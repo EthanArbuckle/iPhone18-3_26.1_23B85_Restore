@@ -1,30 +1,30 @@
 @interface W5WiFiSniffManager
 - (BOOL)__isCancelled;
-- (W5WiFiSniffManager)initWithStatusManager:(id)a3 andUserNotificationManager:(id)a4;
-- (id)__pendingRequestWithUUID:(id)a3;
-- (id)fetchFileHandleForInterface:(id)a3;
-- (pcap)openPcapForInterface:(id)a3 datalinkType:(int)a4;
-- (void)BhoundBpfFileDescriptor:(id)a3 errorOccurred:(id)a4;
-- (void)BhoundBpfFileDescriptor:(id)a3 receivedPacket:(id)a4;
+- (W5WiFiSniffManager)initWithStatusManager:(id)manager andUserNotificationManager:(id)notificationManager;
+- (id)__pendingRequestWithUUID:(id)d;
+- (id)fetchFileHandleForInterface:(id)interface;
+- (pcap)openPcapForInterface:(id)interface datalinkType:(int)type;
+- (void)BhoundBpfFileDescriptor:(id)descriptor errorOccurred:(id)occurred;
+- (void)BhoundBpfFileDescriptor:(id)descriptor receivedPacket:(id)packet;
 - (void)__nextRequest;
 - (void)__setupWatchdogTask;
-- (void)addRequest:(id)a3;
-- (void)cancelRequestWithUUID:(id)a3 reply:(id)a4;
+- (void)addRequest:(id)request;
+- (void)cancelRequestWithUUID:(id)d reply:(id)reply;
 - (void)dealloc;
-- (void)startSniffingWithRequest:(id)a3 interfaceName:(id)a4 reply:(id)a5;
-- (void)stopSniffingActiveRequestWithError:(id)a3;
-- (void)teardownAndNotify:(id)a3;
+- (void)startSniffingWithRequest:(id)request interfaceName:(id)name reply:(id)reply;
+- (void)stopSniffingActiveRequestWithError:(id)error;
+- (void)teardownAndNotify:(id)notify;
 @end
 
 @implementation W5WiFiSniffManager
 
-- (W5WiFiSniffManager)initWithStatusManager:(id)a3 andUserNotificationManager:(id)a4
+- (W5WiFiSniffManager)initWithStatusManager:(id)manager andUserNotificationManager:(id)notificationManager
 {
   v12.receiver = self;
   v12.super_class = W5WiFiSniffManager;
   v6 = [(W5WiFiSniffManager *)&v12 init];
   v7 = v6;
-  if (!a3 || !v6 || ((v6->_status = a3, !a4) ? (v8 = 0) : (v8 = a4), (v7->_notification = v8, v9 = dispatch_queue_create("com.apple.wifivelocity.wifi-sniffer", 0), (v7->_queue = v9) == 0) || (v10 = objc_alloc_init(NSMutableArray), (v7->_pendingRequests = v10) == 0)))
+  if (!manager || !v6 || ((v6->_status = manager, !notificationManager) ? (v8 = 0) : (v8 = notificationManager), (v7->_notification = v8, v9 = dispatch_queue_create("com.apple.wifivelocity.wifi-sniffer", 0), (v7->_queue = v9) == 0) || (v10 = objc_alloc_init(NSMutableArray), (v7->_pendingRequests = v10) == 0)))
   {
 
     return 0;
@@ -51,7 +51,7 @@
   [(W5WiFiSniffManager *)&v5 dealloc];
 }
 
-- (void)addRequest:(id)a3
+- (void)addRequest:(id)request
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -59,11 +59,11 @@
   v4[2] = sub_100057F8C;
   v4[3] = &unk_1000E1C98;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = request;
   dispatch_async(queue, v4);
 }
 
-- (id)__pendingRequestWithUUID:(id)a3
+- (id)__pendingRequestWithUUID:(id)d
 {
   v11 = 0u;
   v12 = 0u;
@@ -106,7 +106,7 @@ LABEL_3:
   }
 }
 
-- (void)cancelRequestWithUUID:(id)a3 reply:(id)a4
+- (void)cancelRequestWithUUID:(id)d reply:(id)reply
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -114,8 +114,8 @@ LABEL_3:
   block[2] = sub_10005815C;
   block[3] = &unk_1000E1CC0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = d;
+  block[6] = reply;
   dispatch_async(queue, block);
 }
 
@@ -146,7 +146,7 @@ LABEL_3:
     v29[1] = 3221225472;
     v30 = sub_100058ED4;
     v31 = &unk_1000E2BE8;
-    v32 = self;
+    selfCopy = self;
     v27[4] = self;
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
@@ -156,9 +156,9 @@ LABEL_3:
     v27[1] = 3221225472;
     v27[2] = sub_10005938C;
     v27[3] = &unk_1000E2C10;
-    v4 = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName];
-    v5 = [(NSURL *)[(W5WiFiSnifferRequest *)[(W5WiFiActiveSnifferRequest *)self->_activeRequest requestInfo] outputFile] path];
-    if (!v4 || (v6 = v5) == 0)
+    interfaceName = [(W5WiFiInterface *)[(W5StatusManager *)self->_status wifi] interfaceName];
+    path = [(NSURL *)[(W5WiFiSnifferRequest *)[(W5WiFiActiveSnifferRequest *)self->_activeRequest requestInfo] outputFile] path];
+    if (!interfaceName || (v6 = path) == 0)
     {
       v33 = NSLocalizedFailureReasonErrorKey;
       v34 = @"W5ParamErr";
@@ -184,7 +184,7 @@ LABEL_3:
       v7 = sub_100098A04();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(W5WiFiSnifferRequest *)[(W5WiFiActiveSnifferRequest *)self->_activeRequest requestInfo] channel];
+        channel = [(W5WiFiSnifferRequest *)[(W5WiFiActiveSnifferRequest *)self->_activeRequest requestInfo] channel];
         v42 = 136315906;
         v43 = "[W5WiFiSniffManager __nextRequest]";
         v44 = 2080;
@@ -192,16 +192,16 @@ LABEL_3:
         v46 = 1024;
         v47 = 469;
         v48 = 2114;
-        v49 = v8;
+        v49 = channel;
         LODWORD(v26) = 38;
         v25 = &v42;
         _os_log_send_and_compose_impl();
       }
 
-      v9 = [(W5WiFiSnifferRequest *)[(W5WiFiActiveSnifferRequest *)self->_activeRequest requestInfo:v25] tcpDump];
+      tcpDump = [(W5WiFiSnifferRequest *)[(W5WiFiActiveSnifferRequest *)self->_activeRequest requestInfo:v25] tcpDump];
       v10 = sub_100098A04();
       v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-      if (v9)
+      if (tcpDump)
       {
         if (v11)
         {
@@ -220,7 +220,7 @@ LABEL_3:
         {
           v12 = objc_alloc_init(NSMutableArray);
           v41[0] = @"-i";
-          v41[1] = v4;
+          v41[1] = interfaceName;
           v41[2] = @"-I";
           v41[3] = @"-G";
           v41[4] = [NSString stringWithFormat:@"%ld", [(W5WiFiSnifferRequest *)[(W5WiFiActiveSnifferRequest *)self->_activeRequest requestInfo] rotationInterval]];
@@ -255,7 +255,7 @@ LABEL_3:
         }
 
         v36[0] = @"-i";
-        v36[1] = v4;
+        v36[1] = interfaceName;
         v36[2] = @"-I";
         v36[3] = @"-G";
         [(W5WiFiSnifferRequest *)[(W5WiFiActiveSnifferRequest *)self->_activeRequest requestInfo] duration];
@@ -292,10 +292,10 @@ LABEL_33:
 
     else
     {
-      v16 = [(W5WiFiSnifferRequest *)[(W5WiFiActiveSnifferRequest *)self->_activeRequest requestInfo] tcpDump];
+      tcpDump2 = [(W5WiFiSnifferRequest *)[(W5WiFiActiveSnifferRequest *)self->_activeRequest requestInfo] tcpDump];
       v17 = sub_100098A04();
       v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
-      if (v16)
+      if (tcpDump2)
       {
         if (v18)
         {
@@ -313,7 +313,7 @@ LABEL_33:
         v35[0] = @"-q";
         v35[1] = @"-n";
         v35[2] = @"-i";
-        v35[3] = v4;
+        v35[3] = interfaceName;
         v35[4] = @"-I";
         v35[5] = @"-G";
         [(W5WiFiSnifferRequest *)[(W5WiFiActiveSnifferRequest *)self->_activeRequest requestInfo:v25] duration];
@@ -342,7 +342,7 @@ LABEL_33:
       }
     }
 
-    [(W5WiFiSniffManager *)self startSniffingWithRequest:[(W5WiFiActiveSnifferRequest *)self->_activeRequest requestInfo:v25] interfaceName:v4 reply:v27];
+    [(W5WiFiSniffManager *)self startSniffingWithRequest:[(W5WiFiActiveSnifferRequest *)self->_activeRequest requestInfo:v25] interfaceName:interfaceName reply:v27];
   }
 }
 
@@ -365,7 +365,7 @@ LABEL_33:
   return v3;
 }
 
-- (void)teardownAndNotify:(id)a3
+- (void)teardownAndNotify:(id)notify
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -373,13 +373,13 @@ LABEL_33:
   v4[2] = sub_100059664;
   v4[3] = &unk_1000E1C70;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = notify;
   dispatch_async(queue, v4);
 }
 
-- (void)startSniffingWithRequest:(id)a3 interfaceName:(id)a4 reply:(id)a5
+- (void)startSniffingWithRequest:(id)request interfaceName:(id)name reply:(id)reply
 {
-  [(W5WiFiActiveSnifferRequest *)self->_activeRequest setActiveFileHandle:[(W5WiFiSniffManager *)self fetchFileHandleForInterface:a4]];
+  [(W5WiFiActiveSnifferRequest *)self->_activeRequest setActiveFileHandle:[(W5WiFiSniffManager *)self fetchFileHandleForInterface:name]];
   if (![(W5WiFiActiveSnifferRequest *)self->_activeRequest activeFileHandle])
   {
     v20 = sub_100098A04();
@@ -396,7 +396,7 @@ LABEL_33:
       _os_log_send_and_compose_impl();
     }
 
-    if (!a5)
+    if (!reply)
     {
       return;
     }
@@ -411,13 +411,13 @@ LABEL_16:
   }
 
   -[W5WiFiActiveSnifferRequest setActiveBFD:](self->_activeRequest, "setActiveBFD:", [[BhoundBpfFileDescriptor alloc] initWithFileDescriptor:-[NSFileHandle fileDescriptor](-[W5WiFiActiveSnifferRequest activeFileHandle](self->_activeRequest datalinkType:"activeFileHandle") delegate:"fileDescriptor") delegateQueue:{127, self, self->_queue}]);
-  -[W5WiFiActiveSnifferRequest setActivePCap:](self->_activeRequest, "setActivePCap:", [[BhoundPcap alloc] initWithSaveFileName:objc_msgSend(objc_msgSend(a3 dataLinkTypeValue:"outputFile") sizeLimit:"path") countLimit:127 circularSaveFiles:0 timestampSaveFiles:{0, 0, 0}]);
+  -[W5WiFiActiveSnifferRequest setActivePCap:](self->_activeRequest, "setActivePCap:", [[BhoundPcap alloc] initWithSaveFileName:objc_msgSend(objc_msgSend(request dataLinkTypeValue:"outputFile") sizeLimit:"path") countLimit:127 circularSaveFiles:0 timestampSaveFiles:{0, 0, 0}]);
   v8 = sub_100098A04();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(NSFileHandle *)[(W5WiFiActiveSnifferRequest *)self->_activeRequest activeFileHandle] fileDescriptor];
-    v10 = [(W5WiFiActiveSnifferRequest *)self->_activeRequest activeBFD];
-    v11 = [(W5WiFiActiveSnifferRequest *)self->_activeRequest activePCap];
+    fileDescriptor = [(NSFileHandle *)[(W5WiFiActiveSnifferRequest *)self->_activeRequest activeFileHandle] fileDescriptor];
+    activeBFD = [(W5WiFiActiveSnifferRequest *)self->_activeRequest activeBFD];
+    activePCap = [(W5WiFiActiveSnifferRequest *)self->_activeRequest activePCap];
     v26 = 136316418;
     v27 = "[W5WiFiSniffManager startSniffingWithRequest:interfaceName:reply:]";
     v28 = 2080;
@@ -425,11 +425,11 @@ LABEL_16:
     v30 = 1024;
     v31 = 599;
     v32 = 1024;
-    v33 = v9;
+    v33 = fileDescriptor;
     v34 = 2114;
-    v35 = v10;
+    v35 = activeBFD;
     v36 = 2114;
-    v37 = v11;
+    v37 = activePCap;
     LODWORD(v22) = 54;
     v21 = &v26;
     _os_log_send_and_compose_impl();
@@ -437,7 +437,7 @@ LABEL_16:
 
   if (![(W5WiFiActiveSnifferRequest *)self->_activeRequest activeBFD:v21]|| ![(W5WiFiActiveSnifferRequest *)self->_activeRequest activePCap])
   {
-    if (!a5)
+    if (!reply)
     {
       return;
     }
@@ -449,34 +449,34 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  [a3 duration];
+  [request duration];
   if (v12 > 0.0)
   {
     [(W5WiFiActiveSnifferRequest *)self->_activeRequest setTimeoutTimer:dispatch_source_create(&_dispatch_source_type_timer, 0, 0, self->_queue)];
-    v13 = [(W5WiFiActiveSnifferRequest *)self->_activeRequest timeoutTimer];
+    timeoutTimer = [(W5WiFiActiveSnifferRequest *)self->_activeRequest timeoutTimer];
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_100059BEC;
     handler[3] = &unk_1000E1CE8;
     handler[4] = self;
-    dispatch_source_set_event_handler(v13, handler);
-    v14 = [(W5WiFiActiveSnifferRequest *)self->_activeRequest timeoutTimer];
-    [a3 duration];
+    dispatch_source_set_event_handler(timeoutTimer, handler);
+    timeoutTimer2 = [(W5WiFiActiveSnifferRequest *)self->_activeRequest timeoutTimer];
+    [request duration];
     v16 = dispatch_time(0, 1000000000 * v15);
-    dispatch_source_set_timer(v14, v16, 0xFFFFFFFFFFFFFFFFLL, 0);
+    dispatch_source_set_timer(timeoutTimer2, v16, 0xFFFFFFFFFFFFFFFFLL, 0);
     dispatch_activate([(W5WiFiActiveSnifferRequest *)self->_activeRequest timeoutTimer]);
   }
 
   [(BhoundBpfFileDescriptor *)[(W5WiFiActiveSnifferRequest *)self->_activeRequest activeBFD] resume];
-  if (a5)
+  if (reply)
   {
     v17 = 0;
 LABEL_17:
-    (*(a5 + 2))(a5, v17);
+    (*(reply + 2))(reply, v17);
   }
 }
 
-- (void)stopSniffingActiveRequestWithError:(id)a3
+- (void)stopSniffingActiveRequestWithError:(id)error
 {
   activeRequest = self->_activeRequest;
   if (activeRequest && [(W5WiFiActiveSnifferRequest *)activeRequest activeBFD])
@@ -489,8 +489,8 @@ LABEL_17:
 
     if ([(W5WiFiSnifferRequest *)[(W5WiFiActiveSnifferRequest *)self->_activeRequest requestInfo] reply])
     {
-      v6 = [(W5WiFiSnifferRequest *)[(W5WiFiActiveSnifferRequest *)self->_activeRequest requestInfo] reply];
-      v6[2](v6, a3);
+      reply = [(W5WiFiSnifferRequest *)[(W5WiFiActiveSnifferRequest *)self->_activeRequest requestInfo] reply];
+      reply[2](reply, error);
     }
 
     [(BhoundPcap *)[(W5WiFiActiveSnifferRequest *)self->_activeRequest activePCap] shutdown];
@@ -501,9 +501,9 @@ LABEL_17:
   }
 }
 
-- (id)fetchFileHandleForInterface:(id)a3
+- (id)fetchFileHandleForInterface:(id)interface
 {
-  v3 = [(W5WiFiSniffManager *)self openPcapForInterface:a3 datalinkType:127];
+  v3 = [(W5WiFiSniffManager *)self openPcapForInterface:interface datalinkType:127];
   if (!v3)
   {
     return 0;
@@ -520,17 +520,17 @@ LABEL_17:
   return v5;
 }
 
-- (void)BhoundBpfFileDescriptor:(id)a3 receivedPacket:(id)a4
+- (void)BhoundBpfFileDescriptor:(id)descriptor receivedPacket:(id)packet
 {
-  if (a4 && [(W5WiFiActiveSnifferRequest *)self->_activeRequest activePCap])
+  if (packet && [(W5WiFiActiveSnifferRequest *)self->_activeRequest activePCap])
   {
-    v6 = [(W5WiFiActiveSnifferRequest *)self->_activeRequest activePCap];
+    activePCap = [(W5WiFiActiveSnifferRequest *)self->_activeRequest activePCap];
 
-    [(BhoundPcap *)v6 savePacket:a4];
+    [(BhoundPcap *)activePCap savePacket:packet];
   }
 }
 
-- (void)BhoundBpfFileDescriptor:(id)a3 errorOccurred:(id)a4
+- (void)BhoundBpfFileDescriptor:(id)descriptor errorOccurred:(id)occurred
 {
   v6 = sub_100098A04();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -542,31 +542,31 @@ LABEL_17:
     v13 = 1024;
     v14 = 668;
     v15 = 2114;
-    v16 = a4;
+    occurredCopy = occurred;
     LODWORD(v8) = 38;
     v7 = &v9;
     _os_log_send_and_compose_impl();
   }
 
-  [(W5WiFiSniffManager *)self stopSniffingActiveRequestWithError:a4, v7, v8];
+  [(W5WiFiSniffManager *)self stopSniffingActiveRequestWithError:occurred, v7, v8];
 }
 
-- (pcap)openPcapForInterface:(id)a3 datalinkType:(int)a4
+- (pcap)openPcapForInterface:(id)interface datalinkType:(int)type
 {
-  v5 = pcap_create([a3 UTF8String], v9);
+  v5 = pcap_create([interface UTF8String], v9);
   if (pcap_set_snaplen(v5, 0x80000))
   {
     return 0;
   }
 
   pcap_set_promisc(v5, 1);
-  if (pcap_set_timeout(v5, 0) || (a4 - 105) <= 0x3A && ((1 << (a4 - 105)) & 0x40000000040C001) != 0 && pcap_set_rfmon(v5, 1))
+  if (pcap_set_timeout(v5, 0) || (type - 105) <= 0x3A && ((1 << (type - 105)) & 0x40000000040C001) != 0 && pcap_set_rfmon(v5, 1))
   {
     return 0;
   }
 
   pcap_activate(v5);
-  if (pcap_set_datalink(v5, a4))
+  if (pcap_set_datalink(v5, type))
   {
     return 0;
   }

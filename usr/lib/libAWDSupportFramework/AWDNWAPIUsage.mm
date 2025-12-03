@@ -1,62 +1,62 @@
 @interface AWDNWAPIUsage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIfFltrAttachOs:(BOOL)a3;
-- (void)setHasIfNetagentEnabled:(BOOL)a3;
-- (void)setHasIfnetAlloc:(BOOL)a3;
-- (void)setHasIfnetAllocOs:(BOOL)a3;
-- (void)setHasIpFltrAdd:(BOOL)a3;
-- (void)setHasIpFltrAddOs:(BOOL)a3;
-- (void)setHasNexusFlowInet6Datagram:(BOOL)a3;
-- (void)setHasNexusFlowInet6Stream:(BOOL)a3;
-- (void)setHasNexusFlowInetDatagram:(BOOL)a3;
-- (void)setHasNexusFlowInetStream:(BOOL)a3;
-- (void)setHasPfAddrule:(BOOL)a3;
-- (void)setHasPfAddruleOs:(BOOL)a3;
-- (void)setHasSockAlloc:(BOOL)a3;
-- (void)setHasSockAllocKernel:(BOOL)a3;
-- (void)setHasSockAllocKernelOs:(BOOL)a3;
-- (void)setHasSockDomainInet6:(BOOL)a3;
-- (void)setHasSockDomainInet:(BOOL)a3;
-- (void)setHasSockDomainKey:(BOOL)a3;
-- (void)setHasSockDomainLocal:(BOOL)a3;
-- (void)setHasSockDomainMultipath:(BOOL)a3;
-- (void)setHasSockDomainNdrv:(BOOL)a3;
-- (void)setHasSockDomainOther:(BOOL)a3;
-- (void)setHasSockDomainRoute:(BOOL)a3;
-- (void)setHasSockDomainSystem:(BOOL)a3;
-- (void)setHasSockFltrRegister:(BOOL)a3;
-- (void)setHasSockFltrRegisterOs:(BOOL)a3;
-- (void)setHasSockInetMcastJoin:(BOOL)a3;
-- (void)setHasSockInetMcastJoinOs:(BOOL)a3;
-- (void)setHasSockNecpClientuuidCount:(BOOL)a3;
-- (void)setHasSockNetInet6Dgram:(BOOL)a3;
-- (void)setHasSockNetInet6DgramConnected:(BOOL)a3;
-- (void)setHasSockNetInet6DgramDns:(BOOL)a3;
-- (void)setHasSockNetInet6DgramNoData:(BOOL)a3;
-- (void)setHasSockNetInet6Stream:(BOOL)a3;
-- (void)setHasSockNetInetDgram:(BOOL)a3;
-- (void)setHasSockNetInetDgramConnected:(BOOL)a3;
-- (void)setHasSockNetInetDgramDns:(BOOL)a3;
-- (void)setHasSockNetInetDgramNoData:(BOOL)a3;
-- (void)setHasSockNetInetStream:(BOOL)a3;
-- (void)setHasTimeSinceLastReport:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasVmnetStart:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIfFltrAttachOs:(BOOL)os;
+- (void)setHasIfNetagentEnabled:(BOOL)enabled;
+- (void)setHasIfnetAlloc:(BOOL)alloc;
+- (void)setHasIfnetAllocOs:(BOOL)os;
+- (void)setHasIpFltrAdd:(BOOL)add;
+- (void)setHasIpFltrAddOs:(BOOL)os;
+- (void)setHasNexusFlowInet6Datagram:(BOOL)datagram;
+- (void)setHasNexusFlowInet6Stream:(BOOL)stream;
+- (void)setHasNexusFlowInetDatagram:(BOOL)datagram;
+- (void)setHasNexusFlowInetStream:(BOOL)stream;
+- (void)setHasPfAddrule:(BOOL)addrule;
+- (void)setHasPfAddruleOs:(BOOL)os;
+- (void)setHasSockAlloc:(BOOL)alloc;
+- (void)setHasSockAllocKernel:(BOOL)kernel;
+- (void)setHasSockAllocKernelOs:(BOOL)os;
+- (void)setHasSockDomainInet6:(BOOL)inet6;
+- (void)setHasSockDomainInet:(BOOL)inet;
+- (void)setHasSockDomainKey:(BOOL)key;
+- (void)setHasSockDomainLocal:(BOOL)local;
+- (void)setHasSockDomainMultipath:(BOOL)multipath;
+- (void)setHasSockDomainNdrv:(BOOL)ndrv;
+- (void)setHasSockDomainOther:(BOOL)other;
+- (void)setHasSockDomainRoute:(BOOL)route;
+- (void)setHasSockDomainSystem:(BOOL)system;
+- (void)setHasSockFltrRegister:(BOOL)register;
+- (void)setHasSockFltrRegisterOs:(BOOL)os;
+- (void)setHasSockInetMcastJoin:(BOOL)join;
+- (void)setHasSockInetMcastJoinOs:(BOOL)os;
+- (void)setHasSockNecpClientuuidCount:(BOOL)count;
+- (void)setHasSockNetInet6Dgram:(BOOL)dgram;
+- (void)setHasSockNetInet6DgramConnected:(BOOL)connected;
+- (void)setHasSockNetInet6DgramDns:(BOOL)dns;
+- (void)setHasSockNetInet6DgramNoData:(BOOL)data;
+- (void)setHasSockNetInet6Stream:(BOOL)stream;
+- (void)setHasSockNetInetDgram:(BOOL)dgram;
+- (void)setHasSockNetInetDgramConnected:(BOOL)connected;
+- (void)setHasSockNetInetDgramDns:(BOOL)dns;
+- (void)setHasSockNetInetDgramNoData:(BOOL)data;
+- (void)setHasSockNetInetStream:(BOOL)stream;
+- (void)setHasTimeSinceLastReport:(BOOL)report;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasVmnetStart:(BOOL)start;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDNWAPIUsage
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
   v3 = 0x10000000000;
-  if (!a3)
+  if (!timestamp)
   {
     v3 = 0;
   }
@@ -64,10 +64,10 @@
   self->_has = (*&self->_has & 0xFFFFFEFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasIfFltrAttachOs:(BOOL)a3
+- (void)setHasIfFltrAttachOs:(BOOL)os
 {
   v3 = 2;
-  if (!a3)
+  if (!os)
   {
     v3 = 0;
   }
@@ -75,10 +75,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFDLL | v3);
 }
 
-- (void)setHasIpFltrAdd:(BOOL)a3
+- (void)setHasIpFltrAdd:(BOOL)add
 {
   v3 = 16;
-  if (!a3)
+  if (!add)
   {
     v3 = 0;
   }
@@ -86,10 +86,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFEFLL | v3);
 }
 
-- (void)setHasIpFltrAddOs:(BOOL)a3
+- (void)setHasIpFltrAddOs:(BOOL)os
 {
   v3 = 32;
-  if (!a3)
+  if (!os)
   {
     v3 = 0;
   }
@@ -97,10 +97,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFDFLL | v3);
 }
 
-- (void)setHasSockFltrRegister:(BOOL)a3
+- (void)setHasSockFltrRegister:(BOOL)register
 {
   v3 = 0x1000000;
-  if (!a3)
+  if (!register)
   {
     v3 = 0;
   }
@@ -108,10 +108,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFEFFFFFFLL | v3);
 }
 
-- (void)setHasSockFltrRegisterOs:(BOOL)a3
+- (void)setHasSockFltrRegisterOs:(BOOL)os
 {
   v3 = 0x2000000;
-  if (!a3)
+  if (!os)
   {
     v3 = 0;
   }
@@ -119,10 +119,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFDFFFFFFLL | v3);
 }
 
-- (void)setHasSockAlloc:(BOOL)a3
+- (void)setHasSockAlloc:(BOOL)alloc
 {
   v3 = 4096;
-  if (!a3)
+  if (!alloc)
   {
     v3 = 0;
   }
@@ -130,10 +130,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFEFFFLL | v3);
 }
 
-- (void)setHasSockAllocKernel:(BOOL)a3
+- (void)setHasSockAllocKernel:(BOOL)kernel
 {
   v3 = 0x2000;
-  if (!a3)
+  if (!kernel)
   {
     v3 = 0;
   }
@@ -141,10 +141,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFDFFFLL | v3);
 }
 
-- (void)setHasSockAllocKernelOs:(BOOL)a3
+- (void)setHasSockAllocKernelOs:(BOOL)os
 {
   v3 = 0x4000;
-  if (!a3)
+  if (!os)
   {
     v3 = 0;
   }
@@ -152,10 +152,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFBFFFLL | v3);
 }
 
-- (void)setHasSockNecpClientuuidCount:(BOOL)a3
+- (void)setHasSockNecpClientuuidCount:(BOOL)count
 {
   v3 = 0x10000000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -163,10 +163,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFEFFFFFFFLL | v3);
 }
 
-- (void)setHasSockDomainLocal:(BOOL)a3
+- (void)setHasSockDomainLocal:(BOOL)local
 {
   v3 = 0x40000;
-  if (!a3)
+  if (!local)
   {
     v3 = 0;
   }
@@ -174,10 +174,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFBFFFFLL | v3);
 }
 
-- (void)setHasSockDomainRoute:(BOOL)a3
+- (void)setHasSockDomainRoute:(BOOL)route
 {
   v3 = 0x400000;
-  if (!a3)
+  if (!route)
   {
     v3 = 0;
   }
@@ -185,10 +185,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFBFFFFFLL | v3);
 }
 
-- (void)setHasSockDomainInet:(BOOL)a3
+- (void)setHasSockDomainInet:(BOOL)inet
 {
   v3 = 0x8000;
-  if (!a3)
+  if (!inet)
   {
     v3 = 0;
   }
@@ -196,10 +196,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFF7FFFLL | v3);
 }
 
-- (void)setHasSockDomainInet6:(BOOL)a3
+- (void)setHasSockDomainInet6:(BOOL)inet6
 {
   v3 = 0x10000;
-  if (!a3)
+  if (!inet6)
   {
     v3 = 0;
   }
@@ -207,10 +207,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFEFFFFLL | v3);
 }
 
-- (void)setHasSockDomainSystem:(BOOL)a3
+- (void)setHasSockDomainSystem:(BOOL)system
 {
   v3 = 0x800000;
-  if (!a3)
+  if (!system)
   {
     v3 = 0;
   }
@@ -218,10 +218,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFF7FFFFFLL | v3);
 }
 
-- (void)setHasSockDomainMultipath:(BOOL)a3
+- (void)setHasSockDomainMultipath:(BOOL)multipath
 {
   v3 = 0x80000;
-  if (!a3)
+  if (!multipath)
   {
     v3 = 0;
   }
@@ -229,10 +229,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFF7FFFFLL | v3);
 }
 
-- (void)setHasSockDomainKey:(BOOL)a3
+- (void)setHasSockDomainKey:(BOOL)key
 {
   v3 = 0x20000;
-  if (!a3)
+  if (!key)
   {
     v3 = 0;
   }
@@ -240,10 +240,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFDFFFFLL | v3);
 }
 
-- (void)setHasSockDomainNdrv:(BOOL)a3
+- (void)setHasSockDomainNdrv:(BOOL)ndrv
 {
   v3 = 0x100000;
-  if (!a3)
+  if (!ndrv)
   {
     v3 = 0;
   }
@@ -251,10 +251,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFEFFFFFLL | v3);
 }
 
-- (void)setHasSockDomainOther:(BOOL)a3
+- (void)setHasSockDomainOther:(BOOL)other
 {
   v3 = 0x200000;
-  if (!a3)
+  if (!other)
   {
     v3 = 0;
   }
@@ -262,10 +262,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFDFFFFFLL | v3);
 }
 
-- (void)setHasSockNetInetStream:(BOOL)a3
+- (void)setHasSockNetInetStream:(BOOL)stream
 {
   v3 = 0x4000000000;
-  if (!a3)
+  if (!stream)
   {
     v3 = 0;
   }
@@ -273,10 +273,10 @@
   self->_has = (*&self->_has & 0xFFFFFFBFFFFFFFFFLL | v3);
 }
 
-- (void)setHasSockNetInetDgram:(BOOL)a3
+- (void)setHasSockNetInetDgram:(BOOL)dgram
 {
   v3 = 0x400000000;
-  if (!a3)
+  if (!dgram)
   {
     v3 = 0;
   }
@@ -284,10 +284,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFBFFFFFFFFLL | v3);
 }
 
-- (void)setHasSockNetInetDgramConnected:(BOOL)a3
+- (void)setHasSockNetInetDgramConnected:(BOOL)connected
 {
   v3 = 0x800000000;
-  if (!a3)
+  if (!connected)
   {
     v3 = 0;
   }
@@ -295,10 +295,10 @@
   self->_has = (*&self->_has & 0xFFFFFFF7FFFFFFFFLL | v3);
 }
 
-- (void)setHasSockNetInetDgramDns:(BOOL)a3
+- (void)setHasSockNetInetDgramDns:(BOOL)dns
 {
   v3 = 0x1000000000;
-  if (!a3)
+  if (!dns)
   {
     v3 = 0;
   }
@@ -306,10 +306,10 @@
   self->_has = (*&self->_has & 0xFFFFFFEFFFFFFFFFLL | v3);
 }
 
-- (void)setHasSockNetInetDgramNoData:(BOOL)a3
+- (void)setHasSockNetInetDgramNoData:(BOOL)data
 {
   v3 = 0x2000000000;
-  if (!a3)
+  if (!data)
   {
     v3 = 0;
   }
@@ -317,10 +317,10 @@
   self->_has = (*&self->_has & 0xFFFFFFDFFFFFFFFFLL | v3);
 }
 
-- (void)setHasSockNetInet6Stream:(BOOL)a3
+- (void)setHasSockNetInet6Stream:(BOOL)stream
 {
   v3 = 0x200000000;
-  if (!a3)
+  if (!stream)
   {
     v3 = 0;
   }
@@ -328,10 +328,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFDFFFFFFFFLL | v3);
 }
 
-- (void)setHasSockNetInet6Dgram:(BOOL)a3
+- (void)setHasSockNetInet6Dgram:(BOOL)dgram
 {
   v3 = 0x20000000;
-  if (!a3)
+  if (!dgram)
   {
     v3 = 0;
   }
@@ -339,10 +339,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFDFFFFFFFLL | v3);
 }
 
-- (void)setHasSockNetInet6DgramConnected:(BOOL)a3
+- (void)setHasSockNetInet6DgramConnected:(BOOL)connected
 {
   v3 = 0x40000000;
-  if (!a3)
+  if (!connected)
   {
     v3 = 0;
   }
@@ -350,10 +350,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFBFFFFFFFLL | v3);
 }
 
-- (void)setHasSockNetInet6DgramDns:(BOOL)a3
+- (void)setHasSockNetInet6DgramDns:(BOOL)dns
 {
   v3 = 0x80000000;
-  if (!a3)
+  if (!dns)
   {
     v3 = 0;
   }
@@ -361,10 +361,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFF7FFFFFFFLL | v3);
 }
 
-- (void)setHasSockNetInet6DgramNoData:(BOOL)a3
+- (void)setHasSockNetInet6DgramNoData:(BOOL)data
 {
   v3 = 0x100000000;
-  if (!a3)
+  if (!data)
   {
     v3 = 0;
   }
@@ -372,10 +372,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFEFFFFFFFFLL | v3);
 }
 
-- (void)setHasSockInetMcastJoin:(BOOL)a3
+- (void)setHasSockInetMcastJoin:(BOOL)join
 {
   v3 = 0x4000000;
-  if (!a3)
+  if (!join)
   {
     v3 = 0;
   }
@@ -383,10 +383,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFBFFFFFFLL | v3);
 }
 
-- (void)setHasSockInetMcastJoinOs:(BOOL)a3
+- (void)setHasSockInetMcastJoinOs:(BOOL)os
 {
   v3 = 0x8000000;
-  if (!a3)
+  if (!os)
   {
     v3 = 0;
   }
@@ -394,10 +394,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFF7FFFFFFLL | v3);
 }
 
-- (void)setHasNexusFlowInetStream:(BOOL)a3
+- (void)setHasNexusFlowInetStream:(BOOL)stream
 {
   v3 = 512;
-  if (!a3)
+  if (!stream)
   {
     v3 = 0;
   }
@@ -405,10 +405,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFDFFLL | v3);
 }
 
-- (void)setHasNexusFlowInetDatagram:(BOOL)a3
+- (void)setHasNexusFlowInetDatagram:(BOOL)datagram
 {
   v3 = 256;
-  if (!a3)
+  if (!datagram)
   {
     v3 = 0;
   }
@@ -416,10 +416,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFEFFLL | v3);
 }
 
-- (void)setHasNexusFlowInet6Stream:(BOOL)a3
+- (void)setHasNexusFlowInet6Stream:(BOOL)stream
 {
   v3 = 128;
-  if (!a3)
+  if (!stream)
   {
     v3 = 0;
   }
@@ -427,10 +427,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFF7FLL | v3);
 }
 
-- (void)setHasNexusFlowInet6Datagram:(BOOL)a3
+- (void)setHasNexusFlowInet6Datagram:(BOOL)datagram
 {
   v3 = 64;
-  if (!a3)
+  if (!datagram)
   {
     v3 = 0;
   }
@@ -438,10 +438,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFBFLL | v3);
 }
 
-- (void)setHasIfnetAlloc:(BOOL)a3
+- (void)setHasIfnetAlloc:(BOOL)alloc
 {
   v3 = 4;
-  if (!a3)
+  if (!alloc)
   {
     v3 = 0;
   }
@@ -449,10 +449,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFBLL | v3);
 }
 
-- (void)setHasIfnetAllocOs:(BOOL)a3
+- (void)setHasIfnetAllocOs:(BOOL)os
 {
   v3 = 8;
-  if (!a3)
+  if (!os)
   {
     v3 = 0;
   }
@@ -460,10 +460,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFF7 | v3);
 }
 
-- (void)setHasPfAddrule:(BOOL)a3
+- (void)setHasPfAddrule:(BOOL)addrule
 {
   v3 = 1024;
-  if (!a3)
+  if (!addrule)
   {
     v3 = 0;
   }
@@ -471,10 +471,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFBFFLL | v3);
 }
 
-- (void)setHasPfAddruleOs:(BOOL)a3
+- (void)setHasPfAddruleOs:(BOOL)os
 {
   v3 = 2048;
-  if (!a3)
+  if (!os)
   {
     v3 = 0;
   }
@@ -482,10 +482,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFF7FFLL | v3);
 }
 
-- (void)setHasVmnetStart:(BOOL)a3
+- (void)setHasVmnetStart:(BOOL)start
 {
   v3 = 0x20000000000;
-  if (!a3)
+  if (!start)
   {
     v3 = 0;
   }
@@ -493,10 +493,10 @@
   self->_has = (*&self->_has & 0xFFFFFDFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasIfNetagentEnabled:(BOOL)a3
+- (void)setHasIfNetagentEnabled:(BOOL)enabled
 {
   v3 = 0x40000000000;
-  if (!a3)
+  if (!enabled)
   {
     v3 = 0;
   }
@@ -504,10 +504,10 @@
   self->_has = (*&self->_has & 0xFFFFFBFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTimeSinceLastReport:(BOOL)a3
+- (void)setHasTimeSinceLastReport:(BOOL)report
 {
   v3 = 0x8000000000;
-  if (!a3)
+  if (!report)
   {
     v3 = 0;
   }
@@ -524,11 +524,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((*&has & 0x10000000000) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((*&has & 1) == 0)
     {
@@ -547,7 +547,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_ifFltrAttach), @"if_fltr_attach"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_ifFltrAttach), @"if_fltr_attach"}];
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -561,7 +561,7 @@ LABEL_4:
   }
 
 LABEL_48:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_ifFltrAttachOs), @"if_fltr_attach_os"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_ifFltrAttachOs), @"if_fltr_attach_os"}];
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -575,7 +575,7 @@ LABEL_5:
   }
 
 LABEL_49:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_ipFltrAdd), @"ip_fltr_add"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_ipFltrAdd), @"ip_fltr_add"}];
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -589,7 +589,7 @@ LABEL_6:
   }
 
 LABEL_50:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_ipFltrAddOs), @"ip_fltr_add_os"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_ipFltrAddOs), @"ip_fltr_add_os"}];
   has = self->_has;
   if ((*&has & 0x1000000) == 0)
   {
@@ -603,7 +603,7 @@ LABEL_7:
   }
 
 LABEL_51:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockFltrRegister), @"sock_fltr_register"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockFltrRegister), @"sock_fltr_register"}];
   has = self->_has;
   if ((*&has & 0x2000000) == 0)
   {
@@ -617,7 +617,7 @@ LABEL_8:
   }
 
 LABEL_52:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockFltrRegisterOs), @"sock_fltr_register_os"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockFltrRegisterOs), @"sock_fltr_register_os"}];
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -631,7 +631,7 @@ LABEL_9:
   }
 
 LABEL_53:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockAlloc), @"sock_alloc"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockAlloc), @"sock_alloc"}];
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -645,7 +645,7 @@ LABEL_10:
   }
 
 LABEL_54:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockAllocKernel), @"sock_alloc_kernel"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockAllocKernel), @"sock_alloc_kernel"}];
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -659,7 +659,7 @@ LABEL_11:
   }
 
 LABEL_55:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockAllocKernelOs), @"sock_alloc_kernel_os"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockAllocKernelOs), @"sock_alloc_kernel_os"}];
   has = self->_has;
   if ((*&has & 0x10000000) == 0)
   {
@@ -673,7 +673,7 @@ LABEL_12:
   }
 
 LABEL_56:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockNecpClientuuidCount), @"sock_necp_clientuuid_count"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockNecpClientuuidCount), @"sock_necp_clientuuid_count"}];
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -687,7 +687,7 @@ LABEL_13:
   }
 
 LABEL_57:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockDomainLocal), @"sock_domain_local"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockDomainLocal), @"sock_domain_local"}];
   has = self->_has;
   if ((*&has & 0x400000) == 0)
   {
@@ -701,7 +701,7 @@ LABEL_14:
   }
 
 LABEL_58:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockDomainRoute), @"sock_domain_route"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockDomainRoute), @"sock_domain_route"}];
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -715,7 +715,7 @@ LABEL_15:
   }
 
 LABEL_59:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockDomainInet), @"sock_domain_inet"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockDomainInet), @"sock_domain_inet"}];
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -729,7 +729,7 @@ LABEL_16:
   }
 
 LABEL_60:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockDomainInet6), @"sock_domain_inet6"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockDomainInet6), @"sock_domain_inet6"}];
   has = self->_has;
   if ((*&has & 0x800000) == 0)
   {
@@ -743,7 +743,7 @@ LABEL_17:
   }
 
 LABEL_61:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockDomainSystem), @"sock_domain_system"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockDomainSystem), @"sock_domain_system"}];
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -757,7 +757,7 @@ LABEL_18:
   }
 
 LABEL_62:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockDomainMultipath), @"sock_domain_multipath"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockDomainMultipath), @"sock_domain_multipath"}];
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -771,7 +771,7 @@ LABEL_19:
   }
 
 LABEL_63:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockDomainKey), @"sock_domain_key"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockDomainKey), @"sock_domain_key"}];
   has = self->_has;
   if ((*&has & 0x100000) == 0)
   {
@@ -785,7 +785,7 @@ LABEL_20:
   }
 
 LABEL_64:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockDomainNdrv), @"sock_domain_ndrv"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockDomainNdrv), @"sock_domain_ndrv"}];
   has = self->_has;
   if ((*&has & 0x200000) == 0)
   {
@@ -799,7 +799,7 @@ LABEL_21:
   }
 
 LABEL_65:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockDomainOther), @"sock_domain_other"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockDomainOther), @"sock_domain_other"}];
   has = self->_has;
   if ((*&has & 0x4000000000) == 0)
   {
@@ -813,7 +813,7 @@ LABEL_22:
   }
 
 LABEL_66:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockNetInetStream), @"sock_net_inet_stream"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockNetInetStream), @"sock_net_inet_stream"}];
   has = self->_has;
   if ((*&has & 0x400000000) == 0)
   {
@@ -827,7 +827,7 @@ LABEL_23:
   }
 
 LABEL_67:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockNetInetDgram), @"sock_net_inet_dgram"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockNetInetDgram), @"sock_net_inet_dgram"}];
   has = self->_has;
   if ((*&has & 0x800000000) == 0)
   {
@@ -841,7 +841,7 @@ LABEL_24:
   }
 
 LABEL_68:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockNetInetDgramConnected), @"sock_net_inet_dgram_connected"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockNetInetDgramConnected), @"sock_net_inet_dgram_connected"}];
   has = self->_has;
   if ((*&has & 0x1000000000) == 0)
   {
@@ -855,7 +855,7 @@ LABEL_25:
   }
 
 LABEL_69:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockNetInetDgramDns), @"sock_net_inet_dgram_dns"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockNetInetDgramDns), @"sock_net_inet_dgram_dns"}];
   has = self->_has;
   if ((*&has & 0x2000000000) == 0)
   {
@@ -869,7 +869,7 @@ LABEL_26:
   }
 
 LABEL_70:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockNetInetDgramNoData), @"sock_net_inet_dgram_no_data"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockNetInetDgramNoData), @"sock_net_inet_dgram_no_data"}];
   has = self->_has;
   if ((*&has & 0x200000000) == 0)
   {
@@ -883,7 +883,7 @@ LABEL_27:
   }
 
 LABEL_71:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockNetInet6Stream), @"sock_net_inet6_stream"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockNetInet6Stream), @"sock_net_inet6_stream"}];
   has = self->_has;
   if ((*&has & 0x20000000) == 0)
   {
@@ -897,7 +897,7 @@ LABEL_28:
   }
 
 LABEL_72:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockNetInet6Dgram), @"sock_net_inet6_dgram"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockNetInet6Dgram), @"sock_net_inet6_dgram"}];
   has = self->_has;
   if ((*&has & 0x40000000) == 0)
   {
@@ -911,7 +911,7 @@ LABEL_29:
   }
 
 LABEL_73:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockNetInet6DgramConnected), @"sock_net_inet6_dgram_connected"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockNetInet6DgramConnected), @"sock_net_inet6_dgram_connected"}];
   has = self->_has;
   if ((*&has & 0x80000000) == 0)
   {
@@ -925,7 +925,7 @@ LABEL_30:
   }
 
 LABEL_74:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockNetInet6DgramDns), @"sock_net_inet6_dgram_dns"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockNetInet6DgramDns), @"sock_net_inet6_dgram_dns"}];
   has = self->_has;
   if ((*&has & 0x100000000) == 0)
   {
@@ -939,7 +939,7 @@ LABEL_31:
   }
 
 LABEL_75:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockNetInet6DgramNoData), @"sock_net_inet6_dgram_no_data"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockNetInet6DgramNoData), @"sock_net_inet6_dgram_no_data"}];
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
   {
@@ -953,7 +953,7 @@ LABEL_32:
   }
 
 LABEL_76:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockInetMcastJoin), @"sock_inet_mcast_join"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockInetMcastJoin), @"sock_inet_mcast_join"}];
   has = self->_has;
   if ((*&has & 0x8000000) == 0)
   {
@@ -967,7 +967,7 @@ LABEL_33:
   }
 
 LABEL_77:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockInetMcastJoinOs), @"sock_inet_mcast_join_os"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_sockInetMcastJoinOs), @"sock_inet_mcast_join_os"}];
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -981,7 +981,7 @@ LABEL_34:
   }
 
 LABEL_78:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_nexusFlowInetStream), @"nexus_flow_inet_stream"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_nexusFlowInetStream), @"nexus_flow_inet_stream"}];
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -995,7 +995,7 @@ LABEL_35:
   }
 
 LABEL_79:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_nexusFlowInetDatagram), @"nexus_flow_inet_datagram"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_nexusFlowInetDatagram), @"nexus_flow_inet_datagram"}];
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -1009,7 +1009,7 @@ LABEL_36:
   }
 
 LABEL_80:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_nexusFlowInet6Stream), @"nexus_flow_inet6_stream"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_nexusFlowInet6Stream), @"nexus_flow_inet6_stream"}];
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -1023,7 +1023,7 @@ LABEL_37:
   }
 
 LABEL_81:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_nexusFlowInet6Datagram), @"nexus_flow_inet6_datagram"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_nexusFlowInet6Datagram), @"nexus_flow_inet6_datagram"}];
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -1037,7 +1037,7 @@ LABEL_38:
   }
 
 LABEL_82:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_ifnetAlloc), @"ifnet_alloc"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_ifnetAlloc), @"ifnet_alloc"}];
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -1051,7 +1051,7 @@ LABEL_39:
   }
 
 LABEL_83:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_ifnetAllocOs), @"ifnet_alloc_os"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_ifnetAllocOs), @"ifnet_alloc_os"}];
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -1065,7 +1065,7 @@ LABEL_40:
   }
 
 LABEL_84:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_pfAddrule), @"pf_addrule"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_pfAddrule), @"pf_addrule"}];
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -1079,7 +1079,7 @@ LABEL_41:
   }
 
 LABEL_85:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_pfAddruleOs), @"pf_addrule_os"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_pfAddruleOs), @"pf_addrule_os"}];
   has = self->_has;
   if ((*&has & 0x20000000000) == 0)
   {
@@ -1090,17 +1090,17 @@ LABEL_42:
     }
 
 LABEL_87:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_ifNetagentEnabled), @"if_netagent_enabled"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_ifNetagentEnabled), @"if_netagent_enabled"}];
     if ((*&self->_has & 0x8000000000) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_44;
   }
 
 LABEL_86:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_vmnetStart), @"vmnet_start"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_vmnetStart), @"vmnet_start"}];
   has = self->_has;
   if ((*&has & 0x40000000000) != 0)
   {
@@ -1111,13 +1111,13 @@ LABEL_43:
   if ((*&has & 0x8000000000) != 0)
   {
 LABEL_44:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timeSinceLastReport), @"time_since_last_report"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timeSinceLastReport), @"time_since_last_report"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((*&has & 0x10000000000) != 0)
@@ -1755,13 +1755,13 @@ LABEL_87:
   PBDataWriterWriteUint64Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((*&has & 0x10000000000) != 0)
   {
-    *(a3 + 41) = self->_timestamp;
-    *(a3 + 348) |= 0x10000000000uLL;
+    *(to + 41) = self->_timestamp;
+    *(to + 348) |= 0x10000000000uLL;
     has = self->_has;
     if ((*&has & 1) == 0)
     {
@@ -1780,8 +1780,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 1) = self->_ifFltrAttach;
-  *(a3 + 348) |= 1uLL;
+  *(to + 1) = self->_ifFltrAttach;
+  *(to + 348) |= 1uLL;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -1795,8 +1795,8 @@ LABEL_4:
   }
 
 LABEL_47:
-  *(a3 + 2) = self->_ifFltrAttachOs;
-  *(a3 + 348) |= 2uLL;
+  *(to + 2) = self->_ifFltrAttachOs;
+  *(to + 348) |= 2uLL;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -1810,8 +1810,8 @@ LABEL_5:
   }
 
 LABEL_48:
-  *(a3 + 5) = self->_ipFltrAdd;
-  *(a3 + 348) |= 0x10uLL;
+  *(to + 5) = self->_ipFltrAdd;
+  *(to + 348) |= 0x10uLL;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -1825,8 +1825,8 @@ LABEL_6:
   }
 
 LABEL_49:
-  *(a3 + 6) = self->_ipFltrAddOs;
-  *(a3 + 348) |= 0x20uLL;
+  *(to + 6) = self->_ipFltrAddOs;
+  *(to + 348) |= 0x20uLL;
   has = self->_has;
   if ((*&has & 0x1000000) == 0)
   {
@@ -1840,8 +1840,8 @@ LABEL_7:
   }
 
 LABEL_50:
-  *(a3 + 25) = self->_sockFltrRegister;
-  *(a3 + 348) |= 0x1000000uLL;
+  *(to + 25) = self->_sockFltrRegister;
+  *(to + 348) |= 0x1000000uLL;
   has = self->_has;
   if ((*&has & 0x2000000) == 0)
   {
@@ -1855,8 +1855,8 @@ LABEL_8:
   }
 
 LABEL_51:
-  *(a3 + 26) = self->_sockFltrRegisterOs;
-  *(a3 + 348) |= 0x2000000uLL;
+  *(to + 26) = self->_sockFltrRegisterOs;
+  *(to + 348) |= 0x2000000uLL;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -1870,8 +1870,8 @@ LABEL_9:
   }
 
 LABEL_52:
-  *(a3 + 13) = self->_sockAlloc;
-  *(a3 + 348) |= 0x1000uLL;
+  *(to + 13) = self->_sockAlloc;
+  *(to + 348) |= 0x1000uLL;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -1885,8 +1885,8 @@ LABEL_10:
   }
 
 LABEL_53:
-  *(a3 + 14) = self->_sockAllocKernel;
-  *(a3 + 348) |= 0x2000uLL;
+  *(to + 14) = self->_sockAllocKernel;
+  *(to + 348) |= 0x2000uLL;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -1900,8 +1900,8 @@ LABEL_11:
   }
 
 LABEL_54:
-  *(a3 + 15) = self->_sockAllocKernelOs;
-  *(a3 + 348) |= 0x4000uLL;
+  *(to + 15) = self->_sockAllocKernelOs;
+  *(to + 348) |= 0x4000uLL;
   has = self->_has;
   if ((*&has & 0x10000000) == 0)
   {
@@ -1915,8 +1915,8 @@ LABEL_12:
   }
 
 LABEL_55:
-  *(a3 + 29) = self->_sockNecpClientuuidCount;
-  *(a3 + 348) |= 0x10000000uLL;
+  *(to + 29) = self->_sockNecpClientuuidCount;
+  *(to + 348) |= 0x10000000uLL;
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -1930,8 +1930,8 @@ LABEL_13:
   }
 
 LABEL_56:
-  *(a3 + 19) = self->_sockDomainLocal;
-  *(a3 + 348) |= 0x40000uLL;
+  *(to + 19) = self->_sockDomainLocal;
+  *(to + 348) |= 0x40000uLL;
   has = self->_has;
   if ((*&has & 0x400000) == 0)
   {
@@ -1945,8 +1945,8 @@ LABEL_14:
   }
 
 LABEL_57:
-  *(a3 + 23) = self->_sockDomainRoute;
-  *(a3 + 348) |= 0x400000uLL;
+  *(to + 23) = self->_sockDomainRoute;
+  *(to + 348) |= 0x400000uLL;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -1960,8 +1960,8 @@ LABEL_15:
   }
 
 LABEL_58:
-  *(a3 + 16) = self->_sockDomainInet;
-  *(a3 + 348) |= 0x8000uLL;
+  *(to + 16) = self->_sockDomainInet;
+  *(to + 348) |= 0x8000uLL;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -1975,8 +1975,8 @@ LABEL_16:
   }
 
 LABEL_59:
-  *(a3 + 17) = self->_sockDomainInet6;
-  *(a3 + 348) |= 0x10000uLL;
+  *(to + 17) = self->_sockDomainInet6;
+  *(to + 348) |= 0x10000uLL;
   has = self->_has;
   if ((*&has & 0x800000) == 0)
   {
@@ -1990,8 +1990,8 @@ LABEL_17:
   }
 
 LABEL_60:
-  *(a3 + 24) = self->_sockDomainSystem;
-  *(a3 + 348) |= 0x800000uLL;
+  *(to + 24) = self->_sockDomainSystem;
+  *(to + 348) |= 0x800000uLL;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -2005,8 +2005,8 @@ LABEL_18:
   }
 
 LABEL_61:
-  *(a3 + 20) = self->_sockDomainMultipath;
-  *(a3 + 348) |= 0x80000uLL;
+  *(to + 20) = self->_sockDomainMultipath;
+  *(to + 348) |= 0x80000uLL;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -2020,8 +2020,8 @@ LABEL_19:
   }
 
 LABEL_62:
-  *(a3 + 18) = self->_sockDomainKey;
-  *(a3 + 348) |= 0x20000uLL;
+  *(to + 18) = self->_sockDomainKey;
+  *(to + 348) |= 0x20000uLL;
   has = self->_has;
   if ((*&has & 0x100000) == 0)
   {
@@ -2035,8 +2035,8 @@ LABEL_20:
   }
 
 LABEL_63:
-  *(a3 + 21) = self->_sockDomainNdrv;
-  *(a3 + 348) |= 0x100000uLL;
+  *(to + 21) = self->_sockDomainNdrv;
+  *(to + 348) |= 0x100000uLL;
   has = self->_has;
   if ((*&has & 0x200000) == 0)
   {
@@ -2050,8 +2050,8 @@ LABEL_21:
   }
 
 LABEL_64:
-  *(a3 + 22) = self->_sockDomainOther;
-  *(a3 + 348) |= 0x200000uLL;
+  *(to + 22) = self->_sockDomainOther;
+  *(to + 348) |= 0x200000uLL;
   has = self->_has;
   if ((*&has & 0x4000000000) == 0)
   {
@@ -2065,8 +2065,8 @@ LABEL_22:
   }
 
 LABEL_65:
-  *(a3 + 39) = self->_sockNetInetStream;
-  *(a3 + 348) |= 0x4000000000uLL;
+  *(to + 39) = self->_sockNetInetStream;
+  *(to + 348) |= 0x4000000000uLL;
   has = self->_has;
   if ((*&has & 0x400000000) == 0)
   {
@@ -2080,8 +2080,8 @@ LABEL_23:
   }
 
 LABEL_66:
-  *(a3 + 35) = self->_sockNetInetDgram;
-  *(a3 + 348) |= 0x400000000uLL;
+  *(to + 35) = self->_sockNetInetDgram;
+  *(to + 348) |= 0x400000000uLL;
   has = self->_has;
   if ((*&has & 0x800000000) == 0)
   {
@@ -2095,8 +2095,8 @@ LABEL_24:
   }
 
 LABEL_67:
-  *(a3 + 36) = self->_sockNetInetDgramConnected;
-  *(a3 + 348) |= 0x800000000uLL;
+  *(to + 36) = self->_sockNetInetDgramConnected;
+  *(to + 348) |= 0x800000000uLL;
   has = self->_has;
   if ((*&has & 0x1000000000) == 0)
   {
@@ -2110,8 +2110,8 @@ LABEL_25:
   }
 
 LABEL_68:
-  *(a3 + 37) = self->_sockNetInetDgramDns;
-  *(a3 + 348) |= 0x1000000000uLL;
+  *(to + 37) = self->_sockNetInetDgramDns;
+  *(to + 348) |= 0x1000000000uLL;
   has = self->_has;
   if ((*&has & 0x2000000000) == 0)
   {
@@ -2125,8 +2125,8 @@ LABEL_26:
   }
 
 LABEL_69:
-  *(a3 + 38) = self->_sockNetInetDgramNoData;
-  *(a3 + 348) |= 0x2000000000uLL;
+  *(to + 38) = self->_sockNetInetDgramNoData;
+  *(to + 348) |= 0x2000000000uLL;
   has = self->_has;
   if ((*&has & 0x200000000) == 0)
   {
@@ -2140,8 +2140,8 @@ LABEL_27:
   }
 
 LABEL_70:
-  *(a3 + 34) = self->_sockNetInet6Stream;
-  *(a3 + 348) |= 0x200000000uLL;
+  *(to + 34) = self->_sockNetInet6Stream;
+  *(to + 348) |= 0x200000000uLL;
   has = self->_has;
   if ((*&has & 0x20000000) == 0)
   {
@@ -2155,8 +2155,8 @@ LABEL_28:
   }
 
 LABEL_71:
-  *(a3 + 30) = self->_sockNetInet6Dgram;
-  *(a3 + 348) |= 0x20000000uLL;
+  *(to + 30) = self->_sockNetInet6Dgram;
+  *(to + 348) |= 0x20000000uLL;
   has = self->_has;
   if ((*&has & 0x40000000) == 0)
   {
@@ -2170,8 +2170,8 @@ LABEL_29:
   }
 
 LABEL_72:
-  *(a3 + 31) = self->_sockNetInet6DgramConnected;
-  *(a3 + 348) |= 0x40000000uLL;
+  *(to + 31) = self->_sockNetInet6DgramConnected;
+  *(to + 348) |= 0x40000000uLL;
   has = self->_has;
   if ((*&has & 0x80000000) == 0)
   {
@@ -2185,8 +2185,8 @@ LABEL_30:
   }
 
 LABEL_73:
-  *(a3 + 32) = self->_sockNetInet6DgramDns;
-  *(a3 + 348) |= 0x80000000uLL;
+  *(to + 32) = self->_sockNetInet6DgramDns;
+  *(to + 348) |= 0x80000000uLL;
   has = self->_has;
   if ((*&has & 0x100000000) == 0)
   {
@@ -2200,8 +2200,8 @@ LABEL_31:
   }
 
 LABEL_74:
-  *(a3 + 33) = self->_sockNetInet6DgramNoData;
-  *(a3 + 348) |= 0x100000000uLL;
+  *(to + 33) = self->_sockNetInet6DgramNoData;
+  *(to + 348) |= 0x100000000uLL;
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
   {
@@ -2215,8 +2215,8 @@ LABEL_32:
   }
 
 LABEL_75:
-  *(a3 + 27) = self->_sockInetMcastJoin;
-  *(a3 + 348) |= 0x4000000uLL;
+  *(to + 27) = self->_sockInetMcastJoin;
+  *(to + 348) |= 0x4000000uLL;
   has = self->_has;
   if ((*&has & 0x8000000) == 0)
   {
@@ -2230,8 +2230,8 @@ LABEL_33:
   }
 
 LABEL_76:
-  *(a3 + 28) = self->_sockInetMcastJoinOs;
-  *(a3 + 348) |= 0x8000000uLL;
+  *(to + 28) = self->_sockInetMcastJoinOs;
+  *(to + 348) |= 0x8000000uLL;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -2245,8 +2245,8 @@ LABEL_34:
   }
 
 LABEL_77:
-  *(a3 + 10) = self->_nexusFlowInetStream;
-  *(a3 + 348) |= 0x200uLL;
+  *(to + 10) = self->_nexusFlowInetStream;
+  *(to + 348) |= 0x200uLL;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -2260,8 +2260,8 @@ LABEL_35:
   }
 
 LABEL_78:
-  *(a3 + 9) = self->_nexusFlowInetDatagram;
-  *(a3 + 348) |= 0x100uLL;
+  *(to + 9) = self->_nexusFlowInetDatagram;
+  *(to + 348) |= 0x100uLL;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -2275,8 +2275,8 @@ LABEL_36:
   }
 
 LABEL_79:
-  *(a3 + 8) = self->_nexusFlowInet6Stream;
-  *(a3 + 348) |= 0x80uLL;
+  *(to + 8) = self->_nexusFlowInet6Stream;
+  *(to + 348) |= 0x80uLL;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -2290,8 +2290,8 @@ LABEL_37:
   }
 
 LABEL_80:
-  *(a3 + 7) = self->_nexusFlowInet6Datagram;
-  *(a3 + 348) |= 0x40uLL;
+  *(to + 7) = self->_nexusFlowInet6Datagram;
+  *(to + 348) |= 0x40uLL;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -2305,8 +2305,8 @@ LABEL_38:
   }
 
 LABEL_81:
-  *(a3 + 3) = self->_ifnetAlloc;
-  *(a3 + 348) |= 4uLL;
+  *(to + 3) = self->_ifnetAlloc;
+  *(to + 348) |= 4uLL;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -2320,8 +2320,8 @@ LABEL_39:
   }
 
 LABEL_82:
-  *(a3 + 4) = self->_ifnetAllocOs;
-  *(a3 + 348) |= 8uLL;
+  *(to + 4) = self->_ifnetAllocOs;
+  *(to + 348) |= 8uLL;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -2335,8 +2335,8 @@ LABEL_40:
   }
 
 LABEL_83:
-  *(a3 + 11) = self->_pfAddrule;
-  *(a3 + 348) |= 0x400uLL;
+  *(to + 11) = self->_pfAddrule;
+  *(to + 348) |= 0x400uLL;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -2350,8 +2350,8 @@ LABEL_41:
   }
 
 LABEL_84:
-  *(a3 + 12) = self->_pfAddruleOs;
-  *(a3 + 348) |= 0x800uLL;
+  *(to + 12) = self->_pfAddruleOs;
+  *(to + 348) |= 0x800uLL;
   has = self->_has;
   if ((*&has & 0x20000000000) == 0)
   {
@@ -2365,8 +2365,8 @@ LABEL_42:
   }
 
 LABEL_85:
-  *(a3 + 42) = self->_vmnetStart;
-  *(a3 + 348) |= 0x20000000000uLL;
+  *(to + 42) = self->_vmnetStart;
+  *(to + 348) |= 0x20000000000uLL;
   has = self->_has;
   if ((*&has & 0x40000000000) == 0)
   {
@@ -2377,23 +2377,23 @@ LABEL_43:
     }
 
 LABEL_87:
-    *(a3 + 40) = self->_timeSinceLastReport;
-    *(a3 + 348) |= 0x8000000000uLL;
+    *(to + 40) = self->_timeSinceLastReport;
+    *(to + 348) |= 0x8000000000uLL;
     return;
   }
 
 LABEL_86:
-  *(a3 + 344) = self->_ifNetagentEnabled;
-  *(a3 + 348) |= 0x40000000000uLL;
+  *(to + 344) = self->_ifNetagentEnabled;
+  *(to + 348) |= 0x40000000000uLL;
   if ((*&self->_has & 0x8000000000) != 0)
   {
     goto LABEL_87;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((*&has & 0x10000000000) != 0)
   {
@@ -3030,19 +3030,19 @@ LABEL_44:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
   }
 
   has = self->_has;
-  v7 = *(a3 + 348);
+  v7 = *(equal + 348);
   if ((*&has & 0x10000000000) != 0)
   {
-    if ((v7 & 0x10000000000) == 0 || self->_timestamp != *(a3 + 41))
+    if ((v7 & 0x10000000000) == 0 || self->_timestamp != *(equal + 41))
     {
       goto LABEL_219;
     }
@@ -3055,7 +3055,7 @@ LABEL_44:
 
   if (*&has)
   {
-    if ((v7 & 1) == 0 || self->_ifFltrAttach != *(a3 + 1))
+    if ((v7 & 1) == 0 || self->_ifFltrAttach != *(equal + 1))
     {
       goto LABEL_219;
     }
@@ -3068,7 +3068,7 @@ LABEL_44:
 
   if ((*&has & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_ifFltrAttachOs != *(a3 + 2))
+    if ((v7 & 2) == 0 || self->_ifFltrAttachOs != *(equal + 2))
     {
       goto LABEL_219;
     }
@@ -3081,7 +3081,7 @@ LABEL_44:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v7 & 0x10) == 0 || self->_ipFltrAdd != *(a3 + 5))
+    if ((v7 & 0x10) == 0 || self->_ipFltrAdd != *(equal + 5))
     {
       goto LABEL_219;
     }
@@ -3094,7 +3094,7 @@ LABEL_44:
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v7 & 0x20) == 0 || self->_ipFltrAddOs != *(a3 + 6))
+    if ((v7 & 0x20) == 0 || self->_ipFltrAddOs != *(equal + 6))
     {
       goto LABEL_219;
     }
@@ -3107,7 +3107,7 @@ LABEL_44:
 
   if ((*&has & 0x1000000) != 0)
   {
-    if ((v7 & 0x1000000) == 0 || self->_sockFltrRegister != *(a3 + 25))
+    if ((v7 & 0x1000000) == 0 || self->_sockFltrRegister != *(equal + 25))
     {
       goto LABEL_219;
     }
@@ -3120,7 +3120,7 @@ LABEL_44:
 
   if ((*&has & 0x2000000) != 0)
   {
-    if ((v7 & 0x2000000) == 0 || self->_sockFltrRegisterOs != *(a3 + 26))
+    if ((v7 & 0x2000000) == 0 || self->_sockFltrRegisterOs != *(equal + 26))
     {
       goto LABEL_219;
     }
@@ -3133,7 +3133,7 @@ LABEL_44:
 
   if ((*&has & 0x1000) != 0)
   {
-    if ((v7 & 0x1000) == 0 || self->_sockAlloc != *(a3 + 13))
+    if ((v7 & 0x1000) == 0 || self->_sockAlloc != *(equal + 13))
     {
       goto LABEL_219;
     }
@@ -3146,7 +3146,7 @@ LABEL_44:
 
   if ((*&has & 0x2000) != 0)
   {
-    if ((v7 & 0x2000) == 0 || self->_sockAllocKernel != *(a3 + 14))
+    if ((v7 & 0x2000) == 0 || self->_sockAllocKernel != *(equal + 14))
     {
       goto LABEL_219;
     }
@@ -3159,7 +3159,7 @@ LABEL_44:
 
   if ((*&has & 0x4000) != 0)
   {
-    if ((v7 & 0x4000) == 0 || self->_sockAllocKernelOs != *(a3 + 15))
+    if ((v7 & 0x4000) == 0 || self->_sockAllocKernelOs != *(equal + 15))
     {
       goto LABEL_219;
     }
@@ -3172,7 +3172,7 @@ LABEL_44:
 
   if ((*&has & 0x10000000) != 0)
   {
-    if ((v7 & 0x10000000) == 0 || self->_sockNecpClientuuidCount != *(a3 + 29))
+    if ((v7 & 0x10000000) == 0 || self->_sockNecpClientuuidCount != *(equal + 29))
     {
       goto LABEL_219;
     }
@@ -3185,7 +3185,7 @@ LABEL_44:
 
   if ((*&has & 0x40000) != 0)
   {
-    if ((v7 & 0x40000) == 0 || self->_sockDomainLocal != *(a3 + 19))
+    if ((v7 & 0x40000) == 0 || self->_sockDomainLocal != *(equal + 19))
     {
       goto LABEL_219;
     }
@@ -3198,7 +3198,7 @@ LABEL_44:
 
   if ((*&has & 0x400000) != 0)
   {
-    if ((v7 & 0x400000) == 0 || self->_sockDomainRoute != *(a3 + 23))
+    if ((v7 & 0x400000) == 0 || self->_sockDomainRoute != *(equal + 23))
     {
       goto LABEL_219;
     }
@@ -3211,7 +3211,7 @@ LABEL_44:
 
   if ((*&has & 0x8000) != 0)
   {
-    if ((v7 & 0x8000) == 0 || self->_sockDomainInet != *(a3 + 16))
+    if ((v7 & 0x8000) == 0 || self->_sockDomainInet != *(equal + 16))
     {
       goto LABEL_219;
     }
@@ -3224,7 +3224,7 @@ LABEL_44:
 
   if ((*&has & 0x10000) != 0)
   {
-    if ((v7 & 0x10000) == 0 || self->_sockDomainInet6 != *(a3 + 17))
+    if ((v7 & 0x10000) == 0 || self->_sockDomainInet6 != *(equal + 17))
     {
       goto LABEL_219;
     }
@@ -3237,7 +3237,7 @@ LABEL_44:
 
   if ((*&has & 0x800000) != 0)
   {
-    if ((v7 & 0x800000) == 0 || self->_sockDomainSystem != *(a3 + 24))
+    if ((v7 & 0x800000) == 0 || self->_sockDomainSystem != *(equal + 24))
     {
       goto LABEL_219;
     }
@@ -3250,7 +3250,7 @@ LABEL_44:
 
   if ((*&has & 0x80000) != 0)
   {
-    if ((v7 & 0x80000) == 0 || self->_sockDomainMultipath != *(a3 + 20))
+    if ((v7 & 0x80000) == 0 || self->_sockDomainMultipath != *(equal + 20))
     {
       goto LABEL_219;
     }
@@ -3263,7 +3263,7 @@ LABEL_44:
 
   if ((*&has & 0x20000) != 0)
   {
-    if ((v7 & 0x20000) == 0 || self->_sockDomainKey != *(a3 + 18))
+    if ((v7 & 0x20000) == 0 || self->_sockDomainKey != *(equal + 18))
     {
       goto LABEL_219;
     }
@@ -3276,7 +3276,7 @@ LABEL_44:
 
   if ((*&has & 0x100000) != 0)
   {
-    if ((v7 & 0x100000) == 0 || self->_sockDomainNdrv != *(a3 + 21))
+    if ((v7 & 0x100000) == 0 || self->_sockDomainNdrv != *(equal + 21))
     {
       goto LABEL_219;
     }
@@ -3289,7 +3289,7 @@ LABEL_44:
 
   if ((*&has & 0x200000) != 0)
   {
-    if ((v7 & 0x200000) == 0 || self->_sockDomainOther != *(a3 + 22))
+    if ((v7 & 0x200000) == 0 || self->_sockDomainOther != *(equal + 22))
     {
       goto LABEL_219;
     }
@@ -3302,7 +3302,7 @@ LABEL_44:
 
   if ((*&has & 0x4000000000) != 0)
   {
-    if ((v7 & 0x4000000000) == 0 || self->_sockNetInetStream != *(a3 + 39))
+    if ((v7 & 0x4000000000) == 0 || self->_sockNetInetStream != *(equal + 39))
     {
       goto LABEL_219;
     }
@@ -3315,7 +3315,7 @@ LABEL_44:
 
   if ((*&has & 0x400000000) != 0)
   {
-    if ((v7 & 0x400000000) == 0 || self->_sockNetInetDgram != *(a3 + 35))
+    if ((v7 & 0x400000000) == 0 || self->_sockNetInetDgram != *(equal + 35))
     {
       goto LABEL_219;
     }
@@ -3328,7 +3328,7 @@ LABEL_44:
 
   if ((*&has & 0x800000000) != 0)
   {
-    if ((v7 & 0x800000000) == 0 || self->_sockNetInetDgramConnected != *(a3 + 36))
+    if ((v7 & 0x800000000) == 0 || self->_sockNetInetDgramConnected != *(equal + 36))
     {
       goto LABEL_219;
     }
@@ -3341,7 +3341,7 @@ LABEL_44:
 
   if ((*&has & 0x1000000000) != 0)
   {
-    if ((v7 & 0x1000000000) == 0 || self->_sockNetInetDgramDns != *(a3 + 37))
+    if ((v7 & 0x1000000000) == 0 || self->_sockNetInetDgramDns != *(equal + 37))
     {
       goto LABEL_219;
     }
@@ -3354,7 +3354,7 @@ LABEL_44:
 
   if ((*&has & 0x2000000000) != 0)
   {
-    if ((v7 & 0x2000000000) == 0 || self->_sockNetInetDgramNoData != *(a3 + 38))
+    if ((v7 & 0x2000000000) == 0 || self->_sockNetInetDgramNoData != *(equal + 38))
     {
       goto LABEL_219;
     }
@@ -3367,7 +3367,7 @@ LABEL_44:
 
   if ((*&has & 0x200000000) != 0)
   {
-    if ((v7 & 0x200000000) == 0 || self->_sockNetInet6Stream != *(a3 + 34))
+    if ((v7 & 0x200000000) == 0 || self->_sockNetInet6Stream != *(equal + 34))
     {
       goto LABEL_219;
     }
@@ -3380,7 +3380,7 @@ LABEL_44:
 
   if ((*&has & 0x20000000) != 0)
   {
-    if ((v7 & 0x20000000) == 0 || self->_sockNetInet6Dgram != *(a3 + 30))
+    if ((v7 & 0x20000000) == 0 || self->_sockNetInet6Dgram != *(equal + 30))
     {
       goto LABEL_219;
     }
@@ -3393,7 +3393,7 @@ LABEL_44:
 
   if ((*&has & 0x40000000) != 0)
   {
-    if ((v7 & 0x40000000) == 0 || self->_sockNetInet6DgramConnected != *(a3 + 31))
+    if ((v7 & 0x40000000) == 0 || self->_sockNetInet6DgramConnected != *(equal + 31))
     {
       goto LABEL_219;
     }
@@ -3406,7 +3406,7 @@ LABEL_44:
 
   if ((*&has & 0x80000000) != 0)
   {
-    if ((v7 & 0x80000000) == 0 || self->_sockNetInet6DgramDns != *(a3 + 32))
+    if ((v7 & 0x80000000) == 0 || self->_sockNetInet6DgramDns != *(equal + 32))
     {
       goto LABEL_219;
     }
@@ -3419,7 +3419,7 @@ LABEL_44:
 
   if ((*&has & 0x100000000) != 0)
   {
-    if ((v7 & 0x100000000) == 0 || self->_sockNetInet6DgramNoData != *(a3 + 33))
+    if ((v7 & 0x100000000) == 0 || self->_sockNetInet6DgramNoData != *(equal + 33))
     {
       goto LABEL_219;
     }
@@ -3432,7 +3432,7 @@ LABEL_44:
 
   if ((*&has & 0x4000000) != 0)
   {
-    if ((v7 & 0x4000000) == 0 || self->_sockInetMcastJoin != *(a3 + 27))
+    if ((v7 & 0x4000000) == 0 || self->_sockInetMcastJoin != *(equal + 27))
     {
       goto LABEL_219;
     }
@@ -3445,7 +3445,7 @@ LABEL_44:
 
   if ((*&has & 0x8000000) != 0)
   {
-    if ((v7 & 0x8000000) == 0 || self->_sockInetMcastJoinOs != *(a3 + 28))
+    if ((v7 & 0x8000000) == 0 || self->_sockInetMcastJoinOs != *(equal + 28))
     {
       goto LABEL_219;
     }
@@ -3458,7 +3458,7 @@ LABEL_44:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v7 & 0x200) == 0 || self->_nexusFlowInetStream != *(a3 + 10))
+    if ((v7 & 0x200) == 0 || self->_nexusFlowInetStream != *(equal + 10))
     {
       goto LABEL_219;
     }
@@ -3471,7 +3471,7 @@ LABEL_44:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v7 & 0x100) == 0 || self->_nexusFlowInetDatagram != *(a3 + 9))
+    if ((v7 & 0x100) == 0 || self->_nexusFlowInetDatagram != *(equal + 9))
     {
       goto LABEL_219;
     }
@@ -3484,7 +3484,7 @@ LABEL_44:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v7 & 0x80) == 0 || self->_nexusFlowInet6Stream != *(a3 + 8))
+    if ((v7 & 0x80) == 0 || self->_nexusFlowInet6Stream != *(equal + 8))
     {
       goto LABEL_219;
     }
@@ -3497,7 +3497,7 @@ LABEL_44:
 
   if ((*&has & 0x40) != 0)
   {
-    if ((v7 & 0x40) == 0 || self->_nexusFlowInet6Datagram != *(a3 + 7))
+    if ((v7 & 0x40) == 0 || self->_nexusFlowInet6Datagram != *(equal + 7))
     {
       goto LABEL_219;
     }
@@ -3510,7 +3510,7 @@ LABEL_44:
 
   if ((*&has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_ifnetAlloc != *(a3 + 3))
+    if ((v7 & 4) == 0 || self->_ifnetAlloc != *(equal + 3))
     {
       goto LABEL_219;
     }
@@ -3523,7 +3523,7 @@ LABEL_44:
 
   if ((*&has & 8) != 0)
   {
-    if ((v7 & 8) == 0 || self->_ifnetAllocOs != *(a3 + 4))
+    if ((v7 & 8) == 0 || self->_ifnetAllocOs != *(equal + 4))
     {
       goto LABEL_219;
     }
@@ -3536,7 +3536,7 @@ LABEL_44:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v7 & 0x400) == 0 || self->_pfAddrule != *(a3 + 11))
+    if ((v7 & 0x400) == 0 || self->_pfAddrule != *(equal + 11))
     {
       goto LABEL_219;
     }
@@ -3549,7 +3549,7 @@ LABEL_44:
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v7 & 0x800) == 0 || self->_pfAddruleOs != *(a3 + 12))
+    if ((v7 & 0x800) == 0 || self->_pfAddruleOs != *(equal + 12))
     {
       goto LABEL_219;
     }
@@ -3562,7 +3562,7 @@ LABEL_44:
 
   if ((*&has & 0x20000000000) != 0)
   {
-    if ((v7 & 0x20000000000) == 0 || self->_vmnetStart != *(a3 + 42))
+    if ((v7 & 0x20000000000) == 0 || self->_vmnetStart != *(equal + 42))
     {
       goto LABEL_219;
     }
@@ -3588,10 +3588,10 @@ LABEL_44:
     goto LABEL_219;
   }
 
-  v8 = *(a3 + 344);
+  v8 = *(equal + 344);
   if (self->_ifNetagentEnabled)
   {
-    if ((*(a3 + 344) & 1) == 0)
+    if ((*(equal + 344) & 1) == 0)
     {
       goto LABEL_219;
     }
@@ -3599,7 +3599,7 @@ LABEL_44:
     goto LABEL_215;
   }
 
-  if (*(a3 + 344))
+  if (*(equal + 344))
   {
 LABEL_219:
     LOBYTE(v5) = 0;
@@ -3610,7 +3610,7 @@ LABEL_215:
   LOBYTE(v5) = (v7 & 0x8000000000) == 0;
   if ((*&has & 0x8000000000) != 0)
   {
-    if ((v7 & 0x8000000000) == 0 || self->_timeSinceLastReport != *(a3 + 40))
+    if ((v7 & 0x8000000000) == 0 || self->_timeSinceLastReport != *(equal + 40))
     {
       goto LABEL_219;
     }
@@ -4222,14 +4222,14 @@ LABEL_44:
   return v45 ^ v46 ^ v44 ^ v43 ^ v42 ^ v41 ^ v40 ^ v39 ^ v38 ^ v37 ^ v36 ^ v35 ^ v34 ^ v33 ^ v32 ^ v31 ^ v30 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24 ^ v25 ^ v26 ^ v27 ^ v28;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x10000000000) != 0)
   {
-    self->_timestamp = *(a3 + 41);
+    self->_timestamp = *(from + 41);
     *&self->_has |= 0x10000000000uLL;
-    v3 = *(a3 + 348);
+    v3 = *(from + 348);
     if ((v3 & 1) == 0)
     {
 LABEL_3:
@@ -4247,9 +4247,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_ifFltrAttach = *(a3 + 1);
+  self->_ifFltrAttach = *(from + 1);
   *&self->_has |= 1uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 2) == 0)
   {
 LABEL_4:
@@ -4262,9 +4262,9 @@ LABEL_4:
   }
 
 LABEL_47:
-  self->_ifFltrAttachOs = *(a3 + 2);
+  self->_ifFltrAttachOs = *(from + 2);
   *&self->_has |= 2uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x10) == 0)
   {
 LABEL_5:
@@ -4277,9 +4277,9 @@ LABEL_5:
   }
 
 LABEL_48:
-  self->_ipFltrAdd = *(a3 + 5);
+  self->_ipFltrAdd = *(from + 5);
   *&self->_has |= 0x10uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x20) == 0)
   {
 LABEL_6:
@@ -4292,9 +4292,9 @@ LABEL_6:
   }
 
 LABEL_49:
-  self->_ipFltrAddOs = *(a3 + 6);
+  self->_ipFltrAddOs = *(from + 6);
   *&self->_has |= 0x20uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x1000000) == 0)
   {
 LABEL_7:
@@ -4307,9 +4307,9 @@ LABEL_7:
   }
 
 LABEL_50:
-  self->_sockFltrRegister = *(a3 + 25);
+  self->_sockFltrRegister = *(from + 25);
   *&self->_has |= 0x1000000uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x2000000) == 0)
   {
 LABEL_8:
@@ -4322,9 +4322,9 @@ LABEL_8:
   }
 
 LABEL_51:
-  self->_sockFltrRegisterOs = *(a3 + 26);
+  self->_sockFltrRegisterOs = *(from + 26);
   *&self->_has |= 0x2000000uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x1000) == 0)
   {
 LABEL_9:
@@ -4337,9 +4337,9 @@ LABEL_9:
   }
 
 LABEL_52:
-  self->_sockAlloc = *(a3 + 13);
+  self->_sockAlloc = *(from + 13);
   *&self->_has |= 0x1000uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x2000) == 0)
   {
 LABEL_10:
@@ -4352,9 +4352,9 @@ LABEL_10:
   }
 
 LABEL_53:
-  self->_sockAllocKernel = *(a3 + 14);
+  self->_sockAllocKernel = *(from + 14);
   *&self->_has |= 0x2000uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x4000) == 0)
   {
 LABEL_11:
@@ -4367,9 +4367,9 @@ LABEL_11:
   }
 
 LABEL_54:
-  self->_sockAllocKernelOs = *(a3 + 15);
+  self->_sockAllocKernelOs = *(from + 15);
   *&self->_has |= 0x4000uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x10000000) == 0)
   {
 LABEL_12:
@@ -4382,9 +4382,9 @@ LABEL_12:
   }
 
 LABEL_55:
-  self->_sockNecpClientuuidCount = *(a3 + 29);
+  self->_sockNecpClientuuidCount = *(from + 29);
   *&self->_has |= 0x10000000uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x40000) == 0)
   {
 LABEL_13:
@@ -4397,9 +4397,9 @@ LABEL_13:
   }
 
 LABEL_56:
-  self->_sockDomainLocal = *(a3 + 19);
+  self->_sockDomainLocal = *(from + 19);
   *&self->_has |= 0x40000uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x400000) == 0)
   {
 LABEL_14:
@@ -4412,9 +4412,9 @@ LABEL_14:
   }
 
 LABEL_57:
-  self->_sockDomainRoute = *(a3 + 23);
+  self->_sockDomainRoute = *(from + 23);
   *&self->_has |= 0x400000uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x8000) == 0)
   {
 LABEL_15:
@@ -4427,9 +4427,9 @@ LABEL_15:
   }
 
 LABEL_58:
-  self->_sockDomainInet = *(a3 + 16);
+  self->_sockDomainInet = *(from + 16);
   *&self->_has |= 0x8000uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x10000) == 0)
   {
 LABEL_16:
@@ -4442,9 +4442,9 @@ LABEL_16:
   }
 
 LABEL_59:
-  self->_sockDomainInet6 = *(a3 + 17);
+  self->_sockDomainInet6 = *(from + 17);
   *&self->_has |= 0x10000uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x800000) == 0)
   {
 LABEL_17:
@@ -4457,9 +4457,9 @@ LABEL_17:
   }
 
 LABEL_60:
-  self->_sockDomainSystem = *(a3 + 24);
+  self->_sockDomainSystem = *(from + 24);
   *&self->_has |= 0x800000uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x80000) == 0)
   {
 LABEL_18:
@@ -4472,9 +4472,9 @@ LABEL_18:
   }
 
 LABEL_61:
-  self->_sockDomainMultipath = *(a3 + 20);
+  self->_sockDomainMultipath = *(from + 20);
   *&self->_has |= 0x80000uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x20000) == 0)
   {
 LABEL_19:
@@ -4487,9 +4487,9 @@ LABEL_19:
   }
 
 LABEL_62:
-  self->_sockDomainKey = *(a3 + 18);
+  self->_sockDomainKey = *(from + 18);
   *&self->_has |= 0x20000uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x100000) == 0)
   {
 LABEL_20:
@@ -4502,9 +4502,9 @@ LABEL_20:
   }
 
 LABEL_63:
-  self->_sockDomainNdrv = *(a3 + 21);
+  self->_sockDomainNdrv = *(from + 21);
   *&self->_has |= 0x100000uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x200000) == 0)
   {
 LABEL_21:
@@ -4517,9 +4517,9 @@ LABEL_21:
   }
 
 LABEL_64:
-  self->_sockDomainOther = *(a3 + 22);
+  self->_sockDomainOther = *(from + 22);
   *&self->_has |= 0x200000uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x4000000000) == 0)
   {
 LABEL_22:
@@ -4532,9 +4532,9 @@ LABEL_22:
   }
 
 LABEL_65:
-  self->_sockNetInetStream = *(a3 + 39);
+  self->_sockNetInetStream = *(from + 39);
   *&self->_has |= 0x4000000000uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x400000000) == 0)
   {
 LABEL_23:
@@ -4547,9 +4547,9 @@ LABEL_23:
   }
 
 LABEL_66:
-  self->_sockNetInetDgram = *(a3 + 35);
+  self->_sockNetInetDgram = *(from + 35);
   *&self->_has |= 0x400000000uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x800000000) == 0)
   {
 LABEL_24:
@@ -4562,9 +4562,9 @@ LABEL_24:
   }
 
 LABEL_67:
-  self->_sockNetInetDgramConnected = *(a3 + 36);
+  self->_sockNetInetDgramConnected = *(from + 36);
   *&self->_has |= 0x800000000uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x1000000000) == 0)
   {
 LABEL_25:
@@ -4577,9 +4577,9 @@ LABEL_25:
   }
 
 LABEL_68:
-  self->_sockNetInetDgramDns = *(a3 + 37);
+  self->_sockNetInetDgramDns = *(from + 37);
   *&self->_has |= 0x1000000000uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x2000000000) == 0)
   {
 LABEL_26:
@@ -4592,9 +4592,9 @@ LABEL_26:
   }
 
 LABEL_69:
-  self->_sockNetInetDgramNoData = *(a3 + 38);
+  self->_sockNetInetDgramNoData = *(from + 38);
   *&self->_has |= 0x2000000000uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x200000000) == 0)
   {
 LABEL_27:
@@ -4607,9 +4607,9 @@ LABEL_27:
   }
 
 LABEL_70:
-  self->_sockNetInet6Stream = *(a3 + 34);
+  self->_sockNetInet6Stream = *(from + 34);
   *&self->_has |= 0x200000000uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x20000000) == 0)
   {
 LABEL_28:
@@ -4622,9 +4622,9 @@ LABEL_28:
   }
 
 LABEL_71:
-  self->_sockNetInet6Dgram = *(a3 + 30);
+  self->_sockNetInet6Dgram = *(from + 30);
   *&self->_has |= 0x20000000uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x40000000) == 0)
   {
 LABEL_29:
@@ -4637,9 +4637,9 @@ LABEL_29:
   }
 
 LABEL_72:
-  self->_sockNetInet6DgramConnected = *(a3 + 31);
+  self->_sockNetInet6DgramConnected = *(from + 31);
   *&self->_has |= 0x40000000uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x80000000) == 0)
   {
 LABEL_30:
@@ -4652,9 +4652,9 @@ LABEL_30:
   }
 
 LABEL_73:
-  self->_sockNetInet6DgramDns = *(a3 + 32);
+  self->_sockNetInet6DgramDns = *(from + 32);
   *&self->_has |= 0x80000000uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x100000000) == 0)
   {
 LABEL_31:
@@ -4667,9 +4667,9 @@ LABEL_31:
   }
 
 LABEL_74:
-  self->_sockNetInet6DgramNoData = *(a3 + 33);
+  self->_sockNetInet6DgramNoData = *(from + 33);
   *&self->_has |= 0x100000000uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x4000000) == 0)
   {
 LABEL_32:
@@ -4682,9 +4682,9 @@ LABEL_32:
   }
 
 LABEL_75:
-  self->_sockInetMcastJoin = *(a3 + 27);
+  self->_sockInetMcastJoin = *(from + 27);
   *&self->_has |= 0x4000000uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x8000000) == 0)
   {
 LABEL_33:
@@ -4697,9 +4697,9 @@ LABEL_33:
   }
 
 LABEL_76:
-  self->_sockInetMcastJoinOs = *(a3 + 28);
+  self->_sockInetMcastJoinOs = *(from + 28);
   *&self->_has |= 0x8000000uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x200) == 0)
   {
 LABEL_34:
@@ -4712,9 +4712,9 @@ LABEL_34:
   }
 
 LABEL_77:
-  self->_nexusFlowInetStream = *(a3 + 10);
+  self->_nexusFlowInetStream = *(from + 10);
   *&self->_has |= 0x200uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x100) == 0)
   {
 LABEL_35:
@@ -4727,9 +4727,9 @@ LABEL_35:
   }
 
 LABEL_78:
-  self->_nexusFlowInetDatagram = *(a3 + 9);
+  self->_nexusFlowInetDatagram = *(from + 9);
   *&self->_has |= 0x100uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x80) == 0)
   {
 LABEL_36:
@@ -4742,9 +4742,9 @@ LABEL_36:
   }
 
 LABEL_79:
-  self->_nexusFlowInet6Stream = *(a3 + 8);
+  self->_nexusFlowInet6Stream = *(from + 8);
   *&self->_has |= 0x80uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x40) == 0)
   {
 LABEL_37:
@@ -4757,9 +4757,9 @@ LABEL_37:
   }
 
 LABEL_80:
-  self->_nexusFlowInet6Datagram = *(a3 + 7);
+  self->_nexusFlowInet6Datagram = *(from + 7);
   *&self->_has |= 0x40uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 4) == 0)
   {
 LABEL_38:
@@ -4772,9 +4772,9 @@ LABEL_38:
   }
 
 LABEL_81:
-  self->_ifnetAlloc = *(a3 + 3);
+  self->_ifnetAlloc = *(from + 3);
   *&self->_has |= 4uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 8) == 0)
   {
 LABEL_39:
@@ -4787,9 +4787,9 @@ LABEL_39:
   }
 
 LABEL_82:
-  self->_ifnetAllocOs = *(a3 + 4);
+  self->_ifnetAllocOs = *(from + 4);
   *&self->_has |= 8uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x400) == 0)
   {
 LABEL_40:
@@ -4802,9 +4802,9 @@ LABEL_40:
   }
 
 LABEL_83:
-  self->_pfAddrule = *(a3 + 11);
+  self->_pfAddrule = *(from + 11);
   *&self->_has |= 0x400uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x800) == 0)
   {
 LABEL_41:
@@ -4817,9 +4817,9 @@ LABEL_41:
   }
 
 LABEL_84:
-  self->_pfAddruleOs = *(a3 + 12);
+  self->_pfAddruleOs = *(from + 12);
   *&self->_has |= 0x800uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x20000000000) == 0)
   {
 LABEL_42:
@@ -4832,9 +4832,9 @@ LABEL_42:
   }
 
 LABEL_85:
-  self->_vmnetStart = *(a3 + 42);
+  self->_vmnetStart = *(from + 42);
   *&self->_has |= 0x20000000000uLL;
-  v3 = *(a3 + 348);
+  v3 = *(from + 348);
   if ((v3 & 0x40000000000) == 0)
   {
 LABEL_43:
@@ -4844,15 +4844,15 @@ LABEL_43:
     }
 
 LABEL_87:
-    self->_timeSinceLastReport = *(a3 + 40);
+    self->_timeSinceLastReport = *(from + 40);
     *&self->_has |= 0x8000000000uLL;
     return;
   }
 
 LABEL_86:
-  self->_ifNetagentEnabled = *(a3 + 344);
+  self->_ifNetagentEnabled = *(from + 344);
   *&self->_has |= 0x40000000000uLL;
-  if ((*(a3 + 348) & 0x8000000000) != 0)
+  if ((*(from + 348) & 0x8000000000) != 0)
   {
     goto LABEL_87;
   }

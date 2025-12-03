@@ -9,25 +9,25 @@
 - (id)_cacheDirectoryPath;
 - (id)_stocksAcceptLanguage;
 - (id)_stocksUserAgent;
-- (id)_urlStringWithHost:(id)a3;
+- (id)_urlStringWithHost:(id)host;
 - (id)backsideLogoURL;
 - (id)defaultBacksideLogoURL;
 - (id)financeRequestAttributes;
-- (id)fullQuoteURLOverrideForStock:(id)a3;
+- (id)fullQuoteURLOverrideForStock:(id)stock;
 - (id)logoBacksideImage;
 - (id)logoButtonImage;
 - (id)serviceDebuggingPath;
-- (id)signedRequestForURL:(id)a3 parameters:(id)a4;
+- (id)signedRequestForURL:(id)l parameters:(id)parameters;
 - (id)stocksCountryCode;
 - (id)stocksLanguageCode;
-- (id)stocksLanguageCodeForLanguage:(id)a3;
+- (id)stocksLanguageCodeForLanguage:(id)language;
 - (id)stocksYQLBaseURL;
-- (void)addStocksHeadersToPostRequest:(id)a3;
+- (void)addStocksHeadersToPostRequest:(id)request;
 - (void)resetLocale;
-- (void)setAcceptLanguageCode:(id)a3;
-- (void)setNetworkReachable:(BOOL)a3;
-- (void)setRequestCountryCode:(id)a3;
-- (void)setRequestLanguageCode:(id)a3;
+- (void)setAcceptLanguageCode:(id)code;
+- (void)setNetworkReachable:(BOOL)reachable;
+- (void)setRequestCountryCode:(id)code;
+- (void)setRequestLanguageCode:(id)code;
 @end
 
 @implementation NetPreferences
@@ -91,21 +91,21 @@
 
     if (!v2->_UUID)
     {
-      v15 = [MEMORY[0x277CCAD78] UUID];
-      v16 = [v15 UUIDString];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
       v17 = v2->_UUID;
-      v2->_UUID = v16;
+      v2->_UUID = uUIDString;
 
       v18 = +[StocksPreferences sharedPreferences];
       [v18 setObject:v2->_UUID forKey:@"UUID"];
-      v19 = [MEMORY[0x277CBEAA8] date];
-      [v18 setObject:v19 forKey:@"UUIDTimestamp"];
+      date = [MEMORY[0x277CBEAA8] date];
+      [v18 setObject:date forKey:@"UUIDTimestamp"];
 
       [v18 synchronize];
     }
 
-    v20 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v20 addObserver:v2 selector:sel_resetLocale name:*MEMORY[0x277CBE620] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_resetLocale name:*MEMORY[0x277CBE620] object:0];
   }
 
   return v2;
@@ -113,63 +113,63 @@
 
 - (NSString)requestCountryCode
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_requestCountryCode;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_requestCountryCode;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setRequestCountryCode:(id)a3
+- (void)setRequestCountryCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   obj = self;
   objc_sync_enter(obj);
   requestCountryCode = obj->_requestCountryCode;
-  obj->_requestCountryCode = v4;
+  obj->_requestCountryCode = codeCopy;
 
   objc_sync_exit(obj);
 }
 
 - (NSString)requestLanguageCode
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_requestLanguageCode;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_requestLanguageCode;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setRequestLanguageCode:(id)a3
+- (void)setRequestLanguageCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   obj = self;
   objc_sync_enter(obj);
   requestLanguageCode = obj->_requestLanguageCode;
-  obj->_requestLanguageCode = v4;
+  obj->_requestLanguageCode = codeCopy;
 
   objc_sync_exit(obj);
 }
 
 - (NSString)acceptLanguageCode
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_acceptLanguageCode;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_acceptLanguageCode;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setAcceptLanguageCode:(id)a3
+- (void)setAcceptLanguageCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   obj = self;
   objc_sync_enter(obj);
   acceptLanguageCode = obj->_acceptLanguageCode;
-  obj->_acceptLanguageCode = v4;
+  obj->_acceptLanguageCode = codeCopy;
 
   objc_sync_exit(obj);
 }
@@ -198,8 +198,8 @@
       v4 = "NO";
     }
 
-    v5 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
-    if ([v5 isNetworkReachable])
+    mEMORY[0x277CEC5B8] = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
+    if ([mEMORY[0x277CEC5B8] isNetworkReachable])
     {
       v6 = "YES";
     }
@@ -221,22 +221,22 @@
     return 1;
   }
 
-  v8 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
-  v7 = [v8 isNetworkReachable];
+  mEMORY[0x277CEC5B8]2 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
+  isNetworkReachable = [mEMORY[0x277CEC5B8]2 isNetworkReachable];
 
-  return v7;
+  return isNetworkReachable;
 }
 
-- (void)setNetworkReachable:(BOOL)a3
+- (void)setNetworkReachable:(BOOL)reachable
 {
-  v3 = a3;
+  reachableCopy = reachable;
   v8 = *MEMORY[0x277D85DE8];
-  self->_isNetworkReachable = a3;
+  self->_isNetworkReachable = reachable;
   v4 = StocksLogForCategory(0);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = "NO";
-    if (v3)
+    if (reachableCopy)
     {
       v5 = "YES";
     }
@@ -273,12 +273,12 @@ void __34__NetPreferences__stocksUserAgent__block_invoke()
 
 - (id)stocksCountryCode
 {
-  v3 = [(NetPreferences *)self requestCountryCode];
+  requestCountryCode = [(NetPreferences *)self requestCountryCode];
 
-  if (!v3)
+  if (!requestCountryCode)
   {
-    v4 = [MEMORY[0x277CBEAF8] currentLocale];
-    v5 = [v4 objectForKey:*MEMORY[0x277CBE690]];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    v5 = [currentLocale objectForKey:*MEMORY[0x277CBE690]];
 
     if (v5)
     {
@@ -298,25 +298,25 @@ void __34__NetPreferences__stocksUserAgent__block_invoke()
 
 - (id)stocksLanguageCode
 {
-  v3 = [(NetPreferences *)self requestLanguageCode];
-  v4 = v3;
-  if (v3)
+  requestLanguageCode = [(NetPreferences *)self requestLanguageCode];
+  v4 = requestLanguageCode;
+  if (requestLanguageCode)
   {
-    v5 = v3;
+    v5 = requestLanguageCode;
   }
 
   else
   {
     v6 = MEMORY[0x277CBEAF8];
-    v7 = [MEMORY[0x277CBEAF8] systemLanguages];
-    v8 = [v6 mostPreferredLanguageOf:v7 forUsage:1 options:0];
+    systemLanguages = [MEMORY[0x277CBEAF8] systemLanguages];
+    v8 = [v6 mostPreferredLanguageOf:systemLanguages forUsage:1 options:0];
 
     if (![v8 length])
     {
-      v9 = [MEMORY[0x277CBEAF8] currentLocale];
-      v10 = [v9 languageCode];
+      currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+      languageCode = [currentLocale languageCode];
 
-      v8 = v10;
+      v8 = languageCode;
     }
 
     v5 = [(NetPreferences *)self stocksLanguageCodeForLanguage:v8];
@@ -325,29 +325,29 @@ void __34__NetPreferences__stocksUserAgent__block_invoke()
   return v5;
 }
 
-- (id)stocksLanguageCodeForLanguage:(id)a3
+- (id)stocksLanguageCodeForLanguage:(id)language
 {
-  v4 = a3;
-  v5 = [(NetPreferences *)self requestLanguageCode];
+  languageCopy = language;
+  requestLanguageCode = [(NetPreferences *)self requestLanguageCode];
 
-  if (!v5)
+  if (!requestLanguageCode)
   {
-    [(NetPreferences *)self setRequestLanguageCode:v4];
+    [(NetPreferences *)self setRequestLanguageCode:languageCopy];
   }
 
-  v6 = [(NetPreferences *)self requestLanguageCode];
+  requestLanguageCode2 = [(NetPreferences *)self requestLanguageCode];
 
-  return v6;
+  return requestLanguageCode2;
 }
 
 - (id)_stocksAcceptLanguage
 {
-  v3 = [(NetPreferences *)self acceptLanguageCode];
+  acceptLanguageCode = [(NetPreferences *)self acceptLanguageCode];
 
-  if (!v3)
+  if (!acceptLanguageCode)
   {
-    v4 = [MEMORY[0x277CBEAF8] preferredLanguages];
-    v5 = [v4 objectAtIndex:0];
+    preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+    v5 = [preferredLanguages objectAtIndex:0];
     if ([v5 length])
     {
       v6 = [v5 stringByAppendingString:{@", *"}];
@@ -363,21 +363,21 @@ void __34__NetPreferences__stocksUserAgent__block_invoke()
   return [(NetPreferences *)self acceptLanguageCode];
 }
 
-- (void)addStocksHeadersToPostRequest:(id)a3
+- (void)addStocksHeadersToPostRequest:(id)request
 {
-  v7 = a3;
-  [v7 setHTTPMethod:@"POST"];
-  [v7 setValue:@"text/xml" forHTTPHeaderField:@"Content-Type"];
-  v4 = [(NetPreferences *)self _stocksUserAgent];
-  [v7 setValue:v4 forHTTPHeaderField:@"User-Agent"];
+  requestCopy = request;
+  [requestCopy setHTTPMethod:@"POST"];
+  [requestCopy setValue:@"text/xml" forHTTPHeaderField:@"Content-Type"];
+  _stocksUserAgent = [(NetPreferences *)self _stocksUserAgent];
+  [requestCopy setValue:_stocksUserAgent forHTTPHeaderField:@"User-Agent"];
 
-  v5 = [(NetPreferences *)self stocksCountryCode];
-  [v7 setValue:v5 forHTTPHeaderField:@"X-Country-Code"];
+  stocksCountryCode = [(NetPreferences *)self stocksCountryCode];
+  [requestCopy setValue:stocksCountryCode forHTTPHeaderField:@"X-Country-Code"];
 
-  v6 = [(NetPreferences *)self _stocksAcceptLanguage];
-  [v7 setValue:v6 forHTTPHeaderField:@"Accept-Language"];
+  _stocksAcceptLanguage = [(NetPreferences *)self _stocksAcceptLanguage];
+  [requestCopy setValue:_stocksAcceptLanguage forHTTPHeaderField:@"Accept-Language"];
 
-  [v7 setHTTPShouldHandleCookies:0];
+  [requestCopy setHTTPShouldHandleCookies:0];
 }
 
 - (id)financeRequestAttributes
@@ -410,11 +410,11 @@ void __42__NetPreferences_financeRequestAttributes__block_invoke(uint64_t a1)
   financeRequestAttributes_RequestAttr = v2;
 }
 
-- (id)_urlStringWithHost:(id)a3
+- (id)_urlStringWithHost:(id)host
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCA900] URLHostAllowedCharacterSet];
-  v6 = [v4 stringByAddingPercentEncodingWithAllowedCharacters:v5];
+  hostCopy = host;
+  uRLHostAllowedCharacterSet = [MEMORY[0x277CCA900] URLHostAllowedCharacterSet];
+  v6 = [hostCopy stringByAddingPercentEncodingWithAllowedCharacters:uRLHostAllowedCharacterSet];
   v7 = v6;
   if (v6)
   {
@@ -423,35 +423,35 @@ void __42__NetPreferences_financeRequestAttributes__block_invoke(uint64_t a1)
 
   else
   {
-    v8 = v4;
+    v8 = hostCopy;
   }
 
   v9 = v8;
 
-  v10 = [(NetPreferences *)self UUID];
-  v11 = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
-  v12 = [v10 stringByAddingPercentEncodingWithAllowedCharacters:v11];
+  uUID = [(NetPreferences *)self UUID];
+  uRLQueryAllowedCharacterSet = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
+  v12 = [uUID stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
   v13 = v12;
   if (v12)
   {
-    v14 = v12;
+    uUID2 = v12;
   }
 
   else
   {
-    v14 = [(NetPreferences *)self UUID];
+    uUID2 = [(NetPreferences *)self UUID];
   }
 
-  v15 = v14;
+  v15 = uUID2;
 
   v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"http://%@/dgw?imei=%@&apptype=finance", v9, v15];
 
   return v16;
 }
 
-- (id)fullQuoteURLOverrideForStock:(id)a3
+- (id)fullQuoteURLOverrideForStock:(id)stock
 {
-  v3 = a3;
+  stockCopy = stock;
   v4 = +[StocksPreferences sharedPreferences];
   v5 = [v4 objectForKey:@"FullQuoteURLOverridePrefix"];
 
@@ -460,10 +460,10 @@ void __42__NetPreferences_financeRequestAttributes__block_invoke(uint64_t a1)
 
   if ([v5 length])
   {
-    v8 = [v3 symbol];
-    v9 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:{objc_msgSend(v8, "length") + objc_msgSend(v5, "length") + objc_msgSend(v7, "length")}];
+    symbol = [stockCopy symbol];
+    v9 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:{objc_msgSend(symbol, "length") + objc_msgSend(v5, "length") + objc_msgSend(v7, "length")}];
     [v9 setString:v5];
-    [v9 appendString:v8];
+    [v9 appendString:symbol];
     if ([v7 length])
     {
       [v9 appendString:v7];
@@ -486,10 +486,10 @@ void __42__NetPreferences_financeRequestAttributes__block_invoke(uint64_t a1)
 
 - (id)defaultBacksideLogoURL
 {
-  v2 = [MEMORY[0x277CBEAF8] currentLocale];
-  v3 = [v2 objectForKey:*MEMORY[0x277CBE6C0]];
-  v4 = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
-  v5 = [v3 stringByAddingPercentEncodingWithAllowedCharacters:v4];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v3 = [currentLocale objectForKey:*MEMORY[0x277CBE6C0]];
+  uRLQueryAllowedCharacterSet = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
+  v5 = [v3 stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
 
   v6 = [@"http://m.yahoo.com/apple/finance?pintl=" stringByAppendingString:v5];
   v7 = [MEMORY[0x277CBEBC0] URLWithString:v6];
@@ -506,10 +506,10 @@ void __42__NetPreferences_financeRequestAttributes__block_invoke(uint64_t a1)
 
   if (!v5)
   {
-    v6 = [MEMORY[0x277CBEAF8] currentLocale];
-    v7 = [v6 objectForKey:*MEMORY[0x277CBE6C0]];
-    v8 = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
-    v9 = [v7 stringByAddingPercentEncodingWithAllowedCharacters:v8];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    v7 = [currentLocale objectForKey:*MEMORY[0x277CBE6C0]];
+    uRLQueryAllowedCharacterSet = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
+    v9 = [v7 stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
 
     v10 = MEMORY[0x277CBEBC0];
     v11 = [@"http://m.yahoo.com/apple/finance?pintl=" stringByAppendingString:v9];
@@ -613,14 +613,14 @@ void __38__NetPreferences_serviceDebuggingPath__block_invoke()
   return v8;
 }
 
-- (id)signedRequestForURL:(id)a3 parameters:(id)a4
+- (id)signedRequestForURL:(id)l parameters:(id)parameters
 {
   v6 = MEMORY[0x277CCACA8];
-  v7 = a4;
-  v8 = [a3 absoluteString];
-  v9 = ParameterString(v7);
+  parametersCopy = parameters;
+  absoluteString = [l absoluteString];
+  v9 = ParameterString(parametersCopy);
 
-  v10 = [v6 stringWithFormat:@"%@?%@", v8, v9];
+  v10 = [v6 stringWithFormat:@"%@?%@", absoluteString, v9];
 
   v11 = MEMORY[0x277CBAB50];
   v12 = [MEMORY[0x277CBEBC0] URLWithString:v10];
@@ -628,8 +628,8 @@ void __38__NetPreferences_serviceDebuggingPath__block_invoke()
 
   [v13 setHTTPMethod:@"GET"];
   [v13 setHTTPShouldHandleCookies:0];
-  v14 = [(NetPreferences *)self UUID];
-  [v13 setValue:v14 forHTTPHeaderField:@"X-Client-UUID"];
+  uUID = [(NetPreferences *)self UUID];
+  [v13 setValue:uUID forHTTPHeaderField:@"X-Client-UUID"];
 
   v15 = ClientInfo();
   v16 = DeviceInfo();
@@ -640,8 +640,8 @@ void __38__NetPreferences_serviceDebuggingPath__block_invoke()
 
   [v13 setValue:v15 forHTTPHeaderField:@"X-Client-Info"];
   [v13 setValue:v16 forHTTPHeaderField:@"X-Device-Info"];
-  v17 = [(NetPreferences *)self _stocksUserAgent];
-  [v13 setValue:v17 forHTTPHeaderField:@"User-Agent"];
+  _stocksUserAgent = [(NetPreferences *)self _stocksUserAgent];
+  [v13 setValue:_stocksUserAgent forHTTPHeaderField:@"User-Agent"];
 
   v18 = CreateCredential();
   v19 = [objc_alloc(MEMORY[0x277D36A38]) initWithCredential:v18];

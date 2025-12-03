@@ -1,16 +1,16 @@
 @interface AXUIUIScreenOverride
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (UIEdgeInsets)_displayPeripheryInsetsRestrictedToScene;
 @end
 
 @implementation AXUIUIScreenOverride
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UIScreen" hasInstanceMethod:@"_isMainScreen" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"UIScreen" hasInstanceMethod:@"_displayPeripheryInsetsRestrictedToScene" withFullSignature:{"{UIEdgeInsets=dddd}", 0}];
-  [v3 validateClass:@"UIScreen" hasInstanceMethod:@"_displayPeripheryInsets" withFullSignature:{"{UIEdgeInsets=dddd}", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UIScreen" hasInstanceMethod:@"_isMainScreen" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"UIScreen" hasInstanceMethod:@"_displayPeripheryInsetsRestrictedToScene" withFullSignature:{"{UIEdgeInsets=dddd}", 0}];
+  [validationsCopy validateClass:@"UIScreen" hasInstanceMethod:@"_displayPeripheryInsets" withFullSignature:{"{UIEdgeInsets=dddd}", 0}];
 }
 
 - (UIEdgeInsets)_displayPeripheryInsetsRestrictedToScene

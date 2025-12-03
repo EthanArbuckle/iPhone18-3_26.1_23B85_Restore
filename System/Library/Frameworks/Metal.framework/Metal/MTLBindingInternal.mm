@@ -1,10 +1,10 @@
 @interface MTLBindingInternal
-- (BOOL)isEqual:(id)a3;
-- (MTLBindingInternal)initWithName:(id)a3 type:(unint64_t)a4 access:(unint64_t)a5 index:(unint64_t)a6 active:(BOOL)a7 arrayLength:(unint64_t)a8;
-- (MTLBindingInternal)initWithName:(id)a3 type:(unint64_t)a4 access:(unint64_t)a5 index:(unint64_t)a6 active:(BOOL)a7 arrayLength:(unint64_t)a8 typeDescription:(id)a9;
+- (BOOL)isEqual:(id)equal;
+- (MTLBindingInternal)initWithName:(id)name type:(unint64_t)type access:(unint64_t)access index:(unint64_t)index active:(BOOL)active arrayLength:(unint64_t)length;
+- (MTLBindingInternal)initWithName:(id)name type:(unint64_t)type access:(unint64_t)access index:(unint64_t)index active:(BOOL)active arrayLength:(unint64_t)length typeDescription:(id)description;
 - (NSString)description;
-- (id)formattedDescription:(unint64_t)a3;
-- (id)formattedDescription:(unint64_t)a3 withPrintedTypes:(id)a4;
+- (id)formattedDescription:(unint64_t)description;
+- (id)formattedDescription:(unint64_t)description withPrintedTypes:(id)types;
 - (void)dealloc;
 @end
 
@@ -17,42 +17,42 @@
   [(MTLBindingInternal *)&v3 dealloc];
 }
 
-- (MTLBindingInternal)initWithName:(id)a3 type:(unint64_t)a4 access:(unint64_t)a5 index:(unint64_t)a6 active:(BOOL)a7 arrayLength:(unint64_t)a8
+- (MTLBindingInternal)initWithName:(id)name type:(unint64_t)type access:(unint64_t)access index:(unint64_t)index active:(BOOL)active arrayLength:(unint64_t)length
 {
   v17.receiver = self;
   v17.super_class = MTLBindingInternal;
   v14 = [(MTLBindingInternal *)&v17 init];
-  v14->_name = a3;
-  v15 = a3;
-  v14->_type = a4;
-  v14->_access = a5;
-  v14->_index = a6;
-  v14->_isUsed = a7;
-  v14->_arrayLength = a8;
+  v14->_name = name;
+  nameCopy = name;
+  v14->_type = type;
+  v14->_access = access;
+  v14->_index = index;
+  v14->_isUsed = active;
+  v14->_arrayLength = length;
   v14->_typeInfo = 0;
   return v14;
 }
 
-- (MTLBindingInternal)initWithName:(id)a3 type:(unint64_t)a4 access:(unint64_t)a5 index:(unint64_t)a6 active:(BOOL)a7 arrayLength:(unint64_t)a8 typeDescription:(id)a9
+- (MTLBindingInternal)initWithName:(id)name type:(unint64_t)type access:(unint64_t)access index:(unint64_t)index active:(BOOL)active arrayLength:(unint64_t)length typeDescription:(id)description
 {
   v18.receiver = self;
   v18.super_class = MTLBindingInternal;
   v15 = [(MTLBindingInternal *)&v18 init];
-  v15->_name = a3;
-  v16 = a3;
-  v15->_type = a4;
-  v15->_access = a5;
-  v15->_index = a6;
-  v15->_isUsed = a7;
-  v15->_arrayLength = a8;
-  v15->_typeInfo = a9;
+  v15->_name = name;
+  nameCopy = name;
+  v15->_type = type;
+  v15->_access = access;
+  v15->_index = index;
+  v15->_isUsed = active;
+  v15->_arrayLength = length;
+  v15->_typeInfo = description;
   return v15;
 }
 
-- (id)formattedDescription:(unint64_t)a3 withPrintedTypes:(id)a4
+- (id)formattedDescription:(unint64_t)description withPrintedTypes:(id)types
 {
   v21[22] = *MEMORY[0x1E69E9840];
-  v7 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v7 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v8 = MEMORY[0x1E696AEC0];
   v20.receiver = self;
   v20.super_class = MTLBindingInternal;
@@ -179,7 +179,7 @@ LABEL_30:
   typeInfo = self->_typeInfo;
   if (typeInfo)
   {
-    v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ TypeInfo = %@", v7, -[MTLType formattedDescription:withPrintedTypes:](typeInfo, "formattedDescription:withPrintedTypes:", a3 + 4, a4)];
+    v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ TypeInfo = %@", v7, -[MTLType formattedDescription:withPrintedTypes:](typeInfo, "formattedDescription:withPrintedTypes:", description + 4, types)];
   }
 
   else
@@ -193,10 +193,10 @@ LABEL_30:
   return result;
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [(MTLBindingInternal *)self formattedDescription:a3 withPrintedTypes:v5];
+  v6 = [(MTLBindingInternal *)self formattedDescription:description withPrintedTypes:v5];
 
   return v6;
 }
@@ -209,9 +209,9 @@ LABEL_30:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     goto LABEL_11;
   }
@@ -222,13 +222,13 @@ LABEL_30:
     goto LABEL_11;
   }
 
-  v5 = [(NSString *)self->_name isEqual:*(a3 + 5)];
+  v5 = [(NSString *)self->_name isEqual:*(equal + 5)];
   if (!v5)
   {
     return v5;
   }
 
-  if (self->_type != *(a3 + 6) || self->_access != *(a3 + 7) || self->_index != *(a3 + 8) || self->_isUsed != *(a3 + 72) || self->_arrayLength != *(a3 + 10))
+  if (self->_type != *(equal + 6) || self->_access != *(equal + 7) || self->_index != *(equal + 8) || self->_isUsed != *(equal + 72) || self->_arrayLength != *(equal + 10))
   {
 LABEL_11:
     LOBYTE(v5) = 0;
@@ -236,7 +236,7 @@ LABEL_11:
   }
 
   typeInfo = self->_typeInfo;
-  if (typeInfo | *(a3 + 11))
+  if (typeInfo | *(equal + 11))
   {
 
     LOBYTE(v5) = [(MTLType *)typeInfo isEqual:?];

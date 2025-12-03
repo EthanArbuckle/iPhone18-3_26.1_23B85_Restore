@@ -31,7 +31,7 @@
   [v13 setTitle:v8];
   [v13 setIconProvider:v9];
   [v13 setImageProvider:v10];
-  v14 = [a1 initWithMetadata:v13];
+  v14 = [self initWithMetadata:v13];
 
   return v14;
 }

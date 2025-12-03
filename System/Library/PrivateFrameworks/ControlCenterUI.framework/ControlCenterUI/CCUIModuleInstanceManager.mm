@@ -1,26 +1,26 @@
 @interface CCUIModuleInstanceManager
-- (BOOL)isDevicePasscodeLockedForContentModuleContext:(id)a3;
+- (BOOL)isDevicePasscodeLockedForContentModuleContext:(id)context;
 - (CCUIContentModuleContextDelegate)contextDelegate;
-- (CCUIModuleInstanceManager)initWithModuleRepository:(id)a3 systemAgent:(id)a4 displayLayoutContextProvider:(id)a5;
+- (CCUIModuleInstanceManager)initWithModuleRepository:(id)repository systemAgent:(id)agent displayLayoutContextProvider:(id)provider;
 - (NSSet)loadableModuleIdentifiers;
-- (id)_instantiateModuleWithMetadata:(id)a3 uniqueIdentifier:(id)a4;
-- (id)_loadBundlesForModuleMetadata:(id)a3;
-- (id)contentModuleContext:(id)a3 requestsSensorActivityDataForActiveSensorType:(unint64_t)a4;
-- (id)contentModuleContextRequestsMutedMicrophoneSensorActivityData:(id)a3;
-- (id)contentModuleContextRequestsSensorActivityDataEligibleForInactiveMicModeSelection:(id)a3;
-- (id)loadAlertModuleWithBundleIdentifier:(id)a3;
-- (id)obtainModuleWithBundleIdentifier:(id)a3 uniqueIdentifier:(id)a4;
-- (void)_runBlockOnObservers:(id)a3;
+- (id)_instantiateModuleWithMetadata:(id)metadata uniqueIdentifier:(id)identifier;
+- (id)_loadBundlesForModuleMetadata:(id)metadata;
+- (id)contentModuleContext:(id)context requestsSensorActivityDataForActiveSensorType:(unint64_t)type;
+- (id)contentModuleContextRequestsMutedMicrophoneSensorActivityData:(id)data;
+- (id)contentModuleContextRequestsSensorActivityDataEligibleForInactiveMicModeSelection:(id)selection;
+- (id)loadAlertModuleWithBundleIdentifier:(id)identifier;
+- (id)obtainModuleWithBundleIdentifier:(id)identifier uniqueIdentifier:(id)uniqueIdentifier;
+- (void)_runBlockOnObservers:(id)observers;
 - (void)_updateModuleInstances;
-- (void)contentModuleContext:(id)a3 enqueueStatusUpdate:(id)a4;
+- (void)contentModuleContext:(id)context enqueueStatusUpdate:(id)update;
 - (void)dealloc;
-- (void)dismissControlCenterForContentModuleContext:(id)a3;
-- (void)dismissExpandedViewForContentModuleContext:(id)a3;
-- (void)invalidateContainerViewsForPlatterTreatmentForContentModuleContext:(id)a3;
-- (void)loadableModulesChangedForModuleRepository:(id)a3;
-- (void)removeModuleWithUniqueIdentifier:(id)a3;
-- (void)requestExpandModuleForContentModuleContext:(id)a3;
-- (void)setEnabledModuleIdentifiersFromSettingsApp:(id)a3;
+- (void)dismissControlCenterForContentModuleContext:(id)context;
+- (void)dismissExpandedViewForContentModuleContext:(id)context;
+- (void)invalidateContainerViewsForPlatterTreatmentForContentModuleContext:(id)context;
+- (void)loadableModulesChangedForModuleRepository:(id)repository;
+- (void)removeModuleWithUniqueIdentifier:(id)identifier;
+- (void)requestExpandModuleForContentModuleContext:(id)context;
+- (void)setEnabledModuleIdentifiersFromSettingsApp:(id)app;
 @end
 
 @implementation CCUIModuleInstanceManager
@@ -38,8 +38,8 @@
 - (NSSet)loadableModuleIdentifiers
 {
   v10 = *MEMORY[0x277D85DE8];
-  v2 = [(CCSModuleRepository *)self->_repository loadableModuleIdentifiers];
-  v3 = [v2 mutableCopy];
+  loadableModuleIdentifiers = [(CCSModuleRepository *)self->_repository loadableModuleIdentifiers];
+  v3 = [loadableModuleIdentifiers mutableCopy];
 
   v4 = MEMORY[0x277CFC8F0];
   v5 = *MEMORY[0x277CFC8F0];
@@ -74,20 +74,20 @@
   return WeakRetained;
 }
 
-- (CCUIModuleInstanceManager)initWithModuleRepository:(id)a3 systemAgent:(id)a4 displayLayoutContextProvider:(id)a5
+- (CCUIModuleInstanceManager)initWithModuleRepository:(id)repository systemAgent:(id)agent displayLayoutContextProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  repositoryCopy = repository;
+  agentCopy = agent;
+  providerCopy = provider;
   v24.receiver = self;
   v24.super_class = CCUIModuleInstanceManager;
   v12 = [(CCUIModuleInstanceManager *)&v24 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_systemAgent, a4);
-    objc_storeStrong(&v13->_repository, a3);
-    objc_storeStrong(&v13->_displayLayoutContextProvider, a5);
+    objc_storeStrong(&v12->_systemAgent, agent);
+    objc_storeStrong(&v13->_repository, repository);
+    objc_storeStrong(&v13->_displayLayoutContextProvider, provider);
     v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
     alertModuleInstanceByModuleIdentifier = v13->_alertModuleInstanceByModuleIdentifier;
     v13->_alertModuleInstanceByModuleIdentifier = v14;
@@ -121,12 +121,12 @@
   [(CCUIModuleInstanceManager *)&v3 dealloc];
 }
 
-- (void)setEnabledModuleIdentifiersFromSettingsApp:(id)a3
+- (void)setEnabledModuleIdentifiersFromSettingsApp:(id)app
 {
-  v6 = a3;
+  appCopy = app;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [appCopy copy];
     enabledModuleIdentifiersFromSettingsApp = self->_enabledModuleIdentifiersFromSettingsApp;
     self->_enabledModuleIdentifiersFromSettingsApp = v4;
 
@@ -134,25 +134,25 @@
   }
 }
 
-- (id)loadAlertModuleWithBundleIdentifier:(id)a3
+- (id)loadAlertModuleWithBundleIdentifier:(id)identifier
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [CCUIModuleInstanceManager loadAlertModuleWithBundleIdentifier:];
   }
 
-  v5 = [(NSMutableDictionary *)self->_alertModuleInstanceByModuleIdentifier objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_alertModuleInstanceByModuleIdentifier objectForKey:identifierCopy];
   if (!v5)
   {
-    v6 = [(CCSModuleRepository *)self->_repository moduleMetadataForModuleIdentifier:v4];
+    v6 = [(CCSModuleRepository *)self->_repository moduleMetadataForModuleIdentifier:identifierCopy];
     v7 = v6;
     if (v6)
     {
       v8 = MEMORY[0x277CCA8D8];
-      v9 = [v6 moduleBundleURL];
-      v10 = [v8 bundleWithURL:v9];
+      moduleBundleURL = [v6 moduleBundleURL];
+      v10 = [v8 bundleWithURL:moduleBundleURL];
 
       if (([v10 isLoaded] & 1) == 0)
       {
@@ -161,11 +161,11 @@
         v12 = [(CCUIModuleInstanceManager *)self _loadBundlesForModuleMetadata:v11];
       }
 
-      v13 = [MEMORY[0x277CCAD78] UUID];
-      v14 = [v13 UUIDString];
-      v5 = [(CCUIModuleInstanceManager *)self _instantiateModuleWithMetadata:v7 uniqueIdentifier:v14];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
+      v5 = [(CCUIModuleInstanceManager *)self _instantiateModuleWithMetadata:v7 uniqueIdentifier:uUIDString];
 
-      [(NSMutableDictionary *)self->_alertModuleInstanceByModuleIdentifier bs_setSafeObject:v5 forKey:v4];
+      [(NSMutableDictionary *)self->_alertModuleInstanceByModuleIdentifier bs_setSafeObject:v5 forKey:identifierCopy];
     }
 
     else
@@ -177,15 +177,15 @@
   return v5;
 }
 
-- (id)obtainModuleWithBundleIdentifier:(id)a3 uniqueIdentifier:(id)a4
+- (id)obtainModuleWithBundleIdentifier:(id)identifier uniqueIdentifier:(id)uniqueIdentifier
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  identifierCopy = identifier;
+  uniqueIdentifierCopy = uniqueIdentifier;
+  v8 = uniqueIdentifierCopy;
+  if (identifierCopy)
   {
-    if (v7)
+    if (uniqueIdentifierCopy)
     {
       goto LABEL_3;
     }
@@ -205,13 +205,13 @@ LABEL_3:
   v9 = [(NSMutableDictionary *)self->_enabledModuleInstanceByUniqueIdentifer objectForKey:v8];
   if (!v9)
   {
-    v10 = [(CCSModuleRepository *)self->_repository moduleMetadataForModuleIdentifier:v6];
+    v10 = [(CCSModuleRepository *)self->_repository moduleMetadataForModuleIdentifier:identifierCopy];
     v11 = v10;
     if (v10)
     {
       v12 = MEMORY[0x277CCA8D8];
-      v13 = [v10 moduleBundleURL];
-      v14 = [v12 bundleWithURL:v13];
+      moduleBundleURL = [v10 moduleBundleURL];
+      v14 = [v12 bundleWithURL:moduleBundleURL];
 
       if (([v14 isLoaded] & 1) == 0)
       {
@@ -233,29 +233,29 @@ LABEL_3:
   return v9;
 }
 
-- (void)removeModuleWithUniqueIdentifier:(id)a3
+- (void)removeModuleWithUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (!identifierCopy)
   {
     [CCUIModuleInstanceManager removeModuleWithUniqueIdentifier:];
-    v4 = 0;
+    identifierCopy = 0;
   }
 
-  [(NSMutableDictionary *)self->_enabledModuleInstanceByUniqueIdentifer removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_enabledModuleInstanceByUniqueIdentifer removeObjectForKey:identifierCopy];
 }
 
-- (id)_loadBundlesForModuleMetadata:(id)a3
+- (id)_loadBundlesForModuleMetadata:(id)metadata
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  metadataCopy = metadata;
   v27 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v4 = v3;
+  v4 = metadataCopy;
   v5 = [v4 countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v5)
   {
@@ -274,8 +274,8 @@ LABEL_3:
 
         v10 = *(*(&v29 + 1) + 8 * i);
         v11 = MEMORY[0x277CCA8D8];
-        v12 = [v10 moduleBundleURL];
-        v13 = [v11 bundleWithURL:v12];
+        moduleBundleURL = [v10 moduleBundleURL];
+        v13 = [v11 bundleWithURL:moduleBundleURL];
 
         if (([v13 isLoaded] & 1) == 0)
         {
@@ -283,9 +283,9 @@ LABEL_3:
           if (os_log_type_enabled(*MEMORY[0x277CFC8F0], OS_LOG_TYPE_DEFAULT))
           {
             v15 = v14;
-            v16 = [v10 moduleIdentifier];
+            moduleIdentifier = [v10 moduleIdentifier];
             *buf = 138543618;
-            v34 = v16;
+            v34 = moduleIdentifier;
             v35 = 2114;
             v36 = v13;
             _os_log_impl(&dword_21E9F5000, v15, OS_LOG_TYPE_DEFAULT, "[%{public}@] Loading bundle %{public}@ for module", buf, 0x16u);
@@ -301,9 +301,9 @@ LABEL_3:
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
             {
               v21 = v19;
-              v22 = [v10 moduleIdentifier];
+              moduleIdentifier2 = [v10 moduleIdentifier];
               *buf = v26;
-              v34 = v22;
+              v34 = moduleIdentifier2;
               _os_log_impl(&dword_21E9F5000, v21, OS_LOG_TYPE_DEFAULT, "[%{public}@] Bundle was loaded successfully", buf, 0xCu);
             }
 
@@ -313,9 +313,9 @@ LABEL_3:
           else if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
           {
             v23 = v19;
-            v24 = [v10 moduleIdentifier];
+            moduleIdentifier3 = [v10 moduleIdentifier];
             *buf = 138543618;
-            v34 = v24;
+            v34 = moduleIdentifier3;
             v35 = 2114;
             v36 = v18;
             _os_log_fault_impl(&dword_21E9F5000, v23, OS_LOG_TYPE_FAULT, "[%{public}@] Bundle was not loaded, error=%{public}@", buf, 0x16u);
@@ -332,15 +332,15 @@ LABEL_3:
   return v27;
 }
 
-- (void)_runBlockOnObservers:(id)a3
+- (void)_runBlockOnObservers:(id)observers
 {
   observers = self->_observers;
-  v4 = a3;
-  v5 = [(NSHashTable *)observers allObjects];
-  [v5 bs_each:v4];
+  observersCopy = observers;
+  allObjects = [(NSHashTable *)observers allObjects];
+  [allObjects bs_each:observersCopy];
 }
 
-- (void)loadableModulesChangedForModuleRepository:(id)a3
+- (void)loadableModulesChangedForModuleRepository:(id)repository
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -350,70 +350,70 @@ LABEL_3:
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)contentModuleContext:(id)a3 enqueueStatusUpdate:(id)a4
+- (void)contentModuleContext:(id)context enqueueStatusUpdate:(id)update
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CCUIModuleInstanceManager *)self contextDelegate];
-  [v8 contentModuleContext:v7 enqueueStatusUpdate:v6];
+  updateCopy = update;
+  contextCopy = context;
+  contextDelegate = [(CCUIModuleInstanceManager *)self contextDelegate];
+  [contextDelegate contentModuleContext:contextCopy enqueueStatusUpdate:updateCopy];
 }
 
-- (void)requestExpandModuleForContentModuleContext:(id)a3
+- (void)requestExpandModuleForContentModuleContext:(id)context
 {
-  v4 = a3;
-  v5 = [(CCUIModuleInstanceManager *)self contextDelegate];
-  [v5 requestExpandModuleForContentModuleContext:v4];
+  contextCopy = context;
+  contextDelegate = [(CCUIModuleInstanceManager *)self contextDelegate];
+  [contextDelegate requestExpandModuleForContentModuleContext:contextCopy];
 }
 
-- (void)dismissExpandedViewForContentModuleContext:(id)a3
+- (void)dismissExpandedViewForContentModuleContext:(id)context
 {
-  v4 = a3;
-  v5 = [(CCUIModuleInstanceManager *)self contextDelegate];
-  [v5 dismissExpandedViewForContentModuleContext:v4];
+  contextCopy = context;
+  contextDelegate = [(CCUIModuleInstanceManager *)self contextDelegate];
+  [contextDelegate dismissExpandedViewForContentModuleContext:contextCopy];
 }
 
-- (void)dismissControlCenterForContentModuleContext:(id)a3
+- (void)dismissControlCenterForContentModuleContext:(id)context
 {
-  v4 = a3;
-  v5 = [(CCUIModuleInstanceManager *)self contextDelegate];
-  [v5 dismissControlCenterForContentModuleContext:v4];
+  contextCopy = context;
+  contextDelegate = [(CCUIModuleInstanceManager *)self contextDelegate];
+  [contextDelegate dismissControlCenterForContentModuleContext:contextCopy];
 }
 
-- (id)contentModuleContext:(id)a3 requestsSensorActivityDataForActiveSensorType:(unint64_t)a4
+- (id)contentModuleContext:(id)context requestsSensorActivityDataForActiveSensorType:(unint64_t)type
 {
-  v6 = a3;
-  v7 = [(CCUIModuleInstanceManager *)self contextDelegate];
-  v8 = [v7 contentModuleContext:v6 requestsSensorActivityDataForActiveSensorType:a4];
+  contextCopy = context;
+  contextDelegate = [(CCUIModuleInstanceManager *)self contextDelegate];
+  v8 = [contextDelegate contentModuleContext:contextCopy requestsSensorActivityDataForActiveSensorType:type];
 
   return v8;
 }
 
-- (id)contentModuleContextRequestsMutedMicrophoneSensorActivityData:(id)a3
+- (id)contentModuleContextRequestsMutedMicrophoneSensorActivityData:(id)data
 {
-  v4 = a3;
-  v5 = [(CCUIModuleInstanceManager *)self contextDelegate];
-  v6 = [v5 contentModuleContextRequestsMutedMicrophoneSensorActivityData:v4];
+  dataCopy = data;
+  contextDelegate = [(CCUIModuleInstanceManager *)self contextDelegate];
+  v6 = [contextDelegate contentModuleContextRequestsMutedMicrophoneSensorActivityData:dataCopy];
 
   return v6;
 }
 
-- (id)contentModuleContextRequestsSensorActivityDataEligibleForInactiveMicModeSelection:(id)a3
+- (id)contentModuleContextRequestsSensorActivityDataEligibleForInactiveMicModeSelection:(id)selection
 {
-  v4 = a3;
-  v5 = [(CCUIModuleInstanceManager *)self contextDelegate];
-  v6 = [v5 contentModuleContextRequestsSensorActivityDataEligibleForInactiveMicModeSelection:v4];
+  selectionCopy = selection;
+  contextDelegate = [(CCUIModuleInstanceManager *)self contextDelegate];
+  v6 = [contextDelegate contentModuleContextRequestsSensorActivityDataEligibleForInactiveMicModeSelection:selectionCopy];
 
   return v6;
 }
 
-- (void)invalidateContainerViewsForPlatterTreatmentForContentModuleContext:(id)a3
+- (void)invalidateContainerViewsForPlatterTreatmentForContentModuleContext:(id)context
 {
-  v4 = a3;
-  v5 = [(CCUIModuleInstanceManager *)self contextDelegate];
-  [v5 invalidateContainerViewsForPlatterTreatmentForContentModuleContext:v4];
+  contextCopy = context;
+  contextDelegate = [(CCUIModuleInstanceManager *)self contextDelegate];
+  [contextDelegate invalidateContainerViewsForPlatterTreatmentForContentModuleContext:contextCopy];
 }
 
-- (BOOL)isDevicePasscodeLockedForContentModuleContext:(id)a3
+- (BOOL)isDevicePasscodeLockedForContentModuleContext:(id)context
 {
   v3 = MKBGetDeviceLockState();
   if (v3)
@@ -429,21 +429,21 @@ LABEL_3:
   return !v4;
 }
 
-- (id)_instantiateModuleWithMetadata:(id)a3 uniqueIdentifier:(id)a4
+- (id)_instantiateModuleWithMetadata:(id)metadata uniqueIdentifier:(id)identifier
 {
   v67 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  identifierCopy = identifier;
   v8 = MEMORY[0x277CCA8D8];
-  v9 = [v6 moduleBundleURL];
-  v10 = [v8 bundleWithURL:v9];
+  moduleBundleURL = [metadataCopy moduleBundleURL];
+  v10 = [v8 bundleWithURL:moduleBundleURL];
 
-  v11 = [v6 moduleIdentifier];
+  moduleIdentifier = [metadataCopy moduleIdentifier];
   if ([v10 isLoaded])
   {
-    v12 = [v10 principalClass];
+    principalClass = [v10 principalClass];
     v13 = objc_opt_class();
-    v14 = v12;
+    v14 = principalClass;
     if (v13)
     {
       if (objc_opt_isKindOfClass())
@@ -491,7 +491,7 @@ LABEL_3:
         v57[2] = __77__CCUIModuleInstanceManager__instantiateModuleWithMetadata_uniqueIdentifier___block_invoke;
         v57[3] = &unk_2783822A8;
         v26 = v58;
-        v27 = v11;
+        v27 = moduleIdentifier;
         v58[1] = self;
         v58[2] = &v59;
         v58[0] = v27;
@@ -506,7 +506,7 @@ LABEL_3:
         activity_block[2] = __77__CCUIModuleInstanceManager__instantiateModuleWithMetadata_uniqueIdentifier___block_invoke_99;
         activity_block[3] = &unk_2783822D0;
         v26 = v56;
-        v56[0] = v11;
+        v56[0] = moduleIdentifier;
         v56[1] = &v59;
         v28 = "instantiate module";
         v29 = activity_block;
@@ -518,8 +518,8 @@ LABEL_3:
       {
         if (objc_opt_respondsToSelector())
         {
-          v30 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v7];
-          v31 = [objc_alloc(MEMORY[0x277CFC948]) initWithModuleIdentifier:v11 uniqueIdentifier:v30];
+          v30 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:identifierCopy];
+          v31 = [objc_alloc(MEMORY[0x277CFC948]) initWithModuleIdentifier:moduleIdentifier uniqueIdentifier:v30];
           [v31 setDelegate:self];
           [v31 setDisplayLayoutContextProvider:self->_displayLayoutContextProvider];
           [v60[5] setContentModuleContext:v31];
@@ -527,10 +527,10 @@ LABEL_3:
 
         v32 = [CCUIModuleInstance alloc];
         v33 = v60[5];
-        v34 = [v10 ccui_prototypeModuleSize];
+        ccui_prototypeModuleSize = [v10 ccui_prototypeModuleSize];
         v36 = v35;
-        v37 = [v10 ccui_displayName];
-        v23 = [(CCUIModuleInstance *)v32 initWithMetadata:v6 module:v33 prototypeModuleSize:v34 uniqueIdentifier:v36 displayName:v7, v37];
+        ccui_displayName = [v10 ccui_displayName];
+        v23 = [(CCUIModuleInstance *)v32 initWithMetadata:metadataCopy module:v33 prototypeModuleSize:ccui_prototypeModuleSize uniqueIdentifier:v36 displayName:identifierCopy, ccui_displayName];
       }
 
       else
@@ -538,14 +538,14 @@ LABEL_3:
         v45 = *MEMORY[0x277CFC8F0];
         if (os_log_type_enabled(*MEMORY[0x277CFC8F0], OS_LOG_TYPE_ERROR))
         {
-          [(CCUIModuleInstanceManager *)v11 _instantiateModuleWithMetadata:v45 uniqueIdentifier:v46, v47, v48, v49, v50, v51];
+          [(CCUIModuleInstanceManager *)moduleIdentifier _instantiateModuleWithMetadata:v45 uniqueIdentifier:v46, v47, v48, v49, v50, v51];
         }
 
         [v10 unload];
         v23 = 0;
       }
 
-      if (![v11 isEqualToString:@"com.apple.control-center.SatelliteModule"])
+      if (![moduleIdentifier isEqualToString:@"com.apple.control-center.SatelliteModule"])
       {
         goto LABEL_33;
       }
@@ -554,7 +554,7 @@ LABEL_3:
       if (os_log_type_enabled(*MEMORY[0x277CFC8F0], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v66 = v11;
+        v66 = moduleIdentifier;
         _os_log_impl(&dword_21E9F5000, v52, OS_LOG_TYPE_DEFAULT, "[Satellite Module] [%{public}@] is not supported. Setting module instance to nil.", buf, 0xCu);
       }
     }
@@ -564,7 +564,7 @@ LABEL_3:
       v38 = *MEMORY[0x277CFC8F0];
       if (os_log_type_enabled(*MEMORY[0x277CFC8F0], OS_LOG_TYPE_ERROR))
       {
-        [(CCUIModuleInstanceManager *)v11 _instantiateModuleWithMetadata:v38 uniqueIdentifier:v39, v40, v41, v42, v43, v44];
+        [(CCUIModuleInstanceManager *)moduleIdentifier _instantiateModuleWithMetadata:v38 uniqueIdentifier:v39, v40, v41, v42, v43, v44];
       }
 
       [v10 unload];
@@ -580,7 +580,7 @@ LABEL_33:
   v16 = *MEMORY[0x277CFC8F0];
   if (os_log_type_enabled(*MEMORY[0x277CFC8F0], OS_LOG_TYPE_ERROR))
   {
-    [(CCUIModuleInstanceManager *)v11 _instantiateModuleWithMetadata:v16 uniqueIdentifier:v17, v18, v19, v20, v21, v22];
+    [(CCUIModuleInstanceManager *)moduleIdentifier _instantiateModuleWithMetadata:v16 uniqueIdentifier:v17, v18, v19, v20, v21, v22];
   }
 
   v23 = 0;

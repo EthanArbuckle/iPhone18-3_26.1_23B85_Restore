@@ -1,20 +1,20 @@
 @interface FCAVAssetCache
-- (BOOL)containsAssetWithIdentifier:(id)a3;
+- (BOOL)containsAssetWithIdentifier:(id)identifier;
 - (FCAVAssetCache)init;
-- (id)cachedFileURLForAssetIdentifier:(id)a3;
-- (id)contentArchiveForAssetIdentifier:(id)a3;
+- (id)cachedFileURLForAssetIdentifier:(id)identifier;
+- (id)contentArchiveForAssetIdentifier:(id)identifier;
 - (id)contentKeyIdentifiersForAllAssets;
-- (id)contentKeyIdentifiersForAssetIdentifier:(id)a3;
-- (id)importAVAsset:(id)a3;
-- (id)interestTokenForAssetIdentifier:(id)a3;
-- (id)interestTokenForAssetIdentifiers:(id)a3;
+- (id)contentKeyIdentifiersForAssetIdentifier:(id)identifier;
+- (id)importAVAsset:(id)asset;
+- (id)interestTokenForAssetIdentifier:(id)identifier;
+- (id)interestTokenForAssetIdentifiers:(id)identifiers;
 - (int64_t)storageSize;
 - (uint64_t)_prepareForUse;
-- (unint64_t)cacheCoordinatorCurrentSizeWithReadLock:(id)a3;
-- (void)adoptFileAtURL:(id)a3 forAssetIdentifier:(id)a4 remoteURL:(id)a5 contentKeyIdentifiers:(id)a6 extension:(id)a7;
-- (void)cacheCoordinator:(id)a3 flushKeysWithWriteLock:(id)a4;
-- (void)enableFlushingWithFlushingThreshold:(unint64_t)a3;
-- (void)initWithCacheDirectory:(void *)a1;
+- (unint64_t)cacheCoordinatorCurrentSizeWithReadLock:(id)lock;
+- (void)adoptFileAtURL:(id)l forAssetIdentifier:(id)identifier remoteURL:(id)rL contentKeyIdentifiers:(id)identifiers extension:(id)extension;
+- (void)cacheCoordinator:(id)coordinator flushKeysWithWriteLock:(id)lock;
+- (void)enableFlushingWithFlushingThreshold:(unint64_t)threshold;
+- (void)initWithCacheDirectory:(void *)directory;
 @end
 
 @implementation FCAVAssetCache
@@ -45,32 +45,32 @@
   objc_exception_throw(v6);
 }
 
-- (void)initWithCacheDirectory:(void *)a1
+- (void)initWithCacheDirectory:(void *)directory
 {
   v3 = a2;
-  if (a1)
+  if (directory)
   {
-    v9.receiver = a1;
+    v9.receiver = directory;
     v9.super_class = FCAVAssetCache;
-    a1 = objc_msgSendSuper2(&v9, sel_init);
-    if (a1)
+    directory = objc_msgSendSuper2(&v9, sel_init);
+    if (directory)
     {
       v4 = [v3 copy];
-      v5 = a1[1];
-      a1[1] = v4;
+      v5 = directory[1];
+      directory[1] = v4;
 
       v6 = objc_alloc_init(MEMORY[0x1E69B6920]);
-      v7 = a1[2];
-      a1[2] = v6;
+      v7 = directory[2];
+      directory[2] = v6;
     }
   }
 
-  return a1;
+  return directory;
 }
 
-- (id)interestTokenForAssetIdentifier:(id)a3
+- (id)interestTokenForAssetIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(FCAVAssetCache *)self _prepareForUse];
   if (self)
   {
@@ -82,7 +82,7 @@
     cacheCoordinator = 0;
   }
 
-  v6 = [(FCCacheCoordinator *)cacheCoordinator holdTokenForKey:v4];
+  v6 = [(FCCacheCoordinator *)cacheCoordinator holdTokenForKey:identifierCopy];
 
   return v6;
 }
@@ -103,9 +103,9 @@
   return result;
 }
 
-- (id)interestTokenForAssetIdentifiers:(id)a3
+- (id)interestTokenForAssetIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   [(FCAVAssetCache *)self _prepareForUse];
   if (self)
   {
@@ -117,14 +117,14 @@
     cacheCoordinator = 0;
   }
 
-  v6 = [(FCCacheCoordinator *)cacheCoordinator holdTokenForKeys:v4];
+  v6 = [(FCCacheCoordinator *)cacheCoordinator holdTokenForKeys:identifiersCopy];
 
   return v6;
 }
 
-- (BOOL)containsAssetWithIdentifier:(id)a3
+- (BOOL)containsAssetWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(FCAVAssetCache *)self _prepareForUse];
   v13 = 0;
   v14 = &v13;
@@ -147,7 +147,7 @@
   v10[3] = &unk_1E7C37138;
   v12 = &v13;
   v10[4] = self;
-  v7 = v4;
+  v7 = identifierCopy;
   v11 = v7;
   [(FCCacheCoordinator *)v6 performCacheRead:v10];
 
@@ -170,9 +170,9 @@ void __46__FCAVAssetCache_containsAssetWithIdentifier___block_invoke(void *a1)
   *(*(a1[6] + 8) + 24) = [v4 containsObjectForKey:v3];
 }
 
-- (id)cachedFileURLForAssetIdentifier:(id)a3
+- (id)cachedFileURLForAssetIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(FCAVAssetCache *)self _prepareForUse];
   v13 = 0;
   v14 = &v13;
@@ -196,7 +196,7 @@ void __46__FCAVAssetCache_containsAssetWithIdentifier___block_invoke(void *a1)
   v10[2] = __50__FCAVAssetCache_cachedFileURLForAssetIdentifier___block_invoke;
   v10[3] = &unk_1E7C37408;
   v10[4] = self;
-  v7 = v4;
+  v7 = identifierCopy;
   v11 = v7;
   v12 = &v13;
   [(FCCacheCoordinator *)v6 performCacheRead:v10];
@@ -251,13 +251,13 @@ void __50__FCAVAssetCache_cachedFileURLForAssetIdentifier___block_invoke(void *a
   v9 = 3221225472;
   v10 = __51__FCAVAssetCache_contentKeyIdentifiersForAllAssets__block_invoke;
   v11 = &unk_1E7C36C58;
-  v12 = self;
+  selfCopy = self;
   v13 = v3;
   v5 = v3;
   [(FCCacheCoordinator *)cacheCoordinator performCacheRead:&v8];
-  v6 = [v5 allObjects];
+  allObjects = [v5 allObjects];
 
-  return v6;
+  return allObjects;
 }
 
 void __51__FCAVAssetCache_contentKeyIdentifiersForAllAssets__block_invoke(uint64_t a1)
@@ -346,14 +346,14 @@ void __51__FCAVAssetCache_contentKeyIdentifiersForAllAssets__block_invoke(uint64
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)adoptFileAtURL:(id)a3 forAssetIdentifier:(id)a4 remoteURL:(id)a5 contentKeyIdentifiers:(id)a6 extension:(id)a7
+- (void)adoptFileAtURL:(id)l forAssetIdentifier:(id)identifier remoteURL:(id)rL contentKeyIdentifiers:(id)identifiers extension:(id)extension
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  lCopy = l;
+  identifierCopy = identifier;
+  rLCopy = rL;
+  identifiersCopy = identifiers;
   v29 = 0;
-  v15 = [v11 bookmarkDataWithOptions:0 includingResourceValuesForKeys:0 relativeToURL:0 error:&v29];
+  v15 = [lCopy bookmarkDataWithOptions:0 includingResourceValuesForKeys:0 relativeToURL:0 error:&v29];
   v16 = v29;
   if (v15)
   {
@@ -374,11 +374,11 @@ void __51__FCAVAssetCache_contentKeyIdentifiersForAllAssets__block_invoke(uint64
     v20[2] = __94__FCAVAssetCache_adoptFileAtURL_forAssetIdentifier_remoteURL_contentKeyIdentifiers_extension___block_invoke_16;
     v20[3] = &unk_1E7C3C310;
     v20[4] = self;
-    v21 = v12;
-    v22 = v13;
-    v23 = v14;
+    v21 = identifierCopy;
+    v22 = rLCopy;
+    v23 = identifiersCopy;
     v24 = v17;
-    v25 = v11;
+    v25 = lCopy;
     v19 = v17;
     [(FCCacheCoordinator *)cacheCoordinator performCacheWrite:v20];
   }
@@ -389,7 +389,7 @@ void __51__FCAVAssetCache_contentKeyIdentifiersForAllAssets__block_invoke(uint64
     v26[1] = 3221225472;
     v26[2] = __94__FCAVAssetCache_adoptFileAtURL_forAssetIdentifier_remoteURL_contentKeyIdentifiers_extension___block_invoke;
     v26[3] = &unk_1E7C36C58;
-    v27 = v12;
+    v27 = identifierCopy;
     v28 = v16;
     __94__FCAVAssetCache_adoptFileAtURL_forAssetIdentifier_remoteURL_contentKeyIdentifiers_extension___block_invoke(v26);
 
@@ -480,9 +480,9 @@ void __94__FCAVAssetCache_adoptFileAtURL_forAssetIdentifier_remoteURL_contentKey
   [v14 didInsertKeyIntoCache:*(a1 + 40) withLifetimeHint:0];
 }
 
-- (id)contentKeyIdentifiersForAssetIdentifier:(id)a3
+- (id)contentKeyIdentifiersForAssetIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(FCAVAssetCache *)self _prepareForUse];
   v14 = 0;
   v15 = &v14;
@@ -506,7 +506,7 @@ void __94__FCAVAssetCache_adoptFileAtURL_forAssetIdentifier_remoteURL_contentKey
   v11[2] = __58__FCAVAssetCache_contentKeyIdentifiersForAssetIdentifier___block_invoke;
   v11[3] = &unk_1E7C37408;
   v11[4] = self;
-  v7 = v4;
+  v7 = identifierCopy;
   v12 = v7;
   v13 = &v14;
   [(FCCacheCoordinator *)v6 performCacheRead:v11];
@@ -551,9 +551,9 @@ void __58__FCAVAssetCache_contentKeyIdentifiersForAssetIdentifier___block_invoke
   }
 }
 
-- (id)contentArchiveForAssetIdentifier:(id)a3
+- (id)contentArchiveForAssetIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -577,7 +577,7 @@ void __58__FCAVAssetCache_contentKeyIdentifiersForAssetIdentifier___block_invoke
   v10[3] = &unk_1E7C37138;
   v12 = &v13;
   v10[4] = self;
-  v7 = v4;
+  v7 = identifierCopy;
   v11 = v7;
   [(FCCacheCoordinator *)v6 performCacheRead:v10];
 
@@ -604,9 +604,9 @@ void __51__FCAVAssetCache_contentArchiveForAssetIdentifier___block_invoke(void *
   *(v5 + 40) = v4;
 }
 
-- (id)importAVAsset:(id)a3
+- (id)importAVAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -631,7 +631,7 @@ void __51__FCAVAssetCache_contentArchiveForAssetIdentifier___block_invoke(void *
   v10[3] = &unk_1E7C37138;
   v12 = &v13;
   v10[4] = self;
-  v7 = v4;
+  v7 = assetCopy;
   v11 = v7;
   [(FCCacheCoordinator *)v6 performCacheWrite:v10];
 
@@ -867,17 +867,17 @@ void __32__FCAVAssetCache_importAVAsset___block_invoke_23(uint64_t a1)
   v11 = 0x2020000000;
   if (self)
   {
-    v3 = [(FCKeyValueStore *)self->_metadataStore storeSize];
+    storeSize = [(FCKeyValueStore *)self->_metadataStore storeSize];
     cacheCoordinator = self->_cacheCoordinator;
   }
 
   else
   {
-    v3 = [0 storeSize];
+    storeSize = [0 storeSize];
     cacheCoordinator = 0;
   }
 
-  v12 = v3;
+  v12 = storeSize;
   v5 = cacheCoordinator;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -915,7 +915,7 @@ uint64_t __29__FCAVAssetCache_storageSize__block_invoke_2(uint64_t a1, uint64_t 
   return result;
 }
 
-- (void)enableFlushingWithFlushingThreshold:(unint64_t)a3
+- (void)enableFlushingWithFlushingThreshold:(unint64_t)threshold
 {
   v4 = [[FCCacheCoordinatorFlushPolicy alloc] initWithLowWaterMark:0 highWaterMark:0 alwaysFlushKeysWithZeroInterest:1];
   if (self)
@@ -932,10 +932,10 @@ uint64_t __29__FCAVAssetCache_storageSize__block_invoke_2(uint64_t a1, uint64_t 
   [(FCCacheCoordinator *)cacheCoordinator enableFlushingWithPolicy:v4];
 }
 
-- (unint64_t)cacheCoordinatorCurrentSizeWithReadLock:(id)a3
+- (unint64_t)cacheCoordinatorCurrentSizeWithReadLock:(id)lock
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = [a3 keysWithZeroInterest];
+  keysWithZeroInterest = [lock keysWithZeroInterest];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -950,8 +950,8 @@ uint64_t __29__FCAVAssetCache_storageSize__block_invoke_2(uint64_t a1, uint64_t 
     metadataStore = 0;
   }
 
-  v6 = [(FCKeyValueStore *)metadataStore allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v28 objects:v36 count:16];
+  allKeys = [(FCKeyValueStore *)metadataStore allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v7)
   {
     v8 = v7;
@@ -965,7 +965,7 @@ uint64_t __29__FCAVAssetCache_storageSize__block_invoke_2(uint64_t a1, uint64_t 
       {
         if (*v29 != v11)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v13 = *(*(&v28 + 1) + 8 * v12);
@@ -980,7 +980,7 @@ uint64_t __29__FCAVAssetCache_storageSize__block_invoke_2(uint64_t a1, uint64_t 
         }
 
         v15 = [(FCKeyValueStore *)v14 objectForKey:*(*(&v28 + 1) + 8 * v12)];
-        v16 = [v4 containsObject:v13];
+        v16 = [keysWithZeroInterest containsObject:v13];
         v17 = [v15 size];
         if (v16)
         {
@@ -1009,7 +1009,7 @@ uint64_t __29__FCAVAssetCache_storageSize__block_invoke_2(uint64_t a1, uint64_t 
       }
 
       while (v8 != v12);
-      v20 = [v6 countByEnumeratingWithState:&v28 objects:v36 count:16];
+      v20 = [allKeys countByEnumeratingWithState:&v28 objects:v36 count:16];
       v8 = v20;
     }
 
@@ -1040,19 +1040,19 @@ uint64_t __29__FCAVAssetCache_storageSize__block_invoke_2(uint64_t a1, uint64_t 
   return v10;
 }
 
-- (void)cacheCoordinator:(id)a3 flushKeysWithWriteLock:(id)a4
+- (void)cacheCoordinator:(id)coordinator flushKeysWithWriteLock:(id)lock
 {
   v40 = *MEMORY[0x1E69E9840];
-  v24 = a3;
-  v6 = a4;
+  coordinatorCopy = coordinator;
+  lockCopy = lock;
   v7 = FCAVAssetLog;
   if (os_log_type_enabled(FCAVAssetLog, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
     *buf = 134218242;
-    v32 = [v6 count];
+    v32 = [lockCopy count];
     v33 = 2114;
-    v34 = v6;
+    v34 = lockCopy;
     _os_log_impl(&dword_1B63EF000, v8, OS_LOG_TYPE_DEFAULT, "AV asset cache is flushing %lu assets, identifiers=%{public}@", buf, 0x16u);
   }
 
@@ -1060,7 +1060,7 @@ uint64_t __29__FCAVAssetCache_storageSize__block_invoke_2(uint64_t a1, uint64_t 
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v6;
+  obj = lockCopy;
   v9 = [obj countByEnumeratingWithState:&v27 objects:v39 count:16];
   if (v9)
   {
@@ -1088,12 +1088,12 @@ uint64_t __29__FCAVAssetCache_storageSize__block_invoke_2(uint64_t a1, uint64_t 
         }
 
         v15 = [(FCKeyValueStore *)metadataStore objectForKey:*(*(&v27 + 1) + 8 * v12)];
-        v16 = [(NTPBAVAsset *)v15 resolvedCacheURL];
-        if (v16)
+        resolvedCacheURL = [(NTPBAVAsset *)v15 resolvedCacheURL];
+        if (resolvedCacheURL)
         {
-          v17 = [MEMORY[0x1E696AC08] defaultManager];
+          defaultManager = [MEMORY[0x1E696AC08] defaultManager];
           v26 = 0;
-          v18 = [v17 removeItemAtURL:v16 error:&v26];
+          v18 = [defaultManager removeItemAtURL:resolvedCacheURL error:&v26];
           v19 = v26;
 
           if ((v18 & 1) == 0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))

@@ -1,12 +1,12 @@
 @interface AVMetadataObject
-+ (id)derivedMetadataObjectFromMetadataObject:(id)a3 withTransform:(CGAffineTransform *)a4 isVideoMirrored:(BOOL)a5 rollAdjustment:(double)a6;
++ (id)derivedMetadataObjectFromMetadataObject:(id)object withTransform:(CGAffineTransform *)transform isVideoMirrored:(BOOL)mirrored rollAdjustment:(double)adjustment;
 - (AVMetadataObject)init;
-- (AVMetadataObject)initWithType:(id)a3 time:(id *)a4 duration:(id *)a5 bounds:(CGRect)a6 optionalInfoDict:(id)a7 originalMetadataObject:(id)a8 sourceCaptureInput:(id)a9;
-- (BOOL)isEqual:(id)a3;
+- (AVMetadataObject)initWithType:(id)type time:(id *)time duration:(id *)duration bounds:(CGRect)bounds optionalInfoDict:(id)dict originalMetadataObject:(id)object sourceCaptureInput:(id)input;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)bounds;
 - (CMTime)duration;
 - (CMTime)time;
-- (id)initDerivedMetadataObjectFromMetadataObject:(id)a3 withTransform:(CGAffineTransform *)a4 isVideoMirrored:(BOOL)a5 rollAdjustment:(double)a6;
+- (id)initDerivedMetadataObjectFromMetadataObject:(id)object withTransform:(CGAffineTransform *)transform isVideoMirrored:(BOOL)mirrored rollAdjustment:(double)adjustment;
 - (id)originalMetadataObject;
 - (void)dealloc;
 @end
@@ -22,12 +22,12 @@
   return [(AVMetadataObject *)self initWithType:0 time:&v5 duration:&v3 bounds:0 optionalInfoDict:0 originalMetadataObject:0 sourceCaptureInput:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
 }
 
-- (AVMetadataObject)initWithType:(id)a3 time:(id *)a4 duration:(id *)a5 bounds:(CGRect)a6 optionalInfoDict:(id)a7 originalMetadataObject:(id)a8 sourceCaptureInput:(id)a9
+- (AVMetadataObject)initWithType:(id)type time:(id *)time duration:(id *)duration bounds:(CGRect)bounds optionalInfoDict:(id)dict originalMetadataObject:(id)object sourceCaptureInput:(id)input
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v37.receiver = self;
   v37.super_class = AVMetadataObject;
   v19 = [(AVMetadataObject *)&v37 init];
@@ -39,31 +39,31 @@
     v19->_objectInternal = v20;
     if (v20)
     {
-      [(AVMetadataObjectInternal *)v20 setType:a3];
+      [(AVMetadataObjectInternal *)v20 setType:type];
       objectInternal = v19->_objectInternal;
-      v35 = *&a4->var0;
-      var3 = a4->var3;
+      v35 = *&time->var0;
+      var3 = time->var3;
       [(AVMetadataObjectInternal *)objectInternal setTime:&v35];
       v22 = v19->_objectInternal;
-      v35 = *&a5->var0;
-      var3 = a5->var3;
+      v35 = *&duration->var0;
+      var3 = duration->var3;
       [(AVMetadataObjectInternal *)v22 setDuration:&v35];
       [(AVMetadataObjectInternal *)v19->_objectInternal setBounds:x, y, width, height];
-      [(AVMetadataObjectInternal *)v19->_objectInternal setOriginalMetadataObject:a8];
-      [(AVMetadataObjectInternal *)v19->_objectInternal setInput:a9];
-      if (a7)
+      [(AVMetadataObjectInternal *)v19->_objectInternal setOriginalMetadataObject:object];
+      [(AVMetadataObjectInternal *)v19->_objectInternal setInput:input];
+      if (dict)
       {
-        v23 = [a7 objectForKeyedSubscript:*MEMORY[0x1E6990E60]];
+        v23 = [dict objectForKeyedSubscript:*MEMORY[0x1E6990E60]];
         if (v23)
         {
           -[AVMetadataObjectInternal setGroupID:](v19->_objectInternal, "setGroupID:", [v23 integerValue]);
         }
 
-        v24 = [a7 objectForKeyedSubscript:*MEMORY[0x1E6990E68]];
+        v24 = [dict objectForKeyedSubscript:*MEMORY[0x1E6990E68]];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v25 = [a7 objectForKeyedSubscript:*MEMORY[0x1E6990FF0]];
+          v25 = [dict objectForKeyedSubscript:*MEMORY[0x1E6990FF0]];
           if (v25)
           {
             v24 = v25;
@@ -75,13 +75,13 @@
           -[AVMetadataObjectInternal setObjectID:](v19->_objectInternal, "setObjectID:", [v24 integerValue]);
         }
 
-        v26 = [a7 objectForKeyedSubscript:*MEMORY[0x1E6990C68]];
+        v26 = [dict objectForKeyedSubscript:*MEMORY[0x1E6990C68]];
         if (v26)
         {
-          v27 = [v26 BOOLValue];
+          bOOLValue = [v26 BOOLValue];
           v28 = v19->_objectInternal;
-          v29 = [(AVMetadataObjectInternal *)v28 syntheticFocusMode];
-          if (v27)
+          syntheticFocusMode = [(AVMetadataObjectInternal *)v28 syntheticFocusMode];
+          if (bOOLValue)
           {
             v30 = 2;
           }
@@ -91,7 +91,7 @@
             v30 = 1;
           }
 
-          if (v27)
+          if (bOOLValue)
           {
             v31 = 1;
           }
@@ -101,18 +101,18 @@
             v31 = 2;
           }
 
-          [(AVMetadataObjectInternal *)v28 setSyntheticFocusMode:v29 | v30];
+          [(AVMetadataObjectInternal *)v28 setSyntheticFocusMode:syntheticFocusMode | v30];
           [(AVMetadataObjectInternal *)v19->_objectInternal setCinematicVideoFocusMode:v31];
         }
 
-        v32 = [a7 objectForKeyedSubscript:*MEMORY[0x1E6990C60]];
+        v32 = [dict objectForKeyedSubscript:*MEMORY[0x1E6990C60]];
         if (!v32)
         {
           goto LABEL_26;
         }
 
-        v33 = [v32 BOOLValue];
-        if (v33)
+        bOOLValue2 = [v32 BOOLValue];
+        if (bOOLValue2)
         {
           [(AVMetadataObjectInternal *)v19->_objectInternal setSyntheticFocusMode:[(AVMetadataObjectInternal *)v19->_objectInternal syntheticFocusMode]| 4];
         }
@@ -120,21 +120,21 @@
 
       else
       {
-        if (!a8)
+        if (!object)
         {
 LABEL_26:
-          -[AVMetadataObjectInternal setDetectionSource:](v19->_objectInternal, "setDetectionSource:", [a8 detectionSource]);
+          -[AVMetadataObjectInternal setDetectionSource:](v19->_objectInternal, "setDetectionSource:", [object detectionSource]);
           return v19;
         }
 
-        -[AVMetadataObjectInternal setGroupID:](v19->_objectInternal, "setGroupID:", [a8 groupID]);
-        -[AVMetadataObjectInternal setObjectID:](v19->_objectInternal, "setObjectID:", [a8 objectID]);
-        -[AVMetadataObjectInternal setSyntheticFocusMode:](v19->_objectInternal, "setSyntheticFocusMode:", [a8 syntheticFocusMode]);
-        -[AVMetadataObjectInternal setCinematicVideoFocusMode:](v19->_objectInternal, "setCinematicVideoFocusMode:", [a8 cinematicVideoFocusMode]);
-        v33 = [a8 isFixedFocus];
+        -[AVMetadataObjectInternal setGroupID:](v19->_objectInternal, "setGroupID:", [object groupID]);
+        -[AVMetadataObjectInternal setObjectID:](v19->_objectInternal, "setObjectID:", [object objectID]);
+        -[AVMetadataObjectInternal setSyntheticFocusMode:](v19->_objectInternal, "setSyntheticFocusMode:", [object syntheticFocusMode]);
+        -[AVMetadataObjectInternal setCinematicVideoFocusMode:](v19->_objectInternal, "setCinematicVideoFocusMode:", [object cinematicVideoFocusMode]);
+        bOOLValue2 = [object isFixedFocus];
       }
 
-      [(AVMetadataObjectInternal *)v19->_objectInternal setFixedFocus:v33];
+      [(AVMetadataObjectInternal *)v19->_objectInternal setFixedFocus:bOOLValue2];
       goto LABEL_26;
     }
 
@@ -144,18 +144,18 @@ LABEL_26:
   return v19;
 }
 
-+ (id)derivedMetadataObjectFromMetadataObject:(id)a3 withTransform:(CGAffineTransform *)a4 isVideoMirrored:(BOOL)a5 rollAdjustment:(double)a6
++ (id)derivedMetadataObjectFromMetadataObject:(id)object withTransform:(CGAffineTransform *)transform isVideoMirrored:(BOOL)mirrored rollAdjustment:(double)adjustment
 {
-  v7 = a5;
+  mirroredCopy = mirrored;
   v10 = objc_alloc(objc_opt_class());
-  v11 = *&a4->c;
-  v13[0] = *&a4->a;
+  v11 = *&transform->c;
+  v13[0] = *&transform->a;
   v13[1] = v11;
-  v13[2] = *&a4->tx;
-  return [v10 initDerivedMetadataObjectFromMetadataObject:a3 withTransform:v13 isVideoMirrored:v7 rollAdjustment:a6];
+  v13[2] = *&transform->tx;
+  return [v10 initDerivedMetadataObjectFromMetadataObject:object withTransform:v13 isVideoMirrored:mirroredCopy rollAdjustment:adjustment];
 }
 
-- (id)initDerivedMetadataObjectFromMetadataObject:(id)a3 withTransform:(CGAffineTransform *)a4 isVideoMirrored:(BOOL)a5 rollAdjustment:(double)a6
+- (id)initDerivedMetadataObjectFromMetadataObject:(id)object withTransform:(CGAffineTransform *)transform isVideoMirrored:(BOOL)mirrored rollAdjustment:(double)adjustment
 {
   objc_opt_class();
   AVRequestConcreteImplementation();
@@ -169,15 +169,15 @@ LABEL_26:
   [(AVMetadataObject *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   if (self)
   {
     [(AVMetadataObject *)self time];
-    if (a3)
+    if (equal)
     {
 LABEL_3:
-      [a3 time];
+      [equal time];
       goto LABEL_6;
     }
   }
@@ -185,7 +185,7 @@ LABEL_3:
   else
   {
     memset(&time1, 0, sizeof(time1));
-    if (a3)
+    if (equal)
     {
       goto LABEL_3;
     }
@@ -203,10 +203,10 @@ LABEL_13:
   if (self)
   {
     [(AVMetadataObject *)self duration];
-    if (a3)
+    if (equal)
     {
 LABEL_9:
-      [a3 duration];
+      [equal duration];
       goto LABEL_12;
     }
   }
@@ -214,7 +214,7 @@ LABEL_9:
   else
   {
     memset(&time1, 0, sizeof(time1));
-    if (a3)
+    if (equal)
     {
       goto LABEL_9;
     }
@@ -232,7 +232,7 @@ LABEL_12:
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  [a3 bounds];
+  [equal bounds];
   v27.origin.x = v14;
   v27.origin.y = v15;
   v27.size.width = v16;
@@ -244,41 +244,41 @@ LABEL_12:
   v5 = CGRectEqualToRect(v26, v27);
   if (v5)
   {
-    v5 = -[NSString isEqualToString:](-[AVMetadataObject type](self, "type"), "isEqualToString:", [a3 type]);
+    v5 = -[NSString isEqualToString:](-[AVMetadataObject type](self, "type"), "isEqualToString:", [equal type]);
     if (v5)
     {
-      if (-[AVMetadataObject groupID](self, "groupID") != -1 && [a3 groupID] != -1)
+      if (-[AVMetadataObject groupID](self, "groupID") != -1 && [equal groupID] != -1)
       {
-        v18 = [(AVMetadataObject *)self groupID];
-        if (v18 != [a3 groupID])
+        groupID = [(AVMetadataObject *)self groupID];
+        if (groupID != [equal groupID])
         {
           goto LABEL_13;
         }
       }
 
-      if (-[AVMetadataObject objectID](self, "objectID", v24.value, *&v24.timescale, v24.epoch) != -1 && [a3 objectID] != -1)
+      if (-[AVMetadataObject objectID](self, "objectID", v24.value, *&v24.timescale, v24.epoch) != -1 && [equal objectID] != -1)
       {
-        v19 = [(AVMetadataObject *)self objectID];
-        if (v19 != [a3 objectID])
+        objectID = [(AVMetadataObject *)self objectID];
+        if (objectID != [equal objectID])
         {
           goto LABEL_13;
         }
       }
 
-      v20 = [(AVMetadataObject *)self detectionSource];
-      if (v20 != [a3 detectionSource])
+      detectionSource = [(AVMetadataObject *)self detectionSource];
+      if (detectionSource != [equal detectionSource])
       {
         goto LABEL_13;
       }
 
-      v21 = [(AVMetadataObject *)self cinematicVideoFocusMode];
-      if (v21 != [a3 cinematicVideoFocusMode])
+      cinematicVideoFocusMode = [(AVMetadataObject *)self cinematicVideoFocusMode];
+      if (cinematicVideoFocusMode != [equal cinematicVideoFocusMode])
       {
         goto LABEL_13;
       }
 
-      v22 = [(AVMetadataObject *)self isFixedFocus];
-      LOBYTE(v5) = v22 ^ [a3 isFixedFocus] ^ 1;
+      isFixedFocus = [(AVMetadataObject *)self isFixedFocus];
+      LOBYTE(v5) = isFixedFocus ^ [equal isFixedFocus] ^ 1;
     }
   }
 
@@ -328,9 +328,9 @@ LABEL_12:
   result = [(AVMetadataObjectInternal *)self->_objectInternal originalMetadataObject];
   if (!result)
   {
-    v4 = self;
+    selfCopy = self;
 
-    return v4;
+    return selfCopy;
   }
 
   return result;

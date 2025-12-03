@@ -1,18 +1,18 @@
 @interface TXRParserKTX
-+ (BOOL)exportTexture:(id)a3 url:(id)a4 error:(id *)a5;
-+ (BOOL)handlesData:(id)a3;
-- (BOOL)parseData:(id)a3 bufferAllocator:(id)a4 options:(id)a5 error:(id *)a6;
-- (id)parsedImageAtLevel:(unint64_t)a3 element:(unint64_t)a4 face:(unint64_t)a5;
-- (unint64_t)determineFormatFromType:(unsigned int)a3 format:(unsigned int)a4 internalFormat:(unsigned int)a5 baseInternalFormat:(unsigned int)a6;
-- (void)parseImageData:(id)a3 WithOptions:(id)a4 bufferAllocator:(id)a5;
++ (BOOL)exportTexture:(id)texture url:(id)url error:(id *)error;
++ (BOOL)handlesData:(id)data;
+- (BOOL)parseData:(id)data bufferAllocator:(id)allocator options:(id)options error:(id *)error;
+- (id)parsedImageAtLevel:(unint64_t)level element:(unint64_t)element face:(unint64_t)face;
+- (unint64_t)determineFormatFromType:(unsigned int)type format:(unsigned int)format internalFormat:(unsigned int)internalFormat baseInternalFormat:(unsigned int)baseInternalFormat;
+- (void)parseImageData:(id)data WithOptions:(id)options bufferAllocator:(id)allocator;
 @end
 
 @implementation TXRParserKTX
 
-+ (BOOL)handlesData:(id)a3
++ (BOOL)handlesData:(id)data
 {
   v7 = *MEMORY[0x277D85DE8];
-  [a3 getBytes:v6 length:12];
+  [data getBytes:v6 length:12];
   v3 = 0;
   result = 1;
   do
@@ -26,21 +26,21 @@
   return result;
 }
 
-- (BOOL)parseData:(id)a3 bufferAllocator:(id)a4 options:(id)a5 error:(id *)a6
+- (BOOL)parseData:(id)data bufferAllocator:(id)allocator options:(id)options error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v10 bytes];
-  if (v13[1].i8[4] != 1 || (v14 = v13, v13[1].i8[5] != 2) || v13[1].i8[6] != 3 || v13[1].i8[7] != 4)
+  dataCopy = data;
+  allocatorCopy = allocator;
+  optionsCopy = options;
+  bytes = [dataCopy bytes];
+  if (bytes[1].i8[4] != 1 || (v14 = bytes, bytes[1].i8[5] != 2) || bytes[1].i8[6] != 3 || bytes[1].i8[7] != 4)
   {
-    if (a6)
+    if (error)
     {
       v30 = @"Only little endian KTX files are supported";
       v31 = 10;
 LABEL_15:
       _newTXRErrorWithCodeAndErrorString(v31, v30);
-      *a6 = v29 = 0;
+      *error = v29 = 0;
       goto LABEL_19;
     }
 
@@ -84,7 +84,7 @@ LABEL_18:
   [(TXRTextureInfo *)self->_textureInfo setPixelFormat:[(TXRParserKTX *)self determineFormatFromType:v14[2].u32[0] format:v14[3].u32[0] internalFormat:v14[3].u32[1] baseInternalFormat:v14[4].u32[0]]];
   if (![(TXRTextureInfo *)self->_textureInfo pixelFormat])
   {
-    if (a6)
+    if (error)
     {
       v30 = @"Could not determine format from KTX header";
       v31 = 8;
@@ -110,9 +110,9 @@ LABEL_18:
   v33[2] = __56__TXRParserKTX_parseData_bufferAllocator_options_error___block_invoke;
   v33[3] = &unk_279DBC078;
   v33[4] = self;
-  v34 = v10;
-  v35 = v12;
-  v36 = v11;
+  v34 = dataCopy;
+  v35 = optionsCopy;
+  v36 = allocatorCopy;
   dispatch_async(v28, v33);
 
   v29 = 1;
@@ -121,13 +121,13 @@ LABEL_19:
   return v29;
 }
 
-- (void)parseImageData:(id)a3 WithOptions:(id)a4 bufferAllocator:(id)a5
+- (void)parseImageData:(id)data WithOptions:(id)options bufferAllocator:(id)allocator
 {
-  v57 = a3;
-  v56 = a4;
-  v8 = a5;
-  v9 = v57;
-  v10 = [v57 bytes];
+  dataCopy = data;
+  optionsCopy = options;
+  allocatorCopy = allocator;
+  v9 = dataCopy;
+  bytes = [dataCopy bytes];
   bytesOfKeyValueData = self->_bytesOfKeyValueData;
   [(TXRTextureInfo *)self->_textureInfo dimensions];
   v70 = v12;
@@ -143,22 +143,22 @@ LABEL_19:
     v18.i64[0] = v70;
     v18.i64[1] = v69;
     v60 = v18;
-    v19 = v10 + bytesOfKeyValueData + 64;
+    v19 = bytes + bytesOfKeyValueData + 64;
     v20 = 0x279DBB000uLL;
-    v62 = v8;
-    v72 = self;
+    v62 = allocatorCopy;
+    selfCopy = self;
     do
     {
-      v21 = [(TXRTextureInfo *)self->_textureInfo pixelFormat];
-      v22 = v21 - 130 > 0xD || ((1 << (v21 + 126)) & 0x3C3F) == 0;
+      pixelFormat = [(TXRTextureInfo *)self->_textureInfo pixelFormat];
+      v22 = pixelFormat - 130 > 0xD || ((1 << (pixelFormat + 126)) & 0x3C3F) == 0;
       v59 = v16;
-      if (v22 && v21 - 150 >= 4 && (v21 & 0xFFFFFFFFFFFFFFF8) != 0xA0 && (v21 - 170 <= 0x30 ? (v25 = ((1 << (v21 + 86)) & 0x1FF7C7FDF3F55) == 0) : (v25 = 1), v25))
+      if (v22 && pixelFormat - 150 >= 4 && (pixelFormat & 0xFFFFFFFFFFFFFFF8) != 0xA0 && (pixelFormat - 170 <= 0x30 ? (v25 = ((1 << (pixelFormat + 86)) & 0x1FF7C7FDF3F55) == 0) : (v25 = 1), v25))
       {
-        v26 = [(TXRTextureInfo *)self->_textureInfo pixelFormat];
-        if (v26 <= 551)
+        pixelFormat2 = [(TXRTextureInfo *)self->_textureInfo pixelFormat];
+        if (pixelFormat2 <= 551)
         {
           v27 = 1;
-          switch(v26)
+          switch(pixelFormat2)
           {
             case 1:
             case 10:
@@ -222,13 +222,13 @@ LABEL_19:
           }
         }
 
-        if ((v26 - 552) < 2)
+        if ((pixelFormat2 - 552) < 2)
         {
 LABEL_54:
           v27 = 8;
         }
 
-        else if ((v26 - 554) < 2)
+        else if ((pixelFormat2 - 554) < 2)
         {
 LABEL_18:
           v27 = 4;
@@ -236,7 +236,7 @@ LABEL_18:
 
         else
         {
-          if ((v26 - 2147483649) >= 2)
+          if ((pixelFormat2 - 2147483649) >= 2)
           {
 LABEL_61:
             pixelBytes_cold_1();
@@ -252,9 +252,9 @@ LABEL_56:
 
       else
       {
-        v23 = [(TXRTextureInfo *)self->_textureInfo pixelFormat];
+        pixelFormat3 = [(TXRTextureInfo *)self->_textureInfo pixelFormat];
         v24 = 17040392;
-        switch(v23)
+        switch(pixelFormat3)
         {
           case 0x82uLL:
           case 0x83uLL:
@@ -372,10 +372,10 @@ LABEL_24:
         {
           v66 = v32;
           v61 = v33;
-          v35 = [(TXRTextureInfo *)self->_textureInfo cubemap];
+          cubemap = [(TXRTextureInfo *)self->_textureInfo cubemap];
           v36 = 0;
           v37 = 6;
-          if (!v35)
+          if (!cubemap)
           {
             v37 = 1;
           }
@@ -385,30 +385,30 @@ LABEL_24:
           {
             v71 = v31;
             v38 = objc_alloc_init(*(v20 + 3888));
-            v39 = [v8 newBufferWithLength:v34];
+            v39 = [allocatorCopy newBufferWithLength:v34];
             [v38 setBuffer:v39];
 
             [v38 setOffset:0];
             [v38 setBytesPerRow:v29];
             [v38 setBytesPerImage:v30];
-            v40 = [v38 buffer];
-            v41 = [v40 map];
+            buffer = [v38 buffer];
+            v41 = [buffer map];
 
             memcpy([v41 bytes], v31, v34);
-            v42 = [(TXRDeferredTextureInfo *)self->_deferredTextureInfo mipmaps];
-            v43 = [v42 objectAtIndexedSubscript:v15];
-            v44 = [v43 elements];
-            v45 = [v44 objectAtIndexedSubscript:v66];
-            v46 = [v45 faces];
-            v47 = [v46 objectAtIndexedSubscript:v36];
+            mipmaps = [(TXRDeferredTextureInfo *)self->_deferredTextureInfo mipmaps];
+            v43 = [mipmaps objectAtIndexedSubscript:v15];
+            elements = [v43 elements];
+            v45 = [elements objectAtIndexedSubscript:v66];
+            faces = [v45 faces];
+            v47 = [faces objectAtIndexedSubscript:v36];
             [v47 setInfo:v38];
 
-            v48 = [(TXRDeferredTextureInfo *)v72->_deferredTextureInfo mipmaps];
-            v49 = [v48 objectAtIndexedSubscript:v15];
-            v50 = [v49 elements];
-            v51 = [v50 objectAtIndexedSubscript:v66];
-            v52 = [v51 faces];
-            v53 = [v52 objectAtIndexedSubscript:v36];
+            mipmaps2 = [(TXRDeferredTextureInfo *)selfCopy->_deferredTextureInfo mipmaps];
+            v49 = [mipmaps2 objectAtIndexedSubscript:v15];
+            elements2 = [v49 elements];
+            v51 = [elements2 objectAtIndexedSubscript:v66];
+            faces2 = [v51 faces];
+            v53 = [faces2 objectAtIndexedSubscript:v36];
             [v53 signalLoaded];
 
             v20 = 0x279DBB000;
@@ -417,10 +417,10 @@ LABEL_24:
             v34 = v63;
             v29 = v65;
 
-            self = v72;
-            v8 = v62;
+            self = selfCopy;
+            allocatorCopy = v62;
             v31 = &v71[v64];
-            if ([(TXRTextureInfo *)v72->_textureInfo cubemap])
+            if ([(TXRTextureInfo *)selfCopy->_textureInfo cubemap])
             {
               v31 = ((v31 + 3) & 0xFFFFFFFFFFFFFFFCLL);
             }
@@ -430,11 +430,11 @@ LABEL_24:
 
           while (v68 != v36);
           v32 = (v61 + 1);
-          v54 = [(TXRTextureInfo *)v72->_textureInfo arrayLength];
+          arrayLength = [(TXRTextureInfo *)selfCopy->_textureInfo arrayLength];
           v33 = v61 + 1;
         }
 
-        while (v54 > v32);
+        while (arrayLength > v32);
       }
 
       v55 = vcgtq_u64(v60, vdupq_n_s64(1uLL));
@@ -458,11 +458,11 @@ LABEL_24:
   }
 }
 
-- (unint64_t)determineFormatFromType:(unsigned int)a3 format:(unsigned int)a4 internalFormat:(unsigned int)a5 baseInternalFormat:(unsigned int)a6
+- (unint64_t)determineFormatFromType:(unsigned int)type format:(unsigned int)format internalFormat:(unsigned int)internalFormat baseInternalFormat:(unsigned int)baseInternalFormat
 {
-  if (a3)
+  if (type)
   {
-    v6 = a4 == 0;
+    v6 = format == 0;
   }
 
   else
@@ -471,40 +471,40 @@ LABEL_24:
   }
 
   v7 = v6;
-  if (a5 == a4 && (v7 & 1) == 0)
+  if (internalFormat == format && (v7 & 1) == 0)
   {
-    if (a4 <= 33318)
+    if (format <= 33318)
     {
       v21 = 6403;
       v22 = 12;
-      if (a3 != 5120)
+      if (type != 5120)
       {
         v22 = 0;
       }
 
-      if (a3 == 5121)
+      if (type == 5121)
       {
         v22 = 10;
       }
 
       v23 = 70;
-      if (a3 != 5121)
+      if (type != 5121)
       {
         v23 = 0;
       }
 
       v24 = 80;
-      if (a3 != 5121)
+      if (type != 5121)
       {
         v24 = 0;
       }
 
-      if (a4 != 32993)
+      if (format != 32993)
       {
         v24 = 0;
       }
 
-      if (a4 == 6408)
+      if (format == 6408)
       {
         v24 = v23;
       }
@@ -512,32 +512,32 @@ LABEL_24:
 
     else
     {
-      if (a4 <= 36243)
+      if (format <= 36243)
       {
         v8 = 30;
-        if (a3 != 5121)
+        if (type != 5121)
         {
           v8 = 0;
         }
 
         v9 = 34;
-        if (a3 != 5120)
+        if (type != 5120)
         {
           v9 = 0;
         }
 
         v10 = 33;
-        if (a3 != 5121)
+        if (type != 5121)
         {
           v10 = v9;
         }
 
-        if (a4 != 33320)
+        if (format != 33320)
         {
           v10 = 0;
         }
 
-        if (a4 == 33319)
+        if (format == 33319)
         {
           return v8;
         }
@@ -550,23 +550,23 @@ LABEL_24:
 
       v21 = 36244;
       v22 = 14;
-      if (a3 != 5120)
+      if (type != 5120)
       {
         v22 = 0;
       }
 
-      if (a3 == 5121)
+      if (type == 5121)
       {
         v22 = 13;
       }
 
       v25 = 91;
-      if (a3 != 33640)
+      if (type != 33640)
       {
         v25 = 0;
       }
 
-      if (a4 == 36249)
+      if (format == 36249)
       {
         v24 = v25;
       }
@@ -577,7 +577,7 @@ LABEL_24:
       }
     }
 
-    if (a4 == v21)
+    if (format == v21)
     {
       return v22;
     }
@@ -588,11 +588,11 @@ LABEL_24:
     }
   }
 
-  if (a5 != a4 || ((v7 ^ 1) & 1) != 0)
+  if (internalFormat != format || ((v7 ^ 1) & 1) != 0)
   {
     v19 = &word_26F0417E8;
     v20 = 115;
-    while (*v19 != a5)
+    while (*v19 != internalFormat)
     {
       v19 += 8;
       if (!--v20)
@@ -606,27 +606,27 @@ LABEL_24:
 
   else
   {
-    if (a4 > 36491)
+    if (format > 36491)
     {
       v12 = 36493;
       v26 = 150;
-      if (a6 != 6407)
+      if (baseInternalFormat != 6407)
       {
         v26 = 0;
       }
 
       v27 = 151;
-      if (a6 != 6407)
+      if (baseInternalFormat != 6407)
       {
         v27 = 0;
       }
 
-      if (a4 != 36495)
+      if (format != 36495)
       {
         v27 = 0;
       }
 
-      if (a4 == 36494)
+      if (format == 36494)
       {
         v16 = v26;
       }
@@ -637,23 +637,23 @@ LABEL_24:
       }
 
       v28 = 152;
-      if (a6 != 6408)
+      if (baseInternalFormat != 6408)
       {
         v28 = 0;
       }
 
       v29 = 153;
-      if (a6 != 6408)
+      if (baseInternalFormat != 6408)
       {
         v29 = 0;
       }
 
-      if (a4 != 36493)
+      if (format != 36493)
       {
         v29 = 0;
       }
 
-      if (a4 == 36492)
+      if (format == 36492)
       {
         v18 = v28;
       }
@@ -668,18 +668,18 @@ LABEL_24:
     {
       v12 = 36284;
       v13 = 142;
-      if (a6 != 6407)
+      if (baseInternalFormat != 6407)
       {
         v13 = 0;
       }
 
       v14 = 143;
-      if (a6 != 6407)
+      if (baseInternalFormat != 6407)
       {
         v14 = 0;
       }
 
-      if (a4 == 36286)
+      if (format == 36286)
       {
         v15 = v14;
       }
@@ -689,7 +689,7 @@ LABEL_24:
         v15 = 0;
       }
 
-      if (a4 == 36285)
+      if (format == 36285)
       {
         v16 = v13;
       }
@@ -700,29 +700,29 @@ LABEL_24:
       }
 
       v17 = 140;
-      if (a6 != 6407)
+      if (baseInternalFormat != 6407)
       {
         v17 = 0;
       }
 
       v18 = 141;
-      if (a6 != 6407)
+      if (baseInternalFormat != 6407)
       {
         v18 = 0;
       }
 
-      if (a4 != 36284)
+      if (format != 36284)
       {
         v18 = 0;
       }
 
-      if (a4 == 36283)
+      if (format == 36283)
       {
         v18 = v17;
       }
     }
 
-    if (a4 <= v12)
+    if (format <= v12)
     {
       return v18;
     }
@@ -734,35 +734,35 @@ LABEL_24:
   }
 }
 
-- (id)parsedImageAtLevel:(unint64_t)a3 element:(unint64_t)a4 face:(unint64_t)a5
+- (id)parsedImageAtLevel:(unint64_t)level element:(unint64_t)element face:(unint64_t)face
 {
-  v8 = [(TXRDeferredTextureInfo *)self->_deferredTextureInfo mipmaps];
-  v9 = [v8 objectAtIndexedSubscript:a3];
-  v10 = [v9 elements];
-  v11 = [v10 objectAtIndexedSubscript:a4];
-  v12 = [v11 faces];
-  v13 = [v12 objectAtIndexedSubscript:a5];
-  v14 = [v13 info];
+  mipmaps = [(TXRDeferredTextureInfo *)self->_deferredTextureInfo mipmaps];
+  v9 = [mipmaps objectAtIndexedSubscript:level];
+  elements = [v9 elements];
+  v11 = [elements objectAtIndexedSubscript:element];
+  faces = [v11 faces];
+  v13 = [faces objectAtIndexedSubscript:face];
+  info = [v13 info];
 
-  return v14;
+  return info;
 }
 
-+ (BOOL)exportTexture:(id)a3 url:(id)a4 error:(id *)a5
++ (BOOL)exportTexture:(id)texture url:(id)url error:(id *)error
 {
   v118 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  textureCopy = texture;
+  urlCopy = url;
   v116 = 0u;
   v117 = 0u;
   v115 = 0u;
   v113 = 169478669;
   __ptr = 0xBB31312058544BABLL;
   v114 = 67305985;
-  [v7 dimensions];
+  [textureCopy dimensions];
   v96 = v9;
-  [v7 dimensions];
+  [textureCopy dimensions];
   *(&v116 + 4) = __PAIR64__(v10, v96);
-  [v7 dimensions];
+  [textureCopy dimensions];
   if (v11 < 2)
   {
     v13 = 0;
@@ -770,28 +770,28 @@ LABEL_24:
 
   else
   {
-    [v7 dimensions];
+    [textureCopy dimensions];
     v13 = v12;
   }
 
   HIDWORD(v116) = v13;
-  v14 = [v7 mipmapLevels];
-  v15 = [v14 objectAtIndexedSubscript:0];
-  v16 = [v15 elements];
-  if ([v16 count] <= 1)
+  mipmapLevels = [textureCopy mipmapLevels];
+  v15 = [mipmapLevels objectAtIndexedSubscript:0];
+  elements = [v15 elements];
+  if ([elements count] <= 1)
   {
     LODWORD(v117) = 0;
   }
 
   else
   {
-    v17 = [v7 mipmapLevels];
-    v18 = [v17 objectAtIndexedSubscript:0];
-    v19 = [v18 elements];
-    LODWORD(v117) = [v19 count];
+    mipmapLevels2 = [textureCopy mipmapLevels];
+    v18 = [mipmapLevels2 objectAtIndexedSubscript:0];
+    elements2 = [v18 elements];
+    LODWORD(v117) = [elements2 count];
   }
 
-  if ([v7 cubemap])
+  if ([textureCopy cubemap])
   {
     v20 = 6;
   }
@@ -802,15 +802,15 @@ LABEL_24:
   }
 
   DWORD1(v117) = v20;
-  v21 = [v7 mipmapLevels];
-  DWORD2(v117) = [v21 count];
+  mipmapLevels3 = [textureCopy mipmapLevels];
+  DWORD2(v117) = [mipmapLevels3 count];
 
   if (v13 && v117)
   {
-    if (a5)
+    if (error)
     {
       _newTXRErrorWithCodeAndErrorString(10, @"KTX does not support volume texture arrays");
-      *a5 = v22 = 0;
+      *error = v22 = 0;
       goto LABEL_45;
     }
 
@@ -819,9 +819,9 @@ LABEL_41:
     goto LABEL_45;
   }
 
-  v23 = [v7 pixelFormat];
+  pixelFormat = [textureCopy pixelFormat];
   v24 = &formatEquivalenceTable;
-  if (v23 != 70)
+  if (pixelFormat != 70)
   {
     do
     {
@@ -829,7 +829,7 @@ LABEL_41:
       v24 += 2;
     }
 
-    while (v25 != v23);
+    while (v25 != pixelFormat);
   }
 
   v26 = *(v24 + 4);
@@ -865,24 +865,24 @@ LABEL_41:
   v101 = 27;
   HIDWORD(v117) = 128;
   v30 = objc_autoreleasePoolPush();
-  v31 = fopen([v8 fileSystemRepresentation], "w+");
+  v31 = fopen([urlCopy fileSystemRepresentation], "w+");
   objc_autoreleasePoolPop(v30);
   if (!v31)
   {
-    if (a5)
+    if (error)
     {
       v82 = MEMORY[0x277CCACA8];
-      v83 = [v8 absoluteString];
-      v84 = [v82 stringWithFormat:@"Cannot create file at %@", v83];
+      absoluteString = [urlCopy absoluteString];
+      v84 = [v82 stringWithFormat:@"Cannot create file at %@", absoluteString];
 
-      *a5 = _newTXRErrorWithCodeAndErrorString(4, v84);
+      *error = _newTXRErrorWithCodeAndErrorString(4, v84);
     }
 
     goto LABEL_41;
   }
 
-  v90 = a5;
-  v91 = v8;
+  errorCopy = error;
+  v91 = urlCopy;
   fwrite(&__ptr, 0x40uLL, 1uLL, v31);
   fwrite(&v104, 4uLL, 1uLL, v31);
   fwrite(v111, 0xFuLL, 1uLL, v31);
@@ -900,41 +900,41 @@ LABEL_41:
   fwrite(v106, 0x18uLL, 1uLL, v31);
   fwrite(v29, 3uLL, 1uLL, v31);
   fwrite(&v105, 1uLL, 1uLL, v31);
-  [v7 dimensions];
+  [textureCopy dimensions];
   v98 = v32;
-  v33 = [v7 mipmapLevels];
-  v34 = [v33 count];
+  mipmapLevels4 = [textureCopy mipmapLevels];
+  v34 = [mipmapLevels4 count];
 
   if (v34)
   {
     v35 = 0;
     v36 = 0;
     v37 = v98;
-    v92 = v7;
+    v92 = textureCopy;
     while (1)
     {
       v93 = v36;
-      v38 = [v7 mipmapLevels];
-      v39 = [v38 objectAtIndexedSubscript:v35];
+      mipmapLevels5 = [textureCopy mipmapLevels];
+      v39 = [mipmapLevels5 objectAtIndexedSubscript:v35];
 
-      v40 = [v39 elements];
-      v41 = [v40 objectAtIndexedSubscript:0];
-      v42 = [v41 faces];
-      v43 = [v42 objectAtIndexedSubscript:0];
-      v44 = [v43 bytesPerImage];
+      elements3 = [v39 elements];
+      v41 = [elements3 objectAtIndexedSubscript:0];
+      faces = [v41 faces];
+      v43 = [faces objectAtIndexedSubscript:0];
+      bytesPerImage = [v43 bytesPerImage];
 
       v94 = v37;
-      v45 = [v39 elements];
-      v46 = v37 * v44 * [v45 count];
-      v47 = [v39 elements];
-      v48 = [v47 objectAtIndexedSubscript:0];
-      v49 = [v48 faces];
-      v50 = v46 * [v49 count];
+      elements4 = [v39 elements];
+      v46 = v37 * bytesPerImage * [elements4 count];
+      elements5 = [v39 elements];
+      v48 = [elements5 objectAtIndexedSubscript:0];
+      faces2 = [v48 faces];
+      v50 = v46 * [faces2 count];
 
       v100 = v50;
       fwrite(&v100, 4uLL, 1uLL, v31);
-      v51 = [v39 elements];
-      v52 = [v51 count];
+      elements6 = [v39 elements];
+      v52 = [elements6 count];
       v53 = v117;
 
       if (v52 != v53)
@@ -942,8 +942,8 @@ LABEL_41:
         break;
       }
 
-      v54 = [v39 elements];
-      v55 = [v54 count];
+      elements7 = [v39 elements];
+      v55 = [elements7 count];
 
       if (v55)
       {
@@ -953,11 +953,11 @@ LABEL_41:
         do
         {
           v95 = v57;
-          v58 = [v39 elements];
-          v59 = [v58 objectAtIndexedSubscript:v56];
+          elements8 = [v39 elements];
+          v59 = [elements8 objectAtIndexedSubscript:v56];
 
-          v60 = [v59 faces];
-          v61 = [v60 count];
+          faces3 = [v59 faces];
+          v61 = [faces3 count];
 
           if (v61)
           {
@@ -965,25 +965,25 @@ LABEL_41:
             v63 = 1;
             do
             {
-              v64 = [v59 faces];
-              v65 = [v64 objectAtIndexedSubscript:v62];
+              faces4 = [v59 faces];
+              v65 = [faces4 objectAtIndexedSubscript:v62];
 
-              v66 = [v65 buffer];
-              v67 = [v66 map];
+              buffer = [v65 buffer];
+              v67 = [buffer map];
 
-              v68 = [v67 bytes];
-              v69 = [v65 bytesPerImage];
-              v70 = v69 * v94;
-              fwrite(v68, v69 * v94, 1uLL, v31);
-              v71 = [v59 faces];
-              if ([v71 count] <= 1)
+              bytes = [v67 bytes];
+              bytesPerImage2 = [v65 bytesPerImage];
+              v70 = bytesPerImage2 * v94;
+              fwrite(bytes, bytesPerImage2 * v94, 1uLL, v31);
+              faces5 = [v59 faces];
+              if ([faces5 count] <= 1)
               {
               }
 
               else
               {
-                v72 = [v97 elements];
-                v73 = [v72 count];
+                elements9 = [v97 elements];
+                v73 = [elements9 count];
 
                 if (v73 == 1)
                 {
@@ -997,8 +997,8 @@ LABEL_41:
               }
 
               v62 = v63;
-              v75 = [v59 faces];
-              v76 = [v75 count];
+              faces6 = [v59 faces];
+              v76 = [faces6 count];
             }
 
             while (v76 > v63++);
@@ -1006,8 +1006,8 @@ LABEL_41:
 
           v56 = (v95 + 1);
           v39 = v97;
-          v78 = [v97 elements];
-          v79 = [v78 count];
+          elements10 = [v97 elements];
+          v79 = [elements10 count];
 
           v57 = v95 + 1;
         }
@@ -1025,10 +1025,10 @@ LABEL_41:
         v37 = v94 >> 1;
       }
 
-      v7 = v92;
+      textureCopy = v92;
       v35 = (v93 + 1);
-      v80 = [v92 mipmapLevels];
-      v81 = [v80 count];
+      mipmapLevels6 = [v92 mipmapLevels];
+      v81 = [mipmapLevels6 count];
 
       v36 = v35;
       if (v81 <= v35)
@@ -1037,20 +1037,20 @@ LABEL_41:
       }
     }
 
-    v8 = v91;
-    if (v90)
+    urlCopy = v91;
+    if (errorCopy)
     {
-      v85 = [v39 elements];
-      v86 = [v85 count];
+      elements11 = [v39 elements];
+      v86 = [elements11 count];
 
       v87 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid TXRTexture object: Level 0 has %d array elments but level %d has %d elements", v117, v93, v86];
-      *v90 = _newTXRErrorWithCodeAndErrorString(5, v87);
+      *errorCopy = _newTXRErrorWithCodeAndErrorString(5, v87);
     }
 
     fclose(v31);
 
     v22 = 0;
-    v7 = v92;
+    textureCopy = v92;
   }
 
   else
@@ -1058,7 +1058,7 @@ LABEL_41:
 LABEL_38:
     fclose(v31);
     v22 = 1;
-    v8 = v91;
+    urlCopy = v91;
   }
 
 LABEL_45:

@@ -1,11 +1,11 @@
 @interface ODPMetricsHandler
 - (id)deviceID;
-- (id)getAppEventsWithError:(id *)a3;
+- (id)getAppEventsWithError:(id *)error;
 - (id)logKey;
 - (void)postMetrics;
-- (void)recordDeletedBundleIDs:(id)a3;
-- (void)recordInstallEventsForBundleIDs:(id)a3 installType:(unsigned __int8)a4;
-- (void)recordLaunches:(id)a3;
+- (void)recordDeletedBundleIDs:(id)ds;
+- (void)recordInstallEventsForBundleIDs:(id)ds installType:(unsigned __int8)type;
+- (void)recordLaunches:(id)launches;
 - (void)recordSupplementalAppMetricsEvents;
 - (void)resetMetrics;
 @end
@@ -14,13 +14,13 @@
 
 - (id)deviceID
 {
-  v2 = sub_1003D4108(AppDefaultsManager, @"ODPDeviceID");
-  if (!v2)
+  uUIDString = sub_1003D4108(AppDefaultsManager, @"ODPDeviceID");
+  if (!uUIDString)
   {
     v3 = +[NSUUID UUID];
-    v2 = [v3 UUIDString];
+    uUIDString = [v3 UUIDString];
 
-    sub_1003D4024(AppDefaultsManager, v2, @"ODPDeviceID");
+    sub_1003D4024(AppDefaultsManager, uUIDString, @"ODPDeviceID");
     v4 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -31,15 +31,15 @@
     }
   }
 
-  return v2;
+  return uUIDString;
 }
 
-- (id)getAppEventsWithError:(id *)a3
+- (id)getAppEventsWithError:(id *)error
 {
   if (self)
   {
     v5 = +[NSMutableArray array];
-    sub_100390F18(&self->super.super.isa, 1, a3);
+    sub_100390F18(&self->super.super.isa, 1, error);
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
@@ -129,10 +129,10 @@
     v5 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [(ODPMetricsHandler *)self logKey];
+      logKey = [(ODPMetricsHandler *)self logKey];
       v7 = [v3 count];
       *buf = 138412546;
-      v10 = v6;
+      v10 = logKey;
       v11 = 2048;
       v12 = v7;
       _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%@] Posted %ld event(s) to AMSEngagement", buf, 0x16u);
@@ -142,24 +142,24 @@
   [(ODPMetricsHandler *)self resetMetrics];
 }
 
-- (void)recordInstallEventsForBundleIDs:(id)a3 installType:(unsigned __int8)a4
+- (void)recordInstallEventsForBundleIDs:(id)ds installType:(unsigned __int8)type
 {
-  v4 = a4;
-  v31 = a3;
+  typeCopy = type;
+  dsCopy = ds;
   [(ODPMetricsHandler *)self recordSupplementalAppMetricsEvents];
   objc_opt_self();
-  if (v4 <= 0x13 && ((1 << v4) & 0xF17FE) != 0)
+  if (typeCopy <= 0x13 && ((1 << typeCopy) & 0xF17FE) != 0)
   {
-    v38 = self;
-    v37 = v4;
-    v7 = v4 != 4 && v4 != 19;
+    selfCopy = self;
+    v37 = typeCopy;
+    v7 = typeCopy != 4 && typeCopy != 19;
     v33 = v7;
     v34 = +[NSMutableArray array];
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    obj = v31;
+    obj = dsCopy;
     v36 = [obj countByEnumeratingWithState:&v42 objects:v53 count:16];
     if (v36)
     {
@@ -174,10 +174,10 @@
             objc_enumerationMutation(obj);
           }
 
-          currentApps = v38;
-          if (v38)
+          currentApps = selfCopy;
+          if (selfCopy)
           {
-            currentApps = v38->super._currentApps;
+            currentApps = selfCopy->super._currentApps;
           }
 
           v10 = *(*(&v42 + 1) + 8 * v8);
@@ -186,7 +186,7 @@
 
           if (v12 || ([ApplicationProxy proxyForBundleID:v10], v13 = objc_claimAutoreleasedReturnValue(), v12 = sub_100381B80([AppMetadata alloc], v13), v13, v12))
           {
-            v14 = sub_100391DE0(&v38->super.super.isa, v10, v12);
+            v14 = sub_100391DE0(&selfCopy->super.super.isa, v10, v12);
             [v14 setObject:@"installs" forKeyedSubscript:@"eventType"];
             v15 = sub_100308EC0(MetricsHandler, v37);
             if (v15)
@@ -210,11 +210,11 @@
             v19 = ASDLogHandleForCategory();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
             {
-              v20 = [(ODPMetricsHandler *)v38 logKey];
+              logKey = [(ODPMetricsHandler *)selfCopy logKey];
               v21 = sub_1001FC658(AppEvent, 1u);
               v22 = sub_100382830(v12);
               *buf = 138413058;
-              *&buf[4] = v20;
+              *&buf[4] = logKey;
               *&buf[12] = 2114;
               *&buf[14] = v21;
               *&buf[22] = 2114;
@@ -230,10 +230,10 @@
             v12 = ASDLogHandleForCategory();
             if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
             {
-              v23 = [(ODPMetricsHandler *)v38 logKey];
+              logKey2 = [(ODPMetricsHandler *)selfCopy logKey];
               v24 = sub_1001FC658(AppEvent, 1u);
               *buf = 138412802;
-              *&buf[4] = v23;
+              *&buf[4] = logKey2;
               *&buf[12] = 2114;
               *&buf[14] = v24;
               *&buf[22] = 2114;
@@ -274,10 +274,10 @@
       v28 = ASDLogHandleForCategory();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
-        v29 = [(ODPMetricsHandler *)v38 logKey];
+        logKey3 = [(ODPMetricsHandler *)selfCopy logKey];
         v30 = *(*&buf[8] + 40);
         *v46 = 138412546;
-        v47 = v29;
+        v47 = logKey3;
         v48 = 2114;
         v49 = v30;
         _os_log_error_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "[%@] App install metrics event import resulted in error: %{public}@", v46, 0x16u);
@@ -286,23 +286,23 @@
 
     if (v37 != 4 && v37 != 19)
     {
-      sub_100391588(v38, v27);
+      sub_100391588(selfCopy, v27);
     }
 
     _Block_object_dispose(buf, 8);
   }
 }
 
-- (void)recordDeletedBundleIDs:(id)a3
+- (void)recordDeletedBundleIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   [(ODPMetricsHandler *)self recordSupplementalAppMetricsEvents];
   v27 = +[NSMutableArray array];
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v4;
+  obj = dsCopy;
   v29 = [obj countByEnumeratingWithState:&v33 objects:v44 count:16];
   if (v29)
   {
@@ -350,11 +350,11 @@
           v14 = ASDLogHandleForCategory();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
-            v15 = [(ODPMetricsHandler *)self logKey];
+            logKey = [(ODPMetricsHandler *)self logKey];
             v16 = sub_1001FC658(AppEvent, 3u);
             v17 = sub_100382830(v9);
             *buf = 138413058;
-            *&buf[4] = v15;
+            *&buf[4] = logKey;
             *&buf[12] = 2114;
             *&buf[14] = v16;
             *&buf[22] = 2114;
@@ -370,10 +370,10 @@
           v10 = ASDLogHandleForCategory();
           if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
           {
-            v18 = [(ODPMetricsHandler *)self logKey];
+            logKey2 = [(ODPMetricsHandler *)self logKey];
             v19 = sub_1001FC658(AppEvent, 3u);
             *buf = 138412802;
-            *&buf[4] = v18;
+            *&buf[4] = logKey2;
             *&buf[12] = 2114;
             *&buf[14] = v19;
             *&buf[22] = 2114;
@@ -414,10 +414,10 @@
     v23 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      v24 = [(ODPMetricsHandler *)self logKey];
+      logKey3 = [(ODPMetricsHandler *)self logKey];
       v25 = *(*&buf[8] + 40);
       *v37 = 138412546;
-      v38 = v24;
+      v38 = logKey3;
       v39 = 2114;
       v40 = v25;
       _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "[%@] App uninstall metrics event import resulted in error: %{public}@", v37, 0x16u);
@@ -429,12 +429,12 @@
   _Block_object_dispose(buf, 8);
 }
 
-- (void)recordLaunches:(id)a3
+- (void)recordLaunches:(id)launches
 {
-  v6 = a3;
+  launchesCopy = launches;
   v59 = +[NSMutableArray array];
-  v7 = v6;
-  v60 = self;
+  v7 = launchesCopy;
+  selfCopy = self;
   if (!self)
   {
     v56 = 0;
@@ -529,8 +529,8 @@ LABEL_19:
             {
               v66 = v4;
               v33 = v10[3];
-              v34 = [(ODPMetricsHandler *)self logKey];
-              v35 = sub_1003560A8(1.0, ArcadeManager, v28, v33, v61, v34);
+              logKey = [(ODPMetricsHandler *)self logKey];
+              v35 = sub_1003560A8(1.0, ArcadeManager, v28, v33, v61, logKey);
 
               if (v35)
               {
@@ -541,10 +541,10 @@ LABEL_19:
                   v37 = ASDLogHandleForCategory();
                   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
                   {
-                    v38 = [(ODPMetricsHandler *)v60 logKey];
+                    logKey2 = [(ODPMetricsHandler *)selfCopy logKey];
                     v39 = sub_10023AC10(v35);
                     *buf = 138412802;
-                    v82 = v38;
+                    v82 = logKey2;
                     v83 = 2114;
                     v84 = v28;
                     v85 = 2114;
@@ -557,7 +557,7 @@ LABEL_19:
                 }
               }
 
-              self = v60;
+              self = selfCopy;
               v4 = v66;
             }
           }
@@ -565,8 +565,8 @@ LABEL_19:
           v41 = v10[3];
           v42 = sub_100308F30(MetricsHandler, v41);
 
-          v43 = [v42 stringValue];
-          v87 = v43;
+          stringValue = [v42 stringValue];
+          v87 = stringValue;
           v44 = [NSNumber numberWithDouble:v23];
           v88 = v44;
           v45 = [NSDictionary dictionaryWithObjects:&v88 forKeys:&v87 count:1];
@@ -637,8 +637,8 @@ LABEL_38:
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v48 = [v8 keyEnumerator];
-  v49 = [v48 countByEnumeratingWithState:&v73 objects:buf count:16];
+  keyEnumerator = [v8 keyEnumerator];
+  v49 = [keyEnumerator countByEnumeratingWithState:&v73 objects:buf count:16];
   if (v49)
   {
     v50 = v49;
@@ -649,7 +649,7 @@ LABEL_38:
       {
         if (*v74 != v51)
         {
-          objc_enumerationMutation(v48);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v53 = *(*(&v73 + 1) + 8 * i);
@@ -665,7 +665,7 @@ LABEL_38:
         }
       }
 
-      v50 = [v48 countByEnumeratingWithState:&v73 objects:buf count:16];
+      v50 = [keyEnumerator countByEnumeratingWithState:&v73 objects:buf count:16];
     }
 
     while (v50);
@@ -684,7 +684,7 @@ LABEL_48:
     v70[2] = sub_100393268;
     v70[3] = &unk_10051C838;
     v71 = v59;
-    v72 = v60;
+    v72 = selfCopy;
     [v57 modifyUsingTransaction:v70];
   }
 }
@@ -701,7 +701,7 @@ LABEL_48:
     v11[2] = sub_1003937E0;
     v11[3] = &unk_10051C838;
     v12 = v4;
-    v13 = self;
+    selfCopy = self;
     [v5 modifyUsingTransaction:v11];
   }
 
@@ -711,7 +711,7 @@ LABEL_48:
   v7 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v8 = [(ODPMetricsHandler *)self logKey];
+    logKey = [(ODPMetricsHandler *)self logKey];
     if (v6)
     {
       [v6 timeIntervalSince1970];
@@ -724,7 +724,7 @@ LABEL_48:
     }
 
     *buf = 138412546;
-    v15 = v8;
+    v15 = logKey;
     v16 = 2048;
     v17 = v10;
     _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "[%@] Updated supplemental date to: %{time_t}ld", buf, 0x16u);
@@ -740,7 +740,7 @@ LABEL_48:
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(ODPMetricsHandler *)self logKey];
+    logKey = [(ODPMetricsHandler *)self logKey];
     if (v3)
     {
       [v3 timeIntervalSince1970];
@@ -752,7 +752,7 @@ LABEL_4:
         v10 = v9;
 LABEL_5:
         *buf = 138412802;
-        v16 = v6;
+        v16 = logKey;
         v17 = 2048;
         v18 = v8;
         v19 = 2048;
@@ -789,9 +789,9 @@ LABEL_6:
   v12 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(ODPMetricsHandler *)self logKey];
+    logKey2 = [(ODPMetricsHandler *)self logKey];
     *buf = 138412290;
-    v16 = v13;
+    v16 = logKey2;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[%@] Reset metrics ", buf, 0xCu);
   }
 }

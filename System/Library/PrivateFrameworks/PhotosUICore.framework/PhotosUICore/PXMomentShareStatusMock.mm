@@ -1,19 +1,19 @@
 @interface PXMomentShareStatusMock
 + (BOOL)shouldUseMockStatus;
-- (PXMomentShareStatusMock)initWithMomentShare:(id)a3;
+- (PXMomentShareStatusMock)initWithMomentShare:(id)share;
 - (id)_actionManager;
 - (id)_createStatusProvider;
 - (id)owner;
 - (void)_updateStatus;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation PXMomentShareStatusMock
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == &_MockMomentShareStatusUserDefaultsContext)
+  if (context == &_MockMomentShareStatusUserDefaultsContext)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -27,7 +27,7 @@
   {
     v6.receiver = self;
     v6.super_class = PXMomentShareStatusMock;
-    [(PXMomentShareStatusMock *)&v6 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(PXMomentShareStatusMock *)&v6 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
@@ -42,24 +42,24 @@
       goto LABEL_3;
     }
 
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = objc_opt_class();
     v10 = NSStringFromClass(v11);
-    v12 = [(PXDisplayMomentShare *)v4 px_descriptionForAssertionMessage];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXMomentShareStatusMock.m" lineNumber:246 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"_originalMomentShare", v10, v12}];
+    px_descriptionForAssertionMessage = [(PXDisplayMomentShare *)v4 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMomentShareStatusMock.m" lineNumber:246 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"_originalMomentShare", v10, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    [v8 handleFailureInMethod:a2 object:self file:@"PXMomentShareStatusMock.m" lineNumber:246 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"_originalMomentShare", v10}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMomentShareStatusMock.m" lineNumber:246 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"_originalMomentShare", v10}];
   }
 
 LABEL_3:
-  v5 = [(PXDisplayMomentShare *)v4 photoLibrary];
-  v6 = [[PXPhotoKitCPLActionManager alloc] initWithPhotoLibrary:v5];
+  photoLibrary = [(PXDisplayMomentShare *)v4 photoLibrary];
+  v6 = [[PXPhotoKitCPLActionManager alloc] initWithPhotoLibrary:photoLibrary];
 
   return v6;
 }
@@ -84,10 +84,10 @@ LABEL_3:
     v6 = [v5 componentsSeparatedByString:@"/"];
     if ([v6 count] < 2)
     {
-      v25 = [MEMORY[0x1E696AAA8] currentHandler];
-      v26 = v25;
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      v26 = currentHandler;
       v27 = a2;
-      v28 = self;
+      selfCopy3 = self;
       v29 = 216;
     }
 
@@ -95,7 +95,7 @@ LABEL_3:
     {
       v7 = [v6 objectAtIndexedSubscript:0];
       v8 = [v6 objectAtIndexedSubscript:1];
-      v31 = self;
+      selfCopy2 = self;
       if ([v7 isEqualToString:@"sender"])
       {
         v32 = 0u;
@@ -123,7 +123,7 @@ LABEL_46:
           v39 = v9;
           v40 = v10;
           v41 = v32;
-          [(PXMomentShareStatus *)v31 performChanges:v33];
+          [(PXMomentShareStatus *)selfCopy2 performChanges:v33];
 
           goto LABEL_47;
         }
@@ -141,8 +141,8 @@ LABEL_46:
         {
           if (([v8 isEqualToString:@"idle"] & 1) == 0)
           {
-            v23 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v23 handleFailureInMethod:a2 object:self file:@"PXMomentShareStatusMock.m" lineNumber:161 description:@"MockMomentShareStatus only supports uploading/downloading/idle for sender"];
+            currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXMomentShareStatusMock.m" lineNumber:161 description:@"MockMomentShareStatus only supports uploading/downloading/idle for sender"];
 
             v30 = 0;
             v9 = 0;
@@ -310,8 +310,8 @@ LABEL_29:
             goto LABEL_29;
           }
 
-          v24 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v24 handleFailureInMethod:a2 object:self file:@"PXMomentShareStatusMock.m" lineNumber:209 description:@"MockMomentShareStatus only supports downloading/saving/saved/idle for receiver"];
+          currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXMomentShareStatusMock.m" lineNumber:209 description:@"MockMomentShareStatus only supports downloading/saving/saved/idle for receiver"];
 
           v30 = 0;
           v9 = 0;
@@ -327,14 +327,14 @@ LABEL_45:
         goto LABEL_46;
       }
 
-      v25 = [MEMORY[0x1E696AAA8] currentHandler];
-      v26 = v25;
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      v26 = currentHandler;
       v27 = a2;
-      v28 = self;
+      selfCopy3 = self;
       v29 = 213;
     }
 
-    [v25 handleFailureInMethod:v27 object:v28 file:@"PXMomentShareStatusMock.m" lineNumber:v29 description:@"Code which should be unreachable has been reached"];
+    [currentHandler handleFailureInMethod:v27 object:selfCopy3 file:@"PXMomentShareStatusMock.m" lineNumber:v29 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -386,9 +386,9 @@ void __40__PXMomentShareStatusMock__updateStatus__block_invoke_2(uint64_t a1, vo
 
 - (id)_createStatusProvider
 {
-  v2 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-  v3 = [[PXPhotoKitCPLActionManager alloc] initWithPhotoLibrary:v2];
-  v4 = [[PXCPLUIStatusProvider alloc] initWithPhotoLibrary:v2 actionManager:v3];
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  v3 = [[PXPhotoKitCPLActionManager alloc] initWithPhotoLibrary:px_deprecated_appPhotoLibrary];
+  v4 = [[PXCPLUIStatusProvider alloc] initWithPhotoLibrary:px_deprecated_appPhotoLibrary actionManager:v3];
 
   return v4;
 }
@@ -403,16 +403,16 @@ void __40__PXMomentShareStatusMock__updateStatus__block_invoke_2(uint64_t a1, vo
   [(PXMomentShareStatusMock *)&v4 dealloc];
 }
 
-- (PXMomentShareStatusMock)initWithMomentShare:(id)a3
+- (PXMomentShareStatusMock)initWithMomentShare:(id)share
 {
-  v5 = a3;
+  shareCopy = share;
   v10.receiver = self;
   v10.super_class = PXMomentShareStatusMock;
-  v6 = [(PXMomentShareStatus *)&v10 initWithMomentShare:v5];
+  v6 = [(PXMomentShareStatus *)&v10 initWithMomentShare:shareCopy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_originalMomentShare, a3);
+    objc_storeStrong(&v6->_originalMomentShare, share);
     [(PXMomentShareStatusMock *)v7 _updateStatus];
     v8 = PXSharedUserDefaults();
     [v8 addObserver:v7 forKeyPath:@"MomentShareStatusMock" options:0 context:&_MockMomentShareStatusUserDefaultsContext];

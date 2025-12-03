@@ -1,53 +1,53 @@
 @interface LoadingRequestHandler
-- (BOOL)resourceLoader:(id)a3 shouldWaitForLoadingOfRequestedResource:(id)a4;
-- (BOOL)resourceLoader:(id)a3 shouldWaitForRenewalOfRequestedResource:(id)a4;
-- (BOOL)resourceLoader:(id)a3 shouldWaitForResponseToAuthenticationChallenge:(id)a4;
-- (void)resourceLoader:(id)a3 didCancelLoadingRequest:(id)a4;
+- (BOOL)resourceLoader:(id)loader shouldWaitForLoadingOfRequestedResource:(id)resource;
+- (BOOL)resourceLoader:(id)loader shouldWaitForRenewalOfRequestedResource:(id)resource;
+- (BOOL)resourceLoader:(id)loader shouldWaitForResponseToAuthenticationChallenge:(id)challenge;
+- (void)resourceLoader:(id)loader didCancelLoadingRequest:(id)request;
 @end
 
 @implementation LoadingRequestHandler
 
-- (BOOL)resourceLoader:(id)a3 shouldWaitForLoadingOfRequestedResource:(id)a4
+- (BOOL)resourceLoader:(id)loader shouldWaitForLoadingOfRequestedResource:(id)resource
 {
-  v6 = a3;
-  v7 = a4;
+  loaderCopy = loader;
+  resourceCopy = resource;
   v8.super.isa = self;
   isa = v8.super.isa;
-  v8._resourceLoader = v7;
+  v8._resourceLoader = resourceCopy;
   LoadingRequestHandler.resourceLoader(_:shouldWaitForLoadingOfRequestedResource:)(v8, v10);
 
   return 1;
 }
 
-- (void)resourceLoader:(id)a3 didCancelLoadingRequest:(id)a4
+- (void)resourceLoader:(id)loader didCancelLoadingRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
+  loaderCopy = loader;
+  requestCopy = request;
   v8.super.isa = self;
   isa = v8.super.isa;
-  v8._resourceLoader = v7;
+  v8._resourceLoader = requestCopy;
   LoadingRequestHandler.resourceLoader(_:didCancel:)(v8, v9);
 }
 
-- (BOOL)resourceLoader:(id)a3 shouldWaitForRenewalOfRequestedResource:(id)a4
+- (BOOL)resourceLoader:(id)loader shouldWaitForRenewalOfRequestedResource:(id)resource
 {
-  v6 = a3;
-  v7 = a4;
+  loaderCopy = loader;
+  resourceCopy = resource;
   v8.super.isa = self;
   isa = v8.super.isa;
-  v8._resourceLoader = v7;
+  v8._resourceLoader = resourceCopy;
   LoadingRequestHandler.resourceLoader(_:shouldWaitForRenewalOfRequestedResource:)(v8, v10);
 
   return 1;
 }
 
-- (BOOL)resourceLoader:(id)a3 shouldWaitForResponseToAuthenticationChallenge:(id)a4
+- (BOOL)resourceLoader:(id)loader shouldWaitForResponseToAuthenticationChallenge:(id)challenge
 {
-  v6 = a3;
-  v7 = a4;
+  loaderCopy = loader;
+  challengeCopy = challenge;
   v8.super.isa = self;
   isa = v8.super.isa;
-  v8._resourceLoader = v7;
+  v8._resourceLoader = challengeCopy;
   LoadingRequestHandler.resourceLoader(_:shouldWaitForResponseTo:)(v8, v10);
 
   return 1;

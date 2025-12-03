@@ -1,31 +1,31 @@
 @interface PinnedUrlDelegate
-- (PinnedUrlDelegate)initWithHost:(id)a3;
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
+- (PinnedUrlDelegate)initWithHost:(id)host;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
 @end
 
 @implementation PinnedUrlDelegate
 
-- (PinnedUrlDelegate)initWithHost:(id)a3
+- (PinnedUrlDelegate)initWithHost:(id)host
 {
-  v5 = a3;
+  hostCopy = host;
   v9.receiver = self;
   v9.super_class = PinnedUrlDelegate;
   v6 = [(PinnedUrlDelegate *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->m_host, a3);
+    objc_storeStrong(&v6->m_host, host);
   }
 
   return v7;
 }
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
   v43 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   if (os_variant_allows_internal_security_policies())
   {
     v11 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.DeviceCheck"];
@@ -77,27 +77,27 @@
         _os_log_impl(&dword_226177000, v12, OS_LOG_TYPE_DEBUG, "%25s:%-5d Pinning disabled.", buf, 0x12u);
       }
 
-      v10[2](v10, 1, 0);
+      handlerCopy[2](handlerCopy, 1, 0);
       goto LABEL_17;
     }
   }
 
-  v19 = [v9 protectionSpace];
-  v20 = [v19 authenticationMethod];
-  v21 = [v20 isEqualToString:*MEMORY[0x277CCA720]];
+  protectionSpace = [challengeCopy protectionSpace];
+  authenticationMethod = [protectionSpace authenticationMethod];
+  v21 = [authenticationMethod isEqualToString:*MEMORY[0x277CCA720]];
 
   if (!v21)
   {
-    v10[2](v10, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
     goto LABEL_40;
   }
 
   m_host = self->m_host;
   AppleSSLPinned = SecPolicyCreateAppleSSLPinned();
-  if (!AppleSSLPinned || (v24 = AppleSSLPinned, [v9 protectionSpace], v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "serverTrust"), v25, LODWORD(v25) = SecTrustSetPolicies(v26, v24), CFRelease(v24), v25))
+  if (!AppleSSLPinned || (v24 = AppleSSLPinned, [challengeCopy protectionSpace], v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "serverTrust"), v25, LODWORD(v25) = SecTrustSetPolicies(v26, v24), CFRelease(v24), v25))
   {
 LABEL_39:
-    v10[2](v10, 2, 0);
+    handlerCopy[2](handlerCopy, 2, 0);
     goto LABEL_40;
   }
 
@@ -158,7 +158,7 @@ LABEL_39:
   }
 
   v11 = [MEMORY[0x277CCACF0] credentialForTrust:v26];
-  (v10)[2](v10, 0, v11);
+  (handlerCopy)[2](handlerCopy, 0, v11);
 LABEL_17:
 
 LABEL_40:

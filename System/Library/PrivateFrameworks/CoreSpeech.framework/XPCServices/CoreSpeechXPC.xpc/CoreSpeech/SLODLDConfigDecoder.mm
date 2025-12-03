@@ -1,6 +1,6 @@
 @interface SLODLDConfigDecoder
 - (BOOL)isSPMModelMmapable;
-- (SLODLDConfigDecoder)initWithConfigFile:(id)a3;
+- (SLODLDConfigDecoder)initWithConfigFile:(id)file;
 - (id)getBertModelOutputNodes;
 - (id)getOdldModelBnnsIrWeightFile;
 - (id)getRegexMapConfig;
@@ -43,8 +43,8 @@
 - (id)getOdldModelBnnsIrWeightFile
 {
   v3 = [CSFModelConfigDecoder getOdldValueForKey:@"BnnsIrWeightFile" categoryKey:kODLDPipelineKey configDict:self->_dictionary];
-  v4 = [(SLODLDConfigDecoder *)self getBertModelFile];
-  if ([v4 hasSuffix:CSBnnsIrSuffix] && (objc_msgSend(v3, "objectForKeyedSubscript:", @"BnnsIrWeightFile"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  getBertModelFile = [(SLODLDConfigDecoder *)self getBertModelFile];
+  if ([getBertModelFile hasSuffix:CSBnnsIrSuffix] && (objc_msgSend(v3, "objectForKeyedSubscript:", @"BnnsIrWeightFile"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     resourcePath = self->_resourcePath;
     v7 = [v3 objectForKeyedSubscript:@"BnnsIrWeightFile"];
@@ -149,9 +149,9 @@
   return v3;
 }
 
-- (SLODLDConfigDecoder)initWithConfigFile:(id)a3
+- (SLODLDConfigDecoder)initWithConfigFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v18.receiver = self;
   v18.super_class = SLODLDConfigDecoder;
   v5 = [(SLODLDConfigDecoder *)&v18 init];
@@ -160,7 +160,7 @@
     goto LABEL_8;
   }
 
-  v6 = [CSFModelConfigDecoder decodeJsonFromFile:v4];
+  v6 = [CSFModelConfigDecoder decodeJsonFromFile:fileCopy];
   v7 = v6;
   if (v6)
   {
@@ -169,9 +169,9 @@
     if (v8)
     {
 LABEL_7:
-      v14 = [v4 stringByDeletingLastPathComponent];
+      stringByDeletingLastPathComponent = [fileCopy stringByDeletingLastPathComponent];
       resourcePath = v5->_resourcePath;
-      v5->_resourcePath = v14;
+      v5->_resourcePath = stringByDeletingLastPathComponent;
 
       NSLog(@"Decoded config at path: %@", v5->_resourcePath);
       dictionary = v5->_dictionary;
@@ -195,8 +195,8 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  v12 = [v11 localizedDescription];
-  NSLog(@"%@", v12);
+  localizedDescription = [v11 localizedDescription];
+  NSLog(@"%@", localizedDescription);
 
   v13 = 0;
 LABEL_9:

@@ -1,19 +1,19 @@
 @interface PKPaletteUndoRedoViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (PKPaletteUndoRedoViewAccessibility)initWithFrame:(CGRect)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (PKPaletteUndoRedoViewAccessibility)initWithFrame:(CGRect)frame;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation PKPaletteUndoRedoViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AKToolbarView" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-  [v3 validateClass:@"PKPaletteUndoRedoView" hasInstanceMethod:@"undoButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKPaletteUndoRedoView" hasInstanceMethod:@"redoButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKPaletteButton" hasInstanceMethod:@"button" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKPaletteButton" isKindOfClass:@"UIControl"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AKToolbarView" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [validationsCopy validateClass:@"PKPaletteUndoRedoView" hasInstanceMethod:@"undoButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKPaletteUndoRedoView" hasInstanceMethod:@"redoButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKPaletteButton" hasInstanceMethod:@"button" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKPaletteButton" isKindOfClass:@"UIControl"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -94,11 +94,11 @@ uint64_t __80__PKPaletteUndoRedoViewAccessibility__accessibilityLoadAccessibilit
   return v8 | v5;
 }
 
-- (PKPaletteUndoRedoViewAccessibility)initWithFrame:(CGRect)a3
+- (PKPaletteUndoRedoViewAccessibility)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = PKPaletteUndoRedoViewAccessibility;
-  v3 = [(PKPaletteUndoRedoViewAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKPaletteUndoRedoViewAccessibility *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(PKPaletteUndoRedoViewAccessibility *)v3 _accessibilityLoadAccessibilityInformation];
 
   return v3;

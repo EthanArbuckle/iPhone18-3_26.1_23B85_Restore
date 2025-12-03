@@ -1,19 +1,19 @@
 @interface CKKSSQLWhereIn
-- (CKKSSQLWhereIn)initWithValues:(id)a3;
+- (CKKSSQLWhereIn)initWithValues:(id)values;
 @end
 
 @implementation CKKSSQLWhereIn
 
-- (CKKSSQLWhereIn)initWithValues:(id)a3
+- (CKKSSQLWhereIn)initWithValues:(id)values
 {
-  v5 = a3;
+  valuesCopy = values;
   v9.receiver = self;
   v9.super_class = CKKSSQLWhereIn;
   v6 = [(CKKSSQLWhereIn *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_values, a3);
+    objc_storeStrong(&v6->_values, values);
   }
 
   return v7;

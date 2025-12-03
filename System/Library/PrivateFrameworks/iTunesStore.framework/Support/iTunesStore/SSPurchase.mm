@@ -6,20 +6,20 @@
 
 - (id)newAMSPurchase
 {
-  v3 = [(SSPurchase *)self buyParameters];
-  v4 = [AMSBuyParams buyParamsWithString:v3];
+  buyParameters = [(SSPurchase *)self buyParameters];
+  v4 = [AMSBuyParams buyParamsWithString:buyParameters];
 
   if ([(SSPurchase *)self isBackgroundPurchase])
   {
     [v4 setObject:@"1" forKeyedSubscript:AMSBuyParamPropertyIsBackground];
   }
 
-  v5 = [(SSPurchase *)self affiliateIdentifier];
+  affiliateIdentifier = [(SSPurchase *)self affiliateIdentifier];
 
-  if (v5)
+  if (affiliateIdentifier)
   {
-    v6 = [(SSPurchase *)self affiliateIdentifier];
-    [v4 setObject:v6 forKeyedSubscript:AMSBuyParamPropertyAffiliateId];
+    affiliateIdentifier2 = [(SSPurchase *)self affiliateIdentifier];
+    [v4 setObject:affiliateIdentifier2 forKeyedSubscript:AMSBuyParamPropertyAffiliateId];
   }
 
   [v4 setObject:0 forKeyedSubscript:@"isUpdateAll"];
@@ -36,50 +36,50 @@
     [v4 setObject:@"1" forKeyedSubscript:@"playback"];
   }
 
-  v10 = [(SSPurchase *)self requestProperties];
-  v11 = [v10 requestParameters];
+  requestProperties = [(SSPurchase *)self requestProperties];
+  requestParameters = [requestProperties requestParameters];
   v41[0] = _NSConcreteStackBlock;
   v41[1] = 3221225472;
   v41[2] = sub_1000CABFC;
   v41[3] = &unk_100327658;
   v12 = v4;
   v42 = v12;
-  [v11 enumerateKeysAndObjectsUsingBlock:v41];
+  [requestParameters enumerateKeysAndObjectsUsingBlock:v41];
 
-  v13 = [(SSPurchase *)self requestProperties];
-  v14 = [v13 URLBagKey];
+  requestProperties2 = [(SSPurchase *)self requestProperties];
+  uRLBagKey = [requestProperties2 URLBagKey];
 
-  if (([v14 isEqualToString:@"backgroundUpdateProduct"] & 1) == 0)
+  if (([uRLBagKey isEqualToString:@"backgroundUpdateProduct"] & 1) == 0)
   {
-    if ([v14 isEqualToString:@"buyProduct"])
+    if ([uRLBagKey isEqualToString:@"buyProduct"])
     {
       v16 = 0;
       v15 = 0;
       goto LABEL_33;
     }
 
-    if ([v14 isEqualToString:@"downloadProduct"])
+    if ([uRLBagKey isEqualToString:@"downloadProduct"])
     {
       v15 = 0;
       v16 = 2;
       goto LABEL_33;
     }
 
-    if ([v14 isEqualToString:@"p2-in-app-buy"])
+    if ([uRLBagKey isEqualToString:@"p2-in-app-buy"])
     {
       v15 = 0;
       v16 = 3;
       goto LABEL_33;
     }
 
-    if ([v14 isEqualToString:@"updateProduct"])
+    if ([uRLBagKey isEqualToString:@"updateProduct"])
     {
       v15 = 0;
       v16 = 4;
       goto LABEL_33;
     }
 
-    if ([v14 isEqualToString:@"redownloadAllTones"])
+    if ([uRLBagKey isEqualToString:@"redownloadAllTones"])
     {
 LABEL_32:
       v16 = 0;
@@ -93,19 +93,19 @@ LABEL_32:
       v17 = +[SSLogConfig sharedConfig];
     }
 
-    v18 = [v17 shouldLog];
+    shouldLog = [v17 shouldLog];
     if ([v17 shouldLogToDisk])
     {
-      v19 = v18 | 2;
+      v19 = shouldLog | 2;
     }
 
     else
     {
-      v19 = v18;
+      v19 = shouldLog;
     }
 
-    v20 = [v17 OSLogObject];
-    if (!os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v17 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v19 &= 2u;
     }
@@ -116,7 +116,7 @@ LABEL_32:
       v43 = 138543618;
       v44 = v21;
       v45 = 2112;
-      v46 = v14;
+      v46 = uRLBagKey;
       v22 = v21;
       LODWORD(v40) = 22;
       v39 = &v43;
@@ -129,9 +129,9 @@ LABEL_31:
         goto LABEL_32;
       }
 
-      v20 = [NSString stringWithCString:v23 encoding:4, &v43, v40];
+      oSLogObject = [NSString stringWithCString:v23 encoding:4, &v43, v40];
       free(v23);
-      v39 = v20;
+      v39 = oSLogObject;
       SSFileLog();
     }
 
@@ -144,24 +144,24 @@ LABEL_33:
   v24 = [[SSAMSPurchase alloc] initWithPurchaseType:v16 buyParams:v12];
   if (v15 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v24 performSelector:"setURLBagKey:" withObject:v14];
+    [v24 performSelector:"setURLBagKey:" withObject:uRLBagKey];
   }
 
   v25 = objc_alloc_init(NSMutableDictionary);
-  v26 = [v10 HTTPHeaders];
+  hTTPHeaders = [requestProperties HTTPHeaders];
 
-  if (v26)
+  if (hTTPHeaders)
   {
-    v27 = [v10 HTTPHeaders];
-    [v25 addEntriesFromDictionary:v27];
+    hTTPHeaders2 = [requestProperties HTTPHeaders];
+    [v25 addEntriesFromDictionary:hTTPHeaders2];
   }
 
-  v28 = [(SSPurchase *)self tidHeaders];
+  tidHeaders = [(SSPurchase *)self tidHeaders];
 
-  if (v28)
+  if (tidHeaders)
   {
-    v29 = [(SSPurchase *)self tidHeaders];
-    [v25 addEntriesFromDictionary:v29];
+    tidHeaders2 = [(SSPurchase *)self tidHeaders];
+    [v25 addEntriesFromDictionary:tidHeaders2];
   }
 
   [v25 setObject:0 forKeyedSubscript:SSHTTPHeaderUserAgent];
@@ -169,23 +169,23 @@ LABEL_33:
   [v24 setAdditionalHeaders:v30];
 
   [v24 setUserInitiated:{-[SSPurchase isBackgroundPurchase](self, "isBackgroundPurchase") ^ 1}];
-  v31 = [(SSPurchase *)self ownerAccountDSID];
-  [v24 setOwnerAccountId:v31];
+  ownerAccountDSID = [(SSPurchase *)self ownerAccountDSID];
+  [v24 setOwnerAccountId:ownerAccountDSID];
 
-  v32 = [(SSPurchase *)self accountIdentifier];
-  [v24 setAccountIdentifier:v32];
+  accountIdentifier = [(SSPurchase *)self accountIdentifier];
+  [v24 setAccountIdentifier:accountIdentifier];
 
   [v24 setIgnoreRequirePasswordRestriction:{-[SSPurchase ignoresForcedPasswordRestriction](self, "ignoresForcedPasswordRestriction")}];
   [v24 setPreauthenticated:{-[SSPurchase isPreauthenticated](self, "isPreauthenticated")}];
   [v24 setRequiresAccount:1];
-  v33 = [(SSPurchase *)self presentingSceneBundleIdentifier];
-  [v24 setPresentingSceneBundleIdentifier:v33];
+  presentingSceneBundleIdentifier = [(SSPurchase *)self presentingSceneBundleIdentifier];
+  [v24 setPresentingSceneBundleIdentifier:presentingSceneBundleIdentifier];
 
-  v34 = [(SSPurchase *)self presentingSceneIdentifier];
-  [v24 setPresentingSceneIdentifier:v34];
+  presentingSceneIdentifier = [(SSPurchase *)self presentingSceneIdentifier];
+  [v24 setPresentingSceneIdentifier:presentingSceneIdentifier];
 
-  v35 = [(SSPurchase *)self requestProperties];
-  [v35 URLBagType];
+  requestProperties3 = [(SSPurchase *)self requestProperties];
+  [requestProperties3 URLBagType];
   v36 = SSAccountScopeForURLBagType();
 
   v37 = &AMSAccountMediaTypeProduction;

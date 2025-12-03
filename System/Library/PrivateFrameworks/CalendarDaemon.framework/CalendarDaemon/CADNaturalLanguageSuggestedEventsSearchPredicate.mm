@@ -1,56 +1,56 @@
 @interface CADNaturalLanguageSuggestedEventsSearchPredicate
-- (BOOL)matchesIgnoringDate:(void *)a3 database:(CalDatabase *)a4;
-- (CADNaturalLanguageSuggestedEventsSearchPredicate)initWithCoder:(id)a3;
-- (CADNaturalLanguageSuggestedEventsSearchPredicate)initWithSearchString:(id)a3 allNLEvents:(BOOL)a4 startDate:(id)a5 timeZone:(id)a6;
-- (id)copyMatchingItemsWithDatabase:(CalDatabase *)a3;
+- (BOOL)matchesIgnoringDate:(void *)date database:(CalDatabase *)database;
+- (CADNaturalLanguageSuggestedEventsSearchPredicate)initWithCoder:(id)coder;
+- (CADNaturalLanguageSuggestedEventsSearchPredicate)initWithSearchString:(id)string allNLEvents:(BOOL)events startDate:(id)date timeZone:(id)zone;
+- (id)copyMatchingItemsWithDatabase:(CalDatabase *)database;
 - (id)defaultPropertiesToLoad;
 - (id)description;
-- (id)matchingDate:(void *)a3;
-- (id)matchingDatesForEvent:(void *)a3 modifiedProperties:(unint64_t)a4 dates:(id)a5 inRange:(id)a6 database:(CalDatabase *)a7 outReset:(BOOL *)a8;
+- (id)matchingDate:(void *)date;
+- (id)matchingDatesForEvent:(void *)event modifiedProperties:(unint64_t)properties dates:(id)dates inRange:(id)range database:(CalDatabase *)database outReset:(BOOL *)reset;
 - (id)predicateFormat;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CADNaturalLanguageSuggestedEventsSearchPredicate
 
-- (CADNaturalLanguageSuggestedEventsSearchPredicate)initWithSearchString:(id)a3 allNLEvents:(BOOL)a4 startDate:(id)a5 timeZone:(id)a6
+- (CADNaturalLanguageSuggestedEventsSearchPredicate)initWithSearchString:(id)string allNLEvents:(BOOL)events startDate:(id)date timeZone:(id)zone
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  stringCopy = string;
+  dateCopy = date;
+  zoneCopy = zone;
   v17.receiver = self;
   v17.super_class = CADNaturalLanguageSuggestedEventsSearchPredicate;
   v14 = [(CADNaturalLanguageSuggestedEventsSearchPredicate *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_searchString, a3);
-    v15->_allNLEvents = a4;
-    objc_storeStrong(&v15->_startDate, a5);
-    objc_storeStrong(&v15->super._timeZone, a6);
+    objc_storeStrong(&v14->_searchString, string);
+    v15->_allNLEvents = events;
+    objc_storeStrong(&v15->_startDate, date);
+    objc_storeStrong(&v15->super._timeZone, zone);
   }
 
   return v15;
 }
 
-- (CADNaturalLanguageSuggestedEventsSearchPredicate)initWithCoder:(id)a3
+- (CADNaturalLanguageSuggestedEventsSearchPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CADNaturalLanguageSuggestedEventsSearchPredicate;
-  v5 = [(EKPredicate *)&v13 initWithCoder:v4];
+  v5 = [(EKPredicate *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"searchString"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"searchString"];
     searchString = v5->_searchString;
     v5->_searchString = v6;
 
-    v5->_allNLEvents = [v4 decodeBoolForKey:@"allNLEvents"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+    v5->_allNLEvents = [coderCopy decodeBoolForKey:@"allNLEvents"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
     startDate = v5->_startDate;
     v5->_startDate = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeZone"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeZone"];
     timeZone = v5->super._timeZone;
     v5->super._timeZone = v10;
   }
@@ -58,16 +58,16 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CADNaturalLanguageSuggestedEventsSearchPredicate;
-  v4 = a3;
-  [(EKPredicate *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_searchString forKey:{@"searchString", v5.receiver, v5.super_class}];
-  [v4 encodeBool:self->_allNLEvents forKey:@"allNLEvents"];
-  [v4 encodeObject:self->_startDate forKey:@"startDate"];
-  [v4 encodeObject:self->super._timeZone forKey:@"timeZone"];
+  coderCopy = coder;
+  [(EKPredicate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_searchString forKey:{@"searchString", v5.receiver, v5.super_class}];
+  [coderCopy encodeBool:self->_allNLEvents forKey:@"allNLEvents"];
+  [coderCopy encodeObject:self->_startDate forKey:@"startDate"];
+  [coderCopy encodeObject:self->super._timeZone forKey:@"timeZone"];
 }
 
 - (id)description
@@ -81,9 +81,9 @@
   [v5 setKey:@"searchString" withObject:self->_searchString];
   [v5 setKey:@"allNLEvents" withBoolean:self->_allNLEvents];
   [v5 setKey:@"startDate" withObject:self->_startDate];
-  v6 = [v5 build];
+  build = [v5 build];
 
-  return v6;
+  return build;
 }
 
 - (id)defaultPropertiesToLoad
@@ -105,7 +105,7 @@
   return NSStringFromClass(v2);
 }
 
-- (id)copyMatchingItemsWithDatabase:(CalDatabase *)a3
+- (id)copyMatchingItemsWithDatabase:(CalDatabase *)database
 {
   v27 = *MEMORY[0x277D85DE8];
   v4 = self->super._timeZone;
@@ -180,14 +180,14 @@
   return v7;
 }
 
-- (id)matchingDatesForEvent:(void *)a3 modifiedProperties:(unint64_t)a4 dates:(id)a5 inRange:(id)a6 database:(CalDatabase *)a7 outReset:(BOOL *)a8
+- (id)matchingDatesForEvent:(void *)event modifiedProperties:(unint64_t)properties dates:(id)dates inRange:(id)range database:(CalDatabase *)database outReset:(BOOL *)reset
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  if ([(CADNaturalLanguageSuggestedEventsSearchPredicate *)self matchesIgnoringDate:a3 database:a7, a5, a6])
+  if ([(CADNaturalLanguageSuggestedEventsSearchPredicate *)self matchesIgnoringDate:event database:database, dates, range])
   {
     if (self->_allNLEvents)
     {
-      v11 = [(CADNaturalLanguageSuggestedEventsSearchPredicate *)self matchingDate:a3];
+      v11 = [(CADNaturalLanguageSuggestedEventsSearchPredicate *)self matchingDate:event];
       v12 = v11;
       if (v11)
       {
@@ -204,7 +204,7 @@
     else
     {
       v13 = 0;
-      *a8 = 1;
+      *reset = 1;
     }
   }
 
@@ -218,7 +218,7 @@
   return v13;
 }
 
-- (BOOL)matchesIgnoringDate:(void *)a3 database:(CalDatabase *)a4
+- (BOOL)matchesIgnoringDate:(void *)date database:(CalDatabase *)database
 {
   v5 = CalDatabaseCopyNaturalLanguageSuggestionsCalendar();
   if (!v5)
@@ -273,7 +273,7 @@ LABEL_11:
   return v10;
 }
 
-- (id)matchingDate:(void *)a3
+- (id)matchingDate:(void *)date
 {
   [(NSDate *)self->_startDate timeIntervalSinceReferenceDate];
   v5 = v4;

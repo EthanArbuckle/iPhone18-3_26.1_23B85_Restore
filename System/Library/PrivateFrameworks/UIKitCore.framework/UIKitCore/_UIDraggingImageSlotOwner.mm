@@ -1,17 +1,17 @@
 @interface _UIDraggingImageSlotOwner
 - (_UIDragManager)dragManager;
-- (_UIDraggingImageSlotOwner)initWithDragManager:(id)a3;
-- (unsigned)uploadImage:(CGImage *)a3;
-- (void)addUsedSlotID:(unsigned int)a3;
+- (_UIDraggingImageSlotOwner)initWithDragManager:(id)manager;
+- (unsigned)uploadImage:(CGImage *)image;
+- (void)addUsedSlotID:(unsigned int)d;
 - (void)dealloc;
 @end
 
 @implementation _UIDraggingImageSlotOwner
 
-- (_UIDraggingImageSlotOwner)initWithDragManager:(id)a3
+- (_UIDraggingImageSlotOwner)initWithDragManager:(id)manager
 {
-  v4 = a3;
-  if (!v4)
+  managerCopy = manager;
+  if (!managerCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"dragManager must be non-nil"];
   }
@@ -22,7 +22,7 @@
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_dragManager, v4);
+    objc_storeWeak(&v5->_dragManager, managerCopy);
   }
 
   return v6;
@@ -55,11 +55,11 @@
   [(_UIDraggingImageSlotOwner *)&v8 dealloc];
 }
 
-- (void)addUsedSlotID:(unsigned int)a3
+- (void)addUsedSlotID:(unsigned int)d
 {
-  if (a3)
+  if (d)
   {
-    v3 = *&a3;
+    v3 = *&d;
     usedSlotIDs = self->_usedSlotIDs;
     if (!usedSlotIDs)
     {
@@ -75,10 +75,10 @@
   }
 }
 
-- (unsigned)uploadImage:(CGImage *)a3
+- (unsigned)uploadImage:(CGImage *)image
 {
-  v5 = [(_UIDraggingImageSlotOwner *)self dragManager];
-  v6 = [v5 uploadImage:a3];
+  dragManager = [(_UIDraggingImageSlotOwner *)self dragManager];
+  v6 = [dragManager uploadImage:image];
 
   [(_UIDraggingImageSlotOwner *)self addUsedSlotID:v6];
   return v6;

@@ -1,24 +1,24 @@
 @interface AMSDUpdateMultiUserTokenTask
-- (AMSDUpdateMultiUserTokenTask)initWithController:(id)a3 account:(id)a4 home:(id)a5;
+- (AMSDUpdateMultiUserTokenTask)initWithController:(id)controller account:(id)account home:(id)home;
 - (id)performTask;
 @end
 
 @implementation AMSDUpdateMultiUserTokenTask
 
-- (AMSDUpdateMultiUserTokenTask)initWithController:(id)a3 account:(id)a4 home:(id)a5
+- (AMSDUpdateMultiUserTokenTask)initWithController:(id)controller account:(id)account home:(id)home
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  controllerCopy = controller;
+  accountCopy = account;
+  homeCopy = home;
   v15.receiver = self;
   v15.super_class = AMSDUpdateMultiUserTokenTask;
   v12 = [(AMSDUpdateMultiUserTokenTask *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_controller, a3);
-    objc_storeStrong(&v13->_account, a4);
-    objc_storeStrong(&v13->_home, a5);
+    objc_storeStrong(&v12->_controller, controller);
+    objc_storeStrong(&v13->_account, account);
+    objc_storeStrong(&v13->_home, home);
   }
 
   return v13;

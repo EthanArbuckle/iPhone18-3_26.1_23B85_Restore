@@ -1,16 +1,16 @@
 @interface AudiogramGraphDetectorModel
-- (_TtC18AudiogramIngestion27AudiogramGraphDetectorModel)initWithModelUrl:(id)a3 modelInputSize:(CGSize)a4 confidenceThreshold:(float)a5;
-- (id)getGraphDetectorResult:(CGImage *)a3 orientation:(unsigned int)a4;
+- (_TtC18AudiogramIngestion27AudiogramGraphDetectorModel)initWithModelUrl:(id)url modelInputSize:(CGSize)size confidenceThreshold:(float)threshold;
+- (id)getGraphDetectorResult:(CGImage *)result orientation:(unsigned int)orientation;
 @end
 
 @implementation AudiogramGraphDetectorModel
 
-- (id)getGraphDetectorResult:(CGImage *)a3 orientation:(unsigned int)a4
+- (id)getGraphDetectorResult:(CGImage *)result orientation:(unsigned int)orientation
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = self;
-  v8 = sub_2417D76E0(v6, v4);
+  v4 = *&orientation;
+  resultCopy = result;
+  selfCopy = self;
+  v8 = sub_2417D76E0(resultCopy, v4);
 
   if (v8)
   {
@@ -26,10 +26,10 @@
   return v9;
 }
 
-- (_TtC18AudiogramIngestion27AudiogramGraphDetectorModel)initWithModelUrl:(id)a3 modelInputSize:(CGSize)a4 confidenceThreshold:(float)a5
+- (_TtC18AudiogramIngestion27AudiogramGraphDetectorModel)initWithModelUrl:(id)url modelInputSize:(CGSize)size confidenceThreshold:(float)threshold
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v8 = sub_2417E407C();
   v9 = *(v8 - 8);
   v10 = MEMORY[0x28223BE20](v8);
@@ -38,7 +38,7 @@
   v14 = &v17 - v13;
   sub_2417E406C();
   (*(v9 + 16))(v12, v14, v8);
-  v15 = AudiogramDetectorModel.init(modelUrl:modelInputSize:confidenceThreshold:)(v12, width, height, a5);
+  v15 = AudiogramDetectorModel.init(modelUrl:modelInputSize:confidenceThreshold:)(v12, width, height, threshold);
   (*(v9 + 8))(v14, v8);
   return v15;
 }

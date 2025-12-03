@@ -2,39 +2,39 @@
 + (CGSize)_minimumIconSize;
 + (CGSize)_preferredIconSize;
 + (CGSize)tableViewIconSize;
-- (_ASPasswordManagerIconController)initWithAllowNetworkFetchingBlock:(id)a3;
-- (_ASPasswordManagerIconController)initWithMetadataManager:(id)a3 allowNetworkFetchingBlock:(id)a4;
+- (_ASPasswordManagerIconController)initWithAllowNetworkFetchingBlock:(id)block;
+- (_ASPasswordManagerIconController)initWithMetadataManager:(id)manager allowNetworkFetchingBlock:(id)block;
 - (_ASPasswordManagerIconControllerDelegate)delegate;
 - (id)_mobileSafariContainerPath;
-- (id)appIconForAppID:(id)a3;
-- (id)backgroundColorForDomain:(id)a3;
-- (id)cachedIconForDomain:(id)a3 resizedToSize:(CGSize)a4;
-- (void)_checkForLocalVisitToDomain:(id)a3 withCompletion:(id)a4;
+- (id)appIconForAppID:(id)d;
+- (id)backgroundColorForDomain:(id)domain;
+- (id)cachedIconForDomain:(id)domain resizedToSize:(CGSize)size;
+- (void)_checkForLocalVisitToDomain:(id)domain withCompletion:(id)completion;
 - (void)_fetchHistory;
-- (void)_fetchIconInHistoryWithBlock:(id)a3;
-- (void)_fetchTouchIconForDomain:(id)a3 requestID:(id)a4 responseHandler:(id)a5;
-- (void)_handleIconFetchFailureWithDomain:(id)a3 options:(unint64_t)a4 requestID:(id)a5 response:(id)a6 responseHandler:(id)a7;
-- (void)_iconDidUpdateForDomain:(id)a3;
-- (void)_populateDomainToAppIDWithCompletion:(id)a3;
+- (void)_fetchIconInHistoryWithBlock:(id)block;
+- (void)_fetchTouchIconForDomain:(id)domain requestID:(id)d responseHandler:(id)handler;
+- (void)_handleIconFetchFailureWithDomain:(id)domain options:(unint64_t)options requestID:(id)d response:(id)response responseHandler:(id)handler;
+- (void)_iconDidUpdateForDomain:(id)domain;
+- (void)_populateDomainToAppIDWithCompletion:(id)completion;
 - (void)_privacyProxyStateInitialized;
-- (void)_requestTouchIconForDomain:(id)a3 options:(unint64_t)a4 requestID:(id)a5 responseHandler:(id)a6;
-- (void)bundleIDForDomain:(id)a3 completionHandler:(id)a4;
-- (void)cancelRequest:(id)a3;
+- (void)_requestTouchIconForDomain:(id)domain options:(unint64_t)options requestID:(id)d responseHandler:(id)handler;
+- (void)bundleIDForDomain:(id)domain completionHandler:(id)handler;
+- (void)cancelRequest:(id)request;
 - (void)clearIconFetchingState;
 - (void)dealloc;
-- (void)fetchAppIconForDomain:(id)a3 responseHandler:(id)a4;
-- (void)iconForDomain:(id)a3 requestID:(id)a4 responseHandler:(id)a5;
+- (void)fetchAppIconForDomain:(id)domain responseHandler:(id)handler;
+- (void)iconForDomain:(id)domain requestID:(id)d responseHandler:(id)handler;
 - (void)performMaintenanceWork;
 - (void)prepareForApplicationTermination;
 @end
 
 @implementation _ASPasswordManagerIconController
 
-- (_ASPasswordManagerIconController)initWithAllowNetworkFetchingBlock:(id)a3
+- (_ASPasswordManagerIconController)initWithAllowNetworkFetchingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(_ASPasswordManagerIconController *)self _mobileSafariContainerPath];
-  v6 = [v5 stringByAppendingPathComponent:@"Library/Image Cache"];
+  blockCopy = block;
+  _mobileSafariContainerPath = [(_ASPasswordManagerIconController *)self _mobileSafariContainerPath];
+  v6 = [_mobileSafariContainerPath stringByAppendingPathComponent:@"Library/Image Cache"];
 
   if ([v6 length])
   {
@@ -57,12 +57,12 @@
     v8 = v7;
     _Block_object_dispose(&v17, 8);
     v9 = [v7 alloc];
-    v10 = [MEMORY[0x1E696AAE8] safari_safariInjectedBundleURL];
+    safari_safariInjectedBundleURL = [MEMORY[0x1E696AAE8] safari_safariInjectedBundleURL];
     v11 = [MEMORY[0x1E695DFF8] fileURLWithPath:v6 isDirectory:1];
-    v12 = [v9 initWithInjectedBundleURL:v10 imageCacheDirectoryURL:v11 cacheIsReadOnly:1 metadataType:4];
+    v12 = [v9 initWithInjectedBundleURL:safari_safariInjectedBundleURL imageCacheDirectoryURL:v11 cacheIsReadOnly:1 metadataType:4];
 
-    self = [(_ASPasswordManagerIconController *)self initWithMetadataManager:v12 allowNetworkFetchingBlock:v4];
-    v13 = self;
+    self = [(_ASPasswordManagerIconController *)self initWithMetadataManager:v12 allowNetworkFetchingBlock:blockCopy];
+    selfCopy = self;
   }
 
   else
@@ -73,16 +73,16 @@
       [_ASPasswordManagerIconController initWithAllowNetworkFetchingBlock:];
     }
 
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (_ASPasswordManagerIconController)initWithMetadataManager:(id)a3 allowNetworkFetchingBlock:(id)a4
+- (_ASPasswordManagerIconController)initWithMetadataManager:(id)manager allowNetworkFetchingBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  blockCopy = block;
   v41.receiver = self;
   v41.super_class = _ASPasswordManagerIconController;
   v9 = [(_ASPasswordManagerIconController *)&v41 init];
@@ -110,13 +110,13 @@
     iconCache = v9->_iconCache;
     v9->_iconCache = v12;
 
-    v14 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     domainsToExtractedBackgroundColors = v9->_domainsToExtractedBackgroundColors;
-    v9->_domainsToExtractedBackgroundColors = v14;
+    v9->_domainsToExtractedBackgroundColors = dictionary;
 
-    v16 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     activeRequestIDToRequestToken = v9->_activeRequestIDToRequestToken;
-    v9->_activeRequestIDToRequestToken = v16;
+    v9->_activeRequestIDToRequestToken = dictionary2;
 
     v18 = [MEMORY[0x1E695DFA8] set];
     touchIconRequests = v9->_touchIconRequests;
@@ -134,8 +134,8 @@
     queue = v9->_queue;
     v9->_queue = v26;
 
-    objc_storeStrong(&v9->_metadataManager, a3);
-    v28 = _Block_copy(v8);
+    objc_storeStrong(&v9->_metadataManager, manager);
+    v28 = _Block_copy(blockCopy);
     allowNetworkFetchingBlock = v9->_allowNetworkFetchingBlock;
     v9->_allowNetworkFetchingBlock = v28;
 
@@ -165,9 +165,9 @@
 
     if (v34)
     {
-      v35 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
       v36 = getWBSPrivacyProxyChangeNotification();
-      [v35 addObserver:v9 selector:sel__privacyProxyStateInitialized name:v36 object:v9->_availabilityManager];
+      [defaultCenter addObserver:v9 selector:sel__privacyProxyStateInitialized name:v36 object:v9->_availabilityManager];
     }
 
     v37 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -186,8 +186,8 @@
   v3 = getWBSPrivacyProxyChangeNotification();
   if (v3)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 removeObserver:self name:v3 object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:v3 object:0];
   }
 
   v5 = WBS_LOG_CHANNEL_PREFIXPasswordsIcons();
@@ -240,11 +240,11 @@
     _os_log_impl(&dword_1B1C8D000, v3, OS_LOG_TYPE_DEFAULT, "Starting to fetch history", buf, 2u);
   }
 
-  v4 = [getWBUHistoryClass() existingSharedHistory];
-  if (!v4)
+  existingSharedHistory = [getWBUHistoryClass() existingSharedHistory];
+  if (!existingSharedHistory)
   {
-    v4 = [objc_alloc(getWBUHistoryClass()) initWithDatabaseID:0];
-    [v4 setShouldScheduleMaintenance:0];
+    existingSharedHistory = [objc_alloc(getWBUHistoryClass()) initWithDatabaseID:0];
+    [existingSharedHistory setShouldScheduleMaintenance:0];
     self->_initializedHistory = 1;
   }
 
@@ -253,9 +253,9 @@
   v6[1] = 3221225472;
   v6[2] = __49___ASPasswordManagerIconController__fetchHistory__block_invoke;
   v6[3] = &unk_1E7AF7680;
-  v5 = v4;
+  v5 = existingSharedHistory;
   v7 = v5;
-  v8 = self;
+  selfCopy = self;
   objc_copyWeak(&v9, buf);
   [v5 performBlockAfterHistoryHasLoaded:v6];
   objc_destroyWeak(&v9);
@@ -302,35 +302,35 @@
   dispatch_async(queue, block);
 }
 
-- (void)cancelRequest:(id)a3
+- (void)cancelRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50___ASPasswordManagerIconController_cancelRequest___block_invoke;
   v7[3] = &unk_1E7AF76A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)iconForDomain:(id)a3 requestID:(id)a4 responseHandler:(id)a5
+- (void)iconForDomain:(id)domain requestID:(id)d responseHandler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![v8 length])
+  domainCopy = domain;
+  dCopy = d;
+  handlerCopy = handler;
+  if (![domainCopy length])
   {
-    v10[2](v10, 0);
+    handlerCopy[2](handlerCopy, 0);
     goto LABEL_13;
   }
 
-  v11 = [(WBSCache *)self->_iconCache objectForKey:v8];
-  v12 = [MEMORY[0x1E695DFB0] null];
-  v13 = [v11 isEqual:v12];
+  v11 = [(WBSCache *)self->_iconCache objectForKey:domainCopy];
+  null = [MEMORY[0x1E695DFB0] null];
+  v13 = [v11 isEqual:null];
 
   if (v13)
   {
@@ -348,11 +348,11 @@
         *buf = 141558275;
         v23 = 1752392040;
         v24 = 2117;
-        v25 = v8;
+        v25 = domainCopy;
         _os_log_impl(&dword_1B1C8D000, v14, OS_LOG_TYPE_DEFAULT, "Account icon found in _ASPasswordManagerIconController's in-memory cache; domain=%{sensitive, mask.hash}@", buf, 0x16u);
       }
 
-      (v10)[2](v10, v11);
+      (handlerCopy)[2](handlerCopy, v11);
       goto LABEL_11;
     }
 
@@ -363,11 +363,11 @@ LABEL_8:
       *buf = 141558275;
       v23 = 1752392040;
       v24 = 2117;
-      v25 = v8;
+      v25 = domainCopy;
       _os_log_impl(&dword_1B1C8D000, v15, OS_LOG_TYPE_DEFAULT, "Icon is nil or not an UIImage; domain=%{sensitive, mask.hash}@", buf, 0x16u);
     }
 
-    v10[2](v10, 0);
+    handlerCopy[2](handlerCopy, 0);
     goto LABEL_11;
   }
 
@@ -377,9 +377,9 @@ LABEL_8:
   v18[2] = __76___ASPasswordManagerIconController_iconForDomain_requestID_responseHandler___block_invoke;
   v18[3] = &unk_1E7AF76D0;
   v18[4] = self;
-  v19 = v8;
-  v20 = v9;
-  v21 = v10;
+  v19 = domainCopy;
+  v20 = dCopy;
+  v21 = handlerCopy;
   dispatch_async(queue, v18);
 
 LABEL_11:
@@ -388,11 +388,11 @@ LABEL_13:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)cachedIconForDomain:(id)a3 resizedToSize:(CGSize)a4
+- (id)cachedIconForDomain:(id)domain resizedToSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = [(WBSCache *)self->_iconCache objectForKey:a3];
+  height = size.height;
+  width = size.width;
+  v6 = [(WBSCache *)self->_iconCache objectForKey:domain];
   if (v6)
   {
     v7 = [getWBSImageUtilitiesClass() resizedImage:v6 withSize:{width, height}];
@@ -406,9 +406,9 @@ LABEL_13:
   return v7;
 }
 
-- (id)backgroundColorForDomain:(id)a3
+- (id)backgroundColorForDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -422,34 +422,34 @@ LABEL_13:
   block[3] = &unk_1E7AF76F8;
   v13 = &v14;
   block[4] = self;
-  v6 = v4;
+  v6 = domainCopy;
   v12 = v6;
   dispatch_sync(queue, block);
   v7 = v15[5];
   if (v7)
   {
-    v8 = v7;
+    defaultMonogramBackgroundColor = v7;
   }
 
   else
   {
-    v8 = [get_SFAccountManagerAppearanceValuesClass() defaultMonogramBackgroundColor];
+    defaultMonogramBackgroundColor = [get_SFAccountManagerAppearanceValuesClass() defaultMonogramBackgroundColor];
   }
 
-  v9 = v8;
+  v9 = defaultMonogramBackgroundColor;
 
   _Block_object_dispose(&v14, 8);
 
   return v9;
 }
 
-- (void)_iconDidUpdateForDomain:(id)a3
+- (void)_iconDidUpdateForDomain:(id)domain
 {
-  v5 = a3;
+  domainCopy = domain;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained iconDidUpdateForDomain:v5 iconController:self];
+    [WeakRetained iconDidUpdateForDomain:domainCopy iconController:self];
   }
 }
 
@@ -478,7 +478,7 @@ LABEL_13:
     {
       v7 = v6;
       *buf = 134218240;
-      v16 = self;
+      selfCopy = self;
       v17 = 1024;
       v18 = [(NSMutableSet *)v3 count];
       _os_log_impl(&dword_1B1C8D000, v7, OS_LOG_TYPE_DEFAULT, "Deallocating ASPasswordManagerIconController instance %p; cancelling %d pending requests", buf, 0x12u);
@@ -505,55 +505,55 @@ LABEL_13:
 
 - (void)performMaintenanceWork
 {
-  v3 = [MEMORY[0x1E696AE30] processInfo];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __58___ASPasswordManagerIconController_performMaintenanceWork__block_invoke;
   v4[3] = &unk_1E7AF7768;
   v4[4] = self;
-  [v3 performExpiringActivityWithReason:@"Perform maintenance work" usingBlock:v4];
+  [processInfo performExpiringActivityWithReason:@"Perform maintenance work" usingBlock:v4];
 }
 
 - (void)prepareForApplicationTermination
 {
   v2 = self->_metadataManager;
-  v3 = [MEMORY[0x1E696AE30] processInfo];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __68___ASPasswordManagerIconController_prepareForApplicationTermination__block_invoke;
   v5[3] = &unk_1E7AF7768;
   v6 = v2;
   v4 = v2;
-  [v3 performExpiringActivityWithReason:@"Save pending changes before termination" usingBlock:v5];
+  [processInfo performExpiringActivityWithReason:@"Save pending changes before termination" usingBlock:v5];
 }
 
-- (void)bundleIDForDomain:(id)a3 completionHandler:(id)a4
+- (void)bundleIDForDomain:(id)domain completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  domainCopy = domain;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __72___ASPasswordManagerIconController_bundleIDForDomain_completionHandler___block_invoke;
   block[3] = &unk_1E7AF7790;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = domainCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = domainCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_checkForLocalVisitToDomain:(id)a3 withCompletion:(id)a4
+- (void)_checkForLocalVisitToDomain:(id)domain withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695E000] pm_defaults];
-  v9 = [v8 BOOLForKey:*MEMORY[0x1E69C8B70]];
+  domainCopy = domain;
+  completionCopy = completion;
+  pm_defaults = [MEMORY[0x1E695E000] pm_defaults];
+  v9 = [pm_defaults BOOLForKey:*MEMORY[0x1E69C8B70]];
 
   if (v9)
   {
-    v7[2](v7, 1);
+    completionCopy[2](completionCopy, 1);
   }
 
   else
@@ -564,17 +564,17 @@ LABEL_13:
     block[2] = __79___ASPasswordManagerIconController__checkForLocalVisitToDomain_withCompletion___block_invoke;
     block[3] = &unk_1E7AF7790;
     block[4] = self;
-    v12 = v6;
-    v13 = v7;
+    v12 = domainCopy;
+    v13 = completionCopy;
     dispatch_async(queue, block);
   }
 }
 
-- (void)_fetchTouchIconForDomain:(id)a3 requestID:(id)a4 responseHandler:(id)a5
+- (void)_fetchTouchIconForDomain:(id)domain requestID:(id)d responseHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  domainCopy = domain;
+  dCopy = d;
+  handlerCopy = handler;
   if ((*(self->_allowNetworkFetchingBlock + 2))())
   {
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -582,11 +582,11 @@ LABEL_13:
     aBlock[2] = __87___ASPasswordManagerIconController__fetchTouchIconForDomain_requestID_responseHandler___block_invoke;
     aBlock[3] = &unk_1E7AF76D0;
     aBlock[4] = self;
-    v11 = v8;
+    v11 = domainCopy;
     v23 = v11;
-    v12 = v9;
+    v12 = dCopy;
     v24 = v12;
-    v13 = v10;
+    v13 = handlerCopy;
     v25 = v13;
     v14 = _Block_copy(aBlock);
     queue = self->_queue;
@@ -604,13 +604,13 @@ LABEL_13:
   }
 }
 
-- (void)_fetchIconInHistoryWithBlock:(id)a3
+- (void)_fetchIconInHistoryWithBlock:(id)block
 {
-  v4 = a3;
-  v11 = v4;
+  blockCopy = block;
+  v11 = blockCopy;
   if (self->_hasLoadedHistory)
   {
-    v4[2]();
+    blockCopy[2]();
   }
 
   else
@@ -618,14 +618,14 @@ LABEL_13:
     blocksAwaitingHistoryItems = self->_blocksAwaitingHistoryItems;
     if (blocksAwaitingHistoryItems)
     {
-      v6 = _Block_copy(v4);
+      v6 = _Block_copy(blockCopy);
       [(NSMutableArray *)blocksAwaitingHistoryItems addObject:v6];
     }
 
     else
     {
       v7 = MEMORY[0x1E695DF70];
-      v8 = _Block_copy(v4);
+      v8 = _Block_copy(blockCopy);
       v9 = [v7 arrayWithObject:v8];
       v10 = self->_blocksAwaitingHistoryItems;
       self->_blocksAwaitingHistoryItems = v9;
@@ -633,21 +633,21 @@ LABEL_13:
   }
 }
 
-- (void)_requestTouchIconForDomain:(id)a3 options:(unint64_t)a4 requestID:(id)a5 responseHandler:(id)a6
+- (void)_requestTouchIconForDomain:(id)domain options:(unint64_t)options requestID:(id)d responseHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if ([v10 length])
+  domainCopy = domain;
+  dCopy = d;
+  handlerCopy = handler;
+  if ([domainCopy length])
   {
-    if ([v10 safari_looksLikeIPAddress])
+    if ([domainCopy safari_looksLikeIPAddress])
     {
-      v13 = (a4 & 0xFFFFFFFFFFFFFFF5);
+      optionsCopy = (options & 0xFFFFFFFFFFFFFFF5);
     }
 
     else
     {
-      v13 = a4;
+      optionsCopy = options;
     }
 
     objc_initWeak(&location, self);
@@ -657,10 +657,10 @@ LABEL_13:
     v15[2] = __97___ASPasswordManagerIconController__requestTouchIconForDomain_options_requestID_responseHandler___block_invoke;
     v15[3] = &unk_1E7AF78A8;
     objc_copyWeak(v19, &location);
-    v16 = v10;
-    v19[1] = v13;
-    v17 = v11;
-    v18 = v12;
+    v16 = domainCopy;
+    v19[1] = optionsCopy;
+    v17 = dCopy;
+    v18 = handlerCopy;
     dispatch_async(queue, v15);
 
     objc_destroyWeak(v19);
@@ -669,16 +669,16 @@ LABEL_13:
 
   else
   {
-    (*(v12 + 2))(v12, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (void)_handleIconFetchFailureWithDomain:(id)a3 options:(unint64_t)a4 requestID:(id)a5 response:(id)a6 responseHandler:(id)a7
+- (void)_handleIconFetchFailureWithDomain:(id)domain options:(unint64_t)options requestID:(id)d response:(id)response responseHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
-  [(_ASPasswordManagerIconController *)self fetchAppIconForDomain:v10 responseHandler:a7];
-  if ([v11 isGenerated])
+  domainCopy = domain;
+  responseCopy = response;
+  [(_ASPasswordManagerIconController *)self fetchAppIconForDomain:domainCopy responseHandler:handler];
+  if ([responseCopy isGenerated])
   {
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
@@ -686,24 +686,24 @@ LABEL_13:
     block[2] = __113___ASPasswordManagerIconController__handleIconFetchFailureWithDomain_options_requestID_response_responseHandler___block_invoke;
     block[3] = &unk_1E7AF7740;
     block[4] = self;
-    v14 = v11;
-    v15 = v10;
+    v14 = responseCopy;
+    v15 = domainCopy;
     dispatch_async(queue, block);
   }
 }
 
-- (void)_populateDomainToAppIDWithCompletion:(id)a3
+- (void)_populateDomainToAppIDWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_domainToAppID)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
   else
   {
-    v6 = [v4 copy];
+    v6 = [completionCopy copy];
 
     blocksAwaitingSharedWebCredentialsInformation = self->_blocksAwaitingSharedWebCredentialsInformation;
     if (blocksAwaitingSharedWebCredentialsInformation)
@@ -736,11 +736,11 @@ LABEL_13:
   }
 }
 
-- (void)fetchAppIconForDomain:(id)a3 responseHandler:(id)a4
+- (void)fetchAppIconForDomain:(id)domain responseHandler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  domainCopy = domain;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v8 = WBS_LOG_CHANNEL_PREFIXPasswordsIcons();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -748,7 +748,7 @@ LABEL_13:
     *buf = 141558275;
     v19 = 1752392040;
     v20 = 2117;
-    v21 = v6;
+    v21 = domainCopy;
     _os_log_impl(&dword_1B1C8D000, v8, OS_LOG_TYPE_DEFAULT, "Fetching app icon; domain=%{sensitive, mask.hash}@", buf, 0x16u);
   }
 
@@ -759,10 +759,10 @@ LABEL_13:
   block[3] = &unk_1E7AF7920;
   block[4] = self;
   objc_copyWeak(&v16, &location);
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = domainCopy;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = domainCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v16);
@@ -770,13 +770,13 @@ LABEL_13:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)appIconForAppID:(id)a3
+- (id)appIconForAppID:(id)d
 {
-  v3 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:a3];
-  v4 = [v3 appState];
-  v5 = [v4 isValid];
+  v3 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:d];
+  appState = [v3 appState];
+  isValid = [appState isValid];
 
-  if (v5)
+  if (isValid)
   {
     WBSImageUtilitiesClass = getWBSImageUtilitiesClass();
     v7 = iconForApplicationProxy(v3);

@@ -1,52 +1,52 @@
 @interface HDQuantitySampleSeriesDataEnumerator
-- (BOOL)_fillValueBufferWithError:(uint64_t)a1;
+- (BOOL)_fillValueBufferWithError:(uint64_t)error;
 - (BOOL)done;
-- (BOOL)enumerateDataToTime:(double)a3 error:(id *)a4 handler:(id)a5;
-- (BOOL)primeEnumeratorWithError:(id *)a3;
-- (HDQuantitySampleSeriesDataEnumerator)initWithTransaction:(id)a3 persistentID:(int64_t)a4 dataTypeCode:(int64_t)a5 UUIDBytes:(unsigned __int8)a6[16] startTime:(double)a7 endTime:(double)a8 count:(int64_t)a9 sourceID:(int64_t)a10 HFDKey:(int64_t)a11 bufferSize:(unint64_t)a12;
-- (HDQuantitySampleSeriesDataEnumerator)initWithTransaction:(id)a3 persistentID:(int64_t)a4 startTime:(double)a5 endTime:(double)a6 HFDKey:(int64_t)a7;
+- (BOOL)enumerateDataToTime:(double)time error:(id *)error handler:(id)handler;
+- (BOOL)primeEnumeratorWithError:(id *)error;
+- (HDQuantitySampleSeriesDataEnumerator)initWithTransaction:(id)transaction persistentID:(int64_t)d dataTypeCode:(int64_t)code UUIDBytes:(unsigned __int8)bytes[16] startTime:(double)time endTime:(double)endTime count:(int64_t)count sourceID:(int64_t)self0 HFDKey:(int64_t)self1 bufferSize:(unint64_t)self2;
+- (HDQuantitySampleSeriesDataEnumerator)initWithTransaction:(id)transaction persistentID:(int64_t)d startTime:(double)time endTime:(double)endTime HFDKey:(int64_t)key;
 - (double)nextDatumTime;
 - (id).cxx_construct;
 - (id)description;
-- (int64_t)compare:(id)a3;
-- (void)_unitTesting_addToBufferTimestamp:(double)a3 value:(double)a4 duration:(float)a5 isLastDatum:(BOOL)a6;
+- (int64_t)compare:(id)compare;
+- (void)_unitTesting_addToBufferTimestamp:(double)timestamp value:(double)value duration:(float)duration isLastDatum:(BOOL)datum;
 @end
 
 @implementation HDQuantitySampleSeriesDataEnumerator
 
-- (HDQuantitySampleSeriesDataEnumerator)initWithTransaction:(id)a3 persistentID:(int64_t)a4 dataTypeCode:(int64_t)a5 UUIDBytes:(unsigned __int8)a6[16] startTime:(double)a7 endTime:(double)a8 count:(int64_t)a9 sourceID:(int64_t)a10 HFDKey:(int64_t)a11 bufferSize:(unint64_t)a12
+- (HDQuantitySampleSeriesDataEnumerator)initWithTransaction:(id)transaction persistentID:(int64_t)d dataTypeCode:(int64_t)code UUIDBytes:(unsigned __int8)bytes[16] startTime:(double)time endTime:(double)endTime count:(int64_t)count sourceID:(int64_t)self0 HFDKey:(int64_t)self1 bufferSize:(unint64_t)self2
 {
-  v20 = a3;
-  v21 = [(HDQuantitySampleSeriesDataEnumerator *)self initWithTransaction:v20 persistentID:a4 startTime:a11 endTime:a7 HFDKey:a8];
+  transactionCopy = transaction;
+  v21 = [(HDQuantitySampleSeriesDataEnumerator *)self initWithTransaction:transactionCopy persistentID:d startTime:key endTime:time HFDKey:endTime];
   v22 = v21;
   if (v21)
   {
-    v21->_dataTypeCode = a5;
-    uuid_copy(v21->_UUIDBytes, a6);
-    v22->_count = a9;
-    v22->_sourceID = a10;
-    v22->_bufferSize = a12;
+    v21->_dataTypeCode = code;
+    uuid_copy(v21->_UUIDBytes, bytes);
+    v22->_count = count;
+    v22->_sourceID = iD;
+    v22->_bufferSize = size;
   }
 
   return v22;
 }
 
-- (HDQuantitySampleSeriesDataEnumerator)initWithTransaction:(id)a3 persistentID:(int64_t)a4 startTime:(double)a5 endTime:(double)a6 HFDKey:(int64_t)a7
+- (HDQuantitySampleSeriesDataEnumerator)initWithTransaction:(id)transaction persistentID:(int64_t)d startTime:(double)time endTime:(double)endTime HFDKey:(int64_t)key
 {
-  v13 = a3;
+  transactionCopy = transaction;
   v31.receiver = self;
   v31.super_class = HDQuantitySampleSeriesDataEnumerator;
   v14 = [(HDQuantitySampleSeriesDataEnumerator *)&v31 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_transaction, a3);
-    v15->_persistentID = a4;
-    v15->_startTime = a5;
-    v15->_endTime = a6;
-    v15->_HFDKey = a7;
+    objc_storeStrong(&v14->_transaction, transaction);
+    v15->_persistentID = d;
+    v15->_startTime = time;
+    v15->_endTime = endTime;
+    v15->_HFDKey = key;
     v15->_index = 0;
-    v15->_previousEndTime = a5;
+    v15->_previousEndTime = time;
     *&v15->_hasFetchedData = 0;
     v15->_hasDuration = 0;
     begin = v15->_data.__map_.__begin_;
@@ -99,8 +99,8 @@
 {
   if (!self->_hasFetchedData)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"HDQuantitySampleSeriesDataEnumerator.mm" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"_hasFetchedData"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDQuantitySampleSeriesDataEnumerator.mm" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"_hasFetchedData"}];
   }
 
   if ([(HDQuantitySampleSeriesDataEnumerator *)self done]|| self->_fatalError)
@@ -121,7 +121,7 @@
   return *p_previousEndTime;
 }
 
-- (BOOL)primeEnumeratorWithError:(id *)a3
+- (BOOL)primeEnumeratorWithError:(id *)error
 {
   if (self->_hasFetchedData)
   {
@@ -130,7 +130,7 @@
 
   if (self->_fatalError)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a3 code:3 description:@"This enumerator has experienced a fatal error" underlyingError:?];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 description:@"This enumerator has experienced a fatal error" underlyingError:?];
     return 0;
   }
 
@@ -163,10 +163,10 @@
       v7 = v10;
       if (v10)
       {
-        if (a3)
+        if (error)
         {
           v11 = v10;
-          *a3 = v7;
+          *error = v7;
         }
 
         else
@@ -180,22 +180,22 @@
   return v3;
 }
 
-- (BOOL)_fillValueBufferWithError:(uint64_t)a1
+- (BOOL)_fillValueBufferWithError:(uint64_t)error
 {
-  if (!a1)
+  if (!error)
   {
     return 0;
   }
 
-  if ((*(a1 + 74) & 1) == 0)
+  if ((*(error + 74) & 1) == 0)
   {
-    v4 = [*(a1 + 8) protectedDatabase];
-    v5 = [HDQuantitySampleSeriesEntity _hasSeriesDataWithDatabase:v4 hfdKey:*(a1 + 168) error:a2];
+    protectedDatabase = [*(error + 8) protectedDatabase];
+    v5 = [HDQuantitySampleSeriesEntity _hasSeriesDataWithDatabase:protectedDatabase hfdKey:*(error + 168) error:a2];
 
     if (v5)
     {
-      v6 = *(a1 + 168);
-      if (*(a1 + 75))
+      v6 = *(error + 168);
+      if (*(error + 75))
       {
         v7 = 2;
       }
@@ -205,9 +205,9 @@
         v7 = 1;
       }
 
-      *(a1 + 192) = v7;
-      *(a1 + 200) = v6;
-      *(a1 + 74) = 1;
+      *(error + 192) = v7;
+      *(error + 200) = v6;
+      *(error + 74) = 1;
       goto LABEL_8;
     }
 
@@ -223,54 +223,54 @@ LABEL_8:
   v13[1] = 3221225472;
   v13[2] = __76__HDQuantitySampleSeriesDataEnumerator__fillValueBufferFromSQLiteWithError___block_invoke;
   v13[3] = &unk_278624818;
-  v13[4] = a1;
+  v13[4] = error;
   v13[5] = &v14;
   v8 = _Block_copy(v13);
-  v9 = *(a1 + 168);
-  if (*(a1 + 72) == 1)
+  v9 = *(error + 168);
+  if (*(error + 72) == 1)
   {
-    v10 = [HDQuantitySeriesDataEntity enumerateSeries:v9 after:0 inclusive:*(a1 + 8) transaction:a2 error:v8 handler:*(a1 + 176)];
+    v10 = [HDQuantitySeriesDataEntity enumerateSeries:v9 after:0 inclusive:*(error + 8) transaction:a2 error:v8 handler:*(error + 176)];
   }
 
   else
   {
-    v10 = [HDQuantitySeriesDataEntity enumerateSeries:v9 transaction:*(a1 + 8) error:a2 handler:v8];
+    v10 = [HDQuantitySeriesDataEntity enumerateSeries:v9 transaction:*(error + 8) error:a2 handler:v8];
   }
 
   v11 = v10;
   if (v10 && (v15[3] & 1) == 0)
   {
-    *(a1 + 73) = 1;
+    *(error + 73) = 1;
   }
 
   _Block_object_dispose(&v14, 8);
-  *(a1 + 72) = 1;
+  *(error + 72) = 1;
   return v11;
 }
 
-- (BOOL)enumerateDataToTime:(double)a3 error:(id *)a4 handler:(id)a5
+- (BOOL)enumerateDataToTime:(double)time error:(id *)error handler:(id)handler
 {
-  v9 = a5;
+  handlerCopy = handler;
   if (!self->_hasFetchedData)
   {
-    v37 = [MEMORY[0x277CCA890] currentHandler];
-    [v37 handleFailureInMethod:a2 object:self file:@"HDQuantitySampleSeriesDataEnumerator.mm" lineNumber:151 description:{@"Invalid parameter not satisfying: %@", @"_hasFetchedData"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDQuantitySampleSeriesDataEnumerator.mm" lineNumber:151 description:{@"Invalid parameter not satisfying: %@", @"_hasFetchedData"}];
   }
 
   if (self->_fatalError)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 description:@"This enumerator has experienced a fatal error" underlyingError:?];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 description:@"This enumerator has experienced a fatal error" underlyingError:?];
     goto LABEL_7;
   }
 
   if ([(HDQuantitySampleSeriesDataEnumerator *)self done])
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:@"This enumerator is already done"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"This enumerator is already done"];
     goto LABEL_7;
   }
 
   [(HDQuantitySampleSeriesDataEnumerator *)self nextDatumTime];
-  if (v12 > a3)
+  if (v12 > time)
   {
 LABEL_10:
     v10 = 1;
@@ -360,7 +360,7 @@ LABEL_23:
           self->_data.__start_ -= 170;
         }
 
-        v29 = v9[2](v9, self->_index, previousEndTime, v25, v27);
+        v29 = handlerCopy[2](handlerCopy, self->_index, previousEndTime, v25, v27);
         ++self->_index;
         self->_previousEndTime = v24;
         if ((v29 & 1) == 0)
@@ -369,7 +369,7 @@ LABEL_23:
         }
 
         [(HDQuantitySampleSeriesDataEnumerator *)self nextDatumTime];
-        if (v30 > a3)
+        if (v30 > time)
         {
           goto LABEL_10;
         }
@@ -410,10 +410,10 @@ LABEL_23:
   v35 = v34;
   if (v34)
   {
-    if (a4)
+    if (error)
     {
       v36 = v34;
-      *a4 = v35;
+      *error = v35;
     }
 
     else
@@ -429,18 +429,18 @@ LABEL_8:
   return v10;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v5 = a3;
+  compareCopy = compare;
   if (!self->_hasFetchedData)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"HDQuantitySampleSeriesDataEnumerator.mm" lineNumber:217 description:{@"Invalid parameter not satisfying: %@", @"_hasFetchedData"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDQuantitySampleSeriesDataEnumerator.mm" lineNumber:217 description:{@"Invalid parameter not satisfying: %@", @"_hasFetchedData"}];
   }
 
   [(HDQuantitySampleSeriesDataEnumerator *)self nextDatumTime];
   v7 = v6;
-  [v5 nextDatumTime];
+  [compareCopy nextDatumTime];
   if (v7 >= v8)
   {
     if (v7 <= v8)
@@ -466,8 +466,8 @@ LABEL_8:
 {
   if (!self->_hasFetchedData)
   {
-    v5 = [MEMORY[0x277CCA890] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"HDQuantitySampleSeriesDataEnumerator.mm" lineNumber:231 description:{@"Invalid parameter not satisfying: %@", @"_hasFetchedData"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDQuantitySampleSeriesDataEnumerator.mm" lineNumber:231 description:{@"Invalid parameter not satisfying: %@", @"_hasFetchedData"}];
   }
 
   return self->_hasFetchedAllData && self->_data.__size_ == 0;
@@ -489,9 +489,9 @@ LABEL_8:
   endTime = self->_endTime;
   [(HDQuantitySampleSeriesDataEnumerator *)self nextDatumTime];
   v14 = v13;
-  v15 = [(HDQuantitySampleSeriesDataEnumerator *)self done];
+  done = [(HDQuantitySampleSeriesDataEnumerator *)self done];
   v16 = @"NO";
-  if (v15)
+  if (done)
   {
     v16 = @"YES";
   }
@@ -524,19 +524,19 @@ uint64_t __76__HDQuantitySampleSeriesDataEnumerator__fillValueBufferFromSQLiteWi
   return result;
 }
 
-- (void)_unitTesting_addToBufferTimestamp:(double)a3 value:(double)a4 duration:(float)a5 isLastDatum:(BOOL)a6
+- (void)_unitTesting_addToBufferTimestamp:(double)timestamp value:(double)value duration:(float)duration isLastDatum:(BOOL)datum
 {
-  v8 = a3;
-  v7 = a4;
-  v6 = a5;
+  timestampCopy = timestamp;
+  valueCopy = value;
+  durationCopy = duration;
   self->_hasFetchedData = 1;
-  if (a6)
+  if (datum)
   {
     self->_hasFetchedAllData = 1;
   }
 
-  self->_lastFetchedDatumTime = a3;
-  std::deque<std::tuple<double,double,float>>::emplace_back<double &,double &,float &>(&self->_data.__map_.__first_, &v8, &v7, &v6);
+  self->_lastFetchedDatumTime = timestamp;
+  std::deque<std::tuple<double,double,float>>::emplace_back<double &,double &,float &>(&self->_data.__map_.__first_, &timestampCopy, &valueCopy, &durationCopy);
 }
 
 - (id).cxx_construct

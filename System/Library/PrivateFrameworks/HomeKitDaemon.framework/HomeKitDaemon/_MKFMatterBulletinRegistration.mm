@@ -1,5 +1,5 @@
 @interface _MKFMatterBulletinRegistration
-+ (id)modelIDForParentRelationshipTo:(id)a3;
++ (id)modelIDForParentRelationshipTo:(id)to;
 - (MKFHome)home;
 - (MKFMatterBulletinRegistrationDatabaseID)databaseID;
 - (NSArray)matterPaths;
@@ -7,9 +7,9 @@
 
 @implementation _MKFMatterBulletinRegistration
 
-+ (id)modelIDForParentRelationshipTo:(id)a3
++ (id)modelIDForParentRelationshipTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -24,28 +24,28 @@
 - (NSArray)matterPaths
 {
   v2 = [(_MKFMatterBulletinRegistration *)self valueForKey:@"matterPaths_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (MKFHome)home
 {
-  v3 = [(_MKFMatterBulletinRegistration *)self user];
-  v4 = [v3 home];
-  v5 = v4;
-  if (v4)
+  user = [(_MKFMatterBulletinRegistration *)self user];
+  home = [user home];
+  v5 = home;
+  if (home)
   {
-    v6 = v4;
+    home2 = home;
   }
 
   else
   {
-    v7 = [(_MKFMatterBulletinRegistration *)self guest];
-    v6 = [v7 home];
+    guest = [(_MKFMatterBulletinRegistration *)self guest];
+    home2 = [guest home];
   }
 
-  return v6;
+  return home2;
 }
 
 - (MKFMatterBulletinRegistrationDatabaseID)databaseID

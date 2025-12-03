@@ -1,21 +1,21 @@
 @interface FPEvictOperation
-- (FPEvictOperation)initWithItems:(id)a3;
+- (FPEvictOperation)initWithItems:(id)items;
 - (void)actionMain;
 @end
 
 @implementation FPEvictOperation
 
-- (FPEvictOperation)initWithItems:(id)a3
+- (FPEvictOperation)initWithItems:(id)items
 {
-  v5 = a3;
+  itemsCopy = items;
   v9.receiver = self;
   v9.super_class = FPEvictOperation;
   v6 = [(FPActionOperation *)&v9 initWithProvider:0 action:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_items, a3);
-    [(FPActionOperation *)v7 setSourceItemsToPreflight:v5];
+    objc_storeStrong(&v6->_items, items);
+    [(FPActionOperation *)v7 setSourceItemsToPreflight:itemsCopy];
   }
 
   return v7;
@@ -52,14 +52,14 @@
         v7 = *(*(&v17 + 1) + 8 * i);
         dispatch_group_enter(v3);
         v8 = +[FPDaemonConnection sharedConnection];
-        v9 = [v7 itemID];
+        itemID = [v7 itemID];
         v14[0] = MEMORY[0x1E69E9820];
         v14[1] = 3221225472;
         v14[2] = __30__FPEvictOperation_actionMain__block_invoke;
         v14[3] = &unk_1E793CA60;
         v16 = v21;
         v15 = v3;
-        [v8 evictItemWithID:v9 evictionReason:2 completionHandler:v14];
+        [v8 evictItemWithID:itemID evictionReason:2 completionHandler:v14];
       }
 
       v4 = [(NSArray *)obj countByEnumeratingWithState:&v17 objects:v23 count:16];
@@ -68,14 +68,14 @@
     while (v4);
   }
 
-  v10 = [(FPOperation *)self callbackQueue];
+  callbackQueue = [(FPOperation *)self callbackQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __30__FPEvictOperation_actionMain__block_invoke_2;
   block[3] = &unk_1E793AD20;
   block[4] = self;
   block[5] = v21;
-  dispatch_group_notify(v3, v10, block);
+  dispatch_group_notify(v3, callbackQueue, block);
 
   _Block_object_dispose(v21, 8);
   v11 = *MEMORY[0x1E69E9840];

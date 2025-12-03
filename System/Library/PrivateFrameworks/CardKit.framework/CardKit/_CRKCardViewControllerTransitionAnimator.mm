@@ -1,53 +1,53 @@
 @interface _CRKCardViewControllerTransitionAnimator
 + (id)sectionShuffleTransitionAnimator;
 - (_CRKCardViewControllerTransitionAnimatorDelegate)delegate;
-- (void)_prepareAnimationFromCardViewController:(id)a3 toCardViewController:(id)a4 withAnimationCoordinator:(id)a5;
-- (void)transitionFromCardViewController:(id)a3 toCardViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6;
+- (void)_prepareAnimationFromCardViewController:(id)controller toCardViewController:(id)viewController withAnimationCoordinator:(id)coordinator;
+- (void)transitionFromCardViewController:(id)controller toCardViewController:(id)viewController animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation _CRKCardViewControllerTransitionAnimator
 
-- (void)transitionFromCardViewController:(id)a3 toCardViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)transitionFromCardViewController:(id)controller toCardViewController:(id)viewController animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v10 parentViewController];
-  v14 = v13;
-  if (v13)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  completionCopy = completion;
+  parentViewController = [controllerCopy parentViewController];
+  v14 = parentViewController;
+  if (parentViewController)
   {
-    v15 = [v13 view];
-    v16 = [v10 view];
-    v17 = [v11 view];
+    view = [parentViewController view];
+    view2 = [controllerCopy view];
+    view3 = [viewControllerCopy view];
     v18 = objc_alloc_init(_CRKCardViewControllerTransitionCoordinator);
-    v30 = v7;
-    [(_CRKCardViewControllerTransitionCoordinator *)v18 setAnimated:v7];
-    [(_CRKCardViewControllerTransitionCoordinator *)v18 setContainerView:v15];
-    [(_CRKCardViewControllerTransitionAnimator *)self _prepareAnimationFromCardViewController:v10 toCardViewController:v11 withAnimationCoordinator:v18];
-    v19 = [(_CRKCardViewControllerTransitionCoordinator *)v18 initialSetup];
-    v20 = v19;
-    if (v19)
+    v30 = animatedCopy;
+    [(_CRKCardViewControllerTransitionCoordinator *)v18 setAnimated:animatedCopy];
+    [(_CRKCardViewControllerTransitionCoordinator *)v18 setContainerView:view];
+    [(_CRKCardViewControllerTransitionAnimator *)self _prepareAnimationFromCardViewController:controllerCopy toCardViewController:viewControllerCopy withAnimationCoordinator:v18];
+    initialSetup = [(_CRKCardViewControllerTransitionCoordinator *)v18 initialSetup];
+    v20 = initialSetup;
+    if (initialSetup)
     {
-      (*(v19 + 16))(v19);
+      (*(initialSetup + 16))(initialSetup);
     }
 
     [(_CRKCardViewControllerTransitionCoordinator *)v18 setInitialSetup:0];
-    [v14 addChildViewController:v11];
-    v31 = v17;
-    v32 = v15;
-    [v15 addSubview:v17];
-    [v11 didMoveToParentViewController:v14];
-    v21 = [(_CRKCardViewControllerTransitionCoordinator *)v18 finalSetup];
-    v22 = v21;
-    if (v21)
+    [v14 addChildViewController:viewControllerCopy];
+    v31 = view3;
+    v32 = view;
+    [view addSubview:view3];
+    [viewControllerCopy didMoveToParentViewController:v14];
+    finalSetup = [(_CRKCardViewControllerTransitionCoordinator *)v18 finalSetup];
+    v22 = finalSetup;
+    if (finalSetup)
     {
-      (*(v21 + 16))(v21);
+      (*(finalSetup + 16))(finalSetup);
     }
 
     [(_CRKCardViewControllerTransitionCoordinator *)v18 setFinalSetup:0];
-    v23 = [(_CRKCardViewControllerTransitionAnimator *)self delegate];
-    [v23 transitionAnimator:self willTransitionFromCardViewController:v10 toCardViewController:v11 withAnimationCoordinator:v18];
+    delegate = [(_CRKCardViewControllerTransitionAnimator *)self delegate];
+    [delegate transitionAnimator:self willTransitionFromCardViewController:controllerCopy toCardViewController:viewControllerCopy withAnimationCoordinator:v18];
 
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
@@ -55,63 +55,63 @@
     v34[3] = &unk_278DA3140;
     v24 = v18;
     v35 = v24;
-    v25 = v10;
+    v25 = controllerCopy;
     v36 = v25;
-    v37 = v16;
-    v33 = v12;
-    v38 = v12;
-    v26 = v16;
+    v37 = view2;
+    v33 = completionCopy;
+    v38 = completionCopy;
+    v26 = view2;
     v27 = MEMORY[0x245D2D520](v34);
-    v28 = [(_CRKCardViewControllerTransitionCoordinator *)v24 animations];
-    v29 = v28;
+    animations = [(_CRKCardViewControllerTransitionCoordinator *)v24 animations];
+    v29 = animations;
     if (v30)
     {
-      [v14 transitionFromViewController:v25 toViewController:v11 duration:129 options:v28 animations:v27 completion:0.2];
+      [v14 transitionFromViewController:v25 toViewController:viewControllerCopy duration:129 options:animations animations:v27 completion:0.2];
     }
 
     else
     {
-      if (v28)
+      if (animations)
       {
-        (*(v28 + 16))(v28);
+        (*(animations + 16))(animations);
       }
 
       v27[2](v27, 1);
     }
 
-    v12 = v33;
+    completionCopy = v33;
   }
 
-  else if (v12)
+  else if (completionCopy)
   {
-    (*(v12 + 2))(v12, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)_prepareAnimationFromCardViewController:(id)a3 toCardViewController:(id)a4 withAnimationCoordinator:(id)a5
+- (void)_prepareAnimationFromCardViewController:(id)controller toCardViewController:(id)viewController withAnimationCoordinator:(id)coordinator
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [a3 view];
-  v10 = [v7 view];
+  viewControllerCopy = viewController;
+  coordinatorCopy = coordinator;
+  view = [controller view];
+  view2 = [viewControllerCopy view];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __130___CRKCardViewControllerTransitionAnimator__prepareAnimationFromCardViewController_toCardViewController_withAnimationCoordinator___block_invoke;
   v27[3] = &unk_278DA3168;
-  v11 = v10;
+  v11 = view2;
   v28 = v11;
-  [v8 setInitialSetup:v27];
+  [coordinatorCopy setInitialSetup:v27];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __130___CRKCardViewControllerTransitionAnimator__prepareAnimationFromCardViewController_toCardViewController_withAnimationCoordinator___block_invoke_2;
   v23[3] = &unk_278DA3190;
-  v12 = v9;
+  v12 = view;
   v24 = v12;
   v13 = v11;
   v25 = v13;
-  v26 = v7;
-  v14 = v7;
-  [v8 setFinalSetup:v23];
+  v26 = viewControllerCopy;
+  v14 = viewControllerCopy;
+  [coordinatorCopy setFinalSetup:v23];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __130___CRKCardViewControllerTransitionAnimator__prepareAnimationFromCardViewController_toCardViewController_withAnimationCoordinator___block_invoke_3;
@@ -120,14 +120,14 @@
   v21 = v15;
   v22 = v12;
   v16 = v12;
-  [v8 setAnimations:v20];
+  [coordinatorCopy setAnimations:v20];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __130___CRKCardViewControllerTransitionAnimator__prepareAnimationFromCardViewController_toCardViewController_withAnimationCoordinator___block_invoke_4;
   v18[3] = &unk_278DA31E0;
   v19 = v15;
   v17 = v15;
-  [v8 setCompletion:v18];
+  [coordinatorCopy setCompletion:v18];
 }
 
 - (_CRKCardViewControllerTransitionAnimatorDelegate)delegate

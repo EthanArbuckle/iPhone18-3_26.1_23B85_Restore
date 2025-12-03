@@ -1,9 +1,9 @@
 @interface OSALogHelper
-+ (BOOL)createForSubmissionWithXPCRequest:(id)a3 fromConnection:(id)a4 forReply:(id)a5;
-+ (BOOL)handleLogCleanupRequest:(id)a3 fromConnection:(id)a4 forReply:(id)a5;
-+ (BOOL)overrideMountPathWithXPCRequest:(id)a3 fromConnection:(id)a4;
++ (BOOL)createForSubmissionWithXPCRequest:(id)request fromConnection:(id)connection forReply:(id)reply;
++ (BOOL)handleLogCleanupRequest:(id)request fromConnection:(id)connection forReply:(id)reply;
++ (BOOL)overrideMountPathWithXPCRequest:(id)request fromConnection:(id)connection;
 + (void)instantiate;
-+ (void)moveLogsFrom:(id)a3 to:(id)a4;
++ (void)moveLogsFrom:(id)from to:(id)to;
 + (void)triggerUrgentSubmission;
 @end
 
@@ -17,10 +17,10 @@
   }
 }
 
-+ (BOOL)createForSubmissionWithXPCRequest:(id)a3 fromConnection:(id)a4 forReply:(id)a5
++ (BOOL)createForSubmissionWithXPCRequest:(id)request fromConnection:(id)connection forReply:(id)reply
 {
-  v7 = a3;
-  v8 = a5;
+  requestCopy = request;
+  replyCopy = reply;
   v25 = 0u;
   v26 = 0u;
   xpc_connection_get_audit_token();
@@ -34,14 +34,14 @@
   block[1] = 3221225472;
   block[2] = sub_10000E120;
   block[3] = &unk_1000252C8;
-  v16 = v8;
-  v17 = v7;
+  v16 = replyCopy;
+  v17 = requestCopy;
   v18 = v9;
   v19 = &v21;
-  v20 = a1;
+  selfCopy = self;
   v11 = v9;
-  v12 = v7;
-  v13 = v8;
+  v12 = requestCopy;
+  v13 = replyCopy;
   dispatch_sync(v10, block);
   LOBYTE(v10) = *(v22 + 24);
 
@@ -64,16 +64,16 @@
   }
 }
 
-+ (BOOL)handleLogCleanupRequest:(id)a3 fromConnection:(id)a4 forReply:(id)a5
++ (BOOL)handleLogCleanupRequest:(id)request fromConnection:(id)connection forReply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  requestCopy = request;
+  connectionCopy = connection;
+  replyCopy = reply;
   v10 = xpc_connection_copy_entitlement_value();
   v11 = v10;
   if (v10 && xpc_get_type(v10) == &_xpc_type_BOOL && xpc_BOOL_get_value(v11))
   {
-    v12 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", xpc_dictionary_get_string(v7, [kOSALogMetadataBugType UTF8String]));
+    v12 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", xpc_dictionary_get_string(requestCopy, [kOSALogMetadataBugType UTF8String]));
     if ([v12 length])
     {
       if ([&off_100027430 containsObject:v12])
@@ -85,7 +85,7 @@
           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Cleaning up logs with bug type %@", buf, 0xCu);
         }
 
-        v36 = [NSDate dateWithTimeIntervalSince1970:xpc_dictionary_get_double(v7, "filterByLogAge")];
+        v36 = [NSDate dateWithTimeIntervalSince1970:xpc_dictionary_get_double(requestCopy, "filterByLogAge")];
         if (v36)
         {
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -101,9 +101,9 @@
           v36 = 0;
         }
 
-        v14 = xpc_dictionary_get_value(v7, "filterByHeaders");
-        v32 = v8;
-        v33 = v7;
+        v14 = xpc_dictionary_get_value(requestCopy, "filterByHeaders");
+        v32 = connectionCopy;
+        v33 = requestCopy;
         v35 = v12;
         v31 = v14;
         if (v14)
@@ -188,8 +188,8 @@
         }
 
         v13 = 0;
-        v8 = v32;
-        v7 = v33;
+        connectionCopy = v32;
+        requestCopy = v33;
         v12 = v35;
 LABEL_38:
 
@@ -201,22 +201,22 @@ LABEL_38:
         goto LABEL_12;
       }
 
-      [NSString stringWithFormat:@"Illegal log cleanup request (%d): bug type %@ is not supported", xpc_connection_get_pid(v8), v12];
+      [NSString stringWithFormat:@"Illegal log cleanup request (%d): bug type %@ is not supported", xpc_connection_get_pid(connectionCopy), v12];
     }
 
     else
     {
-      [NSString stringWithFormat:@"Illegal log cleanup request (%d): missing bug type", xpc_connection_get_pid(v8), v30];
+      [NSString stringWithFormat:@"Illegal log cleanup request (%d): missing bug type", xpc_connection_get_pid(connectionCopy), v30];
     }
     v13 = ;
     goto LABEL_38;
   }
 
-  v13 = [NSString stringWithFormat:@"Client (%d) is not entitled to clean up logs.", xpc_connection_get_pid(v8)];
+  v13 = [NSString stringWithFormat:@"Client (%d) is not entitled to clean up logs.", xpc_connection_get_pid(connectionCopy)];
   if (!v13)
   {
 LABEL_39:
-    xpc_dictionary_set_BOOL(v9, "result", 1);
+    xpc_dictionary_set_BOOL(replyCopy, "result", 1);
     goto LABEL_40;
   }
 
@@ -226,17 +226,17 @@ LABEL_12:
     sub_100015E20();
   }
 
-  xpc_dictionary_set_BOOL(v9, "result", 0);
-  xpc_dictionary_set_string(v9, "error_desc", [v13 UTF8String]);
+  xpc_dictionary_set_BOOL(replyCopy, "result", 0);
+  xpc_dictionary_set_string(replyCopy, "error_desc", [v13 UTF8String]);
 LABEL_40:
 
   return v13 == 0;
 }
 
-+ (BOOL)overrideMountPathWithXPCRequest:(id)a3 fromConnection:(id)a4
++ (BOOL)overrideMountPathWithXPCRequest:(id)request fromConnection:(id)connection
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  connectionCopy = connection;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -245,7 +245,7 @@ LABEL_40:
   v8 = v7;
   if (v7 && xpc_get_type(v7) == &_xpc_type_BOOL && xpc_BOOL_get_value(v8))
   {
-    v9 = xpc_dictionary_get_value(v5, "dre_overrideMountPath");
+    v9 = xpc_dictionary_get_value(requestCopy, "dre_overrideMountPath");
     if (v9)
     {
       v10 = objc_opt_new();
@@ -282,7 +282,7 @@ LABEL_40:
     v14 = &_os_log_default;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      pid = xpc_connection_get_pid(v6);
+      pid = xpc_connection_get_pid(connectionCopy);
       sub_100015F24(buf, pid);
     }
   }
@@ -293,12 +293,12 @@ LABEL_40:
   return v16 & 1;
 }
 
-+ (void)moveLogsFrom:(id)a3 to:(id)a4
++ (void)moveLogsFrom:(id)from to:(id)to
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && v6)
+  fromCopy = from;
+  toCopy = to;
+  v7 = toCopy;
+  if (fromCopy && toCopy)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
     {
@@ -306,18 +306,18 @@ LABEL_40:
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "Moving logs from tempfs submissions paths to mounted submissions paths", buf, 2u);
     }
 
-    v8 = [v5 count];
+    v8 = [fromCopy count];
     if (v8 == [v7 count])
     {
       v9 = +[NSFileManager defaultManager];
-      if ([v5 count])
+      if ([fromCopy count])
       {
         v10 = 0;
         v24 = v7;
-        v25 = v5;
+        v25 = fromCopy;
         do
         {
-          v11 = [v5 objectAtIndexedSubscript:v10];
+          v11 = [fromCopy objectAtIndexedSubscript:v10];
           v26 = v10;
           v28 = [v7 objectAtIndexedSubscript:v10];
           v12 = +[NSFileManager defaultManager];
@@ -397,7 +397,7 @@ LABEL_40:
             while (v15);
           }
 
-          v5 = v25;
+          fromCopy = v25;
           v10 = v26 + 1;
           v7 = v24;
         }

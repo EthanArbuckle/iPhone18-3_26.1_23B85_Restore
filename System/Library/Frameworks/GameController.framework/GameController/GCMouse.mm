@@ -4,7 +4,7 @@
 - (GCMouseLiveInput)liveInput;
 - (NSString)debugDescription;
 - (NSString)description;
-- (int64_t)compareTo:(id)a3;
+- (int64_t)compareTo:(id)to;
 @end
 
 @implementation GCMouse
@@ -12,20 +12,20 @@
 + (GCMouse)current
 {
   v2 = +[_GCLegacyDeviceSession sharedInstance];
-  v3 = [v2 currentMouse];
+  currentMouse = [v2 currentMouse];
 
-  return v3;
+  return currentMouse;
 }
 
 + (NSArray)mice
 {
   v2 = +[_GCLegacyDeviceSession sharedInstance];
-  v3 = [v2 mice];
-  v4 = [(GCDeviceCollection *)v3 orderedCollection];
-  v5 = v4;
-  if (v4)
+  mice = [v2 mice];
+  orderedCollection = [(GCDeviceCollection *)mice orderedCollection];
+  v5 = orderedCollection;
+  if (orderedCollection)
   {
-    v6 = v4;
+    v6 = orderedCollection;
   }
 
   else
@@ -40,20 +40,20 @@
 
 - (GCMouseLiveInput)liveInput
 {
-  v2 = [(GCMouse *)self mouseInput];
-  v3 = [(GCMouseInput *)v2 liveInputFacade];
+  mouseInput = [(GCMouse *)self mouseInput];
+  liveInputFacade = [(GCMouseInput *)mouseInput liveInputFacade];
 
-  return v3;
+  return liveInputFacade;
 }
 
-- (int64_t)compareTo:(id)a3
+- (int64_t)compareTo:(id)to
 {
-  v4 = a3;
-  v5 = [(GCMouse *)self creationSequence];
-  if (v5 >= [v4 creationSequence])
+  toCopy = to;
+  creationSequence = [(GCMouse *)self creationSequence];
+  if (creationSequence >= [toCopy creationSequence])
   {
-    v7 = [(GCMouse *)self creationSequence];
-    v6 = v7 > [v4 creationSequence];
+    creationSequence2 = [(GCMouse *)self creationSequence];
+    v6 = creationSequence2 > [toCopy creationSequence];
   }
 
   else
@@ -67,8 +67,8 @@
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(GCMouse *)self vendorName];
-  v5 = [v3 stringWithFormat:@"<GCMouse %p '%@'>", self, v4];
+  vendorName = [(GCMouse *)self vendorName];
+  v5 = [v3 stringWithFormat:@"<GCMouse %p '%@'>", self, vendorName];
 
   return v5;
 }

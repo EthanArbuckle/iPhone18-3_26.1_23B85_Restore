@@ -32,7 +32,7 @@
 - (NSString)statusDescription;
 - (PFSlowMotionTimeRangeMapper)timeRangeMapper;
 - (PXVideoSession)init;
-- (PXVideoSession)initWithContentProvider:(id)a3 videoPlayer:(id)a4 resourceReclamationController:(id)a5 playerCreationDelay:(double)a6;
+- (PXVideoSession)initWithContentProvider:(id)provider videoPlayer:(id)player resourceReclamationController:(id)controller playerCreationDelay:(double)delay;
 - (PXVideoSessionDelegate)delegate;
 - (__CVBuffer)currentPixelBuffer;
 - (double)desiredPlaybackRate;
@@ -41,7 +41,7 @@
 - (id)_disconnectVideoPlayer;
 - (id)_newVideoView;
 - (id)_playbackStateDescription;
-- (id)_stateQueue_newPresentationStateFromCurrentWithPresenter:(void *)a3;
+- (id)_stateQueue_newPresentationStateFromCurrentWithPresenter:(void *)presenter;
 - (id)audioSession;
 - (id)contentLoadingError;
 - (id)currentPlayerItem;
@@ -57,37 +57,37 @@
 - (unint64_t)audioSessionCategoryOptions;
 - (unint64_t)audioSessionRouteSharingPolicy;
 - (unint64_t)pixelBufferOutputTokenCount;
-- (void)_addOutput:(id)a3 toPlayerItem:(id)a4;
+- (void)_addOutput:(id)output toPlayerItem:(id)item;
 - (void)_assertOnUpdateQueue;
 - (void)_audioSessionQueue_initializeAudioSession;
-- (void)_audioSessionQueue_updateAudioSessionWithCategory:(id)a3 mode:(id)a4 routeSharingPolicy:(unint64_t)a5 options:(unint64_t)a6;
-- (void)_avPlayerTimeDidChange:(id *)a3;
+- (void)_audioSessionQueue_updateAudioSessionWithCategory:(id)category mode:(id)mode routeSharingPolicy:(unint64_t)policy options:(unint64_t)options;
+- (void)_avPlayerTimeDidChange:(id *)change;
 - (void)_didFinishInitializingAudioSession;
-- (void)_handleAssetTracksDidLoadForAsset:(id)a3;
-- (void)_handleContentLoadingResult:(id)a3;
-- (void)_handleDisplayLink:(id)a3;
-- (void)_handlePlayabilityDidLoadForAsset:(id)a3;
+- (void)_handleAssetTracksDidLoadForAsset:(id)asset;
+- (void)_handleContentLoadingResult:(id)result;
+- (void)_handleDisplayLink:(id)link;
+- (void)_handlePlayabilityDidLoadForAsset:(id)asset;
 - (void)_handlePlayerItemSeekDidFinish;
-- (void)_handlePlayerTimeAdvancementTimer:(id)a3;
-- (void)_handleSharedAudioSession:(id)a3;
+- (void)_handlePlayerTimeAdvancementTimer:(id)timer;
+- (void)_handleSharedAudioSession:(id)session;
 - (void)_handleTrackGeometryDidLoad;
 - (void)_loadAssetTracksIfNeeded;
 - (void)_mainQueue_actuallyPrewarmVideoView;
-- (void)_mainQueue_setDisplayLink:(id)a3;
-- (void)_mainQueue_updateCurrentPixelBufferWithVideoOutput:(id)a3;
-- (void)_performBlockOnUpdateQueue:(id)a3;
-- (void)_performChanges:(id)a3;
+- (void)_mainQueue_setDisplayLink:(id)link;
+- (void)_mainQueue_updateCurrentPixelBufferWithVideoOutput:(id)output;
+- (void)_performBlockOnUpdateQueue:(id)queue;
+- (void)_performChanges:(id)changes;
 - (void)_rebuildAVObjects;
 - (void)_relinquishAny4k60StreamAllowance;
 - (void)_removeAllVideoOutputs;
-- (void)_setPlayabilityFromAsset:(id)a3;
+- (void)_setPlayabilityFromAsset:(id)asset;
 - (void)_updateAVPlayerPlayState;
 - (void)_updateAtBeginningOrEnd;
-- (void)_updateAtBeginningOrEndWithPlayerItemDuration:(id *)a3 success:(BOOL)a4 error:(id)a5;
+- (void)_updateAtBeginningOrEndWithPlayerItemDuration:(id *)duration success:(BOOL)success error:(id)error;
 - (void)_updateAudioStatus;
 - (void)_updateBuffering;
 - (void)_updateContentDynamicRange;
-- (void)_updateCurrenPixelBufferAfterSeekingToTime:(id *)a3 completionLock:(id)a4;
+- (void)_updateCurrenPixelBufferAfterSeekingToTime:(id *)time completionLock:(id)lock;
 - (void)_updateCurrentPixelBuffer;
 - (void)_updateCurrentPlayerItem;
 - (void)_updateDisplayLinkState;
@@ -97,85 +97,85 @@
 - (void)_updatePlayability;
 - (void)_updatePlayerItemInPlayer;
 - (void)_updatePlayerVolume;
-- (void)_updateQueue_registerChangeObserver:(id)a3 context:(void *)a4;
+- (void)_updateQueue_registerChangeObserver:(id)observer context:(void *)context;
 - (void)_updateQueue_seekToPlaybackTimeRangeStartIfNeeded;
-- (void)_updateQueue_unregisterChangeObserver:(id)a3 context:(void *)a4;
+- (void)_updateQueue_unregisterChangeObserver:(id)observer context:(void *)context;
 - (void)_updateReadyForSeeking;
 - (void)_updateStalled;
 - (void)_updateTrackGeometry;
 - (void)_updateVideoOutput;
 - (void)_updateVolumeAnimator;
-- (void)_videoQueue_updateContentDynamicRangeWithPlayerItem:(id)a3;
-- (void)_videoQueue_updateTrackGeometryWithPlayerItem:(id)a3;
-- (void)_videoWorkQueue_updateCurrenPixelBufferAfterSeekingToTime:(id *)a3 completionLock:(id)a4;
-- (void)_videoWorkQueue_updateCurrentPixelBufferWithVideoOutput:(id)a3 outputTime:(double)a4;
-- (void)avPlayer:(id)a3 itemDidPlayToEnd:(id)a4;
+- (void)_videoQueue_updateContentDynamicRangeWithPlayerItem:(id)item;
+- (void)_videoQueue_updateTrackGeometryWithPlayerItem:(id)item;
+- (void)_videoWorkQueue_updateCurrenPixelBufferAfterSeekingToTime:(id *)time completionLock:(id)lock;
+- (void)_videoWorkQueue_updateCurrentPixelBufferWithVideoOutput:(id)output outputTime:(double)time;
+- (void)avPlayer:(id)player itemDidPlayToEnd:(id)end;
 - (void)cancelLoading;
-- (void)cancelPixelBufferOutputWithRequestIdentifier:(id)a3;
+- (void)cancelPixelBufferOutputWithRequestIdentifier:(id)identifier;
 - (void)dealloc;
 - (void)didPerformChanges;
-- (void)enterPresentationContext:(int64_t)a3 presenter:(void *)a4;
+- (void)enterPresentationContext:(int64_t)context presenter:(void *)presenter;
 - (void)incrementPixelBufferFrameDropsCount;
-- (void)leavePresentationContext:(int64_t)a3 presenter:(void *)a4;
-- (void)loadIfNeededWithPriority:(int64_t)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)outputMediaDataWillChange:(id)a3;
-- (void)performChanges:(id)a3;
-- (void)performChanges:(id)a3 withPresentationContext:(int64_t)a4 presenter:(void *)a5;
+- (void)leavePresentationContext:(int64_t)context presenter:(void *)presenter;
+- (void)loadIfNeededWithPriority:(int64_t)priority;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)outputMediaDataWillChange:(id)change;
+- (void)performChanges:(id)changes;
+- (void)performChanges:(id)changes withPresentationContext:(int64_t)context presenter:(void *)presenter;
 - (void)prewarmVideoView;
-- (void)registerChangeObserver:(id)a3 context:(void *)a4;
-- (void)requestPixelBufferOutputWithRequestIdentifier:(id)a3 maxOutputSize:(CGSize)a4;
-- (void)resourceReclamationEventDidOccur:(id)a3;
-- (void)seekToExactTime:(id *)a3 updatePixelBuffer:(BOOL)a4 waitUntilComplete:(BOOL)a5;
+- (void)registerChangeObserver:(id)observer context:(void *)context;
+- (void)requestPixelBufferOutputWithRequestIdentifier:(id)identifier maxOutputSize:(CGSize)size;
+- (void)resourceReclamationEventDidOccur:(id)occur;
+- (void)seekToExactTime:(id *)time updatePixelBuffer:(BOOL)buffer waitUntilComplete:(BOOL)complete;
 - (void)seekToPlaybackStartTime;
-- (void)seekToTime:(id *)a3 completionHandler:(id)a4;
-- (void)seekToTime:(id *)a3 toleranceBefore:(id *)a4 toleranceAfter:(id *)a5 completionHandler:(id)a6;
-- (void)setAllowsExternalPlayback:(BOOL)a3;
-- (void)setAtBeginning:(BOOL)a3;
-- (void)setAtEnd:(BOOL)a3;
-- (void)setAudioSession:(id)a3;
-- (void)setAudioSessionCategory:(id)a3 mode:(id)a4 routeSharingPolicy:(unint64_t)a5 options:(unint64_t)a6;
-- (void)setAudioStatus:(int64_t)a3;
-- (void)setBuffering:(BOOL)a3;
-- (void)setContentLoadingError:(id)a3;
-- (void)setCurrentPixelBuffer:(__CVBuffer *)a3;
-- (void)setCurrentPlayerItem:(id)a3;
-- (void)setCurrentTime:(id *)a3;
-- (void)setDesiredPlayState:(int64_t)a3;
-- (void)setDesiredPlaybackRate:(double)a3;
-- (void)setIsContentHighDynamicRange:(BOOL)a3;
-- (void)setIsReadyForSeeking:(BOOL)a3;
-- (void)setIsVideoOutputReady:(BOOL)a3;
-- (void)setLoopingEnabled:(BOOL)a3;
-- (void)setNaturalSize:(CGSize)a3;
-- (void)setNominalFrameRate:(float)a3;
-- (void)setPlayState:(int64_t)a3;
-- (void)setPlayable:(BOOL)a3;
-- (void)setPlaybackStartTime:(id *)a3;
-- (void)setPlaybackTimeRange:(id *)a3;
-- (void)setPlaybackTimeRangeEndBoundaryObserver:(id)a3;
-- (void)setPlayerItem:(id)a3 segmentTimeRangeOfOriginalVideo:(id *)a4 timeRangeMapper:(id)a5;
-- (void)setPlayerTimeAdvancing:(BOOL)a3;
-- (void)setPreferredTransform:(CGAffineTransform *)a3;
-- (void)setPreventsSleepDuringVideoPlayback:(BOOL)a3;
-- (void)setSeekToBeginningAtEnd:(BOOL)a3;
-- (void)setShouldDisableAutomaticPixelBufferUpdates:(BOOL)a3;
-- (void)setStalled:(BOOL)a3;
-- (void)setUpdatingAudioSession:(BOOL)a3;
-- (void)setVideoDuration:(id *)a3;
-- (void)setVideoOutput:(id)a3 size:(CGSize)a4;
-- (void)setVideoPlayer:(id)a3;
-- (void)setVolume:(float)a3 withFade:(BOOL)a4;
-- (void)unregisterChangeObserver:(id)a3 context:(void *)a4;
-- (void)wrappedAudioSession:(id)a3 didChangeVolumeFrom:(float)a4 to:(float)a5;
+- (void)seekToTime:(id *)time completionHandler:(id)handler;
+- (void)seekToTime:(id *)time toleranceBefore:(id *)before toleranceAfter:(id *)after completionHandler:(id)handler;
+- (void)setAllowsExternalPlayback:(BOOL)playback;
+- (void)setAtBeginning:(BOOL)beginning;
+- (void)setAtEnd:(BOOL)end;
+- (void)setAudioSession:(id)session;
+- (void)setAudioSessionCategory:(id)category mode:(id)mode routeSharingPolicy:(unint64_t)policy options:(unint64_t)options;
+- (void)setAudioStatus:(int64_t)status;
+- (void)setBuffering:(BOOL)buffering;
+- (void)setContentLoadingError:(id)error;
+- (void)setCurrentPixelBuffer:(__CVBuffer *)buffer;
+- (void)setCurrentPlayerItem:(id)item;
+- (void)setCurrentTime:(id *)time;
+- (void)setDesiredPlayState:(int64_t)state;
+- (void)setDesiredPlaybackRate:(double)rate;
+- (void)setIsContentHighDynamicRange:(BOOL)range;
+- (void)setIsReadyForSeeking:(BOOL)seeking;
+- (void)setIsVideoOutputReady:(BOOL)ready;
+- (void)setLoopingEnabled:(BOOL)enabled;
+- (void)setNaturalSize:(CGSize)size;
+- (void)setNominalFrameRate:(float)rate;
+- (void)setPlayState:(int64_t)state;
+- (void)setPlayable:(BOOL)playable;
+- (void)setPlaybackStartTime:(id *)time;
+- (void)setPlaybackTimeRange:(id *)range;
+- (void)setPlaybackTimeRangeEndBoundaryObserver:(id)observer;
+- (void)setPlayerItem:(id)item segmentTimeRangeOfOriginalVideo:(id *)video timeRangeMapper:(id)mapper;
+- (void)setPlayerTimeAdvancing:(BOOL)advancing;
+- (void)setPreferredTransform:(CGAffineTransform *)transform;
+- (void)setPreventsSleepDuringVideoPlayback:(BOOL)playback;
+- (void)setSeekToBeginningAtEnd:(BOOL)end;
+- (void)setShouldDisableAutomaticPixelBufferUpdates:(BOOL)updates;
+- (void)setStalled:(BOOL)stalled;
+- (void)setUpdatingAudioSession:(BOOL)session;
+- (void)setVideoDuration:(id *)duration;
+- (void)setVideoOutput:(id)output size:(CGSize)size;
+- (void)setVideoPlayer:(id)player;
+- (void)setVolume:(float)volume withFade:(BOOL)fade;
+- (void)unregisterChangeObserver:(id)observer context:(void *)context;
+- (void)wrappedAudioSession:(id)session didChangeVolumeFrom:(float)from to:(float)to;
 @end
 
 @implementation PXVideoSession
 
-- (void)setCurrentTime:(id *)a3
+- (void)setCurrentTime:(id *)time
 {
-  var3 = a3->var3;
-  *&self->_currentTime.value = *&a3->var0;
+  var3 = time->var3;
+  *&self->_currentTime.value = *&time->var0;
   self->_currentTime.epoch = var3;
 }
 
@@ -186,9 +186,9 @@
   return WeakRetained;
 }
 
-- (void)_performBlockOnUpdateQueue:(id)a3
+- (void)_performBlockOnUpdateQueue:(id)queue
 {
-  block = a3;
+  block = queue;
   if ([(PXVideoSession *)self _isOnUpdateQueue])
   {
     block[2]();
@@ -204,20 +204,20 @@
 {
   if (![(PXVideoSession *)self _isOnUpdateQueue])
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PXVideoSession.m" lineNumber:2763 description:{@"Expected %s to be called on the update queue", "-[PXVideoSession _assertOnUpdateQueue]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXVideoSession.m" lineNumber:2763 description:{@"Expected %s to be called on the update queue", "-[PXVideoSession _assertOnUpdateQueue]"}];
   }
 }
 
 - (NSString)statusDescription
 {
-  v2 = [(PXVideoSession *)self contentProvider];
-  v3 = [v2 loadingResult];
-  v4 = [v3 resultDebugDescription];
-  v5 = v4;
-  if (v4)
+  contentProvider = [(PXVideoSession *)self contentProvider];
+  loadingResult = [contentProvider loadingResult];
+  resultDebugDescription = [loadingResult resultDebugDescription];
+  v5 = resultDebugDescription;
+  if (resultDebugDescription)
   {
-    v6 = v4;
+    v6 = resultDebugDescription;
   }
 
   else
@@ -235,14 +235,14 @@
   v3 = [(PXVideoSession *)self description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(PXVideoSession *)self videoPlayer];
-  [v4 appendFormat:@"\n\tAVPlayer: %@", v5];
+  videoPlayer = [(PXVideoSession *)self videoPlayer];
+  [v4 appendFormat:@"\n\tAVPlayer: %@", videoPlayer];
 
-  v6 = [(PXVideoSession *)self playerItem];
-  v7 = v6;
-  if (v6)
+  playerItem = [(PXVideoSession *)self playerItem];
+  v7 = playerItem;
+  if (playerItem)
   {
-    [v4 appendFormat:@"\n\tPlayer Item: %@", v6];
+    [v4 appendFormat:@"\n\tPlayer Item: %@", playerItem];
     [v4 appendFormat:@"\n\t\tisPlaybackBufferEmpty: %i", objc_msgSend(v7, "isPlaybackBufferEmpty")];
     [v4 appendFormat:@"\n\t\tisPlaybackBufferFull: %i", objc_msgSend(v7, "isPlaybackBufferFull")];
     [v4 appendFormat:@"\n\t\tisPlaybackLikelyToKeepUp: %i", objc_msgSend(v7, "isPlaybackLikelyToKeepUp")];
@@ -259,37 +259,37 @@
 - (NSString)description
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v4 = [(PXVideoSession *)self contentProvider];
-  [v3 appendFormat:@"Content Provider: %@\n", v4];
+  contentProvider = [(PXVideoSession *)self contentProvider];
+  [v3 appendFormat:@"Content Provider: %@\n", contentProvider];
 
-  v5 = [(PXVideoSession *)self desiredPlayState];
+  desiredPlayState = [(PXVideoSession *)self desiredPlayState];
   v6 = @"Playing";
-  if (v5 != 1)
+  if (desiredPlayState != 1)
   {
     v6 = 0;
   }
 
-  if (!v5)
+  if (!desiredPlayState)
   {
     v6 = @"Paused";
   }
 
   [v3 appendFormat:@"Desired Play State: %@\n", v6];
-  v7 = [(PXVideoSession *)self playState];
+  playState = [(PXVideoSession *)self playState];
   v8 = 0;
-  if (v7 <= 5)
+  if (playState <= 5)
   {
-    v8 = off_1E7746940[v7];
+    v8 = off_1E7746940[playState];
   }
 
   [v3 appendFormat:@"Play State: %@\n", v8];
   [v3 appendFormat:@"Stalled: %i\n", -[PXVideoSession isStalled](self, "isStalled")];
   [v3 appendFormat:@"At Beginning: %i End: %i\n", -[PXVideoSession isAtBeginning](self, "isAtBeginning"), -[PXVideoSession isAtEnd](self, "isAtEnd")];
-  v9 = [(PXVideoSession *)self _playbackStateDescription];
-  [v3 appendFormat:@"Playback: %@\n", v9];
+  _playbackStateDescription = [(PXVideoSession *)self _playbackStateDescription];
+  [v3 appendFormat:@"Playback: %@\n", _playbackStateDescription];
 
-  v10 = [(PXVideoSession *)self videoOutput];
-  [v3 appendFormat:@"VideoOutput: %@\n", v10];
+  videoOutput = [(PXVideoSession *)self videoOutput];
+  [v3 appendFormat:@"VideoOutput: %@\n", videoOutput];
 
   if (self->_stateQueue_obtainedFirstPixelBuffer)
   {
@@ -309,26 +309,26 @@
   v13 = MEMORY[0x1E696AEC0];
   v14 = objc_opt_class();
   v15 = NSStringFromClass(v14);
-  v16 = [v3 px_stringByIndentingNewLines];
-  v17 = [v13 stringWithFormat:@"<%@ %p> {\n\t%@}", v15, self, v16];
+  px_stringByIndentingNewLines = [v3 px_stringByIndentingNewLines];
+  v17 = [v13 stringWithFormat:@"<%@ %p> {\n\t%@}", v15, self, px_stringByIndentingNewLines];
 
   return v17;
 }
 
-- (void)_handleAssetTracksDidLoadForAsset:(id)a3
+- (void)_handleAssetTracksDidLoadForAsset:(id)asset
 {
-  if (a3)
+  if (asset)
   {
-    v4 = [MEMORY[0x1E69C0708] tracksWithMediaType:*MEMORY[0x1E6987608] forAsset:a3];
-    v5 = [v4 firstObject];
+    v4 = [MEMORY[0x1E69C0708] tracksWithMediaType:*MEMORY[0x1E6987608] forAsset:asset];
+    firstObject = [v4 firstObject];
 
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __52__PXVideoSession__handleAssetTracksDidLoadForAsset___block_invoke;
     v7[3] = &unk_1E77498F8;
-    v8 = v5;
-    v9 = self;
-    v6 = v5;
+    v8 = firstObject;
+    selfCopy = self;
+    v6 = firstObject;
     [(PXVideoSession *)self _performChanges:v7];
   }
 }
@@ -380,19 +380,19 @@ void __52__PXVideoSession__handleAssetTracksDidLoadForAsset___block_invoke_2(uin
 - (void)_loadAssetTracksIfNeeded
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PXVideoSession *)self playerItem];
-  v4 = [v3 asset];
+  playerItem = [(PXVideoSession *)self playerItem];
+  asset = [playerItem asset];
 
-  if (v4)
+  if (asset)
   {
-    if ([v4 statusOfValueForKey:@"tracks" error:0] == 2)
+    if ([asset statusOfValueForKey:@"tracks" error:0] == 2)
     {
-      [(PXVideoSession *)self _handleAssetTracksDidLoadForAsset:v4];
+      [(PXVideoSession *)self _handleAssetTracksDidLoadForAsset:asset];
     }
 
     else
     {
-      objc_initWeak(&location, v4);
+      objc_initWeak(&location, asset);
       objc_initWeak(&from, self);
       v11[0] = @"tracks";
       v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
@@ -402,7 +402,7 @@ void __52__PXVideoSession__handleAssetTracksDidLoadForAsset___block_invoke_2(uin
       v6[3] = &unk_1E7749C10;
       objc_copyWeak(&v7, &from);
       objc_copyWeak(&v8, &location);
-      [v4 loadValuesAsynchronouslyForKeys:v5 completionHandler:v6];
+      [asset loadValuesAsynchronouslyForKeys:v5 completionHandler:v6];
 
       objc_destroyWeak(&v8);
       objc_destroyWeak(&v7);
@@ -421,39 +421,39 @@ void __42__PXVideoSession__loadAssetTracksIfNeeded__block_invoke(uint64_t a1)
 
 - (id)_playbackStateDescription
 {
-  v3 = [(PXVideoSession *)self desiredPlayState];
-  v4 = [(PXVideoSession *)self playState];
-  if (v4 > 5)
+  desiredPlayState = [(PXVideoSession *)self desiredPlayState];
+  playState = [(PXVideoSession *)self playState];
+  if (playState > 5)
   {
     v27 = 0;
   }
 
   else
   {
-    v27 = off_1E77468F8[v4];
+    v27 = off_1E77468F8[playState];
   }
 
-  v5 = [(PXVideoSession *)self videoPlayer];
-  v6 = [v5 status];
-  if (v6 > 2)
+  videoPlayer = [(PXVideoSession *)self videoPlayer];
+  status = [videoPlayer status];
+  if (status > 2)
   {
     v26 = 0;
   }
 
   else
   {
-    v26 = off_1E7746928[v6];
+    v26 = off_1E7746928[status];
   }
 
-  v25 = [(PXVideoSession *)self isBuffering];
-  v7 = [(PXVideoSession *)self isPlayerTimeAdvancing];
-  v8 = [(PXVideoSession *)self isStalled];
+  isBuffering = [(PXVideoSession *)self isBuffering];
+  isPlayerTimeAdvancing = [(PXVideoSession *)self isPlayerTimeAdvancing];
+  isStalled = [(PXVideoSession *)self isStalled];
   memset(&v30, 0, sizeof(v30));
-  v9 = [(PXVideoSession *)self videoPlayer];
-  v10 = v9;
-  if (v9)
+  videoPlayer2 = [(PXVideoSession *)self videoPlayer];
+  v10 = videoPlayer2;
+  if (videoPlayer2)
   {
-    [v9 currentTime];
+    [videoPlayer2 currentTime];
   }
 
   else
@@ -462,11 +462,11 @@ void __42__PXVideoSession__loadAssetTracksIfNeeded__block_invoke(uint64_t a1)
   }
 
   memset(&v29, 0, sizeof(v29));
-  v11 = [(PXVideoSession *)self videoPlayer];
-  v12 = v11;
-  if (v11)
+  videoPlayer3 = [(PXVideoSession *)self videoPlayer];
+  v12 = videoPlayer3;
+  if (videoPlayer3)
   {
-    [v11 currentItemDuration];
+    [videoPlayer3 currentItemDuration];
   }
 
   else
@@ -475,12 +475,12 @@ void __42__PXVideoSession__loadAssetTracksIfNeeded__block_invoke(uint64_t a1)
   }
 
   v13 = @"▶︎";
-  if (v3 != 1)
+  if (desiredPlayState != 1)
   {
     v13 = 0;
   }
 
-  if (v3)
+  if (desiredPlayState)
   {
     v14 = v13;
   }
@@ -490,17 +490,17 @@ void __42__PXVideoSession__loadAssetTracksIfNeeded__block_invoke(uint64_t a1)
     v14 = @"‖";
   }
 
-  v15 = [v5 currentItemIsLikelyToKeepUp];
-  v16 = [v5 currentItemPlaybackBufferFull];
-  v17 = [v5 currentItemPlaybackBufferEmpty];
-  [v5 rate];
+  currentItemIsLikelyToKeepUp = [videoPlayer currentItemIsLikelyToKeepUp];
+  currentItemPlaybackBufferFull = [videoPlayer currentItemPlaybackBufferFull];
+  currentItemPlaybackBufferEmpty = [videoPlayer currentItemPlaybackBufferEmpty];
+  [videoPlayer rate];
   v18 = MEMORY[0x1E696AEC0];
   v20 = v19;
   v28 = v30;
   v21 = __43__PXVideoSession__playbackStateDescription__block_invoke(&v28);
   v28 = v29;
   v22 = __43__PXVideoSession__playbackStateDescription__block_invoke(&v28);
-  v23 = [v18 stringWithFormat:@"%@ %@ %@ b%i a%i s%i l%i f%i e%i r%.1f %@/%@", v14, v27, v26, v25, v7, v8, v15, v16, v17, *&v20, v21, v22];
+  v23 = [v18 stringWithFormat:@"%@ %@ %@ b%i a%i s%i l%i f%i e%i r%.1f %@/%@", v14, v27, v26, isBuffering, isPlayerTimeAdvancing, isStalled, currentItemIsLikelyToKeepUp, currentItemPlaybackBufferFull, currentItemPlaybackBufferEmpty, *&v20, v21, v22];
 
   return v23;
 }
@@ -546,8 +546,8 @@ void __48__PXVideoSession__handlePlayerItemSeekDidFinish__block_invoke(uint64_t 
 - (void)_updateQueue_seekToPlaybackTimeRangeStartIfNeeded
 {
   [(PXVideoSession *)self _assertOnUpdateQueue];
-  v3 = [(PXVideoSession *)self playerItem];
-  if (v3 && ([(PXVideoSession *)self playState]!= 3 || [(PXVideoSession *)self isAtEnd]))
+  playerItem = [(PXVideoSession *)self playerItem];
+  if (playerItem && ([(PXVideoSession *)self playState]!= 3 || [(PXVideoSession *)self isAtEnd]))
   {
     v18 = 0u;
     v19 = 0u;
@@ -573,7 +573,7 @@ void __48__PXVideoSession__handlePlayerItemSeekDidFinish__block_invoke(uint64_t 
     range.start = v13;
     time = *v4;
     v6 = time;
-    [v3 seekToTime:&range toleranceBefore:&time toleranceAfter:&v6 completionHandler:v7];
+    [playerItem seekToTime:&range toleranceBefore:&time toleranceAfter:&v6 completionHandler:v7];
     objc_destroyWeak(v8);
     objc_destroyWeak(&location);
   }
@@ -603,14 +603,14 @@ void __67__PXVideoSession__updateQueue_seekToPlaybackTimeRangeStartIfNeeded__blo
 - (void)_removeAllVideoOutputs
 {
   [(PXVideoSession *)self _relinquishAny4k60StreamAllowance];
-  v3 = [(PXVideoSession *)self playerItem];
+  playerItem = [(PXVideoSession *)self playerItem];
   videoWorkQueue = self->_videoWorkQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __40__PXVideoSession__removeAllVideoOutputs__block_invoke;
   block[3] = &unk_1E774C648;
-  v7 = v3;
-  v5 = v3;
+  v7 = playerItem;
+  v5 = playerItem;
   dispatch_async(videoWorkQueue, block);
 }
 
@@ -635,30 +635,30 @@ void __40__PXVideoSession__removeAllVideoOutputs__block_invoke_2(uint64_t a1, vo
 - (void)_updateAVPlayerPlayState
 {
   [(PXVideoSession *)self _assertOnUpdateQueue];
-  v8 = [(PXVideoSession *)self videoPlayer];
-  v4 = [(PXVideoSession *)self playState];
-  if (v4 == 2)
+  videoPlayer = [(PXVideoSession *)self videoPlayer];
+  playState = [(PXVideoSession *)self playState];
+  if (playState == 2)
   {
-    [v8 pause];
+    [videoPlayer pause];
     goto LABEL_7;
   }
 
-  if (v4 == 3)
+  if (playState == 3)
   {
     [(PXVideoPlaybackReporter *)self->_playbackReporter reportPlaybackBegan];
     [(PXVideoSession *)self desiredPlaybackRate];
     *&v7 = v7;
-    [v8 setRate:v7];
+    [videoPlayer setRate:v7];
 LABEL_7:
-    v5 = v8;
+    v5 = videoPlayer;
     goto LABEL_8;
   }
 
-  v5 = v8;
-  if (!v4)
+  v5 = videoPlayer;
+  if (!playState)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXVideoSession.m" lineNumber:2529 description:@"unknown play state"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXVideoSession.m" lineNumber:2529 description:@"unknown play state"];
 
     abort();
   }
@@ -668,39 +668,39 @@ LABEL_8:
 
 - (void)_updateCurrentPlayerItem
 {
-  v4 = [(PXVideoSession *)self videoPlayer];
-  v3 = [v4 currentItem];
-  [(PXVideoSession *)self setCurrentPlayerItem:v3];
+  videoPlayer = [(PXVideoSession *)self videoPlayer];
+  currentItem = [videoPlayer currentItem];
+  [(PXVideoSession *)self setCurrentPlayerItem:currentItem];
 }
 
 - (void)_updatePlayState
 {
   v23 = *MEMORY[0x1E69E9840];
   [(PXVideoSession *)self _assertOnUpdateQueue];
-  v3 = [(PXVideoSession *)self playerItem];
-  if (v3)
+  playerItem = [(PXVideoSession *)self playerItem];
+  if (playerItem)
   {
   }
 
   else
   {
-    v7 = [(PXVideoSession *)self contentLoadingError];
+    contentLoadingError = [(PXVideoSession *)self contentLoadingError];
 
-    if (v7)
+    if (contentLoadingError)
     {
       v8 = MEMORY[0x1E696ABC0];
-      v9 = [(PXVideoSession *)self contentLoadingError];
-      v4 = [v8 px_errorWithDomain:@"PXVideoSessionErrorDomain" code:1 underlyingError:v9 debugDescription:@"Video loading failed"];
+      contentLoadingError2 = [(PXVideoSession *)self contentLoadingError];
+      v4 = [v8 px_errorWithDomain:@"PXVideoSessionErrorDomain" code:1 underlyingError:contentLoadingError2 debugDescription:@"Video loading failed"];
 
-      v5 = PLVideoPlaybackGetLog();
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+      videoPlayer = PLVideoPlaybackGetLog();
+      if (os_log_type_enabled(videoPlayer, OS_LOG_TYPE_ERROR))
       {
 LABEL_11:
         v19 = 138412546;
-        v20 = self;
+        selfCopy2 = self;
         v21 = 2112;
         v22 = v4;
-        _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_ERROR, "%@ encountered error: %@", &v19, 0x16u);
+        _os_log_impl(&dword_1A3C1C000, videoPlayer, OS_LOG_TYPE_ERROR, "%@ encountered error: %@", &v19, 0x16u);
       }
 
 LABEL_21:
@@ -712,8 +712,8 @@ LABEL_21:
   if (![(PXVideoSession *)self isPlayable]&& [(PXVideoSession *)self desiredPlayState]== 1)
   {
     v4 = [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXVideoSessionErrorDomain" code:2 underlyingError:0 debugDescription:@"Video is not playable on this device"];
-    v5 = PLVideoPlaybackGetLog();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    videoPlayer = PLVideoPlaybackGetLog();
+    if (os_log_type_enabled(videoPlayer, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_11;
     }
@@ -721,7 +721,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v5 = [(PXVideoSession *)self videoPlayer];
+  videoPlayer = [(PXVideoSession *)self videoPlayer];
   if ([(PXVideoSession *)self isUpdatingAudioSession])
   {
     v4 = 0;
@@ -729,19 +729,19 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v10 = [v5 status];
-  if (v10 == 2)
+  status = [videoPlayer status];
+  if (status == 2)
   {
     v15 = MEMORY[0x1E696ABC0];
-    v16 = [v5 error];
-    v4 = [v15 px_errorWithDomain:@"PXVideoSessionErrorDomain" code:2 underlyingError:v16 debugDescription:@"AVPlayer state == PXVideoSessionActualPlayStateFailed"];
+    error = [videoPlayer error];
+    v4 = [v15 px_errorWithDomain:@"PXVideoSessionErrorDomain" code:2 underlyingError:error debugDescription:@"AVPlayer state == PXVideoSessionActualPlayStateFailed"];
 
     v14 = PLVideoPlaybackGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
 LABEL_19:
       v19 = 138412546;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2112;
       v22 = v4;
       _os_log_impl(&dword_1A3C1C000, v14, OS_LOG_TYPE_ERROR, "%@ encountered error: %@", &v19, 0x16u);
@@ -752,19 +752,19 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (v10 != 1)
+  if (status != 1)
   {
     v4 = 0;
-    v6 = v10 == 0;
+    v6 = status == 0;
     goto LABEL_22;
   }
 
-  if ([v5 currentItemStatus]== 2)
+  if ([videoPlayer currentItemStatus]== 2)
   {
     v11 = MEMORY[0x1E696ABC0];
-    v12 = [v5 currentItem];
-    v13 = [v12 error];
-    v4 = [v11 px_errorWithDomain:@"PXVideoSessionErrorDomain" code:2 underlyingError:v13 debugDescription:@"AVPlayerItem status == AVPlayerItemStatusFailed"];
+    currentItem = [videoPlayer currentItem];
+    error2 = [currentItem error];
+    v4 = [v11 px_errorWithDomain:@"PXVideoSessionErrorDomain" code:2 underlyingError:error2 debugDescription:@"AVPlayerItem status == AVPlayerItemStatusFailed"];
 
     v14 = PLVideoPlaybackGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -775,8 +775,8 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v18 = [(PXVideoSession *)self desiredPlayState];
-  if (v18 == 1)
+  desiredPlayState = [(PXVideoSession *)self desiredPlayState];
+  if (desiredPlayState == 1)
   {
     v4 = 0;
     if ([(PXVideoSession *)self isBuffering])
@@ -793,7 +793,7 @@ LABEL_20:
   else
   {
     v4 = 0;
-    if (v18)
+    if (desiredPlayState)
     {
       v6 = 0;
     }
@@ -814,11 +814,11 @@ LABEL_22:
 
 - (void)_updateReadyForSeeking
 {
-  v5 = [(PXVideoSession *)self videoPlayer];
-  if ([v5 status] == 1)
+  videoPlayer = [(PXVideoSession *)self videoPlayer];
+  if ([videoPlayer status] == 1)
   {
-    v3 = [v5 currentItem];
-    v4 = [v3 status] == 1;
+    currentItem = [videoPlayer currentItem];
+    v4 = [currentItem status] == 1;
   }
 
   else
@@ -844,9 +844,9 @@ LABEL_22:
   v6[5] = &v7;
   dispatch_sync(MEMORY[0x1E69E96A0], v6);
   v3 = *(v8 + 6);
-  v4 = [(PXVideoSession *)self videoPlayer];
+  videoPlayer = [(PXVideoSession *)self videoPlayer];
   LODWORD(v5) = v3;
-  [v4 setVolume:v5];
+  [videoPlayer setVolume:v5];
 
   _Block_object_dispose(&v7, 8);
 }
@@ -919,15 +919,15 @@ void __39__PXVideoSession__updateVolumeAnimator__block_invoke_2(void *a1)
 - (void)_updatePlayerItemInPlayer
 {
   [(PXVideoSession *)self _assertOnUpdateQueue];
-  v3 = [(PXVideoSession *)self playerItem];
-  if (!v3)
+  playerItem = [(PXVideoSession *)self playerItem];
+  if (!playerItem)
   {
     v8 = 0;
-    v5 = [(PXVideoSession *)self videoPlayer];
-    v6 = v5;
+    videoPlayer = [(PXVideoSession *)self videoPlayer];
+    v6 = videoPlayer;
     v7 = 0;
 LABEL_7:
-    [v5 replaceCurrentItemWithPlayerItem:v7];
+    [videoPlayer replaceCurrentItemWithPlayerItem:v7];
     goto LABEL_8;
   }
 
@@ -936,30 +936,30 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v8 = v3;
-  v4 = [(PXVideoSession *)self isLoopingEnabled];
-  v5 = [(PXVideoSession *)self videoPlayer];
-  v6 = v5;
-  if (!v4)
+  v8 = playerItem;
+  isLoopingEnabled = [(PXVideoSession *)self isLoopingEnabled];
+  videoPlayer = [(PXVideoSession *)self videoPlayer];
+  v6 = videoPlayer;
+  if (!isLoopingEnabled)
   {
     v7 = v8;
     goto LABEL_7;
   }
 
-  [v5 setLoopingEnabled:1 withTemplateItem:v8];
+  [videoPlayer setLoopingEnabled:1 withTemplateItem:v8];
 LABEL_8:
 
-  v3 = v8;
+  playerItem = v8;
 LABEL_9:
 }
 
 - (void)_updateStalled
 {
   [(PXVideoSession *)self _assertOnUpdateQueue];
-  v3 = [(PXVideoSession *)self desiredPlayState];
-  v4 = [(PXVideoSession *)self playState];
-  v5 = (v4 == 4) & ![(PXVideoSession *)self isPlayerTimeAdvancing];
-  if (v4 == 1)
+  desiredPlayState = [(PXVideoSession *)self desiredPlayState];
+  playState = [(PXVideoSession *)self playState];
+  v5 = (playState == 4) & ![(PXVideoSession *)self isPlayerTimeAdvancing];
+  if (playState == 1)
   {
     v6 = 1;
   }
@@ -969,7 +969,7 @@ LABEL_9:
     v6 = v5;
   }
 
-  if (v3 == 1)
+  if (desiredPlayState == 1)
   {
     v7 = v6;
   }
@@ -985,44 +985,44 @@ LABEL_9:
 - (void)_updateBuffering
 {
   [(PXVideoSession *)self _assertOnUpdateQueue];
-  v7 = [(PXVideoSession *)self videoPlayer];
-  v3 = [v7 currentItemIsLikelyToKeepUp];
-  v4 = [v7 currentItemPlaybackBufferFull];
-  v5 = [v7 currentItem];
-  v6 = v5 != 0;
+  videoPlayer = [(PXVideoSession *)self videoPlayer];
+  currentItemIsLikelyToKeepUp = [videoPlayer currentItemIsLikelyToKeepUp];
+  currentItemPlaybackBufferFull = [videoPlayer currentItemPlaybackBufferFull];
+  currentItem = [videoPlayer currentItem];
+  v6 = currentItem != 0;
 
-  [(PXVideoSession *)self setBuffering:v6 & ((v3 | v4) ^ 1u)];
+  [(PXVideoSession *)self setBuffering:v6 & ((currentItemIsLikelyToKeepUp | currentItemPlaybackBufferFull) ^ 1u)];
 }
 
-- (void)_updateAtBeginningOrEndWithPlayerItemDuration:(id *)a3 success:(BOOL)a4 error:(id)a5
+- (void)_updateAtBeginningOrEndWithPlayerItemDuration:(id *)duration success:(BOOL)success error:(id)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  if (!a4)
+  errorCopy = error;
+  if (!success)
   {
     v10 = PLVideoPlaybackGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       LODWORD(buf.start.value) = 138412290;
-      *(&buf.start.value + 4) = v8;
+      *(&buf.start.value + 4) = errorCopy;
       _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_ERROR, "Failed to load video duration. Error: %@", &buf, 0xCu);
     }
 
     goto LABEL_10;
   }
 
-  v9 = [(PXVideoSession *)self videoPlayer];
-  v10 = v9;
+  videoPlayer = [(PXVideoSession *)self videoPlayer];
+  v10 = videoPlayer;
   v18 = 0uLL;
   v19 = 0;
-  if (v9)
+  if (videoPlayer)
   {
-    [v9 currentTime];
+    [videoPlayer currentTime];
   }
 
   memset(&buf, 0, sizeof(buf));
   [(PXVideoSession *)self playbackTimeRange];
-  if ((BYTE12(v18) & 0x1D) != 1 || (a3->var2 & 0x1D) != 1)
+  if ((BYTE12(v18) & 0x1D) != 1 || (duration->var2 & 0x1D) != 1)
   {
 LABEL_10:
     v12 = 0;
@@ -1036,7 +1036,7 @@ LABEL_10:
   v11 = CMTimeCompare(&time1.start, &time2) < 1;
   *&time1.start.value = v18;
   time1.start.epoch = v19;
-  time2 = *a3;
+  time2 = *duration;
   if (CMTimeCompare(&time1.start, &time2) < 0)
   {
     if (buf.start.flags)
@@ -1087,19 +1087,19 @@ uint64_t __78__PXVideoSession__updateAtBeginningOrEndWithPlayerItemDuration_succ
 - (void)_updateAtBeginningOrEnd
 {
   [(PXVideoSession *)self _assertOnUpdateQueue];
-  v3 = [(PXVideoSession *)self videoPlayer];
-  v4 = [(PXVideoSession *)self playerItem];
-  v5 = v4;
-  if (v3 && v4)
+  videoPlayer = [(PXVideoSession *)self videoPlayer];
+  playerItem = [(PXVideoSession *)self playerItem];
+  v5 = playerItem;
+  if (videoPlayer && playerItem)
   {
     objc_initWeak(&location, self);
-    v6 = [v5 asset];
+    asset = [v5 asset];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __41__PXVideoSession__updateAtBeginningOrEnd__block_invoke;
     v8[3] = &unk_1E7746810;
     objc_copyWeak(&v9, &location);
-    [v6 px_loadDurationWithCompletionHandler:v8];
+    [asset px_loadDurationWithCompletionHandler:v8];
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
@@ -1133,7 +1133,7 @@ uint64_t __41__PXVideoSession__updateAtBeginningOrEnd__block_invoke_2(uint64_t a
   return [v2 setAtEnd:0];
 }
 
-- (void)setNominalFrameRate:(float)a3
+- (void)setNominalFrameRate:(float)rate
 {
   [(PXVideoSession *)self _assertOnUpdateQueue];
   v10 = 0;
@@ -1145,7 +1145,7 @@ uint64_t __41__PXVideoSession__updateAtBeginningOrEnd__block_invoke_2(uint64_t a
   block[1] = 3221225472;
   block[2] = __38__PXVideoSession_setNominalFrameRate___block_invoke;
   block[3] = &unk_1E77467E8;
-  v9 = a3;
+  rateCopy = rate;
   block[4] = self;
   block[5] = &v10;
   dispatch_sync(stateQueue, block);
@@ -1153,9 +1153,9 @@ uint64_t __41__PXVideoSession__updateAtBeginningOrEnd__block_invoke_2(uint64_t a
   {
     if (self->_updateQueue_updateFlags.isPerformingUpdate && (self->_updateQueue_updateFlags.updated & 0x400) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXVideoSession setNominalFrameRate:]"];
-      [v6 handleFailureInFunction:v7 file:@"PXVideoSession.m" lineNumber:2333 description:{@"invalidating %lu after it already has been updated", 1024}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXVideoSession.m" lineNumber:2333 description:{@"invalidating %lu after it already has been updated", 1024}];
 
       abort();
     }
@@ -1205,10 +1205,10 @@ float __34__PXVideoSession_nominalFrameRate__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setNaturalSize:(CGSize)a3
+- (void)setNaturalSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(PXVideoSession *)self _assertOnUpdateQueue];
   v10 = 0;
   v11 = &v10;
@@ -1228,9 +1228,9 @@ float __34__PXVideoSession_nominalFrameRate__block_invoke(uint64_t a1)
   {
     if (self->_updateQueue_updateFlags.isPerformingUpdate && (self->_updateQueue_updateFlags.updated & 0x400) != 0)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXVideoSession setNaturalSize:]"];
-      [v7 handleFailureInFunction:v8 file:@"PXVideoSession.m" lineNumber:2311 description:{@"invalidating %lu after it already has been updated", 1024}];
+      [currentHandler handleFailureInFunction:v8 file:@"PXVideoSession.m" lineNumber:2311 description:{@"invalidating %lu after it already has been updated", 1024}];
 
       abort();
     }
@@ -1289,7 +1289,7 @@ __n128 __29__PXVideoSession_naturalSize__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setPreferredTransform:(CGAffineTransform *)a3
+- (void)setPreferredTransform:(CGAffineTransform *)transform
 {
   [(PXVideoSession *)self _assertOnUpdateQueue];
   v11 = 0;
@@ -1301,10 +1301,10 @@ __n128 __29__PXVideoSession_naturalSize__block_invoke(uint64_t a1)
   v7[1] = 3221225472;
   v7[2] = __40__PXVideoSession_setPreferredTransform___block_invoke;
   v7[3] = &unk_1E77466A0;
-  v6 = *&a3->c;
-  v8 = *&a3->a;
+  v6 = *&transform->c;
+  v8 = *&transform->a;
   v9 = v6;
-  v10 = *&a3->tx;
+  v10 = *&transform->tx;
   v7[4] = self;
   v7[5] = &v11;
   dispatch_sync(stateQueue, v7);
@@ -1379,10 +1379,10 @@ __n128 __36__PXVideoSession_preferredTransform__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_videoQueue_updateContentDynamicRangeWithPlayerItem:(id)a3
+- (void)_videoQueue_updateContentDynamicRangeWithPlayerItem:(id)item
 {
-  v4 = [a3 asset];
-  v5 = [MEMORY[0x1E69C0928] videoAssetIsHighDynamicRange:v4];
+  asset = [item asset];
+  v5 = [MEMORY[0x1E69C0928] videoAssetIsHighDynamicRange:asset];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __70__PXVideoSession__videoQueue_updateContentDynamicRangeWithPlayerItem___block_invoke;
@@ -1395,7 +1395,7 @@ __n128 __36__PXVideoSession_preferredTransform__block_invoke(uint64_t a1)
 - (void)_updateContentDynamicRange
 {
   [(PXVideoSession *)self _assertOnUpdateQueue];
-  v3 = [(PXVideoSession *)self playerItem];
+  playerItem = [(PXVideoSession *)self playerItem];
   objc_initWeak(&location, self);
   videoWorkQueue = self->_videoWorkQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -1403,8 +1403,8 @@ __n128 __36__PXVideoSession_preferredTransform__block_invoke(uint64_t a1)
   block[2] = __44__PXVideoSession__updateContentDynamicRange__block_invoke;
   block[3] = &unk_1E774B248;
   objc_copyWeak(&v8, &location);
-  v7 = v3;
-  v5 = v3;
+  v7 = playerItem;
+  v5 = playerItem;
   dispatch_async(videoWorkQueue, block);
 
   objc_destroyWeak(&v8);
@@ -1417,23 +1417,23 @@ void __44__PXVideoSession__updateContentDynamicRange__block_invoke(uint64_t a1)
   [WeakRetained _videoQueue_updateContentDynamicRangeWithPlayerItem:*(a1 + 32)];
 }
 
-- (void)_videoQueue_updateTrackGeometryWithPlayerItem:(id)a3
+- (void)_videoQueue_updateTrackGeometryWithPlayerItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 asset];
-  if ([v5 statusOfValueForKey:@"tracks" error:0] == 2 && (objc_msgSend(v5, "tracks"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, v7))
+  itemCopy = item;
+  asset = [itemCopy asset];
+  if ([asset statusOfValueForKey:@"tracks" error:0] == 2 && (objc_msgSend(asset, "tracks"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, v7))
   {
-    v8 = [MEMORY[0x1E69C0708] tracksWithMediaType:*MEMORY[0x1E6987608] forAsset:v5];
-    v9 = [v8 firstObject];
+    v8 = [MEMORY[0x1E69C0708] tracksWithMediaType:*MEMORY[0x1E6987608] forAsset:asset];
+    firstObject = [v8 firstObject];
 
-    if ([v9 statusOfValueForKey:@"preferredTransform" error:0] == 2)
+    if ([firstObject statusOfValueForKey:@"preferredTransform" error:0] == 2)
     {
       v25 = 0u;
       v24 = 0u;
       v23 = 0u;
-      if (v9)
+      if (firstObject)
       {
-        [v9 preferredTransform];
+        [firstObject preferredTransform];
       }
 
       v19[0] = MEMORY[0x1E69E9820];
@@ -1447,9 +1447,9 @@ void __44__PXVideoSession__updateContentDynamicRange__block_invoke(uint64_t a1)
       [(PXVideoSession *)self _performChanges:v19];
     }
 
-    if ([v9 statusOfValueForKey:@"naturalSize" error:0] == 2)
+    if ([firstObject statusOfValueForKey:@"naturalSize" error:0] == 2)
     {
-      [v9 naturalSize];
+      [firstObject naturalSize];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __64__PXVideoSession__videoQueue_updateTrackGeometryWithPlayerItem___block_invoke_2;
@@ -1460,9 +1460,9 @@ void __44__PXVideoSession__updateContentDynamicRange__block_invoke(uint64_t a1)
       [(PXVideoSession *)self _performChanges:v18];
     }
 
-    if ([v9 statusOfValueForKey:@"nominalFrameRate" error:0] == 2)
+    if ([firstObject statusOfValueForKey:@"nominalFrameRate" error:0] == 2)
     {
-      [v9 nominalFrameRate];
+      [firstObject nominalFrameRate];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __64__PXVideoSession__videoQueue_updateTrackGeometryWithPlayerItem___block_invoke_3;
@@ -1475,7 +1475,7 @@ void __44__PXVideoSession__updateContentDynamicRange__block_invoke(uint64_t a1)
 
   else
   {
-    [v4 presentationSize];
+    [itemCopy presentationSize];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __64__PXVideoSession__videoQueue_updateTrackGeometryWithPlayerItem___block_invoke_4;
@@ -1511,21 +1511,21 @@ uint64_t __64__PXVideoSession__videoQueue_updateTrackGeometryWithPlayerItem___bl
 - (void)_updateTrackGeometry
 {
   [(PXVideoSession *)self _assertOnUpdateQueue];
-  v3 = [(PXVideoSession *)self playerItem];
-  v4 = [v3 videoComposition];
-  v5 = v4;
-  if (v4)
+  playerItem = [(PXVideoSession *)self playerItem];
+  videoComposition = [playerItem videoComposition];
+  v5 = videoComposition;
+  if (videoComposition)
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __38__PXVideoSession__updateTrackGeometry__block_invoke;
     v11[3] = &unk_1E77498F8;
     v11[4] = self;
-    v12 = v4;
+    v12 = videoComposition;
     [(PXVideoSession *)self _performChanges:v11];
   }
 
-  else if ([v3 status] == 1)
+  else if ([playerItem status] == 1)
   {
     objc_initWeak(&location, self);
     videoWorkQueue = self->_videoWorkQueue;
@@ -1534,7 +1534,7 @@ uint64_t __64__PXVideoSession__videoQueue_updateTrackGeometryWithPlayerItem___bl
     block[2] = __38__PXVideoSession__updateTrackGeometry__block_invoke_2;
     block[3] = &unk_1E774B248;
     objc_copyWeak(&v9, &location);
-    v8 = v3;
+    v8 = playerItem;
     dispatch_async(videoWorkQueue, block);
 
     objc_destroyWeak(&v9);
@@ -1563,11 +1563,11 @@ void __38__PXVideoSession__updateTrackGeometry__block_invoke_2(uint64_t a1)
 - (void)_updateAudioStatus
 {
   [(PXVideoSession *)self _assertOnUpdateQueue];
-  v3 = [(PXVideoSession *)self playerItem];
-  if (v3)
+  playerItem = [(PXVideoSession *)self playerItem];
+  if (playerItem)
   {
-    v4 = [(PXVideoSession *)self videoPlayer];
-    if ([v4 currentItemHasEnabledAudio])
+    videoPlayer = [(PXVideoSession *)self videoPlayer];
+    if ([videoPlayer currentItemHasEnabledAudio])
     {
       v5 = 2;
     }
@@ -1592,25 +1592,25 @@ void __38__PXVideoSession__updateTrackGeometry__block_invoke_2(uint64_t a1)
   [(PXVideoSession *)self _performChanges:v6];
 }
 
-- (void)_setPlayabilityFromAsset:(id)a3
+- (void)_setPlayabilityFromAsset:(id)asset
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  assetCopy = asset;
+  v5 = assetCopy;
+  if (assetCopy)
   {
-    v6 = [v4 isPlayable];
+    isPlayable = [assetCopy isPlayable];
   }
 
   else
   {
-    v6 = 1;
+    isPlayable = 1;
   }
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __43__PXVideoSession__setPlayabilityFromAsset___block_invoke;
   v8[3] = &unk_1E7749D28;
-  v10 = v6;
+  v10 = isPlayable;
   v8[4] = self;
   v9 = v5;
   v7 = v5;
@@ -1635,22 +1635,22 @@ void __43__PXVideoSession__setPlayabilityFromAsset___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_handlePlayabilityDidLoadForAsset:(id)a3
+- (void)_handlePlayabilityDidLoadForAsset:(id)asset
 {
-  v4 = a3;
-  if (v4)
+  assetCopy = asset;
+  if (assetCopy)
   {
-    v5 = [(PXVideoSession *)self playerItem];
-    v6 = [v5 asset];
+    playerItem = [(PXVideoSession *)self playerItem];
+    asset = [playerItem asset];
 
-    if (v6 == v4)
+    if (asset == assetCopy)
     {
       v12 = 0;
-      v7 = [v4 statusOfValueForKey:@"playable" error:&v12];
+      v7 = [assetCopy statusOfValueForKey:@"playable" error:&v12];
       v8 = v12;
       if (v7 == 2)
       {
-        [(PXVideoSession *)self _setPlayabilityFromAsset:v4];
+        [(PXVideoSession *)self _setPlayabilityFromAsset:assetCopy];
       }
 
       else
@@ -1660,7 +1660,7 @@ void __43__PXVideoSession__setPlayabilityFromAsset___block_invoke(uint64_t a1)
         v9[2] = __52__PXVideoSession__handlePlayabilityDidLoadForAsset___block_invoke;
         v9[3] = &unk_1E774A448;
         v9[4] = self;
-        v10 = v4;
+        v10 = assetCopy;
         v11 = v8;
         [(PXVideoSession *)self _performChanges:v9];
       }
@@ -1689,15 +1689,15 @@ void __52__PXVideoSession__handlePlayabilityDidLoadForAsset___block_invoke(uint6
 {
   v19 = *MEMORY[0x1E69E9840];
   [(PXVideoSession *)self _assertOnUpdateQueue];
-  v3 = [(PXVideoSession *)self playerItem];
-  v4 = [v3 asset];
+  playerItem = [(PXVideoSession *)self playerItem];
+  asset = [playerItem asset];
 
   v13 = 0;
-  v5 = [v4 statusOfValueForKey:@"playable" error:&v13];
+  v5 = [asset statusOfValueForKey:@"playable" error:&v13];
   v6 = v13;
   if (v5 == 2)
   {
-    [(PXVideoSession *)self _setPlayabilityFromAsset:v4];
+    [(PXVideoSession *)self _setPlayabilityFromAsset:asset];
   }
 
   else if (v5 == 3)
@@ -1706,7 +1706,7 @@ void __52__PXVideoSession__handlePlayabilityDidLoadForAsset___block_invoke(uint6
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v16 = v4;
+      v16 = asset;
       v17 = 2112;
       v18 = v6;
       _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_ERROR, "Failed to load playable status of video %@: %@", buf, 0x16u);
@@ -1718,7 +1718,7 @@ void __52__PXVideoSession__handlePlayabilityDidLoadForAsset___block_invoke(uint6
   else
   {
     objc_initWeak(buf, self);
-    objc_initWeak(&location, v4);
+    objc_initWeak(&location, asset);
     v14 = @"playable";
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v14 count:1];
     v9[0] = MEMORY[0x1E69E9820];
@@ -1727,7 +1727,7 @@ void __52__PXVideoSession__handlePlayabilityDidLoadForAsset___block_invoke(uint6
     v9[3] = &unk_1E7749C10;
     objc_copyWeak(&v10, buf);
     objc_copyWeak(&v11, &location);
-    [v4 loadValuesAsynchronouslyForKeys:v8 completionHandler:v9];
+    [asset loadValuesAsynchronouslyForKeys:v8 completionHandler:v9];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&v10);
@@ -1743,7 +1743,7 @@ void __36__PXVideoSession__updatePlayability__block_invoke(uint64_t a1)
   [WeakRetained _handlePlayabilityDidLoadForAsset:v2];
 }
 
-- (void)_handlePlayerTimeAdvancementTimer:(id)a3
+- (void)_handlePlayerTimeAdvancementTimer:(id)timer
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -1791,7 +1791,7 @@ uint64_t __52__PXVideoSession__handlePlayerTimeAdvancementTimer___block_invoke(u
   return [*(a1 + 32) setPlayerTimeAdvancing:v4];
 }
 
-- (void)_avPlayerTimeDidChange:(id *)a3
+- (void)_avPlayerTimeDidChange:(id *)change
 {
   [(PXVideoSession *)self _assertOnUpdateQueue];
   v5[0] = MEMORY[0x1E69E9820];
@@ -1799,7 +1799,7 @@ uint64_t __52__PXVideoSession__handlePlayerTimeAdvancementTimer___block_invoke(u
   v5[2] = __41__PXVideoSession__avPlayerTimeDidChange___block_invoke;
   v5[3] = &unk_1E7746748;
   v5[4] = self;
-  v6 = *a3;
+  v6 = *change;
   [(PXVideoSession *)self _performChanges:v5];
 }
 
@@ -1920,7 +1920,7 @@ uint64_t __45__PXVideoSession_pixelBufferOutputTokenCount__block_invoke(uint64_t
   return result;
 }
 
-- (void)setAtEnd:(BOOL)a3
+- (void)setAtEnd:(BOOL)end
 {
   [(PXVideoSession *)self _assertOnUpdateQueue];
   v8 = 0;
@@ -1932,7 +1932,7 @@ uint64_t __45__PXVideoSession_pixelBufferOutputTokenCount__block_invoke(uint64_t
   block[1] = 3221225472;
   block[2] = __27__PXVideoSession_setAtEnd___block_invoke;
   block[3] = &unk_1E77465B0;
-  v7 = a3;
+  endCopy = end;
   block[4] = self;
   block[5] = &v8;
   dispatch_sync(stateQueue, block);
@@ -1976,7 +1976,7 @@ uint64_t __27__PXVideoSession_setAtEnd___block_invoke(uint64_t result)
   return v3;
 }
 
-- (void)setAtBeginning:(BOOL)a3
+- (void)setAtBeginning:(BOOL)beginning
 {
   [(PXVideoSession *)self _assertOnUpdateQueue];
   v8 = 0;
@@ -1988,7 +1988,7 @@ uint64_t __27__PXVideoSession_setAtEnd___block_invoke(uint64_t result)
   block[1] = 3221225472;
   block[2] = __33__PXVideoSession_setAtBeginning___block_invoke;
   block[3] = &unk_1E77465B0;
-  v7 = a3;
+  beginningCopy = beginning;
   block[4] = self;
   block[5] = &v8;
   dispatch_sync(stateQueue, block);
@@ -2032,7 +2032,7 @@ uint64_t __33__PXVideoSession_setAtBeginning___block_invoke(uint64_t result)
   return v3;
 }
 
-- (void)setDesiredPlayState:(int64_t)a3
+- (void)setDesiredPlayState:(int64_t)state
 {
   v27 = *MEMORY[0x1E69E9840];
   v17 = 0;
@@ -2051,7 +2051,7 @@ uint64_t __33__PXVideoSession_setAtBeginning___block_invoke(uint64_t result)
   block[4] = self;
   block[5] = &v13;
   block[6] = &v17;
-  block[7] = a3;
+  block[7] = state;
   dispatch_sync(stateQueue, block);
   if (*(v18 + 24) == 1)
   {
@@ -2080,7 +2080,7 @@ uint64_t __33__PXVideoSession_setAtBeginning___block_invoke(uint64_t result)
         v10 = @"Paused";
       }
 
-      if (a3 != 1)
+      if (state != 1)
       {
         v8 = 0;
       }
@@ -2088,14 +2088,14 @@ uint64_t __33__PXVideoSession_setAtBeginning___block_invoke(uint64_t result)
       *buf = 138412802;
       v22 = v10;
       v23 = 2112;
-      if (!a3)
+      if (!state)
       {
         v8 = @"Paused";
       }
 
       v24 = v8;
       v25 = 2112;
-      v26 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_DEFAULT, "[Video Session] Desired play state changing from %@ to %@\n\t%@", buf, 0x20u);
     }
 
@@ -2104,7 +2104,7 @@ uint64_t __33__PXVideoSession_setAtBeginning___block_invoke(uint64_t result)
     v11[2] = __38__PXVideoSession_setDesiredPlayState___block_invoke_350;
     v11[3] = &unk_1E7749D78;
     v11[4] = self;
-    v11[5] = a3;
+    v11[5] = state;
     [(PXVideoSession *)self _performChanges:v11];
   }
 
@@ -2209,7 +2209,7 @@ void __38__PXVideoSession_setDesiredPlayState___block_invoke_350(uint64_t a1, vo
   return v3;
 }
 
-- (void)setPlayState:(int64_t)a3
+- (void)setPlayState:(int64_t)state
 {
   v47 = *MEMORY[0x1E69E9840];
   [(PXVideoSession *)self _assertOnUpdateQueue];
@@ -2229,15 +2229,15 @@ void __38__PXVideoSession_setDesiredPlayState___block_invoke_350(uint64_t a1, vo
   block[4] = self;
   block[5] = &v37;
   block[6] = &v33;
-  block[7] = a3;
+  block[7] = state;
   dispatch_sync(stateQueue, block);
   if (*(v38 + 24) == 1)
   {
     if (self->_updateQueue_updateFlags.isPerformingUpdate && (self->_updateQueue_updateFlags.updated & 0x680) != 0)
     {
-      v30 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v31 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXVideoSession setPlayState:]"];
-      [v30 handleFailureInFunction:v31 file:@"PXVideoSession.m" lineNumber:2016 description:{@"invalidating %lu after it already has been updated", 1664}];
+      [currentHandler handleFailureInFunction:v31 file:@"PXVideoSession.m" lineNumber:2016 description:{@"invalidating %lu after it already has been updated", 1664}];
 
       abort();
     }
@@ -2251,9 +2251,9 @@ void __38__PXVideoSession_setDesiredPlayState___block_invoke_350(uint64_t a1, vo
       v8 = v7;
       if (os_signpost_enabled(v6))
       {
-        v9 = [(PXVideoSession *)self logContext];
+        logContext = [(PXVideoSession *)self logContext];
         *buf = 134217984;
-        v42 = v9;
+        v42 = logContext;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v6, OS_SIGNPOST_INTERVAL_END, v8, "PXVideoSessionChangePlayState", "Context=%{signpost.telemetry:string2}lu ", buf, 0xCu);
       }
     }
@@ -2265,11 +2265,11 @@ void __38__PXVideoSession_setDesiredPlayState___block_invoke_350(uint64_t a1, vo
       v12 = v11;
       if (os_signpost_enabled(v10))
       {
-        v13 = [(PXVideoSession *)self logContext];
+        logContext2 = [(PXVideoSession *)self logContext];
         *buf = 134218240;
-        v42 = v13;
+        v42 = logContext2;
         v43 = 2048;
-        v44 = a3;
+        stateCopy2 = state;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v10, OS_SIGNPOST_EVENT, v12, "PXVideoSessionChangePlayState", "Context=%{signpost.telemetry:string2}lu %ld", buf, 0x16u);
       }
     }
@@ -2281,11 +2281,11 @@ void __38__PXVideoSession_setDesiredPlayState___block_invoke_350(uint64_t a1, vo
       v16 = v15;
       if (os_signpost_enabled(v14))
       {
-        v17 = [(PXVideoSession *)self logContext];
+        logContext3 = [(PXVideoSession *)self logContext];
         *buf = 134218240;
-        v42 = v17;
+        v42 = logContext3;
         v43 = 2048;
-        v44 = a3;
+        stateCopy2 = state;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v16, "PXVideoSessionChangePlayState", "Context=%{signpost.telemetry:string2}lu %ld", buf, 0x16u);
       }
     }
@@ -2304,37 +2304,37 @@ void __38__PXVideoSession_setDesiredPlayState___block_invoke_350(uint64_t a1, vo
         v20 = off_1E7746940[v19];
       }
 
-      if (a3 > 5)
+      if (state > 5)
       {
         v21 = 0;
       }
 
       else
       {
-        v21 = off_1E7746940[a3];
+        v21 = off_1E7746940[state];
       }
 
       *buf = 138412802;
       v42 = v20;
       v43 = 2112;
-      v44 = v21;
+      stateCopy2 = v21;
       v45 = 2112;
-      v46 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1A3C1C000, v18, OS_LOG_TYPE_DEFAULT, "[Video Session] Actual play state changing from %@ to %@\n\t%@", buf, 0x20u);
     }
 
-    if (a3 == 5)
+    if (state == 5)
     {
-      v22 = [(PXVideoSession *)self contentProvider];
-      v23 = [v22 analyticsPayload];
-      v24 = [v23 mutableCopy];
+      contentProvider = [(PXVideoSession *)self contentProvider];
+      analyticsPayload = [contentProvider analyticsPayload];
+      v24 = [analyticsPayload mutableCopy];
 
       v25 = objc_opt_class();
       v26 = NSStringFromClass(v25);
       [v24 setObject:v26 forKeyedSubscript:*MEMORY[0x1E6991E20]];
 
-      v27 = [(PXVideoSession *)self error];
-      [v24 setObject:v27 forKeyedSubscript:*MEMORY[0x1E6991E28]];
+      error = [(PXVideoSession *)self error];
+      [v24 setObject:error forKeyedSubscript:*MEMORY[0x1E6991E28]];
 
       v28 = MEMORY[0x1E6991F28];
       v29 = [v24 copy];
@@ -2377,7 +2377,7 @@ void *__31__PXVideoSession_setPlayState___block_invoke(void *result)
   return v3;
 }
 
-- (void)setIsReadyForSeeking:(BOOL)a3
+- (void)setIsReadyForSeeking:(BOOL)seeking
 {
   [(PXVideoSession *)self _assertOnUpdateQueue];
   v8 = 0;
@@ -2389,7 +2389,7 @@ void *__31__PXVideoSession_setPlayState___block_invoke(void *result)
   block[1] = 3221225472;
   block[2] = __39__PXVideoSession_setIsReadyForSeeking___block_invoke;
   block[3] = &unk_1E77465B0;
-  v7 = a3;
+  seekingCopy = seeking;
   block[4] = self;
   block[5] = &v8;
   dispatch_sync(stateQueue, block);
@@ -2437,7 +2437,7 @@ uint64_t __39__PXVideoSession_setIsReadyForSeeking___block_invoke(uint64_t resul
   return v3;
 }
 
-- (void)setBuffering:(BOOL)a3
+- (void)setBuffering:(BOOL)buffering
 {
   [(PXVideoSession *)self _assertOnUpdateQueue];
   v10 = 0;
@@ -2449,7 +2449,7 @@ uint64_t __39__PXVideoSession_setIsReadyForSeeking___block_invoke(uint64_t resul
   block[1] = 3221225472;
   block[2] = __31__PXVideoSession_setBuffering___block_invoke;
   block[3] = &unk_1E77465B0;
-  v9 = a3;
+  bufferingCopy = buffering;
   block[4] = self;
   block[5] = &v10;
   dispatch_sync(stateQueue, block);
@@ -2457,9 +2457,9 @@ uint64_t __39__PXVideoSession_setIsReadyForSeeking___block_invoke(uint64_t resul
   {
     if (self->_updateQueue_updateFlags.isPerformingUpdate && (self->_updateQueue_updateFlags.updated & 0xC0) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXVideoSession setBuffering:]"];
-      [v6 handleFailureInFunction:v7 file:@"PXVideoSession.m" lineNumber:1966 description:{@"invalidating %lu after it already has been updated", 192}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXVideoSession.m" lineNumber:1966 description:{@"invalidating %lu after it already has been updated", 192}];
 
       abort();
     }
@@ -2500,7 +2500,7 @@ uint64_t __31__PXVideoSession_setBuffering___block_invoke(uint64_t result)
   return v3;
 }
 
-- (void)setStalled:(BOOL)a3
+- (void)setStalled:(BOOL)stalled
 {
   [(PXVideoSession *)self _assertOnUpdateQueue];
   v8 = 0;
@@ -2512,7 +2512,7 @@ uint64_t __31__PXVideoSession_setBuffering___block_invoke(uint64_t result)
   block[1] = 3221225472;
   block[2] = __29__PXVideoSession_setStalled___block_invoke;
   block[3] = &unk_1E77465B0;
-  v7 = a3;
+  stalledCopy = stalled;
   block[4] = self;
   block[5] = &v8;
   dispatch_sync(stateQueue, block);
@@ -2556,7 +2556,7 @@ uint64_t __29__PXVideoSession_setStalled___block_invoke(uint64_t result)
   return v3;
 }
 
-- (void)setIsContentHighDynamicRange:(BOOL)a3
+- (void)setIsContentHighDynamicRange:(BOOL)range
 {
   [(PXVideoSession *)self _assertOnUpdateQueue];
   v8 = 0;
@@ -2568,7 +2568,7 @@ uint64_t __29__PXVideoSession_setStalled___block_invoke(uint64_t result)
   block[1] = 3221225472;
   block[2] = __47__PXVideoSession_setIsContentHighDynamicRange___block_invoke;
   block[3] = &unk_1E77465B0;
-  v7 = a3;
+  rangeCopy = range;
   block[4] = self;
   block[5] = &v8;
   dispatch_sync(stateQueue, block);
@@ -2612,7 +2612,7 @@ uint64_t __47__PXVideoSession_setIsContentHighDynamicRange___block_invoke(uint64
   return v3;
 }
 
-- (void)setPlayable:(BOOL)a3
+- (void)setPlayable:(BOOL)playable
 {
   [(PXVideoSession *)self _assertOnUpdateQueue];
   v10 = 0;
@@ -2624,7 +2624,7 @@ uint64_t __47__PXVideoSession_setIsContentHighDynamicRange___block_invoke(uint64
   block[1] = 3221225472;
   block[2] = __30__PXVideoSession_setPlayable___block_invoke;
   block[3] = &unk_1E77465B0;
-  v9 = a3;
+  playableCopy = playable;
   block[4] = self;
   block[5] = &v10;
   dispatch_sync(stateQueue, block);
@@ -2632,9 +2632,9 @@ uint64_t __47__PXVideoSession_setIsContentHighDynamicRange___block_invoke(uint64
   {
     if (self->_updateQueue_updateFlags.isPerformingUpdate && (self->_updateQueue_updateFlags.updated & 0x40) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXVideoSession setPlayable:]"];
-      [v6 handleFailureInFunction:v7 file:@"PXVideoSession.m" lineNumber:1899 description:{@"invalidating %lu after it already has been updated", 64}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXVideoSession.m" lineNumber:1899 description:{@"invalidating %lu after it already has been updated", 64}];
 
       abort();
     }
@@ -2740,10 +2740,10 @@ __n128 __49__PXVideoSession_segmentTimeRangeOfOriginalVideo__block_invoke(uint64
   return result;
 }
 
-- (void)setPlayerItem:(id)a3 segmentTimeRangeOfOriginalVideo:(id *)a4 timeRangeMapper:(id)a5
+- (void)setPlayerItem:(id)item segmentTimeRangeOfOriginalVideo:(id *)video timeRangeMapper:(id)mapper
 {
-  v8 = a3;
-  v9 = a5;
+  itemCopy = item;
+  mapperCopy = mapper;
   [(PXVideoSession *)self _assertOnUpdateQueue];
   v24 = 0;
   v25 = &v24;
@@ -2754,15 +2754,15 @@ __n128 __49__PXVideoSession_segmentTimeRangeOfOriginalVideo__block_invoke(uint64
   block[1] = 3221225472;
   block[2] = __80__PXVideoSession_setPlayerItem_segmentTimeRangeOfOriginalVideo_timeRangeMapper___block_invoke;
   block[3] = &unk_1E77466F0;
-  v11 = v8;
+  v11 = itemCopy;
   v17 = v11;
-  v18 = self;
+  selfCopy = self;
   v20 = &v24;
-  v12 = *&a4->var0.var3;
-  v21 = *&a4->var0.var0;
+  v12 = *&video->var0.var3;
+  v21 = *&video->var0.var0;
   v22 = v12;
-  v23 = *&a4->var1.var1;
-  v13 = v9;
+  v23 = *&video->var1.var1;
+  v13 = mapperCopy;
   v19 = v13;
   dispatch_sync(stateQueue, block);
   if (*(v25 + 24) == 1)
@@ -2772,9 +2772,9 @@ __n128 __49__PXVideoSession_segmentTimeRangeOfOriginalVideo__block_invoke(uint64
     [(PXVideoSession *)self signalChange:1];
     if (self->_updateQueue_updateFlags.isPerformingUpdate && (self->_updateQueue_updateFlags.updated & 0x1452) != 0)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXVideoSession setPlayerItem:segmentTimeRangeOfOriginalVideo:timeRangeMapper:]"];
-      [v14 handleFailureInFunction:v15 file:@"PXVideoSession.m" lineNumber:1864 description:{@"invalidating %lu after it already has been updated", 5202}];
+      [currentHandler handleFailureInFunction:v15 file:@"PXVideoSession.m" lineNumber:1864 description:{@"invalidating %lu after it already has been updated", 5202}];
 
       abort();
     }
@@ -2827,17 +2827,17 @@ void __80__PXVideoSession_setPlayerItem_segmentTimeRangeOfOriginalVideo_timeRang
   return v3;
 }
 
-- (void)setContentLoadingError:(id)a3
+- (void)setContentLoadingError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__PXVideoSession_setContentLoadingError___block_invoke;
   v7[3] = &unk_1E774C620;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_sync(stateQueue, v7);
 }
 
@@ -2885,7 +2885,7 @@ void __80__PXVideoSession_setPlayerItem_segmentTimeRangeOfOriginalVideo_timeRang
   return v3;
 }
 
-- (void)setAudioStatus:(int64_t)a3
+- (void)setAudioStatus:(int64_t)status
 {
   [(PXVideoSession *)self _assertOnUpdateQueue];
   v7 = 0;
@@ -2898,7 +2898,7 @@ void __80__PXVideoSession_setPlayerItem_segmentTimeRangeOfOriginalVideo_timeRang
   block[2] = __33__PXVideoSession_setAudioStatus___block_invoke;
   block[3] = &unk_1E77477B8;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = status;
   block[4] = self;
   dispatch_sync(stateQueue, block);
   if (*(v8 + 24) == 1)
@@ -2941,7 +2941,7 @@ void *__33__PXVideoSession_setAudioStatus___block_invoke(void *result)
   return v3;
 }
 
-- (void)setPlayerTimeAdvancing:(BOOL)a3
+- (void)setPlayerTimeAdvancing:(BOOL)advancing
 {
   [(PXVideoSession *)self _assertOnUpdateQueue];
   v10 = 0;
@@ -2953,7 +2953,7 @@ void *__33__PXVideoSession_setAudioStatus___block_invoke(void *result)
   block[1] = 3221225472;
   block[2] = __41__PXVideoSession_setPlayerTimeAdvancing___block_invoke;
   block[3] = &unk_1E77465B0;
-  v9 = a3;
+  advancingCopy = advancing;
   block[4] = self;
   block[5] = &v10;
   dispatch_sync(stateQueue, block);
@@ -2961,9 +2961,9 @@ void *__33__PXVideoSession_setAudioStatus___block_invoke(void *result)
   {
     if (self->_updateQueue_updateFlags.isPerformingUpdate && (self->_updateQueue_updateFlags.updated & 0x80) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXVideoSession setPlayerTimeAdvancing:]"];
-      [v6 handleFailureInFunction:v7 file:@"PXVideoSession.m" lineNumber:1791 description:{@"invalidating %lu after it already has been updated", 128}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXVideoSession.m" lineNumber:1791 description:{@"invalidating %lu after it already has been updated", 128}];
 
       abort();
     }
@@ -3006,27 +3006,27 @@ uint64_t __41__PXVideoSession_setPlayerTimeAdvancing___block_invoke(uint64_t res
   return v3;
 }
 
-- (void)setAllowsExternalPlayback:(BOOL)a3
+- (void)setAllowsExternalPlayback:(BOOL)playback
 {
-  v3 = a3;
-  v4 = [(PXVideoSession *)self videoPlayer];
-  [v4 setAllowsExternalPlayback:v3];
+  playbackCopy = playback;
+  videoPlayer = [(PXVideoSession *)self videoPlayer];
+  [videoPlayer setAllowsExternalPlayback:playbackCopy];
 }
 
-- (void)setSeekToBeginningAtEnd:(BOOL)a3
+- (void)setSeekToBeginningAtEnd:(BOOL)end
 {
-  v3 = a3;
+  endCopy = end;
   stateQueue = self->_stateQueue;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __42__PXVideoSession_setSeekToBeginningAtEnd___block_invoke;
   v9[3] = &unk_1E7749428;
   v9[4] = self;
-  v10 = a3;
+  endCopy2 = end;
   dispatch_sync(stateQueue, v9);
-  v6 = [(PXVideoSession *)self videoPlayer];
-  v7 = v6;
-  if (v3)
+  videoPlayer = [(PXVideoSession *)self videoPlayer];
+  v7 = videoPlayer;
+  if (endCopy)
   {
     v8 = 2;
   }
@@ -3036,7 +3036,7 @@ uint64_t __41__PXVideoSession_setPlayerTimeAdvancing___block_invoke(uint64_t res
     v8 = 1;
   }
 
-  [v6 setActionAtItemEnd:v8];
+  [videoPlayer setActionAtItemEnd:v8];
 }
 
 - (void)seekToPlaybackStartTime
@@ -3102,7 +3102,7 @@ __n128 __35__PXVideoSession_playbackStartTime__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setPlaybackStartTime:(id *)a3
+- (void)setPlaybackStartTime:(id *)time
 {
   stateQueue = self->_stateQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -3110,7 +3110,7 @@ __n128 __35__PXVideoSession_playbackStartTime__block_invoke(uint64_t a1)
   v4[2] = __39__PXVideoSession_setPlaybackStartTime___block_invoke;
   v4[3] = &unk_1E7749770;
   v4[4] = self;
-  v5 = *a3;
+  v5 = *time;
   dispatch_sync(stateQueue, v4);
 }
 
@@ -3124,7 +3124,7 @@ __n128 __39__PXVideoSession_setPlaybackStartTime___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setPlaybackTimeRange:(id *)a3
+- (void)setPlaybackTimeRange:(id *)range
 {
   v19 = 0;
   v20 = &v19;
@@ -3135,31 +3135,31 @@ __n128 __39__PXVideoSession_setPlaybackStartTime___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __39__PXVideoSession_setPlaybackTimeRange___block_invoke;
   block[3] = &unk_1E77466A0;
-  v6 = *&a3->var0.var3;
-  v16 = *&a3->var0.var0;
+  v6 = *&range->var0.var3;
+  v16 = *&range->var0.var0;
   v17 = v6;
-  v18 = *&a3->var1.var1;
+  v18 = *&range->var1.var1;
   block[4] = self;
   block[5] = &v19;
   dispatch_sync(stateQueue, block);
   if (*(v20 + 24) == 1)
   {
-    v7 = [(PXVideoSession *)self videoPlayer];
-    v8 = [(PXVideoSession *)self playbackTimeRangeEndBoundaryObserver];
-    [v7 removeTimeObserver:v8];
+    videoPlayer = [(PXVideoSession *)self videoPlayer];
+    playbackTimeRangeEndBoundaryObserver = [(PXVideoSession *)self playbackTimeRangeEndBoundaryObserver];
+    [videoPlayer removeTimeObserver:playbackTimeRangeEndBoundaryObserver];
 
-    if ((a3->var0.var2 & 1) != 0 && (a3->var1.var2 & 1) != 0 && !a3->var1.var3 && (a3->var1.var0 & 0x8000000000000000) == 0)
+    if ((range->var0.var2 & 1) != 0 && (range->var1.var2 & 1) != 0 && !range->var1.var3 && (range->var1.var0 & 0x8000000000000000) == 0)
     {
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __39__PXVideoSession_setPlaybackTimeRange___block_invoke_2;
       v10[3] = &unk_1E77466C8;
       v10[4] = self;
-      v9 = *&a3->var0.var3;
-      v12 = *&a3->var0.var0;
+      v9 = *&range->var0.var3;
+      v12 = *&range->var0.var0;
       v13 = v9;
-      v14 = *&a3->var1.var1;
-      v11 = v7;
+      v14 = *&range->var1.var1;
+      v11 = videoPlayer;
       [(PXVideoSession *)self _performChanges:v10];
     }
   }
@@ -3264,19 +3264,19 @@ __n128 __35__PXVideoSession_playbackTimeRange__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setLoopingEnabled:(BOOL)a3
+- (void)setLoopingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __36__PXVideoSession_setLoopingEnabled___block_invoke;
   v7[3] = &unk_1E7749428;
   v7[4] = self;
-  v8 = a3;
+  enabledCopy2 = enabled;
   dispatch_sync(stateQueue, v7);
-  v6 = [(PXVideoSession *)self videoPlayer];
-  [v6 setLoopingEnabled:v3];
+  videoPlayer = [(PXVideoSession *)self videoPlayer];
+  [videoPlayer setLoopingEnabled:enabledCopy];
 }
 
 - (BOOL)isLoopingEnabled
@@ -3300,17 +3300,17 @@ __n128 __35__PXVideoSession_playbackTimeRange__block_invoke(uint64_t a1)
 
 - (BOOL)preventsSleepDuringVideoPlayback
 {
-  v2 = [(PXVideoSession *)self videoPlayer];
-  v3 = [v2 preventsSleepDuringVideoPlayback];
+  videoPlayer = [(PXVideoSession *)self videoPlayer];
+  preventsSleepDuringVideoPlayback = [videoPlayer preventsSleepDuringVideoPlayback];
 
-  return v3;
+  return preventsSleepDuringVideoPlayback;
 }
 
-- (void)setPreventsSleepDuringVideoPlayback:(BOOL)a3
+- (void)setPreventsSleepDuringVideoPlayback:(BOOL)playback
 {
-  v3 = a3;
-  v4 = [(PXVideoSession *)self videoPlayer];
-  [v4 setPreventsSleepDuringVideoPlayback:v3];
+  playbackCopy = playback;
+  videoPlayer = [(PXVideoSession *)self videoPlayer];
+  [videoPlayer setPreventsSleepDuringVideoPlayback:playbackCopy];
 }
 
 - (float)volume
@@ -3339,7 +3339,7 @@ float __24__PXVideoSession_volume__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setVolume:(float)a3 withFade:(BOOL)a4
+- (void)setVolume:(float)volume withFade:(BOOL)fade
 {
   v10 = 0;
   v11 = &v10;
@@ -3350,8 +3350,8 @@ float __24__PXVideoSession_volume__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __37__PXVideoSession_setVolume_withFade___block_invoke;
   block[3] = &unk_1E7746678;
-  v8 = a3;
-  v9 = a4;
+  volumeCopy = volume;
+  fadeCopy = fade;
   block[4] = self;
   block[5] = &v10;
   dispatch_sync(stateQueue, block);
@@ -3414,7 +3414,7 @@ void __37__PXVideoSession_setVolume_withFade___block_invoke_345(uint64_t a1, voi
   *(*(a1 + 32) + 696) |= 0x4000uLL;
 }
 
-- (void)setUpdatingAudioSession:(BOOL)a3
+- (void)setUpdatingAudioSession:(BOOL)session
 {
   v9 = 0;
   v10 = &v9;
@@ -3425,11 +3425,11 @@ void __37__PXVideoSession_setVolume_withFade___block_invoke_345(uint64_t a1, voi
   block[1] = 3221225472;
   block[2] = __42__PXVideoSession_setUpdatingAudioSession___block_invoke;
   block[3] = &unk_1E77465B0;
-  v8 = a3;
+  sessionCopy = session;
   block[4] = self;
   block[5] = &v9;
   dispatch_sync(stateQueue, block);
-  if (*(v10 + 24) == 1 && !a3)
+  if (*(v10 + 24) == 1 && !session)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -3503,9 +3503,9 @@ __n128 __29__PXVideoSession_currentTime__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setCurrentPlayerItem:(id)a3
+- (void)setCurrentPlayerItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   [(PXVideoSession *)self _assertOnUpdateQueue];
   v16 = 0;
   v17 = &v16;
@@ -3516,18 +3516,18 @@ __n128 __29__PXVideoSession_currentTime__block_invoke(uint64_t a1)
   v10 = 3221225472;
   v11 = __39__PXVideoSession_setCurrentPlayerItem___block_invoke;
   v12 = &unk_1E7746448;
-  v6 = v4;
+  v6 = itemCopy;
   v13 = v6;
-  v14 = self;
+  selfCopy = self;
   v15 = &v16;
   dispatch_sync(stateQueue, &block);
   if (*(v17 + 24) == 1)
   {
     if (self->_updateQueue_updateFlags.isPerformingUpdate && (self->_updateQueue_updateFlags.updated & 0x400) != 0)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXVideoSession setCurrentPlayerItem:]"];
-      [v7 handleFailureInFunction:v8 file:@"PXVideoSession.m" lineNumber:1619 description:{@"invalidating %lu after it already has been updated", 1024, block, v10, v11, v12}];
+      [currentHandler handleFailureInFunction:v8 file:@"PXVideoSession.m" lineNumber:1619 description:{@"invalidating %lu after it already has been updated", 1024, block, v10, v11, v12}];
 
       abort();
     }
@@ -3585,7 +3585,7 @@ void __39__PXVideoSession_setCurrentPlayerItem___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setVideoDuration:(id *)a3
+- (void)setVideoDuration:(id *)duration
 {
   [(PXVideoSession *)self _assertOnUpdateQueue];
   v8 = 0;
@@ -3597,7 +3597,7 @@ void __39__PXVideoSession_setCurrentPlayerItem___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __35__PXVideoSession_setVideoDuration___block_invoke;
   block[3] = &unk_1E7746650;
-  v7 = *a3;
+  v7 = *duration;
   block[4] = self;
   block[5] = &v8;
   dispatch_sync(stateQueue, block);
@@ -3661,7 +3661,7 @@ __n128 __31__PXVideoSession_videoDuration__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setIsVideoOutputReady:(BOOL)a3
+- (void)setIsVideoOutputReady:(BOOL)ready
 {
   [(PXVideoSession *)self _assertOnUpdateQueue];
   stateQueue = self->_stateQueue;
@@ -3669,7 +3669,7 @@ __n128 __31__PXVideoSession_videoDuration__block_invoke(uint64_t a1)
   v6[1] = 3221225472;
   v6[2] = __40__PXVideoSession_setIsVideoOutputReady___block_invoke;
   v6[3] = &unk_1E7749428;
-  v7 = a3;
+  readyCopy = ready;
   v6[4] = self;
   dispatch_sync(stateQueue, v6);
 }
@@ -3709,12 +3709,12 @@ uint64_t __40__PXVideoSession_setIsVideoOutputReady___block_invoke(uint64_t resu
   return v3;
 }
 
-- (void)setVideoOutput:(id)a3 size:(CGSize)a4
+- (void)setVideoOutput:(id)output size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  if (!v7)
+  height = size.height;
+  width = size.width;
+  outputCopy = output;
+  if (!outputCopy)
   {
     [(PXVideoSession *)self _relinquishAny4k60StreamAllowance];
   }
@@ -3725,10 +3725,10 @@ uint64_t __40__PXVideoSession_setIsVideoOutputReady___block_invoke(uint64_t resu
   v10[2] = __38__PXVideoSession_setVideoOutput_size___block_invoke;
   v10[3] = &unk_1E7749A50;
   v10[4] = self;
-  v11 = v7;
+  v11 = outputCopy;
   v12 = width;
   v13 = height;
-  v9 = v7;
+  v9 = outputCopy;
   dispatch_sync(stateQueue, v10);
 }
 
@@ -3840,16 +3840,16 @@ __n128 __33__PXVideoSession_videoOutputSize__block_invoke(uint64_t a1)
 {
   v9 = *MEMORY[0x1E6960C70];
   v10 = *(MEMORY[0x1E6960C70] + 16);
-  v3 = [(PXVideoSession *)self videoPlayer];
-  v4 = [v3 currentItemStatus];
+  videoPlayer = [(PXVideoSession *)self videoPlayer];
+  currentItemStatus = [videoPlayer currentItemStatus];
 
-  if (v4 == 1)
+  if (currentItemStatus == 1)
   {
-    v5 = [(PXVideoSession *)self videoPlayer];
-    v6 = v5;
-    if (v5)
+    videoPlayer2 = [(PXVideoSession *)self videoPlayer];
+    v6 = videoPlayer2;
+    if (videoPlayer2)
     {
-      [v5 currentItemDuration];
+      [videoPlayer2 currentItemDuration];
     }
 
     else
@@ -3897,7 +3897,7 @@ __n128 __33__PXVideoSession_videoOutputSize__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setCurrentPixelBuffer:(__CVBuffer *)a3
+- (void)setCurrentPixelBuffer:(__CVBuffer *)buffer
 {
   [(PXVideoSession *)self _assertOnUpdateQueue];
   v7 = 0;
@@ -3910,7 +3910,7 @@ __n128 __33__PXVideoSession_videoOutputSize__block_invoke(uint64_t a1)
   block[2] = __40__PXVideoSession_setCurrentPixelBuffer___block_invoke;
   block[3] = &unk_1E77477B8;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = buffer;
   block[4] = self;
   dispatch_sync(stateQueue, block);
   if (*(v8 + 24) == 1)
@@ -3985,29 +3985,29 @@ __CVBuffer *__36__PXVideoSession_currentPixelBuffer__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_mainQueue_setDisplayLink:(id)a3
+- (void)_mainQueue_setDisplayLink:(id)link
 {
-  v6 = a3;
+  linkCopy = link;
   v5 = self->_mainQueue_displayLink;
-  if (v5 != v6)
+  if (v5 != linkCopy)
   {
     if (v5)
     {
       [(PXDisplayLink *)v5 invalidate];
     }
 
-    objc_storeStrong(&self->_mainQueue_displayLink, a3);
+    objc_storeStrong(&self->_mainQueue_displayLink, link);
   }
 }
 
 - (void)_updateDisplayLinkState
 {
   [(PXVideoSession *)self _assertOnUpdateQueue];
-  v3 = [(PXVideoSession *)self pixelBufferOutputTokenCount];
-  v4 = [(PXVideoSession *)self shouldDisableAutomaticPixelBufferUpdates];
-  if (v3)
+  pixelBufferOutputTokenCount = [(PXVideoSession *)self pixelBufferOutputTokenCount];
+  shouldDisableAutomaticPixelBufferUpdates = [(PXVideoSession *)self shouldDisableAutomaticPixelBufferUpdates];
+  if (pixelBufferOutputTokenCount)
   {
-    v5 = v4;
+    v5 = shouldDisableAutomaticPixelBufferUpdates;
   }
 
   else
@@ -4027,30 +4027,30 @@ void __41__PXVideoSession__updateDisplayLinkState__block_invoke(uint64_t a1)
   [WeakRetained _mainQueue_setDisplayLinkPaused:*(a1 + 40)];
 }
 
-- (void)_videoWorkQueue_updateCurrentPixelBufferWithVideoOutput:(id)a3 outputTime:(double)a4
+- (void)_videoWorkQueue_updateCurrentPixelBufferWithVideoOutput:(id)output outputTime:(double)time
 {
-  v6 = a3;
+  outputCopy = output;
   if (![(PXVideoSession *)self shouldDisableAutomaticPixelBufferUpdates])
   {
-    if (v6)
+    if (outputCopy)
     {
       kdebug_trace();
       v15 = 0uLL;
       v16 = 0;
-      [v6 itemTimeForHostTime:a4];
+      [outputCopy itemTimeForHostTime:time];
       v13 = v15;
       v14 = v16;
-      if (![v6 hasNewPixelBufferForItemTime:&v13])
+      if (![outputCopy hasNewPixelBufferForItemTime:&v13])
       {
         goto LABEL_11;
       }
 
       v13 = v15;
       v14 = v16;
-      v7 = [v6 copyPixelBufferForItemTime:&v13 itemTimeForDisplay:0];
+      v7 = [outputCopy copyPixelBufferForItemTime:&v13 itemTimeForDisplay:0];
       if (v7)
       {
-        v8 = [(PXPhotosensitivityProcessing *)self->_photoSensitivityProcessing copyAndProcessPixelBuffer:v7 timestamp:a4];
+        v8 = [(PXPhotosensitivityProcessing *)self->_photoSensitivityProcessing copyAndProcessPixelBuffer:v7 timestamp:time];
         v9 = v7;
         if (v8)
         {
@@ -4107,9 +4107,9 @@ void __85__PXVideoSession__videoWorkQueue_updateCurrentPixelBufferWithVideoOutpu
   CVPixelBufferRelease(v2);
 }
 
-- (void)_mainQueue_updateCurrentPixelBufferWithVideoOutput:(id)a3
+- (void)_mainQueue_updateCurrentPixelBufferWithVideoOutput:(id)output
 {
-  v4 = a3;
+  outputCopy = output;
   [(PXDisplayLink *)self->_mainQueue_displayLink targetTimestamp];
   v6 = v5;
   objc_initWeak(&location, self);
@@ -4119,9 +4119,9 @@ void __85__PXVideoSession__videoWorkQueue_updateCurrentPixelBufferWithVideoOutpu
   v9[2] = __69__PXVideoSession__mainQueue_updateCurrentPixelBufferWithVideoOutput___block_invoke;
   v9[3] = &unk_1E7746600;
   objc_copyWeak(v11, &location);
-  v10 = v4;
+  v10 = outputCopy;
   v11[1] = v6;
-  v8 = v4;
+  v8 = outputCopy;
   dispatch_async(videoWorkQueue, v9);
 
   objc_destroyWeak(v11);
@@ -4142,15 +4142,15 @@ void __69__PXVideoSession__mainQueue_updateCurrentPixelBufferWithVideoOutput___b
   {
     if (self->_updateQueue_pendingPlayerItemSeekCount < 1)
     {
-      v8 = [(PXVideoSession *)self videoOutput];
+      videoOutput = [(PXVideoSession *)self videoOutput];
       objc_initWeak(buf, self);
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __43__PXVideoSession__updateCurrentPixelBuffer__block_invoke;
       v10[3] = &unk_1E774B248;
       objc_copyWeak(&v12, buf);
-      v11 = v8;
-      v9 = v8;
+      v11 = videoOutput;
+      v9 = videoOutput;
       dispatch_async(MEMORY[0x1E69E96A0], v10);
 
       objc_destroyWeak(&v12);
@@ -4166,10 +4166,10 @@ void __69__PXVideoSession__mainQueue_updateCurrentPixelBufferWithVideoOutput___b
         v5 = v4;
         if (os_signpost_enabled(v3))
         {
-          v6 = [(PXVideoSession *)self logContext];
+          logContext = [(PXVideoSession *)self logContext];
           updateQueue_pendingPlayerItemSeekCount = self->_updateQueue_pendingPlayerItemSeekCount;
           *buf = 134218240;
-          v14 = v6;
+          v14 = logContext;
           v15 = 2048;
           v16 = updateQueue_pendingPlayerItemSeekCount;
           _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v3, OS_SIGNPOST_EVENT, v5, "PXVideoSessionSkippedUpdatingPixelBuffer", "Context=%{signpost.telemetry:string2}lu pendingPlayerItemSeekCount=%ld", buf, 0x16u);
@@ -4185,19 +4185,19 @@ void __43__PXVideoSession__updateCurrentPixelBuffer__block_invoke(uint64_t a1)
   [WeakRetained _mainQueue_updateCurrentPixelBufferWithVideoOutput:*(a1 + 32)];
 }
 
-- (void)_addOutput:(id)a3 toPlayerItem:(id)a4
+- (void)_addOutput:(id)output toPlayerItem:(id)item
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(PXVideoSession *)self videoOutput];
-  if (v7 == v9)
+  outputCopy = output;
+  itemCopy = item;
+  videoOutput = [(PXVideoSession *)self videoOutput];
+  if (videoOutput == outputCopy)
   {
-    v8 = [(PXVideoSession *)self playerItem];
+    playerItem = [(PXVideoSession *)self playerItem];
 
-    if (v8 == v6)
+    if (playerItem == itemCopy)
     {
-      [v6 addOutput:v9];
-      [v9 requestNotificationOfMediaDataChangeWithAdvanceInterval:0.1];
+      [itemCopy addOutput:outputCopy];
+      [outputCopy requestNotificationOfMediaDataChangeWithAdvanceInterval:0.1];
     }
   }
 
@@ -4210,27 +4210,27 @@ void __43__PXVideoSession__updateCurrentPixelBuffer__block_invoke(uint64_t a1)
 {
   v43[10] = *MEMORY[0x1E69E9840];
   [(PXVideoSession *)self _assertOnUpdateQueue];
-  v3 = [(PXVideoSession *)self playerItem];
-  if (v3)
+  playerItem = [(PXVideoSession *)self playerItem];
+  if (playerItem)
   {
-    v4 = [(PXVideoSession *)self pixelBufferOutputTokenCount];
-    v5 = [(PXVideoSession *)self videoOutput];
-    if (v4)
+    pixelBufferOutputTokenCount = [(PXVideoSession *)self pixelBufferOutputTokenCount];
+    videoOutput = [(PXVideoSession *)self videoOutput];
+    if (pixelBufferOutputTokenCount)
     {
-      v6 = [(PXVideoSession *)self pixelBufferOutputSizes];
+      pixelBufferOutputSizes = [(PXVideoSession *)self pixelBufferOutputSizes];
       [(PXVideoSession *)self naturalSize];
       v8 = v7;
       v10 = v9;
       [(PXVideoSession *)self nominalFrameRate];
       v12 = v11;
-      v13 = [v6 firstObject];
-      [v13 CGSizeValue];
+      firstObject = [pixelBufferOutputSizes firstObject];
+      [firstObject CGSizeValue];
       v15 = v14;
       v17 = v16;
 
-      if ([v6 count])
+      if ([pixelBufferOutputSizes count])
       {
-        [v6 objectAtIndexedSubscript:0];
+        [pixelBufferOutputSizes objectAtIndexedSubscript:0];
         [objc_claimAutoreleasedReturnValue() CGSizeValue];
         PXSizeMax();
       }
@@ -4238,7 +4238,7 @@ void __43__PXVideoSession__updateCurrentPixelBuffer__block_invoke(uint64_t a1)
       v18 = *MEMORY[0x1E695F060];
       v19 = *(MEMORY[0x1E695F060] + 8);
       v20 = v17 == v19 && v15 == *MEMORY[0x1E695F060];
-      if (v5)
+      if (videoOutput)
       {
         [(PXVideoSession *)self videoOutputSize];
         PXSizeApproximatelyEqualOrBiggerThanSize();
@@ -4255,9 +4255,9 @@ void __43__PXVideoSession__updateCurrentPixelBuffer__block_invoke(uint64_t a1)
           v43[0] = MEMORY[0x1E695E118];
           v43[1] = MEMORY[0x1E695E0F8];
           v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v43 forKeys:v42 count:2];
-          v29 = [(PXVideoSession *)self isExpectingVideoView];
+          isExpectingVideoView = [(PXVideoSession *)self isExpectingVideoView];
           v30 = MEMORY[0x1E6966130];
-          if (v29)
+          if (isExpectingVideoView)
           {
             if (_deviceSupportsIOSurfaceCompression_onceToken != -1)
             {
@@ -4293,7 +4293,7 @@ void __43__PXVideoSession__updateCurrentPixelBuffer__block_invoke(uint64_t a1)
           block[3] = &unk_1E774B708;
           objc_copyWeak(&v40, &location);
           v38 = v34;
-          v39 = v3;
+          v39 = playerItem;
           v36 = v34;
           dispatch_async(videoWorkQueue, block);
 
@@ -4316,8 +4316,8 @@ void __43__PXVideoSession__updateCurrentPixelBuffer__block_invoke(uint64_t a1)
             v27 = v17;
             if ((v21 & MEMORY[0x1A590D220](v8, v10, 2000.0, 2000.0)) == 1)
             {
-              v28 = [(PXVideoSession *)self _request4k60StreamAllowance];
-              if (v28)
+              _request4k60StreamAllowance = [(PXVideoSession *)self _request4k60StreamAllowance];
+              if (_request4k60StreamAllowance)
               {
                 v27 = v17;
               }
@@ -4327,7 +4327,7 @@ void __43__PXVideoSession__updateCurrentPixelBuffer__block_invoke(uint64_t a1)
                 v27 = 1080.0;
               }
 
-              if (v28)
+              if (_request4k60StreamAllowance)
               {
                 v26 = v15;
               }
@@ -4354,7 +4354,7 @@ void __43__PXVideoSession__updateCurrentPixelBuffer__block_invoke(uint64_t a1)
 
   else
   {
-    v5 = [(PXVideoSession *)self videoOutput];
+    videoOutput = [(PXVideoSession *)self videoOutput];
   }
 
   if ([(PXVideoSession *)self playState]!= 3)
@@ -4382,7 +4382,7 @@ void __36__PXVideoSession__updateVideoOutput__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_handleDisplayLink:(id)a3
+- (void)_handleDisplayLink:(id)link
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -4410,10 +4410,10 @@ void __37__PXVideoSession__handleDisplayLink___block_invoke(uint64_t a1, void *a
 - (id)_newVideoView
 {
   v3 = objc_alloc_init(PXVideoView);
-  v4 = [(PXVideoSession *)self videoPlayer];
-  if (v4)
+  videoPlayer = [(PXVideoSession *)self videoPlayer];
+  if (videoPlayer)
   {
-    [(PXVideoView *)v3 setPlayer:v4];
+    [(PXVideoView *)v3 setPlayer:videoPlayer];
   }
 
   else
@@ -4423,7 +4423,7 @@ void __37__PXVideoSession__handleDisplayLink___block_invoke(uint64_t a1, void *a
     v8 = __31__PXVideoSession__newVideoView__block_invoke;
     v9 = &unk_1E774C620;
     v10 = v3;
-    v11 = self;
+    selfCopy = self;
     [(PXVideoSession *)self _performBlockOnUpdateQueue:&v6];
   }
 
@@ -4439,17 +4439,17 @@ void __31__PXVideoSession__newVideoView__block_invoke_2(uint64_t a1)
   [*(a1 + 32) setPlayer:v2];
 }
 
-- (void)setPlaybackTimeRangeEndBoundaryObserver:(id)a3
+- (void)setPlaybackTimeRangeEndBoundaryObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__PXVideoSession_setPlaybackTimeRangeEndBoundaryObserver___block_invoke;
   v7[3] = &unk_1E774C620;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = observerCopy;
+  selfCopy = self;
+  v6 = observerCopy;
   dispatch_sync(stateQueue, v7);
 }
 
@@ -4516,11 +4516,11 @@ void __52__PXVideoSession__didFinishInitializingAudioSession__block_invoke(uint6
 {
   v22 = *MEMORY[0x1E69E9840];
   Current = CFAbsoluteTimeGetCurrent();
-  v5 = [MEMORY[0x1E69C1B18] auxiliarySession];
-  v6 = [(PXVideoSession *)self audioSessionCategory];
-  v7 = [(PXVideoSession *)self audioSessionMode];
+  auxiliarySession = [MEMORY[0x1E69C1B18] auxiliarySession];
+  audioSessionCategory = [(PXVideoSession *)self audioSessionCategory];
+  audioSessionMode = [(PXVideoSession *)self audioSessionMode];
   v17 = 0;
-  v8 = [v5 setCategory:v6 mode:v7 routeSharingPolicy:-[PXVideoSession audioSessionRouteSharingPolicy](self options:"audioSessionRouteSharingPolicy") error:{-[PXVideoSession audioSessionCategoryOptions](self, "audioSessionCategoryOptions"), &v17}];
+  v8 = [auxiliarySession setCategory:audioSessionCategory mode:audioSessionMode routeSharingPolicy:-[PXVideoSession audioSessionRouteSharingPolicy](self options:"audioSessionRouteSharingPolicy") error:{-[PXVideoSession audioSessionCategoryOptions](self, "audioSessionCategoryOptions"), &v17}];
   v9 = v17;
 
   if ((v8 & 1) == 0)
@@ -4534,9 +4534,9 @@ void __52__PXVideoSession__didFinishInitializingAudioSession__block_invoke(uint6
     }
   }
 
-  [(PXVideoSession *)self setAudioSession:v5];
-  v11 = [(PXVideoSession *)self videoPlayer];
-  [v11 setWrappedAudioSession:v5];
+  [(PXVideoSession *)self setAudioSession:auxiliarySession];
+  videoPlayer = [(PXVideoSession *)self videoPlayer];
+  [videoPlayer setWrappedAudioSession:auxiliarySession];
 
   v12 = CFAbsoluteTimeGetCurrent();
   v13 = PLVideoPlaybackGetLog();
@@ -4551,7 +4551,7 @@ void __52__PXVideoSession__didFinishInitializingAudioSession__block_invoke(uint6
   }
 
   objc_initWeak(buf, self);
-  [v5 registerVolumeObserver:self];
+  [auxiliarySession registerVolumeObserver:self];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __59__PXVideoSession__audioSessionQueue_initializeAudioSession__block_invoke;
@@ -4683,16 +4683,16 @@ void __53__PXVideoSession__updateFromCurrentPresentationState__block_invoke_2(ui
   [v11 setAudioSessionCategory:v12 mode:v13 routeSharingPolicy:objc_msgSend(*(*(*(a1 + 40) + 8) + 40) options:{"audioSessionRouteSharingPolicy"), objc_msgSend(*(*(*(a1 + 40) + 8) + 40), "audioSessionCategoryOptions")}];
 }
 
-- (void)_handleContentLoadingResult:(id)a3
+- (void)_handleContentLoadingResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__PXVideoSession__handleContentLoadingResult___block_invoke;
   v6[3] = &unk_1E77498F8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = resultCopy;
+  selfCopy = self;
+  v5 = resultCopy;
   [(PXVideoSession *)self _performChanges:v6];
 }
 
@@ -4748,7 +4748,7 @@ void __46__PXVideoSession__handleContentLoadingResult___block_invoke(uint64_t a1
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_ERROR, "Rebuilding AV Objects for %@", buf, 0xCu);
   }
 
@@ -4772,7 +4772,7 @@ void __35__PXVideoSession__rebuildAVObjects__block_invoke(uint64_t a1)
   [*(a1 + 32) setVideoPlayer:v4];
 }
 
-- (void)resourceReclamationEventDidOccur:(id)a3
+- (void)resourceReclamationEventDidOccur:(id)occur
 {
   v4 = PLVideoPlaybackGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -4784,37 +4784,37 @@ void __35__PXVideoSession__rebuildAVObjects__block_invoke(uint64_t a1)
   [(PXVideoSession *)self _rebuildAVObjects];
 }
 
-- (void)wrappedAudioSession:(id)a3 didChangeVolumeFrom:(float)a4 to:(float)a5
+- (void)wrappedAudioSession:(id)session didChangeVolumeFrom:(float)from to:(float)to
 {
-  v10 = [(PXVideoSession *)self delegate];
-  *&v8 = a4;
-  *&v9 = a5;
-  [v10 videoSessionAudioSessionOutputVolumeDidChange:self fromVolume:v8 toVolume:v9];
+  delegate = [(PXVideoSession *)self delegate];
+  *&v8 = from;
+  *&v9 = to;
+  [delegate videoSessionAudioSessionOutputVolumeDidChange:self fromVolume:v8 toVolume:v9];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v9 = a3;
-  if (VideoPlayerObservationContext == a5)
+  observableCopy = observable;
+  if (VideoPlayerObservationContext == context)
   {
     v20 = MEMORY[0x1E69E9820];
     v21 = 3221225472;
     v22 = __47__PXVideoSession_observable_didChange_context___block_invoke;
     v23 = &unk_1E7749D78;
-    v24 = self;
-    v25 = a4;
+    selfCopy = self;
+    changeCopy = change;
     v10 = &v20;
 LABEL_6:
-    [(PXVideoSession *)self _performChanges:v10, v14, v15, v16, v17, v18, v19, v20, v21, v22, v23, v24, v25];
+    [(PXVideoSession *)self _performChanges:v10, v14, v15, v16, v17, selfCopy2, changeCopy2, v20, v21, v22, v23, selfCopy, changeCopy];
     goto LABEL_7;
   }
 
-  if (VideoContentProviderObservationContext_217265 != a5)
+  if (VideoContentProviderObservationContext_217265 != context)
   {
-    if (VolumeAnimatorObservationContext != a5)
+    if (VolumeAnimatorObservationContext != context)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:self file:@"PXVideoSession.m" lineNumber:1077 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXVideoSession.m" lineNumber:1077 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -4823,17 +4823,17 @@ LABEL_6:
     v15 = 3221225472;
     v16 = __47__PXVideoSession_observable_didChange_context___block_invoke_2;
     v17 = &unk_1E7749D78;
-    v18 = self;
-    v19 = a4;
+    selfCopy2 = self;
+    changeCopy2 = change;
     v10 = &v14;
     goto LABEL_6;
   }
 
-  if (a4)
+  if (change)
   {
-    v11 = [(PXVideoSession *)self contentProvider];
-    v12 = [v11 loadingResult];
-    [(PXVideoSession *)self _handleContentLoadingResult:v12];
+    contentProvider = [(PXVideoSession *)self contentProvider];
+    loadingResult = [contentProvider loadingResult];
+    [(PXVideoSession *)self _handleContentLoadingResult:loadingResult];
   }
 
 LABEL_7:
@@ -4934,15 +4934,15 @@ void __47__PXVideoSession_observable_didChange_context___block_invoke_2(uint64_t
   }
 }
 
-- (void)avPlayer:(id)a3 itemDidPlayToEnd:(id)a4
+- (void)avPlayer:(id)player itemDidPlayToEnd:(id)end
 {
-  v5 = a3;
-  v6 = [(PXVideoSession *)self videoPlayer];
+  playerCopy = player;
+  videoPlayer = [(PXVideoSession *)self videoPlayer];
 
-  if (v6 == v5)
+  if (videoPlayer == playerCopy)
   {
-    v7 = [(PXVideoSession *)self delegate];
-    [v7 videoSessionDidPlayToEnd:self];
+    delegate = [(PXVideoSession *)self delegate];
+    [delegate videoSessionDidPlayToEnd:self];
 
     [(PXVideoSession *)self playbackTimeRange];
     if ((v17 & 1) == 0 || ([(PXVideoSession *)self playbackTimeRange], (v16 & 1) == 0) || ([(PXVideoSession *)self playbackTimeRange], v15) || ([(PXVideoSession *)self playbackTimeRange], v14 < 0))
@@ -4955,13 +4955,13 @@ void __47__PXVideoSession_observable_didChange_context___block_invoke_2(uint64_t
         v11 = v13;
         v8 = v12;
         v9 = v13;
-        [v5 seekToTime:&v12 toleranceBefore:&v10 toleranceAfter:&v8 completionHandler:0];
+        [playerCopy seekToTime:&v12 toleranceBefore:&v10 toleranceAfter:&v8 completionHandler:0];
       }
     }
   }
 }
 
-- (void)outputMediaDataWillChange:(id)a3
+- (void)outputMediaDataWillChange:(id)change
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -5000,9 +5000,9 @@ void __44__PXVideoSession_outputMediaDataWillChange___block_invoke(uint64_t a1, 
   {
     if (self->_updateQueue_updateFlags.isPerformingUpdate)
     {
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXVideoSession didPerformChanges]"];
-      [v22 handleFailureInFunction:v23 file:@"PXVideoSession.m" lineNumber:960 description:{@"Invalid parameter not satisfying: %@", @"!_updateQueue_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v23 file:@"PXVideoSession.m" lineNumber:960 description:{@"Invalid parameter not satisfying: %@", @"!_updateQueue_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateQueue_updateFlags->needsUpdate;
     }
@@ -5015,9 +5015,9 @@ void __44__PXVideoSession_outputMediaDataWillChange___block_invoke(uint64_t a1, 
       [(PXVideoSession *)self _updatePlayability];
       if (!self->_updateQueue_updateFlags.isPerformingUpdate)
       {
-        v24 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v25 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXVideoSession didPerformChanges]"];
-        [v24 handleFailureInFunction:v25 file:@"PXVideoSession.m" lineNumber:965 description:{@"Invalid parameter not satisfying: %@", @"_updateQueue_updateFlags.isPerformingUpdate"}];
+        [currentHandler2 handleFailureInFunction:v25 file:@"PXVideoSession.m" lineNumber:965 description:{@"Invalid parameter not satisfying: %@", @"_updateQueue_updateFlags.isPerformingUpdate"}];
       }
     }
 
@@ -5031,9 +5031,9 @@ void __44__PXVideoSession_outputMediaDataWillChange___block_invoke(uint64_t a1, 
 
     if (!self->_updateQueue_updateFlags.isPerformingUpdate)
     {
-      v26 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v27 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXVideoSession didPerformChanges]"];
-      [v26 handleFailureInFunction:v27 file:@"PXVideoSession.m" lineNumber:968 description:{@"Invalid parameter not satisfying: %@", @"_updateQueue_updateFlags.isPerformingUpdate"}];
+      [currentHandler3 handleFailureInFunction:v27 file:@"PXVideoSession.m" lineNumber:968 description:{@"Invalid parameter not satisfying: %@", @"_updateQueue_updateFlags.isPerformingUpdate"}];
     }
 
     v6 = p_updateQueue_updateFlags->needsUpdate;
@@ -5046,9 +5046,9 @@ void __44__PXVideoSession_outputMediaDataWillChange___block_invoke(uint64_t a1, 
 
     if (!self->_updateQueue_updateFlags.isPerformingUpdate)
     {
-      v28 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       v29 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXVideoSession didPerformChanges]"];
-      [v28 handleFailureInFunction:v29 file:@"PXVideoSession.m" lineNumber:971 description:{@"Invalid parameter not satisfying: %@", @"_updateQueue_updateFlags.isPerformingUpdate"}];
+      [currentHandler4 handleFailureInFunction:v29 file:@"PXVideoSession.m" lineNumber:971 description:{@"Invalid parameter not satisfying: %@", @"_updateQueue_updateFlags.isPerformingUpdate"}];
     }
 
     v7 = p_updateQueue_updateFlags->needsUpdate;
@@ -5061,9 +5061,9 @@ void __44__PXVideoSession_outputMediaDataWillChange___block_invoke(uint64_t a1, 
 
     if (!self->_updateQueue_updateFlags.isPerformingUpdate)
     {
-      v30 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
       v31 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXVideoSession didPerformChanges]"];
-      [v30 handleFailureInFunction:v31 file:@"PXVideoSession.m" lineNumber:974 description:{@"Invalid parameter not satisfying: %@", @"_updateQueue_updateFlags.isPerformingUpdate"}];
+      [currentHandler5 handleFailureInFunction:v31 file:@"PXVideoSession.m" lineNumber:974 description:{@"Invalid parameter not satisfying: %@", @"_updateQueue_updateFlags.isPerformingUpdate"}];
     }
 
     v8 = p_updateQueue_updateFlags->needsUpdate;
@@ -5076,9 +5076,9 @@ void __44__PXVideoSession_outputMediaDataWillChange___block_invoke(uint64_t a1, 
 
     if (!self->_updateQueue_updateFlags.isPerformingUpdate)
     {
-      v32 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
       v33 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXVideoSession didPerformChanges]"];
-      [v32 handleFailureInFunction:v33 file:@"PXVideoSession.m" lineNumber:977 description:{@"Invalid parameter not satisfying: %@", @"_updateQueue_updateFlags.isPerformingUpdate"}];
+      [currentHandler6 handleFailureInFunction:v33 file:@"PXVideoSession.m" lineNumber:977 description:{@"Invalid parameter not satisfying: %@", @"_updateQueue_updateFlags.isPerformingUpdate"}];
     }
 
     v9 = p_updateQueue_updateFlags->needsUpdate;
@@ -5091,9 +5091,9 @@ void __44__PXVideoSession_outputMediaDataWillChange___block_invoke(uint64_t a1, 
 
     if (!self->_updateQueue_updateFlags.isPerformingUpdate)
     {
-      v34 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler7 = [MEMORY[0x1E696AAA8] currentHandler];
       v35 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXVideoSession didPerformChanges]"];
-      [v34 handleFailureInFunction:v35 file:@"PXVideoSession.m" lineNumber:980 description:{@"Invalid parameter not satisfying: %@", @"_updateQueue_updateFlags.isPerformingUpdate"}];
+      [currentHandler7 handleFailureInFunction:v35 file:@"PXVideoSession.m" lineNumber:980 description:{@"Invalid parameter not satisfying: %@", @"_updateQueue_updateFlags.isPerformingUpdate"}];
     }
 
     v10 = p_updateQueue_updateFlags->needsUpdate;
@@ -5106,9 +5106,9 @@ void __44__PXVideoSession_outputMediaDataWillChange___block_invoke(uint64_t a1, 
 
     if (!self->_updateQueue_updateFlags.isPerformingUpdate)
     {
-      v36 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler8 = [MEMORY[0x1E696AAA8] currentHandler];
       v37 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXVideoSession didPerformChanges]"];
-      [v36 handleFailureInFunction:v37 file:@"PXVideoSession.m" lineNumber:983 description:{@"Invalid parameter not satisfying: %@", @"_updateQueue_updateFlags.isPerformingUpdate"}];
+      [currentHandler8 handleFailureInFunction:v37 file:@"PXVideoSession.m" lineNumber:983 description:{@"Invalid parameter not satisfying: %@", @"_updateQueue_updateFlags.isPerformingUpdate"}];
     }
 
     v11 = p_updateQueue_updateFlags->needsUpdate;
@@ -5121,9 +5121,9 @@ void __44__PXVideoSession_outputMediaDataWillChange___block_invoke(uint64_t a1, 
 
     if (!self->_updateQueue_updateFlags.isPerformingUpdate)
     {
-      v38 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler9 = [MEMORY[0x1E696AAA8] currentHandler];
       v39 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXVideoSession didPerformChanges]"];
-      [v38 handleFailureInFunction:v39 file:@"PXVideoSession.m" lineNumber:986 description:{@"Invalid parameter not satisfying: %@", @"_updateQueue_updateFlags.isPerformingUpdate"}];
+      [currentHandler9 handleFailureInFunction:v39 file:@"PXVideoSession.m" lineNumber:986 description:{@"Invalid parameter not satisfying: %@", @"_updateQueue_updateFlags.isPerformingUpdate"}];
     }
 
     v12 = p_updateQueue_updateFlags->needsUpdate;
@@ -5136,9 +5136,9 @@ void __44__PXVideoSession_outputMediaDataWillChange___block_invoke(uint64_t a1, 
 
     if (!self->_updateQueue_updateFlags.isPerformingUpdate)
     {
-      v40 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler10 = [MEMORY[0x1E696AAA8] currentHandler];
       v41 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXVideoSession didPerformChanges]"];
-      [v40 handleFailureInFunction:v41 file:@"PXVideoSession.m" lineNumber:989 description:{@"Invalid parameter not satisfying: %@", @"_updateQueue_updateFlags.isPerformingUpdate"}];
+      [currentHandler10 handleFailureInFunction:v41 file:@"PXVideoSession.m" lineNumber:989 description:{@"Invalid parameter not satisfying: %@", @"_updateQueue_updateFlags.isPerformingUpdate"}];
     }
 
     v13 = p_updateQueue_updateFlags->needsUpdate;
@@ -5151,9 +5151,9 @@ void __44__PXVideoSession_outputMediaDataWillChange___block_invoke(uint64_t a1, 
 
     if (!self->_updateQueue_updateFlags.isPerformingUpdate)
     {
-      v42 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler11 = [MEMORY[0x1E696AAA8] currentHandler];
       v43 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXVideoSession didPerformChanges]"];
-      [v42 handleFailureInFunction:v43 file:@"PXVideoSession.m" lineNumber:992 description:{@"Invalid parameter not satisfying: %@", @"_updateQueue_updateFlags.isPerformingUpdate"}];
+      [currentHandler11 handleFailureInFunction:v43 file:@"PXVideoSession.m" lineNumber:992 description:{@"Invalid parameter not satisfying: %@", @"_updateQueue_updateFlags.isPerformingUpdate"}];
     }
 
     v14 = p_updateQueue_updateFlags->needsUpdate;
@@ -5166,9 +5166,9 @@ void __44__PXVideoSession_outputMediaDataWillChange___block_invoke(uint64_t a1, 
 
     if (!self->_updateQueue_updateFlags.isPerformingUpdate)
     {
-      v44 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler12 = [MEMORY[0x1E696AAA8] currentHandler];
       v45 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXVideoSession didPerformChanges]"];
-      [v44 handleFailureInFunction:v45 file:@"PXVideoSession.m" lineNumber:995 description:{@"Invalid parameter not satisfying: %@", @"_updateQueue_updateFlags.isPerformingUpdate"}];
+      [currentHandler12 handleFailureInFunction:v45 file:@"PXVideoSession.m" lineNumber:995 description:{@"Invalid parameter not satisfying: %@", @"_updateQueue_updateFlags.isPerformingUpdate"}];
     }
 
     v15 = p_updateQueue_updateFlags->needsUpdate;
@@ -5181,9 +5181,9 @@ void __44__PXVideoSession_outputMediaDataWillChange___block_invoke(uint64_t a1, 
 
     if (!self->_updateQueue_updateFlags.isPerformingUpdate)
     {
-      v46 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler13 = [MEMORY[0x1E696AAA8] currentHandler];
       v47 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXVideoSession didPerformChanges]"];
-      [v46 handleFailureInFunction:v47 file:@"PXVideoSession.m" lineNumber:998 description:{@"Invalid parameter not satisfying: %@", @"_updateQueue_updateFlags.isPerformingUpdate"}];
+      [currentHandler13 handleFailureInFunction:v47 file:@"PXVideoSession.m" lineNumber:998 description:{@"Invalid parameter not satisfying: %@", @"_updateQueue_updateFlags.isPerformingUpdate"}];
     }
 
     v16 = p_updateQueue_updateFlags->needsUpdate;
@@ -5196,9 +5196,9 @@ void __44__PXVideoSession_outputMediaDataWillChange___block_invoke(uint64_t a1, 
 
     if (!self->_updateQueue_updateFlags.isPerformingUpdate)
     {
-      v48 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler14 = [MEMORY[0x1E696AAA8] currentHandler];
       v49 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXVideoSession didPerformChanges]"];
-      [v48 handleFailureInFunction:v49 file:@"PXVideoSession.m" lineNumber:1001 description:{@"Invalid parameter not satisfying: %@", @"_updateQueue_updateFlags.isPerformingUpdate"}];
+      [currentHandler14 handleFailureInFunction:v49 file:@"PXVideoSession.m" lineNumber:1001 description:{@"Invalid parameter not satisfying: %@", @"_updateQueue_updateFlags.isPerformingUpdate"}];
     }
 
     v17 = p_updateQueue_updateFlags->needsUpdate;
@@ -5211,9 +5211,9 @@ void __44__PXVideoSession_outputMediaDataWillChange___block_invoke(uint64_t a1, 
 
     if (!self->_updateQueue_updateFlags.isPerformingUpdate)
     {
-      v50 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler15 = [MEMORY[0x1E696AAA8] currentHandler];
       v51 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXVideoSession didPerformChanges]"];
-      [v50 handleFailureInFunction:v51 file:@"PXVideoSession.m" lineNumber:1004 description:{@"Invalid parameter not satisfying: %@", @"_updateQueue_updateFlags.isPerformingUpdate"}];
+      [currentHandler15 handleFailureInFunction:v51 file:@"PXVideoSession.m" lineNumber:1004 description:{@"Invalid parameter not satisfying: %@", @"_updateQueue_updateFlags.isPerformingUpdate"}];
     }
 
     v18 = p_updateQueue_updateFlags->needsUpdate;
@@ -5226,9 +5226,9 @@ void __44__PXVideoSession_outputMediaDataWillChange___block_invoke(uint64_t a1, 
 
     if (!self->_updateQueue_updateFlags.isPerformingUpdate)
     {
-      v52 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler16 = [MEMORY[0x1E696AAA8] currentHandler];
       v53 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXVideoSession didPerformChanges]"];
-      [v52 handleFailureInFunction:v53 file:@"PXVideoSession.m" lineNumber:1007 description:{@"Invalid parameter not satisfying: %@", @"_updateQueue_updateFlags.isPerformingUpdate"}];
+      [currentHandler16 handleFailureInFunction:v53 file:@"PXVideoSession.m" lineNumber:1007 description:{@"Invalid parameter not satisfying: %@", @"_updateQueue_updateFlags.isPerformingUpdate"}];
     }
 
     v19 = p_updateQueue_updateFlags->needsUpdate;
@@ -5241,9 +5241,9 @@ void __44__PXVideoSession_outputMediaDataWillChange___block_invoke(uint64_t a1, 
 
     if (!self->_updateQueue_updateFlags.isPerformingUpdate)
     {
-      v54 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler17 = [MEMORY[0x1E696AAA8] currentHandler];
       v55 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXVideoSession didPerformChanges]"];
-      [v54 handleFailureInFunction:v55 file:@"PXVideoSession.m" lineNumber:1010 description:{@"Invalid parameter not satisfying: %@", @"_updateQueue_updateFlags.isPerformingUpdate"}];
+      [currentHandler17 handleFailureInFunction:v55 file:@"PXVideoSession.m" lineNumber:1010 description:{@"Invalid parameter not satisfying: %@", @"_updateQueue_updateFlags.isPerformingUpdate"}];
     }
 
     v20 = p_updateQueue_updateFlags->needsUpdate;
@@ -5256,9 +5256,9 @@ void __44__PXVideoSession_outputMediaDataWillChange___block_invoke(uint64_t a1, 
 
     if (!self->_updateQueue_updateFlags.isPerformingUpdate)
     {
-      v56 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler18 = [MEMORY[0x1E696AAA8] currentHandler];
       v57 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXVideoSession didPerformChanges]"];
-      [v56 handleFailureInFunction:v57 file:@"PXVideoSession.m" lineNumber:1013 description:{@"Invalid parameter not satisfying: %@", @"_updateQueue_updateFlags.isPerformingUpdate"}];
+      [currentHandler18 handleFailureInFunction:v57 file:@"PXVideoSession.m" lineNumber:1013 description:{@"Invalid parameter not satisfying: %@", @"_updateQueue_updateFlags.isPerformingUpdate"}];
     }
 
     v21 = p_updateQueue_updateFlags->needsUpdate;
@@ -5273,23 +5273,23 @@ void __44__PXVideoSession_outputMediaDataWillChange___block_invoke(uint64_t a1, 
     self->_updateQueue_updateFlags.isPerformingUpdate = 0;
     if (v21)
     {
-      v58 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler19 = [MEMORY[0x1E696AAA8] currentHandler];
       v59 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXVideoSession didPerformChanges]"];
-      [v58 handleFailureInFunction:v59 file:@"PXVideoSession.m" lineNumber:1016 description:{@"still needing to update %lu after update pass", p_updateQueue_updateFlags->needsUpdate}];
+      [currentHandler19 handleFailureInFunction:v59 file:@"PXVideoSession.m" lineNumber:1016 description:{@"still needing to update %lu after update pass", p_updateQueue_updateFlags->needsUpdate}];
     }
   }
 }
 
-- (void)_performChanges:(id)a3
+- (void)_performChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __34__PXVideoSession__performChanges___block_invoke;
   v6[3] = &unk_1E774C2F0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = changesCopy;
+  v5 = changesCopy;
   [(PXVideoSession *)self _performBlockOnUpdateQueue:v6];
 }
 
@@ -5301,46 +5301,46 @@ id __34__PXVideoSession__performChanges___block_invoke(uint64_t a1)
   return objc_msgSendSuper2(&v3, sel_performChanges_, v1);
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
+  changesCopy = changes;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v7 = NSStringFromSelector(sel_performChanges_withPresentationContext_presenter_);
-  [v6 handleFailureInMethod:a2 object:self file:@"PXVideoSession.m" lineNumber:947 description:{@"Use %@ instead.", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXVideoSession.m" lineNumber:947 description:{@"Use %@ instead.", v7}];
 
   abort();
 }
 
-- (void)_updateQueue_unregisterChangeObserver:(id)a3 context:(void *)a4
+- (void)_updateQueue_unregisterChangeObserver:(id)observer context:(void *)context
 {
-  v6 = a3;
+  observerCopy = observer;
   [(PXVideoSession *)self _assertOnUpdateQueue];
   v7.receiver = self;
   v7.super_class = PXVideoSession;
-  [(PXVideoSession *)&v7 unregisterChangeObserver:v6 context:a4];
+  [(PXVideoSession *)&v7 unregisterChangeObserver:observerCopy context:context];
 }
 
-- (void)_updateQueue_registerChangeObserver:(id)a3 context:(void *)a4
+- (void)_updateQueue_registerChangeObserver:(id)observer context:(void *)context
 {
-  v6 = a3;
+  observerCopy = observer;
   [(PXVideoSession *)self _assertOnUpdateQueue];
   v7.receiver = self;
   v7.super_class = PXVideoSession;
-  [(PXVideoSession *)&v7 registerChangeObserver:v6 context:a4];
+  [(PXVideoSession *)&v7 registerChangeObserver:observerCopy context:context];
 }
 
-- (void)unregisterChangeObserver:(id)a3 context:(void *)a4
+- (void)unregisterChangeObserver:(id)observer context:(void *)context
 {
-  v6 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __51__PXVideoSession_unregisterChangeObserver_context___block_invoke;
   v8[3] = &unk_1E7746600;
   objc_copyWeak(v10, &location);
-  v7 = v6;
+  v7 = observerCopy;
   v9 = v7;
-  v10[1] = a4;
+  v10[1] = context;
   [(PXVideoSession *)self _performBlockOnUpdateQueue:v8];
 
   objc_destroyWeak(v10);
@@ -5353,18 +5353,18 @@ void __51__PXVideoSession_unregisterChangeObserver_context___block_invoke(uint64
   [WeakRetained _updateQueue_unregisterChangeObserver:*(a1 + 32) context:*(a1 + 48)];
 }
 
-- (void)registerChangeObserver:(id)a3 context:(void *)a4
+- (void)registerChangeObserver:(id)observer context:(void *)context
 {
-  v6 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __49__PXVideoSession_registerChangeObserver_context___block_invoke;
   v8[3] = &unk_1E7746600;
   objc_copyWeak(v10, &location);
-  v7 = v6;
+  v7 = observerCopy;
   v9 = v7;
-  v10[1] = a4;
+  v10[1] = context;
   [(PXVideoSession *)self _performBlockOnUpdateQueue:v8];
 
   objc_destroyWeak(v10);
@@ -5377,7 +5377,7 @@ void __49__PXVideoSession_registerChangeObserver_context___block_invoke(uint64_t
   [WeakRetained _updateQueue_registerChangeObserver:*(a1 + 32) context:*(a1 + 48)];
 }
 
-- (void)setDesiredPlaybackRate:(double)a3
+- (void)setDesiredPlaybackRate:(double)rate
 {
   [(PXVideoSession *)self _assertOnUpdateQueue];
   v9 = 0;
@@ -5389,7 +5389,7 @@ void __49__PXVideoSession_registerChangeObserver_context___block_invoke(uint64_t
   block[1] = 3221225472;
   block[2] = __41__PXVideoSession_setDesiredPlaybackRate___block_invoke;
   block[3] = &unk_1E77477B8;
-  *&block[6] = a3;
+  *&block[6] = rate;
   block[4] = self;
   block[5] = &v9;
   dispatch_sync(stateQueue, block);
@@ -5397,9 +5397,9 @@ void __49__PXVideoSession_registerChangeObserver_context___block_invoke(uint64_t
   {
     if (self->_updateQueue_updateFlags.isPerformingUpdate && (self->_updateQueue_updateFlags.updated & 0x200) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXVideoSession setDesiredPlaybackRate:]"];
-      [v6 handleFailureInFunction:v7 file:@"PXVideoSession.m" lineNumber:916 description:{@"invalidating %lu after it already has been updated", 512}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXVideoSession.m" lineNumber:916 description:{@"invalidating %lu after it already has been updated", 512}];
 
       abort();
     }
@@ -5517,17 +5517,17 @@ void __45__PXVideoSession__request4k60StreamAllowance__block_invoke()
   _request4k60StreamAllowance_maxConcurrent4k60Streams = v1;
 }
 
-- (void)setAudioSession:(id)a3
+- (void)setAudioSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __34__PXVideoSession_setAudioSession___block_invoke;
   v7[3] = &unk_1E774C620;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = sessionCopy;
+  v6 = sessionCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -5553,9 +5553,9 @@ void __45__PXVideoSession__request4k60StreamAllowance__block_invoke()
   return v3;
 }
 
-- (void)setVideoPlayer:(id)a3
+- (void)setVideoPlayer:(id)player
 {
-  v4 = a3;
+  playerCopy = player;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -5566,9 +5566,9 @@ void __45__PXVideoSession__request4k60StreamAllowance__block_invoke()
   v10 = 3221225472;
   v11 = __33__PXVideoSession_setVideoPlayer___block_invoke;
   v12 = &unk_1E7746448;
-  v6 = v4;
+  v6 = playerCopy;
   v13 = v6;
-  v14 = self;
+  selfCopy = self;
   v15 = &v16;
   dispatch_sync(stateQueue, &block);
   if (*(v17 + 24) == 1)
@@ -5576,9 +5576,9 @@ void __45__PXVideoSession__request4k60StreamAllowance__block_invoke()
     [(PXVideoSession *)self signalChange:0x4000];
     if (self->_updateQueue_updateFlags.isPerformingUpdate && (self->_updateQueue_updateFlags.updated & 0x2924C) != 0)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXVideoSession setVideoPlayer:]"];
-      [v7 handleFailureInFunction:v8 file:@"PXVideoSession.m" lineNumber:842 description:{@"invalidating %lu after it already has been updated", 168524, block, v10, v11, v12}];
+      [currentHandler handleFailureInFunction:v8 file:@"PXVideoSession.m" lineNumber:842 description:{@"invalidating %lu after it already has been updated", 168524, block, v10, v11, v12}];
 
       abort();
     }
@@ -5734,7 +5734,7 @@ void __40__PXVideoSession__disconnectVideoPlayer__block_invoke(void *a1)
   *(v8 + 256) = 0;
 }
 
-- (void)setShouldDisableAutomaticPixelBufferUpdates:(BOOL)a3
+- (void)setShouldDisableAutomaticPixelBufferUpdates:(BOOL)updates
 {
   [(PXVideoSession *)self _assertOnUpdateQueue];
   v10 = 0;
@@ -5746,7 +5746,7 @@ void __40__PXVideoSession__disconnectVideoPlayer__block_invoke(void *a1)
   block[1] = 3221225472;
   block[2] = __62__PXVideoSession_setShouldDisableAutomaticPixelBufferUpdates___block_invoke;
   block[3] = &unk_1E77465B0;
-  v9 = a3;
+  updatesCopy = updates;
   block[4] = self;
   block[5] = &v10;
   dispatch_sync(stateQueue, block);
@@ -5754,9 +5754,9 @@ void __40__PXVideoSession__disconnectVideoPlayer__block_invoke(void *a1)
   {
     if (self->_updateQueue_updateFlags.isPerformingUpdate && (self->_updateQueue_updateFlags.updated & 0x2000) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXVideoSession setShouldDisableAutomaticPixelBufferUpdates:]"];
-      [v6 handleFailureInFunction:v7 file:@"PXVideoSession.m" lineNumber:770 description:{@"invalidating %lu after it already has been updated", 0x2000}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXVideoSession.m" lineNumber:770 description:{@"invalidating %lu after it already has been updated", 0x2000}];
 
       abort();
     }
@@ -5799,28 +5799,28 @@ uint64_t __62__PXVideoSession_setShouldDisableAutomaticPixelBufferUpdates___bloc
   return v3;
 }
 
-- (void)_videoWorkQueue_updateCurrenPixelBufferAfterSeekingToTime:(id *)a3 completionLock:(id)a4
+- (void)_videoWorkQueue_updateCurrenPixelBufferAfterSeekingToTime:(id *)time completionLock:(id)lock
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(PXVideoSession *)self videoOutput];
-  time = *a3;
-  v8 = [v7 copyPixelBufferForItemTime:&time itemTimeForDisplay:0];
+  lockCopy = lock;
+  videoOutput = [(PXVideoSession *)self videoOutput];
+  time = *time;
+  v8 = [videoOutput copyPixelBufferForItemTime:&time itemTimeForDisplay:0];
 
   if (!v8)
   {
     v9 = PLVideoPlaybackGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      time = *a3;
+      time = *time;
       Seconds = CMTimeGetSeconds(&time);
-      v11 = [(PXVideoSession *)self videoOutput];
+      videoOutput2 = [(PXVideoSession *)self videoOutput];
       LODWORD(time.value) = 138412802;
       *(&time.value + 4) = self;
       LOWORD(time.flags) = 2048;
       *(&time.flags + 2) = Seconds;
       HIWORD(time.epoch) = 2112;
-      v17 = v11;
+      v17 = videoOutput2;
       _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_ERROR, "%@ got nil pixelBuffer for time %f from videoOutput: %@", &time, 0x20u);
     }
   }
@@ -5829,9 +5829,9 @@ uint64_t __62__PXVideoSession_setShouldDisableAutomaticPixelBufferUpdates___bloc
   v13[1] = 3221225472;
   v13[2] = __91__PXVideoSession__videoWorkQueue_updateCurrenPixelBufferAfterSeekingToTime_completionLock___block_invoke;
   v13[3] = &unk_1E7746588;
-  v14 = v6;
+  v14 = lockCopy;
   v15 = v8;
-  v12 = v6;
+  v12 = lockCopy;
   [(PXVideoSession *)self _performChanges:v13];
 }
 
@@ -5844,9 +5844,9 @@ uint64_t __91__PXVideoSession__videoWorkQueue_updateCurrenPixelBufferAfterSeekin
   return [v3 unlock];
 }
 
-- (void)_updateCurrenPixelBufferAfterSeekingToTime:(id *)a3 completionLock:(id)a4
+- (void)_updateCurrenPixelBufferAfterSeekingToTime:(id *)time completionLock:(id)lock
 {
-  v6 = a4;
+  lockCopy = lock;
   objc_initWeak(&location, self);
   videoWorkQueue = self->_videoWorkQueue;
   v9[0] = MEMORY[0x1E69E9820];
@@ -5854,9 +5854,9 @@ uint64_t __91__PXVideoSession__videoWorkQueue_updateCurrenPixelBufferAfterSeekin
   v9[2] = __76__PXVideoSession__updateCurrenPixelBufferAfterSeekingToTime_completionLock___block_invoke;
   v9[3] = &unk_1E7746560;
   objc_copyWeak(&v11, &location);
-  v12 = *a3;
-  v10 = v6;
-  v8 = v6;
+  v12 = *time;
+  v10 = lockCopy;
+  v8 = lockCopy;
   dispatch_async(videoWorkQueue, v9);
 
   objc_destroyWeak(&v11);
@@ -5872,13 +5872,13 @@ void __76__PXVideoSession__updateCurrenPixelBufferAfterSeekingToTime_completionL
   [WeakRetained _videoWorkQueue_updateCurrenPixelBufferAfterSeekingToTime:&v4 completionLock:v3];
 }
 
-- (void)seekToExactTime:(id *)a3 updatePixelBuffer:(BOOL)a4 waitUntilComplete:(BOOL)a5
+- (void)seekToExactTime:(id *)time updatePixelBuffer:(BOOL)buffer waitUntilComplete:(BOOL)complete
 {
-  v5 = a5;
+  completeCopy = complete;
   v35 = *MEMORY[0x1E69E9840];
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
-    v10 = !v5;
+    v10 = !completeCopy;
   }
 
   else
@@ -5888,7 +5888,7 @@ void __76__PXVideoSession__updateCurrenPixelBufferAfterSeekingToTime_completionL
 
   if (v10)
   {
-    if (!v5)
+    if (!completeCopy)
     {
       goto LABEL_8;
     }
@@ -5907,19 +5907,19 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v21 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v21 handleFailureInMethod:a2 object:self file:@"PXVideoSession.m" lineNumber:681 description:{@"Invalid parameter not satisfying: %@", @"NSThread.isMainThread ? waitUntilComplete == NO : YES"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXVideoSession.m" lineNumber:681 description:{@"Invalid parameter not satisfying: %@", @"NSThread.isMainThread ? waitUntilComplete == NO : YES"}];
 
-  if (v5)
+  if (completeCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_8:
-  v12 = [(PXVideoSession *)self videoPlayer];
-  if (v12 && [(PXVideoSession *)self isPlayable]&& [(PXVideoSession *)self isReadyForSeeking]&& [(PXVideoSession *)self isVideoOutputReady])
+  videoPlayer = [(PXVideoSession *)self videoPlayer];
+  if (videoPlayer && [(PXVideoSession *)self isPlayable]&& [(PXVideoSession *)self isReadyForSeeking]&& [(PXVideoSession *)self isVideoOutputReady])
   {
-    if (v5)
+    if (completeCopy)
     {
       v13 = objc_alloc_init(MEMORY[0x1E696AD10]);
     }
@@ -5935,19 +5935,19 @@ LABEL_8:
     v24[1] = 3221225472;
     v24[2] = __70__PXVideoSession_seekToExactTime_updatePixelBuffer_waitUntilComplete___block_invoke_273;
     v24[3] = &unk_1E7746538;
-    v29 = a4;
+    bufferCopy = buffer;
     objc_copyWeak(&v26, &location);
-    v27 = *&a3->var0;
-    var3 = a3->var3;
+    v27 = *&time->var0;
+    var3 = time->var3;
     v14 = v13;
     v25 = v14;
-    time = *a3;
+    time = *time;
     *buf = *MEMORY[0x1E6960CC0];
     *&buf[16] = *(MEMORY[0x1E6960CC0] + 16);
     v22 = *buf;
     v23 = *&buf[16];
-    [v12 seekToTime:&time toleranceBefore:buf toleranceAfter:&v22 completionHandler:v24];
-    if (v5)
+    [videoPlayer seekToTime:&time toleranceBefore:buf toleranceAfter:&v22 completionHandler:v24];
+    if (completeCopy)
     {
       v17 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:10.0];
       v18 = [v14 lockBeforeDate:v17];
@@ -5957,7 +5957,7 @@ LABEL_8:
         v19 = PLVideoPlaybackGetLog();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
         {
-          time = *a3;
+          time = *time;
           Seconds = CMTimeGetSeconds(&time);
           *buf = 138412546;
           *&buf[4] = self;
@@ -5977,7 +5977,7 @@ LABEL_8:
     v14 = PLVideoPlaybackGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      time = *a3;
+      time = *time;
       v15 = CMTimeGetSeconds(&time);
       v16 = [(PXVideoSession *)self description];
       LODWORD(time.value) = 138543874;
@@ -6073,20 +6073,20 @@ void __70__PXVideoSession_seekToExactTime_updatePixelBuffer_waitUntilComplete___
   }
 }
 
-- (void)seekToTime:(id *)a3 toleranceBefore:(id *)a4 toleranceAfter:(id *)a5 completionHandler:(id)a6
+- (void)seekToTime:(id *)time toleranceBefore:(id *)before toleranceAfter:(id *)after completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = [(PXVideoSession *)self videoPlayer];
+  handlerCopy = handler;
+  videoPlayer = [(PXVideoSession *)self videoPlayer];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __78__PXVideoSession_seekToTime_toleranceBefore_toleranceAfter_completionHandler___block_invoke;
   v16[3] = &unk_1E77464C0;
-  v17 = v10;
-  v15 = *a3;
-  v14 = *a4;
-  v13 = *a5;
-  v12 = v10;
-  [v11 seekToTime:&v15 toleranceBefore:&v14 toleranceAfter:&v13 completionHandler:v16];
+  v17 = handlerCopy;
+  v15 = *time;
+  v14 = *before;
+  v13 = *after;
+  v12 = handlerCopy;
+  [videoPlayer seekToTime:&v15 toleranceBefore:&v14 toleranceAfter:&v13 completionHandler:v16];
 }
 
 uint64_t __78__PXVideoSession_seekToTime_toleranceBefore_toleranceAfter_completionHandler___block_invoke(uint64_t a1)
@@ -6100,34 +6100,34 @@ uint64_t __78__PXVideoSession_seekToTime_toleranceBefore_toleranceAfter_completi
   return result;
 }
 
-- (void)seekToTime:(id *)a3 completionHandler:(id)a4
+- (void)seekToTime:(id *)time completionHandler:(id)handler
 {
-  v8 = *a3;
+  v8 = *time;
   v6 = *MEMORY[0x1E6960CC0];
   v7 = *(MEMORY[0x1E6960CC0] + 16);
   v4 = v6;
   v5 = v7;
-  [(PXVideoSession *)self seekToTime:&v8 toleranceBefore:&v6 toleranceAfter:&v4 completionHandler:a4];
+  [(PXVideoSession *)self seekToTime:&v8 toleranceBefore:&v6 toleranceAfter:&v4 completionHandler:handler];
 }
 
 - (CGImage)generateSnapshotImage
 {
   v25 = *MEMORY[0x1E69E9840];
   v23 = 0;
-  v3 = [(PXVideoSession *)self videoPlayer];
-  v4 = v3;
+  videoPlayer = [(PXVideoSession *)self videoPlayer];
+  v4 = videoPlayer;
   memset(&v22, 0, sizeof(v22));
-  if (v3)
+  if (videoPlayer)
   {
-    [v3 currentTime];
+    [videoPlayer currentTime];
   }
 
-  v5 = [v4 currentItem];
-  v6 = [v5 asset];
-  v7 = v6;
-  if (v6)
+  currentItem = [v4 currentItem];
+  asset = [currentItem asset];
+  v7 = asset;
+  if (asset)
   {
-    [v6 duration];
+    [asset duration];
     v8 = MEMORY[0x1E6960CC0];
     start = **&MEMORY[0x1E6960CC0];
     CMTimeRangeMake(&range, &start, &duration);
@@ -6142,17 +6142,17 @@ uint64_t __78__PXVideoSession_seekToTime_toleranceBefore_toleranceAfter_completi
     *&range.start.value = *v8;
     range.start.epoch = *(v8 + 16);
     [v9 setRequestedTimeToleranceBefore:&range];
-    v10 = [v5 videoComposition];
-    [v9 setVideoComposition:v10];
+    videoComposition = [currentItem videoComposition];
+    [v9 setVideoComposition:videoComposition];
 
-    v11 = [v9 customVideoCompositor];
+    customVideoCompositor = [v9 customVideoCompositor];
     NSClassFromString(&cfstr_Nuvideoplaybac.isa);
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v13 = [v9 customVideoCompositor];
-      [v13 setLabel:@"PXVideoSession-generateSnapshotImage"];
+      customVideoCompositor2 = [v9 customVideoCompositor];
+      [customVideoCompositor2 setLabel:@"PXVideoSession-generateSnapshotImage"];
     }
 
     v19 = 0;
@@ -6190,18 +6190,18 @@ uint64_t __78__PXVideoSession_seekToTime_toleranceBefore_toleranceAfter_completi
 
 - (void)cancelLoading
 {
-  v2 = [(PXVideoSession *)self contentProvider];
-  [v2 cancelLoading];
+  contentProvider = [(PXVideoSession *)self contentProvider];
+  [contentProvider cancelLoading];
 }
 
-- (void)loadIfNeededWithPriority:(int64_t)a3
+- (void)loadIfNeededWithPriority:(int64_t)priority
 {
-  v5 = [(PXVideoSession *)self contentProvider];
-  [v5 beginLoadingWithPriority:a3];
+  contentProvider = [(PXVideoSession *)self contentProvider];
+  [contentProvider beginLoadingWithPriority:priority];
 
   playbackReporter = self->_playbackReporter;
 
-  [(PXVideoPlaybackReporter *)playbackReporter reportPlaybackRequestedWithPriority:a3];
+  [(PXVideoPlaybackReporter *)playbackReporter reportPlaybackRequestedWithPriority:priority];
 }
 
 - (unint64_t)audioSessionRouteSharingPolicy
@@ -6294,14 +6294,14 @@ void __38__PXVideoSession_audioSessionCategory__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)_audioSessionQueue_updateAudioSessionWithCategory:(id)a3 mode:(id)a4 routeSharingPolicy:(unint64_t)a5 options:(unint64_t)a6
+- (void)_audioSessionQueue_updateAudioSessionWithCategory:(id)category mode:(id)mode routeSharingPolicy:(unint64_t)policy options:(unint64_t)options
 {
   v21 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a3;
-  v12 = [(PXVideoSession *)self audioSession];
+  modeCopy = mode;
+  categoryCopy = category;
+  audioSession = [(PXVideoSession *)self audioSession];
   v16 = 0;
-  LOBYTE(a5) = [v12 setCategory:v11 mode:v10 routeSharingPolicy:a5 options:a6 error:&v16];
+  LOBYTE(policy) = [audioSession setCategory:categoryCopy mode:modeCopy routeSharingPolicy:policy options:options error:&v16];
 
   v13 = v16;
   v15[0] = MEMORY[0x1E69E9820];
@@ -6310,13 +6310,13 @@ void __38__PXVideoSession_audioSessionCategory__block_invoke(uint64_t a1)
   v15[3] = &unk_1E774C5F8;
   v15[4] = self;
   [(PXVideoSession *)self _performChanges:v15];
-  if ((a5 & 1) == 0)
+  if ((policy & 1) == 0)
   {
     v14 = PLVideoPlaybackGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v18 = self;
+      selfCopy = self;
       v19 = 2112;
       v20 = v13;
       _os_log_impl(&dword_1A3C1C000, v14, OS_LOG_TYPE_ERROR, "Failed to update audio category on video session: %@\n\tError: %@", buf, 0x16u);
@@ -6324,10 +6324,10 @@ void __38__PXVideoSession_audioSessionCategory__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setAudioSessionCategory:(id)a3 mode:(id)a4 routeSharingPolicy:(unint64_t)a5 options:(unint64_t)a6
+- (void)setAudioSessionCategory:(id)category mode:(id)mode routeSharingPolicy:(unint64_t)policy options:(unint64_t)options
 {
-  v10 = a3;
-  v11 = a4;
+  categoryCopy = category;
+  modeCopy = mode;
   if (self->_audioSessionQueue)
   {
     v28 = 0;
@@ -6339,12 +6339,12 @@ void __38__PXVideoSession_audioSessionCategory__block_invoke(uint64_t a1)
     block[1] = 3221225472;
     block[2] = __74__PXVideoSession_setAudioSessionCategory_mode_routeSharingPolicy_options___block_invoke;
     block[3] = &unk_1E7746470;
-    v13 = v10;
+    v13 = categoryCopy;
     v22 = v13;
-    v23 = self;
-    v26 = a6;
-    v14 = v11;
-    v27 = a5;
+    selfCopy = self;
+    optionsCopy = options;
+    v14 = modeCopy;
+    policyCopy = policy;
     v24 = v14;
     v25 = &v28;
     dispatch_sync(stateQueue, block);
@@ -6360,8 +6360,8 @@ void __38__PXVideoSession_audioSessionCategory__block_invoke(uint64_t a1)
       objc_copyWeak(v19, &location);
       v17 = v13;
       v18 = v14;
-      v19[1] = a5;
-      v19[2] = a6;
+      v19[1] = policy;
+      v19[2] = options;
       dispatch_async(audioSessionQueue, v16);
 
       objc_destroyWeak(v19);
@@ -6414,9 +6414,9 @@ void __74__PXVideoSession_setAudioSessionCategory_mode_routeSharingPolicy_option
   [WeakRetained _audioSessionQueue_updateAudioSessionWithCategory:*(a1 + 32) mode:*(a1 + 40) routeSharingPolicy:*(a1 + 56) options:*(a1 + 64)];
 }
 
-- (void)cancelPixelBufferOutputWithRequestIdentifier:(id)a3
+- (void)cancelPixelBufferOutputWithRequestIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -6427,7 +6427,7 @@ void __74__PXVideoSession_setAudioSessionCategory_mode_routeSharingPolicy_option
   block[2] = __63__PXVideoSession_cancelPixelBufferOutputWithRequestIdentifier___block_invoke;
   block[3] = &unk_1E7746448;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   v9 = v6;
   v10 = &v11;
   dispatch_sync(stateQueue, block);
@@ -6482,11 +6482,11 @@ LABEL_10:
   *(*(a1 + 32) + 696) |= 0x2000uLL;
 }
 
-- (void)requestPixelBufferOutputWithRequestIdentifier:(id)a3 maxOutputSize:(CGSize)a4
+- (void)requestPixelBufferOutputWithRequestIdentifier:(id)identifier maxOutputSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  identifierCopy = identifier;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -6497,7 +6497,7 @@ LABEL_10:
   block[2] = __78__PXVideoSession_requestPixelBufferOutputWithRequestIdentifier_maxOutputSize___block_invoke;
   block[3] = &unk_1E7746420;
   block[4] = self;
-  v9 = v7;
+  v9 = identifierCopy;
   v14 = width;
   v15 = height;
   v12 = v9;
@@ -6565,19 +6565,19 @@ LABEL_10:
     mainQueue_videoViewQueue = self->_mainQueue_videoViewQueue;
   }
 
-  v6 = [(NSMutableArray *)mainQueue_videoViewQueue lastObject];
-  if (v6)
+  lastObject = [(NSMutableArray *)mainQueue_videoViewQueue lastObject];
+  if (lastObject)
   {
-    v7 = v6;
+    _newVideoView = lastObject;
     [(NSMutableArray *)self->_mainQueue_videoViewQueue removeLastObject];
   }
 
   else
   {
-    v7 = [(PXVideoSession *)self _newVideoView];
+    _newVideoView = [(PXVideoSession *)self _newVideoView];
   }
 
-  return v7;
+  return _newVideoView;
 }
 
 - (void)_mainQueue_actuallyPrewarmVideoView
@@ -6589,8 +6589,8 @@ LABEL_10:
     self->_mainQueue_videoViewQueue = v3;
 
     v5 = self->_mainQueue_videoViewQueue;
-    v6 = [(PXVideoSession *)self dequeueVideoView];
-    [(NSMutableArray *)v5 addObject:v6];
+    dequeueVideoView = [(PXVideoSession *)self dequeueVideoView];
+    [(NSMutableArray *)v5 addObject:dequeueVideoView];
   }
 }
 
@@ -6598,13 +6598,13 @@ LABEL_10:
 {
   self->_isExpectingVideoView = 1;
   objc_initWeak(&location, self);
-  v2 = [off_1E7721858 sharedScheduler];
+  sharedScheduler = [off_1E7721858 sharedScheduler];
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __34__PXVideoSession_prewarmVideoView__block_invoke;
   v3[3] = &unk_1E774C318;
   objc_copyWeak(&v4, &location);
-  [v2 scheduleMainQueueTask:v3];
+  [sharedScheduler scheduleMainQueueTask:v3];
 
   objc_destroyWeak(&v4);
   objc_destroyWeak(&location);
@@ -6637,14 +6637,14 @@ void __34__PXVideoSession_prewarmVideoView__block_invoke(uint64_t a1)
 
   if (self->_audioSessionQueue)
   {
-    v3 = [(PXVideoSession *)self audioSession];
+    audioSession = [(PXVideoSession *)self audioSession];
     audioSessionQueue = self->_audioSessionQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __37__PXVideoSession_performFinalCleanup__block_invoke;
     block[3] = &unk_1E774C648;
-    v10 = v3;
-    v5 = v3;
+    v10 = audioSession;
+    v5 = audioSession;
     dispatch_async(audioSessionQueue, block);
   }
 
@@ -6652,14 +6652,14 @@ void __34__PXVideoSession_prewarmVideoView__block_invoke(uint64_t a1)
   playerTimeAdvancementTimer = self->_playerTimeAdvancementTimer;
   self->_playerTimeAdvancementTimer = 0;
 
-  v7 = [(PXVideoSession *)self _disconnectVideoPlayer];
+  _disconnectVideoPlayer = [(PXVideoSession *)self _disconnectVideoPlayer];
 
-  return v7;
+  return _disconnectVideoPlayer;
 }
 
-- (void)performChanges:(id)a3 withPresentationContext:(int64_t)a4 presenter:(void *)a5
+- (void)performChanges:(id)changes withPresentationContext:(int64_t)context presenter:(void *)presenter
 {
-  v8 = a3;
+  changesCopy = changes;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -6671,8 +6671,8 @@ void __34__PXVideoSession_prewarmVideoView__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __67__PXVideoSession_performChanges_withPresentationContext_presenter___block_invoke;
   block[3] = &unk_1E77463D0;
-  block[6] = a4;
-  block[7] = a5;
+  block[6] = context;
+  block[7] = presenter;
   block[4] = self;
   block[5] = &v18;
   dispatch_sync(stateQueue, block);
@@ -6683,7 +6683,7 @@ void __34__PXVideoSession_prewarmVideoView__block_invoke(uint64_t a1)
     v12 = 3221225472;
     v13 = __67__PXVideoSession_performChanges_withPresentationContext_presenter___block_invoke_2;
     v14 = &unk_1E77463F8;
-    v15 = v8;
+    v15 = changesCopy;
     v16 = &v18;
     dispatch_async(updateQueue, &v11);
     [(PXVideoSession *)self _updateFromCurrentPresentationState:v11];
@@ -6742,7 +6742,7 @@ LABEL_7:
   }
 }
 
-- (void)leavePresentationContext:(int64_t)a3 presenter:(void *)a4
+- (void)leavePresentationContext:(int64_t)context presenter:(void *)presenter
 {
   v7 = 0;
   v8 = &v7;
@@ -6753,8 +6753,8 @@ LABEL_7:
   v6[1] = 3221225472;
   v6[2] = __53__PXVideoSession_leavePresentationContext_presenter___block_invoke;
   v6[3] = &unk_1E77463D0;
-  v6[6] = a3;
-  v6[7] = a4;
+  v6[6] = context;
+  v6[7] = presenter;
   v6[4] = self;
   v6[5] = &v7;
   dispatch_sync(stateQueue, v6);
@@ -6794,7 +6794,7 @@ void __53__PXVideoSession_leavePresentationContext_presenter___block_invoke(void
 LABEL_7:
 }
 
-- (void)enterPresentationContext:(int64_t)a3 presenter:(void *)a4
+- (void)enterPresentationContext:(int64_t)context presenter:(void *)presenter
 {
   stateQueue = self->_stateQueue;
   v6[0] = MEMORY[0x1E69E9820];
@@ -6802,8 +6802,8 @@ LABEL_7:
   v6[2] = __53__PXVideoSession_enterPresentationContext_presenter___block_invoke;
   v6[3] = &unk_1E7749770;
   v6[4] = self;
-  v6[5] = a3;
-  v6[6] = a4;
+  v6[5] = context;
+  v6[6] = presenter;
   v6[7] = a2;
   dispatch_sync(stateQueue, v6);
   [(PXVideoSession *)self _updateFromCurrentPresentationState];
@@ -6838,10 +6838,10 @@ void __53__PXVideoSession_enterPresentationContext_presenter___block_invoke(uint
   [v4 addObject:v8];
 }
 
-- (id)_stateQueue_newPresentationStateFromCurrentWithPresenter:(void *)a3
+- (id)_stateQueue_newPresentationStateFromCurrentWithPresenter:(void *)presenter
 {
   v5 = objc_alloc_init(_PXVideoSessionPresentationState);
-  [(_PXVideoSessionPresentationState *)v5 setPresenter:a3];
+  [(_PXVideoSessionPresentationState *)v5 setPresenter:presenter];
   [(_PXVideoSessionPresentationState *)v5 setLoopingEnabled:self->_stateQueue_isLoopingEnabled];
   v6 = *&self->_stateQueue_playbackTimeRange.start.flags;
   v9[0] = *(&self->_stateQueue_isLoopingEnabled + 2);
@@ -6859,19 +6859,19 @@ void __53__PXVideoSession_enterPresentationContext_presenter___block_invoke(uint
   return v5;
 }
 
-- (void)_handleSharedAudioSession:(id)a3
+- (void)_handleSharedAudioSession:(id)session
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  sessionCopy = session;
+  v5 = sessionCopy;
+  if (sessionCopy)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __44__PXVideoSession__handleSharedAudioSession___block_invoke;
     v7[3] = &unk_1E774C620;
-    v8 = v4;
-    v9 = self;
+    v8 = sessionCopy;
+    selfCopy = self;
     [(PXVideoSession *)self _performBlockOnUpdateQueue:v7];
     v6 = v8;
   }
@@ -6882,7 +6882,7 @@ void __53__PXVideoSession_enterPresentationContext_presenter___block_invoke(uint
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v11 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_ERROR, "Failed to load shared audio session. Audio playback issues or interruptions may occur! %@", buf, 0xCu);
     }
   }
@@ -6901,17 +6901,17 @@ uint64_t __44__PXVideoSession__handleSharedAudioSession___block_invoke(uint64_t 
 
 - (PXVideoSession)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXVideoSession.m" lineNumber:359 description:{@"%s is not available as initializer", "-[PXVideoSession init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXVideoSession.m" lineNumber:359 description:{@"%s is not available as initializer", "-[PXVideoSession init]"}];
 
   abort();
 }
 
-- (PXVideoSession)initWithContentProvider:(id)a3 videoPlayer:(id)a4 resourceReclamationController:(id)a5 playerCreationDelay:(double)a6
+- (PXVideoSession)initWithContentProvider:(id)provider videoPlayer:(id)player resourceReclamationController:(id)controller playerCreationDelay:(double)delay
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  providerCopy = provider;
+  playerCopy = player;
+  controllerCopy = controller;
   v68.receiver = self;
   v68.super_class = PXVideoSession;
   v14 = [(PXVideoSession *)&v68 init];
@@ -6926,8 +6926,8 @@ uint64_t __44__PXVideoSession__handleSharedAudioSession___block_invoke(uint64_t 
       v15->_photoSensitivityProcessing = v16;
 
       v18 = [PXVideoPlaybackReporter alloc];
-      v19 = [v11 contentIdentifier];
-      v20 = [(PXVideoPlaybackReporter *)v18 initWithIdentifier:v19 CPAnalysticsEndpoint:1];
+      contentIdentifier = [providerCopy contentIdentifier];
+      v20 = [(PXVideoPlaybackReporter *)v18 initWithIdentifier:contentIdentifier CPAnalysticsEndpoint:1];
       playbackReporter = v15->_playbackReporter;
       v15->_playbackReporter = v20;
 
@@ -6944,14 +6944,14 @@ uint64_t __44__PXVideoSession__handleSharedAudioSession___block_invoke(uint64_t 
       updateQueue = v15->_updateQueue;
       v15->_updateQueue = v27;
 
-      v29 = v13;
-      if (!v13)
+      v29 = controllerCopy;
+      if (!controllerCopy)
       {
         v29 = objc_alloc_init(MEMORY[0x1E69C1AC8]);
       }
 
       objc_storeStrong(&v15->_resourceReclamationController, v29);
-      if (!v13)
+      if (!controllerCopy)
       {
       }
 
@@ -6961,15 +6961,15 @@ uint64_t __44__PXVideoSession__handleSharedAudioSession___block_invoke(uint64_t 
       v31 = [v30 numberWithInt:?];
       v15->_updateQueueIdentifier = v31;
       dispatch_queue_set_specific(v15->_updateQueue, QueueIdentifierContext, v31, 0);
-      objc_storeStrong(&v15->_contentProvider, a3);
+      objc_storeStrong(&v15->_contentProvider, provider);
       v66 = 0u;
       v67 = 0u;
       v65 = 0u;
-      v32 = [(PXVideoContentProvider *)v15->_contentProvider loadingResult];
-      v33 = v32;
-      if (v32)
+      loadingResult = [(PXVideoContentProvider *)v15->_contentProvider loadingResult];
+      v33 = loadingResult;
+      if (loadingResult)
       {
-        [v32 timeRange];
+        [loadingResult timeRange];
       }
 
       else
@@ -6990,18 +6990,18 @@ uint64_t __44__PXVideoSession__handleSharedAudioSession___block_invoke(uint64_t 
       v63 = v66;
       v64 = v67;
       dispatch_sync(v34, block);
-      [v11 registerChangeObserver:v35 context:VideoContentProviderObservationContext_217265];
+      [providerCopy registerChangeObserver:v35 context:VideoContentProviderObservationContext_217265];
       v60[0] = MEMORY[0x1E69E9820];
       v60[1] = 3221225472;
       v60[2] = __104__PXVideoSession_initWithContentProvider_videoPlayer_resourceReclamationController_playerCreationDelay___block_invoke_2;
       v60[3] = &unk_1E77499B0;
-      *&v60[6] = a6;
+      *&v60[6] = delay;
       v36 = v35;
       v60[4] = v36;
-      v60[5] = v12;
+      v60[5] = playerCopy;
       [v36 _performChanges:v60];
-      v37 = [v36 videoPlayer];
-      [v37 setActionAtItemEnd:2];
+      videoPlayer = [v36 videoPlayer];
+      [videoPlayer setActionAtItemEnd:2];
 
       v38 = MEMORY[0x1E695EFD0];
       v39 = *(MEMORY[0x1E695EFD0] + 16);
@@ -7018,18 +7018,18 @@ uint64_t __44__PXVideoSession__handleSharedAudioSession___block_invoke(uint64_t 
       v44 = v36[15];
       v36[15] = v43;
 
-      if ([v11 mayContainAudio])
+      if ([providerCopy mayContainAudio])
       {
-        if ([v11 audioSessionKind])
+        if ([providerCopy audioSessionKind])
         {
           objc_initWeak(&location, v36);
-          v45 = [v11 audioSessionKind];
+          audioSessionKind = [providerCopy audioSessionKind];
           v46 = v36[15];
           v53[0] = MEMORY[0x1E69E9820];
           v53[1] = 3221225472;
           v53[2] = __104__PXVideoSession_initWithContentProvider_videoPlayer_resourceReclamationController_playerCreationDelay___block_invoke_5;
           v53[3] = &unk_1E7749808;
-          v54[1] = v45;
+          v54[1] = audioSessionKind;
           objc_copyWeak(v54, &location);
           dispatch_async(v46, v53);
           objc_destroyWeak(v54);
@@ -7068,9 +7068,9 @@ uint64_t __44__PXVideoSession__handleSharedAudioSession___block_invoke(uint64_t 
       px_dispatch_on_main_queue();
     }
 
-    v51 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v52 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXVideoSession initWithContentProvider:videoPlayer:resourceReclamationController:playerCreationDelay:]"];
-    [v51 handleFailureInFunction:v52 file:@"PXVideoSession.m" lineNumber:269 description:{@"invalidating %lu after it already has been updated", 4096}];
+    [currentHandler handleFailureInFunction:v52 file:@"PXVideoSession.m" lineNumber:269 description:{@"invalidating %lu after it already has been updated", 4096}];
 
     abort();
   }

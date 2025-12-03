@@ -1,24 +1,24 @@
 @interface CRLNavigationControllerAccessibility
-+ (id)crlaxCastFrom:(id)a3;
-- (void)didShowViewController:(id)a3 animated:(BOOL)a4;
++ (id)crlaxCastFrom:(id)from;
+- (void)didShowViewController:(id)controller animated:(BOOL)animated;
 @end
 
 @implementation CRLNavigationControllerAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
 
-- (void)didShowViewController:(id)a3 animated:(BOOL)a4
+- (void)didShowViewController:(id)controller animated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = CRLNavigationControllerAccessibility;
-  [(CRLNavigationControllerAccessibility *)&v4 didShowViewController:a3 animated:a4];
+  [(CRLNavigationControllerAccessibility *)&v4 didShowViewController:controller animated:animated];
   UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, 0);
 }
 

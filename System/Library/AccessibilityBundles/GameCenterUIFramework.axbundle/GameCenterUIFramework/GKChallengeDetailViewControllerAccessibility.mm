@@ -1,31 +1,31 @@
 @interface GKChallengeDetailViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_axElementsOfView;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)updateIconViewWithSubView:(id)a3;
+- (void)updateIconViewWithSubView:(id)view;
 @end
 
 @implementation GKChallengeDetailViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"GKChallengeDetailViewController" hasInstanceMethod:@"iconView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GKChallengeDetailViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"GKChallengeDetailViewController" hasInstanceMethod:@"categoryLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GKChallengeDetailViewController" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GKChallengeDetailViewController" hasInstanceMethod:@"descriptionLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GKChallengeDetailViewController" hasInstanceMethod:@"playerAvatarView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GKChallengeDetailViewController" hasInstanceMethod:@"challengeByNameLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GKChallengeDetailViewController" hasInstanceMethod:@"shouldShowPlay" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"GKChallengeDetailViewController" hasInstanceMethod:@"playNowButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GKChallengeDetailViewController" hasInstanceMethod:@"declineButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GKChallengeDetailViewController" hasInstanceMethod:@"updateIconViewWithSubView:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"GameCenterUI.AchievementBadge"];
-  [v3 validateClass:@"GameCenterUI.AchievementBadge" hasInstanceMethod:@"accessibilityIsAchievementLocked" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"GameCenterUI.AchievementBadge" hasInstanceMethod:@"accessibilityIsAchievementCompleted" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"GameCenterUI.AchievementBadge" hasInstanceMethod:@"accessibilityIsAchievementInProgress" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"GameCenterUI.AchievementBadge" hasInstanceMethod:@"accessibilityProgress" withFullSignature:{"d", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"GKChallengeDetailViewController" hasInstanceMethod:@"iconView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GKChallengeDetailViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"GKChallengeDetailViewController" hasInstanceMethod:@"categoryLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GKChallengeDetailViewController" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GKChallengeDetailViewController" hasInstanceMethod:@"descriptionLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GKChallengeDetailViewController" hasInstanceMethod:@"playerAvatarView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GKChallengeDetailViewController" hasInstanceMethod:@"challengeByNameLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GKChallengeDetailViewController" hasInstanceMethod:@"shouldShowPlay" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"GKChallengeDetailViewController" hasInstanceMethod:@"playNowButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GKChallengeDetailViewController" hasInstanceMethod:@"declineButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GKChallengeDetailViewController" hasInstanceMethod:@"updateIconViewWithSubView:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"GameCenterUI.AchievementBadge"];
+  [validationsCopy validateClass:@"GameCenterUI.AchievementBadge" hasInstanceMethod:@"accessibilityIsAchievementLocked" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"GameCenterUI.AchievementBadge" hasInstanceMethod:@"accessibilityIsAchievementCompleted" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"GameCenterUI.AchievementBadge" hasInstanceMethod:@"accessibilityIsAchievementInProgress" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"GameCenterUI.AchievementBadge" hasInstanceMethod:@"accessibilityProgress" withFullSignature:{"d", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -106,12 +106,12 @@ id __90__GKChallengeDetailViewControllerAccessibility__accessibilityLoadAccessib
 
 - (id)_axElementsOfView
 {
-  v3 = [(GKChallengeDetailViewControllerAccessibility *)self _accessibilityChallengeDetailElements];
-  if (!v3)
+  _accessibilityChallengeDetailElements = [(GKChallengeDetailViewControllerAccessibility *)self _accessibilityChallengeDetailElements];
+  if (!_accessibilityChallengeDetailElements)
   {
-    v3 = [MEMORY[0x29EDB8DE8] array];
+    _accessibilityChallengeDetailElements = [MEMORY[0x29EDB8DE8] array];
     v20 = [(GKChallengeDetailViewControllerAccessibility *)self safeValueForKey:@"iconView"];
-    [v3 axSafelyAddObject:?];
+    [_accessibilityChallengeDetailElements axSafelyAddObject:?];
     v4 = [(GKChallengeDetailViewControllerAccessibility *)self safeValueForKey:@"categoryLabel"];
     v5 = [(GKChallengeDetailViewControllerAccessibility *)self safeValueForKey:@"titleLabel"];
     v6 = [(GKChallengeDetailViewControllerAccessibility *)self safeValueForKey:@"descriptionLabel"];
@@ -129,7 +129,7 @@ id __90__GKChallengeDetailViewControllerAccessibility__accessibilityLoadAccessib
     v26 = v9;
     [v7 _setAccessibilityLabelBlock:v23];
     [v7 _setIsAccessibilityElementBlock:&__block_literal_global_362];
-    [v3 axSafelyAddObject:v7];
+    [_accessibilityChallengeDetailElements axSafelyAddObject:v7];
     v10 = [(GKChallengeDetailViewControllerAccessibility *)self safeValueForKey:@"playerAvatarView"];
     v11 = [(GKChallengeDetailViewControllerAccessibility *)self safeValueForKey:@"challengeByNameLabel"];
     v12 = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{2, v10, v11}];
@@ -142,19 +142,19 @@ id __90__GKChallengeDetailViewControllerAccessibility__accessibilityLoadAccessib
     v14 = v11;
     [v13 _setAccessibilityLabelBlock:v21];
     [v13 _setIsAccessibilityElementBlock:&__block_literal_global_364];
-    [v3 axSafelyAddObject:v13];
+    [_accessibilityChallengeDetailElements axSafelyAddObject:v13];
     if ([(GKChallengeDetailViewControllerAccessibility *)self safeBoolForKey:@"shouldShowPlay"])
     {
       v15 = [(GKChallengeDetailViewControllerAccessibility *)self safeValueForKey:@"playNowButton"];
-      [v3 axSafelyAddObject:v15];
+      [_accessibilityChallengeDetailElements axSafelyAddObject:v15];
     }
 
     v16 = [(GKChallengeDetailViewControllerAccessibility *)self safeValueForKey:@"declineButton"];
-    [v3 axSafelyAddObject:v16];
-    [(GKChallengeDetailViewControllerAccessibility *)self _setAccessibilityChallengeDetailElements:v3];
+    [_accessibilityChallengeDetailElements axSafelyAddObject:v16];
+    [(GKChallengeDetailViewControllerAccessibility *)self _setAccessibilityChallengeDetailElements:_accessibilityChallengeDetailElements];
   }
 
-  return v3;
+  return _accessibilityChallengeDetailElements;
 }
 
 id __65__GKChallengeDetailViewControllerAccessibility__axElementsOfView__block_invoke(id *a1)
@@ -175,11 +175,11 @@ id __65__GKChallengeDetailViewControllerAccessibility__axElementsOfView__block_i
   return v2;
 }
 
-- (void)updateIconViewWithSubView:(id)a3
+- (void)updateIconViewWithSubView:(id)view
 {
   v4.receiver = self;
   v4.super_class = GKChallengeDetailViewControllerAccessibility;
-  [(GKChallengeDetailViewControllerAccessibility *)&v4 updateIconViewWithSubView:a3];
+  [(GKChallengeDetailViewControllerAccessibility *)&v4 updateIconViewWithSubView:view];
   [(GKChallengeDetailViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 

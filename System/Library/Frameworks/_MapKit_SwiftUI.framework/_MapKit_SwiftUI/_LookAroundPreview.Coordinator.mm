@@ -1,15 +1,15 @@
 @interface _LookAroundPreview.Coordinator
 - (_TtCV15_MapKit_SwiftUI18_LookAroundPreview11Coordinator)init;
-- (void)lookAroundViewControllerDidUpdateScene:(id)a3;
+- (void)lookAroundViewControllerDidUpdateScene:(id)scene;
 @end
 
 @implementation _LookAroundPreview.Coordinator
 
-- (void)lookAroundViewControllerDidUpdateScene:(id)a3
+- (void)lookAroundViewControllerDidUpdateScene:(id)scene
 {
-  v4 = a3;
-  v5 = self;
-  sub_213D59EAC(v4);
+  sceneCopy = scene;
+  selfCopy = self;
+  sub_213D59EAC(sceneCopy);
 }
 
 - (_TtCV15_MapKit_SwiftUI18_LookAroundPreview11Coordinator)init

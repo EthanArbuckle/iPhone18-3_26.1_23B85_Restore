@@ -1,42 +1,42 @@
 @interface ANCAlert
-- (ANCAlert)initWithCategoryID:(unsigned __int8)a3;
-- (id)_appIdentifierForTUCallProvider:(id)a3;
+- (ANCAlert)initWithCategoryID:(unsigned __int8)d;
+- (id)_appIdentifierForTUCallProvider:(id)provider;
 @end
 
 @implementation ANCAlert
 
-- (ANCAlert)initWithCategoryID:(unsigned __int8)a3
+- (ANCAlert)initWithCategoryID:(unsigned __int8)d
 {
   v5.receiver = self;
   v5.super_class = ANCAlert;
   result = [(ANCAlert *)&v5 init];
   if (result)
   {
-    result->_categoryID = a3;
+    result->_categoryID = d;
   }
 
   return result;
 }
 
-- (id)_appIdentifierForTUCallProvider:(id)a3
+- (id)_appIdentifierForTUCallProvider:(id)provider
 {
-  v3 = a3;
-  if ([v3 isTelephonyProvider])
+  providerCopy = provider;
+  if ([providerCopy isTelephonyProvider])
   {
-    v4 = @"com.apple.mobilephone";
+    bundleIdentifier = @"com.apple.mobilephone";
   }
 
-  else if ([v3 isFaceTimeProvider])
+  else if ([providerCopy isFaceTimeProvider])
   {
-    v4 = @"com.apple.facetime";
+    bundleIdentifier = @"com.apple.facetime";
   }
 
   else
   {
-    v4 = [v3 bundleIdentifier];
+    bundleIdentifier = [providerCopy bundleIdentifier];
   }
 
-  return v4;
+  return bundleIdentifier;
 }
 
 @end

@@ -4,9 +4,9 @@
 - (void)_updateFields;
 - (void)awakeFromNib;
 - (void)deleteBackward;
-- (void)insertText:(id)a3;
-- (void)setText:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)insertText:(id)text;
+- (void)setText:(id)text;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation RPPINEntryView
@@ -129,21 +129,21 @@
   return v4;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = [a3 uppercaseString];
-  v5 = [v4 mutableCopy];
+  uppercaseString = [text uppercaseString];
+  v5 = [uppercaseString mutableCopy];
   text = self->_text;
   self->_text = v5;
 
   [(RPPINEntryView *)self _updateFields];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = RPPINEntryView;
-  [(RPPINEntryView *)&v5 touchesBegan:a3 withEvent:a4];
+  [(RPPINEntryView *)&v5 touchesBegan:began withEvent:event];
   if (!self->_disabled)
   {
     [(RPPINEntryView *)self becomeFirstResponder];
@@ -218,15 +218,15 @@
   wellFocusColor = self->_wellFocusColor;
   if (wellFocusColor)
   {
-    v16 = wellFocusColor;
+    grayColor = wellFocusColor;
   }
 
   else
   {
-    v16 = [MEMORY[0x277D75348] grayColor];
+    grayColor = [MEMORY[0x277D75348] grayColor];
   }
 
-  v29 = v16;
+  v29 = grayColor;
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
@@ -302,19 +302,19 @@
   }
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  textChangedHandler = a3;
+  textChangedHandler = text;
   v5 = textChangedHandler;
   if (!self->_disabled)
   {
     v20 = textChangedHandler;
     v6 = textChangedHandler;
-    v7 = [v20 UTF8String];
+    uTF8String = [v20 UTF8String];
     v8 = [(NSArray *)self->_labels count];
     v9 = v8 - [(NSMutableString *)self->_text length];
-    v10 = *v7;
-    if (*v7)
+    v10 = *uTF8String;
+    if (*uTF8String)
     {
       v11 = v9 == 0;
     }
@@ -327,7 +327,7 @@
     if (!v11)
     {
       v12 = MEMORY[0x277D85DE0];
-      v13 = v7 + 1;
+      v13 = uTF8String + 1;
       do
       {
         if ((v10 & 0x80) != 0)

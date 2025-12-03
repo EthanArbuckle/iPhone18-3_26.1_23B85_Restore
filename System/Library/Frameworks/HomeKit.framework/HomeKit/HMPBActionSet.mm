@@ -1,22 +1,22 @@
 @interface HMPBActionSet
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addActions:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addActions:(id)actions;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMPBActionSet
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 4))
+  fromCopy = from;
+  if (*(fromCopy + 4))
   {
     [(HMPBActionSet *)self setName:?];
   }
@@ -25,7 +25,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -49,17 +49,17 @@
     while (v7);
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(HMPBActionSet *)self setActionSetType:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(HMPBActionSet *)self setUuid:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(HMPBActionSet *)self setHomeUUID:?];
   }
@@ -76,13 +76,13 @@
   return v6 ^ [(NSData *)self->_homeUUID hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((name = self->_name, !(name | v4[4])) || -[NSString isEqual:](name, "isEqual:")) && ((actions = self->_actions, !(actions | v4[2])) || -[NSMutableArray isEqual:](actions, "isEqual:")) && ((actionSetType = self->_actionSetType, !(actionSetType | v4[1])) || -[NSString isEqual:](actionSetType, "isEqual:")) && ((uuid = self->_uuid, !(uuid | v4[5])) || -[NSData isEqual:](uuid, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((name = self->_name, !(name | equalCopy[4])) || -[NSString isEqual:](name, "isEqual:")) && ((actions = self->_actions, !(actions | equalCopy[2])) || -[NSMutableArray isEqual:](actions, "isEqual:")) && ((actionSetType = self->_actionSetType, !(actionSetType | equalCopy[1])) || -[NSString isEqual:](actionSetType, "isEqual:")) && ((uuid = self->_uuid, !(uuid | equalCopy[5])) || -[NSData isEqual:](uuid, "isEqual:")))
   {
     homeUUID = self->_homeUUID;
-    if (homeUUID | v4[3])
+    if (homeUUID | equalCopy[3])
     {
       v10 = [(NSData *)homeUUID isEqual:?];
     }
@@ -101,11 +101,11 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_name copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_name copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
@@ -129,7 +129,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v22 + 1) + 8 * v12) copyWithZone:{a3, v22}];
+        v13 = [*(*(&v22 + 1) + 8 * v12) copyWithZone:{zone, v22}];
         [v5 addActions:v13];
 
         ++v12;
@@ -142,15 +142,15 @@
     while (v10);
   }
 
-  v14 = [(NSString *)self->_actionSetType copyWithZone:a3];
+  v14 = [(NSString *)self->_actionSetType copyWithZone:zone];
   v15 = v5[1];
   v5[1] = v14;
 
-  v16 = [(NSData *)self->_uuid copyWithZone:a3];
+  v16 = [(NSData *)self->_uuid copyWithZone:zone];
   v17 = v5[5];
   v5[5] = v16;
 
-  v18 = [(NSData *)self->_homeUUID copyWithZone:a3];
+  v18 = [(NSData *)self->_homeUUID copyWithZone:zone];
   v19 = v5[3];
   v5[3] = v18;
 
@@ -158,52 +158,52 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (self->_name)
   {
-    [v9 setName:?];
+    [toCopy setName:?];
   }
 
   if ([(HMPBActionSet *)self actionsCount])
   {
-    [v9 clearActions];
-    v4 = [(HMPBActionSet *)self actionsCount];
-    if (v4)
+    [toCopy clearActions];
+    actionsCount = [(HMPBActionSet *)self actionsCount];
+    if (actionsCount)
     {
-      v5 = v4;
+      v5 = actionsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HMPBActionSet *)self actionsAtIndex:i];
-        [v9 addActions:v7];
+        [toCopy addActions:v7];
       }
     }
   }
 
   if (self->_actionSetType)
   {
-    [v9 setActionSetType:?];
+    [toCopy setActionSetType:?];
   }
 
-  v8 = v9;
+  v8 = toCopy;
   if (self->_uuid)
   {
-    [v9 setUuid:?];
-    v8 = v9;
+    [toCopy setUuid:?];
+    v8 = toCopy;
   }
 
   if (self->_homeUUID)
   {
-    [v9 setHomeUUID:?];
-    v8 = v9;
+    [toCopy setHomeUUID:?];
+    v8 = toCopy;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_name)
   {
     PBDataWriterWriteStringField();
@@ -262,12 +262,12 @@
 - (id)dictionaryRepresentation
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   name = self->_name;
   if (name)
   {
-    [v3 setObject:name forKey:@"name"];
+    [dictionary setObject:name forKey:@"name"];
   }
 
   if ([(NSMutableArray *)self->_actions count])
@@ -292,8 +292,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -334,28 +334,28 @@
   v8.receiver = self;
   v8.super_class = HMPBActionSet;
   v4 = [(HMPBActionSet *)&v8 description];
-  v5 = [(HMPBActionSet *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMPBActionSet *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addActions:(id)a3
+- (void)addActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   actions = self->_actions;
-  v8 = v4;
+  v8 = actionsCopy;
   if (!actions)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_actions;
     self->_actions = v6;
 
-    v4 = v8;
+    actionsCopy = v8;
     actions = self->_actions;
   }
 
-  [(NSMutableArray *)actions addObject:v4];
+  [(NSMutableArray *)actions addObject:actionsCopy];
 }
 
 @end

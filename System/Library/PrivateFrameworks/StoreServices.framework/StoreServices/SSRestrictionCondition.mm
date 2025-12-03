@@ -1,19 +1,19 @@
 @interface SSRestrictionCondition
-- (BOOL)evaluateWithContext:(id)a3;
-- (SSRestrictionCondition)initWithDictionary:(id)a3;
+- (BOOL)evaluateWithContext:(id)context;
+- (SSRestrictionCondition)initWithDictionary:(id)dictionary;
 - (void)dealloc;
 @end
 
 @implementation SSRestrictionCondition
 
-- (SSRestrictionCondition)initWithDictionary:(id)a3
+- (SSRestrictionCondition)initWithDictionary:(id)dictionary
 {
   v7.receiver = self;
   v7.super_class = SSRestrictionCondition;
   v4 = [(SSProtocolCondition *)&v7 initWithDictionary:?];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"restriction-name"];
+    v5 = [dictionary objectForKey:@"restriction-name"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,7 +31,7 @@
   [(SSProtocolCondition *)&v3 dealloc];
 }
 
-- (BOOL)evaluateWithContext:(id)a3
+- (BOOL)evaluateWithContext:(id)context
 {
   if (self->_restrictionName)
   {
@@ -45,15 +45,15 @@
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [self->super._value BOOLValue];
+    bOOLValue = [self->super._value BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v4 ^ v5 ^ (self->super._operator == 1);
+  return v4 ^ bOOLValue ^ (self->super._operator == 1);
 }
 
 @end

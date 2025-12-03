@@ -1,26 +1,26 @@
 @interface MUIToastViewController
-- (MUIToastViewController)initWithContentViewController:(id)a3;
+- (MUIToastViewController)initWithContentViewController:(id)controller;
 - (MUIToastViewControllerDelegate)delegate;
-- (void)_didReceivePan:(id)a3;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)_didReceivePan:(id)pan;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation MUIToastViewController
 
-- (MUIToastViewController)initWithContentViewController:(id)a3
+- (MUIToastViewController)initWithContentViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = MUIToastViewController;
   v6 = [(MUIToastViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contentViewController, a3);
+    objc_storeStrong(&v6->_contentViewController, controller);
   }
 
   return v7;
@@ -32,27 +32,27 @@
   v66.receiver = self;
   v66.super_class = MUIToastViewController;
   [(MUIToastViewController *)&v66 viewDidLoad];
-  v3 = [(MUIToastViewController *)self view];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [(MUIToastViewController *)self view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
   v4 = objc_alloc_init(MEMORY[0x277D75D18]);
   contentContainerView = self->_contentContainerView;
   self->_contentContainerView = v4;
 
   [(UIView *)self->_contentContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [MEMORY[0x277D75348] blackColor];
-  v7 = [v6 CGColor];
-  v8 = [(UIView *)self->_contentContainerView layer];
-  [v8 setShadowColor:v7];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  cGColor = [blackColor CGColor];
+  layer = [(UIView *)self->_contentContainerView layer];
+  [layer setShadowColor:cGColor];
 
-  v9 = [(UIView *)self->_contentContainerView layer];
+  layer2 = [(UIView *)self->_contentContainerView layer];
   LODWORD(v10) = 1042536202;
-  [v9 setShadowOpacity:v10];
+  [layer2 setShadowOpacity:v10];
 
-  v11 = [(UIView *)self->_contentContainerView layer];
-  [v11 setShadowRadius:20.0];
+  layer3 = [(UIView *)self->_contentContainerView layer];
+  [layer3 setShadowRadius:20.0];
 
-  v12 = [(UIView *)self->_contentContainerView layer];
-  [v12 setShadowOffset:{0.0, 5.0}];
+  layer4 = [(UIView *)self->_contentContainerView layer];
+  [layer4 setShadowOffset:{0.0, 5.0}];
 
   [(UIViewController *)self->_contentViewController willMoveToParentViewController:self];
   v13 = objc_alloc(MEMORY[0x277D75D68]);
@@ -63,70 +63,70 @@
 
   [(UIVisualEffectView *)self->_backgroundVisualEffectView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)self->_contentContainerView addSubview:self->_backgroundVisualEffectView];
-  v17 = [(UIViewController *)self->_contentViewController view];
-  [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(UIView *)self->_contentContainerView addSubview:v17];
+  view2 = [(UIViewController *)self->_contentViewController view];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(UIView *)self->_contentContainerView addSubview:view2];
   [(UIViewController *)self->_contentViewController didMoveToParentViewController:self];
-  [v3 addSubview:self->_contentContainerView];
+  [view addSubview:self->_contentContainerView];
   v46 = MEMORY[0x277CCAAD0];
-  v62 = [v17 topAnchor];
-  v60 = [(UIView *)self->_contentContainerView topAnchor];
-  v58 = [v62 constraintEqualToAnchor:v60];
+  topAnchor = [view2 topAnchor];
+  topAnchor2 = [(UIView *)self->_contentContainerView topAnchor];
+  v58 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v68[0] = v58;
-  v56 = [v17 leadingAnchor];
-  v54 = [(UIView *)self->_contentContainerView leadingAnchor];
-  v52 = [v56 constraintEqualToAnchor:v54];
+  leadingAnchor = [view2 leadingAnchor];
+  leadingAnchor2 = [(UIView *)self->_contentContainerView leadingAnchor];
+  v52 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v68[1] = v52;
-  v65 = v17;
-  v51 = [v17 bottomAnchor];
-  v50 = [(UIView *)self->_contentContainerView bottomAnchor];
-  v49 = [v51 constraintEqualToAnchor:v50];
+  v65 = view2;
+  bottomAnchor = [view2 bottomAnchor];
+  bottomAnchor2 = [(UIView *)self->_contentContainerView bottomAnchor];
+  v49 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v68[2] = v49;
-  v48 = [v17 trailingAnchor];
-  v47 = [(UIView *)self->_contentContainerView trailingAnchor];
-  v45 = [v48 constraintEqualToAnchor:v47];
+  trailingAnchor = [view2 trailingAnchor];
+  trailingAnchor2 = [(UIView *)self->_contentContainerView trailingAnchor];
+  v45 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v68[3] = v45;
-  v44 = [(UIView *)self->_contentContainerView topAnchor];
-  v43 = [v3 topAnchor];
-  v42 = [v44 constraintEqualToAnchor:v43];
+  topAnchor3 = [(UIView *)self->_contentContainerView topAnchor];
+  topAnchor4 = [view topAnchor];
+  v42 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v68[4] = v42;
-  v41 = [(UIView *)self->_contentContainerView leadingAnchor];
-  v40 = [v3 leadingAnchor];
-  v39 = [v41 constraintGreaterThanOrEqualToAnchor:v40 constant:20.0];
+  leadingAnchor3 = [(UIView *)self->_contentContainerView leadingAnchor];
+  leadingAnchor4 = [view leadingAnchor];
+  v39 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4 constant:20.0];
   v68[5] = v39;
-  v38 = [(UIView *)self->_contentContainerView bottomAnchor];
-  v37 = [v3 bottomAnchor];
-  v18 = [v38 constraintEqualToAnchor:v37];
+  bottomAnchor3 = [(UIView *)self->_contentContainerView bottomAnchor];
+  bottomAnchor4 = [view bottomAnchor];
+  v18 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v68[6] = v18;
-  v19 = [(UIView *)self->_contentContainerView trailingAnchor];
-  v20 = v3;
-  v64 = v3;
-  v21 = [v3 trailingAnchor];
-  v22 = [v19 constraintLessThanOrEqualToAnchor:v21 constant:-20.0];
+  trailingAnchor3 = [(UIView *)self->_contentContainerView trailingAnchor];
+  v20 = view;
+  v64 = view;
+  trailingAnchor4 = [view trailingAnchor];
+  v22 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:trailingAnchor4 constant:-20.0];
   v68[7] = v22;
-  v23 = [(UIView *)self->_contentContainerView centerXAnchor];
-  v24 = [v20 centerXAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  centerXAnchor = [(UIView *)self->_contentContainerView centerXAnchor];
+  centerXAnchor2 = [v20 centerXAnchor];
+  v25 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v68[8] = v25;
   v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v68 count:9];
   [v46 activateConstraints:v26];
 
   v53 = MEMORY[0x277CCAAD0];
-  v63 = [(UIVisualEffectView *)self->_backgroundVisualEffectView leadingAnchor];
-  v61 = [(UIView *)self->_contentContainerView leadingAnchor];
-  v59 = [v63 constraintEqualToAnchor:v61];
+  leadingAnchor5 = [(UIVisualEffectView *)self->_backgroundVisualEffectView leadingAnchor];
+  leadingAnchor6 = [(UIView *)self->_contentContainerView leadingAnchor];
+  v59 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v67[0] = v59;
-  v57 = [(UIVisualEffectView *)self->_backgroundVisualEffectView trailingAnchor];
-  v55 = [(UIView *)self->_contentContainerView trailingAnchor];
-  v27 = [v57 constraintEqualToAnchor:v55];
+  trailingAnchor5 = [(UIVisualEffectView *)self->_backgroundVisualEffectView trailingAnchor];
+  trailingAnchor6 = [(UIView *)self->_contentContainerView trailingAnchor];
+  v27 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v67[1] = v27;
-  v28 = [(UIVisualEffectView *)self->_backgroundVisualEffectView topAnchor];
-  v29 = [(UIView *)self->_contentContainerView topAnchor];
-  v30 = [v28 constraintEqualToAnchor:v29];
+  topAnchor5 = [(UIVisualEffectView *)self->_backgroundVisualEffectView topAnchor];
+  topAnchor6 = [(UIView *)self->_contentContainerView topAnchor];
+  v30 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v67[2] = v30;
-  v31 = [(UIVisualEffectView *)self->_backgroundVisualEffectView bottomAnchor];
-  v32 = [(UIView *)self->_contentContainerView bottomAnchor];
-  v33 = [v31 constraintEqualToAnchor:v32];
+  bottomAnchor5 = [(UIVisualEffectView *)self->_backgroundVisualEffectView bottomAnchor];
+  bottomAnchor6 = [(UIView *)self->_contentContainerView bottomAnchor];
+  v33 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v67[3] = v33;
   v34 = [MEMORY[0x277CBEA60] arrayWithObjects:v67 count:4];
   [v53 activateConstraints:v34];
@@ -147,29 +147,29 @@
   if (![(MUIToastViewController *)self positioningConstraintsApplied])
   {
     v19 = MEMORY[0x277CCAAD0];
-    v27 = [(MUIToastViewController *)self view];
-    v24 = [v27 leadingAnchor];
-    v26 = [(MUIToastViewController *)self view];
-    v25 = [v26 superview];
-    v23 = [v25 safeAreaLayoutGuide];
-    v22 = [v23 leadingAnchor];
-    v21 = [v24 constraintEqualToAnchor:v22];
+    view = [(MUIToastViewController *)self view];
+    leadingAnchor = [view leadingAnchor];
+    view2 = [(MUIToastViewController *)self view];
+    superview = [view2 superview];
+    safeAreaLayoutGuide = [superview safeAreaLayoutGuide];
+    leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+    v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v29[0] = v21;
-    v20 = [(MUIToastViewController *)self view];
-    v16 = [v20 trailingAnchor];
-    v18 = [(MUIToastViewController *)self view];
-    v17 = [v18 superview];
-    v15 = [v17 safeAreaLayoutGuide];
-    v14 = [v15 trailingAnchor];
-    v3 = [v16 constraintEqualToAnchor:v14];
+    view3 = [(MUIToastViewController *)self view];
+    trailingAnchor = [view3 trailingAnchor];
+    view4 = [(MUIToastViewController *)self view];
+    superview2 = [view4 superview];
+    safeAreaLayoutGuide2 = [superview2 safeAreaLayoutGuide];
+    trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+    v3 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v29[1] = v3;
-    v4 = [(MUIToastViewController *)self view];
-    v5 = [v4 bottomAnchor];
-    v6 = [(MUIToastViewController *)self view];
-    v7 = [v6 superview];
-    v8 = [v7 safeAreaLayoutGuide];
-    v9 = [v8 bottomAnchor];
-    v10 = [v5 constraintEqualToAnchor:v9 constant:-16.0];
+    view5 = [(MUIToastViewController *)self view];
+    bottomAnchor = [view5 bottomAnchor];
+    view6 = [(MUIToastViewController *)self view];
+    superview3 = [view6 superview];
+    safeAreaLayoutGuide3 = [superview3 safeAreaLayoutGuide];
+    bottomAnchor2 = [safeAreaLayoutGuide3 bottomAnchor];
+    v10 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-16.0];
     v29[2] = v10;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:3];
     [v19 activateConstraints:v11];
@@ -177,46 +177,46 @@
     [(MUIToastViewController *)self setPositioningConstraintsApplied:1];
     [(UIView *)self->_contentContainerView bounds];
     [(UIVisualEffectView *)self->_backgroundVisualEffectView _setContinuousCornerRadius:CGRectGetHeight(v30) * 0.5];
-    v12 = [(MUIToastViewController *)self view];
-    v13 = [v12 superview];
-    [v13 layoutIfNeeded];
+    view7 = [(MUIToastViewController *)self view];
+    superview4 = [view7 superview];
+    [superview4 layoutIfNeeded];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MUIToastViewController;
-  [(MUIToastViewController *)&v4 viewDidAppear:a3];
+  [(MUIToastViewController *)&v4 viewDidAppear:appear];
   self->_remainingToastDuration = 0.0;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = MUIToastViewController;
-  [(MUIToastViewController *)&v5 viewWillDisappear:a3];
+  [(MUIToastViewController *)&v5 viewWillDisappear:disappear];
   [(NSTimer *)self->_dismissalTimer invalidate];
   dismissalTimer = self->_dismissalTimer;
   self->_dismissalTimer = 0;
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v5.receiver = self;
   v5.super_class = MUIToastViewController;
-  [(MUIToastViewController *)&v5 preferredContentSizeDidChangeForChildContentContainer:a3];
-  v4 = [(MUIToastViewController *)self view];
-  [v4 setNeedsUpdateConstraints];
+  [(MUIToastViewController *)&v5 preferredContentSizeDidChangeForChildContentContainer:container];
+  view = [(MUIToastViewController *)self view];
+  [view setNeedsUpdateConstraints];
 }
 
-- (void)_didReceivePan:(id)a3
+- (void)_didReceivePan:(id)pan
 {
-  v4 = a3;
+  panCopy = pan;
   if ([(NSTimer *)self->_dismissalTimer isValid])
   {
-    v5 = [(NSTimer *)self->_dismissalTimer fireDate];
-    [v5 timeIntervalSinceNow];
+    fireDate = [(NSTimer *)self->_dismissalTimer fireDate];
+    [fireDate timeIntervalSinceNow];
     self->_remainingToastDuration = v6;
 
     [(NSTimer *)self->_dismissalTimer invalidate];
@@ -224,22 +224,22 @@
     self->_dismissalTimer = 0;
   }
 
-  v8 = [(MUIToastViewController *)self view];
-  [v4 translationInView:v8];
+  view = [(MUIToastViewController *)self view];
+  [panCopy translationInView:view];
   self->_contentOffset = v9;
-  [v8 setNeedsUpdateConstraints];
-  if ([v4 state] == 3 || objc_msgSend(v4, "state") == 4)
+  [view setNeedsUpdateConstraints];
+  if ([panCopy state] == 3 || objc_msgSend(panCopy, "state") == 4)
   {
-    [v4 translationInView:v8];
+    [panCopy translationInView:view];
     v11 = v10;
-    [v4 velocityInView:v8];
+    [panCopy velocityInView:view];
     v13 = v11 + v12 / -1000.0 / log(*MEMORY[0x277D76EB8]);
-    [v8 bounds];
+    [view bounds];
     v14 = CGRectGetHeight(v20) * -0.5;
     v15 = 0.0;
     if (v13 < v14)
     {
-      [v8 bounds];
+      [view bounds];
       v15 = fmin(v13 + CGRectGetHeight(v21), 0.0);
     }
 
@@ -249,12 +249,12 @@
     v18[1] = 3221225472;
     v18[2] = __41__MUIToastViewController__didReceivePan___block_invoke;
     v18[3] = &unk_278188BB0;
-    v19 = v8;
+    v19 = view;
     [v16 animateWithDuration:v18 animations:0.5];
     if (v13 < v14)
     {
-      v17 = [(MUIToastViewController *)self delegate];
-      [v17 dismissToastViewController:self];
+      delegate = [(MUIToastViewController *)self delegate];
+      [delegate dismissToastViewController:self];
     }
   }
 }

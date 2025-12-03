@@ -1,14 +1,14 @@
 @interface ConversationChangeNotifier
 - (_TtC24FaceTimeNotificationCore26ConversationChangeNotifier)init;
-- (void)conversationManager:(id)a3 activeRemoteParticipantsChangedForConversation:(id)a4;
+- (void)conversationManager:(id)manager activeRemoteParticipantsChangedForConversation:(id)conversation;
 @end
 
 @implementation ConversationChangeNotifier
 
-- (void)conversationManager:(id)a3 activeRemoteParticipantsChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager activeRemoteParticipantsChangedForConversation:(id)conversation
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC24FaceTimeNotificationCore26ConversationChangeNotifier_activeRemoteParticipantsChangedPublisher);
-  v5 = self;
+  selfCopy = self;
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EF82AE0, &qword_24AA00CD0);
   sub_24A9DC39C();
   sub_24A9FEAF0();

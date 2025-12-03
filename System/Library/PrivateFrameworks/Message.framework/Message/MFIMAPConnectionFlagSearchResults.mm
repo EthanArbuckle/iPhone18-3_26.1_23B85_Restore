@@ -1,10 +1,10 @@
 @interface MFIMAPConnectionFlagSearchResults
 - (MFIMAPConnectionFlagSearchResults)init;
-- (id)_indexSetFromUIDs:(id)a3;
-- (id)copyResponseForUID:(unint64_t)a3;
+- (id)_indexSetFromUIDs:(id)ds;
+- (id)copyResponseForUID:(unint64_t)d;
 - (id)description;
-- (unint64_t)_flagsForUID:(unint64_t)a3;
-- (void)cacheStateForUIDs:(id)a3 mask:(unint64_t)a4 existenceSetsFlag:(BOOL)a5;
+- (unint64_t)_flagsForUID:(unint64_t)d;
+- (void)cacheStateForUIDs:(id)ds mask:(unint64_t)mask existenceSetsFlag:(BOOL)flag;
 @end
 
 @implementation MFIMAPConnectionFlagSearchResults
@@ -99,7 +99,7 @@
   return v3;
 }
 
-- (unint64_t)_flagsForUID:(unint64_t)a3
+- (unint64_t)_flagsForUID:(unint64_t)d
 {
   v32 = *MEMORY[0x1E69E9840];
   v26 = 0u;
@@ -123,15 +123,15 @@
 
         v10 = *(*(&v26 + 1) + 8 * i);
         v11 = [(NSMutableDictionary *)self->_uidsWithFlagMaskSet objectForKey:v10];
-        v12 = [v10 unsignedLongLongValue];
-        if ([v11 containsIndex:a3])
+        unsignedLongLongValue = [v10 unsignedLongLongValue];
+        if ([v11 containsIndex:d])
         {
-          v6 |= v12;
+          v6 |= unsignedLongLongValue;
         }
 
         else
         {
-          v6 &= ~v12;
+          v6 &= ~unsignedLongLongValue;
         }
       }
 
@@ -161,15 +161,15 @@
 
         v17 = *(*(&v22 + 1) + 8 * j);
         v18 = [(NSMutableDictionary *)self->_uidsWithoutFlagMaskSet objectForKey:v17, v22];
-        v19 = [v17 unsignedLongLongValue];
-        if ([v18 containsIndex:a3])
+        unsignedLongLongValue2 = [v17 unsignedLongLongValue];
+        if ([v18 containsIndex:d])
         {
-          v6 &= ~v19;
+          v6 &= ~unsignedLongLongValue2;
         }
 
         else
         {
-          v6 |= v19;
+          v6 |= unsignedLongLongValue2;
         }
       }
 
@@ -183,16 +183,16 @@
   return v6;
 }
 
-- (id)_indexSetFromUIDs:(id)a3
+- (id)_indexSetFromUIDs:(id)ds
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AD50] indexSet];
+  dsCopy = ds;
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = v3;
+  v5 = dsCopy;
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -206,7 +206,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [v4 addIndex:{objc_msgSend(*(*(&v11 + 1) + 8 * i), "integerValue", v11)}];
+        [indexSet addIndex:{objc_msgSend(*(*(&v11 + 1) + 8 * i), "integerValue", v11)}];
       }
 
       v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -217,17 +217,17 @@
 
   v9 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return indexSet;
 }
 
-- (void)cacheStateForUIDs:(id)a3 mask:(unint64_t)a4 existenceSetsFlag:(BOOL)a5
+- (void)cacheStateForUIDs:(id)ds mask:(unint64_t)mask existenceSetsFlag:(BOOL)flag
 {
-  v5 = a5;
-  v15 = a3;
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4];
-  v9 = [(MFIMAPConnectionFlagSearchResults *)self _indexSetFromUIDs:v15];
+  flagCopy = flag;
+  dsCopy = ds;
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:mask];
+  v9 = [(MFIMAPConnectionFlagSearchResults *)self _indexSetFromUIDs:dsCopy];
   v10 = 16;
-  if (v5)
+  if (flagCopy)
   {
     v10 = 8;
   }
@@ -246,7 +246,7 @@
   }
 
   v14 = 8;
-  if (v5)
+  if (flagCopy)
   {
     v14 = 16;
   }
@@ -254,15 +254,15 @@
   [*(&self->super.isa + v14) removeObjectForKey:v8];
 }
 
-- (id)copyResponseForUID:(unint64_t)a3
+- (id)copyResponseForUID:(unint64_t)d
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MFIMAPResponse);
   [(MFIMAPResponse *)v5 setResponseType:17];
   v6 = [[MFIMAPFetchResult alloc] initWithType:8];
   v7 = [[MFIMAPFetchResult alloc] initWithType:10];
-  [(MFIMAPFetchResult *)v6 setUid:a3];
-  [(MFIMAPFetchResult *)v7 setMessageFlags:[(MFIMAPConnectionFlagSearchResults *)self _flagsForUID:a3]];
+  [(MFIMAPFetchResult *)v6 setUid:d];
+  [(MFIMAPFetchResult *)v7 setMessageFlags:[(MFIMAPConnectionFlagSearchResults *)self _flagsForUID:d]];
   v11[0] = v6;
   v11[1] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];

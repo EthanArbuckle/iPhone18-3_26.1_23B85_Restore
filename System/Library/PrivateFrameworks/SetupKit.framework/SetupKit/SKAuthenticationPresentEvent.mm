@@ -1,13 +1,13 @@
 @interface SKAuthenticationPresentEvent
-- (SKAuthenticationPresentEvent)initWithPasswordType:(int)a3 password:(id)a4;
-- (id)descriptionWithLevel:(int)a3;
+- (SKAuthenticationPresentEvent)initWithPasswordType:(int)type password:(id)password;
+- (id)descriptionWithLevel:(int)level;
 @end
 
 @implementation SKAuthenticationPresentEvent
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v4 = 0;
   }
@@ -49,17 +49,17 @@
   return v11;
 }
 
-- (SKAuthenticationPresentEvent)initWithPasswordType:(int)a3 password:(id)a4
+- (SKAuthenticationPresentEvent)initWithPasswordType:(int)type password:(id)password
 {
-  v6 = a4;
+  passwordCopy = password;
   v7 = [(SKEvent *)self initWithEventType:110];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [passwordCopy copy];
     password = v7->_password;
     v7->_password = v8;
 
-    v7->_passwordType = a3;
+    v7->_passwordType = type;
     v10 = v7;
   }
 

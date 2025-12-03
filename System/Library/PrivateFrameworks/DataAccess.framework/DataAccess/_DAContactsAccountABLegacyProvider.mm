@@ -1,22 +1,22 @@
 @interface _DAContactsAccountABLegacyProvider
-- (_DAContactsAccountABLegacyProvider)initWithAddressBook:(void *)a3;
-- (id)accountByCreatingAccountWithExternalIdentifier:(id)a3;
-- (id)accountForContainerWithIdentifier:(id)a3;
+- (_DAContactsAccountABLegacyProvider)initWithAddressBook:(void *)book;
+- (id)accountByCreatingAccountWithExternalIdentifier:(id)identifier;
+- (id)accountForContainerWithIdentifier:(id)identifier;
 - (id)allAccounts;
-- (id)fetchedAccountWithExternalIdentifier:(id)a3;
+- (id)fetchedAccountWithExternalIdentifier:(id)identifier;
 - (void)dealloc;
 @end
 
 @implementation _DAContactsAccountABLegacyProvider
 
-- (_DAContactsAccountABLegacyProvider)initWithAddressBook:(void *)a3
+- (_DAContactsAccountABLegacyProvider)initWithAddressBook:(void *)book
 {
   v6.receiver = self;
   v6.super_class = _DAContactsAccountABLegacyProvider;
   v4 = [(_DAContactsAccountABLegacyProvider *)&v6 init];
   if (v4)
   {
-    v4->_addressBook = CFRetain(a3);
+    v4->_addressBook = CFRetain(book);
   }
 
   return v4;
@@ -36,9 +36,9 @@
   [(_DAContactsAccountABLegacyProvider *)&v4 dealloc];
 }
 
-- (id)fetchedAccountWithExternalIdentifier:(id)a3
+- (id)fetchedAccountWithExternalIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(_DAContactsAccountABLegacyProvider *)self addressBook];
   v5 = ABAddressBookCopyAccountWithIdentifier();
 
@@ -55,9 +55,9 @@
   return v6;
 }
 
-- (id)accountByCreatingAccountWithExternalIdentifier:(id)a3
+- (id)accountByCreatingAccountWithExternalIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = ABAccountCreate();
   if (v5)
   {
@@ -78,7 +78,7 @@
   v19 = *MEMORY[0x277D85DE8];
   [(_DAContactsAccountABLegacyProvider *)self addressBook];
   v2 = ABAddressBookCopyArrayOfAllAccounts();
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -101,7 +101,7 @@
         v9 = *(*(&v14 + 1) + 8 * i);
         v10 = [DAABLegacyAccount alloc];
         v11 = [(DAABLegacyAccount *)v10 initWithABAccout:v9, v14];
-        [v3 addObject:v11];
+        [array addObject:v11];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -112,20 +112,20 @@
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
-- (id)accountForContainerWithIdentifier:(id)a3
+- (id)accountForContainerWithIdentifier:(id)identifier
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   [(_DAContactsAccountABLegacyProvider *)self addressBook];
-  v10[0] = v4;
+  v10[0] = identifierCopy;
   [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
   v5 = ABAddressBookCopySourcesWithUUIDs();
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
 
-  if (v6)
+  if (firstObject)
   {
     [(_DAContactsAccountABLegacyProvider *)self addressBook];
     AccountForSource = ABAddressBookGetAccountForSource();

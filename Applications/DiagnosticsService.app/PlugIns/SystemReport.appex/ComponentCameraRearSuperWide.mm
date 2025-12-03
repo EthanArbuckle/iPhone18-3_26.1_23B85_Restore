@@ -6,8 +6,8 @@
 
 - (BOOL)isPresent
 {
-  v2 = [(ComponentCameraBase *)self IORegClassName];
-  v3 = v2 != 0;
+  iORegClassName = [(ComponentCameraBase *)self IORegClassName];
+  v3 = iORegClassName != 0;
 
   return v3 & MGGetBoolAnswer();
 }

@@ -1,23 +1,23 @@
 @interface MSOID
-+ (id)ECSignatureOIDWithDigestAlgorithm:(id)a3 error:(id *)a4;
-+ (id)OIDWithAsn1OID:(heim_oid *)a3 error:(id *)a4;
-+ (id)OIDWithData:(id)a3 error:(id *)a4;
-+ (id)OIDWithString:(id)a3 error:(id *)a4;
-+ (id)RSASignatureOIDWithDigestAlgorithm:(id)a3 error:(id *)a4;
-+ (id)digestOIDWithSignatureAlgorithm:(id)a3 error:(id *)a4;
-+ (id)signatureAlgorithmOIDWithSecKeyAlgorithm:(__CFString *)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)setAsn1OidFromOIDString:(id)a3 error:(id *)a4;
-- (MSOID)initWithAsn1OID:(heim_oid *)a3 error:(id *)a4;
-- (MSOID)initWithData:(id)a3 error:(id *)a4;
-- (MSOID)initWithString:(id)a3 error:(id *)a4;
++ (id)ECSignatureOIDWithDigestAlgorithm:(id)algorithm error:(id *)error;
++ (id)OIDWithAsn1OID:(heim_oid *)d error:(id *)error;
++ (id)OIDWithData:(id)data error:(id *)error;
++ (id)OIDWithString:(id)string error:(id *)error;
++ (id)RSASignatureOIDWithDigestAlgorithm:(id)algorithm error:(id *)error;
++ (id)digestOIDWithSignatureAlgorithm:(id)algorithm error:(id *)error;
++ (id)signatureAlgorithmOIDWithSecKeyAlgorithm:(__CFString *)algorithm error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)setAsn1OidFromOIDString:(id)string error:(id *)error;
+- (MSOID)initWithAsn1OID:(heim_oid *)d error:(id *)error;
+- (MSOID)initWithData:(id)data error:(id *)error;
+- (MSOID)initWithString:(id)string error:(id *)error;
 - (__CFString)secKeyAlgorithm;
 - (const)ccdigest;
 - (heim_oid)Asn1OID;
-- (id)initDigestOIDWithSignatureAlgorithm:(id)a3 error:(id *)a4;
-- (id)initECSignatureOIDWithDigestAlgorithm:(id)a3 error:(id *)a4;
-- (id)initRSASignatureOIDWithDigestAlgorithm:(id)a3 error:(id *)a4;
-- (id)initSignatureOIDWithSecKeyAlgorithm:(__CFString *)a3 error:(id *)a4;
+- (id)initDigestOIDWithSignatureAlgorithm:(id)algorithm error:(id *)error;
+- (id)initECSignatureOIDWithDigestAlgorithm:(id)algorithm error:(id *)error;
+- (id)initRSASignatureOIDWithDigestAlgorithm:(id)algorithm error:(id *)error;
+- (id)initSignatureOIDWithSecKeyAlgorithm:(__CFString *)algorithm error:(id *)error;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -26,8 +26,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(MSOID *)self OIDBytes];
-  v3 = [v2 hash];
+  oIDBytes = [(MSOID *)self OIDBytes];
+  v3 = [oIDBytes hash];
 
   return v3;
 }
@@ -106,17 +106,17 @@
   return result;
 }
 
-- (BOOL)setAsn1OidFromOIDString:(id)a3 error:(id *)a4
+- (BOOL)setAsn1OidFromOIDString:(id)string error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  stringCopy = string;
+  v7 = stringCopy;
+  if (stringCopy)
   {
-    if ([v6 length] >= 3)
+    if ([stringCopy length] >= 3)
     {
       v8 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"0123456789."];
-      v9 = [v8 invertedSet];
-      v10 = [v7 rangeOfCharacterFromSet:v9];
+      invertedSet = [v8 invertedSet];
+      v10 = [v7 rangeOfCharacterFromSet:invertedSet];
       v12 = v11;
 
       [v7 getCharacters:v21 range:{0, 2}];
@@ -144,30 +144,30 @@ LABEL_20:
             goto LABEL_8;
           }
 
-          [MSError MSErrorWithDomain:MSErrorAllocationDomain[0] code:-108 underlyingError:*a4 description:@"could allocate OID components", v19];
+          [MSError MSErrorWithDomain:MSErrorAllocationDomain[0] code:-108 underlyingError:*error description:@"could allocate OID components", v19];
         }
 
         else
         {
-          if (!a4)
+          if (!error)
           {
             v13 = 0;
             goto LABEL_20;
           }
 
-          [MSError MSErrorWithDomain:MSErrorAllocationDomain[0] code:-108 underlyingError:*a4 description:@"could not parse OID into parts %@", v7];
+          [MSError MSErrorWithDomain:MSErrorAllocationDomain[0] code:-108 underlyingError:*error description:@"could not parse OID into parts %@", v7];
         }
 
-        *a4 = v13 = 0;
+        *error = v13 = 0;
         goto LABEL_20;
       }
     }
   }
 
-  if (a4)
+  if (error)
   {
-    [MSError MSErrorWithDomain:MSErrorASN1Domain[0] code:-50 underlyingError:*a4 description:@"missing or invalid OID string %@", v7];
-    *a4 = v13 = 0;
+    [MSError MSErrorWithDomain:MSErrorASN1Domain[0] code:-50 underlyingError:*error description:@"missing or invalid OID string %@", v7];
+    *error = v13 = 0;
   }
 
   else
@@ -211,68 +211,68 @@ LABEL_6:
   }
 }
 
-+ (id)OIDWithString:(id)a3 error:(id *)a4
++ (id)OIDWithString:(id)string error:(id *)error
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithString:v6 error:a4];
+  stringCopy = string;
+  v7 = [[self alloc] initWithString:stringCopy error:error];
 
   return v7;
 }
 
-+ (id)OIDWithData:(id)a3 error:(id *)a4
++ (id)OIDWithData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithData:v6 error:a4];
+  dataCopy = data;
+  v7 = [[self alloc] initWithData:dataCopy error:error];
 
   return v7;
 }
 
-+ (id)digestOIDWithSignatureAlgorithm:(id)a3 error:(id *)a4
++ (id)digestOIDWithSignatureAlgorithm:(id)algorithm error:(id *)error
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initDigestOIDWithSignatureAlgorithm:v6 error:a4];
+  algorithmCopy = algorithm;
+  v7 = [[self alloc] initDigestOIDWithSignatureAlgorithm:algorithmCopy error:error];
 
   return v7;
 }
 
-+ (id)signatureAlgorithmOIDWithSecKeyAlgorithm:(__CFString *)a3 error:(id *)a4
++ (id)signatureAlgorithmOIDWithSecKeyAlgorithm:(__CFString *)algorithm error:(id *)error
 {
-  v4 = [[a1 alloc] initSignatureOIDWithSecKeyAlgorithm:a3 error:a4];
+  v4 = [[self alloc] initSignatureOIDWithSecKeyAlgorithm:algorithm error:error];
 
   return v4;
 }
 
-+ (id)OIDWithAsn1OID:(heim_oid *)a3 error:(id *)a4
++ (id)OIDWithAsn1OID:(heim_oid *)d error:(id *)error
 {
-  v4 = [[a1 alloc] initWithAsn1OID:a3 error:a4];
+  v4 = [[self alloc] initWithAsn1OID:d error:error];
 
   return v4;
 }
 
-+ (id)RSASignatureOIDWithDigestAlgorithm:(id)a3 error:(id *)a4
++ (id)RSASignatureOIDWithDigestAlgorithm:(id)algorithm error:(id *)error
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initRSASignatureOIDWithDigestAlgorithm:v6 error:a4];
+  algorithmCopy = algorithm;
+  v7 = [[self alloc] initRSASignatureOIDWithDigestAlgorithm:algorithmCopy error:error];
 
   return v7;
 }
 
-+ (id)ECSignatureOIDWithDigestAlgorithm:(id)a3 error:(id *)a4
++ (id)ECSignatureOIDWithDigestAlgorithm:(id)algorithm error:(id *)error
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initECSignatureOIDWithDigestAlgorithm:v6 error:a4];
+  algorithmCopy = algorithm;
+  v7 = [[self alloc] initECSignatureOIDWithDigestAlgorithm:algorithmCopy error:error];
 
   return v7;
 }
 
-- (MSOID)initWithString:(id)a3 error:(id *)a4
+- (MSOID)initWithString:(id)string error:(id *)error
 {
-  v7 = a3;
+  stringCopy = string;
   v14.receiver = self;
   v14.super_class = MSOID;
   v8 = [(MSOID *)&v14 init];
   v9 = v8;
-  if (!v8 || (objc_storeStrong(&v8->_OIDString, a3), [(MSOID *)v9 setAsn1OidFromOIDString:v7 error:a4]) && (NSDataFromIntegerArray(v9->_Asn1OID.components, v9->_Asn1OID.length), v10 = objc_claimAutoreleasedReturnValue(), OIDBytes = v9->_OIDBytes, v9->_OIDBytes = v10, OIDBytes, v9->_OIDBytes))
+  if (!v8 || (objc_storeStrong(&v8->_OIDString, string), [(MSOID *)v9 setAsn1OidFromOIDString:stringCopy error:error]) && (NSDataFromIntegerArray(v9->_Asn1OID.components, v9->_Asn1OID.length), v10 = objc_claimAutoreleasedReturnValue(), OIDBytes = v9->_OIDBytes, v9->_OIDBytes = v10, OIDBytes, v9->_OIDBytes))
   {
     v12 = v9;
   }
@@ -285,9 +285,9 @@ LABEL_6:
   return v12;
 }
 
-- (MSOID)initWithData:(id)a3 error:(id *)a4
+- (MSOID)initWithData:(id)data error:(id *)error
 {
-  v7 = a3;
+  dataCopy = data;
   v15.receiver = self;
   v15.super_class = MSOID;
   v8 = [(MSOID *)&v15 init];
@@ -297,18 +297,18 @@ LABEL_6:
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v8->_OIDBytes, a3);
-  v10 = NSStringFromOIDData(v7);
+  objc_storeStrong(&v8->_OIDBytes, data);
+  v10 = NSStringFromOIDData(dataCopy);
   OIDString = v9->_OIDString;
   v9->_OIDString = v10;
 
   v12 = v9->_OIDString;
   if (!v12)
   {
-    if (a4)
+    if (error)
     {
-      [MSError MSErrorWithDomain:MSErrorAllocationDomain[0] code:-108 underlyingError:*a4 description:@"could not parse OID into string"];
-      *a4 = v13 = 0;
+      [MSError MSErrorWithDomain:MSErrorAllocationDomain[0] code:-108 underlyingError:*error description:@"could not parse OID into string"];
+      *error = v13 = 0;
       goto LABEL_8;
     }
 
@@ -317,7 +317,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (![(MSOID *)v9 setAsn1OidFromOIDString:v12 error:a4])
+  if (![(MSOID *)v9 setAsn1OidFromOIDString:v12 error:error])
   {
     goto LABEL_7;
   }
@@ -329,34 +329,34 @@ LABEL_8:
   return v13;
 }
 
-- (id)initDigestOIDWithSignatureAlgorithm:(id)a3 error:(id *)a4
+- (id)initDigestOIDWithSignatureAlgorithm:(id)algorithm error:(id *)error
 {
-  v6 = a3;
+  algorithmCopy = algorithm;
   if (initDigestOIDWithSignatureAlgorithm_error__onceToken != -1)
   {
     [MSOID initDigestOIDWithSignatureAlgorithm:error:];
   }
 
   v7 = initDigestOIDWithSignatureAlgorithm_error__sSigAlgToDigAlg;
-  v8 = [v6 OIDString];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  oIDString = [algorithmCopy OIDString];
+  v9 = [v7 objectForKeyedSubscript:oIDString];
 
   if (v9)
   {
-    a4 = [MSOID OIDWithString:v9 error:a4];
+    error = [MSOID OIDWithString:v9 error:error];
   }
 
-  else if (a4)
+  else if (error)
   {
     v10 = MSErrorCryptoDomain[0];
-    v11 = *a4;
-    v12 = [v6 OIDString];
-    *a4 = [MSError MSErrorWithDomain:v10 code:-50 underlyingError:v11 description:@"MSOID %@ does not indicate a digest algorithm", v12];
+    v11 = *error;
+    oIDString2 = [algorithmCopy OIDString];
+    *error = [MSError MSErrorWithDomain:v10 code:-50 underlyingError:v11 description:@"MSOID %@ does not indicate a digest algorithm", oIDString2];
 
-    a4 = 0;
+    error = 0;
   }
 
-  return a4;
+  return error;
 }
 
 void __51__MSOID_initDigestOIDWithSignatureAlgorithm_error___block_invoke()
@@ -391,34 +391,34 @@ void __51__MSOID_initDigestOIDWithSignatureAlgorithm_error___block_invoke()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (id)initRSASignatureOIDWithDigestAlgorithm:(id)a3 error:(id *)a4
+- (id)initRSASignatureOIDWithDigestAlgorithm:(id)algorithm error:(id *)error
 {
-  v6 = a3;
+  algorithmCopy = algorithm;
   if (initRSASignatureOIDWithDigestAlgorithm_error__onceToken != -1)
   {
     [MSOID initRSASignatureOIDWithDigestAlgorithm:error:];
   }
 
   v7 = initRSASignatureOIDWithDigestAlgorithm_error__sDigAlgToSigAlg;
-  v8 = [v6 OIDString];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  oIDString = [algorithmCopy OIDString];
+  v9 = [v7 objectForKeyedSubscript:oIDString];
 
   if (v9)
   {
-    a4 = [MSOID OIDWithString:v9 error:a4];
+    error = [MSOID OIDWithString:v9 error:error];
   }
 
-  else if (a4)
+  else if (error)
   {
     v10 = MSErrorCryptoDomain[0];
-    v11 = *a4;
-    v12 = [v6 OIDString];
-    *a4 = [MSError MSErrorWithDomain:v10 code:-50 underlyingError:v11 description:@"MSOID %@ does not indicate a signature algorithm", v12];
+    v11 = *error;
+    oIDString2 = [algorithmCopy OIDString];
+    *error = [MSError MSErrorWithDomain:v10 code:-50 underlyingError:v11 description:@"MSOID %@ does not indicate a signature algorithm", oIDString2];
 
-    a4 = 0;
+    error = 0;
   }
 
-  return a4;
+  return error;
 }
 
 void __54__MSOID_initRSASignatureOIDWithDigestAlgorithm_error___block_invoke()
@@ -443,34 +443,34 @@ void __54__MSOID_initRSASignatureOIDWithDigestAlgorithm_error___block_invoke()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (id)initECSignatureOIDWithDigestAlgorithm:(id)a3 error:(id *)a4
+- (id)initECSignatureOIDWithDigestAlgorithm:(id)algorithm error:(id *)error
 {
-  v6 = a3;
+  algorithmCopy = algorithm;
   if (initECSignatureOIDWithDigestAlgorithm_error__onceToken != -1)
   {
     [MSOID initECSignatureOIDWithDigestAlgorithm:error:];
   }
 
   v7 = initECSignatureOIDWithDigestAlgorithm_error__sDigAlgToSigAlg;
-  v8 = [v6 OIDString];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  oIDString = [algorithmCopy OIDString];
+  v9 = [v7 objectForKeyedSubscript:oIDString];
 
   if (v9)
   {
-    a4 = [MSOID OIDWithString:v9 error:a4];
+    error = [MSOID OIDWithString:v9 error:error];
   }
 
-  else if (a4)
+  else if (error)
   {
     v10 = MSErrorCryptoDomain[0];
-    v11 = *a4;
-    v12 = [v6 OIDString];
-    *a4 = [MSError MSErrorWithDomain:v10 code:-50 underlyingError:v11 description:@"MSOID %@ does not indicate a signature algorithm", v12];
+    v11 = *error;
+    oIDString2 = [algorithmCopy OIDString];
+    *error = [MSError MSErrorWithDomain:v10 code:-50 underlyingError:v11 description:@"MSOID %@ does not indicate a signature algorithm", oIDString2];
 
-    a4 = 0;
+    error = 0;
   }
 
-  return a4;
+  return error;
 }
 
 void __53__MSOID_initECSignatureOIDWithDigestAlgorithm_error___block_invoke()
@@ -493,23 +493,23 @@ void __53__MSOID_initECSignatureOIDWithDigestAlgorithm_error___block_invoke()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (id)initSignatureOIDWithSecKeyAlgorithm:(__CFString *)a3 error:(id *)a4
+- (id)initSignatureOIDWithSecKeyAlgorithm:(__CFString *)algorithm error:(id *)error
 {
   if (initSignatureOIDWithSecKeyAlgorithm_error__onceToken != -1)
   {
     [MSOID initSignatureOIDWithSecKeyAlgorithm:error:];
   }
 
-  v7 = [initSignatureOIDWithSecKeyAlgorithm_error__sKeyAlgorithmToSignatureAlgorithm objectForKeyedSubscript:a3];
+  v7 = [initSignatureOIDWithSecKeyAlgorithm_error__sKeyAlgorithmToSignatureAlgorithm objectForKeyedSubscript:algorithm];
   if (v7)
   {
-    v8 = [MSOID OIDWithString:v7 error:a4];
+    v8 = [MSOID OIDWithString:v7 error:error];
   }
 
-  else if (a4)
+  else if (error)
   {
-    [MSError MSErrorWithDomain:MSErrorCryptoDomain[0] code:-50 underlyingError:*a4 description:@"SecKeyAlgorithm %@ does not indicate a signature algorithm", a3];
-    *a4 = v8 = 0;
+    [MSError MSErrorWithDomain:MSErrorCryptoDomain[0] code:-50 underlyingError:*error description:@"SecKeyAlgorithm %@ does not indicate a signature algorithm", algorithm];
+    *error = v8 = 0;
   }
 
   else
@@ -627,7 +627,7 @@ void __24__MSOID_secKeyAlgorithm__block_invoke()
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (MSOID)initWithAsn1OID:(heim_oid *)a3 error:(id *)a4
+- (MSOID)initWithAsn1OID:(heim_oid *)d error:(id *)error
 {
   v19.receiver = self;
   v19.super_class = MSOID;
@@ -640,15 +640,15 @@ void __24__MSOID_secKeyAlgorithm__block_invoke()
   v7 = der_copy_oid();
   if (v7)
   {
-    if (a4)
+    if (error)
     {
       v8 = MSErrorASN1Domain[0];
       v9 = v7;
-      v10 = *a4;
+      v10 = *error;
       v11 = @"unable to copy OID";
 LABEL_13:
       [MSError MSErrorWithDomain:v8 code:v9 underlyingError:v10 description:v11];
-      *a4 = v17 = 0;
+      *error = v17 = 0;
       goto LABEL_15;
     }
 
@@ -657,20 +657,20 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v12 = NSDataFromIntegerArray(a3->components, a3->length);
+  v12 = NSDataFromIntegerArray(d->components, d->length);
   OIDBytes = v6->_OIDBytes;
   v6->_OIDBytes = v12;
 
   v14 = v6->_OIDBytes;
   if (!v14)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_14;
     }
 
     v8 = MSErrorAllocationDomain[0];
-    v10 = *a4;
+    v10 = *error;
     v11 = @"could not parse OID into data";
 LABEL_12:
     v9 = -108;
@@ -683,13 +683,13 @@ LABEL_12:
 
   if (!v6->_OIDString)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_14;
     }
 
     v8 = MSErrorAllocationDomain[0];
-    v10 = *a4;
+    v10 = *error;
     v11 = @"could not parse OID into string";
     goto LABEL_12;
   }
@@ -701,17 +701,17 @@ LABEL_15:
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 OIDString];
-    if ([v5 isEqualToString:self->_OIDString])
+    oIDString = [equalCopy OIDString];
+    if ([oIDString isEqualToString:self->_OIDString])
     {
-      v6 = [v4 OIDBytes];
-      v7 = [v6 isEqualToData:self->_OIDBytes];
+      oIDBytes = [equalCopy OIDBytes];
+      v7 = [oIDBytes isEqualToData:self->_OIDBytes];
     }
 
     else

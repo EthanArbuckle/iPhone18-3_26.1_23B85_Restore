@@ -1,42 +1,42 @@
 @interface PKAccountInvitationChooseMemberViewController
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (PKAccountInvitationChooseMemberViewController)initWithController:(id)a3;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (int64_t)visibilityBackdropView:(id)a3 preferredStyleForTraitCollection:(id)a4;
-- (void)_filterAvailableFamilyMembersFromMembers:(id)a3;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (PKAccountInvitationChooseMemberViewController)initWithController:(id)controller;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (int64_t)visibilityBackdropView:(id)view preferredStyleForTraitCollection:(id)collection;
+- (void)_filterAvailableFamilyMembersFromMembers:(id)members;
 - (void)_handleAddPersonTapped;
 - (void)_openFamilyMemberSettings;
-- (void)_reloadFamilyCollectionWithForceReload:(BOOL)a3 completion:(id)a4;
-- (void)_reportAnalyticsViewDidAppear:(BOOL)a3;
-- (void)_setLoadingIndexPath:(id)a3;
+- (void)_reloadFamilyCollectionWithForceReload:(BOOL)reload completion:(id)completion;
+- (void)_reportAnalyticsViewDidAppear:(BOOL)appear;
+- (void)_setLoadingIndexPath:(id)path;
 - (void)_updateHeaderFooterText;
-- (void)_updateSnapshotAnimated:(BOOL)a3;
+- (void)_updateSnapshotAnimated:(BOOL)animated;
 - (void)dealloc;
-- (void)deviceSharingCapabilitiesUpdated:(id)a3 newSharingCapabilties:(id)a4 forAppleID:(id)a5;
+- (void)deviceSharingCapabilitiesUpdated:(id)updated newSharingCapabilties:(id)capabilties forAppleID:(id)d;
 - (void)didUpdateInvitationControllerFamilyCircle;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableViewDidFinishReload:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableViewDidFinishReload:(id)reload;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKAccountInvitationChooseMemberViewController
 
-- (PKAccountInvitationChooseMemberViewController)initWithController:(id)a3
+- (PKAccountInvitationChooseMemberViewController)initWithController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v25.receiver = self;
   v25.super_class = PKAccountInvitationChooseMemberViewController;
   v6 = [(PKAccountInvitationChooseMemberViewController *)&v25 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_controller, a3);
+    objc_storeStrong(&v6->_controller, controller);
     [(PKAccountInvitationController *)v7->_controller registerObserver:v7];
-    v8 = [(PKAccountInvitationController *)v7->_controller deviceCapabiltiesManager];
-    [v8 registerObserver:v7];
+    deviceCapabiltiesManager = [(PKAccountInvitationController *)v7->_controller deviceCapabiltiesManager];
+    [deviceCapabiltiesManager registerObserver:v7];
 
     v9 = objc_alloc_init(MEMORY[0x1E696ADF8]);
     nameFormatter = v7->_nameFormatter;
@@ -54,11 +54,11 @@
     v7->_maximumAccountUsersFormatter = v13;
 
     [(NSNumberFormatter *)v7->_maximumAccountUsersFormatter setNumberStyle:5];
-    v15 = [(PKAccountInvitationController *)v7->_controller account];
-    v16 = [v15 accountUserInvitationAllowedFeatureDescriptor];
-    v17 = [v16 osVersionRange];
+    account = [(PKAccountInvitationController *)v7->_controller account];
+    accountUserInvitationAllowedFeatureDescriptor = [account accountUserInvitationAllowedFeatureDescriptor];
+    osVersionRange = [accountUserInvitationAllowedFeatureDescriptor osVersionRange];
     requiredOSVersionRange = v7->_requiredOSVersionRange;
-    v7->_requiredOSVersionRange = v17;
+    v7->_requiredOSVersionRange = osVersionRange;
 
     if (!v7->_requiredOSVersionRange)
     {
@@ -70,15 +70,15 @@
       }
     }
 
-    v20 = [(PKAccountInvitationController *)v7->_controller account];
-    v21 = [v20 accountUserInvitationAllowedFeatureDescriptor];
+    account2 = [(PKAccountInvitationController *)v7->_controller account];
+    accountUserInvitationAllowedFeatureDescriptor2 = [account2 accountUserInvitationAllowedFeatureDescriptor];
 
-    v7->_minimumParticipantAge = [v21 minimumParticipantAge];
+    v7->_minimumParticipantAge = [accountUserInvitationAllowedFeatureDescriptor2 minimumParticipantAge];
     if ((_UISolariumEnabled() & 1) == 0)
     {
-      v22 = [(PKAccountInvitationChooseMemberViewController *)v7 navigationItem];
-      [v22 pkui_setupScrollEdgeChromelessAppearance];
-      [v22 pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
+      navigationItem = [(PKAccountInvitationChooseMemberViewController *)v7 navigationItem];
+      [navigationItem pkui_setupScrollEdgeChromelessAppearance];
+      [navigationItem pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
     }
   }
 
@@ -87,8 +87,8 @@
 
 - (void)dealloc
 {
-  v3 = [(PKAccountInvitationController *)self->_controller deviceCapabiltiesManager];
-  [v3 unregisterObserver:self];
+  deviceCapabiltiesManager = [(PKAccountInvitationController *)self->_controller deviceCapabiltiesManager];
+  [deviceCapabiltiesManager unregisterObserver:self];
 
   [(PKAccountInvitationController *)self->_controller unregisterObserver:self];
   v4.receiver = self;
@@ -101,9 +101,9 @@
   v26.receiver = self;
   v26.super_class = PKAccountInvitationChooseMemberViewController;
   [(PKAccountInvitationChooseMemberViewController *)&v26 viewDidLoad];
-  v3 = [(PKAccountInvitationChooseMemberViewController *)self view];
+  view = [(PKAccountInvitationChooseMemberViewController *)self view];
   v4 = PKProvisioningBackgroundColor();
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
   v5 = objc_alloc(MEMORY[0x1E69DD020]);
   v6 = [MEMORY[0x1E69DD020] pkui_groupedStyleWithRoundedCorners:1];
@@ -120,7 +120,7 @@
   [(UITableView *)v13 setBackgroundColor:v14];
 
   [(UITableView *)self->_tableView setDelegate:self];
-  [v3 addSubview:self->_tableView];
+  [view addSubview:self->_tableView];
   [(UITableView *)self->_tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"FamilyMemberCellReuseIdentifier"];
   v15 = [[PKTableHeaderView alloc] initWithFrame:v7, v8, v9, v10];
   headerView = self->_headerView;
@@ -138,7 +138,7 @@
   {
     v19 = [objc_alloc(MEMORY[0x1E69DD6C8]) initWithScrollView:self->_tableView edge:4 style:0];
     [(PKPaymentSetupDockView *)self->_dockView addInteraction:v19];
-    [v3 addSubview:self->_dockView];
+    [view addSubview:self->_dockView];
   }
 
   else
@@ -150,10 +150,10 @@
     [(_PKVisibilityBackdropView *)self->_blurringView setDelegate:self];
     [(_PKVisibilityBackdropView *)self->_blurringView pkui_setVisibility:0 animated:self->_backdropWeight];
     [(_PKVisibilityBackdropView *)self->_blurringView setUserInteractionEnabled:1];
-    v22 = [(_UIBackdropView *)self->_blurringView contentView];
-    [v22 addSubview:self->_dockView];
+    contentView = [(_UIBackdropView *)self->_blurringView contentView];
+    [contentView addSubview:self->_dockView];
 
-    [v3 addSubview:self->_blurringView];
+    [view addSubview:self->_blurringView];
   }
 
   v23 = [(UITableViewDiffableDataSource *)[PKTableViewDiffableDataSource alloc] initWithTableView:self->_tableView cellProvider:&__block_literal_global_169];
@@ -165,8 +165,8 @@
   [(UITableViewDiffableDataSource *)self->_diffableDataSource setDefaultRowAnimation:0];
   [(PKAccountInvitationChooseMemberViewController *)self _updateHeaderFooterText];
   [(PKAccountInvitationChooseMemberViewController *)self _updateSnapshotAnimated:0];
-  v25 = [(PKAccountInvitationChooseMemberViewController *)self view];
-  [v25 setAccessibilityIdentifier:*MEMORY[0x1E69B95F8]];
+  view2 = [(PKAccountInvitationChooseMemberViewController *)self view];
+  [view2 setAccessibilityIdentifier:*MEMORY[0x1E69B95F8]];
 }
 
 - (void)viewWillLayoutSubviews
@@ -174,13 +174,13 @@
   v37.receiver = self;
   v37.super_class = PKAccountInvitationChooseMemberViewController;
   [(PKAccountInvitationChooseMemberViewController *)&v37 viewWillLayoutSubviews];
-  v3 = [(PKAccountInvitationChooseMemberViewController *)self view];
-  [v3 bounds];
+  view = [(PKAccountInvitationChooseMemberViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 safeAreaInsets];
+  [view safeAreaInsets];
   v13 = v12;
   [(UITableView *)self->_tableView setFrame:v5, v7, v9, v11];
   [(UITableView *)self->_tableView contentInset];
@@ -203,8 +203,8 @@
     v39.size.height = v11;
     [(_PKVisibilityBackdropView *)self->_blurringView setFrame:v5, v21, v9, CGRectGetMaxY(v39) - v21];
     [(_PKVisibilityBackdropView *)self->_blurringView layoutIfNeeded];
-    v22 = [(_UIBackdropView *)self->_blurringView contentView];
-    [v22 bounds];
+    contentView = [(_UIBackdropView *)self->_blurringView contentView];
+    [contentView bounds];
 
     tableView = self->_tableView;
     [(_PKVisibilityBackdropView *)self->_blurringView bounds];
@@ -253,30 +253,30 @@
   if ((_UISolariumEnabled() & 1) == 0)
   {
     v33 = self->_tableView;
-    v34 = [(PKAccountInvitationChooseMemberViewController *)self navigationItem];
-    [(UITableView *)v33 pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:v34];
+    navigationItem = [(PKAccountInvitationChooseMemberViewController *)self navigationItem];
+    [(UITableView *)v33 pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:navigationItem];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKAccountInvitationChooseMemberViewController;
-  [(PKAccountInvitationChooseMemberViewController *)&v4 viewDidAppear:a3];
+  [(PKAccountInvitationChooseMemberViewController *)&v4 viewDidAppear:appear];
   [(PKAccountInvitationChooseMemberViewController *)self _reportAnalyticsViewDidAppear:1];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKAccountInvitationChooseMemberViewController;
-  [(PKAccountInvitationChooseMemberViewController *)&v4 viewDidDisappear:a3];
+  [(PKAccountInvitationChooseMemberViewController *)&v4 viewDidDisappear:disappear];
   [(PKAccountInvitationChooseMemberViewController *)self _reportAnalyticsViewDidAppear:0];
 }
 
-- (void)deviceSharingCapabilitiesUpdated:(id)a3 newSharingCapabilties:(id)a4 forAppleID:(id)a5
+- (void)deviceSharingCapabilitiesUpdated:(id)updated newSharingCapabilties:(id)capabilties forAppleID:(id)d
 {
-  if (a5)
+  if (d)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -287,20 +287,20 @@
   }
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  if (a4 < 0 || (-[UITableViewDiffableDataSource snapshot](self->_diffableDataSource, "snapshot", a3), v6 = objc_claimAutoreleasedReturnValue(), [v6 sectionIdentifiers], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v6, v8 <= a4))
+  if (section < 0 || (-[UITableViewDiffableDataSource snapshot](self->_diffableDataSource, "snapshot", view), v6 = objc_claimAutoreleasedReturnValue(), [v6 sectionIdentifiers], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v6, v8 <= section))
   {
     v13 = 0;
     goto LABEL_10;
   }
 
-  v9 = [(UITableViewDiffableDataSource *)self->_diffableDataSource snapshot];
-  v10 = [v9 sectionIdentifiers];
-  v11 = [v10 objectAtIndex:a4];
+  snapshot = [(UITableViewDiffableDataSource *)self->_diffableDataSource snapshot];
+  sectionIdentifiers = [snapshot sectionIdentifiers];
+  v11 = [sectionIdentifiers objectAtIndex:section];
 
-  v12 = [v11 identifier];
-  if (v12 == @"IneligibleSectionIdentifier")
+  identifier = [v11 identifier];
+  if (identifier == @"IneligibleSectionIdentifier")
   {
 LABEL_6:
     v13 = objc_alloc_init(PKFooterHyperlinkView);
@@ -316,10 +316,10 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  v13 = v12;
-  if (v12)
+  v13 = identifier;
+  if (identifier)
   {
-    v14 = [(__CFString *)v12 isEqualToString:@"IneligibleSectionIdentifier"];
+    v14 = [(__CFString *)identifier isEqualToString:@"IneligibleSectionIdentifier"];
 
     if (!v14)
     {
@@ -337,22 +337,22 @@ LABEL_10:
   return v13;
 }
 
-- (void)tableViewDidFinishReload:(id)a3
+- (void)tableViewDidFinishReload:(id)reload
 {
-  v3 = [(PKAccountInvitationChooseMemberViewController *)self view];
-  [v3 setNeedsLayout];
+  view = [(PKAccountInvitationChooseMemberViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(UITableViewDiffableDataSource *)self->_diffableDataSource itemIdentifierForIndexPath:v5];
+  pathCopy = path;
+  v6 = [(UITableViewDiffableDataSource *)self->_diffableDataSource itemIdentifierForIndexPath:pathCopy];
   if ([v6 isEligible])
   {
-    v7 = [v6 familyMember];
-    [(PKAccountInvitationController *)self->_controller setFamilyMember:v7];
+    familyMember = [v6 familyMember];
+    [(PKAccountInvitationController *)self->_controller setFamilyMember:familyMember];
     [(PKAccountInvitationController *)self->_controller setAccessLevel:0];
-    [(PKAccountInvitationChooseMemberViewController *)self _setLoadingIndexPath:v5];
+    [(PKAccountInvitationChooseMemberViewController *)self _setLoadingIndexPath:pathCopy];
     controller = self->_controller;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
@@ -393,22 +393,22 @@ LABEL_5:
 LABEL_6:
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
   loadingInvitationIndexPath = self->_loadingInvitationIndexPath;
-  v5 = [(UITableViewDiffableDataSource *)self->_diffableDataSource itemIdentifierForIndexPath:a4];
+  v5 = [(UITableViewDiffableDataSource *)self->_diffableDataSource itemIdentifierForIndexPath:path];
   v6 = v5;
   if (loadingInvitationIndexPath)
   {
-    LOBYTE(v7) = 0;
+    LOBYTE(isEligible) = 0;
   }
 
   else
   {
-    v7 = [v5 isEligible];
+    isEligible = [v5 isEligible];
   }
 
-  return v7;
+  return isEligible;
 }
 
 - (void)didUpdateInvitationControllerFamilyCircle
@@ -448,50 +448,50 @@ uint64_t __90__PKAccountInvitationChooseMemberViewController_didUpdateInvitation
 
 - (void)_updateHeaderFooterText
 {
-  v3 = [(PKAccountInvitationController *)self->_controller isCurrentFamilyMemberAnOrganizer];
-  v4 = [(PKAccountInvitationController *)self->_controller familyCircleCount];
+  isCurrentFamilyMemberAnOrganizer = [(PKAccountInvitationController *)self->_controller isCurrentFamilyMemberAnOrganizer];
+  familyCircleCount = [(PKAccountInvitationController *)self->_controller familyCircleCount];
   v5 = [(NSArray *)self->_pendingFamilyMembers count]== 0;
-  v15 = [(PKPaymentSetupDockView *)self->_dockView footerView];
-  v6 = v4 < 2 && v5;
+  footerView = [(PKPaymentSetupDockView *)self->_dockView footerView];
+  v6 = familyCircleCount < 2 && v5;
   v7 = PKLocalizedFeatureString();
-  v8 = [(PKTableHeaderView *)self->_headerView titleLabel];
+  titleLabel = [(PKTableHeaderView *)self->_headerView titleLabel];
   v9 = PKLocalizedFeatureString();
-  [v8 setText:v9];
+  [titleLabel setText:v9];
 
-  v10 = [(PKTableHeaderView *)self->_headerView subtitleLabel];
-  [v10 setText:v7];
+  subtitleLabel = [(PKTableHeaderView *)self->_headerView subtitleLabel];
+  [subtitleLabel setText:v7];
 
   if (v6 == 1)
   {
-    v11 = [(PKPaymentSetupDockView *)self->_dockView primaryButton];
+    primaryButton = [(PKPaymentSetupDockView *)self->_dockView primaryButton];
     v12 = PKLocalizedFeatureString();
-    [v11 setTitle:v12 forState:0];
+    [primaryButton setTitle:v12 forState:0];
 
-    v13 = [(PKPaymentSetupDockView *)self->_dockView primaryButton];
-    [v13 addTarget:self action:sel__handleAddPersonTapped forControlEvents:0x2000];
+    primaryButton2 = [(PKPaymentSetupDockView *)self->_dockView primaryButton];
+    [primaryButton2 addTarget:self action:sel__handleAddPersonTapped forControlEvents:0x2000];
   }
 
   else
   {
-    if (!v3)
+    if (!isCurrentFamilyMemberAnOrganizer)
     {
       goto LABEL_6;
     }
 
-    v13 = [v15 setUpLaterButton];
+    primaryButton2 = [footerView setUpLaterButton];
     v14 = PKLocalizedFeatureString();
-    [v13 setTitle:v14 forState:0];
+    [primaryButton2 setTitle:v14 forState:0];
 
-    [v13 addTarget:self action:sel__handleAddPersonTapped forControlEvents:0x2000];
+    [primaryButton2 addTarget:self action:sel__handleAddPersonTapped forControlEvents:0x2000];
     [(PKPaymentSetupDockView *)self->_dockView setPrimaryButton:0];
   }
 
 LABEL_6:
 }
 
-- (void)_setLoadingIndexPath:(id)a3
+- (void)_setLoadingIndexPath:(id)path
 {
-  v8 = a3;
+  pathCopy = path;
   if ((PKEqualObjects() & 1) == 0)
   {
     if (self->_loadingInvitationIndexPath)
@@ -501,7 +501,7 @@ LABEL_6:
       [v5 setAccessoryView:0];
     }
 
-    objc_storeStrong(&self->_loadingInvitationIndexPath, a3);
+    objc_storeStrong(&self->_loadingInvitationIndexPath, path);
     if (self->_loadingInvitationIndexPath)
     {
       v6 = [(UITableView *)self->_tableView cellForRowAtIndexPath:?];
@@ -513,7 +513,7 @@ LABEL_6:
   }
 }
 
-- (void)_reportAnalyticsViewDidAppear:(BOOL)a3
+- (void)_reportAnalyticsViewDidAppear:(BOOL)appear
 {
   v30 = *MEMORY[0x1E69E9840];
   v23 = 0u;
@@ -538,8 +538,8 @@ LABEL_6:
           objc_enumerationMutation(v4);
         }
 
-        v12 = [*(*(&v23 + 1) + 8 * i) memberType];
-        switch(v12)
+        memberType = [*(*(&v23 + 1) + 8 * i) memberType];
+        switch(memberType)
         {
           case 2:
             ++v7;
@@ -572,20 +572,20 @@ LABEL_6:
   v27[0] = v13;
   v27[1] = v14;
   v15 = [MEMORY[0x1E696AD98] numberWithInteger:v9];
-  v16 = [v15 stringValue];
-  v28[1] = v16;
+  stringValue = [v15 stringValue];
+  v28[1] = stringValue;
   v27[2] = *MEMORY[0x1E69BA240];
   v17 = [MEMORY[0x1E696AD98] numberWithInteger:v8];
-  v18 = [v17 stringValue];
-  v28[2] = v18;
+  stringValue2 = [v17 stringValue];
+  v28[2] = stringValue2;
   v27[3] = *MEMORY[0x1E69BA238];
   v19 = [MEMORY[0x1E696AD98] numberWithInteger:v7];
-  v20 = [v19 stringValue];
-  v28[3] = v20;
+  stringValue3 = [v19 stringValue];
+  v28[3] = stringValue3;
   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:4];
 
-  v22 = [(PKAccountInvitationController *)self->_controller applyController];
-  [v22 reportAnalyticsDictionaryForPage:0 pageTag:*MEMORY[0x1E69BA1A8] additionalValues:v21];
+  applyController = [(PKAccountInvitationController *)self->_controller applyController];
+  [applyController reportAnalyticsDictionaryForPage:0 pageTag:*MEMORY[0x1E69BA1A8] additionalValues:v21];
 }
 
 - (void)_handleAddPersonTapped
@@ -597,8 +597,8 @@ LABEL_6:
 
   [v5 setClientName:@"WalletAppleCard"];
   v6 = objc_alloc(off_1EE9A1DF0());
-  v7 = [(PKAccountInvitationChooseMemberViewController *)self navigationController];
-  v8 = [v6 initWithPresenter:v7];
+  navigationController = [(PKAccountInvitationChooseMemberViewController *)self navigationController];
+  v8 = [v6 initWithPresenter:navigationController];
   stateController = self->_stateController;
   self->_stateController = v8;
 
@@ -622,8 +622,8 @@ LABEL_6:
   v18[0] = v11;
   v18[1] = v13;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
-  v15 = [(PKAccountInvitationController *)self->_controller applyController];
-  [v15 reportAnalyticsDictionaryForPage:0 pageTag:*MEMORY[0x1E69BA1A8] additionalValues:v14];
+  applyController = [(PKAccountInvitationController *)self->_controller applyController];
+  [applyController reportAnalyticsDictionaryForPage:0 pageTag:*MEMORY[0x1E69BA1A8] additionalValues:v14];
 }
 
 void __71__PKAccountInvitationChooseMemberViewController__handleAddPersonTapped__block_invoke(uint64_t a1, void *a2)
@@ -757,9 +757,9 @@ id __71__PKAccountInvitationChooseMemberViewController__handleAddPersonTapped__b
   PKOpenURL();
 }
 
-- (void)_updateSnapshotAnimated:(BOOL)a3
+- (void)_updateSnapshotAnimated:(BOOL)animated
 {
-  v44 = a3;
+  animatedCopy = animated;
   v65 = *MEMORY[0x1E69E9840];
   v45 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -785,10 +785,10 @@ id __71__PKAccountInvitationChooseMemberViewController__handleAddPersonTapped__b
         }
 
         v8 = *(*(&v53 + 1) + 8 * v7);
-        v9 = [v8 appleID];
+        appleID = [v8 appleID];
         familyMemberPhotosByAltDSID = self->_familyMemberPhotosByAltDSID;
-        v11 = [v8 altDSID];
-        v12 = [(NSDictionary *)familyMemberPhotosByAltDSID objectForKey:v11];
+        altDSID = [v8 altDSID];
+        v12 = [(NSDictionary *)familyMemberPhotosByAltDSID objectForKey:altDSID];
 
         if ([v8 age] < self->_minimumParticipantAge)
         {
@@ -797,13 +797,13 @@ id __71__PKAccountInvitationChooseMemberViewController__handleAddPersonTapped__b
           goto LABEL_21;
         }
 
-        v14 = [(PKAccountInvitationController *)self->_controller deviceCapabiltiesManager];
-        v13 = [v14 currentFetchStatusForAppleID:v9];
+        deviceCapabiltiesManager = [(PKAccountInvitationController *)self->_controller deviceCapabiltiesManager];
+        v13 = [deviceCapabiltiesManager currentFetchStatusForAppleID:appleID];
 
         if ((PKPKBroadwayBypassIDSOSCheck() & 1) == 0 && self->_requiredOSVersionRange)
         {
-          v15 = [(PKAccountInvitationChooseMemberRow *)v13 fetchError];
-          if (v15 || (-[PKAccountInvitationChooseMemberRow fetchedCapabilities](v13, "fetchedCapabilities"), v15 = objc_claimAutoreleasedReturnValue(), ![v15 count]))
+          fetchError = [(PKAccountInvitationChooseMemberRow *)v13 fetchError];
+          if (fetchError || (-[PKAccountInvitationChooseMemberRow fetchedCapabilities](v13, "fetchedCapabilities"), fetchError = objc_claimAutoreleasedReturnValue(), ![fetchError count]))
           {
           }
 
@@ -829,7 +829,7 @@ id __71__PKAccountInvitationChooseMemberViewController__handleAddPersonTapped__b
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v61 = v9;
+            v61 = appleID;
             _os_log_impl(&dword_1BD026000, v17, OS_LOG_TYPE_DEFAULT, "By-passing IDS requiredOSVersionRange check for %@", buf, 0xCu);
           }
 
@@ -838,26 +838,26 @@ LABEL_18:
           goto LABEL_19;
         }
 
-        v18 = [(PKAccountInvitationChooseMemberRow *)v13 fetchError];
+        fetchError2 = [(PKAccountInvitationChooseMemberRow *)v13 fetchError];
 
-        if (v18)
+        if (fetchError2)
         {
           v17 = PKLogFacilityTypeGetObject();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
-            v19 = [(PKAccountInvitationChooseMemberRow *)v13 fetchError];
+            fetchError3 = [(PKAccountInvitationChooseMemberRow *)v13 fetchError];
             *buf = 138412546;
-            v61 = v9;
+            v61 = appleID;
             v62 = 2112;
-            v63 = v19;
+            v63 = fetchError3;
             _os_log_impl(&dword_1BD026000, v17, OS_LOG_TYPE_DEFAULT, "skipping requiredOSVersionRange check for %@ due to a fetch error: %@", buf, 0x16u);
           }
 
           goto LABEL_18;
         }
 
-        v20 = [(PKAccountInvitationChooseMemberRow *)v13 fetchedCapabilities];
-        v21 = [v20 count];
+        fetchedCapabilities = [(PKAccountInvitationChooseMemberRow *)v13 fetchedCapabilities];
+        v21 = [fetchedCapabilities count];
 
         if (v21)
         {
@@ -870,7 +870,7 @@ LABEL_18:
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v61 = v9;
+          v61 = appleID;
           _os_log_impl(&dword_1BD026000, v17, OS_LOG_TYPE_DEFAULT, "skipping requiredOSVersionRange check for %@ since we fetched 0 capabilities", buf, 0xCu);
         }
 
@@ -911,8 +911,8 @@ LABEL_21:
 
         v29 = *(*(&v49 + 1) + 8 * i);
         pendingFamilyMemberImagesByEmail = self->_pendingFamilyMemberImagesByEmail;
-        v31 = [v29 inviteEmail];
-        v32 = [(NSDictionary *)pendingFamilyMemberImagesByEmail objectForKey:v31];
+        inviteEmail = [v29 inviteEmail];
+        v32 = [(NSDictionary *)pendingFamilyMemberImagesByEmail objectForKey:inviteEmail];
 
         v33 = [[PKAccountInvitationChooseMemberRow alloc] initWithFamilyMember:v29 photoImage:v32 eligibility:0];
         [v45 addObject:v33];
@@ -956,19 +956,19 @@ LABEL_21:
     v39 = v46;
   }
 
-  [(UITableViewDiffableDataSource *)self->_diffableDataSource applySnapshot:v34 animatingDifferences:v44];
+  [(UITableViewDiffableDataSource *)self->_diffableDataSource applySnapshot:v34 animatingDifferences:animatedCopy];
 }
 
-- (void)_filterAvailableFamilyMembersFromMembers:(id)a3
+- (void)_filterAvailableFamilyMembersFromMembers:(id)members
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  membersCopy = members;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = membersCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -1003,10 +1003,10 @@ LABEL_21:
   [(PKAccountInvitationChooseMemberViewController *)self _updateSnapshotAnimated:1];
 }
 
-- (void)_reloadFamilyCollectionWithForceReload:(BOOL)a3 completion:(id)a4
+- (void)_reloadFamilyCollectionWithForceReload:(BOOL)reload completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  reloadCopy = reload;
+  completionCopy = completion;
   v7 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1020,9 +1020,9 @@ LABEL_21:
   v10[2] = __99__PKAccountInvitationChooseMemberViewController__reloadFamilyCollectionWithForceReload_completion___block_invoke;
   v10[3] = &unk_1E801D7B8;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  [(PKAccountInvitationController *)controller familyMembersForceReload:v4 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(PKAccountInvitationController *)controller familyMembersForceReload:reloadCopy completion:v10];
 }
 
 void __99__PKAccountInvitationChooseMemberViewController__reloadFamilyCollectionWithForceReload_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4, void *a5)
@@ -1074,15 +1074,15 @@ uint64_t __99__PKAccountInvitationChooseMemberViewController__reloadFamilyCollec
   return result;
 }
 
-- (int64_t)visibilityBackdropView:(id)a3 preferredStyleForTraitCollection:(id)a4
+- (int64_t)visibilityBackdropView:(id)view preferredStyleForTraitCollection:(id)collection
 {
-  v5 = a4;
+  collectionCopy = collection;
   if (PKPaymentSetupForceBridgeAppearance() & 1) != 0 || ([(PKAccountInvitationController *)self->_controller context], (PKPaymentSetupContextIsBridge()))
   {
     v6 = 2030;
   }
 
-  else if ([v5 userInterfaceStyle] == 2)
+  else if ([collectionCopy userInterfaceStyle] == 2)
   {
     v6 = 2030;
   }

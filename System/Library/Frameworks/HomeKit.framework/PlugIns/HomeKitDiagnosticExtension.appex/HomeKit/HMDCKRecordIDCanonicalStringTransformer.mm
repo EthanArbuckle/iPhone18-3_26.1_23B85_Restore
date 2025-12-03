@@ -1,14 +1,14 @@
 @interface HMDCKRecordIDCanonicalStringTransformer
-+ (id)reverseTransformedValue:(id)a3 error:(id *)a4;
++ (id)reverseTransformedValue:(id)value error:(id *)error;
 @end
 
 @implementation HMDCKRecordIDCanonicalStringTransformer
 
-+ (id)reverseTransformedValue:(id)a3 error:(id *)a4
++ (id)reverseTransformedValue:(id)value error:(id *)error
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = [CKRecordID alloc];
-  v6 = [v5 hmd_initWithCanonicalStringRepresentation:v4];
+  v6 = [v5 hmd_initWithCanonicalStringRepresentation:valueCopy];
 
   return v6;
 }

@@ -1,31 +1,31 @@
 @interface HFOverrideCharacteristicValueSource
 + (NAIdentity)na_identity;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isNaturalLightingEnabledForProfile:(id)a3;
-- (BOOL)isNaturalLightingSupportedForProfile:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isNaturalLightingEnabledForProfile:(id)profile;
+- (BOOL)isNaturalLightingSupportedForProfile:(id)profile;
 - (HFCharacteristicOperationContextProviding)contextProvider;
 - (HFOverrideCharacteristicValueProvider)overrideValueProvider;
-- (HFOverrideCharacteristicValueSource)initWithOriginalValueSource:(id)a3 overrideValueProvider:(id)a4;
-- (id)cachedErrorForWriteToCharacteristic:(id)a3;
-- (id)cachedValueForCharacteristic:(id)a3;
-- (id)readValuesForCharacteristicTypes:(id)a3 inServices:(id)a4;
-- (id)readValuesForCharacteristics:(id)a3;
-- (id)writeValuesForCharacteristics:(id)a3;
+- (HFOverrideCharacteristicValueSource)initWithOriginalValueSource:(id)source overrideValueProvider:(id)provider;
+- (id)cachedErrorForWriteToCharacteristic:(id)characteristic;
+- (id)cachedValueForCharacteristic:(id)characteristic;
+- (id)readValuesForCharacteristicTypes:(id)types inServices:(id)services;
+- (id)readValuesForCharacteristics:(id)characteristics;
+- (id)writeValuesForCharacteristics:(id)characteristics;
 - (unint64_t)hash;
-- (void)beginTransactionWithReason:(id)a3 readPolicy:(id)a4 logger:(id)a5;
-- (void)commitTransactionWithReason:(id)a3;
-- (void)fetchNaturalLightColorTemperatureForBrightness:(int64_t)a3 lightProfile:(id)a4 completion:(id)a5;
+- (void)beginTransactionWithReason:(id)reason readPolicy:(id)policy logger:(id)logger;
+- (void)commitTransactionWithReason:(id)reason;
+- (void)fetchNaturalLightColorTemperatureForBrightness:(int64_t)brightness lightProfile:(id)profile completion:(id)completion;
 @end
 
 @implementation HFOverrideCharacteristicValueSource
 
-- (BOOL)isNaturalLightingSupportedForProfile:(id)a3
+- (BOOL)isNaturalLightingSupportedForProfile:(id)profile
 {
-  v4 = a3;
-  v5 = [(HFOverrideCharacteristicValueSource *)self originalValueSource];
-  if ([v5 conformsToProtocol:&unk_28253EC38])
+  profileCopy = profile;
+  originalValueSource = [(HFOverrideCharacteristicValueSource *)self originalValueSource];
+  if ([originalValueSource conformsToProtocol:&unk_28253EC38])
   {
-    v6 = v5;
+    v6 = originalValueSource;
   }
 
   else
@@ -35,17 +35,17 @@
 
   v7 = v6;
 
-  v8 = [v7 isNaturalLightingSupportedForProfile:v4];
+  v8 = [v7 isNaturalLightingSupportedForProfile:profileCopy];
   return v8;
 }
 
-- (BOOL)isNaturalLightingEnabledForProfile:(id)a3
+- (BOOL)isNaturalLightingEnabledForProfile:(id)profile
 {
-  v4 = a3;
-  v5 = [(HFOverrideCharacteristicValueSource *)self originalValueSource];
-  if ([v5 conformsToProtocol:&unk_28253EC38])
+  profileCopy = profile;
+  originalValueSource = [(HFOverrideCharacteristicValueSource *)self originalValueSource];
+  if ([originalValueSource conformsToProtocol:&unk_28253EC38])
   {
-    v6 = v5;
+    v6 = originalValueSource;
   }
 
   else
@@ -55,18 +55,18 @@
 
   v7 = v6;
 
-  v8 = [v7 isNaturalLightingEnabledForProfile:v4];
+  v8 = [v7 isNaturalLightingEnabledForProfile:profileCopy];
   return v8;
 }
 
-- (void)fetchNaturalLightColorTemperatureForBrightness:(int64_t)a3 lightProfile:(id)a4 completion:(id)a5
+- (void)fetchNaturalLightColorTemperatureForBrightness:(int64_t)brightness lightProfile:(id)profile completion:(id)completion
 {
-  v8 = a5;
-  v12 = a4;
-  v9 = [(HFOverrideCharacteristicValueSource *)self originalValueSource];
-  if ([v9 conformsToProtocol:&unk_28253EC38])
+  completionCopy = completion;
+  profileCopy = profile;
+  originalValueSource = [(HFOverrideCharacteristicValueSource *)self originalValueSource];
+  if ([originalValueSource conformsToProtocol:&unk_28253EC38])
   {
-    v10 = v9;
+    v10 = originalValueSource;
   }
 
   else
@@ -76,40 +76,40 @@
 
   v11 = v10;
 
-  [v11 fetchNaturalLightColorTemperatureForBrightness:a3 lightProfile:v12 completion:v8];
+  [v11 fetchNaturalLightColorTemperatureForBrightness:brightness lightProfile:profileCopy completion:completionCopy];
 }
 
-- (HFOverrideCharacteristicValueSource)initWithOriginalValueSource:(id)a3 overrideValueProvider:(id)a4
+- (HFOverrideCharacteristicValueSource)initWithOriginalValueSource:(id)source overrideValueProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = HFOverrideCharacteristicValueSource;
   v9 = [(HFOverrideCharacteristicValueSource *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_originalValueSource, a3);
-    objc_storeWeak(&v10->_overrideValueProvider, v8);
+    objc_storeStrong(&v9->_originalValueSource, source);
+    objc_storeWeak(&v10->_overrideValueProvider, providerCopy);
   }
 
   return v10;
 }
 
-- (id)readValuesForCharacteristics:(id)a3
+- (id)readValuesForCharacteristics:(id)characteristics
 {
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __68__HFOverrideCharacteristicValueSource_readValuesForCharacteristics___block_invoke;
   v16[3] = &unk_277DF6218;
   v16[4] = self;
-  v4 = a3;
-  v5 = [v4 na_filter:v16];
-  v6 = [v4 na_setByRemovingObjectsFromSet:v5];
+  characteristicsCopy = characteristics;
+  v5 = [characteristicsCopy na_filter:v16];
+  v6 = [characteristicsCopy na_setByRemovingObjectsFromSet:v5];
 
   objc_initWeak(&location, self);
-  v7 = [(HFOverrideCharacteristicValueSource *)self originalValueSource];
-  v8 = [v7 readValuesForCharacteristics:v6];
+  originalValueSource = [(HFOverrideCharacteristicValueSource *)self originalValueSource];
+  v8 = [originalValueSource readValuesForCharacteristics:v6];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __68__HFOverrideCharacteristicValueSource_readValuesForCharacteristics___block_invoke_2;
@@ -190,19 +190,19 @@ id __68__HFOverrideCharacteristicValueSource_readValuesForCharacteristics___bloc
   return v20;
 }
 
-- (id)readValuesForCharacteristicTypes:(id)a3 inServices:(id)a4
+- (id)readValuesForCharacteristicTypes:(id)types inServices:(id)services
 {
-  v6 = a3;
+  typesCopy = types;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __83__HFOverrideCharacteristicValueSource_readValuesForCharacteristicTypes_inServices___block_invoke;
   v12[3] = &unk_277DF7AF8;
-  v13 = v6;
-  v7 = v6;
-  v8 = [a4 na_map:v12];
-  v9 = [v8 na_setByFlattening];
+  v13 = typesCopy;
+  v7 = typesCopy;
+  v8 = [services na_map:v12];
+  na_setByFlattening = [v8 na_setByFlattening];
 
-  v10 = [(HFOverrideCharacteristicValueSource *)self readValuesForCharacteristics:v9];
+  v10 = [(HFOverrideCharacteristicValueSource *)self readValuesForCharacteristics:na_setByFlattening];
 
   return v10;
 }
@@ -231,29 +231,29 @@ uint64_t __83__HFOverrideCharacteristicValueSource_readValuesForCharacteristicTy
   return v4;
 }
 
-- (id)writeValuesForCharacteristics:(id)a3
+- (id)writeValuesForCharacteristics:(id)characteristics
 {
-  v4 = a3;
-  v5 = [(HFOverrideCharacteristicValueSource *)self originalValueSource];
-  v6 = [v5 writeValuesForCharacteristics:v4];
+  characteristicsCopy = characteristics;
+  originalValueSource = [(HFOverrideCharacteristicValueSource *)self originalValueSource];
+  v6 = [originalValueSource writeValuesForCharacteristics:characteristicsCopy];
 
   return v6;
 }
 
-- (id)cachedValueForCharacteristic:(id)a3
+- (id)cachedValueForCharacteristic:(id)characteristic
 {
-  v4 = a3;
-  v5 = [(HFOverrideCharacteristicValueSource *)self originalValueSource];
-  v6 = [v5 cachedValueForCharacteristic:v4];
+  characteristicCopy = characteristic;
+  originalValueSource = [(HFOverrideCharacteristicValueSource *)self originalValueSource];
+  v6 = [originalValueSource cachedValueForCharacteristic:characteristicCopy];
 
   return v6;
 }
 
-- (id)cachedErrorForWriteToCharacteristic:(id)a3
+- (id)cachedErrorForWriteToCharacteristic:(id)characteristic
 {
-  v4 = a3;
-  v5 = [(HFOverrideCharacteristicValueSource *)self overrideValueProvider];
-  if ([v5 valueSource:self shouldOverrideValueForCharacteristic:v4])
+  characteristicCopy = characteristic;
+  overrideValueProvider = [(HFOverrideCharacteristicValueSource *)self overrideValueProvider];
+  if ([overrideValueProvider valueSource:self shouldOverrideValueForCharacteristic:characteristicCopy])
   {
     v6 = 0;
 LABEL_5:
@@ -261,13 +261,13 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  v7 = [(HFOverrideCharacteristicValueSource *)self originalValueSource];
+  originalValueSource = [(HFOverrideCharacteristicValueSource *)self originalValueSource];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v5 = [(HFOverrideCharacteristicValueSource *)self originalValueSource];
-    v6 = [v5 cachedErrorForWriteToCharacteristic:v4];
+    overrideValueProvider = [(HFOverrideCharacteristicValueSource *)self originalValueSource];
+    v6 = [overrideValueProvider cachedErrorForWriteToCharacteristic:characteristicCopy];
     goto LABEL_5;
   }
 
@@ -279,37 +279,37 @@ LABEL_7:
 
 - (HFCharacteristicOperationContextProviding)contextProvider
 {
-  v3 = [(HFOverrideCharacteristicValueSource *)self originalValueSource];
+  originalValueSource = [(HFOverrideCharacteristicValueSource *)self originalValueSource];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(HFOverrideCharacteristicValueSource *)self originalValueSource];
-    v6 = [v5 contextProvider];
+    originalValueSource2 = [(HFOverrideCharacteristicValueSource *)self originalValueSource];
+    contextProvider = [originalValueSource2 contextProvider];
   }
 
   else
   {
-    v6 = 0;
+    contextProvider = 0;
   }
 
-  return v6;
+  return contextProvider;
 }
 
-- (void)beginTransactionWithReason:(id)a3 readPolicy:(id)a4 logger:(id)a5
+- (void)beginTransactionWithReason:(id)reason readPolicy:(id)policy logger:(id)logger
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(HFOverrideCharacteristicValueSource *)self originalValueSource];
-  [v11 beginTransactionWithReason:v10 readPolicy:v9 logger:v8];
+  loggerCopy = logger;
+  policyCopy = policy;
+  reasonCopy = reason;
+  originalValueSource = [(HFOverrideCharacteristicValueSource *)self originalValueSource];
+  [originalValueSource beginTransactionWithReason:reasonCopy readPolicy:policyCopy logger:loggerCopy];
 }
 
-- (void)commitTransactionWithReason:(id)a3
+- (void)commitTransactionWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(HFOverrideCharacteristicValueSource *)self originalValueSource];
-  [v5 commitTransactionWithReason:v4];
+  reasonCopy = reason;
+  originalValueSource = [(HFOverrideCharacteristicValueSource *)self originalValueSource];
+  [originalValueSource commitTransactionWithReason:reasonCopy];
 }
 
 + (NAIdentity)na_identity
@@ -335,19 +335,19 @@ void __50__HFOverrideCharacteristicValueSource_na_identity__block_invoke_2()
   qword_280E03A10 = v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }

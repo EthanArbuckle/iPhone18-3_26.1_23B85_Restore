@@ -1,19 +1,19 @@
 @interface VMManager
 - (VMManager)init;
-- (VMManager)initWithQueue:(id)a3;
-- (void)addDelegate:(id)a3 queue:(id)a4;
-- (void)performAtomicAccessorBlock:(id)a3;
-- (void)performAtomicDelegateBlock:(id)a3;
-- (void)removeDelegate:(id)a3;
+- (VMManager)initWithQueue:(id)queue;
+- (void)addDelegate:(id)delegate queue:(id)queue;
+- (void)performAtomicAccessorBlock:(id)block;
+- (void)performAtomicDelegateBlock:(id)block;
+- (void)removeDelegate:(id)delegate;
 @end
 
 @implementation VMManager
 
 - (VMManager)init
 {
-  v3 = [objc_opt_class() vm_classIdentifier];
+  vm_classIdentifier = [objc_opt_class() vm_classIdentifier];
   v4 = NSStringFromSelector("queue");
-  v5 = [NSString stringWithFormat:@"%@.%@", v3, v4];
+  v5 = [NSString stringWithFormat:@"%@.%@", vm_classIdentifier, v4];
 
   v6 = dispatch_queue_create([v5 UTF8String], 0);
   v7 = [(VMManager *)self initWithQueue:v6];
@@ -21,9 +21,9 @@
   return v7;
 }
 
-- (VMManager)initWithQueue:(id)a3
+- (VMManager)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = VMManager;
   v6 = [(VMManager *)&v11 init];
@@ -35,46 +35,46 @@
     delegateToQueue = v7->_delegateToQueue;
     v7->_delegateToQueue = v8;
 
-    objc_storeStrong(&v7->_queue, a3);
+    objc_storeStrong(&v7->_queue, queue);
   }
 
   return v7;
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4
+- (void)addDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
+  delegateCopy = delegate;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000248BC;
   v9[3] = &unk_1000ED478;
   v9[4] = self;
-  v10 = a4;
-  v11 = v6;
-  v7 = v6;
-  v8 = v10;
+  queueCopy = queue;
+  v11 = delegateCopy;
+  v7 = delegateCopy;
+  v8 = queueCopy;
   [(VMManager *)self performAtomicDelegateBlock:v9];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000249B4;
   v4[3] = &unk_1000ED450;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(VMManager *)v5 performAtomicDelegateBlock:v4];
+  selfCopy = self;
+  delegateCopy = delegate;
+  v3 = delegateCopy;
+  [(VMManager *)selfCopy performAtomicDelegateBlock:v4];
 }
 
-- (void)performAtomicAccessorBlock:(id)a3
+- (void)performAtomicAccessorBlock:(id)block
 {
-  v5 = a3;
-  if (v5)
+  blockCopy = block;
+  if (blockCopy)
   {
     os_unfair_lock_lock_with_options();
-    v5[2]();
+    blockCopy[2]();
     os_unfair_lock_unlock(&self->_accessorLock);
   }
 
@@ -84,13 +84,13 @@
   }
 }
 
-- (void)performAtomicDelegateBlock:(id)a3
+- (void)performAtomicDelegateBlock:(id)block
 {
-  v5 = a3;
-  if (v5)
+  blockCopy = block;
+  if (blockCopy)
   {
     os_unfair_lock_lock_with_options();
-    v5[2]();
+    blockCopy[2]();
     os_unfair_lock_unlock(&self->_delegateLock);
   }
 

@@ -1,25 +1,25 @@
 @interface OI_TSUImageM
-+ (id)initWithCGImage:(CGImage *)a3;
-+ (id)initWithCGImage:(CGImage *)a3 scale:(double)a4 orientation:(int64_t)a5;
-+ (id)initWithContentsOfFile:(id)a3;
-+ (id)initWithData:(id)a3;
-+ (id)initWithImageSourceRef:(CGImageSource *)a3;
-+ (id)initWithUIImage:(id)a3;
++ (id)initWithCGImage:(CGImage *)image;
++ (id)initWithCGImage:(CGImage *)image scale:(double)scale orientation:(int64_t)orientation;
++ (id)initWithContentsOfFile:(id)file;
++ (id)initWithData:(id)data;
++ (id)initWithImageSourceRef:(CGImageSource *)ref;
++ (id)initWithUIImage:(id)image;
 @end
 
 @implementation OI_TSUImageM
 
-+ (id)initWithCGImage:(CGImage *)a3
++ (id)initWithCGImage:(CGImage *)image
 {
   v4 = [OITSUCGImage alloc];
 
-  return [(OITSUCGImage *)v4 initWithCGImage:a3 scale:0 orientation:0.0];
+  return [(OITSUCGImage *)v4 initWithCGImage:image scale:0 orientation:0.0];
 }
 
-+ (id)initWithData:(id)a3
++ (id)initWithData:(id)data
 {
-  v4 = CGImageSourceCreateWithData(a3, MEMORY[0x277CBEC10]);
-  v5 = [a1 initWithImageSourceRef:v4];
+  v4 = CGImageSourceCreateWithData(data, MEMORY[0x277CBEC10]);
+  v5 = [self initWithImageSourceRef:v4];
   if (v4)
   {
     CFRelease(v4);
@@ -28,27 +28,27 @@
   return v5;
 }
 
-+ (id)initWithCGImage:(CGImage *)a3 scale:(double)a4 orientation:(int64_t)a5
++ (id)initWithCGImage:(CGImage *)image scale:(double)scale orientation:(int64_t)orientation
 {
   v8 = [OITSUCGImage alloc];
 
-  return [(OITSUCGImage *)v8 initWithCGImage:a3 scale:a5 orientation:a4];
+  return [(OITSUCGImage *)v8 initWithCGImage:image scale:orientation orientation:scale];
 }
 
-+ (id)initWithContentsOfFile:(id)a3
++ (id)initWithContentsOfFile:(id)file
 {
   v4 = [OITSUUIImage alloc];
 
-  return [(OITSUUIImage *)v4 initWithContentsOfFile:a3];
+  return [(OITSUUIImage *)v4 initWithContentsOfFile:file];
 }
 
-+ (id)initWithImageSourceRef:(CGImageSource *)a3
++ (id)initWithImageSourceRef:(CGImageSource *)ref
 {
-  v3 = a3;
-  if (a3)
+  refCopy = ref;
+  if (ref)
   {
-    ImageAtIndex = CGImageSourceCreateImageAtIndex(a3, 0, 0);
-    v3 = TSUImageSourceOrientation(v3);
+    ImageAtIndex = CGImageSourceCreateImageAtIndex(ref, 0, 0);
+    refCopy = TSUImageSourceOrientation(refCopy);
   }
 
   else
@@ -56,16 +56,16 @@
     ImageAtIndex = 0;
   }
 
-  v5 = [[OITSUCGImage alloc] initWithCGImage:ImageAtIndex scale:v3 orientation:0.0];
+  v5 = [[OITSUCGImage alloc] initWithCGImage:ImageAtIndex scale:refCopy orientation:0.0];
   CGImageRelease(ImageAtIndex);
   return v5;
 }
 
-+ (id)initWithUIImage:(id)a3
++ (id)initWithUIImage:(id)image
 {
   v4 = [OITSUUIImage alloc];
 
-  return [(OITSUUIImage *)v4 initWithUIImage:a3];
+  return [(OITSUUIImage *)v4 initWithUIImage:image];
 }
 
 @end

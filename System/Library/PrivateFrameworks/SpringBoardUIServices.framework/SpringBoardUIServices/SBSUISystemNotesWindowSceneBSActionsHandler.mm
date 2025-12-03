@@ -1,28 +1,28 @@
 @interface SBSUISystemNotesWindowSceneBSActionsHandler
-- (id)_launchOptionsFromActions:(id)a3 forFBSScene:(id)a4 uiSceneSession:(id)a5 transitionContext:(id)a6;
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
+- (id)_launchOptionsFromActions:(id)actions forFBSScene:(id)scene uiSceneSession:(id)session transitionContext:(id)context;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
 @end
 
 @implementation SBSUISystemNotesWindowSceneBSActionsHandler
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v27 = [v7 mutableCopy];
+  actionsCopy = actions;
+  iSceneCopy = iScene;
+  v27 = [actionsCopy mutableCopy];
   v9 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v25 = v8;
-    v11 = v8;
+    v25 = iSceneCopy;
+    v11 = iSceneCopy;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v12 = v7;
+    v12 = actionsCopy;
     v13 = [v12 countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v13)
     {
@@ -45,19 +45,19 @@
           if (v19)
           {
             [v27 removeObject:v17];
-            v20 = [v11 delegate];
-            if ([v20 conformsToProtocol:&unk_1F1E25940] && (objc_opt_respondsToSelector() & 1) != 0)
+            delegate = [v11 delegate];
+            if ([delegate conformsToProtocol:&unk_1F1E25940] && (objc_opt_respondsToSelector() & 1) != 0)
             {
-              [v20 notesSceneDidReceiveCreateNewNoteRequest:v11];
-              v21 = [MEMORY[0x1E698E600] response];
-              [v17 sendResponse:v21];
+              [delegate notesSceneDidReceiveCreateNewNoteRequest:v11];
+              response = [MEMORY[0x1E698E600] response];
+              [v17 sendResponse:response];
             }
 
             else
             {
               v22 = MEMORY[0x1E698E600];
-              v21 = [MEMORY[0x1E696ABC0] errorWithDomain:v26 code:1 userInfo:0];
-              v23 = [v22 responseForError:v21];
+              response = [MEMORY[0x1E696ABC0] errorWithDomain:v26 code:1 userInfo:0];
+              v23 = [v22 responseForError:response];
               [v17 sendResponse:v23];
             }
           }
@@ -69,26 +69,26 @@
       while (v14);
     }
 
-    v8 = v25;
+    iSceneCopy = v25;
   }
 
   return v27;
 }
 
-- (id)_launchOptionsFromActions:(id)a3 forFBSScene:(id)a4 uiSceneSession:(id)a5 transitionContext:(id)a6
+- (id)_launchOptionsFromActions:(id)actions forFBSScene:(id)scene uiSceneSession:(id)session transitionContext:(id)context
 {
-  v29 = self;
+  selfCopy = self;
   v36 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  actionsCopy = actions;
+  sceneCopy = scene;
+  sessionCopy = session;
+  contextCopy = context;
   v13 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v14 = v9;
+  v14 = actionsCopy;
   v15 = [v14 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (!v15)
   {
@@ -97,9 +97,9 @@
     goto LABEL_14;
   }
 
-  v30 = v12;
-  v16 = v11;
-  v17 = v10;
+  v30 = contextCopy;
+  v16 = sessionCopy;
+  v17 = sceneCopy;
   v18 = 0;
   v19 = *v32;
   do
@@ -122,7 +122,7 @@
 
       else
       {
-        [v13 addObject:{v21, v29}];
+        [v13 addObject:{v21, selfCopy}];
       }
     }
 
@@ -139,23 +139,23 @@
     v25 = [v23 setWithObject:v24];
     [v15 setValue:v25 forKey:@"_SBSUISystemNotesWindowSceneConnectionOptionsSceneConnectionSourceKey"];
 
-    v10 = v17;
-    v11 = v16;
-    v12 = v30;
+    sceneCopy = v17;
+    sessionCopy = v16;
+    contextCopy = v30;
 LABEL_14:
 
     goto LABEL_16;
   }
 
   v15 = 0;
-  v10 = v17;
-  v11 = v16;
-  v12 = v30;
+  sceneCopy = v17;
+  sessionCopy = v16;
+  contextCopy = v30;
 LABEL_16:
   v26 = SBLogSystemNotes();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
   {
-    [SBSUISystemNotesWindowSceneBSActionsHandler _launchOptionsFromActions:v29 forFBSScene:v15 uiSceneSession:v26 transitionContext:?];
+    [SBSUISystemNotesWindowSceneBSActionsHandler _launchOptionsFromActions:selfCopy forFBSScene:v15 uiSceneSession:v26 transitionContext:?];
   }
 
   v27 = objc_alloc_init(MEMORY[0x1E69DD680]);

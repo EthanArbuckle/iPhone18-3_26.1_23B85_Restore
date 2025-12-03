@@ -1,23 +1,23 @@
 @interface RRSchemaProvisionalRREntityPoolResolveStarted
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (RRSchemaProvisionalRREntityPoolResolveStarted)initWithDictionary:(id)a3;
-- (RRSchemaProvisionalRREntityPoolResolveStarted)initWithJSON:(id)a3;
+- (RRSchemaProvisionalRREntityPoolResolveStarted)initWithDictionary:(id)dictionary;
+- (RRSchemaProvisionalRREntityPoolResolveStarted)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RRSchemaProvisionalRREntityPoolResolveStarted
 
-- (RRSchemaProvisionalRREntityPoolResolveStarted)initWithDictionary:(id)a3
+- (RRSchemaProvisionalRREntityPoolResolveStarted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = RRSchemaProvisionalRREntityPoolResolveStarted;
   v5 = [(RRSchemaProvisionalRREntityPoolResolveStarted *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"usoQuery"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"usoQuery"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,30 +31,30 @@
   return v5;
 }
 
-- (RRSchemaProvisionalRREntityPoolResolveStarted)initWithJSON:(id)a3
+- (RRSchemaProvisionalRREntityPoolResolveStarted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(RRSchemaProvisionalRREntityPoolResolveStarted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(RRSchemaProvisionalRREntityPoolResolveStarted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(RRSchemaProvisionalRREntityPoolResolveStarted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -67,40 +67,40 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_usoQuery)
   {
-    v4 = [(RRSchemaProvisionalRREntityPoolResolveStarted *)self usoQuery];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    usoQuery = [(RRSchemaProvisionalRREntityPoolResolveStarted *)self usoQuery];
+    dictionaryRepresentation = [usoQuery dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"usoQuery"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"usoQuery"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"usoQuery"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"usoQuery"];
     }
   }
 
-  [(RRSchemaProvisionalRREntityPoolResolveStarted *)self willProduceDictionaryRepresentation:v3];
+  [(RRSchemaProvisionalRREntityPoolResolveStarted *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(RRSchemaProvisionalRREntityPoolResolveStarted *)self usoQuery];
-    v6 = [v4 usoQuery];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    usoQuery = [(RRSchemaProvisionalRREntityPoolResolveStarted *)self usoQuery];
+    usoQuery2 = [equalCopy usoQuery];
+    v7 = usoQuery2;
+    if ((usoQuery != 0) != (usoQuery2 == 0))
     {
-      v8 = [(RRSchemaProvisionalRREntityPoolResolveStarted *)self usoQuery];
-      if (!v8)
+      usoQuery3 = [(RRSchemaProvisionalRREntityPoolResolveStarted *)self usoQuery];
+      if (!usoQuery3)
       {
 
 LABEL_10:
@@ -108,10 +108,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(RRSchemaProvisionalRREntityPoolResolveStarted *)self usoQuery];
-      v11 = [v4 usoQuery];
-      v12 = [v10 isEqual:v11];
+      v9 = usoQuery3;
+      usoQuery4 = [(RRSchemaProvisionalRREntityPoolResolveStarted *)self usoQuery];
+      usoQuery5 = [equalCopy usoQuery];
+      v12 = [usoQuery4 isEqual:usoQuery5];
 
       if (v12)
       {
@@ -130,14 +130,14 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(RRSchemaProvisionalRREntityPoolResolveStarted *)self usoQuery];
+  toCopy = to;
+  usoQuery = [(RRSchemaProvisionalRREntityPoolResolveStarted *)self usoQuery];
 
-  if (v4)
+  if (usoQuery)
   {
-    v5 = [(RRSchemaProvisionalRREntityPoolResolveStarted *)self usoQuery];
+    usoQuery2 = [(RRSchemaProvisionalRREntityPoolResolveStarted *)self usoQuery];
     PBDataWriterWriteSubmessage();
   }
 }

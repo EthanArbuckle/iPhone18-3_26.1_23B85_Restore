@@ -1,10 +1,10 @@
 @interface PXImageViewSpec
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)floatingContentMotionRotation;
 - (CGPoint)floatingContentMotionTranslation;
 - (CGSize)floatingUnfocusedShadowExpansion;
 - (PXImageViewSpec)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -37,14 +37,14 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = PXImageViewSpec;
   v5 = [(PXViewSpec *)&v9 copyWithZone:?];
   if (self->_overlaySpecs)
   {
-    v6 = [objc_msgSend(MEMORY[0x1E695DEC8] allocWithZone:{a3), "initWithArray:copyItems:", self->_overlaySpecs, 1}];
+    v6 = [objc_msgSend(MEMORY[0x1E695DEC8] allocWithZone:{zone), "initWithArray:copyItems:", self->_overlaySpecs, 1}];
   }
 
   else
@@ -60,28 +60,28 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v15.receiver = self;
   v15.super_class = PXImageViewSpec;
-  v5 = [(PXViewSpec *)&v15 isEqual:v4];
-  v6 = v4;
+  v5 = [(PXViewSpec *)&v15 isEqual:equalCopy];
+  v6 = equalCopy;
   if (!v5)
   {
     goto LABEL_7;
   }
 
-  v7 = [(PXImageViewSpec *)self overlaySpecs];
-  v8 = [v6 overlaySpecs];
-  v9 = v8;
-  if (v7 == v8)
+  overlaySpecs = [(PXImageViewSpec *)self overlaySpecs];
+  overlaySpecs2 = [v6 overlaySpecs];
+  v9 = overlaySpecs2;
+  if (overlaySpecs == overlaySpecs2)
   {
   }
 
   else
   {
-    v10 = [v7 isEqual:v8];
+    v10 = [overlaySpecs isEqual:overlaySpecs2];
 
     if ((v10 & 1) == 0)
     {
@@ -89,11 +89,11 @@
     }
   }
 
-  v11 = [(PXImageViewSpec *)self shouldEnableFocus];
-  if (v11 == [v6 shouldEnableFocus])
+  shouldEnableFocus = [(PXImageViewSpec *)self shouldEnableFocus];
+  if (shouldEnableFocus == [v6 shouldEnableFocus])
   {
-    v14 = [(PXImageViewSpec *)self roundedCornersMode];
-    v12 = v14 == [v6 roundedCornersMode];
+    roundedCornersMode = [(PXImageViewSpec *)self roundedCornersMode];
+    v12 = roundedCornersMode == [v6 roundedCornersMode];
     goto LABEL_8;
   }
 
@@ -109,8 +109,8 @@ LABEL_8:
   v7.receiver = self;
   v7.super_class = PXImageViewSpec;
   v3 = [(PXViewSpec *)&v7 hash];
-  v4 = [(PXImageViewSpec *)self overlaySpecs];
-  v5 = [v4 hash];
+  overlaySpecs = [(PXImageViewSpec *)self overlaySpecs];
+  v5 = [overlaySpecs hash];
 
   return v5 ^ v3;
 }

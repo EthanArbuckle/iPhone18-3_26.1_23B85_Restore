@@ -1,30 +1,30 @@
 @interface FCAssetManager
 - (FCAssetManager)init;
-- (FCAssetManager)initWithName:(id)a3 directory:(id)a4 keyManager:(id)a5 avAssetFactory:(id)a6 resourceURLGenerator:(id)a7 networkBehaviorMonitor:(id)a8 networkReachability:(id)a9;
-- (id)_assetHandleForCKAssetURLComponents:(uint64_t)a3 lifetimeHint:;
-- (id)_assetKeyForRemoteURL:(uint64_t)a1;
-- (id)_importFileAtPath:(uint64_t)a3 method:(void *)a4 key:(void *)a5 mimeType:(void *)a6 importedMetadata:(uint64_t)a7 lifetimeHint:;
-- (id)assetHandleForCKAssetURL:(id)a3 lifetimeHint:(int64_t)a4;
-- (id)assetHandleForCKAssetURLString:(id)a3 lifetimeHint:(int64_t)a4;
-- (id)assetHandleForCKAssetURLString:(id)a3 prefetchedData:(id)a4 unzipIfNeeded:(BOOL)a5 lifetimeHint:(int64_t)a6;
-- (id)assetHandleForRecordID:(id)a3 field:(int64_t)a4 lifetimeHint:(int64_t)a5 contentDatabase:(id)a6;
-- (id)assetHandleForResourceID:(id)a3 lifetimeHint:(int64_t)a4 contentContext:(id)a5;
-- (id)assetHandleForURL:(id)a3 lifetimeHint:(int64_t)a4;
-- (id)assetHandleForURL:(id)a3 prefetchedFileURL:(id)a4 importMethod:(int64_t)a5 lifetimeHint:(int64_t)a6;
-- (id)contentArchiveForAssetHandle:(id)a3;
-- (id)importAsset:(id)a3 remoteURL:(id)a4 fileURL:(id)a5;
-- (id)interestTokenForAssetURLs:(id)a3;
-- (id)operationToFetchDataProviderForAssetHandle:(id)a3 completion:(id)a4;
+- (FCAssetManager)initWithName:(id)name directory:(id)directory keyManager:(id)manager avAssetFactory:(id)factory resourceURLGenerator:(id)generator networkBehaviorMonitor:(id)monitor networkReachability:(id)reachability;
+- (id)_assetHandleForCKAssetURLComponents:(uint64_t)components lifetimeHint:;
+- (id)_assetKeyForRemoteURL:(uint64_t)l;
+- (id)_importFileAtPath:(uint64_t)path method:(void *)method key:(void *)key mimeType:(void *)type importedMetadata:(uint64_t)metadata lifetimeHint:;
+- (id)assetHandleForCKAssetURL:(id)l lifetimeHint:(int64_t)hint;
+- (id)assetHandleForCKAssetURLString:(id)string lifetimeHint:(int64_t)hint;
+- (id)assetHandleForCKAssetURLString:(id)string prefetchedData:(id)data unzipIfNeeded:(BOOL)needed lifetimeHint:(int64_t)hint;
+- (id)assetHandleForRecordID:(id)d field:(int64_t)field lifetimeHint:(int64_t)hint contentDatabase:(id)database;
+- (id)assetHandleForResourceID:(id)d lifetimeHint:(int64_t)hint contentContext:(id)context;
+- (id)assetHandleForURL:(id)l lifetimeHint:(int64_t)hint;
+- (id)assetHandleForURL:(id)l prefetchedFileURL:(id)rL importMethod:(int64_t)method lifetimeHint:(int64_t)hint;
+- (id)contentArchiveForAssetHandle:(id)handle;
+- (id)importAsset:(id)asset remoteURL:(id)l fileURL:(id)rL;
+- (id)interestTokenForAssetURLs:(id)ls;
+- (id)operationToFetchDataProviderForAssetHandle:(id)handle completion:(id)completion;
 - (int64_t)storageSize;
-- (unint64_t)cacheCoordinatorCurrentSizeWithReadLock:(id)a3;
+- (unint64_t)cacheCoordinatorCurrentSizeWithReadLock:(id)lock;
 - (void)_prepareForUseIfNeeded;
 - (void)assetStore;
-- (void)cacheCoordinator:(id)a3 flushKeysWithWriteLock:(id)a4;
-- (void)d_resetAssetHandle:(id)a3;
-- (void)enableFlushingWithFlushingThreshold:(unint64_t)a3;
+- (void)cacheCoordinator:(id)coordinator flushKeysWithWriteLock:(id)lock;
+- (void)d_resetAssetHandle:(id)handle;
+- (void)enableFlushingWithFlushingThreshold:(unint64_t)threshold;
 - (void)keyValueStore;
 - (void)save;
-- (void)saveWithCompletionHandler:(id)a3;
+- (void)saveWithCompletionHandler:(id)handler;
 - (void)t_save;
 @end
 
@@ -32,14 +32,14 @@
 
 - (void)_prepareForUseIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 96);
+    v1 = *(self + 96);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __40__FCAssetManager__prepareForUseIfNeeded__block_invoke;
     block[3] = &unk_1E7C36EA0;
-    block[4] = a1;
+    block[4] = self;
     dispatch_sync(v1, block);
   }
 }
@@ -140,10 +140,10 @@ void __29__FCAssetManager__initStores__block_invoke(uint64_t a1, void *a2, void 
 - (void)assetStore
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    v2 = a1[5];
+    selfCopy = self;
+    v2 = self[5];
     if (!v2)
     {
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -159,7 +159,7 @@ void __29__FCAssetManager__initStores__block_invoke(uint64_t a1, void *a2, void 
         v13 = v5;
         _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-        v2 = v1[5];
+        v2 = selfCopy[5];
       }
 
       else
@@ -168,21 +168,21 @@ void __29__FCAssetManager__initStores__block_invoke(uint64_t a1, void *a2, void 
       }
     }
 
-    a1 = v2;
+    self = v2;
   }
 
   v3 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return self;
 }
 
 - (void)keyValueStore
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    v2 = a1[4];
+    selfCopy = self;
+    v2 = self[4];
     if (!v2)
     {
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -198,7 +198,7 @@ void __29__FCAssetManager__initStores__block_invoke(uint64_t a1, void *a2, void 
         v13 = v5;
         _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-        v2 = v1[4];
+        v2 = selfCopy[4];
       }
 
       else
@@ -207,20 +207,20 @@ void __29__FCAssetManager__initStores__block_invoke(uint64_t a1, void *a2, void 
       }
     }
 
-    a1 = v2;
+    self = v2;
   }
 
   v3 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return self;
 }
 
-- (id)assetHandleForRecordID:(id)a3 field:(int64_t)a4 lifetimeHint:(int64_t)a5 contentDatabase:(id)a6
+- (id)assetHandleForRecordID:(id)d field:(int64_t)field lifetimeHint:(int64_t)hint contentDatabase:(id)database
 {
-  v8 = [a6 permanentURLForRecordID:a3 field:a4];
+  v8 = [database permanentURLForRecordID:d field:field];
   if (v8)
   {
-    v9 = [(FCAssetManager *)self assetHandleForURL:v8 lifetimeHint:a5];
+    v9 = [(FCAssetManager *)self assetHandleForURL:v8 lifetimeHint:hint];
   }
 
   else
@@ -257,19 +257,19 @@ void __29__FCAssetManager__initStores__block_invoke(uint64_t a1, void *a2, void 
   objc_exception_throw(v6);
 }
 
-- (FCAssetManager)initWithName:(id)a3 directory:(id)a4 keyManager:(id)a5 avAssetFactory:(id)a6 resourceURLGenerator:(id)a7 networkBehaviorMonitor:(id)a8 networkReachability:(id)a9
+- (FCAssetManager)initWithName:(id)name directory:(id)directory keyManager:(id)manager avAssetFactory:(id)factory resourceURLGenerator:(id)generator networkBehaviorMonitor:(id)monitor networkReachability:(id)reachability
 {
   v62 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v52 = a8;
-  v19 = a9;
-  if (!v14 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  nameCopy = name;
+  directoryCopy = directory;
+  managerCopy = manager;
+  factoryCopy = factory;
+  generatorCopy = generator;
+  monitorCopy = monitor;
+  reachabilityCopy = reachability;
+  if (!nameCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v46 = a8;
+    monitorCopy2 = monitor;
     v42 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "name != nil"];
     *buf = 136315906;
     v55 = "[FCAssetManager initWithName:directory:keyManager:avAssetFactory:resourceURLGenerator:networkBehaviorMonitor:networkReachability:]";
@@ -281,21 +281,21 @@ void __29__FCAssetManager__initStores__block_invoke(uint64_t a1, void *a2, void 
     v61 = v42;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    a8 = v46;
-    if (v15)
+    monitor = monitorCopy2;
+    if (directoryCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v15)
+  else if (directoryCopy)
   {
     goto LABEL_6;
   }
 
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v47 = a8;
+    monitorCopy3 = monitor;
     v43 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "directory != nil"];
     *buf = 136315906;
     v55 = "[FCAssetManager initWithName:directory:keyManager:avAssetFactory:resourceURLGenerator:networkBehaviorMonitor:networkReachability:]";
@@ -307,14 +307,14 @@ void __29__FCAssetManager__initStores__block_invoke(uint64_t a1, void *a2, void 
     v61 = v43;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    a8 = v47;
+    monitor = monitorCopy3;
   }
 
 LABEL_6:
-  v51 = v19;
-  if (!v19 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  v51 = reachabilityCopy;
+  if (!reachabilityCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v48 = a8;
+    monitorCopy4 = monitor;
     v44 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "networkReachability != nil"];
     *buf = 136315906;
     v55 = "[FCAssetManager initWithName:directory:keyManager:avAssetFactory:resourceURLGenerator:networkBehaviorMonitor:networkReachability:]";
@@ -326,7 +326,7 @@ LABEL_6:
     v61 = v44;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    a8 = v48;
+    monitor = monitorCopy4;
   }
 
   v53.receiver = self;
@@ -334,20 +334,20 @@ LABEL_6:
   v20 = [(FCAssetManager *)&v53 init];
   if (v20)
   {
-    v21 = [v14 copy];
+    v21 = [nameCopy copy];
     name = v20->_name;
     v20->_name = v21;
 
-    v23 = [v15 copy];
+    v23 = [directoryCopy copy];
     parentDirectory = v20->_parentDirectory;
     v20->_parentDirectory = v23;
 
-    [v14 stringByAppendingString:@"-assetstore"];
-    v50 = v17;
-    v45 = a7;
-    v26 = v25 = v16;
-    [v15 stringByAppendingPathComponent:v26];
-    v28 = v27 = a8;
+    [nameCopy stringByAppendingString:@"-assetstore"];
+    v50 = factoryCopy;
+    generatorCopy2 = generator;
+    v26 = v25 = managerCopy;
+    [directoryCopy stringByAppendingPathComponent:v26];
+    v28 = v27 = monitor;
 
     v29 = [MEMORY[0x1E695DFF8] fileURLWithPath:v28 isDirectory:0];
     directoryURLForCachedAssets = v20->_directoryURLForCachedAssets;
@@ -358,7 +358,7 @@ LABEL_6:
     initQueue = v20->_initQueue;
     v20->_initQueue = v32;
 
-    v16 = v25;
+    managerCopy = v25;
     v34 = objc_alloc_init(FCCacheCoordinator);
     cacheCoordinator = v20->_cacheCoordinator;
     v20->_cacheCoordinator = v34;
@@ -373,20 +373,20 @@ LABEL_6:
     v20->_assetHandlesLock = v38;
 
     objc_storeStrong(&v20->_networkBehaviorMonitor, v27);
-    objc_storeStrong(&v20->_networkReachability, a9);
-    objc_storeStrong(&v20->_keyManager, a5);
-    objc_storeStrong(&v20->_avAssetFactory, a6);
-    v17 = v50;
-    objc_storeStrong(&v20->_resourceURLGenerator, v45);
+    objc_storeStrong(&v20->_networkReachability, reachability);
+    objc_storeStrong(&v20->_keyManager, manager);
+    objc_storeStrong(&v20->_avAssetFactory, factory);
+    factoryCopy = v50;
+    objc_storeStrong(&v20->_resourceURLGenerator, generatorCopy2);
   }
 
   v40 = *MEMORY[0x1E69E9840];
   return v20;
 }
 
-- (id)assetHandleForURL:(id)a3 lifetimeHint:(int64_t)a4
+- (id)assetHandleForURL:(id)l lifetimeHint:(int64_t)hint
 {
-  v6 = a3;
+  lCopy = l;
   [(FCAssetManager *)self _prepareForUseIfNeeded];
   v68 = 0;
   v69 = &v68;
@@ -394,7 +394,7 @@ LABEL_6:
   v71 = __Block_byref_object_copy__81;
   v72 = __Block_byref_object_dispose__81;
   v73 = 0;
-  v7 = [(FCAssetManager *)self _assetKeyForRemoteURL:v6];
+  v7 = [(FCAssetManager *)self _assetKeyForRemoteURL:lCopy];
   if (self)
   {
     assetHandlesLock = self->_assetHandlesLock;
@@ -457,7 +457,7 @@ LABEL_6:
     v41 = v14;
     v15 = v10;
     v42 = v15;
-    v43 = self;
+    selfCopy = self;
     v45 = &v53;
     v46 = &v47;
     [(FCCacheCoordinator *)v14 performCacheRead:v40];
@@ -486,7 +486,7 @@ LABEL_6:
       v20 = 0;
     }
 
-    [(FCAssetHandle *)v20 setRemoteURL:v6];
+    [(FCAssetHandle *)v20 setRemoteURL:lCopy];
     [(FCAssetHandle *)v69[5] setHoldToken:?];
     v22 = v69[5];
     if (v22)
@@ -503,7 +503,7 @@ LABEL_6:
           v27 = v69[5];
           if (v27)
           {
-            *(v27 + 104) = a4;
+            *(v27 + 104) = hint;
           }
         }
       }
@@ -516,7 +516,7 @@ LABEL_6:
       {
         if ([v32 error] && objc_msgSend(v48[5], "error") == 1)
         {
-          v34 = [MEMORY[0x1E696ABC0] fc_HTTPErrorWithURL:v6 statusCode:404 requestUUID:0 additionalUserInfo:0];
+          v34 = [MEMORY[0x1E696ABC0] fc_HTTPErrorWithURL:lCopy statusCode:404 requestUUID:0 additionalUserInfo:0];
           v35 = v69[5];
           if (v35)
           {
@@ -560,25 +560,25 @@ LABEL_6:
   return v30;
 }
 
-- (id)_assetKeyForRemoteURL:(uint64_t)a1
+- (id)_assetKeyForRemoteURL:(uint64_t)l
 {
   v3 = a2;
-  if (a1)
+  if (l)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = [v3 scheme];
-    if (([v5 isEqualToString:@"http"] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"https"))
+    scheme = [v3 scheme];
+    if (([scheme isEqualToString:@"http"] & 1) != 0 || objc_msgSend(scheme, "isEqualToString:", @"https"))
     {
-      v6 = [v3 path];
-      v7 = [v6 stringByReplacingOccurrencesOfString:@"/" withString:@":"];
+      path = [v3 path];
+      v7 = [path stringByReplacingOccurrencesOfString:@"/" withString:@":"];
       v8 = [v7 copy];
     }
 
     else
     {
       v9 = MEMORY[0x1E696AEC0];
-      v6 = [v3 absoluteString];
-      v8 = [v9 stringWithFormat:@"%lu", objc_msgSend(v6, "hash")];
+      path = [v3 absoluteString];
+      v8 = [v9 stringWithFormat:@"%lu", objc_msgSend(path, "hash")];
     }
 
     objc_autoreleasePoolPop(v4);
@@ -708,15 +708,15 @@ void __49__FCAssetManager_assetHandleForURL_lifetimeHint___block_invoke_6(void *
   }
 }
 
-- (id)_assetHandleForCKAssetURLComponents:(uint64_t)a3 lifetimeHint:
+- (id)_assetHandleForCKAssetURLComponents:(uint64_t)components lifetimeHint:
 {
-  if (a1)
+  if (self)
   {
     v5 = a2;
     FCUpdateAssetURLHostIfNeeded(v5);
     v6 = [v5 URL];
 
-    v7 = [a1 assetHandleForURL:v6 lifetimeHint:a3];
+    v7 = [self assetHandleForURL:v6 lifetimeHint:components];
   }
 
   else
@@ -727,12 +727,12 @@ void __49__FCAssetManager_assetHandleForURL_lifetimeHint___block_invoke_6(void *
   return v7;
 }
 
-- (id)assetHandleForCKAssetURLString:(id)a3 lifetimeHint:(int64_t)a4
+- (id)assetHandleForCKAssetURLString:(id)string lifetimeHint:(int64_t)hint
 {
-  if (a3)
+  if (string)
   {
     v6 = [MEMORY[0x1E696AF20] componentsWithString:?];
-    v7 = [(FCAssetManager *)self _assetHandleForCKAssetURLComponents:v6 lifetimeHint:a4];
+    v7 = [(FCAssetManager *)self _assetHandleForCKAssetURLComponents:v6 lifetimeHint:hint];
   }
 
   else
@@ -743,27 +743,27 @@ void __49__FCAssetManager_assetHandleForURL_lifetimeHint___block_invoke_6(void *
   return v7;
 }
 
-- (id)assetHandleForCKAssetURL:(id)a3 lifetimeHint:(int64_t)a4
+- (id)assetHandleForCKAssetURL:(id)l lifetimeHint:(int64_t)hint
 {
-  v6 = [MEMORY[0x1E696AF20] componentsWithURL:a3 resolvingAgainstBaseURL:0];
-  v7 = [(FCAssetManager *)self _assetHandleForCKAssetURLComponents:v6 lifetimeHint:a4];
+  v6 = [MEMORY[0x1E696AF20] componentsWithURL:l resolvingAgainstBaseURL:0];
+  v7 = [(FCAssetManager *)self _assetHandleForCKAssetURLComponents:v6 lifetimeHint:hint];
 
   return v7;
 }
 
-- (id)assetHandleForCKAssetURLString:(id)a3 prefetchedData:(id)a4 unzipIfNeeded:(BOOL)a5 lifetimeHint:(int64_t)a6
+- (id)assetHandleForCKAssetURLString:(id)string prefetchedData:(id)data unzipIfNeeded:(BOOL)needed lifetimeHint:(int64_t)hint
 {
-  v10 = a3;
-  v11 = a4;
+  stringCopy = string;
+  dataCopy = data;
   [(FCAssetManager *)self _prepareForUseIfNeeded];
-  v12 = [MEMORY[0x1E695DFF8] URLWithString:v10];
+  v12 = [MEMORY[0x1E695DFF8] URLWithString:stringCopy];
   v29[0] = 0;
   v29[1] = v29;
   v29[2] = 0x3032000000;
   v29[3] = __Block_byref_object_copy__81;
   v29[4] = __Block_byref_object_dispose__81;
   v30 = 0;
-  if (v11)
+  if (dataCopy)
   {
     v13 = [(FCAssetManager *)self _assetKeyForRemoteURL:v12];
     if (self)
@@ -781,20 +781,20 @@ void __49__FCAssetManager_assetHandleForURL_lifetimeHint___block_invoke_6(void *
     v20 = 3221225472;
     v21 = __91__FCAssetManager_assetHandleForCKAssetURLString_prefetchedData_unzipIfNeeded_lifetimeHint___block_invoke;
     v22 = &unk_1E7C46138;
-    v23 = self;
+    selfCopy = self;
     v16 = v13;
     v24 = v16;
-    v28 = a5;
-    v25 = v11;
+    neededCopy = needed;
+    v25 = dataCopy;
     v26 = v29;
-    v27 = a6;
+    hintCopy = hint;
     [(FCCacheCoordinator *)v15 performCacheWrite:&v19];
   }
 
-  v17 = [(FCAssetManager *)self assetHandleForCKAssetURLString:v10 lifetimeHint:a6, v19, v20, v21, v22, v23];
+  selfCopy = [(FCAssetManager *)self assetHandleForCKAssetURLString:stringCopy lifetimeHint:hint, v19, v20, v21, v22, selfCopy];
   _Block_object_dispose(v29, 8);
 
-  return v17;
+  return selfCopy;
 }
 
 void __91__FCAssetManager_assetHandleForCKAssetURLString_prefetchedData_unzipIfNeeded_lifetimeHint___block_invoke(uint64_t a1)
@@ -871,12 +871,12 @@ void __91__FCAssetManager_assetHandleForCKAssetURLString_prefetchedData_unzipIfN
   }
 }
 
-- (id)assetHandleForURL:(id)a3 prefetchedFileURL:(id)a4 importMethod:(int64_t)a5 lifetimeHint:(int64_t)a6
+- (id)assetHandleForURL:(id)l prefetchedFileURL:(id)rL importMethod:(int64_t)method lifetimeHint:(int64_t)hint
 {
   v40 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  if (!v10 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  lCopy = l;
+  rLCopy = rL;
+  if (!lCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v22 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "remoteURL"];
     *buf = 136315906;
@@ -890,7 +890,7 @@ void __91__FCAssetManager_assetHandleForCKAssetURLString_prefetchedData_unzipIfN
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  if (!v11 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!rLCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v23 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "prefetchedFileURL"];
     *buf = 136315906;
@@ -905,7 +905,7 @@ void __91__FCAssetManager_assetHandleForCKAssetURLString_prefetchedData_unzipIfN
   }
 
   [(FCAssetManager *)self _prepareForUseIfNeeded];
-  v12 = [(FCAssetManager *)self _assetKeyForRemoteURL:v10];
+  v12 = [(FCAssetManager *)self _assetKeyForRemoteURL:lCopy];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
@@ -934,17 +934,17 @@ void __91__FCAssetManager_assetHandleForCKAssetURLString_prefetchedData_unzipIfN
   v24[2] = __80__FCAssetManager_assetHandleForURL_prefetchedFileURL_importMethod_lifetimeHint___block_invoke;
   v24[3] = &unk_1E7C46160;
   v24[4] = self;
-  v15 = v11;
+  v15 = rLCopy;
   v25 = v15;
-  v29 = a5;
+  methodCopy = method;
   v16 = v12;
   v26 = v16;
   v27 = buf;
-  v30 = a6;
+  hintCopy = hint;
   v28 = &v31;
   [(FCCacheCoordinator *)v14 performCacheWrite:v24];
 
-  v17 = [(FCAssetManager *)self assetHandleForURL:v10 lifetimeHint:a6];
+  v17 = [(FCAssetManager *)self assetHandleForURL:lCopy lifetimeHint:hint];
   v19 = v17;
   if (v17)
   {
@@ -983,17 +983,17 @@ void __80__FCAssetManager_assetHandleForURL_prefetchedFileURL_importMethod_lifet
   *(v11 + 40) = v4;
 }
 
-- (id)_importFileAtPath:(uint64_t)a3 method:(void *)a4 key:(void *)a5 mimeType:(void *)a6 importedMetadata:(uint64_t)a7 lifetimeHint:
+- (id)_importFileAtPath:(uint64_t)path method:(void *)method key:(void *)key mimeType:(void *)type importedMetadata:(uint64_t)metadata lifetimeHint:
 {
   v64 = *MEMORY[0x1E69E9840];
   v13 = a2;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  if (a1)
+  methodCopy = method;
+  keyCopy = key;
+  typeCopy = type;
+  if (self)
   {
-    v17 = [(FCAssetManager *)a1 assetStore];
-    v18 = [v17 filePathForKey:v14];
+    assetStore = [(FCAssetManager *)self assetStore];
+    v18 = [assetStore filePathForKey:methodCopy];
 
     if (v18)
     {
@@ -1002,7 +1002,7 @@ void __80__FCAssetManager_assetHandleForURL_prefetchedFileURL_importMethod_lifet
       v59 = __86__FCAssetManager__importFileAtPath_method_key_mimeType_importedMetadata_lifetimeHint___block_invoke;
       v60 = &unk_1E7C36F98;
       v61 = v18;
-      a1 = v61;
+      self = v61;
     }
 
     else
@@ -1017,12 +1017,12 @@ void __80__FCAssetManager_assetHandleForURL_prefetchedFileURL_importMethod_lifet
       v50[1] = 3221225472;
       v50[2] = __86__FCAssetManager__importFileAtPath_method_key_mimeType_importedMetadata_lifetimeHint___block_invoke_2;
       v50[3] = &unk_1E7C46340;
-      v54 = a3;
-      v50[4] = a1;
+      pathCopy = path;
+      v50[4] = self;
       v19 = v13;
       v20 = v13;
       v51 = v20;
-      v21 = v14;
+      v21 = methodCopy;
       v52 = v21;
       v53 = v55;
       v22 = __86__FCAssetManager__importFileAtPath_method_key_mimeType_importedMetadata_lifetimeHint___block_invoke_2(v50);
@@ -1034,28 +1034,28 @@ void __80__FCAssetManager_assetHandleForURL_prefetchedFileURL_importMethod_lifet
         v38 = 3221225472;
         v39 = __86__FCAssetManager__importFileAtPath_method_key_mimeType_importedMetadata_lifetimeHint___block_invoke_102;
         v40 = &unk_1E7C46390;
-        v41 = v16;
-        v42 = a1;
+        v41 = typeCopy;
+        selfCopy = self;
         v24 = v21;
         v43 = v24;
-        v44 = v15;
+        v44 = keyCopy;
         v35 = v23;
         v45 = v35;
         __86__FCAssetManager__importFileAtPath_method_key_mimeType_importedMetadata_lifetimeHint___block_invoke_102(&v37);
         v25 = v13 = v19;
-        v26 = [(FCAssetManager *)a1 keyValueStore];
-        [v26 setObject:v25 forKey:v24];
+        keyValueStore = [(FCAssetManager *)self keyValueStore];
+        [keyValueStore setObject:v25 forKey:v24];
 
-        v27 = a1[6];
-        [v27 didInsertKeyIntoCache:v24 withLifetimeHint:a7];
+        v27 = self[6];
+        [v27 didInsertKeyIntoCache:v24 withLifetimeHint:metadata];
 
-        v28 = a1[6];
-        v29 = [v28 persistableHints];
+        v28 = self[6];
+        persistableHints = [v28 persistableHints];
 
-        if (v29)
+        if (persistableHints)
         {
-          v30 = [(FCAssetManager *)a1 keyValueStore];
-          [v30 setObject:v29 forKey:{@"cacheHints", v35, v36, v37, v38, v39, v40, v41, v42, v43, v44}];
+          keyValueStore2 = [(FCAssetManager *)self keyValueStore];
+          [keyValueStore2 setObject:persistableHints forKey:{@"cacheHints", v35, v36, v37, v38, v39, v40, v41, selfCopy, v43, v44}];
         }
 
         v31 = FCDefaultLog;
@@ -1066,7 +1066,7 @@ void __80__FCAssetManager_assetHandleForURL_prefetchedFileURL_importMethod_lifet
           _os_log_impl(&dword_1B63EF000, v31, OS_LOG_TYPE_DEFAULT, "asset manager successfully imported %{public}@", buf, 0xCu);
         }
 
-        a1 = v35;
+        self = v35;
 
         v32 = &v41;
       }
@@ -1080,7 +1080,7 @@ void __80__FCAssetManager_assetHandleForURL_prefetchedFileURL_importMethod_lifet
         v47 = v21;
         v48 = v20;
         v49 = v55;
-        a1 = __86__FCAssetManager__importFileAtPath_method_key_mimeType_importedMetadata_lifetimeHint___block_invoke_3(v46);
+        self = __86__FCAssetManager__importFileAtPath_method_key_mimeType_importedMetadata_lifetimeHint___block_invoke_3(v46);
 
         v32 = &v47;
       }
@@ -1091,16 +1091,16 @@ void __80__FCAssetManager_assetHandleForURL_prefetchedFileURL_importMethod_lifet
 
   v33 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return self;
 }
 
-- (id)importAsset:(id)a3 remoteURL:(id)a4 fileURL:(id)a5
+- (id)importAsset:(id)asset remoteURL:(id)l fileURL:(id)rL
 {
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  assetCopy = asset;
+  lCopy = l;
+  rLCopy = rL;
+  if (!assetCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v24 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "assetMetadata"];
     *buf = 136315906;
@@ -1114,7 +1114,7 @@ void __80__FCAssetManager_assetHandleForURL_prefetchedFileURL_importMethod_lifet
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  if (!v9 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!lCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v25 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "remoteURL"];
     *buf = 136315906;
@@ -1128,7 +1128,7 @@ void __80__FCAssetManager_assetHandleForURL_prefetchedFileURL_importMethod_lifet
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  if (!v10 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!rLCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v26 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "fileURL"];
     *buf = 136315906;
@@ -1143,7 +1143,7 @@ void __80__FCAssetManager_assetHandleForURL_prefetchedFileURL_importMethod_lifet
   }
 
   [(FCAssetManager *)self _prepareForUseIfNeeded];
-  v11 = [(FCAssetManager *)self _assetKeyForRemoteURL:v9];
+  v11 = [(FCAssetManager *)self _assetKeyForRemoteURL:lCopy];
   if (self)
   {
     cacheCoordinator = self->_cacheCoordinator;
@@ -1198,11 +1198,11 @@ void __80__FCAssetManager_assetHandleForURL_prefetchedFileURL_importMethod_lifet
   v27[2] = __48__FCAssetManager_importAsset_remoteURL_fileURL___block_invoke_2;
   v27[3] = &unk_1E7C46188;
   v27[4] = self;
-  v19 = v10;
+  v19 = rLCopy;
   v28 = v19;
   v20 = v16;
   v29 = v20;
-  v21 = v8;
+  v21 = assetCopy;
   v30 = v21;
   v31 = buf;
   [(FCCacheCoordinator *)v18 performCacheWrite:v27];
@@ -1250,16 +1250,16 @@ void __48__FCAssetManager_importAsset_remoteURL_fileURL___block_invoke_2(uint64_
   }
 }
 
-- (id)interestTokenForAssetURLs:(id)a3
+- (id)interestTokenForAssetURLs:(id)ls
 {
-  v4 = a3;
+  lsCopy = ls;
   [(FCAssetManager *)self _prepareForUseIfNeeded];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __44__FCAssetManager_interestTokenForAssetURLs___block_invoke;
   v9[3] = &unk_1E7C461B0;
   v9[4] = self;
-  v5 = [v4 fc_arrayByTransformingWithBlock:v9];
+  v5 = [lsCopy fc_arrayByTransformingWithBlock:v9];
 
   if (self)
   {
@@ -1276,20 +1276,20 @@ void __48__FCAssetManager_importAsset_remoteURL_fileURL___block_invoke_2(uint64_
   return v7;
 }
 
-- (id)operationToFetchDataProviderForAssetHandle:(id)a3 completion:(id)a4
+- (id)operationToFetchDataProviderForAssetHandle:(id)handle completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  objc_initWeak(&location, v6);
+  handleCopy = handle;
+  completionCopy = completion;
+  objc_initWeak(&location, handleCopy);
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __72__FCAssetManager_operationToFetchDataProviderForAssetHandle_completion___block_invoke;
   v26[3] = &unk_1E7C461D8;
-  v8 = v7;
+  v8 = completionCopy;
   v27 = v8;
   objc_copyWeak(&v28, &location);
   v26[4] = self;
-  v9 = v6;
+  v9 = handleCopy;
   v11 = v26;
   if (self)
   {
@@ -1311,9 +1311,9 @@ void __48__FCAssetManager_importAsset_remoteURL_fileURL___block_invoke_2(uint64_
       v31 = 3221225472;
       v32 = __64__FCAssetManager__populateRawFilePathForAssetHandle_completion___block_invoke;
       v33 = &unk_1E7C46200;
-      v34 = v11;
+      selfCopy = v11;
       v14 = __64__FCAssetManager__populateRawFilePathForAssetHandle_completion___block_invoke(&v30);
-      v15 = v34;
+      v15 = selfCopy;
 LABEL_15:
 
       goto LABEL_16;
@@ -1330,24 +1330,24 @@ LABEL_15:
     }
 
     v17 = v16;
-    v18 = [v9 remoteURL];
-    v19 = [v18 host];
-    v20 = [v19 isEqualToString:@"news-record"];
+    remoteURL = [v9 remoteURL];
+    host = [remoteURL host];
+    v20 = [host isEqualToString:@"news-record"];
 
     if (v20)
     {
       goto LABEL_9;
     }
 
-    v22 = [v18 scheme];
-    if ([v22 isEqualToString:@"http"])
+    scheme = [remoteURL scheme];
+    if ([scheme isEqualToString:@"http"])
     {
     }
 
     else
     {
-      v23 = [v18 scheme];
-      v24 = [v23 isEqualToString:@"https"];
+      scheme2 = [remoteURL scheme];
+      v24 = [scheme2 isEqualToString:@"https"];
 
       if (!v24)
       {
@@ -1355,7 +1355,7 @@ LABEL_9:
         v21 = 0;
 LABEL_14:
         v14 = [[FCAssetDownloadOperation alloc] initWithNetworkReachability:self->_networkReachability];
-        [(FCAssetDownloadOperation *)v14 setURL:v18];
+        [(FCAssetDownloadOperation *)v14 setURL:remoteURL];
         [(FCAssetDownloadOperation *)v14 setLoggingKey:v17];
         [(FCAssetDownloadOperation *)v14 setNetworkEventType:v21];
         [(FCAssetDownloadOperation *)v14 setNetworkBehaviorMonitor:self->_networkBehaviorMonitor];
@@ -1364,7 +1364,7 @@ LABEL_14:
         v31 = 3221225472;
         v32 = __64__FCAssetManager__populateRawFilePathForAssetHandle_completion___block_invoke_3;
         v33 = &unk_1E7C46250;
-        v34 = self;
+        selfCopy = self;
         v15 = v17;
         v35 = v15;
         objc_copyWeak(&v38, from);
@@ -1554,17 +1554,17 @@ uint64_t __72__FCAssetManager_operationToFetchDataProviderForAssetHandle_complet
   return result;
 }
 
-- (id)contentArchiveForAssetHandle:(id)a3
+- (id)contentArchiveForAssetHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   v5 = MEMORY[0x1E695DEC8];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __47__FCAssetManager_contentArchiveForAssetHandle___block_invoke;
   v13 = &unk_1E7C3B110;
-  v14 = v4;
-  v15 = self;
-  v6 = v4;
+  v14 = handleCopy;
+  selfCopy = self;
+  v6 = handleCopy;
   v7 = [v5 fc_array:&v10];
   v8 = [FCContentArchive archiveWithChildArchives:v7, v10, v11, v12, v13];
 
@@ -1975,7 +1975,7 @@ void __62__FCAssetManager__fetchDataProviderForAssetHandle_completion___block_in
   }
 }
 
-- (unint64_t)cacheCoordinatorCurrentSizeWithReadLock:(id)a3
+- (unint64_t)cacheCoordinatorCurrentSizeWithReadLock:(id)lock
 {
   v26 = *MEMORY[0x1E69E9840];
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -1983,20 +1983,20 @@ void __62__FCAssetManager__fetchDataProviderForAssetHandle_completion___block_in
   aBlock[2] = __58__FCAssetManager_cacheCoordinatorCurrentSizeWithReadLock___block_invoke;
   aBlock[3] = &unk_1E7C462F0;
   aBlock[4] = self;
-  v3 = a3;
+  lockCopy = lock;
   v4 = _Block_copy(aBlock);
-  v5 = [v3 keysWithZeroInterest];
-  v6 = v4[2](v4, v5);
-  v7 = [v3 keysWithNonZeroInterest];
+  keysWithZeroInterest = [lockCopy keysWithZeroInterest];
+  v6 = v4[2](v4, keysWithZeroInterest);
+  keysWithNonZeroInterest = [lockCopy keysWithNonZeroInterest];
 
-  v8 = v4[2](v4, v7);
+  v8 = v4[2](v4, keysWithNonZeroInterest);
   v9 = FCDefaultLog;
   if (os_log_type_enabled(FCDefaultLog, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [v7 count];
+    v11 = [keysWithNonZeroInterest count];
     v12 = [MEMORY[0x1E696AAF0] stringFromByteCount:v8 countStyle:0];
-    v13 = [v5 count];
+    v13 = [keysWithZeroInterest count];
     v14 = [MEMORY[0x1E696AAF0] stringFromByteCount:v6 countStyle:0];
     *buf = 134218754;
     v19 = v11;
@@ -2041,34 +2041,34 @@ uint64_t __58__FCAssetManager_cacheCoordinatorCurrentSizeWithReadLock___block_in
   return result;
 }
 
-- (void)cacheCoordinator:(id)a3 flushKeysWithWriteLock:(id)a4
+- (void)cacheCoordinator:(id)coordinator flushKeysWithWriteLock:(id)lock
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  coordinatorCopy = coordinator;
+  lockCopy = lock;
   v8 = FCDefaultLog;
   if (os_log_type_enabled(FCDefaultLog, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
     *buf = 134218242;
-    v27 = [v7 count];
+    v27 = [lockCopy count];
     v28 = 2112;
-    v29 = v7;
+    v29 = lockCopy;
     _os_log_impl(&dword_1B63EF000, v9, OS_LOG_TYPE_DEFAULT, "asset manager is flushing %lu files with keys: %@", buf, 0x16u);
   }
 
-  v10 = [(FCAssetManager *)self keyValueStore];
-  v11 = [v7 allObjects];
-  [v10 removeObjectsForKeys:v11];
+  keyValueStore = [(FCAssetManager *)self keyValueStore];
+  allObjects = [lockCopy allObjects];
+  [keyValueStore removeObjectsForKeys:allObjects];
 
-  v12 = [v6 persistableHints];
-  [v10 setObject:v12 forKey:@"cacheHints"];
+  persistableHints = [coordinatorCopy persistableHints];
+  [keyValueStore setObject:persistableHints forKey:@"cacheHints"];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v13 = v7;
+  v13 = lockCopy;
   v14 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v14)
   {
@@ -2085,8 +2085,8 @@ uint64_t __58__FCAssetManager_cacheCoordinatorCurrentSizeWithReadLock___block_in
         }
 
         v18 = *(*(&v21 + 1) + 8 * v17);
-        v19 = [(FCAssetManager *)self assetStore];
-        [v19 removeFileWithKey:{v18, v21}];
+        assetStore = [(FCAssetManager *)self assetStore];
+        [assetStore removeFileWithKey:{v18, v21}];
 
         ++v17;
       }
@@ -2101,9 +2101,9 @@ uint64_t __58__FCAssetManager_cacheCoordinatorCurrentSizeWithReadLock___block_in
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)saveWithCompletionHandler:(id)a3
+- (void)saveWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
@@ -2120,13 +2120,13 @@ uint64_t __58__FCAssetManager_cacheCoordinatorCurrentSizeWithReadLock___block_in
   dispatch_sync(initQueue, v7);
   if (v9[5])
   {
-    v6 = [(FCAssetManager *)self keyValueStore];
-    [v6 saveWithCompletionHandler:v4];
+    keyValueStore = [(FCAssetManager *)self keyValueStore];
+    [keyValueStore saveWithCompletionHandler:handlerCopy];
   }
 
   else
   {
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
   }
 
   _Block_object_dispose(&v8, 8);
@@ -2158,10 +2158,10 @@ uint64_t __58__FCAssetManager_cacheCoordinatorCurrentSizeWithReadLock___block_in
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
-  v3 = [(FCAssetManager *)self keyValueStore];
-  v4 = [v3 storeSize];
+  keyValueStore = [(FCAssetManager *)self keyValueStore];
+  storeSize = [keyValueStore storeSize];
 
-  v13 = v4;
+  v13 = storeSize;
   if (self)
   {
     cacheCoordinator = self->_cacheCoordinator;
@@ -2214,11 +2214,11 @@ uint64_t __29__FCAssetManager_storageSize__block_invoke_2(uint64_t a1, uint64_t 
   return result;
 }
 
-- (void)d_resetAssetHandle:(id)a3
+- (void)d_resetAssetHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [v4 remoteURL];
-  v6 = [(FCAssetManager *)self _assetKeyForRemoteURL:v5];
+  handleCopy = handle;
+  remoteURL = [handleCopy remoteURL];
+  v6 = [(FCAssetManager *)self _assetKeyForRemoteURL:remoteURL];
 
   if (self)
   {
@@ -2236,8 +2236,8 @@ uint64_t __29__FCAssetManager_storageSize__block_invoke_2(uint64_t a1, uint64_t 
   v10[3] = &unk_1E7C376A0;
   v10[4] = self;
   v11 = v6;
-  v12 = v4;
-  v8 = v4;
+  v12 = handleCopy;
+  v8 = handleCopy;
   v9 = v6;
   [(FCCacheCoordinator *)cacheCoordinator performCacheWrite:v10];
 }
@@ -2272,12 +2272,12 @@ void __37__FCAssetManager_d_resetAssetHandle___block_invoke(uint64_t a1)
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enableFlushingWithFlushingThreshold:(unint64_t)a3
+- (void)enableFlushingWithFlushingThreshold:(unint64_t)threshold
 {
   v4 = 10000000;
   v5 = 5000000;
-  v6 = a3 == 0;
-  if (a3 == 1)
+  v6 = threshold == 0;
+  if (threshold == 1)
   {
     v6 = 0;
   }
@@ -2287,12 +2287,12 @@ void __37__FCAssetManager_d_resetAssetHandle___block_invoke(uint64_t a1)
     v5 = 0;
   }
 
-  if (a3 != 1)
+  if (threshold != 1)
   {
     v4 = 0;
   }
 
-  if (a3 == 2)
+  if (threshold == 2)
   {
     v7 = 200000000;
   }
@@ -2302,8 +2302,8 @@ void __37__FCAssetManager_d_resetAssetHandle___block_invoke(uint64_t a1)
     v7 = v5;
   }
 
-  v8 = a3 != 2 && v6;
-  if (a3 == 2)
+  v8 = threshold != 2 && v6;
+  if (threshold == 2)
   {
     v9 = 300000000;
   }
@@ -2425,16 +2425,16 @@ id __86__FCAssetManager__importFileAtPath_method_key_mimeType_importedMetadata_l
 
 - (void)t_save
 {
-  v2 = [(FCAssetManager *)self keyValueStore];
-  [v2 save];
+  keyValueStore = [(FCAssetManager *)self keyValueStore];
+  [keyValueStore save];
 }
 
-- (id)assetHandleForResourceID:(id)a3 lifetimeHint:(int64_t)a4 contentContext:(id)a5
+- (id)assetHandleForResourceID:(id)d lifetimeHint:(int64_t)hint contentContext:(id)context
 {
-  v8 = a3;
-  v9 = [a5 internalContentContext];
-  v10 = [v9 contentDatabase];
-  v11 = [(FCAssetManager *)self assetHandleForRecordID:v8 field:3 lifetimeHint:a4 contentDatabase:v10];
+  dCopy = d;
+  internalContentContext = [context internalContentContext];
+  contentDatabase = [internalContentContext contentDatabase];
+  v11 = [(FCAssetManager *)self assetHandleForRecordID:dCopy field:3 lifetimeHint:hint contentDatabase:contentDatabase];
 
   return v11;
 }

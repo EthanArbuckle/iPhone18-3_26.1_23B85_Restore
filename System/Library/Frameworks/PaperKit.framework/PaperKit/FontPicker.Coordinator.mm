@@ -1,14 +1,14 @@
 @interface FontPicker.Coordinator
-- (void)fontPickerViewControllerDidPickFont:(id)a3;
+- (void)fontPickerViewControllerDidPickFont:(id)font;
 @end
 
 @implementation FontPicker.Coordinator
 
-- (void)fontPickerViewControllerDidPickFont:(id)a3
+- (void)fontPickerViewControllerDidPickFont:(id)font
 {
-  v4 = a3;
-  v5 = self;
-  FontPicker.Coordinator.fontPickerViewControllerDidPickFont(_:)(v4);
+  fontCopy = font;
+  selfCopy = self;
+  FontPicker.Coordinator.fontPickerViewControllerDidPickFont(_:)(fontCopy);
 }
 
 @end

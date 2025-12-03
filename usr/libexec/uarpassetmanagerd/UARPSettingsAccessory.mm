@@ -1,331 +1,331 @@
 @interface UARPSettingsAccessory
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isFusingEqual:(id)a3;
-- (UARPSettingsAccessory)initWithCoder:(id)a3;
-- (UARPSettingsAccessory)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isFusingEqual:(id)equal;
+- (UARPSettingsAccessory)initWithCoder:(id)coder;
+- (UARPSettingsAccessory)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)encodeAsChangedDictionary;
 - (id)encodeAsDictionary;
-- (void)encodeWithCoder:(id)a3;
-- (void)setActiveVersion:(id)a3;
-- (void)setAssetLocation:(id)a3;
-- (void)setAssetURLOverride:(id)a3;
-- (void)setCustomBuild:(id)a3;
-- (void)setCustomTrain:(id)a3;
-- (void)setDownloadedVersion:(id)a3;
-- (void)setDropboxVersion:(id)a3;
-- (void)setHwFusing:(id)a3;
-- (void)setHwRevision:(id)a3;
-- (void)setMobileAssetModelNumber:(id)a3;
-- (void)setModelNumber:(id)a3;
-- (void)setName:(id)a3;
-- (void)setPallasAudienceOverride:(id)a3;
-- (void)setPartnerSerialNumbers:(id)a3;
-- (void)setSerialNumber:(id)a3;
-- (void)setSupplementalAssetLocation:(id)a3;
-- (void)setSupplementalCustomBuild:(id)a3;
-- (void)setSupplementalCustomTrain:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setActiveVersion:(id)version;
+- (void)setAssetLocation:(id)location;
+- (void)setAssetURLOverride:(id)override;
+- (void)setCustomBuild:(id)build;
+- (void)setCustomTrain:(id)train;
+- (void)setDownloadedVersion:(id)version;
+- (void)setDropboxVersion:(id)version;
+- (void)setHwFusing:(id)fusing;
+- (void)setHwRevision:(id)revision;
+- (void)setMobileAssetModelNumber:(id)number;
+- (void)setModelNumber:(id)number;
+- (void)setName:(id)name;
+- (void)setPallasAudienceOverride:(id)override;
+- (void)setPartnerSerialNumbers:(id)numbers;
+- (void)setSerialNumber:(id)number;
+- (void)setSupplementalAssetLocation:(id)location;
+- (void)setSupplementalCustomBuild:(id)build;
+- (void)setSupplementalCustomTrain:(id)train;
 @end
 
 @implementation UARPSettingsAccessory
 
-- (UARPSettingsAccessory)initWithDictionary:(id)a3
+- (UARPSettingsAccessory)initWithDictionary:(id)dictionary
 {
-  v80 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v80;
-  v80 = 0;
+  objc_storeStrong(location, dictionary);
+  v3 = selfCopy;
+  selfCopy = 0;
   v78.receiver = v3;
   v78.super_class = UARPSettingsAccessory;
-  v80 = [(UARPSettingsAccessory *)&v78 init];
-  objc_storeStrong(&v80, v80);
-  if (v80)
+  selfCopy = [(UARPSettingsAccessory *)&v78 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v52 = [location[0] objectForKeyedSubscript:@"name"];
     v4 = [v52 copy];
-    name = v80->_name;
-    v80->_name = v4;
+    name = selfCopy->_name;
+    selfCopy->_name = v4;
 
     v53 = [location[0] objectForKeyedSubscript:@"serialNumber"];
     v6 = [v53 copy];
-    serialNumber = v80->_serialNumber;
-    v80->_serialNumber = v6;
+    serialNumber = selfCopy->_serialNumber;
+    selfCopy->_serialNumber = v6;
 
     v54 = [location[0] objectForKeyedSubscript:@"modelNumber"];
     v8 = [v54 copy];
-    modelNumber = v80->_modelNumber;
-    v80->_modelNumber = v8;
+    modelNumber = selfCopy->_modelNumber;
+    selfCopy->_modelNumber = v8;
 
     v55 = [location[0] objectForKeyedSubscript:@"mobileAssetModelNumber"];
     v10 = [v55 copy];
-    mobileAssetModelNumber = v80->_mobileAssetModelNumber;
-    v80->_mobileAssetModelNumber = v10;
+    mobileAssetModelNumber = selfCopy->_mobileAssetModelNumber;
+    selfCopy->_mobileAssetModelNumber = v10;
 
     v56 = [location[0] objectForKeyedSubscript:@"fusing"];
     v12 = [v56 copy];
-    hwFusing = v80->_hwFusing;
-    v80->_hwFusing = v12;
+    hwFusing = selfCopy->_hwFusing;
+    selfCopy->_hwFusing = v12;
 
     v57 = [location[0] objectForKeyedSubscript:@"activeVersion"];
     v14 = [v57 copy];
-    activeVersion = v80->_activeVersion;
-    v80->_activeVersion = v14;
+    activeVersion = selfCopy->_activeVersion;
+    selfCopy->_activeVersion = v14;
 
     v58 = [location[0] objectForKeyedSubscript:@"hwRevision"];
     v16 = [v58 copy];
-    hwRevision = v80->_hwRevision;
-    v80->_hwRevision = v16;
+    hwRevision = selfCopy->_hwRevision;
+    selfCopy->_hwRevision = v16;
 
     v59 = [location[0] objectForKeyedSubscript:@"partnerSerialNumbers"];
     v18 = [v59 copy];
-    partnerSerialNumbers = v80->_partnerSerialNumbers;
-    v80->_partnerSerialNumbers = v18;
+    partnerSerialNumbers = selfCopy->_partnerSerialNumbers;
+    selfCopy->_partnerSerialNumbers = v18;
 
     v60 = [location[0] objectForKeyedSubscript:@"assetLocation"];
     v20 = [v60 copy];
-    assetLocation = v80->_assetLocation;
-    v80->_assetLocation = v20;
+    assetLocation = selfCopy->_assetLocation;
+    selfCopy->_assetLocation = v20;
 
     v61 = [location[0] objectForKeyedSubscript:@"basejumperTrain"];
     v22 = [v61 copy];
-    customTrain = v80->_customTrain;
-    v80->_customTrain = v22;
+    customTrain = selfCopy->_customTrain;
+    selfCopy->_customTrain = v22;
 
     v62 = [location[0] objectForKeyedSubscript:@"basejumperBuild"];
     v24 = [v62 copy];
-    customBuild = v80->_customBuild;
-    v80->_customBuild = v24;
+    customBuild = selfCopy->_customBuild;
+    selfCopy->_customBuild = v24;
 
     v63 = [location[0] objectForKeyedSubscript:@"supplementalAssetLocation"];
     v26 = [v63 copy];
-    supplementalAssetLocation = v80->_supplementalAssetLocation;
-    v80->_supplementalAssetLocation = v26;
+    supplementalAssetLocation = selfCopy->_supplementalAssetLocation;
+    selfCopy->_supplementalAssetLocation = v26;
 
     v64 = [location[0] objectForKeyedSubscript:@"supplementalBasejumperTrain"];
     v28 = [v64 copy];
-    supplementalCustomTrain = v80->_supplementalCustomTrain;
-    v80->_supplementalCustomTrain = v28;
+    supplementalCustomTrain = selfCopy->_supplementalCustomTrain;
+    selfCopy->_supplementalCustomTrain = v28;
 
     v65 = [location[0] objectForKeyedSubscript:@"supplementalBasejumperBuild"];
     v30 = [v65 copy];
-    supplementalCustomBuild = v80->_supplementalCustomBuild;
-    v80->_supplementalCustomBuild = v30;
+    supplementalCustomBuild = selfCopy->_supplementalCustomBuild;
+    selfCopy->_supplementalCustomBuild = v30;
 
     v66 = [location[0] objectForKeyedSubscript:@"isOTADisabled"];
-    v32 = [v66 BOOLValue];
-    v80->_otaDisabled = v32;
+    bOOLValue = [v66 BOOLValue];
+    selfCopy->_otaDisabled = bOOLValue;
 
     v67 = [location[0] objectForKeyedSubscript:@"authListingEnabled"];
-    v33 = [v67 BOOLValue];
-    v80->_authListingEnabled = v33;
+    bOOLValue2 = [v67 BOOLValue];
+    selfCopy->_authListingEnabled = bOOLValue2;
 
     v68 = [location[0] objectForKeyedSubscript:@"personalizationRequired"];
-    v34 = [v68 BOOLValue];
-    v80->_personalizationRequired = v34;
+    bOOLValue3 = [v68 BOOLValue];
+    selfCopy->_personalizationRequired = bOOLValue3;
 
     v69 = [location[0] objectForKeyedSubscript:@"accessoryReachable"];
-    v35 = [v69 BOOLValue];
-    v80->_accessoryReachable = v35;
+    bOOLValue4 = [v69 BOOLValue];
+    selfCopy->_accessoryReachable = bOOLValue4;
 
     v70 = [location[0] objectForKeyedSubscript:@"SupportsDeveloperSettings"];
-    v36 = [v70 BOOLValue];
-    v80->_supportsDeveloperSettings = v36;
+    bOOLValue5 = [v70 BOOLValue];
+    selfCopy->_supportsDeveloperSettings = bOOLValue5;
 
     v71 = [location[0] objectForKeyedSubscript:@"downloadedVersion"];
     v37 = [v71 copy];
-    downloadedVersion = v80->_downloadedVersion;
-    v80->_downloadedVersion = v37;
+    downloadedVersion = selfCopy->_downloadedVersion;
+    selfCopy->_downloadedVersion = v37;
 
     v72 = [location[0] objectForKeyedSubscript:@"dropboxVersion"];
     v39 = [v72 copy];
-    dropboxVersion = v80->_dropboxVersion;
-    v80->_dropboxVersion = v39;
+    dropboxVersion = selfCopy->_dropboxVersion;
+    selfCopy->_dropboxVersion = v39;
 
     v73 = [location[0] objectForKeyedSubscript:@"assetURLOverride"];
     v41 = [v73 copy];
-    assetURLOverride = v80->_assetURLOverride;
-    v80->_assetURLOverride = v41;
+    assetURLOverride = selfCopy->_assetURLOverride;
+    selfCopy->_assetURLOverride = v41;
 
     v74 = [location[0] objectForKeyedSubscript:@"pallasSupportEnabled"];
-    v43 = [v74 BOOLValue];
-    v80->_pallasSupportEnabled = v43;
+    bOOLValue6 = [v74 BOOLValue];
+    selfCopy->_pallasSupportEnabled = bOOLValue6;
 
     v75 = [location[0] objectForKeyedSubscript:@"pallasInternalAsset"];
-    v44 = [v75 BOOLValue];
-    v80->_pallasInternalAssetVariant = v44;
+    bOOLValue7 = [v75 BOOLValue];
+    selfCopy->_pallasInternalAssetVariant = bOOLValue7;
 
     v76 = [location[0] objectForKeyedSubscript:@"pallasAudience"];
-    v45 = [v76 integerValue];
-    v80->_pallasAudience = v45;
+    integerValue = [v76 integerValue];
+    selfCopy->_pallasAudience = integerValue;
 
     v77 = [location[0] objectForKeyedSubscript:@"pallasAudienceOverride"];
     v46 = [v77 copy];
-    pallasAudienceOverride = v80->_pallasAudienceOverride;
-    v80->_pallasAudienceOverride = v46;
+    pallasAudienceOverride = selfCopy->_pallasAudienceOverride;
+    selfCopy->_pallasAudienceOverride = v46;
 
-    v48 = [(UARPSettingsAccessory *)v80 encodeAsDictionary];
-    originalSettings = v80->_originalSettings;
-    v80->_originalSettings = v48;
+    encodeAsDictionary = [(UARPSettingsAccessory *)selfCopy encodeAsDictionary];
+    originalSettings = selfCopy->_originalSettings;
+    selfCopy->_originalSettings = encodeAsDictionary;
   }
 
-  v51 = v80;
+  v51 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v80, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v51;
 }
 
-- (UARPSettingsAccessory)initWithCoder:(id)a3
+- (UARPSettingsAccessory)initWithCoder:(id)coder
 {
-  v52 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v52;
-  v52 = 0;
+  objc_storeStrong(location, coder);
+  v3 = selfCopy;
+  selfCopy = 0;
   v50.receiver = v3;
   v50.super_class = UARPSettingsAccessory;
-  v52 = [(UARPSettingsAccessory *)&v50 init];
-  objc_storeStrong(&v52, v52);
-  if (v52)
+  selfCopy = [(UARPSettingsAccessory *)&v50 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v4 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-    name = v52->_name;
-    v52->_name = v4;
+    name = selfCopy->_name;
+    selfCopy->_name = v4;
 
     v6 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
-    serialNumber = v52->_serialNumber;
-    v52->_serialNumber = v6;
+    serialNumber = selfCopy->_serialNumber;
+    selfCopy->_serialNumber = v6;
 
     v8 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"modelNumber"];
-    modelNumber = v52->_modelNumber;
-    v52->_modelNumber = v8;
+    modelNumber = selfCopy->_modelNumber;
+    selfCopy->_modelNumber = v8;
 
     v10 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"mobileAssetModelNumber"];
-    mobileAssetModelNumber = v52->_mobileAssetModelNumber;
-    v52->_mobileAssetModelNumber = v10;
+    mobileAssetModelNumber = selfCopy->_mobileAssetModelNumber;
+    selfCopy->_mobileAssetModelNumber = v10;
 
     v12 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"fusing"];
-    hwFusing = v52->_hwFusing;
-    v52->_hwFusing = v12;
+    hwFusing = selfCopy->_hwFusing;
+    selfCopy->_hwFusing = v12;
 
     v14 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"activeVersion"];
-    activeVersion = v52->_activeVersion;
-    v52->_activeVersion = v14;
+    activeVersion = selfCopy->_activeVersion;
+    selfCopy->_activeVersion = v14;
 
     v16 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"hwRevision"];
-    hwRevision = v52->_hwRevision;
-    v52->_hwRevision = v16;
+    hwRevision = selfCopy->_hwRevision;
+    selfCopy->_hwRevision = v16;
 
     v18 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"partnerSerialNumbers"];
-    partnerSerialNumbers = v52->_partnerSerialNumbers;
-    v52->_partnerSerialNumbers = v18;
+    partnerSerialNumbers = selfCopy->_partnerSerialNumbers;
+    selfCopy->_partnerSerialNumbers = v18;
 
     v20 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"assetLocation"];
-    assetLocation = v52->_assetLocation;
-    v52->_assetLocation = v20;
+    assetLocation = selfCopy->_assetLocation;
+    selfCopy->_assetLocation = v20;
 
     v22 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"basejumperTrain"];
-    customTrain = v52->_customTrain;
-    v52->_customTrain = v22;
+    customTrain = selfCopy->_customTrain;
+    selfCopy->_customTrain = v22;
 
     v24 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"basejumperBuild"];
-    customBuild = v52->_customBuild;
-    v52->_customBuild = v24;
+    customBuild = selfCopy->_customBuild;
+    selfCopy->_customBuild = v24;
 
     v26 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"supplementalAssetLocation"];
-    supplementalAssetLocation = v52->_supplementalAssetLocation;
-    v52->_supplementalAssetLocation = v26;
+    supplementalAssetLocation = selfCopy->_supplementalAssetLocation;
+    selfCopy->_supplementalAssetLocation = v26;
 
     v28 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"supplementalBasejumperTrain"];
-    supplementalCustomTrain = v52->_supplementalCustomTrain;
-    v52->_supplementalCustomTrain = v28;
+    supplementalCustomTrain = selfCopy->_supplementalCustomTrain;
+    selfCopy->_supplementalCustomTrain = v28;
 
     v30 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"supplementalBasejumperBuild"];
-    supplementalCustomBuild = v52->_supplementalCustomBuild;
-    v52->_supplementalCustomBuild = v30;
+    supplementalCustomBuild = selfCopy->_supplementalCustomBuild;
+    selfCopy->_supplementalCustomBuild = v30;
 
     v32 = [location[0] decodeBoolForKey:@"isOTADisabled"];
-    v52->_otaDisabled = v32;
+    selfCopy->_otaDisabled = v32;
     v33 = [location[0] decodeBoolForKey:@"authListingEnabled"];
-    v52->_authListingEnabled = v33;
+    selfCopy->_authListingEnabled = v33;
     v34 = [location[0] decodeBoolForKey:@"personalizationRequired"];
-    v52->_personalizationRequired = v34;
+    selfCopy->_personalizationRequired = v34;
     v35 = [location[0] decodeBoolForKey:@"accessoryReachable"];
-    v52->_accessoryReachable = v35;
+    selfCopy->_accessoryReachable = v35;
     v36 = [location[0] decodeBoolForKey:@"SupportsDeveloperSettings"];
-    v52->_supportsDeveloperSettings = v36;
+    selfCopy->_supportsDeveloperSettings = v36;
     v37 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"downloadedVersion"];
-    downloadedVersion = v52->_downloadedVersion;
-    v52->_downloadedVersion = v37;
+    downloadedVersion = selfCopy->_downloadedVersion;
+    selfCopy->_downloadedVersion = v37;
 
     v39 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"dropboxVersion"];
-    dropboxVersion = v52->_dropboxVersion;
-    v52->_dropboxVersion = v39;
+    dropboxVersion = selfCopy->_dropboxVersion;
+    selfCopy->_dropboxVersion = v39;
 
     v41 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"assetURLOverride"];
-    assetURLOverride = v52->_assetURLOverride;
-    v52->_assetURLOverride = v41;
+    assetURLOverride = selfCopy->_assetURLOverride;
+    selfCopy->_assetURLOverride = v41;
 
     v43 = [location[0] decodeIntegerForKey:@"pallasAudience"];
-    v52->_pallasAudience = v43;
+    selfCopy->_pallasAudience = v43;
     v44 = [location[0] decodeBoolForKey:@"pallasSupportEnabled"];
-    v52->_pallasSupportEnabled = v44;
+    selfCopy->_pallasSupportEnabled = v44;
     v45 = [location[0] decodeBoolForKey:@"pallasInternalAsset"];
-    v52->_pallasInternalAssetVariant = v45;
+    selfCopy->_pallasInternalAssetVariant = v45;
     v46 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"pallasAudienceOverride"];
-    pallasAudienceOverride = v52->_pallasAudienceOverride;
-    v52->_pallasAudienceOverride = v46;
+    pallasAudienceOverride = selfCopy->_pallasAudienceOverride;
+    selfCopy->_pallasAudienceOverride = v46;
   }
 
-  v49 = v52;
+  v49 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v52, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v49;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [location[0] encodeObject:v4->_name forKey:@"name"];
-  [location[0] encodeObject:v4->_serialNumber forKey:@"serialNumber"];
-  [location[0] encodeObject:v4->_modelNumber forKey:@"modelNumber"];
-  [location[0] encodeObject:v4->_mobileAssetModelNumber forKey:@"mobileAssetModelNumber"];
-  [location[0] encodeObject:v4->_hwFusing forKey:@"fusing"];
-  [location[0] encodeObject:v4->_activeVersion forKey:@"activeVersion"];
-  [location[0] encodeObject:v4->_hwRevision forKey:@"hwRevision"];
-  [location[0] encodeObject:v4->_partnerSerialNumbers forKey:@"partnerSerialNumbers"];
-  [location[0] encodeObject:v4->_assetLocation forKey:@"assetLocation"];
-  [location[0] encodeObject:v4->_customTrain forKey:@"basejumperTrain"];
-  [location[0] encodeObject:v4->_customBuild forKey:@"basejumperBuild"];
-  [location[0] encodeObject:v4->_supplementalAssetLocation forKey:@"supplementalAssetLocation"];
-  [location[0] encodeObject:v4->_supplementalCustomTrain forKey:@"supplementalBasejumperTrain"];
-  [location[0] encodeObject:v4->_supplementalCustomBuild forKey:@"supplementalBasejumperBuild"];
-  [location[0] encodeBool:v4->_otaDisabled forKey:@"isOTADisabled"];
-  [location[0] encodeBool:v4->_authListingEnabled forKey:@"authListingEnabled"];
-  [location[0] encodeBool:v4->_personalizationRequired forKey:@"personalizationRequired"];
-  [location[0] encodeBool:v4->_accessoryReachable forKey:@"accessoryReachable"];
-  [location[0] encodeBool:v4->_supportsDeveloperSettings forKey:@"SupportsDeveloperSettings"];
-  [location[0] encodeObject:v4->_downloadedVersion forKey:@"downloadedVersion"];
-  [location[0] encodeObject:v4->_dropboxVersion forKey:@"dropboxVersion"];
-  [location[0] encodeObject:v4->_assetURLOverride forKey:@"assetURLOverride"];
-  [location[0] encodeInteger:v4->_pallasAudience forKey:@"pallasAudience"];
-  [location[0] encodeBool:v4->_pallasSupportEnabled forKey:@"pallasSupportEnabled"];
-  [location[0] encodeBool:v4->_pallasInternalAssetVariant forKey:@"pallasInternalAsset"];
-  [location[0] encodeObject:v4->_pallasAudienceOverride forKey:@"pallasAudienceOverride"];
+  objc_storeStrong(location, coder);
+  [location[0] encodeObject:selfCopy->_name forKey:@"name"];
+  [location[0] encodeObject:selfCopy->_serialNumber forKey:@"serialNumber"];
+  [location[0] encodeObject:selfCopy->_modelNumber forKey:@"modelNumber"];
+  [location[0] encodeObject:selfCopy->_mobileAssetModelNumber forKey:@"mobileAssetModelNumber"];
+  [location[0] encodeObject:selfCopy->_hwFusing forKey:@"fusing"];
+  [location[0] encodeObject:selfCopy->_activeVersion forKey:@"activeVersion"];
+  [location[0] encodeObject:selfCopy->_hwRevision forKey:@"hwRevision"];
+  [location[0] encodeObject:selfCopy->_partnerSerialNumbers forKey:@"partnerSerialNumbers"];
+  [location[0] encodeObject:selfCopy->_assetLocation forKey:@"assetLocation"];
+  [location[0] encodeObject:selfCopy->_customTrain forKey:@"basejumperTrain"];
+  [location[0] encodeObject:selfCopy->_customBuild forKey:@"basejumperBuild"];
+  [location[0] encodeObject:selfCopy->_supplementalAssetLocation forKey:@"supplementalAssetLocation"];
+  [location[0] encodeObject:selfCopy->_supplementalCustomTrain forKey:@"supplementalBasejumperTrain"];
+  [location[0] encodeObject:selfCopy->_supplementalCustomBuild forKey:@"supplementalBasejumperBuild"];
+  [location[0] encodeBool:selfCopy->_otaDisabled forKey:@"isOTADisabled"];
+  [location[0] encodeBool:selfCopy->_authListingEnabled forKey:@"authListingEnabled"];
+  [location[0] encodeBool:selfCopy->_personalizationRequired forKey:@"personalizationRequired"];
+  [location[0] encodeBool:selfCopy->_accessoryReachable forKey:@"accessoryReachable"];
+  [location[0] encodeBool:selfCopy->_supportsDeveloperSettings forKey:@"SupportsDeveloperSettings"];
+  [location[0] encodeObject:selfCopy->_downloadedVersion forKey:@"downloadedVersion"];
+  [location[0] encodeObject:selfCopy->_dropboxVersion forKey:@"dropboxVersion"];
+  [location[0] encodeObject:selfCopy->_assetURLOverride forKey:@"assetURLOverride"];
+  [location[0] encodeInteger:selfCopy->_pallasAudience forKey:@"pallasAudience"];
+  [location[0] encodeBool:selfCopy->_pallasSupportEnabled forKey:@"pallasSupportEnabled"];
+  [location[0] encodeBool:selfCopy->_pallasInternalAssetVariant forKey:@"pallasInternalAsset"];
+  [location[0] encodeObject:selfCopy->_pallasAudienceOverride forKey:@"pallasAudienceOverride"];
   objc_storeStrong(location, 0);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7[3] = self;
   v7[2] = a2;
-  v7[1] = a3;
+  v7[1] = zone;
   v7[0] = [(UARPSettingsAccessory *)self encodeAsDictionary];
   v3 = [UARPSettingsAccessory alloc];
   v6 = [(UARPSettingsAccessory *)v3 initWithDictionary:v7[0]];
@@ -335,15 +335,15 @@
   return v5;
 }
 
-- (BOOL)isFusingEqual:(id)a3
+- (BOOL)isFusingEqual:(id)equal
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v5->_hwFusing)
+  objc_storeStrong(location, equal);
+  if (selfCopy->_hwFusing)
   {
-    v6 = [(NSString *)v5->_hwFusing caseInsensitiveCompare:location[0]]== NSOrderedSame;
+    v6 = [(NSString *)selfCopy->_hwFusing caseInsensitiveCompare:location[0]]== NSOrderedSame;
   }
 
   else
@@ -355,16 +355,16 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, equal);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v8 == location[0])
+    if (selfCopy == location[0])
     {
       v9 = 1;
       v6 = 1;
@@ -372,12 +372,12 @@
 
     else
     {
-      v5 = [(UARPSettingsAccessory *)v8 encodeAsDictionary];
-      v4 = [location[0] encodeAsDictionary];
-      v9 = [v5 isEqualToDictionary:v4] == 1;
+      encodeAsDictionary = [(UARPSettingsAccessory *)selfCopy encodeAsDictionary];
+      encodeAsDictionary2 = [location[0] encodeAsDictionary];
+      v9 = [encodeAsDictionary isEqualToDictionary:encodeAsDictionary2] == 1;
       v6 = 1;
-      objc_storeStrong(&v4, 0);
-      objc_storeStrong(&v5, 0);
+      objc_storeStrong(&encodeAsDictionary2, 0);
+      objc_storeStrong(&encodeAsDictionary, 0);
     }
   }
 
@@ -393,138 +393,138 @@
 
 - (id)encodeAsDictionary
 {
-  v32 = self;
+  selfCopy = self;
   v31[1] = a2;
   v31[0] = objc_opt_new();
-  if ([(NSString *)v32->_name length])
+  if ([(NSString *)selfCopy->_name length])
   {
-    v30 = [(NSString *)v32->_name copy];
+    v30 = [(NSString *)selfCopy->_name copy];
     [v31[0] setObject:? forKeyedSubscript:?];
   }
 
-  if ([(NSString *)v32->_serialNumber length])
+  if ([(NSString *)selfCopy->_serialNumber length])
   {
-    v29 = [(NSString *)v32->_serialNumber copy];
+    v29 = [(NSString *)selfCopy->_serialNumber copy];
     [v31[0] setObject:? forKeyedSubscript:?];
   }
 
-  if ([(NSString *)v32->_modelNumber length])
+  if ([(NSString *)selfCopy->_modelNumber length])
   {
-    v28 = [(NSString *)v32->_modelNumber copy];
+    v28 = [(NSString *)selfCopy->_modelNumber copy];
     [v31[0] setObject:? forKeyedSubscript:?];
   }
 
-  if ([(NSString *)v32->_mobileAssetModelNumber length])
+  if ([(NSString *)selfCopy->_mobileAssetModelNumber length])
   {
-    v27 = [(NSString *)v32->_mobileAssetModelNumber copy];
+    v27 = [(NSString *)selfCopy->_mobileAssetModelNumber copy];
     [v31[0] setObject:? forKeyedSubscript:?];
   }
 
-  if ([(NSString *)v32->_hwFusing length])
+  if ([(NSString *)selfCopy->_hwFusing length])
   {
-    v26 = [(NSString *)v32->_hwFusing copy];
+    v26 = [(NSString *)selfCopy->_hwFusing copy];
     [v31[0] setObject:? forKeyedSubscript:?];
   }
 
-  if ([(NSString *)v32->_activeVersion length])
+  if ([(NSString *)selfCopy->_activeVersion length])
   {
-    v25 = [(NSString *)v32->_activeVersion copy];
+    v25 = [(NSString *)selfCopy->_activeVersion copy];
     [v31[0] setObject:? forKeyedSubscript:?];
   }
 
-  if ([(NSString *)v32->_hwRevision length])
+  if ([(NSString *)selfCopy->_hwRevision length])
   {
-    v24 = [(NSString *)v32->_hwRevision copy];
+    v24 = [(NSString *)selfCopy->_hwRevision copy];
     [v31[0] setObject:? forKeyedSubscript:?];
   }
 
-  if ([(NSArray *)v32->_partnerSerialNumbers count])
+  if ([(NSArray *)selfCopy->_partnerSerialNumbers count])
   {
-    v23 = [(NSArray *)v32->_partnerSerialNumbers copy];
+    v23 = [(NSArray *)selfCopy->_partnerSerialNumbers copy];
     [v31[0] setObject:? forKeyedSubscript:?];
   }
 
-  if ([(NSString *)v32->_assetLocation length])
+  if ([(NSString *)selfCopy->_assetLocation length])
   {
-    v22 = [(NSString *)v32->_assetLocation copy];
+    v22 = [(NSString *)selfCopy->_assetLocation copy];
     [v31[0] setObject:? forKeyedSubscript:?];
   }
 
-  if ([(NSString *)v32->_customTrain length])
+  if ([(NSString *)selfCopy->_customTrain length])
   {
-    v21 = [(NSString *)v32->_customTrain copy];
+    v21 = [(NSString *)selfCopy->_customTrain copy];
     [v31[0] setObject:? forKeyedSubscript:?];
   }
 
-  if ([(NSString *)v32->_customBuild length])
+  if ([(NSString *)selfCopy->_customBuild length])
   {
-    v20 = [(NSString *)v32->_customBuild copy];
+    v20 = [(NSString *)selfCopy->_customBuild copy];
     [v31[0] setObject:? forKeyedSubscript:?];
   }
 
-  if ([(NSString *)v32->_supplementalAssetLocation length])
+  if ([(NSString *)selfCopy->_supplementalAssetLocation length])
   {
-    v19 = [(NSString *)v32->_supplementalAssetLocation copy];
+    v19 = [(NSString *)selfCopy->_supplementalAssetLocation copy];
     [v31[0] setObject:? forKeyedSubscript:?];
   }
 
-  if ([(NSString *)v32->_supplementalCustomTrain length])
+  if ([(NSString *)selfCopy->_supplementalCustomTrain length])
   {
-    v18 = [(NSString *)v32->_supplementalCustomTrain copy];
+    v18 = [(NSString *)selfCopy->_supplementalCustomTrain copy];
     [v31[0] setObject:? forKeyedSubscript:?];
   }
 
-  if ([(NSString *)v32->_supplementalCustomBuild length])
+  if ([(NSString *)selfCopy->_supplementalCustomBuild length])
   {
-    v17 = [(NSString *)v32->_supplementalCustomBuild copy];
+    v17 = [(NSString *)selfCopy->_supplementalCustomBuild copy];
     [v31[0] setObject:? forKeyedSubscript:?];
   }
 
-  v12 = [NSNumber numberWithBool:v32->_otaDisabled];
+  v12 = [NSNumber numberWithBool:selfCopy->_otaDisabled];
   [v31[0] setObject:? forKeyedSubscript:?];
 
-  v13 = [NSNumber numberWithBool:v32->_authListingEnabled];
+  v13 = [NSNumber numberWithBool:selfCopy->_authListingEnabled];
   [v31[0] setObject:? forKeyedSubscript:?];
 
-  v14 = [NSNumber numberWithBool:v32->_personalizationRequired];
+  v14 = [NSNumber numberWithBool:selfCopy->_personalizationRequired];
   [v31[0] setObject:? forKeyedSubscript:?];
 
-  v15 = [NSNumber numberWithBool:v32->_accessoryReachable];
+  v15 = [NSNumber numberWithBool:selfCopy->_accessoryReachable];
   [v31[0] setObject:? forKeyedSubscript:?];
 
-  v16 = [NSNumber numberWithBool:v32->_supportsDeveloperSettings];
+  v16 = [NSNumber numberWithBool:selfCopy->_supportsDeveloperSettings];
   [v31[0] setObject:? forKeyedSubscript:?];
 
-  if ([(NSString *)v32->_downloadedVersion length])
+  if ([(NSString *)selfCopy->_downloadedVersion length])
   {
-    v11 = [(NSString *)v32->_downloadedVersion copy];
+    v11 = [(NSString *)selfCopy->_downloadedVersion copy];
     [v31[0] setObject:? forKeyedSubscript:?];
   }
 
-  if ([(NSString *)v32->_dropboxVersion length])
+  if ([(NSString *)selfCopy->_dropboxVersion length])
   {
-    v10 = [(NSString *)v32->_dropboxVersion copy];
+    v10 = [(NSString *)selfCopy->_dropboxVersion copy];
     [v31[0] setObject:? forKeyedSubscript:?];
   }
 
-  if ([(NSString *)v32->_assetURLOverride length])
+  if ([(NSString *)selfCopy->_assetURLOverride length])
   {
-    v9 = [(NSString *)v32->_assetURLOverride copy];
+    v9 = [(NSString *)selfCopy->_assetURLOverride copy];
     [v31[0] setObject:? forKeyedSubscript:?];
   }
 
-  v6 = [NSNumber numberWithBool:v32->_pallasSupportEnabled];
+  v6 = [NSNumber numberWithBool:selfCopy->_pallasSupportEnabled];
   [v31[0] setObject:? forKeyedSubscript:?];
 
-  v7 = [NSNumber numberWithBool:v32->_pallasInternalAssetVariant];
+  v7 = [NSNumber numberWithBool:selfCopy->_pallasInternalAssetVariant];
   [v31[0] setObject:? forKeyedSubscript:?];
 
-  v8 = [NSNumber numberWithUnsignedInteger:v32->_pallasAudience];
+  v8 = [NSNumber numberWithUnsignedInteger:selfCopy->_pallasAudience];
   [v31[0] setObject:? forKeyedSubscript:?];
 
-  if ([(NSString *)v32->_pallasAudienceOverride length])
+  if ([(NSString *)selfCopy->_pallasAudienceOverride length])
   {
-    v5 = [(NSString *)v32->_pallasAudienceOverride copy];
+    v5 = [(NSString *)selfCopy->_pallasAudienceOverride copy];
     [v31[0] setObject:? forKeyedSubscript:?];
   }
 
@@ -536,7 +536,7 @@
 
 - (id)encodeAsChangedDictionary
 {
-  v23 = self;
+  selfCopy = self;
   v22[1] = a2;
   v22[0] = [(UARPSettingsAccessory *)self encodeAsDictionary];
   location = objc_opt_new();
@@ -546,10 +546,10 @@
   v16 = 0;
   v17 = __50__UARPSettingsAccessory_encodeAsChangedDictionary__block_invoke;
   v18 = &unk_100034450;
-  v19 = v23;
+  v19 = selfCopy;
   v20 = location;
   [v5 enumerateKeysAndObjectsUsingBlock:&v14];
-  originalSettings = v23->_originalSettings;
+  originalSettings = selfCopy->_originalSettings;
   v7 = _NSConcreteStackBlock;
   v8 = -1073741824;
   v9 = 0;
@@ -651,244 +651,244 @@ void __50__UARPSettingsAccessory_encodeAsChangedDictionary__block_invoke_2(id *a
   objc_storeStrong(location, 0);
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v3 = [location[0] copy];
-  name = v6->_name;
-  v6->_name = v3;
+  name = selfCopy->_name;
+  selfCopy->_name = v3;
 
   objc_storeStrong(location, 0);
 }
 
-- (void)setSerialNumber:(id)a3
+- (void)setSerialNumber:(id)number
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, number);
   v3 = [location[0] copy];
-  serialNumber = v6->_serialNumber;
-  v6->_serialNumber = v3;
+  serialNumber = selfCopy->_serialNumber;
+  selfCopy->_serialNumber = v3;
 
   objc_storeStrong(location, 0);
 }
 
-- (void)setModelNumber:(id)a3
+- (void)setModelNumber:(id)number
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, number);
   v3 = [location[0] copy];
-  modelNumber = v6->_modelNumber;
-  v6->_modelNumber = v3;
+  modelNumber = selfCopy->_modelNumber;
+  selfCopy->_modelNumber = v3;
 
   objc_storeStrong(location, 0);
 }
 
-- (void)setMobileAssetModelNumber:(id)a3
+- (void)setMobileAssetModelNumber:(id)number
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, number);
   v3 = [location[0] copy];
-  mobileAssetModelNumber = v6->_mobileAssetModelNumber;
-  v6->_mobileAssetModelNumber = v3;
+  mobileAssetModelNumber = selfCopy->_mobileAssetModelNumber;
+  selfCopy->_mobileAssetModelNumber = v3;
 
   objc_storeStrong(location, 0);
 }
 
-- (void)setHwFusing:(id)a3
+- (void)setHwFusing:(id)fusing
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, fusing);
   v3 = [location[0] copy];
-  hwFusing = v6->_hwFusing;
-  v6->_hwFusing = v3;
+  hwFusing = selfCopy->_hwFusing;
+  selfCopy->_hwFusing = v3;
 
   objc_storeStrong(location, 0);
 }
 
-- (void)setHwRevision:(id)a3
+- (void)setHwRevision:(id)revision
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, revision);
   v3 = [location[0] copy];
-  hwRevision = v6->_hwRevision;
-  v6->_hwRevision = v3;
+  hwRevision = selfCopy->_hwRevision;
+  selfCopy->_hwRevision = v3;
 
   objc_storeStrong(location, 0);
 }
 
-- (void)setActiveVersion:(id)a3
+- (void)setActiveVersion:(id)version
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, version);
   v3 = [location[0] copy];
-  activeVersion = v6->_activeVersion;
-  v6->_activeVersion = v3;
+  activeVersion = selfCopy->_activeVersion;
+  selfCopy->_activeVersion = v3;
 
   objc_storeStrong(location, 0);
 }
 
-- (void)setPartnerSerialNumbers:(id)a3
+- (void)setPartnerSerialNumbers:(id)numbers
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, numbers);
   v3 = [location[0] copy];
-  partnerSerialNumbers = v6->_partnerSerialNumbers;
-  v6->_partnerSerialNumbers = v3;
+  partnerSerialNumbers = selfCopy->_partnerSerialNumbers;
+  selfCopy->_partnerSerialNumbers = v3;
 
   objc_storeStrong(location, 0);
 }
 
-- (void)setAssetLocation:(id)a3
+- (void)setAssetLocation:(id)location
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, location);
   v3 = [location[0] copy];
-  assetLocation = v6->_assetLocation;
-  v6->_assetLocation = v3;
+  assetLocation = selfCopy->_assetLocation;
+  selfCopy->_assetLocation = v3;
 
   objc_storeStrong(location, 0);
 }
 
-- (void)setCustomTrain:(id)a3
+- (void)setCustomTrain:(id)train
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, train);
   v3 = [location[0] copy];
-  customTrain = v6->_customTrain;
-  v6->_customTrain = v3;
+  customTrain = selfCopy->_customTrain;
+  selfCopy->_customTrain = v3;
 
   objc_storeStrong(location, 0);
 }
 
-- (void)setCustomBuild:(id)a3
+- (void)setCustomBuild:(id)build
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, build);
   v3 = [location[0] copy];
-  customBuild = v6->_customBuild;
-  v6->_customBuild = v3;
+  customBuild = selfCopy->_customBuild;
+  selfCopy->_customBuild = v3;
 
   objc_storeStrong(location, 0);
 }
 
-- (void)setSupplementalAssetLocation:(id)a3
+- (void)setSupplementalAssetLocation:(id)location
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, location);
   v3 = [location[0] copy];
-  supplementalAssetLocation = v6->_supplementalAssetLocation;
-  v6->_supplementalAssetLocation = v3;
+  supplementalAssetLocation = selfCopy->_supplementalAssetLocation;
+  selfCopy->_supplementalAssetLocation = v3;
 
   objc_storeStrong(location, 0);
 }
 
-- (void)setSupplementalCustomTrain:(id)a3
+- (void)setSupplementalCustomTrain:(id)train
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, train);
   v3 = [location[0] copy];
-  supplementalCustomTrain = v6->_supplementalCustomTrain;
-  v6->_supplementalCustomTrain = v3;
+  supplementalCustomTrain = selfCopy->_supplementalCustomTrain;
+  selfCopy->_supplementalCustomTrain = v3;
 
   objc_storeStrong(location, 0);
 }
 
-- (void)setSupplementalCustomBuild:(id)a3
+- (void)setSupplementalCustomBuild:(id)build
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, build);
   v3 = [location[0] copy];
-  supplementalCustomBuild = v6->_supplementalCustomBuild;
-  v6->_supplementalCustomBuild = v3;
+  supplementalCustomBuild = selfCopy->_supplementalCustomBuild;
+  selfCopy->_supplementalCustomBuild = v3;
 
   objc_storeStrong(location, 0);
 }
 
-- (void)setDownloadedVersion:(id)a3
+- (void)setDownloadedVersion:(id)version
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, version);
   v3 = [location[0] copy];
-  downloadedVersion = v6->_downloadedVersion;
-  v6->_downloadedVersion = v3;
+  downloadedVersion = selfCopy->_downloadedVersion;
+  selfCopy->_downloadedVersion = v3;
 
   objc_storeStrong(location, 0);
 }
 
-- (void)setDropboxVersion:(id)a3
+- (void)setDropboxVersion:(id)version
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, version);
   v3 = [location[0] copy];
-  dropboxVersion = v6->_dropboxVersion;
-  v6->_dropboxVersion = v3;
+  dropboxVersion = selfCopy->_dropboxVersion;
+  selfCopy->_dropboxVersion = v3;
 
   objc_storeStrong(location, 0);
 }
 
-- (void)setAssetURLOverride:(id)a3
+- (void)setAssetURLOverride:(id)override
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, override);
   v3 = [location[0] copy];
-  assetURLOverride = v6->_assetURLOverride;
-  v6->_assetURLOverride = v3;
+  assetURLOverride = selfCopy->_assetURLOverride;
+  selfCopy->_assetURLOverride = v3;
 
   objc_storeStrong(location, 0);
 }
 
-- (void)setPallasAudienceOverride:(id)a3
+- (void)setPallasAudienceOverride:(id)override
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, override);
   v3 = [location[0] copy];
-  pallasAudienceOverride = v6->_pallasAudienceOverride;
-  v6->_pallasAudienceOverride = v3;
+  pallasAudienceOverride = selfCopy->_pallasAudienceOverride;
+  selfCopy->_pallasAudienceOverride = v3;
 
   objc_storeStrong(location, 0);
 }
 
 - (id)description
 {
-  v3 = [(UARPSettingsAccessory *)self encodeAsDictionary];
-  v4 = [NSString stringWithFormat:@"%@", v3];
+  encodeAsDictionary = [(UARPSettingsAccessory *)self encodeAsDictionary];
+  v4 = [NSString stringWithFormat:@"%@", encodeAsDictionary];
 
   return v4;
 }

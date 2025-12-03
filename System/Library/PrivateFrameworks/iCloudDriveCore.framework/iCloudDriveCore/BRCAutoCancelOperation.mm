@@ -1,5 +1,5 @@
 @interface BRCAutoCancelOperation
-- (BRCAutoCancelOperation)initWithName:(id)a3 syncContext:(id)a4 sessionContext:(id)a5 group:(id)a6;
+- (BRCAutoCancelOperation)initWithName:(id)name syncContext:(id)context sessionContext:(id)sessionContext group:(id)group;
 - (id)createActivity;
 - (void)_initializeCancelTimer;
 - (void)beginObservingChanges;
@@ -74,7 +74,7 @@ void __48__BRCAutoCancelOperation__initializeCancelTimer__block_invoke(uint64_t 
 
 - (void)_initializeCancelTimer
 {
-  v3 = [(_BRCOperation *)self callbackQueue];
+  callbackQueue = [(_BRCOperation *)self callbackQueue];
   objc_initWeak(&location, self);
   observersGroup = self->_observersGroup;
   block[0] = MEMORY[0x277D85DD0];
@@ -82,8 +82,8 @@ void __48__BRCAutoCancelOperation__initializeCancelTimer__block_invoke(uint64_t 
   block[2] = __48__BRCAutoCancelOperation__initializeCancelTimer__block_invoke;
   block[3] = &unk_2784FFDF8;
   objc_copyWeak(&v8, &location);
-  v7 = v3;
-  v5 = v3;
+  v7 = callbackQueue;
+  v5 = callbackQueue;
   dispatch_group_notify(observersGroup, v5, block);
 
   objc_destroyWeak(&v8);
@@ -101,11 +101,11 @@ void __48__BRCAutoCancelOperation__initializeCancelTimer__block_invoke(uint64_t 
   }
 }
 
-- (BRCAutoCancelOperation)initWithName:(id)a3 syncContext:(id)a4 sessionContext:(id)a5 group:(id)a6
+- (BRCAutoCancelOperation)initWithName:(id)name syncContext:(id)context sessionContext:(id)sessionContext group:(id)group
 {
   v10.receiver = self;
   v10.super_class = BRCAutoCancelOperation;
-  v6 = [(_BRCOperation *)&v10 initWithName:a3 syncContext:a4 sessionContext:a5 group:a6];
+  v6 = [(_BRCOperation *)&v10 initWithName:name syncContext:context sessionContext:sessionContext group:group];
   if (v6)
   {
     v7 = dispatch_group_create();
@@ -151,18 +151,6 @@ void __48__BRCAutoCancelOperation__initializeCancelTimer__block_invoke_2(uint64_
         [(dispatch_group_t *)v2 cancel];
       }
     }
-  }
-}
-
-{
-  WeakRetained = objc_loadWeakRetained((a1 + 32));
-  if (WeakRetained)
-  {
-    v2 = WeakRetained[64];
-    WeakRetained[64] = 0;
-    v3 = WeakRetained;
-
-    WeakRetained = v3;
   }
 }
 

@@ -6,7 +6,7 @@
 - (id)blankIcon;
 - (id)getLazyIcon;
 - (id)getLazyIconID;
-- (void)setSpecifier:(id)a3;
+- (void)setSpecifier:(id)specifier;
 @end
 
 @implementation BPSLinkCell
@@ -19,15 +19,15 @@
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    getLazyIconID = v5;
   }
 
   else
   {
-    v7 = [(BPSLinkCell *)self getLazyIconID];
+    getLazyIconID = [(BPSLinkCell *)self getLazyIconID];
   }
 
-  v8 = v7;
+  v8 = getLazyIconID;
 
   v9 = v8;
   v10 = +[BPSLinkCell _iconCache];
@@ -43,27 +43,27 @@
     v13 = _LoadMMappedImage(v9);
   }
 
-  v14 = v13;
+  blankIcon = v13;
 
-  if (!v14)
+  if (!blankIcon)
   {
     v20.receiver = self;
     v20.super_class = BPSLinkCell;
-    v14 = [(PSTableCell *)&v20 blankIcon];
+    blankIcon = [(PSTableCell *)&v20 blankIcon];
   }
 
   v15 = objc_loadWeakRetained((&self->super.super.super.super.super.super.super.isa + v3));
   v16 = [v15 propertyForKey:*MEMORY[0x277D3FFC8]];
-  v17 = [v16 BOOLValue];
+  bOOLValue = [v16 BOOLValue];
 
-  if (v17)
+  if (bOOLValue)
   {
-    v18 = [v14 imageFlippedForRightToLeftLayoutDirection];
+    imageFlippedForRightToLeftLayoutDirection = [blankIcon imageFlippedForRightToLeftLayoutDirection];
 
-    v14 = v18;
+    blankIcon = imageFlippedForRightToLeftLayoutDirection;
   }
 
-  return v14;
+  return blankIcon;
 }
 
 + (id)_iconCache
@@ -92,8 +92,8 @@ uint64_t __25__BPSLinkCell__iconCache__block_invoke()
 
 - (id)getLazyIconID
 {
-  v2 = [(PSTableCell *)self specifier];
-  v3 = [v2 propertyForKey:*MEMORY[0x277D40008]];
+  specifier = [(PSTableCell *)self specifier];
+  v3 = [specifier propertyForKey:*MEMORY[0x277D40008]];
 
   return v3;
 }
@@ -108,20 +108,20 @@ uint64_t __25__BPSLinkCell__iconCache__block_invoke()
   v80 = __Block_byref_object_dispose__0;
   v81 = 0;
   os_unfair_lock_lock(&self->_lazyIconPropertiesLock);
-  v3 = [(BPSLazyLoadingIconProperties *)self->_lazyIconLoadingProperties squareIconName];
-  v4 = [(BPSLazyLoadingIconProperties *)self->_lazyIconLoadingProperties lazyIconID];
-  v5 = [(BPSLazyLoadingIconProperties *)self->_lazyIconLoadingProperties flipsForRTL];
-  v68 = [(BPSLazyLoadingIconProperties *)self->_lazyIconLoadingProperties identifier];
-  v67 = [(BPSLazyLoadingIconProperties *)self->_lazyIconLoadingProperties bundlePath];
+  squareIconName = [(BPSLazyLoadingIconProperties *)self->_lazyIconLoadingProperties squareIconName];
+  lazyIconID = [(BPSLazyLoadingIconProperties *)self->_lazyIconLoadingProperties lazyIconID];
+  flipsForRTL = [(BPSLazyLoadingIconProperties *)self->_lazyIconLoadingProperties flipsForRTL];
+  identifier = [(BPSLazyLoadingIconProperties *)self->_lazyIconLoadingProperties identifier];
+  bundlePath = [(BPSLazyLoadingIconProperties *)self->_lazyIconLoadingProperties bundlePath];
   os_unfair_lock_unlock(&self->_lazyIconPropertiesLock);
-  if (v3)
+  if (squareIconName)
   {
-    v6 = v3;
+    v6 = squareIconName;
   }
 
   else
   {
-    v6 = v4;
+    v6 = lazyIconID;
   }
 
   v7 = v6;
@@ -152,11 +152,11 @@ LABEL_50:
     v16 = v15;
     if (v15)
     {
-      if (v5)
+      if (flipsForRTL)
       {
-        v17 = [v15 imageFlippedForRightToLeftLayoutDirection];
+        imageFlippedForRightToLeftLayoutDirection = [v15 imageFlippedForRightToLeftLayoutDirection];
 
-        v16 = v17;
+        v16 = imageFlippedForRightToLeftLayoutDirection;
       }
 
       objc_initWeak(&location, self);
@@ -172,18 +172,18 @@ LABEL_50:
 
       objc_destroyWeak(&v75);
       objc_destroyWeak(&location);
-      if (v3)
+      if (squareIconName)
       {
 LABEL_12:
         v18 = MEMORY[0x277D755B8];
-        v19 = [MEMORY[0x277CCA8D8] mainBundle];
-        v20 = [v3 stringByAppendingString:v10];
-        v21 = [v19 pathForResource:v20 ofType:@".png"];
+        mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+        v20 = [squareIconName stringByAppendingString:v10];
+        v21 = [mainBundle pathForResource:v20 ofType:@".png"];
         v22 = [v18 imageWithContentsOfFile:v21];
 
         if (v22)
         {
-          if (!v5)
+          if (!flipsForRTL)
           {
             goto LABEL_23;
           }
@@ -191,8 +191,8 @@ LABEL_12:
 
         else
         {
-          v22 = [MEMORY[0x277D755B8] imageNamed:v3];
-          if (!v5)
+          v22 = [MEMORY[0x277D755B8] imageNamed:squareIconName];
+          if (!flipsForRTL)
           {
 LABEL_23:
             v33 = BPSCreateRoundedGizmoAppIconForSquareImage(v22);
@@ -202,9 +202,9 @@ LABEL_23:
           }
         }
 
-        v32 = [v22 imageFlippedForRightToLeftLayoutDirection];
+        imageFlippedForRightToLeftLayoutDirection2 = [v22 imageFlippedForRightToLeftLayoutDirection];
 
-        v22 = v32;
+        v22 = imageFlippedForRightToLeftLayoutDirection2;
         goto LABEL_23;
       }
     }
@@ -212,7 +212,7 @@ LABEL_23:
     else
     {
       v65 = 0;
-      if (v3)
+      if (squareIconName)
       {
         goto LABEL_12;
       }
@@ -262,10 +262,10 @@ LABEL_23:
 
     v37 = v36;
     _Block_object_dispose(&v82, 8);
-    v38 = [v36 sharedInstance];
-    v39 = [MEMORY[0x277D759A0] mainScreen];
-    v40 = [v39 traitCollection];
-    [v40 displayScale];
+    sharedInstance = [v36 sharedInstance];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    traitCollection = [mainScreen traitCollection];
+    [traitCollection displayScale];
     if (v41 <= 2.0)
     {
       v42 = 47;
@@ -283,7 +283,7 @@ LABEL_23:
     v71 = &v76;
     v22 = v35;
     v70 = v22;
-    [v38 getIconForBundleID:v4 iconVariant:v42 block:v69 timeout:60.0];
+    [sharedInstance getIconForBundleID:lazyIconID iconVariant:v42 block:v69 timeout:60.0];
 
     dispatch_semaphore_wait(v22, 0xFFFFFFFFFFFFFFFFLL);
     v34 = v70;
@@ -295,7 +295,7 @@ LABEL_31:
       goto LABEL_37;
     }
 
-    if ([v68 isEqualToString:@"VICTORY_ROW_ID"])
+    if ([identifier isEqualToString:@"VICTORY_ROW_ID"])
     {
       v43 = [MEMORY[0x277D755B8] imageNamed:@"VictoryIcon"];
       v44 = BPSCreateRoundedGizmoAppIconForSquareImage(v43);
@@ -303,7 +303,7 @@ LABEL_31:
 
     else
     {
-      if (![v68 isEqualToString:@"VICTORY_TRAINING_CLUB_ROW_ID"])
+      if (![identifier isEqualToString:@"VICTORY_TRAINING_CLUB_ROW_ID"])
       {
         goto LABEL_37;
       }
@@ -325,7 +325,7 @@ LABEL_37:
 
     else
     {
-      v49 = [MEMORY[0x277CCA8D8] bundleWithPath:v67];
+      v49 = [MEMORY[0x277CCA8D8] bundleWithPath:bundlePath];
       if (v49)
       {
         v50 = [@"BridgeSettingsIcon" stringByAppendingString:v10];
@@ -461,32 +461,32 @@ void __26__BPSLinkCell_getLazyIcon__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v12.receiver = self;
   v12.super_class = BPSLinkCell;
-  [(PSTableCell *)&v12 setSpecifier:v4];
+  [(PSTableCell *)&v12 setSpecifier:specifierCopy];
   os_unfair_lock_lock(&self->_lazyIconPropertiesLock);
-  if (v4)
+  if (specifierCopy)
   {
     v5 = objc_alloc_init(BPSLazyLoadingIconProperties);
     lazyIconLoadingProperties = self->_lazyIconLoadingProperties;
     self->_lazyIconLoadingProperties = v5;
 
-    v7 = [v4 identifier];
-    [(BPSLazyLoadingIconProperties *)self->_lazyIconLoadingProperties setIdentifier:v7];
+    identifier = [specifierCopy identifier];
+    [(BPSLazyLoadingIconProperties *)self->_lazyIconLoadingProperties setIdentifier:identifier];
 
-    v8 = [v4 propertyForKey:@"squareIconName"];
+    v8 = [specifierCopy propertyForKey:@"squareIconName"];
     [(BPSLazyLoadingIconProperties *)self->_lazyIconLoadingProperties setSquareIconName:v8];
 
-    v9 = [(BPSLinkCell *)self getLazyIconID];
-    [(BPSLazyLoadingIconProperties *)self->_lazyIconLoadingProperties setLazyIconID:v9];
+    getLazyIconID = [(BPSLinkCell *)self getLazyIconID];
+    [(BPSLazyLoadingIconProperties *)self->_lazyIconLoadingProperties setLazyIconID:getLazyIconID];
 
-    v10 = [v4 propertyForKey:*MEMORY[0x277D3FFC8]];
+    v10 = [specifierCopy propertyForKey:*MEMORY[0x277D3FFC8]];
     -[BPSLazyLoadingIconProperties setFlipsForRTL:](self->_lazyIconLoadingProperties, "setFlipsForRTL:", [v10 BOOLValue]);
 
-    v11 = [v4 propertyForKey:*MEMORY[0x277D40000]];
+    v11 = [specifierCopy propertyForKey:*MEMORY[0x277D40000]];
     [(BPSLazyLoadingIconProperties *)self->_lazyIconLoadingProperties setBundlePath:v11];
   }
 

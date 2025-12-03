@@ -1,10 +1,10 @@
 @interface DTKTraceTapLocalDelegate
-- (DTKTraceTapLocalDelegate)initWithConfig:(id)a3;
+- (DTKTraceTapLocalDelegate)initWithConfig:(id)config;
 - (id)_getSessionMetadata;
-- (unint64_t)_clampBufferSize:(unint64_t)a3;
-- (unint64_t)bufferSizeForConfiguration:(id)a3;
+- (unint64_t)_clampBufferSize:(unint64_t)size;
+- (unint64_t)bufferSizeForConfiguration:(id)configuration;
 - (void)_sendStackshot;
-- (void)fetchDataForReason:(unint64_t)a3 block:(id)a4;
+- (void)fetchDataForReason:(unint64_t)reason block:(id)block;
 - (void)pause;
 - (void)start;
 - (void)stop;
@@ -13,19 +13,19 @@
 
 @implementation DTKTraceTapLocalDelegate
 
-- (unint64_t)_clampBufferSize:(unint64_t)a3
+- (unint64_t)_clampBufferSize:(unint64_t)size
 {
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v6 = [v5 integerForKey:@"DTKPTapMaxRAMPercentage"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v6 = [standardUserDefaults integerForKey:@"DTKPTapMaxRAMPercentage"];
 
-  v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v8 = [v7 integerForKey:@"DTKPTapMinRAMBytes"];
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v8 = [standardUserDefaults2 integerForKey:@"DTKPTapMinRAMBytes"];
 
   v9 = DTGetPhysicalMemorySize();
   if (v9)
   {
     v10 = sBufferConstants;
-    v11 = unk_27EE81E50;
+    sizeCopy = unk_27EE81E50;
     if ((v6 - 1) < 0x63)
     {
       v10 = v6;
@@ -33,24 +33,24 @@
 
     v13 = v10 * v9;
     v12 = (((v10 * v9) >> 2) * 0x28F5C28F5C28F5C3uLL) >> 64;
-    if (unk_27EE81E50 <= a3)
+    if (unk_27EE81E50 <= size)
     {
-      v11 = a3;
+      sizeCopy = size;
     }
 
-    if (v8 > a3)
+    if (v8 > size)
     {
-      v11 = v8;
+      sizeCopy = v8;
     }
 
-    if (v11 >= v12 >> 2)
+    if (sizeCopy >= v12 >> 2)
     {
       return v13 / 0x64;
     }
 
     else
     {
-      return v11;
+      return sizeCopy;
     }
   }
 
@@ -64,9 +64,9 @@
   }
 }
 
-- (unint64_t)bufferSizeForConfiguration:(id)a3
+- (unint64_t)bufferSizeForConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = DTGetCoreCount();
   if (!v5)
   {
@@ -79,25 +79,25 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v6 = [v4 bufferMode];
-  if (!v6)
+  bufferMode = [configurationCopy bufferMode];
+  if (!bufferMode)
   {
-    v7 = 2 * [v4 pollingInterval];
+    windowSize = 2 * [configurationCopy pollingInterval];
     v8 = 1;
     goto LABEL_9;
   }
 
-  if (v6 == 1)
+  if (bufferMode == 1)
   {
     v8 = 0;
-    v7 = 1000000000 * qword_27EE81E58;
+    windowSize = 1000000000 * qword_27EE81E58;
     goto LABEL_9;
   }
 
-  if (v6 != 2)
+  if (bufferMode != 2)
   {
     v20 = [DTTapStatusMemo alloc];
-    v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unsupported buffer mode: %lu", objc_msgSend(v4, "bufferMode")];
+    v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unsupported buffer mode: %lu", objc_msgSend(configurationCopy, "bufferMode")];
     v9 = [(DTTapStatusMemo *)v20 initWithStatus:2281701376 notice:v21];
 
     WeakRetained = objc_loadWeakRetained(&self->_tap);
@@ -105,13 +105,13 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v7 = [v4 windowSize];
+  windowSize = [configurationCopy windowSize];
   v8 = 0;
 LABEL_9:
   v12 = 1000000000;
-  if (v7)
+  if (windowSize)
   {
-    v12 = v7;
+    v12 = windowSize;
   }
 
   v26 = 0;
@@ -126,7 +126,7 @@ LABEL_9:
   v24[5] = &v26;
   v24[6] = v12;
   v25 = v8;
-  [v4 enumerateTriggerConfigs:v24];
+  [configurationCopy enumerateTriggerConfigs:v24];
   v13 = v27[3];
   if (DTCoreIs64BitCapable())
   {
@@ -138,8 +138,8 @@ LABEL_9:
     v14 = 5;
   }
 
-  v15 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v15 floatForKey:@"DTKPTapBufferScalingFactor"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults floatForKey:@"DTKPTapBufferScalingFactor"];
   v17 = v16;
   v18 = 101 * ((v13 * v5) << v14) / 0x64;
 
@@ -165,13 +165,13 @@ LABEL_20:
   if (self->_triggerIDs)
   {
     v4 = objc_opt_new();
-    v5 = [(NSMutableData *)self->_triggerIDs mutableBytes];
+    mutableBytes = [(NSMutableData *)self->_triggerIDs mutableBytes];
     if ([(DTKTraceTapLocalDelegate *)self _triggerCount])
     {
       v6 = 0;
       do
       {
-        v7 = [MEMORY[0x277CCABB0] numberWithInt:v5[v6]];
+        v7 = [MEMORY[0x277CCABB0] numberWithInt:mutableBytes[v6]];
         [v4 addObject:v7];
 
         ++v6;
@@ -220,17 +220,17 @@ LABEL_20:
   return v3;
 }
 
-- (DTKTraceTapLocalDelegate)initWithConfig:(id)a3
+- (DTKTraceTapLocalDelegate)initWithConfig:(id)config
 {
-  v5 = a3;
+  configCopy = config;
   v11.receiver = self;
   v11.super_class = DTKTraceTapLocalDelegate;
   v6 = [(DTKTraceTapLocalDelegate *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_config, a3);
-    v8 = DTKTraceTapLocalEventProducersForConfig(v5);
+    objc_storeStrong(&v6->_config, config);
+    v8 = DTKTraceTapLocalEventProducersForConfig(configCopy);
     localEventProducers = v7->_localEventProducers;
     v7->_localEventProducers = v8;
 
@@ -287,14 +287,14 @@ LABEL_39:
       return;
     }
 
-    v13 = [(DTKTraceTapConfig *)self->_config providerOptions];
-    [v11 setProviderOptions:v13];
+    providerOptions = [(DTKTraceTapConfig *)self->_config providerOptions];
+    [v11 setProviderOptions:providerOptions];
 
     [v11 setCollectionInterval:{-[DTKTraceTapConfig collectionInterval](self->_config, "collectionInterval")}];
-    v14 = [(DTKTraceTapConfig *)self->_config canUseRawKtraceFile];
+    canUseRawKtraceFile = [(DTKTraceTapConfig *)self->_config canUseRawKtraceFile];
     v15 = off_278EF03F8;
-    self->_usesRawKtraceFile = v14;
-    if (!v14)
+    self->_usesRawKtraceFile = canUseRawKtraceFile;
+    if (!canUseRawKtraceFile)
     {
       v15 = off_278EF0400;
     }
@@ -306,8 +306,8 @@ LABEL_39:
       if (v17)
       {
         [(DTKPSession *)v17 setRecordingPriority:[(DTKTraceTapConfig *)self->_config recordingPriority]];
-        v18 = [(DTTapConfig *)self->_config bufferMode];
-        if (v18 >= 3)
+        bufferMode = [(DTTapConfig *)self->_config bufferMode];
+        if (bufferMode >= 3)
         {
           v20 = [DTTapStatusMemo alloc];
           v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unsupported buffer mode: %lu", -[DTTapConfig bufferMode](self->_config, "bufferMode")];
@@ -319,28 +319,28 @@ LABEL_39:
 
         else
         {
-          [v11 setCollectionMode:(0x30202u >> (8 * v18)) & 3];
+          [v11 setCollectionMode:(0x30202u >> (8 * bufferMode)) & 3];
         }
 
-        v25 = [(DTKTraceTapConfig *)self->_config bufferSizeOverride];
-        if (v25)
+        bufferSizeOverride = [(DTKTraceTapConfig *)self->_config bufferSizeOverride];
+        if (bufferSizeOverride)
         {
           if ([(DTKTraceTapConfig *)self->_config bufferSizeOverrideClamping])
           {
-            [(DTKTraceTapLocalDelegate *)self _clampBufferSize:v25];
+            [(DTKTraceTapLocalDelegate *)self _clampBufferSize:bufferSizeOverride];
           }
         }
 
         else
         {
-          v25 = [(DTKTraceTapLocalDelegate *)self _clampBufferSize:[(DTKTraceTapLocalDelegate *)self bufferSizeForConfiguration:self->_config]];
-          if (!v25)
+          bufferSizeOverride = [(DTKTraceTapLocalDelegate *)self _clampBufferSize:[(DTKTraceTapLocalDelegate *)self bufferSizeForConfiguration:self->_config]];
+          if (!bufferSizeOverride)
           {
             goto LABEL_22;
           }
         }
 
-        [v11 setBufferSize:v25];
+        [v11 setBufferSize:bufferSizeOverride];
 LABEL_22:
         v78 = 0;
         v79 = &v78;
@@ -370,7 +370,7 @@ LABEL_22:
         v54[2] = sub_247F77280;
         v54[3] = &unk_278EF1690;
         v55 = v11;
-        v56 = self;
+        selfCopy = self;
         v57 = &v66;
         v58 = &v62;
         v59 = &v91;
@@ -419,7 +419,7 @@ LABEL_22:
           triggerIDs = self->_triggerIDs;
           self->_triggerIDs = v32;
 
-          v34 = [(NSMutableData *)self->_triggerIDs mutableBytes];
+          mutableBytes = [(NSMutableData *)self->_triggerIDs mutableBytes];
           to[0] = 0;
           to[1] = to;
           to[2] = 0x2020000000;
@@ -432,7 +432,7 @@ LABEL_22:
             v49[2] = sub_247F77900;
             v49[3] = &unk_278EF1700;
             v49[5] = to;
-            v49[6] = v34;
+            v49[6] = mutableBytes;
             v49[4] = self;
             [v35 enumerateObjectsUsingBlock:v49];
           }
@@ -445,7 +445,7 @@ LABEL_22:
             v48[2] = sub_247F779A8;
             v48[3] = &unk_278EF1728;
             v48[5] = to;
-            v48[6] = v34;
+            v48[6] = mutableBytes;
             v48[4] = self;
             [v36 enumerateObjectsUsingBlock:v48];
           }
@@ -458,7 +458,7 @@ LABEL_22:
             v47[2] = sub_247F77A50;
             v47[3] = &unk_278EF1750;
             v47[5] = to;
-            v47[6] = v34;
+            v47[6] = mutableBytes;
             v47[4] = self;
             [v37 enumerateObjectsUsingBlock:v47];
           }
@@ -470,8 +470,8 @@ LABEL_22:
         {
           v38 = [DTTapStatusMemo alloc];
           v39 = MEMORY[0x277CCACA8];
-          v40 = [v92[5] localizedDescription];
-          v41 = [v39 stringWithFormat:@"Failed to start the recording: %@", v40];
+          localizedDescription = [v92[5] localizedDescription];
+          v41 = [v39 stringWithFormat:@"Failed to start the recording: %@", localizedDescription];
           v42 = [(DTTapStatusMemo *)v38 initWithStatus:0x80000000 notice:v41];
 
           v43 = objc_loadWeakRetained(&self->_tap);
@@ -479,8 +479,8 @@ LABEL_22:
         }
 
         objc_storeStrong(p_session, v17);
-        v45 = [(DTKTraceTapLocalDelegate *)self _getSessionMetadata];
-        [(DTTapConfig *)self->_config _runningMetadataChanged:v45];
+        _getSessionMetadata = [(DTKTraceTapLocalDelegate *)self _getSessionMetadata];
+        [(DTTapConfig *)self->_config _runningMetadataChanged:_getSessionMetadata];
 
         _Block_object_dispose(&v62, 8);
         _Block_object_dispose(&v66, 8);
@@ -527,8 +527,8 @@ LABEL_38:
     {
       v5 = [DTTapStatusMemo alloc];
       v6 = MEMORY[0x277CCACA8];
-      v7 = [v4 localizedDescription];
-      v8 = [v6 stringWithFormat:@"Failed to stop recording session: %@ ", v7];
+      localizedDescription = [v4 localizedDescription];
+      v8 = [v6 stringWithFormat:@"Failed to stop recording session: %@ ", localizedDescription];
       v9 = [(DTTapStatusMemo *)v5 initWithStatus:0x80000000 notice:v8];
 
       WeakRetained = objc_loadWeakRetained(&self->_tap);
@@ -556,8 +556,8 @@ LABEL_38:
     {
       v6 = [DTTapStatusMemo alloc];
       v7 = MEMORY[0x277CCACA8];
-      v8 = [v3 localizedDescription];
-      v9 = [v7 stringWithFormat:@"Failed to pause recording session: %@ ", v8];
+      localizedDescription = [v3 localizedDescription];
+      v9 = [v7 stringWithFormat:@"Failed to pause recording session: %@ ", localizedDescription];
       v10 = [(DTTapStatusMemo *)v6 initWithStatus:0x80000000 notice:v9];
 
       WeakRetained = objc_loadWeakRetained(&self->_tap);
@@ -585,8 +585,8 @@ LABEL_38:
     {
       v6 = [DTTapStatusMemo alloc];
       v7 = MEMORY[0x277CCACA8];
-      v8 = [v3 localizedDescription];
-      v9 = [v7 stringWithFormat:@"Failed to resume recording session: %@ ", v8];
+      localizedDescription = [v3 localizedDescription];
+      v9 = [v7 stringWithFormat:@"Failed to resume recording session: %@ ", localizedDescription];
       v10 = [(DTTapStatusMemo *)v6 initWithStatus:0x80000000 notice:v9];
 
       WeakRetained = objc_loadWeakRetained(&self->_tap);
@@ -597,10 +597,10 @@ LABEL_38:
   [(NSArray *)self->_localEventProducers enumerateObjectsUsingBlock:&unk_285A18008];
 }
 
-- (void)fetchDataForReason:(unint64_t)a3 block:(id)a4
+- (void)fetchDataForReason:(unint64_t)reason block:(id)block
 {
-  v6 = a4;
-  if (a3 == 2)
+  blockCopy = block;
+  if (reason == 2)
   {
     v7 = mach_absolute_time();
   }
@@ -625,14 +625,14 @@ LABEL_38:
   {
     [v8 setDatastream:v11];
     [v8 setSupportsPeek:1];
-    [v8 setFinalMemo:a3 == 1 && self->_stopWasCalled];
-    v6[2](v6, v8, 1);
+    [v8 setFinalMemo:reason == 1 && self->_stopWasCalled];
+    blockCopy[2](blockCopy, v8, 1);
   }
 
   else
   {
     v12 = [[DTTapHeartbeatMemo alloc] initWithTimestamp:v7];
-    v6[2](v6, v12, 1);
+    blockCopy[2](blockCopy, v12, 1);
   }
 }
 
@@ -648,8 +648,8 @@ LABEL_38:
     [v5 setSupportsPeek:0];
     [v5 setStackshot:v4];
     WeakRetained = objc_loadWeakRetained(&self->_tap);
-    v7 = [WeakRetained memoHandler];
-    v8 = [v7 handleMemo:v5];
+    memoHandler = [WeakRetained memoHandler];
+    v8 = [memoHandler handleMemo:v5];
   }
 }
 

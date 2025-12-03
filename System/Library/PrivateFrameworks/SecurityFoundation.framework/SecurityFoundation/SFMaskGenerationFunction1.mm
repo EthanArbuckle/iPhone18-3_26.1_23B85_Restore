@@ -1,9 +1,9 @@
 @interface SFMaskGenerationFunction1
 - (SFDigestOperation)digestOperation;
 - (SFMaskGenerationFunction1)init;
-- (SFMaskGenerationFunction1)initWithCoder:(id)a3;
-- (SFMaskGenerationFunction1)initWithDigestOperation:(id)a3;
-- (void)setDigestOperation:(id)a3;
+- (SFMaskGenerationFunction1)initWithCoder:(id)coder;
+- (SFMaskGenerationFunction1)initWithDigestOperation:(id)operation;
+- (void)setDigestOperation:(id)operation;
 @end
 
 @implementation SFMaskGenerationFunction1
@@ -16,22 +16,22 @@
   return v4;
 }
 
-- (SFMaskGenerationFunction1)initWithDigestOperation:(id)a3
+- (SFMaskGenerationFunction1)initWithDigestOperation:(id)operation
 {
-  v5 = a3;
+  operationCopy = operation;
   v9.receiver = self;
   v9.super_class = SFMaskGenerationFunction1;
   v6 = [(SFMaskGenerationFunction1 *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(v6->_mgf1OperationInternal + 1, a3);
+    objc_storeStrong(v6->_mgf1OperationInternal + 1, operation);
   }
 
   return v7;
 }
 
-- (SFMaskGenerationFunction1)initWithCoder:(id)a3
+- (SFMaskGenerationFunction1)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SFMaskGenerationFunction1;
@@ -45,9 +45,9 @@
   return v2;
 }
 
-- (void)setDigestOperation:(id)a3
+- (void)setDigestOperation:(id)operation
 {
-  v4 = [a3 copyWithZone:0];
+  v4 = [operation copyWithZone:0];
   mgf1OperationInternal = self->_mgf1OperationInternal;
   v6 = mgf1OperationInternal[1];
   mgf1OperationInternal[1] = v4;

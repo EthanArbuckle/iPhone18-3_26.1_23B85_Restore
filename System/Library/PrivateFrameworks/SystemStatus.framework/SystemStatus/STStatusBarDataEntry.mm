@@ -1,14 +1,14 @@
 @interface STStatusBarDataEntry
 + (id)disabledEntry;
 + (id)entry;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (STStatusBarDataEntry)init;
-- (STStatusBarDataEntry)initWithBSXPCCoder:(id)a3;
-- (STStatusBarDataEntry)initWithCoder:(id)a3;
-- (id)_equalsBuilderWithObject:(id)a3;
+- (STStatusBarDataEntry)initWithBSXPCCoder:(id)coder;
+- (STStatusBarDataEntry)initWithCoder:(id)coder;
+- (id)_equalsBuilderWithObject:(id)object;
 - (id)_hashBuilder;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (unint64_t)hash;
@@ -27,7 +27,7 @@
 
 + (id)disabledEntry
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   v2[8] = 0;
 
   return v2;
@@ -35,7 +35,7 @@
 
 + (id)entry
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -48,39 +48,39 @@
   return v3;
 }
 
-- (STStatusBarDataEntry)initWithCoder:(id)a3
+- (STStatusBarDataEntry)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = STStatusBarDataEntry;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(STStatusBarDataEntry *)&v7 init];
-  v5 = [v3 decodeBoolForKey:{@"enabled", v7.receiver, v7.super_class}];
+  v5 = [coderCopy decodeBoolForKey:{@"enabled", v7.receiver, v7.super_class}];
 
   v4->_enabled = v5;
   return v4;
 }
 
-- (STStatusBarDataEntry)initWithBSXPCCoder:(id)a3
+- (STStatusBarDataEntry)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = STStatusBarDataEntry;
   v5 = [(STStatusBarDataEntry *)&v7 init];
   if (v5)
   {
-    v5->_enabled = [v4 decodeBoolForKey:@"enabled"];
+    v5->_enabled = [coderCopy decodeBoolForKey:@"enabled"];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([v4 isEnabled] & 1) != 0 || -[STStatusBarDataEntry isEnabled](self, "isEnabled"))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([equalCopy isEnabled] & 1) != 0 || -[STStatusBarDataEntry isEnabled](self, "isEnabled"))
   {
-    v5 = [(STStatusBarDataEntry *)self _equalsBuilderWithObject:v4];
+    v5 = [(STStatusBarDataEntry *)self _equalsBuilderWithObject:equalCopy];
     v6 = [v5 isEqual];
   }
 
@@ -94,58 +94,58 @@
 
 - (unint64_t)hash
 {
-  v2 = [(STStatusBarDataEntry *)self _hashBuilder];
-  v3 = [v2 hash];
+  _hashBuilder = [(STStatusBarDataEntry *)self _hashBuilder];
+  v3 = [_hashBuilder hash];
 
   return v3;
 }
 
-- (id)_equalsBuilderWithObject:(id)a3
+- (id)_equalsBuilderWithObject:(id)object
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = [(STStatusBarDataEntry *)self isEnabled];
+  objectCopy = object;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:objectCopy ofExpectedClass:objc_opt_class()];
+  isEnabled = [(STStatusBarDataEntry *)self isEnabled];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __49__STStatusBarDataEntry__equalsBuilderWithObject___block_invoke;
   v10[3] = &unk_1E85DDD50;
-  v11 = v4;
-  v7 = v4;
-  v8 = [v5 appendBool:v6 counterpart:v10];
+  v11 = objectCopy;
+  v7 = objectCopy;
+  v8 = [v5 appendBool:isEnabled counterpart:v10];
 
   return v5;
 }
 
 - (id)_hashBuilder
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendBool:{-[STStatusBarDataEntry isEnabled](self, "isEnabled")}];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendBool:{-[STStatusBarDataEntry isEnabled](self, "isEnabled")}];
 
-  return v3;
+  return builder;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STStatusBarDataEntry *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STStatusBarDataEntry *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STStatusBarDataEntry *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STStatusBarDataEntry *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STStatusBarDataEntry *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STStatusBarDataEntry *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

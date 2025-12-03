@@ -1,17 +1,17 @@
 @interface SUUIItemList
 - (NSMutableDictionary)cacheRepresentation;
-- (SUUIItemList)initWithCacheRepresentation:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setItems:(id)a3;
+- (SUUIItemList)initWithCacheRepresentation:(id)representation;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setItems:(id)items;
 @end
 
 @implementation SUUIItemList
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
-  if (self->_items != a3)
+  if (self->_items != items)
   {
-    v5 = [a3 mutableCopy];
+    v5 = [items mutableCopy];
     items = self->_items;
     self->_items = v5;
 
@@ -19,9 +19,9 @@
   }
 }
 
-- (SUUIItemList)initWithCacheRepresentation:(id)a3
+- (SUUIItemList)initWithCacheRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -30,7 +30,7 @@
     v5 = [(SUUIItemList *)&v23 init];
     if (v5)
     {
-      v6 = [v4 objectForKey:@"title"];
+      v6 = [representationCopy objectForKey:@"title"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -39,7 +39,7 @@
         v5->_title = v7;
       }
 
-      v9 = [v4 objectForKey:@"seeallt"];
+      v9 = [representationCopy objectForKey:@"seeallt"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -49,7 +49,7 @@
         v5->_seeAllTitle = v10;
       }
 
-      v12 = [v4 objectForKey:@"seeall"];
+      v12 = [representationCopy objectForKey:@"seeall"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -59,7 +59,7 @@
         v5->_seeAllURLString = v13;
       }
 
-      v15 = [v4 objectForKey:@"items"];
+      v15 = [representationCopy objectForKey:@"items"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -70,7 +70,7 @@
         v5->_items = v17;
       }
 
-      v19 = [v4 objectForKey:@"unavail"];
+      v19 = [representationCopy objectForKey:@"unavail"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -93,62 +93,62 @@
 
 - (NSMutableDictionary)cacheRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   items = self->_items;
   if (items)
   {
     v5 = SUUICacheCodingEncodeArray(items);
-    [v3 setObject:v5 forKey:@"items"];
+    [dictionary setObject:v5 forKey:@"items"];
   }
 
   seeAllTitle = self->_seeAllTitle;
   if (seeAllTitle)
   {
-    [v3 setObject:seeAllTitle forKey:@"seeallt"];
+    [dictionary setObject:seeAllTitle forKey:@"seeallt"];
   }
 
   seeAllURLString = self->_seeAllURLString;
   if (seeAllURLString)
   {
-    [v3 setObject:seeAllURLString forKey:@"seeall"];
+    [dictionary setObject:seeAllURLString forKey:@"seeall"];
   }
 
   title = self->_title;
   if (title)
   {
-    [v3 setObject:title forKey:@"title"];
+    [dictionary setObject:title forKey:@"title"];
   }
 
   unavailableItemIdentifiers = self->_unavailableItemIdentifiers;
   if (unavailableItemIdentifiers)
   {
-    v10 = [(NSSet *)unavailableItemIdentifiers allObjects];
-    [v3 setObject:v10 forKey:@"unavail"];
+    allObjects = [(NSSet *)unavailableItemIdentifiers allObjects];
+    [dictionary setObject:allObjects forKey:@"unavail"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSMutableArray *)self->_items mutableCopyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSMutableArray *)self->_items mutableCopyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_seeAllTitle copyWithZone:a3];
+  v8 = [(NSString *)self->_seeAllTitle copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSString *)self->_seeAllURLString copyWithZone:a3];
+  v10 = [(NSString *)self->_seeAllURLString copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
-  v12 = [(NSString *)self->_title copyWithZone:a3];
+  v12 = [(NSString *)self->_title copyWithZone:zone];
   v13 = v5[4];
   v5[4] = v12;
 
-  v14 = [(NSSet *)self->_unavailableItemIdentifiers copyWithZone:a3];
+  v14 = [(NSSet *)self->_unavailableItemIdentifiers copyWithZone:zone];
   v15 = v5[5];
   v5[5] = v14;
 

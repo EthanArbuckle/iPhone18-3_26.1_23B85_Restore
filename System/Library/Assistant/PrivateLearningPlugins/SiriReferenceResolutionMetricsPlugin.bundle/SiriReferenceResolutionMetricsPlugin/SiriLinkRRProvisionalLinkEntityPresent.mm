@@ -1,25 +1,25 @@
 @interface SiriLinkRRProvisionalLinkEntityPresent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SiriLinkRRProvisionalLinkEntityPresent)initWithDictionary:(id)a3;
-- (SiriLinkRRProvisionalLinkEntityPresent)initWithJSON:(id)a3;
+- (SiriLinkRRProvisionalLinkEntityPresent)initWithDictionary:(id)dictionary;
+- (SiriLinkRRProvisionalLinkEntityPresent)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setHasEntityPresent:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasEntityPresent:(BOOL)present;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SiriLinkRRProvisionalLinkEntityPresent
 
-- (SiriLinkRRProvisionalLinkEntityPresent)initWithDictionary:(id)a3
+- (SiriLinkRRProvisionalLinkEntityPresent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = SiriLinkRRProvisionalLinkEntityPresent;
   v5 = [(SiriLinkRRProvisionalLinkEntityPresent *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"sourceBundleId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"sourceBundleId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(SiriLinkRRProvisionalLinkEntityPresent *)v5 setSourceBundleId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"linkEntityType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"linkEntityType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,14 +35,14 @@
       [(SiriLinkRRProvisionalLinkEntityPresent *)v5 setLinkEntityType:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"executionStage"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"executionStage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SiriLinkRRProvisionalLinkEntityPresent setExecutionStage:](v5, "setExecutionStage:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"entityPresent"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"entityPresent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -55,30 +55,30 @@
   return v5;
 }
 
-- (SiriLinkRRProvisionalLinkEntityPresent)initWithJSON:(id)a3
+- (SiriLinkRRProvisionalLinkEntityPresent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [NSJSONSerialization JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [NSJSONSerialization JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SiriLinkRRProvisionalLinkEntityPresent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SiriLinkRRProvisionalLinkEntityPresent *)self dictionaryRepresentation];
-  if ([NSJSONSerialization isValidJSONObject:v2])
+  dictionaryRepresentation = [(SiriLinkRRProvisionalLinkEntityPresent *)self dictionaryRepresentation];
+  if ([NSJSONSerialization isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [NSJSONSerialization dataWithJSONObject:v2 options:0 error:0];
+    v3 = [NSJSONSerialization dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -119,15 +119,15 @@
 
   if (self->_linkEntityType)
   {
-    v8 = [(SiriLinkRRProvisionalLinkEntityPresent *)self linkEntityType];
-    v9 = [v8 copy];
+    linkEntityType = [(SiriLinkRRProvisionalLinkEntityPresent *)self linkEntityType];
+    v9 = [linkEntityType copy];
     [v3 setObject:v9 forKeyedSubscript:@"linkEntityType"];
   }
 
   if (self->_sourceBundleId)
   {
-    v10 = [(SiriLinkRRProvisionalLinkEntityPresent *)self sourceBundleId];
-    v11 = [v10 copy];
+    sourceBundleId = [(SiriLinkRRProvisionalLinkEntityPresent *)self sourceBundleId];
+    v11 = [sourceBundleId copy];
     [v3 setObject:v11 forKeyedSubscript:@"sourceBundleId"];
   }
 
@@ -164,28 +164,28 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(SiriLinkRRProvisionalLinkEntityPresent *)self sourceBundleId];
-  v6 = [v4 sourceBundleId];
-  if ((v5 != 0) == (v6 == 0))
+  sourceBundleId = [(SiriLinkRRProvisionalLinkEntityPresent *)self sourceBundleId];
+  sourceBundleId2 = [equalCopy sourceBundleId];
+  if ((sourceBundleId != 0) == (sourceBundleId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(SiriLinkRRProvisionalLinkEntityPresent *)self sourceBundleId];
-  if (v7)
+  sourceBundleId3 = [(SiriLinkRRProvisionalLinkEntityPresent *)self sourceBundleId];
+  if (sourceBundleId3)
   {
-    v8 = v7;
-    v9 = [(SiriLinkRRProvisionalLinkEntityPresent *)self sourceBundleId];
-    v10 = [v4 sourceBundleId];
-    v11 = [v9 isEqual:v10];
+    v8 = sourceBundleId3;
+    sourceBundleId4 = [(SiriLinkRRProvisionalLinkEntityPresent *)self sourceBundleId];
+    sourceBundleId5 = [equalCopy sourceBundleId];
+    v11 = [sourceBundleId4 isEqual:sourceBundleId5];
 
     if (!v11)
     {
@@ -197,22 +197,22 @@ LABEL_3:
   {
   }
 
-  v5 = [(SiriLinkRRProvisionalLinkEntityPresent *)self linkEntityType];
-  v6 = [v4 linkEntityType];
-  if ((v5 != 0) == (v6 == 0))
+  sourceBundleId = [(SiriLinkRRProvisionalLinkEntityPresent *)self linkEntityType];
+  sourceBundleId2 = [equalCopy linkEntityType];
+  if ((sourceBundleId != 0) == (sourceBundleId2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(SiriLinkRRProvisionalLinkEntityPresent *)self linkEntityType];
-  if (v12)
+  linkEntityType = [(SiriLinkRRProvisionalLinkEntityPresent *)self linkEntityType];
+  if (linkEntityType)
   {
-    v13 = v12;
-    v14 = [(SiriLinkRRProvisionalLinkEntityPresent *)self linkEntityType];
-    v15 = [v4 linkEntityType];
-    v16 = [v14 isEqual:v15];
+    v13 = linkEntityType;
+    linkEntityType2 = [(SiriLinkRRProvisionalLinkEntityPresent *)self linkEntityType];
+    linkEntityType3 = [equalCopy linkEntityType];
+    v16 = [linkEntityType2 isEqual:linkEntityType3];
 
     if (!v16)
     {
@@ -225,24 +225,24 @@ LABEL_11:
   }
 
   has = self->_has;
-  v20 = v4[32];
+  v20 = equalCopy[32];
   if ((v20 & 1) == (*&has & 1))
   {
     if (*&has)
     {
       executionStage = self->_executionStage;
-      if (executionStage != [v4 executionStage])
+      if (executionStage != [equalCopy executionStage])
       {
         goto LABEL_12;
       }
 
       has = self->_has;
-      v20 = v4[32];
+      v20 = equalCopy[32];
     }
 
     if (((v20 ^ *&has) & 2) == 0)
     {
-      if ((*&has & 2) == 0 || (entityPresent = self->_entityPresent, entityPresent == [v4 entityPresent]))
+      if ((*&has & 2) == 0 || (entityPresent = self->_entityPresent, entityPresent == [equalCopy entityPresent]))
       {
         v17 = 1;
         goto LABEL_13;
@@ -257,32 +257,32 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
-  v4 = [(SiriLinkRRProvisionalLinkEntityPresent *)self sourceBundleId];
+  toCopy = to;
+  sourceBundleId = [(SiriLinkRRProvisionalLinkEntityPresent *)self sourceBundleId];
 
-  if (v4)
+  if (sourceBundleId)
   {
     sourceBundleId = self->_sourceBundleId;
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(SiriLinkRRProvisionalLinkEntityPresent *)self linkEntityType];
+  linkEntityType = [(SiriLinkRRProvisionalLinkEntityPresent *)self linkEntityType];
 
-  if (v6)
+  if (linkEntityType)
   {
     linkEntityType = self->_linkEntityType;
     PBDataWriterWriteStringField();
   }
 
   has = self->_has;
-  v9 = v12;
+  v9 = toCopy;
   if (has)
   {
     executionStage = self->_executionStage;
     PBDataWriterWriteInt32Field();
-    v9 = v12;
+    v9 = toCopy;
     has = self->_has;
   }
 
@@ -290,13 +290,13 @@ LABEL_13:
   {
     entityPresent = self->_entityPresent;
     PBDataWriterWriteBOOLField();
-    v9 = v12;
+    v9 = toCopy;
   }
 }
 
-- (void)setHasEntityPresent:(BOOL)a3
+- (void)setHasEntityPresent:(BOOL)present
 {
-  if (a3)
+  if (present)
   {
     v3 = 2;
   }

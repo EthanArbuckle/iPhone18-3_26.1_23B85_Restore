@@ -1,10 +1,10 @@
 @interface SBUILegibilityLabel
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SBUILegibilityLabel)initWithCoder:(id)a3;
-- (SBUILegibilityLabel)initWithFrame:(CGRect)a3;
-- (SBUILegibilityLabel)initWithSettings:(id)a3 strength:(double)a4;
-- (SBUILegibilityLabel)initWithSettings:(id)a3 strength:(double)a4 string:(id)a5 font:(id)a6 options:(int64_t)a7;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SBUILegibilityLabel)initWithCoder:(id)coder;
+- (SBUILegibilityLabel)initWithFrame:(CGRect)frame;
+- (SBUILegibilityLabel)initWithSettings:(id)settings strength:(double)strength;
+- (SBUILegibilityLabel)initWithSettings:(id)settings strength:(double)strength string:(id)string font:(id)font options:(int64_t)options;
 - (UIColor)textColor;
 - (UIEdgeInsets)characterOverflowInsets;
 - (double)firstBaselineOffsetFromBottom;
@@ -14,22 +14,22 @@
 - (void)_updateLabelForLegibilitySettings;
 - (void)_updateLegibilityView;
 - (void)layoutSubviews;
-- (void)setAdjustsFontSizeToFitWidth:(BOOL)a3;
-- (void)setAttributedText:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setFont:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHyphenationFactor:(float)a3;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setLineBreakMode:(int64_t)a3;
-- (void)setMinimumScaleFactor:(double)a3;
-- (void)setNumberOfLines:(int64_t)a3;
-- (void)setOptions:(int64_t)a3;
-- (void)setStrength:(double)a3;
-- (void)setString:(id)a3;
-- (void)setTextAlignment:(int64_t)a3;
-- (void)setTextColor:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAdjustsFontSizeToFitWidth:(BOOL)width;
+- (void)setAttributedText:(id)text;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFont:(id)font;
+- (void)setFrame:(CGRect)frame;
+- (void)setHyphenationFactor:(float)factor;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setLineBreakMode:(int64_t)mode;
+- (void)setMinimumScaleFactor:(double)factor;
+- (void)setNumberOfLines:(int64_t)lines;
+- (void)setOptions:(int64_t)options;
+- (void)setStrength:(double)strength;
+- (void)setString:(id)string;
+- (void)setTextAlignment:(int64_t)alignment;
+- (void)setTextColor:(id)color;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SBUILegibilityLabel
@@ -42,18 +42,18 @@
   [(SBUILegibilityLabel *)self invalidateIntrinsicContentSize];
 }
 
-- (SBUILegibilityLabel)initWithFrame:(CGRect)a3
+- (SBUILegibilityLabel)initWithFrame:(CGRect)frame
 {
-  v4 = [MEMORY[0x1E69DD5B8] sharedInstanceForStyle:{0, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+  v4 = [MEMORY[0x1E69DD5B8] sharedInstanceForStyle:{0, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height}];
   v5 = [(SBUILegibilityLabel *)self initWithSettings:v4 strength:*MEMORY[0x1E69DE9E0]];
 
   return v5;
 }
 
-- (SBUILegibilityLabel)initWithCoder:(id)a3
+- (SBUILegibilityLabel)initWithCoder:(id)coder
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"SBUILegibilityLabel.m" lineNumber:52 description:@"Not supported"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBUILegibilityLabel.m" lineNumber:52 description:@"Not supported"];
 
   v6 = *MEMORY[0x1E695F058];
   v7 = *(MEMORY[0x1E695F058] + 8);
@@ -63,22 +63,22 @@
   return [(SBUILegibilityLabel *)self initWithFrame:v6, v7, v8, v9];
 }
 
-- (SBUILegibilityLabel)initWithSettings:(id)a3 strength:(double)a4
+- (SBUILegibilityLabel)initWithSettings:(id)settings strength:(double)strength
 {
   v6 = MEMORY[0x1E69DB878];
-  v7 = a3;
+  settingsCopy = settings;
   [v6 systemFontSize];
   v8 = [v6 systemFontOfSize:?];
-  v9 = [(SBUILegibilityLabel *)self initWithSettings:v7 strength:0 string:v8 font:a4];
+  v9 = [(SBUILegibilityLabel *)self initWithSettings:settingsCopy strength:0 string:v8 font:strength];
 
   return v9;
 }
 
-- (SBUILegibilityLabel)initWithSettings:(id)a3 strength:(double)a4 string:(id)a5 font:(id)a6 options:(int64_t)a7
+- (SBUILegibilityLabel)initWithSettings:(id)settings strength:(double)strength string:(id)string font:(id)font options:(int64_t)options
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
+  settingsCopy = settings;
+  stringCopy = string;
+  fontCopy = font;
   v27.receiver = self;
   v27.super_class = SBUILegibilityLabel;
   v16 = *MEMORY[0x1E695F058];
@@ -89,14 +89,14 @@
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_legibilitySettings, a3);
-    v21->_strength = a4;
-    v22 = [v14 copy];
+    objc_storeStrong(&v20->_legibilitySettings, settings);
+    v21->_strength = strength;
+    v22 = [stringCopy copy];
     string = v21->_string;
     v21->_string = v22;
 
-    objc_storeStrong(&v21->_font, a6);
-    v21->_options = a7;
+    objc_storeStrong(&v21->_font, font);
+    v21->_options = options;
     v24 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v16, v17, v18, v19}];
     lookasideLabel = v21->_lookasideLabel;
     v21->_lookasideLabel = v24;
@@ -112,15 +112,15 @@
   return v21;
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   attributedText = self->_attributedText;
-  if (attributedText != v4)
+  if (attributedText != textCopy)
   {
-    v8 = v4;
-    attributedText = [attributedText isEqualToAttributedString:v4];
-    v4 = v8;
+    v8 = textCopy;
+    attributedText = [attributedText isEqualToAttributedString:textCopy];
+    textCopy = v8;
     if ((attributedText & 1) == 0)
     {
       v6 = [v8 copy];
@@ -129,19 +129,19 @@
 
       [(UILabel *)self->_lookasideLabel setAttributedText:self->_attributedText];
       attributedText = [(SBUILegibilityLabel *)self _markOurselfDirty];
-      v4 = v8;
+      textCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](attributedText, v4);
+  MEMORY[0x1EEE66BB8](attributedText, textCopy);
 }
 
-- (void)setString:(id)a3
+- (void)setString:(id)string
 {
-  v6 = a3;
+  stringCopy = string;
   if (![(NSString *)self->_string isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [stringCopy copy];
     string = self->_string;
     self->_string = v4;
 
@@ -155,47 +155,47 @@
   textColorOverride = self->_textColorOverride;
   if (textColorOverride)
   {
-    v3 = textColorOverride;
+    primaryColor = textColorOverride;
   }
 
   else
   {
-    v3 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+    primaryColor = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
   }
 
-  return v3;
+  return primaryColor;
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_textColorOverride isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_textColorOverride, a3);
+    objc_storeStrong(&self->_textColorOverride, color);
     [(SBUILegibilityLabel *)self _updateLabelColor];
     [(SBUILegibilityLabel *)self _markOurselfDirty];
   }
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v5 = a3;
-  if (self->_font != v5)
+  fontCopy = font;
+  if (self->_font != fontCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_font, a3);
+    v6 = fontCopy;
+    objc_storeStrong(&self->_font, font);
     [(UILabel *)self->_lookasideLabel setFont:v6];
     [(SBUILegibilityLabel *)self _markOurselfDirty];
-    v5 = v6;
+    fontCopy = v6;
   }
 }
 
-- (void)setNumberOfLines:(int64_t)a3
+- (void)setNumberOfLines:(int64_t)lines
 {
-  if ([(UILabel *)self->_lookasideLabel numberOfLines]!= a3)
+  if ([(UILabel *)self->_lookasideLabel numberOfLines]!= lines)
   {
-    [(UILabel *)self->_lookasideLabel setNumberOfLines:a3];
-    if (a3 > 1)
+    [(UILabel *)self->_lookasideLabel setNumberOfLines:lines];
+    if (lines > 1)
     {
       v5 = 1;
     }
@@ -211,66 +211,66 @@
   }
 }
 
-- (void)setAdjustsFontSizeToFitWidth:(BOOL)a3
+- (void)setAdjustsFontSizeToFitWidth:(BOOL)width
 {
-  v3 = a3;
-  if ([(UILabel *)self->_lookasideLabel adjustsFontSizeToFitWidth]!= a3)
+  widthCopy = width;
+  if ([(UILabel *)self->_lookasideLabel adjustsFontSizeToFitWidth]!= width)
   {
-    [(UILabel *)self->_lookasideLabel setAdjustsFontSizeToFitWidth:v3];
+    [(UILabel *)self->_lookasideLabel setAdjustsFontSizeToFitWidth:widthCopy];
 
     [(SBUILegibilityLabel *)self _markOurselfDirty];
   }
 }
 
-- (void)setMinimumScaleFactor:(double)a3
+- (void)setMinimumScaleFactor:(double)factor
 {
   [(UILabel *)self->_lookasideLabel minimumScaleFactor];
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    [(UILabel *)self->_lookasideLabel setMinimumScaleFactor:a3];
+    [(UILabel *)self->_lookasideLabel setMinimumScaleFactor:factor];
 
     [(SBUILegibilityLabel *)self _markOurselfDirty];
   }
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
-  if ([(UILabel *)self->_lookasideLabel textAlignment]!= a3)
+  if ([(UILabel *)self->_lookasideLabel textAlignment]!= alignment)
   {
-    [(UILabel *)self->_lookasideLabel setTextAlignment:a3];
+    [(UILabel *)self->_lookasideLabel setTextAlignment:alignment];
 
     [(SBUILegibilityLabel *)self _markOurselfDirty];
   }
 }
 
-- (void)setLineBreakMode:(int64_t)a3
+- (void)setLineBreakMode:(int64_t)mode
 {
-  if ([(UILabel *)self->_lookasideLabel lineBreakMode]!= a3)
+  if ([(UILabel *)self->_lookasideLabel lineBreakMode]!= mode)
   {
-    [(UILabel *)self->_lookasideLabel setLineBreakMode:a3];
+    [(UILabel *)self->_lookasideLabel setLineBreakMode:mode];
 
     [(SBUILegibilityLabel *)self _markOurselfDirty];
   }
 }
 
-- (void)setHyphenationFactor:(float)a3
+- (void)setHyphenationFactor:(float)factor
 {
   [(UILabel *)self->_lookasideLabel _hyphenationFactor];
-  if (*&v5 != a3)
+  if (*&v5 != factor)
   {
-    *&v5 = a3;
+    *&v5 = factor;
     [(UILabel *)self->_lookasideLabel _setHyphenationFactor:v5];
 
     [(SBUILegibilityLabel *)self _markOurselfDirty];
   }
 }
 
-- (void)setOptions:(int64_t)a3
+- (void)setOptions:(int64_t)options
 {
-  if (self->_options != a3)
+  if (self->_options != options)
   {
-    self->_options = a3;
-    [(SBUILegibilityView *)self->_legibilityView updateForChangedSettings:self->_legibilitySettings options:a3];
+    self->_options = options;
+    [(SBUILegibilityView *)self->_legibilityView updateForChangedSettings:self->_legibilitySettings options:options];
     [(SBUILegibilityLabel *)self _updateLabelColor];
 
     [(SBUILegibilityLabel *)self _markOurselfDirty];
@@ -307,33 +307,33 @@
 
   else
   {
-    v4 = [(SBUILegibilityLabel *)self drawingColor];
-    [(UILabel *)lookasideLabel setTextColor:v4];
+    drawingColor = [(SBUILegibilityLabel *)self drawingColor];
+    [(UILabel *)lookasideLabel setTextColor:drawingColor];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = SBUILegibilityLabel;
-  v4 = a3;
-  [(SBUILegibilityLabel *)&v6 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(SBUILegibilityLabel *)&v6 traitCollectionDidChange:changeCopy];
   v5 = [(SBUILegibilityLabel *)self traitCollection:v6.receiver];
   [v5 displayScale];
 
-  [v4 displayScale];
+  [changeCopy displayScale];
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
     [(SBUILegibilityLabel *)self _markOurselfDirty];
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(SBUILegibilityLabel *)self frame];
   v8.receiver = self;
   v8.super_class = SBUILegibilityLabel;
@@ -345,12 +345,12 @@
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(SBUILegibilityLabel *)self bounds];
   v8.receiver = self;
   v8.super_class = SBUILegibilityLabel;
@@ -370,9 +370,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UILabel *)self->_lookasideLabel sizeThatFits:a3.width, a3.height];
+  [(UILabel *)self->_lookasideLabel sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -393,23 +393,23 @@
   }
 }
 
-- (void)setStrength:(double)a3
+- (void)setStrength:(double)strength
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_strength = a3;
+    self->_strength = strength;
     legibilityView = self->_legibilityView;
 
-    [(SBUILegibilityView *)legibilityView setStrength:a3];
+    [(SBUILegibilityView *)legibilityView setStrength:strength];
   }
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   if (([(_UILegibilitySettings *)self->_legibilitySettings sb_isEqualToLegibilitySettings:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_legibilitySettings, a3);
+    objc_storeStrong(&self->_legibilitySettings, settings);
     [(SBUILegibilityLabel *)self _updateLabelColor];
     [(SBUILegibilityLabel *)self _markOurselfDirty];
     [(SBUILegibilityLabel *)self _updateLegibilityView];
@@ -418,15 +418,15 @@
 
 - (void)_updateLabelForLegibilitySettings
 {
-  v3 = [(UILabel *)self->_lookasideLabel attributedText];
-  v7 = [v3 mutableCopy];
+  attributedText = [(UILabel *)self->_lookasideLabel attributedText];
+  v7 = [attributedText mutableCopy];
 
   v4 = [v7 length];
-  v5 = [(SBUILegibilityLabel *)self textColor];
+  textColor = [(SBUILegibilityLabel *)self textColor];
   v6 = *MEMORY[0x1E69DB650];
-  if (v5)
+  if (textColor)
   {
-    [v7 addAttribute:v6 value:v5 range:{0, v4}];
+    [v7 addAttribute:v6 value:textColor range:{0, v4}];
   }
 
   else
@@ -445,8 +445,8 @@
   v57 = v3;
   v49 = v6;
   v51 = v5;
-  v7 = [(SBUILegibilityLabel *)self traitCollection];
-  [v7 displayScale];
+  traitCollection = [(SBUILegibilityLabel *)self traitCollection];
+  [traitCollection displayScale];
 
   [(SBUILegibilityLabel *)self characterOverflowInsets];
   v48 = v8;
@@ -566,8 +566,8 @@
   }
 
   v45 = self->_legibilityView;
-  v46 = [(SBUILegibilityLabel *)self legibilitySettings];
-  [(SBUILegibilityView *)v45 updateForChangedSettings:v46 options:[(SBUILegibilityLabel *)self options] image:v40 strength:self->_strength];
+  legibilitySettings = [(SBUILegibilityLabel *)self legibilitySettings];
+  [(SBUILegibilityView *)v45 updateForChangedSettings:legibilitySettings options:[(SBUILegibilityLabel *)self options] image:v40 strength:self->_strength];
 }
 
 uint64_t __44__SBUILegibilityLabel__updateLegibilityView__block_invoke(uint64_t a1)
@@ -581,9 +581,9 @@ uint64_t __44__SBUILegibilityLabel__updateLegibilityView__block_invoke(uint64_t 
 
 - (id)drawingColor
 {
-  v3 = [(SBUILegibilityLabel *)self usesSecondaryColor];
+  usesSecondaryColor = [(SBUILegibilityLabel *)self usesSecondaryColor];
   legibilitySettings = self->_legibilitySettings;
-  if (v3)
+  if (usesSecondaryColor)
   {
     [(_UILegibilitySettings *)legibilitySettings secondaryColor];
   }

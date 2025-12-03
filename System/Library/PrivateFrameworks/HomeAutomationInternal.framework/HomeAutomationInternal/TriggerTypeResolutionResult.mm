@@ -1,36 +1,36 @@
 @interface TriggerTypeResolutionResult
-+ (id)confirmationRequiredWithTriggerTypeToConfirm:(int64_t)a3;
-+ (id)successWithResolvedTriggerType:(int64_t)a3;
-- (TriggerTypeResolutionResult)initWithJSONDictionary:(id)a3 forIntent:(id)a4;
++ (id)confirmationRequiredWithTriggerTypeToConfirm:(int64_t)confirm;
++ (id)successWithResolvedTriggerType:(int64_t)type;
+- (TriggerTypeResolutionResult)initWithJSONDictionary:(id)dictionary forIntent:(id)intent;
 @end
 
 @implementation TriggerTypeResolutionResult
 
-+ (id)successWithResolvedTriggerType:(int64_t)a3
++ (id)successWithResolvedTriggerType:(int64_t)type
 {
   swift_getObjCClassMetadata();
-  v4 = sub_252E250C0(a3);
+  v4 = sub_252E250C0(type);
 
   return v4;
 }
 
-+ (id)confirmationRequiredWithTriggerTypeToConfirm:(int64_t)a3
++ (id)confirmationRequiredWithTriggerTypeToConfirm:(int64_t)confirm
 {
   swift_getObjCClassMetadata();
-  v4 = sub_252E2514C(a3);
+  v4 = sub_252E2514C(confirm);
 
   return v4;
 }
 
-- (TriggerTypeResolutionResult)initWithJSONDictionary:(id)a3 forIntent:(id)a4
+- (TriggerTypeResolutionResult)initWithJSONDictionary:(id)dictionary forIntent:(id)intent
 {
   sub_252E36E44();
-  v6 = a4;
+  intentCopy = intent;
   v7 = sub_252E36E24();
 
   v10.receiver = self;
   v10.super_class = type metadata accessor for TriggerTypeResolutionResult();
-  v8 = [(TriggerTypeResolutionResult *)&v10 initWithJSONDictionary:v7 forIntent:v6];
+  v8 = [(TriggerTypeResolutionResult *)&v10 initWithJSONDictionary:v7 forIntent:intentCopy];
 
   if (v8)
   {

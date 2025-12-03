@@ -8,7 +8,7 @@
 - (NSArray)emergencyContactHandles
 {
   v2 = *(&self->super.isa + OBJC_IVAR___IMDEmergencyContactsManager_processingQueue);
-  v3 = self;
+  selfCopy = self;
   sub_22B6F0AD4(&unk_27D8CE9E0, &qword_22B7F99B0);
   sub_22B7DAF38();
 

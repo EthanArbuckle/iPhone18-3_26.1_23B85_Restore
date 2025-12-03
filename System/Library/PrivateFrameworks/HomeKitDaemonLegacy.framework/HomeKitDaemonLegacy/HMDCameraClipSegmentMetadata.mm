@@ -1,32 +1,32 @@
 @interface HMDCameraClipSegmentMetadata
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasByteOffset:(BOOL)a3;
-- (void)setHasDuration:(BOOL)a3;
-- (void)setHasTimeOffset:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasByteOffset:(BOOL)offset;
+- (void)setHasDuration:(BOOL)duration;
+- (void)setHasTimeOffset:(BOOL)offset;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMDCameraClipSegmentMetadata
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 44);
+  fromCopy = from;
+  v5 = *(fromCopy + 44);
   if ((v5 & 2) != 0)
   {
-    self->_byteOffset = *(v4 + 2);
+    self->_byteOffset = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 44);
+    v5 = *(fromCopy + 44);
     if ((v5 & 1) == 0)
     {
 LABEL_3:
@@ -39,14 +39,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 44) & 1) == 0)
+  else if ((*(fromCopy + 44) & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_byteLength = *(v4 + 1);
+  self->_byteLength = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 8) == 0)
   {
 LABEL_4:
@@ -59,9 +59,9 @@ LABEL_4:
   }
 
 LABEL_12:
-  self->_timeOffset = *(v4 + 4);
+  self->_timeOffset = *(fromCopy + 4);
   *&self->_has |= 8u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 4) == 0)
   {
 LABEL_5:
@@ -74,12 +74,12 @@ LABEL_5:
   }
 
 LABEL_13:
-  self->_duration = *(v4 + 3);
+  self->_duration = *(fromCopy + 3);
   *&self->_has |= 4u;
-  if ((*(v4 + 44) & 0x10) != 0)
+  if ((*(fromCopy + 44) & 0x10) != 0)
   {
 LABEL_6:
-    self->_type = *(v4 + 10);
+    self->_type = *(fromCopy + 10);
     *&self->_has |= 0x10u;
   }
 
@@ -195,23 +195,23 @@ LABEL_11:
   return v5 ^ v4 ^ v9 ^ v10 ^ v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0 || self->_byteOffset != *(v4 + 2))
+    if ((*(equalCopy + 44) & 2) == 0 || self->_byteOffset != *(equalCopy + 2))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
 LABEL_26:
     v5 = 0;
@@ -220,47 +220,47 @@ LABEL_26:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_byteLength != *(v4 + 1))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_byteLength != *(equalCopy + 1))
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 44) & 8) == 0 || self->_timeOffset != *(v4 + 4))
+    if ((*(equalCopy + 44) & 8) == 0 || self->_timeOffset != *(equalCopy + 4))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 44) & 8) != 0)
+  else if ((*(equalCopy + 44) & 8) != 0)
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 44) & 4) == 0 || self->_duration != *(v4 + 3))
+    if ((*(equalCopy + 44) & 4) == 0 || self->_duration != *(equalCopy + 3))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 44) & 4) != 0)
+  else if ((*(equalCopy + 44) & 4) != 0)
   {
     goto LABEL_26;
   }
 
-  v5 = (*(v4 + 44) & 0x10) == 0;
+  v5 = (*(equalCopy + 44) & 0x10) == 0;
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 44) & 0x10) == 0 || self->_type != *(v4 + 10))
+    if ((*(equalCopy + 44) & 0x10) == 0 || self->_type != *(equalCopy + 10))
     {
       goto LABEL_26;
     }
@@ -273,9 +273,9 @@ LABEL_27:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -342,14 +342,14 @@ LABEL_6:
   return result;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[2] = self->_byteOffset;
-    *(v4 + 44) |= 2u;
+    toCopy[2] = self->_byteOffset;
+    *(toCopy + 44) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -368,8 +368,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[1] = self->_byteLength;
-  *(v4 + 44) |= 1u;
+  toCopy[1] = self->_byteLength;
+  *(toCopy + 44) |= 1u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -383,8 +383,8 @@ LABEL_4:
   }
 
 LABEL_12:
-  v4[4] = *&self->_timeOffset;
-  *(v4 + 44) |= 8u;
+  toCopy[4] = *&self->_timeOffset;
+  *(toCopy + 44) |= 8u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -398,21 +398,21 @@ LABEL_5:
   }
 
 LABEL_13:
-  v4[3] = *&self->_duration;
-  *(v4 + 44) |= 4u;
+  toCopy[3] = *&self->_duration;
+  *(toCopy + 44) |= 4u;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_6:
-    *(v4 + 10) = self->_type;
-    *(v4 + 44) |= 0x10u;
+    *(toCopy + 10) = self->_type;
+    *(toCopy + 44) |= 0x10u;
   }
 
 LABEL_7:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -478,14 +478,14 @@ LABEL_6:
 LABEL_7:
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
         break;
       }
@@ -496,18 +496,18 @@ LABEL_7:
       while (1)
       {
         LOBYTE(v47) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v47 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v47 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v47 & 0x7F) << v6;
@@ -525,9 +525,9 @@ LABEL_7:
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
         break;
       }
@@ -544,18 +544,18 @@ LABEL_15:
           while (1)
           {
             LOBYTE(v47) = 0;
-            v36 = [a3 position] + 1;
-            if (v36 >= [a3 position] && (v37 = objc_msgSend(a3, "position") + 1, v37 <= objc_msgSend(a3, "length")))
+            v36 = [from position] + 1;
+            if (v36 >= [from position] && (v37 = objc_msgSend(from, "position") + 1, v37 <= objc_msgSend(from, "length")))
             {
-              v38 = [a3 data];
-              [v38 getBytes:&v47 range:{objc_msgSend(a3, "position"), 1}];
+              data2 = [from data];
+              [data2 getBytes:&v47 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v35 |= (v47 & 0x7F) << v33;
@@ -573,7 +573,7 @@ LABEL_15:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v28 = 0;
           }
@@ -608,18 +608,18 @@ LABEL_56:
           while (1)
           {
             LOBYTE(v47) = 0;
-            v25 = [a3 position] + 1;
-            if (v25 >= [a3 position] && (v26 = objc_msgSend(a3, "position") + 1, v26 <= objc_msgSend(a3, "length")))
+            v25 = [from position] + 1;
+            if (v25 >= [from position] && (v26 = objc_msgSend(from, "position") + 1, v26 <= objc_msgSend(from, "length")))
             {
-              v27 = [a3 data];
-              [v27 getBytes:&v47 range:{objc_msgSend(a3, "position"), 1}];
+              data3 = [from data];
+              [data3 getBytes:&v47 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v24 |= (v47 & 0x7F) << v22;
@@ -637,7 +637,7 @@ LABEL_56:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v28 = 0;
           }
@@ -660,18 +660,18 @@ LABEL_69:
         {
           *&self->_has |= 8u;
           v47 = 0;
-          v29 = [a3 position] + 8;
-          if (v29 >= [a3 position] && (v30 = objc_msgSend(a3, "position") + 8, v30 <= objc_msgSend(a3, "length")))
+          v29 = [from position] + 8;
+          if (v29 >= [from position] && (v30 = objc_msgSend(from, "position") + 8, v30 <= objc_msgSend(from, "length")))
           {
-            v41 = [a3 data];
-            [v41 getBytes:&v47 range:{objc_msgSend(a3, "position"), 8}];
+            data4 = [from data];
+            [data4 getBytes:&v47 range:{objc_msgSend(from, "position"), 8}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 8}];
+            [from setPosition:{objc_msgSend(from, "position") + 8}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v42 = v47;
@@ -683,18 +683,18 @@ LABEL_69:
         {
           *&self->_has |= 4u;
           v47 = 0;
-          v31 = [a3 position] + 8;
-          if (v31 >= [a3 position] && (v32 = objc_msgSend(a3, "position") + 8, v32 <= objc_msgSend(a3, "length")))
+          v31 = [from position] + 8;
+          if (v31 >= [from position] && (v32 = objc_msgSend(from, "position") + 8, v32 <= objc_msgSend(from, "length")))
           {
-            v44 = [a3 data];
-            [v44 getBytes:&v47 range:{objc_msgSend(a3, "position"), 8}];
+            data5 = [from data];
+            [data5 getBytes:&v47 range:{objc_msgSend(from, "position"), 8}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 8}];
+            [from setPosition:{objc_msgSend(from, "position") + 8}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v42 = v47;
@@ -716,18 +716,18 @@ LABEL_75:
         while (1)
         {
           LOBYTE(v47) = 0;
-          v18 = [a3 position] + 1;
-          if (v18 >= [a3 position] && (v19 = objc_msgSend(a3, "position") + 1, v19 <= objc_msgSend(a3, "length")))
+          v18 = [from position] + 1;
+          if (v18 >= [from position] && (v19 = objc_msgSend(from, "position") + 1, v19 <= objc_msgSend(from, "length")))
           {
-            v20 = [a3 data];
-            [v20 getBytes:&v47 range:{objc_msgSend(a3, "position"), 1}];
+            data6 = [from data];
+            [data6 getBytes:&v47 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v17 |= (v47 & 0x7F) << v15;
@@ -745,7 +745,7 @@ LABEL_75:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v21 = 0;
         }
@@ -760,24 +760,24 @@ LABEL_65:
       }
 
 LABEL_76:
-      v45 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v45 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  LOBYTE(v39) = [a3 hasError] ^ 1;
+  LOBYTE(v39) = [from hasError] ^ 1;
   return v39;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_byteOffset];
-    [v3 setObject:v5 forKey:@"byteOffset"];
+    [dictionary setObject:v5 forKey:@"byteOffset"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -798,7 +798,7 @@ LABEL_3:
   }
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_byteLength];
-  [v3 setObject:v6 forKey:@"byteLength"];
+  [dictionary setObject:v6 forKey:@"byteLength"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -811,7 +811,7 @@ LABEL_4:
 
 LABEL_10:
     v8 = [MEMORY[0x277CCABB0] numberWithDouble:self->_duration];
-    [v3 setObject:v8 forKey:@"duration"];
+    [dictionary setObject:v8 forKey:@"duration"];
 
     if ((*&self->_has & 0x10) == 0)
     {
@@ -830,14 +830,14 @@ LABEL_11:
       v10 = off_27972F4A8[type];
     }
 
-    [v3 setObject:v10 forKey:@"type"];
+    [dictionary setObject:v10 forKey:@"type"];
 
     goto LABEL_15;
   }
 
 LABEL_9:
   v7 = [MEMORY[0x277CCABB0] numberWithDouble:self->_timeOffset];
-  [v3 setObject:v7 forKey:@"timeOffset"];
+  [dictionary setObject:v7 forKey:@"timeOffset"];
 
   has = self->_has;
   if ((has & 4) != 0)
@@ -853,7 +853,7 @@ LABEL_5:
 
 LABEL_15:
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -862,26 +862,26 @@ LABEL_15:
   v8.receiver = self;
   v8.super_class = HMDCameraClipSegmentMetadata;
   v4 = [(HMDCameraClipSegmentMetadata *)&v8 description];
-  v5 = [(HMDCameraClipSegmentMetadata *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMDCameraClipSegmentMetadata *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"FMP4_INIT"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"FMP4_INIT"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"FMP4_SEGMENT"])
+  else if ([typeCopy isEqualToString:@"FMP4_SEGMENT"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"POSTER_FRAME"])
+  else if ([typeCopy isEqualToString:@"POSTER_FRAME"])
   {
     v4 = 2;
   }
@@ -894,9 +894,9 @@ LABEL_15:
   return v4;
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -922,9 +922,9 @@ LABEL_15:
   }
 }
 
-- (void)setHasDuration:(BOOL)a3
+- (void)setHasDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 4;
   }
@@ -937,9 +937,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasTimeOffset:(BOOL)a3
+- (void)setHasTimeOffset:(BOOL)offset
 {
-  if (a3)
+  if (offset)
   {
     v3 = 8;
   }
@@ -952,9 +952,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasByteOffset:(BOOL)a3
+- (void)setHasByteOffset:(BOOL)offset
 {
-  if (a3)
+  if (offset)
   {
     v3 = 2;
   }

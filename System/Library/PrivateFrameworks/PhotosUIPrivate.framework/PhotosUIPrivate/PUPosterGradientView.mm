@@ -1,42 +1,42 @@
 @interface PUPosterGradientView
-- (PUPosterGradientView)initWithFrame:(CGRect)a3 appearance:(unint64_t)a4;
-- (void)_layoutBlurAndGradientsAnimated:(BOOL)a3;
+- (PUPosterGradientView)initWithFrame:(CGRect)frame appearance:(unint64_t)appearance;
+- (void)_layoutBlurAndGradientsAnimated:(BOOL)animated;
 - (void)_updateBlurEffect;
 - (void)_updateGradientProperties;
 - (void)didMoveToWindow;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3 animated:(BOOL)a4;
-- (void)setIsInactive:(BOOL)a3;
-- (void)setPrimaryGradientColor:(id)a3;
-- (void)setUsesHighKeyStyle:(BOOL)a3;
-- (void)setVisibilityAmount:(double)a3;
-- (void)settings:(id)a3 changedValueForKeyPath:(id)a4;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame animated:(BOOL)animated;
+- (void)setIsInactive:(BOOL)inactive;
+- (void)setPrimaryGradientColor:(id)color;
+- (void)setUsesHighKeyStyle:(BOOL)style;
+- (void)setVisibilityAmount:(double)amount;
+- (void)settings:(id)settings changedValueForKeyPath:(id)path;
 @end
 
 @implementation PUPosterGradientView
 
-- (void)settings:(id)a3 changedValueForKeyPath:(id)a4
+- (void)settings:(id)settings changedValueForKeyPath:(id)path
 {
-  [(PUPosterGradientView *)self _updateBlurEffect:a3];
+  [(PUPosterGradientView *)self _updateBlurEffect:settings];
 
   [(PUPosterGradientView *)self _updateGradientProperties];
 }
 
-- (void)setIsInactive:(BOOL)a3
+- (void)setIsInactive:(BOOL)inactive
 {
-  if (self->_isInactive != a3)
+  if (self->_isInactive != inactive)
   {
-    self->_isInactive = a3;
+    self->_isInactive = inactive;
     [(PUPosterGradientView *)self _updateGradientProperties];
   }
 }
 
-- (void)setPrimaryGradientColor:(id)a3
+- (void)setPrimaryGradientColor:(id)color
 {
-  v8 = a3;
+  colorCopy = color;
   v5 = self->_primaryGradientColor;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == colorCopy)
   {
   }
 
@@ -46,32 +46,32 @@
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_primaryGradientColor, a3);
+      objc_storeStrong(&self->_primaryGradientColor, color);
       [(PUPosterGradientView *)self _updateGradientProperties];
     }
   }
 }
 
-- (void)setUsesHighKeyStyle:(BOOL)a3
+- (void)setUsesHighKeyStyle:(BOOL)style
 {
-  if (self->_usesHighKeyStyle != a3)
+  if (self->_usesHighKeyStyle != style)
   {
-    self->_usesHighKeyStyle = a3;
+    self->_usesHighKeyStyle = style;
     [(PUPosterGradientView *)self _updateGradientProperties];
   }
 }
 
-- (void)setVisibilityAmount:(double)a3
+- (void)setVisibilityAmount:(double)amount
 {
   if ((PXFloatApproximatelyEqualToFloat() & 1) == 0)
   {
-    self->_visibilityAmount = a3;
+    self->_visibilityAmount = amount;
     v5 = +[PUPosterHeadroomSettings sharedInstance];
     [v5 blurVisibilityFraction];
-    v7 = a3 / v6;
+    v7 = amount / v6;
 
-    v8 = [(PUPosterGradientView *)self blurView];
-    [v8 setAlpha:{fmin(v7, 1.0)}];
+    blurView = [(PUPosterGradientView *)self blurView];
+    [blurView setAlpha:{fmin(v7, 1.0)}];
 
     [(PUPosterGradientView *)self visibilityAmount];
 
@@ -79,12 +79,12 @@
   }
 }
 
-- (void)_layoutBlurAndGradientsAnimated:(BOOL)a3
+- (void)_layoutBlurAndGradientsAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PUPosterGradientView *)self window];
-  v6 = [v5 screen];
-  [v6 scale];
+  animatedCopy = animated;
+  window = [(PUPosterGradientView *)self window];
+  screen = [window screen];
+  [screen scale];
   v8 = v7;
 
   if (v8 > 0.0)
@@ -100,19 +100,19 @@
     [v17 gradientHeight];
     PFSizeWithAspectRatioFittingSize();
 
-    v18 = [(PUPosterGradientView *)self blurView];
-    [v18 setFrame:{v10, v12, v14, v16}];
+    blurView = [(PUPosterGradientView *)self blurView];
+    [blurView setFrame:{v10, v12, v14, v16}];
 
-    v19 = [(PUPosterGradientView *)self bottomGradientLayer];
-    if (v19)
+    bottomGradientLayer = [(PUPosterGradientView *)self bottomGradientLayer];
+    if (bottomGradientLayer)
     {
-      v20 = v19;
-      v21 = [(PUPosterGradientView *)self topGradientLayer];
+      v20 = bottomGradientLayer;
+      topGradientLayer = [(PUPosterGradientView *)self topGradientLayer];
 
-      if (v21)
+      if (topGradientLayer)
       {
-        v22 = [(PUPosterGradientView *)self bottomGradientLayer];
-        [v22 bounds];
+        bottomGradientLayer2 = [(PUPosterGradientView *)self bottomGradientLayer];
+        [bottomGradientLayer2 bounds];
         v63 = v24;
         v64 = v23;
         v61 = v26;
@@ -125,28 +125,28 @@
         v32 = v31;
         v34 = v33;
         v36 = v35;
-        v37 = [(PUPosterGradientView *)self bottomGradientLayer];
+        bottomGradientLayer3 = [(PUPosterGradientView *)self bottomGradientLayer];
         v38 = v29;
         v39 = v27;
         v40 = v32;
         v41 = v30;
-        [v37 setBounds:{v38, v40, v34, v36}];
+        [bottomGradientLayer3 setBounds:{v38, v40, v34, v36}];
 
         PXRectWithSizeAlignedToRectEdges();
         v43 = v42;
         v45 = v44;
         v47 = v46;
         v49 = v48;
-        v50 = [(PUPosterGradientView *)self topGradientLayer];
-        [v50 setBounds:{v43, v45, v47, v49}];
+        topGradientLayer2 = [(PUPosterGradientView *)self topGradientLayer];
+        [topGradientLayer2 setBounds:{v43, v45, v47, v49}];
 
-        if (v3)
+        if (animatedCopy)
         {
           v65 = [MEMORY[0x1E6979318] animationWithKeyPath:@"bounds"];
           [MEMORY[0x1E69DD250] inheritedAnimationDuration];
           [v65 setDuration:?];
-          v51 = [MEMORY[0x1E69DD250] _currentAnimationCurve];
-          v56 = _PUPosterGradientViewGetTimingFunction(v51, v52, v53, v54, v55);
+          _currentAnimationCurve = [MEMORY[0x1E69DD250] _currentAnimationCurve];
+          v56 = _PUPosterGradientViewGetTimingFunction(_currentAnimationCurve, v52, v53, v54, v55);
           [v65 setTimingFunction:v56];
 
           v57 = [MEMORY[0x1E696B098] valueWithCGRect:{v39, v41, v14, v16}];
@@ -155,11 +155,11 @@
           v58 = [MEMORY[0x1E696B098] valueWithCGRect:{v64, v63, v62, v61}];
           [v65 setFromValue:v58];
 
-          v59 = [(PUPosterGradientView *)self bottomGradientLayer];
-          [v59 addAnimation:v65 forKey:@"boundsAnimation"];
+          bottomGradientLayer4 = [(PUPosterGradientView *)self bottomGradientLayer];
+          [bottomGradientLayer4 addAnimation:v65 forKey:@"boundsAnimation"];
 
-          v60 = [(PUPosterGradientView *)self topGradientLayer];
-          [v60 addAnimation:v65 forKey:@"boundsAnimation"];
+          topGradientLayer3 = [(PUPosterGradientView *)self topGradientLayer];
+          [topGradientLayer3 addAnimation:v65 forKey:@"boundsAnimation"];
         }
       }
     }
@@ -174,12 +174,12 @@
   [(PUPosterGradientView *)self _layoutBlurAndGradientsAnimated:0];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(PUPosterGradientView *)self bounds];
   v8.receiver = self;
   v8.super_class = PUPosterGradientView;
@@ -190,20 +190,20 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3 animated:(BOOL)a4
+- (void)setFrame:(CGRect)frame animated:(BOOL)animated
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  animatedCopy = animated;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(PUPosterGradientView *)self frame];
   v10.receiver = self;
   v10.super_class = PUPosterGradientView;
   [(PUPosterGradientView *)&v10 setFrame:x, y, width, height];
   if ((PXRectApproximatelyEqualToRect() & 1) == 0)
   {
-    [(PUPosterGradientView *)self _layoutBlurAndGradientsAnimated:v4];
+    [(PUPosterGradientView *)self _layoutBlurAndGradientsAnimated:animatedCopy];
   }
 }
 
@@ -222,11 +222,11 @@
   }
 
   v5 = v4;
-  v6 = [(PUPosterGradientView *)self primaryGradientColor];
-  v7 = v6;
-  if (v6)
+  primaryGradientColor = [(PUPosterGradientView *)self primaryGradientColor];
+  v7 = primaryGradientColor;
+  if (primaryGradientColor)
   {
-    v8 = v6;
+    v8 = primaryGradientColor;
   }
 
   else
@@ -240,8 +240,8 @@
   v56[0] = [v9 CGColor];
   v56[1] = [v10 CGColor];
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:2];
-  v12 = [(PUPosterGradientView *)self bottomGradientLayer];
-  [v12 setColors:v11];
+  bottomGradientLayer = [(PUPosterGradientView *)self bottomGradientLayer];
+  [bottomGradientLayer setColors:v11];
 
   v13 = MEMORY[0x1E696AD98];
   [v3 bottomGradientTopLocation];
@@ -252,20 +252,20 @@
   v16 = [v15 numberWithDouble:?];
   v55[1] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:2];
-  v18 = [(PUPosterGradientView *)self bottomGradientLayer];
-  [v18 setLocations:v17];
+  bottomGradientLayer2 = [(PUPosterGradientView *)self bottomGradientLayer];
+  [bottomGradientLayer2 setLocations:v17];
 
   [v3 bottomGradientAlpha];
   v20 = v19;
-  v21 = [(PUPosterGradientView *)self bottomGradientLayer];
+  bottomGradientLayer3 = [(PUPosterGradientView *)self bottomGradientLayer];
   *&v22 = v20;
-  [v21 setOpacity:v22];
+  [bottomGradientLayer3 setOpacity:v22];
 
   v54[0] = [v9 CGColor];
   v54[1] = [v10 CGColor];
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:2];
-  v24 = [(PUPosterGradientView *)self topGradientLayer];
-  [v24 setColors:v23];
+  topGradientLayer = [(PUPosterGradientView *)self topGradientLayer];
+  [topGradientLayer setColors:v23];
 
   v25 = MEMORY[0x1E696AD98];
   [v3 topGradientTopLocation];
@@ -276,17 +276,17 @@
   v28 = [v27 numberWithDouble:?];
   v53[1] = v28;
   v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v53 count:2];
-  v30 = [(PUPosterGradientView *)self topGradientLayer];
-  [v30 setLocations:v29];
+  topGradientLayer2 = [(PUPosterGradientView *)self topGradientLayer];
+  [topGradientLayer2 setLocations:v29];
 
   [v3 topGradientAlpha];
   v32 = v31;
-  v33 = [(PUPosterGradientView *)self topGradientLayer];
+  topGradientLayer3 = [(PUPosterGradientView *)self topGradientLayer];
   *&v34 = v32;
-  [v33 setOpacity:v34];
+  [topGradientLayer3 setOpacity:v34];
 
-  v35 = [v3 useSoftLightBlendingModeForTopGradient];
-  if (v35)
+  useSoftLightBlendingModeForTopGradient = [v3 useSoftLightBlendingModeForTopGradient];
+  if (useSoftLightBlendingModeForTopGradient)
   {
     v36 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979D20]];
   }
@@ -296,17 +296,17 @@
     v36 = 0;
   }
 
-  v37 = [(PUPosterGradientView *)self topGradientLayer];
-  [v37 setCompositingFilter:v36];
+  topGradientLayer4 = [(PUPosterGradientView *)self topGradientLayer];
+  [topGradientLayer4 setCompositingFilter:v36];
 
-  if (v35)
+  if (useSoftLightBlendingModeForTopGradient)
   {
   }
 
   if ([(PUPosterGradientView *)self isInactive])
   {
-    v38 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979880]];
-    [v38 setName:@"colorMatrix"];
+    topGradientLayer6 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979880]];
+    [topGradientLayer6 setName:@"colorMatrix"];
     v49 = 0u;
     v50 = 0u;
     v47 = 0u;
@@ -319,91 +319,91 @@
     v45[0] = v46;
     v45[1] = v47;
     v39 = [MEMORY[0x1E696B098] valueWithCAColorMatrix:v45];
-    [v38 setValue:v39 forKey:*MEMORY[0x1E6979AC0]];
+    [topGradientLayer6 setValue:v39 forKey:*MEMORY[0x1E6979AC0]];
 
-    v52 = v38;
+    v52 = topGradientLayer6;
     v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v52 count:1];
-    v41 = [(PUPosterGradientView *)self bottomGradientLayer];
-    [v41 setFilters:v40];
+    bottomGradientLayer4 = [(PUPosterGradientView *)self bottomGradientLayer];
+    [bottomGradientLayer4 setFilters:v40];
 
-    v51 = v38;
+    v51 = topGradientLayer6;
     v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v51 count:1];
-    v43 = [(PUPosterGradientView *)self topGradientLayer];
-    [v43 setFilters:v42];
+    topGradientLayer5 = [(PUPosterGradientView *)self topGradientLayer];
+    [topGradientLayer5 setFilters:v42];
   }
 
   else
   {
-    v44 = [(PUPosterGradientView *)self bottomGradientLayer];
-    [v44 setFilters:0];
+    bottomGradientLayer5 = [(PUPosterGradientView *)self bottomGradientLayer];
+    [bottomGradientLayer5 setFilters:0];
 
-    v38 = [(PUPosterGradientView *)self topGradientLayer];
-    [v38 setFilters:0];
+    topGradientLayer6 = [(PUPosterGradientView *)self topGradientLayer];
+    [topGradientLayer6 setFilters:0];
   }
 }
 
 - (void)_updateBlurEffect
 {
-  v2 = [(PUPosterGradientView *)self blurView];
-  [v2 _updateBlurProperties];
+  blurView = [(PUPosterGradientView *)self blurView];
+  [blurView _updateBlurProperties];
 }
 
-- (PUPosterGradientView)initWithFrame:(CGRect)a3 appearance:(unint64_t)a4
+- (PUPosterGradientView)initWithFrame:(CGRect)frame appearance:(unint64_t)appearance
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v32[2] = *MEMORY[0x1E69E9840];
   v28.receiver = self;
   v28.super_class = PUPosterGradientView;
   v9 = [(PUPosterGradientView *)&v28 initWithFrame:?];
   if (v9)
   {
-    v10 = [[PUPosterVariableBlurView alloc] initWithFrame:a4 appearance:x, y, width, height];
+    height = [[PUPosterVariableBlurView alloc] initWithFrame:appearance appearance:x, y, width, height];
     blurView = v9->_blurView;
-    v9->_blurView = v10;
+    v9->_blurView = height;
 
     [(PUPosterVariableBlurView *)v9->_blurView setAlpha:0.0];
     [(PUPosterGradientView *)v9 addSubview:v9->_blurView];
-    v9->_appearance = a4;
+    v9->_appearance = appearance;
     if (![(PUPosterGradientView *)v9 _isBackdropAppearance])
     {
-      v12 = [MEMORY[0x1E6979380] layer];
+      layer = [MEMORY[0x1E6979380] layer];
       bottomGradientLayer = v9->_bottomGradientLayer;
-      v9->_bottomGradientLayer = v12;
+      v9->_bottomGradientLayer = layer;
 
       v14 = *MEMORY[0x1E695EFF8];
       v15 = *(MEMORY[0x1E695EFF8] + 8);
       [(CAGradientLayer *)v9->_bottomGradientLayer setAnchorPoint:*MEMORY[0x1E695EFF8], v15];
       v31[0] = @"bounds";
-      v16 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
       v31[1] = @"opacity";
-      v32[0] = v16;
-      v17 = [MEMORY[0x1E695DFB0] null];
-      v32[1] = v17;
+      v32[0] = null;
+      null2 = [MEMORY[0x1E695DFB0] null];
+      v32[1] = null2;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:2];
       [(CAGradientLayer *)v9->_bottomGradientLayer setActions:v18];
 
-      v19 = [(PUPosterGradientView *)v9 layer];
-      [v19 addSublayer:v9->_bottomGradientLayer];
+      layer2 = [(PUPosterGradientView *)v9 layer];
+      [layer2 addSublayer:v9->_bottomGradientLayer];
 
-      v20 = [MEMORY[0x1E6979380] layer];
+      layer3 = [MEMORY[0x1E6979380] layer];
       topGradientLayer = v9->_topGradientLayer;
-      v9->_topGradientLayer = v20;
+      v9->_topGradientLayer = layer3;
 
       [(CAGradientLayer *)v9->_topGradientLayer setAnchorPoint:v14, v15];
       v29[0] = @"bounds";
-      v22 = [MEMORY[0x1E695DFB0] null];
+      null3 = [MEMORY[0x1E695DFB0] null];
       v29[1] = @"opacity";
-      v30[0] = v22;
-      v23 = [MEMORY[0x1E695DFB0] null];
-      v30[1] = v23;
+      v30[0] = null3;
+      null4 = [MEMORY[0x1E695DFB0] null];
+      v30[1] = null4;
       v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:2];
       [(CAGradientLayer *)v9->_topGradientLayer setActions:v24];
 
-      v25 = [(PUPosterGradientView *)v9 layer];
-      [v25 addSublayer:v9->_topGradientLayer];
+      layer4 = [(PUPosterGradientView *)v9 layer];
+      [layer4 addSublayer:v9->_topGradientLayer];
     }
 
     [(PUPosterGradientView *)v9 setAlpha:0.0];

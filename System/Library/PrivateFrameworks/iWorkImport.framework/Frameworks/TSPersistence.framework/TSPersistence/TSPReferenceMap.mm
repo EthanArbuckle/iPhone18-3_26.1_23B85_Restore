@@ -1,26 +1,26 @@
 @interface TSPReferenceMap
-- (id)allReferencesFromIdentifier:(int64_t)a3;
+- (id)allReferencesFromIdentifier:(int64_t)identifier;
 - (id)makeMutableReferenceMap;
 - (int64_t)hash;
-- (void)enumerateReferencesUsingBlock:(id)a3;
+- (void)enumerateReferencesUsingBlock:(id)block;
 @end
 
 @implementation TSPReferenceMap
 
-- (id)allReferencesFromIdentifier:(int64_t)a3
+- (id)allReferencesFromIdentifier:(int64_t)identifier
 {
-  v4 = self;
-  v5 = TSPReferenceMap.allReferences(from:)(a3);
+  selfCopy = self;
+  v5 = TSPReferenceMap.allReferences(from:)(identifier);
 
   return v5;
 }
 
-- (void)enumerateReferencesUsingBlock:(id)a3
+- (void)enumerateReferencesUsingBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   v5 = *(&self->super.isa + OBJC_IVAR____TtC13TSPersistence15TSPReferenceMap_referenceMap);
   _Block_copy(v4);
-  v6 = self;
+  selfCopy = self;
   sub_276B0762C(v5, v4);
   _Block_release(v4);
   _Block_release(v4);
@@ -44,7 +44,7 @@
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC13TSPersistence15TSPReferenceMap_referenceMap);
   sub_276BDAF74();
-  v4 = self;
+  selfCopy = self;
   sub_276B057D4(v7, v3);
   v5 = sub_276BDAFA4();
 

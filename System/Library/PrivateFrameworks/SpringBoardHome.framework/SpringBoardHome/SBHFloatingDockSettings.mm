@@ -16,10 +16,10 @@
 + (id)settingsControllerModule
 {
   v31[3] = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v4 = [MEMORY[0x1E69C65F8] rowWithTitle:@"Connected Client" valueKeyPath:@"connectedClientBundleIdentifier"];
     v31[0] = @"Files";

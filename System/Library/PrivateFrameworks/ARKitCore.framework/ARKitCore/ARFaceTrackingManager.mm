@@ -1,10 +1,10 @@
 @interface ARFaceTrackingManager
 + (BOOL)isSupported;
 + (void)initialize;
-- (ARFaceTrackingManager)initWithMaximumNumberOfTrackedFaces:(int64_t)a3 options:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)faceTrackingOptionsFromImageData:(id)a3 withCallback:(id)a4;
-- (id)processData:(id)a3;
+- (ARFaceTrackingManager)initWithMaximumNumberOfTrackedFaces:(int64_t)faces options:(id)options;
+- (BOOL)isEqual:(id)equal;
+- (id)faceTrackingOptionsFromImageData:(id)data withCallback:(id)callback;
+- (id)processData:(id)data;
 - (void)dealloc;
 @end
 
@@ -25,12 +25,12 @@ void __35__ARFaceTrackingManager_initialize__block_invoke()
   s_faceTrackingSemaphore = v0;
 }
 
-- (ARFaceTrackingManager)initWithMaximumNumberOfTrackedFaces:(int64_t)a3 options:(id)a4
+- (ARFaceTrackingManager)initWithMaximumNumberOfTrackedFaces:(int64_t)faces options:(id)options
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (![ARFaceTrackingManager isSupported:a3])
+  if (![ARFaceTrackingManager isSupported:faces])
   {
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -47,8 +47,8 @@ void __35__ARFaceTrackingManager_initialize__block_invoke()
   if (s_faceTracking || (v11 = CVAFaceTrackingCreate()) == 0)
   {
     dispatch_semaphore_signal(s_faceTrackingSemaphore);
-    v6->_maximumNumberOfTrackedFaces = a3;
-    if (a3 == 1)
+    v6->_maximumNumberOfTrackedFaces = faces;
+    if (faces == 1)
     {
       v7 = objc_opt_new();
       singleUserAnchorIdentifier = v6->_singleUserAnchorIdentifier;
@@ -57,7 +57,7 @@ void __35__ARFaceTrackingManager_initialize__block_invoke()
 
 LABEL_6:
     self = v6;
-    v9 = self;
+    selfCopy = self;
     goto LABEL_8;
   }
 
@@ -99,11 +99,11 @@ LABEL_6:
   }
 
   dispatch_semaphore_signal(s_faceTrackingSemaphore);
-  v9 = 0;
+  selfCopy = 0;
   self = v6;
 LABEL_8:
 
-  return v9;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -141,11 +141,11 @@ LABEL_8:
   return ARPearlCameraSupported();
 }
 
-- (id)processData:(id)a3
+- (id)processData:(id)data
 {
   v53 = *MEMORY[0x1E69E9840];
-  v35 = a3;
-  [v35 timestamp];
+  dataCopy = data;
+  [dataCopy timestamp];
   kdebug_trace();
   v46 = 0;
   v47 = &v46;
@@ -161,13 +161,13 @@ LABEL_8:
   v45 = &v46;
   dsema = v3;
   v44 = dsema;
-  v4 = [(ARFaceTrackingManager *)self faceTrackingOptionsFromImageData:v35 withCallback:v43];
+  v4 = [(ARFaceTrackingManager *)self faceTrackingOptionsFromImageData:dataCopy withCallback:v43];
   dispatch_semaphore_wait(s_faceTrackingSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   v30 = v4;
   LODWORD(v4) = CVAFaceTrackingProcess();
   dispatch_semaphore_signal(s_faceTrackingSemaphore);
   dispatch_semaphore_wait(dsema, 0xFFFFFFFFFFFFFFFFLL);
-  v36 = [MEMORY[0x1E695DEC8] array];
+  array = [MEMORY[0x1E695DEC8] array];
   if (!v4)
   {
     v5 = v47[5];
@@ -175,14 +175,14 @@ LABEL_8:
     {
       v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E698C0C0]];
 
-      v36 = v6;
+      array = v6;
     }
   }
 
-  [v36 count];
+  [array count];
   kdebug_trace();
   v33 = objc_opt_new();
-  if ([v36 count])
+  if ([array count])
   {
     v41[0] = MEMORY[0x1E69E9820];
     v41[1] = 3221225472;
@@ -190,7 +190,7 @@ LABEL_8:
     v41[3] = &unk_1E817C9D0;
     v41[4] = self;
     v42 = v33;
-    [v36 enumerateObjectsUsingBlock:v41];
+    [array enumerateObjectsUsingBlock:v41];
     v32 = [v47[5] mutableCopy];
     v7 = objc_opt_new();
     v39 = 0u;
@@ -236,30 +236,30 @@ LABEL_8:
     }
 
     [v32 setObject:v7 forKeyedSubscript:v29];
-    v18 = [v35 faceData];
-    [v18 setFaceMeshPayload:v32];
+    faceData = [dataCopy faceData];
+    [faceData setFaceMeshPayload:v32];
   }
 
-  v19 = [v35 faceData];
-  v20 = [v19 faceMeshPayload];
-  v21 = [v20 objectForKeyedSubscript:*MEMORY[0x1E698C0C0]];
+  faceData2 = [dataCopy faceData];
+  faceMeshPayload = [faceData2 faceMeshPayload];
+  v21 = [faceMeshPayload objectForKeyedSubscript:*MEMORY[0x1E698C0C0]];
   v22 = [v21 count] == 0;
 
   if (v22)
   {
-    [v35 timestamp];
+    [dataCopy timestamp];
     kdebug_trace();
   }
 
   if ([(ARFaceTrackingManager *)self maximumNumberOfTrackedFaces]== 1)
   {
-    v23 = [v33 firstObject];
-    if (v23)
+    firstObject = [v33 firstObject];
+    if (firstObject)
     {
       [v33 removeAllObjects];
       v24 = [ARFaceTrackingData alloc];
-      v25 = [v23 trackingData];
-      v26 = [(ARFaceTrackingData *)v24 initWithTrackingData:v25 anchorIdentifier:self->_singleUserAnchorIdentifier];
+      trackingData = [firstObject trackingData];
+      v26 = [(ARFaceTrackingData *)v24 initWithTrackingData:trackingData anchorIdentifier:self->_singleUserAnchorIdentifier];
 
       [v33 addObject:v26];
     }
@@ -363,20 +363,20 @@ LABEL_5:
 LABEL_8:
 }
 
-- (id)faceTrackingOptionsFromImageData:(id)a3 withCallback:(id)a4
+- (id)faceTrackingOptionsFromImageData:(id)data withCallback:(id)callback
 {
   v53[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v42 = a4;
+  dataCopy = data;
+  callbackCopy = callback;
   v6 = *MEMORY[0x1E698C0C8];
   v52[0] = *MEMORY[0x1E698C0A0];
   v52[1] = v6;
   v53[0] = &unk_1F4258EC0;
   v53[1] = &unk_1F4258ED8;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v53 forKeys:v52 count:2];
-  v8 = __71__ARFaceTrackingManager_faceTrackingOptionsFromImageData_withCallback___block_invoke_2(v7, v5);
+  v8 = __71__ARFaceTrackingManager_faceTrackingOptionsFromImageData_withCallback___block_invoke_2(v7, dataCopy);
   memset(&v43, 0, sizeof(v43));
-  [v5 timestamp];
+  [dataCopy timestamp];
   CMTimeMakeWithSeconds(&v43, v9, 1000000000);
   time = v43;
   v10 = CMTimeCopyAsDictionary(&time, 0);
@@ -385,9 +385,9 @@ LABEL_8:
   v12 = *MEMORY[0x1E698C028];
   v50[0] = v11;
   v50[1] = v12;
-  v13 = [v5 faceData];
-  v14 = [v13 detectedFaces];
-  v15 = __71__ARFaceTrackingManager_faceTrackingOptionsFromImageData_withCallback___block_invoke(v14, v14);
+  faceData = [dataCopy faceData];
+  detectedFaces = [faceData detectedFaces];
+  v15 = __71__ARFaceTrackingManager_faceTrackingOptionsFromImageData_withCallback___block_invoke(detectedFaces, detectedFaces);
   v51[1] = v15;
   v50[2] = *MEMORY[0x1E698BFD0];
   v16 = *MEMORY[0x1E698C030];
@@ -398,9 +398,9 @@ LABEL_8:
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v49 forKeys:v48 count:2];
   v51[2] = v17;
   v50[3] = *MEMORY[0x1E698BFD8];
-  v18 = [v5 pixelBuffer];
+  pixelBuffer = [dataCopy pixelBuffer];
   v19 = *MEMORY[0x1E698BF68];
-  v51[3] = v18;
+  v51[3] = pixelBuffer;
   v51[4] = MEMORY[0x1E695E110];
   v20 = *MEMORY[0x1E698BF70];
   v50[4] = v19;
@@ -409,21 +409,21 @@ LABEL_8:
   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v51 forKeys:v50 count:6];
   v22 = [v21 mutableCopy];
 
-  v23 = [v5 depthData];
-  LOBYTE(v21) = v23 == 0;
+  depthData = [dataCopy depthData];
+  LOBYTE(v21) = depthData == 0;
 
   if ((v21 & 1) == 0)
   {
-    v24 = [v5 depthData];
-    v25 = v24;
-    v26 = [v24 depthDataMap];
+    depthData2 = [dataCopy depthData];
+    v25 = depthData2;
+    depthDataMap = [depthData2 depthDataMap];
 
-    if (v26)
+    if (depthDataMap)
     {
-      PixelFormatType = CVPixelBufferGetPixelFormatType(v26);
+      PixelFormatType = CVPixelBufferGetPixelFormatType(depthDataMap);
       if (PixelFormatType == 1717855600)
       {
-        [v22 setValue:v26 forKey:*MEMORY[0x1E698C000]];
+        [v22 setValue:depthDataMap forKey:*MEMORY[0x1E698C000]];
         [v22 setValue:&unk_1F42597B0 forKey:*MEMORY[0x1E698C008]];
         [v22 setValue:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E698C0A8]];
       }
@@ -483,7 +483,7 @@ LABEL_8:
     }
   }
 
-  v39 = MEMORY[0x1C691B4C0](v42);
+  v39 = MEMORY[0x1C691B4C0](callbackCopy);
   [v22 setValue:v39 forKey:*MEMORY[0x1E698BFC8]];
 
   return v22;
@@ -608,16 +608,16 @@ id __71__ARFaceTrackingManager_faceTrackingOptionsFromImageData_withCallback___b
   return v34;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = ARFaceTrackingManager;
-  if ([(ARFaceTrackingManager *)&v9 isEqual:v4])
+  if ([(ARFaceTrackingManager *)&v9 isEqual:equalCopy])
   {
-    v5 = v4;
-    v6 = [(ARFaceTrackingManager *)self maximumNumberOfTrackedFaces];
-    v7 = v6 == [v5 maximumNumberOfTrackedFaces];
+    v5 = equalCopy;
+    maximumNumberOfTrackedFaces = [(ARFaceTrackingManager *)self maximumNumberOfTrackedFaces];
+    v7 = maximumNumberOfTrackedFaces == [v5 maximumNumberOfTrackedFaces];
   }
 
   else

@@ -1,16 +1,16 @@
 @interface _ReachabilityRequest
 - (BOOL)hasObservers;
-- (_ReachabilityRequest)initWithHostname:(id)a3;
+- (_ReachabilityRequest)initWithHostname:(id)hostname;
 - (id)description;
-- (void)addObserver:(id)a3 selector:(SEL)a4;
+- (void)addObserver:(id)observer selector:(SEL)selector;
 - (void)dealloc;
-- (void)reachabilityChangedWithFlags:(unsigned int)a3;
-- (void)removeObserver:(id)a3;
+- (void)reachabilityChangedWithFlags:(unsigned int)flags;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation _ReachabilityRequest
 
-- (_ReachabilityRequest)initWithHostname:(id)a3
+- (_ReachabilityRequest)initWithHostname:(id)hostname
 {
   v6.receiver = self;
   v6.super_class = _ReachabilityRequest;
@@ -18,7 +18,7 @@
   if (v4)
   {
     v4->_lock = objc_alloc_init(MEMORY[0x1E696AD10]);
-    v4->_hostname = [a3 copy];
+    v4->_hostname = [hostname copy];
     v4->_observers = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, 0, 0);
   }
 
@@ -51,16 +51,16 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ (%@)", -[_ReachabilityRequest description](&v3, sel_description), self->_hostname];
 }
 
-- (void)reachabilityChangedWithFlags:(unsigned int)a3
+- (void)reachabilityChangedWithFlags:(unsigned int)flags
 {
   *&v15[4] = *MEMORY[0x1E69E9840];
   v4 = &v14;
-  if ((a3 & 2) != 0)
+  if ((flags & 2) != 0)
   {
     if ((self->_flags & 2) != 0)
     {
       v4 = v15;
-      v14 = a3 & 0xFFFFFFFD;
+      v14 = flags & 0xFFFFFFFD;
       v5 = 2;
       goto LABEL_6;
     }
@@ -70,8 +70,8 @@
 
   v5 = 1;
 LABEL_6:
-  self->_flags = a3;
-  *v4 = a3;
+  self->_flags = flags;
+  *v4 = flags;
   v6 = &v14;
   v7 = *MEMORY[0x1E695E480];
   do
@@ -111,13 +111,13 @@ LABEL_6:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addObserver:(id)a3 selector:(SEL)a4
+- (void)addObserver:(id)observer selector:(SEL)selector
 {
   [(NSLock *)self->_lock lock];
   observers = self->_observers;
   if (observers)
   {
-    CFDictionaryAddValue(observers, a3, a4);
+    CFDictionaryAddValue(observers, observer, selector);
     if (!self->_reachability)
     {
       context.version = 0;
@@ -174,13 +174,13 @@ LABEL_6:
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   [(NSLock *)self->_lock lock];
   observers = self->_observers;
   if (observers)
   {
-    CFDictionaryRemoveValue(observers, a3);
+    CFDictionaryRemoveValue(observers, observer);
     if (self->_reachability)
     {
       if (!CFDictionaryGetCount(self->_observers))

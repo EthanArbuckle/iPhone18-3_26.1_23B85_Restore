@@ -1,17 +1,17 @@
 @interface GCSettingsRemappableElementCell
-- (GCSettingsRemappableElementCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (GCSettingsRemappableElementCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)awakeFromNib;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
 - (void)setup;
 @end
 
 @implementation GCSettingsRemappableElementCell
 
-- (GCSettingsRemappableElementCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (GCSettingsRemappableElementCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = GCSettingsRemappableElementCell;
-  v4 = [(GCSettingsRemappableElementCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(GCSettingsRemappableElementCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -31,19 +31,19 @@
   [(UIImageView *)self->_remappedElementView setTintColor:v5];
 
   [(UIImageView *)self->_remappedElementView setContentMode:1];
-  v6 = [(GCSettingsRemappableElementCell *)self contentView];
-  [v6 addSubview:self->_remappedElementView];
+  contentView = [(GCSettingsRemappableElementCell *)self contentView];
+  [contentView addSubview:self->_remappedElementView];
 
   [(UIImageView *)self->_remappedElementView setTranslatesAutoresizingMaskIntoConstraints:0];
   v7 = self->_remappedElementView;
-  v8 = [(GCSettingsRemappableElementCell *)self contentView];
-  v9 = [NSLayoutConstraint constraintWithItem:v7 attribute:6 relatedBy:0 toItem:v8 attribute:6 multiplier:1.0 constant:-3.0];
+  contentView2 = [(GCSettingsRemappableElementCell *)self contentView];
+  v9 = [NSLayoutConstraint constraintWithItem:v7 attribute:6 relatedBy:0 toItem:contentView2 attribute:6 multiplier:1.0 constant:-3.0];
   [(GCSettingsRemappableElementCell *)self addConstraint:v9];
 
   v10 = self->_remappedElementView;
-  v11 = [(GCSettingsRemappableElementCell *)self imageView];
-  v12 = [v11 image];
-  if (v12)
+  imageView = [(GCSettingsRemappableElementCell *)self imageView];
+  image = [imageView image];
+  if (image)
   {
     [(GCSettingsRemappableElementCell *)self imageView];
   }
@@ -57,9 +57,9 @@
   [(GCSettingsRemappableElementCell *)self addConstraint:v14];
 
   v15 = self->_remappedElementView;
-  v19 = [(GCSettingsRemappableElementCell *)self imageView];
-  v16 = [v19 image];
-  if (v16)
+  imageView2 = [(GCSettingsRemappableElementCell *)self imageView];
+  image2 = [imageView2 image];
+  if (image2)
   {
     [(GCSettingsRemappableElementCell *)self imageView];
   }
@@ -80,11 +80,11 @@
   [(GCSettingsRemappableElementCell *)&v2 awakeFromNib];
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = GCSettingsRemappableElementCell;
-  [(GCSettingsRemappableElementCell *)&v4 setSelected:a3 animated:a4];
+  [(GCSettingsRemappableElementCell *)&v4 setSelected:selected animated:animated];
 }
 
 @end

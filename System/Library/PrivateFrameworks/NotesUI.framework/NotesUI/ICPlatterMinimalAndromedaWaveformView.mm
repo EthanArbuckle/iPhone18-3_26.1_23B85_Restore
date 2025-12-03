@@ -1,5 +1,5 @@
 @interface ICPlatterMinimalAndromedaWaveformView
-- (void)_appendSlices:(unint64_t)a3;
+- (void)_appendSlices:(unint64_t)slices;
 - (void)updateSlicesAndFrames;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)updateSlicesAndFrames
 {
-  v3 = [(ICPlatterMinimalWaveformView *)self numberOfSlices];
-  v4 = [(ICPlatterWaveformView *)self activeSliceQueue];
-  v5 = [v4 count];
+  numberOfSlices = [(ICPlatterMinimalWaveformView *)self numberOfSlices];
+  activeSliceQueue = [(ICPlatterWaveformView *)self activeSliceQueue];
+  v5 = [activeSliceQueue count];
 
-  if (v3 == v5)
+  if (numberOfSlices == v5)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -24,50 +24,50 @@
   else
   {
 
-    [(ICPlatterMinimalAndromedaWaveformView *)self _appendSlices:v3 - v5];
+    [(ICPlatterMinimalAndromedaWaveformView *)self _appendSlices:numberOfSlices - v5];
   }
 }
 
-- (void)_appendSlices:(unint64_t)a3
+- (void)_appendSlices:(unint64_t)slices
 {
-  if (a3)
+  if (slices)
   {
-    v4 = a3;
+    slicesCopy = slices;
     do
     {
       [(ICPlatterWaveformView *)self appendSliceWithType:0];
-      --v4;
+      --slicesCopy;
     }
 
-    while (v4);
+    while (slicesCopy);
   }
 
-  v17 = [(ICPlatterMinimalAndromedaWaveformView *)self _genericAmplitudes];
-  v5 = [(ICPlatterWaveformView *)self activeSliceQueue];
-  v6 = [v5 count];
-  v7 = [v17 count];
+  _genericAmplitudes = [(ICPlatterMinimalAndromedaWaveformView *)self _genericAmplitudes];
+  activeSliceQueue = [(ICPlatterWaveformView *)self activeSliceQueue];
+  v6 = [activeSliceQueue count];
+  v7 = [_genericAmplitudes count];
 
   if (v6 == v7)
   {
-    v8 = [(ICPlatterWaveformView *)self activeSliceQueue];
-    v9 = [v8 count];
+    activeSliceQueue2 = [(ICPlatterWaveformView *)self activeSliceQueue];
+    v9 = [activeSliceQueue2 count];
 
     if (v9)
     {
       v10 = 0;
       do
       {
-        v11 = [(ICPlatterWaveformView *)self activeSliceQueue];
-        v12 = [v11 objectAtIndexedSubscript:v10];
+        activeSliceQueue3 = [(ICPlatterWaveformView *)self activeSliceQueue];
+        v12 = [activeSliceQueue3 objectAtIndexedSubscript:v10];
 
-        v13 = [v17 objectAtIndexedSubscript:v10];
+        v13 = [_genericAmplitudes objectAtIndexedSubscript:v10];
         [v13 floatValue];
         [v12 setAmplitude:v14];
         [v12 setAmplitudeNeedsUpdate:0];
 
         ++v10;
-        v15 = [(ICPlatterWaveformView *)self activeSliceQueue];
-        v16 = [v15 count];
+        activeSliceQueue4 = [(ICPlatterWaveformView *)self activeSliceQueue];
+        v16 = [activeSliceQueue4 count];
       }
 
       while (v10 < v16);

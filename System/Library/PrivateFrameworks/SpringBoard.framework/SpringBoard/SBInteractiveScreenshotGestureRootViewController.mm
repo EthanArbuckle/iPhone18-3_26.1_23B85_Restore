@@ -1,42 +1,42 @@
 @interface SBInteractiveScreenshotGestureRootViewController
-- (CATransform3D)_anchoredTransformForAnchorPoint:(SEL)a3 bounds:(CGPoint)a4 center:(CGRect)a5 transform:(CGPoint)a6;
-- (CATransform3D)_contentTransformForCommitProgress:(SEL)a3 contentInsets:(double)a4 additionalContentTranslation:(UIEdgeInsets)a5;
-- (CATransform3D)_inverseContentTransformForCommitProgress:(SEL)a3 contentInsets:(double)a4 additionalContentTranslation:(UIEdgeInsets)a5;
-- (CGPoint)_contentScaleForCommitProgress:(double)a3 contentInsets:(UIEdgeInsets)a4 additionalContentTranslation:(CGPoint)a5;
-- (SBInteractiveScreenshotGestureRootViewController)initWithWindowScene:(id)a3;
+- (CATransform3D)_anchoredTransformForAnchorPoint:(SEL)point bounds:(CGPoint)bounds center:(CGRect)center transform:(CGPoint)transform;
+- (CATransform3D)_contentTransformForCommitProgress:(SEL)progress contentInsets:(double)insets additionalContentTranslation:(UIEdgeInsets)translation;
+- (CATransform3D)_inverseContentTransformForCommitProgress:(SEL)progress contentInsets:(double)insets additionalContentTranslation:(UIEdgeInsets)translation;
+- (CGPoint)_contentScaleForCommitProgress:(double)progress contentInsets:(UIEdgeInsets)insets additionalContentTranslation:(CGPoint)translation;
+- (SBInteractiveScreenshotGestureRootViewController)initWithWindowScene:(id)scene;
 - (SBInteractiveScreenshotGestureRootViewControllerDelegate)delegate;
-- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)a3 insetsAreAbsolute:(BOOL *)a4;
-- (double)_gestureCommitProgressUpdateVelocityOverTimeInterval:(double)a3;
-- (id)_createFlashViewWithFrame:(CGRect)a3;
-- (id)_createScreenshotImageViewWithFrame:(CGRect)a3;
+- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)controller insetsAreAbsolute:(BOOL *)absolute;
+- (double)_gestureCommitProgressUpdateVelocityOverTimeInterval:(double)interval;
+- (id)_createFlashViewWithFrame:(CGRect)frame;
+- (id)_createScreenshotImageViewWithFrame:(CGRect)frame;
 - (int64_t)gestureStyle;
 - (unint64_t)flashViewLayerRenderID;
 - (unsigned)flashViewLayerContextID;
-- (void)_addGestureUpdateWithCommitProgress:(double)a3 timestamp:(double)a4;
+- (void)_addGestureUpdateWithCommitProgress:(double)progress timestamp:(double)timestamp;
 - (void)_cancellationCommitProgressAnimatablePropertyPresentationValueDidChange;
-- (void)_getContentTranslation:(CGPoint *)a3 scale:(CGPoint *)a4 forCommitProgress:(double)a5 contentInsets:(UIEdgeInsets)a6 additionalContentTranslation:(CGPoint)a7;
-- (void)_getDistanceTraveled:(double *)a3 fullDistance:(double *)a4 commitProgress:(double *)a5 forTranslationFromCorner:(CGPoint)a6 bounds:(CGRect)a7;
-- (void)_prepareViewHierarchyForCommittedScreenshot:(BOOL)a3 gestureStyle:(int64_t)a4;
-- (void)_updateContentTransformUsingPresentationValues:(BOOL)a3;
+- (void)_getContentTranslation:(CGPoint *)translation scale:(CGPoint *)scale forCommitProgress:(double)progress contentInsets:(UIEdgeInsets)insets additionalContentTranslation:(CGPoint)contentTranslation;
+- (void)_getDistanceTraveled:(double *)traveled fullDistance:(double *)distance commitProgress:(double *)progress forTranslationFromCorner:(CGPoint)corner bounds:(CGRect)bounds;
+- (void)_prepareViewHierarchyForCommittedScreenshot:(BOOL)screenshot gestureStyle:(int64_t)style;
+- (void)_updateContentTransformUsingPresentationValues:(BOOL)values;
 - (void)_updateCropLinesMultiPartAnimationForCropsProgress;
-- (void)_updateWithUpdateMode:(int64_t)a3 commitProgress:(double)a4 additionalContentTranslation:(CGPoint)a5 completion:(id)a6;
-- (void)_updateWithUpdateMode:(int64_t)a3 contentAnimationSettings:(id)a4 commitProgress:(double)a5 additionalContentTranslation:(CGPoint)a6 completion:(id)a7;
-- (void)cancelInteractionWithStyle:(int64_t)a3 settlingCompletionHandler:(id)a4;
-- (void)captureScreenshotWithInterfaceOrientation:(int64_t)a3 completion:(id)a4;
-- (void)commitInteractionWithScreenshotImage:(id)a3 screenshotInterfaceOrientation:(int64_t)a4 settlingCompletionHandler:(id)a5 flashCompletionHandler:(id)a6;
-- (void)handlePanGestureRecognizerAction:(id)a3;
+- (void)_updateWithUpdateMode:(int64_t)mode commitProgress:(double)progress additionalContentTranslation:(CGPoint)translation completion:(id)completion;
+- (void)_updateWithUpdateMode:(int64_t)mode contentAnimationSettings:(id)settings commitProgress:(double)progress additionalContentTranslation:(CGPoint)translation completion:(id)completion;
+- (void)cancelInteractionWithStyle:(int64_t)style settlingCompletionHandler:(id)handler;
+- (void)captureScreenshotWithInterfaceOrientation:(int64_t)orientation completion:(id)completion;
+- (void)commitInteractionWithScreenshotImage:(id)image screenshotInterfaceOrientation:(int64_t)orientation settlingCompletionHandler:(id)handler flashCompletionHandler:(id)completionHandler;
+- (void)handlePanGestureRecognizerAction:(id)action;
 - (void)invalidate;
 - (void)removePlaceholderChrome;
-- (void)setGestureStyle:(int64_t)a3;
+- (void)setGestureStyle:(int64_t)style;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation SBInteractiveScreenshotGestureRootViewController
 
-- (SBInteractiveScreenshotGestureRootViewController)initWithWindowScene:(id)a3
+- (SBInteractiveScreenshotGestureRootViewController)initWithWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v19.receiver = self;
   v19.super_class = SBInteractiveScreenshotGestureRootViewController;
   v5 = [(SBInteractiveScreenshotGestureRootViewController *)&v19 initWithNibName:0 bundle:0];
@@ -46,10 +46,10 @@
     accessQueue = v5->_accessQueue;
     v5->_accessQueue = v6;
 
-    v8 = [MEMORY[0x277D0AAD8] sharedInstance];
-    v9 = [v4 _FBSScene];
-    v10 = [v9 identityToken];
-    v11 = [v8 sceneFromIdentityToken:v10];
+    mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
+    _FBSScene = [sceneCopy _FBSScene];
+    identityToken = [_FBSScene identityToken];
+    v11 = [mEMORY[0x277D0AAD8] sceneFromIdentityToken:identityToken];
     sourceScene = v5->_sourceScene;
     v5->_sourceScene = v11;
 
@@ -57,8 +57,8 @@
     settings = v5->_settings;
     v5->_settings = v13;
 
-    v15 = [(SBInteractiveScreenshotSettings *)v5->_settings cropsAnimationSettings];
-    v16 = [v15 copy];
+    cropsAnimationSettings = [(SBInteractiveScreenshotSettings *)v5->_settings cropsAnimationSettings];
+    v16 = [cropsAnimationSettings copy];
     trackingCropsAnimationSettings = v5->_trackingCropsAnimationSettings;
     v5->_trackingCropsAnimationSettings = v16;
   }
@@ -79,30 +79,30 @@
   v91.receiver = self;
   v91.super_class = SBInteractiveScreenshotGestureRootViewController;
   [(SBInteractiveScreenshotGestureRootViewController *)&v91 viewDidLoad];
-  v3 = [(SBInteractiveScreenshotGestureRootViewController *)self view];
-  [v3 bounds];
+  view = [(SBInteractiveScreenshotGestureRootViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [MEMORY[0x277D75348] clearColor];
-  [v3 setBackgroundColor:v12];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [view setBackgroundColor:clearColor];
 
   v13 = objc_alloc_init(MEMORY[0x277D4BE28]);
   chromePlaceholderViewController = self->_chromePlaceholderViewController;
   self->_chromePlaceholderViewController = v13;
 
-  v80 = [(FBScene *)self->_sourceScene identifier];
-  v82 = [MEMORY[0x277CCACA8] stringWithFormat:@"SBInteractiveGestureContent-%@", v80];
+  identifier = [(FBScene *)self->_sourceScene identifier];
+  v82 = [MEMORY[0x277CCACA8] stringWithFormat:@"SBInteractiveGestureContent-%@", identifier];
   v15 = [[_SBInteractiveScreenshotGestureBackdropView alloc] initWithFrame:v5, v7, v9, v11];
   contentCapturingView = self->_contentCapturingView;
   self->_contentCapturingView = v15;
 
   [(_SBInteractiveScreenshotGestureBackdropView *)self->_contentCapturingView bs_setHitTestingDisabled:1];
-  v83 = [(_SBInteractiveScreenshotGestureBackdropView *)self->_contentCapturingView backdropLayer];
-  [v83 setGroupName:v82];
-  [v83 setCaptureOnly:1];
-  [v3 addSubview:self->_contentCapturingView];
+  backdropLayer = [(_SBInteractiveScreenshotGestureBackdropView *)self->_contentCapturingView backdropLayer];
+  [backdropLayer setGroupName:v82];
+  [backdropLayer setCaptureOnly:1];
+  [view addSubview:self->_contentCapturingView];
   v17 = [[SBWallpaperEffectView alloc] initWithWallpaperVariant:1 transformOptions:0];
   wallpaperEffectView = self->_wallpaperEffectView;
   self->_wallpaperEffectView = v17;
@@ -111,48 +111,48 @@
   [(SBWallpaperEffectView *)self->_wallpaperEffectView bs_setHitTestingDisabled:1];
   [(PBUIWallpaperEffectViewBase *)self->_wallpaperEffectView setForcesOpaque:1];
   [(PBUIWallpaperEffectViewBase *)self->_wallpaperEffectView setFullscreen:1];
-  [v3 addSubview:self->_wallpaperEffectView];
-  v19 = [(SSChromePlaceholderViewController *)self->_chromePlaceholderViewController backgroundBlurEffectStyle];
+  [view addSubview:self->_wallpaperEffectView];
+  backgroundBlurEffectStyle = [(SSChromePlaceholderViewController *)self->_chromePlaceholderViewController backgroundBlurEffectStyle];
   v20 = objc_alloc_init(MEMORY[0x277D75D68]);
   materialView = self->_materialView;
   self->_materialView = v20;
 
   v22 = self->_materialView;
-  v23 = [MEMORY[0x277D75210] effectWithStyle:v19];
+  v23 = [MEMORY[0x277D75210] effectWithStyle:backgroundBlurEffectStyle];
   [(UIVisualEffectView *)v22 setEffect:v23];
 
   [(UIVisualEffectView *)self->_materialView bs_setHitTestingDisabled:1];
-  [v3 addSubview:self->_materialView];
+  [view addSubview:self->_materialView];
   v24 = [objc_alloc(MEMORY[0x277CF0D78]) initWithFrame:{v5, v7, v9, v11}];
   chromePlaceholderOrientationWrapperView = self->_chromePlaceholderOrientationWrapperView;
   self->_chromePlaceholderOrientationWrapperView = v24;
 
   [(BSUIOrientationTransformWrapperView *)self->_chromePlaceholderOrientationWrapperView setContainerOrientation:1];
-  [v3 addSubview:self->_chromePlaceholderOrientationWrapperView];
+  [view addSubview:self->_chromePlaceholderOrientationWrapperView];
   [(SBInteractiveScreenshotGestureRootViewController *)self addChildViewController:self->_chromePlaceholderViewController];
   [(SSChromePlaceholderViewController *)self->_chromePlaceholderViewController beginAppearanceTransition:1 animated:0];
-  v81 = [(SSChromePlaceholderViewController *)self->_chromePlaceholderViewController view];
-  [v81 sb_setBoundsAndPositionFromFrame:{v5, v7, v9, v11}];
-  [(BSUIOrientationTransformWrapperView *)self->_chromePlaceholderOrientationWrapperView addContentView:v81];
+  view2 = [(SSChromePlaceholderViewController *)self->_chromePlaceholderViewController view];
+  [view2 sb_setBoundsAndPositionFromFrame:{v5, v7, v9, v11}];
+  [(BSUIOrientationTransformWrapperView *)self->_chromePlaceholderOrientationWrapperView addContentView:view2];
   [(SSChromePlaceholderViewController *)self->_chromePlaceholderViewController endAppearanceTransition];
   [(SSChromePlaceholderViewController *)self->_chromePlaceholderViewController didMoveToParentViewController:self];
   if ([(SSChromePlaceholderViewController *)self->_chromePlaceholderViewController _preferredStatusBarVisibility]== 2)
   {
-    v26 = [SBApp windowSceneManager];
-    v27 = [(FBScene *)self->_sourceScene settings];
-    v28 = [v27 displayConfiguration];
-    v29 = [v28 identity];
-    v30 = [v26 windowSceneForDisplayIdentity:v29];
+    windowSceneManager = [SBApp windowSceneManager];
+    settings = [(FBScene *)self->_sourceScene settings];
+    displayConfiguration = [settings displayConfiguration];
+    identity = [displayConfiguration identity];
+    v30 = [windowSceneManager windowSceneForDisplayIdentity:identity];
 
-    v31 = [v30 statusBarManager];
-    v32 = [v31 reusePool];
+    statusBarManager = [v30 statusBarManager];
+    reusePool = [statusBarManager reusePool];
     v33 = [(SBInteractiveScreenshotGestureRootViewController *)self description];
-    v34 = [v32 getReusableStatusBarWithReason:v33 withFrame:{v5, v7, v9, v11}];
+    v34 = [reusePool getReusableStatusBarWithReason:v33 withFrame:{v5, v7, v9, v11}];
     chromePlaceholderStatusBar = self->_chromePlaceholderStatusBar;
     self->_chromePlaceholderStatusBar = v34;
 
-    v36 = [(SSChromePlaceholderViewController *)self->_chromePlaceholderViewController preferredStatusBarStyle];
-    v37 = [objc_alloc(MEMORY[0x277D6BFE8]) initWithResolvedStyle:_SBStatusBarStyleFromLegacyStyle(v36) foregroundColor:0];
+    preferredStatusBarStyle = [(SSChromePlaceholderViewController *)self->_chromePlaceholderViewController preferredStatusBarStyle];
+    v37 = [objc_alloc(MEMORY[0x277D6BFE8]) initWithResolvedStyle:_SBStatusBarStyleFromLegacyStyle(preferredStatusBarStyle) foregroundColor:0];
     [(UIStatusBar *)self->_chromePlaceholderStatusBar setStyleRequest:v37 animationParameters:0];
     [(BSUIOrientationTransformWrapperView *)self->_chromePlaceholderOrientationWrapperView addContentView:self->_chromePlaceholderStatusBar];
   }
@@ -162,11 +162,11 @@
   self->_topContentContainerView = v38;
 
   [(UIView *)self->_topContentContainerView setClipsToBounds:1];
-  v40 = [(UIView *)self->_topContentContainerView layer];
+  layer = [(UIView *)self->_topContentContainerView layer];
   v41 = *MEMORY[0x277CDA138];
-  [v40 setCornerCurve:*MEMORY[0x277CDA138]];
+  [layer setCornerCurve:*MEMORY[0x277CDA138]];
 
-  [v3 addSubview:self->_topContentContainerView];
+  [view addSubview:self->_topContentContainerView];
   v42 = [_SBInteractiveScreenshotGestureReplicatorView alloc];
   [(UIView *)self->_topContentContainerView bounds];
   v43 = [(_SBInteractiveScreenshotGestureReplicatorView *)v42 initWithFrame:?];
@@ -174,8 +174,8 @@
   self->_replicatorView = v43;
 
   [(_SBInteractiveScreenshotGestureReplicatorView *)self->_replicatorView bs_setHitTestingDisabled:1];
-  v79 = [(_SBInteractiveScreenshotGestureReplicatorView *)self->_replicatorView replicatorLayer];
-  [v79 setInstanceCount:2];
+  replicatorLayer = [(_SBInteractiveScreenshotGestureReplicatorView *)self->_replicatorView replicatorLayer];
+  [replicatorLayer setInstanceCount:2];
   [(UIView *)self->_topContentContainerView addSubview:self->_replicatorView];
   v45 = [_SBInteractiveScreenshotGestureBackdropView alloc];
   [(_SBInteractiveScreenshotGestureReplicatorView *)self->_replicatorView bounds];
@@ -184,18 +184,18 @@
   self->_contentBackdropView = v46;
 
   [(_SBInteractiveScreenshotGestureBackdropView *)self->_contentBackdropView bs_setHitTestingDisabled:1];
-  v48 = [(_SBInteractiveScreenshotGestureBackdropView *)self->_contentBackdropView backdropLayer];
-  [v48 setGroupName:v82];
+  backdropLayer2 = [(_SBInteractiveScreenshotGestureBackdropView *)self->_contentBackdropView backdropLayer];
+  [backdropLayer2 setGroupName:v82];
   [(_SBInteractiveScreenshotGestureReplicatorView *)self->_replicatorView addSubview:self->_contentBackdropView];
   v49 = [(SBInteractiveScreenshotGestureRootViewController *)self _createFlashViewWithFrame:v5, v7, v9, v11];
   flashView = self->_flashView;
   self->_flashView = v49;
 
   [(SSFlashView *)self->_flashView setHidden:1];
-  v51 = [(SSFlashView *)self->_flashView layer];
-  [v51 setCornerCurve:v41];
+  layer2 = [(SSFlashView *)self->_flashView layer];
+  [layer2 setCornerCurve:v41];
 
-  [v3 addSubview:self->_flashView];
+  [view addSubview:self->_flashView];
   _UISolariumEnabled();
   v52 = [objc_alloc(objc_opt_class()) initWithFrame:{v5, v7, v9, v11}];
   cropsView = self->_cropsView;
@@ -203,17 +203,17 @@
 
   [(SBInteractiveScreenshotGestureCropsView *)self->_cropsView bs_setHitTestingDisabled:1];
   v54 = self->_cropsView;
-  v55 = [(SSChromePlaceholderViewController *)self->_chromePlaceholderViewController cropsCornerColor];
-  [(SBInteractiveScreenshotGestureCropsView *)v54 setCornerColor:v55];
+  cropsCornerColor = [(SSChromePlaceholderViewController *)self->_chromePlaceholderViewController cropsCornerColor];
+  [(SBInteractiveScreenshotGestureCropsView *)v54 setCornerColor:cropsCornerColor];
 
   v56 = self->_cropsView;
-  v57 = [(SSChromePlaceholderViewController *)self->_chromePlaceholderViewController cropsCornerColor];
-  [(SBInteractiveScreenshotGestureCropsView *)v56 setLineColor:v57];
+  cropsCornerColor2 = [(SSChromePlaceholderViewController *)self->_chromePlaceholderViewController cropsCornerColor];
+  [(SBInteractiveScreenshotGestureCropsView *)v56 setLineColor:cropsCornerColor2];
 
   [(SBInteractiveScreenshotGestureCropsView *)self->_cropsView setLineWidth:1.0];
   v58 = self->_cropsView;
-  v59 = [(SSChromePlaceholderViewController *)self->_chromePlaceholderViewController cropsCornerColor];
-  [(SBInteractiveScreenshotGestureCropsView *)v58 setLineGrabberColor:v59];
+  cropsCornerColor3 = [(SSChromePlaceholderViewController *)self->_chromePlaceholderViewController cropsCornerColor];
+  [(SBInteractiveScreenshotGestureCropsView *)v58 setLineGrabberColor:cropsCornerColor3];
 
   v60 = self->_cropsView;
   [(SSChromePlaceholderViewController *)self->_chromePlaceholderViewController cropsCornerLineWidth];
@@ -225,7 +225,7 @@
   [(SSChromePlaceholderViewController *)self->_chromePlaceholderViewController cropsCornerEdgeLength];
   [(SBInteractiveScreenshotGestureCropsView *)v62 setLineGrabberEdgeLength:?];
   [(SBInteractiveScreenshotGestureCropsView *)self->_cropsView setCornerAlpha:0.0];
-  [v3 addSubview:self->_cropsView];
+  [view addSubview:self->_cropsView];
   v63 = objc_alloc_init(MEMORY[0x277D75D38]);
   transformProgressAnimatableProperty = self->_transformProgressAnimatableProperty;
   self->_transformProgressAnimatableProperty = v63;
@@ -306,25 +306,25 @@ void __63__SBInteractiveScreenshotGestureRootViewController_viewDidLoad__block_i
   [WeakRetained _updateCropLinesMultiPartAnimationForCropsProgress];
 }
 
-- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)a3 insetsAreAbsolute:(BOOL *)a4
+- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)controller insetsAreAbsolute:(BOOL *)absolute
 {
-  if (self->_chromePlaceholderViewController == a3)
+  if (self->_chromePlaceholderViewController == controller)
   {
-    v14 = [MEMORY[0x277D77750] sb_thisDeviceDisplayEdgeInfo];
+    sb_thisDeviceDisplayEdgeInfo = [MEMORY[0x277D77750] sb_thisDeviceDisplayEdgeInfo];
     [(UIStatusBar *)self->_chromePlaceholderStatusBar currentHeight];
-    v15 = [v14 sb_displayEdgeInfoWithSafeAreaInsetsForStatusBarHeight:?];
+    v15 = [sb_thisDeviceDisplayEdgeInfo sb_displayEdgeInfoWithSafeAreaInsetsForStatusBarHeight:?];
 
-    v16 = [(BSUIOrientationTransformWrapperView *)self->_chromePlaceholderOrientationWrapperView contentOrientation];
-    v17 = [(SBInteractiveScreenshotGestureRootViewController *)self traitCollection];
-    [v15 sb_orientedEdgeInsetsForInterfaceOrientation:v16 traitCollection:v17];
+    contentOrientation = [(BSUIOrientationTransformWrapperView *)self->_chromePlaceholderOrientationWrapperView contentOrientation];
+    traitCollection = [(SBInteractiveScreenshotGestureRootViewController *)self traitCollection];
+    [v15 sb_orientedEdgeInsetsForInterfaceOrientation:contentOrientation traitCollection:traitCollection];
     v7 = v18;
     v9 = v19;
     v11 = v20;
     v13 = v21;
 
-    if (a4)
+    if (absolute)
     {
-      *a4 = 1;
+      *absolute = 1;
     }
   }
 
@@ -390,10 +390,10 @@ void __63__SBInteractiveScreenshotGestureRootViewController_viewDidLoad__block_i
 
   if (self->_chromePlaceholderStatusBar)
   {
-    v11 = [(UIViewController *)self _sbWindowScene];
-    v12 = [v11 statusBarManager];
-    v13 = [v12 reusePool];
-    [v13 recycleStatusBar:self->_chromePlaceholderStatusBar];
+    _sbWindowScene = [(UIViewController *)self _sbWindowScene];
+    statusBarManager = [_sbWindowScene statusBarManager];
+    reusePool = [statusBarManager reusePool];
+    [reusePool recycleStatusBar:self->_chromePlaceholderStatusBar];
 
     chromePlaceholderStatusBar = self->_chromePlaceholderStatusBar;
     self->_chromePlaceholderStatusBar = 0;
@@ -402,16 +402,16 @@ void __63__SBInteractiveScreenshotGestureRootViewController_viewDidLoad__block_i
 
 - (unsigned)flashViewLayerContextID
 {
-  v2 = [(SSFlashView *)self->_flashView layer];
-  v3 = [v2 context];
-  v4 = [v3 contextId];
+  layer = [(SSFlashView *)self->_flashView layer];
+  context = [layer context];
+  contextId = [context contextId];
 
-  return v4;
+  return contextId;
 }
 
 - (unint64_t)flashViewLayerRenderID
 {
-  v2 = [(SSFlashView *)self->_flashView layer];
+  layer = [(SSFlashView *)self->_flashView layer];
   RenderId = CALayerGetRenderId();
 
   return RenderId;
@@ -436,7 +436,7 @@ void __63__SBInteractiveScreenshotGestureRootViewController_viewDidLoad__block_i
   return v3;
 }
 
-- (void)setGestureStyle:(int64_t)a3
+- (void)setGestureStyle:(int64_t)style
 {
   accessQueue = self->_accessQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -444,23 +444,23 @@ void __63__SBInteractiveScreenshotGestureRootViewController_viewDidLoad__block_i
   v4[2] = __68__SBInteractiveScreenshotGestureRootViewController_setGestureStyle___block_invoke;
   v4[3] = &unk_2783A8BC8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = style;
   dispatch_sync(accessQueue, v4);
 }
 
-- (void)cancelInteractionWithStyle:(int64_t)a3 settlingCompletionHandler:(id)a4
+- (void)cancelInteractionWithStyle:(int64_t)style settlingCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(SBInteractiveScreenshotSettings *)self->_settings contentAnimationSettings];
-  if (!a3)
+  handlerCopy = handler;
+  contentAnimationSettings = [(SBInteractiveScreenshotSettings *)self->_settings contentAnimationSettings];
+  if (!style)
   {
-    v8 = [(SBInteractiveScreenshotSettings *)self->_settings disabledGestureContentAnimationSettings];
+    disabledGestureContentAnimationSettings = [(SBInteractiveScreenshotSettings *)self->_settings disabledGestureContentAnimationSettings];
 
     [(SBInteractiveScreenshotGestureRootViewController *)self _currentCommitProgressVelocity];
     v10 = v9;
     [(SBInteractiveScreenshotSettings *)self->_settings disabledGestureVelocityScale];
     [(SBInteractiveScreenshotGestureRootViewController *)self _injectCommitProgressVelocity:v10 * v11];
-    v7 = v8;
+    contentAnimationSettings = disabledGestureContentAnimationSettings;
   }
 
   v15 = 0;
@@ -485,24 +485,24 @@ void __63__SBInteractiveScreenshotGestureRootViewController_viewDidLoad__block_i
     v13 = 3;
   }
 
-  [(SBInteractiveScreenshotGestureRootViewController *)self _updateWithUpdateMode:v13 contentAnimationSettings:v7 commitProgress:v6 additionalContentTranslation:0.0 completion:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
+  [(SBInteractiveScreenshotGestureRootViewController *)self _updateWithUpdateMode:v13 contentAnimationSettings:contentAnimationSettings commitProgress:handlerCopy additionalContentTranslation:0.0 completion:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
   _Block_object_dispose(&v15, 8);
 }
 
-- (void)captureScreenshotWithInterfaceOrientation:(int64_t)a3 completion:(id)a4
+- (void)captureScreenshotWithInterfaceOrientation:(int64_t)orientation completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   [(SBInteractiveScreenshotGestureRootViewController *)self loadViewIfNeeded];
   sourceScenePresentationView = self->_sourceScenePresentationView;
   if (sourceScenePresentationView)
   {
-    v8 = [(UIScenePresentation *)sourceScenePresentationView layer];
-    v9 = [v8 hasBeenCommitted];
+    layer = [(UIScenePresentation *)sourceScenePresentationView layer];
+    hasBeenCommitted = [layer hasBeenCommitted];
 
-    if (v9)
+    if (hasBeenCommitted)
     {
-      ImageFromInterfaceOrientedView = SBInteractiveScreenshotCreateImageFromInterfaceOrientedView(self->_sourceScenePresentationView, a3);
-      v6[2](v6, ImageFromInterfaceOrientedView);
+      ImageFromInterfaceOrientedView = SBInteractiveScreenshotCreateImageFromInterfaceOrientedView(self->_sourceScenePresentationView, orientation);
+      completionCopy[2](completionCopy, ImageFromInterfaceOrientedView);
     }
 
     else
@@ -513,15 +513,15 @@ void __63__SBInteractiveScreenshotGestureRootViewController_viewDidLoad__block_i
       v12[2] = __105__SBInteractiveScreenshotGestureRootViewController_captureScreenshotWithInterfaceOrientation_completion___block_invoke;
       v12[3] = &unk_2783B8140;
       v12[4] = self;
-      v13 = v6;
-      v14 = a3;
+      v13 = completionCopy;
+      orientationCopy = orientation;
       [v11 sb_performBlockAfterCATransactionSynchronizedCommit:v12];
     }
   }
 
   else
   {
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
@@ -532,11 +532,11 @@ void __105__SBInteractiveScreenshotGestureRootViewController_captureScreenshotWi
   (*(v1 + 16))(v1, ImageFromInterfaceOrientedView);
 }
 
-- (void)commitInteractionWithScreenshotImage:(id)a3 screenshotInterfaceOrientation:(int64_t)a4 settlingCompletionHandler:(id)a5 flashCompletionHandler:(id)a6
+- (void)commitInteractionWithScreenshotImage:(id)image screenshotInterfaceOrientation:(int64_t)orientation settlingCompletionHandler:(id)handler flashCompletionHandler:(id)completionHandler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  imageCopy = image;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v54 = 0;
   v55 = &v54;
   v56 = 0x2020000000;
@@ -559,13 +559,13 @@ void __105__SBInteractiveScreenshotGestureRootViewController_captureScreenshotWi
     [(SBInteractiveScreenshotGestureRootViewController *)self _prepareViewHierarchyForCommittedScreenshot:1 gestureStyle:v51[3]];
   }
 
-  [(UIImageView *)self->_screenshotImageView setImage:v10];
+  [(UIImageView *)self->_screenshotImageView setImage:imageCopy];
   queue_displayScale = self->_queue_displayScale;
   [(UIImageView *)self->_screenshotImageView sizeThatFits:1.79769313e308, 1.79769313e308];
   [(UIView *)self->_screenshotContainerView bounds];
   UIRectCenteredIntegralRectScale();
   [(UIImageView *)self->_screenshotImageView sb_setBoundsAndPositionFromFrame:*&queue_displayScale];
-  switch(a4)
+  switch(orientation)
   {
     case 1:
       v15 = 0.0;
@@ -578,7 +578,7 @@ void __105__SBInteractiveScreenshotGestureRootViewController_captureScreenshotWi
       break;
     default:
       v15 = 3.14159265;
-      if (a4 != 2)
+      if (orientation != 2)
       {
         v15 = 0.0;
       }
@@ -591,28 +591,28 @@ void __105__SBInteractiveScreenshotGestureRootViewController_captureScreenshotWi
   [(UIImageView *)screenshotImageView setTransform3D:&v48];
   if ([(SBInteractiveScreenshotGestureRootViewController *)self _isGestureStyleReducedMotion:v51[3]])
   {
-    if (v12)
+    if (completionHandlerCopy)
     {
-      (*(v12 + 2))(v12, 0, 0);
+      (*(completionHandlerCopy + 2))(completionHandlerCopy, 0, 0);
     }
 
-    v17 = [MEMORY[0x277CDA000] animation];
+    animation = [MEMORY[0x277CDA000] animation];
     v18 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7A8]];
-    [v17 setTimingFunction:v18];
+    [animation setTimingFunction:v18];
 
-    [v17 setType:*MEMORY[0x277CDA928]];
-    [v17 setDuration:0.3];
+    [animation setType:*MEMORY[0x277CDA928]];
+    [animation setDuration:0.3];
     v19 = objc_alloc_init(SBCAAnimationBlockDelegate);
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __169__SBInteractiveScreenshotGestureRootViewController_commitInteractionWithScreenshotImage_screenshotInterfaceOrientation_settlingCompletionHandler_flashCompletionHandler___block_invoke_8;
     v36[3] = &unk_2783B81E0;
-    v37 = v11;
+    v37 = handlerCopy;
     [(SBCAAnimationBlockDelegate *)v19 setAnimationDidStopHandler:v36];
-    [v17 setDelegate:v19];
-    v20 = [(SBInteractiveScreenshotGestureRootViewController *)self view];
-    v21 = [v20 layer];
-    [v21 addAnimation:v17 forKey:@"crossFade"];
+    [animation setDelegate:v19];
+    view = [(SBInteractiveScreenshotGestureRootViewController *)self view];
+    layer = [view layer];
+    [layer addAnimation:animation forKey:@"crossFade"];
 
     [(SBInteractiveScreenshotGestureCropsView *)self->_cropsView setLineAlpha:1.0];
     [(SBInteractiveScreenshotGestureCropsView *)self->_cropsView setLineGrabberAlpha:1.0];
@@ -639,7 +639,7 @@ void __105__SBInteractiveScreenshotGestureRootViewController_captureScreenshotWi
     v46[1] = 3221225472;
     v46[2] = __169__SBInteractiveScreenshotGestureRootViewController_commitInteractionWithScreenshotImage_screenshotInterfaceOrientation_settlingCompletionHandler_flashCompletionHandler___block_invoke_2;
     v46[3] = &unk_2783B8190;
-    v47 = v11;
+    v47 = handlerCopy;
     v26 = [(SBInteractiveScreenshotGestureMultiPartAnimation *)v25 initWithCompletionHandler:v46];
     [(SBInteractiveScreenshotGestureMultiPartAnimation *)v26 beginAnimationWithIdentifier:@"cropLinesMultiPartAnimation"];
     [(SBInteractiveScreenshotGestureMultiPartAnimation *)v26 beginAnimationWithIdentifier:@"mainUpdate"];
@@ -680,13 +680,13 @@ void __105__SBInteractiveScreenshotGestureRootViewController_captureScreenshotWi
     v38[1] = 3221225472;
     v38[2] = __169__SBInteractiveScreenshotGestureRootViewController_commitInteractionWithScreenshotImage_screenshotInterfaceOrientation_settlingCompletionHandler_flashCompletionHandler___block_invoke_7;
     v38[3] = &unk_2783A9348;
-    v39 = v12;
+    v39 = completionHandlerCopy;
     [(SSFlashView *)flashView flashWithCompletion:v38];
 
     objc_destroyWeak(&v45);
     objc_destroyWeak(&v48);
 
-    v17 = v47;
+    animation = v47;
   }
 
   _Block_object_dispose(&v50, 8);
@@ -799,26 +799,26 @@ uint64_t __169__SBInteractiveScreenshotGestureRootViewController_commitInteracti
   return result;
 }
 
-- (void)handlePanGestureRecognizerAction:(id)a3
+- (void)handlePanGestureRecognizerAction:(id)action
 {
-  v4 = a3;
-  v5 = [(SBInteractiveScreenshotGestureRootViewController *)self view];
-  [v5 bounds];
+  actionCopy = action;
+  view = [(SBInteractiveScreenshotGestureRootViewController *)self view];
+  [view bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(SBInteractiveScreenshotGestureRootViewController *)self traitCollection];
-  [v14 displayScale];
+  traitCollection = [(SBInteractiveScreenshotGestureRootViewController *)self traitCollection];
+  [traitCollection displayScale];
   v16 = v15;
   if (BSFloatLessThanOrEqualToFloat())
   {
-    v17 = [MEMORY[0x277D759A0] mainScreen];
-    [v17 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v16 = v18;
   }
 
-  v19 = [v4 state];
+  state = [actionCopy state];
   v104 = 0;
   v105 = &v104;
   v106 = 0x2020000000;
@@ -831,7 +831,7 @@ uint64_t __169__SBInteractiveScreenshotGestureRootViewController_commitInteracti
   block[4] = self;
   block[5] = &v104;
   dispatch_sync(accessQueue, block);
-  if (v19 == 1)
+  if (state == 1)
   {
     [(SBInteractiveScreenshotGestureRootViewController *)self _prepareViewHierarchyForCommittedScreenshot:0 gestureStyle:v105[3]];
     [(SBInteractiveScreenshotGestureCropsView *)self->_cropsView sb_setBoundsAndPositionFromFrame:v7, v9, v11, v13];
@@ -841,16 +841,16 @@ uint64_t __169__SBInteractiveScreenshotGestureRootViewController_commitInteracti
   v100 = &v99;
   v101 = 0x2020000000;
   v102 = 0;
-  [v4 locationInView:v5];
+  [actionCopy locationInView:view];
   v22 = v21;
   v24 = v23;
-  if (v19 == 1)
+  if (state == 1)
   {
-    v25 = [v4 _touchInterfaceOrientation];
-    v100[3] = v25;
+    _touchInterfaceOrientation = [actionCopy _touchInterfaceOrientation];
+    v100[3] = _touchInterfaceOrientation;
     self->_gesturePortraitAnchorPoint.x = v22;
     self->_gesturePortraitAnchorPoint.y = v24;
-    [(UIStatusBar *)self->_chromePlaceholderStatusBar setOrientation:v25];
+    [(UIStatusBar *)self->_chromePlaceholderStatusBar setOrientation:_touchInterfaceOrientation];
     [(BSUIOrientationTransformWrapperView *)self->_chromePlaceholderOrientationWrapperView setContentOrientation:v100[3]];
     [(SSChromePlaceholderViewController *)self->_chromePlaceholderViewController _updateContentOverlayInsetsFromParentIfNecessary];
     v91 = v16;
@@ -861,7 +861,7 @@ uint64_t __169__SBInteractiveScreenshotGestureRootViewController_commitInteracti
 
     else
     {
-      [v14 displayCornerRadius];
+      [traitCollection displayCornerRadius];
     }
 
     v90 = v26;
@@ -916,10 +916,10 @@ uint64_t __169__SBInteractiveScreenshotGestureRootViewController_commitInteracti
   v43 = v42;
   v45 = v44;
   v47 = v46;
-  v48 = [v4 edges];
+  edges = [actionCopy edges];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   _UIWindowConvertPointFromOrientationToOrientation();
-  if (v19 == 4)
+  if (state == 4)
   {
     v59 = 0;
     goto LABEL_21;
@@ -927,7 +927,7 @@ uint64_t __169__SBInteractiveScreenshotGestureRootViewController_commitInteracti
 
   v52 = v50;
   v53 = v51;
-  if (v19 == 3)
+  if (state == 3)
   {
     if ([(SBInteractiveScreenshotGestureRootViewController *)self _isGestureStyleDisabled:v105[3]])
     {
@@ -937,7 +937,7 @@ LABEL_21:
       goto LABEL_56;
     }
 
-    [v4 velocityInView:v5];
+    [actionCopy velocityInView:view];
     v62 = v60;
     v63 = v100[3];
     v92 = v47;
@@ -966,7 +966,7 @@ LABEL_21:
     [(SBInteractiveScreenshotSettings *)self->_settings projectionDecelerationRate];
     v79 = v38 + v62 / 1000.0 * v78 / (1.0 - v78);
     v80 = v40 + v64 / 1000.0 * v78 / (1.0 - v78);
-    if (v48 == 12)
+    if (edges == 12)
     {
       v82 = v79 - v52;
       v83 = v80 - v53;
@@ -981,7 +981,7 @@ LABEL_21:
     else
     {
       v81 = v92;
-      if (v48 != 6 || ((v82 = v79 - v52, v83 = v80 - v53, v82 > 0.00000011920929) ? (v84 = v83 < 0.00000011920929) : (v84 = 0), !v84))
+      if (edges != 6 || ((v82 = v79 - v52, v83 = v80 - v53, v82 > 0.00000011920929) ? (v84 = v83 < 0.00000011920929) : (v84 = 0), !v84))
       {
 LABEL_46:
         v85 = 1;
@@ -1006,7 +1006,7 @@ LABEL_55:
     goto LABEL_55;
   }
 
-  if (v19 == 2)
+  if (state == 2)
   {
     v54 = vabdd_f64(v38, v50);
     v95 = 0;
@@ -1121,7 +1121,7 @@ double __85__SBInteractiveScreenshotGestureRootViewController_handlePanGestureRe
   [(BSUIOrientationTransformWrapperView *)chromePlaceholderOrientationWrapperView setHidden:1];
 }
 
-- (CATransform3D)_anchoredTransformForAnchorPoint:(SEL)a3 bounds:(CGPoint)a4 center:(CGRect)a5 transform:(CGPoint)a6
+- (CATransform3D)_anchoredTransformForAnchorPoint:(SEL)point bounds:(CGPoint)bounds center:(CGRect)center transform:(CGPoint)transform
 {
   *&retstr->m41 = 0u;
   *&retstr->m43 = 0u;
@@ -1143,7 +1143,7 @@ double __85__SBInteractiveScreenshotGestureRootViewController_handlePanGestureRe
   v11 = *&a7->m23;
   *&v17.m21 = *&a7->m21;
   *&v17.m23 = v11;
-  CATransform3DTranslate(retstr, &v17, -(a4.x * a5.size.width), -(a4.y * a5.size.height), 0.0);
+  CATransform3DTranslate(retstr, &v17, -(bounds.x * center.size.width), -(bounds.y * center.size.height), 0.0);
   result = CATransform3DTranslateRight();
   v13 = *&v17.m33;
   *&retstr->m31 = *&v17.m31;
@@ -1208,19 +1208,19 @@ __n128 __123__SBInteractiveScreenshotGestureRootViewController__cancellationComm
   return result;
 }
 
-- (CGPoint)_contentScaleForCommitProgress:(double)a3 contentInsets:(UIEdgeInsets)a4 additionalContentTranslation:(CGPoint)a5
+- (CGPoint)_contentScaleForCommitProgress:(double)progress contentInsets:(UIEdgeInsets)insets additionalContentTranslation:(CGPoint)translation
 {
-  y = a5.y;
-  x = a5.x;
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
+  y = translation.y;
+  x = translation.x;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   dispatch_assert_queue_V2(self->_accessQueue);
   __asm { FMOV            V0.2D, #1.0 }
 
   v20 = _Q0;
-  [(SBInteractiveScreenshotGestureRootViewController *)self _getContentTranslation:0 scale:&v20 forCommitProgress:a3 contentInsets:top additionalContentTranslation:left, bottom, right, x, y];
+  [(SBInteractiveScreenshotGestureRootViewController *)self _getContentTranslation:0 scale:&v20 forCommitProgress:progress contentInsets:top additionalContentTranslation:left, bottom, right, x, y];
   v19 = *(&v20 + 1);
   v18 = *&v20;
   result.y = v19;
@@ -1228,21 +1228,21 @@ __n128 __123__SBInteractiveScreenshotGestureRootViewController__cancellationComm
   return result;
 }
 
-- (CATransform3D)_contentTransformForCommitProgress:(SEL)a3 contentInsets:(double)a4 additionalContentTranslation:(UIEdgeInsets)a5
+- (CATransform3D)_contentTransformForCommitProgress:(SEL)progress contentInsets:(double)insets additionalContentTranslation:(UIEdgeInsets)translation
 {
   y = a6.y;
   x = a6.x;
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
+  right = translation.right;
+  bottom = translation.bottom;
+  left = translation.left;
+  top = translation.top;
   dispatch_assert_queue_V2(self->_accessQueue);
   v15 = *MEMORY[0x277CBF348];
   __asm { FMOV            V0.2D, #1.0 }
 
   v32 = _Q0;
   v33 = v15;
-  [(SBInteractiveScreenshotGestureRootViewController *)self _getContentTranslation:&v33 scale:&v32 forCommitProgress:a4 contentInsets:top additionalContentTranslation:left, bottom, right, x, y];
+  [(SBInteractiveScreenshotGestureRootViewController *)self _getContentTranslation:&v33 scale:&v32 forCommitProgress:insets contentInsets:top additionalContentTranslation:left, bottom, right, x, y];
   *&retstr->m41 = 0u;
   *&retstr->m43 = 0u;
   *&retstr->m31 = 0u;
@@ -1280,21 +1280,21 @@ __n128 __123__SBInteractiveScreenshotGestureRootViewController__cancellationComm
   return result;
 }
 
-- (CATransform3D)_inverseContentTransformForCommitProgress:(SEL)a3 contentInsets:(double)a4 additionalContentTranslation:(UIEdgeInsets)a5
+- (CATransform3D)_inverseContentTransformForCommitProgress:(SEL)progress contentInsets:(double)insets additionalContentTranslation:(UIEdgeInsets)translation
 {
   y = a6.y;
   x = a6.x;
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
+  right = translation.right;
+  bottom = translation.bottom;
+  left = translation.left;
+  top = translation.top;
   dispatch_assert_queue_V2(self->_accessQueue);
   v15 = *MEMORY[0x277CBF348];
   __asm { FMOV            V0.2D, #1.0 }
 
   v32 = _Q0;
   v33 = v15;
-  [(SBInteractiveScreenshotGestureRootViewController *)self _getContentTranslation:&v33 scale:&v32 forCommitProgress:a4 contentInsets:top additionalContentTranslation:left, bottom, right, x, y];
+  [(SBInteractiveScreenshotGestureRootViewController *)self _getContentTranslation:&v33 scale:&v32 forCommitProgress:insets contentInsets:top additionalContentTranslation:left, bottom, right, x, y];
   *&retstr->m41 = 0u;
   *&retstr->m43 = 0u;
   *&retstr->m31 = 0u;
@@ -1332,12 +1332,12 @@ __n128 __123__SBInteractiveScreenshotGestureRootViewController__cancellationComm
   return result;
 }
 
-- (id)_createFlashViewWithFrame:(CGRect)a3
+- (id)_createFlashViewWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   objc_opt_class();
   if (objc_opt_respondsToSelector())
   {
@@ -1357,18 +1357,18 @@ __n128 __123__SBInteractiveScreenshotGestureRootViewController__cancellationComm
   return v8;
 }
 
-- (id)_createScreenshotImageViewWithFrame:(CGRect)a3
+- (id)_createScreenshotImageViewWithFrame:(CGRect)frame
 {
-  v3 = [objc_alloc(MEMORY[0x277D755E8]) initWithFrame:{a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+  v3 = [objc_alloc(MEMORY[0x277D755E8]) initWithFrame:{frame.origin.x, frame.origin.y, frame.size.width, frame.size.height}];
   [v3 setContentMode:4];
-  v4 = [v3 layer];
-  [v4 setMinificationFilter:*MEMORY[0x277CDA630]];
-  [v4 setCornerCurve:*MEMORY[0x277CDA138]];
+  layer = [v3 layer];
+  [layer setMinificationFilter:*MEMORY[0x277CDA630]];
+  [layer setCornerCurve:*MEMORY[0x277CDA138]];
 
   return v3;
 }
 
-- (void)_addGestureUpdateWithCommitProgress:(double)a3 timestamp:(double)a4
+- (void)_addGestureUpdateWithCommitProgress:(double)progress timestamp:(double)timestamp
 {
   gestureCommitProgressUpdates = self->_gestureCommitProgressUpdates;
   if (gestureCommitProgressUpdates)
@@ -1403,15 +1403,15 @@ __n128 __123__SBInteractiveScreenshotGestureRootViewController__cancellationComm
   }
 
   v13 = self->_gestureCommitProgressUpdates;
-  v14 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v14 = [MEMORY[0x277CCABB0] numberWithDouble:progress];
   [(NSMutableArray *)v13 insertObject:v14 atIndex:0];
 
   v15 = self->_gestureCommitProgressUpdateTimestamps;
-  v16 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+  v16 = [MEMORY[0x277CCABB0] numberWithDouble:timestamp];
   [(NSMutableArray *)v15 insertObject:v16 atIndex:0];
 }
 
-- (double)_gestureCommitProgressUpdateVelocityOverTimeInterval:(double)a3
+- (double)_gestureCommitProgressUpdateVelocityOverTimeInterval:(double)interval
 {
   if (![(NSMutableArray *)self->_gestureCommitProgressUpdates count])
   {
@@ -1457,7 +1457,7 @@ __n128 __123__SBInteractiveScreenshotGestureRootViewController__cancellationComm
     }
   }
 
-  while (v7 - v20 <= a3);
+  while (v7 - v20 <= interval);
   if (v6)
   {
     return v8 / v6;
@@ -1469,12 +1469,12 @@ __n128 __123__SBInteractiveScreenshotGestureRootViewController__cancellationComm
   }
 }
 
-- (void)_getContentTranslation:(CGPoint *)a3 scale:(CGPoint *)a4 forCommitProgress:(double)a5 contentInsets:(UIEdgeInsets)a6 additionalContentTranslation:(CGPoint)a7
+- (void)_getContentTranslation:(CGPoint *)translation scale:(CGPoint *)scale forCommitProgress:(double)progress contentInsets:(UIEdgeInsets)insets additionalContentTranslation:(CGPoint)contentTranslation
 {
-  right = a6.right;
-  bottom = a6.bottom;
-  left = a6.left;
-  top = a6.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   dispatch_assert_queue_V2(self->_accessQueue);
   width = self->_queue_portraitBounds.size.width;
   height = self->_queue_portraitBounds.size.height;
@@ -1485,53 +1485,53 @@ __n128 __123__SBInteractiveScreenshotGestureRootViewController__cancellationComm
   v22 = v21;
   v24 = v23;
   UIRectGetCenter();
-  if (a3)
+  if (translation)
   {
-    a3->x = a7.x + (v22 - v25) * a5 + 0.0;
-    a3->y = a7.y + (v24 - v26) * a5 + 0.0;
+    translation->x = contentTranslation.x + (v22 - v25) * progress + 0.0;
+    translation->y = contentTranslation.y + (v24 - v26) * progress + 0.0;
   }
 
-  if (a4)
+  if (scale)
   {
-    a4->x = (v18 / width + -1.0) * a5 + 1.0;
-    a4->y = (v20 / height + -1.0) * a5 + 1.0;
+    scale->x = (v18 / width + -1.0) * progress + 1.0;
+    scale->y = (v20 / height + -1.0) * progress + 1.0;
   }
 }
 
-- (void)_getDistanceTraveled:(double *)a3 fullDistance:(double *)a4 commitProgress:(double *)a5 forTranslationFromCorner:(CGPoint)a6 bounds:(CGRect)a7
+- (void)_getDistanceTraveled:(double *)traveled fullDistance:(double *)distance commitProgress:(double *)progress forTranslationFromCorner:(CGPoint)corner bounds:(CGRect)bounds
 {
-  v11 = sqrt(a6.y * a6.y + a6.x * a6.x);
-  v12 = sqrt(a7.size.height * a7.size.height + a7.size.width * a7.size.width);
+  v11 = sqrt(corner.y * corner.y + corner.x * corner.x);
+  v12 = sqrt(bounds.size.height * bounds.size.height + bounds.size.width * bounds.size.width);
   [(SBInteractiveScreenshotSettings *)self->_settings normalizedDistanceForCommitThreshold];
   [(SBInteractiveScreenshotSettings *)self->_settings rubberbandingRange];
   BSUIConstrainValueToIntervalWithRubberBand();
-  if (a3)
+  if (traveled)
   {
-    *a3 = v11;
+    *traveled = v11;
   }
 
-  if (a4)
+  if (distance)
   {
-    *a4 = v12;
+    *distance = v12;
   }
 
-  if (a5)
+  if (progress)
   {
-    *a5 = v13;
+    *progress = v13;
   }
 }
 
-- (void)_prepareViewHierarchyForCommittedScreenshot:(BOOL)a3 gestureStyle:(int64_t)a4
+- (void)_prepareViewHierarchyForCommittedScreenshot:(BOOL)screenshot gestureStyle:(int64_t)style
 {
-  v5 = a3;
+  screenshotCopy = screenshot;
   v45[1] = *MEMORY[0x277D85DE8];
-  v7 = [(SBInteractiveScreenshotGestureRootViewController *)self view];
-  [v7 bounds];
+  view = [(SBInteractiveScreenshotGestureRootViewController *)self view];
+  [view bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(SBInteractiveScreenshotGestureRootViewController *)self _isGestureStyleDisabled:a4];
+  v16 = [(SBInteractiveScreenshotGestureRootViewController *)self _isGestureStyleDisabled:style];
   cancellationCommitProgressAnimatableProperty = self->_cancellationCommitProgressAnimatableProperty;
   if (v16)
   {
@@ -1565,7 +1565,7 @@ __n128 __123__SBInteractiveScreenshotGestureRootViewController__cancellationComm
     self->_cancellationCommitProgressAnimatableProperty = 0;
   }
 
-  if (v5)
+  if (screenshotCopy)
   {
     [(UIScenePresentation *)self->_sourceScenePresentationView removeFromSuperview];
     sourceScenePresentationView = self->_sourceScenePresentationView;
@@ -1593,7 +1593,7 @@ __n128 __123__SBInteractiveScreenshotGestureRootViewController__cancellationComm
       self->_screenshotImageView = v35;
 
       [(UIView *)self->_screenshotContainerView addSubview:self->_screenshotImageView];
-      [v7 insertSubview:self->_screenshotContainerView atIndex:0];
+      [view insertSubview:self->_screenshotContainerView atIndex:0];
     }
 
     [(UIView *)self->_screenshotContainerView setHidden:0, v39, v40, v41, v42];
@@ -1605,8 +1605,8 @@ __n128 __123__SBInteractiveScreenshotGestureRootViewController__cancellationComm
   {
     if (!self->_sourceScenePresenter)
     {
-      v26 = [(FBScene *)self->_sourceScene uiPresentationManager];
-      v27 = [v26 createPresenterWithIdentifier:@"SBInteractiveScreenshotGestureRootViewController" priority:5000];
+      uiPresentationManager = [(FBScene *)self->_sourceScene uiPresentationManager];
+      v27 = [uiPresentationManager createPresenterWithIdentifier:@"SBInteractiveScreenshotGestureRootViewController" priority:5000];
       v28 = self->_sourceScenePresenter;
       self->_sourceScenePresenter = v27;
 
@@ -1616,14 +1616,14 @@ __n128 __123__SBInteractiveScreenshotGestureRootViewController__cancellationComm
     v29 = self->_sourceScenePresentationView;
     if (!v29)
     {
-      v30 = [(UIScenePresenter *)self->_sourceScenePresenter presentationView];
+      presentationView = [(UIScenePresenter *)self->_sourceScenePresenter presentationView];
       v31 = self->_sourceScenePresentationView;
-      self->_sourceScenePresentationView = v30;
+      self->_sourceScenePresentationView = presentationView;
 
       v32 = self->_sourceScenePresentationView;
       if (v32)
       {
-        [v7 insertSubview:v32 atIndex:0];
+        [view insertSubview:v32 atIndex:0];
         v29 = self->_sourceScenePresentationView;
       }
 
@@ -1633,7 +1633,7 @@ __n128 __123__SBInteractiveScreenshotGestureRootViewController__cancellationComm
       }
     }
 
-    [(UIScenePresentation *)v29 bs_setHitTestingDisabled:[(SBInteractiveScreenshotGestureRootViewController *)self _isGestureStyleDisabled:a4, v39, v40, v41, v42]^ 1];
+    [(UIScenePresentation *)v29 bs_setHitTestingDisabled:[(SBInteractiveScreenshotGestureRootViewController *)self _isGestureStyleDisabled:style, v39, v40, v41, v42]^ 1];
     [(UIScenePresentation *)self->_sourceScenePresentationView sb_setBoundsAndPositionFromFrame:v9, v11, v13, v15];
     [(UIScenePresentation *)self->_sourceScenePresentationView setHidden:0];
     [(UIView *)self->_screenshotContainerView setHidden:1];
@@ -1642,7 +1642,7 @@ __n128 __123__SBInteractiveScreenshotGestureRootViewController__cancellationComm
     p_flashView = &self->_flashView;
   }
 
-  [(SSFlashView *)*p_flashView setHidden:!v5];
+  [(SSFlashView *)*p_flashView setHidden:!screenshotCopy];
   [(SBWallpaperEffectView *)self->_wallpaperEffectView sb_setBoundsAndPositionFromFrame:v9, v11, v13, v15];
   [(PBUIWallpaperEffectViewBase *)self->_wallpaperEffectView setHidden:0];
   [(UIVisualEffectView *)self->_materialView sb_setBoundsAndPositionFromFrame:v9, v11, v13, v15];
@@ -1650,7 +1650,7 @@ __n128 __123__SBInteractiveScreenshotGestureRootViewController__cancellationComm
   [(_SBInteractiveScreenshotGestureBackdropView *)self->_contentCapturingView sb_setBoundsAndPositionFromFrame:v9, v11, v13, v15];
   [(_SBInteractiveScreenshotGestureBackdropView *)self->_contentCapturingView setHidden:0];
   [(BSUIOrientationTransformWrapperView *)self->_chromePlaceholderOrientationWrapperView sb_setBoundsAndPositionFromFrame:v9, v11, v13, v15];
-  [(BSUIOrientationTransformWrapperView *)self->_chromePlaceholderOrientationWrapperView setHidden:[(SBInteractiveScreenshotGestureRootViewController *)self _isGestureStyleDisabled:a4]];
+  [(BSUIOrientationTransformWrapperView *)self->_chromePlaceholderOrientationWrapperView setHidden:[(SBInteractiveScreenshotGestureRootViewController *)self _isGestureStyleDisabled:style]];
   [(_SBInteractiveScreenshotGestureReplicatorView *)self->_replicatorView sb_setBoundsAndPositionFromFrame:v9, v11, v13, v15];
   [(_SBInteractiveScreenshotGestureReplicatorView *)self->_replicatorView setHidden:0];
   [(UIView *)self->_topContentContainerView sb_setBoundsAndPositionFromFrame:v9, v11, v13, v15];
@@ -1668,11 +1668,11 @@ void __109__SBInteractiveScreenshotGestureRootViewController__prepareViewHierarc
   [WeakRetained _cancellationCommitProgressAnimatablePropertyPresentationValueDidChange];
 }
 
-- (void)_updateContentTransformUsingPresentationValues:(BOOL)a3
+- (void)_updateContentTransformUsingPresentationValues:(BOOL)values
 {
-  v3 = a3;
+  valuesCopy = values;
   transformProgressAnimatableProperty = self->_transformProgressAnimatableProperty;
-  if (a3)
+  if (values)
   {
     [(UIViewFloatAnimatableProperty *)transformProgressAnimatableProperty presentationValue];
     v7 = v6;
@@ -1777,7 +1777,7 @@ void __109__SBInteractiveScreenshotGestureRootViewController__prepareViewHierarc
   __asm { FMOV            V1.2D, #0.5 }
 
   v82 = vmlaq_f64(v138[2], _Q1, v138[3]);
-  if (v3)
+  if (valuesCopy)
   {
     v36 = *(v118 + 7);
     v91 = *(v118 + 6);
@@ -1855,7 +1855,7 @@ void __109__SBInteractiveScreenshotGestureRootViewController__prepareViewHierarc
     v89 = *(v118 + 4);
     v90 = v62;
     [(UIView *)v58 setTransform3D:&v87];
-    v63 = [(_SBInteractiveScreenshotGestureReplicatorView *)self->_replicatorView replicatorLayer];
+    replicatorLayer = [(_SBInteractiveScreenshotGestureReplicatorView *)self->_replicatorView replicatorLayer];
     v64 = *(v118 + 7);
     v91 = *(v118 + 6);
     v92 = v64;
@@ -1868,7 +1868,7 @@ void __109__SBInteractiveScreenshotGestureRootViewController__prepareViewHierarc
     v67 = *(v118 + 5);
     v89 = *(v118 + 4);
     v90 = v67;
-    [v63 setInstanceTransform:&v87];
+    [replicatorLayer setInstanceTransform:&v87];
 
     v68 = self->_flashView;
     v69 = *(v118 + 7);
@@ -1898,14 +1898,14 @@ void __109__SBInteractiveScreenshotGestureRootViewController__prepareViewHierarc
     v89 = *(v106 + 4);
     v90 = v77;
     [(_SBInteractiveScreenshotGestureReplicatorView *)replicatorView setTransform3D:&v87];
-    v78 = [(SSFlashView *)self->_flashView layer];
-    [v78 setCornerRadius:v134[3]];
+    layer = [(SSFlashView *)self->_flashView layer];
+    [layer setCornerRadius:v134[3]];
 
-    v79 = [(UIView *)self->_topContentContainerView layer];
-    [v79 setCornerRadius:v134[3]];
+    layer2 = [(UIView *)self->_topContentContainerView layer];
+    [layer2 setCornerRadius:v134[3]];
 
-    v80 = [(UIImageView *)self->_screenshotImageView layer];
-    [v80 setCornerRadius:v134[3]];
+    layer3 = [(UIImageView *)self->_screenshotImageView layer];
+    [layer3 setCornerRadius:v134[3]];
 
     [(SBInteractiveScreenshotGestureCropsView *)self->_cropsView bounds];
     if (BSRectEqualToRect())
@@ -2109,22 +2109,22 @@ uint64_t __99__SBInteractiveScreenshotGestureRootViewController__updateContentTr
   }
 }
 
-- (void)_updateWithUpdateMode:(int64_t)a3 commitProgress:(double)a4 additionalContentTranslation:(CGPoint)a5 completion:(id)a6
+- (void)_updateWithUpdateMode:(int64_t)mode commitProgress:(double)progress additionalContentTranslation:(CGPoint)translation completion:(id)completion
 {
-  y = a5.y;
-  x = a5.x;
+  y = translation.y;
+  x = translation.x;
   settings = self->_settings;
-  v12 = a6;
-  v13 = [(SBInteractiveScreenshotSettings *)settings contentAnimationSettings];
-  [(SBInteractiveScreenshotGestureRootViewController *)self _updateWithUpdateMode:a3 contentAnimationSettings:v13 commitProgress:v12 additionalContentTranslation:a4 completion:x, y];
+  completionCopy = completion;
+  contentAnimationSettings = [(SBInteractiveScreenshotSettings *)settings contentAnimationSettings];
+  [(SBInteractiveScreenshotGestureRootViewController *)self _updateWithUpdateMode:mode contentAnimationSettings:contentAnimationSettings commitProgress:completionCopy additionalContentTranslation:progress completion:x, y];
 }
 
-- (void)_updateWithUpdateMode:(int64_t)a3 contentAnimationSettings:(id)a4 commitProgress:(double)a5 additionalContentTranslation:(CGPoint)a6 completion:(id)a7
+- (void)_updateWithUpdateMode:(int64_t)mode contentAnimationSettings:(id)settings commitProgress:(double)progress additionalContentTranslation:(CGPoint)translation completion:(id)completion
 {
-  y = a6.y;
-  x = a6.x;
-  v13 = a4;
-  v14 = a7;
+  y = translation.y;
+  x = translation.x;
+  settingsCopy = settings;
+  completionCopy = completion;
   v15 = BSFloatGreaterThanOrEqualToFloat();
   v16 = v15;
   if (v15)
@@ -2139,7 +2139,7 @@ uint64_t __99__SBInteractiveScreenshotGestureRootViewController__updateContentTr
       objc_initWeak(location, self->_cropsTrackingDiscreteAnimationProgressAnimatableProperty);
       objc_initWeak(&from, self);
       v19 = MEMORY[0x277D75D18];
-      v20 = [(SBInteractiveScreenshotSettings *)self->_settings cropsAnimationSettings];
+      cropsAnimationSettings = [(SBInteractiveScreenshotSettings *)self->_settings cropsAnimationSettings];
       v34[0] = MEMORY[0x277D85DD0];
       v34[1] = 3221225472;
       v34[2] = __154__SBInteractiveScreenshotGestureRootViewController__updateWithUpdateMode_contentAnimationSettings_commitProgress_additionalContentTranslation_completion___block_invoke;
@@ -2151,7 +2151,7 @@ uint64_t __99__SBInteractiveScreenshotGestureRootViewController__updateContentTr
       v31[3] = &unk_2783B8258;
       objc_copyWeak(&v32, &from);
       objc_copyWeak(&v33, location);
-      [v19 sb_animateWithSettings:v20 mode:3 animations:v34 completion:v31];
+      [v19 sb_animateWithSettings:cropsAnimationSettings mode:3 animations:v34 completion:v31];
 
       objc_destroyWeak(&v33);
       objc_destroyWeak(&v32);
@@ -2173,14 +2173,14 @@ uint64_t __99__SBInteractiveScreenshotGestureRootViewController__updateContentTr
   v24[1] = 3221225472;
   v24[2] = __154__SBInteractiveScreenshotGestureRootViewController__updateWithUpdateMode_contentAnimationSettings_commitProgress_additionalContentTranslation_completion___block_invoke_3;
   v24[3] = &unk_2783B8280;
-  v26 = self;
-  v27 = a3;
-  v25 = v13;
-  v28 = a5;
+  selfCopy = self;
+  modeCopy = mode;
+  v25 = settingsCopy;
+  progressCopy = progress;
   v29 = x;
   v30 = y;
-  v23 = v13;
-  [v22 perform:v24 finalCompletion:v14];
+  v23 = settingsCopy;
+  [v22 perform:v24 finalCompletion:completionCopy];
 }
 
 void __154__SBInteractiveScreenshotGestureRootViewController__updateWithUpdateMode_contentAnimationSettings_commitProgress_additionalContentTranslation_completion___block_invoke_2(uint64_t a1)

@@ -1,26 +1,26 @@
 @interface _REConcreteFeature
-- (BOOL)isEqual:(id)a3;
-- (_REConcreteFeature)initWithName:(id)a3 featureType:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (_REConcreteFeature)initWithName:(id)name featureType:(unint64_t)type;
 - (id)_rootFeatures;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)_bitCount;
 @end
 
 @implementation _REConcreteFeature
 
-- (_REConcreteFeature)initWithName:(id)a3 featureType:(unint64_t)a4
+- (_REConcreteFeature)initWithName:(id)name featureType:(unint64_t)type
 {
-  v6 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = _REConcreteFeature;
   v7 = [(_REConcreteFeature *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [nameCopy copy];
     name = v7->_name;
     v7->_name = v8;
 
-    v7->_featureType = a4;
+    v7->_featureType = type;
   }
 
   return v7;
@@ -46,10 +46,10 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -59,7 +59,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       if (self->_featureType == v5->_featureType)
       {
@@ -100,9 +100,9 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   name = self->_name;
   featureType = self->_featureType;
 

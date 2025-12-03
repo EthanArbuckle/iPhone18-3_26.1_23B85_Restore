@@ -1,23 +1,23 @@
 @interface _HDPeriodicCountryMonitorPairedBuildIdentifiers
-- (_HDPeriodicCountryMonitorPairedBuildIdentifiers)initWithPairingIdentifier:(id)a3 buildIdentifier:(id)a4;
+- (_HDPeriodicCountryMonitorPairedBuildIdentifiers)initWithPairingIdentifier:(id)identifier buildIdentifier:(id)buildIdentifier;
 @end
 
 @implementation _HDPeriodicCountryMonitorPairedBuildIdentifiers
 
-- (_HDPeriodicCountryMonitorPairedBuildIdentifiers)initWithPairingIdentifier:(id)a3 buildIdentifier:(id)a4
+- (_HDPeriodicCountryMonitorPairedBuildIdentifiers)initWithPairingIdentifier:(id)identifier buildIdentifier:(id)buildIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  buildIdentifierCopy = buildIdentifier;
   v14.receiver = self;
   v14.super_class = _HDPeriodicCountryMonitorPairedBuildIdentifiers;
   v8 = [(_HDPeriodicCountryMonitorPairedBuildIdentifiers *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     pairingIdentifier = v8->_pairingIdentifier;
     v8->_pairingIdentifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [buildIdentifierCopy copy];
     buildIdentifier = v8->_buildIdentifier;
     v8->_buildIdentifier = v11;
   }

@@ -1,7 +1,7 @@
 @interface CHChannelGradient
-- (void)getGradientAtTime:(id *)a3 inColorSpace:(CGColorSpace *)a4 asChars:(unsigned __int8)a5[4] samples:(unsigned int)a6;
-- (void)getGradientAtTime:(id *)a3 inColorSpace:(CGColorSpace *)a4 asFloats:(float)a5[4] samples:(unsigned int)a6;
-- (void)getGradientAtTime:(id *)a3 inColorSpace:(CGColorSpace *)a4 asShorts:(unsigned __int16)a5[4] samples:(unsigned int)a6;
+- (void)getGradientAtTime:(id *)time inColorSpace:(CGColorSpace *)space asChars:(unsigned __int8)chars[4] samples:(unsigned int)samples;
+- (void)getGradientAtTime:(id *)time inColorSpace:(CGColorSpace *)space asFloats:(float)floats[4] samples:(unsigned int)samples;
+- (void)getGradientAtTime:(id *)time inColorSpace:(CGColorSpace *)space asShorts:(unsigned __int16)shorts[4] samples:(unsigned int)samples;
 - (void)ozChannel;
 @end
 
@@ -17,7 +17,7 @@
   return result;
 }
 
-- (void)getGradientAtTime:(id *)a3 inColorSpace:(CGColorSpace *)a4 asChars:(unsigned __int8)a5[4] samples:(unsigned int)a6
+- (void)getGradientAtTime:(id *)time inColorSpace:(CGColorSpace *)space asChars:(unsigned __int8)chars[4] samples:(unsigned int)samples
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
@@ -29,11 +29,11 @@
     v11 = 0;
   }
 
-  (*(*v11 + 336))(&v12, v11, a3);
-  OZChannelGradient::getGradient(v11, &v12, a4, a5, a6, 0, &kPCNoToneMapMethod);
+  (*(*v11 + 336))(&v12, v11, time);
+  OZChannelGradient::getGradient(v11, &v12, space, chars, samples, 0, &kPCNoToneMapMethod);
 }
 
-- (void)getGradientAtTime:(id *)a3 inColorSpace:(CGColorSpace *)a4 asShorts:(unsigned __int16)a5[4] samples:(unsigned int)a6
+- (void)getGradientAtTime:(id *)time inColorSpace:(CGColorSpace *)space asShorts:(unsigned __int16)shorts[4] samples:(unsigned int)samples
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
@@ -45,11 +45,11 @@
     v11 = 0;
   }
 
-  (*(*v11 + 336))(&v12, v11, a3);
-  OZChannelGradient::getGradient(v11, &v12, a4, a5, a6, 0, &kPCNoToneMapMethod);
+  (*(*v11 + 336))(&v12, v11, time);
+  OZChannelGradient::getGradient(v11, &v12, space, shorts, samples, 0, &kPCNoToneMapMethod);
 }
 
-- (void)getGradientAtTime:(id *)a3 inColorSpace:(CGColorSpace *)a4 asFloats:(float)a5[4] samples:(unsigned int)a6
+- (void)getGradientAtTime:(id *)time inColorSpace:(CGColorSpace *)space asFloats:(float)floats[4] samples:(unsigned int)samples
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
@@ -61,8 +61,8 @@
     v11 = 0;
   }
 
-  (*(*v11 + 336))(&v12, v11, a3);
-  OZChannelGradient::getGradient(v11, &v12, a4, a5, a6, 0, &kPCNoToneMapMethod);
+  (*(*v11 + 336))(&v12, v11, time);
+  OZChannelGradient::getGradient(v11, &v12, space, floats, samples, 0, &kPCNoToneMapMethod);
 }
 
 @end

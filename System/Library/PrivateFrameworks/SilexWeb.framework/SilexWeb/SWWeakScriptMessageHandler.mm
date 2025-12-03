@@ -1,32 +1,32 @@
 @interface SWWeakScriptMessageHandler
-- (SWWeakScriptMessageHandler)initWithScriptMessageHandler:(id)a3;
+- (SWWeakScriptMessageHandler)initWithScriptMessageHandler:(id)handler;
 - (WKScriptMessageHandler)scriptMessageHandler;
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4;
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message;
 @end
 
 @implementation SWWeakScriptMessageHandler
 
-- (SWWeakScriptMessageHandler)initWithScriptMessageHandler:(id)a3
+- (SWWeakScriptMessageHandler)initWithScriptMessageHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v8.receiver = self;
   v8.super_class = SWWeakScriptMessageHandler;
   v5 = [(SWWeakScriptMessageHandler *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_scriptMessageHandler, v4);
+    objc_storeWeak(&v5->_scriptMessageHandler, handlerCopy);
   }
 
   return v6;
 }
 
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SWWeakScriptMessageHandler *)self scriptMessageHandler];
-  [v8 userContentController:v7 didReceiveScriptMessage:v6];
+  messageCopy = message;
+  controllerCopy = controller;
+  scriptMessageHandler = [(SWWeakScriptMessageHandler *)self scriptMessageHandler];
+  [scriptMessageHandler userContentController:controllerCopy didReceiveScriptMessage:messageCopy];
 }
 
 - (WKScriptMessageHandler)scriptMessageHandler

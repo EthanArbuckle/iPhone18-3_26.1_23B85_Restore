@@ -1,20 +1,20 @@
 @interface ICStorePlatformResponse
 - (BOOL)isAuthenticated;
-- (ICStorePlatformResponse)initWithResponseDictionary:(id)a3 requestedItemIdentifiers:(id)a4;
-- (ICStorePlatformResponse)initWithURLResponse:(id)a3 requestedItemIdentifiers:(id)a4;
+- (ICStorePlatformResponse)initWithResponseDictionary:(id)dictionary requestedItemIdentifiers:(id)identifiers;
+- (ICStorePlatformResponse)initWithURLResponse:(id)response requestedItemIdentifiers:(id)identifiers;
 - (NSArray)allItems;
 - (NSDictionary)resultsDictionary;
 - (NSString)storefrontIdentifier;
-- (id)itemForIdentifier:(id)a3;
-- (void)_enumerateResultDictionariesUsingBlock:(id)a3;
-- (void)enumerateItemsUsingBlock:(id)a3;
+- (id)itemForIdentifier:(id)identifier;
+- (void)_enumerateResultDictionariesUsingBlock:(id)block;
+- (void)enumerateItemsUsingBlock:(id)block;
 @end
 
 @implementation ICStorePlatformResponse
 
-- (void)_enumerateResultDictionariesUsingBlock:(id)a3
+- (void)_enumerateResultDictionariesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSDictionary *)self->_responseDictionary objectForKey:@"storePlatformData"];
   v6 = [(NSDictionary *)self->_responseDictionary objectForKey:@"results"];
   if (_NSIsNSDictionary())
@@ -23,14 +23,14 @@
     v8[1] = 3221225472;
     v8[2] = __66__ICStorePlatformResponse__enumerateResultDictionariesUsingBlock___block_invoke;
     v8[3] = &unk_1E7BF8360;
-    v9 = v4;
+    v9 = blockCopy;
     [v5 enumerateKeysAndObjectsUsingBlock:v8];
   }
 
   else if (_NSIsNSDictionary())
   {
     v7 = 0;
-    (*(v4 + 2))(v4, v6, &stru_1F2C4A680, &v7);
+    (*(blockCopy + 2))(blockCopy, v6, &stru_1F2C4A680, &v7);
   }
 }
 
@@ -71,15 +71,15 @@ void __66__ICStorePlatformResponse__enumerateResultDictionariesUsingBlock___bloc
   v2 = [(NSDictionary *)self->_responseDictionary valueForKey:@"isAuthenticated"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSString)storefrontIdentifier
@@ -106,7 +106,7 @@ LABEL_14:
     v6 = [v5 objectForKey:@"id"];
     if (_NSIsNSString())
     {
-      v7 = v6;
+      stringValue = v6;
     }
 
     else
@@ -117,10 +117,10 @@ LABEL_14:
         goto LABEL_13;
       }
 
-      v7 = [v6 stringValue];
+      stringValue = [v6 stringValue];
     }
 
-    v3 = v7;
+    v3 = stringValue;
 LABEL_13:
 
     goto LABEL_14;
@@ -134,9 +134,9 @@ LABEL_16:
   return v3;
 }
 
-- (id)itemForIdentifier:(id)a3
+- (id)itemForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -147,8 +147,8 @@ LABEL_16:
   v8[1] = 3221225472;
   v8[2] = __45__ICStorePlatformResponse_itemForIdentifier___block_invoke;
   v8[3] = &unk_1E7BF8338;
-  v5 = v4;
-  v10 = self;
+  v5 = identifierCopy;
+  selfCopy = self;
   v11 = &v12;
   v9 = v5;
   [(ICStorePlatformResponse *)self _enumerateResultDictionariesUsingBlock:v8];
@@ -180,9 +180,9 @@ void __45__ICStorePlatformResponse_itemForIdentifier___block_invoke(uint64_t a1,
   }
 }
 
-- (void)enumerateItemsUsingBlock:(id)a3
+- (void)enumerateItemsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(NSArray *)self->_requestedItemIdentifiers count])
   {
     requestedItemIdentifiers = self->_requestedItemIdentifiers;
@@ -191,21 +191,21 @@ void __45__ICStorePlatformResponse_itemForIdentifier___block_invoke(uint64_t a1,
     v10[2] = __52__ICStorePlatformResponse_enumerateItemsUsingBlock___block_invoke;
     v10[3] = &unk_1E7BF82C0;
     v10[4] = self;
-    v11 = v4;
-    v6 = v4;
+    v11 = blockCopy;
+    expirationDate = blockCopy;
     [(NSArray *)requestedItemIdentifiers enumerateObjectsUsingBlock:v10];
   }
 
   else
   {
-    v6 = [(ICStorePlatformResponse *)self expirationDate];
+    expirationDate = [(ICStorePlatformResponse *)self expirationDate];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __52__ICStorePlatformResponse_enumerateItemsUsingBlock___block_invoke_2;
     v8[3] = &unk_1E7BF8310;
-    v8[4] = v6;
-    v9 = v4;
-    v7 = v4;
+    v8[4] = expirationDate;
+    v9 = blockCopy;
+    v7 = blockCopy;
     [(ICStorePlatformResponse *)self _enumerateResultDictionariesUsingBlock:v8];
   }
 }
@@ -254,23 +254,23 @@ void __52__ICStorePlatformResponse_enumerateItemsUsingBlock___block_invoke_3(uin
 
 - (NSArray)allItems
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __35__ICStorePlatformResponse_allItems__block_invoke;
   v5[3] = &unk_1E7BF8298;
-  v5[4] = v3;
+  v5[4] = array;
   [(ICStorePlatformResponse *)self enumerateItemsUsingBlock:v5];
 
-  return v3;
+  return array;
 }
 
-- (ICStorePlatformResponse)initWithURLResponse:(id)a3 requestedItemIdentifiers:(id)a4
+- (ICStorePlatformResponse)initWithURLResponse:(id)response requestedItemIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 parsedBodyDictionary];
-  if (!v8)
+  responseCopy = response;
+  identifiersCopy = identifiers;
+  parsedBodyDictionary = [responseCopy parsedBodyDictionary];
+  if (!parsedBodyDictionary)
   {
     v9 = 0;
 LABEL_17:
@@ -278,13 +278,13 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v9 = [(ICStorePlatformResponse *)self initWithResponseDictionary:v8 requestedItemIdentifiers:v7];
+  v9 = [(ICStorePlatformResponse *)self initWithResponseDictionary:parsedBodyDictionary requestedItemIdentifiers:identifiersCopy];
   if (v9)
   {
-    self = [v6 urlRequest];
-    v10 = [v6 urlResponse];
-    v11 = [v10 ic_valueForHTTPHeaderField:@"X-Set-Apple-Store-Front"];
-    if (v11 || ([v10 ic_valueForHTTPHeaderField:@"X-Apple-Request-Store-Front"], (v11 = objc_claimAutoreleasedReturnValue()) != 0) || (-[ICStorePlatformResponse ic_valueForHTTPHeaderField:](self, "ic_valueForHTTPHeaderField:", @"X-Apple-Store-Front"), (v11 = objc_claimAutoreleasedReturnValue()) != 0))
+    self = [responseCopy urlRequest];
+    urlResponse = [responseCopy urlResponse];
+    v11 = [urlResponse ic_valueForHTTPHeaderField:@"X-Set-Apple-Store-Front"];
+    if (v11 || ([urlResponse ic_valueForHTTPHeaderField:@"X-Apple-Request-Store-Front"], (v11 = objc_claimAutoreleasedReturnValue()) != 0) || (-[ICStorePlatformResponse ic_valueForHTTPHeaderField:](self, "ic_valueForHTTPHeaderField:", @"X-Apple-Store-Front"), (v11 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v12 = v11;
       v13 = [v11 copy];
@@ -293,40 +293,40 @@ LABEL_17:
     }
 
     v15 = [(ICStorePlatformResponse *)self ic_valueForHTTPHeaderField:@"X-Dsid"];
-    v16 = [v15 UTF8String];
+    uTF8String = [v15 UTF8String];
 
-    if (v16)
+    if (uTF8String)
     {
-      v17 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedLongLong:{strtoull(v16, 0, 10)}];
+      v17 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedLongLong:{strtoull(uTF8String, 0, 10)}];
       accountIdentifier = v9->_accountIdentifier;
       v9->_accountIdentifier = v17;
     }
 
     v19 = [(ICStorePlatformResponse *)self ic_valueForHTTPHeaderField:@"X-Enqueuer-DSID"];
-    v20 = [v19 UTF8String];
+    uTF8String2 = [v19 UTF8String];
 
-    if (v20)
+    if (uTF8String2)
     {
-      v21 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedLongLong:{strtoull(v20, 0, 10)}];
+      v21 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedLongLong:{strtoull(uTF8String2, 0, 10)}];
       enqueuerAccountIdentifier = v9->_enqueuerAccountIdentifier;
       v9->_enqueuerAccountIdentifier = v21;
     }
 
-    if ([v10 hasCacheControl])
+    if ([urlResponse hasCacheControl])
     {
-      [v10 cacheControlMaxAge];
+      [urlResponse cacheControlMaxAge];
       v23 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:?];
       expirationDate = v9->_expirationDate;
       v9->_expirationDate = v23;
     }
 
-    v25 = [v6 performanceMetrics];
+    performanceMetrics = [responseCopy performanceMetrics];
 
-    if (v25)
+    if (performanceMetrics)
     {
-      v26 = [v6 aggregatedPerformanceMetrics];
+      aggregatedPerformanceMetrics = [responseCopy aggregatedPerformanceMetrics];
       performanceMetrics = v9->_performanceMetrics;
-      v9->_performanceMetrics = v26;
+      v9->_performanceMetrics = aggregatedPerformanceMetrics;
     }
 
     goto LABEL_17;
@@ -337,20 +337,20 @@ LABEL_18:
   return v9;
 }
 
-- (ICStorePlatformResponse)initWithResponseDictionary:(id)a3 requestedItemIdentifiers:(id)a4
+- (ICStorePlatformResponse)initWithResponseDictionary:(id)dictionary requestedItemIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  identifiersCopy = identifiers;
   v14.receiver = self;
   v14.super_class = ICStorePlatformResponse;
   v8 = [(ICStorePlatformResponse *)&v14 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [identifiersCopy copy];
     requestedItemIdentifiers = v8->_requestedItemIdentifiers;
     v8->_requestedItemIdentifiers = v9;
 
-    v11 = [v6 copy];
+    v11 = [dictionaryCopy copy];
     responseDictionary = v8->_responseDictionary;
     v8->_responseDictionary = v11;
   }

@@ -1,55 +1,55 @@
 @interface SWCManager
 + (id)beginListening;
-- (BOOL)_addJSONDataInDictionary:(id)a3 toStagingDirectoryAtURL:(id)a4 error:(id *)a5;
-- (BOOL)_connectionIsEntitled:(id)a3 forMutation:(BOOL)a4;
-- (BOOL)_copyStagingDirectoryAtURL:(id)a3 toAdditionalServiceDetailsDirectoriesForApplicationIdentifiers:(id)a4 error:(id *)a5;
+- (BOOL)_addJSONDataInDictionary:(id)dictionary toStagingDirectoryAtURL:(id)l error:(id *)error;
+- (BOOL)_connectionIsEntitled:(id)entitled forMutation:(BOOL)mutation;
+- (BOOL)_copyStagingDirectoryAtURL:(id)l toAdditionalServiceDetailsDirectoriesForApplicationIdentifiers:(id)identifiers error:(id *)error;
 - (BOOL)_isDeveloperModeEnabled;
-- (BOOL)_setDeveloperModeEnabled:(BOOL)a3 error:(id *)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (SWCManager)initWithDatabase:(id)a3;
-- (id)_createStagingDirectoryForAdditionalServiceDetailsReturningError:(id *)a3;
+- (BOOL)_setDeveloperModeEnabled:(BOOL)enabled error:(id *)error;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (SWCManager)initWithDatabase:(id)database;
+- (id)_createStagingDirectoryForAdditionalServiceDetailsReturningError:(id *)error;
 - (id)_developerModeSemaphoreURL;
 - (id)_eligibleSystemPlaceholderRecords;
-- (id)_entriesWithServiceSpecifier:(id)a3 URL:(id)a4 limit:(unint64_t)a5 auditToken:(id *)a6;
-- (id)_filterApplicationIdentifiers:(id)a3 toMatchEntitlementOfXPCConnection:(id)a4;
-- (id)_serviceDetailsWithEntry:(id)a3;
-- (void)_updateAllEntries:(id)a3;
-- (void)_waitForSiteApprovalWithServiceSpecifier:(id)a3 completionHandler:(id)a4;
-- (void)addAllAppsWithCompletionHandler:(id)a3;
-- (void)addServiceWithServiceSpecifier:(id)a3 completionHandler:(id)a4;
-- (void)commitServiceSettings:(id)a3 completionHandler:(id)a4;
-- (void)downloader:(id)a3 didDownloadAASAFileContainingJSONObject:(id)a4 fromDomain:(id)a5 downloadRoute:(unsigned __int8)a6;
-- (void)downloader:(id)a3 failedToDownloadAASAFileFromDomain:(id)a4 error:(id)a5;
-- (void)downloader:(id)a3 willDownloadAASAFileFromDomain:(id)a4;
-- (void)getDetailsWithServiceSpecifier:(id)a3 URL:(id)a4 limit:(unint64_t)a5 callerAuditToken:(id)a6 completionHandler:(id)a7;
-- (void)getDeveloperModeEnabledWithCompletionHandler:(id)a3;
-- (void)getServiceSettingsWithServiceSpecifier:(id)a3 completionHandler:(id)a4;
-- (void)getTrackingDomains:(id)a3 sources:(unint64_t)a4 completionHandler:(id)a5;
+- (id)_entriesWithServiceSpecifier:(id)specifier URL:(id)l limit:(unint64_t)limit auditToken:(id *)token;
+- (id)_filterApplicationIdentifiers:(id)identifiers toMatchEntitlementOfXPCConnection:(id)connection;
+- (id)_serviceDetailsWithEntry:(id)entry;
+- (void)_updateAllEntries:(id)entries;
+- (void)_waitForSiteApprovalWithServiceSpecifier:(id)specifier completionHandler:(id)handler;
+- (void)addAllAppsWithCompletionHandler:(id)handler;
+- (void)addServiceWithServiceSpecifier:(id)specifier completionHandler:(id)handler;
+- (void)commitServiceSettings:(id)settings completionHandler:(id)handler;
+- (void)downloader:(id)downloader didDownloadAASAFileContainingJSONObject:(id)object fromDomain:(id)domain downloadRoute:(unsigned __int8)route;
+- (void)downloader:(id)downloader failedToDownloadAASAFileFromDomain:(id)domain error:(id)error;
+- (void)downloader:(id)downloader willDownloadAASAFileFromDomain:(id)domain;
+- (void)getDetailsWithServiceSpecifier:(id)specifier URL:(id)l limit:(unint64_t)limit callerAuditToken:(id)token completionHandler:(id)handler;
+- (void)getDeveloperModeEnabledWithCompletionHandler:(id)handler;
+- (void)getServiceSettingsWithServiceSpecifier:(id)specifier completionHandler:(id)handler;
+- (void)getTrackingDomains:(id)domains sources:(unint64_t)sources completionHandler:(id)handler;
 - (void)receiveSIGTERMSignal;
-- (void)removeServiceWithServiceSpecifier:(id)a3 completionHandler:(id)a4;
-- (void)removeSettingsForKeys:(id)a3 serviceSpecifier:(id)a4 completionHandler:(id)a5;
-- (void)removeSettingsForKeys:(id)a3 serviceType:(id)a4 completionHandler:(id)a5;
-- (void)resetWithCompletionHandler:(id)a3;
-- (void)setAdditionalServiceDetailsForApplicationIdentifiers:(id)a3 usingContentsOfDictionary:(id)a4 completionHandler:(id)a5;
-- (void)setDetails:(id)a3 forServiceWithServiceSpecifier:(id)a4 completionHandler:(id)a5;
-- (void)setDeveloperModeEnabled:(BOOL)a3 completionHandler:(id)a4;
-- (void)showWithVerbosity:(unsigned __int8)a3 isTTY:(BOOL)a4 fileDescriptor:(id)a5 completionHandler:(id)a6;
-- (void)updateEntriesForAllBundlesIgnoringCurrentState:(BOOL)a3;
-- (void)waitForSiteApprovalWithServiceSpecifier:(id)a3 completionHandler:(id)a4;
+- (void)removeServiceWithServiceSpecifier:(id)specifier completionHandler:(id)handler;
+- (void)removeSettingsForKeys:(id)keys serviceSpecifier:(id)specifier completionHandler:(id)handler;
+- (void)removeSettingsForKeys:(id)keys serviceType:(id)type completionHandler:(id)handler;
+- (void)resetWithCompletionHandler:(id)handler;
+- (void)setAdditionalServiceDetailsForApplicationIdentifiers:(id)identifiers usingContentsOfDictionary:(id)dictionary completionHandler:(id)handler;
+- (void)setDetails:(id)details forServiceWithServiceSpecifier:(id)specifier completionHandler:(id)handler;
+- (void)setDeveloperModeEnabled:(BOOL)enabled completionHandler:(id)handler;
+- (void)showWithVerbosity:(unsigned __int8)verbosity isTTY:(BOOL)y fileDescriptor:(id)descriptor completionHandler:(id)handler;
+- (void)updateEntriesForAllBundlesIgnoringCurrentState:(BOOL)state;
+- (void)waitForSiteApprovalWithServiceSpecifier:(id)specifier completionHandler:(id)handler;
 @end
 
 @implementation SWCManager
 
-- (SWCManager)initWithDatabase:(id)a3
+- (SWCManager)initWithDatabase:(id)database
 {
-  v5 = a3;
+  databaseCopy = database;
   v13.receiver = self;
   v13.super_class = SWCManager;
   v6 = [(SWCManager *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_database, a3);
+    objc_storeStrong(&v6->_database, database);
     v8 = objc_alloc_init(SWCDownloader);
     downloader = v7->_downloader;
     v7->_downloader = v8;
@@ -83,9 +83,9 @@
   [(SWCDatabase *)database receiveSIGTERMSignal];
 }
 
-- (void)updateEntriesForAllBundlesIgnoringCurrentState:(BOOL)a3
+- (void)updateEntriesForAllBundlesIgnoringCurrentState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v34 = os_transaction_create();
   v5 = objc_autoreleasePoolPush();
   v6 = +[LSApplicationWorkspace defaultWorkspace];
@@ -93,9 +93,9 @@
   [v6 getKnowledgeUUID:0 andSequenceNumber:&v35];
   v7 = v35;
 
-  v8 = [(SWCDatabase *)self->_database launchServicesDatabaseGeneration];
-  v9 = v8;
-  if (v7 && v8 && ([v7 isEqual:{v8, v34}] & 1) != 0)
+  launchServicesDatabaseGeneration = [(SWCDatabase *)self->_database launchServicesDatabaseGeneration];
+  v9 = launchServicesDatabaseGeneration;
+  if (v7 && launchServicesDatabaseGeneration && ([v7 isEqual:{launchServicesDatabaseGeneration, v34}] & 1) != 0)
   {
     if (qword_10003AD28 != -1)
     {
@@ -134,10 +134,10 @@
   }
 
   v13 = objc_alloc_init(SWCEnterpriseContext);
-  v14 = [(SWCEnterpriseContext *)v13 state];
-  v15 = [(SWCDatabase *)self->_database enterpriseState];
-  v16 = v15;
-  if (!(v14 | v15))
+  state = [(SWCEnterpriseContext *)v13 state];
+  enterpriseState = [(SWCDatabase *)self->_database enterpriseState];
+  v16 = enterpriseState;
+  if (!(state | enterpriseState))
   {
     if (qword_10003AD28 != -1)
     {
@@ -157,7 +157,7 @@
     goto LABEL_46;
   }
 
-  if (v14 && v15 && ([v14 isEqual:v15] & 1) != 0)
+  if (state && enterpriseState && ([state isEqual:enterpriseState] & 1) != 0)
   {
     if (qword_10003AD28 != -1)
     {
@@ -171,7 +171,7 @@
     }
 
     *buf = 138543362;
-    v37 = v14;
+    v37 = state;
     v18 = "Enterprise state is still %{public}@. No need to synchronize the SWC database to it.";
     v19 = v17;
     v20 = 12;
@@ -193,14 +193,14 @@ LABEL_25:
     *buf = 138543618;
     v37 = v16;
     v38 = 2114;
-    v39 = v14;
+    v39 = state;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Enterprise state has changed %{public}@ to %{public}@. Synchronizing SWC database to it.", buf, 0x16u);
   }
 
   v22 = 1;
 LABEL_31:
 
-  if (v3)
+  if (stateCopy)
   {
     if (qword_10003AD28 != -1)
     {
@@ -221,7 +221,7 @@ LABEL_31:
   }
 
   v25 = objc_alloc_init(NSMutableOrderedSet);
-  v26 = [(SWCManager *)self _isDeveloperModeEnabled];
+  _isDeveloperModeEnabled = [(SWCManager *)self _isDeveloperModeEnabled];
   if (qword_10003AD28 != -1)
   {
     dispatch_once(&qword_10003AD28, &stru_1000351C0);
@@ -231,22 +231,22 @@ LABEL_31:
   if (os_log_type_enabled(qword_10003AD20, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    LODWORD(v37) = v26;
+    LODWORD(v37) = _isDeveloperModeEnabled;
     _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Developer mode enabled: %{BOOL}i", buf, 8u);
   }
 
   v28 = objc_autoreleasePoolPush();
   v29 = [LSApplicationRecord enumeratorWithOptions:0];
   [v29 setErrorHandler:&stru_100034E88];
-  [(SWCManager *)self _addEntriesForAllBundlesWithEnumerator:v29 toWorkingSet:v25 enterpriseContext:v13 developerModeEnabled:v26];
+  [(SWCManager *)self _addEntriesForAllBundlesWithEnumerator:v29 toWorkingSet:v25 enterpriseContext:v13 developerModeEnabled:_isDeveloperModeEnabled];
 
   objc_autoreleasePoolPop(v28);
   v30 = objc_autoreleasePoolPush();
-  v31 = [(SWCManager *)self _eligibleSystemPlaceholderRecords];
-  if ([v31 count])
+  _eligibleSystemPlaceholderRecords = [(SWCManager *)self _eligibleSystemPlaceholderRecords];
+  if ([_eligibleSystemPlaceholderRecords count])
   {
-    v32 = [v31 objectEnumerator];
-    [(SWCManager *)self _addEntriesForAllBundlesWithEnumerator:v32 toWorkingSet:v25 enterpriseContext:v13 developerModeEnabled:v26];
+    objectEnumerator = [_eligibleSystemPlaceholderRecords objectEnumerator];
+    [(SWCManager *)self _addEntriesForAllBundlesWithEnumerator:objectEnumerator toWorkingSet:v25 enterpriseContext:v13 developerModeEnabled:_isDeveloperModeEnabled];
   }
 
   objc_autoreleasePoolPop(v30);
@@ -255,16 +255,16 @@ LABEL_31:
 
   [(SWCManager *)self _updateAllEntries:v25];
   [(SWCDatabase *)self->_database setLaunchServicesDatabaseGeneration:v7];
-  [(SWCDatabase *)self->_database setEnterpriseState:v14];
+  [(SWCDatabase *)self->_database setEnterpriseState:state];
 
 LABEL_44:
   objc_autoreleasePoolPop(v5);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [(SWCManager *)self _connectionMayConnect:v5];
+  connectionCopy = connection;
+  v6 = [(SWCManager *)self _connectionMayConnect:connectionCopy];
   if (v6)
   {
     if (qword_10003AD28 != -1)
@@ -276,31 +276,31 @@ LABEL_44:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       LODWORD(location[0]) = 134217984;
-      *(location + 4) = [v5 processIdentifier];
+      *(location + 4) = [connectionCopy processIdentifier];
       _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Accepted connection: %llu", location, 0xCu);
     }
 
     v8 = _SWCGetServerInterface();
-    [v5 setExportedInterface:v8];
+    [connectionCopy setExportedInterface:v8];
 
-    [v5 setExportedObject:self];
-    objc_initWeak(location, v5);
+    [connectionCopy setExportedObject:self];
+    objc_initWeak(location, connectionCopy);
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_100014350;
     v17[3] = &unk_100034D58;
     objc_copyWeak(&v18, location);
-    [v5 setInterruptionHandler:v17];
+    [connectionCopy setInterruptionHandler:v17];
     v12 = _NSConcreteStackBlock;
     v13 = 3221225472;
     v14 = sub_100014460;
     v15 = &unk_100034D58;
     objc_copyWeak(&v16, location);
-    [v5 setInvalidationHandler:&v12];
+    [connectionCopy setInvalidationHandler:&v12];
     v9 = [SWCDatabase queue:v12];
-    [v5 _setQueue:v9];
+    [connectionCopy _setQueue:v9];
 
-    [v5 resume];
+    [connectionCopy resume];
     objc_destroyWeak(&v16);
     objc_destroyWeak(&v18);
     objc_destroyWeak(location);
@@ -317,7 +317,7 @@ LABEL_44:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       LODWORD(location[0]) = 134217984;
-      *(location + 4) = [v5 processIdentifier];
+      *(location + 4) = [connectionCopy processIdentifier];
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "### Unentitled process %llu attempted to connect", location, 0xCu);
     }
   }
@@ -325,75 +325,75 @@ LABEL_44:
   return v6;
 }
 
-- (void)downloader:(id)a3 willDownloadAASAFileFromDomain:(id)a4
+- (void)downloader:(id)downloader willDownloadAASAFileFromDomain:(id)domain
 {
-  v5 = a4;
+  domainCopy = domain;
   v6 = +[SWCDatabase queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100014638;
   v8[3] = &unk_1000347C0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = domainCopy;
+  v7 = domainCopy;
   dispatch_async(v6, v8);
 }
 
-- (void)downloader:(id)a3 didDownloadAASAFileContainingJSONObject:(id)a4 fromDomain:(id)a5 downloadRoute:(unsigned __int8)a6
+- (void)downloader:(id)downloader didDownloadAASAFileContainingJSONObject:(id)object fromDomain:(id)domain downloadRoute:(unsigned __int8)route
 {
-  v8 = a4;
-  v9 = a5;
+  objectCopy = object;
+  domainCopy = domain;
   v10 = +[SWCDatabase queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100014770;
   block[3] = &unk_100034DC8;
   block[4] = self;
-  v14 = v9;
-  v15 = v8;
-  v11 = v8;
-  v12 = v9;
+  v14 = domainCopy;
+  v15 = objectCopy;
+  v11 = objectCopy;
+  v12 = domainCopy;
   dispatch_async(v10, block);
 }
 
-- (void)downloader:(id)a3 failedToDownloadAASAFileFromDomain:(id)a4 error:(id)a5
+- (void)downloader:(id)downloader failedToDownloadAASAFileFromDomain:(id)domain error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  domainCopy = domain;
+  errorCopy = error;
   v9 = +[SWCDatabase queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100014920;
   block[3] = &unk_100034DC8;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = domainCopy;
+  v14 = errorCopy;
+  v10 = errorCopy;
+  v11 = domainCopy;
   dispatch_async(v9, block);
 }
 
-- (void)waitForSiteApprovalWithServiceSpecifier:(id)a3 completionHandler:(id)a4
+- (void)waitForSiteApprovalWithServiceSpecifier:(id)specifier completionHandler:(id)handler
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100014BE4;
   v6[3] = &unk_100034F10;
-  v7 = self;
-  v8 = a4;
-  v5 = v8;
-  [(SWCManager *)v7 _waitForSiteApprovalWithServiceSpecifier:a3 completionHandler:v6];
+  selfCopy = self;
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  [(SWCManager *)selfCopy _waitForSiteApprovalWithServiceSpecifier:specifier completionHandler:v6];
 }
 
-- (void)getDetailsWithServiceSpecifier:(id)a3 URL:(id)a4 limit:(unint64_t)a5 callerAuditToken:(id)a6 completionHandler:(id)a7
+- (void)getDetailsWithServiceSpecifier:(id)specifier URL:(id)l limit:(unint64_t)limit callerAuditToken:(id)token completionHandler:(id)handler
 {
-  v24 = a3;
-  v26 = a4;
-  v12 = a6;
-  v13 = a7;
-  if (v12 && !strcmp([v12 objCType], "{?=[8I]}"))
+  specifierCopy = specifier;
+  lCopy = l;
+  tokenCopy = token;
+  handlerCopy = handler;
+  if (tokenCopy && !strcmp([tokenCopy objCType], "{?=[8I]}"))
   {
-    [v12 getValue:&v33 size:32];
+    [tokenCopy getValue:&v33 size:32];
   }
 
   else
@@ -417,13 +417,13 @@ LABEL_44:
 
   v31 = v33;
   v32 = v34;
-  v16 = [(SWCManager *)self _entriesWithServiceSpecifier:v24 URL:v26 limit:a5 auditToken:&v31, v24];
-  v17 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v16, "count")}];
+  specifierCopy = [(SWCManager *)self _entriesWithServiceSpecifier:specifierCopy URL:lCopy limit:limit auditToken:&v31, specifierCopy];
+  v17 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(specifierCopy, "count")}];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v18 = v16;
+  v18 = specifierCopy;
   v19 = [v18 countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v19)
   {
@@ -451,44 +451,44 @@ LABEL_44:
   }
 
   v23 = [v17 copy];
-  v13[2](v13, v23, 0);
+  handlerCopy[2](handlerCopy, v23, 0);
 }
 
-- (void)addServiceWithServiceSpecifier:(id)a3 completionHandler:(id)a4
+- (void)addServiceWithServiceSpecifier:(id)specifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  specifierCopy = specifier;
+  handlerCopy = handler;
   v8 = +[NSXPCConnection currentConnection];
   v9 = [(SWCManager *)self _connectionIsEntitled:v8 forMutation:1];
 
   if (v9)
   {
-    if (v6 && ([v6 SWCApplicationIdentifier], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
+    if (specifierCopy && ([specifierCopy SWCApplicationIdentifier], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
     {
       v11 = [LSApplicationRecord alloc];
-      v12 = [v6 bundleIdentifier];
-      v13 = [v11 initWithBundleIdentifier:v12 allowPlaceholder:0 error:0];
+      bundleIdentifier = [specifierCopy bundleIdentifier];
+      v13 = [v11 initWithBundleIdentifier:bundleIdentifier allowPlaceholder:0 error:0];
 
-      if ((v13 || (v14 = [LSApplicationExtensionRecord alloc], [v6 bundleIdentifier], v15 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v14, "initWithBundleIdentifier:error:", v15, 0), v15, v13)) && (objc_msgSend(v6, "isFullySpecified") & 1) == 0)
+      if ((v13 || (v14 = [LSApplicationExtensionRecord alloc], [specifierCopy bundleIdentifier], v15 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v14, "initWithBundleIdentifier:error:", v15, 0), v15, v13)) && (objc_msgSend(specifierCopy, "isFullySpecified") & 1) == 0)
       {
         [(SWCManager *)self updateEntriesForAllBundlesIgnoringCurrentState:0];
-        v7[2](v7, 1, 0);
+        handlerCopy[2](handlerCopy, 1, 0);
       }
 
-      else if ([v6 isFullySpecified])
+      else if ([specifierCopy isFullySpecified])
       {
-        v16 = [(SWCDatabase *)self->_database entryMatchingServiceSpecifier:v6];
+        v16 = [(SWCDatabase *)self->_database entryMatchingServiceSpecifier:specifierCopy];
         if (!v16)
         {
-          v16 = [[SWCEntry alloc] initWithServiceSpecifier:v6];
-          v17 = [(SWCEntry *)v16 fields];
-          *v17 = *v17 & 0xE3FF | 0x800;
+          v16 = [[SWCEntry alloc] initWithServiceSpecifier:specifierCopy];
+          fields = [(SWCEntry *)v16 fields];
+          *fields = *fields & 0xE3FF | 0x800;
           database = self->_database;
           v19 = [[NSOrderedSet alloc] initWithObject:v16];
           [(SWCDatabase *)database addEntries:v19];
         }
 
-        v7[2](v7, 1, 0);
+        handlerCopy[2](handlerCopy, 1, 0);
       }
 
       else
@@ -501,7 +501,7 @@ LABEL_44:
         v33[1] = v27;
         v28 = [NSDictionary dictionaryWithObjects:v33 forKeys:v32 count:2];
         v29 = [v26 initWithDomain:_SWCErrorDomain code:3 userInfo:v28];
-        (v7)[2](v7, 0, v29);
+        (handlerCopy)[2](handlerCopy, 0, v29);
       }
     }
 
@@ -515,7 +515,7 @@ LABEL_44:
       v31[1] = v13;
       v24 = [NSDictionary dictionaryWithObjects:v31 forKeys:v30 count:2];
       v25 = [v23 initWithDomain:_SWCErrorDomain code:2 userInfo:v24];
-      (v7)[2](v7, 0, v25);
+      (handlerCopy)[2](handlerCopy, 0, v25);
     }
   }
 
@@ -531,20 +531,20 @@ LABEL_44:
     v35[2] = @"Entitlement required to mutate SWC database";
     v21 = [NSDictionary dictionaryWithObjects:v35 forKeys:v34 count:3];
     v22 = [v20 initWithDomain:_SWCErrorDomain code:1 userInfo:v21];
-    (v7)[2](v7, 0, v22);
+    (handlerCopy)[2](handlerCopy, 0, v22);
   }
 }
 
-- (void)removeServiceWithServiceSpecifier:(id)a3 completionHandler:(id)a4
+- (void)removeServiceWithServiceSpecifier:(id)specifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  specifierCopy = specifier;
+  handlerCopy = handler;
   v8 = +[NSXPCConnection currentConnection];
   v9 = [(SWCManager *)self _connectionIsEntitled:v8 forMutation:1];
 
   if (v9)
   {
-    if (v6)
+    if (specifierCopy)
     {
       v10 = objc_alloc_init(NSMutableOrderedSet);
       database = self->_database;
@@ -554,26 +554,26 @@ LABEL_44:
       v26[3] = &unk_100034F38;
       v12 = v10;
       v27 = v12;
-      [(SWCDatabase *)database enumerateEntriesMatchingServiceSpecifier:v6 block:v26];
+      [(SWCDatabase *)database enumerateEntriesMatchingServiceSpecifier:specifierCopy block:v26];
       if ([v12 count])
       {
         [(SWCDatabase *)self->_database removeEntries:v12];
 LABEL_5:
-        v7[2](v7, 1, 0);
+        handlerCopy[2](handlerCopy, 1, 0);
 LABEL_16:
         v14 = v27;
         goto LABEL_17;
       }
 
-      v18 = [v6 serviceType];
-      if (v18 || ([v6 SWCApplicationIdentifier], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
+      serviceType = [specifierCopy serviceType];
+      if (serviceType || ([specifierCopy SWCApplicationIdentifier], (serviceType = objc_claimAutoreleasedReturnValue()) != 0))
       {
       }
 
       else
       {
-        v24 = [v6 SWCDomain];
-        v25 = v24 == 0;
+        sWCDomain = [specifierCopy SWCDomain];
+        v25 = sWCDomain == 0;
 
         if (v25)
         {
@@ -590,7 +590,7 @@ LABEL_16:
       if (os_log_type_enabled(qword_10003AD20, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v33 = v6;
+        v33 = specifierCopy;
         _os_log_debug_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "Service '%@' not found to remove", buf, 0xCu);
       }
 
@@ -602,7 +602,7 @@ LABEL_16:
       v31[1] = v21;
       v22 = [NSDictionary dictionaryWithObjects:v31 forKeys:v30 count:2];
       v23 = [v20 initWithDomain:_SWCErrorDomain code:3 userInfo:v22];
-      (v7)[2](v7, 0, v23);
+      (handlerCopy)[2](handlerCopy, 0, v23);
 
       goto LABEL_16;
     }
@@ -615,7 +615,7 @@ LABEL_16:
     v29[1] = v12;
     v14 = [NSDictionary dictionaryWithObjects:v29 forKeys:v28 count:2];
     v17 = [v16 initWithDomain:_SWCErrorDomain code:2 userInfo:v14];
-    (v7)[2](v7, 0, v17);
+    (handlerCopy)[2](handlerCopy, 0, v17);
   }
 
   else
@@ -630,17 +630,17 @@ LABEL_16:
     v35[2] = @"Entitlement required to mutate SWC database";
     v14 = [NSDictionary dictionaryWithObjects:v35 forKeys:v34 count:3];
     v15 = [v13 initWithDomain:_SWCErrorDomain code:1 userInfo:v14];
-    (v7)[2](v7, 0, v15);
+    (handlerCopy)[2](handlerCopy, 0, v15);
   }
 
 LABEL_17:
 }
 
-- (void)setDetails:(id)a3 forServiceWithServiceSpecifier:(id)a4 completionHandler:(id)a5
+- (void)setDetails:(id)details forServiceWithServiceSpecifier:(id)specifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  detailsCopy = details;
+  specifierCopy = specifier;
+  handlerCopy = handler;
   v11 = +[NSXPCConnection currentConnection];
   v12 = [(SWCManager *)self _connectionIsEntitled:v11 forMutation:1];
 
@@ -656,30 +656,30 @@ LABEL_17:
     v34[2] = @"Entitlement required to mutate SWC database";
     v19 = [NSDictionary dictionaryWithObjects:v34 forKeys:v33 count:3];
     v20 = [v17 initWithDomain:_SWCErrorDomain code:1 userInfo:v19];
-    v10[2](v10, 0, v20);
+    handlerCopy[2](handlerCopy, 0, v20);
 LABEL_11:
 
     goto LABEL_20;
   }
 
-  if (![v9 isFullySpecified])
+  if (![specifierCopy isFullySpecified])
   {
     v21 = [NSError alloc];
     v18 = [NSString stringWithUTF8String:"[SWCManager setDetails:forServiceWithServiceSpecifier:completionHandler:]", @"Line", @"Function", &off_100036948];
     v28[1] = v18;
     v19 = [NSDictionary dictionaryWithObjects:v28 forKeys:&v27 count:2];
     v20 = [v21 initWithDomain:_SWCErrorDomain code:2 userInfo:v19];
-    v10[2](v10, 0, v20);
+    handlerCopy[2](handlerCopy, 0, v20);
     goto LABEL_11;
   }
 
-  v13 = [(SWCDatabase *)self->_database entryMatchingServiceSpecifier:v9];
+  v13 = [(SWCDatabase *)self->_database entryMatchingServiceSpecifier:specifierCopy];
   if (v13)
   {
-    v14 = [_SWCPatternList patternListWithDetailsDictionary:v8];
+    v14 = [_SWCPatternList patternListWithDetailsDictionary:detailsCopy];
     [(SWCEntry *)v13 setPatterns:v14];
 
-    v15 = [_SWCSubstitutionVariableList substitutionVariableListWithDictionary:v8];
+    v15 = [_SWCSubstitutionVariableList substitutionVariableListWithDictionary:detailsCopy];
     [(SWCEntry *)v13 setSubstitutionVariables:v15];
 
     if (qword_10003AD28 != -1)
@@ -693,7 +693,7 @@ LABEL_11:
       *buf = 138412546;
       v30 = v13;
       v31 = 2112;
-      v32 = v8;
+      v32 = detailsCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "Set details on %@: %@", buf, 0x16u);
     }
 
@@ -702,13 +702,13 @@ LABEL_11:
 
   else
   {
-    v13 = [[SWCEntry alloc] initWithServiceSpecifier:v9];
-    if (v8)
+    v13 = [[SWCEntry alloc] initWithServiceSpecifier:specifierCopy];
+    if (detailsCopy)
     {
-      v22 = [_SWCPatternList patternListWithDetailsDictionary:v8];
+      v22 = [_SWCPatternList patternListWithDetailsDictionary:detailsCopy];
       [(SWCEntry *)v13 setPatterns:v22];
 
-      v23 = [_SWCSubstitutionVariableList substitutionVariableListWithDictionary:v8];
+      v23 = [_SWCSubstitutionVariableList substitutionVariableListWithDictionary:detailsCopy];
       [(SWCEntry *)v13 setSubstitutionVariables:v23];
     }
 
@@ -723,7 +723,7 @@ LABEL_11:
       *buf = 138412546;
       v30 = v13;
       v31 = 2112;
-      v32 = v8;
+      v32 = detailsCopy;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "Added %@ with details: %@", buf, 0x16u);
     }
 
@@ -732,13 +732,13 @@ LABEL_11:
     [(SWCDatabase *)database addEntries:v26];
   }
 
-  v10[2](v10, 1, 0);
+  handlerCopy[2](handlerCopy, 1, 0);
 LABEL_20:
 }
 
-- (void)addAllAppsWithCompletionHandler:(id)a3
+- (void)addAllAppsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[NSXPCConnection currentConnection];
   v6 = [(SWCManager *)self _connectionIsEntitled:v5 forMutation:1];
 
@@ -774,23 +774,23 @@ LABEL_20:
     v8 = [v9 initWithDomain:_SWCErrorDomain code:1 userInfo:v11];
   }
 
-  v4[2](v4, v6, v8);
+  handlerCopy[2](handlerCopy, v6, v8);
 }
 
-- (void)showWithVerbosity:(unsigned __int8)a3 isTTY:(BOOL)a4 fileDescriptor:(id)a5 completionHandler:(id)a6
+- (void)showWithVerbosity:(unsigned __int8)verbosity isTTY:(BOOL)y fileDescriptor:(id)descriptor completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a3;
-  v10 = a5;
-  v11 = a6;
-  if (v10)
+  yCopy = y;
+  verbosityCopy = verbosity;
+  descriptorCopy = descriptor;
+  handlerCopy = handler;
+  if (descriptorCopy)
   {
-    if (xpc_get_type(v10) == &_xpc_type_fd)
+    if (xpc_get_type(descriptorCopy) == &_xpc_type_fd)
     {
-      v12 = xpc_fd_dup(v10);
+      v12 = xpc_fd_dup(descriptorCopy);
       if ((v12 & 0x80000000) == 0)
       {
-        if (v7)
+        if (yCopy)
         {
           _SWCForceTTY();
         }
@@ -802,23 +802,23 @@ LABEL_20:
           v14 = [NSNumber numberWithInt:getpid()];
           _SWCLogValueForKey();
 
-          v15 = [(SWCDatabase *)self->_database storageURL];
-          v16 = [v15 path];
+          storageURL = [(SWCDatabase *)self->_database storageURL];
+          path = [storageURL path];
           _SWCLogValueForKey();
 
-          if (v8)
+          if (verbosityCopy)
           {
-            v17 = [(SWCDatabase *)self->_database settingsGeneration];
+            settingsGeneration = [(SWCDatabase *)self->_database settingsGeneration];
             _SWCLogValueForKey();
 
-            v18 = [(SWCDatabase *)self->_database launchServicesDatabaseGeneration];
+            launchServicesDatabaseGeneration = [(SWCDatabase *)self->_database launchServicesDatabaseGeneration];
             _SWCLogValueForKey();
 
-            v19 = [(SWCDatabase *)self->_database enterpriseState];
-            v20 = v19;
-            if (v19)
+            enterpriseState = [(SWCDatabase *)self->_database enterpriseState];
+            v20 = enterpriseState;
+            if (enterpriseState)
             {
-              v21 = [v19 base64EncodedStringWithOptions:0];
+              v21 = [enterpriseState base64EncodedStringWithOptions:0];
             }
 
             else
@@ -843,7 +843,7 @@ LABEL_20:
           v73[3] = &unk_100034F88;
           v73[4] = &v75;
           v73[5] = v13;
-          v74 = v8;
+          v74 = verbosityCopy;
           [(SWCDatabase *)database enumerateEntriesWithBlock:v73];
           if ((v76[3] & 1) == 0)
           {
@@ -851,7 +851,7 @@ LABEL_20:
           }
 
           _SWCLogHeader();
-          if (v8 < 2)
+          if (verbosityCopy < 2)
           {
             v29 = objc_alloc_init(NSMutableArray);
             downloader = self->_downloader;
@@ -859,14 +859,14 @@ LABEL_20:
             v67[1] = 3221225472;
             v67[2] = sub_10001710C;
             v67[3] = &unk_100034FD8;
-            v69 = v8;
+            v69 = verbosityCopy;
             v31 = v29;
             v68 = v31;
             [(SWCDownloader *)downloader enumerateActiveAASAFileDownloadsWithBlock:v67];
             v32 = [v31 componentsJoinedByString:{@", "}];
             _SWCLogLine();
 
-            if (!v8)
+            if (!verbosityCopy)
             {
 LABEL_35:
               _Block_object_dispose(&v75, 8);
@@ -891,13 +891,13 @@ LABEL_35:
 
             _SWCLogHeader();
             v27 = +[_SWCPrefs sharedPrefs];
-            v28 = [v27 descriptionOfAllPrefs];
+            descriptionOfAllPrefs = [v27 descriptionOfAllPrefs];
             v66[0] = _NSConcreteStackBlock;
             v66[1] = 3221225472;
             v66[2] = sub_100017230;
             v66[3] = &unk_100034FF8;
             v66[4] = v13;
-            [v28 enumerateKeysAndObjectsUsingBlock:v66];
+            [descriptionOfAllPrefs enumerateKeysAndObjectsUsingBlock:v66];
           }
 
           _SWCLogHeader();
@@ -966,10 +966,10 @@ LABEL_35:
 
           else
           {
-            v50 = v11;
-            v51 = v10;
+            v50 = handlerCopy;
+            v51 = descriptorCopy;
             v41 = v13;
-            v42 = v8;
+            v42 = verbosityCopy;
             v53 = objc_alloc_init(NSByteCountFormatter);
             v43 = v57[6];
             v44 = v57[7];
@@ -999,8 +999,8 @@ LABEL_35:
             }
 
             v13 = v41;
-            v11 = v50;
-            v10 = v51;
+            handlerCopy = v50;
+            descriptorCopy = v51;
           }
 
           _Block_object_dispose(&v56, 8);
@@ -1015,12 +1015,12 @@ LABEL_35:
 
 LABEL_3:
   _SWCForceTTY();
-  v11[2](v11);
+  handlerCopy[2](handlerCopy);
 }
 
-- (void)resetWithCompletionHandler:(id)a3
+- (void)resetWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[NSXPCConnection currentConnection];
   v6 = [(SWCManager *)self _connectionIsEntitled:v5 forMutation:1];
 
@@ -1032,7 +1032,7 @@ LABEL_3:
     v13 = 0;
     v8 = [(SWCDatabase *)database saveReturningError:&v13];
     v9 = v13;
-    v4[2](v4, v8, v9);
+    handlerCopy[2](handlerCopy, v8, v9);
     xpc_transaction_exit_clean();
   }
 
@@ -1048,18 +1048,18 @@ LABEL_3:
     v15[2] = @"Entitlement required to mutate SWC database";
     v11 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:3];
     v12 = [v10 initWithDomain:_SWCErrorDomain code:1 userInfo:v11];
-    v4[2](v4, 0, v12);
+    handlerCopy[2](handlerCopy, 0, v12);
   }
 }
 
-- (void)getServiceSettingsWithServiceSpecifier:(id)a3 completionHandler:(id)a4
+- (void)getServiceSettingsWithServiceSpecifier:(id)specifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SWCDatabase *)self->_database settingsDictionaryForServiceSpecifier:v6];
+  specifierCopy = specifier;
+  handlerCopy = handler;
+  v8 = [(SWCDatabase *)self->_database settingsDictionaryForServiceSpecifier:specifierCopy];
   if (!v8)
   {
-    v9 = [(SWCDatabase *)self->_database entryMatchingServiceSpecifier:v6];
+    v9 = [(SWCDatabase *)self->_database entryMatchingServiceSpecifier:specifierCopy];
 
     if (!v9)
     {
@@ -1083,19 +1083,19 @@ LABEL_3:
   }
 
   v10 = [_SWCServiceSettings alloc];
-  v11 = [(SWCDatabase *)self->_database settingsGeneration];
-  v12 = [v10 _initWithServiceSpecifier:v6 dictionary:v8 generation:v11];
+  settingsGeneration = [(SWCDatabase *)self->_database settingsGeneration];
+  v12 = [v10 _initWithServiceSpecifier:specifierCopy dictionary:v8 generation:settingsGeneration];
 
   v13 = 0;
 LABEL_5:
-  v7[2](v7, v12, v13);
+  handlerCopy[2](handlerCopy, v12, v13);
 }
 
-- (void)commitServiceSettings:(id)a3 completionHandler:(id)a4
+- (void)commitServiceSettings:(id)settings completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SWCDatabase *)self->_database settingsGeneration];
+  settingsCopy = settings;
+  handlerCopy = handler;
+  settingsGeneration = [(SWCDatabase *)self->_database settingsGeneration];
   v9 = +[NSXPCConnection currentConnection];
   v10 = [(SWCManager *)self _connectionIsEntitled:v9 forMutation:1];
 
@@ -1113,12 +1113,12 @@ LABEL_5:
     v20 = [v17 initWithDomain:_SWCErrorDomain code:1 userInfo:v19];
 
 LABEL_7:
-    v16 = 0;
+    settingsGeneration2 = 0;
     goto LABEL_10;
   }
 
-  v11 = [v6 generation];
-  v12 = [v11 isEqual:v8];
+  generation = [settingsCopy generation];
+  v12 = [generation isEqual:settingsGeneration];
 
   if ((v12 & 1) == 0)
   {
@@ -1131,11 +1131,11 @@ LABEL_7:
     v28[2] = @"Settings conflict detected. Try again.";
     v27[2] = NSDebugDescriptionErrorKey;
     v27[3] = @"Generation";
-    v23 = [v6 generation];
-    v24 = [v23 description];
+    generation2 = [settingsCopy generation];
+    v24 = [generation2 description];
     v28[3] = v24;
     v27[4] = @"ExpectedGeneration";
-    v25 = [v8 description];
+    v25 = [settingsGeneration description];
     v28[4] = v25;
     v26 = [NSDictionary dictionaryWithObjects:v28 forKeys:v27 count:5];
     v20 = [v21 initWithDomain:_SWCErrorDomain code:1000 userInfo:v26];
@@ -1143,31 +1143,31 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v13 = [v6 serviceSpecifier];
-  if (v13)
+  serviceSpecifier = [settingsCopy serviceSpecifier];
+  if (serviceSpecifier)
   {
     database = self->_database;
-    v15 = [v6 dictionaryRepresentation];
-    [(SWCDatabase *)database setSettingsDictionary:v15 forServiceSpecifier:v13];
+    dictionaryRepresentation = [settingsCopy dictionaryRepresentation];
+    [(SWCDatabase *)database setSettingsDictionary:dictionaryRepresentation forServiceSpecifier:serviceSpecifier];
 
-    v16 = [(SWCDatabase *)self->_database settingsGeneration];
+    settingsGeneration2 = [(SWCDatabase *)self->_database settingsGeneration];
   }
 
   else
   {
-    v16 = 0;
+    settingsGeneration2 = 0;
   }
 
   v20 = 0;
 LABEL_10:
-  v7[2](v7, v16, v20);
+  handlerCopy[2](handlerCopy, settingsGeneration2, v20);
 }
 
-- (void)removeSettingsForKeys:(id)a3 serviceType:(id)a4 completionHandler:(id)a5
+- (void)removeSettingsForKeys:(id)keys serviceType:(id)type completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keysCopy = keys;
+  typeCopy = type;
+  handlerCopy = handler;
   v11 = +[NSXPCConnection currentConnection];
   v12 = [(SWCManager *)self _connectionIsEntitled:v11 forMutation:1];
 
@@ -1190,7 +1190,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!v9 || v8 && (_NSIsNSSet() & 1) == 0)
+  if (!typeCopy || keysCopy && (_NSIsNSSet() & 1) == 0)
   {
     v19 = [NSError alloc];
     v20[0] = @"Line";
@@ -1204,17 +1204,17 @@ LABEL_8:
   }
 
   v13 = 0;
-  [(SWCDatabase *)self->_database removeSettingsForKeys:v8 serviceType:v9];
+  [(SWCDatabase *)self->_database removeSettingsForKeys:keysCopy serviceType:typeCopy];
   v14 = 1;
 LABEL_9:
-  v10[2](v10, v14, v13);
+  handlerCopy[2](handlerCopy, v14, v13);
 }
 
-- (void)removeSettingsForKeys:(id)a3 serviceSpecifier:(id)a4 completionHandler:(id)a5
+- (void)removeSettingsForKeys:(id)keys serviceSpecifier:(id)specifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keysCopy = keys;
+  specifierCopy = specifier;
+  handlerCopy = handler;
   v11 = +[NSXPCConnection currentConnection];
   v12 = [(SWCManager *)self _connectionIsEntitled:v11 forMutation:1];
 
@@ -1233,13 +1233,13 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  if (v9)
+  if (specifierCopy)
   {
-    v13 = [v9 serviceType];
-    v14 = v13;
-    if (v13)
+    serviceType = [specifierCopy serviceType];
+    v14 = serviceType;
+    if (serviceType)
     {
-      if (v8)
+      if (keysCopy)
       {
         v15 = _NSIsNSSet();
 
@@ -1254,7 +1254,7 @@ LABEL_9:
       }
 
       v21 = 0;
-      [(SWCDatabase *)self->_database removeSettingsForKeys:v8 serviceSpecifier:v9];
+      [(SWCDatabase *)self->_database removeSettingsForKeys:keysCopy serviceSpecifier:specifierCopy];
       v22 = 1;
       goto LABEL_9;
     }
@@ -1274,17 +1274,17 @@ LABEL_8:
 
   v22 = 0;
 LABEL_9:
-  v10[2](v10, v22, v21);
+  handlerCopy[2](handlerCopy, v22, v21);
 }
 
-- (void)getTrackingDomains:(id)a3 sources:(unint64_t)a4 completionHandler:(id)a5
+- (void)getTrackingDomains:(id)domains sources:(unint64_t)sources completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
-  if (v7 && !_NSIsNSSet())
+  domainsCopy = domains;
+  handlerCopy = handler;
+  if (domainsCopy && !_NSIsNSSet())
   {
 LABEL_13:
-    v8[2](v8, &__NSDictionary0__struct);
+    handlerCopy[2](handlerCopy, &__NSDictionary0__struct);
   }
 
   else
@@ -1293,7 +1293,7 @@ LABEL_13:
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = v7;
+    v9 = domainsCopy;
     v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
@@ -1334,41 +1334,41 @@ LABEL_13:
     v15[2] = sub_1000187D8;
     v15[3] = &unk_1000350B0;
     v16 = os_transaction_create();
-    v17 = v8;
+    v17 = handlerCopy;
     v14 = v16;
-    [_SWCTrackingDomainInfo _getTrackingDomainInfoWithDomains:v9 sources:a4 completionHandler:v15];
+    [_SWCTrackingDomainInfo _getTrackingDomainInfoWithDomains:v9 sources:sources completionHandler:v15];
   }
 }
 
-- (void)getDeveloperModeEnabledWithCompletionHandler:(id)a3
+- (void)getDeveloperModeEnabledWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v4 = [NSNumber numberWithBool:[(SWCManager *)self _isDeveloperModeEnabled]];
-  v5[2](v5, v4, 0);
+  handlerCopy[2](handlerCopy, v4, 0);
 }
 
-- (void)setDeveloperModeEnabled:(BOOL)a3 completionHandler:(id)a4
+- (void)setDeveloperModeEnabled:(BOOL)enabled completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
+  enabledCopy = enabled;
+  handlerCopy = handler;
   v7 = +[NSXPCConnection currentConnection];
   v8 = [(SWCManager *)self _connectionIsEntitled:v7 forMutation:1];
 
   if (v8)
   {
-    if ([(SWCManager *)self _isDeveloperModeEnabled]== v4)
+    if ([(SWCManager *)self _isDeveloperModeEnabled]== enabledCopy)
     {
-      v6[2](v6, 1, 0);
+      handlerCopy[2](handlerCopy, 1, 0);
     }
 
-    else if (v4)
+    else if (enabledCopy)
     {
       v16[0] = _NSConcreteStackBlock;
       v16[1] = 3221225472;
       v16[2] = sub_100018B48;
       v16[3] = &unk_1000350D8;
       v16[4] = self;
-      v17 = v6;
+      v17 = handlerCopy;
       [(SWCManager *)self _authorizeDeveloperModeChangeWithCompletionHandler:v16];
     }
 
@@ -1377,7 +1377,7 @@ LABEL_13:
       v15 = 0;
       v13 = [(SWCManager *)self _setDeveloperModeEnabled:0 error:&v15];
       v14 = v15;
-      (v6)[2](v6, v13, v14);
+      (handlerCopy)[2](handlerCopy, v13, v14);
     }
   }
 
@@ -1394,15 +1394,15 @@ LABEL_13:
     v11 = [NSDictionary dictionaryWithObjects:v19 forKeys:v18 count:3];
     v12 = [v9 initWithDomain:_SWCErrorDomain code:1 userInfo:v11];
 
-    (v6)[2](v6, 0, v12);
+    (handlerCopy)[2](handlerCopy, 0, v12);
   }
 }
 
-- (void)setAdditionalServiceDetailsForApplicationIdentifiers:(id)a3 usingContentsOfDictionary:(id)a4 completionHandler:(id)a5
+- (void)setAdditionalServiceDetailsForApplicationIdentifiers:(id)identifiers usingContentsOfDictionary:(id)dictionary completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifiersCopy = identifiers;
+  dictionaryCopy = dictionary;
+  handlerCopy = handler;
   v11 = +[NSXPCConnection currentConnection];
   if (![(SWCManager *)self _connectionIsEntitled:v11 forMutation:1])
   {
@@ -1421,7 +1421,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (!v8 || !_NSIsNSSet() || ![v8 count])
+  if (!identifiersCopy || !_NSIsNSSet() || ![identifiersCopy count])
   {
     v20 = [NSError alloc];
     v32[0] = &off_100036A98;
@@ -1436,7 +1436,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if (!v9 || (_NSIsNSDictionary() & 1) == 0)
+  if (!dictionaryCopy || (_NSIsNSDictionary() & 1) == 0)
   {
     v21 = [NSError alloc];
     v30[0] = &off_100036AB0;
@@ -1451,7 +1451,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v12 = [(SWCManager *)self _filterApplicationIdentifiers:v8 toMatchEntitlementOfXPCConnection:v11];
+  v12 = [(SWCManager *)self _filterApplicationIdentifiers:identifiersCopy toMatchEntitlementOfXPCConnection:v11];
   v26 = 0;
   v13 = [(SWCManager *)self _createStagingDirectoryForAdditionalServiceDetailsReturningError:&v26];
   v14 = v26;
@@ -1464,7 +1464,7 @@ LABEL_13:
   }
 
   v25 = v14;
-  v16 = [(SWCManager *)self _addJSONDataInDictionary:v9 toStagingDirectoryAtURL:v13 error:&v25];
+  v16 = [(SWCManager *)self _addJSONDataInDictionary:dictionaryCopy toStagingDirectoryAtURL:v13 error:&v25];
   v17 = v25;
 
   if (v16)
@@ -1488,7 +1488,7 @@ LABEL_13:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v28 = v8;
+      v28 = identifiersCopy;
       _os_log_debug_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEBUG, "Updating all apps after updating additional service details for %@", buf, 0xCu);
     }
 
@@ -1498,7 +1498,7 @@ LABEL_13:
 
 LABEL_14:
 
-  v10[2](v10, v16, v15);
+  handlerCopy[2](handlerCopy, v16, v15);
 }
 
 - (id)_eligibleSystemPlaceholderRecords
@@ -1542,9 +1542,9 @@ LABEL_14:
   return v2;
 }
 
-- (void)_updateAllEntries:(id)a3
+- (void)_updateAllEntries:(id)entries
 {
-  v36 = a3;
+  entriesCopy = entries;
   v37 = objc_alloc_init(NSMutableOrderedSet);
   v4 = objc_alloc_init(NSMutableOrderedSet);
   v5 = objc_autoreleasePoolPush();
@@ -1553,7 +1553,7 @@ LABEL_14:
   v44[1] = 3221225472;
   v44[2] = sub_100019DE4;
   v44[3] = &unk_100034CE0;
-  v7 = v36;
+  v7 = entriesCopy;
   v45 = v7;
   v39 = v37;
   v46 = v39;
@@ -1626,10 +1626,10 @@ LABEL_14:
 
         else
         {
-          v22 = [v11 applicationPersistentIdentifier];
-          v23 = [v12 applicationPersistentIdentifier];
-          v24 = v23;
-          if (!v22 || !v23)
+          applicationPersistentIdentifier = [v11 applicationPersistentIdentifier];
+          applicationPersistentIdentifier2 = [v12 applicationPersistentIdentifier];
+          applicationVersion = applicationPersistentIdentifier2;
+          if (!applicationPersistentIdentifier || !applicationPersistentIdentifier2)
           {
             goto LABEL_37;
           }
@@ -1638,9 +1638,9 @@ LABEL_14:
 
           if (!v25)
           {
-            v22 = [v11 applicationVersion];
-            v24 = [v12 applicationVersion];
-            if ([v11 isDownloadable] && objc_msgSend(v22, "isEqual:", v24))
+            applicationPersistentIdentifier = [v11 applicationVersion];
+            applicationVersion = [v12 applicationVersion];
+            if ([v11 isDownloadable] && objc_msgSend(applicationPersistentIdentifier, "isEqual:", applicationVersion))
             {
               if (qword_10003AD28 != -1)
               {
@@ -1655,8 +1655,8 @@ LABEL_14:
                 _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Entry %@ has moved databases but hasn't changed versions; we won't download new JSON right now", buf, 0xCu);
               }
 
-              v19 = [v11 applicationPersistentIdentifier];
-              [v12 setApplicationPersistentIdentifier:v19];
+              applicationPersistentIdentifier3 = [v11 applicationPersistentIdentifier];
+              [v12 setApplicationPersistentIdentifier:applicationPersistentIdentifier3];
 LABEL_16:
 
               goto LABEL_19;
@@ -1700,9 +1700,9 @@ LABEL_14:
             }
 
             downloader = self->_downloader;
-            v19 = [v11 domain];
-            v20 = [v11 applicationIdentifier];
-            [(SWCDownloader *)downloader downloadAASAFileForDomain:v19 applicationIdentifier:v20 completionHandler:0];
+            applicationPersistentIdentifier3 = [v11 domain];
+            applicationIdentifier = [v11 applicationIdentifier];
+            [(SWCDownloader *)downloader downloadAASAFileForDomain:applicationPersistentIdentifier3 applicationIdentifier:applicationIdentifier completionHandler:0];
 
             goto LABEL_16;
           }
@@ -1780,13 +1780,13 @@ LABEL_19:
   [(SWCDownloadScheduler *)self->_downloadScheduler update];
 }
 
-- (id)_entriesWithServiceSpecifier:(id)a3 URL:(id)a4 limit:(unint64_t)a5 auditToken:(id *)a6
+- (id)_entriesWithServiceSpecifier:(id)specifier URL:(id)l limit:(unint64_t)limit auditToken:(id *)token
 {
-  v9 = a3;
-  v10 = a4;
-  if (v10)
+  specifierCopy = specifier;
+  lCopy = l;
+  if (lCopy)
   {
-    v11 = [[NSURLComponents alloc] initWithURL:v10 resolvingAgainstBaseURL:1];
+    v11 = [[NSURLComponents alloc] initWithURL:lCopy resolvingAgainstBaseURL:1];
   }
 
   else
@@ -1801,12 +1801,12 @@ LABEL_19:
   v27[1] = 3221225472;
   v27[2] = sub_10001A0A4;
   v27[3] = &unk_100035100;
-  v15 = v9;
+  v15 = specifierCopy;
   v28 = v15;
   v16 = v11;
   v29 = v16;
-  v17 = *&a6->var0[4];
-  v31 = *a6->var0;
+  v17 = *&token->var0[4];
+  v31 = *token->var0;
   v32 = v17;
   v18 = v13;
   v30 = v18;
@@ -1825,21 +1825,21 @@ LABEL_19:
   return v20;
 }
 
-- (id)_serviceDetailsWithEntry:(id)a3
+- (id)_serviceDetailsWithEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   v4 = [_SWCServiceDetails alloc];
-  v5 = [v3 serviceSpecifier];
-  v6 = [v4 _initWithServiceSpecifier:v5 fields:{objc_msgSend(v3, "fields")}];
+  serviceSpecifier = [entryCopy serviceSpecifier];
+  v6 = [v4 _initWithServiceSpecifier:serviceSpecifier fields:{objc_msgSend(entryCopy, "fields")}];
 
   return v6;
 }
 
-- (void)_waitForSiteApprovalWithServiceSpecifier:(id)a3 completionHandler:(id)a4
+- (void)_waitForSiteApprovalWithServiceSpecifier:(id)specifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 isFullySpecified])
+  specifierCopy = specifier;
+  handlerCopy = handler;
+  if (![specifierCopy isFullySpecified])
   {
     v11 = [NSError alloc];
     v38[0] = @"Line";
@@ -1847,13 +1847,13 @@ LABEL_19:
     v39[0] = &off_100036AF8;
     v9 = [NSString stringWithUTF8String:"[SWCManager(Private) _waitForSiteApprovalWithServiceSpecifier:completionHandler:]"];
     v39[1] = v9;
-    v12 = [NSDictionary dictionaryWithObjects:v39 forKeys:v38 count:2];
-    v13 = [v11 initWithDomain:_SWCErrorDomain code:2 userInfo:v12];
-    v7[2](v7, 0, v13);
+    sWCDomain = [NSDictionary dictionaryWithObjects:v39 forKeys:v38 count:2];
+    v13 = [v11 initWithDomain:_SWCErrorDomain code:2 userInfo:sWCDomain];
+    handlerCopy[2](handlerCopy, 0, v13);
     goto LABEL_20;
   }
 
-  v8 = [(SWCDatabase *)self->_database entryMatchingServiceSpecifier:v6];
+  v8 = [(SWCDatabase *)self->_database entryMatchingServiceSpecifier:specifierCopy];
   v9 = v8;
   if (!v8)
   {
@@ -1861,13 +1861,13 @@ LABEL_19:
     v41[0] = &off_100036AE0;
     v40[0] = @"Line";
     v40[1] = @"Function";
-    v12 = [NSString stringWithUTF8String:"[SWCManager(Private) _waitForSiteApprovalWithServiceSpecifier:completionHandler:]"];
+    sWCDomain = [NSString stringWithUTF8String:"[SWCManager(Private) _waitForSiteApprovalWithServiceSpecifier:completionHandler:]"];
     v40[2] = NSDebugDescriptionErrorKey;
-    v41[1] = v12;
+    v41[1] = sWCDomain;
     v41[2] = @"The specified service was not found in the SWC database.";
     v13 = [NSDictionary dictionaryWithObjects:v41 forKeys:v40 count:3];
     v15 = [v14 initWithDomain:_SWCErrorDomain code:3 userInfo:v13];
-    v7[2](v7, 0, v15);
+    handlerCopy[2](handlerCopy, 0, v15);
 
     v9 = 0;
     goto LABEL_20;
@@ -1875,15 +1875,15 @@ LABEL_19:
 
   if ((*[v8 fields] & 0xC) == 0)
   {
-    v16 = [v9 retryCount];
-    if (v16)
+    retryCount = [v9 retryCount];
+    if (retryCount)
     {
-      v17 = [v9 retryCount];
-      v18 = [v17 unsignedIntegerValue];
+      retryCount2 = [v9 retryCount];
+      unsignedIntegerValue = [retryCount2 unsignedIntegerValue];
       v19 = +[_SWCPrefs sharedPrefs];
-      v20 = [v19 maximumRetryCount];
+      maximumRetryCount = [v19 maximumRetryCount];
 
-      if (v18 > v20)
+      if (unsignedIntegerValue > maximumRetryCount)
       {
         if (qword_10003AD28 != -1)
         {
@@ -1893,22 +1893,22 @@ LABEL_19:
         v21 = qword_10003AD20;
         if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
         {
-          v22 = [v9 retryCount];
+          retryCount3 = [v9 retryCount];
           v23 = +[NSXPCConnection currentConnection];
           *buf = 138543874;
-          v45 = v22;
+          v45 = retryCount3;
           v46 = 2112;
           v47 = v9;
           v48 = 2048;
-          v49 = [v23 processIdentifier];
+          processIdentifier = [v23 processIdentifier];
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Exhausted retry attempts (%{public}@) for entry %@; will not attempt to download it on behalf of an interested caller %llu", buf, 0x20u);
         }
 
-        v24 = [v9 lastError];
-        v25 = v24;
-        if (v24)
+        lastError = [v9 lastError];
+        v25 = lastError;
+        if (lastError)
         {
-          v12 = v24;
+          sWCDomain = lastError;
         }
 
         else
@@ -1920,25 +1920,25 @@ LABEL_19:
           v30 = [NSString stringWithUTF8String:"[SWCManager(Private) _waitForSiteApprovalWithServiceSpecifier:completionHandler:]"];
           v43[1] = v30;
           v31 = [NSDictionary dictionaryWithObjects:v43 forKeys:v42 count:2];
-          v12 = [v29 initWithDomain:_SWCErrorDomain code:-1 userInfo:v31];
+          sWCDomain = [v29 initWithDomain:_SWCErrorDomain code:-1 userInfo:v31];
         }
 
-        v7[2](v7, 0, v12);
+        handlerCopy[2](handlerCopy, 0, sWCDomain);
         goto LABEL_21;
       }
     }
 
-    v12 = [v6 SWCDomain];
+    sWCDomain = [specifierCopy SWCDomain];
     downloader = self->_downloader;
-    v27 = [v6 SWCApplicationIdentifier];
+    sWCApplicationIdentifier = [specifierCopy SWCApplicationIdentifier];
     v35[0] = _NSConcreteStackBlock;
     v35[1] = 3221225472;
     v35[2] = sub_10001AD80;
     v35[3] = &unk_100035178;
-    v37 = v7;
+    v37 = handlerCopy;
     v28 = v9;
     v36 = v28;
-    [(SWCDownloader *)downloader downloadAASAFileForDomain:v12 applicationIdentifier:v27 completionHandler:v35];
+    [(SWCDownloader *)downloader downloadAASAFileForDomain:sWCDomain applicationIdentifier:sWCApplicationIdentifier completionHandler:v35];
 
     v13 = v37;
     v9 = v28;
@@ -1964,21 +1964,21 @@ LABEL_21:
     v46 = 2114;
     v47 = v33;
     v48 = 2048;
-    v49 = [v34 processIdentifier];
+    processIdentifier = [v34 processIdentifier];
     _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "Entry %@ already has approval state %{public}@, skipping download for interested caller %llu", buf, 0x20u);
   }
 
-  (v7)[2](v7, v9, 0);
+  (handlerCopy)[2](handlerCopy, v9, 0);
 LABEL_22:
 }
 
-- (BOOL)_connectionIsEntitled:(id)a3 forMutation:(BOOL)a4
+- (BOOL)_connectionIsEntitled:(id)entitled forMutation:(BOOL)mutation
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  entitledCopy = entitled;
+  v5 = entitledCopy;
+  if (entitledCopy)
   {
-    [v4 auditToken];
+    [entitledCopy auditToken];
   }
 
   v6 = _SWCIsAuditTokenEntitled();
@@ -1996,13 +1996,13 @@ LABEL_22:
   return v4;
 }
 
-- (BOOL)_setDeveloperModeEnabled:(BOOL)a3 error:(id *)a4
+- (BOOL)_setDeveloperModeEnabled:(BOOL)enabled error:(id *)error
 {
-  v5 = a3;
-  v7 = [(SWCManager *)self _developerModeSemaphoreURL];
-  if (!v7)
+  enabledCopy = enabled;
+  _developerModeSemaphoreURL = [(SWCManager *)self _developerModeSemaphoreURL];
+  if (!_developerModeSemaphoreURL)
   {
-    if (a4)
+    if (error)
     {
       v11 = [NSError alloc];
       v20[0] = &off_100036B10;
@@ -2013,13 +2013,13 @@ LABEL_22:
       v20[1] = v12;
       v20[2] = @"Unable to find path to developer mode semaphore file.";
       v13 = [NSDictionary dictionaryWithObjects:v20 forKeys:v19 count:3];
-      *a4 = [v11 initWithDomain:_SWCErrorDomain code:-1 userInfo:v13];
+      *error = [v11 initWithDomain:_SWCErrorDomain code:-1 userInfo:v13];
     }
 
     return 0;
   }
 
-  if (!v5)
+  if (!enabledCopy)
   {
     if (qword_10003AD28 != -1)
     {
@@ -2034,7 +2034,7 @@ LABEL_22:
     }
 
     v15 = +[NSFileManager defaultManager];
-    v16 = [v15 removeItemAtURL:v7 error:a4];
+    v16 = [v15 removeItemAtURL:_developerModeSemaphoreURL error:error];
 
     if (!v16)
     {
@@ -2042,7 +2042,7 @@ LABEL_22:
     }
 
 LABEL_16:
-    self->_developerModeEnabled = (v5 | 0x100);
+    self->_developerModeEnabled = (enabledCopy | 0x100);
     [(SWCManager *)self updateEntriesForAllBundlesIgnoringCurrentState:1];
     return 1;
   }
@@ -2060,7 +2060,7 @@ LABEL_16:
   }
 
   v9 = +[NSData data];
-  v10 = [v9 writeToURL:v7 options:1 error:a4];
+  v10 = [v9 writeToURL:_developerModeSemaphoreURL options:1 error:error];
 
   if (v10)
   {
@@ -2079,11 +2079,11 @@ LABEL_16:
 
   else
   {
-    v4 = [(SWCManager *)self _developerModeSemaphoreURL];
-    v5 = v4;
-    if (v4)
+    _developerModeSemaphoreURL = [(SWCManager *)self _developerModeSemaphoreURL];
+    v5 = _developerModeSemaphoreURL;
+    if (_developerModeSemaphoreURL)
     {
-      v3 = [v4 checkResourceIsReachableAndReturnError:0];
+      v3 = [_developerModeSemaphoreURL checkResourceIsReachableAndReturnError:0];
     }
 
     else
@@ -2097,12 +2097,12 @@ LABEL_16:
   return v3;
 }
 
-- (id)_filterApplicationIdentifiers:(id)a3 toMatchEntitlementOfXPCConnection:(id)a4
+- (id)_filterApplicationIdentifiers:(id)identifiers toMatchEntitlementOfXPCConnection:(id)connection
 {
-  v18 = a3;
-  v17 = a4;
-  v5 = [v17 processIdentifier];
-  if (v5 == getpid())
+  identifiersCopy = identifiers;
+  connectionCopy = connection;
+  processIdentifier = [connectionCopy processIdentifier];
+  if (processIdentifier == getpid())
   {
     if (qword_10003AD28 != -1)
     {
@@ -2116,14 +2116,14 @@ LABEL_16:
       _os_log_debug_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "Treating connection from self as entitled (additional service details check)", buf, 2u);
     }
 
-    v7 = v18;
+    v7 = identifiersCopy;
     goto LABEL_24;
   }
 
-  v8 = [v17 valueForEntitlement:@"com.apple.private.swc.additional-service-details-provider"];
+  v8 = [connectionCopy valueForEntitlement:@"com.apple.private.swc.additional-service-details-provider"];
   if ([v8 isEqual:@"*"])
   {
-    v7 = v18;
+    v7 = identifiersCopy;
 LABEL_23:
 
     goto LABEL_24;
@@ -2143,7 +2143,7 @@ LABEL_23:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = v18;
+    v9 = identifiersCopy;
     v10 = [v9 countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v10)
     {
@@ -2160,8 +2160,8 @@ LABEL_23:
           v13 = *(*(&v19 + 1) + 8 * i);
           if (objc_opt_isKindOfClass())
           {
-            v14 = [v13 rawValue];
-            v15 = [v8 containsObject:v14];
+            rawValue = [v13 rawValue];
+            v15 = [v8 containsObject:rawValue];
 
             if (v15)
             {
@@ -2184,13 +2184,13 @@ LABEL_24:
   return v7;
 }
 
-- (id)_createStagingDirectoryForAdditionalServiceDetailsReturningError:(id *)a3
+- (id)_createStagingDirectoryForAdditionalServiceDetailsReturningError:(id *)error
 {
   v4 = objc_autoreleasePoolPush();
   v5 = [NSString alloc];
   v6 = +[NSUUID UUID];
-  v7 = [v6 UUIDString];
-  v8 = [v5 initWithFormat:@"AdditionalServiceDetails/staged-%@", v7];
+  uUIDString = [v6 UUIDString];
+  v8 = [v5 initWithFormat:@"AdditionalServiceDetails/staged-%@", uUIDString];
 
   v9 = +[_SWCPrefs sharedPrefs];
   v20 = 0;
@@ -2224,26 +2224,26 @@ LABEL_24:
   }
 
   objc_autoreleasePoolPop(v4);
-  if (a3 && !v16)
+  if (error && !v16)
   {
     v17 = v11;
-    *a3 = v11;
+    *error = v11;
   }
 
   return v16;
 }
 
-- (BOOL)_addJSONDataInDictionary:(id)a3 toStagingDirectoryAtURL:(id)a4 error:(id *)a5
+- (BOOL)_addJSONDataInDictionary:(id)dictionary toStagingDirectoryAtURL:(id)l error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  dictionaryCopy = dictionary;
+  lCopy = l;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
   v25 = sub_10001BA00;
   v26 = sub_10001BA10;
   v27 = 0;
-  v9 = [v7 count];
+  v9 = [dictionaryCopy count];
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -2253,15 +2253,15 @@ LABEL_24:
   v13[2] = sub_10001BA18;
   v13[3] = &unk_1000351A0;
   v17 = objc_opt_class();
-  v10 = v8;
+  v10 = lCopy;
   v14 = v10;
   v15 = &v22;
   v16 = &v18;
-  [v7 enumerateKeysAndObjectsUsingBlock:v13];
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v13];
   v11 = v19[3];
-  if (a5 && v11 != v9)
+  if (error && v11 != v9)
   {
-    *a5 = v23[5];
+    *error = v23[5];
   }
 
   _Block_object_dispose(&v18, 8);
@@ -2270,16 +2270,16 @@ LABEL_24:
   return v11 == v9;
 }
 
-- (BOOL)_copyStagingDirectoryAtURL:(id)a3 toAdditionalServiceDetailsDirectoriesForApplicationIdentifiers:(id)a4 error:(id *)a5
+- (BOOL)_copyStagingDirectoryAtURL:(id)l toAdditionalServiceDetailsDirectoriesForApplicationIdentifiers:(id)identifiers error:(id *)error
 {
-  v24 = a3;
-  v6 = a4;
-  v22 = [v6 count];
+  lCopy = l;
+  identifiersCopy = identifiers;
+  v22 = [identifiersCopy count];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v6;
+  obj = identifiersCopy;
   v7 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v7)
   {
@@ -2308,7 +2308,7 @@ LABEL_3:
 
         v17 = +[NSFileManager defaultManager];
         v25 = v15;
-        v18 = [v17 copyItemAtURL:v24 toURL:v14 error:&v25];
+        v18 = [v17 copyItemAtURL:lCopy toURL:v14 error:&v25];
         v9 = v25;
 
         v8 += v18;
@@ -2345,10 +2345,10 @@ LABEL_3:
     v9 = 0;
   }
 
-  if (a5 && v8 != v22)
+  if (error && v8 != v22)
   {
     v19 = v9;
-    *a5 = v9;
+    *error = v9;
   }
 
   return v8 == v22;

@@ -1,13 +1,13 @@
 @interface _DASThunderingHerdPolicy
 + (id)policyInstance;
-- (BOOL)appliesToActivity:(id)a3;
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4;
+- (BOOL)appliesToActivity:(id)activity;
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state;
 - (_DASThunderingHerdPolicy)init;
 - (id)initializeTriggers;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
+- (id)responseForActivity:(id)activity withState:(id)state;
 - (void)handleTriggerEvent;
-- (void)setRecentTriggerEvent:(BOOL)a3;
-- (void)setWaitingForInactivity:(BOOL)a3;
+- (void)setRecentTriggerEvent:(BOOL)event;
+- (void)setWaitingForInactivity:(BOOL)inactivity;
 @end
 
 @implementation _DASThunderingHerdPolicy
@@ -67,9 +67,9 @@
     shortTermTimer = v3->_shortTermTimer;
     v3->_shortTermTimer = v8;
 
-    v10 = [(_DASThunderingHerdPolicy *)v3 initializeTriggers];
+    initializeTriggers = [(_DASThunderingHerdPolicy *)v3 initializeTriggers];
     triggers = v3->_triggers;
-    v3->_triggers = v10;
+    v3->_triggers = initializeTriggers;
 
     dispatch_source_set_timer(v3->_shortTermTimer, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0xE8D4A51000uLL);
     v12 = v3->_shortTermTimer;
@@ -124,28 +124,28 @@
   return v3;
 }
 
-- (void)setRecentTriggerEvent:(BOOL)a3
+- (void)setRecentTriggerEvent:(BOOL)event
 {
-  v3 = a3;
-  self->_recentTriggerEvent = a3;
+  eventCopy = event;
+  self->_recentTriggerEvent = event;
   v4 = [_DASDaemonLogger logForCategory:@"thpolicy"];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5[0] = 67109120;
-    v5[1] = v3;
+    v5[1] = eventCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Setting recent trigger event to %u", v5, 8u);
   }
 }
 
-- (void)setWaitingForInactivity:(BOOL)a3
+- (void)setWaitingForInactivity:(BOOL)inactivity
 {
-  v3 = a3;
-  self->_waitingForInactivity = a3;
+  inactivityCopy = inactivity;
+  self->_waitingForInactivity = inactivity;
   v4 = [_DASDaemonLogger logForCategory:@"thpolicy"];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5[0] = 67109120;
-    v5[1] = v3;
+    v5[1] = inactivityCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Set waiting for user inactivity to %u", v5, 8u);
   }
 }
@@ -162,21 +162,21 @@
   return v3;
 }
 
-- (BOOL)appliesToActivity:(id)a3
+- (BOOL)appliesToActivity:(id)activity
 {
-  v3 = a3;
-  if ([v3 budgeted])
+  activityCopy = activity;
+  if ([activityCopy budgeted])
   {
-    v4 = [v3 fileProtection];
+    fileProtection = [activityCopy fileProtection];
     v5 = +[_DASFileProtection complete];
-    if ([v4 isEqual:v5])
+    if ([fileProtection isEqual:v5])
     {
       LOBYTE(v6) = 0;
     }
 
     else
     {
-      v6 = [v3 requestsImmediateRuntime] ^ 1;
+      v6 = [activityCopy requestsImmediateRuntime] ^ 1;
     }
   }
 
@@ -201,23 +201,23 @@
   dispatch_source_set_timer(longTermTimer, v6, 0xFFFFFFFFFFFFFFFFLL, 0x3E8uLL);
 }
 
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state
 {
-  v6 = a3;
-  if (([v6 isEqualToString:@"com.apple.duetactivityscheduler.thpolicy.lengthyLock"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"com.apple.duetactivityscheduler.thpolicy.lengthyNoNetwork"))
+  triggerCopy = trigger;
+  if (([triggerCopy isEqualToString:@"com.apple.duetactivityscheduler.thpolicy.lengthyLock"] & 1) != 0 || objc_msgSend(triggerCopy, "isEqualToString:", @"com.apple.duetactivityscheduler.thpolicy.lengthyNoNetwork"))
   {
     [(_DASThunderingHerdPolicy *)self handleTriggerEvent];
     [_DASMetricRecorder recordOccurrenceForKey:@"com.apple.dasd.thunderingHerdTrigger"];
-    objc_storeStrong(&self->_recentTriggerReason, a3);
+    objc_storeStrong(&self->_recentTriggerReason, trigger);
   }
 
   return 1;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  stateCopy = state;
   waitingForInactivity = self->_waitingForInactivity;
   if (self->_recentTriggerEvent)
   {
@@ -232,7 +232,7 @@
   if (self->_waitingForInactivity)
   {
 LABEL_5:
-    if (![_DASDeviceActivityPolicy isDeviceInUse:v7])
+    if (![_DASDeviceActivityPolicy isDeviceInUse:stateCopy])
     {
       [(_DASThunderingHerdPolicy *)self setWaitingForInactivity:0];
     }
@@ -251,7 +251,7 @@ LABEL_7:
 
     else
     {
-      if (!self->_waitingForInactivity || ![_DASDeviceActivityPolicy isDeviceInUse:v7])
+      if (!self->_waitingForInactivity || ![_DASDeviceActivityPolicy isDeviceInUse:stateCopy])
       {
         v13 = 0;
         v14 = 0;
@@ -277,7 +277,7 @@ LABEL_16:
     v17 = +[_DASPPSDataManager sharedInstance];
     [v17 sendDataToPPS:v16 subsystem:@"BackgroundProcessing" category:@"SystemConditionsOther"];
 
-    if ([_DASPhotosPolicy isActivity:v6 consideredNonDiscretionary:v7])
+    if ([_DASPhotosPolicy isActivity:activityCopy consideredNonDiscretionary:stateCopy])
     {
       v18 = [NSPredicate predicateWithFormat:@"isPhotosConsideredNonDiscretionary == 1"];
       [(_DASPolicyResponseRationale *)v10 addRationaleWithCondition:v18];

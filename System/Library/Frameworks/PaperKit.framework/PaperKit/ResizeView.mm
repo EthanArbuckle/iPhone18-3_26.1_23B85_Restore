@@ -1,48 +1,48 @@
 @interface ResizeView
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (_TtC8PaperKit10ResizeView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)dragMoved:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (_TtC8PaperKit10ResizeView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)dragMoved:(id)moved;
 - (void)layoutSubviews;
-- (void)resizeHandleMoved:(id)a3;
-- (void)rotate:(id)a3;
+- (void)resizeHandleMoved:(id)moved;
+- (void)rotate:(id)rotate;
 @end
 
 @implementation ResizeView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   ResizeView.layoutSubviews()();
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = self;
-  if ([(ResizeView *)v8 isHidden])
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  if ([(ResizeView *)selfCopy isHidden])
   {
 
 LABEL_3:
-    v8 = 0;
+    selfCopy = 0;
     goto LABEL_7;
   }
 
-  v9.value.super.isa = v7;
+  v9.value.super.isa = eventCopy;
   ResizeView.hitTestChrome(_:with:)(v10, __PAIR128__(*&y, *&x), v9);
   if (v11)
   {
     v12 = v11;
 
-    v8 = v12;
+    selfCopy = v12;
   }
 
   else
   {
-    [*(&v8->super.super.super.isa + OBJC_IVAR____TtC8PaperKit10ResizeView_borderView) frame];
+    [*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC8PaperKit10ResizeView_borderView) frame];
     v16.x = x;
     v16.y = y;
     v13 = CGRectContainsPoint(v17, v16);
@@ -55,50 +55,50 @@ LABEL_3:
 
 LABEL_7:
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)resizeHandleMoved:(id)a3
+- (void)resizeHandleMoved:(id)moved
 {
-  v4 = a3;
-  v5 = self;
-  ResizeView.resizeHandleMoved(_:)(v4);
+  movedCopy = moved;
+  selfCopy = self;
+  ResizeView.resizeHandleMoved(_:)(movedCopy);
 }
 
-- (void)dragMoved:(id)a3
+- (void)dragMoved:(id)moved
 {
-  v4 = a3;
-  v5 = self;
-  ResizeView.dragMoved(_:)(v4);
+  movedCopy = moved;
+  selfCopy = self;
+  ResizeView.dragMoved(_:)(movedCopy);
 }
 
-- (void)rotate:(id)a3
+- (void)rotate:(id)rotate
 {
-  v4 = a3;
-  v5 = self;
-  ResizeView.rotate(_:)(v4);
+  rotateCopy = rotate;
+  selfCopy = self;
+  ResizeView.rotate(_:)(rotateCopy);
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = ResizeView.gestureRecognizerShouldBegin(_:)(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  LOBYTE(self) = ResizeView.gestureRecognizerShouldBegin(_:)(beginCopy);
 
   return self & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = ResizeView.gestureRecognizer(_:shouldBeRequiredToFailBy:)(v6, v7);
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  selfCopy = self;
+  v9 = ResizeView.gestureRecognizer(_:shouldBeRequiredToFailBy:)(recognizerCopy, gestureRecognizerCopy);
 
   return v9;
 }
 
-- (_TtC8PaperKit10ResizeView)initWithFrame:(CGRect)a3
+- (_TtC8PaperKit10ResizeView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

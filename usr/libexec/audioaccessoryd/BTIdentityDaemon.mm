@@ -1,8 +1,8 @@
 @interface BTIdentityDaemon
 + (id)sharedBTIdentityDaemon;
-- (BOOL)diagnosticControl:(id)a3 completion:(id)a4;
+- (BOOL)diagnosticControl:(id)control completion:(id)completion;
 - (BTIdentityDaemon)init;
-- (void)_idsDevicesChanged:(id)a3;
+- (void)_idsDevicesChanged:(id)changed;
 - (void)_idsScheduleUpdateIdentities;
 - (void)_idsUpdateIdentities;
 - (void)activate;
@@ -64,17 +64,17 @@
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_idsDevicesChanged:(id)a3
+- (void)_idsDevicesChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000C509C;
   v7[3] = &unk_1002B6D18;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = changedCopy;
+  selfCopy = self;
+  v6 = changedCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -96,7 +96,7 @@
     v9 = &unk_1002B6D18;
     v3 = v4;
     v10 = v3;
-    v11 = self;
+    selfCopy = self;
     [(CUCoalescer *)v3 setActionHandler:&v6];
   }
 
@@ -105,13 +105,13 @@
 
 - (void)_idsUpdateIdentities
 {
-  v2 = self;
+  selfCopy = self;
   [(NSMutableDictionary *)self->_identityMap enumerateKeysAndObjectsUsingBlock:&stru_1002BADF0];
   v62 = 0u;
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
-  obj = v2->_idsDevices;
+  obj = selfCopy->_idsDevices;
   v53 = [(NSArray *)obj countByEnumeratingWithState:&v60 objects:v65 count:16];
   if (!v53)
   {
@@ -122,7 +122,7 @@
 
   v48 = 0;
   v49 = 0;
-  v51 = v2;
+  v51 = selfCopy;
   v52 = *v61;
   do
   {
@@ -135,36 +135,36 @@
       }
 
       v4 = *(*(&v60 + 1) + 8 * v3);
-      v5 = [v4 uniqueIDOverride];
-      if (v5)
+      uniqueIDOverride = [v4 uniqueIDOverride];
+      if (uniqueIDOverride)
       {
-        v6 = [(NSMutableDictionary *)v2->_identityMap objectForKeyedSubscript:v5];
+        v6 = [(NSMutableDictionary *)selfCopy->_identityMap objectForKeyedSubscript:uniqueIDOverride];
         v7 = v6;
         if (!v6)
         {
           v7 = objc_alloc_init(CBDeviceIdentity);
-          [v7 setIdentifier:v5];
-          [v7 setIdsDeviceID:v5];
-          identityMap = v2->_identityMap;
+          [v7 setIdentifier:uniqueIDOverride];
+          [v7 setIdsDeviceID:uniqueIDOverride];
+          identityMap = selfCopy->_identityMap;
           if (!identityMap)
           {
             v9 = objc_alloc_init(NSMutableDictionary);
-            v10 = v2->_identityMap;
-            v2->_identityMap = v9;
+            v10 = selfCopy->_identityMap;
+            selfCopy->_identityMap = v9;
 
-            identityMap = v2->_identityMap;
+            identityMap = selfCopy->_identityMap;
           }
 
-          [(NSMutableDictionary *)identityMap setObject:v7 forKeyedSubscript:v5];
+          [(NSMutableDictionary *)identityMap setObject:v7 forKeyedSubscript:uniqueIDOverride];
         }
 
         [v7 setType:2];
-        v11 = [v4 nsuuid];
-        if (v11)
+        nsuuid = [v4 nsuuid];
+        if (nsuuid)
         {
-          v12 = [v7 bluetoothIdentifier];
-          v13 = v11;
-          v14 = v12;
+          bluetoothIdentifier = [v7 bluetoothIdentifier];
+          v13 = nsuuid;
+          v14 = bluetoothIdentifier;
           v15 = v14;
           if (v13 == v14)
           {
@@ -186,12 +186,12 @@ LABEL_19:
               [v7 setBluetoothIdentifier:v13];
               v54 = 1;
 LABEL_20:
-              v17 = [v4 modelIdentifier];
-              if (v17)
+              modelIdentifier = [v4 modelIdentifier];
+              if (modelIdentifier)
               {
-                v18 = [v7 model];
-                v19 = v17;
-                v20 = v18;
+                model = [v7 model];
+                v19 = modelIdentifier;
+                v20 = model;
                 v21 = v20;
                 if (v19 == v20)
                 {
@@ -218,12 +218,12 @@ LABEL_20:
               }
 
 LABEL_28:
-              v23 = [v4 name];
-              if (v23)
+              name = [v4 name];
+              if (name)
               {
-                v24 = [v7 name];
-                v25 = v23;
-                v26 = v24;
+                name2 = [v7 name];
+                v25 = name;
+                v26 = name2;
                 v27 = v26;
                 if (v25 != v26)
                 {
@@ -263,7 +263,7 @@ LABEL_46:
 
 LABEL_49:
 
-                  v2 = v51;
+                  selfCopy = v51;
                   goto LABEL_50;
                 }
 
@@ -318,8 +318,8 @@ LABEL_56:
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v30 = [(NSMutableDictionary *)v2->_identityMap allKeys];
-  v31 = [v30 countByEnumeratingWithState:&v56 objects:v64 count:16];
+  allKeys = [(NSMutableDictionary *)selfCopy->_identityMap allKeys];
+  v31 = [allKeys countByEnumeratingWithState:&v56 objects:v64 count:16];
   if (v31)
   {
     v32 = v31;
@@ -332,14 +332,14 @@ LABEL_56:
       {
         if (*v57 != v34)
         {
-          objc_enumerationMutation(v30);
+          objc_enumerationMutation(allKeys);
         }
 
         v36 = *(*(&v56 + 1) + 8 * v35);
-        v37 = [(NSMutableDictionary *)v2->_identityMap objectForKeyedSubscript:v36];
+        v37 = [(NSMutableDictionary *)selfCopy->_identityMap objectForKeyedSubscript:v36];
         if (![v37 type])
         {
-          [(NSMutableDictionary *)v2->_identityMap setObject:0 forKeyedSubscript:v36];
+          [(NSMutableDictionary *)selfCopy->_identityMap setObject:0 forKeyedSubscript:v36];
           v33 = (v33 + 1);
           if (dword_1002F7148 <= 20 && (dword_1002F7148 != -1 || _LogCategory_Initialize()))
           {
@@ -351,7 +351,7 @@ LABEL_56:
       }
 
       while (v32 != v35);
-      v38 = [v30 countByEnumeratingWithState:&v56 objects:v64 count:16];
+      v38 = [allKeys countByEnumeratingWithState:&v56 objects:v64 count:16];
       v32 = v38;
     }
 
@@ -365,7 +365,7 @@ LABEL_56:
 
   if (dword_1002F7148 <= 30 && (dword_1002F7148 != -1 || _LogCategory_Initialize()))
   {
-    if (v2->_cbDaemonUpdated)
+    if (selfCopy->_cbDaemonUpdated)
     {
       v39 = "yes";
     }
@@ -382,19 +382,19 @@ LABEL_56:
     LogPrintF();
   }
 
-  if (v48 || v33 || v49 || !v2->_cbDaemonUpdated)
+  if (v48 || v33 || v49 || !selfCopy->_cbDaemonUpdated)
   {
     v40 = objc_alloc_init(CBController);
-    [v40 setDispatchQueue:v2->_dispatchQueue];
-    v41 = [(NSMutableDictionary *)v2->_identityMap allValues];
-    v42 = v41;
+    [v40 setDispatchQueue:selfCopy->_dispatchQueue];
+    allValues = [(NSMutableDictionary *)selfCopy->_identityMap allValues];
+    v42 = allValues;
     v55[0] = _NSConcreteStackBlock;
     v55[1] = 3221225472;
     v55[2] = sub_1000C5954;
     v55[3] = &unk_1002B68A8;
-    if (v41)
+    if (allValues)
     {
-      v43 = v41;
+      v43 = allValues;
     }
 
     else
@@ -403,15 +403,15 @@ LABEL_56:
     }
 
     v55[4] = v40;
-    v55[5] = v2;
+    v55[5] = selfCopy;
     [v40 updateIdentities:v43 completion:{v55, v44, v45, v46, v47}];
   }
 }
 
-- (BOOL)diagnosticControl:(id)a3 completion:(id)a4
+- (BOOL)diagnosticControl:(id)control completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  controlCopy = control;
   CFStringGetTypeID();
   v8 = CFDictionaryGetTypedValue();
 
@@ -429,7 +429,7 @@ LABEL_56:
     block[3] = &unk_1002B6BB0;
     block[4] = v8;
     block[5] = self;
-    v13 = v6;
+    v13 = completionCopy;
     dispatch_async(dispatchQueue, block);
 
     v9 = 1;

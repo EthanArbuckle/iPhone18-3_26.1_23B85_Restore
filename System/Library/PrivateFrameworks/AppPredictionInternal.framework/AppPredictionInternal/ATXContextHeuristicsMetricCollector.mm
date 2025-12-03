@@ -1,11 +1,11 @@
 @interface ATXContextHeuristicsMetricCollector
-- (id)lifetimeEngagementMetricsWithBiomeConfig:(id)a3;
-- (id)lifetimeEngagementMetricsWithPublisher:(id)a3;
-- (id)recentsMetricsWithBiomeConfig:(id)a3;
-- (id)saveableBookmarkDictionaryFromTracker:(id)a3;
+- (id)lifetimeEngagementMetricsWithBiomeConfig:(id)config;
+- (id)lifetimeEngagementMetricsWithPublisher:(id)publisher;
+- (id)recentsMetricsWithBiomeConfig:(id)config;
+- (id)saveableBookmarkDictionaryFromTracker:(id)tracker;
 - (id)spotlightUIBookmark;
-- (id)trackerFromBookmarkDictionary:(id)a3;
-- (void)fillWeeklyStatisticsMetricWithSpotlightUIStream:(id)a3 biomeConfig:(id)a4;
+- (id)trackerFromBookmarkDictionary:(id)dictionary;
+- (void)fillWeeklyStatisticsMetricWithSpotlightUIStream:(id)stream biomeConfig:(id)config;
 - (void)postLifetimeEngagementMetrics;
 - (void)postRecentsMetrics;
 - (void)postWeeklyMetrics;
@@ -30,40 +30,40 @@
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v6 = 1;
+    bOOLValue = 1;
   }
 
-  [v3 setAreSpotlightRecentsEnabled:v6];
+  [v3 setAreSpotlightRecentsEnabled:bOOLValue];
   v7 = CFPreferencesCopyAppValue(@"SuggestionsSpotlightZKWEnabled", @"com.apple.suggestions");
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 BOOLValue];
+    bOOLValue2 = [v7 BOOLValue];
   }
 
   else
   {
-    v9 = 1;
+    bOOLValue2 = 1;
   }
 
-  [v3 setAreSpotlightSuggestionsEnabled:v9];
+  [v3 setAreSpotlightSuggestionsEnabled:bOOLValue2];
   [(ATXContextHeuristicsMetricCollector *)self fillWeeklyStatisticsMetricWithSpotlightUIStream:v3 biomeConfig:0];
   v10 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.spotlightui"];
   v11 = [v10 BOOLForKey:@"SpotlightZKWExpanded"];
-  v12 = [MEMORY[0x277D42590] isiPad];
+  isiPad = [MEMORY[0x277D42590] isiPad];
   v13 = 4;
-  if (v12)
+  if (isiPad)
   {
     v13 = 6;
   }
 
   v14 = 8;
-  if (v12)
+  if (isiPad)
   {
     v14 = 12;
   }
@@ -79,33 +79,33 @@
   }
 
   [v3 setNumAppSuggestionsVisibleInSpotlight:v15];
-  v16 = [MEMORY[0x277CEB898] sharedInstance];
-  v17 = [v16 trialTreatmentId];
-  [v3 setTrialTreatmentId:v17];
+  mEMORY[0x277CEB898] = [MEMORY[0x277CEB898] sharedInstance];
+  trialTreatmentId = [mEMORY[0x277CEB898] trialTreatmentId];
+  [v3 setTrialTreatmentId:trialTreatmentId];
 
-  v18 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v16, "trialDeploymentId")}];
-  v19 = [v18 stringValue];
-  [v3 setTrialDeploymentId:v19];
+  v18 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(mEMORY[0x277CEB898], "trialDeploymentId")}];
+  stringValue = [v18 stringValue];
+  [v3 setTrialDeploymentId:stringValue];
 
-  v20 = [v16 trialExperimentId];
-  [v3 setTrialExperimentId:v20];
+  trialExperimentId = [mEMORY[0x277CEB898] trialExperimentId];
+  [v3 setTrialExperimentId:trialExperimentId];
 
   v21 = getTrialAssets();
-  v22 = [v21 trialTreatmentId];
-  [v3 setAtxTrialTreatmentId:v22];
+  trialTreatmentId2 = [v21 trialTreatmentId];
+  [v3 setAtxTrialTreatmentId:trialTreatmentId2];
 
-  v23 = [v21 trialExperimentId];
-  [v3 setAtxTrialExperimentId:v23];
+  trialExperimentId2 = [v21 trialExperimentId];
+  [v3 setAtxTrialExperimentId:trialExperimentId2];
 
-  v24 = [v21 trialDeploymentId];
-  [v3 setAtxTrialDeploymentId:v24];
+  trialDeploymentId = [v21 trialDeploymentId];
+  [v3 setAtxTrialDeploymentId:trialDeploymentId];
 
   v25 = __atxlog_handle_metrics();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
-    v26 = [v3 coreAnalyticsDictionary];
+    coreAnalyticsDictionary = [v3 coreAnalyticsDictionary];
     v28 = 138412290;
-    v29 = v26;
+    v29 = coreAnalyticsDictionary;
     _os_log_impl(&dword_2263AA000, v25, OS_LOG_TYPE_DEFAULT, "ZKW: Weekly metrics dict - %@", &v28, 0xCu);
   }
 
@@ -116,7 +116,7 @@
 - (void)postLifetimeEngagementMetrics
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CEB898] sharedInstance];
+  mEMORY[0x277CEB898] = [MEMORY[0x277CEB898] sharedInstance];
   v4 = getTrialAssets();
   v5 = [(ATXContextHeuristicsMetricCollector *)self lifetimeEngagementMetricsWithBiomeConfig:0];
   v23 = 0u;
@@ -141,31 +141,31 @@
         }
 
         v11 = *(*(&v23 + 1) + 8 * v10);
-        v12 = [v3 trialTreatmentId];
-        [v11 setTrialTreatmentId:v12];
+        trialTreatmentId = [mEMORY[0x277CEB898] trialTreatmentId];
+        [v11 setTrialTreatmentId:trialTreatmentId];
 
-        v13 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v3, "trialDeploymentId")}];
-        v14 = [v13 stringValue];
-        [v11 setTrialDeploymentId:v14];
+        v13 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(mEMORY[0x277CEB898], "trialDeploymentId")}];
+        stringValue = [v13 stringValue];
+        [v11 setTrialDeploymentId:stringValue];
 
-        v15 = [v3 trialExperimentId];
-        [v11 setTrialExperimentId:v15];
+        trialExperimentId = [mEMORY[0x277CEB898] trialExperimentId];
+        [v11 setTrialExperimentId:trialExperimentId];
 
-        v16 = [v4 trialTreatmentId];
-        [v11 setAtxTrialTreatmentId:v16];
+        trialTreatmentId2 = [v4 trialTreatmentId];
+        [v11 setAtxTrialTreatmentId:trialTreatmentId2];
 
-        v17 = [v4 trialExperimentId];
-        [v11 setAtxTrialExperimentId:v17];
+        trialExperimentId2 = [v4 trialExperimentId];
+        [v11 setAtxTrialExperimentId:trialExperimentId2];
 
-        v18 = [v4 trialDeploymentId];
-        [v11 setAtxTrialDeploymentId:v18];
+        trialDeploymentId = [v4 trialDeploymentId];
+        [v11 setAtxTrialDeploymentId:trialDeploymentId];
 
         v19 = __atxlog_handle_metrics();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [v11 coreAnalyticsDictionary];
+          coreAnalyticsDictionary = [v11 coreAnalyticsDictionary];
           *buf = v22;
-          v28 = v20;
+          v28 = coreAnalyticsDictionary;
           _os_log_impl(&dword_2263AA000, v19, OS_LOG_TYPE_DEFAULT, "ZKW: Lifetime engagement metric dict - %@", buf, 0xCu);
         }
 
@@ -186,7 +186,7 @@
 - (void)postRecentsMetrics
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CEB898] sharedInstance];
+  mEMORY[0x277CEB898] = [MEMORY[0x277CEB898] sharedInstance];
   v4 = getTrialAssets();
   v5 = [(ATXContextHeuristicsMetricCollector *)self recentsMetricsWithBiomeConfig:0];
   v23 = 0u;
@@ -211,31 +211,31 @@
         }
 
         v11 = *(*(&v23 + 1) + 8 * v10);
-        v12 = [v3 trialTreatmentId];
-        [v11 setTrialTreatmentId:v12];
+        trialTreatmentId = [mEMORY[0x277CEB898] trialTreatmentId];
+        [v11 setTrialTreatmentId:trialTreatmentId];
 
-        v13 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v3, "trialDeploymentId")}];
-        v14 = [v13 stringValue];
-        [v11 setTrialDeploymentId:v14];
+        v13 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(mEMORY[0x277CEB898], "trialDeploymentId")}];
+        stringValue = [v13 stringValue];
+        [v11 setTrialDeploymentId:stringValue];
 
-        v15 = [v3 trialExperimentId];
-        [v11 setTrialExperimentId:v15];
+        trialExperimentId = [mEMORY[0x277CEB898] trialExperimentId];
+        [v11 setTrialExperimentId:trialExperimentId];
 
-        v16 = [v4 trialTreatmentId];
-        [v11 setAtxTrialTreatmentId:v16];
+        trialTreatmentId2 = [v4 trialTreatmentId];
+        [v11 setAtxTrialTreatmentId:trialTreatmentId2];
 
-        v17 = [v4 trialExperimentId];
-        [v11 setAtxTrialExperimentId:v17];
+        trialExperimentId2 = [v4 trialExperimentId];
+        [v11 setAtxTrialExperimentId:trialExperimentId2];
 
-        v18 = [v4 trialDeploymentId];
-        [v11 setAtxTrialDeploymentId:v18];
+        trialDeploymentId = [v4 trialDeploymentId];
+        [v11 setAtxTrialDeploymentId:trialDeploymentId];
 
         v19 = __atxlog_handle_metrics();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [v11 coreAnalyticsDictionary];
+          coreAnalyticsDictionary = [v11 coreAnalyticsDictionary];
           *buf = v22;
-          v28 = v20;
+          v28 = coreAnalyticsDictionary;
           _os_log_impl(&dword_2263AA000, v19, OS_LOG_TYPE_DEFAULT, "ZKW: Recents metric dict - %@", buf, 0xCu);
         }
 
@@ -253,12 +253,12 @@
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fillWeeklyStatisticsMetricWithSpotlightUIStream:(id)a3 biomeConfig:(id)a4
+- (void)fillWeeklyStatisticsMetricWithSpotlightUIStream:(id)stream biomeConfig:(id)config
 {
-  v5 = a3;
+  streamCopy = stream;
   v6 = MEMORY[0x277D420C8];
-  v7 = a4;
-  v8 = [[v6 alloc] initWithStoreConfig:v7];
+  configCopy = config;
+  v8 = [[v6 alloc] initWithStoreConfig:configCopy];
 
   v9 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceNow:-604800.0];
   [v9 timeIntervalSinceReferenceDate];
@@ -269,8 +269,8 @@
   v15[1] = 3221225472;
   v15[2] = __99__ATXContextHeuristicsMetricCollector_fillWeeklyStatisticsMetricWithSpotlightUIStream_biomeConfig___block_invoke_2;
   v15[3] = &unk_278596F60;
-  v16 = v5;
-  v13 = v5;
+  v16 = streamCopy;
+  v13 = streamCopy;
   v14 = [v12 sinkWithCompletion:&__block_literal_global_154 receiveInput:v15];
 }
 
@@ -338,11 +338,11 @@ void __99__ATXContextHeuristicsMetricCollector_fillWeeklyStatisticsMetricWithSpo
   }
 }
 
-- (id)lifetimeEngagementMetricsWithBiomeConfig:(id)a3
+- (id)lifetimeEngagementMetricsWithBiomeConfig:(id)config
 {
   v4 = MEMORY[0x277D420C8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithStoreConfig:v5];
+  configCopy = config;
+  v6 = [[v4 alloc] initWithStoreConfig:configCopy];
 
   v7 = [v6 publisherFromStartTime:0.0];
   v8 = [(ATXContextHeuristicsMetricCollector *)self lifetimeEngagementMetricsWithPublisher:v7];
@@ -350,9 +350,9 @@ void __99__ATXContextHeuristicsMetricCollector_fillWeeklyStatisticsMetricWithSpo
   return v8;
 }
 
-- (id)lifetimeEngagementMetricsWithPublisher:(id)a3
+- (id)lifetimeEngagementMetricsWithPublisher:(id)publisher
 {
-  v4 = a3;
+  publisherCopy = publisher;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -364,16 +364,16 @@ void __99__ATXContextHeuristicsMetricCollector_fillWeeklyStatisticsMetricWithSpo
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__66;
   v22 = __Block_byref_object_dispose__66;
-  v23 = [(ATXContextHeuristicsMetricCollector *)self spotlightUIBookmark];
+  spotlightUIBookmark = [(ATXContextHeuristicsMetricCollector *)self spotlightUIBookmark];
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x3032000000;
   v16[3] = __Block_byref_object_copy__66;
   v16[4] = __Block_byref_object_dispose__66;
-  v5 = [v19[5] metadata];
-  v17 = [(ATXContextHeuristicsMetricCollector *)self trackerFromBookmarkDictionary:v5];
+  metadata = [v19[5] metadata];
+  v17 = [(ATXContextHeuristicsMetricCollector *)self trackerFromBookmarkDictionary:metadata];
 
-  v6 = [v19[5] bookmark];
+  bookmark = [v19[5] bookmark];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __78__ATXContextHeuristicsMetricCollector_lifetimeEngagementMetricsWithPublisher___block_invoke;
@@ -387,7 +387,7 @@ void __99__ATXContextHeuristicsMetricCollector_fillWeeklyStatisticsMetricWithSpo
   v14[3] = &unk_278599858;
   v14[4] = v16;
   v14[5] = &v24;
-  v7 = [v4 sinkWithBookmark:v6 completion:v15 receiveInput:v14];
+  v7 = [publisherCopy sinkWithBookmark:bookmark completion:v15 receiveInput:v14];
 
   v8 = v19[5];
   v13 = 0;
@@ -589,16 +589,16 @@ LABEL_24:
   return v7;
 }
 
-- (id)saveableBookmarkDictionaryFromTracker:(id)a3
+- (id)saveableBookmarkDictionaryFromTracker:(id)tracker
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  trackerCopy = tracker;
   v19 = objc_opt_new();
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = v3;
+  v4 = trackerCopy;
   v5 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
@@ -616,11 +616,11 @@ LABEL_24:
         v8 = *(*(&v20 + 1) + 8 * i);
         v9 = [v4 objectForKeyedSubscript:v8];
         v10 = MEMORY[0x277CCACA8];
-        v11 = [v9 actionId];
-        v12 = [v9 contextType];
+        actionId = [v9 actionId];
+        contextType = [v9 contextType];
         v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v9, "numShown")}];
         v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v9, "numEngaged")}];
-        v15 = [v10 stringWithFormat:@"%@:%@:%@:%@", v11, v12, v13, v14];
+        v15 = [v10 stringWithFormat:@"%@:%@:%@:%@", actionId, contextType, v13, v14];
         [v19 setObject:v15 forKeyedSubscript:v8];
       }
 
@@ -635,16 +635,16 @@ LABEL_24:
   return v19;
 }
 
-- (id)trackerFromBookmarkDictionary:(id)a3
+- (id)trackerFromBookmarkDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = v3;
+  v5 = dictionaryCopy;
   v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v6)
   {
@@ -707,11 +707,11 @@ LABEL_13:
   return v4;
 }
 
-- (id)recentsMetricsWithBiomeConfig:(id)a3
+- (id)recentsMetricsWithBiomeConfig:(id)config
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277D420C8]) initWithStoreConfig:v3];
+  configCopy = config;
+  v4 = [objc_alloc(MEMORY[0x277D420C8]) initWithStoreConfig:configCopy];
   v5 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceNow:-2419200.0];
   [v5 timeIntervalSinceReferenceDate];
   v7 = v6;

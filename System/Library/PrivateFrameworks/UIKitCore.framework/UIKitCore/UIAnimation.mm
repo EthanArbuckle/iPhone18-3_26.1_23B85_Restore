@@ -1,12 +1,12 @@
 @interface UIAnimation
 - (SEL)action;
-- (UIAnimation)initWithTarget:(id)a3;
-- (float)fractionForTime:(double)a3;
+- (UIAnimation)initWithTarget:(id)target;
+- (float)fractionForTime:(double)time;
 - (float)progressForFraction:(float)result;
 - (id)completion;
 - (id)delegate;
-- (void)setAction:(SEL)a3;
-- (void)setCompletion:(id)a3;
+- (void)setAction:(SEL)action;
+- (void)setCompletion:(id)completion;
 - (void)stopAnimation;
 @end
 
@@ -39,34 +39,34 @@
   }
 }
 
-- (UIAnimation)initWithTarget:(id)a3
+- (UIAnimation)initWithTarget:(id)target
 {
-  v5 = a3;
+  targetCopy = target;
   v18.receiver = self;
   v18.super_class = UIAnimation;
   v6 = [(UIAnimation *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_target, a3);
-    v8 = [(UIAnimation *)v7 target];
+    objc_storeStrong(&v6->_target, target);
+    target = [(UIAnimation *)v7 target];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v10 = [(UIAnimation *)v7 target];
-      v11 = [v10 window];
-      v12 = [v11 screen];
+      target2 = [(UIAnimation *)v7 target];
+      window = [target2 window];
+      screen = [window screen];
       screen = v7->_screen;
-      v7->_screen = v12;
+      v7->_screen = screen;
     }
 
-    v14 = [(UIScreen *)v7->_screen _displayID];
-    v15 = v14;
-    if (v14)
+    _displayID = [(UIScreen *)v7->_screen _displayID];
+    v15 = _displayID;
+    if (_displayID)
     {
-      v16 = v14;
+      v16 = _displayID;
     }
 
     else
@@ -86,24 +86,24 @@
   [v3 stopAnimation:self];
 }
 
-- (void)setAction:(SEL)a3
+- (void)setAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->_action = v3;
+  self->_action = actionCopy;
 }
 
-- (void)setCompletion:(id)a3
+- (void)setCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   completion = self->_completion;
   self->_completion = v4;
 }
@@ -132,12 +132,12 @@
   return result;
 }
 
-- (float)fractionForTime:(double)a3
+- (float)fractionForTime:(double)time
 {
   startTime = self->_startTime;
   if (self->_state == 1)
   {
-    result = fmax((a3 - startTime) / self->_duration, 0.0);
+    result = fmax((time - startTime) / self->_duration, 0.0);
     if (result > 1.0 || 1.0 - result < 0.00100000005)
     {
       return 1.0;
@@ -146,7 +146,7 @@
 
   else
   {
-    v5 = startTime < a3;
+    v5 = startTime < time;
     v6 = 0.0;
     if (v5)
     {

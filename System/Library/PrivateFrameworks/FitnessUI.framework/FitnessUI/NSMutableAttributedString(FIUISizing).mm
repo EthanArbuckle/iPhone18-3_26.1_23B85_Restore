@@ -9,12 +9,12 @@
 
 - (double)scaleFontSizeByAmount:()FIUISizing minimumFontSize:
 {
-  v6 = [a1 length];
+  v6 = [self length];
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  [a1 beginEditing];
+  [self beginEditing];
   v7 = *MEMORY[0x1E69DB648];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -22,10 +22,10 @@
   v10[3] = &unk_1E878C498;
   *&v10[6] = a2;
   *&v10[7] = a3;
-  v10[4] = a1;
+  v10[4] = self;
   v10[5] = &v11;
-  [a1 enumerateAttribute:v7 inRange:0 options:v6 usingBlock:{0x100000, v10}];
-  [a1 endEditing];
+  [self enumerateAttribute:v7 inRange:0 options:v6 usingBlock:{0x100000, v10}];
+  [self endEditing];
   v8 = v12[3];
   _Block_object_dispose(&v11, 8);
   return v8;
@@ -34,23 +34,23 @@
 - (double)scaleNumericAttribute:()FIUISizing byAmount:
 {
   v6 = a4;
-  v7 = [a1 length];
+  v7 = [self length];
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0x3FF0000000000000;
-  [a1 beginEditing];
+  [self beginEditing];
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __72__NSMutableAttributedString_FIUISizing__scaleNumericAttribute_byAmount___block_invoke;
   v14 = &unk_1E878C4C0;
   v18 = a2;
   v17 = &v19;
-  v15 = a1;
+  selfCopy = self;
   v8 = v6;
   v16 = v8;
-  [a1 enumerateAttribute:v8 inRange:0 options:v7 usingBlock:{0x100000, &v11}];
-  [a1 endEditing];
+  [self enumerateAttribute:v8 inRange:0 options:v7 usingBlock:{0x100000, &v11}];
+  [self endEditing];
   v9 = v20[3];
 
   _Block_object_dispose(&v19, 8);
@@ -59,14 +59,14 @@
 
 - (uint64_t)scaleToFitWidth:()FIUISizing
 {
-  result = [a1 size];
+  result = [self size];
   if (v5 > a2)
   {
     do
     {
-      [a1 scaleFontSizeByAmount:0.94 minimumFontSize:1.0];
+      [self scaleFontSizeByAmount:0.94 minimumFontSize:1.0];
       v7 = v6;
-      result = [a1 size];
+      result = [self size];
     }
 
     while (v8 > a2 && v7 > 1.0);
@@ -84,7 +84,7 @@
   while ((v14 & 1) != 0)
   {
 LABEL_10:
-    [a1 boundingRectWithSize:1 options:0 context:{a2, 1.79769313e308}];
+    [self boundingRectWithSize:1 options:0 context:{a2, 1.79769313e308}];
     v14 = 0;
     v20 = v19 > a3;
     if (v19 <= a3)
@@ -98,7 +98,7 @@ LABEL_10:
     }
   }
 
-  if ([a1 length] && a2 > 0.0 && a3 > 0.0)
+  if ([self length] && a2 > 0.0 && a3 > 0.0)
   {
     if (v16 <= a5)
     {
@@ -107,13 +107,13 @@ LABEL_10:
         goto LABEL_14;
       }
 
-      [a1 scaleFontSizeByAmount:0.85 minimumFontSize:a4];
+      [self scaleFontSizeByAmount:0.85 minimumFontSize:a4];
       v15 = v18;
     }
 
     else
     {
-      [a1 scaleNumericAttribute:v13 byAmount:0.8];
+      [self scaleNumericAttribute:v13 byAmount:0.8];
       v16 = v17;
     }
 
@@ -121,7 +121,7 @@ LABEL_10:
   }
 
 LABEL_14:
-  [a1 boundingRectWithSize:1 options:0 context:{a2, 1.79769313e308}];
+  [self boundingRectWithSize:1 options:0 context:{a2, 1.79769313e308}];
   v20 = v22 > a3;
   if (a7)
   {

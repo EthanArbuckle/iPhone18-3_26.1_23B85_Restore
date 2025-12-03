@@ -8,17 +8,17 @@
 - (id)sg_clone
 {
   v24 = *MEMORY[0x277D85DE8];
-  v2 = objc_getAssociatedObject(a1, sel_sg_clonableItemAtIndex_inCodedArray_);
+  v2 = objc_getAssociatedObject(self, sel_sg_clonableItemAtIndex_inCodedArray_);
   v3 = v2;
   if (v2)
   {
     v4 = MEMORY[0x277CC34B0];
-    v5 = [v2 second];
-    v6 = [v5 unsignedIntegerValue];
-    v7 = [v3 first];
-    v8 = [v4 sg_clonableItemAtIndex:v6 inCodedArray:v7];
+    second = [v2 second];
+    unsignedIntegerValue = [second unsignedIntegerValue];
+    first = [v3 first];
+    v8 = [v4 sg_clonableItemAtIndex:unsignedIntegerValue inCodedArray:first];
 
-    if (v8 != a1)
+    if (v8 != self)
     {
       goto LABEL_11;
     }
@@ -26,11 +26,11 @@
     v9 = sgLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
-      v19 = [v3 first];
+      first2 = [v3 first];
       v20 = 138412546;
-      v21 = v19;
+      v21 = first2;
       v22 = 2112;
-      v23 = a1;
+      selfCopy = self;
       _os_log_fault_impl(&dword_231E60000, v9, OS_LOG_TYPE_FAULT, "expected coded array %@ to give a new instance of %@ but it didn't", &v20, 0x16u);
     }
 
@@ -40,24 +40,24 @@
     }
   }
 
-  v8 = [a1 copy];
-  v10 = [a1 attributeSet];
-  v11 = [v10 textContentNoCopy];
-  if (v11)
+  v8 = [self copy];
+  attributeSet = [self attributeSet];
+  textContentNoCopy = [attributeSet textContentNoCopy];
+  if (textContentNoCopy)
   {
-    v12 = v11;
-    v13 = [v8 attributeSet];
-    v14 = [v13 textContentNoCopy];
+    v12 = textContentNoCopy;
+    attributeSet2 = [v8 attributeSet];
+    textContentNoCopy2 = [attributeSet2 textContentNoCopy];
 
-    if (v14)
+    if (textContentNoCopy2)
     {
       goto LABEL_11;
     }
 
-    v10 = [a1 attributeSet];
-    v15 = [v10 textContent];
-    v16 = [v8 attributeSet];
-    [v16 setTextContent:v15];
+    attributeSet = [self attributeSet];
+    textContent = [attributeSet textContent];
+    attributeSet3 = [v8 attributeSet];
+    [attributeSet3 setTextContent:textContent];
   }
 
 LABEL_11:

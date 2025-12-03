@@ -11,8 +11,8 @@
 {
   v5 = a3;
   v6 = a4;
-  v7 = [v6 type];
-  if ([v5 supportsHandleType:v7])
+  type = [v6 type];
+  if ([v5 supportsHandleType:type])
   {
     v8 = [objc_alloc(MEMORY[0x277D6EED0]) initWithProvider:v5];
     [v8 setHandle:v6];
@@ -24,7 +24,7 @@
     v9 = PHDefaultLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(TUDialRequest(PhoneKit) *)v5 dialRequestForCallProvider:v7 handle:v9];
+      [(TUDialRequest(PhoneKit) *)v5 dialRequestForCallProvider:type handle:v9];
     }
 
     v8 = 0;
@@ -46,18 +46,18 @@
     _os_log_impl(&dword_25E4EC000, v8, OS_LOG_TYPE_DEFAULT, "Attempting to create a dial request for user activity (%@)", &v17, 0xCu);
   }
 
-  v9 = [v6 userInfo];
-  if (v9)
+  userInfo = [v6 userInfo];
+  if (userInfo)
   {
-    v10 = [v6 callProviderIdentifier];
-    if (v10)
+    callProviderIdentifier = [v6 callProviderIdentifier];
+    if (callProviderIdentifier)
     {
-      v11 = [v7 providerWithIdentifier:v10];
-      v12 = [v6 handle];
+      v11 = [v7 providerWithIdentifier:callProviderIdentifier];
+      handle = [v6 handle];
       LOBYTE(v17) = 0;
-      if ((v11 || ([v7 providerWithService:objc_msgSend(v6 video:{"callService"), &v17}], (v11 = objc_claimAutoreleasedReturnValue()) != 0)) && v12)
+      if ((v11 || ([v7 providerWithService:objc_msgSend(v6 video:{"callService"), &v17}], (v11 = objc_claimAutoreleasedReturnValue()) != 0)) && handle)
       {
-        v13 = [a1 dialRequestForCallProvider:v11 handle:v12];
+        v13 = [self dialRequestForCallProvider:v11 handle:handle];
         [v13 setVideo:v17];
         [v13 setOriginatingUIType:37];
       }
@@ -67,7 +67,7 @@
         v14 = PHDefaultLog();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
-          [TUDialRequest(PhoneKit) dialRequestForUserActivity:v10 callProviderManager:v14];
+          [TUDialRequest(PhoneKit) dialRequestForUserActivity:callProviderIdentifier callProviderManager:v14];
         }
 
         v13 = 0;
@@ -88,10 +88,10 @@
 
   else
   {
-    v10 = PHDefaultLog();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    callProviderIdentifier = PHDefaultLog();
+    if (os_log_type_enabled(callProviderIdentifier, OS_LOG_TYPE_ERROR))
     {
-      [TUDialRequest(PhoneKit) dialRequestForUserActivity:v10 callProviderManager:?];
+      [TUDialRequest(PhoneKit) dialRequestForUserActivity:callProviderIdentifier callProviderManager:?];
     }
 
     v13 = 0;
@@ -109,8 +109,8 @@
   if (PHIsInAirplaneMode())
   {
     v4 = MEMORY[0x277D6EDE8];
-    v5 = [v3 UUID];
-    v6 = [v4 canAttemptEmergencyCallsWithoutCellularConnectionWithUUID:v5];
+    uUID = [v3 UUID];
+    v6 = [v4 canAttemptEmergencyCallsWithoutCellularConnectionWithUUID:uUID];
 
     v7 = PHDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -142,18 +142,18 @@
 {
   v35 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 copy];
-  v6 = [a1 handle];
-  v7 = [v6 value];
-  if ([v7 length])
+  v5 = [self copy];
+  handle = [self handle];
+  value = [handle value];
+  if ([value length])
   {
   }
 
   else
   {
-    v8 = [a1 dialType];
+    dialType = [self dialType];
 
-    if (v8 != 1)
+    if (dialType != 1)
     {
       goto LABEL_23;
     }
@@ -164,16 +164,16 @@
   aBlock[2] = __83__TUDialRequest_PhoneKit__dialRequestByResolvingDialTypeUsingSenderIdentityClient___block_invoke;
   aBlock[3] = &unk_279A22770;
   v30 = v4;
-  v31 = a1;
+  selfCopy = self;
   v9 = _Block_copy(aBlock);
-  v10 = [a1 localSenderIdentityAccountUUID];
-  if (!v10)
+  localSenderIdentityAccountUUID = [self localSenderIdentityAccountUUID];
+  if (!localSenderIdentityAccountUUID)
   {
     goto LABEL_11;
   }
 
-  v11 = [a1 provider];
-  v12 = [v11 senderIdentityForAccountUUID:v10];
+  provider = [self provider];
+  v12 = [provider senderIdentityForAccountUUID:localSenderIdentityAccountUUID];
 
   if (!v12)
   {
@@ -181,7 +181,7 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v34 = v10;
+      v34 = localSenderIdentityAccountUUID;
       _os_log_impl(&dword_25E4EC000, v14, OS_LOG_TYPE_DEFAULT, "Could not find a sender identity that contains account UUID %@", buf, 0xCu);
     }
 
@@ -193,14 +193,14 @@
   if (!v13)
   {
 LABEL_11:
-    v15 = [a1 provider];
-    v16 = [v15 prioritizedSenderIdentities];
+    provider2 = [self provider];
+    prioritizedSenderIdentities = [provider2 prioritizedSenderIdentities];
 
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v17 = v16;
+    v17 = prioritizedSenderIdentities;
     v18 = [v17 countByEnumeratingWithState:&v25 objects:v32 count:16];
     if (v18)
     {

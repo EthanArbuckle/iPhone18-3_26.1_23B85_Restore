@@ -1,35 +1,35 @@
 @interface MTSThreadNetworkAssociation
-- (BOOL)isEqual:(id)a3;
-- (MTSThreadNetworkAssociation)initWithCoder:(id)a3;
-- (MTSThreadNetworkAssociation)initWithExtendedPANID:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MTSThreadNetworkAssociation)initWithCoder:(id)coder;
+- (MTSThreadNetworkAssociation)initWithExtendedPANID:(id)d;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MTSThreadNetworkAssociation
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MTSThreadNetworkAssociation *)self extendedPANID];
-  [v4 encodeObject:v5 forKey:@"MTSTNA.ck.extendedPANID"];
+  coderCopy = coder;
+  extendedPANID = [(MTSThreadNetworkAssociation *)self extendedPANID];
+  [coderCopy encodeObject:extendedPANID forKey:@"MTSTNA.ck.extendedPANID"];
 }
 
-- (MTSThreadNetworkAssociation)initWithCoder:(id)a3
+- (MTSThreadNetworkAssociation)initWithCoder:(id)coder
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTSTNA.ck.extendedPANID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSTNA.ck.extendedPANID"];
   if (v5)
   {
-    v6 = [(MTSThreadNetworkAssociation *)self initWithExtendedPANID:v5];
-    v7 = v6;
+    selfCopy = [(MTSThreadNetworkAssociation *)self initWithExtendedPANID:v5];
+    v7 = selfCopy;
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -51,19 +51,19 @@
 
 - (unint64_t)hash
 {
-  v2 = [(MTSThreadNetworkAssociation *)self extendedPANID];
-  v3 = [v2 hash];
+  extendedPANID = [(MTSThreadNetworkAssociation *)self extendedPANID];
+  v3 = [extendedPANID hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -74,9 +74,9 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(MTSThreadNetworkAssociation *)self extendedPANID];
-    v8 = [v6 extendedPANID];
-    v9 = [v7 isEqualToNumber:v8];
+    extendedPANID = [(MTSThreadNetworkAssociation *)self extendedPANID];
+    extendedPANID2 = [v6 extendedPANID];
+    v9 = [extendedPANID isEqualToNumber:extendedPANID2];
   }
 
   else
@@ -87,19 +87,19 @@
   return v9;
 }
 
-- (MTSThreadNetworkAssociation)initWithExtendedPANID:(id)a3
+- (MTSThreadNetworkAssociation)initWithExtendedPANID:(id)d
 {
-  v5 = a3;
-  if (v5)
+  dCopy = d;
+  if (dCopy)
   {
-    v6 = v5;
+    v6 = dCopy;
     v12.receiver = self;
     v12.super_class = MTSThreadNetworkAssociation;
     v7 = [(MTSThreadNetworkAssociation *)&v12 init];
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_extendedPANID, a3);
+      objc_storeStrong(&v7->_extendedPANID, d);
     }
 
     return v8;

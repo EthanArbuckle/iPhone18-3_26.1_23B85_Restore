@@ -1,7 +1,7 @@
 @interface POProfile
 - (POProfile)init;
-- (POProfile)initWithProfile:(id)a3;
-- (unint64_t)translatePolicy:(id)a3;
+- (POProfile)initWithProfile:(id)profile;
+- (unint64_t)translatePolicy:(id)policy;
 @end
 
 @implementation POProfile
@@ -13,11 +13,11 @@
   return [(POProfile *)&v3 init];
 }
 
-- (POProfile)initWithProfile:(id)a3
+- (POProfile)initWithProfile:(id)profile
 {
   v216 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  profileCopy = profile;
+  if (!profileCopy)
   {
     goto LABEL_113;
   }
@@ -26,66 +26,66 @@
   self = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_profile, a3);
-    v7 = [v5 extensionBundleIdentifier];
+    objc_storeStrong(&v6->_profile, profile);
+    extensionBundleIdentifier = [profileCopy extensionBundleIdentifier];
     extensionBundleIdentifier = self->_extensionBundleIdentifier;
-    self->_extensionBundleIdentifier = v7;
+    self->_extensionBundleIdentifier = extensionBundleIdentifier;
 
-    v9 = [v5 URLPrefix];
+    uRLPrefix = [profileCopy URLPrefix];
     URLPrefix = self->_URLPrefix;
-    self->_URLPrefix = v9;
+    self->_URLPrefix = uRLPrefix;
 
-    v11 = [v5 pssoRegistrationToken];
+    pssoRegistrationToken = [profileCopy pssoRegistrationToken];
     registrationToken = self->_registrationToken;
-    self->_registrationToken = v11;
+    self->_registrationToken = pssoRegistrationToken;
 
-    v13 = [v5 extensionData];
+    extensionData = [profileCopy extensionData];
     extensionData = self->_extensionData;
-    self->_extensionData = v13;
+    self->_extensionData = extensionData;
 
-    v15 = [v5 platformSSO];
-    v16 = [v15 objectForKeyedSubscript:@"AccountDisplayName"];
+    platformSSO = [profileCopy platformSSO];
+    v16 = [platformSSO objectForKeyedSubscript:@"AccountDisplayName"];
     accountDisplayName = self->_accountDisplayName;
     self->_accountDisplayName = v16;
 
-    v18 = [v5 platformSSO];
-    v19 = [v18 objectForKeyedSubscript:@"AuthenticationMethod"];
+    platformSSO2 = [profileCopy platformSSO];
+    v19 = [platformSSO2 objectForKeyedSubscript:@"AuthenticationMethod"];
 
     self->_authenticationMethod = [MEMORY[0x277CEBF08] authMethodWithString:v19];
-    v20 = [v5 platformSSO];
-    v21 = [v20 objectForKeyedSubscript:@"UseSharedDeviceKeys"];
+    platformSSO3 = [profileCopy platformSSO];
+    v21 = [platformSSO3 objectForKeyedSubscript:@"UseSharedDeviceKeys"];
 
     v175 = v21;
     self->_useSharedDeviceKeys = [v21 BOOLValue];
-    v22 = [v5 platformSSO];
-    v23 = [v22 objectForKeyedSubscript:@"EnableCreateUserAtLogin"];
+    platformSSO4 = [profileCopy platformSSO];
+    v23 = [platformSSO4 objectForKeyedSubscript:@"EnableCreateUserAtLogin"];
 
     v174 = v23;
     self->_createUsersEnabled = [v23 BOOLValue];
-    v24 = [v5 platformSSO];
-    v25 = [v24 objectForKeyedSubscript:@"EnableCreateFirstUserDuringSetup"];
+    platformSSO5 = [profileCopy platformSSO];
+    v25 = [platformSSO5 objectForKeyedSubscript:@"EnableCreateFirstUserDuringSetup"];
 
     v176 = v19;
     v173 = v25;
     if (v25)
     {
-      v26 = [v25 BOOLValue];
+      bOOLValue = [v25 BOOLValue];
     }
 
     else
     {
-      v26 = 1;
+      bOOLValue = 1;
     }
 
-    self->_createFirstUserDuringSetupEnabled = v26;
+    self->_createFirstUserDuringSetupEnabled = bOOLValue;
     v27 = 0x277CBE000uLL;
     v28 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v29 = [v5 platformSSO];
-    v30 = [v29 objectForKeyedSubscript:@"NewUserAuthenticationMethods"];
+    platformSSO6 = [profileCopy platformSSO];
+    v30 = [platformSSO6 objectForKeyedSubscript:@"NewUserAuthenticationMethods"];
 
     objc_opt_class();
-    v179 = v5;
-    v180 = self;
+    v179 = profileCopy;
+    selfCopy = self;
     v182 = v28;
     v178 = v30;
     if (objc_opt_isKindOfClass())
@@ -129,7 +129,7 @@
         while (v33);
       }
 
-      self = v180;
+      self = selfCopy;
       v28 = v182;
       v30 = v178;
       v27 = 0x277CBE000;
@@ -151,12 +151,12 @@
       self->_createUserAuthenticationMethods = v43;
     }
 
-    v45 = [v5 platformSSO];
-    v46 = [v45 objectForKeyedSubscript:@"EnableAuthorization"];
+    platformSSO7 = [profileCopy platformSSO];
+    v46 = [platformSSO7 objectForKeyedSubscript:@"EnableAuthorization"];
 
     self->_authorizationEnabled = [v46 BOOLValue];
-    v47 = [v5 platformSSO];
-    v48 = [v47 objectForKeyedSubscript:@"LoginFrequency"];
+    platformSSO8 = [profileCopy platformSSO];
+    v48 = [platformSSO8 objectForKeyedSubscript:@"LoginFrequency"];
 
     if (v48)
     {
@@ -180,8 +180,8 @@
     v171 = v48;
     v172 = v46;
     v50 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v51 = [v5 platformSSO];
-    v52 = [v51 objectForKeyedSubscript:@"TokenToUserMapping"];
+    platformSSO9 = [profileCopy platformSSO];
+    v52 = [platformSSO9 objectForKeyedSubscript:@"TokenToUserMapping"];
 
     objc_opt_class();
     v181 = v50;
@@ -191,8 +191,8 @@
       v205 = 0u;
       v202 = 0u;
       v203 = 0u;
-      v53 = [v52 allKeys];
-      v54 = [v53 countByEnumeratingWithState:&v202 objects:v214 count:16];
+      allKeys = [v52 allKeys];
+      v54 = [allKeys countByEnumeratingWithState:&v202 objects:v214 count:16];
       if (v54)
       {
         v55 = v54;
@@ -205,7 +205,7 @@
           {
             if (*v203 != v56)
             {
-              objc_enumerationMutation(v53);
+              objc_enumerationMutation(allKeys);
             }
 
             v60 = *(*(&v202 + 1) + 8 * j);
@@ -221,14 +221,14 @@
             }
           }
 
-          v55 = [v53 countByEnumeratingWithState:&v202 objects:v214 count:16];
+          v55 = [allKeys countByEnumeratingWithState:&v202 objects:v214 count:16];
         }
 
         while (v55);
       }
 
-      v5 = v179;
-      self = v180;
+      profileCopy = v179;
+      self = selfCopy;
       v50 = v181;
       v27 = 0x277CBE000uLL;
     }
@@ -240,19 +240,19 @@
       self->_tokenToUserMapping = v62;
     }
 
-    v64 = [v5 platformSSO];
-    v65 = [v64 objectForKeyedSubscript:@"NewUserAuthorizationMode"];
+    platformSSO10 = [profileCopy platformSSO];
+    v65 = [platformSSO10 objectForKeyedSubscript:@"NewUserAuthorizationMode"];
 
     v170 = v65;
     self->_newUserAuthorizationMode = [MEMORY[0x277D3D1D0] userAuthorizationModeWithString:v65];
-    v66 = [v5 platformSSO];
-    v67 = [v66 objectForKeyedSubscript:@"UserAuthorizationMode"];
+    platformSSO11 = [profileCopy platformSSO];
+    v67 = [platformSSO11 objectForKeyedSubscript:@"UserAuthorizationMode"];
 
     v169 = v67;
     self->_userAuthorizationMode = [MEMORY[0x277D3D1D0] userAuthorizationModeWithString:v67];
     v68 = objc_alloc_init(*(v27 + 2840));
-    v69 = [v5 platformSSO];
-    v70 = [v69 objectForKeyedSubscript:@"AdministratorGroups"];
+    platformSSO12 = [profileCopy platformSSO];
+    v70 = [platformSSO12 objectForKeyedSubscript:@"AdministratorGroups"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -290,8 +290,8 @@
         while (v73);
       }
 
-      v5 = v179;
-      self = v180;
+      profileCopy = v179;
+      self = selfCopy;
     }
 
     if ([v68 count])
@@ -303,8 +303,8 @@
 
     v79 = objc_alloc_init(*(v27 + 2840));
 
-    v80 = [v5 platformSSO];
-    v81 = [v80 objectForKeyedSubscript:@"AdditionalGroups"];
+    platformSSO13 = [profileCopy platformSSO];
+    v81 = [platformSSO13 objectForKeyedSubscript:@"AdditionalGroups"];
 
     objc_opt_class();
     v177 = v81;
@@ -343,7 +343,7 @@
         while (v84);
       }
 
-      v5 = v179;
+      profileCopy = v179;
     }
 
     v168 = v70;
@@ -356,15 +356,15 @@
 
     v167 = v79;
     v183 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v90 = [v5 platformSSO];
-    v91 = [v90 objectForKeyedSubscript:@"AuthorizationGroups"];
+    platformSSO14 = [profileCopy platformSSO];
+    v91 = [platformSSO14 objectForKeyedSubscript:@"AuthorizationGroups"];
 
     v192 = 0u;
     v193 = 0u;
     v190 = 0u;
     v191 = 0u;
-    v92 = [v91 allKeys];
-    v93 = [v92 countByEnumeratingWithState:&v190 objects:v211 count:16];
+    allKeys2 = [v91 allKeys];
+    v93 = [allKeys2 countByEnumeratingWithState:&v190 objects:v211 count:16];
     if (v93)
     {
       v94 = v93;
@@ -375,7 +375,7 @@
         {
           if (*v191 != v95)
           {
-            objc_enumerationMutation(v92);
+            objc_enumerationMutation(allKeys2);
           }
 
           v97 = *(*(&v190 + 1) + 8 * n);
@@ -394,24 +394,24 @@
           }
         }
 
-        v94 = [v92 countByEnumeratingWithState:&v190 objects:v211 count:16];
+        v94 = [allKeys2 countByEnumeratingWithState:&v190 objects:v211 count:16];
       }
 
       while (v94);
     }
 
-    self = v180;
+    self = selfCopy;
     if ([v183 count])
     {
       v101 = [v183 copy];
-      authorizationGroups = v180->_authorizationGroups;
-      v180->_authorizationGroups = v101;
+      authorizationGroups = selfCopy->_authorizationGroups;
+      selfCopy->_authorizationGroups = v101;
     }
 
-    v103 = [(NSArray *)v180->_administratorGroups count];
-    v104 = [(NSArray *)v180->_otherGroups count]+ v103;
-    v105 = v104 + [(NSDictionary *)v180->_authorizationGroups count];
-    v5 = v179;
+    v103 = [(NSArray *)selfCopy->_administratorGroups count];
+    v104 = [(NSArray *)selfCopy->_otherGroups count]+ v103;
+    v105 = v104 + [(NSDictionary *)selfCopy->_authorizationGroups count];
+    profileCopy = v179;
     v166 = v105;
     if (v105 >= 0x65)
     {
@@ -435,31 +435,31 @@
       goto LABEL_111;
     }
 
-    v106 = [v179 platformSSO];
-    v107 = [v106 objectForKeyedSubscript:@"FileVaultPolicy"];
-    v180->_fileVaultPolicy = [(POProfile *)v180 translatePolicy:v107];
+    platformSSO15 = [v179 platformSSO];
+    v107 = [platformSSO15 objectForKeyedSubscript:@"FileVaultPolicy"];
+    selfCopy->_fileVaultPolicy = [(POProfile *)selfCopy translatePolicy:v107];
 
-    v108 = [v179 platformSSO];
-    v109 = [v108 objectForKeyedSubscript:@"LoginPolicy"];
-    v180->_loginPolicy = [(POProfile *)v180 translatePolicy:v109];
+    platformSSO16 = [v179 platformSSO];
+    v109 = [platformSSO16 objectForKeyedSubscript:@"LoginPolicy"];
+    selfCopy->_loginPolicy = [(POProfile *)selfCopy translatePolicy:v109];
 
-    v110 = [v179 platformSSO];
-    v111 = [v110 objectForKeyedSubscript:@"UnlockPolicy"];
-    v180->_unlockPolicy = [(POProfile *)v180 translatePolicy:v111];
+    platformSSO17 = [v179 platformSSO];
+    v111 = [platformSSO17 objectForKeyedSubscript:@"UnlockPolicy"];
+    selfCopy->_unlockPolicy = [(POProfile *)selfCopy translatePolicy:v111];
 
-    v112 = [v179 platformSSO];
-    v113 = [v112 objectForKeyedSubscript:@"OfflineGracePeriod"];
+    platformSSO18 = [v179 platformSSO];
+    v113 = [platformSSO18 objectForKeyedSubscript:@"OfflineGracePeriod"];
 
     v165 = v113;
-    v180->_offlineGracePeriod = [v113 intValue];
-    v114 = [v179 platformSSO];
-    v115 = [v114 objectForKeyedSubscript:@"AuthenticationGracePeriod"];
+    selfCopy->_offlineGracePeriod = [v113 intValue];
+    platformSSO19 = [v179 platformSSO];
+    v115 = [platformSSO19 objectForKeyedSubscript:@"AuthenticationGracePeriod"];
 
     v164 = v115;
-    v180->_requireAuthGracePeriod = [v115 intValue];
+    selfCopy->_requireAuthGracePeriod = [v115 intValue];
     v116 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v117 = [v179 platformSSO];
-    v118 = [v117 objectForKeyedSubscript:@"NonPlatformSSOAccounts"];
+    platformSSO20 = [v179 platformSSO];
+    v118 = [platformSSO20 objectForKeyedSubscript:@"NonPlatformSSOAccounts"];
 
     v186 = 0u;
     v187 = 0u;
@@ -484,8 +484,8 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v125 = [v124 lowercaseString];
-            [v116 addObject:v125];
+            lowercaseString = [v124 lowercaseString];
+            [v116 addObject:lowercaseString];
           }
         }
 
@@ -495,31 +495,31 @@
       while (v121);
     }
 
-    self = v180;
+    self = selfCopy;
     if ([v116 count])
     {
       v126 = [v116 copy];
-      nonPlatformSSOAccounts = v180->_nonPlatformSSOAccounts;
-      v180->_nonPlatformSSOAccounts = v126;
+      nonPlatformSSOAccounts = selfCopy->_nonPlatformSSOAccounts;
+      selfCopy->_nonPlatformSSOAccounts = v126;
     }
 
-    v128 = [v179 platformSSO];
-    v129 = [v128 objectForKeyedSubscript:@"AllowDeviceIdentifiersInAttestation"];
+    platformSSO21 = [v179 platformSSO];
+    v129 = [platformSSO21 objectForKeyedSubscript:@"AllowDeviceIdentifiersInAttestation"];
 
     v163 = v129;
-    v180->_allowDeviceIdentifiersInAttestation = [v129 BOOLValue];
-    v130 = [v179 platformSSO];
-    v131 = [v130 objectForKeyedSubscript:@"AccessKeyTerminalIdentityUUID"];
+    selfCopy->_allowDeviceIdentifiersInAttestation = [v129 BOOLValue];
+    platformSSO22 = [v179 platformSSO];
+    v131 = [platformSSO22 objectForKeyedSubscript:@"AccessKeyTerminalIdentityUUID"];
 
     v162 = v131;
-    objc_storeStrong(&v180->_accessKeyTerminalIdentityUUID, v131);
-    v132 = [v179 platformSSO];
-    v133 = [v132 objectForKeyedSubscript:@"AllowAccessKeyExpressMode"];
+    objc_storeStrong(&selfCopy->_accessKeyTerminalIdentityUUID, v131);
+    platformSSO23 = [v179 platformSSO];
+    v133 = [platformSSO23 objectForKeyedSubscript:@"AllowAccessKeyExpressMode"];
 
     v161 = v133;
-    v180->_allowAccessKeyExpressMode = [v133 BOOLValue];
-    v134 = [v179 platformSSO];
-    v135 = [v134 objectForKeyedSubscript:@"AccessKeyReaderGroupIdentifier"];
+    selfCopy->_allowAccessKeyExpressMode = [v133 BOOLValue];
+    platformSSO24 = [v179 platformSSO];
+    v135 = [platformSSO24 objectForKeyedSubscript:@"AccessKeyReaderGroupIdentifier"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -539,19 +539,19 @@ LABEL_108:
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
 LABEL_110:
-        v151 = [v179 platformSSO];
-        v160 = [v151 objectForKeyedSubscript:@"SynchronizeProfilePicture"];
+        platformSSO25 = [v179 platformSSO];
+        v160 = [platformSSO25 objectForKeyedSubscript:@"SynchronizeProfilePicture"];
 
-        v180->_synchronizeProfilePicture = [v160 BOOLValue];
-        v152 = [v179 platformSSO];
-        [v152 objectForKeyedSubscript:@"TemporarySessionQuickLogin"];
+        selfCopy->_synchronizeProfilePicture = [v160 BOOLValue];
+        platformSSO26 = [v179 platformSSO];
+        [platformSSO26 objectForKeyedSubscript:@"TemporarySessionQuickLogin"];
         v154 = v153 = v135;
 
-        v180->_temporarySessionQuickLogin = [v154 BOOLValue];
-        v155 = [v179 platformSSO];
-        v156 = [v155 objectForKeyedSubscript:@"EnableRegistrationDuringSetup"];
+        selfCopy->_temporarySessionQuickLogin = [v154 BOOLValue];
+        platformSSO27 = [v179 platformSSO];
+        v156 = [platformSSO27 objectForKeyedSubscript:@"EnableRegistrationDuringSetup"];
 
-        v180->_enableRegistrationDuringSetup = [v156 BOOLValue];
+        selfCopy->_enableRegistrationDuringSetup = [v156 BOOLValue];
         v144 = v181;
         v143 = v182;
         v145 = v178;
@@ -567,7 +567,7 @@ LABEL_111:
         }
 
 LABEL_113:
-        v157 = 0;
+        selfCopy2 = 0;
         goto LABEL_114;
       }
 
@@ -580,8 +580,8 @@ LABEL_113:
     }
 
     v148 = [v136 copy];
-    accessKeyReaderGroupIdentifier = v180->_accessKeyReaderGroupIdentifier;
-    v180->_accessKeyReaderGroupIdentifier = v148;
+    accessKeyReaderGroupIdentifier = selfCopy->_accessKeyReaderGroupIdentifier;
+    selfCopy->_accessKeyReaderGroupIdentifier = v148;
 
 LABEL_109:
     goto LABEL_110;
@@ -589,11 +589,11 @@ LABEL_109:
 
 LABEL_112:
   self = self;
-  v157 = self;
+  selfCopy2 = self;
 LABEL_114:
 
   v158 = *MEMORY[0x277D85DE8];
-  return v157;
+  return selfCopy2;
 }
 
 id __29__POProfile_initWithProfile___block_invoke(uint64_t a1)
@@ -620,10 +620,10 @@ id __29__POProfile_initWithProfile___block_invoke_90()
   return v0;
 }
 
-- (unint64_t)translatePolicy:(id)a3
+- (unint64_t)translatePolicy:(id)policy
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  policyCopy = policy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -631,8 +631,8 @@ id __29__POProfile_initWithProfile___block_invoke_90()
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v14 = v3;
-    v4 = v3;
+    v14 = policyCopy;
+    v4 = policyCopy;
     v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v5)
     {
@@ -696,7 +696,7 @@ id __29__POProfile_initWithProfile___block_invoke_90()
       v7 = 0;
     }
 
-    v3 = v14;
+    policyCopy = v14;
   }
 
   else

@@ -1,20 +1,20 @@
 @interface TSCH3DTextureAtlasTextureResource
-- (TSCH3DTextureAtlasTextureResource)initWithParent:(id)a3;
+- (TSCH3DTextureAtlasTextureResource)initWithParent:(id)parent;
 - (id)get;
 @end
 
 @implementation TSCH3DTextureAtlasTextureResource
 
-- (TSCH3DTextureAtlasTextureResource)initWithParent:(id)a3
+- (TSCH3DTextureAtlasTextureResource)initWithParent:(id)parent
 {
-  v4 = a3;
+  parentCopy = parent;
   v8.receiver = self;
   v8.super_class = TSCH3DTextureAtlasTextureResource;
   v5 = [(TSCH3DResource *)&v8 initWithCaching:0];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_parent, v4);
+    objc_storeWeak(&v5->_parent, parentCopy);
   }
 
   return v6;

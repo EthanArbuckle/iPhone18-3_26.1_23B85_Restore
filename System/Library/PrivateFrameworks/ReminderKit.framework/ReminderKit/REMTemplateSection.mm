@@ -1,22 +1,22 @@
 @interface REMTemplateSection
-- (REMTemplateSection)initWithStore:(id)a3 parentTemplate:(id)a4 storage:(id)a5;
+- (REMTemplateSection)initWithStore:(id)store parentTemplate:(id)template storage:(id)storage;
 @end
 
 @implementation REMTemplateSection
 
-- (REMTemplateSection)initWithStore:(id)a3 parentTemplate:(id)a4 storage:(id)a5
+- (REMTemplateSection)initWithStore:(id)store parentTemplate:(id)template storage:(id)storage
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a3;
-  v12 = [v9 accountCapabilities];
+  templateCopy = template;
+  storageCopy = storage;
+  storeCopy = store;
+  accountCapabilities = [templateCopy accountCapabilities];
   v15.receiver = self;
   v15.super_class = REMTemplateSection;
-  v13 = [(REMBaseSection *)&v15 initWithStore:v11 accountCapabilities:v12 storage:v10];
+  v13 = [(REMBaseSection *)&v15 initWithStore:storeCopy accountCapabilities:accountCapabilities storage:storageCopy];
 
   if (v13)
   {
-    objc_storeStrong(&v13->_parentTemplate, a4);
+    objc_storeStrong(&v13->_parentTemplate, template);
   }
 
   return v13;

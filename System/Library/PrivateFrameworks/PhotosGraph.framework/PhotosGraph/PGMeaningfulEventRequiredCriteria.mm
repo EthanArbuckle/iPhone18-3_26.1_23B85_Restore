@@ -1,6 +1,6 @@
 @interface PGMeaningfulEventRequiredCriteria
 - (NSString)meaningNodeLabel;
-- (PGMeaningfulEventRequiredCriteria)initWithIdentifier:(id)a3 minimumScore:(double)a4 graph:(id)a5;
+- (PGMeaningfulEventRequiredCriteria)initWithIdentifier:(id)identifier minimumScore:(double)score graph:(id)graph;
 - (id)debugDescription;
 - (id)description;
 @end
@@ -34,28 +34,28 @@
 
 - (NSString)meaningNodeLabel
 {
-  v2 = [(PGMeaningfulEventRequiredCriteria *)self identifier];
-  if ([(__CFString *)v2 isEqualToString:@"WeakBirthday"])
+  identifier = [(PGMeaningfulEventRequiredCriteria *)self identifier];
+  if ([(__CFString *)identifier isEqualToString:@"WeakBirthday"])
   {
     v3 = @"Birthday";
 
-    v2 = @"Birthday";
+    identifier = @"Birthday";
   }
 
-  return v2;
+  return identifier;
 }
 
-- (PGMeaningfulEventRequiredCriteria)initWithIdentifier:(id)a3 minimumScore:(double)a4 graph:(id)a5
+- (PGMeaningfulEventRequiredCriteria)initWithIdentifier:(id)identifier minimumScore:(double)score graph:(id)graph
 {
-  v9 = a3;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = PGMeaningfulEventRequiredCriteria;
-  v10 = [(PGMeaningfulEventCriteria *)&v15 initWithGraph:a5];
+  v10 = [(PGMeaningfulEventCriteria *)&v15 initWithGraph:graph];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_identifier, a3);
-    v11->_minimumScore = a4;
+    objc_storeStrong(&v10->_identifier, identifier);
+    v11->_minimumScore = score;
     v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
     internalAdditionalInfo = v11->_internalAdditionalInfo;
     v11->_internalAdditionalInfo = v12;

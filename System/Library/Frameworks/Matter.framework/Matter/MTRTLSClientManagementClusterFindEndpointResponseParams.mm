@@ -1,9 +1,9 @@
 @interface MTRTLSClientManagementClusterFindEndpointResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRTLSClientManagementClusterFindEndpointResponseParams)init;
-- (MTRTLSClientManagementClusterFindEndpointResponseParams)initWithDecodableStruct:(const void *)a3;
-- (MTRTLSClientManagementClusterFindEndpointResponseParams)initWithResponseValue:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MTRTLSClientManagementClusterFindEndpointResponseParams)initWithDecodableStruct:(const void *)struct;
+- (MTRTLSClientManagementClusterFindEndpointResponseParams)initWithResponseValue:(id)value error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,11 +24,11 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRTLSClientManagementClusterFindEndpointResponseParams);
-  v5 = [(MTRTLSClientManagementClusterFindEndpointResponseParams *)self endpoint];
-  [(MTRTLSClientManagementClusterFindEndpointResponseParams *)v4 setEndpoint:v5];
+  endpoint = [(MTRTLSClientManagementClusterFindEndpointResponseParams *)self endpoint];
+  [(MTRTLSClientManagementClusterFindEndpointResponseParams *)v4 setEndpoint:endpoint];
 
   return v4;
 }
@@ -43,9 +43,9 @@
   return v6;
 }
 
-- (MTRTLSClientManagementClusterFindEndpointResponseParams)initWithResponseValue:(id)a3 error:(id *)a4
+- (MTRTLSClientManagementClusterFindEndpointResponseParams)initWithResponseValue:(id)value error:(id *)error
 {
-  v6 = a3;
+  valueCopy = value;
   v18.receiver = self;
   v18.super_class = MTRTLSClientManagementClusterFindEndpointResponseParams;
   v7 = [(MTRTLSClientManagementClusterFindEndpointResponseParams *)&v18 init];
@@ -55,7 +55,7 @@
     goto LABEL_10;
   }
 
-  [MTRBaseDevice _responseDataForCommand:v6 clusterID:2050 commandID:3 error:a4];
+  [MTRBaseDevice _responseDataForCommand:valueCopy clusterID:2050 commandID:3 error:error];
   if (v17)
   {
     sub_2393C5AAC(v16);
@@ -80,7 +80,7 @@
       }
     }
 
-    sub_238DD3F98(v8, v9, a4);
+    sub_238DD3F98(v8, v9, error);
   }
 
   v10 = 0;
@@ -91,7 +91,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRTLSClientManagementClusterFindEndpointResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRTLSClientManagementClusterFindEndpointResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRTLSClientManagementClusterFindEndpointResponseParams;
@@ -99,7 +99,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRTLSClientManagementClusterFindEndpointResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRTLSClientManagementClusterFindEndpointResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -115,47 +115,47 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
   v5 = objc_opt_new();
   [(MTRTLSClientManagementClusterFindEndpointResponseParams *)self setEndpoint:v5];
 
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*a3];
-  v7 = [(MTRTLSClientManagementClusterFindEndpointResponseParams *)self endpoint];
-  [v7 setEndpointID:v6];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*struct];
+  endpoint = [(MTRTLSClientManagementClusterFindEndpointResponseParams *)self endpoint];
+  [endpoint setEndpointID:v6];
 
-  v8 = [MEMORY[0x277CBEA90] dataWithBytes:*(a3 + 1) length:*(a3 + 2)];
-  v9 = [(MTRTLSClientManagementClusterFindEndpointResponseParams *)self endpoint];
-  [v9 setHostname:v8];
+  v8 = [MEMORY[0x277CBEA90] dataWithBytes:*(struct + 1) length:*(struct + 2)];
+  endpoint2 = [(MTRTLSClientManagementClusterFindEndpointResponseParams *)self endpoint];
+  [endpoint2 setHostname:v8];
 
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(a3 + 12)];
-  v11 = [(MTRTLSClientManagementClusterFindEndpointResponseParams *)self endpoint];
-  [v11 setPort:v10];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(struct + 12)];
+  endpoint3 = [(MTRTLSClientManagementClusterFindEndpointResponseParams *)self endpoint];
+  [endpoint3 setPort:v10];
 
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(a3 + 13)];
-  v13 = [(MTRTLSClientManagementClusterFindEndpointResponseParams *)self endpoint];
-  [v13 setCaid:v12];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(struct + 13)];
+  endpoint4 = [(MTRTLSClientManagementClusterFindEndpointResponseParams *)self endpoint];
+  [endpoint4 setCaid:v12];
 
-  if (*(a3 + 30))
+  if (*(struct + 30))
   {
-    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(a3 + 14)];
-    v15 = [(MTRTLSClientManagementClusterFindEndpointResponseParams *)self endpoint];
-    [v15 setCcdid:v14];
+    endpoint6 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(struct + 14)];
+    endpoint5 = [(MTRTLSClientManagementClusterFindEndpointResponseParams *)self endpoint];
+    [endpoint5 setCcdid:endpoint6];
   }
 
   else
   {
-    v14 = [(MTRTLSClientManagementClusterFindEndpointResponseParams *)self endpoint];
-    [v14 setCcdid:0];
+    endpoint6 = [(MTRTLSClientManagementClusterFindEndpointResponseParams *)self endpoint];
+    [endpoint6 setCcdid:0];
   }
 
-  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(a3 + 32)];
-  v17 = [(MTRTLSClientManagementClusterFindEndpointResponseParams *)self endpoint];
-  [v17 setStatus:v16];
+  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(struct + 32)];
+  endpoint7 = [(MTRTLSClientManagementClusterFindEndpointResponseParams *)self endpoint];
+  [endpoint7 setStatus:v16];
 
-  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(a3 + 33)];
-  v19 = [(MTRTLSClientManagementClusterFindEndpointResponseParams *)self endpoint];
-  [v19 setFabricIndex:v18];
+  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(struct + 33)];
+  endpoint8 = [(MTRTLSClientManagementClusterFindEndpointResponseParams *)self endpoint];
+  [endpoint8 setFabricIndex:v18];
 
   v20 = 0;
   v21 = 0;

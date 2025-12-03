@@ -1,24 +1,24 @@
 @interface AuthorizationExtensionProvider.Observer
 - (_TtCC18SmartStackSettings30AuthorizationExtensionProvider8Observer)init;
-- (void)applicationsDidUninstall:(char *)a1;
-- (void)queryControllerDidUpdate:(id)a3;
+- (void)applicationsDidUninstall:(char *)uninstall;
+- (void)queryControllerDidUpdate:(id)update;
 @end
 
 @implementation AuthorizationExtensionProvider.Observer
 
-- (void)queryControllerDidUpdate:(id)a3
+- (void)queryControllerDidUpdate:(id)update
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtCC18SmartStackSettings30AuthorizationExtensionProvider8Observer_queryHandler);
   v4 = *&self->updateHandler[OBJC_IVAR____TtCC18SmartStackSettings30AuthorizationExtensionProvider8Observer_queryHandler];
-  v5 = self;
+  selfCopy = self;
   v3();
 }
 
-- (void)applicationsDidUninstall:(char *)a1
+- (void)applicationsDidUninstall:(char *)uninstall
 {
-  v1 = *&a1[OBJC_IVAR____TtCC18SmartStackSettings30AuthorizationExtensionProvider8Observer_updateHandler];
-  v2 = *&a1[OBJC_IVAR____TtCC18SmartStackSettings30AuthorizationExtensionProvider8Observer_updateHandler + 8];
-  v3 = a1;
+  v1 = *&uninstall[OBJC_IVAR____TtCC18SmartStackSettings30AuthorizationExtensionProvider8Observer_updateHandler];
+  v2 = *&uninstall[OBJC_IVAR____TtCC18SmartStackSettings30AuthorizationExtensionProvider8Observer_updateHandler + 8];
+  uninstallCopy = uninstall;
   v1();
 }
 

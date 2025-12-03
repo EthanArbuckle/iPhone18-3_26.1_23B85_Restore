@@ -1,6 +1,6 @@
 @interface BRModalProgressController
 - (BRModalProgressController)init;
-- (void)_showSpinner:(id)a3;
+- (void)_showSpinner:(id)spinner;
 @end
 
 @implementation BRModalProgressController
@@ -17,24 +17,24 @@
     v2->_displayTimer = v3;
 
     v5 = [_BRModalProgressTouchStealingView alloc];
-    v6 = [(BRModalProgressController *)v2 view];
-    [v6 bounds];
+    view = [(BRModalProgressController *)v2 view];
+    [view bounds];
     v7 = [(_BRModalProgressTouchStealingView *)v5 initWithFrame:?];
 
     [(_BRModalProgressTouchStealingView *)v7 setAutoresizingMask:18];
-    v8 = [(BRModalProgressController *)v2 view];
-    [v8 addSubview:v7];
+    view2 = [(BRModalProgressController *)v2 view];
+    [view2 addSubview:v7];
   }
 
   return v2;
 }
 
-- (void)_showSpinner:(id)a3
+- (void)_showSpinner:(id)spinner
 {
   v41 = [UIBlurEffect effectWithStyle:4];
   v4 = +[UIColor systemBackgroundColor];
-  v5 = [(BRModalProgressController *)self view];
-  [v5 setBackgroundColor:v4];
+  view = [(BRModalProgressController *)self view];
+  [view setBackgroundColor:v4];
 
   v6 = [[UIVisualEffectView alloc] initWithEffect:v41];
   v7 = objc_alloc_init(UILabel);
@@ -44,7 +44,7 @@
   [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v6 _setContinuousCornerRadius:13.0];
   [v6 setClipsToBounds:1];
-  v9 = [(BRModalProgressController *)self view];
+  view2 = [(BRModalProgressController *)self view];
   v10 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
   v11 = [v10 localizedStringForKey:@"PROGRESS_FINISHING_TEXT" value:@"Finishing up…" table:@"Localizable"];
   [v7 setText:v11];
@@ -56,53 +56,53 @@
   [v7 setTextColor:v13];
 
   [v8 startAnimating];
-  [v9 addSubview:v6];
-  v14 = [v6 contentView];
-  [v14 addSubview:v7];
+  [view2 addSubview:v6];
+  contentView = [v6 contentView];
+  [contentView addSubview:v7];
 
-  v15 = [v6 contentView];
-  [v15 addSubview:v8];
+  contentView2 = [v6 contentView];
+  [contentView2 addSubview:v8];
 
   v16 = objc_opt_new();
-  v17 = [v6 widthAnchor];
-  v18 = [v17 constraintEqualToConstant:288.0];
+  widthAnchor = [v6 widthAnchor];
+  v18 = [widthAnchor constraintEqualToConstant:288.0];
   [v16 addObject:v18];
 
-  v19 = [v6 centerXAnchor];
-  v20 = [v9 centerXAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  centerXAnchor = [v6 centerXAnchor];
+  centerXAnchor2 = [view2 centerXAnchor];
+  v21 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v16 addObject:v21];
 
-  v22 = [v6 centerYAnchor];
-  v23 = [v9 centerYAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
+  centerYAnchor = [v6 centerYAnchor];
+  centerYAnchor2 = [view2 centerYAnchor];
+  v24 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v16 addObject:v24];
 
-  v25 = [v7 centerXAnchor];
-  v26 = [v6 centerXAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26];
+  centerXAnchor3 = [v7 centerXAnchor];
+  centerXAnchor4 = [v6 centerXAnchor];
+  v27 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   [v16 addObject:v27];
 
-  v28 = [v8 centerXAnchor];
-  v29 = [v6 centerXAnchor];
-  v30 = [v28 constraintEqualToAnchor:v29];
+  centerXAnchor5 = [v8 centerXAnchor];
+  centerXAnchor6 = [v6 centerXAnchor];
+  v30 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
   [v16 addObject:v30];
 
-  v31 = [v8 topAnchor];
-  v32 = [v6 topAnchor];
-  v33 = [v31 constraintEqualToAnchor:v32 constant:18.0];
+  topAnchor = [v8 topAnchor];
+  topAnchor2 = [v6 topAnchor];
+  v33 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:18.0];
   [v16 addObject:v33];
 
-  v34 = [v7 lastBaselineAnchor];
-  v35 = [v8 bottomAnchor];
-  v36 = [v7 font];
-  [v36 _scaledValueForValue:22.0];
-  v37 = [v34 constraintEqualToAnchor:v35 constant:?];
+  lastBaselineAnchor = [v7 lastBaselineAnchor];
+  bottomAnchor = [v8 bottomAnchor];
+  font = [v7 font];
+  [font _scaledValueForValue:22.0];
+  v37 = [lastBaselineAnchor constraintEqualToAnchor:bottomAnchor constant:?];
   [v16 addObject:v37];
 
-  v38 = [v6 bottomAnchor];
-  v39 = [v7 lastBaselineAnchor];
-  v40 = [v38 constraintEqualToAnchor:v39 constant:22.0];
+  bottomAnchor2 = [v6 bottomAnchor];
+  lastBaselineAnchor2 = [v7 lastBaselineAnchor];
+  v40 = [bottomAnchor2 constraintEqualToAnchor:lastBaselineAnchor2 constant:22.0];
   [v16 addObject:v40];
 
   [NSLayoutConstraint activateConstraints:v16];

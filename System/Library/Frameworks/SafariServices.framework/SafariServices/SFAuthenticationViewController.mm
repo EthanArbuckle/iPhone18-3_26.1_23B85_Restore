@@ -1,67 +1,67 @@
 @interface SFAuthenticationViewController
-- (SFAuthenticationViewController)initWithURL:(id)a3 callback:(id)a4 storageMode:(unint64_t)a5 jitEnabled:(BOOL)a6 presentationContextWindow:(id)a7 additionalHeaderFields:(id)a8 proxiedAssociatedDomains:(id)a9 networkAttributionApplicationBundleIdentifier:(id)a10;
-- (SFAuthenticationViewController)initWithURL:(id)a3 callbackURLScheme:(id)a4 usingEphemeralSession:(BOOL)a5 jitEnabled:(BOOL)a6 presentationContextWindow:(id)a7;
+- (SFAuthenticationViewController)initWithURL:(id)l callback:(id)callback storageMode:(unint64_t)mode jitEnabled:(BOOL)enabled presentationContextWindow:(id)window additionalHeaderFields:(id)fields proxiedAssociatedDomains:(id)domains networkAttributionApplicationBundleIdentifier:(id)self0;
+- (SFAuthenticationViewController)initWithURL:(id)l callbackURLScheme:(id)scheme usingEphemeralSession:(BOOL)session jitEnabled:(BOOL)enabled presentationContextWindow:(id)window;
 - (SFAuthenticationViewControllerPresentationDelegate)presentationDelegate;
 - (void)_presentViewController;
 - (void)_restartServiceViewController;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)remoteViewController:(id)a3 didDecideCookieSharingForURL:(id)a4 shouldCancel:(BOOL)a5 withError:(id)a6;
-- (void)remoteViewController:(id)a3 hostApplicationOpenURL:(id)a4;
-- (void)setDefersAddingRemoteViewController:(BOOL)a3;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)remoteViewController:(id)controller didDecideCookieSharingForURL:(id)l shouldCancel:(BOOL)cancel withError:(id)error;
+- (void)remoteViewController:(id)controller hostApplicationOpenURL:(id)l;
+- (void)setDefersAddingRemoteViewController:(BOOL)controller;
 @end
 
 @implementation SFAuthenticationViewController
 
-- (SFAuthenticationViewController)initWithURL:(id)a3 callbackURLScheme:(id)a4 usingEphemeralSession:(BOOL)a5 jitEnabled:(BOOL)a6 presentationContextWindow:(id)a7
+- (SFAuthenticationViewController)initWithURL:(id)l callbackURLScheme:(id)scheme usingEphemeralSession:(BOOL)session jitEnabled:(BOOL)enabled presentationContextWindow:(id)window
 {
-  v7 = a6;
-  v8 = a5;
+  enabledCopy = enabled;
+  sessionCopy = session;
   v12 = MEMORY[0x1E695A958];
-  v13 = a7;
-  v14 = a3;
-  v15 = [v12 callbackWithCustomScheme:a4];
-  v16 = [(SFAuthenticationViewController *)self initWithURL:v14 callback:v15 storageMode:v8 jitEnabled:v7 presentationContextWindow:v13 additionalHeaderFields:0 proxiedAssociatedDomains:0 networkAttributionApplicationBundleIdentifier:0];
+  windowCopy = window;
+  lCopy = l;
+  v15 = [v12 callbackWithCustomScheme:scheme];
+  v16 = [(SFAuthenticationViewController *)self initWithURL:lCopy callback:v15 storageMode:sessionCopy jitEnabled:enabledCopy presentationContextWindow:windowCopy additionalHeaderFields:0 proxiedAssociatedDomains:0 networkAttributionApplicationBundleIdentifier:0];
 
   return v16;
 }
 
-- (SFAuthenticationViewController)initWithURL:(id)a3 callback:(id)a4 storageMode:(unint64_t)a5 jitEnabled:(BOOL)a6 presentationContextWindow:(id)a7 additionalHeaderFields:(id)a8 proxiedAssociatedDomains:(id)a9 networkAttributionApplicationBundleIdentifier:(id)a10
+- (SFAuthenticationViewController)initWithURL:(id)l callback:(id)callback storageMode:(unint64_t)mode jitEnabled:(BOOL)enabled presentationContextWindow:(id)window additionalHeaderFields:(id)fields proxiedAssociatedDomains:(id)domains networkAttributionApplicationBundleIdentifier:(id)self0
 {
-  v12 = a6;
-  v16 = a4;
-  obj = a7;
-  v32 = a7;
-  v17 = a8;
-  v18 = a9;
-  v19 = a10;
-  v20 = a3;
+  enabledCopy = enabled;
+  callbackCopy = callback;
+  obj = window;
+  windowCopy = window;
+  fieldsCopy = fields;
+  domainsCopy = domains;
+  identifierCopy = identifier;
+  lCopy = l;
   v21 = objc_alloc_init(SFSafariViewControllerConfiguration);
   [(SFSafariViewControllerConfiguration *)v21 setEntersReaderIfAvailable:0];
   [(SFSafariViewControllerConfiguration *)v21 setBarCollapsingEnabled:0];
-  [(SFSafariViewControllerConfiguration *)v21 set_storageModeForAuthenticationSession:a5];
-  [(SFSafariViewControllerConfiguration *)v21 _setJITEnabled:v12];
-  [(SFSafariViewControllerConfiguration *)v21 _setNetworkAttributionApplicationBundleIdentifier:v19];
+  [(SFSafariViewControllerConfiguration *)v21 set_storageModeForAuthenticationSession:mode];
+  [(SFSafariViewControllerConfiguration *)v21 _setJITEnabled:enabledCopy];
+  [(SFSafariViewControllerConfiguration *)v21 _setNetworkAttributionApplicationBundleIdentifier:identifierCopy];
 
   v33.receiver = self;
   v33.super_class = SFAuthenticationViewController;
-  v22 = [(SFSafariViewController *)&v33 initWithURL:v20 configuration:v21];
+  v22 = [(SFSafariViewController *)&v33 initWithURL:lCopy configuration:v21];
 
   if (v22)
   {
     objc_storeStrong(&v22->_presentationContextWindow, obj);
-    objc_storeStrong(&v22->_callback, a4);
-    v23 = [v18 copy];
+    objc_storeStrong(&v22->_callback, callback);
+    v23 = [domainsCopy copy];
     proxiedAssociatedDomains = v22->_proxiedAssociatedDomains;
     v22->_proxiedAssociatedDomains = v23;
 
-    v25 = [(SFSafariViewController *)v22 serviceProxy];
-    v26 = [(SFSafariViewController *)v22 initialURL];
-    [v25 decideCookieSharingForURL:v26 callback:v16 proxiedAssociatedDomains:v22->_proxiedAssociatedDomains];
+    serviceProxy = [(SFSafariViewController *)v22 serviceProxy];
+    initialURL = [(SFSafariViewController *)v22 initialURL];
+    [serviceProxy decideCookieSharingForURL:initialURL callback:callbackCopy proxiedAssociatedDomains:v22->_proxiedAssociatedDomains];
 
-    if ([v17 count])
+    if ([fieldsCopy count])
     {
-      v27 = [(SFSafariViewController *)v22 serviceProxy];
-      [v27 setAdditionalHeaderFieldsForInitialLoad:v17];
+      serviceProxy2 = [(SFSafariViewController *)v22 serviceProxy];
+      [serviceProxy2 setAdditionalHeaderFieldsForInitialLoad:fieldsCopy];
     }
 
     [(SFSafariViewController *)v22 setDismissButtonStyle:2];
@@ -74,20 +74,20 @@
   return v22;
 }
 
-- (void)setDefersAddingRemoteViewController:(BOOL)a3
+- (void)setDefersAddingRemoteViewController:(BOOL)controller
 {
-  v3 = a3;
-  if ([(SFSafariViewController *)self defersAddingRemoteViewController]!= a3)
+  controllerCopy = controller;
+  if ([(SFSafariViewController *)self defersAddingRemoteViewController]!= controller)
   {
     v7.receiver = self;
     v7.super_class = SFAuthenticationViewController;
-    [(SFSafariViewController *)&v7 setDefersAddingRemoteViewController:v3];
-    if (!v3)
+    [(SFSafariViewController *)&v7 setDefersAddingRemoteViewController:controllerCopy];
+    if (!controllerCopy)
     {
       [(SFSafariViewController *)self _addRemoteViewControllerIfNeeded];
-      v5 = [(SFSafariViewController *)self serviceProxy];
-      v6 = [(SFSafariViewController *)self initialURL];
-      [v5 loadURL:v6];
+      serviceProxy = [(SFSafariViewController *)self serviceProxy];
+      initialURL = [(SFSafariViewController *)self initialURL];
+      [serviceProxy loadURL:initialURL];
     }
   }
 }
@@ -96,24 +96,24 @@
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_1D4644000, a2, OS_LOG_TYPE_FAULT, "Attempted to present SFAuthenticationViewController from a view controller that is being dismissed: %@", &v2, 0xCu);
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __75__SFAuthenticationViewController_dismissViewControllerAnimated_completion___block_invoke;
   v9[3] = &unk_1E8490798;
   v9[4] = self;
-  v10 = v6;
+  v10 = completionCopy;
   v8.receiver = self;
   v8.super_class = SFAuthenticationViewController;
-  v7 = v6;
-  [(SFAuthenticationViewController *)&v8 dismissViewControllerAnimated:v4 completion:v9];
+  v7 = completionCopy;
+  [(SFAuthenticationViewController *)&v8 dismissViewControllerAnimated:animatedCopy completion:v9];
 }
 
 void __75__SFAuthenticationViewController_dismissViewControllerAnimated_completion___block_invoke(uint64_t a1)
@@ -140,43 +140,43 @@ void __75__SFAuthenticationViewController_dismissViewControllerAnimated_completi
 
 - (void)_restartServiceViewController
 {
-  v5 = [(SFSafariViewController *)self serviceProxy];
-  v3 = [(SFSafariViewController *)self configuration];
-  [v5 setConfiguration:v3];
+  serviceProxy = [(SFSafariViewController *)self serviceProxy];
+  configuration = [(SFSafariViewController *)self configuration];
+  [serviceProxy setConfiguration:configuration];
 
-  [v5 setDismissButtonStyle:{-[SFSafariViewController dismissButtonStyle](self, "dismissButtonStyle")}];
-  v4 = [(SFSafariViewController *)self initialURL];
-  [v5 decideCookieSharingForURL:v4 callback:self->_callback proxiedAssociatedDomains:self->_proxiedAssociatedDomains];
+  [serviceProxy setDismissButtonStyle:{-[SFSafariViewController dismissButtonStyle](self, "dismissButtonStyle")}];
+  initialURL = [(SFSafariViewController *)self initialURL];
+  [serviceProxy decideCookieSharingForURL:initialURL callback:self->_callback proxiedAssociatedDomains:self->_proxiedAssociatedDomains];
 
   [(SFAuthenticationViewController *)self setDefersAddingRemoteViewController:1];
 }
 
-- (void)remoteViewController:(id)a3 hostApplicationOpenURL:(id)a4
+- (void)remoteViewController:(id)controller hostApplicationOpenURL:(id)l
 {
-  v6 = a4;
-  v5 = [(SFSafariViewController *)self delegate];
+  lCopy = l;
+  delegate = [(SFSafariViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 safariViewController:self hostApplicationOpenURL:v6];
+    [delegate safariViewController:self hostApplicationOpenURL:lCopy];
   }
 }
 
-- (void)remoteViewController:(id)a3 didDecideCookieSharingForURL:(id)a4 shouldCancel:(BOOL)a5 withError:(id)a6
+- (void)remoteViewController:(id)controller didDecideCookieSharingForURL:(id)l shouldCancel:(BOOL)cancel withError:(id)error
 {
-  v7 = a5;
-  v12 = a4;
-  v9 = a6;
-  v10 = [(SFSafariViewController *)self delegate];
+  cancelCopy = cancel;
+  lCopy = l;
+  errorCopy = error;
+  delegate = [(SFSafariViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v10 safariViewController:self didDecideCookieSharingForURL:v12 shouldCancel:v7 withError:v9];
+    [delegate safariViewController:self didDecideCookieSharingForURL:lCopy shouldCancel:cancelCopy withError:errorCopy];
   }
 
-  v11 = [(SFAuthenticationViewController *)self presentingViewController];
+  presentingViewController = [(SFAuthenticationViewController *)self presentingViewController];
 
-  if (v7)
+  if (cancelCopy)
   {
-    if (v11)
+    if (presentingViewController)
     {
       [(SFAuthenticationViewController *)self dismissViewControllerAnimated:1 completion:0];
     }
@@ -184,7 +184,7 @@ void __75__SFAuthenticationViewController_dismissViewControllerAnimated_completi
 
   else
   {
-    if (!v11)
+    if (!presentingViewController)
     {
       [(SFAuthenticationViewController *)self _presentViewController];
     }

@@ -1,18 +1,18 @@
 @interface ICMediaTimeLabel
-- (ICMediaTimeLabel)initWithCoder:(id)a3;
-- (ICMediaTimeLabel)initWithFrame:(CGRect)a3;
+- (ICMediaTimeLabel)initWithCoder:(id)coder;
+- (ICMediaTimeLabel)initWithFrame:(CGRect)frame;
 - (id)accessibilityValue;
 - (void)commonInit;
-- (void)setMediaTimeValue:(id)a3;
+- (void)setMediaTimeValue:(id)value;
 @end
 
 @implementation ICMediaTimeLabel
 
-- (ICMediaTimeLabel)initWithFrame:(CGRect)a3
+- (ICMediaTimeLabel)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = ICMediaTimeLabel;
-  v3 = [(ICMediaTimeLabel *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ICMediaTimeLabel *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -22,11 +22,11 @@
   return v4;
 }
 
-- (ICMediaTimeLabel)initWithCoder:(id)a3
+- (ICMediaTimeLabel)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ICMediaTimeLabel;
-  v3 = [(ICMediaTimeLabel *)&v6 initWithCoder:a3];
+  v3 = [(ICMediaTimeLabel *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -44,27 +44,27 @@
   [(ICMediaTimeLabel *)self setTextAlignment:2];
 }
 
-- (void)setMediaTimeValue:(id)a3
+- (void)setMediaTimeValue:(id)value
 {
-  v8 = a3;
+  valueCopy = value;
   if (![(ICMediaTime *)self->_mediaTimeValue isEqualToMediaTime:?])
   {
-    v4 = [v8 copy];
+    v4 = [valueCopy copy];
     mediaTimeValue = self->_mediaTimeValue;
     self->_mediaTimeValue = v4;
 
-    v6 = [(ICMediaTimeLabel *)self formatter];
-    v7 = [v6 stringForObjectValue:v8];
+    formatter = [(ICMediaTimeLabel *)self formatter];
+    v7 = [formatter stringForObjectValue:valueCopy];
     [(ICMediaTimeLabel *)self setText:v7];
   }
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(ICMediaTimeLabel *)self mediaTimeValue];
-  v3 = [v2 durationDescription];
+  mediaTimeValue = [(ICMediaTimeLabel *)self mediaTimeValue];
+  durationDescription = [mediaTimeValue durationDescription];
 
-  return v3;
+  return durationDescription;
 }
 
 @end

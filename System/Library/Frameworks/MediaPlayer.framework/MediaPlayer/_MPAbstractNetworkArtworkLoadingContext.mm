@@ -11,9 +11,9 @@
   v2 = [(_MPAbstractNetworkArtworkLoadingContext *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     catalogIdentifierToCompletionHandlerMap = v2->_catalogIdentifierToCompletionHandlerMap;
-    v2->_catalogIdentifierToCompletionHandlerMap = v3;
+    v2->_catalogIdentifierToCompletionHandlerMap = dictionary;
   }
 
   return v2;

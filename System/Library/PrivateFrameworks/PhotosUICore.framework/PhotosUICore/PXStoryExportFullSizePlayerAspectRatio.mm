@@ -1,7 +1,7 @@
 @interface PXStoryExportFullSizePlayerAspectRatio
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)size;
-- (id)adjustedForOrientation:(id)a3;
+- (id)adjustedForOrientation:(id)orientation;
 - (unint64_t)hash;
 @end
 
@@ -27,10 +27,10 @@
   return v6 ^ (8 * v7);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -40,7 +40,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(PXStoryExportFullSizePlayerAspectRatio *)self size];
       [(PXStoryExportFullSizePlayerAspectRatio *)v5 size];
       PXSizeApproximatelyEqualToSize();
@@ -52,24 +52,24 @@
   return v6;
 }
 
-- (id)adjustedForOrientation:(id)a3
+- (id)adjustedForOrientation:(id)orientation
 {
-  v4 = a3;
-  v5 = [(PXStoryExportAspectRatio *)self orientation];
-  v6 = [v5 isEqual:v4];
+  orientationCopy = orientation;
+  orientation = [(PXStoryExportAspectRatio *)self orientation];
+  v6 = [orientation isEqual:orientationCopy];
 
   if (v6)
   {
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = [objc_opt_class() pickableAspectRatiosForOrientation:v4 fullSizePlayerAspect:0];
-    v7 = [v8 firstObject];
+    v8 = [objc_opt_class() pickableAspectRatiosForOrientation:orientationCopy fullSizePlayerAspect:0];
+    selfCopy = [v8 firstObject];
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

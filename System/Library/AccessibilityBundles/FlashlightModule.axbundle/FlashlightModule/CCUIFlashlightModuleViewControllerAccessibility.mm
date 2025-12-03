@@ -1,16 +1,16 @@
 @interface CCUIFlashlightModuleViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation CCUIFlashlightModuleViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CCUIFlashlightModuleViewController" hasInstanceVariable:@"_sliderView" withType:"CCUIBaseSliderView"];
-  [v3 validateClass:@"CCUIFlashlightModuleViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CCUIFlashlightModuleViewController" hasInstanceVariable:@"_sliderView" withType:"CCUIBaseSliderView"];
+  [validationsCopy validateClass:@"CCUIFlashlightModuleViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

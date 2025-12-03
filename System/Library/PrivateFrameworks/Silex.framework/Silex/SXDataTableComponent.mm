@@ -1,34 +1,34 @@
 @interface SXDataTableComponent
-+ (id)valueClassBlockForPropertyWithName:(id)a3;
-- (BOOL)showDescriptorLabelsWithValue:(id)a3 withType:(int)a4;
-- (unint64_t)dataOrientationWithValue:(id)a3 withType:(int)a4;
++ (id)valueClassBlockForPropertyWithName:(id)name;
+- (BOOL)showDescriptorLabelsWithValue:(id)value withType:(int)type;
+- (unint64_t)dataOrientationWithValue:(id)value withType:(int)type;
 @end
 
 @implementation SXDataTableComponent
 
-+ (id)valueClassBlockForPropertyWithName:(id)a3
++ (id)valueClassBlockForPropertyWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"sortBy"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"sortBy"])
   {
     v5 = &__block_literal_global_98;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SXDataTableComponent;
-    v5 = objc_msgSendSuper2(&v7, sel_valueClassBlockForPropertyWithName_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_valueClassBlockForPropertyWithName_, nameCopy);
   }
 
   return v5;
 }
 
-- (unint64_t)dataOrientationWithValue:(id)a3 withType:(int)a4
+- (unint64_t)dataOrientationWithValue:(id)value withType:(int)type
 {
-  if (a4 == 3)
+  if (type == 3)
   {
-    return [a3 isEqualToString:{@"vertical", v4, v5}];
+    return [value isEqualToString:{@"vertical", v4, v5}];
   }
 
   else
@@ -37,11 +37,11 @@
   }
 }
 
-- (BOOL)showDescriptorLabelsWithValue:(id)a3 withType:(int)a4
+- (BOOL)showDescriptorLabelsWithValue:(id)value withType:(int)type
 {
-  if (a4 == 2)
+  if (type == 2)
   {
-    return [a3 BOOLValue];
+    return [value BOOLValue];
   }
 
   else

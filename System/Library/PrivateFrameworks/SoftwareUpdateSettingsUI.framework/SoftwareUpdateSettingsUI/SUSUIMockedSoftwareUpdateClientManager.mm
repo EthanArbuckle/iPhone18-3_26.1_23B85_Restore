@@ -6,12 +6,12 @@
 - (BOOL)isSecurityResponseEnabled;
 - (BOOL)previousUserSpecifiedSecurityResponseEnabled;
 - (id)preferences;
-- (void)queue_enableAutoInstallPreviousUserSettings:(BOOL)a3;
-- (void)queue_enableAutomaticInstallSystemDataFiles:(BOOL)a3;
-- (void)queue_setAutoDownloadEnabled:(BOOL)a3;
-- (void)queue_setAutoInstallEnabled:(BOOL)a3;
-- (void)queue_setPreviousUserSpecifiedSecurityResponseStatus:(BOOL)a3;
-- (void)queue_setSecurityResponseEnabled:(BOOL)a3;
+- (void)queue_enableAutoInstallPreviousUserSettings:(BOOL)settings;
+- (void)queue_enableAutomaticInstallSystemDataFiles:(BOOL)files;
+- (void)queue_setAutoDownloadEnabled:(BOOL)enabled;
+- (void)queue_setAutoInstallEnabled:(BOOL)enabled;
+- (void)queue_setPreviousUserSpecifiedSecurityResponseStatus:(BOOL)status;
+- (void)queue_setSecurityResponseEnabled:(BOOL)enabled;
 @end
 
 @implementation SUSUIMockedSoftwareUpdateClientManager
@@ -19,12 +19,12 @@
 - (BOOL)isAutoDownloadEnabled
 {
   v19 = *MEMORY[0x277D85DE8];
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v10 = [(SUSUIMockedSoftwareUpdateClientManager *)self preferences];
-  v11 = [v10 automaticDownloadEnabled];
-  MEMORY[0x277D82BD8](v10);
-  v15 = v11;
+  preferences = [(SUSUIMockedSoftwareUpdateClientManager *)self preferences];
+  automaticDownloadEnabled = [preferences automaticDownloadEnabled];
+  MEMORY[0x277D82BD8](preferences);
+  v15 = automaticDownloadEnabled;
   v14 = _SUSUIInternalLoggingFacility();
   v13 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -32,9 +32,9 @@
     log = v14;
     type = v13;
     v9 = +[SUSUITestAutomationManager sharedManager];
-    v8 = [v9 currentSession];
-    v7 = [v8 correlationId];
-    v2 = MEMORY[0x277D82BE0](v7);
+    currentSession = [v9 currentSession];
+    correlationId = [currentSession correlationId];
+    v2 = MEMORY[0x277D82BE0](correlationId);
     v12 = v2;
     if (v15)
     {
@@ -48,8 +48,8 @@
 
     __os_log_helper_16_2_3_8_64_8_32_8_64(v18, v2, "[SUSUIMockedSoftwareUpdateClientManager isAutoDownloadEnabled]", v3);
     _os_log_impl(&dword_26AC94000, log, type, "[XCUI correlationId: %@] %s Getting mocked value for SUPreferences key 'automaticDownloadEnabled': %@", v18, 0x20u);
-    MEMORY[0x277D82BD8](v7);
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](correlationId);
+    MEMORY[0x277D82BD8](currentSession);
     MEMORY[0x277D82BD8](v9);
     objc_storeStrong(&v12, 0);
   }
@@ -59,12 +59,12 @@
   return v15 & 1;
 }
 
-- (void)queue_setAutoDownloadEnabled:(BOOL)a3
+- (void)queue_setAutoDownloadEnabled:(BOOL)enabled
 {
   v18 = *MEMORY[0x277D85DE8];
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
+  enabledCopy = enabled;
   v13 = _SUSUIInternalLoggingFacility();
   v12 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -72,11 +72,11 @@
     log = v13;
     type = v12;
     v10 = +[SUSUITestAutomationManager sharedManager];
-    v9 = [v10 currentSession];
-    v8 = [v9 correlationId];
-    v3 = MEMORY[0x277D82BE0](v8);
+    currentSession = [v10 currentSession];
+    correlationId = [currentSession correlationId];
+    v3 = MEMORY[0x277D82BE0](correlationId);
     v11 = v3;
-    if (v14)
+    if (enabledCopy)
     {
       v4 = @"YES";
     }
@@ -88,28 +88,28 @@
 
     __os_log_helper_16_2_3_8_64_8_32_8_64(v17, v3, "[SUSUIMockedSoftwareUpdateClientManager queue_setAutoDownloadEnabled:]", v4);
     _os_log_impl(&dword_26AC94000, log, type, "[XCUI correlationId: %@] %s Setting mocked value for SUPreferences setter 'setAutomaticDownloadEnabled': %@", v17, 0x20u);
-    MEMORY[0x277D82BD8](v8);
-    MEMORY[0x277D82BD8](v9);
+    MEMORY[0x277D82BD8](correlationId);
+    MEMORY[0x277D82BD8](currentSession);
     MEMORY[0x277D82BD8](v10);
     objc_storeStrong(&v11, 0);
   }
 
   objc_storeStrong(&v13, 0);
-  v5 = [(SUSUIMockedSoftwareUpdateClientManager *)v16 preferences];
-  [v5 setAutomaticDownloadEnabled:v14];
-  MEMORY[0x277D82BD8](v5);
+  preferences = [(SUSUIMockedSoftwareUpdateClientManager *)selfCopy preferences];
+  [preferences setAutomaticDownloadEnabled:enabledCopy];
+  MEMORY[0x277D82BD8](preferences);
   *MEMORY[0x277D85DE8];
 }
 
 - (BOOL)isAutoInstallEnabled
 {
   v19 = *MEMORY[0x277D85DE8];
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v10 = [(SUSUIMockedSoftwareUpdateClientManager *)self preferences];
-  v11 = [v10 automaticUpdateV2Enabled];
-  MEMORY[0x277D82BD8](v10);
-  v15 = v11;
+  preferences = [(SUSUIMockedSoftwareUpdateClientManager *)self preferences];
+  automaticUpdateV2Enabled = [preferences automaticUpdateV2Enabled];
+  MEMORY[0x277D82BD8](preferences);
+  v15 = automaticUpdateV2Enabled;
   v14 = _SUSUIInternalLoggingFacility();
   v13 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -117,9 +117,9 @@
     log = v14;
     type = v13;
     v9 = +[SUSUITestAutomationManager sharedManager];
-    v8 = [v9 currentSession];
-    v7 = [v8 correlationId];
-    v2 = MEMORY[0x277D82BE0](v7);
+    currentSession = [v9 currentSession];
+    correlationId = [currentSession correlationId];
+    v2 = MEMORY[0x277D82BE0](correlationId);
     v12 = v2;
     if (v15)
     {
@@ -133,8 +133,8 @@
 
     __os_log_helper_16_2_3_8_64_8_32_8_64(v18, v2, "[SUSUIMockedSoftwareUpdateClientManager isAutoInstallEnabled]", v3);
     _os_log_impl(&dword_26AC94000, log, type, "[XCUI correlationId: %@] %s Getting mocked value for SUPreferences key 'automaticUpdateV2Enabled': %@", v18, 0x20u);
-    MEMORY[0x277D82BD8](v7);
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](correlationId);
+    MEMORY[0x277D82BD8](currentSession);
     MEMORY[0x277D82BD8](v9);
     objc_storeStrong(&v12, 0);
   }
@@ -144,12 +144,12 @@
   return v15 & 1;
 }
 
-- (void)queue_setAutoInstallEnabled:(BOOL)a3
+- (void)queue_setAutoInstallEnabled:(BOOL)enabled
 {
   v18 = *MEMORY[0x277D85DE8];
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
+  enabledCopy = enabled;
   v13 = _SUSUIInternalLoggingFacility();
   v12 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -157,11 +157,11 @@
     log = v13;
     type = v12;
     v10 = +[SUSUITestAutomationManager sharedManager];
-    v9 = [v10 currentSession];
-    v8 = [v9 correlationId];
-    v3 = MEMORY[0x277D82BE0](v8);
+    currentSession = [v10 currentSession];
+    correlationId = [currentSession correlationId];
+    v3 = MEMORY[0x277D82BE0](correlationId);
     v11 = v3;
-    if (v14)
+    if (enabledCopy)
     {
       v4 = @"YES";
     }
@@ -173,28 +173,28 @@
 
     __os_log_helper_16_2_3_8_64_8_32_8_64(v17, v3, "[SUSUIMockedSoftwareUpdateClientManager queue_setAutoInstallEnabled:]", v4);
     _os_log_impl(&dword_26AC94000, log, type, "[XCUI correlationId: %@] %s Setting mocked value for SUPreferences setter 'setAutomaticUpdateV2Enabled': %@", v17, 0x20u);
-    MEMORY[0x277D82BD8](v8);
-    MEMORY[0x277D82BD8](v9);
+    MEMORY[0x277D82BD8](correlationId);
+    MEMORY[0x277D82BD8](currentSession);
     MEMORY[0x277D82BD8](v10);
     objc_storeStrong(&v11, 0);
   }
 
   objc_storeStrong(&v13, 0);
-  v5 = [(SUSUIMockedSoftwareUpdateClientManager *)v16 preferences];
-  [v5 setAutomaticUpdateV2Enabled:v14];
-  MEMORY[0x277D82BD8](v5);
+  preferences = [(SUSUIMockedSoftwareUpdateClientManager *)selfCopy preferences];
+  [preferences setAutomaticUpdateV2Enabled:enabledCopy];
+  MEMORY[0x277D82BD8](preferences);
   *MEMORY[0x277D85DE8];
 }
 
 - (BOOL)isAutoInstallPreviousUserSettingsEnabled
 {
   v19 = *MEMORY[0x277D85DE8];
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v10 = [(SUSUIMockedSoftwareUpdateClientManager *)self preferences];
-  v11 = [v10 previousUserSpecifiedAutomaticUpdateV2Enabled];
-  MEMORY[0x277D82BD8](v10);
-  v15 = v11;
+  preferences = [(SUSUIMockedSoftwareUpdateClientManager *)self preferences];
+  previousUserSpecifiedAutomaticUpdateV2Enabled = [preferences previousUserSpecifiedAutomaticUpdateV2Enabled];
+  MEMORY[0x277D82BD8](preferences);
+  v15 = previousUserSpecifiedAutomaticUpdateV2Enabled;
   v14 = _SUSUIInternalLoggingFacility();
   v13 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -202,9 +202,9 @@
     log = v14;
     type = v13;
     v9 = +[SUSUITestAutomationManager sharedManager];
-    v8 = [v9 currentSession];
-    v7 = [v8 correlationId];
-    v2 = MEMORY[0x277D82BE0](v7);
+    currentSession = [v9 currentSession];
+    correlationId = [currentSession correlationId];
+    v2 = MEMORY[0x277D82BE0](correlationId);
     v12 = v2;
     if (v15)
     {
@@ -218,8 +218,8 @@
 
     __os_log_helper_16_2_3_8_64_8_32_8_64(v18, v2, "[SUSUIMockedSoftwareUpdateClientManager isAutoInstallPreviousUserSettingsEnabled]", v3);
     _os_log_impl(&dword_26AC94000, log, type, "[XCUI correlationId: %@] %s Getting mocked value for SUPreferences key 'previousUserSpecifiedAutomaticUpdateV2Enabled': %@", v18, 0x20u);
-    MEMORY[0x277D82BD8](v7);
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](correlationId);
+    MEMORY[0x277D82BD8](currentSession);
     MEMORY[0x277D82BD8](v9);
     objc_storeStrong(&v12, 0);
   }
@@ -229,12 +229,12 @@
   return v15 & 1;
 }
 
-- (void)queue_enableAutoInstallPreviousUserSettings:(BOOL)a3
+- (void)queue_enableAutoInstallPreviousUserSettings:(BOOL)settings
 {
   v18 = *MEMORY[0x277D85DE8];
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
+  settingsCopy = settings;
   v13 = _SUSUIInternalLoggingFacility();
   v12 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -242,11 +242,11 @@
     log = v13;
     type = v12;
     v10 = +[SUSUITestAutomationManager sharedManager];
-    v9 = [v10 currentSession];
-    v8 = [v9 correlationId];
-    v3 = MEMORY[0x277D82BE0](v8);
+    currentSession = [v10 currentSession];
+    correlationId = [currentSession correlationId];
+    v3 = MEMORY[0x277D82BE0](correlationId);
     v11 = v3;
-    if (v14)
+    if (settingsCopy)
     {
       v4 = @"YES";
     }
@@ -258,28 +258,28 @@
 
     __os_log_helper_16_2_3_8_64_8_32_8_64(v17, v3, "[SUSUIMockedSoftwareUpdateClientManager queue_enableAutoInstallPreviousUserSettings:]", v4);
     _os_log_impl(&dword_26AC94000, log, type, "[XCUI correlationId: %@] %s Setting mocked value for SUPreferences setter 'setPreviousUserSpecifiedAutomaticUpdateV2Enabled': %@", v17, 0x20u);
-    MEMORY[0x277D82BD8](v8);
-    MEMORY[0x277D82BD8](v9);
+    MEMORY[0x277D82BD8](correlationId);
+    MEMORY[0x277D82BD8](currentSession);
     MEMORY[0x277D82BD8](v10);
     objc_storeStrong(&v11, 0);
   }
 
   objc_storeStrong(&v13, 0);
-  v5 = [(SUSUIMockedSoftwareUpdateClientManager *)v16 preferences];
-  [v5 setPreviousUserSpecifiedAutomaticUpdateV2Enabled:v14];
-  MEMORY[0x277D82BD8](v5);
+  preferences = [(SUSUIMockedSoftwareUpdateClientManager *)selfCopy preferences];
+  [preferences setPreviousUserSpecifiedAutomaticUpdateV2Enabled:settingsCopy];
+  MEMORY[0x277D82BD8](preferences);
   *MEMORY[0x277D85DE8];
 }
 
 - (BOOL)isSecurityResponseEnabled
 {
   v19 = *MEMORY[0x277D85DE8];
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v10 = [(SUSUIMockedSoftwareUpdateClientManager *)self preferences];
-  v11 = [v10 autoInstallSecurityResponse];
-  MEMORY[0x277D82BD8](v10);
-  v15 = v11;
+  preferences = [(SUSUIMockedSoftwareUpdateClientManager *)self preferences];
+  autoInstallSecurityResponse = [preferences autoInstallSecurityResponse];
+  MEMORY[0x277D82BD8](preferences);
+  v15 = autoInstallSecurityResponse;
   v14 = _SUSUIInternalLoggingFacility();
   v13 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -287,9 +287,9 @@
     log = v14;
     type = v13;
     v9 = +[SUSUITestAutomationManager sharedManager];
-    v8 = [v9 currentSession];
-    v7 = [v8 correlationId];
-    v2 = MEMORY[0x277D82BE0](v7);
+    currentSession = [v9 currentSession];
+    correlationId = [currentSession correlationId];
+    v2 = MEMORY[0x277D82BE0](correlationId);
     v12 = v2;
     if (v15)
     {
@@ -303,8 +303,8 @@
 
     __os_log_helper_16_2_3_8_64_8_32_8_64(v18, v2, "[SUSUIMockedSoftwareUpdateClientManager isSecurityResponseEnabled]", v3);
     _os_log_impl(&dword_26AC94000, log, type, "[XCUI correlationId: %@] %s Getting mocked value for SUPreferences key 'autoInstallSecurityResponse': %@", v18, 0x20u);
-    MEMORY[0x277D82BD8](v7);
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](correlationId);
+    MEMORY[0x277D82BD8](currentSession);
     MEMORY[0x277D82BD8](v9);
     objc_storeStrong(&v12, 0);
   }
@@ -314,12 +314,12 @@
   return v15 & 1;
 }
 
-- (void)queue_setSecurityResponseEnabled:(BOOL)a3
+- (void)queue_setSecurityResponseEnabled:(BOOL)enabled
 {
   v18 = *MEMORY[0x277D85DE8];
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
+  enabledCopy = enabled;
   v13 = _SUSUIInternalLoggingFacility();
   v12 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -327,11 +327,11 @@
     log = v13;
     type = v12;
     v10 = +[SUSUITestAutomationManager sharedManager];
-    v9 = [v10 currentSession];
-    v8 = [v9 correlationId];
-    v3 = MEMORY[0x277D82BE0](v8);
+    currentSession = [v10 currentSession];
+    correlationId = [currentSession correlationId];
+    v3 = MEMORY[0x277D82BE0](correlationId);
     v11 = v3;
-    if (v14)
+    if (enabledCopy)
     {
       v4 = @"YES";
     }
@@ -343,28 +343,28 @@
 
     __os_log_helper_16_2_3_8_64_8_32_8_64(v17, v3, "[SUSUIMockedSoftwareUpdateClientManager queue_setSecurityResponseEnabled:]", v4);
     _os_log_impl(&dword_26AC94000, log, type, "[XCUI correlationId: %@] %s Setting mocked value for SUPreferences setter 'setAutoInstallSecurityResponse': %@", v17, 0x20u);
-    MEMORY[0x277D82BD8](v8);
-    MEMORY[0x277D82BD8](v9);
+    MEMORY[0x277D82BD8](correlationId);
+    MEMORY[0x277D82BD8](currentSession);
     MEMORY[0x277D82BD8](v10);
     objc_storeStrong(&v11, 0);
   }
 
   objc_storeStrong(&v13, 0);
-  v5 = [(SUSUIMockedSoftwareUpdateClientManager *)v16 preferences];
-  [v5 setAutoInstallSecurityResponse:v14];
-  MEMORY[0x277D82BD8](v5);
+  preferences = [(SUSUIMockedSoftwareUpdateClientManager *)selfCopy preferences];
+  [preferences setAutoInstallSecurityResponse:enabledCopy];
+  MEMORY[0x277D82BD8](preferences);
   *MEMORY[0x277D85DE8];
 }
 
 - (BOOL)previousUserSpecifiedSecurityResponseEnabled
 {
   v19 = *MEMORY[0x277D85DE8];
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v10 = [(SUSUIMockedSoftwareUpdateClientManager *)self preferences];
-  v11 = [v10 previousUserSpecifiedAutoInstallSecurityResponse];
-  MEMORY[0x277D82BD8](v10);
-  v15 = v11;
+  preferences = [(SUSUIMockedSoftwareUpdateClientManager *)self preferences];
+  previousUserSpecifiedAutoInstallSecurityResponse = [preferences previousUserSpecifiedAutoInstallSecurityResponse];
+  MEMORY[0x277D82BD8](preferences);
+  v15 = previousUserSpecifiedAutoInstallSecurityResponse;
   v14 = _SUSUIInternalLoggingFacility();
   v13 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -372,9 +372,9 @@
     log = v14;
     type = v13;
     v9 = +[SUSUITestAutomationManager sharedManager];
-    v8 = [v9 currentSession];
-    v7 = [v8 correlationId];
-    v2 = MEMORY[0x277D82BE0](v7);
+    currentSession = [v9 currentSession];
+    correlationId = [currentSession correlationId];
+    v2 = MEMORY[0x277D82BE0](correlationId);
     v12 = v2;
     if (v15)
     {
@@ -388,8 +388,8 @@
 
     __os_log_helper_16_2_3_8_64_8_32_8_64(v18, v2, "[SUSUIMockedSoftwareUpdateClientManager previousUserSpecifiedSecurityResponseEnabled]", v3);
     _os_log_impl(&dword_26AC94000, log, type, "[XCUI correlationId: %@] %s Getting mocked value for SUPreferences key 'previousUserSpecifiedAutoInstallSecurityResponse': %@", v18, 0x20u);
-    MEMORY[0x277D82BD8](v7);
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](correlationId);
+    MEMORY[0x277D82BD8](currentSession);
     MEMORY[0x277D82BD8](v9);
     objc_storeStrong(&v12, 0);
   }
@@ -399,12 +399,12 @@
   return v15 & 1;
 }
 
-- (void)queue_setPreviousUserSpecifiedSecurityResponseStatus:(BOOL)a3
+- (void)queue_setPreviousUserSpecifiedSecurityResponseStatus:(BOOL)status
 {
   v18 = *MEMORY[0x277D85DE8];
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
+  statusCopy = status;
   v13 = _SUSUIInternalLoggingFacility();
   v12 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -412,11 +412,11 @@
     log = v13;
     type = v12;
     v10 = +[SUSUITestAutomationManager sharedManager];
-    v9 = [v10 currentSession];
-    v8 = [v9 correlationId];
-    v3 = MEMORY[0x277D82BE0](v8);
+    currentSession = [v10 currentSession];
+    correlationId = [currentSession correlationId];
+    v3 = MEMORY[0x277D82BE0](correlationId);
     v11 = v3;
-    if (v14)
+    if (statusCopy)
     {
       v4 = @"YES";
     }
@@ -428,28 +428,28 @@
 
     __os_log_helper_16_2_3_8_64_8_32_8_64(v17, v3, "[SUSUIMockedSoftwareUpdateClientManager queue_setPreviousUserSpecifiedSecurityResponseStatus:]", v4);
     _os_log_impl(&dword_26AC94000, log, type, "[XCUI correlationId: %@] %s Setting mocked value for SUPreferences setter 'setPreviousUserSpecifiedAutoInstallSecurityResponse': %@", v17, 0x20u);
-    MEMORY[0x277D82BD8](v8);
-    MEMORY[0x277D82BD8](v9);
+    MEMORY[0x277D82BD8](correlationId);
+    MEMORY[0x277D82BD8](currentSession);
     MEMORY[0x277D82BD8](v10);
     objc_storeStrong(&v11, 0);
   }
 
   objc_storeStrong(&v13, 0);
-  v5 = [(SUSUIMockedSoftwareUpdateClientManager *)v16 preferences];
-  [v5 setPreviousUserSpecifiedAutoInstallSecurityResponse:v14];
-  MEMORY[0x277D82BD8](v5);
+  preferences = [(SUSUIMockedSoftwareUpdateClientManager *)selfCopy preferences];
+  [preferences setPreviousUserSpecifiedAutoInstallSecurityResponse:statusCopy];
+  MEMORY[0x277D82BD8](preferences);
   *MEMORY[0x277D85DE8];
 }
 
 - (BOOL)isAutomaticInstallSystemDataFilesEnabled
 {
   v19 = *MEMORY[0x277D85DE8];
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v10 = [(SUSUIMockedSoftwareUpdateClientManager *)self preferences];
-  v11 = [v10 autoInstallSystemAndDataFiles];
-  MEMORY[0x277D82BD8](v10);
-  v15 = v11;
+  preferences = [(SUSUIMockedSoftwareUpdateClientManager *)self preferences];
+  autoInstallSystemAndDataFiles = [preferences autoInstallSystemAndDataFiles];
+  MEMORY[0x277D82BD8](preferences);
+  v15 = autoInstallSystemAndDataFiles;
   v14 = _SUSUIInternalLoggingFacility();
   v13 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -457,9 +457,9 @@
     log = v14;
     type = v13;
     v9 = +[SUSUITestAutomationManager sharedManager];
-    v8 = [v9 currentSession];
-    v7 = [v8 correlationId];
-    v2 = MEMORY[0x277D82BE0](v7);
+    currentSession = [v9 currentSession];
+    correlationId = [currentSession correlationId];
+    v2 = MEMORY[0x277D82BE0](correlationId);
     v12 = v2;
     if (v15)
     {
@@ -473,8 +473,8 @@
 
     __os_log_helper_16_2_3_8_64_8_32_8_64(v18, v2, "[SUSUIMockedSoftwareUpdateClientManager isAutomaticInstallSystemDataFilesEnabled]", v3);
     _os_log_impl(&dword_26AC94000, log, type, "[XCUI correlationId: %@] %s Getting mocked value for SUPreferences key 'autoInstallSystemAndDataFiles': %@", v18, 0x20u);
-    MEMORY[0x277D82BD8](v7);
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](correlationId);
+    MEMORY[0x277D82BD8](currentSession);
     MEMORY[0x277D82BD8](v9);
     objc_storeStrong(&v12, 0);
   }
@@ -484,12 +484,12 @@
   return v15 & 1;
 }
 
-- (void)queue_enableAutomaticInstallSystemDataFiles:(BOOL)a3
+- (void)queue_enableAutomaticInstallSystemDataFiles:(BOOL)files
 {
   v18 = *MEMORY[0x277D85DE8];
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
+  filesCopy = files;
   v13 = _SUSUIInternalLoggingFacility();
   v12 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -497,11 +497,11 @@
     log = v13;
     type = v12;
     v10 = +[SUSUITestAutomationManager sharedManager];
-    v9 = [v10 currentSession];
-    v8 = [v9 correlationId];
-    v3 = MEMORY[0x277D82BE0](v8);
+    currentSession = [v10 currentSession];
+    correlationId = [currentSession correlationId];
+    v3 = MEMORY[0x277D82BE0](correlationId);
     v11 = v3;
-    if (v14)
+    if (filesCopy)
     {
       v4 = @"YES";
     }
@@ -513,16 +513,16 @@
 
     __os_log_helper_16_2_3_8_64_8_32_8_64(v17, v3, "[SUSUIMockedSoftwareUpdateClientManager queue_enableAutomaticInstallSystemDataFiles:]", v4);
     _os_log_impl(&dword_26AC94000, log, type, "[XCUI correlationId: %@] %s Setting mocked value for SUPreferences setter 'setAutoInstallSystemAndDataFiles': %@", v17, 0x20u);
-    MEMORY[0x277D82BD8](v8);
-    MEMORY[0x277D82BD8](v9);
+    MEMORY[0x277D82BD8](correlationId);
+    MEMORY[0x277D82BD8](currentSession);
     MEMORY[0x277D82BD8](v10);
     objc_storeStrong(&v11, 0);
   }
 
   objc_storeStrong(&v13, 0);
-  v5 = [(SUSUIMockedSoftwareUpdateClientManager *)v16 preferences];
-  [v5 setAutoInstallSystemAndDataFiles:v14];
-  MEMORY[0x277D82BD8](v5);
+  preferences = [(SUSUIMockedSoftwareUpdateClientManager *)selfCopy preferences];
+  [preferences setAutoInstallSystemAndDataFiles:filesCopy];
+  MEMORY[0x277D82BD8](preferences);
   *MEMORY[0x277D85DE8];
 }
 
@@ -532,14 +532,14 @@
   v30[2] = self;
   v30[1] = a2;
   v19 = +[SUSUITestAutomationManager sharedManager];
-  v18 = [v19 currentSession];
-  v30[0] = [v18 strategyForServiceType:0];
-  MEMORY[0x277D82BD8](v18);
+  currentSession = [v19 currentSession];
+  v30[0] = [currentSession strategyForServiceType:0];
+  MEMORY[0x277D82BD8](currentSession);
   MEMORY[0x277D82BD8](v19);
   getSUSMKSoftwareUpdateServicesStrategyBaseClass();
   if (objc_opt_isKindOfClass())
   {
-    v24 = [v30[0] options];
+    options = [v30[0] options];
     getSUSMKSoftwareUpdateServicesStrategyOptionsClass();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -550,16 +550,16 @@
         v7 = v23;
         v8 = v22;
         v11 = +[SUSUITestAutomationManager sharedManager];
-        v10 = [v11 currentSession];
-        v9 = [v10 correlationId];
-        v6 = MEMORY[0x277D82BE0](v9);
+        currentSession2 = [v11 currentSession];
+        correlationId = [currentSession2 correlationId];
+        v6 = MEMORY[0x277D82BE0](correlationId);
         v21 = v6;
         v3 = objc_opt_class();
         v20 = MEMORY[0x277D82BE0](v3);
         __os_log_helper_16_2_2_8_64_8_64(v32, v6, v20);
         _os_log_error_impl(&dword_26AC94000, v7, v8, "[XCUI correlationId: %@] The strategy options class %@ doesn't inherit SUSMKSoftwareUpdateServicesStrategyOptions.", v32, 0x16u);
-        MEMORY[0x277D82BD8](v9);
-        MEMORY[0x277D82BD8](v10);
+        MEMORY[0x277D82BD8](correlationId);
+        MEMORY[0x277D82BD8](currentSession2);
         MEMORY[0x277D82BD8](v11);
         objc_storeStrong(&v20, 0);
         objc_storeStrong(&v21, 0);
@@ -568,9 +568,9 @@
       objc_storeStrong(&v23, 0);
     }
 
-    v31 = [v24 preferences];
+    preferences = [options preferences];
     v25 = 1;
-    objc_storeStrong(&v24, 0);
+    objc_storeStrong(&options, 0);
   }
 
   else
@@ -582,29 +582,29 @@
       log = v29;
       type = v28;
       v17 = +[SUSUITestAutomationManager sharedManager];
-      v16 = [v17 currentSession];
-      v15 = [v16 correlationId];
-      v12 = MEMORY[0x277D82BE0](v15);
+      currentSession3 = [v17 currentSession];
+      correlationId2 = [currentSession3 correlationId];
+      v12 = MEMORY[0x277D82BE0](correlationId2);
       v27 = v12;
       v2 = objc_opt_class();
       v26 = MEMORY[0x277D82BE0](v2);
       __os_log_helper_16_2_2_8_64_8_64(v33, v12, v26);
       _os_log_error_impl(&dword_26AC94000, log, type, "[XCUI correlationId: %@] The strategy class %@ doesn't inherit SUSMKSoftwareUpdateServicesStrategyBase.", v33, 0x16u);
-      MEMORY[0x277D82BD8](v15);
-      MEMORY[0x277D82BD8](v16);
+      MEMORY[0x277D82BD8](correlationId2);
+      MEMORY[0x277D82BD8](currentSession3);
       MEMORY[0x277D82BD8](v17);
       objc_storeStrong(&v26, 0);
       objc_storeStrong(&v27, 0);
     }
 
     objc_storeStrong(&v29, 0);
-    v31 = 0;
+    preferences = 0;
     v25 = 1;
   }
 
   objc_storeStrong(v30, 0);
   *MEMORY[0x277D85DE8];
-  v4 = v31;
+  v4 = preferences;
 
   return v4;
 }

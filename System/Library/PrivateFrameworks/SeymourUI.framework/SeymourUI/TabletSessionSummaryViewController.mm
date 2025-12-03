@@ -1,18 +1,18 @@
 @interface TabletSessionSummaryViewController
-- (_TtC9SeymourUI34TabletSessionSummaryViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC9SeymourUI34TabletSessionSummaryViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (uint64_t)ttrButtonTapped;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateViewConstraints;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation TabletSessionSummaryViewController
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = sub_20C1333A4();
   v6 = *(v5 - 8);
   MEMORY[0x28223BE20](v5);
@@ -20,34 +20,34 @@
   v9 = type metadata accessor for TabletSessionSummaryViewController();
   v12.receiver = self;
   v12.super_class = v9;
-  v10 = self;
-  [(TabletSessionSummaryViewController *)&v12 viewDidAppear:v3];
-  [*(&v10->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI34TabletSessionSummaryViewController_scrollView) flashScrollIndicators];
-  v11[1] = v10;
+  selfCopy = self;
+  [(TabletSessionSummaryViewController *)&v12 viewDidAppear:appearCopy];
+  [*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI34TabletSessionSummaryViewController_scrollView) flashScrollIndicators];
+  v11[1] = selfCopy;
   sub_20BFB4810(v8);
   sub_20B7A3BE0();
   sub_20C138C54();
   (*(v6 + 8))(v8, v5);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_20B79BC68(a3);
+  selfCopy = self;
+  sub_20B79BC68(disappear);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = type metadata accessor for TabletSessionSummaryViewController();
   v4 = v8.receiver;
-  v5 = a3;
-  [(TabletSessionSummaryViewController *)&v8 traitCollectionDidChange:v5];
-  v6 = [v4 view];
-  if (v6)
+  changeCopy = change;
+  [(TabletSessionSummaryViewController *)&v8 traitCollectionDidChange:changeCopy];
+  view = [v4 view];
+  if (view)
   {
-    v7 = v6;
-    [v6 setNeedsUpdateConstraints];
+    v7 = view;
+    [view setNeedsUpdateConstraints];
   }
 
   else
@@ -66,18 +66,18 @@
   sub_20B79E134();
 }
 
-- (_TtC9SeymourUI34TabletSessionSummaryViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI34TabletSessionSummaryViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  sub_20B7A0628(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  sub_20B7A0628(scrollCopy);
 }
 
 - (uint64_t)ttrButtonTapped
@@ -97,10 +97,10 @@
   }
 
   (*(v4 + 32))(v6, v2, v3);
-  v8 = [objc_opt_self() defaultWorkspace];
-  if (v8)
+  defaultWorkspace = [objc_opt_self() defaultWorkspace];
+  if (defaultWorkspace)
   {
-    v9 = v8;
+    v9 = defaultWorkspace;
     v10 = sub_20C132B64();
     [v9 openURL:v10 configuration:0 completionHandler:0];
   }

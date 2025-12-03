@@ -1,9 +1,9 @@
 @interface U2OwlModel
 + (id)log;
 - (NSDictionary)modelMetadata;
-- (U2OwlModel)initWithLocale:(id)a3;
-- (void)getUnderstandingForQueryString:(id)a3 queryID:(int64_t)a4 spans:(id)a5 intentHint:(id)a6 withCompletionHandler:(id)a7;
-- (void)loadWithCompletionHandler:(id)a3;
+- (U2OwlModel)initWithLocale:(id)locale;
+- (void)getUnderstandingForQueryString:(id)string queryID:(int64_t)d spans:(id)spans intentHint:(id)hint withCompletionHandler:(id)handler;
+- (void)loadWithCompletionHandler:(id)handler;
 @end
 
 @implementation U2OwlModel
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __17__U2OwlModel_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_0 != -1)
   {
     dispatch_once(&log_onceToken_0, block);
@@ -34,17 +34,17 @@ void __17__U2OwlModel_log__block_invoke(uint64_t a1)
   log_log_0 = v2;
 }
 
-- (U2OwlModel)initWithLocale:(id)a3
+- (U2OwlModel)initWithLocale:(id)locale
 {
-  v5 = a3;
+  localeCopy = locale;
   v11.receiver = self;
   v11.super_class = U2OwlModel;
   v6 = [(U2OwlModel *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_locale, a3);
-    v8 = [[U2HeadWrapper alloc] initWithLocale:v5];
+    objc_storeStrong(&v6->_locale, locale);
+    v8 = [[U2HeadWrapper alloc] initWithLocale:localeCopy];
     u2headWrapper = v7->_u2headWrapper;
     v7->_u2headWrapper = v8;
   }
@@ -52,9 +52,9 @@ void __17__U2OwlModel_log__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (void)loadWithCompletionHandler:(id)a3
+- (void)loadWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [objc_opt_class() log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -77,7 +77,7 @@ void __17__U2OwlModel_log__block_invoke(uint64_t a1)
   v9[3] = &unk_279ADA848;
   objc_copyWeak(&v11, buf);
   v9[4] = self;
-  v8 = v4;
+  v8 = handlerCopy;
   v10 = v8;
   [(U2HeadWrapper *)u2headWrapper loadWithCompletionHandler:v9];
 
@@ -174,35 +174,35 @@ void __40__U2OwlModel_loadWithCompletionHandler___block_invoke_4(uint64_t a1, vo
 
 - (NSDictionary)modelMetadata
 {
-  v2 = [(U2HeadWrapper *)self->_u2headWrapper metadata];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277CBFE90]];
+  metadata = [(U2HeadWrapper *)self->_u2headWrapper metadata];
+  v3 = [metadata objectForKeyedSubscript:*MEMORY[0x277CBFE90]];
 
   return v3;
 }
 
-- (void)getUnderstandingForQueryString:(id)a3 queryID:(int64_t)a4 spans:(id)a5 intentHint:(id)a6 withCompletionHandler:(id)a7
+- (void)getUnderstandingForQueryString:(id)string queryID:(int64_t)d spans:(id)spans intentHint:(id)hint withCompletionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  stringCopy = string;
+  spansCopy = spans;
+  hintCopy = hint;
+  handlerCopy = handler;
   v16 = mach_absolute_time();
   embeddingService = self->_embeddingService;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __92__U2OwlModel_getUnderstandingForQueryString_queryID_spans_intentHint_withCompletionHandler___block_invoke;
   v22[3] = &unk_279ADA870;
-  v26 = v15;
+  v26 = handlerCopy;
   v27 = v16;
   v22[4] = self;
-  v23 = v12;
-  v28 = a4;
-  v24 = v13;
-  v25 = v14;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
-  v21 = v15;
+  v23 = stringCopy;
+  dCopy = d;
+  v24 = spansCopy;
+  v25 = hintCopy;
+  v18 = hintCopy;
+  v19 = spansCopy;
+  v20 = stringCopy;
+  v21 = handlerCopy;
   [(QUEmbeddingService *)embeddingService getEmbeddingForQuery:v20 completionHandler:v22];
 }
 

@@ -1,22 +1,22 @@
 @interface MRUActivityTrailingAccessoryViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)setRouteImage:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)setRouteImage:(id)image;
 @end
 
 @implementation MRUActivityTrailingAccessoryViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MRUActivityTrailingAccessoryView" hasInstanceMethod:@"setRouteImage:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"MRUActivityNowPlayingView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MRUActivityTrailingAccessoryView" hasInstanceMethod:@"setRouteImage:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"MRUActivityNowPlayingView"];
 }
 
-- (void)setRouteImage:(id)a3
+- (void)setRouteImage:(id)image
 {
   v6.receiver = self;
   v6.super_class = MRUActivityTrailingAccessoryViewAccessibility;
-  [(MRUActivityTrailingAccessoryViewAccessibility *)&v6 setRouteImage:a3];
+  [(MRUActivityTrailingAccessoryViewAccessibility *)&v6 setRouteImage:image];
   v4 = [(MRUActivityTrailingAccessoryViewAccessibility *)self _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Mruactivitynow.isa)];
   v5 = v4;
   if (v4)

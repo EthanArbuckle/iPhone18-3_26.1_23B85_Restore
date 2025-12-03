@@ -1,28 +1,28 @@
 @interface MFAttachmentService
-+ (BOOL)handleMessage:(id)a3 connectionState:(id)a4 replyObject:(id *)a5 error:(id *)a6;
++ (BOOL)handleMessage:(id)message connectionState:(id)state replyObject:(id *)object error:(id *)error;
 @end
 
 @implementation MFAttachmentService
 
-+ (BOOL)handleMessage:(id)a3 connectionState:(id)a4 replyObject:(id *)a5 error:(id *)a6
++ (BOOL)handleMessage:(id)message connectionState:(id)state replyObject:(id *)object error:(id *)error
 {
-  v10 = a3;
-  v11 = xpc_dictionary_get_value(v10, [_MSMailServiceArguments UTF8String]);
+  messageCopy = message;
+  v11 = xpc_dictionary_get_value(messageCopy, [_MSMailServiceArguments UTF8String]);
   if (!v11)
   {
     v59 = +[NSAssertionHandler currentHandler];
-    [v59 handleFailureInMethod:a2 object:a1 file:@"MFDeliveryService.m" lineNumber:375 description:{@"Invalid parameter not satisfying: %@", @"args"}];
+    [v59 handleFailureInMethod:a2 object:self file:@"MFDeliveryService.m" lineNumber:375 description:{@"Invalid parameter not satisfying: %@", @"args"}];
   }
 
   v12 = _CFXPCCreateCFObjectFromXPCObject();
   [v12 objectForKey:@"MSAttachmentRequestKeyOperation"];
-  v65 = v64 = a5;
-  v13 = [v65 integerValue];
+  v65 = v64 = object;
+  integerValue = [v65 integerValue];
   v14 = +[NSMutableDictionary dictionary];
-  if (v13 == 1)
+  if (integerValue == 1)
   {
     v40 = MFLogGeneral();
-    v63 = a6;
+    errorCopy3 = error;
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
     {
       sub_1000D4094(v40, v41, v42, v43, v44, v45, v46, v47);
@@ -32,15 +32,15 @@
     if (!v23)
     {
       v61 = +[NSAssertionHandler currentHandler];
-      [v61 handleFailureInMethod:a2 object:a1 file:@"MFDeliveryService.m" lineNumber:389 description:{@"Invalid parameter not satisfying: %@", @"argName"}];
+      [v61 handleFailureInMethod:a2 object:self file:@"MFDeliveryService.m" lineNumber:389 description:{@"Invalid parameter not satisfying: %@", @"argName"}];
     }
 
     v48 = [v12 objectForKey:@"MSAttachmentRequestKeySizeType"];
-    v49 = [v48 integerValue];
+    integerValue2 = [v48 integerValue];
 
-    v25 = [v12 objectForKey:@"MSAttachmentRequestKeyMimeType"];
+    mf_canonicalizedAbsolutePath = [v12 objectForKey:@"MSAttachmentRequestKeyMimeType"];
     v26 = [v12 objectForKey:@"MSAttachmentRequestKeyContentID"];
-    v50 = [MFAttachmentPlaceholder serializedPlaceholderForFileName:v23 fileSize:v49 mimeType:v25 contentID:v26];
+    v50 = [MFAttachmentPlaceholder serializedPlaceholderForFileName:v23 fileSize:integerValue2 mimeType:mf_canonicalizedAbsolutePath contentID:v26];
     if (v50)
     {
       [v14 setObject:v50 forKey:@"MSAttachmentResponseKeyData"];
@@ -49,14 +49,14 @@
     goto LABEL_34;
   }
 
-  if (v13 != 2)
+  if (integerValue != 2)
   {
-    if (v13 != 3)
+    if (integerValue != 3)
     {
       v51 = MFLogGeneral();
       if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
       {
-        sub_1000D40CC(v13, v51);
+        sub_1000D40CC(integerValue, v51);
       }
 
       v31 = [NSError errorWithDomain:MSMailServiceErrorDomain code:7342 userInfo:0];
@@ -69,7 +69,7 @@
     }
 
     v15 = MFLogGeneral();
-    v63 = a6;
+    errorCopy3 = error;
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
       sub_1000D3FAC(v15, v16, v17, v18, v19, v20, v21, v22);
@@ -79,14 +79,14 @@
     if (!v23)
     {
       v62 = +[NSAssertionHandler currentHandler];
-      [v62 handleFailureInMethod:a2 object:a1 file:@"MFDeliveryService.m" lineNumber:415 description:{@"Invalid parameter not satisfying: %@", @"argURL"}];
+      [v62 handleFailureInMethod:a2 object:self file:@"MFDeliveryService.m" lineNumber:415 description:{@"Invalid parameter not satisfying: %@", @"argURL"}];
     }
 
-    v24 = [v23 path];
-    v25 = [v24 mf_canonicalizedAbsolutePath];
+    path = [v23 path];
+    mf_canonicalizedAbsolutePath = [path mf_canonicalizedAbsolutePath];
 
     v26 = +[MFAttachmentPlaceholder placeholderDirectory];
-    if (![v25 hasPrefix:v26] || (objc_msgSend(v25, "lastPathComponent"), v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v26, "lastPathComponent"), v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v27, "isEqualToString:", v28), v28, v27, (v29 & 1) != 0))
+    if (![mf_canonicalizedAbsolutePath hasPrefix:v26] || (objc_msgSend(mf_canonicalizedAbsolutePath, "lastPathComponent"), v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v26, "lastPathComponent"), v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v27, "isEqualToString:", v28), v28, v27, (v29 & 1) != 0))
     {
       v30 = MFLogGeneral();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -98,13 +98,13 @@
       goto LABEL_35;
     }
 
-    v50 = [NSURL fileURLWithPath:v25];
+    v50 = [NSURL fileURLWithPath:mf_canonicalizedAbsolutePath];
     v53 = [MFAttachmentSecurityScope securityScopedURL:v50];
-    v54 = [v53 securityScopeToken];
+    securityScopeToken = [v53 securityScopeToken];
 
-    if (v54)
+    if (securityScopeToken)
     {
-      [v14 setObject:v54 forKey:@"MSAttachmentResponseKeyData"];
+      [v14 setObject:securityScopeToken forKey:@"MSAttachmentResponseKeyData"];
     }
 
 LABEL_34:
@@ -115,7 +115,7 @@ LABEL_35:
   }
 
   v32 = MFLogGeneral();
-  v63 = a6;
+  errorCopy3 = error;
   if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
   {
     sub_1000D405C(v32, v33, v34, v35, v36, v37, v38, v39);
@@ -125,20 +125,20 @@ LABEL_35:
   if (!v23)
   {
     v60 = +[NSAssertionHandler currentHandler];
-    [v60 handleFailureInMethod:a2 object:a1 file:@"MFDeliveryService.m" lineNumber:405 description:{@"Invalid parameter not satisfying: %@", @"argURL"}];
+    [v60 handleFailureInMethod:a2 object:self file:@"MFDeliveryService.m" lineNumber:405 description:{@"Invalid parameter not satisfying: %@", @"argURL"}];
   }
 
   [MFAttachmentPlaceholder removePlaceholderForFileURL:v23];
-  v25 = +[NSNull null];
-  [v14 setObject:v25 forKey:@"MSAttachmentResponseKeyError"];
+  mf_canonicalizedAbsolutePath = +[NSNull null];
+  [v14 setObject:mf_canonicalizedAbsolutePath forKey:@"MSAttachmentResponseKeyError"];
   v31 = 0;
 LABEL_36:
 
-  a6 = v63;
+  error = errorCopy3;
   if (v14)
   {
 LABEL_37:
-    reply = xpc_dictionary_create_reply(v10);
+    reply = xpc_dictionary_create_reply(messageCopy);
     v56 = _CFXPCCreateXPCObjectFromCFObject();
     xpc_dictionary_set_value(reply, [@"MSAttachmentResponse" UTF8String], v56);
     v57 = reply;
@@ -148,10 +148,10 @@ LABEL_37:
   }
 
 LABEL_29:
-  if (a6)
+  if (error)
   {
     v52 = v31;
-    *a6 = v31;
+    *error = v31;
   }
 
 LABEL_38:

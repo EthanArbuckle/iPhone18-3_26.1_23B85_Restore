@@ -1,25 +1,25 @@
 @interface CODiscoveryManager
-+ (id)managerWithDiscoveryDelay:(double)a3 delegate:(id)a4;
-- (BOOL)addDiscoveryRecord:(id)a3;
++ (id)managerWithDiscoveryDelay:(double)delay delegate:(id)delegate;
+- (BOOL)addDiscoveryRecord:(id)record;
 - (CODiscoveryManagerDelegate)delegate;
-- (id)_initWithDiscoveryDelay:(double)a3 delegate:(id)a4;
+- (id)_initWithDiscoveryDelay:(double)delay delegate:(id)delegate;
 - (id)_triggerDiscovery_unsafe;
 - (unint64_t)count;
 - (void)_configureTimer;
 - (void)_disableTimer_unsafe;
 - (void)_enableTimer_unsafe;
-- (void)_invokeDelegate:(id)a3;
+- (void)_invokeDelegate:(id)delegate;
 - (void)_timerFired;
-- (void)_withLock:(id)a3;
+- (void)_withLock:(id)lock;
 - (void)clearRecords;
 - (void)dealloc;
 @end
 
 @implementation CODiscoveryManager
 
-- (id)_initWithDiscoveryDelay:(double)a3 delegate:(id)a4
+- (id)_initWithDiscoveryDelay:(double)delay delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = CODiscoveryManager;
   v7 = [(CODiscoveryManager *)&v14 init];
@@ -27,8 +27,8 @@
   if (v7)
   {
     v7->_lock._os_unfair_lock_opaque = 0;
-    v7->_discoveryDelay = fabs(a3);
-    objc_storeWeak(&v7->_delegate, v6);
+    v7->_discoveryDelay = fabs(delay);
+    objc_storeWeak(&v7->_delegate, delegateCopy);
     v9 = objc_alloc_init(MEMORY[0x277CBEAC0]);
     envelopes = v8->_envelopes;
     v8->_envelopes = v9;
@@ -43,18 +43,18 @@
   return v8;
 }
 
-+ (id)managerWithDiscoveryDelay:(double)a3 delegate:(id)a4
++ (id)managerWithDiscoveryDelay:(double)delay delegate:(id)delegate
 {
-  v6 = a4;
-  v7 = [[a1 alloc] _initWithDiscoveryDelay:v6 delegate:a3];
+  delegateCopy = delegate;
+  v7 = [[self alloc] _initWithDiscoveryDelay:delegateCopy delegate:delay];
 
   return v7;
 }
 
 - (void)dealloc
 {
-  v3 = [(CODiscoveryManager *)self timer];
-  dispatch_source_cancel(v3);
+  timer = [(CODiscoveryManager *)self timer];
+  dispatch_source_cancel(timer);
 
   [(CODiscoveryManager *)self setTimerEnabled:0];
   v4.receiver = self;
@@ -86,11 +86,11 @@ void __27__CODiscoveryManager_count__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v2 count];
 }
 
-- (BOOL)addDiscoveryRecord:(id)a3
+- (BOOL)addDiscoveryRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 IDSIdentifier];
-  v6 = [CODiscoveryEnvelope envelopeWithRecord:v4];
+  recordCopy = record;
+  iDSIdentifier = [recordCopy IDSIdentifier];
+  v6 = [CODiscoveryEnvelope envelopeWithRecord:recordCopy];
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -99,10 +99,10 @@ void __27__CODiscoveryManager_count__block_invoke(uint64_t a1)
   v11[1] = 3221225472;
   v11[2] = __41__CODiscoveryManager_addDiscoveryRecord___block_invoke;
   v11[3] = &unk_278E15BB8;
-  v7 = v4;
+  v7 = recordCopy;
   v12 = v7;
-  v13 = self;
-  v8 = v5;
+  selfCopy = self;
+  v8 = iDSIdentifier;
   v14 = v8;
   v9 = v6;
   v15 = v9;
@@ -214,8 +214,8 @@ void __33__CODiscoveryManager__timerFired__block_invoke(uint64_t a1)
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = [(CODiscoveryManager *)self envelopes];
-  v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  envelopes = [(CODiscoveryManager *)self envelopes];
+  v8 = [envelopes countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
     v9 = v8;
@@ -227,17 +227,17 @@ void __33__CODiscoveryManager__timerFired__block_invoke(uint64_t a1)
       {
         if (*v22 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(envelopes);
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
-        v14 = [(CODiscoveryManager *)self envelopes];
-        v15 = [v14 objectForKey:v13];
+        envelopes2 = [(CODiscoveryManager *)self envelopes];
+        v15 = [envelopes2 objectForKey:v13];
 
         if ([v15 received] <= v10)
         {
-          v16 = [v15 record];
-          [v20 addObject:v16];
+          record = [v15 record];
+          [v20 addObject:record];
         }
 
         else
@@ -246,7 +246,7 @@ void __33__CODiscoveryManager__timerFired__block_invoke(uint64_t a1)
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v9 = [envelopes countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v9);
@@ -262,18 +262,18 @@ void __33__CODiscoveryManager__timerFired__block_invoke(uint64_t a1)
 
 - (void)_configureTimer
 {
-  v3 = [(CODiscoveryManager *)self timer];
-  dispatch_source_set_timer(v3, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
+  timer = [(CODiscoveryManager *)self timer];
+  dispatch_source_set_timer(timer, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
 
   [(CODiscoveryManager *)self setTimerEnabled:0];
   objc_initWeak(&location, self);
-  v4 = [(CODiscoveryManager *)self timer];
+  timer2 = [(CODiscoveryManager *)self timer];
   v6 = MEMORY[0x277D85DD0];
   v7 = 3221225472;
   v8 = __37__CODiscoveryManager__configureTimer__block_invoke;
   v9 = &unk_278E15B10;
   objc_copyWeak(&v10, &location);
-  dispatch_source_set_event_handler(v4, &v6);
+  dispatch_source_set_event_handler(timer2, &v6);
 
   v5 = [(CODiscoveryManager *)self timer:v6];
   dispatch_activate(v5);
@@ -313,26 +313,26 @@ void __37__CODiscoveryManager__configureTimer__block_invoke(uint64_t a1)
   if ([(CODiscoveryManager *)self isTimerEnabled])
   {
     [(CODiscoveryManager *)self setTimerEnabled:0];
-    v3 = [(CODiscoveryManager *)self timer];
-    dispatch_source_set_timer(v3, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
+    timer = [(CODiscoveryManager *)self timer];
+    dispatch_source_set_timer(timer, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
   }
 }
 
-- (void)_invokeDelegate:(id)a3
+- (void)_invokeDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [WeakRetained discoveryManager:self didDiscoverRecords:v5];
+    [WeakRetained discoveryManager:self didDiscoverRecords:delegateCopy];
   }
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }

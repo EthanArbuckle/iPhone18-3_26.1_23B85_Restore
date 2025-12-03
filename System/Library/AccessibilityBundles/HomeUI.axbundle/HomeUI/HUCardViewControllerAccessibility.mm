@@ -1,19 +1,19 @@
 @interface HUCardViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIgnoreSettingsDetailScrollLockIn;
 - (BOOL)disablePullToUnlockSettings;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_nudgeScrollViewToPoint:(CGPoint)a3;
+- (void)_nudgeScrollViewToPoint:(CGPoint)point;
 @end
 
 @implementation HUCardViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUCardViewController" hasInstanceMethod:@"disablePullToUnlockSettings" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"HUCardViewController" hasInstanceMethod:@"forceUnlockSettings" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"HUCardViewController" hasInstanceMethod:@"_nudgeScrollViewToPoint:" withFullSignature:{"v", "{CGPoint=dd}", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUCardViewController" hasInstanceMethod:@"disablePullToUnlockSettings" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"HUCardViewController" hasInstanceMethod:@"forceUnlockSettings" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"HUCardViewController" hasInstanceMethod:@"_nudgeScrollViewToPoint:" withFullSignature:{"v", "{CGPoint=dd}", 0}];
 }
 
 - (BOOL)_accessibilityIgnoreSettingsDetailScrollLockIn
@@ -37,10 +37,10 @@
   }
 }
 
-- (void)_nudgeScrollViewToPoint:(CGPoint)a3
+- (void)_nudgeScrollViewToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (![(HUCardViewControllerAccessibility *)self _accessibilityIgnoreSettingsDetailScrollLockIn])
   {
     v6.receiver = self;

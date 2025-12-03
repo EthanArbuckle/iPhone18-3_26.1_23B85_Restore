@@ -1,45 +1,45 @@
 @interface PKGroupsController
-- (BOOL)containsExpiredPassWithUniqueID:(id)a3;
+- (BOOL)containsExpiredPassWithUniqueID:(id)d;
 - (BOOL)filteringEnabled;
 - (PKCatalog)_copyRemoteCatalog;
 - (PKGroupsController)init;
-- (PKGroupsController)initWithPassLibrary:(id)a3;
-- (PKGroupsController)initWithPassTypeMask:(unint64_t)a3 passFilters:(unint64_t)a4 allowedPassUniqueIDs:(id)a5;
+- (PKGroupsController)initWithPassLibrary:(id)library;
+- (PKGroupsController)initWithPassTypeMask:(unint64_t)mask passFilters:(unint64_t)filters allowedPassUniqueIDs:(id)ds;
 - (PKGroupsControllerDelegate)delegate;
 - (PKGroupsControllerSnapshotFetchOptions)snapshotFetchOptions;
-- (id)groupAtIndex:(unint64_t)a3;
+- (id)groupAtIndex:(unint64_t)index;
 - (id)groups;
 - (id)initLimited;
-- (id)passWithUniqueID:(id)a3;
+- (id)passWithUniqueID:(id)d;
 - (id)passes;
-- (uint64_t)_indexOfGroupID:(uint64_t)a1;
-- (unint64_t)_fixIndicesFrom:(void *)a1;
-- (unint64_t)groupIndexForPassUniqueID:(id)a3;
-- (unint64_t)indexOfGroup:(id)a3;
+- (uint64_t)_indexOfGroupID:(uint64_t)d;
+- (unint64_t)_fixIndicesFrom:(void *)from;
+- (unint64_t)groupIndexForPassUniqueID:(id)d;
+- (unint64_t)indexOfGroup:(id)group;
 - (unint64_t)indexOfSeparationGroup;
-- (void)_fixIndex:(uint64_t)a1;
-- (void)_insertGroup:(unint64_t)a3 atIndex:(int)a4 notify:;
-- (void)_moveGroup:(id)a3 fromIndex:(unint64_t)a4 toIndex:(unint64_t)a5 notify:(BOOL)a6;
-- (void)_placeGroup:(unint64_t)a3 atIndex:(uint64_t)a4 notify:;
-- (void)_removeGroup:(int)a3 notify:;
-- (void)_updateStateWithCatalog:(void *)a3 passes:(void *)a4 states:(void *)a5 annotations:(unsigned int)a6 notify:;
-- (void)addLocalPasses:(id)a3;
+- (void)_fixIndex:(uint64_t)index;
+- (void)_insertGroup:(unint64_t)group atIndex:(int)index notify:;
+- (void)_moveGroup:(id)group fromIndex:(unint64_t)index toIndex:(unint64_t)toIndex notify:(BOOL)notify;
+- (void)_placeGroup:(unint64_t)group atIndex:(uint64_t)index notify:;
+- (void)_removeGroup:(int)group notify:;
+- (void)_updateStateWithCatalog:(void *)catalog passes:(void *)passes states:(void *)states annotations:(unsigned int)annotations notify:;
+- (void)addLocalPasses:(id)passes;
 - (void)dealloc;
 - (void)enableRemoteUpdates;
-- (void)handleUserPassArchive:(id)a3;
-- (void)handleUserPassDelete:(id)a3;
-- (void)handleUserPassRecover:(id)a3;
-- (void)handleUserPassesDelete:(id)a3;
+- (void)handleUserPassArchive:(id)archive;
+- (void)handleUserPassDelete:(id)delete;
+- (void)handleUserPassRecover:(id)recover;
+- (void)handleUserPassesDelete:(id)delete;
 - (void)loadGroupsSynchronously;
-- (void)loadGroupsWithCompletion:(id)a3;
-- (void)moveGroupAtIndex:(unint64_t)a3 toIndex:(unint64_t)a4;
-- (void)movePass:(id)a3 inGroup:(id)a4 toIndex:(unint64_t)a5;
-- (void)objectSettingsDidChangeNotification:(id)a3;
-- (void)passLibrary:(id)a3 receivedUpdatedCatalog:(id)a4 passes:(id)a5 states:(id)a6;
-- (void)processFetchedSnapshot:(void *)a3 withOptions:(int)a4 synchronously:(unsigned int)a5 notify:(void *)a6 completion:;
-- (void)reloadGroupsWithCompletion:(id)a3;
-- (void)suppressRemoteUpdates:(BOOL)a3;
-- (void)updateStateWithSnapshot:(uint64_t)a1 options:(void *)a2 notify:(unsigned int)a3;
+- (void)loadGroupsWithCompletion:(id)completion;
+- (void)moveGroupAtIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
+- (void)movePass:(id)pass inGroup:(id)group toIndex:(unint64_t)index;
+- (void)objectSettingsDidChangeNotification:(id)notification;
+- (void)passLibrary:(id)library receivedUpdatedCatalog:(id)catalog passes:(id)passes states:(id)states;
+- (void)processFetchedSnapshot:(void *)snapshot withOptions:(int)options synchronously:(unsigned int)synchronously notify:(void *)notify completion:;
+- (void)reloadGroupsWithCompletion:(id)completion;
+- (void)suppressRemoteUpdates:(BOOL)updates;
+- (void)updateStateWithSnapshot:(uint64_t)snapshot options:(void *)options notify:(unsigned int)notify;
 @end
 
 @implementation PKGroupsController
@@ -54,13 +54,13 @@
 
 - (void)loadGroupsSynchronously
 {
-  v3 = [(PKGroupsController *)self snapshotFetchOptions];
+  snapshotFetchOptions = [(PKGroupsController *)self snapshotFetchOptions];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __45__PKGroupsController_loadGroupsSynchronously__block_invoke;
   v6[3] = &unk_1E79E2398;
   v6[4] = self;
-  v4 = v3;
+  v4 = snapshotFetchOptions;
   v7 = v4;
   v5 = v4;
   if (self)
@@ -72,12 +72,12 @@
 
 - (PKGroupsControllerSnapshotFetchOptions)snapshotFetchOptions
 {
-  if (a1)
+  if (self)
   {
     v2 = objc_alloc_init(PKGroupsControllerSnapshotFetchOptions);
-    [(PKGroupsControllerSnapshotFetchOptions *)v2 setLimitResults:*(a1 + 128)];
+    [(PKGroupsControllerSnapshotFetchOptions *)v2 setLimitResults:*(self + 128)];
     [(PKGroupsControllerSnapshotFetchOptions *)v2 setIncludeAnnotations:PKExpiredPassesRefreshEnabled()];
-    [(PKGroupsControllerSnapshotFetchOptions *)v2 setAllowedPassType:*(a1 + 32)];
+    [(PKGroupsControllerSnapshotFetchOptions *)v2 setAllowedPassType:*(self + 32)];
   }
 
   else
@@ -107,10 +107,10 @@
   {
     v6 = [(PKGroupsController *)self groupAtIndex:v5];
     v7 = [v6 passAtIndex:{objc_msgSend(v6, "frontmostPassIndex")}];
-    v8 = [v7 passType];
-    v9 = [v7 style];
+    passType = [v7 passType];
+    style = [v7 style];
 
-    if (!v7 || v8 != 1 || v9 != 6)
+    if (!v7 || passType != 1 || style != 6)
     {
       break;
     }
@@ -132,16 +132,16 @@
   }
 }
 
-- (PKGroupsController)initWithPassLibrary:(id)a3
+- (PKGroupsController)initWithPassLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v23.receiver = self;
   v23.super_class = PKGroupsController;
   v6 = [(PKGroupsController *)&v23 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_passLibrary, a3);
+    objc_storeStrong(&v6->_passLibrary, library);
     [(PKPassLibrary *)v7->_passLibrary addDelegate:v7];
     v8 = +[PKPaymentService paymentService];
     paymentService = v7->_paymentService;
@@ -179,25 +179,25 @@
   return v7;
 }
 
-- (PKGroupsController)initWithPassTypeMask:(unint64_t)a3 passFilters:(unint64_t)a4 allowedPassUniqueIDs:(id)a5
+- (PKGroupsController)initWithPassTypeMask:(unint64_t)mask passFilters:(unint64_t)filters allowedPassUniqueIDs:(id)ds
 {
-  v9 = a5;
+  dsCopy = ds;
   v10 = [(PKGroupsController *)self init];
   v11 = v10;
   if (v10)
   {
-    if (a3 == -1)
+    if (mask == -1)
     {
-      v12 = 0;
+      maskCopy = 0;
     }
 
     else
     {
-      v12 = a3;
+      maskCopy = mask;
     }
 
-    v10->_passTypeMask = v12;
-    if (v12)
+    v10->_passTypeMask = maskCopy;
+    if (maskCopy)
     {
       v13 = 0;
     }
@@ -208,16 +208,16 @@
     }
 
     v10->_reorderingEnabled = v13;
-    v10->_filters = a4;
-    objc_storeStrong(&v10->_allowedPassUniqueIDs, a5);
+    v10->_filters = filters;
+    objc_storeStrong(&v10->_allowedPassUniqueIDs, ds);
     if ((v11->_filters & 0x10) != 0)
     {
-      v14 = [(PKPaymentService *)v11->_paymentService expressPassConfigurations];
+      expressPassConfigurations = [(PKPaymentService *)v11->_paymentService expressPassConfigurations];
       expressPassConfigurations = v11->_expressPassConfigurations;
-      v11->_expressPassConfigurations = v14;
+      v11->_expressPassConfigurations = expressPassConfigurations;
 
       objc_initWeak(&location, v11);
-      v16 = [@"com.apple.passkit.expresspassesinformation.changed" UTF8String];
+      uTF8String = [@"com.apple.passkit.expresspassesinformation.changed" UTF8String];
       v17 = MEMORY[0x1E69E96A0];
       v18 = MEMORY[0x1E69E96A0];
       v20[0] = MEMORY[0x1E69E9820];
@@ -225,7 +225,7 @@
       v20[2] = __76__PKGroupsController_initWithPassTypeMask_passFilters_allowedPassUniqueIDs___block_invoke;
       v20[3] = &unk_1E79D08F0;
       objc_copyWeak(&v21, &location);
-      notify_register_dispatch(v16, &v11->_expressPassesInformationToken, v17, v20);
+      notify_register_dispatch(uTF8String, &v11->_expressPassesInformationToken, v17, v20);
 
       objc_destroyWeak(&v21);
       objc_destroyWeak(&location);
@@ -277,18 +277,18 @@ void __76__PKGroupsController_initWithPassTypeMask_passFilters_allowedPassUnique
   [(PKGroupsController *)&v4 dealloc];
 }
 
-- (void)loadGroupsWithCompletion:(id)a3
+- (void)loadGroupsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKGroupsController *)self snapshotFetchOptions];
+  completionCopy = completion;
+  snapshotFetchOptions = [(PKGroupsController *)self snapshotFetchOptions];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __47__PKGroupsController_loadGroupsWithCompletion___block_invoke;
   v9[3] = &unk_1E79E2370;
   v9[4] = self;
-  v6 = v5;
+  v6 = snapshotFetchOptions;
   v10 = v6;
-  v7 = v4;
+  v7 = completionCopy;
   v11 = v7;
   v8 = v7;
   if (self)
@@ -298,19 +298,19 @@ void __76__PKGroupsController_initWithPassTypeMask_passFilters_allowedPassUnique
   }
 }
 
-- (void)processFetchedSnapshot:(void *)a3 withOptions:(int)a4 synchronously:(unsigned int)a5 notify:(void *)a6 completion:
+- (void)processFetchedSnapshot:(void *)snapshot withOptions:(int)options synchronously:(unsigned int)synchronously notify:(void *)notify completion:
 {
   v11 = a2;
-  v12 = a3;
-  v13 = a6;
-  if (a1)
+  snapshotCopy = snapshot;
+  notifyCopy = notify;
+  if (self)
   {
-    if (a4)
+    if (options)
     {
-      [PKGroupsController updateStateWithSnapshot:a1 options:v11 notify:a5];
-      if (v13)
+      [PKGroupsController updateStateWithSnapshot:self options:v11 notify:synchronously];
+      if (notifyCopy)
       {
-        v13[2](v13);
+        notifyCopy[2](notifyCopy);
       }
     }
 
@@ -320,47 +320,47 @@ void __76__PKGroupsController_initWithPassTypeMask_passFilters_allowedPassUnique
       block[1] = 3221225472;
       block[2] = __89__PKGroupsController_processFetchedSnapshot_withOptions_synchronously_notify_completion___block_invoke;
       block[3] = &unk_1E79E23E8;
-      block[4] = a1;
+      block[4] = self;
       v15 = v11;
-      v16 = v12;
-      v18 = a5;
-      v17 = v13;
+      v16 = snapshotCopy;
+      synchronouslyCopy = synchronously;
+      v17 = notifyCopy;
       dispatch_async(MEMORY[0x1E69E96A0], block);
     }
   }
 }
 
-- (void)reloadGroupsWithCompletion:(id)a3
+- (void)reloadGroupsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (self)
   {
-    v5 = [(PKGroupsController *)self snapshotFetchOptions];
+    snapshotFetchOptions = [(PKGroupsController *)self snapshotFetchOptions];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __55__PKGroupsController_reloadGroupsAndNotify_completion___block_invoke;
     v8[3] = &unk_1E79E23C0;
     v8[4] = self;
-    v9 = v5;
+    v9 = snapshotFetchOptions;
     v11 = 1;
-    v10 = v4;
+    v10 = completionCopy;
     passLibrary = self->_passLibrary;
-    v7 = v5;
+    v7 = snapshotFetchOptions;
     [(PKPassLibrary *)passLibrary getGroupsControllerSnapshotWithOptions:v7 synchronously:0 handler:v8];
   }
 }
 
-- (void)updateStateWithSnapshot:(uint64_t)a1 options:(void *)a2 notify:(unsigned int)a3
+- (void)updateStateWithSnapshot:(uint64_t)snapshot options:(void *)options notify:(unsigned int)notify
 {
-  if (a1)
+  if (snapshot)
   {
-    v5 = a2;
-    v9 = [v5 catalog];
-    v6 = [v5 passes];
-    v7 = [v5 states];
-    v8 = [v5 annotations];
+    optionsCopy = options;
+    catalog = [optionsCopy catalog];
+    passes = [optionsCopy passes];
+    states = [optionsCopy states];
+    annotations = [optionsCopy annotations];
 
-    [(PKGroupsController *)a1 _updateStateWithCatalog:v9 passes:v6 states:v7 annotations:v8 notify:a3];
+    [(PKGroupsController *)snapshot _updateStateWithCatalog:catalog passes:passes states:states annotations:annotations notify:notify];
   }
 }
 
@@ -378,30 +378,30 @@ uint64_t __89__PKGroupsController_processFetchedSnapshot_withOptions_synchronous
   return result;
 }
 
-- (void)_updateStateWithCatalog:(void *)a3 passes:(void *)a4 states:(void *)a5 annotations:(unsigned int)a6 notify:
+- (void)_updateStateWithCatalog:(void *)catalog passes:(void *)passes states:(void *)states annotations:(unsigned int)annotations notify:
 {
   v279 = *MEMORY[0x1E69E9840];
   v177 = a2;
-  v176 = a3;
-  v175 = a4;
-  v10 = a5;
-  if (a1)
+  catalogCopy = catalog;
+  passesCopy = passes;
+  statesCopy = states;
+  if (self)
   {
-    v173 = v10;
+    v173 = statesCopy;
     context = objc_autoreleasePoolPush();
-    v196 = a1;
-    if (v10)
+    selfCopy = self;
+    if (statesCopy)
     {
-      v11 = v176;
+      v11 = catalogCopy;
       v204 = v177;
-      v12 = v10;
+      v12 = statesCopy;
       v217 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v11, "count")}];
       v221 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v213 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      if (*(a1 + 24) && (v13 = objc_loadWeakRetained((a1 + 168)), v14 = objc_opt_respondsToSelector(), v13, (v14 & 1) != 0))
+      if (*(self + 24) && (v13 = objc_loadWeakRetained((self + 168)), v14 = objc_opt_respondsToSelector(), v13, (v14 & 1) != 0))
       {
-        WeakRetained = objc_loadWeakRetained((a1 + 168));
-        v226 = [WeakRetained groupsControllerShouldExcludePassesWithUniqueIDsFromFiltering:a1];
+        WeakRetained = objc_loadWeakRetained((self + 168));
+        v226 = [WeakRetained groupsControllerShouldExcludePassesWithUniqueIDsFromFiltering:self];
       }
 
       else
@@ -409,7 +409,7 @@ uint64_t __89__PKGroupsController_processFetchedSnapshot_withOptions_synchronous
         v226 = 0;
       }
 
-      v16 = _FindAllowedPassUniqueIDs(v204, *(a1 + 40));
+      v16 = _FindAllowedPassUniqueIDs(v204, *(self + 40));
       v277 = 0u;
       v276 = 0u;
       v275 = 0u;
@@ -429,64 +429,64 @@ uint64_t __89__PKGroupsController_processFetchedSnapshot_withOptions_synchronous
             }
 
             v21 = *(*(&v274 + 1) + 8 * i);
-            v22 = [v21 uniqueID];
-            v23 = [v12 objectForKeyedSubscript:v22];
-            v24 = *(v196 + 32);
+            uniqueID = [v21 uniqueID];
+            v23 = [v12 objectForKeyedSubscript:uniqueID];
+            v24 = *(selfCopy + 32);
             if (!v24 || ((v24 >> [v21 passType]) & 1) != 0)
             {
-              if ((!v16 || [v16 containsObject:v22]) && ((objc_msgSend(v226, "containsObject:", v22) & 1) != 0 || _PassMeetsFilterRequirements(v21, *(v196 + 24), *(v196 + 120))))
+              if ((!v16 || [v16 containsObject:uniqueID]) && ((objc_msgSend(v226, "containsObject:", uniqueID) & 1) != 0 || _PassMeetsFilterRequirements(v21, *(selfCopy + 24), *(selfCopy + 120))))
               {
                 if (PKExpiredPassesRefreshEnabled() && v23 && [v23 isArchived])
                 {
-                  v25 = [*(v196 + 80) objectForKey:v22];
+                  v25 = [*(selfCopy + 80) objectForKey:uniqueID];
                   v26 = v25 == 0;
 
                   if (v26)
                   {
-                    v27 = [*(v196 + 72) objectForKey:v22];
+                    v27 = [*(selfCopy + 72) objectForKey:uniqueID];
                     if (v27)
                     {
-                      [*(v196 + 80) setObject:v27 forKey:v22];
+                      [*(selfCopy + 80) setObject:v27 forKey:uniqueID];
                     }
 
                     else
                     {
-                      v210 = [v204 groups];
+                      groups = [v204 groups];
                       v269 = MEMORY[0x1E69E9820];
                       v270 = 3221225472;
                       v271 = __92__PKGroupsController__displayablePassesDictionaryFromPasses_withCatalog_andPassAnnotations___block_invoke;
                       v272 = &unk_1E79E2488;
-                      v206 = v22;
+                      v206 = uniqueID;
                       v273 = v206;
-                      v208 = [v210 pk_firstObjectPassingTest:&v269];
+                      v208 = [groups pk_firstObjectPassingTest:&v269];
 
                       v30 = v208;
                       if (v208)
                       {
-                        v211 = *(v196 + 80);
-                        v31 = [v208 groupID];
+                        v211 = *(selfCopy + 80);
+                        groupID = [v208 groupID];
                         v32 = v211;
-                        v212 = v31;
-                        [v32 setObject:v31 forKey:v206];
+                        v212 = groupID;
+                        [v32 setObject:groupID forKey:v206];
 
                         v30 = v208;
                       }
                     }
                   }
 
-                  [v221 addObject:v22];
+                  [v221 addObject:uniqueID];
                   [v213 addObject:v21];
                 }
 
                 else
                 {
-                  [v217 setObject:v21 forKey:v22];
+                  [v217 setObject:v21 forKey:uniqueID];
                 }
               }
 
               else
               {
-                [v221 addObject:v22];
+                [v221 addObject:uniqueID];
                 refreshed = PKExpiredPassesRefreshEnabled();
                 if (v23)
                 {
@@ -512,19 +512,19 @@ uint64_t __89__PKGroupsController_processFetchedSnapshot_withOptions_synchronous
         while (v18);
       }
 
-      v33 = *(v196 + 144);
-      *(v196 + 144) = v221;
+      v33 = *(selfCopy + 144);
+      *(selfCopy + 144) = v221;
       v34 = v221;
 
-      v35 = *(v196 + 152);
-      *(v196 + 152) = v213;
+      v35 = *(selfCopy + 152);
+      *(selfCopy + 152) = v213;
       v36 = v213;
 
       v37 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v12];
-      v38 = *(v196 + 160);
-      *(v196 + 160) = v37;
+      v38 = *(selfCopy + 160);
+      *(selfCopy + 160) = v37;
 
-      v39 = *(v196 + 112);
+      v39 = *(selfCopy + 112);
       *&v265 = MEMORY[0x1E69E9820];
       *(&v265 + 1) = 3221225472;
       *&v266 = __92__PKGroupsController__displayablePassesDictionaryFromPasses_withCatalog_andPassAnnotations___block_invoke_2;
@@ -537,14 +537,14 @@ uint64_t __89__PKGroupsController_processFetchedSnapshot_withOptions_synchronous
 
     else
     {
-      v42 = v176;
+      v42 = catalogCopy;
       v222 = v177;
       v227 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v42, "count")}];
       v43 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      if (*(a1 + 24) && (v44 = objc_loadWeakRetained((a1 + 168)), v45 = objc_opt_respondsToSelector(), v44, (v45 & 1) != 0))
+      if (*(self + 24) && (v44 = objc_loadWeakRetained((self + 168)), v45 = objc_opt_respondsToSelector(), v44, (v45 & 1) != 0))
       {
-        v46 = objc_loadWeakRetained((a1 + 168));
-        v47 = [v46 groupsControllerShouldExcludePassesWithUniqueIDsFromFiltering:a1];
+        v46 = objc_loadWeakRetained((self + 168));
+        v47 = [v46 groupsControllerShouldExcludePassesWithUniqueIDsFromFiltering:self];
       }
 
       else
@@ -552,7 +552,7 @@ uint64_t __89__PKGroupsController_processFetchedSnapshot_withOptions_synchronous
         v47 = 0;
       }
 
-      v48 = _FindAllowedPassUniqueIDs(v222, *(a1 + 40));
+      v48 = _FindAllowedPassUniqueIDs(v222, *(self + 40));
       v277 = 0u;
       v276 = 0u;
       v275 = 0u;
@@ -572,18 +572,18 @@ uint64_t __89__PKGroupsController_processFetchedSnapshot_withOptions_synchronous
             }
 
             v53 = *(*(&v274 + 1) + 8 * j);
-            v54 = *(v196 + 32);
+            v54 = *(selfCopy + 32);
             if (!v54 || ((v54 >> [*(*(&v274 + 1) + 8 * j) passType]) & 1) != 0)
             {
-              v55 = [v53 uniqueID];
-              if ((!v48 || [v48 containsObject:v55]) && ((objc_msgSend(v47, "containsObject:", v55, v173, context, v175) & 1) != 0 || _PassMeetsFilterRequirements(v53, *(v196 + 24), *(v196 + 120))))
+              uniqueID2 = [v53 uniqueID];
+              if ((!v48 || [v48 containsObject:uniqueID2]) && ((objc_msgSend(v47, "containsObject:", uniqueID2, v173, context, passesCopy) & 1) != 0 || _PassMeetsFilterRequirements(v53, *(selfCopy + 24), *(selfCopy + 120))))
               {
-                [v227 setObject:v53 forKey:v55];
+                [v227 setObject:v53 forKey:uniqueID2];
               }
 
               else
               {
-                [v43 addObject:{v55, v173}];
+                [v43 addObject:{uniqueID2, v173}];
               }
             }
           }
@@ -594,11 +594,11 @@ uint64_t __89__PKGroupsController_processFetchedSnapshot_withOptions_synchronous
         while (v50);
       }
 
-      v56 = *(v196 + 144);
-      *(v196 + 144) = v43;
+      v56 = *(selfCopy + 144);
+      *(selfCopy + 144) = v43;
       v57 = v43;
 
-      v58 = *(v196 + 112);
+      v58 = *(selfCopy + 112);
       v269 = MEMORY[0x1E69E9820];
       v270 = 3221225472;
       v271 = __70__PKGroupsController__displayablePassesDictionaryFromSet_withCatalog___block_invoke;
@@ -633,8 +633,8 @@ uint64_t __89__PKGroupsController_processFetchedSnapshot_withOptions_synchronous
           }
 
           v63 = *(*(&v261 + 1) + 8 * v62);
-          v64 = [v63 groupID];
-          v65 = [*(v196 + 56) objectForKeyedSubscript:v64];
+          groupID2 = [v63 groupID];
+          v65 = [*(selfCopy + 56) objectForKeyedSubscript:groupID2];
           v66 = v65;
           if (v65)
           {
@@ -645,7 +645,7 @@ uint64_t __89__PKGroupsController_processFetchedSnapshot_withOptions_synchronous
 
               if (!v68)
               {
-                v172 = v66;
+                uniqueIDs = v66;
 LABEL_84:
 
                 v61 = v223;
@@ -660,8 +660,8 @@ LABEL_84:
             v238 = 0u;
             v235 = 0u;
             v236 = 0u;
-            v172 = [v63 uniqueIDs];
-            v69 = [v172 countByEnumeratingWithState:&v235 objects:&v269 count:16];
+            uniqueIDs = [v63 uniqueIDs];
+            v69 = [uniqueIDs countByEnumeratingWithState:&v235 objects:&v269 count:16];
             if (v69)
             {
               v70 = *v236;
@@ -671,7 +671,7 @@ LABEL_84:
                 {
                   if (*v236 != v70)
                   {
-                    objc_enumerationMutation(v172);
+                    objc_enumerationMutation(uniqueIDs);
                   }
 
                   v72 = [v228 objectForKeyedSubscript:*(*(&v235 + 1) + 8 * k)];
@@ -683,7 +683,7 @@ LABEL_84:
                   }
                 }
 
-                v69 = [v172 countByEnumeratingWithState:&v235 objects:&v269 count:16];
+                v69 = [uniqueIDs countByEnumeratingWithState:&v235 objects:&v269 count:16];
                 if (v69)
                 {
                   continue;
@@ -720,12 +720,12 @@ LABEL_86:
     v259 = 0u;
     v256 = 0u;
     v257 = 0u;
-    v74 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v268 = 0u;
     v267 = 0u;
     v266 = 0u;
     v265 = 0u;
-    v75 = *(v196 + 48);
+    v75 = *(selfCopy + 48);
     v76 = [v75 countByEnumeratingWithState:&v265 objects:v278 count:16];
     if (v76)
     {
@@ -746,7 +746,7 @@ LABEL_86:
             v81 = v80;
             if (v80 && [v80 passType] != 1)
             {
-              [v74 addObject:v79];
+              [array addObject:v79];
             }
           }
 
@@ -762,7 +762,7 @@ LABEL_86:
       while (v76);
     }
 
-    v82 = [v74 countByEnumeratingWithState:&v256 objects:v278 count:16];
+    v82 = [array countByEnumeratingWithState:&v256 objects:v278 count:16];
     if (v82)
     {
       v83 = *v257;
@@ -772,7 +772,7 @@ LABEL_86:
         {
           if (*v257 != v83)
           {
-            objc_enumerationMutation(v74);
+            objc_enumerationMutation(array);
           }
 
           v85 = *(*(&v256 + 1) + 8 * n);
@@ -793,7 +793,7 @@ LABEL_86:
           ++v61;
         }
 
-        v82 = [v74 countByEnumeratingWithState:&v256 objects:v278 count:16];
+        v82 = [array countByEnumeratingWithState:&v256 objects:v278 count:16];
       }
 
       while (v82);
@@ -801,18 +801,18 @@ LABEL_86:
 
     v181 = v177;
     v184 = v228;
-    v182 = v175;
+    v182 = passesCopy;
     v185 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v87 = objc_alloc(MEMORY[0x1E695DFA8]);
-    v88 = [*(v196 + 72) allKeys];
-    v178 = [v87 initWithArray:v88];
+    allKeys = [*(selfCopy + 72) allKeys];
+    v178 = [v87 initWithArray:allKeys];
 
     v191 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v244 = 0u;
     v245 = 0u;
     v246 = 0u;
     v247 = 0u;
-    v89 = *(v196 + 152);
+    v89 = *(selfCopy + 152);
     v90 = [v89 countByEnumeratingWithState:&v244 objects:&v265 count:16];
     if (v90)
     {
@@ -826,8 +826,8 @@ LABEL_86:
             objc_enumerationMutation(v89);
           }
 
-          v93 = [*(*(&v244 + 1) + 8 * ii) uniqueID];
-          [v191 addObject:v93];
+          uniqueID3 = [*(*(&v244 + 1) + 8 * ii) uniqueID];
+          [v191 addObject:uniqueID3];
         }
 
         v90 = [v89 countByEnumeratingWithState:&v244 objects:&v265 count:16];
@@ -836,8 +836,8 @@ LABEL_86:
       while (v90);
     }
 
-    v94 = [v181 groups];
-    v95 = [v94 copy];
+    groups2 = [v181 groups];
+    v95 = [groups2 copy];
 
     v242 = 0u;
     v243 = 0u;
@@ -858,12 +858,12 @@ LABEL_86:
           }
 
           v187 = *(*(&v240 + 1) + 8 * jj);
-          v189 = [v187 groupID];
-          v229 = [*(v196 + 56) objectForKey:v189];
+          groupID3 = [v187 groupID];
+          v229 = [*(selfCopy + 56) objectForKey:groupID3];
           if (!v229)
           {
             v229 = [[PKGroup alloc] initWithCatalogGroup:v187 passes:v184 states:v182];
-            [v185 setObject:v229 forKey:v189];
+            [v185 setObject:v229 forKey:groupID3];
             goto LABEL_194;
           }
 
@@ -872,15 +872,15 @@ LABEL_86:
           v192 = v182;
           v198 = v191;
           v96 = objc_alloc(MEMORY[0x1E695DFA8]);
-          v97 = [v229[4] allKeys];
-          v194 = [v96 initWithArray:v97];
+          allKeys2 = [v229[4] allKeys];
+          v194 = [v96 initWithArray:allKeys2];
 
-          v190 = [v186 uniqueIDs];
+          uniqueIDs2 = [v186 uniqueIDs];
           v254 = 0u;
           v255 = 0u;
           v252 = 0u;
           v253 = 0u;
-          v195 = [v190 copy];
+          v195 = [uniqueIDs2 copy];
           v199 = [v195 countByEnumeratingWithState:&v252 objects:&v274 count:16];
           if (!v199)
           {
@@ -913,23 +913,23 @@ LABEL_86:
                     v98 = v200;
                     v224 = v205;
                     v215 = v98;
-                    v99 = [v98 uniqueID];
-                    v209 = [v229[4] objectForKey:v99];
+                    uniqueID4 = [v98 uniqueID];
+                    v209 = [v229[4] objectForKey:uniqueID4];
                     v100 = [v209 isEqualToPassIncludingMetadata:v215];
                     if ((v100 & 1) == 0)
                     {
-                      [v229[4] setObject:v215 forKeyedSubscript:v99];
+                      [v229[4] setObject:v215 forKeyedSubscript:uniqueID4];
                     }
 
-                    [v229[5] setObject:v224 forKeyedSubscript:v99];
-                    if (a6)
+                    [v229[5] setObject:v224 forKeyedSubscript:uniqueID4];
+                    if (annotations)
                     {
-                      v101 = [(PKGroup *)v229 observers];
+                      observers = [(PKGroup *)v229 observers];
                       v258 = 0u;
                       v259 = 0u;
                       v256 = 0u;
                       v257 = 0u;
-                      v102 = [v101 countByEnumeratingWithState:&v256 objects:v278 count:16];
+                      v102 = [observers countByEnumeratingWithState:&v256 objects:v278 count:16];
                       if (v102)
                       {
                         v103 = *v257;
@@ -939,11 +939,11 @@ LABEL_86:
                           {
                             if (*v257 != v103)
                             {
-                              objc_enumerationMutation(v101);
+                              objc_enumerationMutation(observers);
                             }
 
                             v105 = *(*(&v256 + 1) + 8 * kk);
-                            v106 = [(PKGroup *)v229[3] _indexOfUniqueID:v99];
+                            v106 = [(PKGroup *)v229[3] _indexOfUniqueID:uniqueID4];
                             if (v100)
                             {
                               if (objc_opt_respondsToSelector())
@@ -963,7 +963,7 @@ LABEL_86:
                             }
                           }
 
-                          v102 = [v101 countByEnumeratingWithState:&v256 objects:v278 count:16];
+                          v102 = [observers countByEnumeratingWithState:&v256 objects:v278 count:16];
                         }
 
                         while (v102);
@@ -974,14 +974,14 @@ LABEL_86:
                   else if (v205)
                   {
                     [v229[5] setObject:v205 forKeyedSubscript:v207];
-                    if (a6)
+                    if (annotations)
                     {
-                      v116 = [(PKGroup *)v229 observers];
+                      observers2 = [(PKGroup *)v229 observers];
                       v250 = 0u;
                       v251 = 0u;
                       v248 = 0u;
                       v249 = 0u;
-                      v117 = [v116 countByEnumeratingWithState:&v248 objects:&v269 count:16];
+                      v117 = [observers2 countByEnumeratingWithState:&v248 objects:&v269 count:16];
                       if (v117)
                       {
                         v118 = *v249;
@@ -991,7 +991,7 @@ LABEL_86:
                           {
                             if (*v249 != v118)
                             {
-                              objc_enumerationMutation(v116);
+                              objc_enumerationMutation(observers2);
                             }
 
                             v120 = *(*(&v248 + 1) + 8 * mm);
@@ -1001,7 +1001,7 @@ LABEL_86:
                             }
                           }
 
-                          v117 = [v116 countByEnumeratingWithState:&v248 objects:&v269 count:16];
+                          v117 = [observers2 countByEnumeratingWithState:&v248 objects:&v269 count:16];
                         }
 
                         while (v117);
@@ -1009,7 +1009,7 @@ LABEL_86:
                     }
                   }
 
-                  [(PKGroup *)v229 _moveUniqueID:v207 toIndex:v219 notify:a6];
+                  [(PKGroup *)v229 _moveUniqueID:v207 toIndex:v219 notify:annotations];
                   goto LABEL_167;
                 }
 
@@ -1017,20 +1017,20 @@ LABEL_86:
                 {
                   v107 = v200;
                   v108 = v205;
-                  v109 = [v107 uniqueID];
-                  v110 = [v229[3] uniqueIDs];
-                  [v110 insertObject:v109 atIndex:v219];
+                  uniqueID5 = [v107 uniqueID];
+                  uniqueIDs3 = [v229[3] uniqueIDs];
+                  [uniqueIDs3 insertObject:uniqueID5 atIndex:v219];
 
-                  [v229[4] setObject:v107 forKeyedSubscript:v109];
-                  [v229[5] setObject:v108 forKeyedSubscript:v109];
-                  if (a6)
+                  [v229[4] setObject:v107 forKeyedSubscript:uniqueID5];
+                  [v229[5] setObject:v108 forKeyedSubscript:uniqueID5];
+                  if (annotations)
                   {
-                    v111 = [(PKGroup *)v229 observers];
+                    observers3 = [(PKGroup *)v229 observers];
                     v258 = 0u;
                     v259 = 0u;
                     v256 = 0u;
                     v257 = 0u;
-                    v112 = [v111 countByEnumeratingWithState:&v256 objects:v278 count:16];
+                    v112 = [observers3 countByEnumeratingWithState:&v256 objects:v278 count:16];
                     if (v112)
                     {
                       v113 = *v257;
@@ -1040,7 +1040,7 @@ LABEL_86:
                         {
                           if (*v257 != v113)
                           {
-                            objc_enumerationMutation(v111);
+                            objc_enumerationMutation(observers3);
                           }
 
                           v115 = *(*(&v256 + 1) + 8 * nn);
@@ -1055,7 +1055,7 @@ LABEL_86:
                           }
                         }
 
-                        v112 = [v111 countByEnumeratingWithState:&v256 objects:v278 count:16];
+                        v112 = [observers3 countByEnumeratingWithState:&v256 objects:v278 count:16];
                       }
 
                       while (v112);
@@ -1068,7 +1068,7 @@ LABEL_167:
 
                 else
                 {
-                  [v190 removeObject:v207];
+                  [uniqueIDs2 removeObject:v207];
                 }
               }
 
@@ -1101,7 +1101,7 @@ LABEL_185:
                   objc_enumerationMutation(v122);
                 }
 
-                [(PKGroup *)v229 _removeUniqueID:a6 notify:?];
+                [(PKGroup *)v229 _removeUniqueID:annotations notify:?];
               }
 
               v123 = [v122 countByEnumeratingWithState:&v256 objects:v278 count:16];
@@ -1113,10 +1113,10 @@ LABEL_185:
 LABEL_194:
           if (!v229 || ([v229[3] uniqueIDs], v126 = objc_claimAutoreleasedReturnValue(), v127 = objc_msgSend(v126, "count") == 0, v126, v127))
           {
-            v137 = [v181 groups];
-            [v137 removeObject:v187];
+            groups3 = [v181 groups];
+            [groups3 removeObject:v187];
 
-            [v185 removeObjectForKey:v189];
+            [v185 removeObjectForKey:groupID3];
           }
 
           else
@@ -1132,8 +1132,8 @@ LABEL_194:
             v128 = v191;
             v239 = &v269;
             *&v237 = v128;
-            *(&v237 + 1) = v196;
-            v129 = v189;
+            *(&v237 + 1) = selfCopy;
+            v129 = groupID3;
             *&v238 = v129;
             *(&v238 + 1) = v178;
             v130 = &v235;
@@ -1141,8 +1141,8 @@ LABEL_194:
             v277 = 0u;
             v275 = 0u;
             v274 = 0u;
-            v131 = [v229[3] uniqueIDs];
-            v132 = [v131 countByEnumeratingWithState:&v274 objects:v278 count:16];
+            uniqueIDs4 = [v229[3] uniqueIDs];
+            v132 = [uniqueIDs4 countByEnumeratingWithState:&v274 objects:v278 count:16];
             if (v132)
             {
               v133 = *v275;
@@ -1152,13 +1152,13 @@ LABEL_194:
                 {
                   if (*v275 != v133)
                   {
-                    objc_enumerationMutation(v131);
+                    objc_enumerationMutation(uniqueIDs4);
                   }
 
                   (v236)(v130, *(*(&v274 + 1) + 8 * i2));
                 }
 
-                v132 = [v131 countByEnumeratingWithState:&v274 objects:v278 count:16];
+                v132 = [uniqueIDs4 countByEnumeratingWithState:&v274 objects:v278 count:16];
               }
 
               while (v132);
@@ -1167,8 +1167,8 @@ LABEL_194:
             v135 = *(v270 + 24);
             if (v135 == [v229 passCount])
             {
-              v136 = [v181 groups];
-              [v136 removeObject:v187];
+              groups4 = [v181 groups];
+              [groups4 removeObject:v187];
 
               [v185 removeObjectForKey:v129];
             }
@@ -1201,7 +1201,7 @@ LABEL_194:
             objc_enumerationMutation(v138);
           }
 
-          [*(v196 + 72) removeObjectForKey:{*(*(&v274 + 1) + 8 * i3), v173}];
+          [*(selfCopy + 72) removeObjectForKey:{*(*(&v274 + 1) + 8 * i3), v173}];
         }
 
         v139 = [v138 countByEnumeratingWithState:&v274 objects:v278 count:16];
@@ -1211,11 +1211,11 @@ LABEL_194:
     }
 
     v142 = objc_alloc(MEMORY[0x1E695DFA8]);
-    v143 = [*(v196 + 56) allKeys];
-    v144 = [v142 initWithArray:v143];
+    allKeys3 = [*(selfCopy + 56) allKeys];
+    v144 = [v142 initWithArray:allKeys3];
 
-    v145 = [v181 allGroupIDs];
-    [v144 minusSet:v145];
+    allGroupIDs = [v181 allGroupIDs];
+    [v144 minusSet:allGroupIDs];
 
     v233 = 0u;
     v234 = 0u;
@@ -1235,8 +1235,8 @@ LABEL_194:
             objc_enumerationMutation(v146);
           }
 
-          v150 = [*(v196 + 56) objectForKey:{*(*(&v231 + 1) + 8 * i4), v173}];
-          [(PKGroupsController *)v196 _removeGroup:v150 notify:a6];
+          v150 = [*(selfCopy + 56) objectForKey:{*(*(&v231 + 1) + 8 * i4), v173}];
+          [(PKGroupsController *)selfCopy _removeGroup:v150 notify:annotations];
         }
 
         v147 = [v146 countByEnumeratingWithState:&v231 objects:v260 count:16];
@@ -1245,36 +1245,36 @@ LABEL_194:
       while (v147);
     }
 
-    v225 = [v181 groups];
-    v220 = [v225 count];
+    groups5 = [v181 groups];
+    v220 = [groups5 count];
     if (v220)
     {
       v151 = 0;
       do
       {
         v152 = v151;
-        v153 = [v225 objectAtIndex:v173];
-        v230 = [v153 groupID];
+        v153 = [groups5 objectAtIndex:v173];
+        groupID4 = [v153 groupID];
 
-        v154 = [v196 groupAtIndex:v152];
-        v155 = [v154 groupID];
+        v154 = [selfCopy groupAtIndex:v152];
+        groupID5 = [v154 groupID];
 
-        if (!v155 || ![v230 isEqualToNumber:v155])
+        if (!groupID5 || ![groupID4 isEqualToNumber:groupID5])
         {
-          v156 = [*(v196 + 56) objectForKey:v230];
+          v156 = [*(selfCopy + 56) objectForKey:groupID4];
           v157 = v156 == 0;
 
           if (v157)
           {
-            v167 = [v185 objectForKey:v230];
-            [(PKGroupsController *)v196 _placeGroup:v167 atIndex:v152 notify:a6];
+            v167 = [v185 objectForKey:groupID4];
+            [(PKGroupsController *)selfCopy _placeGroup:v167 atIndex:v152 notify:annotations];
           }
 
-          else if (v155)
+          else if (groupID5)
           {
-            v216 = [(PKGroupsController *)v196 _indexOfGroupID:v230];
-            v158 = v155;
-            v159 = v225;
+            v216 = [(PKGroupsController *)selfCopy _indexOfGroupID:groupID4];
+            v158 = groupID5;
+            v159 = groups5;
             v160 = [v159 count];
             v161 = v152;
             if (v160 > v152)
@@ -1284,14 +1284,14 @@ LABEL_194:
               while (1)
               {
                 v163 = [v159 objectAtIndex:v162];
-                v164 = [v163 groupID];
+                groupID6 = [v163 groupID];
 
-                if ([v164 isEqualToNumber:v158])
+                if ([groupID6 isEqualToNumber:v158])
                 {
                   break;
                 }
 
-                v165 = [*(v196 + 56) objectForKey:v164];
+                v165 = [*(selfCopy + 56) objectForKey:groupID6];
                 v166 = v165 != 0;
 
                 v161 += v166;
@@ -1304,23 +1304,23 @@ LABEL_194:
 
 LABEL_237:
 
-            v169 = *(v196 + 56);
+            v169 = *(selfCopy + 56);
             if (v216 <= v161)
             {
               v171 = [v169 objectForKey:v158];
-              [(PKGroupsController *)v196 _placeGroup:v171 atIndex:v161 notify:a6];
+              [(PKGroupsController *)selfCopy _placeGroup:v171 atIndex:v161 notify:annotations];
 
               goto LABEL_240;
             }
 
-            v170 = [v169 objectForKey:v230];
-            [(PKGroupsController *)v196 _placeGroup:v170 atIndex:v152 notify:a6];
+            v170 = [v169 objectForKey:groupID4];
+            [(PKGroupsController *)selfCopy _placeGroup:v170 atIndex:v152 notify:annotations];
           }
 
           else
           {
-            v168 = [*(v196 + 56) objectForKey:v230];
-            [(PKGroupsController *)v196 _placeGroup:v168 atIndex:v152 notify:a6];
+            v168 = [*(selfCopy + 56) objectForKey:groupID4];
+            [(PKGroupsController *)selfCopy _placeGroup:v168 atIndex:v152 notify:annotations];
           }
         }
 
@@ -1334,7 +1334,7 @@ LABEL_240:
     }
 
     objc_autoreleasePoolPop(context);
-    v10 = v173;
+    statesCopy = v173;
   }
 }
 
@@ -1345,69 +1345,69 @@ LABEL_240:
   return v2;
 }
 
-- (id)groupAtIndex:(unint64_t)a3
+- (id)groupAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_groups count]<= a3)
+  if ([(NSMutableArray *)self->_groups count]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_groups objectAtIndex:a3];
+    v5 = [(NSMutableArray *)self->_groups objectAtIndex:index];
   }
 
   return v5;
 }
 
-- (unint64_t)indexOfGroup:(id)a3
+- (unint64_t)indexOfGroup:(id)group
 {
-  v4 = [a3 groupID];
-  v5 = [(PKGroupsController *)self _indexOfGroupID:v4];
+  groupID = [group groupID];
+  v5 = [(PKGroupsController *)self _indexOfGroupID:groupID];
 
   return v5;
 }
 
-- (uint64_t)_indexOfGroupID:(uint64_t)a1
+- (uint64_t)_indexOfGroupID:(uint64_t)d
 {
-  if (!a1)
+  if (!d)
   {
     return 0;
   }
 
-  v2 = [*(a1 + 64) objectForKey:a2];
+  v2 = [*(d + 64) objectForKey:a2];
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 0x7FFFFFFFFFFFFFFFLL;
+    unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (unint64_t)groupIndexForPassUniqueID:(id)a3
+- (unint64_t)groupIndexForPassUniqueID:(id)d
 {
-  v4 = [(NSMutableDictionary *)self->_groupIDsByPassUniqueID objectForKey:a3];
+  v4 = [(NSMutableDictionary *)self->_groupIDsByPassUniqueID objectForKey:d];
   v5 = [(PKGroupsController *)self _indexOfGroupID:v4];
 
   return v5;
 }
 
-- (BOOL)containsExpiredPassWithUniqueID:(id)a3
+- (BOOL)containsExpiredPassWithUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   expiredSectionPasses = self->_expiredSectionPasses;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __54__PKGroupsController_containsExpiredPassWithUniqueID___block_invoke;
   v8[3] = &unk_1E79E2410;
-  v9 = v4;
-  v6 = v4;
+  v9 = dCopy;
+  v6 = dCopy;
   LOBYTE(expiredSectionPasses) = [(NSArray *)expiredSectionPasses pk_containsObjectPassingTest:v8];
 
   return expiredSectionPasses;
@@ -1437,16 +1437,16 @@ uint64_t __54__PKGroupsController_containsExpiredPassWithUniqueID___block_invoke
   return v8;
 }
 
-- (id)passWithUniqueID:(id)a3
+- (id)passWithUniqueID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v4 = a3;
-    v5 = [(PKGroupsController *)self groupAtIndex:[(PKGroupsController *)self groupIndexForPassUniqueID:v4]];
+    dCopy = d;
+    v5 = [(PKGroupsController *)self groupAtIndex:[(PKGroupsController *)self groupIndexForPassUniqueID:dCopy]];
     v6 = v5;
     if (v5)
     {
-      v7 = [*(v5 + 32) objectForKey:v4];
+      v7 = [*(v5 + 32) objectForKey:dCopy];
     }
 
     else
@@ -1463,18 +1463,18 @@ uint64_t __54__PKGroupsController_containsExpiredPassWithUniqueID___block_invoke
   return v7;
 }
 
-- (void)handleUserPassesDelete:(id)a3
+- (void)handleUserPassesDelete:(id)delete
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  deleteCopy = delete;
+  if ([deleteCopy count])
   {
     expiredSectionPasses = self->_expiredSectionPasses;
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __45__PKGroupsController_handleUserPassesDelete___block_invoke;
     v21[3] = &unk_1E79E2410;
-    v6 = v4;
+    v6 = deleteCopy;
     v22 = v6;
     v7 = [(NSArray *)expiredSectionPasses pk_createArrayByRemovingObjectsPassingTest:v21];
     v8 = self->_expiredSectionPasses;
@@ -1545,43 +1545,43 @@ BOOL __45__PKGroupsController_handleUserPassesDelete___block_invoke(uint64_t a1,
   return v4;
 }
 
-- (void)_removeGroup:(int)a3 notify:
+- (void)_removeGroup:(int)group notify:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v9 = v5;
-    v6 = [a1 indexOfGroup:v5];
-    [a1[6] removeObjectAtIndex:v6];
-    [(PKGroupsController *)a1 _fixIndicesFrom:v6];
-    v7 = [v9 groupID];
-    [a1[8] removeObjectForKey:v7];
-    [a1[7] removeObjectForKey:v7];
-    if (a3)
+    v6 = [self indexOfGroup:v5];
+    [self[6] removeObjectAtIndex:v6];
+    [(PKGroupsController *)self _fixIndicesFrom:v6];
+    groupID = [v9 groupID];
+    [self[8] removeObjectForKey:groupID];
+    [self[7] removeObjectForKey:groupID];
+    if (group)
     {
-      WeakRetained = objc_loadWeakRetained(a1 + 21);
-      [WeakRetained groupsController:a1 didRemoveGroup:v9 atIndex:v6];
+      WeakRetained = objc_loadWeakRetained(self + 21);
+      [WeakRetained groupsController:self didRemoveGroup:v9 atIndex:v6];
     }
 
     v5 = v9;
   }
 }
 
-- (void)handleUserPassDelete:(id)a3
+- (void)handleUserPassDelete:(id)delete
 {
-  v4 = a3;
-  if (v4)
+  deleteCopy = delete;
+  if (deleteCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_groupIDsByPassUniqueID objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_groupIDsByPassUniqueID objectForKey:deleteCopy];
     if (v5)
     {
-      [(NSMutableDictionary *)self->_groupIDsByPassUniqueID removeObjectForKey:v4];
+      [(NSMutableDictionary *)self->_groupIDsByPassUniqueID removeObjectForKey:deleteCopy];
       v6 = [(NSMutableDictionary *)self->_groupsByGroupID objectForKey:v5];
-      if (([(PKGroup *)v6 containsPassesInAdditionToUniqueID:v4]& 1) != 0)
+      if (([(PKGroup *)v6 containsPassesInAdditionToUniqueID:deleteCopy]& 1) != 0)
       {
         if (v6)
         {
-          [(PKGroup *)v6 _removeUniqueID:v4 notify:1];
+          [(PKGroup *)v6 _removeUniqueID:deleteCopy notify:1];
         }
       }
 
@@ -1593,7 +1593,7 @@ BOOL __45__PKGroupsController_handleUserPassesDelete___block_invoke(uint64_t a1,
 
     else
     {
-      [(NSMutableDictionary *)self->_groupIDsByExpiredPassUniqueID removeObjectForKey:v4];
+      [(NSMutableDictionary *)self->_groupIDsByExpiredPassUniqueID removeObjectForKey:deleteCopy];
     }
 
     expiredSectionPasses = self->_expiredSectionPasses;
@@ -1601,7 +1601,7 @@ BOOL __45__PKGroupsController_handleUserPassesDelete___block_invoke(uint64_t a1,
     v12[1] = 3221225472;
     v12[2] = __43__PKGroupsController_handleUserPassDelete___block_invoke;
     v12[3] = &unk_1E79E2438;
-    v8 = v4;
+    v8 = deleteCopy;
     v13 = v8;
     v9 = [(NSArray *)expiredSectionPasses indexOfObjectPassingTest:v12];
     if (v9 != 0x7FFFFFFFFFFFFFFFLL)
@@ -1625,19 +1625,19 @@ uint64_t __43__PKGroupsController_handleUserPassDelete___block_invoke(uint64_t a
   return v4;
 }
 
-- (void)handleUserPassRecover:(id)a3
+- (void)handleUserPassRecover:(id)recover
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  recoverCopy = recover;
+  v5 = recoverCopy;
+  if (recoverCopy)
   {
     expiredSectionPasses = self->_expiredSectionPasses;
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __44__PKGroupsController_handleUserPassRecover___block_invoke;
     v16[3] = &unk_1E79E2438;
-    v7 = v4;
+    v7 = recoverCopy;
     v17 = v7;
     v8 = [(NSArray *)expiredSectionPasses indexOfObjectPassingTest:v16];
     if (v8 != 0x7FFFFFFFFFFFFFFFLL)
@@ -1679,37 +1679,37 @@ uint64_t __44__PKGroupsController_handleUserPassRecover___block_invoke(uint64_t 
   return v4;
 }
 
-- (void)handleUserPassArchive:(id)a3
+- (void)handleUserPassArchive:(id)archive
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  archiveCopy = archive;
   v5 = PKManualArchiveEnabled();
-  if (v4 && v5)
+  if (archiveCopy && v5)
   {
-    v6 = [(PKPassLibrary *)self->_passLibrary passWithUniqueID:v4];
-    v7 = [(NSMutableDictionary *)self->_groupIDsByPassUniqueID objectForKey:v4];
+    v6 = [(PKPassLibrary *)self->_passLibrary passWithUniqueID:archiveCopy];
+    v7 = [(NSMutableDictionary *)self->_groupIDsByPassUniqueID objectForKey:archiveCopy];
     v8 = [(NSArray *)self->_expiredSectionPasses arrayByAddingObject:v6];
     expiredSectionPasses = self->_expiredSectionPasses;
     self->_expiredSectionPasses = v8;
 
-    v10 = [(NSArray *)self->_filteredPassUniqueIDs arrayByAddingObject:v4];
+    v10 = [(NSArray *)self->_filteredPassUniqueIDs arrayByAddingObject:archiveCopy];
     filteredPassUniqueIDs = self->_filteredPassUniqueIDs;
     self->_filteredPassUniqueIDs = v10;
 
     if (v7)
     {
-      [(NSMutableDictionary *)self->_groupIDsByExpiredPassUniqueID setObject:v7 forKey:v4];
+      [(NSMutableDictionary *)self->_groupIDsByExpiredPassUniqueID setObject:v7 forKey:archiveCopy];
     }
 
     v12 = PKLogFacilityTypeGetObject(0);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v4;
+      v14 = archiveCopy;
       _os_log_impl(&dword_1AD337000, v12, OS_LOG_TYPE_DEFAULT, "Attempting pass archival with unique id:%@", &v13, 0xCu);
     }
 
-    [(PKPassLibrary *)self->_passLibrary archivePassWithUniqueID:v4];
+    [(PKPassLibrary *)self->_passLibrary archivePassWithUniqueID:archiveCopy];
   }
 }
 
@@ -1732,19 +1732,19 @@ uint64_t __44__PKGroupsController_handleUserPassRecover___block_invoke(uint64_t 
   return refreshed;
 }
 
-- (void)suppressRemoteUpdates:(BOOL)a3
+- (void)suppressRemoteUpdates:(BOOL)updates
 {
   self->_suppressRemoteUpdates = 1;
-  self->_enqueueRemoteUpdates = a3;
-  v4 = [(PKGroupsController *)self _copyRemoteCatalog];
+  self->_enqueueRemoteUpdates = updates;
+  _copyRemoteCatalog = [(PKGroupsController *)self _copyRemoteCatalog];
   catalogBeforeReordering = self->_catalogBeforeReordering;
-  self->_catalogBeforeReordering = v4;
+  self->_catalogBeforeReordering = _copyRemoteCatalog;
 }
 
 - (PKCatalog)_copyRemoteCatalog
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -1754,7 +1754,7 @@ uint64_t __44__PKGroupsController_handleUserPassRecover___block_invoke(uint64_t 
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = *(a1 + 48);
+  v3 = *(self + 48);
   v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (!v4)
   {
@@ -1789,8 +1789,8 @@ uint64_t __44__PKGroupsController_handleUserPassRecover___block_invoke(uint64_t 
         v9 = 0;
       }
 
-      v10 = [(PKCatalog *)v2 groups];
-      [v10 addObject:v9];
+      groups = [(PKCatalog *)v2 groups];
+      [groups addObject:v9];
 
 LABEL_11:
       ++v7;
@@ -1807,17 +1807,17 @@ LABEL_15:
   return v2;
 }
 
-- (void)moveGroupAtIndex:(unint64_t)a3 toIndex:(unint64_t)a4
+- (void)moveGroupAtIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
   v7 = [(PKGroupsController *)self groupAtIndex:?];
-  [(PKGroupsController *)self _moveGroup:v7 fromIndex:a3 toIndex:a4 notify:0];
+  [(PKGroupsController *)self _moveGroup:v7 fromIndex:index toIndex:toIndex notify:0];
 }
 
-- (void)movePass:(id)a3 inGroup:(id)a4 toIndex:(unint64_t)a5
+- (void)movePass:(id)pass inGroup:(id)group toIndex:(unint64_t)index
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  passCopy = pass;
+  groupCopy = group;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -1827,7 +1827,7 @@ LABEL_15:
   if (v11)
   {
     v12 = v11;
-    v21 = a5;
+    indexCopy = index;
     v13 = *v23;
 LABEL_3:
     v14 = 0;
@@ -1839,9 +1839,9 @@ LABEL_3:
       }
 
       v15 = *(*(&v22 + 1) + 8 * v14);
-      v16 = [v15 groupID];
-      v17 = [v9 groupID];
-      v18 = [v16 isEqualToNumber:v17];
+      groupID = [v15 groupID];
+      groupID2 = [groupCopy groupID];
+      v18 = [groupID isEqualToNumber:groupID2];
 
       if (v18)
       {
@@ -1867,8 +1867,8 @@ LABEL_3:
       goto LABEL_13;
     }
 
-    v20 = [v8 uniqueID];
-    [(PKGroup *)v19 _moveUniqueID:v20 toIndex:v21 notify:0];
+    uniqueID = [passCopy uniqueID];
+    [(PKGroup *)v19 _moveUniqueID:uniqueID toIndex:indexCopy notify:0];
 
     v10 = v19;
   }
@@ -1880,7 +1880,7 @@ LABEL_13:
 
 - (void)enableRemoteUpdates
 {
-  v8 = [(PKGroupsController *)self _copyRemoteCatalog];
+  _copyRemoteCatalog = [(PKGroupsController *)self _copyRemoteCatalog];
   if ([(PKCatalog *)self->_catalogBeforeReordering isEquivalentToCatalog:?])
   {
     v3 = [(NSMutableArray *)self->_enqueuedUpdates count];
@@ -1897,7 +1897,7 @@ LABEL_13:
 
   else
   {
-    [(PKPassLibrary *)self->_passLibrary sendUserEditedCatalog:v8];
+    [(PKPassLibrary *)self->_passLibrary sendUserEditedCatalog:_copyRemoteCatalog];
   }
 
   [(NSMutableArray *)self->_enqueuedUpdates removeAllObjects];
@@ -1907,22 +1907,22 @@ LABEL_13:
   self->_suppressRemoteUpdates = 0;
 }
 
-- (void)addLocalPasses:(id)a3
+- (void)addLocalPasses:(id)passes
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = self;
-  objc_storeStrong(&self->_localPasses, a3);
+  passesCopy = passes;
+  selfCopy = self;
+  objc_storeStrong(&self->_localPasses, passes);
   v7 = objc_alloc_init(PKCatalogGroup);
   v8 = PKUniqueNumber();
   [(PKCatalogGroup *)v7 setGroupID:v8];
 
-  v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(passesCopy, "count")}];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v10 = v5;
+  v10 = passesCopy;
   v11 = [v10 countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v11)
   {
@@ -1938,11 +1938,11 @@ LABEL_13:
         }
 
         v15 = *(*(&v35 + 1) + 8 * i);
-        v16 = [v15 uniqueID];
-        v17 = [(PKCatalogGroup *)v7 uniqueIDs];
-        [v17 addObject:v16];
+        uniqueID = [v15 uniqueID];
+        uniqueIDs = [(PKCatalogGroup *)v7 uniqueIDs];
+        [uniqueIDs addObject:uniqueID];
 
-        [v9 setObject:v15 forKey:v16];
+        [v9 setObject:v15 forKey:uniqueID];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v35 objects:v40 count:16];
@@ -1964,8 +1964,8 @@ LABEL_13:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v21 = [v9 allKeys];
-  v22 = [v21 countByEnumeratingWithState:&v31 objects:v39 count:16];
+  allKeys = [v9 allKeys];
+  v22 = [allKeys countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v22)
   {
     v23 = v22;
@@ -1976,39 +1976,39 @@ LABEL_13:
       {
         if (*v32 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(allKeys);
         }
 
         v26 = *(*(&v31 + 1) + 8 * j);
-        groupIDsByPassUniqueID = v6->_groupIDsByPassUniqueID;
-        v28 = [v20 groupID];
-        [(NSMutableDictionary *)groupIDsByPassUniqueID setObject:v28 forKey:v26];
+        groupIDsByPassUniqueID = selfCopy->_groupIDsByPassUniqueID;
+        groupID = [v20 groupID];
+        [(NSMutableDictionary *)groupIDsByPassUniqueID setObject:groupID forKey:v26];
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v31 objects:v39 count:16];
+      v23 = [allKeys countByEnumeratingWithState:&v31 objects:v39 count:16];
     }
 
     while (v23);
   }
 
-  [(PKGroupsController *)v6 _insertGroup:v20 atIndex:0 notify:1];
+  [(PKGroupsController *)selfCopy _insertGroup:v20 atIndex:0 notify:1];
 }
 
-- (void)_insertGroup:(unint64_t)a3 atIndex:(int)a4 notify:
+- (void)_insertGroup:(unint64_t)group atIndex:(int)index notify:
 {
   v10 = a2;
-  if (a1)
+  if (self)
   {
-    v7 = *(a1 + 56);
-    v8 = [v10 groupID];
-    [v7 setObject:v10 forKey:v8];
+    v7 = *(self + 56);
+    groupID = [v10 groupID];
+    [v7 setObject:v10 forKey:groupID];
 
-    [*(a1 + 48) insertObject:v10 atIndex:a3];
-    [(PKGroupsController *)a1 _fixIndicesFrom:a3];
-    if (a4)
+    [*(self + 48) insertObject:v10 atIndex:group];
+    [(PKGroupsController *)self _fixIndicesFrom:group];
+    if (index)
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 168));
-      [WeakRetained groupsController:a1 didInsertGroup:v10 atIndex:a3];
+      WeakRetained = objc_loadWeakRetained((self + 168));
+      [WeakRetained groupsController:self didInsertGroup:v10 atIndex:group];
     }
   }
 }
@@ -2036,8 +2036,8 @@ LABEL_13:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) passes];
-        [v3 addObjectsFromArray:v9];
+        passes = [*(*(&v12 + 1) + 8 * i) passes];
+        [v3 addObjectsFromArray:passes];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -2051,11 +2051,11 @@ LABEL_13:
   return v10;
 }
 
-- (void)passLibrary:(id)a3 receivedUpdatedCatalog:(id)a4 passes:(id)a5 states:(id)a6
+- (void)passLibrary:(id)library receivedUpdatedCatalog:(id)catalog passes:(id)passes states:(id)states
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  catalogCopy = catalog;
+  passesCopy = passes;
+  statesCopy = states;
   if (!self->_limitedMode)
   {
     v12[0] = MEMORY[0x1E69E9820];
@@ -2063,9 +2063,9 @@ LABEL_13:
     v12[2] = __71__PKGroupsController_passLibrary_receivedUpdatedCatalog_passes_states___block_invoke;
     v12[3] = &unk_1E79C9668;
     v12[4] = self;
-    v13 = v9;
-    v14 = v10;
-    v15 = v11;
+    v13 = catalogCopy;
+    v14 = passesCopy;
+    v15 = statesCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v12);
   }
 }
@@ -2106,16 +2106,16 @@ void __71__PKGroupsController_passLibrary_receivedUpdatedCatalog_passes_states__
   }
 }
 
-- (void)objectSettingsDidChangeNotification:(id)a3
+- (void)objectSettingsDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __58__PKGroupsController_objectSettingsDidChangeNotification___block_invoke;
   v6[3] = &unk_1E79C4DD8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = notificationCopy;
+  selfCopy = self;
+  v5 = notificationCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -2150,47 +2150,47 @@ void __92__PKGroupsController__displayablePassesDictionaryFromPasses_withCatalog
   [v2 removeObjectForKey:v3];
 }
 
-- (void)_fixIndex:(uint64_t)a1
+- (void)_fixIndex:(uint64_t)index
 {
-  if (a1)
+  if (index)
   {
-    v7 = [*(a1 + 48) objectAtIndex:a2];
-    v4 = *(a1 + 64);
+    v7 = [*(index + 48) objectAtIndex:a2];
+    v4 = *(index + 64);
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a2];
-    v6 = [v7 groupID];
-    [v4 setObject:v5 forKey:v6];
+    groupID = [v7 groupID];
+    [v4 setObject:v5 forKey:groupID];
   }
 }
 
-- (unint64_t)_fixIndicesFrom:(void *)a1
+- (unint64_t)_fixIndicesFrom:(void *)from
 {
-  for (result = [a1 groupCount]; a2 < result; result = objc_msgSend(a1, "groupCount"))
+  for (result = [from groupCount]; a2 < result; result = objc_msgSend(from, "groupCount"))
   {
-    [(PKGroupsController *)a1 _fixIndex:?];
+    [(PKGroupsController *)from _fixIndex:?];
   }
 
   return result;
 }
 
-- (void)_placeGroup:(unint64_t)a3 atIndex:(uint64_t)a4 notify:
+- (void)_placeGroup:(unint64_t)group atIndex:(uint64_t)index notify:
 {
   v8 = a2;
-  if ([a1[6] count] <= a3)
+  if ([self[6] count] <= group)
   {
-    a3 = [a1[6] count];
+    group = [self[6] count];
   }
 
-  v7 = [a1 indexOfGroup:v8];
-  if (v7 != a3)
+  v7 = [self indexOfGroup:v8];
+  if (v7 != group)
   {
     if (v7 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      [(PKGroupsController *)a1 _insertGroup:v8 atIndex:a3 notify:a4];
+      [(PKGroupsController *)self _insertGroup:v8 atIndex:group notify:index];
     }
 
     else
     {
-      [a1 _moveGroup:v8 fromIndex:v7 toIndex:a3 notify:a4];
+      [self _moveGroup:v8 fromIndex:v7 toIndex:group notify:index];
     }
   }
 }
@@ -2210,30 +2210,30 @@ void __77__PKGroupsController__updateAndCreateGroupsWithCatalog_passes_states_no
   }
 }
 
-- (void)_moveGroup:(id)a3 fromIndex:(unint64_t)a4 toIndex:(unint64_t)a5 notify:(BOOL)a6
+- (void)_moveGroup:(id)group fromIndex:(unint64_t)index toIndex:(unint64_t)toIndex notify:(BOOL)notify
 {
-  v6 = a6;
-  v13 = a3;
-  [(NSMutableArray *)self->_groups removeObjectAtIndex:a4];
-  [(NSMutableArray *)self->_groups insertObject:v13 atIndex:a5];
-  if (a4 >= a5)
+  notifyCopy = notify;
+  groupCopy = group;
+  [(NSMutableArray *)self->_groups removeObjectAtIndex:index];
+  [(NSMutableArray *)self->_groups insertObject:groupCopy atIndex:toIndex];
+  if (index >= toIndex)
   {
-    v10 = a5;
+    indexCopy = toIndex;
   }
 
   else
   {
-    v10 = a4;
+    indexCopy = index;
   }
 
-  if (a4 <= a5)
+  if (index <= toIndex)
   {
-    v11 = a5;
+    indexCopy2 = toIndex;
   }
 
   else
   {
-    v11 = a4;
+    indexCopy2 = index;
   }
 
   do
@@ -2241,11 +2241,11 @@ void __77__PKGroupsController__updateAndCreateGroupsWithCatalog_passes_states_no
     [(PKGroupsController *)self _fixIndex:?];
   }
 
-  while (v10 <= v11);
-  if (v6)
+  while (indexCopy <= indexCopy2);
+  if (notifyCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained groupsController:self didMoveGroup:v13 fromIndex:a4 toIndex:a5];
+    [WeakRetained groupsController:self didMoveGroup:groupCopy fromIndex:index toIndex:toIndex];
   }
 }
 

@@ -2,15 +2,15 @@
 - (AudioServerPlugInHostInterface)get_host_interface;
 - (Core_Audio_Driver_Host_Proxy)init;
 - (DictionaryRef)driver_storage;
-- (PropertyListRef)copy_from_driver_storage:(StringRef)a3;
+- (PropertyListRef)copy_from_driver_storage:(StringRef)copy_from_driver_storage;
 - (id).cxx_construct;
-- (id)init_with_host_endpoint:(id)a3 driver:(id)a4;
-- (int)delete_from_driver_storage:(StringRef)a3;
-- (int)write_to_driver_storage:(StringRef)a3 property_list:(PropertyListRef)a4;
+- (id)init_with_host_endpoint:(id)init_with_host_endpoint driver:(id)driver;
+- (int)delete_from_driver_storage:(StringRef)delete_from_driver_storage;
+- (int)write_to_driver_storage:(StringRef)write_to_driver_storage property_list:(PropertyListRef)property_list;
 - (shared_ptr<Host_Interface>)host_interface;
 - (shared_ptr<caulk::mach::unfair_lock>)config_change_lock;
 - (shared_ptr<caulk::mach::unfair_lock>)driver_storage_lock;
-- (void)setDriver_storage:(DictionaryRef)a3;
+- (void)setDriver_storage:(DictionaryRef)driver_storage;
 @end
 
 @implementation Core_Audio_Driver_Host_Proxy
@@ -39,11 +39,11 @@
   return result;
 }
 
-- (void)setDriver_storage:(DictionaryRef)a3
+- (void)setDriver_storage:(DictionaryRef)driver_storage
 {
   mCFObject = self->_driver_storage.mObject.mCFObject;
-  v5 = *a3.mObject.mCFObject;
-  self->_driver_storage.mObject.mCFObject = *a3.mObject.mCFObject;
+  v5 = *driver_storage.mObject.mCFObject;
+  self->_driver_storage.mObject.mCFObject = *driver_storage.mObject.mCFObject;
   if (v5)
   {
     CFRetain(v5);
@@ -98,48 +98,48 @@
   return result;
 }
 
-- (int)delete_from_driver_storage:(StringRef)a3
+- (int)delete_from_driver_storage:(StringRef)delete_from_driver_storage
 {
   v10 = 0;
-  v4 = [(Core_Audio_Driver_Host_Proxy *)self connection_to_host];
+  connection_to_host = [(Core_Audio_Driver_Host_Proxy *)self connection_to_host];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3321888768;
   v9[2] = __59__Core_Audio_Driver_Host_Proxy_delete_from_driver_storage___block_invoke;
   v9[3] = &__block_descriptor_40_ea8_32c73_ZTSKZ59__Core_Audio_Driver_Host_Proxy_delete_from_driver_storage__E4__10_e17_v16__0__NSError_8l;
   v9[4] = &v10;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v9];
+  v5 = [connection_to_host synchronousRemoteObjectProxyWithErrorHandler:v9];
 
-  isa = a3.var0.var0->isa;
+  isa = delete_from_driver_storage.var0.var0->isa;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3321888768;
   v8[2] = __59__Core_Audio_Driver_Host_Proxy_delete_from_driver_storage___block_invoke_33;
   v8[3] = &__block_descriptor_40_ea8_32c73_ZTSKZ59__Core_Audio_Driver_Host_Proxy_delete_from_driver_storage__E4__11_e8_v12__0i8l;
   v8[4] = &v10;
   [v5 delete_storage_settings:isa reply:v8];
-  LODWORD(v4) = v10;
+  LODWORD(connection_to_host) = v10;
 
-  return v4;
+  return connection_to_host;
 }
 
-- (int)write_to_driver_storage:(StringRef)a3 property_list:(PropertyListRef)a4
+- (int)write_to_driver_storage:(StringRef)write_to_driver_storage property_list:(PropertyListRef)property_list
 {
   v15 = 0;
-  v6 = [(Core_Audio_Driver_Host_Proxy *)self connection_to_host];
+  connection_to_host = [(Core_Audio_Driver_Host_Proxy *)self connection_to_host];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3321888768;
   v14[2] = __70__Core_Audio_Driver_Host_Proxy_write_to_driver_storage_property_list___block_invoke;
   v14[3] = &__block_descriptor_40_ea8_32c83_ZTSKZ70__Core_Audio_Driver_Host_Proxy_write_to_driver_storage_property_list__E3__8_e17_v16__0__NSError_8l;
   v14[4] = &v15;
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v14];
+  v7 = [connection_to_host synchronousRemoteObjectProxyWithErrorHandler:v14];
   v8 = 560947818;
 
-  v13 = *a4.var0.var0;
+  v13 = *property_list.var0.var0;
   if (v13)
   {
     v9 = AMCP::HAL::pack_property_data(15, 8u, &v13);
     if (v9)
     {
-      isa = a3.var0.var0->isa;
+      isa = write_to_driver_storage.var0.var0->isa;
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3321888768;
       v12[2] = __70__Core_Audio_Driver_Host_Proxy_write_to_driver_storage_property_list___block_invoke_28;
@@ -153,19 +153,19 @@
   return v8;
 }
 
-- (PropertyListRef)copy_from_driver_storage:(StringRef)a3
+- (PropertyListRef)copy_from_driver_storage:(StringRef)copy_from_driver_storage
 {
   v5 = v3;
   v16 = 0;
-  v6 = [(Core_Audio_Driver_Host_Proxy *)self connection_to_host];
+  connection_to_host = [(Core_Audio_Driver_Host_Proxy *)self connection_to_host];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3321888768;
   v15[2] = __57__Core_Audio_Driver_Host_Proxy_copy_from_driver_storage___block_invoke;
   v15[3] = &__block_descriptor_40_ea8_32c70_ZTSKZ57__Core_Audio_Driver_Host_Proxy_copy_from_driver_storage__E3__6_e17_v16__0__NSError_8l;
   v15[4] = &v16;
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v15];
+  v7 = [connection_to_host synchronousRemoteObjectProxyWithErrorHandler:v15];
 
-  isa = a3.var0.var0->isa;
+  isa = copy_from_driver_storage.var0.var0->isa;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3321888768;
   v13[2] = __57__Core_Audio_Driver_Host_Proxy_copy_from_driver_storage___block_invoke_22;
@@ -213,10 +213,10 @@
   return v3;
 }
 
-- (id)init_with_host_endpoint:(id)a3 driver:(id)a4
+- (id)init_with_host_endpoint:(id)init_with_host_endpoint driver:(id)driver
 {
-  v6 = a3;
-  v7 = a4;
+  init_with_host_endpointCopy = init_with_host_endpoint;
+  driverCopy = driver;
   v14.receiver = self;
   v14.super_class = Core_Audio_Driver_Host_Proxy;
   v15 = 0;
@@ -224,7 +224,7 @@
   v15 = v8;
   if (v8)
   {
-    v9 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:v6];
+    v9 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:init_with_host_endpointCopy];
     connection_to_host = v8->_connection_to_host;
     v8->_connection_to_host = v9;
 

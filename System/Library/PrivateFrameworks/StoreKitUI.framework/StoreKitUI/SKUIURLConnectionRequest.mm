@@ -1,12 +1,12 @@
 @interface SKUIURLConnectionRequest
-- (void)startWithConnectionResponseBlock:(id)a3;
+- (void)startWithConnectionResponseBlock:(id)block;
 @end
 
 @implementation SKUIURLConnectionRequest
 
-- (void)startWithConnectionResponseBlock:(id)a3
+- (void)startWithConnectionResponseBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIURLConnectionRequest startWithConnectionResponseBlock:];
@@ -19,10 +19,10 @@
   v9[2] = __61__SKUIURLConnectionRequest_startWithConnectionResponseBlock___block_invoke_2;
   v9[3] = &unk_2782010C8;
   v10 = v5;
-  v11 = v4;
+  v11 = blockCopy;
   v8.receiver = self;
   v8.super_class = SKUIURLConnectionRequest;
-  v6 = v4;
+  v6 = blockCopy;
   v7 = v5;
   [(SSURLConnectionRequest *)&v8 startWithConnectionResponseBlock:v9];
 }

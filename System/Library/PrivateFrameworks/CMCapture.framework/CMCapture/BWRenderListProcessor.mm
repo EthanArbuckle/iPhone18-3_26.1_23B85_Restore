@@ -1,15 +1,15 @@
 @interface BWRenderListProcessor
-+ (id)filterRendererResultToString:(unint64_t)a3;
++ (id)filterRendererResultToString:(unint64_t)string;
 - (BOOL)alwaysEmitsOriginalResult;
-- (BWRenderListProcessor)initWithRenderingPool:(id)a3;
-- (void)_continueRenderingUsingRenderList:(void *)a3 parameterListProvider:(uint64_t)a4 result:(uint64_t)a5 resultError:(uint64_t *)a6 fromRendererNode:(uint64_t *)a7 parameterNode:(opaqueCMSampleBuffer *)a8 inputSampleBuffer:(__CVBuffer *)a9 inputPixelBuffer:(uint64_t)a10 finalResultHandler:;
-- (void)_emitProcessedSampleBufferFromRenderList:(uint64_t)a3 result:(int)a4 resultError:(opaqueCMSampleBuffer *)cf inputSampleBuffer:(__CVBuffer *)a6 processedPixelBuffer:(uint64_t)a7 finalResultHandler:;
-- (void)_finishRenderingUsingRenderList:(void *)a3 parameterListProvider:(uint64_t)a4 result:(int)a5 resultError:(opaqueCMSampleBuffer *)a6 inputSampleBuffer:(__CVBuffer *)a7 processedPixelBuffer:(uint64_t)a8 finalResultHandler:;
-- (void)_processRenderList:(void *)a3 parameterListProvider:(void *)a4 inputPixelBuffer:(void *)a5 inputSampleBuffer:(uint64_t)a6 resultHandler:;
-- (void)adjustMetadataOfSampleBuffer:(opaqueCMSampleBuffer *)a3 usingRenderList:(id)a4;
+- (BWRenderListProcessor)initWithRenderingPool:(id)pool;
+- (void)_continueRenderingUsingRenderList:(void *)list parameterListProvider:(uint64_t)provider result:(uint64_t)result resultError:(uint64_t *)error fromRendererNode:(uint64_t *)node parameterNode:(opaqueCMSampleBuffer *)parameterNode inputSampleBuffer:(__CVBuffer *)buffer inputPixelBuffer:(uint64_t)self0 finalResultHandler:;
+- (void)_emitProcessedSampleBufferFromRenderList:(uint64_t)list result:(int)result resultError:(opaqueCMSampleBuffer *)cf inputSampleBuffer:(__CVBuffer *)buffer processedPixelBuffer:(uint64_t)pixelBuffer finalResultHandler:;
+- (void)_finishRenderingUsingRenderList:(void *)list parameterListProvider:(uint64_t)provider result:(int)result resultError:(opaqueCMSampleBuffer *)error inputSampleBuffer:(__CVBuffer *)buffer processedPixelBuffer:(uint64_t)pixelBuffer finalResultHandler:;
+- (void)_processRenderList:(void *)list parameterListProvider:(void *)provider inputPixelBuffer:(void *)buffer inputSampleBuffer:(uint64_t)sampleBuffer resultHandler:;
+- (void)adjustMetadataOfSampleBuffer:(opaqueCMSampleBuffer *)buffer usingRenderList:(id)list;
 - (void)dealloc;
-- (void)processRenderList:(id)a3 withParameters:(id)a4 inputPixelBuffer:(__CVBuffer *)a5 inputSampleBuffer:(opaqueCMSampleBuffer *)a6 resultHandler:(id)a7;
-- (void)setAlwaysEmitsOriginalResult:(BOOL)a3;
+- (void)processRenderList:(id)list withParameters:(id)parameters inputPixelBuffer:(__CVBuffer *)buffer inputSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer resultHandler:(id)handler;
+- (void)setAlwaysEmitsOriginalResult:(BOOL)result;
 @end
 
 @implementation BWRenderListProcessor
@@ -33,7 +33,7 @@
   return v3;
 }
 
-- (BWRenderListProcessor)initWithRenderingPool:(id)a3
+- (BWRenderListProcessor)initWithRenderingPool:(id)pool
 {
   v6.receiver = self;
   v6.super_class = BWRenderListProcessor;
@@ -41,7 +41,7 @@
   if (v4)
   {
     v4->_configurationMutexQueue = dispatch_queue_create("com.apple.bwgraph.render-list-processor.configuration-queue", 0);
-    v4->_renderingPool = a3;
+    v4->_renderingPool = pool;
     v4->_renderingGroup = dispatch_group_create();
   }
 
@@ -61,7 +61,7 @@
   [(BWRenderListProcessor *)&v4 dealloc];
 }
 
-- (void)setAlwaysEmitsOriginalResult:(BOOL)a3
+- (void)setAlwaysEmitsOriginalResult:(BOOL)result
 {
   configurationMutexQueue = self->_configurationMutexQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -69,27 +69,27 @@
   v4[2] = __54__BWRenderListProcessor_setAlwaysEmitsOriginalResult___block_invoke;
   v4[3] = &unk_1E7990078;
   v4[4] = self;
-  v5 = a3;
+  resultCopy = result;
   dispatch_sync(configurationMutexQueue, v4);
 }
 
-- (void)_continueRenderingUsingRenderList:(void *)a3 parameterListProvider:(uint64_t)a4 result:(uint64_t)a5 resultError:(uint64_t *)a6 fromRendererNode:(uint64_t *)a7 parameterNode:(opaqueCMSampleBuffer *)a8 inputSampleBuffer:(__CVBuffer *)a9 inputPixelBuffer:(uint64_t)a10 finalResultHandler:
+- (void)_continueRenderingUsingRenderList:(void *)list parameterListProvider:(uint64_t)provider result:(uint64_t)result resultError:(uint64_t *)error fromRendererNode:(uint64_t *)node parameterNode:(opaqueCMSampleBuffer *)parameterNode inputSampleBuffer:(__CVBuffer *)buffer inputPixelBuffer:(uint64_t)self0 finalResultHandler:
 {
-  if (a1 && a6 && a7 && a9)
+  if (self && error && node && buffer)
   {
-    v17 = [*(a1 + 24) newPixelBuffer];
-    if (v17)
+    newPixelBuffer = [*(self + 24) newPixelBuffer];
+    if (newPixelBuffer)
     {
-      v18 = v17;
-      CVBufferPropagateAttachments(a9, v17);
-      v19 = [a2 shouldAllowOriginalRenderFromNode:a6];
+      v18 = newPixelBuffer;
+      CVBufferPropagateAttachments(buffer, newPixelBuffer);
+      v19 = [a2 shouldAllowOriginalRenderFromNode:error];
       if (v19)
       {
         v24 = v19;
-        v20 = [*(a1 + 24) newPixelBuffer];
-        if (v20)
+        newPixelBuffer2 = [*(self + 24) newPixelBuffer];
+        if (newPixelBuffer2)
         {
-          CVBufferPropagateAttachments(a9, v20);
+          CVBufferPropagateAttachments(buffer, newPixelBuffer2);
         }
 
         LOBYTE(v19) = v24;
@@ -97,17 +97,17 @@
 
       else
       {
-        v20 = 0;
+        newPixelBuffer2 = 0;
       }
 
-      v21 = *a6;
-      v22 = *a7;
+      v21 = *error;
+      v22 = *node;
       v30[0] = 0;
       v30[1] = v30;
       v30[2] = 0x3052000000;
       v30[3] = __Block_byref_object_copy__37;
       v30[4] = __Block_byref_object_dispose__37;
-      v30[5] = a1;
+      v30[5] = self;
       v29[0] = 0;
       v29[1] = v29;
       v29[2] = 0x2020000000;
@@ -117,20 +117,20 @@
       v27[2] = __185__BWRenderListProcessor__continueRenderingUsingRenderList_parameterListProvider_result_resultError_fromRendererNode_parameterNode_inputSampleBuffer_inputPixelBuffer_finalResultHandler___block_invoke;
       v27[3] = &unk_1E799B978;
       v28 = v19;
-      v27[4] = a1;
+      v27[4] = self;
       v27[5] = a2;
-      v27[10] = v20;
-      v27[11] = a8;
+      v27[10] = newPixelBuffer2;
+      v27[11] = parameterNode;
       v27[12] = v18;
-      v27[13] = a9;
-      v27[14] = a4;
+      v27[13] = buffer;
+      v27[14] = provider;
       v27[15] = v21;
       v27[8] = v29;
       v27[9] = v30;
-      v27[6] = a3;
-      v27[7] = a10;
+      v27[6] = list;
+      v27[7] = pixelBuffer;
       v27[16] = v22;
-      [a6[1] renderUsingParameters:a7[1] inputPixelBuffer:a9 inputSampleBuffer:a8 originalPixelBuffer:v20 processedPixelBuffer:v18 completionHandler:v27];
+      [error[1] renderUsingParameters:node[1] inputPixelBuffer:buffer inputSampleBuffer:parameterNode originalPixelBuffer:newPixelBuffer2 processedPixelBuffer:v18 completionHandler:v27];
       _Block_object_dispose(v29, 8);
       _Block_object_dispose(v30, 8);
     }
@@ -140,33 +140,33 @@
       v23 = *MEMORY[0x1E696A768];
       v25 = *MEMORY[0x1E696A578];
       v26 = @"Failed to allocate pixel buffer for processed render";
-      -[BWRenderListProcessor _finishRenderingUsingRenderList:parameterListProvider:result:resultError:inputSampleBuffer:processedPixelBuffer:finalResultHandler:](a1, a2, a3, 0, [MEMORY[0x1E696ABC0] errorWithDomain:v23 code:-12786 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v26, &v25, 1)}], a8, a9, a10);
+      -[BWRenderListProcessor _finishRenderingUsingRenderList:parameterListProvider:result:resultError:inputSampleBuffer:processedPixelBuffer:finalResultHandler:](self, a2, list, 0, [MEMORY[0x1E696ABC0] errorWithDomain:v23 code:-12786 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v26, &v25, 1)}], parameterNode, buffer, pixelBuffer);
     }
   }
 }
 
-- (void)adjustMetadataOfSampleBuffer:(opaqueCMSampleBuffer *)a3 usingRenderList:(id)a4
+- (void)adjustMetadataOfSampleBuffer:(opaqueCMSampleBuffer *)buffer usingRenderList:(id)list
 {
-  if ([a4 affectsMetadata])
+  if ([list affectsMetadata])
   {
-    if (a3)
+    if (buffer)
     {
-      CFRetain(a3);
+      CFRetain(buffer);
     }
 
-    v5 = a4;
-    for (i = *[a4 rendererList]; i; i = *i)
+    listCopy = list;
+    for (i = *[list rendererList]; i; i = *i)
     {
       v7 = i[1];
       if ([v7 adjustsMetadata])
       {
-        [v7 adjustMetadataOfSampleBuffer:a3];
+        [v7 adjustMetadataOfSampleBuffer:buffer];
       }
     }
 
-    if (a3)
+    if (buffer)
     {
-      CFRelease(a3);
+      CFRelease(buffer);
     }
   }
 }
@@ -221,15 +221,15 @@ void __185__BWRenderListProcessor__continueRenderingUsingRenderList_parameterLis
   }
 }
 
-+ (id)filterRendererResultToString:(unint64_t)a3
++ (id)filterRendererResultToString:(unint64_t)string
 {
   v3 = @"Passthrough";
-  if (a3 == 1)
+  if (string == 1)
   {
     v3 = @"Original";
   }
 
-  if (a3 == 2)
+  if (string == 2)
   {
     return @"Processed";
   }
@@ -240,46 +240,46 @@ void __185__BWRenderListProcessor__continueRenderingUsingRenderList_parameterLis
   }
 }
 
-- (void)_processRenderList:(void *)a3 parameterListProvider:(void *)a4 inputPixelBuffer:(void *)a5 inputSampleBuffer:(uint64_t)a6 resultHandler:
+- (void)_processRenderList:(void *)list parameterListProvider:(void *)provider inputPixelBuffer:(void *)buffer inputSampleBuffer:(uint64_t)sampleBuffer resultHandler:
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  dispatch_group_wait(a1[4], 0xFFFFFFFFFFFFFFFFLL);
-  dispatch_group_enter(a1[4]);
-  if (a5)
+  dispatch_group_wait(self[4], 0xFFFFFFFFFFFFFFFFLL);
+  dispatch_group_enter(self[4]);
+  if (buffer)
   {
-    CFRetain(a5);
+    CFRetain(buffer);
   }
 
-  if (a4)
+  if (provider)
   {
-    CFRetain(a4);
+    CFRetain(provider);
   }
 
   v12 = a2;
-  v13 = a3;
-  if (a6 && -[dispatch_group_t alwaysEmitsOriginalResult](a1, "alwaysEmitsOriginalResult") && ([a2 producesOriginalRender] & 1) == 0)
+  listCopy = list;
+  if (sampleBuffer && -[dispatch_group_t alwaysEmitsOriginalResult](self, "alwaysEmitsOriginalResult") && ([a2 producesOriginalRender] & 1) == 0)
   {
-    (*(a6 + 16))(a6, 1, a5, 0);
+    (*(sampleBuffer + 16))(sampleBuffer, 1, buffer, 0);
   }
 
   if (a2)
   {
     v14 = *[a2 rendererList];
-    if (!a3)
+    if (!list)
     {
       goto LABEL_18;
     }
 
 LABEL_14:
-    v15 = [a3 parameterList];
-    if (v14 && *v15)
+    parameterList = [list parameterList];
+    if (v14 && *parameterList)
     {
       v16 = OUTLINED_FUNCTION_0_103();
-      [(BWRenderListProcessor *)v16 _continueRenderingUsingRenderList:v17 parameterListProvider:v18 result:v19 resultError:v20 fromRendererNode:v14 parameterNode:v21 inputSampleBuffer:a5 inputPixelBuffer:a4 finalResultHandler:a6];
+      [(BWRenderListProcessor *)v16 _continueRenderingUsingRenderList:v17 parameterListProvider:v18 result:v19 resultError:v20 fromRendererNode:v14 parameterNode:v21 inputSampleBuffer:buffer inputPixelBuffer:provider finalResultHandler:sampleBuffer];
       return;
     }
 
@@ -287,7 +287,7 @@ LABEL_14:
   }
 
   v14 = 0;
-  if (a3)
+  if (list)
   {
     goto LABEL_14;
   }
@@ -295,52 +295,52 @@ LABEL_14:
 LABEL_18:
   v22 = OUTLINED_FUNCTION_0_103();
 
-  [(BWRenderListProcessor *)v22 _finishRenderingUsingRenderList:v23 parameterListProvider:v24 result:v25 resultError:0 inputSampleBuffer:a5 processedPixelBuffer:a4 finalResultHandler:a6];
+  [(BWRenderListProcessor *)v22 _finishRenderingUsingRenderList:v23 parameterListProvider:v24 result:v25 resultError:0 inputSampleBuffer:buffer processedPixelBuffer:provider finalResultHandler:sampleBuffer];
 }
 
-- (void)processRenderList:(id)a3 withParameters:(id)a4 inputPixelBuffer:(__CVBuffer *)a5 inputSampleBuffer:(opaqueCMSampleBuffer *)a6 resultHandler:(id)a7
+- (void)processRenderList:(id)list withParameters:(id)parameters inputPixelBuffer:(__CVBuffer *)buffer inputSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer resultHandler:(id)handler
 {
-  v7 = a3;
-  if (a4)
+  listCopy = list;
+  if (parameters)
   {
-    a3 = a4;
+    list = parameters;
   }
 
-  [(BWRenderListProcessor *)self _processRenderList:v7 parameterListProvider:a3 inputPixelBuffer:a5 inputSampleBuffer:a6 resultHandler:a7];
+  [(BWRenderListProcessor *)self _processRenderList:listCopy parameterListProvider:list inputPixelBuffer:buffer inputSampleBuffer:sampleBuffer resultHandler:handler];
 }
 
-- (void)_finishRenderingUsingRenderList:(void *)a3 parameterListProvider:(uint64_t)a4 result:(int)a5 resultError:(opaqueCMSampleBuffer *)a6 inputSampleBuffer:(__CVBuffer *)a7 processedPixelBuffer:(uint64_t)a8 finalResultHandler:
+- (void)_finishRenderingUsingRenderList:(void *)list parameterListProvider:(uint64_t)provider result:(int)result resultError:(opaqueCMSampleBuffer *)error inputSampleBuffer:(__CVBuffer *)buffer processedPixelBuffer:(uint64_t)pixelBuffer finalResultHandler:
 {
-  if (a1)
+  if (self)
   {
-    [(BWRenderListProcessor *)a1 _emitProcessedSampleBufferFromRenderList:a2 result:a4 resultError:a5 inputSampleBuffer:a6 processedPixelBuffer:a7 finalResultHandler:a8];
-    if (a6)
+    [(BWRenderListProcessor *)self _emitProcessedSampleBufferFromRenderList:a2 result:provider resultError:result inputSampleBuffer:error processedPixelBuffer:buffer finalResultHandler:pixelBuffer];
+    if (error)
     {
-      CFRelease(a6);
+      CFRelease(error);
     }
 
-    v12 = *(a1 + 32);
+    v12 = *(self + 32);
 
     dispatch_group_leave(v12);
   }
 }
 
-- (void)_emitProcessedSampleBufferFromRenderList:(uint64_t)a3 result:(int)a4 resultError:(opaqueCMSampleBuffer *)cf inputSampleBuffer:(__CVBuffer *)a6 processedPixelBuffer:(uint64_t)a7 finalResultHandler:
+- (void)_emitProcessedSampleBufferFromRenderList:(uint64_t)list result:(int)result resultError:(opaqueCMSampleBuffer *)cf inputSampleBuffer:(__CVBuffer *)buffer processedPixelBuffer:(uint64_t)pixelBuffer finalResultHandler:
 {
-  if (a1)
+  if (self)
   {
     cfa = 0;
-    if ((a3 & 3) != 0)
+    if ((list & 3) != 0)
     {
-      if (!BWCMSampleBufferCreateCopyWithNewPixelBuffer(cf, a6, (a1 + 40), &cfa) && cfa)
+      if (!BWCMSampleBufferCreateCopyWithNewPixelBuffer(cf, buffer, (self + 40), &cfa) && cfa)
       {
 LABEL_5:
-        if (a7)
+        if (pixelBuffer)
         {
-          (*(a7 + 16))(a7, a3);
+          (*(pixelBuffer + 16))(pixelBuffer, list);
         }
 
-        if (!a6)
+        if (!buffer)
         {
           goto LABEL_9;
         }
@@ -371,7 +371,7 @@ LABEL_5:
     fig_log_get_emitter();
     OUTLINED_FUNCTION_2_33();
     FigDebugAssert3();
-    if (!a6)
+    if (!buffer)
     {
 LABEL_9:
       if (cfa)
@@ -383,7 +383,7 @@ LABEL_9:
     }
 
 LABEL_8:
-    CFRelease(a6);
+    CFRelease(buffer);
     goto LABEL_9;
   }
 }

@@ -1,32 +1,32 @@
 @interface TCFontFamily
 - (BOOL)allFamilyIsBold;
 - (BOOL)allFamilyIsItalic;
-- (BOOL)doesAnyNonBoldVariantExistForFont:(id)a3;
+- (BOOL)doesAnyNonBoldVariantExistForFont:(id)font;
 - (BOOL)traitsAreAdditive;
-- (TCFontFamily)initWithDictionary:(id)a3;
-- (TCFontFamily)initWithNamesByLanguage:(id)a3 members:(id)a4;
-- (id)bestMatchForStyling:(TCFontStyling)a3;
+- (TCFontFamily)initWithDictionary:(id)dictionary;
+- (TCFontFamily)initWithNamesByLanguage:(id)language members:(id)members;
+- (id)bestMatchForStyling:(TCFontStyling)styling;
 - (id)description;
 - (id)englishName;
 - (id)equivalentDictionary;
-- (id)memberForFullName:(id)a3;
-- (id)memberForPSName:(id)a3;
-- (id)regularVariant:(BOOL)a3;
-- (id)variantByAddingBoldToFont:(id)a3;
-- (id)variantByRemovingBoldFromFont:(id)a3;
-- (id)variantByTogglingItalicOfFont:(id)a3;
-- (id)weightVariantsOfFont:(id)a3;
-- (unint64_t)boldFontIndexInWeightVariants:(id)a3;
-- (unint64_t)regularFontIndexInWeightVariants:(id)a3;
+- (id)memberForFullName:(id)name;
+- (id)memberForPSName:(id)name;
+- (id)regularVariant:(BOOL)variant;
+- (id)variantByAddingBoldToFont:(id)font;
+- (id)variantByRemovingBoldFromFont:(id)font;
+- (id)variantByTogglingItalicOfFont:(id)font;
+- (id)weightVariantsOfFont:(id)font;
+- (unint64_t)boldFontIndexInWeightVariants:(id)variants;
+- (unint64_t)regularFontIndexInWeightVariants:(id)variants;
 @end
 
 @implementation TCFontFamily
 
-- (TCFontFamily)initWithNamesByLanguage:(id)a3 members:(id)a4
+- (TCFontFamily)initWithNamesByLanguage:(id)language members:(id)members
 {
   v50 = *MEMORY[0x277D85DE8];
-  v32 = a3;
-  v35 = a4;
+  languageCopy = language;
+  membersCopy = members;
   v47.receiver = self;
   v47.super_class = TCFontFamily;
   v6 = [(TCFontFamily *)&v47 init];
@@ -34,7 +34,7 @@
   if (v6)
   {
     v7 = v6;
-    v8 = [v32 copy];
+    v8 = [languageCopy copy];
     namesByLanguage = v7->_namesByLanguage;
     v7->_namesByLanguage = v8;
 
@@ -42,7 +42,7 @@
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    obj = v35;
+    obj = membersCopy;
     v10 = [obj countByEnumeratingWithState:&v43 objects:v49 count:16];
     if (v10)
     {
@@ -78,8 +78,8 @@ LABEL_4:
       v42 = 0u;
       v39 = 0u;
       v40 = 0u;
-      v35 = obj;
-      v15 = [v35 countByEnumeratingWithState:&v39 objects:v48 count:16];
+      membersCopy = obj;
+      v15 = [membersCopy countByEnumeratingWithState:&v39 objects:v48 count:16];
       if (!v15)
       {
 
@@ -98,48 +98,48 @@ LABEL_28:
         {
           if (*v40 != v36)
           {
-            objc_enumerationMutation(v35);
+            objc_enumerationMutation(membersCopy);
           }
 
           v18 = *(*(&v39 + 1) + 8 * i);
           if ([v18 styling])
           {
-            v19 = [v18 styling];
-            v16 |= v19 != [v38 styling];
+            styling = [v18 styling];
+            v16 |= styling != [v38 styling];
           }
 
           else
           {
             if (!v37)
             {
-              v37 = [v35 mutableCopy];
+              v37 = [membersCopy mutableCopy];
             }
 
-            v20 = [v18 styling];
+            styling2 = [v18 styling];
             v22 = v21;
-            v23 = [v38 styling];
+            styling3 = [v38 styling];
             v24 = [TCFont alloc];
-            v25 = [v18 namesByLanguage];
-            v26 = [v18 psName];
-            v27 = [(TCFont *)v24 initWithNamesByLanguage:v25 psName:v26 styling:v20 & 0xFFFFFFFF00000000 | v23, v22];
+            namesByLanguage = [v18 namesByLanguage];
+            psName = [v18 psName];
+            v27 = [(TCFont *)v24 initWithNamesByLanguage:namesByLanguage psName:psName styling:styling2 & 0xFFFFFFFF00000000 | styling3, v22];
 
             [v37 replaceObjectAtIndex:objc_msgSend(v37 withObject:{"indexOfObjectIdenticalTo:", v18), v27}];
           }
         }
 
-        v15 = [v35 countByEnumeratingWithState:&v39 objects:v48 count:16];
+        v15 = [membersCopy countByEnumeratingWithState:&v39 objects:v48 count:16];
       }
 
       while (v15);
 
       if ((v16 & (v37 != 0)) == 1)
       {
-        [v32 objectForKeyedSubscript:&unk_286F6D860];
+        [languageCopy objectForKeyedSubscript:&unk_286F6D860];
 
         v28 = v37;
 LABEL_27:
         v13 = v28;
-        v35 = v13;
+        membersCopy = v13;
         goto LABEL_28;
       }
 
@@ -157,11 +157,11 @@ LABEL_27:
 LABEL_10:
       v13 = 0;
       v14 = obj;
-      v35 = obj;
+      membersCopy = obj;
 LABEL_29:
     }
 
-    v29 = [v35 copy];
+    v29 = [membersCopy copy];
     members = v33->_members;
     v33->_members = v29;
 
@@ -171,9 +171,9 @@ LABEL_29:
   return v33;
 }
 
-- (id)bestMatchForStyling:(TCFontStyling)a3
+- (id)bestMatchForStyling:(TCFontStyling)styling
 {
-  v3 = *&a3.weight;
+  v3 = *&styling.weight;
   v27 = *MEMORY[0x277D85DE8];
   [(TCFontFamily *)self members];
   v24 = 0u;
@@ -242,10 +242,10 @@ LABEL_29:
   return v6;
 }
 
-- (id)memberForPSName:(id)a3
+- (id)memberForPSName:(id)name
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   [(TCFontFamily *)self members];
   v15 = 0u;
   v16 = 0u;
@@ -265,8 +265,8 @@ LABEL_29:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 psName];
-        v11 = [v10 isEqualToString:v4];
+        psName = [v9 psName];
+        v11 = [psName isEqualToString:nameCopy];
 
         if (v11)
         {
@@ -290,10 +290,10 @@ LABEL_11:
   return v6;
 }
 
-- (id)memberForFullName:(id)a3
+- (id)memberForFullName:(id)name
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   [(TCFontFamily *)self members];
   v28 = 0u;
   v29 = 0u;
@@ -318,8 +318,8 @@ LABEL_11:
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v8 = [v7 namesByLanguage];
-        v9 = [v8 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        namesByLanguage = [v7 namesByLanguage];
+        v9 = [namesByLanguage countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v9)
         {
           v10 = *v23;
@@ -329,15 +329,15 @@ LABEL_11:
             {
               if (*v23 != v10)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(namesByLanguage);
               }
 
               v12 = *(*(&v22 + 1) + 8 * j);
-              v13 = [v7 namesByLanguage];
-              v14 = [v13 objectForKeyedSubscript:v12];
+              namesByLanguage2 = [v7 namesByLanguage];
+              v14 = [namesByLanguage2 objectForKeyedSubscript:v12];
 
-              v15 = [v14 fullName];
-              v16 = [v15 isEqualToString:v4];
+              fullName = [v14 fullName];
+              v16 = [fullName isEqualToString:nameCopy];
 
               if (v16)
               {
@@ -347,7 +347,7 @@ LABEL_11:
               }
             }
 
-            v9 = [v8 countByEnumeratingWithState:&v22 objects:v30 count:16];
+            v9 = [namesByLanguage countByEnumeratingWithState:&v22 objects:v30 count:16];
             if (v9)
             {
               continue;
@@ -375,14 +375,14 @@ LABEL_19:
   return v17;
 }
 
-- (id)regularVariant:(BOOL)a3
+- (id)regularVariant:(BOOL)variant
 {
-  v49 = a3;
+  variantCopy = variant;
   v62 = *MEMORY[0x277D85DE8];
-  v50 = [(TCFontFamily *)self members];
-  if ([v50 count] == 1)
+  members = [(TCFontFamily *)self members];
+  if ([members count] == 1)
   {
-    v3 = [v50 firstObject];
+    firstObject = [members firstObject];
     goto LABEL_58;
   }
 
@@ -395,7 +395,7 @@ LABEL_19:
   }
 
   v4 = &[TCFontFamily regularVariant:]::sRegularSuffixExtendedArray;
-  if (!v49)
+  if (!variantCopy)
   {
     v4 = &[TCFontFamily regularVariant:]::sRegularSuffixArray;
   }
@@ -405,11 +405,11 @@ LABEL_19:
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  obj = v50;
+  obj = members;
   v6 = [obj countByEnumeratingWithState:&v56 objects:v61 count:16];
   if (v6)
   {
-    v3 = 0;
+    firstObject = 0;
     v7 = *v57;
     v8 = 0x7FFFFFFFFFFFFFFFLL;
     do
@@ -422,16 +422,16 @@ LABEL_19:
         }
 
         v10 = *(*(&v56 + 1) + 8 * i);
-        v11 = [v10 englishName];
-        v12 = [v11 styleName];
-        v13 = [v12 lowercaseString];
+        englishName = [v10 englishName];
+        styleName = [englishName styleName];
+        lowercaseString = [styleName lowercaseString];
 
-        v14 = [v5 indexOfObject:v13];
+        v14 = [v5 indexOfObject:lowercaseString];
         if (v14 < v8)
         {
           v15 = v10;
 
-          v3 = v15;
+          firstObject = v15;
           v8 = v14;
         }
       }
@@ -441,18 +441,18 @@ LABEL_19:
 
     while (v6);
 
-    if (v3)
+    if (firstObject)
     {
-      if (v49)
+      if (variantCopy)
       {
         goto LABEL_57;
       }
 
 LABEL_27:
-      v25 = [v3 englishName];
-      v26 = [v25 fullName];
-      v27 = [v25 styleName];
-      v28 = [v26 hasSuffix:v27];
+      englishName2 = [firstObject englishName];
+      fullName = [englishName2 fullName];
+      styleName2 = [englishName2 styleName];
+      v28 = [fullName hasSuffix:styleName2];
 
       if (!v28)
       {
@@ -464,9 +464,9 @@ LABEL_27:
       }
 
       v29 = [TCFontFamily regularVariant:]::sInvalidFullNameSuffixSet;
-      v30 = [v25 styleName];
-      v31 = [v30 lowercaseString];
-      v32 = [v29 containsObject:v31];
+      styleName3 = [englishName2 styleName];
+      lowercaseString2 = [styleName3 lowercaseString];
+      v32 = [v29 containsObject:lowercaseString2];
 
       if (!v32)
       {
@@ -478,20 +478,20 @@ LABEL_27:
       }
 
       v33 = [TCFontFamily regularVariant:]::sFontsWithRegular;
-      v34 = [(TCFontFamily *)self englishName];
-      LOBYTE(v33) = [v33 containsObject:v34];
+      englishName3 = [(TCFontFamily *)self englishName];
+      LOBYTE(v33) = [v33 containsObject:englishName3];
 
       if ((v33 & 1) == 0)
       {
-        v35 = v3;
+        v35 = firstObject;
 LABEL_54:
-        v3 = 0;
+        firstObject = 0;
       }
 
       else
       {
 LABEL_32:
-        if (!v3)
+        if (!firstObject)
         {
 LABEL_56:
 
@@ -517,12 +517,12 @@ LABEL_56:
               }
 
               v39 = *(*(&v52 + 1) + 8 * j);
-              if (v39 != v3)
+              if (v39 != firstObject)
               {
-                v40 = [v39 styling];
+                styling = [v39 styling];
                 v42 = v41;
-                v43 = [v3 styling];
-                v45 = v40 == v43 && (v43 ^ v40) >> 32 == 0;
+                styling2 = [firstObject styling];
+                v45 = styling == styling2 && (styling2 ^ styling) >> 32 == 0;
                 if (v45 && v42 == v44 && BYTE1(v42) == BYTE1(v44) && (v44 ^ v42) >> 32 == 0)
                 {
 
@@ -569,22 +569,22 @@ LABEL_56:
     while ((v18 & 1) != 0);
   }
 
-  if (!v49)
+  if (!variantCopy)
   {
-    v3 = 0;
+    firstObject = 0;
     goto LABEL_27;
   }
 
-  v21 = [obj firstObject];
-  v22 = [v21 styling];
+  firstObject2 = [obj firstObject];
+  styling3 = [firstObject2 styling];
   v24 = v23;
 
-  v3 = [(TCFontFamily *)self bestMatchForStyling:v22, v24 & 0xFFFF0000];
+  firstObject = [(TCFontFamily *)self bestMatchForStyling:styling3, v24 & 0xFFFF0000];
 LABEL_57:
 
 LABEL_58:
 
-  return v3;
+  return firstObject;
 }
 
 - (BOOL)traitsAreAdditive
@@ -602,8 +602,8 @@ LABEL_58:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(TCFontFamily *)self members];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  members = [(TCFontFamily *)self members];
+  v3 = [members countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = *v10;
@@ -613,7 +613,7 @@ LABEL_58:
       {
         if (*v10 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(members);
         }
 
         [*(*(&v9 + 1) + 8 * i) styling];
@@ -624,7 +624,7 @@ LABEL_58:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v3 = [members countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v3)
       {
         continue;
@@ -640,11 +640,11 @@ LABEL_11:
   return v7;
 }
 
-- (id)variantByTogglingItalicOfFont:(id)a3
+- (id)variantByTogglingItalicOfFont:(id)font
 {
   v26 = *MEMORY[0x277D85DE8];
-  v20 = a3;
-  v4 = [v20 styling];
+  fontCopy = font;
+  styling = [fontCopy styling];
   v6 = v5;
   [(TCFontFamily *)self members];
   v23 = 0u;
@@ -667,8 +667,8 @@ LABEL_11:
         }
 
         v12 = *(*(&v21 + 1) + 8 * v11);
-        v13 = [v12 styling];
-        if (v13 == v4 && (v13 ^ v4) >> 32 == 0 && v14 == v6 && (v14 & 0xFF00 ^ v6 & 0x100) == 0x100 && (v14 ^ v6) >> 32 == 0)
+        styling2 = [v12 styling];
+        if (styling2 == styling && (styling2 ^ styling) >> 32 == 0 && v14 == v6 && (v14 & 0xFF00 ^ v6 & 0x100) == 0x100 && (v14 ^ v6) >> 32 == 0)
         {
           if (v9)
           {
@@ -706,8 +706,8 @@ LABEL_25:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(TCFontFamily *)self members];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  members = [(TCFontFamily *)self members];
+  v3 = [members countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = *v10;
@@ -717,7 +717,7 @@ LABEL_25:
       {
         if (*v10 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(members);
         }
 
         [*(*(&v9 + 1) + 8 * i) styling];
@@ -728,7 +728,7 @@ LABEL_25:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v3 = [members countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v3)
       {
         continue;
@@ -744,12 +744,12 @@ LABEL_11:
   return v7;
 }
 
-- (id)weightVariantsOfFont:(id)a3
+- (id)weightVariantsOfFont:(id)font
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = [a3 styling];
+  styling = [font styling];
   v6 = v5;
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   [(TCFontFamily *)self members];
   v24 = 0u;
   v25 = 0u;
@@ -772,11 +772,11 @@ LABEL_11:
         v12 = *(*(&v22 + 1) + 8 * v11);
         [v12 styling];
         v14 = v13;
-        v15 = [v12 styling];
-        v17 = v15 == v4 && (v15 ^ v4) >> 32 == 0;
+        styling2 = [v12 styling];
+        v17 = styling2 == styling && (styling2 ^ styling) >> 32 == 0;
         if (v17 && v16 == v14 && BYTE1(v6) == BYTE1(v16) && (v16 ^ v6) >> 32 == 0)
         {
-          [v7 addObject:v12];
+          [array addObject:v12];
         }
 
         ++v11;
@@ -790,7 +790,7 @@ LABEL_11:
     while (v19);
   }
 
-  v20 = [v7 sortedArrayUsingComparator:&__block_literal_global_42];
+  v20 = [array sortedArrayUsingComparator:&__block_literal_global_42];
 
   return v20;
 }
@@ -826,17 +826,17 @@ uint64_t __37__TCFontFamily_weightVariantsOfFont___block_invoke(uint64_t a1, voi
   return v11;
 }
 
-- (unint64_t)boldFontIndexInWeightVariants:(id)a3
+- (unint64_t)boldFontIndexInWeightVariants:(id)variants
 {
-  v3 = a3;
-  v4 = [v3 count];
+  variantsCopy = variants;
+  v4 = [variantsCopy count];
   v5 = v4;
   if (v4)
   {
     v6 = v4;
     while (1)
     {
-      v7 = [v3 objectAtIndexedSubscript:v6 - 1];
+      v7 = [variantsCopy objectAtIndexedSubscript:v6 - 1];
       [v7 styling];
       if (v8 <= 40)
       {
@@ -866,16 +866,16 @@ LABEL_13:
   return v5;
 }
 
-- (unint64_t)regularFontIndexInWeightVariants:(id)a3
+- (unint64_t)regularFontIndexInWeightVariants:(id)variants
 {
-  v3 = a3;
-  v4 = [v3 count];
+  variantsCopy = variants;
+  v4 = [variantsCopy count];
   if (v4)
   {
     v5 = 0;
     while (1)
     {
-      v6 = [v3 objectAtIndexedSubscript:v5];
+      v6 = [variantsCopy objectAtIndexedSubscript:v5];
       [v6 styling];
       if (!(v7 << 24))
       {
@@ -915,19 +915,19 @@ LABEL_6:
   return v5;
 }
 
-- (id)variantByAddingBoldToFont:(id)a3
+- (id)variantByAddingBoldToFont:(id)font
 {
-  v4 = a3;
-  v5 = [(TCFontFamily *)self members];
-  if ([v5 count] == 1 || (objc_msgSend(v4, "styling"), v6 > 39) || -[TCFontFamily allFamilyIsBold](self, "allFamilyIsBold"))
+  fontCopy = font;
+  members = [(TCFontFamily *)self members];
+  if ([members count] == 1 || (objc_msgSend(fontCopy, "styling"), v6 > 39) || -[TCFontFamily allFamilyIsBold](self, "allFamilyIsBold"))
   {
     v7 = 0;
   }
 
   else
   {
-    v9 = [(TCFontFamily *)self weightVariantsOfFont:v4];
-    v10 = [v9 indexOfObjectIdenticalTo:v4];
+    v9 = [(TCFontFamily *)self weightVariantsOfFont:fontCopy];
+    v10 = [v9 indexOfObjectIdenticalTo:fontCopy];
     if ([v9 count] >= 2 && (v11 = -[TCFontFamily boldFontIndexInWeightVariants:](self, "boldFontIndexInWeightVariants:", v9), v10 == -[TCFontFamily regularFontIndexInWeightVariants:](self, "regularFontIndexInWeightVariants:", v9)))
     {
       v7 = [v9 objectAtIndexedSubscript:v11];
@@ -942,19 +942,19 @@ LABEL_6:
   return v7;
 }
 
-- (id)variantByRemovingBoldFromFont:(id)a3
+- (id)variantByRemovingBoldFromFont:(id)font
 {
-  v4 = a3;
-  v5 = [(TCFontFamily *)self members];
-  if ([v5 count] == 1 || (objc_msgSend(v4, "styling"), v6 < 1) || -[TCFontFamily allFamilyIsBold](self, "allFamilyIsBold") || !-[TCFontFamily traitsAreAdditive](self, "traitsAreAdditive"))
+  fontCopy = font;
+  members = [(TCFontFamily *)self members];
+  if ([members count] == 1 || (objc_msgSend(fontCopy, "styling"), v6 < 1) || -[TCFontFamily allFamilyIsBold](self, "allFamilyIsBold") || !-[TCFontFamily traitsAreAdditive](self, "traitsAreAdditive"))
   {
     v11 = 0;
   }
 
   else
   {
-    v7 = [(TCFontFamily *)self weightVariantsOfFont:v4];
-    v8 = [v7 indexOfObjectIdenticalTo:v4];
+    v7 = [(TCFontFamily *)self weightVariantsOfFont:fontCopy];
+    v8 = [v7 indexOfObjectIdenticalTo:fontCopy];
     if ([v7 count] >= 2 && (v9 = -[TCFontFamily boldFontIndexInWeightVariants:](self, "boldFontIndexInWeightVariants:", v7), v10 = -[TCFontFamily regularFontIndexInWeightVariants:](self, "regularFontIndexInWeightVariants:", v7), v8 == v9))
     {
       v11 = [v7 objectAtIndexedSubscript:v10];
@@ -969,17 +969,17 @@ LABEL_6:
   return v11;
 }
 
-- (BOOL)doesAnyNonBoldVariantExistForFont:(id)a3
+- (BOOL)doesAnyNonBoldVariantExistForFont:(id)font
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = [a3 styling];
+  styling = [font styling];
   v6 = v5;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = [(TCFontFamily *)self members];
-  v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  members = [(TCFontFamily *)self members];
+  v8 = [members countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v8)
   {
     v9 = *v23;
@@ -990,14 +990,14 @@ LABEL_6:
       {
         if (*v23 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(members);
         }
 
         v11 = *(*(&v22 + 1) + 8 * v10);
         [v11 styling];
         v13 = v12;
-        v14 = [v11 styling];
-        v16 = v14 == v4 && (v14 ^ v4) >> 32 == 0;
+        styling2 = [v11 styling];
+        v16 = styling2 == styling && (styling2 ^ styling) >> 32 == 0;
         if (v16 && v15 == v13 && BYTE1(v6) == BYTE1(v15) && (v15 ^ v6) >> 32 == 0)
         {
           [v11 styling];
@@ -1012,7 +1012,7 @@ LABEL_6:
       }
 
       while (v8 != v10);
-      v19 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v19 = [members countByEnumeratingWithState:&v22 objects:v26 count:16];
       v8 = v19;
     }
 
@@ -1027,8 +1027,8 @@ LABEL_22:
 
 - (id)englishName
 {
-  v2 = [(TCFontFamily *)self namesByLanguage];
-  v3 = [v2 objectForKeyedSubscript:&unk_286F6D860];
+  namesByLanguage = [(TCFontFamily *)self namesByLanguage];
+  v3 = [namesByLanguage objectForKeyedSubscript:&unk_286F6D860];
 
   return v3;
 }
@@ -1036,13 +1036,13 @@ LABEL_22:
 - (id)equivalentDictionary
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v4 = [(TCFontFamily *)self namesByLanguage];
-  v5 = [v4 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  namesByLanguage = [(TCFontFamily *)self namesByLanguage];
+  v5 = [namesByLanguage countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v5)
   {
     v6 = *v27;
@@ -1052,25 +1052,25 @@ LABEL_22:
       {
         if (*v27 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(namesByLanguage);
         }
 
         v8 = *(*(&v26 + 1) + 8 * i);
         v9 = TCFontMacLanguageIDToNSString([v8 unsignedShortValue]);
-        v10 = [(TCFontFamily *)self namesByLanguage];
-        v11 = [v10 objectForKeyedSubscript:v8];
-        [v3 setObject:v11 forKeyedSubscript:v9];
+        namesByLanguage2 = [(TCFontFamily *)self namesByLanguage];
+        v11 = [namesByLanguage2 objectForKeyedSubscript:v8];
+        [dictionary setObject:v11 forKeyedSubscript:v9];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v5 = [namesByLanguage countByEnumeratingWithState:&v26 objects:v31 count:16];
     }
 
     while (v5);
   }
 
-  v12 = [MEMORY[0x277CBEB18] array];
-  v13 = [(TCFontFamily *)self members];
-  v14 = [v13 sortedArrayUsingComparator:&__block_literal_global_260];
+  array = [MEMORY[0x277CBEB18] array];
+  members = [(TCFontFamily *)self members];
+  v14 = [members sortedArrayUsingComparator:&__block_literal_global_260];
 
   v24 = 0u;
   v25 = 0u;
@@ -1090,8 +1090,8 @@ LABEL_22:
           objc_enumerationMutation(v15);
         }
 
-        v19 = [*(*(&v22 + 1) + 8 * j) equivalentDictionary];
-        [v12 addObject:v19];
+        equivalentDictionary = [*(*(&v22 + 1) + 8 * j) equivalentDictionary];
+        [array addObject:equivalentDictionary];
       }
 
       v16 = [v15 countByEnumeratingWithState:&v22 objects:v30 count:16];
@@ -1100,7 +1100,7 @@ LABEL_22:
     while (v16);
   }
 
-  v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v3, @"names-by-language", v12, @"members", 0, v22}];
+  v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{dictionary, @"names-by-language", array, @"members", 0, v22}];
 
   return v20;
 }
@@ -1115,13 +1115,13 @@ uint64_t __36__TCFontFamily_equivalentDictionary__block_invoke(uint64_t a1, void
   return v7;
 }
 
-- (TCFontFamily)initWithDictionary:(id)a3
+- (TCFontFamily)initWithDictionary:(id)dictionary
 {
   v35 = *MEMORY[0x277D85DE8];
-  v24 = a3;
-  v22 = self;
-  v23 = [v24 objectForKeyedSubscript:@"names-by-language"];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dictionaryCopy = dictionary;
+  selfCopy = self;
+  v23 = [dictionaryCopy objectForKeyedSubscript:@"names-by-language"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
@@ -1144,7 +1144,7 @@ uint64_t __36__TCFontFamily_equivalentDictionary__block_invoke(uint64_t a1, void
         v10 = TCFontMacLanguageIDFromNSString(v9);
         v11 = [v5 objectForKeyedSubscript:v9];
         v12 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v10];
-        [v4 setObject:v11 forKeyedSubscript:v12];
+        [dictionary setObject:v11 forKeyedSubscript:v12];
       }
 
       v6 = [v5 countByEnumeratingWithState:&v29 objects:v34 count:16];
@@ -1153,8 +1153,8 @@ uint64_t __36__TCFontFamily_equivalentDictionary__block_invoke(uint64_t a1, void
     while (v6);
   }
 
-  v13 = [v24 objectForKeyedSubscript:@"members"];
-  v14 = [MEMORY[0x277CBEB18] array];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"members"];
+  array = [MEMORY[0x277CBEB18] array];
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
@@ -1174,7 +1174,7 @@ uint64_t __36__TCFontFamily_equivalentDictionary__block_invoke(uint64_t a1, void
         }
 
         v19 = [[TCFont alloc] initWithDictionary:*(*(&v25 + 1) + 8 * j)];
-        [v14 addObject:v19];
+        [array addObject:v19];
       }
 
       v16 = [v15 countByEnumeratingWithState:&v25 objects:v33 count:16];
@@ -1183,14 +1183,14 @@ uint64_t __36__TCFontFamily_equivalentDictionary__block_invoke(uint64_t a1, void
     while (v16);
   }
 
-  v20 = [(TCFontFamily *)v22 initWithNamesByLanguage:v4 members:v14];
+  v20 = [(TCFontFamily *)selfCopy initWithNamesByLanguage:dictionary members:array];
   return v20;
 }
 
 - (id)description
 {
-  v2 = [(TCFontFamily *)self equivalentDictionary];
-  v3 = [v2 description];
+  equivalentDictionary = [(TCFontFamily *)self equivalentDictionary];
+  v3 = [equivalentDictionary description];
 
   return v3;
 }

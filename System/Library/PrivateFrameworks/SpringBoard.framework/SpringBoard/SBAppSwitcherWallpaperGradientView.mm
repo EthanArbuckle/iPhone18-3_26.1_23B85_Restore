@@ -1,20 +1,20 @@
 @interface SBAppSwitcherWallpaperGradientView
-- (SBAppSwitcherWallpaperGradientView)initWithPrivateStyle:(int64_t)a3;
+- (SBAppSwitcherWallpaperGradientView)initWithPrivateStyle:(int64_t)style;
 - (SBSwitcherWallpaperGradientAttributes)attributes;
 - (void)_updateGradientColors;
 - (void)layoutSubviews;
-- (void)setAttributes:(SBSwitcherWallpaperGradientAttributes)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setCornerRadii:(CACornerRadii *)a3;
+- (void)setAttributes:(SBSwitcherWallpaperGradientAttributes)attributes;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCornerRadii:(CACornerRadii *)radii;
 @end
 
 @implementation SBAppSwitcherWallpaperGradientView
 
-- (SBAppSwitcherWallpaperGradientView)initWithPrivateStyle:(int64_t)a3
+- (SBAppSwitcherWallpaperGradientView)initWithPrivateStyle:(int64_t)style
 {
   v11.receiver = self;
   v11.super_class = SBAppSwitcherWallpaperGradientView;
-  v3 = [(_UIBackdropView *)&v11 initWithPrivateStyle:a3];
+  v3 = [(_UIBackdropView *)&v11 initWithPrivateStyle:style];
   v4 = v3;
   if (v3)
   {
@@ -30,18 +30,18 @@
     [(CAGradientLayer *)v4->_gradientLayer setEndPoint:1.0, 0.5];
     [(CAGradientLayer *)v4->_gradientLayer setCompositingFilter:*MEMORY[0x277CDA310]];
     [(SBAppSwitcherWallpaperGradientView *)v4 _updateGradientColors];
-    v8 = [(_UIBackdropView *)v4 effectView];
-    v9 = [v8 layer];
-    [v9 addSublayer:v4->_gradientLayer];
+    effectView = [(_UIBackdropView *)v4 effectView];
+    layer = [effectView layer];
+    [layer addSublayer:v4->_gradientLayer];
   }
 
   return v4;
 }
 
-- (void)setAttributes:(SBSwitcherWallpaperGradientAttributes)a3
+- (void)setAttributes:(SBSwitcherWallpaperGradientAttributes)attributes
 {
-  trailingAlpha = a3.trailingAlpha;
-  leadingAlpha = a3.leadingAlpha;
+  trailingAlpha = attributes.trailingAlpha;
+  leadingAlpha = attributes.leadingAlpha;
   p_attributes = &self->_attributes;
   if ((SBSwitcherWallpaperGradientAttributesEqual() & 1) == 0)
   {
@@ -52,7 +52,7 @@
   }
 }
 
-- (void)setCornerRadii:(CACornerRadii *)a3
+- (void)setCornerRadii:(CACornerRadii *)radii
 {
   v37 = *MEMORY[0x277D85DE8];
   p_cornerRadii = &self->_cornerRadii;
@@ -62,36 +62,36 @@
   minXMinY = self->_cornerRadii.minXMinY;
   maxXMinY = self->_cornerRadii.maxXMinY;
   v35 = minXMinY;
-  v8 = a3->maxXMaxY;
-  v28 = a3->minXMaxY;
+  v8 = radii->maxXMaxY;
+  v28 = radii->minXMaxY;
   v29 = v8;
-  v9 = a3->minXMinY;
-  v30 = a3->maxXMinY;
+  v9 = radii->minXMinY;
+  v30 = radii->maxXMinY;
   v31 = v9;
   if ((CACornerRadiiEqualToRadii() & 1) == 0)
   {
-    v10 = a3->minXMaxY;
-    v11 = a3->maxXMaxY;
-    v12 = a3->minXMinY;
-    p_cornerRadii->maxXMinY = a3->maxXMinY;
+    v10 = radii->minXMaxY;
+    v11 = radii->maxXMaxY;
+    v12 = radii->minXMinY;
+    p_cornerRadii->maxXMinY = radii->maxXMinY;
     p_cornerRadii->minXMinY = v12;
     p_cornerRadii->minXMaxY = v10;
     p_cornerRadii->maxXMaxY = v11;
-    v13 = [(SBAppSwitcherWallpaperGradientView *)self layer];
+    layer = [(SBAppSwitcherWallpaperGradientView *)self layer];
     v14 = p_cornerRadii->maxXMaxY;
     minXMaxY = p_cornerRadii->minXMaxY;
     v33 = v14;
     v15 = p_cornerRadii->minXMinY;
     maxXMinY = p_cornerRadii->maxXMinY;
     v35 = v15;
-    [v13 setCornerRadii:&minXMaxY];
+    [layer setCornerRadii:&minXMaxY];
 
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v16 = [(SBAppSwitcherWallpaperGradientView *)self subviews];
-    v17 = [v16 countByEnumeratingWithState:&v24 objects:v36 count:16];
+    subviews = [(SBAppSwitcherWallpaperGradientView *)self subviews];
+    v17 = [subviews countByEnumeratingWithState:&v24 objects:v36 count:16];
     if (v17)
     {
       v18 = v17;
@@ -103,23 +103,23 @@
         {
           if (*v25 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(subviews);
           }
 
-          v21 = [*(*(&v24 + 1) + 8 * v20) layer];
+          layer2 = [*(*(&v24 + 1) + 8 * v20) layer];
           v22 = p_cornerRadii->maxXMaxY;
           minXMaxY = p_cornerRadii->minXMaxY;
           v33 = v22;
           v23 = p_cornerRadii->minXMinY;
           maxXMinY = p_cornerRadii->maxXMinY;
           v35 = v23;
-          [v21 setCornerRadii:&minXMaxY];
+          [layer2 setCornerRadii:&minXMaxY];
 
           ++v20;
         }
 
         while (v18 != v20);
-        v18 = [v16 countByEnumeratingWithState:&v24 objects:v36 count:16];
+        v18 = [subviews countByEnumeratingWithState:&v24 objects:v36 count:16];
       }
 
       while (v18);
@@ -127,11 +127,11 @@
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = SBAppSwitcherWallpaperGradientView;
-  [(SBAppSwitcherWallpaperGradientView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SBAppSwitcherWallpaperGradientView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(SBAppSwitcherWallpaperGradientView *)self setNeedsLayout];
 }
 

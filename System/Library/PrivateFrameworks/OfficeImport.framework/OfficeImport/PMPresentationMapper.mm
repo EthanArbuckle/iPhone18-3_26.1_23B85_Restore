@@ -1,23 +1,23 @@
 @interface PMPresentationMapper
 - (CGSize)pageSizeForDevice;
-- (CGSize)pageSizeForDeviceIncludingMargins:(BOOL)a3;
+- (CGSize)pageSizeForDeviceIncludingMargins:(BOOL)margins;
 - (CGSize)slideSize;
-- (PMPresentationMapper)initWithDocument:(id)a3 archiver:(id)a4;
-- (id)blipAtIndex:(unsigned int)a3;
+- (PMPresentationMapper)initWithDocument:(id)document archiver:(id)archiver;
+- (id)blipAtIndex:(unsigned int)index;
 - (id)defaultStyleSheet;
-- (void)_pushEmptySlideWithMessage:(id)a3;
-- (void)finishMappingWithState:(id)a3;
-- (void)mapElement:(id)a3 atIndex:(unint64_t)a4 withState:(id)a5 isLastElement:(BOOL)a6;
+- (void)_pushEmptySlideWithMessage:(id)message;
+- (void)finishMappingWithState:(id)state;
+- (void)mapElement:(id)element atIndex:(unint64_t)index withState:(id)state isLastElement:(BOOL)lastElement;
 - (void)setHtmlDocumentSizeInArchiver;
-- (void)startMappingWithState:(id)a3;
+- (void)startMappingWithState:(id)state;
 @end
 
 @implementation PMPresentationMapper
 
 - (CGSize)slideSize
 {
-  v2 = [(CMMapper *)self document];
-  [v2 slideSize];
+  document = [(CMMapper *)self document];
+  [document slideSize];
   v4 = v3;
   v6 = v5;
 
@@ -48,10 +48,10 @@
 
 - (id)defaultStyleSheet
 {
-  v2 = [(CMMapper *)self archiver];
-  v3 = [v2 noDecorations];
+  archiver = [(CMMapper *)self archiver];
+  noDecorations = [archiver noDecorations];
 
-  if (v3)
+  if (noDecorations)
   {
     v4 = @"@media screen { body { margin : 0 !important; } }\n";
   }
@@ -66,13 +66,13 @@
   return v5;
 }
 
-- (PMPresentationMapper)initWithDocument:(id)a3 archiver:(id)a4
+- (PMPresentationMapper)initWithDocument:(id)document archiver:(id)archiver
 {
-  v6 = a3;
-  v7 = a4;
+  documentCopy = document;
+  archiverCopy = archiver;
   v17.receiver = self;
   v17.super_class = PMPresentationMapper;
-  v8 = [(CMDocumentMapper *)&v17 initWithDocument:v6 archiver:v7];
+  v8 = [(CMDocumentMapper *)&v17 initWithDocument:documentCopy archiver:archiverCopy];
   v9 = v8;
   if (v8)
   {
@@ -93,21 +93,21 @@
   return v9;
 }
 
-- (id)blipAtIndex:(unsigned int)a3
+- (id)blipAtIndex:(unsigned int)index
 {
-  v3 = *&a3;
-  v4 = [(CMMapper *)self document];
-  v5 = [v4 blips];
-  v6 = [v5 blipAtIndex:v3];
+  v3 = *&index;
+  document = [(CMMapper *)self document];
+  blips = [document blips];
+  v6 = [blips blipAtIndex:v3];
 
   return v6;
 }
 
-- (CGSize)pageSizeForDeviceIncludingMargins:(BOOL)a3
+- (CGSize)pageSizeForDeviceIncludingMargins:(BOOL)margins
 {
-  v3 = a3;
+  marginsCopy = margins;
   [(PMPresentationMapper *)self slideSize];
-  if (v3)
+  if (marginsCopy)
   {
     v5 = v5 + 5.0;
     v4 = v4 + -3.0;
@@ -118,28 +118,28 @@
   return result;
 }
 
-- (void)startMappingWithState:(id)a3
+- (void)startMappingWithState:(id)state
 {
-  v30 = [(CMMapper *)self document];
+  document = [(CMMapper *)self document];
   [(PMPresentationMapper *)self setHtmlDocumentSizeInArchiver];
   v4 = +[CMXmlUtils copyXhtmlDocument];
   mXhtmlDoc = self->mXhtmlDoc;
   self->mXhtmlDoc = v4;
 
-  v6 = [(PMPresentationMapper *)self documentTitle];
-  v7 = [CMXmlUtils copyHeadElementWithTitle:v6 deviceWidth:self->mWidth];
+  documentTitle = [(PMPresentationMapper *)self documentTitle];
+  v7 = [CMXmlUtils copyHeadElementWithTitle:documentTitle deviceWidth:self->mWidth];
 
-  v8 = [(PMPresentationMapper *)self defaultStyleSheet];
-  v9 = [OIXMLElement elementWithType:17 stringValue:v8];
+  defaultStyleSheet = [(PMPresentationMapper *)self defaultStyleSheet];
+  v9 = [OIXMLElement elementWithType:17 stringValue:defaultStyleSheet];
 
   v10 = [OIXMLAttribute attributeWithName:0x286F007F0 stringValue:0x286F07970];
   [v9 addAttribute:v10];
 
   [v7 addChild:v9];
   v11 = MEMORY[0x277CCACA8];
-  [v30 slideSize];
+  [document slideSize];
   v13 = v12;
-  [v30 slideSize];
+  [document slideSize];
   v15 = [v11 stringWithFormat:@"div.slide, div.loading-slide { width: %d height: %d;}", v13, v14];;
   v16 = [OIXMLElement elementWithType:17 stringValue:v15];
 
@@ -147,8 +147,8 @@
   [v16 addAttribute:v17];
 
   [v7 addChild:v16];
-  v18 = [(OIXMLDocument *)self->mXhtmlDoc rootElement];
-  [v18 addChild:v7];
+  rootElement = [(OIXMLDocument *)self->mXhtmlDoc rootElement];
+  [rootElement addChild:v7];
 
   v19 = [OIXMLElement elementWithType:1];
   mBodyElement = self->mBodyElement;
@@ -156,22 +156,22 @@
 
   [(CMArchiveManager *)self->super.super.mArchiver commitDataAtPath:0];
   mArchiver = self->super.super.mArchiver;
-  v22 = [(OIXMLDocument *)self->mXhtmlDoc openingTagString];
-  [(CMArchiveManager *)mArchiver pushText:v22 toPath:0];
+  openingTagString = [(OIXMLDocument *)self->mXhtmlDoc openingTagString];
+  [(CMArchiveManager *)mArchiver pushText:openingTagString toPath:0];
 
   v23 = self->super.super.mArchiver;
-  v24 = [(OIXMLDocument *)self->mXhtmlDoc rootElement];
-  v25 = [v24 openingTagString];
-  [(CMArchiveManager *)v23 pushText:v25 toPath:0];
+  rootElement2 = [(OIXMLDocument *)self->mXhtmlDoc rootElement];
+  openingTagString2 = [rootElement2 openingTagString];
+  [(CMArchiveManager *)v23 pushText:openingTagString2 toPath:0];
 
   v26 = self->super.super.mArchiver;
-  v27 = [v7 XMLString];
-  [(CMArchiveManager *)v26 pushText:v27 toPath:0];
+  xMLString = [v7 XMLString];
+  [(CMArchiveManager *)v26 pushText:xMLString toPath:0];
 
   [(CMArchiveManager *)self->super.super.mArchiver pushCssToPath:0];
   v28 = self->super.super.mArchiver;
-  v29 = [(OIXMLElement *)self->mBodyElement openingTagString];
-  [(CMArchiveManager *)v28 pushText:v29 toPath:0];
+  openingTagString3 = [(OIXMLElement *)self->mBodyElement openingTagString];
+  [(CMArchiveManager *)v28 pushText:openingTagString3 toPath:0];
 
   if (objc_opt_respondsToSelector())
   {
@@ -183,9 +183,9 @@
   self->mHasPushedFirstSlides = 0;
 }
 
-- (void)_pushEmptySlideWithMessage:(id)a3
+- (void)_pushEmptySlideWithMessage:(id)message
 {
-  v18 = a3;
+  messageCopy = message;
   v4 = [OIXMLElement elementWithType:3];
   v5 = [OIXMLAttribute attributeWithName:@"style" stringValue:@"position: relative width:0; height: 0"];;
   [v4 addAttribute:v5];
@@ -212,30 +212,30 @@
   [(CMStyle *)v9 addProperty:v14 forKey:@"text-align"];
   [(CMStyle *)v9 appendPropertyForName:0x286EF73B0 stringWithColons:@":Arial;"];
   [(CMStyle *)v9 appendPropertyForName:0x286EF73D0 stringWithColons:@":48;"];
-  v15 = [OIXMLElement elementWithType:3 stringValue:v18];
+  v15 = [OIXMLElement elementWithType:3 stringValue:messageCopy];
   [(CMMapper *)self addStyleUsingGlobalCacheTo:v15 style:v9 embedStyle:1];
   [v6 addChild:v15];
   mArchiver = self->super.super.mArchiver;
-  v17 = [v4 XMLString];
-  [(CMArchiveManager *)mArchiver pushText:v17 toPath:0];
+  xMLString = [v4 XMLString];
+  [(CMArchiveManager *)mArchiver pushText:xMLString toPath:0];
 }
 
-- (void)mapElement:(id)a3 atIndex:(unint64_t)a4 withState:(id)a5 isLastElement:(BOOL)a6
+- (void)mapElement:(id)element atIndex:(unint64_t)index withState:(id)state isLastElement:(BOOL)lastElement
 {
-  v17 = a3;
-  v9 = a5;
+  elementCopy = element;
+  stateCopy = state;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v17;
+    v10 = elementCopy;
     [(PMPresentationMapper *)self slideSize];
     v12 = v11;
     [(PMPresentationMapper *)self slideSize];
     v14 = [[PMSlideMapper alloc] initWithPDSlide:v10 slideRect:self parent:0.0, 0.0, v12, v13];
-    [(PMSlideMapper *)v14 mapAt:self->mBodyElement withState:v9];
+    [(PMSlideMapper *)v14 mapAt:self->mBodyElement withState:stateCopy];
     if (self->mCurrentSlide >= self->mNextCommit)
     {
-      if (!a6)
+      if (!lastElement)
       {
         v15 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v16 = [v15 localizedStringForKey:@"Loading…" value:&stru_286EE1130 table:@"Localizable"];
@@ -254,7 +254,7 @@
   }
 }
 
-- (void)finishMappingWithState:(id)a3
+- (void)finishMappingWithState:(id)state
 {
   if ([(CMArchiveManager *)self->super.super.mArchiver isCancelled])
   {
@@ -264,17 +264,17 @@
   }
 
   mArchiver = self->super.super.mArchiver;
-  v7 = [(OIXMLElement *)self->mBodyElement closingTagString];
-  [(CMArchiveManager *)mArchiver pushText:v7 toPath:0];
+  closingTagString = [(OIXMLElement *)self->mBodyElement closingTagString];
+  [(CMArchiveManager *)mArchiver pushText:closingTagString toPath:0];
 
   v8 = self->super.super.mArchiver;
-  v9 = [(OIXMLDocument *)self->mXhtmlDoc rootElement];
-  v10 = [v9 closingTagString];
-  [(CMArchiveManager *)v8 pushText:v10 toPath:0];
+  rootElement = [(OIXMLDocument *)self->mXhtmlDoc rootElement];
+  closingTagString2 = [rootElement closingTagString];
+  [(CMArchiveManager *)v8 pushText:closingTagString2 toPath:0];
 
   v11 = self->super.super.mArchiver;
-  v12 = [(OIXMLDocument *)self->mXhtmlDoc closingTagString];
-  [(CMArchiveManager *)v11 pushText:v12 toPath:0];
+  closingTagString3 = [(OIXMLDocument *)self->mXhtmlDoc closingTagString];
+  [(CMArchiveManager *)v11 pushText:closingTagString3 toPath:0];
 
   [(CMArchiveManager *)self->super.super.mArchiver commitDataAtPath:0];
   v13 = self->super.super.mArchiver;

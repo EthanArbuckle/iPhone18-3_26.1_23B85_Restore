@@ -1,11 +1,11 @@
 @interface TagAssignmentCollectionView
-- (_TtC11MobileNotes27TagAssignmentCollectionView)initWithCoder:(id)a3;
-- (_TtC11MobileNotes27TagAssignmentCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
+- (_TtC11MobileNotes27TagAssignmentCollectionView)initWithCoder:(id)coder;
+- (_TtC11MobileNotes27TagAssignmentCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
 @end
 
 @implementation TagAssignmentCollectionView
 
-- (_TtC11MobileNotes27TagAssignmentCollectionView)initWithCoder:(id)a3
+- (_TtC11MobileNotes27TagAssignmentCollectionView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC11MobileNotes27TagAssignmentCollectionView_tagAssignmentDataSource) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -13,7 +13,7 @@
   return result;
 }
 
-- (_TtC11MobileNotes27TagAssignmentCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (_TtC11MobileNotes27TagAssignmentCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

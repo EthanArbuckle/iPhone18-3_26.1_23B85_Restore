@@ -1,20 +1,20 @@
 @interface HAPCoreUtilsHTTPClient
-- (HAPCoreUtilsHTTPClient)initWithQueue:(id)a3;
-- (int)getPeerAddress:(void *)a3 maxLength:(unint64_t)a4 outLength:(unint64_t *)a5;
-- (int)sendMessage:(HTTPMessagePrivate *)a3;
-- (int)setDestination:(const char *)a3 port:(int)a4;
-- (int)setProperty:(__CFString *)a3 value:(void *)a4;
+- (HAPCoreUtilsHTTPClient)initWithQueue:(id)queue;
+- (int)getPeerAddress:(void *)address maxLength:(unint64_t)length outLength:(unint64_t *)outLength;
+- (int)sendMessage:(HTTPMessagePrivate *)message;
+- (int)setDestination:(const char *)destination port:(int)port;
+- (int)setProperty:(__CFString *)property value:(void *)value;
 - (unsigned)getClientID;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setConnectionProgressHandler:(void *)a3 context:(void *)a4;
-- (void)setContext:(void *)a3;
-- (void)setDebugDelegate:(id *)a3;
-- (void)setDelegate:(id *)a3;
-- (void)setDispatchQueue:(id)a3;
-- (void)setFlags:(unsigned int)a3 mask:(unsigned int)a4;
-- (void)setTimeoutInSeconds:(int)a3;
-- (void)setTransportDelegate:(id *)a3;
+- (void)setConnectionProgressHandler:(void *)handler context:(void *)context;
+- (void)setContext:(void *)context;
+- (void)setDebugDelegate:(id *)delegate;
+- (void)setDelegate:(id *)delegate;
+- (void)setDispatchQueue:(id)queue;
+- (void)setFlags:(unsigned int)flags mask:(unsigned int)mask;
+- (void)setTimeoutInSeconds:(int)seconds;
+- (void)setTransportDelegate:(id *)delegate;
 @end
 
 @implementation HAPCoreUtilsHTTPClient
@@ -45,7 +45,7 @@
   return ClientID;
 }
 
-- (int)getPeerAddress:(void *)a3 maxLength:(unint64_t)a4 outLength:(unint64_t *)a5
+- (int)getPeerAddress:(void *)address maxLength:(unint64_t)length outLength:(unint64_t *)outLength
 {
   os_unfair_lock_lock_with_options();
   if ([(HAPCoreUtilsHTTPClient *)self isInvalidated])
@@ -67,7 +67,7 @@
   return PeerAddress;
 }
 
-- (int)sendMessage:(HTTPMessagePrivate *)a3
+- (int)sendMessage:(HTTPMessagePrivate *)message
 {
   os_unfair_lock_lock_with_options();
   if ([(HAPCoreUtilsHTTPClient *)self isInvalidated])
@@ -103,7 +103,7 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setContext:(void *)a3
+- (void)setContext:(void *)context
 {
   os_unfair_lock_lock_with_options();
   if (![(HAPCoreUtilsHTTPClient *)self isInvalidated])
@@ -115,7 +115,7 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setConnectionProgressHandler:(void *)a3 context:(void *)a4
+- (void)setConnectionProgressHandler:(void *)handler context:(void *)context
 {
   os_unfair_lock_lock_with_options();
   if (![(HAPCoreUtilsHTTPClient *)self isInvalidated])
@@ -127,7 +127,7 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setDebugDelegate:(id *)a3
+- (void)setDebugDelegate:(id *)delegate
 {
   os_unfair_lock_lock_with_options();
   if (![(HAPCoreUtilsHTTPClient *)self isInvalidated])
@@ -139,7 +139,7 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setTransportDelegate:(id *)a3
+- (void)setTransportDelegate:(id *)delegate
 {
   os_unfair_lock_lock_with_options();
   if (![(HAPCoreUtilsHTTPClient *)self isInvalidated])
@@ -151,7 +151,7 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setDelegate:(id *)a3
+- (void)setDelegate:(id *)delegate
 {
   os_unfair_lock_lock_with_options();
   if (![(HAPCoreUtilsHTTPClient *)self isInvalidated])
@@ -163,7 +163,7 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (int)setDestination:(const char *)a3 port:(int)a4
+- (int)setDestination:(const char *)destination port:(int)port
 {
   os_unfair_lock_lock_with_options();
   if ([(HAPCoreUtilsHTTPClient *)self isInvalidated])
@@ -181,7 +181,7 @@
   return v5;
 }
 
-- (void)setTimeoutInSeconds:(int)a3
+- (void)setTimeoutInSeconds:(int)seconds
 {
   os_unfair_lock_lock_with_options();
   if (![(HAPCoreUtilsHTTPClient *)self isInvalidated])
@@ -193,7 +193,7 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setFlags:(unsigned int)a3 mask:(unsigned int)a4
+- (void)setFlags:(unsigned int)flags mask:(unsigned int)mask
 {
   os_unfair_lock_lock_with_options();
   if (![(HAPCoreUtilsHTTPClient *)self isInvalidated])
@@ -205,9 +205,9 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setDispatchQueue:(id)a3
+- (void)setDispatchQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   os_unfair_lock_lock_with_options();
   if (![(HAPCoreUtilsHTTPClient *)self isInvalidated])
   {
@@ -218,7 +218,7 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (int)setProperty:(__CFString *)a3 value:(void *)a4
+- (int)setProperty:(__CFString *)property value:(void *)value
 {
   os_unfair_lock_lock_with_options();
   if ([(HAPCoreUtilsHTTPClient *)self isInvalidated])
@@ -236,13 +236,13 @@
   return v5;
 }
 
-- (HAPCoreUtilsHTTPClient)initWithQueue:(id)a3
+- (HAPCoreUtilsHTTPClient)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v10 = 0;
   if (HTTPClientCreate())
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -254,15 +254,15 @@
     if (v6)
     {
       v6->_httpClient = v10;
-      [(HAPCoreUtilsHTTPClient *)v6 setDispatchQueue:v4];
+      [(HAPCoreUtilsHTTPClient *)v6 setDispatchQueue:queueCopy];
       v7->_isInvalidated = 0;
     }
 
     self = v7;
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 @end

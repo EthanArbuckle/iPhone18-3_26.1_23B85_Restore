@@ -14,13 +14,13 @@
 
 - (void)run
 {
-  v3 = [(DDRTaskResetAVVolumeLimits *)self oldLimit];
+  oldLimit = [(DDRTaskResetAVVolumeLimits *)self oldLimit];
 
-  if (v3)
+  if (oldLimit)
   {
     v5 = +[AVSystemController sharedAVSystemController];
-    v4 = [(DDRTaskResetAVVolumeLimits *)self oldLimit];
-    [v5 setAttribute:v4 forKey:AVSystemController_HeadphoneVolumeLimitAttribute error:0];
+    oldLimit2 = [(DDRTaskResetAVVolumeLimits *)self oldLimit];
+    [v5 setAttribute:oldLimit2 forKey:AVSystemController_HeadphoneVolumeLimitAttribute error:0];
   }
 }
 

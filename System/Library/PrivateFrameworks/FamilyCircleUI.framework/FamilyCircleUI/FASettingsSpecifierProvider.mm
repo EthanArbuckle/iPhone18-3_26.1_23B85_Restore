@@ -1,69 +1,69 @@
 @interface FASettingsSpecifierProvider
 - (AAUISpecifierProviderDelegate)delegate;
 - (BOOL)_isEnabled;
-- (BOOL)handleURL:(id)a3;
-- (BOOL)remoteUIController:(id)a3 shouldLoadRequest:(id)a4 redirectResponse:(id)a5;
-- (BOOL)shouldUseModernNavigationForPresenter:(id)a3;
-- (FASettingsSpecifierProvider)initWithAccountManager:(id)a3 presenter:(id)a4;
+- (BOOL)handleURL:(id)l;
+- (BOOL)remoteUIController:(id)controller shouldLoadRequest:(id)request redirectResponse:(id)response;
+- (BOOL)shouldUseModernNavigationForPresenter:(id)presenter;
+- (FASettingsSpecifierProvider)initWithAccountManager:(id)manager presenter:(id)presenter;
 - (NSArray)specifiers;
 - (id)_acuPresenter;
 - (id)_appleAccount;
-- (id)_configureContextWithType:(id)a3 resourceDictionary:(id)a4;
-- (id)_familyBaseSpecifierWithState:(unint64_t)a3;
+- (id)_configureContextWithType:(id)type resourceDictionary:(id)dictionary;
+- (id)_familyBaseSpecifierWithState:(unint64_t)state;
 - (id)_familySpecifier;
 - (id)_grandSlamSigner;
 - (id)_invitationsCellSpecifier;
 - (id)_requestConfigurator;
-- (id)_valueForFamilySpecifier:(id)a3;
-- (id)getFamilyStatusText:(int64_t)a3 pendingMemberCount:(int64_t)a4 me:(id)a5;
+- (id)_valueForFamilySpecifier:(id)specifier;
+- (id)getFamilyStatusText:(int64_t)text pendingMemberCount:(int64_t)count me:(id)me;
 - (unint64_t)_familyState;
 - (void)_clearFamilyState;
-- (void)_handleFamilyDetailsResponse:(id)a3 error:(id)a4 completion:(id)a5;
-- (void)_handleFamilyEligibilityResponse:(id)a3 completion:(id)a4;
-- (void)_handleObjectModelChangeForController:(id)a3 objectModel:(id)a4 isModal:(BOOL)a5;
-- (void)_handleShowFamilySettingsURL:(id)a3;
-- (void)_handleShowFamilySettingsV2WithResourceDictionary:(id)a3;
-- (void)_handleShowInviteActionURL:(id)a3 isChildTransfer:(BOOL)a4;
-- (void)_handleShowInvitesActionURL:(id)a3;
-- (void)_handleStartFamilySetupActionURL:(id)a3;
-- (void)_initiateFamilyWithResources:(id)a3;
-- (void)_loadFamilyDetailsWithCompletion:(id)a3;
-- (void)_loadFamilyEligibilityWithCompletion:(id)a3;
-- (void)_pendingInvitationsSpecifierWasTapped:(id)a3;
-- (void)_presentFlowWithEventType:(id)a3 completion:(id)a4;
+- (void)_handleFamilyDetailsResponse:(id)response error:(id)error completion:(id)completion;
+- (void)_handleFamilyEligibilityResponse:(id)response completion:(id)completion;
+- (void)_handleObjectModelChangeForController:(id)controller objectModel:(id)model isModal:(BOOL)modal;
+- (void)_handleShowFamilySettingsURL:(id)l;
+- (void)_handleShowFamilySettingsV2WithResourceDictionary:(id)dictionary;
+- (void)_handleShowInviteActionURL:(id)l isChildTransfer:(BOOL)transfer;
+- (void)_handleShowInvitesActionURL:(id)l;
+- (void)_handleStartFamilySetupActionURL:(id)l;
+- (void)_initiateFamilyWithResources:(id)resources;
+- (void)_loadFamilyDetailsWithCompletion:(id)completion;
+- (void)_loadFamilyEligibilityWithCompletion:(id)completion;
+- (void)_pendingInvitationsSpecifierWasTapped:(id)tapped;
+- (void)_presentFlowWithEventType:(id)type completion:(id)completion;
 - (void)_presentPendingInvitesRemoteUI;
-- (void)_presentViewController:(id)a3;
+- (void)_presentViewController:(id)controller;
 - (void)_reloadFamily;
-- (void)_setUpFamilySpecifierWasTapped:(id)a3;
-- (void)_showUnderageAlertWithEligibilityResponse:(id)a3;
+- (void)_setUpFamilySpecifierWasTapped:(id)tapped;
+- (void)_showUnderageAlertWithEligibilityResponse:(id)response;
 - (void)_viewFamilySpecifierWasTapped;
-- (void)_viewFamilyWithResourceDictionary:(id)a3;
+- (void)_viewFamilyWithResourceDictionary:(id)dictionary;
 - (void)dealloc;
-- (void)familySettingsViewController2StopFamilySharing:(id)a3;
-- (void)familySetupViewController:(id)a3 didCompleteWithSuccess:(BOOL)a4;
-- (void)presentFamilySettingsFromPresenter:(id)a3;
-- (void)remoteUIController:(id)a3 didRefreshObjectModel:(id)a4;
-- (void)setSpecifiers:(id)a3;
+- (void)familySettingsViewController2StopFamilySharing:(id)sharing;
+- (void)familySetupViewController:(id)controller didCompleteWithSuccess:(BOOL)success;
+- (void)presentFamilySettingsFromPresenter:(id)presenter;
+- (void)remoteUIController:(id)controller didRefreshObjectModel:(id)model;
+- (void)setSpecifiers:(id)specifiers;
 @end
 
 @implementation FASettingsSpecifierProvider
 
-- (FASettingsSpecifierProvider)initWithAccountManager:(id)a3 presenter:(id)a4
+- (FASettingsSpecifierProvider)initWithAccountManager:(id)manager presenter:(id)presenter
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  presenterCopy = presenter;
   v9 = [(FASettingsSpecifierProvider *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_presenter, v8);
-    objc_storeStrong(&v10->_accountManager, a3);
+    objc_storeWeak(&v9->_presenter, presenterCopy);
+    objc_storeStrong(&v10->_accountManager, manager);
     v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
     pendingFamilyDetailsCompletionBlocks = v10->_pendingFamilyDetailsCompletionBlocks;
     v10->_pendingFamilyDetailsCompletionBlocks = v11;
 
-    v13 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v13 addObserver:v10 selector:sel__handleFamilyChanged_ name:*MEMORY[0x277D080E0] object:0];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel__handleFamilyChanged_ name:*MEMORY[0x277D080E0] object:0];
 
     v14 = objc_alloc_init(MEMORY[0x277CCABD8]);
     networkActivityQueue = v10->_networkActivityQueue;
@@ -79,8 +79,8 @@
 
 - (id)_appleAccount
 {
-  v2 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v3 = [accounts objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
 
   return v3;
 }
@@ -92,8 +92,8 @@
   {
     v4 = [(AIDAAccountManager *)self->_accountManager aidaAccountForService:*MEMORY[0x277CED1A0]];
     v5 = objc_alloc(MEMORY[0x277CEC808]);
-    v6 = [(AIDAAccountManager *)self->_accountManager accountStore];
-    v7 = [v5 initWithAccountStore:v6 grandSlamAccount:v4 appTokenID:*MEMORY[0x277CEC6F0]];
+    accountStore = [(AIDAAccountManager *)self->_accountManager accountStore];
+    v7 = [v5 initWithAccountStore:accountStore grandSlamAccount:v4 appTokenID:*MEMORY[0x277CEC6F0]];
     v8 = self->_grandSlamSigner;
     self->_grandSlamSigner = v7;
 
@@ -109,8 +109,8 @@
   if (!requestConfigurator)
   {
     v4 = objc_alloc(MEMORY[0x277D082E8]);
-    v5 = [(FASettingsSpecifierProvider *)self _appleAccount];
-    v6 = [v4 initWithAccount:v5];
+    _appleAccount = [(FASettingsSpecifierProvider *)self _appleAccount];
+    v6 = [v4 initWithAccount:_appleAccount];
     v7 = self->_requestConfigurator;
     self->_requestConfigurator = v6;
 
@@ -122,19 +122,19 @@
 
 - (BOOL)_isEnabled
 {
-  v2 = [(FASettingsSpecifierProvider *)self _appleAccount];
-  v3 = v2;
-  if (v2)
+  _appleAccount = [(FASettingsSpecifierProvider *)self _appleAccount];
+  v3 = _appleAccount;
+  if (_appleAccount)
   {
-    if ([v2 aa_needsToVerifyTerms])
+    if ([_appleAccount aa_needsToVerifyTerms])
     {
       LOBYTE(v4) = 0;
     }
 
     else
     {
-      v5 = [v3 aa_suspensionInfo];
-      v4 = [v5 isFamilySuspended] ^ 1;
+      aa_suspensionInfo = [v3 aa_suspensionInfo];
+      v4 = [aa_suspensionInfo isFamilySuspended] ^ 1;
     }
   }
 
@@ -146,9 +146,9 @@
   return v4;
 }
 
-- (void)setSpecifiers:(id)a3
+- (void)setSpecifiers:(id)specifiers
 {
-  objc_storeStrong(&self->_specifiers, a3);
+  objc_storeStrong(&self->_specifiers, specifiers);
   if (!self->_specifiers && self->_didFailToGetFamilyDetails)
   {
     self->_didFailToGetFamilyDetails = 0;
@@ -161,8 +161,8 @@
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if ([MEMORY[0x277CEC7B8] isMultiUserMode])
   {
-    v4 = _FALogSystem();
-    if (!os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    _familySpecifier = _FALogSystem();
+    if (!os_log_type_enabled(_familySpecifier, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_13;
     }
@@ -170,16 +170,16 @@
     *buf = 0;
     v5 = "Device is in multi-user mode, not showing Family Sharing specifiers.";
 LABEL_12:
-    _os_log_impl(&dword_21BB35000, v4, OS_LOG_TYPE_DEFAULT, v5, buf, 2u);
+    _os_log_impl(&dword_21BB35000, _familySpecifier, OS_LOG_TYPE_DEFAULT, v5, buf, 2u);
     goto LABEL_13;
   }
 
-  v6 = [(FASettingsSpecifierProvider *)self _appleAccount];
+  _appleAccount = [(FASettingsSpecifierProvider *)self _appleAccount];
 
-  if (!v6)
+  if (!_appleAccount)
   {
-    v4 = _FALogSystem();
-    if (!os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    _familySpecifier = _FALogSystem();
+    if (!os_log_type_enabled(_familySpecifier, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_13;
     }
@@ -189,16 +189,16 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v4 = [(FASettingsSpecifierProvider *)self _familySpecifier];
-  if (v4)
+  _familySpecifier = [(FASettingsSpecifierProvider *)self _familySpecifier];
+  if (_familySpecifier)
   {
-    [v3 addObject:v4];
+    [v3 addObject:_familySpecifier];
   }
 
-  v7 = [(FASettingsSpecifierProvider *)self _invitationsCellSpecifier];
-  if (v7)
+  _invitationsCellSpecifier = [(FASettingsSpecifierProvider *)self _invitationsCellSpecifier];
+  if (_invitationsCellSpecifier)
   {
-    [v3 insertObject:v7 atIndex:0];
+    [v3 insertObject:_invitationsCellSpecifier atIndex:0];
   }
 
 LABEL_13:
@@ -267,21 +267,21 @@ LABEL_13:
     goto LABEL_10;
   }
 
-  v4 = [(FAFamilyCircle *)self->_familyCircle pendingMembers];
-  if ([v4 count])
+  pendingMembers = [(FAFamilyCircle *)self->_familyCircle pendingMembers];
+  if ([pendingMembers count])
   {
 
 LABEL_8:
     v2 = 1;
 LABEL_9:
-    v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v7 setInteger:v2 forKey:@"_FAFamilyCachedFamilyStateKey"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults setInteger:v2 forKey:@"_FAFamilyCachedFamilyStateKey"];
 
     goto LABEL_10;
   }
 
-  v5 = [(FAFamilyCircle *)self->_familyCircle members];
-  v6 = [v5 count];
+  members = [(FAFamilyCircle *)self->_familyCircle members];
+  v6 = [members count];
 
   if (v6)
   {
@@ -348,17 +348,17 @@ LABEL_10:
 - (id)_familySpecifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 integerForKey:@"_FAFamilyCachedFamilyStateKey"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  _familyState = [standardUserDefaults integerForKey:@"_FAFamilyCachedFamilyStateKey"];
 
-  v5 = v4 && !self->_familyCircle && !self->_didFailToGetFamilyDetails;
+  v5 = _familyState && !self->_familyCircle && !self->_didFailToGetFamilyDetails;
   v6 = _FALogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109376;
     v16 = v5;
     v17 = 2048;
-    v18 = v4;
+    v18 = _familyState;
     _os_log_impl(&dword_21BB35000, v6, OS_LOG_TYPE_DEFAULT, "Using cache - %d with state - %lu", buf, 0x12u);
   }
 
@@ -376,19 +376,19 @@ LABEL_10:
   if (!v5)
   {
 LABEL_10:
-    v4 = [(FASettingsSpecifierProvider *)self _familyState];
+    _familyState = [(FASettingsSpecifierProvider *)self _familyState];
   }
 
 LABEL_11:
-  if (v4 > 2)
+  if (_familyState > 2)
   {
-    if (v4 == 3)
+    if (_familyState == 3)
     {
       v7 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:0 target:0 set:0 get:0 detail:0 cell:15 edit:0];
       goto LABEL_24;
     }
 
-    if (v4 == 4)
+    if (_familyState == 4)
     {
       v9 = MEMORY[0x277D3FAD8];
       v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -402,7 +402,7 @@ LABEL_11:
 
   else
   {
-    if (v4 == 1)
+    if (_familyState == 1)
     {
       v7 = [(FASettingsSpecifierProvider *)self _familyBaseSpecifierWithState:1];
       [v7 setControllerLoadAction:sel__viewFamilySpecifierWasTapped];
@@ -410,7 +410,7 @@ LABEL_11:
       goto LABEL_22;
     }
 
-    if (v4 == 2)
+    if (_familyState == 2)
     {
       v7 = [(FASettingsSpecifierProvider *)self _familyBaseSpecifierWithState:2];
       [v7 setButtonAction:sel__setUpFamilySpecifierWasTapped_];
@@ -435,7 +435,7 @@ LABEL_24:
   return v7;
 }
 
-- (id)_familyBaseSpecifierWithState:(unint64_t)a3
+- (id)_familyBaseSpecifierWithState:(unint64_t)state
 {
   v5 = MEMORY[0x277D3FAD8];
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -444,23 +444,23 @@ LABEL_24:
 
   [v8 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D40020]];
   [v8 setObject:@"com.apple.application-icon.family" forKeyedSubscript:*MEMORY[0x277D3FFD8]];
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:state];
   [v8 setProperty:v9 forKey:@"_FAFamilyCachedFamilyStateKey"];
 
   return v8;
 }
 
-- (void)_loadFamilyDetailsWithCompletion:(id)a3
+- (void)_loadFamilyDetailsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v5 = [(FASettingsSpecifierProvider *)self _appleAccount];
-  if (v5)
+  _appleAccount = [(FASettingsSpecifierProvider *)self _appleAccount];
+  if (_appleAccount)
   {
-    if (v4)
+    if (completionCopy)
     {
       pendingFamilyDetailsCompletionBlocks = self->_pendingFamilyDetailsCompletionBlocks;
-      v7 = _Block_copy(v4);
+      v7 = _Block_copy(completionCopy);
       [(NSMutableArray *)pendingFamilyDetailsCompletionBlocks addObject:v7];
     }
 
@@ -496,9 +496,9 @@ LABEL_24:
       _os_log_impl(&dword_21BB35000, v10, OS_LOG_TYPE_DEFAULT, "Attempted to load family details without an Apple Account, bailing!", buf, 2u);
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      (*(v4 + 2))(v4, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -588,42 +588,42 @@ _BYTE *__64__FASettingsSpecifierProvider__loadFamilyDetailsWithCompletion___bloc
   return result;
 }
 
-- (void)_handleFamilyDetailsResponse:(id)a3 error:(id)a4 completion:(id)a5
+- (void)_handleFamilyDetailsResponse:(id)response error:(id)error completion:(id)completion
 {
   v37 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  responseCopy = response;
+  errorCopy = error;
+  completionCopy = completion;
   self->_isLoadingFamilyDetails = 0;
-  if (v10)
+  if (errorCopy)
   {
     self->_didFailToGetFamilyDetails = 1;
     v12 = _FALogSystem();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v36 = v10;
+      v36 = errorCopy;
       _os_log_impl(&dword_21BB35000, v12, OS_LOG_TYPE_DEFAULT, "Failed to get family details: %@", buf, 0xCu);
     }
 
     [(FASettingsSpecifierProvider *)self reloadSpecifiers];
-    v11[2](v11, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
-    objc_storeStrong(&self->_familyCircle, a3);
+    objc_storeStrong(&self->_familyCircle, response);
     v13 = _FALogSystem();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(FAFamilyCircle *)self->_familyCircle _serverResponse];
+      _serverResponse = [(FAFamilyCircle *)self->_familyCircle _serverResponse];
       *buf = 138412290;
-      v36 = v14;
+      v36 = _serverResponse;
       _os_log_impl(&dword_21BB35000, v13, OS_LOG_TYPE_DEFAULT, "Family details response: %@", buf, 0xCu);
     }
 
-    v15 = [(FAFamilyCircle *)self->_familyCircle invites];
-    v16 = [v15 count];
+    invites = [(FAFamilyCircle *)self->_familyCircle invites];
+    v16 = [invites count];
 
     if (v16 >= 1 && [(FAFamilyCircle *)self->_familyCircle shouldShowInvites])
     {
@@ -633,17 +633,17 @@ _BYTE *__64__FASettingsSpecifierProvider__loadFamilyDetailsWithCompletion___bloc
       invitationSummary = self->_invitationSummary;
       self->_invitationSummary = v19;
 
-      v21 = [(FAFamilyCircle *)self->_familyCircle invites];
-      v22 = [v21 mutableCopy];
+      invites2 = [(FAFamilyCircle *)self->_familyCircle invites];
+      v22 = [invites2 mutableCopy];
       pendingInvites = self->_pendingInvites;
       self->_pendingInvites = v22;
     }
 
-    v24 = [(FAFamilyCircle *)self->_familyCircle members];
-    v25 = [v24 count];
+    members = [(FAFamilyCircle *)self->_familyCircle members];
+    v25 = [members count];
 
-    v26 = [(FAFamilyCircle *)self->_familyCircle pendingMembers];
-    v27 = [v26 count];
+    pendingMembers = [(FAFamilyCircle *)self->_familyCircle pendingMembers];
+    v27 = [pendingMembers count];
 
     if (v27 | v25)
     {
@@ -653,7 +653,7 @@ _BYTE *__64__FASettingsSpecifierProvider__loadFamilyDetailsWithCompletion___bloc
       self->_familyStatusSummary = v30;
 
       [(FASettingsSpecifierProvider *)self reloadSpecifiers];
-      v11[2](v11, 1);
+      completionCopy[2](completionCopy, 1);
     }
 
     else
@@ -666,7 +666,7 @@ _BYTE *__64__FASettingsSpecifierProvider__loadFamilyDetailsWithCompletion___bloc
       v33[2] = __77__FASettingsSpecifierProvider__handleFamilyDetailsResponse_error_completion___block_invoke;
       v33[3] = &unk_2782F3AB0;
       v33[4] = self;
-      v34 = v11;
+      v34 = completionCopy;
       [(FASettingsSpecifierProvider *)self _loadFamilyEligibilityWithCompletion:v33];
     }
   }
@@ -682,24 +682,24 @@ uint64_t __77__FASettingsSpecifierProvider__handleFamilyDetailsResponse_error_co
   return v2();
 }
 
-- (id)getFamilyStatusText:(int64_t)a3 pendingMemberCount:(int64_t)a4 me:(id)a5
+- (id)getFamilyStatusText:(int64_t)text pendingMemberCount:(int64_t)count me:(id)me
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  if ([v8 hasLinkediTunesAccount])
+  meCopy = me;
+  if ([meCopy hasLinkediTunesAccount])
   {
-    if (a3 <= 1)
+    if (text <= 1)
     {
-      if (a4 < 1)
+      if (count < 1)
       {
-        v12 = 0;
+        text = 0;
         goto LABEL_15;
       }
 
-      if (a4 == 1)
+      if (count == 1)
       {
         v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-        v12 = [v10 localizedStringForKey:@"FAMILY_SENT_INVITE_ONE" value:&stru_282D9AA68 table:@"Localizable"];
+        text = [v10 localizedStringForKey:@"FAMILY_SENT_INVITE_ONE" value:&stru_282D9AA68 table:@"Localizable"];
 LABEL_14:
 
         goto LABEL_15;
@@ -708,8 +708,8 @@ LABEL_14:
       v16 = MEMORY[0x277CCACA8];
       v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v11 = [v10 localizedStringForKey:@"FAMILY_SENT_INVITES_MANY" value:&stru_282D9AA68 table:@"Localizable"];
-      v17 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-      v12 = [v16 stringWithFormat:v11, v17];
+      v17 = [MEMORY[0x277CCABB0] numberWithInteger:count];
+      text = [v16 stringWithFormat:v11, v17];
     }
 
     else
@@ -717,24 +717,24 @@ LABEL_14:
       v9 = MEMORY[0x277CCACA8];
       v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v11 = [v10 localizedStringForKey:@"FAMILY_MEMBERS_IN_FAMILY" value:&stru_282D9AA68 table:@"Localizable"];
-      v12 = [v9 localizedStringWithFormat:v11, a3];
+      text = [v9 localizedStringWithFormat:v11, text];
     }
 
     goto LABEL_14;
   }
 
-  v12 = [v8 iTunesNotLinkedMessage];
-  if (![v12 length])
+  text = [meCopy iTunesNotLinkedMessage];
+  if (![text length])
   {
     v13 = _FALogSystem();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v8 appleID];
-      v15 = [(FAFamilyCircle *)self->_familyCircle _serverResponse];
+      appleID = [meCopy appleID];
+      _serverResponse = [(FAFamilyCircle *)self->_familyCircle _serverResponse];
       *buf = 138412546;
-      v21 = v14;
+      v21 = appleID;
       v22 = 2112;
-      v23 = v15;
+      v23 = _serverResponse;
       _os_log_impl(&dword_21BB35000, v13, OS_LOG_TYPE_DEFAULT, "Member %@ is not sharing purchases but there is no iTunesNotLinkedMessage, response dictionary is %@", buf, 0x16u);
     }
   }
@@ -743,10 +743,10 @@ LABEL_15:
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return text;
 }
 
-- (void)_setUpFamilySpecifierWasTapped:(id)a3
+- (void)_setUpFamilySpecifierWasTapped:(id)tapped
 {
   v12 = *MEMORY[0x277D85DE8];
   v4 = _FALogSystem();
@@ -801,10 +801,10 @@ LABEL_15:
   [(FASettingsSpecifierProvider *)self _reloadFamilySpecifiersAnimated:1];
 }
 
-- (void)_initiateFamilyWithResources:(id)a3
+- (void)_initiateFamilyWithResources:(id)resources
 {
-  v4 = a3;
-  v5 = [(FASettingsSpecifierProvider *)self _configureContextWithType:@"FACircleEventTypeInitiate" resourceDictionary:v4];
+  resourcesCopy = resources;
+  v5 = [(FASettingsSpecifierProvider *)self _configureContextWithType:@"FACircleEventTypeInitiate" resourceDictionary:resourcesCopy];
   context = self->_context;
   self->_context = v5;
 
@@ -872,20 +872,20 @@ uint64_t __60__FASettingsSpecifierProvider__initiateFamilyWithResources___block_
   return result;
 }
 
-- (id)_configureContextWithType:(id)a3 resourceDictionary:(id)a4
+- (id)_configureContextWithType:(id)type resourceDictionary:(id)dictionary
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[FACircleContext alloc] initWithEventType:v6];
+  dictionaryCopy = dictionary;
+  typeCopy = type;
+  v7 = [[FACircleContext alloc] initWithEventType:typeCopy];
 
   [(FACircleContext *)v7 setClientName:@"Preferences"];
-  if ([v5 count])
+  if ([dictionaryCopy count])
   {
-    v8 = [v5 objectForKeyedSubscript:@"clientAppContext"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"clientAppContext"];
 
     if (v8)
     {
-      v9 = [v5 objectForKeyedSubscript:@"clientAppContext"];
+      v9 = [dictionaryCopy objectForKeyedSubscript:@"clientAppContext"];
       [(FACircleContext *)v7 setClientName:v9];
     }
   }
@@ -893,9 +893,9 @@ uint64_t __60__FASettingsSpecifierProvider__initiateFamilyWithResources___block_
   return v7;
 }
 
-- (void)_showUnderageAlertWithEligibilityResponse:(id)a3
+- (void)_showUnderageAlertWithEligibilityResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = _FALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -903,15 +903,15 @@ uint64_t __60__FASettingsSpecifierProvider__initiateFamilyWithResources___block_
     _os_log_impl(&dword_21BB35000, v5, OS_LOG_TYPE_DEFAULT, "Error: showing underage alert.", buf, 2u);
   }
 
-  v6 = [v4 underageEligibilityAlertTitle];
-  v7 = [v4 underageEligibilityAlertMessage];
+  underageEligibilityAlertTitle = [responseCopy underageEligibilityAlertTitle];
+  underageEligibilityAlertMessage = [responseCopy underageEligibilityAlertMessage];
 
-  if (v6 | v7)
+  if (underageEligibilityAlertTitle | underageEligibilityAlertMessage)
   {
     v9 = MEMORY[0x277D75110];
     v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v11 = [v10 localizedStringForKey:@"OK" value:&stru_282D9AA68 table:@"Localizable"];
-    v8 = [v9 alertWithTitle:v6 message:v7 buttonTitle:v11];
+    v8 = [v9 alertWithTitle:underageEligibilityAlertTitle message:underageEligibilityAlertMessage buttonTitle:v11];
 
     WeakRetained = objc_loadWeakRetained(&self->_presenter);
     [WeakRetained presentViewController:v8 animated:1 completion:0];
@@ -928,9 +928,9 @@ uint64_t __60__FASettingsSpecifierProvider__initiateFamilyWithResources___block_
   }
 }
 
-- (void)familySetupViewController:(id)a3 didCompleteWithSuccess:(BOOL)a4
+- (void)familySetupViewController:(id)controller didCompleteWithSuccess:(BOOL)success
 {
-  if (a4)
+  if (success)
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
@@ -971,9 +971,9 @@ void __80__FASettingsSpecifierProvider_familySetupViewController_didCompleteWith
   }
 }
 
-- (void)_pendingInvitationsSpecifierWasTapped:(id)a3
+- (void)_pendingInvitationsSpecifierWasTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   if (!self->_familyCircle)
   {
     v6 = _FALogSystem();
@@ -1006,21 +1006,21 @@ LABEL_9:
   }
 
   [(PSSpecifier *)self->_invitationsCellSpecifier setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
-  v5 = [(FASettingsSpecifierProvider *)self delegate];
-  [v5 specifierProvider:self willBeginLoadingSpecifier:self->_invitationsCellSpecifier];
+  delegate = [(FASettingsSpecifierProvider *)self delegate];
+  [delegate specifierProvider:self willBeginLoadingSpecifier:self->_invitationsCellSpecifier];
 
   [(FASettingsSpecifierProvider *)self _presentPendingInvitesRemoteUI];
 LABEL_10:
 }
 
-- (void)_presentFlowWithEventType:(id)a3 completion:(id)a4
+- (void)_presentFlowWithEventType:(id)type completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  typeCopy = type;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (typeCopy)
   {
-    v9 = [[FACircleContext alloc] initWithEventType:v6];
+    v9 = [[FACircleContext alloc] initWithEventType:typeCopy];
     v16 = 0;
     v17 = &v16;
     v18 = 0x3032000000;
@@ -1045,7 +1045,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v9 = [objc_alloc(MEMORY[0x277D08230]) initWithLoadSuccess:1 error:0 userInfo:0];
     (v8)[2](v8, v9);
@@ -1097,12 +1097,12 @@ void __61__FASettingsSpecifierProvider__presentPendingInvitesRemoteUI__block_inv
   [v2 specifierProvider:*(a1 + 32) didFinishLoadingSpecifier:*(*(a1 + 32) + 48)];
 }
 
-- (id)_valueForFamilySpecifier:(id)a3
+- (id)_valueForFamilySpecifier:(id)specifier
 {
-  v4 = [a3 propertyForKey:@"_FAFamilyCachedFamilyStateKey"];
-  v5 = [v4 integerValue];
+  v4 = [specifier propertyForKey:@"_FAFamilyCachedFamilyStateKey"];
+  integerValue = [v4 integerValue];
 
-  if (v5 == 2)
+  if (integerValue == 2)
   {
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v7 = [v6 localizedStringForKey:@"SETUP_FAMILY" value:&stru_282D9AA68 table:@"Localizable"];
@@ -1136,15 +1136,15 @@ void __61__FASettingsSpecifierProvider__presentPendingInvitesRemoteUI__block_inv
   self->_cachedResourceDictionary = 0;
 }
 
-- (void)_viewFamilyWithResourceDictionary:(id)a3
+- (void)_viewFamilyWithResourceDictionary:(id)dictionary
 {
   v37 = *MEMORY[0x277D85DE8];
-  v26 = a3;
+  dictionaryCopy = dictionary;
   v4 = _FALogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v36 = v26;
+    v36 = dictionaryCopy;
     _os_log_impl(&dword_21BB35000, v4, OS_LOG_TYPE_DEFAULT, "_viewFamilyWithResourceDictionary: %@", buf, 0xCu);
   }
 
@@ -1171,22 +1171,22 @@ void __61__FASettingsSpecifierProvider__presentPendingInvitesRemoteUI__block_inv
     }
 
     v10 = [FAFamilySettingsMemberSpecifierProvider alloc];
-    v11 = [(FASettingsSpecifierProvider *)self _appleAccount];
-    v25 = [(FAFamilySettingsMemberSpecifierProvider *)v10 initWithAppleAccount:v11 familyCircle:self->_familyCircle familyPictureStore:self->_familyPictureStore];
+    _appleAccount = [(FASettingsSpecifierProvider *)self _appleAccount];
+    v25 = [(FAFamilySettingsMemberSpecifierProvider *)v10 initWithAppleAccount:_appleAccount familyCircle:self->_familyCircle familyPictureStore:self->_familyPictureStore];
 
     v12 = [_TtC14FamilyCircleUI32FAFamilySettingsViewControllerV2 alloc];
-    v13 = [(FASettingsSpecifierProvider *)self _appleAccount];
-    v14 = [(FASettingsSpecifierProvider *)self _grandSlamSigner];
+    _appleAccount2 = [(FASettingsSpecifierProvider *)self _appleAccount];
+    _grandSlamSigner = [(FASettingsSpecifierProvider *)self _grandSlamSigner];
     familyCircle = self->_familyCircle;
     v16 = self->_familyPictureStore;
     accountManager = self->_accountManager;
-    v18 = [MEMORY[0x277D082D0] sharedInstance];
-    v19 = [(FAFamilySettingsViewControllerV2 *)v12 initWithAppleAccount:v13 grandSlamSigner:v14 familyCircle:familyCircle pictureStore:v16 accountManager:accountManager peopleDiscoveryService:v18];
+    mEMORY[0x277D082D0] = [MEMORY[0x277D082D0] sharedInstance];
+    v19 = [(FAFamilySettingsViewControllerV2 *)v12 initWithAppleAccount:_appleAccount2 grandSlamSigner:_grandSlamSigner familyCircle:familyCircle pictureStore:v16 accountManager:accountManager peopleDiscoveryService:mEMORY[0x277D082D0]];
 
     [(FAFamilySettingsViewControllerV2 *)v19 setDelegate:self];
     v20 = objc_loadWeakRetained(&self->_presenter);
-    v21 = [v20 rootController];
-    [(FARestorableViewController *)v19 setRootController:v21];
+    rootController = [v20 rootController];
+    [(FARestorableViewController *)v19 setRootController:rootController];
 
     [(FARestorableViewController *)v19 setSpecifier:v5];
     objc_initWeak(buf, self);
@@ -1199,8 +1199,8 @@ void __61__FASettingsSpecifierProvider__presentPendingInvitesRemoteUI__block_inv
     v23 = v19;
     v28 = v23;
     v29 = v5;
-    v30 = self;
-    v31 = v26;
+    selfCopy = self;
+    v31 = dictionaryCopy;
     [(FAProfilePictureStore *)v22 fetchProfileImagesWithCompletion:v27];
 
     objc_destroyWeak(&v32);
@@ -1214,7 +1214,7 @@ void __61__FASettingsSpecifierProvider__presentPendingInvitesRemoteUI__block_inv
     v33[2] = __65__FASettingsSpecifierProvider__viewFamilyWithResourceDictionary___block_invoke;
     v33[3] = &unk_2782F3B50;
     v33[4] = self;
-    v34 = v26;
+    v34 = dictionaryCopy;
     [(FASettingsSpecifierProvider *)self _loadFamilyDetailsWithCompletion:v33];
   }
 
@@ -1261,9 +1261,9 @@ void __65__FASettingsSpecifierProvider__viewFamilyWithResourceDictionary___block
   }
 }
 
-- (void)_loadFamilyEligibilityWithCompletion:(id)a3
+- (void)_loadFamilyEligibilityWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __68__FASettingsSpecifierProvider__loadFamilyEligibilityWithCompletion___block_invoke;
@@ -1275,8 +1275,8 @@ void __65__FASettingsSpecifierProvider__viewFamilyWithResourceDictionary___block
   v14[2] = __68__FASettingsSpecifierProvider__loadFamilyEligibilityWithCompletion___block_invoke_2;
   v14[3] = &unk_2782F3BC8;
   v14[4] = self;
-  v15 = v4;
-  v6 = v4;
+  v15 = completionCopy;
+  v6 = completionCopy;
   v7 = _Block_copy(v14);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -1399,21 +1399,21 @@ void __68__FASettingsSpecifierProvider__loadFamilyEligibilityWithCompletion___bl
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleFamilyEligibilityResponse:(id)a3 completion:(id)a4
+- (void)_handleFamilyEligibilityResponse:(id)response completion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 error];
+  responseCopy = response;
+  completionCopy = completion;
+  error = [responseCopy error];
 
-  if (v9)
+  if (error)
   {
     v10 = _FALogSystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v7 error];
+      error2 = [responseCopy error];
       v14 = 138412290;
-      v15 = v11;
+      v15 = error2;
       v12 = "Failed to get family eligibility: %@";
 LABEL_6:
       _os_log_impl(&dword_21BB35000, v10, OS_LOG_TYPE_DEFAULT, v12, &v14, 0xCu);
@@ -1422,20 +1422,20 @@ LABEL_6:
 
   else
   {
-    self->_familyEligibilityStatus = [v7 eligibilityStatus];
-    objc_storeStrong(&self->_familyEligibilityResponse, a3);
+    self->_familyEligibilityStatus = [responseCopy eligibilityStatus];
+    objc_storeStrong(&self->_familyEligibilityResponse, response);
     v10 = _FALogSystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(AAFamilyEligibilityResponse *)self->_familyEligibilityResponse responseDictionary];
+      error2 = [(AAFamilyEligibilityResponse *)self->_familyEligibilityResponse responseDictionary];
       v14 = 138412290;
-      v15 = v11;
+      v15 = error2;
       v12 = "Family eligibility response: %@";
       goto LABEL_6;
     }
   }
 
-  v8[2](v8, v9 == 0);
+  completionCopy[2](completionCopy, error == 0);
   v13 = *MEMORY[0x277D85DE8];
 }
 
@@ -1466,11 +1466,11 @@ LABEL_6:
   self->_cachedResourceDictionary = 0;
 }
 
-- (BOOL)handleURL:(id)a3
+- (BOOL)handleURL:(id)l
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 copy];
+  lCopy = l;
+  v5 = [lCopy copy];
   cachedResourceDictionary = self->_cachedResourceDictionary;
   self->_cachedResourceDictionary = v5;
 
@@ -1478,34 +1478,34 @@ LABEL_6:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v4;
+    v13 = lCopy;
     _os_log_impl(&dword_21BB35000, v7, OS_LOG_TYPE_DEFAULT, "Handle URL in: %@", &v12, 0xCu);
   }
 
-  v8 = [v4 objectForKeyedSubscript:@"aaaction"];
+  v8 = [lCopy objectForKeyedSubscript:@"aaaction"];
   if ([v8 isEqual:@"showFamilyInvite"])
   {
-    [(FASettingsSpecifierProvider *)self _handleShowFamilyInviteActionURL:v4];
+    [(FASettingsSpecifierProvider *)self _handleShowFamilyInviteActionURL:lCopy];
   }
 
   else if ([v8 isEqual:@"setupFamily"])
   {
-    [(FASettingsSpecifierProvider *)self _handleStartFamilySetupActionURL:v4];
+    [(FASettingsSpecifierProvider *)self _handleStartFamilySetupActionURL:lCopy];
   }
 
   else if ([v8 isEqual:@"showFamilySettings"])
   {
-    [(FASettingsSpecifierProvider *)self _handleShowFamilySettingsURL:v4];
+    [(FASettingsSpecifierProvider *)self _handleShowFamilySettingsURL:lCopy];
   }
 
   else if ([v8 isEqual:@"showFamilySettingsV2"])
   {
-    [(FASettingsSpecifierProvider *)self _handleShowFamilySettingsV2WithResourceDictionary:v4];
+    [(FASettingsSpecifierProvider *)self _handleShowFamilySettingsV2WithResourceDictionary:lCopy];
   }
 
   else if ([v8 isEqual:@"showChildTransferRequest"])
   {
-    [(FASettingsSpecifierProvider *)self _handleShowChildTransferActionURL:v4];
+    [(FASettingsSpecifierProvider *)self _handleShowChildTransferActionURL:lCopy];
   }
 
   else
@@ -1516,7 +1516,7 @@ LABEL_6:
       goto LABEL_16;
     }
 
-    [(FASettingsSpecifierProvider *)self _handleShowInvitesActionURL:v4];
+    [(FASettingsSpecifierProvider *)self _handleShowInvitesActionURL:lCopy];
   }
 
   v9 = 1;
@@ -1526,29 +1526,29 @@ LABEL_16:
   return v9;
 }
 
-- (void)_handleShowFamilySettingsV2WithResourceDictionary:(id)a3
+- (void)_handleShowFamilySettingsV2WithResourceDictionary:(id)dictionary
 {
-  v4 = [_TtC14FamilyCircleUI34FASwiftUIHostingControllerProvider getSettingsViewControllerWithResourceDictionary:a3];
+  v4 = [_TtC14FamilyCircleUI34FASwiftUIHostingControllerProvider getSettingsViewControllerWithResourceDictionary:dictionary];
   [(FASettingsSpecifierProvider *)self _presentViewController:v4];
 }
 
-- (void)_presentViewController:(id)a3
+- (void)_presentViewController:(id)controller
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_presenter);
-  v6 = [WeakRetained navigationController];
-  v7 = [v6 viewControllers];
-  v8 = [v7 containsObject:v4];
+  navigationController = [WeakRetained navigationController];
+  viewControllers = [navigationController viewControllers];
+  v8 = [viewControllers containsObject:controllerCopy];
 
   if (v8)
   {
-    v9 = _FALogSystem();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    splitViewController = _FALogSystem();
+    if (os_log_type_enabled(splitViewController, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 138412290;
-      v19 = v4;
-      _os_log_impl(&dword_21BB35000, v9, OS_LOG_TYPE_DEFAULT, "View Controller %@ already exists in Navigation stack, can't push another", &v18, 0xCu);
+      v19 = controllerCopy;
+      _os_log_impl(&dword_21BB35000, splitViewController, OS_LOG_TYPE_DEFAULT, "View Controller %@ already exists in Navigation stack, can't push another", &v18, 0xCu);
     }
   }
 
@@ -1565,46 +1565,46 @@ LABEL_16:
       {
         v13 = objc_loadWeakRetained(&self->_presenter);
         v18 = 138412546;
-        v19 = v4;
+        v19 = controllerCopy;
         v20 = 2112;
         v21 = v13;
         _os_log_impl(&dword_21BB35000, v12, OS_LOG_TYPE_DEFAULT, "Calling showController with settingsViewController %@ for presenter %@", &v18, 0x16u);
       }
 
-      v9 = objc_loadWeakRetained(&self->_presenter);
-      [v9 showController:v4 animate:1];
+      splitViewController = objc_loadWeakRetained(&self->_presenter);
+      [splitViewController showController:controllerCopy animate:1];
     }
 
     else
     {
       v14 = objc_loadWeakRetained(&self->_presenter);
-      v9 = [v14 splitViewController];
+      splitViewController = [v14 splitViewController];
 
       v15 = _FALogSystem();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         v16 = objc_loadWeakRetained(&self->_presenter);
         v18 = 138412802;
-        v19 = v4;
+        v19 = controllerCopy;
         v20 = 2112;
         v21 = v16;
         v22 = 2112;
-        v23 = v9;
+        v23 = splitViewController;
         _os_log_impl(&dword_21BB35000, v15, OS_LOG_TYPE_DEFAULT, "Calling showInitialViewController with settingsViewController %@ for presenter %@ with splitViewController %@", &v18, 0x20u);
       }
 
-      [v9 showInitialViewController:v4];
+      [splitViewController showInitialViewController:controllerCopy];
     }
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleShowInvitesActionURL:(id)a3
+- (void)_handleShowInvitesActionURL:(id)l
 {
-  v4 = [(FASettingsSpecifierProvider *)self _appleAccount];
-  v5 = v4;
-  if (!v4)
+  _appleAccount = [(FASettingsSpecifierProvider *)self _appleAccount];
+  v5 = _appleAccount;
+  if (!_appleAccount)
   {
     v6 = _FALogSystem();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1620,7 +1620,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (([v4 aa_isPrimaryAccount] & 1) == 0)
+  if (([_appleAccount aa_isPrimaryAccount] & 1) == 0)
   {
     v6 = _FALogSystem();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1688,7 +1688,7 @@ LABEL_7:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleShowFamilySettingsURL:(id)a3
+- (void)_handleShowFamilySettingsURL:(id)l
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -1753,13 +1753,13 @@ LABEL_8:
   return WeakRetained;
 }
 
-- (void)_handleShowInviteActionURL:(id)a3 isChildTransfer:(BOOL)a4
+- (void)_handleShowInviteActionURL:(id)l isChildTransfer:(BOOL)transfer
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(FASettingsSpecifierProvider *)self _appleAccount];
-  v8 = v7;
-  if (!v7)
+  lCopy = l;
+  _appleAccount = [(FASettingsSpecifierProvider *)self _appleAccount];
+  v8 = _appleAccount;
+  if (!_appleAccount)
   {
     v9 = _FALogSystem();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1774,7 +1774,7 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  if (([v7 aa_isPrimaryAccount] & 1) == 0)
+  if (([_appleAccount aa_isPrimaryAccount] & 1) == 0)
   {
     v9 = _FALogSystem();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1787,13 +1787,13 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"inviteCode"];
+  v9 = [lCopy objectForKeyedSubscript:@"inviteCode"];
   if (v9)
   {
     self->_isHandlingURLForInvite = 1;
-    v10 = [v6 objectForKeyedSubscript:@"organizerFirstName"];
-    v11 = [v6 objectForKeyedSubscript:@"organizerLastName"];
-    v12 = [v6 objectForKeyedSubscript:@"organizerEmail"];
+    v10 = [lCopy objectForKeyedSubscript:@"organizerFirstName"];
+    v11 = [lCopy objectForKeyedSubscript:@"organizerLastName"];
+    v12 = [lCopy objectForKeyedSubscript:@"organizerEmail"];
     v13 = _FALogSystem();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
@@ -1809,7 +1809,7 @@ LABEL_11:
     v19[2] = __74__FASettingsSpecifierProvider__handleShowInviteActionURL_isChildTransfer___block_invoke;
     v19[3] = &unk_2782F3C40;
     v19[4] = self;
-    v24 = a4;
+    transferCopy = transfer;
     v20 = v9;
     v21 = v10;
     v22 = v11;
@@ -1921,76 +1921,76 @@ LABEL_15:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleStartFamilySetupActionURL:(id)a3
+- (void)_handleStartFamilySetupActionURL:(id)l
 {
-  v7 = a3;
+  lCopy = l;
   WeakRetained = objc_loadWeakRetained(&self->_presenter);
-  v5 = [WeakRetained presentedViewController];
+  presentedViewController = [WeakRetained presentedViewController];
 
-  if (v5)
+  if (presentedViewController)
   {
     v6 = objc_loadWeakRetained(&self->_presenter);
     [v6 dismissViewControllerAnimated:0 completion:0];
   }
 
-  [(FASettingsSpecifierProvider *)self _initiateFamilyWithResources:v7];
+  [(FASettingsSpecifierProvider *)self _initiateFamilyWithResources:lCopy];
 }
 
-- (BOOL)remoteUIController:(id)a3 shouldLoadRequest:(id)a4 redirectResponse:(id)a5
+- (BOOL)remoteUIController:(id)controller shouldLoadRequest:(id)request redirectResponse:(id)response
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(FASettingsSpecifierProvider *)self _requestConfigurator];
-  [v7 addFresnoHeadersToRequest:v6];
+  requestCopy = request;
+  _requestConfigurator = [(FASettingsSpecifierProvider *)self _requestConfigurator];
+  [_requestConfigurator addFresnoHeadersToRequest:requestCopy];
 
-  v8 = [(FASettingsSpecifierProvider *)self _requestConfigurator];
+  _requestConfigurator2 = [(FASettingsSpecifierProvider *)self _requestConfigurator];
   v13 = @"clientAppContext";
-  v9 = [(FACircleContext *)self->_context clientName];
-  v14[0] = v9;
+  clientName = [(FACircleContext *)self->_context clientName];
+  v14[0] = clientName;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-  [v8 addFresnoPayloadToRequest:v6 additionalPayload:v10];
+  [_requestConfigurator2 addFresnoPayloadToRequest:requestCopy additionalPayload:v10];
 
   v11 = *MEMORY[0x277D85DE8];
   return 1;
 }
 
-- (void)remoteUIController:(id)a3 didRefreshObjectModel:(id)a4
+- (void)remoteUIController:(id)controller didRefreshObjectModel:(id)model
 {
-  v7 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  modelCopy = model;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(FASettingsSpecifierProvider *)self _handleObjectModelChangeForController:v7 objectModel:v6 isModal:0];
+    [(FASettingsSpecifierProvider *)self _handleObjectModelChangeForController:controllerCopy objectModel:modelCopy isModal:0];
   }
 }
 
-- (void)_handleObjectModelChangeForController:(id)a3 objectModel:(id)a4 isModal:(BOOL)a5
+- (void)_handleObjectModelChangeForController:(id)controller objectModel:(id)model isModal:(BOOL)modal
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  modelCopy = model;
   v7 = _FALogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 identifier];
+    identifier = [modelCopy identifier];
     v34 = 138412290;
-    v35 = v8;
+    v35 = identifier;
     _os_log_impl(&dword_21BB35000, v7, OS_LOG_TYPE_DEFAULT, "Handling an object model: %@", &v34, 0xCu);
   }
 
-  v9 = [v6 clientInfo];
-  v10 = [v9 objectForKeyedSubscript:@"needsProfilePhotoHeader"];
+  clientInfo = [modelCopy clientInfo];
+  v10 = [clientInfo objectForKeyedSubscript:@"needsProfilePhotoHeader"];
   v11 = [v10 isEqual:@"true"];
 
   if (v11)
   {
-    v12 = [v6 defaultPages];
-    v13 = [v12 firstObject];
+    defaultPages = [modelCopy defaultPages];
+    firstObject = [defaultPages firstObject];
 
-    v14 = [v13 hasTableView];
+    hasTableView = [firstObject hasTableView];
     v15 = _FALogSystem();
     v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-    if (v14)
+    if (hasTableView)
     {
       if (v16)
       {
@@ -1999,30 +1999,30 @@ LABEL_15:
       }
 
       v15 = objc_alloc_init(MEMORY[0x277CEC7F0]);
-      v17 = [(FASettingsSpecifierProvider *)self _appleAccount];
-      v18 = [v17 aa_firstName];
-      [v15 setFirstName:v18];
+      _appleAccount = [(FASettingsSpecifierProvider *)self _appleAccount];
+      aa_firstName = [_appleAccount aa_firstName];
+      [v15 setFirstName:aa_firstName];
 
-      v19 = [(FASettingsSpecifierProvider *)self _appleAccount];
-      v20 = [v19 aa_lastName];
-      [v15 setLastName:v20];
+      _appleAccount2 = [(FASettingsSpecifierProvider *)self _appleAccount];
+      aa_lastName = [_appleAccount2 aa_lastName];
+      [v15 setLastName:aa_lastName];
 
-      v21 = [(FASettingsSpecifierProvider *)self _appleAccount];
-      v22 = [v21 aa_appleId];
-      [v15 setAppleID:v22];
+      _appleAccount3 = [(FASettingsSpecifierProvider *)self _appleAccount];
+      aa_appleId = [_appleAccount3 aa_appleId];
+      [v15 setAppleID:aa_appleId];
 
       v23 = MEMORY[0x277CCABB0];
-      v24 = [(FASettingsSpecifierProvider *)self _appleAccount];
-      v25 = [v24 aa_personID];
-      v26 = [v23 numberWithLongLong:{objc_msgSend(v25, "longLongValue")}];
+      _appleAccount4 = [(FASettingsSpecifierProvider *)self _appleAccount];
+      aa_personID = [_appleAccount4 aa_personID];
+      v26 = [v23 numberWithLongLong:{objc_msgSend(aa_personID, "longLongValue")}];
       [v15 setPersonID:v26];
 
       [v15 setIsMe:1];
       v27 = [FAProfileViewTableViewDecorator alloc];
-      v28 = [v13 tableViewOM];
-      v29 = [v28 tableView];
-      v30 = [v13 tableViewOM];
-      v31 = [(FAProfileViewTableViewDecorator *)v27 initWithTableView:v29 ruiTableView:v30 forPerson:v15 pictureStore:self->_familyPictureStore];
+      tableViewOM = [firstObject tableViewOM];
+      tableView = [tableViewOM tableView];
+      tableViewOM2 = [firstObject tableViewOM];
+      v31 = [(FAProfileViewTableViewDecorator *)v27 initWithTableView:tableView ruiTableView:tableViewOM2 forPerson:v15 pictureStore:self->_familyPictureStore];
       remoteUIDecorator = self->_remoteUIDecorator;
       self->_remoteUIDecorator = v31;
     }
@@ -2044,12 +2044,12 @@ LABEL_15:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21BB35000, v3, OS_LOG_TYPE_DEFAULT, "FASettingsSpecifierProvider dealloc %@", buf, 0xCu);
   }
 
-  v4 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v6.receiver = self;
   v6.super_class = FASettingsSpecifierProvider;
@@ -2057,9 +2057,9 @@ LABEL_15:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)familySettingsViewController2StopFamilySharing:(id)a3
+- (void)familySettingsViewController2StopFamilySharing:(id)sharing
 {
-  v4 = a3;
+  sharingCopy = sharing;
   [(FASettingsSpecifierProvider *)self _clearFamilyState];
   [(FASettingsSpecifierProvider *)self _reloadFamilySpecifiersAnimated:0];
   WeakRetained = objc_loadWeakRetained(&self->_presenter);
@@ -2068,17 +2068,17 @@ LABEL_15:
 
   if (isKindOfClass)
   {
-    v7 = [v4 navigationController];
+    navigationController = [sharingCopy navigationController];
     v8 = objc_loadWeakRetained(&self->_presenter);
-    v9 = [v7 popToViewController:v8 animated:1];
+    v9 = [navigationController popToViewController:v8 animated:1];
   }
 
   else
   {
     v12 = 0;
     v10 = [MEMORY[0x277D08358] urlDestinationTo:0 error:&v12];
-    v11 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    [v11 openSensitiveURL:v10 withOptions:0];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    [defaultWorkspace openSensitiveURL:v10 withOptions:0];
   }
 }
 
@@ -2089,16 +2089,16 @@ LABEL_15:
   return WeakRetained;
 }
 
-- (BOOL)shouldUseModernNavigationForPresenter:(id)a3
+- (BOOL)shouldUseModernNavigationForPresenter:(id)presenter
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_21BBF3664(v4);
+  presenterCopy = presenter;
+  selfCopy = self;
+  v6 = sub_21BBF3664(presenterCopy);
 
   return v6;
 }
 
-- (void)presentFamilySettingsFromPresenter:(id)a3
+- (void)presentFamilySettingsFromPresenter:(id)presenter
 {
   v4 = sub_21BE2693C();
   v5 = *(v4 - 8);
@@ -2113,10 +2113,10 @@ LABEL_15:
   v13 = *(v12 + 64);
   MEMORY[0x28223BE20](v11);
   v15 = &v18 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v16 = a3;
+  presenterCopy = presenter;
   sub_21BE293CC();
   sub_21BE2885C();
-  v17 = [v16 traitCollection];
+  traitCollection = [presenterCopy traitCollection];
   sub_21BE2929C();
 
   sub_21BBF381C(&qword_27CDB66C0, MEMORY[0x277D4D798]);

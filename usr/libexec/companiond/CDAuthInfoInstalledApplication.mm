@@ -1,5 +1,5 @@
 @interface CDAuthInfoInstalledApplication
-- (CDAuthInfoInstalledApplication)initWithApplicationRecord:(id)a3;
+- (CDAuthInfoInstalledApplication)initWithApplicationRecord:(id)record;
 - (id)applicationIdentifier;
 - (id)bundleIdentifier;
 - (id)localizedName;
@@ -8,16 +8,16 @@
 
 @implementation CDAuthInfoInstalledApplication
 
-- (CDAuthInfoInstalledApplication)initWithApplicationRecord:(id)a3
+- (CDAuthInfoInstalledApplication)initWithApplicationRecord:(id)record
 {
-  v5 = a3;
+  recordCopy = record;
   v9.receiver = self;
   v9.super_class = CDAuthInfoInstalledApplication;
   v6 = [(CDAuthInfoInstalledApplication *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_applicationRecord, a3);
+    objc_storeStrong(&v6->_applicationRecord, record);
   }
 
   return v7;
@@ -25,32 +25,32 @@
 
 - (id)bundleIdentifier
 {
-  v2 = [(LSApplicationRecord *)self->_applicationRecord bundleIdentifier];
-  v3 = [v2 copy];
+  bundleIdentifier = [(LSApplicationRecord *)self->_applicationRecord bundleIdentifier];
+  v3 = [bundleIdentifier copy];
 
   return v3;
 }
 
 - (id)applicationIdentifier
 {
-  v2 = [(LSApplicationRecord *)self->_applicationRecord applicationIdentifier];
-  v3 = [v2 copy];
+  applicationIdentifier = [(LSApplicationRecord *)self->_applicationRecord applicationIdentifier];
+  v3 = [applicationIdentifier copy];
 
   return v3;
 }
 
 - (id)teamIdentifier
 {
-  v2 = [(LSApplicationRecord *)self->_applicationRecord teamIdentifier];
-  v3 = [v2 copy];
+  teamIdentifier = [(LSApplicationRecord *)self->_applicationRecord teamIdentifier];
+  v3 = [teamIdentifier copy];
 
   return v3;
 }
 
 - (id)localizedName
 {
-  v2 = [(LSApplicationRecord *)self->_applicationRecord localizedName];
-  v3 = [v2 copy];
+  localizedName = [(LSApplicationRecord *)self->_applicationRecord localizedName];
+  v3 = [localizedName copy];
 
   return v3;
 }

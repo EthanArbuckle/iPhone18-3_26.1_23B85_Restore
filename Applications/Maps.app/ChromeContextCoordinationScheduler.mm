@@ -1,8 +1,8 @@
 @interface ChromeContextCoordinationScheduler
-- (ChromeContextCoordinationScheduler)initWithChromeViewController:(id)a3;
+- (ChromeContextCoordinationScheduler)initWithChromeViewController:(id)controller;
 - (void)commit;
-- (void)scheduleBlock:(id)a3 completionHandler:(id)a4;
-- (void)setFallbackBlock:(id)a3;
+- (void)scheduleBlock:(id)block completionHandler:(id)handler;
+- (void)setFallbackBlock:(id)block;
 @end
 
 @implementation ChromeContextCoordinationScheduler
@@ -54,10 +54,10 @@ LABEL_31:
     goto LABEL_36;
   }
 
-  v5 = [WeakRetained isExecuting];
+  isExecuting = [WeakRetained isExecuting];
   v6 = sub_100018D38();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
-  if (!v5)
+  if (!isExecuting)
   {
     if (!v7)
     {
@@ -142,21 +142,21 @@ LABEL_30:
 LABEL_36:
 }
 
-- (void)setFallbackBlock:(id)a3
+- (void)setFallbackBlock:(id)block
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  blockCopy = block;
+  v5 = [blockCopy copy];
   fallbackBlock = self->_fallbackBlock;
   self->_fallbackBlock = v5;
 
   WeakRetained = objc_loadWeakRetained(&self->_deferredOperation);
-  [WeakRetained setFallbackCoordinationBlock:v4];
+  [WeakRetained setFallbackCoordinationBlock:blockCopy];
 }
 
-- (void)scheduleBlock:(id)a3 completionHandler:(id)a4
+- (void)scheduleBlock:(id)block completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_chromeViewController);
 
   if (!WeakRetained)
@@ -209,7 +209,7 @@ LABEL_36:
     v18 = objc_loadWeakRetained(&self->_chromeViewController);
     v19 = [(ChromeContextOperation *)v17 initWithChromeViewController:v18 fallbackCoordinationBlock:self->_fallbackBlock];
 
-    [(ChromeContextOperation *)v19 addContextCoordinationBlock:v6];
+    [(ChromeContextOperation *)v19 addContextCoordinationBlock:blockCopy];
     v20 = objc_loadWeakRetained(&self->_deferredOperation);
 
     if (v20)
@@ -260,7 +260,7 @@ LABEL_20:
   }
 
   v19 = objc_loadWeakRetained(&self->_deferredOperation);
-  [(ChromeContextOperation *)v19 addContextCoordinationBlock:v6];
+  [(ChromeContextOperation *)v19 addContextCoordinationBlock:blockCopy];
 LABEL_21:
 
   v29 = objc_loadWeakRetained(&self->_deferredOperation);
@@ -268,16 +268,16 @@ LABEL_21:
   v35[1] = 3221225472;
   v35[2] = sub_1005D20EC;
   v35[3] = &unk_1016230C0;
-  v36 = v7;
+  v36 = handlerCopy;
   v37 = v10;
-  v30 = v7;
+  v30 = handlerCopy;
   [v29 addCompletionBlock:v35];
 }
 
-- (ChromeContextCoordinationScheduler)initWithChromeViewController:(id)a3
+- (ChromeContextCoordinationScheduler)initWithChromeViewController:(id)controller
 {
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
     v5 = [(ChromeContextCoordinationScheduler *)self init];
     p_isa = &v5->super.isa;
@@ -285,11 +285,11 @@ LABEL_21:
     {
 LABEL_28:
       self = p_isa;
-      v9 = self;
+      selfCopy = self;
       goto LABEL_29;
     }
 
-    objc_storeWeak(&v5->_chromeViewController, v4);
+    objc_storeWeak(&v5->_chromeViewController, controllerCopy);
     if (GEOConfigGetBOOL())
     {
       v7 = objc_alloc_init(NSOperationQueue);
@@ -328,7 +328,7 @@ LABEL_27:
 
 LABEL_13:
         v19 = v18;
-        v20 = v4;
+        v20 = controllerCopy;
         v21 = objc_opt_class();
         v22 = NSStringFromClass(v21);
         if (objc_opt_respondsToSelector())
@@ -396,10 +396,10 @@ LABEL_26:
     goto LABEL_13;
   }
 
-  v9 = 0;
+  selfCopy = 0;
 LABEL_29:
 
-  return v9;
+  return selfCopy;
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface VUIPerfMetricsAppLaunchController
 + (id)sharedInstance;
 - (VUIPerfMetricsAppLaunchController)init;
-- (void)_setAppLaunchFieldWithData:(id)a3;
-- (void)recordAppLaunchEventWithEventType:(id)a3;
+- (void)_setAppLaunchFieldWithData:(id)data;
+- (void)recordAppLaunchEventWithEventType:(id)type;
 @end
 
 @implementation VUIPerfMetricsAppLaunchController
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __51__VUIPerfMetricsAppLaunchController_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_once_1 != -1)
   {
     dispatch_once(&sharedInstance_once_1, block);
@@ -71,48 +71,48 @@ void __51__VUIPerfMetricsAppLaunchController_sharedInstance__block_invoke(uint64
   return v2;
 }
 
-- (void)recordAppLaunchEventWithEventType:(id)a3
+- (void)recordAppLaunchEventWithEventType:(id)type
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DF00];
-  v5 = a3;
-  v6 = [v4 date];
-  [v6 timeIntervalSince1970];
+  typeCopy = type;
+  date = [v4 date];
+  [date timeIntervalSince1970];
   v8 = v7 * 1000.0;
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:vcvtad_u64_f64(v8)];
-  v11 = v5;
+  v11 = typeCopy;
   v12[0] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
 
   [(VUIPerfMetricsAppLaunchController *)self _setAppLaunchFieldWithData:v10];
 }
 
-- (void)_setAppLaunchFieldWithData:(id)a3
+- (void)_setAppLaunchFieldWithData:(id)data
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(VUIPerfMetricsAppLaunchController *)v5 appLaunchData];
+  dataCopy = data;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  appLaunchData = [(VUIPerfMetricsAppLaunchController *)selfCopy appLaunchData];
 
-  if (!v6)
+  if (!appLaunchData)
   {
     v12 = @"isAppLaunch";
     v7 = [MEMORY[0x1E696AD98] numberWithBool:1];
     v13[0] = v7;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-    [(VUIPerfMetricsAppLaunchController *)v5 setAppLaunchData:v8];
+    [(VUIPerfMetricsAppLaunchController *)selfCopy setAppLaunchData:v8];
   }
 
-  v9 = [(VUIPerfMetricsAppLaunchController *)v5 appLaunchData];
-  v10 = [v9 mutableCopy];
+  appLaunchData2 = [(VUIPerfMetricsAppLaunchController *)selfCopy appLaunchData];
+  v10 = [appLaunchData2 mutableCopy];
 
-  [v10 addEntriesFromDictionary:v4];
+  [v10 addEntriesFromDictionary:dataCopy];
   v11 = [v10 copy];
-  [(VUIPerfMetricsAppLaunchController *)v5 setAppLaunchData:v11];
+  [(VUIPerfMetricsAppLaunchController *)selfCopy setAppLaunchData:v11];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface AMLRawSignalsConfiguration
 - (AMLFeaturesSpecification)rawSignalsDescription;
-- (AMLRawSignalsConfiguration)initWithBundleIdentifier:(id)a3 modelName:(id)a4 versionId:(id)a5 expirationPolicy:(int)a6 rawSignalsDescription:(id)a7;
-- (AMLRawSignalsConfiguration)initWithBundleIdentifier:(id)a3 modelName:(id)a4 versionId:(id)a5 expirationPolicy:(int)a6 rawSignalsDescription:(id)a7 configurationId:(id)a8;
+- (AMLRawSignalsConfiguration)initWithBundleIdentifier:(id)identifier modelName:(id)name versionId:(id)id expirationPolicy:(int)policy rawSignalsDescription:(id)description;
+- (AMLRawSignalsConfiguration)initWithBundleIdentifier:(id)identifier modelName:(id)name versionId:(id)id expirationPolicy:(int)policy rawSignalsDescription:(id)description configurationId:(id)configurationId;
 - (NSString)modelName;
-- (void)encodeWithCoder:(id)a3;
-- (void)setModelName:(id)a3;
-- (void)setRawSignalsDescription:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setModelName:(id)name;
+- (void)setRawSignalsDescription:(id)description;
 @end
 
 @implementation AMLRawSignalsConfiguration
@@ -26,9 +26,9 @@
   return v3;
 }
 
-- (void)setModelName:(id)a3
+- (void)setModelName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v4 = sub_21AF097CC();
     v6 = v5;
@@ -40,7 +40,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_21AF01128(v4, v6);
 }
 
@@ -51,34 +51,34 @@
   return v2;
 }
 
-- (void)setRawSignalsDescription:(id)a3
+- (void)setRawSignalsDescription:(id)description
 {
-  v4 = a3;
-  v5 = self;
-  sub_21AF01314(v4);
+  descriptionCopy = description;
+  selfCopy = self;
+  sub_21AF01314(descriptionCopy);
 }
 
-- (AMLRawSignalsConfiguration)initWithBundleIdentifier:(id)a3 modelName:(id)a4 versionId:(id)a5 expirationPolicy:(int)a6 rawSignalsDescription:(id)a7
+- (AMLRawSignalsConfiguration)initWithBundleIdentifier:(id)identifier modelName:(id)name versionId:(id)id expirationPolicy:(int)policy rawSignalsDescription:(id)description
 {
   sub_21AF097CC();
-  if (a4)
+  if (name)
   {
     sub_21AF097CC();
   }
 
   sub_21AF097CC();
-  v9 = a7;
+  descriptionCopy = description;
   AMLRawSignalsConfiguration.init(bundleIdentifier:modelName:versionId:expirationPolicy:rawSignalsDescription:)();
   return result;
 }
 
-- (AMLRawSignalsConfiguration)initWithBundleIdentifier:(id)a3 modelName:(id)a4 versionId:(id)a5 expirationPolicy:(int)a6 rawSignalsDescription:(id)a7 configurationId:(id)a8
+- (AMLRawSignalsConfiguration)initWithBundleIdentifier:(id)identifier modelName:(id)name versionId:(id)id expirationPolicy:(int)policy rawSignalsDescription:(id)description configurationId:(id)configurationId
 {
   v10 = sub_21AF097CC();
   v12 = v11;
-  if (a4)
+  if (name)
   {
-    a4 = sub_21AF097CC();
+    name = sub_21AF097CC();
     v14 = v13;
   }
 
@@ -90,14 +90,14 @@
   v15 = sub_21AF097CC();
   v17 = v16;
   v18 = sub_21AF097CC();
-  return sub_21AF01810(v10, v12, a4, v14, v15, v17, a6, a7, v18, v19);
+  return sub_21AF01810(v10, v12, name, v14, v15, v17, policy, description, v18, v19);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  AMLRawSignalsConfiguration.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  AMLRawSignalsConfiguration.encode(with:)(coderCopy);
 }
 
 @end

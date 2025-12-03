@@ -8,8 +8,8 @@
 
 - (void)_updateBackgroundColor
 {
-  v4 = [(RAPSeparatorBar *)self traitCollection];
-  if ([v4 userInterfaceStyle] == 1)
+  traitCollection = [(RAPSeparatorBar *)self traitCollection];
+  if ([traitCollection userInterfaceStyle] == 1)
   {
     +[UIColor tableSeparatorDarkColor];
   }

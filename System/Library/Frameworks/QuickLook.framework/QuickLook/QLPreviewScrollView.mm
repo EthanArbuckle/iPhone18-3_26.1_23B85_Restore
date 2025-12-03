@@ -1,24 +1,24 @@
 @interface QLPreviewScrollView
-- (CGRect)zoomRectForScale:(double)a3 withCenter:(CGPoint)a4;
+- (CGRect)zoomRectForScale:(double)scale withCenter:(CGPoint)center;
 - (CGSize)contentViewSize;
 - (QLPreviewScrollView)init;
 - (QLPreviewScrollViewZoomDelegate)zoomDelegate;
 - (UIEdgeInsets)peripheryInsetsLandscape;
 - (UIEdgeInsets)peripheryInsetsPortrait;
 - (UIView)contentView;
-- (double)_maxZoomScaleForContentSize:(CGSize)a3;
+- (double)_maxZoomScaleForContentSize:(CGSize)size;
 - (void)_updateScrollViewZooming;
 - (void)layoutSubviews;
 - (void)resetZoomScale;
-- (void)scrollViewDidEndZooming:(id)a3 withView:(id)a4 atScale:(double)a5;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewDidZoom:(id)a3;
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4;
-- (void)setContentView:(id)a3 withSize:(CGSize)a4;
-- (void)setContentViewSize:(CGSize)a3;
-- (void)setNeedsZoomUpdate:(BOOL)a3;
+- (void)scrollViewDidEndZooming:(id)zooming withView:(id)view atScale:(double)scale;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewDidZoom:(id)zoom;
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view;
+- (void)setContentView:(id)view withSize:(CGSize)size;
+- (void)setContentViewSize:(CGSize)size;
+- (void)setNeedsZoomUpdate:(BOOL)update;
 - (void)updateZoomScales;
-- (void)updateZoomScalesWithSize:(CGSize)a3;
+- (void)updateZoomScalesWithSize:(CGSize)size;
 @end
 
 @implementation QLPreviewScrollView
@@ -32,8 +32,8 @@
   if (v2)
   {
     [(QLPreviewScrollView *)v2 setDelegate:v2];
-    v4 = [MEMORY[0x277D75348] clearColor];
-    [(QLPreviewScrollView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(QLPreviewScrollView *)v3 setBackgroundColor:clearColor];
 
     [(QLPreviewScrollView *)v3 setBouncesZoom:1];
     [(QLPreviewScrollView *)v3 setShowsVerticalScrollIndicator:0];
@@ -49,35 +49,35 @@
   return v3;
 }
 
-- (void)setContentView:(id)a3 withSize:(CGSize)a4
+- (void)setContentView:(id)view withSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = [(QLPreviewScrollView *)self contentView];
-  [v8 removeFromSuperview];
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
+  contentView = [(QLPreviewScrollView *)self contentView];
+  [contentView removeFromSuperview];
 
-  [(QLPreviewScrollView *)self setContentView:v7];
-  [(QLPreviewScrollView *)self addSubview:v7];
+  [(QLPreviewScrollView *)self setContentView:viewCopy];
+  [(QLPreviewScrollView *)self addSubview:viewCopy];
 
   [(QLPreviewScrollView *)self setContentViewSize:width, height];
 }
 
-- (void)setContentViewSize:(CGSize)a3
+- (void)setContentViewSize:(CGSize)size
 {
-  if (self->_contentViewSize.width != a3.width || self->_contentViewSize.height != a3.height)
+  if (self->_contentViewSize.width != size.width || self->_contentViewSize.height != size.height)
   {
-    self->_contentViewSize = a3;
+    self->_contentViewSize = size;
     [(QLPreviewScrollView *)self setContentSize:?];
 
     [(QLPreviewScrollView *)self _updateScrollViewZooming];
   }
 }
 
-- (void)setNeedsZoomUpdate:(BOOL)a3
+- (void)setNeedsZoomUpdate:(BOOL)update
 {
-  self->_needsZoomUpdate = a3;
-  if (a3)
+  self->_needsZoomUpdate = update;
+  if (update)
   {
     [(QLPreviewScrollView *)self _updateScrollViewZooming];
   }
@@ -114,10 +114,10 @@
   }
 }
 
-- (double)_maxZoomScaleForContentSize:(CGSize)a3
+- (double)_maxZoomScaleForContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = 3.0;
   if (_UIAccessibilityZoomTouchEnabled())
   {
@@ -148,35 +148,35 @@
   [(QLPreviewScrollView *)self updateZoomScalesWithSize:v3, v4];
 }
 
-- (void)updateZoomScalesWithSize:(CGSize)a3
+- (void)updateZoomScalesWithSize:(CGSize)size
 {
   if (self->_preventZoomUpdate)
   {
     return;
   }
 
-  height = a3.height;
-  width = a3.width;
-  self->_lastUpdatedSize = a3;
-  v7 = [(QLPreviewScrollView *)self zoomDelegate];
+  height = size.height;
+  width = size.width;
+  self->_lastUpdatedSize = size;
+  zoomDelegate = [(QLPreviewScrollView *)self zoomDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(QLPreviewScrollView *)self zoomDelegate];
-    v9 = [v8 previewScrollViewShouldResizeContentBasedOnPeripheryInsets:self];
+    zoomDelegate2 = [(QLPreviewScrollView *)self zoomDelegate];
+    v9 = [zoomDelegate2 previewScrollViewShouldResizeContentBasedOnPeripheryInsets:self];
 
     if (v9)
     {
-      v10 = [(QLPreviewScrollView *)self window];
-      if ([v10 _windowInterfaceOrientation] == 1)
+      window = [(QLPreviewScrollView *)self window];
+      if ([window _windowInterfaceOrientation] == 1)
       {
       }
 
       else
       {
-        v11 = [(QLPreviewScrollView *)self window];
-        v12 = [v11 _windowInterfaceOrientation];
+        window2 = [(QLPreviewScrollView *)self window];
+        _windowInterfaceOrientation = [window2 _windowInterfaceOrientation];
 
-        if (v12 != 2)
+        if (_windowInterfaceOrientation != 2)
         {
           width = width - self->_peripheryInsetsLandscape.left - self->_peripheryInsetsLandscape.right;
           goto LABEL_10;
@@ -216,8 +216,8 @@ LABEL_10:
     [(QLPreviewScrollView *)self contentViewSize];
     if (QLImageWithSizeShouldNotBeScaled())
     {
-      v27 = [MEMORY[0x277D759A0] mainScreen];
-      [v27 scale];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen scale];
       self->_minZoomScale = 1.0 / v28;
 
       if (v24 <= v26)
@@ -360,13 +360,13 @@ LABEL_10:
   }
 
 LABEL_12:
-  v16 = [(QLPreviewScrollView *)self zoomDelegate];
+  zoomDelegate3 = [(QLPreviewScrollView *)self zoomDelegate];
   v17 = objc_opt_respondsToSelector();
 
   if (v17)
   {
-    v18 = [(QLPreviewScrollView *)self zoomDelegate];
-    [v18 previewScrollView:self extraMinimumZoomForMinimumZoomScale:self->_minZoomScale maximumZoomScale:{fmin(self->_pinchMaxZoomScale, 3.0)}];
+    zoomDelegate4 = [(QLPreviewScrollView *)self zoomDelegate];
+    [zoomDelegate4 previewScrollView:self extraMinimumZoomForMinimumZoomScale:self->_minZoomScale maximumZoomScale:{fmin(self->_pinchMaxZoomScale, 3.0)}];
     self->_minZoomScale = v19 + self->_minZoomScale;
   }
 
@@ -394,14 +394,14 @@ LABEL_12:
   }
 }
 
-- (CGRect)zoomRectForScale:(double)a3 withCenter:(CGPoint)a4
+- (CGRect)zoomRectForScale:(double)scale withCenter:(CGPoint)center
 {
-  y = a4.y;
-  x = a4.x;
+  y = center.y;
+  x = center.x;
   [(QLPreviewScrollView *)self frame];
-  v9 = v8 / a3;
+  v9 = v8 / scale;
   [(QLPreviewScrollView *)self frame];
-  v11 = v10 / a3;
+  v11 = v10 / scale;
   v12 = x - v11 * 0.5;
   v13 = y - v9 * 0.5;
   v14 = v9;
@@ -412,61 +412,61 @@ LABEL_12:
   return result;
 }
 
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view
 {
   self->_inSizeChange = 1;
-  [(QLPreviewScrollView *)self setScrollEnabled:1, a4];
-  v5 = [(QLPreviewScrollView *)self zoomDelegate];
+  [(QLPreviewScrollView *)self setScrollEnabled:1, view];
+  zoomDelegate = [(QLPreviewScrollView *)self zoomDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(QLPreviewScrollView *)self zoomDelegate];
-    [v7 previewScrollViewWillBeginZooming:self];
+    zoomDelegate2 = [(QLPreviewScrollView *)self zoomDelegate];
+    [zoomDelegate2 previewScrollViewWillBeginZooming:self];
   }
 }
 
-- (void)scrollViewDidEndZooming:(id)a3 withView:(id)a4 atScale:(double)a5
+- (void)scrollViewDidEndZooming:(id)zooming withView:(id)view atScale:(double)scale
 {
   v7 = 0;
   self->_inSizeChange = 0;
   if (self->_contentIsSmallerThanView == 0.0)
   {
-    v7 = self->_minZoomScale < a5;
+    v7 = self->_minZoomScale < scale;
   }
 
-  [(QLPreviewScrollView *)self setScrollEnabled:v7, a4];
-  v8 = [(QLPreviewScrollView *)self zoomDelegate];
+  [(QLPreviewScrollView *)self setScrollEnabled:v7, view];
+  zoomDelegate = [(QLPreviewScrollView *)self zoomDelegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(QLPreviewScrollView *)self zoomDelegate];
-    [v10 previewScrollView:self didEndZoomingAtScale:a5];
+    zoomDelegate2 = [(QLPreviewScrollView *)self zoomDelegate];
+    [zoomDelegate2 previewScrollView:self didEndZoomingAtScale:scale];
   }
 }
 
-- (void)scrollViewDidZoom:(id)a3
+- (void)scrollViewDidZoom:(id)zoom
 {
-  v4 = [(QLPreviewScrollView *)self zoomDelegate];
+  zoomDelegate = [(QLPreviewScrollView *)self zoomDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(QLPreviewScrollView *)self zoomDelegate];
-    [v6 previewScrollViewDidZoom:self];
+    zoomDelegate2 = [(QLPreviewScrollView *)self zoomDelegate];
+    [zoomDelegate2 previewScrollViewDidZoom:self];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = [(QLPreviewScrollView *)self zoomDelegate];
+  zoomDelegate = [(QLPreviewScrollView *)self zoomDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(QLPreviewScrollView *)self zoomDelegate];
-    [v6 previewScrollViewDidScroll:self];
+    zoomDelegate2 = [(QLPreviewScrollView *)self zoomDelegate];
+    [zoomDelegate2 previewScrollViewDidScroll:self];
   }
 }
 

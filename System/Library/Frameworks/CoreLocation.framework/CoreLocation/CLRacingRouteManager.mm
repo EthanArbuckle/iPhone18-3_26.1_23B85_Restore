@@ -1,23 +1,23 @@
 @interface CLRacingRouteManager
-- (BOOL)setRaceParameters:(id)a3;
-- (id)advanceToPoint:(id)a3;
-- (unint64_t)addRoutePoints:(id)a3;
-- (unint64_t)configureWithWorkoutActivityType:(unint64_t)a3 bufferSize:(unint64_t)a4 offRouteGraceDurationInSec:(unint64_t)a5;
+- (BOOL)setRaceParameters:(id)parameters;
+- (id)advanceToPoint:(id)point;
+- (unint64_t)addRoutePoints:(id)points;
+- (unint64_t)configureWithWorkoutActivityType:(unint64_t)type bufferSize:(unint64_t)size offRouteGraceDurationInSec:(unint64_t)sec;
 @end
 
 @implementation CLRacingRouteManager
 
-- (unint64_t)configureWithWorkoutActivityType:(unint64_t)a3 bufferSize:(unint64_t)a4 offRouteGraceDurationInSec:(unint64_t)a5
+- (unint64_t)configureWithWorkoutActivityType:(unint64_t)type bufferSize:(unint64_t)size offRouteGraceDurationInSec:(unint64_t)sec
 {
-  if (a3 > 51)
+  if (type > 51)
   {
-    if (a3 - 70 < 2)
+    if (type - 70 < 2)
     {
       v5 = 90603;
       goto LABEL_12;
     }
 
-    if (a3 != 52)
+    if (type != 52)
     {
 LABEL_11:
       v5 = 62;
@@ -29,18 +29,18 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  if (a3 == 13)
+  if (type == 13)
   {
     v5 = 6;
     goto LABEL_12;
   }
 
-  if (a3 == 24)
+  if (type == 24)
   {
     goto LABEL_9;
   }
 
-  if (a3 != 37)
+  if (type != 37)
   {
     goto LABEL_11;
   }
@@ -48,16 +48,16 @@ LABEL_9:
   v5 = 8;
 LABEL_12:
   v9 = v5;
-  v7 = a5;
-  v8 = a4;
-  return sub_19B923E48(&self->clrr, &v9, &v8, &v7);
+  secCopy = sec;
+  sizeCopy = size;
+  return sub_19B923E48(&self->clrr, &v9, &sizeCopy, &secCopy);
 }
 
-- (unint64_t)addRoutePoints:(id)a3
+- (unint64_t)addRoutePoints:(id)points
 {
-  if (a3)
+  if (points)
   {
-    return sub_19B920AF0(&self->clrr, a3);
+    return sub_19B920AF0(&self->clrr, points);
   }
 
   else
@@ -66,10 +66,10 @@ LABEL_12:
   }
 }
 
-- (id)advanceToPoint:(id)a3
+- (id)advanceToPoint:(id)point
 {
   result = [[CLRacingRoutePerformanceResults alloc] initWithTimeAhead:4 currentDistance:604800.0 referenceDistance:-1.0 currentAveragePace:-1.0 totalOverlapDistance:-1.0 state:-1.0];
-  if (a3)
+  if (point)
   {
     v18 = 0u;
     v19 = 0u;
@@ -81,7 +81,7 @@ LABEL_12:
     v13 = 0u;
     v11 = 0u;
     memset(v10, 0, sizeof(v10));
-    v6 = sub_19B924398(&self->clrr, a3, v10);
+    v6 = sub_19B924398(&self->clrr, point, v10);
     v7 = *&v17 - *(&v11 + 1);
     v8 = *&v18;
     v9 = [CLRacingRoutePerformanceResults alloc];
@@ -91,11 +91,11 @@ LABEL_12:
   return result;
 }
 
-- (BOOL)setRaceParameters:(id)a3
+- (BOOL)setRaceParameters:(id)parameters
 {
-  if (a3)
+  if (parameters)
   {
-    return sub_19B926868(&self->clrr, a3);
+    return sub_19B926868(&self->clrr, parameters);
   }
 
   else

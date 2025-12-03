@@ -1,32 +1,32 @@
 @interface IDSDXPCServerMessaging
-- (BOOL)_entitledForTopic:(id)a3;
-- (IDSDXPCServerMessaging)initWithQueue:(id)a3 connection:(id)a4 messageDelivery:(id)a5 pushHandler:(id)a6;
+- (BOOL)_entitledForTopic:(id)topic;
+- (IDSDXPCServerMessaging)initWithQueue:(id)queue connection:(id)connection messageDelivery:(id)delivery pushHandler:(id)handler;
 - (id)_commands;
 - (id)_topics;
-- (void)_handlePendingFetchBlocksForIdentifier:(id)a3 topic:(id)a4;
+- (void)_handlePendingFetchBlocksForIdentifier:(id)identifier topic:(id)topic;
 - (void)_recalculateTopics;
-- (void)cancelMessageWithIdentifier:(id)a3 onTopic:(id)a4 completion:(id)a5;
+- (void)cancelMessageWithIdentifier:(id)identifier onTopic:(id)topic completion:(id)completion;
 - (void)dealloc;
-- (void)handler:(id)a3 didReceiveMessage:(id)a4 forTopic:(id)a5 fromID:(id)a6 messageContext:(id)a7;
-- (void)handler:(id)a3 receivedNoStorageResponseForTopic:(id)a4 identifier:(id)a5 messageContext:(id)a6;
-- (void)handler:(id)a3 receivedOfflineMessagePendingForTopic:(id)a4 messageContext:(id)a5;
-- (void)sendCertifiedDeliveryReceipt:(id)a3;
-- (void)sendMessageData:(id)a3 onTopic:(id)a4 withOptions:(id)a5 identifier:(id)a6 completion:(id)a7;
-- (void)sendServerStorageFetchForTopic:(id)a3 completion:(id)a4;
-- (void)setupServerMessagingClient:(id)a3 withUUID:(id)a4 forTopic:(id)a5 commands:(id)a6;
+- (void)handler:(id)handler didReceiveMessage:(id)message forTopic:(id)topic fromID:(id)d messageContext:(id)context;
+- (void)handler:(id)handler receivedNoStorageResponseForTopic:(id)topic identifier:(id)identifier messageContext:(id)context;
+- (void)handler:(id)handler receivedOfflineMessagePendingForTopic:(id)topic messageContext:(id)context;
+- (void)sendCertifiedDeliveryReceipt:(id)receipt;
+- (void)sendMessageData:(id)data onTopic:(id)topic withOptions:(id)options identifier:(id)identifier completion:(id)completion;
+- (void)sendServerStorageFetchForTopic:(id)topic completion:(id)completion;
+- (void)setupServerMessagingClient:(id)client withUUID:(id)d forTopic:(id)topic commands:(id)commands;
 @end
 
 @implementation IDSDXPCServerMessaging
 
-- (IDSDXPCServerMessaging)initWithQueue:(id)a3 connection:(id)a4 messageDelivery:(id)a5 pushHandler:(id)a6
+- (IDSDXPCServerMessaging)initWithQueue:(id)queue connection:(id)connection messageDelivery:(id)delivery pushHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  obj = a5;
-  v13 = a5;
-  v14 = a6;
-  v15 = [(IDSDXPCServerMessaging *)v12 valueForEntitlement:kIDSServerMessagingEntitlement];
-  v16 = [(IDSDXPCServerMessaging *)v12 valueForEntitlement:kIDSTestToolEntitlement];
+  queueCopy = queue;
+  connectionCopy = connection;
+  obj = delivery;
+  deliveryCopy = delivery;
+  handlerCopy = handler;
+  v15 = [(IDSDXPCServerMessaging *)connectionCopy valueForEntitlement:kIDSServerMessagingEntitlement];
+  v16 = [(IDSDXPCServerMessaging *)connectionCopy valueForEntitlement:kIDSTestToolEntitlement];
   if (!v15)
   {
     v18 = +[IDSFoundationLog IDSServerMessaging];
@@ -38,27 +38,27 @@
     goto LABEL_30;
   }
 
-  v35 = a6;
+  handlerCopy2 = handler;
   objc_opt_class();
   v17 = (objc_opt_isKindOfClass() & 1) != 0 && [v15 count] != 0;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && [v15 BOOLValue] && (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v19 = [(IDSDXPCServerMessaging *)v16 BOOLValue];
+    bOOLValue = [(IDSDXPCServerMessaging *)v16 BOOLValue];
   }
 
   else
   {
-    v19 = 0;
+    bOOLValue = 0;
   }
 
-  if (((v17 | v19) & 1) == 0)
+  if (((v17 | bOOLValue) & 1) == 0)
   {
     v18 = +[IDSFoundationLog IDSServerMessaging];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v44 = v12;
+      v44 = connectionCopy;
       v45 = 2112;
       v46 = v15;
       v47 = 2112;
@@ -68,15 +68,15 @@
 
 LABEL_30:
 
-    v28 = 0;
+    selfCopy2 = 0;
     goto LABEL_37;
   }
 
   if (v17)
   {
-    v32 = self;
-    v33 = v14;
-    v34 = v13;
+    selfCopy = self;
+    v33 = handlerCopy;
+    v34 = deliveryCopy;
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
@@ -105,10 +105,10 @@ LABEL_30:
               sub_100929688();
             }
 
-            v28 = 0;
-            v14 = v33;
-            v13 = v34;
-            self = v32;
+            selfCopy2 = 0;
+            handlerCopy = v33;
+            deliveryCopy = v34;
+            self = selfCopy;
             goto LABEL_37;
           }
         }
@@ -123,9 +123,9 @@ LABEL_30:
       }
     }
 
-    v13 = v34;
-    v14 = v33;
-    self = v32;
+    deliveryCopy = v34;
+    handlerCopy = v33;
+    self = selfCopy;
   }
 
   v37.receiver = self;
@@ -141,12 +141,12 @@ LABEL_30:
       v45 = 2112;
       v46 = v15;
       v47 = 2112;
-      v48 = v12;
+      v48 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Created XPCServerMessaging {self: %p, serverMessagingEntitlementValue: %@, connection: %@}", buf, 0x20u);
     }
 
-    objc_storeStrong(&v25->_queue, a3);
-    if (v19)
+    objc_storeStrong(&v25->_queue, queue);
+    if (bOOLValue)
     {
       v27 = 0;
       v25->_entitledForAllTopics = 1;
@@ -162,14 +162,14 @@ LABEL_30:
     v25->_serverMessagingEntitlements = v27;
 
     objc_storeStrong(&v25->_messageDelivery, obj);
-    objc_storeStrong(&v25->_pushHandler, v35);
+    objc_storeStrong(&v25->_pushHandler, handlerCopy2);
   }
 
   self = v25;
-  v28 = self;
+  selfCopy2 = self;
 LABEL_37:
 
-  return v28;
+  return selfCopy2;
 }
 
 - (void)dealloc
@@ -199,8 +199,8 @@ LABEL_37:
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v5 = [(IDSDXPCServerMessaging *)self messagesToCancelOnDeallocByTopic];
-        v6 = [v5 objectForKeyedSubscript:v4];
+        messagesToCancelOnDeallocByTopic = [(IDSDXPCServerMessaging *)self messagesToCancelOnDeallocByTopic];
+        v6 = [messagesToCancelOnDeallocByTopic objectForKeyedSubscript:v4];
 
         v7 = [v6 countByEnumeratingWithState:&v18 objects:v32 count:16];
         if (v7)
@@ -221,7 +221,7 @@ LABEL_37:
               if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 134218498;
-                v27 = self;
+                selfCopy = self;
                 v28 = 2112;
                 v29 = v11;
                 v30 = 2112;
@@ -253,10 +253,10 @@ LABEL_37:
   [(IDSDXPCServerMessaging *)&v17 dealloc];
 }
 
-- (BOOL)_entitledForTopic:(id)a3
+- (BOOL)_entitledForTopic:(id)topic
 {
-  v4 = a3;
-  if (-[IDSDXPCServerMessaging entitledForAllTopics](self, "entitledForAllTopics") || (-[IDSDXPCServerMessaging serverMessagingEntitlements](self, "serverMessagingEntitlements"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 containsObject:v4], v5, (v6 & 1) != 0))
+  topicCopy = topic;
+  if (-[IDSDXPCServerMessaging entitledForAllTopics](self, "entitledForAllTopics") || (-[IDSDXPCServerMessaging serverMessagingEntitlements](self, "serverMessagingEntitlements"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 containsObject:topicCopy], v5, (v6 & 1) != 0))
   {
     v7 = 1;
   }
@@ -266,7 +266,7 @@ LABEL_37:
     v8 = +[IDSFoundationLog IDSServerMessaging];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      sub_100929758(self, v4, v8);
+      sub_100929758(self, topicCopy, v8);
     }
 
     v7 = 0;
@@ -303,8 +303,8 @@ LABEL_37:
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v6 = [(IDSDXPCServerMessaging *)self clientContextByTopic];
-        v7 = [v6 objectForKeyedSubscript:v5];
+        clientContextByTopic = [(IDSDXPCServerMessaging *)self clientContextByTopic];
+        v7 = [clientContextByTopic objectForKeyedSubscript:v5];
 
         v8 = [v7 countByEnumeratingWithState:&v24 objects:v32 count:16];
         if (v8)
@@ -321,16 +321,16 @@ LABEL_37:
               }
 
               v12 = *(*(&v24 + 1) + 8 * i);
-              v13 = [(IDSDXPCServerMessaging *)self clientContextByTopic];
-              v14 = [v13 objectForKeyedSubscript:v5];
+              clientContextByTopic2 = [(IDSDXPCServerMessaging *)self clientContextByTopic];
+              v14 = [clientContextByTopic2 objectForKeyedSubscript:v5];
               v15 = [v14 objectForKeyedSubscript:v12];
 
-              v16 = [v15 commands];
+              commands = [v15 commands];
 
-              if (v16)
+              if (commands)
               {
-                v17 = [v15 commands];
-                [v3 unionSet:v17];
+                commands2 = [v15 commands];
+                [v3 unionSet:commands2];
               }
             }
 
@@ -357,41 +357,41 @@ LABEL_37:
 
 - (id)_topics
 {
-  v2 = [(IDSDXPCServerMessaging *)self clientContextByTopic];
-  v3 = [v2 allKeys];
-  v4 = [v3 __imSetFromArray];
+  clientContextByTopic = [(IDSDXPCServerMessaging *)self clientContextByTopic];
+  allKeys = [clientContextByTopic allKeys];
+  __imSetFromArray = [allKeys __imSetFromArray];
 
-  return v4;
+  return __imSetFromArray;
 }
 
 - (void)_recalculateTopics
 {
-  v3 = [(IDSDXPCServerMessaging *)self clientContextByTopic];
-  v4 = [v3 count];
+  clientContextByTopic = [(IDSDXPCServerMessaging *)self clientContextByTopic];
+  v4 = [clientContextByTopic count];
 
-  v10 = [(IDSDXPCServerMessaging *)self pushHandler];
+  pushHandler = [(IDSDXPCServerMessaging *)self pushHandler];
   if (v4)
   {
-    v5 = [(IDSDXPCServerMessaging *)self clientContextByTopic];
-    v6 = [v5 allKeys];
-    v7 = [v6 __imSetFromArray];
-    v8 = [(IDSDXPCServerMessaging *)self _commands];
-    v9 = [(IDSDXPCServerMessaging *)self queue];
-    [v10 addListener:self topics:v7 commands:v8 queue:v9];
+    clientContextByTopic2 = [(IDSDXPCServerMessaging *)self clientContextByTopic];
+    allKeys = [clientContextByTopic2 allKeys];
+    __imSetFromArray = [allKeys __imSetFromArray];
+    _commands = [(IDSDXPCServerMessaging *)self _commands];
+    queue = [(IDSDXPCServerMessaging *)self queue];
+    [pushHandler addListener:self topics:__imSetFromArray commands:_commands queue:queue];
   }
 
   else
   {
-    [v10 removeListener:self];
+    [pushHandler removeListener:self];
   }
 }
 
-- (void)_handlePendingFetchBlocksForIdentifier:(id)a3 topic:(id)a4
+- (void)_handlePendingFetchBlocksForIdentifier:(id)identifier topic:(id)topic
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IDSDXPCServerMessaging *)self pendingFetchMessagesWaiting];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  identifierCopy = identifier;
+  topicCopy = topic;
+  pendingFetchMessagesWaiting = [(IDSDXPCServerMessaging *)self pendingFetchMessagesWaiting];
+  v9 = [pendingFetchMessagesWaiting objectForKeyedSubscript:topicCopy];
 
   if ([v9 count])
   {
@@ -399,17 +399,17 @@ LABEL_37:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v24 = v7;
+      v24 = topicCopy;
       v25 = 2112;
-      v26 = v6;
+      v26 = identifierCopy;
       v27 = 2112;
       v28 = v9;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Calling pending fetch blocks { topic: %@, identifier: %@, blocks: %@ }", buf, 0x20u);
     }
 
-    if (v6)
+    if (identifierCopy)
     {
-      v11 = [v9 objectForKeyedSubscript:v6];
+      v11 = [v9 objectForKeyedSubscript:identifierCopy];
       v12 = v11;
       if (v11)
       {
@@ -455,56 +455,56 @@ LABEL_37:
   }
 }
 
-- (void)setupServerMessagingClient:(id)a3 withUUID:(id)a4 forTopic:(id)a5 commands:(id)a6
+- (void)setupServerMessagingClient:(id)client withUUID:(id)d forTopic:(id)topic commands:(id)commands
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([(IDSDXPCServerMessaging *)self _entitledForTopic:v12])
+  clientCopy = client;
+  dCopy = d;
+  topicCopy = topic;
+  commandsCopy = commands;
+  if ([(IDSDXPCServerMessaging *)self _entitledForTopic:topicCopy])
   {
-    if (v10)
+    if (clientCopy)
     {
-      v14 = [v10 remoteObjectProxy];
+      remoteObjectProxy = [clientCopy remoteObjectProxy];
       v15 = +[IDSFoundationLog IDSServerMessaging];
       v16 = v15;
-      if (v14)
+      if (remoteObjectProxy)
       {
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
           v34 = 134218498;
-          v35 = self;
+          selfCopy3 = self;
           v36 = 2112;
-          v37 = v11;
+          v37 = dCopy;
           v38 = 2112;
-          v39 = v12;
+          v39 = topicCopy;
           _os_log_impl(&_mh_execute_header, &v16->super, OS_LOG_TYPE_DEFAULT, "Adding server messaging client {self: %p, uuid: %@, topic: %@}", &v34, 0x20u);
         }
 
-        v17 = [(IDSDXPCServerMessaging *)self clientContextByTopic];
+        clientContextByTopic = [(IDSDXPCServerMessaging *)self clientContextByTopic];
 
-        if (!v17)
+        if (!clientContextByTopic)
         {
           v18 = objc_alloc_init(NSMutableDictionary);
           [(IDSDXPCServerMessaging *)self setClientContextByTopic:v18];
         }
 
-        v19 = [(IDSDXPCServerMessaging *)self clientContextByTopic];
-        v20 = [v19 objectForKeyedSubscript:v12];
+        clientContextByTopic2 = [(IDSDXPCServerMessaging *)self clientContextByTopic];
+        v20 = [clientContextByTopic2 objectForKeyedSubscript:topicCopy];
 
         if (!v20)
         {
           v21 = objc_alloc_init(NSMutableDictionary);
-          v22 = [(IDSDXPCServerMessaging *)self clientContextByTopic];
-          [v22 setObject:v21 forKeyedSubscript:v12];
+          clientContextByTopic3 = [(IDSDXPCServerMessaging *)self clientContextByTopic];
+          [clientContextByTopic3 setObject:v21 forKeyedSubscript:topicCopy];
         }
 
         v16 = objc_alloc_init(IDSXPCServerMessagingClientContext);
-        [(IDSXPCServerMessagingClientContext *)v16 setClient:v14];
-        [(IDSXPCServerMessagingClientContext *)v16 setCommands:v13];
-        v23 = [(IDSDXPCServerMessaging *)self clientContextByTopic];
-        v24 = [v23 objectForKeyedSubscript:v12];
-        [v24 setObject:v16 forKeyedSubscript:v11];
+        [(IDSXPCServerMessagingClientContext *)v16 setClient:remoteObjectProxy];
+        [(IDSXPCServerMessagingClientContext *)v16 setCommands:commandsCopy];
+        clientContextByTopic4 = [(IDSDXPCServerMessaging *)self clientContextByTopic];
+        v24 = [clientContextByTopic4 objectForKeyedSubscript:topicCopy];
+        [v24 setObject:v16 forKeyedSubscript:dCopy];
 
         [(IDSDXPCServerMessaging *)self _recalculateTopics];
       }
@@ -512,11 +512,11 @@ LABEL_37:
       else if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         v34 = 134218498;
-        v35 = self;
+        selfCopy3 = self;
         v36 = 2112;
-        v37 = v11;
+        v37 = dCopy;
         v38 = 2112;
-        v39 = v12;
+        v39 = topicCopy;
         _os_log_error_impl(&_mh_execute_header, &v16->super, OS_LOG_TYPE_ERROR, "Error creating proxy for server messaging client {self: %p, uuid: %@, topic: %@}", &v34, 0x20u);
       }
     }
@@ -527,30 +527,30 @@ LABEL_37:
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
         v34 = 134218498;
-        v35 = self;
+        selfCopy3 = self;
         v36 = 2112;
-        v37 = v11;
+        v37 = dCopy;
         v38 = 2112;
-        v39 = v12;
+        v39 = topicCopy;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Removing server messaging client {self: %p, uuid: %@, topic: %@}", &v34, 0x20u);
       }
 
-      v26 = [(IDSDXPCServerMessaging *)self clientContextByTopic];
-      v27 = [v26 objectForKeyedSubscript:v12];
-      [v27 setObject:0 forKeyedSubscript:v11];
+      clientContextByTopic5 = [(IDSDXPCServerMessaging *)self clientContextByTopic];
+      v27 = [clientContextByTopic5 objectForKeyedSubscript:topicCopy];
+      [v27 setObject:0 forKeyedSubscript:dCopy];
 
-      v28 = [(IDSDXPCServerMessaging *)self clientContextByTopic];
-      v29 = [v28 objectForKeyedSubscript:v12];
+      clientContextByTopic6 = [(IDSDXPCServerMessaging *)self clientContextByTopic];
+      v29 = [clientContextByTopic6 objectForKeyedSubscript:topicCopy];
       v30 = [v29 count];
 
       if (!v30)
       {
-        v31 = [(IDSDXPCServerMessaging *)self clientContextByTopic];
-        [v31 setObject:0 forKeyedSubscript:v12];
+        clientContextByTopic7 = [(IDSDXPCServerMessaging *)self clientContextByTopic];
+        [clientContextByTopic7 setObject:0 forKeyedSubscript:topicCopy];
       }
 
-      v32 = [(IDSDXPCServerMessaging *)self clientContextByTopic];
-      v33 = [v32 count];
+      clientContextByTopic8 = [(IDSDXPCServerMessaging *)self clientContextByTopic];
+      v33 = [clientContextByTopic8 count];
 
       if (!v33)
       {
@@ -562,64 +562,64 @@ LABEL_37:
   }
 }
 
-- (void)sendMessageData:(id)a3 onTopic:(id)a4 withOptions:(id)a5 identifier:(id)a6 completion:(id)a7
+- (void)sendMessageData:(id)data onTopic:(id)topic withOptions:(id)options identifier:(id)identifier completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  LOBYTE(a7) = [(IDSDXPCServerMessaging *)self _entitledForTopic:v13];
+  dataCopy = data;
+  topicCopy = topic;
+  optionsCopy = options;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  LOBYTE(completion) = [(IDSDXPCServerMessaging *)self _entitledForTopic:topicCopy];
   v17 = +[IDSFoundationLog IDSServerMessaging];
   v18 = v17;
-  if (a7)
+  if (completion)
   {
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v53 = v15;
+      v53 = identifierCopy;
       v54 = 2112;
-      v55 = v14;
+      v55 = optionsCopy;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "daemon requested sendMessageData { guid: %@, options: %@ }", buf, 0x16u);
     }
 
     v19 = objc_alloc_init(IDSServerMessagingMessage);
-    v45 = v12;
-    [v19 setMessageData:v12];
-    v20 = [v14 timeout];
+    v45 = dataCopy;
+    [v19 setMessageData:dataCopy];
+    timeout = [optionsCopy timeout];
 
-    if (v20)
+    if (timeout)
     {
-      v21 = [v14 timeout];
-      [v21 doubleValue];
+      timeout2 = [optionsCopy timeout];
+      [timeout2 doubleValue];
       v22 = [NSDate dateWithTimeIntervalSinceNow:?];
 
       [v19 setExpirationDate:v22];
     }
 
-    [v19 setMessageID:v15];
-    [v19 setTopic:v13];
-    v23 = [v14 command];
-    [v19 setUserSpecifiedCommand:v23];
+    [v19 setMessageID:identifierCopy];
+    [v19 setTopic:topicCopy];
+    command = [optionsCopy command];
+    [v19 setUserSpecifiedCommand:command];
 
-    v24 = [(IDSDXPCServerMessaging *)self pushHandler];
-    v25 = [v24 pushToken];
-    [v19 setPushToken:v25];
+    pushHandler = [(IDSDXPCServerMessaging *)self pushHandler];
+    pushToken = [pushHandler pushToken];
+    [v19 setPushToken:pushToken];
 
-    v26 = [v14 additionalTopLevelFields];
-    [v19 setUserDefinedTopLevelFields:v26];
+    additionalTopLevelFields = [optionsCopy additionalTopLevelFields];
+    [v19 setUserDefinedTopLevelFields:additionalTopLevelFields];
 
     v46[0] = _NSConcreteStackBlock;
     v46[1] = 3221225472;
     v46[2] = sub_10057CB00;
     v46[3] = &unk_100BE08A0;
-    v51 = v16;
-    v27 = v14;
+    v51 = completionCopy;
+    v27 = optionsCopy;
     v47 = v27;
-    v48 = self;
-    v28 = v13;
+    selfCopy = self;
+    v28 = topicCopy;
     v49 = v28;
-    v29 = v15;
+    v29 = identifierCopy;
     v50 = v29;
     [v19 setCompletionBlock:v46];
     v30 = +[IDSFoundationLog IDSServerMessaging];
@@ -634,38 +634,38 @@ LABEL_37:
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Sending server message { guid: %@, topic: %@, message: %@ } ", buf, 0x20u);
     }
 
-    v31 = [(IDSDXPCServerMessaging *)self messageDelivery];
-    [v31 sendMessage:v19];
+    messageDelivery = [(IDSDXPCServerMessaging *)self messageDelivery];
+    [messageDelivery sendMessage:v19];
 
-    v32 = [v27 cancelOnClientCrash];
-    v33 = [v32 BOOLValue];
+    cancelOnClientCrash = [v27 cancelOnClientCrash];
+    bOOLValue = [cancelOnClientCrash BOOLValue];
 
-    if (v33)
+    if (bOOLValue)
     {
-      v34 = [(IDSDXPCServerMessaging *)self messagesToCancelOnDeallocByTopic];
+      messagesToCancelOnDeallocByTopic = [(IDSDXPCServerMessaging *)self messagesToCancelOnDeallocByTopic];
 
-      if (!v34)
+      if (!messagesToCancelOnDeallocByTopic)
       {
         v35 = objc_alloc_init(NSMutableDictionary);
         [(IDSDXPCServerMessaging *)self setMessagesToCancelOnDeallocByTopic:v35];
       }
 
-      v36 = [(IDSDXPCServerMessaging *)self messagesToCancelOnDeallocByTopic];
-      v37 = [v36 objectForKeyedSubscript:v28];
+      messagesToCancelOnDeallocByTopic2 = [(IDSDXPCServerMessaging *)self messagesToCancelOnDeallocByTopic];
+      v37 = [messagesToCancelOnDeallocByTopic2 objectForKeyedSubscript:v28];
 
       if (!v37)
       {
         v38 = objc_alloc_init(NSMutableSet);
-        v39 = [(IDSDXPCServerMessaging *)self messagesToCancelOnDeallocByTopic];
-        [v39 setObject:v38 forKeyedSubscript:v28];
+        messagesToCancelOnDeallocByTopic3 = [(IDSDXPCServerMessaging *)self messagesToCancelOnDeallocByTopic];
+        [messagesToCancelOnDeallocByTopic3 setObject:v38 forKeyedSubscript:v28];
       }
 
-      v40 = [(IDSDXPCServerMessaging *)self messagesToCancelOnDeallocByTopic];
-      v41 = [v40 objectForKeyedSubscript:v28];
+      messagesToCancelOnDeallocByTopic4 = [(IDSDXPCServerMessaging *)self messagesToCancelOnDeallocByTopic];
+      v41 = [messagesToCancelOnDeallocByTopic4 objectForKeyedSubscript:v28];
       [v41 addObject:v29];
     }
 
-    v12 = v45;
+    dataCopy = v45;
   }
 
   else
@@ -682,28 +682,28 @@ LABEL_37:
     v44 = [NSDictionary dictionaryWithObjects:&v59 forKeys:&v58 count:1];
     v19 = [NSError errorWithDomain:v42 code:1 userInfo:v44];
 
-    (*(v16 + 2))(v16, 0, v19);
+    (*(completionCopy + 2))(completionCopy, 0, v19);
   }
 }
 
-- (void)cancelMessageWithIdentifier:(id)a3 onTopic:(id)a4 completion:(id)a5
+- (void)cancelMessageWithIdentifier:(id)identifier onTopic:(id)topic completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v34 = self;
-  v11 = [(IDSDXPCServerMessaging *)self _entitledForTopic:v9];
+  identifierCopy = identifier;
+  topicCopy = topic;
+  completionCopy = completion;
+  selfCopy = self;
+  v11 = [(IDSDXPCServerMessaging *)self _entitledForTopic:topicCopy];
   v12 = +[IDSFoundationLog IDSServerMessaging];
   v13 = v12;
   if (v11)
   {
-    v33 = v10;
+    v33 = completionCopy;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v40 = v8;
+      v40 = identifierCopy;
       v41 = 2112;
-      v42 = v9;
+      v42 = topicCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "daemon requested cancelMessageWithIdentifier { identifier: %@, topic: %@ }", buf, 0x16u);
     }
 
@@ -711,11 +711,11 @@ LABEL_37:
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v14 = [(IDSDXPCServerMessaging *)self messageDelivery];
-    v15 = [v14 queuedMessages];
-    v16 = [v15 _copyForEnumerating];
+    messageDelivery = [(IDSDXPCServerMessaging *)self messageDelivery];
+    queuedMessages = [messageDelivery queuedMessages];
+    _copyForEnumerating = [queuedMessages _copyForEnumerating];
 
-    v17 = [v16 countByEnumeratingWithState:&v35 objects:v45 count:16];
+    v17 = [_copyForEnumerating countByEnumeratingWithState:&v35 objects:v45 count:16];
     if (v17)
     {
       v18 = v17;
@@ -726,7 +726,7 @@ LABEL_37:
         {
           if (*v36 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(_copyForEnumerating);
           }
 
           v21 = *(*(&v35 + 1) + 8 * i);
@@ -734,13 +734,13 @@ LABEL_37:
           if (objc_opt_isKindOfClass())
           {
             v22 = v21;
-            v23 = [v22 topic];
-            v24 = [v23 isEqualToString:v9];
+            topic = [v22 topic];
+            v24 = [topic isEqualToString:topicCopy];
 
             if (v24)
             {
-              v25 = [v22 messageID];
-              v26 = [v25 isEqualToString:v8];
+              messageID = [v22 messageID];
+              v26 = [messageID isEqualToString:identifierCopy];
 
               if (v26)
               {
@@ -750,26 +750,26 @@ LABEL_37:
                   *buf = 138412802;
                   v40 = v22;
                   v41 = 2112;
-                  v42 = v8;
+                  v42 = identifierCopy;
                   v43 = 2112;
-                  v44 = v9;
+                  v44 = topicCopy;
                   _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Cancelling server message { guid: %@, topic: %@, message: %@ } ", buf, 0x20u);
                 }
 
-                v28 = [(IDSDXPCServerMessaging *)v34 messageDelivery];
-                [v28 cancelMessage:v22];
+                messageDelivery2 = [(IDSDXPCServerMessaging *)selfCopy messageDelivery];
+                [messageDelivery2 cancelMessage:v22];
               }
             }
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v35 objects:v45 count:16];
+        v18 = [_copyForEnumerating countByEnumeratingWithState:&v35 objects:v45 count:16];
       }
 
       while (v18);
     }
 
-    v10 = v33;
+    completionCopy = v33;
     if (v33)
     {
       v33[2](v33, 1, 0);
@@ -790,14 +790,14 @@ LABEL_37:
     v31 = [NSDictionary dictionaryWithObjects:&v47 forKeys:&v46 count:1];
     v32 = [NSError errorWithDomain:v29 code:1 userInfo:v31];
 
-    v10[2](v10, 0, v32);
+    completionCopy[2](completionCopy, 0, v32);
   }
 }
 
-- (void)sendCertifiedDeliveryReceipt:(id)a3
+- (void)sendCertifiedDeliveryReceipt:(id)receipt
 {
-  v4 = a3;
-  if (!v4)
+  receiptCopy = receipt;
+  if (!receiptCopy)
   {
     v5 = +[IDSFoundationLog IDSServerMessaging];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -806,28 +806,28 @@ LABEL_37:
     }
   }
 
-  v6 = [v4 service];
-  if ([(IDSDXPCServerMessaging *)self _entitledForTopic:v6])
+  service = [receiptCopy service];
+  if ([(IDSDXPCServerMessaging *)self _entitledForTopic:service])
   {
-    v7 = [[IDSCertifiedDeliveryReceiptMessage alloc] initWithCertifiedDeliveryContext:v4];
-    v8 = [v4 service];
-    [v7 setTopic:v8];
+    v7 = [[IDSCertifiedDeliveryReceiptMessage alloc] initWithCertifiedDeliveryContext:receiptCopy];
+    service2 = [receiptCopy service];
+    [v7 setTopic:service2];
 
     v9 = +[IDSFoundationLog IDSServerMessaging];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v4 originalGUID];
+      originalGUID = [receiptCopy originalGUID];
       v12 = 138412802;
-      v13 = v6;
+      v13 = service;
       v14 = 2112;
-      v15 = v10;
+      v15 = originalGUID;
       v16 = 2112;
-      v17 = v4;
+      v17 = receiptCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Sending certified delivery receipt to server { topic: %@, guid: %@, context: %@ }", &v12, 0x20u);
     }
 
-    v11 = [(IDSDXPCServerMessaging *)self messageDelivery];
-    [v11 sendMessage:v7];
+    messageDelivery = [(IDSDXPCServerMessaging *)self messageDelivery];
+    [messageDelivery sendMessage:v7];
   }
 
   else
@@ -840,59 +840,59 @@ LABEL_37:
   }
 }
 
-- (void)sendServerStorageFetchForTopic:(id)a3 completion:(id)a4
+- (void)sendServerStorageFetchForTopic:(id)topic completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(IDSDXPCServerMessaging *)self _entitledForTopic:v6])
+  topicCopy = topic;
+  completionCopy = completion;
+  if ([(IDSDXPCServerMessaging *)self _entitledForTopic:topicCopy])
   {
     v8 = +[NSUUID UUID];
-    v9 = [v8 UUIDString];
+    uUIDString = [v8 UUIDString];
 
-    if (v7)
+    if (completionCopy)
     {
-      v10 = [(IDSDXPCServerMessaging *)self pendingFetchMessagesWaiting];
+      pendingFetchMessagesWaiting = [(IDSDXPCServerMessaging *)self pendingFetchMessagesWaiting];
 
-      if (!v10)
+      if (!pendingFetchMessagesWaiting)
       {
         v11 = objc_alloc_init(NSMutableDictionary);
         [(IDSDXPCServerMessaging *)self setPendingFetchMessagesWaiting:v11];
       }
 
-      v12 = [(IDSDXPCServerMessaging *)self pendingFetchMessagesWaiting];
-      v13 = [v12 objectForKeyedSubscript:v6];
+      pendingFetchMessagesWaiting2 = [(IDSDXPCServerMessaging *)self pendingFetchMessagesWaiting];
+      v13 = [pendingFetchMessagesWaiting2 objectForKeyedSubscript:topicCopy];
 
       if (!v13)
       {
         v14 = objc_alloc_init(NSMutableDictionary);
-        v15 = [(IDSDXPCServerMessaging *)self pendingFetchMessagesWaiting];
-        [v15 setObject:v14 forKeyedSubscript:v6];
+        pendingFetchMessagesWaiting3 = [(IDSDXPCServerMessaging *)self pendingFetchMessagesWaiting];
+        [pendingFetchMessagesWaiting3 setObject:v14 forKeyedSubscript:topicCopy];
       }
 
       v26[0] = _NSConcreteStackBlock;
       v26[1] = 3221225472;
       v26[2] = sub_10057D728;
       v26[3] = &unk_100BD7270;
-      v27 = v7;
+      v27 = completionCopy;
       v16 = objc_retainBlock(v26);
-      v17 = [(IDSDXPCServerMessaging *)self pendingFetchMessagesWaiting];
-      v18 = [v17 objectForKeyedSubscript:v6];
-      [v18 setObject:v16 forKeyedSubscript:v9];
+      pendingFetchMessagesWaiting4 = [(IDSDXPCServerMessaging *)self pendingFetchMessagesWaiting];
+      v18 = [pendingFetchMessagesWaiting4 objectForKeyedSubscript:topicCopy];
+      [v18 setObject:v16 forKeyedSubscript:uUIDString];
     }
 
     v19 = objc_alloc_init(IDSPendingOfflineMessageResponse);
-    [v19 setTopic:v6];
-    [v19 setMessageIdentifier:v9];
+    [v19 setTopic:topicCopy];
+    [v19 setMessageIdentifier:uUIDString];
     v20 = +[IDSFoundationLog IDSServerMessaging];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v29 = v6;
+      v29 = topicCopy;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Client triggered sending pending offline to server in IDSServerMessaging { topic: %@ }", buf, 0xCu);
     }
 
-    v21 = [(IDSDXPCServerMessaging *)self messageDelivery];
-    [v21 sendMessage:v19];
+    messageDelivery = [(IDSDXPCServerMessaging *)self messageDelivery];
+    [messageDelivery sendMessage:v19];
   }
 
   else
@@ -908,22 +908,22 @@ LABEL_37:
     v24 = [IDSXPCConnection errorForMissingEntitlement:kIDSServerMessagingEntitlement];
     v31 = v24;
     v25 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-    v9 = [NSError errorWithDomain:v23 code:1 userInfo:v25];
+    uUIDString = [NSError errorWithDomain:v23 code:1 userInfo:v25];
 
-    (*(v7 + 2))(v7, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, uUIDString);
   }
 }
 
-- (void)handler:(id)a3 didReceiveMessage:(id)a4 forTopic:(id)a5 fromID:(id)a6 messageContext:(id)a7
+- (void)handler:(id)handler didReceiveMessage:(id)message forTopic:(id)topic fromID:(id)d messageContext:(id)context
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v9 objectForKey:@"U"];
+  messageCopy = message;
+  topicCopy = topic;
+  dCopy = d;
+  v12 = [messageCopy objectForKey:@"U"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = [v9 objectForKey:@"U"];
+    v13 = [messageCopy objectForKey:@"U"];
     v14 = [NSData _IDSDataFromBase64String:v13];
 LABEL_5:
     v15 = v14;
@@ -932,11 +932,11 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  v13 = [v9 objectForKey:@"U"];
+  v13 = [messageCopy objectForKey:@"U"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [v9 objectForKey:@"U"];
+    v14 = [messageCopy objectForKey:@"U"];
     goto LABEL_5;
   }
 
@@ -949,63 +949,63 @@ LABEL_7:
     *buf = 138412802;
     v96 = v87;
     v97 = 2112;
-    v98 = v10;
+    v98 = topicCopy;
     v99 = 2112;
-    v100 = v11;
+    v100 = dCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Received incoming server message over push in IDSDXPCServerMessaging { guid: %@, topic: %@, fromID: %@ }", buf, 0x20u);
   }
 
   v17 = IDSPayloadKey;
-  v18 = [v9 objectForKey:IDSPayloadKey];
+  v18 = [messageCopy objectForKey:IDSPayloadKey];
   objc_opt_class();
-  v77 = v11;
+  v77 = dCopy;
   v81 = v17;
   if (objc_opt_isKindOfClass())
   {
-    v19 = [v9 objectForKey:v17];
+    v19 = [messageCopy objectForKey:v17];
     v20 = [NSData _IDSDataFromBase64String:v19];
 LABEL_13:
     v84 = v20;
     goto LABEL_15;
   }
 
-  v19 = [v9 objectForKey:v17];
+  v19 = [messageCopy objectForKey:v17];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v20 = [v9 objectForKey:v17];
+    v20 = [messageCopy objectForKey:v17];
     goto LABEL_13;
   }
 
   v84 = 0;
 LABEL_15:
-  v21 = v9;
+  v21 = messageCopy;
 
   v22 = objc_opt_class();
-  v23 = sub_10001B74C(v22, v9, @"H");
+  v23 = sub_10001B74C(v22, messageCopy, @"H");
   v24 = objc_opt_class();
-  v88 = sub_10001B74C(v24, v9, @"c");
-  v80 = [v23 unsignedIntValue];
+  v88 = sub_10001B74C(v24, messageCopy, @"c");
+  unsignedIntValue = [v23 unsignedIntValue];
   v76 = v23;
-  v25 = [v23 unsignedIntValue];
+  unsignedIntValue2 = [v23 unsignedIntValue];
   v26 = IDSTokenKey;
-  v27 = [v9 objectForKey:IDSTokenKey];
+  v27 = [messageCopy objectForKey:IDSTokenKey];
   objc_opt_class();
-  v86 = v10;
+  v86 = topicCopy;
   if (objc_opt_isKindOfClass())
   {
-    v28 = [v9 objectForKey:v26];
+    v28 = [messageCopy objectForKey:v26];
     v29 = [NSData _IDSDataFromBase64String:v28];
 LABEL_19:
     v78 = v29;
     goto LABEL_21;
   }
 
-  v28 = [v9 objectForKey:v26];
+  v28 = [messageCopy objectForKey:v26];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v29 = [v9 objectForKey:v26];
+    v29 = [messageCopy objectForKey:v26];
     goto LABEL_19;
   }
 
@@ -1014,26 +1014,26 @@ LABEL_21:
 
   v30 = objc_opt_class();
   v74 = IDSCertifiedDeliveryVersionKey;
-  v31 = sub_10001B74C(v30, v9, IDSCertifiedDeliveryVersionKey);
-  v72 = [v31 integerValue];
+  v31 = sub_10001B74C(v30, messageCopy, IDSCertifiedDeliveryVersionKey);
+  integerValue = [v31 integerValue];
 
   v32 = IDSCertifiedDeliveryRTSKey;
-  v33 = [v9 objectForKey:IDSCertifiedDeliveryRTSKey];
+  v33 = [messageCopy objectForKey:IDSCertifiedDeliveryRTSKey];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v34 = [v9 objectForKey:v32];
+    v34 = [messageCopy objectForKey:v32];
     v35 = [NSData _IDSDataFromBase64String:v34];
 LABEL_25:
     v79 = v35;
     goto LABEL_27;
   }
 
-  v34 = [v9 objectForKey:v32];
+  v34 = [messageCopy objectForKey:v32];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v35 = [v9 objectForKey:v32];
+    v35 = [messageCopy objectForKey:v32];
     goto LABEL_25;
   }
 
@@ -1041,22 +1041,22 @@ LABEL_25:
 LABEL_27:
 
   v36 = IDSStorageFetchIdentifierKey;
-  v37 = [v9 objectForKey:IDSStorageFetchIdentifierKey];
+  v37 = [messageCopy objectForKey:IDSStorageFetchIdentifierKey];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v38 = [v9 objectForKey:v36];
+    v38 = [messageCopy objectForKey:v36];
     v39 = [NSData _IDSDataFromBase64String:v38];
     v83 = JWUUIDPushObjectToString();
   }
 
   else
   {
-    v38 = [v9 objectForKey:v36];
+    v38 = [messageCopy objectForKey:v36];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v40 = [v9 objectForKey:v36];
+      v40 = [messageCopy objectForKey:v36];
       v83 = JWUUIDPushObjectToString();
     }
 
@@ -1066,10 +1066,10 @@ LABEL_27:
     }
   }
 
-  v41 = self;
+  selfCopy3 = self;
   v42 = v87;
 
-  v43 = [v9 mutableCopy];
+  v43 = [messageCopy mutableCopy];
   v94[0] = v81;
   v94[1] = @"H";
   v94[2] = @"c";
@@ -1082,7 +1082,7 @@ LABEL_27:
   if (v79)
   {
     v45 = v86;
-    v46 = [[IDSCertifiedDeliveryContext alloc] initWithGUID:v87 service:v86 certifiedDeliveryVersion:v72 certifiedDeliveryRTS:v79 senderToken:v78];
+    v46 = [[IDSCertifiedDeliveryContext alloc] initWithGUID:v87 service:v86 certifiedDeliveryVersion:integerValue certifiedDeliveryRTS:v79 senderToken:v78];
   }
 
   else
@@ -1099,9 +1099,9 @@ LABEL_27:
 
   v73 = v46;
   v75 = v43;
-  v82 = [[IDSServerMessagingIncomingContext alloc] initWithFromServerStorage:v80 & 1 certifiedDeliveryContext:v46 command:v88 identifier:v87 additionalTopLevelFields:v43];
-  v48 = [(IDSDXPCServerMessaging *)self clientContextByTopic];
-  v49 = [v48 objectForKeyedSubscript:v45];
+  v82 = [[IDSServerMessagingIncomingContext alloc] initWithFromServerStorage:unsignedIntValue & 1 certifiedDeliveryContext:v46 command:v88 identifier:v87 additionalTopLevelFields:v43];
+  clientContextByTopic = [(IDSDXPCServerMessaging *)self clientContextByTopic];
+  v49 = [clientContextByTopic objectForKeyedSubscript:v45];
   v50 = [v49 count];
 
   if (v50)
@@ -1110,8 +1110,8 @@ LABEL_27:
     v92 = 0u;
     v89 = 0u;
     v90 = 0u;
-    v51 = [(IDSDXPCServerMessaging *)self clientContextByTopic];
-    v52 = [v51 objectForKeyedSubscript:v45];
+    clientContextByTopic2 = [(IDSDXPCServerMessaging *)self clientContextByTopic];
+    v52 = [clientContextByTopic2 objectForKeyedSubscript:v45];
 
     v53 = [v52 countByEnumeratingWithState:&v89 objects:v93 count:16];
     if (!v53)
@@ -1121,7 +1121,7 @@ LABEL_27:
     }
 
     v54 = v53;
-    v71 = v9;
+    v71 = messageCopy;
     v55 = *v90;
     while (1)
     {
@@ -1135,7 +1135,7 @@ LABEL_27:
         v57 = *(*(&v89 + 1) + 8 * i);
         v58 = +[IDSFoundationLog IDSServerMessaging];
         v59 = os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT);
-        if ((v25 & 2) != 0)
+        if ((unsignedIntValue2 & 2) != 0)
         {
           if (!v59)
           {
@@ -1170,27 +1170,27 @@ LABEL_49:
 
         if ([v88 longValue] != 255)
         {
-          v62 = [(IDSDXPCServerMessaging *)v41 clientContextByTopic];
-          v63 = [v62 objectForKeyedSubscript:v45];
+          clientContextByTopic3 = [(IDSDXPCServerMessaging *)selfCopy3 clientContextByTopic];
+          v63 = [clientContextByTopic3 objectForKeyedSubscript:v45];
           v64 = [v63 objectForKeyedSubscript:v57];
-          v65 = [v64 client];
-          [v65 handleReceivedIncomingMessageData:v84 identifier:v87 context:v82];
+          client = [v64 client];
+          [client handleReceivedIncomingMessageData:v84 identifier:v87 context:v82];
 
-          v41 = self;
+          selfCopy3 = self;
           v45 = v86;
         }
 
-        if ((v25 & 2) != 0)
+        if ((unsignedIntValue2 & 2) != 0)
         {
-          [(IDSDXPCServerMessaging *)v41 _handlePendingFetchBlocksForIdentifier:v83 topic:v45];
-          v66 = [(IDSDXPCServerMessaging *)v41 clientContextByTopic];
-          v67 = [v66 objectForKeyedSubscript:v45];
+          [(IDSDXPCServerMessaging *)selfCopy3 _handlePendingFetchBlocksForIdentifier:v83 topic:v45];
+          clientContextByTopic4 = [(IDSDXPCServerMessaging *)selfCopy3 clientContextByTopic];
+          v67 = [clientContextByTopic4 objectForKeyedSubscript:v45];
           v68 = [v67 objectForKeyedSubscript:v57];
-          v69 = [v68 client];
-          [v69 handleReceivedFinalStorageIndication];
+          client2 = [v68 client];
+          [client2 handleReceivedFinalStorageIndication];
 
           v45 = v86;
-          v41 = self;
+          selfCopy3 = self;
         }
       }
 
@@ -1215,29 +1215,29 @@ LABEL_49:
 LABEL_59:
 }
 
-- (void)handler:(id)a3 receivedOfflineMessagePendingForTopic:(id)a4 messageContext:(id)a5
+- (void)handler:(id)handler receivedOfflineMessagePendingForTopic:(id)topic messageContext:(id)context
 {
-  v6 = a4;
+  topicCopy = topic;
   v7 = objc_alloc_init(IDSPendingOfflineMessageResponse);
-  [v7 setTopic:v6];
+  [v7 setTopic:topicCopy];
   v8 = +[IDSFoundationLog IDSServerMessaging];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v6;
+    v11 = topicCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Sending pending offline message response to server in IDSServerMessaging { topic: %@ }", &v10, 0xCu);
   }
 
-  v9 = [(IDSDXPCServerMessaging *)self messageDelivery];
-  [v9 sendMessage:v7];
+  messageDelivery = [(IDSDXPCServerMessaging *)self messageDelivery];
+  [messageDelivery sendMessage:v7];
 }
 
-- (void)handler:(id)a3 receivedNoStorageResponseForTopic:(id)a4 identifier:(id)a5 messageContext:(id)a6
+- (void)handler:(id)handler receivedNoStorageResponseForTopic:(id)topic identifier:(id)identifier messageContext:(id)context
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(IDSDXPCServerMessaging *)self clientContextByTopic];
-  v11 = [v10 objectForKeyedSubscript:v8];
+  topicCopy = topic;
+  identifierCopy = identifier;
+  clientContextByTopic = [(IDSDXPCServerMessaging *)self clientContextByTopic];
+  v11 = [clientContextByTopic objectForKeyedSubscript:topicCopy];
   v12 = [v11 count];
 
   if (v12)
@@ -1246,15 +1246,15 @@ LABEL_59:
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v13 = [(IDSDXPCServerMessaging *)self clientContextByTopic];
-    v14 = [v13 objectForKeyedSubscript:v8];
+    clientContextByTopic2 = [(IDSDXPCServerMessaging *)self clientContextByTopic];
+    v14 = [clientContextByTopic2 objectForKeyedSubscript:topicCopy];
 
     obj = v14;
     v15 = [v14 countByEnumeratingWithState:&v27 objects:v35 count:16];
     if (v15)
     {
       v16 = v15;
-      v25 = v9;
+      v25 = identifierCopy;
       v17 = *v28;
       do
       {
@@ -1270,24 +1270,24 @@ LABEL_59:
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
-            v32 = v8;
+            v32 = topicCopy;
             v33 = 2112;
             v34 = v19;
             _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Giving no storage response indication to client { topic: %@, clientUUID: %@ }", buf, 0x16u);
           }
 
-          v21 = [(IDSDXPCServerMessaging *)self clientContextByTopic];
-          v22 = [v21 objectForKeyedSubscript:v8];
+          clientContextByTopic3 = [(IDSDXPCServerMessaging *)self clientContextByTopic];
+          v22 = [clientContextByTopic3 objectForKeyedSubscript:topicCopy];
           v23 = [v22 objectForKeyedSubscript:v19];
-          v24 = [v23 client];
-          [v24 handleReceivedFinalStorageIndication];
+          client = [v23 client];
+          [client handleReceivedFinalStorageIndication];
         }
 
         v16 = [obj countByEnumeratingWithState:&v27 objects:v35 count:16];
       }
 
       while (v16);
-      v9 = v25;
+      identifierCopy = v25;
     }
   }
 
@@ -1300,7 +1300,7 @@ LABEL_59:
     }
   }
 
-  [(IDSDXPCServerMessaging *)self _handlePendingFetchBlocksForIdentifier:v9 topic:v8];
+  [(IDSDXPCServerMessaging *)self _handlePendingFetchBlocksForIdentifier:identifierCopy topic:topicCopy];
 }
 
 @end

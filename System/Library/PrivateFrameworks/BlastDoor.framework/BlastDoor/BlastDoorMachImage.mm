@@ -7,7 +7,7 @@
 
 - (CGImage)cgImage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21467132C();
 
   return v3;

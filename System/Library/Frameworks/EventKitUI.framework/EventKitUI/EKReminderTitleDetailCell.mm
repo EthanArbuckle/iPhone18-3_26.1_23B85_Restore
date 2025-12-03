@@ -2,27 +2,27 @@
 + (id)_dateFont;
 + (void)_invalidateCachedFonts;
 + (void)_registerForInvalidation;
-- (EKReminderTitleDetailCell)initWithEvent:(id)a3 reminder:(id)a4 editable:(BOOL)a5 delegate:(id)a6;
-- (id)_buttonConfigForReminder:(id)a3;
+- (EKReminderTitleDetailCell)initWithEvent:(id)event reminder:(id)reminder editable:(BOOL)editable delegate:(id)delegate;
+- (id)_buttonConfigForReminder:(id)reminder;
 - (id)_editButton;
 - (void)_editButtonTapped;
-- (void)setShowExtraSpaceAtBottom:(BOOL)a3;
-- (void)setupConstraintsWithExtraSpace:(BOOL)a3;
+- (void)setShowExtraSpaceAtBottom:(BOOL)bottom;
+- (void)setupConstraintsWithExtraSpace:(BOOL)space;
 @end
 
 @implementation EKReminderTitleDetailCell
 
-- (EKReminderTitleDetailCell)initWithEvent:(id)a3 reminder:(id)a4 editable:(BOOL)a5 delegate:(id)a6
+- (EKReminderTitleDetailCell)initWithEvent:(id)event reminder:(id)reminder editable:(BOOL)editable delegate:(id)delegate
 {
-  v7 = a5;
+  editableCopy = editable;
   v257 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v215 = a4;
-  obj = a6;
+  eventCopy = event;
+  reminderCopy = reminder;
+  obj = delegate;
   v239.receiver = self;
   v239.super_class = EKReminderTitleDetailCell;
-  v207 = v10;
-  v11 = [(EKReminderDetailCell *)&v239 initWithEvent:v10 reminder:v215 editable:v7];
+  v207 = eventCopy;
+  v11 = [(EKReminderDetailCell *)&v239 initWithEvent:eventCopy reminder:reminderCopy editable:editableCopy];
   v12 = v11;
   if (v11)
   {
@@ -34,8 +34,8 @@
 
     [(UILabel *)v12->_title setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v12->_title setNumberOfLines:0];
-    v15 = [(EKEvent *)v12->super.super._event title];
-    [(UILabel *)v12->_title setText:v15];
+    title = [(EKEvent *)v12->super.super._event title];
+    [(UILabel *)v12->_title setText:title];
 
     v217 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v16 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDDC0] addingSymbolicTraits:2];
@@ -44,16 +44,16 @@
 
     if (([(EKEvent *)v12->super.super._event completed]& 1) != 0 || ([(EKEvent *)v12->super.super._event CUIK_reminderShouldBeEditable]& 1) == 0)
     {
-      v18 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-      [v217 setObject:v18 forKeyedSubscript:*MEMORY[0x1E69DB650]];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      [v217 setObject:secondaryLabelColor forKeyedSubscript:*MEMORY[0x1E69DB650]];
     }
 
     v19 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v20 = [(EKEvent *)v12->super.super._event title];
-    v21 = v20;
-    if (v20)
+    title2 = [(EKEvent *)v12->super.super._event title];
+    v21 = title2;
+    if (title2)
     {
-      v22 = v20;
+      v22 = title2;
     }
 
     else
@@ -64,39 +64,39 @@
     v206 = [v19 initWithString:v22 attributes:v217];
 
     [(UILabel *)v12->_title setAttributedText:v206];
-    v23 = [(EKReminderTitleDetailCell *)v12 contentView];
-    [v23 addSubview:v12->_title];
+    contentView = [(EKReminderTitleDetailCell *)v12 contentView];
+    [contentView addSubview:v12->_title];
 
     LODWORD(v24) = 1148846080;
     [(UILabel *)v12->_title setContentCompressionResistancePriority:1 forAxis:v24];
-    v25 = EKUIWidthSizeClassForViewHierarchy(v12);
-    if (!v25)
+    horizontalSizeClass = EKUIWidthSizeClassForViewHierarchy(v12);
+    if (!horizontalSizeClass)
     {
-      v26 = [(EKReminderTitleDetailCell *)v12 traitCollection];
-      v25 = [v26 horizontalSizeClass];
+      traitCollection = [(EKReminderTitleDetailCell *)v12 traitCollection];
+      horizontalSizeClass = [traitCollection horizontalSizeClass];
 
       v27 = kEKUILogHandle;
       if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_ERROR))
       {
         LODWORD(buf) = 134217984;
-        *(&buf + 4) = v25;
+        *(&buf + 4) = horizontalSizeClass;
         _os_log_impl(&dword_1D3400000, v27, OS_LOG_TYPE_ERROR, "Size class from EKUIWidthSizeClassForViewHierarchy was unspecified, so fall back to getting size class from view's trait collection [%ld]", &buf, 0xCu);
       }
 
-      if (!v25)
+      if (!horizontalSizeClass)
       {
         v28 = kEKUILogHandle;
         if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_ERROR))
         {
           LODWORD(buf) = 134217984;
-          v25 = 1;
+          horizontalSizeClass = 1;
           *(&buf + 4) = 1;
           _os_log_impl(&dword_1D3400000, v28, OS_LOG_TYPE_ERROR, "Size class from view's trait collection was unspecified, so fall back to default size class [%ld]", &buf, 0xCu);
         }
 
         else
         {
-          v25 = 1;
+          horizontalSizeClass = 1;
         }
       }
     }
@@ -110,7 +110,7 @@
     v234 = 0;
     v231 = 0;
     v232 = 0;
-    CalDetailStringsForCalendarEvent(event, v25, &v238, &v237, &v236, &v235, &v234, &v233, &v232, &v231, 0, 0);
+    CalDetailStringsForCalendarEvent(event, horizontalSizeClass, &v238, &v237, &v236, &v235, &v234, &v233, &v232, &v231, 0, 0);
     v204 = v238;
     v214 = v237;
     v213 = v236;
@@ -126,11 +126,11 @@
     [(UILabel *)v12->_dateLabelLine1 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v12->_dateLabelLine1 setText:v204];
     [(UILabel *)v12->_dateLabelLine1 setTextColor:v205];
-    v32 = [objc_opt_class() _dateFont];
-    [(UILabel *)v12->_dateLabelLine1 setFont:v32];
+    _dateFont = [objc_opt_class() _dateFont];
+    [(UILabel *)v12->_dateLabelLine1 setFont:_dateFont];
 
-    v33 = [(EKReminderTitleDetailCell *)v12 contentView];
-    [v33 addSubview:v12->_dateLabelLine1];
+    contentView2 = [(EKReminderTitleDetailCell *)v12 contentView];
+    [contentView2 addSubview:v12->_dateLabelLine1];
 
     if (v214)
     {
@@ -141,13 +141,13 @@
       [(UILabel *)v12->_dateLabelLine2 setTranslatesAutoresizingMaskIntoConstraints:0];
       [(UILabel *)v12->_dateLabelLine2 setText:v214];
       [(UILabel *)v12->_dateLabelLine2 setTextColor:v167];
-      v36 = [objc_opt_class() _dateFont];
-      [(UILabel *)v12->_dateLabelLine2 setFont:v36];
+      _dateFont2 = [objc_opt_class() _dateFont];
+      [(UILabel *)v12->_dateLabelLine2 setFont:_dateFont2];
 
       LODWORD(v37) = 1148846080;
       [(UILabel *)v12->_dateLabelLine2 setContentCompressionResistancePriority:1 forAxis:v37];
-      v38 = [(EKReminderTitleDetailCell *)v12 contentView];
-      [v38 addSubview:v12->_dateLabelLine2];
+      contentView3 = [(EKReminderTitleDetailCell *)v12 contentView];
+      [contentView3 addSubview:v12->_dateLabelLine2];
     }
 
     if (v213)
@@ -159,13 +159,13 @@
       [(UILabel *)v12->_dateLabelLine3 setTranslatesAutoresizingMaskIntoConstraints:0];
       [(UILabel *)v12->_dateLabelLine3 setText:v213];
       [(UILabel *)v12->_dateLabelLine3 setTextColor:v166];
-      v41 = [objc_opt_class() _dateFont];
-      [(UILabel *)v12->_dateLabelLine3 setFont:v41];
+      _dateFont3 = [objc_opt_class() _dateFont];
+      [(UILabel *)v12->_dateLabelLine3 setFont:_dateFont3];
 
       LODWORD(v42) = 1148846080;
       [(UILabel *)v12->_dateLabelLine3 setContentCompressionResistancePriority:1 forAxis:v42];
-      v43 = [(EKReminderTitleDetailCell *)v12 contentView];
-      [v43 addSubview:v12->_dateLabelLine3];
+      contentView4 = [(EKReminderTitleDetailCell *)v12 contentView];
+      [contentView4 addSubview:v12->_dateLabelLine3];
     }
 
     if (v212)
@@ -177,13 +177,13 @@
       [(UILabel *)v12->_dateLabelLine4 setTranslatesAutoresizingMaskIntoConstraints:0];
       [(UILabel *)v12->_dateLabelLine4 setText:v212];
       [(UILabel *)v12->_dateLabelLine4 setTextColor:v165];
-      v46 = [objc_opt_class() _dateFont];
-      [(UILabel *)v12->_dateLabelLine4 setFont:v46];
+      _dateFont4 = [objc_opt_class() _dateFont];
+      [(UILabel *)v12->_dateLabelLine4 setFont:_dateFont4];
 
       LODWORD(v47) = 1148846080;
       [(UILabel *)v12->_dateLabelLine4 setContentCompressionResistancePriority:1 forAxis:v47];
-      v48 = [(EKReminderTitleDetailCell *)v12 contentView];
-      [v48 addSubview:v12->_dateLabelLine4];
+      contentView5 = [(EKReminderTitleDetailCell *)v12 contentView];
+      [contentView5 addSubview:v12->_dateLabelLine4];
     }
 
     if ([(EKEvent *)v12->super.super._event hasRecurrenceRules])
@@ -206,12 +206,12 @@
 
       v50 = v49;
       _Block_object_dispose(&v240, 8);
-      v51 = [v215 recurrenceRules];
-      v52 = [v51 firstObject];
-      v53 = [(EKEvent *)v12->super.super._event startDate];
-      v54 = [(EKEvent *)v12->super.super._event eventStore];
-      v55 = [v54 timeZone];
-      v56 = [v49 shortNaturalLanguageDescriptionForRecurrenceRule:v52 date:v53 timeZone:v55 lowercase:1];
+      recurrenceRules = [reminderCopy recurrenceRules];
+      firstObject = [recurrenceRules firstObject];
+      startDate = [(EKEvent *)v12->super.super._event startDate];
+      eventStore = [(EKEvent *)v12->super.super._event eventStore];
+      timeZone = [eventStore timeZone];
+      v56 = [v49 shortNaturalLanguageDescriptionForRecurrenceRule:firstObject date:startDate timeZone:timeZone lowercase:1];
       v57 = v56;
       v58 = &stru_1F4EF6790;
       if (v56)
@@ -227,11 +227,11 @@
       v63 = [v60 localizedStringWithFormat:v62, v59];
 
       v251[0] = v17;
-      v64 = [objc_opt_class() _dateFont];
-      v252[0] = v64;
+      _dateFont5 = [objc_opt_class() _dateFont];
+      v252[0] = _dateFont5;
       v251[1] = *MEMORY[0x1E69DB650];
-      v65 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-      v252[1] = v65;
+      secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      v252[1] = secondaryLabelColor2;
       v66 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v252 forKeys:v251 count:2];
 
       v67 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v63 attributes:v66];
@@ -243,16 +243,16 @@
       [(UILabel *)v12->_recurrenceLabel setAttributedText:v67];
       LODWORD(v70) = 1148846080;
       [(UILabel *)v12->_recurrenceLabel setContentCompressionResistancePriority:1 forAxis:v70];
-      v71 = [(EKReminderTitleDetailCell *)v12 contentView];
-      [v71 addSubview:v12->_recurrenceLabel];
+      contentView6 = [(EKReminderTitleDetailCell *)v12 contentView];
+      [contentView6 addSubview:v12->_recurrenceLabel];
     }
 
-    v72 = [(EKReminderTitleDetailCell *)v12 _editButton];
+    _editButton = [(EKReminderTitleDetailCell *)v12 _editButton];
     editButton = v12->_editButton;
-    v12->_editButton = v72;
+    v12->_editButton = _editButton;
 
-    v74 = [(EKReminderTitleDetailCell *)v12 contentView];
-    [v74 addSubview:v12->_editButton];
+    contentView7 = [(EKReminderTitleDetailCell *)v12 contentView];
+    [contentView7 addSubview:v12->_editButton];
 
     objc_initWeak(&buf, v12);
     v75 = MEMORY[0x1E69DC628];
@@ -273,15 +273,15 @@
     LODWORD(v81) = 1144750080;
     [(UIButton *)v12->_circle setContentHuggingPriority:0 forAxis:v81];
     [(UIButton *)v12->_circle setTranslatesAutoresizingMaskIntoConstraints:0];
-    v82 = [(EKReminderTitleDetailCell *)v12 contentView];
-    [v82 addSubview:v12->_circle];
+    contentView8 = [(EKReminderTitleDetailCell *)v12 contentView];
+    [contentView8 addSubview:v12->_circle];
 
-    v83 = [(EKEventDetailCell *)v12 event];
-    -[UIButton setUserInteractionEnabled:](v12->_circle, "setUserInteractionEnabled:", [v83 CUIK_reminderShouldBeEditable]);
+    event = [(EKEventDetailCell *)v12 event];
+    -[UIButton setUserInteractionEnabled:](v12->_circle, "setUserInteractionEnabled:", [event CUIK_reminderShouldBeEditable]);
 
-    v84 = [(EKReminderTitleDetailCell *)v12 _editButton];
+    _editButton2 = [(EKReminderTitleDetailCell *)v12 _editButton];
     [(UIButton *)v12->_editButton frame];
-    [v84 sizeThatFits:{v85, v86}];
+    [_editButton2 sizeThatFits:{v85, v86}];
     v88 = v87;
     v90 = v89;
 
@@ -310,81 +310,81 @@
     }
 
     v222 = MEMORY[0x1E695DF70];
-    v189 = [(UIButton *)v12->_circle leadingAnchor];
-    v199 = [(EKReminderTitleDetailCell *)v12 contentView];
-    v194 = [v199 layoutMarginsGuide];
-    v188 = [v194 leadingAnchor];
-    v187 = [v189 constraintEqualToAnchor:v188];
+    leadingAnchor = [(UIButton *)v12->_circle leadingAnchor];
+    contentView9 = [(EKReminderTitleDetailCell *)v12 contentView];
+    layoutMarginsGuide = [contentView9 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v187 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v250[0] = v187;
-    v186 = [(UIButton *)v12->_circle firstBaselineAnchor];
-    v185 = [(UILabel *)v12->_title firstBaselineAnchor];
-    v184 = [v186 constraintEqualToAnchor:v185];
+    firstBaselineAnchor = [(UIButton *)v12->_circle firstBaselineAnchor];
+    firstBaselineAnchor2 = [(UILabel *)v12->_title firstBaselineAnchor];
+    v184 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
     v250[1] = v184;
-    v182 = [(UILabel *)v12->_title topAnchor];
-    v183 = [(EKReminderTitleDetailCell *)v12 contentView];
-    v181 = [v183 topAnchor];
-    v180 = [v182 constraintEqualToAnchor:v181 constant:8.0];
+    topAnchor = [(UILabel *)v12->_title topAnchor];
+    contentView10 = [(EKReminderTitleDetailCell *)v12 contentView];
+    topAnchor2 = [contentView10 topAnchor];
+    v180 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:8.0];
     v250[2] = v180;
-    v179 = [(UILabel *)v12->_title leadingAnchor];
-    v178 = [(UIButton *)v12->_circle trailingAnchor];
-    v177 = [v179 constraintEqualToAnchor:v178 constant:11.0];
+    leadingAnchor3 = [(UILabel *)v12->_title leadingAnchor];
+    trailingAnchor = [(UIButton *)v12->_circle trailingAnchor];
+    v177 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:11.0];
     v250[3] = v177;
-    v174 = [(UILabel *)v12->_title trailingAnchor];
-    v176 = [(EKReminderTitleDetailCell *)v12 contentView];
-    v175 = [v176 layoutMarginsGuide];
-    v173 = [v175 trailingAnchor];
-    v172 = [v174 constraintEqualToAnchor:v173 constant:-(v88 + v94)];
+    trailingAnchor2 = [(UILabel *)v12->_title trailingAnchor];
+    contentView11 = [(EKReminderTitleDetailCell *)v12 contentView];
+    layoutMarginsGuide2 = [contentView11 layoutMarginsGuide];
+    trailingAnchor3 = [layoutMarginsGuide2 trailingAnchor];
+    v172 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-(v88 + v94)];
     v250[4] = v172;
-    v171 = [(UILabel *)v12->_title bottomAnchor];
-    v170 = [(UILabel *)v12->_dateLabelLine1 topAnchor];
-    v169 = [v171 constraintEqualToAnchor:v170 constant:-21.0];
+    bottomAnchor = [(UILabel *)v12->_title bottomAnchor];
+    topAnchor3 = [(UILabel *)v12->_dateLabelLine1 topAnchor];
+    v169 = [bottomAnchor constraintEqualToAnchor:topAnchor3 constant:-21.0];
     v250[5] = v169;
-    v95 = [(UILabel *)v12->_dateLabelLine1 leadingAnchor];
-    v96 = [(EKReminderTitleDetailCell *)v12 contentView];
-    v97 = [v96 layoutMarginsGuide];
-    v98 = [v97 leadingAnchor];
-    v99 = [v95 constraintEqualToAnchor:v98];
+    leadingAnchor4 = [(UILabel *)v12->_dateLabelLine1 leadingAnchor];
+    contentView12 = [(EKReminderTitleDetailCell *)v12 contentView];
+    layoutMarginsGuide3 = [contentView12 layoutMarginsGuide];
+    leadingAnchor5 = [layoutMarginsGuide3 leadingAnchor];
+    v99 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
     v250[6] = v99;
-    v100 = [(UILabel *)v12->_dateLabelLine1 trailingAnchor];
-    v101 = [(UILabel *)v12->_title trailingAnchor];
-    v102 = [v100 constraintEqualToAnchor:v101];
+    trailingAnchor4 = [(UILabel *)v12->_dateLabelLine1 trailingAnchor];
+    trailingAnchor5 = [(UILabel *)v12->_title trailingAnchor];
+    v102 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
     v250[7] = v102;
     v103 = [MEMORY[0x1E695DEC8] arrayWithObjects:v250 count:8];
     v223 = [v222 arrayWithArray:v103];
 
     v104 = objc_loadWeakRetained(&v12->_delegate);
-    LODWORD(v97) = [v104 shouldShowEditButtonInline];
+    LODWORD(layoutMarginsGuide3) = [v104 shouldShowEditButtonInline];
 
     v105 = v12->_editButton;
-    if (v97)
+    if (layoutMarginsGuide3)
     {
       if (MEMORY[0x1D38B98D0]([(UIButton *)v105 setHidden:0]))
       {
-        v106 = [(UIButton *)v12->_editButton layer];
+        layer = [(UIButton *)v12->_editButton layer];
         v107 = v90 + 8.0;
-        [v106 setCornerRadius:v107 * 0.5];
+        [layer setCornerRadius:v107 * 0.5];
 
-        v108 = [(UIButton *)v12->_editButton layer];
-        [v108 setMasksToBounds:1];
+        layer2 = [(UIButton *)v12->_editButton layer];
+        [layer2 setMasksToBounds:1];
 
-        v109 = [(UIButton *)v12->_editButton widthAnchor];
-        v110 = [v109 constraintEqualToConstant:v88 + 20.0];
+        widthAnchor = [(UIButton *)v12->_editButton widthAnchor];
+        v110 = [widthAnchor constraintEqualToConstant:v88 + 20.0];
         v249[0] = v110;
-        v111 = [(UIButton *)v12->_editButton heightAnchor];
-        v112 = [v111 constraintEqualToConstant:v107];
+        heightAnchor = [(UIButton *)v12->_editButton heightAnchor];
+        v112 = [heightAnchor constraintEqualToConstant:v107];
         v249[1] = v112;
         v113 = [MEMORY[0x1E695DEC8] arrayWithObjects:v249 count:2];
         [v223 addObjectsFromArray:v113];
       }
 
-      v114 = [(UIButton *)v12->_editButton trailingAnchor];
-      v115 = [(EKReminderTitleDetailCell *)v12 contentView];
-      v116 = [v115 trailingAnchor];
-      v117 = [v114 constraintEqualToAnchor:v116 constant:-8.0];
+      trailingAnchor6 = [(UIButton *)v12->_editButton trailingAnchor];
+      contentView13 = [(EKReminderTitleDetailCell *)v12 contentView];
+      trailingAnchor7 = [contentView13 trailingAnchor];
+      v117 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7 constant:-8.0];
       v248[0] = v117;
-      v118 = [(UIButton *)v12->_editButton firstBaselineAnchor];
-      v119 = [(UILabel *)v12->_title firstBaselineAnchor];
-      v120 = [v118 constraintEqualToAnchor:v119];
+      firstBaselineAnchor3 = [(UIButton *)v12->_editButton firstBaselineAnchor];
+      firstBaselineAnchor4 = [(UILabel *)v12->_title firstBaselineAnchor];
+      v120 = [firstBaselineAnchor3 constraintEqualToAnchor:firstBaselineAnchor4];
       v248[1] = v120;
       v121 = [MEMORY[0x1E695DEC8] arrayWithObjects:v248 count:2];
       [v223 addObjectsFromArray:v121];
@@ -399,21 +399,21 @@
     v122 = v12->_dateLabelLine2;
     if (v122)
     {
-      v218 = [(UILabel *)v122 topAnchor];
-      v224 = [(UILabel *)v228 bottomAnchor];
-      v208 = [v218 constraintEqualToAnchor:v224 constant:4.0];
+      topAnchor4 = [(UILabel *)v122 topAnchor];
+      bottomAnchor2 = [(UILabel *)v228 bottomAnchor];
+      v208 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:4.0];
       v247[0] = v208;
-      v190 = [(UILabel *)v12->_dateLabelLine2 leadingAnchor];
-      v200 = [(EKReminderTitleDetailCell *)v12 contentView];
-      v195 = [v200 layoutMarginsGuide];
-      v123 = [v195 leadingAnchor];
-      v124 = [v190 constraintEqualToAnchor:v123];
+      leadingAnchor6 = [(UILabel *)v12->_dateLabelLine2 leadingAnchor];
+      contentView14 = [(EKReminderTitleDetailCell *)v12 contentView];
+      layoutMarginsGuide4 = [contentView14 layoutMarginsGuide];
+      leadingAnchor7 = [layoutMarginsGuide4 leadingAnchor];
+      v124 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
       v247[1] = v124;
-      v125 = [(UILabel *)v12->_dateLabelLine2 trailingAnchor];
-      v126 = [(EKReminderTitleDetailCell *)v12 contentView];
-      v127 = [v126 layoutMarginsGuide];
-      v128 = [v127 trailingAnchor];
-      v129 = [v125 constraintEqualToAnchor:v128];
+      trailingAnchor8 = [(UILabel *)v12->_dateLabelLine2 trailingAnchor];
+      contentView15 = [(EKReminderTitleDetailCell *)v12 contentView];
+      layoutMarginsGuide5 = [contentView15 layoutMarginsGuide];
+      trailingAnchor9 = [layoutMarginsGuide5 trailingAnchor];
+      v129 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9];
       v247[2] = v129;
       v130 = [MEMORY[0x1E695DEC8] arrayWithObjects:v247 count:3];
       [v223 addObjectsFromArray:v130];
@@ -425,21 +425,21 @@
     v132 = v12->_dateLabelLine3;
     if (v132)
     {
-      v225 = [(UILabel *)v132 topAnchor];
-      v219 = [(UILabel *)v228 bottomAnchor];
-      v209 = [v225 constraintEqualToAnchor:v219 constant:4.0];
+      topAnchor5 = [(UILabel *)v132 topAnchor];
+      bottomAnchor3 = [(UILabel *)v228 bottomAnchor];
+      v209 = [topAnchor5 constraintEqualToAnchor:bottomAnchor3 constant:4.0];
       v246[0] = v209;
-      v191 = [(UILabel *)v12->_dateLabelLine3 leadingAnchor];
-      v201 = [(EKReminderTitleDetailCell *)v12 contentView];
-      v196 = [v201 layoutMarginsGuide];
-      v133 = [v196 leadingAnchor];
-      v134 = [v191 constraintEqualToAnchor:v133];
+      leadingAnchor8 = [(UILabel *)v12->_dateLabelLine3 leadingAnchor];
+      contentView16 = [(EKReminderTitleDetailCell *)v12 contentView];
+      layoutMarginsGuide6 = [contentView16 layoutMarginsGuide];
+      leadingAnchor9 = [layoutMarginsGuide6 leadingAnchor];
+      v134 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9];
       v246[1] = v134;
-      v135 = [(UILabel *)v12->_dateLabelLine3 trailingAnchor];
-      v136 = [(EKReminderTitleDetailCell *)v12 contentView];
-      v137 = [v136 layoutMarginsGuide];
-      v138 = [v137 trailingAnchor];
-      v139 = [v135 constraintEqualToAnchor:v138];
+      trailingAnchor10 = [(UILabel *)v12->_dateLabelLine3 trailingAnchor];
+      contentView17 = [(EKReminderTitleDetailCell *)v12 contentView];
+      layoutMarginsGuide7 = [contentView17 layoutMarginsGuide];
+      trailingAnchor11 = [layoutMarginsGuide7 trailingAnchor];
+      v139 = [trailingAnchor10 constraintEqualToAnchor:trailingAnchor11];
       v246[2] = v139;
       v140 = [MEMORY[0x1E695DEC8] arrayWithObjects:v246 count:3];
       [v223 addObjectsFromArray:v140];
@@ -451,21 +451,21 @@
     v142 = v12->_dateLabelLine4;
     if (v142)
     {
-      v226 = [(UILabel *)v142 topAnchor];
-      v220 = [(UILabel *)v228 bottomAnchor];
-      v210 = [v226 constraintEqualToAnchor:v220 constant:4.0];
+      topAnchor6 = [(UILabel *)v142 topAnchor];
+      bottomAnchor4 = [(UILabel *)v228 bottomAnchor];
+      v210 = [topAnchor6 constraintEqualToAnchor:bottomAnchor4 constant:4.0];
       v245[0] = v210;
-      v192 = [(UILabel *)v12->_dateLabelLine4 leadingAnchor];
-      v202 = [(EKReminderTitleDetailCell *)v12 contentView];
-      v197 = [v202 layoutMarginsGuide];
-      v143 = [v197 leadingAnchor];
-      v144 = [v192 constraintEqualToAnchor:v143];
+      leadingAnchor10 = [(UILabel *)v12->_dateLabelLine4 leadingAnchor];
+      contentView18 = [(EKReminderTitleDetailCell *)v12 contentView];
+      layoutMarginsGuide8 = [contentView18 layoutMarginsGuide];
+      leadingAnchor11 = [layoutMarginsGuide8 leadingAnchor];
+      v144 = [leadingAnchor10 constraintEqualToAnchor:leadingAnchor11];
       v245[1] = v144;
-      v145 = [(UILabel *)v12->_dateLabelLine4 trailingAnchor];
-      v146 = [(EKReminderTitleDetailCell *)v12 contentView];
-      v147 = [v146 layoutMarginsGuide];
-      v148 = [v147 trailingAnchor];
-      v149 = [v145 constraintEqualToAnchor:v148];
+      trailingAnchor12 = [(UILabel *)v12->_dateLabelLine4 trailingAnchor];
+      contentView19 = [(EKReminderTitleDetailCell *)v12 contentView];
+      layoutMarginsGuide9 = [contentView19 layoutMarginsGuide];
+      trailingAnchor13 = [layoutMarginsGuide9 trailingAnchor];
+      v149 = [trailingAnchor12 constraintEqualToAnchor:trailingAnchor13];
       v245[2] = v149;
       v150 = [MEMORY[0x1E695DEC8] arrayWithObjects:v245 count:3];
       [v223 addObjectsFromArray:v150];
@@ -477,21 +477,21 @@
     v152 = v12->_recurrenceLabel;
     if (v152)
     {
-      v227 = [(UILabel *)v152 topAnchor];
-      v221 = [(UILabel *)v228 bottomAnchor];
-      v211 = [v227 constraintEqualToAnchor:v221 constant:4.0];
+      topAnchor7 = [(UILabel *)v152 topAnchor];
+      bottomAnchor5 = [(UILabel *)v228 bottomAnchor];
+      v211 = [topAnchor7 constraintEqualToAnchor:bottomAnchor5 constant:4.0];
       v244[0] = v211;
-      v193 = [(UILabel *)v12->_recurrenceLabel leadingAnchor];
-      v203 = [(EKReminderTitleDetailCell *)v12 contentView];
-      v198 = [v203 layoutMarginsGuide];
-      v153 = [v198 leadingAnchor];
-      v154 = [v193 constraintEqualToAnchor:v153];
+      leadingAnchor12 = [(UILabel *)v12->_recurrenceLabel leadingAnchor];
+      contentView20 = [(EKReminderTitleDetailCell *)v12 contentView];
+      layoutMarginsGuide10 = [contentView20 layoutMarginsGuide];
+      leadingAnchor13 = [layoutMarginsGuide10 leadingAnchor];
+      v154 = [leadingAnchor12 constraintEqualToAnchor:leadingAnchor13];
       v244[1] = v154;
-      v155 = [(UILabel *)v12->_recurrenceLabel trailingAnchor];
-      v156 = [(EKReminderTitleDetailCell *)v12 contentView];
-      v157 = [v156 layoutMarginsGuide];
-      v158 = [v157 trailingAnchor];
-      v159 = [v155 constraintEqualToAnchor:v158];
+      trailingAnchor14 = [(UILabel *)v12->_recurrenceLabel trailingAnchor];
+      contentView21 = [(EKReminderTitleDetailCell *)v12 contentView];
+      layoutMarginsGuide11 = [contentView21 layoutMarginsGuide];
+      trailingAnchor15 = [layoutMarginsGuide11 trailingAnchor];
+      v159 = [trailingAnchor14 constraintEqualToAnchor:trailingAnchor15];
       v244[2] = v159;
       v160 = [MEMORY[0x1E695DEC8] arrayWithObjects:v244 count:3];
       [v223 addObjectsFromArray:v160];
@@ -552,7 +552,7 @@ void __70__EKReminderTitleDetailCell_initWithEvent_reminder_editable_delegate___
   block[1] = 3221225472;
   block[2] = __53__EKReminderTitleDetailCell__registerForInvalidation__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_registerForInvalidation_onceToken_1 != -1)
   {
     dispatch_once(&_registerForInvalidation_onceToken_1, block);
@@ -567,7 +567,7 @@ void __53__EKReminderTitleDetailCell__registerForInvalidation__block_invoke(uint
 
 + (id)_dateFont
 {
-  [a1 _registerForInvalidation];
+  [self _registerForInvalidation];
   os_unfair_lock_lock(&_fontLock_0);
   v2 = s_dateFont;
   if (!s_dateFont)
@@ -604,15 +604,15 @@ void __53__EKReminderTitleDetailCell__registerForInvalidation__block_invoke(uint
 
     if (CalSolariumEnabled())
     {
-      v10 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+      plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
       v11 = objc_alloc(MEMORY[0x1E696AAB0]);
       v23 = *MEMORY[0x1E69DB648];
       v24[0] = v7;
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
       v13 = [v11 initWithString:v9 attributes:v12];
-      [v10 setAttributedTitle:v13];
+      [plainButtonConfiguration setAttributedTitle:v13];
 
-      [(UIButton *)self->_editButton setConfiguration:v10];
+      [(UIButton *)self->_editButton setConfiguration:plainButtonConfiguration];
     }
 
     else
@@ -621,19 +621,19 @@ void __53__EKReminderTitleDetailCell__registerForInvalidation__block_invoke(uint
       v15 = objc_alloc(MEMORY[0x1E696AAB0]);
       v21 = *MEMORY[0x1E69DB648];
       v22 = v7;
-      v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-      v16 = [v15 initWithString:v9 attributes:v10];
+      plainButtonConfiguration = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
+      v16 = [v15 initWithString:v9 attributes:plainButtonConfiguration];
       [(UIButton *)v14 setAttributedTitle:v16 forState:0];
     }
 
     if (MEMORY[0x1D38B98D0]([(UIButton *)self->_editButton addTarget:self action:sel__editButtonTapped forControlEvents:64]))
     {
-      v17 = [MEMORY[0x1E69DC888] secondarySystemFillColor];
-      [(UIButton *)self->_editButton setBackgroundColor:v17];
+      secondarySystemFillColor = [MEMORY[0x1E69DC888] secondarySystemFillColor];
+      [(UIButton *)self->_editButton setBackgroundColor:secondarySystemFillColor];
 
       v18 = self->_editButton;
-      v19 = [MEMORY[0x1E69DC888] labelColor];
-      [(UIButton *)v18 setTitleColor:v19 forState:0];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
+      [(UIButton *)v18 setTitleColor:labelColor forState:0];
     }
 
     editButton = self->_editButton;
@@ -642,9 +642,9 @@ void __53__EKReminderTitleDetailCell__registerForInvalidation__block_invoke(uint
   return editButton;
 }
 
-- (void)setupConstraintsWithExtraSpace:(BOOL)a3
+- (void)setupConstraintsWithExtraSpace:(BOOL)space
 {
-  v3 = a3;
+  spaceCopy = space;
   v15[1] = *MEMORY[0x1E69E9840];
   if (self->_bottomConstraint)
   {
@@ -654,17 +654,17 @@ void __53__EKReminderTitleDetailCell__registerForInvalidation__block_invoke(uint
     [v5 deactivateConstraints:v6];
   }
 
-  v7 = [(UIView *)self->_bottomView bottomAnchor];
-  v8 = [(EKReminderTitleDetailCell *)self contentView];
-  v9 = [v8 bottomAnchor];
-  if (v3)
+  bottomAnchor = [(UIView *)self->_bottomView bottomAnchor];
+  contentView = [(EKReminderTitleDetailCell *)self contentView];
+  bottomAnchor2 = [contentView bottomAnchor];
+  if (spaceCopy)
   {
-    [v7 constraintEqualToAnchor:v9 constant:-15.0];
+    [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-15.0];
   }
 
   else
   {
-    [v7 constraintEqualToAnchor:v9];
+    [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   }
   v10 = ;
   bottomConstraint = self->_bottomConstraint;
@@ -676,11 +676,11 @@ void __53__EKReminderTitleDetailCell__registerForInvalidation__block_invoke(uint
   [v12 activateConstraints:v13];
 }
 
-- (void)setShowExtraSpaceAtBottom:(BOOL)a3
+- (void)setShowExtraSpaceAtBottom:(BOOL)bottom
 {
-  if (self->_showExtraSpaceAtBottom != a3)
+  if (self->_showExtraSpaceAtBottom != bottom)
   {
-    self->_showExtraSpaceAtBottom = a3;
+    self->_showExtraSpaceAtBottom = bottom;
     [(EKReminderTitleDetailCell *)self setupConstraintsWithExtraSpace:?];
   }
 }
@@ -691,41 +691,41 @@ void __53__EKReminderTitleDetailCell__registerForInvalidation__block_invoke(uint
   [WeakRetained editButtonPressed];
 }
 
-- (id)_buttonConfigForReminder:(id)a3
+- (id)_buttonConfigForReminder:(id)reminder
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-  [v4 contentInsets];
-  [v4 setContentInsets:?];
+  reminderCopy = reminder;
+  plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+  [plainButtonConfiguration contentInsets];
+  [plainButtonConfiguration setContentInsets:?];
   v5 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDDC0] weight:*MEMORY[0x1E69DB980]];
   v6 = [MEMORY[0x1E69DCAD8] configurationWithFont:v5 scale:2];
   v7 = MEMORY[0x1E69DCAB8];
-  if (v3)
+  if (reminderCopy)
   {
-    v8 = [v3 CUIK_symbolName:{objc_msgSend(v3, "isAllDay")}];
+    v8 = [reminderCopy CUIK_symbolName:{objc_msgSend(reminderCopy, "isAllDay")}];
     v9 = [v7 systemImageNamed:v8 withConfiguration:v6];
-    [v4 setImage:v9];
+    [plainButtonConfiguration setImage:v9];
 
-    if ([v3 CUIK_reminderShouldBeEditable])
+    if ([reminderCopy CUIK_reminderShouldBeEditable])
     {
-      [v3 CUIK_symbolColor];
+      [reminderCopy CUIK_symbolColor];
     }
 
     else
     {
-      [v3 CUIK_disabledSymbolColor];
+      [reminderCopy CUIK_disabledSymbolColor];
     }
     v10 = ;
-    [v4 setBaseForegroundColor:v10];
+    [plainButtonConfiguration setBaseForegroundColor:v10];
   }
 
   else
   {
     v10 = [MEMORY[0x1E69DCAB8] systemImageNamed:*MEMORY[0x1E69932F8] withConfiguration:v6];
-    [v4 setImage:v10];
+    [plainButtonConfiguration setImage:v10];
   }
 
-  return v4;
+  return plainButtonConfiguration;
 }
 
 @end

@@ -2,10 +2,10 @@
 + (NSString)defaultFile;
 + (double)defaultMicroLocationSimilarityThreshold;
 + (id)routePredictor;
-- (ARPRoutePredictor)initWithmicroLocationSimilarityThreshold:(double)a3 file:(id)a4 knowledgeStore:(id)a5;
+- (ARPRoutePredictor)initWithmicroLocationSimilarityThreshold:(double)threshold file:(id)file knowledgeStore:(id)store;
 - (id)description;
-- (id)predictionsForContext:(id)a3;
-- (id)predictionsWithCurrentContext:(id *)a3;
+- (id)predictionsForContext:(id)context;
+- (id)predictionsWithCurrentContext:(id *)context;
 - (void)_reloadLatestMicroLocationEvent;
 - (void)_reloadPersistedSessions;
 - (void)dealloc;
@@ -16,9 +16,9 @@
 + (NSString)defaultFile
 {
   v2 = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, 1uLL, 1);
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  v4 = [v3 stringByAppendingPathComponent:@"AirPlayRoutePrediction/correlations.archive"];
+  v4 = [firstObject stringByAppendingPathComponent:@"AirPlayRoutePrediction/correlations.archive"];
 
   return v4;
 }
@@ -42,20 +42,20 @@
 
 + (id)routePredictor
 {
-  v3 = [MEMORY[0x277CFE208] knowledgeStore];
+  knowledgeStore = [MEMORY[0x277CFE208] knowledgeStore];
   v4 = objc_alloc(objc_opt_class());
-  [a1 defaultMicroLocationSimilarityThreshold];
+  [self defaultMicroLocationSimilarityThreshold];
   v6 = v5;
-  v7 = [a1 defaultFile];
-  v8 = [v4 initWithmicroLocationSimilarityThreshold:v7 file:v3 knowledgeStore:v6];
+  defaultFile = [self defaultFile];
+  v8 = [v4 initWithmicroLocationSimilarityThreshold:defaultFile file:knowledgeStore knowledgeStore:v6];
 
   return v8;
 }
 
-- (ARPRoutePredictor)initWithmicroLocationSimilarityThreshold:(double)a3 file:(id)a4 knowledgeStore:(id)a5
+- (ARPRoutePredictor)initWithmicroLocationSimilarityThreshold:(double)threshold file:(id)file knowledgeStore:(id)store
 {
-  v8 = a4;
-  v9 = a5;
+  fileCopy = file;
+  storeCopy = store;
   v31.receiver = self;
   v31.super_class = ARPRoutePredictor;
   v10 = [(ARPRoutePredictor *)&v31 init];
@@ -67,13 +67,13 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v10->_microLocationSimilarityThreshold = a3;
+  v10->_microLocationSimilarityThreshold = threshold;
   v10->_token = -1;
-  v12 = [v8 copy];
+  v12 = [fileCopy copy];
   file = v11->_file;
   v11->_file = v12;
 
-  objc_storeStrong(&v11->_knowledgeStore, a5);
+  objc_storeStrong(&v11->_knowledgeStore, store);
   v14 = [MEMORY[0x277CBEB98] set];
   knownOutputDeviceIDs = v11->_knownOutputDeviceIDs;
   v11->_knownOutputDeviceIDs = v14;
@@ -86,25 +86,25 @@ LABEL_7:
   queue = v11->_queue;
   v11->_queue = v17;
 
-  v19 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"com.apple.AirPlayRoutePrediction:%s", objc_msgSend(v8, "fileSystemRepresentation")];
+  v19 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"com.apple.AirPlayRoutePrediction:%s", objc_msgSend(fileCopy, "fileSystemRepresentation")];
   objc_initWeak(&location, v11);
-  v20 = [v19 UTF8String];
+  uTF8String = [v19 UTF8String];
   v21 = v11->_queue;
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __82__ARPRoutePredictor_initWithmicroLocationSimilarityThreshold_file_knowledgeStore___block_invoke;
   handler[3] = &unk_278C64770;
   objc_copyWeak(&v29, &location);
-  v22 = notify_register_dispatch(v20, &v11->_token, v21, handler);
+  v22 = notify_register_dispatch(uTF8String, &v11->_token, v21, handler);
   objc_destroyWeak(&v29);
   if (!v22)
   {
     if (v11->_knowledgeStore)
     {
-      v24 = [MEMORY[0x277CCA9A0] defaultCenter];
-      v25 = [MEMORY[0x277CFE298] microLocationVisitStream];
-      v26 = [v25 name];
-      [v24 addObserver:v11 selector:sel__reloadLatestMicroLocationEvent name:*MEMORY[0x277CFE2E8] object:v26];
+      defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+      microLocationVisitStream = [MEMORY[0x277CFE298] microLocationVisitStream];
+      name = [microLocationVisitStream name];
+      [defaultCenter addObserver:v11 selector:sel__reloadLatestMicroLocationEvent name:*MEMORY[0x277CFE2E8] object:name];
     }
 
     objc_destroyWeak(&location);
@@ -139,11 +139,11 @@ void __82__ARPRoutePredictor_initWithmicroLocationSimilarityThreshold_file_knowl
 
   if (self->_knowledgeStore)
   {
-    v4 = [MEMORY[0x277CCA9A0] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
     v5 = *MEMORY[0x277CFE2E8];
-    v6 = [MEMORY[0x277CFE298] microLocationVisitStream];
-    v7 = [v6 name];
-    [v4 removeObserver:self name:v5 object:v7];
+    microLocationVisitStream = [MEMORY[0x277CFE298] microLocationVisitStream];
+    name = [microLocationVisitStream name];
+    [defaultCenter removeObserver:self name:v5 object:name];
   }
 
   v8.receiver = self;
@@ -194,10 +194,10 @@ BOOL __45__ARPRoutePredictor__reloadPersistedSessions__block_invoke(uint64_t a1,
   return v6;
 }
 
-- (id)predictionsForContext:(id)a3
+- (id)predictionsForContext:(id)context
 {
   v112[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = _os_activity_create(&dword_23EB15000, "CoreDuet: ARPRoutePredictor predictionsForContext:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   *&state[8] = 0;
   *state = 0;
@@ -212,30 +212,30 @@ BOOL __45__ARPRoutePredictor__reloadPersistedSessions__block_invoke(uint64_t a1,
     [ARPRoutePredictor predictionsForContext:];
   }
 
-  v7 = [(ARPRoutePredictor *)self sessions];
-  v8 = v7 == 0;
+  sessions = [(ARPRoutePredictor *)self sessions];
+  v8 = sessions == 0;
 
   if (v8)
   {
-    v9 = [(ARPRoutePredictor *)self queue];
+    queue = [(ARPRoutePredictor *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __43__ARPRoutePredictor_predictionsForContext___block_invoke;
     block[3] = &unk_278C646A0;
     block[4] = self;
-    dispatch_sync(v9, block);
+    dispatch_sync(queue, block);
   }
 
-  v10 = [(ARPRoutePredictor *)self sessions];
+  sessions2 = [(ARPRoutePredictor *)self sessions];
   v11 = MEMORY[0x277CCAC30];
   v96[0] = MEMORY[0x277D85DD0];
   v96[1] = 3221225472;
   v96[2] = __43__ARPRoutePredictor_predictionsForContext___block_invoke_2;
   v96[3] = &unk_278C647B8;
-  v12 = v4;
+  v12 = contextCopy;
   v97 = v12;
   v13 = [v11 predicateWithBlock:v96];
-  v67 = [v10 filteredArrayUsingPredicate:v13];
+  v67 = [sessions2 filteredArrayUsingPredicate:v13];
 
   [(ARPRoutePredictor *)self routingSessionTimeout];
   v92 = 0;
@@ -253,7 +253,7 @@ BOOL __45__ARPRoutePredictor__reloadPersistedSessions__block_invoke(uint64_t a1,
   v87 = v14;
   v69 = v12;
   v83 = v69;
-  v84 = self;
+  selfCopy = self;
   v85 = &v88;
   v86 = &v92;
   [v67 enumerateObjectsUsingBlock:v82];
@@ -292,7 +292,7 @@ BOOL __45__ARPRoutePredictor__reloadPersistedSessions__block_invoke(uint64_t a1,
         *&v24 = 138413826;
         v60 = v24;
         v61 = v17;
-        v62 = self;
+        selfCopy2 = self;
         obj = v21;
         do
         {
@@ -305,17 +305,17 @@ BOOL __45__ARPRoutePredictor__reloadPersistedSessions__block_invoke(uint64_t a1,
             }
 
             v26 = *(*(&v78 + 1) + 8 * v25);
-            v27 = [v69 microLocationProbabilityVector];
-            v28 = [v26 microLocationProbabilityVector];
-            v29 = ARPMicroLocationSimilarity(v27, v28);
+            microLocationProbabilityVector = [v69 microLocationProbabilityVector];
+            microLocationProbabilityVector2 = [v26 microLocationProbabilityVector];
+            v29 = ARPMicroLocationSimilarity(microLocationProbabilityVector, microLocationProbabilityVector2);
 
             [(ARPRoutePredictor *)self microLocationSimilarityThreshold];
             v31 = v30;
             v32 = oslog;
             if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
             {
-              v64 = [v26 interval];
-              v63 = [v26 outputDeviceID];
+              interval = [v26 interval];
+              outputDeviceID = [v26 outputDeviceID];
               if (v29 < v31)
               {
                 v38 = @"not ";
@@ -338,13 +338,13 @@ BOOL __45__ARPRoutePredictor__reloadPersistedSessions__block_invoke(uint64_t a1,
               }
 
               v41 = MEMORY[0x277CCABB0];
-              [(ARPRoutePredictor *)v62 microLocationSimilarityThreshold];
+              [(ARPRoutePredictor *)selfCopy2 microLocationSimilarityThreshold];
               v42 = [v41 numberWithDouble:?];
-              v43 = [v26 microLocationProbabilityVector];
+              microLocationProbabilityVector3 = [v26 microLocationProbabilityVector];
               *state = v60;
-              *&state[4] = v64;
+              *&state[4] = interval;
               *&state[12] = 2112;
-              *&state[14] = v63;
+              *&state[14] = outputDeviceID;
               v101 = 2112;
               v102 = v38;
               v103 = 2112;
@@ -354,27 +354,27 @@ BOOL __45__ARPRoutePredictor__reloadPersistedSessions__block_invoke(uint64_t a1,
               v107 = 2112;
               v108 = v42;
               v109 = 2112;
-              v110 = v43;
+              v110 = microLocationProbabilityVector3;
               _os_log_debug_impl(&dword_23EB15000, oslog, OS_LOG_TYPE_DEBUG, "Session from %@ with route %@ is %@included in predictions because microlocation similarity %@ is %@ than threshold (%@), microLocationProbabilityVector: %@", state, 0x48u);
 
               v17 = v61;
-              self = v62;
+              self = selfCopy2;
 
               v32 = oslog;
             }
 
             if (v29 >= v31)
             {
-              v33 = [v26 outputDeviceID];
-              [v17 addObject:v33];
-              v34 = [v71 objectForKey:v33];
+              outputDeviceID2 = [v26 outputDeviceID];
+              [v17 addObject:outputDeviceID2];
+              v34 = [v71 objectForKey:outputDeviceID2];
               v35 = v34 == 0;
 
               if (v35)
               {
-                v36 = [v26 interval];
-                v37 = [v36 endDate];
-                [v71 setObject:v37 forKeyedSubscript:v33];
+                interval2 = [v26 interval];
+                endDate = [interval2 endDate];
+                [v71 setObject:endDate forKeyedSubscript:outputDeviceID2];
               }
 
               ++v22;
@@ -471,8 +471,8 @@ LABEL_38:
   {
     v16 = [v67 objectAtIndexedSubscript:?];
     v45 = [ARPRoutePrediction alloc];
-    v46 = [v16 outputDeviceID];
-    v47 = [(ARPRoutePrediction *)v45 initWithOutputDeviceID:v46 confidence:1.0];
+    outputDeviceID3 = [v16 outputDeviceID];
+    v47 = [(ARPRoutePrediction *)v45 initWithOutputDeviceID:outputDeviceID3 confidence:1.0];
 
     v112[0] = v47;
     v48 = [MEMORY[0x277CBEA60] arrayWithObjects:v112 count:1];
@@ -610,28 +610,28 @@ uint64_t __43__ARPRoutePredictor_predictionsForContext___block_invoke_111(uint64
   return v11;
 }
 
-- (id)predictionsWithCurrentContext:(id *)a3
+- (id)predictionsWithCurrentContext:(id *)context
 {
   if (![(ARPRoutePredictor *)self hasLoadedMicroLocation])
   {
     [(ARPRoutePredictor *)self _reloadLatestMicroLocationEvent];
   }
 
-  v5 = [(ARPRoutePredictor *)self latestMicroLocationEvent];
-  if (v5)
+  latestMicroLocationEvent = [(ARPRoutePredictor *)self latestMicroLocationEvent];
+  if (latestMicroLocationEvent)
   {
-    v6 = [MEMORY[0x277CBEAA8] date];
-    v7 = [v5 startDate];
-    v8 = [v5 metadata];
-    v9 = [MEMORY[0x277CFE230] probabilityVector];
-    v10 = [v8 objectForKeyedSubscript:v9];
+    date = [MEMORY[0x277CBEAA8] date];
+    startDate = [latestMicroLocationEvent startDate];
+    metadata = [latestMicroLocationEvent metadata];
+    probabilityVector = [MEMORY[0x277CFE230] probabilityVector];
+    v10 = [metadata objectForKeyedSubscript:probabilityVector];
 
-    v11 = [[ARPPredictionContext alloc] initWithPredictionDate:v6 microLocationEventDate:v7 microLocationProbabilityVector:v10];
+    v11 = [[ARPPredictionContext alloc] initWithPredictionDate:date microLocationEventDate:startDate microLocationProbabilityVector:v10];
     v12 = v11;
-    if (a3)
+    if (context)
     {
       v13 = v11;
-      *a3 = v12;
+      *context = v12;
     }
 
     v14 = [(ARPRoutePredictor *)self predictionsForContext:v12];
@@ -656,9 +656,9 @@ uint64_t __43__ARPRoutePredictor_predictionsForContext___block_invoke_111(uint64
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(ARPRoutePredictor *)self file];
-  v6 = [(ARPRoutePredictor *)self knownOutputDeviceIDs];
-  v7 = [v3 stringWithFormat:@"<%@ %p> file: %@, knownOutputDeviceIDs: %@", v4, self, v5, v6];
+  file = [(ARPRoutePredictor *)self file];
+  knownOutputDeviceIDs = [(ARPRoutePredictor *)self knownOutputDeviceIDs];
+  v7 = [v3 stringWithFormat:@"<%@ %p> file: %@, knownOutputDeviceIDs: %@", v4, self, file, knownOutputDeviceIDs];
 
   return v7;
 }

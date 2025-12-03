@@ -1,21 +1,21 @@
 @interface NTKEncodedSnapshot
-- (BOOL)queue_writeToURL:(id)a3 error:(id *)a4;
-- (BOOL)writeToURL:(id)a3 error:(id *)a4;
-- (NTKEncodedSnapshot)initWithImage:(id)a3;
+- (BOOL)queue_writeToURL:(id)l error:(id *)error;
+- (BOOL)writeToURL:(id)l error:(id *)error;
+- (NTKEncodedSnapshot)initWithImage:(id)image;
 @end
 
 @implementation NTKEncodedSnapshot
 
-- (NTKEncodedSnapshot)initWithImage:(id)a3
+- (NTKEncodedSnapshot)initWithImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   v11.receiver = self;
   v11.super_class = NTKEncodedSnapshot;
   v6 = [(NTKEncodedSnapshot *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_image, a3);
+    objc_storeStrong(&v6->_image, image);
     v8 = +[NTKSnapshotFileQueue defaultFileQueue];
     snapshotQueue = v7->_snapshotQueue;
     v7->_snapshotQueue = v8;
@@ -24,9 +24,9 @@
   return v7;
 }
 
-- (BOOL)writeToURL:(id)a3 error:(id *)a4
+- (BOOL)writeToURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -37,24 +37,24 @@
   v19 = __Block_byref_object_copy__1;
   v20 = __Block_byref_object_dispose__1;
   v21 = 0;
-  v7 = [(NTKSnapshotFileQueue *)self->_snapshotQueue queue];
+  queue = [(NTKSnapshotFileQueue *)self->_snapshotQueue queue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __39__NTKEncodedSnapshot_writeToURL_error___block_invoke;
   v12[3] = &unk_27877DE80;
   v14 = &v22;
   v12[4] = self;
-  v8 = v6;
+  v8 = lCopy;
   v13 = v8;
   v15 = &v16;
-  dispatch_sync(v7, v12);
+  dispatch_sync(queue, v12);
 
-  if (a4)
+  if (error)
   {
     v9 = v17[5];
     if (v9)
     {
-      *a4 = v9;
+      *error = v9;
     }
   }
 
@@ -77,19 +77,19 @@ void __39__NTKEncodedSnapshot_writeToURL_error___block_invoke(void *a1)
   *(*(a1[6] + 8) + 24) = v5;
 }
 
-- (BOOL)queue_writeToURL:(id)a3 error:(id *)a4
+- (BOOL)queue_writeToURL:(id)l error:(id *)error
 {
   values[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(NTKSnapshotFileQueue *)self->_snapshotQueue queue];
-  dispatch_assert_queue_V2(v7);
+  lCopy = l;
+  queue = [(NTKSnapshotFileQueue *)self->_snapshotQueue queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (v6 && self->_image)
+  if (lCopy && self->_image)
   {
-    v8 = [v6 URLByDeletingLastPathComponent];
+    uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
     v9 = 0x277CCA000uLL;
-    v10 = [MEMORY[0x277CCAA00] defaultManager];
-    v11 = [v10 createDirectoryAtURL:v8 withIntermediateDirectories:1 attributes:0 error:a4];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v11 = [defaultManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:error];
 
     if (!v11)
     {
@@ -105,8 +105,8 @@ LABEL_40:
     v57 = 0;
     v14 = objc_alloc_init(MEMORY[0x277CCAD78]);
     v15 = NSTemporaryDirectory();
-    v16 = [v14 UUIDString];
-    v17 = [v15 stringByAppendingPathComponent:v16];
+    uUIDString = [v14 UUIDString];
+    v17 = [v15 stringByAppendingPathComponent:uUIDString];
     v18 = [v17 stringByAppendingPathExtension:@"tmp"];
 
     cf = v13;
@@ -118,7 +118,7 @@ LABEL_40:
       {
         v20 = v19;
         v21 = v14;
-        v22 = v8;
+        v22 = uRLByDeletingLastPathComponent;
         v23 = ffsctl(v19, 0xC0084A44uLL, &v56, 0);
         v24 = v23 == 0;
         v25 = _NTKLoggingObjectForDomain(24, "NTKLoggingDomainCompanionApp");
@@ -141,9 +141,9 @@ LABEL_40:
           }
 
           v14 = v21;
-          if (a4)
+          if (error)
           {
-            *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"NTKEncodedSnapshotErrorDomain" code:501 userInfo:MEMORY[0x277CBEC10]];
+            *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"NTKEncodedSnapshotErrorDomain" code:501 userInfo:MEMORY[0x277CBEC10]];
           }
         }
 
@@ -162,9 +162,9 @@ LABEL_40:
         }
 
         close(v20);
-        v8 = v22;
+        uRLByDeletingLastPathComponent = v22;
         v9 = 0x277CCA000;
-        if (!a4)
+        if (!error)
         {
           goto LABEL_30;
         }
@@ -172,10 +172,10 @@ LABEL_40:
 LABEL_26:
         if (!v24 && v57)
         {
-          *a4 = v57;
+          *error = v57;
 LABEL_39:
-          v45 = [*(v9 + 2560) defaultManager];
-          [v45 removeItemAtPath:v18 error:0];
+          defaultManager2 = [*(v9 + 2560) defaultManager];
+          [defaultManager2 removeItemAtPath:v18 error:0];
 
           CFRelease(cf);
           goto LABEL_40;
@@ -183,30 +183,30 @@ LABEL_39:
 
 LABEL_30:
         v50 = v14;
-        v51 = v8;
-        v31 = [v6 absoluteURL];
-        v32 = [v31 path];
+        v51 = uRLByDeletingLastPathComponent;
+        absoluteURL = [lCopy absoluteURL];
+        path = [absoluteURL path];
 
-        v33 = [*(v9 + 2560) defaultManager];
+        defaultManager3 = [*(v9 + 2560) defaultManager];
         v55 = 0;
-        v34 = [v33 copyItemAtPath:v18 toPath:v32 error:&v55];
+        v34 = [defaultManager3 copyItemAtPath:v18 toPath:path error:&v55];
         v35 = v55;
 
-        v49 = v32;
-        v36 = [MEMORY[0x277CBEBC0] fileURLWithPath:v32];
+        v49 = path;
+        v36 = [MEMORY[0x277CBEBC0] fileURLWithPath:path];
         if ((v34 & 1) == 0)
         {
           v37 = [MEMORY[0x277CBEBC0] fileURLWithPath:v18];
-          v38 = [*(v9 + 2560) defaultManager];
+          defaultManager4 = [*(v9 + 2560) defaultManager];
           v54 = v35;
-          v39 = [v38 replaceItemAtURL:v36 withItemAtURL:v37 backupItemName:0 options:0 resultingItemURL:0 error:&v54];
+          v39 = [defaultManager4 replaceItemAtURL:v36 withItemAtURL:v37 backupItemName:0 options:0 resultingItemURL:0 error:&v54];
           v40 = v54;
 
           if ((v39 & 1) == 0)
           {
             v41 = v40;
             LOBYTE(v24) = 0;
-            *a4 = v40;
+            *error = v40;
           }
 
           v35 = v40;
@@ -225,7 +225,7 @@ LABEL_30:
         }
 
         v14 = v50;
-        v8 = v51;
+        uRLByDeletingLastPathComponent = v51;
         v9 = 0x277CCA000uLL;
         goto LABEL_39;
       }
@@ -236,7 +236,7 @@ LABEL_30:
         [NTKEncodedSnapshot queue_writeToURL:v18 error:v30];
       }
 
-      if (!a4)
+      if (!error)
       {
         LOBYTE(v24) = 0;
         goto LABEL_30;
@@ -255,8 +255,8 @@ LABEL_30:
     }
 
     [v27 errorWithDomain:@"NTKEncodedSnapshotErrorDomain" code:v29 userInfo:v28];
-    *a4 = v24 = 0;
-    if (!a4)
+    *error = v24 = 0;
+    if (!error)
     {
       goto LABEL_30;
     }
@@ -264,10 +264,10 @@ LABEL_30:
     goto LABEL_26;
   }
 
-  if (a4)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"NTKEncodedSnapshotErrorDomain" code:400 userInfo:MEMORY[0x277CBEC10]];
-    *a4 = LOBYTE(v24) = 0;
+    *error = LOBYTE(v24) = 0;
   }
 
   else

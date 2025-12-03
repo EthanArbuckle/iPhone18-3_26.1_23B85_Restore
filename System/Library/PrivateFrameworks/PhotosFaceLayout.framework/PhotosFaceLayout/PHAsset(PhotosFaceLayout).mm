@@ -7,24 +7,24 @@
 
 - (id)pfl_creationDate
 {
-  v1 = [a1 creationDate];
-  if (!v1)
+  creationDate = [self creationDate];
+  if (!creationDate)
   {
-    v1 = [MEMORY[0x277CBEAA8] distantPast];
+    creationDate = [MEMORY[0x277CBEAA8] distantPast];
   }
 
-  return v1;
+  return creationDate;
 }
 
 - (id)pfl_modificationDate
 {
-  v2 = [a1 modificationDate];
-  if (!v2)
+  modificationDate = [self modificationDate];
+  if (!modificationDate)
   {
-    v2 = [a1 pfl_creationDate];
+    modificationDate = [self pfl_creationDate];
   }
 
-  return v2;
+  return modificationDate;
 }
 
 @end

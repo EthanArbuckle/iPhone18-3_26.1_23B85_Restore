@@ -11,17 +11,17 @@
   *&v6[1] = a3;
   *&v6[2] = a4;
   *&v6[3] = a5;
-  return [a1 valueWithBytes:v6 objCType:"{UIEdgeInsets=dddd}"];
+  return [self valueWithBytes:v6 objCType:"{UIEdgeInsets=dddd}"];
 }
 
 - (double)TSDEdgeInsetsValue
 {
   memset(v4, 0, sizeof(v4));
-  v2 = strncmp([a1 objCType], "{UIEdgeInsets=dddd}", 0x13uLL);
+  v2 = strncmp([self objCType], "{UIEdgeInsets=dddd}", 0x13uLL);
   result = 0.0;
   if (!v2)
   {
-    [a1 getValue:{v4, 0.0, 0.0, 0.0, 0.0}];
+    [self getValue:{v4, 0.0, 0.0, 0.0, 0.0}];
     return *v4;
   }
 

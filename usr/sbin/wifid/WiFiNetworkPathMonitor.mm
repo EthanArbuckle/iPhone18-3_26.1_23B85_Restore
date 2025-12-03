@@ -1,5 +1,5 @@
 @interface WiFiNetworkPathMonitor
-+ (id)sharedWiFiNetworkPathMonitorWithCallback:(void *)a3 context:(void *)a4;
++ (id)sharedWiFiNetworkPathMonitorWithCallback:(void *)callback context:(void *)context;
 - (WiFiNetworkPathMonitor)init;
 - (void)start;
 - (void)stop;
@@ -7,15 +7,15 @@
 
 @implementation WiFiNetworkPathMonitor
 
-+ (id)sharedWiFiNetworkPathMonitorWithCallback:(void *)a3 context:(void *)a4
++ (id)sharedWiFiNetworkPathMonitorWithCallback:(void *)callback context:(void *)context
 {
   if (qword_100298670 != -1)
   {
     sub_100187838();
   }
 
-  [qword_100298668 setWifiDeviceCallBack:a3];
-  [qword_100298668 setWifiDeviceCallBackContext:a4];
+  [qword_100298668 setWifiDeviceCallBack:callback];
+  [qword_100298668 setWifiDeviceCallBackContext:context];
   v6 = qword_100298668;
 
   return v6;
@@ -31,9 +31,9 @@
     v3 = dispatch_queue_create("com.apple.wifi.WiFiNetworkPathMonitor", 0);
     [(WiFiNetworkPathMonitor *)v2 setMonitorQueue:v3];
 
-    v4 = [(WiFiNetworkPathMonitor *)v2 monitorQueue];
+    monitorQueue = [(WiFiNetworkPathMonitor *)v2 monitorQueue];
 
-    if (!v4)
+    if (!monitorQueue)
     {
       sub_10018784C(v2);
       return 0;

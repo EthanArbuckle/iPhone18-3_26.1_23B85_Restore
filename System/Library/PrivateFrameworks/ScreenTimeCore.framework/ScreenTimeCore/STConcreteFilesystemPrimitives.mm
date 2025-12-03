@@ -1,38 +1,38 @@
 @interface STConcreteFilesystemPrimitives
-- (BOOL)createDirectoryAtURL:(id)a3 error:(id *)a4;
-- (BOOL)moveFileAtURL:(id)a3 toURL:(id)a4 error:(id *)a5;
-- (BOOL)removeFileURL:(id)a3 error:(id *)a4;
-- (id)fileSizeOfDataAtURL:(id)a3 error:(id *)a4;
-- (void)enumerateRegularFilesInDirectoryAtURL:(id)a3 withBlock:(id)a4;
+- (BOOL)createDirectoryAtURL:(id)l error:(id *)error;
+- (BOOL)moveFileAtURL:(id)l toURL:(id)rL error:(id *)error;
+- (BOOL)removeFileURL:(id)l error:(id *)error;
+- (id)fileSizeOfDataAtURL:(id)l error:(id *)error;
+- (void)enumerateRegularFilesInDirectoryAtURL:(id)l withBlock:(id)block;
 @end
 
 @implementation STConcreteFilesystemPrimitives
 
-- (BOOL)createDirectoryAtURL:(id)a3 error:(id *)a4
+- (BOOL)createDirectoryAtURL:(id)l error:(id *)error
 {
-  v5 = a3;
+  lCopy = l;
   v6 = +[NSFileManager defaultManager];
-  LOBYTE(a4) = [v6 createDirectoryAtURL:v5 withIntermediateDirectories:1 attributes:0 error:a4];
+  LOBYTE(error) = [v6 createDirectoryAtURL:lCopy withIntermediateDirectories:1 attributes:0 error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)removeFileURL:(id)a3 error:(id *)a4
+- (BOOL)removeFileURL:(id)l error:(id *)error
 {
-  v5 = a3;
+  lCopy = l;
   v6 = +[NSFileManager defaultManager];
-  LOBYTE(a4) = [v6 removeItemAtURL:v5 error:a4];
+  LOBYTE(error) = [v6 removeItemAtURL:lCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (id)fileSizeOfDataAtURL:(id)a3 error:(id *)a4
+- (id)fileSizeOfDataAtURL:(id)l error:(id *)error
 {
-  v5 = a3;
+  lCopy = l;
   v6 = +[NSFileManager defaultManager];
-  v7 = [v5 path];
+  path = [lCopy path];
 
-  v8 = [v6 attributesOfItemAtPath:v7 error:a4];
+  v8 = [v6 attributesOfItemAtPath:path error:error];
 
   if (v8)
   {
@@ -47,20 +47,20 @@
   return v9;
 }
 
-- (BOOL)moveFileAtURL:(id)a3 toURL:(id)a4 error:(id *)a5
+- (BOOL)moveFileAtURL:(id)l toURL:(id)rL error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
+  rLCopy = rL;
+  lCopy = l;
   v9 = +[NSFileManager defaultManager];
-  LOBYTE(a5) = [v9 moveItemAtURL:v8 toURL:v7 error:a5];
+  LOBYTE(error) = [v9 moveItemAtURL:lCopy toURL:rLCopy error:error];
 
-  return a5;
+  return error;
 }
 
-- (void)enumerateRegularFilesInDirectoryAtURL:(id)a3 withBlock:(id)a4
+- (void)enumerateRegularFilesInDirectoryAtURL:(id)l withBlock:(id)block
 {
-  v19 = a3;
-  v5 = a4;
+  lCopy = l;
+  blockCopy = block;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -72,10 +72,10 @@
   v27[1] = 3221225472;
   v27[2] = sub_1000166F0;
   v27[3] = &unk_1001A3108;
-  v8 = v5;
+  v8 = blockCopy;
   v28 = v8;
   v29 = &v30;
-  v9 = [v6 enumeratorAtURL:v19 includingPropertiesForKeys:v7 options:1 errorHandler:v27];
+  v9 = [v6 enumeratorAtURL:lCopy includingPropertiesForKeys:v7 options:1 errorHandler:v27];
 
   v25 = 0u;
   v26 = 0u;

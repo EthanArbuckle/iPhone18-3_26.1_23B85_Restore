@@ -1,5 +1,5 @@
 @interface AEConcretePerformancePrimitivesInFlightInterval
-- (id)initWithName:(void *)a3 signpostID:(void *)a4 log:;
+- (id)initWithName:(void *)name signpostID:(void *)d log:;
 - (void)dealloc;
 - (void)endInterval;
 @end
@@ -35,7 +35,7 @@ LABEL_6:
     {
       v6 = self->_name;
       v8 = 136446210;
-      v9 = [(NSString *)v6 UTF8String];
+      uTF8String = [(NSString *)v6 UTF8String];
       _os_signpost_emit_with_name_impl(&dword_23C1AA000, v4, OS_SIGNPOST_INTERVAL_END, signpostID, "AAC Signposts", "%{public}s", &v8, 0xCu);
     }
 
@@ -46,28 +46,28 @@ LABEL_7:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)initWithName:(void *)a3 signpostID:(void *)a4 log:
+- (id)initWithName:(void *)name signpostID:(void *)d log:
 {
   v7 = a2;
-  v8 = a4;
-  if (a1)
+  dCopy = d;
+  if (self)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = AEConcretePerformancePrimitivesInFlightInterval;
-    a1 = objc_msgSendSuper2(&v12, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v12, sel_init);
+    if (self)
     {
       v9 = [v7 copy];
-      v10 = a1[2];
-      a1[2] = v9;
+      v10 = self[2];
+      self[2] = v9;
 
-      a1[3] = a3;
-      objc_storeStrong(a1 + 4, a4);
-      *(a1 + 8) = 0;
+      self[3] = name;
+      objc_storeStrong(self + 4, d);
+      *(self + 8) = 0;
     }
   }
 
-  return a1;
+  return self;
 }
 
 @end

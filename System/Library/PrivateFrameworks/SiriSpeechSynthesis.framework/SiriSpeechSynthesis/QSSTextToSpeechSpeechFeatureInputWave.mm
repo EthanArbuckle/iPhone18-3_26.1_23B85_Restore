@@ -1,9 +1,9 @@
 @interface QSSTextToSpeechSpeechFeatureInputWave
-- (Offset<siri::speech::schema_fb::TextToSpeechSpeechFeatureInputWave>)addObjectToBuffer:(void *)a3;
-- (QSSTextToSpeechSpeechFeatureInputWave)initWithFlatbuffData:(id)a3 root:(const TextToSpeechSpeechFeatureInputWave *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::TextToSpeechSpeechFeatureInputWave>)addObjectToBuffer:(void *)buffer;
+- (QSSTextToSpeechSpeechFeatureInputWave)initWithFlatbuffData:(id)data root:(const TextToSpeechSpeechFeatureInputWave *)root verify:(BOOL)verify;
 - (id)flatbuffData;
 - (int)sample_rate;
-- (void)pcm_data:(id)a3;
+- (void)pcm_data:(id)pcm_data;
 @end
 
 @implementation QSSTextToSpeechSpeechFeatureInputWave
@@ -37,10 +37,10 @@ flatbuffers::DetachedBuffer *__53__QSSTextToSpeechSpeechFeatureInputWave_flatbuf
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::TextToSpeechSpeechFeatureInputWave>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TextToSpeechSpeechFeatureInputWave>)addObjectToBuffer:(void *)buffer
 {
-  v4 = self;
-  v5 = [(QSSTextToSpeechSpeechFeatureInputWave *)self sample_rate];
+  selfCopy = self;
+  sample_rate = [(QSSTextToSpeechSpeechFeatureInputWave *)self sample_rate];
   v10 = 0;
   v11 = &v10;
   v12 = 0x3812000000;
@@ -53,18 +53,18 @@ flatbuffers::DetachedBuffer *__53__QSSTextToSpeechSpeechFeatureInputWave_flatbuf
   v9[2] = __59__QSSTextToSpeechSpeechFeatureInputWave_addObjectToBuffer___block_invoke;
   v9[3] = &unk_279C4C2C8;
   v9[4] = &v10;
-  v9[5] = a3;
-  [(QSSTextToSpeechSpeechFeatureInputWave *)v4 pcm_data:v9];
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v6 = *(a3 + 8);
-  v7 = *(a3 + 12);
-  LODWORD(v4) = *(a3 + 10);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 4, v5);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 6, *(v11 + 12));
-  LODWORD(a3) = flatbuffers::FlatBufferBuilder::EndTable(a3, v6 - v7 + v4);
+  v9[5] = buffer;
+  [(QSSTextToSpeechSpeechFeatureInputWave *)selfCopy pcm_data:v9];
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v6 = *(buffer + 8);
+  v7 = *(buffer + 12);
+  LODWORD(selfCopy) = *(buffer + 10);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 4, sample_rate);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 6, *(v11 + 12));
+  LODWORD(buffer) = flatbuffers::FlatBufferBuilder::EndTable(buffer, v6 - v7 + selfCopy);
   _Block_object_dispose(&v10, 8);
-  return a3;
+  return buffer;
 }
 
 uint64_t __59__QSSTextToSpeechSpeechFeatureInputWave_addObjectToBuffer___block_invoke(uint64_t a1, const void *a2, unsigned int a3)
@@ -74,14 +74,14 @@ uint64_t __59__QSSTextToSpeechSpeechFeatureInputWave_addObjectToBuffer___block_i
   return result;
 }
 
-- (void)pcm_data:(id)a3
+- (void)pcm_data:(id)pcm_data
 {
   root = self->_root;
   v5 = &root[-*root->var0];
-  v6 = a3;
+  pcm_dataCopy = pcm_data;
   v7 = *root[*v5[6].var0 + *root[*v5[6].var0].var0].var0;
-  v8 = v6;
-  (*(a3 + 2))();
+  v8 = pcm_dataCopy;
+  (*(pcm_data + 2))();
 }
 
 - (int)sample_rate
@@ -99,42 +99,42 @@ uint64_t __59__QSSTextToSpeechSpeechFeatureInputWave_addObjectToBuffer___block_i
   }
 }
 
-- (QSSTextToSpeechSpeechFeatureInputWave)initWithFlatbuffData:(id)a3 root:(const TextToSpeechSpeechFeatureInputWave *)a4 verify:(BOOL)a5
+- (QSSTextToSpeechSpeechFeatureInputWave)initWithFlatbuffData:(id)data root:(const TextToSpeechSpeechFeatureInputWave *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSTextToSpeechSpeechFeatureInputWave;
   v10 = [(QSSTextToSpeechSpeechFeatureInputWave *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -156,9 +156,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

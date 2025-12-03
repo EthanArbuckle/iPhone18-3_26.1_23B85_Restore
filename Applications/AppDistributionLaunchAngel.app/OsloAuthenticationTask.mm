@@ -1,12 +1,12 @@
 @interface OsloAuthenticationTask
 - (_TtC26AppDistributionLaunchAngel22OsloAuthenticationTask)init;
-- (void)paymentAuthorizationController:(PKPaymentAuthorizationController *)a3 didAuthorizePayment:(PKPayment *)a4 handler:(id)a5;
-- (void)paymentAuthorizationControllerDidFinish:(id)a3;
+- (void)paymentAuthorizationController:(PKPaymentAuthorizationController *)controller didAuthorizePayment:(PKPayment *)payment handler:(id)handler;
+- (void)paymentAuthorizationControllerDidFinish:(id)finish;
 @end
 
 @implementation OsloAuthenticationTask
 
-- (void)paymentAuthorizationControllerDidFinish:(id)a3
+- (void)paymentAuthorizationControllerDidFinish:(id)finish
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -16,21 +16,21 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
+  finishCopy = finish;
+  selfCopy = self;
   sub_100031B9C();
 }
 
-- (void)paymentAuthorizationController:(PKPaymentAuthorizationController *)a3 didAuthorizePayment:(PKPayment *)a4 handler:(id)a5
+- (void)paymentAuthorizationController:(PKPaymentAuthorizationController *)controller didAuthorizePayment:(PKPayment *)payment handler:(id)handler
 {
   v9 = sub_1000047BC(&unk_100088F10, &qword_100065D60);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = controller;
+  v14[3] = payment;
   v14[4] = v13;
   v14[5] = self;
   v15 = type metadata accessor for TaskPriority();
@@ -45,9 +45,9 @@
   v17[3] = 0;
   v17[4] = &unk_100066AC8;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
-  v20 = self;
+  controllerCopy = controller;
+  paymentCopy = payment;
+  selfCopy = self;
   sub_100031388(0, 0, v12, &unk_100066AD8, v17);
 }
 

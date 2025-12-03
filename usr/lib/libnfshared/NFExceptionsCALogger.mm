@@ -1,25 +1,25 @@
 @interface NFExceptionsCALogger
-+ (void)postAnalyticsCRSAuthECommerceWithParameters:(id)a3;
-+ (void)postAnalyticsHciTransactionException:(id)a3 eventType:(id)a4 commandResult:(id)a5 status:(id)a6;
-+ (void)postAnalyticsSERestrictedModeEntered:(id)a3;
++ (void)postAnalyticsCRSAuthECommerceWithParameters:(id)parameters;
++ (void)postAnalyticsHciTransactionException:(id)exception eventType:(id)type commandResult:(id)result status:(id)status;
++ (void)postAnalyticsSERestrictedModeEntered:(id)entered;
 @end
 
 @implementation NFExceptionsCALogger
 
-+ (void)postAnalyticsCRSAuthECommerceWithParameters:(id)a3
++ (void)postAnalyticsCRSAuthECommerceWithParameters:(id)parameters
 {
   v29[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  parametersCopy = parameters;
   v4 = objc_autoreleasePoolPush();
-  v6 = objc_msgSend_objectForKey_(v3, v5, @"status");
+  v6 = objc_msgSend_objectForKey_(parametersCopy, v5, @"status");
   v9 = objc_msgSend_unsignedIntValue(v6, v7, v8);
 
   if (v9 != 36864)
   {
-    v12 = objc_msgSend_objectForKey_(v3, v10, @"method");
+    v12 = objc_msgSend_objectForKey_(parametersCopy, v10, @"method");
     if (v12)
     {
-      v13 = objc_msgSend_objectForKey_(v3, v11, @"method");
+      v13 = objc_msgSend_objectForKey_(parametersCopy, v11, @"method");
       v16 = objc_msgSend_unsignedIntValue(v13, v14, v15);
     }
 
@@ -45,21 +45,21 @@
   v27 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)postAnalyticsSERestrictedModeEntered:(id)a3
++ (void)postAnalyticsSERestrictedModeEntered:(id)entered
 {
   v44[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  enteredCopy = entered;
   v5 = objc_autoreleasePoolPush();
   v8 = objc_msgSend_sharedCALogger(NFCALogger, v6, v7);
   if ((objc_msgSend_restrictedMode(v8, v9, v10) & 1) == 0)
   {
     objc_msgSend_setRestrictedMode_(v8, v11, 1);
     v43[0] = @"contactless";
-    v14 = objc_msgSend_objectForKeyedSubscript_(v4, v12, @"contactless");
+    v14 = objc_msgSend_objectForKeyedSubscript_(enteredCopy, v12, @"contactless");
     if (v14)
     {
       v15 = MEMORY[0x277CCABB0];
-      v3 = objc_msgSend_objectForKeyedSubscript_(v4, v13, @"contactless");
+      v3 = objc_msgSend_objectForKeyedSubscript_(enteredCopy, v13, @"contactless");
       v18 = objc_msgSend_BOOLValue(v3, v16, v17);
       v20 = objc_msgSend_numberWithBool_(v15, v19, v18);
     }
@@ -71,7 +71,7 @@
 
     v44[0] = v20;
     v43[1] = @"platformIdentifier";
-    v21 = objc_msgSend_objectForKeyedSubscript_(v4, v13, @"platformIdentifier");
+    v21 = objc_msgSend_objectForKeyedSubscript_(enteredCopy, v13, @"platformIdentifier");
     v23 = v21;
     v24 = &stru_2843AE380;
     if (v21)
@@ -81,7 +81,7 @@
 
     v44[1] = v24;
     v43[2] = @"hardwareType";
-    v25 = objc_msgSend_objectForKeyedSubscript_(v4, v22, @"hardwareType");
+    v25 = objc_msgSend_objectForKeyedSubscript_(enteredCopy, v22, @"hardwareType");
     v27 = v25;
     if (v25)
     {
@@ -126,22 +126,22 @@
   v40 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)postAnalyticsHciTransactionException:(id)a3 eventType:(id)a4 commandResult:(id)a5 status:(id)a6
++ (void)postAnalyticsHciTransactionException:(id)exception eventType:(id)type commandResult:(id)result status:(id)status
 {
   v22[4] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  exceptionCopy = exception;
+  typeCopy = type;
+  resultCopy = result;
+  statusCopy = status;
   v13 = objc_autoreleasePoolPush();
   v21[0] = @"transactionUUID";
   v21[1] = @"eventType";
-  v22[0] = v9;
-  v22[1] = v10;
+  v22[0] = exceptionCopy;
+  v22[1] = typeCopy;
   v21[2] = @"commandResult";
   v21[3] = @"status";
-  v22[2] = v11;
-  v22[3] = v12;
+  v22[2] = resultCopy;
+  v22[3] = statusCopy;
   v15 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v14, v22, v21, 4);
   v18 = objc_msgSend_sharedCALogger(NFCALogger, v16, v17);
   objc_msgSend_postCAEventFor_eventInput_(v18, v19, @"com.apple.nfcd.exceptions.hciTransactionExceptionEvent", v15);

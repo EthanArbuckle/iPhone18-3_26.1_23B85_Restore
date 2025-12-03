@@ -1,13 +1,13 @@
 @interface NavAudioControlViewController
-- (_TtC4Maps29NavAudioControlViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)heightForLayout:(unint64_t)a3;
+- (_TtC4Maps29NavAudioControlViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (double)heightForLayout:(unint64_t)layout;
 - (id)dismissHandler;
 - (id)volumeLevelChangeHandler;
-- (void)setDismissHandler:(id)a3;
-- (void)setVolumeLevelChangeHandler:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setDismissHandler:(id)handler;
+- (void)setVolumeLevelChangeHandler:(id)handler;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation NavAudioControlViewController
@@ -34,9 +34,9 @@
   return v3;
 }
 
-- (void)setVolumeLevelChangeHandler:(id)a3
+- (void)setVolumeLevelChangeHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -54,7 +54,7 @@
   v8 = *(self + OBJC_IVAR____TtC4Maps29NavAudioControlViewController_volumeLevelChangeHandler);
   *v7 = v6;
   v7[1] = v4;
-  v9 = self;
+  selfCopy = self;
   sub_1000588AC(v8);
 }
 
@@ -80,9 +80,9 @@
   return v3;
 }
 
-- (void)setDismissHandler:(id)a3
+- (void)setDismissHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -100,7 +100,7 @@
   v8 = *(self + OBJC_IVAR____TtC4Maps29NavAudioControlViewController_dismissHandler);
   *v7 = v6;
   v7[1] = v4;
-  v9 = self;
+  selfCopy = self;
   sub_1000588AC(v8);
 }
 
@@ -110,11 +110,11 @@
   v5.super_class = swift_getObjectType();
   v2 = v5.receiver;
   [(MapsHostingContaineeViewController *)&v5 viewDidLoad];
-  v3 = [v2 cardPresentationController];
-  if (v3)
+  cardPresentationController = [v2 cardPresentationController];
+  if (cardPresentationController)
   {
-    v4 = v3;
-    [v3 setEdgeAttachedRegularHeightDimmingBehavior:2];
+    v4 = cardPresentationController;
+    [cardPresentationController setEdgeAttachedRegularHeightDimmingBehavior:2];
   }
 
   else
@@ -123,18 +123,18 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v4 = v7.receiver;
-  [(MapsHostingContaineeViewController *)&v7 viewWillAppear:v3];
-  v5 = [v4 cardPresentationController];
-  if (v5)
+  [(MapsHostingContaineeViewController *)&v7 viewWillAppear:appearCopy];
+  cardPresentationController = [v4 cardPresentationController];
+  if (cardPresentationController)
   {
-    v6 = v5;
-    [v5 setHideGrabber:1];
+    v6 = cardPresentationController;
+    [cardPresentationController setHideGrabber:1];
   }
 
   else
@@ -143,26 +143,26 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(MapsHostingContaineeViewController *)&v5 viewDidAppear:v3];
+  [(MapsHostingContaineeViewController *)&v5 viewDidAppear:appearCopy];
   sub_100106794();
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
-  v4 = self;
-  sub_100106BA0(a3);
+  selfCopy = self;
+  sub_100106BA0(layout);
   v6 = v5;
 
   return v6;
 }
 
-- (_TtC4Maps29NavAudioControlViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC4Maps29NavAudioControlViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -5,8 +5,8 @@
 + (SKVideoNode)videoNodeWithVideoFileNamed:(NSString *)videoFile;
 + (SKVideoNode)videoNodeWithVideoURL:(NSURL *)videoURL;
 + (id)debugHierarchyPropertyDescriptions;
-+ (id)debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6;
-- (BOOL)isEqualToNode:(id)a3;
++ (id)debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error;
+- (BOOL)isEqualToNode:(id)node;
 - (CGPoint)anchorPoint;
 - (CGSize)size;
 - (SKVideoNode)init;
@@ -18,10 +18,10 @@
 - (SKVideoNode)initWithVideoURL:(NSURL *)url;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)encodeWithCoder:(id)coder;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)setAnchorPoint:(CGPoint)anchorPoint;
-- (void)setPaused:(BOOL)a3;
+- (void)setPaused:(BOOL)paused;
 - (void)setSize:(CGSize)size;
 @end
 
@@ -51,20 +51,20 @@
   [(SKNode *)&v7 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = SKVideoNode;
-  [(SKNode *)&v10 encodeWithCoder:v4];
-  [v4 encodeObject:self->_videoFileName forKey:@"_videoFileName"];
-  [v4 encodeObject:self->_videoFileURL forKey:@"_videoFileURL"];
+  [(SKNode *)&v10 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_videoFileName forKey:@"_videoFileName"];
+  [coderCopy encodeObject:self->_videoFileURL forKey:@"_videoFileURL"];
   v5 = MEMORY[0x277CCAE60];
   [(SKVideoNode *)self size];
   v7 = v6;
   [(SKVideoNode *)self size];
   v9 = [v5 valueWithCGRect:{0.0, 0.0, v7, v8}];
-  [v4 encodeObject:v9 forKey:@"_bounds"];
+  [coderCopy encodeObject:v9 forKey:@"_bounds"];
 }
 
 - (SKVideoNode)init
@@ -246,14 +246,14 @@
 
 + (SKVideoNode)videoNodeWithVideoFileNamed:(NSString *)videoFile
 {
-  v3 = [a1 videoNodeWithFileNamed:videoFile];
+  v3 = [self videoNodeWithFileNamed:videoFile];
 
   return v3;
 }
 
 + (SKVideoNode)videoNodeWithVideoURL:(NSURL *)videoURL
 {
-  v3 = [a1 videoNodeWithURL:videoURL];
+  v3 = [self videoNodeWithURL:videoURL];
 
   return v3;
 }
@@ -261,7 +261,7 @@
 + (SKVideoNode)videoNodeWithFileNamed:(NSString *)videoFile
 {
   v4 = videoFile;
-  v5 = [[a1 alloc] initWithFileNamed:v4];
+  v5 = [[self alloc] initWithFileNamed:v4];
 
   return v5;
 }
@@ -269,7 +269,7 @@
 + (SKVideoNode)videoNodeWithURL:(NSURL *)videoURL
 {
   v4 = videoURL;
-  v5 = [[a1 alloc] initWithURL:v4];
+  v5 = [[self alloc] initWithURL:v4];
 
   return v5;
 }
@@ -282,10 +282,10 @@
   return v4;
 }
 
-- (BOOL)isEqualToNode:(id)a3
+- (BOOL)isEqualToNode:(id)node
 {
-  v4 = a3;
-  if (self == v4)
+  nodeCopy = node;
+  if (self == nodeCopy)
   {
     v11 = 1;
   }
@@ -295,7 +295,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = nodeCopy;
       v21.receiver = self;
       v21.super_class = SKVideoNode;
       if (![(SKNode *)&v21 isEqualToNode:v5])
@@ -356,23 +356,23 @@ LABEL_15:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SKNode *)self name];
+  name = [(SKNode *)self name];
   [(SKNode *)self position];
   v5 = NSStringFromCGPoint(v11);
   [(SKVideoNode *)self size];
   v6 = NSStringFromCGSize(v12);
   [(SKNode *)self zRotation];
-  v8 = [v3 stringWithFormat:@"<SKVideoNode> name:'%@' position:%@ size:%@ rotation:%.2f", v4, v5, v6, v7];
+  v8 = [v3 stringWithFormat:@"<SKVideoNode> name:'%@' position:%@ size:%@ rotation:%.2f", name, v5, v6, v7];
 
   return v8;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"rate"] || objc_msgSend(v10, "isEqualToString:", @"currentItem"))
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"rate"] || objc_msgSend(pathCopy, "isEqualToString:", @"currentItem"))
   {
     SKCNode::setDirty(self->_skcVideoNode);
     SKCNode::recomputeFlags(self->_skcVideoNode, 1);
@@ -382,18 +382,18 @@ LABEL_15:
   {
     v13.receiver = self;
     v13.super_class = SKVideoNode;
-    [(SKVideoNode *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(SKVideoNode *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  v3 = a3;
+  pausedCopy = paused;
   v6.receiver = self;
   v6.super_class = SKVideoNode;
   [(SKNode *)&v6 setPaused:?];
   skcVideoNode = self->_skcVideoNode;
-  if (v3)
+  if (pausedCopy)
   {
     SKCVideoNode::pause(skcVideoNode);
   }
@@ -483,23 +483,23 @@ LABEL_15:
   return v9;
 }
 
-+ (id)debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6
++ (id)debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error
 {
   v34[3] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  if ([v9 isEqualToString:@"visualRepresentation"])
+  nameCopy = name;
+  objectCopy = object;
+  if ([nameCopy isEqualToString:@"visualRepresentation"])
   {
-    v11 = [v10 createDebugHierarchyVisualRepresentation];
+    errorCopy = [objectCopy createDebugHierarchyVisualRepresentation];
     v31 = @"propertyFormat";
-    v12 = [*MEMORY[0x277CE1E10] identifier];
-    v32 = v12;
-    *a5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
+    identifier = [*MEMORY[0x277CE1E10] identifier];
+    v32 = identifier;
+    *options = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
     goto LABEL_24;
   }
 
-  v13 = v10;
-  v14 = v9;
+  v13 = objectCopy;
+  v14 = nameCopy;
   if (![v14 length])
   {
     goto LABEL_14;
@@ -510,18 +510,18 @@ LABEL_15:
   {
     if ([v14 length] < 2)
     {
-      v19 = [v14 uppercaseString];
+      uppercaseString = [v14 uppercaseString];
     }
 
     else
     {
       v16 = [v14 substringToIndex:1];
-      v17 = [v16 uppercaseString];
+      uppercaseString2 = [v16 uppercaseString];
       v18 = [v14 substringFromIndex:1];
-      v19 = [v17 stringByAppendingString:v18];
+      uppercaseString = [uppercaseString2 stringByAppendingString:v18];
     }
 
-    v20 = [@"is" stringByAppendingString:v19];
+    v20 = [@"is" stringByAppendingString:uppercaseString];
     NSSelectorFromString(v20);
     if (objc_opt_respondsToSelector())
     {
@@ -539,7 +539,7 @@ LABEL_15:
     }
 
 LABEL_14:
-    if (a6)
+    if (error)
     {
       v21 = v13;
       v22 = v14;
@@ -575,10 +575,10 @@ LABEL_14:
       v27 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DebugHierarchyErrorDomain" code:100 userInfo:v26];
 
       v28 = v27;
-      *a6 = v27;
+      *error = v27;
 
       v15 = 0;
-      a6 = 0;
+      error = 0;
     }
 
     else
@@ -596,14 +596,14 @@ LABEL_14:
   }
 
 LABEL_6:
-  a6 = [v13 valueForKey:v15];
+  error = [v13 valueForKey:v15];
 LABEL_23:
 
-  v12 = v13;
-  v11 = a6;
+  identifier = v13;
+  errorCopy = error;
 LABEL_24:
 
-  return v11;
+  return errorCopy;
 }
 
 @end

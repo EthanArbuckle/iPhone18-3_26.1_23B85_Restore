@@ -1,5 +1,5 @@
 @interface BCSidecarRewritePlistProducer
-- (BCSidecarRewritePlistProducer)initWithPath:(id)a3 deletes:(id)a4;
+- (BCSidecarRewritePlistProducer)initWithPath:(id)path deletes:(id)deletes;
 - (BOOL)shouldRetry;
 - (id)produceData;
 - (void)dealloc;
@@ -7,12 +7,12 @@
 
 @implementation BCSidecarRewritePlistProducer
 
-- (BCSidecarRewritePlistProducer)initWithPath:(id)a3 deletes:(id)a4
+- (BCSidecarRewritePlistProducer)initWithPath:(id)path deletes:(id)deletes
 {
-  v5 = [(BCPlistProducer *)self initWithPath:a3];
+  v5 = [(BCPlistProducer *)self initWithPath:path];
   if (v5)
   {
-    v5->_deletes = a4;
+    v5->_deletes = deletes;
   }
 
   return v5;

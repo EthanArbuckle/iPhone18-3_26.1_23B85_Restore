@@ -1,6 +1,6 @@
 @interface HMDCameraSnapshotIDSRelay
 + (id)logCategory;
-- (HMDCameraSnapshotIDSRelay)initWithSessionID:(id)a3 logIdentifier:(id)a4 workQueue:(id)a5 idsStreamService:(id)a6;
+- (HMDCameraSnapshotIDSRelay)initWithSessionID:(id)d logIdentifier:(id)identifier workQueue:(id)queue idsStreamService:(id)service;
 - (void)dealloc;
 @end
 
@@ -10,7 +10,7 @@
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -21,34 +21,34 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDCameraSnapshotIDSRelay *)v4 idsStreamService];
-  [v7 removeDelegate:v4];
+  idsStreamService = [(HMDCameraSnapshotIDSRelay *)selfCopy idsStreamService];
+  [idsStreamService removeDelegate:selfCopy];
 
-  v9.receiver = v4;
+  v9.receiver = selfCopy;
   v9.super_class = HMDCameraSnapshotIDSRelay;
   [(HMDCameraSnapshotIDSRelay *)&v9 dealloc];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDCameraSnapshotIDSRelay)initWithSessionID:(id)a3 logIdentifier:(id)a4 workQueue:(id)a5 idsStreamService:(id)a6
+- (HMDCameraSnapshotIDSRelay)initWithSessionID:(id)d logIdentifier:(id)identifier workQueue:(id)queue idsStreamService:(id)service
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  identifierCopy = identifier;
+  queueCopy = queue;
+  serviceCopy = service;
   v22.receiver = self;
   v22.super_class = HMDCameraSnapshotIDSRelay;
   v15 = [(HMDCameraSnapshotIDSRelay *)&v22 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_workQueue, a5);
-    objc_storeStrong(&v16->_sessionID, a3);
-    objc_storeStrong(&v16->_logIdentifier, a4);
-    objc_storeStrong(&v16->_idsStreamService, a6);
+    objc_storeStrong(&v15->_workQueue, queue);
+    objc_storeStrong(&v16->_sessionID, d);
+    objc_storeStrong(&v16->_logIdentifier, identifier);
+    objc_storeStrong(&v16->_idsStreamService, service);
     idsStreamService = v16->_idsStreamService;
-    v18 = [(HMDCameraSnapshotIDSRelay *)v16 workQueue];
-    [(HMDIDSService *)idsStreamService addDelegate:v16 queue:v18];
+    workQueue = [(HMDCameraSnapshotIDSRelay *)v16 workQueue];
+    [(HMDIDSService *)idsStreamService addDelegate:v16 queue:workQueue];
 
     v19 = [objc_alloc(MEMORY[0x277D0F880]) initWithName:@"com.apple.homed.snapshot-relay"];
     snapshotRelayTransaction = v16->_snapshotRelayTransaction;

@@ -9,7 +9,7 @@
 {
   v2 = *&self->config[OBJC_IVAR____TtC23_CoreLocationUI_SwiftUIP33_8A043ABF03A1FE75D0192BCB51A8BCAD11Coordinator_config + 8];
   v3 = *&self->config[OBJC_IVAR____TtC23_CoreLocationUI_SwiftUIP33_8A043ABF03A1FE75D0192BCB51A8BCAD11Coordinator_config + 16];
-  v4 = self;
+  selfCopy = self;
   v2();
 }
 

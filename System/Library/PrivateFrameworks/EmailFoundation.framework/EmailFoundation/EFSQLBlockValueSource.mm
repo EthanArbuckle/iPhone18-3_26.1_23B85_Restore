@@ -1,32 +1,32 @@
 @interface EFSQLBlockValueSource
-- (EFSQLBlockValueSource)initWithSourceTableName:(id)a3 creationBlock:(id)a4 selectResultExpression:(id)a5 selectResultAlias:(id)a6;
-- (id)comparisonExpressionForValue:(id)a3 predicateOperator:(unint64_t)a4;
+- (EFSQLBlockValueSource)initWithSourceTableName:(id)name creationBlock:(id)block selectResultExpression:(id)expression selectResultAlias:(id)alias;
+- (id)comparisonExpressionForValue:(id)value predicateOperator:(unint64_t)operator;
 @end
 
 @implementation EFSQLBlockValueSource
 
-- (EFSQLBlockValueSource)initWithSourceTableName:(id)a3 creationBlock:(id)a4 selectResultExpression:(id)a5 selectResultAlias:(id)a6
+- (EFSQLBlockValueSource)initWithSourceTableName:(id)name creationBlock:(id)block selectResultExpression:(id)expression selectResultAlias:(id)alias
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  blockCopy = block;
+  expressionCopy = expression;
+  aliasCopy = alias;
   v17.receiver = self;
   v17.super_class = EFSQLBlockValueSource;
-  v13 = [(EFSQLValueSource *)&v17 initWithTableName:a3 selectResultAlias:v12];
+  v13 = [(EFSQLValueSource *)&v17 initWithTableName:name selectResultAlias:aliasCopy];
   if (v13)
   {
-    v14 = _Block_copy(v10);
+    v14 = _Block_copy(blockCopy);
     creationBlock = v13->_creationBlock;
     v13->_creationBlock = v14;
 
-    objc_storeStrong(&v13->_selectResultExpression, a5);
-    objc_storeStrong(&v13->_selectResultAlias, a6);
+    objc_storeStrong(&v13->_selectResultExpression, expression);
+    objc_storeStrong(&v13->_selectResultAlias, alias);
   }
 
   return v13;
 }
 
-- (id)comparisonExpressionForValue:(id)a3 predicateOperator:(unint64_t)a4
+- (id)comparisonExpressionForValue:(id)value predicateOperator:(unint64_t)operator
 {
   v4 = (*(self->_creationBlock + 2))();
 

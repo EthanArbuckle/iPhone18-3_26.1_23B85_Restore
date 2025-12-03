@@ -1,86 +1,86 @@
 @interface TSTGroupNode
-+ (BOOL)needFormulasForAggregateType:(unsigned __int8)a3;
-+ (id)localizedStringForCellValue:(id)a3 categoryLevel:(unsigned __int8)a4 groupBy:(id)a5;
-+ (id)normalizedStringForCompare:(id)a3;
-- (BOOL)containsAnyRowUidInRowUidSet:(id)a3;
-- (BOOL)containsRowUid:(const TSKUIDStruct *)a3;
++ (BOOL)needFormulasForAggregateType:(unsigned __int8)type;
++ (id)localizedStringForCellValue:(id)value categoryLevel:(unsigned __int8)level groupBy:(id)by;
++ (id)normalizedStringForCompare:(id)compare;
+- (BOOL)containsAnyRowUidInRowUidSet:(id)set;
+- (BOOL)containsRowUid:(const TSKUIDStruct *)uid;
 - (BOOL)hasUnfilteredRows;
 - (BOOL)isBlankNode;
 - (BOOL)isErrorNode;
-- (BOOL)updateGroupCellValueIfKeyMatches:(id)a3;
+- (BOOL)updateGroupCellValueIfKeyMatches:(id)matches;
 - (NSUUID)groupValueUuid;
 - (TSCEUIDSet)childGroupUids;
 - (TSCEUIDSet)directChildGroupUids;
 - (TSCEUIDSet)unfilteredChildGroupUids;
 - (TSCEUIDSet)unfilteredDirectChildGroupUids;
-- (TSKUIDStruct)firstVisibleNodeUsingColumnRowUIDMap:(id)a3 forDimension:(int64_t)a4 leafLevel:(unsigned __int8)a5 pivotTableHiddenExtent:(id)a6;
+- (TSKUIDStruct)firstVisibleNodeUsingColumnRowUIDMap:(id)map forDimension:(int64_t)dimension leafLevel:(unsigned __int8)level pivotTableHiddenExtent:(id)extent;
 - (TSKUIDStruct)groupUid;
 - (TSKUIDStruct)groupValueUid;
 - (TSKUIDStruct)labelUid;
 - (TSKUIDStructVectorTemplate<TSKUIDStruct>)nodePath;
 - (TSKUIDStructVectorTemplate<TSKUIDStruct>)rowUidsAsVector;
 - (TSKUIDStructVectorTemplate<TSKUIDStruct>)unfilteredRowUidsAsVector;
-- (TSTGroupNode)initWithArchive:(const void *)a3 forGroupBy:(id)a4;
-- (TSTGroupNode)initWithGroupCellValue:(id)a3 context:(id)a4 atLevel:(unsigned __int8)a5 groupUid:(TSKUIDStruct)a6 children:(id)a7;
-- (TSTGroupNode)initWithGroupCellValue:(id)a3 groupBy:(id)a4 atLevel:(unsigned __int8)a5 groupUid:(TSKUIDStruct)a6 children:(id)a7;
+- (TSTGroupNode)initWithArchive:(const void *)archive forGroupBy:(id)by;
+- (TSTGroupNode)initWithGroupCellValue:(id)value context:(id)context atLevel:(unsigned __int8)level groupUid:(TSKUIDStruct)uid children:(id)children;
+- (TSTGroupNode)initWithGroupCellValue:(id)value groupBy:(id)by atLevel:(unsigned __int8)level groupUid:(TSKUIDStruct)uid children:(id)children;
 - (TSTGroupValueTuple)groupValueTuple;
 - (TSUIndexSet)pivotOnlyRowIndexes;
 - (id).cxx_construct;
-- (id)aggNodeForColumnUid:(const TSKUIDStruct *)a3;
-- (id)aggregateRefForType:(unsigned __int8)a3 atLevel:(unsigned __int8)a4 forColumnUid:(const TSKUIDStruct *)a5;
-- (id)canonicalKeyStringAtLevel:(unsigned __int8)a3;
+- (id)aggNodeForColumnUid:(const TSKUIDStruct *)uid;
+- (id)aggregateRefForType:(unsigned __int8)type atLevel:(unsigned __int8)level forColumnUid:(const TSKUIDStruct *)uid;
+- (id)canonicalKeyStringAtLevel:(unsigned __int8)level;
 - (id)computedGroupValueTuple;
-- (id)findGroupNodeForDisplayValuesFromSplitter:(id)a3 atLevel:(unsigned __int8)a4 startAtComponent:(unint64_t)a5 startAtWord:(unint64_t)a6 preserveFlags:(TSUPreserveFlags *)a7;
-- (id)findGroupNodeForValue:(id)a3 atLevel:(unsigned __int8)a4 locale:(id)a5;
-- (id)groupHierarchyTreeAsFiltered:(BOOL)a3 usingOrder:(id)a4 forDimension:(int64_t)a5;
-- (id)groupNodeForGroupUid:(const TSKUIDStruct *)a3;
-- (id)groupNodeForRowUid:(const TSKUIDStruct *)a3 atLevel:(unsigned __int8)a4;
-- (id)groupValueAtLevel:(unsigned __int8)a3;
+- (id)findGroupNodeForDisplayValuesFromSplitter:(id)splitter atLevel:(unsigned __int8)level startAtComponent:(unint64_t)component startAtWord:(unint64_t)word preserveFlags:(TSUPreserveFlags *)flags;
+- (id)findGroupNodeForValue:(id)value atLevel:(unsigned __int8)level locale:(id)locale;
+- (id)groupHierarchyTreeAsFiltered:(BOOL)filtered usingOrder:(id)order forDimension:(int64_t)dimension;
+- (id)groupNodeForGroupUid:(const TSKUIDStruct *)uid;
+- (id)groupNodeForRowUid:(const TSKUIDStruct *)uid atLevel:(unsigned __int8)level;
+- (id)groupValueAtLevel:(unsigned __int8)level;
 - (id)groupValueCellValue;
-- (id)groupValueCellValueForGroupBySet:(id)a3 aggIndex:(unsigned __int16)a4 appendAggregateName:(BOOL)a5;
-- (id)groupValueHierarchyForChart:(BOOL)a3;
-- (id)groupValueHierarchyForChart:(BOOL)a3 groupBySet:(id)a4 aggIndex:(unsigned __int16)a5 appendAggregateName:(BOOL)a6;
-- (id)groupValueHierarchyRefAtLevel:(unsigned __int8)a3;
-- (id)groupValueHierarchyStringWithDelimiterString:(id)a3;
-- (id)groupValueHierarchyStringWithDelimiterString:(id)a3 namingContext:(id)a4;
-- (id)groupValueRefAtLevel:(unsigned __int8)a3;
-- (id)initAsRootNodeForContext:(id)a3;
-- (id)initAsRootNodeForGroupBy:(id)a3;
-- (id)insertRowUid:(const TSKUIDStruct *)a3 atRowIndex:(unsigned int)a4 forGroupValueTuple:(id)a5 atLevel:(unsigned __int8)a6 withLocale:(id)a7 createdGroupNodeCount:(unint64_t *)a8;
+- (id)groupValueCellValueForGroupBySet:(id)set aggIndex:(unsigned __int16)index appendAggregateName:(BOOL)name;
+- (id)groupValueHierarchyForChart:(BOOL)chart;
+- (id)groupValueHierarchyForChart:(BOOL)chart groupBySet:(id)set aggIndex:(unsigned __int16)index appendAggregateName:(BOOL)name;
+- (id)groupValueHierarchyRefAtLevel:(unsigned __int8)level;
+- (id)groupValueHierarchyStringWithDelimiterString:(id)string;
+- (id)groupValueHierarchyStringWithDelimiterString:(id)string namingContext:(id)context;
+- (id)groupValueRefAtLevel:(unsigned __int8)level;
+- (id)initAsRootNodeForContext:(id)context;
+- (id)initAsRootNodeForGroupBy:(id)by;
+- (id)insertRowUid:(const TSKUIDStruct *)uid atRowIndex:(unsigned int)index forGroupValueTuple:(id)tuple atLevel:(unsigned __int8)level withLocale:(id)locale createdGroupNodeCount:(unint64_t *)count;
 - (id)rawGroupValueCellValue;
 - (id)safeOrderedChildrenForArchiving;
 - (unsigned)rowCount;
-- (void)addAggNode:(id)a3;
-- (void)addChangesTo:(id)a3 forDemotingValueAtLevel:(unsigned __int8)a4 toLevel:(unsigned __int8)a5;
-- (void)addChangesTo:(id)a3 forPromotingValueAtLevel:(unsigned __int8)a4 toLevel:(unsigned __int8)a5;
-- (void)addChangesTo:(id)a3 forRemovingValueAtLevel:(unsigned __int8)a4;
-- (void)addChangesTo:(id)a3 forReplacingValue:(id)a4 atLevel:(unsigned __int8)a5;
-- (void)addChild:(id)a3 withKey:(id)a4;
-- (void)addRowUid:(const TSKUIDStruct *)a3;
+- (void)addAggNode:(id)node;
+- (void)addChangesTo:(id)to forDemotingValueAtLevel:(unsigned __int8)level toLevel:(unsigned __int8)toLevel;
+- (void)addChangesTo:(id)to forPromotingValueAtLevel:(unsigned __int8)level toLevel:(unsigned __int8)toLevel;
+- (void)addChangesTo:(id)to forRemovingValueAtLevel:(unsigned __int8)level;
+- (void)addChangesTo:(id)to forReplacingValue:(id)value atLevel:(unsigned __int8)level;
+- (void)addChild:(id)child withKey:(id)key;
+- (void)addRowUid:(const TSKUIDStruct *)uid;
 - (void)clearAllGroupNodes;
 - (void)clearEmptyNodes;
 - (void)dealloc;
-- (void)encodeToArchive:(void *)a3 backwardCompatOptions:(unint64_t)a4 archiver:(id)a5;
-- (void)enumerateAllGroupsWithStop:(BOOL *)a3 withBlock:(id)a4;
-- (void)enumerateDirectChildren:(id)a3;
-- (void)enumerateGroupsBetweenLevel:(unsigned __int8)a3 andLevel:(unsigned __int8)a4 withStop:(BOOL *)a5 withBlock:(id)a6;
-- (void)enumerateRowUidsWithBlock:(id)a3;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4 forGroupBy:(id)a5;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)markAsDirtyWithCalcEngine:(id)a3;
-- (void)markDependentsAsDirtyWithCalcEngine:(id)a3;
-- (void)p_addChildGroupUidsIntoSet:(id)a3 recursively:(BOOL)a4 skipFiltered:(BOOL)a5;
+- (void)encodeToArchive:(void *)archive backwardCompatOptions:(unint64_t)options archiver:(id)archiver;
+- (void)enumerateAllGroupsWithStop:(BOOL *)stop withBlock:(id)block;
+- (void)enumerateDirectChildren:(id)children;
+- (void)enumerateGroupsBetweenLevel:(unsigned __int8)level andLevel:(unsigned __int8)andLevel withStop:(BOOL *)stop withBlock:(id)block;
+- (void)enumerateRowUidsWithBlock:(id)block;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver forGroupBy:(id)by;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)markAsDirtyWithCalcEngine:(id)engine;
+- (void)markDependentsAsDirtyWithCalcEngine:(id)engine;
+- (void)p_addChildGroupUidsIntoSet:(id)set recursively:(BOOL)recursively skipFiltered:(BOOL)filtered;
 - (void)p_refreshGroupValue;
-- (void)rebuildFormulasForAggNode:(id)a3;
+- (void)rebuildFormulasForAggNode:(id)node;
 - (void)removeAllRowUids;
-- (void)removeChildForKey:(id)a3;
-- (void)removeRowUid:(const TSKUIDStruct *)a3 forGroupValueTuple:(id)a4 atLevel:(unsigned __int8)a5 withLocale:(id)a6;
-- (void)removeRowUids:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)setGroupBy:(id)a3;
-- (void)setupWithGroupCellValue:(id)a3 groupBy:(id)a4 atLevel:(unsigned __int8)a5 groupUid:(TSKUIDStruct)a6 children:(id)a7;
-- (void)unpackAfterUnarchiveForGroupBy:(id)a3 atLevel:(unsigned __int8)a4;
-- (void)updateWithDocumentRoot:(id)a3;
+- (void)removeChildForKey:(id)key;
+- (void)removeRowUid:(const TSKUIDStruct *)uid forGroupValueTuple:(id)tuple atLevel:(unsigned __int8)level withLocale:(id)locale;
+- (void)removeRowUids:(id)uids;
+- (void)saveToArchiver:(id)archiver;
+- (void)setGroupBy:(id)by;
+- (void)setupWithGroupCellValue:(id)value groupBy:(id)by atLevel:(unsigned __int8)level groupUid:(TSKUIDStruct)uid children:(id)children;
+- (void)unpackAfterUnarchiveForGroupBy:(id)by atLevel:(unsigned __int8)level;
+- (void)updateWithDocumentRoot:(id)root;
 @end
 
 @implementation TSTGroupNode
@@ -189,12 +189,12 @@
   v3 = self->_cachedGroupValueTuple;
   if (!v3)
   {
-    v4 = self;
-    objc_sync_enter(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     cachedGroupValueTuple = self->_cachedGroupValueTuple;
     if (!cachedGroupValueTuple)
     {
-      v10 = objc_msgSend_computedGroupValueTuple(v4, v5, v6, v7, v8);
+      v10 = objc_msgSend_computedGroupValueTuple(selfCopy, v5, v6, v7, v8);
       v11 = self->_cachedGroupValueTuple;
       self->_cachedGroupValueTuple = v10;
 
@@ -202,7 +202,7 @@
     }
 
     v3 = cachedGroupValueTuple;
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 
   return v3;
@@ -210,7 +210,7 @@
 
 - (BOOL)hasUnfilteredRows
 {
-  v5 = self;
+  selfCopy = self;
   v6 = objc_msgSend_groupBy(self, a2, v2, v3, v4);
   if (!objc_msgSend_isForPivotTable(v6, v7, v8, v9, v10))
   {
@@ -220,40 +220,40 @@
   v15 = objc_msgSend_hiddenStates(v6, v11, v12, v13, v14);
   v20 = objc_msgSend_rowHiddenStateExtent(v15, v16, v17, v18, v19);
 
-  if (!v20 || !objc_msgSend_hasActiveFilters(v20, v21, v22, v23, v24) || !TSUIndexSet::count(&v5->_pivotOnlyRowIndexes))
+  if (!v20 || !objc_msgSend_hasActiveFilters(v20, v21, v22, v23, v24) || !TSUIndexSet::count(&selfCopy->_pivotOnlyRowIndexes))
   {
 
 LABEL_7:
-    LOBYTE(v5) = objc_msgSend_rowCount(v5, v11, v12, v13, v14) != 0;
+    LOBYTE(selfCopy) = objc_msgSend_rowCount(selfCopy, v11, v12, v13, v14) != 0;
     goto LABEL_8;
   }
 
   v29 = objc_msgSend_mutableFilteredIndexes(v20, v25, v26, v27, v28);
-  v30 = TSUIndexSet::asNSIndexSet(&v5->_pivotOnlyRowIndexes);
-  LODWORD(v5) = objc_msgSend_containsIndexes_(v29, v31, v30, v32, v33) ^ 1;
+  v30 = TSUIndexSet::asNSIndexSet(&selfCopy->_pivotOnlyRowIndexes);
+  LODWORD(selfCopy) = objc_msgSend_containsIndexes_(v29, v31, v30, v32, v33) ^ 1;
 
 LABEL_8:
-  return v5;
+  return selfCopy;
 }
 
-- (void)setupWithGroupCellValue:(id)a3 groupBy:(id)a4 atLevel:(unsigned __int8)a5 groupUid:(TSKUIDStruct)a6 children:(id)a7
+- (void)setupWithGroupCellValue:(id)value groupBy:(id)by atLevel:(unsigned __int8)level groupUid:(TSKUIDStruct)uid children:(id)children
 {
-  upper = a6._upper;
-  lower = a6._lower;
-  v10 = a5;
+  upper = uid._upper;
+  lower = uid._lower;
+  levelCopy = level;
   v66 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v60 = a7;
+  valueCopy = value;
+  byCopy = by;
+  childrenCopy = children;
   self->_childrenLock._os_unfair_lock_opaque = 0;
   __dmb(0xBu);
-  self->_groupBy = v15;
-  objc_storeStrong(&self->_groupCellValue, a3);
+  self->_groupBy = byCopy;
+  objc_storeStrong(&self->_groupCellValue, value);
   self->_groupUid._lower = lower;
   self->_groupUid._upper = upper;
-  self->_groupLevel = v10;
-  objc_storeStrong(&self->_children, a7);
-  if (v14 && !v10)
+  self->_groupLevel = levelCopy;
+  objc_storeStrong(&self->_children, children);
+  if (valueCopy && !levelCopy)
   {
     v19 = MEMORY[0x277D81150];
     v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v16, "[TSTGroupNode setupWithGroupCellValue:groupBy:atLevel:groupUid:children:]", v17, v18);
@@ -311,62 +311,62 @@ LABEL_8:
   }
 }
 
-- (TSTGroupNode)initWithGroupCellValue:(id)a3 groupBy:(id)a4 atLevel:(unsigned __int8)a5 groupUid:(TSKUIDStruct)a6 children:(id)a7
+- (TSTGroupNode)initWithGroupCellValue:(id)value groupBy:(id)by atLevel:(unsigned __int8)level groupUid:(TSKUIDStruct)uid children:(id)children
 {
-  upper = a6._upper;
-  lower = a6._lower;
-  v10 = a5;
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
-  v20 = objc_msgSend_context(v14, v16, v17, v18, v19);
+  upper = uid._upper;
+  lower = uid._lower;
+  levelCopy = level;
+  valueCopy = value;
+  byCopy = by;
+  childrenCopy = children;
+  v20 = objc_msgSend_context(byCopy, v16, v17, v18, v19);
   v24.receiver = self;
   v24.super_class = TSTGroupNode;
   v21 = [(TSTGroupNode *)&v24 initWithContext:v20];
 
   if (v21)
   {
-    objc_msgSend_setupWithGroupCellValue_groupBy_atLevel_groupUid_children_(v21, v22, v13, v14, v10, lower, upper, v15);
+    objc_msgSend_setupWithGroupCellValue_groupBy_atLevel_groupUid_children_(v21, v22, valueCopy, byCopy, levelCopy, lower, upper, childrenCopy);
   }
 
   return v21;
 }
 
-- (TSTGroupNode)initWithGroupCellValue:(id)a3 context:(id)a4 atLevel:(unsigned __int8)a5 groupUid:(TSKUIDStruct)a6 children:(id)a7
+- (TSTGroupNode)initWithGroupCellValue:(id)value context:(id)context atLevel:(unsigned __int8)level groupUid:(TSKUIDStruct)uid children:(id)children
 {
-  upper = a6._upper;
-  lower = a6._lower;
-  v10 = a5;
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
+  upper = uid._upper;
+  lower = uid._lower;
+  levelCopy = level;
+  valueCopy = value;
+  contextCopy = context;
+  childrenCopy = children;
   v20.receiver = self;
   v20.super_class = TSTGroupNode;
-  v16 = [(TSTGroupNode *)&v20 initWithContext:v14];
+  v16 = [(TSTGroupNode *)&v20 initWithContext:contextCopy];
   v18 = v16;
   if (v16)
   {
-    objc_msgSend_setupWithGroupCellValue_groupBy_atLevel_groupUid_children_(v16, v17, v13, 0, v10, lower, upper, v15);
+    objc_msgSend_setupWithGroupCellValue_groupBy_atLevel_groupUid_children_(v16, v17, valueCopy, 0, levelCopy, lower, upper, childrenCopy);
   }
 
   return v18;
 }
 
-- (id)initAsRootNodeForGroupBy:(id)a3
+- (id)initAsRootNodeForGroupBy:(id)by
 {
-  v4 = a3;
+  byCopy = by;
   v9 = objc_msgSend_groupByRootUid(TSCECategoryRef, v5, v6, v7, v8);
-  v11 = objc_msgSend_initWithGroupCellValue_groupBy_atLevel_groupUid_children_(self, v10, 0, v4, 0, v9, v10, 0);
+  v11 = objc_msgSend_initWithGroupCellValue_groupBy_atLevel_groupUid_children_(self, v10, 0, byCopy, 0, v9, v10, 0);
 
   return v11;
 }
 
-- (id)initAsRootNodeForContext:(id)a3
+- (id)initAsRootNodeForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = TSTGroupNode;
-  v9 = [(TSTGroupNode *)&v13 initWithContext:v4];
+  v9 = [(TSTGroupNode *)&v13 initWithContext:contextCopy];
   if (v9)
   {
     v10 = objc_msgSend_groupByRootUid(TSCECategoryRef, v5, v6, v7, v8);
@@ -376,31 +376,31 @@ LABEL_8:
   return v9;
 }
 
-- (TSTGroupNode)initWithArchive:(const void *)a3 forGroupBy:(id)a4
+- (TSTGroupNode)initWithArchive:(const void *)archive forGroupBy:(id)by
 {
-  v6 = a4;
-  v11 = objc_msgSend_context(v6, v7, v8, v9, v10);
+  byCopy = by;
+  v11 = objc_msgSend_context(byCopy, v7, v8, v9, v10);
   v15.receiver = self;
   v15.super_class = TSTGroupNode;
   v12 = [(TSTGroupNode *)&v15 initWithContext:v11];
 
   if (v12)
   {
-    objc_msgSend_loadFromArchive_unarchiver_forGroupBy_(v12, v13, a3, 0, v6);
+    objc_msgSend_loadFromArchive_unarchiver_forGroupBy_(v12, v13, archive, 0, byCopy);
   }
 
   return v12;
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4 forGroupBy:(id)a5
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver forGroupBy:(id)by
 {
-  v8 = a4;
-  v110 = a5;
+  unarchiverCopy = unarchiver;
+  byCopy = by;
   v15 = objc_msgSend_currentLocale(MEMORY[0x277D81228], v9, v10, v11, v12);
   v109 = v15;
-  if ((*(a3 + 16) & 4) != 0)
+  if ((*(archive + 16) & 4) != 0)
   {
-    v16 = objc_msgSend_cellValueWithArchive_locale_(TSCECellValue, v13, *(a3 + 17), v15, v14);
+    v16 = objc_msgSend_cellValueWithArchive_locale_(TSCECellValue, v13, *(archive + 17), v15, v14);
   }
 
   else
@@ -408,9 +408,9 @@ LABEL_8:
     v16 = 0;
   }
 
-  if (*(a3 + 15))
+  if (*(archive + 15))
   {
-    v17 = *(a3 + 15);
+    v17 = *(archive + 15);
   }
 
   else
@@ -419,10 +419,10 @@ LABEL_8:
   }
 
   v18 = TSKUIDStruct::loadFromMessage(v17, v13);
-  objc_msgSend_setupWithGroupCellValue_groupBy_atLevel_groupUid_children_(self, v19, v16, v110, 255, v18, v19, 0);
-  if ((*(a3 + 16) & 0x10) != 0)
+  objc_msgSend_setupWithGroupCellValue_groupBy_atLevel_groupUid_children_(self, v19, v16, byCopy, 255, v18, v19, 0);
+  if ((*(archive + 16) & 0x10) != 0)
   {
-    sub_22126A778(*(a3 + 19), &v114);
+    sub_22126A778(*(archive + 19), &v114);
     TSUIndexSet::operator=();
     TSUIndexSet::~TSUIndexSet(&v114);
     v113[5] = MEMORY[0x277D85DD0];
@@ -435,7 +435,7 @@ LABEL_8:
 
   else
   {
-    v23 = *(a3 + 14);
+    v23 = *(archive + 14);
     if (v23 >= 1)
     {
       v24 = 8;
@@ -443,7 +443,7 @@ LABEL_8:
       {
         *&v114 = 0;
         v114._singleRange._begin = 0;
-        *&v114 = TSKUIDStruct::loadFromMessage(*(*(a3 + 8) + v24), v20);
+        *&v114 = TSKUIDStruct::loadFromMessage(*(*(archive + 8) + v24), v20);
         v114._singleRange._begin = v25;
         objc_msgSend_addRowUid_(self, v25, &v114, v26, v27);
         v24 += 8;
@@ -454,18 +454,18 @@ LABEL_8:
     }
   }
 
-  if ((*(a3 + 16) & 8) != 0)
+  if ((*(archive + 16) & 8) != 0)
   {
-    sub_22126A778(*(a3 + 18), &v114);
+    sub_22126A778(*(archive + 18), &v114);
     TSUIndexSet::operator=();
     TSUIndexSet::~TSUIndexSet(&v114);
   }
 
-  if (*(a3 + 26) < 1)
+  if (*(archive + 26) < 1)
   {
-    if (v110)
+    if (byCopy)
     {
-      v74 = *(a3 + 8);
+      v74 = *(archive + 8);
       if (v74 >= 1)
       {
         v75 = objc_alloc(MEMORY[0x277CBEB38]);
@@ -477,7 +477,7 @@ LABEL_8:
         do
         {
           v82 = [TSTGroupNode alloc];
-          v85 = objc_msgSend_initWithArchive_forGroupBy_(v82, v83, *(*(a3 + 5) + v81), v110, v84);
+          v85 = objc_msgSend_initWithArchive_forGroupBy_(v82, v83, *(*(archive + 5) + v81), byCopy, v84);
           objc_msgSend_setParentNode_(v85, v86, self, v87, v88);
           v93 = objc_msgSend_groupCellValue(v85, v89, v90, v91, v92);
           v98 = objc_msgSend_canonicalKeyString(v93, v94, v95, v96, v97);
@@ -523,7 +523,7 @@ LABEL_8:
 
   else
   {
-    if (!v8)
+    if (!unarchiverCopy)
     {
       v28 = MEMORY[0x277D81150];
       v29 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v20, "[TSTGroupNode loadFromArchive:unarchiver:forGroupBy:]", v21, v22);
@@ -538,18 +538,18 @@ LABEL_8:
     v113[2] = sub_22107DB10;
     v113[3] = &unk_27845D8D8;
     v113[4] = self;
-    v39 = v8;
+    v39 = unarchiverCopy;
     v40 = objc_opt_class();
-    objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v39, v41, a3 + 96, v40, 0, v113);
+    objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v39, v41, archive + 96, v40, 0, v113);
   }
 
-  v42 = *(a3 + 20);
+  v42 = *(archive + 20);
   if (v42 >= 1)
   {
     v43 = 8;
     do
     {
-      v44 = sub_2212697C0(*(*(a3 + 11) + v43));
+      v44 = sub_2212697C0(*(*(archive + 11) + v43));
       p_aggNodeCoordsToUnpack = &self->_aggNodeCoordsToUnpack;
       end = self->_aggNodeCoordsToUnpack.__end_;
       cap = self->_aggNodeCoordsToUnpack.__cap_;
@@ -613,13 +613,13 @@ LABEL_8:
     while (v42);
   }
 
-  v57 = *(a3 + 4);
+  v57 = *(archive + 4);
   if ((v57 & 2) != 0)
   {
     v58 = [TSTGroupNodeFormatManager alloc];
-    if (*(a3 + 16))
+    if (*(archive + 16))
     {
-      v62 = objc_msgSend_initWithArchive_(v58, v59, *(a3 + 16), v60, v61);
+      v62 = objc_msgSend_initWithArchive_(v58, v59, *(archive + 16), v60, v61);
     }
 
     else
@@ -630,15 +630,15 @@ LABEL_8:
     formatManager = self->_formatManager;
     self->_formatManager = v62;
 
-    v57 = *(a3 + 4);
+    v57 = *(archive + 4);
   }
 
   if ((v57 & 2) != 0)
   {
     v69 = [TSTGroupNodeFormatManager alloc];
-    if (*(a3 + 16))
+    if (*(archive + 16))
     {
-      v68 = objc_msgSend_initWithArchive_(v69, v70, *(a3 + 16), v71, v72);
+      v68 = objc_msgSend_initWithArchive_(v69, v70, *(archive + 16), v71, v72);
     }
 
     else
@@ -657,19 +657,19 @@ LABEL_8:
   self->_formatManager = v68;
 }
 
-- (void)unpackAfterUnarchiveForGroupBy:(id)a3 atLevel:(unsigned __int8)a4
+- (void)unpackAfterUnarchiveForGroupBy:(id)by atLevel:(unsigned __int8)level
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  byCopy = by;
   self->_childrenLock._os_unfair_lock_opaque = 0;
   __dmb(0xBu);
-  self->_groupBy = v6;
-  self->_groupLevel = a4;
-  v11 = objc_msgSend_groupNodesByGroupUid(v6, v7, v8, v9, v10);
+  self->_groupBy = byCopy;
+  self->_groupLevel = level;
+  v11 = objc_msgSend_groupNodesByGroupUid(byCopy, v7, v8, v9, v10);
   p_groupUid = &self->_groupUid;
   v12 = sub_221086FBC(v11, &self->_groupUid._lower);
   objc_storeStrong(v12 + 4, self);
-  objc_msgSend_unpackAfterUnarchiveForGroupBy_(self->_formatManager, v13, v6, v14, v15);
+  objc_msgSend_unpackAfterUnarchiveForGroupBy_(self->_formatManager, v13, byCopy, v14, v15);
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
@@ -679,7 +679,7 @@ LABEL_8:
   if (v21)
   {
     v22 = *v42;
-    v23 = a4 + 1;
+    v23 = level + 1;
     do
     {
       for (i = 0; i != v21; ++i)
@@ -690,7 +690,7 @@ LABEL_8:
         }
 
         v25 = objc_msgSend_objectForKey_(self->_children, v18, *(*(&v41 + 1) + 8 * i), v19, v20, v41);
-        objc_msgSend_unpackAfterUnarchiveForGroupBy_atLevel_(v25, v26, v6, v23, v27);
+        objc_msgSend_unpackAfterUnarchiveForGroupBy_atLevel_(v25, v26, byCopy, v23, v27);
       }
 
       v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(v16, v18, &v41, v46, 16);
@@ -706,7 +706,7 @@ LABEL_8:
     do
     {
       p_groupUid = *begin;
-      v33 = objc_msgSend_aggNodeForAggFormulaCoord_(v6, v28, &p_groupUid, v29, v30, v41);
+      v33 = objc_msgSend_aggNodeForAggFormulaCoord_(byCopy, v28, &p_groupUid, v29, v30, v41);
       v37 = v33;
       if (v33)
       {
@@ -724,22 +724,22 @@ LABEL_8:
   self->_aggNodeCoordsToUnpack.__end_ = begin;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v9 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v7 = objc_msgSend_messageWithDescriptor_(v9, v4, off_2812E4498[272], v5, v6);
+  v7 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812E4498[272], v5, v6);
 
-  objc_msgSend_loadFromArchive_unarchiver_forGroupBy_(self, v8, v7, v9, 0);
+  objc_msgSend_loadFromArchive_unarchiver_forGroupBy_(self, v8, v7, unarchiverCopy, 0);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v8 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v8, v4, sub_22108750C, off_2812E4498[272], v5);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_22108750C, off_2812E4498[272], v5);
 
-  objc_msgSend_encodeToArchive_backwardCompatOptions_archiver_(self, v7, v6, 0, v8);
+  objc_msgSend_encodeToArchive_backwardCompatOptions_archiver_(self, v7, v6, 0, archiverCopy);
 }
 
 - (void)dealloc
@@ -782,16 +782,16 @@ LABEL_8:
   [(TSTGroupNode *)&v15 dealloc];
 }
 
-- (void)addChild:(id)a3 withKey:(id)a4
+- (void)addChild:(id)child withKey:(id)key
 {
-  v6 = a3;
-  v11 = a4;
-  if (v6)
+  childCopy = child;
+  keyCopy = key;
+  if (childCopy)
   {
     objc_msgSend_willModify(self, v7, v8, v9, v10);
-    if (!v11)
+    if (!keyCopy)
     {
-      v11 = &stru_2834BADA0;
+      keyCopy = &stru_2834BADA0;
     }
 
     os_unfair_lock_lock(&self->_childrenLock);
@@ -805,30 +805,30 @@ LABEL_8:
       children = self->_children;
     }
 
-    objc_msgSend_setObject_forKey_(children, v12, v6, v11, v13);
+    objc_msgSend_setObject_forKey_(children, v12, childCopy, keyCopy, v13);
     os_unfair_lock_unlock(&self->_childrenLock);
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = sub_22107E4FC;
     v20[3] = &unk_27845D8B0;
     v20[4] = self;
-    v21 = v6;
+    v21 = childCopy;
     objc_msgSend_enumerateRowUidsWithBlock_(v21, v17, v20, v18, v19);
   }
 }
 
-- (void)removeChildForKey:(id)a3
+- (void)removeChildForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   objc_msgSend_willModify(self, v5, v6, v7, v8);
-  if (!v4)
+  if (!keyCopy)
   {
-    v4 = &stru_2834BADA0;
+    keyCopy = &stru_2834BADA0;
   }
 
   os_unfair_lock_lock(&self->_childrenLock);
-  v12 = objc_msgSend_objectForKey_(self->_children, v9, v4, v10, v11);
-  objc_msgSend_removeObjectForKey_(self->_children, v13, v4, v14, v15);
+  v12 = objc_msgSend_objectForKey_(self->_children, v9, keyCopy, v10, v11);
+  objc_msgSend_removeObjectForKey_(self->_children, v13, keyCopy, v14, v15);
   os_unfair_lock_unlock(&self->_childrenLock);
   if (v12)
   {
@@ -911,41 +911,41 @@ LABEL_8:
   return v20;
 }
 
-- (void)encodeToArchive:(void *)a3 backwardCompatOptions:(unint64_t)a4 archiver:(id)a5
+- (void)encodeToArchive:(void *)archive backwardCompatOptions:(unint64_t)options archiver:(id)archiver
 {
   v83 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  archiverCopy = archiver;
   v73 = objc_msgSend_groupBy(self, v9, v10, v11, v12);
-  *(a3 + 4) |= 1u;
-  v13 = *(a3 + 15);
+  *(archive + 4) |= 1u;
+  v13 = *(archive + 15);
   if (!v13)
   {
-    v14 = *(a3 + 1);
+    v14 = *(archive + 1);
     if (v14)
     {
       v14 = *(v14 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v13 = MEMORY[0x223DA0360](v14);
-    *(a3 + 15) = v13;
+    *(archive + 15) = v13;
   }
 
   TSKUIDStruct::saveToMessage(&self->_groupUid, v13);
   v19 = self->_groupCellValue;
   if (v19)
   {
-    *(a3 + 4) |= 4u;
-    v20 = *(a3 + 17);
+    *(archive + 4) |= 4u;
+    v20 = *(archive + 17);
     if (!v20)
     {
-      v21 = *(a3 + 1);
+      v21 = *(archive + 1);
       if (v21)
       {
         v21 = *(v21 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v20 = google::protobuf::Arena::CreateMaybeMessage<TSCE::CellValueArchive>(v21);
-      *(a3 + 17) = v20;
+      *(archive + 17) = v20;
     }
 
     objc_msgSend_encodeCellValueToArchive_(v19, v15, v20, v17, v18);
@@ -964,7 +964,7 @@ LABEL_8:
   if (v73)
   {
     v33 = 0;
-    if ((a4 & 2) != 0)
+    if ((options & 2) != 0)
     {
       goto LABEL_18;
     }
@@ -979,7 +979,7 @@ LABEL_17:
   }
 
   v33 = objc_msgSend_count(self->_disconnectedRowUids, v15, v16, v17, v18) != 0;
-  if ((a4 & 2) == 0)
+  if ((options & 2) == 0)
   {
     goto LABEL_17;
   }
@@ -989,21 +989,21 @@ LABEL_18:
   v81[1] = 3221225472;
   v81[2] = sub_22107EF30;
   v81[3] = &unk_27845D920;
-  v81[4] = a3;
+  v81[4] = archive;
   objc_msgSend_enumerateRowUidsWithBlock_(self, v15, v81, v17, v18);
 LABEL_19:
   if (TSUIndexSet::count(&self->_rowUidsIndexSet))
   {
-    *(a3 + 4) |= 0x10u;
-    if (!*(a3 + 19))
+    *(archive + 4) |= 0x10u;
+    if (!*(archive + 19))
     {
-      v34 = *(a3 + 1);
+      v34 = *(archive + 1);
       if (v34)
       {
         v34 = *(v34 & 0xFFFFFFFFFFFFFFFELL);
       }
 
-      *(a3 + 19) = google::protobuf::Arena::CreateMaybeMessage<TSCE::IndexSetArchive>(v34);
+      *(archive + 19) = google::protobuf::Arena::CreateMaybeMessage<TSCE::IndexSetArchive>(v34);
     }
 
     sub_22126A644();
@@ -1011,22 +1011,22 @@ LABEL_19:
 
   if (TSUIndexSet::count(&self->_pivotOnlyRowIndexes))
   {
-    *(a3 + 4) |= 8u;
-    if (!*(a3 + 18))
+    *(archive + 4) |= 8u;
+    if (!*(archive + 18))
     {
-      v39 = *(a3 + 1);
+      v39 = *(archive + 1);
       if (v39)
       {
         v39 = *(v39 & 0xFFFFFFFFFFFFFFFELL);
       }
 
-      *(a3 + 18) = google::protobuf::Arena::CreateMaybeMessage<TSCE::IndexSetArchive>(v39);
+      *(archive + 18) = google::protobuf::Arena::CreateMaybeMessage<TSCE::IndexSetArchive>(v39);
     }
 
     sub_22126A644();
   }
 
-  if (a4 - 1 < 3)
+  if (options - 1 < 3)
   {
     objc_msgSend_safeOrderedChildrenForArchiving(self, v35, v36, v37, v38);
     v79 = 0u;
@@ -1050,36 +1050,36 @@ LABEL_19:
         }
 
         v46 = *(*(&v77 + 1) + 8 * i);
-        v47 = *(a3 + 5);
+        v47 = *(archive + 5);
         if (!v47)
         {
           goto LABEL_42;
         }
 
-        v48 = *(a3 + 8);
+        v48 = *(archive + 8);
         v49 = *v47;
         if (v48 < *v47)
         {
-          *(a3 + 8) = v48 + 1;
-          objc_msgSend_encodeToArchive_backwardCompatOptions_archiver_(v46, v42, *&v47[2 * v48 + 2], a4, v8);
+          *(archive + 8) = v48 + 1;
+          objc_msgSend_encodeToArchive_backwardCompatOptions_archiver_(v46, v42, *&v47[2 * v48 + 2], options, archiverCopy);
           continue;
         }
 
-        if (v49 == *(a3 + 9))
+        if (v49 == *(archive + 9))
         {
 LABEL_42:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 24));
-          v47 = *(a3 + 5);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 24));
+          v47 = *(archive + 5);
           v49 = *v47;
         }
 
         *v47 = v49 + 1;
-        v50 = google::protobuf::Arena::CreateMaybeMessage<TST::GroupByArchive_GroupNodeArchive>(*(a3 + 3));
-        v51 = *(a3 + 8);
-        v52 = *(a3 + 5) + 8 * v51;
-        *(a3 + 8) = v51 + 1;
+        v50 = google::protobuf::Arena::CreateMaybeMessage<TST::GroupByArchive_GroupNodeArchive>(*(archive + 3));
+        v51 = *(archive + 8);
+        v52 = *(archive + 5) + 8 * v51;
+        *(archive + 8) = v51 + 1;
         *(v52 + 8) = v50;
-        objc_msgSend_encodeToArchive_backwardCompatOptions_archiver_(v46, v53, v50, a4, v8);
+        objc_msgSend_encodeToArchive_backwardCompatOptions_archiver_(v46, v53, v50, options, archiverCopy);
       }
 
       v43 = objc_msgSend_countByEnumeratingWithState_objects_count_(v40, v42, &v77, v82, 16);
@@ -1092,10 +1092,10 @@ LABEL_46:
     }
   }
 
-  if (!a4)
+  if (!options)
   {
     v40 = objc_msgSend_safeOrderedChildrenForArchiving(self, v35, v36, v37, v38);
-    objc_msgSend_setStrongReferenceArray_message_(v8, v54, v40, a3 + 96, v55);
+    objc_msgSend_setStrongReferenceArray_message_(archiverCopy, v54, v40, archive + 96, v55);
 LABEL_49:
   }
 
@@ -1109,20 +1109,20 @@ LABEL_49:
       v59 = v58[4];
       v74 = 0;
       v74 = objc_msgSend_formulaCoord(v59, v60, v61, v62, v63);
-      v64 = *(a3 + 11);
+      v64 = *(archive + 11);
       if (!v64)
       {
         goto LABEL_56;
       }
 
-      v65 = *(a3 + 20);
+      v65 = *(archive + 20);
       v66 = *v64;
       if (v65 >= *v64)
       {
         break;
       }
 
-      *(a3 + 20) = v65 + 1;
+      *(archive + 20) = v65 + 1;
       v67 = *&v64[2 * v65 + 2];
 LABEL_58:
       sub_221269820(&v74, v67);
@@ -1134,19 +1134,19 @@ LABEL_58:
       }
     }
 
-    if (v66 == *(a3 + 21))
+    if (v66 == *(archive + 21))
     {
 LABEL_56:
-      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 72));
-      v64 = *(a3 + 11);
+      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 72));
+      v64 = *(archive + 11);
       v66 = *v64;
     }
 
     *v64 = v66 + 1;
-    v67 = google::protobuf::Arena::CreateMaybeMessage<TSCE::CellCoordinateArchive>(*(a3 + 9));
-    v68 = *(a3 + 20);
-    v69 = *(a3 + 11) + 8 * v68;
-    *(a3 + 20) = v68 + 1;
+    v67 = google::protobuf::Arena::CreateMaybeMessage<TSCE::CellCoordinateArchive>(*(archive + 9));
+    v68 = *(archive + 20);
+    v69 = *(archive + 11) + 8 * v68;
+    *(archive + 20) = v68 + 1;
     *(v69 + 8) = v67;
     goto LABEL_58;
   }
@@ -1155,21 +1155,21 @@ LABEL_59:
   formatManager = self->_formatManager;
   if (formatManager)
   {
-    *(a3 + 4) |= 2u;
-    v71 = *(a3 + 16);
+    *(archive + 4) |= 2u;
+    v71 = *(archive + 16);
     if (!v71)
     {
-      v72 = *(a3 + 1);
+      v72 = *(archive + 1);
       if (v72)
       {
         v72 = *(v72 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v71 = google::protobuf::Arena::CreateMaybeMessage<TST::GroupByArchive_GroupNodeArchive_FormatManagerArchive>(v72);
-      *(a3 + 16) = v71;
+      *(archive + 16) = v71;
     }
 
-    objc_msgSend_encodeToArchive_forGroupBy_backwardCompat_(formatManager, v57, v71, v73, (a4 >> 1) & 1);
+    objc_msgSend_encodeToArchive_forGroupBy_backwardCompat_(formatManager, v57, v71, v73, (options >> 1) & 1);
   }
 
   sub_221087AA4(v75);
@@ -1197,13 +1197,13 @@ LABEL_59:
   return !groupCellValue || objc_msgSend_valueType(groupCellValue, a2, v2, v3, v4) == 9;
 }
 
-- (void)setGroupBy:(id)a3
+- (void)setGroupBy:(id)by
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  self->_groupBy = v4;
-  if (v4)
+  byCopy = by;
+  v5 = byCopy;
+  self->_groupBy = byCopy;
+  if (byCopy)
   {
     disconnectedRowUids = self->_disconnectedRowUids;
     if (disconnectedRowUids)
@@ -1213,7 +1213,7 @@ LABEL_59:
       v27[2] = sub_22107F2D4;
       v27[3] = &unk_27845D8B0;
       v27[4] = self;
-      v28 = v4;
+      v28 = byCopy;
       objc_msgSend_foreachUuid_(disconnectedRowUids, v7, v27, v8, v9);
       v10 = self->_disconnectedRowUids;
       self->_disconnectedRowUids = 0;
@@ -1253,15 +1253,15 @@ LABEL_59:
   }
 }
 
-- (void)updateWithDocumentRoot:(id)a3
+- (void)updateWithDocumentRoot:(id)root
 {
   v111 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v100 = v4;
-  if (v4)
+  rootCopy = root;
+  v100 = rootCopy;
+  if (rootCopy)
   {
-    v9 = v4;
-    v10 = objc_msgSend_documentLocale(v4, v5, v6, v7, v8);
+    v9 = rootCopy;
+    v10 = objc_msgSend_documentLocale(rootCopy, v5, v6, v7, v8);
     objc_msgSend_setLocale_(self->_groupCellValue, v11, v10, v12, v13);
 
     groupCellValue = self->_groupCellValue;
@@ -1384,12 +1384,12 @@ LABEL_26:
 LABEL_27:
 }
 
-- (void)p_addChildGroupUidsIntoSet:(id)a3 recursively:(BOOL)a4 skipFiltered:(BOOL)a5
+- (void)p_addChildGroupUidsIntoSet:(id)set recursively:(BOOL)recursively skipFiltered:(BOOL)filtered
 {
-  v5 = a5;
-  v6 = a4;
+  filteredCopy = filtered;
+  recursivelyCopy = recursively;
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  setCopy = set;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -1411,13 +1411,13 @@ LABEL_27:
 
         v17 = objc_msgSend_objectForKey_(self->_children, v11, *(*(&v27 + 1) + 8 * v16), v12, v13, v27);
         v22 = v17;
-        if (!v5 || objc_msgSend_hasUnfilteredRows(v17, v18, v19, v20, v21))
+        if (!filteredCopy || objc_msgSend_hasUnfilteredRows(v17, v18, v19, v20, v21))
         {
           v23 = objc_msgSend_groupUid(v22, v18, v19, v20, v21);
-          objc_msgSend_addUUID_(v8, v24, v23, v24, v25);
-          if (v6)
+          objc_msgSend_addUUID_(setCopy, v24, v23, v24, v25);
+          if (recursivelyCopy)
           {
-            objc_msgSend_p_addChildGroupUidsIntoSet_recursively_skipFiltered_(v22, v26, v8, 1, v5);
+            objc_msgSend_p_addChildGroupUidsIntoSet_recursively_skipFiltered_(v22, v26, setCopy, 1, filteredCopy);
           }
         }
 
@@ -1464,24 +1464,24 @@ LABEL_27:
   return v3;
 }
 
-- (id)aggregateRefForType:(unsigned __int8)a3 atLevel:(unsigned __int8)a4 forColumnUid:(const TSKUIDStruct *)a5
+- (id)aggregateRefForType:(unsigned __int8)type atLevel:(unsigned __int8)level forColumnUid:(const TSKUIDStruct *)uid
 {
-  v6 = a4;
-  v7 = a3;
+  levelCopy = level;
+  typeCopy = type;
   v9 = [TSCECategoryRef alloc];
   v14 = objc_msgSend_groupBy(self, v10, v11, v12, v13);
   v27[0] = objc_msgSend_groupByUid(v14, v15, v16, v17, v18);
   v27[1] = v19;
   v26[0] = objc_msgSend_groupUid(self, v19, v20, v21, v22);
   v26[1] = v23;
-  v24 = objc_msgSend_initWithGroupByUID_absGroupUid_columnUid_aggType_groupLevel_(v9, v23, v27, v26, a5, v7, v6);
+  v24 = objc_msgSend_initWithGroupByUID_absGroupUid_columnUid_aggType_groupLevel_(v9, v23, v27, v26, uid, typeCopy, levelCopy);
 
   return v24;
 }
 
-- (id)groupValueRefAtLevel:(unsigned __int8)a3
+- (id)groupValueRefAtLevel:(unsigned __int8)level
 {
-  v3 = a3;
+  levelCopy = level;
   v5 = [TSCECategoryRef alloc];
   v10 = objc_msgSend_groupBy(self, v6, v7, v8, v9);
   v24[0] = objc_msgSend_groupByUid(v10, v11, v12, v13, v14);
@@ -1490,14 +1490,14 @@ LABEL_27:
   v23[1] = v19;
   v22[0] = 0;
   v22[1] = 0;
-  v20 = objc_msgSend_initWithGroupByUID_absGroupUid_columnUid_aggType_groupLevel_(v5, v19, v24, v23, v22, 9, v3);
+  v20 = objc_msgSend_initWithGroupByUID_absGroupUid_columnUid_aggType_groupLevel_(v5, v19, v24, v23, v22, 9, levelCopy);
 
   return v20;
 }
 
-- (id)groupValueHierarchyRefAtLevel:(unsigned __int8)a3
+- (id)groupValueHierarchyRefAtLevel:(unsigned __int8)level
 {
-  v3 = a3;
+  levelCopy = level;
   v5 = [TSCECategoryRef alloc];
   v10 = objc_msgSend_groupBy(self, v6, v7, v8, v9);
   v24[0] = objc_msgSend_groupByUid(v10, v11, v12, v13, v14);
@@ -1506,50 +1506,50 @@ LABEL_27:
   v23[1] = v19;
   v22[0] = 0;
   v22[1] = 0;
-  v20 = objc_msgSend_initWithGroupByUID_absGroupUid_columnUid_aggType_groupLevel_(v5, v19, v24, v23, v22, 8, v3);
+  v20 = objc_msgSend_initWithGroupByUID_absGroupUid_columnUid_aggType_groupLevel_(v5, v19, v24, v23, v22, 8, levelCopy);
 
   return v20;
 }
 
-- (id)findGroupNodeForValue:(id)a3 atLevel:(unsigned __int8)a4 locale:(id)a5
+- (id)findGroupNodeForValue:(id)value atLevel:(unsigned __int8)level locale:(id)locale
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (objc_msgSend_groupLevel(self, v10, v11, v12, v13) == v6)
+  levelCopy = level;
+  valueCopy = value;
+  localeCopy = locale;
+  if (objc_msgSend_groupLevel(self, v10, v11, v12, v13) == levelCopy)
   {
-    v18 = self;
+    selfCopy = self;
   }
 
-  else if (objc_msgSend_groupLevel(self, v14, v15, v16, v17) >= v6)
+  else if (objc_msgSend_groupLevel(self, v14, v15, v16, v17) >= levelCopy)
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v23 = objc_msgSend_groupLevel(self, v19, v20, v21, v22);
-    v30 = objc_msgSend_canonicalKeyStringAtLevel_(v8, v24, (v23 + 1), v25, v26);
+    v30 = objc_msgSend_canonicalKeyStringAtLevel_(valueCopy, v24, (v23 + 1), v25, v26);
     if (v30)
     {
       v31 = objc_msgSend_objectForKey_(self->_children, v27, v30, v28, v29);
-      v18 = objc_msgSend_findGroupNodeForValue_atLevel_locale_(v31, v32, v8, v6, v9);
+      selfCopy = objc_msgSend_findGroupNodeForValue_atLevel_locale_(v31, v32, valueCopy, levelCopy, localeCopy);
     }
 
     else
     {
-      v18 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v18;
+  return selfCopy;
 }
 
-- (id)findGroupNodeForDisplayValuesFromSplitter:(id)a3 atLevel:(unsigned __int8)a4 startAtComponent:(unint64_t)a5 startAtWord:(unint64_t)a6 preserveFlags:(TSUPreserveFlags *)a7
+- (id)findGroupNodeForDisplayValuesFromSplitter:(id)splitter atLevel:(unsigned __int8)level startAtComponent:(unint64_t)component startAtWord:(unint64_t)word preserveFlags:(TSUPreserveFlags *)flags
 {
-  v162 = a4;
+  levelCopy = level;
   v172 = *MEMORY[0x277D85DE8];
-  v164 = a3;
+  splitterCopy = splitter;
   v165 = self->_groupBy;
   if (!v165 || self->_disconnectedRowUids)
   {
@@ -1561,27 +1561,27 @@ LABEL_27:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v20, v21, v22, v23);
   }
 
-  v161 = objc_msgSend_componentAtIndex_(v164, v10, a5, v11, v12);
-  if (objc_msgSend_groupLevel(self, v24, v25, v26, v27) == v162)
+  v161 = objc_msgSend_componentAtIndex_(splitterCopy, v10, component, v11, v12);
+  if (objc_msgSend_groupLevel(self, v24, v25, v26, v27) == levelCopy)
   {
-    v32 = self;
+    selfCopy = self;
     goto LABEL_43;
   }
 
-  if (objc_msgSend_groupLevel(self, v28, v29, v30, v31) >= v162)
+  if (objc_msgSend_groupLevel(self, v28, v29, v30, v31) >= levelCopy)
   {
-    v32 = 0;
+    selfCopy = 0;
     goto LABEL_43;
   }
 
-  v157 = objc_msgSend_wordAtIndex_(v161, v33, a6, v34, v35);
+  v157 = objc_msgSend_wordAtIndex_(v161, v33, word, v34, v35);
   if (objc_msgSend_hasPreserveFlag(v157, v36, v37, v38, v39))
   {
-    a7->_flags |= 2u;
+    flags->_flags |= 2u;
   }
 
-  v43 = objc_msgSend_trimmedStringStartingAtWord_(v161, v40, a6, v41, v42);
-  v48 = objc_msgSend_localizedBlankGroupName(v164, v44, v45, v46, v47);
+  v43 = objc_msgSend_trimmedStringStartingAtWord_(v161, v40, word, v41, v42);
+  v48 = objc_msgSend_localizedBlankGroupName(splitterCopy, v44, v45, v46, v47);
   v52 = objc_msgSend_caseInsensitiveCompare_(v43, v49, v48, v50, v51);
 
   if (!v52)
@@ -1590,7 +1590,7 @@ LABEL_27:
     goto LABEL_25;
   }
 
-  v57 = objc_msgSend_localizedErrorGroupName(v164, v53, v54, v55, v56);
+  v57 = objc_msgSend_localizedErrorGroupName(splitterCopy, v53, v54, v55, v56);
   v61 = objc_msgSend_caseInsensitiveCompare_(v43, v58, v57, v59, v60);
 
   if (!v61)
@@ -1599,7 +1599,7 @@ LABEL_27:
     goto LABEL_25;
   }
 
-  v63 = objc_msgSend_localizedTrueGroupName(v164, v53, v62, v55, v56);
+  v63 = objc_msgSend_localizedTrueGroupName(splitterCopy, v53, v62, v55, v56);
   if (!objc_msgSend_caseInsensitiveCompare_(v43, v64, v63, v65, v66))
   {
     v102 = @"boo_TRUE";
@@ -1608,7 +1608,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v71 = objc_msgSend_localizedTrueGroupNameForColumn(v164, v67, v68, v69, v70);
+  v71 = objc_msgSend_localizedTrueGroupNameForColumn(splitterCopy, v67, v68, v69, v70);
   v75 = objc_msgSend_caseInsensitiveCompare_(v43, v72, v71, v73, v74);
 
   if (!v75)
@@ -1617,14 +1617,14 @@ LABEL_22:
     goto LABEL_25;
   }
 
-  v63 = objc_msgSend_localizedFalseGroupName(v164, v53, v76, v55, v56);
+  v63 = objc_msgSend_localizedFalseGroupName(splitterCopy, v53, v76, v55, v56);
   if (!objc_msgSend_caseInsensitiveCompare_(v43, v77, v63, v78, v79))
   {
     v102 = @"boo_FALSE";
     goto LABEL_22;
   }
 
-  v84 = objc_msgSend_localizedFalseGroupNameForColumn(v164, v80, v81, v82, v83);
+  v84 = objc_msgSend_localizedFalseGroupNameForColumn(splitterCopy, v80, v81, v82, v83);
   v88 = objc_msgSend_caseInsensitiveCompare_(v43, v85, v84, v86, v87);
 
   if (v88)
@@ -1729,27 +1729,27 @@ LABEL_39:
   v109 = v158;
 LABEL_42:
   v166 = 0;
-  v32 = objc_msgSend_findGroupNodeForDisplayValuesFromSplitter_atLevel_startAtComponent_startAtWord_preserveFlags_(v109, v108, v164, v162, a5 + 1, 0, &v166);
+  selfCopy = objc_msgSend_findGroupNodeForDisplayValuesFromSplitter_atLevel_startAtComponent_startAtWord_preserveFlags_(v109, v108, splitterCopy, levelCopy, component + 1, 0, &v166);
 
 LABEL_43:
 
-  return v32;
+  return selfCopy;
 }
 
-- (void)addChangesTo:(id)a3 forReplacingValue:(id)a4 atLevel:(unsigned __int8)a5
+- (void)addChangesTo:(id)to forReplacingValue:(id)value atLevel:(unsigned __int8)level
 {
-  v5 = a5;
+  levelCopy = level;
   v45 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  toCopy = to;
+  valueCopy = value;
   v14 = objc_msgSend_groupValueTuple(self, v10, v11, v12, v13);
-  v37 = objc_msgSend_groupValueTupleByReplacingValue_atLevel_(v14, v15, v9, v5, v16);
+  v37 = objc_msgSend_groupValueTupleByReplacingValue_atLevel_(v14, v15, valueCopy, levelCopy, v16);
 
   v43[0] = objc_msgSend_groupUid(self, v17, v18, v19, v20);
   v43[1] = v21;
   v42[0] = objc_msgSend_groupValueUid(v37, v21, v22, v23, v24);
   v42[1] = v25;
-  objc_msgSend_mapPreviousGroupNodeUid_toUpdatedGroupNodeUid_(v8, v25, v43, v42, v26);
+  objc_msgSend_mapPreviousGroupNodeUid_toUpdatedGroupNodeUid_(toCopy, v25, v43, v42, v26);
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
@@ -1770,7 +1770,7 @@ LABEL_43:
         }
 
         v35 = objc_msgSend_objectForKey_(self->_children, v29, *(*(&v38 + 1) + 8 * v34), v30, v31);
-        objc_msgSend_addChangesTo_forReplacingValue_atLevel_(v35, v36, v8, v9, v5);
+        objc_msgSend_addChangesTo_forReplacingValue_atLevel_(v35, v36, toCopy, valueCopy, levelCopy);
 
         ++v34;
       }
@@ -1783,13 +1783,13 @@ LABEL_43:
   }
 }
 
-- (void)addChangesTo:(id)a3 forRemovingValueAtLevel:(unsigned __int8)a4
+- (void)addChangesTo:(id)to forRemovingValueAtLevel:(unsigned __int8)level
 {
-  v4 = a4;
+  levelCopy = level;
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  toCopy = to;
   v11 = objc_msgSend_groupValueTuple(self, v7, v8, v9, v10);
-  v15 = objc_msgSend_groupValueTupleByRemovingValueAtLevel_(v11, v12, v4, v13, v14);
+  v15 = objc_msgSend_groupValueTupleByRemovingValueAtLevel_(v11, v12, levelCopy, v13, v14);
 
   if (objc_msgSend_numberOfLevels(v15, v16, v17, v18, v19))
   {
@@ -1797,7 +1797,7 @@ LABEL_43:
     v46[1] = v24;
     v45[0] = objc_msgSend_groupValueUid(v15, v24, v25, v26, v27);
     v45[1] = v28;
-    objc_msgSend_mapPreviousGroupNodeUid_toUpdatedGroupNodeUid_(v6, v28, v46, v45, v29);
+    objc_msgSend_mapPreviousGroupNodeUid_toUpdatedGroupNodeUid_(toCopy, v28, v46, v45, v29);
   }
 
   v43 = 0u;
@@ -1820,7 +1820,7 @@ LABEL_43:
         }
 
         v38 = objc_msgSend_objectForKey_(self->_children, v32, *(*(&v41 + 1) + 8 * v37), v33, v34, v41);
-        objc_msgSend_addChangesTo_forRemovingValueAtLevel_(v38, v39, v6, v4, v40);
+        objc_msgSend_addChangesTo_forRemovingValueAtLevel_(v38, v39, toCopy, levelCopy, v40);
 
         ++v37;
       }
@@ -1833,20 +1833,20 @@ LABEL_43:
   }
 }
 
-- (void)addChangesTo:(id)a3 forPromotingValueAtLevel:(unsigned __int8)a4 toLevel:(unsigned __int8)a5
+- (void)addChangesTo:(id)to forPromotingValueAtLevel:(unsigned __int8)level toLevel:(unsigned __int8)toLevel
 {
-  v5 = a5;
-  v6 = a4;
+  toLevelCopy = toLevel;
+  levelCopy = level;
   v44 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  toCopy = to;
   v13 = objc_msgSend_groupValueTuple(self, v9, v10, v11, v12);
-  v36 = objc_msgSend_groupValueTupleByPromotingValueAtLevel_toLevel_(v13, v14, v6, v5, v15);
+  v36 = objc_msgSend_groupValueTupleByPromotingValueAtLevel_toLevel_(v13, v14, levelCopy, toLevelCopy, v15);
 
   v42[0] = objc_msgSend_groupUid(self, v16, v17, v18, v19);
   v42[1] = v20;
   v41[0] = objc_msgSend_groupValueUid(v36, v20, v21, v22, v23);
   v41[1] = v24;
-  objc_msgSend_mapPreviousGroupNodeUid_toUpdatedGroupNodeUid_(v8, v24, v42, v41, v25);
+  objc_msgSend_mapPreviousGroupNodeUid_toUpdatedGroupNodeUid_(toCopy, v24, v42, v41, v25);
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
@@ -1867,7 +1867,7 @@ LABEL_43:
         }
 
         v34 = objc_msgSend_objectForKey_(self->_children, v28, *(*(&v37 + 1) + 8 * v33), v29, v30);
-        objc_msgSend_addChangesTo_forPromotingValueAtLevel_toLevel_(v34, v35, v8, v6, v5);
+        objc_msgSend_addChangesTo_forPromotingValueAtLevel_toLevel_(v34, v35, toCopy, levelCopy, toLevelCopy);
 
         ++v33;
       }
@@ -1880,20 +1880,20 @@ LABEL_43:
   }
 }
 
-- (void)addChangesTo:(id)a3 forDemotingValueAtLevel:(unsigned __int8)a4 toLevel:(unsigned __int8)a5
+- (void)addChangesTo:(id)to forDemotingValueAtLevel:(unsigned __int8)level toLevel:(unsigned __int8)toLevel
 {
-  v5 = a5;
-  v6 = a4;
+  toLevelCopy = toLevel;
+  levelCopy = level;
   v44 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  toCopy = to;
   v13 = objc_msgSend_groupValueTuple(self, v9, v10, v11, v12);
-  v36 = objc_msgSend_groupValueTupleByDemotingValueAtLevel_toLevel_(v13, v14, v6, v5, v15);
+  v36 = objc_msgSend_groupValueTupleByDemotingValueAtLevel_toLevel_(v13, v14, levelCopy, toLevelCopy, v15);
 
   v42[0] = objc_msgSend_groupUid(self, v16, v17, v18, v19);
   v42[1] = v20;
   v41[0] = objc_msgSend_groupValueUid(v36, v20, v21, v22, v23);
   v41[1] = v24;
-  objc_msgSend_mapPreviousGroupNodeUid_toUpdatedGroupNodeUid_(v8, v24, v42, v41, v25);
+  objc_msgSend_mapPreviousGroupNodeUid_toUpdatedGroupNodeUid_(toCopy, v24, v42, v41, v25);
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
@@ -1914,7 +1914,7 @@ LABEL_43:
         }
 
         v34 = objc_msgSend_objectForKey_(self->_children, v28, *(*(&v37 + 1) + 8 * v33), v29, v30);
-        objc_msgSend_addChangesTo_forDemotingValueAtLevel_toLevel_(v34, v35, v8, v6, v5);
+        objc_msgSend_addChangesTo_forDemotingValueAtLevel_toLevel_(v34, v35, toCopy, levelCopy, toLevelCopy);
 
         ++v33;
       }
@@ -1957,13 +1957,13 @@ LABEL_43:
   }
 }
 
-- (BOOL)updateGroupCellValueIfKeyMatches:(id)a3
+- (BOOL)updateGroupCellValueIfKeyMatches:(id)matches
 {
-  v8 = a3;
-  if (v8)
+  matchesCopy = matches;
+  if (matchesCopy)
   {
     v9 = objc_msgSend_groupCellValue(self, v4, v5, v6, v7);
-    v14 = objc_msgSend_canonicalKeyString(v8, v10, v11, v12, v13);
+    v14 = objc_msgSend_canonicalKeyString(matchesCopy, v10, v11, v12, v13);
     v19 = objc_msgSend_canonicalKeyString(v9, v15, v16, v17, v18);
     isEqualToString = objc_msgSend_isEqualToString_(v14, v20, v19, v21, v22);
 
@@ -1971,7 +1971,7 @@ LABEL_43:
     {
       objc_msgSend_willModify(self, v24, v25, v26, v27);
       v28 = [TSTGroupNodeFormatManager alloc];
-      v32 = objc_msgSend_initWithCellValue_(v28, v29, v8, v30, v31);
+      v32 = objc_msgSend_initWithCellValue_(v28, v29, matchesCopy, v30, v31);
       formatManager = self->_formatManager;
       self->_formatManager = v32;
 
@@ -2004,15 +2004,15 @@ LABEL_43:
   return isEqualToString;
 }
 
-- (id)insertRowUid:(const TSKUIDStruct *)a3 atRowIndex:(unsigned int)a4 forGroupValueTuple:(id)a5 atLevel:(unsigned __int8)a6 withLocale:(id)a7 createdGroupNodeCount:(unint64_t *)a8
+- (id)insertRowUid:(const TSKUIDStruct *)uid atRowIndex:(unsigned int)index forGroupValueTuple:(id)tuple atLevel:(unsigned __int8)level withLocale:(id)locale createdGroupNodeCount:(unint64_t *)count
 {
-  v9 = a6;
-  v10 = *&a4;
+  levelCopy = level;
+  v10 = *&index;
   v148 = *MEMORY[0x277D85DE8];
-  v141 = a5;
-  v139 = a7;
+  tupleCopy = tuple;
+  localeCopy = locale;
   v13 = self->_groupBy;
-  objc_msgSend_addRowUid_(self, v14, a3, v15, v16);
+  objc_msgSend_addRowUid_(self, v14, uid, v15, v16);
   if (objc_msgSend_isForPivotTable(v13, v17, v18, v19, v20))
   {
     if (v10 == 0x7FFFFFFF)
@@ -2034,17 +2034,17 @@ LABEL_43:
   if (v13)
   {
     v36 = objc_msgSend_groupLevel(self, v21, v22, v23, v24);
-    v40 = objc_msgSend_groupValueAtLevel_(v141, v37, v36, v38, v39);
-    if (objc_msgSend_mergedFormatChangedByAddingRowUID_andCellValue_groupBy_(self->_formatManager, v41, a3, v40, v13))
+    v40 = objc_msgSend_groupValueAtLevel_(tupleCopy, v37, v36, v38, v39);
+    if (objc_msgSend_mergedFormatChangedByAddingRowUID_andCellValue_groupBy_(self->_formatManager, v41, uid, v40, v13))
     {
       objc_msgSend_p_refreshGroupValue(self, v42, v43, v44, v45);
     }
   }
 
-  objc_msgSend_didAddRowUID_toGroup_(v13, v21, a3->_lower, a3->_upper, self);
-  if (objc_msgSend_numberOfLevels(v141, v46, v47, v48, v49) >= v9)
+  objc_msgSend_didAddRowUID_toGroup_(v13, v21, uid->_lower, uid->_upper, self);
+  if (objc_msgSend_numberOfLevels(tupleCopy, v46, v47, v48, v49) >= levelCopy)
   {
-    v58 = objc_msgSend_canonicalKeyStringAtLevel_(v141, v50, v9, v52, v53);
+    v58 = objc_msgSend_canonicalKeyStringAtLevel_(tupleCopy, v50, levelCopy, v52, v53);
     v137 = v58;
     if (v58)
     {
@@ -2052,32 +2052,32 @@ LABEL_43:
       if (v62)
       {
         v63 = 0;
-        v140 = 0;
+        selfCopy = 0;
       }
 
       else
       {
-        v140 = self;
-        v136 = objc_msgSend_prefixTupleToLevel_(v141, v69, v9, v70, v71);
-        v75 = objc_msgSend_groupValueAtLevel_(v141, v72, v9, v73, v74);
+        selfCopy = self;
+        v136 = objc_msgSend_prefixTupleToLevel_(tupleCopy, v69, levelCopy, v70, v71);
+        v75 = objc_msgSend_groupValueAtLevel_(tupleCopy, v72, levelCopy, v73, v74);
         v76 = [TSTGroupNode alloc];
         v81 = objc_msgSend_groupValueUid(v136, v77, v78, v79, v80);
-        v83 = objc_msgSend_initWithGroupCellValue_groupBy_atLevel_groupUid_children_(v76, v82, v75, v13, v9, v81, v82, 0);
-        objc_msgSend_setParentNode_(v83, v84, v140, v85, v86);
-        if (a8)
+        v83 = objc_msgSend_initWithGroupCellValue_groupBy_atLevel_groupUid_children_(v76, v82, v75, v13, levelCopy, v81, v82, 0);
+        objc_msgSend_setParentNode_(v83, v84, selfCopy, v85, v86);
+        if (count)
         {
-          ++*a8;
+          ++*count;
         }
 
-        objc_msgSend_addChild_withKey_(v140, v87, v83, v137, v88);
+        objc_msgSend_addChild_withKey_(selfCopy, v87, v83, v137, v88);
         v63 = v83;
         objc_msgSend_didAddGroupNode_(v13, v89, v63, v90, v91);
 
         v62 = v63;
       }
 
-      v96 = objc_msgSend_insertRowUid_atRowIndex_forGroupValueTuple_atLevel_withLocale_createdGroupNodeCount_(v62, v61, a3, v10, v141, (v9 + 1), v139, a8);
-      if (*a3 == 0)
+      v96 = objc_msgSend_insertRowUid_atRowIndex_forGroupValueTuple_atLevel_withLocale_createdGroupNodeCount_(v62, v61, uid, v10, tupleCopy, (levelCopy + 1), localeCopy, count);
+      if (*uid == 0)
       {
         if (self->_groupBy)
         {
@@ -2092,8 +2092,8 @@ LABEL_43:
 
       else
       {
-        v146 = a3;
-        v97 = sub_221086FBC(&self->_childNodesByRowUid.__table_.__bucket_list_.__ptr_, a3);
+        uidCopy = uid;
+        v97 = sub_221086FBC(&self->_childNodesByRowUid.__table_.__bucket_list_.__ptr_, uid);
         objc_storeStrong(v97 + 4, v62);
       }
 
@@ -2143,15 +2143,15 @@ LABEL_43:
         }
       }
 
-      if (!v140)
+      if (!selfCopy)
       {
-        v140 = v96;
+        selfCopy = v96;
       }
     }
 
     else
     {
-      v140 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -2171,30 +2171,30 @@ LABEL_43:
       }
     }
 
-    v140 = 0;
+    selfCopy = 0;
   }
 
-  return v140;
+  return selfCopy;
 }
 
-- (void)removeRowUid:(const TSKUIDStruct *)a3 forGroupValueTuple:(id)a4 atLevel:(unsigned __int8)a5 withLocale:(id)a6
+- (void)removeRowUid:(const TSKUIDStruct *)uid forGroupValueTuple:(id)tuple atLevel:(unsigned __int8)level withLocale:(id)locale
 {
-  v7 = a5;
+  levelCopy = level;
   v125 = *MEMORY[0x277D85DE8];
-  v115 = a4;
-  v119 = a6;
+  tupleCopy = tuple;
+  localeCopy = locale;
   v117 = self->_groupBy;
   if (!v117 || self->_disconnectedRowUids)
   {
     v13 = MEMORY[0x277D81150];
-    v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSTGroupNode removeRowUid:forGroupValueTuple:atLevel:withLocale:]", v11, v12, v115);
+    v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSTGroupNode removeRowUid:forGroupValueTuple:atLevel:withLocale:]", v11, v12, tupleCopy);
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTGroupNode.mm", v16, v17);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v19, v14, v18, 1022, 0, "Not supported for disconnected GroupNodes");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v20, v21, v22, v23);
   }
 
-  if (objc_msgSend_containsRowUid_(self, v10, a3, v11, v12, v115))
+  if (objc_msgSend_containsRowUid_(self, v10, uid, v11, v12, tupleCopy))
   {
     objc_msgSend_willModify(self, v24, v25, v26, v27);
     if (objc_msgSend_isForPivotTable(v117, v28, v29, v30, v31))
@@ -2207,14 +2207,14 @@ LABEL_43:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v42, v43, v44, v45);
     }
 
-    objc_msgSend_lookupKeyForRowUID_(v117, v32, a3, v33, v34);
+    objc_msgSend_lookupKeyForRowUID_(v117, v32, uid, v33, v34);
     TSUIndexSet::removeIndex(&self->_rowUidsIndexSet);
-    if (objc_msgSend_mergedFormatChangedByRemovingRowUID_groupBy_(self->_formatManager, v46, a3, v117, v47))
+    if (objc_msgSend_mergedFormatChangedByRemovingRowUID_groupBy_(self->_formatManager, v46, uid, v117, v47))
     {
       objc_msgSend_p_refreshGroupValue(self, v48, v49, v50, v51);
     }
 
-    objc_msgSend_didRemoveRowUID_fromGroup_(v117, v48, a3->_lower, a3->_upper, self);
+    objc_msgSend_didRemoveRowUID_fromGroup_(v117, v48, uid->_lower, uid->_upper, self);
     groupLevel = self->_groupLevel;
     if (groupLevel == objc_msgSend_numberOfLevels(v117, v53, v54, v55, v56))
     {
@@ -2235,12 +2235,12 @@ LABEL_43:
 
     else if (v116)
     {
-      v67 = objc_msgSend_canonicalKeyStringAtLevel_(v116, v57, v7, v59, v60);
+      v67 = objc_msgSend_canonicalKeyStringAtLevel_(v116, v57, levelCopy, v59, v60);
       if (v67)
       {
         v68 = objc_msgSend_objectForKey_(self->_children, v64, v67, v65, v66);
-        objc_msgSend_removeRowUid_forGroupValueTuple_atLevel_withLocale_(v68, v69, a3, v116, (v7 + 1), v119);
-        sub_221087578(&self->_childNodesByRowUid.__table_.__bucket_list_.__ptr_, a3);
+        objc_msgSend_removeRowUid_forGroupValueTuple_atLevel_withLocale_(v68, v69, uid, v116, (levelCopy + 1), localeCopy);
+        sub_221087578(&self->_childNodesByRowUid.__table_.__bucket_list_.__ptr_, uid);
         if (!objc_msgSend_rowCount(v68, v70, v71, v72, v73))
         {
           objc_msgSend_willRemoveGroupNode_(v117, v74, v68, v75, v76);
@@ -2262,7 +2262,7 @@ LABEL_43:
       if (v94)
       {
         v95 = *v121;
-        v96 = v7 + 1;
+        v96 = levelCopy + 1;
         do
         {
           for (j = 0; j != v94; ++j)
@@ -2274,8 +2274,8 @@ LABEL_43:
 
             v98 = *(*(&v120 + 1) + 8 * j);
             v99 = objc_msgSend_objectForKey_(self->_children, v91, v98, v92, v93);
-            objc_msgSend_removeRowUid_forGroupValueTuple_atLevel_withLocale_(v99, v100, a3, 0, v96, v119);
-            sub_221087578(&self->_childNodesByRowUid.__table_.__bucket_list_.__ptr_, a3);
+            objc_msgSend_removeRowUid_forGroupValueTuple_atLevel_withLocale_(v99, v100, uid, 0, v96, localeCopy);
+            sub_221087578(&self->_childNodesByRowUid.__table_.__bucket_list_.__ptr_, uid);
             if (!objc_msgSend_rowCount(v99, v101, v102, v103, v104))
             {
               objc_msgSend_willRemoveGroupNode_(v117, v105, v99, v106, v107);
@@ -2294,10 +2294,10 @@ LABEL_43:
   }
 }
 
-- (void)removeRowUids:(id)a3
+- (void)removeRowUids:(id)uids
 {
   v117 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  uidsCopy = uids;
   v100 = self->_groupBy;
   if (!v100 || self->_disconnectedRowUids)
   {
@@ -2329,10 +2329,10 @@ LABEL_43:
     v112[3] = &unk_27845D948;
     v43 = v100;
     v113 = v43;
-    v114 = self;
+    selfCopy = self;
     v44 = v24;
     v115 = v44;
-    objc_msgSend_foreachUuid_(v4, v45, v112, v46, v47);
+    objc_msgSend_foreachUuid_(uidsCopy, v45, v112, v46, v47);
     if (objc_msgSend_count(v44, v48, v49, v50, v51))
     {
       v108 = 0;
@@ -2393,7 +2393,7 @@ LABEL_43:
 
               v76 = *(*(&v101 + 1) + 8 * j);
               v77 = objc_msgSend_objectForKey_(self->_children, v70, v76, v71, v72);
-              objc_msgSend_removeRowUids_(v77, v78, v4, v79, v80);
+              objc_msgSend_removeRowUids_(v77, v78, uidsCopy, v79, v80);
               if (!objc_msgSend_rowCount(v77, v81, v82, v83, v84))
               {
                 objc_msgSend_willRemoveGroupNode_(v52, v85, v77, v86, v87);
@@ -2414,16 +2414,16 @@ LABEL_43:
   }
 }
 
-+ (BOOL)needFormulasForAggregateType:(unsigned __int8)a3
++ (BOOL)needFormulasForAggregateType:(unsigned __int8)type
 {
-  if (a3 <= 0x21u)
+  if (type <= 0x21u)
   {
-    if (((1 << a3) & 0x66A23E) != 0 || ((1 << a3) & 0x3FC194000) != 0)
+    if (((1 << type) & 0x66A23E) != 0 || ((1 << type) & 0x3FC194000) != 0)
     {
       return 1;
     }
 
-    if (a3 == 11)
+    if (type == 11)
     {
       v6 = MEMORY[0x277D81150];
       v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "+[TSTGroupNode needFormulasForAggregateType:]", v3, v4);
@@ -2435,12 +2435,12 @@ LABEL_43:
     }
   }
 
-  if (a3 == 240)
+  if (type == 240)
   {
     return 1;
   }
 
-  if (a3 == 255)
+  if (type == 255)
   {
     v17 = MEMORY[0x277D81150];
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "+[TSTGroupNode needFormulasForAggregateType:]", v3, v4);
@@ -2453,9 +2453,9 @@ LABEL_43:
   return 0;
 }
 
-- (void)rebuildFormulasForAggNode:(id)a3
+- (void)rebuildFormulasForAggNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   v9 = self->_groupBy;
   if (!v9 || self->_disconnectedRowUids)
   {
@@ -2468,11 +2468,11 @@ LABEL_43:
   }
 
   v161 = objc_msgSend_categoryOwner(v9, v5, v6, v7, v8);
-  v160 = objc_msgSend_aggregator(v4, v21, v22, v23, v24);
+  v160 = objc_msgSend_aggregator(nodeCopy, v21, v22, v23, v24);
   v29 = objc_msgSend_calcEngine(v161, v25, v26, v27, v28);
   objc_msgSend_willModify(self, v30, v31, v32, v33);
   objc_msgSend_willModify(v160, v34, v35, v36, v37);
-  v42 = objc_msgSend_aggregator(v4, v38, v39, v40, v41);
+  v42 = objc_msgSend_aggregator(nodeCopy, v38, v39, v40, v41);
   v47 = objc_msgSend_columnUid(v42, v43, v44, v45, v46);
   v49 = v48;
 
@@ -2489,14 +2489,14 @@ LABEL_43:
   v188[2] = sub_221082C98;
   v188[3] = &unk_27845D998;
   v188[4] = &v189;
-  objc_msgSend_enumerateDirectChildren_(v4, v50, v188, v51, v52);
+  objc_msgSend_enumerateDirectChildren_(nodeCopy, v50, v188, v51, v52);
   v183[0] = MEMORY[0x277D85DD0];
   v183[1] = 3221225472;
   v183[2] = sub_221082D18;
   v183[3] = &unk_27845D9C0;
   v186 = v47;
   v187 = v49;
-  v53 = v4;
+  v53 = nodeCopy;
   v184 = v53;
   v185 = &v189;
   objc_msgSend_enumerateDirectChildren_(self, v54, v183, v55, v56);
@@ -2700,9 +2700,9 @@ LABEL_43:
   }
 }
 
-- (void)markAsDirtyWithCalcEngine:(id)a3
+- (void)markAsDirtyWithCalcEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   next = self->_aggNodes.__table_.__first_node_.__next_;
   if (next)
   {
@@ -2731,7 +2731,7 @@ LABEL_43:
       v28[0] = objc_msgSend_formulaCoord(v13, v9, v10, v11, v12);
       v28[1] = v6;
       v28[2] = v7;
-      objc_msgSend_markCellRefAsDirty_(v4, v25, v28, v26, v27);
+      objc_msgSend_markCellRefAsDirty_(engineCopy, v25, v28, v26, v27);
 
       next = *next;
     }
@@ -2740,9 +2740,9 @@ LABEL_43:
   }
 }
 
-- (void)markDependentsAsDirtyWithCalcEngine:(id)a3
+- (void)markDependentsAsDirtyWithCalcEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   next = self->_aggNodes.__table_.__first_node_.__next_;
   if (next)
   {
@@ -2771,7 +2771,7 @@ LABEL_43:
       v28[0] = objc_msgSend_formulaCoord(v13, v9, v10, v11, v12);
       v28[1] = v6;
       v28[2] = v7;
-      objc_msgSend_markOnlyDependentsDirty_(v4, v25, v28, v26, v27);
+      objc_msgSend_markOnlyDependentsDirty_(engineCopy, v25, v28, v26, v27);
 
       next = *next;
     }
@@ -2942,13 +2942,13 @@ LABEL_43:
   return TSUIndexSet::operator=();
 }
 
-- (void)enumerateRowUidsWithBlock:(id)a3
+- (void)enumerateRowUidsWithBlock:(id)block
 {
-  v4 = a3;
-  v8 = v4;
+  blockCopy = block;
+  v8 = blockCopy;
   if (self->_groupBy)
   {
-    v10 = v4;
+    v10 = blockCopy;
     TSUIndexSet::enumerateIndexesUsingBlock();
   }
 
@@ -2962,16 +2962,16 @@ LABEL_43:
   }
 }
 
-- (void)addRowUid:(const TSKUIDStruct *)a3
+- (void)addRowUid:(const TSKUIDStruct *)uid
 {
-  if (*a3 != 0)
+  if (*uid != 0)
   {
-    objc_msgSend_willModify(self, a2, a3, v3, v4);
+    objc_msgSend_willModify(self, a2, uid, v3, v4);
     v7 = self->_groupBy;
     v14 = v7;
     if (v7)
     {
-      objc_msgSend_lookupKeyForRowUID_(v7, v8, a3, v9, v10);
+      objc_msgSend_lookupKeyForRowUID_(v7, v8, uid, v9, v10);
       TSUIndexSet::addIndex(&self->_rowUidsIndexSet);
     }
 
@@ -2987,17 +2987,17 @@ LABEL_43:
         disconnectedRowUids = self->_disconnectedRowUids;
       }
 
-      objc_msgSend_addUUID_(disconnectedRowUids, v8, a3->_lower, a3->_upper, v10);
+      objc_msgSend_addUUID_(disconnectedRowUids, v8, uid->_lower, uid->_upper, v10);
     }
   }
 }
 
-- (BOOL)containsRowUid:(const TSKUIDStruct *)a3
+- (BOOL)containsRowUid:(const TSKUIDStruct *)uid
 {
   groupBy = self->_groupBy;
   if (groupBy)
   {
-    if (objc_msgSend_findKeyForRowUid_(groupBy, a2, a3, v3, v4) != -1)
+    if (objc_msgSend_findKeyForRowUid_(groupBy, a2, uid, v3, v4) != -1)
     {
 
       return TSUIndexSet::containsIndex(&self->_rowUidsIndexSet);
@@ -3012,15 +3012,15 @@ LABEL_43:
     return 0;
   }
 
-  upper = a3->_upper;
-  lower = a3->_lower;
+  upper = uid->_upper;
+  lower = uid->_lower;
 
   return objc_msgSend_containsUuid_(disconnectedRowUids, a2, lower, upper, v4);
 }
 
-- (BOOL)containsAnyRowUidInRowUidSet:(id)a3
+- (BOOL)containsAnyRowUidInRowUidSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -3036,16 +3036,16 @@ LABEL_43:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v17, v18, v19, v20);
   }
 
-  if (objc_msgSend_count(v4, v5, v6, v7, v8))
+  if (objc_msgSend_count(setCopy, v5, v6, v7, v8))
   {
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = sub_221083E14;
     v26[3] = &unk_27845DA60;
-    v28 = self;
+    selfCopy = self;
     v29 = &v30;
     v27 = v9;
-    objc_msgSend_foreachUuid_(v4, v21, v26, v22, v23);
+    objc_msgSend_foreachUuid_(setCopy, v21, v26, v22, v23);
   }
 
   v24 = *(v31 + 24);
@@ -3237,19 +3237,19 @@ LABEL_43:
   }
 }
 
-- (id)groupValueAtLevel:(unsigned __int8)a3
+- (id)groupValueAtLevel:(unsigned __int8)level
 {
   groupLevel = self->_groupLevel;
-  if (groupLevel == a3)
+  if (groupLevel == level)
   {
     v6 = self->_groupCellValue;
   }
 
-  else if (groupLevel > a3)
+  else if (groupLevel > level)
   {
-    v7 = a3;
-    v8 = objc_msgSend_parentNode(self, a2, a3, v3, v4);
-    v6 = objc_msgSend_groupValueAtLevel_(v8, v9, v7, v10, v11);
+    levelCopy = level;
+    v8 = objc_msgSend_parentNode(self, a2, level, v3, v4);
+    v6 = objc_msgSend_groupValueAtLevel_(v8, v9, levelCopy, v10, v11);
   }
 
   else
@@ -3260,19 +3260,19 @@ LABEL_43:
   return v6;
 }
 
-- (id)canonicalKeyStringAtLevel:(unsigned __int8)a3
+- (id)canonicalKeyStringAtLevel:(unsigned __int8)level
 {
   groupLevel = self->_groupLevel;
-  if (groupLevel == a3)
+  if (groupLevel == level)
   {
-    v6 = objc_msgSend_canonicalKeyString(self->_groupCellValue, a2, a3, v3, v4);
+    v6 = objc_msgSend_canonicalKeyString(self->_groupCellValue, a2, level, v3, v4);
   }
 
-  else if (groupLevel > a3)
+  else if (groupLevel > level)
   {
-    v7 = a3;
-    v8 = objc_msgSend_parentNode(self, a2, a3, v3, v4);
-    v6 = objc_msgSend_canonicalKeyStringAtLevel_(v8, v9, v7, v10, v11);
+    levelCopy = level;
+    v8 = objc_msgSend_parentNode(self, a2, level, v3, v4);
+    v6 = objc_msgSend_canonicalKeyStringAtLevel_(v8, v9, levelCopy, v10, v11);
   }
 
   else
@@ -3283,9 +3283,9 @@ LABEL_43:
   return v6;
 }
 
-+ (id)normalizedStringForCompare:(id)a3
++ (id)normalizedStringForCompare:(id)compare
 {
-  v4 = objc_msgSend_stringByReplacingOccurrencesOfString_withString_(a3, a2, @"“", @"", v3);
+  v4 = objc_msgSend_stringByReplacingOccurrencesOfString_withString_(compare, a2, @"“", @"", v3);
   v7 = objc_msgSend_stringByReplacingOccurrencesOfString_withString_(v4, v5, @"”", @"", v6);
 
   v10 = objc_msgSend_stringByReplacingOccurrencesOfString_withString_(v7, v8, @"„", @"", v9);
@@ -3301,34 +3301,34 @@ LABEL_43:
   return v22;
 }
 
-+ (id)localizedStringForCellValue:(id)a3 categoryLevel:(unsigned __int8)a4 groupBy:(id)a5
++ (id)localizedStringForCellValue:(id)value categoryLevel:(unsigned __int8)level groupBy:(id)by
 {
-  v6 = a4;
-  v7 = a3;
-  v12 = a5;
-  if (v7)
+  levelCopy = level;
+  valueCopy = value;
+  byCopy = by;
+  if (valueCopy)
   {
-    v13 = objc_msgSend_valueType(v7, v8, v9, v10, v11);
+    v13 = objc_msgSend_valueType(valueCopy, v8, v9, v10, v11);
     if (!v13)
     {
-      v18 = objc_msgSend_locale(v7, v14, v15, v16, v17);
+      v18 = objc_msgSend_locale(valueCopy, v14, v15, v16, v17);
       v22 = objc_msgSend_localizedNameForBlankGroupForDocumentLocale_(TSTGroupBy, v65, v18, v66, v67);
       goto LABEL_15;
     }
 
     if (v13 == 2)
     {
-      if (v12)
+      if (byCopy)
       {
-        v37 = objc_msgSend_tsceValue(v7, v14, v15, v16, v17);
+        v37 = objc_msgSend_tsceValue(valueCopy, v14, v15, v16, v17);
         v42 = objc_msgSend_BOOLean(v37, v38, v39, v40, v41);
 
-        v47 = objc_msgSend_tableInfo(v12, v43, v44, v45, v46);
+        v47 = objc_msgSend_tableInfo(byCopy, v43, v44, v45, v46);
         v18 = v47;
         if (v47)
         {
-          v52 = objc_msgSend_columnDisplayNameForCategoryLevel_(v47, v48, v6, v50, v51);
-          v59 = objc_msgSend_locale(v12, v53, v54, v55, v56);
+          v52 = objc_msgSend_columnDisplayNameForCategoryLevel_(v47, v48, levelCopy, v50, v51);
+          v59 = objc_msgSend_locale(byCopy, v53, v54, v55, v56);
           if (v42)
           {
             objc_msgSend_localizedTrueStringForBooleanGroupWithString_documentLocale_(TSTGroupBy, v57, v52, v59, v58);
@@ -3343,7 +3343,7 @@ LABEL_43:
           goto LABEL_23;
         }
 
-        v52 = objc_msgSend_locale(v12, v48, v49, v50, v51);
+        v52 = objc_msgSend_locale(byCopy, v48, v49, v50, v51);
         if (v42)
         {
           objc_msgSend_trueString(v52, v73, v74, v75, v76);
@@ -3371,14 +3371,14 @@ LABEL_24:
 
     else if (v13 == 9)
     {
-      v18 = objc_msgSend_locale(v7, v14, v15, v16, v17);
+      v18 = objc_msgSend_locale(valueCopy, v14, v15, v16, v17);
       v22 = objc_msgSend_localizedNameForErrorGroupForDocumentLocale_(TSTGroupBy, v19, v18, v20, v21);
 LABEL_15:
       v68 = v22;
       goto LABEL_24;
     }
 
-    v52 = objc_msgSend_displayString(v7, v14, v15, v16, v17);
+    v52 = objc_msgSend_displayString(valueCopy, v14, v15, v16, v17);
     if (objc_msgSend_length(v52, v60, v61, v62, v63))
     {
       if (v52)
@@ -3389,7 +3389,7 @@ LABEL_15:
       goto LABEL_25;
     }
 
-    v18 = objc_msgSend_locale(v7, v34, v64, v35, v36);
+    v18 = objc_msgSend_locale(valueCopy, v34, v64, v35, v36);
     v72 = objc_msgSend_localizedNameForBlankGroupForDocumentLocale_(TSTGroupBy, v69, v18, v70, v71);
     goto LABEL_17;
   }
@@ -3475,11 +3475,11 @@ LABEL_26:
   return v19;
 }
 
-- (id)groupValueCellValueForGroupBySet:(id)a3 aggIndex:(unsigned __int16)a4 appendAggregateName:(BOOL)a5
+- (id)groupValueCellValueForGroupBySet:(id)set aggIndex:(unsigned __int16)index appendAggregateName:(BOOL)name
 {
-  v5 = a5;
-  v82 = a4;
-  v83 = a3;
+  nameCopy = name;
+  indexCopy = index;
+  setCopy = set;
   v11 = self->_groupBy;
   if (!v11 || self->_disconnectedRowUids)
   {
@@ -3514,11 +3514,11 @@ LABEL_26:
     v60 = [TSCEStringCellValue alloc];
     v63 = objc_msgSend_initWithString_locale_(v60, v61, v59, v32, v62);
 
-    if (v5)
+    if (nameCopy)
     {
       v68 = objc_msgSend_groupLevel(self, v64, v65, v66, v67);
       v70 = objc_msgSend_localizedStringForCellValue_categoryLevel_groupBy_(TSTGroupNode, v69, v63, v68, v11);
-      v73 = objc_msgSend_compactDescriptionForAggregateIndex_locale_(v83, v71, v82, v32, v72);
+      v73 = objc_msgSend_compactDescriptionForAggregateIndex_locale_(setCopy, v71, indexCopy, v32, v72);
       v77 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v74, @"%@ %@", v75, v76, v70, v73);
 
       v78 = [TSCEStringCellValue alloc];
@@ -3534,9 +3534,9 @@ LABEL_26:
   return v23;
 }
 
-- (id)groupValueHierarchyForChart:(BOOL)a3
+- (id)groupValueHierarchyForChart:(BOOL)chart
 {
-  v3 = a3;
+  chartCopy = chart;
   v8 = self->_groupBy;
   if (!v8 || self->_disconnectedRowUids)
   {
@@ -3549,7 +3549,7 @@ LABEL_26:
   }
 
   v20 = off_278467610;
-  if (!v3)
+  if (!chartCopy)
   {
     v20 = off_278467608;
   }
@@ -3570,12 +3570,12 @@ LABEL_26:
   return v34;
 }
 
-- (id)groupValueHierarchyForChart:(BOOL)a3 groupBySet:(id)a4 aggIndex:(unsigned __int16)a5 appendAggregateName:(BOOL)a6
+- (id)groupValueHierarchyForChart:(BOOL)chart groupBySet:(id)set aggIndex:(unsigned __int16)index appendAggregateName:(BOOL)name
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a3;
-  v10 = a4;
+  nameCopy = name;
+  indexCopy = index;
+  chartCopy = chart;
+  setCopy = set;
   v14 = self->_groupBy;
   if (!v14 || self->_disconnectedRowUids)
   {
@@ -3588,7 +3588,7 @@ LABEL_26:
   }
 
   v26 = off_278467610;
-  if (!v8)
+  if (!chartCopy)
   {
     v26 = off_278467608;
   }
@@ -3602,7 +3602,7 @@ LABEL_26:
 
   if (objc_msgSend_length(v27, v32, v33, v34, v35) || self->_groupLevel)
   {
-    if (!v6)
+    if (!nameCopy)
     {
       goto LABEL_14;
     }
@@ -3614,13 +3614,13 @@ LABEL_26:
     v53 = objc_msgSend_localizedStringForKey_value_table_(v51, v52, @"Grand Total", &stru_2834BADA0, @"TSTables");
 
     v27 = v53;
-    if (!v6)
+    if (!nameCopy)
     {
       goto LABEL_14;
     }
   }
 
-  v44 = objc_msgSend_compactDescriptionForAggregateIndex_locale_(v10, v37, v7, v36, v40);
+  v44 = objc_msgSend_compactDescriptionForAggregateIndex_locale_(setCopy, v37, indexCopy, v36, v40);
   if (v44)
   {
     v45 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v41, @"%@ %@", v42, v43, v27, v44);
@@ -3643,10 +3643,10 @@ LABEL_14:
   return v49;
 }
 
-- (id)groupValueHierarchyStringWithDelimiterString:(id)a3 namingContext:(id)a4
+- (id)groupValueHierarchyStringWithDelimiterString:(id)string namingContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  contextCopy = context;
   v12 = self->_groupBy;
   if (!v12 || self->_disconnectedRowUids)
   {
@@ -3658,27 +3658,27 @@ LABEL_14:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v20, v21, v22, v23);
   }
 
-  if (!v6)
+  if (!stringCopy)
   {
-    v6 = @"::";
+    stringCopy = @"::";
   }
 
   if (self->_groupLevel)
   {
     v24 = objc_msgSend_parentNode(self, v8, v9, v10, v11);
-    v27 = objc_msgSend_groupValueHierarchyStringWithDelimiterString_namingContext_(v24, v25, v6, v7, v26);
+    v27 = objc_msgSend_groupValueHierarchyStringWithDelimiterString_namingContext_(v24, v25, stringCopy, contextCopy, v26);
 
     if (objc_msgSend_length(v27, v28, v29, v30, v31))
     {
-      objc_msgSend_appendString_(v27, v32, v6, v33, v34);
+      objc_msgSend_appendString_(v27, v32, stringCopy, v33, v34);
     }
 
     v39 = objc_msgSend_localizedStringForCellValue_categoryLevel_groupBy_(TSTGroupNode, v32, self->_groupCellValue, self->_groupLevel, v12);
     if (v39)
     {
-      if (objc_msgSend_quoteComponents(v7, v35, v36, v37, v38))
+      if (objc_msgSend_quoteComponents(contextCopy, v35, v36, v37, v38))
       {
-        if (objc_msgSend_forFormulaPlainText(v7, v40, v41, v42, v43))
+        if (objc_msgSend_forFormulaPlainText(contextCopy, v40, v41, v42, v43))
         {
           v48 = objc_msgSend_tsce_internationalWhitespaceCharacterSet(MEMORY[0x277CCA900], v44, v45, v46, v47);
           v52 = objc_msgSend_rangeOfCharacterFromSet_(v39, v49, v48, v50, v51) != 0x7FFFFFFFFFFFFFFFLL;
@@ -3706,18 +3706,18 @@ LABEL_14:
   return v27;
 }
 
-- (id)groupValueHierarchyStringWithDelimiterString:(id)a3
+- (id)groupValueHierarchyStringWithDelimiterString:(id)string
 {
-  v4 = objc_msgSend_groupValueHierarchyStringWithDelimiterString_namingContext_(self, a2, a3, 0, v3);
+  v4 = objc_msgSend_groupValueHierarchyStringWithDelimiterString_namingContext_(self, a2, string, 0, v3);
 
   return v4;
 }
 
-- (TSKUIDStruct)firstVisibleNodeUsingColumnRowUIDMap:(id)a3 forDimension:(int64_t)a4 leafLevel:(unsigned __int8)a5 pivotTableHiddenExtent:(id)a6
+- (TSKUIDStruct)firstVisibleNodeUsingColumnRowUIDMap:(id)map forDimension:(int64_t)dimension leafLevel:(unsigned __int8)level pivotTableHiddenExtent:(id)extent
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a6;
+  levelCopy = level;
+  mapCopy = map;
+  extentCopy = extent;
   v16 = self->_groupBy;
   if (!v16 || self->_disconnectedRowUids)
   {
@@ -3729,7 +3729,7 @@ LABEL_14:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v24, v25, v26, v27);
   }
 
-  if ((objc_msgSend_isLeaf(self, v12, v13, v14, v15) & 1) != 0 || objc_msgSend_groupLevel(self, v28, v29, v30, v31) == v7)
+  if ((objc_msgSend_isLeaf(self, v12, v13, v14, v15) & 1) != 0 || objc_msgSend_groupLevel(self, v28, v29, v30, v31) == levelCopy)
   {
     v32 = objc_msgSend_groupUid(self, v28, v29, v30, v31);
 LABEL_7:
@@ -3740,13 +3740,13 @@ LABEL_7:
 
   v75[0] = objc_msgSend_groupUid(self, v28, v29, v30, v31);
   v75[1] = v38;
-  if (objc_msgSend_isGroupUIDCollapsed_(v11, v38, v75, v39, v40))
+  if (objc_msgSend_isGroupUIDCollapsed_(extentCopy, v38, v75, v39, v40))
   {
     v32 = objc_msgSend_groupUid(self, v41, v42, v43, v44);
     goto LABEL_7;
   }
 
-  if (objc_msgSend_hasActiveFilters(v11, v41, v42, v43, v44))
+  if (objc_msgSend_hasActiveFilters(extentCopy, v41, v42, v43, v44))
   {
     objc_msgSend_unfilteredDirectChildGroupUids(self, v45, v46, v47, v48);
   }
@@ -3758,7 +3758,7 @@ LABEL_7:
   v49 = ;
   if (objc_msgSend_count(v49, v50, v51, v52, v53))
   {
-    if (!v10)
+    if (!mapCopy)
     {
       v57 = MEMORY[0x277D81150];
       v58 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v54, "[TSTGroupNode firstVisibleNodeUsingColumnRowUIDMap:forDimension:leafLevel:pivotTableHiddenExtent:]", v55, v56);
@@ -3768,12 +3768,12 @@ LABEL_7:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v64, v65, v66, v67);
     }
 
-    isRows = objc_msgSend_firstUidFromUIDSet_isRows_(v10, v54, v49, a4 == 0, v56);
+    isRows = objc_msgSend_firstUidFromUIDSet_isRows_(mapCopy, v54, v49, dimension == 0, v56);
     v71 = objc_msgSend_groupNodeForGroupUid_(v16, v69, isRows, v69, v70);
     v73 = v71;
     if (v71)
     {
-      VisibleNodeUsingColumnRowUIDMap_forDimension_leafLevel_pivotTableHiddenExtent = objc_msgSend_firstVisibleNodeUsingColumnRowUIDMap_forDimension_leafLevel_pivotTableHiddenExtent_(v71, v72, v10, a4, v7, v11);
+      VisibleNodeUsingColumnRowUIDMap_forDimension_leafLevel_pivotTableHiddenExtent = objc_msgSend_firstVisibleNodeUsingColumnRowUIDMap_forDimension_leafLevel_pivotTableHiddenExtent_(v71, v72, mapCopy, dimension, levelCopy, extentCopy);
       v35 = v74;
     }
 
@@ -3798,18 +3798,18 @@ LABEL_8:
   return result;
 }
 
-- (id)groupHierarchyTreeAsFiltered:(BOOL)a3 usingOrder:(id)a4 forDimension:(int64_t)a5
+- (id)groupHierarchyTreeAsFiltered:(BOOL)filtered usingOrder:(id)order forDimension:(int64_t)dimension
 {
   v5 = objc_opt_new();
 
   return v5;
 }
 
-- (void)enumerateAllGroupsWithStop:(BOOL *)a3 withBlock:(id)a4
+- (void)enumerateAllGroupsWithStop:(BOOL *)stop withBlock:(id)block
 {
   v28 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  if (!*a3)
+  blockCopy = block;
+  if (!*stop)
   {
     objc_msgSend_allKeys(self->_children, v6, v7, v8, v9);
     v25 = 0u;
@@ -3830,8 +3830,8 @@ LABEL_4:
         }
 
         v19 = objc_msgSend_objectForKey_(self->_children, v13, *(*(&v23 + 1) + 8 * v18), v14, v15, v23);
-        objc_msgSend_enumerateAllGroupsWithStop_withBlock_(v19, v20, a3, v10, v21);
-        v22 = *a3;
+        objc_msgSend_enumerateAllGroupsWithStop_withBlock_(v19, v20, stop, blockCopy, v21);
+        v22 = *stop;
 
         if (v22)
         {
@@ -3851,29 +3851,29 @@ LABEL_4:
       }
     }
 
-    if (!*a3)
+    if (!*stop)
     {
-      v10[2](v10, self, a3);
+      blockCopy[2](blockCopy, self, stop);
     }
   }
 }
 
-- (void)enumerateGroupsBetweenLevel:(unsigned __int8)a3 andLevel:(unsigned __int8)a4 withStop:(BOOL *)a5 withBlock:(id)a6
+- (void)enumerateGroupsBetweenLevel:(unsigned __int8)level andLevel:(unsigned __int8)andLevel withStop:(BOOL *)stop withBlock:(id)block
 {
-  v7 = a4;
-  v8 = a3;
+  andLevelCopy = andLevel;
+  levelCopy = level;
   v33 = *MEMORY[0x277D85DE8];
-  v27 = a6;
-  if (!*a5)
+  blockCopy = block;
+  if (!*stop)
   {
     groupLevel = self->_groupLevel;
-    v15 = groupLevel < v8 || groupLevel > v7;
+    v15 = groupLevel < levelCopy || groupLevel > andLevelCopy;
     if (!v15 && objc_msgSend_rowCount(self, v10, v11, v12, v13))
     {
-      v27[2](v27, self, a5);
+      blockCopy[2](blockCopy, self, stop);
     }
 
-    if (self->_groupLevel < v7)
+    if (self->_groupLevel < andLevelCopy)
     {
       v30 = 0u;
       v31 = 0u;
@@ -3894,8 +3894,8 @@ LABEL_11:
           }
 
           v23 = objc_msgSend_objectForKey_(self->_children, v17, *(*(&v28 + 1) + 8 * v22), v18, v19);
-          objc_msgSend_enumerateGroupsBetweenLevel_andLevel_withStop_withBlock_(v23, v24, v8, v7, a5, v27);
-          v25 = *a5;
+          objc_msgSend_enumerateGroupsBetweenLevel_andLevel_withStop_withBlock_(v23, v24, levelCopy, andLevelCopy, stop, blockCopy);
+          v25 = *stop;
 
           if (v25)
           {
@@ -3918,10 +3918,10 @@ LABEL_11:
   }
 }
 
-- (void)enumerateDirectChildren:(id)a3
+- (void)enumerateDirectChildren:(id)children
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  childrenCopy = children;
   v19 = 0;
   v15 = 0u;
   v16 = 0u;
@@ -3942,7 +3942,7 @@ LABEL_3:
       }
 
       v13 = objc_msgSend_objectForKey_(self->_children, v7, *(*(&v15 + 1) + 8 * v12), v8, v9, v15);
-      v4[2](v4, v13, &v19);
+      childrenCopy[2](childrenCopy, v13, &v19);
       v14 = v19;
 
       if (v14)
@@ -3964,13 +3964,13 @@ LABEL_3:
   }
 }
 
-- (void)addAggNode:(id)a3
+- (void)addAggNode:(id)node
 {
-  v9 = a3;
-  if (v9)
+  nodeCopy = node;
+  if (nodeCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7, v8);
-    v14 = objc_msgSend_aggregator(v9, v10, v11, v12, v13);
+    v14 = objc_msgSend_aggregator(nodeCopy, v10, v11, v12, v13);
 
     if (!v14)
     {
@@ -3982,21 +3982,21 @@ LABEL_3:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v26, v27, v28, v29);
     }
 
-    v30 = objc_msgSend_aggregator(v9, v15, v16, v17, v18);
+    v30 = objc_msgSend_aggregator(nodeCopy, v15, v16, v17, v18);
     v37[0] = objc_msgSend_columnUid(v30, v31, v32, v33, v34);
     v37[1] = v35;
     v37[3] = v37;
     v36 = sub_221088308(&self->_aggNodes.__table_.__bucket_list_.__ptr_, v37);
-    objc_storeStrong(v36 + 4, a3);
+    objc_storeStrong(v36 + 4, node);
   }
 }
 
-- (id)groupNodeForGroupUid:(const TSKUIDStruct *)a3
+- (id)groupNodeForGroupUid:(const TSKUIDStruct *)uid
 {
   v28 = *MEMORY[0x277D85DE8];
-  if (objc_msgSend_groupUid(self, a2, a3, v3, v4) == a3->_lower && v7 == a3->_upper)
+  if (objc_msgSend_groupUid(self, a2, uid, v3, v4) == uid->_lower && v7 == uid->_upper)
   {
-    v21 = self;
+    selfCopy = self;
   }
 
   else
@@ -4020,9 +4020,9 @@ LABEL_7:
         }
 
         v17 = objc_msgSend_objectForKey_(self->_children, v11, *(*(&v23 + 1) + 8 * v16), v12, v13, v23);
-        v21 = objc_msgSend_groupNodeForGroupUid_(v17, v18, a3, v19, v20);
+        selfCopy = objc_msgSend_groupNodeForGroupUid_(v17, v18, uid, v19, v20);
 
-        if (v21)
+        if (selfCopy)
         {
           break;
         }
@@ -4043,30 +4043,30 @@ LABEL_7:
     else
     {
 LABEL_13:
-      v21 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v21;
+  return selfCopy;
 }
 
-- (id)groupNodeForRowUid:(const TSKUIDStruct *)a3 atLevel:(unsigned __int8)a4
+- (id)groupNodeForRowUid:(const TSKUIDStruct *)uid atLevel:(unsigned __int8)level
 {
-  v5 = a4;
+  levelCopy = level;
   v42 = *MEMORY[0x277D85DE8];
-  if (!objc_msgSend_containsRowUid_(self, a2, a3, a4, v4))
+  if (!objc_msgSend_containsRowUid_(self, a2, uid, level, v4))
   {
-    v8 = 0;
+    selfCopy = 0;
     goto LABEL_25;
   }
 
-  if (self->_groupLevel == v5)
+  if (self->_groupLevel == levelCopy)
   {
-    v8 = self;
+    selfCopy = self;
     goto LABEL_25;
   }
 
-  v9 = sub_2210875C4(&self->_childNodesByRowUid.__table_.__bucket_list_.__ptr_, a3);
+  v9 = sub_2210875C4(&self->_childNodesByRowUid.__table_.__bucket_list_.__ptr_, uid);
   if (!v9)
   {
     v15 = 0;
@@ -4098,9 +4098,9 @@ LABEL_16:
         }
 
         v31 = objc_msgSend_objectForKey_(self->_children, v25, *(*(&v37 + 1) + 8 * v30), v26, v27);
-        v8 = objc_msgSend_groupNodeForRowUid_atLevel_(v31, v32, a3, v5, v33);
+        selfCopy = objc_msgSend_groupNodeForRowUid_atLevel_(v31, v32, uid, levelCopy, v33);
 
-        if (v8)
+        if (selfCopy)
         {
           break;
         }
@@ -4121,7 +4121,7 @@ LABEL_16:
     else
     {
 LABEL_22:
-      v8 = 0;
+      selfCopy = 0;
     }
 
     v15 = v35;
@@ -4134,19 +4134,19 @@ LABEL_22:
   {
 
 LABEL_13:
-    sub_221087578(&self->_childNodesByRowUid.__table_.__bucket_list_.__ptr_, a3);
+    sub_221087578(&self->_childNodesByRowUid.__table_.__bucket_list_.__ptr_, uid);
     goto LABEL_14;
   }
 
-  v21 = objc_msgSend_containsRowUid_(v15, v17, a3, v18, v19);
+  v21 = objc_msgSend_containsRowUid_(v15, v17, uid, v18, v19);
 
   if (!v21)
   {
     goto LABEL_13;
   }
 
-  v8 = objc_msgSend_groupNodeForRowUid_atLevel_(v15, v22, a3, v5, v23);
-  if (!v8)
+  selfCopy = objc_msgSend_groupNodeForRowUid_atLevel_(v15, v22, uid, levelCopy, v23);
+  if (!selfCopy)
   {
     goto LABEL_14;
   }
@@ -4155,12 +4155,12 @@ LABEL_24:
 
 LABEL_25:
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)aggNodeForColumnUid:(const TSKUIDStruct *)a3
+- (id)aggNodeForColumnUid:(const TSKUIDStruct *)uid
 {
-  v3 = sub_2210875C4(&self->_aggNodes.__table_.__bucket_list_.__ptr_, a3);
+  v3 = sub_2210875C4(&self->_aggNodes.__table_.__bucket_list_.__ptr_, uid);
   if (v3)
   {
     v3 = v3[4];
@@ -4174,16 +4174,16 @@ LABEL_25:
   retstr->__begin_ = 0;
   retstr->__end_ = 0;
   retstr->__cap_ = 0;
-  v4 = self;
-  for (i = objc_msgSend_groupLevel(v4, v5, v6, v7, v8); i; i = objc_msgSend_groupLevel(v20, v21, v22, v23, v24))
+  selfCopy = self;
+  for (i = objc_msgSend_groupLevel(selfCopy, v5, v6, v7, v8); i; i = objc_msgSend_groupLevel(v20, v21, v22, v23, v24))
   {
     begin = retstr->__begin_;
-    v26.n128_u64[0] = objc_msgSend_groupUid(v4, v10, v11, v12, v13);
+    v26.n128_u64[0] = objc_msgSend_groupUid(selfCopy, v10, v11, v12, v13);
     v26.n128_u64[1] = v15;
     sub_221086AF0(retstr, begin, &v26);
-    v20 = objc_msgSend_parentNode(v4, v16, v17, v18, v19);
+    v20 = objc_msgSend_parentNode(selfCopy, v16, v17, v18, v19);
 
-    v4 = v20;
+    selfCopy = v20;
   }
 
   return result;

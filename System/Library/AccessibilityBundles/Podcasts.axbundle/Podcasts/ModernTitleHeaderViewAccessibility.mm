@@ -1,5 +1,5 @@
 @interface ModernTitleHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)_axFavoriteHeaderButton;
 - (id)_axSuggestLessButton;
@@ -11,14 +11,14 @@
 
 @implementation ModernTitleHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ShelfKitCollectionViews.ModernTitleHeaderView" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.ModernTitleHeaderView" hasInstanceMethod:@"accessibilitySubtitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.ModernTitleHeaderView" hasSwiftField:@"accessibilityHasContextAction" withSwiftType:"Bool"];
-  [v3 validateClass:@"ShelfKitCollectionViews.ModernTitleHeaderView" hasInstanceMethod:@"accessibilityHeaderButtons" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.ModernTitleHeaderView" hasSwiftField:@"titleButton" withSwiftType:"UIButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.ModernTitleHeaderView" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.ModernTitleHeaderView" hasInstanceMethod:@"accessibilitySubtitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.ModernTitleHeaderView" hasSwiftField:@"accessibilityHasContextAction" withSwiftType:"Bool"];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.ModernTitleHeaderView" hasInstanceMethod:@"accessibilityHeaderButtons" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.ModernTitleHeaderView" hasSwiftField:@"titleButton" withSwiftType:"UIButton"];
 }
 
 - (unint64_t)accessibilityTraits
@@ -49,8 +49,8 @@
   v4 = __UIAccessibilityCastAsClass();
 
   v5 = [(ModernTitleHeaderViewAccessibility *)self safeValueForKey:@"accessibilitySubtitleLabel"];
-  v6 = [v4 text];
-  v9 = [v5 accessibilityLabel];
+  text = [v4 text];
+  accessibilityLabel = [v5 accessibilityLabel];
   v7 = __UIAXStringForVariables();
 
   return v7;
@@ -60,65 +60,65 @@
 {
   if ([(ModernTitleHeaderViewAccessibility *)self safeSwiftBoolForKey:@"accessibilityHasContextAction"])
   {
-    v3 = accessibilityLocalizedString(@"filter");
+    accessibilityValue = accessibilityLocalizedString(@"filter");
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = ModernTitleHeaderViewAccessibility;
-    v3 = [(ModernTitleHeaderViewAccessibility *)&v5 accessibilityValue];
+    accessibilityValue = [(ModernTitleHeaderViewAccessibility *)&v5 accessibilityValue];
   }
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (id)accessibilityElements
 {
   if ([(ModernTitleHeaderViewAccessibility *)self safeSwiftBoolForKey:@"accessibilityHasContextAction"])
   {
-    v3 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     v11 = 0;
     objc_opt_class();
     v4 = [(ModernTitleHeaderViewAccessibility *)self safeValueForKey:@"accessibilityTitleLabel"];
     v5 = __UIAccessibilityCastAsClass();
 
-    v6 = [v5 text];
-    [v5 setAccessibilityLabel:v6];
+    text = [v5 text];
+    [v5 setAccessibilityLabel:text];
 
     v7 = accessibilityLocalizedString(@"filter");
     [v5 setAccessibilityValue:v7];
 
     [v5 setAccessibilityTraits:*MEMORY[0x29EDC7F70] | *MEMORY[0x29EDC7F80]];
-    [v3 axSafelyAddObject:v5];
+    [array axSafelyAddObject:v5];
     v8 = [(ModernTitleHeaderViewAccessibility *)self safeArrayForKey:@"accessibilityHeaderButtons"];
-    [v3 axSafelyAddObjectsFromArray:v8];
+    [array axSafelyAddObjectsFromArray:v8];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = ModernTitleHeaderViewAccessibility;
-    v3 = [(ModernTitleHeaderViewAccessibility *)&v10 accessibilityElements];
+    array = [(ModernTitleHeaderViewAccessibility *)&v10 accessibilityElements];
   }
 
-  return v3;
+  return array;
 }
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v8.receiver = self;
   v8.super_class = ModernTitleHeaderViewAccessibility;
-  v4 = [(ModernTitleHeaderViewAccessibility *)&v8 _accessibilitySupplementaryFooterViews];
-  [v3 axSafelyAddObjectsFromArray:v4];
+  _accessibilitySupplementaryFooterViews = [(ModernTitleHeaderViewAccessibility *)&v8 _accessibilitySupplementaryFooterViews];
+  [array axSafelyAddObjectsFromArray:_accessibilitySupplementaryFooterViews];
 
-  v5 = [(ModernTitleHeaderViewAccessibility *)self _axFavoriteHeaderButton];
-  [v3 axSafelyAddObject:v5];
-  v6 = [(ModernTitleHeaderViewAccessibility *)self _axSuggestLessButton];
-  [v3 axSafelyAddObject:v6];
+  _axFavoriteHeaderButton = [(ModernTitleHeaderViewAccessibility *)self _axFavoriteHeaderButton];
+  [array axSafelyAddObject:_axFavoriteHeaderButton];
+  _axSuggestLessButton = [(ModernTitleHeaderViewAccessibility *)self _axSuggestLessButton];
+  [array axSafelyAddObject:_axSuggestLessButton];
 
-  return v3;
+  return array;
 }
 
 - (id)_axFavoriteHeaderButton

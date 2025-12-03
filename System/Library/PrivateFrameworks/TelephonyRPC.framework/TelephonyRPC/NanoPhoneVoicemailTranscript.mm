@@ -1,25 +1,25 @@
 @interface NanoPhoneVoicemailTranscript
-- (BOOL)isEqual:(id)a3;
-- (NanoPhoneVoicemailTranscript)initWithTranscriptMessage:(id)a3 voicemailNumber:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (NanoPhoneVoicemailTranscript)initWithTranscriptMessage:(id)message voicemailNumber:(unint64_t)number;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NanoPhoneVoicemailTranscript
 
-- (NanoPhoneVoicemailTranscript)initWithTranscriptMessage:(id)a3 voicemailNumber:(unint64_t)a4
+- (NanoPhoneVoicemailTranscript)initWithTranscriptMessage:(id)message voicemailNumber:(unint64_t)number
 {
-  v6 = [a3 transcriptionData];
-  if (v6)
+  transcriptionData = [message transcriptionData];
+  if (transcriptionData)
   {
     v7 = MEMORY[0x277CCAAC8];
     v8 = [MEMORY[0x277CBEB98] setWithObject:objc_opt_class()];
     v19 = 0;
-    v9 = [v7 unarchivedObjectOfClasses:v8 fromData:v6 error:&v19];
+    v9 = [v7 unarchivedObjectOfClasses:v8 fromData:transcriptionData error:&v19];
     v10 = v19;
 
     if (v10 || !v9)
@@ -30,7 +30,7 @@
         [NanoPhoneVoicemailTranscript(NanoPhone) initWithTranscriptMessage:v10 voicemailNumber:v15];
       }
 
-      v14 = 0;
+      selfCopy = 0;
     }
 
     else
@@ -41,7 +41,7 @@
       v12 = v11;
       if (v11)
       {
-        [(NanoPhoneVoicemailTranscript *)v11 setVoicemailNumber:a4];
+        [(NanoPhoneVoicemailTranscript *)v11 setVoicemailNumber:number];
         v17[0] = MEMORY[0x277D85DD0];
         v17[1] = 3221225472;
         v17[2] = __85__NanoPhoneVoicemailTranscript_NanoPhone__initWithTranscriptMessage_voicemailNumber___block_invoke;
@@ -52,16 +52,16 @@
       }
 
       self = v12;
-      v14 = self;
+      selfCopy = self;
     }
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 id __85__NanoPhoneVoicemailTranscript_NanoPhone__initWithTranscriptMessage_voicemailNumber___block_invoke(uint64_t a1)
@@ -86,32 +86,32 @@ id __85__NanoPhoneVoicemailTranscript_NanoPhone__initWithTranscriptMessage_voice
   v8.receiver = self;
   v8.super_class = NanoPhoneVoicemailTranscript;
   v4 = [(NanoPhoneVoicemailTranscript *)&v8 description];
-  v5 = [(NanoPhoneVoicemailTranscript *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NanoPhoneVoicemailTranscript *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_voicemailNumber];
-  [v3 setObject:v4 forKey:@"voicemailNumber"];
+  [dictionary setObject:v4 forKey:@"voicemailNumber"];
 
   transcriptionString = self->_transcriptionString;
   if (transcriptionString)
   {
-    [v3 setObject:transcriptionString forKey:@"transcriptionString"];
+    [dictionary setObject:transcriptionString forKey:@"transcriptionString"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   voicemailNumber = self->_voicemailNumber;
-  v6 = v4;
+  v6 = toCopy;
   PBDataWriterWriteInt64Field();
   if (self->_transcriptionString)
   {
@@ -119,34 +119,34 @@ id __85__NanoPhoneVoicemailTranscript_NanoPhone__initWithTranscriptMessage_voice
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 1) = self->_voicemailNumber;
+  *(to + 1) = self->_voicemailNumber;
   transcriptionString = self->_transcriptionString;
   if (transcriptionString)
   {
-    [a3 setTranscriptionString:transcriptionString];
+    [to setTranscriptionString:transcriptionString];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[1] = self->_voicemailNumber;
-  v6 = [(NSString *)self->_transcriptionString copyWithZone:a3];
+  v6 = [(NSString *)self->_transcriptionString copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_voicemailNumber == v4[1])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_voicemailNumber == equalCopy[1])
   {
     transcriptionString = self->_transcriptionString;
-    if (transcriptionString | v4[2])
+    if (transcriptionString | equalCopy[2])
     {
       v6 = [(NSString *)transcriptionString isEqual:?];
     }
@@ -165,10 +165,10 @@ id __85__NanoPhoneVoicemailTranscript_NanoPhone__initWithTranscriptMessage_voice
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_voicemailNumber = *(a3 + 1);
-  if (*(a3 + 2))
+  self->_voicemailNumber = *(from + 1);
+  if (*(from + 2))
   {
     [(NanoPhoneVoicemailTranscript *)self setTranscriptionString:?];
   }

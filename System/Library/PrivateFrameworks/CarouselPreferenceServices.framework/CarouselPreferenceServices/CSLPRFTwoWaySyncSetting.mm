@@ -1,17 +1,17 @@
 @interface CSLPRFTwoWaySyncSetting
-- (CSLPRFTwoWaySyncSetting)initWithKey:(id)a3 defaultValue:(id)a4 notification:(const char *)a5;
+- (CSLPRFTwoWaySyncSetting)initWithKey:(id)key defaultValue:(id)value notification:(const char *)notification;
 - (CSLPRFTwoWaySyncSettingDelegate)delegate;
 - (NSString)description;
 - (id)domainAccessor;
-- (id)safeValueOfType:(Class)a3;
+- (id)safeValueOfType:(Class)type;
 - (id)syncManager;
 - (id)value;
 - (void)dealloc;
 - (void)didUpdate;
 - (void)handleDidUnpair;
-- (void)migrate:(id)a3 withMapping:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setValue:(id)a3;
+- (void)migrate:(id)migrate withMapping:(id)mapping;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setValue:(id)value;
 @end
 
 @implementation CSLPRFTwoWaySyncSetting
@@ -23,18 +23,18 @@
   return WeakRetained;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v4 = a3;
-  v5 = [(CSLPRFTwoWaySyncSetting *)self domainAccessor];
-  [v5 setObject:v4 forKey:self->_key];
+  valueCopy = value;
+  domainAccessor = [(CSLPRFTwoWaySyncSetting *)self domainAccessor];
+  [domainAccessor setObject:valueCopy forKey:self->_key];
 
-  v6 = [(CSLPRFTwoWaySyncSetting *)self domainAccessor];
-  v7 = [v6 synchronize];
+  domainAccessor2 = [(CSLPRFTwoWaySyncSetting *)self domainAccessor];
+  synchronize = [domainAccessor2 synchronize];
 
-  v8 = [(CSLPRFTwoWaySyncSetting *)self syncManager];
+  syncManager = [(CSLPRFTwoWaySyncSetting *)self syncManager];
   v9 = [MEMORY[0x277CBEB98] setWithObject:self->_key];
-  [v8 synchronizeNanoDomain:@"com.apple.Carousel" keys:v9];
+  [syncManager synchronizeNanoDomain:@"com.apple.Carousel" keys:v9];
 
   notificationName = self->_notificationName;
   if (notificationName)
@@ -44,15 +44,15 @@
   }
 }
 
-- (id)safeValueOfType:(Class)a3
+- (id)safeValueOfType:(Class)type
 {
-  v5 = [(CSLPRFTwoWaySyncSetting *)self domainAccessor];
-  v6 = [v5 synchronize];
+  domainAccessor = [(CSLPRFTwoWaySyncSetting *)self domainAccessor];
+  synchronize = [domainAccessor synchronize];
 
-  v7 = [(CSLPRFTwoWaySyncSetting *)self domainAccessor];
-  v8 = [v7 objectForKey:self->_key];
+  domainAccessor2 = [(CSLPRFTwoWaySyncSetting *)self domainAccessor];
+  v8 = [domainAccessor2 objectForKey:self->_key];
 
-  if (a3 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (type && (objc_opt_isKindOfClass() & 1) == 0)
   {
 
 LABEL_6:
@@ -75,11 +75,11 @@ LABEL_7:
 
 - (id)value
 {
-  v3 = [(CSLPRFTwoWaySyncSetting *)self domainAccessor];
-  v4 = [v3 synchronize];
+  domainAccessor = [(CSLPRFTwoWaySyncSetting *)self domainAccessor];
+  synchronize = [domainAccessor synchronize];
 
-  v5 = [(CSLPRFTwoWaySyncSetting *)self domainAccessor];
-  v6 = [v5 objectForKey:self->_key];
+  domainAccessor2 = [(CSLPRFTwoWaySyncSetting *)self domainAccessor];
+  v6 = [domainAccessor2 objectForKey:self->_key];
 
   defaultValue = v6;
   if (!v6)
@@ -140,8 +140,8 @@ LABEL_7:
     self->_notifyToken = -1;
   }
 
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v4 removeObserver:self forKeyPath:self->_key];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults removeObserver:self forKeyPath:self->_key];
 
   notificationName = self->_notificationName;
   if (notificationName)
@@ -154,34 +154,34 @@ LABEL_7:
   [(CSLPRFTwoWaySyncSetting *)&v6 dealloc];
 }
 
-- (void)migrate:(id)a3 withMapping:(id)a4
+- (void)migrate:(id)migrate withMapping:(id)mapping
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [(CSLPRFTwoWaySyncSetting *)self domainAccessor];
-  v8 = [v7 synchronize];
+  migrateCopy = migrate;
+  mappingCopy = mapping;
+  domainAccessor = [(CSLPRFTwoWaySyncSetting *)self domainAccessor];
+  synchronize = [domainAccessor synchronize];
 
-  v9 = [(CSLPRFTwoWaySyncSetting *)self domainAccessor];
-  v10 = [v9 objectForKey:self->_key];
+  domainAccessor2 = [(CSLPRFTwoWaySyncSetting *)self domainAccessor];
+  v10 = [domainAccessor2 objectForKey:self->_key];
 
   if (!v10)
   {
-    v11 = [(CSLPRFTwoWaySyncSetting *)self domainAccessor];
-    v12 = [v11 objectForKey:v14];
+    domainAccessor3 = [(CSLPRFTwoWaySyncSetting *)self domainAccessor];
+    v12 = [domainAccessor3 objectForKey:migrateCopy];
 
     if (v12)
     {
-      v13 = v6[2](v6, v12);
+      v13 = mappingCopy[2](mappingCopy, v12);
       [(CSLPRFTwoWaySyncSetting *)self setValue:v13];
     }
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = a3;
+  pathCopy = path;
   v8 = [(CSLPRFTwoWaySyncSetting *)self key];
-  v9 = [v8 isEqualToString:v7];
+  v9 = [v8 isEqualToString:pathCopy];
 
   if (v9)
   {
@@ -192,8 +192,8 @@ LABEL_7:
 
 - (void)didUpdate
 {
-  v3 = [(CSLPRFTwoWaySyncSetting *)self delegate];
-  [v3 twoWaySyncSettingDidUpdate:self];
+  delegate = [(CSLPRFTwoWaySyncSetting *)self delegate];
+  [delegate twoWaySyncSettingDidUpdate:self];
 }
 
 - (NSString)description
@@ -202,37 +202,37 @@ LABEL_7:
   v4 = [(CSLPRFTwoWaySyncSetting *)self key];
   [v3 appendString:v4 withName:@"key"];
 
-  v5 = [(CSLPRFTwoWaySyncSetting *)self value];
-  v6 = [v3 appendObject:v5 withName:@"value"];
+  value = [(CSLPRFTwoWaySyncSetting *)self value];
+  v6 = [v3 appendObject:value withName:@"value"];
 
-  v7 = [(CSLPRFTwoWaySyncSetting *)self defaultValue];
-  v8 = [v3 appendObject:v7 withName:@"default"];
+  defaultValue = [(CSLPRFTwoWaySyncSetting *)self defaultValue];
+  v8 = [v3 appendObject:defaultValue withName:@"default"];
 
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
-- (CSLPRFTwoWaySyncSetting)initWithKey:(id)a3 defaultValue:(id)a4 notification:(const char *)a5
+- (CSLPRFTwoWaySyncSetting)initWithKey:(id)key defaultValue:(id)value notification:(const char *)notification
 {
   v33 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  keyCopy = key;
+  valueCopy = value;
   v28.receiver = self;
   v28.super_class = CSLPRFTwoWaySyncSetting;
   v11 = [(CSLPRFTwoWaySyncSetting *)&v28 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_key, a3);
-    objc_storeStrong(&v12->_defaultValue, a4);
+    objc_storeStrong(&v11->_key, key);
+    objc_storeStrong(&v12->_defaultValue, value);
     v12->_notifyToken = -1;
-    if (a5)
+    if (notification)
     {
-      v13 = strnlen(a5, 0x3FFuLL);
+      v13 = strnlen(notification, 0x3FFuLL);
       v14 = malloc_type_calloc(v13 + 1, 1uLL, 0x100004077774924uLL);
       v12->_notificationName = v14;
-      strlcpy(v14, a5, v13 + 1);
+      strlcpy(v14, notification, v13 + 1);
       objc_initWeak(&location, v12);
       v15 = cslprf_settings_log();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -251,17 +251,17 @@ LABEL_7:
       v24 = __65__CSLPRFTwoWaySyncSetting_initWithKey_defaultValue_notification___block_invoke;
       v25 = &unk_278744900;
       objc_copyWeak(&v26, &location);
-      notify_register_dispatch(a5, &v12->_notifyToken, MEMORY[0x277D85CD0], &v22);
+      notify_register_dispatch(notification, &v12->_notifyToken, MEMORY[0x277D85CD0], &v22);
 
       objc_destroyWeak(&v26);
       objc_destroyWeak(&location);
     }
 
-    v18 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v18 addObserver:v12 forKeyPath:v9 options:1 context:0];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults addObserver:v12 forKeyPath:keyCopy options:1 context:0];
 
-    v19 = [MEMORY[0x277D37B50] sharedInstance];
-    [v19 addDelegate:v12];
+    mEMORY[0x277D37B50] = [MEMORY[0x277D37B50] sharedInstance];
+    [mEMORY[0x277D37B50] addDelegate:v12];
   }
 
   v20 = *MEMORY[0x277D85DE8];

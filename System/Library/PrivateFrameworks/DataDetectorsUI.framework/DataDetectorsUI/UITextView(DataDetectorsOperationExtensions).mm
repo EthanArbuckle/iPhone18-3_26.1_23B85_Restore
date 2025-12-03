@@ -6,8 +6,8 @@
 
 - (DDTextKitOperation)dd_newOperation
 {
-  v2 = [[DDTextKitOperation alloc] initWithContainer:a1];
-  -[DDOperation setIgnoreSignatures:](v2, "setIgnoreSignatures:", [a1 dd_ignoreSignatures]);
+  v2 = [[DDTextKitOperation alloc] initWithContainer:self];
+  -[DDOperation setIgnoreSignatures:](v2, "setIgnoreSignatures:", [self dd_ignoreSignatures]);
   return v2;
 }
 

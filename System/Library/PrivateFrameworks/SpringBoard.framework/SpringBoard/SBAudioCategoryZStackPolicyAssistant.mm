@@ -1,6 +1,6 @@
 @interface SBAudioCategoryZStackPolicyAssistant
 - (id)observedSceneSettings;
-- (int64_t)resolveProposedPoliciesForForegroundScenes:(id)a3;
+- (int64_t)resolveProposedPoliciesForForegroundScenes:(id)scenes;
 - (uint64_t)audioCategoriesDisablingVolumeHUD;
 @end
 
@@ -26,15 +26,15 @@
   return v3;
 }
 
-- (int64_t)resolveProposedPoliciesForForegroundScenes:(id)a3
+- (int64_t)resolveProposedPoliciesForForegroundScenes:(id)scenes
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  scenesCopy = scenes;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v4 = [scenesCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v4)
   {
     v5 = v4;
@@ -48,12 +48,12 @@
       {
         if (*v21 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(scenesCopy);
         }
 
-        v10 = [*(*(&v20 + 1) + 8 * v8) clientSettings];
+        clientSettings = [*(*(&v20 + 1) + 8 * v8) clientSettings];
         v11 = objc_opt_self();
-        v12 = v10;
+        v12 = clientSettings;
         if (v11)
         {
           if (objc_opt_isKindOfClass())
@@ -74,11 +74,11 @@
 
         v14 = v13;
 
-        v15 = [v14 audioCategoriesDisablingVolumeHUD];
+        audioCategoriesDisablingVolumeHUD = [v14 audioCategoriesDisablingVolumeHUD];
 
-        if (v15)
+        if (audioCategoriesDisablingVolumeHUD)
         {
-          v16 = [MEMORY[0x277CBEB98] setWithArray:v15];
+          v16 = [MEMORY[0x277CBEB98] setWithArray:audioCategoriesDisablingVolumeHUD];
         }
 
         else
@@ -93,7 +93,7 @@
       }
 
       while (v5 != v8);
-      v5 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v5 = [scenesCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v5);

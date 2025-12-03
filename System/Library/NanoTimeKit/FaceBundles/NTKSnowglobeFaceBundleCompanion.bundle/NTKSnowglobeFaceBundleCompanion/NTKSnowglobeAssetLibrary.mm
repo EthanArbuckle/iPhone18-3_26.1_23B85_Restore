@@ -1,20 +1,20 @@
 @interface NTKSnowglobeAssetLibrary
 + (NTKSnowglobeAssetLibrary)sharedInstance;
 - (NTKSnowglobeAssetLibrary)init;
-- (id)_copyAndConfigureDigitNode:(id)a3;
+- (id)_copyAndConfigureDigitNode:(id)node;
 - (id)_lightMaterialContents;
 - (id)_loadBackgroundObjects;
 - (id)_loadDainty;
-- (id)_loadDigitNumber:(unint64_t)a3;
+- (id)_loadDigitNumber:(unint64_t)number;
 - (id)createScene;
 - (id)digitShaderModifier;
-- (void)_applyCustomShadingToMaterial:(id)a3;
-- (void)_configurePhysicsBodyForNode:(id)a3;
-- (void)_fetchEyes:(id)a3;
-- (void)_replaceEyesForNode:(id)a3 withCompletion:(id)a4;
-- (void)digitNodeForNumber:(unint64_t)a3 queue:(id)a4 withCompletion:(id)a5;
-- (void)loadDaintyOnQueue:(id)a3 withCompletion:(id)a4;
-- (void)loadRandomBackgroundShapeOnQueue:(id)a3 withCompletion:(id)a4;
+- (void)_applyCustomShadingToMaterial:(id)material;
+- (void)_configurePhysicsBodyForNode:(id)node;
+- (void)_fetchEyes:(id)eyes;
+- (void)_replaceEyesForNode:(id)node withCompletion:(id)completion;
+- (void)digitNodeForNumber:(unint64_t)number queue:(id)queue withCompletion:(id)completion;
+- (void)loadDaintyOnQueue:(id)queue withCompletion:(id)completion;
+- (void)loadRandomBackgroundShapeOnQueue:(id)queue withCompletion:(id)completion;
 @end
 
 @implementation NTKSnowglobeAssetLibrary
@@ -100,30 +100,30 @@
   return v2;
 }
 
-- (void)digitNodeForNumber:(unint64_t)a3 queue:(id)a4 withCompletion:(id)a5
+- (void)digitNodeForNumber:(unint64_t)number queue:(id)queue withCompletion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(NSArray *)self->_digitPromises objectAtIndex:a3];
+  queueCopy = queue;
+  completionCopy = completion;
+  v10 = [(NSArray *)self->_digitPromises objectAtIndex:number];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = sub_23C085918;
   v13[3] = &unk_278BAC748;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v17 = a3;
-  v11 = v9;
-  v12 = v8;
+  v14 = queueCopy;
+  selfCopy = self;
+  v16 = completionCopy;
+  numberCopy = number;
+  v11 = completionCopy;
+  v12 = queueCopy;
   [v10 fetchWithCompletion:v13];
 }
 
-- (id)_loadDigitNumber:(unint64_t)a3
+- (id)_loadDigitNumber:(unint64_t)number
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"digit_%i", a3];
+  number = [MEMORY[0x277CCACA8] stringWithFormat:@"digit_%i", number];
   v4 = sub_23C085C88();
-  v5 = [v4 URLForResource:v3 withExtension:@"scn" subdirectory:@"SceneKit Asset Catalog.scnassets"];
+  v5 = [v4 URLForResource:number withExtension:@"scn" subdirectory:@"SceneKit Asset Catalog.scnassets"];
 
   v14 = 0;
   v6 = [MEMORY[0x277CDBAF8] sceneWithURL:v5 options:0 error:&v14];
@@ -139,9 +139,9 @@
     }
   }
 
-  v9 = [v6 rootNode];
-  v10 = [v9 childNodes];
-  v11 = [v10 objectAtIndexedSubscript:0];
+  rootNode = [v6 rootNode];
+  childNodes = [rootNode childNodes];
+  v11 = [childNodes objectAtIndexedSubscript:0];
 
   [v11 setSimdPosition:0.0];
   [v11 removeFromParentNode];
@@ -151,16 +151,16 @@
   return v11;
 }
 
-- (id)_copyAndConfigureDigitNode:(id)a3
+- (id)_copyAndConfigureDigitNode:(id)node
 {
-  v4 = [a3 clone];
+  clone = [node clone];
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = sub_23C085D84;
   v11 = &unk_278BAC798;
-  v5 = v4;
+  v5 = clone;
   v12 = v5;
-  v13 = self;
+  selfCopy = self;
   [(NTKSnowglobeAssetLibrary *)self _replaceEyesForNode:v5 withCompletion:&v8];
   [(NTKSnowglobeAssetLibrary *)self _configurePhysicsBodyForNode:v5, v8, v9, v10, v11];
   v6 = v5;
@@ -168,64 +168,64 @@
   return v6;
 }
 
-- (void)_applyCustomShadingToMaterial:(id)a3
+- (void)_applyCustomShadingToMaterial:(id)material
 {
-  v3 = a3;
-  v4 = [v3 roughness];
-  [v4 setContents:&unk_284EDC838];
+  materialCopy = material;
+  roughness = [materialCopy roughness];
+  [roughness setContents:&unk_284EDC838];
 
-  v5 = [v3 metalness];
-  [v5 setContents:&unk_284EDC848];
+  metalness = [materialCopy metalness];
+  [metalness setContents:&unk_284EDC848];
 
-  [v3 setLightingModelName:*MEMORY[0x277CDBBA0]];
+  [materialCopy setLightingModelName:*MEMORY[0x277CDBBA0]];
   v7 = +[NTKSnowglobeAssetLibrary sharedInstance];
-  v6 = [v7 digitShaderModifier];
-  [v3 setShaderModifiers:v6];
+  digitShaderModifier = [v7 digitShaderModifier];
+  [materialCopy setShaderModifiers:digitShaderModifier];
 }
 
-- (void)_configurePhysicsBodyForNode:(id)a3
+- (void)_configurePhysicsBodyForNode:(id)node
 {
-  v3 = a3;
-  v18 = [v3 childNodeWithName:@"Leg_1" recursively:1];
-  v4 = [v3 childNodeWithName:@"Leg_2" recursively:1];
-  v5 = sub_23C0861EC(v4, v3);
-  [v3 setPhysicsBody:v5];
+  nodeCopy = node;
+  v18 = [nodeCopy childNodeWithName:@"Leg_1" recursively:1];
+  v4 = [nodeCopy childNodeWithName:@"Leg_2" recursively:1];
+  v5 = sub_23C0861EC(v4, nodeCopy);
+  [nodeCopy setPhysicsBody:v5];
 
   v7 = sub_23C0861EC(v6, v18);
   [v18 setPhysicsBody:v7];
 
-  v8 = [v18 physicsBody];
-  [v8 setMass:0.05];
+  physicsBody = [v18 physicsBody];
+  [physicsBody setMass:0.05];
 
-  v9 = [v18 physicsBody];
-  [v9 setAngularDamping:0.95];
+  physicsBody2 = [v18 physicsBody];
+  [physicsBody2 setAngularDamping:0.95];
 
-  v10 = [v18 physicsBody];
-  [v10 setCollisionBitMask:0];
+  physicsBody3 = [v18 physicsBody];
+  [physicsBody3 setCollisionBitMask:0];
 
-  v11 = [v18 physicsBody];
-  [v11 setContactTestBitMask:0];
+  physicsBody4 = [v18 physicsBody];
+  [physicsBody4 setContactTestBitMask:0];
 
   v13 = sub_23C0861EC(v12, v4);
   [v4 setPhysicsBody:v13];
 
-  v14 = [v4 physicsBody];
-  [v14 setMass:0.05];
+  physicsBody5 = [v4 physicsBody];
+  [physicsBody5 setMass:0.05];
 
-  v15 = [v4 physicsBody];
-  [v15 setAngularDamping:0.95];
+  physicsBody6 = [v4 physicsBody];
+  [physicsBody6 setAngularDamping:0.95];
 
-  v16 = [v4 physicsBody];
-  [v16 setCollisionBitMask:0];
+  physicsBody7 = [v4 physicsBody];
+  [physicsBody7 setCollisionBitMask:0];
 
-  v17 = [v4 physicsBody];
-  [v17 setContactTestBitMask:0];
+  physicsBody8 = [v4 physicsBody];
+  [physicsBody8 setContactTestBitMask:0];
 }
 
-- (void)_fetchEyes:(id)a3
+- (void)_fetchEyes:(id)eyes
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eyesCopy = eyes;
   leftEye = self->_leftEye;
   if (!leftEye || (v6 = self->_rightEye) == 0)
   {
@@ -246,13 +246,13 @@
       }
     }
 
-    v12 = [v9 rootNode];
-    v13 = [v12 childNodeWithName:@"LeftEye" recursively:1];
+    rootNode = [v9 rootNode];
+    v13 = [rootNode childNodeWithName:@"LeftEye" recursively:1];
     v14 = self->_leftEye;
     self->_leftEye = v13;
 
-    v15 = [v9 rootNode];
-    v16 = [v15 childNodeWithName:@"RightEye" recursively:1];
+    rootNode2 = [v9 rootNode];
+    v16 = [rootNode2 childNodeWithName:@"RightEye" recursively:1];
     rightEye = self->_rightEye;
     self->_rightEye = v16;
 
@@ -263,39 +263,39 @@
     v6 = self->_rightEye;
   }
 
-  v4[2](v4, leftEye, v6);
+  eyesCopy[2](eyesCopy, leftEye, v6);
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_replaceEyesForNode:(id)a3 withCompletion:(id)a4
+- (void)_replaceEyesForNode:(id)node withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  nodeCopy = node;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = sub_23C086600;
   v10[3] = &unk_278BAC7C0;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = nodeCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = nodeCopy;
   [(NTKSnowglobeAssetLibrary *)self _fetchEyes:v10];
 }
 
-- (void)loadRandomBackgroundShapeOnQueue:(id)a3 withCompletion:(id)a4
+- (void)loadRandomBackgroundShapeOnQueue:(id)queue withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   backgroundObjectPromise = self->_backgroundObjectPromise;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_23C0867E8;
   v11[3] = &unk_278BAC810;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = queueCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = queueCopy;
   [(NTKSnowglobePromise *)backgroundObjectPromise fetchWithCompletion:v11];
 }
 
@@ -335,9 +335,9 @@
       _os_log_impl(&dword_23C07F000, v8, OS_LOG_TYPE_DEFAULT, "Loaded Snowglobe background objects", buf, 2u);
     }
 
-    v10 = [v5 rootNode];
-    v11 = [v10 childNodes];
-    v12 = [v11 copy];
+    rootNode = [v5 rootNode];
+    childNodes = [rootNode childNodes];
+    v12 = [childNodes copy];
 
     v21 = 0u;
     v22 = 0u;
@@ -378,9 +378,9 @@
 - (id)digitShaderModifier
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  shaderModifier = v2->_shaderModifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  shaderModifier = selfCopy->_shaderModifier;
   if (!shaderModifier)
   {
     v4 = sub_23C085C88();
@@ -390,33 +390,33 @@
     v12 = *MEMORY[0x277CDBC20];
     v13[0] = v6;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-    v8 = v2->_shaderModifier;
-    v2->_shaderModifier = v7;
+    v8 = selfCopy->_shaderModifier;
+    selfCopy->_shaderModifier = v7;
 
-    shaderModifier = v2->_shaderModifier;
+    shaderModifier = selfCopy->_shaderModifier;
   }
 
   v9 = shaderModifier;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v10 = *MEMORY[0x277D85DE8];
 
   return v9;
 }
 
-- (void)loadDaintyOnQueue:(id)a3 withCompletion:(id)a4
+- (void)loadDaintyOnQueue:(id)queue withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   daintyPromise = self->_daintyPromise;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_23C086F14;
   v11[3] = &unk_278BAC618;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = queueCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = queueCopy;
   [(NTKSnowglobePromise *)daintyPromise fetchWithCompletion:v11];
 }
 
@@ -447,9 +447,9 @@
     }
   }
 
-  v8 = [v5 rootNode];
-  v9 = [v8 childNodes];
-  v10 = [v9 objectAtIndexedSubscript:0];
+  rootNode = [v5 rootNode];
+  childNodes = [rootNode childNodes];
+  v10 = [childNodes objectAtIndexedSubscript:0];
 
   [v10 removeFromParentNode];
   v11 = _NTKLoggingObjectForDomain();
@@ -467,15 +467,15 @@
 
 - (id)createScene
 {
-  v3 = [MEMORY[0x277CDBAF8] scene];
-  v4 = [(NTKSnowglobeAssetLibrary *)self _lightMaterialContents];
-  v5 = [v3 lightingEnvironment];
-  [v5 setContents:v4];
+  scene = [MEMORY[0x277CDBAF8] scene];
+  _lightMaterialContents = [(NTKSnowglobeAssetLibrary *)self _lightMaterialContents];
+  lightingEnvironment = [scene lightingEnvironment];
+  [lightingEnvironment setContents:_lightMaterialContents];
 
-  v6 = [v3 lightingEnvironment];
-  [v6 setIntensity:2.0];
+  lightingEnvironment2 = [scene lightingEnvironment];
+  [lightingEnvironment2 setIntensity:2.0];
 
-  return v3;
+  return scene;
 }
 
 - (id)_lightMaterialContents

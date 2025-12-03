@@ -21,15 +21,15 @@
     if ([v4 containsMultipleRanges])
     {
       v6 = objc_alloc_init(MEMORY[0x1E696AD40]);
-      v7 = [v4 rangeArray];
+      rangeArray = [v4 rangeArray];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __60__NSAttributedString_VK__vk_attributedSubstringFromVKRange___block_invoke;
       v14[3] = &unk_1E7BE7780;
       v15 = v6;
-      v16 = a1;
-      v17 = v7;
-      v8 = v7;
+      selfCopy = self;
+      v17 = rangeArray;
+      v8 = rangeArray;
       v9 = v6;
       [v8 enumerateObjectsUsingBlock:v14];
       v10 = [v9 copy];
@@ -37,8 +37,8 @@
       goto LABEL_7;
     }
 
-    v11 = [v4 nsRange];
-    v5 = [a1 vk_attributedSubstringFromRange:{v11, v12}];
+    nsRange = [v4 nsRange];
+    v5 = [self vk_attributedSubstringFromRange:{nsRange, v12}];
   }
 
   v10 = v5;
@@ -64,7 +64,7 @@ LABEL_7:
   v14 = v13;
   v16 = v14;
   v17 = v18;
-  [a1 enumerateAttribute:v12 inRange:a4 options:a5 usingBlock:{a6, v15}];
+  [self enumerateAttribute:v12 inRange:a4 options:a5 usingBlock:{a6, v15}];
 
   _Block_object_dispose(v18, 8);
 }
@@ -77,19 +77,19 @@ LABEL_7:
   {
     v14 = a4 + ((a5 - 1) & (a6 << 62 >> 63));
     v23 = 0;
-    v15 = [a1 length];
+    v15 = [self length];
     while (1)
     {
       v21 = 0;
       v22 = 0;
       if ((a6 & 0x100000) != 0)
       {
-        [a1 attribute:v12 atIndex:v14 effectiveRange:&v21];
+        [self attribute:v12 atIndex:v14 effectiveRange:&v21];
       }
 
       else
       {
-        [a1 attribute:v12 atIndex:v14 longestEffectiveRange:&v21 inRange:{0, v15}];
+        [self attribute:v12 atIndex:v14 longestEffectiveRange:&v21 inRange:{0, v15}];
       }
       v16 = ;
       v13[2](v13, v16, v21, v22, &v23);
@@ -110,7 +110,7 @@ LABEL_7:
 
       else
       {
-        v17 = [a1 length];
+        v17 = [self length];
         v18 = v17 - v15 + v21 + v22;
         v19 = a5 - v15 + v17;
         v20 = v17 == v15;
@@ -141,8 +141,8 @@ LABEL_7:
 
 - (id)vk_attributedStringByReplacingNewlineCharactersWithWhiteSpace
 {
-  v2 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-  v3 = [a1 vk_attributedStringByReplacingCharactersInSet:v2 withString:@" "];
+  newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+  v3 = [self vk_attributedStringByReplacingCharactersInSet:newlineCharacterSet withString:@" "];
 
   return v3;
 }
@@ -151,25 +151,25 @@ LABEL_7:
 {
   v6 = a3;
   v7 = a4;
-  v8 = a1;
-  v9 = [v8 string];
-  v10 = [v9 rangeOfCharacterFromSet:v6];
+  selfCopy = self;
+  string = [selfCopy string];
+  v10 = [string rangeOfCharacterFromSet:v6];
 
   if (v10 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = [v8 mutableCopy];
-    v12 = [v11 string];
-    v13 = [v12 rangeOfCharacterFromSet:v6];
+    v11 = [selfCopy mutableCopy];
+    string2 = [v11 string];
+    v13 = [string2 rangeOfCharacterFromSet:v6];
     v15 = v14;
 
     while (v13 != 0x7FFFFFFFFFFFFFFFLL)
     {
       [v11 replaceCharactersInRange:v13 withString:{v15, v7}];
-      v16 = [v11 string];
-      v17 = [v16 length] - v13;
+      string3 = [v11 string];
+      v17 = [string3 length] - v13;
 
-      v18 = [v11 string];
-      v13 = [v18 rangeOfCharacterFromSet:v6 options:2 range:{v13, v17}];
+      string4 = [v11 string];
+      v13 = [string4 rangeOfCharacterFromSet:v6 options:2 range:{v13, v17}];
       v15 = v19;
     }
 
@@ -177,11 +177,11 @@ LABEL_7:
     {
       v20 = [v11 copy];
 
-      v8 = v20;
+      selfCopy = v20;
     }
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

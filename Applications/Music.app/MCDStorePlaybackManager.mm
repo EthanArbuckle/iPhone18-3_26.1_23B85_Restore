@@ -1,58 +1,58 @@
 @interface MCDStorePlaybackManager
-- (id)_normalizedStringStoreIDForContentItem:(id)a3;
-- (id)_setupPlaybackIntentForContentItem:(id)a3 shouldShuffle:(BOOL)a4;
-- (id)_setupPlaybackIntentForQueuedSongsLength:(int64_t)a3 startItemIdentifiers:(id)a4;
-- (id)_storeIDForObject:(id)a3;
-- (void)_initiatePlaybackForItem:(id)a3 shouldShuffle:(BOOL)a4 playActivityFeatureName:(id)a5;
-- (void)initiatePlaybackForPlaylist:(id)a3 lastResponse:(id)a4 shuffled:(BOOL)a5 playActivityFeatureName:(id)a6;
-- (void)initiatePlaybackForRadioStation:(id)a3 lastResponse:(id)a4 shuffled:(BOOL)a5 playActivityFeatureName:(id)a6;
-- (void)initiatePlaybackForSong:(id)a3 lastResponse:(id)a4 shuffled:(BOOL)a5 forceScopingToResponseResults:(BOOL)a6 playActivityFeatureName:(id)a7;
-- (void)initiatePlaybackForSong:(id)a3 useResultsAsPlaybackQueue:(BOOL)a4 itemList:(id)a5 playActivityFeatureName:(id)a6;
+- (id)_normalizedStringStoreIDForContentItem:(id)item;
+- (id)_setupPlaybackIntentForContentItem:(id)item shouldShuffle:(BOOL)shuffle;
+- (id)_setupPlaybackIntentForQueuedSongsLength:(int64_t)length startItemIdentifiers:(id)identifiers;
+- (id)_storeIDForObject:(id)object;
+- (void)_initiatePlaybackForItem:(id)item shouldShuffle:(BOOL)shuffle playActivityFeatureName:(id)name;
+- (void)initiatePlaybackForPlaylist:(id)playlist lastResponse:(id)response shuffled:(BOOL)shuffled playActivityFeatureName:(id)name;
+- (void)initiatePlaybackForRadioStation:(id)station lastResponse:(id)response shuffled:(BOOL)shuffled playActivityFeatureName:(id)name;
+- (void)initiatePlaybackForSong:(id)song lastResponse:(id)response shuffled:(BOOL)shuffled forceScopingToResponseResults:(BOOL)results playActivityFeatureName:(id)name;
+- (void)initiatePlaybackForSong:(id)song useResultsAsPlaybackQueue:(BOOL)queue itemList:(id)list playActivityFeatureName:(id)name;
 @end
 
 @implementation MCDStorePlaybackManager
 
-- (void)initiatePlaybackForSong:(id)a3 lastResponse:(id)a4 shuffled:(BOOL)a5 forceScopingToResponseResults:(BOOL)a6 playActivityFeatureName:(id)a7
+- (void)initiatePlaybackForSong:(id)song lastResponse:(id)response shuffled:(BOOL)shuffled forceScopingToResponseResults:(BOOL)results playActivityFeatureName:(id)name
 {
-  v7 = a5;
-  v11 = a7;
-  v12 = a3;
-  v13 = [a4 results];
-  v14 = [v13 itemsInSectionAtIndex:0];
+  shuffledCopy = shuffled;
+  nameCopy = name;
+  songCopy = song;
+  results = [response results];
+  v14 = [results itemsInSectionAtIndex:0];
 
   if ([v14 count])
   {
-    [(MCDStorePlaybackManager *)self initiatePlaybackForSong:v12 useResultsAsPlaybackQueue:1 itemList:v14 playActivityFeatureName:v11];
+    [(MCDStorePlaybackManager *)self initiatePlaybackForSong:songCopy useResultsAsPlaybackQueue:1 itemList:v14 playActivityFeatureName:nameCopy];
   }
 
   else
   {
-    [(MCDStorePlaybackManager *)self _initiatePlaybackForItem:v12 shouldShuffle:v7 playActivityFeatureName:v11];
+    [(MCDStorePlaybackManager *)self _initiatePlaybackForItem:songCopy shouldShuffle:shuffledCopy playActivityFeatureName:nameCopy];
   }
 }
 
-- (void)initiatePlaybackForSong:(id)a3 useResultsAsPlaybackQueue:(BOOL)a4 itemList:(id)a5 playActivityFeatureName:(id)a6
+- (void)initiatePlaybackForSong:(id)song useResultsAsPlaybackQueue:(BOOL)queue itemList:(id)list playActivityFeatureName:(id)name
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (!v8)
+  queueCopy = queue;
+  songCopy = song;
+  listCopy = list;
+  nameCopy = name;
+  v13 = nameCopy;
+  if (!queueCopy)
   {
-    v31 = [(MCDStorePlaybackManager *)self _setupPlaybackIntentForContentItem:v10 shouldShuffle:0];
+    v31 = [(MCDStorePlaybackManager *)self _setupPlaybackIntentForContentItem:songCopy shouldShuffle:0];
     goto LABEL_29;
   }
 
-  v37 = v12;
-  v39 = self;
+  v37 = nameCopy;
+  selfCopy = self;
   v14 = +[NSMutableArray array];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v38 = v11;
-  v15 = v11;
+  v38 = listCopy;
+  v15 = listCopy;
   v16 = v14;
   v17 = v15;
   v18 = [v15 countByEnumeratingWithState:&v43 objects:v47 count:16];
@@ -83,39 +83,39 @@
           continue;
         }
 
-        v23 = [v22 identifiers];
-        v25 = [v23 universalStore];
-        v24 = [v25 adamID];
+        identifiers = [v22 identifiers];
+        universalStore = [identifiers universalStore];
+        adamID = [universalStore adamID];
 LABEL_13:
 
         goto LABEL_15;
       }
 
-      v23 = v22;
-      if ([v23 itemType] == 7)
+      identifiers = v22;
+      if ([identifiers itemType] == 7)
       {
-        v24 = [v23 song];
+        adamID = [identifiers song];
 
-        if (!v24)
+        if (!adamID)
         {
           goto LABEL_15;
         }
 
-        v25 = [v23 song];
-        v26 = [v25 identifiers];
-        v27 = [v26 universalStore];
-        v24 = [v27 adamID];
+        universalStore = [identifiers song];
+        identifiers2 = [universalStore identifiers];
+        universalStore2 = [identifiers2 universalStore];
+        adamID = [universalStore2 adamID];
 
         v16 = v40;
         goto LABEL_13;
       }
 
-      v24 = 0;
+      adamID = 0;
 LABEL_15:
 
-      if (v24)
+      if (adamID)
       {
-        v28 = [NSString stringWithFormat:@"%lld", v24];
+        v28 = [NSString stringWithFormat:@"%lld", adamID];
         [v16 addObject:v28];
       }
     }
@@ -126,12 +126,12 @@ LABEL_15:
   while (v19);
 LABEL_19:
 
-  [(MCDStorePlaybackManager *)v39 setPlaybackQueueItemIDs:v16];
+  [(MCDStorePlaybackManager *)selfCopy setPlaybackQueueItemIDs:v16];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v29 = [v10 song];
-    v30 = [v29 identifiers];
+    song = [songCopy song];
+    identifiers3 = [song identifiers];
   }
 
   else
@@ -139,23 +139,23 @@ LABEL_19:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v30 = [v10 identifiers];
+      identifiers3 = [songCopy identifiers];
     }
 
     else
     {
-      v30 = 0;
+      identifiers3 = 0;
     }
   }
 
-  v31 = -[MCDStorePlaybackManager _setupPlaybackIntentForQueuedSongsLength:startItemIdentifiers:](v39, "_setupPlaybackIntentForQueuedSongsLength:startItemIdentifiers:", [v16 count], v30);
-  v32 = [v10 identifiers];
-  v33 = [v32 personalizedStore];
-  v34 = [v33 recommendationID];
+  v31 = -[MCDStorePlaybackManager _setupPlaybackIntentForQueuedSongsLength:startItemIdentifiers:](selfCopy, "_setupPlaybackIntentForQueuedSongsLength:startItemIdentifiers:", [v16 count], identifiers3);
+  identifiers4 = [songCopy identifiers];
+  personalizedStore = [identifiers4 personalizedStore];
+  recommendationID = [personalizedStore recommendationID];
 
-  if (v34)
+  if (recommendationID)
   {
-    v35 = [v34 dataUsingEncoding:4];
+    v35 = [recommendationID dataUsingEncoding:4];
   }
 
   else
@@ -166,8 +166,8 @@ LABEL_19:
   [v31 setPlayActivityRecommendationData:v35];
 
   v13 = v37;
-  v11 = v38;
-  self = v39;
+  listCopy = v38;
+  self = selfCopy;
 LABEL_29:
   [v31 setPlayActivityFeatureName:v13];
   v41[0] = _NSConcreteStackBlock;
@@ -180,58 +180,58 @@ LABEL_29:
   [(MCDPlaybackManager *)self setupPlaybackRequestWithCompletion:v41];
 }
 
-- (void)initiatePlaybackForPlaylist:(id)a3 lastResponse:(id)a4 shuffled:(BOOL)a5 playActivityFeatureName:(id)a6
+- (void)initiatePlaybackForPlaylist:(id)playlist lastResponse:(id)response shuffled:(BOOL)shuffled playActivityFeatureName:(id)name
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  playlistCopy = playlist;
+  responseCopy = response;
+  nameCopy = name;
   v23.receiver = self;
   v23.super_class = MCDStorePlaybackManager;
-  v13 = [(MCDLibraryPlaybackManager *)&v23 playbackRequestForPlaylist:v10];
+  v13 = [(MCDLibraryPlaybackManager *)&v23 playbackRequestForPlaylist:playlistCopy];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100103A28;
   v17[3] = &unk_1010987C8;
-  v18 = v10;
-  v19 = v11;
-  v22 = a5;
-  v20 = v12;
-  v21 = self;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = playlistCopy;
+  v19 = responseCopy;
+  shuffledCopy = shuffled;
+  v20 = nameCopy;
+  selfCopy = self;
+  v14 = nameCopy;
+  v15 = responseCopy;
+  v16 = playlistCopy;
   [v13 performWithResponseHandler:v17];
 }
 
-- (void)initiatePlaybackForRadioStation:(id)a3 lastResponse:(id)a4 shuffled:(BOOL)a5 playActivityFeatureName:(id)a6
+- (void)initiatePlaybackForRadioStation:(id)station lastResponse:(id)response shuffled:(BOOL)shuffled playActivityFeatureName:(id)name
 {
-  v8 = a3;
-  v9 = a6;
-  v10 = v8;
+  stationCopy = station;
+  nameCopy = name;
+  v10 = stationCopy;
   objc_opt_class();
-  v11 = v10;
+  radioStation = v10;
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v11 = [v10 radioStation];
+    radioStation = [v10 radioStation];
   }
 
-  if (v11)
+  if (radioStation)
   {
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100103BD4;
     v12[3] = &unk_1010987F0;
-    v13 = v11;
-    v14 = v9;
-    v15 = self;
+    v13 = radioStation;
+    v14 = nameCopy;
+    selfCopy = self;
     [(MCDPlaybackManager *)self setupPlaybackRequestWithCompletion:v12];
   }
 }
 
-- (void)_initiatePlaybackForItem:(id)a3 shouldShuffle:(BOOL)a4 playActivityFeatureName:(id)a5
+- (void)_initiatePlaybackForItem:(id)item shouldShuffle:(BOOL)shuffle playActivityFeatureName:(id)name
 {
-  v8 = a3;
-  v9 = a5;
+  itemCopy = item;
+  nameCopy = name;
   v10 = MCDMusicGeneralLogging();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -244,17 +244,17 @@ LABEL_29:
   v13[2] = sub_100103E10;
   v13[3] = &unk_101098818;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = itemCopy;
+  shuffleCopy = shuffle;
+  v15 = nameCopy;
+  v11 = nameCopy;
+  v12 = itemCopy;
   [(MCDPlaybackManager *)self setupPlaybackRequestWithCompletion:v13];
 }
 
-- (id)_setupPlaybackIntentForQueuedSongsLength:(int64_t)a3 startItemIdentifiers:(id)a4
+- (id)_setupPlaybackIntentForQueuedSongsLength:(int64_t)length startItemIdentifiers:(id)identifiers
 {
-  v7 = a4;
+  identifiersCopy = identifiers;
   v8 = MCDMusicGeneralLogging();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -263,52 +263,52 @@ LABEL_29:
   }
 
   v9 = objc_alloc_init(MPCModelStorePlaybackItemsRequest);
-  v10 = [(MCDStorePlaybackManager *)self playbackQueueItemIDs];
-  v11 = [(MCDStorePlaybackManager *)self playbackQueueItemIDs];
-  v12 = [v11 count];
-  v13 = a3;
-  if (v12 <= a3)
+  playbackQueueItemIDs = [(MCDStorePlaybackManager *)self playbackQueueItemIDs];
+  playbackQueueItemIDs2 = [(MCDStorePlaybackManager *)self playbackQueueItemIDs];
+  v12 = [playbackQueueItemIDs2 count];
+  lengthCopy = length;
+  if (v12 <= length)
   {
-    v4 = [(MCDStorePlaybackManager *)self playbackQueueItemIDs];
-    v13 = [v4 count];
+    playbackQueueItemIDs3 = [(MCDStorePlaybackManager *)self playbackQueueItemIDs];
+    lengthCopy = [playbackQueueItemIDs3 count];
   }
 
-  v14 = [v10 subarrayWithRange:{0, v13}];
+  v14 = [playbackQueueItemIDs subarrayWithRange:{0, lengthCopy}];
   [v9 setStoreIDs:v14];
 
-  if (v12 <= a3)
+  if (v12 <= length)
   {
   }
 
-  v15 = [v9 playbackIntentWithStartItemIdentifiers:v7];
+  v15 = [v9 playbackIntentWithStartItemIdentifiers:identifiersCopy];
 
   return v15;
 }
 
-- (id)_setupPlaybackIntentForContentItem:(id)a3 shouldShuffle:(BOOL)a4
+- (id)_setupPlaybackIntentForContentItem:(id)item shouldShuffle:(BOOL)shuffle
 {
-  v4 = a4;
-  v5 = a3;
+  shuffleCopy = shuffle;
+  itemCopy = item;
   v6 = objc_alloc_init(MPCModelStorePlaybackItemsRequest);
   v7 = objc_alloc_init(NSMutableArray);
-  v8 = [v5 identifiers];
-  v9 = [v8 universalStore];
-  v10 = [v9 globalPlaylistID];
+  identifiers = [itemCopy identifiers];
+  universalStore = [identifiers universalStore];
+  globalPlaylistID = [universalStore globalPlaylistID];
 
-  if (v10 || ([v5 identifiers], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "universalStore"), v12 = objc_claimAutoreleasedReturnValue(), +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lld", objc_msgSend(v12, "adamID")), v10 = objc_claimAutoreleasedReturnValue(), v12, v11, v10))
+  if (globalPlaylistID || ([itemCopy identifiers], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "universalStore"), v12 = objc_claimAutoreleasedReturnValue(), +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lld", objc_msgSend(v12, "adamID")), globalPlaylistID = objc_claimAutoreleasedReturnValue(), v12, v11, globalPlaylistID))
   {
-    [v7 addObject:v10];
+    [v7 addObject:globalPlaylistID];
   }
 
   [v6 setStoreIDs:v7];
   v13 = [v6 playbackIntentWithStartItemIdentifiers:0];
-  v14 = [v5 identifiers];
-  v15 = [v14 personalizedStore];
-  v16 = [v15 recommendationID];
+  identifiers2 = [itemCopy identifiers];
+  personalizedStore = [identifiers2 personalizedStore];
+  recommendationID = [personalizedStore recommendationID];
 
-  if (v16)
+  if (recommendationID)
   {
-    v17 = [v16 dataUsingEncoding:4];
+    v17 = [recommendationID dataUsingEncoding:4];
   }
 
   else
@@ -317,7 +317,7 @@ LABEL_29:
   }
 
   [v13 setPlayActivityRecommendationData:v17];
-  if (v4)
+  if (shuffleCopy)
   {
     v18 = 1;
   }
@@ -332,41 +332,41 @@ LABEL_29:
   return v13;
 }
 
-- (id)_normalizedStringStoreIDForContentItem:(id)a3
+- (id)_normalizedStringStoreIDForContentItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v8 = [(MCDStorePlaybackManager *)self _storeIDForObject:v4];
+    v8 = [(MCDStorePlaybackManager *)self _storeIDForObject:itemCopy];
     goto LABEL_12;
   }
 
-  v5 = v4;
-  v6 = [v5 itemType];
-  if (v6 == 7)
+  v5 = itemCopy;
+  itemType = [v5 itemType];
+  if (itemType == 7)
   {
-    v7 = [v5 song];
+    song = [v5 song];
   }
 
-  else if (v6 == 4)
+  else if (itemType == 4)
   {
-    v7 = [v5 playlist];
+    song = [v5 playlist];
   }
 
   else
   {
-    if (v6 != 1)
+    if (itemType != 1)
     {
       v8 = 0;
       goto LABEL_11;
     }
 
-    v7 = [v5 album];
+    song = [v5 album];
   }
 
-  v9 = v7;
-  v8 = [(MCDStorePlaybackManager *)self _storeIDForObject:v7];
+  v9 = song;
+  v8 = [(MCDStorePlaybackManager *)self _storeIDForObject:song];
 
 LABEL_11:
 LABEL_12:
@@ -374,16 +374,16 @@ LABEL_12:
   return v8;
 }
 
-- (id)_storeIDForObject:(id)a3
+- (id)_storeIDForObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v4 = [v3 identifiers];
-    v5 = [v4 universalStore];
-    v6 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v5 adamID]);
-    v7 = MPStoreItemMetadataStringNormalizeStoreIDValue();
+    identifiers = [objectCopy identifiers];
+    universalStore = [identifiers universalStore];
+    v6 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [universalStore adamID]);
+    globalPlaylistID = MPStoreItemMetadataStringNormalizeStoreIDValue();
 
 LABEL_4:
     goto LABEL_5;
@@ -392,16 +392,16 @@ LABEL_4:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 identifiers];
-    v5 = [v4 universalStore];
-    v7 = [v5 globalPlaylistID];
+    identifiers = [objectCopy identifiers];
+    universalStore = [identifiers universalStore];
+    globalPlaylistID = [universalStore globalPlaylistID];
     goto LABEL_4;
   }
 
-  v7 = 0;
+  globalPlaylistID = 0;
 LABEL_5:
 
-  return v7;
+  return globalPlaylistID;
 }
 
 @end

@@ -1,85 +1,85 @@
 @interface SearchUIButtonItemAccessoryViewController
-+ (BOOL)supportsRowModel:(id)a3;
++ (BOOL)supportsRowModel:(id)model;
 - (id)buttonTypes;
 - (id)setupView;
-- (void)updateWithRowModel:(id)a3;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUIButtonItemAccessoryViewController
 
-+ (BOOL)supportsRowModel:(id)a3
++ (BOOL)supportsRowModel:(id)model
 {
-  v3 = a3;
-  v4 = [v3 action];
-  v5 = [v3 buttonItems];
-  if ([v5 count] && (objc_msgSend(v3, "buttonItemsAreTrailing") & 1) != 0)
+  modelCopy = model;
+  action = [modelCopy action];
+  buttonItems = [modelCopy buttonItems];
+  if ([buttonItems count] && (objc_msgSend(modelCopy, "buttonItemsAreTrailing") & 1) != 0)
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [v4 contactIdentifier];
-    if (v7)
+    contactIdentifier = [action contactIdentifier];
+    if (contactIdentifier)
     {
       v6 = 1;
     }
 
     else
     {
-      v8 = [v4 phoneNumber];
-      if (v8)
+      phoneNumber = [action phoneNumber];
+      if (phoneNumber)
       {
         v6 = 1;
       }
 
       else
       {
-        v9 = [v4 email];
-        if (v9)
+        email = [action email];
+        if (email)
         {
           v6 = 1;
         }
 
         else
         {
-          v10 = [v4 mapsData];
-          if (v10)
+          mapsData = [action mapsData];
+          if (mapsData)
           {
             v6 = 1;
           }
 
           else
           {
-            v11 = [v4 location];
-            if (v11)
+            location = [action location];
+            if (location)
             {
               v6 = 1;
             }
 
             else
             {
-              v12 = [v4 customDirectionsPunchout];
-              if (v12)
+              customDirectionsPunchout = [action customDirectionsPunchout];
+              if (customDirectionsPunchout)
               {
                 v6 = 1;
               }
 
               else
               {
-                v13 = [v4 messageURL];
-                if (v13)
+                messageURL = [action messageURL];
+                if (messageURL)
                 {
                   v6 = 1;
                 }
 
                 else
                 {
-                  v16 = [v4 label];
-                  if ([v16 length])
+                  label = [action label];
+                  if ([label length])
                   {
-                    v15 = [v4 storeIdentifiers];
-                    v6 = [v15 count] == 0;
+                    storeIdentifiers = [action storeIdentifiers];
+                    v6 = [storeIdentifiers count] == 0;
                   }
 
                   else
@@ -87,7 +87,7 @@
                     v6 = 0;
                   }
 
-                  v13 = 0;
+                  messageURL = 0;
                 }
               }
             }
@@ -107,15 +107,15 @@
   return v2;
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  modelCopy = model;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = [v4 buttonItems];
+  obj = [modelCopy buttonItems];
   v35 = [obj countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (!v35)
   {
@@ -123,8 +123,8 @@
     goto LABEL_37;
   }
 
-  v31 = self;
-  v32 = v4;
+  selfCopy = self;
+  v32 = modelCopy;
   v36 = 1;
   v34 = *v38;
   v5 = 1;
@@ -150,14 +150,14 @@
       }
 
       v9 = v8;
-      v10 = [v9 image];
-      v11 = v10 == 0;
+      image = [v9 image];
+      v11 = image == 0;
 
-      v12 = [v9 title];
-      v13 = [v12 length];
+      title = [v9 title];
+      v13 = [title length];
       v14 = v13 != 0;
 
-      if (v10)
+      if (image)
       {
         v15 = v13 == 0;
       }
@@ -169,7 +169,7 @@
 
       if (v15)
       {
-        v16 = [v9 image];
+        image2 = [v9 image];
         objc_opt_class();
         v36 &= objc_opt_isKindOfClass();
       }
@@ -183,7 +183,7 @@
       {
         v17 = [v7 performSelector:sel_toggleButtonConfiguration];
         v18 = v17;
-        if (v10)
+        if (image)
         {
           v11 = 0;
           if (v13)
@@ -192,31 +192,31 @@
           }
 
 LABEL_23:
-          v21 = [v18 toggledTitle];
-          if ([v21 length])
+          toggledTitle = [v18 toggledTitle];
+          if ([toggledTitle length])
           {
             v14 = 1;
           }
 
           else
           {
-            v22 = [v18 untoggledTitle];
-            v14 = [v22 length] != 0;
+            untoggledTitle = [v18 untoggledTitle];
+            v14 = [untoggledTitle length] != 0;
           }
         }
 
         else
         {
-          v19 = [v17 toggledImage];
-          if (v19)
+          toggledImage = [v17 toggledImage];
+          if (toggledImage)
           {
             v11 = 0;
           }
 
           else
           {
-            v20 = [v18 untoggledImage];
-            v11 = v20 == 0;
+            untoggledImage = [v18 untoggledImage];
+            v11 = untoggledImage == 0;
           }
 
           if (!v13)
@@ -252,16 +252,16 @@ LABEL_18:
     v24 = v23;
   }
 
-  self = v31;
-  v4 = v32;
+  self = selfCopy;
+  modelCopy = v32;
 LABEL_37:
 
-  v25 = [v4 useCompactVersionOfUI];
-  v26 = [(SearchUIAccessoryViewController *)self view];
-  [v26 setIsCompact:v25];
+  useCompactVersionOfUI = [modelCopy useCompactVersionOfUI];
+  view = [(SearchUIAccessoryViewController *)self view];
+  [view setIsCompact:useCompactVersionOfUI];
 
-  v27 = [(SearchUIAccessoryViewController *)self view];
-  v28 = [v4 buttonItems];
+  view2 = [(SearchUIAccessoryViewController *)self view];
+  buttonItems = [modelCopy buttonItems];
   if ([MEMORY[0x1E69D9240] isMacOS])
   {
     v29 = 5;
@@ -272,16 +272,16 @@ LABEL_37:
     v29 = 3;
   }
 
-  v30 = [(SearchUIAccessoryViewController *)self feedbackDelegate:v31];
-  [v27 updateWithButtonItems:v28 maxButtonItems:v29 buttonItemViewType:v24 rowModel:v4 feedbackDelegate:v30];
+  v30 = [(SearchUIAccessoryViewController *)self feedbackDelegate:selfCopy];
+  [view2 updateWithButtonItems:buttonItems maxButtonItems:v29 buttonItemViewType:v24 rowModel:modelCopy feedbackDelegate:v30];
 }
 
 - (id)buttonTypes
 {
-  v2 = [(SearchUIAccessoryViewController *)self view];
-  v3 = [v2 buttonTypes];
+  view = [(SearchUIAccessoryViewController *)self view];
+  buttonTypes = [view buttonTypes];
 
-  return v3;
+  return buttonTypes;
 }
 
 @end

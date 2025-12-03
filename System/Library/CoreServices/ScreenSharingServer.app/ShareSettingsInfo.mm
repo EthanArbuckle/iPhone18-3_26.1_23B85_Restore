@@ -1,7 +1,7 @@
 @interface ShareSettingsInfo
 - (ShareSettingsInfo)init;
 - (id)gatherSystemInfo;
-- (void)centralManagerDidUpdateState:(id)a3;
+- (void)centralManagerDidUpdateState:(id)state;
 - (void)dealloc;
 @end
 
@@ -48,11 +48,11 @@
   }
 
   sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/ShareSettingsInfo.m", 110, 140, "[ShareSettingsInfo gatherSystemInfo]", 7, 0, "gather system info");
-  v4 = self;
+  selfCopy = self;
   v5 = +[NSProcessInfo processInfo];
-  v6 = [v5 isLowPowerModeEnabled];
+  isLowPowerModeEnabled = [v5 isLowPowerModeEnabled];
 
-  if (v6)
+  if (isLowPowerModeEnabled)
   {
     if (sub_1000423E0())
     {
@@ -149,7 +149,7 @@
   }
 
   v15 = objc_opt_new();
-  v16 = [v15 crossAppTrackingAllowed];
+  crossAppTrackingAllowed = [v15 crossAppTrackingAllowed];
   if (sub_1000423E0())
   {
     v17 = sub_100042E68();
@@ -160,14 +160,14 @@
       *&buf[12] = 1024;
       *&buf[14] = 742;
       *&buf[18] = 1024;
-      *&buf[20] = v16;
+      *&buf[20] = crossAppTrackingAllowed;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "[%s:%d] cross-app tracking enabled %d", buf, 0x18u);
     }
   }
 
-  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/ShareSettingsInfo.m", 110, 742, "CrossAppTrackingEnabled", 7, 0, "cross-app tracking enabled %d", v16);
+  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/ShareSettingsInfo.m", 110, 742, "CrossAppTrackingEnabled", 7, 0, "cross-app tracking enabled %d", crossAppTrackingAllowed);
 
-  if (v16)
+  if (crossAppTrackingAllowed)
   {
     if (sub_1000423E0())
     {
@@ -186,7 +186,7 @@
     v8 = v8 | 4;
   }
 
-  v19 = v4;
+  v19 = selfCopy;
   v20 = [CBCentralManager alloc];
   v21 = dispatch_get_global_queue(17, 0);
   *v454 = CBCentralManagerOptionShowPowerAlertKey;
@@ -213,9 +213,9 @@
 
   while (1)
   {
-    v26 = [(ShareSettingsInfo *)v19 stateSemaphore];
+    stateSemaphore = [(ShareSettingsInfo *)v19 stateSemaphore];
     v27 = dispatch_time(0, 10000000);
-    v28 = dispatch_semaphore_wait(v26, v27) == 0;
+    v28 = dispatch_semaphore_wait(stateSemaphore, v27) == 0;
 
     if (v28)
     {
@@ -250,19 +250,19 @@ LABEL_47:
 
     sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/ShareSettingsInfo.m", 110, 883, "BluetoothEnabled", 3, 0, "CBCentralManager did not update state");
     [v24 setDelegate:0];
-    v32 = 0;
+    bOOLValue = 0;
     goto LABEL_52;
   }
 
-  v81 = [v24 state];
-  v32 = 0;
-  if (v81 > 2)
+  state = [v24 state];
+  bOOLValue = 0;
+  if (state > 2)
   {
-    if (v81 != 3)
+    if (state != 3)
     {
-      if (v81 != 4)
+      if (state != 4)
       {
-        if (v81 == 5)
+        if (state == 5)
         {
           if (sub_1000423E0())
           {
@@ -278,7 +278,7 @@ LABEL_47:
           }
 
           sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/ShareSettingsInfo.m", 110, 894, "BluetoothEnabled", 7, 0, "Bluetooth state is CBManagerStatePoweredOn");
-          v32 = 1;
+          bOOLValue = 1;
         }
 
         goto LABEL_547;
@@ -299,7 +299,7 @@ LABEL_47:
 
       sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/ShareSettingsInfo.m", 110, 899, "BluetoothEnabled", 7, 0, "Bluetooth state is CBManagerStatePoweredOff");
 LABEL_544:
-      v32 = 0;
+      bOOLValue = 0;
       goto LABEL_547;
     }
 
@@ -324,7 +324,7 @@ LABEL_544:
     goto LABEL_532;
   }
 
-  switch(v81)
+  switch(state)
   {
     case 0:
       if (sub_1000423E0())
@@ -403,13 +403,13 @@ LABEL_532:
           {
             v394 = [v392 description];
             v395 = v394;
-            v396 = [v394 UTF8String];
+            uTF8String = [v394 UTF8String];
             *v452 = 136315650;
             *&v452[4] = "BluetoothEnabled";
             *&v452[12] = 1024;
             *&v452[14] = 928;
             *&v452[18] = 2080;
-            *&v452[20] = v396;
+            *&v452[20] = uTF8String;
             _os_log_impl(&_mh_execute_header, v393, OS_LOG_TYPE_DEFAULT, "[%s:%d] SCDynamicStore shows: %s", v452, 0x1Cu);
           }
         }
@@ -422,12 +422,12 @@ LABEL_532:
         v400 = v399;
         if (v399)
         {
-          v32 = [v399 BOOLValue];
+          bOOLValue = [v399 BOOLValue];
         }
 
         else
         {
-          v32 = 0;
+          bOOLValue = 0;
         }
 
         CFRelease(v391);
@@ -463,16 +463,16 @@ LABEL_547:
       *&v452[12] = 1024;
       *&v452[14] = 941;
       *&v452[18] = 1024;
-      *&v452[20] = v32;
+      *&v452[20] = bOOLValue;
       _os_log_impl(&_mh_execute_header, v402, OS_LOG_TYPE_DEFAULT, "[%s:%d] Bluetooth enabled: %d", v452, 0x18u);
     }
   }
 
-  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/ShareSettingsInfo.m", 110, 941, "BluetoothEnabled", 7, 0, "Bluetooth enabled: %d", v32);
+  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/ShareSettingsInfo.m", 110, 941, "BluetoothEnabled", 7, 0, "Bluetooth enabled: %d", bOOLValue);
 LABEL_52:
   _Block_object_dispose(&v444, 8);
 
-  if (v32)
+  if (bOOLValue)
   {
     if (sub_1000423E0())
     {
@@ -493,9 +493,9 @@ LABEL_52:
 
   v34 = objc_alloc_init(CWFInterface);
   [v34 activate];
-  v35 = [v34 powerOn];
+  powerOn = [v34 powerOn];
 
-  if (v35)
+  if (powerOn)
   {
     if (sub_1000423E0())
     {
@@ -516,7 +516,7 @@ LABEL_52:
 
   v37 = dispatch_get_global_queue(0, 0);
   v38 = [[IDSSignInController alloc] initWithQueue:v37];
-  v39 = [v38 isFaceTimeEnabled];
+  isFaceTimeEnabled = [v38 isFaceTimeEnabled];
   if (sub_1000423E0())
   {
     v40 = sub_100042E68();
@@ -527,14 +527,14 @@ LABEL_52:
       *&buf[12] = 1024;
       *&buf[14] = 966;
       *&buf[18] = 1024;
-      *&buf[20] = v39;
+      *&buf[20] = isFaceTimeEnabled;
       _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "[%s:%d] FaceTimeEnabled returning %d", buf, 0x18u);
     }
   }
 
-  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/ShareSettingsInfo.m", 110, 966, "FaceTimeEnabled", 7, 0, "FaceTimeEnabled returning %d", v39);
+  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/ShareSettingsInfo.m", 110, 966, "FaceTimeEnabled", 7, 0, "FaceTimeEnabled returning %d", isFaceTimeEnabled);
 
-  if (v39)
+  if (isFaceTimeEnabled)
   {
     if (sub_1000423E0())
     {
@@ -554,9 +554,9 @@ LABEL_52:
   }
 
   v42 = objc_alloc_init(RadiosPreferences);
-  v43 = [v42 airplaneMode];
+  airplaneMode = [v42 airplaneMode];
 
-  if (v43)
+  if (airplaneMode)
   {
     if (sub_1000423E0())
     {
@@ -611,26 +611,26 @@ LABEL_52:
       v51 = sub_100042E68();
       if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
       {
-        v52 = [v50 code];
+        code = [v50 code];
         v53 = [v50 description];
         v54 = v53;
-        v55 = [v53 UTF8String];
+        uTF8String2 = [v53 UTF8String];
         *buf = 136315906;
         *&buf[4] = "IsDNDEnabled";
         *&buf[12] = 1024;
         *&buf[14] = 644;
         *&buf[18] = 2048;
-        *&buf[20] = v52;
+        *&buf[20] = code;
         *&buf[28] = 2080;
-        *&buf[30] = v55;
+        *&buf[30] = uTF8String2;
         _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_DEFAULT, "[%s:%d] dnd state error code %ld  %s", buf, 0x26u);
       }
     }
 
-    v56 = [v50 code];
+    code2 = [v50 code];
     v57 = [v50 description];
     v58 = v57;
-    sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/ShareSettingsInfo.m", 110, 644, "IsDNDEnabled", 7, 0, "dnd state error code %ld  %s", v56, [v57 UTF8String]);
+    sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/ShareSettingsInfo.m", 110, 644, "IsDNDEnabled", 7, 0, "dnd state error code %ld  %s", code2, [v57 UTF8String]);
   }
 
   if (v49)
@@ -640,13 +640,13 @@ LABEL_52:
       v59 = sub_100042E68();
       if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
       {
-        v60 = [v49 isActive];
+        isActive = [v49 isActive];
         *buf = 136315650;
         *&buf[4] = "IsDNDEnabled";
         *&buf[12] = 1024;
         *&buf[14] = 647;
         *&buf[18] = 1024;
-        *&buf[20] = v60;
+        *&buf[20] = isActive;
         _os_log_impl(&_mh_execute_header, v59, OS_LOG_TYPE_DEFAULT, "[%s:%d] dnd active %d", buf, 0x18u);
       }
     }
@@ -686,13 +686,13 @@ LABEL_52:
         {
           v66 = [v64 description];
           v67 = v66;
-          v68 = [v66 UTF8String];
+          uTF8String3 = [v66 UTF8String];
           *v454 = 136315650;
           *&v454[4] = "IsDNDScheduled";
           v455 = 1024;
           v456 = 668;
           v457 = 2080;
-          v458 = v68;
+          v458 = uTF8String3;
           _os_log_impl(&_mh_execute_header, v65, OS_LOG_TYPE_DEFAULT, "[%s:%d] Error getting the mode configs %s", v454, 0x1Cu);
         }
       }
@@ -722,14 +722,14 @@ LABEL_52:
               objc_enumerationMutation(obj);
             }
 
-            v74 = [*(*&v452[8] + 8 * i) triggers];
-            if ([v74 count])
+            triggers = [*(*&v452[8] + 8 * i) triggers];
+            if ([triggers count])
             {
               v450 = 0u;
               v451 = 0u;
               v448 = 0u;
               v449 = 0u;
-              v75 = v74;
+              v75 = triggers;
               v76 = [v75 countByEnumeratingWithState:&v448 objects:&v444 count:16];
               if (v76)
               {
@@ -835,26 +835,26 @@ LABEL_143:
       v89 = sub_100042E68();
       if (os_log_type_enabled(v89, OS_LOG_TYPE_DEFAULT))
       {
-        v90 = [v88 code];
+        code3 = [v88 code];
         v91 = [v88 description];
         v92 = v91;
-        v93 = [v91 UTF8String];
+        uTF8String4 = [v91 UTF8String];
         *buf = 136315906;
         *&buf[4] = "IsDNDLockScreenOnly";
         *&buf[12] = 1024;
         *&buf[14] = 707;
         *&buf[18] = 2048;
-        *&buf[20] = v90;
+        *&buf[20] = code3;
         *&buf[28] = 2080;
-        *&buf[30] = v93;
+        *&buf[30] = uTF8String4;
         _os_log_impl(&_mh_execute_header, v89, OS_LOG_TYPE_DEFAULT, "[%s:%d] Error getting behavior settings error = %ld  %s", buf, 0x26u);
       }
     }
 
-    v94 = [v88 code];
+    code4 = [v88 code];
     v95 = [v88 description];
     v96 = v95;
-    sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/ShareSettingsInfo.m", 110, 707, "IsDNDLockScreenOnly", 7, 0, "Error getting behavior settings error = %ld  %s", v94, [v95 UTF8String]);
+    sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/ShareSettingsInfo.m", 110, 707, "IsDNDLockScreenOnly", 7, 0, "Error getting behavior settings error = %ld  %s", code4, [v95 UTF8String]);
 
     v97 = 1;
   }
@@ -1191,31 +1191,31 @@ LABEL_143:
           v147 = sub_100042E68();
           if (os_log_type_enabled(v147, OS_LOG_TYPE_DEFAULT))
           {
-            v148 = [v146 accountType];
-            v149 = [v148 identifier];
-            v150 = v149;
-            v151 = [v149 UTF8String];
+            accountType = [v146 accountType];
+            identifier = [accountType identifier];
+            v150 = identifier;
+            uTF8String5 = [identifier UTF8String];
             *v452 = 136315650;
             *&v452[4] = "GetMailAccountsInfo";
             *&v452[12] = 1024;
             *&v452[14] = 529;
             *&v452[18] = 2080;
-            *&v452[20] = v151;
+            *&v452[20] = uTF8String5;
             _os_log_impl(&_mh_execute_header, v147, OS_LOG_TYPE_DEFAULT, "[%s:%d] id %s", v452, 0x1Cu);
           }
         }
 
-        v152 = [v146 accountType];
-        v153 = [v152 identifier];
-        v154 = v153;
-        sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/ShareSettingsInfo.m", 110, 529, "GetMailAccountsInfo", 7, 0, "id %s", [v153 UTF8String]);
+        accountType2 = [v146 accountType];
+        identifier2 = [accountType2 identifier];
+        v154 = identifier2;
+        sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/ShareSettingsInfo.m", 110, 529, "GetMailAccountsInfo", 7, 0, "id %s", [identifier2 UTF8String]);
 
-        v155 = [v146 enabledDataclasses];
-        if ([v155 containsObject:@"com.apple.Dataclass.Mail"])
+        enabledDataclasses = [v146 enabledDataclasses];
+        if ([enabledDataclasses containsObject:@"com.apple.Dataclass.Mail"])
         {
-          v156 = [v146 accountType];
-          v157 = [v156 identifier];
-          v158 = [v157 isEqualToString:v421];
+          accountType3 = [v146 accountType];
+          identifier3 = [accountType3 identifier];
+          v158 = [identifier3 isEqualToString:v421];
 
           v159 = sub_1000423E0();
           if (v158)
@@ -1225,22 +1225,22 @@ LABEL_143:
               v160 = sub_100042E68();
               if (os_log_type_enabled(v160, OS_LOG_TYPE_DEFAULT))
               {
-                v161 = [v146 accountDescription];
-                v162 = v161;
-                v163 = [v161 UTF8String];
+                accountDescription = [v146 accountDescription];
+                v162 = accountDescription;
+                uTF8String6 = [accountDescription UTF8String];
                 *v452 = 136315650;
                 *&v452[4] = "GetMailAccountsInfo";
                 *&v452[12] = 1024;
                 *&v452[14] = 535;
                 *&v452[18] = 2080;
-                *&v452[20] = v163;
+                *&v452[20] = uTF8String6;
                 _os_log_impl(&_mh_execute_header, v160, OS_LOG_TYPE_DEFAULT, "[%s:%d] %s ignore this smtp account", v452, 0x1Cu);
               }
             }
 
-            v164 = [v146 accountDescription];
-            v165 = v164;
-            sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/ShareSettingsInfo.m", 110, 535, "GetMailAccountsInfo", 7, 0, "%s ignore this smtp account", [v164 UTF8String]);
+            accountDescription2 = [v146 accountDescription];
+            v165 = accountDescription2;
+            sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/ShareSettingsInfo.m", 110, 535, "GetMailAccountsInfo", 7, 0, "%s ignore this smtp account", [accountDescription2 UTF8String]);
           }
 
           else
@@ -1250,38 +1250,38 @@ LABEL_143:
               v166 = sub_100042E68();
               if (os_log_type_enabled(v166, OS_LOG_TYPE_DEFAULT))
               {
-                v167 = [v146 accountDescription];
-                v168 = v167;
-                v169 = [v167 UTF8String];
-                v170 = [v146 accountType];
-                v171 = [v170 identifier];
-                v172 = v171;
-                v173 = [v171 UTF8String];
+                accountDescription3 = [v146 accountDescription];
+                v168 = accountDescription3;
+                uTF8String7 = [accountDescription3 UTF8String];
+                accountType4 = [v146 accountType];
+                identifier4 = [accountType4 identifier];
+                v172 = identifier4;
+                uTF8String8 = [identifier4 UTF8String];
                 *v452 = 136315906;
                 *&v452[4] = "GetMailAccountsInfo";
                 *&v452[12] = 1024;
                 *&v452[14] = 539;
                 *&v452[18] = 2080;
-                *&v452[20] = v169;
+                *&v452[20] = uTF8String7;
                 *&v452[28] = 2080;
-                *&v452[30] = v173;
+                *&v452[30] = uTF8String8;
                 _os_log_impl(&_mh_execute_header, v166, OS_LOG_TYPE_DEFAULT, "[%s:%d] %s identifier %s contains mail", v452, 0x26u);
               }
             }
 
-            v174 = [v146 accountDescription];
-            v175 = v174;
-            v176 = [v174 UTF8String];
-            v177 = [v146 accountType];
-            v178 = [v177 identifier];
-            v179 = v178;
-            sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/ShareSettingsInfo.m", 110, 539, "GetMailAccountsInfo", 7, 0, "%s identifier %s contains mail", v176, [v178 UTF8String]);
+            accountDescription4 = [v146 accountDescription];
+            v175 = accountDescription4;
+            uTF8String9 = [accountDescription4 UTF8String];
+            accountType5 = [v146 accountType];
+            identifier5 = [accountType5 identifier];
+            v179 = identifier5;
+            sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/ShareSettingsInfo.m", 110, 539, "GetMailAccountsInfo", 7, 0, "%s identifier %s contains mail", uTF8String9, [identifier5 UTF8String]);
 
-            v180 = [v146 accountType];
-            v181 = [v180 identifier];
-            LODWORD(v174) = [v181 isEqualToString:@"com.apple.account.Yahoo"];
+            accountType6 = [v146 accountType];
+            identifier6 = [accountType6 identifier];
+            LODWORD(accountDescription4) = [identifier6 isEqualToString:@"com.apple.account.Yahoo"];
 
-            if (v174)
+            if (accountDescription4)
             {
               if (sub_1000423E0())
               {
@@ -1302,9 +1302,9 @@ LABEL_143:
 
             else
             {
-              v183 = [v146 accountType];
-              v184 = [v183 identifier];
-              v185 = [v184 isEqualToString:@"com.apple.account.Google"];
+              accountType7 = [v146 accountType];
+              identifier7 = [accountType7 identifier];
+              v185 = [identifier7 isEqualToString:@"com.apple.account.Google"];
 
               if (v185)
               {
@@ -1327,9 +1327,9 @@ LABEL_143:
 
               else
               {
-                v187 = [v146 accountType];
-                v188 = [v187 identifier];
-                v189 = [v188 isEqualToString:@"com.apple.account.OnMyDevice"];
+                accountType8 = [v146 accountType];
+                identifier8 = [accountType8 identifier];
+                v189 = [identifier8 isEqualToString:@"com.apple.account.OnMyDevice"];
 
                 if ((v189 & 1) == 0)
                 {
@@ -1418,65 +1418,65 @@ LABEL_143:
           v197 = sub_100042E68();
           if (os_log_type_enabled(v197, OS_LOG_TYPE_DEFAULT))
           {
-            v198 = [v196 accountType];
-            v199 = [v198 identifier];
-            v200 = v199;
-            v201 = [v199 UTF8String];
+            accountType9 = [v196 accountType];
+            identifier9 = [accountType9 identifier];
+            v200 = identifier9;
+            uTF8String10 = [identifier9 UTF8String];
             *v452 = 136315650;
             *&v452[4] = "GetContactsAccountsInfo";
             *&v452[12] = 1024;
             *&v452[14] = 596;
             *&v452[18] = 2080;
-            *&v452[20] = v201;
+            *&v452[20] = uTF8String10;
             _os_log_impl(&_mh_execute_header, v197, OS_LOG_TYPE_DEFAULT, "[%s:%d] id %s", v452, 0x1Cu);
           }
         }
 
-        v202 = [v196 accountType];
-        v203 = [v202 identifier];
-        v204 = v203;
-        sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/ShareSettingsInfo.m", 110, 596, "GetContactsAccountsInfo", 7, 0, "id %s", [v203 UTF8String]);
+        accountType10 = [v196 accountType];
+        identifier10 = [accountType10 identifier];
+        v204 = identifier10;
+        sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/ShareSettingsInfo.m", 110, 596, "GetContactsAccountsInfo", 7, 0, "id %s", [identifier10 UTF8String]);
 
-        v205 = [v196 enabledDataclasses];
-        if ([v205 containsObject:@"com.apple.Dataclass.Contacts"])
+        enabledDataclasses2 = [v196 enabledDataclasses];
+        if ([enabledDataclasses2 containsObject:@"com.apple.Dataclass.Contacts"])
         {
           if (sub_1000423E0())
           {
             v206 = sub_100042E68();
             if (os_log_type_enabled(v206, OS_LOG_TYPE_DEFAULT))
             {
-              v207 = [v196 accountDescription];
-              v208 = v207;
-              v209 = [v207 UTF8String];
-              v210 = [v196 accountType];
-              v211 = [v210 identifier];
-              v212 = v211;
-              v213 = [v211 UTF8String];
+              accountDescription5 = [v196 accountDescription];
+              v208 = accountDescription5;
+              uTF8String11 = [accountDescription5 UTF8String];
+              accountType11 = [v196 accountType];
+              identifier11 = [accountType11 identifier];
+              v212 = identifier11;
+              uTF8String12 = [identifier11 UTF8String];
               *v452 = 136315906;
               *&v452[4] = "GetContactsAccountsInfo";
               *&v452[12] = 1024;
               *&v452[14] = 600;
               *&v452[18] = 2080;
-              *&v452[20] = v209;
+              *&v452[20] = uTF8String11;
               *&v452[28] = 2080;
-              *&v452[30] = v213;
+              *&v452[30] = uTF8String12;
               _os_log_impl(&_mh_execute_header, v206, OS_LOG_TYPE_DEFAULT, "[%s:%d] %s identifier %s contains contacts", v452, 0x26u);
             }
           }
 
-          v214 = [v196 accountDescription];
-          v215 = v214;
-          v216 = [v214 UTF8String];
-          v217 = [v196 accountType];
-          v218 = [v217 identifier];
-          v219 = v218;
-          sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/ShareSettingsInfo.m", 110, 600, "GetContactsAccountsInfo", 7, 0, "%s identifier %s contains contacts", v216, [v218 UTF8String]);
+          accountDescription6 = [v196 accountDescription];
+          v215 = accountDescription6;
+          uTF8String13 = [accountDescription6 UTF8String];
+          accountType12 = [v196 accountType];
+          identifier12 = [accountType12 identifier];
+          v219 = identifier12;
+          sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/ShareSettingsInfo.m", 110, 600, "GetContactsAccountsInfo", 7, 0, "%s identifier %s contains contacts", uTF8String13, [identifier12 UTF8String]);
 
-          v220 = [v196 accountType];
-          v221 = [v220 identifier];
-          LODWORD(v216) = [v221 isEqualToString:@"com.apple.account.Yahoo"];
+          accountType13 = [v196 accountType];
+          identifier13 = [accountType13 identifier];
+          LODWORD(uTF8String13) = [identifier13 isEqualToString:@"com.apple.account.Yahoo"];
 
-          if (v216)
+          if (uTF8String13)
           {
             if (sub_1000423E0())
             {
@@ -1497,9 +1497,9 @@ LABEL_143:
 
           else
           {
-            v223 = [v196 accountType];
-            v224 = [v223 identifier];
-            v225 = [v224 isEqualToString:@"com.apple.account.Google"];
+            accountType14 = [v196 accountType];
+            identifier14 = [accountType14 identifier];
+            v225 = [identifier14 isEqualToString:@"com.apple.account.Google"];
 
             if (v225)
             {
@@ -1522,9 +1522,9 @@ LABEL_143:
 
             else
             {
-              v227 = [v196 accountType];
-              v228 = [v227 identifier];
-              v229 = [v228 isEqualToString:@"com.apple.account.OnMyDevice"];
+              accountType15 = [v196 accountType];
+              identifier15 = [accountType15 identifier];
+              v229 = [identifier15 isEqualToString:@"com.apple.account.OnMyDevice"];
 
               if ((v229 & 1) == 0)
               {
@@ -1620,15 +1620,15 @@ LABEL_143:
   v431 = [NSNumber numberWithUnsignedInt:v238];
   [v412 setObject:v431 forKeyedSubscript:@"iOS-Accounts"];
   v239 = objc_alloc_init(ACAccountStore);
-  v240 = [v239 aa_primaryAppleAccountWithPreloadedDataclasses];
-  v241 = v240;
-  if (v240)
+  aa_primaryAppleAccountWithPreloadedDataclasses = [v239 aa_primaryAppleAccountWithPreloadedDataclasses];
+  v241 = aa_primaryAppleAccountWithPreloadedDataclasses;
+  if (aa_primaryAppleAccountWithPreloadedDataclasses)
   {
-    v242 = [v240 enabledDataclasses];
-    v243 = [v242 containsObject:ACAccountDataclassUbiquity];
+    enabledDataclasses3 = [aa_primaryAppleAccountWithPreloadedDataclasses enabledDataclasses];
+    v243 = [enabledDataclasses3 containsObject:ACAccountDataclassUbiquity];
 
-    v244 = [v241 enabledDataclasses];
-    v245 = [v244 containsObject:ACAccountDataclassCloudPhotos];
+    enabledDataclasses4 = [v241 enabledDataclasses];
+    v245 = [enabledDataclasses4 containsObject:ACAccountDataclassCloudPhotos];
 
     if (v245)
     {
@@ -1640,56 +1640,56 @@ LABEL_143:
       v246 = v243;
     }
 
-    v247 = [v241 enabledDataclasses];
-    v248 = [v247 containsObject:v404];
+    enabledDataclasses5 = [v241 enabledDataclasses];
+    v248 = [enabledDataclasses5 containsObject:v404];
 
     if (v248)
     {
       v246 |= 4u;
     }
 
-    v249 = [v241 enabledDataclasses];
-    v250 = [v249 containsObject:v403];
+    enabledDataclasses6 = [v241 enabledDataclasses];
+    v250 = [enabledDataclasses6 containsObject:v403];
 
     if (v250)
     {
       v246 |= 8u;
     }
 
-    v251 = [v241 enabledDataclasses];
-    v252 = [v251 containsObject:ACAccountDataclassCalendars];
+    enabledDataclasses7 = [v241 enabledDataclasses];
+    v252 = [enabledDataclasses7 containsObject:ACAccountDataclassCalendars];
 
     if (v252)
     {
       v246 |= 0x10u;
     }
 
-    v253 = [v241 enabledDataclasses];
-    v254 = [v253 containsObject:ACAccountDataclassReminders];
+    enabledDataclasses8 = [v241 enabledDataclasses];
+    v254 = [enabledDataclasses8 containsObject:ACAccountDataclassReminders];
 
     if (v254)
     {
       v246 |= 0x20u;
     }
 
-    v255 = [v241 enabledDataclasses];
-    v256 = [v255 containsObject:ACAccountDataclassMessages];
+    enabledDataclasses9 = [v241 enabledDataclasses];
+    v256 = [enabledDataclasses9 containsObject:ACAccountDataclassMessages];
 
     if (v256)
     {
       v246 |= 0x40u;
     }
 
-    v257 = [v241 enabledDataclasses];
-    v258 = [v257 containsObject:ACAccountDataclassBookmarks];
+    enabledDataclasses10 = [v241 enabledDataclasses];
+    v258 = [enabledDataclasses10 containsObject:ACAccountDataclassBookmarks];
 
     if (v258)
     {
       v246 |= 0x80u;
     }
 
-    v259 = [v241 enabledDataclasses];
-    v260 = [v259 containsObject:ACAccountDataclassBackup];
+    enabledDataclasses11 = [v241 enabledDataclasses];
+    v260 = [enabledDataclasses11 containsObject:ACAccountDataclassBackup];
 
     if (v260)
     {
@@ -1719,13 +1719,13 @@ LABEL_143:
           {
             v268 = [v266 description];
             v269 = v268;
-            v270 = [v268 UTF8String];
+            uTF8String14 = [v268 UTF8String];
             *buf = 136315650;
             *&buf[4] = "CloudKeychainEnabled";
             *&buf[12] = 1024;
             *&buf[14] = 763;
             *&buf[18] = 2080;
-            *&buf[20] = v270;
+            *&buf[20] = uTF8String14;
             _os_log_impl(&_mh_execute_header, v267, OS_LOG_TYPE_ERROR, "[%s:%d] fetchUserControllableViewsSyncingEnabled failed %s", buf, 0x1Cu);
           }
         }
@@ -1759,8 +1759,8 @@ LABEL_143:
       sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/ShareSettingsInfo.m", 110, 757, "CloudKeychainEnabled", 3, 0, "failed to create an OTClique, unable to return keychain sync info");
     }
 
-    v276 = [v241 enabledDataclasses];
-    v277 = [v276 containsObject:ACAccountDataclassNotes];
+    enabledDataclasses12 = [v241 enabledDataclasses];
+    v277 = [enabledDataclasses12 containsObject:ACAccountDataclassNotes];
 
     if (v277)
     {
@@ -1932,13 +1932,13 @@ LABEL_388:
         {
           v314 = [v296 description];
           v315 = v314;
-          v316 = [v314 UTF8String];
+          uTF8String15 = [v314 UTF8String];
           *buf = 136315650;
           *&buf[4] = "SelectedPlanDataRoamingEnabled";
           *&buf[12] = 1024;
           *&buf[14] = 1085;
           *&buf[18] = 2080;
-          *&buf[20] = v316;
+          *&buf[20] = uTF8String15;
           _os_log_impl(&_mh_execute_header, v313, OS_LOG_TYPE_DEFAULT, "[%s:%d] SelectedPlanDataRoamingEnabled: no data service descriptor available, error = %s", buf, 0x1Cu);
         }
       }
@@ -1962,13 +1962,13 @@ LABEL_388:
           {
             v300 = [v298 description];
             v301 = v300;
-            v302 = [v300 UTF8String];
+            uTF8String16 = [v300 UTF8String];
             *buf = 136315650;
             *&buf[4] = "SelectedPlanDataRoamingEnabled";
             *&buf[12] = 1024;
             *&buf[14] = 1079;
             *&buf[18] = 2080;
-            *&buf[20] = v302;
+            *&buf[20] = uTF8String16;
             _os_log_impl(&_mh_execute_header, v299, OS_LOG_TYPE_ERROR, "[%s:%d] SelectedPlanDataRoamingEnabled: failed to get the roaming enabled value, error = %s", buf, 0x1Cu);
           }
         }
@@ -1989,8 +1989,8 @@ LABEL_388:
           v308 = v444;
           if (v307)
           {
-            v309 = [v307 subscriptions];
-            v310 = [v309 count] > 1;
+            subscriptions = [v307 subscriptions];
+            v310 = [subscriptions count] > 1;
 
             if (v310)
             {
@@ -2011,13 +2011,13 @@ LABEL_438:
               {
                 v324 = [v308 description];
                 v325 = v324;
-                v326 = [v324 UTF8String];
+                uTF8String17 = [v324 UTF8String];
                 *buf = 136315650;
                 *&buf[4] = "isMultiSim";
                 *&buf[12] = 1024;
                 *&buf[14] = 1057;
                 *&buf[18] = 2080;
-                *&buf[20] = v326;
+                *&buf[20] = uTF8String17;
                 _os_log_impl(&_mh_execute_header, v323, OS_LOG_TYPE_ERROR, "[%s:%d] isMultiSim: error getting activeContexts, error = %s", buf, 0x1Cu);
               }
             }
@@ -2089,8 +2089,8 @@ LABEL_439:
 
   [v412 setObject:@"iOS" forKeyedSubscript:@"os"];
   v332 = +[NSProcessInfo processInfo];
-  v333 = [v332 operatingSystemVersionString];
-  [v412 setObject:v333 forKeyedSubscript:@"OSVersion"];
+  operatingSystemVersionString = [v332 operatingSystemVersionString];
+  [v412 setObject:operatingSystemVersionString forKeyedSubscript:@"OSVersion"];
 
   v334 = MGCopyAnswer();
   [v412 setObject:v334 forKeyedSubscript:@"ComputerName"];
@@ -2186,12 +2186,12 @@ LABEL_439:
     }
 
     sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/ShareSettingsInfo.m", 110, 981, "GetMMSEnabled", 7, 0, "Has multiple SIMs");
-    v345 = [v341 ctServiceSubscriptions];
+    ctServiceSubscriptions = [v341 ctServiceSubscriptions];
     v446 = 0u;
     v447 = 0u;
     v444 = 0u;
     v445 = 0u;
-    v346 = v345;
+    v346 = ctServiceSubscriptions;
     v347 = [v346 countByEnumeratingWithState:&v444 objects:buf count:16];
     if (v347)
     {
@@ -2206,9 +2206,9 @@ LABEL_439:
           }
 
           v350 = *(*(&v444 + 1) + 8 * n);
-          v351 = [v350 phoneNumber];
-          v352 = [v350 labelID];
-          v353 = [IMCTSMSUtilities IMMMSEnabledForPhoneNumber:v351 simID:v352];
+          phoneNumber = [v350 phoneNumber];
+          labelID = [v350 labelID];
+          v353 = [IMCTSMSUtilities IMMMSEnabledForPhoneNumber:phoneNumber simID:labelID];
 
           if (v353)
           {
@@ -2256,13 +2256,13 @@ LABEL_439:
       {
         v364 = [v356 description];
         v365 = v364;
-        v366 = [v364 UTF8String];
+        uTF8String18 = [v364 UTF8String];
         *v452 = 136315650;
         *&v452[4] = "GetMMSEnabled";
         *&v452[12] = 1024;
         *&v452[14] = 1006;
         *&v452[18] = 2080;
-        *&v452[20] = v366;
+        *&v452[20] = uTF8String18;
         _os_log_impl(&_mh_execute_header, v363, OS_LOG_TYPE_ERROR, "[%s:%d] error getting the active subscription %s", v452, 0x1Cu);
       }
     }
@@ -2273,18 +2273,18 @@ LABEL_439:
     goto LABEL_495;
   }
 
-  v357 = [v355 preferredOrDefaultSubscriptionContext];
-  v358 = v357;
-  if (!v357)
+  preferredOrDefaultSubscriptionContext = [v355 preferredOrDefaultSubscriptionContext];
+  v358 = preferredOrDefaultSubscriptionContext;
+  if (!preferredOrDefaultSubscriptionContext)
   {
 LABEL_495:
 
     goto LABEL_496;
   }
 
-  v359 = [v357 phoneNumber];
-  v360 = [v358 labelID];
-  v361 = [IMCTSMSUtilities IMMMSEnabledForPhoneNumber:v359 simID:v360];
+  phoneNumber2 = [preferredOrDefaultSubscriptionContext phoneNumber];
+  labelID2 = [v358 labelID];
+  v361 = [IMCTSMSUtilities IMMMSEnabledForPhoneNumber:phoneNumber2 simID:labelID2];
 
   if (v361)
   {
@@ -2352,13 +2352,13 @@ LABEL_496:
     {
       v377 = [v375 description];
       v378 = v377;
-      v379 = [v377 UTF8String];
+      uTF8String19 = [v377 UTF8String];
       *buf = 136315650;
       *&buf[4] = "[ShareSettingsInfo gatherSystemInfo]";
       *&buf[12] = 1024;
       *&buf[14] = 220;
       *&buf[18] = 2080;
-      *&buf[20] = v379;
+      *&buf[20] = uTF8String19;
       _os_log_impl(&_mh_execute_header, v376, OS_LOG_TYPE_DEFAULT, "[%s:%d] DLC %s", buf, 0x1Cu);
     }
   }
@@ -2376,13 +2376,13 @@ LABEL_496:
     {
       v383 = [v412 description];
       v384 = v383;
-      v385 = [v383 UTF8String];
+      uTF8String20 = [v383 UTF8String];
       *buf = 136315650;
       *&buf[4] = "[ShareSettingsInfo gatherSystemInfo]";
       *&buf[12] = 1024;
       *&buf[14] = 223;
       *&buf[18] = 2080;
-      *&buf[20] = v385;
+      *&buf[20] = uTF8String20;
       _os_log_impl(&_mh_execute_header, v382, OS_LOG_TYPE_DEFAULT, "[%s:%d] system info %s", buf, 0x1Cu);
     }
   }
@@ -2394,10 +2394,10 @@ LABEL_496:
   return v412;
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v3 = [(ShareSettingsInfo *)self stateSemaphore];
-  dispatch_semaphore_signal(v3);
+  stateSemaphore = [(ShareSettingsInfo *)self stateSemaphore];
+  dispatch_semaphore_signal(stateSemaphore);
 }
 
 @end

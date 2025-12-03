@@ -1,12 +1,12 @@
 @interface SUCorePolicyExtensionAbsoluteCompatibility
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SUCorePolicyExtensionAbsoluteCompatibility)init;
-- (SUCorePolicyExtensionAbsoluteCompatibility)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SUCorePolicyExtensionAbsoluteCompatibility)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
-- (void)extendSoftwareUpdateMAAssetQuery:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)extendSoftwareUpdateMAAssetQuery:(id)query;
 @end
 
 @implementation SUCorePolicyExtensionAbsoluteCompatibility
@@ -26,44 +26,44 @@
   return v3;
 }
 
-- (void)extendSoftwareUpdateMAAssetQuery:(id)a3
+- (void)extendSoftwareUpdateMAAssetQuery:(id)query
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCorePolicyExtensionAbsoluteCompatibility *)self compatibilityVersion];
+  queryCopy = query;
+  compatibilityVersion = [(SUCorePolicyExtensionAbsoluteCompatibility *)self compatibilityVersion];
 
-  if (v5)
+  if (compatibilityVersion)
   {
-    v6 = [(SUCorePolicyExtensionAbsoluteCompatibility *)self compatibilityVersion];
-    v7 = [v6 stringValue];
-    [v4 addKeyValuePair:@"_CompatibilityVersion" with:v7];
+    compatibilityVersion2 = [(SUCorePolicyExtensionAbsoluteCompatibility *)self compatibilityVersion];
+    stringValue = [compatibilityVersion2 stringValue];
+    [queryCopy addKeyValuePair:@"_CompatibilityVersion" with:stringValue];
   }
 
-  v8 = [MEMORY[0x277D64460] sharedLogger];
-  v9 = [v8 oslog];
+  mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+  oslog = [mEMORY[0x277D64460] oslog];
 
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(SUCorePolicyExtensionAbsoluteCompatibility *)self compatibilityVersion];
+    compatibilityVersion3 = [(SUCorePolicyExtensionAbsoluteCompatibility *)self compatibilityVersion];
     v12 = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
-    v15 = v10;
-    _os_log_impl(&dword_23193C000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ querying SU metadata: compatibilityVersion=%{public}@", &v12, 0x16u);
+    v15 = compatibilityVersion3;
+    _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ querying SU metadata: compatibilityVersion=%{public}@", &v12, 0x16u);
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (SUCorePolicyExtensionAbsoluteCompatibility)initWithCoder:(id)a3
+- (SUCorePolicyExtensionAbsoluteCompatibility)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SUCorePolicyExtensionAbsoluteCompatibility;
   v5 = [(SUCorePolicyExtension *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_CompatibilityVersion"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_CompatibilityVersion"];
     compatibilityVersion = v5->_compatibilityVersion;
     v5->_compatibilityVersion = v6;
   }
@@ -71,17 +71,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SUCorePolicyExtensionAbsoluteCompatibility *)self compatibilityVersion];
-  [v4 encodeObject:v5 forKey:@"_CompatibilityVersion"];
+  coderCopy = coder;
+  compatibilityVersion = [(SUCorePolicyExtensionAbsoluteCompatibility *)self compatibilityVersion];
+  [coderCopy encodeObject:compatibilityVersion forKey:@"_CompatibilityVersion"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -92,9 +92,9 @@
     if (objc_opt_isKindOfClass())
     {
       v5 = MEMORY[0x277D643F8];
-      v6 = [(SUCorePolicyExtensionAbsoluteCompatibility *)v4 compatibilityVersion];
-      v7 = [(SUCorePolicyExtensionAbsoluteCompatibility *)self compatibilityVersion];
-      v8 = [v5 numberIsEqual:v6 to:v7];
+      compatibilityVersion = [(SUCorePolicyExtensionAbsoluteCompatibility *)equalCopy compatibilityVersion];
+      compatibilityVersion2 = [(SUCorePolicyExtensionAbsoluteCompatibility *)self compatibilityVersion];
+      v8 = [v5 numberIsEqual:compatibilityVersion to:compatibilityVersion2];
     }
 
     else
@@ -108,13 +108,13 @@
 
 - (id)summary
 {
-  v3 = [(SUCorePolicyExtensionAbsoluteCompatibility *)self compatibilityVersion];
+  compatibilityVersion = [(SUCorePolicyExtensionAbsoluteCompatibility *)self compatibilityVersion];
 
-  if (v3)
+  if (compatibilityVersion)
   {
     v4 = objc_alloc(MEMORY[0x277CCACA8]);
-    v5 = [(SUCorePolicyExtensionAbsoluteCompatibility *)self compatibilityVersion];
-    v6 = [v4 initWithFormat:@"|compatibilityVersion=%@", v5];
+    compatibilityVersion2 = [(SUCorePolicyExtensionAbsoluteCompatibility *)self compatibilityVersion];
+    v6 = [v4 initWithFormat:@"|compatibilityVersion=%@", compatibilityVersion2];
     v7 = [&stru_28469CC48 stringByAppendingString:v6];
   }
 
@@ -136,18 +136,18 @@
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(SUCorePolicyExtensionAbsoluteCompatibility *)self extensionName];
-  v5 = [(SUCorePolicyExtensionAbsoluteCompatibility *)self compatibilityVersion];
-  v6 = [v3 initWithFormat:@"%@(compatibilityVersion:%@)", v4, v5];
+  extensionName = [(SUCorePolicyExtensionAbsoluteCompatibility *)self extensionName];
+  compatibilityVersion = [(SUCorePolicyExtensionAbsoluteCompatibility *)self compatibilityVersion];
+  v6 = [v3 initWithFormat:@"%@(compatibilityVersion:%@)", extensionName, compatibilityVersion];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SUCorePolicyExtensionAbsoluteCompatibility);
-  v5 = [(SUCorePolicyExtensionAbsoluteCompatibility *)self compatibilityVersion];
-  [(SUCorePolicyExtensionAbsoluteCompatibility *)v4 setCompatibilityVersion:v5];
+  compatibilityVersion = [(SUCorePolicyExtensionAbsoluteCompatibility *)self compatibilityVersion];
+  [(SUCorePolicyExtensionAbsoluteCompatibility *)v4 setCompatibilityVersion:compatibilityVersion];
 
   return v4;
 }

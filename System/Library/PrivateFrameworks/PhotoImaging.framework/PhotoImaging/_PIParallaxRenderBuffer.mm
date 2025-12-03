@@ -1,6 +1,6 @@
 @interface _PIParallaxRenderBuffer
 - ($0AC6E346AE4835514AAA8AC86D8F4844)size;
-- (_PIParallaxRenderBuffer)initWithPixelBuffer:(id)a3 renderTask:(id)a4;
+- (_PIParallaxRenderBuffer)initWithPixelBuffer:(id)buffer renderTask:(id)task;
 - (__CVBuffer)CVPixelBuffer;
 @end
 
@@ -45,9 +45,9 @@
     }
   }
 
-  v9 = [(NUImageBuffer *)self->_pixelBuffer CVPixelBuffer];
+  cVPixelBuffer = [(NUImageBuffer *)self->_pixelBuffer CVPixelBuffer];
 
-  return v9;
+  return cVPixelBuffer;
 }
 
 - ($0AC6E346AE4835514AAA8AC86D8F4844)size
@@ -58,19 +58,19 @@
   return result;
 }
 
-- (_PIParallaxRenderBuffer)initWithPixelBuffer:(id)a3 renderTask:(id)a4
+- (_PIParallaxRenderBuffer)initWithPixelBuffer:(id)buffer renderTask:(id)task
 {
-  v6 = a3;
-  v7 = a4;
+  bufferCopy = buffer;
+  taskCopy = task;
   v13.receiver = self;
   v13.super_class = _PIParallaxRenderBuffer;
   v8 = [(_PIParallaxRenderBuffer *)&v13 init];
   pixelBuffer = v8->_pixelBuffer;
-  v8->_pixelBuffer = v6;
-  v10 = v6;
+  v8->_pixelBuffer = bufferCopy;
+  v10 = bufferCopy;
 
   renderTask = v8->_renderTask;
-  v8->_renderTask = v7;
+  v8->_renderTask = taskCopy;
 
   return v8;
 }

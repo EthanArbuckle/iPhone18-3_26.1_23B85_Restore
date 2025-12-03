@@ -1,17 +1,17 @@
 @interface MRUMirroringViewController
 - (BOOL)isConnectedToExternalDisplay;
-- (id)leadingImageForMenuItem:(id)a3;
-- (void)mirroringController:(id)a3 didChangeOutputDevice:(id)a4;
-- (void)mirroringController:(id)a3 didUpdateBusyIdenifiers:(id)a4;
-- (void)selectOutputDevice:(id)a3;
-- (void)setContentRenderingMode:(unint64_t)a3;
-- (void)stopMirroringDismissOnComplete:(BOOL)a3;
+- (id)leadingImageForMenuItem:(id)item;
+- (void)mirroringController:(id)controller didChangeOutputDevice:(id)device;
+- (void)mirroringController:(id)controller didUpdateBusyIdenifiers:(id)idenifiers;
+- (void)selectOutputDevice:(id)device;
+- (void)setContentRenderingMode:(unint64_t)mode;
+- (void)stopMirroringDismissOnComplete:(BOOL)complete;
 - (void)updateFooter;
 - (void)updateGlyphPackageDescription;
 - (void)updateItems;
 - (void)updateState;
 - (void)viewDidLoad;
-- (void)willTransitionToExpandedContentMode:(BOOL)a3;
+- (void)willTransitionToExpandedContentMode:(BOOL)mode;
 @end
 
 @implementation MRUMirroringViewController
@@ -28,8 +28,8 @@
   v4 = [MEMORY[0x29EDB8D80] arrayWithObjects:v28 count:1];
   v5 = [(MRUMirroringViewController *)self registerForTraitChanges:v4 withAction:sel_updateGlyphPackageDescription];
 
-  v6 = [MEMORY[0x29EDC5910] screenMirroring];
-  [(CCUIMenuModuleViewController *)self setTitle:v6];
+  screenMirroring = [MEMORY[0x29EDC5910] screenMirroring];
+  [(CCUIMenuModuleViewController *)self setTitle:screenMirroring];
 
   [(CCUIMenuModuleViewController *)self setMinimumMenuItems:4];
   [(CCUIMenuModuleViewController *)self setVisibleMenuItems:0.0];
@@ -50,40 +50,40 @@
   v14 = v13;
   if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
   {
-    v15 = [(FBSDisplayMonitor *)self->_displayMonitor mainConfiguration];
-    v16 = [v15 deviceName];
-    v17 = [(FBSDisplayMonitor *)self->_displayMonitor mainConfiguration];
-    v18 = [v17 hardwareIdentifier];
-    v19 = [(FBSDisplayMonitor *)self->_displayMonitor connectedIdentities];
+    mainConfiguration = [(FBSDisplayMonitor *)self->_displayMonitor mainConfiguration];
+    deviceName = [mainConfiguration deviceName];
+    mainConfiguration2 = [(FBSDisplayMonitor *)self->_displayMonitor mainConfiguration];
+    hardwareIdentifier = [mainConfiguration2 hardwareIdentifier];
+    connectedIdentities = [(FBSDisplayMonitor *)self->_displayMonitor connectedIdentities];
     *buf = 138478339;
-    v23 = v16;
+    v23 = deviceName;
     v24 = 2114;
-    v25 = v18;
+    v25 = hardwareIdentifier;
     v26 = 2112;
-    v27 = v19;
+    v27 = connectedIdentities;
     _os_signpost_emit_with_name_impl(&dword_29C950000, v14, OS_SIGNPOST_EVENT, v12, "MirrorModuleViewDidLoad", "EVENT DETAILS || displayMonitor (mainConfiguration) - deviceName:%{private}@, hardwareID:%{public}@}, connectedIdentities:%@", buf, 0x20u);
   }
 
   v20 = *MEMORY[0x29EDCA608];
 }
 
-- (void)setContentRenderingMode:(unint64_t)a3
+- (void)setContentRenderingMode:(unint64_t)mode
 {
   v4.receiver = self;
   v4.super_class = MRUMirroringViewController;
-  [(CCUIButtonModuleViewController *)&v4 setContentRenderingMode:a3];
+  [(CCUIButtonModuleViewController *)&v4 setContentRenderingMode:mode];
   [(MRUMirroringViewController *)self updateState];
 }
 
-- (void)willTransitionToExpandedContentMode:(BOOL)a3
+- (void)willTransitionToExpandedContentMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v7.receiver = self;
   v7.super_class = MRUMirroringViewController;
   [(CCUIMenuModuleViewController *)&v7 willTransitionToExpandedContentMode:?];
   [(MRUMirroringViewController *)self updateState];
   controller = self->_controller;
-  if (v3)
+  if (modeCopy)
   {
     [(MRUMirroringController *)controller startDetailedDiscovery];
     v6[0] = MEMORY[0x29EDCA5F8];
@@ -101,16 +101,16 @@
   }
 }
 
-- (id)leadingImageForMenuItem:(id)a3
+- (id)leadingImageForMenuItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = [MEMORY[0x29EDC7AD0] configurationWithPointSize:4 weight:3 scale:17.0];
     v5 = MEMORY[0x29EDC7AC8];
-    v6 = [v3 symbolName];
-    v7 = [v5 _systemImageNamed:v6];
+    symbolName = [itemCopy symbolName];
+    v7 = [v5 _systemImageNamed:symbolName];
 
     v8 = [v7 imageWithConfiguration:v4];
   }
@@ -123,17 +123,17 @@
   return v8;
 }
 
-- (void)mirroringController:(id)a3 didChangeOutputDevice:(id)a4
+- (void)mirroringController:(id)controller didChangeOutputDevice:(id)device
 {
-  [(MRUMirroringViewController *)self updateState:a3];
+  [(MRUMirroringViewController *)self updateState:controller];
   [(MRUMirroringViewController *)self updateItems];
 
   MEMORY[0x2A1C70FE8](self, sel_updateFooter);
 }
 
-- (void)mirroringController:(id)a3 didUpdateBusyIdenifiers:(id)a4
+- (void)mirroringController:(id)controller didUpdateBusyIdenifiers:(id)idenifiers
 {
-  if ([(CCUIButtonModuleViewController *)self isExpanded:a3])
+  if ([(CCUIButtonModuleViewController *)self isExpanded:controller])
   {
     v5[0] = MEMORY[0x29EDCA5F8];
     v5[1] = 3221225472;
@@ -150,15 +150,15 @@
   if ([(CCUIButtonModuleViewController *)self isExpanded])
   {
     v37 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
-    v34 = [(MRUMirroringController *)self->_controller availableOutputDevices];
-    v3 = [v34 msv_filter:&unk_2A23E3258];
+    availableOutputDevices = [(MRUMirroringController *)self->_controller availableOutputDevices];
+    v3 = [availableOutputDevices msv_filter:&unk_2A23E3258];
     v48[0] = MEMORY[0x29EDCA5F8];
     v48[1] = 3221225472;
     v48[2] = sub_29C951DF8;
     v48[3] = &unk_29F3366B8;
     v33 = v3;
     v49 = v33;
-    v32 = [v34 msv_filter:v48];
+    v32 = [availableOutputDevices msv_filter:v48];
     if (-[MRUMirroringViewController showMoreExpanded](self, "showMoreExpanded") || ![v33 count])
     {
       v4 = [v33 arrayByAddingObjectsFromArray:v32];
@@ -189,17 +189,17 @@
           }
 
           v6 = *(*(&v44 + 1) + 8 * v5);
-          v7 = [(MRUMirroringController *)self->_controller busyIdentifiers];
-          v8 = [v6 deviceID];
-          v9 = [v7 containsObject:v8];
+          busyIdentifiers = [(MRUMirroringController *)self->_controller busyIdentifiers];
+          deviceID = [v6 deviceID];
+          v9 = [busyIdentifiers containsObject:deviceID];
 
-          v10 = [(MRUMirroringController *)self->_controller selectedOutputDevice];
-          v11 = [v6 isEqual:v10];
+          selectedOutputDevice = [(MRUMirroringController *)self->_controller selectedOutputDevice];
+          v11 = [v6 isEqual:selectedOutputDevice];
 
           objc_initWeak(location, self);
           v12 = [MRUMirroringMenuModuleItem alloc];
-          v13 = [v6 name];
-          v14 = [v6 deviceID];
+          name = [v6 name];
+          deviceID2 = [v6 deviceID];
           v40[0] = MEMORY[0x29EDCA5F8];
           v40[1] = 3221225472;
           v40[2] = sub_29C951E1C;
@@ -208,7 +208,7 @@
           v42 = v11;
           v43 = v9;
           v40[4] = v6;
-          v15 = [(CCUIMenuModuleItem *)v12 initWithTitle:v13 identifier:v14 handler:v40];
+          v15 = [(CCUIMenuModuleItem *)v12 initWithTitle:name identifier:deviceID2 handler:v40];
 
           v16 = [MEMORY[0x29EDC5908] symbolNameForOutputDevice:v6];
           [(MRUMirroringMenuModuleItem *)v15 setSymbolName:v16];
@@ -231,17 +231,17 @@
 
     if (![(MRUMirroringViewController *)self showMoreExpanded])
     {
-      v17 = [v34 count];
+      v17 = [availableOutputDevices count];
       if (v17 > [obj count])
       {
         v18 = [MRUMirroringMenuModuleItem alloc];
-        v19 = [MEMORY[0x29EDC5910] routingFooterShowMoreTitle];
+        routingFooterShowMoreTitle = [MEMORY[0x29EDC5910] routingFooterShowMoreTitle];
         v39[0] = MEMORY[0x29EDCA5F8];
         v39[1] = 3221225472;
         v39[2] = sub_29C951E80;
         v39[3] = &unk_29F336708;
         v39[4] = self;
-        v20 = [(CCUIMenuModuleItem *)v18 initWithTitle:v19 identifier:@"showmore" handler:v39];
+        v20 = [(CCUIMenuModuleItem *)v18 initWithTitle:routingFooterShowMoreTitle identifier:@"showmore" handler:v39];
         [v37 addObject:v20];
       }
     }
@@ -283,18 +283,18 @@
 - (void)updateFooter
 {
   location[1] = *MEMORY[0x29EDCA608];
-  v3 = [(MRUMirroringController *)self->_controller selectedOutputDevice];
+  selectedOutputDevice = [(MRUMirroringController *)self->_controller selectedOutputDevice];
 
-  if (v3)
+  if (selectedOutputDevice)
   {
     objc_initWeak(location, self);
-    v4 = [MEMORY[0x29EDC5910] stopMirroring];
+    stopMirroring = [MEMORY[0x29EDC5910] stopMirroring];
     v15[0] = MEMORY[0x29EDCA5F8];
     v15[1] = 3221225472;
     v15[2] = sub_29C952128;
     v15[3] = &unk_29F336730;
     objc_copyWeak(&v16, location);
-    [(CCUIMenuModuleViewController *)self setFooterButtonTitle:v4 handler:v15];
+    [(CCUIMenuModuleViewController *)self setFooterButtonTitle:stopMirroring handler:v15];
 
     v5 = _MRLogCategoryMirroringView();
     v6 = os_signpost_id_generate(v5);
@@ -303,9 +303,9 @@
     v8 = v7;
     if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
     {
-      v9 = [(CCUIMenuModuleViewController *)self hasFooterButton];
+      hasFooterButton = [(CCUIMenuModuleViewController *)self hasFooterButton];
       *buf = 67109120;
-      v18 = v9;
+      v18 = hasFooterButton;
       _os_signpost_emit_with_name_impl(&dword_29C950000, v8, OS_SIGNPOST_EVENT, v6, "SetMirrorModuleFooterButton", "EVENT DETAILS || hasFooterButton:%{BOOL}u", buf, 8u);
     }
 
@@ -334,10 +334,10 @@
 
 - (void)updateGlyphPackageDescription
 {
-  v3 = [(MRUMirroringViewController *)self traitCollection];
-  v4 = [v3 accessibilityContrast];
+  traitCollection = [(MRUMirroringViewController *)self traitCollection];
+  accessibilityContrast = [traitCollection accessibilityContrast];
   v5 = @"Mirroring";
-  if (v4 == 1)
+  if (accessibilityContrast == 1)
   {
     v5 = @"Mirroring_IC";
   }
@@ -354,8 +354,8 @@
   v33 = *MEMORY[0x29EDCA608];
   if ([(CCUIButtonModuleViewController *)self contentRenderingMode]== 1)
   {
-    v3 = [(CCUIButtonModuleViewController *)self buttonView];
-    [v3 setGlyphState:@"off"];
+    buttonView = [(CCUIButtonModuleViewController *)self buttonView];
+    [buttonView setGlyphState:@"off"];
 
     [(CCUIButtonModuleViewController *)self setSelected:0];
     v4 = _MRLogCategoryMirroringView();
@@ -365,16 +365,16 @@
     v7 = v6;
     if (v5 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v6))
     {
-      v8 = [(CCUIButtonModuleViewController *)self isExpanded];
-      v9 = [(CCUIButtonModuleViewController *)self isSelected];
-      v10 = [(CCUIButtonModuleViewController *)self buttonView];
-      v11 = [v10 glyphState];
+      isExpanded = [(CCUIButtonModuleViewController *)self isExpanded];
+      isSelected = [(CCUIButtonModuleViewController *)self isSelected];
+      buttonView2 = [(CCUIButtonModuleViewController *)self buttonView];
+      glyphState = [buttonView2 glyphState];
       v27 = 67109634;
-      v28 = v8;
+      v28 = isExpanded;
       v29 = 1024;
-      v30 = v9;
+      v30 = isSelected;
       v31 = 2114;
-      v32 = v11;
+      v32 = glyphState;
       v12 = "UpdatedMirroringModuleStateModePreview";
 LABEL_15:
       _os_signpost_emit_with_name_impl(&dword_29C950000, v7, OS_SIGNPOST_EVENT, v5, v12, "EVENT DETAILS || isModuleExpanded:%{BOOL}u, isModuleSelected:%{BOOL}u, glyphState:%{public}@", &v27, 0x18u);
@@ -384,8 +384,8 @@ LABEL_15:
   else if ([(CCUIButtonModuleViewController *)self isExpanded])
   {
     [(CCUIButtonModuleViewController *)self setSelected:0];
-    v13 = [(CCUIButtonModuleViewController *)self buttonView];
-    [v13 setGlyphState:@"off"];
+    buttonView3 = [(CCUIButtonModuleViewController *)self buttonView];
+    [buttonView3 setGlyphState:@"off"];
 
     v14 = _MRLogCategoryMirroringView();
     v5 = os_signpost_id_generate(v14);
@@ -394,16 +394,16 @@ LABEL_15:
     v7 = v15;
     if (v5 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
     {
-      v16 = [(CCUIButtonModuleViewController *)self isExpanded];
-      v17 = [(CCUIButtonModuleViewController *)self isSelected];
-      v10 = [(CCUIButtonModuleViewController *)self buttonView];
-      v11 = [v10 glyphState];
+      isExpanded2 = [(CCUIButtonModuleViewController *)self isExpanded];
+      isSelected2 = [(CCUIButtonModuleViewController *)self isSelected];
+      buttonView2 = [(CCUIButtonModuleViewController *)self buttonView];
+      glyphState = [buttonView2 glyphState];
       v27 = 67109634;
-      v28 = v16;
+      v28 = isExpanded2;
       v29 = 1024;
-      v30 = v17;
+      v30 = isSelected2;
       v31 = 2114;
-      v32 = v11;
+      v32 = glyphState;
       v12 = "UpdatedMirroringModuleStateIsExpanded";
       goto LABEL_15;
     }
@@ -411,11 +411,11 @@ LABEL_15:
 
   else
   {
-    v18 = [(MRUMirroringController *)self->_controller selectedOutputDevice];
-    [(CCUIButtonModuleViewController *)self setSelected:v18 != 0];
+    selectedOutputDevice = [(MRUMirroringController *)self->_controller selectedOutputDevice];
+    [(CCUIButtonModuleViewController *)self setSelected:selectedOutputDevice != 0];
 
-    v19 = [(MRUMirroringController *)self->_controller selectedOutputDevice];
-    if (v19)
+    selectedOutputDevice2 = [(MRUMirroringController *)self->_controller selectedOutputDevice];
+    if (selectedOutputDevice2)
     {
       v20 = @"on";
     }
@@ -425,8 +425,8 @@ LABEL_15:
       v20 = @"off";
     }
 
-    v21 = [(CCUIButtonModuleViewController *)self buttonView];
-    [v21 setGlyphState:v20];
+    buttonView4 = [(CCUIButtonModuleViewController *)self buttonView];
+    [buttonView4 setGlyphState:v20];
 
     v22 = _MRLogCategoryMirroringView();
     v5 = os_signpost_id_generate(v22);
@@ -435,16 +435,16 @@ LABEL_15:
     v7 = v23;
     if (v5 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v23))
     {
-      v24 = [(CCUIButtonModuleViewController *)self isExpanded];
-      v25 = [(CCUIButtonModuleViewController *)self isSelected];
-      v10 = [(CCUIButtonModuleViewController *)self buttonView];
-      v11 = [v10 glyphState];
+      isExpanded3 = [(CCUIButtonModuleViewController *)self isExpanded];
+      isSelected3 = [(CCUIButtonModuleViewController *)self isSelected];
+      buttonView2 = [(CCUIButtonModuleViewController *)self buttonView];
+      glyphState = [buttonView2 glyphState];
       v27 = 67109634;
-      v28 = v24;
+      v28 = isExpanded3;
       v29 = 1024;
-      v30 = v25;
+      v30 = isSelected3;
       v31 = 2114;
-      v32 = v11;
+      v32 = glyphState;
       v12 = "UpdatedMirroringModuleState";
       goto LABEL_15;
     }
@@ -453,15 +453,15 @@ LABEL_15:
   v26 = *MEMORY[0x29EDCA608];
 }
 
-- (void)selectOutputDevice:(id)a3
+- (void)selectOutputDevice:(id)device
 {
-  v12 = a3;
+  deviceCopy = device;
   if ([(MRUMirroringViewController *)self isConnectedToExternalDisplay]&& ([(MRUMirroringController *)self->_controller selectedOutputDevice], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
     v5 = MEMORY[0x29EDC7928];
-    v6 = [MEMORY[0x29EDC5910] airPlayErrorTitle];
-    v7 = [MEMORY[0x29EDC5910] airplayErrorExternalDisplay];
-    v8 = [v5 alertControllerWithTitle:v6 message:v7 preferredStyle:1];
+    airPlayErrorTitle = [MEMORY[0x29EDC5910] airPlayErrorTitle];
+    airplayErrorExternalDisplay = [MEMORY[0x29EDC5910] airplayErrorExternalDisplay];
+    v8 = [v5 alertControllerWithTitle:airPlayErrorTitle message:airplayErrorExternalDisplay preferredStyle:1];
 
     v9 = MEMORY[0x29EDC7920];
     v10 = [MEMORY[0x29EDC5910] ok];
@@ -473,11 +473,11 @@ LABEL_15:
 
   else
   {
-    [(MRUMirroringController *)self->_controller startMirroringToOutputDevice:v12 completion:0];
+    [(MRUMirroringController *)self->_controller startMirroringToOutputDevice:deviceCopy completion:0];
   }
 }
 
-- (void)stopMirroringDismissOnComplete:(BOOL)a3
+- (void)stopMirroringDismissOnComplete:(BOOL)complete
 {
   objc_initWeak(&location, self);
   controller = self->_controller;
@@ -486,7 +486,7 @@ LABEL_15:
   v6[2] = sub_29C9527A4;
   v6[3] = &unk_29F336778;
   objc_copyWeak(&v7, &location);
-  v8 = a3;
+  completeCopy = complete;
   [(MRUMirroringController *)controller stopMirroringWithCompletion:v6];
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -499,8 +499,8 @@ LABEL_15:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(FBSDisplayMonitor *)self->_displayMonitor connectedIdentities];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  connectedIdentities = [(FBSDisplayMonitor *)self->_displayMonitor connectedIdentities];
+  v3 = [connectedIdentities countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = *v10;
@@ -510,7 +510,7 @@ LABEL_15:
       {
         if (*v10 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(connectedIdentities);
         }
 
         v6 = *(*(&v9 + 1) + 8 * i);
@@ -521,7 +521,7 @@ LABEL_15:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v3 = [connectedIdentities countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v3)
       {
         continue;

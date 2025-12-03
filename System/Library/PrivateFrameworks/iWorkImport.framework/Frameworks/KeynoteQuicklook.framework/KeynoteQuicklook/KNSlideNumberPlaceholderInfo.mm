@@ -1,30 +1,30 @@
 @interface KNSlideNumberPlaceholderInfo
 - (id)copyToInstantiateTemplatePlaceholder;
 - (id)instructionalText;
-- (id)textureDeliveryStylesLocalized:(BOOL)a3 animationFilter:(id)a4;
+- (id)textureDeliveryStylesLocalized:(BOOL)localized animationFilter:(id)filter;
 - (id)typeName;
-- (void)acceptVisitor:(id)a3;
-- (void)loadFromUnarchiver:(id)a3;
+- (void)acceptVisitor:(id)visitor;
+- (void)loadFromUnarchiver:(id)unarchiver;
 @end
 
 @implementation KNSlideNumberPlaceholderInfo
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   v25.receiver = self;
   v25.super_class = KNSlideNumberPlaceholderInfo;
-  [(KNPlaceholderInfo *)&v25 loadFromUnarchiver:v4];
-  if (objc_msgSend_hasPreUFFVersion(v4, v5, v6))
+  [(KNPlaceholderInfo *)&v25 loadFromUnarchiver:unarchiverCopy];
+  if (objc_msgSend_hasPreUFFVersion(unarchiverCopy, v5, v6))
   {
-    v9 = objc_msgSend_preUFFVersion(v4, v7, v8);
+    v9 = objc_msgSend_preUFFVersion(unarchiverCopy, v7, v8);
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = sub_275D7C728;
     v24[3] = &unk_27A698480;
     v24[4] = self;
     v24[5] = v9;
-    objc_msgSend_addFinalizeHandler_(v4, v10, v24);
+    objc_msgSend_addFinalizeHandler_(unarchiverCopy, v10, v24);
   }
 
   else
@@ -39,7 +39,7 @@
       v23[2] = sub_275D7C8CC;
       v23[3] = &unk_27A698390;
       v23[4] = self;
-      objc_msgSend_addFinalizeHandler_(v4, v11, v23);
+      objc_msgSend_addFinalizeHandler_(unarchiverCopy, v11, v23);
     }
   }
 
@@ -53,7 +53,7 @@
     v22[2] = sub_275D7C97C;
     v22[3] = &unk_27A698390;
     v22[4] = self;
-    objc_msgSend_addFinalizeHandler_(v4, v21, v22);
+    objc_msgSend_addFinalizeHandler_(unarchiverCopy, v21, v22);
   }
 }
 
@@ -69,21 +69,21 @@
 {
   v14.receiver = self;
   v14.super_class = KNSlideNumberPlaceholderInfo;
-  v2 = [(KNSlideNumberPlaceholderInfo *)&v14 copyToInstantiateTemplatePlaceholder];
+  copyToInstantiateTemplatePlaceholder = [(KNSlideNumberPlaceholderInfo *)&v14 copyToInstantiateTemplatePlaceholder];
   v3 = [KNSlideNumberAttachment alloc];
-  v6 = objc_msgSend_context(v2, v4, v5);
+  v6 = objc_msgSend_context(copyToInstantiateTemplatePlaceholder, v4, v5);
   v8 = objc_msgSend_initWithContext_(v3, v7, v6);
 
-  v11 = objc_msgSend_textStorage(v2, v9, v10);
+  v11 = objc_msgSend_textStorage(copyToInstantiateTemplatePlaceholder, v9, v10);
   objc_msgSend_insertAttachmentOrFootnote_range_(v11, v12, v8, 0, 0);
 
-  return v2;
+  return copyToInstantiateTemplatePlaceholder;
 }
 
-- (id)textureDeliveryStylesLocalized:(BOOL)a3 animationFilter:(id)a4
+- (id)textureDeliveryStylesLocalized:(BOOL)localized animationFilter:(id)filter
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (localized)
   {
     v4 = sub_275DC204C();
     v6 = objc_msgSend_localizedStringForKey_value_table_(v4, v5, @"All at Once", &stru_2884D8E20, @"Keynote");
@@ -108,9 +108,9 @@
   return v4;
 }
 
-- (void)acceptVisitor:(id)a3
+- (void)acceptVisitor:(id)visitor
 {
-  v4 = a3;
+  visitorCopy = visitor;
   v5 = TSUProtocolCast();
   v7 = v5;
   if (v5)
@@ -122,7 +122,7 @@
   {
     v8.receiver = self;
     v8.super_class = KNSlideNumberPlaceholderInfo;
-    [(KNSlideNumberPlaceholderInfo *)&v8 acceptVisitor:v4, &unk_2885462B0];
+    [(KNSlideNumberPlaceholderInfo *)&v8 acceptVisitor:visitorCopy, &unk_2885462B0];
   }
 }
 

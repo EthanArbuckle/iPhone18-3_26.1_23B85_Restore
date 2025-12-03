@@ -1,9 +1,9 @@
 @interface HealthBluetoothPeripheralDaemonPlugin
 - (HealthBluetoothPeripheralDaemonPlugin)init;
-- (id)extensionForHealthDaemon:(id)a3;
-- (id)extensionForProfile:(id)a3;
+- (id)extensionForHealthDaemon:(id)daemon;
+- (id)extensionForProfile:(id)profile;
 - (id)taskServerClasses;
-- (id)workoutSessionControllerClassesForProfile:(id)a3;
+- (id)workoutSessionControllerClassesForProfile:(id)profile;
 @end
 
 @implementation HealthBluetoothPeripheralDaemonPlugin
@@ -23,23 +23,23 @@
   return [(HealthBluetoothPeripheralDaemonPlugin *)&v5 init];
 }
 
-- (id)extensionForHealthDaemon:(id)a3
+- (id)extensionForHealthDaemon:(id)daemon
 {
-  v3 = a3;
-  v4 = [[HDHealthBluetoothPeripheralPluginDaemonExtension alloc] initWithDaemon:v3];
+  daemonCopy = daemon;
+  v4 = [[HDHealthBluetoothPeripheralPluginDaemonExtension alloc] initWithDaemon:daemonCopy];
 
   return v4;
 }
 
-- (id)extensionForProfile:(id)a3
+- (id)extensionForProfile:(id)profile
 {
-  v4 = a3;
-  if ([v4 profileType] == &dword_0 + 1)
+  profileCopy = profile;
+  if ([profileCopy profileType] == &dword_0 + 1)
   {
     profileExtension = self->_profileExtension;
     if (!profileExtension)
     {
-      v6 = [[HealthBluetoothPeripheralProfileExtension alloc] initWithProfile:v4];
+      v6 = [[HealthBluetoothPeripheralProfileExtension alloc] initWithProfile:profileCopy];
       v7 = self->_profileExtension;
       self->_profileExtension = v6;
 
@@ -69,9 +69,9 @@
   return v2;
 }
 
-- (id)workoutSessionControllerClassesForProfile:(id)a3
+- (id)workoutSessionControllerClassesForProfile:(id)profile
 {
-  if ([a3 profileType] == &dword_0 + 1)
+  if ([profile profileType] == &dword_0 + 1)
   {
     v5 = objc_opt_class();
     v3 = [NSArray arrayWithObjects:&v5 count:1];

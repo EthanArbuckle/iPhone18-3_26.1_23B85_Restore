@@ -1,6 +1,6 @@
 @interface CAKeyframeAnimation
-- (BOOL)CA_validateValue:(id)a3 forKey:(id)a4;
-- (BOOL)_setCARenderAnimation:(void *)a3 layer:(id)a4;
+- (BOOL)CA_validateValue:(id)value forKey:(id)key;
+- (BOOL)_setCARenderAnimation:(void *)animation layer:(id)layer;
 - (CAAnimationCalculationMode)calculationMode;
 - (CAAnimationRotationMode)rotationMode;
 - (CGPathRef)path;
@@ -11,8 +11,8 @@
 - (NSArray)timingFunctions;
 - (NSArray)values;
 - (void)CA_prepareRenderValue;
-- (void)_copyRenderAnimationForLayer:(id)a3;
-- (void)applyForTime:(double)a3 presentationObject:(id)a4 modelObject:(id)a5;
+- (void)_copyRenderAnimationForLayer:(id)layer;
+- (void)applyForTime:(double)time presentationObject:(id)object modelObject:(id)modelObject;
 - (void)setBiasValues:(NSArray *)biasValues;
 - (void)setCalculationMode:(CAAnimationCalculationMode)calculationMode;
 - (void)setContinuityValues:(NSArray *)continuityValues;
@@ -28,11 +28,11 @@
 
 - (void)CA_prepareRenderValue
 {
-  v2 = [(CAKeyframeAnimation *)self values];
-  if (v2)
+  values = [(CAKeyframeAnimation *)self values];
+  if (values)
   {
-    v3 = v2;
-    v4 = [(NSArray *)v2 count];
+    v3 = values;
+    v4 = [(NSArray *)values count];
     if (v4)
     {
       v5 = v4;
@@ -144,33 +144,33 @@
   CAAnimation_setter(self, 0x2BF, 3, v3);
 }
 
-- (void)applyForTime:(double)a3 presentationObject:(id)a4 modelObject:(id)a5
+- (void)applyForTime:(double)time presentationObject:(id)object modelObject:(id)modelObject
 {
-  v5 = a4;
+  objectCopy = object;
   v123 = *MEMORY[0x1E69E9840];
-  v112 = a3;
-  if (![(CAAnimation *)self isEnabled:a4])
+  timeCopy = time;
+  if (![(CAAnimation *)self isEnabled:object])
   {
     return;
   }
 
-  v7 = [(CAPropertyAnimation *)self keyPath];
-  if (!v7)
+  keyPath = [(CAPropertyAnimation *)self keyPath];
+  if (!keyPath)
   {
     return;
   }
 
-  v8 = v7;
+  v8 = keyPath;
   v111 = 0;
-  if (!mapAnimationTime(&self->super.super, &v112, &v111))
+  if (!mapAnimationTime(&self->super.super, &timeCopy, &v111))
   {
     return;
   }
 
-  v9 = [(CAKeyframeAnimation *)self path];
-  if (v9)
+  path = [(CAKeyframeAnimation *)self path];
+  if (path)
   {
-    v11 = CA::Render::Path::new_path(v9, v10);
+    v11 = CA::Render::Path::new_path(path, v10);
   }
 
   else
@@ -181,8 +181,8 @@
   v113 = 0u;
   v114 = 0u;
   v12 = calcModeFromString([(CAKeyframeAnimation *)self calculationMode]);
-  v13 = [(CAKeyframeAnimation *)self keyTimes];
-  if (!v13)
+  keyTimes = [(CAKeyframeAnimation *)self keyTimes];
+  if (!keyTimes)
   {
     if (v11)
     {
@@ -192,7 +192,7 @@
         v23 = CA::Render::Path::keyframe_lengths(v11);
         if (v23)
         {
-          v21 = paced_keyframe(v23, v22, v112, &v113);
+          v21 = paced_keyframe(v23, v22, timeCopy, &v113);
           goto LABEL_41;
         }
       }
@@ -200,14 +200,14 @@
 
     else
     {
-      v29 = [(CAKeyframeAnimation *)self values];
-      if (!v29)
+      values = [(CAKeyframeAnimation *)self values];
+      if (!values)
       {
         goto LABEL_40;
       }
 
-      v30 = v29;
-      v31 = [(NSArray *)v29 count];
+      v30 = values;
+      v31 = [(NSArray *)values count];
       v22 = (v31 - 1);
       if (v12 == 4 || v12 == 2)
       {
@@ -232,7 +232,7 @@
           bzero(v38, v37);
         }
 
-        v98 = v5;
+        v98 = objectCopy;
         v86 = [(NSArray *)v30 objectAtIndex:0, 0];
         for (i = 0; i != v22; ++i)
         {
@@ -242,14 +242,14 @@
           v86 = v88;
         }
 
-        v21 = paced_keyframe(v38, v22, v112, &v113);
+        v21 = paced_keyframe(v38, v22, timeCopy, &v113);
         v11 = v97;
         if (v22 >= 0x201)
         {
           free(v38);
         }
 
-        v5 = v98;
+        objectCopy = v98;
         goto LABEL_41;
       }
 
@@ -267,9 +267,9 @@
 LABEL_27:
     v32 = 1.0;
     v33 = 1.0 / v22;
-    if (v112 <= 1.0)
+    if (timeCopy <= 1.0)
     {
-      v32 = v112;
+      v32 = timeCopy;
     }
 
     if (v32 < 0.0)
@@ -277,7 +277,7 @@ LABEL_27:
       v32 = 0.0;
     }
 
-    v112 = v32;
+    timeCopy = v32;
     v34 = v32 * v22;
     v35 = floor(v34);
     v21 = vcvtmd_s64_f64(v34);
@@ -288,8 +288,8 @@ LABEL_27:
     goto LABEL_41;
   }
 
-  v14 = v13;
-  v15 = [(NSArray *)v13 count];
+  v14 = keyTimes;
+  v15 = [(NSArray *)keyTimes count];
   v16 = (v15 - 2);
   if (v15 < 2)
   {
@@ -302,7 +302,7 @@ LABEL_40:
     goto LABEL_41;
   }
 
-  v17 = v112;
+  v17 = timeCopy;
   v18 = 1;
   while (1)
   {
@@ -364,13 +364,13 @@ LABEL_41:
 
     else if (v44 == 4)
     {
-      v46 = 0;
+      timingFunctions = 0;
       v45 = 1;
       goto LABEL_48;
     }
 
 LABEL_51:
-    v46 = [(CAKeyframeAnimation *)self timingFunctions];
+    timingFunctions = [(CAKeyframeAnimation *)self timingFunctions];
     v47 = 0;
     goto LABEL_52;
   }
@@ -379,7 +379,7 @@ LABEL_51:
   {
     v45 = 0;
     v47 = 0;
-    v112 = 0.0;
+    timeCopy = 0.0;
     v48 = 0.0;
     goto LABEL_61;
   }
@@ -389,11 +389,11 @@ LABEL_51:
     goto LABEL_51;
   }
 
-  v46 = 0;
+  timingFunctions = 0;
 LABEL_48:
   v47 = 1;
 LABEL_52:
-  v49 = (v112 - *(&v113 + 1)) / (*&v114 - *(&v113 + 1));
+  v49 = (timeCopy - *(&v113 + 1)) / (*&v114 - *(&v113 + 1));
   if (v49 > 1.0)
   {
     v49 = 1.0;
@@ -409,17 +409,17 @@ LABEL_52:
     v48 = 0.0;
   }
 
-  v112 = v48;
-  if (v46)
+  timeCopy = v48;
+  if (timingFunctions)
   {
-    v50 = [(NSArray *)v46 count];
+    v50 = [(NSArray *)timingFunctions count];
     if ((v21 & 0x80000000) == 0 && v21 < v50)
     {
-      v51 = [(NSArray *)v46 objectAtIndex:v21];
+      v51 = [(NSArray *)timingFunctions objectAtIndex:v21];
       *&v52 = v48;
       [v51 _solveForInput:v52];
       v48 = v53;
-      v112 = v53;
+      timeCopy = v53;
     }
   }
 
@@ -430,11 +430,11 @@ LABEL_61:
     v109 = 0uLL;
     v108 = 0uLL;
     v107 = 0.0;
-    v54 = [(CAKeyframeAnimation *)self rotationMode];
-    v55 = v54;
-    if (v54)
+    rotationMode = [(CAKeyframeAnimation *)self rotationMode];
+    v55 = rotationMode;
+    if (rotationMode)
     {
-      if ([(NSString *)v54 isEqualToString:@"auto"])
+      if ([(NSString *)rotationMode isEqualToString:@"auto"])
       {
         LODWORD(v55) = 0x20000;
       }
@@ -465,9 +465,9 @@ LABEL_61:
     {
       if ([(CAPropertyAnimation *)self isCumulative]&& v111)
       {
-        v68 = [(CAAnimation *)self autoreverses];
+        autoreverses = [(CAAnimation *)self autoreverses];
         v69 = &v108;
-        if (v68)
+        if (autoreverses)
         {
           v69 = &v109;
         }
@@ -475,25 +475,25 @@ LABEL_61:
         v110 = vmlaq_n_f64(v110, *v69, v111);
       }
 
-      v70 = [(CAPropertyAnimation *)self valueFunction];
-      if (v70)
+      valueFunction = [(CAPropertyAnimation *)self valueFunction];
+      if (valueFunction)
       {
-        v71 = v70;
-        v72 = [(CAValueFunction *)v70 inputCount];
-        v73 = [(CAValueFunction *)v71 outputCount];
-        if (v72 <= 2 && v73 <= 2)
+        v71 = valueFunction;
+        inputCount = [(CAValueFunction *)valueFunction inputCount];
+        outputCount = [(CAValueFunction *)v71 outputCount];
+        if (inputCount <= 2 && outputCount <= 2)
         {
           *&v115.f64[0] = self;
-          *&v115.f64[1] = v5;
+          *&v115.f64[1] = objectCopy;
           [(CAValueFunction *)v71 apply:&v110 result:&v110 parameterFunction:functionParam context:&v115];
         }
       }
 
       if ([(CAPropertyAnimation *)self isAdditive])
       {
-        v74 = [(objc_object *)v5 valueForKeyPath:v8];
-        v75 = [v74 objCType];
-        if (v75 && !strcmp(v75, "{CGPoint=dd}"))
+        v74 = [(objc_object *)objectCopy valueForKeyPath:v8];
+        objCType = [v74 objCType];
+        if (objCType && !strcmp(objCType, "{CGPoint=dd}"))
         {
           [v74 pointValue];
         }
@@ -516,7 +516,7 @@ LABEL_61:
         v78 = v110.f64[0];
       }
 
-      -[objc_object setValue:forKeyPath:](v5, "setValue:forKeyPath:", [MEMORY[0x1E696B098] valueWithPoint:{v78, v79}], v8);
+      -[objc_object setValue:forKeyPath:](objectCopy, "setValue:forKeyPath:", [MEMORY[0x1E696B098] valueWithPoint:{v78, v79}], v8);
       if (v55)
       {
         if (v55 >= 0x40000)
@@ -524,9 +524,9 @@ LABEL_61:
           v107 = v107 + 3.14159265;
         }
 
-        if (v5)
+        if (objectCopy)
         {
-          [(objc_object *)v5 transform];
+          [(objc_object *)objectCopy transform];
         }
 
         else
@@ -592,7 +592,7 @@ LABEL_61:
         v116 = v100;
         v117 = v101;
         v118 = v102;
-        [(objc_object *)v5 setTransform:&v115];
+        [(objc_object *)objectCopy setTransform:&v115];
       }
     }
 
@@ -604,10 +604,10 @@ LABEL_61:
     return;
   }
 
-  v56 = [(CAKeyframeAnimation *)self values];
-  if (v56)
+  values2 = [(CAKeyframeAnimation *)self values];
+  if (values2)
   {
-    v57 = v56;
+    v57 = values2;
     *&v122 = 0;
     v120 = 0u;
     v121 = 0u;
@@ -694,18 +694,18 @@ LABEL_128:
                 v62 = [(objc_object *)v62 CA_addValue:v95 multipliedBy:v111];
               }
 
-              v96 = [(CAPropertyAnimation *)self valueFunction];
-              if (v96)
+              valueFunction2 = [(CAPropertyAnimation *)self valueFunction];
+              if (valueFunction2)
               {
-                v62 = applyValueFunction(v96, v62, &self->super, v5);
+                v62 = applyValueFunction(valueFunction2, v62, &self->super, objectCopy);
               }
 
               if ([(CAPropertyAnimation *)self isAdditive])
               {
-                v62 = [-[objc_object valueForKeyPath:](v5 valueForKeyPath:{v8), "CA_addValue:multipliedBy:", v62, 1}];
+                v62 = [-[objc_object valueForKeyPath:](objectCopy valueForKeyPath:{v8), "CA_addValue:multipliedBy:", v62, 1}];
               }
 
-              [(objc_object *)v5 setValue:v62 forKeyPath:v8];
+              [(objc_object *)objectCopy setValue:v62 forKeyPath:v8];
               return;
             }
           }
@@ -758,15 +758,15 @@ LABEL_128:
   CAAnimation_setter(self, 0x58, 3, v3);
 }
 
-- (BOOL)CA_validateValue:(id)a3 forKey:(id)a4
+- (BOOL)CA_validateValue:(id)value forKey:(id)key
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!value)
   {
     goto LABEL_12;
   }
 
-  v7 = CAInternAtom(a4, 0);
+  v7 = CAInternAtom(key, 0);
   if (v7 <= 464)
   {
     if (v7 != 67 && v7 != 157)
@@ -780,15 +780,15 @@ LABEL_128:
 LABEL_12:
     v9.receiver = self;
     v9.super_class = CAKeyframeAnimation;
-    return [&v9 CA_validateValue:a3 forKey:a4];
+    return [&v9 CA_validateValue:value forKey:key];
   }
 
   objc_opt_class();
 
-  return CAObject_validateArrayOfClass(a3);
+  return CAObject_validateArrayOfClass(value);
 }
 
-- (void)_copyRenderAnimationForLayer:(id)a3
+- (void)_copyRenderAnimationForLayer:(id)layer
 {
   if (x_malloc_get_zone::once != -1)
   {
@@ -818,7 +818,7 @@ LABEL_12:
     *(v5 + 19) = 0;
     *(v5 + 20) = 0;
     *(v5 + 21) = 0;
-    if (![(CAKeyframeAnimation *)self _setCARenderAnimation:v5 layer:a3])
+    if (![(CAKeyframeAnimation *)self _setCARenderAnimation:v5 layer:layer])
     {
       if (atomic_fetch_add(v6 + 2, 0xFFFFFFFF) == 1)
       {
@@ -831,26 +831,26 @@ LABEL_12:
 
   else
   {
-    [(CAKeyframeAnimation *)self _setCARenderAnimation:0 layer:a3];
+    [(CAKeyframeAnimation *)self _setCARenderAnimation:0 layer:layer];
   }
 
   return v6;
 }
 
-- (BOOL)_setCARenderAnimation:(void *)a3 layer:(id)a4
+- (BOOL)_setCARenderAnimation:(void *)animation layer:(id)layer
 {
   v71 = *MEMORY[0x1E69E9840];
   v70.receiver = self;
   v70.super_class = CAKeyframeAnimation;
-  v6 = [(CAPropertyAnimation *)&v70 _setCARenderAnimation:a3 layer:a4];
+  v6 = [(CAPropertyAnimation *)&v70 _setCARenderAnimation:animation layer:layer];
   if (v6)
   {
-    *(a3 + 144) = calcModeFromString([(CAKeyframeAnimation *)self calculationMode]);
-    v7 = [(CAKeyframeAnimation *)self path];
-    if (v7)
+    *(animation + 144) = calcModeFromString([(CAKeyframeAnimation *)self calculationMode]);
+    path = [(CAKeyframeAnimation *)self path];
+    if (path)
     {
-      v9 = CA::Render::Path::new_path(v7, v8);
-      v10 = *(a3 + 17);
+      v9 = CA::Render::Path::new_path(path, v8);
+      v10 = *(animation + 17);
       if (v10 != v9)
       {
         if (v10 && atomic_fetch_add(v10 + 2, 0xFFFFFFFF) == 1)
@@ -873,7 +873,7 @@ LABEL_12:
           v11 = 0;
         }
 
-        *(a3 + 17) = v11;
+        *(animation + 17) = v11;
       }
 
       if (v9 && atomic_fetch_add(v9 + 2, 0xFFFFFFFF) == 1)
@@ -884,17 +884,17 @@ LABEL_12:
 
     else
     {
-      v12 = [(CAKeyframeAnimation *)self values];
-      if (v12)
+      values = [(CAKeyframeAnimation *)self values];
+      if (values)
       {
-        v13 = v12;
-        v14 = [(NSArray *)v12 count];
+        v13 = values;
+        v14 = [(NSArray *)values count];
         if (v14)
         {
           v15 = v14;
           AtomInKeyPath = CAInternFirstAtomInKeyPath([(CAPropertyAnimation *)self keyPath]);
           v17 = AtomInKeyPath;
-          v18 = *(a3 + 144);
+          v18 = *(animation + 144);
           v19 = 8 * v15;
           if ((8 * v15) > 0x1000)
           {
@@ -954,7 +954,7 @@ LABEL_12:
             else
             {
 LABEL_34:
-              v31 = *(a3 + 14);
+              v31 = *(animation + 14);
               if (v31 != v27)
               {
                 if (v31 && atomic_fetch_add(v31 + 2, 0xFFFFFFFF) == 1)
@@ -969,7 +969,7 @@ LABEL_34:
                   atomic_fetch_add(v27 + 2, 0xFFFFFFFF);
                 }
 
-                *(a3 + 14) = v32;
+                *(animation + 14) = v32;
               }
             }
 
@@ -987,20 +987,20 @@ LABEL_34:
       }
     }
 
-    v33 = *(a3 + 144);
+    v33 = *(animation + 144);
     if (v33 == 4 || v33 == 2)
     {
-      CA::Render::KeyframeAnimation::update_paced_key_times(a3);
+      CA::Render::KeyframeAnimation::update_paced_key_times(animation);
     }
 
     else
     {
-      v39 = [(CAKeyframeAnimation *)self keyTimes];
-      if (v39)
+      keyTimes = [(CAKeyframeAnimation *)self keyTimes];
+      if (keyTimes)
       {
         v69 = 0;
-        v40 = copyFloatVector(v39, &v69);
-        v41 = *(a3 + 15);
+        v40 = copyFloatVector(keyTimes, &v69);
+        v41 = *(animation + 15);
         if (v41 != v40)
         {
           if (v41 && atomic_fetch_add(v41 + 2, 0xFFFFFFFF) == 1)
@@ -1023,7 +1023,7 @@ LABEL_34:
             v42 = 0;
           }
 
-          *(a3 + 15) = v42;
+          *(animation + 15) = v42;
         }
 
         if (v40 && atomic_fetch_add(v40 + 2, 0xFFFFFFFF) == 1)
@@ -1033,15 +1033,15 @@ LABEL_34:
 
         if (v69)
         {
-          *(a3 + 3) |= 0x8000000u;
+          *(animation + 3) |= 0x8000000u;
         }
       }
 
-      v55 = [(CAKeyframeAnimation *)self timingFunctions];
-      if (v55)
+      timingFunctions = [(CAKeyframeAnimation *)self timingFunctions];
+      if (timingFunctions)
       {
-        v56 = v55;
-        v57 = [(NSArray *)v55 count];
+        v56 = timingFunctions;
+        v57 = [(NSArray *)timingFunctions count];
         if (v57)
         {
           v58 = v57;
@@ -1068,7 +1068,7 @@ LABEL_34:
 
           while (v58 != v61);
           v64 = CA::Render::Vector::new_vector((4 * v58), v60, v63);
-          v65 = *(a3 + 16);
+          v65 = *(animation + 16);
           if (v65 != v64)
           {
             if (v65 && atomic_fetch_add(v65 + 2, 0xFFFFFFFF) == 1)
@@ -1091,7 +1091,7 @@ LABEL_34:
               v66 = 0;
             }
 
-            *(a3 + 16) = v66;
+            *(animation + 16) = v66;
           }
 
           if (v64 && atomic_fetch_add(v64 + 2, 0xFFFFFFFF) == 1)
@@ -1107,13 +1107,13 @@ LABEL_34:
       }
     }
 
-    if (*(a3 + 144) - 3 <= 1)
+    if (*(animation + 144) - 3 <= 1)
     {
-      v35 = [(CAKeyframeAnimation *)self tensionValues];
-      if (v35)
+      tensionValues = [(CAKeyframeAnimation *)self tensionValues];
+      if (tensionValues)
       {
-        v36 = copyFloatVector(v35, 0);
-        v37 = *(a3 + 19);
+        v36 = copyFloatVector(tensionValues, 0);
+        v37 = *(animation + 19);
         if (v37 != v36)
         {
           if (v37 && atomic_fetch_add(v37 + 2, 0xFFFFFFFF) == 1)
@@ -1136,7 +1136,7 @@ LABEL_34:
             v38 = 0;
           }
 
-          *(a3 + 19) = v38;
+          *(animation + 19) = v38;
         }
 
         if (v36 && atomic_fetch_add(v36 + 2, 0xFFFFFFFF) == 1)
@@ -1145,11 +1145,11 @@ LABEL_34:
         }
       }
 
-      v43 = [(CAKeyframeAnimation *)self continuityValues];
-      if (v43)
+      continuityValues = [(CAKeyframeAnimation *)self continuityValues];
+      if (continuityValues)
       {
-        v44 = copyFloatVector(v43, 0);
-        v45 = *(a3 + 20);
+        v44 = copyFloatVector(continuityValues, 0);
+        v45 = *(animation + 20);
         if (v45 != v44)
         {
           if (v45 && atomic_fetch_add(v45 + 2, 0xFFFFFFFF) == 1)
@@ -1172,7 +1172,7 @@ LABEL_34:
             v46 = 0;
           }
 
-          *(a3 + 20) = v46;
+          *(animation + 20) = v46;
         }
 
         if (v44 && atomic_fetch_add(v44 + 2, 0xFFFFFFFF) == 1)
@@ -1181,11 +1181,11 @@ LABEL_34:
         }
       }
 
-      v47 = [(CAKeyframeAnimation *)self biasValues];
-      if (v47)
+      biasValues = [(CAKeyframeAnimation *)self biasValues];
+      if (biasValues)
       {
-        v48 = copyFloatVector(v47, 0);
-        v49 = *(a3 + 21);
+        v48 = copyFloatVector(biasValues, 0);
+        v49 = *(animation + 21);
         if (v49 != v48)
         {
           if (v49 && atomic_fetch_add(v49 + 2, 0xFFFFFFFF) == 1)
@@ -1208,7 +1208,7 @@ LABEL_34:
             v50 = 0;
           }
 
-          *(a3 + 21) = v50;
+          *(animation + 21) = v50;
         }
 
         if (v48 && atomic_fetch_add(v48 + 2, 0xFFFFFFFF) == 1)
@@ -1218,15 +1218,15 @@ LABEL_34:
       }
     }
 
-    v51 = [(CAKeyframeAnimation *)self rotationMode];
-    if (v51)
+    rotationMode = [(CAKeyframeAnimation *)self rotationMode];
+    if (rotationMode)
     {
-      v52 = v51;
-      if ([(NSString *)v51 isEqualToString:@"auto"])
+      v52 = rotationMode;
+      if ([(NSString *)rotationMode isEqualToString:@"auto"])
       {
         v53 = 0x2000000;
 LABEL_104:
-        *(a3 + 3) |= v53;
+        *(animation + 3) |= v53;
         return v6;
       }
 

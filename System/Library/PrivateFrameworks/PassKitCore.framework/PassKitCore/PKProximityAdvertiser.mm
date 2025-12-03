@@ -1,10 +1,10 @@
 @interface PKProximityAdvertiser
 - (PKProximityAdvertiser)init;
-- (id)_createAdvertisingActivationBlockWithName:(id)a3 duration:(double)a4 completion:(id)a5;
+- (id)_createAdvertisingActivationBlockWithName:(id)name duration:(double)duration completion:(id)completion;
 - (void)_queue_endAdvertising;
 - (void)dealloc;
 - (void)endAdvertising;
-- (void)startAdvertisingForDuration:(double)a3 completion:(id)a4;
+- (void)startAdvertisingForDuration:(double)duration completion:(id)completion;
 @end
 
 @implementation PKProximityAdvertiser
@@ -36,9 +36,9 @@
   [(PKProximityAdvertiser *)&v3 dealloc];
 }
 
-- (void)startAdvertisingForDuration:(double)a3 completion:(id)a4
+- (void)startAdvertisingForDuration:(double)duration completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if (self->_isAdvertising)
   {
     [(PKProximityAdvertiser *)self endAdvertising];
@@ -49,10 +49,10 @@
   block[1] = 3221225472;
   block[2] = __64__PKProximityAdvertiser_startAdvertisingForDuration_completion___block_invoke;
   block[3] = &unk_1E79C4EA0;
-  v11 = a3;
+  durationCopy = duration;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_sync(advertiserQueue, block);
 }
 
@@ -76,20 +76,20 @@ void __64__PKProximityAdvertiser_startAdvertisingForDuration_completion___block_
   [v8 activateWithCompletion:v9];
 }
 
-- (id)_createAdvertisingActivationBlockWithName:(id)a3 duration:(double)a4 completion:(id)a5
+- (id)_createAdvertisingActivationBlockWithName:(id)name duration:(double)duration completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  nameCopy = name;
+  completionCopy = completion;
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __87__PKProximityAdvertiser__createAdvertisingActivationBlockWithName_duration_completion___block_invoke;
   v18 = &unk_1E79D1FA8;
-  v19 = self;
-  v20 = v8;
-  v22 = a4;
-  v21 = v9;
-  v10 = v9;
-  v11 = v8;
+  selfCopy = self;
+  v20 = nameCopy;
+  durationCopy = duration;
+  v21 = completionCopy;
+  v10 = completionCopy;
+  v11 = nameCopy;
   v12 = _Block_copy(&v15);
   v13 = [v12 copy];
 

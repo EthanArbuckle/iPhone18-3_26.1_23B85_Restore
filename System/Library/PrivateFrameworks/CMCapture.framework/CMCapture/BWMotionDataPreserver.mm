@@ -1,21 +1,21 @@
 @interface BWMotionDataPreserver
-- (BOOL)prependPreservedMotionDataToSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (BWMotionDataPreserver)initWithName:(id)a3;
-- (uint64_t)_preserveMotionDataForSampleBuffer:(int)a3 willBeDropped:;
+- (BOOL)prependPreservedMotionDataToSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (BWMotionDataPreserver)initWithName:(id)name;
+- (uint64_t)_preserveMotionDataForSampleBuffer:(int)buffer willBeDropped:;
 - (void)dealloc;
 - (void)reset;
 @end
 
 @implementation BWMotionDataPreserver
 
-- (BWMotionDataPreserver)initWithName:(id)a3
+- (BWMotionDataPreserver)initWithName:(id)name
 {
   v6.receiver = self;
   v6.super_class = BWMotionDataPreserver;
   v4 = [(BWMotionDataPreserver *)&v6 init];
   if (v4)
   {
-    v4->_name = [objc_alloc(MEMORY[0x1E696AEC0]) initWithString:a3];
+    v4->_name = [objc_alloc(MEMORY[0x1E696AEC0]) initWithString:name];
   }
 
   return v4;
@@ -28,7 +28,7 @@
   [(BWMotionDataPreserver *)&v3 dealloc];
 }
 
-- (BOOL)prependPreservedMotionDataToSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (BOOL)prependPreservedMotionDataToSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   if (!self->_preservedISPMotionData)
   {
@@ -37,7 +37,7 @@
 
   v7 = v3;
   v8 = v4;
-  [(BWMotionDataPreserver *)self prependPreservedMotionDataToSampleBuffer:a3, &self->_preservedISPMotionData, &v6];
+  [(BWMotionDataPreserver *)self prependPreservedMotionDataToSampleBuffer:buffer, &self->_preservedISPMotionData, &v6];
   return v6;
 }
 
@@ -49,7 +49,7 @@
   self->_currentISPHallPortType = 0;
 }
 
-- (uint64_t)_preserveMotionDataForSampleBuffer:(int)a3 willBeDropped:
+- (uint64_t)_preserveMotionDataForSampleBuffer:(int)buffer willBeDropped:
 {
   if (result)
   {
@@ -59,9 +59,9 @@
     v7 = [v5 objectForKeyedSubscript:*off_1E798B540];
     if (v6)
     {
-      v8 = [v6 bytes];
+      bytes = [v6 bytes];
       v9 = [v6 length];
-      v10 = *(v8 + 4);
+      v10 = *(bytes + 4);
       if (v9 != 40 * v10 + 8 || v10 >= 111)
       {
         goto LABEL_44;
@@ -70,7 +70,7 @@
       v11 = *(v4 + 16);
       if (v11)
       {
-        if (a3)
+        if (buffer)
         {
           v12 = *(v4 + 24);
           v13 = [v11 length];
@@ -85,12 +85,12 @@
         }
 
         v15 = *([v11 bytes] + 4);
-        v16 = *(v8 + 4);
+        v16 = *(bytes + 4);
         v17 = v16 + v15;
         v18 = 110 - v15;
         if (v17 <= 110)
         {
-          v19 = *(v8 + 4);
+          v19 = *(bytes + 4);
         }
 
         else
@@ -106,9 +106,9 @@
             v20 = 0;
           }
 
-          [*(v4 + 16) appendBytes:v8 + 40 * v20 + 8 length:40 * v19];
-          v21 = [*(v4 + 16) mutableBytes];
-          *(v21 + 4) += v19;
+          [*(v4 + 16) appendBytes:bytes + 40 * v20 + 8 length:40 * v19];
+          mutableBytes = [*(v4 + 16) mutableBytes];
+          *(mutableBytes + 4) += v19;
         }
       }
 
@@ -128,8 +128,8 @@
     }
 
     v24 = v23;
-    v25 = [v23 bytes];
-    if (*v25)
+    bytes2 = [v23 bytes];
+    if (*bytes2)
     {
       v26 = 24;
     }
@@ -140,7 +140,7 @@
     }
 
     v27 = [v24 length];
-    v28 = v25[1];
+    v28 = bytes2[1];
     if (v27 == v26 * v28 + 8 && v28 < 511)
     {
       if (!*(v4 + 40))
@@ -166,7 +166,7 @@
 
       if ([v7 isEqualToString:*(v4 + 64)])
       {
-        if (a3)
+        if (buffer)
         {
           v29 = *(v4 + 48);
           if (v29 < [*(v4 + 40) length])
@@ -178,7 +178,7 @@
         }
 
         v31 = *([*(v4 + 40) bytes] + 4);
-        v32 = v25[1];
+        v32 = bytes2[1];
         v33 = v32 + v31;
         v34 = 510 - v31;
         v35 = v32 - (510 - v31);
@@ -190,13 +190,13 @@
         else
         {
           v35 = 0;
-          v36 = v25[1];
+          v36 = bytes2[1];
         }
 
         if (v36)
         {
-          v39 = *v25;
-          v38 = v25 + 2;
+          v39 = *bytes2;
+          v38 = bytes2 + 2;
           v37 = v39;
           v40 = &v38[4 * v35];
           v41 = &v38[6 * v35];
@@ -217,8 +217,8 @@
           }
 
           [*(v4 + 40) appendBytes:v43 length:v26 * v36];
-          v44 = [*(v4 + 40) mutableBytes];
-          *(v44 + 4) += v36;
+          mutableBytes2 = [*(v4 + 40) mutableBytes];
+          *(mutableBytes2 + 4) += v36;
         }
 
         return 1;

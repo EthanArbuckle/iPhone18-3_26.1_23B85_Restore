@@ -33,11 +33,11 @@
   v5 = [HFServiceState stateClassForServiceDescriptor:v4];
   if (v5)
   {
-    v6 = [(objc_class *)v5 requiredCharacteristicTypes];
+    requiredCharacteristicTypes = [(objc_class *)v5 requiredCharacteristicTypes];
     goto LABEL_15;
   }
 
-  v7 = [MEMORY[0x277CD1D90] hf_sensorServiceTypes];
+  hf_sensorServiceTypes = [MEMORY[0x277CD1D90] hf_sensorServiceTypes];
   v8 = __HFSimplePowerStateServices_block_invoke();
   v9 = __HFSimpleActiveStateServices_block_invoke();
   v10 = __HFCurrentTargetPositionServices_block_invoke();
@@ -46,13 +46,13 @@
     goto LABEL_4;
   }
 
-  if ([v7 containsObject:v3])
+  if ([hf_sensorServiceTypes containsObject:v3])
   {
     v12 = MEMORY[0x277CBEB98];
     v13 = [objc_opt_class() hf_sensorCharacteristicTypeForServiceType:v3];
     v43[0] = v13;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v43 count:1];
-    v6 = [v12 setWithArray:v14];
+    requiredCharacteristicTypes = [v12 setWithArray:v14];
 
     goto LABEL_14;
   }
@@ -67,7 +67,7 @@ LABEL_12:
     v18 = 1;
 LABEL_13:
     v19 = [v16 arrayWithObjects:v17 count:v18];
-    v6 = [v15 setWithArray:v19];
+    requiredCharacteristicTypes = [v15 setWithArray:v19];
 
     goto LABEL_14;
   }
@@ -191,7 +191,7 @@ LABEL_32:
     if (![v3 isEqualToString:*MEMORY[0x277CD0E78]])
     {
       NSLog(&cfstr_UnknownOrUnimp.isa, v3);
-      v6 = 0;
+      requiredCharacteristicTypes = 0;
       goto LABEL_14;
     }
 
@@ -202,13 +202,13 @@ LABEL_32:
 LABEL_4:
   v11 = [MEMORY[0x277CBEB98] set];
 LABEL_5:
-  v6 = v11;
+  requiredCharacteristicTypes = v11;
 LABEL_14:
 
 LABEL_15:
   v20 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return requiredCharacteristicTypes;
 }
 
 + (id)hf_allRequiredCharacteristicTypesForStandardServices
@@ -217,7 +217,7 @@ LABEL_15:
   v3[1] = 3221225472;
   v3[2] = __112__HMService_HFCharacteristicValueDisplayMetadataAdditions__hf_allRequiredCharacteristicTypesForStandardServices__block_invoke;
   v3[3] = &__block_descriptor_40_e5__8__0l;
-  v3[4] = a1;
+  v3[4] = self;
   v1 = __112__HMService_HFCharacteristicValueDisplayMetadataAdditions__hf_allRequiredCharacteristicTypesForStandardServices__block_invoke(v3);
 
   return v1;
@@ -226,8 +226,8 @@ LABEL_15:
 - (id)hf_requiredCharacteristicTypesForDisplayMetadata
 {
   v2 = objc_opt_class();
-  v3 = [a1 serviceType];
-  v4 = [v2 hf_requiredCharacteristicTypesForDisplayMetadataWithServiceType:v3];
+  serviceType = [self serviceType];
+  v4 = [v2 hf_requiredCharacteristicTypesForDisplayMetadataWithServiceType:serviceType];
 
   return v4;
 }

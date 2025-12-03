@@ -1,22 +1,22 @@
 @interface DBSDisplayTableViewCell
-- (DBSDisplayTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (DBSDisplayTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 @end
 
 @implementation DBSDisplayTableViewCell
 
-- (DBSDisplayTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (DBSDisplayTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v11.receiver = self;
   v11.super_class = DBSDisplayTableViewCell;
-  v6 = [(PSTableCell *)&v11 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  v6 = [(PSTableCell *)&v11 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
   v7 = v6;
-  if (a3 == 1 && v6)
+  if (style == 1 && v6)
   {
     v8 = objc_opt_new();
     [(DBSDisplayTableViewCell *)v7 setLayoutManager:v8];
 
-    v9 = [(DBSDisplayTableViewCell *)v7 imageView];
-    [v9 setContentMode:1];
+    imageView = [(DBSDisplayTableViewCell *)v7 imageView];
+    [imageView setContentMode:1];
   }
 
   return v7;

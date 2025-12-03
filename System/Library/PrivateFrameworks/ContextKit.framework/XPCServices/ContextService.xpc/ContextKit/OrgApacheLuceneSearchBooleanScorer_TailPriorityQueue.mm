@@ -1,37 +1,37 @@
 @interface OrgApacheLuceneSearchBooleanScorer_TailPriorityQueue
-- (BOOL)lessThanWithId:(id)a3 withId:(id)a4;
-- (id)getWithInt:(int)a3;
+- (BOOL)lessThanWithId:(id)id withId:(id)withId;
+- (id)getWithInt:(int)int;
 @end
 
 @implementation OrgApacheLuceneSearchBooleanScorer_TailPriorityQueue
 
-- (BOOL)lessThanWithId:(id)a3 withId:(id)a4
+- (BOOL)lessThanWithId:(id)id withId:(id)withId
 {
-  if (!a3 || !a4)
+  if (!id || !withId)
   {
     JreThrowNullPointerException();
   }
 
-  return *(a3 + 2) < *(a4 + 2);
+  return *(id + 2) < *(withId + 2);
 }
 
-- (id)getWithInt:(int)a3
+- (id)getWithInt:(int)int
 {
-  if (a3 < 0 || [(OrgApacheLuceneUtilPriorityQueue *)self size]<= a3)
+  if (int < 0 || [(OrgApacheLuceneUtilPriorityQueue *)self size]<= int)
   {
     v11 = new_JavaLangIndexOutOfBoundsException_init();
     objc_exception_throw(v11);
   }
 
-  v5 = [(OrgApacheLuceneUtilPriorityQueue *)self getHeapArray];
-  if (!v5)
+  getHeapArray = [(OrgApacheLuceneUtilPriorityQueue *)self getHeapArray];
+  if (!getHeapArray)
   {
     JreThrowNullPointerException();
   }
 
-  v6 = v5;
-  v7 = (a3 + 1);
-  v8 = v5[2];
+  v6 = getHeapArray;
+  v7 = (int + 1);
+  v8 = getHeapArray[2];
   if (v7 >= v8)
   {
     IOSArray_throwOutOfBoundsWithMsg(v8, v7);

@@ -4,18 +4,18 @@
 + (NSTermOfAddress)masculine;
 + (NSTermOfAddress)neutral;
 + (id)currentUser;
-- (BOOL)_containsPronoun:(id)a3 withGrammemes:(id)a4;
-- (BOOL)_isSupportedInLanguage:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (NSTermOfAddress)initWithCoder:(id)a3;
-- (id)_initWithGender:(int64_t)a3 addressingUser:(BOOL)a4;
-- (id)_initWithPronouns:(id)a3 forLanguage:(id)a4;
-- (id)_morphologyForLanguage:(id)a3;
+- (BOOL)_containsPronoun:(id)pronoun withGrammemes:(id)grammemes;
+- (BOOL)_isSupportedInLanguage:(id)language;
+- (BOOL)isEqual:(id)equal;
+- (NSTermOfAddress)initWithCoder:(id)coder;
+- (id)_initWithGender:(int64_t)gender addressingUser:(BOOL)user;
+- (id)_initWithPronouns:(id)pronouns forLanguage:(id)language;
+- (id)_morphologyForLanguage:(id)language;
 - (id)_withExtrapolatedPronouns;
 - (id)debugDescription;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSTermOfAddress
@@ -27,7 +27,7 @@
   v3[1] = 3221225472;
   v3[2] = __30__NSTermOfAddress_currentUser__block_invoke;
   v3[3] = &unk_1E69F2C00;
-  v3[4] = a1;
+  v3[4] = self;
   if (qword_1ED43FBC0 != -1)
   {
     dispatch_once(&qword_1ED43FBC0, v3);
@@ -43,11 +43,11 @@ uint64_t __30__NSTermOfAddress_currentUser__block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)_isSupportedInLanguage:(id)a3
+- (BOOL)_isSupportedInLanguage:(id)language
 {
-  v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(a3);
+  v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(language);
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   LOBYTE(v4) = NSTermOfAddress.isSupportedInLanguage(_:)(v8);
@@ -55,11 +55,11 @@ uint64_t __30__NSTermOfAddress_currentUser__block_invoke(uint64_t a1)
   return v4 & 1;
 }
 
-- (id)_morphologyForLanguage:(id)a3
+- (id)_morphologyForLanguage:(id)language
 {
-  v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(a3);
+  v4 = static String._unconditionallyBridgeFromObjectiveC(_:)(language);
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   NSTermOfAddress.morphologyForLanguage(_:)(v8);
@@ -93,13 +93,13 @@ uint64_t __30__NSTermOfAddress_currentUser__block_invoke(uint64_t a1)
   return v13;
 }
 
-- (BOOL)_containsPronoun:(id)a3 withGrammemes:(id)a4
+- (BOOL)_containsPronoun:(id)pronoun withGrammemes:(id)grammemes
 {
-  v6 = static String._unconditionallyBridgeFromObjectiveC(_:)(a3);
+  v6 = static String._unconditionallyBridgeFromObjectiveC(_:)(pronoun);
   v8 = v7;
   grammemes._rawValue = 0;
-  v9 = self;
-  result = _sSD10FoundationE26_forceBridgeFromObjectiveC_6resultySo12NSDictionaryC_SDyxq_GSgztFZSS_SSTt1g5(a4, &grammemes);
+  selfCopy = self;
+  result = _sSD10FoundationE26_forceBridgeFromObjectiveC_6resultySo12NSDictionaryC_SDyxq_GSgztFZSS_SSTt1g5(grammemes, &grammemes);
   if (grammemes._rawValue)
   {
     v11._countAndFlagsBits = v6;
@@ -119,7 +119,7 @@ uint64_t __30__NSTermOfAddress_currentUser__block_invoke(uint64_t a1)
 
 - (id)_withExtrapolatedPronouns
 {
-  v2 = self;
+  selfCopy = self;
   NSTermOfAddress.withExtrapolatedPronouns()(&v7);
 
   if (v8 == 4)
@@ -138,7 +138,7 @@ uint64_t __30__NSTermOfAddress_currentUser__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)_initWithGender:(int64_t)a3 addressingUser:(BOOL)a4
+- (id)_initWithGender:(int64_t)gender addressingUser:(BOOL)user
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -146,16 +146,16 @@ uint64_t __30__NSTermOfAddress_currentUser__block_invoke(uint64_t a1)
   result = [(NSTermOfAddress *)&v7 init];
   if (result)
   {
-    *(result + 1) = a3;
+    *(result + 1) = gender;
     *(result + 3) = 0;
     *(result + 4) = 0;
-    *(result + 16) = a4;
+    *(result + 16) = user;
   }
 
   return result;
 }
 
-- (id)_initWithPronouns:(id)a3 forLanguage:(id)a4
+- (id)_initWithPronouns:(id)pronouns forLanguage:(id)language
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -165,8 +165,8 @@ uint64_t __30__NSTermOfAddress_currentUser__block_invoke(uint64_t a1)
   if (v6)
   {
     v6->_gender = 0;
-    v6->_language = [a4 copy];
-    v7->_pronouns = [a3 copy];
+    v6->_language = [language copy];
+    v7->_pronouns = [pronouns copy];
     v7->_addressesCurrentUser = 0;
   }
 
@@ -180,7 +180,7 @@ uint64_t __30__NSTermOfAddress_currentUser__block_invoke(uint64_t a1)
   v3[1] = 3221225472;
   v3[2] = __26__NSTermOfAddress_neutral__block_invoke;
   v3[3] = &unk_1E69F2C00;
-  v3[4] = a1;
+  v3[4] = self;
   if (qword_1ED43FB90 != -1)
   {
     dispatch_once(&qword_1ED43FB90, v3);
@@ -203,7 +203,7 @@ uint64_t __26__NSTermOfAddress_neutral__block_invoke(uint64_t a1)
   v3[1] = 3221225472;
   v3[2] = __27__NSTermOfAddress_feminine__block_invoke;
   v3[3] = &unk_1E69F2C00;
-  v3[4] = a1;
+  v3[4] = self;
   if (qword_1ED43FBA0 != -1)
   {
     dispatch_once(&qword_1ED43FBA0, v3);
@@ -226,7 +226,7 @@ uint64_t __27__NSTermOfAddress_feminine__block_invoke(uint64_t a1)
   v3[1] = 3221225472;
   v3[2] = __28__NSTermOfAddress_masculine__block_invoke;
   v3[3] = &unk_1E69F2C00;
-  v3[4] = a1;
+  v3[4] = self;
   if (qword_1ED43FBB0 != -1)
   {
     dispatch_once(&qword_1ED43FBB0, v3);
@@ -288,13 +288,13 @@ uint64_t __28__NSTermOfAddress_masculine__block_invoke(uint64_t a1)
   }
 }
 
-- (NSTermOfAddress)initWithCoder:(id)a3
+- (NSTermOfAddress)initWithCoder:(id)coder
 {
   v15 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = NSTermOfAddress;
   v4 = [(NSTermOfAddress *)&v14 init];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
 
     v11 = MEMORY[0x1E695DF30];
@@ -305,7 +305,7 @@ uint64_t __28__NSTermOfAddress_masculine__block_invoke(uint64_t a1)
 
   if (v4)
   {
-    v5 = [a3 decodeIntegerForKey:@"termOfAddress"];
+    v5 = [coder decodeIntegerForKey:@"termOfAddress"];
     v4->_gender = v5;
     if ((v5 - 1) <= 2)
     {
@@ -316,16 +316,16 @@ LABEL_6:
       return v4;
     }
 
-    v6 = [a3 decodeBoolForKey:@"addressesUser"];
+    v6 = [coder decodeBoolForKey:@"addressesUser"];
     v4->_addressesCurrentUser = v6;
     if (v6)
     {
       goto LABEL_6;
     }
 
-    v4->_language = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"language", "copy"}];
+    v4->_language = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"language", "copy"}];
     p_language = &v4->_language;
-    v8 = [objc_msgSend(a3 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:{@"pronouns", "copy"}];
+    v8 = [objc_msgSend(coder decodeArrayOfObjectsOfClass:objc_opt_class() forKey:{@"pronouns", "copy"}];
     v4->_pronouns = v8;
     if (!v4->_language || v8 == 0)
     {
@@ -344,34 +344,34 @@ LABEL_13:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Encoder does not allow keyed coding!" userInfo:0]);
   }
 
   if (self->_addressesCurrentUser)
   {
-    [a3 encodeBool:1 forKey:@"addressesUser"];
+    [coder encodeBool:1 forKey:@"addressesUser"];
   }
 
   gender = self->_gender;
   if (gender)
   {
-    [a3 encodeInteger:gender forKey:@"termOfAddress"];
+    [coder encodeInteger:gender forKey:@"termOfAddress"];
   }
 
   language = self->_language;
   if (language)
   {
-    [a3 encodeObject:language forKey:@"language"];
+    [coder encodeObject:language forKey:@"language"];
   }
 
   if (self->_pronouns)
   {
 
-    [a3 encodeObject:? forKey:?];
+    [coder encodeObject:? forKey:?];
   }
 }
 
@@ -393,16 +393,16 @@ LABEL_13:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && self->_gender == *(a3 + 1) && self->_addressesCurrentUser == *(a3 + 16))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && self->_gender == *(equal + 1) && self->_addressesCurrentUser == *(equal + 16))
   {
     pronouns = self->_pronouns;
-    if (pronouns == *(a3 + 4) || (v6 = [(NSArray *)pronouns isEqualToArray:?]))
+    if (pronouns == *(equal + 4) || (v6 = [(NSArray *)pronouns isEqualToArray:?]))
     {
       language = self->_language;
-      if (language == *(a3 + 3))
+      if (language == *(equal + 3))
       {
         LOBYTE(v6) = 1;
       }

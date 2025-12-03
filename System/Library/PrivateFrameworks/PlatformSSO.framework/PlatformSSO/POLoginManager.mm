@@ -1,38 +1,38 @@
 @interface POLoginManager
 - (BOOL)isDeviceRegistered;
 - (BOOL)isUserRegistered;
-- (BOOL)saveLoginConfiguration:(id)a3 error:(id *)a4;
-- (BOOL)saveUserLoginConfiguration:(id)a3 error:(id *)a4;
+- (BOOL)saveLoginConfiguration:(id)configuration error:(id *)error;
+- (BOOL)saveUserLoginConfiguration:(id)configuration error:(id *)error;
 - (NSDictionary)ssoTokens;
 - (NSString)loginUserName;
 - (NSString)registrationToken;
 - (POLoginConfiguration)loginConfiguration;
-- (POLoginManager)initWithCoder:(id)a3;
+- (POLoginManager)initWithCoder:(id)coder;
 - (POUserLoginConfiguration)userLoginConfiguration;
-- (__SecIdentity)copyIdentityForKeyType:(int64_t)a3;
-- (__SecKey)copyKeyForKeyType:(int64_t)a3;
-- (__SecKey)rotateKeyForKeyType:(int64_t)a3;
+- (__SecIdentity)copyIdentityForKeyType:(int64_t)type;
+- (__SecKey)copyKeyForKeyType:(int64_t)type;
+- (__SecKey)rotateKeyForKeyType:(int64_t)type;
 - (int)authenticationMethod;
-- (void)attestKey:(int64_t)a3 clientData:(id)a4 completion:(id)a5;
-- (void)attestPendingKey:(int64_t)a3 clientData:(id)a4 completion:(id)a5;
+- (void)attestKey:(int64_t)key clientData:(id)data completion:(id)completion;
+- (void)attestPendingKey:(int64_t)key clientData:(id)data completion:(id)completion;
 - (void)authenticationMethod;
-- (void)completeRotationKeyForKeyType:(int64_t)a3;
+- (void)completeRotationKeyForKeyType:(int64_t)type;
 - (void)deviceRegistrationsNeedsRepair;
 - (void)invalidate;
 - (void)isDeviceRegistered;
 - (void)isUserRegistered;
 - (void)loginConfiguration;
-- (void)presentRegistrationViewControllerWithCompletion:(id)a3;
+- (void)presentRegistrationViewControllerWithCompletion:(id)completion;
 - (void)registrationToken;
 - (void)resetDeviceKeys;
 - (void)resetKeys;
 - (void)resetUserSecureEnclaveKey;
-- (void)saveCertificate:(__SecCertificate *)a3 keyType:(int64_t)a4;
-- (void)setLoginUserName:(id)a3;
-- (void)setSsoTokens:(id)a3;
+- (void)saveCertificate:(__SecCertificate *)certificate keyType:(int64_t)type;
+- (void)setLoginUserName:(id)name;
+- (void)setSsoTokens:(id)tokens;
 - (void)ssoTokens;
 - (void)userLoginConfiguration;
-- (void)userNeedsReauthenticationWithCompletion:(id)a3;
+- (void)userNeedsReauthenticationWithCompletion:(id)completion;
 - (void)userRegistrationsNeedsRepair;
 @end
 
@@ -237,9 +237,9 @@ void __31__POLoginManager_loginUserName__block_invoke(uint64_t a1, void *a2, voi
   *(v9 + 40) = v6;
 }
 
-- (void)setLoginUserName:(id)a3
+- (void)setLoginUserName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -257,7 +257,7 @@ void __31__POLoginManager_loginUserName__block_invoke(uint64_t a1, void *a2, voi
   v9[3] = &unk_279A3A428;
   v9[4] = &v12;
   v9[5] = v10;
-  [(POServiceLoginManagerConnection *)serviceConnection setLoginUserName:v4 completion:v9];
+  [(POServiceLoginManagerConnection *)serviceConnection setLoginUserName:nameCopy completion:v9];
   if (*(v13 + 24) == 1)
   {
     v6 = PO_LOG_POLoginManager();
@@ -344,10 +344,10 @@ void __40__POLoginManager_userLoginConfiguration__block_invoke(uint64_t a1, void
   *(v9 + 40) = v6;
 }
 
-- (BOOL)saveUserLoginConfiguration:(id)a3 error:(id *)a4
+- (BOOL)saveUserLoginConfiguration:(id)configuration error:(id *)error
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  configurationCopy = configuration;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -365,7 +365,7 @@ void __40__POLoginManager_userLoginConfiguration__block_invoke(uint64_t a1, void
   v18[3] = &unk_279A3A428;
   v18[4] = &v25;
   v18[5] = &v19;
-  [(POServiceLoginManagerConnection *)serviceConnection setUserLoginConfiguration:v6 completion:v18];
+  [(POServiceLoginManagerConnection *)serviceConnection setUserLoginConfiguration:configurationCopy completion:v18];
   v8 = *(v26 + 24);
   if (v8 == 1)
   {
@@ -392,10 +392,10 @@ void __40__POLoginManager_userLoginConfiguration__block_invoke(uint64_t a1, void
       [POLoginManager saveUserLoginConfiguration:error:];
     }
 
-    if (a4)
+    if (error)
     {
       v15 = v13;
-      *a4 = v13;
+      *error = v13;
     }
   }
 
@@ -571,21 +571,21 @@ id __27__POLoginManager_ssoTokens__block_invoke_26(uint64_t a1)
   return v1;
 }
 
-- (void)setSsoTokens:(id)a3
+- (void)setSsoTokens:(id)tokens
 {
-  v4 = a3;
+  tokensCopy = tokens;
   v5 = PO_LOG_POLoginManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [POLoginManager setSsoTokens:];
   }
 
-  if (v4)
+  if (tokensCopy)
   {
-    if ([MEMORY[0x277CCAAA0] isValidJSONObject:v4])
+    if ([MEMORY[0x277CCAAA0] isValidJSONObject:tokensCopy])
     {
       v25 = 0;
-      v6 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v4 options:1 error:&v25];
+      v6 = [MEMORY[0x277CCAAA0] dataWithJSONObject:tokensCopy options:1 error:&v25];
       v7 = v25;
       v8 = v7;
       if (v7 || !v6)
@@ -866,10 +866,10 @@ void __36__POLoginManager_loginConfiguration__block_invoke(uint64_t a1, void *a2
   *(v9 + 40) = v6;
 }
 
-- (BOOL)saveLoginConfiguration:(id)a3 error:(id *)a4
+- (BOOL)saveLoginConfiguration:(id)configuration error:(id *)error
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  configurationCopy = configuration;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -887,7 +887,7 @@ void __36__POLoginManager_loginConfiguration__block_invoke(uint64_t a1, void *a2
   v18[3] = &unk_279A3A428;
   v18[4] = &v25;
   v18[5] = &v19;
-  [(POServiceLoginManagerConnection *)serviceConnection setLoginConfiguration:v6 completion:v18];
+  [(POServiceLoginManagerConnection *)serviceConnection setLoginConfiguration:configurationCopy completion:v18];
   v8 = *(v26 + 24);
   if (v8 == 1)
   {
@@ -914,10 +914,10 @@ void __36__POLoginManager_loginConfiguration__block_invoke(uint64_t a1, void *a2
       [POLoginManager saveLoginConfiguration:error:];
     }
 
-    if (a4)
+    if (error)
     {
       v15 = v13;
-      *a4 = v13;
+      *error = v13;
     }
   }
 
@@ -928,7 +928,7 @@ void __36__POLoginManager_loginConfiguration__block_invoke(uint64_t a1, void *a2
   return v8;
 }
 
-- (void)saveCertificate:(__SecCertificate *)a3 keyType:(int64_t)a4
+- (void)saveCertificate:(__SecCertificate *)certificate keyType:(int64_t)type
 {
   v7 = PO_LOG_POLoginManager();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -936,7 +936,7 @@ void __36__POLoginManager_loginConfiguration__block_invoke(uint64_t a1, void *a2
     [POLoginManager saveCertificate:keyType:];
   }
 
-  v8 = [MEMORY[0x277D3D230] dataForCertificate:a3];
+  v8 = [MEMORY[0x277D3D230] dataForCertificate:certificate];
   if (v8)
   {
     v12[0] = 0;
@@ -951,7 +951,7 @@ void __36__POLoginManager_loginConfiguration__block_invoke(uint64_t a1, void *a2
     v11[2] = __42__POLoginManager_saveCertificate_keyType___block_invoke_82;
     v11[3] = &unk_279A3A240;
     v11[4] = v12;
-    [(POServiceLoginManagerConnection *)serviceConnection setCertificateData:v8 keyType:a4 completion:v11];
+    [(POServiceLoginManagerConnection *)serviceConnection setCertificateData:v8 keyType:type completion:v11];
     _Block_object_dispose(v12, 8);
   }
 
@@ -973,7 +973,7 @@ id __42__POLoginManager_saveCertificate_keyType___block_invoke()
   return v0;
 }
 
-- (__SecKey)copyKeyForKeyType:(int64_t)a3
+- (__SecKey)copyKeyForKeyType:(int64_t)type
 {
   v5 = PO_LOG_POLoginManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -1000,7 +1000,7 @@ id __42__POLoginManager_saveCertificate_keyType___block_invoke()
   v16[3] = &unk_279A3A510;
   v16[4] = &v17;
   v16[5] = &v23;
-  [(POServiceLoginManagerConnection *)serviceConnection secKeyProxyEndpointForKeyType:a3 completion:v16];
+  [(POServiceLoginManagerConnection *)serviceConnection secKeyProxyEndpointForKeyType:type completion:v16];
   v7 = v18[5];
   if (!v7)
   {
@@ -1073,7 +1073,7 @@ id __36__POLoginManager_copyKeyForKeyType___block_invoke_88(uint64_t a1)
   return v1;
 }
 
-- (__SecIdentity)copyIdentityForKeyType:(int64_t)a3
+- (__SecIdentity)copyIdentityForKeyType:(int64_t)type
 {
   v5 = PO_LOG_POLoginManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -1100,7 +1100,7 @@ id __36__POLoginManager_copyKeyForKeyType___block_invoke_88(uint64_t a1)
   v16[3] = &unk_279A3A510;
   v16[4] = &v17;
   v16[5] = &v23;
-  [(POServiceLoginManagerConnection *)serviceConnection secIdentityProxyEndpointForKeyType:a3 completion:v16];
+  [(POServiceLoginManagerConnection *)serviceConnection secIdentityProxyEndpointForKeyType:type completion:v16];
   v7 = v18[5];
   if (!v7)
   {
@@ -1173,10 +1173,10 @@ id __41__POLoginManager_copyIdentityForKeyType___block_invoke_95(uint64_t a1)
   return v1;
 }
 
-- (void)attestKey:(int64_t)a3 clientData:(id)a4 completion:(id)a5
+- (void)attestKey:(int64_t)key clientData:(id)data completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  completionCopy = completion;
   v10 = PO_LOG_POLoginManager();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -1188,11 +1188,11 @@ id __41__POLoginManager_copyIdentityForKeyType___block_invoke_95(uint64_t a1)
   v13[2] = __50__POLoginManager_attestKey_clientData_completion___block_invoke;
   v13[3] = &unk_279A3A560;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
+  v14 = dataCopy;
+  v15 = completionCopy;
+  keyCopy = key;
+  v11 = completionCopy;
+  v12 = dataCopy;
   _os_activity_initiate(&dword_25E831000, "attestation", OS_ACTIVITY_FLAG_DEFAULT, v13);
 }
 
@@ -1256,10 +1256,10 @@ void __50__POLoginManager_attestKey_clientData_completion___block_invoke_2(uint6
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)attestPendingKey:(int64_t)a3 clientData:(id)a4 completion:(id)a5
+- (void)attestPendingKey:(int64_t)key clientData:(id)data completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  completionCopy = completion;
   v10 = PO_LOG_POLoginManager();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -1271,11 +1271,11 @@ void __50__POLoginManager_attestKey_clientData_completion___block_invoke_2(uint6
   v13[2] = __57__POLoginManager_attestPendingKey_clientData_completion___block_invoke;
   v13[3] = &unk_279A3A560;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
+  v14 = dataCopy;
+  v15 = completionCopy;
+  keyCopy = key;
+  v11 = completionCopy;
+  v12 = dataCopy;
   _os_activity_initiate(&dword_25E831000, "pending attestation", OS_ACTIVITY_FLAG_DEFAULT, v13);
 }
 
@@ -1339,29 +1339,29 @@ void __57__POLoginManager_attestPendingKey_clientData_completion___block_invoke_
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)userNeedsReauthenticationWithCompletion:(id)a3
+- (void)userNeedsReauthenticationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PO_LOG_POLoginManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [POLoginManager userNeedsReauthenticationWithCompletion:];
   }
 
-  v6 = [(POLoginManager *)self hostExtensionContext];
+  hostExtensionContext = [(POLoginManager *)self hostExtensionContext];
 
-  if (v6)
+  if (hostExtensionContext)
   {
-    v7 = [(POLoginManager *)self hostExtensionContext];
-    v8 = [(POLoginManager *)self requestIdentifier];
+    hostExtensionContext2 = [(POLoginManager *)self hostExtensionContext];
+    requestIdentifier = [(POLoginManager *)self requestIdentifier];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __58__POLoginManager_userNeedsReauthenticationWithCompletion___block_invoke_2;
     v13[3] = &unk_279A3A5B0;
     v13[4] = self;
-    v14 = v4;
-    v9 = v4;
-    [v7 requestReauthenticationWithRequestIdentifier:v8 completion:v13];
+    v14 = completionCopy;
+    v9 = completionCopy;
+    [hostExtensionContext2 requestReauthenticationWithRequestIdentifier:requestIdentifier completion:v13];
 
     v10 = v14;
   }
@@ -1373,8 +1373,8 @@ void __57__POLoginManager_attestPendingKey_clientData_completion___block_invoke_
     v15[1] = 3221225472;
     v15[2] = __58__POLoginManager_userNeedsReauthenticationWithCompletion___block_invoke;
     v15[3] = &unk_279A3A588;
-    v16 = v4;
-    v12 = v4;
+    v16 = completionCopy;
+    v12 = completionCopy;
     [(POServiceLoginManagerConnection *)serviceConnection userNeedsReauthenticationWithCompletion:v15];
     v10 = v16;
   }
@@ -1490,23 +1490,23 @@ uint64_t __58__POLoginManager_userNeedsReauthenticationWithCompletion___block_in
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presentRegistrationViewControllerWithCompletion:(id)a3
+- (void)presentRegistrationViewControllerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PO_LOG_POLoginManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [POLoginManager presentRegistrationViewControllerWithCompletion:];
   }
 
-  v6 = [(POLoginManager *)self hostExtensionContext];
+  hostExtensionContext = [(POLoginManager *)self hostExtensionContext];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __66__POLoginManager_presentRegistrationViewControllerWithCompletion___block_invoke;
   v8[3] = &unk_279A3A588;
-  v9 = v4;
-  v7 = v4;
-  [v6 presentRegistrationViewControllerWithCompletion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [hostExtensionContext presentRegistrationViewControllerWithCompletion:v8];
 }
 
 uint64_t __66__POLoginManager_presentRegistrationViewControllerWithCompletion___block_invoke(uint64_t a1)
@@ -1544,7 +1544,7 @@ uint64_t __66__POLoginManager_presentRegistrationViewControllerWithCompletion___
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (__SecKey)rotateKeyForKeyType:(int64_t)a3
+- (__SecKey)rotateKeyForKeyType:(int64_t)type
 {
   v5 = PO_LOG_POLoginManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -1570,7 +1570,7 @@ uint64_t __66__POLoginManager_presentRegistrationViewControllerWithCompletion___
   v16[2] = __38__POLoginManager_rotateKeyForKeyType___block_invoke;
   v16[3] = &unk_279A3A5D8;
   v16[4] = &v23;
-  [(POServiceLoginManagerConnection *)serviceConnection rotateKeyForKeyType:a3 completion:v16];
+  [(POServiceLoginManagerConnection *)serviceConnection rotateKeyForKeyType:type completion:v16];
   v7 = v24[5];
   if (!v7)
   {
@@ -1629,7 +1629,7 @@ id __38__POLoginManager_rotateKeyForKeyType___block_invoke_121(uint64_t a1)
   return v1;
 }
 
-- (void)completeRotationKeyForKeyType:(int64_t)a3
+- (void)completeRotationKeyForKeyType:(int64_t)type
 {
   v5 = PO_LOG_POLoginManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -1637,7 +1637,7 @@ id __38__POLoginManager_rotateKeyForKeyType___block_invoke_121(uint64_t a1)
     [POLoginManager completeRotationKeyForKeyType:];
   }
 
-  [(POServiceLoginManagerConnection *)self->_serviceConnection completeRotationKeyForKeyType:a3 completion:&__block_literal_global_126_0];
+  [(POServiceLoginManagerConnection *)self->_serviceConnection completeRotationKeyForKeyType:type completion:&__block_literal_global_126_0];
 }
 
 void __48__POLoginManager_completeRotationKeyForKeyType___block_invoke(uint64_t a1, int a2, void *a3)
@@ -1678,7 +1678,7 @@ id __48__POLoginManager_completeRotationKeyForKeyType___block_invoke_127(uint64_
   return v1;
 }
 
-- (POLoginManager)initWithCoder:(id)a3
+- (POLoginManager)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = POLoginManager;

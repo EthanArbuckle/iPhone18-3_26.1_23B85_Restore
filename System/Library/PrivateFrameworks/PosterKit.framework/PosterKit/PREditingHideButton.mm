@@ -1,12 +1,12 @@
 @interface PREditingHideButton
-+ (id)editingTitledButtonSymbolName:(BOOL)a3;
++ (id)editingTitledButtonSymbolName:(BOOL)name;
 @end
 
 @implementation PREditingHideButton
 
-+ (id)editingTitledButtonSymbolName:(BOOL)a3
++ (id)editingTitledButtonSymbolName:(BOOL)name
 {
-  if (a3)
+  if (name)
   {
     return @"eye.slash.fill";
   }

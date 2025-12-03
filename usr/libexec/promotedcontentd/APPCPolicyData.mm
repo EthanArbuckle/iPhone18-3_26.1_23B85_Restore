@@ -1,15 +1,15 @@
 @interface APPCPolicyData
-- (APPCPolicyData)initWithCoder:(id)a3;
-- (APPCPolicyData)initWithPolicyType:(int64_t)a3 policyValue:(id)a4 isXLFormat:(id)a5;
+- (APPCPolicyData)initWithCoder:(id)coder;
+- (APPCPolicyData)initWithPolicyType:(int64_t)type policyValue:(id)value isXLFormat:(id)format;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation APPCPolicyData
 
-- (APPCPolicyData)initWithCoder:(id)a3
+- (APPCPolicyData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(APPCPolicyData *)self init];
   if (v5)
   {
@@ -17,44 +17,44 @@
     v7 = [NSSet setWithObjects:v6, objc_opt_class(), 0];
     v8 = objc_opt_class();
     v9 = [NSSet setWithObjects:v8, objc_opt_class(), 0];
-    v5->_policyType = [v4 decodeIntForKey:@"policyType"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"policyValue"];
+    v5->_policyType = [coderCopy decodeIntForKey:@"policyType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"policyValue"];
     policyValue = v5->_policyValue;
     v5->_policyValue = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"containerType"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"containerType"];
     containerType = v5->_containerType;
     v5->_containerType = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"adType"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"adType"];
     adType = v5->_adType;
     v5->_adType = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expression"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expression"];
     expression = v5->_expression;
     v5->_expression = v16;
 
-    v18 = [v4 decodeObjectOfClasses:v7 forKey:@"targetingExpression"];
+    v18 = [coderCopy decodeObjectOfClasses:v7 forKey:@"targetingExpression"];
     targetingExpression = v5->_targetingExpression;
     v5->_targetingExpression = v18;
 
-    v20 = [v4 decodeObjectOfClasses:v9 forKey:@"dataAdapters"];
+    v20 = [coderCopy decodeObjectOfClasses:v9 forKey:@"dataAdapters"];
     dataAdapters = v5->_dataAdapters;
     v5->_dataAdapters = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"placementDescriptor"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"placementDescriptor"];
     placementDescriptor = v5->_placementDescriptor;
     v5->_placementDescriptor = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"adFormatType"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"adFormatType"];
     adFormatType = v5->_adFormatType;
     v5->_adFormatType = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userStatus"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userStatus"];
     userStatus = v5->_userStatus;
     v5->_userStatus = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isXLFormat"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isXLFormat"];
     isXLFormat = v5->_isXLFormat;
     v5->_isXLFormat = v28;
   }
@@ -62,54 +62,54 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt:-[APPCPolicyData policyType](self forKey:{"policyType"), @"policyType"}];
-  v5 = [(APPCPolicyData *)self policyValue];
-  [v4 encodeObject:v5 forKey:@"policyValue"];
+  coderCopy = coder;
+  [coderCopy encodeInt:-[APPCPolicyData policyType](self forKey:{"policyType"), @"policyType"}];
+  policyValue = [(APPCPolicyData *)self policyValue];
+  [coderCopy encodeObject:policyValue forKey:@"policyValue"];
 
-  v6 = [(APPCPolicyData *)self containerType];
-  [v4 encodeObject:v6 forKey:@"containerType"];
+  containerType = [(APPCPolicyData *)self containerType];
+  [coderCopy encodeObject:containerType forKey:@"containerType"];
 
-  v7 = [(APPCPolicyData *)self adType];
-  [v4 encodeObject:v7 forKey:@"adType"];
+  adType = [(APPCPolicyData *)self adType];
+  [coderCopy encodeObject:adType forKey:@"adType"];
 
-  v8 = [(APPCPolicyData *)self expression];
-  [v4 encodeObject:v8 forKey:@"expression"];
+  expression = [(APPCPolicyData *)self expression];
+  [coderCopy encodeObject:expression forKey:@"expression"];
 
-  v9 = [(APPCPolicyData *)self targetingExpression];
-  [v4 encodeObject:v9 forKey:@"targetingExpression"];
+  targetingExpression = [(APPCPolicyData *)self targetingExpression];
+  [coderCopy encodeObject:targetingExpression forKey:@"targetingExpression"];
 
-  v10 = [(APPCPolicyData *)self dataAdapters];
-  [v4 encodeObject:v10 forKey:@"dataAdapters"];
+  dataAdapters = [(APPCPolicyData *)self dataAdapters];
+  [coderCopy encodeObject:dataAdapters forKey:@"dataAdapters"];
 
-  v11 = [(APPCPolicyData *)self placementDescriptor];
-  [v4 encodeObject:v11 forKey:@"placementDescriptor"];
+  placementDescriptor = [(APPCPolicyData *)self placementDescriptor];
+  [coderCopy encodeObject:placementDescriptor forKey:@"placementDescriptor"];
 
-  v12 = [(APPCPolicyData *)self adFormatType];
-  [v4 encodeObject:v12 forKey:@"adFormatType"];
+  adFormatType = [(APPCPolicyData *)self adFormatType];
+  [coderCopy encodeObject:adFormatType forKey:@"adFormatType"];
 
-  v13 = [(APPCPolicyData *)self userStatus];
-  [v4 encodeObject:v13 forKey:@"userStatus"];
+  userStatus = [(APPCPolicyData *)self userStatus];
+  [coderCopy encodeObject:userStatus forKey:@"userStatus"];
 
-  v14 = [(APPCPolicyData *)self isXLFormat];
-  [v4 encodeObject:v14 forKey:@"isXLFormat"];
+  isXLFormat = [(APPCPolicyData *)self isXLFormat];
+  [coderCopy encodeObject:isXLFormat forKey:@"isXLFormat"];
 }
 
-- (APPCPolicyData)initWithPolicyType:(int64_t)a3 policyValue:(id)a4 isXLFormat:(id)a5
+- (APPCPolicyData)initWithPolicyType:(int64_t)type policyValue:(id)value isXLFormat:(id)format
 {
-  v9 = a4;
-  v10 = a5;
+  valueCopy = value;
+  formatCopy = format;
   v14.receiver = self;
   v14.super_class = APPCPolicyData;
   v11 = [(APPCPolicyData *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_policyType = a3;
-    objc_storeStrong(&v11->_policyValue, a4);
-    objc_storeStrong(&v12->_isXLFormat, a5);
+    v11->_policyType = type;
+    objc_storeStrong(&v11->_policyValue, value);
+    objc_storeStrong(&v12->_isXLFormat, format);
   }
 
   return v12;

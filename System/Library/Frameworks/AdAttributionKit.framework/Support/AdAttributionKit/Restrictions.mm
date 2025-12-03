@@ -1,6 +1,6 @@
 @interface Restrictions
 - (_TtC20AttributionKitDaemon12Restrictions)init;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
 @end
 
 @implementation Restrictions
@@ -32,7 +32,7 @@
   return result;
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
   v5 = sub_10000CDE0(&qword_100239EE0, &qword_1001B3640);
   v6 = *(*(v5 - 8) + 64);

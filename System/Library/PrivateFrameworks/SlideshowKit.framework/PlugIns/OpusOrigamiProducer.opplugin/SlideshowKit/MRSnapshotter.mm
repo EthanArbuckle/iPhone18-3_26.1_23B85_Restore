@@ -1,41 +1,41 @@
 @interface MRSnapshotter
-+ (id)snapshotterWithDocument:(id)a3;
++ (id)snapshotterWithDocument:(id)document;
 - (BOOL)isFlipped;
 - (CGColorSpace)colorSpace;
-- (CGImage)CGImageSnapshotAtState:(id)a3;
-- (CGImage)CGImageSnapshotAtTime:(double)a3;
+- (CGImage)CGImageSnapshotAtState:(id)state;
+- (CGImage)CGImageSnapshotAtTime:(double)time;
 - (CGImage)_CGImageSnapshot;
 - (CGSize)size;
-- (MRSnapshotter)initWithMontage:(id)a3 andAssetManagementDelegate:(id)a4 isReadOnly:(BOOL)a5;
-- (void)_snapshotToBuffer:(unsigned int *)a3 withBytesPerRow:(unsigned int)a4;
+- (MRSnapshotter)initWithMontage:(id)montage andAssetManagementDelegate:(id)delegate isReadOnly:(BOOL)only;
+- (void)_snapshotToBuffer:(unsigned int *)buffer withBytesPerRow:(unsigned int)row;
 - (void)dealloc;
-- (void)setIgnoresFadeInAndOut:(BOOL)a3;
-- (void)setIsFlipped:(BOOL)a3;
-- (void)setSize:(CGSize)a3;
-- (void)snapshotToBuffer:(unsigned int *)a3 withBytesPerRow:(unsigned int)a4 atTime:(double)a5;
+- (void)setIgnoresFadeInAndOut:(BOOL)out;
+- (void)setIsFlipped:(BOOL)flipped;
+- (void)setSize:(CGSize)size;
+- (void)snapshotToBuffer:(unsigned int *)buffer withBytesPerRow:(unsigned int)row atTime:(double)time;
 @end
 
 @implementation MRSnapshotter
 
-+ (id)snapshotterWithDocument:(id)a3
++ (id)snapshotterWithDocument:(id)document
 {
-  v3 = -[MRSnapshotter initWithMontage:andAssetManagementDelegate:isReadOnly:]([MRSnapshotter alloc], "initWithMontage:andAssetManagementDelegate:isReadOnly:", [a3 montage], a3, 1);
+  v3 = -[MRSnapshotter initWithMontage:andAssetManagementDelegate:isReadOnly:]([MRSnapshotter alloc], "initWithMontage:andAssetManagementDelegate:isReadOnly:", [document montage], document, 1);
 
   return v3;
 }
 
-- (MRSnapshotter)initWithMontage:(id)a3 andAssetManagementDelegate:(id)a4 isReadOnly:(BOOL)a5
+- (MRSnapshotter)initWithMontage:(id)montage andAssetManagementDelegate:(id)delegate isReadOnly:(BOOL)only
 {
-  v5 = a5;
+  onlyCopy = only;
   v11.receiver = self;
   v11.super_class = MRSnapshotter;
   v8 = [(MRSnapshotter *)&v11 init];
   if (v8)
   {
-    v9 = [[MRRenderer alloc] initWithParameters:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:v5], @"readonly", &__kCFBooleanTrue, @"noAudio", 0]];
+    v9 = [[MRRenderer alloc] initWithParameters:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:onlyCopy], @"readonly", &__kCFBooleanTrue, @"noAudio", 0]];
     v8->_renderer = v9;
-    [(MRRenderer *)v9 setMontage:a3];
-    [(MRRenderer *)v8->_renderer setAssetManagementDelegate:a4];
+    [(MRRenderer *)v9 setMontage:montage];
+    [(MRRenderer *)v8->_renderer setAssetManagementDelegate:delegate];
     [(MRRenderer *)v8->_renderer setMode:1];
     [(MRRenderer *)v8->_renderer setAllowsThumbnails:0];
     [(MRRenderer *)v8->_renderer setTimeQuantum:0.0166666667];
@@ -55,11 +55,11 @@
   [(MRSnapshotter *)&v3 dealloc];
 }
 
-- (void)setSize:(CGSize)a3
+- (void)setSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  if (a3.width != self->_size.width || a3.height != self->_size.height)
+  height = size.height;
+  width = size.width;
+  if (size.width != self->_size.width || size.height != self->_size.height)
   {
     if (self->_texture)
     {
@@ -90,31 +90,31 @@
 
 - (BOOL)isFlipped
 {
-  v2 = [(MRRenderer *)self->_renderer context];
+  context = [(MRRenderer *)self->_renderer context];
 
-  return [(MRContext *)v2 isFlipped];
+  return [(MRContext *)context isFlipped];
 }
 
-- (void)setIsFlipped:(BOOL)a3
+- (void)setIsFlipped:(BOOL)flipped
 {
-  v3 = a3;
-  v4 = [(MRRenderer *)self->_renderer context];
+  flippedCopy = flipped;
+  context = [(MRRenderer *)self->_renderer context];
 
-  [(MRContext *)v4 setIsFlipped:v3];
+  [(MRContext *)context setIsFlipped:flippedCopy];
 }
 
 - (CGColorSpace)colorSpace
 {
-  v2 = [(MRRenderer *)self->_renderer context];
+  context = [(MRRenderer *)self->_renderer context];
 
-  return [(MRContext *)v2 colorSpace];
+  return [(MRContext *)context colorSpace];
 }
 
-- (void)setIgnoresFadeInAndOut:(BOOL)a3
+- (void)setIgnoresFadeInAndOut:(BOOL)out
 {
-  self->_ignoresFadeInAndOut = a3;
+  self->_ignoresFadeInAndOut = out;
   renderer = self->_renderer;
-  if (a3)
+  if (out)
   {
     [(MRRenderer *)renderer disableFadeInAndOut];
   }
@@ -125,19 +125,19 @@
   }
 }
 
-- (void)_snapshotToBuffer:(unsigned int *)a3 withBytesPerRow:(unsigned int)a4
+- (void)_snapshotToBuffer:(unsigned int *)buffer withBytesPerRow:(unsigned int)row
 {
   if (self->_texture)
   {
-    [(MRRenderer *)self->_renderer requestRendering:1, *&a4];
-    v6 = [(MRRenderer *)self->_renderer renderDispatchQueue];
+    [(MRRenderer *)self->_renderer requestRendering:1, *&row];
+    renderDispatchQueue = [(MRRenderer *)self->_renderer renderDispatchQueue];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_2937C;
     v7[3] = &unk_1AA670;
     v7[4] = self;
-    v7[5] = a3;
-    dispatch_sync(v6, v7);
+    v7[5] = buffer;
+    dispatch_sync(renderDispatchQueue, v7);
   }
 }
 
@@ -159,24 +159,24 @@
   return v7;
 }
 
-- (void)snapshotToBuffer:(unsigned int *)a3 withBytesPerRow:(unsigned int)a4 atTime:(double)a5
+- (void)snapshotToBuffer:(unsigned int *)buffer withBytesPerRow:(unsigned int)row atTime:(double)time
 {
-  v5 = *&a4;
-  [(MRRenderer *)self->_renderer setTime:a5];
+  v5 = *&row;
+  [(MRRenderer *)self->_renderer setTime:time];
 
-  [(MRSnapshotter *)self _snapshotToBuffer:a3 withBytesPerRow:v5];
+  [(MRSnapshotter *)self _snapshotToBuffer:buffer withBytesPerRow:v5];
 }
 
-- (CGImage)CGImageSnapshotAtTime:(double)a3
+- (CGImage)CGImageSnapshotAtTime:(double)time
 {
-  [(MRRenderer *)self->_renderer setTime:a3];
+  [(MRRenderer *)self->_renderer setTime:time];
 
   return [(MRSnapshotter *)self _CGImageSnapshot];
 }
 
-- (CGImage)CGImageSnapshotAtState:(id)a3
+- (CGImage)CGImageSnapshotAtState:(id)state
 {
-  [(MRRenderer *)self->_renderer gotoState:a3];
+  [(MRRenderer *)self->_renderer gotoState:state];
 
   return [(MRSnapshotter *)self _CGImageSnapshot];
 }

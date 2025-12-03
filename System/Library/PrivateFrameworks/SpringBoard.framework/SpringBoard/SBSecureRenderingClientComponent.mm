@@ -1,7 +1,7 @@
 @interface SBSecureRenderingClientComponent
 - (void)_injectSecureRenderingSceneSettingToHostScene;
-- (void)scene:(id)a3 didUpdateSettings:(id)a4;
-- (void)setScene:(id)a3;
+- (void)scene:(id)scene didUpdateSettings:(id)settings;
+- (void)setScene:(id)scene;
 @end
 
 @implementation SBSecureRenderingClientComponent
@@ -9,11 +9,11 @@
 - (void)_injectSecureRenderingSceneSettingToHostScene
 {
   WeakRetained = objc_loadWeakRetained(&self->_sbWindowScene);
-  v4 = [WeakRetained secureDisplayStateProvider];
-  v5 = [v4 isInSecureDisplayMode];
+  secureDisplayStateProvider = [WeakRetained secureDisplayStateProvider];
+  isInSecureDisplayMode = [secureDisplayStateProvider isInSecureDisplayMode];
 
   v6 = objc_loadWeakRetained(&self->_hostScene);
-  v7 = [v6 settings];
+  settings = [v6 settings];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
@@ -24,7 +24,7 @@
     v9[2] = __81__SBSecureRenderingClientComponent__injectSecureRenderingSceneSettingToHostScene__block_invoke;
     v9[3] = &unk_2783C1660;
     objc_copyWeak(&v10, &location);
-    v11 = v5;
+    v11 = isInSecureDisplayMode;
     [v6 updateWhenMutable:v9];
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
@@ -50,14 +50,14 @@ void __81__SBSecureRenderingClientComponent__injectSecureRenderingSceneSettingTo
   [v5 setSecureRenderingEnabled:BSSettingFlagForBool()];
 }
 
-- (void)setScene:(id)a3
+- (void)setScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v14.receiver = self;
   v14.super_class = SBSecureRenderingClientComponent;
-  [(FBSSceneComponent *)&v14 setScene:v4];
+  [(FBSSceneComponent *)&v14 setScene:sceneCopy];
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = sceneCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -78,27 +78,27 @@ void __81__SBSecureRenderingClientComponent__injectSecureRenderingSceneSettingTo
 
   v8 = v7;
 
-  v9 = [v8 settings];
+  settings = [v8 settings];
 
-  v10 = [v9 transientLocalSettings];
-  v11 = [v10 objectForSetting:732775916];
+  transientLocalSettings = [settings transientLocalSettings];
+  v11 = [transientLocalSettings objectForSetting:732775916];
 
-  v12 = [v11 fbScene];
-  objc_storeWeak(&self->_hostScene, v12);
+  fbScene = [v11 fbScene];
+  objc_storeWeak(&self->_hostScene, fbScene);
 
-  v13 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v13 addObserver:self selector:sel__willEnableSecureDisplay_ name:*MEMORY[0x277D66028] object:0];
-  [v13 addObserver:self selector:sel__didDisableSecureDisplay_ name:*MEMORY[0x277D66020] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__willEnableSecureDisplay_ name:*MEMORY[0x277D66028] object:0];
+  [defaultCenter addObserver:self selector:sel__didDisableSecureDisplay_ name:*MEMORY[0x277D66020] object:0];
 }
 
-- (void)scene:(id)a3 didUpdateSettings:(id)a4
+- (void)scene:(id)scene didUpdateSettings:(id)settings
 {
-  v12 = a3;
+  sceneCopy = scene;
   WeakRetained = objc_loadWeakRetained(&self->_sbWindowScene);
 
   if (!WeakRetained)
   {
-    v7 = [MEMORY[0x277D75DA8] _sceneForFBSScene:v12];
+    v7 = [MEMORY[0x277D75DA8] _sceneForFBSScene:sceneCopy];
     v8 = objc_opt_class();
     v9 = v7;
     if (v8)

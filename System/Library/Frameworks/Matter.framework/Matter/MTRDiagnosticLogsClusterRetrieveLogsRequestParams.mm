@@ -1,8 +1,8 @@
 @interface MTRDiagnosticLogsClusterRetrieveLogsRequestParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRDiagnosticLogsClusterRetrieveLogsRequestParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -35,23 +35,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDiagnosticLogsClusterRetrieveLogsRequestParams);
-  v5 = [(MTRDiagnosticLogsClusterRetrieveLogsRequestParams *)self intent];
-  [(MTRDiagnosticLogsClusterRetrieveLogsRequestParams *)v4 setIntent:v5];
+  intent = [(MTRDiagnosticLogsClusterRetrieveLogsRequestParams *)self intent];
+  [(MTRDiagnosticLogsClusterRetrieveLogsRequestParams *)v4 setIntent:intent];
 
-  v6 = [(MTRDiagnosticLogsClusterRetrieveLogsRequestParams *)self requestedProtocol];
-  [(MTRDiagnosticLogsClusterRetrieveLogsRequestParams *)v4 setRequestedProtocol:v6];
+  requestedProtocol = [(MTRDiagnosticLogsClusterRetrieveLogsRequestParams *)self requestedProtocol];
+  [(MTRDiagnosticLogsClusterRetrieveLogsRequestParams *)v4 setRequestedProtocol:requestedProtocol];
 
-  v7 = [(MTRDiagnosticLogsClusterRetrieveLogsRequestParams *)self transferFileDesignator];
-  [(MTRDiagnosticLogsClusterRetrieveLogsRequestParams *)v4 setTransferFileDesignator:v7];
+  transferFileDesignator = [(MTRDiagnosticLogsClusterRetrieveLogsRequestParams *)self transferFileDesignator];
+  [(MTRDiagnosticLogsClusterRetrieveLogsRequestParams *)v4 setTransferFileDesignator:transferFileDesignator];
 
-  v8 = [(MTRDiagnosticLogsClusterRetrieveLogsRequestParams *)self timedInvokeTimeoutMs];
-  [(MTRDiagnosticLogsClusterRetrieveLogsRequestParams *)v4 setTimedInvokeTimeoutMs:v8];
+  timedInvokeTimeoutMs = [(MTRDiagnosticLogsClusterRetrieveLogsRequestParams *)self timedInvokeTimeoutMs];
+  [(MTRDiagnosticLogsClusterRetrieveLogsRequestParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v9 = [(MTRDiagnosticLogsClusterRetrieveLogsRequestParams *)self serverSideProcessingTimeout];
-  [(MTRDiagnosticLogsClusterRetrieveLogsRequestParams *)v4 setServerSideProcessingTimeout:v9];
+  serverSideProcessingTimeout = [(MTRDiagnosticLogsClusterRetrieveLogsRequestParams *)self serverSideProcessingTimeout];
+  [(MTRDiagnosticLogsClusterRetrieveLogsRequestParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -66,27 +66,27 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   *v25 = 0;
   v26 = 0;
   v24[0] = 0;
   v24[1] = 0;
   v23 = v24;
-  v5 = [(MTRDiagnosticLogsClusterRetrieveLogsRequestParams *)self intent];
-  v25[0] = [v5 unsignedCharValue];
+  intent = [(MTRDiagnosticLogsClusterRetrieveLogsRequestParams *)self intent];
+  v25[0] = [intent unsignedCharValue];
 
-  v6 = [(MTRDiagnosticLogsClusterRetrieveLogsRequestParams *)self requestedProtocol];
-  v25[1] = [v6 unsignedCharValue];
+  requestedProtocol = [(MTRDiagnosticLogsClusterRetrieveLogsRequestParams *)self requestedProtocol];
+  v25[1] = [requestedProtocol unsignedCharValue];
 
-  v7 = [(MTRDiagnosticLogsClusterRetrieveLogsRequestParams *)self transferFileDesignator];
+  transferFileDesignator = [(MTRDiagnosticLogsClusterRetrieveLogsRequestParams *)self transferFileDesignator];
 
-  if (v7)
+  if (transferFileDesignator)
   {
     v26 = 1;
     v27 = 0uLL;
-    v8 = [(MTRDiagnosticLogsClusterRetrieveLogsRequestParams *)self transferFileDesignator];
-    sub_238DB9BD8(v17, [v8 UTF8String], objc_msgSend(v8, "lengthOfBytesUsingEncoding:", 4));
+    transferFileDesignator2 = [(MTRDiagnosticLogsClusterRetrieveLogsRequestParams *)self transferFileDesignator];
+    sub_238DB9BD8(v17, [transferFileDesignator2 UTF8String], objc_msgSend(transferFileDesignator2, "lengthOfBytesUsingEncoding:", 4));
 
     v27 = v17[0];
   }
@@ -110,8 +110,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v22);
-      v9 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v22);
+      v9 = sub_2393C7114(reader, 21, 256);
       v12 = v16;
       v11 = v9;
     }
@@ -139,19 +139,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRDiagnosticLogsClusterRetrieveLogsRequestParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -162,7 +162,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x1A2100000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

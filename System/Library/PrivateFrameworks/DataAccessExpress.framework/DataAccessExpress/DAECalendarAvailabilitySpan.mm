@@ -1,9 +1,9 @@
 @interface DAECalendarAvailabilitySpan
 - (DAECalendarAvailabilitySpan)init;
-- (DAECalendarAvailabilitySpan)initWithCoder:(id)a3;
-- (DAECalendarAvailabilitySpan)initWithStartDate:(id)a3 endDate:(id)a4 type:(int64_t)a5;
+- (DAECalendarAvailabilitySpan)initWithCoder:(id)coder;
+- (DAECalendarAvailabilitySpan)initWithStartDate:(id)date endDate:(id)endDate type:(int64_t)type;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DAECalendarAvailabilitySpan
@@ -14,14 +14,14 @@
   objc_exception_throw(v2);
 }
 
-- (DAECalendarAvailabilitySpan)initWithStartDate:(id)a3 endDate:(id)a4 type:(int64_t)a5
+- (DAECalendarAvailabilitySpan)initWithStartDate:(id)date endDate:(id)endDate type:(int64_t)type
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
-  if (v10)
+  dateCopy = date;
+  endDateCopy = endDate;
+  v12 = endDateCopy;
+  if (dateCopy)
   {
-    if (v11)
+    if (endDateCopy)
     {
       goto LABEL_3;
     }
@@ -38,7 +38,7 @@
 
   [DAECalendarAvailabilitySpan initWithStartDate:a2 endDate:self type:?];
 LABEL_3:
-  if ([v10 compare:v12] == 1)
+  if ([dateCopy compare:v12] == 1)
   {
     [DAECalendarAvailabilitySpan initWithStartDate:a2 endDate:self type:?];
   }
@@ -49,9 +49,9 @@ LABEL_3:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_startDate, a3);
-    objc_storeStrong(&v14->_endDate, a4);
-    v14->_type = a5;
+    objc_storeStrong(&v13->_startDate, date);
+    objc_storeStrong(&v14->_endDate, endDate);
+    v14->_type = type;
   }
 
   return v14;
@@ -68,26 +68,26 @@ LABEL_3:
   return v7;
 }
 
-- (DAECalendarAvailabilitySpan)initWithCoder:(id)a3
+- (DAECalendarAvailabilitySpan)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"startDate"];
-  v7 = [v4 decodeObjectOfClass:v5 forKey:@"endDate"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"startDate"];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:@"endDate"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
 
   v9 = -[DAECalendarAvailabilitySpan initWithStartDate:endDate:type:](self, "initWithStartDate:endDate:type:", v6, v7, [v8 integerValue]);
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   startDate = self->_startDate;
-  v5 = a3;
-  [v5 encodeObject:startDate forKey:@"startDate"];
-  [v5 encodeObject:self->_endDate forKey:@"endDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:startDate forKey:@"startDate"];
+  [coderCopy encodeObject:self->_endDate forKey:@"endDate"];
   v6 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:self->_type];
-  [v5 encodeObject:v6 forKey:@"type"];
+  [coderCopy encodeObject:v6 forKey:@"type"];
 }
 
 - (void)initWithStartDate:(uint64_t)a1 endDate:(uint64_t)a2 type:.cold.1(uint64_t a1, uint64_t a2)

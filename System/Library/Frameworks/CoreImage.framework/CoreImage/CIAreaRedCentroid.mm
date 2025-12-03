@@ -35,15 +35,15 @@
     v22 = v21;
     v24 = v23;
     v25 = [CIVector vectorWithX:"vectorWithX:Y:Z:W:" Y:v17 Z:? W:?];
-    v26 = [(CIAreaCentroid *)self _kernelWeightedCoordinate];
+    _kernelWeightedCoordinate = [(CIAreaCentroid *)self _kernelWeightedCoordinate];
     [(CIImage *)self->super.super.inputImage extent];
     v45[0] = self->super.super.inputImage;
     v45[1] = v25;
-    v31 = [v26 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v45, 2), v27, v28, v29, v30}];
+    v31 = [_kernelWeightedCoordinate applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v45, 2), v27, v28, v29, v30}];
     v43 = @"inputExtent";
     v44 = [CIVector vectorWithCGRect:v18, v20, v22, v24];
     v32 = [objc_msgSend(v31 imageByApplyingFilter:@"CIAreaAverage" withInputParameters:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v44, &v43, 1)), "imageByUnpremultiplyingAlpha"}];
-    v33 = [(CIAreaCentroid *)self _kernelCentroid];
+    _kernelCentroid = [(CIAreaCentroid *)self _kernelCentroid];
     [v32 extent];
     v35 = v34;
     v37 = v36;
@@ -51,7 +51,7 @@
     v41 = v40;
     v42[0] = v32;
     v42[1] = [CIVector vectorWithCGRect:v18, v20, v22, v24];
-    return [objc_msgSend(v33 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v42, 2), v35, v37, v39, v41), "imageByCroppingToRect:", 0.0, 0.0, 1.0, 1.0}];
+    return [objc_msgSend(_kernelCentroid applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v42, 2), v35, v37, v39, v41), "imageByCroppingToRect:", 0.0, 0.0, 1.0, 1.0}];
   }
 
   else

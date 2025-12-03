@@ -1,35 +1,35 @@
 @interface SwipableCollectionViewLayout
-- (UIEdgeInsets)swipeActionController:(id)a3 extraInsetsForItemAtIndexPath:(id)a4;
-- (_TtC17SequoiaTranslator28SwipableCollectionViewLayout)initWithCoder:(id)a3;
-- (_TtC17SequoiaTranslator28SwipableCollectionViewLayout)initWithSection:(id)a3;
-- (_TtC17SequoiaTranslator28SwipableCollectionViewLayout)initWithSection:(id)a3 configuration:(id)a4;
-- (_TtC17SequoiaTranslator28SwipableCollectionViewLayout)initWithSectionProvider:(id)a3;
-- (_TtC17SequoiaTranslator28SwipableCollectionViewLayout)initWithSectionProvider:(id)a3 configuration:(id)a4;
-- (id)gestureRecognizerViewForSwipeActionController:(id)a3;
-- (id)itemContainerViewForSwipeActionController:(id)a3;
-- (id)swipeActionController:(id)a3 indexPathForTouchLocation:(CGPoint)a4;
-- (id)swipeActionController:(id)a3 leadingSwipeConfigurationForItemAtIndexPath:(id)a4;
-- (int64_t)layoutDirectionForSwipeActionController:(id)a3;
-- (void)invalidateLayoutWithContext:(id)a3;
+- (UIEdgeInsets)swipeActionController:(id)controller extraInsetsForItemAtIndexPath:(id)path;
+- (_TtC17SequoiaTranslator28SwipableCollectionViewLayout)initWithCoder:(id)coder;
+- (_TtC17SequoiaTranslator28SwipableCollectionViewLayout)initWithSection:(id)section;
+- (_TtC17SequoiaTranslator28SwipableCollectionViewLayout)initWithSection:(id)section configuration:(id)configuration;
+- (_TtC17SequoiaTranslator28SwipableCollectionViewLayout)initWithSectionProvider:(id)provider;
+- (_TtC17SequoiaTranslator28SwipableCollectionViewLayout)initWithSectionProvider:(id)provider configuration:(id)configuration;
+- (id)gestureRecognizerViewForSwipeActionController:(id)controller;
+- (id)itemContainerViewForSwipeActionController:(id)controller;
+- (id)swipeActionController:(id)controller indexPathForTouchLocation:(CGPoint)location;
+- (id)swipeActionController:(id)controller leadingSwipeConfigurationForItemAtIndexPath:(id)path;
+- (int64_t)layoutDirectionForSwipeActionController:(id)controller;
+- (void)invalidateLayoutWithContext:(id)context;
 @end
 
 @implementation SwipableCollectionViewLayout
 
-- (void)invalidateLayoutWithContext:(id)a3
+- (void)invalidateLayoutWithContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for SwipableCollectionViewLayout();
-  v4 = a3;
+  contextCopy = context;
   v5 = v7.receiver;
-  [(SwipableCollectionViewLayout *)&v7 invalidateLayoutWithContext:v4];
-  if ([v4 invalidateEverything])
+  [(SwipableCollectionViewLayout *)&v7 invalidateLayoutWithContext:contextCopy];
+  if ([contextCopy invalidateEverything])
   {
     v6 = sub_1002569CC();
     [v6 resetSwipedItemAnimated:0 completion:0];
   }
 }
 
-- (_TtC17SequoiaTranslator28SwipableCollectionViewLayout)initWithSection:(id)a3
+- (_TtC17SequoiaTranslator28SwipableCollectionViewLayout)initWithSection:(id)section
 {
   v4 = self + OBJC_IVAR____TtC17SequoiaTranslator28SwipableCollectionViewLayout_swipeDelegate;
   *v4 = 0u;
@@ -38,10 +38,10 @@
   *(&self->super.super.super.isa + OBJC_IVAR____TtC17SequoiaTranslator28SwipableCollectionViewLayout____lazy_storage___swipeController) = 0;
   v6.receiver = self;
   v6.super_class = type metadata accessor for SwipableCollectionViewLayout();
-  return [(SwipableCollectionViewLayout *)&v6 initWithSection:a3];
+  return [(SwipableCollectionViewLayout *)&v6 initWithSection:section];
 }
 
-- (_TtC17SequoiaTranslator28SwipableCollectionViewLayout)initWithSection:(id)a3 configuration:(id)a4
+- (_TtC17SequoiaTranslator28SwipableCollectionViewLayout)initWithSection:(id)section configuration:(id)configuration
 {
   v6 = self + OBJC_IVAR____TtC17SequoiaTranslator28SwipableCollectionViewLayout_swipeDelegate;
   *v6 = 0u;
@@ -50,12 +50,12 @@
   *(&self->super.super.super.isa + OBJC_IVAR____TtC17SequoiaTranslator28SwipableCollectionViewLayout____lazy_storage___swipeController) = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for SwipableCollectionViewLayout();
-  return [(SwipableCollectionViewLayout *)&v8 initWithSection:a3 configuration:a4];
+  return [(SwipableCollectionViewLayout *)&v8 initWithSection:section configuration:configuration];
 }
 
-- (_TtC17SequoiaTranslator28SwipableCollectionViewLayout)initWithSectionProvider:(id)a3
+- (_TtC17SequoiaTranslator28SwipableCollectionViewLayout)initWithSectionProvider:(id)provider
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(provider);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = self + OBJC_IVAR____TtC17SequoiaTranslator28SwipableCollectionViewLayout_swipeDelegate;
@@ -79,9 +79,9 @@
   return v8;
 }
 
-- (_TtC17SequoiaTranslator28SwipableCollectionViewLayout)initWithSectionProvider:(id)a3 configuration:(id)a4
+- (_TtC17SequoiaTranslator28SwipableCollectionViewLayout)initWithSectionProvider:(id)provider configuration:(id)configuration
 {
-  v6 = _Block_copy(a3);
+  v6 = _Block_copy(provider);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   v8 = self + OBJC_IVAR____TtC17SequoiaTranslator28SwipableCollectionViewLayout_swipeDelegate;
@@ -96,17 +96,17 @@
   aBlock[2] = sub_1002A3A0C;
   aBlock[3] = &unk_10038B220;
   v9 = _Block_copy(aBlock);
-  v10 = a4;
+  configurationCopy = configuration;
 
   v13.receiver = self;
   v13.super_class = type metadata accessor for SwipableCollectionViewLayout();
-  v11 = [(SwipableCollectionViewLayout *)&v13 initWithSectionProvider:v9 configuration:v10];
+  v11 = [(SwipableCollectionViewLayout *)&v13 initWithSectionProvider:v9 configuration:configurationCopy];
 
   _Block_release(v9);
   return v11;
 }
 
-- (_TtC17SequoiaTranslator28SwipableCollectionViewLayout)initWithCoder:(id)a3
+- (_TtC17SequoiaTranslator28SwipableCollectionViewLayout)initWithCoder:(id)coder
 {
   v4 = self + OBJC_IVAR____TtC17SequoiaTranslator28SwipableCollectionViewLayout_swipeDelegate;
   *v4 = 0u;
@@ -115,8 +115,8 @@
   *(&self->super.super.super.isa + OBJC_IVAR____TtC17SequoiaTranslator28SwipableCollectionViewLayout____lazy_storage___swipeController) = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for SwipableCollectionViewLayout();
-  v5 = a3;
-  v6 = [(SwipableCollectionViewLayout *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(SwipableCollectionViewLayout *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {
@@ -125,15 +125,15 @@
   return v6;
 }
 
-- (UIEdgeInsets)swipeActionController:(id)a3 extraInsetsForItemAtIndexPath:(id)a4
+- (UIEdgeInsets)swipeActionController:(id)controller extraInsetsForItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v24 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1002578A4();
   v13 = v12;
   v15 = v14;
@@ -152,14 +152,14 @@
   return result;
 }
 
-- (id)gestureRecognizerViewForSwipeActionController:(id)a3
+- (id)gestureRecognizerViewForSwipeActionController:(id)controller
 {
-  v3 = self;
-  v4 = [(SwipableCollectionViewLayout *)v3 collectionView];
-  if (v4)
+  selfCopy = self;
+  collectionView = [(SwipableCollectionViewLayout *)selfCopy collectionView];
+  if (collectionView)
   {
-    v5 = v4;
-    [v4 endEditing:1];
+    v5 = collectionView;
+    [collectionView endEditing:1];
 
     return v5;
   }
@@ -173,13 +173,13 @@
   return result;
 }
 
-- (id)itemContainerViewForSwipeActionController:(id)a3
+- (id)itemContainerViewForSwipeActionController:(id)controller
 {
-  v3 = self;
-  v4 = [(SwipableCollectionViewLayout *)v3 collectionView];
-  if (v4)
+  selfCopy = self;
+  collectionView = [(SwipableCollectionViewLayout *)selfCopy collectionView];
+  if (collectionView)
   {
-    v5 = v4;
+    v5 = collectionView;
 
     return v5;
   }
@@ -193,16 +193,16 @@
   return result;
 }
 
-- (id)swipeActionController:(id)a3 indexPathForTouchLocation:(CGPoint)a4
+- (id)swipeActionController:(id)controller indexPathForTouchLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   v8 = type metadata accessor for IndexPath();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v16 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v12 = a3;
-  v13 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1002572D8(v11, x, y);
 
   v14.super.isa = IndexPath._bridgeToObjectiveC()().super.isa;
@@ -211,7 +211,7 @@
   return v14.super.isa;
 }
 
-- (id)swipeActionController:(id)a3 leadingSwipeConfigurationForItemAtIndexPath:(id)a4
+- (id)swipeActionController:(id)controller leadingSwipeConfigurationForItemAtIndexPath:(id)path
 {
   v4 = type metadata accessor for IndexPath();
   v5 = *(v4 - 8);
@@ -223,17 +223,17 @@
   return 0;
 }
 
-- (int64_t)layoutDirectionForSwipeActionController:(id)a3
+- (int64_t)layoutDirectionForSwipeActionController:(id)controller
 {
-  v3 = self;
-  v4 = [(SwipableCollectionViewLayout *)v3 collectionView];
-  if (v4)
+  selfCopy = self;
+  collectionView = [(SwipableCollectionViewLayout *)selfCopy collectionView];
+  if (collectionView)
   {
-    v5 = v4;
-    v6 = [v4 traitCollection];
-    v7 = [v6 layoutDirection];
+    v5 = collectionView;
+    traitCollection = [collectionView traitCollection];
+    layoutDirection = [traitCollection layoutDirection];
 
-    return v7;
+    return layoutDirection;
   }
 
   else

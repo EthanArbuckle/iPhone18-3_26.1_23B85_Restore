@@ -18,10 +18,10 @@
 {
   v4.receiver = self;
   v4.super_class = PUAdjustmentsToolControllerAccessibility;
-  v2 = [(PUAdjustmentsToolControllerAccessibility *)&v4 centerToolbarView];
-  [v2 _setAccessibilityTraitsBlock:&__block_literal_global_484_0];
+  centerToolbarView = [(PUAdjustmentsToolControllerAccessibility *)&v4 centerToolbarView];
+  [centerToolbarView _setAccessibilityTraitsBlock:&__block_literal_global_484_0];
 
-  return v2;
+  return centerToolbarView;
 }
 
 @end

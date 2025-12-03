@@ -1,10 +1,10 @@
 @interface AKRedactionRectAnnotation
 - (AKRedactionRectAnnotation)init;
-- (AKRedactionRectAnnotation)initWithCoder:(id)a3;
+- (AKRedactionRectAnnotation)initWithCoder:(id)coder;
 - (CGRect)hitTestBounds;
 - (id)displayName;
 - (id)keysForValuesToObserveForRedrawing;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AKRedactionRectAnnotation
@@ -16,8 +16,8 @@
   v2 = [(AKRectangularShapeAnnotation *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D75348] blackColor];
-    [(AKShapeAnnotation *)v2 setFillColor:v3];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(AKShapeAnnotation *)v2 setFillColor:blackColor];
 
     [(AKRedactionRectAnnotation *)v2 setIsOpaque:1];
   }
@@ -38,8 +38,8 @@
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKRedactionRectAnnotation;
-  v3 = [(AKRectangularShapeAnnotation *)&v6 keysForValuesToObserveForRedrawing];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForRedrawing = [(AKRectangularShapeAnnotation *)&v6 keysForValuesToObserveForRedrawing];
+  v4 = [v2 setWithSet:keysForValuesToObserveForRedrawing];
 
   [v4 addObjectsFromArray:&unk_2851BB1C0];
 
@@ -75,26 +75,26 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = AKRedactionRectAnnotation;
-  v4 = a3;
-  [(AKRectangularShapeAnnotation *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:-[AKRedactionRectAnnotation isOpaque](self forKey:{"isOpaque", v5.receiver, v5.super_class), @"isOpaque"}];
-  [v4 encodeBool:-[AKRedactionRectAnnotation isOpaque](self forKey:{"isOpaque"), @"isHighlighted"}];
+  coderCopy = coder;
+  [(AKRectangularShapeAnnotation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:-[AKRedactionRectAnnotation isOpaque](self forKey:{"isOpaque", v5.receiver, v5.super_class), @"isOpaque"}];
+  [coderCopy encodeBool:-[AKRedactionRectAnnotation isOpaque](self forKey:{"isOpaque"), @"isHighlighted"}];
 }
 
-- (AKRedactionRectAnnotation)initWithCoder:(id)a3
+- (AKRedactionRectAnnotation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = AKRedactionRectAnnotation;
-  v5 = [(AKRectangularShapeAnnotation *)&v7 initWithCoder:v4];
+  v5 = [(AKRectangularShapeAnnotation *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    -[AKRedactionRectAnnotation setIsOpaque:](v5, "setIsOpaque:", [v4 decodeBoolForKey:@"isOpaque"]);
-    -[AKRedactionRectAnnotation setIsOpaque:](v5, "setIsOpaque:", [v4 decodeBoolForKey:@"isHighlighted"]);
+    -[AKRedactionRectAnnotation setIsOpaque:](v5, "setIsOpaque:", [coderCopy decodeBoolForKey:@"isOpaque"]);
+    -[AKRedactionRectAnnotation setIsOpaque:](v5, "setIsOpaque:", [coderCopy decodeBoolForKey:@"isHighlighted"]);
   }
 
   return v5;

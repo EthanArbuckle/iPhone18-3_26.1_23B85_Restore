@@ -3,9 +3,9 @@
 - (BOOL)_connectToService;
 - (void)_connectToService;
 - (void)dealloc;
-- (void)getLoginTypeForUser:(id)a3 completion:(id)a4;
-- (void)verifyPasswordLogin:(id)a3 passwordContext:(id)a4 completion:(id)a5;
-- (void)verifyPasswordUser:(id)a3 passwordContext:(id)a4 completion:(id)a5;
+- (void)getLoginTypeForUser:(id)user completion:(id)completion;
+- (void)verifyPasswordLogin:(id)login passwordContext:(id)context completion:(id)completion;
+- (void)verifyPasswordUser:(id)user passwordContext:(id)context completion:(id)completion;
 @end
 
 @implementation POServiceCoreConnection
@@ -37,32 +37,32 @@ uint64_t __35__POServiceCoreConnection_xpcQueue__block_invoke()
   v3 = 136315394;
   v4 = "[POServiceCoreConnection dealloc]";
   v5 = 2112;
-  v6 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_25E8B1000, a2, OS_LOG_TYPE_DEBUG, "%s  on %@", &v3, 0x16u);
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getLoginTypeForUser:(id)a3 completion:(id)a4
+- (void)getLoginTypeForUser:(id)user completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  userCopy = user;
+  completionCopy = completion;
   if ([(POServiceCoreConnection *)self _connectToService])
   {
-    v8 = [(POServiceCoreConnection *)self xpcConnection];
+    xpcConnection = [(POServiceCoreConnection *)self xpcConnection];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __58__POServiceCoreConnection_getLoginTypeForUser_completion___block_invoke;
     v12[3] = &unk_279A3E488;
-    v9 = v7;
+    v9 = completionCopy;
     v13 = v9;
-    v10 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v12];
-    [v10 getLoginTypeForUser:v6 completion:v9];
+    v10 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v12];
+    [v10 getLoginTypeForUser:userCopy completion:v9];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     v11 = [POError internalErrorWithMessage:@"Failed to connect to PSSO service"];
-    (*(v7 + 2))(v7, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, v11);
   }
 }
 
@@ -114,28 +114,28 @@ void __116__POServiceCoreConnection_performPasswordLogin_loginUserName_passwordC
   }
 }
 
-- (void)verifyPasswordLogin:(id)a3 passwordContext:(id)a4 completion:(id)a5
+- (void)verifyPasswordLogin:(id)login passwordContext:(id)context completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  loginCopy = login;
+  contextCopy = context;
+  completionCopy = completion;
   if ([(POServiceCoreConnection *)self _connectToService])
   {
-    v11 = [(POServiceCoreConnection *)self xpcConnection];
+    xpcConnection = [(POServiceCoreConnection *)self xpcConnection];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __74__POServiceCoreConnection_verifyPasswordLogin_passwordContext_completion___block_invoke;
     v15[3] = &unk_279A3E488;
-    v12 = v10;
+    v12 = completionCopy;
     v16 = v12;
-    v13 = [v11 synchronousRemoteObjectProxyWithErrorHandler:v15];
-    [v13 verifyPasswordLogin:v8 passwordContext:v9 completion:v12];
+    v13 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v15];
+    [v13 verifyPasswordLogin:loginCopy passwordContext:contextCopy completion:v12];
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
     v14 = [POError internalErrorWithMessage:@"Failed to connect to PSSO service"];
-    (*(v10 + 2))(v10, 2, v14);
+    (*(completionCopy + 2))(completionCopy, 2, v14);
   }
 }
 
@@ -155,28 +155,28 @@ void __74__POServiceCoreConnection_verifyPasswordLogin_passwordContext_completio
   }
 }
 
-- (void)verifyPasswordUser:(id)a3 passwordContext:(id)a4 completion:(id)a5
+- (void)verifyPasswordUser:(id)user passwordContext:(id)context completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  userCopy = user;
+  contextCopy = context;
+  completionCopy = completion;
   if ([(POServiceCoreConnection *)self _connectToService])
   {
-    v11 = [(POServiceCoreConnection *)self xpcConnection];
+    xpcConnection = [(POServiceCoreConnection *)self xpcConnection];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __73__POServiceCoreConnection_verifyPasswordUser_passwordContext_completion___block_invoke;
     v15[3] = &unk_279A3E488;
-    v12 = v10;
+    v12 = completionCopy;
     v16 = v12;
-    v13 = [v11 synchronousRemoteObjectProxyWithErrorHandler:v15];
-    [v13 verifyPasswordUser:v8 passwordContext:v9 completion:v12];
+    v13 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v15];
+    [v13 verifyPasswordUser:userCopy passwordContext:contextCopy completion:v12];
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
     v14 = [POError internalErrorWithMessage:@"Failed to connect to PSSO service"];
-    (*(v10 + 2))(v10, 2, 0, 0, 0, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 2, 0, 0, 0, 0, v14);
   }
 }
 

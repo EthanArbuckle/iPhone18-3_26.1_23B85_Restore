@@ -1,7 +1,7 @@
 @interface PVCameraPreviewRequest
 - (void)dealloc;
-- (void)setSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)setTime:(id *)a3;
+- (void)setSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)setTime:(id *)time;
 @end
 
 @implementation PVCameraPreviewRequest
@@ -19,29 +19,29 @@
   [(PVCameraPreviewRequest *)&v4 dealloc];
 }
 
-- (void)setSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)setSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   sampleBuffer = self->_sampleBuffer;
-  if (sampleBuffer != a3)
+  if (sampleBuffer != buffer)
   {
     if (sampleBuffer)
     {
       CFRelease(sampleBuffer);
     }
 
-    self->_sampleBuffer = a3;
-    if (a3)
+    self->_sampleBuffer = buffer;
+    if (buffer)
     {
 
-      CFRetain(a3);
+      CFRetain(buffer);
     }
   }
 }
 
-- (void)setTime:(id *)a3
+- (void)setTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_time.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_time.epoch = time->var3;
   *&self->_time.value = v3;
 }
 

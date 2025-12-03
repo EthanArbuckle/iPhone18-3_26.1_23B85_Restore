@@ -1,12 +1,12 @@
 @interface PrivacyCategoryView
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
-- (_TtC22SubscribePageExtension19PrivacyCategoryView)initWithCoder:(id)a3;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
+- (_TtC22SubscribePageExtension19PrivacyCategoryView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation PrivacyCategoryView
 
-- (_TtC22SubscribePageExtension19PrivacyCategoryView)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension19PrivacyCategoryView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension19PrivacyCategoryView_dataTypesLabel) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension19PrivacyCategoryView_category) = 0;
@@ -17,15 +17,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002E97AC();
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  v7 = sub_1002EA37C(a4);
+  selfCopy = self;
+  v7 = sub_1002EA37C(in);
   v9 = v8;
   v11 = v10;
   v13 = v12;

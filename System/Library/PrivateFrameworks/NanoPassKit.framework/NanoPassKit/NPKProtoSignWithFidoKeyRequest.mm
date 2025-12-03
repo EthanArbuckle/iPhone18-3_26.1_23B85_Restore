@@ -1,12 +1,12 @@
 @interface NPKProtoSignWithFidoKeyRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoSignWithFidoKeyRequest
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoSignWithFidoKeyRequest;
   v4 = [(NPKProtoSignWithFidoKeyRequest *)&v8 description];
-  v5 = [(NPKProtoSignWithFidoKeyRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoSignWithFidoKeyRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   relyingParty = self->_relyingParty;
   if (relyingParty)
   {
-    [v3 setObject:relyingParty forKey:@"relyingParty"];
+    [dictionary setObject:relyingParty forKey:@"relyingParty"];
   }
 
   relyingPartyAccountHash = self->_relyingPartyAccountHash;
@@ -66,125 +66,125 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_relyingParty)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_relyingPartyAccountHash)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_fidoKeyHash)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_challenge)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_publicKeyIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_externalizedAuth)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_relyingParty)
   {
-    [v4 setRelyingParty:?];
-    v4 = v5;
+    [toCopy setRelyingParty:?];
+    toCopy = v5;
   }
 
   if (self->_relyingPartyAccountHash)
   {
     [v5 setRelyingPartyAccountHash:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_fidoKeyHash)
   {
     [v5 setFidoKeyHash:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_challenge)
   {
     [v5 setChallenge:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_publicKeyIdentifier)
   {
     [v5 setPublicKeyIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_externalizedAuth)
   {
     [v5 setExternalizedAuth:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_relyingParty copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_relyingParty copyWithZone:zone];
   v7 = v5[5];
   v5[5] = v6;
 
-  v8 = [(NSString *)self->_relyingPartyAccountHash copyWithZone:a3];
+  v8 = [(NSString *)self->_relyingPartyAccountHash copyWithZone:zone];
   v9 = v5[6];
   v5[6] = v8;
 
-  v10 = [(NSData *)self->_fidoKeyHash copyWithZone:a3];
+  v10 = [(NSData *)self->_fidoKeyHash copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
-  v12 = [(NSData *)self->_challenge copyWithZone:a3];
+  v12 = [(NSData *)self->_challenge copyWithZone:zone];
   v13 = v5[1];
   v5[1] = v12;
 
-  v14 = [(NSString *)self->_publicKeyIdentifier copyWithZone:a3];
+  v14 = [(NSString *)self->_publicKeyIdentifier copyWithZone:zone];
   v15 = v5[4];
   v5[4] = v14;
 
-  v16 = [(NSData *)self->_externalizedAuth copyWithZone:a3];
+  v16 = [(NSData *)self->_externalizedAuth copyWithZone:zone];
   v17 = v5[2];
   v5[2] = v16;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((relyingParty = self->_relyingParty, !(relyingParty | v4[5])) || -[NSString isEqual:](relyingParty, "isEqual:")) && ((relyingPartyAccountHash = self->_relyingPartyAccountHash, !(relyingPartyAccountHash | v4[6])) || -[NSString isEqual:](relyingPartyAccountHash, "isEqual:")) && ((fidoKeyHash = self->_fidoKeyHash, !(fidoKeyHash | v4[3])) || -[NSData isEqual:](fidoKeyHash, "isEqual:")) && ((challenge = self->_challenge, !(challenge | v4[1])) || -[NSData isEqual:](challenge, "isEqual:")) && ((publicKeyIdentifier = self->_publicKeyIdentifier, !(publicKeyIdentifier | v4[4])) || -[NSString isEqual:](publicKeyIdentifier, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((relyingParty = self->_relyingParty, !(relyingParty | equalCopy[5])) || -[NSString isEqual:](relyingParty, "isEqual:")) && ((relyingPartyAccountHash = self->_relyingPartyAccountHash, !(relyingPartyAccountHash | equalCopy[6])) || -[NSString isEqual:](relyingPartyAccountHash, "isEqual:")) && ((fidoKeyHash = self->_fidoKeyHash, !(fidoKeyHash | equalCopy[3])) || -[NSData isEqual:](fidoKeyHash, "isEqual:")) && ((challenge = self->_challenge, !(challenge | equalCopy[1])) || -[NSData isEqual:](challenge, "isEqual:")) && ((publicKeyIdentifier = self->_publicKeyIdentifier, !(publicKeyIdentifier | equalCopy[4])) || -[NSString isEqual:](publicKeyIdentifier, "isEqual:")))
   {
     externalizedAuth = self->_externalizedAuth;
-    if (externalizedAuth | v4[2])
+    if (externalizedAuth | equalCopy[2])
     {
       v11 = [(NSData *)externalizedAuth isEqual:?];
     }
@@ -213,35 +213,35 @@
   return v6 ^ v7 ^ [(NSData *)self->_externalizedAuth hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[5])
+  fromCopy = from;
+  if (fromCopy[5])
   {
     [(NPKProtoSignWithFidoKeyRequest *)self setRelyingParty:?];
   }
 
-  if (v4[6])
+  if (fromCopy[6])
   {
     [(NPKProtoSignWithFidoKeyRequest *)self setRelyingPartyAccountHash:?];
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(NPKProtoSignWithFidoKeyRequest *)self setFidoKeyHash:?];
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(NPKProtoSignWithFidoKeyRequest *)self setChallenge:?];
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(NPKProtoSignWithFidoKeyRequest *)self setPublicKeyIdentifier:?];
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(NPKProtoSignWithFidoKeyRequest *)self setExternalizedAuth:?];
   }

@@ -8,13 +8,13 @@
 
 - (void)displayPrivateBrowsingDenialAlert
 {
-  v2 = self;
+  selfCopy = self;
   WBSFeatureRestrictionAlertHelper.displayPrivateBrowsingDenialAlert()();
 }
 
 - (void)displayHistoryClearingDenialAlert
 {
-  v2 = self;
+  selfCopy = self;
   WBSFeatureRestrictionAlertHelper.displayHistoryClearingDenialAlert()();
 }
 

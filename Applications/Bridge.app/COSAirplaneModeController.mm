@@ -1,20 +1,20 @@
 @interface COSAirplaneModeController
 + (BOOL)isMirroring;
 - (COSAirplaneModeController)init;
-- (id)bluetoothOn:(id)a3;
-- (id)disableAPMSettings:(id)a3;
+- (id)bluetoothOn:(id)on;
+- (id)disableAPMSettings:(id)settings;
 - (id)specifiers;
-- (id)wifiOn:(id)a3;
+- (id)wifiOn:(id)on;
 - (void)_recheckAPMSettings;
 - (void)changeAirplaneModeSettings;
 - (void)dealloc;
 - (void)hideSettingsForMirrorOn;
 - (void)retrieveAirplaneModeSettings;
-- (void)setBluetoothOn:(id)a3 specifier:(id)a4;
-- (void)setMirror:(id)a3 specifier:(id)a4;
-- (void)setWifiOn:(id)a3 specifier:(id)a4;
-- (void)updateSettingsSpecifiersForChanges:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setBluetoothOn:(id)on specifier:(id)specifier;
+- (void)setMirror:(id)mirror specifier:(id)specifier;
+- (void)setWifiOn:(id)on specifier:(id)specifier;
+- (void)updateSettingsSpecifiersForChanges:(id)changes;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation COSAirplaneModeController
@@ -55,7 +55,7 @@
   if (!v4)
   {
     v5 = [(COSAirplaneModeController *)self loadSpecifiersFromPlistName:@"AirplaneMode" target:self];
-    v6 = [(COSAirplaneModeController *)self airplaneModeSettingsLoaded];
+    airplaneModeSettingsLoaded = [(COSAirplaneModeController *)self airplaneModeSettingsLoaded];
     if (+[COSAirplaneModeController isMirroring])
     {
       v7 = [v5 objectAtIndexedSubscript:0];
@@ -71,7 +71,7 @@
     else
     {
       SFLocalizableWAPIStringKeyForKey();
-      v12 = v30 = v6;
+      v12 = v30 = airplaneModeSettingsLoaded;
       v34 = v5;
       v13 = [PSSpecifier groupSpecifierWithID:@"NANO_WIFI_AIRPLANE_MODE_GROUP"];
       v14 = [NSBundle bundleForClass:objc_opt_class()];
@@ -79,7 +79,7 @@
       v15 = [v14 localizedStringForKey:v12 value:&stru_10026E598 table:@"AirplaneMode"];
       v16 = [PSSpecifier preferenceSpecifierNamed:v15 target:self set:"setWifiOn:specifier:" get:"wifiOn:" detail:0 cell:6 edit:0];
 
-      v17 = [NSNumber numberWithBool:v6];
+      v17 = [NSNumber numberWithBool:airplaneModeSettingsLoaded];
       v29 = PSEnabledKey;
       [v16 setProperty:v17 forKey:?];
 
@@ -124,21 +124,21 @@
   return v4;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = COSAirplaneModeController;
-  [(COSAirplaneModeController *)&v4 viewDidAppear:a3];
+  [(COSAirplaneModeController *)&v4 viewDidAppear:appear];
   [(COSAirplaneModeController *)self retrieveAirplaneModeSettings];
 }
 
-- (void)setMirror:(id)a3 specifier:(id)a4
+- (void)setMirror:(id)mirror specifier:(id)specifier
 {
-  v5 = a3;
-  sub_10002CA2C(@"com.apple.nano", @"mirror-airplane", v5);
-  v6 = [v5 BOOLValue];
+  mirrorCopy = mirror;
+  sub_10002CA2C(@"com.apple.nano", @"mirror-airplane", mirrorCopy);
+  bOOLValue = [mirrorCopy BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
 
     [(COSAirplaneModeController *)self hideSettingsForMirrorOn];
@@ -166,16 +166,16 @@
   [(COSAirplaneModeController *)self removeSpecifier:v6 animated:1];
 }
 
-- (id)bluetoothOn:(id)a3
+- (id)bluetoothOn:(id)on
 {
-  v3 = [(COSAirplaneModeController *)self bluetoothWithAirplaneMode];
+  bluetoothWithAirplaneMode = [(COSAirplaneModeController *)self bluetoothWithAirplaneMode];
 
-  return [NSNumber numberWithBool:v3];
+  return [NSNumber numberWithBool:bluetoothWithAirplaneMode];
 }
 
-- (void)setBluetoothOn:(id)a3 specifier:(id)a4
+- (void)setBluetoothOn:(id)on specifier:(id)specifier
 {
-  -[COSAirplaneModeController setBluetoothWithAirplaneMode:](self, "setBluetoothWithAirplaneMode:", [a3 BOOLValue]);
+  -[COSAirplaneModeController setBluetoothWithAirplaneMode:](self, "setBluetoothWithAirplaneMode:", [on BOOLValue]);
   v8 = [COSTinkerHealthSharingSetupDelegate tinkerDevice]_0();
   v5 = [[NSUUID alloc] initWithUUIDString:@"48DB09AC-404A-4F1D-8952-61DCA0277C32"];
   v6 = [v8 supportsCapability:v5];
@@ -201,16 +201,16 @@
   }
 }
 
-- (id)wifiOn:(id)a3
+- (id)wifiOn:(id)on
 {
-  v3 = [(COSAirplaneModeController *)self wifiWithAirplaneMode];
+  wifiWithAirplaneMode = [(COSAirplaneModeController *)self wifiWithAirplaneMode];
 
-  return [NSNumber numberWithBool:v3];
+  return [NSNumber numberWithBool:wifiWithAirplaneMode];
 }
 
-- (void)setWifiOn:(id)a3 specifier:(id)a4
+- (void)setWifiOn:(id)on specifier:(id)specifier
 {
-  -[COSAirplaneModeController setWifiWithAirplaneMode:](self, "setWifiWithAirplaneMode:", [a3 BOOLValue]);
+  -[COSAirplaneModeController setWifiWithAirplaneMode:](self, "setWifiWithAirplaneMode:", [on BOOLValue]);
   v8 = [COSTinkerHealthSharingSetupDelegate tinkerDevice]_0();
   v5 = [[NSUUID alloc] initWithUUIDString:@"48DB09AC-404A-4F1D-8952-61DCA0277C32"];
   v6 = [v8 supportsCapability:v5];
@@ -307,19 +307,19 @@
   objc_destroyWeak(&location);
 }
 
-- (void)updateSettingsSpecifiersForChanges:(id)a3
+- (void)updateSettingsSpecifiersForChanges:(id)changes
 {
   v4 = kNSSAirplaneModeBluetoothKey;
-  v5 = a3;
-  v6 = [v5 objectForKey:v4];
-  v7 = [v6 BOOLValue];
+  changesCopy = changes;
+  v6 = [changesCopy objectForKey:v4];
+  bOOLValue = [v6 BOOLValue];
 
-  v8 = [v5 objectForKey:kNSSAirplaneModeWifiKey];
+  v8 = [changesCopy objectForKey:kNSSAirplaneModeWifiKey];
 
-  v9 = [v8 BOOLValue];
-  if (v7 != [(COSAirplaneModeController *)self bluetoothWithAirplaneMode])
+  bOOLValue2 = [v8 BOOLValue];
+  if (bOOLValue != [(COSAirplaneModeController *)self bluetoothWithAirplaneMode])
   {
-    [(COSAirplaneModeController *)self setBluetoothWithAirplaneMode:v7];
+    [(COSAirplaneModeController *)self setBluetoothWithAirplaneMode:bOOLValue];
     v10 = [(COSAirplaneModeController *)self specifierForID:@"BLUETOOTH_ON"];
     if (v10)
     {
@@ -327,9 +327,9 @@
     }
   }
 
-  if (v9 != [(COSAirplaneModeController *)self wifiWithAirplaneMode])
+  if (bOOLValue2 != [(COSAirplaneModeController *)self wifiWithAirplaneMode])
   {
-    [(COSAirplaneModeController *)self setWifiWithAirplaneMode:v9];
+    [(COSAirplaneModeController *)self setWifiWithAirplaneMode:bOOLValue2];
     v11 = [(COSAirplaneModeController *)self specifierForID:@"WIFI_ON"];
     if (v11)
     {
@@ -340,13 +340,13 @@
   }
 }
 
-- (id)disableAPMSettings:(id)a3
+- (id)disableAPMSettings:(id)settings
 {
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  obj = a3;
+  obj = settings;
   v3 = [obj countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v3)
   {
@@ -396,7 +396,7 @@
 {
   v7 = 0;
   v2 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.nano"];
-  v3 = [v2 synchronize];
+  synchronize = [v2 synchronize];
   v4 = [v2 BOOLForKey:@"mirror-airplane" keyExistsAndHasValidFormat:&v7];
   v5 = v7 & v4;
 

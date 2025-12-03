@@ -7,57 +7,57 @@
 
 - (id)directionsMode
 {
-  v2 = [(DCMapsURLGenerator *)self mapsLink];
-  v3 = [v2 directionsMode];
+  mapsLink = [(DCMapsURLGenerator *)self mapsLink];
+  directionsMode = [mapsLink directionsMode];
 
-  if ((v3 - 1) > 3)
+  if ((directionsMode - 1) > 3)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_27834A0D8 + v3 - 1);
+    return *(&off_27834A0D8 + directionsMode - 1);
   }
 }
 
 - (void)populateQueryDictionary
 {
-  v9 = [(DCMapsURLGenerator *)self mapsLink];
-  v3 = [(DCBaiduMapsURLGenerator *)self directionsMode];
-  [(DCMapsURLGenerator *)self setString:v3 forQueryKey:@"mode"];
+  mapsLink = [(DCMapsURLGenerator *)self mapsLink];
+  directionsMode = [(DCBaiduMapsURLGenerator *)self directionsMode];
+  [(DCMapsURLGenerator *)self setString:directionsMode forQueryKey:@"mode"];
 
-  v4 = [v9 destinationAddress];
-  if (v4 || ([v9 centerLocation], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  destinationAddress = [mapsLink destinationAddress];
+  if (destinationAddress || ([mapsLink centerLocation], (destinationAddress = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v5 = v4;
+    searchLocation = destinationAddress;
 LABEL_4:
-    [(DCMapsURLGenerator *)self setString:v5 forQueryKey:@"destination"];
+    [(DCMapsURLGenerator *)self setString:searchLocation forQueryKey:@"destination"];
 
     goto LABEL_5;
   }
 
-  v8 = [v9 searchQuery];
-  if (v8)
+  searchQuery = [mapsLink searchQuery];
+  if (searchQuery)
   {
-    v5 = v8;
+    searchLocation = searchQuery;
 
     goto LABEL_4;
   }
 
-  v5 = [v9 searchLocation];
-  if (v5)
+  searchLocation = [mapsLink searchLocation];
+  if (searchLocation)
   {
     goto LABEL_4;
   }
 
 LABEL_5:
-  v6 = [v9 startAddress];
+  startAddress = [mapsLink startAddress];
 
-  if (v6)
+  if (startAddress)
   {
-    v7 = [v9 startAddress];
-    [(DCMapsURLGenerator *)self setString:v7 forQueryKey:@"origin"];
+    startAddress2 = [mapsLink startAddress];
+    [(DCMapsURLGenerator *)self setString:startAddress2 forQueryKey:@"origin"];
   }
 }
 

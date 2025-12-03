@@ -1,47 +1,47 @@
 @interface CRKFeatureDataStoreHeuristics_MCX
 + (id)overrideFeaturesByFeature;
 + (id)overrideIsForcedByFeature;
-- (BOOL)applyIsForcedHeuristicsToFeature:(id)a3 isForced:(BOOL)a4;
-- (CRKFeatureDataStoreHeuristics_MCX)initWithDataStore:(id)a3;
+- (BOOL)applyIsForcedHeuristicsToFeature:(id)feature isForced:(BOOL)forced;
+- (CRKFeatureDataStoreHeuristics_MCX)initWithDataStore:(id)store;
 - (CRKFeatureDataStoreProtocol)dataStore;
-- (unint64_t)applyHeuristicsToFeature:(id)a3 BOOLType:(unint64_t)a4;
+- (unint64_t)applyHeuristicsToFeature:(id)feature BOOLType:(unint64_t)type;
 @end
 
 @implementation CRKFeatureDataStoreHeuristics_MCX
 
-- (CRKFeatureDataStoreHeuristics_MCX)initWithDataStore:(id)a3
+- (CRKFeatureDataStoreHeuristics_MCX)initWithDataStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v8.receiver = self;
   v8.super_class = CRKFeatureDataStoreHeuristics_MCX;
   v5 = [(CRKFeatureDataStoreHeuristics_MCX *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_dataStore, v4);
+    objc_storeWeak(&v5->_dataStore, storeCopy);
   }
 
   return v6;
 }
 
-- (BOOL)applyIsForcedHeuristicsToFeature:(id)a3 isForced:(BOOL)a4
+- (BOOL)applyIsForcedHeuristicsToFeature:(id)feature isForced:(BOOL)forced
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (a4)
+  featureCopy = feature;
+  if (forced)
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [(CRKFeatureDataStoreHeuristics_MCX *)self dataStore];
+    dataStore = [(CRKFeatureDataStoreHeuristics_MCX *)self dataStore];
     v9 = objc_opt_respondsToSelector();
 
-    if ((v9 & 1) != 0 && ([objc_opt_class() overrideIsForcedByFeature], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "allKeys"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "containsObject:", v6), v11, v10, v12))
+    if ((v9 & 1) != 0 && ([objc_opt_class() overrideIsForcedByFeature], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "allKeys"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "containsObject:", featureCopy), v11, v10, v12))
     {
-      v13 = [objc_opt_class() overrideIsForcedByFeature];
-      v14 = [v13 objectForKeyedSubscript:v6];
+      overrideIsForcedByFeature = [objc_opt_class() overrideIsForcedByFeature];
+      v14 = [overrideIsForcedByFeature objectForKeyedSubscript:featureCopy];
 
       v25 = 0u;
       v26 = 0u;
@@ -63,8 +63,8 @@
             }
 
             v20 = *(*(&v23 + 1) + 8 * i);
-            v21 = [(CRKFeatureDataStoreHeuristics_MCX *)self dataStore];
-            LOBYTE(v20) = [v21 isFeatureForced:v20];
+            dataStore2 = [(CRKFeatureDataStoreHeuristics_MCX *)self dataStore];
+            LOBYTE(v20) = [dataStore2 isFeatureForced:v20];
 
             if (v20)
             {
@@ -96,18 +96,18 @@ LABEL_16:
   return v7;
 }
 
-- (unint64_t)applyHeuristicsToFeature:(id)a3 BOOLType:(unint64_t)a4
+- (unint64_t)applyHeuristicsToFeature:(id)feature BOOLType:(unint64_t)type
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [objc_opt_class() overrideFeaturesByFeature];
-  v8 = [v7 allKeys];
-  v9 = [v8 containsObject:v6];
+  featureCopy = feature;
+  overrideFeaturesByFeature = [objc_opt_class() overrideFeaturesByFeature];
+  allKeys = [overrideFeaturesByFeature allKeys];
+  v9 = [allKeys containsObject:featureCopy];
 
   if (v9)
   {
-    v10 = [objc_opt_class() overrideFeaturesByFeature];
-    v11 = [v10 objectForKeyedSubscript:v6];
+    overrideFeaturesByFeature2 = [objc_opt_class() overrideFeaturesByFeature];
+    v11 = [overrideFeaturesByFeature2 objectForKeyedSubscript:featureCopy];
 
     v23 = 0u;
     v24 = 0u;
@@ -129,12 +129,12 @@ LABEL_16:
           }
 
           v17 = *(*(&v21 + 1) + 8 * i);
-          v18 = [(CRKFeatureDataStoreHeuristics_MCX *)self dataStore];
-          v19 = [v18 BOOLRestrictionForFeature:v17];
+          dataStore = [(CRKFeatureDataStoreHeuristics_MCX *)self dataStore];
+          v19 = [dataStore BOOLRestrictionForFeature:v17];
 
           if (v19 == 2)
           {
-            a4 = 2;
+            type = 2;
             goto LABEL_12;
           }
         }
@@ -152,7 +152,7 @@ LABEL_16:
 LABEL_12:
   }
 
-  return a4;
+  return type;
 }
 
 + (id)overrideIsForcedByFeature

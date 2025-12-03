@@ -1,27 +1,27 @@
 @interface NEArticleLinkPresentationSource
 + (double)deviceScreenScaleFromPotentialBackgroundThread;
 - (LPLinkMetadata)linkMetadata;
-- (NEArticleLinkPresentationSource)initWithHeadline:(id)a3 articleURL:(id)a4 selectedText:(id)a5;
-- (id)thumbnailImageProviderFromHeadline:(id)a3;
-- (id)titleFromHeadline:(id)a3;
+- (NEArticleLinkPresentationSource)initWithHeadline:(id)headline articleURL:(id)l selectedText:(id)text;
+- (id)thumbnailImageProviderFromHeadline:(id)headline;
+- (id)titleFromHeadline:(id)headline;
 @end
 
 @implementation NEArticleLinkPresentationSource
 
-- (NEArticleLinkPresentationSource)initWithHeadline:(id)a3 articleURL:(id)a4 selectedText:(id)a5
+- (NEArticleLinkPresentationSource)initWithHeadline:(id)headline articleURL:(id)l selectedText:(id)text
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  headlineCopy = headline;
+  lCopy = l;
+  textCopy = text;
   v17.receiver = self;
   v17.super_class = NEArticleLinkPresentationSource;
   v12 = [(NEArticleLinkPresentationSource *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_headline, a3);
-    objc_storeStrong(&v13->_url, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_headline, headline);
+    objc_storeStrong(&v13->_url, l);
+    v14 = [textCopy copy];
     selectedText = v13->_selectedText;
     v13->_selectedText = v14;
   }
@@ -31,56 +31,56 @@
 
 - (LPLinkMetadata)linkMetadata
 {
-  v3 = [(NEArticleLinkPresentationSource *)self headline];
-  v4 = [(NEArticleLinkPresentationSource *)self thumbnailImageProviderFromHeadline:v3];
+  headline = [(NEArticleLinkPresentationSource *)self headline];
+  v4 = [(NEArticleLinkPresentationSource *)self thumbnailImageProviderFromHeadline:headline];
 
   v5 = [NELinkMetadataSource alloc];
-  v6 = [(NEArticleLinkPresentationSource *)self headline];
-  v7 = [(NEArticleLinkPresentationSource *)self titleFromHeadline:v6];
+  headline2 = [(NEArticleLinkPresentationSource *)self headline];
+  v7 = [(NEArticleLinkPresentationSource *)self titleFromHeadline:headline2];
   v8 = [(NEArticleLinkPresentationSource *)self url];
-  v9 = [(NEArticleLinkPresentationSource *)self selectedText];
-  v10 = [(NELinkMetadataSource *)v5 initWithTitle:v7 url:v8 imageProvider:v4 iconProvider:v4 selectedText:v9];
+  selectedText = [(NEArticleLinkPresentationSource *)self selectedText];
+  v10 = [(NELinkMetadataSource *)v5 initWithTitle:v7 url:v8 imageProvider:v4 iconProvider:v4 selectedText:selectedText];
 
-  v11 = [(NELinkMetadataSource *)v10 linkMetadata];
+  linkMetadata = [(NELinkMetadataSource *)v10 linkMetadata];
 
-  return v11;
+  return linkMetadata;
 }
 
-- (id)titleFromHeadline:(id)a3
+- (id)titleFromHeadline:(id)headline
 {
-  v3 = a3;
-  v4 = [v3 title];
-  if (v4)
+  headlineCopy = headline;
+  title = [headlineCopy title];
+  if (title)
   {
-    v5 = v4;
-    v6 = [v3 sourceName];
+    v5 = title;
+    sourceName = [headlineCopy sourceName];
 
-    if (v6)
+    if (sourceName)
     {
       v7 = MEMORY[0x1E696AEC0];
-      v8 = [v3 title];
-      v9 = [v3 sourceName];
-      v10 = [v7 stringWithFormat:@"%@ - %@", v8, v9];
+      title2 = [headlineCopy title];
+      sourceName2 = [headlineCopy sourceName];
+      v10 = [v7 stringWithFormat:@"%@ - %@", title2, sourceName2];
 
       goto LABEL_9;
     }
   }
 
-  v11 = [v3 title];
+  title3 = [headlineCopy title];
 
-  if (v11)
+  if (title3)
   {
-    v12 = [v3 title];
+    title4 = [headlineCopy title];
 LABEL_8:
-    v10 = v12;
+    v10 = title4;
     goto LABEL_9;
   }
 
-  v13 = [v3 sourceName];
+  sourceName3 = [headlineCopy sourceName];
 
-  if (v13)
+  if (sourceName3)
   {
-    v12 = [v3 sourceName];
+    title4 = [headlineCopy sourceName];
     goto LABEL_8;
   }
 
@@ -90,18 +90,18 @@ LABEL_9:
   return v10;
 }
 
-- (id)thumbnailImageProviderFromHeadline:(id)a3
+- (id)thumbnailImageProviderFromHeadline:(id)headline
 {
-  v3 = a3;
+  headlineCopy = headline;
   v4 = objc_alloc_init(MEMORY[0x1E696ACA0]);
-  v5 = [*MEMORY[0x1E6982F28] identifier];
+  identifier = [*MEMORY[0x1E6982F28] identifier];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __70__NEArticleLinkPresentationSource_thumbnailImageProviderFromHeadline___block_invoke;
   v8[3] = &unk_1E84CD0B8;
-  v9 = v3;
-  v6 = v3;
-  [v4 registerItemForTypeIdentifier:v5 loadHandler:v8];
+  v9 = headlineCopy;
+  v6 = headlineCopy;
+  [v4 registerItemForTypeIdentifier:identifier loadHandler:v8];
 
   return v4;
 }
@@ -143,8 +143,8 @@ void __70__NEArticleLinkPresentationSource_thumbnailImageProviderFromHeadline___
 {
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
-    v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v2 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v4 = v3;
 
     return v4;

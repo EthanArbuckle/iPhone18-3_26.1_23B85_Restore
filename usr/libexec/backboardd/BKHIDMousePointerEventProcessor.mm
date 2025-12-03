@@ -1,7 +1,7 @@
 @interface BKHIDMousePointerEventProcessor
 - (BKHIDMousePointerEventProcessor)init;
 - (BKMousePointerController)mousePointerController;
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5;
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher;
 @end
 
 @implementation BKHIDMousePointerEventProcessor
@@ -16,12 +16,12 @@
   return v3;
 }
 
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher
 {
   result = self->_mousePointerController;
   if (result)
   {
-    return [result processEvent:a3 sender:a4 dispatcher:a5];
+    return [result processEvent:event sender:sender dispatcher:dispatcher];
   }
 
   return result;

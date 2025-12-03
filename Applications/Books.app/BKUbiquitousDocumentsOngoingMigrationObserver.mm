@@ -1,22 +1,22 @@
 @interface BKUbiquitousDocumentsOngoingMigrationObserver
-- (BKUbiquitousDocumentsOngoingMigrationObserver)initWithAssetIDs:(id)a3 notify:(id)a4;
+- (BKUbiquitousDocumentsOngoingMigrationObserver)initWithAssetIDs:(id)ds notify:(id)notify;
 - (void)notify;
 @end
 
 @implementation BKUbiquitousDocumentsOngoingMigrationObserver
 
-- (BKUbiquitousDocumentsOngoingMigrationObserver)initWithAssetIDs:(id)a3 notify:(id)a4
+- (BKUbiquitousDocumentsOngoingMigrationObserver)initWithAssetIDs:(id)ds notify:(id)notify
 {
-  v7 = a3;
-  v8 = a4;
+  dsCopy = ds;
+  notifyCopy = notify;
   v14.receiver = self;
   v14.super_class = BKUbiquitousDocumentsOngoingMigrationObserver;
   v9 = [(BKUbiquitousDocumentsOngoingMigrationObserver *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_assetIDs, a3);
-    v11 = objc_retainBlock(v8);
+    objc_storeStrong(&v9->_assetIDs, ds);
+    v11 = objc_retainBlock(notifyCopy);
     notifyBlock = v10->_notifyBlock;
     v10->_notifyBlock = v11;
   }
@@ -26,12 +26,12 @@
 
 - (void)notify
 {
-  v2 = [(BKUbiquitousDocumentsOngoingMigrationObserver *)self notifyBlock];
-  if (v2)
+  notifyBlock = [(BKUbiquitousDocumentsOngoingMigrationObserver *)self notifyBlock];
+  if (notifyBlock)
   {
-    v3 = v2;
-    v2[2]();
-    v2 = v3;
+    v3 = notifyBlock;
+    notifyBlock[2]();
+    notifyBlock = v3;
   }
 }
 

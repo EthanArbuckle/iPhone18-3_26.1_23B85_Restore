@@ -27,7 +27,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [a1 removeObject:{*(*(&v10 + 1) + 8 * v8++), v10}];
+        [self removeObject:{*(*(&v10 + 1) + 8 * v8++), v10}];
       }
 
       while (v6 != v8);

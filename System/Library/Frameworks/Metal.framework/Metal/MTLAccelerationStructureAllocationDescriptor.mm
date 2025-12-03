@@ -1,7 +1,7 @@
 @interface MTLAccelerationStructureAllocationDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTLAccelerationStructureAllocationDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -20,7 +20,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setStorageMode:self->_storageMode];
@@ -29,33 +29,33 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   Class = object_getClass(self);
-  if (Class != object_getClass(a3))
+  if (Class != object_getClass(equal))
   {
     return 0;
   }
 
-  v6 = [(MTLAccelerationStructureAllocationDescriptor *)self storageMode];
-  if (v6 != [a3 storageMode])
+  storageMode = [(MTLAccelerationStructureAllocationDescriptor *)self storageMode];
+  if (storageMode != [equal storageMode])
   {
     return 0;
   }
 
-  v7 = [(MTLAccelerationStructureAllocationDescriptor *)self forceResourceIndex];
-  if (v7 != [a3 forceResourceIndex])
+  forceResourceIndex = [(MTLAccelerationStructureAllocationDescriptor *)self forceResourceIndex];
+  if (forceResourceIndex != [equal forceResourceIndex])
   {
     return 0;
   }
 
-  v9 = [(MTLAccelerationStructureAllocationDescriptor *)self resourceIndex];
-  return v9 == [a3 resourceIndex];
+  resourceIndex = [(MTLAccelerationStructureAllocationDescriptor *)self resourceIndex];
+  return resourceIndex == [equal resourceIndex];
 }
 
 - (unint64_t)hash

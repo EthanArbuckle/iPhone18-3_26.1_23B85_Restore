@@ -1,5 +1,5 @@
 @interface FTMSRScaler
-- (BOOL)scaleSourceBuffer:(__CVBuffer *)a3 toDestinationBuffer:(__CVBuffer *)a4 sourceROI:(CGRect)a5 destinationROI:(CGRect)a6 mean:;
+- (BOOL)scaleSourceBuffer:(__CVBuffer *)buffer toDestinationBuffer:(__CVBuffer *)destinationBuffer sourceROI:(CGRect)i destinationROI:(CGRect)oI mean:;
 - (FTMSRScaler)init;
 @end
 
@@ -19,21 +19,21 @@
   return 0;
 }
 
-- (BOOL)scaleSourceBuffer:(__CVBuffer *)a3 toDestinationBuffer:(__CVBuffer *)a4 sourceROI:(CGRect)a5 destinationROI:(CGRect)a6 mean:
+- (BOOL)scaleSourceBuffer:(__CVBuffer *)buffer toDestinationBuffer:(__CVBuffer *)destinationBuffer sourceROI:(CGRect)i destinationROI:(CGRect)oI mean:
 {
   v7 = v6;
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v13 = a5.size.height;
-  v14 = a5.size.width;
-  v15 = a5.origin.y;
-  v16 = a5.origin.x;
+  height = oI.size.height;
+  width = oI.size.width;
+  y = oI.origin.y;
+  x = oI.origin.x;
+  v13 = i.size.height;
+  v14 = i.size.width;
+  v15 = i.origin.y;
+  v16 = i.origin.x;
   v48 = &unk_285F8F1F8;
-  v49 = a3;
+  bufferCopy = buffer;
   v50 = 0;
-  if (CVPixelBufferLockBaseAddress(a3, 0))
+  if (CVPixelBufferLockBaseAddress(buffer, 0))
   {
     exception = __cxa_allocate_exception(0x10uLL);
     std::runtime_error::runtime_error(exception, "Failed to lock pixel buffer.");
@@ -43,8 +43,8 @@
   v47 = 0;
   v48 = &unk_285F8F2D0;
   v45 = &unk_285F8F1F8;
-  v46 = a4;
-  if (CVPixelBufferLockBaseAddress(a4, 0))
+  destinationBufferCopy = destinationBuffer;
+  if (CVPixelBufferLockBaseAddress(destinationBuffer, 0))
   {
     v26 = __cxa_allocate_exception(0x10uLL);
     std::runtime_error::runtime_error(v26, "Failed to lock pixel buffer.");
@@ -58,8 +58,8 @@
   v51.size.height = v13;
   if (CGRectIsEmpty(v51))
   {
-    v14 = CVPixelBufferGetWidth(a3);
-    v13 = CVPixelBufferGetHeight(a3);
+    v14 = CVPixelBufferGetWidth(buffer);
+    v13 = CVPixelBufferGetHeight(buffer);
     v16 = 0.0;
     v15 = 0.0;
   }
@@ -70,8 +70,8 @@
   v52.size.height = height;
   if (CGRectIsEmpty(v52))
   {
-    width = CVPixelBufferGetWidth(a4);
-    height = CVPixelBufferGetHeight(a4);
+    width = CVPixelBufferGetWidth(destinationBuffer);
+    height = CVPixelBufferGetHeight(destinationBuffer);
     y = 0.0;
     x = 0.0;
   }
@@ -108,7 +108,7 @@
   v41 = width;
   v42 = height;
   v43 = v7 != 0;
-  ik::core::msr::MSR::Resample(*ptr, a3, a4, v27);
+  ik::core::msr::MSR::Resample(*ptr, buffer, destinationBuffer, v27);
   if (v7 && (v21 = FTComputeMeanColor(v44, (width * height), v7), v21))
   {
     v22 = ft::GetOsLog(v21);
@@ -126,7 +126,7 @@
   }
 
   v45 = &unk_285F8F1F8;
-  if (CVPixelBufferUnlockBaseAddress(v46, v47))
+  if (CVPixelBufferUnlockBaseAddress(destinationBufferCopy, v47))
   {
     v26 = __cxa_allocate_exception(0x10uLL);
     std::runtime_error::runtime_error(v26, "Failed to unlock pixel buffer.");
@@ -135,7 +135,7 @@ LABEL_22:
   }
 
   v48 = &unk_285F8F1F8;
-  if (CVPixelBufferUnlockBaseAddress(v49, v50))
+  if (CVPixelBufferUnlockBaseAddress(bufferCopy, v50))
   {
     exception = __cxa_allocate_exception(0x10uLL);
     std::runtime_error::runtime_error(exception, "Failed to unlock pixel buffer.");

@@ -3,14 +3,14 @@
 - (CMWorkoutManager)cmWorkoutManager;
 - (HDCoreMotionWorkoutInterface)init;
 - (dispatch_queue_t)_queue_coreMotionWorkoutManager;
-- (id)_queue_cmWorkoutForConfiguration:(void *)a3 sessionUUID:(uint64_t)a4 error:;
-- (id)takeCMWorkoutAssertionForOwnerIdentifier:(id)a3 sessionUUID:(id)a4 workoutConfiguration:(id)a5 activityConfigurations:(id)a6 enableWorkoutChangeDetection:(BOOL)a7;
-- (void)assertionManager:(id)a3 assertionInvalidated:(id)a4;
-- (void)averageMETsForWorkoutSessionUUID:(id)a3 completion:(id)a4;
+- (id)_queue_cmWorkoutForConfiguration:(void *)configuration sessionUUID:(uint64_t)d error:;
+- (id)takeCMWorkoutAssertionForOwnerIdentifier:(id)identifier sessionUUID:(id)d workoutConfiguration:(id)configuration activityConfigurations:(id)configurations enableWorkoutChangeDetection:(BOOL)detection;
+- (void)assertionManager:(id)manager assertionInvalidated:(id)invalidated;
+- (void)averageMETsForWorkoutSessionUUID:(id)d completion:(id)completion;
 - (void)dealloc;
-- (void)pauseWorkoutForWorkoutSessionUUID:(id)a3;
-- (void)resumeWorkoutForWorkoutSessionUUID:(id)a3;
-- (void)setCurrentActivity:(id)a3 isManualTransition:(BOOL)a4;
+- (void)pauseWorkoutForWorkoutSessionUUID:(id)d;
+- (void)resumeWorkoutForWorkoutSessionUUID:(id)d;
+- (void)setCurrentActivity:(id)activity isManualTransition:(BOOL)transition;
 @end
 
 @implementation HDCoreMotionWorkoutInterface
@@ -70,22 +70,22 @@ uint64_t __48__HDCoreMotionWorkoutInterface_cmWorkoutManager__block_invoke(uint6
 
 - (dispatch_queue_t)_queue_coreMotionWorkoutManager
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    dispatch_assert_queue_V2(a1[1]);
-    if (!v2[2] && [MEMORY[0x277CC1DA0] isAvailable])
+    selfCopy = self;
+    dispatch_assert_queue_V2(self[1]);
+    if (!selfCopy[2] && [MEMORY[0x277CC1DA0] isAvailable])
     {
       v3 = objc_alloc_init(MEMORY[0x277CC1DA0]);
-      v4 = v2[2];
-      v2[2] = v3;
+      v4 = selfCopy[2];
+      selfCopy[2] = v3;
     }
 
-    a1 = v2[2];
+    self = selfCopy[2];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (CMWorkout)currentWorkout
@@ -118,34 +118,34 @@ uint64_t __48__HDCoreMotionWorkoutInterface_cmWorkoutManager__block_invoke(uint6
   [(HDCoreMotionWorkoutInterface *)&v3 dealloc];
 }
 
-- (id)takeCMWorkoutAssertionForOwnerIdentifier:(id)a3 sessionUUID:(id)a4 workoutConfiguration:(id)a5 activityConfigurations:(id)a6 enableWorkoutChangeDetection:(BOOL)a7
+- (id)takeCMWorkoutAssertionForOwnerIdentifier:(id)identifier sessionUUID:(id)d workoutConfiguration:(id)configuration activityConfigurations:(id)configurations enableWorkoutChangeDetection:(BOOL)detection
 {
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  configurationsCopy = configurations;
+  configurationCopy = configuration;
+  dCopy = d;
+  identifierCopy = identifier;
   v16 = [_HDCoreMotionAssertion alloc];
-  v17 = v14;
-  v18 = v13;
-  v19 = v12;
+  v17 = dCopy;
+  v18 = configurationCopy;
+  v19 = configurationsCopy;
   if (v16)
   {
     v30.receiver = v16;
     v30.super_class = _HDCoreMotionAssertion;
-    v20 = [(HDCoreMotionWorkoutInterface *)&v30 initWithAssertionIdentifier:@"HDWorkoutSessionAssertionIdentifierCoreMotion" ownerIdentifier:v15];
+    v20 = [(HDCoreMotionWorkoutInterface *)&v30 initWithAssertionIdentifier:@"HDWorkoutSessionAssertionIdentifierCoreMotion" ownerIdentifier:identifierCopy];
     v16 = v20;
     if (v20)
     {
-      objc_storeStrong(&v20[1]._assertionManager, a4);
-      objc_storeStrong(&v16->_workoutConfiguration, a5);
-      objc_storeStrong(&v16->_activityConfigurations, a6);
-      v16->_enableWorkoutChangeDetection = a7;
+      objc_storeStrong(&v20[1]._assertionManager, d);
+      objc_storeStrong(&v16->_workoutConfiguration, configuration);
+      objc_storeStrong(&v16->_activityConfigurations, configurations);
+      v16->_enableWorkoutChangeDetection = detection;
     }
   }
 
-  v21 = [(HDAssertion *)v16 ownerIdentifier];
+  ownerIdentifier = [(HDAssertion *)v16 ownerIdentifier];
   appIdentifier = self->_appIdentifier;
-  self->_appIdentifier = v21;
+  self->_appIdentifier = ownerIdentifier;
 
   if ([(HDAssertionManager *)self->_assertionManager takeAssertion:v16])
   {
@@ -407,10 +407,10 @@ LABEL_39:
   v55 = *MEMORY[0x277D85DE8];
 }
 
-- (void)averageMETsForWorkoutSessionUUID:(id)a3 completion:(id)a4
+- (void)averageMETsForWorkoutSessionUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -432,15 +432,15 @@ LABEL_39:
     v11[1] = 3221225472;
     v11[2] = __76__HDCoreMotionWorkoutInterface_averageMETsForWorkoutSessionUUID_completion___block_invoke_2;
     v11[3] = &unk_27862F688;
-    v12 = v7;
-    [v9 queryWorkoutMetsWithSessionId:v6 handler:v11];
+    v12 = completionCopy;
+    [v9 queryWorkoutMetsWithSessionId:dCopy handler:v11];
     v10 = v12;
   }
 
   else
   {
     v10 = [MEMORY[0x277CCA9B8] hk_error:110 description:@"Workout METs are not available for current device"];
-    (*(v7 + 2))(v7, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, v10);
   }
 
   _Block_object_dispose(&v14, 8);
@@ -494,18 +494,18 @@ void __76__HDCoreMotionWorkoutInterface_averageMETsForWorkoutSessionUUID_complet
   }
 }
 
-- (void)setCurrentActivity:(id)a3 isManualTransition:(BOOL)a4
+- (void)setCurrentActivity:(id)activity isManualTransition:(BOOL)transition
 {
-  v6 = a3;
+  activityCopy = activity;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__HDCoreMotionWorkoutInterface_setCurrentActivity_isManualTransition___block_invoke;
   block[3] = &unk_27861F830;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = activityCopy;
+  transitionCopy = transition;
+  v8 = activityCopy;
   dispatch_sync(queue, block);
 }
 
@@ -669,283 +669,283 @@ LABEL_22:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_queue_cmWorkoutForConfiguration:(void *)a3 sessionUUID:(uint64_t)a4 error:
+- (id)_queue_cmWorkoutForConfiguration:(void *)configuration sessionUUID:(uint64_t)d error:
 {
   v7 = a2;
-  v8 = a3;
-  if (a1)
+  configurationCopy = configuration;
+  if (self)
   {
-    v9 = [v7 predictionSessionUUID];
-    v10 = v9;
-    if (v9)
+    predictionSessionUUID = [v7 predictionSessionUUID];
+    v10 = predictionSessionUUID;
+    if (predictionSessionUUID)
     {
-      v11 = v9;
+      v11 = predictionSessionUUID;
     }
 
     else
     {
-      v12 = [v7 suggestedActivityUUID];
-      v13 = v12;
-      if (v12)
+      suggestedActivityUUID = [v7 suggestedActivityUUID];
+      v13 = suggestedActivityUUID;
+      if (suggestedActivityUUID)
       {
-        v14 = v12;
+        v14 = suggestedActivityUUID;
       }
 
       else
       {
-        v14 = v8;
+        v14 = configurationCopy;
       }
 
       v11 = v14;
     }
 
-    v15 = [v7 locationType];
-    v16 = [v7 activityType];
-    v17 = [v7 shouldDisambiguateLocation];
-    if (*MEMORY[0x277CCE1E0] == v16)
+    locationType = [v7 locationType];
+    activityType = [v7 activityType];
+    shouldDisambiguateLocation = [v7 shouldDisambiguateLocation];
+    if (*MEMORY[0x277CCE1E0] == activityType)
     {
-      v16 = 0;
+      activityType = 0;
     }
 
     else
     {
-      switch(v16)
+      switch(activityType)
       {
         case 1uLL:
-          v16 = 42;
+          activityType = 42;
           break;
         case 3uLL:
-          v16 = 41;
+          activityType = 41;
           break;
         case 4uLL:
-          v16 = 52;
+          activityType = 52;
           break;
         case 5uLL:
-          v16 = 60;
+          activityType = 60;
           break;
         case 6uLL:
-          v16 = 50;
+          activityType = 50;
           break;
         case 8uLL:
-          v16 = 64;
+          activityType = 64;
           break;
         case 0xAuLL:
-          v16 = 61;
+          activityType = 61;
           break;
         case 0xDuLL:
           v40 = 4;
-          if (v15 == 2)
+          if (locationType == 2)
           {
             v40 = 5;
           }
 
-          v41 = v17 == 0;
+          v41 = shouldDisambiguateLocation == 0;
           v42 = 3;
           goto LABEL_90;
         case 0x10uLL:
-          v16 = 9;
+          activityType = 9;
           break;
         case 0x14uLL:
-          v16 = 28;
+          activityType = 28;
           break;
         case 0x15uLL:
-          v16 = 27;
+          activityType = 27;
           break;
         case 0x17uLL:
-          v16 = 57;
+          activityType = 57;
           break;
         case 0x18uLL:
           break;
         case 0x19uLL:
-          v36 = v15 == 2;
+          v36 = locationType == 2;
           v37 = 48;
           goto LABEL_50;
         case 0x1BuLL:
-          v16 = 45;
+          activityType = 45;
           break;
         case 0x1FuLL:
-          v16 = 38;
+          activityType = 38;
           break;
         case 0x22uLL:
-          v16 = 53;
+          activityType = 53;
           break;
         case 0x23uLL:
-          if (v15 == 2)
+          if (locationType == 2)
           {
-            v16 = 12;
+            activityType = 12;
           }
 
           else
           {
-            v16 = 35;
+            activityType = 35;
           }
 
           break;
         case 0x24uLL:
-          v16 = 44;
+          activityType = 44;
           break;
         case 0x25uLL:
           v40 = 17;
-          if (v15 == 2)
+          if (locationType == 2)
           {
             v40 = 18;
           }
 
-          v41 = v17 == 0;
+          v41 = shouldDisambiguateLocation == 0;
           v42 = 2;
 LABEL_90:
           if (v41)
           {
-            v16 = v40;
+            activityType = v40;
           }
 
           else
           {
-            v16 = v42;
+            activityType = v42;
           }
 
           break;
         case 0x27uLL:
-          v38 = v15 == 2;
+          v38 = locationType == 2;
           v39 = 46;
           goto LABEL_100;
         case 0x29uLL:
-          v38 = v15 == 2;
+          v38 = locationType == 2;
           v39 = 39;
 LABEL_100:
           if (v38)
           {
-            v16 = v39 + 1;
+            activityType = v39 + 1;
           }
 
           else
           {
-            v16 = v39;
+            activityType = v39;
           }
 
           break;
         case 0x2AuLL:
-          v16 = 59;
+          activityType = 59;
           break;
         case 0x2BuLL:
-          v16 = 56;
+          activityType = 56;
           break;
         case 0x2CuLL:
-          v16 = 11;
+          activityType = 11;
           break;
         case 0x2EuLL:
-          v16 = 19;
+          activityType = 19;
           break;
         case 0x2FuLL:
-          v16 = 62;
+          activityType = 62;
           break;
         case 0x30uLL:
-          v16 = 51;
+          activityType = 51;
           break;
         case 0x31uLL:
-          v16 = 58;
+          activityType = 58;
           break;
         case 0x33uLL:
-          v16 = 55;
+          activityType = 55;
           break;
         case 0x34uLL:
           v43 = 15;
-          if (v15 == 2)
+          if (locationType == 2)
           {
             v43 = 16;
           }
 
-          if (v17)
+          if (shouldDisambiguateLocation)
           {
-            v16 = 1;
+            activityType = 1;
           }
 
           else
           {
-            v16 = v43;
+            activityType = v43;
           }
 
           break;
         case 0x39uLL:
-          v16 = 6;
+          activityType = 6;
           break;
         case 0x3BuLL:
-          v16 = 30;
+          activityType = 30;
           break;
         case 0x3CuLL:
-          v16 = 36;
+          activityType = 36;
           break;
         case 0x3DuLL:
-          v16 = 23;
+          activityType = 23;
           break;
         case 0x3FuLL:
-          v16 = 22;
+          activityType = 22;
           break;
         case 0x40uLL:
-          v16 = 63;
+          activityType = 63;
           break;
         case 0x41uLL:
-          v16 = 34;
+          activityType = 34;
           break;
         case 0x42uLL:
-          v16 = 32;
+          activityType = 32;
           break;
         case 0x43uLL:
-          v16 = 37;
+          activityType = 37;
           break;
         case 0x46uLL:
-          v16 = 20;
+          activityType = 20;
           break;
         case 0x47uLL:
-          v16 = 21;
+          activityType = 21;
           break;
         case 0x48uLL:
-          v16 = 31;
+          activityType = 31;
           break;
         case 0x4AuLL:
-          v36 = v15 == 2;
+          v36 = locationType == 2;
           v37 = 66;
 LABEL_50:
           if (v36)
           {
-            v16 = v37;
+            activityType = v37;
           }
 
           else
           {
-            v16 = v37 + 1;
+            activityType = v37 + 1;
           }
 
           break;
         case 0x4BuLL:
-          v16 = 43;
+          activityType = 43;
           break;
         case 0x4DuLL:
-          v16 = 7;
+          activityType = 7;
           break;
         case 0x4FuLL:
-          v16 = 54;
+          activityType = 54;
           break;
         case 0x50uLL:
-          v16 = 29;
+          activityType = 29;
           break;
         case 0x53uLL:
-          v16 = 33;
+          activityType = 33;
           break;
         default:
-          v16 = 14;
+          activityType = 14;
           break;
       }
     }
 
-    v18 = [v7 shouldDisambiguateLocation];
+    shouldDisambiguateLocation2 = [v7 shouldDisambiguateLocation];
     v19 = 1;
-    if (v15 != 2)
+    if (locationType != 2)
     {
       v19 = 2;
     }
 
-    if (v18)
+    if (shouldDisambiguateLocation2)
     {
       v20 = 3;
     }
@@ -959,40 +959,40 @@ LABEL_50:
     if ([v7 shouldUseExtendedMode])
     {
       objc_opt_self();
-      if (v16 <= 0x18 && ((1 << v16) & 0x1028006) != 0)
+      if (activityType <= 0x18 && ((1 << activityType) & 0x1028006) != 0)
       {
         v21 = 1;
       }
     }
 
-    v22 = [v7 fitnessPlusCatalogWorkoutId];
+    fitnessPlusCatalogWorkoutId = [v7 fitnessPlusCatalogWorkoutId];
 
-    if (v22)
+    if (fitnessPlusCatalogWorkoutId)
     {
       v23 = objc_alloc(MEMORY[0x277CC1C90]);
-      v24 = [v7 fitnessPlusCatalogWorkoutId];
-      v25 = [v7 fitnessPlusMediaType];
-      if ((v25 - 1) >= 3)
+      fitnessPlusCatalogWorkoutId2 = [v7 fitnessPlusCatalogWorkoutId];
+      fitnessPlusMediaType = [v7 fitnessPlusMediaType];
+      if ((fitnessPlusMediaType - 1) >= 3)
       {
         v26 = 0;
       }
 
       else
       {
-        v26 = v25;
+        v26 = fitnessPlusMediaType;
       }
 
-      v27 = [v23 initWithSessionId:v11 type:v16 catalogWorkoutId:v24 mediaType:v26 locationType:v20 error:a4];
+      v27 = [v23 initWithSessionId:v11 type:activityType catalogWorkoutId:fitnessPlusCatalogWorkoutId2 mediaType:v26 locationType:v20 error:d];
     }
 
     else if ([v7 activityType] == 46)
     {
       v28 = ([v7 swimmingLocationType] & 0xFFFFFFFFFFFFFFFDLL) == 0;
-      v29 = [v7 lapLength];
-      if (v29)
+      lapLength = [v7 lapLength];
+      if (lapLength)
       {
-        v30 = [MEMORY[0x277CCDAB0] meterUnit];
-        [v29 doubleValueForUnit:v30];
+        meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+        [lapLength doubleValueForUnit:meterUnit];
         v32 = v31;
       }
 
@@ -1006,30 +1006,30 @@ LABEL_50:
 
     else
     {
-      if (v16 == 14)
+      if (activityType == 14)
       {
         v33 = [objc_alloc(MEMORY[0x277CC1CA0]) initWithSessionId:v11 workoutLabel:{objc_msgSend(v7, "activityType")}];
       }
 
       else
       {
-        v34 = [v7 fitnessMachineSessionUUID];
+        fitnessMachineSessionUUID = [v7 fitnessMachineSessionUUID];
 
-        if (v34)
+        if (fitnessMachineSessionUUID)
         {
-          v33 = [objc_alloc(MEMORY[0x277CC1C88]) initWithSessionId:v11 workoutType:v16 manufacturerName:@"GymKit" model:@"Fitness Machine"];
+          v33 = [objc_alloc(MEMORY[0x277CC1C88]) initWithSessionId:v11 workoutType:activityType manufacturerName:@"GymKit" model:@"Fitness Machine"];
         }
 
         else
         {
-          v33 = [objc_alloc(MEMORY[0x277CC1D90]) initWithSessionId:v11 type:v16 locationType:v20 mode:v21];
+          v33 = [objc_alloc(MEMORY[0x277CC1D90]) initWithSessionId:v11 type:activityType locationType:v20 mode:v21];
         }
       }
 
       v27 = v33;
     }
 
-    [v27 setAppId:*(a1 + 64)];
+    [v27 setAppId:*(self + 64)];
   }
 
   else
@@ -1040,17 +1040,17 @@ LABEL_50:
   return v27;
 }
 
-- (void)resumeWorkoutForWorkoutSessionUUID:(id)a3
+- (void)resumeWorkoutForWorkoutSessionUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__HDCoreMotionWorkoutInterface_resumeWorkoutForWorkoutSessionUUID___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -1111,17 +1111,17 @@ LABEL_9:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)pauseWorkoutForWorkoutSessionUUID:(id)a3
+- (void)pauseWorkoutForWorkoutSessionUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66__HDCoreMotionWorkoutInterface_pauseWorkoutForWorkoutSessionUUID___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -1182,19 +1182,19 @@ LABEL_9:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)assertionManager:(id)a3 assertionInvalidated:(id)a4
+- (void)assertionManager:(id)manager assertionInvalidated:(id)invalidated
 {
   v56 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  invalidatedCopy = invalidated;
   dispatch_assert_queue_V2(self->_queue);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v40 = [MEMORY[0x277CCA890] currentHandler];
-    [v40 handleFailureInMethod:a2 object:self file:@"HDCoreMotionWorkoutInterface.m" lineNumber:225 description:{@"Invalid parameter not satisfying: %@", @"[assertion isKindOfClass:[_HDCoreMotionAssertion class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCoreMotionWorkoutInterface.m" lineNumber:225 description:{@"Invalid parameter not satisfying: %@", @"[assertion isKindOfClass:[_HDCoreMotionAssertion class]]"}];
   }
 
-  v7 = v6;
+  v7 = invalidatedCopy;
   v41 = v7;
   if (v7)
   {
@@ -1221,8 +1221,8 @@ LABEL_19:
     dispatch_assert_queue_V2(self->_queue);
     if (v41 && (v18 = *(v17 + 14)) != 0 && (v19 = v18, v20 = [(NSUUID *)self->_currentSessionUUID isEqual:*(v17 + 13)], v19, v20))
     {
-      v21 = [(HDCoreMotionWorkoutInterface *)self _queue_coreMotionWorkoutManager];
-      if (v21)
+      _queue_coreMotionWorkoutManager = [(HDCoreMotionWorkoutInterface *)self _queue_coreMotionWorkoutManager];
+      if (_queue_coreMotionWorkoutManager)
       {
         _HKInitializeLogging();
         v22 = *MEMORY[0x277CCC330];
@@ -1239,7 +1239,7 @@ LABEL_19:
           _os_log_impl(&dword_228986000, v23, OS_LOG_TYPE_DEFAULT, "[%{public}@] Stopping CM workout: %{public}@", buf, 0x16u);
         }
 
-        [v21 endWorkoutSession:*(v17 + 14)];
+        [_queue_coreMotionWorkoutManager endWorkoutSession:*(v17 + 14)];
       }
 
       currentCMWorkout = self->_currentCMWorkout;
@@ -1252,8 +1252,8 @@ LABEL_19:
     else
     {
       _HKInitializeLogging();
-      v21 = *MEMORY[0x277CCC330];
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+      _queue_coreMotionWorkoutManager = *MEMORY[0x277CCC330];
+      if (os_log_type_enabled(_queue_coreMotionWorkoutManager, OS_LOG_TYPE_ERROR))
       {
         v30 = objc_opt_class();
         if (v41)
@@ -1268,7 +1268,7 @@ LABEL_19:
 
         v32 = v31;
         v33 = v30;
-        v34 = [v32 sessionId];
+        sessionId = [v32 sessionId];
         if (v41)
         {
           v35 = *(v17 + 13);
@@ -1281,19 +1281,19 @@ LABEL_19:
 
         v36 = self->_currentCMWorkout;
         v37 = v35;
-        v38 = [(CMWorkout *)v36 sessionId];
+        sessionId2 = [(CMWorkout *)v36 sessionId];
         v39 = self->_currentSessionUUID;
         *buf = 138544386;
         v47 = v30;
         v48 = 2114;
-        v49 = v34;
+        v49 = sessionId;
         v50 = 2114;
         v51 = v35;
         v52 = 2114;
-        v53 = v38;
+        v53 = sessionId2;
         v54 = 2114;
         v55 = v39;
-        _os_log_error_impl(&dword_228986000, v21, OS_LOG_TYPE_ERROR, "[%{public}@] Not stopping CM workout %{public}@ (overview %{public}@) because workout %{public}@ (overview %{public}@) is in progress", buf, 0x34u);
+        _os_log_error_impl(&dword_228986000, _queue_coreMotionWorkoutManager, OS_LOG_TYPE_ERROR, "[%{public}@] Not stopping CM workout %{public}@ (overview %{public}@) because workout %{public}@ (overview %{public}@) is in progress", buf, 0x34u);
       }
     }
 

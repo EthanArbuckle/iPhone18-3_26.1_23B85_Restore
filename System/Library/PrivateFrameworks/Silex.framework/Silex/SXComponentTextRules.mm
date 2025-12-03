@@ -5,7 +5,7 @@
 + (id)smallTextRules;
 + (id)titleTextRules;
 - (SXComponentTextRules)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SXComponentTextRules
@@ -159,9 +159,9 @@ uint64_t __53__SXComponentTextRules_Definitions__headingTextRules__block_invoke(
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   [(SXComponentTextRules *)self fontResizingTresholdFactor];
   [v4 setFontResizingTresholdFactor:?];
   [(SXComponentTextRules *)self fontSizeConstant];
@@ -174,8 +174,8 @@ uint64_t __53__SXComponentTextRules_Definitions__headingTextRules__block_invoke(
   [v4 setAllowsScrollPositionRestore:{-[SXComponentTextRules allowsScrollPositionRestore](self, "allowsScrollPositionRestore")}];
   [v4 setIsSelectable:{-[SXComponentTextRules isSelectable](self, "isSelectable")}];
   [v4 setTextFlow:{-[SXComponentTextRules textFlow](self, "textFlow")}];
-  v5 = [(SXComponentTextRules *)self fontTextStyle];
-  [v4 setFontTextStyle:v5];
+  fontTextStyle = [(SXComponentTextRules *)self fontTextStyle];
+  [v4 setFontTextStyle:fontTextStyle];
 
   return v4;
 }

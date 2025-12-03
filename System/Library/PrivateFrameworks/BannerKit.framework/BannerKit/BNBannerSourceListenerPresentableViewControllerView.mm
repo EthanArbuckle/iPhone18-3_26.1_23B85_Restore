@@ -1,18 +1,18 @@
 @interface BNBannerSourceListenerPresentableViewControllerView
 - (BNBannerSourceListenerPresentableViewControllerViewDelegate)delegate;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation BNBannerSourceListenerPresentableViewControllerView
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(BNBannerSourceListenerPresentableViewControllerView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -37,12 +37,12 @@
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(BNBannerSourceListenerPresentableViewControllerView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -58,11 +58,11 @@
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
@@ -78,7 +78,7 @@
   {
     v12.receiver = self;
     v12.super_class = BNBannerSourceListenerPresentableViewControllerView;
-    v9 = [(BNBannerSourceListenerPresentableViewControllerView *)&v12 pointInside:v7 withEvent:x, y];
+    v9 = [(BNBannerSourceListenerPresentableViewControllerView *)&v12 pointInside:eventCopy withEvent:x, y];
   }
 
   v10 = v9;

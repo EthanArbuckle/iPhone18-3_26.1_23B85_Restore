@@ -1,14 +1,14 @@
 @interface CSDAVCMoments
 - (CSDAVCMomentsDelegate)delegate;
-- (_TtC13callservicesd13CSDAVCMoments)initWithStreamToken:(int64_t)a3 requesterID:(id)a4 delegate:(id)a5 dispatchQueue:(id)a6;
+- (_TtC13callservicesd13CSDAVCMoments)initWithStreamToken:(int64_t)token requesterID:(id)d delegate:(id)delegate dispatchQueue:(id)queue;
 - (int)activeRequestCount;
 - (int)pendingRequestCount;
 - (int64_t)streamToken;
 - (unsigned)capabilities;
-- (void)moments:(id)a3 didEndProcessingRequest:(id)a4 stillImageURL:(id)a5 movieURL:(id)a6 error:(id)a7;
-- (void)moments:(id)a3 didEndProcessingRequest:(id)a4 url:(id)a5 error:(id)a6;
-- (void)momentsServerDidDisconnect:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)moments:(id)moments didEndProcessingRequest:(id)request stillImageURL:(id)l movieURL:(id)rL error:(id)error;
+- (void)moments:(id)moments didEndProcessingRequest:(id)request url:(id)url error:(id)error;
+- (void)momentsServerDidDisconnect:(id)disconnect;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation CSDAVCMoments
@@ -20,16 +20,16 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_10044C950();
 }
 
-- (_TtC13callservicesd13CSDAVCMoments)initWithStreamToken:(int64_t)a3 requesterID:(id)a4 delegate:(id)a5 dispatchQueue:(id)a6
+- (_TtC13callservicesd13CSDAVCMoments)initWithStreamToken:(int64_t)token requesterID:(id)d delegate:(id)delegate dispatchQueue:(id)queue
 {
-  if (a4)
+  if (d)
   {
     v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v11 = v10;
@@ -42,13 +42,13 @@
   }
 
   swift_unknownObjectRetain();
-  v12 = a6;
-  return sub_10044C998(a3, v9, v11, a5, a6);
+  queueCopy = queue;
+  return sub_10044C998(token, v9, v11, delegate, queue);
 }
 
 - (int64_t)streamToken
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10044CB50();
 
   return v3;
@@ -56,7 +56,7 @@
 
 - (unsigned)capabilities
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10044CC24(&selRef_capabilities);
 
   return v3;
@@ -64,7 +64,7 @@
 
 - (int)activeRequestCount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10044CC24(&selRef_activeRequestCount);
 
   return v3;
@@ -72,19 +72,19 @@
 
 - (int)pendingRequestCount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10044CC24(&selRef_pendingRequestCount);
 
   return v3;
 }
 
-- (void)moments:(id)a3 didEndProcessingRequest:(id)a4 url:(id)a5 error:(id)a6
+- (void)moments:(id)moments didEndProcessingRequest:(id)request url:(id)url error:(id)error
 {
   v7 = sub_10026D814(&unk_1006A52C0, &unk_10057D930);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8, v9);
   v11 = &v14 - v10;
-  if (a5)
+  if (url)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v12 = type metadata accessor for URL();
@@ -101,7 +101,7 @@
   sub_1002E1320(v11);
 }
 
-- (void)moments:(id)a3 didEndProcessingRequest:(id)a4 stillImageURL:(id)a5 movieURL:(id)a6 error:(id)a7
+- (void)moments:(id)moments didEndProcessingRequest:(id)request stillImageURL:(id)l movieURL:(id)rL error:(id)error
 {
   v13 = sub_10026D814(&unk_1006A52C0, &unk_10057D930);
   v14 = *(*(v13 - 8) + 64);
@@ -109,7 +109,7 @@
   v18 = &v30 - ((v17 + 15) & 0xFFFFFFFFFFFFFFF0);
   __chkstk_darwin(v16, v19);
   v21 = &v30 - v20;
-  if (a5)
+  if (l)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v22 = type metadata accessor for URL();
@@ -124,7 +124,7 @@
 
   v24 = 1;
   sub_10000AF74(v21, v23, 1, v22);
-  if (a6)
+  if (rL)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v24 = 0;
@@ -132,20 +132,20 @@
 
   v25 = type metadata accessor for URL();
   sub_10000AF74(v18, v24, 1, v25);
-  v26 = a3;
-  v27 = a4;
-  v28 = a7;
-  v29 = self;
-  sub_10044D108(v29, v27, v21, v18, a7);
+  momentsCopy = moments;
+  requestCopy = request;
+  errorCopy = error;
+  selfCopy = self;
+  sub_10044D108(selfCopy, requestCopy, v21, v18, error);
 
   sub_1002E1320(v18);
   sub_1002E1320(v21);
 }
 
-- (void)momentsServerDidDisconnect:(id)a3
+- (void)momentsServerDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = self;
+  disconnectCopy = disconnect;
+  selfCopy = self;
   sub_10044D48C();
 }
 

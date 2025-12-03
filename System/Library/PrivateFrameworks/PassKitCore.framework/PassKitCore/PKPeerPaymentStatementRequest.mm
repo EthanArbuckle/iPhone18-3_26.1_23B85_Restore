@@ -1,16 +1,16 @@
 @interface PKPeerPaymentStatementRequest
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4;
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information;
 @end
 
 @implementation PKPeerPaymentStatementRequest
 
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  lCopy = l;
+  informationCopy = information;
+  v8 = informationCopy;
+  if (!lCopy)
   {
     v10 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -30,7 +30,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (!v7)
+  if (!informationCopy)
   {
     v10 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -79,15 +79,15 @@ LABEL_13:
     v10 = 0;
   }
 
-  v16 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v6 endpointComponents:&unk_1F23B4808 queryParameters:v10 appleAccountInformation:v8];
+  v16 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:&unk_1F23B4808 queryParameters:v10 appleAccountInformation:v8];
   [v16 setHTTPMethod:@"POST"];
   [v16 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-  v17 = [MEMORY[0x1E695DF90] dictionary];
-  v18 = v17;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v18 = dictionary;
   emailAddress = self->_emailAddress;
   if (emailAddress)
   {
-    [v17 setObject:emailAddress forKey:@"emailAddress"];
+    [dictionary setObject:emailAddress forKey:@"emailAddress"];
   }
 
   v20 = [objc_opt_class() _HTTPBodyWithDictionary:v18];

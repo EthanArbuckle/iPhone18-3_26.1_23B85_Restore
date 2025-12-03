@@ -1,26 +1,26 @@
 @interface SKUIWishlistDataConsumer
-- (id)_errorWithData:(id)a3 MIMEType:(id)a4;
-- (id)_itemsWithJSONData:(id)a3 error:(id *)a4;
-- (id)objectForData:(id)a3 response:(id)a4 error:(id *)a5;
+- (id)_errorWithData:(id)data MIMEType:(id)type;
+- (id)_itemsWithJSONData:(id)data error:(id *)error;
+- (id)objectForData:(id)data response:(id)response error:(id *)error;
 @end
 
 @implementation SKUIWishlistDataConsumer
 
-- (id)objectForData:(id)a3 response:(id)a4 error:(id *)a5
+- (id)objectForData:(id)data response:(id)response error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  responseCopy = response;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIWishlistDataConsumer objectForData:response:error:];
   }
 
-  v10 = [v9 MIMEType];
-  if ([v10 rangeOfString:@"application/json" options:1] == 0x7FFFFFFFFFFFFFFFLL)
+  mIMEType = [responseCopy MIMEType];
+  if ([mIMEType rangeOfString:@"application/json" options:1] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = [(SKUIWishlistDataConsumer *)self _errorWithData:v8 MIMEType:v10];
+    v11 = [(SKUIWishlistDataConsumer *)self _errorWithData:dataCopy MIMEType:mIMEType];
     v12 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -29,9 +29,9 @@
   else
   {
     v15 = 0;
-    v12 = [(SKUIWishlistDataConsumer *)self _itemsWithJSONData:v8 error:&v15];
+    v12 = [(SKUIWishlistDataConsumer *)self _itemsWithJSONData:dataCopy error:&v15];
     v11 = v15;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -40,7 +40,7 @@
   if (!v12)
   {
     v13 = v11;
-    *a5 = v11;
+    *error = v11;
   }
 
 LABEL_11:
@@ -48,15 +48,15 @@ LABEL_11:
   return v12;
 }
 
-- (id)_errorWithData:(id)a3 MIMEType:(id)a4
+- (id)_errorWithData:(id)data MIMEType:(id)type
 {
-  v5 = a3;
-  if ([a4 rangeOfString:@"xml" options:1] == 0x7FFFFFFFFFFFFFFFLL)
+  dataCopy = data;
+  if ([type rangeOfString:@"xml" options:1] == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_10;
   }
 
-  v6 = [MEMORY[0x277CCAC58] propertyListWithData:v5 options:0 format:0 error:0];
+  v6 = [MEMORY[0x277CCAC58] propertyListWithData:dataCopy options:0 format:0 error:0];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -71,9 +71,9 @@ LABEL_10:
   if ([v8 count] == 1)
   {
     v9 = [v8 objectAtIndex:0];
-    v10 = [v9 dialog];
-    v11 = [v10 dialogKind];
-    v12 = [v11 isEqualToString:*MEMORY[0x277D69E48]];
+    dialog = [v9 dialog];
+    dialogKind = [dialog dialogKind];
+    v12 = [dialogKind isEqualToString:*MEMORY[0x277D69E48]];
 
     v13 = 0;
     if (v12)
@@ -97,10 +97,10 @@ LABEL_11:
   return v13;
 }
 
-- (id)_itemsWithJSONData:(id)a3 error:(id *)a4
+- (id)_itemsWithJSONData:(id)data error:(id *)error
 {
   v19 = 0;
-  v5 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a3 options:0 error:&v19];
+  v5 = [MEMORY[0x277CCAAA0] JSONObjectWithData:data options:0 error:&v19];
   v6 = v19;
   objc_opt_class();
   v7 = 0;
@@ -140,10 +140,10 @@ LABEL_11:
     }
   }
 
-  if (a4 && !v7)
+  if (error && !v7)
   {
     v13 = v6;
-    *a4 = v6;
+    *error = v6;
   }
 
   v14 = v7;

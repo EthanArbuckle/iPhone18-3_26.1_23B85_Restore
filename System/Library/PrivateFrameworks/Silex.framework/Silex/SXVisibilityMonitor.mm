@@ -1,17 +1,17 @@
 @interface SXVisibilityMonitor
 - (BOOL)appeared;
-- (SXVisibilityMonitor)initWithObject:(id)a3 visiblePercentageProvider:(id)a4;
+- (SXVisibilityMonitor)initWithObject:(id)object visiblePercentageProvider:(id)provider;
 - (id)object;
 - (void)determineVisiblePercentage;
 - (void)didAppear;
 - (void)didDisappear;
 - (void)lock;
-- (void)onDidAppear:(id)a3;
-- (void)onDidDisappear:(id)a3;
-- (void)onVisiblePercentageChange:(id)a3;
-- (void)onWillAppear:(id)a3;
-- (void)onWillDisappear:(id)a3;
-- (void)setVisiblePercentage:(double)a3;
+- (void)onDidAppear:(id)appear;
+- (void)onDidDisappear:(id)disappear;
+- (void)onVisiblePercentageChange:(id)change;
+- (void)onWillAppear:(id)appear;
+- (void)onWillDisappear:(id)disappear;
+- (void)setVisiblePercentage:(double)percentage;
 - (void)unlock;
 - (void)willAppear;
 - (void)willDisappear;
@@ -19,38 +19,38 @@
 
 @implementation SXVisibilityMonitor
 
-- (SXVisibilityMonitor)initWithObject:(id)a3 visiblePercentageProvider:(id)a4
+- (SXVisibilityMonitor)initWithObject:(id)object visiblePercentageProvider:(id)provider
 {
   v60[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  providerCopy = provider;
   v56.receiver = self;
   v56.super_class = SXVisibilityMonitor;
   v8 = [(SXVisibilityMonitor *)&v56 init];
   if (v8)
   {
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     willAppearBlocks = v8->_willAppearBlocks;
-    v8->_willAppearBlocks = v9;
+    v8->_willAppearBlocks = array;
 
-    v11 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     didAppearBlocks = v8->_didAppearBlocks;
-    v8->_didAppearBlocks = v11;
+    v8->_didAppearBlocks = array2;
 
-    v13 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     visiblePercentageBlocks = v8->_visiblePercentageBlocks;
-    v8->_visiblePercentageBlocks = v13;
+    v8->_visiblePercentageBlocks = array3;
 
-    v15 = [MEMORY[0x1E695DF70] array];
+    array4 = [MEMORY[0x1E695DF70] array];
     willDisappearBlocks = v8->_willDisappearBlocks;
-    v8->_willDisappearBlocks = v15;
+    v8->_willDisappearBlocks = array4;
 
-    v17 = [MEMORY[0x1E695DF70] array];
+    array5 = [MEMORY[0x1E695DF70] array];
     didDisappearBlocks = v8->_didDisappearBlocks;
-    v8->_didDisappearBlocks = v17;
+    v8->_didDisappearBlocks = array5;
 
-    objc_storeStrong(&v8->_visiblePercentageProvider, a4);
-    objc_storeWeak(&v8->_object, v6);
+    objc_storeStrong(&v8->_visiblePercentageProvider, provider);
+    objc_storeWeak(&v8->_object, objectCopy);
     v8->_state = 0;
     v19 = [objc_alloc(MEMORY[0x1E69B6918]) initWithName:@"appearing"];
     appearingState = v8->_appearingState;
@@ -295,82 +295,82 @@ id __64__SXVisibilityMonitor_initWithObject_visiblePercentageProvider___block_in
 
 - (BOOL)appeared
 {
-  v2 = self;
-  v3 = [(SXVisibilityMonitor *)self stateMachine];
-  v4 = [v3 state];
-  v5 = [(SXVisibilityMonitor *)v2 appearedState];
-  LOBYTE(v2) = v4 == v5;
+  selfCopy = self;
+  stateMachine = [(SXVisibilityMonitor *)self stateMachine];
+  state = [stateMachine state];
+  appearedState = [(SXVisibilityMonitor *)selfCopy appearedState];
+  LOBYTE(selfCopy) = state == appearedState;
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)onWillAppear:(id)a3
+- (void)onWillAppear:(id)appear
 {
-  v4 = a3;
-  v6 = [(SXVisibilityMonitor *)self willAppearBlocks];
-  v5 = MEMORY[0x1DA716BE0](v4);
+  appearCopy = appear;
+  willAppearBlocks = [(SXVisibilityMonitor *)self willAppearBlocks];
+  v5 = MEMORY[0x1DA716BE0](appearCopy);
 
-  [v6 addObject:v5];
+  [willAppearBlocks addObject:v5];
 }
 
-- (void)onDidAppear:(id)a3
+- (void)onDidAppear:(id)appear
 {
-  v4 = a3;
-  v6 = [(SXVisibilityMonitor *)self didAppearBlocks];
-  v5 = MEMORY[0x1DA716BE0](v4);
+  appearCopy = appear;
+  didAppearBlocks = [(SXVisibilityMonitor *)self didAppearBlocks];
+  v5 = MEMORY[0x1DA716BE0](appearCopy);
 
-  [v6 addObject:v5];
+  [didAppearBlocks addObject:v5];
 }
 
-- (void)onVisiblePercentageChange:(id)a3
+- (void)onVisiblePercentageChange:(id)change
 {
-  v4 = a3;
-  v6 = [(SXVisibilityMonitor *)self visiblePercentageBlocks];
-  v5 = MEMORY[0x1DA716BE0](v4);
+  changeCopy = change;
+  visiblePercentageBlocks = [(SXVisibilityMonitor *)self visiblePercentageBlocks];
+  v5 = MEMORY[0x1DA716BE0](changeCopy);
 
-  [v6 addObject:v5];
+  [visiblePercentageBlocks addObject:v5];
 }
 
-- (void)onWillDisappear:(id)a3
+- (void)onWillDisappear:(id)disappear
 {
-  v4 = a3;
-  v6 = [(SXVisibilityMonitor *)self willDisappearBlocks];
-  v5 = MEMORY[0x1DA716BE0](v4);
+  disappearCopy = disappear;
+  willDisappearBlocks = [(SXVisibilityMonitor *)self willDisappearBlocks];
+  v5 = MEMORY[0x1DA716BE0](disappearCopy);
 
-  [v6 addObject:v5];
+  [willDisappearBlocks addObject:v5];
 }
 
-- (void)onDidDisappear:(id)a3
+- (void)onDidDisappear:(id)disappear
 {
-  v4 = a3;
-  v6 = [(SXVisibilityMonitor *)self didDisappearBlocks];
-  v5 = MEMORY[0x1DA716BE0](v4);
+  disappearCopy = disappear;
+  didDisappearBlocks = [(SXVisibilityMonitor *)self didDisappearBlocks];
+  v5 = MEMORY[0x1DA716BE0](disappearCopy);
 
-  [v6 addObject:v5];
+  [didDisappearBlocks addObject:v5];
 }
 
 - (void)willAppear
 {
-  v3 = [(SXVisibilityMonitor *)self stateMachine];
-  v2 = [v3 fireEventWithName:@"appearing" withContext:0];
+  stateMachine = [(SXVisibilityMonitor *)self stateMachine];
+  v2 = [stateMachine fireEventWithName:@"appearing" withContext:0];
 }
 
 - (void)didAppear
 {
-  v3 = [(SXVisibilityMonitor *)self stateMachine];
-  v2 = [v3 fireEventWithName:@"appeared" withContext:0];
+  stateMachine = [(SXVisibilityMonitor *)self stateMachine];
+  v2 = [stateMachine fireEventWithName:@"appeared" withContext:0];
 }
 
 - (void)willDisappear
 {
-  v3 = [(SXVisibilityMonitor *)self stateMachine];
-  v2 = [v3 fireEventWithName:@"disappearing" withContext:0];
+  stateMachine = [(SXVisibilityMonitor *)self stateMachine];
+  v2 = [stateMachine fireEventWithName:@"disappearing" withContext:0];
 }
 
 - (void)didDisappear
 {
-  v3 = [(SXVisibilityMonitor *)self stateMachine];
-  v2 = [v3 fireEventWithName:@"disappeared" withContext:0];
+  stateMachine = [(SXVisibilityMonitor *)self stateMachine];
+  v2 = [stateMachine fireEventWithName:@"disappeared" withContext:0];
 }
 
 - (void)determineVisiblePercentage
@@ -380,16 +380,16 @@ id __64__SXVisibilityMonitor_initWithObject_visiblePercentageProvider___block_in
     return;
   }
 
-  v3 = [(SXVisibilityMonitor *)self visiblePercentageProvider];
-  v4 = [(SXVisibilityMonitor *)self object];
-  [v3 visiblePercentageOfObject:v4];
+  visiblePercentageProvider = [(SXVisibilityMonitor *)self visiblePercentageProvider];
+  object = [(SXVisibilityMonitor *)self object];
+  [visiblePercentageProvider visiblePercentageOfObject:object];
   v6 = v5;
 
   [(SXVisibilityMonitor *)self setVisiblePercentage:v6];
-  v7 = [(SXVisibilityMonitor *)self stateMachine];
-  v8 = [v7 state];
-  v9 = [(SXVisibilityMonitor *)self appearedState];
-  if (v8 != v9 || v6 >= 1.0)
+  stateMachine = [(SXVisibilityMonitor *)self stateMachine];
+  state = [stateMachine state];
+  appearedState = [(SXVisibilityMonitor *)self appearedState];
+  if (state != appearedState || v6 >= 1.0)
   {
 
     goto LABEL_8;
@@ -398,10 +398,10 @@ id __64__SXVisibilityMonitor_initWithObject_visiblePercentageProvider___block_in
   if (v6 < 0.0)
   {
 LABEL_8:
-    v10 = [(SXVisibilityMonitor *)self stateMachine];
-    v11 = [v10 state];
-    v12 = [(SXVisibilityMonitor *)self disappearedState];
-    if (v11 == v12 && v6 <= 1.0)
+    stateMachine2 = [(SXVisibilityMonitor *)self stateMachine];
+    state2 = [stateMachine2 state];
+    disappearedState = [(SXVisibilityMonitor *)self disappearedState];
+    if (state2 == disappearedState && v6 <= 1.0)
     {
 
       if (v6 > 0.0)
@@ -419,17 +419,17 @@ LABEL_8:
 
   [(SXVisibilityMonitor *)self willDisappear];
 LABEL_13:
-  v13 = [(SXVisibilityMonitor *)self stateMachine];
-  v14 = [v13 state];
-  v15 = [(SXVisibilityMonitor *)self disappearedState];
+  stateMachine3 = [(SXVisibilityMonitor *)self stateMachine];
+  state3 = [stateMachine3 state];
+  disappearedState2 = [(SXVisibilityMonitor *)self disappearedState];
 
-  if (v14 == v15 || v6 > 0.0)
+  if (state3 == disappearedState2 || v6 > 0.0)
   {
-    v16 = [(SXVisibilityMonitor *)self stateMachine];
-    v17 = [v16 state];
-    v18 = [(SXVisibilityMonitor *)self appearedState];
+    stateMachine4 = [(SXVisibilityMonitor *)self stateMachine];
+    state4 = [stateMachine4 state];
+    appearedState2 = [(SXVisibilityMonitor *)self appearedState];
 
-    if (v17 != v18 && v6 >= 1.0)
+    if (state4 != appearedState2 && v6 >= 1.0)
     {
 
       [(SXVisibilityMonitor *)self didAppear];
@@ -443,18 +443,18 @@ LABEL_13:
   }
 }
 
-- (void)setVisiblePercentage:(double)a3
+- (void)setVisiblePercentage:(double)percentage
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_visiblePercentage != a3)
+  if (self->_visiblePercentage != percentage)
   {
-    self->_visiblePercentage = a3;
+    self->_visiblePercentage = percentage;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(SXVisibilityMonitor *)self visiblePercentageBlocks];
-    v5 = [v4 copy];
+    visiblePercentageBlocks = [(SXVisibilityMonitor *)self visiblePercentageBlocks];
+    v5 = [visiblePercentageBlocks copy];
 
     v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
@@ -470,7 +470,7 @@ LABEL_13:
             objc_enumerationMutation(v5);
           }
 
-          (*(*(*(&v10 + 1) + 8 * i) + 16))(a3);
+          (*(*(*(&v10 + 1) + 8 * i) + 16))(percentage);
         }
 
         v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];

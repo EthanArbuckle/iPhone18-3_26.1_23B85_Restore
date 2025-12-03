@@ -1,11 +1,11 @@
 @interface UAFNLAsset
 - (NSString)description;
-- (UAFNLAsset)initWithCoder:(id)a3;
-- (id)initForFactor:(id)a3 withPath:(id)a4 withAssetSetName:(id)a5 withUAFMetadata:(id)a6 withAssetSet:(id)a7;
+- (UAFNLAsset)initWithCoder:(id)coder;
+- (id)initForFactor:(id)factor withPath:(id)path withAssetSetName:(id)name withUAFMetadata:(id)metadata withAssetSet:(id)set;
 - (id)toDictionary;
-- (void)appendPathWithServiceAssetFolder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)processUAFMetadata:(id)a3;
+- (void)appendPathWithServiceAssetFolder:(id)folder;
+- (void)encodeWithCoder:(id)coder;
+- (void)processUAFMetadata:(id)metadata;
 @end
 
 @implementation UAFNLAsset
@@ -13,61 +13,61 @@
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(UAFNLAsset *)self getFactorName];
-  v5 = [(UAFNLAsset *)self getAssetPath];
-  v6 = [(UAFNLAsset *)self getAssetVersion];
-  v7 = [(UAFNLAsset *)self getAssetLocale];
-  v8 = [(UAFNLAsset *)self getAssetSetName];
-  v9 = [(UAFNLAsset *)self getAssetMetadata];
-  v10 = [v3 stringWithFormat:@"[UAF asset] - Factor name: %@, Asset path: %@, Asset version: %@, Asset locale: %@, Asset Set Name: %@, Asset metadata: %@.", v4, v5, v6, v7, v8, v9];
+  getFactorName = [(UAFNLAsset *)self getFactorName];
+  getAssetPath = [(UAFNLAsset *)self getAssetPath];
+  getAssetVersion = [(UAFNLAsset *)self getAssetVersion];
+  getAssetLocale = [(UAFNLAsset *)self getAssetLocale];
+  getAssetSetName = [(UAFNLAsset *)self getAssetSetName];
+  getAssetMetadata = [(UAFNLAsset *)self getAssetMetadata];
+  v10 = [v3 stringWithFormat:@"[UAF asset] - Factor name: %@, Asset path: %@, Asset version: %@, Asset locale: %@, Asset Set Name: %@, Asset metadata: %@.", getFactorName, getAssetPath, getAssetVersion, getAssetLocale, getAssetSetName, getAssetMetadata];
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   factorName = self->_factorName;
-  v5 = a3;
-  [v5 encodeObject:factorName forKey:@"factorName"];
-  [v5 encodeObject:self->_path forKey:@"path"];
-  [v5 encodeObject:self->_assetMetadata forKey:@"assetMetadata"];
-  [v5 encodeObject:self->_assetLocale forKey:@"assetLocale"];
-  [v5 encodeObject:self->_assetVersion forKey:@"assetVersion"];
-  [v5 encodeObject:self->_assetSetName forKey:@"assetSetName"];
+  coderCopy = coder;
+  [coderCopy encodeObject:factorName forKey:@"factorName"];
+  [coderCopy encodeObject:self->_path forKey:@"path"];
+  [coderCopy encodeObject:self->_assetMetadata forKey:@"assetMetadata"];
+  [coderCopy encodeObject:self->_assetLocale forKey:@"assetLocale"];
+  [coderCopy encodeObject:self->_assetVersion forKey:@"assetVersion"];
+  [coderCopy encodeObject:self->_assetSetName forKey:@"assetSetName"];
 }
 
-- (UAFNLAsset)initWithCoder:(id)a3
+- (UAFNLAsset)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = UAFNLAsset;
   v5 = [(UAFNLAsset *)&v22 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"factorName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"factorName"];
     factorName = v5->_factorName;
     v5->_factorName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"path"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"path"];
     path = v5->_path;
     v5->_path = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetLocale"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetLocale"];
     assetLocale = v5->_assetLocale;
     v5->_assetLocale = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetVersion"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetVersion"];
     assetVersion = v5->_assetVersion;
     v5->_assetVersion = v12;
 
     v14 = MEMORY[0x1E695DFD8];
     v15 = objc_opt_class();
     v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"assetMetadata"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"assetMetadata"];
     assetMetadata = v5->_assetMetadata;
     v5->_assetMetadata = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetSetName"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetSetName"];
     assetSetName = v5->_assetSetName;
     v5->_assetSetName = v19;
   }
@@ -82,32 +82,32 @@
   v5 = NSStringFromClass(v4);
   [v3 setObject:v5 forKey:@"type"];
 
-  v6 = [(UAFNLAsset *)self getAssetPath];
-  [v3 setObject:v6 forKey:@"path"];
+  getAssetPath = [(UAFNLAsset *)self getAssetPath];
+  [v3 setObject:getAssetPath forKey:@"path"];
 
-  v7 = [(UAFNLAsset *)self getAssetVersion];
-  [v3 setObject:v7 forKey:@"version"];
+  getAssetVersion = [(UAFNLAsset *)self getAssetVersion];
+  [v3 setObject:getAssetVersion forKey:@"version"];
 
-  v8 = [(UAFNLAsset *)self getFactorName];
-  [v3 setObject:v8 forKey:@"factor"];
+  getFactorName = [(UAFNLAsset *)self getFactorName];
+  [v3 setObject:getFactorName forKey:@"factor"];
 
-  v9 = [(UAFNLAsset *)self getAssetLocale];
-  [v3 setObject:v9 forKey:@"locale"];
+  getAssetLocale = [(UAFNLAsset *)self getAssetLocale];
+  [v3 setObject:getAssetLocale forKey:@"locale"];
 
-  v10 = [(UAFNLAsset *)self getAssetMetadata];
-  [v3 setObject:v10 forKey:@"asset_metadata"];
+  getAssetMetadata = [(UAFNLAsset *)self getAssetMetadata];
+  [v3 setObject:getAssetMetadata forKey:@"asset_metadata"];
 
-  v11 = [(UAFNLAsset *)self getAssetSetName];
-  [v3 setObject:v11 forKey:@"asset_set_name"];
+  getAssetSetName = [(UAFNLAsset *)self getAssetSetName];
+  [v3 setObject:getAssetSetName forKey:@"asset_set_name"];
 
   return v3;
 }
 
-- (void)appendPathWithServiceAssetFolder:(id)a3
+- (void)appendPathWithServiceAssetFolder:(id)folder
 {
-  v4 = a3;
-  v5 = [(UAFNLAsset *)self getAssetPath];
-  v6 = [CDMAssetsUtils appendPathWithServiceAssetFolder:v4 assetPath:v5];
+  folderCopy = folder;
+  getAssetPath = [(UAFNLAsset *)self getAssetPath];
+  v6 = [CDMAssetsUtils appendPathWithServiceAssetFolder:folderCopy assetPath:getAssetPath];
 
   path = self->_path;
   self->_path = v6;
@@ -119,10 +119,10 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)processUAFMetadata:(id)a3
+- (void)processUAFMetadata:(id)metadata
 {
-  v10 = a3;
-  v4 = [v10 objectForKey:@"locale"];
+  metadataCopy = metadata;
+  v4 = [metadataCopy objectForKey:@"locale"];
   assetLocale = self->_assetLocale;
   self->_assetLocale = v4;
 
@@ -133,33 +133,33 @@
     self->_assetLocale = v6;
   }
 
-  v8 = [v10 objectForKey:@"version"];
+  v8 = [metadataCopy objectForKey:@"version"];
   assetVersion = self->_assetVersion;
   self->_assetVersion = v8;
 }
 
-- (id)initForFactor:(id)a3 withPath:(id)a4 withAssetSetName:(id)a5 withUAFMetadata:(id)a6 withAssetSet:(id)a7
+- (id)initForFactor:(id)factor withPath:(id)path withAssetSetName:(id)name withUAFMetadata:(id)metadata withAssetSet:(id)set
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  factorCopy = factor;
+  pathCopy = path;
+  nameCopy = name;
+  metadataCopy = metadata;
+  setCopy = set;
   v23.receiver = self;
   v23.super_class = UAFNLAsset;
   v18 = [(UAFNLAsset *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_factorName, a3);
-    objc_storeStrong(&v19->_path, a4);
-    objc_storeStrong(&v19->_assetSetName, a5);
+    objc_storeStrong(&v18->_factorName, factor);
+    objc_storeStrong(&v19->_path, path);
+    objc_storeStrong(&v19->_assetSetName, name);
     v20 = objc_alloc_init(MEMORY[0x1E695DF90]);
     assetMetadata = v19->_assetMetadata;
     v19->_assetMetadata = v20;
 
-    objc_storeStrong(&v19->_assetSet, a7);
-    [(UAFNLAsset *)v19 processUAFMetadata:v16];
+    objc_storeStrong(&v19->_assetSet, set);
+    [(UAFNLAsset *)v19 processUAFMetadata:metadataCopy];
   }
 
   return v19;

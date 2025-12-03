@@ -1,8 +1,8 @@
 @interface FPImportProgressReport
 - (FPImportProgressReport)init;
-- (FPImportProgressReport)initWithCoder:(id)a3;
+- (FPImportProgressReport)initWithCoder:(id)coder;
 - (NSDictionary)json;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FPImportProgressReport
@@ -31,109 +31,109 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  [v9 encodeInteger:self->_status forKey:@"_status"];
-  [v9 encodeInteger:self->_numberOfItemsReconciled forKey:@"_numberOfItemsReconciled"];
-  [v9 encodeInteger:self->_numberOfItemsInError forKey:@"_numberOfItemsInError"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_status forKey:@"_status"];
+  [coderCopy encodeInteger:self->_numberOfItemsReconciled forKey:@"_numberOfItemsReconciled"];
+  [coderCopy encodeInteger:self->_numberOfItemsInError forKey:@"_numberOfItemsInError"];
   errorDetails = self->_errorDetails;
   if (errorDetails)
   {
-    [v9 encodeObject:errorDetails forKey:@"_errorDetails"];
+    [coderCopy encodeObject:errorDetails forKey:@"_errorDetails"];
   }
 
-  [v9 encodeInteger:self->_dbCreationTimestamp forKey:@"_dbCreationTimestamp"];
-  [v9 encodeBool:self->_isStreamResetRunning forKey:@"_isStreamResetRunning"];
-  [v9 encodeInteger:self->_stateOfDownloadJobs forKey:@"_stateOfDownloadJobs"];
-  [v9 encodeInteger:self->_stateOfUploadJobs forKey:@"_stateOfUploadJobs"];
-  [v9 encodeInteger:self->_stateOfOtherJobs forKey:@"_stateOfOtherJobs"];
-  [v9 encodeInteger:self->_numberOfItemsPendingReconciliation forKey:@"_numberOfItemsPendingReconciliation"];
-  [v9 encodeInteger:self->_numberOfItemsPendingSelection forKey:@"_numberOfItemsPendingSelection"];
-  [v9 encodeInteger:self->_numberOfItemsPendingScanningDisk forKey:@"_numberOfItemsPendingScanningDisk"];
-  [v9 encodeInteger:self->_numberOfItemsPendingScanningProvider forKey:@"_numberOfItemsPendingScanningProvider"];
-  [v9 encodeBool:self->_xpcActivityRegisteredWithDuet forKey:@"_xpcActivityRegisteredWithDuet"];
-  [v9 encodeInteger:self->_xpcActivityTimeSinceLastRegistration forKey:@"_xpcActivityTimeSinceLastRegistration"];
-  [v9 encodeBool:self->_xpcActivityIsActive forKey:@"_xpcActivityIsActive"];
-  [v9 encodeInteger:self->_xpcActivityTimeSinceLastActivation forKey:@"_xpcActivityTimeSinceLastActivation"];
-  [v9 encodeInteger:self->_xpcActivityTimeSinceLastAbleToRun forKey:@"_xpcActivityTimeSinceLastAbleToRun"];
-  [v9 encodeInteger:self->_xpcActivityDasdContext forKey:@"_xpcActivityDasdContext"];
+  [coderCopy encodeInteger:self->_dbCreationTimestamp forKey:@"_dbCreationTimestamp"];
+  [coderCopy encodeBool:self->_isStreamResetRunning forKey:@"_isStreamResetRunning"];
+  [coderCopy encodeInteger:self->_stateOfDownloadJobs forKey:@"_stateOfDownloadJobs"];
+  [coderCopy encodeInteger:self->_stateOfUploadJobs forKey:@"_stateOfUploadJobs"];
+  [coderCopy encodeInteger:self->_stateOfOtherJobs forKey:@"_stateOfOtherJobs"];
+  [coderCopy encodeInteger:self->_numberOfItemsPendingReconciliation forKey:@"_numberOfItemsPendingReconciliation"];
+  [coderCopy encodeInteger:self->_numberOfItemsPendingSelection forKey:@"_numberOfItemsPendingSelection"];
+  [coderCopy encodeInteger:self->_numberOfItemsPendingScanningDisk forKey:@"_numberOfItemsPendingScanningDisk"];
+  [coderCopy encodeInteger:self->_numberOfItemsPendingScanningProvider forKey:@"_numberOfItemsPendingScanningProvider"];
+  [coderCopy encodeBool:self->_xpcActivityRegisteredWithDuet forKey:@"_xpcActivityRegisteredWithDuet"];
+  [coderCopy encodeInteger:self->_xpcActivityTimeSinceLastRegistration forKey:@"_xpcActivityTimeSinceLastRegistration"];
+  [coderCopy encodeBool:self->_xpcActivityIsActive forKey:@"_xpcActivityIsActive"];
+  [coderCopy encodeInteger:self->_xpcActivityTimeSinceLastActivation forKey:@"_xpcActivityTimeSinceLastActivation"];
+  [coderCopy encodeInteger:self->_xpcActivityTimeSinceLastAbleToRun forKey:@"_xpcActivityTimeSinceLastAbleToRun"];
+  [coderCopy encodeInteger:self->_xpcActivityDasdContext forKey:@"_xpcActivityDasdContext"];
   itemsPendingReconciliation = self->_itemsPendingReconciliation;
   if (itemsPendingReconciliation)
   {
-    [v9 encodeObject:itemsPendingReconciliation forKey:@"_itemsPendingReconciliation"];
+    [coderCopy encodeObject:itemsPendingReconciliation forKey:@"_itemsPendingReconciliation"];
   }
 
   itemsPendingScanningDisk = self->_itemsPendingScanningDisk;
   if (itemsPendingScanningDisk)
   {
-    [v9 encodeObject:itemsPendingScanningDisk forKey:@"_itemsPendingScanningDisk"];
+    [coderCopy encodeObject:itemsPendingScanningDisk forKey:@"_itemsPendingScanningDisk"];
   }
 
   itemsPendingScanningProvider = self->_itemsPendingScanningProvider;
-  v8 = v9;
+  v8 = coderCopy;
   if (itemsPendingScanningProvider)
   {
-    [v9 encodeObject:itemsPendingScanningProvider forKey:@"_itemsPendingScanningProvider"];
-    v8 = v9;
+    [coderCopy encodeObject:itemsPendingScanningProvider forKey:@"_itemsPendingScanningProvider"];
+    v8 = coderCopy;
   }
 
   [v8 encodeInteger:self->_latestFolderSelectedForImport forKey:@"_latestFolderSelectedForImport"];
-  [v9 encodeInteger:self->_latestFolderSelectedForImportTimestamp forKey:@"_latestFolderSelectedForImportTimestamp"];
-  [v9 encodeInteger:self->_latestFolderSelectedForImportState forKey:@"_latestFolderSelectedForImportState"];
-  [v9 encodeBool:self->_latestFolderSelectedForImportWasModifiedOnDisk forKey:@"_latestFolderSelectedForImportWasModifiedOnDisk"];
-  [v9 encodeBool:self->_latestFolderSelectedForImportWasModifiedRemotely forKey:@"_latestFolderSelectedForImportWasModifiedRemotely"];
-  [v9 encodeBool:self->_latestFolderSelectedForImportIsMonitored forKey:@"_latestFolderSelectedForImportIsMonitored"];
+  [coderCopy encodeInteger:self->_latestFolderSelectedForImportTimestamp forKey:@"_latestFolderSelectedForImportTimestamp"];
+  [coderCopy encodeInteger:self->_latestFolderSelectedForImportState forKey:@"_latestFolderSelectedForImportState"];
+  [coderCopy encodeBool:self->_latestFolderSelectedForImportWasModifiedOnDisk forKey:@"_latestFolderSelectedForImportWasModifiedOnDisk"];
+  [coderCopy encodeBool:self->_latestFolderSelectedForImportWasModifiedRemotely forKey:@"_latestFolderSelectedForImportWasModifiedRemotely"];
+  [coderCopy encodeBool:self->_latestFolderSelectedForImportIsMonitored forKey:@"_latestFolderSelectedForImportIsMonitored"];
 }
 
-- (FPImportProgressReport)initWithCoder:(id)a3
+- (FPImportProgressReport)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = FPImportProgressReport;
   v5 = [(FPImportProgressReport *)&v15 init];
   if (v5)
   {
-    v5->_status = [v4 decodeIntegerForKey:@"_status"];
-    v5->_numberOfItemsReconciled = [v4 decodeIntegerForKey:@"_numberOfItemsReconciled"];
-    v5->_numberOfItemsInError = [v4 decodeIntegerForKey:@"_numberOfItemsInError"];
-    v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_errorDetails"];
+    v5->_status = [coderCopy decodeIntegerForKey:@"_status"];
+    v5->_numberOfItemsReconciled = [coderCopy decodeIntegerForKey:@"_numberOfItemsReconciled"];
+    v5->_numberOfItemsInError = [coderCopy decodeIntegerForKey:@"_numberOfItemsInError"];
+    v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_errorDetails"];
     errorDetails = v5->_errorDetails;
     v5->_errorDetails = v6;
 
-    v5->_dbCreationTimestamp = [v4 decodeIntegerForKey:@"_dbCreationTimestamp"];
-    v5->_isStreamResetRunning = [v4 decodeBoolForKey:@"_isStreamResetRunning"];
-    v5->_stateOfDownloadJobs = [v4 decodeIntegerForKey:@"_stateOfDownloadJobs"];
-    v5->_stateOfUploadJobs = [v4 decodeIntegerForKey:@"_stateOfUploadJobs"];
-    v5->_stateOfOtherJobs = [v4 decodeIntegerForKey:@"_stateOfOtherJobs"];
-    v5->_numberOfItemsPendingReconciliation = [v4 decodeIntegerForKey:@"_numberOfItemsPendingReconciliation"];
-    v5->_numberOfItemsPendingSelection = [v4 decodeIntegerForKey:@"_numberOfItemsPendingSelection"];
-    v5->_numberOfItemsPendingScanningDisk = [v4 decodeIntegerForKey:@"_numberOfItemsPendingScanningDisk"];
-    v5->_numberOfItemsPendingScanningProvider = [v4 decodeIntegerForKey:@"_numberOfItemsPendingScanningProvider"];
-    v5->_xpcActivityRegisteredWithDuet = [v4 decodeBoolForKey:@"_xpcActivityRegisteredWithDuet"];
-    v5->_xpcActivityTimeSinceLastRegistration = [v4 decodeIntegerForKey:@"_xpcActivityTimeSinceLastRegistration"];
-    v5->_xpcActivityIsActive = [v4 decodeBoolForKey:@"_xpcActivityIsActive"];
-    v5->_xpcActivityTimeSinceLastActivation = [v4 decodeIntegerForKey:@"_xpcActivityTimeSinceLastActivation"];
-    v5->_xpcActivityTimeSinceLastAbleToRun = [v4 decodeIntegerForKey:@"_xpcActivityTimeSinceLastAbleToRun"];
-    v5->_xpcActivityDasdContext = [v4 decodeIntegerForKey:@"_xpcActivityDasdContext"];
-    v8 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_itemsPendingReconciliation"];
+    v5->_dbCreationTimestamp = [coderCopy decodeIntegerForKey:@"_dbCreationTimestamp"];
+    v5->_isStreamResetRunning = [coderCopy decodeBoolForKey:@"_isStreamResetRunning"];
+    v5->_stateOfDownloadJobs = [coderCopy decodeIntegerForKey:@"_stateOfDownloadJobs"];
+    v5->_stateOfUploadJobs = [coderCopy decodeIntegerForKey:@"_stateOfUploadJobs"];
+    v5->_stateOfOtherJobs = [coderCopy decodeIntegerForKey:@"_stateOfOtherJobs"];
+    v5->_numberOfItemsPendingReconciliation = [coderCopy decodeIntegerForKey:@"_numberOfItemsPendingReconciliation"];
+    v5->_numberOfItemsPendingSelection = [coderCopy decodeIntegerForKey:@"_numberOfItemsPendingSelection"];
+    v5->_numberOfItemsPendingScanningDisk = [coderCopy decodeIntegerForKey:@"_numberOfItemsPendingScanningDisk"];
+    v5->_numberOfItemsPendingScanningProvider = [coderCopy decodeIntegerForKey:@"_numberOfItemsPendingScanningProvider"];
+    v5->_xpcActivityRegisteredWithDuet = [coderCopy decodeBoolForKey:@"_xpcActivityRegisteredWithDuet"];
+    v5->_xpcActivityTimeSinceLastRegistration = [coderCopy decodeIntegerForKey:@"_xpcActivityTimeSinceLastRegistration"];
+    v5->_xpcActivityIsActive = [coderCopy decodeBoolForKey:@"_xpcActivityIsActive"];
+    v5->_xpcActivityTimeSinceLastActivation = [coderCopy decodeIntegerForKey:@"_xpcActivityTimeSinceLastActivation"];
+    v5->_xpcActivityTimeSinceLastAbleToRun = [coderCopy decodeIntegerForKey:@"_xpcActivityTimeSinceLastAbleToRun"];
+    v5->_xpcActivityDasdContext = [coderCopy decodeIntegerForKey:@"_xpcActivityDasdContext"];
+    v8 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_itemsPendingReconciliation"];
     itemsPendingReconciliation = v5->_itemsPendingReconciliation;
     v5->_itemsPendingReconciliation = v8;
 
-    v10 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_itemsPendingScanningDisk"];
+    v10 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_itemsPendingScanningDisk"];
     itemsPendingScanningDisk = v5->_itemsPendingScanningDisk;
     v5->_itemsPendingScanningDisk = v10;
 
-    v12 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_itemsPendingScanningProvider"];
+    v12 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_itemsPendingScanningProvider"];
     itemsPendingScanningProvider = v5->_itemsPendingScanningProvider;
     v5->_itemsPendingScanningProvider = v12;
 
-    v5->_latestFolderSelectedForImport = [v4 decodeIntegerForKey:@"_latestFolderSelectedForImport"];
-    v5->_latestFolderSelectedForImportTimestamp = [v4 decodeIntegerForKey:@"_latestFolderSelectedForImportTimestamp"];
-    v5->_latestFolderSelectedForImportState = [v4 decodeIntegerForKey:@"_latestFolderSelectedForImportState"];
-    v5->_latestFolderSelectedForImportWasModifiedOnDisk = [v4 decodeBoolForKey:@"_latestFolderSelectedForImportWasModifiedOnDisk"];
-    v5->_latestFolderSelectedForImportWasModifiedRemotely = [v4 decodeBoolForKey:@"_latestFolderSelectedForImportWasModifiedRemotely"];
-    v5->_latestFolderSelectedForImportIsMonitored = [v4 decodeBoolForKey:@"_latestFolderSelectedForImportIsMonitored"];
+    v5->_latestFolderSelectedForImport = [coderCopy decodeIntegerForKey:@"_latestFolderSelectedForImport"];
+    v5->_latestFolderSelectedForImportTimestamp = [coderCopy decodeIntegerForKey:@"_latestFolderSelectedForImportTimestamp"];
+    v5->_latestFolderSelectedForImportState = [coderCopy decodeIntegerForKey:@"_latestFolderSelectedForImportState"];
+    v5->_latestFolderSelectedForImportWasModifiedOnDisk = [coderCopy decodeBoolForKey:@"_latestFolderSelectedForImportWasModifiedOnDisk"];
+    v5->_latestFolderSelectedForImportWasModifiedRemotely = [coderCopy decodeBoolForKey:@"_latestFolderSelectedForImportWasModifiedRemotely"];
+    v5->_latestFolderSelectedForImportIsMonitored = [coderCopy decodeBoolForKey:@"_latestFolderSelectedForImportIsMonitored"];
   }
 
   return v5;

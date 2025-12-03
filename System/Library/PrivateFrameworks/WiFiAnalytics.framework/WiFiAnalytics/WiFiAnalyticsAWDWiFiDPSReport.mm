@@ -1,90 +1,90 @@
 @interface WiFiAnalyticsAWDWiFiDPSReport
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addDpsCounterSample:(id)a3;
-- (void)addProbeResult:(id)a3;
-- (void)addStallNotification:(id)a3;
-- (void)addUsbEvent:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addDpsCounterSample:(id)sample;
+- (void)addProbeResult:(id)result;
+- (void)addStallNotification:(id)notification;
+- (void)addUsbEvent:(id)event;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WiFiAnalyticsAWDWiFiDPSReport
 
-- (void)addStallNotification:(id)a3
+- (void)addStallNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   stallNotifications = self->_stallNotifications;
-  v8 = v4;
+  v8 = notificationCopy;
   if (!stallNotifications)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_stallNotifications;
     self->_stallNotifications = v6;
 
-    v4 = v8;
+    notificationCopy = v8;
     stallNotifications = self->_stallNotifications;
   }
 
-  [(NSMutableArray *)stallNotifications addObject:v4];
+  [(NSMutableArray *)stallNotifications addObject:notificationCopy];
 }
 
-- (void)addProbeResult:(id)a3
+- (void)addProbeResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   probeResults = self->_probeResults;
-  v8 = v4;
+  v8 = resultCopy;
   if (!probeResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_probeResults;
     self->_probeResults = v6;
 
-    v4 = v8;
+    resultCopy = v8;
     probeResults = self->_probeResults;
   }
 
-  [(NSMutableArray *)probeResults addObject:v4];
+  [(NSMutableArray *)probeResults addObject:resultCopy];
 }
 
-- (void)addDpsCounterSample:(id)a3
+- (void)addDpsCounterSample:(id)sample
 {
-  v4 = a3;
+  sampleCopy = sample;
   dpsCounterSamples = self->_dpsCounterSamples;
-  v8 = v4;
+  v8 = sampleCopy;
   if (!dpsCounterSamples)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_dpsCounterSamples;
     self->_dpsCounterSamples = v6;
 
-    v4 = v8;
+    sampleCopy = v8;
     dpsCounterSamples = self->_dpsCounterSamples;
   }
 
-  [(NSMutableArray *)dpsCounterSamples addObject:v4];
+  [(NSMutableArray *)dpsCounterSamples addObject:sampleCopy];
 }
 
-- (void)addUsbEvent:(id)a3
+- (void)addUsbEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   usbEvents = self->_usbEvents;
-  v8 = v4;
+  v8 = eventCopy;
   if (!usbEvents)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_usbEvents;
     self->_usbEvents = v6;
 
-    v4 = v8;
+    eventCopy = v8;
     usbEvents = self->_usbEvents;
   }
 
-  [(NSMutableArray *)usbEvents addObject:v4];
+  [(NSMutableArray *)usbEvents addObject:eventCopy];
 }
 
 - (id)description
@@ -93,8 +93,8 @@
   v8.receiver = self;
   v8.super_class = WiFiAnalyticsAWDWiFiDPSReport;
   v4 = [(WiFiAnalyticsAWDWiFiDPSReport *)&v8 description];
-  v5 = [(WiFiAnalyticsAWDWiFiDPSReport *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WiFiAnalyticsAWDWiFiDPSReport *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -102,11 +102,11 @@
 - (id)dictionaryRepresentation
 {
   v59 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v4 forKey:@"timestamp"];
+    [dictionary setObject:v4 forKey:@"timestamp"];
   }
 
   if ([(NSMutableArray *)self->_stallNotifications count])
@@ -131,8 +131,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v51 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v51 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v51 objects:v58 count:16];
@@ -141,7 +141,7 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"stallNotification"];
+    [dictionary setObject:v5 forKey:@"stallNotification"];
   }
 
   if ([(NSMutableArray *)self->_probeResults count])
@@ -166,8 +166,8 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v47 + 1) + 8 * j) dictionaryRepresentation];
-          [v12 addObject:v18];
+          dictionaryRepresentation2 = [*(*(&v47 + 1) + 8 * j) dictionaryRepresentation];
+          [v12 addObject:dictionaryRepresentation2];
         }
 
         v15 = [(NSMutableArray *)v13 countByEnumeratingWithState:&v47 objects:v57 count:16];
@@ -176,7 +176,7 @@
       while (v15);
     }
 
-    [v3 setObject:v12 forKey:@"probeResult"];
+    [dictionary setObject:v12 forKey:@"probeResult"];
   }
 
   if ([(NSMutableArray *)self->_dpsCounterSamples count])
@@ -201,8 +201,8 @@
             objc_enumerationMutation(v20);
           }
 
-          v25 = [*(*(&v43 + 1) + 8 * k) dictionaryRepresentation];
-          [v19 addObject:v25];
+          dictionaryRepresentation3 = [*(*(&v43 + 1) + 8 * k) dictionaryRepresentation];
+          [v19 addObject:dictionaryRepresentation3];
         }
 
         v22 = [(NSMutableArray *)v20 countByEnumeratingWithState:&v43 objects:v56 count:16];
@@ -211,21 +211,21 @@
       while (v22);
     }
 
-    [v3 setObject:v19 forKey:@"dpsCounterSample"];
+    [dictionary setObject:v19 forKey:@"dpsCounterSample"];
   }
 
   dpsEpiloge = self->_dpsEpiloge;
   if (dpsEpiloge)
   {
-    v27 = [(WiFiAnalyticsAWDWiFiDPSEpilogue *)dpsEpiloge dictionaryRepresentation];
-    [v3 setObject:v27 forKey:@"dpsEpiloge"];
+    dictionaryRepresentation4 = [(WiFiAnalyticsAWDWiFiDPSEpilogue *)dpsEpiloge dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"dpsEpiloge"];
   }
 
   snapshot = self->_snapshot;
   if (snapshot)
   {
-    v29 = [(WiFiAnalyticsAWDWiFiDPSSnapshot *)snapshot dictionaryRepresentation];
-    [v3 setObject:v29 forKey:@"snapshot"];
+    dictionaryRepresentation5 = [(WiFiAnalyticsAWDWiFiDPSSnapshot *)snapshot dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"snapshot"];
   }
 
   if ([(NSMutableArray *)self->_usbEvents count])
@@ -250,8 +250,8 @@
             objc_enumerationMutation(v31);
           }
 
-          v36 = [*(*(&v39 + 1) + 8 * m) dictionaryRepresentation];
-          [v30 addObject:v36];
+          dictionaryRepresentation6 = [*(*(&v39 + 1) + 8 * m) dictionaryRepresentation];
+          [v30 addObject:dictionaryRepresentation6];
         }
 
         v33 = [(NSMutableArray *)v31 countByEnumeratingWithState:&v39 objects:v55 count:16];
@@ -260,18 +260,18 @@
       while (v33);
     }
 
-    [v3 setObject:v30 forKey:@"usbEvent"];
+    [dictionary setObject:v30 forKey:@"usbEvent"];
   }
 
   v37 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     timestamp = self->_timestamp;
@@ -419,23 +419,23 @@
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 64) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 64) |= 1u;
   }
 
-  v21 = v4;
+  v21 = toCopy;
   if ([(WiFiAnalyticsAWDWiFiDPSReport *)self stallNotificationsCount])
   {
     [v21 clearStallNotifications];
-    v5 = [(WiFiAnalyticsAWDWiFiDPSReport *)self stallNotificationsCount];
-    if (v5)
+    stallNotificationsCount = [(WiFiAnalyticsAWDWiFiDPSReport *)self stallNotificationsCount];
+    if (stallNotificationsCount)
     {
-      v6 = v5;
+      v6 = stallNotificationsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(WiFiAnalyticsAWDWiFiDPSReport *)self stallNotificationAtIndex:i];
@@ -447,10 +447,10 @@
   if ([(WiFiAnalyticsAWDWiFiDPSReport *)self probeResultsCount])
   {
     [v21 clearProbeResults];
-    v9 = [(WiFiAnalyticsAWDWiFiDPSReport *)self probeResultsCount];
-    if (v9)
+    probeResultsCount = [(WiFiAnalyticsAWDWiFiDPSReport *)self probeResultsCount];
+    if (probeResultsCount)
     {
-      v10 = v9;
+      v10 = probeResultsCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(WiFiAnalyticsAWDWiFiDPSReport *)self probeResultAtIndex:j];
@@ -462,10 +462,10 @@
   if ([(WiFiAnalyticsAWDWiFiDPSReport *)self dpsCounterSamplesCount])
   {
     [v21 clearDpsCounterSamples];
-    v13 = [(WiFiAnalyticsAWDWiFiDPSReport *)self dpsCounterSamplesCount];
-    if (v13)
+    dpsCounterSamplesCount = [(WiFiAnalyticsAWDWiFiDPSReport *)self dpsCounterSamplesCount];
+    if (dpsCounterSamplesCount)
     {
-      v14 = v13;
+      v14 = dpsCounterSamplesCount;
       for (k = 0; k != v14; ++k)
       {
         v16 = [(WiFiAnalyticsAWDWiFiDPSReport *)self dpsCounterSampleAtIndex:k];
@@ -487,10 +487,10 @@
   if ([(WiFiAnalyticsAWDWiFiDPSReport *)self usbEventsCount])
   {
     [v21 clearUsbEvents];
-    v17 = [(WiFiAnalyticsAWDWiFiDPSReport *)self usbEventsCount];
-    if (v17)
+    usbEventsCount = [(WiFiAnalyticsAWDWiFiDPSReport *)self usbEventsCount];
+    if (usbEventsCount)
     {
-      v18 = v17;
+      v18 = usbEventsCount;
       for (m = 0; m != v18; ++m)
       {
         v20 = [(WiFiAnalyticsAWDWiFiDPSReport *)self usbEventAtIndex:m];
@@ -500,10 +500,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v57 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -531,7 +531,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v49 + 1) + 8 * v11) copyWithZone:a3];
+        v12 = [*(*(&v49 + 1) + 8 * v11) copyWithZone:zone];
         [v6 addStallNotification:v12];
 
         ++v11;
@@ -564,7 +564,7 @@
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v45 + 1) + 8 * v17) copyWithZone:a3];
+        v18 = [*(*(&v45 + 1) + 8 * v17) copyWithZone:zone];
         [v6 addProbeResult:v18];
 
         ++v17;
@@ -597,7 +597,7 @@
           objc_enumerationMutation(v19);
         }
 
-        v24 = [*(*(&v41 + 1) + 8 * v23) copyWithZone:a3];
+        v24 = [*(*(&v41 + 1) + 8 * v23) copyWithZone:zone];
         [v6 addDpsCounterSample:v24];
 
         ++v23;
@@ -610,11 +610,11 @@
     while (v21);
   }
 
-  v25 = [(WiFiAnalyticsAWDWiFiDPSEpilogue *)self->_dpsEpiloge copyWithZone:a3];
+  v25 = [(WiFiAnalyticsAWDWiFiDPSEpilogue *)self->_dpsEpiloge copyWithZone:zone];
   v26 = v6[3];
   v6[3] = v25;
 
-  v27 = [(WiFiAnalyticsAWDWiFiDPSSnapshot *)self->_snapshot copyWithZone:a3];
+  v27 = [(WiFiAnalyticsAWDWiFiDPSSnapshot *)self->_snapshot copyWithZone:zone];
   v28 = v6[5];
   v6[5] = v27;
 
@@ -638,7 +638,7 @@
           objc_enumerationMutation(v29);
         }
 
-        v34 = [*(*(&v37 + 1) + 8 * v33) copyWithZone:{a3, v37}];
+        v34 = [*(*(&v37 + 1) + 8 * v33) copyWithZone:{zone, v37}];
         [v6 addUsbEvent:v34];
 
         ++v33;
@@ -655,24 +655,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
-  v5 = *(v4 + 64);
+  v5 = *(equalCopy + 64);
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
 LABEL_19:
     v12 = 0;
@@ -680,13 +680,13 @@ LABEL_19:
   }
 
   stallNotifications = self->_stallNotifications;
-  if (stallNotifications | *(v4 + 6) && ![(NSMutableArray *)stallNotifications isEqual:?])
+  if (stallNotifications | *(equalCopy + 6) && ![(NSMutableArray *)stallNotifications isEqual:?])
   {
     goto LABEL_19;
   }
 
   probeResults = self->_probeResults;
-  if (probeResults | *(v4 + 4))
+  if (probeResults | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)probeResults isEqual:?])
     {
@@ -695,7 +695,7 @@ LABEL_19:
   }
 
   dpsCounterSamples = self->_dpsCounterSamples;
-  if (dpsCounterSamples | *(v4 + 2))
+  if (dpsCounterSamples | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)dpsCounterSamples isEqual:?])
     {
@@ -704,7 +704,7 @@ LABEL_19:
   }
 
   dpsEpiloge = self->_dpsEpiloge;
-  if (dpsEpiloge | *(v4 + 3))
+  if (dpsEpiloge | *(equalCopy + 3))
   {
     if (![(WiFiAnalyticsAWDWiFiDPSEpilogue *)dpsEpiloge isEqual:?])
     {
@@ -713,7 +713,7 @@ LABEL_19:
   }
 
   snapshot = self->_snapshot;
-  if (snapshot | *(v4 + 5))
+  if (snapshot | *(equalCopy + 5))
   {
     if (![(WiFiAnalyticsAWDWiFiDPSSnapshot *)snapshot isEqual:?])
     {
@@ -722,7 +722,7 @@ LABEL_19:
   }
 
   usbEvents = self->_usbEvents;
-  if (usbEvents | *(v4 + 7))
+  if (usbEvents | *(equalCopy + 7))
   {
     v12 = [(NSMutableArray *)usbEvents isEqual:?];
   }
@@ -757,14 +757,14 @@ LABEL_20:
   return v6 ^ v8 ^ [(NSMutableArray *)self->_usbEvents hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 64))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 64))
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -772,7 +772,7 @@ LABEL_20:
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v6 = *(v4 + 6);
+  v6 = *(fromCopy + 6);
   v7 = [v6 countByEnumeratingWithState:&v43 objects:v50 count:16];
   if (v7)
   {

@@ -1,12 +1,12 @@
 @interface PASVSSetupEventPresenter
 - (_TtC14PASViewService24PASVSSetupEventPresenter)init;
 - (_TtP14PASViewService22PASViewServiceProtocol_)delegate;
-- (void)authCompleted:(CUMessageSession *)a3 completionHandler:(id)a4;
+- (void)authCompleted:(CUMessageSession *)completed completionHandler:(id)handler;
 - (void)authRequested;
-- (void)proximitySetupCompletedWithResult:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setPresentingViewController:(id)a3;
-- (void)showErrorWithTitle:(id)a3 message:(id)a4;
+- (void)proximitySetupCompletedWithResult:(id)result;
+- (void)setDelegate:(id)delegate;
+- (void)setPresentingViewController:(id)controller;
+- (void)showErrorWithTitle:(id)title message:(id)message;
 - (void)showManualPinEntry;
 - (void)showPinEntryError;
 - (void)showProxCard;
@@ -14,11 +14,11 @@
 
 @implementation PASVSSetupEventPresenter
 
-- (void)setPresentingViewController:(id)a3
+- (void)setPresentingViewController:(id)controller
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC14PASViewService24PASVSSetupEventPresenter_presentingViewController);
-  *(&self->super.isa + OBJC_IVAR____TtC14PASViewService24PASVSSetupEventPresenter_presentingViewController) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC14PASViewService24PASVSSetupEventPresenter_presentingViewController) = controller;
+  controllerCopy = controller;
 }
 
 - (_TtP14PASViewService22PASViewServiceProtocol_)delegate
@@ -29,10 +29,10 @@
   return v3;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC14PASViewService24PASVSSetupEventPresenter_delegate);
-  *(&self->super.isa + OBJC_IVAR____TtC14PASViewService24PASVSSetupEventPresenter_delegate) = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC14PASViewService24PASVSSetupEventPresenter_delegate) = delegate;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
@@ -40,37 +40,37 @@
 
 - (void)showProxCard
 {
-  v2 = self;
+  selfCopy = self;
   sub_100008B04();
 }
 
 - (void)authRequested
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000AEBC();
 }
 
 - (void)showManualPinEntry
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000B0D4();
 }
 
 - (void)showPinEntryError
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000B6EC();
 }
 
-- (void)authCompleted:(CUMessageSession *)a3 completionHandler:(id)a4
+- (void)authCompleted:(CUMessageSession *)completed completionHandler:(id)handler
 {
   v7 = sub_100001E28(&unk_100025EC0, &qword_100017420);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = completed;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -85,18 +85,18 @@
   v15[3] = 0;
   v15[4] = &unk_100017BC8;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  completedCopy = completed;
+  selfCopy = self;
   sub_10000D1BC(0, 0, v10, &unk_100017BD8, v15);
 }
 
-- (void)showErrorWithTitle:(id)a3 message:(id)a4
+- (void)showErrorWithTitle:(id)title message:(id)message
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
-  v11 = self;
+  selfCopy = self;
   sub_10000C3D8(v5, v7, v8, v10);
 }
 
@@ -107,10 +107,10 @@
   return result;
 }
 
-- (void)proximitySetupCompletedWithResult:(id)a3
+- (void)proximitySetupCompletedWithResult:(id)result
 {
-  v4 = a3;
-  v5 = self;
+  resultCopy = result;
+  selfCopy = self;
   sub_10000D8D8();
 }
 

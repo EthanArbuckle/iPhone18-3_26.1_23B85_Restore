@@ -1,7 +1,7 @@
 @interface BLOperationQueue
 - (BLOperationQueue)init;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation BLOperationQueue
@@ -33,14 +33,14 @@
   [(BLOperationQueue *)&v3 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (off_10013E040 == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (off_10013E040 == context)
   {
-    if (self->_queue == v11 && [v10 isEqualToString:@"operationCount"])
+    if (self->_queue == objectCopy && [pathCopy isEqualToString:@"operationCount"])
     {
       v13 = +[NSNotificationCenter defaultCenter];
       [v13 postNotificationName:@"BLOperationQueueOperationCountChangedNotification" object:self];
@@ -51,7 +51,7 @@
   {
     v14.receiver = self;
     v14.super_class = BLOperationQueue;
-    [(BLOperationQueue *)&v14 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(BLOperationQueue *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 

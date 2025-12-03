@@ -1,16 +1,16 @@
 @interface SYAtomicFIFO
-- (SYAtomicFIFO)initWithCapacity:(unint64_t)a3;
+- (SYAtomicFIFO)initWithCapacity:(unint64_t)capacity;
 - (id)dequeue;
-- (id)dequeueUntil:(id)a3;
+- (id)dequeueUntil:(id)until;
 - (id)head;
 - (id)tail;
-- (void)enqueue:(id)a3;
+- (void)enqueue:(id)enqueue;
 - (void)removeAllObjects;
 @end
 
 @implementation SYAtomicFIFO
 
-- (SYAtomicFIFO)initWithCapacity:(unint64_t)a3
+- (SYAtomicFIFO)initWithCapacity:(unint64_t)capacity
 {
   v10.receiver = self;
   v10.super_class = SYAtomicFIFO;
@@ -19,7 +19,7 @@
   if (v4)
   {
     v4->_lock._os_unfair_lock_opaque = 0;
-    v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a3];
+    v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:capacity];
     store = v5->_store;
     v5->_store = v6;
 
@@ -29,11 +29,11 @@
   return v5;
 }
 
-- (void)enqueue:(id)a3
+- (void)enqueue:(id)enqueue
 {
-  v4 = a3;
+  enqueueCopy = enqueue;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableArray *)self->_store addObject:v4];
+  [(NSMutableArray *)self->_store addObject:enqueueCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -41,20 +41,20 @@
 - (id)dequeue
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableArray *)self->_store firstObject];
-  if (v3)
+  firstObject = [(NSMutableArray *)self->_store firstObject];
+  if (firstObject)
   {
     [(NSMutableArray *)self->_store removeObjectAtIndex:0];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return firstObject;
 }
 
-- (id)dequeueUntil:(id)a3
+- (id)dequeueUntil:(id)until
 {
-  v4 = a3;
+  untilCopy = until;
   os_unfair_lock_lock(&self->_lock);
   v19 = 0;
   v20 = &v19;
@@ -74,7 +74,7 @@
   v9[2] = __29__SYAtomicFIFO_dequeueUntil___block_invoke;
   v9[3] = &unk_1E86CA348;
   v11 = &v19;
-  v6 = v4;
+  v6 = untilCopy;
   v10 = v6;
   v12 = &v13;
   [(NSMutableArray *)store enumerateObjectsUsingBlock:v9];
@@ -111,19 +111,19 @@ void __29__SYAtomicFIFO_dequeueUntil___block_invoke(void *a1, void *a2, uint64_t
 - (id)head
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableArray *)self->_store firstObject];
+  firstObject = [(NSMutableArray *)self->_store firstObject];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return firstObject;
 }
 
 - (id)tail
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableArray *)self->_store lastObject];
+  lastObject = [(NSMutableArray *)self->_store lastObject];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return lastObject;
 }
 
 @end

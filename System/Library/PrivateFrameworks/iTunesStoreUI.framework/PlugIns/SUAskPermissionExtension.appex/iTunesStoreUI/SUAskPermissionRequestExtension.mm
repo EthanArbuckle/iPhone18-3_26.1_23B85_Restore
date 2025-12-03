@@ -1,6 +1,6 @@
 @interface SUAskPermissionRequestExtension
 - (void)checkDownloadQueue;
-- (void)requestUpdatedWithResult:(id)a3 completion:(id)a4;
+- (void)requestUpdatedWithResult:(id)result completion:(id)completion;
 @end
 
 @implementation SUAskPermissionRequestExtension
@@ -8,19 +8,19 @@
 - (void)checkDownloadQueue
 {
   v2 = +[SSLogConfig sharedConfig];
-  v3 = [v2 shouldLog];
+  shouldLog = [v2 shouldLog];
   if ([v2 shouldLogToDisk])
   {
-    v4 = v3 | 2;
+    v4 = shouldLog | 2;
   }
 
   else
   {
-    v4 = v3;
+    v4 = shouldLog;
   }
 
-  v5 = [v2 OSLogObject];
-  if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v2 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v4 &= 2u;
   }
@@ -37,7 +37,7 @@
 
   if (v6)
   {
-    v5 = [NSString stringWithCString:v6 encoding:4, &v15, v12];
+    oSLogObject = [NSString stringWithCString:v6 encoding:4, &v15, v12];
     free(v6);
     SSFileLog();
 LABEL_9:
@@ -63,24 +63,24 @@ LABEL_9:
   [v11 reloadFromServer];
 }
 
-- (void)requestUpdatedWithResult:(id)a3 completion:(id)a4
+- (void)requestUpdatedWithResult:(id)result completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  resultCopy = result;
+  completionCopy = completion;
   v7 = +[SSLogConfig sharedConfig];
-  v8 = [v7 shouldLog];
+  shouldLog = [v7 shouldLog];
   if ([v7 shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog;
   }
 
-  v10 = [v7 OSLogObject];
-  if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v7 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v9 &= 2u;
   }
@@ -91,7 +91,7 @@ LABEL_9:
   }
 
   v11 = objc_opt_class();
-  [v5 compile];
+  [resultCopy compile];
   v20 = 138543618;
   v21 = v11;
   v23 = v22 = 2114;
@@ -100,14 +100,14 @@ LABEL_9:
 
   if (v12)
   {
-    v10 = [NSString stringWithCString:v12 encoding:4, &v20, v18];
+    oSLogObject = [NSString stringWithCString:v12 encoding:4, &v20, v18];
     free(v12);
     SSFileLog();
 LABEL_9:
   }
 
-  v13 = [v5 buyParams];
-  v14 = [SSPurchase purchaseWithBuyParameters:v13];
+  buyParams = [resultCopy buyParams];
+  v14 = [SSPurchase purchaseWithBuyParameters:buyParams];
 
   [v14 setCreatesDownloads:1];
   v15 = [SSPurchaseRequest alloc];
@@ -116,7 +116,7 @@ LABEL_9:
   v17 = [v15 initWithPurchases:v16];
 
   [v17 start];
-  v6[2](v6);
+  completionCopy[2](completionCopy);
 }
 
 @end

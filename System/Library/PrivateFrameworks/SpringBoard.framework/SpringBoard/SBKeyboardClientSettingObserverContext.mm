@@ -1,23 +1,23 @@
 @interface SBKeyboardClientSettingObserverContext
-- (void)setOldClientSettings:(uint64_t)a1;
-- (void)setScene:(uint64_t)a1;
+- (void)setOldClientSettings:(uint64_t)settings;
+- (void)setScene:(uint64_t)scene;
 @end
 
 @implementation SBKeyboardClientSettingObserverContext
 
-- (void)setScene:(uint64_t)a1
+- (void)setScene:(uint64_t)scene
 {
-  if (a1)
+  if (scene)
   {
-    objc_storeStrong((a1 + 8), a2);
+    objc_storeStrong((scene + 8), a2);
   }
 }
 
-- (void)setOldClientSettings:(uint64_t)a1
+- (void)setOldClientSettings:(uint64_t)settings
 {
-  if (a1)
+  if (settings)
   {
-    objc_storeStrong((a1 + 16), a2);
+    objc_storeStrong((settings + 16), a2);
   }
 }
 

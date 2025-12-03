@@ -1,23 +1,23 @@
 @interface GKAcceptedInviteManager
 + (id)syncQueue;
-- (BOOL)removeAndReturnQueuedCancelledInviteWithSessionToken:(id)a3;
+- (BOOL)removeAndReturnQueuedCancelledInviteWithSessionToken:(id)token;
 - (GKAcceptedInviteManager)init;
-- (id)_fetchAndRemoveBulletinFromArray:(id)a3 passingTest:(id)a4;
-- (id)_fetchObjectFromArray:(id)a3 passingTest:(id)a4;
+- (id)_fetchAndRemoveBulletinFromArray:(id)array passingTest:(id)test;
+- (id)_fetchObjectFromArray:(id)array passingTest:(id)test;
 - (id)description;
-- (id)multiplayerInviteForGame:(id)a3;
-- (id)multiplayerInviteForGameDescriptor:(id)a3;
-- (id)removeAndReturnInviteWithSessionToken:(id)a3;
-- (id)removeAndReturnTurnBasedInviteWithMatchID:(id)a3;
-- (id)turnBasedInviteForGame:(id)a3;
-- (id)turnBasedInviteForGameDescriptor:(id)a3;
-- (void)_addBulletin:(id)a3 toArray:(id)a4;
-- (void)_insertBulletin:(id)a3 atFrontOfArray:(id)a4;
-- (void)addMultiplayerInvite:(id)a3;
-- (void)addTurnBasedEvent:(id)a3;
-- (void)declineMultiplayerInvite:(id)a3;
-- (void)performSync:(id)a3;
-- (void)queueCancelledMultiplayerInviteSessionToken:(id)a3;
+- (id)multiplayerInviteForGame:(id)game;
+- (id)multiplayerInviteForGameDescriptor:(id)descriptor;
+- (id)removeAndReturnInviteWithSessionToken:(id)token;
+- (id)removeAndReturnTurnBasedInviteWithMatchID:(id)d;
+- (id)turnBasedInviteForGame:(id)game;
+- (id)turnBasedInviteForGameDescriptor:(id)descriptor;
+- (void)_addBulletin:(id)bulletin toArray:(id)array;
+- (void)_insertBulletin:(id)bulletin atFrontOfArray:(id)array;
+- (void)addMultiplayerInvite:(id)invite;
+- (void)addTurnBasedEvent:(id)event;
+- (void)declineMultiplayerInvite:(id)invite;
+- (void)performSync:(id)sync;
+- (void)queueCancelledMultiplayerInviteSessionToken:(id)token;
 @end
 
 @implementation GKAcceptedInviteManager
@@ -69,9 +69,9 @@
   return v4;
 }
 
-- (void)performSync:(id)a3
+- (void)performSync:(id)sync
 {
-  v3 = a3;
+  syncCopy = sync;
   if (!os_log_GKGeneral)
   {
     v4 = GKOSLoggers();
@@ -84,28 +84,28 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "GKAcceptedInviteManager performSync:", buf, 2u);
   }
 
-  v6 = [objc_opt_class() syncQueue];
+  syncQueue = [objc_opt_class() syncQueue];
   v7 = dispatch_get_current_queue();
 
-  if (v7 == v6)
+  if (v7 == syncQueue)
   {
-    label = dispatch_queue_get_label(v6);
+    label = dispatch_queue_get_label(syncQueue);
     v9 = +[NSThread callStackSymbols];
     v10 = [NSString stringWithFormat:@"%s invoked on the same queue(%s), would deadlock at %@", "[GKAcceptedInviteManager performSync:]", label, v9];
     v11 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKAcceptedInviteManager.m"];
-    v12 = [v11 lastPathComponent];
-    v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (dispatch_get_current_queue() != queue)\n[%s (%s:%d)]", v10, "-[GKAcceptedInviteManager performSync:]", [v12 UTF8String], 58);
+    lastPathComponent = [v11 lastPathComponent];
+    v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (dispatch_get_current_queue() != queue)\n[%s (%s:%d)]", v10, "-[GKAcceptedInviteManager performSync:]", [lastPathComponent UTF8String], 58);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v13];
   }
 
-  dispatch_sync(v6, v3);
+  dispatch_sync(syncQueue, syncCopy);
 }
 
-- (void)_addBulletin:(id)a3 toArray:(id)a4
+- (void)_addBulletin:(id)bulletin toArray:(id)array
 {
-  v6 = a3;
-  v7 = a4;
+  bulletinCopy = bulletin;
+  arrayCopy = array;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -122,17 +122,17 @@
   v12[1] = 3221225472;
   v12[2] = sub_10018617C;
   v12[3] = &unk_1003610B8;
-  v13 = v7;
-  v14 = v6;
-  v10 = v6;
-  v11 = v7;
+  v13 = arrayCopy;
+  v14 = bulletinCopy;
+  v10 = bulletinCopy;
+  v11 = arrayCopy;
   [(GKAcceptedInviteManager *)self performSync:v12];
 }
 
-- (void)_insertBulletin:(id)a3 atFrontOfArray:(id)a4
+- (void)_insertBulletin:(id)bulletin atFrontOfArray:(id)array
 {
-  v6 = a3;
-  v7 = a4;
+  bulletinCopy = bulletin;
+  arrayCopy = array;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -149,17 +149,17 @@
   v12[1] = 3221225472;
   v12[2] = sub_1001862A8;
   v12[3] = &unk_1003610B8;
-  v13 = v7;
-  v14 = v6;
-  v10 = v6;
-  v11 = v7;
+  v13 = arrayCopy;
+  v14 = bulletinCopy;
+  v10 = bulletinCopy;
+  v11 = arrayCopy;
   [(GKAcceptedInviteManager *)self performSync:v12];
 }
 
-- (id)_fetchObjectFromArray:(id)a3 passingTest:(id)a4
+- (id)_fetchObjectFromArray:(id)array passingTest:(id)test
 {
-  v6 = a3;
-  v7 = a4;
+  arrayCopy = array;
+  testCopy = test;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -182,9 +182,9 @@
   v14[1] = 3221225472;
   v14[2] = sub_100186480;
   v14[3] = &unk_10036A008;
-  v10 = v6;
+  v10 = arrayCopy;
   v15 = v10;
-  v11 = v7;
+  v11 = testCopy;
   v16 = v11;
   v17 = buf;
   [(GKAcceptedInviteManager *)self performSync:v14];
@@ -195,10 +195,10 @@
   return v12;
 }
 
-- (id)_fetchAndRemoveBulletinFromArray:(id)a3 passingTest:(id)a4
+- (id)_fetchAndRemoveBulletinFromArray:(id)array passingTest:(id)test
 {
-  v6 = a3;
-  v7 = a4;
+  arrayCopy = array;
+  testCopy = test;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -221,9 +221,9 @@
   v14[1] = 3221225472;
   v14[2] = sub_100186720;
   v14[3] = &unk_10036A008;
-  v10 = v6;
+  v10 = arrayCopy;
   v15 = v10;
-  v11 = v7;
+  v11 = testCopy;
   v16 = v11;
   v17 = buf;
   [(GKAcceptedInviteManager *)self performSync:v14];
@@ -234,9 +234,9 @@
   return v12;
 }
 
-- (void)addMultiplayerInvite:(id)a3
+- (void)addMultiplayerInvite:(id)invite
 {
-  v4 = a3;
+  inviteCopy = invite;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -254,7 +254,7 @@
   v12[1] = 3221225472;
   v12[2] = sub_1001869E4;
   v12[3] = &unk_10036A030;
-  v8 = v4;
+  v8 = inviteCopy;
   v13 = v8;
   v9 = [(GKAcceptedInviteManager *)self _fetchObjectFromArray:queuedCancelledMultiplayerInviteSessionTokens passingTest:v12];
   if (v9)
@@ -278,9 +278,9 @@
   [(GKAcceptedInviteManager *)self _insertBulletin:v8 atFrontOfArray:self->_acceptedMultiplayerInvites];
 }
 
-- (void)declineMultiplayerInvite:(id)a3
+- (void)declineMultiplayerInvite:(id)invite
 {
-  v4 = a3;
+  inviteCopy = invite;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -293,11 +293,11 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "GKAcceptedInviteManager declineMultiplayerInvite:", buf, 2u);
   }
 
-  v7 = [v4 declineReason];
+  declineReason = [inviteCopy declineReason];
 
-  if (v7)
+  if (declineReason)
   {
-    [(GKAcceptedInviteManager *)self addMultiplayerInvite:v4];
+    [(GKAcceptedInviteManager *)self addMultiplayerInvite:inviteCopy];
   }
 
   else
@@ -316,9 +316,9 @@
   }
 }
 
-- (void)queueCancelledMultiplayerInviteSessionToken:(id)a3
+- (void)queueCancelledMultiplayerInviteSessionToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -331,12 +331,12 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "GKAcceptedInviteManager queueCancelledMultiplayerInvite:", v7, 2u);
   }
 
-  [(GKAcceptedInviteManager *)self _insertBulletin:v4 atFrontOfArray:self->_queuedCancelledMultiplayerInviteSessionTokens];
+  [(GKAcceptedInviteManager *)self _insertBulletin:tokenCopy atFrontOfArray:self->_queuedCancelledMultiplayerInviteSessionTokens];
 }
 
-- (void)addTurnBasedEvent:(id)a3
+- (void)addTurnBasedEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -349,12 +349,12 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "GKAcceptedInviteManager addTurnBasedEvent:", v7, 2u);
   }
 
-  [(GKAcceptedInviteManager *)self _addBulletin:v4 toArray:self->_acceptedTurnBased];
+  [(GKAcceptedInviteManager *)self _addBulletin:eventCopy toArray:self->_acceptedTurnBased];
 }
 
-- (id)removeAndReturnInviteWithSessionToken:(id)a3
+- (id)removeAndReturnInviteWithSessionToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -372,16 +372,16 @@
   v11[1] = 3221225472;
   v11[2] = sub_100186DD8;
   v11[3] = &unk_10036A058;
-  v12 = v4;
-  v8 = v4;
+  v12 = tokenCopy;
+  v8 = tokenCopy;
   v9 = [(GKAcceptedInviteManager *)self _fetchAndRemoveBulletinFromArray:acceptedMultiplayerInvites passingTest:v11];
 
   return v9;
 }
 
-- (BOOL)removeAndReturnQueuedCancelledInviteWithSessionToken:(id)a3
+- (BOOL)removeAndReturnQueuedCancelledInviteWithSessionToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -399,17 +399,17 @@
   v12[1] = 3221225472;
   v12[2] = sub_100186F38;
   v12[3] = &unk_10036A030;
-  v13 = v4;
-  v8 = v4;
+  v13 = tokenCopy;
+  v8 = tokenCopy;
   v9 = [(GKAcceptedInviteManager *)self _fetchAndRemoveBulletinFromArray:queuedCancelledMultiplayerInviteSessionTokens passingTest:v12];
   v10 = v9 != 0;
 
   return v10;
 }
 
-- (id)removeAndReturnTurnBasedInviteWithMatchID:(id)a3
+- (id)removeAndReturnTurnBasedInviteWithMatchID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -427,16 +427,16 @@
   v11[1] = 3221225472;
   v11[2] = sub_100187068;
   v11[3] = &unk_10036A080;
-  v12 = v4;
-  v8 = v4;
+  v12 = dCopy;
+  v8 = dCopy;
   v9 = [(GKAcceptedInviteManager *)self _fetchAndRemoveBulletinFromArray:acceptedTurnBased passingTest:v11];
 
   return v9;
 }
 
-- (id)multiplayerInviteForGame:(id)a3
+- (id)multiplayerInviteForGame:(id)game
 {
-  v4 = a3;
+  gameCopy = game;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -449,15 +449,15 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "GKAcceptedInviteManager multiplayerInviteForGame:", v10, 2u);
   }
 
-  v7 = [[GKGameDescriptor alloc] initWithDictionary:v4];
+  v7 = [[GKGameDescriptor alloc] initWithDictionary:gameCopy];
   v8 = [(GKAcceptedInviteManager *)self multiplayerInviteForGameDescriptor:v7];
 
   return v8;
 }
 
-- (id)multiplayerInviteForGameDescriptor:(id)a3
+- (id)multiplayerInviteForGameDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -489,16 +489,16 @@
   v14[1] = 3221225472;
   v14[2] = sub_100187344;
   v14[3] = &unk_10036A058;
-  v15 = v4;
-  v11 = v4;
+  v15 = descriptorCopy;
+  v11 = descriptorCopy;
   v12 = [(GKAcceptedInviteManager *)self _fetchAndRemoveBulletinFromArray:v10 passingTest:v14];
 
   return v12;
 }
 
-- (id)turnBasedInviteForGame:(id)a3
+- (id)turnBasedInviteForGame:(id)game
 {
-  v4 = a3;
+  gameCopy = game;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -511,15 +511,15 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "GKAcceptedInviteManager turnBasedInviteForGame:", v10, 2u);
   }
 
-  v7 = [[GKGameDescriptor alloc] initWithDictionary:v4];
+  v7 = [[GKGameDescriptor alloc] initWithDictionary:gameCopy];
   v8 = [(GKAcceptedInviteManager *)self turnBasedInviteForGameDescriptor:v7];
 
   return v8;
 }
 
-- (id)turnBasedInviteForGameDescriptor:(id)a3
+- (id)turnBasedInviteForGameDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -537,8 +537,8 @@
   v11[1] = 3221225472;
   v11[2] = sub_100187554;
   v11[3] = &unk_10036A0A8;
-  v12 = v4;
-  v8 = v4;
+  v12 = descriptorCopy;
+  v8 = descriptorCopy;
   v9 = [(GKAcceptedInviteManager *)self _fetchAndRemoveBulletinFromArray:acceptedTurnBased passingTest:v11];
 
   return v9;

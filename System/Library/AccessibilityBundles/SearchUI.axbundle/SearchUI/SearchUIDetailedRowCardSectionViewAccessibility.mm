@@ -1,5 +1,5 @@
 @interface SearchUIDetailedRowCardSectionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)_axGetToggleSwitch;
 - (id)accessibilityLabel;
@@ -10,16 +10,16 @@
 
 @implementation SearchUIDetailedRowCardSectionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SearchUIDetailedView" hasInstanceMethod:@"detailsView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SearchUIDetailedView" hasInstanceMethod:@"innerContainer" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TLKAuxilliaryTextView"];
-  [v3 validateClass:@"SearchUIDetailedRowCardSectionView" isKindOfClass:@"SearchUICardSectionView"];
-  [v3 validateClass:@"SearchUICardSectionView" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SearchUIDetailedRowCardSectionView" hasInstanceMethod:@"updateWithRowModel:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SearchUIButtonItemView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SearchUIDetailedView" hasInstanceMethod:@"detailsView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SearchUIDetailedView" hasInstanceMethod:@"innerContainer" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TLKAuxilliaryTextView"];
+  [validationsCopy validateClass:@"SearchUIDetailedRowCardSectionView" isKindOfClass:@"SearchUICardSectionView"];
+  [validationsCopy validateClass:@"SearchUICardSectionView" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SearchUIDetailedRowCardSectionView" hasInstanceMethod:@"updateWithRowModel:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SearchUIButtonItemView"];
 }
 
 uint64_t __89__SearchUIDetailedRowCardSectionViewAccessibility__accessibilitySupplementaryFooterViews__block_invoke(uint64_t a1, void *a2)
@@ -125,8 +125,8 @@ uint64_t __89__SearchUIDetailedRowCardSectionViewAccessibility__accessibilitySup
   v7 = [v6 safeUIViewForKey:@"detailsView"];
 
   v8 = [(SearchUIDetailedRowCardSectionViewAccessibility *)self _accessibilityValueForKey:*MEMORY[0x29EDB8F18]];
-  v9 = [v7 accessibilityLabel];
-  v10 = [v7 accessibilityValue];
+  accessibilityLabel = [v7 accessibilityLabel];
+  accessibilityValue = [v7 accessibilityValue];
   v13 = MEMORY[0x29ED341C0](v5);
   v11 = __UIAXStringForVariables();
 
@@ -144,32 +144,32 @@ uint64_t __69__SearchUIDetailedRowCardSectionViewAccessibility_accessibilityLabe
 
 - (id)accessibilityValue
 {
-  v3 = [(SearchUIDetailedRowCardSectionViewAccessibility *)self _axGetToggleSwitch];
-  v4 = v3;
-  if (v3)
+  _axGetToggleSwitch = [(SearchUIDetailedRowCardSectionViewAccessibility *)self _axGetToggleSwitch];
+  v4 = _axGetToggleSwitch;
+  if (_axGetToggleSwitch)
   {
-    v5 = [v3 accessibilityValue];
+    accessibilityValue = [_axGetToggleSwitch accessibilityValue];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SearchUIDetailedRowCardSectionViewAccessibility;
-    v5 = [(SearchUIDetailedRowCardSectionViewAccessibility *)&v8 accessibilityValue];
+    accessibilityValue = [(SearchUIDetailedRowCardSectionViewAccessibility *)&v8 accessibilityValue];
   }
 
-  v6 = v5;
+  v6 = accessibilityValue;
 
   return v6;
 }
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v3 = [(SearchUIDetailedRowCardSectionViewAccessibility *)self _axGetToggleSwitch];
-  v4 = v3;
-  if (v3)
+  _axGetToggleSwitch = [(SearchUIDetailedRowCardSectionViewAccessibility *)self _axGetToggleSwitch];
+  v4 = _axGetToggleSwitch;
+  if (_axGetToggleSwitch)
   {
-    [v3 accessibilityActivationPoint];
+    [_axGetToggleSwitch accessibilityActivationPoint];
   }
 
   else
@@ -191,9 +191,9 @@ uint64_t __69__SearchUIDetailedRowCardSectionViewAccessibility_accessibilityLabe
 
 - (unint64_t)accessibilityTraits
 {
-  v3 = [(SearchUIDetailedRowCardSectionViewAccessibility *)self _axGetToggleSwitch];
+  _axGetToggleSwitch = [(SearchUIDetailedRowCardSectionViewAccessibility *)self _axGetToggleSwitch];
 
-  if (v3)
+  if (_axGetToggleSwitch)
   {
     return *MEMORY[0x29EDC7FE8];
   }
@@ -210,11 +210,11 @@ uint64_t __69__SearchUIDetailedRowCardSectionViewAccessibility_accessibilityLabe
   v3 = [v2 safeUIViewForKey:@"detailsView"];
 
   v13[0] = @"Title";
-  v4 = [v3 accessibilityLabel];
-  v5 = v4;
-  if (v4)
+  accessibilityLabel = [v3 accessibilityLabel];
+  v5 = accessibilityLabel;
+  if (accessibilityLabel)
   {
-    v6 = v4;
+    v6 = accessibilityLabel;
   }
 
   else
@@ -224,11 +224,11 @@ uint64_t __69__SearchUIDetailedRowCardSectionViewAccessibility_accessibilityLabe
 
   v13[1] = @"Subtitle";
   v14[0] = v6;
-  v7 = [v3 accessibilityValue];
-  v8 = v7;
-  if (v7)
+  accessibilityValue = [v3 accessibilityValue];
+  v8 = accessibilityValue;
+  if (accessibilityValue)
   {
-    v9 = v7;
+    v9 = accessibilityValue;
   }
 
   else

@@ -1,18 +1,18 @@
 @interface PUPickerExtensionContext
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
-+ (void)setAllowedClassesForExtensionAuxiliaryHostInterface:(id)a3;
++ (void)setAllowedClassesForExtensionAuxiliaryHostInterface:(id)interface;
 @end
 
 @implementation PUPickerExtensionContext
 
-+ (void)setAllowedClassesForExtensionAuxiliaryHostInterface:(id)a3
++ (void)setAllowedClassesForExtensionAuxiliaryHostInterface:(id)interface
 {
   v3 = MEMORY[0x1E695DFD8];
-  v4 = a3;
+  interfaceCopy = interface;
   v5 = objc_opt_class();
   v6 = [v3 setWithObjects:{v5, objc_opt_class(), 0}];
-  [v4 setClasses:v6 forSelector:sel__pickerDidFinishPicking_action_error_ argumentIndex:0 ofReply:0];
+  [interfaceCopy setClasses:v6 forSelector:sel__pickerDidFinishPicking_action_error_ argumentIndex:0 ofReply:0];
 }
 
 + (id)_extensionAuxiliaryHostProtocol
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __59__PUPickerExtensionContext__extensionAuxiliaryHostProtocol__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_extensionAuxiliaryHostProtocol_onceToken_859 != -1)
   {
     dispatch_once(&_extensionAuxiliaryHostProtocol_onceToken_859, block);

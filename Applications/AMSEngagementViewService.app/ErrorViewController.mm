@@ -1,6 +1,6 @@
 @interface ErrorViewController
 - (UINavigationItem)navigationItem;
-- (_TtC24AMSEngagementViewService19ErrorViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC24AMSEngagementViewService19ErrorViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -10,7 +10,7 @@
 
 - (UINavigationItem)navigationItem
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100005CF8();
 
   return v3;
@@ -18,30 +18,30 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_100005D98();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100005E70();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100005EF0();
 }
 
-- (_TtC24AMSEngagementViewService19ErrorViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC24AMSEngagementViewService19ErrorViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_10000654C();
 }
 

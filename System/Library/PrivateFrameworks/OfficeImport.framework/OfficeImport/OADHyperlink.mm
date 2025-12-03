@@ -1,5 +1,5 @@
 @interface OADHyperlink
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (OADHyperlink)init;
 - (id)description;
 - (unint64_t)hash;
@@ -29,23 +29,23 @@
   return v3 ^ v4 ^ [(NSString *)self->mTooltip hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     mTargetLocation = self->mTargetLocation;
-    v6 = [v4 targetLocation];
-    if (-[NSURL isEqual:](mTargetLocation, "isEqual:", v6) && (mTargetMode = self->mTargetMode, mTargetMode == [v4 targetMode]))
+    targetLocation = [equalCopy targetLocation];
+    if (-[NSURL isEqual:](mTargetLocation, "isEqual:", targetLocation) && (mTargetMode = self->mTargetMode, mTargetMode == [equalCopy targetMode]))
     {
       mAction = self->mAction;
-      v9 = [v4 action];
-      if ([(NSString *)mAction isEqualToString:v9])
+      action = [equalCopy action];
+      if ([(NSString *)mAction isEqualToString:action])
       {
         mTooltip = self->mTooltip;
-        v11 = [v4 tooltip];
-        v12 = [(NSString *)mTooltip isEqualToString:v11];
+        tooltip = [equalCopy tooltip];
+        v12 = [(NSString *)mTooltip isEqualToString:tooltip];
       }
 
       else

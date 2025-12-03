@@ -1,18 +1,18 @@
 @interface VCPHandGestureImageRequest
-+ (BOOL)heuristicHeart:(id)a3 andRightHand:(id)a4 rotationInDegrees:(int)a5 relax:(BOOL)a6;
-+ (BOOL)heuristicIsIndexMiddleTooClose:(id)a3 rotationInDegrees:(int)a4;
-+ (BOOL)heuristicIsThumbOpenWide:(id)a3 rotationInDegrees:(int)a4 isRelaxed:(BOOL)a5;
-+ (BOOL)isFistClosedTight:(id)a3 rotationInDegrees:(int)a4 scalingFactor:(float)a5;
-+ (BOOL)isFistClosedTightOccluded:(id)a3 rotationInDegrees:(int)a4 scalingFactor:(float)a5 palmScale:(float)a6;
-+ (float)tiltingAngleForHand:(id)a3 srcKeypointType:(int)a4 dstKeypointType:(int)a5 rotationInDegrees:(int)a6;
-+ (unint64_t)heuristicFingerOpenness:(id)a3 rotationInDegrees:(int)a4;
++ (BOOL)heuristicHeart:(id)heart andRightHand:(id)hand rotationInDegrees:(int)degrees relax:(BOOL)relax;
++ (BOOL)heuristicIsIndexMiddleTooClose:(id)close rotationInDegrees:(int)degrees;
++ (BOOL)heuristicIsThumbOpenWide:(id)wide rotationInDegrees:(int)degrees isRelaxed:(BOOL)relaxed;
++ (BOOL)isFistClosedTight:(id)tight rotationInDegrees:(int)degrees scalingFactor:(float)factor;
++ (BOOL)isFistClosedTightOccluded:(id)occluded rotationInDegrees:(int)degrees scalingFactor:(float)factor palmScale:(float)scale;
++ (float)tiltingAngleForHand:(id)hand srcKeypointType:(int)type dstKeypointType:(int)keypointType rotationInDegrees:(int)degrees;
++ (unint64_t)heuristicFingerOpenness:(id)openness rotationInDegrees:(int)degrees;
 - (VCPHandGestureImageRequest)init;
-- (VCPHandGestureImageRequest)initWithOptions:(id)a3;
-- (id)processImage:(__CVBuffer *)a3 withOptions:(id)a4 error:(id *)a5;
+- (VCPHandGestureImageRequest)initWithOptions:(id)options;
+- (id)processImage:(__CVBuffer *)image withOptions:(id)options error:(id *)error;
 - (id)taxonomyMappingStatic;
-- (int)heuristicThumb:(id)a3 rotationInDegrees:(int)a4;
-- (void)processImage:(__CVBuffer *)a3 withOptions:(id)a4 completion:(id)a5;
-- (void)updateWithOptions:(id)a3 completion:(id)a4;
+- (int)heuristicThumb:(id)thumb rotationInDegrees:(int)degrees;
+- (void)processImage:(__CVBuffer *)image withOptions:(id)options completion:(id)completion;
+- (void)updateWithOptions:(id)options completion:(id)completion;
 @end
 
 @implementation VCPHandGestureImageRequest
@@ -28,9 +28,9 @@
   return 0;
 }
 
-- (VCPHandGestureImageRequest)initWithOptions:(id)a3
+- (VCPHandGestureImageRequest)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = VCPSignPostLog();
   v6 = os_signpost_id_generate(v5);
 
@@ -44,11 +44,11 @@
 
   v23.receiver = self;
   v23.super_class = VCPHandGestureImageRequest;
-  v9 = [(VCPRequest *)&v23 initWithOptions:v4];
+  v9 = [(VCPRequest *)&v23 initWithOptions:optionsCopy];
   if (v9)
   {
-    v10 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v4];
-    v11 = [v4 objectForKeyedSubscript:@"handPoseLite"];
+    v10 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:optionsCopy];
+    v11 = [optionsCopy objectForKeyedSubscript:@"handPoseLite"];
 
     if (!v11)
     {
@@ -118,22 +118,22 @@ LABEL_17:
   return v2;
 }
 
-- (int)heuristicThumb:(id)a3 rotationInDegrees:(int)a4
+- (int)heuristicThumb:(id)thumb rotationInDegrees:(int)degrees
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 keypoints];
-  v7 = [v6 objectAtIndexedSubscript:5];
+  thumbCopy = thumb;
+  keypoints = [thumbCopy keypoints];
+  v7 = [keypoints objectAtIndexedSubscript:5];
 
-  v8 = [v5 keypoints];
-  v9 = [v8 objectAtIndexedSubscript:13];
+  keypoints2 = [thumbCopy keypoints];
+  v9 = [keypoints2 objectAtIndexedSubscript:13];
 
   [v7 location];
-  transformLocation(v24, 0, a4);
+  transformLocation(v24, 0, degrees);
   v11 = v10;
   v13 = v12;
   [v9 location];
-  transformLocation(v25, 0, a4);
+  transformLocation(v25, 0, degrees);
   v16 = atan2(v11 - v14, v13 - v15);
   v17 = v16 * 180.0 / 3.14159265;
   v18 = fabsf(v17);
@@ -165,32 +165,32 @@ LABEL_17:
   return v19;
 }
 
-+ (BOOL)heuristicIsThumbOpenWide:(id)a3 rotationInDegrees:(int)a4 isRelaxed:(BOOL)a5
++ (BOOL)heuristicIsThumbOpenWide:(id)wide rotationInDegrees:(int)degrees isRelaxed:(BOOL)relaxed
 {
-  v5 = a5;
+  relaxedCopy = relaxed;
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
-  if (v7 && ([v7 bounds], v9 > 0.0))
+  wideCopy = wide;
+  v8 = wideCopy;
+  if (wideCopy && ([wideCopy bounds], v9 > 0.0))
   {
-    v10 = [v8 keypoints];
-    v11 = v10;
-    if (!v10)
+    keypoints = [v8 keypoints];
+    v11 = keypoints;
+    if (!keypoints)
     {
       goto LABEL_15;
     }
 
-    v12 = [v10 objectAtIndexedSubscript:4];
-    v13 = keyPointPosition(v12, a4);
+    v12 = [keypoints objectAtIndexedSubscript:4];
+    v13 = keyPointPosition(v12, degrees);
 
     v14 = [v11 objectAtIndexedSubscript:3];
-    v15 = keyPointPosition(v14, a4);
+    v15 = keyPointPosition(v14, degrees);
 
     v16 = [v11 objectAtIndexedSubscript:5];
-    v17 = keyPointPosition(v16, a4);
+    v17 = keyPointPosition(v16, degrees);
 
     v18 = [v11 objectAtIndexedSubscript:13];
-    v19 = keyPointPosition(v18, a4);
+    v19 = keyPointPosition(v18, degrees);
 
     v20 = vsub_f32(*&v13, *&v15);
     LODWORD(v13) = atan2f(v20.f32[1], v20.f32[0]);
@@ -198,9 +198,9 @@ LABEL_17:
     v22 = fabsf(*&v13 - atan2f(v21.f32[1], v21.f32[0]));
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
-      v23 = [v8 chirality];
+      chirality = [v8 chirality];
       v24 = "right";
-      if (v23 == -1)
+      if (chirality == -1)
       {
         v24 = "left";
       }
@@ -212,7 +212,7 @@ LABEL_17:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "VCPHandGestureImageRequest : %s, thumbPalmLineAngle %f", &v28, 0x16u);
     }
 
-    v25 = v5 ? 1.03672562 : 0.785398163;
+    v25 = relaxedCopy ? 1.03672562 : 0.785398163;
     if (v22 < v25)
     {
       v26 = 1;
@@ -233,22 +233,22 @@ LABEL_15:
   return v26;
 }
 
-+ (BOOL)heuristicIsIndexMiddleTooClose:(id)a3 rotationInDegrees:(int)a4
++ (BOOL)heuristicIsIndexMiddleTooClose:(id)close rotationInDegrees:(int)degrees
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (v5 && ([v5 bounds], v7 > 0.0))
+  closeCopy = close;
+  v6 = closeCopy;
+  if (closeCopy && ([closeCopy bounds], v7 > 0.0))
   {
-    v8 = [v6 keypoints];
-    v9 = v8;
-    if (v8 && ([v8 objectAtIndexedSubscript:8], v10 = objc_claimAutoreleasedReturnValue(), v11 = keyPointPosition(v10, a4), v10, objc_msgSend(v9, "objectAtIndexedSubscript:", 12), v12 = objc_claimAutoreleasedReturnValue(), v13 = keyPointPosition(v12, a4), v12, objc_msgSend(v9, "objectAtIndexedSubscript:", 5), v14 = objc_claimAutoreleasedReturnValue(), v15 = keyPointPosition(v14, a4), v14, objc_msgSend(v9, "objectAtIndexedSubscript:", 9), v16 = objc_claimAutoreleasedReturnValue(), v17 = keyPointPosition(v16, a4), v16, v18 = vsub_f32(*&v11, *&v13), v19 = vmul_f32(v18, v18), v20 = vsub_f32(*&v15, *&v17), v21 = vmul_f32(v20, v20), v22 = vsqrt_f32(vadd_f32(vzip1_s32(v19, v21), vzip2_s32(v19, v21))), (vcgt_f32(vdup_lane_s32(v22, 1), v22).u8[0] & 1) != 0))
+    keypoints = [v6 keypoints];
+    v9 = keypoints;
+    if (keypoints && ([keypoints objectAtIndexedSubscript:8], v10 = objc_claimAutoreleasedReturnValue(), v11 = keyPointPosition(v10, degrees), v10, objc_msgSend(v9, "objectAtIndexedSubscript:", 12), v12 = objc_claimAutoreleasedReturnValue(), v13 = keyPointPosition(v12, degrees), v12, objc_msgSend(v9, "objectAtIndexedSubscript:", 5), v14 = objc_claimAutoreleasedReturnValue(), v15 = keyPointPosition(v14, degrees), v14, objc_msgSend(v9, "objectAtIndexedSubscript:", 9), v16 = objc_claimAutoreleasedReturnValue(), v17 = keyPointPosition(v16, degrees), v16, v18 = vsub_f32(*&v11, *&v13), v19 = vmul_f32(v18, v18), v20 = vsub_f32(*&v15, *&v17), v21 = vmul_f32(v20, v20), v22 = vsqrt_f32(vadd_f32(vzip1_s32(v19, v21), vzip2_s32(v19, v21))), (vcgt_f32(vdup_lane_s32(v22, 1), v22).u8[0] & 1) != 0))
     {
       if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
       {
-        v23 = [v6 chirality];
+        chirality = [v6 chirality];
         v24 = "right";
-        if (v23 == -1)
+        if (chirality == -1)
         {
           v24 = "left";
         }
@@ -275,18 +275,18 @@ LABEL_15:
   return v25;
 }
 
-+ (float)tiltingAngleForHand:(id)a3 srcKeypointType:(int)a4 dstKeypointType:(int)a5 rotationInDegrees:(int)a6
++ (float)tiltingAngleForHand:(id)hand srcKeypointType:(int)type dstKeypointType:(int)keypointType rotationInDegrees:(int)degrees
 {
-  v9 = a3;
-  v10 = v9;
-  if (v9 && ([v9 keypoints], v11 = objc_claimAutoreleasedReturnValue(), v11, a5 <= 20) && a4 <= 20 && ((a5 | a4) & 0x80000000) == 0 && v11)
+  handCopy = hand;
+  v10 = handCopy;
+  if (handCopy && ([handCopy keypoints], v11 = objc_claimAutoreleasedReturnValue(), v11, keypointType <= 20) && type <= 20 && ((keypointType | type) & 0x80000000) == 0 && v11)
   {
-    v12 = [v10 keypoints];
-    v13 = [v12 objectAtIndexedSubscript:a4];
-    v14 = keyPointPosition(v13, a6);
+    keypoints = [v10 keypoints];
+    v13 = [keypoints objectAtIndexedSubscript:type];
+    v14 = keyPointPosition(v13, degrees);
 
-    v15 = [v12 objectAtIndexedSubscript:a5];
-    v16 = keyPointPosition(v15, a6);
+    v15 = [keypoints objectAtIndexedSubscript:keypointType];
+    v16 = keyPointPosition(v15, degrees);
 
     v17 = vsub_f32(*&v16, *&v14);
     v18 = fabsf(atan2f(fabsf(v17.f32[1]), fabsf(v17.f32[0])));
@@ -305,28 +305,28 @@ LABEL_15:
   return v18;
 }
 
-+ (BOOL)isFistClosedTight:(id)a3 rotationInDegrees:(int)a4 scalingFactor:(float)a5
++ (BOOL)isFistClosedTight:(id)tight rotationInDegrees:(int)degrees scalingFactor:(float)factor
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
-  if (v7 && ([v7 keypoints], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
+  tightCopy = tight;
+  v8 = tightCopy;
+  if (tightCopy && ([tightCopy keypoints], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
   {
-    v10 = [v8 keypoints];
-    v11 = [v10 objectAtIndexedSubscript:8];
-    v12 = keyPointPosition(v11, a4);
+    keypoints = [v8 keypoints];
+    v11 = [keypoints objectAtIndexedSubscript:8];
+    v12 = keyPointPosition(v11, degrees);
 
-    v13 = [v10 objectAtIndexedSubscript:2];
-    v14 = keyPointPosition(v13, a4);
+    v13 = [keypoints objectAtIndexedSubscript:2];
+    v14 = keyPointPosition(v13, degrees);
 
-    v15 = [v10 objectAtIndexedSubscript:4];
-    v16 = keyPointPosition(v15, a4);
+    v15 = [keypoints objectAtIndexedSubscript:4];
+    v16 = keyPointPosition(v15, degrees);
 
     v17 = vsub_f32(*&v12, *&v14);
     v18 = sqrtf(vaddv_f32(vmul_f32(v17, v17)));
     v19 = vsub_f32(*&v12, *&v16);
     v20 = sqrtf(vaddv_f32(vmul_f32(v19, v19)));
-    v21 = v20 * a5;
+    v21 = v20 * factor;
     v22 = v18 < v21;
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
@@ -354,30 +354,30 @@ LABEL_15:
   return v22;
 }
 
-+ (BOOL)isFistClosedTightOccluded:(id)a3 rotationInDegrees:(int)a4 scalingFactor:(float)a5 palmScale:(float)a6
++ (BOOL)isFistClosedTightOccluded:(id)occluded rotationInDegrees:(int)degrees scalingFactor:(float)factor palmScale:(float)scale
 {
   v28 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = v9;
-  if (v9 && ([v9 keypoints], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
+  occludedCopy = occluded;
+  v10 = occludedCopy;
+  if (occludedCopy && ([occludedCopy keypoints], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
   {
-    v12 = [v10 keypoints];
-    v13 = [v12 objectAtIndexedSubscript:8];
-    v14 = keyPointPosition(v13, a4);
+    keypoints = [v10 keypoints];
+    v13 = [keypoints objectAtIndexedSubscript:8];
+    v14 = keyPointPosition(v13, degrees);
 
-    v15 = [v12 objectAtIndexedSubscript:2];
-    v16 = keyPointPosition(v15, a4);
+    v15 = [keypoints objectAtIndexedSubscript:2];
+    v16 = keyPointPosition(v15, degrees);
 
     v17 = vsub_f32(*&v14, *&v16);
     v18 = sqrtf(vaddv_f32(vmul_f32(v17, v17)));
-    v19 = a5 * a6;
+    v19 = factor * scale;
     v20 = v18 < v19;
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
       v22 = 134218496;
       v23 = v18;
       v24 = 2048;
-      v25 = a6;
+      scaleCopy = scale;
       v26 = 1024;
       v27 = v18 < v19;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "isFistClosedTight: distanceIndexCloseToThumb %f, palmScale %f, isTight %d", &v22, 0x1Cu);
@@ -398,61 +398,61 @@ LABEL_15:
   return v20;
 }
 
-+ (unint64_t)heuristicFingerOpenness:(id)a3 rotationInDegrees:(int)a4
++ (unint64_t)heuristicFingerOpenness:(id)openness rotationInDegrees:(int)degrees
 {
   v64 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (v5 && ([v5 bounds], v7 > 0.0))
+  opennessCopy = openness;
+  v6 = opennessCopy;
+  if (opennessCopy && ([opennessCopy bounds], v7 > 0.0))
   {
-    v8 = [v6 keypoints];
-    v9 = v8;
-    if (v8)
+    keypoints = [v6 keypoints];
+    v9 = keypoints;
+    if (keypoints)
     {
-      v10 = [v8 objectAtIndexedSubscript:4];
-      v11 = keyPointPosition(v10, a4);
+      v10 = [keypoints objectAtIndexedSubscript:4];
+      v11 = keyPointPosition(v10, degrees);
 
       v12 = [v9 objectAtIndexedSubscript:2];
-      v45 = keyPointPosition(v12, a4);
+      v45 = keyPointPosition(v12, degrees);
 
       v13 = [v9 objectAtIndexedSubscript:8];
-      v14 = keyPointPosition(v13, a4);
+      v14 = keyPointPosition(v13, degrees);
 
       v15 = [v9 objectAtIndexedSubscript:6];
-      v53 = keyPointPosition(v15, a4);
+      v53 = keyPointPosition(v15, degrees);
 
       v16 = [v9 objectAtIndexedSubscript:5];
-      v52 = keyPointPosition(v16, a4);
+      v52 = keyPointPosition(v16, degrees);
 
       v17 = [v9 objectAtIndexedSubscript:12];
-      v18 = keyPointPosition(v17, a4);
+      v18 = keyPointPosition(v17, degrees);
 
       v19 = [v9 objectAtIndexedSubscript:10];
-      v51 = keyPointPosition(v19, a4);
+      v51 = keyPointPosition(v19, degrees);
 
       v20 = [v9 objectAtIndexedSubscript:9];
-      v50 = keyPointPosition(v20, a4);
+      v50 = keyPointPosition(v20, degrees);
 
       v21 = [v9 objectAtIndexedSubscript:16];
-      v22 = keyPointPosition(v21, a4);
+      v22 = keyPointPosition(v21, degrees);
 
       v23 = [v9 objectAtIndexedSubscript:14];
-      v49 = keyPointPosition(v23, a4);
+      v49 = keyPointPosition(v23, degrees);
 
       v24 = [v9 objectAtIndexedSubscript:13];
-      v48 = keyPointPosition(v24, a4);
+      v48 = keyPointPosition(v24, degrees);
 
       v25 = [v9 objectAtIndexedSubscript:20];
-      v26 = keyPointPosition(v25, a4);
+      v26 = keyPointPosition(v25, degrees);
 
       v27 = [v9 objectAtIndexedSubscript:18];
-      v47 = keyPointPosition(v27, a4);
+      v47 = keyPointPosition(v27, degrees);
 
       v28 = [v9 objectAtIndexedSubscript:17];
-      v46 = keyPointPosition(v28, a4);
+      v46 = keyPointPosition(v28, degrees);
 
       v29 = [v9 objectAtIndexedSubscript:0];
-      v55 = keyPointPosition(v29, a4);
+      v55 = keyPointPosition(v29, degrees);
 
       v30 = vsub_f32(*&v53, *&v14);
       LODWORD(v14) = atan2f(v30.f32[1], v30.f32[0]);
@@ -499,10 +499,10 @@ LABEL_15:
       v41 = v36 | v40;
       if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
       {
-        v42 = [v6 chirality];
+        chirality = [v6 chirality];
         v43 = "right";
         *buf = 136315650;
-        if (v42 == -1)
+        if (chirality == -1)
         {
           v43 = "left";
         }
@@ -530,84 +530,84 @@ LABEL_15:
   return v41;
 }
 
-+ (BOOL)heuristicHeart:(id)a3 andRightHand:(id)a4 rotationInDegrees:(int)a5 relax:(BOOL)a6
++ (BOOL)heuristicHeart:(id)heart andRightHand:(id)hand rotationInDegrees:(int)degrees relax:(BOOL)relax
 {
-  v6 = a6;
+  relaxCopy = relax;
   v121[3] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
+  heartCopy = heart;
+  handCopy = hand;
+  v11 = handCopy;
   v12 = 0;
-  if (v9 && v10)
+  if (heartCopy && handCopy)
   {
-    v13 = [v9 keypoints];
-    v14 = [v13 objectAtIndexedSubscript:4];
-    v112 = COERCE_FLOAT32X2_T(keyPointPosition(v14, a5));
+    keypoints = [heartCopy keypoints];
+    v14 = [keypoints objectAtIndexedSubscript:4];
+    v112 = COERCE_FLOAT32X2_T(keyPointPosition(v14, degrees));
 
-    v15 = [v13 objectAtIndexedSubscript:2];
-    v100 = COERCE_FLOAT32X2_T(keyPointPosition(v15, a5));
+    v15 = [keypoints objectAtIndexedSubscript:2];
+    v100 = COERCE_FLOAT32X2_T(keyPointPosition(v15, degrees));
 
-    v16 = [v13 objectAtIndexedSubscript:8];
-    v110 = keyPointPosition(v16, a5);
+    v16 = [keypoints objectAtIndexedSubscript:8];
+    v110 = keyPointPosition(v16, degrees);
 
-    v17 = [v13 objectAtIndexedSubscript:6];
-    v104 = keyPointPosition(v17, a5);
+    v17 = [keypoints objectAtIndexedSubscript:6];
+    v104 = keyPointPosition(v17, degrees);
 
-    v18 = [v13 objectAtIndexedSubscript:12];
-    v109 = COERCE_FLOAT32X2_T(keyPointPosition(v18, a5));
+    v18 = [keypoints objectAtIndexedSubscript:12];
+    v109 = COERCE_FLOAT32X2_T(keyPointPosition(v18, degrees));
 
-    v19 = [v13 objectAtIndexedSubscript:10];
-    v103 = keyPointPosition(v19, a5);
+    v19 = [keypoints objectAtIndexedSubscript:10];
+    v103 = keyPointPosition(v19, degrees);
 
-    v20 = [v13 objectAtIndexedSubscript:16];
-    v107 = keyPointPosition(v20, a5);
+    v20 = [keypoints objectAtIndexedSubscript:16];
+    v107 = keyPointPosition(v20, degrees);
 
-    v21 = [v13 objectAtIndexedSubscript:14];
-    v102 = keyPointPosition(v21, a5);
+    v21 = [keypoints objectAtIndexedSubscript:14];
+    v102 = keyPointPosition(v21, degrees);
 
-    v22 = [v13 objectAtIndexedSubscript:20];
-    v97 = keyPointPosition(v22, a5);
+    v22 = [keypoints objectAtIndexedSubscript:20];
+    v97 = keyPointPosition(v22, degrees);
 
-    v23 = [v13 objectAtIndexedSubscript:18];
-    v24 = keyPointPosition(v23, a5);
+    v23 = [keypoints objectAtIndexedSubscript:18];
+    v24 = keyPointPosition(v23, degrees);
     v96 = *(&v24 + 1);
 
-    v25 = [v13 objectAtIndexedSubscript:0];
-    v26 = keyPointPosition(v25, a5);
+    v25 = [keypoints objectAtIndexedSubscript:0];
+    v26 = keyPointPosition(v25, degrees);
 
-    v27 = [v11 keypoints];
-    v28 = [v27 objectAtIndexedSubscript:4];
-    v114 = COERCE_INT32X2_T(keyPointPosition(v28, a5));
+    keypoints2 = [v11 keypoints];
+    v28 = [keypoints2 objectAtIndexedSubscript:4];
+    v114 = COERCE_INT32X2_T(keyPointPosition(v28, degrees));
 
-    v29 = [v27 objectAtIndexedSubscript:2];
-    v99 = COERCE_FLOAT32X2_T(keyPointPosition(v29, a5));
+    v29 = [keypoints2 objectAtIndexedSubscript:2];
+    v99 = COERCE_FLOAT32X2_T(keyPointPosition(v29, degrees));
 
-    v30 = [v27 objectAtIndexedSubscript:8];
-    v113 = keyPointPosition(v30, a5);
+    v30 = [keypoints2 objectAtIndexedSubscript:8];
+    v113 = keyPointPosition(v30, degrees);
 
-    v31 = [v27 objectAtIndexedSubscript:6];
-    v106 = keyPointPosition(v31, a5);
+    v31 = [keypoints2 objectAtIndexedSubscript:6];
+    v106 = keyPointPosition(v31, degrees);
 
-    v32 = [v27 objectAtIndexedSubscript:12];
-    v111 = COERCE_FLOAT32X2_T(keyPointPosition(v32, a5));
+    v32 = [keypoints2 objectAtIndexedSubscript:12];
+    v111 = COERCE_FLOAT32X2_T(keyPointPosition(v32, degrees));
 
-    v33 = [v27 objectAtIndexedSubscript:10];
-    v105 = keyPointPosition(v33, a5);
+    v33 = [keypoints2 objectAtIndexedSubscript:10];
+    v105 = keyPointPosition(v33, degrees);
 
-    v34 = [v27 objectAtIndexedSubscript:16];
-    v108 = keyPointPosition(v34, a5);
+    v34 = [keypoints2 objectAtIndexedSubscript:16];
+    v108 = keyPointPosition(v34, degrees);
 
-    v35 = [v27 objectAtIndexedSubscript:14];
-    v101 = keyPointPosition(v35, a5);
+    v35 = [keypoints2 objectAtIndexedSubscript:14];
+    v101 = keyPointPosition(v35, degrees);
 
-    v36 = [v27 objectAtIndexedSubscript:20];
-    v98 = keyPointPosition(v36, a5);
+    v36 = [keypoints2 objectAtIndexedSubscript:20];
+    v98 = keyPointPosition(v36, degrees);
 
-    v37 = [v27 objectAtIndexedSubscript:18];
-    v94 = keyPointPosition(v37, a5);
+    v37 = [keypoints2 objectAtIndexedSubscript:18];
+    v94 = keyPointPosition(v37, degrees);
 
-    v38 = [v27 objectAtIndexedSubscript:{0, *&v94}];
-    v39 = keyPointPosition(v38, a5);
+    v38 = [keypoints2 objectAtIndexedSubscript:{0, *&v94}];
+    v39 = keyPointPosition(v38, degrees);
 
     *v40.f32 = vzip1_s32(v112, v100);
     *v41.f32 = vzip1_s32(v109, *&v103);
@@ -619,9 +619,9 @@ LABEL_15:
     v43.i64[1] = __PAIR64__(LODWORD(v101), LODWORD(v108));
     if ((vmaxvq_u8(vuzp1q_s8(vuzp1q_s16(vcltzq_f32(v40), vcltzq_f32(v41)), vuzp1q_s16(vcltzq_f32(v42), vcltzq_f32(v43)))) & 1) == 0)
     {
-      [v9 bounds];
+      [heartCopy bounds];
       v46 = v45;
-      [v9 bounds];
+      [heartCopy bounds];
       v48 = 0;
       if (v46 >= v47)
       {
@@ -706,7 +706,7 @@ LABEL_15:
       v68 = vsub_f32(v50, v56);
       v69 = sqrtf(vaddv_f32(vmul_f32(v68, v68)));
       v70 = v58 * 0.1;
-      if (v6)
+      if (relaxCopy)
       {
         v71 = vsub_f32(v59, v61);
         v72 = sqrtf(vaddv_f32(vmul_f32(v71, v71)));
@@ -793,10 +793,10 @@ LABEL_5:
   return v12;
 }
 
-- (id)processImage:(__CVBuffer *)a3 withOptions:(id)a4 error:(id *)a5
+- (id)processImage:(__CVBuffer *)image withOptions:(id)options error:(id *)error
 {
   v146 = *MEMORY[0x1E69E9840];
-  v94 = a4;
+  optionsCopy = options;
   v6 = VCPSignPostLog();
   v7 = os_signpost_id_generate(v6);
 
@@ -810,8 +810,8 @@ LABEL_5:
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v9, OS_SIGNPOST_INTERVAL_BEGIN, v7, "VCPHandGestureImageRequest_processImage", "", buf, 2u);
   }
 
-  v91 = [(VCPHandPoseImageRequest *)self->handPoseRequest processImage:a3 withOptions:v94 error:a5];
-  RotationInDegrees = getRotationInDegrees(v94);
+  v91 = [(VCPHandPoseImageRequest *)self->handPoseRequest processImage:image withOptions:optionsCopy error:error];
+  RotationInDegrees = getRotationInDegrees(optionsCopy);
   maxNumOfPersons = self->super._maxNumOfPersons;
   if (maxNumOfPersons >= 3)
   {
@@ -824,8 +824,8 @@ LABEL_5:
   }
 
   v99 = maxNumOfPersons;
-  v106 = [MEMORY[0x1E695DF70] array];
-  v11 = [MEMORY[0x1E695DF90] dictionary];
+  array = [MEMORY[0x1E695DF70] array];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v130 = 0u;
   v131 = 0u;
   v128 = 0u;
@@ -846,20 +846,20 @@ LABEL_5:
 
         v15 = *(*(&v128 + 1) + 8 * i);
         v16 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v15, "groupID")}];
-        v17 = [v11 objectForKeyedSubscript:v16];
+        v17 = [dictionary objectForKeyedSubscript:v16];
         v18 = v17 == 0;
 
         if (v18)
         {
           v19 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v15, 0}];
           v20 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v15, "groupID")}];
-          [v11 setObject:v19 forKeyedSubscript:v20];
+          [dictionary setObject:v19 forKeyedSubscript:v20];
         }
 
         else
         {
           v19 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v15, "groupID")}];
-          v20 = [v11 objectForKeyedSubscript:v19];
+          v20 = [dictionary objectForKeyedSubscript:v19];
           [v20 addObject:v15];
         }
       }
@@ -870,8 +870,8 @@ LABEL_5:
     while (v12);
   }
 
-  v21 = [v11 allKeys];
-  v22 = [v21 count];
+  allKeys = [dictionary allKeys];
+  v22 = [allKeys count];
   v23 = v99;
   if (v99 >= v22)
   {
@@ -880,13 +880,13 @@ LABEL_5:
 
   v93 = v23;
 
-  v105 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v126 = 0u;
   v127 = 0u;
   v124 = 0u;
   v125 = 0u;
-  v102 = [v11 allKeys];
-  v24 = [v102 countByEnumeratingWithState:&v124 objects:v144 count:16];
+  allKeys2 = [dictionary allKeys];
+  v24 = [allKeys2 countByEnumeratingWithState:&v124 objects:v144 count:16];
   if (v24)
   {
     v25 = *v125;
@@ -896,11 +896,11 @@ LABEL_5:
       {
         if (*v125 != v25)
         {
-          objc_enumerationMutation(v102);
+          objc_enumerationMutation(allKeys2);
         }
 
         v27 = *(*(&v124 + 1) + 8 * j);
-        v28 = [v11 objectForKeyedSubscript:v27];
+        v28 = [dictionary objectForKeyedSubscript:v27];
         if ([v28 count])
         {
           v122 = 0u;
@@ -938,17 +938,17 @@ LABEL_5:
 
           *&v34 = v32 / [v29 count];
           v35 = [MEMORY[0x1E696AD98] numberWithFloat:v34];
-          [v105 setObject:v35 forKeyedSubscript:v27];
+          [dictionary2 setObject:v35 forKeyedSubscript:v27];
         }
       }
 
-      v24 = [v102 countByEnumeratingWithState:&v124 objects:v144 count:16];
+      v24 = [allKeys2 countByEnumeratingWithState:&v124 objects:v144 count:16];
     }
 
     while (v24);
   }
 
-  v36 = [v105 keysSortedByValueUsingComparator:&__block_literal_global_34];
+  v36 = [dictionary2 keysSortedByValueUsingComparator:&__block_literal_global_34];
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
@@ -972,7 +972,7 @@ LABEL_5:
 
     v40 = [v36 objectAtIndexedSubscript:v37];
     v90 = v37;
-    v41 = [v11 objectForKeyedSubscript:v40];
+    v41 = [dictionary objectForKeyedSubscript:v40];
 
     v118 = 0u;
     v119 = 0u;
@@ -1009,8 +1009,8 @@ LABEL_5:
           goto LABEL_113;
         }
 
-        v46 = [(VCPCoreMLRequest *)self->gestureCoreMLRequest model];
-        v103 = [v46 predictionFromFeatures:v45 error:a5];
+        model = [(VCPCoreMLRequest *)self->gestureCoreMLRequest model];
+        v103 = [model predictionFromFeatures:v45 error:error];
 
         if (!v103)
         {
@@ -1024,11 +1024,11 @@ LABEL_5:
         }
 
         v47 = [v103 featureValueForName:@"output"];
-        v48 = [v47 multiArrayValue];
-        v49 = v48;
-        v50 = [v48 dataPointer];
+        multiArrayValue = [v47 multiArrayValue];
+        v49 = multiArrayValue;
+        dataPointer = [multiArrayValue dataPointer];
 
-        if (!v50)
+        if (!dataPointer)
         {
           if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -1040,14 +1040,14 @@ LABEL_5:
 LABEL_112:
 
 LABEL_113:
-          if (a5)
+          if (error)
           {
             v81 = MEMORY[0x1E696ABC0];
             v132 = *MEMORY[0x1E696A578];
             v82 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error: failed to processImage"];
             v133 = v82;
             v83 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v133 forKeys:&v132 count:1];
-            *a5 = [v81 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v83];
+            *error = [v81 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v83];
           }
 
           v84 = 0;
@@ -1055,8 +1055,8 @@ LABEL_113:
           goto LABEL_116;
         }
 
-        v51 = [v47 multiArrayValue];
-        v52 = [v51 count] == 12;
+        multiArrayValue2 = [v47 multiArrayValue];
+        v52 = [multiArrayValue2 count] == 12;
 
         if (!v52)
         {
@@ -1076,31 +1076,31 @@ LABEL_111:
         v55 = 0.0;
         while (1)
         {
-          v56 = [v47 multiArrayValue];
-          v57 = [v56 count] > v53;
+          multiArrayValue3 = [v47 multiArrayValue];
+          v57 = [multiArrayValue3 count] > v53;
 
           if (!v57)
           {
             break;
           }
 
-          if (*(v50 + 4 * v53) <= v55)
+          if (*(dataPointer + 4 * v53) <= v55)
           {
             v54 = v54;
           }
 
           else
           {
-            v55 = *(v50 + 4 * v53);
+            v55 = *(dataPointer + 4 * v53);
             v54 = v53;
           }
 
           ++v53;
         }
 
-        v58 = [(VCPHandGestureImageRequest *)self taxonomyMappingStatic];
+        taxonomyMappingStatic = [(VCPHandGestureImageRequest *)self taxonomyMappingStatic];
         v59 = [MEMORY[0x1E696AD98] numberWithInt:v54];
-        v60 = [v58 objectForKeyedSubscript:v59];
+        v60 = [taxonomyMappingStatic objectForKeyedSubscript:v59];
         [v44 setGestureType:{objc_msgSend(v60, "intValue")}];
 
         if ([v44 gestureType] == 9)
@@ -1255,7 +1255,7 @@ LABEL_90:
             objc_enumerationMutation(v76);
           }
 
-          [v106 addObject:*(*(&v108 + 1) + 8 * ii)];
+          [array addObject:*(*(&v108 + 1) + 8 * ii)];
         }
 
         v77 = [v76 countByEnumeratingWithState:&v108 objects:v134 count:16];
@@ -1275,16 +1275,16 @@ LABEL_90:
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v87, OS_SIGNPOST_INTERVAL_END, spid, "VCPHandGestureImageRequest_processImage", "", buf, 2u);
   }
 
-  v84 = v106;
+  v84 = array;
 LABEL_116:
 
   return v84;
 }
 
-- (void)updateWithOptions:(id)a3 completion:(id)a4
+- (void)updateWithOptions:(id)options completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   queue = self->_queue;
   if (queue)
   {
@@ -1293,8 +1293,8 @@ LABEL_116:
     block[2] = __59__VCPHandGestureImageRequest_updateWithOptions_completion___block_invoke;
     block[3] = &unk_1E834DBD8;
     block[4] = self;
-    v12 = v6;
-    v13 = v7;
+    v12 = optionsCopy;
+    v13 = completionCopy;
     dispatch_async(queue, block);
   }
 
@@ -1307,7 +1307,7 @@ LABEL_116:
     }
 
     v9 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:0];
-    (*(v7 + 2))(v7, v9);
+    (*(completionCopy + 2))(completionCopy, v9);
   }
 }
 
@@ -1331,16 +1331,16 @@ void __59__VCPHandGestureImageRequest_updateWithOptions_completion___block_invok
   }
 }
 
-- (void)processImage:(__CVBuffer *)a3 withOptions:(id)a4 completion:(id)a5
+- (void)processImage:(__CVBuffer *)image withOptions:(id)options completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  optionsCopy = options;
+  completionCopy = completion;
   if (self->_queue)
   {
     *buf = 0;
     v17 = buf;
     v18 = 0x2020000000;
-    v19 = CFRetain(a3);
+    v19 = CFRetain(image);
     queue = self->_queue;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
@@ -1348,8 +1348,8 @@ void __59__VCPHandGestureImageRequest_updateWithOptions_completion___block_invok
     v12[3] = &unk_1E834DF90;
     v12[4] = self;
     v15 = buf;
-    v13 = v8;
-    v14 = v9;
+    v13 = optionsCopy;
+    v14 = completionCopy;
     dispatch_async(queue, v12);
 
     _Block_object_dispose(buf, 8);
@@ -1364,7 +1364,7 @@ void __59__VCPHandGestureImageRequest_updateWithOptions_completion___block_invok
     }
 
     v11 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:0];
-    (*(v9 + 2))(v9, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, v11);
   }
 }
 

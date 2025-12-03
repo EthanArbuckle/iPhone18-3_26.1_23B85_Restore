@@ -7,13 +7,13 @@
 
 - (void)tintColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1891F7824();
 }
 
 - (void)reduceTransparencyDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1891F869C();
 }
 

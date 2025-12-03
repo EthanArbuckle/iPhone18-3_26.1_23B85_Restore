@@ -7,7 +7,7 @@
 
 + (id)button
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   if (v2)
   {
     v3 = [PGLayerHostView alloc];
@@ -17,8 +17,8 @@
     v2[51] = v4;
 
     [v2[51] setUserInteractionEnabled:0];
-    v6 = [v2[51] layer];
-    [v6 setAllowsHitTesting:0];
+    layer = [v2[51] layer];
+    [layer setAllowsHitTesting:0];
 
     [v2 insertSubview:v2[51] atIndex:0];
     [v2 setClipsToBounds:1];

@@ -1,14 +1,14 @@
 @interface _WKSmartCardSlotObserver
 - (WTF::StringImpl)observeValueForKeyPath:(WTF::StringImpl *)result ofObject:change:context:;
-- (_WKSmartCardSlotObserver)initWithService:(void *)a3;
-- (uint64_t)observeValueForKeyPath:(WTF *)this ofObject:(void *)a2 change:context:;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)observeValueForKeyPath:(void *)a1 ofObject:(void *)a2 change:context:;
+- (_WKSmartCardSlotObserver)initWithService:(void *)service;
+- (uint64_t)observeValueForKeyPath:(WTF *)this ofObject:(void *)object change:context:;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)observeValueForKeyPath:(void *)path ofObject:(void *)object change:context:;
 @end
 
 @implementation _WKSmartCardSlotObserver
 
-- (_WKSmartCardSlotObserver)initWithService:(void *)a3
+- (_WKSmartCardSlotObserver)initWithService:(void *)service
 {
   v10.receiver = self;
   v10.super_class = _WKSmartCardSlotObserver;
@@ -16,8 +16,8 @@
   v6 = v4;
   if (v4)
   {
-    v7 = *a3;
-    *a3 = 0;
+    v7 = *service;
+    *service = 0;
     m_ptr = v4->m_service.m_impl.m_ptr;
     v6->m_service.m_impl.m_ptr = v7;
     if (m_ptr)
@@ -33,7 +33,7 @@
   return v6;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   m_ptr = self->m_service.m_impl.m_ptr;
   if (m_ptr)
@@ -41,15 +41,15 @@
     atomic_fetch_add(m_ptr, 1u);
   }
 
-  if (a5)
+  if (change)
   {
-    v8 = a5;
+    changeCopy = change;
   }
 
   v9 = WTF::fastMalloc(0x18);
   *v9 = &unk_1F110B8F8;
   v9[1] = m_ptr;
-  v9[2] = a5;
+  v9[2] = change;
   v10 = v9;
   WTF::callOnMainRunLoop();
   if (v10)
@@ -58,27 +58,27 @@
   }
 }
 
-- (void)observeValueForKeyPath:(void *)a1 ofObject:(void *)a2 change:context:
+- (void)observeValueForKeyPath:(void *)path ofObject:(void *)object change:context:
 {
-  *a1 = &unk_1F110B8F8;
-  v3 = a1[2];
-  a1[2] = 0;
+  *path = &unk_1F110B8F8;
+  v3 = path[2];
+  path[2] = 0;
   if (v3)
   {
   }
 
-  v4 = a1[1];
-  a1[1] = 0;
+  v4 = path[1];
+  path[1] = 0;
   if (v4 && atomic_fetch_add(v4, 0xFFFFFFFF) == 1)
   {
     atomic_store(1u, v4);
-    WTF::fastFree(v4, a2);
+    WTF::fastFree(v4, object);
   }
 
-  return a1;
+  return path;
 }
 
-- (uint64_t)observeValueForKeyPath:(WTF *)this ofObject:(void *)a2 change:context:
+- (uint64_t)observeValueForKeyPath:(WTF *)this ofObject:(void *)object change:context:
 {
   *this = &unk_1F110B8F8;
   v3 = *(this + 2);
@@ -92,10 +92,10 @@
   if (v4 && atomic_fetch_add(v4, 0xFFFFFFFF) == 1)
   {
     atomic_store(1u, v4);
-    WTF::fastFree(v4, a2);
+    WTF::fastFree(v4, object);
   }
 
-  return WTF::fastFree(this, a2);
+  return WTF::fastFree(this, object);
 }
 
 - (WTF::StringImpl)observeValueForKeyPath:(WTF::StringImpl *)result ofObject:change:context:
@@ -144,7 +144,7 @@
 
         if (v12 == v10)
         {
-          v13 = [MEMORY[0x1E69666E8] defaultManager];
+          defaultManager = [MEMORY[0x1E69666E8] defaultManager];
           ++*(v2 + 24);
           v14 = v49;
           if (v49)
@@ -160,7 +160,7 @@
           v15[4] = v2;
           v15[5] = v2;
           v15[6] = v14;
-          [v13 getSlotWithName:v7 reply:v15];
+          [defaultManager getSlotWithName:v7 reply:v15];
           _Block_release(v15);
         }
 

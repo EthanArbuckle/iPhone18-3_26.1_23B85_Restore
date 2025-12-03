@@ -1,22 +1,22 @@
 @interface INObject
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)setValue:(id)a3 forProperty:(id)a4;
-- (INObject)initWithCoder:(id)a3;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)setValue:(id)value forProperty:(id)property;
+- (INObject)initWithCoder:(id)coder;
 - (INObject)initWithIdentifier:(NSString *)identifier displayString:(NSString *)displayString pronunciationHint:(NSString *)pronunciationHint;
 - (INObject)initWithIdentifier:(NSString *)identifier displayString:(NSString *)displayString pronunciationHint:(NSString *)pronunciationHint subtitleString:(NSString *)subtitleString displayImage:(INImage *)displayImage;
 - (INObject)initWithIdentifier:(NSString *)identifier displayString:(NSString *)displayString subtitleString:(NSString *)subtitleString displayImage:(INImage *)displayImage;
 - (NSMutableDictionary)_valueForKeyDictionary;
 - (id)_dictionaryRepresentation;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)_intents_localizedCopyWithLocalizer:(id)a3;
-- (id)_intents_readableSubtitleWithLocalizer:(id)a3 metadata:(id)a4;
-- (id)_intents_readableTitleWithLocalizer:(id)a3 metadata:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
-- (id)valueForProperty:(id)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)_intents_localizedCopyWithLocalizer:(id)localizer;
+- (id)_intents_readableSubtitleWithLocalizer:(id)localizer metadata:(id)metadata;
+- (id)_intents_readableTitleWithLocalizer:(id)localizer metadata:(id)metadata;
+- (id)descriptionAtIndent:(unint64_t)indent;
+- (id)valueForProperty:(id)property;
 - (unint64_t)hash;
-- (void)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (void)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (void)encodeWithCoder:(id)coder;
 - (void)setAlternativeSpeakableMatches:(NSArray *)alternativeSpeakableMatches;
 @end
 
@@ -66,8 +66,8 @@
 
             else
             {
-              v12 = [MEMORY[0x1E695DFB0] null];
-              [v3 setObject:v12 forKeyedSubscript:v10];
+              null = [MEMORY[0x1E695DFB0] null];
+              [v3 setObject:null forKeyedSubscript:v10];
             }
           }
         }
@@ -79,52 +79,52 @@
 
   v31[0] = @"identifier";
   identifier = self->_identifier;
-  v14 = identifier;
+  null2 = identifier;
   if (!identifier)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29 = v14;
-  v32[0] = v14;
+  v29 = null2;
+  v32[0] = null2;
   v31[1] = @"displayString";
   displayString = self->_displayString;
-  v16 = displayString;
+  null3 = displayString;
   if (!displayString)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
   v17 = v3;
-  v27 = v16;
-  v32[1] = v16;
+  v27 = null3;
+  v32[1] = null3;
   v31[2] = @"pronunciationHint";
   pronunciationHint = self->_pronunciationHint;
-  v19 = pronunciationHint;
+  null4 = pronunciationHint;
   if (!pronunciationHint)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32[2] = v19;
+  v32[2] = null4;
   v31[3] = @"alternativeSpeakableMatches";
   alternativeSpeakableMatches = self->_alternativeSpeakableMatches;
-  v21 = alternativeSpeakableMatches;
+  null5 = alternativeSpeakableMatches;
   if (!alternativeSpeakableMatches)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32[3] = v21;
+  v32[3] = null5;
   v31[4] = @"subtitleString";
   subtitleString = self->_subtitleString;
-  v23 = subtitleString;
+  null6 = subtitleString;
   if (!subtitleString)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32[4] = v23;
+  v32[4] = null6;
   v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:{5, v27}];
   [v17 addEntriesFromDictionary:v24];
 
@@ -190,98 +190,98 @@ LABEL_30:
   return v17;
 }
 
-- (id)_intents_localizedCopyWithLocalizer:(id)a3
+- (id)_intents_localizedCopyWithLocalizer:(id)localizer
 {
-  v4 = a3;
+  localizerCopy = localizer;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(INObject *)self identifier];
-  v7 = [(INObject *)self displayString];
-  v8 = [v4 languageCode];
-  v9 = [v7 localizeForLanguage:v8];
-  v10 = [(INObject *)self pronunciationHint];
-  v11 = [v4 languageCode];
+  identifier = [(INObject *)self identifier];
+  displayString = [(INObject *)self displayString];
+  languageCode = [localizerCopy languageCode];
+  v9 = [displayString localizeForLanguage:languageCode];
+  pronunciationHint = [(INObject *)self pronunciationHint];
+  languageCode2 = [localizerCopy languageCode];
 
-  v12 = [v10 localizeForLanguage:v11];
-  v13 = [v5 initWithIdentifier:v6 displayString:v9 pronunciationHint:v12];
+  v12 = [pronunciationHint localizeForLanguage:languageCode2];
+  v13 = [v5 initWithIdentifier:identifier displayString:v9 pronunciationHint:v12];
 
   return v13;
 }
 
-- (id)_intents_readableSubtitleWithLocalizer:(id)a3 metadata:(id)a4
+- (id)_intents_readableSubtitleWithLocalizer:(id)localizer metadata:(id)metadata
 {
-  v5 = a3;
-  v6 = [(INObject *)self subtitleString];
-  v7 = [v5 languageCode];
+  localizerCopy = localizer;
+  subtitleString = [(INObject *)self subtitleString];
+  languageCode = [localizerCopy languageCode];
 
-  v8 = [v6 localizeForLanguage:v7];
+  v8 = [subtitleString localizeForLanguage:languageCode];
 
   return v8;
 }
 
-- (id)_intents_readableTitleWithLocalizer:(id)a3 metadata:(id)a4
+- (id)_intents_readableTitleWithLocalizer:(id)localizer metadata:(id)metadata
 {
-  v5 = a3;
-  v6 = [(INObject *)self displayString];
-  v7 = [v5 languageCode];
+  localizerCopy = localizer;
+  displayString = [(INObject *)self displayString];
+  languageCode = [localizerCopy languageCode];
 
-  v8 = [v6 localizeForLanguage:v7];
+  v8 = [displayString localizeForLanguage:languageCode];
 
   return v8;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INObject;
   v6 = [(INObject *)&v11 description];
-  v7 = [(INObject *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INObject *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF90] dictionary];
-  v9 = [v6 encodeObject:self->_identifier];
-  [v8 if_setObjectIfNonNil:v9 forKey:@"identifier"];
+  encoderCopy = encoder;
+  descriptionCopy = description;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v9 = [encoderCopy encodeObject:self->_identifier];
+  [dictionary if_setObjectIfNonNil:v9 forKey:@"identifier"];
 
-  v10 = [v6 encodeObject:self->_displayString];
-  [v8 if_setObjectIfNonNil:v10 forKey:@"displayString"];
+  v10 = [encoderCopy encodeObject:self->_displayString];
+  [dictionary if_setObjectIfNonNil:v10 forKey:@"displayString"];
 
-  v11 = [v6 encodeObject:self->_pronunciationHint];
-  [v8 if_setObjectIfNonNil:v11 forKey:@"pronunciationHint"];
+  v11 = [encoderCopy encodeObject:self->_pronunciationHint];
+  [dictionary if_setObjectIfNonNil:v11 forKey:@"pronunciationHint"];
 
-  v12 = [v6 encodeObject:self->_alternativeSpeakableMatches];
-  [v8 if_setObjectIfNonNil:v12 forKey:@"alternativeSpeakableMatches"];
+  v12 = [encoderCopy encodeObject:self->_alternativeSpeakableMatches];
+  [dictionary if_setObjectIfNonNil:v12 forKey:@"alternativeSpeakableMatches"];
 
-  v13 = [v6 encodeObject:self->_subtitleString];
-  [v8 if_setObjectIfNonNil:v13 forKey:@"subtitleString"];
+  v13 = [encoderCopy encodeObject:self->_subtitleString];
+  [dictionary if_setObjectIfNonNil:v13 forKey:@"subtitleString"];
 
-  v14 = [v6 encodeObject:self->_subtitleString];
-  [v8 if_setObjectIfNonNil:v14 forKey:@"descriptionString"];
+  v14 = [encoderCopy encodeObject:self->_subtitleString];
+  [dictionary if_setObjectIfNonNil:v14 forKey:@"descriptionString"];
 
-  v15 = self;
-  v16 = v6;
-  v17 = [v6 encodeObject:self->_displayImage];
-  v18 = v8;
-  [v8 if_setObjectIfNonNil:v17 forKey:@"displayImage"];
+  selfCopy = self;
+  v16 = encoderCopy;
+  v17 = [encoderCopy encodeObject:self->_displayImage];
+  v18 = dictionary;
+  [dictionary if_setObjectIfNonNil:v17 forKey:@"displayImage"];
 
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v33 = v7;
-  v19 = [v7 attributes];
-  v20 = [v19 allValues];
+  v33 = descriptionCopy;
+  attributes = [descriptionCopy attributes];
+  allValues = [attributes allValues];
 
-  obj = v20;
-  v21 = [v20 countByEnumeratingWithState:&v35 objects:v39 count:16];
+  obj = allValues;
+  v21 = [allValues countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v21)
   {
     v22 = v21;
@@ -296,11 +296,11 @@ LABEL_30:
         }
 
         v25 = *(*(&v35 + 1) + 8 * i);
-        v26 = [v25 propertyName];
-        v27 = [(INObject *)v15 valueForUndefinedKey:v26];
+        propertyName = [v25 propertyName];
+        v27 = [(INObject *)selfCopy valueForUndefinedKey:propertyName];
         v28 = [v16 encodeObject:v27 withCodableAttribute:v25];
-        v29 = [v25 propertyName];
-        [v18 if_setObjectIfNonNil:v28 forKey:v29];
+        propertyName2 = [v25 propertyName];
+        [v18 if_setObjectIfNonNil:v28 forKey:propertyName2];
       }
 
       v22 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
@@ -309,42 +309,42 @@ LABEL_30:
     while (v22);
   }
 
-  v30 = [v33 semanticRoot];
-  [v18 if_setObjectIfNonNil:v30 forKey:@"_type"];
+  semanticRoot = [v33 semanticRoot];
+  [v18 if_setObjectIfNonNil:semanticRoot forKey:@"_type"];
 
   v31 = *MEMORY[0x1E69E9840];
 
   return v18;
 }
 
-- (void)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
+- (void)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
   v48 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  decoderCopy = decoder;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v9 = objc_opt_class();
-    v10 = [v8 objectForKeyedSubscript:@"identifier"];
-    v11 = [v7 decodeObjectOfClass:v9 from:v10];
+    v10 = [fromCopy objectForKeyedSubscript:@"identifier"];
+    v11 = [decoderCopy decodeObjectOfClass:v9 from:v10];
     identifier = self->_identifier;
     self->_identifier = v11;
 
     v13 = objc_opt_class();
-    v14 = [v8 objectForKeyedSubscript:@"displayString"];
-    v15 = [v7 decodeObjectOfClass:v13 from:v14];
+    v14 = [fromCopy objectForKeyedSubscript:@"displayString"];
+    v15 = [decoderCopy decodeObjectOfClass:v13 from:v14];
     displayString = self->_displayString;
     self->_displayString = v15;
 
     v17 = objc_opt_class();
-    v18 = [v8 objectForKeyedSubscript:@"pronunciationHint"];
-    v19 = [v7 decodeObjectOfClass:v17 from:v18];
+    v18 = [fromCopy objectForKeyedSubscript:@"pronunciationHint"];
+    v19 = [decoderCopy decodeObjectOfClass:v17 from:v18];
     pronunciationHint = self->_pronunciationHint;
     self->_pronunciationHint = v19;
 
     v21 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v22 = [v8 objectForKeyedSubscript:@"alternativeSpeakableMatches"];
+    v22 = [fromCopy objectForKeyedSubscript:@"alternativeSpeakableMatches"];
     if (v22)
     {
       objc_opt_class();
@@ -385,7 +385,7 @@ LABEL_30:
             objc_enumerationMutation(v25);
           }
 
-          v30 = [v7 decodeObjectOfClass:objc_opt_class() from:{*(*(&v43 + 1) + 8 * i), v43}];
+          v30 = [decoderCopy decodeObjectOfClass:objc_opt_class() from:{*(*(&v43 + 1) + 8 * i), v43}];
           [v21 if_addObjectIfNonNil:v30];
         }
 
@@ -400,14 +400,14 @@ LABEL_30:
     self->_alternativeSpeakableMatches = v31;
 
     v33 = objc_opt_class();
-    v34 = [v8 objectForKeyedSubscript:@"subtitleString"];
+    v34 = [fromCopy objectForKeyedSubscript:@"subtitleString"];
     v35 = v34;
     if (!v34)
     {
-      v35 = [v8 objectForKeyedSubscript:@"descriptionString"];
+      v35 = [fromCopy objectForKeyedSubscript:@"descriptionString"];
     }
 
-    v36 = [v7 decodeObjectOfClass:v33 from:{v35, v43}];
+    v36 = [decoderCopy decodeObjectOfClass:v33 from:{v35, v43}];
     subtitleString = self->_subtitleString;
     self->_subtitleString = v36;
 
@@ -416,8 +416,8 @@ LABEL_30:
     }
 
     v38 = objc_opt_class();
-    v39 = [v8 objectForKeyedSubscript:@"displayImage"];
-    v40 = [v7 decodeObjectOfClass:v38 from:v39];
+    v39 = [fromCopy objectForKeyedSubscript:@"displayImage"];
+    v40 = [decoderCopy decodeObjectOfClass:v38 from:v39];
     displayImage = self->_displayImage;
     self->_displayImage = v40;
   }
@@ -425,10 +425,10 @@ LABEL_30:
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)setValue:(id)a3 forProperty:(id)a4
+- (BOOL)setValue:(id)value forProperty:(id)property
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  propertyCopy = property;
   os_unfair_lock_lock(&self->_lock);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -436,31 +436,31 @@ LABEL_30:
   v13[3] = &unk_1E72882F8;
   v13[4] = self;
   v8 = MEMORY[0x193AD7780](v13);
-  if (v7)
+  if (propertyCopy)
   {
-    v9 = [v7 if_stringByLowercasingFirstCharacter];
+    if_stringByLowercasingFirstCharacter = [propertyCopy if_stringByLowercasingFirstCharacter];
 
-    v10 = [(INObject *)self _valueForKeyDictionary];
-    v11 = v10;
-    if (v6)
+    _valueForKeyDictionary = [(INObject *)self _valueForKeyDictionary];
+    v11 = _valueForKeyDictionary;
+    if (valueCopy)
     {
-      [v10 setObject:v6 forKeyedSubscript:v9];
+      [_valueForKeyDictionary setObject:valueCopy forKeyedSubscript:if_stringByLowercasingFirstCharacter];
     }
 
     else
     {
-      [v10 removeObjectForKey:v9];
+      [_valueForKeyDictionary removeObjectForKey:if_stringByLowercasingFirstCharacter];
     }
   }
 
   v8[2](v8);
 
-  return v7 != 0;
+  return propertyCopy != 0;
 }
 
-- (id)valueForProperty:(id)a3
+- (id)valueForProperty:(id)property
 {
-  v4 = a3;
+  propertyCopy = property;
   os_unfair_lock_lock(&self->_lock);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -468,11 +468,11 @@ LABEL_30:
   v10[3] = &unk_1E72882F8;
   v10[4] = self;
   v5 = MEMORY[0x193AD7780](v10);
-  v6 = [(INObject *)self _valueForKeyDictionary];
-  if (v4)
+  _valueForKeyDictionary = [(INObject *)self _valueForKeyDictionary];
+  if (propertyCopy)
   {
-    v7 = [v4 if_stringByLowercasingFirstCharacter];
-    v8 = [v6 objectForKeyedSubscript:v7];
+    if_stringByLowercasingFirstCharacter = [propertyCopy if_stringByLowercasingFirstCharacter];
+    v8 = [_valueForKeyDictionary objectForKeyedSubscript:if_stringByLowercasingFirstCharacter];
   }
 
   else
@@ -485,16 +485,16 @@ LABEL_30:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 encodeObject:self->_identifier forKey:@"identifier"];
-  [v4 encodeObject:self->_displayString forKey:@"displayString"];
-  [v4 encodeObject:self->_pronunciationHint forKey:@"pronunciationHint"];
-  [v4 encodeObject:self->_alternativeSpeakableMatches forKey:@"alternativeSpeakableMatches"];
-  [v4 encodeObject:self->_subtitleString forKey:@"subtitleString"];
-  [v4 encodeObject:self->_displayImage forKey:@"displayImage"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_displayString forKey:@"displayString"];
+  [coderCopy encodeObject:self->_pronunciationHint forKey:@"pronunciationHint"];
+  [coderCopy encodeObject:self->_alternativeSpeakableMatches forKey:@"alternativeSpeakableMatches"];
+  [coderCopy encodeObject:self->_subtitleString forKey:@"subtitleString"];
+  [coderCopy encodeObject:self->_displayImage forKey:@"displayImage"];
   v5 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v6 = [INSchema _defaultSchemaForBundle:v5];
 
@@ -503,10 +503,10 @@ LABEL_30:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [v7 attributes];
-  v9 = [v8 allValues];
+  attributes = [v7 attributes];
+  allValues = [attributes allValues];
 
-  v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v10 = [allValues countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -518,21 +518,21 @@ LABEL_30:
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allValues);
         }
 
-        v14 = [*(*(&v17 + 1) + 8 * v13) propertyName];
-        v15 = [(INObject *)self valueForProperty:v14];
+        propertyName = [*(*(&v17 + 1) + 8 * v13) propertyName];
+        v15 = [(INObject *)self valueForProperty:propertyName];
         if (v15)
         {
-          [v4 encodeObject:v15 forKey:v14];
+          [coderCopy encodeObject:v15 forKey:propertyName];
         }
 
         ++v13;
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v11 = [allValues countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v11);
@@ -541,25 +541,25 @@ LABEL_30:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (INObject)initWithCoder:(id)a3
+- (INObject)initWithCoder:(id)coder
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"displayString"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"displayString"];
 
   v10 = MEMORY[0x1E695DFD8];
   v11 = objc_opt_class();
   v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-  v13 = [v4 decodeObjectOfClasses:v12 forKey:@"pronunciationHint"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"pronunciationHint"];
 
   v14 = MEMORY[0x1E695DFD8];
   v15 = objc_opt_class();
   v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
-  v17 = [v4 decodeObjectOfClasses:v16 forKey:@"alternativeSpeakableMatches"];
+  v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"alternativeSpeakableMatches"];
 
   v18 = [(INObject *)self initWithIdentifier:v5 displayString:v9 pronunciationHint:v13];
   v19 = v18;
@@ -572,11 +572,11 @@ LABEL_30:
     v20 = MEMORY[0x1E695DFD8];
     v21 = objc_opt_class();
     v22 = [v20 setWithObjects:{v21, objc_opt_class(), 0}];
-    v23 = [v4 decodeObjectOfClasses:v22 forKey:@"subtitleString"];
+    v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"subtitleString"];
     subtitleString = v19->_subtitleString;
     v19->_subtitleString = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayImage"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayImage"];
     displayImage = v19->_displayImage;
     v19->_displayImage = v25;
 
@@ -589,10 +589,10 @@ LABEL_30:
     v47 = 0u;
     v48 = 0u;
     v41 = v49 = 0u;
-    v29 = [v41 attributes];
-    v30 = [v29 allValues];
+    attributes = [v41 attributes];
+    allValues = [attributes allValues];
 
-    v31 = [v30 countByEnumeratingWithState:&v46 objects:v50 count:16];
+    v31 = [allValues countByEnumeratingWithState:&v46 objects:v50 count:16];
     if (v31)
     {
       v32 = v31;
@@ -603,18 +603,18 @@ LABEL_30:
         {
           if (*v47 != v33)
           {
-            objc_enumerationMutation(v30);
+            objc_enumerationMutation(allValues);
           }
 
           v35 = *(*(&v46 + 1) + 8 * i);
-          v36 = [v35 propertyName];
+          propertyName = [v35 propertyName];
           v37 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), objc_msgSend(v35, "_unsafeObjectClass"), 0}];
-          v38 = [v4 decodeObjectOfClasses:v37 forKey:v36];
+          v38 = [coderCopy decodeObjectOfClasses:v37 forKey:propertyName];
 
-          [(INObject *)v19 setValue:v38 forProperty:v36];
+          [(INObject *)v19 setValue:v38 forProperty:propertyName];
         }
 
-        v32 = [v30 countByEnumeratingWithState:&v46 objects:v50 count:16];
+        v32 = [allValues countByEnumeratingWithState:&v46 objects:v50 count:16];
       }
 
       while (v32);
@@ -629,10 +629,10 @@ LABEL_30:
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -642,7 +642,7 @@ LABEL_30:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       identifier = self->_identifier;
       v11 = 0;
       if (identifier == v5->_identifier || [(NSString *)identifier isEqual:?])
@@ -711,15 +711,15 @@ LABEL_30:
           }
 
           v11 = *(*(&v23 + 1) + 8 * i);
-          v12 = [v11 spokenPhrase];
+          spokenPhrase = [v11 spokenPhrase];
 
-          if (v12)
+          if (spokenPhrase)
           {
             v13 = [INSpeakableString alloc];
-            v14 = [(INObject *)self identifier];
-            v15 = [v11 spokenPhrase];
-            v16 = [v11 pronunciationHint];
-            v17 = [(INSpeakableString *)v13 initWithVocabularyIdentifier:v14 spokenPhrase:v15 pronunciationHint:v16];
+            identifier = [(INObject *)self identifier];
+            spokenPhrase2 = [v11 spokenPhrase];
+            pronunciationHint = [v11 pronunciationHint];
+            v17 = [(INSpeakableString *)v13 initWithVocabularyIdentifier:identifier spokenPhrase:spokenPhrase2 pronunciationHint:pronunciationHint];
 
             [v5 addObject:v17];
           }
@@ -809,16 +809,16 @@ LABEL_30:
   return v11;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  decoderCopy = decoder;
+  descriptionCopy = description;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [[a1 alloc] initWithIdentifier:0 displayString:&stru_1F01E0850];
-    [v11 _intents_decodeWithJSONDecoder:v8 codableDescription:v9 from:v10];
+    v11 = [[self alloc] initWithIdentifier:0 displayString:&stru_1F01E0850];
+    [v11 _intents_decodeWithJSONDecoder:decoderCopy codableDescription:descriptionCopy from:fromCopy];
   }
 
   else

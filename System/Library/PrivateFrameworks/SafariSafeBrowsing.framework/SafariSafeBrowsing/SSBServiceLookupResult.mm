@@ -6,14 +6,14 @@
 - (NSString)provider;
 - (NSString)reportAnErrorBaseURLString;
 - (NSURL)learnMoreURL;
-- (SSBServiceLookupResult)initWithCoder:(id)a3;
-- (id)_initWithLookupResult:(LookupResult)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SSBServiceLookupResult)initWithCoder:(id)coder;
+- (id)_initWithLookupResult:(LookupResult)result;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SSBServiceLookupResult
 
-- (id)_initWithLookupResult:(LookupResult)a3
+- (id)_initWithLookupResult:(LookupResult)result
 {
   v8.receiver = self;
   v8.super_class = SSBServiceLookupResult;
@@ -21,34 +21,34 @@
   v5 = v4;
   if (v4)
   {
-    v4->_lookupResult = a3;
+    v4->_lookupResult = result;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (SSBServiceLookupResult)initWithCoder:(id)a3
+- (SSBServiceLookupResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SSBServiceLookupResult;
   v5 = [(SSBServiceLookupResult *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeInt64ForKey:@"type"];
-    v5->_lookupResult = (v6 | ([v4 decodeInt64ForKey:@"provider"] << 32));
+    v6 = [coderCopy decodeInt64ForKey:@"type"];
+    v5->_lookupResult = (v6 | ([coderCopy decodeInt64ForKey:@"provider"] << 32));
     v7 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:self->_lookupResult.type.m_storage forKey:@"type"];
-  [v4 encodeInt64:self->_lookupResult.provider forKey:@"provider"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:self->_lookupResult.type.m_storage forKey:@"type"];
+  [coderCopy encodeInt64:self->_lookupResult.provider forKey:@"provider"];
 }
 
 - (BOOL)isKnownToBeUnsafe

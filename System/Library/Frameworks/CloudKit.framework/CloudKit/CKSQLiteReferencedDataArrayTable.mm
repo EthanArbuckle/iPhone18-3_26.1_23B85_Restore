@@ -1,22 +1,22 @@
 @interface CKSQLiteReferencedDataArrayTable
-- (id)addData:(id)a3 toReferencedDataArray:(id)a4;
-- (id)collectionWithElementsFromEntryEnumerator:(id)a3;
-- (id)referentForDatabaseReferenceValue:(id)a3 error:(id *)a4;
-- (void)enumerateCollection:(id)a3 block:(id)a4;
+- (id)addData:(id)data toReferencedDataArray:(id)array;
+- (id)collectionWithElementsFromEntryEnumerator:(id)enumerator;
+- (id)referentForDatabaseReferenceValue:(id)value error:(id *)error;
+- (void)enumerateCollection:(id)collection block:(id)block;
 @end
 
 @implementation CKSQLiteReferencedDataArrayTable
 
-- (id)collectionWithElementsFromEntryEnumerator:(id)a3
+- (id)collectionWithElementsFromEntryEnumerator:(id)enumerator
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  enumeratorCopy = enumerator;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = enumeratorCopy;
   v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v17, v21, 16);
   if (v7)
   {
@@ -46,11 +46,11 @@
   return v4;
 }
 
-- (void)enumerateCollection:(id)a3 block:(id)a4
+- (void)enumerateCollection:(id)collection block:(id)block
 {
-  v5 = a3;
-  v6 = a4;
-  if (objc_msgSend_count(v5, v7, v8))
+  collectionCopy = collection;
+  blockCopy = block;
+  if (objc_msgSend_count(collectionCopy, v7, v8))
   {
     v9 = objc_alloc_init(CKSQLiteReferencedDataArrayValueEntry);
     v13[0] = MEMORY[0x1E69E9820];
@@ -58,35 +58,35 @@
     v13[2] = sub_18867FBC8;
     v13[3] = &unk_1E70C0D90;
     v14 = v9;
-    v15 = v6;
+    v15 = blockCopy;
     v10 = v9;
-    objc_msgSend_enumerateObjectsUsingBlock_(v5, v11, v13);
+    objc_msgSend_enumerateObjectsUsingBlock_(collectionCopy, v11, v13);
   }
 
   else
   {
     v12 = 0;
-    (*(v6 + 2))(v6, 0, 0, &v12);
+    (*(blockCopy + 2))(blockCopy, 0, 0, &v12);
   }
 }
 
-- (id)referentForDatabaseReferenceValue:(id)a3 error:(id *)a4
+- (id)referentForDatabaseReferenceValue:(id)value error:(id *)error
 {
   v6.receiver = self;
   v6.super_class = CKSQLiteReferencedDataArrayTable;
-  v4 = [(CKSQLiteReferencedObjectTable *)&v6 referentForDatabaseReferenceValue:a3 error:a4];
+  v4 = [(CKSQLiteReferencedObjectTable *)&v6 referentForDatabaseReferenceValue:value error:error];
 
   return v4;
 }
 
-- (id)addData:(id)a3 toReferencedDataArray:(id)a4
+- (id)addData:(id)data toReferencedDataArray:(id)array
 {
-  v6 = a4;
-  v7 = a3;
+  arrayCopy = array;
+  dataCopy = data;
   v8 = objc_alloc_init(CKSQLiteReferencedDataArrayValueEntry);
-  objc_msgSend_setDataBlob_(v8, v9, v7);
+  objc_msgSend_setDataBlob_(v8, v9, dataCopy);
 
-  v11 = objc_msgSend_addElement_toCollection_(self, v10, v8, v6);
+  v11 = objc_msgSend_addElement_toCollection_(self, v10, v8, arrayCopy);
 
   return v11;
 }

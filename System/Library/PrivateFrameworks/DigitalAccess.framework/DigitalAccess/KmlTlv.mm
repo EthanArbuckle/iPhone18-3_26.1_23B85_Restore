@@ -1,12 +1,12 @@
 @interface KmlTlv
-+ (KmlTlv)TLVWithJustTag:(unsigned __int16)a3;
-+ (KmlTlv)TLVWithTag:(unsigned __int16)a3 unsignedChar:(unsigned __int8)a4;
-+ (KmlTlv)TLVWithTag:(unsigned __int16)a3 unsignedLongValue:(unsigned int)a4;
-+ (KmlTlv)TLVWithTag:(unsigned __int16)a3 unsignedShort:(unsigned __int16)a4;
-+ (KmlTlv)TLVWithTag:(unsigned __int16)a3 value:(id)a4;
-+ (id)TLVsWithData:(id)a3;
-+ (id)_intToData:(uint64_t)a1;
-+ (id)_parseTLVs:(unint64_t)a3 end:;
++ (KmlTlv)TLVWithJustTag:(unsigned __int16)tag;
++ (KmlTlv)TLVWithTag:(unsigned __int16)tag unsignedChar:(unsigned __int8)char;
++ (KmlTlv)TLVWithTag:(unsigned __int16)tag unsignedLongValue:(unsigned int)value;
++ (KmlTlv)TLVWithTag:(unsigned __int16)tag unsignedShort:(unsigned __int16)short;
++ (KmlTlv)TLVWithTag:(unsigned __int16)tag value:(id)value;
++ (id)TLVsWithData:(id)data;
++ (id)_intToData:(uint64_t)data;
++ (id)_parseTLVs:(unint64_t)vs end:;
 - (id)asData;
 - (id)description;
 - (unsigned)valueAsUnsignedChar;
@@ -16,14 +16,14 @@
 
 @implementation KmlTlv
 
-+ (id)TLVsWithData:(id)a3
++ (id)TLVsWithData:(id)data
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length])
+  dataCopy = data;
+  if ([dataCopy length])
   {
-    v5 = [v4 bytes];
-    v6 = +[KmlTlv _parseTLVs:end:](a1, v11, v5 + [v4 length]);
+    bytes = [dataCopy bytes];
+    array = +[KmlTlv _parseTLVs:end:](self, v11, bytes + [dataCopy length]);
   }
 
   else
@@ -38,29 +38,29 @@
       _os_log_impl(&dword_248BF3000, v7, OS_LOG_TYPE_INFO, "%s : %i : nothing to parse", v11, 0x12u);
     }
 
-    v6 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  v8 = v6;
+  v8 = array;
 
   v9 = *MEMORY[0x277D85DE8];
 
   return v8;
 }
 
-+ (id)_parseTLVs:(unint64_t)a3 end:
++ (id)_parseTLVs:(unint64_t)vs end:
 {
   *&v42[5] = *MEMORY[0x277D85DE8];
   objc_opt_self();
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v7 = *a2;
-  if (*a2 >= a3)
+  if (*a2 >= vs)
   {
 LABEL_23:
     v10 = KmlLogger();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v29 = [v5 count];
+      v29 = [array count];
       *buf = 136315650;
       v38 = "+[KmlTlv _parseTLVs:end:]";
       v39 = 1024;
@@ -78,7 +78,7 @@ LABEL_23:
     v35 = v6;
     while (1)
     {
-      v9 = [*(v8 + 2704) dataWithBytes:v7 length:{a3 - v7, v35}];
+      v9 = [*(v8 + 2704) dataWithBytes:v7 length:{vs - v7, v35}];
       v10 = [KmlTlv TLVWithTag:0xFFFFLL value:v9];
 
       v11 = *a2;
@@ -87,7 +87,7 @@ LABEL_23:
       v13 = *v11;
       if ((~v13 & 0x1F) == 0)
       {
-        while (v12 < a3)
+        while (v12 < vs)
         {
           v14 = (v12 + 1);
           *a2 = (v12 + 1);
@@ -121,7 +121,7 @@ LABEL_27:
       v14 = v12;
       LOWORD(v17) = v13;
 LABEL_8:
-      if (v14 >= a3)
+      if (v14 >= vs)
       {
         v23 = KmlLogger();
         if (!os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
@@ -154,7 +154,7 @@ LABEL_33:
         {
           v19 = 0;
           v28 = v14 + 1;
-          while (v28 < a3)
+          while (v28 < vs)
           {
             v18 = v28 + 1;
             *a2 = (v28 + 1);
@@ -191,9 +191,9 @@ LABEL_10:
       }
 
       v36 = v10;
-      v20 = v5;
+      v20 = array;
       v21 = v8;
-      v22 = a3 - v18;
+      v22 = vs - v18;
       v23 = KmlLogger();
       v24 = os_log_type_enabled(v23, OS_LOG_TYPE_INFO);
       if (v22 < v19)
@@ -211,7 +211,7 @@ LABEL_10:
           _os_log_impl(&dword_248BF3000, v23, OS_LOG_TYPE_INFO, "%s : %i : TLV: Underflow: tag=0x%x len=%u", buf, 0x1Eu);
         }
 
-        v5 = v20;
+        array = v20;
         v10 = v36;
         goto LABEL_34;
       }
@@ -232,12 +232,12 @@ LABEL_10:
       v8 = v21;
       v25 = [*(v21 + 2704) dataWithBytes:*a2 length:v19];
       v26 = [KmlTlv TLVWithTag:v17 value:v25];
-      v5 = v20;
+      array = v20;
       [v20 addObject:v26];
 
       *a2 += v19;
       v7 = *a2;
-      if (*a2 >= a3)
+      if (*a2 >= vs)
       {
         goto LABEL_23;
       }
@@ -256,43 +256,43 @@ LABEL_10:
 
 LABEL_34:
 
-    [v5 addObject:v10];
+    [array addObject:v10];
   }
 
   v33 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return array;
 }
 
-+ (KmlTlv)TLVWithTag:(unsigned __int16)a3 value:(id)a4
++ (KmlTlv)TLVWithTag:(unsigned __int16)tag value:(id)value
 {
-  v6 = a4;
-  v7 = objc_alloc_init(a1);
-  v7[4] = a3;
+  valueCopy = value;
+  v7 = objc_alloc_init(self);
+  v7[4] = tag;
   v8 = *(v7 + 2);
-  *(v7 + 2) = v6;
+  *(v7 + 2) = valueCopy;
 
   return v7;
 }
 
-+ (KmlTlv)TLVWithTag:(unsigned __int16)a3 unsignedChar:(unsigned __int8)a4
++ (KmlTlv)TLVWithTag:(unsigned __int16)tag unsignedChar:(unsigned __int8)char
 {
-  v9 = a4;
-  v5 = objc_alloc_init(a1);
-  v5[4] = a3;
-  v6 = [MEMORY[0x277CBEA90] dataWithBytes:&v9 length:1];
+  charCopy = char;
+  v5 = objc_alloc_init(self);
+  v5[4] = tag;
+  v6 = [MEMORY[0x277CBEA90] dataWithBytes:&charCopy length:1];
   v7 = *(v5 + 2);
   *(v5 + 2) = v6;
 
   return v5;
 }
 
-+ (KmlTlv)TLVWithTag:(unsigned __int16)a3 unsignedShort:(unsigned __int16)a4
++ (KmlTlv)TLVWithTag:(unsigned __int16)tag unsignedShort:(unsigned __int16)short
 {
-  v4 = a4;
-  v6 = objc_alloc_init(a1);
-  v6[4] = a3;
-  v10 = __rev16(v4);
+  shortCopy = short;
+  v6 = objc_alloc_init(self);
+  v6[4] = tag;
+  v10 = __rev16(shortCopy);
   v7 = [MEMORY[0x277CBEA90] dataWithBytes:&v10 length:2];
   v8 = *(v6 + 2);
   *(v6 + 2) = v7;
@@ -300,11 +300,11 @@ LABEL_34:
   return v6;
 }
 
-+ (KmlTlv)TLVWithTag:(unsigned __int16)a3 unsignedLongValue:(unsigned int)a4
++ (KmlTlv)TLVWithTag:(unsigned __int16)tag unsignedLongValue:(unsigned int)value
 {
-  v6 = objc_alloc_init(a1);
-  v6[4] = a3;
-  v10 = bswap32(a4);
+  v6 = objc_alloc_init(self);
+  v6[4] = tag;
+  v10 = bswap32(value);
   v7 = [MEMORY[0x277CBEA90] dataWithBytes:&v10 length:2];
   v8 = *(v6 + 2);
   *(v6 + 2) = v7;
@@ -312,10 +312,10 @@ LABEL_34:
   return v6;
 }
 
-+ (KmlTlv)TLVWithJustTag:(unsigned __int16)a3
++ (KmlTlv)TLVWithJustTag:(unsigned __int16)tag
 {
-  v4 = objc_alloc_init(a1);
-  v4[4] = a3;
+  v4 = objc_alloc_init(self);
+  v4[4] = tag;
 
   return v4;
 }
@@ -371,7 +371,7 @@ LABEL_34:
     goto LABEL_10;
   }
 
-  v6 = [(NSData *)self->_value bytes];
+  bytes = [(NSData *)self->_value bytes];
   if (![(NSData *)self->_value length])
   {
 LABEL_10:
@@ -383,7 +383,7 @@ LABEL_10:
   v8 = 0;
   do
   {
-    v8 = v6[v7++] | (v8 << 8);
+    v8 = bytes[v7++] | (v8 << 8);
   }
 
   while ([(NSData *)self->_value length]> v7);
@@ -453,7 +453,7 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  v6 = [(NSData *)self->_value bytes];
+  bytes = [(NSData *)self->_value bytes];
   if (![(NSData *)self->_value length])
   {
 LABEL_10:
@@ -465,7 +465,7 @@ LABEL_10:
   v8 = 0;
   do
   {
-    v8 = v6[v7++] | (v8 << 8);
+    v8 = bytes[v7++] | (v8 << 8);
   }
 
   while ([(NSData *)self->_value length]> v7);
@@ -474,7 +474,7 @@ LABEL_11:
   return v8;
 }
 
-+ (id)_intToData:(uint64_t)a1
++ (id)_intToData:(uint64_t)data
 {
   objc_opt_self();
   v3 = [MEMORY[0x277CBEB28] dataWithCapacity:4];
@@ -521,9 +521,9 @@ LABEL_14:
 
 - (id)asData
 {
-  v3 = [MEMORY[0x277CBEB28] data];
+  data = [MEMORY[0x277CBEB28] data];
   v4 = [KmlTlv _intToData:?];
-  [v3 appendData:v4];
+  [data appendData:v4];
 
   v5 = self->_value;
   v6 = [(NSData *)v5 length];
@@ -532,16 +532,16 @@ LABEL_14:
   if (v6 >= 0x80)
   {
     v10 = [v7 length] | 0x80;
-    [v3 appendBytes:&v10 length:1];
+    [data appendBytes:&v10 length:1];
   }
 
-  [v3 appendData:v8];
+  [data appendData:v8];
   if (v5)
   {
-    [v3 appendData:v5];
+    [data appendData:v5];
   }
 
-  return v3;
+  return data;
 }
 
 @end

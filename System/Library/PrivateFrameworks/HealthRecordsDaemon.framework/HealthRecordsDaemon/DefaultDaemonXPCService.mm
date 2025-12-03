@@ -1,6 +1,6 @@
 @interface DefaultDaemonXPCService
 - (_TtC19HealthRecordsDaemon23DefaultDaemonXPCService)init;
-- (id)exportObjectForListener:(id)a3 client:(id)a4 error:(id *)a5;
+- (id)exportObjectForListener:(id)listener client:(id)client error:(id *)error;
 @end
 
 @implementation DefaultDaemonXPCService
@@ -12,13 +12,13 @@
   return result;
 }
 
-- (id)exportObjectForListener:(id)a3 client:(id)a4 error:(id *)a5
+- (id)exportObjectForListener:(id)listener client:(id)client error:(id *)error
 {
   v7 = *(&self->super.isa + OBJC_IVAR____TtC19HealthRecordsDaemon23DefaultDaemonXPCService_serverGenerator);
   v6 = *&self->identifier[OBJC_IVAR____TtC19HealthRecordsDaemon23DefaultDaemonXPCService_serverGenerator];
-  v8 = a4;
-  v9 = self;
-  v10 = v7(v8);
+  clientCopy = client;
+  selfCopy = self;
+  v10 = v7(clientCopy);
 
   return v10;
 }

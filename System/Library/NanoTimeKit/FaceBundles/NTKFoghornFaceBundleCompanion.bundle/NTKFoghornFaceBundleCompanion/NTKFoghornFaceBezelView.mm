@@ -1,133 +1,133 @@
 @interface NTKFoghornFaceBezelView
-+ (id)_attributedStringForActiveDepth:(double)a3 maxDepth:(double)a4 beyondLimit:(BOOL)a5 inFeet:(BOOL)a6 depthAttributes:(id)a7 depthUnitAttributes:(id)a8 maxDepthAttributes:(id)a9 maxDepthUnitAttributes:(id)a10;
-+ (id)_attributedStringForActiveElevation:(double)a3 accuracy:(double)a4 precision:(double)a5 showPrefix:(BOOL)a6 inFeet:(BOOL)a7 valueAttributes:(id)a8 unitAttributes:(id)a9;
-+ (id)_attributedStringForBeyondLimitDepth:(double)a3 showPrefix:(BOOL)a4 inFeet:(BOOL)a5 depthAttributes:(id)a6 depthUnitAttributes:(id)a7;
-+ (id)_attributedStringForMaxDepth:(double)a3 beyondLimit:(BOOL)a4 inFeet:(BOOL)a5 depthAttributes:(id)a6 depthUnitAttributes:(id)a7;
-+ (id)_maxDepthImageAttributesFromMaxDepthAttributes:(id)a3;
-+ (id)_stringForDepth:(double)a3 inFeet:(BOOL)a4;
-+ (void)drawSnapshotInContext:(CGContext *)a3 bezelStyle:(int64_t)a4 colorPalette:(id)a5 forDevice:(id)a6;
-- (BOOL)_needBaseLabelUpdateForDeltaDepthElevation:(double)a3 range:(double)a4;
-- (CGRect)_dirtyRectFromSeconds:(double)a3 toSeconds:(double)a4;
-- (NTKFoghornFaceBezelView)initWithFrame:(CGRect)a3 forDevice:(id)a4;
++ (id)_attributedStringForActiveDepth:(double)depth maxDepth:(double)maxDepth beyondLimit:(BOOL)limit inFeet:(BOOL)feet depthAttributes:(id)attributes depthUnitAttributes:(id)unitAttributes maxDepthAttributes:(id)depthAttributes maxDepthUnitAttributes:(id)self0;
++ (id)_attributedStringForActiveElevation:(double)elevation accuracy:(double)accuracy precision:(double)precision showPrefix:(BOOL)prefix inFeet:(BOOL)feet valueAttributes:(id)attributes unitAttributes:(id)unitAttributes;
++ (id)_attributedStringForBeyondLimitDepth:(double)depth showPrefix:(BOOL)prefix inFeet:(BOOL)feet depthAttributes:(id)attributes depthUnitAttributes:(id)unitAttributes;
++ (id)_attributedStringForMaxDepth:(double)depth beyondLimit:(BOOL)limit inFeet:(BOOL)feet depthAttributes:(id)attributes depthUnitAttributes:(id)unitAttributes;
++ (id)_maxDepthImageAttributesFromMaxDepthAttributes:(id)attributes;
++ (id)_stringForDepth:(double)depth inFeet:(BOOL)feet;
++ (void)drawSnapshotInContext:(CGContext *)context bezelStyle:(int64_t)style colorPalette:(id)palette forDevice:(id)device;
+- (BOOL)_needBaseLabelUpdateForDeltaDepthElevation:(double)elevation range:(double)range;
+- (CGRect)_dirtyRectFromSeconds:(double)seconds toSeconds:(double)toSeconds;
+- (NTKFoghornFaceBezelView)initWithFrame:(CGRect)frame forDevice:(id)device;
 - (id)_harmoniaOvernightSummaryLabelColor;
 - (id)_harmoniaTrainingSummaryLabelColor;
 - (void)_addConstraints;
 - (void)_addSubViews;
-- (void)_drawBezelInContext:(CGContext *)a3 bezelStyle:(int64_t)a4 tritiumProgress:(double)a5 alpha:(double)a6;
-- (void)_drawDepthBezelInContext:(CGContext *)a3 tritiumProgress:(double)a4 alpha:(double)a5;
-- (void)_drawElevationBezelInContext:(CGContext *)a3 tritiumProgress:(double)a4 alpha:(double)a5;
-- (void)_drawHarmoniaBezelInContext:(CGContext *)a3 tritiumProgress:(double)a4 alpha:(double)a5;
-- (void)_drawSecondsBezelInContext:(CGContext *)a3 tritiumProgress:(double)a4 alpha:(double)a5;
-- (void)_initPixelsPerValuesForDevice:(id)a3;
-- (void)_limitsForElevation:(double)a3 elevationIsValid:(BOOL)a4 limitMeters:(double *)a5 limitFeet:(double *)a6;
+- (void)_drawBezelInContext:(CGContext *)context bezelStyle:(int64_t)style tritiumProgress:(double)progress alpha:(double)alpha;
+- (void)_drawDepthBezelInContext:(CGContext *)context tritiumProgress:(double)progress alpha:(double)alpha;
+- (void)_drawElevationBezelInContext:(CGContext *)context tritiumProgress:(double)progress alpha:(double)alpha;
+- (void)_drawHarmoniaBezelInContext:(CGContext *)context tritiumProgress:(double)progress alpha:(double)alpha;
+- (void)_drawSecondsBezelInContext:(CGContext *)context tritiumProgress:(double)progress alpha:(double)alpha;
+- (void)_initPixelsPerValuesForDevice:(id)device;
+- (void)_limitsForElevation:(double)elevation elevationIsValid:(BOOL)valid limitMeters:(double *)meters limitFeet:(double *)feet;
 - (void)_registerNotifications;
-- (void)_transitionBaseLabelFromStyle:(int64_t)a3 toStyle:(int64_t)a4 progress:(double)a5;
+- (void)_transitionBaseLabelFromStyle:(int64_t)style toStyle:(int64_t)toStyle progress:(double)progress;
 - (void)_updateBaseLabel;
-- (void)_updateBaseLabelBaslineOffsetForAttributedText:(id)a3;
+- (void)_updateBaseLabelBaslineOffsetForAttributedText:(id)text;
 - (void)_updateBaseLabelForDepthBezel;
 - (void)_updateBaseLabelForElevationBezel;
 - (void)_updateDepthUnits;
-- (void)_updateElevationLimitLabelsWithElevation:(double)a3 elevationIsValid:(BOOL)a4;
-- (void)_updateHarmoniaSummaryLabelCache:(id *)a3 withString:(id)a4 dataState:(unint64_t)a5;
-- (void)_updateLimitLabelCache:(id *)a3 limitFeet:(double)a4 limitMeters:(double)a5 limitsValid:(BOOL)a6;
+- (void)_updateElevationLimitLabelsWithElevation:(double)elevation elevationIsValid:(BOOL)valid;
+- (void)_updateHarmoniaSummaryLabelCache:(id *)cache withString:(id)string dataState:(unint64_t)state;
+- (void)_updateLimitLabelCache:(id *)cache limitFeet:(double)feet limitMeters:(double)meters limitsValid:(BOOL)valid;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
-- (void)setBezelFromStyle:(int64_t)a3 toStyle:(int64_t)a4 progress:(double)a5;
-- (void)setBezelStyle:(int64_t)a3;
-- (void)setColorPalette:(id)a3;
-- (void)setDepthDecorationColor:(id)a3;
-- (void)setDepthLabelColor:(id)a3;
-- (void)setDepthLimitLabelColor:(id)a3;
-- (void)setDepthLimitMajorTickColor:(id)a3;
-- (void)setDepthLimitMedialTickColor:(id)a3;
-- (void)setDepthLimitMinorTickColor:(id)a3;
-- (void)setDepthMarkerColor:(id)a3;
-- (void)setDepthMaxLabelColor:(id)a3;
-- (void)setDepthMaxMajorTickColor:(id)a3;
-- (void)setDepthMaxMarkerColor:(id)a3;
-- (void)setDepthMaxMedialTickColor:(id)a3;
-- (void)setDepthMaxMinorTickColor:(id)a3;
-- (void)setDepthOverLimitColor:(id)a3;
-- (void)setElevation:(double)a3;
-- (void)setElevationAccuracy:(double)a3;
-- (void)setElevationIsValid:(BOOL)a3;
-- (void)setElevationPrecision:(double)a3;
-- (void)setHarmoniaDotFillColor:(id)a3;
-- (void)setHarmoniaEmphasizedTickColor:(id)a3;
-- (void)setHarmoniaOvernightChangeAboveValues:(id)a3;
-- (void)setHarmoniaOvernightChangeBelowValues:(id)a3;
-- (void)setHarmoniaOvernightChangesThreshold:(unint64_t)a3;
-- (void)setHarmoniaOvernightDataState:(unint64_t)a3;
-- (void)setHarmoniaOvernightLocalizedSummary:(id)a3;
-- (void)setHarmoniaOvernightMarkers:(id)a3;
-- (void)setHarmoniaOvernightOutOfRangeColor:(id)a3;
-- (void)setHarmoniaOvernightPartiallyOutOfRangeColor:(id)a3;
-- (void)setHarmoniaOvernightTypicalColor:(id)a3;
-- (void)setHarmoniaOvernightTypicalValues:(id)a3;
-- (void)setHarmoniaTrainingAboveColor:(id)a3;
-- (void)setHarmoniaTrainingBelowColor:(id)a3;
-- (void)setHarmoniaTrainingDataState:(unint64_t)a3;
-- (void)setHarmoniaTrainingLoadBand:(unint64_t)a3;
-- (void)setHarmoniaTrainingLocalizedSummary:(id)a3;
-- (void)setHarmoniaTrainingMarkers:(id)a3;
-- (void)setHarmoniaTrainingNearColor:(id)a3;
-- (void)setHarmoniaTrainingValue:(id)a3;
-- (void)setHarmoniaTrainingWellAboveColor:(id)a3;
-- (void)setHarmoniaTrainingWellBelowColor:(id)a3;
-- (void)setHarmoniaUnitLabelColor:(id)a3;
-- (void)setInactiveMajorTickColor:(id)a3;
-- (void)setInactiveMedialTickColor:(id)a3;
-- (void)setInactiveMinorTickColor:(id)a3;
-- (void)setMajorTickColor:(id)a3;
-- (void)setMedialTickColor:(id)a3;
-- (void)setMinorTickColor:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setBezelFromStyle:(int64_t)style toStyle:(int64_t)toStyle progress:(double)progress;
+- (void)setBezelStyle:(int64_t)style;
+- (void)setColorPalette:(id)palette;
+- (void)setDepthDecorationColor:(id)color;
+- (void)setDepthLabelColor:(id)color;
+- (void)setDepthLimitLabelColor:(id)color;
+- (void)setDepthLimitMajorTickColor:(id)color;
+- (void)setDepthLimitMedialTickColor:(id)color;
+- (void)setDepthLimitMinorTickColor:(id)color;
+- (void)setDepthMarkerColor:(id)color;
+- (void)setDepthMaxLabelColor:(id)color;
+- (void)setDepthMaxMajorTickColor:(id)color;
+- (void)setDepthMaxMarkerColor:(id)color;
+- (void)setDepthMaxMedialTickColor:(id)color;
+- (void)setDepthMaxMinorTickColor:(id)color;
+- (void)setDepthOverLimitColor:(id)color;
+- (void)setElevation:(double)elevation;
+- (void)setElevationAccuracy:(double)accuracy;
+- (void)setElevationIsValid:(BOOL)valid;
+- (void)setElevationPrecision:(double)precision;
+- (void)setHarmoniaDotFillColor:(id)color;
+- (void)setHarmoniaEmphasizedTickColor:(id)color;
+- (void)setHarmoniaOvernightChangeAboveValues:(id)values;
+- (void)setHarmoniaOvernightChangeBelowValues:(id)values;
+- (void)setHarmoniaOvernightChangesThreshold:(unint64_t)threshold;
+- (void)setHarmoniaOvernightDataState:(unint64_t)state;
+- (void)setHarmoniaOvernightLocalizedSummary:(id)summary;
+- (void)setHarmoniaOvernightMarkers:(id)markers;
+- (void)setHarmoniaOvernightOutOfRangeColor:(id)color;
+- (void)setHarmoniaOvernightPartiallyOutOfRangeColor:(id)color;
+- (void)setHarmoniaOvernightTypicalColor:(id)color;
+- (void)setHarmoniaOvernightTypicalValues:(id)values;
+- (void)setHarmoniaTrainingAboveColor:(id)color;
+- (void)setHarmoniaTrainingBelowColor:(id)color;
+- (void)setHarmoniaTrainingDataState:(unint64_t)state;
+- (void)setHarmoniaTrainingLoadBand:(unint64_t)band;
+- (void)setHarmoniaTrainingLocalizedSummary:(id)summary;
+- (void)setHarmoniaTrainingMarkers:(id)markers;
+- (void)setHarmoniaTrainingNearColor:(id)color;
+- (void)setHarmoniaTrainingValue:(id)value;
+- (void)setHarmoniaTrainingWellAboveColor:(id)color;
+- (void)setHarmoniaTrainingWellBelowColor:(id)color;
+- (void)setHarmoniaUnitLabelColor:(id)color;
+- (void)setInactiveMajorTickColor:(id)color;
+- (void)setInactiveMedialTickColor:(id)color;
+- (void)setInactiveMinorTickColor:(id)color;
+- (void)setMajorTickColor:(id)color;
+- (void)setMedialTickColor:(id)color;
+- (void)setMinorTickColor:(id)color;
 - (void)setNeedsDisplay;
-- (void)setNeedsDisplayInRect:(CGRect)a3;
-- (void)setSeconds:(double)a3;
-- (void)setShowingStatusIndicator:(BOOL)a3;
-- (void)setSubmerged:(BOOL)a3;
-- (void)setSubmergedDepth:(double)a3;
-- (void)setSubmergedDepthLabelLimitFeet:(double)a3;
-- (void)setSubmergedDepthLabelLimitMeters:(double)a3;
-- (void)setSubmergedDepthLimit:(double)a3;
-- (void)setSubmergedDepthMax:(double)a3;
+- (void)setNeedsDisplayInRect:(CGRect)rect;
+- (void)setSeconds:(double)seconds;
+- (void)setShowingStatusIndicator:(BOOL)indicator;
+- (void)setSubmerged:(BOOL)submerged;
+- (void)setSubmergedDepth:(double)depth;
+- (void)setSubmergedDepthLabelLimitFeet:(double)feet;
+- (void)setSubmergedDepthLabelLimitMeters:(double)meters;
+- (void)setSubmergedDepthLimit:(double)limit;
+- (void)setSubmergedDepthMax:(double)max;
 - (void)setToSnapshotValues;
-- (void)setTritiumProgress:(double)a3;
+- (void)setTritiumProgress:(double)progress;
 @end
 
 @implementation NTKFoghornFaceBezelView
 
-- (void)_initPixelsPerValuesForDevice:(id)a3
+- (void)_initPixelsPerValuesForDevice:(id)device
 {
   bezelDepthStartAngle = self->_layoutConstants.bezelDepthStartAngle;
   superEllipseGeometry = self->_superEllipseGeometry;
-  v6 = a3;
+  deviceCopy = device;
   NTKSuperEllipseRectGeometryGetPositionAtAngle(superEllipseGeometry, bezelDepthStartAngle);
   self->_depthElevationBezelLength = v7 + v7;
   NTKSuperEllipseRectGeometryGetPositionAtAngle(self->_superEllipseGeometry, 1.57079633);
   self->_pixelsPerSecond = v8 * 4.0 / 60.0;
-  objc_msgSend_screenScale(v6, v9, v10, v11);
+  objc_msgSend_screenScale(deviceCopy, v9, v10, v11);
   v13 = v12;
 
   self->_pixelsVisibleChange = 1.0 / (v13 * 4.0);
 }
 
-- (NTKFoghornFaceBezelView)initWithFrame:(CGRect)a3 forDevice:(id)a4
+- (NTKFoghornFaceBezelView)initWithFrame:(CGRect)frame forDevice:(id)device
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v236 = *MEMORY[0x277D85DE8];
-  v9 = a4;
+  deviceCopy = device;
   v216.receiver = self;
   v216.super_class = NTKFoghornFaceBezelView;
-  v10 = [(NTKFoghornFaceBezelView *)&v216 initWithFrame:x, y, width, height];
-  v14 = v10;
-  if (v10)
+  height = [(NTKFoghornFaceBezelView *)&v216 initWithFrame:x, y, width, height];
+  v14 = height;
+  if (height)
   {
-    p_dirtyRect = &v10->_dirtyRect;
-    objc_msgSend_bounds(v10, v11, v12, v13);
+    p_dirtyRect = &height->_dirtyRect;
+    objc_msgSend_bounds(height, v11, v12, v13);
     *&p_dirtyRect->origin.x = v16;
     v14->_dirtyRect.origin.y = v17;
     v14->_dirtyRect.size.width = v18;
@@ -135,7 +135,7 @@
     v23 = objc_msgSend_clearColor(MEMORY[0x277D75348], v20, v21, v22);
     objc_msgSend_setBackgroundColor_(v14, v24, v23, v25);
 
-    sub_23BE69240(v9, &v217);
+    sub_23BE69240(deviceCopy, &v217);
     *&v14->_layoutConstants.bezelHarmoniaMinorTickLength = v229;
     *&v14->_layoutConstants.bezelHarmoniaDotInnerDiameter = v230;
     *&v14->_layoutConstants.bezelHarmoniaLabelPositionOffset = v231;
@@ -153,7 +153,7 @@
     *&v14->_layoutConstants.bezelOuterCornerRadius = v219;
     *&v14->_layoutConstants.bezelCornerEndAngle = v220;
     v26 = [NTKSuperEllipseRectGeometry alloc];
-    v29 = objc_msgSend_initForDevice_tangentialInset_(v26, v27, v9, v28, v14->_layoutConstants.bezelOuterRect.origin.x);
+    v29 = objc_msgSend_initForDevice_tangentialInset_(v26, v27, deviceCopy, v28, v14->_layoutConstants.bezelOuterRect.origin.x);
     superEllipseGeometry = v14->_superEllipseGeometry;
     v14->_superEllipseGeometry = v29;
 
@@ -178,7 +178,7 @@
     objc_storeStrong(&v14->_depthMaxMedialTickColor, v14->_depthMaxMajorTickColor);
     objc_storeStrong(&v14->_depthMaxMinorTickColor, v14->_depthMaxMajorTickColor);
     v54 = objc_msgSend_grayColor(MEMORY[0x277D75348], v51, v52, v53);
-    v215 = v9;
+    v215 = deviceCopy;
     depthLimitMajorTickColor = v14->_depthLimitMajorTickColor;
     v14->_depthLimitMajorTickColor = v54;
 
@@ -316,7 +316,7 @@
     objc_msgSend_setObject_atIndexedSubscript_(v171, v181, v180, 1);
 
     v185 = objc_msgSend_copy(v171, v182, v183, v184);
-    v9 = v215;
+    deviceCopy = v215;
 
     v14->_harmoniaTextLines = sub_23BE61320(v185);
     objc_msgSend__updateHarmoniaSummaryLabelCache_withString_dataState_(v14, v186, &v14->_harmoniaSummaryOvernightLabelCache, v14->_harmoniaOvernightLocalizedSummary, v14->_harmoniaOvernightDataState);
@@ -398,12 +398,12 @@
   [(NTKFoghornFaceBezelView *)&v14 dealloc];
 }
 
-- (void)setNeedsDisplayInRect:(CGRect)a3
+- (void)setNeedsDisplayInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_dirtyRect = &self->_dirtyRect;
   v9 = self->_dirtyRect.origin.x;
   v10 = self->_dirtyRect.origin.y;
@@ -500,41 +500,41 @@
   objc_msgSend_activateConstraints_(v14, v40, v39, v41);
 }
 
-+ (id)_stringForDepth:(double)a3 inFeet:(BOOL)a4
++ (id)_stringForDepth:(double)depth inFeet:(BOOL)feet
 {
-  v4 = a3 * 3.2808399;
-  if (!a4)
+  depthCopy = depth * 3.2808399;
+  if (!feet)
   {
-    v4 = a3;
+    depthCopy = depth;
   }
 
-  v5 = floor(a3) != a3 && !a4;
-  return sub_23BE6952C(v5, 6, v4);
+  v5 = floor(depth) != depth && !feet;
+  return sub_23BE6952C(v5, 6, depthCopy);
 }
 
-+ (id)_attributedStringForBeyondLimitDepth:(double)a3 showPrefix:(BOOL)a4 inFeet:(BOOL)a5 depthAttributes:(id)a6 depthUnitAttributes:(id)a7
++ (id)_attributedStringForBeyondLimitDepth:(double)depth showPrefix:(BOOL)prefix inFeet:(BOOL)feet depthAttributes:(id)attributes depthUnitAttributes:(id)unitAttributes
 {
-  v8 = a5;
-  v9 = a4;
+  feetCopy = feet;
+  prefixCopy = prefix;
   v30[3] = *MEMORY[0x277D85DE8];
-  v12 = -a3;
-  if (a3 >= 0.0)
+  v12 = -depth;
+  if (depth >= 0.0)
   {
-    v13 = a3;
+    depthCopy = depth;
   }
 
   else
   {
-    v13 = v12;
+    depthCopy = v12;
   }
 
-  v14 = a7;
-  v15 = a6;
-  v18 = objc_msgSend__stringForDepth_inFeet_(a1, v16, v8, v17, v13);
+  unitAttributesCopy = unitAttributes;
+  attributesCopy = attributes;
+  v18 = objc_msgSend__stringForDepth_inFeet_(self, v16, feetCopy, v17, depthCopy);
   v19 = @"FOGHORN_BEYOND_METERS";
-  if (a3 >= 0.0 && !v9)
+  if (depth >= 0.0 && !prefixCopy)
   {
-    if (v8)
+    if (feetCopy)
     {
       v22 = @"FOGHORN_BEYOND_FEET";
     }
@@ -547,18 +547,18 @@
 
   else
   {
-    if (v8)
+    if (feetCopy)
     {
       v19 = @"FOGHORN_BEYOND_FEET";
     }
 
     v21 = @"FOGHORN_BEYOND_NEGATIVE_FEET";
-    if (!v8)
+    if (!feetCopy)
     {
       v21 = @"FOGHORN_BEYOND_NEGATIVE_METERS";
     }
 
-    if (a3 < 0.0)
+    if (depth < 0.0)
     {
       v22 = v21;
     }
@@ -572,20 +572,20 @@
   v23 = NTKFoghornFaceLocalizedMarkdownString(v22);
   v29[0] = *MEMORY[0x277D2BE60];
   v29[1] = @"beyond";
-  v30[0] = v15;
-  v30[1] = v15;
+  v30[0] = attributesCopy;
+  v30[1] = attributesCopy;
   v29[2] = @"beyondUnit";
-  v30[2] = v14;
+  v30[2] = unitAttributesCopy;
   v25 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v24, v30, v29, 3);
   v27 = objc_msgSend_ntk_attributedStringFromAttributesTable_markdownFormat_(MEMORY[0x277CCA898], v26, v25, v23, v18);
 
   return v27;
 }
 
-+ (id)_maxDepthImageAttributesFromMaxDepthAttributes:(id)a3
++ (id)_maxDepthImageAttributesFromMaxDepthAttributes:(id)attributes
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v4 = objc_msgSend_objectForKeyedSubscript_(a3, a2, *MEMORY[0x277D740C0], v3);
+  v4 = objc_msgSend_objectForKeyedSubscript_(attributes, a2, *MEMORY[0x277D740C0], v3);
   v7 = objc_msgSend_configurationWithScale_(MEMORY[0x277D755D0], v5, 1, v6);
   v9 = objc_msgSend_systemImageNamed_withConfiguration_(MEMORY[0x277D755B8], v8, @"arrow.down.to.line", v7);
   v12 = objc_msgSend_imageWithTintColor_(v9, v10, v4, v11);
@@ -598,28 +598,28 @@
   return v17;
 }
 
-+ (id)_attributedStringForMaxDepth:(double)a3 beyondLimit:(BOOL)a4 inFeet:(BOOL)a5 depthAttributes:(id)a6 depthUnitAttributes:(id)a7
++ (id)_attributedStringForMaxDepth:(double)depth beyondLimit:(BOOL)limit inFeet:(BOOL)feet depthAttributes:(id)attributes depthUnitAttributes:(id)unitAttributes
 {
-  v8 = a5;
-  v9 = a4;
+  feetCopy = feet;
+  limitCopy = limit;
   v30[4] = *MEMORY[0x277D85DE8];
-  v12 = a6;
-  v13 = a7;
-  v16 = objc_msgSend__stringForDepth_inFeet_(a1, v14, v8, v15, a3);
-  v19 = objc_msgSend__maxDepthImageAttributesFromMaxDepthAttributes_(a1, v17, v12, v18);
+  attributesCopy = attributes;
+  unitAttributesCopy = unitAttributes;
+  v16 = objc_msgSend__stringForDepth_inFeet_(self, v14, feetCopy, v15, depth);
+  v19 = objc_msgSend__maxDepthImageAttributesFromMaxDepthAttributes_(self, v17, attributesCopy, v18);
   v20 = @"FOGHORN_MAXDEPTH_METERS_PLUS";
-  if (v8)
+  if (feetCopy)
   {
     v20 = @"FOGHORN_MAXDEPTH_FEET_PLUS";
   }
 
   v21 = @"FOGHORN_MAXDEPTH_FEET";
-  if (!v8)
+  if (!feetCopy)
   {
     v21 = @"FOGHORN_MAXDEPTH_METERS";
   }
 
-  if (v9)
+  if (limitCopy)
   {
     v22 = v20;
   }
@@ -632,45 +632,45 @@
   v23 = NTKFoghornFaceLocalizedMarkdownString(v22);
   v29[0] = *MEMORY[0x277D2BE60];
   v29[1] = @"maxDepthImage";
-  v30[0] = v12;
+  v30[0] = attributesCopy;
   v30[1] = v19;
   v29[2] = @"maxDepth";
   v29[3] = @"maxDepthUnit";
-  v30[2] = v12;
-  v30[3] = v13;
+  v30[2] = attributesCopy;
+  v30[3] = unitAttributesCopy;
   v25 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v24, v30, v29, 4);
   v27 = objc_msgSend_ntk_attributedStringFromAttributesTable_markdownFormat_(MEMORY[0x277CCA898], v26, v25, v23, v16);
 
   return v27;
 }
 
-+ (id)_attributedStringForActiveElevation:(double)a3 accuracy:(double)a4 precision:(double)a5 showPrefix:(BOOL)a6 inFeet:(BOOL)a7 valueAttributes:(id)a8 unitAttributes:(id)a9
++ (id)_attributedStringForActiveElevation:(double)elevation accuracy:(double)accuracy precision:(double)precision showPrefix:(BOOL)prefix inFeet:(BOOL)feet valueAttributes:(id)attributes unitAttributes:(id)unitAttributes
 {
-  v10 = a7;
-  v11 = a6;
+  feetCopy = feet;
+  prefixCopy = prefix;
   v42[3] = *MEMORY[0x277D85DE8];
-  v15 = a8;
-  v16 = a9;
-  shouldApproximateAltitude_accuracy_precision = objc_msgSend_shouldApproximateAltitude_accuracy_precision_(NTKFoghornElevationUtilities, v17, v18, v19, a3, a4, a5);
-  v24 = a3 * 3.2808399;
-  if (v10)
+  attributesCopy = attributes;
+  unitAttributesCopy = unitAttributes;
+  shouldApproximateAltitude_accuracy_precision = objc_msgSend_shouldApproximateAltitude_accuracy_precision_(NTKFoghornElevationUtilities, v17, v18, v19, elevation, accuracy, precision);
+  v24 = elevation * 3.2808399;
+  if (feetCopy)
   {
-    v25 = a5 * 3.2808399;
+    precisionCopy = precision * 3.2808399;
   }
 
   else
   {
-    v25 = a5;
+    precisionCopy = precision;
   }
 
-  if (v10)
+  if (feetCopy)
   {
-    objc_msgSend_roundedAltitude_accuracy_precision_(NTKFoghornElevationUtilities, v20, v21, v22, a3 * 3.2808399, a4 * 3.2808399, v25, v24);
+    objc_msgSend_roundedAltitude_accuracy_precision_(NTKFoghornElevationUtilities, v20, v21, v22, elevation * 3.2808399, accuracy * 3.2808399, precisionCopy, v24);
   }
 
   else
   {
-    objc_msgSend_roundedAltitude_accuracy_precision_(NTKFoghornElevationUtilities, v20, v21, v22, a3, a4, v25, v24);
+    objc_msgSend_roundedAltitude_accuracy_precision_(NTKFoghornElevationUtilities, v20, v21, v22, elevation, accuracy, precisionCopy, v24);
   }
 
   if (fabs(v26) >= 0.00000011920929)
@@ -684,7 +684,7 @@
   }
 
   v28 = -v27;
-  v29 = v27 < 0.0 || v11;
+  v29 = v27 < 0.0 || prefixCopy;
   if (v27 >= 0.0)
   {
     v28 = v27;
@@ -724,7 +724,7 @@ LABEL_26:
   }
 
 LABEL_28:
-  if (v10)
+  if (feetCopy)
   {
     v34 = v33;
   }
@@ -737,41 +737,41 @@ LABEL_28:
   v35 = NTKFoghornFaceLocalizedMarkdownString(v34);
   v41[0] = *MEMORY[0x277D2BE60];
   v41[1] = @"elevation";
-  v42[0] = v15;
-  v42[1] = v15;
+  v42[0] = attributesCopy;
+  v42[1] = attributesCopy;
   v41[2] = @"elevationUnit";
-  v42[2] = v16;
+  v42[2] = unitAttributesCopy;
   v37 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v36, v42, v41, 3);
   v39 = objc_msgSend_ntk_attributedStringFromAttributesTable_markdownFormat_(MEMORY[0x277CCA898], v38, v37, v35, v30);
 
   return v39;
 }
 
-+ (id)_attributedStringForActiveDepth:(double)a3 maxDepth:(double)a4 beyondLimit:(BOOL)a5 inFeet:(BOOL)a6 depthAttributes:(id)a7 depthUnitAttributes:(id)a8 maxDepthAttributes:(id)a9 maxDepthUnitAttributes:(id)a10
++ (id)_attributedStringForActiveDepth:(double)depth maxDepth:(double)maxDepth beyondLimit:(BOOL)limit inFeet:(BOOL)feet depthAttributes:(id)attributes depthUnitAttributes:(id)unitAttributes maxDepthAttributes:(id)depthAttributes maxDepthUnitAttributes:(id)self0
 {
-  v13 = a6;
-  v14 = a5;
+  feetCopy = feet;
+  limitCopy = limit;
   v41[6] = *MEMORY[0x277D85DE8];
-  v18 = a9;
-  v19 = a10;
-  v20 = a8;
-  v21 = a7;
-  v24 = objc_msgSend__stringForDepth_inFeet_(a1, v22, v13, v23, a3);
-  v27 = objc_msgSend__stringForDepth_inFeet_(a1, v25, v13, v26, a4);
-  v30 = objc_msgSend__maxDepthImageAttributesFromMaxDepthAttributes_(a1, v28, v18, v29);
+  depthAttributesCopy = depthAttributes;
+  depthUnitAttributesCopy = depthUnitAttributes;
+  unitAttributesCopy = unitAttributes;
+  attributesCopy = attributes;
+  v24 = objc_msgSend__stringForDepth_inFeet_(self, v22, feetCopy, v23, depth);
+  v27 = objc_msgSend__stringForDepth_inFeet_(self, v25, feetCopy, v26, maxDepth);
+  v30 = objc_msgSend__maxDepthImageAttributesFromMaxDepthAttributes_(self, v28, depthAttributesCopy, v29);
   v31 = @"FOGHORN_DEPTH_MAXDEPTH_METERS_PLUS";
-  if (v13)
+  if (feetCopy)
   {
     v31 = @"FOGHORN_DEPTH_MAXDEPTH_FEET_PLUS";
   }
 
   v32 = @"FOGHORN_DEPTH_MAXDEPTH_FEET";
-  if (!v13)
+  if (!feetCopy)
   {
     v32 = @"FOGHORN_DEPTH_MAXDEPTH_METERS";
   }
 
-  if (v14)
+  if (limitCopy)
   {
     v33 = v31;
   }
@@ -784,16 +784,16 @@ LABEL_28:
   v34 = NTKFoghornFaceLocalizedMarkdownString(v33);
   v40[0] = *MEMORY[0x277D2BE60];
   v40[1] = @"depth";
-  v41[0] = v21;
-  v41[1] = v21;
+  v41[0] = attributesCopy;
+  v41[1] = attributesCopy;
   v40[2] = @"depthUnit";
   v40[3] = @"maxDepthImage";
-  v41[2] = v20;
+  v41[2] = unitAttributesCopy;
   v41[3] = v30;
   v40[4] = @"maxDepth";
   v40[5] = @"maxDepthUnit";
-  v41[4] = v18;
-  v41[5] = v19;
+  v41[4] = depthAttributesCopy;
+  v41[5] = depthUnitAttributesCopy;
   v36 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v35, v41, v40, 6);
   v38 = objc_msgSend_ntk_attributedStringFromAttributesTable_markdownFormat_(MEMORY[0x277CCA898], v37, v36, v34, v24, v27);
 
@@ -811,11 +811,11 @@ LABEL_28:
   self->_useMetricUnitsForDepth = objc_msgSend_isEqualToString_(v16, v25, v24, v26);
 }
 
-- (void)_updateBaseLabelBaslineOffsetForAttributedText:(id)a3
+- (void)_updateBaseLabelBaslineOffsetForAttributedText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   objc_msgSend_frame(self, v5, v6, v7);
-  objc_msgSend_boundingRectWithSize_options_context_(v4, v8, 8, 0, v9, 2.0);
+  objc_msgSend_boundingRectWithSize_options_context_(textCopy, v8, 8, 0, v9, 2.0);
   v11 = v10;
 
   if (v11 < -2.5)
@@ -1107,7 +1107,7 @@ LABEL_22:
   objc_msgSend_setAttributedText_(self->_baseLabel, v29, v28, v30);
 }
 
-- (void)_drawSecondsBezelInContext:(CGContext *)a3 tritiumProgress:(double)a4 alpha:(double)a5
+- (void)_drawSecondsBezelInContext:(CGContext *)context tritiumProgress:(double)progress alpha:(double)alpha
 {
   v9 = self->_majorTickColor;
   v10 = self->_minorTickColor;
@@ -1133,7 +1133,7 @@ LABEL_22:
     }
   }
 
-  if (a4 > 1.0 || fabs(a4 + -1.0) < 0.00000011920929)
+  if (progress > 1.0 || fabs(progress + -1.0) < 0.00000011920929)
   {
     v24 = v11;
 
@@ -1144,7 +1144,7 @@ LABEL_22:
     v9 = v24;
   }
 
-  else if (a4 > 0.0 && fabs(a4) >= 0.00000011920929)
+  else if (progress > 0.0 && fabs(progress) >= 0.00000011920929)
   {
     secondsTritiumAnimationStyle = self->_secondsTritiumAnimationStyle;
     if (secondsTritiumAnimationStyle == 3)
@@ -1160,15 +1160,15 @@ LABEL_22:
     }
   }
 
-  if (a5 < 1.0)
+  if (alpha < 1.0)
   {
-    v26 = objc_msgSend_colorWithAlphaComponent_(v9, v12, v13, v14, a5);
+    v26 = objc_msgSend_colorWithAlphaComponent_(v9, v12, v13, v14, alpha);
 
-    v30 = objc_msgSend_colorWithAlphaComponent_(v10, v27, v28, v29, a5);
+    v30 = objc_msgSend_colorWithAlphaComponent_(v10, v27, v28, v29, alpha);
 
-    v34 = objc_msgSend_colorWithAlphaComponent_(v11, v31, v32, v33, a5);
+    v34 = objc_msgSend_colorWithAlphaComponent_(v11, v31, v32, v33, alpha);
 
-    v38 = objc_msgSend_colorWithAlphaComponent_(v15, v35, v36, v37, a5);
+    v38 = objc_msgSend_colorWithAlphaComponent_(v15, v35, v36, v37, alpha);
 
     v11 = v34;
     v15 = v38;
@@ -1185,7 +1185,7 @@ LABEL_22:
   __y[0] = 0.0;
   v44 = modf(seconds + seconds, __y);
   v45 = __y[0];
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   v46 = v40;
   v101 = v40;
   v50 = objc_msgSend_CGColor(v46, v47, v48, v49);
@@ -1198,12 +1198,12 @@ LABEL_22:
   v60 = v43;
   v98 = v43;
   v96 = objc_msgSend_CGColor(v60, v61, v62, v63);
-  CGContextSetStrokeColorWithColor(a3, v50);
-  CGContextSetLineCap(a3, kCGLineCapRound);
-  CGContextSetLineWidth(a3, bezelActiveWidth);
+  CGContextSetStrokeColorWithColor(context, v50);
+  CGContextSetLineCap(context, kCGLineCapRound);
+  CGContextSetLineWidth(context, bezelActiveWidth);
   MidX = CGRectGetMidX(p_layoutConstants->bezelOuterRect);
   MidY = CGRectGetMidY(p_layoutConstants->bezelOuterRect);
-  CGContextTranslateCTM(a3, MidX, MidY);
+  CGContextTranslateCTM(context, MidX, MidY);
   v66 = 0;
   v95 = v45 % 0x78;
   v67 = v45 % 0x78 + 1;
@@ -1242,7 +1242,7 @@ LABEL_22:
     }
 
     NTKSuperEllipseRectGeometryGetRadialPoints(v39, &v103, &v105, v70, *(&p_layoutConstants->bezelOuterRect.origin.x + v72));
-    sub_23BE6965C(a3, v71, showingStatusIndicator, 1.57079633 - v68, v103, v104, v105, v106, bezelActiveWidth);
+    sub_23BE6965C(context, v71, showingStatusIndicator, 1.57079633 - v68, v103, v104, v105, v106, bezelActiveWidth);
     v68 = v68 + 0.0523598776;
     v66 = v69 + 1;
   }
@@ -1257,8 +1257,8 @@ LABEL_22:
   {
     CLKInterpolateBetweenFloatsClipped();
     v74 = v73;
-    v75 = a3;
-    CGContextSetLineWidth(a3, v73);
+    contextCopy = context;
+    CGContextSetLineWidth(context, v73);
     if (v69)
     {
       v76 = v99;
@@ -1283,7 +1283,7 @@ LABEL_22:
 
     v79 = v77;
     v80 = v76;
-    a3 = v75;
+    context = contextCopy;
     v81 = v80;
     v82 = MEMORY[0x23EEBFD00](v44);
     v83 = v82;
@@ -1300,12 +1300,12 @@ LABEL_22:
 
     NTKSuperEllipseRectGeometryGetRadialPoints(v39, &v103, &v105, v88, *(&p_layoutConstants->bezelOuterRect.origin.x + v78));
 
-    sub_23BE6965C(a3, v87, showingStatusIndicator, 1.57079633 - v68, v103, v104, v105, v106, v74);
+    sub_23BE6965C(context, v87, showingStatusIndicator, 1.57079633 - v68, v103, v104, v105, v106, v74);
     v68 = v68 + 0.0523598776;
     v89 = v95 + 2;
   }
 
-  CGContextSetLineWidth(a3, bezelInactiveWidth);
+  CGContextSetLineWidth(context, bezelInactiveWidth);
   if (v89 <= 0x77)
   {
     do
@@ -1341,7 +1341,7 @@ LABEL_22:
       }
 
       NTKSuperEllipseRectGeometryGetRadialPoints(v39, &v103, &v105, v90, *(&p_layoutConstants->bezelOuterRect.origin.x + v92));
-      sub_23BE6965C(a3, v91, showingStatusIndicator, 1.57079633 - v68, v103, v104, v105, v106, bezelInactiveWidth);
+      sub_23BE6965C(context, v91, showingStatusIndicator, 1.57079633 - v68, v103, v104, v105, v106, bezelInactiveWidth);
       v68 = v68 + 0.0523598776;
       ++v89;
     }
@@ -1349,10 +1349,10 @@ LABEL_22:
     while (v89 != 120);
   }
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
-- (void)_drawDepthBezelInContext:(CGContext *)a3 tritiumProgress:(double)a4 alpha:(double)a5
+- (void)_drawDepthBezelInContext:(CGContext *)context tritiumProgress:(double)progress alpha:(double)alpha
 {
   submerged = self->_submerged;
   if (submerged && self->_submergedDepth > self->_submergedDepthLimit)
@@ -1391,8 +1391,8 @@ LABEL_22:
     v15 = 1;
   }
 
-  v22 = a4 <= 1.0;
-  if (fabs(a4 + -1.0) < 0.00000011920929)
+  v22 = progress <= 1.0;
+  if (fabs(progress + -1.0) < 0.00000011920929)
   {
     v22 = 0;
   }
@@ -1440,45 +1440,45 @@ LABEL_22:
   v138 = v18;
   v133 = v15;
   v23 = v19;
-  if (a4 <= 0.0)
+  if (progress <= 0.0)
   {
     v41 = v134;
     goto LABEL_13;
   }
 
   v24 = v151;
-  if (fabs(a4) >= 0.00000011920929)
+  if (fabs(progress) >= 0.00000011920929)
   {
     v25 = v20;
     v131 = submerged;
-    v128 = MEMORY[0x23EEBFD00](v151, self->_depthLimitMajorTickColor, a4);
+    v128 = MEMORY[0x23EEBFD00](v151, self->_depthLimitMajorTickColor, progress);
 
-    v126 = MEMORY[0x23EEBFD00](v141, self->_depthLimitMedialTickColor, a4);
+    v126 = MEMORY[0x23EEBFD00](v141, self->_depthLimitMedialTickColor, progress);
 
-    v124 = MEMORY[0x23EEBFD00](v143, self->_depthLimitMinorTickColor, a4);
+    v124 = MEMORY[0x23EEBFD00](v143, self->_depthLimitMinorTickColor, progress);
 
-    v122 = MEMORY[0x23EEBFD00](v148, self->_depthLimitMajorTickColor, a4);
+    v122 = MEMORY[0x23EEBFD00](v148, self->_depthLimitMajorTickColor, progress);
 
-    v120 = MEMORY[0x23EEBFD00](v16, self->_depthLimitMedialTickColor, a4);
+    v120 = MEMORY[0x23EEBFD00](v16, self->_depthLimitMedialTickColor, progress);
 
-    v118 = MEMORY[0x23EEBFD00](v17, self->_depthLimitMinorTickColor, a4);
+    v118 = MEMORY[0x23EEBFD00](v17, self->_depthLimitMinorTickColor, progress);
 
-    v117 = MEMORY[0x23EEBFD00](v138, self->_depthLimitMajorTickColor, a4);
+    v117 = MEMORY[0x23EEBFD00](v138, self->_depthLimitMajorTickColor, progress);
 
     v26 = v23;
-    v23 = MEMORY[0x23EEBFD00](v23, v23, a4);
+    v23 = MEMORY[0x23EEBFD00](v23, v23, progress);
 
-    v20 = MEMORY[0x23EEBFD00](v25, self->_depthLimitMinorTickColor, a4);
+    v20 = MEMORY[0x23EEBFD00](v25, self->_depthLimitMinorTickColor, progress);
 
-    v30 = objc_msgSend_colorWithAlphaComponent_(self->_depthMarkerColor, v27, v28, v29, 1.0 - a4);
+    v30 = objc_msgSend_colorWithAlphaComponent_(self->_depthMarkerColor, v27, v28, v29, 1.0 - progress);
 
-    v34 = objc_msgSend_colorWithAlphaComponent_(self->_depthMaxMarkerColor, v31, v32, v33, 1.0 - a4);
+    v34 = objc_msgSend_colorWithAlphaComponent_(self->_depthMaxMarkerColor, v31, v32, v33, 1.0 - progress);
 
-    v35 = MEMORY[0x23EEBFD00](v21, self->_depthLimitLabelColor, a4);
+    v35 = MEMORY[0x23EEBFD00](v21, self->_depthLimitLabelColor, progress);
     v36 = v21;
     v21 = v35;
 
-    v40 = objc_msgSend_colorWithAlphaComponent_(v147, v37, v38, v39, 1.0 - a4);
+    v40 = objc_msgSend_colorWithAlphaComponent_(v147, v37, v38, v39, 1.0 - progress);
     v151 = v128;
     v141 = v126;
     v143 = v124;
@@ -1499,7 +1499,7 @@ LABEL_13:
 
   v41 = v134;
 LABEL_14:
-  if (a5 >= 1.0)
+  if (alpha >= 1.0)
   {
     v101 = v143;
     v85 = v145;
@@ -1512,33 +1512,33 @@ LABEL_14:
   else
   {
     v152 = v24;
-    v135 = objc_msgSend_colorWithAlphaComponent_(v24, v12, v13, v14, a5);
+    v135 = objc_msgSend_colorWithAlphaComponent_(v24, v12, v13, v14, alpha);
 
-    v153 = objc_msgSend_colorWithAlphaComponent_(v141, v56, v57, v58, a5);
+    v153 = objc_msgSend_colorWithAlphaComponent_(v141, v56, v57, v58, alpha);
 
-    v142 = objc_msgSend_colorWithAlphaComponent_(v143, v59, v60, v61, a5);
+    v142 = objc_msgSend_colorWithAlphaComponent_(v143, v59, v60, v61, alpha);
 
-    v144 = objc_msgSend_colorWithAlphaComponent_(v148, v62, v63, v64, a5);
+    v144 = objc_msgSend_colorWithAlphaComponent_(v148, v62, v63, v64, alpha);
 
-    v149 = objc_msgSend_colorWithAlphaComponent_(v16, v65, v66, v67, a5);
+    v149 = objc_msgSend_colorWithAlphaComponent_(v16, v65, v66, v67, alpha);
 
-    v132 = objc_msgSend_colorWithAlphaComponent_(v17, v68, v69, v70, a5);
+    v132 = objc_msgSend_colorWithAlphaComponent_(v17, v68, v69, v70, alpha);
 
-    v130 = objc_msgSend_colorWithAlphaComponent_(v138, v71, v72, v73, a5);
+    v130 = objc_msgSend_colorWithAlphaComponent_(v138, v71, v72, v73, alpha);
 
-    v140 = objc_msgSend_colorWithAlphaComponent_(v23, v74, v75, v76, a5);
+    v140 = objc_msgSend_colorWithAlphaComponent_(v23, v74, v75, v76, alpha);
 
-    objc_msgSend_colorWithAlphaComponent_(v20, v77, v78, v79, a5);
+    objc_msgSend_colorWithAlphaComponent_(v20, v77, v78, v79, alpha);
     v81 = v80 = v41;
 
-    v85 = objc_msgSend_colorWithAlphaComponent_(v145, v82, v83, v84, a5);
+    v85 = objc_msgSend_colorWithAlphaComponent_(v145, v82, v83, v84, alpha);
 
-    objc_msgSend_colorWithAlphaComponent_(v80, v86, v87, v88, a5);
+    objc_msgSend_colorWithAlphaComponent_(v80, v86, v87, v88, alpha);
     v90 = v89 = v21;
 
-    v94 = objc_msgSend_colorWithAlphaComponent_(v89, v91, v92, v93, a5);
+    v94 = objc_msgSend_colorWithAlphaComponent_(v89, v91, v92, v93, alpha);
 
-    v98 = objc_msgSend_colorWithAlphaComponent_(v147, v95, v96, v97, a5);
+    v98 = objc_msgSend_colorWithAlphaComponent_(v147, v95, v96, v97, alpha);
 
     v24 = v135;
     v16 = v149;
@@ -1580,10 +1580,10 @@ LABEL_14:
   v113 = v99;
   v114 = v101;
   v115 = v102;
-  sub_23BE69794(a3, p_layoutConstants, superEllipseGeometry, depthTextLines, textLines, v24, v99, v101, submergedDepth, submergedDepthMax, v100, v116, v17, v102, v23, v20, v41, v85, v21, v104, v147, v155, submerged, v136);
+  sub_23BE69794(context, p_layoutConstants, superEllipseGeometry, depthTextLines, textLines, v24, v99, v101, submergedDepth, submergedDepthMax, v100, v116, v17, v102, v23, v20, v41, v85, v21, v104, v147, v155, submerged, v136);
 }
 
-- (void)_drawElevationBezelInContext:(CGContext *)a3 tritiumProgress:(double)a4 alpha:(double)a5
+- (void)_drawElevationBezelInContext:(CGContext *)context tritiumProgress:(double)progress alpha:(double)alpha
 {
   elevationIsValid = self->_elevationIsValid;
   elevation = 0.0;
@@ -1697,7 +1697,7 @@ LABEL_21:
   v142 = depthLimitLabelColor;
 LABEL_22:
   v149 = depthLimitLabelColor;
-  if (a4 > 1.0 || fabs(a4 + -1.0) < 0.00000011920929)
+  if (progress > 1.0 || fabs(progress + -1.0) < 0.00000011920929)
   {
     v53 = v149;
     v127 = self->_depthLimitMajorTickColor;
@@ -1723,7 +1723,7 @@ LABEL_22:
     goto LABEL_28;
   }
 
-  if (a4 <= 0.0)
+  if (progress <= 0.0)
   {
     v63 = v28;
     v65 = v29;
@@ -1742,33 +1742,33 @@ LABEL_22:
   {
     v125 = v26;
     v41 = v150;
-    if (fabs(a4) >= 0.00000011920929)
+    if (fabs(progress) >= 0.00000011920929)
     {
-      v127 = MEMORY[0x23EEBFD00](v150, self->_depthLimitMajorTickColor, a4);
+      v127 = MEMORY[0x23EEBFD00](v150, self->_depthLimitMajorTickColor, progress);
 
-      v151 = MEMORY[0x23EEBFD00](v28, self->_depthLimitMedialTickColor, a4);
+      v151 = MEMORY[0x23EEBFD00](v28, self->_depthLimitMedialTickColor, progress);
 
-      v126 = MEMORY[0x23EEBFD00](v129, self->_depthLimitMinorTickColor, a4);
+      v126 = MEMORY[0x23EEBFD00](v129, self->_depthLimitMinorTickColor, progress);
 
-      v130 = MEMORY[0x23EEBFD00](v29, self->_depthLimitMajorTickColor, a4);
+      v130 = MEMORY[0x23EEBFD00](v29, self->_depthLimitMajorTickColor, progress);
 
-      v42 = MEMORY[0x23EEBFD00](v30, self->_depthLimitMedialTickColor, a4);
+      v42 = MEMORY[0x23EEBFD00](v30, self->_depthLimitMedialTickColor, progress);
 
-      v43 = MEMORY[0x23EEBFD00](v144, self->_depthLimitMinorTickColor, a4);
+      v43 = MEMORY[0x23EEBFD00](v144, self->_depthLimitMinorTickColor, progress);
 
-      v145 = MEMORY[0x23EEBFD00](v132, self->_depthLimitMajorTickColor, a4);
+      v145 = MEMORY[0x23EEBFD00](v132, self->_depthLimitMajorTickColor, progress);
 
-      v133 = MEMORY[0x23EEBFD00](v135, self->_depthLimitMedialTickColor, a4);
+      v133 = MEMORY[0x23EEBFD00](v135, self->_depthLimitMedialTickColor, progress);
 
-      v136 = MEMORY[0x23EEBFD00](v138, self->_depthLimitMinorTickColor, a4);
+      v136 = MEMORY[0x23EEBFD00](v138, self->_depthLimitMinorTickColor, progress);
 
-      v47 = objc_msgSend_colorWithAlphaComponent_(v148, v44, v45, v46, 1.0 - a4);
+      v47 = objc_msgSend_colorWithAlphaComponent_(v148, v44, v45, v46, 1.0 - progress);
 
-      v51 = objc_msgSend_colorWithAlphaComponent_(v142, v48, v49, v50, 1.0 - a4);
+      v51 = objc_msgSend_colorWithAlphaComponent_(v142, v48, v49, v50, 1.0 - progress);
 
       v52 = v43;
       v53 = v149;
-      v54 = MEMORY[0x23EEBFD00](a4);
+      v54 = MEMORY[0x23EEBFD00](progress);
       v55 = v125;
 LABEL_28:
 
@@ -1798,7 +1798,7 @@ LABEL_28:
   }
 
 LABEL_29:
-  if (a5 >= 1.0)
+  if (alpha >= 1.0)
   {
     v111 = v65;
     v110 = v63;
@@ -1811,29 +1811,29 @@ LABEL_29:
     v143 = v68;
     v71 = v62;
     v152 = v41;
-    v146 = objc_msgSend_colorWithAlphaComponent_(v41, v38, v39, v40, a5);
+    v146 = objc_msgSend_colorWithAlphaComponent_(v41, v38, v39, v40, alpha);
 
-    v153 = objc_msgSend_colorWithAlphaComponent_(v63, v72, v73, v74, a5);
+    v153 = objc_msgSend_colorWithAlphaComponent_(v63, v72, v73, v74, alpha);
 
-    v78 = objc_msgSend_colorWithAlphaComponent_(v71, v75, v76, v77, a5);
+    v78 = objc_msgSend_colorWithAlphaComponent_(v71, v75, v76, v77, alpha);
 
-    v139 = objc_msgSend_colorWithAlphaComponent_(v65, v79, v80, v81, a5);
+    v139 = objc_msgSend_colorWithAlphaComponent_(v65, v79, v80, v81, alpha);
 
-    v137 = objc_msgSend_colorWithAlphaComponent_(v42, v82, v83, v84, a5);
+    v137 = objc_msgSend_colorWithAlphaComponent_(v42, v82, v83, v84, alpha);
 
-    v134 = objc_msgSend_colorWithAlphaComponent_(v52, v85, v86, v87, a5);
+    v134 = objc_msgSend_colorWithAlphaComponent_(v52, v85, v86, v87, alpha);
 
-    v131 = objc_msgSend_colorWithAlphaComponent_(v70, v88, v89, v90, a5);
+    v131 = objc_msgSend_colorWithAlphaComponent_(v70, v88, v89, v90, alpha);
 
-    v128 = objc_msgSend_colorWithAlphaComponent_(v69, v91, v92, v93, a5);
+    v128 = objc_msgSend_colorWithAlphaComponent_(v69, v91, v92, v93, alpha);
 
-    v97 = objc_msgSend_colorWithAlphaComponent_(v67, v94, v95, v96, a5);
+    v97 = objc_msgSend_colorWithAlphaComponent_(v67, v94, v95, v96, alpha);
 
-    v101 = objc_msgSend_colorWithAlphaComponent_(v143, v98, v99, v100, a5);
+    v101 = objc_msgSend_colorWithAlphaComponent_(v143, v98, v99, v100, alpha);
 
-    v105 = objc_msgSend_colorWithAlphaComponent_(v148, v102, v103, v104, a5);
+    v105 = objc_msgSend_colorWithAlphaComponent_(v148, v102, v103, v104, alpha);
 
-    v109 = objc_msgSend_colorWithAlphaComponent_(v149, v106, v107, v108, a5);
+    v109 = objc_msgSend_colorWithAlphaComponent_(v149, v106, v107, v108, alpha);
 
     v41 = v146;
     v110 = v153;
@@ -1869,7 +1869,7 @@ LABEL_29:
   v154 = v41;
   v121 = v62;
   v122 = v111;
-  sub_23BE69794(a3, p_layoutConstants, superEllipseGeometry, depthTextLines, textLines, v41, v110, v62, v115, v115, v111, v42, v123, v66, v64, v124, v148, v68, v149, 0, 0, v140, v55, 0);
+  sub_23BE69794(context, p_layoutConstants, superEllipseGeometry, depthTextLines, textLines, v41, v110, v62, v115, v115, v111, v42, v123, v66, v64, v124, v148, v68, v149, 0, 0, v140, v55, 0);
 }
 
 - (id)_harmoniaOvernightSummaryLabelColor
@@ -1924,7 +1924,7 @@ LABEL_4:
   return a2;
 }
 
-- (void)_drawHarmoniaBezelInContext:(CGContext *)a3 tritiumProgress:(double)a4 alpha:(double)a5
+- (void)_drawHarmoniaBezelInContext:(CGContext *)context tritiumProgress:(double)progress alpha:(double)alpha
 {
   v473 = *MEMORY[0x277D85DE8];
   v8 = self->_harmoniaUnitLabelColor;
@@ -1941,7 +1941,7 @@ LABEL_4:
   v418 = self->_harmoniaDotFillColor;
   v392 = objc_msgSend__harmoniaOvernightSummaryLabelColor(self, v11, v12, v13);
   v390 = objc_msgSend__harmoniaTrainingSummaryLabelColor(self, v14, v15, v16);
-  if (a4 > 1.0 || fabs(a4 + -1.0) < 0.00000011920929)
+  if (progress > 1.0 || fabs(progress + -1.0) < 0.00000011920929)
   {
     v388 = self->_harmoniaUnitLabelColor;
 
@@ -1977,35 +1977,35 @@ LABEL_4:
     goto LABEL_7;
   }
 
-  if (a4 > 0.0 && fabs(a4) >= 0.00000011920929)
+  if (progress > 0.0 && fabs(progress) >= 0.00000011920929)
   {
-    v387 = MEMORY[0x23EEBFD00](v8, self->_harmoniaUnitLabelColor, a4);
+    v387 = MEMORY[0x23EEBFD00](v8, self->_harmoniaUnitLabelColor, progress);
 
-    v384 = MEMORY[0x23EEBFD00](v429, self->_harmoniaOvernightTypicalColor, a4);
+    v384 = MEMORY[0x23EEBFD00](v429, self->_harmoniaOvernightTypicalColor, progress);
 
-    v381 = MEMORY[0x23EEBFD00](obj, self->_harmoniaOvernightPartiallyOutOfRangeColor, a4);
+    v381 = MEMORY[0x23EEBFD00](obj, self->_harmoniaOvernightPartiallyOutOfRangeColor, progress);
 
-    v378 = MEMORY[0x23EEBFD00](v423, self->_harmoniaOvernightOutOfRangeColor, a4);
+    v378 = MEMORY[0x23EEBFD00](v423, self->_harmoniaOvernightOutOfRangeColor, progress);
 
-    v20 = MEMORY[0x23EEBFD00](v420, self->_harmoniaTrainingWellBelowColor, a4);
+    v20 = MEMORY[0x23EEBFD00](v420, self->_harmoniaTrainingWellBelowColor, progress);
 
-    v375 = MEMORY[0x23EEBFD00](v416, self->_harmoniaTrainingBelowColor, a4);
+    v375 = MEMORY[0x23EEBFD00](v416, self->_harmoniaTrainingBelowColor, progress);
 
-    v412 = MEMORY[0x23EEBFD00](v410, self->_harmoniaTrainingNearColor, a4);
+    v412 = MEMORY[0x23EEBFD00](v410, self->_harmoniaTrainingNearColor, progress);
 
-    v407 = MEMORY[0x23EEBFD00](v396, self->_harmoniaTrainingAboveColor, a4);
+    v407 = MEMORY[0x23EEBFD00](v396, self->_harmoniaTrainingAboveColor, progress);
 
-    v404 = MEMORY[0x23EEBFD00](v9, self->_harmoniaTrainingWellAboveColor, a4);
+    v404 = MEMORY[0x23EEBFD00](v9, self->_harmoniaTrainingWellAboveColor, progress);
 
-    v21 = MEMORY[0x23EEBFD00](v10, self->_depthLimitMinorTickColor, a4);
+    v21 = MEMORY[0x23EEBFD00](v10, self->_depthLimitMinorTickColor, progress);
 
-    v22 = MEMORY[0x23EEBFD00](v427, self->_harmoniaEmphasizedTickColor, a4);
+    v22 = MEMORY[0x23EEBFD00](v427, self->_harmoniaEmphasizedTickColor, progress);
 
     v26 = objc_msgSend__harmoniaOvernightSummaryLabelColor(self, v23, v24, v25);
-    v27 = MEMORY[0x23EEBFD00](v392, v26, a4);
+    v27 = MEMORY[0x23EEBFD00](v392, v26, progress);
 
     v31 = objc_msgSend__harmoniaTrainingSummaryLabelColor(self, v28, v29, v30);
-    v32 = MEMORY[0x23EEBFD00](v390, v31, a4);
+    v32 = MEMORY[0x23EEBFD00](v390, v31, progress);
 
     v33 = v387;
     v427 = v22;
@@ -2031,7 +2031,7 @@ LABEL_7:
   v45 = v8;
 LABEL_9:
   v46 = v9;
-  if (a5 >= 1.0)
+  if (alpha >= 1.0)
   {
     v97 = v418;
     v391 = v32;
@@ -2046,33 +2046,33 @@ LABEL_9:
   {
     v47 = v32;
     v48 = v45;
-    v49 = objc_msgSend_colorWithAlphaComponent_(v45, v17, v18, v19, a5);
+    v49 = objc_msgSend_colorWithAlphaComponent_(v45, v17, v18, v19, alpha);
 
-    v414 = objc_msgSend_colorWithAlphaComponent_(v429, v50, v51, v52, a5);
+    v414 = objc_msgSend_colorWithAlphaComponent_(v429, v50, v51, v52, alpha);
 
-    v408 = objc_msgSend_colorWithAlphaComponent_(obj, v53, v54, v55, a5);
+    v408 = objc_msgSend_colorWithAlphaComponent_(obj, v53, v54, v55, alpha);
 
-    v405 = objc_msgSend_colorWithAlphaComponent_(v423, v56, v57, v58, a5);
+    v405 = objc_msgSend_colorWithAlphaComponent_(v423, v56, v57, v58, alpha);
 
-    v402 = objc_msgSend_colorWithAlphaComponent_(v420, v59, v60, v61, a5);
+    v402 = objc_msgSend_colorWithAlphaComponent_(v420, v59, v60, v61, alpha);
 
-    v400 = objc_msgSend_colorWithAlphaComponent_(v416, v62, v63, v64, a5);
+    v400 = objc_msgSend_colorWithAlphaComponent_(v416, v62, v63, v64, alpha);
 
-    v397 = objc_msgSend_colorWithAlphaComponent_(v410, v65, v66, v67, a5);
+    v397 = objc_msgSend_colorWithAlphaComponent_(v410, v65, v66, v67, alpha);
 
-    v393 = objc_msgSend_colorWithAlphaComponent_(v35, v68, v69, v70, a5);
+    v393 = objc_msgSend_colorWithAlphaComponent_(v35, v68, v69, v70, alpha);
 
-    v74 = objc_msgSend_colorWithAlphaComponent_(v46, v71, v72, v73, a5);
+    v74 = objc_msgSend_colorWithAlphaComponent_(v46, v71, v72, v73, alpha);
 
-    v78 = objc_msgSend_colorWithAlphaComponent_(v10, v75, v76, v77, a5);
+    v78 = objc_msgSend_colorWithAlphaComponent_(v10, v75, v76, v77, alpha);
 
-    v82 = objc_msgSend_colorWithAlphaComponent_(v418, v79, v80, v81, a5);
+    v82 = objc_msgSend_colorWithAlphaComponent_(v418, v79, v80, v81, alpha);
 
-    v86 = objc_msgSend_colorWithAlphaComponent_(v427, v83, v84, v85, a5);
+    v86 = objc_msgSend_colorWithAlphaComponent_(v427, v83, v84, v85, alpha);
 
-    v90 = objc_msgSend_colorWithAlphaComponent_(v34, v87, v88, v89, a5);
+    v90 = objc_msgSend_colorWithAlphaComponent_(v34, v87, v88, v89, alpha);
 
-    v94 = objc_msgSend_colorWithAlphaComponent_(v47, v91, v92, v93, a5);
+    v94 = objc_msgSend_colorWithAlphaComponent_(v47, v91, v92, v93, alpha);
 
     v368 = v49;
     v427 = v86;
@@ -2132,8 +2132,8 @@ LABEL_9:
   v114 = v111 - v112;
   MidX = CGRectGetMidX(p_layoutConstants->bezelOuterRect);
   MidY = CGRectGetMidY(p_layoutConstants->bezelOuterRect);
-  CGContextSaveGState(a3);
-  CGContextTranslateCTM(a3, MidX, MidY);
+  CGContextSaveGState(context);
+  CGContextTranslateCTM(context, MidX, MidY);
   bezelHarmoniaLabelPositionOffset = p_layoutConstants->bezelHarmoniaLabelPositionOffset;
   v417 = p_layoutConstants;
   v118 = (p_layoutConstants->bezelHarmoniaMajorTickLength - p_layoutConstants->bezelHarmoniaMinorTickLength) * 0.5;
@@ -2142,7 +2142,7 @@ LABEL_9:
   v395 = v108;
   v124 = objc_msgSend_CGColor(v120, v121, v122, v123);
   v421 = v105;
-  sub_23BE6A688(a3, v105, v124, ValueAtIndex, 0, 0, v114 - bezelHarmoniaLabelPositionOffset, v118);
+  sub_23BE6A688(context, v105, v124, ValueAtIndex, 0, 0, v114 - bezelHarmoniaLabelPositionOffset, v118);
   v430 = objc_opt_new();
   v460 = 0u;
   v461 = 0u;
@@ -2177,14 +2177,14 @@ LABEL_9:
   v140 = v419;
   v144 = objc_msgSend_CGColor(v419, v141, v142, v143);
   v145 = v113 + v113;
-  v146 = sub_23BE6ACBC(a3, &p_layoutConstants->bezelOuterRect.origin.x, v421, v139, v144, v430, v113 + v113, v114);
+  v146 = sub_23BE6ACBC(context, &p_layoutConstants->bezelOuterRect.origin.x, v421, v139, v144, v430, v113 + v113, v114);
   v147 = v399;
   v151 = objc_msgSend_CGColor(v399, v148, v149, v150);
-  sub_23BE6A688(a3, v421, v151, v367, 0, 1, bezelHarmoniaLabelPositionOffset + bezelHarmoniaLabelPositionOffset + v114 - bezelHarmoniaLabelPositionOffset + v146, v118);
+  sub_23BE6A688(context, v421, v151, v367, 0, 1, bezelHarmoniaLabelPositionOffset + bezelHarmoniaLabelPositionOffset + v114 - bezelHarmoniaLabelPositionOffset + v146, v118);
   v152 = CFArrayGetValueAtIndex(theArray, 1);
   v153 = v108;
   v157 = objc_msgSend_CGColor(v108, v154, v155, v156);
-  sub_23BE6A688(a3, v421, v157, v152, 2, 0, v113 + bezelHarmoniaLabelPositionOffset, v118);
+  sub_23BE6A688(context, v421, v157, v152, 2, 0, v113 + bezelHarmoniaLabelPositionOffset, v118);
   v158 = objc_opt_new();
   v458 = 0u;
   v459 = 0u;
@@ -2219,10 +2219,10 @@ LABEL_9:
   v174 = v419;
   v178 = objc_msgSend_CGColor(v419, v175, v176, v177);
   v179 = -v145;
-  v180 = sub_23BE6ACBC(a3, &p_layoutConstants->bezelOuterRect.origin.x, v421, v173, v178, v158, -v145, v113);
+  v180 = sub_23BE6ACBC(context, &p_layoutConstants->bezelOuterRect.origin.x, v421, v173, v178, v158, -v145, v113);
   v181 = v411;
   v185 = objc_msgSend_CGColor(v411, v182, v183, v184);
-  sub_23BE6A688(a3, v421, v185, line, 2, 1, v113 + bezelHarmoniaLabelPositionOffset - v180 - bezelHarmoniaLabelPositionOffset - bezelHarmoniaLabelPositionOffset, v118);
+  sub_23BE6A688(context, v421, v185, line, 2, 1, v113 + bezelHarmoniaLabelPositionOffset - v180 - bezelHarmoniaLabelPositionOffset - bezelHarmoniaLabelPositionOffset, v118);
   v186 = objc_alloc(MEMORY[0x277CBEB18]);
   v190 = objc_msgSend_count(v415, v187, v188, v189);
   v194 = objc_msgSend_count(v406, v191, v192, v193);
@@ -2354,7 +2354,7 @@ LABEL_9:
     objc_msgSend_floatValue(v445[5], v264, v265, v266);
     v268 = v267;
     objc_msgSend_floatValue(v451[5], v269, v270, v271);
-    sub_23BE6AF78(a3, v417, v421, v201, v114 + v146 * (((v263 * -24.0) + 24.0) / 48.0), v146 * (((v268 * -24.0) + 24.0) / 48.0) - v146 * (((v272 * -24.0) + 24.0) / 48.0));
+    sub_23BE6AF78(context, v417, v421, v201, v114 + v146 * (((v263 * -24.0) + 24.0) / 48.0), v146 * (((v268 * -24.0) + 24.0) / 48.0) - v146 * (((v272 * -24.0) + 24.0) / 48.0));
   }
 
   if (v401)
@@ -2383,14 +2383,14 @@ LABEL_9:
       {
 LABEL_66:
         objc_msgSend_floatValue(&unk_284EA1050, v274, v275, v276);
-        sub_23BE6AF78(a3, v417, v421, v279, ((v338 * -24.0) + 24.0) / 48.0, v113 + v180 * (((v278 * -24.0) + 24.0) / -48.0));
+        sub_23BE6AF78(context, v417, v421, v279, ((v338 * -24.0) + 24.0) / 48.0, v113 + v180 * (((v278 * -24.0) + 24.0) / -48.0));
         v339 = v389;
         v343 = objc_msgSend_CGColor(v389, v340, v341, v342);
         v347 = objc_msgSend_clearColor(MEMORY[0x277D75348], v344, v345, v346);
         v348 = v347;
         v352 = objc_msgSend_CGColor(v347, v349, v350, v351);
         v355 = objc_msgSend_indexSetWithIndex_(MEMORY[0x277CCAA78], v353, 24, v354);
-        sub_23BE6ACBC(a3, v417->f64, v421, v343, v352, v355, v179, v113);
+        sub_23BE6ACBC(context, v417->f64, v421, v343, v352, v355, v179, v113);
 
         goto LABEL_67;
       }
@@ -2455,59 +2455,59 @@ LABEL_65:
 LABEL_67:
   if (objc_msgSend_count(v415, v259, v260, v261))
   {
-    sub_23BE6B0D4(a3, v417->f64, v421, v415, v403, v204, v114, v146, 1.0);
+    sub_23BE6B0D4(context, v417->f64, v421, v415, v403, v204, v114, v146, 1.0);
   }
 
   if (objc_msgSend_count(v409, v356, v357, v358))
   {
-    sub_23BE6B0D4(a3, v417->f64, v421, v409, v403, v428, v114, v146, 1.0);
+    sub_23BE6B0D4(context, v417->f64, v421, v409, v403, v428, v114, v146, 1.0);
   }
 
   if (objc_msgSend_count(v406, v359, v360, v361))
   {
-    sub_23BE6B0D4(a3, v417->f64, v421, v406, v403, v204, v114, v146, 1.0);
+    sub_23BE6B0D4(context, v417->f64, v421, v406, v403, v204, v114, v146, 1.0);
   }
 
   if (v401)
   {
     v464 = v401;
     v363 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v362, &v464, 1);
-    sub_23BE6B0D4(a3, v417->f64, v421, v363, v403, v411, v113, v180, -1.0);
+    sub_23BE6B0D4(context, v417->f64, v421, v363, v403, v411, v113, v180, -1.0);
   }
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 
   _Block_object_dispose(&v444, 8);
   _Block_object_dispose(&v450, 8);
 }
 
-- (void)_drawBezelInContext:(CGContext *)a3 bezelStyle:(int64_t)a4 tritiumProgress:(double)a5 alpha:(double)a6
+- (void)_drawBezelInContext:(CGContext *)context bezelStyle:(int64_t)style tritiumProgress:(double)progress alpha:(double)alpha
 {
-  if (a4 > 2)
+  if (style > 2)
   {
-    if (a4 == 3)
+    if (style == 3)
     {
-      MEMORY[0x2821F9670](self, sel__drawElevationBezelInContext_tritiumProgress_alpha_, a3, 3);
+      MEMORY[0x2821F9670](self, sel__drawElevationBezelInContext_tritiumProgress_alpha_, context, 3);
     }
 
-    else if (a4 == 4)
+    else if (style == 4)
     {
-      MEMORY[0x2821F9670](self, sel__drawHarmoniaBezelInContext_tritiumProgress_alpha_, a3, 4);
+      MEMORY[0x2821F9670](self, sel__drawHarmoniaBezelInContext_tritiumProgress_alpha_, context, 4);
     }
   }
 
-  else if (a4 == 1)
+  else if (style == 1)
   {
-    MEMORY[0x2821F9670](self, sel__drawSecondsBezelInContext_tritiumProgress_alpha_, a3, 1);
+    MEMORY[0x2821F9670](self, sel__drawSecondsBezelInContext_tritiumProgress_alpha_, context, 1);
   }
 
-  else if (a4 == 2)
+  else if (style == 2)
   {
-    MEMORY[0x2821F9670](self, sel__drawDepthBezelInContext_tritiumProgress_alpha_, a3, 2);
+    MEMORY[0x2821F9670](self, sel__drawDepthBezelInContext_tritiumProgress_alpha_, context, 2);
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   CurrentContext = UIGraphicsGetCurrentContext();
   objc_msgSend_bounds(self, v5, v6, v7);
@@ -2584,38 +2584,38 @@ LABEL_67:
   objc_msgSend_setHarmoniaTrainingLocalizedSummary_(self, v59, v61, v60);
 }
 
-+ (void)drawSnapshotInContext:(CGContext *)a3 bezelStyle:(int64_t)a4 colorPalette:(id)a5 forDevice:(id)a6
++ (void)drawSnapshotInContext:(CGContext *)context bezelStyle:(int64_t)style colorPalette:(id)palette forDevice:(id)device
 {
-  v9 = a6;
-  v10 = a5;
+  deviceCopy = device;
+  paletteCopy = palette;
   v11 = [NTKFoghornFaceBezelView alloc];
-  objc_msgSend_screenBounds(v9, v12, v13, v14);
-  v30 = objc_msgSend_initWithFrame_forDevice_(v11, v15, v9, v16);
+  objc_msgSend_screenBounds(deviceCopy, v12, v13, v14);
+  v30 = objc_msgSend_initWithFrame_forDevice_(v11, v15, deviceCopy, v16);
 
-  objc_msgSend_setBezelStyle_(v30, v17, a4, v18);
-  objc_msgSend_setColorPalette_(v30, v19, v10, v20);
+  objc_msgSend_setBezelStyle_(v30, v17, style, v18);
+  objc_msgSend_setColorPalette_(v30, v19, paletteCopy, v20);
 
   objc_msgSend_setToSnapshotValues(v30, v21, v22, v23);
   v27 = objc_msgSend_layer(v30, v24, v25, v26);
-  objc_msgSend_renderInContext_(v27, v28, a3, v29);
+  objc_msgSend_renderInContext_(v27, v28, context, v29);
 }
 
-- (void)_transitionBaseLabelFromStyle:(int64_t)a3 toStyle:(int64_t)a4 progress:(double)a5
+- (void)_transitionBaseLabelFromStyle:(int64_t)style toStyle:(int64_t)toStyle progress:(double)progress
 {
-  v5 = a4;
-  v7 = a3 & 0xFFFFFFFFFFFFFFFELL;
-  v8 = a4 & 0xFFFFFFFFFFFFFFFELL;
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2 && v8 == 2)
+  styleCopy2 = toStyle;
+  v7 = style & 0xFFFFFFFFFFFFFFFELL;
+  v8 = toStyle & 0xFFFFFFFFFFFFFFFELL;
+  if ((style & 0xFFFFFFFFFFFFFFFELL) == 2 && v8 == 2)
   {
-    if (a5 >= 0.5)
+    if (progress >= 0.5)
     {
-      v10 = a5;
+      progressCopy2 = progress;
     }
 
     else
     {
-      v5 = a3;
-      v10 = 1.0 - a5;
+      styleCopy2 = style;
+      progressCopy2 = 1.0 - progress;
     }
   }
 
@@ -2623,67 +2623,67 @@ LABEL_67:
   {
     if (v7 != 2 && v8 != 2)
     {
-      v10 = 1.0;
-      objc_msgSend_setHidden_(self->_baseLabel, a2, 1, a4, a5);
+      progressCopy2 = 1.0;
+      objc_msgSend_setHidden_(self->_baseLabel, a2, 1, toStyle, progress);
       goto LABEL_15;
     }
 
     if (v7 == 2)
     {
-      v5 = a3;
-      v10 = 1.0 - a5;
+      styleCopy2 = style;
+      progressCopy2 = 1.0 - progress;
     }
 
     else
     {
-      v10 = a5;
+      progressCopy2 = progress;
     }
   }
 
-  objc_msgSend_setHidden_(self->_baseLabel, a2, 0, a4, a5);
+  objc_msgSend_setHidden_(self->_baseLabel, a2, 0, toStyle, progress);
 LABEL_15:
-  objc_msgSend_setAlpha_(self->_baseLabel, v11, v12, v13, v10);
-  if (v5 == 3)
+  objc_msgSend_setAlpha_(self->_baseLabel, v11, v12, v13, progressCopy2);
+  if (styleCopy2 == 3)
   {
 
     objc_msgSend__updateBaseLabelForElevationBezel(self, v14, v15, v16);
   }
 
-  else if (v5 == 2)
+  else if (styleCopy2 == 2)
   {
 
     MEMORY[0x2821F9670](self, sel__updateBaseLabelForDepthBezel, v15, v16);
   }
 }
 
-- (void)setBezelStyle:(int64_t)a3
+- (void)setBezelStyle:(int64_t)style
 {
-  if (self->_bezelStyle != a3)
+  if (self->_bezelStyle != style)
   {
-    self->_bezelStyle = a3;
+    self->_bezelStyle = style;
     self->_transitoryProgress = 0.0;
-    self->_transitoryBezelStyle = a3;
-    objc_msgSend_setNeedsDisplay(self, a2, a3, v3);
+    self->_transitoryBezelStyle = style;
+    objc_msgSend_setNeedsDisplay(self, a2, style, v3);
 
-    MEMORY[0x2821F9670](self, sel__transitionBaseLabelFromStyle_toStyle_progress_, a3, a3);
+    MEMORY[0x2821F9670](self, sel__transitionBaseLabelFromStyle_toStyle_progress_, style, style);
   }
 }
 
-- (void)setBezelFromStyle:(int64_t)a3 toStyle:(int64_t)a4 progress:(double)a5
+- (void)setBezelFromStyle:(int64_t)style toStyle:(int64_t)toStyle progress:(double)progress
 {
-  self->_transitoryProgress = a5;
-  self->_transitoryBezelStyle = a3;
-  self->_bezelStyle = a4;
-  objc_msgSend_setNeedsDisplay(self, a2, a3, a4);
+  self->_transitoryProgress = progress;
+  self->_transitoryBezelStyle = style;
+  self->_bezelStyle = toStyle;
+  objc_msgSend_setNeedsDisplay(self, a2, style, toStyle);
 
-  MEMORY[0x2821F9670](self, sel__transitionBaseLabelFromStyle_toStyle_progress_, a3, a4);
+  MEMORY[0x2821F9670](self, sel__transitionBaseLabelFromStyle_toStyle_progress_, style, toStyle);
 }
 
-- (void)setTritiumProgress:(double)a3
+- (void)setTritiumProgress:(double)progress
 {
-  if (self->_tritiumProgress != a3)
+  if (self->_tritiumProgress != progress)
   {
-    self->_tritiumProgress = a3;
+    self->_tritiumProgress = progress;
     objc_msgSend_setNeedsDisplay(self, a2, v3, v4);
     bezelStyle = self->_bezelStyle;
 
@@ -2691,52 +2691,52 @@ LABEL_15:
   }
 }
 
-- (void)setShowingStatusIndicator:(BOOL)a3
+- (void)setShowingStatusIndicator:(BOOL)indicator
 {
-  if (self->_showingStatusIndicator != a3)
+  if (self->_showingStatusIndicator != indicator)
   {
-    self->_showingStatusIndicator = a3;
+    self->_showingStatusIndicator = indicator;
     if (self->_bezelStyle == 1)
     {
-      objc_msgSend_setNeedsDisplay(self, a2, a3, v3);
+      objc_msgSend_setNeedsDisplay(self, a2, indicator, v3);
     }
   }
 }
 
-- (CGRect)_dirtyRectFromSeconds:(double)a3 toSeconds:(double)a4
+- (CGRect)_dirtyRectFromSeconds:(double)seconds toSeconds:(double)toSeconds
 {
-  if (a3 <= a4)
+  if (seconds <= toSeconds)
   {
-    v5 = a4;
+    secondsCopy = toSeconds;
   }
 
   else
   {
-    v5 = a3;
+    secondsCopy = seconds;
   }
 
-  if (a3 <= a4)
+  if (seconds <= toSeconds)
   {
-    v6 = a3;
+    toSecondsCopy2 = seconds;
   }
 
   else
   {
-    v6 = a4;
+    toSecondsCopy2 = toSeconds;
   }
 
-  x = sub_23BE66320(&self->_layoutConstants, self->_superEllipseGeometry, v5);
+  x = sub_23BE66320(&self->_layoutConstants, self->_superEllipseGeometry, secondsCopy);
   y = v11;
   width = v13;
   for (i = v15; ; i = v33.size.height)
   {
-    v5 = v5 + -0.5;
-    if (v5 <= v6)
+    secondsCopy = secondsCopy + -0.5;
+    if (secondsCopy <= toSecondsCopy2)
     {
       break;
     }
 
-    v37.origin.x = sub_23BE66320(&self->_layoutConstants, self->_superEllipseGeometry, v5);
+    v37.origin.x = sub_23BE66320(&self->_layoutConstants, self->_superEllipseGeometry, secondsCopy);
     v37.origin.y = v17;
     v37.size.width = v18;
     v37.size.height = v19;
@@ -2773,17 +2773,17 @@ LABEL_15:
   return result;
 }
 
-- (void)setSeconds:(double)a3
+- (void)setSeconds:(double)seconds
 {
-  if (objc_msgSend__needUpdateForDeltaSeconds_(self, a2, v3, v4, a3 - self->_seconds))
+  if (objc_msgSend__needUpdateForDeltaSeconds_(self, a2, v3, v4, seconds - self->_seconds))
   {
     seconds = self->_seconds;
-    self->_seconds = a3;
+    self->_seconds = seconds;
     if (self->_bezelStyle == 1)
     {
-      if (vabdd_f64(a3, seconds) <= 0.5 && 60.0 - self->_secondsEndOfMinuteAnimationDuration >= a3)
+      if (vabdd_f64(seconds, seconds) <= 0.5 && 60.0 - self->_secondsEndOfMinuteAnimationDuration >= seconds)
       {
-        objc_msgSend__dirtyRectFromSeconds_toSeconds_(self, v7, v8, v9, seconds, a3);
+        objc_msgSend__dirtyRectFromSeconds_toSeconds_(self, v7, v8, v9, seconds, seconds);
 
         MEMORY[0x2821F9670](self, sel_setNeedsDisplayInRect_, v11, v12);
       }
@@ -2797,10 +2797,10 @@ LABEL_15:
   }
 }
 
-- (BOOL)_needBaseLabelUpdateForDeltaDepthElevation:(double)a3 range:(double)a4
+- (BOOL)_needBaseLabelUpdateForDeltaDepthElevation:(double)elevation range:(double)range
 {
-  v4 = fabs(a3) * 3.2808399;
-  v5 = fabs(a4) <= 30.0;
+  v4 = fabs(elevation) * 3.2808399;
+  v5 = fabs(range) <= 30.0;
   v6 = 0.1;
   if (!v5)
   {
@@ -2810,14 +2810,14 @@ LABEL_15:
   return v4 >= v6;
 }
 
-- (void)setSubmergedDepth:(double)a3
+- (void)setSubmergedDepth:(double)depth
 {
-  v7 = a3 - self->_submergedDepth;
+  v7 = depth - self->_submergedDepth;
   v8 = objc_msgSend__needUpdateForDeltaDepthElevation_range_(self, a2, v3, v4, v7, self->_submergedDepthLimit);
   v12 = objc_msgSend__needBaseLabelUpdateForDeltaDepthElevation_range_(self, v9, v10, v11, v7, self->_submergedDepthLimit);
   if ((v8 & 1) != 0 || v12)
   {
-    self->_submergedDepth = a3;
+    self->_submergedDepth = depth;
     if (self->_bezelStyle == 2)
     {
       objc_msgSend_setNeedsDisplay(self, v13, v14, v15);
@@ -2827,44 +2827,44 @@ LABEL_15:
   }
 }
 
-- (void)setSubmergedDepthMax:(double)a3
+- (void)setSubmergedDepthMax:(double)max
 {
-  v7 = a3 - self->_submergedDepthMax;
+  v7 = max - self->_submergedDepthMax;
   v8 = objc_msgSend__needUpdateForDeltaDepthElevation_range_(self, a2, v3, v4, v7, self->_submergedDepthLimit);
   v12 = objc_msgSend__needBaseLabelUpdateForDeltaDepthElevation_range_(self, v9, v10, v11, v7, self->_submergedDepthLimit);
   if ((v8 & 1) != 0 || v12)
   {
-    self->_submergedDepthMax = a3;
+    self->_submergedDepthMax = max;
     if (self->_bezelStyle == 2)
     {
       objc_msgSend_setNeedsDisplay(self, v13, v14, v15);
-      objc_msgSend_setHidden_(self->_baseLabel, v16, a3 <= 0.0 && !self->_submerged, v17);
+      objc_msgSend_setHidden_(self->_baseLabel, v16, max <= 0.0 && !self->_submerged, v17);
 
       MEMORY[0x2821F9670](self, sel__updateBaseLabelForDepthBezel, v18, v19);
     }
   }
 }
 
-- (void)_updateLimitLabelCache:(id *)a3 limitFeet:(double)a4 limitMeters:(double)a5 limitsValid:(BOOL)a6
+- (void)_updateLimitLabelCache:(id *)cache limitFeet:(double)feet limitMeters:(double)meters limitsValid:(BOOL)valid
 {
-  v6 = a6;
+  validCopy = valid;
   v49[3] = *MEMORY[0x277D85DE8];
-  if (a3->var1 != a4 || a3->var2 != a5 || a3->var3 != a6)
+  if (cache->var1 != feet || cache->var2 != meters || cache->var3 != valid)
   {
-    a3->var1 = a4;
-    a3->var2 = a5;
-    a3->var3 = a6;
-    if (a3->var0)
+    cache->var1 = feet;
+    cache->var2 = meters;
+    cache->var3 = valid;
+    if (cache->var0)
     {
-      CFRelease(a3->var0);
-      a3->var0 = 0;
+      CFRelease(cache->var0);
+      cache->var0 = 0;
     }
 
     p_layoutConstants = &self->_layoutConstants;
-    if (v6)
+    if (validCopy)
     {
-      v12 = sub_23BE6952C(0, 6, ceil(fabs(a4)));
-      v13 = sub_23BE6952C(0, 6, ceil(fabs(a5)));
+      v12 = sub_23BE6952C(0, 6, ceil(fabs(feet)));
+      v13 = sub_23BE6952C(0, 6, ceil(fabs(meters)));
     }
 
     else
@@ -2901,18 +2901,18 @@ LABEL_15:
     objc_msgSend_setObject_atIndexedSubscript_(v31, v43, v42, 1);
     v47 = objc_msgSend_copy(v31, v44, v45, v46);
 
-    a3->var0 = sub_23BE61320(v47);
+    cache->var0 = sub_23BE61320(v47);
   }
 }
 
-- (void)_limitsForElevation:(double)a3 elevationIsValid:(BOOL)a4 limitMeters:(double *)a5 limitFeet:(double *)a6
+- (void)_limitsForElevation:(double)elevation elevationIsValid:(BOOL)valid limitMeters:(double *)meters limitFeet:(double *)feet
 {
   v9 = 0.0;
   v10 = 0.0;
-  if (a4)
+  if (valid)
   {
-    v11 = sub_23BE642C4(&v12, a3);
-    if (a3 >= 0.0)
+    v11 = sub_23BE642C4(&v12, elevation);
+    if (elevation >= 0.0)
     {
       v10 = v11[4];
       v9 = *v11;
@@ -2925,24 +2925,24 @@ LABEL_15:
     }
   }
 
-  *a5 = v10;
-  *a6 = v9;
+  *meters = v10;
+  *feet = v9;
 }
 
-- (void)_updateElevationLimitLabelsWithElevation:(double)a3 elevationIsValid:(BOOL)a4
+- (void)_updateElevationLimitLabelsWithElevation:(double)elevation elevationIsValid:(BOOL)valid
 {
-  v4 = a4;
+  validCopy = valid;
   v7 = 0.0;
   v8 = 0.0;
-  objc_msgSend__limitsForElevation_elevationIsValid_limitMeters_limitFeet_(self, a2, a4, &v8, &v7, a3);
-  objc_msgSend__updateLimitLabelCache_limitFeet_limitMeters_limitsValid_(self, v6, &self->_elevationLimitLabelCache, v4, v7, v8);
+  objc_msgSend__limitsForElevation_elevationIsValid_limitMeters_limitFeet_(self, a2, valid, &v8, &v7, elevation);
+  objc_msgSend__updateLimitLabelCache_limitFeet_limitMeters_limitsValid_(self, v6, &self->_elevationLimitLabelCache, validCopy, v7, v8);
 }
 
-- (void)setSubmergedDepthLimit:(double)a3
+- (void)setSubmergedDepthLimit:(double)limit
 {
-  if (self->_submergedDepthLimit != a3)
+  if (self->_submergedDepthLimit != limit)
   {
-    self->_submergedDepthLimit = a3;
+    self->_submergedDepthLimit = limit;
     if (self->_bezelStyle == 2)
     {
       objc_msgSend_setNeedsDisplay(self, a2, v3, v4);
@@ -2952,11 +2952,11 @@ LABEL_15:
   }
 }
 
-- (void)setSubmergedDepthLabelLimitMeters:(double)a3
+- (void)setSubmergedDepthLabelLimitMeters:(double)meters
 {
-  if (self->_submergedDepthLabelLimitMeters != a3)
+  if (self->_submergedDepthLabelLimitMeters != meters)
   {
-    self->_submergedDepthLabelLimitMeters = a3;
+    self->_submergedDepthLabelLimitMeters = meters;
     objc_msgSend__updateDepthLimitLabelsWithSubmergedDepthLimitMeters_feet_(self, a2, v3, v4);
     if (self->_bezelStyle == 2)
     {
@@ -2967,11 +2967,11 @@ LABEL_15:
   }
 }
 
-- (void)setSubmergedDepthLabelLimitFeet:(double)a3
+- (void)setSubmergedDepthLabelLimitFeet:(double)feet
 {
-  if (self->_submergedDepthLabelLimitFeet != a3)
+  if (self->_submergedDepthLabelLimitFeet != feet)
   {
-    self->_submergedDepthLabelLimitFeet = a3;
+    self->_submergedDepthLabelLimitFeet = feet;
     objc_msgSend__updateDepthLimitLabelsWithSubmergedDepthLimitMeters_feet_(self, a2, v3, v4, self->_submergedDepthLabelLimitMeters);
     if (self->_bezelStyle == 2)
     {
@@ -2982,17 +2982,17 @@ LABEL_15:
   }
 }
 
-- (void)setElevation:(double)a3
+- (void)setElevation:(double)elevation
 {
   v21 = 0.0;
   v22 = 0.0;
   objc_msgSend__limitsForElevation_elevationIsValid_limitMeters_limitFeet_(self, a2, self->_elevationIsValid, &v22, &v21);
-  v5 = a3 - self->_elevation;
+  v5 = elevation - self->_elevation;
   v9 = objc_msgSend__needUpdateForDeltaDepthElevation_range_(self, v6, v7, v8, v5, v22);
   v13 = objc_msgSend__needBaseLabelUpdateForDeltaDepthElevation_range_(self, v10, v11, v12, v5, v22);
   if ((v9 & 1) != 0 || v13)
   {
-    self->_elevation = a3;
+    self->_elevation = elevation;
     objc_msgSend__updateLimitLabelCache_limitFeet_limitMeters_limitsValid_(self, v14, &self->_elevationLimitLabelCache, self->_elevationIsValid, v21, v22);
     if (self->_bezelStyle == 3)
     {
@@ -3002,11 +3002,11 @@ LABEL_15:
   }
 }
 
-- (void)setElevationAccuracy:(double)a3
+- (void)setElevationAccuracy:(double)accuracy
 {
-  if (self->_elevationAccuracy != a3)
+  if (self->_elevationAccuracy != accuracy)
   {
-    self->_elevationAccuracy = a3;
+    self->_elevationAccuracy = accuracy;
     if (self->_bezelStyle == 3)
     {
       objc_msgSend__updateBaseLabelForElevationBezel(self, a2, v3, v4);
@@ -3014,11 +3014,11 @@ LABEL_15:
   }
 }
 
-- (void)setElevationPrecision:(double)a3
+- (void)setElevationPrecision:(double)precision
 {
-  if (self->_elevationPrecision != a3)
+  if (self->_elevationPrecision != precision)
   {
-    self->_elevationPrecision = a3;
+    self->_elevationPrecision = precision;
     if (self->_bezelStyle == 3)
     {
       objc_msgSend__updateBaseLabelForElevationBezel(self, a2, v3, v4);
@@ -3026,12 +3026,12 @@ LABEL_15:
   }
 }
 
-- (void)setElevationIsValid:(BOOL)a3
+- (void)setElevationIsValid:(BOOL)valid
 {
-  if (self->_elevationIsValid != a3)
+  if (self->_elevationIsValid != valid)
   {
-    self->_elevationIsValid = a3;
-    objc_msgSend__updateElevationLimitLabelsWithElevation_elevationIsValid_(self, a2, a3, v3, self->_elevation);
+    self->_elevationIsValid = valid;
+    objc_msgSend__updateElevationLimitLabelsWithElevation_elevationIsValid_(self, a2, valid, v3, self->_elevation);
     if (self->_bezelStyle == 3)
     {
       objc_msgSend_setNeedsDisplay(self, v5, v6, v7);
@@ -3041,72 +3041,72 @@ LABEL_15:
   }
 }
 
-- (void)setMajorTickColor:(id)a3
+- (void)setMajorTickColor:(id)color
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(v10, v5, self->_majorTickColor, v6) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, self->_majorTickColor, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_majorTickColor, a3);
+    objc_storeStrong(&self->_majorTickColor, color);
     objc_msgSend_setNeedsDisplay(self, v7, v8, v9);
   }
 }
 
-- (void)setMinorTickColor:(id)a3
+- (void)setMinorTickColor:(id)color
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(v10, v5, self->_minorTickColor, v6) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, self->_minorTickColor, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_minorTickColor, a3);
+    objc_storeStrong(&self->_minorTickColor, color);
     objc_msgSend_setNeedsDisplay(self, v7, v8, v9);
   }
 }
 
-- (void)setMedialTickColor:(id)a3
+- (void)setMedialTickColor:(id)color
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(v10, v5, self->_medialTickColor, v6) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, self->_medialTickColor, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_medialTickColor, a3);
+    objc_storeStrong(&self->_medialTickColor, color);
     objc_msgSend_setNeedsDisplay(self, v7, v8, v9);
   }
 }
 
-- (void)setInactiveMajorTickColor:(id)a3
+- (void)setInactiveMajorTickColor:(id)color
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(v10, v5, self->_inactiveMajorTickColor, v6) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, self->_inactiveMajorTickColor, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_inactiveMajorTickColor, a3);
+    objc_storeStrong(&self->_inactiveMajorTickColor, color);
     objc_msgSend_setNeedsDisplay(self, v7, v8, v9);
   }
 }
 
-- (void)setInactiveMedialTickColor:(id)a3
+- (void)setInactiveMedialTickColor:(id)color
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(v10, v5, self->_inactiveMedialTickColor, v6) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, self->_inactiveMedialTickColor, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_inactiveMedialTickColor, a3);
+    objc_storeStrong(&self->_inactiveMedialTickColor, color);
     objc_msgSend_setNeedsDisplay(self, v7, v8, v9);
   }
 }
 
-- (void)setInactiveMinorTickColor:(id)a3
+- (void)setInactiveMinorTickColor:(id)color
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(v10, v5, self->_inactiveMinorTickColor, v6) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, self->_inactiveMinorTickColor, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_inactiveMinorTickColor, a3);
+    objc_storeStrong(&self->_inactiveMinorTickColor, color);
     objc_msgSend_setNeedsDisplay(self, v7, v8, v9);
   }
 }
 
-- (void)setHarmoniaOvernightDataState:(unint64_t)a3
+- (void)setHarmoniaOvernightDataState:(unint64_t)state
 {
-  if (self->_harmoniaOvernightDataState != a3)
+  if (self->_harmoniaOvernightDataState != state)
   {
-    self->_harmoniaOvernightDataState = a3;
-    objc_msgSend__updateHarmoniaSummaryLabelCache_withString_dataState_(self, a2, &self->_harmoniaSummaryOvernightLabelCache, self->_harmoniaOvernightLocalizedSummary, a3);
+    self->_harmoniaOvernightDataState = state;
+    objc_msgSend__updateHarmoniaSummaryLabelCache_withString_dataState_(self, a2, &self->_harmoniaSummaryOvernightLabelCache, self->_harmoniaOvernightLocalizedSummary, state);
     if (self->_bezelStyle == 4)
     {
 
@@ -3115,12 +3115,12 @@ LABEL_15:
   }
 }
 
-- (void)setHarmoniaOvernightMarkers:(id)a3
+- (void)setHarmoniaOvernightMarkers:(id)markers
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(self->_harmoniaOvernightMarkers, v5, v10, v6) & 1) == 0)
+  markersCopy = markers;
+  if ((objc_msgSend_isEqual_(self->_harmoniaOvernightMarkers, v5, markersCopy, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_harmoniaOvernightMarkers, a3);
+    objc_storeStrong(&self->_harmoniaOvernightMarkers, markers);
     if (self->_bezelStyle == 4)
     {
       objc_msgSend_setNeedsDisplay(self, v7, v8, v9);
@@ -3128,12 +3128,12 @@ LABEL_15:
   }
 }
 
-- (void)setHarmoniaOvernightTypicalValues:(id)a3
+- (void)setHarmoniaOvernightTypicalValues:(id)values
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(self->_harmoniaOvernightTypicalValues, v5, v10, v6) & 1) == 0)
+  valuesCopy = values;
+  if ((objc_msgSend_isEqual_(self->_harmoniaOvernightTypicalValues, v5, valuesCopy, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_harmoniaOvernightTypicalValues, a3);
+    objc_storeStrong(&self->_harmoniaOvernightTypicalValues, values);
     if (self->_bezelStyle == 4)
     {
       objc_msgSend_setNeedsDisplay(self, v7, v8, v9);
@@ -3141,12 +3141,12 @@ LABEL_15:
   }
 }
 
-- (void)setHarmoniaOvernightChangeAboveValues:(id)a3
+- (void)setHarmoniaOvernightChangeAboveValues:(id)values
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(self->_harmoniaOvernightChangeAboveValues, v5, v10, v6) & 1) == 0)
+  valuesCopy = values;
+  if ((objc_msgSend_isEqual_(self->_harmoniaOvernightChangeAboveValues, v5, valuesCopy, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_harmoniaOvernightChangeAboveValues, a3);
+    objc_storeStrong(&self->_harmoniaOvernightChangeAboveValues, values);
     if (self->_bezelStyle == 4)
     {
       objc_msgSend_setNeedsDisplay(self, v7, v8, v9);
@@ -3154,12 +3154,12 @@ LABEL_15:
   }
 }
 
-- (void)setHarmoniaOvernightChangeBelowValues:(id)a3
+- (void)setHarmoniaOvernightChangeBelowValues:(id)values
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(self->_harmoniaOvernightChangeBelowValues, v5, v10, v6) & 1) == 0)
+  valuesCopy = values;
+  if ((objc_msgSend_isEqual_(self->_harmoniaOvernightChangeBelowValues, v5, valuesCopy, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_harmoniaOvernightChangeBelowValues, a3);
+    objc_storeStrong(&self->_harmoniaOvernightChangeBelowValues, values);
     if (self->_bezelStyle == 4)
     {
       objc_msgSend_setNeedsDisplay(self, v7, v8, v9);
@@ -3167,24 +3167,24 @@ LABEL_15:
   }
 }
 
-- (void)setHarmoniaOvernightChangesThreshold:(unint64_t)a3
+- (void)setHarmoniaOvernightChangesThreshold:(unint64_t)threshold
 {
-  if (self->_harmoniaOvernightChangesThreshold != a3)
+  if (self->_harmoniaOvernightChangesThreshold != threshold)
   {
-    self->_harmoniaOvernightChangesThreshold = a3;
+    self->_harmoniaOvernightChangesThreshold = threshold;
     if (self->_bezelStyle == 4)
     {
-      objc_msgSend_setNeedsDisplay(self, a2, a3, v3);
+      objc_msgSend_setNeedsDisplay(self, a2, threshold, v3);
     }
   }
 }
 
-- (void)setHarmoniaOvernightLocalizedSummary:(id)a3
+- (void)setHarmoniaOvernightLocalizedSummary:(id)summary
 {
-  v11 = a3;
-  if ((objc_msgSend_isEqualToString_(self->_harmoniaOvernightLocalizedSummary, v5, v11, v6) & 1) == 0)
+  summaryCopy = summary;
+  if ((objc_msgSend_isEqualToString_(self->_harmoniaOvernightLocalizedSummary, v5, summaryCopy, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_harmoniaOvernightLocalizedSummary, a3);
+    objc_storeStrong(&self->_harmoniaOvernightLocalizedSummary, summary);
     objc_msgSend__updateHarmoniaSummaryLabelCache_withString_dataState_(self, v7, &self->_harmoniaSummaryOvernightLabelCache, self->_harmoniaOvernightLocalizedSummary, self->_harmoniaOvernightDataState);
     if (self->_bezelStyle == 4)
     {
@@ -3193,12 +3193,12 @@ LABEL_15:
   }
 }
 
-- (void)setHarmoniaTrainingDataState:(unint64_t)a3
+- (void)setHarmoniaTrainingDataState:(unint64_t)state
 {
-  if (self->_harmoniaTrainingDataState != a3)
+  if (self->_harmoniaTrainingDataState != state)
   {
-    self->_harmoniaTrainingDataState = a3;
-    objc_msgSend__updateHarmoniaSummaryLabelCache_withString_dataState_(self, a2, &self->_harmoniaSummaryTrainingLabelCache, self->_harmoniaTrainingLocalizedSummary, a3);
+    self->_harmoniaTrainingDataState = state;
+    objc_msgSend__updateHarmoniaSummaryLabelCache_withString_dataState_(self, a2, &self->_harmoniaSummaryTrainingLabelCache, self->_harmoniaTrainingLocalizedSummary, state);
     if (self->_bezelStyle == 4)
     {
 
@@ -3207,12 +3207,12 @@ LABEL_15:
   }
 }
 
-- (void)setHarmoniaTrainingMarkers:(id)a3
+- (void)setHarmoniaTrainingMarkers:(id)markers
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(self->_harmoniaTrainingMarkers, v5, v10, v6) & 1) == 0)
+  markersCopy = markers;
+  if ((objc_msgSend_isEqual_(self->_harmoniaTrainingMarkers, v5, markersCopy, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_harmoniaTrainingMarkers, a3);
+    objc_storeStrong(&self->_harmoniaTrainingMarkers, markers);
     if (self->_bezelStyle == 4)
     {
       objc_msgSend_setNeedsDisplay(self, v7, v8, v9);
@@ -3220,24 +3220,24 @@ LABEL_15:
   }
 }
 
-- (void)setHarmoniaTrainingLoadBand:(unint64_t)a3
+- (void)setHarmoniaTrainingLoadBand:(unint64_t)band
 {
-  if (self->_harmoniaTrainingLoadBand != a3)
+  if (self->_harmoniaTrainingLoadBand != band)
   {
-    self->_harmoniaTrainingLoadBand = a3;
+    self->_harmoniaTrainingLoadBand = band;
     if (self->_bezelStyle == 4)
     {
-      objc_msgSend_setNeedsDisplay(self, a2, a3, v3);
+      objc_msgSend_setNeedsDisplay(self, a2, band, v3);
     }
   }
 }
 
-- (void)setHarmoniaTrainingValue:(id)a3
+- (void)setHarmoniaTrainingValue:(id)value
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(self->_harmoniaTrainingValue, v5, v10, v6) & 1) == 0)
+  valueCopy = value;
+  if ((objc_msgSend_isEqual_(self->_harmoniaTrainingValue, v5, valueCopy, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_harmoniaTrainingValue, a3);
+    objc_storeStrong(&self->_harmoniaTrainingValue, value);
     if (self->_bezelStyle == 4)
     {
       objc_msgSend_setNeedsDisplay(self, v7, v8, v9);
@@ -3245,12 +3245,12 @@ LABEL_15:
   }
 }
 
-- (void)setHarmoniaTrainingLocalizedSummary:(id)a3
+- (void)setHarmoniaTrainingLocalizedSummary:(id)summary
 {
-  v11 = a3;
-  if ((objc_msgSend_isEqualToString_(self->_harmoniaTrainingLocalizedSummary, v5, v11, v6) & 1) == 0)
+  summaryCopy = summary;
+  if ((objc_msgSend_isEqualToString_(self->_harmoniaTrainingLocalizedSummary, v5, summaryCopy, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_harmoniaTrainingLocalizedSummary, a3);
+    objc_storeStrong(&self->_harmoniaTrainingLocalizedSummary, summary);
     objc_msgSend__updateHarmoniaSummaryLabelCache_withString_dataState_(self, v7, &self->_harmoniaSummaryTrainingLabelCache, self->_harmoniaTrainingLocalizedSummary, self->_harmoniaTrainingDataState);
     if (self->_bezelStyle == 4)
     {
@@ -3259,15 +3259,15 @@ LABEL_15:
   }
 }
 
-- (void)setSubmerged:(BOOL)a3
+- (void)setSubmerged:(BOOL)submerged
 {
-  if (self->_submerged != a3)
+  if (self->_submerged != submerged)
   {
-    self->_submerged = a3;
+    self->_submerged = submerged;
     if (self->_bezelStyle == 2)
     {
-      objc_msgSend_setNeedsDisplay(self, a2, a3, v3);
-      if (a3)
+      objc_msgSend_setNeedsDisplay(self, a2, submerged, v3);
+      if (submerged)
       {
         objc_msgSend_setHidden_(self->_baseLabel, v6, 0, v7);
       }
@@ -3282,12 +3282,12 @@ LABEL_15:
   }
 }
 
-- (void)setDepthMaxMajorTickColor:(id)a3
+- (void)setDepthMaxMajorTickColor:(id)color
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(v10, v5, self->_depthMaxMajorTickColor, v6) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, self->_depthMaxMajorTickColor, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_depthMaxMajorTickColor, a3);
+    objc_storeStrong(&self->_depthMaxMajorTickColor, color);
     if (self->_bezelStyle == 2)
     {
       objc_msgSend_setNeedsDisplay(self, v7, v8, v9);
@@ -3295,12 +3295,12 @@ LABEL_15:
   }
 }
 
-- (void)setDepthMaxMedialTickColor:(id)a3
+- (void)setDepthMaxMedialTickColor:(id)color
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(v10, v5, self->_depthMaxMedialTickColor, v6) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, self->_depthMaxMedialTickColor, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_depthMaxMedialTickColor, a3);
+    objc_storeStrong(&self->_depthMaxMedialTickColor, color);
     if (self->_bezelStyle == 2)
     {
       objc_msgSend_setNeedsDisplay(self, v7, v8, v9);
@@ -3308,12 +3308,12 @@ LABEL_15:
   }
 }
 
-- (void)setDepthMaxMinorTickColor:(id)a3
+- (void)setDepthMaxMinorTickColor:(id)color
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(v10, v5, self->_depthMaxMinorTickColor, v6) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, self->_depthMaxMinorTickColor, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_depthMaxMinorTickColor, a3);
+    objc_storeStrong(&self->_depthMaxMinorTickColor, color);
     if (self->_bezelStyle == 2)
     {
       objc_msgSend_setNeedsDisplay(self, v7, v8, v9);
@@ -3321,12 +3321,12 @@ LABEL_15:
   }
 }
 
-- (void)setDepthLimitMajorTickColor:(id)a3
+- (void)setDepthLimitMajorTickColor:(id)color
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(v10, v5, self->_depthLimitMajorTickColor, v6) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, self->_depthLimitMajorTickColor, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_depthLimitMajorTickColor, a3);
+    objc_storeStrong(&self->_depthLimitMajorTickColor, color);
     if ((self->_bezelStyle & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
       objc_msgSend_setNeedsDisplay(self, v7, v8, v9);
@@ -3334,12 +3334,12 @@ LABEL_15:
   }
 }
 
-- (void)setDepthLimitMedialTickColor:(id)a3
+- (void)setDepthLimitMedialTickColor:(id)color
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(v10, v5, self->_depthLimitMedialTickColor, v6) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, self->_depthLimitMedialTickColor, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_depthLimitMedialTickColor, a3);
+    objc_storeStrong(&self->_depthLimitMedialTickColor, color);
     if ((self->_bezelStyle & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
       objc_msgSend_setNeedsDisplay(self, v7, v8, v9);
@@ -3347,12 +3347,12 @@ LABEL_15:
   }
 }
 
-- (void)setDepthLimitMinorTickColor:(id)a3
+- (void)setDepthLimitMinorTickColor:(id)color
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(v10, v5, self->_depthLimitMinorTickColor, v6) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, self->_depthLimitMinorTickColor, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_depthLimitMinorTickColor, a3);
+    objc_storeStrong(&self->_depthLimitMinorTickColor, color);
     if ((self->_bezelStyle & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
       objc_msgSend_setNeedsDisplay(self, v7, v8, v9);
@@ -3360,12 +3360,12 @@ LABEL_15:
   }
 }
 
-- (void)setDepthMarkerColor:(id)a3
+- (void)setDepthMarkerColor:(id)color
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(v10, v5, self->_depthMarkerColor, v6) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, self->_depthMarkerColor, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_depthMarkerColor, a3);
+    objc_storeStrong(&self->_depthMarkerColor, color);
     if ((self->_bezelStyle & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
       objc_msgSend_setNeedsDisplay(self, v7, v8, v9);
@@ -3373,12 +3373,12 @@ LABEL_15:
   }
 }
 
-- (void)setDepthMaxMarkerColor:(id)a3
+- (void)setDepthMaxMarkerColor:(id)color
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(v10, v5, self->_depthMaxMarkerColor, v6) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, self->_depthMaxMarkerColor, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_depthMaxMarkerColor, a3);
+    objc_storeStrong(&self->_depthMaxMarkerColor, color);
     if (self->_bezelStyle == 2)
     {
       objc_msgSend_setNeedsDisplay(self, v7, v8, v9);
@@ -3386,12 +3386,12 @@ LABEL_15:
   }
 }
 
-- (void)setDepthLimitLabelColor:(id)a3
+- (void)setDepthLimitLabelColor:(id)color
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(v10, v5, self->_depthLimitLabelColor, v6) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, self->_depthLimitLabelColor, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_depthLimitLabelColor, a3);
+    objc_storeStrong(&self->_depthLimitLabelColor, color);
     if ((self->_bezelStyle & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
       objc_msgSend_setNeedsDisplay(self, v7, v8, v9);
@@ -3399,12 +3399,12 @@ LABEL_15:
   }
 }
 
-- (void)setDepthOverLimitColor:(id)a3
+- (void)setDepthOverLimitColor:(id)color
 {
-  v13 = a3;
-  if ((objc_msgSend_isEqual_(v13, v5, self->_depthOverLimitColor, v6) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, self->_depthOverLimitColor, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_depthOverLimitColor, a3);
+    objc_storeStrong(&self->_depthOverLimitColor, color);
     objc_msgSend__updateBaseLabel(self, v7, v8, v9);
     if ((self->_bezelStyle & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
@@ -3427,32 +3427,32 @@ LABEL_15:
   }
 }
 
-- (void)setDepthLabelColor:(id)a3
+- (void)setDepthLabelColor:(id)color
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(v10, v5, self->_depthLabelColor, v6) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, self->_depthLabelColor, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_depthLabelColor, a3);
+    objc_storeStrong(&self->_depthLabelColor, color);
     objc_msgSend__updateBaseLabel(self, v7, v8, v9);
   }
 }
 
-- (void)setDepthMaxLabelColor:(id)a3
+- (void)setDepthMaxLabelColor:(id)color
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(v10, v5, self->_depthMaxLabelColor, v6) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, self->_depthMaxLabelColor, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_depthMaxLabelColor, a3);
+    objc_storeStrong(&self->_depthMaxLabelColor, color);
     objc_msgSend__updateBaseLabel(self, v7, v8, v9);
   }
 }
 
-- (void)setDepthDecorationColor:(id)a3
+- (void)setDepthDecorationColor:(id)color
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(v10, v5, self->_depthDecorationColor, v6) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, self->_depthDecorationColor, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_depthDecorationColor, a3);
+    objc_storeStrong(&self->_depthDecorationColor, color);
     if (self->_bezelStyle == 2)
     {
       objc_msgSend_setNeedsDisplay(self, v7, v8, v9);
@@ -3460,12 +3460,12 @@ LABEL_15:
   }
 }
 
-- (void)setHarmoniaUnitLabelColor:(id)a3
+- (void)setHarmoniaUnitLabelColor:(id)color
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(self->_harmoniaUnitLabelColor, v5, v10, v6) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(self->_harmoniaUnitLabelColor, v5, colorCopy, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_harmoniaUnitLabelColor, a3);
+    objc_storeStrong(&self->_harmoniaUnitLabelColor, color);
     if (self->_bezelStyle == 4)
     {
       objc_msgSend_setNeedsDisplay(self, v7, v8, v9);
@@ -3473,12 +3473,12 @@ LABEL_15:
   }
 }
 
-- (void)setHarmoniaDotFillColor:(id)a3
+- (void)setHarmoniaDotFillColor:(id)color
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(self->_harmoniaDotFillColor, v5, v10, v6) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(self->_harmoniaDotFillColor, v5, colorCopy, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_harmoniaDotFillColor, a3);
+    objc_storeStrong(&self->_harmoniaDotFillColor, color);
     if (self->_bezelStyle == 4)
     {
       objc_msgSend_setNeedsDisplay(self, v7, v8, v9);
@@ -3486,12 +3486,12 @@ LABEL_15:
   }
 }
 
-- (void)setHarmoniaEmphasizedTickColor:(id)a3
+- (void)setHarmoniaEmphasizedTickColor:(id)color
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(self->_harmoniaEmphasizedTickColor, v5, v10, v6) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(self->_harmoniaEmphasizedTickColor, v5, colorCopy, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_harmoniaEmphasizedTickColor, a3);
+    objc_storeStrong(&self->_harmoniaEmphasizedTickColor, color);
     if (self->_bezelStyle == 4)
     {
       objc_msgSend_setNeedsDisplay(self, v7, v8, v9);
@@ -3499,12 +3499,12 @@ LABEL_15:
   }
 }
 
-- (void)setHarmoniaOvernightTypicalColor:(id)a3
+- (void)setHarmoniaOvernightTypicalColor:(id)color
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(self->_harmoniaOvernightTypicalColor, v5, v10, v6) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(self->_harmoniaOvernightTypicalColor, v5, colorCopy, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_harmoniaOvernightTypicalColor, a3);
+    objc_storeStrong(&self->_harmoniaOvernightTypicalColor, color);
     if (self->_bezelStyle == 4)
     {
       objc_msgSend_setNeedsDisplay(self, v7, v8, v9);
@@ -3512,12 +3512,12 @@ LABEL_15:
   }
 }
 
-- (void)setHarmoniaOvernightPartiallyOutOfRangeColor:(id)a3
+- (void)setHarmoniaOvernightPartiallyOutOfRangeColor:(id)color
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(self->_harmoniaOvernightPartiallyOutOfRangeColor, v5, v10, v6) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(self->_harmoniaOvernightPartiallyOutOfRangeColor, v5, colorCopy, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_harmoniaOvernightPartiallyOutOfRangeColor, a3);
+    objc_storeStrong(&self->_harmoniaOvernightPartiallyOutOfRangeColor, color);
     if (self->_bezelStyle == 4)
     {
       objc_msgSend_setNeedsDisplay(self, v7, v8, v9);
@@ -3525,12 +3525,12 @@ LABEL_15:
   }
 }
 
-- (void)setHarmoniaOvernightOutOfRangeColor:(id)a3
+- (void)setHarmoniaOvernightOutOfRangeColor:(id)color
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(self->_harmoniaOvernightOutOfRangeColor, v5, v10, v6) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(self->_harmoniaOvernightOutOfRangeColor, v5, colorCopy, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_harmoniaOvernightOutOfRangeColor, a3);
+    objc_storeStrong(&self->_harmoniaOvernightOutOfRangeColor, color);
     if (self->_bezelStyle == 4)
     {
       objc_msgSend_setNeedsDisplay(self, v7, v8, v9);
@@ -3538,12 +3538,12 @@ LABEL_15:
   }
 }
 
-- (void)setHarmoniaTrainingWellBelowColor:(id)a3
+- (void)setHarmoniaTrainingWellBelowColor:(id)color
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(self->_harmoniaTrainingWellBelowColor, v5, v10, v6) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(self->_harmoniaTrainingWellBelowColor, v5, colorCopy, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_harmoniaTrainingWellBelowColor, a3);
+    objc_storeStrong(&self->_harmoniaTrainingWellBelowColor, color);
     if (self->_bezelStyle == 4)
     {
       objc_msgSend_setNeedsDisplay(self, v7, v8, v9);
@@ -3551,12 +3551,12 @@ LABEL_15:
   }
 }
 
-- (void)setHarmoniaTrainingBelowColor:(id)a3
+- (void)setHarmoniaTrainingBelowColor:(id)color
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(self->_harmoniaTrainingBelowColor, v5, v10, v6) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(self->_harmoniaTrainingBelowColor, v5, colorCopy, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_harmoniaTrainingBelowColor, a3);
+    objc_storeStrong(&self->_harmoniaTrainingBelowColor, color);
     if (self->_bezelStyle == 4)
     {
       objc_msgSend_setNeedsDisplay(self, v7, v8, v9);
@@ -3564,12 +3564,12 @@ LABEL_15:
   }
 }
 
-- (void)setHarmoniaTrainingNearColor:(id)a3
+- (void)setHarmoniaTrainingNearColor:(id)color
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(self->_harmoniaTrainingNearColor, v5, v10, v6) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(self->_harmoniaTrainingNearColor, v5, colorCopy, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_harmoniaTrainingNearColor, a3);
+    objc_storeStrong(&self->_harmoniaTrainingNearColor, color);
     if (self->_bezelStyle == 4)
     {
       objc_msgSend_setNeedsDisplay(self, v7, v8, v9);
@@ -3577,12 +3577,12 @@ LABEL_15:
   }
 }
 
-- (void)setHarmoniaTrainingAboveColor:(id)a3
+- (void)setHarmoniaTrainingAboveColor:(id)color
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(self->_harmoniaTrainingAboveColor, v5, v10, v6) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(self->_harmoniaTrainingAboveColor, v5, colorCopy, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_harmoniaTrainingAboveColor, a3);
+    objc_storeStrong(&self->_harmoniaTrainingAboveColor, color);
     if (self->_bezelStyle == 4)
     {
       objc_msgSend_setNeedsDisplay(self, v7, v8, v9);
@@ -3590,12 +3590,12 @@ LABEL_15:
   }
 }
 
-- (void)setHarmoniaTrainingWellAboveColor:(id)a3
+- (void)setHarmoniaTrainingWellAboveColor:(id)color
 {
-  v10 = a3;
-  if ((objc_msgSend_isEqual_(self->_harmoniaTrainingWellAboveColor, v5, v10, v6) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(self->_harmoniaTrainingWellAboveColor, v5, colorCopy, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_harmoniaTrainingWellAboveColor, a3);
+    objc_storeStrong(&self->_harmoniaTrainingWellAboveColor, color);
     if (self->_bezelStyle == 4)
     {
       objc_msgSend_setNeedsDisplay(self, v7, v8, v9);
@@ -3603,19 +3603,19 @@ LABEL_15:
   }
 }
 
-- (void)_updateHarmoniaSummaryLabelCache:(id *)a3 withString:(id)a4 dataState:(unint64_t)a5
+- (void)_updateHarmoniaSummaryLabelCache:(id *)cache withString:(id)string dataState:(unint64_t)state
 {
   v32[3] = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = v9;
-  if (*&a3->var1 != __PAIR128__(a5, v9))
+  stringCopy = string;
+  v10 = stringCopy;
+  if (*&cache->var1 != __PAIR128__(state, stringCopy))
   {
-    a3->var2 = a5;
-    objc_storeStrong(&a3->var1, a4);
-    if (a3->var0)
+    cache->var2 = state;
+    objc_storeStrong(&cache->var1, string);
+    if (cache->var0)
     {
-      CFRelease(a3->var0);
-      a3->var0 = 0;
+      CFRelease(cache->var0);
+      cache->var0 = 0;
     }
 
     p_layoutConstants = &self->_layoutConstants;
@@ -3636,99 +3636,99 @@ LABEL_15:
     v28 = objc_alloc(MEMORY[0x277CCA898]);
     v30 = objc_msgSend_initWithString_attributes_(v28, v29, v13, v27);
 
-    a3->var0 = CTLineCreateWithAttributedString(v30);
+    cache->var0 = CTLineCreateWithAttributedString(v30);
   }
 }
 
-- (void)setColorPalette:(id)a3
+- (void)setColorPalette:(id)palette
 {
-  v4 = a3;
-  v8 = objc_msgSend_bezelMajorTickColor(v4, v5, v6, v7);
+  paletteCopy = palette;
+  v8 = objc_msgSend_bezelMajorTickColor(paletteCopy, v5, v6, v7);
   objc_msgSend_setMajorTickColor_(self, v9, v8, v10);
 
-  v14 = objc_msgSend_bezelMedialTickColor(v4, v11, v12, v13);
+  v14 = objc_msgSend_bezelMedialTickColor(paletteCopy, v11, v12, v13);
   objc_msgSend_setMedialTickColor_(self, v15, v14, v16);
 
-  v20 = objc_msgSend_bezelMinorTickColor(v4, v17, v18, v19);
+  v20 = objc_msgSend_bezelMinorTickColor(paletteCopy, v17, v18, v19);
   objc_msgSend_setMinorTickColor_(self, v21, v20, v22);
 
-  v26 = objc_msgSend_bezelInactiveMajorTickColor(v4, v23, v24, v25);
+  v26 = objc_msgSend_bezelInactiveMajorTickColor(paletteCopy, v23, v24, v25);
   objc_msgSend_setInactiveMajorTickColor_(self, v27, v26, v28);
 
-  v32 = objc_msgSend_bezelInactiveMedialTickColor(v4, v29, v30, v31);
+  v32 = objc_msgSend_bezelInactiveMedialTickColor(paletteCopy, v29, v30, v31);
   objc_msgSend_setInactiveMedialTickColor_(self, v33, v32, v34);
 
-  v38 = objc_msgSend_bezelInactiveMinorTickColor(v4, v35, v36, v37);
+  v38 = objc_msgSend_bezelInactiveMinorTickColor(paletteCopy, v35, v36, v37);
   objc_msgSend_setInactiveMinorTickColor_(self, v39, v38, v40);
 
-  v44 = objc_msgSend_bezelDepthMaxMajorTickColor(v4, v41, v42, v43);
+  v44 = objc_msgSend_bezelDepthMaxMajorTickColor(paletteCopy, v41, v42, v43);
   objc_msgSend_setDepthMaxMajorTickColor_(self, v45, v44, v46);
 
-  v50 = objc_msgSend_bezelDepthMaxMedialTickColor(v4, v47, v48, v49);
+  v50 = objc_msgSend_bezelDepthMaxMedialTickColor(paletteCopy, v47, v48, v49);
   objc_msgSend_setDepthMaxMedialTickColor_(self, v51, v50, v52);
 
-  v56 = objc_msgSend_bezelDepthMaxMinorTickColor(v4, v53, v54, v55);
+  v56 = objc_msgSend_bezelDepthMaxMinorTickColor(paletteCopy, v53, v54, v55);
   objc_msgSend_setDepthMaxMinorTickColor_(self, v57, v56, v58);
 
-  v62 = objc_msgSend_bezelDepthLimitMajorTickColor(v4, v59, v60, v61);
+  v62 = objc_msgSend_bezelDepthLimitMajorTickColor(paletteCopy, v59, v60, v61);
   objc_msgSend_setDepthLimitMajorTickColor_(self, v63, v62, v64);
 
-  v68 = objc_msgSend_bezelDepthLimitMedialTickColor(v4, v65, v66, v67);
+  v68 = objc_msgSend_bezelDepthLimitMedialTickColor(paletteCopy, v65, v66, v67);
   objc_msgSend_setDepthLimitMedialTickColor_(self, v69, v68, v70);
 
-  v74 = objc_msgSend_bezelDepthLimitMinorTickColor(v4, v71, v72, v73);
+  v74 = objc_msgSend_bezelDepthLimitMinorTickColor(paletteCopy, v71, v72, v73);
   objc_msgSend_setDepthLimitMinorTickColor_(self, v75, v74, v76);
 
-  v80 = objc_msgSend_bezelDepthMarkerColor(v4, v77, v78, v79);
+  v80 = objc_msgSend_bezelDepthMarkerColor(paletteCopy, v77, v78, v79);
   objc_msgSend_setDepthMarkerColor_(self, v81, v80, v82);
 
-  v86 = objc_msgSend_bezelDepthMaxMarkerColor(v4, v83, v84, v85);
+  v86 = objc_msgSend_bezelDepthMaxMarkerColor(paletteCopy, v83, v84, v85);
   objc_msgSend_setDepthMaxMarkerColor_(self, v87, v86, v88);
 
-  v92 = objc_msgSend_bezelDepthLabelColor(v4, v89, v90, v91);
+  v92 = objc_msgSend_bezelDepthLabelColor(paletteCopy, v89, v90, v91);
   objc_msgSend_setDepthLabelColor_(self, v93, v92, v94);
 
-  v98 = objc_msgSend_bezelDepthMaxLabelColor(v4, v95, v96, v97);
+  v98 = objc_msgSend_bezelDepthMaxLabelColor(paletteCopy, v95, v96, v97);
   objc_msgSend_setDepthMaxLabelColor_(self, v99, v98, v100);
 
-  v104 = objc_msgSend_bezelDepthLimitLabelColor(v4, v101, v102, v103);
+  v104 = objc_msgSend_bezelDepthLimitLabelColor(paletteCopy, v101, v102, v103);
   objc_msgSend_setDepthLimitLabelColor_(self, v105, v104, v106);
 
-  v110 = objc_msgSend_bezelDepthDecorationColor(v4, v107, v108, v109);
+  v110 = objc_msgSend_bezelDepthDecorationColor(paletteCopy, v107, v108, v109);
   objc_msgSend_setDepthDecorationColor_(self, v111, v110, v112);
 
-  v116 = objc_msgSend_bezelHarmoniaUnitLabelColor(v4, v113, v114, v115);
+  v116 = objc_msgSend_bezelHarmoniaUnitLabelColor(paletteCopy, v113, v114, v115);
   objc_msgSend_setHarmoniaUnitLabelColor_(self, v117, v116, v118);
 
-  v122 = objc_msgSend_bezelHarmoniaEmphasizedTickColor(v4, v119, v120, v121);
+  v122 = objc_msgSend_bezelHarmoniaEmphasizedTickColor(paletteCopy, v119, v120, v121);
   objc_msgSend_setHarmoniaEmphasizedTickColor_(self, v123, v122, v124);
 
-  v128 = objc_msgSend_bezelHarmoniaOvernightTypicalColor(v4, v125, v126, v127);
+  v128 = objc_msgSend_bezelHarmoniaOvernightTypicalColor(paletteCopy, v125, v126, v127);
   objc_msgSend_setHarmoniaOvernightTypicalColor_(self, v129, v128, v130);
 
-  v134 = objc_msgSend_bezelHarmoniaOvernightPartiallyOutOfRangeColor(v4, v131, v132, v133);
+  v134 = objc_msgSend_bezelHarmoniaOvernightPartiallyOutOfRangeColor(paletteCopy, v131, v132, v133);
   objc_msgSend_setHarmoniaOvernightPartiallyOutOfRangeColor_(self, v135, v134, v136);
 
-  v140 = objc_msgSend_bezelHarmoniaOvernightOutOfRangeColor(v4, v137, v138, v139);
+  v140 = objc_msgSend_bezelHarmoniaOvernightOutOfRangeColor(paletteCopy, v137, v138, v139);
   objc_msgSend_setHarmoniaOvernightOutOfRangeColor_(self, v141, v140, v142);
 
-  v146 = objc_msgSend_bezelHarmoniaTrainingWellBelowColor(v4, v143, v144, v145);
+  v146 = objc_msgSend_bezelHarmoniaTrainingWellBelowColor(paletteCopy, v143, v144, v145);
   objc_msgSend_setHarmoniaTrainingWellBelowColor_(self, v147, v146, v148);
 
-  v152 = objc_msgSend_bezelHarmoniaTrainingBelowColor(v4, v149, v150, v151);
+  v152 = objc_msgSend_bezelHarmoniaTrainingBelowColor(paletteCopy, v149, v150, v151);
   objc_msgSend_setHarmoniaTrainingBelowColor_(self, v153, v152, v154);
 
-  v158 = objc_msgSend_bezelHarmoniaTrainingNearColor(v4, v155, v156, v157);
+  v158 = objc_msgSend_bezelHarmoniaTrainingNearColor(paletteCopy, v155, v156, v157);
   objc_msgSend_setHarmoniaTrainingNearColor_(self, v159, v158, v160);
 
-  v164 = objc_msgSend_bezelHarmoniaTrainingAboveColor(v4, v161, v162, v163);
+  v164 = objc_msgSend_bezelHarmoniaTrainingAboveColor(paletteCopy, v161, v162, v163);
   objc_msgSend_setHarmoniaTrainingAboveColor_(self, v165, v164, v166);
 
-  v170 = objc_msgSend_bezelHarmoniaTrainingWellAboveColor(v4, v167, v168, v169);
+  v170 = objc_msgSend_bezelHarmoniaTrainingWellAboveColor(paletteCopy, v167, v168, v169);
   objc_msgSend_setHarmoniaTrainingWellAboveColor_(self, v171, v170, v172);
 
   colorPalette = self->_colorPalette;
-  self->_colorPalette = v4;
+  self->_colorPalette = paletteCopy;
 }
 
 @end

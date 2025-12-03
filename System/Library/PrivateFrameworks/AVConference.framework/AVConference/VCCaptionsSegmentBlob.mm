@@ -1,15 +1,15 @@
 @interface VCCaptionsSegmentBlob
-- (BOOL)isEqual:(id)a3;
-- (VCCaptionsSegmentBlob)initWithSFTranscriptionSegment:(id)a3 isLast:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (VCCaptionsSegmentBlob)initWithSFTranscriptionSegment:(id)segment isLast:(BOOL)last;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasHasSpaceAfter:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasHasSpaceAfter:(BOOL)after;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCCaptionsSegmentBlob
@@ -23,9 +23,9 @@
   [(VCCaptionsSegmentBlob *)&v3 dealloc];
 }
 
-- (void)setHasHasSpaceAfter:(BOOL)a3
+- (void)setHasHasSpaceAfter:(BOOL)after
 {
-  if (a3)
+  if (after)
   {
     v3 = 2;
   }
@@ -48,29 +48,29 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_confidence), @"confidence"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_confidence), @"confidence"}];
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", self->_hasSpaceAfter), @"hasSpaceAfter"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", self->_hasSpaceAfter), @"hasSpaceAfter"}];
   }
 
   text = self->_text;
   if (text)
   {
-    [v3 setObject:text forKey:@"text"];
+    [dictionary setObject:text forKey:@"text"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -91,32 +91,32 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 2) = self->_confidence;
-    *(a3 + 28) |= 1u;
+    *(to + 2) = self->_confidence;
+    *(to + 28) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(a3 + 24) = self->_hasSpaceAfter;
-    *(a3 + 28) |= 2u;
+    *(to + 24) = self->_hasSpaceAfter;
+    *(to + 28) |= 2u;
   }
 
   text = self->_text;
   if (text)
   {
-    [a3 setText:text];
+    [to setText:text];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -132,13 +132,13 @@
     *(v5 + 28) |= 2u;
   }
 
-  v6[2] = [(NSString *)self->_text copyWithZone:a3];
+  v6[2] = [(NSString *)self->_text copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
@@ -146,30 +146,30 @@
 
   if (*&self->_has)
   {
-    if ((*(a3 + 28) & 1) == 0 || self->_confidence != *(a3 + 2))
+    if ((*(equal + 28) & 1) == 0 || self->_confidence != *(equal + 2))
     {
       goto LABEL_12;
     }
   }
 
-  else if (*(a3 + 28))
+  else if (*(equal + 28))
   {
     goto LABEL_12;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(a3 + 28) & 2) != 0)
+    if ((*(equal + 28) & 2) != 0)
     {
       if (self->_hasSpaceAfter)
       {
-        if ((*(a3 + 24) & 1) == 0)
+        if ((*(equal + 24) & 1) == 0)
         {
           goto LABEL_12;
         }
       }
 
-      else if (*(a3 + 24))
+      else if (*(equal + 24))
       {
         goto LABEL_12;
       }
@@ -182,14 +182,14 @@ LABEL_12:
     return v5;
   }
 
-  if ((*(a3 + 28) & 2) != 0)
+  if ((*(equal + 28) & 2) != 0)
   {
     goto LABEL_12;
   }
 
 LABEL_9:
   text = self->_text;
-  if (text | *(a3 + 2))
+  if (text | *(equal + 2))
   {
 
     LOBYTE(v5) = [(NSString *)text isEqual:?];
@@ -229,29 +229,29 @@ LABEL_3:
   return v7 ^ v6 ^ [(NSString *)self->_text hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 28);
+  v3 = *(from + 28);
   if (v3)
   {
-    self->_confidence = *(a3 + 2);
+    self->_confidence = *(from + 2);
     *&self->_has |= 1u;
-    v3 = *(a3 + 28);
+    v3 = *(from + 28);
   }
 
   if ((v3 & 2) != 0)
   {
-    self->_hasSpaceAfter = *(a3 + 24);
+    self->_hasSpaceAfter = *(from + 24);
     *&self->_has |= 2u;
   }
 
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
     [(VCCaptionsSegmentBlob *)self setText:?];
   }
 }
 
-- (VCCaptionsSegmentBlob)initWithSFTranscriptionSegment:(id)a3 isLast:(BOOL)a4
+- (VCCaptionsSegmentBlob)initWithSFTranscriptionSegment:(id)segment isLast:(BOOL)last
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -259,11 +259,11 @@ LABEL_3:
   v6 = [(VCCaptionsSegmentBlob *)&v9 init];
   if (v6)
   {
-    v6->_text = [objc_msgSend(a3 "substring")];
-    [a3 confidence];
+    v6->_text = [objc_msgSend(segment "substring")];
+    [segment confidence];
     v6->_confidence = (v7 * 100.0);
     *&v6->_has |= 1u;
-    v6->_hasSpaceAfter = !a4;
+    v6->_hasSpaceAfter = !last;
     *&v6->_has |= 2u;
   }
 

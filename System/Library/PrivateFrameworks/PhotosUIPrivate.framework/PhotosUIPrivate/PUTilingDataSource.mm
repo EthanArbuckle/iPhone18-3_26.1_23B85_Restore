@@ -1,22 +1,22 @@
 @interface PUTilingDataSource
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PUTilingDataSource)init;
 - (id)description;
-- (int64_t)numberOfSubItemsAtIndexPath:(id)a3;
+- (int64_t)numberOfSubItemsAtIndexPath:(id)path;
 - (unint64_t)hash;
-- (void)enumerateIndexPathsStartingAtIndexPath:(id)a3 reverseDirection:(BOOL)a4 usingBlock:(id)a5;
+- (void)enumerateIndexPathsStartingAtIndexPath:(id)path reverseDirection:(BOOL)direction usingBlock:(id)block;
 @end
 
 @implementation PUTilingDataSource
 
-- (void)enumerateIndexPathsStartingAtIndexPath:(id)a3 reverseDirection:(BOOL)a4 usingBlock:(id)a5
+- (void)enumerateIndexPathsStartingAtIndexPath:(id)path reverseDirection:(BOOL)direction usingBlock:(id)block
 {
-  v28 = a4;
-  v7 = a3;
-  v8 = a5;
-  if (v8)
+  directionCopy = direction;
+  pathCopy = path;
+  blockCopy = block;
+  if (blockCopy)
   {
-    if (v7)
+    if (pathCopy)
     {
       goto LABEL_3;
     }
@@ -24,26 +24,26 @@
 
   else
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"PUTilingDataSource.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"block != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUTilingDataSource.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"block != nil"}];
 
-    if (v7)
+    if (pathCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v24 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v24 handleFailureInMethod:a2 object:self file:@"PUTilingDataSource.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"startIndexPath != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUTilingDataSource.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"startIndexPath != nil"}];
 
 LABEL_3:
-  if ([v7 length] <= 1)
+  if ([pathCopy length] <= 1)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"PUTilingDataSource.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"[startIndexPath length] >= 2"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PUTilingDataSource.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"[startIndexPath length] >= 2"}];
   }
 
-  if (v28)
+  if (directionCopy)
   {
     v9 = -1;
   }
@@ -53,15 +53,15 @@ LABEL_3:
     v9 = 1;
   }
 
-  v10 = [v7 length];
+  v10 = [pathCopy length];
   v11 = v10 - 1;
-  v12 = [v7 indexAtPosition:v10 - 2];
-  v13 = [v7 indexPathByRemovingLastIndex];
-  v14 = [v13 indexPathByRemovingLastIndex];
+  v12 = [pathCopy indexAtPosition:v10 - 2];
+  indexPathByRemovingLastIndex = [pathCopy indexPathByRemovingLastIndex];
+  v13IndexPathByRemovingLastIndex = [indexPathByRemovingLastIndex indexPathByRemovingLastIndex];
 
-  v26 = v7;
-  v27 = [(PUTilingDataSource *)self numberOfSubItemsAtIndexPath:v14];
-  v15 = [v7 indexAtPosition:v11];
+  v26 = pathCopy;
+  v27 = [(PUTilingDataSource *)self numberOfSubItemsAtIndexPath:v13IndexPathByRemovingLastIndex];
+  v15 = [pathCopy indexAtPosition:v11];
   v30 = 0;
   if ((v12 & 0x8000000000000000) == 0)
   {
@@ -74,10 +74,10 @@ LABEL_3:
         break;
       }
 
-      v18 = [v14 indexPathByAddingIndex:v17];
+      v18 = [v13IndexPathByRemovingLastIndex indexPathByAddingIndex:v17];
       v19 = [(PUTilingDataSource *)self numberOfSubItemsAtIndexPath:v18];
       v20 = v19 - 1;
-      if (!v28)
+      if (!directionCopy)
       {
         v20 = 0;
       }
@@ -93,7 +93,7 @@ LABEL_3:
         while (v16 < v21 && (v30 & 1) == 0)
         {
           v22 = [v18 indexPathByAddingIndex:v16];
-          v8[2](v8, v22, &v30);
+          blockCopy[2](blockCopy, v22, &v30);
 
           v16 += v9;
           if (v16 < 0)
@@ -116,21 +116,21 @@ LABEL_3:
   v7.receiver = self;
   v7.super_class = PUTilingDataSource;
   v3 = [(PUTilingDataSource *)&v7 description];
-  v4 = [(PUTilingDataSource *)self identifier];
-  v5 = [v3 stringByAppendingFormat:@" identifier=%@", v4];
+  identifier = [(PUTilingDataSource *)self identifier];
+  v5 = [v3 stringByAppendingFormat:@" identifier=%@", identifier];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 identifier];
-    v6 = [(PUTilingDataSource *)self identifier];
-    v7 = [v6 isEqual:v5];
+    identifier = [equalCopy identifier];
+    identifier2 = [(PUTilingDataSource *)self identifier];
+    v7 = [identifier2 isEqual:identifier];
   }
 
   else
@@ -143,16 +143,16 @@ LABEL_3:
 
 - (unint64_t)hash
 {
-  v2 = [(PUTilingDataSource *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(PUTilingDataSource *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (int64_t)numberOfSubItemsAtIndexPath:(id)a3
+- (int64_t)numberOfSubItemsAtIndexPath:(id)path
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PUTilingDataSource.m" lineNumber:28 description:@"concrete subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUTilingDataSource.m" lineNumber:28 description:@"concrete subclass must implement"];
 
   return 0;
 }
@@ -166,15 +166,15 @@ LABEL_3:
   {
     v3 = MEMORY[0x1E696AEC0];
     v4 = [objc_opt_class() description];
-    v5 = [MEMORY[0x1E696AFB0] UUID];
-    v6 = [v5 UUIDString];
-    v7 = [v3 stringWithFormat:@"%@-%@", v4, v6];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v7 = [v3 stringWithFormat:@"%@-%@", v4, uUIDString];
     identifier = v2->_identifier;
     v2->_identifier = v7;
 
-    v9 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     changeObservers = v2->__changeObservers;
-    v2->__changeObservers = v9;
+    v2->__changeObservers = weakObjectsHashTable;
   }
 
   return v2;

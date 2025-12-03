@@ -2,38 +2,38 @@
 - (BOOL)dynamic;
 - (NSArray)specificity;
 - (NSString)text;
-- (RWIProtocolCSSSelector)initWithText:(id)a3;
-- (void)setSpecificity:(id)a3;
-- (void)setText:(id)a3;
+- (RWIProtocolCSSSelector)initWithText:(id)text;
+- (void)setSpecificity:(id)specificity;
+- (void)setText:(id)text;
 @end
 
 @implementation RWIProtocolCSSSelector
 
-- (RWIProtocolCSSSelector)initWithText:(id)a3
+- (RWIProtocolCSSSelector)initWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v8.receiver = self;
   v8.super_class = RWIProtocolCSSSelector;
   v5 = [(RWIProtocolJSONObject *)&v8 init];
   if (v5)
   {
-    if (!v4)
+    if (!textCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"text"}];
     }
 
-    [(RWIProtocolCSSSelector *)v5 setText:v4];
+    [(RWIProtocolCSSSelector *)v5 setText:textCopy];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSSelector;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"text"];
+  [(RWIProtocolJSONObject *)&v3 setString:text forKey:@"text"];
 }
 
 - (NSString)text
@@ -45,9 +45,9 @@
   return v2;
 }
 
-- (void)setSpecificity:(id)a3
+- (void)setSpecificity:(id)specificity
 {
-  Inspector::toJSONIntegerArray(a3, &v6);
+  Inspector::toJSONIntegerArray(specificity, &v6);
   v5.receiver = self;
   v5.super_class = RWIProtocolCSSSelector;
   [(RWIProtocolJSONObject *)&v5 setJSONArray:&v6 forKey:@"specificity"];

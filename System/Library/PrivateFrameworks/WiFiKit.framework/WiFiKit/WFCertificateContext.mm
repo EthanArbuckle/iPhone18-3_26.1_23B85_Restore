@@ -1,5 +1,5 @@
 @interface WFCertificateContext
-- (WFCertificateContext)initWithNetwork:(id)a3 profile:(id)a4 certificateChain:(id)a5;
+- (WFCertificateContext)initWithNetwork:(id)network profile:(id)profile certificateChain:(id)chain;
 - (WFNetworkView)provider;
 - (void)accept;
 - (void)cancel;
@@ -9,11 +9,11 @@
 
 @implementation WFCertificateContext
 
-- (WFCertificateContext)initWithNetwork:(id)a3 profile:(id)a4 certificateChain:(id)a5
+- (WFCertificateContext)initWithNetwork:(id)network profile:(id)profile certificateChain:(id)chain
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  networkCopy = network;
+  profileCopy = profile;
+  chainCopy = chain;
   v17.receiver = self;
   v17.super_class = WFCertificateContext;
   v12 = [(WFCertificateContext *)&v17 init];
@@ -23,7 +23,7 @@
     goto LABEL_13;
   }
 
-  if (!v9)
+  if (!networkCopy)
   {
     [WFCertificateContext initWithNetwork:? profile:? certificateChain:?];
 LABEL_12:
@@ -33,23 +33,23 @@ LABEL_13:
     goto LABEL_7;
   }
 
-  if (!v10)
+  if (!profileCopy)
   {
     [WFCertificateContext initWithNetwork:? profile:? certificateChain:?];
     goto LABEL_12;
   }
 
-  objc_storeStrong(&v12->_network, a3);
-  objc_storeStrong(&v13->_profile, a4);
-  if (!v11)
+  objc_storeStrong(&v12->_network, network);
+  objc_storeStrong(&v13->_profile, profile);
+  if (!chainCopy)
   {
     [WFCertificateContext initWithNetwork:? profile:? certificateChain:?];
     goto LABEL_12;
   }
 
-  objc_storeStrong(&v13->_certificateChain, a5);
-  v14 = [(WFCertificateContext *)v13 certificateChain];
-  v15 = WFCreateSecTrustFromCertificateChain(v14);
+  objc_storeStrong(&v13->_certificateChain, chain);
+  certificateChain = [(WFCertificateContext *)v13 certificateChain];
+  v15 = WFCreateSecTrustFromCertificateChain(certificateChain);
 
   if (!v15)
   {
@@ -79,8 +79,8 @@ LABEL_7:
 
 - (void)cancel
 {
-  v2 = [(WFCertificateContext *)self completionHandler];
-  v2[2](v2, 0);
+  completionHandler = [(WFCertificateContext *)self completionHandler];
+  completionHandler[2](completionHandler, 0);
 }
 
 - (void)accept
@@ -93,15 +93,15 @@ LABEL_7:
     v5 = v3;
     if (os_log_type_enabled(v5, v4))
     {
-      v6 = [(WFCertificateContext *)self certificateChain];
+      certificateChain = [(WFCertificateContext *)self certificateChain];
       v9 = 138412290;
-      v10 = v6;
+      v10 = certificateChain;
       _os_log_impl(&dword_273ECD000, v5, v4, "User trusted provided certificate chain %@", &v9, 0xCu);
     }
   }
 
-  v7 = [(WFCertificateContext *)self completionHandler];
-  v7[2](v7, 1);
+  completionHandler = [(WFCertificateContext *)self completionHandler];
+  completionHandler[2](completionHandler, 1);
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -116,19 +116,19 @@ LABEL_7:
     v5 = v3;
     if (os_log_type_enabled(v5, v4))
     {
-      v6 = [(WFCertificateContext *)self network];
+      network = [(WFCertificateContext *)self network];
       v9 = 136315650;
       v10 = "[WFCertificateContext launchSettings]";
       v11 = 2112;
-      v12 = v6;
+      v12 = network;
       v13 = 2112;
-      v14 = self;
+      selfCopy = self;
       _os_log_impl(&dword_273ECD000, v5, v4, "%s: opening settings for %@ (context: %@)", &v9, 0x20u);
     }
   }
 
-  v7 = [(WFCertificateContext *)self network];
-  WFScanRecordArchiveToEnterprisePath(v7);
+  network2 = [(WFCertificateContext *)self network];
+  WFScanRecordArchiveToEnterprisePath(network2);
 
   WFOpenSettingsURLWithType(1uLL);
   [(WFCertificateContext *)self cancel];

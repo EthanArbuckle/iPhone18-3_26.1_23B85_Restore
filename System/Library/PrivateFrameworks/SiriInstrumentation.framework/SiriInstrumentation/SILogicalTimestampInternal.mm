@@ -1,7 +1,7 @@
 @interface SILogicalTimestampInternal
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSUUID)clockIdentifier;
-- (SILogicalTimestampInternal)initWithClockIdentifier:(id)a3 nanosecondsSinceBoot:(unint64_t)a4;
+- (SILogicalTimestampInternal)initWithClockIdentifier:(id)identifier nanosecondsSinceBoot:(unint64_t)boot;
 @end
 
 @implementation SILogicalTimestampInternal
@@ -19,20 +19,20 @@
   return v6;
 }
 
-- (SILogicalTimestampInternal)initWithClockIdentifier:(id)a3 nanosecondsSinceBoot:(unint64_t)a4
+- (SILogicalTimestampInternal)initWithClockIdentifier:(id)identifier nanosecondsSinceBoot:(unint64_t)boot
 {
   v5 = sub_1AA651944();
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1AA651914();
-  return LogicalTimestamp.init(clockIdentifier:nanosecondsSinceBoot:)(v7, a4);
+  return LogicalTimestamp.init(clockIdentifier:nanosecondsSinceBoot:)(v7, boot);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1AA651CA4();
     swift_unknownObjectRelease();
@@ -41,7 +41,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = LogicalTimestamp.isEqual(_:)(v8);

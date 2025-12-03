@@ -1,8 +1,8 @@
 @interface LSBundleRecord
-- (BOOL)asd_canMakeExternalPurchasesForAnyCountryCodeInCountryCodes:(id)a3;
+- (BOOL)asd_canMakeExternalPurchasesForAnyCountryCodeInCountryCodes:(id)codes;
 - (id)_fullInfoPlistDictionary;
 - (id)_infoPlistURL;
-- (id)asd_firstExternalLinkURLForCountryCodes:(id)a3;
+- (id)asd_firstExternalLinkURLForCountryCodes:(id)codes;
 - (int64_t)asd_galetteMode;
 @end
 
@@ -10,21 +10,21 @@
 
 - (int64_t)asd_galetteMode
 {
-  v2 = [(LSBundleRecord *)self entitlements];
-  v3 = [v2 objectForKey:@"com.apple.developer.storekit.external-purchase-link" ofClass:objc_opt_class()];
-  v4 = [v3 BOOLValue];
+  entitlements = [(LSBundleRecord *)self entitlements];
+  v3 = [entitlements objectForKey:@"com.apple.developer.storekit.external-purchase-link" ofClass:objc_opt_class()];
+  bOOLValue = [v3 BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v2 objectForKey:@"com.apple.developer.storekit.external-purchase" ofClass:objc_opt_class()];
-    v7 = [v6 BOOLValue];
+    v6 = [entitlements objectForKey:@"com.apple.developer.storekit.external-purchase" ofClass:objc_opt_class()];
+    bOOLValue2 = [v6 BOOLValue];
 
-    if (v7)
+    if (bOOLValue2)
     {
       v5 = 2;
     }
@@ -38,12 +38,12 @@
   return v5;
 }
 
-- (id)asd_firstExternalLinkURLForCountryCodes:(id)a3
+- (id)asd_firstExternalLinkURLForCountryCodes:(id)codes
 {
-  v4 = a3;
-  v24 = self;
-  v5 = [(LSBundleRecord *)self _fullInfoPlistDictionary];
-  v6 = [v5 objectForKeyedSubscript:@"SKExternalPurchaseLink"];
+  codesCopy = codes;
+  selfCopy = self;
+  _fullInfoPlistDictionary = [(LSBundleRecord *)self _fullInfoPlistDictionary];
+  v6 = [_fullInfoPlistDictionary objectForKeyedSubscript:@"SKExternalPurchaseLink"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -52,12 +52,12 @@
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    obj = v4;
+    obj = codesCopy;
     v7 = [obj countByEnumeratingWithState:&v26 objects:v38 count:16];
     if (v7)
     {
       v8 = v7;
-      v23 = v4;
+      v23 = codesCopy;
       v9 = *v27;
       while (2)
       {
@@ -69,8 +69,8 @@
           }
 
           v11 = *(*(&v26 + 1) + 8 * i);
-          v12 = [v11 lowercaseString];
-          v13 = [v6 objectForKeyedSubscript:v12];
+          lowercaseString = [v11 lowercaseString];
+          v13 = [v6 objectForKeyedSubscript:lowercaseString];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -82,21 +82,21 @@
             v14 = ASDLogHandleForCategory();
             if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
             {
-              v20 = [(LSBundleRecord *)v24 bundleIdentifier];
+              bundleIdentifier = [(LSBundleRecord *)selfCopy bundleIdentifier];
               *buf = 138544130;
-              v31 = v20;
+              v31 = bundleIdentifier;
               v32 = 2114;
               v33 = @"SKExternalPurchaseLink";
               v34 = 2114;
-              v35 = v12;
+              v35 = lowercaseString;
               v36 = 2114;
               v37 = v13;
               _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "[%{public}@] %{public}@.%{public}@ = %{public}@, which is not a string", buf, 0x2Au);
             }
           }
 
-          v15 = [v11 uppercaseString];
-          v16 = [v6 objectForKeyedSubscript:v15];
+          uppercaseString = [v11 uppercaseString];
+          v16 = [v6 objectForKeyedSubscript:uppercaseString];
 
           objc_opt_class();
           v13 = v16;
@@ -114,13 +114,13 @@ LABEL_13:
             v18 = ASDLogHandleForCategory();
             if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
             {
-              v19 = [(LSBundleRecord *)v24 bundleIdentifier];
+              bundleIdentifier2 = [(LSBundleRecord *)selfCopy bundleIdentifier];
               *buf = 138544130;
-              v31 = v19;
+              v31 = bundleIdentifier2;
               v32 = 2114;
               v33 = @"SKExternalPurchaseLink";
               v34 = 2114;
-              v35 = v12;
+              v35 = lowercaseString;
               v36 = 2114;
               v37 = v13;
               _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "[%{public}@] %{public}@.%{public}@ = %{public}@, which is not a valid URL", buf, 0x2Au);
@@ -139,7 +139,7 @@ LABEL_13:
 
       v21 = 0;
 LABEL_22:
-      v4 = v23;
+      codesCopy = v23;
     }
 
     else
@@ -156,12 +156,12 @@ LABEL_22:
   return v21;
 }
 
-- (BOOL)asd_canMakeExternalPurchasesForAnyCountryCodeInCountryCodes:(id)a3
+- (BOOL)asd_canMakeExternalPurchasesForAnyCountryCodeInCountryCodes:(id)codes
 {
-  v4 = a3;
-  v30 = self;
-  v5 = [(LSBundleRecord *)self _fullInfoPlistDictionary];
-  v6 = [v5 objectForKeyedSubscript:@"SKExternalPurchase"];
+  codesCopy = codes;
+  selfCopy = self;
+  _fullInfoPlistDictionary = [(LSBundleRecord *)self _fullInfoPlistDictionary];
+  v6 = [_fullInfoPlistDictionary objectForKeyedSubscript:@"SKExternalPurchase"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -172,7 +172,7 @@ LABEL_5:
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v9 = v4;
+    v9 = codesCopy;
     v10 = [v9 countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v10)
     {
@@ -181,7 +181,7 @@ LABEL_5:
       *&v11 = 138543874;
       v27 = v11;
       v28 = v6;
-      v29 = v4;
+      v29 = codesCopy;
       while (2)
       {
         for (i = 0; i != v12; i = i + 1)
@@ -192,8 +192,8 @@ LABEL_5:
           }
 
           v15 = *(*(&v31 + 1) + 8 * i);
-          v16 = [v15 lowercaseString];
-          v17 = [v7 member:v16];
+          lowercaseString = [v15 lowercaseString];
+          v17 = [v7 member:lowercaseString];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -206,9 +206,9 @@ LABEL_5:
             v18 = ASDLogHandleForCategory();
             if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
             {
-              v22 = [(LSBundleRecord *)v30 bundleIdentifier];
+              bundleIdentifier = [(LSBundleRecord *)selfCopy bundleIdentifier];
               *buf = v27;
-              v37 = v22;
+              v37 = bundleIdentifier;
               v38 = 2114;
               v39 = v17;
               v40 = 2114;
@@ -217,8 +217,8 @@ LABEL_5:
             }
           }
 
-          v19 = [v15 uppercaseString];
-          v20 = [v7 member:v19];
+          uppercaseString = [v15 uppercaseString];
+          v20 = [v7 member:uppercaseString];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -228,7 +228,7 @@ LABEL_28:
 
             v24 = 1;
             v6 = v28;
-            v4 = v29;
+            codesCopy = v29;
             goto LABEL_29;
           }
 
@@ -237,9 +237,9 @@ LABEL_28:
             v21 = ASDLogHandleForCategory();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
             {
-              v23 = [(LSBundleRecord *)v30 bundleIdentifier];
+              bundleIdentifier2 = [(LSBundleRecord *)selfCopy bundleIdentifier];
               *buf = v27;
-              v37 = v23;
+              v37 = bundleIdentifier2;
               v38 = 2114;
               v39 = v20;
               v40 = 2114;
@@ -251,7 +251,7 @@ LABEL_28:
 
         v12 = [v9 countByEnumeratingWithState:&v31 objects:v35 count:16];
         v6 = v28;
-        v4 = v29;
+        codesCopy = v29;
         if (v12)
         {
           continue;
@@ -267,8 +267,8 @@ LABEL_28:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(__CFString *)v6 allKeys];
-    v7 = [NSSet setWithArray:v8];
+    allKeys = [(__CFString *)v6 allKeys];
+    v7 = [NSSet setWithArray:allKeys];
 
     goto LABEL_5;
   }
@@ -282,9 +282,9 @@ LABEL_28:
   v7 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    v26 = [(LSBundleRecord *)self bundleIdentifier];
+    bundleIdentifier3 = [(LSBundleRecord *)self bundleIdentifier];
     *buf = 138543874;
-    v37 = v26;
+    v37 = bundleIdentifier3;
     v38 = 2114;
     v39 = @"SKExternalPurchase";
     v40 = 2114;
@@ -310,9 +310,9 @@ LABEL_30:
 
 - (id)_fullInfoPlistDictionary
 {
-  v3 = [(LSBundleRecord *)self _infoPlistURL];
+  _infoPlistURL = [(LSBundleRecord *)self _infoPlistURL];
   v9 = 0;
-  v4 = [NSDictionary dictionaryWithContentsOfURL:v3 error:&v9];
+  v4 = [NSDictionary dictionaryWithContentsOfURL:_infoPlistURL error:&v9];
   v5 = v9;
 
   if (v5)
@@ -320,9 +320,9 @@ LABEL_30:
     v6 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(LSBundleRecord *)self bundleIdentifier];
+      bundleIdentifier = [(LSBundleRecord *)self bundleIdentifier];
       *buf = 138543618;
-      v11 = v8;
+      v11 = bundleIdentifier;
       v12 = 2114;
       v13 = v5;
       _os_log_error_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "Error loading Info.plist for %{public}@: %{public}@", buf, 0x16u);

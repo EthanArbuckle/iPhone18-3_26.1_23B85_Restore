@@ -1,20 +1,20 @@
 @interface BMPBPOICategoryEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRank:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasRank:(BOOL)rank;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBPOICategoryEvent
 
-- (void)setHasRank:(BOOL)a3
+- (void)setHasRank:(BOOL)rank
 {
-  if (a3)
+  if (rank)
   {
     v3 = 2;
   }
@@ -33,20 +33,20 @@
   v8.receiver = self;
   v8.super_class = BMPBPOICategoryEvent;
   v4 = [(BMPBPOICategoryEvent *)&v8 description];
-  v5 = [(BMPBPOICategoryEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBPOICategoryEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   poiCategory = self->_poiCategory;
   if (poiCategory)
   {
-    [v3 setObject:poiCategory forKey:@"poiCategory"];
+    [dictionary setObject:poiCategory forKey:@"poiCategory"];
   }
 
   has = self->_has;
@@ -67,14 +67,14 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_poiCategory)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -82,7 +82,7 @@
   {
     rank = self->_rank;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -90,39 +90,39 @@
   {
     timeIntervalSince1970 = self->_timeIntervalSince1970;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_poiCategory)
   {
-    v6 = v4;
-    [v4 setPoiCategory:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setPoiCategory:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 6) = self->_rank;
-    *(v4 + 28) |= 2u;
+    *(toCopy + 6) = self->_rank;
+    *(toCopy + 28) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = *&self->_timeIntervalSince1970;
-    *(v4 + 28) |= 1u;
+    *(toCopy + 1) = *&self->_timeIntervalSince1970;
+    *(toCopy + 28) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_poiCategory copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_poiCategory copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -143,16 +143,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   poiCategory = self->_poiCategory;
-  if (poiCategory | *(v4 + 2))
+  if (poiCategory | *(equalCopy + 2))
   {
     if (![(NSString *)poiCategory isEqual:?])
     {
@@ -162,23 +162,23 @@
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_rank != *(v4 + 6))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_rank != *(equalCopy + 6))
     {
       goto LABEL_13;
     }
   }
 
-  else if ((*(v4 + 28) & 2) != 0)
+  else if ((*(equalCopy + 28) & 2) != 0)
   {
 LABEL_13:
     v6 = 0;
     goto LABEL_14;
   }
 
-  v6 = (*(v4 + 28) & 1) == 0;
+  v6 = (*(equalCopy + 28) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_timeIntervalSince1970 != *(v4 + 1))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_timeIntervalSince1970 != *(equalCopy + 1))
     {
       goto LABEL_13;
     }
@@ -242,27 +242,27 @@ LABEL_3:
   return v6 ^ v3 ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(BMPBPOICategoryEvent *)self setPoiCategory:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 2) != 0)
   {
-    self->_rank = *(v4 + 6);
+    self->_rank = *(fromCopy + 6);
     *&self->_has |= 2u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
   }
 
   if (v5)
   {
-    self->_timeIntervalSince1970 = *(v4 + 1);
+    self->_timeIntervalSince1970 = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 }

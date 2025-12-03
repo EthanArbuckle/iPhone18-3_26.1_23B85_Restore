@@ -1,27 +1,27 @@
 @interface SWLayoutGuide
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)bounds;
 - (CGRect)contentFrame;
 - (CGRect)contentSafeAreaFrame;
 - (CGRect)systemSafeAreaFrame;
-- (double)initWithBounds:(double)a3 contentFrame:(double)a4 contentSafeAreaFrame:(double)a5 systemSafeAreaFrame:(double)a6;
+- (double)initWithBounds:(double)bounds contentFrame:(double)frame contentSafeAreaFrame:(double)areaFrame systemSafeAreaFrame:(double)safeAreaFrame;
 - (id)description;
 @end
 
 @implementation SWLayoutGuide
 
-- (double)initWithBounds:(double)a3 contentFrame:(double)a4 contentSafeAreaFrame:(double)a5 systemSafeAreaFrame:(double)a6
+- (double)initWithBounds:(double)bounds contentFrame:(double)frame contentSafeAreaFrame:(double)areaFrame systemSafeAreaFrame:(double)safeAreaFrame
 {
-  v33.receiver = a1;
+  v33.receiver = self;
   v33.super_class = SWLayoutGuide;
   result = objc_msgSendSuper2(&v33, sel_init);
   if (result)
   {
     result[1] = a2;
-    result[2] = a3;
-    result[3] = a4;
-    result[4] = a5;
-    result[5] = a6;
+    result[2] = bounds;
+    result[3] = frame;
+    result[4] = areaFrame;
+    result[5] = safeAreaFrame;
     result[6] = a7;
     result[7] = a8;
     result[8] = a9;
@@ -38,13 +38,13 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(SWLayoutGuide *)self bounds];
     v7 = v6;
     v9 = v8;

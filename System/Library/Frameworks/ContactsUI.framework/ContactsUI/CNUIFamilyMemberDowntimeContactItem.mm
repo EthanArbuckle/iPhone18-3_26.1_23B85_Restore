@@ -1,21 +1,21 @@
 @interface CNUIFamilyMemberDowntimeContactItem
-- (CNUIFamilyMemberDowntimeContactItem)initWithContact:(id)a3 label:(id)a4;
+- (CNUIFamilyMemberDowntimeContactItem)initWithContact:(id)contact label:(id)label;
 @end
 
 @implementation CNUIFamilyMemberDowntimeContactItem
 
-- (CNUIFamilyMemberDowntimeContactItem)initWithContact:(id)a3 label:(id)a4
+- (CNUIFamilyMemberDowntimeContactItem)initWithContact:(id)contact label:(id)label
 {
-  v7 = a3;
-  v8 = a4;
+  contactCopy = contact;
+  labelCopy = label;
   v13.receiver = self;
   v13.super_class = CNUIFamilyMemberDowntimeContactItem;
   v9 = [(CNUIFamilyMemberDowntimeContactItem *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contact, a3);
-    objc_storeStrong(&v10->_label, a4);
+    objc_storeStrong(&v9->_contact, contact);
+    objc_storeStrong(&v10->_label, label);
     v11 = v10;
   }
 

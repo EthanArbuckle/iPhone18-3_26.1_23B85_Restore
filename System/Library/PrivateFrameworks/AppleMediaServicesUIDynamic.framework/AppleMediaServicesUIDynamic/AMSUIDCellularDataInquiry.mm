@@ -1,22 +1,22 @@
 @interface AMSUIDCellularDataInquiry
 - (AMSUIDCellularDataInquiry)init;
-- (AMSUIDCellularDataInquiry)initWithBundle:(id)a3;
+- (AMSUIDCellularDataInquiry)initWithBundle:(id)bundle;
 - (BOOL)isEnabledForBundle;
 - (BOOL)isEnabledForDevice;
 @end
 
 @implementation AMSUIDCellularDataInquiry
 
-- (AMSUIDCellularDataInquiry)initWithBundle:(id)a3
+- (AMSUIDCellularDataInquiry)initWithBundle:(id)bundle
 {
-  v5 = a3;
+  bundleCopy = bundle;
   v9.receiver = self;
   v9.super_class = AMSUIDCellularDataInquiry;
   v6 = [(AMSUIDCellularDataInquiry *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bundle, a3);
+    objc_storeStrong(&v6->_bundle, bundle);
   }
 
   return v7;
@@ -24,56 +24,56 @@
 
 - (AMSUIDCellularDataInquiry)init
 {
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [(AMSUIDCellularDataInquiry *)self initWithBundle:v3];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  v4 = [(AMSUIDCellularDataInquiry *)self initWithBundle:mainBundle];
 
   return v4;
 }
 
 - (BOOL)isEnabledForDevice
 {
-  v2 = [(AMSUIDCellularDataInquiry *)self isSupported];
-  if (v2)
+  isSupported = [(AMSUIDCellularDataInquiry *)self isSupported];
+  if (isSupported)
   {
     v3 = MEMORY[0x1E69C56E0];
 
-    LOBYTE(v2) = [v3 isEnabled];
+    LOBYTE(isSupported) = [v3 isEnabled];
   }
 
-  return v2;
+  return isSupported;
 }
 
 - (BOOL)isEnabledForBundle
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSUIDCellularDataInquiry *)self isEnabledForDevice];
-  if (v3)
+  isEnabledForDevice = [(AMSUIDCellularDataInquiry *)self isEnabledForDevice];
+  if (isEnabledForDevice)
   {
     v4 = _CTServerConnectionCreateOnTargetQueue();
     if (v4)
     {
       v5 = v4;
-      v6 = [(AMSUIDCellularDataInquiry *)self bundle];
-      v7 = [v6 bundleIdentifier];
+      bundle = [(AMSUIDCellularDataInquiry *)self bundle];
+      bundleIdentifier = [bundle bundleIdentifier];
 
       v8 = _CTServerConnectionCopyCellularUsagePolicy();
       CFRelease(v5);
       if (v8)
       {
-        v9 = [MEMORY[0x1E698C968] sharedConfig];
-        if (!v9)
+        mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+        if (!mEMORY[0x1E698C968])
         {
-          v9 = [MEMORY[0x1E698C968] sharedConfig];
+          mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
         }
 
-        v10 = [v9 OSLogObject];
-        if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+        oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
           *buf = 67240448;
           v14 = v8;
           v15 = 1026;
           v16 = HIDWORD(v8);
-          _os_log_impl(&dword_1CA0E5000, v10, OS_LOG_TYPE_ERROR, "Could not determine cellular usage policy, reason: CTError(domain: %{public}d, error: %{public}d)", buf, 0xEu);
+          _os_log_impl(&dword_1CA0E5000, oSLogObject, OS_LOG_TYPE_ERROR, "Could not determine cellular usage policy, reason: CTError(domain: %{public}d, error: %{public}d)", buf, 0xEu);
         }
 
         goto LABEL_12;
@@ -87,14 +87,14 @@
     if (!Value)
     {
 LABEL_12:
-      LOBYTE(v3) = 1;
-      return v3;
+      LOBYTE(isEnabledForDevice) = 1;
+      return isEnabledForDevice;
     }
 
-    LOBYTE(v3) = CFBooleanGetValue(Value) != 0;
+    LOBYTE(isEnabledForDevice) = CFBooleanGetValue(Value) != 0;
   }
 
-  return v3;
+  return isEnabledForDevice;
 }
 
 @end

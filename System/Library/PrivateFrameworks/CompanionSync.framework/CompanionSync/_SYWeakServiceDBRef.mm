@@ -1,19 +1,19 @@
 @interface _SYWeakServiceDBRef
 - (_SYSharedServiceDB)db;
-- (_SYWeakServiceDBRef)initWithServiceName:(id)a3;
+- (_SYWeakServiceDBRef)initWithServiceName:(id)name;
 @end
 
 @implementation _SYWeakServiceDBRef
 
-- (_SYWeakServiceDBRef)initWithServiceName:(id)a3
+- (_SYWeakServiceDBRef)initWithServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = _SYWeakServiceDBRef;
   v5 = [(_SYWeakServiceDBRef *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     name = v5->_name;
     v5->_name = v6;
 
@@ -29,8 +29,8 @@
   if (!WeakRetained)
   {
     v4 = [_SYSharedServiceDB alloc];
-    v5 = [(_SYWeakServiceDBRef *)self name];
-    WeakRetained = [(_SYSharedServiceDB *)v4 initWithServiceName:v5];
+    name = [(_SYWeakServiceDBRef *)self name];
+    WeakRetained = [(_SYSharedServiceDB *)v4 initWithServiceName:name];
 
     objc_storeWeak(&self->_db, WeakRetained);
   }

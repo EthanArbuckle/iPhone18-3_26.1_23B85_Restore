@@ -1,15 +1,15 @@
 @interface SecureConfigDaemon
-- (void)registerConfigWithInputData:(id)a3 metadata:(id)a4 reply:(id)a5;
-- (void)registerParametersWithParametersJson:(id)a3 securityPolicy:(id)a4 reply:(id)a5;
+- (void)registerConfigWithInputData:(id)data metadata:(id)metadata reply:(id)reply;
+- (void)registerParametersWithParametersJson:(id)json securityPolicy:(id)policy reply:(id)reply;
 @end
 
 @implementation SecureConfigDaemon
 
-- (void)registerConfigWithInputData:(id)a3 metadata:(id)a4 reply:(id)a5
+- (void)registerConfigWithInputData:(id)data metadata:(id)metadata reply:(id)reply
 {
-  v8 = _Block_copy(a5);
-  v9 = a3;
-  v10 = a4;
+  v8 = _Block_copy(reply);
+  dataCopy = data;
+  metadataCopy = metadata;
 
   v11 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
@@ -23,16 +23,16 @@
   sub_100001FD8(v11, v13);
 }
 
-- (void)registerParametersWithParametersJson:(id)a3 securityPolicy:(id)a4 reply:(id)a5
+- (void)registerParametersWithParametersJson:(id)json securityPolicy:(id)policy reply:(id)reply
 {
-  v7 = _Block_copy(a5);
-  v8 = a3;
+  v7 = _Block_copy(reply);
+  jsonCopy = json;
 
-  v9 = a4;
+  policyCopy = policy;
   v10 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
 
-  if (v9)
+  if (policyCopy)
   {
     v13 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v15 = v14;

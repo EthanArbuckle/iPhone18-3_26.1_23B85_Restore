@@ -1,6 +1,6 @@
 @interface _UIDocumentSearchListController
 - (_UIDocumentSearchListController)init;
-- (_UIDocumentSearchListController)initWithModel:(id)a3;
+- (_UIDocumentSearchListController)initWithModel:(id)model;
 @end
 
 @implementation _UIDocumentSearchListController
@@ -17,16 +17,16 @@
   return v6;
 }
 
-- (_UIDocumentSearchListController)initWithModel:(id)a3
+- (_UIDocumentSearchListController)initWithModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _UIDocumentSearchListController;
-  v6 = [(_UIDocumentListController *)&v9 initWithModel:v5];
+  v6 = [(_UIDocumentListController *)&v9 initWithModel:modelCopy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_model, a3);
+    objc_storeStrong(&v6->_model, model);
     [(_UIDocumentSearchListController *)v7 setRestorationIdentifier:0];
   }
 

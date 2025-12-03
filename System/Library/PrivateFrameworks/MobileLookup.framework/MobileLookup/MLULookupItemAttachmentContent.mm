@@ -1,22 +1,22 @@
 @interface MLULookupItemAttachmentContent
-- (MLULookupItemAttachmentContent)initWithAttachments:(id)a3 currentAttachmentIndex:(unint64_t)a4;
+- (MLULookupItemAttachmentContent)initWithAttachments:(id)attachments currentAttachmentIndex:(unint64_t)index;
 @end
 
 @implementation MLULookupItemAttachmentContent
 
-- (MLULookupItemAttachmentContent)initWithAttachments:(id)a3 currentAttachmentIndex:(unint64_t)a4
+- (MLULookupItemAttachmentContent)initWithAttachments:(id)attachments currentAttachmentIndex:(unint64_t)index
 {
-  v6 = a3;
+  attachmentsCopy = attachments;
   v11.receiver = self;
   v11.super_class = MLULookupItemAttachmentContent;
   v7 = [(MLULookupItemAttachmentContent *)&v11 init];
   if (v7)
   {
-    v8 = [objc_alloc(MEMORY[0x277CDAA58]) initWithPreviewItems:v6];
+    v8 = [objc_alloc(MEMORY[0x277CDAA58]) initWithPreviewItems:attachmentsCopy];
     [(MLULookupItemContent *)v7 setPreviewViewController:v8];
 
-    v9 = [(MLULookupItemContent *)v7 previewViewController];
-    [v9 setCurrentPreviewItemIndex:a4];
+    previewViewController = [(MLULookupItemContent *)v7 previewViewController];
+    [previewViewController setCurrentPreviewItemIndex:index];
 
     [(MLULookupItemContent *)v7 setValid:1];
   }

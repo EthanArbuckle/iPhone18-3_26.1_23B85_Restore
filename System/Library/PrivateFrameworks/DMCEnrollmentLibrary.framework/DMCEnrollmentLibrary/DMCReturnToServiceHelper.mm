@@ -1,6 +1,6 @@
 @interface DMCReturnToServiceHelper
 + (id)_userDefaultsToPreserve;
-+ (id)preseveReturnToServiceDataWithMDMProfileData:(id)a3 wifiProfileData:(id)a4 additionalDetails:(id)a5 error:(id *)a6;
++ (id)preseveReturnToServiceDataWithMDMProfileData:(id)data wifiProfileData:(id)profileData additionalDetails:(id)details error:(id *)error;
 - (BOOL)shouldDoRapidReturnToService;
 - (BOOL)shouldDoReturnToService;
 - (DMCObliterationShelter)obliterationShelter;
@@ -11,30 +11,30 @@
 
 @implementation DMCReturnToServiceHelper
 
-+ (id)preseveReturnToServiceDataWithMDMProfileData:(id)a3 wifiProfileData:(id)a4 additionalDetails:(id)a5 error:(id *)a6
++ (id)preseveReturnToServiceDataWithMDMProfileData:(id)data wifiProfileData:(id)profileData additionalDetails:(id)details error:(id *)error
 {
   v77 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [MEMORY[0x277D24640] sharedConfiguration];
-  [v13 refreshDetailsFromDisk];
+  dataCopy = data;
+  profileDataCopy = profileData;
+  detailsCopy = details;
+  mEMORY[0x277D24640] = [MEMORY[0x277D24640] sharedConfiguration];
+  [mEMORY[0x277D24640] refreshDetailsFromDisk];
   v14 = objc_alloc_init(MEMORY[0x277D03548]);
   [v14 clear];
-  v15 = [MEMORY[0x277CBEAF8] preferredLanguages];
-  [v14 setLanguageStrings:v15];
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+  [v14 setLanguageStrings:preferredLanguages];
 
-  v16 = [MEMORY[0x277CBEAF8] currentLocale];
-  v17 = [v16 localeIdentifier];
-  [v14 setLocaleString:v17];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  [v14 setLocaleString:localeIdentifier];
 
-  [v14 setWifiProfileData:v11];
-  [v14 setMdmProfileData:v10];
-  [v14 setIsSupervised:{objc_msgSend(v13, "isSupervised")}];
-  [v14 setIsRapidReturnToService:{objc_msgSend(v13, "isRapidReturnToService")}];
+  [v14 setWifiProfileData:profileDataCopy];
+  [v14 setMdmProfileData:dataCopy];
+  [v14 setIsSupervised:{objc_msgSend(mEMORY[0x277D24640], "isSupervised")}];
+  [v14 setIsRapidReturnToService:{objc_msgSend(mEMORY[0x277D24640], "isRapidReturnToService")}];
   [v14 setIsSharediPad:{objc_msgSend(MEMORY[0x277D03538], "isSharediPad")}];
-  [v14 setAdditionalDetails:v12];
-  if ([v13 isSupervised] && (objc_msgSend(v13, "isTeslaEnrolled") & 1) == 0)
+  [v14 setAdditionalDetails:detailsCopy];
+  if ([mEMORY[0x277D24640] isSupervised] && (objc_msgSend(mEMORY[0x277D24640], "isTeslaEnrolled") & 1) == 0)
   {
     v18 = *DMCLogObjects();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -43,8 +43,8 @@
       _os_log_impl(&dword_247E39000, v18, OS_LOG_TYPE_DEFAULT, "Doing RTS on non-ADE enrolled device, need to preserve the cloud config", buf, 2u);
     }
 
-    v19 = [v13 details];
-    v20 = [v19 mutableCopy];
+    details = [mEMORY[0x277D24640] details];
+    v20 = [details mutableCopy];
 
     v21 = MEMORY[0x277CBEC28];
     [v20 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:*MEMORY[0x277D03028]];
@@ -57,13 +57,13 @@
   if ([MEMORY[0x277D03500] shouldPreserveUserDefaultsForReturnToService])
   {
     v45 = v14;
-    v47 = v13;
-    v49 = a6;
-    v51 = v12;
-    v53 = v11;
-    v55 = v10;
+    v47 = mEMORY[0x277D24640];
+    errorCopy = error;
+    v51 = detailsCopy;
+    v53 = profileDataCopy;
+    v55 = dataCopy;
     v57 = objc_opt_new();
-    [a1 _userDefaultsToPreserve];
+    [self _userDefaultsToPreserve];
     v67 = 0u;
     v68 = 0u;
     v69 = 0u;
@@ -105,8 +105,8 @@
                 }
 
                 v31 = *(*(&v63 + 1) + 8 * i);
-                v32 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-                v33 = [v32 objectForKey:v31 inDomain:v24];
+                standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+                v33 = [standardUserDefaults objectForKey:v31 inDomain:v24];
 
                 [v25 setObject:v33 forKeyedSubscript:v31];
               }
@@ -144,12 +144,12 @@
     }
 
     v36 = [v57 count];
-    v11 = v54;
-    v10 = v56;
-    a6 = v50;
-    v12 = v52;
+    profileDataCopy = v54;
+    dataCopy = v56;
+    error = v50;
+    detailsCopy = v52;
     v14 = v46;
-    v13 = v48;
+    mEMORY[0x277D24640] = v48;
     if (v36)
     {
       v37 = [v57 copy];
@@ -169,11 +169,11 @@
   else
   {
     v41 = 0;
-    if (a6 && v39)
+    if (error && v39)
     {
       v42 = v39;
       v41 = 0;
-      *a6 = v40;
+      *error = v40;
     }
   }
 
@@ -184,64 +184,64 @@
 
 - (BOOL)shouldDoReturnToService
 {
-  v2 = [(DMCReturnToServiceHelper *)self obliterationShelter];
-  v3 = [v2 hasConfigFile];
+  obliterationShelter = [(DMCReturnToServiceHelper *)self obliterationShelter];
+  hasConfigFile = [obliterationShelter hasConfigFile];
 
-  return v3;
+  return hasConfigFile;
 }
 
 - (BOOL)shouldDoRapidReturnToService
 {
-  v3 = [(DMCReturnToServiceHelper *)self shouldDoReturnToService];
-  if (v3)
+  shouldDoReturnToService = [(DMCReturnToServiceHelper *)self shouldDoReturnToService];
+  if (shouldDoReturnToService)
   {
-    v4 = [(DMCReturnToServiceHelper *)self obliterationShelter];
-    v5 = [v4 isRapidReturnToService];
+    obliterationShelter = [(DMCReturnToServiceHelper *)self obliterationShelter];
+    isRapidReturnToService = [obliterationShelter isRapidReturnToService];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(shouldDoReturnToService) = isRapidReturnToService;
   }
 
-  return v3;
+  return shouldDoReturnToService;
 }
 
 - (id)languageStrings
 {
   if ([(DMCReturnToServiceHelper *)self shouldDoReturnToService])
   {
-    v3 = [(DMCReturnToServiceHelper *)self obliterationShelter];
-    v4 = [v3 languageStrings];
+    obliterationShelter = [(DMCReturnToServiceHelper *)self obliterationShelter];
+    languageStrings = [obliterationShelter languageStrings];
   }
 
   else
   {
-    v4 = 0;
+    languageStrings = 0;
   }
 
-  return v4;
+  return languageStrings;
 }
 
 - (id)localeString
 {
   if ([(DMCReturnToServiceHelper *)self shouldDoReturnToService])
   {
-    v3 = [(DMCReturnToServiceHelper *)self obliterationShelter];
-    v4 = [v3 localeString];
+    obliterationShelter = [(DMCReturnToServiceHelper *)self obliterationShelter];
+    localeString = [obliterationShelter localeString];
   }
 
   else
   {
-    v4 = 0;
+    localeString = 0;
   }
 
-  return v4;
+  return localeString;
 }
 
 - (void)returnToServiceFlowCompleted
 {
   if ([(DMCReturnToServiceHelper *)self shouldDoReturnToService])
   {
-    v3 = [(DMCReturnToServiceHelper *)self obliterationShelter];
-    [v3 clear];
+    obliterationShelter = [(DMCReturnToServiceHelper *)self obliterationShelter];
+    [obliterationShelter clear];
   }
 }
 
@@ -251,8 +251,8 @@
   v6[0] = @"com.apple.managedconfiguration.notbackedup";
   v6[1] = @"Apple Global Domain";
   v7[0] = &unk_2859F9E68;
-  v2 = [MEMORY[0x277D03500] _allOverrides];
-  v7[1] = v2;
+  _allOverrides = [MEMORY[0x277D03500] _allOverrides];
+  v7[1] = _allOverrides;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:v6 count:2];
 
   v4 = *MEMORY[0x277D85DE8];

@@ -1,11 +1,11 @@
 @interface NSProcessInfo
 + (NSProcessInfo)alloc;
-+ (NSProcessInfo)allocWithZone:(_NSZone *)a3;
++ (NSProcessInfo)allocWithZone:(_NSZone *)zone;
 + (NSProcessInfo)processInfo;
 - ($9FE6E10C8CE45DBC9A88DFDEA39A390D)macCatalystVersion;
 - (BOOL)automaticTerminationSupportEnabled;
 - (BOOL)isLowPowerModeEnabled;
-- (BOOL)macCatalystVersionIsAtLeastVersion:(id *)a3;
+- (BOOL)macCatalystVersionIsAtLeastVersion:(id *)version;
 - (NSArray)arguments;
 - (NSDictionary)environment;
 - (NSOperatingSystemVersion)operatingSystemVersion;
@@ -18,16 +18,16 @@
 - (NSString)userName;
 - (NSUInteger)activeProcessorCount;
 - (NSUInteger)processorCount;
-- (id)beginActivityWithOptions:(unint64_t)a3 reason:(id)a4 expirationHandler:(id)a5;
-- (id)beginSuspensionOfSystemBehaviors:(unint64_t)a3 reason:(id)a4;
+- (id)beginActivityWithOptions:(unint64_t)options reason:(id)reason expirationHandler:(id)handler;
+- (id)beginSuspensionOfSystemBehaviors:(unint64_t)behaviors reason:(id)reason;
 - (unint64_t)physicalMemory;
-- (void)_reactivateActivity:(id)a3;
+- (void)_reactivateActivity:(id)activity;
 - (void)dealloc;
 - (void)disableAutomaticTermination:(NSString *)reason;
 - (void)enableAutomaticTermination:(NSString *)reason;
 - (void)endActivity:(id)activity;
-- (void)endSystemBehaviorSuspension:(id)a3;
-- (void)setArguments:(id)a3;
+- (void)endSystemBehaviorSuspension:(id)suspension;
+- (void)setArguments:(id)arguments;
 - (void)setAutomaticTerminationSupportEnabled:(BOOL)automaticTerminationSupportEnabled;
 - (void)setProcessName:(NSString *)processName;
 @end
@@ -36,7 +36,7 @@
 
 + (NSProcessInfo)processInfo
 {
-  if (NSProcessInfo == a1)
+  if (NSProcessInfo == self)
   {
 
     return +[_NSSwiftProcessInfo processInfo];
@@ -79,7 +79,7 @@
   return v5;
 }
 
-+ (NSProcessInfo)allocWithZone:(_NSZone *)a3
++ (NSProcessInfo)allocWithZone:(_NSZone *)zone
 {
   v7 = *MEMORY[0x1E69E9840];
   if (qword_1ED43FA10 != -1)
@@ -87,17 +87,17 @@
     dispatch_once(&qword_1ED43FA10, &__block_literal_global_156);
   }
 
-  if (byte_1ED43F9F1 == 1 && NSProcessInfo == a1)
+  if (byte_1ED43F9F1 == 1 && NSProcessInfo == self)
   {
 
-    return [(NSProcessInfo *)_NSSwiftProcessInfo allocWithZone:a3];
+    return [(NSProcessInfo *)_NSSwiftProcessInfo allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___NSProcessInfo;
-    return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v6, sel_allocWithZone_, zone);
   }
 }
 
@@ -109,7 +109,7 @@
     dispatch_once(&qword_1ED43FA10, &__block_literal_global_156);
   }
 
-  if (byte_1ED43F9F1 == 1 && NSProcessInfo == a1)
+  if (byte_1ED43F9F1 == 1 && NSProcessInfo == self)
   {
 
     return [_NSSwiftProcessInfo alloc];
@@ -117,7 +117,7 @@
 
   else
   {
-    v4.receiver = a1;
+    v4.receiver = self;
     v4.super_class = &OBJC_METACLASS___NSProcessInfo;
     return objc_msgSendSuper2(&v4, sel_alloc);
   }
@@ -132,15 +132,15 @@ uint64_t __28__NSProcessInfo_processInfo__block_invoke()
 
 - (NSString)operatingSystemName
 {
-  v2 = [(NSProcessInfo *)self operatingSystem];
-  if (v2 - 1 > 4)
+  operatingSystem = [(NSProcessInfo *)self operatingSystem];
+  if (operatingSystem - 1 > 4)
   {
     return @"NSUnknownOperatingSystem";
   }
 
   else
   {
-    return off_1E69F54E0[v2 - 1];
+    return off_1E69F54E0[operatingSystem - 1];
   }
 }
 
@@ -306,8 +306,8 @@ LABEL_13:
       v5 = &stru_1EEEFDF90;
     }
 
-    v9 = [(__CFString *)v5 stringByStandardizingPath];
-    v10 = [MEMORY[0x1E695DF70] array];
+    stringByStandardizingPath = [(__CFString *)v5 stringByStandardizingPath];
+    array = [MEMORY[0x1E695DF70] array];
     v11 = *_NSGetArgv();
     v12 = *_NSGetArgc();
     if (v12 >= 1)
@@ -319,7 +319,7 @@ LABEL_13:
           v13 = [NSString stringWithCString:*v11 encoding:4];
           if (v13 || (v13 = [NSString stringWithCString:*v11 encoding:5]) != 0)
           {
-            [v10 addObject:v13];
+            [array addObject:v13];
           }
         }
 
@@ -330,17 +330,17 @@ LABEL_13:
       while (v12);
     }
 
-    if ([v10 count])
+    if ([array count])
     {
-      [v10 replaceObjectAtIndex:0 withObject:v9];
+      [array replaceObjectAtIndex:0 withObject:stringByStandardizingPath];
     }
 
     else
     {
-      [v10 addObject:v9];
+      [array addObject:stringByStandardizingPath];
     }
 
-    arguments = [v10 copy];
+    arguments = [array copy];
     self->arguments = arguments;
   }
 
@@ -348,14 +348,14 @@ LABEL_13:
   return arguments;
 }
 
-- (void)setArguments:(id)a3
+- (void)setArguments:(id)arguments
 {
   os_unfair_lock_lock_with_options();
   arguments = self->arguments;
-  if (arguments != a3)
+  if (arguments != arguments)
   {
 
-    self->arguments = [a3 copy];
+    self->arguments = [arguments copy];
   }
 
   os_unfair_lock_unlock(&processLock);
@@ -444,30 +444,30 @@ LABEL_13:
   return self;
 }
 
-- (BOOL)macCatalystVersionIsAtLeastVersion:(id *)a3
+- (BOOL)macCatalystVersionIsAtLeastVersion:(id *)version
 {
   if (self)
   {
     [(NSProcessInfo *)self macCatalystVersion];
   }
 
-  if (a3->var0 > 0)
+  if (version->var0 > 0)
   {
     return 0;
   }
 
-  if (a3->var0 < 0)
+  if (version->var0 < 0)
   {
     return 1;
   }
 
-  var1 = a3->var1;
+  var1 = version->var1;
   if (var1 > 0)
   {
     return 0;
   }
 
-  return var1 < 0 || a3->var2 <= 0;
+  return var1 < 0 || version->var2 <= 0;
 }
 
 - (NSUInteger)processorCount
@@ -569,42 +569,42 @@ LABEL_13:
   return 0;
 }
 
-- (void)_reactivateActivity:(id)a3
+- (void)_reactivateActivity:(id)activity
 {
-  if (a3)
+  if (activity)
   {
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Invalid class type" userInfo:0]);
     }
 
-    [a3 _reactivate];
+    [activity _reactivate];
   }
 }
 
-- (id)beginSuspensionOfSystemBehaviors:(unint64_t)a3 reason:(id)a4
+- (id)beginSuspensionOfSystemBehaviors:(unint64_t)behaviors reason:(id)reason
 {
-  v4 = [[_NSActivityAssertion alloc] _initWithActivityOptions:0xFF00EFFFFFLL reason:a4 expirationHandler:0];
+  v4 = [[_NSActivityAssertion alloc] _initWithActivityOptions:0xFF00EFFFFFLL reason:reason expirationHandler:0];
 
   return v4;
 }
 
-- (void)endSystemBehaviorSuspension:(id)a3
+- (void)endSystemBehaviorSuspension:(id)suspension
 {
-  if (a3)
+  if (suspension)
   {
-    [a3 _endFromDealloc:0];
+    [suspension _endFromDealloc:0];
   }
 }
 
-- (id)beginActivityWithOptions:(unint64_t)a3 reason:(id)a4 expirationHandler:(id)a5
+- (id)beginActivityWithOptions:(unint64_t)options reason:(id)reason expirationHandler:(id)handler
 {
-  if (!a4 || !_NSIsNSString() || ![a4 length])
+  if (!reason || !_NSIsNSString() || ![reason length])
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Cannot begin activity without reason string or empty reason string" userInfo:0]);
   }
 
-  v8 = [[_NSActivityAssertion alloc] _initWithActivityOptions:a3 reason:a4 expirationHandler:a5];
+  v8 = [[_NSActivityAssertion alloc] _initWithActivityOptions:options reason:reason expirationHandler:handler];
 
   return v8;
 }

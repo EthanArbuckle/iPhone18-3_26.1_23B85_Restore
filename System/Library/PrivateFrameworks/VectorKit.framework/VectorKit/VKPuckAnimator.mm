@@ -1,27 +1,27 @@
 @interface VKPuckAnimator
 - (Matrix<double,)lastProjectedPosition;
-- (VKPuckAnimator)initWithCallbackQueue:(id)a3;
+- (VKPuckAnimator)initWithCallbackQueue:(id)queue;
 - (VKPuckAnimatorDelegate)delegate;
 - (id).cxx_construct;
 - (id)detailedDescription;
 - (optional<std::pair<geo::Mercator3<double>,)currentSnappedSegment;
 - (unint64_t)subscribeToLocationUpdates:(function<void (VKPuckAnimator *);
-- (void)_publishLocationUpdate:(id)a3 routeMatch:(id)a4 uuid:(id)a5;
-- (void)_queueLocationUpdate:(id)a3 routeMatch:(id)a4 locationUpdateUUID:(id)a5;
+- (void)_publishLocationUpdate:(id)update routeMatch:(id)match uuid:(id)uuid;
+- (void)_queueLocationUpdate:(id)update routeMatch:(id)match locationUpdateUUID:(id)d;
 - (void)_step;
-- (void)_updateLocation:(id)a3 routeMatch:(id)a4 locationUpdateUUID:(id)a5;
+- (void)_updateLocation:(id)location routeMatch:(id)match locationUpdateUUID:(id)d;
 - (void)dealloc;
 - (void)initWithCallbackQueue:;
 - (void)pause;
 - (void)processLocationUpdates;
 - (void)resume;
-- (void)setDelegate:(id)a3;
-- (void)setTarget:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setTarget:(id)target;
 - (void)start;
 - (void)stop;
-- (void)unsubscribeFromLocationUpdates:(unint64_t)a3;
-- (void)updateVehicleHeading:(double)a3;
-- (void)updatedPosition:(const void *)a3;
+- (void)unsubscribeFromLocationUpdates:(unint64_t)updates;
+- (void)updateVehicleHeading:(double)heading;
+- (void)updatedPosition:(const void *)position;
 @end
 
 @implementation VKPuckAnimator
@@ -83,8 +83,8 @@
     v13 = 0x3032000000;
     v14 = __Block_byref_object_copy__12936;
     v15 = __Block_byref_object_dispose__12937;
-    v8 = self;
-    v16 = v8;
+    selfCopy = self;
+    v16 = selfCopy;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __23__VKPuckAnimator_start__block_invoke;
@@ -97,8 +97,8 @@
     v10[3] = &unk_1E7B34D38;
     v10[4] = &buf;
     [(VKAnimation *)self->_animation setCompletionHandler:v10];
-    v9 = [(VKPuckAnimator *)v8 delegate];
-    [v9 puckAnimator:v8 runAnimation:self->_animation];
+    delegate = [(VKPuckAnimator *)selfCopy delegate];
+    [delegate puckAnimator:selfCopy runAnimation:self->_animation];
 
     _Block_object_dispose(&buf, 8);
   }
@@ -158,8 +158,8 @@
   [v5 appendFormat:@"_suspended: %@\n", v6];
   [v5 appendFormat:@"_lastProjectedPosition: %f, %f, %f\n", *&self->_lastProjectedPosition._e[0], *&self->_lastProjectedPosition._e[1], *&self->_lastProjectedPosition._e[2]];
   [v5 appendFormat:@"_behavior: %lu\n", self->_behavior];
-  v7 = [(VKPuckAnimatorLocationProjector *)self->_locationProjector detailedDescription];
-  [v5 appendFormat:@"_locationProjector:\n%@\n", v7];
+  detailedDescription = [(VKPuckAnimatorLocationProjector *)self->_locationProjector detailedDescription];
+  [v5 appendFormat:@"_locationProjector:\n%@\n", detailedDescription];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [v5 appendFormat:@"_delegate: %@\n", WeakRetained];
@@ -169,21 +169,21 @@
   return v5;
 }
 
-- (void)updateVehicleHeading:(double)a3
+- (void)updateVehicleHeading:(double)heading
 {
-  if (vabdd_f64(a3, self->_vehicleHeading) >= 0.000001)
+  if (vabdd_f64(heading, self->_vehicleHeading) >= 0.000001)
   {
-    self->_vehicleHeading = a3;
+    self->_vehicleHeading = heading;
     self->_vehicleHeadingUpdated = 1;
   }
 }
 
-- (void)_queueLocationUpdate:(id)a3 routeMatch:(id)a4 locationUpdateUUID:(id)a5
+- (void)_queueLocationUpdate:(id)update routeMatch:(id)match locationUpdateUUID:(id)d
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  updateCopy = update;
+  matchCopy = match;
+  dCopy = d;
   if (GEOGetVectorKitVKDefaultLog_onceToken != -1)
   {
     dispatch_once(&GEOGetVectorKitVKDefaultLog_onceToken, &__block_literal_global_5_15525);
@@ -192,11 +192,11 @@
   v11 = GEOGetVectorKitVKDefaultLog_log;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    [v8 coordinate];
+    [updateCopy coordinate];
     v13 = v12;
-    [v8 coordinate];
+    [updateCopy coordinate];
     v23 = 134218497;
-    v24 = self;
+    selfCopy = self;
     v25 = 2049;
     v26 = v13;
     v27 = 2049;
@@ -204,9 +204,9 @@
     _os_log_impl(&dword_1B2754000, v11, OS_LOG_TYPE_INFO, "[%p] VKPuckAnimator queued location %{private}f, %{private}f", &v23, 0x20u);
   }
 
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
+  v15 = updateCopy;
+  v16 = matchCopy;
+  v17 = dCopy;
   v18 = v17;
   if (self->_lastLocationUpdate.__engaged_)
   {
@@ -235,12 +235,12 @@
   }
 }
 
-- (void)_updateLocation:(id)a3 routeMatch:(id)a4 locationUpdateUUID:(id)a5
+- (void)_updateLocation:(id)location routeMatch:(id)match locationUpdateUUID:(id)d
 {
   v57 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  locationCopy = location;
+  matchCopy = match;
+  dCopy = d;
   if (GEOGetVectorKitVKDefaultLog_onceToken != -1)
   {
     dispatch_once(&GEOGetVectorKitVKDefaultLog_onceToken, &__block_literal_global_5_15525);
@@ -249,9 +249,9 @@
   v11 = GEOGetVectorKitVKDefaultLog_log;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    [v8 coordinate];
+    [locationCopy coordinate];
     v13 = v12;
-    [v8 coordinate];
+    [locationCopy coordinate];
     *buf = 134218497;
     *&buf[4] = self;
     *&buf[12] = 2049;
@@ -265,26 +265,26 @@
   routeOverlayCache = self->_routeOverlayCache;
   if (routeOverlayCache)
   {
-    v16 = [v9 route];
-    v17 = (*(routeOverlayCache->var0 + 7))(routeOverlayCache, v16);
+    route = [matchCopy route];
+    v17 = (*(routeOverlayCache->var0 + 7))(routeOverlayCache, route);
 
     if (v17)
     {
-      v18 = [v17 routeRibbon];
+      routeRibbon = [v17 routeRibbon];
     }
 
     else
     {
-      v18 = 0;
+      routeRibbon = 0;
     }
   }
 
   else
   {
-    v18 = 0;
+    routeRibbon = 0;
   }
 
-  [(VKPuckAnimatorLocationProjector *)self->_locationProjector projectFromLocation:v8 routeMatch:v9 speedMultiplier:v18 routeLine:self->_tracePlaybackSpeedMultiplier];
+  [(VKPuckAnimatorLocationProjector *)self->_locationProjector projectFromLocation:locationCopy routeMatch:matchCopy speedMultiplier:routeRibbon routeLine:self->_tracePlaybackSpeedMultiplier];
   [(VKPuckAnimatorLocationProjector *)self->_locationProjector projectedPosition];
   v20 = v19;
   v48 = v21;
@@ -363,7 +363,7 @@
     if (!((v32 > value) | v41 & 1))
     {
 LABEL_17:
-      [(VKPuckAnimator *)self _publishLocationUpdate:v8 routeMatch:v9 uuid:v10];
+      [(VKPuckAnimator *)self _publishLocationUpdate:locationCopy routeMatch:matchCopy uuid:dCopy];
       goto LABEL_39;
     }
   }
@@ -374,7 +374,7 @@ LABEL_17:
     v43 = ![(VKPuckAnimatorLocationProjector *)self->_locationProjector isProjectedPositionBehind]&& !self->_resetCourse && !self->_suspended;
     [(VKRunningCurve *)curve setCourseValid:v43];
     [(VKRunningCurve *)self->_curve appendPosition:[(VKPuckAnimatorLocationProjector *)self->_locationProjector projectedCoordinate] coordinate:v36 atTime:v35, v20, v45];
-    [(VKPuckAnimator *)self _publishLocationUpdate:v8 routeMatch:v9 uuid:v10];
+    [(VKPuckAnimator *)self _publishLocationUpdate:locationCopy routeMatch:matchCopy uuid:dCopy];
     if (self->_suspended)
     {
       self->_suspended = 0;
@@ -395,12 +395,12 @@ LABEL_17:
     if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
     {
       *v53 = 134217984;
-      v54 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B2754000, v44, OS_LOG_TYPE_INFO, "[%p] VKPuckAnimator move without animation", v53, 0xCu);
     }
 
     [(VKPuckAnimator *)self updatedPosition:v49];
-    [(VKPuckAnimator *)self _publishLocationUpdate:v8 routeMatch:v9 uuid:v10];
+    [(VKPuckAnimator *)self _publishLocationUpdate:locationCopy routeMatch:matchCopy uuid:dCopy];
   }
 
 LABEL_39:
@@ -478,9 +478,9 @@ LABEL_13:
   v26[2] = v29;
   if (v31 != *MEMORY[0x1E69A1918] || (v20 = *MEMORY[0x1E69A1918], vabds_f32(*(&v31 + 1), COERCE_FLOAT(HIDWORD(*MEMORY[0x1E69A1918]))) >= 0.00000011921))
   {
-    v21 = [(VKPuckAnimatorLocationProjector *)self->_locationProjector projectedRouteMatch];
-    v22 = [v21 route];
-    v20 = [v22 routeCoordinateForDistance:v31 beforeRouteCoordinate:v32 * 40075017.0];
+    projectedRouteMatch = [(VKPuckAnimatorLocationProjector *)self->_locationProjector projectedRouteMatch];
+    route = [projectedRouteMatch route];
+    v20 = [route routeCoordinateForDistance:v31 beforeRouteCoordinate:v32 * 40075017.0];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -514,7 +514,7 @@ LABEL_13:
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         v6 = 134217984;
-        v7 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[%p] Resuming VKPuckAnimator", &v6, 0xCu);
       }
 
@@ -538,7 +538,7 @@ LABEL_13:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v5 = 134217984;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B2754000, v4, OS_LOG_TYPE_INFO, "[%p] Pausing VKPuckAnimator", &v5, 0xCu);
     }
 
@@ -563,7 +563,7 @@ LABEL_13:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
       v7 = 134217984;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B2754000, v3, OS_LOG_TYPE_INFO, "[%p] Stopping VKPuckAnimator", &v7, 0xCu);
     }
 
@@ -581,24 +581,24 @@ LABEL_13:
   }
 }
 
-- (void)setTarget:(id)a3
+- (void)setTarget:(id)target
 {
-  v5 = a3;
+  targetCopy = target;
   target = self->_target;
-  v7 = v5;
-  if (target != v5)
+  v7 = targetCopy;
+  if (target != targetCopy)
   {
     [(VKPuckAnimatorTarget *)target setAnimatingToCoordinate:0];
-    objc_storeStrong(&self->_target, a3);
+    objc_storeStrong(&self->_target, target);
     [(VKPuckAnimatorTarget *)self->_target setAnimatingToCoordinate:self->_animation != 0];
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  objc_storeWeak(&self->_delegate, v4);
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
   if (GEOGetVectorKitVKDefaultLog_onceToken != -1)
   {
     dispatch_once(&GEOGetVectorKitVKDefaultLog_onceToken, &__block_literal_global_5_15525);
@@ -608,30 +608,30 @@ LABEL_13:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 134218240;
-    v7 = self;
+    selfCopy = self;
     v8 = 2048;
-    v9 = v4;
+    v9 = delegateCopy;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[%p] VKPuckAnimator setDelegate: %p", &v6, 0x16u);
   }
 }
 
-- (void)_publishLocationUpdate:(id)a3 routeMatch:(id)a4 uuid:(id)a5
+- (void)_publishLocationUpdate:(id)update routeMatch:(id)match uuid:(id)uuid
 {
-  v17 = a3;
-  v8 = a4;
-  v9 = a5;
+  updateCopy = update;
+  matchCopy = match;
+  uuidCopy = uuid;
   begin = self->_locationUpdateSubscriptions._backing.__begin_;
   end = self->_locationUpdateSubscriptions._backing.__end_;
   while (begin != end)
   {
     if (begin[4])
     {
-      v21 = self;
-      v12 = v17;
+      selfCopy = self;
+      v12 = updateCopy;
       v20 = v12;
-      v13 = v8;
+      v13 = matchCopy;
       v19 = v13;
-      v14 = v9;
+      v14 = uuidCopy;
       v18 = v14;
       v15 = begin[4];
       if (!v15)
@@ -641,19 +641,19 @@ LABEL_13:
         _Unwind_Resume(v16);
       }
 
-      (*(*v15 + 48))(v15, &v21, &v20, &v19, &v18);
+      (*(*v15 + 48))(v15, &selfCopy, &v20, &v19, &v18);
     }
 
     begin += 5;
   }
 }
 
-- (void)updatedPosition:(const void *)a3
+- (void)updatedPosition:(const void *)position
 {
   if (self->_behavior)
   {
-    v5 = *a3 * 6.28318531;
-    v6 = exp(*(a3 + 1) * 6.28318531 + -3.14159265);
+    v5 = *position * 6.28318531;
+    v6 = exp(*(position + 1) * 6.28318531 + -3.14159265);
     v7 = atan(v6);
     v8 = fmod(v5, 6.28318531);
     [(VKPuckAnimatorTarget *)self->_target setPresentationCoordinate:v7 * 114.591559 + -90.0, (fmod(v8 + 6.28318531, 6.28318531) * 57.2957795 + -180.0)];
@@ -661,9 +661,9 @@ LABEL_13:
 
   [(VKPuckAnimatorLocationProjector *)self->_locationProjector projectedCourse];
   [(VKPuckAnimatorTarget *)self->_target setPresentationCourse:?];
-  v9 = *a3;
-  v10 = *(a3 + 1);
-  v11 = *(a3 + 2);
+  v9 = *position;
+  v10 = *(position + 1);
+  v11 = *(position + 2);
   v12 = v9 * 6.28318531;
   v13 = exp(v10 * 6.28318531 + -3.14159265);
   v14 = atan(v13) * 2.0 + -1.57079633;
@@ -676,7 +676,7 @@ LABEL_13:
   [WeakRetained puckAnimator:self updatedPosition:&v19 course:&v18 polylineCoordinate:{-[VKPuckAnimatorLocationProjector projectedCoordinate](self->_locationProjector, "projectedCoordinate", v17 * 0.0174532925, *&v14, *&v20, v21)}];
 }
 
-- (void)unsubscribeFromLocationUpdates:(unint64_t)a3
+- (void)unsubscribeFromLocationUpdates:(unint64_t)updates
 {
   begin = self->_locationUpdateSubscriptions._backing.__begin_;
   end = self->_locationUpdateSubscriptions._backing.__end_;
@@ -686,7 +686,7 @@ LABEL_13:
     while (1)
     {
       v7 = &begin[v6];
-      if (*&begin[v6] == a3)
+      if (*&begin[v6] == updates)
       {
         break;
       }
@@ -982,7 +982,7 @@ LABEL_13:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B2754000, v3, OS_LOG_TYPE_INFO, "[%p] Destroying VKPuckAnimator", buf, 0xCu);
   }
 
@@ -992,10 +992,10 @@ LABEL_13:
   [(VKPuckAnimator *)&v4 dealloc];
 }
 
-- (VKPuckAnimator)initWithCallbackQueue:(id)a3
+- (VKPuckAnimator)initWithCallbackQueue:(id)queue
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  queueCopy = queue;
   v20.receiver = self;
   v20.super_class = VKPuckAnimator;
   v5 = [(VKPuckAnimator *)&v20 init];
@@ -1021,7 +1021,7 @@ LABEL_13:
     objc_moveWeak(&v29, &to);
     v30 = &v28;
     objc_destroyWeak(&to);
-    md::Monitorable<md::ConfigValue<GEOConfigKeyDouble,double>>::setCallbackQueue(&v6->_puckUpdateDistanceDeltaThreshold, v4, &v28);
+    md::Monitorable<md::ConfigValue<GEOConfigKeyDouble,double>>::setCallbackQueue(&v6->_puckUpdateDistanceDeltaThreshold, queueCopy, &v28);
     std::__function::__value_func<void ()(double)>::~__value_func[abi:nn200100](&v28);
     v6->_puckUpdatePointDeltaForAnimation._key = VectorKitConfig_PuckUpdatePointDeltaForAnimation;
     GEOConfigGetDouble();
@@ -1032,7 +1032,7 @@ LABEL_13:
     objc_moveWeak(&v26, &from);
     v27 = &v25;
     objc_destroyWeak(&from);
-    md::Monitorable<md::ConfigValue<GEOConfigKeyDouble,double>>::setCallbackQueue(&v6->_puckUpdatePointDeltaForAnimation, v4, &v25);
+    md::Monitorable<md::ConfigValue<GEOConfigKeyDouble,double>>::setCallbackQueue(&v6->_puckUpdatePointDeltaForAnimation, queueCopy, &v25);
     std::__function::__value_func<void ()(double)>::~__value_func[abi:nn200100](&v25);
     if (GEOGetVectorKitVKDefaultLog_onceToken != -1)
     {
@@ -1073,7 +1073,7 @@ LABEL_13:
 
 - (void)initWithCallbackQueue:
 {
-  objc_destroyWeak((a1 + 8));
+  objc_destroyWeak((self + 8));
 
   JUMPOUT(0x1B8C62190);
 }

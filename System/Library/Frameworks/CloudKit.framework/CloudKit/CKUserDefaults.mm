@@ -1,6 +1,6 @@
 @interface CKUserDefaults
 + (id)CKUserDefaults;
-+ (void)performAtomicDefaultsOperation:(id)a3;
++ (void)performAtomicDefaultsOperation:(id)operation;
 @end
 
 @implementation CKUserDefaults
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = sub_1884215A4;
   block[3] = &unk_1E70BC418;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED4B6750 != -1)
   {
     dispatch_once(&qword_1ED4B6750, block);
@@ -22,12 +22,12 @@
   return v2;
 }
 
-+ (void)performAtomicDefaultsOperation:(id)a3
++ (void)performAtomicDefaultsOperation:(id)operation
 {
-  v7 = a3;
+  operationCopy = operation;
   os_unfair_lock_lock(&unk_1ED4B6778);
-  v6 = objc_msgSend_CKUserDefaults(a1, v4, v5);
-  v7[2](v7, v6);
+  v6 = objc_msgSend_CKUserDefaults(self, v4, v5);
+  operationCopy[2](operationCopy, v6);
 
   os_unfair_lock_unlock(&unk_1ED4B6778);
 }

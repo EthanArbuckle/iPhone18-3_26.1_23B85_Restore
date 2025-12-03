@@ -1,8 +1,8 @@
 @interface BTShareAudioConfirmViewController
-- (void)_updateDeviceVisual:(id)a3;
-- (void)eventCancel:(id)a3;
-- (void)eventPermanentButton:(id)a3;
-- (void)eventTemporarilyShareButton:(id)a3;
+- (void)_updateDeviceVisual:(id)visual;
+- (void)eventCancel:(id)cancel;
+- (void)eventPermanentButton:(id)button;
+- (void)eventTemporarilyShareButton:(id)button;
 @end
 
 @implementation BTShareAudioConfirmViewController
@@ -26,33 +26,33 @@ void __52__BTShareAudioConfirmViewController_viewWillAppear___block_invoke(uint6
   }
 }
 
-- (void)eventTemporarilyShareButton:(id)a3
+- (void)eventTemporarilyShareButton:(id)button
 {
-  v5 = a3;
+  buttonCopy = button;
   if (gLogCategory_BTShareAudioViewController <= 30 && (gLogCategory_BTShareAudioViewController != -1 || _LogCategory_Initialize()))
   {
     [BTShareAudioConfirmViewController eventTemporarilyShareButton:];
   }
 
-  v4 = [(BTShareAudioViewController *)self->super._mainController shareAudioSession];
-  [v4 userConfirmed:0];
+  shareAudioSession = [(BTShareAudioViewController *)self->super._mainController shareAudioSession];
+  [shareAudioSession userConfirmed:0];
 }
 
-- (void)eventPermanentButton:(id)a3
+- (void)eventPermanentButton:(id)button
 {
-  v5 = a3;
+  buttonCopy = button;
   if (gLogCategory_BTShareAudioViewController <= 30 && (gLogCategory_BTShareAudioViewController != -1 || _LogCategory_Initialize()))
   {
     [BTShareAudioConfirmViewController eventPermanentButton:];
   }
 
-  v4 = [(BTShareAudioViewController *)self->super._mainController shareAudioSession];
-  [v4 userConfirmed:1];
+  shareAudioSession = [(BTShareAudioViewController *)self->super._mainController shareAudioSession];
+  [shareAudioSession userConfirmed:1];
 }
 
-- (void)eventCancel:(id)a3
+- (void)eventCancel:(id)cancel
 {
-  v4 = a3;
+  cancelCopy = cancel;
   if (gLogCategory_BTShareAudioViewController <= 30 && (gLogCategory_BTShareAudioViewController != -1 || _LogCategory_Initialize()))
   {
     [BTShareAudioConfirmViewController eventCancel:];
@@ -61,12 +61,12 @@ void __52__BTShareAudioConfirmViewController_viewWillAppear___block_invoke(uint6
   [(BTShareAudioViewController *)self->super._mainController reportUserCancelled];
 }
 
-- (void)_updateDeviceVisual:(id)a3
+- (void)_updateDeviceVisual:(id)visual
 {
   v12 = [(BTShareAudioViewController *)self->super._mainController _moviePathForPID:self->_colorCode colorCode:*(&self->super._viewActive + 1)];
   v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@-Loop", v12];
-  v5 = [(BTShareAudioViewController *)self->super._mainController mainBundle];
-  v6 = [v5 pathForResource:v4 ofType:@"mov"];
+  mainBundle = [(BTShareAudioViewController *)self->super._mainController mainBundle];
+  v6 = [mainBundle pathForResource:v4 ofType:@"mov"];
 
   if (v6)
   {
@@ -101,8 +101,8 @@ void __52__BTShareAudioConfirmViewController_viewWillAppear___block_invoke(uint6
       }
 
       v9 = MEMORY[0x277D755B8];
-      v10 = [(BTShareAudioViewController *)self->super._mainController mainBundle];
-      v11 = [v9 imageNamed:@"ShareAudioAirPods" inBundle:v10 compatibleWithTraitCollection:0];
+      mainBundle2 = [(BTShareAudioViewController *)self->super._mainController mainBundle];
+      v11 = [v9 imageNamed:@"ShareAudioAirPods" inBundle:mainBundle2 compatibleWithTraitCollection:0];
       p_productImageView = &self->_shareImageView;
       [(UIImageView *)*p_productImageView setImage:v11];
     }

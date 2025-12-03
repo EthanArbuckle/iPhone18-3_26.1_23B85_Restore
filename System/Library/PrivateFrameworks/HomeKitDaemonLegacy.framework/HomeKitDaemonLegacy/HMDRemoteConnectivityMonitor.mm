@@ -3,8 +3,8 @@
 - (_TtC19HomeKitDaemonLegacy28HMDRemoteConnectivityMonitor)init;
 - (void)sendMessageFailed;
 - (void)sendMessageSucceeded;
-- (void)timerDidFire:(id)a3;
-- (void)underlyingConnectionChanged:(BOOL)a3;
+- (void)timerDidFire:(id)fire;
+- (void)underlyingConnectionChanged:(BOOL)changed;
 @end
 
 @implementation HMDRemoteConnectivityMonitor
@@ -12,7 +12,7 @@
 - (BOOL)hasConnectivity
 {
   v2 = (self + OBJC_IVAR____TtC19HomeKitDaemonLegacy28HMDRemoteConnectivityMonitor__hasConnectivity);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2);
   os_unfair_lock_opaque = v2[1]._os_unfair_lock_opaque;
   os_unfair_lock_unlock(v2);
@@ -20,7 +20,7 @@
   return os_unfair_lock_opaque;
 }
 
-- (void)underlyingConnectionChanged:(BOOL)a3
+- (void)underlyingConnectionChanged:(BOOL)changed
 {
   v5 = sub_253CD0888();
   v6 = *(v5 - 8);
@@ -30,13 +30,13 @@
   v10 = *(&self->super.isa + OBJC_IVAR____TtC19HomeKitDaemonLegacy28HMDRemoteConnectivityMonitor_workQueue);
   *v9 = v10;
   (*(v6 + 104))(v9, *MEMORY[0x277D85200], v5);
-  v11 = self;
+  selfCopy = self;
   v12 = v10;
   LOBYTE(v10) = sub_253CD08A8();
   (*(v6 + 8))(v9, v5);
   if (v10)
   {
-    *(&v11->super.isa + OBJC_IVAR____TtC19HomeKitDaemonLegacy28HMDRemoteConnectivityMonitor_hasUnderlyingConnection) = a3;
+    *(&selfCopy->super.isa + OBJC_IVAR____TtC19HomeKitDaemonLegacy28HMDRemoteConnectivityMonitor_hasUnderlyingConnection) = changed;
     sub_25320D7F8();
   }
 
@@ -48,21 +48,21 @@
 
 - (void)sendMessageSucceeded
 {
-  v2 = self;
+  selfCopy = self;
   HMDRemoteConnectivityMonitor.sendMessageSucceeded()();
 }
 
 - (void)sendMessageFailed
 {
-  v2 = self;
+  selfCopy = self;
   HMDRemoteConnectivityMonitor.sendMessageFailed()();
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
-  v4 = a3;
-  v5 = self;
-  HMDRemoteConnectivityMonitor.timerDidFire(_:)(v4);
+  fireCopy = fire;
+  selfCopy = self;
+  HMDRemoteConnectivityMonitor.timerDidFire(_:)(fireCopy);
 }
 
 - (_TtC19HomeKitDaemonLegacy28HMDRemoteConnectivityMonitor)init

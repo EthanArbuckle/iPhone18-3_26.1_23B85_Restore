@@ -1,14 +1,14 @@
 @interface _MPCLeaseManager
 - (MPCPlaybackEngine)playbackEngine;
 - (NSString)playbackEngineID;
-- (_MPCLeaseManager)initWithPlaybackEngine:(id)a3;
-- (id)_storeRequestContextForAccount:(id)a3;
+- (_MPCLeaseManager)initWithPlaybackEngine:(id)engine;
+- (id)_storeRequestContextForAccount:(id)account;
 - (void)_updateStateForPlaybackPrevention;
 - (void)didMigratePlaybackSession;
-- (void)endIgnoringLeaseEndEventsForReason:(id)a3;
-- (void)engine:(id)a3 willChangeToItem:(id)a4 fromItem:(id)a5;
-- (void)getHasPreparedLeaseForAccount:(id)a3 completion:(id)a4;
-- (void)prepareForPlaybackWithAccount:(id)a3 completion:(id)a4;
+- (void)endIgnoringLeaseEndEventsForReason:(id)reason;
+- (void)engine:(id)engine willChangeToItem:(id)item fromItem:(id)fromItem;
+- (void)getHasPreparedLeaseForAccount:(id)account completion:(id)completion;
+- (void)prepareForPlaybackWithAccount:(id)account completion:(id)completion;
 - (void)setCanStealLeaseIfNeeded;
 @end
 
@@ -23,47 +23,47 @@
 
 - (NSString)playbackEngineID
 {
-  v2 = [(_MPCLeaseManager *)self playbackEngine];
-  v3 = [v2 engineID];
+  playbackEngine = [(_MPCLeaseManager *)self playbackEngine];
+  engineID = [playbackEngine engineID];
 
-  return v3;
+  return engineID;
 }
 
 - (void)_updateStateForPlaybackPrevention
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(_MPCLeaseManager *)self playbackEngine];
-  v4 = [v3 player];
+  playbackEngine = [(_MPCLeaseManager *)self playbackEngine];
+  player = [playbackEngine player];
 
-  v5 = [v4 state];
-  v6 = [v4 currentItem];
+  state = [player state];
+  currentItem = [player currentItem];
   v7 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134219010;
-    v16 = self;
+    selfCopy2 = self;
     v17 = 2114;
-    v18 = v6;
+    v18 = currentItem;
     v19 = 1024;
-    v20 = [v6 shouldPreventPlayback];
+    shouldPreventPlayback = [currentItem shouldPreventPlayback];
     v21 = 2048;
-    v22 = v5;
+    v22 = state;
     v23 = 1024;
-    v24 = v5 > 1;
+    v24 = state > 1;
     _os_log_impl(&dword_1C5C61000, v7, OS_LOG_TYPE_DEFAULT, "[Lease] - MPCLeaseManager: %p - State for lease playback prevention [evaluation] - item:%{public}@ - shouldPreventPlayback:%{BOOL}u - playbackState:%ld - isPlaying:%{BOOL}u", buf, 0x2Cu);
   }
 
-  if (v5 >= 2 && [v6 shouldPreventPlayback])
+  if (state >= 2 && [currentItem shouldPreventPlayback])
   {
     if ([(NSMutableSet *)self->_leaseEndIgnoreReasons count])
     {
       v8 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [(NSMutableSet *)self->_leaseEndIgnoreReasons allObjects];
-        v10 = [v9 componentsJoinedByString:{@", "}];
+        allObjects = [(NSMutableSet *)self->_leaseEndIgnoreReasons allObjects];
+        v10 = [allObjects componentsJoinedByString:{@", "}];
         *buf = 134218242;
-        v16 = self;
+        selfCopy2 = self;
         v17 = 2114;
         v18 = v10;
         _os_log_impl(&dword_1C5C61000, v8, OS_LOG_TYPE_DEFAULT, "[Lease] - MPCLeaseManager: %p - Ignoring lease playback prevention [pending reasons %{public}@]", buf, 0x16u);
@@ -76,9 +76,9 @@
       block[1] = 3221225472;
       block[2] = __53___MPCLeaseManager__updateStateForPlaybackPrevention__block_invoke;
       block[3] = &unk_1E82391C0;
-      v12 = v6;
-      v13 = self;
-      v14 = v4;
+      v12 = currentItem;
+      selfCopy3 = self;
+      v14 = player;
       dispatch_async(MEMORY[0x1E69E96A0], block);
 
       v8 = v12;
@@ -86,34 +86,34 @@
   }
 }
 
-- (id)_storeRequestContextForAccount:(id)a3
+- (id)_storeRequestContextForAccount:(id)account
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  accountCopy = account;
   v5 = [MPCNetworkRequestMonitoredTag alloc];
   v12 = @"network-request-initiator";
   v13[0] = @"_MPCLeaseManager";
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
   v7 = [(MPCNetworkRequestMonitoredTag *)v5 initWithContextInfo:v6 engineInfoProvider:self];
 
-  v8 = [v4 userIdentity];
+  userIdentity = [accountCopy userIdentity];
 
-  v9 = [MPCPlaybackRequestEnvironment requestEnvironmentWithUserIdentity:v8];
+  v9 = [MPCPlaybackRequestEnvironment requestEnvironmentWithUserIdentity:userIdentity];
   v10 = [v9 _createStoreRequestContextWithTag:v7];
 
   return v10;
 }
 
-- (void)engine:(id)a3 willChangeToItem:(id)a4 fromItem:(id)a5
+- (void)engine:(id)engine willChangeToItem:(id)item fromItem:(id)fromItem
 {
   v7 = MEMORY[0x1E696AD88];
-  v8 = a5;
-  v9 = a4;
-  v11 = [v7 defaultCenter];
+  fromItemCopy = fromItem;
+  itemCopy = item;
+  defaultCenter = [v7 defaultCenter];
   v10 = *MEMORY[0x1E696F808];
-  [v11 removeObserver:self name:*MEMORY[0x1E696F808] object:v8];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E696F808] object:fromItemCopy];
 
-  [v11 addObserver:self selector:sel__itemShouldPreventPlaybackDidChangeNotification_ name:v10 object:v9];
+  [defaultCenter addObserver:self selector:sel__itemShouldPreventPlaybackDidChangeNotification_ name:v10 object:itemCopy];
 }
 
 - (void)didMigratePlaybackSession
@@ -123,14 +123,14 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C5C61000, v3, OS_LOG_TYPE_DEFAULT, "[Lease] - MPCLeaseManager: %p - Did migrate playback session", &v5, 0xCu);
   }
 
-  v4 = [MEMORY[0x1E69E44A0] sharedController];
+  mEMORY[0x1E69E44A0] = [MEMORY[0x1E69E44A0] sharedController];
   if (objc_opt_respondsToSelector())
   {
-    [v4 didMigratePlaybackSession];
+    [mEMORY[0x1E69E44A0] didMigratePlaybackSession];
   }
 }
 
@@ -141,17 +141,17 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C5C61000, v3, OS_LOG_TYPE_DEFAULT, "[Lease] - MPCLeaseManager: %p - Can steal lease if needed", &v5, 0xCu);
   }
 
-  v4 = [MEMORY[0x1E69E44A0] sharedController];
-  [v4 receivedUserInteractionEvent];
+  mEMORY[0x1E69E44A0] = [MEMORY[0x1E69E44A0] sharedController];
+  [mEMORY[0x1E69E44A0] receivedUserInteractionEvent];
 }
 
-- (void)endIgnoringLeaseEndEventsForReason:(id)a3
+- (void)endIgnoringLeaseEndEventsForReason:(id)reason
 {
-  [(NSMutableSet *)self->_leaseEndIgnoreReasons removeObject:a3];
+  [(NSMutableSet *)self->_leaseEndIgnoreReasons removeObject:reason];
   if (![(NSMutableSet *)self->_leaseEndIgnoreReasons count])
   {
 
@@ -159,20 +159,20 @@
   }
 }
 
-- (void)prepareForPlaybackWithAccount:(id)a3 completion:(id)a4
+- (void)prepareForPlaybackWithAccount:(id)account completion:(id)completion
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  completionCopy = completion;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v8 = [v6 hasCatalogPlaybackCapability];
-  v9 = [v6 usesLease];
-  v10 = v9;
-  if (v8 && (v9 & 1) != 0)
+  hasCatalogPlaybackCapability = [accountCopy hasCatalogPlaybackCapability];
+  usesLease = [accountCopy usesLease];
+  v10 = usesLease;
+  if (hasCatalogPlaybackCapability && (usesLease & 1) != 0)
   {
     prepareCompletions = self->_prepareCompletions;
-    v12 = [v6 hashedDSID];
-    v13 = [(NSMutableDictionary *)prepareCompletions objectForKeyedSubscript:v12];
+    hashedDSID = [accountCopy hashedDSID];
+    v13 = [(NSMutableDictionary *)prepareCompletions objectForKeyedSubscript:hashedDSID];
 
     if (v13)
     {
@@ -181,29 +181,29 @@
       aBlock[2] = __61___MPCLeaseManager_prepareForPlaybackWithAccount_completion___block_invoke;
       aBlock[3] = &unk_1E8236400;
       v36 = v13;
-      v37 = v7;
+      v37 = completionCopy;
       v14 = _Block_copy(aBlock);
       v15 = self->_prepareCompletions;
-      v16 = [v6 hashedDSID];
-      [(NSMutableDictionary *)v15 setObject:v14 forKeyedSubscript:v16];
+      hashedDSID2 = [accountCopy hashedDSID];
+      [(NSMutableDictionary *)v15 setObject:v14 forKeyedSubscript:hashedDSID2];
 
       v17 = v36;
     }
 
     else
     {
-      v19 = _Block_copy(v7);
+      v19 = _Block_copy(completionCopy);
       v20 = self->_prepareCompletions;
-      v21 = [v6 hashedDSID];
-      [(NSMutableDictionary *)v20 setObject:v19 forKeyedSubscript:v21];
+      hashedDSID3 = [accountCopy hashedDSID];
+      [(NSMutableDictionary *)v20 setObject:v19 forKeyedSubscript:hashedDSID3];
 
       v22 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218242;
-        v39 = self;
+        selfCopy2 = self;
         v40 = 2112;
-        v41 = v6;
+        v41 = accountCopy;
         _os_log_impl(&dword_1C5C61000, v22, OS_LOG_TYPE_DEFAULT, "[Lease] - MPCLeaseManager: %p - prepareForPlayback: preparing lease account: %@", buf, 0x16u);
       }
 
@@ -212,11 +212,11 @@
       v33[2] = __61___MPCLeaseManager_prepareForPlaybackWithAccount_completion___block_invoke_5;
       v33[3] = &unk_1E8238628;
       v33[4] = self;
-      v23 = v6;
+      v23 = accountCopy;
       v34 = v23;
       v24 = _Block_copy(v33);
       v25 = [(_MPCLeaseManager *)self _storeRequestContextForAccount:v23];
-      v26 = [MEMORY[0x1E69E44A0] sharedController];
+      mEMORY[0x1E69E44A0] = [MEMORY[0x1E69E44A0] sharedController];
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = __61___MPCLeaseManager_prepareForPlaybackWithAccount_completion___block_invoke_3;
@@ -227,7 +227,7 @@
       v31 = v25;
       v27 = v25;
       v28 = v24;
-      [v26 getLeaseSessionWithRequestContext:v27 completionHandler:v29];
+      [mEMORY[0x1E69E44A0] getLeaseSessionWithRequestContext:v27 completionHandler:v29];
 
       v17 = v34;
     }
@@ -239,53 +239,53 @@
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218754;
-      v39 = self;
+      selfCopy2 = self;
       v40 = 2112;
-      v41 = v6;
+      v41 = accountCopy;
       v42 = 1024;
-      v43 = v8;
+      v43 = hasCatalogPlaybackCapability;
       v44 = 1024;
       v45 = v10;
       _os_log_impl(&dword_1C5C61000, v18, OS_LOG_TYPE_DEFAULT, "[Lease] - MPCLeaseManager: %p - prepareForPlayback: Ignoring request to prepare lease for account: %@ hasCatalogPlayback=%{BOOL}u usesLease=%{BOOL}u", buf, 0x22u);
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)getHasPreparedLeaseForAccount:(id)a3 completion:(id)a4
+- (void)getHasPreparedLeaseForAccount:(id)account completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(_MPCLeaseManager *)self _storeRequestContextForAccount:a3];
-  v8 = [MEMORY[0x1E69E44A0] sharedController];
+  completionCopy = completion;
+  v7 = [(_MPCLeaseManager *)self _storeRequestContextForAccount:account];
+  mEMORY[0x1E69E44A0] = [MEMORY[0x1E69E44A0] sharedController];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __61___MPCLeaseManager_getHasPreparedLeaseForAccount_completion___block_invoke;
   v10[3] = &unk_1E82363D8;
-  v11 = v6;
-  v9 = v6;
-  [v8 getLeaseSessionWithRequestContext:v7 completionHandler:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [mEMORY[0x1E69E44A0] getLeaseSessionWithRequestContext:v7 completionHandler:v10];
 }
 
-- (_MPCLeaseManager)initWithPlaybackEngine:(id)a3
+- (_MPCLeaseManager)initWithPlaybackEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v12.receiver = self;
   v12.super_class = _MPCLeaseManager;
   v5 = [(_MPCLeaseManager *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_playbackEngine, v4);
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeWeak(&v5->_playbackEngine, engineCopy);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     prepareCompletions = v6->_prepareCompletions;
-    v6->_prepareCompletions = v7;
+    v6->_prepareCompletions = dictionary;
 
     v9 = [MEMORY[0x1E695DFA8] set];
     leaseEndIgnoreReasons = v6->_leaseEndIgnoreReasons;
     v6->_leaseEndIgnoreReasons = v9;
 
-    [v4 addEngineObserver:v6];
+    [engineCopy addEngineObserver:v6];
   }
 
   return v6;

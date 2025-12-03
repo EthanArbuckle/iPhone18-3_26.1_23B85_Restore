@@ -1,11 +1,11 @@
 @interface NUVideoMetadataExtractor
-+ (BOOL)canProvideMetadataForAVAsset:(id)a3;
-- (CGPoint)opticalCenterFromMetadata:(id *)a3;
-- (CGVector)centerMotionVectorFromMetadata:(const FigLivePhotoMetadata *)a3;
-- (CGVector)motionBlurVectorFromMetadata:(const FigLivePhotoMetadata *)a3;
++ (BOOL)canProvideMetadataForAVAsset:(id)asset;
+- (CGPoint)opticalCenterFromMetadata:(id *)metadata;
+- (CGVector)centerMotionVectorFromMetadata:(const FigLivePhotoMetadata *)metadata;
+- (CGVector)motionBlurVectorFromMetadata:(const FigLivePhotoMetadata *)metadata;
 - (NUVideoMetadataExtractor)init;
-- (NUVideoMetadataExtractor)initWithAVAsset:(id)a3;
-- (double)trajectoryHomographyFromMetadata:(double)a3;
+- (NUVideoMetadataExtractor)initWithAVAsset:(id)asset;
+- (double)trajectoryHomographyFromMetadata:(double)metadata;
 - (id)extractMetadata;
 @end
 
@@ -54,8 +54,8 @@
         while (1)
         {
           v10 = objc_autoreleasePoolPush();
-          v11 = [v55 nextTimedMetadataGroup];
-          if (v11)
+          nextTimedMetadataGroup = [v55 nextTimedMetadataGroup];
+          if (nextTimedMetadataGroup)
           {
             break;
           }
@@ -63,7 +63,7 @@
 LABEL_51:
 
           objc_autoreleasePoolPop(v10);
-          if (!v11)
+          if (!nextTimedMetadataGroup)
           {
             if (_NULogOnceToken != -1)
             {
@@ -87,12 +87,12 @@ LABEL_51:
 
         v12 = objc_alloc_init(NUVideoTimedMetadata);
         [(NUVideoTimedMetadata *)v12 setIsMetadataValid:1];
-        v13 = [v11 items];
-        v14 = [v13 firstObject];
+        items = [nextTimedMetadataGroup items];
+        firstObject = [items firstObject];
 
-        if (v14)
+        if (firstObject)
         {
-          [v14 time];
+          [firstObject time];
         }
 
         else
@@ -118,8 +118,8 @@ LABEL_51:
 
         buf = v58;
         [(NUVideoTimedMetadata *)v12 setTime:&buf, v46];
-        v16 = [v14 identifier];
-        v17 = [v16 isEqualToString:v52];
+        identifier = [firstObject identifier];
+        v17 = [identifier isEqualToString:v52];
 
         if ((v17 & 1) == 0)
         {
@@ -138,8 +138,8 @@ LABEL_51:
           [(NUVideoTimedMetadata *)v12 setIsMetadataValid:0];
         }
 
-        v19 = [v14 dataType];
-        v20 = [v19 isEqualToString:v51];
+        dataType = [firstObject dataType];
+        v20 = [dataType isEqualToString:v51];
 
         if ((v20 & 1) == 0)
         {
@@ -160,11 +160,11 @@ LABEL_51:
 
         v57 = 0;
         buf.value = 0;
-        v22 = [v14 dataValue];
-        v23 = v22;
-        [v22 bytes];
-        v24 = [v14 dataValue];
-        [v24 length];
+        dataValue = [firstObject dataValue];
+        v23 = dataValue;
+        [dataValue bytes];
+        dataValue2 = [firstObject dataValue];
+        [dataValue2 length];
         v25 = FigLivePhotoMetadataComputeDeserializationSize();
 
         if (v25)
@@ -188,11 +188,11 @@ LABEL_51:
           MEMORY[0x1EEE9AC00]();
           v28 = (&v46 - ((v27 + 15) & 0xFFFFFFFFFFFFFFF0));
           bzero(v28, buf.value);
-          v29 = [v14 dataValue];
-          v30 = v29;
-          [v29 bytes];
-          v31 = [v14 dataValue];
-          [v31 length];
+          dataValue3 = [firstObject dataValue];
+          v30 = dataValue3;
+          [dataValue3 bytes];
+          dataValue4 = [firstObject dataValue];
+          [dataValue4 length];
           v32 = FigLivePhotoMetadataDeserializeIntoBuffer();
 
           if (!v32)
@@ -299,16 +299,16 @@ LABEL_70:
   return v5;
 }
 
-- (CGPoint)opticalCenterFromMetadata:(id *)a3
+- (CGPoint)opticalCenterFromMetadata:(id *)metadata
 {
-  v3 = *&a3->var7[1];
-  v4 = *&a3->var7[5];
+  v3 = *&metadata->var7[1];
+  v4 = *&metadata->var7[5];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (double)trajectoryHomographyFromMetadata:(double)a3
+- (double)trajectoryHomographyFromMetadata:(double)metadata
 {
   if (*a9)
   {
@@ -339,11 +339,11 @@ LABEL_70:
   return result;
 }
 
-- (CGVector)motionBlurVectorFromMetadata:(const FigLivePhotoMetadata *)a3
+- (CGVector)motionBlurVectorFromMetadata:(const FigLivePhotoMetadata *)metadata
 {
-  if (a3->var0)
+  if (metadata->var0)
   {
-    v5 = vsubq_f64(vaddq_f64(*&self->pxlMetadataTransform.tx, vmlaq_n_f64(vmulq_n_f64(*&self->pxlMetadataTransform.c, a3->var1.var3), *&self->pxlMetadataTransform.a, a3->var1.var2)), vaddq_f64(*&self->pxlMetadataTransform.tx, vmlaq_n_f64(vmulq_n_f64(*&self->pxlMetadataTransform.c, *(MEMORY[0x1E695EFF8] + 8)), *&self->pxlMetadataTransform.a, *MEMORY[0x1E695EFF8])));
+    v5 = vsubq_f64(vaddq_f64(*&self->pxlMetadataTransform.tx, vmlaq_n_f64(vmulq_n_f64(*&self->pxlMetadataTransform.c, metadata->var1.var3), *&self->pxlMetadataTransform.a, metadata->var1.var2)), vaddq_f64(*&self->pxlMetadataTransform.tx, vmlaq_n_f64(vmulq_n_f64(*&self->pxlMetadataTransform.c, *(MEMORY[0x1E695EFF8] + 8)), *&self->pxlMetadataTransform.a, *MEMORY[0x1E695EFF8])));
     v6 = v5.f64[1];
   }
 
@@ -374,11 +374,11 @@ LABEL_70:
   return result;
 }
 
-- (CGVector)centerMotionVectorFromMetadata:(const FigLivePhotoMetadata *)a3
+- (CGVector)centerMotionVectorFromMetadata:(const FigLivePhotoMetadata *)metadata
 {
-  if (a3->var0)
+  if (metadata->var0)
   {
-    v5 = vsubq_f64(vaddq_f64(*&self->pxlMetadataTransform.tx, vmlaq_n_f64(vmulq_n_f64(*&self->pxlMetadataTransform.c, *(&a3->var1.var1 + 1)), *&self->pxlMetadataTransform.a, *&a3->var1.var1)), vaddq_f64(*&self->pxlMetadataTransform.tx, vmlaq_n_f64(vmulq_n_f64(*&self->pxlMetadataTransform.c, *(MEMORY[0x1E695EFF8] + 8)), *&self->pxlMetadataTransform.a, *MEMORY[0x1E695EFF8])));
+    v5 = vsubq_f64(vaddq_f64(*&self->pxlMetadataTransform.tx, vmlaq_n_f64(vmulq_n_f64(*&self->pxlMetadataTransform.c, *(&metadata->var1.var1 + 1)), *&self->pxlMetadataTransform.a, *&metadata->var1.var1)), vaddq_f64(*&self->pxlMetadataTransform.tx, vmlaq_n_f64(vmulq_n_f64(*&self->pxlMetadataTransform.c, *(MEMORY[0x1E695EFF8] + 8)), *&self->pxlMetadataTransform.a, *MEMORY[0x1E695EFF8])));
     v6 = v5.f64[1];
   }
 
@@ -409,14 +409,14 @@ LABEL_70:
   return result;
 }
 
-- (NUVideoMetadataExtractor)initWithAVAsset:(id)a3
+- (NUVideoMetadataExtractor)initWithAVAsset:(id)asset
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  assetCopy = asset;
   v31.receiver = self;
   v31.super_class = NUVideoMetadataExtractor;
   v6 = [(NUVideoMetadataExtractor *)&v31 init];
-  objc_storeStrong(v6 + 1, a3);
+  objc_storeStrong(v6 + 1, asset);
   v7 = *(v6 + 1);
   v30 = 0;
   v8 = [NUVideoUtilities firstEnabledVideoTrackInAsset:v7 error:&v30];
@@ -449,8 +449,8 @@ LABEL_70:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v11 = [v5 tracks];
-  v12 = [v11 countByEnumeratingWithState:&v26 objects:v32 count:16];
+  tracks = [assetCopy tracks];
+  v12 = [tracks countByEnumeratingWithState:&v26 objects:v32 count:16];
   if (v12)
   {
     v13 = *v27;
@@ -460,7 +460,7 @@ LABEL_70:
       {
         if (*v27 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(tracks);
         }
 
         v15 = *(*(&v26 + 1) + 8 * i);
@@ -471,7 +471,7 @@ LABEL_70:
         }
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v26 objects:v32 count:16];
+      v12 = [tracks countByEnumeratingWithState:&v26 objects:v32 count:16];
       if (v12)
       {
         continue;
@@ -519,9 +519,9 @@ LABEL_29:
   *(v6 + 10) = 0x3FF0000000000000;
   *(v6 + 104) = xmmword_1C03C28E0;
   *(v6 + 15) = v16;
-  v17 = [v6 extractMetadata];
+  extractMetadata = [v6 extractMetadata];
   v18 = *(v6 + 16);
-  *(v6 + 16) = v17;
+  *(v6 + 16) = extractMetadata;
 
   if (![*(v6 + 16) count])
   {
@@ -553,12 +553,12 @@ LABEL_30:
   objc_exception_throw(v2);
 }
 
-+ (BOOL)canProvideMetadataForAVAsset:(id)a3
++ (BOOL)canProvideMetadataForAVAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [[NUVideoMetadataExtractor alloc] initWithAVAsset:v3];
-  v5 = [(NUVideoMetadataExtractor *)v4 timedMetadataArray];
-  v6 = v5 != 0;
+  assetCopy = asset;
+  v4 = [[NUVideoMetadataExtractor alloc] initWithAVAsset:assetCopy];
+  timedMetadataArray = [(NUVideoMetadataExtractor *)v4 timedMetadataArray];
+  v6 = timedMetadataArray != 0;
 
   return v6;
 }

@@ -1,23 +1,23 @@
 @interface _UIBarContentView
-- (_UIBarContentView)initWithFrame:(CGRect)a3;
-- (void)_UIAppearance_setBackButtonBackgroundImage:(id)a3 forState:(unint64_t)a4 barMetrics:(int64_t)a5;
-- (void)_UIAppearance_setBackButtonBackgroundVerticalPositionAdjustment:(double)a3 forBarMetrics:(int64_t)a4;
-- (void)_UIAppearance_setBackButtonTitlePositionAdjustment:(UIOffset)a3 forBarMetrics:(int64_t)a4;
-- (void)_UIAppearance_setBackgroundImage:(id)a3 forState:(unint64_t)a4 style:(int64_t)a5 barMetrics:(int64_t)a6;
-- (void)_UIAppearance_setBackgroundVerticalPositionAdjustment:(double)a3 forBarMetrics:(int64_t)a4;
-- (void)_UIAppearance_setTintColor:(id)a3;
-- (void)_UIAppearance_setTitlePositionAdjustment:(UIOffset)a3 forBarMetrics:(int64_t)a4;
-- (void)_UIAppearance_setTitleTextAttributes:(id)a3 forState:(unint64_t)a4;
+- (_UIBarContentView)initWithFrame:(CGRect)frame;
+- (void)_UIAppearance_setBackButtonBackgroundImage:(id)image forState:(unint64_t)state barMetrics:(int64_t)metrics;
+- (void)_UIAppearance_setBackButtonBackgroundVerticalPositionAdjustment:(double)adjustment forBarMetrics:(int64_t)metrics;
+- (void)_UIAppearance_setBackButtonTitlePositionAdjustment:(UIOffset)adjustment forBarMetrics:(int64_t)metrics;
+- (void)_UIAppearance_setBackgroundImage:(id)image forState:(unint64_t)state style:(int64_t)style barMetrics:(int64_t)metrics;
+- (void)_UIAppearance_setBackgroundVerticalPositionAdjustment:(double)adjustment forBarMetrics:(int64_t)metrics;
+- (void)_UIAppearance_setTintColor:(id)color;
+- (void)_UIAppearance_setTitlePositionAdjustment:(UIOffset)adjustment forBarMetrics:(int64_t)metrics;
+- (void)_UIAppearance_setTitleTextAttributes:(id)attributes forState:(unint64_t)state;
 - (void)_appearanceChanged;
 @end
 
 @implementation _UIBarContentView
 
-- (_UIBarContentView)initWithFrame:(CGRect)a3
+- (_UIBarContentView)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = _UIBarContentView;
-  v3 = [(UIView *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     [(_UIBarContentView *)v3 _setAppearanceGuideClass:objc_opt_class()];
@@ -28,29 +28,29 @@
 
 - (void)_appearanceChanged
 {
-  v2 = [(UIView *)self superview];
-  [v2 setNeedsLayout];
+  superview = [(UIView *)self superview];
+  [superview setNeedsLayout];
 }
 
-- (void)_UIAppearance_setBackgroundImage:(id)a3 forState:(unint64_t)a4 style:(int64_t)a5 barMetrics:(int64_t)a6
+- (void)_UIAppearance_setBackgroundImage:(id)image forState:(unint64_t)state style:(int64_t)style barMetrics:(int64_t)metrics
 {
-  v10 = a3;
-  if ((a6 - 101) > 1)
+  imageCopy = image;
+  if ((metrics - 101) > 1)
   {
     appearanceStorage = self->_appearanceStorage;
-    if (v10)
+    if (imageCopy)
     {
-      v20 = v10;
+      v20 = imageCopy;
       if (!appearanceStorage)
       {
         v12 = objc_alloc_init(_UIBarButtonItemAppearanceStorage);
         v13 = self->_appearanceStorage;
         self->_appearanceStorage = v12;
 
-        v10 = v20;
+        imageCopy = v20;
       }
 
-      v14 = v10;
+      v14 = imageCopy;
       if (([v14 _isResizable] & 1) == 0)
       {
         [v14 size];
@@ -72,16 +72,16 @@
       v14 = 0;
     }
 
-    if ((a4 & 0xFFFFFFFFFFFFFFFDLL) != 0 && a4 != 4)
+    if ((state & 0xFFFFFFFFFFFFFFFDLL) != 0 && state != 4)
     {
-      a4 = 1;
+      state = 1;
     }
 
-    v19 = [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage backgroundImageForState:a4 style:a5 isMini:a6 == 1];
+    v19 = [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage backgroundImageForState:state style:style isMini:metrics == 1];
 
     if (v19 != v14)
     {
-      [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage setBackgroundImage:v14 forState:a4 style:a5 isMini:a6 == 1];
+      [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage setBackgroundImage:v14 forState:state style:style isMini:metrics == 1];
       [(_UIBarContentView *)self _appearanceChanged];
     }
   }
@@ -94,20 +94,20 @@
     }
 
     _UIAppearance_setBackgroundImage_forState_style_barMetrics__didWarn_1 = 1;
-    v20 = v10;
+    v20 = imageCopy;
     NSLog(&cfstr_SCustomization.isa, "UIBarButtonItem", @"background image", "UIBarMetricsDefaultPrompt", "UIBarMetricsCompactPrompt");
   }
 
-  v10 = v20;
+  imageCopy = v20;
 LABEL_20:
 }
 
-- (void)_UIAppearance_setTintColor:(id)a3
+- (void)_UIAppearance_setTintColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   appearanceStorage = self->_appearanceStorage;
-  v9 = v4;
-  if (v4)
+  v9 = colorCopy;
+  if (colorCopy)
   {
     if (!appearanceStorage)
     {
@@ -124,10 +124,10 @@ LABEL_20:
     goto LABEL_7;
   }
 
-  v8 = [(_UIBarButtonItemAppearanceStorage *)appearanceStorage tintColor];
+  tintColor = [(_UIBarButtonItemAppearanceStorage *)appearanceStorage tintColor];
 
   [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage setTintColor:v9];
-  if (v8 != v9)
+  if (tintColor != v9)
   {
     [(_UIBarContentView *)self _appearanceChanged];
   }
@@ -135,12 +135,12 @@ LABEL_20:
 LABEL_7:
 }
 
-- (void)_UIAppearance_setBackgroundVerticalPositionAdjustment:(double)a3 forBarMetrics:(int64_t)a4
+- (void)_UIAppearance_setBackgroundVerticalPositionAdjustment:(double)adjustment forBarMetrics:(int64_t)metrics
 {
-  if ((a4 - 101) > 1)
+  if ((metrics - 101) > 1)
   {
     appearanceStorage = self->_appearanceStorage;
-    if (a3 != 0.0 || appearanceStorage != 0)
+    if (adjustment != 0.0 || appearanceStorage != 0)
     {
       if (!appearanceStorage)
       {
@@ -151,10 +151,10 @@ LABEL_7:
         appearanceStorage = self->_appearanceStorage;
       }
 
-      [(_UIBarButtonItemAppearanceStorage *)appearanceStorage backgroundVerticalAdjustmentForBarMetrics:a4];
-      if (v11 != a3)
+      [(_UIBarButtonItemAppearanceStorage *)appearanceStorage backgroundVerticalAdjustmentForBarMetrics:metrics];
+      if (v11 != adjustment)
       {
-        [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage setBackgroundVerticalAdjustment:a4 forBarMetrics:a3];
+        [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage setBackgroundVerticalAdjustment:metrics forBarMetrics:adjustment];
 
         [(_UIBarContentView *)self _appearanceChanged];
       }
@@ -164,29 +164,29 @@ LABEL_7:
   else if ((_UIAppearance_setBackgroundVerticalPositionAdjustment_forBarMetrics__didWarn_0 & 1) == 0)
   {
     _UIAppearance_setBackgroundVerticalPositionAdjustment_forBarMetrics__didWarn_0 = 1;
-    NSLog(&cfstr_SCustomization.isa, a2, a3, "UIBarButtonItem", @"toolbar button background vertical position adjustment", "UIBarMetricsDefaultPrompt", "UIBarMetricsCompactPrompt");
+    NSLog(&cfstr_SCustomization.isa, a2, adjustment, "UIBarButtonItem", @"toolbar button background vertical position adjustment", "UIBarMetricsDefaultPrompt", "UIBarMetricsCompactPrompt");
   }
 }
 
-- (void)_UIAppearance_setTitlePositionAdjustment:(UIOffset)a3 forBarMetrics:(int64_t)a4
+- (void)_UIAppearance_setTitlePositionAdjustment:(UIOffset)adjustment forBarMetrics:(int64_t)metrics
 {
-  if ((a4 - 101) <= 1)
+  if ((metrics - 101) <= 1)
   {
     if ((_UIAppearance_setTitlePositionAdjustment_forBarMetrics__didWarn_1 & 1) == 0)
     {
       _UIAppearance_setTitlePositionAdjustment_forBarMetrics__didWarn_1 = 1;
-      NSLog(&cfstr_SCustomization.isa, a2, a3.horizontal, a3.vertical, "UIBarButtonItem", @"title position adjustment", "UIBarMetricsDefaultPrompt", "UIBarMetricsCompactPrompt");
+      NSLog(&cfstr_SCustomization.isa, a2, adjustment.horizontal, adjustment.vertical, "UIBarButtonItem", @"title position adjustment", "UIBarMetricsDefaultPrompt", "UIBarMetricsCompactPrompt");
     }
 
     return;
   }
 
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
+  vertical = adjustment.vertical;
+  horizontal = adjustment.horizontal;
   appearanceStorage = self->_appearanceStorage;
   if (!appearanceStorage)
   {
-    if (a3.horizontal == 0.0 && a3.vertical == 0.0)
+    if (adjustment.horizontal == 0.0 && adjustment.vertical == 0.0)
     {
       return;
     }
@@ -198,7 +198,7 @@ LABEL_7:
     appearanceStorage = self->_appearanceStorage;
   }
 
-  if (a4 == 1)
+  if (metrics == 1)
   {
     [(_UIBarButtonItemAppearanceStorage *)appearanceStorage miniTitlePositionOffset];
   }
@@ -223,7 +223,7 @@ LABEL_7:
   if (horizontal != v13 || vertical != v14)
   {
     v15 = self->_appearanceStorage;
-    if (a4 == 1)
+    if (metrics == 1)
     {
       *v18 = horizontal;
       *&v18[1] = vertical;
@@ -243,18 +243,18 @@ LABEL_7:
   }
 }
 
-- (void)_UIAppearance_setBackButtonBackgroundImage:(id)a3 forState:(unint64_t)a4 barMetrics:(int64_t)a5
+- (void)_UIAppearance_setBackButtonBackgroundImage:(id)image forState:(unint64_t)state barMetrics:(int64_t)metrics
 {
-  v8 = a3;
-  if ((a5 - 101) > 1)
+  imageCopy = image;
+  if ((metrics - 101) > 1)
   {
     appearanceStorage = self->_appearanceStorage;
-    if (!(v8 | appearanceStorage))
+    if (!(imageCopy | appearanceStorage))
     {
       goto LABEL_15;
     }
 
-    v17 = v8;
+    v17 = imageCopy;
     if (!appearanceStorage)
     {
       v10 = objc_alloc_init(_UIBarButtonItemAppearanceStorage);
@@ -280,10 +280,10 @@ LABEL_7:
       v12 = 0;
     }
 
-    v16 = [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage backButtonBackgroundImageForState:a4 isMini:a5 == 1];
+    v16 = [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage backButtonBackgroundImageForState:state isMini:metrics == 1];
     if (v12 != v16)
     {
-      [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage setBackButtonBackgroundImage:v12 forState:a4 isMini:a5 == 1];
+      [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage setBackButtonBackgroundImage:v12 forState:state isMini:metrics == 1];
       [(_UIBarContentView *)self _appearanceChanged];
     }
   }
@@ -296,33 +296,33 @@ LABEL_7:
     }
 
     _UIAppearance_setBackButtonBackgroundImage_forState_barMetrics__didWarn_0 = 1;
-    v17 = v8;
+    v17 = imageCopy;
     NSLog(&cfstr_SCustomization.isa, "UIBarButtonItem", @"back button background image", "UIBarMetricsDefaultPrompt", "UIBarMetricsCompactPrompt");
   }
 
-  v8 = v17;
+  imageCopy = v17;
 LABEL_15:
 }
 
-- (void)_UIAppearance_setBackButtonTitlePositionAdjustment:(UIOffset)a3 forBarMetrics:(int64_t)a4
+- (void)_UIAppearance_setBackButtonTitlePositionAdjustment:(UIOffset)adjustment forBarMetrics:(int64_t)metrics
 {
-  if ((a4 - 101) <= 1)
+  if ((metrics - 101) <= 1)
   {
     if ((_UIAppearance_setBackButtonTitlePositionAdjustment_forBarMetrics__didWarn_0 & 1) == 0)
     {
       _UIAppearance_setBackButtonTitlePositionAdjustment_forBarMetrics__didWarn_0 = 1;
-      NSLog(&cfstr_SCustomization.isa, a2, a3.horizontal, a3.vertical, "UIBarButtonItem", @"back button title adjustment", "UIBarMetricsDefaultPrompt", "UIBarMetricsCompactPrompt");
+      NSLog(&cfstr_SCustomization.isa, a2, adjustment.horizontal, adjustment.vertical, "UIBarButtonItem", @"back button title adjustment", "UIBarMetricsDefaultPrompt", "UIBarMetricsCompactPrompt");
     }
 
     return;
   }
 
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
+  vertical = adjustment.vertical;
+  horizontal = adjustment.horizontal;
   appearanceStorage = self->_appearanceStorage;
   if (!appearanceStorage)
   {
-    if (a3.horizontal == 0.0 && a3.vertical == 0.0)
+    if (adjustment.horizontal == 0.0 && adjustment.vertical == 0.0)
     {
       return;
     }
@@ -334,7 +334,7 @@ LABEL_15:
     appearanceStorage = self->_appearanceStorage;
   }
 
-  if (a4 == 1)
+  if (metrics == 1)
   {
     [(_UIBarButtonItemAppearanceStorage *)appearanceStorage miniTitlePositionOffset];
   }
@@ -359,7 +359,7 @@ LABEL_15:
   if (horizontal != v13 || vertical != v14)
   {
     v15 = self->_appearanceStorage;
-    if (a4 == 1)
+    if (metrics == 1)
     {
       *v18 = horizontal;
       *&v18[1] = vertical;
@@ -379,10 +379,10 @@ LABEL_15:
   }
 }
 
-- (void)_UIAppearance_setBackButtonBackgroundVerticalPositionAdjustment:(double)a3 forBarMetrics:(int64_t)a4
+- (void)_UIAppearance_setBackButtonBackgroundVerticalPositionAdjustment:(double)adjustment forBarMetrics:(int64_t)metrics
 {
   appearanceStorage = self->_appearanceStorage;
-  if (a3 != 0.0 || appearanceStorage != 0)
+  if (adjustment != 0.0 || appearanceStorage != 0)
   {
     if (!appearanceStorage)
     {
@@ -393,21 +393,21 @@ LABEL_15:
       appearanceStorage = self->_appearanceStorage;
     }
 
-    [(_UIBarButtonItemAppearanceStorage *)appearanceStorage backButtonBackgroundVerticalAdjustmentForBarMetrics:a4];
-    if (v11 != a3)
+    [(_UIBarButtonItemAppearanceStorage *)appearanceStorage backButtonBackgroundVerticalAdjustmentForBarMetrics:metrics];
+    if (v11 != adjustment)
     {
-      [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage setBackButtonBackgroundVerticalAdjustment:a4 forBarMetrics:a3];
+      [(_UIBarButtonItemAppearanceStorage *)self->_appearanceStorage setBackButtonBackgroundVerticalAdjustment:metrics forBarMetrics:adjustment];
 
       [(_UIBarContentView *)self _appearanceChanged];
     }
   }
 }
 
-- (void)_UIAppearance_setTitleTextAttributes:(id)a3 forState:(unint64_t)a4
+- (void)_UIAppearance_setTitleTextAttributes:(id)attributes forState:(unint64_t)state
 {
-  v6 = a3;
+  attributesCopy = attributes;
   appearanceStorage = self->_appearanceStorage;
-  if (v6)
+  if (attributesCopy)
   {
     if (!appearanceStorage)
     {
@@ -422,14 +422,14 @@ LABEL_15:
     return;
   }
 
-  v14 = [v6 _ui_attributesForDictionaryContainingUIStringDrawingKeys];
+  _ui_attributesForDictionaryContainingUIStringDrawingKeys = [attributesCopy _ui_attributesForDictionaryContainingUIStringDrawingKeys];
 
-  v10 = [(_UIBarItemAppearanceStorage *)self->_appearanceStorage textAttributesForState:a4];
-  if (v14 | v10 && ([v14 isEqualToDictionary:v10] & 1) == 0)
+  v10 = [(_UIBarItemAppearanceStorage *)self->_appearanceStorage textAttributesForState:state];
+  if (_ui_attributesForDictionaryContainingUIStringDrawingKeys | v10 && ([_ui_attributesForDictionaryContainingUIStringDrawingKeys isEqualToDictionary:v10] & 1) == 0)
   {
-    [(_UIBarItemAppearanceStorage *)self->_appearanceStorage setTextAttributes:v14 forState:a4];
+    [(_UIBarItemAppearanceStorage *)self->_appearanceStorage setTextAttributes:_ui_attributesForDictionaryContainingUIStringDrawingKeys forState:state];
     v11 = *off_1E70EC918;
-    v12 = [v14 objectForKey:*off_1E70EC918];
+    v12 = [_ui_attributesForDictionaryContainingUIStringDrawingKeys objectForKey:*off_1E70EC918];
     v13 = [v10 objectForKey:v11];
     if (v12 | v13 && ([v12 isEqual:v13] & 1) == 0)
     {

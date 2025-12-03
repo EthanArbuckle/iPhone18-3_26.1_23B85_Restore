@@ -1,24 +1,24 @@
 @interface CHPatternNetwork
-+ (BOOL)isString:(id)a3 fullPattern:(int64_t)a4 inNetwork:(id)a5;
-+ (id)newCursorByAdvancingWithString:(id)a3 fromCursor:(id)a4 inNetwork:(id)a5;
-+ (id)newCursorByAdvancingWithSymbol:(unint64_t)a3 fromCursor:(id)a4 inNetwork:(id)a5;
-+ (id)rootCursorForContentType:(int)a3 inNetwork:(id)a4 forFirstSegmentGroup:(BOOL)a5;
-+ (id)rootCursorForPatternType:(int64_t)a3 inNetwork:(id)a4 forFirstSegmentGroup:(BOOL)a5;
-- (CHPatternNetwork)initWithFile:(id)a3;
++ (BOOL)isString:(id)string fullPattern:(int64_t)pattern inNetwork:(id)network;
++ (id)newCursorByAdvancingWithString:(id)string fromCursor:(id)cursor inNetwork:(id)network;
++ (id)newCursorByAdvancingWithSymbol:(unint64_t)symbol fromCursor:(id)cursor inNetwork:(id)network;
++ (id)rootCursorForContentType:(int)type inNetwork:(id)network forFirstSegmentGroup:(BOOL)group;
++ (id)rootCursorForPatternType:(int64_t)type inNetwork:(id)network forFirstSegmentGroup:(BOOL)group;
+- (CHPatternNetwork)initWithFile:(id)file;
 - (void)dealloc;
 @end
 
 @implementation CHPatternNetwork
 
-+ (id)rootCursorForContentType:(int)a3 inNetwork:(id)a4 forFirstSegmentGroup:(BOOL)a5
++ (id)rootCursorForContentType:(int)type inNetwork:(id)network forFirstSegmentGroup:(BOOL)group
 {
-  v5 = a5;
-  v6 = *&a3;
-  v7 = a4;
-  v12 = v7;
-  if (v7 && (v13 = v7[4], objc_msgSend_numberWithInt_(MEMORY[0x1E696AD98], v8, v6, v9, v10, v11), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend_objectForKey_(v13, v15, v14, v16, v17, v18), v19 = objc_claimAutoreleasedReturnValue(), v14, v19))
+  groupCopy = group;
+  v6 = *&type;
+  networkCopy = network;
+  v12 = networkCopy;
+  if (networkCopy && (v13 = networkCopy[4], objc_msgSend_numberWithInt_(MEMORY[0x1E696AD98], v8, v6, v9, v10, v11), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend_objectForKey_(v13, v15, v14, v16, v17, v18), v19 = objc_claimAutoreleasedReturnValue(), v14, v19))
   {
-    if (v6 || !v5)
+    if (v6 || !groupCopy)
     {
       v32 = v19;
     }
@@ -64,14 +64,14 @@
   return v32;
 }
 
-+ (id)rootCursorForPatternType:(int64_t)a3 inNetwork:(id)a4 forFirstSegmentGroup:(BOOL)a5
++ (id)rootCursorForPatternType:(int64_t)type inNetwork:(id)network forFirstSegmentGroup:(BOOL)group
 {
-  v6 = a4;
-  if (v6)
+  networkCopy = network;
+  if (networkCopy)
   {
     v7 = objc_alloc_init(NetworkCursor);
-    v8 = v6[3];
-    v13 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v9, a3, v10, v11, v12);
+    v8 = networkCopy[3];
+    v13 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v9, type, v10, v11, v12);
     v18 = objc_msgSend_objectForKey_(v8, v14, v13, v15, v16, v17);
     v24 = objc_msgSend_unsignedLongValue(v18, v19, v20, v21, v22, v23);
 
@@ -90,32 +90,32 @@
   return v7;
 }
 
-+ (id)newCursorByAdvancingWithString:(id)a3 fromCursor:(id)a4 inNetwork:(id)a5
++ (id)newCursorByAdvancingWithString:(id)string fromCursor:(id)cursor inNetwork:(id)network
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v15 = v9;
+  stringCopy = string;
+  cursorCopy = cursor;
+  networkCopy = network;
+  v15 = networkCopy;
   v16 = 0;
-  if (v8 && v9)
+  if (cursorCopy && networkCopy)
   {
-    if (v8[2] != v8[1])
+    if (cursorCopy[2] != cursorCopy[1])
     {
-      if (!objc_msgSend_length(v7, v10, v11, v12, v13, v14))
+      if (!objc_msgSend_length(stringCopy, v10, v11, v12, v13, v14))
       {
-        v16 = v8;
+        v16 = cursorCopy;
         goto LABEL_9;
       }
 
-      v21 = objc_msgSend_rangeOfComposedCharacterSequenceAtIndex_(v7, v17, 0, v18, v19, v20);
+      v21 = objc_msgSend_rangeOfComposedCharacterSequenceAtIndex_(stringCopy, v17, 0, v18, v19, v20);
       v25 = v22;
       if (v22 <= 1)
       {
         v26 = v21;
-        v27 = objc_msgSend_substringWithRange_(v7, v22, v21, v22, v23, v24);
-        v32 = objc_msgSend_substringFromIndex_(v7, v28, &v25[v26], v29, v30, v31);
+        v27 = objc_msgSend_substringWithRange_(stringCopy, v22, v21, v22, v23, v24);
+        v32 = objc_msgSend_substringFromIndex_(stringCopy, v28, &v25[v26], v29, v30, v31);
         v37 = objc_msgSend_characterAtIndex_(v27, v33, 0, v34, v35, v36);
-        v38 = sub_183986558(v15, v8, v37);
+        v38 = sub_183986558(v15, cursorCopy, v37);
         v16 = objc_msgSend_newCursorByAdvancingWithString_fromCursor_inNetwork_(CHPatternNetwork, v39, v32, v38, v15, v40);
 
         goto LABEL_9;
@@ -130,22 +130,22 @@ LABEL_9:
   return v16;
 }
 
-+ (id)newCursorByAdvancingWithSymbol:(unint64_t)a3 fromCursor:(id)a4 inNetwork:(id)a5
++ (id)newCursorByAdvancingWithSymbol:(unint64_t)symbol fromCursor:(id)cursor inNetwork:(id)network
 {
-  v7 = a4;
-  v8 = a5;
+  cursorCopy = cursor;
+  networkCopy = network;
   v9 = 0;
-  if (v7 && v8)
+  if (cursorCopy && networkCopy)
   {
-    if (v7[2] == v7[1])
+    if (cursorCopy[2] == cursorCopy[1])
     {
       v9 = 0;
     }
 
     else
     {
-      v10 = v8;
-      v11 = sub_183986558(v8, v7, a3);
+      v10 = networkCopy;
+      v11 = sub_183986558(networkCopy, cursorCopy, symbol);
       v9 = v11;
       if (!v11 || v11->_nodeIndexes.__end_ == v11->_nodeIndexes.__begin_)
       {
@@ -153,22 +153,22 @@ LABEL_9:
         v9 = 0;
       }
 
-      v8 = v10;
+      networkCopy = v10;
     }
   }
 
   return v9;
 }
 
-- (CHPatternNetwork)initWithFile:(id)a3
+- (CHPatternNetwork)initWithFile:(id)file
 {
   v186 = *MEMORY[0x1E69E9840];
   v181.receiver = self;
   v181.super_class = CHPatternNetwork;
-  v156 = a3;
+  fileCopy = file;
   v167 = [(CHPatternNetwork *)&v181 init];
-  v3 = v156;
-  v9 = objc_msgSend_UTF8String(v156, v4, v5, v6, v7, v8);
+  v3 = fileCopy;
+  v9 = objc_msgSend_UTF8String(fileCopy, v4, v5, v6, v7, v8);
   if (sub_1837A3290(v9, 0, __s))
   {
     operator new();
@@ -424,12 +424,12 @@ LABEL_9:
   return v167;
 }
 
-+ (BOOL)isString:(id)a3 fullPattern:(int64_t)a4 inNetwork:(id)a5
++ (BOOL)isString:(id)string fullPattern:(int64_t)pattern inNetwork:(id)network
 {
-  v7 = a3;
-  v8 = a5;
-  v11 = objc_msgSend_rootCursorForPatternType_inNetwork_forFirstSegmentGroup_(CHPatternNetwork, v9, a4, v8, 0, v10);
-  v14 = objc_msgSend_newCursorByAdvancingWithString_fromCursor_inNetwork_(CHPatternNetwork, v12, v7, v11, v8, v13);
+  stringCopy = string;
+  networkCopy = network;
+  v11 = objc_msgSend_rootCursorForPatternType_inNetwork_forFirstSegmentGroup_(CHPatternNetwork, v9, pattern, networkCopy, 0, v10);
+  v14 = objc_msgSend_newCursorByAdvancingWithString_fromCursor_inNetwork_(CHPatternNetwork, v12, stringCopy, v11, networkCopy, v13);
 
   LOBYTE(v11) = objc_msgSend_isCompletePattern(v14, v15, v16, v17, v18, v19);
   return v11;

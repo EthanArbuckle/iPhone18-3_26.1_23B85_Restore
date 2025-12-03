@@ -1,23 +1,23 @@
 @interface CRLatticeEdge
-- (CRLatticeEdge)initWithSymbol:(id)a3 index:(unint64_t)a4 score:(double)a5 startNode:(unint64_t)a6 endNode:(unint64_t)a7;
+- (CRLatticeEdge)initWithSymbol:(id)symbol index:(unint64_t)index score:(double)score startNode:(unint64_t)node endNode:(unint64_t)endNode;
 @end
 
 @implementation CRLatticeEdge
 
-- (CRLatticeEdge)initWithSymbol:(id)a3 index:(unint64_t)a4 score:(double)a5 startNode:(unint64_t)a6 endNode:(unint64_t)a7
+- (CRLatticeEdge)initWithSymbol:(id)symbol index:(unint64_t)index score:(double)score startNode:(unint64_t)node endNode:(unint64_t)endNode
 {
-  v13 = a3;
+  symbolCopy = symbol;
   v17.receiver = self;
   v17.super_class = CRLatticeEdge;
   v14 = [(CRLatticeEdge *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_symbol, a3);
-    v15->_edgeIndex = a4;
-    v15->_score = a5;
-    v15->_startNode = a6;
-    v15->_endNode = a7;
+    objc_storeStrong(&v14->_symbol, symbol);
+    v15->_edgeIndex = index;
+    v15->_score = score;
+    v15->_startNode = node;
+    v15->_endNode = endNode;
   }
 
   return v15;

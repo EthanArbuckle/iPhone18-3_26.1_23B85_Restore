@@ -1,46 +1,46 @@
 @interface EMMailToURLComponents
-+ (id)componentsWithURL:(id)a3;
-- (EMMailToURLComponents)initWithURL:(id)a3;
-- (void)_decomposeURL:(id)a3;
++ (id)componentsWithURL:(id)l;
+- (EMMailToURLComponents)initWithURL:(id)l;
+- (void)_decomposeURL:(id)l;
 @end
 
 @implementation EMMailToURLComponents
 
-+ (id)componentsWithURL:(id)a3
++ (id)componentsWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithURL:v4];
+  lCopy = l;
+  v5 = [[self alloc] initWithURL:lCopy];
 
   return v5;
 }
 
-- (EMMailToURLComponents)initWithURL:(id)a3
+- (EMMailToURLComponents)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v8.receiver = self;
   v8.super_class = EMMailToURLComponents;
   v5 = [(EMMailToURLComponents *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(EMMailToURLComponents *)v5 _decomposeURL:v4];
+    [(EMMailToURLComponents *)v5 _decomposeURL:lCopy];
   }
 
   return v6;
 }
 
-- (void)_decomposeURL:(id)a3
+- (void)_decomposeURL:(id)l
 {
   v69 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  lCopy = l;
+  if (!lCopy)
   {
     goto LABEL_48;
   }
 
-  v52 = v3;
-  v57 = [v3 absoluteString];
-  v5 = [v57 rangeOfString:@"mailto:" options:9];
+  v52 = lCopy;
+  absoluteString = [lCopy absoluteString];
+  v5 = [absoluteString rangeOfString:@"mailto:" options:9];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_47;
@@ -48,10 +48,10 @@
 
   v6 = v4;
   context = objc_autoreleasePoolPush();
-  v58 = [MEMORY[0x1E695DF70] array];
-  v55 = [MEMORY[0x1E695DF70] array];
-  v56 = [MEMORY[0x1E695DF70] array];
-  v53 = [v57 substringFromIndex:v5 + v6];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
+  v53 = [absoluteString substringFromIndex:v5 + v6];
   v7 = [v53 rangeOfString:@"?"];
   v9 = v7;
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
@@ -72,13 +72,13 @@
 
   v13 = MEMORY[0x1E699AFC8];
   v54 = v10;
-  v14 = [v10 stringByRemovingPercentEncoding];
-  v15 = [v13 addressListFromHeaderValue:v14];
+  stringByRemovingPercentEncoding = [v10 stringByRemovingPercentEncoding];
+  v15 = [v13 addressListFromHeaderValue:stringByRemovingPercentEncoding];
 
   v51 = v15;
   if ([v15 count])
   {
-    [v58 addObjectsFromArray:v15];
+    [array addObjectsFromArray:v15];
   }
 
   v66 = 0u;
@@ -119,29 +119,29 @@
       {
         v23 = v21;
         v24 = [v20 substringToIndex:v22];
-        v25 = [v24 lowercaseString];
+        lowercaseString = [v24 lowercaseString];
 
         v26 = [v20 substringFromIndex:v22 + v23];
-        if ([v25 length] && objc_msgSend(v26, "length"))
+        if ([lowercaseString length] && objc_msgSend(v26, "length"))
         {
           v27 = [v26 ef_stringByReplacingPercentEscapesUsingEncoding:4];
 
-          if ([v25 isEqualToString:@"body"])
+          if ([lowercaseString isEqualToString:@"body"])
           {
             [v27 ef_stringByEscapingForMessageBody];
             v62 = v28 = v62;
             goto LABEL_23;
           }
 
-          if ([v25 isEqualToString:@"subject"])
+          if ([lowercaseString isEqualToString:@"subject"])
           {
             v28 = v61;
             v61 = v27;
             goto LABEL_23;
           }
 
-          v29 = [MEMORY[0x1E695DFF8] em_mailToFromQueryItemKey];
-          v30 = [v25 ef_caseInsensitiveIsEqualToString:v29];
+          em_mailToFromQueryItemKey = [MEMORY[0x1E695DFF8] em_mailToFromQueryItemKey];
+          v30 = [lowercaseString ef_caseInsensitiveIsEqualToString:em_mailToFromQueryItemKey];
 
           if (v30)
           {
@@ -150,25 +150,25 @@
             goto LABEL_23;
           }
 
-          if (([v25 isEqualToString:@"attachment"] & 1) == 0 && (objc_msgSend(v25, "isEqualToString:", @"attachdircontent") & 1) == 0)
+          if (([lowercaseString isEqualToString:@"attachment"] & 1) == 0 && (objc_msgSend(lowercaseString, "isEqualToString:", @"attachdircontent") & 1) == 0)
           {
             v31 = [MEMORY[0x1E699AFC8] addressListFromHeaderValue:v27];
             v28 = v31;
             if (v31 && [(NSString *)v31 count])
             {
-              if ([v25 isEqualToString:v50])
+              if ([lowercaseString isEqualToString:v50])
               {
-                [v58 addObjectsFromArray:v28];
+                [array addObjectsFromArray:v28];
               }
 
-              if ([v25 isEqualToString:v49])
+              if ([lowercaseString isEqualToString:v49])
               {
-                [v55 addObjectsFromArray:v28];
+                [array2 addObjectsFromArray:v28];
               }
 
-              if ([v25 isEqualToString:v48])
+              if ([lowercaseString isEqualToString:v48])
               {
-                [v56 addObjectsFromArray:v28];
+                [array3 addObjectsFromArray:v28];
               }
             }
 
@@ -193,23 +193,23 @@ LABEL_23:
   while (v32);
 LABEL_40:
 
-  if ([v58 count])
+  if ([array count])
   {
-    v33 = [v58 copy];
+    v33 = [array copy];
     toRecipients = self->_toRecipients;
     self->_toRecipients = v33;
   }
 
-  if ([v55 count])
+  if ([array2 count])
   {
-    v35 = [v55 copy];
+    v35 = [array2 copy];
     ccRecipients = self->_ccRecipients;
     self->_ccRecipients = v35;
   }
 
-  if ([v56 count])
+  if ([array3 count])
   {
-    v37 = [v56 copy];
+    v37 = [array3 copy];
     bccRecipients = self->_bccRecipients;
     self->_bccRecipients = v37;
   }
@@ -229,7 +229,7 @@ LABEL_40:
   objc_autoreleasePoolPop(context);
 LABEL_47:
 
-  v3 = v52;
+  lCopy = v52;
 LABEL_48:
 
   v45 = *MEMORY[0x1E69E9840];

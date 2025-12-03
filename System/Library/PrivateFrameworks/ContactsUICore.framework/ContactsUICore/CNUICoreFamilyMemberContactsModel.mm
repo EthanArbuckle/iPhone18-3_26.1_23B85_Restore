@@ -1,8 +1,8 @@
 @interface CNUICoreFamilyMemberContactsModel
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CNUICoreFamilyMemberContactsModel)init;
-- (CNUICoreFamilyMemberContactsModel)initWithCoder:(id)a3;
-- (CNUICoreFamilyMemberContactsModel)initWithItems:(id)a3;
+- (CNUICoreFamilyMemberContactsModel)initWithCoder:(id)coder;
+- (CNUICoreFamilyMemberContactsModel)initWithItems:(id)items;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -11,15 +11,15 @@
 
 - (CNUICoreFamilyMemberContactsModel)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }
 
-- (CNUICoreFamilyMemberContactsModel)initWithItems:(id)a3
+- (CNUICoreFamilyMemberContactsModel)initWithItems:(id)items
 {
-  v5 = a3;
-  if (!v5)
+  itemsCopy = items;
+  if (!itemsCopy)
   {
     if (CNGuardOSLog_cn_once_token_0_10 != -1)
     {
@@ -39,16 +39,16 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_items, a3);
+    objc_storeStrong(&v7->_items, items);
     v9 = v8;
   }
 
   return v8;
 }
 
-- (CNUICoreFamilyMemberContactsModel)initWithCoder:(id)a3
+- (CNUICoreFamilyMemberContactsModel)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = CNUICoreFamilyMemberContactsModel;
   v5 = [(CNUICoreFamilyMemberContactsModel *)&v14 init];
@@ -57,7 +57,7 @@
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"_items"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"_items"];
     v10 = [v9 copy];
     items = v5->_items;
     v5->_items = v10;
@@ -68,14 +68,14 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7 = 1;
-  if (self != v4)
+  if (self != equalCopy)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || (v5 = -[CNUICoreFamilyMemberContactsModel items](self, "items"), v6 = -[CNUICoreFamilyMemberContactsModel items](v4, "items"), v5 | v6) && ![v5 isEqual:v6])
+    if ((objc_opt_isKindOfClass() & 1) == 0 || (v5 = -[CNUICoreFamilyMemberContactsModel items](self, "items"), v6 = -[CNUICoreFamilyMemberContactsModel items](equalCopy, "items"), v5 | v6) && ![v5 isEqual:v6])
     {
       v7 = 0;
     }
@@ -87,8 +87,8 @@
 - (unint64_t)hash
 {
   v2 = MEMORY[0x1E6996730];
-  v3 = [(CNUICoreFamilyMemberContactsModel *)self items];
-  v4 = [v2 arrayHash:v3];
+  items = [(CNUICoreFamilyMemberContactsModel *)self items];
+  v4 = [v2 arrayHash:items];
 
   return v4 + 527;
 }
@@ -96,12 +96,12 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [(CNUICoreFamilyMemberContactsModel *)self items];
-  v5 = [v3 appendObject:v4 withName:@"items"];
+  items = [(CNUICoreFamilyMemberContactsModel *)self items];
+  v5 = [v3 appendObject:items withName:@"items"];
 
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 @end

@@ -1,61 +1,61 @@
 @interface SHSheetSceneViewController
 - (CGRect)_framePortrait;
 - (SHSheetContentPresenter)presenter;
-- (SHSheetSceneViewController)initWithSession:(id)a3;
+- (SHSheetSceneViewController)initWithSession:(id)session;
 - (UIEdgeInsets)_safeAreaInsetsPortrait;
 - (id)_hostSheetPresentationController;
 - (int64_t)_hostProcessType;
 - (void)_installSceneView;
-- (void)_sceneDidEnterBackground:(id)a3;
-- (void)_sceneWillEnterForeground:(id)a3;
-- (void)_willEnterForeground:(id)a3;
+- (void)_sceneDidEnterBackground:(id)background;
+- (void)_sceneWillEnterForeground:(id)foreground;
+- (void)_willEnterForeground:(id)foreground;
 - (void)dealloc;
-- (void)didUpdateAirDropTransferWithChange:(id)a3;
-- (void)reloadActivity:(id)a3;
+- (void)didUpdateAirDropTransferWithChange:(id)change;
+- (void)reloadActivity:(id)activity;
 - (void)reloadContent;
-- (void)reloadMetadata:(id)a3;
-- (void)runScrollingTestWithName:(id)a3 type:(int64_t)a4 completionHandler:(id)a5;
-- (void)scene:(id)a3 didReceiveAction:(id)a4;
-- (void)scene:(id)a3 didReceiveDraggingAction:(id)a4;
-- (void)scene:(id)a3 didReceiveMetadataUpdateAction:(id)a4;
-- (void)scene:(id)a3 didReceiveSuggestionAction:(id)a4;
-- (void)sceneSettingsDidChange:(id)a3;
-- (void)startPulsingActivity:(id)a3 localizedTitle:(id)a4;
-- (void)stopPulsingActivity:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateWithViewModel:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)reloadMetadata:(id)metadata;
+- (void)runScrollingTestWithName:(id)name type:(int64_t)type completionHandler:(id)handler;
+- (void)scene:(id)scene didReceiveAction:(id)action;
+- (void)scene:(id)scene didReceiveDraggingAction:(id)action;
+- (void)scene:(id)scene didReceiveMetadataUpdateAction:(id)action;
+- (void)scene:(id)scene didReceiveSuggestionAction:(id)action;
+- (void)sceneSettingsDidChange:(id)change;
+- (void)startPulsingActivity:(id)activity localizedTitle:(id)title;
+- (void)stopPulsingActivity:(id)activity;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateWithViewModel:(id)model;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 - (void)viewSafeAreaInsetsDidChange;
 @end
 
 @implementation SHSheetSceneViewController
 
-- (SHSheetSceneViewController)initWithSession:(id)a3
+- (SHSheetSceneViewController)initWithSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v14.receiver = self;
   v14.super_class = SHSheetSceneViewController;
   v6 = [(SHSheetSceneViewController *)&v14 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_session, a3);
-    v8 = [v5 remoteScene];
+    objc_storeStrong(&v6->_session, session);
+    remoteScene = [sessionCopy remoteScene];
     scene = v7->_scene;
-    v7->_scene = v8;
+    v7->_scene = remoteScene;
 
     [(SHSheetScene *)v7->_scene setDelegate:v7];
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v7 selector:sel__willEnterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__willEnterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v7 selector:sel__sceneWillEnterForeground_ name:*MEMORY[0x1E69DE360] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v7 selector:sel__sceneWillEnterForeground_ name:*MEMORY[0x1E69DE360] object:0];
 
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:v7 selector:sel__sceneDidEnterBackground_ name:*MEMORY[0x1E69DE348] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v7 selector:sel__sceneDidEnterBackground_ name:*MEMORY[0x1E69DE348] object:0];
   }
 
   return v7;
@@ -63,17 +63,17 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDBC0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDBC0] object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x1E69DE360] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x1E69DE360] object:0];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self name:*MEMORY[0x1E69DE348] object:0];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 removeObserver:self name:*MEMORY[0x1E69DE348] object:0];
 
-  v6 = [(SHSheetSceneViewController *)self scene];
-  [v6 invalidate];
+  scene = [(SHSheetSceneViewController *)self scene];
+  [scene invalidate];
 
   v7.receiver = self;
   v7.super_class = SHSheetSceneViewController;
@@ -86,60 +86,60 @@
   v9.super_class = SHSheetSceneViewController;
   [(SHSheetSceneViewController *)&v9 viewDidLoad];
   [(SHSheetSceneViewController *)self _installSceneView];
-  v3 = [(SHSheetSceneViewController *)self session];
-  v4 = [v3 activityViewController];
+  session = [(SHSheetSceneViewController *)self session];
+  activityViewController = [session activityViewController];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__SHSheetSceneViewController_viewDidLoad__block_invoke;
   v7[3] = &unk_1E71F9510;
-  v8 = v4;
-  v5 = v4;
-  v6 = [(SHSheetSceneViewController *)self scene];
-  [v6 setFenceCompletionHandler:v7];
+  v8 = activityViewController;
+  v5 = activityViewController;
+  scene = [(SHSheetSceneViewController *)self scene];
+  [scene setFenceCompletionHandler:v7];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = SHSheetSceneViewController;
-  [(SHSheetSceneViewController *)&v7 viewDidDisappear:a3];
-  v4 = [(SHSheetSceneViewController *)self view];
-  v5 = [v4 window];
-  v6 = [v5 windowScene];
-  [v6 _unregisterSettingsDiffActionArrayForKey:@"SHSheetSceneViewControllerSceneSettingsDiffAction"];
+  [(SHSheetSceneViewController *)&v7 viewDidDisappear:disappear];
+  view = [(SHSheetSceneViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  [windowScene _unregisterSettingsDiffActionArrayForKey:@"SHSheetSceneViewControllerSceneSettingsDiffAction"];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v19[1] = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = SHSheetSceneViewController;
-  [(SHSheetSceneViewController *)&v18 viewIsAppearing:a3];
+  [(SHSheetSceneViewController *)&v18 viewIsAppearing:appearing];
   v4 = objc_alloc_init(SHSheetSceneSettingsDiffAction);
   [(SHSheetSceneSettingsDiffAction *)v4 setDelegate:self];
-  v5 = [(SHSheetSceneViewController *)self view];
-  v6 = [v5 window];
-  v7 = [v6 windowScene];
+  view = [(SHSheetSceneViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
   v19[0] = v4;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
-  [v7 _registerSettingsDiffActionArray:v8 forKey:@"SHSheetSceneViewControllerSceneSettingsDiffAction"];
+  [windowScene _registerSettingsDiffActionArray:v8 forKey:@"SHSheetSceneViewControllerSceneSettingsDiffAction"];
 
-  v9 = [(SHSheetSceneViewController *)self view];
-  v10 = [v9 window];
-  v11 = [v10 windowScene];
+  view2 = [(SHSheetSceneViewController *)self view];
+  window2 = [view2 window];
+  windowScene2 = [window2 windowScene];
 
-  v12 = [(SHSheetSceneViewController *)self _hostProcessType];
-  v13 = [(SHSheetSceneViewController *)self scene];
+  _hostProcessType = [(SHSheetSceneViewController *)self _hostProcessType];
+  scene = [(SHSheetSceneViewController *)self scene];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __46__SHSheetSceneViewController_viewIsAppearing___block_invoke;
   v15[3] = &unk_1E71FADD8;
   v15[4] = self;
-  v16 = v11;
-  v17 = v12;
-  v14 = v11;
-  [v13 updateWithChange:v15];
+  v16 = windowScene2;
+  v17 = _hostProcessType;
+  v14 = windowScene2;
+  [scene updateWithChange:v15];
 }
 
 void __46__SHSheetSceneViewController_viewIsAppearing___block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -164,20 +164,20 @@ void __46__SHSheetSceneViewController_viewIsAppearing___block_invoke(uint64_t a1
   v9.receiver = self;
   v9.super_class = SHSheetSceneViewController;
   [(SHSheetSceneViewController *)&v9 viewDidLayoutSubviews];
-  v3 = [(SHSheetSceneViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
+  view = [(SHSheetSceneViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
 
-  if (v5)
+  if (windowScene)
   {
-    v6 = [(SHSheetSceneViewController *)self scene];
+    scene = [(SHSheetSceneViewController *)self scene];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __51__SHSheetSceneViewController_viewDidLayoutSubviews__block_invoke;
     v7[3] = &unk_1E71FAE00;
     v7[4] = self;
-    v8 = v5;
-    [v6 updateWithChange:v7];
+    v8 = windowScene;
+    [scene updateWithChange:v7];
   }
 }
 
@@ -199,18 +199,18 @@ void __51__SHSheetSceneViewController_viewDidLayoutSubviews__block_invoke(uint64
   [v4 setUserInterfaceStyle:{objc_msgSend(v7, "userInterfaceStyle")}];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = SHSheetSceneViewController;
-  [(SHSheetSceneViewController *)&v6 traitCollectionDidChange:a3];
-  v4 = [(SHSheetSceneViewController *)self scene];
+  [(SHSheetSceneViewController *)&v6 traitCollectionDidChange:change];
+  scene = [(SHSheetSceneViewController *)self scene];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __55__SHSheetSceneViewController_traitCollectionDidChange___block_invoke;
   v5[3] = &unk_1E71F9E00;
   v5[4] = self;
-  [v4 updateWithChange:v5];
+  [scene updateWithChange:v5];
 }
 
 void __55__SHSheetSceneViewController_traitCollectionDidChange___block_invoke(uint64_t a1, void *a2)
@@ -226,13 +226,13 @@ void __55__SHSheetSceneViewController_traitCollectionDidChange___block_invoke(ui
   v5.receiver = self;
   v5.super_class = SHSheetSceneViewController;
   [(SHSheetSceneViewController *)&v5 viewSafeAreaInsetsDidChange];
-  v3 = [(SHSheetSceneViewController *)self scene];
+  scene = [(SHSheetSceneViewController *)self scene];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __57__SHSheetSceneViewController_viewSafeAreaInsetsDidChange__block_invoke;
   v4[3] = &unk_1E71F9E00;
   v4[4] = self;
-  [v3 updateWithChange:v4];
+  [scene updateWithChange:v4];
 }
 
 void __57__SHSheetSceneViewController_viewSafeAreaInsetsDidChange__block_invoke(uint64_t a1, void *a2)
@@ -245,19 +245,19 @@ void __57__SHSheetSceneViewController_viewSafeAreaInsetsDidChange__block_invoke(
 
 - (void)_installSceneView
 {
-  v3 = [(SHSheetSceneViewController *)self scene];
-  obj = [v3 sceneView];
+  scene = [(SHSheetSceneViewController *)self scene];
+  obj = [scene sceneView];
 
   sceneView = self->_sceneView;
   if (sceneView != obj)
   {
     [(UIView *)sceneView removeFromSuperview];
-    v5 = [(SHSheetSceneViewController *)self view];
-    [v5 addSubview:obj];
+    view = [(SHSheetSceneViewController *)self view];
+    [view addSubview:obj];
 
     [(UIView *)obj setClipsToBounds:1];
-    v6 = [(UIView *)obj layer];
-    [v6 setName:@"SHSheetSceneView"];
+    layer = [(UIView *)obj layer];
+    [layer setName:@"SHSheetSceneView"];
 
     objc_storeStrong(&self->_sceneView, obj);
   }
@@ -265,19 +265,19 @@ void __57__SHSheetSceneViewController_viewSafeAreaInsetsDidChange__block_invoke(
 
 - (CGRect)_framePortrait
 {
-  v3 = [(SHSheetSceneViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
+  view = [(SHSheetSceneViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
 
-  v6 = [(SHSheetSceneViewController *)self view];
-  [v6 bounds];
+  view2 = [(SHSheetSceneViewController *)self view];
+  [view2 bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [v5 interfaceOrientation];
-  if ((v15 - 3) >= 2)
+  interfaceOrientation = [windowScene interfaceOrientation];
+  if ((interfaceOrientation - 3) >= 2)
   {
     v16 = v14;
   }
@@ -287,7 +287,7 @@ void __57__SHSheetSceneViewController_viewSafeAreaInsetsDidChange__block_invoke(
     v16 = v12;
   }
 
-  if ((v15 - 3) < 2)
+  if ((interfaceOrientation - 3) < 2)
   {
     v12 = v14;
   }
@@ -305,27 +305,27 @@ void __57__SHSheetSceneViewController_viewSafeAreaInsetsDidChange__block_invoke(
 
 - (UIEdgeInsets)_safeAreaInsetsPortrait
 {
-  v3 = [(SHSheetSceneViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
+  view = [(SHSheetSceneViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
 
-  v6 = [(SHSheetSceneViewController *)self view];
-  [v6 safeAreaInsets];
+  view2 = [(SHSheetSceneViewController *)self view];
+  [view2 safeAreaInsets];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [v5 traitCollection];
-  v16 = [v15 userInterfaceIdiom];
+  traitCollection = [windowScene traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v16 == 1)
+  if (userInterfaceIdiom == 1)
   {
     goto LABEL_2;
   }
 
-  v24 = [v5 interfaceOrientation];
-  if (v24 == 2)
+  interfaceOrientation = [windowScene interfaceOrientation];
+  if (interfaceOrientation == 2)
   {
     v17 = v10;
     v18 = v8;
@@ -334,7 +334,7 @@ void __57__SHSheetSceneViewController_viewSafeAreaInsetsDidChange__block_invoke(
     goto LABEL_3;
   }
 
-  if (v24 == 3)
+  if (interfaceOrientation == 3)
   {
     v17 = v8;
     v18 = v14;
@@ -343,7 +343,7 @@ void __57__SHSheetSceneViewController_viewSafeAreaInsetsDidChange__block_invoke(
     goto LABEL_3;
   }
 
-  if (v24 != 4)
+  if (interfaceOrientation != 4)
   {
 LABEL_2:
     v17 = v14;
@@ -372,20 +372,20 @@ LABEL_3:
   return result;
 }
 
-- (void)sceneSettingsDidChange:(id)a3
+- (void)sceneSettingsDidChange:(id)change
 {
-  v4 = [(SHSheetSceneViewController *)self view];
-  v5 = [v4 window];
+  view = [(SHSheetSceneViewController *)self view];
+  window = [view window];
 
-  if (v5)
+  if (window)
   {
-    v6 = [(SHSheetSceneViewController *)self scene];
+    scene = [(SHSheetSceneViewController *)self scene];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __53__SHSheetSceneViewController_sceneSettingsDidChange___block_invoke;
     v7[3] = &unk_1E71F9E00;
     v7[4] = self;
-    [v6 updateWithChange:v7];
+    [scene updateWithChange:v7];
   }
 }
 
@@ -406,49 +406,49 @@ void __53__SHSheetSceneViewController_sceneSettingsDidChange___block_invoke(uint
   [v4 setDisplayConfiguration:v11];
 }
 
-- (void)_willEnterForeground:(id)a3
+- (void)_willEnterForeground:(id)foreground
 {
-  v4 = [(SHSheetSceneViewController *)self scene];
-  v5 = [v4 isActive];
+  scene = [(SHSheetSceneViewController *)self scene];
+  isActive = [scene isActive];
 
-  if ((v5 & 1) == 0)
+  if ((isActive & 1) == 0)
   {
-    v6 = [(SHSheetSceneViewController *)self scene];
-    [v6 activate];
+    scene2 = [(SHSheetSceneViewController *)self scene];
+    [scene2 activate];
   }
 }
 
-- (void)_sceneWillEnterForeground:(id)a3
+- (void)_sceneWillEnterForeground:(id)foreground
 {
-  v9 = a3;
-  v4 = [(SHSheetSceneViewController *)self view];
-  v5 = [v4 window];
-  v6 = [v5 windowScene];
+  foregroundCopy = foreground;
+  view = [(SHSheetSceneViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
 
-  if (v6)
+  if (windowScene)
   {
-    v7 = [v9 object];
+    object = [foregroundCopy object];
 
-    if (v7 == v6)
+    if (object == windowScene)
     {
-      v8 = [(SHSheetSceneViewController *)self scene];
-      [v8 updateWithChange:&__block_literal_global_34];
+      scene = [(SHSheetSceneViewController *)self scene];
+      [scene updateWithChange:&__block_literal_global_34];
     }
   }
 }
 
-- (void)_sceneDidEnterBackground:(id)a3
+- (void)_sceneDidEnterBackground:(id)background
 {
-  v4 = a3;
-  v5 = [(SHSheetSceneViewController *)self view];
-  v6 = [v5 window];
-  v7 = [v6 windowScene];
+  backgroundCopy = background;
+  view = [(SHSheetSceneViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
 
-  if (v7)
+  if (windowScene)
   {
-    v8 = [v4 object];
-    v9 = v8;
-    if (v8 == v7)
+    object = [backgroundCopy object];
+    v9 = object;
+    if (object == windowScene)
     {
       v10 = objc_opt_respondsToSelector();
 
@@ -459,7 +459,7 @@ void __53__SHSheetSceneViewController_sceneSettingsDidChange___block_invoke(uint
         v11[2] = __55__SHSheetSceneViewController__sceneDidEnterBackground___block_invoke;
         v11[3] = &unk_1E71F9510;
         v11[4] = self;
-        [v7 _performAfterSystemSnapshotsComplete:v11];
+        [windowScene _performAfterSystemSnapshotsComplete:v11];
       }
     }
 
@@ -477,16 +477,16 @@ void __55__SHSheetSceneViewController__sceneDidEnterBackground___block_invoke(ui
 
 - (int64_t)_hostProcessType
 {
-  v3 = [(SHSheetSceneViewController *)self viewIfLoaded];
-  v4 = [v3 window];
+  viewIfLoaded = [(SHSheetSceneViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  if (!v4)
+  if (!window)
   {
     return 0;
   }
 
-  v5 = [(SHSheetSceneViewController *)self viewIfLoaded];
-  v6 = [v5 window];
+  viewIfLoaded2 = [(SHSheetSceneViewController *)self viewIfLoaded];
+  window2 = [viewIfLoaded2 window];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -501,54 +501,54 @@ void __55__SHSheetSceneViewController__sceneDidEnterBackground___block_invoke(ui
   }
 }
 
-- (void)scene:(id)a3 didReceiveAction:(id)a4
+- (void)scene:(id)scene didReceiveAction:(id)action
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  actionCopy = action;
   v6 = share_sheet_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 134217984;
-    v13 = [v5 type];
+    type = [actionCopy type];
     _os_log_impl(&dword_18B359000, v6, OS_LOG_TYPE_DEFAULT, "did receive action with type:%ld", &v12, 0xCu);
   }
 
-  v7 = [v5 type];
-  if (v7 > 4)
+  type2 = [actionCopy type];
+  if (type2 > 4)
   {
-    if (v7 <= 6)
+    if (type2 <= 6)
     {
-      if (v7 == 5)
+      if (type2 == 5)
       {
-        v8 = [(SHSheetSceneViewController *)self presenter];
-        [v8 handleClose];
+        presenter = [(SHSheetSceneViewController *)self presenter];
+        [presenter handleClose];
       }
 
       else
       {
-        v8 = [(SHSheetSceneViewController *)self presenter];
-        [v8 handleActionsEdit];
+        presenter = [(SHSheetSceneViewController *)self presenter];
+        [presenter handleActionsEdit];
       }
 
       goto LABEL_24;
     }
 
-    switch(v7)
+    switch(type2)
     {
       case 7:
-        v8 = [(SHSheetSceneViewController *)self presenter];
-        [v8 handleNext];
+        presenter = [(SHSheetSceneViewController *)self presenter];
+        [presenter handleNext];
         goto LABEL_24;
       case 8:
-        v8 = [(SHSheetSceneViewController *)self session];
-        v11 = [v8 activityViewController];
-        [v11 dismissViewControllerAnimated:0 completion:0];
+        presenter = [(SHSheetSceneViewController *)self session];
+        activityViewController = [presenter activityViewController];
+        [activityViewController dismissViewControllerAnimated:0 completion:0];
 
         goto LABEL_24;
       case 9:
-        v9 = [(SHSheetSceneViewController *)self currentTest];
-        v10 = [v9 completionHandler];
-        v10[2]();
+        currentTest = [(SHSheetSceneViewController *)self currentTest];
+        completionHandler = [currentTest completionHandler];
+        completionHandler[2]();
 
         [(SHSheetSceneViewController *)self setCurrentTest:0];
         break;
@@ -557,40 +557,40 @@ void __55__SHSheetSceneViewController__sceneDidEnterBackground___block_invoke(ui
 
   else
   {
-    if (v7 > 1)
+    if (type2 > 1)
     {
-      if (v7 == 2)
+      if (type2 == 2)
       {
-        v8 = [(SHSheetSceneViewController *)self presenter];
-        [v8 handleCollaborationOptions];
+        presenter = [(SHSheetSceneViewController *)self presenter];
+        [presenter handleCollaborationOptions];
       }
 
-      else if (v7 == 3)
+      else if (type2 == 3)
       {
-        v8 = [(SHSheetSceneViewController *)self presenter];
-        [v8 didSelectCollaborativeAction];
+        presenter = [(SHSheetSceneViewController *)self presenter];
+        [presenter didSelectCollaborativeAction];
       }
 
       else
       {
-        v8 = [(SHSheetSceneViewController *)self presenter];
-        [v8 didSelectSendCopyAction];
+        presenter = [(SHSheetSceneViewController *)self presenter];
+        [presenter didSelectSendCopyAction];
       }
 
       goto LABEL_24;
     }
 
-    if (!v7)
+    if (!type2)
     {
-      v8 = [(SHSheetSceneViewController *)self presenter];
-      [v8 handleCustomHeaderButton];
+      presenter = [(SHSheetSceneViewController *)self presenter];
+      [presenter handleCustomHeaderButton];
       goto LABEL_24;
     }
 
-    if (v7 == 1)
+    if (type2 == 1)
     {
-      v8 = [(SHSheetSceneViewController *)self presenter];
-      [v8 handleOptions];
+      presenter = [(SHSheetSceneViewController *)self presenter];
+      [presenter handleOptions];
 LABEL_24:
     }
   }
@@ -598,90 +598,90 @@ LABEL_24:
 
 - (id)_hostSheetPresentationController
 {
-  v3 = [(SHSheetSceneViewController *)self sheetPresentationController];
-  if (!v3)
+  sheetPresentationController = [(SHSheetSceneViewController *)self sheetPresentationController];
+  if (!sheetPresentationController)
   {
-    v4 = [(SHSheetSceneViewController *)self session];
-    v5 = [v4 activityViewController];
-    v3 = [v5 _existingPresentationControllerImmediate:1 effective:1];
+    session = [(SHSheetSceneViewController *)self session];
+    activityViewController = [session activityViewController];
+    sheetPresentationController = [activityViewController _existingPresentationControllerImmediate:1 effective:1];
   }
 
-  return v3;
+  return sheetPresentationController;
 }
 
-- (void)scene:(id)a3 didReceiveMetadataUpdateAction:(id)a4
+- (void)scene:(id)scene didReceiveMetadataUpdateAction:(id)action
 {
-  v5 = [a4 metadata];
-  [(SHSheetSceneViewController *)self setRemoteHeaderMetadata:v5];
+  metadata = [action metadata];
+  [(SHSheetSceneViewController *)self setRemoteHeaderMetadata:metadata];
 }
 
-- (void)scene:(id)a3 didReceiveSuggestionAction:(id)a4
+- (void)scene:(id)scene didReceiveSuggestionAction:(id)action
 {
-  v5 = a4;
-  v7 = [(SHSheetSceneViewController *)self presenter];
-  v6 = [v5 suggestionReason];
+  actionCopy = action;
+  presenter = [(SHSheetSceneViewController *)self presenter];
+  suggestionReason = [actionCopy suggestionReason];
 
-  [v7 handleInfoSuggestionPress:v6];
+  [presenter handleInfoSuggestionPress:suggestionReason];
 }
 
-- (void)scene:(id)a3 didReceiveDraggingAction:(id)a4
+- (void)scene:(id)scene didReceiveDraggingAction:(id)action
 {
-  v5 = a4;
-  v19 = [(SHSheetSceneViewController *)self _hostSheetPresentationController];
-  v6 = [v5 draggingEvent];
+  actionCopy = action;
+  _hostSheetPresentationController = [(SHSheetSceneViewController *)self _hostSheetPresentationController];
+  draggingEvent = [actionCopy draggingEvent];
 
-  v7 = [v6 type];
-  switch(v7)
+  type = [draggingEvent type];
+  switch(type)
   {
     case 2:
-      [v19 _remoteSheetInteractionDraggingDidEnd];
+      [_hostSheetPresentationController _remoteSheetInteractionDraggingDidEnd];
       break;
     case 1:
-      [v6 translation];
+      [draggingEvent translation];
       v14 = v13;
       v16 = v15;
-      [v6 velocity];
-      [v19 _remoteSheetInteractionDraggingDidChangeWithTranslation:objc_msgSend(v6 velocity:"shouldAnimate") animateChange:objc_msgSend(v6 dismissible:{"dismissible"), v14, v16, v17, v18}];
+      [draggingEvent velocity];
+      [_hostSheetPresentationController _remoteSheetInteractionDraggingDidChangeWithTranslation:objc_msgSend(draggingEvent velocity:"shouldAnimate") animateChange:objc_msgSend(draggingEvent dismissible:{"dismissible"), v14, v16, v17, v18}];
       break;
     case 0:
-      [v6 rubberBandCoefficient];
+      [draggingEvent rubberBandCoefficient];
       v9 = v8;
-      v10 = [v6 dismissible];
-      [v6 interruptedOffset];
-      [v19 _remoteSheetInteractionDraggingDidBeginWithRubberBandCoefficient:v10 dismissible:v9 interruptedOffset:{v11, v12}];
+      dismissible = [draggingEvent dismissible];
+      [draggingEvent interruptedOffset];
+      [_hostSheetPresentationController _remoteSheetInteractionDraggingDidBeginWithRubberBandCoefficient:dismissible dismissible:v9 interruptedOffset:{v11, v12}];
       break;
   }
 }
 
-- (void)updateWithViewModel:(id)a3
+- (void)updateWithViewModel:(id)model
 {
-  v4 = [(SHSheetSceneViewController *)self session];
-  v5 = [v4 createClientContext];
+  session = [(SHSheetSceneViewController *)self session];
+  createClientContext = [session createClientContext];
 
-  v6 = [(SHSheetSceneViewController *)self scene];
+  scene = [(SHSheetSceneViewController *)self scene];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __50__SHSheetSceneViewController_updateWithViewModel___block_invoke;
   v8[3] = &unk_1E71F9E00;
-  v9 = v5;
-  v7 = v5;
-  [v6 updateWithChange:v8];
+  v9 = createClientContext;
+  v7 = createClientContext;
+  [scene updateWithChange:v8];
 }
 
-- (void)didUpdateAirDropTransferWithChange:(id)a3
+- (void)didUpdateAirDropTransferWithChange:(id)change
 {
-  v4 = a3;
-  v6 = [[SHSheetAirDropTransferUpdateAction alloc] initWithAirDropTransferChange:v4];
+  changeCopy = change;
+  v6 = [[SHSheetAirDropTransferUpdateAction alloc] initWithAirDropTransferChange:changeCopy];
 
-  v5 = [(SHSheetSceneViewController *)self scene];
-  [v5 sendAction:v6];
+  scene = [(SHSheetSceneViewController *)self scene];
+  [scene sendAction:v6];
 }
 
-- (void)reloadMetadata:(id)a3
+- (void)reloadMetadata:(id)metadata
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v15[0] = v4;
+  metadataCopy = metadata;
+  v15[0] = metadataCopy;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -736,75 +736,75 @@ void __45__SHSheetSceneViewController_reloadMetadata___block_invoke_2(uint64_t a
 - (void)reloadContent
 {
   v4 = [[SHSheetContentReloadAction alloc] initWithActivityUUID:0];
-  v3 = [(SHSheetSceneViewController *)self scene];
-  [v3 sendAction:v4];
+  scene = [(SHSheetSceneViewController *)self scene];
+  [scene sendAction:v4];
 }
 
-- (void)reloadActivity:(id)a3
+- (void)reloadActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = [SHSheetContentReloadAction alloc];
-  v6 = [v4 activityUUID];
+  activityUUID = [activityCopy activityUUID];
 
-  v8 = [(SHSheetContentReloadAction *)v5 initWithActivityUUID:v6];
-  v7 = [(SHSheetSceneViewController *)self scene];
-  [v7 sendAction:v8];
+  v8 = [(SHSheetContentReloadAction *)v5 initWithActivityUUID:activityUUID];
+  scene = [(SHSheetSceneViewController *)self scene];
+  [scene sendAction:v8];
 }
 
-- (void)startPulsingActivity:(id)a3 localizedTitle:(id)a4
+- (void)startPulsingActivity:(id)activity localizedTitle:(id)title
 {
-  v6 = a4;
-  v7 = [a3 activityUUID];
-  v10 = [SHSheetPulsingEvent startPulsingEventWithActivityUUID:v7 localizedTitle:v6];
+  titleCopy = title;
+  activityUUID = [activity activityUUID];
+  v10 = [SHSheetPulsingEvent startPulsingEventWithActivityUUID:activityUUID localizedTitle:titleCopy];
 
   v8 = [[SHSheetPulsingAction alloc] initWithEvent:v10];
-  v9 = [(SHSheetSceneViewController *)self scene];
-  [v9 sendAction:v8];
+  scene = [(SHSheetSceneViewController *)self scene];
+  [scene sendAction:v8];
 }
 
-- (void)stopPulsingActivity:(id)a3
+- (void)stopPulsingActivity:(id)activity
 {
-  v4 = [a3 activityUUID];
-  v7 = [SHSheetPulsingEvent stopPulsingEventWithActivityUUID:v4];
+  activityUUID = [activity activityUUID];
+  v7 = [SHSheetPulsingEvent stopPulsingEventWithActivityUUID:activityUUID];
 
   v5 = [[SHSheetPulsingAction alloc] initWithEvent:v7];
-  v6 = [(SHSheetSceneViewController *)self scene];
-  [v6 sendAction:v5];
+  scene = [(SHSheetSceneViewController *)self scene];
+  [scene sendAction:v5];
 }
 
-- (void)runScrollingTestWithName:(id)a3 type:(int64_t)a4 completionHandler:(id)a5
+- (void)runScrollingTestWithName:(id)name type:(int64_t)type completionHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(SHSheetSceneViewController *)self currentTest];
+  nameCopy = name;
+  handlerCopy = handler;
+  currentTest = [(SHSheetSceneViewController *)self currentTest];
 
-  if (v10)
+  if (currentTest)
   {
     v11 = share_sheet_log();
     if (os_log_type_enabled(&v11->super, OS_LOG_TYPE_ERROR))
     {
-      [SHSheetRemoteSceneViewController runScrollingTestWithName:v8 type:self completionHandler:&v11->super];
+      [SHSheetRemoteSceneViewController runScrollingTestWithName:nameCopy type:self completionHandler:&v11->super];
     }
   }
 
   else
   {
-    v11 = [[SHSheetScrollingTest alloc] initWithName:v8 type:a4 completionHandler:v9];
+    v11 = [[SHSheetScrollingTest alloc] initWithName:nameCopy type:type completionHandler:handlerCopy];
     [(SHSheetSceneViewController *)self setCurrentTest:v11];
     v12 = share_sheet_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138412546;
-      v16 = v8;
+      v16 = nameCopy;
       v17 = 2048;
-      v18 = a4;
+      typeCopy = type;
       _os_log_impl(&dword_18B359000, v12, OS_LOG_TYPE_DEFAULT, "sending scrolling test action with test name:%@ type:%ld", &v15, 0x16u);
     }
 
     v13 = [[SHSheetScrollingTestAction alloc] initWithTest:v11];
-    v14 = [(SHSheetSceneViewController *)self scene];
-    [v14 sendAction:v13];
+    scene = [(SHSheetSceneViewController *)self scene];
+    [scene sendAction:v13];
   }
 }
 

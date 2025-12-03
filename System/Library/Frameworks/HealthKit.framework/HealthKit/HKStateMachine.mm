@@ -1,37 +1,37 @@
 @interface HKStateMachine
-+ (id)nameForOwner:(id)a3 UUID:(id)a4 tag:(id)a5;
++ (id)nameForOwner:(id)owner UUID:(id)d tag:(id)tag;
 - (HKStateMachine)init;
-- (HKStateMachine)initWithName:(id)a3;
+- (HKStateMachine)initWithName:(id)name;
 - (HKStateMachineDelegate)delegate;
-- (id)addStateTransitionFrom:(id)a3 to:(id)a4 event:(int64_t)a5 label:(id)a6;
-- (id)addStateWithIndex:(int64_t)a3 label:(id)a4;
+- (id)addStateTransitionFrom:(id)from to:(id)to event:(int64_t)event label:(id)label;
+- (id)addStateWithIndex:(int64_t)index label:(id)label;
 - (id)graphDescription;
-- (id)stateWithIndex:(int64_t)a3;
+- (id)stateWithIndex:(int64_t)index;
 - (void)_dequeueEvent;
-- (void)_handleEvent:(int64_t)a3 date:(id)a4 error:(id)a5 completion:(id)a6;
-- (void)enqueueEvent:(int64_t)a3 date:(id)a4 error:(id)a5 completion:(id)a6;
-- (void)enterAtState:(int64_t)a3;
+- (void)_handleEvent:(int64_t)event date:(id)date error:(id)error completion:(id)completion;
+- (void)enqueueEvent:(int64_t)event date:(id)date error:(id)error completion:(id)completion;
+- (void)enterAtState:(int64_t)state;
 @end
 
 @implementation HKStateMachine
 
-+ (id)nameForOwner:(id)a3 UUID:(id)a4 tag:(id)a5
++ (id)nameForOwner:(id)owner UUID:(id)d tag:(id)tag
 {
-  v6 = a5;
+  tagCopy = tag;
   v7 = MEMORY[0x1E696AEC0];
-  v8 = a4;
+  dCopy = d;
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  v11 = [v8 hk_shortRepresentation];
+  hk_shortRepresentation = [dCopy hk_shortRepresentation];
 
-  if (v6)
+  if (tagCopy)
   {
-    [v7 stringWithFormat:@"%@_%@_%@", v10, v6, v11];
+    [v7 stringWithFormat:@"%@_%@_%@", v10, tagCopy, hk_shortRepresentation];
   }
 
   else
   {
-    [v7 stringWithFormat:@"%@_%@", v10, v11, v14];
+    [v7 stringWithFormat:@"%@_%@", v10, hk_shortRepresentation, v14];
   }
   v12 = ;
 
@@ -48,15 +48,15 @@
   return 0;
 }
 
-- (HKStateMachine)initWithName:(id)a3
+- (HKStateMachine)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = HKStateMachine;
   v5 = [(HKStateMachine *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     name = v5->_name;
     v5->_name = v6;
 
@@ -72,72 +72,72 @@
   return v5;
 }
 
-- (id)addStateWithIndex:(int64_t)a3 label:(id)a4
+- (id)addStateWithIndex:(int64_t)index label:(id)label
 {
-  v7 = a4;
+  labelCopy = label;
   if (self->_currentState)
   {
     [HKStateMachine addStateWithIndex:label:];
   }
 
   statesByIndex = self->_statesByIndex;
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:index];
   v10 = [(NSMutableDictionary *)statesByIndex objectForKeyedSubscript:v9];
 
   if (v10)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = self->_statesByIndex;
-    v13 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v13 = [MEMORY[0x1E696AD98] numberWithInteger:index];
     v14 = [(NSMutableDictionary *)v12 objectForKeyedSubscript:v13];
-    [v11 handleFailureInMethod:a2 object:self file:@"HKStateMachine.m" lineNumber:154 description:{@"%@: Attempt to add a state (%@) with the same index as an existing state (%@).", self, v7, v14}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKStateMachine.m" lineNumber:154 description:{@"%@: Attempt to add a state (%@) with the same index as an existing state (%@).", self, labelCopy, v14}];
 
     v15 = 0;
   }
 
   else
   {
-    v15 = [[HKStateMachineState alloc] initWithIndex:a3 label:v7];
+    v15 = [[HKStateMachineState alloc] initWithIndex:index label:labelCopy];
     v16 = self->_statesByIndex;
-    v11 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-    [(NSMutableDictionary *)v16 setObject:v15 forKeyedSubscript:v11];
+    currentHandler = [MEMORY[0x1E696AD98] numberWithInteger:index];
+    [(NSMutableDictionary *)v16 setObject:v15 forKeyedSubscript:currentHandler];
   }
 
   return v15;
 }
 
-- (id)addStateTransitionFrom:(id)a3 to:(id)a4 event:(int64_t)a5 label:(id)a6
+- (id)addStateTransitionFrom:(id)from to:(id)to event:(int64_t)event label:(id)label
 {
   v44 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  fromCopy = from;
+  toCopy = to;
+  labelCopy = label;
   if (self->_currentState)
   {
     [HKStateMachine addStateTransitionFrom:to:event:label:];
   }
 
   statesByIndex = self->_statesByIndex;
-  v14 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v10, "index")}];
+  v14 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(fromCopy, "index")}];
   v15 = [(NSMutableDictionary *)statesByIndex objectForKeyedSubscript:v14];
 
-  if (v15 != v10)
+  if (v15 != fromCopy)
   {
-    [HKStateMachine addStateTransitionFrom:a2 to:self event:v10 label:?];
+    [HKStateMachine addStateTransitionFrom:a2 to:self event:fromCopy label:?];
   }
 
-  v37 = v12;
+  v37 = labelCopy;
   v16 = self->_statesByIndex;
-  v17 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v11, "index")}];
+  v17 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(toCopy, "index")}];
   v18 = [(NSMutableDictionary *)v16 objectForKeyedSubscript:v17];
 
-  if (v18 != v11)
+  if (v18 != toCopy)
   {
-    [HKStateMachine addStateTransitionFrom:a2 to:self event:v11 label:?];
+    [HKStateMachine addStateTransitionFrom:a2 to:self event:toCopy label:?];
   }
 
   v35 = a2;
-  v36 = self;
+  selfCopy = self;
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
@@ -161,29 +161,29 @@
       }
 
       v24 = *(*(&v39 + 1) + 8 * i);
-      v25 = [v24 fromState];
-      v26 = [v25 index];
-      if (v26 != [v10 index])
+      fromState = [v24 fromState];
+      index = [fromState index];
+      if (index != [fromCopy index])
       {
         goto LABEL_17;
       }
 
-      v27 = [v24 toState];
-      v28 = [v27 index];
-      if (v28 != [v11 index])
+      toState = [v24 toState];
+      index2 = [toState index];
+      if (index2 != [toCopy index])
       {
 
 LABEL_17:
         continue;
       }
 
-      v29 = [v24 event];
+      event = [v24 event];
 
-      if (v29 == a5)
+      if (event == event)
       {
-        v30 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v31 = v37;
-        [v30 handleFailureInMethod:v35 object:v36 file:v37 lineNumber:v10 description:{v11, v24}];
+        [currentHandler handleFailureInMethod:v35 object:selfCopy file:v37 lineNumber:fromCopy description:{toCopy, v24}];
 
         v32 = 0;
         goto LABEL_21;
@@ -197,8 +197,8 @@ LABEL_17:
 LABEL_20:
 
   v31 = v37;
-  v32 = [[HKStateMachineTransition alloc] initWithEvent:a5 label:v37 from:v10 to:v11];
-  [(NSMutableArray *)v36->_transitions addObject:v32];
+  v32 = [[HKStateMachineTransition alloc] initWithEvent:event label:v37 from:fromCopy to:toCopy];
+  [(NSMutableArray *)selfCopy->_transitions addObject:v32];
 LABEL_21:
 
   v33 = *MEMORY[0x1E69E9840];
@@ -206,29 +206,29 @@ LABEL_21:
   return v32;
 }
 
-- (id)stateWithIndex:(int64_t)a3
+- (id)stateWithIndex:(int64_t)index
 {
   statesByIndex = self->_statesByIndex;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:index];
   v5 = [(NSMutableDictionary *)statesByIndex objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (void)enterAtState:(int64_t)a3
+- (void)enterAtState:(int64_t)state
 {
-  v4 = self;
+  selfCopy2 = self;
   v55 = *MEMORY[0x1E69E9840];
   p_currentState = &self->_currentState;
   if (self->_currentState)
   {
     [HKStateMachine enterAtState:];
-    v4 = self;
+    selfCopy2 = self;
   }
 
-  p_isa = &v4->super.isa;
-  statesByIndex = v4->_statesByIndex;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:{a3, p_currentState}];
+  p_isa = &selfCopy2->super.isa;
+  statesByIndex = selfCopy2->_statesByIndex;
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:{state, p_currentState}];
   v38 = [(NSMutableDictionary *)statesByIndex objectForKeyedSubscript:v6];
 
   if (!v38)
@@ -280,8 +280,8 @@ LABEL_21:
               }
 
               v16 = *(*(&v45 + 1) + 8 * i);
-              v17 = [v16 fromState];
-              v18 = v17 == v9;
+              fromState = [v16 fromState];
+              v18 = fromState == v9;
 
               if (v18)
               {
@@ -289,8 +289,8 @@ LABEL_21:
                 [v11 setObject:v16 forKeyedSubscript:v19];
               }
 
-              v20 = [v16 toState];
-              v21 = v20 == v9;
+              toState = [v16 toState];
+              v21 = toState == v9;
 
               if (v21)
               {
@@ -355,19 +355,19 @@ LABEL_21:
   v34 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enqueueEvent:(int64_t)a3 date:(id)a4 error:(id)a5 completion:(id)a6
+- (void)enqueueEvent:(int64_t)event date:(id)date error:(id)error completion:(id)completion
 {
   if (self->_isProcessingEvent)
   {
-    v10 = a6;
-    v11 = a5;
-    v12 = a4;
-    v18 = objc_alloc_init(HKStateMachinePendingEvent);
-    [(HKStateMachinePendingEvent *)v18 setEvent:a3];
-    [(HKStateMachinePendingEvent *)v18 setDate:v12];
+    completionCopy = completion;
+    errorCopy = error;
+    dateCopy = date;
+    dateCopy2 = objc_alloc_init(HKStateMachinePendingEvent);
+    [(HKStateMachinePendingEvent *)dateCopy2 setEvent:event];
+    [(HKStateMachinePendingEvent *)dateCopy2 setDate:dateCopy];
 
-    [(HKStateMachinePendingEvent *)v18 setError:v11];
-    [(HKStateMachinePendingEvent *)v18 setCompletion:v10];
+    [(HKStateMachinePendingEvent *)dateCopy2 setError:errorCopy];
+    [(HKStateMachinePendingEvent *)dateCopy2 setCompletion:completionCopy];
 
     pendingEvents = self->_pendingEvents;
     if (!pendingEvents)
@@ -379,23 +379,23 @@ LABEL_21:
       pendingEvents = self->_pendingEvents;
     }
 
-    [(NSMutableArray *)pendingEvents addObject:v18];
+    [(NSMutableArray *)pendingEvents addObject:dateCopy2];
   }
 
   else
   {
-    v16 = a6;
-    v17 = a5;
-    v18 = a4;
-    [HKStateMachine _handleEvent:"_handleEvent:date:error:completion:" date:a3 error:? completion:?];
+    completionCopy2 = completion;
+    errorCopy2 = error;
+    dateCopy2 = date;
+    [HKStateMachine _handleEvent:"_handleEvent:date:error:completion:" date:event error:? completion:?];
   }
 }
 
-- (void)_handleEvent:(int64_t)a3 date:(id)a4 error:(id)a5 completion:(id)a6
+- (void)_handleEvent:(int64_t)event date:(id)date error:(id)error completion:(id)completion
 {
-  v45 = a4;
-  v11 = a5;
-  v12 = a6;
+  dateCopy = date;
+  errorCopy = error;
+  completionCopy = completion;
   p_currentState = &self->_currentState;
   if (!self->_currentState)
   {
@@ -403,14 +403,14 @@ LABEL_21:
   }
 
   objc_copyWeak(&to, &self->_delegate);
-  v14 = [(HKStateMachineState *)self->_currentState outgoingTransitions];
-  v15 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v16 = [v14 objectForKeyedSubscript:v15];
+  outgoingTransitions = [(HKStateMachineState *)self->_currentState outgoingTransitions];
+  v15 = [MEMORY[0x1E696AD98] numberWithInteger:event];
+  v16 = [outgoingTransitions objectForKeyedSubscript:v15];
 
   if (v16)
   {
     self->_isProcessingEvent = 1;
-    v17 = [v16 toState];
+    toState = [v16 toState];
     v18 = *p_currentState;
     v19 = objc_loadWeakRetained(&to);
     v20 = objc_opt_respondsToSelector();
@@ -418,7 +418,7 @@ LABEL_21:
     if (v20)
     {
       v21 = objc_loadWeakRetained(&to);
-      [v21 stateMachine:self willLeaveState:v18 date:v45 error:v11];
+      [v21 stateMachine:self willLeaveState:v18 date:dateCopy error:errorCopy];
     }
 
     v22 = objc_loadWeakRetained(&to);
@@ -427,7 +427,7 @@ LABEL_21:
     if (v23)
     {
       v24 = objc_loadWeakRetained(&to);
-      [v24 stateMachine:self willEnterState:v17 date:v45 error:v11];
+      [v24 stateMachine:self willEnterState:toState date:dateCopy error:errorCopy];
     }
 
     v25 = objc_loadWeakRetained(&to);
@@ -439,14 +439,14 @@ LABEL_21:
       [v27 stateMachine:self persistTransition:v16];
     }
 
-    objc_storeStrong(&self->_currentState, v17);
+    objc_storeStrong(&self->_currentState, toState);
     v28 = objc_loadWeakRetained(&to);
     v29 = objc_opt_respondsToSelector();
 
     if (v29)
     {
       v30 = objc_loadWeakRetained(&to);
-      [v30 stateMachine:self didEnterState:v17 date:v45 error:v11];
+      [v30 stateMachine:self didEnterState:toState date:dateCopy error:errorCopy];
     }
 
     v31 = objc_loadWeakRetained(&to);
@@ -455,7 +455,7 @@ LABEL_21:
     if (v32)
     {
       v33 = objc_loadWeakRetained(&to);
-      [v33 stateMachine:self didLeaveState:v18 date:v45 error:v11];
+      [v33 stateMachine:self didLeaveState:v18 date:dateCopy error:errorCopy];
     }
 
     v34 = objc_loadWeakRetained(&to);
@@ -464,10 +464,10 @@ LABEL_21:
     if (v35)
     {
       v36 = objc_loadWeakRetained(&to);
-      [v36 stateMachine:self didTransition:v16 fromState:v18 toState:v17 date:v45 error:v11];
+      [v36 stateMachine:self didTransition:v16 fromState:v18 toState:toState date:dateCopy error:errorCopy];
     }
 
-    v12[2](v12, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
     self->_isProcessingEvent = 0;
     [(HKStateMachine *)self _dequeueEvent];
   }
@@ -480,15 +480,15 @@ LABEL_21:
     if (v38)
     {
       v39 = objc_loadWeakRetained(&to);
-      [v39 stateMachine:self didIgnoreEvent:a3 state:self->_currentState];
+      [v39 stateMachine:self didIgnoreEvent:event state:self->_currentState];
     }
 
     v40 = MEMORY[0x1E696ABC0];
     v41 = objc_opt_class();
     v42 = *p_currentState;
-    v43 = [(HKStateMachineState *)*p_currentState outgoingTransitions];
-    v44 = [v40 hk_errorForInvalidArgument:@"@" class:v41 selector:a2 format:{@"Unable to transition to the desired state from the %@ state (event %ld). Allowed transitions from the current state are: %@", v42, a3, v43}];
-    (v12)[2](v12, 0, v44);
+    outgoingTransitions2 = [(HKStateMachineState *)*p_currentState outgoingTransitions];
+    v44 = [v40 hk_errorForInvalidArgument:@"@" class:v41 selector:a2 format:{@"Unable to transition to the desired state from the %@ state (event %ld). Allowed transitions from the current state are: %@", v42, event, outgoingTransitions2}];
+    (completionCopy)[2](completionCopy, 0, v44);
 
     [(HKStateMachine *)self _dequeueEvent];
   }
@@ -498,18 +498,18 @@ LABEL_21:
 
 - (void)_dequeueEvent
 {
-  v3 = [(NSMutableArray *)self->_pendingEvents firstObject];
-  if (v3)
+  firstObject = [(NSMutableArray *)self->_pendingEvents firstObject];
+  if (firstObject)
   {
-    v8 = v3;
+    v8 = firstObject;
     [(NSMutableArray *)self->_pendingEvents removeObjectAtIndex:0];
-    v4 = [v8 event];
-    v5 = [v8 date];
-    v6 = [v8 error];
-    v7 = [v8 completion];
-    [(HKStateMachine *)self _handleEvent:v4 date:v5 error:v6 completion:v7];
+    event = [v8 event];
+    date = [v8 date];
+    error = [v8 error];
+    completion = [v8 completion];
+    [(HKStateMachine *)self _handleEvent:event date:date error:error completion:completion];
 
-    v3 = v8;
+    firstObject = v8;
   }
 }
 
@@ -517,8 +517,8 @@ LABEL_21:
 {
   v42 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v4 = [(NSMutableDictionary *)self->_statesByIndex allValues];
-  v5 = [v4 sortedArrayUsingComparator:&__block_literal_global_51];
+  allValues = [(NSMutableDictionary *)self->_statesByIndex allValues];
+  v5 = [allValues sortedArrayUsingComparator:&__block_literal_global_51];
 
   v6 = [(NSString *)self->_name stringByReplacingOccurrencesOfString:@" " withString:@"_"];
   v7 = v6;
@@ -532,9 +532,9 @@ LABEL_21:
     v8 = @"state_machine";
   }
 
-  v9 = [(HKStateMachineState *)self->_currentState label];
+  label = [(HKStateMachineState *)self->_currentState label];
   v31 = v3;
-  [v3 appendFormat:@"digraph %@ {\n   rankdir=LR;\n   node [shape=doublecircle width=1]; %@\n   node [shape=circle width=1];\n", v8, v9];
+  [v3 appendFormat:@"digraph %@ {\n   rankdir=LR;\n   node [shape=doublecircle width=1]; %@\n   node [shape=circle width=1];\n", v8, label];
 
   v38 = 0u;
   v39 = 0u;
@@ -557,9 +557,9 @@ LABEL_21:
 
         v30 = v10;
         v11 = *(*(&v36 + 1) + 8 * v10);
-        v12 = [v11 outgoingTransitions];
-        v13 = [v12 allValues];
-        v14 = [v13 sortedArrayUsingComparator:&__block_literal_global_170];
+        outgoingTransitions = [v11 outgoingTransitions];
+        allValues2 = [outgoingTransitions allValues];
+        v14 = [allValues2 sortedArrayUsingComparator:&__block_literal_global_170];
 
         v34 = 0u;
         v35 = 0u;
@@ -581,11 +581,11 @@ LABEL_21:
               }
 
               v20 = *(*(&v32 + 1) + 8 * i);
-              v21 = [v11 label];
-              v22 = [v20 toState];
-              v23 = [v22 label];
-              v24 = [v20 label];
-              [v31 appendFormat:@"   %@ -> %@ [ label = %@ (%ld) ];\n", v21, v23, v24, objc_msgSend(v20, "event")];
+              label2 = [v11 label];
+              toState = [v20 toState];
+              label3 = [toState label];
+              label4 = [v20 label];
+              [v31 appendFormat:@"   %@ -> %@ [ label = %@ (%ld) ];\n", label2, label3, label4, objc_msgSend(v20, "event")];
             }
 
             v17 = [v15 countByEnumeratingWithState:&v32 objects:v40 count:16];

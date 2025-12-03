@@ -1,11 +1,11 @@
 @interface HMDUserActivityHomeAwayReport
-+ (id)reportFromMKFUserActivityStatus:(id)a3 withUser:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (HMDUserActivityHomeAwayReport)initWithUser:(id)a3 state:(unint64_t)a4 fromDevice:(id)a5 reason:(unint64_t)a6 changedTimestamp:(id)a7 lastUpdatedTimeStamp:(id)a8;
++ (id)reportFromMKFUserActivityStatus:(id)status withUser:(id)user;
+- (BOOL)isEqual:(id)equal;
+- (HMDUserActivityHomeAwayReport)initWithUser:(id)user state:(unint64_t)state fromDevice:(id)device reason:(unint64_t)reason changedTimestamp:(id)timestamp lastUpdatedTimeStamp:(id)stamp;
 - (id)attributeDescriptions;
-- (id)copyReportWithChangedTimestamp:(id)a3;
-- (id)copyReportWithLastUpdateTimestamp:(id)a3 reason:(unint64_t)a4;
-- (id)initFromMessagePayload:(id)a3 withUser:(id)a4 sourceDevice:(id)a5;
+- (id)copyReportWithChangedTimestamp:(id)timestamp;
+- (id)copyReportWithLastUpdateTimestamp:(id)timestamp reason:(unint64_t)reason;
+- (id)initFromMessagePayload:(id)payload withUser:(id)user sourceDevice:(id)device;
 - (id)serializedRemoteMessagePayload;
 @end
 
@@ -16,28 +16,28 @@
   v19[2] = *MEMORY[0x277D85DE8];
   v18.receiver = self;
   v18.super_class = HMDUserActivityHomeAwayReport;
-  v3 = [(HMDUserActivityReport *)&v18 attributeDescriptions];
-  v4 = [v3 mutableCopy];
+  attributeDescriptions = [(HMDUserActivityReport *)&v18 attributeDescriptions];
+  v4 = [attributeDescriptions mutableCopy];
 
   v5 = objc_alloc(MEMORY[0x277D0F778]);
-  v6 = [(HMDUserActivityHomeAwayReport *)self state];
-  if (v6 > 3)
+  state = [(HMDUserActivityHomeAwayReport *)self state];
+  if (state > 3)
   {
     v7 = @"Undefined";
   }
 
   else
   {
-    v7 = off_278672FD8[v6];
+    v7 = off_278672FD8[state];
   }
 
   v8 = v7;
   v9 = [v5 initWithName:@"state" value:v8];
   v19[0] = v9;
   v10 = objc_alloc(MEMORY[0x277D0F778]);
-  v11 = [(HMDUserActivityHomeAwayReport *)self sourceDevice];
-  v12 = [v11 shortDescription];
-  v13 = [v10 initWithName:@"device" value:v12];
+  sourceDevice = [(HMDUserActivityHomeAwayReport *)self sourceDevice];
+  shortDescription = [sourceDevice shortDescription];
+  v13 = [v10 initWithName:@"device" value:shortDescription];
   v19[1] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:2];
   [v4 addObjectsFromArray:v14];
@@ -48,29 +48,29 @@
   return v15;
 }
 
-- (id)copyReportWithLastUpdateTimestamp:(id)a3 reason:(unint64_t)a4
+- (id)copyReportWithLastUpdateTimestamp:(id)timestamp reason:(unint64_t)reason
 {
-  v6 = a3;
+  timestampCopy = timestamp;
   v7 = [HMDUserActivityHomeAwayReport alloc];
-  v8 = [(HMDUserActivityReport *)self user];
-  v9 = [(HMDUserActivityHomeAwayReport *)self state];
-  v10 = [(HMDUserActivityHomeAwayReport *)self sourceDevice];
-  v11 = [(HMDUserActivityReport *)self changedTimestamp];
-  v12 = [(HMDUserActivityHomeAwayReport *)v7 initWithUser:v8 state:v9 fromDevice:v10 reason:a4 changedTimestamp:v11 lastUpdatedTimeStamp:v6];
+  user = [(HMDUserActivityReport *)self user];
+  state = [(HMDUserActivityHomeAwayReport *)self state];
+  sourceDevice = [(HMDUserActivityHomeAwayReport *)self sourceDevice];
+  changedTimestamp = [(HMDUserActivityReport *)self changedTimestamp];
+  v12 = [(HMDUserActivityHomeAwayReport *)v7 initWithUser:user state:state fromDevice:sourceDevice reason:reason changedTimestamp:changedTimestamp lastUpdatedTimeStamp:timestampCopy];
 
   return v12;
 }
 
-- (id)copyReportWithChangedTimestamp:(id)a3
+- (id)copyReportWithChangedTimestamp:(id)timestamp
 {
-  v4 = a3;
+  timestampCopy = timestamp;
   v5 = [HMDUserActivityHomeAwayReport alloc];
-  v6 = [(HMDUserActivityReport *)self user];
-  v7 = [(HMDUserActivityHomeAwayReport *)self state];
-  v8 = [(HMDUserActivityHomeAwayReport *)self sourceDevice];
-  v9 = [(HMDUserActivityReport *)self reason];
-  v10 = [(HMDUserActivityReport *)self lastUpdateTimestamp];
-  v11 = [(HMDUserActivityHomeAwayReport *)v5 initWithUser:v6 state:v7 fromDevice:v8 reason:v9 changedTimestamp:v4 lastUpdatedTimeStamp:v10];
+  user = [(HMDUserActivityReport *)self user];
+  state = [(HMDUserActivityHomeAwayReport *)self state];
+  sourceDevice = [(HMDUserActivityHomeAwayReport *)self sourceDevice];
+  reason = [(HMDUserActivityReport *)self reason];
+  lastUpdateTimestamp = [(HMDUserActivityReport *)self lastUpdateTimestamp];
+  v11 = [(HMDUserActivityHomeAwayReport *)v5 initWithUser:user state:state fromDevice:sourceDevice reason:reason changedTimestamp:timestampCopy lastUpdatedTimeStamp:lastUpdateTimestamp];
 
   return v11;
 }
@@ -79,8 +79,8 @@
 {
   v8.receiver = self;
   v8.super_class = HMDUserActivityHomeAwayReport;
-  v3 = [(HMDUserActivityReport *)&v8 serializedRemoteMessagePayload];
-  v4 = [v3 mutableCopy];
+  serializedRemoteMessagePayload = [(HMDUserActivityReport *)&v8 serializedRemoteMessagePayload];
+  v4 = [serializedRemoteMessagePayload mutableCopy];
 
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDUserActivityHomeAwayReport state](self, "state")}];
   [v4 setObject:v5 forKeyedSubscript:@"HAS.HA.S"];
@@ -90,13 +90,13 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -107,8 +107,8 @@
   v6 = v5;
   if (v6 && (v10.receiver = self, v10.super_class = HMDUserActivityHomeAwayReport, [(HMDUserActivityReport *)&v10 isEqual:v6]))
   {
-    v7 = [(HMDUserActivityHomeAwayReport *)self state];
-    v8 = v7 == [v6 state];
+    state = [(HMDUserActivityHomeAwayReport *)self state];
+    v8 = state == [v6 state];
   }
 
   else
@@ -119,32 +119,32 @@
   return v8;
 }
 
-- (id)initFromMessagePayload:(id)a3 withUser:(id)a4 sourceDevice:(id)a5
+- (id)initFromMessagePayload:(id)payload withUser:(id)user sourceDevice:(id)device
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 hmf_numberForKey:@"HAS.HA.S"];
+  payloadCopy = payload;
+  userCopy = user;
+  deviceCopy = device;
+  v11 = [payloadCopy hmf_numberForKey:@"HAS.HA.S"];
   if (v11)
   {
     v20.receiver = self;
     v20.super_class = HMDUserActivityHomeAwayReport;
-    v12 = [(HMDUserActivityReport *)&v20 initFromMessagePayload:v8 withUser:v9];
+    v12 = [(HMDUserActivityReport *)&v20 initFromMessagePayload:payloadCopy withUser:userCopy];
     if (v12)
     {
       *(v12 + 5) = [v11 unsignedIntValue];
-      objc_storeStrong(v12 + 6, a5);
+      objc_storeStrong(v12 + 6, device);
     }
 
-    v13 = v12;
-    v14 = v13;
+    selfCopy = v12;
+    v14 = selfCopy;
   }
 
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
@@ -162,39 +162,39 @@
   return v14;
 }
 
-- (HMDUserActivityHomeAwayReport)initWithUser:(id)a3 state:(unint64_t)a4 fromDevice:(id)a5 reason:(unint64_t)a6 changedTimestamp:(id)a7 lastUpdatedTimeStamp:(id)a8
+- (HMDUserActivityHomeAwayReport)initWithUser:(id)user state:(unint64_t)state fromDevice:(id)device reason:(unint64_t)reason changedTimestamp:(id)timestamp lastUpdatedTimeStamp:(id)stamp
 {
-  v15 = a5;
+  deviceCopy = device;
   v19.receiver = self;
   v19.super_class = HMDUserActivityHomeAwayReport;
-  v16 = [(HMDUserActivityReport *)&v19 initWithUser:a3 withReason:a6 changedTimestamp:a7 lastUpdateTimestamp:a8];
+  v16 = [(HMDUserActivityReport *)&v19 initWithUser:user withReason:reason changedTimestamp:timestamp lastUpdateTimestamp:stamp];
   v17 = v16;
   if (v16)
   {
-    v16->_state = a4;
-    objc_storeStrong(&v16->_sourceDevice, a5);
+    v16->_state = state;
+    objc_storeStrong(&v16->_sourceDevice, device);
   }
 
   return v17;
 }
 
-+ (id)reportFromMKFUserActivityStatus:(id)a3 withUser:(id)a4
++ (id)reportFromMKFUserActivityStatus:(id)status withUser:(id)user
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 type];
-  v8 = [v7 unsignedIntValue];
+  statusCopy = status;
+  userCopy = user;
+  type = [statusCopy type];
+  unsignedIntValue = [type unsignedIntValue];
 
-  if (v8 == 1)
+  if (unsignedIntValue == 1)
   {
     v9 = [HMDUserActivityHomeAwayReport alloc];
-    v10 = [v5 state];
-    v11 = [v10 unsignedIntegerValue];
-    v12 = [v5 statusChangeReason];
-    v13 = [v12 unsignedIntegerValue];
-    v14 = [v5 statusChangedTimestamp];
-    v15 = [v5 lastReportTimestamp];
-    v16 = [(HMDUserActivityHomeAwayReport *)v9 initWithUser:v6 state:v11 fromDevice:0 reason:v13 changedTimestamp:v14 lastUpdatedTimeStamp:v15];
+    state = [statusCopy state];
+    unsignedIntegerValue = [state unsignedIntegerValue];
+    statusChangeReason = [statusCopy statusChangeReason];
+    unsignedIntegerValue2 = [statusChangeReason unsignedIntegerValue];
+    statusChangedTimestamp = [statusCopy statusChangedTimestamp];
+    lastReportTimestamp = [statusCopy lastReportTimestamp];
+    v16 = [(HMDUserActivityHomeAwayReport *)v9 initWithUser:userCopy state:unsignedIntegerValue fromDevice:0 reason:unsignedIntegerValue2 changedTimestamp:statusChangedTimestamp lastUpdatedTimeStamp:lastReportTimestamp];
 
     return v16;
   }

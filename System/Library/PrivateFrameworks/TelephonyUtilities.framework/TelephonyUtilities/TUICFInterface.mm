@@ -1,14 +1,14 @@
 @interface TUICFInterface
-+ (id)allowCallForDestinationID:(id)a3 providerIdentifier:(id)a4;
-+ (void)allowCallForDestinationID:(id)a3 providerIdentifier:(id)a4 queue:(id)a5 completionHandler:(id)a6;
++ (id)allowCallForDestinationID:(id)d providerIdentifier:(id)identifier;
++ (void)allowCallForDestinationID:(id)d providerIdentifier:(id)identifier queue:(id)queue completionHandler:(id)handler;
 @end
 
 @implementation TUICFInterface
 
-+ (id)allowCallForDestinationID:(id)a3 providerIdentifier:(id)a4
++ (id)allowCallForDestinationID:(id)d providerIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  dCopy = d;
   v8 = objc_alloc_init(TUICFQueryResult);
   v9 = dispatch_semaphore_create(0);
   v18[0] = MEMORY[0x1E69E9820];
@@ -19,7 +19,7 @@
   v19 = v10;
   v11 = v9;
   v20 = v11;
-  [a1 allowCallForDestinationID:v7 providerIdentifier:v6 queue:0 completionHandler:v18];
+  [self allowCallForDestinationID:dCopy providerIdentifier:identifierCopy queue:0 completionHandler:v18];
 
   v12 = dispatch_time(0, 2000000000);
   if (dispatch_semaphore_wait(v11, v12))
@@ -50,10 +50,10 @@ intptr_t __63__TUICFInterface_allowCallForDestinationID_providerIdentifier___blo
   return dispatch_semaphore_signal(v5);
 }
 
-+ (void)allowCallForDestinationID:(id)a3 providerIdentifier:(id)a4 queue:(id)a5 completionHandler:(id)a6
++ (void)allowCallForDestinationID:(id)d providerIdentifier:(id)identifier queue:(id)queue completionHandler:(id)handler
 {
-  v7 = a6;
-  v6 = v7;
+  handlerCopy = handler;
+  v6 = handlerCopy;
   ICFCallProviderShouldAllowIncomingCallWithQueue();
 }
 

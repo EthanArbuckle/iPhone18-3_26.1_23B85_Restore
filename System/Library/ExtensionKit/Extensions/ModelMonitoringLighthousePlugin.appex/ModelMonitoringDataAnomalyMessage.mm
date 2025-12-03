@@ -1,17 +1,17 @@
 @interface ModelMonitoringDataAnomalyMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAnomalyType:(id)a3;
+- (int)StringAsAnomalyType:(id)type;
 - (int)anomalyType;
 - (unint64_t)hash;
-- (void)addDataStates:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasOccuranceCount:(BOOL)a3;
-- (void)setHasTotalEventCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addDataStates:(id)states;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasOccuranceCount:(BOOL)count;
+- (void)setHasTotalEventCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ModelMonitoringDataAnomalyMessage
@@ -29,35 +29,35 @@
   }
 }
 
-- (int)StringAsAnomalyType:(id)a3
+- (int)StringAsAnomalyType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"MODEL_SCORE_DISTRIBUTION_IN_EVENT"])
+  else if ([typeCopy isEqualToString:@"MODEL_SCORE_DISTRIBUTION_IN_EVENT"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"MODEL_SCORE_MEAN_LOCAL"])
+  else if ([typeCopy isEqualToString:@"MODEL_SCORE_MEAN_LOCAL"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"MODEL_SCORE_ENTROPY_LOCAL"])
+  else if ([typeCopy isEqualToString:@"MODEL_SCORE_ENTROPY_LOCAL"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"MODEL_SCORE_MEAN_GLOBAL"])
+  else if ([typeCopy isEqualToString:@"MODEL_SCORE_MEAN_GLOBAL"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"MODEL_SCORE_ENTROPY_GLOBAL"])
+  else if ([typeCopy isEqualToString:@"MODEL_SCORE_ENTROPY_GLOBAL"])
   {
     v4 = 5;
   }
@@ -70,9 +70,9 @@
   return v4;
 }
 
-- (void)setHasOccuranceCount:(BOOL)a3
+- (void)setHasOccuranceCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -85,9 +85,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasTotalEventCount:(BOOL)a3
+- (void)setHasTotalEventCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -100,22 +100,22 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addDataStates:(id)a3
+- (void)addDataStates:(id)states
 {
-  v4 = a3;
+  statesCopy = states;
   dataStates = self->_dataStates;
-  v8 = v4;
+  v8 = statesCopy;
   if (!dataStates)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_dataStates;
     self->_dataStates = v6;
 
-    v4 = v8;
+    statesCopy = v8;
     dataStates = self->_dataStates;
   }
 
-  [(NSMutableArray *)dataStates addObject:v4];
+  [(NSMutableArray *)dataStates addObject:statesCopy];
 }
 
 - (id)description
@@ -123,8 +123,8 @@
   v7.receiver = self;
   v7.super_class = ModelMonitoringDataAnomalyMessage;
   v3 = [(ModelMonitoringDataAnomalyMessage *)&v7 description];
-  v4 = [(ModelMonitoringDataAnomalyMessage *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(ModelMonitoringDataAnomalyMessage *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -168,8 +168,8 @@
   trialIdentifier = self->_trialIdentifier;
   if (trialIdentifier)
   {
-    v10 = [(ModelMonitoringDataTrialIdentifier *)trialIdentifier dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"trialIdentifier"];
+    dictionaryRepresentation = [(ModelMonitoringDataTrialIdentifier *)trialIdentifier dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"trialIdentifier"];
   }
 
   if ([(NSMutableArray *)self->_dataStates count])
@@ -194,8 +194,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation2 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation2];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -210,9 +210,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -281,14 +281,14 @@ LABEL_5:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[2] = self->_anomalyType;
-    *(v4 + 40) |= 1u;
+    toCopy[2] = self->_anomalyType;
+    *(toCopy + 40) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -307,29 +307,29 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[6] = self->_occuranceCount;
-  *(v4 + 40) |= 2u;
+  toCopy[6] = self->_occuranceCount;
+  *(toCopy + 40) |= 2u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
-    v4[7] = self->_totalEventCount;
-    *(v4 + 40) |= 4u;
+    toCopy[7] = self->_totalEventCount;
+    *(toCopy + 40) |= 4u;
   }
 
 LABEL_5:
-  v10 = v4;
+  v10 = toCopy;
   if (self->_trialIdentifier)
   {
-    [v4 setTrialIdentifier:?];
+    [toCopy setTrialIdentifier:?];
   }
 
   if ([(ModelMonitoringDataAnomalyMessage *)self dataStatesCount])
   {
     [v10 clearDataStates];
-    v6 = [(ModelMonitoringDataAnomalyMessage *)self dataStatesCount];
-    if (v6)
+    dataStatesCount = [(ModelMonitoringDataAnomalyMessage *)self dataStatesCount];
+    if (dataStatesCount)
     {
-      v7 = v6;
+      v7 = dataStatesCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(ModelMonitoringDataAnomalyMessage *)self dataStatesAtIndex:i];
@@ -339,9 +339,9 @@ LABEL_5:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -376,7 +376,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(ModelMonitoringDataTrialIdentifier *)self->_trialIdentifier copyWithZone:a3];
+  v8 = [(ModelMonitoringDataTrialIdentifier *)self->_trialIdentifier copyWithZone:zone];
   v9 = v6[4];
   v6[4] = v8;
 
@@ -399,7 +399,7 @@ LABEL_5:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v17 + 1) + 8 * i) copyWithZone:{a3, v17}];
+        v15 = [*(*(&v17 + 1) + 8 * i) copyWithZone:{zone, v17}];
         [v6 addDataStates:v15];
       }
 
@@ -412,24 +412,24 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(equalCopy + 40);
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_anomalyType != *(v4 + 2))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_anomalyType != *(equalCopy + 2))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_21:
     v8 = 0;
@@ -438,38 +438,38 @@ LABEL_21:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_occuranceCount != *(v4 + 6))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_occuranceCount != *(equalCopy + 6))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
     goto LABEL_21;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0 || self->_totalEventCount != *(v4 + 7))
+    if ((*(equalCopy + 40) & 4) == 0 || self->_totalEventCount != *(equalCopy + 7))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 40) & 4) != 0)
+  else if ((*(equalCopy + 40) & 4) != 0)
   {
     goto LABEL_21;
   }
 
   trialIdentifier = self->_trialIdentifier;
-  if (trialIdentifier | *(v4 + 4) && ![(ModelMonitoringDataTrialIdentifier *)trialIdentifier isEqual:?])
+  if (trialIdentifier | *(equalCopy + 4) && ![(ModelMonitoringDataTrialIdentifier *)trialIdentifier isEqual:?])
   {
     goto LABEL_21;
   }
 
   dataStates = self->_dataStates;
-  if (dataStates | *(v4 + 2))
+  if (dataStates | *(equalCopy + 2))
   {
     v8 = [(NSMutableArray *)dataStates isEqual:?];
   }
@@ -526,16 +526,16 @@ LABEL_8:
   return v6 ^ [(NSMutableArray *)self->_dataStates hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 40);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 40);
   if (v6)
   {
-    self->_anomalyType = v4[2];
+    self->_anomalyType = fromCopy[2];
     *&self->_has |= 1u;
-    v6 = *(v4 + 40);
+    v6 = *(fromCopy + 40);
     if ((v6 & 2) == 0)
     {
 LABEL_3:
@@ -548,17 +548,17 @@ LABEL_3:
     }
   }
 
-  else if ((v4[10] & 2) == 0)
+  else if ((fromCopy[10] & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_occuranceCount = v4[6];
+  self->_occuranceCount = fromCopy[6];
   *&self->_has |= 2u;
-  if ((v4[10] & 4) != 0)
+  if ((fromCopy[10] & 4) != 0)
   {
 LABEL_4:
-    self->_totalEventCount = v4[7];
+    self->_totalEventCount = fromCopy[7];
     *&self->_has |= 4u;
   }
 

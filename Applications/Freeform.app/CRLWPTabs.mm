@@ -1,15 +1,15 @@
 @interface CRLWPTabs
 + (id)tabs;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CRLWPTabs)init;
-- (CRLWPTabs)initWithTabs:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CRLWPTabs)initWithTabs:(id)tabs;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)tabAfterPosition:(double)a3;
-- (id)tabAtPosition:(double)a3;
-- (unint64_t)indexForTabWithPosition:(double)a3 alignment:(int)a4 leader:(id)a5;
-- (void)insertTab:(id)a3;
-- (void)setPosition:(double)a3 forTab:(id)a4;
+- (id)tabAfterPosition:(double)position;
+- (id)tabAtPosition:(double)position;
+- (unint64_t)indexForTabWithPosition:(double)position alignment:(int)alignment leader:(id)leader;
+- (void)insertTab:(id)tab;
+- (void)setPosition:(double)position forTab:(id)tab;
 @end
 
 @implementation CRLWPTabs
@@ -36,15 +36,15 @@
   return v2;
 }
 
-- (CRLWPTabs)initWithTabs:(id)a3
+- (CRLWPTabs)initWithTabs:(id)tabs
 {
-  v4 = a3;
+  tabsCopy = tabs;
   v9.receiver = self;
   v9.super_class = CRLWPTabs;
   v5 = [(CRLWPTabs *)&v9 init];
   if (v5)
   {
-    v6 = [[NSMutableArray alloc] initWithArray:v4[1] copyItems:1];
+    v6 = [[NSMutableArray alloc] initWithArray:tabsCopy[1] copyItems:1];
     tabs = v5->_tabs;
     v5->_tabs = v6;
   }
@@ -52,14 +52,14 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithTabs:self];
 }
 
-- (id)tabAtPosition:(double)a3
+- (id)tabAtPosition:(double)position
 {
   v12 = 0u;
   v13 = 0u;
@@ -81,7 +81,7 @@
 
         v8 = *(*(&v12 + 1) + 8 * i);
         [v8 position];
-        if (v9 == a3 || vabdd_f64(a3, v9) < fabs(v9 * 0.000000999999997))
+        if (v9 == position || vabdd_f64(position, v9) < fabs(v9 * 0.000000999999997))
         {
           v10 = v8;
           goto LABEL_13;
@@ -109,7 +109,7 @@ LABEL_13:
   return v10;
 }
 
-- (id)tabAfterPosition:(double)a3
+- (id)tabAfterPosition:(double)position
 {
   v12 = 0u;
   v13 = 0u;
@@ -131,8 +131,8 @@ LABEL_13:
 
         v8 = *(*(&v12 + 1) + 8 * i);
         [v8 position];
-        v10 = v9 <= a3 || v9 == a3;
-        if (!v10 && vabdd_f64(a3, v9) >= 0.00999999978)
+        v10 = v9 <= position || v9 == position;
+        if (!v10 && vabdd_f64(position, v9) >= 0.00999999978)
         {
           v5 = v8;
           goto LABEL_15;
@@ -154,13 +154,13 @@ LABEL_15:
   return v5;
 }
 
-- (void)insertTab:(id)a3
+- (void)insertTab:(id)tab
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  tabCopy = tab;
+  v5 = tabCopy;
+  if (tabCopy)
   {
-    [v4 position];
+    [tabCopy position];
     v7 = v6;
     v17 = 0u;
     v18 = 0u;
@@ -212,38 +212,38 @@ LABEL_12:
   }
 }
 
-- (void)setPosition:(double)a3 forTab:(id)a4
+- (void)setPosition:(double)position forTab:(id)tab
 {
-  v8 = a4;
-  [v8 position];
-  if (v6 != a3)
+  tabCopy = tab;
+  [tabCopy position];
+  if (v6 != position)
   {
-    v7 = [(CRLWPTabs *)self tabAtPosition:a3];
+    v7 = [(CRLWPTabs *)self tabAtPosition:position];
 
     if (v7)
     {
-      [v8 setPosition:a3];
+      [tabCopy setPosition:position];
     }
 
     else
     {
-      [(NSMutableArray *)self->_tabs removeObjectIdenticalTo:v8];
-      [v8 setPosition:a3];
-      [(CRLWPTabs *)self insertTab:v8];
+      [(NSMutableArray *)self->_tabs removeObjectIdenticalTo:tabCopy];
+      [tabCopy setPosition:position];
+      [(CRLWPTabs *)self insertTab:tabCopy];
     }
   }
 }
 
-- (unint64_t)indexForTabWithPosition:(double)a3 alignment:(int)a4 leader:(id)a5
+- (unint64_t)indexForTabWithPosition:(double)position alignment:(int)alignment leader:(id)leader
 {
-  v8 = a5;
+  leaderCopy = leader;
   v9 = [(NSMutableArray *)self->_tabs count];
   if (v9)
   {
     v10 = 0;
-    if (v8)
+    if (leaderCopy)
     {
-      v11 = v8;
+      v11 = leaderCopy;
     }
 
     else
@@ -254,14 +254,14 @@ LABEL_12:
     while (1)
     {
       v12 = [(NSMutableArray *)self->_tabs objectAtIndexedSubscript:v10];
-      if ([v12 alignment] == a4)
+      if ([v12 alignment] == alignment)
       {
         [v12 position];
-        if (v13 == a3 || vabdd_f64(a3, v13) < fabs(v13 * 0.000000999999997))
+        if (v13 == position || vabdd_f64(position, v13) < fabs(v13 * 0.000000999999997))
         {
-          v14 = [v12 leader];
-          v15 = v8;
-          v16 = v14;
+          leader = [v12 leader];
+          v15 = leaderCopy;
+          v16 = leader;
           v17 = v16;
           v18 = v16 ? v16 : @" ";
           v19 = [(__CFString *)v11 isEqualToString:v18];
@@ -289,11 +289,11 @@ LABEL_13:
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, equalCopy);
   if (v6)
   {
     tabs = self->_tabs;

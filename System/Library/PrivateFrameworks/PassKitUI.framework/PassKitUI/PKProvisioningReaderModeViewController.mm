@@ -1,48 +1,48 @@
 @interface PKProvisioningReaderModeViewController
-- (PKProvisioningReaderModeViewController)initWithContext:(int64_t)a3 product:(id)a4 isWatch:(BOOL)a5 fieldsModel:(id)a6 delegate:(id)a7;
-- (void)_done:(id)a3;
-- (void)_hideBackButton:(BOOL)a3;
+- (PKProvisioningReaderModeViewController)initWithContext:(int64_t)context product:(id)product isWatch:(BOOL)watch fieldsModel:(id)model delegate:(id)delegate;
+- (void)_done:(id)_done;
+- (void)_hideBackButton:(BOOL)button;
 - (void)_invalidateCardNotFoundTimer;
 - (void)_resetProvisioningState;
-- (void)_setIdleTimerDisabled:(BOOL)a3;
+- (void)_setIdleTimerDisabled:(BOOL)disabled;
 - (void)_setupCardIngester;
 - (void)_startCardNotFoundTimer;
 - (void)_startIngestion;
 - (void)_startReadingCard;
 - (void)_startTransferringCard;
 - (void)_tearDownCardIngester;
-- (void)_updateToUIState:(unint64_t)a3;
-- (void)cardNotFoundTimerFired:(id)a3;
-- (void)contactlessCardIngester:(id)a3 didFailToIngestCardWithError:(id)a4 resetProvisioning:(BOOL)a5 isRecoverable:(BOOL)a6;
-- (void)contactlessCardIngester:(id)a3 didUpdateCardIngestionStatus:(unint64_t)a4;
-- (void)didTransitionTo:(int64_t)a3 loading:(BOOL)a4;
+- (void)_updateToUIState:(unint64_t)state;
+- (void)cardNotFoundTimerFired:(id)fired;
+- (void)contactlessCardIngester:(id)ingester didFailToIngestCardWithError:(id)error resetProvisioning:(BOOL)provisioning isRecoverable:(BOOL)recoverable;
+- (void)contactlessCardIngester:(id)ingester didUpdateCardIngestionStatus:(unint64_t)status;
+- (void)didTransitionTo:(int64_t)to loading:(BOOL)loading;
 - (void)loadView;
-- (void)showReaderModeError:(id)a3 isRecoverable:(BOOL)a4;
-- (void)showWithProvisioningError:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)showReaderModeError:(id)error isRecoverable:(BOOL)recoverable;
+- (void)showWithProvisioningError:(id)error;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKProvisioningReaderModeViewController
 
-- (PKProvisioningReaderModeViewController)initWithContext:(int64_t)a3 product:(id)a4 isWatch:(BOOL)a5 fieldsModel:(id)a6 delegate:(id)a7
+- (PKProvisioningReaderModeViewController)initWithContext:(int64_t)context product:(id)product isWatch:(BOOL)watch fieldsModel:(id)model delegate:(id)delegate
 {
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  productCopy = product;
+  modelCopy = model;
+  delegateCopy = delegate;
   v19.receiver = self;
   v19.super_class = PKProvisioningReaderModeViewController;
   v16 = [(PKProvisioningReaderModeViewController *)&v19 initWithNibName:0 bundle:0];
   v17 = v16;
   if (v16)
   {
-    v16->_context = a3;
-    objc_storeWeak(&v16->_delegate, v15);
-    v17->_isWatch = a5;
-    objc_storeStrong(&v17->_fieldsModel, a6);
-    objc_storeStrong(&v17->_product, a4);
+    v16->_context = context;
+    objc_storeWeak(&v16->_delegate, delegateCopy);
+    v17->_isWatch = watch;
+    objc_storeStrong(&v17->_fieldsModel, model);
+    objc_storeStrong(&v17->_product, product);
     v17->_state = 0;
   }
 
@@ -55,15 +55,15 @@
   v5.super_class = PKProvisioningReaderModeViewController;
   [(PKProvisioningReaderModeViewController *)&v5 viewDidLoad];
   context = self->_context;
-  v4 = [(PKProvisioningReaderModeViewController *)self view];
-  PKPaymentSetupApplyContextAppearance(context, v4);
+  view = [(PKProvisioningReaderModeViewController *)self view];
+  PKPaymentSetupApplyContextAppearance(context, view);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKProvisioningReaderModeViewController;
-  [(PKProvisioningReaderModeViewController *)&v4 viewDidAppear:a3];
+  [(PKProvisioningReaderModeViewController *)&v4 viewDidAppear:appear];
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportViewAppeared];
   if (!self->_state)
   {
@@ -71,15 +71,15 @@
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = PKProvisioningReaderModeViewController;
-  [(PKProvisioningReaderModeViewController *)&v7 viewDidDisappear:a3];
+  [(PKProvisioningReaderModeViewController *)&v7 viewDidDisappear:disappear];
   [(PKProvisioningReaderModeViewController *)self _tearDownCardIngester];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [WeakRetained provisionedPass];
-  if (v5)
+  provisionedPass = [WeakRetained provisionedPass];
+  if (provisionedPass)
   {
     state = self->_state;
 
@@ -98,23 +98,23 @@
   v16.receiver = self;
   v16.super_class = PKProvisioningReaderModeViewController;
   [(PKProvisioningReaderModeViewController *)&v16 loadView];
-  v3 = [(PKProvisioningReaderModeViewController *)self view];
+  view = [(PKProvisioningReaderModeViewController *)self view];
   v4 = PKProvisioningBackgroundColor();
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
   v5 = [[PKReaderModeProvisioningView alloc] initWithContext:self->_context product:self->_product isWatch:self->_isWatch];
   provisioningView = self->_provisioningView;
   self->_provisioningView = v5;
 
-  v7 = [(PKPaymentSetupProduct *)self->_product imageAssets];
-  v8 = [v7 plasticCardImage];
+  imageAssets = [(PKPaymentSetupProduct *)self->_product imageAssets];
+  plasticCardImage = [imageAssets plasticCardImage];
 
-  v9 = [(PKPaymentSetupProduct *)self->_product imageAssets];
-  v10 = [v9 digitalCardImage];
+  imageAssets2 = [(PKPaymentSetupProduct *)self->_product imageAssets];
+  digitalCardImage = [imageAssets2 digitalCardImage];
 
-  if (v8)
+  if (plasticCardImage)
   {
-    v11 = v10 == 0;
+    v11 = digitalCardImage == 0;
   }
 
   else
@@ -124,8 +124,8 @@
 
   if (!v11)
   {
-    v12 = [MEMORY[0x1E69DCAB8] imageWithCGImage:v8];
-    v13 = [MEMORY[0x1E69DCAB8] imageWithCGImage:v10];
+    v12 = [MEMORY[0x1E69DCAB8] imageWithCGImage:plasticCardImage];
+    v13 = [MEMORY[0x1E69DCAB8] imageWithCGImage:digitalCardImage];
     [(PKReaderModeProvisioningView *)self->_provisioningView setPlasticCardImage:v12];
     [(PKReaderModeProvisioningView *)self->_provisioningView setDigitalCardImage:v13];
   }
@@ -138,7 +138,7 @@
   [(UIScrollView *)self->_scrollView setShowsHorizontalScrollIndicator:0];
   [(UIScrollView *)self->_scrollView setShowsVerticalScrollIndicator:1];
   [(UIScrollView *)self->_scrollView setAlwaysBounceVertical:1];
-  [v3 addSubview:self->_scrollView];
+  [view addSubview:self->_scrollView];
 }
 
 - (void)viewWillLayoutSubviews
@@ -146,9 +146,9 @@
   v17.receiver = self;
   v17.super_class = PKProvisioningReaderModeViewController;
   [(PKProvisioningReaderModeViewController *)&v17 viewWillLayoutSubviews];
-  v3 = [(PKProvisioningReaderModeViewController *)self view];
-  v4 = [v3 safeAreaLayoutGuide];
-  [v4 layoutFrame];
+  view = [(PKProvisioningReaderModeViewController *)self view];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  [safeAreaLayoutGuide layoutFrame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -164,17 +164,17 @@
   [(UIScrollView *)self->_scrollView setScrollEnabled:v16 > v12];
 }
 
-- (void)_setIdleTimerDisabled:(BOOL)a3
+- (void)_setIdleTimerDisabled:(BOOL)disabled
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (self->_idleTimerDisabled != a3)
+  if (self->_idleTimerDisabled != disabled)
   {
-    v3 = a3;
+    disabledCopy = disabled;
     v5 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"enabled";
-      if (v3)
+      if (disabledCopy)
       {
         v6 = @"disabled";
       }
@@ -186,28 +186,28 @@
       _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "Payment Setup has %@ the Idle Timer. (For: %@)", &v8, 0x16u);
     }
 
-    v7 = [MEMORY[0x1E69DC668] sharedApplication];
-    [v7 _setIdleTimerDisabled:v3 forReason:@"ReaderModeProvisioning"];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    [mEMORY[0x1E69DC668] _setIdleTimerDisabled:disabledCopy forReason:@"ReaderModeProvisioning"];
 
-    self->_idleTimerDisabled = v3;
+    self->_idleTimerDisabled = disabledCopy;
   }
 }
 
-- (void)_hideBackButton:(BOOL)a3
+- (void)_hideBackButton:(BOOL)button
 {
-  v3 = a3;
-  v4 = [(PKProvisioningReaderModeViewController *)self navigationItem];
-  [v4 setHidesBackButton:v3 animated:1];
+  buttonCopy = button;
+  navigationItem = [(PKProvisioningReaderModeViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:buttonCopy animated:1];
 }
 
-- (void)_updateToUIState:(unint64_t)a3
+- (void)_updateToUIState:(unint64_t)state
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __59__PKProvisioningReaderModeViewController__updateToUIState___block_invoke;
   v4[3] = &unk_1E80119C8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = state;
   v3 = v4;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -257,7 +257,7 @@ void __59__PKProvisioningReaderModeViewController__updateToUIState___block_invok
   [v10 setNeedsLayout];
 }
 
-- (void)_done:(id)a3
+- (void)_done:(id)_done
 {
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportButtonPressed:0];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -285,24 +285,24 @@ void __59__PKProvisioningReaderModeViewController__updateToUIState___block_invok
   [(PKProvisioningReaderModeViewController *)self _invalidateCardNotFoundTimer];
 }
 
-- (void)contactlessCardIngester:(id)a3 didFailToIngestCardWithError:(id)a4 resetProvisioning:(BOOL)a5 isRecoverable:(BOOL)a6
+- (void)contactlessCardIngester:(id)ingester didFailToIngestCardWithError:(id)error resetProvisioning:(BOOL)provisioning isRecoverable:(BOOL)recoverable
 {
-  v9 = a4;
+  errorCopy = error;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __127__PKProvisioningReaderModeViewController_contactlessCardIngester_didFailToIngestCardWithError_resetProvisioning_isRecoverable___block_invoke;
   v12[3] = &unk_1E801F508;
-  v14 = a5;
+  provisioningCopy = provisioning;
   v12[4] = self;
-  v13 = v9;
-  v15 = a6;
+  v13 = errorCopy;
+  recoverableCopy = recoverable;
   v10 = v12;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __dispatch_async_ar_block_invoke_0;
   block[3] = &unk_1E8010B50;
   v17 = v10;
-  v11 = v9;
+  v11 = errorCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -355,15 +355,15 @@ uint64_t __127__PKProvisioningReaderModeViewController_contactlessCardIngester_d
   return [*(a1 + 32) showReaderModeError:*(a1 + 40) isRecoverable:*(a1 + 49)];
 }
 
-- (void)contactlessCardIngester:(id)a3 didUpdateCardIngestionStatus:(unint64_t)a4
+- (void)contactlessCardIngester:(id)ingester didUpdateCardIngestionStatus:(unint64_t)status
 {
-  v6 = a3;
+  ingesterCopy = ingester;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __95__PKProvisioningReaderModeViewController_contactlessCardIngester_didUpdateCardIngestionStatus___block_invoke;
   v9[3] = &unk_1E8012C50;
-  v10 = v6;
-  v11 = a4;
+  v10 = ingesterCopy;
+  statusCopy = status;
   v9[4] = self;
   v7 = v9;
   block[0] = MEMORY[0x1E69E9820];
@@ -371,7 +371,7 @@ uint64_t __127__PKProvisioningReaderModeViewController_contactlessCardIngester_d
   block[2] = __dispatch_async_ar_block_invoke_0;
   block[3] = &unk_1E8010B50;
   v13 = v7;
-  v8 = v6;
+  v8 = ingesterCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -449,7 +449,7 @@ void *__95__PKProvisioningReaderModeViewController_contactlessCardIngester_didUp
   return result;
 }
 
-- (void)cardNotFoundTimerFired:(id)a3
+- (void)cardNotFoundTimerFired:(id)fired
 {
   v4 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -673,16 +673,16 @@ uint64_t __65__PKProvisioningReaderModeViewController__resetProvisioningState__b
   return [v4 setTransferringProgress:0.0 duration:0.0];
 }
 
-- (void)showReaderModeError:(id)a3 isRecoverable:(BOOL)a4
+- (void)showReaderModeError:(id)error isRecoverable:(BOOL)recoverable
 {
-  v4 = a4;
+  recoverableCopy = recoverable;
   v13 = *MEMORY[0x1E69E9840];
   self->_state = self->_stateOnRetry;
   self->_stateOnRetry = 0;
   reporter = self->_reporter;
-  v7 = a3;
-  [(PKProvisioningAnalyticsSessionUIReporter *)reporter reportError:v7 context:0];
-  if (v4)
+  errorCopy = error;
+  [(PKProvisioningAnalyticsSessionUIReporter *)reporter reportError:errorCopy context:0];
+  if (recoverableCopy)
   {
     v8 = 3;
   }
@@ -692,7 +692,7 @@ uint64_t __65__PKProvisioningReaderModeViewController__resetProvisioningState__b
     v8 = 4;
   }
 
-  v9 = [MEMORY[0x1E69B90E8] errorWithUnderlyingError:v7 defaultSeverity:v8];
+  v9 = [MEMORY[0x1E69B90E8] errorWithUnderlyingError:errorCopy defaultSeverity:v8];
 
   v10 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -706,18 +706,18 @@ uint64_t __65__PKProvisioningReaderModeViewController__resetProvisioningState__b
   [(PKProvisioningReaderModeViewController *)self _hideBackButton:0];
 }
 
-- (void)showWithProvisioningError:(id)a3
+- (void)showWithProvisioningError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   [(PKProvisioningReaderModeViewController *)self _setIdleTimerDisabled:0];
   [(PKProvisioningReaderModeViewController *)self _hideBackButton:0];
-  if (([v4 hasLocalizedTitleAndMessage] & 1) == 0)
+  if (([errorCopy hasLocalizedTitleAndMessage] & 1) == 0)
   {
     v5 = PKLocalizedPaymentString(&cfstr_CouldNotAddCar.isa);
-    [v4 setLocalizedTitle:v5];
+    [errorCopy setLocalizedTitle:v5];
 
     v6 = PKLocalizedPaymentString(&cfstr_CouldNotAddCar_0.isa);
-    [v4 setLocalizedMessage:v6];
+    [errorCopy setLocalizedMessage:v6];
   }
 
   v10[0] = MEMORY[0x1E69E9820];
@@ -735,7 +735,7 @@ uint64_t __65__PKProvisioningReaderModeViewController__resetProvisioningState__b
   v8[1] = 3221225472;
   v8[2] = __68__PKProvisioningReaderModeViewController_showWithProvisioningError___block_invoke_3;
   v8[3] = &unk_1E8010970;
-  v7 = [MEMORY[0x1E69DC650] alertForErrorWithError:v4 acknowledgeButtonText:0 exitButtonText:0 onAcknowledge:v10 onExit:v9 onTryAgain:v8];
+  v7 = [MEMORY[0x1E69DC650] alertForErrorWithError:errorCopy acknowledgeButtonText:0 exitButtonText:0 onAcknowledge:v10 onExit:v9 onTryAgain:v8];
   [(PKProvisioningReaderModeViewController *)self presentViewController:v7 animated:1 completion:0];
 }
 
@@ -751,16 +751,16 @@ void __68__PKProvisioningReaderModeViewController_showWithProvisioningError___bl
   [WeakRetained viewControllerDidComplete:*(a1 + 32)];
 }
 
-- (void)didTransitionTo:(int64_t)a3 loading:(BOOL)a4
+- (void)didTransitionTo:(int64_t)to loading:(BOOL)loading
 {
-  if (a4)
+  if (loading)
   {
     [(PKProvisioningReaderModeViewController *)self _updateToUIState:3];
     [(PKProvisioningReaderModeViewController *)self _setIdleTimerDisabled:0];
     [(PKProvisioningReaderModeViewController *)self _hideBackButton:1];
-    if (a3 >= 6)
+    if (to >= 6)
     {
-      if ((a3 - 6) >= 3)
+      if ((to - 6) >= 3)
       {
         return;
       }
@@ -778,7 +778,7 @@ void __68__PKProvisioningReaderModeViewController_showWithProvisioningError___bl
     [(PKReaderModeProvisioningView *)provisioningView setTransferringProgress:v7 duration:12.0];
   }
 
-  else if (a3 == 8)
+  else if (to == 8)
   {
     self->_state = 4;
 

@@ -1,5 +1,5 @@
 @interface MSRHDRProcessingT1
-- (void)getDegammaLutInput:(float *)a3;
+- (void)getDegammaLutInput:(float *)input;
 - (void)setupHardwareConfigUnit;
 @end
 
@@ -15,12 +15,12 @@
   *msrCU = vadd_s32(*msrCU, 0x140400000001);
 }
 
-- (void)getDegammaLutInput:(float *)a3
+- (void)getDegammaLutInput:(float *)input
 {
   v3 = 0;
   v4 = xmmword_2508CD900;
   v5 = xmmword_2508CD910;
-  v6 = a3 + 2;
+  v6 = input + 2;
   v7 = vdupq_n_s64(0x401uLL);
   v8 = vdupq_n_s64(4uLL);
   do
@@ -52,7 +52,7 @@
   v10 = 1.0;
   do
   {
-    a3[v9 + 1024] = v10;
+    input[v9 + 1024] = v10;
     v10 = v10 + 0.03125;
     ++v9;
   }

@@ -1,45 +1,45 @@
 @interface COMTDeleteAction
-+ (id)actionWithTargetType:(id)a3 targetIdentifier:(id)a4;
-- (COMTDeleteAction)initWithCoder:(id)a3;
-- (COMTDeleteAction)initWithTargetType:(id)a3 targetIdentifier:(id)a4;
-- (void)encodeWithCoder:(id)a3;
++ (id)actionWithTargetType:(id)type targetIdentifier:(id)identifier;
+- (COMTDeleteAction)initWithCoder:(id)coder;
+- (COMTDeleteAction)initWithTargetType:(id)type targetIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation COMTDeleteAction
 
-+ (id)actionWithTargetType:(id)a3 targetIdentifier:(id)a4
++ (id)actionWithTargetType:(id)type targetIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithTargetType:v7 targetIdentifier:v6];
+  identifierCopy = identifier;
+  typeCopy = type;
+  v8 = [[self alloc] initWithTargetType:typeCopy targetIdentifier:identifierCopy];
 
   return v8;
 }
 
-- (COMTDeleteAction)initWithTargetType:(id)a3 targetIdentifier:(id)a4
+- (COMTDeleteAction)initWithTargetType:(id)type targetIdentifier:(id)identifier
 {
-  v7 = a4;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = COMTDeleteAction;
-  v8 = [(COMTTypedAction *)&v11 initWithType:a3];
+  v8 = [(COMTTypedAction *)&v11 initWithType:type];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_targetIdentifier, a4);
+    objc_storeStrong(&v8->_targetIdentifier, identifier);
   }
 
   return v9;
 }
 
-- (COMTDeleteAction)initWithCoder:(id)a3
+- (COMTDeleteAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = COMTDeleteAction;
-  v5 = [(COMTTypedAction *)&v10 initWithCoder:v4];
+  v5 = [(COMTTypedAction *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DI"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DI"];
     if (!v6)
     {
       v8 = 0;
@@ -56,14 +56,14 @@ LABEL_6:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = COMTDeleteAction;
-  v4 = a3;
-  [(COMTTypedAction *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(COMTTypedAction *)&v6 encodeWithCoder:coderCopy];
   v5 = [(COMTDeleteAction *)self targetIdentifier:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"DI"];
+  [coderCopy encodeObject:v5 forKey:@"DI"];
 }
 
 @end

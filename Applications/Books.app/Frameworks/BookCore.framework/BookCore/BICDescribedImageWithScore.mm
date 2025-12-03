@@ -1,24 +1,24 @@
 @interface BICDescribedImageWithScore
 - (BICDescribedImage)image;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation BICDescribedImageWithScore
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(BICDescribedImageWithScore *)self score];
-  v6 = [v4 score];
+  compareCopy = compare;
+  score = [(BICDescribedImageWithScore *)self score];
+  score2 = [compareCopy score];
 
-  if (v5 < v6)
+  if (score < score2)
   {
     return -1;
   }
 
   else
   {
-    return v5 != v6;
+    return score != score2;
   }
 }
 

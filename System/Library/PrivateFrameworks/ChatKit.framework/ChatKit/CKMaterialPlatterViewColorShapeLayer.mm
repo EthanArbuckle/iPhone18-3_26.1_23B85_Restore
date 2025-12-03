@@ -1,6 +1,6 @@
 @interface CKMaterialPlatterViewColorShapeLayer
 - (_TtC7ChatKit36CKMaterialPlatterViewColorShapeLayer)init;
-- (_TtC7ChatKit36CKMaterialPlatterViewColorShapeLayer)initWithCoder:(id)a3;
+- (_TtC7ChatKit36CKMaterialPlatterViewColorShapeLayer)initWithCoder:(id)coder;
 @end
 
 @implementation CKMaterialPlatterViewColorShapeLayer
@@ -16,7 +16,7 @@
   return v2;
 }
 
-- (_TtC7ChatKit36CKMaterialPlatterViewColorShapeLayer)initWithCoder:(id)a3
+- (_TtC7ChatKit36CKMaterialPlatterViewColorShapeLayer)initWithCoder:(id)coder
 {
   result = sub_190D58510();
   __break(1u);

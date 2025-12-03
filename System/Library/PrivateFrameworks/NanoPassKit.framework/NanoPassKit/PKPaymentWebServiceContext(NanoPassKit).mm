@@ -7,7 +7,7 @@
 - (id)npkPossiblyOverriddenPeerPaymentServiceURL
 {
   v11 = *MEMORY[0x277D85DE8];
-  v1 = [a1 peerPaymentServiceURL];
+  peerPaymentServiceURL = [self peerPaymentServiceURL];
   v2 = PKPeerPaymentServiceOverrideURL();
   if (v2)
   {
@@ -27,12 +27,12 @@
 
     v6 = v2;
 
-    v1 = v6;
+    peerPaymentServiceURL = v6;
   }
 
   v7 = *MEMORY[0x277D85DE8];
 
-  return v1;
+  return peerPaymentServiceURL;
 }
 
 @end

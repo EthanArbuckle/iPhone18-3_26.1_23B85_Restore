@@ -64,7 +64,7 @@
 - (NSString)videoType;
 - (NSURL)videoCallToActionURL;
 - (NSURL)videoURL;
-- (SCWebHeadline)initWithURL:(id)a3 title:(id)a4 shortExcerpt:(id)a5 publishDate:(id)a6 sourceName:(id)a7;
+- (SCWebHeadline)initWithURL:(id)l title:(id)title shortExcerpt:(id)excerpt publishDate:(id)date sourceName:(id)name;
 - (double)globalScore;
 - (double)globalUserFeedback;
 - (double)tileProminenceScore;
@@ -81,9 +81,9 @@
 - (unint64_t)order;
 - (unint64_t)publishDateMilliseconds;
 - (unint64_t)topStoryType;
-- (void)addSurfacedByArticleListID:(id)a3;
+- (void)addSurfacedByArticleListID:(id)d;
 - (void)allowedStorefrontIDs;
-- (void)applyConditionalScore:(double)a3;
+- (void)applyConditionalScore:(double)score;
 - (void)articleContentType;
 - (void)articleRecirculationConfigJSON;
 - (void)associatedAd;
@@ -95,7 +95,7 @@
 - (void)disableTapToChannel;
 - (void)displayDate;
 - (void)endOfArticleTopicIDs;
-- (void)enumerateTopicConversionStatsWithBlock:(id)a3;
+- (void)enumerateTopicConversionStatsWithBlock:(id)block;
 - (void)feedHalfLifeMilliseconds;
 - (void)feedID;
 - (void)feedOrder;
@@ -170,33 +170,33 @@
 
 @implementation SCWebHeadline
 
-- (SCWebHeadline)initWithURL:(id)a3 title:(id)a4 shortExcerpt:(id)a5 publishDate:(id)a6 sourceName:(id)a7
+- (SCWebHeadline)initWithURL:(id)l title:(id)title shortExcerpt:(id)excerpt publishDate:(id)date sourceName:(id)name
 {
-  v13 = a3;
-  v21 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  lCopy = l;
+  titleCopy = title;
+  excerptCopy = excerpt;
+  dateCopy = date;
+  nameCopy = name;
   v22.receiver = self;
   v22.super_class = SCWebHeadline;
   v17 = [(SCWebHeadline *)&v22 init];
   if (v17)
   {
-    v18 = [v13 absoluteString];
+    absoluteString = [lCopy absoluteString];
     identifier = v17->_identifier;
-    v17->_identifier = v18;
+    v17->_identifier = absoluteString;
 
-    objc_storeStrong(&v17->_contentURL, a3);
-    objc_storeStrong(&v17->_title, a4);
-    objc_storeStrong(&v17->_shortExcerpt, a5);
-    objc_storeStrong(&v17->_publishDate, a6);
-    objc_storeStrong(&v17->_sourceName, a7);
+    objc_storeStrong(&v17->_contentURL, l);
+    objc_storeStrong(&v17->_title, title);
+    objc_storeStrong(&v17->_shortExcerpt, excerpt);
+    objc_storeStrong(&v17->_publishDate, date);
+    objc_storeStrong(&v17->_sourceName, name);
   }
 
   return v17;
 }
 
-- (void)enumerateTopicConversionStatsWithBlock:(id)a3
+- (void)enumerateTopicConversionStatsWithBlock:(id)block
 {
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -204,7 +204,7 @@
   }
 }
 
-- (void)addSurfacedByArticleListID:(id)a3
+- (void)addSurfacedByArticleListID:(id)d
 {
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -212,7 +212,7 @@
   }
 }
 
-- (void)applyConditionalScore:(double)a3
+- (void)applyConditionalScore:(double)score
 {
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {

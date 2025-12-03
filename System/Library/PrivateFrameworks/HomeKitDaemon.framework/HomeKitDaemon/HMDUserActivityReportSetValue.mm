@@ -1,5 +1,5 @@
 @interface HMDUserActivityReportSetValue
-- (HMDUserActivityReportSetValue)initWithReport:(id)a3;
+- (HMDUserActivityReportSetValue)initWithReport:(id)report;
 - (id)description;
 @end
 
@@ -7,22 +7,22 @@
 
 - (id)description
 {
-  v2 = [(HMDUserActivityReportSetValue *)self value];
-  v3 = [v2 description];
+  value = [(HMDUserActivityReportSetValue *)self value];
+  v3 = [value description];
 
   return v3;
 }
 
-- (HMDUserActivityReportSetValue)initWithReport:(id)a3
+- (HMDUserActivityReportSetValue)initWithReport:(id)report
 {
-  v5 = a3;
+  reportCopy = report;
   v9.receiver = self;
   v9.super_class = HMDUserActivityReportSetValue;
   v6 = [(HMDUserActivityReportSetValue *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_value, a3);
+    objc_storeStrong(&v6->_value, report);
   }
 
   return v7;

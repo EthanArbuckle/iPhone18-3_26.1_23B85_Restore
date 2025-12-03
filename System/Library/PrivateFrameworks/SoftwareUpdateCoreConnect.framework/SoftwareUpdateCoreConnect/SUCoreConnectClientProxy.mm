@@ -1,57 +1,57 @@
 @interface SUCoreConnectClientProxy
 - (NSString)description;
-- (SUCoreConnectClientProxy)initWithClientID:(id)a3 completionQueue:(id)a4 genericBlock:(id)a5 progressBlock:(id)a6;
-- (SUCoreConnectClientProxy)initWithCoder:(id)a3;
+- (SUCoreConnectClientProxy)initWithClientID:(id)d completionQueue:(id)queue genericBlock:(id)block progressBlock:(id)progressBlock;
+- (SUCoreConnectClientProxy)initWithCoder:(id)coder;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeGenericBlock:(id)a3 disableVerboseLogging:(BOOL)a4;
-- (void)executeProgressBlock:(id)a3 disableVerboseLogging:(BOOL)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeGenericBlock:(id)block disableVerboseLogging:(BOOL)logging;
+- (void)executeProgressBlock:(id)block disableVerboseLogging:(BOOL)logging;
 @end
 
 @implementation SUCoreConnectClientProxy
 
-- (SUCoreConnectClientProxy)initWithClientID:(id)a3 completionQueue:(id)a4 genericBlock:(id)a5 progressBlock:(id)a6
+- (SUCoreConnectClientProxy)initWithClientID:(id)d completionQueue:(id)queue genericBlock:(id)block progressBlock:(id)progressBlock
 {
   v36 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  queueCopy = queue;
+  blockCopy = block;
+  progressBlockCopy = progressBlock;
   v33.receiver = self;
   v33.super_class = SUCoreConnectClientProxy;
   v15 = [(SUCoreConnectClientProxy *)&v33 init];
   if (v15)
   {
     v16 = MEMORY[0x277CCACA8];
-    v17 = [MEMORY[0x277CCAC38] processInfo];
-    v18 = [v16 stringWithFormat:@"%@.<%d>", v11, objc_msgSend(v17, "processIdentifier")];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    v18 = [v16 stringWithFormat:@"%@.<%d>", dCopy, objc_msgSend(processInfo, "processIdentifier")];
     clientID = v15->_clientID;
     v15->_clientID = v18;
 
-    objc_storeStrong(&v15->_clientIDRaw, a3);
-    v20 = [MEMORY[0x277CCAC38] processInfo];
-    v15->_clientProcessIdentifier = [v20 processIdentifier];
+    objc_storeStrong(&v15->_clientIDRaw, d);
+    processInfo2 = [MEMORY[0x277CCAC38] processInfo];
+    v15->_clientProcessIdentifier = [processInfo2 processIdentifier];
 
-    objc_storeStrong(&v15->_completionQueue, a4);
-    v21 = MEMORY[0x2318E52D0](v13);
+    objc_storeStrong(&v15->_completionQueue, queue);
+    v21 = MEMORY[0x2318E52D0](blockCopy);
     genericBlock = v15->_genericBlock;
     v15->_genericBlock = v21;
 
-    v23 = MEMORY[0x2318E52D0](v14);
+    v23 = MEMORY[0x2318E52D0](progressBlockCopy);
     progressBlock = v15->_progressBlock;
     v15->_progressBlock = v23;
 
     if (!v15->_completionQueue)
     {
-      v25 = [MEMORY[0x277D64460] sharedLogger];
-      v26 = [v25 oslog];
+      mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+      oslog = [mEMORY[0x277D64460] oslog];
 
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = [(SUCoreConnectClientProxy *)v15 summary];
+        summary = [(SUCoreConnectClientProxy *)v15 summary];
         *buf = 138543362;
-        v35 = v27;
-        _os_log_impl(&dword_22E2D6000, v26, OS_LOG_TYPE_DEFAULT, "[%{public}@] No completion queue was provided on initialization, creating new completion queue", buf, 0xCu);
+        v35 = summary;
+        _os_log_impl(&dword_22E2D6000, oslog, OS_LOG_TYPE_DEFAULT, "[%{public}@] No completion queue was provided on initialization, creating new completion queue", buf, 0xCu);
       }
 
       v28 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -65,47 +65,47 @@
   return v15;
 }
 
-- (void)executeGenericBlock:(id)a3 disableVerboseLogging:(BOOL)a4
+- (void)executeGenericBlock:(id)block disableVerboseLogging:(BOOL)logging
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(SUCoreConnectClientProxy *)self genericBlock];
+  blockCopy = block;
+  genericBlock = [(SUCoreConnectClientProxy *)self genericBlock];
 
-  if (v7)
+  if (genericBlock)
   {
-    if (!a4)
+    if (!logging)
     {
-      v8 = [MEMORY[0x277D64460] sharedLogger];
-      v9 = [v8 oslog];
+      mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+      oslog = [mEMORY[0x277D64460] oslog];
 
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [(SUCoreConnectClientProxy *)self summary];
+        summary = [(SUCoreConnectClientProxy *)self summary];
         *buf = 138543618;
-        v19 = v10;
+        v19 = summary;
         v20 = 2114;
         v21 = objc_opt_class();
         v11 = v21;
-        _os_log_impl(&dword_22E2D6000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Calling genericBlock on completion queue with object: %{public}@", buf, 0x16u);
+        _os_log_impl(&dword_22E2D6000, oslog, OS_LOG_TYPE_DEFAULT, "[%{public}@] Calling genericBlock on completion queue with object: %{public}@", buf, 0x16u);
       }
     }
 
-    v12 = [(SUCoreConnectClientProxy *)self completionQueue];
+    completionQueue = [(SUCoreConnectClientProxy *)self completionQueue];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __70__SUCoreConnectClientProxy_executeGenericBlock_disableVerboseLogging___block_invoke;
     v16[3] = &unk_2787BC990;
     v16[4] = self;
-    v17 = v6;
-    dispatch_async(v12, v16);
+    v17 = blockCopy;
+    dispatch_async(completionQueue, v16);
   }
 
-  else if (!a4)
+  else if (!logging)
   {
-    v13 = [MEMORY[0x277D64460] sharedLogger];
-    v14 = [v13 oslog];
+    mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+    oslog2 = [mEMORY[0x277D64460]2 oslog];
 
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_ERROR))
     {
       [SUCoreConnectClientProxy executeGenericBlock:? disableVerboseLogging:?];
     }
@@ -120,49 +120,49 @@ void __70__SUCoreConnectClientProxy_executeGenericBlock_disableVerboseLogging___
   v2[2](v2, *(a1 + 40));
 }
 
-- (void)executeProgressBlock:(id)a3 disableVerboseLogging:(BOOL)a4
+- (void)executeProgressBlock:(id)block disableVerboseLogging:(BOOL)logging
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(SUCoreConnectClientProxy *)self progressBlock];
+  blockCopy = block;
+  progressBlock = [(SUCoreConnectClientProxy *)self progressBlock];
 
-  if (v7)
+  if (progressBlock)
   {
-    if (!a4)
+    if (!logging)
     {
-      v8 = [MEMORY[0x277D64460] sharedLogger];
-      v9 = [v8 oslog];
+      mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+      oslog = [mEMORY[0x277D64460] oslog];
 
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [(SUCoreConnectClientProxy *)self summary];
-        v11 = [v6 summary];
+        summary = [(SUCoreConnectClientProxy *)self summary];
+        summary2 = [blockCopy summary];
         *buf = 138543618;
-        v19 = v10;
+        v19 = summary;
         v20 = 2114;
-        v21 = v11;
-        _os_log_impl(&dword_22E2D6000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Calling progressBlock on completion queue with progress: %{public}@", buf, 0x16u);
+        v21 = summary2;
+        _os_log_impl(&dword_22E2D6000, oslog, OS_LOG_TYPE_DEFAULT, "[%{public}@] Calling progressBlock on completion queue with progress: %{public}@", buf, 0x16u);
       }
     }
 
-    v12 = [(SUCoreConnectClientProxy *)self completionQueue];
+    completionQueue = [(SUCoreConnectClientProxy *)self completionQueue];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __71__SUCoreConnectClientProxy_executeProgressBlock_disableVerboseLogging___block_invoke;
     v16[3] = &unk_2787BC990;
     v16[4] = self;
-    v17 = v6;
-    dispatch_async(v12, v16);
+    v17 = blockCopy;
+    dispatch_async(completionQueue, v16);
   }
 
-  else if (!a4)
+  else if (!logging)
   {
-    v13 = [MEMORY[0x277D64460] sharedLogger];
-    v14 = [v13 oslog];
+    mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+    oslog2 = [mEMORY[0x277D64460]2 oslog];
 
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_ERROR))
     {
-      [SUCoreConnectClientProxy executeProgressBlock:v6 disableVerboseLogging:?];
+      [SUCoreConnectClientProxy executeProgressBlock:blockCopy disableVerboseLogging:?];
     }
   }
 
@@ -175,22 +175,22 @@ void __71__SUCoreConnectClientProxy_executeProgressBlock_disableVerboseLogging__
   v2[2](v2, *(a1 + 40));
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SUCoreConnectClientProxy *)self clientID];
-  [v4 encodeObject:v5 forKey:@"SUCoreConnectClientProxyClientID"];
+  coderCopy = coder;
+  clientID = [(SUCoreConnectClientProxy *)self clientID];
+  [coderCopy encodeObject:clientID forKey:@"SUCoreConnectClientProxyClientID"];
 }
 
-- (SUCoreConnectClientProxy)initWithCoder:(id)a3
+- (SUCoreConnectClientProxy)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SUCoreConnectClientProxy;
   v5 = [(SUCoreConnectClientProxy *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SUCoreConnectClientProxyClientID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SUCoreConnectClientProxyClientID"];
     clientID = v5->_clientID;
     v5->_clientID = v6;
   }
@@ -201,8 +201,8 @@ void __71__SUCoreConnectClientProxy_executeProgressBlock_disableVerboseLogging__
 - (id)summary
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(SUCoreConnectClientProxy *)self clientID];
-  v4 = [v2 stringWithFormat:@"SUCoreConnectClientProxy(%@)", v3];
+  clientID = [(SUCoreConnectClientProxy *)self clientID];
+  v4 = [v2 stringWithFormat:@"SUCoreConnectClientProxy(%@)", clientID];
 
   return v4;
 }
@@ -210,9 +210,9 @@ void __71__SUCoreConnectClientProxy_executeProgressBlock_disableVerboseLogging__
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SUCoreConnectClientProxy *)self clientID];
-  v5 = [(SUCoreConnectClientProxy *)self completionQueue];
-  if (v5)
+  clientID = [(SUCoreConnectClientProxy *)self clientID];
+  completionQueue = [(SUCoreConnectClientProxy *)self completionQueue];
+  if (completionQueue)
   {
     v6 = @"YES";
   }
@@ -222,8 +222,8 @@ void __71__SUCoreConnectClientProxy_executeProgressBlock_disableVerboseLogging__
     v6 = @"NO";
   }
 
-  v7 = [(SUCoreConnectClientProxy *)self genericBlock];
-  if (v7)
+  genericBlock = [(SUCoreConnectClientProxy *)self genericBlock];
+  if (genericBlock)
   {
     v8 = @"YES";
   }
@@ -233,8 +233,8 @@ void __71__SUCoreConnectClientProxy_executeProgressBlock_disableVerboseLogging__
     v8 = @"NO";
   }
 
-  v9 = [(SUCoreConnectClientProxy *)self progressBlock];
-  if (v9)
+  progressBlock = [(SUCoreConnectClientProxy *)self progressBlock];
+  if (progressBlock)
   {
     v10 = @"YES";
   }
@@ -244,7 +244,7 @@ void __71__SUCoreConnectClientProxy_executeProgressBlock_disableVerboseLogging__
     v10 = @"NO";
   }
 
-  v11 = [v3 stringWithFormat:@"SUCoreConnectClientProxy(clientID:%@|completionQueue:%@|genericBlock:%@|progressBlock:%@)", v4, v6, v8, v10];
+  v11 = [v3 stringWithFormat:@"SUCoreConnectClientProxy(clientID:%@|completionQueue:%@|genericBlock:%@|progressBlock:%@)", clientID, v6, v8, v10];
 
   return v11;
 }

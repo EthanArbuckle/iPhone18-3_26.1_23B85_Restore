@@ -1,33 +1,33 @@
 @interface PCSShareProtectionObject
-- (PCSShareProtectionObject)initWithShareProtectionRef:(_OpaquePCSShareProtection *)a3;
-- (PCSShareProtectionObject)initWithSharingRequestData:(id)a3 identitySet:(_PCSIdentitySetData *)a4 error:(id *)a5;
-- (id)exportAcceptedSharingRequestWithError:(id *)a3;
+- (PCSShareProtectionObject)initWithShareProtectionRef:(_OpaquePCSShareProtection *)ref;
+- (PCSShareProtectionObject)initWithSharingRequestData:(id)data identitySet:(_PCSIdentitySetData *)set error:(id *)error;
+- (id)exportAcceptedSharingRequestWithError:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation PCSShareProtectionObject
 
-- (PCSShareProtectionObject)initWithShareProtectionRef:(_OpaquePCSShareProtection *)a3
+- (PCSShareProtectionObject)initWithShareProtectionRef:(_OpaquePCSShareProtection *)ref
 {
   v6.receiver = self;
   v6.super_class = PCSShareProtectionObject;
   v4 = [(PCSShareProtectionObject *)&v6 init];
   if (v4)
   {
-    if (a3)
+    if (ref)
     {
-      CFRetain(a3);
+      CFRetain(ref);
     }
 
-    v4->_shareProtection = a3;
+    v4->_shareProtection = ref;
   }
 
   return v4;
 }
 
-- (PCSShareProtectionObject)initWithSharingRequestData:(id)a3 identitySet:(_PCSIdentitySetData *)a4 error:(id *)a5
+- (PCSShareProtectionObject)initWithSharingRequestData:(id)data identitySet:(_PCSIdentitySetData *)set error:(id *)error
 {
-  v8 = a3;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = PCSShareProtectionObject;
   v9 = [(PCSShareProtectionObject *)&v25 init];
@@ -38,11 +38,11 @@
     v22 = &v21;
     v23 = 0x2020000000;
     v24 = 0;
-    v11 = [[PCSManateeShareInvitation alloc] initWithData:v8];
+    v11 = [[PCSManateeShareInvitation alloc] initWithData:dataCopy];
     v12 = v11;
     if (v11 && [(PCSManateeShareInvitation *)v11 hasExportedPCSData])
     {
-      v13 = PCSIdentitySetCopyIdentities(a4, 0);
+      v13 = PCSIdentitySetCopyIdentities(set, 0);
       context[0] = MEMORY[0x1E69E9820];
       context[1] = 3221225472;
       context[2] = __73__PCSShareProtectionObject_initWithSharingRequestData_identitySet_error___block_invoke;
@@ -73,9 +73,9 @@
     }
 
     v15 = v22[3];
-    if (a5)
+    if (error)
     {
-      *a5 = v15;
+      *error = v15;
       v22[3] = 0;
     }
 
@@ -125,7 +125,7 @@ void __73__PCSShareProtectionObject_initWithSharingRequestData_identitySet_error
   [(PCSShareProtectionObject *)&v5 dealloc];
 }
 
-- (id)exportAcceptedSharingRequestWithError:(id *)a3
+- (id)exportAcceptedSharingRequestWithError:(id *)error
 {
   v20[1] = *MEMORY[0x1E69E9840];
   SigningIdentity = _PCSIdentityGetSigningIdentity(self->_identity);
@@ -136,9 +136,9 @@ void __73__PCSShareProtectionObject_initWithSharingRequestData_identitySet_error
     v18 = 0;
     v11 = _PCSFPCopyExportedWithOptions(self->_shareProtection, 1, 1, v6, &v18, v7, v8, v9);
     v12 = v18;
-    if (a3)
+    if (error)
     {
-      *a3 = v18;
+      *error = v18;
       v18 = 0;
     }
 
@@ -153,14 +153,14 @@ void __73__PCSShareProtectionObject_initWithSharingRequestData_identitySet_error
 
   else
   {
-    if (a3)
+    if (error)
     {
       v13 = MEMORY[0x1E696ABC0];
       v14 = kPCSErrorDomain;
       v19 = *MEMORY[0x1E696A578];
       v20[0] = @"missing signing identity";
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-      *a3 = [v13 errorWithDomain:v14 code:144 userInfo:v15];
+      *error = [v13 errorWithDomain:v14 code:144 userInfo:v15];
     }
 
     v11 = 0;

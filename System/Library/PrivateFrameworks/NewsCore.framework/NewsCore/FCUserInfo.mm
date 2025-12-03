@@ -1,9 +1,9 @@
 @interface FCUserInfo
 + (id)backingRecordZoneIDs;
-+ (id)commandsToMergeLocalDataToCloud:(id)a3 privateDataDirectory:(id)a4;
++ (id)commandsToMergeLocalDataToCloud:(id)cloud privateDataDirectory:(id)directory;
 + (id)desiredKeys;
 + (id)overrideFeldsparID;
-+ (id)userInfoCKRecordFromUserInfoDictionary:(uint64_t)a1;
++ (id)userInfoCKRecordFromUserInfoDictionary:(uint64_t)dictionary;
 + (unint64_t)progressivePersonalization;
 - (BOOL)endOfAudioTrackNotificationsEnabled;
 - (BOOL)hasShownProgressivePersonalizationWelcomeBrick;
@@ -14,75 +14,75 @@
 - (BOOL)puzzleNotificationsEnabled;
 - (BOOL)shouldShowDefaultForYou;
 - (BOOL)userHasCompletedFavoritesSetup;
-- (FCUserInfo)initWithContext:(id)a3 pushNotificationCenter:(id)a4 storeDirectory:(id)a5;
+- (FCUserInfo)initWithContext:(id)context pushNotificationCenter:(id)center storeDirectory:(id)directory;
 - (NSDate)newsletterSignupLastSeenDate;
 - (NSString)adsUserID;
 - (NSString)feldsparID;
 - (NSString)sportsUserID;
 - (double)ageOfPlaceholderFSID;
-- (id)_temporaryUserIDForKey:(uint64_t)a1;
-- (id)_userInfoValueForKey:(id *)a1;
-- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)a3;
+- (id)_temporaryUserIDForKey:(uint64_t)key;
+- (id)_userInfoValueForKey:(id *)key;
+- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)d;
 - (id)asCKRecord;
-- (id)recordsForRestoringZoneName:(id)a3;
+- (id)recordsForRestoringZoneName:(id)name;
 - (int64_t)shortcutsOnboardingState;
 - (int64_t)sportsOnboardingState;
 - (int64_t)sportsSyncState;
 - (uint64_t)_modifyUserInfoWithBlock:(uint64_t)result;
-- (uint64_t)_shouldRotateAdsUserIDWithCreatedDate:(id *)a1;
+- (uint64_t)_shouldRotateAdsUserIDWithCreatedDate:(id *)date;
 - (unint64_t)progressivePersonalization;
 - (unint64_t)sportsTopicNotificationsEnabledState;
-- (void)_clearTemporaryUserIDForKey:(uint64_t)a1;
-- (void)_generateTemporaryUserIDIfNeededForKey:(uint64_t)a1;
-- (void)_persistAdsUserID:(void *)a3 createdDate:;
-- (void)_persistSportsUserID:(id *)a1;
-- (void)_setUserInfoValue:(void *)a3 forKey:;
-- (void)accessTokenDidChangeForTagID:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)handleSyncWithChangedRecords:(id)a3 deletedRecordNames:(id)a4;
-- (void)handleSyncWithUserInfoRecord:(id *)a1;
-- (void)loadFeldsparIDWithCompletion:(id)a3;
+- (void)_clearTemporaryUserIDForKey:(uint64_t)key;
+- (void)_generateTemporaryUserIDIfNeededForKey:(uint64_t)key;
+- (void)_persistAdsUserID:(void *)d createdDate:;
+- (void)_persistSportsUserID:(id *)d;
+- (void)_setUserInfoValue:(void *)value forKey:;
+- (void)accessTokenDidChangeForTagID:(id)d;
+- (void)addObserver:(id)observer;
+- (void)handleSyncWithChangedRecords:(id)records deletedRecordNames:(id)names;
+- (void)handleSyncWithUserInfoRecord:(id *)record;
+- (void)loadFeldsparIDWithCompletion:(id)completion;
 - (void)loadLocalCachesFromStore;
 - (void)markSavedAsViewed;
 - (void)markSharedWithYouAsViewed;
-- (void)maybeUpdateOnboardingVersion:(id)a3;
+- (void)maybeUpdateOnboardingVersion:(id)version;
 - (void)prepareForUse;
-- (void)refreshOnboardingVersion:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)refreshOnboardingVersion:(id)version;
+- (void)removeObserver:(id)observer;
 - (void)resetPuzzleNotificationsState;
 - (void)resetRecipeBoxInitialImport;
 - (void)resetSportsID;
 - (void)resetUserIDs;
-- (void)setALaCarteSubscriptionMeteredCountLastResetDate:(id)a3;
-- (void)setAdsUserID:(id)a3;
-- (void)setAppLaunchUpsellLastPresenterBundleID:(id)a3;
-- (void)setAppLaunchUpsellLastSeenDate:(id)a3;
-- (void)setAppLaunchUpsellLastShownCampaignID:(id)a3;
-- (void)setAppReviewRequestLastShownDate:(id)a3;
-- (void)setBundleSubscriptionMeteredCountLastResetDate:(id)a3;
-- (void)setCanonicalLanguage:(id)a3;
-- (void)setDateLastOpened:(id)a3;
-- (void)setEditorialArticleVersion:(id)a3;
-- (void)setFeldsparID:(id)a3;
-- (void)setImportSavedToRecipeVersion:(id)a3;
-- (void)setLastAppLaunchUpsellInstanceID:(id)a3;
-- (void)setMonthlyALaCarteSubscriptionMeteredCount:(id)a3;
-- (void)setMonthlyBundleSubscriptionMeteredCount:(id)a3;
-- (void)setNewsletterSignupLastSeenDate:(id)a3;
-- (void)setOnboardingVersionNumber:(id)a3;
-- (void)setPostPurchaseOnboardingLastShownDate:(id)a3;
-- (void)setPuzzleStatsStartDate:(id)a3;
-- (void)setReadOnlyUserInfo:(uint64_t)a1;
-- (void)setShortcutsOnboardingState:(int64_t)a3;
-- (void)setSportsFavoritesLastModifiedDate:(id)a3;
-- (void)setSportsOnboardingState:(int64_t)a3;
-- (void)setSportsSyncState:(int64_t)a3;
-- (void)setSportsTopicNotificationsEnabledState:(unint64_t)a3;
-- (void)setSportsUserID:(id)a3;
-- (void)setUpsellAppLaunchCount:(id)a3;
-- (void)setUserStartDate:(id)a3;
-- (void)settingsDataDidChangeForPuzzleTypeID:(id)a3;
-- (void)syncWithCompletion:(id)a3;
+- (void)setALaCarteSubscriptionMeteredCountLastResetDate:(id)date;
+- (void)setAdsUserID:(id)d;
+- (void)setAppLaunchUpsellLastPresenterBundleID:(id)d;
+- (void)setAppLaunchUpsellLastSeenDate:(id)date;
+- (void)setAppLaunchUpsellLastShownCampaignID:(id)d;
+- (void)setAppReviewRequestLastShownDate:(id)date;
+- (void)setBundleSubscriptionMeteredCountLastResetDate:(id)date;
+- (void)setCanonicalLanguage:(id)language;
+- (void)setDateLastOpened:(id)opened;
+- (void)setEditorialArticleVersion:(id)version;
+- (void)setFeldsparID:(id)d;
+- (void)setImportSavedToRecipeVersion:(id)version;
+- (void)setLastAppLaunchUpsellInstanceID:(id)d;
+- (void)setMonthlyALaCarteSubscriptionMeteredCount:(id)count;
+- (void)setMonthlyBundleSubscriptionMeteredCount:(id)count;
+- (void)setNewsletterSignupLastSeenDate:(id)date;
+- (void)setOnboardingVersionNumber:(id)number;
+- (void)setPostPurchaseOnboardingLastShownDate:(id)date;
+- (void)setPuzzleStatsStartDate:(id)date;
+- (void)setReadOnlyUserInfo:(uint64_t)info;
+- (void)setShortcutsOnboardingState:(int64_t)state;
+- (void)setSportsFavoritesLastModifiedDate:(id)date;
+- (void)setSportsOnboardingState:(int64_t)state;
+- (void)setSportsSyncState:(int64_t)state;
+- (void)setSportsTopicNotificationsEnabledState:(unint64_t)state;
+- (void)setSportsUserID:(id)d;
+- (void)setUpsellAppLaunchCount:(id)count;
+- (void)setUserStartDate:(id)date;
+- (void)settingsDataDidChangeForPuzzleTypeID:(id)d;
+- (void)syncWithCompletion:(id)completion;
 - (void)updateOnboardingVersion;
 @end
 
@@ -135,34 +135,34 @@ void __32__FCUserInfo_overrideFeldsparID__block_invoke()
   v22.receiver = self;
   v22.super_class = FCUserInfo;
   [(FCPrivateDataController *)&v22 prepareForUse];
-  v3 = [(FCUserInfo *)self notificationsUserID];
-  if (!v3 || (v4 = v3, -[FCUserInfo notificationsUserID](self, "notificationsUserID"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 length], v5, v4, !v6))
+  notificationsUserID = [(FCUserInfo *)self notificationsUserID];
+  if (!notificationsUserID || (v4 = notificationsUserID, -[FCUserInfo notificationsUserID](self, "notificationsUserID"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 length], v5, v4, !v6))
   {
-    v7 = [MEMORY[0x1E696AFB0] UUID];
-    v8 = [v7 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
-    [(FCUserInfo *)self _setUserInfoValue:v8 forKey:@"notificationsUserID"];
+    [(FCUserInfo *)self _setUserInfoValue:uUIDString forKey:@"notificationsUserID"];
     v9 = FCPushNotificationsLog;
     if (os_log_type_enabled(FCPushNotificationsLog, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v24 = v8;
+      v24 = uUIDString;
       _os_log_impl(&dword_1B63EF000, v9, OS_LOG_TYPE_INFO, "Generated a new notificationsUserID: %@", buf, 0xCu);
     }
   }
 
   v10 = +[FCAppleAccount sharedAccount];
-  v11 = [v10 isPrivateDataSyncingEnabled];
+  isPrivateDataSyncingEnabled = [v10 isPrivateDataSyncingEnabled];
 
-  if ((v11 & 1) == 0)
+  if ((isPrivateDataSyncingEnabled & 1) == 0)
   {
     v12 = [(FCUserInfo *)&self->super.super.isa _userInfoValueForKey:?];
     if (([v12 hasSuffix:@"-NoSync"] & 1) == 0)
     {
-      v13 = [MEMORY[0x1E696AFB0] UUID];
-      v14 = [v13 UUIDString];
+      uUID2 = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString2 = [uUID2 UUIDString];
 
-      v12 = [v14 stringByAppendingString:@"-NoSync"];
+      v12 = [uUIDString2 stringByAppendingString:@"-NoSync"];
 
       [(FCUserInfo *)self _setUserInfoValue:v12 forKey:@"notificationsUserID"];
       v15 = FCPushNotificationsLog;
@@ -189,12 +189,12 @@ void __32__FCUserInfo_overrideFeldsparID__block_invoke()
 
   if (v17)
   {
-    v18 = [MEMORY[0x1E696AFB0] UUID];
-    v19 = [v18 UUIDString];
+    uUID3 = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString3 = [uUID3 UUIDString];
 
-    [(FCUserInfo *)self _setUserInfoValue:v19 forKey:@"adsUserID"];
-    v20 = [MEMORY[0x1E695DF00] date];
-    [(FCUserInfo *)self _setUserInfoValue:v20 forKey:@"adsUserIDCreatedDate"];
+    [(FCUserInfo *)self _setUserInfoValue:uUIDString3 forKey:@"adsUserID"];
+    date = [MEMORY[0x1E695DF00] date];
+    [(FCUserInfo *)self _setUserInfoValue:date forKey:@"adsUserIDCreatedDate"];
   }
 
   v21 = *MEMORY[0x1E69E9840];
@@ -202,9 +202,9 @@ void __32__FCUserInfo_overrideFeldsparID__block_invoke()
 
 - (void)loadLocalCachesFromStore
 {
-  v3 = [(FCPrivateDataController *)self localStore];
-  v4 = [v3 asDictionary];
-  [(FCUserInfo *)self setReadOnlyUserInfo:v4];
+  localStore = [(FCPrivateDataController *)self localStore];
+  asDictionary = [localStore asDictionary];
+  [(FCUserInfo *)self setReadOnlyUserInfo:asDictionary];
 
   v5 = NewsCoreSensitiveUserDefaults();
   v20 = [v5 stringForKey:@"widget_assigned_user_id"];
@@ -249,14 +249,14 @@ void __32__FCUserInfo_overrideFeldsparID__block_invoke()
 
       else
       {
-        v14 = [MEMORY[0x1E696AFB0] UUID];
-        v15 = [v14 UUIDString];
-        [v13 setObject:v15 forKey:@"temporary-fsid"];
+        uUID = [MEMORY[0x1E696AFB0] UUID];
+        uUIDString = [uUID UUIDString];
+        [v13 setObject:uUIDString forKey:@"temporary-fsid"];
       }
 
       v16 = NewsCoreSensitiveUserDefaults();
-      v17 = [MEMORY[0x1E695DF00] date];
-      [v16 setObject:v17 forKey:@"temporary-fsid-creation-date"];
+      date = [MEMORY[0x1E695DF00] date];
+      [v16 setObject:date forKey:@"temporary-fsid-creation-date"];
 
       v11 = 0;
     }
@@ -264,11 +264,11 @@ void __32__FCUserInfo_overrideFeldsparID__block_invoke()
 
   [(FCUserInfo *)self _generateTemporaryUserIDIfNeededForKey:?];
   [(FCUserInfo *)self _generateTemporaryUserIDIfNeededForKey:?];
-  v18 = [(FCUserInfo *)self tagSettings];
-  [v18 loadLocalCachesFromStore];
+  tagSettings = [(FCUserInfo *)self tagSettings];
+  [tagSettings loadLocalCachesFromStore];
 
-  v19 = [(FCUserInfo *)self puzzleTypeSettings];
-  [v19 loadLocalCachesFromStore];
+  puzzleTypeSettings = [(FCUserInfo *)self puzzleTypeSettings];
+  [puzzleTypeSettings loadLocalCachesFromStore];
 }
 
 + (unint64_t)progressivePersonalization
@@ -290,9 +290,9 @@ void __32__FCUserInfo_overrideFeldsparID__block_invoke()
 - (int64_t)sportsSyncState
 {
   v2 = [(FCUserInfo *)&self->super.super.isa _userInfoValueForKey:?];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (unint64_t)progressivePersonalization
@@ -354,41 +354,41 @@ void __32__FCUserInfo_overrideFeldsparID__block_invoke()
 - (int64_t)sportsOnboardingState
 {
   v2 = [(FCUserInfo *)&self->super.super.isa _userInfoValueForKey:?];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)newIssueNotificationsEnabled
 {
   v2 = [(FCUserInfo *)&self->super.super.isa _userInfoValueForKey:?];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)marketingNotificationsEnabled
 {
   v2 = [(FCUserInfo *)&self->super.super.isa _userInfoValueForKey:?];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)endOfAudioTrackNotificationsEnabled
 {
   v2 = [(FCUserInfo *)&self->super.super.isa _userInfoValueForKey:?];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)puzzleNotificationsEnabled
 {
   v2 = [(FCUserInfo *)&self->super.super.isa _userInfoValueForKey:?];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSString)sportsUserID
@@ -477,36 +477,36 @@ void __32__FCUserInfo_overrideFeldsparID__block_invoke()
 
 - (BOOL)mightNeedToUpdateOnboardingVersion
 {
-  v3 = [(FCUserInfo *)self onboardingVersionNumber];
-  v4 = [v3 integerValue];
+  onboardingVersionNumber = [(FCUserInfo *)self onboardingVersionNumber];
+  integerValue = [onboardingVersionNumber integerValue];
 
-  if (v4 > 6)
+  if (integerValue > 6)
   {
     return 0;
   }
 
-  v6 = [(FCUserInfo *)self onboardingVersionNumber];
-  v7 = [v6 integerValue];
+  onboardingVersionNumber2 = [(FCUserInfo *)self onboardingVersionNumber];
+  integerValue2 = [onboardingVersionNumber2 integerValue];
 
-  return v7 != 6;
+  return integerValue2 != 6;
 }
 
-- (FCUserInfo)initWithContext:(id)a3 pushNotificationCenter:(id)a4 storeDirectory:(id)a5
+- (FCUserInfo)initWithContext:(id)context pushNotificationCenter:(id)center storeDirectory:(id)directory
 {
   v17.receiver = self;
   v17.super_class = FCUserInfo;
-  v5 = [(FCPrivateDataController *)&v17 initWithContext:a3 pushNotificationCenter:a4 storeDirectory:a5];
+  v5 = [(FCPrivateDataController *)&v17 initWithContext:context pushNotificationCenter:center storeDirectory:directory];
   if (v5)
   {
     v6 = [FCTagSettings alloc];
-    v7 = [(FCPrivateDataController *)v5 localStore];
-    v8 = [(FCTagSettings *)v6 initWithStore:v7 tagSettingsDelegate:v5];
+    localStore = [(FCPrivateDataController *)v5 localStore];
+    v8 = [(FCTagSettings *)v6 initWithStore:localStore tagSettingsDelegate:v5];
     tagSettings = v5->_tagSettings;
     v5->_tagSettings = v8;
 
     v10 = [FCPuzzleTypeSettings alloc];
-    v11 = [(FCPrivateDataController *)v5 localStore];
-    v12 = [(FCPuzzleTypeSettings *)v10 initWithStore:v11 delegate:v5];
+    localStore2 = [(FCPrivateDataController *)v5 localStore];
+    v12 = [(FCPuzzleTypeSettings *)v10 initWithStore:localStore2 delegate:v5];
     puzzleTypeSettings = v5->_puzzleTypeSettings;
     v5->_puzzleTypeSettings = v12;
 
@@ -518,57 +518,57 @@ void __32__FCUserInfo_overrideFeldsparID__block_invoke()
   return v5;
 }
 
-- (void)_setUserInfoValue:(void *)a3 forKey:
+- (void)_setUserInfoValue:(void *)value forKey:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  valueCopy = value;
+  v7 = valueCopy;
+  if (self)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __39__FCUserInfo__setUserInfoValue_forKey___block_invoke;
     v8[3] = &unk_1E7C3C220;
-    v9 = v6;
+    v9 = valueCopy;
     v10 = v5;
-    [(FCUserInfo *)a1 _modifyUserInfoWithBlock:v8];
+    [(FCUserInfo *)self _modifyUserInfoWithBlock:v8];
   }
 }
 
-- (id)_userInfoValueForKey:(id *)a1
+- (id)_userInfoValueForKey:(id *)key
 {
   v3 = a2;
-  if (a1)
+  if (key)
   {
-    [a1 assertReadyForUse];
+    [key assertReadyForUse];
     v9 = 0;
     v10 = &v9;
     v11 = 0x3032000000;
     v12 = __Block_byref_object_copy__26;
     v13 = __Block_byref_object_dispose__26;
     v14 = 0;
-    v4 = a1[15];
+    v4 = key[15];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __35__FCUserInfo__userInfoValueForKey___block_invoke;
     v6[3] = &unk_1E7C37138;
     v8 = &v9;
-    v6[4] = a1;
+    v6[4] = key;
     v7 = v3;
     [v4 performReadSync:v6];
 
-    a1 = v10[5];
+    key = v10[5];
     _Block_object_dispose(&v9, 8);
   }
 
-  return a1;
+  return key;
 }
 
-- (uint64_t)_shouldRotateAdsUserIDWithCreatedDate:(id *)a1
+- (uint64_t)_shouldRotateAdsUserIDWithCreatedDate:(id *)date
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (date)
   {
     if (v3)
     {
@@ -586,13 +586,13 @@ void __32__FCUserInfo_overrideFeldsparID__block_invoke()
       }
 
       v8 = [v4 dateByAddingTimeInterval:v7];
-      v9 = [MEMORY[0x1E695DF00] date];
-      v10 = [v8 fc_isEarlierThanOrEqualTo:v9];
+      date = [MEMORY[0x1E695DF00] date];
+      v10 = [v8 fc_isEarlierThanOrEqualTo:date];
     }
 
     else
     {
-      v6 = [(FCUserInfo *)a1 _userInfoValueForKey:?];
+      v6 = [(FCUserInfo *)date _userInfoValueForKey:?];
       v10 = v6 != 0;
     }
   }
@@ -633,42 +633,42 @@ void __25__FCUserInfo_desiredKeys__block_invoke()
   _MergedGlobals_13_0 = v0;
 }
 
-- (void)setOnboardingVersionNumber:(id)a3
+- (void)setOnboardingVersionNumber:(id)number
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  numberCopy = number;
   [MEMORY[0x1E696AF00] isMainThread];
   v5 = FCDefaultLog;
   if (os_log_type_enabled(FCDefaultLog, OS_LOG_TYPE_INFO))
   {
     v6 = v5;
-    v7 = NSStringFromFCOnboardingVersionNumber([v4 integerValue]);
+    v7 = NSStringFromFCOnboardingVersionNumber([numberCopy integerValue]);
     *buf = 138412546;
-    v28 = v4;
+    v28 = numberCopy;
     v29 = 2112;
     v30 = v7;
     _os_log_impl(&dword_1B63EF000, v6, OS_LOG_TYPE_INFO, "Onboarding version number being set to %@ (%@)", buf, 0x16u);
   }
 
-  if ([v4 intValue] == 4)
+  if ([numberCopy intValue] == 4)
   {
-    v8 = [(FCUserInfo *)self onboardingVersionNumber];
-    v9 = [v8 intValue];
+    onboardingVersionNumber = [(FCUserInfo *)self onboardingVersionNumber];
+    intValue = [onboardingVersionNumber intValue];
 
-    if (v9 == 3)
+    if (intValue == 3)
     {
-      v10 = [MEMORY[0x1E695E000] standardUserDefaults];
-      [v10 setBool:1 forKey:@"onboarding_completed_from_personalize_news"];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      [standardUserDefaults setBool:1 forKey:@"onboarding_completed_from_personalize_news"];
     }
   }
 
-  [(FCUserInfo *)self _setUserInfoValue:v4 forKey:@"finishFirstLaunchVersion"];
+  [(FCUserInfo *)self _setUserInfoValue:numberCopy forKey:@"finishFirstLaunchVersion"];
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v11 = [(FCPrivateDataController *)self observers];
-  v12 = [v11 copy];
+  observers = [(FCPrivateDataController *)self observers];
+  v12 = [observers copy];
 
   v13 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v13)
@@ -702,8 +702,8 @@ void __25__FCUserInfo_desiredKeys__block_invoke()
   }
 
   v18 = [FCModifyUserInfoCommand alloc];
-  v19 = [(FCUserInfo *)&self->super.super.isa asCKRecord];
-  v20 = [(FCModifyUserInfoCommand *)v18 initWithUserInfoRecord:v19];
+  asCKRecord = [(FCUserInfo *)&self->super.super.isa asCKRecord];
+  v20 = [(FCModifyUserInfoCommand *)v18 initWithUserInfoRecord:asCKRecord];
 
   [(FCPrivateDataController *)self addCommandToCommandQueue:v20];
   v21 = *MEMORY[0x1E69E9840];
@@ -711,8 +711,8 @@ void __25__FCUserInfo_desiredKeys__block_invoke()
 
 - (id)asCKRecord
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v5 = 0;
     v6 = &v5;
@@ -720,25 +720,25 @@ void __25__FCUserInfo_desiredKeys__block_invoke()
     v8 = __Block_byref_object_copy__26;
     v9 = __Block_byref_object_dispose__26;
     v10 = 0;
-    v2 = a1[15];
+    v2 = self[15];
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __24__FCUserInfo_asCKRecord__block_invoke;
     v4[3] = &unk_1E7C37160;
-    v4[4] = v1;
+    v4[4] = selfCopy;
     v4[5] = &v5;
     [v2 performReadSync:v4];
 
-    v1 = v6[5];
+    selfCopy = v6[5];
     _Block_object_dispose(&v5, 8);
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)loadFeldsparIDWithCompletion:(id)a3
+- (void)loadFeldsparIDWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [MEMORY[0x1E696AF00] isMainThread];
   v5 = [(FCUserInfo *)&self->super.super.isa _userInfoValueForKey:?];
 
@@ -749,8 +749,8 @@ void __25__FCUserInfo_desiredKeys__block_invoke()
     v9[3] = __43__FCUserInfo_loadFeldsparIDWithCompletion___block_invoke;
     v9[4] = &unk_1E7C379C8;
     v6 = &v10;
-    v10 = v4;
-    v4[2](v4);
+    v10 = completionCopy;
+    completionCopy[2](completionCopy);
   }
 
   else
@@ -761,8 +761,8 @@ void __25__FCUserInfo_desiredKeys__block_invoke()
     v8[3] = &unk_1E7C39C20;
     v6 = v9;
     v8[4] = self;
-    v9[0] = v4;
-    v7 = v4;
+    v9[0] = completionCopy;
+    v7 = completionCopy;
     [(FCPrivateDataController *)self performFirstSyncWithCallbackQueue:MEMORY[0x1E69E96A0] completion:v8];
   }
 }
@@ -877,8 +877,8 @@ void __43__FCUserInfo_loadFeldsparIDWithCompletion___block_invoke_5(uint64_t a1,
     v3 = MEMORY[0x1E696AF00];
     v4 = a2;
     [v3 isMainThread];
-    v5 = [v2 localStore];
-    v4[2](v4, v5);
+    localStore = [v2 localStore];
+    v4[2](v4, localStore);
 
     v6 = v2[15];
     v7[0] = MEMORY[0x1E69E9820];
@@ -916,8 +916,8 @@ void __43__FCUserInfo_loadFeldsparIDWithCompletion___block_invoke_5(uint64_t a1,
   [(FCUserInfo *)self _clearTemporaryUserIDForKey:?];
   [(FCUserInfo *)self _clearTemporaryUserIDForKey:?];
   v7 = [FCModifyUserInfoCommand alloc];
-  v8 = [(FCUserInfo *)&self->super.super.isa asCKRecord];
-  v9 = [(FCModifyUserInfoCommand *)v7 initWithUserInfoRecord:v8];
+  asCKRecord = [(FCUserInfo *)&self->super.super.isa asCKRecord];
+  v9 = [(FCModifyUserInfoCommand *)v7 initWithUserInfoRecord:asCKRecord];
 
   v18 = v9;
   [(FCPrivateDataController *)self addCommandToCommandQueue:v9];
@@ -925,8 +925,8 @@ void __43__FCUserInfo_loadFeldsparIDWithCompletion___block_invoke_5(uint64_t a1,
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = [(FCPrivateDataController *)self observers];
-  v11 = [v10 copy];
+  observers = [(FCPrivateDataController *)self observers];
+  v11 = [observers copy];
 
   v12 = [v11 countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v12)
@@ -989,9 +989,9 @@ void __26__FCUserInfo_resetUserIDs__block_invoke(uint64_t a1, void *a2)
   [v3 setObject:v8 forKeyedSubscript:@"sportsUserID"];
 }
 
-- (void)_clearTemporaryUserIDForKey:(uint64_t)a1
+- (void)_clearTemporaryUserIDForKey:(uint64_t)key
 {
-  if (a1)
+  if (key)
   {
     v3 = [@"temporary-user-id-" stringByAppendingString:a2];
     v2 = NewsCoreSensitiveUserDefaults();
@@ -1013,16 +1013,16 @@ void __26__FCUserInfo_resetUserIDs__block_invoke(uint64_t a1, void *a2)
   [(FCUserInfo *)self _modifyUserInfoWithBlock:?];
   [(FCUserInfo *)self _clearTemporaryUserIDForKey:?];
   v4 = [FCModifyUserInfoCommand alloc];
-  v5 = [(FCUserInfo *)&self->super.super.isa asCKRecord];
-  v6 = [(FCModifyUserInfoCommand *)v4 initWithUserInfoRecord:v5];
+  asCKRecord = [(FCUserInfo *)&self->super.super.isa asCKRecord];
+  v6 = [(FCModifyUserInfoCommand *)v4 initWithUserInfoRecord:asCKRecord];
 
   [(FCPrivateDataController *)self addCommandToCommandQueue:v6];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [(FCPrivateDataController *)self observers];
-  v8 = [v7 copy];
+  observers = [(FCPrivateDataController *)self observers];
+  v8 = [observers copy];
 
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v9)
@@ -1067,23 +1067,23 @@ void __27__FCUserInfo_resetSportsID__block_invoke(uint64_t a1, void *a2)
   [v3 setObject:v4 forKeyedSubscript:@"sportsUserID"];
 }
 
-- (void)setFeldsparID:(id)a3
+- (void)setFeldsparID:(id)d
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   [MEMORY[0x1E696AF00] isMainThread];
-  [(FCUserInfo *)self _setUserInfoValue:v4 forKey:@"feldsparID"];
+  [(FCUserInfo *)self _setUserInfoValue:dCopy forKey:@"feldsparID"];
   v5 = [FCModifyUserInfoCommand alloc];
-  v6 = [(FCUserInfo *)&self->super.super.isa asCKRecord];
-  v7 = [(FCModifyUserInfoCommand *)v5 initWithUserInfoRecord:v6];
+  asCKRecord = [(FCUserInfo *)&self->super.super.isa asCKRecord];
+  v7 = [(FCModifyUserInfoCommand *)v5 initWithUserInfoRecord:asCKRecord];
 
   [(FCPrivateDataController *)self addCommandToCommandQueue:v7];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(FCPrivateDataController *)self observers];
-  v9 = [v8 copy];
+  observers = [(FCPrivateDataController *)self observers];
+  v9 = [observers copy];
 
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
@@ -1138,34 +1138,34 @@ void __27__FCUserInfo_resetSportsID__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (void)setAdsUserID:(id)a3
+- (void)setAdsUserID:(id)d
 {
   v4 = MEMORY[0x1E696AF00];
-  v5 = a3;
+  dCopy = d;
   [v4 isMainThread];
-  v6 = [MEMORY[0x1E695DF00] date];
-  [(FCUserInfo *)&self->super.super.isa _persistAdsUserID:v5 createdDate:v6];
+  date = [MEMORY[0x1E695DF00] date];
+  [(FCUserInfo *)&self->super.super.isa _persistAdsUserID:dCopy createdDate:date];
 }
 
-- (void)_persistAdsUserID:(void *)a3 createdDate:
+- (void)_persistAdsUserID:(void *)d createdDate:
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (a1)
+  dCopy = d;
+  if (self)
   {
-    [(FCUserInfo *)a1 _setUserInfoValue:a2 forKey:@"adsUserID"];
-    [(FCUserInfo *)a1 _setUserInfoValue:v5 forKey:@"adsUserIDCreatedDate"];
+    [(FCUserInfo *)self _setUserInfoValue:a2 forKey:@"adsUserID"];
+    [(FCUserInfo *)self _setUserInfoValue:dCopy forKey:@"adsUserIDCreatedDate"];
     v6 = [FCModifyUserInfoCommand alloc];
-    v7 = [(FCUserInfo *)a1 asCKRecord];
-    v8 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:v7];
+    asCKRecord = [(FCUserInfo *)self asCKRecord];
+    v8 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:asCKRecord];
 
-    [a1 addCommandToCommandQueue:v8];
+    [self addCommandToCommandQueue:v8];
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v9 = [a1 observers];
-    v10 = [v9 copy];
+    observers = [self observers];
+    v10 = [observers copy];
 
     v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v11)
@@ -1185,7 +1185,7 @@ void __27__FCUserInfo_resetSportsID__block_invoke(uint64_t a1, void *a2)
           v15 = *(*(&v17 + 1) + 8 * v14);
           if (objc_opt_respondsToSelector())
           {
-            [v15 userInfoDidChangeAdsUserID:a1 fromCloud:0];
+            [v15 userInfoDidChangeAdsUserID:self fromCloud:0];
           }
 
           ++v14;
@@ -1202,9 +1202,9 @@ void __27__FCUserInfo_resetSportsID__block_invoke(uint64_t a1, void *a2)
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_temporaryUserIDForKey:(uint64_t)a1
+- (id)_temporaryUserIDForKey:(uint64_t)key
 {
-  if (a1)
+  if (key)
   {
     v2 = [@"temporary-user-id-" stringByAppendingString:a2];
     v3 = NewsCoreSensitiveUserDefaults();
@@ -1219,31 +1219,31 @@ void __27__FCUserInfo_resetSportsID__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-- (void)setSportsUserID:(id)a3
+- (void)setSportsUserID:(id)d
 {
   v4 = MEMORY[0x1E696AF00];
-  v5 = a3;
+  dCopy = d;
   [v4 isMainThread];
-  [(FCUserInfo *)&self->super.super.isa _persistSportsUserID:v5];
+  [(FCUserInfo *)&self->super.super.isa _persistSportsUserID:dCopy];
 }
 
-- (void)_persistSportsUserID:(id *)a1
+- (void)_persistSportsUserID:(id *)d
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (d)
   {
-    [(FCUserInfo *)a1 _setUserInfoValue:a2 forKey:@"sportsUserID"];
+    [(FCUserInfo *)d _setUserInfoValue:a2 forKey:@"sportsUserID"];
     v3 = [FCModifyUserInfoCommand alloc];
-    v4 = [(FCUserInfo *)a1 asCKRecord];
-    v5 = [(FCModifyUserInfoCommand *)v3 initWithUserInfoRecord:v4];
+    asCKRecord = [(FCUserInfo *)d asCKRecord];
+    v5 = [(FCModifyUserInfoCommand *)v3 initWithUserInfoRecord:asCKRecord];
 
-    [a1 addCommandToCommandQueue:v5];
+    [d addCommandToCommandQueue:v5];
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [a1 observers];
-    v7 = [v6 copy];
+    observers = [d observers];
+    v7 = [observers copy];
 
     v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
@@ -1263,7 +1263,7 @@ void __27__FCUserInfo_resetSportsID__block_invoke(uint64_t a1, void *a2)
           v12 = *(*(&v14 + 1) + 8 * v11);
           if (objc_opt_respondsToSelector())
           {
-            [v12 userInfoDidChangeSportsUserID:a1];
+            [v12 userInfoDidChangeSportsUserID:d];
           }
 
           ++v11;
@@ -1283,37 +1283,37 @@ void __27__FCUserInfo_resetSportsID__block_invoke(uint64_t a1, void *a2)
 - (unint64_t)sportsTopicNotificationsEnabledState
 {
   v2 = [(FCUserInfo *)&self->super.super.isa _userInfoValueForKey:?];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setUserStartDate:(id)a3
+- (void)setUserStartDate:(id)date
 {
   v4 = MEMORY[0x1E696AF00];
-  v5 = a3;
+  dateCopy = date;
   [v4 isMainThread];
-  [(FCUserInfo *)self _setUserInfoValue:v5 forKey:@"userStartDate"];
+  [(FCUserInfo *)self _setUserInfoValue:dateCopy forKey:@"userStartDate"];
 
   v6 = [FCModifyUserInfoCommand alloc];
-  v7 = [(FCUserInfo *)&self->super.super.isa asCKRecord];
-  v8 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:v7];
+  asCKRecord = [(FCUserInfo *)&self->super.super.isa asCKRecord];
+  v8 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:asCKRecord];
 
   [(FCPrivateDataController *)self addCommandToCommandQueue:v8];
 }
 
-- (void)setDateLastOpened:(id)a3
+- (void)setDateLastOpened:(id)opened
 {
-  v11 = a3;
+  openedCopy = opened;
   [MEMORY[0x1E696AF00] isMainThread];
-  v4 = [(FCUserInfo *)self dateLastOpened];
-  v5 = v4;
-  if (!v4 || ([v4 dateByAddingTimeInterval:86400.0], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v11, "fc_isLaterThan:", v6), v6, v7))
+  dateLastOpened = [(FCUserInfo *)self dateLastOpened];
+  v5 = dateLastOpened;
+  if (!dateLastOpened || ([dateLastOpened dateByAddingTimeInterval:86400.0], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(openedCopy, "fc_isLaterThan:", v6), v6, v7))
   {
-    [(FCUserInfo *)self _setUserInfoValue:v11 forKey:@"lastOpenedDate"];
+    [(FCUserInfo *)self _setUserInfoValue:openedCopy forKey:@"lastOpenedDate"];
     v8 = [FCModifyUserInfoCommand alloc];
-    v9 = [(FCUserInfo *)&self->super.super.isa asCKRecord];
-    v10 = [(FCModifyUserInfoCommand *)v8 initWithUserInfoRecord:v9];
+    asCKRecord = [(FCUserInfo *)&self->super.super.isa asCKRecord];
+    v10 = [(FCModifyUserInfoCommand *)v8 initWithUserInfoRecord:asCKRecord];
 
     [(FCPrivateDataController *)self addCommandToCommandQueue:v10];
   }
@@ -1321,36 +1321,36 @@ void __27__FCUserInfo_resetSportsID__block_invoke(uint64_t a1, void *a2)
 
 - (BOOL)shouldShowDefaultForYou
 {
-  v2 = [(FCUserInfo *)self onboardingVersionNumber];
-  v3 = [v2 integerValue];
+  onboardingVersionNumber = [(FCUserInfo *)self onboardingVersionNumber];
+  integerValue = [onboardingVersionNumber integerValue];
 
-  return v3 == 3;
+  return integerValue == 3;
 }
 
 - (BOOL)hasShownProgressivePersonalizationWelcomeBrick
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"personalization_reset_progressive_personalization_opt_in"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"personalization_reset_progressive_personalization_opt_in"];
 
   if (v3)
   {
     v4 = NewsCoreUserDefaults();
     [v4 setBool:0 forKey:@"has_show_personalization_brick"];
 
-    v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v5 setBool:0 forKey:@"personalization_reset_progressive_personalization_opt_in"];
+    standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults2 setBool:0 forKey:@"personalization_reset_progressive_personalization_opt_in"];
   }
 
-  v6 = [objc_opt_class() progressivePersonalization];
-  if (v6 != 1)
+  progressivePersonalization = [objc_opt_class() progressivePersonalization];
+  if (progressivePersonalization != 1)
   {
     v7 = NewsCoreUserDefaults();
     v8 = [v7 BOOLForKey:@"has_show_personalization_brick"];
 
-    LOBYTE(v6) = v8;
+    LOBYTE(progressivePersonalization) = v8;
   }
 
-  return v6;
+  return progressivePersonalization;
 }
 
 - (BOOL)userHasCompletedFavoritesSetup
@@ -1361,27 +1361,27 @@ void __27__FCUserInfo_resetSportsID__block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-- (void)setSportsOnboardingState:(int64_t)a3
+- (void)setSportsOnboardingState:(int64_t)state
 {
   v23 = *MEMORY[0x1E69E9840];
   [MEMORY[0x1E696AF00] isMainThread];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:state];
   [(FCUserInfo *)self _setUserInfoValue:v5 forKey:@"sportsOnboardingState"];
 
-  v6 = [MEMORY[0x1E695DF00] date];
-  [(FCUserInfo *)self _setUserInfoValue:v6 forKey:@"sportsOnboardingCompletedDate"];
+  date = [MEMORY[0x1E695DF00] date];
+  [(FCUserInfo *)self _setUserInfoValue:date forKey:@"sportsOnboardingCompletedDate"];
 
   v7 = [FCModifyUserInfoCommand alloc];
-  v8 = [(FCUserInfo *)&self->super.super.isa asCKRecord];
-  v9 = [(FCModifyUserInfoCommand *)v7 initWithUserInfoRecord:v8];
+  asCKRecord = [(FCUserInfo *)&self->super.super.isa asCKRecord];
+  v9 = [(FCModifyUserInfoCommand *)v7 initWithUserInfoRecord:asCKRecord];
 
   [(FCPrivateDataController *)self addCommandToCommandQueue:v9];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = [(FCPrivateDataController *)self observers];
-  v11 = [v10 copy];
+  observers = [(FCPrivateDataController *)self observers];
+  v11 = [observers copy];
 
   v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v12)
@@ -1417,27 +1417,27 @@ void __27__FCUserInfo_resetSportsID__block_invoke(uint64_t a1, void *a2)
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setShortcutsOnboardingState:(int64_t)a3
+- (void)setShortcutsOnboardingState:(int64_t)state
 {
   v23 = *MEMORY[0x1E69E9840];
   [MEMORY[0x1E696AF00] isMainThread];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:state];
   [(FCUserInfo *)self _setUserInfoValue:v5 forKey:@"shortcutsOnboardingState"];
 
-  v6 = [MEMORY[0x1E695DF00] date];
-  [(FCUserInfo *)self _setUserInfoValue:v6 forKey:@"shortcutsOnboardingCompletedDate"];
+  date = [MEMORY[0x1E695DF00] date];
+  [(FCUserInfo *)self _setUserInfoValue:date forKey:@"shortcutsOnboardingCompletedDate"];
 
   v7 = [FCModifyUserInfoCommand alloc];
-  v8 = [(FCUserInfo *)&self->super.super.isa asCKRecord];
-  v9 = [(FCModifyUserInfoCommand *)v7 initWithUserInfoRecord:v8];
+  asCKRecord = [(FCUserInfo *)&self->super.super.isa asCKRecord];
+  v9 = [(FCModifyUserInfoCommand *)v7 initWithUserInfoRecord:asCKRecord];
 
   [(FCPrivateDataController *)self addCommandToCommandQueue:v9];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = [(FCPrivateDataController *)self observers];
-  v11 = [v10 copy];
+  observers = [(FCPrivateDataController *)self observers];
+  v11 = [observers copy];
 
   v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v12)
@@ -1476,27 +1476,27 @@ void __27__FCUserInfo_resetSportsID__block_invoke(uint64_t a1, void *a2)
 - (int64_t)shortcutsOnboardingState
 {
   v2 = [(FCUserInfo *)&self->super.super.isa _userInfoValueForKey:?];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setSportsSyncState:(int64_t)a3
+- (void)setSportsSyncState:(int64_t)state
 {
   v25 = *MEMORY[0x1E69E9840];
   [MEMORY[0x1E696AF00] isMainThread];
   v5 = [(FCUserInfo *)&self->super.super.isa _userInfoValueForKey:?];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:state];
 
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:state];
   [(FCUserInfo *)self _setUserInfoValue:v7 forKey:@"sportsSyncState"];
 
-  v8 = [MEMORY[0x1E695DF00] date];
-  [(FCUserInfo *)self _setUserInfoValue:v8 forKey:@"sportsSyncStateLastSavedDate"];
+  date = [MEMORY[0x1E695DF00] date];
+  [(FCUserInfo *)self _setUserInfoValue:date forKey:@"sportsSyncStateLastSavedDate"];
 
   v9 = [FCModifyUserInfoCommand alloc];
-  v10 = [(FCUserInfo *)&self->super.super.isa asCKRecord];
-  v11 = [(FCModifyUserInfoCommand *)v9 initWithUserInfoRecord:v10];
+  asCKRecord = [(FCUserInfo *)&self->super.super.isa asCKRecord];
+  v11 = [(FCModifyUserInfoCommand *)v9 initWithUserInfoRecord:asCKRecord];
 
   [(FCPrivateDataController *)self addCommandToCommandQueue:v11];
   if (v5 != v6)
@@ -1505,8 +1505,8 @@ void __27__FCUserInfo_resetSportsID__block_invoke(uint64_t a1, void *a2)
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v12 = [(FCPrivateDataController *)self observers];
-    v13 = [v12 copy];
+    observers = [(FCPrivateDataController *)self observers];
+    v13 = [observers copy];
 
     v14 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v14)
@@ -1543,24 +1543,24 @@ void __27__FCUserInfo_resetSportsID__block_invoke(uint64_t a1, void *a2)
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSportsFavoritesLastModifiedDate:(id)a3
+- (void)setSportsFavoritesLastModifiedDate:(id)date
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dateCopy = date;
   v5 = FCUserInfoLog;
   if (os_log_type_enabled(FCUserInfoLog, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 description];
+    v7 = [dateCopy description];
     v12 = 138412290;
     v13 = v7;
     _os_log_impl(&dword_1B63EF000, v6, OS_LOG_TYPE_DEFAULT, "Setting sports favorites last modified date=%@", &v12, 0xCu);
   }
 
-  [(FCUserInfo *)self _setUserInfoValue:v4 forKey:@"sportsFavoritesLastModifiedDate"];
+  [(FCUserInfo *)self _setUserInfoValue:dateCopy forKey:@"sportsFavoritesLastModifiedDate"];
   v8 = [FCModifyUserInfoCommand alloc];
-  v9 = [(FCUserInfo *)&self->super.super.isa asCKRecord];
-  v10 = [(FCModifyUserInfoCommand *)v8 initWithUserInfoRecord:v9];
+  asCKRecord = [(FCUserInfo *)&self->super.super.isa asCKRecord];
+  v10 = [(FCModifyUserInfoCommand *)v8 initWithUserInfoRecord:asCKRecord];
 
   [(FCPrivateDataController *)self addCommandToCommandQueue:v10];
   v11 = *MEMORY[0x1E69E9840];
@@ -1588,32 +1588,32 @@ void __27__FCUserInfo_resetSportsID__block_invoke(uint64_t a1, void *a2)
   v8 = [MEMORY[0x1E695DEC8] arrayWithObject:v7];
   [v6 sortUsingDescriptors:v8];
 
-  v9 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  return v9;
+  return firstObject;
 }
 
-- (void)setNewsletterSignupLastSeenDate:(id)a3
+- (void)setNewsletterSignupLastSeenDate:(id)date
 {
   v4 = MEMORY[0x1E696AF00];
-  v5 = a3;
+  dateCopy = date;
   [v4 isMainThread];
-  [(FCUserInfo *)self _setUserInfoValue:v5 forKey:@"newsletterSignupLastSeenDate"];
+  [(FCUserInfo *)self _setUserInfoValue:dateCopy forKey:@"newsletterSignupLastSeenDate"];
   v6 = [FCModifyUserInfoCommand alloc];
-  v7 = [(FCUserInfo *)&self->super.super.isa asCKRecord];
-  v18 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:v7];
+  asCKRecord = [(FCUserInfo *)&self->super.super.isa asCKRecord];
+  v18 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:asCKRecord];
 
   [(FCPrivateDataController *)self addCommandToCommandQueue:v18];
   if (self)
   {
     v8 = MEMORY[0x1E696AF00];
-    v9 = v5;
+    v9 = dateCopy;
     [v8 isMainThread];
     [(FCUserInfo *)self _setUserInfoValue:v9 forKey:@"personalizedNewsletterSignupLastSeenDate"];
 
     v10 = [FCModifyUserInfoCommand alloc];
-    v11 = [(FCUserInfo *)&self->super.super.isa asCKRecord];
-    v12 = [(FCModifyUserInfoCommand *)v10 initWithUserInfoRecord:v11];
+    asCKRecord2 = [(FCUserInfo *)&self->super.super.isa asCKRecord];
+    v12 = [(FCModifyUserInfoCommand *)v10 initWithUserInfoRecord:asCKRecord2];
 
     [(FCPrivateDataController *)self addCommandToCommandQueue:v12];
     v13 = MEMORY[0x1E696AF00];
@@ -1622,163 +1622,163 @@ void __27__FCUserInfo_resetSportsID__block_invoke(uint64_t a1, void *a2)
     [(FCUserInfo *)self _setUserInfoValue:v14 forKey:@"issuesNewsletterOptinLastSeenDate"];
 
     v15 = [FCModifyUserInfoCommand alloc];
-    v16 = [(FCUserInfo *)&self->super.super.isa asCKRecord];
-    v17 = [(FCModifyUserInfoCommand *)v15 initWithUserInfoRecord:v16];
+    asCKRecord3 = [(FCUserInfo *)&self->super.super.isa asCKRecord];
+    v17 = [(FCModifyUserInfoCommand *)v15 initWithUserInfoRecord:asCKRecord3];
 
     [(FCPrivateDataController *)self addCommandToCommandQueue:v17];
   }
 }
 
-- (void)setMonthlyALaCarteSubscriptionMeteredCount:(id)a3
+- (void)setMonthlyALaCarteSubscriptionMeteredCount:(id)count
 {
   v4 = MEMORY[0x1E696AF00];
-  v5 = a3;
+  countCopy = count;
   [v4 isMainThread];
-  [(FCUserInfo *)self _setUserInfoValue:v5 forKey:@"monthlyMeteredCount"];
+  [(FCUserInfo *)self _setUserInfoValue:countCopy forKey:@"monthlyMeteredCount"];
 
   v6 = [FCModifyUserInfoCommand alloc];
-  v7 = [(FCUserInfo *)&self->super.super.isa asCKRecord];
-  v8 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:v7];
+  asCKRecord = [(FCUserInfo *)&self->super.super.isa asCKRecord];
+  v8 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:asCKRecord];
 
   [(FCPrivateDataController *)self addCommandToCommandQueue:v8];
 }
 
-- (void)setALaCarteSubscriptionMeteredCountLastResetDate:(id)a3
+- (void)setALaCarteSubscriptionMeteredCountLastResetDate:(id)date
 {
   v4 = MEMORY[0x1E696AF00];
-  v5 = a3;
+  dateCopy = date;
   [v4 isMainThread];
-  [(FCUserInfo *)self _setUserInfoValue:v5 forKey:@"meteredCountLastResetDate"];
+  [(FCUserInfo *)self _setUserInfoValue:dateCopy forKey:@"meteredCountLastResetDate"];
 
   v6 = [FCModifyUserInfoCommand alloc];
-  v7 = [(FCUserInfo *)&self->super.super.isa asCKRecord];
-  v8 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:v7];
+  asCKRecord = [(FCUserInfo *)&self->super.super.isa asCKRecord];
+  v8 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:asCKRecord];
 
   [(FCPrivateDataController *)self addCommandToCommandQueue:v8];
 }
 
-- (void)setMonthlyBundleSubscriptionMeteredCount:(id)a3
+- (void)setMonthlyBundleSubscriptionMeteredCount:(id)count
 {
   v4 = MEMORY[0x1E696AF00];
-  v5 = a3;
+  countCopy = count;
   [v4 isMainThread];
-  [(FCUserInfo *)self _setUserInfoValue:v5 forKey:@"monthlyPaidBundleMeteredCount"];
+  [(FCUserInfo *)self _setUserInfoValue:countCopy forKey:@"monthlyPaidBundleMeteredCount"];
 
   v6 = [FCModifyUserInfoCommand alloc];
-  v7 = [(FCUserInfo *)&self->super.super.isa asCKRecord];
-  v8 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:v7];
+  asCKRecord = [(FCUserInfo *)&self->super.super.isa asCKRecord];
+  v8 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:asCKRecord];
 
   [(FCPrivateDataController *)self addCommandToCommandQueue:v8];
 }
 
-- (void)setBundleSubscriptionMeteredCountLastResetDate:(id)a3
+- (void)setBundleSubscriptionMeteredCountLastResetDate:(id)date
 {
   v4 = MEMORY[0x1E696AF00];
-  v5 = a3;
+  dateCopy = date;
   [v4 isMainThread];
-  [(FCUserInfo *)self _setUserInfoValue:v5 forKey:@"paidBundleMeteredCountLastResetDate"];
+  [(FCUserInfo *)self _setUserInfoValue:dateCopy forKey:@"paidBundleMeteredCountLastResetDate"];
 
   v6 = [FCModifyUserInfoCommand alloc];
-  v7 = [(FCUserInfo *)&self->super.super.isa asCKRecord];
-  v8 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:v7];
+  asCKRecord = [(FCUserInfo *)&self->super.super.isa asCKRecord];
+  v8 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:asCKRecord];
 
   [(FCPrivateDataController *)self addCommandToCommandQueue:v8];
 }
 
-- (void)setUpsellAppLaunchCount:(id)a3
+- (void)setUpsellAppLaunchCount:(id)count
 {
   v4 = MEMORY[0x1E696AF00];
-  v5 = a3;
+  countCopy = count;
   [v4 isMainThread];
-  [(FCUserInfo *)self _setUserInfoValue:v5 forKey:@"upsellAppLaunchCount"];
+  [(FCUserInfo *)self _setUserInfoValue:countCopy forKey:@"upsellAppLaunchCount"];
 
   v6 = [FCModifyUserInfoCommand alloc];
-  v7 = [(FCUserInfo *)&self->super.super.isa asCKRecord];
-  v8 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:v7];
+  asCKRecord = [(FCUserInfo *)&self->super.super.isa asCKRecord];
+  v8 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:asCKRecord];
 
   [(FCPrivateDataController *)self addCommandToCommandQueue:v8];
 }
 
-- (void)setLastAppLaunchUpsellInstanceID:(id)a3
+- (void)setLastAppLaunchUpsellInstanceID:(id)d
 {
   v4 = MEMORY[0x1E696AF00];
-  v5 = a3;
+  dCopy = d;
   [v4 isMainThread];
-  [(FCUserInfo *)self _setUserInfoValue:v5 forKey:@"lastAppLaunchUpsellInstanceID"];
+  [(FCUserInfo *)self _setUserInfoValue:dCopy forKey:@"lastAppLaunchUpsellInstanceID"];
 
   v6 = [FCModifyUserInfoCommand alloc];
-  v7 = [(FCUserInfo *)&self->super.super.isa asCKRecord];
-  v8 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:v7];
+  asCKRecord = [(FCUserInfo *)&self->super.super.isa asCKRecord];
+  v8 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:asCKRecord];
 
   [(FCPrivateDataController *)self addCommandToCommandQueue:v8];
 }
 
-- (void)setAppLaunchUpsellLastSeenDate:(id)a3
+- (void)setAppLaunchUpsellLastSeenDate:(id)date
 {
   v4 = MEMORY[0x1E696AF00];
-  v5 = a3;
+  dateCopy = date;
   [v4 isMainThread];
-  [(FCUserInfo *)self _setUserInfoValue:v5 forKey:@"upsellAppLaunchLastSeenDate"];
+  [(FCUserInfo *)self _setUserInfoValue:dateCopy forKey:@"upsellAppLaunchLastSeenDate"];
 
   v6 = [FCModifyUserInfoCommand alloc];
-  v7 = [(FCUserInfo *)&self->super.super.isa asCKRecord];
-  v8 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:v7];
+  asCKRecord = [(FCUserInfo *)&self->super.super.isa asCKRecord];
+  v8 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:asCKRecord];
 
   [(FCPrivateDataController *)self addCommandToCommandQueue:v8];
 }
 
-- (void)setAppLaunchUpsellLastShownCampaignID:(id)a3
+- (void)setAppLaunchUpsellLastShownCampaignID:(id)d
 {
   v4 = MEMORY[0x1E696AF00];
-  v5 = a3;
+  dCopy = d;
   [v4 isMainThread];
-  [(FCUserInfo *)self _setUserInfoValue:v5 forKey:@"upsellAppLaunchLastShownCampaignID"];
+  [(FCUserInfo *)self _setUserInfoValue:dCopy forKey:@"upsellAppLaunchLastShownCampaignID"];
 
   v6 = [FCModifyUserInfoCommand alloc];
-  v7 = [(FCUserInfo *)&self->super.super.isa asCKRecord];
-  v8 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:v7];
+  asCKRecord = [(FCUserInfo *)&self->super.super.isa asCKRecord];
+  v8 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:asCKRecord];
 
   [(FCPrivateDataController *)self addCommandToCommandQueue:v8];
 }
 
-- (void)setAppLaunchUpsellLastPresenterBundleID:(id)a3
+- (void)setAppLaunchUpsellLastPresenterBundleID:(id)d
 {
   v4 = MEMORY[0x1E696AF00];
-  v5 = a3;
+  dCopy = d;
   [v4 isMainThread];
-  [(FCUserInfo *)self _setUserInfoValue:v5 forKey:@"upsellAppLaunchLastPresenterBundleID"];
+  [(FCUserInfo *)self _setUserInfoValue:dCopy forKey:@"upsellAppLaunchLastPresenterBundleID"];
 
   v6 = [FCModifyUserInfoCommand alloc];
-  v7 = [(FCUserInfo *)&self->super.super.isa asCKRecord];
-  v8 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:v7];
+  asCKRecord = [(FCUserInfo *)&self->super.super.isa asCKRecord];
+  v8 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:asCKRecord];
 
   [(FCPrivateDataController *)self addCommandToCommandQueue:v8];
 }
 
-- (void)setPostPurchaseOnboardingLastShownDate:(id)a3
+- (void)setPostPurchaseOnboardingLastShownDate:(id)date
 {
   v4 = MEMORY[0x1E696AF00];
-  v5 = a3;
+  dateCopy = date;
   [v4 isMainThread];
-  [(FCUserInfo *)self _setUserInfoValue:v5 forKey:@"postPurchaseOnboardingLastSeenDate"];
+  [(FCUserInfo *)self _setUserInfoValue:dateCopy forKey:@"postPurchaseOnboardingLastSeenDate"];
 
   v6 = [FCModifyUserInfoCommand alloc];
-  v7 = [(FCUserInfo *)&self->super.super.isa asCKRecord];
-  v8 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:v7];
+  asCKRecord = [(FCUserInfo *)&self->super.super.isa asCKRecord];
+  v8 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:asCKRecord];
 
   [(FCPrivateDataController *)self addCommandToCommandQueue:v8];
 }
 
-- (void)refreshOnboardingVersion:(id)a3
+- (void)refreshOnboardingVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __39__FCUserInfo_refreshOnboardingVersion___block_invoke;
   v6[3] = &unk_1E7C39C20;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = versionCopy;
+  v5 = versionCopy;
   [(FCPrivateDataController *)self performFirstSyncWithCallbackQueue:MEMORY[0x1E69E96A0] completion:v6];
 }
 
@@ -1794,19 +1794,19 @@ void __39__FCUserInfo_refreshOnboardingVersion___block_invoke(uint64_t a1)
 
 - (void)updateOnboardingVersion
 {
-  v3 = [(FCUserInfo *)self onboardingVersionNumber];
-  v4 = [v3 integerValue];
+  onboardingVersionNumber = [(FCUserInfo *)self onboardingVersionNumber];
+  integerValue = [onboardingVersionNumber integerValue];
 
-  if (v4 < 5)
+  if (integerValue < 5)
   {
     [(FCUserInfo *)self setMarketingNotificationsEnabled:1];
     [(FCUserInfo *)self setOnboardingVersionNumber:&unk_1F2E70218];
   }
 
-  v5 = [(FCUserInfo *)self onboardingVersionNumber];
-  v6 = [v5 integerValue];
+  onboardingVersionNumber2 = [(FCUserInfo *)self onboardingVersionNumber];
+  integerValue2 = [onboardingVersionNumber2 integerValue];
 
-  if (v6 <= 5)
+  if (integerValue2 <= 5)
   {
     [(FCUserInfo *)self setEndOfAudioTrackNotificationsEnabled:1];
     [(FCUserInfo *)self setOnboardingVersionNumber:&unk_1F2E70230];
@@ -1819,9 +1819,9 @@ void __39__FCUserInfo_refreshOnboardingVersion___block_invoke(uint64_t a1)
   [(FCUserInfo *)self setOnboardingVersionNumber:v8];
 }
 
-- (void)maybeUpdateOnboardingVersion:(id)a3
+- (void)maybeUpdateOnboardingVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __43__FCUserInfo_maybeUpdateOnboardingVersion___block_invoke;
@@ -1830,9 +1830,9 @@ void __39__FCUserInfo_refreshOnboardingVersion___block_invoke(uint64_t a1)
   v5 = _Block_copy(aBlock);
   if (v5[2]())
   {
-    if (v4)
+    if (versionCopy)
     {
-      v4[2](v4, 0);
+      versionCopy[2](versionCopy, 0);
     }
   }
 
@@ -1843,7 +1843,7 @@ void __39__FCUserInfo_refreshOnboardingVersion___block_invoke(uint64_t a1)
     v6[2] = __43__FCUserInfo_maybeUpdateOnboardingVersion___block_invoke_2;
     v6[3] = &unk_1E7C3C1F8;
     v7 = v5;
-    v8 = v4;
+    v8 = versionCopy;
     v6[4] = self;
     [(FCPrivateDataController *)self performFirstSyncWithCallbackQueue:MEMORY[0x1E69E96A0] completion:v6];
   }
@@ -1892,19 +1892,19 @@ void __43__FCUserInfo_maybeUpdateOnboardingVersion___block_invoke_2(uint64_t a1)
 {
   v19 = *MEMORY[0x1E69E9840];
   [MEMORY[0x1E696AF00] isMainThread];
-  v3 = [MEMORY[0x1E695DF00] date];
-  [(FCUserInfo *)self _setUserInfoValue:v3 forKey:@"lastViewedSavedDate"];
+  date = [MEMORY[0x1E695DF00] date];
+  [(FCUserInfo *)self _setUserInfoValue:date forKey:@"lastViewedSavedDate"];
   v4 = [FCModifyUserInfoCommand alloc];
-  v5 = [(FCUserInfo *)&self->super.super.isa asCKRecord];
-  v6 = [(FCModifyUserInfoCommand *)v4 initWithUserInfoRecord:v5];
+  asCKRecord = [(FCUserInfo *)&self->super.super.isa asCKRecord];
+  v6 = [(FCModifyUserInfoCommand *)v4 initWithUserInfoRecord:asCKRecord];
 
   [(FCPrivateDataController *)self addCommandToCommandQueue:v6];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(FCPrivateDataController *)self observers];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  observers = [(FCPrivateDataController *)self observers];
+  v8 = [observers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1916,7 +1916,7 @@ void __43__FCUserInfo_maybeUpdateOnboardingVersion___block_invoke_2(uint64_t a1)
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(observers);
         }
 
         v12 = *(*(&v14 + 1) + 8 * v11);
@@ -1929,7 +1929,7 @@ void __43__FCUserInfo_maybeUpdateOnboardingVersion___block_invoke_2(uint64_t a1)
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [observers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
@@ -1938,76 +1938,76 @@ void __43__FCUserInfo_maybeUpdateOnboardingVersion___block_invoke_2(uint64_t a1)
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setEditorialArticleVersion:(id)a3
+- (void)setEditorialArticleVersion:(id)version
 {
-  v9 = a3;
-  if (v9)
+  versionCopy = version;
+  if (versionCopy)
   {
     v4 = [(FCUserInfo *)&self->super.super.isa _userInfoValueForKey:?];
     v5 = v4;
-    if (!v4 || ([v4 isEqualToString:v9] & 1) == 0)
+    if (!v4 || ([v4 isEqualToString:versionCopy] & 1) == 0)
     {
-      [(FCUserInfo *)self _setUserInfoValue:v9 forKey:@"editorialArticleVersion"];
+      [(FCUserInfo *)self _setUserInfoValue:versionCopy forKey:@"editorialArticleVersion"];
       v6 = [FCModifyUserInfoCommand alloc];
-      v7 = [(FCUserInfo *)&self->super.super.isa asCKRecord];
-      v8 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:v7];
+      asCKRecord = [(FCUserInfo *)&self->super.super.isa asCKRecord];
+      v8 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:asCKRecord];
 
       [(FCPrivateDataController *)self addCommandToCommandQueue:v8];
     }
   }
 }
 
-- (void)setCanonicalLanguage:(id)a3
+- (void)setCanonicalLanguage:(id)language
 {
-  v9 = a3;
-  if (v9)
+  languageCopy = language;
+  if (languageCopy)
   {
     v4 = [(FCUserInfo *)&self->super.super.isa _userInfoValueForKey:?];
     v5 = v4;
-    if (!v4 || ([v4 isEqualToString:v9] & 1) == 0)
+    if (!v4 || ([v4 isEqualToString:languageCopy] & 1) == 0)
     {
-      [(FCUserInfo *)self _setUserInfoValue:v9 forKey:@"canonicalLanguage"];
+      [(FCUserInfo *)self _setUserInfoValue:languageCopy forKey:@"canonicalLanguage"];
       v6 = [FCModifyUserInfoCommand alloc];
-      v7 = [(FCUserInfo *)&self->super.super.isa asCKRecord];
-      v8 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:v7];
+      asCKRecord = [(FCUserInfo *)&self->super.super.isa asCKRecord];
+      v8 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:asCKRecord];
 
       [(FCPrivateDataController *)self addCommandToCommandQueue:v8];
     }
   }
 }
 
-- (void)setSportsTopicNotificationsEnabledState:(unint64_t)a3
+- (void)setSportsTopicNotificationsEnabledState:(unint64_t)state
 {
   v29 = *MEMORY[0x1E69E9840];
   [MEMORY[0x1E696AF00] isMainThread];
-  v5 = [(FCUserInfo *)self sportsTopicNotificationsEnabledState];
-  if (v5 != a3)
+  sportsTopicNotificationsEnabledState = [(FCUserInfo *)self sportsTopicNotificationsEnabledState];
+  if (sportsTopicNotificationsEnabledState != state)
   {
-    v6 = v5;
+    v6 = sportsTopicNotificationsEnabledState;
     v7 = FCPushNotificationsLog;
     if (os_log_type_enabled(FCPushNotificationsLog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
       v26 = v6;
       v27 = 2048;
-      v28 = a3;
+      stateCopy = state;
       _os_log_impl(&dword_1B63EF000, v7, OS_LOG_TYPE_DEFAULT, "Changing the sports topic notifications from: %ld to: %ld", buf, 0x16u);
     }
 
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:state];
     [(FCUserInfo *)self _setUserInfoValue:v8 forKey:@"sportsTopicNotificationsEnabledState2"];
 
     v9 = [FCModifyUserInfoCommand alloc];
-    v10 = [(FCUserInfo *)&self->super.super.isa asCKRecord];
-    v11 = [(FCModifyUserInfoCommand *)v9 initWithUserInfoRecord:v10];
+    asCKRecord = [(FCUserInfo *)&self->super.super.isa asCKRecord];
+    v11 = [(FCModifyUserInfoCommand *)v9 initWithUserInfoRecord:asCKRecord];
 
     [(FCPrivateDataController *)self addCommandToCommandQueue:v11];
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v12 = [(FCPrivateDataController *)self observers];
-    v13 = [v12 copy];
+    observers = [(FCPrivateDataController *)self observers];
+    v13 = [observers copy];
 
     v14 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v14)
@@ -2044,16 +2044,16 @@ void __43__FCUserInfo_maybeUpdateOnboardingVersion___block_invoke_2(uint64_t a1)
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setAppReviewRequestLastShownDate:(id)a3
+- (void)setAppReviewRequestLastShownDate:(id)date
 {
   v4 = MEMORY[0x1E696AF00];
-  v5 = a3;
+  dateCopy = date;
   [v4 isMainThread];
-  [(FCUserInfo *)self _setUserInfoValue:v5 forKey:@"appReviewRequestLastSeenDate"];
+  [(FCUserInfo *)self _setUserInfoValue:dateCopy forKey:@"appReviewRequestLastSeenDate"];
 
   v6 = [FCModifyUserInfoCommand alloc];
-  v7 = [(FCUserInfo *)&self->super.super.isa asCKRecord];
-  v8 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:v7];
+  asCKRecord = [(FCUserInfo *)&self->super.super.isa asCKRecord];
+  v8 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:asCKRecord];
 
   [(FCPrivateDataController *)self addCommandToCommandQueue:v8];
 }
@@ -2074,16 +2074,16 @@ void __43__FCUserInfo_maybeUpdateOnboardingVersion___block_invoke_2(uint64_t a1)
 
   [(FCUserInfo *)self _setUserInfoValue:@"puzzleNotificationsLastChangedDate" forKey:?];
   v5 = [FCModifyUserInfoCommand alloc];
-  v6 = [(FCUserInfo *)&self->super.super.isa asCKRecord];
-  v7 = [(FCModifyUserInfoCommand *)v5 initWithUserInfoRecord:v6];
+  asCKRecord = [(FCUserInfo *)&self->super.super.isa asCKRecord];
+  v7 = [(FCModifyUserInfoCommand *)v5 initWithUserInfoRecord:asCKRecord];
 
   [(FCPrivateDataController *)self addCommandToCommandQueue:v7];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(FCPrivateDataController *)self observers];
-  v9 = [v8 copy];
+  observers = [(FCPrivateDataController *)self observers];
+  v9 = [observers copy];
 
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v10)
@@ -2134,31 +2134,31 @@ void __43__FCUserInfo_maybeUpdateOnboardingVersion___block_invoke_2(uint64_t a1)
   [(FCUserInfo *)self setImportSavedToRecipeVersion:&unk_1F2E70248];
 }
 
-- (void)setPuzzleStatsStartDate:(id)a3
+- (void)setPuzzleStatsStartDate:(id)date
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dateCopy = date;
   [MEMORY[0x1E696AF00] isMainThread];
   v5 = FCUserInfoLog;
   if (os_log_type_enabled(FCUserInfoLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v22 = v4;
+    v22 = dateCopy;
     _os_log_impl(&dword_1B63EF000, v5, OS_LOG_TYPE_DEFAULT, "Changing the puzzle stats start date to: %@", buf, 0xCu);
   }
 
-  [(FCUserInfo *)self _setUserInfoValue:v4 forKey:@"puzzleStatsStartDate"];
+  [(FCUserInfo *)self _setUserInfoValue:dateCopy forKey:@"puzzleStatsStartDate"];
   v6 = [FCModifyUserInfoCommand alloc];
-  v7 = [(FCUserInfo *)&self->super.super.isa asCKRecord];
-  v8 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:v7];
+  asCKRecord = [(FCUserInfo *)&self->super.super.isa asCKRecord];
+  v8 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:asCKRecord];
 
   [(FCPrivateDataController *)self addCommandToCommandQueue:v8];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = [(FCPrivateDataController *)self observers];
-  v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  observers = [(FCPrivateDataController *)self observers];
+  v10 = [observers countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
     v11 = v10;
@@ -2170,7 +2170,7 @@ void __43__FCUserInfo_maybeUpdateOnboardingVersion___block_invoke_2(uint64_t a1)
       {
         if (*v17 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(observers);
         }
 
         v14 = *(*(&v16 + 1) + 8 * v13);
@@ -2183,7 +2183,7 @@ void __43__FCUserInfo_maybeUpdateOnboardingVersion___block_invoke_2(uint64_t a1)
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v11 = [observers countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v11);
@@ -2192,23 +2192,23 @@ void __43__FCUserInfo_maybeUpdateOnboardingVersion___block_invoke_2(uint64_t a1)
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setImportSavedToRecipeVersion:(id)a3
+- (void)setImportSavedToRecipeVersion:(id)version
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  versionCopy = version;
   [MEMORY[0x1E696AF00] isMainThread];
   v5 = FCUserInfoLog;
   if (os_log_type_enabled(FCUserInfoLog, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = versionCopy;
     _os_log_impl(&dword_1B63EF000, v5, OS_LOG_TYPE_DEFAULT, "Changing the import saved to recipe version number to: %@", &v10, 0xCu);
   }
 
-  [(FCUserInfo *)self _setUserInfoValue:v4 forKey:@"importSavedToRecipeVersion"];
+  [(FCUserInfo *)self _setUserInfoValue:versionCopy forKey:@"importSavedToRecipeVersion"];
   v6 = [FCModifyUserInfoCommand alloc];
-  v7 = [(FCUserInfo *)&self->super.super.isa asCKRecord];
-  v8 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:v7];
+  asCKRecord = [(FCUserInfo *)&self->super.super.isa asCKRecord];
+  v8 = [(FCModifyUserInfoCommand *)v6 initWithUserInfoRecord:asCKRecord];
 
   [(FCPrivateDataController *)self addCommandToCommandQueue:v8];
   v9 = *MEMORY[0x1E69E9840];
@@ -2229,7 +2229,7 @@ void __24__FCUserInfo_asCKRecord__block_invoke(uint64_t a1)
   *(v4 + 40) = v3;
 }
 
-+ (id)userInfoCKRecordFromUserInfoDictionary:(uint64_t)a1
++ (id)userInfoCKRecordFromUserInfoDictionary:(uint64_t)dictionary
 {
   v2 = a2;
   objc_opt_self();
@@ -2324,21 +2324,21 @@ void __24__FCUserInfo_asCKRecord__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setReadOnlyUserInfo:(uint64_t)a1
+- (void)setReadOnlyUserInfo:(uint64_t)info
 {
-  if (a1)
+  if (info)
   {
-    objc_storeStrong((a1 + 112), a2);
+    objc_storeStrong((info + 112), a2);
   }
 }
 
-- (void)_generateTemporaryUserIDIfNeededForKey:(uint64_t)a1
+- (void)_generateTemporaryUserIDIfNeededForKey:(uint64_t)key
 {
-  if (a1)
+  if (key)
   {
     v3 = a2;
     v11 = [@"temporary-user-id-" stringByAppendingString:v3];
-    v4 = [*(a1 + 112) objectForKeyedSubscript:v3];
+    v4 = [*(key + 112) objectForKeyedSubscript:v3];
 
     v5 = NewsCoreSensitiveUserDefaults();
     v6 = v5;
@@ -2355,9 +2355,9 @@ void __24__FCUserInfo_asCKRecord__block_invoke(uint64_t a1)
       if (!v7)
       {
         v8 = NewsCoreSensitiveUserDefaults();
-        v9 = [MEMORY[0x1E696AFB0] UUID];
-        v10 = [v9 UUIDString];
-        [v8 setObject:v10 forKey:v11];
+        uUID = [MEMORY[0x1E696AFB0] UUID];
+        uUIDString = [uUID UUIDString];
+        [v8 setObject:uUIDString forKey:v11];
 
         v6 = 0;
       }
@@ -2365,32 +2365,32 @@ void __24__FCUserInfo_asCKRecord__block_invoke(uint64_t a1)
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v3.receiver = self;
   v3.super_class = FCUserInfo;
-  [(FCPrivateDataController *)&v3 addObserver:a3];
+  [(FCPrivateDataController *)&v3 addObserver:observer];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v3.receiver = self;
   v3.super_class = FCUserInfo;
-  [(FCPrivateDataController *)&v3 removeObserver:a3];
+  [(FCPrivateDataController *)&v3 removeObserver:observer];
 }
 
-- (void)syncWithCompletion:(id)a3
+- (void)syncWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__FCUserInfo_syncWithCompletion___block_invoke;
   v7[3] = &unk_1E7C3B860;
   v7[4] = self;
-  v8 = v4;
+  v8 = completionCopy;
   v6.receiver = self;
   v6.super_class = FCUserInfo;
-  v5 = v4;
+  v5 = completionCopy;
   [(FCPrivateDataController *)&v6 syncWithCompletion:v7];
 }
 
@@ -2416,16 +2416,16 @@ void __33__FCUserInfo_syncWithCompletion___block_invoke(uint64_t a1, uint64_t a2
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)accessTokenDidChangeForTagID:(id)a3
+- (void)accessTokenDidChangeForTagID:(id)d
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(FCPrivateDataController *)self observers];
-  v6 = [v5 copy];
+  observers = [(FCPrivateDataController *)self observers];
+  v6 = [observers copy];
 
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
@@ -2445,7 +2445,7 @@ void __33__FCUserInfo_syncWithCompletion___block_invoke(uint64_t a1, uint64_t a2
         v11 = *(*(&v14 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          v12 = [v4 copy];
+          v12 = [dCopy copy];
           [v11 userInfo:self didChangeAccessTokenForTagID:v12];
         }
 
@@ -2462,16 +2462,16 @@ void __33__FCUserInfo_syncWithCompletion___block_invoke(uint64_t a1, uint64_t a2
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)settingsDataDidChangeForPuzzleTypeID:(id)a3
+- (void)settingsDataDidChangeForPuzzleTypeID:(id)d
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(FCPrivateDataController *)self observers];
-  v6 = [v5 copy];
+  observers = [(FCPrivateDataController *)self observers];
+  v6 = [observers copy];
 
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
@@ -2491,7 +2491,7 @@ void __33__FCUserInfo_syncWithCompletion___block_invoke(uint64_t a1, uint64_t a2
         v11 = *(*(&v14 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          v12 = [v4 copy];
+          v12 = [dCopy copy];
           [v11 userInfo:self didChangePuzzleTypeSettingsForPuzzleTypeID:v12];
         }
 
@@ -2508,17 +2508,17 @@ void __33__FCUserInfo_syncWithCompletion___block_invoke(uint64_t a1, uint64_t a2
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleSyncWithChangedRecords:(id)a3 deletedRecordNames:(id)a4
+- (void)handleSyncWithChangedRecords:(id)records deletedRecordNames:(id)names
 {
   v55 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v42 = a4;
-  obj = v6;
+  recordsCopy = records;
+  namesCopy = names;
+  obj = recordsCopy;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v49 objects:v54 count:16];
+  v7 = [recordsCopy countByEnumeratingWithState:&v49 objects:v54 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2529,38 +2529,38 @@ void __33__FCUserInfo_syncWithCompletion___block_invoke(uint64_t a1, uint64_t a2
       {
         if (*v50 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(recordsCopy);
         }
 
         v11 = *(*(&v49 + 1) + 8 * i);
-        v12 = [v11 recordType];
-        if ([v12 isEqualToString:@"UserInfo"])
+        recordType = [v11 recordType];
+        if ([recordType isEqualToString:@"UserInfo"])
         {
           [(FCUserInfo *)&self->super.super.isa handleSyncWithUserInfoRecord:v11];
           goto LABEL_13;
         }
 
-        if ([v12 isEqualToString:@"TagSettings"])
+        if ([recordType isEqualToString:@"TagSettings"])
         {
-          v13 = [(FCUserInfo *)self tagSettings];
-          [v13 handleSyncWithTagSettingsRecord:v11];
+          tagSettings = [(FCUserInfo *)self tagSettings];
+          [tagSettings handleSyncWithTagSettingsRecord:v11];
         }
 
         else
         {
-          if (![v12 isEqualToString:@"PuzzleTypeSettings"])
+          if (![recordType isEqualToString:@"PuzzleTypeSettings"])
           {
             goto LABEL_13;
           }
 
-          v13 = [(FCUserInfo *)self puzzleTypeSettings];
-          [v13 handleSyncWithPuzzleTypeSettingsRecord:v11];
+          tagSettings = [(FCUserInfo *)self puzzleTypeSettings];
+          [tagSettings handleSyncWithPuzzleTypeSettingsRecord:v11];
         }
 
 LABEL_13:
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v49 objects:v54 count:16];
+      v8 = [recordsCopy countByEnumeratingWithState:&v49 objects:v54 count:16];
     }
 
     while (v8);
@@ -2570,7 +2570,7 @@ LABEL_13:
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v43 = v42;
+  v43 = namesCopy;
   v14 = [v43 countByEnumeratingWithState:&v45 objects:v53 count:16];
   if (v14)
   {
@@ -2593,47 +2593,47 @@ LABEL_13:
             continue;
           }
 
-          v20 = [(FCPrivateDataController *)self localStore];
+          localStore = [(FCPrivateDataController *)self localStore];
           v21 = __FCCKUserInfoKeys_block_invoke();
-          [v20 removeObjectsForKeys:v21];
+          [localStore removeObjectsForKeys:v21];
 
-          v22 = [(FCPrivateDataController *)self localStore];
-          v23 = [MEMORY[0x1E696AFB0] UUID];
-          v24 = [v23 UUIDString];
-          [v22 setObject:v24 forKey:@"feldsparID"];
+          localStore2 = [(FCPrivateDataController *)self localStore];
+          uUID = [MEMORY[0x1E696AFB0] UUID];
+          uUIDString = [uUID UUIDString];
+          [localStore2 setObject:uUIDString forKey:@"feldsparID"];
 
-          v25 = [(FCPrivateDataController *)self localStore];
-          v26 = [MEMORY[0x1E696AFB0] UUID];
-          v27 = [v26 UUIDString];
-          [v25 setObject:v27 forKey:@"notificationsUserID"];
+          localStore3 = [(FCPrivateDataController *)self localStore];
+          uUID2 = [MEMORY[0x1E696AFB0] UUID];
+          uUIDString2 = [uUID2 UUIDString];
+          [localStore3 setObject:uUIDString2 forKey:@"notificationsUserID"];
 
-          v28 = [(FCPrivateDataController *)self localStore];
-          v29 = [MEMORY[0x1E696AFB0] UUID];
-          v30 = [v29 UUIDString];
-          [v28 setObject:v30 forKey:@"adsUserID"];
+          localStore4 = [(FCPrivateDataController *)self localStore];
+          uUID3 = [MEMORY[0x1E696AFB0] UUID];
+          uUIDString3 = [uUID3 UUIDString];
+          [localStore4 setObject:uUIDString3 forKey:@"adsUserID"];
 
-          v31 = [(FCPrivateDataController *)self localStore];
-          v32 = [MEMORY[0x1E696AFB0] UUID];
-          v33 = [v32 UUIDString];
-          [v31 setObject:v33 forKey:@"sportsUserID"];
+          localStore5 = [(FCPrivateDataController *)self localStore];
+          uUID4 = [MEMORY[0x1E696AFB0] UUID];
+          uUIDString4 = [uUID4 UUIDString];
+          [localStore5 setObject:uUIDString4 forKey:@"sportsUserID"];
 
-          v34 = [(FCPrivateDataController *)self localStore];
-          v35 = [MEMORY[0x1E695DF00] date];
-          [v34 setObject:v35 forKey:@"adsUserIDCreatedDate"];
+          localStore6 = [(FCPrivateDataController *)self localStore];
+          date = [MEMORY[0x1E695DF00] date];
+          [localStore6 setObject:date forKey:@"adsUserIDCreatedDate"];
 
-          v36 = [(FCPrivateDataController *)self localStore];
-          v37 = [MEMORY[0x1E695DF00] date];
-          [v36 setObject:v37 forKey:@"lastOpenedDate"];
+          localStore7 = [(FCPrivateDataController *)self localStore];
+          date2 = [MEMORY[0x1E695DF00] date];
+          [localStore7 setObject:date2 forKey:@"lastOpenedDate"];
 
-          v38 = [(FCPrivateDataController *)self localStore];
-          v39 = [MEMORY[0x1E695DF00] date];
-          [v38 setObject:v39 forKey:@"userStartDate"];
+          localStore8 = [(FCPrivateDataController *)self localStore];
+          date3 = [MEMORY[0x1E695DF00] date];
+          [localStore8 setObject:date3 forKey:@"userStartDate"];
         }
 
         else if (FCIsTagSettingsRecordName(v18, v19))
         {
-          v38 = [(FCUserInfo *)self tagSettings];
-          [v38 handleSyncWithDeletedTagSettingsRecordName:v18];
+          localStore8 = [(FCUserInfo *)self tagSettings];
+          [localStore8 handleSyncWithDeletedTagSettingsRecordName:v18];
         }
 
         else
@@ -2643,8 +2643,8 @@ LABEL_13:
             continue;
           }
 
-          v38 = [(FCUserInfo *)self puzzleTypeSettings];
-          [v38 handleSyncWithDeletedPuzzleTypeSettingsRecordName:v18];
+          localStore8 = [(FCUserInfo *)self puzzleTypeSettings];
+          [localStore8 handleSyncWithDeletedPuzzleTypeSettingsRecordName:v18];
         }
       }
 
@@ -2657,40 +2657,40 @@ LABEL_13:
   v41 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleSyncWithUserInfoRecord:(id *)a1
+- (void)handleSyncWithUserInfoRecord:(id *)record
 {
   v263 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (!a1)
+  if (!record)
   {
     goto LABEL_222;
   }
 
-  v227 = [(FCUserInfo *)a1 _userInfoValueForKey:?];
-  v226 = [(FCUserInfo *)a1 _userInfoValueForKey:?];
-  v230 = [(FCUserInfo *)a1 _userInfoValueForKey:?];
-  v225 = [(FCUserInfo *)a1 _userInfoValueForKey:?];
-  v224 = [(FCUserInfo *)a1 _userInfoValueForKey:?];
-  v223 = [(FCUserInfo *)a1 _userInfoValueForKey:?];
-  v222 = [(FCUserInfo *)a1 _userInfoValueForKey:?];
-  v221 = [(FCUserInfo *)a1 _userInfoValueForKey:?];
-  v220 = [(FCUserInfo *)a1 _userInfoValueForKey:?];
-  v4 = [(FCUserInfo *)a1 _userInfoValueForKey:?];
-  v228 = [(FCUserInfo *)a1 _userInfoValueForKey:?];
-  v186 = [(FCUserInfo *)a1 _userInfoValueForKey:?];
-  v193 = [(FCUserInfo *)a1 _userInfoValueForKey:?];
-  v195 = [(FCUserInfo *)a1 _userInfoValueForKey:?];
-  v200 = [(FCUserInfo *)a1 _userInfoValueForKey:?];
-  v217 = [(FCUserInfo *)a1 _userInfoValueForKey:?];
-  v205 = [(FCUserInfo *)a1 _userInfoValueForKey:?];
-  v203 = [(FCUserInfo *)a1 _userInfoValueForKey:?];
-  v191 = [(FCUserInfo *)a1 _userInfoValueForKey:?];
-  v215 = [(FCUserInfo *)a1 _userInfoValueForKey:?];
-  v213 = [(FCUserInfo *)a1 _userInfoValueForKey:?];
-  v209 = [(FCUserInfo *)a1 _userInfoValueForKey:?];
-  v207 = [(FCUserInfo *)a1 _userInfoValueForKey:?];
-  v211 = [(FCUserInfo *)a1 _userInfoValueForKey:?];
-  v231 = [(FCUserInfo *)a1 _userInfoValueForKey:?];
+  v227 = [(FCUserInfo *)record _userInfoValueForKey:?];
+  v226 = [(FCUserInfo *)record _userInfoValueForKey:?];
+  v230 = [(FCUserInfo *)record _userInfoValueForKey:?];
+  v225 = [(FCUserInfo *)record _userInfoValueForKey:?];
+  v224 = [(FCUserInfo *)record _userInfoValueForKey:?];
+  v223 = [(FCUserInfo *)record _userInfoValueForKey:?];
+  v222 = [(FCUserInfo *)record _userInfoValueForKey:?];
+  v221 = [(FCUserInfo *)record _userInfoValueForKey:?];
+  v220 = [(FCUserInfo *)record _userInfoValueForKey:?];
+  v4 = [(FCUserInfo *)record _userInfoValueForKey:?];
+  v228 = [(FCUserInfo *)record _userInfoValueForKey:?];
+  v186 = [(FCUserInfo *)record _userInfoValueForKey:?];
+  v193 = [(FCUserInfo *)record _userInfoValueForKey:?];
+  v195 = [(FCUserInfo *)record _userInfoValueForKey:?];
+  v200 = [(FCUserInfo *)record _userInfoValueForKey:?];
+  v217 = [(FCUserInfo *)record _userInfoValueForKey:?];
+  v205 = [(FCUserInfo *)record _userInfoValueForKey:?];
+  v203 = [(FCUserInfo *)record _userInfoValueForKey:?];
+  v191 = [(FCUserInfo *)record _userInfoValueForKey:?];
+  v215 = [(FCUserInfo *)record _userInfoValueForKey:?];
+  v213 = [(FCUserInfo *)record _userInfoValueForKey:?];
+  v209 = [(FCUserInfo *)record _userInfoValueForKey:?];
+  v207 = [(FCUserInfo *)record _userInfoValueForKey:?];
+  v211 = [(FCUserInfo *)record _userInfoValueForKey:?];
+  v231 = [(FCUserInfo *)record _userInfoValueForKey:?];
   v5 = MEMORY[0x1E695DFD8];
   v254[0] = @"lastAppLaunchUpsellInstanceID";
   v254[1] = @"upsellAppLaunchLastSeenDate";
@@ -2708,10 +2708,10 @@ LABEL_13:
   v212 = v3;
   v9 = v3;
   v248 = v9;
-  [(FCUserInfo *)a1 _modifyUserInfoWithBlock:v246];
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
-  v241 = a1;
-  [v10 postNotificationName:@"FCUserInfoChangedNotificationName" object:a1];
+  [(FCUserInfo *)record _modifyUserInfoWithBlock:v246];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  recordCopy = record;
+  [defaultCenter postNotificationName:@"FCUserInfoChangedNotificationName" object:record];
 
   v11 = [v9 objectForKeyedSubscript:@"notificationsUserID"];
   v12 = v4;
@@ -2722,40 +2722,40 @@ LABEL_13:
   v199 = v8;
   if (!v13 || ![v13 length])
   {
-    if (!v12 || ![v12 length] || (v15 = v12, objc_msgSend(v12, "hasSuffix:", @"-NoSync")))
+    if (!v12 || ![v12 length] || (uUIDString = v12, objc_msgSend(v12, "hasSuffix:", @"-NoSync")))
     {
-      v18 = [MEMORY[0x1E696AFB0] UUID];
-      v15 = [v18 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
 
       v19 = FCPushNotificationsLog;
       if (os_log_type_enabled(FCPushNotificationsLog, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v256 = v15;
+        v256 = uUIDString;
         _os_log_impl(&dword_1B63EF000, v19, OS_LOG_TYPE_INFO, "Syncing enabled, generated a new notificationsUserID: %@", buf, 0xCu);
       }
     }
 
-    [(FCUserInfo *)a1 _setUserInfoValue:v15 forKey:@"notificationsUserID"];
+    [(FCUserInfo *)record _setUserInfoValue:uUIDString forKey:@"notificationsUserID"];
     v20 = [FCModifyUserInfoCommand alloc];
-    v21 = [(FCUserInfo *)a1 asCKRecord];
-    v22 = [(FCModifyUserInfoCommand *)v20 initWithUserInfoRecord:v21];
+    asCKRecord = [(FCUserInfo *)record asCKRecord];
+    v22 = [(FCModifyUserInfoCommand *)v20 initWithUserInfoRecord:asCKRecord];
 
-    [a1 addCommandToCommandQueue:v22];
+    [record addCommandToCommandQueue:v22];
     goto LABEL_18;
   }
 
   if (v12 && [v12 length])
   {
-    v15 = v12;
+    uUIDString = v12;
     if ([v12 isEqualToString:v14])
     {
       goto LABEL_28;
     }
 
-    [(FCUserInfo *)a1 _setUserInfoValue:v14 forKey:@"notificationsUserID"];
+    [(FCUserInfo *)record _setUserInfoValue:v14 forKey:@"notificationsUserID"];
     v16 = FCPushNotificationsLog;
-    v15 = v12;
+    uUIDString = v12;
     if (os_log_type_enabled(FCPushNotificationsLog, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
@@ -2763,15 +2763,15 @@ LABEL_13:
       v17 = "Syncing enabled, updated with remote notificationsUserID: %@";
 LABEL_17:
       _os_log_impl(&dword_1B63EF000, v16, OS_LOG_TYPE_INFO, v17, buf, 0xCu);
-      v15 = v12;
+      uUIDString = v12;
     }
   }
 
   else
   {
-    [(FCUserInfo *)a1 _setUserInfoValue:v14 forKey:@"notificationsUserID"];
+    [(FCUserInfo *)record _setUserInfoValue:v14 forKey:@"notificationsUserID"];
     v16 = FCPushNotificationsLog;
-    v15 = v12;
+    uUIDString = v12;
     if (os_log_type_enabled(FCPushNotificationsLog, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
@@ -2786,8 +2786,8 @@ LABEL_18:
   v252 = 0u;
   v249 = 0u;
   v250 = 0u;
-  v23 = [a1 observers];
-  v24 = [v23 copy];
+  observers = [record observers];
+  v24 = [observers copy];
 
   v25 = [v24 countByEnumeratingWithState:&v249 objects:buf count:16];
   if (v25)
@@ -2806,7 +2806,7 @@ LABEL_18:
         v29 = *(*(&v249 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          [v29 userInfoDidChangeNotificationsUserID:v241];
+          [v29 userInfoDidChangeNotificationsUserID:recordCopy];
         }
       }
 
@@ -2829,75 +2829,75 @@ LABEL_28:
   v187 = v34;
   if (!v33 || (v35 = v34, ![v33 length]))
   {
-    v36 = v241;
-    if (!v32 || (v38 = v32, v37 = v229, ![v32 length]))
+    v36 = recordCopy;
+    if (!v32 || (uUIDString2 = v32, date = v229, ![v32 length]))
     {
-      v41 = [(FCUserInfo *)v241 _temporaryUserIDForKey:?];
+      v41 = [(FCUserInfo *)recordCopy _temporaryUserIDForKey:?];
       v42 = v41;
       if (v41)
       {
-        v38 = v41;
-        v43 = v32;
+        uUIDString2 = v41;
+        uUID2 = v32;
       }
 
       else
       {
-        v43 = [MEMORY[0x1E696AFB0] UUID];
-        v38 = [v43 UUIDString];
+        uUID2 = [MEMORY[0x1E696AFB0] UUID];
+        uUIDString2 = [uUID2 UUIDString];
       }
 
-      v37 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
     }
 
-    v39 = v241;
-    v40 = v38;
+    v39 = recordCopy;
+    v40 = uUIDString2;
 LABEL_45:
-    [(FCUserInfo *)v39 _persistAdsUserID:v40 createdDate:v37];
+    [(FCUserInfo *)v39 _persistAdsUserID:v40 createdDate:date];
     goto LABEL_46;
   }
 
-  v36 = v241;
+  v36 = recordCopy;
   if (v32 && [v32 length])
   {
-    if ([v32 isEqualToString:v33] & 1) != 0 || (-[FCUserInfo _shouldRotateAdsUserIDWithCreatedDate:](v241, v35))
+    if ([v32 isEqualToString:v33] & 1) != 0 || (-[FCUserInfo _shouldRotateAdsUserIDWithCreatedDate:](recordCopy, v35))
     {
-      v37 = v229;
-      v38 = v32;
-      if (![(FCUserInfo *)v241 _shouldRotateAdsUserIDWithCreatedDate:v35])
+      date = v229;
+      uUIDString2 = v32;
+      if (![(FCUserInfo *)recordCopy _shouldRotateAdsUserIDWithCreatedDate:v35])
       {
         goto LABEL_56;
       }
 
-      v39 = v241;
-      v38 = v32;
+      v39 = recordCopy;
+      uUIDString2 = v32;
       v40 = v32;
-      v37 = v229;
+      date = v229;
       goto LABEL_45;
     }
 
-    [(FCUserInfo *)v241 _setUserInfoValue:v33 forKey:@"adsUserID"];
-    v44 = v241;
+    [(FCUserInfo *)recordCopy _setUserInfoValue:v33 forKey:@"adsUserID"];
+    v44 = recordCopy;
     v45 = v35;
     v46 = @"adsUserIDCreatedDate";
   }
 
   else
   {
-    v44 = v241;
+    v44 = recordCopy;
     v45 = v33;
     v46 = @"adsUserID";
   }
 
   [(FCUserInfo *)v44 _setUserInfoValue:v45 forKey:v46];
-  v37 = v229;
-  v38 = v32;
+  date = v229;
+  uUIDString2 = v32;
 LABEL_46:
   v251 = 0u;
   v252 = 0u;
   v249 = 0u;
   v250 = 0u;
-  v47 = [v36 observers];
-  v48 = [v47 copy];
+  observers2 = [v36 observers];
+  v48 = [observers2 copy];
 
   v49 = [v48 countByEnumeratingWithState:&v249 objects:buf count:16];
   if (v49)
@@ -2916,7 +2916,7 @@ LABEL_46:
         v53 = *(*(&v249 + 1) + 8 * j);
         if (objc_opt_respondsToSelector())
         {
-          [v53 userInfoDidChangeAdsUserID:v241 fromCloud:1];
+          [v53 userInfoDidChangeAdsUserID:recordCopy fromCloud:1];
         }
       }
 
@@ -2927,7 +2927,7 @@ LABEL_46:
   }
 
   v9 = v239;
-  v36 = v241;
+  v36 = recordCopy;
   v35 = v187;
 LABEL_56:
 
@@ -2942,7 +2942,7 @@ LABEL_56:
     {
       if ([v55 length])
       {
-        v58 = v55;
+        uUIDString3 = v55;
         if ([v55 isEqualToString:v57])
         {
           goto LABEL_80;
@@ -2951,37 +2951,37 @@ LABEL_56:
     }
 
     [(FCUserInfo *)v36 _setUserInfoValue:v57 forKey:@"sportsUserID"];
-    v58 = v55;
+    uUIDString3 = v55;
   }
 
   else
   {
-    if (!v55 || (v58 = v55, ![v55 length]))
+    if (!v55 || (uUIDString3 = v55, ![v55 length]))
     {
       v59 = [(FCUserInfo *)v36 _temporaryUserIDForKey:?];
       v60 = v59;
       if (v59)
       {
-        v58 = v59;
+        uUIDString3 = v59;
       }
 
       else
       {
         [MEMORY[0x1E696AFB0] UUID];
         v55 = v61 = v55;
-        v58 = [v55 UUIDString];
+        uUIDString3 = [v55 UUIDString];
       }
     }
 
-    [(FCUserInfo *)v36 _persistSportsUserID:v58];
+    [(FCUserInfo *)v36 _persistSportsUserID:uUIDString3];
   }
 
   v251 = 0u;
   v252 = 0u;
   v249 = 0u;
   v250 = 0u;
-  v62 = [v36 observers];
-  v63 = [v62 copy];
+  observers3 = [v36 observers];
+  v63 = [observers3 copy];
 
   v64 = [v63 countByEnumeratingWithState:&v249 objects:buf count:16];
   if (v64)
@@ -3068,8 +3068,8 @@ LABEL_80:
     goto LABEL_112;
   }
 
-  v86 = [v80 BOOLValue];
-  if (v86 != [v82 BOOLValue])
+  bOOLValue = [v80 BOOLValue];
+  if (bOOLValue != [v82 BOOLValue])
   {
     v87 = FCPushNotificationsLog;
     if (os_log_type_enabled(FCPushNotificationsLog, OS_LOG_TYPE_DEFAULT))
@@ -3099,8 +3099,8 @@ LABEL_100:
     v252 = 0u;
     v249 = 0u;
     v250 = 0u;
-    v89 = [v36 observers];
-    v90 = [v89 copy];
+    observers4 = [v36 observers];
+    v90 = [observers4 copy];
 
     v91 = [v90 countByEnumeratingWithState:&v249 objects:buf count:16];
     if (v91)
@@ -3183,8 +3183,8 @@ LABEL_114:
     v252 = 0u;
     v249 = 0u;
     v250 = 0u;
-    v108 = [v36 observers];
-    v109 = [v108 copy];
+    observers5 = [v36 observers];
+    v109 = [observers5 copy];
 
     v110 = [v109 countByEnumeratingWithState:&v249 objects:buf count:16];
     if (v110)
@@ -3203,7 +3203,7 @@ LABEL_114:
           v114 = *(*(&v249 + 1) + 8 * n);
           if (objc_opt_respondsToSelector())
           {
-            [v114 userInfoDidChangeSportsSyncState:v241];
+            [v114 userInfoDidChangeSportsSyncState:recordCopy];
           }
         }
 
@@ -3214,7 +3214,7 @@ LABEL_114:
     }
 
     v9 = v239;
-    v36 = v241;
+    v36 = recordCopy;
     v99 = v206;
     v100 = v218;
   }
@@ -3256,8 +3256,8 @@ LABEL_114:
     v252 = 0u;
     v249 = 0u;
     v250 = 0u;
-    v126 = [v36 observers];
-    v127 = [v126 copy];
+    observers6 = [v36 observers];
+    v127 = [observers6 copy];
 
     v128 = [v127 countByEnumeratingWithState:&v249 objects:buf count:16];
     if (v128)
@@ -3276,7 +3276,7 @@ LABEL_114:
           v132 = *(*(&v249 + 1) + 8 * ii);
           if (objc_opt_respondsToSelector())
           {
-            [v132 userInfoDidChangeSportsOnboardingState:v241];
+            [v132 userInfoDidChangeSportsOnboardingState:recordCopy];
           }
         }
 
@@ -3287,7 +3287,7 @@ LABEL_114:
     }
 
     v9 = v239;
-    v36 = v241;
+    v36 = recordCopy;
     v100 = v218;
     v117 = v204;
   }
@@ -3334,8 +3334,8 @@ LABEL_153:
       v252 = 0u;
       v249 = 0u;
       v250 = 0u;
-      v145 = [v36 observers];
-      v146 = [v145 copy];
+      observers7 = [v36 observers];
+      v146 = [observers7 copy];
 
       v147 = [v146 countByEnumeratingWithState:&v249 objects:buf count:16];
       if (v147)
@@ -3416,21 +3416,21 @@ LABEL_153:
   }
 
   v190 = v160;
-  v161 = [v224 BOOLValue];
+  bOOLValue2 = [v224 BOOLValue];
   v162 = [v9 objectForKeyedSubscript:@"marketingNotificationsEnabled"];
-  v163 = [v162 BOOLValue];
+  bOOLValue3 = [v162 BOOLValue];
 
-  v164 = [v223 BOOLValue];
+  bOOLValue4 = [v223 BOOLValue];
   v165 = [v9 objectForKeyedSubscript:@"newIssueNotificationsEnabled"];
-  v166 = [v165 BOOLValue];
+  bOOLValue5 = [v165 BOOLValue];
 
-  v233 = [v222 BOOLValue];
+  bOOLValue6 = [v222 BOOLValue];
   v167 = [v9 objectForKeyedSubscript:@"endOfAudioNotificationsEnabled"];
-  v232 = [v167 BOOLValue];
+  bOOLValue7 = [v167 BOOLValue];
 
-  v235 = [v221 integerValue];
+  integerValue = [v221 integerValue];
   v168 = [v9 objectForKeyedSubscript:@"sportsTopicNotificationsEnabledState2"];
-  v169 = [v168 integerValue];
+  integerValue2 = [v168 integerValue];
 
   v170 = [v9 objectForKeyedSubscript:@"lastViewedSharedWithYouDate"];
   v189 = v170;
@@ -3444,8 +3444,8 @@ LABEL_153:
     v171 = [v220 isEqualToDate:v170] ^ 1;
   }
 
-  v172 = v161 ^ v163;
-  v173 = v164 ^ v166;
+  v172 = bOOLValue2 ^ bOOLValue3;
+  v173 = bOOLValue4 ^ bOOLValue5;
   v174 = [v9 objectForKeyedSubscript:@"puzzleStatsStartDate"];
   v175 = v211;
   if (v211 == v174)
@@ -3466,8 +3466,8 @@ LABEL_153:
     v245 = 0u;
     v242 = 0u;
     v243 = 0u;
-    v177 = [v241 observers];
-    v178 = [v177 copy];
+    observers8 = [recordCopy observers];
+    v178 = [observers8 copy];
 
     obj = v178;
     v179 = [v178 countByEnumeratingWithState:&v242 objects:v253 count:16];
@@ -3490,53 +3490,53 @@ LABEL_153:
             v184 = *(*(&v242 + 1) + 8 * kk);
             if (objc_opt_respondsToSelector())
             {
-              [v183 userInfoDidChangeFeldsparID:v241 fromCloud:1];
+              [v183 userInfoDidChangeFeldsparID:recordCopy fromCloud:1];
             }
           }
 
           if (v237 & 1) == 0 && (objc_opt_respondsToSelector())
           {
-            [v183 userInfoDidChangeOnboardingStatus:v241];
+            [v183 userInfoDidChangeOnboardingStatus:recordCopy];
           }
 
           if (v236 && (objc_opt_respondsToSelector() & 1) != 0)
           {
-            [v183 userInfoDidChangeDateLastViewedSaved:v241 fromCloud:1];
+            [v183 userInfoDidChangeDateLastViewedSaved:recordCopy fromCloud:1];
           }
 
           if (v240 && (objc_opt_respondsToSelector() & 1) != 0)
           {
-            [v183 userInfoDidChangeEditorialArticleVersion:v241];
+            [v183 userInfoDidChangeEditorialArticleVersion:recordCopy];
           }
 
           if (v172 && (objc_opt_respondsToSelector() & 1) != 0)
           {
-            [v183 userInfoDidChangeMarketingNotificationsEnabled:v241 fromCloud:1];
+            [v183 userInfoDidChangeMarketingNotificationsEnabled:recordCopy fromCloud:1];
           }
 
           if (v173 && (objc_opt_respondsToSelector() & 1) != 0)
           {
-            [v183 userInfoDidChangeNewIssueNotificationsEnabled:v241 fromCloud:1];
+            [v183 userInfoDidChangeNewIssueNotificationsEnabled:recordCopy fromCloud:1];
           }
 
-          if (v233 != v232 && (objc_opt_respondsToSelector() & 1) != 0)
+          if (bOOLValue6 != bOOLValue7 && (objc_opt_respondsToSelector() & 1) != 0)
           {
-            [v183 userInfoDidChangeEndOfAudioTrackNotificationsEnabled:v241 fromCloud:1];
+            [v183 userInfoDidChangeEndOfAudioTrackNotificationsEnabled:recordCopy fromCloud:1];
           }
 
-          if (v235 != v169 && (objc_opt_respondsToSelector() & 1) != 0)
+          if (integerValue != integerValue2 && (objc_opt_respondsToSelector() & 1) != 0)
           {
-            [v183 userInfoDidChangeSportsTopicNotificationsEnabledState:v241 fromCloud:1];
+            [v183 userInfoDidChangeSportsTopicNotificationsEnabledState:recordCopy fromCloud:1];
           }
 
           if (v171 && (objc_opt_respondsToSelector() & 1) != 0)
           {
-            [v183 userInfoDidChangeDateLastViewedSharedWithYou:v241 fromCloud:1];
+            [v183 userInfoDidChangeDateLastViewedSharedWithYou:recordCopy fromCloud:1];
           }
 
           if (v176 && (objc_opt_respondsToSelector() & 1) != 0)
           {
-            [v183 userInfoDidChangeDatePuzzleStatsStart:v241 fromCloud:1];
+            [v183 userInfoDidChangeDatePuzzleStatsStart:recordCopy fromCloud:1];
           }
         }
 
@@ -3556,20 +3556,20 @@ LABEL_222:
   v185 = *MEMORY[0x1E69E9840];
 }
 
-- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)a3
+- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)d
 {
   [MEMORY[0x1E696AF00] isMainThread];
-  v4 = [MEMORY[0x1E695DF70] array];
-  [v4 addObject:@"user_info_static_record_name"];
-  v5 = [(FCUserInfo *)self tagSettings];
-  v6 = [v5 allTagSettingsRecordNames];
-  [v4 addObjectsFromArray:v6];
+  array = [MEMORY[0x1E695DF70] array];
+  [array addObject:@"user_info_static_record_name"];
+  tagSettings = [(FCUserInfo *)self tagSettings];
+  allTagSettingsRecordNames = [tagSettings allTagSettingsRecordNames];
+  [array addObjectsFromArray:allTagSettingsRecordNames];
 
-  v7 = [(FCUserInfo *)self puzzleTypeSettings];
-  v8 = [v7 allPuzzleTypeSettingsRecordNames];
-  [v4 addObjectsFromArray:v8];
+  puzzleTypeSettings = [(FCUserInfo *)self puzzleTypeSettings];
+  allPuzzleTypeSettingsRecordNames = [puzzleTypeSettings allPuzzleTypeSettingsRecordNames];
+  [array addObjectsFromArray:allPuzzleTypeSettingsRecordNames];
 
-  return v4;
+  return array;
 }
 
 void __43__FCUserInfo_handleSyncWithUserInfoRecord___block_invoke(uint64_t a1, void *a2)
@@ -3616,19 +3616,19 @@ void __43__FCUserInfo_handleSyncWithUserInfoRecord___block_invoke(uint64_t a1, v
 {
   v19 = *MEMORY[0x1E69E9840];
   [MEMORY[0x1E696AF00] isMainThread];
-  v3 = [MEMORY[0x1E695DF00] date];
-  [(FCUserInfo *)self _setUserInfoValue:v3 forKey:@"lastViewedSharedWithYouDate"];
+  date = [MEMORY[0x1E695DF00] date];
+  [(FCUserInfo *)self _setUserInfoValue:date forKey:@"lastViewedSharedWithYouDate"];
   v4 = [FCModifyUserInfoCommand alloc];
-  v5 = [(FCUserInfo *)&self->super.super.isa asCKRecord];
-  v6 = [(FCModifyUserInfoCommand *)v4 initWithUserInfoRecord:v5];
+  asCKRecord = [(FCUserInfo *)&self->super.super.isa asCKRecord];
+  v6 = [(FCModifyUserInfoCommand *)v4 initWithUserInfoRecord:asCKRecord];
 
   [(FCPrivateDataController *)self addCommandToCommandQueue:v6];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(FCPrivateDataController *)self observers];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  observers = [(FCPrivateDataController *)self observers];
+  v8 = [observers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -3640,7 +3640,7 @@ void __43__FCUserInfo_handleSyncWithUserInfoRecord___block_invoke(uint64_t a1, v
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(observers);
         }
 
         v12 = *(*(&v14 + 1) + 8 * v11);
@@ -3653,7 +3653,7 @@ void __43__FCUserInfo_handleSyncWithUserInfoRecord___block_invoke(uint64_t a1, v
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [observers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
@@ -3675,27 +3675,27 @@ void __43__FCUserInfo_handleSyncWithUserInfoRecord___block_invoke(uint64_t a1, v
   return v4;
 }
 
-+ (id)commandsToMergeLocalDataToCloud:(id)a3 privateDataDirectory:(id)a4
++ (id)commandsToMergeLocalDataToCloud:(id)cloud privateDataDirectory:(id)directory
 {
   v5 = MEMORY[0x1E695DF70];
-  v6 = a3;
-  v7 = [v5 array];
+  cloudCopy = cloud;
+  array = [v5 array];
   v8 = [FCModifyUserInfoCommand alloc];
-  v9 = [v6 asDictionary];
-  v10 = [(FCUserInfo *)a1 userInfoCKRecordFromUserInfoDictionary:v9];
+  asDictionary = [cloudCopy asDictionary];
+  v10 = [(FCUserInfo *)self userInfoCKRecordFromUserInfoDictionary:asDictionary];
   v11 = [(FCModifyUserInfoCommand *)v8 initWithUserInfoRecord:v10];
 
-  [v7 addObject:v11];
-  v12 = [FCTagSettings commandsToMergeLocalDataToCloud:v6];
-  [v7 addObjectsFromArray:v12];
-  v13 = [FCPuzzleTypeSettings commandsToMergeLocalDataToCloud:v6];
+  [array addObject:v11];
+  v12 = [FCTagSettings commandsToMergeLocalDataToCloud:cloudCopy];
+  [array addObjectsFromArray:v12];
+  v13 = [FCPuzzleTypeSettings commandsToMergeLocalDataToCloud:cloudCopy];
 
-  [v7 addObjectsFromArray:v13];
+  [array addObjectsFromArray:v13];
 
-  return v7;
+  return array;
 }
 
-- (id)recordsForRestoringZoneName:(id)a3
+- (id)recordsForRestoringZoneName:(id)name
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;

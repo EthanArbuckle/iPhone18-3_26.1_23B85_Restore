@@ -1,20 +1,20 @@
 @interface CNPhotoPickerVariantsManager
-+ (id)avatarBackgroundsFromDictionary:(id)a3;
-+ (id)avatarPoseConfigurationsForAvatarRecord:(id)a3;
-+ (id)colorFromRGBArray:(id)a3;
-+ (id)colorFromRGBString:(id)a3;
-+ (id)colorGradientBackground:(id)a3;
-+ (id)colorVariantWithColorNamed:(id)a3;
-+ (id)compositeColorForTopColor:(id)a3 bottomColor:(id)a4;
-+ (id)defaultEmojisFromDictionary:(id)a3;
++ (id)avatarBackgroundsFromDictionary:(id)dictionary;
++ (id)avatarPoseConfigurationsForAvatarRecord:(id)record;
++ (id)colorFromRGBArray:(id)array;
++ (id)colorFromRGBString:(id)string;
++ (id)colorGradientBackground:(id)background;
++ (id)colorVariantWithColorNamed:(id)named;
++ (id)compositeColorForTopColor:(id)color bottomColor:(id)bottomColor;
++ (id)defaultEmojisFromDictionary:(id)dictionary;
 + (id)generateGradientColorsByColor;
 + (id)generateMonogramGradientColorsByColor;
-+ (id)gradientBackgroundImageForColor:(id)a3;
-+ (id)gradientBackgroundImageForColor:(id)a3 bottomColor:(id)a4;
-+ (id)gradientStartColor:(id)a3;
-+ (id)monogramColorGradientBackground:(id)a3;
-+ (id)nonAlphaColorForBackgroundColor:(id)a3;
-+ (id)sharingProfileAvatarPoseConfigurationForAvatarRecord:(id)a3;
++ (id)gradientBackgroundImageForColor:(id)color;
++ (id)gradientBackgroundImageForColor:(id)color bottomColor:(id)bottomColor;
++ (id)gradientStartColor:(id)color;
++ (id)monogramColorGradientBackground:(id)background;
++ (id)nonAlphaColorForBackgroundColor:(id)color;
++ (id)sharingProfileAvatarPoseConfigurationForAvatarRecord:(id)record;
 - (CNPhotoPickerVariantsManager)init;
 - (id)randomColorVariant;
 @end
@@ -23,11 +23,11 @@
 
 - (id)randomColorVariant
 {
-  v3 = [(CNPhotoPickerVariantsManager *)self avatarBackgrounds];
-  v4 = arc4random_uniform([v3 count]);
+  avatarBackgrounds = [(CNPhotoPickerVariantsManager *)self avatarBackgrounds];
+  v4 = arc4random_uniform([avatarBackgrounds count]);
 
-  v5 = [(CNPhotoPickerVariantsManager *)self avatarBackgrounds];
-  v6 = [v5 objectAtIndexedSubscript:v4];
+  avatarBackgrounds2 = [(CNPhotoPickerVariantsManager *)self avatarBackgrounds];
+  v6 = [avatarBackgrounds2 objectAtIndexedSubscript:v4];
 
   return v6;
 }
@@ -59,19 +59,19 @@
 
 + (id)generateMonogramGradientColorsByColor
 {
-  v3 = [MEMORY[0x1E69BDC50] availableColors];
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  availableColors = [MEMORY[0x1E69BDC50] availableColors];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __69__CNPhotoPickerVariantsManager_generateMonogramGradientColorsByColor__block_invoke;
   v13 = &unk_1E74E2190;
-  v5 = v4;
+  v5 = dictionary;
   v14 = v5;
-  v15 = a1;
-  [v3 _cn_each:&v10];
-  v6 = [MEMORY[0x1E69BDC50] defaultGradientStartColor];
-  v7 = [objc_opt_class() gradientBackgroundImageForColor:v6];
-  [v5 setObject:v7 forKeyedSubscript:v6];
+  selfCopy = self;
+  [availableColors _cn_each:&v10];
+  defaultGradientStartColor = [MEMORY[0x1E69BDC50] defaultGradientStartColor];
+  v7 = [objc_opt_class() gradientBackgroundImageForColor:defaultGradientStartColor];
+  [v5 setObject:v7 forKeyedSubscript:defaultGradientStartColor];
 
   v8 = v5;
   return v5;
@@ -90,14 +90,14 @@ void __69__CNPhotoPickerVariantsManager_generateMonogramGradientColorsByColor__b
   v4 = [v3 pathForResource:@"PhotoPickerVariants" ofType:@"plist"];
 
   v5 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfFile:v4];
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v7 = [v5 objectForKeyedSubscript:@"avatarBackgrounds"];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __61__CNPhotoPickerVariantsManager_generateGradientColorsByColor__block_invoke;
   v10[3] = &unk_1E74E2168;
-  v12 = a1;
-  v8 = v6;
+  selfCopy = self;
+  v8 = dictionary;
   v11 = v8;
   [v7 _cn_each:v10];
 
@@ -116,14 +116,14 @@ void __61__CNPhotoPickerVariantsManager_generateGradientColorsByColor__block_inv
   [*(a1 + 32) setObject:v7 forKeyedSubscript:v5];
 }
 
-+ (id)gradientBackgroundImageForColor:(id)a3 bottomColor:(id)a4
++ (id)gradientBackgroundImageForColor:(id)color bottomColor:(id)bottomColor
 {
-  v6 = a3;
-  v7 = a4;
+  colorCopy = color;
+  bottomColorCopy = bottomColor;
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   v9 = CGBitmapContextCreate(0, 0x32uLL, 0x32uLL, 8uLL, 0xC8uLL, DeviceRGB, 1u);
-  v10 = [MEMORY[0x1E69DC888] whiteColor];
-  v11 = [v10 colorWithAlphaComponent:1.0];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v11 = [whiteColor colorWithAlphaComponent:1.0];
   CGContextSetFillColorWithColor(v9, [v11 CGColor]);
 
   v21.size.width = 50.0;
@@ -132,15 +132,15 @@ void __61__CNPhotoPickerVariantsManager_generateGradientColorsByColor__block_inv
   v21.size.height = 50.0;
   CGContextFillRect(v9, v21);
   Mutable = CFArrayCreateMutable(0, 2, MEMORY[0x1E695E9C0]);
-  CFArrayAppendValue(Mutable, [v6 CGColor]);
-  if (v7)
+  CFArrayAppendValue(Mutable, [colorCopy CGColor]);
+  if (bottomColorCopy)
   {
-    CFArrayAppendValue(Mutable, [v7 CGColor]);
+    CFArrayAppendValue(Mutable, [bottomColorCopy CGColor]);
   }
 
   else
   {
-    v13 = [a1 gradientStartColor:v6];
+    v13 = [self gradientStartColor:colorCopy];
     CFArrayAppendValue(Mutable, [v13 CGColor]);
   }
 
@@ -161,69 +161,69 @@ void __61__CNPhotoPickerVariantsManager_generateGradientColorsByColor__block_inv
   return v16;
 }
 
-+ (id)gradientBackgroundImageForColor:(id)a3
++ (id)gradientBackgroundImageForColor:(id)color
 {
-  v3 = a3;
-  v4 = [objc_opt_class() gradientBackgroundImageForColor:v3 bottomColor:0];
+  colorCopy = color;
+  v4 = [objc_opt_class() gradientBackgroundImageForColor:colorCopy bottomColor:0];
 
   return v4;
 }
 
-+ (id)compositeColorForTopColor:(id)a3 bottomColor:(id)a4
++ (id)compositeColorForTopColor:(id)color bottomColor:(id)bottomColor
 {
   v14 = 0.0;
   v15 = 0.0;
   v12 = 0.0;
   v13 = 0.0;
-  v5 = a3;
-  [a4 getRed:&v15 green:&v14 blue:&v13 alpha:&v12];
+  colorCopy = color;
+  [bottomColor getRed:&v15 green:&v14 blue:&v13 alpha:&v12];
   v10 = 0.0;
   v11 = 0.0;
   v8 = 0.0;
   v9 = 0.0;
-  [v5 getRed:&v11 green:&v10 blue:&v9 alpha:&v8];
+  [colorCopy getRed:&v11 green:&v10 blue:&v9 alpha:&v8];
 
   v6 = [MEMORY[0x1E69DC888] colorWithRed:((1.0 - v8) * (v12 * v15) + v11 * v8) / (v8 + v12 * (1.0 - v8)) green:((1.0 - v8) * (v12 * v14) + v10 * v8) / (v8 + v12 * (1.0 - v8)) blue:((1.0 - v8) * (v12 * v13) + v9 * v8) / (v8 + v12 * (1.0 - v8)) alpha:?];
 
   return v6;
 }
 
-+ (id)nonAlphaColorForBackgroundColor:(id)a3
++ (id)nonAlphaColorForBackgroundColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v4 = objc_opt_class();
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
-  v6 = [v4 compositeColorForTopColor:v3 bottomColor:v5];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v6 = [v4 compositeColorForTopColor:colorCopy bottomColor:whiteColor];
 
   return v6;
 }
 
-+ (id)gradientStartColor:(id)a3
++ (id)gradientStartColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v4 = objc_opt_class();
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
-  v6 = [v5 colorWithAlphaComponent:0.3];
-  v7 = [v4 compositeColorForTopColor:v6 bottomColor:v3];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v6 = [whiteColor colorWithAlphaComponent:0.3];
+  v7 = [v4 compositeColorForTopColor:v6 bottomColor:colorCopy];
 
   return v7;
 }
 
-+ (id)colorGradientBackground:(id)a3
++ (id)colorGradientBackground:(id)background
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__CNPhotoPickerVariantsManager_colorGradientBackground___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   v3 = colorGradientBackground__onceToken;
-  v4 = a3;
+  backgroundCopy = background;
   if (v3 != -1)
   {
     dispatch_once(&colorGradientBackground__onceToken, block);
   }
 
-  v5 = [colorGradientBackground__gradientColors objectForKeyedSubscript:v4];
+  v5 = [colorGradientBackground__gradientColors objectForKeyedSubscript:backgroundCopy];
 
   return v5;
 }
@@ -237,18 +237,18 @@ uint64_t __56__CNPhotoPickerVariantsManager_colorGradientBackground___block_invo
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-+ (id)monogramColorGradientBackground:(id)a3
++ (id)monogramColorGradientBackground:(id)background
 {
-  v4 = a3;
-  v5 = v4;
+  backgroundCopy = background;
+  v5 = backgroundCopy;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__CNPhotoPickerVariantsManager_monogramColorGradientBackground___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (monogramColorGradientBackground__onceToken == -1)
   {
-    if (v4)
+    if (backgroundCopy)
     {
 LABEL_3:
       v6 = [monogramColorGradientBackground__gradientColors objectForKeyedSubscript:v5];
@@ -265,8 +265,8 @@ LABEL_3:
     }
   }
 
-  v7 = [MEMORY[0x1E69BDC50] defaultGradientStartColor];
-  v6 = [monogramColorGradientBackground__gradientColors objectForKeyedSubscript:v7];
+  defaultGradientStartColor = [MEMORY[0x1E69BDC50] defaultGradientStartColor];
+  v6 = [monogramColorGradientBackground__gradientColors objectForKeyedSubscript:defaultGradientStartColor];
 
 LABEL_6:
 
@@ -282,9 +282,9 @@ uint64_t __64__CNPhotoPickerVariantsManager_monogramColorGradientBackground___bl
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-+ (id)sharingProfileAvatarPoseConfigurationForAvatarRecord:(id)a3
++ (id)sharingProfileAvatarPoseConfigurationForAvatarRecord:(id)record
 {
-  v3 = [a1 avatarPoseConfigurationsForAvatarRecord:a3];
+  v3 = [self avatarPoseConfigurationsForAvatarRecord:record];
   v4 = [v3 _cn_firstObjectPassingTest:&__block_literal_global_39];
   if (!v4)
   {
@@ -310,9 +310,9 @@ uint64_t __85__CNPhotoPickerVariantsManager_sharingProfileAvatarPoseConfiguratio
   return v3;
 }
 
-+ (id)avatarPoseConfigurationsForAvatarRecord:(id)a3
++ (id)avatarPoseConfigurationsForAvatarRecord:(id)record
 {
-  v3 = a3;
+  recordCopy = record;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2050000000;
@@ -331,31 +331,31 @@ uint64_t __85__CNPhotoPickerVariantsManager_sharingProfileAvatarPoseConfiguratio
 
   v5 = v4;
   _Block_object_dispose(&v9, 8);
-  v6 = [v4 poseConfigurationsForTypes:0 avatarRecord:v3];
+  v6 = [v4 poseConfigurationsForTypes:0 avatarRecord:recordCopy];
 
   return v6;
 }
 
-+ (id)colorVariantWithColorNamed:(id)a3
++ (id)colorVariantWithColorNamed:(id)named
 {
-  v3 = a3;
-  v4 = [CNPhotoPickerVariantsManager colorFromRGBString:v3];
-  v5 = [[CNPhotoPickerColorVariant alloc] initWithColor:v4 named:v3];
+  namedCopy = named;
+  v4 = [CNPhotoPickerVariantsManager colorFromRGBString:namedCopy];
+  v5 = [[CNPhotoPickerColorVariant alloc] initWithColor:v4 named:namedCopy];
 
   return v5;
 }
 
-+ (id)colorFromRGBString:(id)a3
++ (id)colorFromRGBString:(id)string
 {
   v3 = colorFromRGBString__cn_once_token_1;
-  v4 = a3;
+  stringCopy = string;
   if (v3 != -1)
   {
     dispatch_once(&colorFromRGBString__cn_once_token_1, &__block_literal_global_6105);
   }
 
   v5 = colorFromRGBString__cn_once_object_1;
-  v6 = [v4 componentsSeparatedByString:@":"];
+  v6 = [stringCopy componentsSeparatedByString:@":"];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -378,25 +378,25 @@ void __51__CNPhotoPickerVariantsManager_colorFromRGBString___block_invoke()
   colorFromRGBString__cn_once_object_1 = v0;
 }
 
-+ (id)colorFromRGBArray:(id)a3
++ (id)colorFromRGBArray:(id)array
 {
-  v3 = a3;
-  if ([v3 count] <= 2)
+  arrayCopy = array;
+  if ([arrayCopy count] <= 2)
   {
     +[CNUIColorRepository photoPickerAvatarBackgroundDefaultColor];
   }
 
   else
   {
-    v4 = [v3 objectAtIndexedSubscript:0];
+    v4 = [arrayCopy objectAtIndexedSubscript:0];
     [v4 floatValue];
     v6 = (v5 / 255.0);
 
-    v7 = [v3 objectAtIndexedSubscript:1];
+    v7 = [arrayCopy objectAtIndexedSubscript:1];
     [v7 floatValue];
     v9 = (v8 / 255.0);
 
-    v10 = [v3 objectAtIndexedSubscript:2];
+    v10 = [arrayCopy objectAtIndexedSubscript:2];
     [v10 floatValue];
     v12 = (v11 / 255.0);
 
@@ -407,17 +407,17 @@ void __51__CNPhotoPickerVariantsManager_colorFromRGBString___block_invoke()
   return v13;
 }
 
-+ (id)defaultEmojisFromDictionary:(id)a3
++ (id)defaultEmojisFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __60__CNPhotoPickerVariantsManager_defaultEmojisFromDictionary___block_invoke;
   v10[3] = &unk_1E74E4478;
-  v11 = v4;
-  v12 = a1;
+  v11 = dictionaryCopy;
+  selfCopy = self;
   v5 = defaultEmojisFromDictionary__onceToken;
-  v6 = v4;
+  v6 = dictionaryCopy;
   if (v5 != -1)
   {
     dispatch_once(&defaultEmojisFromDictionary__onceToken, v10);
@@ -457,17 +457,17 @@ CNPhotoPickerDefaultEmoji *__60__CNPhotoPickerVariantsManager_defaultEmojisFromD
   return v10;
 }
 
-+ (id)avatarBackgroundsFromDictionary:(id)a3
++ (id)avatarBackgroundsFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __64__CNPhotoPickerVariantsManager_avatarBackgroundsFromDictionary___block_invoke;
   v10[3] = &unk_1E74E4478;
-  v11 = v4;
-  v12 = a1;
+  v11 = dictionaryCopy;
+  selfCopy = self;
   v5 = avatarBackgroundsFromDictionary__onceToken;
-  v6 = v4;
+  v6 = dictionaryCopy;
   if (v5 != -1)
   {
     dispatch_once(&avatarBackgroundsFromDictionary__onceToken, v10);

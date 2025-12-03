@@ -1,42 +1,42 @@
 @interface PXPhotoKitMoveToLibraryActionPerformer
-+ (id)createBarButtonItemWithTarget:(id)a3 action:(SEL)a4 actionManager:(id)a5;
-+ (id)createPreviewActionWithTitle:(id)a3 image:(id)a4 handler:(id)a5;
++ (id)createBarButtonItemWithTarget:(id)target action:(SEL)action actionManager:(id)manager;
++ (id)createPreviewActionWithTitle:(id)title image:(id)image handler:(id)handler;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotoKitMoveToLibraryActionPerformer
 
-+ (id)createBarButtonItemWithTarget:(id)a3 action:(SEL)a4 actionManager:(id)a5
++ (id)createBarButtonItemWithTarget:(id)target action:(SEL)action actionManager:(id)manager
 {
-  v7 = a3;
-  v8 = [a5 selectionManager];
-  v9 = [v8 selectionSnapshot];
-  v10 = [v9 selectedIndexPaths];
-  v11 = [v10 itemCount];
+  targetCopy = target;
+  selectionManager = [manager selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
+  selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
+  itemCount = [selectedIndexPaths itemCount];
 
-  if (v11)
+  if (itemCount)
   {
-    PXLocalizedSharedLibraryAssetCountForUsage(v11, 0, 0, 15);
+    PXLocalizedSharedLibraryAssetCountForUsage(itemCount, 0, 0, 15);
   }
 
   v12 = [PXLabelBarButtonItem alloc];
   v13 = PXLocalizedStringFromTable(@"PXSelectItems", @"PhotosUICore");
-  v14 = [(PXLabelBarButtonItem *)v12 initWithTitle:v13 style:0 target:v7 action:a4];
+  v14 = [(PXLabelBarButtonItem *)v12 initWithTitle:v13 style:0 target:targetCopy action:action];
 
   return v14;
 }
 
-+ (id)createPreviewActionWithTitle:(id)a3 image:(id)a4 handler:(id)a5
++ (id)createPreviewActionWithTitle:(id)title image:(id)image handler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v8 = MEMORY[0x1E69DC628];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __85__PXPhotoKitMoveToLibraryActionPerformer_createPreviewActionWithTitle_image_handler___block_invoke;
   v12[3] = &unk_1E7742C90;
-  v13 = v7;
-  v9 = v7;
-  v10 = [v8 actionWithTitle:a3 image:a4 identifier:0 handler:v12];
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [v8 actionWithTitle:title image:image identifier:0 handler:v12];
 
   return v10;
 }
@@ -45,8 +45,8 @@
 {
   v3 = PXLocalizedSharedLibraryString(@"PXSharedLibrary_Action_MoveToLibrary_Message");
   v4 = PXLocalizedSharedLibraryString(@"PXSharedLibrary_Action_MoveToPersonalLibrary");
-  v5 = [(PXPhotoKitAssetActionPerformer *)self assets];
-  v6 = _PXSharedLibraryFetchAssetsFromAssets(v5, 0, 1, 0);
+  assets = [(PXPhotoKitAssetActionPerformer *)self assets];
+  v6 = _PXSharedLibraryFetchAssetsFromAssets(assets, 0, 1, 0);
 
   v7 = [v6 count];
   if (v7)
@@ -55,8 +55,8 @@
   }
 
   v8 = PXLocalizedSharedLibraryString(@"PXSharedLibrary_Action_MoveToSharedLibrary");
-  v9 = [(PXPhotoKitAssetActionPerformer *)self assets];
-  v10 = _PXSharedLibraryFetchAssetsFromAssets(v9, 0, 0, 0);
+  assets2 = [(PXPhotoKitAssetActionPerformer *)self assets];
+  v10 = _PXSharedLibraryFetchAssetsFromAssets(assets2, 0, 0, 0);
 
   v11 = [v10 count];
   if (v11)

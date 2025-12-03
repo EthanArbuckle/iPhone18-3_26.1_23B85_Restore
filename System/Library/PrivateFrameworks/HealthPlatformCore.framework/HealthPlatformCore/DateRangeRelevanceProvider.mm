@@ -1,5 +1,5 @@
 @interface DateRangeRelevanceProvider
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (_TtC18HealthPlatformCore26DateRangeRelevanceProvider)init;
 - (int64_t)hash;
@@ -36,11 +36,11 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_2287CB870();
     swift_unknownObjectRelease();
@@ -49,7 +49,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_22878F134(v8);
@@ -71,7 +71,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_22878F828();
 
   v3 = sub_2287CB210();

@@ -1,11 +1,11 @@
 @interface TTRICustomRecurrenceTableViewCell
 + (id)reuseIdentifier;
 - (void)_layoutSeparator;
-- (void)_setMarginExtendsToFullWidth:(BOOL)a3;
+- (void)_setMarginExtendsToFullWidth:(BOOL)width;
 - (void)layoutSubviews;
-- (void)setDrawsOwnRowSeparators:(BOOL)a3;
-- (void)setRowSeparatorColor:(id)a3;
-- (void)setRowSeparatorVisualEffect:(id)a3;
+- (void)setDrawsOwnRowSeparators:(BOOL)separators;
+- (void)setRowSeparatorColor:(id)color;
+- (void)setRowSeparatorVisualEffect:(id)effect;
 @end
 
 @implementation TTRICustomRecurrenceTableViewCell
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __52__TTRICustomRecurrenceTableViewCell_reuseIdentifier__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (reuseIdentifier_onceToken_0 != -1)
   {
     dispatch_once(&reuseIdentifier_onceToken_0, block);
@@ -53,9 +53,9 @@ void __52__TTRICustomRecurrenceTableViewCell_reuseIdentifier__block_invoke()
     v6 = v5;
     v8 = v7;
     v10 = v9;
-    v11 = [(TTRICustomRecurrenceTableViewCell *)self usesInsetMargin];
+    usesInsetMargin = [(TTRICustomRecurrenceTableViewCell *)self usesInsetMargin];
     v12 = 15.0;
-    if (!v11)
+    if (!usesInsetMargin)
     {
       v12 = v6;
     }
@@ -66,10 +66,10 @@ void __52__TTRICustomRecurrenceTableViewCell_reuseIdentifier__block_invoke()
   }
 }
 
-- (void)setRowSeparatorColor:(id)a3
+- (void)setRowSeparatorColor:(id)color
 {
-  v6 = a3;
-  objc_storeStrong(&self->_rowSeparatorColor, a3);
+  colorCopy = color;
+  objc_storeStrong(&self->_rowSeparatorColor, color);
   separatorViewForNonOpaqueTables = self->_separatorViewForNonOpaqueTables;
   if (separatorViewForNonOpaqueTables)
   {
@@ -77,107 +77,107 @@ void __52__TTRICustomRecurrenceTableViewCell_reuseIdentifier__block_invoke()
   }
 }
 
-- (void)setRowSeparatorVisualEffect:(id)a3
+- (void)setRowSeparatorVisualEffect:(id)effect
 {
-  objc_storeStrong(&self->_rowSeparatorVisualEffect, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_rowSeparatorVisualEffect, effect);
+  effectCopy = effect;
   [(UIVisualEffectView *)self->_rowSeparatorParentView setEffect:self->_rowSeparatorVisualEffect];
 }
 
-- (void)setDrawsOwnRowSeparators:(BOOL)a3
+- (void)setDrawsOwnRowSeparators:(BOOL)separators
 {
-  v3 = a3;
-  v4 = self;
-  v20 = v4;
+  separatorsCopy = separators;
+  selfCopy = self;
+  contentView = selfCopy;
   if ([objc_opt_class() vibrant])
   {
-    if (v3 && !v4->_rowSeparatorParentView)
+    if (separatorsCopy && !selfCopy->_rowSeparatorParentView)
     {
       v5 = objc_alloc(MEMORY[0x277D75D68]);
-      [(TTRICustomRecurrenceTableViewCell *)v4 bounds];
+      [(TTRICustomRecurrenceTableViewCell *)selfCopy bounds];
       v6 = [v5 initWithFrame:?];
-      rowSeparatorParentView = v4->_rowSeparatorParentView;
-      v4->_rowSeparatorParentView = v6;
+      rowSeparatorParentView = selfCopy->_rowSeparatorParentView;
+      selfCopy->_rowSeparatorParentView = v6;
 
-      v8 = [(TTRICustomRecurrenceTableViewCell *)v4 rowSeparatorVisualEffect];
-      rowSeparatorVisualEffect = v4->_rowSeparatorVisualEffect;
-      v4->_rowSeparatorVisualEffect = v8;
+      rowSeparatorVisualEffect = [(TTRICustomRecurrenceTableViewCell *)selfCopy rowSeparatorVisualEffect];
+      rowSeparatorVisualEffect = selfCopy->_rowSeparatorVisualEffect;
+      selfCopy->_rowSeparatorVisualEffect = rowSeparatorVisualEffect;
 
-      [(UIVisualEffectView *)v4->_rowSeparatorParentView setAutoresizingMask:18];
-      v10 = [MEMORY[0x277D75348] clearColor];
-      [(UIVisualEffectView *)v4->_rowSeparatorParentView setBackgroundColor:v10];
+      [(UIVisualEffectView *)selfCopy->_rowSeparatorParentView setAutoresizingMask:18];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [(UIVisualEffectView *)selfCopy->_rowSeparatorParentView setBackgroundColor:clearColor];
 
-      [(TTRICustomRecurrenceTableViewCell *)v4 addSubview:v4->_rowSeparatorParentView];
+      [(TTRICustomRecurrenceTableViewCell *)selfCopy addSubview:selfCopy->_rowSeparatorParentView];
     }
 
-    v20 = [(UIVisualEffectView *)v4->_rowSeparatorParentView contentView];
+    contentView = [(UIVisualEffectView *)selfCopy->_rowSeparatorParentView contentView];
   }
 
-  v4->_drawsOwnRowSeparators = v3;
-  separatorViewForNonOpaqueTables = v4->_separatorViewForNonOpaqueTables;
-  if (v3)
+  selfCopy->_drawsOwnRowSeparators = separatorsCopy;
+  separatorViewForNonOpaqueTables = selfCopy->_separatorViewForNonOpaqueTables;
+  if (separatorsCopy)
   {
     if (!separatorViewForNonOpaqueTables)
     {
       v12 = objc_alloc_init(TTRICustomRecurrenceCellRowSeparatorView);
-      v13 = v4->_separatorViewForNonOpaqueTables;
-      v4->_separatorViewForNonOpaqueTables = v12;
+      v13 = selfCopy->_separatorViewForNonOpaqueTables;
+      selfCopy->_separatorViewForNonOpaqueTables = v12;
 
-      -[TTRICustomRecurrenceCellRowSeparatorView setVibrant:](v4->_separatorViewForNonOpaqueTables, "setVibrant:", [objc_opt_class() vibrant]);
+      -[TTRICustomRecurrenceCellRowSeparatorView setVibrant:](selfCopy->_separatorViewForNonOpaqueTables, "setVibrant:", [objc_opt_class() vibrant]);
       if ([objc_opt_class() vibrant])
       {
-        v14 = [(UIVisualEffectView *)v4->_rowSeparatorParentView contentView];
-        v15 = [v14 tintColor];
+        contentView2 = [(UIVisualEffectView *)selfCopy->_rowSeparatorParentView contentView];
+        tintColor = [contentView2 tintColor];
       }
 
       else
       {
-        v14 = [(TTRICustomRecurrenceTableViewCell *)v4 rowSeparatorColor];
-        if (v14)
+        contentView2 = [(TTRICustomRecurrenceTableViewCell *)selfCopy rowSeparatorColor];
+        if (contentView2)
         {
-          [(TTRICustomRecurrenceTableViewCell *)v4 rowSeparatorColor];
+          [(TTRICustomRecurrenceTableViewCell *)selfCopy rowSeparatorColor];
         }
 
         else
         {
           [MEMORY[0x277D75348] colorWithWhite:0.78 alpha:1.0];
         }
-        v15 = ;
+        tintColor = ;
       }
 
-      v17 = v15;
-      [(TTRICustomRecurrenceCellRowSeparatorView *)v4->_separatorViewForNonOpaqueTables setBackgroundColor:v15];
+      v17 = tintColor;
+      [(TTRICustomRecurrenceCellRowSeparatorView *)selfCopy->_separatorViewForNonOpaqueTables setBackgroundColor:tintColor];
 
-      [v20 addSubview:v4->_separatorViewForNonOpaqueTables];
+      [contentView addSubview:selfCopy->_separatorViewForNonOpaqueTables];
     }
   }
 
   else if (separatorViewForNonOpaqueTables)
   {
     [(TTRICustomRecurrenceCellRowSeparatorView *)separatorViewForNonOpaqueTables removeFromSuperview];
-    v16 = v4->_separatorViewForNonOpaqueTables;
-    v4->_separatorViewForNonOpaqueTables = 0;
+    v16 = selfCopy->_separatorViewForNonOpaqueTables;
+    selfCopy->_separatorViewForNonOpaqueTables = 0;
   }
 
   if ([objc_opt_class() vibrant])
   {
-    if (!v4->_drawsOwnRowSeparators)
+    if (!selfCopy->_drawsOwnRowSeparators)
     {
-      v18 = v4->_rowSeparatorParentView;
+      v18 = selfCopy->_rowSeparatorParentView;
       if (v18)
       {
         [(UIVisualEffectView *)v18 removeFromSuperview];
-        v19 = v4->_rowSeparatorParentView;
-        v4->_rowSeparatorParentView = 0;
+        v19 = selfCopy->_rowSeparatorParentView;
+        selfCopy->_rowSeparatorParentView = 0;
       }
     }
   }
 }
 
-- (void)_setMarginExtendsToFullWidth:(BOOL)a3
+- (void)_setMarginExtendsToFullWidth:(BOOL)width
 {
   v3 = 15.0;
-  if (a3)
+  if (width)
   {
     v3 = 0.0;
   }

@@ -1,13 +1,13 @@
 @interface MenstrualCyclesHeaderFooterView
-- (_TtC24MenstrualCyclesAppPlugin31MenstrualCyclesHeaderFooterView)initWithCoder:(id)a3;
-- (_TtC24MenstrualCyclesAppPlugin31MenstrualCyclesHeaderFooterView)initWithReuseIdentifier:(id)a3;
+- (_TtC24MenstrualCyclesAppPlugin31MenstrualCyclesHeaderFooterView)initWithCoder:(id)coder;
+- (_TtC24MenstrualCyclesAppPlugin31MenstrualCyclesHeaderFooterView)initWithReuseIdentifier:(id)identifier;
 @end
 
 @implementation MenstrualCyclesHeaderFooterView
 
-- (_TtC24MenstrualCyclesAppPlugin31MenstrualCyclesHeaderFooterView)initWithReuseIdentifier:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin31MenstrualCyclesHeaderFooterView)initWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = _sSo25HKMCDisplayTypeIdentifiera24MenstrualCyclesAppPluginE2idSSvg_0();
   }
@@ -21,7 +21,7 @@
   return sub_29DFD5048(v3, v4);
 }
 
-- (_TtC24MenstrualCyclesAppPlugin31MenstrualCyclesHeaderFooterView)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin31MenstrualCyclesHeaderFooterView)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin31MenstrualCyclesHeaderFooterView_configuration;
   *v3 = 0u;

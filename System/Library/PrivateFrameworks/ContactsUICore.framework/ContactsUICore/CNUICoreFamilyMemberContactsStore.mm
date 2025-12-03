@@ -1,15 +1,15 @@
 @interface CNUICoreFamilyMemberContactsStore
 - (CNScheduler)backgroundOrImmediateScheduler;
 - (CNUICoreFamilyMemberContactsStore)init;
-- (CNUICoreFamilyMemberContactsStore)initWithFamilyMember:(id)a3 schedulerProvider:(id)a4;
-- (CNUICoreFamilyMemberContactsStore)initWithFamilyMemberScopedContactStoreFacade:(id)a3 familyMember:(id)a4 contactsSyncTrigger:(id)a5 schedulerProvider:(id)a6;
-- (id)contactsFoundAndNotFoundInFamilyMemberContainerFuture:(id)a3;
-- (id)contactsInsertedIntoFamilyMemberContainerIfMissingFuture:(id)a3 preserveEditsToProvidedContactsOverContactsFoundInFamilyMemberStore:(BOOL)a4;
-- (id)updateContactListByAddingContacts:(id)a3;
-- (id)updateContactListByRemovingContacts:(id)a3;
-- (id)updateContactListByUpdatingContacts:(id)a3;
-- (id)updateContactWhitelistByAddingContacts:(id)a3;
-- (id)updateContactWhitelistByRemovingContacts:(id)a3;
+- (CNUICoreFamilyMemberContactsStore)initWithFamilyMember:(id)member schedulerProvider:(id)provider;
+- (CNUICoreFamilyMemberContactsStore)initWithFamilyMemberScopedContactStoreFacade:(id)facade familyMember:(id)member contactsSyncTrigger:(id)trigger schedulerProvider:(id)provider;
+- (id)contactsFoundAndNotFoundInFamilyMemberContainerFuture:(id)future;
+- (id)contactsInsertedIntoFamilyMemberContainerIfMissingFuture:(id)future preserveEditsToProvidedContactsOverContactsFoundInFamilyMemberStore:(BOOL)store;
+- (id)updateContactListByAddingContacts:(id)contacts;
+- (id)updateContactListByRemovingContacts:(id)contacts;
+- (id)updateContactListByUpdatingContacts:(id)contacts;
+- (id)updateContactWhitelistByAddingContacts:(id)contacts;
+- (id)updateContactWhitelistByRemovingContacts:(id)contacts;
 - (void)triggerContactsSyncRequest;
 @end
 
@@ -17,32 +17,32 @@
 
 - (CNUICoreFamilyMemberContactsStore)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }
 
-- (CNUICoreFamilyMemberContactsStore)initWithFamilyMember:(id)a3 schedulerProvider:(id)a4
+- (CNUICoreFamilyMemberContactsStore)initWithFamilyMember:(id)member schedulerProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
+  providerCopy = provider;
+  memberCopy = member;
   v8 = [CNUICoreContactStoreProductionFacade alloc];
-  v9 = [MEMORY[0x1E695CE18] storeForFamilyMember:v7];
+  v9 = [MEMORY[0x1E695CE18] storeForFamilyMember:memberCopy];
   v10 = [(CNUICoreContactStoreProductionFacade *)v8 initWithContactStore:v9];
 
   v11 = objc_alloc_init(CNUICoreContactsSyncProductionTrigger);
-  v12 = [(CNUICoreFamilyMemberContactsStore *)self initWithFamilyMemberScopedContactStoreFacade:v10 familyMember:v7 contactsSyncTrigger:v11 schedulerProvider:v6];
+  v12 = [(CNUICoreFamilyMemberContactsStore *)self initWithFamilyMemberScopedContactStoreFacade:v10 familyMember:memberCopy contactsSyncTrigger:v11 schedulerProvider:providerCopy];
 
   return v12;
 }
 
-- (CNUICoreFamilyMemberContactsStore)initWithFamilyMemberScopedContactStoreFacade:(id)a3 familyMember:(id)a4 contactsSyncTrigger:(id)a5 schedulerProvider:(id)a6
+- (CNUICoreFamilyMemberContactsStore)initWithFamilyMemberScopedContactStoreFacade:(id)facade familyMember:(id)member contactsSyncTrigger:(id)trigger schedulerProvider:(id)provider
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  facadeCopy = facade;
+  memberCopy = member;
+  triggerCopy = trigger;
+  providerCopy = provider;
+  if (facadeCopy)
   {
     goto LABEL_5;
   }
@@ -55,7 +55,7 @@
   if (os_log_type_enabled(CNGuardOSLog_cn_once_object_0_9, OS_LOG_TYPE_FAULT))
   {
     [CNUICoreFamilyMemberWhitelistedContactsController initWithModelFetcher:familyMemberContactsUpdator:familyMemberScopedContactStoreFacade:mainContactStoreFacade:schedulerProvider:];
-    if (v12)
+    if (memberCopy)
     {
       goto LABEL_10;
     }
@@ -64,7 +64,7 @@
   else
   {
 LABEL_5:
-    if (v12)
+    if (memberCopy)
     {
       goto LABEL_10;
     }
@@ -81,7 +81,7 @@ LABEL_5:
   }
 
 LABEL_10:
-  if (!v14)
+  if (!providerCopy)
   {
     if (CNGuardOSLog_cn_once_token_0_9 != -1)
     {
@@ -100,10 +100,10 @@ LABEL_10:
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_familyMemberScopedContactStore, a3);
-    objc_storeStrong(&v16->_familyMember, a4);
-    objc_storeStrong(&v16->_contactsSyncTrigger, a5);
-    objc_storeStrong(&v16->_schedulerProvider, a6);
+    objc_storeStrong(&v15->_familyMemberScopedContactStore, facade);
+    objc_storeStrong(&v16->_familyMember, member);
+    objc_storeStrong(&v16->_contactsSyncTrigger, trigger);
+    objc_storeStrong(&v16->_schedulerProvider, provider);
     v17 = v16;
   }
 
@@ -112,27 +112,27 @@ LABEL_10:
 
 - (CNScheduler)backgroundOrImmediateScheduler
 {
-  v3 = [MEMORY[0x1E696AF00] isMainThread];
-  v4 = [(CNUICoreFamilyMemberContactsStore *)self schedulerProvider];
-  v5 = v4;
-  if (v3)
+  isMainThread = [MEMORY[0x1E696AF00] isMainThread];
+  schedulerProvider = [(CNUICoreFamilyMemberContactsStore *)self schedulerProvider];
+  v5 = schedulerProvider;
+  if (isMainThread)
   {
-    [v4 backgroundScheduler];
+    [schedulerProvider backgroundScheduler];
   }
 
   else
   {
-    [v4 immediateScheduler];
+    [schedulerProvider immediateScheduler];
   }
   v6 = ;
 
   return v6;
 }
 
-- (id)updateContactListByAddingContacts:(id)a3
+- (id)updateContactListByAddingContacts:(id)contacts
 {
-  v4 = a3;
-  if (!v4)
+  contactsCopy = contacts;
+  if (!contactsCopy)
   {
     if (CNGuardOSLog_cn_once_token_0_9 != -1)
     {
@@ -152,24 +152,24 @@ LABEL_10:
 
   else
   {
-    v6 = [(CNUICoreFamilyMemberContactsStore *)self familyMember];
-    v7 = [(CNUICoreFamilyMemberContactsStore *)self familyMemberScopedContactStore];
+    familyMember = [(CNUICoreFamilyMemberContactsStore *)self familyMember];
+    familyMemberScopedContactStore = [(CNUICoreFamilyMemberContactsStore *)self familyMemberScopedContactStore];
     v8 = MEMORY[0x1E6996720];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __71__CNUICoreFamilyMemberContactsStore_updateContactListByAddingContacts___block_invoke;
     v20[3] = &unk_1E76E9120;
-    v21 = v4;
-    v9 = [(CNUICoreFamilyMemberContactsStore *)self backgroundOrImmediateScheduler];
-    v10 = [(CNUICoreFamilyMemberContactsStore *)self schedulerProvider];
-    v11 = [v8 futureWithBlock:v20 scheduler:v9 schedulerProvider:v10];
+    v21 = contactsCopy;
+    backgroundOrImmediateScheduler = [(CNUICoreFamilyMemberContactsStore *)self backgroundOrImmediateScheduler];
+    schedulerProvider = [(CNUICoreFamilyMemberContactsStore *)self schedulerProvider];
+    v11 = [v8 futureWithBlock:v20 scheduler:backgroundOrImmediateScheduler schedulerProvider:schedulerProvider];
 
     v16 = MEMORY[0x1E69E9820];
-    v17 = v7;
-    v18 = self;
-    v19 = v6;
-    v12 = v6;
-    v13 = v7;
+    v17 = familyMemberScopedContactStore;
+    selfCopy = self;
+    v19 = familyMember;
+    v12 = familyMember;
+    v13 = familyMemberScopedContactStore;
     v14 = [(CNUICoreFamilyMemberContactsStore *)self schedulerProvider:v16];
     v5 = [v11 flatMap:&v16 schedulerProvider:v14];
   }
@@ -206,23 +206,23 @@ id __71__CNUICoreFamilyMemberContactsStore_updateContactListByAddingContacts___b
   return v9;
 }
 
-- (id)updateContactListByUpdatingContacts:(id)a3
+- (id)updateContactListByUpdatingContacts:(id)contacts
 {
-  v4 = a3;
-  v5 = [(CNUICoreFamilyMemberContactsStore *)self familyMemberScopedContactStore];
+  contactsCopy = contacts;
+  familyMemberScopedContactStore = [(CNUICoreFamilyMemberContactsStore *)self familyMemberScopedContactStore];
   v6 = MEMORY[0x1E6996720];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __73__CNUICoreFamilyMemberContactsStore_updateContactListByUpdatingContacts___block_invoke;
   v13[3] = &unk_1E76E9170;
-  v14 = v5;
-  v15 = v4;
-  v16 = self;
-  v7 = v4;
-  v8 = v5;
-  v9 = [(CNUICoreFamilyMemberContactsStore *)self backgroundOrImmediateScheduler];
-  v10 = [(CNUICoreFamilyMemberContactsStore *)self schedulerProvider];
-  v11 = [v6 futureWithBlock:v13 scheduler:v9 schedulerProvider:v10];
+  v14 = familyMemberScopedContactStore;
+  v15 = contactsCopy;
+  selfCopy = self;
+  v7 = contactsCopy;
+  v8 = familyMemberScopedContactStore;
+  backgroundOrImmediateScheduler = [(CNUICoreFamilyMemberContactsStore *)self backgroundOrImmediateScheduler];
+  schedulerProvider = [(CNUICoreFamilyMemberContactsStore *)self schedulerProvider];
+  v11 = [v6 futureWithBlock:v13 scheduler:backgroundOrImmediateScheduler schedulerProvider:schedulerProvider];
 
   return v11;
 }
@@ -261,10 +261,10 @@ LABEL_7:
   return v9;
 }
 
-- (id)updateContactListByRemovingContacts:(id)a3
+- (id)updateContactListByRemovingContacts:(id)contacts
 {
-  v4 = a3;
-  if (!v4)
+  contactsCopy = contacts;
+  if (!contactsCopy)
   {
     if (CNGuardOSLog_cn_once_token_0_9 != -1)
     {
@@ -284,19 +284,19 @@ LABEL_7:
 
   else
   {
-    v6 = [(CNUICoreFamilyMemberContactsStore *)self familyMember];
-    v7 = [(CNUICoreFamilyMemberContactsStore *)self familyMemberScopedContactStore];
+    familyMember = [(CNUICoreFamilyMemberContactsStore *)self familyMember];
+    familyMemberScopedContactStore = [(CNUICoreFamilyMemberContactsStore *)self familyMemberScopedContactStore];
     v8 = MEMORY[0x1E6996720];
     v14 = MEMORY[0x1E69E9820];
-    v15 = v7;
-    v16 = v4;
-    v17 = self;
-    v18 = v6;
-    v9 = v6;
-    v10 = v7;
+    v15 = familyMemberScopedContactStore;
+    v16 = contactsCopy;
+    selfCopy = self;
+    v18 = familyMember;
+    v9 = familyMember;
+    v10 = familyMemberScopedContactStore;
     v11 = [(CNUICoreFamilyMemberContactsStore *)self backgroundOrImmediateScheduler:v14];
-    v12 = [(CNUICoreFamilyMemberContactsStore *)self schedulerProvider];
-    v5 = [v8 futureWithBlock:&v14 scheduler:v11 schedulerProvider:v12];
+    schedulerProvider = [(CNUICoreFamilyMemberContactsStore *)self schedulerProvider];
+    v5 = [v8 futureWithBlock:&v14 scheduler:v11 schedulerProvider:schedulerProvider];
   }
 
   return v5;
@@ -342,10 +342,10 @@ LABEL_7:
   return v10;
 }
 
-- (id)updateContactWhitelistByAddingContacts:(id)a3
+- (id)updateContactWhitelistByAddingContacts:(id)contacts
 {
-  v4 = a3;
-  if (!v4)
+  contactsCopy = contacts;
+  if (!contactsCopy)
   {
     if (CNGuardOSLog_cn_once_token_0_9 != -1)
     {
@@ -365,16 +365,16 @@ LABEL_7:
 
   else
   {
-    v6 = [(CNUICoreFamilyMemberContactsStore *)self familyMember];
-    v7 = [(CNUICoreFamilyMemberContactsStore *)self familyMemberScopedContactStore];
-    v8 = [(CNUICoreFamilyMemberContactsStore *)self contactsInsertedIntoFamilyMemberContainerIfMissingFuture:v4 preserveEditsToProvidedContactsOverContactsFoundInFamilyMemberStore:1];
+    familyMember = [(CNUICoreFamilyMemberContactsStore *)self familyMember];
+    familyMemberScopedContactStore = [(CNUICoreFamilyMemberContactsStore *)self familyMemberScopedContactStore];
+    v8 = [(CNUICoreFamilyMemberContactsStore *)self contactsInsertedIntoFamilyMemberContainerIfMissingFuture:contactsCopy preserveEditsToProvidedContactsOverContactsFoundInFamilyMemberStore:1];
     v13 = MEMORY[0x1E69E9820];
-    v14 = v7;
-    v15 = self;
-    v16 = v4;
-    v17 = v6;
-    v9 = v6;
-    v10 = v7;
+    v14 = familyMemberScopedContactStore;
+    selfCopy = self;
+    v16 = contactsCopy;
+    v17 = familyMember;
+    v9 = familyMember;
+    v10 = familyMemberScopedContactStore;
     v11 = [(CNUICoreFamilyMemberContactsStore *)self schedulerProvider:v13];
     v5 = [v8 flatMap:&v13 schedulerProvider:v11];
   }
@@ -444,25 +444,25 @@ LABEL_7:
 
 - (void)triggerContactsSyncRequest
 {
-  v2 = [(CNUICoreFamilyMemberContactsStore *)self contactsSyncTrigger];
-  [v2 fireSyncRequest];
+  contactsSyncTrigger = [(CNUICoreFamilyMemberContactsStore *)self contactsSyncTrigger];
+  [contactsSyncTrigger fireSyncRequest];
 }
 
-- (id)contactsInsertedIntoFamilyMemberContainerIfMissingFuture:(id)a3 preserveEditsToProvidedContactsOverContactsFoundInFamilyMemberStore:(BOOL)a4
+- (id)contactsInsertedIntoFamilyMemberContainerIfMissingFuture:(id)future preserveEditsToProvidedContactsOverContactsFoundInFamilyMemberStore:(BOOL)store
 {
-  v6 = a3;
-  v7 = [(CNUICoreFamilyMemberContactsStore *)self schedulerProvider];
+  futureCopy = future;
+  schedulerProvider = [(CNUICoreFamilyMemberContactsStore *)self schedulerProvider];
   objc_initWeak(&location, self);
-  v8 = [(CNUICoreFamilyMemberContactsStore *)self contactsFoundAndNotFoundInFamilyMemberContainerFuture:v6];
+  v8 = [(CNUICoreFamilyMemberContactsStore *)self contactsFoundAndNotFoundInFamilyMemberContainerFuture:futureCopy];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __162__CNUICoreFamilyMemberContactsStore_contactsInsertedIntoFamilyMemberContainerIfMissingFuture_preserveEditsToProvidedContactsOverContactsFoundInFamilyMemberStore___block_invoke;
   v13[3] = &unk_1E76E9238;
   objc_copyWeak(&v16, &location);
-  v17 = a4;
-  v9 = v6;
+  storeCopy = store;
+  v9 = futureCopy;
   v14 = v9;
-  v10 = v7;
+  v10 = schedulerProvider;
   v15 = v10;
   v11 = [v8 flatMap:v13 schedulerProvider:v10];
 
@@ -531,25 +531,25 @@ id __162__CNUICoreFamilyMemberContactsStore_contactsInsertedIntoFamilyMemberCont
   return v8;
 }
 
-- (id)contactsFoundAndNotFoundInFamilyMemberContainerFuture:(id)a3
+- (id)contactsFoundAndNotFoundInFamilyMemberContainerFuture:(id)future
 {
-  v4 = a3;
-  v5 = [(CNUICoreFamilyMemberContactsStore *)self familyMember];
-  v6 = [(CNUICoreFamilyMemberContactsStore *)self familyMemberScopedContactStore];
+  futureCopy = future;
+  familyMember = [(CNUICoreFamilyMemberContactsStore *)self familyMember];
+  familyMemberScopedContactStore = [(CNUICoreFamilyMemberContactsStore *)self familyMemberScopedContactStore];
   v7 = MEMORY[0x1E6996720];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __91__CNUICoreFamilyMemberContactsStore_contactsFoundAndNotFoundInFamilyMemberContainerFuture___block_invoke;
   v15[3] = &unk_1E76E9260;
-  v16 = v6;
-  v17 = v4;
-  v18 = v5;
-  v8 = v5;
-  v9 = v4;
-  v10 = v6;
-  v11 = [(CNUICoreFamilyMemberContactsStore *)self backgroundOrImmediateScheduler];
-  v12 = [(CNUICoreFamilyMemberContactsStore *)self schedulerProvider];
-  v13 = [v7 futureWithBlock:v15 scheduler:v11 schedulerProvider:v12];
+  v16 = familyMemberScopedContactStore;
+  v17 = futureCopy;
+  v18 = familyMember;
+  v8 = familyMember;
+  v9 = futureCopy;
+  v10 = familyMemberScopedContactStore;
+  backgroundOrImmediateScheduler = [(CNUICoreFamilyMemberContactsStore *)self backgroundOrImmediateScheduler];
+  schedulerProvider = [(CNUICoreFamilyMemberContactsStore *)self schedulerProvider];
+  v13 = [v7 futureWithBlock:v15 scheduler:backgroundOrImmediateScheduler schedulerProvider:schedulerProvider];
 
   return v13;
 }
@@ -584,10 +584,10 @@ id __91__CNUICoreFamilyMemberContactsStore_contactsFoundAndNotFoundInFamilyMembe
   return v6;
 }
 
-- (id)updateContactWhitelistByRemovingContacts:(id)a3
+- (id)updateContactWhitelistByRemovingContacts:(id)contacts
 {
-  v4 = a3;
-  if (!v4)
+  contactsCopy = contacts;
+  if (!contactsCopy)
   {
     if (CNGuardOSLog_cn_once_token_0_9 != -1)
     {
@@ -607,19 +607,19 @@ id __91__CNUICoreFamilyMemberContactsStore_contactsFoundAndNotFoundInFamilyMembe
 
   else
   {
-    v6 = [(CNUICoreFamilyMemberContactsStore *)self familyMember];
-    v7 = [(CNUICoreFamilyMemberContactsStore *)self familyMemberScopedContactStore];
+    familyMember = [(CNUICoreFamilyMemberContactsStore *)self familyMember];
+    familyMemberScopedContactStore = [(CNUICoreFamilyMemberContactsStore *)self familyMemberScopedContactStore];
     v8 = MEMORY[0x1E6996720];
     v14 = MEMORY[0x1E69E9820];
-    v15 = v7;
-    v16 = v4;
-    v17 = self;
-    v18 = v6;
-    v9 = v6;
-    v10 = v7;
+    v15 = familyMemberScopedContactStore;
+    v16 = contactsCopy;
+    selfCopy = self;
+    v18 = familyMember;
+    v9 = familyMember;
+    v10 = familyMemberScopedContactStore;
     v11 = [(CNUICoreFamilyMemberContactsStore *)self backgroundOrImmediateScheduler:v14];
-    v12 = [(CNUICoreFamilyMemberContactsStore *)self schedulerProvider];
-    v5 = [v8 futureWithBlock:&v14 scheduler:v11 schedulerProvider:v12];
+    schedulerProvider = [(CNUICoreFamilyMemberContactsStore *)self schedulerProvider];
+    v5 = [v8 futureWithBlock:&v14 scheduler:v11 schedulerProvider:schedulerProvider];
   }
 
   return v5;

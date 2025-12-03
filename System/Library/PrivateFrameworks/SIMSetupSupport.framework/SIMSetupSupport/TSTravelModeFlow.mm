@@ -1,22 +1,22 @@
 @interface TSTravelModeFlow
-- (TSTravelModeFlow)initWithOptions:(id)a3;
+- (TSTravelModeFlow)initWithOptions:(id)options;
 - (id)_getCellularPlanItemForTravelSIM;
 - (id)firstViewController;
-- (id)nextViewControllerFrom:(id)a3;
+- (id)nextViewControllerFrom:(id)from;
 - (void)firstViewController;
-- (void)firstViewController:(id)a3;
+- (void)firstViewController:(id)controller;
 @end
 
 @implementation TSTravelModeFlow
 
-- (TSTravelModeFlow)initWithOptions:(id)a3
+- (TSTravelModeFlow)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v8.receiver = self;
   v8.super_class = TSTravelModeFlow;
   v5 = [(TSSIMSetupFlow *)&v8 init];
   options = v5->_options;
-  v5->_options = v4;
+  v5->_options = optionsCopy;
 
   return v5;
 }
@@ -32,36 +32,36 @@
   return 0;
 }
 
-- (void)firstViewController:(id)a3
+- (void)firstViewController:(id)controller
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  if (v4)
+  if (controllerCopy)
   {
     v5 = [(NSDictionary *)self->_options objectForKeyedSubscript:@"options"];
-    v6 = [v5 integerValue];
+    integerValue = [v5 integerValue];
 
     v7 = [(NSDictionary *)self->_options objectForKeyedSubscript:@"isUserAbroad"];
-    v8 = [v7 integerValue];
+    integerValue2 = [v7 integerValue];
 
     v9 = [(NSDictionary *)self->_options objectForKeyedSubscript:@"travelSIMIccid"];
     v10 = [(NSDictionary *)self->_options objectForKeyedSubscript:@"homeSIMIccid"];
     v11 = [(NSDictionary *)self->_options objectForKeyedSubscript:@"voiceSIMIccid"];
-    if (v6)
+    if (integerValue)
     {
       v12 = objc_alloc_init(TSRoamingEducationViewController);
     }
 
-    else if ((v6 & 2) != 0)
+    else if ((integerValue & 2) != 0)
     {
       v13 = [TSTravelModeIntroViewController alloc];
       v14 = [(NSDictionary *)self->_options objectForKeyedSubscript:@"extractionSource"];
       v15 = [(NSDictionary *)self->_options objectForKeyedSubscript:@"arrivalCountry"];
-      v12 = [(TSTravelModeIntroViewController *)v13 initWithOptions:v8 extractionSource:v14 reduceEducation:0 arrivalCountry:v15];
+      v12 = [(TSTravelModeIntroViewController *)v13 initWithOptions:integerValue2 extractionSource:v14 reduceEducation:0 arrivalCountry:v15];
     }
 
-    else if ((v6 & 4) != 0)
+    else if ((integerValue & 4) != 0)
     {
       v12 = [[TSTravelBuddyViewController alloc] initWithIccids:v9 homeIccid:v10 voiceIccid:v11 postArrivalInstallation:0];
       objc_storeStrong(&self->_travelSIM, v9);
@@ -76,7 +76,7 @@
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 134218242;
-      v19 = v6;
+      v19 = integerValue;
       v20 = 2080;
       v21 = "[TSTravelModeFlow firstViewController:]";
       _os_log_impl(&dword_262AA8000, v16, OS_LOG_TYPE_DEFAULT, "options: %lu @%s", &v18, 0x16u);
@@ -84,35 +84,35 @@
 
     [(TSRoamingEducationViewController *)v12 setDelegate:self];
     [(TSSIMSetupFlow *)self setTopViewController:v12];
-    v4[2](v4, v12);
+    controllerCopy[2](controllerCopy, v12);
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)nextViewControllerFrom:(id)a3
+- (id)nextViewControllerFrom:(id)from
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(TSTravelModeFlow *)self _getCellularPlanItemForTravelSIM];
+    v5 = fromCopy;
+    _getCellularPlanItemForTravelSIM = [(TSTravelModeFlow *)self _getCellularPlanItemForTravelSIM];
     v7 = _TSLogDomain();
     v8 = v7;
-    if (v6)
+    if (_getCellularPlanItemForTravelSIM)
     {
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v17 = v6;
+        v17 = _getCellularPlanItemForTravelSIM;
         v18 = 2080;
         v19 = "[TSTravelModeFlow nextViewControllerFrom:]";
         _os_log_impl(&dword_262AA8000, &v8->super, OS_LOG_TYPE_DEFAULT, "Found a matching cellular plan item %@ @%s", buf, 0x16u);
       }
 
-      v8 = [[SSInstallPlanInformation alloc] initWithItem:v6];
+      v8 = [[SSInstallPlanInformation alloc] initWithItem:_getCellularPlanItemForTravelSIM];
       -[SSInstallPlanInformation setUseTravelOnly:](v8, "setUseTravelOnly:", [v5 travelOnlySelected]);
       v9 = [TSLowDataModeConfigViewController alloc];
       v15 = v8;
@@ -145,8 +145,8 @@
 - (id)_getCellularPlanItemForTravelSIM
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CF96D8] sharedManager];
-  v4 = [v3 planItemsShouldUpdate:0];
+  mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
+  v4 = [mEMORY[0x277CF96D8] planItemsShouldUpdate:0];
 
   v18 = 0u;
   v19 = 0u;
@@ -170,8 +170,8 @@
         v10 = *(*(&v16 + 1) + 8 * i);
         if ([v10 isSelected])
         {
-          v11 = [v10 iccid];
-          v12 = [v11 isEqualToString:self->_travelSIM];
+          iccid = [v10 iccid];
+          v12 = [iccid isEqualToString:self->_travelSIM];
 
           if (v12)
           {

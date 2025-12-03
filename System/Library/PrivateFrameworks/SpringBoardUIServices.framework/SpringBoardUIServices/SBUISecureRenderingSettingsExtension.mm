@@ -1,17 +1,17 @@
 @interface SBUISecureRenderingSettingsExtension
-+ (void)configureSetting:(id)a3;
++ (void)configureSetting:(id)setting;
 @end
 
 @implementation SBUISecureRenderingSettingsExtension
 
-+ (void)configureSetting:(id)a3
++ (void)configureSetting:(id)setting
 {
-  v3 = a3;
-  if ([v3 matchesProperty:sel_isSecureRenderingEnabled])
+  settingCopy = setting;
+  if ([settingCopy matchesProperty:sel_isSecureRenderingEnabled])
   {
-    [v3 setPropagating:1];
-    [v3 setDefaultValue:&unk_1F1DB5A70];
-    [v3 setNullPreserving:1];
+    [settingCopy setPropagating:1];
+    [settingCopy setDefaultValue:&unk_1F1DB5A70];
+    [settingCopy setNullPreserving:1];
   }
 }
 

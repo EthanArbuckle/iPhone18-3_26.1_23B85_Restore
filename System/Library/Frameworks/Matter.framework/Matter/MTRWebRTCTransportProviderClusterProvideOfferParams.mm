@@ -1,8 +1,8 @@
 @interface MTRWebRTCTransportProviderClusterProvideOfferParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRWebRTCTransportProviderClusterProvideOfferParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -56,44 +56,44 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRWebRTCTransportProviderClusterProvideOfferParams);
-  v5 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self webRTCSessionID];
-  [(MTRWebRTCTransportProviderClusterProvideOfferParams *)v4 setWebRTCSessionID:v5];
+  webRTCSessionID = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self webRTCSessionID];
+  [(MTRWebRTCTransportProviderClusterProvideOfferParams *)v4 setWebRTCSessionID:webRTCSessionID];
 
   v6 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self sdp];
   [(MTRWebRTCTransportProviderClusterProvideOfferParams *)v4 setSdp:v6];
 
-  v7 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self streamUsage];
-  [(MTRWebRTCTransportProviderClusterProvideOfferParams *)v4 setStreamUsage:v7];
+  streamUsage = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self streamUsage];
+  [(MTRWebRTCTransportProviderClusterProvideOfferParams *)v4 setStreamUsage:streamUsage];
 
-  v8 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self originatingEndpointID];
-  [(MTRWebRTCTransportProviderClusterProvideOfferParams *)v4 setOriginatingEndpointID:v8];
+  originatingEndpointID = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self originatingEndpointID];
+  [(MTRWebRTCTransportProviderClusterProvideOfferParams *)v4 setOriginatingEndpointID:originatingEndpointID];
 
-  v9 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self videoStreamID];
-  [(MTRWebRTCTransportProviderClusterProvideOfferParams *)v4 setVideoStreamID:v9];
+  videoStreamID = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self videoStreamID];
+  [(MTRWebRTCTransportProviderClusterProvideOfferParams *)v4 setVideoStreamID:videoStreamID];
 
-  v10 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self audioStreamID];
-  [(MTRWebRTCTransportProviderClusterProvideOfferParams *)v4 setAudioStreamID:v10];
+  audioStreamID = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self audioStreamID];
+  [(MTRWebRTCTransportProviderClusterProvideOfferParams *)v4 setAudioStreamID:audioStreamID];
 
-  v11 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self iceServers];
-  [(MTRWebRTCTransportProviderClusterProvideOfferParams *)v4 setIceServers:v11];
+  iceServers = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self iceServers];
+  [(MTRWebRTCTransportProviderClusterProvideOfferParams *)v4 setIceServers:iceServers];
 
-  v12 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self iceTransportPolicy];
-  [(MTRWebRTCTransportProviderClusterProvideOfferParams *)v4 setIceTransportPolicy:v12];
+  iceTransportPolicy = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self iceTransportPolicy];
+  [(MTRWebRTCTransportProviderClusterProvideOfferParams *)v4 setIceTransportPolicy:iceTransportPolicy];
 
-  v13 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self metadataEnabled];
-  [(MTRWebRTCTransportProviderClusterProvideOfferParams *)v4 setMetadataEnabled:v13];
+  metadataEnabled = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self metadataEnabled];
+  [(MTRWebRTCTransportProviderClusterProvideOfferParams *)v4 setMetadataEnabled:metadataEnabled];
 
-  v14 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self sFrameConfig];
-  [(MTRWebRTCTransportProviderClusterProvideOfferParams *)v4 setSFrameConfig:v14];
+  sFrameConfig = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self sFrameConfig];
+  [(MTRWebRTCTransportProviderClusterProvideOfferParams *)v4 setSFrameConfig:sFrameConfig];
 
-  v15 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self timedInvokeTimeoutMs];
-  [(MTRWebRTCTransportProviderClusterProvideOfferParams *)v4 setTimedInvokeTimeoutMs:v15];
+  timedInvokeTimeoutMs = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self timedInvokeTimeoutMs];
+  [(MTRWebRTCTransportProviderClusterProvideOfferParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v16 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self serverSideProcessingTimeout];
-  [(MTRWebRTCTransportProviderClusterProvideOfferParams *)v4 setServerSideProcessingTimeout:v16];
+  serverSideProcessingTimeout = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self serverSideProcessingTimeout];
+  [(MTRWebRTCTransportProviderClusterProvideOfferParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -108,12 +108,12 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v76 = *MEMORY[0x277D85DE8];
-  LOBYTE(v54) = 0;
+  LOBYTE(unsignedShortValue) = 0;
   v55 = 0;
-  v58 = 0;
+  unsignedShortValue2 = 0;
   v59 = 0;
   v61 = 0;
   v63 = 0;
@@ -121,19 +121,19 @@
   LOBYTE(v68) = 0;
   v69 = 0;
   v56 = 0uLL;
-  v57 = 0;
+  unsignedCharValue = 0;
   v53[0] = 0;
   v53[1] = 0;
   v52 = v53;
-  v4 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self webRTCSessionID];
-  v5 = v4 == 0;
+  webRTCSessionID = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self webRTCSessionID];
+  v5 = webRTCSessionID == 0;
 
   if (!v5)
   {
-    v54 = 0;
+    unsignedShortValue = 0;
     v55 = 1;
-    v6 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self webRTCSessionID];
-    v54 = [v6 unsignedShortValue];
+    webRTCSessionID2 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self webRTCSessionID];
+    unsignedShortValue = [webRTCSessionID2 unsignedShortValue];
   }
 
   v7 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self sdp];
@@ -141,60 +141,60 @@
   sub_238DB9BD8(buf, [v7 UTF8String], objc_msgSend(v7, "lengthOfBytesUsingEncoding:", 4));
 
   v56 = *buf;
-  v9 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self streamUsage];
-  v57 = [v9 unsignedCharValue];
+  streamUsage = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self streamUsage];
+  unsignedCharValue = [streamUsage unsignedCharValue];
 
-  v10 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self originatingEndpointID];
-  v58 = [v10 unsignedShortValue];
+  originatingEndpointID = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self originatingEndpointID];
+  unsignedShortValue2 = [originatingEndpointID unsignedShortValue];
 
-  v11 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self videoStreamID];
-  v12 = v11 == 0;
+  videoStreamID = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self videoStreamID];
+  v12 = videoStreamID == 0;
 
   if (!v12)
   {
     v59 = 1;
     v60 = 0;
-    v13 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self videoStreamID];
-    v14 = v13 == 0;
+    videoStreamID2 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self videoStreamID];
+    v14 = videoStreamID2 == 0;
 
     if (!v14)
     {
       LOWORD(v60) = 0;
       BYTE2(v60) = 1;
-      v15 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self videoStreamID];
-      LOWORD(v60) = [v15 unsignedShortValue];
+      videoStreamID3 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self videoStreamID];
+      LOWORD(v60) = [videoStreamID3 unsignedShortValue];
     }
   }
 
-  v16 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self audioStreamID];
-  v17 = v16 == 0;
+  audioStreamID = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self audioStreamID];
+  v17 = audioStreamID == 0;
 
   if (!v17)
   {
     v61 = 1;
     v62 = 0;
-    v18 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self audioStreamID];
-    v19 = v18 == 0;
+    audioStreamID2 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self audioStreamID];
+    v19 = audioStreamID2 == 0;
 
     if (!v19)
     {
       LOWORD(v62) = 0;
       BYTE2(v62) = 1;
-      v20 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self audioStreamID];
-      LOWORD(v62) = [v20 unsignedShortValue];
+      audioStreamID3 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self audioStreamID];
+      LOWORD(v62) = [audioStreamID3 unsignedShortValue];
     }
   }
 
-  v21 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self iceServers];
-  v22 = v21 == 0;
+  iceServers = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self iceServers];
+  v22 = iceServers == 0;
 
   if (!v22)
   {
     v63 = 1;
     v64 = 0;
     v65 = 0;
-    v23 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self iceServers];
-    v24 = [v23 count] == 0;
+    iceServers2 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self iceServers];
+    v24 = [iceServers2 count] == 0;
 
     if (!v24)
     {
@@ -205,49 +205,49 @@
     v65 = 0;
   }
 
-  v25 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self iceTransportPolicy];
-  v26 = v25 == 0;
+  iceTransportPolicy = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self iceTransportPolicy];
+  v26 = iceTransportPolicy == 0;
 
   if (!v26)
   {
     v66 = 1;
     v67 = 0uLL;
-    v27 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self iceTransportPolicy];
-    v28 = v27;
-    sub_238DB9BD8(buf, [v27 UTF8String], objc_msgSend(v27, "lengthOfBytesUsingEncoding:", 4));
+    iceTransportPolicy2 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self iceTransportPolicy];
+    v28 = iceTransportPolicy2;
+    sub_238DB9BD8(buf, [iceTransportPolicy2 UTF8String], objc_msgSend(iceTransportPolicy2, "lengthOfBytesUsingEncoding:", 4));
 
     v67 = *buf;
   }
 
-  v29 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self metadataEnabled];
-  v30 = v29 == 0;
+  metadataEnabled = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self metadataEnabled];
+  v30 = metadataEnabled == 0;
 
   if (!v30)
   {
     v68 = 1;
-    v31 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self metadataEnabled];
-    HIBYTE(v68) = [v31 BOOLValue];
+    metadataEnabled2 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self metadataEnabled];
+    HIBYTE(v68) = [metadataEnabled2 BOOLValue];
   }
 
-  v32 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self sFrameConfig];
-  v33 = v32 == 0;
+  sFrameConfig = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self sFrameConfig];
+  v33 = sFrameConfig == 0;
 
   if (!v33)
   {
     v69 = 1;
     memset(v70, 0, sizeof(v70));
-    v34 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self sFrameConfig];
-    v35 = [v34 cipherSuite];
-    LOWORD(v70[0]) = [v35 unsignedShortValue];
+    sFrameConfig2 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self sFrameConfig];
+    cipherSuite = [sFrameConfig2 cipherSuite];
+    LOWORD(v70[0]) = [cipherSuite unsignedShortValue];
 
-    v36 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self sFrameConfig];
-    v37 = [v36 baseKey];
-    v38 = v37;
-    sub_238DB6950(buf, [v37 bytes], objc_msgSend(v37, "length"));
+    sFrameConfig3 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self sFrameConfig];
+    baseKey = [sFrameConfig3 baseKey];
+    v38 = baseKey;
+    sub_238DB6950(buf, [baseKey bytes], objc_msgSend(baseKey, "length"));
 
     *&v70[1] = *buf;
-    v39 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self sFrameConfig];
-    v40 = [v39 kid];
+    sFrameConfig4 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self sFrameConfig];
+    v40 = [sFrameConfig4 kid];
     v41 = v40;
     sub_238DB6950(buf, [v40 bytes], objc_msgSend(v40, "length"));
 
@@ -264,7 +264,7 @@
     v75 = 0;
     sub_238EA16C4(&v72, &v51, 0);
     sub_2393C7BF0(buf, &v72, 0xFFFFFFFF);
-    v43 = sub_238F33528(&v54, buf, 0x100uLL);
+    v43 = sub_238F33528(&unsignedShortValue, buf, 0x100uLL);
     v44 = v43;
     if (v43 || (v43 = sub_238DD2EFC(buf, &v51), v44 = v43, v43))
     {
@@ -273,8 +273,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v51);
-      v43 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v51);
+      v43 = sub_2393C7114(reader, 21, 256);
       v45 = v49;
       v44 = v43;
     }
@@ -302,19 +302,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRWebRTCTransportProviderClusterProvideOfferParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -325,7 +325,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x8E5300000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

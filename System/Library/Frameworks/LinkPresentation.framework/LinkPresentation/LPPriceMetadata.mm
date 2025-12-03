@@ -1,10 +1,10 @@
 @interface LPPriceMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (LPPriceMetadata)init;
-- (LPPriceMetadata)initWithCoder:(id)a3;
-- (id)_initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (LPPriceMetadata)initWithCoder:(id)coder;
+- (id)_initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LPPriceMetadata
@@ -23,17 +23,17 @@
   return v3;
 }
 
-- (id)_initWithDictionary:(id)a3
+- (id)_initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(LPPriceMetadata *)self init];
   if (v5)
   {
-    v6 = stringForKey(v4, @"LPMetadataPriceAmount");
+    v6 = stringForKey(dictionaryCopy, @"LPMetadataPriceAmount");
     amount = v5->_amount;
     v5->_amount = v6;
 
-    v8 = stringForKey(v4, @"LPMetadataPriceCurrency");
+    v8 = stringForKey(dictionaryCopy, @"LPMetadataPriceCurrency");
     currency = v5->_currency;
     v5->_currency = v8;
 
@@ -43,19 +43,19 @@
   return v5;
 }
 
-- (LPPriceMetadata)initWithCoder:(id)a3
+- (LPPriceMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = LPPriceMetadata;
   v5 = [(LPPriceMetadata *)&v12 init];
   if (v5)
   {
-    v6 = decodeStringForKey(v4, @"amount");
+    v6 = decodeStringForKey(coderCopy, @"amount");
     amount = v5->_amount;
     v5->_amount = v6;
 
-    v8 = decodeStringForKey(v4, @"currency");
+    v8 = decodeStringForKey(coderCopy, @"currency");
     currency = v5->_currency;
     v5->_currency = v8;
 
@@ -65,19 +65,19 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 _lp_encodeStringIfNotNil:self->_amount forKey:@"amount"];
-  [v4 _lp_encodeStringIfNotNil:self->_currency forKey:@"currency"];
+  coderCopy = coder;
+  [coderCopy _lp_encodeStringIfNotNil:self->_amount forKey:@"amount"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_currency forKey:@"currency"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = LPPriceMetadata;
-  if ([(LPPriceMetadata *)&v8 isEqual:v4])
+  if ([(LPPriceMetadata *)&v8 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -87,7 +87,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       if (objectsAreEqual_0(v6[1], self->_amount))
       {
         v5 = objectsAreEqual_0(v6[2], self->_currency);
@@ -108,16 +108,16 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [LPPriceMetadata allocWithZone:a3];
+  v4 = [LPPriceMetadata allocWithZone:zone];
   if (v4)
   {
-    v5 = [(LPPriceMetadata *)self amount];
-    [(LPPriceMetadata *)v4 setAmount:v5];
+    amount = [(LPPriceMetadata *)self amount];
+    [(LPPriceMetadata *)v4 setAmount:amount];
 
-    v6 = [(LPPriceMetadata *)self currency];
-    [(LPPriceMetadata *)v4 setCurrency:v6];
+    currency = [(LPPriceMetadata *)self currency];
+    [(LPPriceMetadata *)v4 setCurrency:currency];
 
     v7 = v4;
   }

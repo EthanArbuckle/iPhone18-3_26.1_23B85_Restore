@@ -1,27 +1,27 @@
 @interface IMAssistantMessageSearchHandler
-- (IMAssistantMessageSearchHandler)initWithDataSource:(id)a3 attributeSanitizer:(id)a4 intentIdentifier:(id)a5;
-- (id)resolveSpeakableGroupNames:(id)a3 forIntent:(id)a4;
-- (void)handleSearchForMessages:(id)a3 completion:(id)a4;
-- (void)resolveAttributesForSearchForMessages:(id)a3 withCompletion:(id)a4;
-- (void)resolveRecipientsAndSender:(id)a3 withCompletion:(id)a4;
-- (void)resolveRecipientsForSearchForMessages:(id)a3 withCompletion:(id)a4;
-- (void)resolveSendersForSearchForMessages:(id)a3 withCompletion:(id)a4;
-- (void)resolveSpeakableGroupNamesForSearchForMessages:(id)a3 withCompletion:(id)a4;
+- (IMAssistantMessageSearchHandler)initWithDataSource:(id)source attributeSanitizer:(id)sanitizer intentIdentifier:(id)identifier;
+- (id)resolveSpeakableGroupNames:(id)names forIntent:(id)intent;
+- (void)handleSearchForMessages:(id)messages completion:(id)completion;
+- (void)resolveAttributesForSearchForMessages:(id)messages withCompletion:(id)completion;
+- (void)resolveRecipientsAndSender:(id)sender withCompletion:(id)completion;
+- (void)resolveRecipientsForSearchForMessages:(id)messages withCompletion:(id)completion;
+- (void)resolveSendersForSearchForMessages:(id)messages withCompletion:(id)completion;
+- (void)resolveSpeakableGroupNamesForSearchForMessages:(id)messages withCompletion:(id)completion;
 @end
 
 @implementation IMAssistantMessageSearchHandler
 
-- (IMAssistantMessageSearchHandler)initWithDataSource:(id)a3 attributeSanitizer:(id)a4 intentIdentifier:(id)a5
+- (IMAssistantMessageSearchHandler)initWithDataSource:(id)source attributeSanitizer:(id)sanitizer intentIdentifier:(id)identifier
 {
-  v8 = a4;
+  sanitizerCopy = sanitizer;
   v13.receiver = self;
   v13.super_class = IMAssistantMessageSearchHandler;
-  v9 = [(IMAssistantMessageHandler *)&v13 initWithDataSource:a3 intentIdentifier:a5];
+  v9 = [(IMAssistantMessageHandler *)&v13 initWithDataSource:source intentIdentifier:identifier];
   if (v9)
   {
-    if (v8)
+    if (sanitizerCopy)
     {
-      v10 = v8;
+      v10 = sanitizerCopy;
     }
 
     else
@@ -36,11 +36,11 @@
   return v9;
 }
 
-- (void)resolveRecipientsForSearchForMessages:(id)a3 withCompletion:(id)a4
+- (void)resolveRecipientsForSearchForMessages:(id)messages withCompletion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  messagesCopy = messages;
+  completionCopy = completion;
   v8 = _IMAssistantCoreSearchForMessageSignpostLogHandle();
   v9 = os_signpost_id_generate(v8);
 
@@ -56,28 +56,28 @@
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v20 = v6;
+    v20 = messagesCopy;
     _os_log_impl(&dword_25479E000, v12, OS_LOG_TYPE_INFO, "resolveRecipients called with intent: %@", buf, 0xCu);
   }
 
-  v13 = [v6 recipients];
+  recipients = [messagesCopy recipients];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = sub_2547B4A48;
   v16[3] = &unk_2797868D8;
-  v17 = v7;
+  v17 = completionCopy;
   v18 = v9;
-  v14 = v7;
-  [(IMAssistantMessageQueryHandler *)self resolvePersons:v13 forIntent:v6 completionHandler:v16];
+  v14 = completionCopy;
+  [(IMAssistantMessageQueryHandler *)self resolvePersons:recipients forIntent:messagesCopy completionHandler:v16];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resolveSendersForSearchForMessages:(id)a3 withCompletion:(id)a4
+- (void)resolveSendersForSearchForMessages:(id)messages withCompletion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  messagesCopy = messages;
+  completionCopy = completion;
   v8 = _IMAssistantCoreSearchForMessageSignpostLogHandle();
   v9 = os_signpost_id_generate(v8);
 
@@ -93,28 +93,28 @@
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v20 = v6;
+    v20 = messagesCopy;
     _os_log_impl(&dword_25479E000, v12, OS_LOG_TYPE_INFO, "resolveSenders called with intent: %@", buf, 0xCu);
   }
 
-  v13 = [v6 senders];
+  senders = [messagesCopy senders];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = sub_2547B4D48;
   v16[3] = &unk_2797868D8;
-  v17 = v7;
+  v17 = completionCopy;
   v18 = v9;
-  v14 = v7;
-  [(IMAssistantMessageQueryHandler *)self resolvePersons:v13 forIntent:v6 completionHandler:v16];
+  v14 = completionCopy;
+  [(IMAssistantMessageQueryHandler *)self resolvePersons:senders forIntent:messagesCopy completionHandler:v16];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resolveAttributesForSearchForMessages:(id)a3 withCompletion:(id)a4
+- (void)resolveAttributesForSearchForMessages:(id)messages withCompletion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  messagesCopy = messages;
+  completionCopy = completion;
   v8 = _IMAssistantCoreSearchForMessageSignpostLogHandle();
   v9 = os_signpost_id_generate(v8);
 
@@ -130,18 +130,18 @@
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v26 = 138412290;
-    v27 = v6;
+    v27 = messagesCopy;
     _os_log_impl(&dword_25479E000, v12, OS_LOG_TYPE_INFO, "resolveAttributes called with intent: %@", &v26, 0xCu);
   }
 
-  v13 = [v6 attributes];
-  v14 = [(IMAssistantMessageSearchHandler *)self attributeSanitizer];
-  v15 = [IMAssistantMessageAttributeOptions optionsWithAttributes:v13 sanitizer:v14];
+  attributes = [messagesCopy attributes];
+  attributeSanitizer = [(IMAssistantMessageSearchHandler *)self attributeSanitizer];
+  v15 = [IMAssistantMessageAttributeOptions optionsWithAttributes:attributes sanitizer:attributeSanitizer];
 
   if ([v15 includeRead])
   {
-    v16 = [v6 identifiers];
-    v17 = [v16 count];
+    identifiers = [messagesCopy identifiers];
+    v17 = [identifiers count];
 
     if (!v17)
     {
@@ -149,20 +149,20 @@
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
         v26 = 138412290;
-        v27 = v6;
+        v27 = messagesCopy;
         _os_log_impl(&dword_25479E000, v18, OS_LOG_TYPE_INFO, "intent with read options lacks message identifiers: %@", &v26, 0xCu);
       }
     }
 
-    v19 = [v6 dateTimeRange];
+    dateTimeRange = [messagesCopy dateTimeRange];
 
-    if (!v19)
+    if (!dateTimeRange)
     {
       v20 = IMLogHandleForCategory();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
         v26 = 138412290;
-        v27 = v6;
+        v27 = messagesCopy;
         _os_log_impl(&dword_25479E000, v20, OS_LOG_TYPE_INFO, "intent with read options lacks dateTimeRange: %@", &v26, 0xCu);
       }
     }
@@ -185,15 +185,15 @@
     _os_signpost_emit_with_name_impl(&dword_25479E000, v24, OS_SIGNPOST_INTERVAL_END, v9, "resolveAttributesForSearchForMessages", &unk_2547CAD0B, &v26, 2u);
   }
 
-  v7[2](v7, v21);
+  completionCopy[2](completionCopy, v21);
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resolveSpeakableGroupNamesForSearchForMessages:(id)a3 withCompletion:(id)a4
+- (void)resolveSpeakableGroupNamesForSearchForMessages:(id)messages withCompletion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  messagesCopy = messages;
+  completionCopy = completion;
   v8 = _IMAssistantCoreSearchForMessageSignpostLogHandle();
   v9 = os_signpost_id_generate(v8);
 
@@ -209,7 +209,7 @@
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v30 = v6;
+    v30 = messagesCopy;
     _os_log_impl(&dword_25479E000, v12, OS_LOG_TYPE_INFO, "resolveSpeakableGroupNames called with intent: %@", buf, 0xCu);
   }
 
@@ -218,14 +218,14 @@
   v25[2] = sub_2547B5544;
   v25[3] = &unk_279786900;
   v25[4] = self;
-  v13 = v6;
+  v13 = messagesCopy;
   v26 = v13;
   v28 = v9;
-  v14 = v7;
+  v14 = completionCopy;
   v27 = v14;
   v15 = MEMORY[0x259C19590](v25);
-  v16 = [v13 speakableGroupNames];
-  v17 = [v16 count];
+  speakableGroupNames = [v13 speakableGroupNames];
+  v17 = [speakableGroupNames count];
 
   if (v17)
   {
@@ -269,10 +269,10 @@
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleSearchForMessages:(id)a3 completion:(id)a4
+- (void)handleSearchForMessages:(id)messages completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  messagesCopy = messages;
+  completionCopy = completion;
   v8 = _IMAssistantCoreSearchForMessageSignpostLogHandle();
   v9 = os_signpost_id_generate(v8);
 
@@ -288,11 +288,11 @@
   v18[1] = 3221225472;
   v18[2] = sub_2547B5890;
   v18[3] = &unk_279786900;
-  v12 = v6;
+  v12 = messagesCopy;
   v19 = v12;
-  v20 = self;
+  selfCopy = self;
   v22 = v9;
-  v13 = v7;
+  v13 = completionCopy;
   v21 = v13;
   v14 = MEMORY[0x259C19590](v18);
   if ([MEMORY[0x277CCACC8] isMainThread])
@@ -312,33 +312,33 @@
   }
 }
 
-- (void)resolveRecipientsAndSender:(id)a3 withCompletion:(id)a4
+- (void)resolveRecipientsAndSender:(id)sender withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 recipients];
+  senderCopy = sender;
+  completionCopy = completion;
+  recipients = [senderCopy recipients];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_2547B6204;
   v11[3] = &unk_279786978;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
-  [(IMAssistantMessageQueryHandler *)self resolvePersons:v8 forIntent:v10 completionHandler:v11];
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = senderCopy;
+  v9 = completionCopy;
+  v10 = senderCopy;
+  [(IMAssistantMessageQueryHandler *)self resolvePersons:recipients forIntent:v10 completionHandler:v11];
 }
 
-- (id)resolveSpeakableGroupNames:(id)a3 forIntent:(id)a4
+- (id)resolveSpeakableGroupNames:(id)names forIntent:(id)intent
 {
   v55 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  namesCopy = names;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = v4;
+  obj = namesCopy;
   v39 = [obj countByEnumeratingWithState:&v41 objects:v54 count:16];
   if (v39)
   {
@@ -364,13 +364,13 @@
         v13 = IMLogHandleForCategory();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
         {
-          v14 = [v10 spokenPhrase];
-          v15 = [v10 vocabularyIdentifier];
+          spokenPhrase = [v10 spokenPhrase];
+          vocabularyIdentifier = [v10 vocabularyIdentifier];
           v16 = [v12 count];
           *buf = 138413058;
-          v46 = v14;
+          v46 = spokenPhrase;
           v47 = 2112;
-          v48 = v15;
+          v48 = vocabularyIdentifier;
           v49 = 2048;
           v50 = v16;
           v51 = 2112;
@@ -382,24 +382,24 @@
         {
           v17 = v7;
           v18 = v5;
-          v19 = [v12 firstObject];
-          v20 = [v19 displayName];
-          v21 = [v19 chatIdentifier];
-          v22 = [(IMAssistantMessageHandler *)self messageHandlerDataSource];
-          v23 = [v22 screentimeAllowedToShowChat:v19 error:0];
+          firstObject = [v12 firstObject];
+          displayName = [firstObject displayName];
+          chatIdentifier = [firstObject chatIdentifier];
+          messageHandlerDataSource = [(IMAssistantMessageHandler *)self messageHandlerDataSource];
+          v23 = [messageHandlerDataSource screentimeAllowedToShowChat:firstObject error:0];
 
           if (v23)
           {
-            if ([v20 length])
+            if ([displayName length])
             {
-              v24 = [objc_alloc(MEMORY[0x277CD4188]) initWithVocabularyIdentifier:v21 spokenPhrase:v20 pronunciationHint:0];
+              v24 = [objc_alloc(MEMORY[0x277CD4188]) initWithVocabularyIdentifier:chatIdentifier spokenPhrase:displayName pronunciationHint:0];
               v25 = IMLogHandleForCategory();
               if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
               {
                 *buf = v36;
-                v46 = v20;
+                v46 = displayName;
                 v47 = 2112;
-                v48 = v21;
+                v48 = chatIdentifier;
                 _os_log_impl(&dword_25479E000, v25, OS_LOG_TYPE_INFO, "Resolve chatName: %@ and vocabularyIdentifier: %@", buf, 0x16u);
               }
             }
@@ -423,9 +423,9 @@
             if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
             {
               *buf = v36;
-              v46 = v20;
+              v46 = displayName;
               v47 = 2112;
-              v48 = v21;
+              v48 = chatIdentifier;
               _os_log_impl(&dword_25479E000, v30, OS_LOG_TYPE_INFO, "downtime suppressing resolve for chatName: %@ and vocabularyIdentifier: %@", buf, 0x16u);
             }
 
@@ -452,7 +452,7 @@
               _os_log_impl(&dword_25479E000, v27, OS_LOG_TYPE_INFO, "No matching chats were found, returning unsupported/notFound for resolveSpeakableGroupNames", buf, 2u);
             }
 
-            v29 = [MEMORY[0x277CD4198] unsupported];
+            unsupported = [MEMORY[0x277CD4198] unsupported];
           }
 
           else
@@ -463,10 +463,10 @@
               _os_log_impl(&dword_25479E000, v27, OS_LOG_TYPE_INFO, "Using input as resolved value.", buf, 2u);
             }
 
-            v29 = [MEMORY[0x277CD4198] successWithResolvedString:v10];
+            unsupported = [MEMORY[0x277CD4198] successWithResolvedString:v10];
           }
 
-          v31 = v29;
+          v31 = unsupported;
         }
 
         [v5 addObject:v31];

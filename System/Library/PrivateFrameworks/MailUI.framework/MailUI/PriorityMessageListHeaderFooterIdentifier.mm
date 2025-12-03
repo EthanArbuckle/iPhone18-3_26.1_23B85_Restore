@@ -1,10 +1,10 @@
 @interface PriorityMessageListHeaderFooterIdentifier
-- (id)initAsEphemeralID:(BOOL)a3 representedObjectID:(id)a4;
+- (id)initAsEphemeralID:(BOOL)d representedObjectID:(id)iD;
 @end
 
 @implementation PriorityMessageListHeaderFooterIdentifier
 
-- (id)initAsEphemeralID:(BOOL)a3 representedObjectID:(id)a4
+- (id)initAsEphemeralID:(BOOL)d representedObjectID:(id)iD
 {
   swift_unknownObjectRetain();
   sub_214CCD394();

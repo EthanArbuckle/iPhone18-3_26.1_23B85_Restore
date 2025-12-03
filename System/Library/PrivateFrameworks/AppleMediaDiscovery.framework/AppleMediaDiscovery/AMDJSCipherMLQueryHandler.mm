@@ -1,18 +1,18 @@
 @interface AMDJSCipherMLQueryHandler
-+ (id)triggerPECCall:(id)a3 withError:(id *)a4;
-+ (id)triggerPIRKVFetch:(id)a3 withError:(id *)a4;
++ (id)triggerPECCall:(id)call withError:(id *)error;
++ (id)triggerPIRKVFetch:(id)fetch withError:(id *)error;
 @end
 
 @implementation AMDJSCipherMLQueryHandler
 
-+ (id)triggerPIRKVFetch:(id)a3 withError:(id *)a4
++ (id)triggerPIRKVFetch:(id)fetch withError:(id *)error
 {
   v60 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v52 = a4;
+  objc_storeStrong(location, fetch);
+  errorCopy = error;
   if (location[0])
   {
     objc_opt_class();
@@ -70,9 +70,9 @@
               MEMORY[0x277D82BD8](obj);
               v35 = [objc_alloc(MEMORY[0x277CFA598]) initWithUseCase:v41];
               v34 = [objc_alloc(MEMORY[0x277CFA5B0]) initWithClientConfig:v35];
-              *v52 = 0;
-              v33 = [v34 asyncResponseDataByKeywords:v39 error:v52];
-              if (*v52)
+              *errorCopy = 0;
+              v33 = [v34 asyncResponseDataByKeywords:v39 error:errorCopy];
+              if (*errorCopy)
               {
                 oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
                 type = OS_LOG_TYPE_ERROR;
@@ -81,11 +81,11 @@
                   log = oslog;
                   v14 = type;
                   v12 = v41;
-                  v15 = [*v52 localizedDescription];
-                  v30 = MEMORY[0x277D82BE0](v15);
+                  localizedDescription = [*errorCopy localizedDescription];
+                  v30 = MEMORY[0x277D82BE0](localizedDescription);
                   __os_log_helper_16_2_2_8_64_8_64(v58, v12, v30);
                   _os_log_error_impl(&dword_240CB9000, log, v14, "PIR use case %@ error: %@", v58, 0x16u);
-                  MEMORY[0x277D82BD8](v15);
+                  MEMORY[0x277D82BD8](localizedDescription);
                   objc_storeStrong(&v30, 0);
                 }
 
@@ -123,7 +123,7 @@
               v42 = MEMORY[0x277D82BE0](@"usecase is not a string");
               v22 = [AMDMiscHelpers logAndCreateError:18 errorMessage:v42];
               v9 = v22;
-              *v52 = v22;
+              *errorCopy = v22;
               v54 = 0;
               v50 = 1;
               objc_storeStrong(&v42, 0);
@@ -135,7 +135,7 @@
             v43 = MEMORY[0x277D82BE0](@"usecase absent in PIR query payload");
             v23 = [AMDMiscHelpers logAndCreateError:18 errorMessage:v43];
             v8 = v23;
-            *v52 = v23;
+            *errorCopy = v23;
             v54 = 0;
             v50 = 1;
             objc_storeStrong(&v43, 0);
@@ -149,7 +149,7 @@
           v45 = MEMORY[0x277D82BE0](@"Keywords are not an array");
           v24 = [AMDMiscHelpers logAndCreateError:18 errorMessage:v45];
           v7 = v24;
-          *v52 = v24;
+          *errorCopy = v24;
           v54 = 0;
           v50 = 1;
           objc_storeStrong(&v45, 0);
@@ -161,7 +161,7 @@
         v46 = MEMORY[0x277D82BE0](@"Keywords absent in PIR query payload");
         v25 = [AMDMiscHelpers logAndCreateError:18 errorMessage:v46];
         v6 = v25;
-        *v52 = v25;
+        *errorCopy = v25;
         v54 = 0;
         v50 = 1;
         objc_storeStrong(&v46, 0);
@@ -176,7 +176,7 @@
       v49 = MEMORY[0x277D82BE0](@"PIRQueryPayload is not a dictionary");
       v26 = [AMDMiscHelpers logAndCreateError:18 errorMessage:v49];
       v5 = v26;
-      *v52 = v26;
+      *errorCopy = v26;
       v54 = 0;
       v50 = 1;
       objc_storeStrong(&v49, 0);
@@ -188,7 +188,7 @@
     v51 = MEMORY[0x277D82BE0](@"PIRQueryPayload is nil");
     v27 = [AMDMiscHelpers logAndCreateError:18 errorMessage:v51];
     v4 = v27;
-    *v52 = v27;
+    *errorCopy = v27;
     v54 = 0;
     v50 = 1;
     objc_storeStrong(&v51, 0);
@@ -201,14 +201,14 @@
   return v10;
 }
 
-+ (id)triggerPECCall:(id)a3 withError:(id *)a4
++ (id)triggerPECCall:(id)call withError:(id *)error
 {
   v105 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v94 = a4;
+  objc_storeStrong(location, call);
+  errorCopy = error;
   if (location[0])
   {
     objc_opt_class();
@@ -296,7 +296,7 @@
                         v74 = MEMORY[0x277D82BE0](@"an embedding element is not a number");
                         v36 = [AMDMiscHelpers logAndCreateError:18 errorMessage:v74];
                         v13 = v36;
-                        *v94 = v36;
+                        *errorCopy = v36;
                         v96 = 0;
                         v92 = 1;
                         objc_storeStrong(&v74, 0);
@@ -329,7 +329,7 @@ LABEL_31:
                     v76 = MEMORY[0x277D82BE0](@"an embedding is not an array");
                     v43 = [AMDMiscHelpers logAndCreateError:18 errorMessage:v76];
                     v12 = v43;
-                    *v94 = v43;
+                    *errorCopy = v43;
                     v96 = 0;
                     v92 = 1;
                     objc_storeStrong(&v76, 0);
@@ -367,7 +367,7 @@ LABEL_36:
                         v69 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:{4 * objc_msgSend(v71, "count")}];
                         v27 = v69;
                         v14 = v69;
-                        v68 = [v27 mutableBytes];
+                        mutableBytes = [v27 mutableBytes];
                         memset(v66, 0, sizeof(v66));
                         v28 = MEMORY[0x277D82BE0](v71);
                         v29 = [v28 countByEnumeratingWithState:v66 objects:v101 count:16];
@@ -386,8 +386,8 @@ LABEL_36:
 
                             v67 = *(v66[1] + 8 * v25);
                             [v67 floatValue];
-                            v15 = v68;
-                            v68 += 4;
+                            v15 = mutableBytes;
+                            mutableBytes += 4;
                             *v15 = v16;
                             ++v25;
                             if (v23 + 1 >= v26)
@@ -421,8 +421,8 @@ LABEL_36:
                     MEMORY[0x277D82BD8](v34);
                     v65 = [objc_alloc(MEMORY[0x277CFA598]) initWithUseCase:v86];
                     v64 = [objc_alloc(MEMORY[0x277CFA5B8]) initWithClientConfig:v65];
-                    v63 = [v64 asyncResponseSimilarityScoresForElements:v72 shardIndices:v82 error:v94];
-                    if (*v94)
+                    v63 = [v64 asyncResponseSimilarityScoresForElements:v72 shardIndices:v82 error:errorCopy];
+                    if (*errorCopy)
                     {
                       oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
                       type = OS_LOG_TYPE_ERROR;
@@ -431,11 +431,11 @@ LABEL_36:
                         log = oslog;
                         v21 = type;
                         v19 = v86;
-                        v22 = [*v94 localizedDescription];
-                        v60 = MEMORY[0x277D82BE0](v22);
+                        localizedDescription = [*errorCopy localizedDescription];
+                        v60 = MEMORY[0x277D82BE0](localizedDescription);
                         __os_log_helper_16_2_2_8_64_8_64(v100, v19, v60);
                         _os_log_error_impl(&dword_240CB9000, log, v21, "PEC use case %@ error: %@", v100, 0x16u);
-                        MEMORY[0x277D82BD8](v22);
+                        MEMORY[0x277D82BD8](localizedDescription);
                         objc_storeStrong(&v60, 0);
                       }
 
@@ -473,7 +473,7 @@ LABEL_36:
                   v79 = MEMORY[0x277D82BE0](@"data is not an array");
                   v50 = [AMDMiscHelpers logAndCreateError:18 errorMessage:v79];
                   v11 = v50;
-                  *v94 = v50;
+                  *errorCopy = v50;
                   v96 = 0;
                   v92 = 1;
                   objc_storeStrong(&v79, 0);
@@ -485,7 +485,7 @@ LABEL_36:
                 v80 = MEMORY[0x277D82BE0](@"data absent in PEC query payload");
                 v51 = [AMDMiscHelpers logAndCreateError:18 errorMessage:v80];
                 v10 = v51;
-                *v94 = v51;
+                *errorCopy = v51;
                 v96 = 0;
                 v92 = 1;
                 objc_storeStrong(&v80, 0);
@@ -500,7 +500,7 @@ LABEL_36:
               v83 = MEMORY[0x277D82BE0](@"shardIndices are not an array");
               v52 = [AMDMiscHelpers logAndCreateError:18 errorMessage:v83];
               v9 = v52;
-              *v94 = v52;
+              *errorCopy = v52;
               v96 = 0;
               v92 = 1;
               objc_storeStrong(&v83, 0);
@@ -512,7 +512,7 @@ LABEL_36:
             v84 = MEMORY[0x277D82BE0](@"shardIndices absent in PEC query payload");
             v53 = [AMDMiscHelpers logAndCreateError:18 errorMessage:v84];
             v8 = v53;
-            *v94 = v53;
+            *errorCopy = v53;
             v96 = 0;
             v92 = 1;
             objc_storeStrong(&v84, 0);
@@ -527,7 +527,7 @@ LABEL_36:
           v87 = MEMORY[0x277D82BE0](@"usecase is not a string");
           v54 = [AMDMiscHelpers logAndCreateError:18 errorMessage:v87];
           v7 = v54;
-          *v94 = v54;
+          *errorCopy = v54;
           v96 = 0;
           v92 = 1;
           objc_storeStrong(&v87, 0);
@@ -539,7 +539,7 @@ LABEL_36:
         v88 = MEMORY[0x277D82BE0](@"usecase absent in PEC query payload");
         v55 = [AMDMiscHelpers logAndCreateError:18 errorMessage:v88];
         v6 = v55;
-        *v94 = v55;
+        *errorCopy = v55;
         v96 = 0;
         v92 = 1;
         objc_storeStrong(&v88, 0);
@@ -554,7 +554,7 @@ LABEL_36:
       v91 = MEMORY[0x277D82BE0](@"PECQueryPayload is not a dictionary");
       v56 = [AMDMiscHelpers logAndCreateError:18 errorMessage:v91];
       v5 = v56;
-      *v94 = v56;
+      *errorCopy = v56;
       v96 = 0;
       v92 = 1;
       objc_storeStrong(&v91, 0);
@@ -566,7 +566,7 @@ LABEL_36:
     v93 = MEMORY[0x277D82BE0](@"PECQueryPayload is nil");
     v57 = [AMDMiscHelpers logAndCreateError:18 errorMessage:v93];
     v4 = v57;
-    *v94 = v57;
+    *errorCopy = v57;
     v96 = 0;
     v92 = 1;
     objc_storeStrong(&v93, 0);

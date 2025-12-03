@@ -1,6 +1,6 @@
 @interface _TSF_TSDgPTPLocalClockPort
-+ (id)diagnosticInfoForService:(id)a3;
-+ (id)iokitMatchingDictionaryForClockIdentifier:(unint64_t)a3;
++ (id)diagnosticInfoForService:(id)service;
++ (id)iokitMatchingDictionaryForClockIdentifier:(unint64_t)identifier;
 - (BOOL)_hasLocalClockSourceFromNTP;
 - (BOOL)_hasLocalFrequencyStabilityLower;
 - (BOOL)_hasLocalFrequencyStabilityUpper;
@@ -18,7 +18,7 @@
 
 @implementation _TSF_TSDgPTPLocalClockPort
 
-+ (id)iokitMatchingDictionaryForClockIdentifier:(unint64_t)a3
++ (id)iokitMatchingDictionaryForClockIdentifier:(unint64_t)identifier
 {
   v14[2] = *MEMORY[0x277D85DE8];
   v14[0] = @"IOTimeSyncLocalClockPort";
@@ -28,7 +28,7 @@
   v11[1] = @"IOPropertyMatch";
   v12[0] = @"IOTimeSyncDomain";
   v9 = @"ClockIdentifier";
-  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:identifier];
   v10 = v3;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   v12[1] = v4;
@@ -43,183 +43,183 @@
 
 - (unsigned)_localOscillatorType
 {
-  v2 = [(_TSF_TSDgPTPPort *)self service];
-  v3 = [v2 iodPropertyForKey:@"LocalOscillatorType"];
+  service = [(_TSF_TSDgPTPPort *)self service];
+  v3 = [service iodPropertyForKey:@"LocalOscillatorType"];
 
   if (v3)
   {
-    v4 = [v3 unsignedCharValue];
+    unsignedCharValue = [v3 unsignedCharValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedCharValue = 0;
   }
 
-  return v4;
+  return unsignedCharValue;
 }
 
 - (BOOL)_hasLocalFrequencyToleranceLower
 {
-  v2 = [(_TSF_TSDgPTPPort *)self service];
-  v3 = [v2 iodPropertyForKey:@"LocalFrequencyToleranceLower"];
+  service = [(_TSF_TSDgPTPPort *)self service];
+  v3 = [service iodPropertyForKey:@"LocalFrequencyToleranceLower"];
 
   return v3 != 0;
 }
 
 - (int)_localFrequencyToleranceLower
 {
-  v2 = [(_TSF_TSDgPTPPort *)self service];
-  v3 = [v2 iodPropertyForKey:@"LocalFrequencyToleranceLower"];
+  service = [(_TSF_TSDgPTPPort *)self service];
+  v3 = [service iodPropertyForKey:@"LocalFrequencyToleranceLower"];
 
   if (v3)
   {
-    v4 = [v3 intValue];
+    intValue = [v3 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (BOOL)_hasLocalFrequencyToleranceUpper
 {
-  v2 = [(_TSF_TSDgPTPPort *)self service];
-  v3 = [v2 iodPropertyForKey:@"LocalFrequencyToleranceUpper"];
+  service = [(_TSF_TSDgPTPPort *)self service];
+  v3 = [service iodPropertyForKey:@"LocalFrequencyToleranceUpper"];
 
   return v3 != 0;
 }
 
 - (int)_localFrequencyToleranceUpper
 {
-  v2 = [(_TSF_TSDgPTPPort *)self service];
-  v3 = [v2 iodPropertyForKey:@"LocalFrequencyToleranceUpper"];
+  service = [(_TSF_TSDgPTPPort *)self service];
+  v3 = [service iodPropertyForKey:@"LocalFrequencyToleranceUpper"];
 
   if (v3)
   {
-    v4 = [v3 intValue];
+    intValue = [v3 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (BOOL)_hasLocalFrequencyStabilityLower
 {
-  v2 = [(_TSF_TSDgPTPPort *)self service];
-  v3 = [v2 iodPropertyForKey:@"LocalFrequencyStabilityLower"];
+  service = [(_TSF_TSDgPTPPort *)self service];
+  v3 = [service iodPropertyForKey:@"LocalFrequencyStabilityLower"];
 
   return v3 != 0;
 }
 
 - (int)_localFrequencyStabilityLower
 {
-  v2 = [(_TSF_TSDgPTPPort *)self service];
-  v3 = [v2 iodPropertyForKey:@"LocalFrequencyStabilityLower"];
+  service = [(_TSF_TSDgPTPPort *)self service];
+  v3 = [service iodPropertyForKey:@"LocalFrequencyStabilityLower"];
 
   if (v3)
   {
-    v4 = [v3 intValue];
+    intValue = [v3 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (BOOL)_hasLocalFrequencyStabilityUpper
 {
-  v2 = [(_TSF_TSDgPTPPort *)self service];
-  v3 = [v2 iodPropertyForKey:@"LocalFrequencyStabilityUpper"];
+  service = [(_TSF_TSDgPTPPort *)self service];
+  v3 = [service iodPropertyForKey:@"LocalFrequencyStabilityUpper"];
 
   return v3 != 0;
 }
 
 - (int)_localFrequencyStabilityUpper
 {
-  v2 = [(_TSF_TSDgPTPPort *)self service];
-  v3 = [v2 iodPropertyForKey:@"LocalFrequencyStabilityUpper"];
+  service = [(_TSF_TSDgPTPPort *)self service];
+  v3 = [service iodPropertyForKey:@"LocalFrequencyStabilityUpper"];
 
   if (v3)
   {
-    v4 = [v3 intValue];
+    intValue = [v3 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (BOOL)_hasNtpAnchorOffsetNsec
 {
-  v2 = [(_TSF_TSDgPTPPort *)self service];
-  v3 = [v2 iodPropertyForKey:@"NtpAnchorOffsetNsec"];
+  service = [(_TSF_TSDgPTPPort *)self service];
+  v3 = [service iodPropertyForKey:@"NtpAnchorOffsetNsec"];
 
   return v3 != 0;
 }
 
 - (int64_t)_ntpAnchorOffsetNsec
 {
-  v2 = [(_TSF_TSDgPTPPort *)self service];
-  v3 = [v2 iodPropertyForKey:@"NtpAnchorOffsetNsec"];
+  service = [(_TSF_TSDgPTPPort *)self service];
+  v3 = [service iodPropertyForKey:@"NtpAnchorOffsetNsec"];
 
   if (v3)
   {
-    v4 = [v3 longLongValue];
+    longLongValue = [v3 longLongValue];
   }
 
   else
   {
-    v4 = 0;
+    longLongValue = 0;
   }
 
-  return v4;
+  return longLongValue;
 }
 
 - (BOOL)_hasLocalClockSourceFromNTP
 {
-  v2 = [(_TSF_TSDgPTPPort *)self service];
-  v3 = [v2 iodPropertyForKey:@"LocalClockSourceFromNTP"];
+  service = [(_TSF_TSDgPTPPort *)self service];
+  v3 = [service iodPropertyForKey:@"LocalClockSourceFromNTP"];
 
   return v3 != 0;
 }
 
 - (BOOL)_localClockSourceFromNTP
 {
-  v2 = [(_TSF_TSDgPTPPort *)self service];
-  v3 = [v2 iodPropertyForKey:@"LocalClockSourceFromNTP"];
+  service = [(_TSF_TSDgPTPPort *)self service];
+  v3 = [service iodPropertyForKey:@"LocalClockSourceFromNTP"];
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (id)diagnosticInfoForService:(id)a3
++ (id)diagnosticInfoForService:(id)service
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS____TSF_TSDgPTPLocalClockPort;
-  v3 = objc_msgSendSuper2(&v6, sel_diagnosticInfoForService_, a3);
+  v3 = objc_msgSendSuper2(&v6, sel_diagnosticInfoForService_, service);
   v4 = [MEMORY[0x277CCABB0] numberWithInt:8];
   [v3 setObject:v4 forKeyedSubscript:@"PortType"];
 

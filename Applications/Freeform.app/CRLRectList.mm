@@ -1,22 +1,22 @@
 @interface CRLRectList
-+ (id)rectListWithRect:(CGRect)a3;
-- (BOOL)isEqual:(id)a3;
-- (CGRect)rectAtIndex:(unint64_t)a3;
-- (CRLRectList)initWithRect:(CGRect)a3;
-- (CRLRectList)initWithRectList:(id)a3;
++ (id)rectListWithRect:(CGRect)rect;
+- (BOOL)isEqual:(id)equal;
+- (CGRect)rectAtIndex:(unint64_t)index;
+- (CRLRectList)initWithRect:(CGRect)rect;
+- (CRLRectList)initWithRectList:(id)list;
 - (id).cxx_construct;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation CRLRectList
 
-- (CRLRectList)initWithRect:(CGRect)a3
+- (CRLRectList)initWithRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v7 = [(CRLRectList *)self init];
   v8 = v7;
   if (v7)
@@ -32,17 +32,17 @@
   return v8;
 }
 
-- (CRLRectList)initWithRectList:(id)a3
+- (CRLRectList)initWithRectList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v5 = [(CRLRectList *)self init];
   if (v5)
   {
-    sub_100200F80(&v5->mRectList.__begin_, [v4 count]);
+    sub_100200F80(&v5->mRectList.__begin_, [listCopy count]);
     v6 = 0;
-    for (i = 0; i < [v4 count]; ++i)
+    for (i = 0; i < [listCopy count]; ++i)
     {
-      [v4 rectAtIndex:i];
+      [listCopy rectAtIndex:i];
       p_x = &v5->mRectList.__begin_[v6].origin.x;
       *p_x = v9;
       p_x[1] = v10;
@@ -55,27 +55,27 @@
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CRLMutableRectList alloc];
 
   return [(CRLRectList *)v4 initWithRectList:self];
 }
 
-- (CGRect)rectAtIndex:(unint64_t)a3
+- (CGRect)rectAtIndex:(unint64_t)index
 {
   begin = self->mRectList.__begin_;
   v4 = self->mRectList.__end_ - begin;
-  if (v4 <= a3)
+  if (v4 <= index)
   {
-    v10 = [NSString stringWithFormat:@"Getting object at %lu from an array with size %lu", a3, v4];
+    v10 = [NSString stringWithFormat:@"Getting object at %lu from an array with size %lu", index, v4];
     v11 = [NSException exceptionWithName:@"IndexOutOfBound" reason:v10 userInfo:0];
     v12 = v11;
 
     objc_exception_throw(v11);
   }
 
-  p_x = &begin[a3].origin.x;
+  p_x = &begin[index].origin.x;
   v6 = *p_x;
   v7 = p_x[1];
   v8 = p_x[2];
@@ -87,11 +87,11 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, equalCopy);
   v7 = [(CRLRectList *)self count];
   if (v6 && (v8 = v7, [v6 count] == v7))
   {
@@ -142,12 +142,12 @@
   return v2;
 }
 
-+ (id)rectListWithRect:(CGRect)a3
++ (id)rectListWithRect:(CGRect)rect
 {
-  *&v5 = a3.origin.x;
-  *(&v5 + 1) = *&a3.origin.y;
-  width = a3.size.width;
-  height = a3.size.height;
+  *&v5 = rect.origin.x;
+  *(&v5 + 1) = *&rect.origin.y;
+  width = rect.size.width;
+  height = rect.size.height;
   v3 = objc_opt_new();
   sub_10020133C(v3 + 8, &v5);
 

@@ -1,24 +1,24 @@
 @interface CCDKeychain
-+ (BOOL)setData:(id)a3 forService:(id)a4 account:(id)a5 label:(id)a6 description:(id)a7 access:(void *)a8 group:(id)a9 useSystemKeychain:(BOOL)a10 sysBound:(BOOL)a11 outError:(id *)a12;
-+ (__CFDictionary)_newQueryWithService:(id)a3 account:(id)a4 label:(id)a5 description:(id)a6 group:(id)a7 useSystemKeychain:(BOOL)a8 outError:(id *)a9;
++ (BOOL)setData:(id)data forService:(id)service account:(id)account label:(id)label description:(id)description access:(void *)access group:(id)group useSystemKeychain:(BOOL)self0 sysBound:(BOOL)self1 outError:(id *)self2;
++ (__CFDictionary)_newQueryWithService:(id)service account:(id)account label:(id)label description:(id)description group:(id)group useSystemKeychain:(BOOL)keychain outError:(id *)error;
 @end
 
 @implementation CCDKeychain
 
-+ (BOOL)setData:(id)a3 forService:(id)a4 account:(id)a5 label:(id)a6 description:(id)a7 access:(void *)a8 group:(id)a9 useSystemKeychain:(BOOL)a10 sysBound:(BOOL)a11 outError:(id *)a12
++ (BOOL)setData:(id)data forService:(id)service account:(id)account label:(id)label description:(id)description access:(void *)access group:(id)group useSystemKeychain:(BOOL)self0 sysBound:(BOOL)self1 outError:(id *)self2
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a9;
-  v40 = v19;
-  if ([v17 length])
+  dataCopy = data;
+  serviceCopy = service;
+  accountCopy = account;
+  labelCopy = label;
+  descriptionCopy = description;
+  groupCopy = group;
+  v40 = accountCopy;
+  if ([dataCopy length])
   {
-    value = v17;
+    value = dataCopy;
     v41 = 0;
-    v23 = [CCDKeychain _newQueryWithService:v18 account:v19 label:v20 description:v21 group:v22 useSystemKeychain:a10 outError:&v41];
+    v23 = [CCDKeychain _newQueryWithService:serviceCopy account:accountCopy label:labelCopy description:descriptionCopy group:groupCopy useSystemKeychain:keychain outError:&v41];
     v24 = v41;
     if (v24)
     {
@@ -28,12 +28,12 @@
         CFRelease(v23);
       }
 
-      v17 = value;
+      dataCopy = value;
       goto LABEL_7;
     }
 
-    v38 = v18;
-    v31 = [CCDKeychain dataFromService:v18 account:v19 label:v20 description:v21 group:v22 useSystemKeychain:a10 outError:0];
+    v38 = serviceCopy;
+    v31 = [CCDKeychain dataFromService:serviceCopy account:accountCopy label:labelCopy description:descriptionCopy group:groupCopy useSystemKeychain:keychain outError:0];
     v32 = v31;
     if (v31)
     {
@@ -41,14 +41,14 @@
       {
         CFRelease(v23);
         v25 = 0;
-        v17 = value;
+        dataCopy = value;
         goto LABEL_21;
       }
 
       v44[0] = kSecValueData;
       v44[1] = kSecAttrAccessible;
       v45[0] = value;
-      v45[1] = a8;
+      v45[1] = access;
       v34 = [NSDictionary dictionaryWithObjects:v45 forKeys:v44 count:2];
       v33 = SecItemUpdate(v23, v34);
     }
@@ -56,7 +56,7 @@
     else
     {
       CFDictionaryAddValue(v23, kSecValueData, value);
-      CFDictionaryAddValue(v23, kSecAttrAccessible, a8);
+      CFDictionaryAddValue(v23, kSecAttrAccessible, access);
       CFDictionaryAddValue(v23, kSecAttrSysBound, &__kCFBooleanTrue);
       v33 = SecItemAdd(v23, 0);
     }
@@ -75,10 +75,10 @@
       v25 = 0;
     }
 
-    v17 = value;
+    dataCopy = value;
 LABEL_21:
 
-    v18 = v38;
+    serviceCopy = v38;
     if (!v25)
     {
       goto LABEL_22;
@@ -88,10 +88,10 @@ LABEL_21:
   }
 
   DEPErrorArray();
-  v27 = v26 = v18;
+  v27 = v26 = serviceCopy;
   v25 = [NSError DEPErrorWithDomain:@"CCDKeychainErrorDomain" code:6001 descriptionArray:v27 errorType:DEPErrorTypeFatal, 0];
 
-  v18 = v26;
+  serviceCopy = v26;
   if (!v25)
   {
 LABEL_22:
@@ -100,10 +100,10 @@ LABEL_22:
   }
 
 LABEL_7:
-  if (a12)
+  if (error)
   {
     v28 = v25;
-    *a12 = v25;
+    *error = v25;
   }
 
   v29 = *(DEPLogObjects() + 8);
@@ -120,40 +120,40 @@ LABEL_23:
   return v30;
 }
 
-+ (__CFDictionary)_newQueryWithService:(id)a3 account:(id)a4 label:(id)a5 description:(id)a6 group:(id)a7 useSystemKeychain:(BOOL)a8 outError:(id *)a9
++ (__CFDictionary)_newQueryWithService:(id)service account:(id)account label:(id)label description:(id)description group:(id)group useSystemKeychain:(BOOL)keychain outError:(id *)error
 {
-  v9 = a8;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  if ([v14 length])
+  keychainCopy = keychain;
+  serviceCopy = service;
+  accountCopy = account;
+  labelCopy = label;
+  descriptionCopy = description;
+  groupCopy = group;
+  if ([serviceCopy length])
   {
     Mutable = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, 0, 0);
     CFDictionaryAddValue(Mutable, kSecClass, kSecClassGenericPassword);
-    CFDictionaryAddValue(Mutable, kSecAttrService, v14);
-    if ([v15 length])
+    CFDictionaryAddValue(Mutable, kSecAttrService, serviceCopy);
+    if ([accountCopy length])
     {
-      CFDictionaryAddValue(Mutable, kSecAttrAccount, v15);
+      CFDictionaryAddValue(Mutable, kSecAttrAccount, accountCopy);
     }
 
-    if ([v16 length])
+    if ([labelCopy length])
     {
-      CFDictionaryAddValue(Mutable, kSecAttrLabel, v16);
+      CFDictionaryAddValue(Mutable, kSecAttrLabel, labelCopy);
     }
 
-    if ([v17 length])
+    if ([descriptionCopy length])
     {
-      CFDictionaryAddValue(Mutable, kSecAttrDescription, v17);
+      CFDictionaryAddValue(Mutable, kSecAttrDescription, descriptionCopy);
     }
 
-    if ([v18 length])
+    if ([groupCopy length])
     {
-      CFDictionaryAddValue(Mutable, kSecAttrAccessGroup, v18);
+      CFDictionaryAddValue(Mutable, kSecAttrAccessGroup, groupCopy);
     }
 
-    if (v9)
+    if (keychainCopy)
     {
       CFDictionaryAddValue(Mutable, kSecUseSystemKeychain, &__kCFBooleanTrue);
     }
@@ -161,10 +161,10 @@ LABEL_23:
 
   else
   {
-    if (a9)
+    if (error)
     {
       v20 = DEPErrorArray();
-      *a9 = [NSError DEPErrorWithDomain:@"CCDKeychainErrorDomain" code:6002 descriptionArray:v20 errorType:DEPErrorTypeFatal, 0];
+      *error = [NSError DEPErrorWithDomain:@"CCDKeychainErrorDomain" code:6002 descriptionArray:v20 errorType:DEPErrorTypeFatal, 0];
     }
 
     Mutable = 0;

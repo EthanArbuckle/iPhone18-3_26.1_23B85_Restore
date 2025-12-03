@@ -1,43 +1,43 @@
 @interface ATXSpotlightContextAdapter
 - (ATXSpotlightContextAdapter)init;
-- (ATXSpotlightContextAdapter)initWithNowDate:(id)a3;
-- (BOOL)_hourIsOneWithDate:(id)a3;
-- (id)_absoluteDateContextTitleWithSuggestion:(id)a3 eventTitle:(id)a4;
-- (id)_stringWithInterval:(double)a3;
-- (id)contextCodeIdentifierWithSectionBundleIdentifier:(id)a3;
-- (id)contextTitleWithSuggestion:(id)a3 eventTitle:(id)a4;
-- (id)sectionIdentifierForContextCode:(int64_t)a3;
+- (ATXSpotlightContextAdapter)initWithNowDate:(id)date;
+- (BOOL)_hourIsOneWithDate:(id)date;
+- (id)_absoluteDateContextTitleWithSuggestion:(id)suggestion eventTitle:(id)title;
+- (id)_stringWithInterval:(double)interval;
+- (id)contextCodeIdentifierWithSectionBundleIdentifier:(id)identifier;
+- (id)contextTitleWithSuggestion:(id)suggestion eventTitle:(id)title;
+- (id)sectionIdentifierForContextCode:(int64_t)code;
 @end
 
 @implementation ATXSpotlightContextAdapter
 
 - (ATXSpotlightContextAdapter)init
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [(ATXSpotlightContextAdapter *)self initWithNowDate:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  v4 = [(ATXSpotlightContextAdapter *)self initWithNowDate:date];
 
   return v4;
 }
 
-- (ATXSpotlightContextAdapter)initWithNowDate:(id)a3
+- (ATXSpotlightContextAdapter)initWithNowDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   v9.receiver = self;
   v9.super_class = ATXSpotlightContextAdapter;
   v6 = [(ATXSpotlightContextAdapter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_nowDate, a3);
+    objc_storeStrong(&v6->_nowDate, date);
   }
 
   return v7;
 }
 
-- (id)sectionIdentifierForContextCode:(int64_t)a3
+- (id)sectionIdentifierForContextCode:(int64_t)code
 {
   v3 = @"com.apple.spotlight.dec.zkw.recents";
-  switch(a3)
+  switch(code)
   {
     case 0:
     case 1:
@@ -58,86 +58,86 @@
     case 16:
     case 17:
     case 43:
-      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld.unsupported", a3];
+      code = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld.unsupported", code];
       goto LABEL_3;
     case 18:
-      v4 = @"nowplaying";
+      code = @"nowplaying";
       goto LABEL_3;
     case 19:
-      v4 = @"ongoingcall";
+      code = @"ongoingcall";
       goto LABEL_3;
     case 20:
-      v4 = @"event.upcoming";
+      code = @"event.upcoming";
       goto LABEL_3;
     case 21:
-      v4 = @"event.ongoing";
+      code = @"event.ongoing";
       goto LABEL_3;
     case 22:
-      v4 = @"event.recent";
+      code = @"event.recent";
       goto LABEL_3;
     case 23:
-      v4 = @"nearby";
+      code = @"nearby";
       goto LABEL_3;
     case 24:
       goto LABEL_4;
     case 25:
-      v4 = @"clipboard";
+      code = @"clipboard";
       goto LABEL_3;
     case 26:
-      v4 = @"clipboard.package";
+      code = @"clipboard.package";
       goto LABEL_3;
     case 27:
-      v4 = @"clipboard.url";
+      code = @"clipboard.url";
       goto LABEL_3;
     case 28:
-      v4 = @"clipboard.phone";
+      code = @"clipboard.phone";
       goto LABEL_3;
     case 29:
-      v4 = @"callonbirthday";
+      code = @"callonbirthday";
       goto LABEL_3;
     case 30:
-      v4 = @"returncall";
+      code = @"returncall";
       goto LABEL_3;
     case 31:
-      v4 = @"flight.upcoming";
+      code = @"flight.upcoming";
       goto LABEL_3;
     case 32:
-      v4 = @"flight.ongoing";
+      code = @"flight.ongoing";
       goto LABEL_3;
     case 33:
-      v4 = @"flight.concluded";
+      code = @"flight.concluded";
       goto LABEL_3;
     case 34:
-      v4 = @"upcomingmedia";
+      code = @"upcomingmedia";
       goto LABEL_3;
     case 35:
-      v4 = @"changeholidayalarm";
+      code = @"changeholidayalarm";
       goto LABEL_3;
     case 36:
-      v4 = @"upcomingcommute.work";
+      code = @"upcomingcommute.work";
       goto LABEL_3;
     case 37:
-      v4 = @"upcomingcommute.home";
+      code = @"upcomingcommute.home";
       goto LABEL_3;
     case 38:
-      v4 = @"earlyevent";
+      code = @"earlyevent";
       goto LABEL_3;
     case 39:
-      v4 = @"debug";
+      code = @"debug";
       goto LABEL_3;
     case 40:
-      v4 = @"goodmorning";
+      code = @"goodmorning";
       goto LABEL_3;
     case 41:
-      v4 = @"winddown";
+      code = @"winddown";
       goto LABEL_3;
     case 42:
-      v4 = @"sportsgame";
+      code = @"sportsgame";
       goto LABEL_3;
     default:
-      v4 = 0;
+      code = 0;
 LABEL_3:
-      v3 = [@"com.apple.spotlight.dec.zkw.actions." stringByAppendingString:v4];
+      v3 = [@"com.apple.spotlight.dec.zkw.actions." stringByAppendingString:code];
 
 LABEL_4:
 
@@ -145,17 +145,17 @@ LABEL_4:
   }
 }
 
-- (id)contextCodeIdentifierWithSectionBundleIdentifier:(id)a3
+- (id)contextCodeIdentifierWithSectionBundleIdentifier:(id)identifier
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v5 = 0;
     while (1)
     {
       v6 = [(ATXSpotlightContextAdapter *)self sectionIdentifierForContextCode:v5];
-      if ([v6 isEqualToString:v4])
+      if ([v6 isEqualToString:identifierCopy])
       {
         break;
       }
@@ -166,7 +166,7 @@ LABEL_4:
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
         {
           v10 = 138412290;
-          v11 = v4;
+          v11 = identifierCopy;
           _os_log_impl(&dword_1BF549000, v6, OS_LOG_TYPE_DEFAULT, "ATXSpotlightContextAdapter contextCodeIdentifierWithSectionBundleIdentifier:%@ returns nil", &v10, 0xCu);
         }
 
@@ -180,7 +180,7 @@ LABEL_4:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412546;
-      v11 = v4;
+      v11 = identifierCopy;
       v12 = 2112;
       v13 = v7;
       _os_log_impl(&dword_1BF549000, v8, OS_LOG_TYPE_DEFAULT, "ATXSpotlightContextAdapter contextCodeIdentifierWithSectionBundleIdentifier:%@ returns  %@", &v10, 0x16u);
@@ -197,11 +197,11 @@ LABEL_12:
   return v7;
 }
 
-- (id)contextTitleWithSuggestion:(id)a3 eventTitle:(id)a4
+- (id)contextTitleWithSuggestion:(id)suggestion eventTitle:(id)title
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 uiSpecification];
+  suggestionCopy = suggestion;
+  titleCopy = title;
+  uiSpecification = [suggestionCopy uiSpecification];
   v8 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v15 = 0;
   v16 = &v15;
@@ -209,10 +209,10 @@ LABEL_12:
   v18 = __Block_byref_object_copy__4;
   v19 = __Block_byref_object_dispose__4;
   v20 = 0;
-  [v7 predictionReasons];
-  v11 = v7;
-  v12 = v5;
-  v13 = v6;
+  [uiSpecification predictionReasons];
+  v11 = uiSpecification;
+  v12 = suggestionCopy;
+  v13 = titleCopy;
   v14 = v8;
   ATXSuggestionPredictionReasonEnumerateReasonCodes();
   v9 = v16[5];
@@ -360,49 +360,49 @@ LABEL_15:
   MEMORY[0x1EEE66BB8](v21, v23);
 }
 
-- (id)_stringWithInterval:(double)a3
+- (id)_stringWithInterval:(double)interval
 {
   v4 = objc_opt_new();
   [v4 setUnitsStyle:2];
   [v4 setAllowedUnits:64];
-  v5 = 60.0;
-  if (a3 > 60.0)
+  intervalCopy = 60.0;
+  if (interval > 60.0)
   {
-    v5 = a3;
+    intervalCopy = interval;
   }
 
-  v6 = [v4 stringFromTimeInterval:v5];
+  v6 = [v4 stringFromTimeInterval:intervalCopy];
 
   return v6;
 }
 
-- (id)_absoluteDateContextTitleWithSuggestion:(id)a3 eventTitle:(id)a4
+- (id)_absoluteDateContextTitleWithSuggestion:(id)suggestion eventTitle:(id)title
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a3 uiSpecification];
-  v8 = [v7 predictionReasons];
-  v9 = [v7 contextStartDate];
-  v10 = [v7 contextEndDate];
+  titleCopy = title;
+  uiSpecification = [suggestion uiSpecification];
+  predictionReasons = [uiSpecification predictionReasons];
+  contextStartDate = [uiSpecification contextStartDate];
+  contextEndDate = [uiSpecification contextEndDate];
   v11 = __atxlog_handle_context_heuristic();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446978;
     v23 = "[ATXSpotlightContextAdapter _absoluteDateContextTitleWithSuggestion:eventTitle:]";
     v24 = 2048;
-    v25 = [v6 hash];
+    v25 = [titleCopy hash];
     v26 = 2112;
-    v27 = v9;
+    v27 = contextStartDate;
     v28 = 2112;
-    v29 = v10;
+    v29 = contextEndDate;
     _os_log_impl(&dword_1BF549000, v11, OS_LOG_TYPE_DEFAULT, "%{public}s eventTitle.hash:%lu starts at:%@ ends at: %@", buf, 0x2Au);
   }
 
   v12 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  if ((v8 & 0x100000) != 0)
+  if ((predictionReasons & 0x100000) != 0)
   {
-    v14 = [MEMORY[0x1E696AB78] localizedStringFromDate:v9 dateStyle:0 timeStyle:1];
-    v15 = [(ATXSpotlightContextAdapter *)self _hourIsOneWithDate:v9];
+    v14 = [MEMORY[0x1E696AB78] localizedStringFromDate:contextStartDate dateStyle:0 timeStyle:1];
+    v15 = [(ATXSpotlightContextAdapter *)self _hourIsOneWithDate:contextStartDate];
     v16 = MEMORY[0x1E696AEC0];
     v17 = @"CONTEXT_UPCOMING_EVENT";
     v18 = @"CONTEXT_UPCOMING_EVENT_(hour is 1)";
@@ -418,49 +418,49 @@ LABEL_10:
     }
 
     v20 = [v12 localizedStringForKey:v19 value:&stru_1F3E050C8 table:0];
-    v13 = [v16 localizedStringWithFormat:v20, v6, v14];
+    v13 = [v16 localizedStringWithFormat:v20, titleCopy, v14];
 
     goto LABEL_14;
   }
 
-  if ((v8 & 0x200000) != 0)
+  if ((predictionReasons & 0x200000) != 0)
   {
-    v14 = [MEMORY[0x1E696AB78] localizedStringFromDate:v9 dateStyle:0 timeStyle:1];
-    v15 = [(ATXSpotlightContextAdapter *)self _hourIsOneWithDate:v9];
+    v14 = [MEMORY[0x1E696AB78] localizedStringFromDate:contextStartDate dateStyle:0 timeStyle:1];
+    v15 = [(ATXSpotlightContextAdapter *)self _hourIsOneWithDate:contextStartDate];
     v16 = MEMORY[0x1E696AEC0];
     v17 = @"CONTEXT_ONGOING_EVENT";
     v18 = @"CONTEXT_ONGOING_EVENT_(hour is 1)";
     goto LABEL_10;
   }
 
-  if ((v8 & 0x400000) != 0)
+  if ((predictionReasons & 0x400000) != 0)
   {
-    v14 = [MEMORY[0x1E696AB78] localizedStringFromDate:v10 dateStyle:0 timeStyle:1];
-    v15 = [(ATXSpotlightContextAdapter *)self _hourIsOneWithDate:v10];
+    v14 = [MEMORY[0x1E696AB78] localizedStringFromDate:contextEndDate dateStyle:0 timeStyle:1];
+    v15 = [(ATXSpotlightContextAdapter *)self _hourIsOneWithDate:contextEndDate];
     v16 = MEMORY[0x1E696AEC0];
     v17 = @"CONTEXT_RECENT_EVENT";
     v18 = @"CONTEXT_RECENT_EVENT_(hour is 1)";
     goto LABEL_10;
   }
 
-  v13 = v6;
+  v13 = titleCopy;
 LABEL_14:
 
   return v13;
 }
 
-- (BOOL)_hourIsOneWithDate:(id)a3
+- (BOOL)_hourIsOneWithDate:(id)date
 {
   v3 = MEMORY[0x1E695DEE8];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [v5 components:32 fromDate:v4];
+  dateCopy = date;
+  currentCalendar = [v3 currentCalendar];
+  v6 = [currentCalendar components:32 fromDate:dateCopy];
 
-  v7 = [v6 hour];
-  v8 = [MEMORY[0x1E695DF58] atx_usesTwelveHourClock];
-  if (v7 == 13)
+  hour = [v6 hour];
+  atx_usesTwelveHourClock = [MEMORY[0x1E695DF58] atx_usesTwelveHourClock];
+  if (hour == 13)
   {
-    v9 = v8;
+    v9 = atx_usesTwelveHourClock;
   }
 
   else

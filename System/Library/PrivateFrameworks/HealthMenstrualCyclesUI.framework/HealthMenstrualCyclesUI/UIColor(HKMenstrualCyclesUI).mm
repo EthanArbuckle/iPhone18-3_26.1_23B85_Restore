@@ -25,8 +25,8 @@
 
 + (id)hkmc_calendarTodayLabelColor
 {
-  v0 = [MEMORY[0x277D75348] whiteColor];
-  v1 = [MEMORY[0x277D75348] blackColor];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  blackColor = [MEMORY[0x277D75348] blackColor];
   v2 = HKUIDynamicColorWithColors();
 
   return v2;
@@ -37,16 +37,16 @@
   v3 = MEMORY[0x277D75348];
   v4 = MEMORY[0x277CCA8D8];
   v5 = a3;
-  v6 = [v4 hkmcui_bundle];
-  v7 = [v3 colorNamed:v5 inBundle:v6 compatibleWithTraitCollection:0];
+  hkmcui_bundle = [v4 hkmcui_bundle];
+  v7 = [v3 colorNamed:v5 inBundle:hkmcui_bundle compatibleWithTraitCollection:0];
 
   return v7;
 }
 
 + (id)hkmc_cycleHistoryFilterLabelColor
 {
-  v0 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v1 = [MEMORY[0x277D75348] labelColor];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  labelColor = [MEMORY[0x277D75348] labelColor];
   v2 = HKUIDynamicColorWithColors();
 
   return v2;
@@ -55,7 +55,7 @@
 + (id)hkmc_doneButtonLoggingCarouselColor
 {
   v0 = [MEMORY[0x277D75348] _hkmcui_colorWithAssetName:@"DoneButtonLoggingCarousel"];
-  v1 = [MEMORY[0x277D75348] tertiarySystemBackgroundColor];
+  tertiarySystemBackgroundColor = [MEMORY[0x277D75348] tertiarySystemBackgroundColor];
   v2 = HKUIDynamicColorWithColors();
 
   return v2;
@@ -64,18 +64,18 @@
 + (id)hkmc_fertilityProjectionColor
 {
   v0 = MEMORY[0x277D75348];
-  v1 = [MEMORY[0x277D755B8] hkmc_fertilityProjectionImage];
-  v2 = [v0 colorWithPatternImage:v1];
+  hkmc_fertilityProjectionImage = [MEMORY[0x277D755B8] hkmc_fertilityProjectionImage];
+  v2 = [v0 colorWithPatternImage:hkmc_fertilityProjectionImage];
 
   return v2;
 }
 
 + (id)hkmc_loggingCardBackgroundColor
 {
-  v0 = [MEMORY[0x277D75348] systemGray4Color];
-  v1 = [v0 colorWithAlphaComponent:0.13];
-  v2 = [MEMORY[0x277D75348] systemGray4Color];
-  v3 = [v2 colorWithAlphaComponent:0.7];
+  systemGray4Color = [MEMORY[0x277D75348] systemGray4Color];
+  v1 = [systemGray4Color colorWithAlphaComponent:0.13];
+  systemGray4Color2 = [MEMORY[0x277D75348] systemGray4Color];
+  v3 = [systemGray4Color2 colorWithAlphaComponent:0.7];
   v4 = HKUIDynamicColorWithColors();
 
   return v4;
@@ -83,19 +83,19 @@
 
 + (id)hkmc_menstruationCalendarFutureColor
 {
-  v0 = [MEMORY[0x277D75348] hkmc_menstruationColor];
-  v1 = [v0 colorWithAlphaComponent:0.2];
+  hkmc_menstruationColor = [MEMORY[0x277D75348] hkmc_menstruationColor];
+  v1 = [hkmc_menstruationColor colorWithAlphaComponent:0.2];
 
   return v1;
 }
 
 + (id)hkmc_menstruationBackgroundColor
 {
-  v0 = [MEMORY[0x277D75348] hkmc_menstruationColor];
-  v1 = [v0 colorWithAlphaComponent:0.08];
+  hkmc_menstruationColor = [MEMORY[0x277D75348] hkmc_menstruationColor];
+  v1 = [hkmc_menstruationColor colorWithAlphaComponent:0.08];
 
-  v2 = [MEMORY[0x277D75348] hkmc_menstruationColor];
-  v3 = [v2 colorWithAlphaComponent:0.24];
+  hkmc_menstruationColor2 = [MEMORY[0x277D75348] hkmc_menstruationColor];
+  v3 = [hkmc_menstruationColor2 colorWithAlphaComponent:0.24];
 
   v4 = HKUIDynamicColorWithColors();
 
@@ -105,8 +105,8 @@
 + (id)hkmc_menstruationProjectionHighColor
 {
   v0 = MEMORY[0x277D75348];
-  v1 = [MEMORY[0x277D755B8] hkmc_menstruationProjectionHighImage];
-  v2 = [v0 colorWithPatternImage:v1];
+  hkmc_menstruationProjectionHighImage = [MEMORY[0x277D755B8] hkmc_menstruationProjectionHighImage];
+  v2 = [v0 colorWithPatternImage:hkmc_menstruationProjectionHighImage];
 
   return v2;
 }
@@ -114,16 +114,16 @@
 + (id)hkmc_menstruationProjectionLowColor
 {
   v0 = MEMORY[0x277D75348];
-  v1 = [MEMORY[0x277D755B8] hkmc_menstruationProjectionLowImage];
-  v2 = [v0 colorWithPatternImage:v1];
+  hkmc_menstruationProjectionLowImage = [MEMORY[0x277D755B8] hkmc_menstruationProjectionLowImage];
+  v2 = [v0 colorWithPatternImage:hkmc_menstruationProjectionLowImage];
 
   return v2;
 }
 
 + (id)hkmc_projectionTextColor
 {
-  v0 = [MEMORY[0x277D75348] whiteColor];
-  v1 = [MEMORY[0x277D75348] blackColor];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  blackColor = [MEMORY[0x277D75348] blackColor];
   v2 = HKUIDynamicColorWithColors();
 
   return v2;
@@ -131,11 +131,11 @@
 
 + (id)hkmc_supplementaryDataBackgroundColor
 {
-  v0 = [MEMORY[0x277D75348] hkmc_supplementaryDataTextColor];
-  v1 = [v0 colorWithAlphaComponent:0.08];
+  hkmc_supplementaryDataTextColor = [MEMORY[0x277D75348] hkmc_supplementaryDataTextColor];
+  v1 = [hkmc_supplementaryDataTextColor colorWithAlphaComponent:0.08];
 
-  v2 = [MEMORY[0x277D75348] hkmc_supplementaryDataTextColor];
-  v3 = [v2 colorWithAlphaComponent:0.24];
+  hkmc_supplementaryDataTextColor2 = [MEMORY[0x277D75348] hkmc_supplementaryDataTextColor];
+  v3 = [hkmc_supplementaryDataTextColor2 colorWithAlphaComponent:0.24];
 
   v4 = HKUIDynamicColorWithColors();
 
@@ -144,10 +144,10 @@
 
 + (id)hkmc_cycleLogCellBackgroundColor
 {
-  v0 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-  v1 = [v0 colorWithAlphaComponent:0.8];
+  secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+  v1 = [secondarySystemBackgroundColor colorWithAlphaComponent:0.8];
 
-  v2 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+  secondarySystemBackgroundColor2 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
   v3 = HKUIDynamicColorWithColors();
 
   return v3;
@@ -155,8 +155,8 @@
 
 + (id)hkmc_cycleFactorsTimeIntervalBackgroundColor
 {
-  v0 = [MEMORY[0x277D75348] hkmc_regularDayColor];
-  v1 = [MEMORY[0x277D75348] quaternarySystemFillColor];
+  hkmc_regularDayColor = [MEMORY[0x277D75348] hkmc_regularDayColor];
+  quaternarySystemFillColor = [MEMORY[0x277D75348] quaternarySystemFillColor];
   v2 = HKUIDynamicColorWithColors();
 
   return v2;
@@ -164,8 +164,8 @@
 
 + (id)hkmc_highContrastCycleFactorsTimeIntervalBackgroundColor
 {
-  v0 = [MEMORY[0x277D75348] hkmc_highContrastRegularDayColor];
-  v1 = [MEMORY[0x277D75348] quaternarySystemFillColor];
+  hkmc_highContrastRegularDayColor = [MEMORY[0x277D75348] hkmc_highContrastRegularDayColor];
+  quaternarySystemFillColor = [MEMORY[0x277D75348] quaternarySystemFillColor];
   v2 = HKUIDynamicColorWithColors();
 
   return v2;
@@ -173,19 +173,19 @@
 
 + (id)hkmc_supplementaryDataTextFutureColor
 {
-  v1 = [a1 hkmc_supplementaryDataTextColor];
-  v2 = [v1 colorWithAlphaComponent:0.2];
+  hkmc_supplementaryDataTextColor = [self hkmc_supplementaryDataTextColor];
+  v2 = [hkmc_supplementaryDataTextColor colorWithAlphaComponent:0.2];
 
   return v2;
 }
 
 + (id)hkmc_highContrastMenstruationBackgroundColor
 {
-  v0 = [MEMORY[0x277D75348] hkmc_highContrastMenstruationColor];
-  v1 = [v0 colorWithAlphaComponent:0.08];
+  hkmc_highContrastMenstruationColor = [MEMORY[0x277D75348] hkmc_highContrastMenstruationColor];
+  v1 = [hkmc_highContrastMenstruationColor colorWithAlphaComponent:0.08];
 
-  v2 = [MEMORY[0x277D75348] hkmc_highContrastMenstruationColor];
-  v3 = [v2 colorWithAlphaComponent:0.24];
+  hkmc_highContrastMenstruationColor2 = [MEMORY[0x277D75348] hkmc_highContrastMenstruationColor];
+  v3 = [hkmc_highContrastMenstruationColor2 colorWithAlphaComponent:0.24];
 
   v4 = HKUIDynamicColorWithColors();
 
@@ -194,11 +194,11 @@
 
 + (id)hkmc_highContrastSupplementaryDataBackgroundColor
 {
-  v0 = [MEMORY[0x277D75348] hkmc_highContrastSupplementaryDataTextColor];
-  v1 = [v0 colorWithAlphaComponent:0.08];
+  hkmc_highContrastSupplementaryDataTextColor = [MEMORY[0x277D75348] hkmc_highContrastSupplementaryDataTextColor];
+  v1 = [hkmc_highContrastSupplementaryDataTextColor colorWithAlphaComponent:0.08];
 
-  v2 = [MEMORY[0x277D75348] hkmc_highContrastSupplementaryDataTextColor];
-  v3 = [v2 colorWithAlphaComponent:0.24];
+  hkmc_highContrastSupplementaryDataTextColor2 = [MEMORY[0x277D75348] hkmc_highContrastSupplementaryDataTextColor];
+  v3 = [hkmc_highContrastSupplementaryDataTextColor2 colorWithAlphaComponent:0.24];
 
   v4 = HKUIDynamicColorWithColors();
 
@@ -208,8 +208,8 @@
 + (id)hkmc_ovulationDayCycleTimelineColor
 {
   v0 = MEMORY[0x277D75348];
-  v1 = [MEMORY[0x277D755B8] hkmc_ovulationDayImage];
-  v2 = [v0 colorWithPatternImage:v1];
+  hkmc_ovulationDayImage = [MEMORY[0x277D755B8] hkmc_ovulationDayImage];
+  v2 = [v0 colorWithPatternImage:hkmc_ovulationDayImage];
 
   return v2;
 }
@@ -217,8 +217,8 @@
 + (id)hkmc_ovulationDayCycleTimelineReversedColor
 {
   v0 = MEMORY[0x277D75348];
-  v1 = [MEMORY[0x277D755B8] hkmc_ovulationDayReversedImage];
-  v2 = [v0 colorWithPatternImage:v1];
+  hkmc_ovulationDayReversedImage = [MEMORY[0x277D755B8] hkmc_ovulationDayReversedImage];
+  v2 = [v0 colorWithPatternImage:hkmc_ovulationDayReversedImage];
 
   return v2;
 }

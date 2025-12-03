@@ -7,86 +7,86 @@
 - (NSString)localizedTitle;
 - (RAPMenu)followUpQuestion;
 - (id)_alternateAuxiliaryControlsRecording;
-- (void)_fillSubmissionParameters:(id)a3;
-- (void)setSelectedValue:(id)a3;
+- (void)_fillSubmissionParameters:(id)parameters;
+- (void)setSelectedValue:(id)value;
 @end
 
 @implementation RAPSearchWhichOneQuestion
 
 - (BOOL)_hasSearchRelatedFollowupQuestion
 {
-  v2 = [(RAPMenu *)self->_followUpQuestion selectedMenuItem];
-  v3 = [v2 questionCategory];
+  selectedMenuItem = [(RAPMenu *)self->_followUpQuestion selectedMenuItem];
+  questionCategory = [selectedMenuItem questionCategory];
 
-  return v3 == 10 || v3 == 1;
+  return questionCategory == 10 || questionCategory == 1;
 }
 
-- (void)_fillSubmissionParameters:(id)a3
+- (void)_fillSubmissionParameters:(id)parameters
 {
-  v39 = a3;
-  v4 = [v39 commonContext];
+  parametersCopy = parameters;
+  commonContext = [parametersCopy commonContext];
 
-  if (!v4)
+  if (!commonContext)
   {
     v5 = objc_alloc_init(GEORPFeedbackCommonContext);
-    [v39 setCommonContext:v5];
+    [parametersCopy setCommonContext:v5];
   }
 
   if ([(RAPSearchWhichOneQuestion *)self _hasSearchRelatedFollowupQuestion])
   {
     v6 = objc_alloc_init(GEORPCorrectedSearch);
-    v7 = [(RAPSearchWhichOneQuestion *)self selectedValue];
-    [v7 applyToCorrectedSearch:v6];
-    v8 = [v39 details];
+    selectedValue = [(RAPSearchWhichOneQuestion *)self selectedValue];
+    [selectedValue applyToCorrectedSearch:v6];
+    details = [parametersCopy details];
 
-    if (!v8)
+    if (!details)
     {
       v9 = objc_alloc_init(GEORPFeedbackDetails);
-      [v39 setDetails:v9];
+      [parametersCopy setDetails:v9];
     }
 
-    v10 = [v39 details];
-    v11 = [v10 searchFeedback];
+    details2 = [parametersCopy details];
+    searchFeedback = [details2 searchFeedback];
 
-    if (!v11)
+    if (!searchFeedback)
     {
       v12 = objc_alloc_init(GEORPSearchFeedback);
-      v13 = [v39 details];
-      [v13 setSearchFeedback:v12];
+      details3 = [parametersCopy details];
+      [details3 setSearchFeedback:v12];
     }
 
-    v14 = [v39 details];
-    v15 = [v14 searchFeedback];
-    v16 = [v15 context];
+    details4 = [parametersCopy details];
+    searchFeedback2 = [details4 searchFeedback];
+    context = [searchFeedback2 context];
 
-    if (!v16)
+    if (!context)
     {
-      v16 = objc_alloc_init(GEORPSearchFeedbackContext);
-      v17 = [v39 details];
-      v18 = [v17 searchFeedback];
-      [v18 setContext:v16];
+      context = objc_alloc_init(GEORPSearchFeedbackContext);
+      details5 = [parametersCopy details];
+      searchFeedback3 = [details5 searchFeedback];
+      [searchFeedback3 setContext:context];
     }
 
-    v19 = [v16 requestContext];
+    requestContext = [context requestContext];
 
-    if (!v19)
+    if (!requestContext)
     {
       v20 = objc_alloc_init(GEORPPlaceRequestResponse);
-      [v16 setRequestContext:v20];
+      [context setRequestContext:v20];
     }
 
-    v21 = [v6 placeRequest];
-    v22 = [v16 requestContext];
-    [v22 setPlaceRequest:v21];
+    placeRequest = [v6 placeRequest];
+    requestContext2 = [context requestContext];
+    [requestContext2 setPlaceRequest:placeRequest];
 
-    v23 = [v6 placeResponse];
-    v24 = [v16 requestContext];
-    [v24 setPlaceResponse:v23];
+    placeResponse = [v6 placeResponse];
+    requestContext3 = [context requestContext];
+    [requestContext3 setPlaceResponse:placeResponse];
 
-    v25 = [(RAPMenu *)self->_followUpQuestion selectedMenuItem];
-    v26 = [v25 questionCategory];
+    selectedMenuItem = [(RAPMenu *)self->_followUpQuestion selectedMenuItem];
+    questionCategory = [selectedMenuItem questionCategory];
 
-    if (v26 == 1)
+    if (questionCategory == 1)
     {
       v27 = 7;
     }
@@ -96,7 +96,7 @@
       v27 = 0;
     }
 
-    if (v26 == 10)
+    if (questionCategory == 10)
     {
       v28 = 6;
     }
@@ -106,49 +106,49 @@
       v28 = v27;
     }
 
-    v29 = [v39 details];
-    v30 = [v29 searchFeedback];
-    v31 = [v30 corrections];
+    details6 = [parametersCopy details];
+    searchFeedback4 = [details6 searchFeedback];
+    corrections = [searchFeedback4 corrections];
 
-    if (!v31)
+    if (!corrections)
     {
       v32 = objc_alloc_init(GEORPSearchFeedbackCorrections);
-      v33 = [v39 details];
-      v34 = [v33 searchFeedback];
-      [v34 setCorrections:v32];
+      details7 = [parametersCopy details];
+      searchFeedback5 = [details7 searchFeedback];
+      [searchFeedback5 setCorrections:v32];
     }
 
-    v35 = [v39 details];
-    v36 = [v35 searchFeedback];
-    v37 = [v36 corrections];
-    [v37 setCorrectionType:v28];
+    details8 = [parametersCopy details];
+    searchFeedback6 = [details8 searchFeedback];
+    corrections2 = [searchFeedback6 corrections];
+    [corrections2 setCorrectionType:v28];
   }
 
-  v38 = [v39 commonContext];
-  [v38 addUserPath:11];
+  commonContext2 = [parametersCopy commonContext];
+  [commonContext2 addUserPath:11];
 
-  [(RAPMenu *)self->_followUpQuestion _fillSubmissionParameters:v39];
+  [(RAPMenu *)self->_followUpQuestion _fillSubmissionParameters:parametersCopy];
 }
 
 - (id)_alternateAuxiliaryControlsRecording
 {
-  v2 = [(RAPSearchWhichOneQuestion *)self selectedValue];
-  v3 = [v2 auxiliaryControlsRecording];
+  selectedValue = [(RAPSearchWhichOneQuestion *)self selectedValue];
+  auxiliaryControlsRecording = [selectedValue auxiliaryControlsRecording];
 
-  return v3;
+  return auxiliaryControlsRecording;
 }
 
 - (BOOL)_isRecursivelyComplete
 {
-  v3 = [(RAPMenu *)self->_followUpQuestion _isRecursivelyComplete];
-  if (v3)
+  _isRecursivelyComplete = [(RAPMenu *)self->_followUpQuestion _isRecursivelyComplete];
+  if (_isRecursivelyComplete)
   {
     v5.receiver = self;
     v5.super_class = RAPSearchWhichOneQuestion;
-    LOBYTE(v3) = [(RAPQuestion *)&v5 _isRecursivelyComplete];
+    LOBYTE(_isRecursivelyComplete) = [(RAPQuestion *)&v5 _isRecursivelyComplete];
   }
 
-  return v3;
+  return _isRecursivelyComplete;
 }
 
 - (RAPMenu)followUpQuestion
@@ -157,8 +157,8 @@
   if (!followUpQuestion)
   {
     v4 = [RAPSearchResultCategoryQuestion alloc];
-    v5 = [(RAPQuestion *)self report];
-    v6 = [(RAPSearchResultCategoryQuestion *)v4 initWithReport:v5 parentQuestion:self search:self->_selectedValue];
+    report = [(RAPQuestion *)self report];
+    v6 = [(RAPSearchResultCategoryQuestion *)v4 initWithReport:report parentQuestion:self search:self->_selectedValue];
     v7 = self->_followUpQuestion;
     self->_followUpQuestion = v6;
 
@@ -168,15 +168,15 @@
   return followUpQuestion;
 }
 
-- (void)setSelectedValue:(id)a3
+- (void)setSelectedValue:(id)value
 {
-  v5 = a3;
-  if (self->_selectedValue != v5)
+  valueCopy = value;
+  if (self->_selectedValue != valueCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_selectedValue, a3);
+    v6 = valueCopy;
+    objc_storeStrong(&self->_selectedValue, value);
     [(RAPQuestion *)self _didChange];
-    v5 = v6;
+    valueCopy = v6;
   }
 }
 
@@ -185,18 +185,18 @@
   selectableSearches = self->_selectableSearches;
   if (!selectableSearches)
   {
-    v4 = [(RAPQuestion *)self report];
-    v5 = [v4 _context];
-    v6 = [v5 searchesHistory];
+    report = [(RAPQuestion *)self report];
+    _context = [report _context];
+    searchesHistory = [_context searchesHistory];
 
-    if ([v6 count] >= 6)
+    if ([searchesHistory count] >= 6)
     {
-      v7 = [v6 subarrayWithRange:{0, 5}];
+      v7 = [searchesHistory subarrayWithRange:{0, 5}];
 
-      v6 = v7;
+      searchesHistory = v7;
     }
 
-    v8 = [v6 copy];
+    v8 = [searchesHistory copy];
     v9 = self->_selectableSearches;
     self->_selectableSearches = v8;
 

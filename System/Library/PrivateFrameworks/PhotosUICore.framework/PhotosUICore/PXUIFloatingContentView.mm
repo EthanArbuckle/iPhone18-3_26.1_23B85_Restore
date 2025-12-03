@@ -1,7 +1,7 @@
 @interface PXUIFloatingContentView
 - (CGRect)contentsRect;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)setContentsRect:(CGRect)a3;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)setContentsRect:(CGRect)rect;
 @end
 
 @implementation PXUIFloatingContentView
@@ -19,15 +19,15 @@
   return result;
 }
 
-- (void)setContentsRect:(CGRect)a3
+- (void)setContentsRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v21 = *MEMORY[0x1E69E9840];
   p_contentsRect = &self->_contentsRect;
-  if (!CGRectEqualToRect(self->_contentsRect, a3))
+  if (!CGRectEqualToRect(self->_contentsRect, rect))
   {
     p_contentsRect->origin.x = x;
     p_contentsRect->origin.y = y;
@@ -37,10 +37,10 @@
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = [(_UIFloatingContentView *)self contentView];
-    v10 = [v9 subviews];
+    contentView = [(_UIFloatingContentView *)self contentView];
+    subviews = [contentView subviews];
 
-    v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v11 = [subviews countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v11)
     {
       v12 = v11;
@@ -51,7 +51,7 @@
         {
           if (*v17 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(subviews);
           }
 
           v15 = *(*(&v16 + 1) + 8 * i);
@@ -61,7 +61,7 @@
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v12 = [subviews countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v12);
@@ -69,13 +69,13 @@
   }
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v7 = a4;
-  v6 = [a3 nextFocusedView];
-  LODWORD(a3) = v6 == self;
+  coordinatorCopy = coordinator;
+  nextFocusedView = [context nextFocusedView];
+  LODWORD(context) = nextFocusedView == self;
 
-  [(_UIFloatingContentView *)self setControlState:8 * a3 withAnimationCoordinator:v7];
+  [(_UIFloatingContentView *)self setControlState:8 * context withAnimationCoordinator:coordinatorCopy];
 }
 
 @end

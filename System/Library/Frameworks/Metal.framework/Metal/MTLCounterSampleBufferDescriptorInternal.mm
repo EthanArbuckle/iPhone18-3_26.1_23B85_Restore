@@ -1,6 +1,6 @@
 @interface MTLCounterSampleBufferDescriptorInternal
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -14,7 +14,7 @@
   [(MTLCounterSampleBufferDescriptorInternal *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[MTLCounterSampleBufferDescriptor allocWithZone:?]];
   [(MTLCounterSampleBufferDescriptorInternal *)v4 setCounterSet:self->_counterSet];
@@ -24,9 +24,9 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v12) = 1;
   }
@@ -38,7 +38,7 @@
     v20 = v4;
     v21 = v3;
     Class = object_getClass(self);
-    if (Class != object_getClass(a3))
+    if (Class != object_getClass(equal))
     {
 LABEL_3:
       LOBYTE(v12) = 0;
@@ -46,22 +46,22 @@ LABEL_3:
     }
 
     counterSet = self->_counterSet;
-    if (counterSet == [a3 counterSet] || (v12 = -[MTLCounterSet isEqual:](self->_counterSet, "isEqual:", objc_msgSend(a3, "counterSet"))) != 0)
+    if (counterSet == [equal counterSet] || (v12 = -[MTLCounterSet isEqual:](self->_counterSet, "isEqual:", objc_msgSend(equal, "counterSet"))) != 0)
     {
       storageMode = self->_storageMode;
-      if (storageMode != [a3 storageMode])
+      if (storageMode != [equal storageMode])
       {
         goto LABEL_3;
       }
 
       sampleCount = self->_sampleCount;
-      if (sampleCount != [a3 sampleCount])
+      if (sampleCount != [equal sampleCount])
       {
         goto LABEL_3;
       }
 
       label = self->_label;
-      if (label == [a3 label] || (v12 = -[NSString isEqual:](self->_label, "isEqual:", objc_msgSend(a3, "label"))) != 0)
+      if (label == [equal label] || (v12 = -[NSString isEqual:](self->_label, "isEqual:", objc_msgSend(equal, "label"))) != 0)
       {
         LOBYTE(v12) = 1;
       }

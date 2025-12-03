@@ -3,14 +3,14 @@
 - (BOOL)canEnterSession;
 - (BOOL)isWifiStateOn;
 - (BOOL)shouldAutoAcceptCCConfirmation;
-- (BOOL)shouldByPassConfirmationForRemoteDeviceID:(id)a3;
+- (BOOL)shouldByPassConfirmationForRemoteDeviceID:(id)d;
 - (_DDUIRemoteDisplaySessionHandler)init;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)cancelCurrentProxCard;
 - (void)dealloc;
-- (void)enterSessionWithRemoteDeviceID:(id)a3 reason:(id)a4;
-- (void)presentProxCardForDevice:(id)a3 completion:(id)a4;
-- (void)saveDedicatedDeviceInformation:(id)a3;
+- (void)enterSessionWithRemoteDeviceID:(id)d reason:(id)reason;
+- (void)presentProxCardForDevice:(id)device completion:(id)completion;
+- (void)saveDedicatedDeviceInformation:(id)information;
 @end
 
 @implementation _DDUIRemoteDisplaySessionHandler
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __50___DDUIRemoteDisplaySessionHandler_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_0 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_0, block);
@@ -55,15 +55,15 @@
   [(_DDUIRemoteDisplaySessionHandler *)&v3 dealloc];
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = _DDUICoreLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&dword_230EF9000, v5, OS_LOG_TYPE_DEFAULT, "Starting up _DDUIRemoteDisplaySessionHandler {self: %@}", buf, 0xCu);
   }
 
@@ -75,7 +75,7 @@
   v9[3] = &unk_2788F5C90;
   v9[4] = self;
   objc_copyWeak(&v11, buf);
-  v7 = v4;
+  v7 = completionCopy;
   v10 = v7;
   [(RPRemoteDisplayDiscovery *)rDiscovery activateWithCompletion:v9];
 
@@ -96,36 +96,36 @@
 
 - (BOOL)canEnterSession
 {
-  v3 = [(_DDUIRemoteDisplaySessionHandler *)self isWifiStateOn];
-  if (v3)
+  isWifiStateOn = [(_DDUIRemoteDisplaySessionHandler *)self isWifiStateOn];
+  if (isWifiStateOn)
   {
 
-    LOBYTE(v3) = [(_DDUIRemoteDisplaySessionHandler *)self isContinuityCaptureUserPreferenceEnabled];
+    LOBYTE(isWifiStateOn) = [(_DDUIRemoteDisplaySessionHandler *)self isContinuityCaptureUserPreferenceEnabled];
   }
 
-  return v3;
+  return isWifiStateOn;
 }
 
-- (void)enterSessionWithRemoteDeviceID:(id)a3 reason:(id)a4
+- (void)enterSessionWithRemoteDeviceID:(id)d reason:(id)reason
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  reasonCopy = reason;
   v8 = _DDUICoreLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
-    v17 = v6;
+    v17 = dCopy;
     v18 = 2112;
-    v19 = v7;
+    v19 = reasonCopy;
     _os_log_impl(&dword_230EF9000, v8, OS_LOG_TYPE_DEFAULT, "{self: %@} Enter session with remoteDeviceID: %@ reason: %@", buf, 0x20u);
   }
 
   if ([(_DDUIRemoteDisplaySessionHandler *)self _isActivated])
   {
-    [(RPRemoteDisplayDiscovery *)self->_rDiscovery enterDiscoverySessionWithDevice:v6 reason:v7];
+    [(RPRemoteDisplayDiscovery *)self->_rDiscovery enterDiscoverySessionWithDevice:dCopy reason:reasonCopy];
   }
 
   else
@@ -136,8 +136,8 @@
     v10[2] = __74___DDUIRemoteDisplaySessionHandler_enterSessionWithRemoteDeviceID_reason___block_invoke;
     v10[3] = &unk_2788F5CB8;
     objc_copyWeak(&v13, buf);
-    v11 = v6;
-    v12 = v7;
+    v11 = dCopy;
+    v12 = reasonCopy;
     [(_DDUIRemoteDisplaySessionHandler *)self activateWithCompletion:v10];
 
     objc_destroyWeak(&v13);
@@ -147,13 +147,13 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldByPassConfirmationForRemoteDeviceID:(id)a3
+- (BOOL)shouldByPassConfirmationForRemoteDeviceID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = _os_feature_enabled_impl();
-  v6 = [(RPRemoteDisplayDiscovery *)self->_rDiscovery dedicatedDevice];
-  v7 = [v6 persistentIdentifier];
-  v8 = [v7 isEqualToString:v4];
+  dedicatedDevice = [(RPRemoteDisplayDiscovery *)self->_rDiscovery dedicatedDevice];
+  persistentIdentifier = [dedicatedDevice persistentIdentifier];
+  v8 = [persistentIdentifier isEqualToString:dCopy];
 
   return [(_DDUIRemoteDisplaySessionHandler *)self canEnterSession]& v5 & v8;
 }
@@ -186,16 +186,16 @@
   return v7;
 }
 
-- (void)presentProxCardForDevice:(id)a3 completion:(id)a4
+- (void)presentProxCardForDevice:(id)device completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
     v13 = @"Disabled";
 LABEL_10:
     v15 = UnsupportedErrorWithDescription(v13);
-    v7[2](v7, v15);
+    completionCopy[2](completionCopy, v15);
 
     goto LABEL_11;
   }
@@ -213,10 +213,10 @@ LABEL_10:
   }
 
   v8 = objc_alloc_init(getCPSDedicatedCameraRequestClass());
-  v9 = [v6 name];
-  [v8 setDeviceName:v9];
+  name = [deviceCopy name];
+  [v8 setDeviceName:name];
 
-  if (([v6 deviceType] & 0x10) != 0)
+  if (([deviceCopy deviceType] & 0x10) != 0)
   {
     [v8 setDeviceType:1];
   }
@@ -229,7 +229,7 @@ LABEL_10:
   v16[2] = __72___DDUIRemoteDisplaySessionHandler_presentProxCardForDevice_completion___block_invoke;
   v16[3] = &unk_2788F5CE0;
   objc_copyWeak(&v18, &location);
-  v17 = v7;
+  v17 = completionCopy;
   [v10 setSessionCompletionHandler:v16];
   [v10 start];
   proxSession = self->_proxSession;
@@ -249,24 +249,24 @@ LABEL_11:
   self->_proxSession = 0;
 }
 
-- (void)saveDedicatedDeviceInformation:(id)a3
+- (void)saveDedicatedDeviceInformation:(id)information
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  informationCopy = information;
+  if (informationCopy)
   {
     v5 = objc_alloc(MEMORY[0x277D441D8]);
-    v6 = [v4 identifier];
-    v7 = [v4 name];
-    v8 = [v4 model];
-    v9 = [v4 accountIdentifier];
-    v10 = [v5 initWithIdentifier:v6 name:v7 model:v8 accountID:v9];
+    identifier = [informationCopy identifier];
+    name = [informationCopy name];
+    model = [informationCopy model];
+    accountIdentifier = [informationCopy accountIdentifier];
+    v10 = [v5 initWithIdentifier:identifier name:name model:model accountID:accountIdentifier];
 
     v11 = _DDUICoreLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412546;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2112;
       v17 = v10;
       _os_log_impl(&dword_230EF9000, v11, OS_LOG_TYPE_DEFAULT, "{self: %@} Saving dedicated device: %@", &v14, 0x16u);
@@ -281,7 +281,7 @@ LABEL_11:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_230EF9000, v12, OS_LOG_TYPE_DEFAULT, "{self: %@} Removing dedicated device", &v14, 0xCu);
     }
 

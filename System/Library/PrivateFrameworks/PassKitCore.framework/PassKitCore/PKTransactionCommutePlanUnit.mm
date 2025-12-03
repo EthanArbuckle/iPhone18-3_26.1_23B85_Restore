@@ -1,65 +1,65 @@
 @interface PKTransactionCommutePlanUnit
-- (BOOL)isEqual:(id)a3;
-- (PKTransactionCommutePlanUnit)initWithCoder:(id)a3;
-- (PKTransactionCommutePlanUnit)initWithCountPlanIdentifier:(id)a3 currencyCode:(id)a4 value:(id)a5 label:(id)a6;
-- (PKTransactionCommutePlanUnit)initWithDictionary:(id)a3;
-- (PKTransactionCommutePlanUnit)initWithTimedPlanIdentifier:(id)a3 label:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKTransactionCommutePlanUnit)initWithCoder:(id)coder;
+- (PKTransactionCommutePlanUnit)initWithCountPlanIdentifier:(id)identifier currencyCode:(id)code value:(id)value label:(id)label;
+- (PKTransactionCommutePlanUnit)initWithDictionary:(id)dictionary;
+- (PKTransactionCommutePlanUnit)initWithTimedPlanIdentifier:(id)identifier label:(id)label;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKTransactionCommutePlanUnit
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKTransactionCommutePlanUnit allocWithZone:](PKTransactionCommutePlanUnit init];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   identifier = v5->_identifier;
   v5->_identifier = v6;
 
   v5->_planType = self->_planType;
-  v8 = [(PKCurrencyAmount *)self->_valueCount copyWithZone:a3];
+  v8 = [(PKCurrencyAmount *)self->_valueCount copyWithZone:zone];
   valueCount = v5->_valueCount;
   v5->_valueCount = v8;
 
-  v10 = [(NSString *)self->_label copyWithZone:a3];
+  v10 = [(NSString *)self->_label copyWithZone:zone];
   label = v5->_label;
   v5->_label = v10;
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_valueCount forKey:@"valueCount"];
-  [v5 encodeInteger:self->_planType forKey:@"planType"];
-  [v5 encodeObject:self->_label forKey:@"label"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_valueCount forKey:@"valueCount"];
+  [coderCopy encodeInteger:self->_planType forKey:@"planType"];
+  [coderCopy encodeObject:self->_label forKey:@"label"];
 }
 
-- (PKTransactionCommutePlanUnit)initWithCoder:(id)a3
+- (PKTransactionCommutePlanUnit)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKTransactionCommutePlanUnit;
   v5 = [(PKTransactionCommutePlanUnit *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"valueCount"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"valueCount"];
     valueCount = v5->_valueCount;
     v5->_valueCount = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v8;
 
-    v5->_planType = [v4 decodeIntegerForKey:@"planType"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"label"];
+    v5->_planType = [coderCopy decodeIntegerForKey:@"planType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"label"];
     label = v5->_label;
     v5->_label = v10;
   }
@@ -67,60 +67,60 @@
   return v5;
 }
 
-- (PKTransactionCommutePlanUnit)initWithTimedPlanIdentifier:(id)a3 label:(id)a4
+- (PKTransactionCommutePlanUnit)initWithTimedPlanIdentifier:(id)identifier label:(id)label
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  labelCopy = label;
   v12.receiver = self;
   v12.super_class = PKTransactionCommutePlanUnit;
   v9 = [(PKTransactionCommutePlanUnit *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
+    objc_storeStrong(&v9->_identifier, identifier);
     v10->_planType = 0;
-    objc_storeStrong(&v10->_label, a4);
+    objc_storeStrong(&v10->_label, label);
   }
 
   return v10;
 }
 
-- (PKTransactionCommutePlanUnit)initWithCountPlanIdentifier:(id)a3 currencyCode:(id)a4 value:(id)a5 label:(id)a6
+- (PKTransactionCommutePlanUnit)initWithCountPlanIdentifier:(id)identifier currencyCode:(id)code value:(id)value label:(id)label
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  codeCopy = code;
+  valueCopy = value;
+  labelCopy = label;
   v20.receiver = self;
   v20.super_class = PKTransactionCommutePlanUnit;
   v15 = [(PKTransactionCommutePlanUnit *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_identifier, a3);
+    objc_storeStrong(&v15->_identifier, identifier);
     v16->_planType = 1;
-    v17 = PKCurrencyAmountCreate(v13, v12, 0);
+    v17 = PKCurrencyAmountCreate(valueCopy, codeCopy, 0);
     valueCount = v16->_valueCount;
     v16->_valueCount = v17;
 
-    objc_storeStrong(&v16->_label, a6);
+    objc_storeStrong(&v16->_label, label);
   }
 
   return v16;
 }
 
-- (PKTransactionCommutePlanUnit)initWithDictionary:(id)a3
+- (PKTransactionCommutePlanUnit)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 PKIntegerForKey:@"value"];
-  v6 = [v4 PKStringForKey:@"currencyCode"];
-  v7 = [v4 PKStringForKey:@"localizedTitle"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy PKIntegerForKey:@"value"];
+  v6 = [dictionaryCopy PKStringForKey:@"currencyCode"];
+  v7 = [dictionaryCopy PKStringForKey:@"localizedTitle"];
   if (!v7)
   {
-    v7 = [v4 PKStringForKey:@"label"];
+    v7 = [dictionaryCopy PKStringForKey:@"label"];
   }
 
-  v8 = [v4 PKStringForKey:@"identifier"];
+  v8 = [dictionaryCopy PKStringForKey:@"identifier"];
   if (v8)
   {
     if (v6 && v5)
@@ -128,22 +128,22 @@
       v9 = [MEMORY[0x1E696AB90] numberWithInteger:v5];
       self = [(PKTransactionCommutePlanUnit *)self initWithCountPlanIdentifier:v8 currencyCode:v6 value:v9 label:v7];
 
-      v10 = self;
+      selfCopy2 = self;
     }
 
     else
     {
       self = [(PKTransactionCommutePlanUnit *)self initWithTimedPlanIdentifier:v8 label:v7];
-      v10 = self;
+      selfCopy2 = self;
     }
   }
 
   else
   {
-    v10 = 0;
+    selfCopy2 = 0;
   }
 
-  return v10;
+  return selfCopy2;
 }
 
 - (id)description
@@ -154,9 +154,9 @@
   {
     identifier = self->_identifier;
     label = self->_label;
-    v7 = [(PKCurrencyAmount *)self->_valueCount currency];
-    v8 = [(PKCurrencyAmount *)self->_valueCount amount];
-    v9 = [v4 stringWithFormat:@"Plan Type: %@, Identifier: %@, Label: %@, Currency: %@, Value: %ld", @"count plan", identifier, label, v7, objc_msgSend(v8, "integerValue")];
+    currency = [(PKCurrencyAmount *)self->_valueCount currency];
+    amount = [(PKCurrencyAmount *)self->_valueCount amount];
+    v9 = [v4 stringWithFormat:@"Plan Type: %@, Identifier: %@, Label: %@, Currency: %@, Value: %ld", @"count plan", identifier, label, currency, objc_msgSend(amount, "integerValue")];
   }
 
   else
@@ -181,12 +181,12 @@
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v3 setObject:self->_identifier forKeyedSubscript:@"identifier"];
-  v4 = [(PKCurrencyAmount *)self->_valueCount currency];
-  [v3 setObject:v4 forKeyedSubscript:@"currencyCode"];
+  currency = [(PKCurrencyAmount *)self->_valueCount currency];
+  [v3 setObject:currency forKeyedSubscript:@"currencyCode"];
 
   v5 = MEMORY[0x1E696AD98];
-  v6 = [(PKCurrencyAmount *)self->_valueCount amount];
-  v7 = [v5 numberWithInteger:{objc_msgSend(v6, "integerValue")}];
+  amount = [(PKCurrencyAmount *)self->_valueCount amount];
+  v7 = [v5 numberWithInteger:{objc_msgSend(amount, "integerValue")}];
   [v3 setObject:v7 forKeyedSubscript:@"value"];
 
   label = self->_label;
@@ -202,26 +202,26 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_valueCount];
-  [v3 safelyAddObject:self->_label];
-  [v3 safelyAddObject:self->_identifier];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_valueCount];
+  [array safelyAddObject:self->_label];
+  [array safelyAddObject:self->_identifier];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_planType - v4 + 32 * v4;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     identifier = self->_identifier;
-    v6 = [v4 identifier];
+    identifier = [equalCopy identifier];
     v7 = identifier;
-    v8 = v6;
+    v8 = identifier;
     v9 = v8;
     if (v7 == v8)
     {
@@ -248,9 +248,9 @@ LABEL_25:
     }
 
     label = self->_label;
-    v13 = [v4 label];
+    label = [equalCopy label];
     v14 = label;
-    v15 = v13;
+    v15 = label;
     v7 = v15;
     if (v14 == v15)
     {
@@ -274,7 +274,7 @@ LABEL_25:
     }
 
     planType = self->_planType;
-    if (planType != [v4 planType])
+    if (planType != [equalCopy planType])
     {
       LOBYTE(v10) = 0;
 LABEL_24:
@@ -283,16 +283,16 @@ LABEL_24:
     }
 
     valueCount = self->_valueCount;
-    v18 = [v4 valueCount];
-    v14 = v18;
-    if (valueCount && v18)
+    valueCount = [equalCopy valueCount];
+    v14 = valueCount;
+    if (valueCount && valueCount)
     {
-      LOBYTE(v10) = [(PKCurrencyAmount *)valueCount isEqual:v18];
+      LOBYTE(v10) = [(PKCurrencyAmount *)valueCount isEqual:valueCount];
     }
 
     else
     {
-      LOBYTE(v10) = valueCount == v18;
+      LOBYTE(v10) = valueCount == valueCount;
     }
 
 LABEL_23:

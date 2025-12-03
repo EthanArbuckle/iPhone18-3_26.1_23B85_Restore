@@ -1,25 +1,25 @@
 @interface SKUIMediaPageSection
-- (CGSize)cellSizeForIndexPath:(id)a3;
-- (SKUIMediaPageSection)initWithPageComponent:(id)a3;
-- (double)contentInsetAdjustmentForCollectionView:(id)a3;
-- (id)cellForIndexPath:(id)a3;
-- (void)_loadImageWithReason:(int64_t)a3;
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4;
-- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)a3;
-- (void)collectionViewDidSelectItemAtIndexPath:(id)a3;
-- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)a3;
+- (CGSize)cellSizeForIndexPath:(id)path;
+- (SKUIMediaPageSection)initWithPageComponent:(id)component;
+- (double)contentInsetAdjustmentForCollectionView:(id)view;
+- (id)cellForIndexPath:(id)path;
+- (void)_loadImageWithReason:(int64_t)reason;
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session;
+- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)path;
+- (void)collectionViewDidSelectItemAtIndexPath:(id)path;
+- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)mediaView:(id)a3 playbackStateDidChange:(int64_t)a4;
-- (void)prefetchResourcesWithReason:(int64_t)a3;
-- (void)setSectionIndex:(int64_t)a3;
-- (void)willAppearInContext:(id)a3;
+- (void)mediaView:(id)view playbackStateDidChange:(int64_t)change;
+- (void)prefetchResourcesWithReason:(int64_t)reason;
+- (void)setSectionIndex:(int64_t)index;
+- (void)willAppearInContext:(id)context;
 @end
 
 @implementation SKUIMediaPageSection
 
-- (SKUIMediaPageSection)initWithPageComponent:(id)a3
+- (SKUIMediaPageSection)initWithPageComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIMediaPageSection initWithPageComponent:];
@@ -27,28 +27,28 @@
 
   v23.receiver = self;
   v23.super_class = SKUIMediaPageSection;
-  v5 = [(SKUIStorePageSection *)&v23 initWithPageComponent:v4];
+  v5 = [(SKUIStorePageSection *)&v23 initWithPageComponent:componentCopy];
   if (v5)
   {
-    v6 = [MEMORY[0x277D759A0] mainScreen];
-    [v6 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v8 = v7;
     v10 = v9;
 
-    v11 = [MEMORY[0x277D75418] currentDevice];
-    v12 = [v11 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v8 < v10 && v12 == 1)
+    if (v8 < v10 && userInterfaceIdiom == 1)
     {
       v8 = v10;
     }
 
-    v14 = [v4 bestThumbnailForWidth:v8];
+    v14 = [componentCopy bestThumbnailForWidth:v8];
     artwork = v5->_artwork;
     v5->_artwork = v14;
 
-    v16 = [(SKUIArtwork *)v5->_artwork height];
-    v17 = v8 / [(SKUIArtwork *)v5->_artwork width]* v16;
+    height = [(SKUIArtwork *)v5->_artwork height];
+    v17 = v8 / [(SKUIArtwork *)v5->_artwork width]* height;
     v5->_imageSize.width = v8;
     v5->_imageSize.height = floorf(v17);
     v18 = objc_alloc_init(SKUIEmbeddedMediaView);
@@ -56,8 +56,8 @@
     v5->_mediaView = v18;
 
     v20 = v5->_mediaView;
-    v21 = [v4 accessibilityLabel];
-    [(SKUIEmbeddedMediaView *)v20 setAccessibilityLabel:v21];
+    accessibilityLabel = [componentCopy accessibilityLabel];
+    [(SKUIEmbeddedMediaView *)v20 setAccessibilityLabel:accessibilityLabel];
 
     [(SKUIEmbeddedMediaView *)v5->_mediaView setDelegate:v5];
     [(SKUIEmbeddedMediaView *)v5->_mediaView setThumbnailContentMode:5];
@@ -74,33 +74,33 @@
   [(SKUIStorePageSection *)&v3 dealloc];
 }
 
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session
 {
-  v5 = a4;
-  v6 = [(SKUIStorePageSection *)self pageComponent];
-  [v5 addItemIdentifier:{objc_msgSend(v6, "mediaIdentifier")}];
+  sessionCopy = session;
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  [sessionCopy addItemIdentifier:{objc_msgSend(pageComponent, "mediaIdentifier")}];
 
-  v8 = [(SKUIStorePageSection *)self pageComponent];
-  v7 = [v8 viewElement];
-  [v5 addItemViewElement:v7];
+  pageComponent2 = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent2 viewElement];
+  [sessionCopy addItemViewElement:viewElement];
 }
 
-- (id)cellForIndexPath:(id)a3
+- (id)cellForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SKUIStorePageSection *)self context];
-  v6 = [v5 collectionView];
-  v7 = [v6 dequeueReusableCellWithReuseIdentifier:@"SKUIMediaPageSectionReuseIdentifier" forIndexPath:v4];
+  pathCopy = path;
+  context = [(SKUIStorePageSection *)self context];
+  collectionView = [context collectionView];
+  v7 = [collectionView dequeueReusableCellWithReuseIdentifier:@"SKUIMediaPageSectionReuseIdentifier" forIndexPath:pathCopy];
 
   [v7 setContentInsets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
-  v8 = [v5 resourceLoader];
-  v9 = v8;
+  resourceLoader = [context resourceLoader];
+  v9 = resourceLoader;
   if (!self->_artworkRequestID)
   {
     goto LABEL_4;
   }
 
-  v10 = [v8 cachedResourceForRequestIdentifier:?];
+  v10 = [resourceLoader cachedResourceForRequestIdentifier:?];
   if (v10)
   {
     goto LABEL_6;
@@ -120,11 +120,11 @@ LABEL_6:
   return v7;
 }
 
-- (CGSize)cellSizeForIndexPath:(id)a3
+- (CGSize)cellSizeForIndexPath:(id)path
 {
-  v4 = [(SKUIStorePageSection *)self context];
-  v5 = [v4 collectionView];
-  [v5 bounds];
+  context = [(SKUIStorePageSection *)self context];
+  collectionView = [context collectionView];
+  [collectionView bounds];
   v7 = v6;
 
   height = self->_imageSize.height;
@@ -140,29 +140,29 @@ LABEL_6:
   return result;
 }
 
-- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)a3
+- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SKUIStorePageSection *)self pageComponent];
-  v6 = [v5 viewElement];
+  pathCopy = path;
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  v7 = [(SKUIStorePageSection *)self context];
-  v8 = [v7 activeMetricsImpressionSession];
-  [v8 beginActiveImpressionForViewElement:v6];
+  context = [(SKUIStorePageSection *)self context];
+  activeMetricsImpressionSession = [context activeMetricsImpressionSession];
+  [activeMetricsImpressionSession beginActiveImpressionForViewElement:viewElement];
 
   v9.receiver = self;
   v9.super_class = SKUIMediaPageSection;
-  [(SKUIStorePageSection *)&v9 collectionViewWillDisplayCellForItemAtIndexPath:v4];
+  [(SKUIStorePageSection *)&v9 collectionViewWillDisplayCellForItemAtIndexPath:pathCopy];
 }
 
-- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)a3
+- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if (self->_artworkRequestID)
   {
-    v5 = [(SKUIStorePageSection *)self context];
-    v6 = [v5 resourceLoader];
-    v7 = [v6 trySetReason:0 forRequestWithIdentifier:self->_artworkRequestID];
+    context = [(SKUIStorePageSection *)self context];
+    resourceLoader = [context resourceLoader];
+    v7 = [resourceLoader trySetReason:0 forRequestWithIdentifier:self->_artworkRequestID];
 
     if ((v7 & 1) == 0)
     {
@@ -170,46 +170,46 @@ LABEL_6:
     }
   }
 
-  v8 = [(SKUIStorePageSection *)self pageComponent];
-  v9 = [v8 viewElement];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  v10 = [(SKUIStorePageSection *)self context];
-  v11 = [v10 activeMetricsImpressionSession];
-  [v11 endActiveImpressionForViewElement:v9];
+  context2 = [(SKUIStorePageSection *)self context];
+  activeMetricsImpressionSession = [context2 activeMetricsImpressionSession];
+  [activeMetricsImpressionSession endActiveImpressionForViewElement:viewElement];
 
   v12.receiver = self;
   v12.super_class = SKUIMediaPageSection;
-  [(SKUIStorePageSection *)&v12 collectionViewDidEndDisplayingCellForItemAtIndexPath:v4];
+  [(SKUIStorePageSection *)&v12 collectionViewDidEndDisplayingCellForItemAtIndexPath:pathCopy];
 }
 
-- (void)collectionViewDidSelectItemAtIndexPath:(id)a3
+- (void)collectionViewDidSelectItemAtIndexPath:(id)path
 {
-  v8 = [(SKUIStorePageSection *)self pageComponent];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
   v4 = [SKUIStorePageSection clickEventWithMedia:"clickEventWithMedia:elementName:index:" elementName:? index:?];
   if (v4)
   {
-    v5 = [(SKUIStorePageSection *)self context];
-    v6 = [v5 metricsController];
-    [v6 recordEvent:v4];
+    context = [(SKUIStorePageSection *)self context];
+    metricsController = [context metricsController];
+    [metricsController recordEvent:v4];
   }
 
-  if ([v8 mediaType])
+  if ([pageComponent mediaType])
   {
     [(SKUIEmbeddedMediaView *)self->_mediaView beginPlaybackAnimated:1];
   }
 
   else
   {
-    v7 = [v8 link];
-    [(SKUIStorePageSection *)self showPageWithLink:v7];
+    link = [pageComponent link];
+    [(SKUIStorePageSection *)self showPageWithLink:link];
   }
 }
 
-- (double)contentInsetAdjustmentForCollectionView:(id)a3
+- (double)contentInsetAdjustmentForCollectionView:(id)view
 {
-  v4 = [(SKUIEmbeddedMediaView *)self->_mediaView showsThumbnailReflection];
+  showsThumbnailReflection = [(SKUIEmbeddedMediaView *)self->_mediaView showsThumbnailReflection];
   result = 0.0;
-  if (v4)
+  if (showsThumbnailReflection)
   {
     return -self->_imageSize.height;
   }
@@ -217,55 +217,55 @@ LABEL_6:
   return result;
 }
 
-- (void)prefetchResourcesWithReason:(int64_t)a3
+- (void)prefetchResourcesWithReason:(int64_t)reason
 {
   if (!self->_artworkRequestID)
   {
-    [(SKUIMediaPageSection *)self _loadImageWithReason:a3];
+    [(SKUIMediaPageSection *)self _loadImageWithReason:reason];
   }
 }
 
-- (void)setSectionIndex:(int64_t)a3
+- (void)setSectionIndex:(int64_t)index
 {
-  [(SKUIEmbeddedMediaView *)self->_mediaView setShowsThumbnailReflection:a3 == 0];
+  [(SKUIEmbeddedMediaView *)self->_mediaView setShowsThumbnailReflection:index == 0];
   v5.receiver = self;
   v5.super_class = SKUIMediaPageSection;
-  [(SKUIStorePageSection *)&v5 setSectionIndex:a3];
+  [(SKUIStorePageSection *)&v5 setSectionIndex:index];
 }
 
-- (void)willAppearInContext:(id)a3
+- (void)willAppearInContext:(id)context
 {
-  v3 = [a3 collectionView];
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"SKUIMediaPageSectionReuseIdentifier"];
+  collectionView = [context collectionView];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"SKUIMediaPageSectionReuseIdentifier"];
 }
 
-- (void)mediaView:(id)a3 playbackStateDidChange:(int64_t)a4
+- (void)mediaView:(id)view playbackStateDidChange:(int64_t)change
 {
   v19[2] = *MEMORY[0x277D85DE8];
-  v6 = [(SKUIStorePageSection *)self context];
-  v7 = [v6 metricsController];
+  context = [(SKUIStorePageSection *)self context];
+  metricsController = [context metricsController];
 
-  if ([v7 canRecordEventWithType:*MEMORY[0x277D6A488]])
+  if ([metricsController canRecordEventWithType:*MEMORY[0x277D6A488]])
   {
     v8 = objc_alloc_init(MEMORY[0x277D69BA8]);
-    v9 = SKUIMetricsMediaEventTypeForPlaybackState(a4);
+    v9 = SKUIMetricsMediaEventTypeForPlaybackState(change);
     [v8 setMediaEventType:v9];
 
-    v10 = [(SKUIStorePageSection *)self pageComponent];
-    v11 = [v10 mediaIdentifier];
-    if (v11)
+    pageComponent = [(SKUIStorePageSection *)self pageComponent];
+    mediaIdentifier = [pageComponent mediaIdentifier];
+    if (mediaIdentifier)
     {
-      v12 = [MEMORY[0x277CCABB0] numberWithLongLong:v11];
+      v12 = [MEMORY[0x277CCABB0] numberWithLongLong:mediaIdentifier];
       [v8 setItemIdentifier:v12];
     }
 
-    v13 = [v10 mediaURLString];
-    [v8 setMediaURL:v13];
+    mediaURLString = [pageComponent mediaURLString];
+    [v8 setMediaURL:mediaURLString];
 
-    v14 = [(SKUIStorePageSection *)self pageComponent];
-    v15 = [v7 locationWithPageComponent:v14];
+    pageComponent2 = [(SKUIStorePageSection *)self pageComponent];
+    v15 = [metricsController locationWithPageComponent:pageComponent2];
 
-    v16 = [v7 locationWithPageComponent:v10];
+    v16 = [metricsController locationWithPageComponent:pageComponent];
     v17 = v16;
     if (v15 && v16)
     {
@@ -275,11 +275,11 @@ LABEL_6:
       [v8 setLocationWithEventLocations:v18];
     }
 
-    [v7 recordEvent:v8];
+    [metricsController recordEvent:v8];
   }
 }
 
-- (void)_loadImageWithReason:(int64_t)a3
+- (void)_loadImageWithReason:(int64_t)reason
 {
   v13 = objc_alloc_init(SKUIArtworkRequest);
   [(SKUIArtworkRequest *)v13 setDelegate:self];
@@ -287,24 +287,24 @@ LABEL_6:
   [(SKUIArtworkRequest *)v13 setURL:v4];
 
   v5 = [SKUISizeToFitImageDataConsumer consumerWithConstraintSize:self->_imageSize.width, self->_imageSize.height];
-  v6 = [(SKUIStorePageSection *)self pageComponent];
-  v7 = [v6 mediaAppearance];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  mediaAppearance = [pageComponent mediaAppearance];
 
-  if (v7 == 1)
+  if (mediaAppearance == 1)
   {
-    v8 = [(SKUIStorePageSection *)self context];
-    v9 = [v8 colorScheme];
-    v10 = [v9 backgroundColor];
-    [v5 setGradientEndColor:v10];
+    context = [(SKUIStorePageSection *)self context];
+    colorScheme = [context colorScheme];
+    backgroundColor = [colorScheme backgroundColor];
+    [v5 setGradientEndColor:backgroundColor];
 
     [v5 setGradientHeight:63.0];
   }
 
   [(SKUIArtworkRequest *)v13 setDataConsumer:v5];
   self->_artworkRequestID = [(SKUIResourceRequest *)v13 requestIdentifier];
-  v11 = [(SKUIStorePageSection *)self context];
-  v12 = [v11 resourceLoader];
-  [v12 loadResourceWithRequest:v13 reason:1];
+  context2 = [(SKUIStorePageSection *)self context];
+  resourceLoader = [context2 resourceLoader];
+  [resourceLoader loadResourceWithRequest:v13 reason:1];
 }
 
 - (void)initWithPageComponent:.cold.1()

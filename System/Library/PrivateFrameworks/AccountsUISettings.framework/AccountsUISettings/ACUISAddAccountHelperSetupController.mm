@@ -1,7 +1,7 @@
 @interface ACUISAddAccountHelperSetupController
 - (ACUISAddAccountHelperSetupController)init;
 - (void)_dismissAndNotifyParent;
-- (void)controller:(id)a3 didFinishSettingUpAccount:(id)a4;
+- (void)controller:(id)controller didFinishSettingUpAccount:(id)account;
 @end
 
 @implementation ACUISAddAccountHelperSetupController
@@ -20,20 +20,20 @@
   return v3;
 }
 
-- (void)controller:(id)a3 didFinishSettingUpAccount:(id)a4
+- (void)controller:(id)controller didFinishSettingUpAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  accountCopy = account;
   v8 = _ACUILogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [(ACUISAddAccountHelperSetupController *)v6 controller:v7 didFinishSettingUpAccount:v8];
+    [(ACUISAddAccountHelperSetupController *)controllerCopy controller:accountCopy didFinishSettingUpAccount:v8];
   }
 
-  v9 = [v6 specifier];
-  v10 = [v9 userInfo];
+  specifier = [controllerCopy specifier];
+  userInfo = [specifier userInfo];
 
-  v11 = [v10 objectForKeyedSubscript:*MEMORY[0x277CE8558]];
+  v11 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CE8558]];
   [v11 BOOLValue];
 
   if (self->_ranDataclassSetup)
@@ -44,17 +44,17 @@
   self->_ranDataclassSetup = 1;
   objc_initWeak(&location, self);
   v15 = MEMORY[0x277CE8598];
-  v16 = [v6 specifier];
-  v17 = [v16 name];
-  v18 = [v6 specifier];
+  specifier2 = [controllerCopy specifier];
+  name = [specifier2 name];
+  specifier3 = [controllerCopy specifier];
   v23 = MEMORY[0x277D85DD0];
   v24 = 3221225472;
   v25 = __77__ACUISAddAccountHelperSetupController_controller_didFinishSettingUpAccount___block_invoke;
   v26 = &unk_278BFD1E8;
   objc_copyWeak(&v29, &location);
-  v27 = v7;
-  v28 = self;
-  v19 = [v15 dataclassConfigurationControllerForAccount:v27 name:v17 specifier:v18 completion:&v23];
+  v27 = accountCopy;
+  selfCopy = self;
+  v19 = [v15 dataclassConfigurationControllerForAccount:v27 name:name specifier:specifier3 completion:&v23];
 
   if (!v19)
   {
@@ -71,7 +71,7 @@ LABEL_4:
     completion = self->_completion;
     if (completion)
     {
-      completion[2](completion, v7);
+      completion[2](completion, accountCopy);
       v14 = self->_completion;
       self->_completion = 0;
     }
@@ -88,8 +88,8 @@ LABEL_4:
 
   v21 = [(ACUISAddAccountHelperSetupController *)self topViewController:v23];
   [v19 setParentController:v21];
-  v22 = [(PSRootController *)self rootController];
-  [v19 setRootController:v22];
+  rootController = [(PSRootController *)self rootController];
+  [v19 setRootController:rootController];
 
   [v21 pushController:v19];
   objc_destroyWeak(&v29);

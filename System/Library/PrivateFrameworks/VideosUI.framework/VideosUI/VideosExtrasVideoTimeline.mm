@@ -1,16 +1,16 @@
 @interface VideosExtrasVideoTimeline
-- (VideosExtrasVideoTimeline)initWithTimelineElements:(id)a3;
+- (VideosExtrasVideoTimeline)initWithTimelineElements:(id)elements;
 - (id)description;
-- (id)eventForTime:(double)a3;
+- (id)eventForTime:(double)time;
 @end
 
 @implementation VideosExtrasVideoTimeline
 
-- (VideosExtrasVideoTimeline)initWithTimelineElements:(id)a3
+- (VideosExtrasVideoTimeline)initWithTimelineElements:(id)elements
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 && [v5 count])
+  elementsCopy = elements;
+  v6 = elementsCopy;
+  if (elementsCopy && [elementsCopy count])
   {
     v18.receiver = self;
     v18.super_class = VideosExtrasVideoTimeline;
@@ -18,38 +18,38 @@
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_timelineElements, a3);
-      v9 = [MEMORY[0x1E695DF70] array];
-      v10 = [(NSArray *)v8->_timelineElements firstObject];
-      v11 = v10;
-      if (v10)
+      objc_storeStrong(&v7->_timelineElements, elements);
+      array = [MEMORY[0x1E695DF70] array];
+      firstObject = [(NSArray *)v8->_timelineElements firstObject];
+      v11 = firstObject;
+      if (firstObject)
       {
-        v12 = [v10 events];
-        if (v12)
+        events = [firstObject events];
+        if (events)
         {
           v16[0] = MEMORY[0x1E69E9820];
           v16[1] = 3221225472;
           v16[2] = __54__VideosExtrasVideoTimeline_initWithTimelineElements___block_invoke;
           v16[3] = &unk_1E8735DA8;
-          v17 = v9;
-          [v12 enumerateObjectsUsingBlock:v16];
+          v17 = array;
+          [events enumerateObjectsUsingBlock:v16];
         }
       }
 
       events = v8->_events;
-      v8->_events = v9;
+      v8->_events = array;
     }
 
     self = v8;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 void __54__VideosExtrasVideoTimeline_initWithTimelineElements___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -71,7 +71,7 @@ void __54__VideosExtrasVideoTimeline_initWithTimelineElements___block_invoke(uin
   [*(a1 + 32) addObject:v6];
 }
 
-- (id)eventForTime:(double)a3
+- (id)eventForTime:(double)time
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
@@ -94,12 +94,12 @@ void __54__VideosExtrasVideoTimeline_initWithTimelineElements___block_invoke(uin
 
         v8 = *(*(&v14 + 1) + 8 * i);
         [v8 offset];
-        if (v9 <= a3)
+        if (v9 <= time)
         {
           [v8 offset];
           v11 = v10;
           [v8 duration];
-          if (v11 + v12 > a3)
+          if (v11 + v12 > time)
           {
             v5 = v8;
             goto LABEL_12;

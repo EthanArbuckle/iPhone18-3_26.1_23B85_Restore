@@ -1,25 +1,25 @@
 @interface NEFlowMetaData
-- (NEFlowMetaData)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NEFlowMetaData)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEFlowMetaData
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [NEFlowMetaData allocWithZone:a3];
-  v5 = [(NEFlowMetaData *)self sourceAppUniqueIdentifier];
-  v6 = [(NEFlowMetaData *)self sourceAppSigningIdentifier];
-  v16 = [(NEFlowMetaData *)self fastOpenRequested];
-  v7 = [(NEFlowMetaData *)self multipathRequested];
-  v8 = [(NEFlowMetaData *)self sourceAppAuditToken];
-  v9 = [(NEFlowMetaData *)self filterFlowIdentifier];
-  v10 = v5;
-  v11 = v6;
-  v12 = v8;
-  v13 = v9;
+  v4 = [NEFlowMetaData allocWithZone:zone];
+  sourceAppUniqueIdentifier = [(NEFlowMetaData *)self sourceAppUniqueIdentifier];
+  sourceAppSigningIdentifier = [(NEFlowMetaData *)self sourceAppSigningIdentifier];
+  fastOpenRequested = [(NEFlowMetaData *)self fastOpenRequested];
+  multipathRequested = [(NEFlowMetaData *)self multipathRequested];
+  sourceAppAuditToken = [(NEFlowMetaData *)self sourceAppAuditToken];
+  filterFlowIdentifier = [(NEFlowMetaData *)self filterFlowIdentifier];
+  v10 = sourceAppUniqueIdentifier;
+  v11 = sourceAppSigningIdentifier;
+  v12 = sourceAppAuditToken;
+  v13 = filterFlowIdentifier;
   if (v4)
   {
     v17.receiver = v4;
@@ -28,55 +28,55 @@
     v4 = v14;
     if (v14)
     {
-      objc_storeStrong(&v14->_sourceAppSigningIdentifier, v6);
-      objc_storeStrong(&v4->_sourceAppUniqueIdentifier, v5);
-      v4->_fastOpenRequested = v16;
-      v4->_multipathRequested = v7;
-      objc_storeStrong(&v4->_sourceAppAuditToken, v8);
-      objc_storeStrong(&v4->_filterFlowIdentifier, v9);
+      objc_storeStrong(&v14->_sourceAppSigningIdentifier, sourceAppSigningIdentifier);
+      objc_storeStrong(&v4->_sourceAppUniqueIdentifier, sourceAppUniqueIdentifier);
+      v4->_fastOpenRequested = fastOpenRequested;
+      v4->_multipathRequested = multipathRequested;
+      objc_storeStrong(&v4->_sourceAppAuditToken, sourceAppAuditToken);
+      objc_storeStrong(&v4->_filterFlowIdentifier, filterFlowIdentifier);
     }
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(NEFlowMetaData *)self sourceAppSigningIdentifier];
-  [v4 encodeObject:v5 forKey:@"sourceAppSigningIdentifier"];
+  coderCopy = coder;
+  sourceAppSigningIdentifier = [(NEFlowMetaData *)self sourceAppSigningIdentifier];
+  [coderCopy encodeObject:sourceAppSigningIdentifier forKey:@"sourceAppSigningIdentifier"];
 
-  v6 = [(NEFlowMetaData *)self sourceAppUniqueIdentifier];
-  [v4 encodeObject:v6 forKey:@"sourceAppUniqueIdentifier"];
+  sourceAppUniqueIdentifier = [(NEFlowMetaData *)self sourceAppUniqueIdentifier];
+  [coderCopy encodeObject:sourceAppUniqueIdentifier forKey:@"sourceAppUniqueIdentifier"];
 
-  v7 = [(NEFlowMetaData *)self sourceAppAuditToken];
-  [v4 encodeObject:v7 forKey:@"sourceAppAuditToken"];
+  sourceAppAuditToken = [(NEFlowMetaData *)self sourceAppAuditToken];
+  [coderCopy encodeObject:sourceAppAuditToken forKey:@"sourceAppAuditToken"];
 
-  v8 = [(NEFlowMetaData *)self filterFlowIdentifier];
-  [v4 encodeObject:v8 forKey:@"filterFlowID"];
+  filterFlowIdentifier = [(NEFlowMetaData *)self filterFlowIdentifier];
+  [coderCopy encodeObject:filterFlowIdentifier forKey:@"filterFlowID"];
 }
 
-- (NEFlowMetaData)initWithCoder:(id)a3
+- (NEFlowMetaData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = NEFlowMetaData;
   v5 = [(NEFlowMetaData *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceAppSigningIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceAppSigningIdentifier"];
     sourceAppSigningIdentifier = v5->_sourceAppSigningIdentifier;
     v5->_sourceAppSigningIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceAppUniqueIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceAppUniqueIdentifier"];
     sourceAppUniqueIdentifier = v5->_sourceAppUniqueIdentifier;
     v5->_sourceAppUniqueIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceAppAuditToken"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceAppAuditToken"];
     sourceAppAuditToken = v5->_sourceAppAuditToken;
     v5->_sourceAppAuditToken = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"filterFlowID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"filterFlowID"];
     filterFlowIdentifier = v5->_filterFlowIdentifier;
     v5->_filterFlowIdentifier = v12;
   }
@@ -87,9 +87,9 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(NEFlowMetaData *)self sourceAppSigningIdentifier];
-  v5 = [(NEFlowMetaData *)self sourceAppUniqueIdentifier];
-  v6 = [v3 stringWithFormat:@"%@[%@]", v4, v5];
+  sourceAppSigningIdentifier = [(NEFlowMetaData *)self sourceAppSigningIdentifier];
+  sourceAppUniqueIdentifier = [(NEFlowMetaData *)self sourceAppUniqueIdentifier];
+  v6 = [v3 stringWithFormat:@"%@[%@]", sourceAppSigningIdentifier, sourceAppUniqueIdentifier];
 
   return v6;
 }

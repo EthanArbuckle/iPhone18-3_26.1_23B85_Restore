@@ -1,11 +1,11 @@
 @interface WebPresentmentCABLEAuthenticator
 - (_TtC8coreidvd32WebPresentmentCABLEAuthenticator)init;
-- (void)authenticator:(id)a3 didCompleteTransactionWithError:(id)a4;
+- (void)authenticator:(id)authenticator didCompleteTransactionWithError:(id)error;
 @end
 
 @implementation WebPresentmentCABLEAuthenticator
 
-- (void)authenticator:(id)a3 didCompleteTransactionWithError:(id)a4
+- (void)authenticator:(id)authenticator didCompleteTransactionWithError:(id)error
 {
   v6 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v7 = *(*(v6 - 8) + 64);
@@ -17,9 +17,9 @@
   v11[2] = 0;
   v11[3] = 0;
   v11[4] = self;
-  v11[5] = a4;
+  v11[5] = error;
 
-  v12 = a4;
+  errorCopy = error;
   sub_1003E653C(0, 0, v9, &unk_1006E2C08, v11);
 }
 

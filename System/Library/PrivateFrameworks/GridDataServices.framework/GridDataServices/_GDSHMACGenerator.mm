@@ -1,21 +1,21 @@
 @interface _GDSHMACGenerator
-+ (id)HMACSignedRequest:(id)a3 secret:(id)a4 secretVersion:(id)a5;
-+ (id)HMAC_SHA256Digest:(id)a3 key:(id)a4;
-+ (id)SHA256_HashStringFromData:(id)a3;
++ (id)HMACSignedRequest:(id)request secret:(id)secret secretVersion:(id)version;
++ (id)HMAC_SHA256Digest:(id)digest key:(id)key;
++ (id)SHA256_HashStringFromData:(id)data;
 + (id)bucketedEpochTimeStamp;
-+ (id)encodeStringToBase64:(id)a3;
-+ (id)generateURLRequest:(id)a3 secretVersion:(id)a4 signature:(id)a5 content:(id)a6 timestamp:(id)a7;
++ (id)encodeStringToBase64:(id)base64;
++ (id)generateURLRequest:(id)request secretVersion:(id)version signature:(id)signature content:(id)content timestamp:(id)timestamp;
 @end
 
 @implementation _GDSHMACGenerator
 
-+ (id)HMAC_SHA256Digest:(id)a3 key:(id)a4
++ (id)HMAC_SHA256Digest:(id)digest key:(id)key
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [a4 cStringUsingEncoding:1];
-  v9 = [v7 cStringUsingEncoding:1];
+  keyCopy = key;
+  digestCopy = digest;
+  v8 = [key cStringUsingEncoding:1];
+  v9 = [digestCopy cStringUsingEncoding:1];
 
   v10 = strlen(v8);
   v11 = strlen(v9);
@@ -28,11 +28,11 @@
   return v13;
 }
 
-+ (id)SHA256_HashStringFromData:(id)a3
++ (id)SHA256_HashStringFromData:(id)data
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  CC_SHA256([v3 bytes], objc_msgSend(v3, "length"), md);
+  dataCopy = data;
+  CC_SHA256([dataCopy bytes], objc_msgSend(dataCopy, "length"), md);
   v4 = [MEMORY[0x277CCAB68] stringWithCapacity:64];
   for (i = 0; i != 32; ++i)
   {
@@ -44,102 +44,102 @@
   return v4;
 }
 
-+ (id)HMACSignedRequest:(id)a3 secret:(id)a4 secretVersion:(id)a5
++ (id)HMACSignedRequest:(id)request secret:(id)secret secretVersion:(id)version
 {
   v45[7] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v41 = a4;
-  v10 = [v8 HTTPMethod];
-  v11 = [v10 lowercaseString];
+  requestCopy = request;
+  versionCopy = version;
+  secretCopy = secret;
+  hTTPMethod = [requestCopy HTTPMethod];
+  lowercaseString = [hTTPMethod lowercaseString];
 
-  v12 = [v8 URL];
-  v13 = [v12 path];
-  v14 = [v13 lowercaseString];
+  v12 = [requestCopy URL];
+  path = [v12 path];
+  lowercaseString2 = [path lowercaseString];
 
-  v15 = [v8 HTTPBody];
-  v43 = v8;
-  v16 = [v8 URL];
-  v17 = [v16 query];
+  hTTPBody = [requestCopy HTTPBody];
+  v43 = requestCopy;
+  v16 = [requestCopy URL];
+  query = [v16 query];
 
-  v40 = v15;
-  v18 = [a1 SHA256_HashStringFromData:v15];
-  v19 = [a1 bucketedEpochTimeStamp];
-  v20 = [MEMORY[0x277CBEB18] array];
-  v44 = v11;
-  v21 = [a1 encodeStringToBase64:v11];
-  [v20 addObject:v21];
+  v40 = hTTPBody;
+  v18 = [self SHA256_HashStringFromData:hTTPBody];
+  bucketedEpochTimeStamp = [self bucketedEpochTimeStamp];
+  array = [MEMORY[0x277CBEB18] array];
+  v44 = lowercaseString;
+  v21 = [self encodeStringToBase64:lowercaseString];
+  [array addObject:v21];
 
-  v42 = v14;
-  v22 = [a1 encodeStringToBase64:v14];
-  [v20 addObject:v22];
+  v42 = lowercaseString2;
+  v22 = [self encodeStringToBase64:lowercaseString2];
+  [array addObject:v22];
 
-  if ([v17 length])
+  if ([query length])
   {
-    v23 = [a1 encodeStringToBase64:v17];
-    [v20 addObject:v23];
+    v23 = [self encodeStringToBase64:query];
+    [array addObject:v23];
   }
 
-  v24 = [a1 encodeStringToBase64:@"X-Apple-Content-SHA256"];
+  v24 = [self encodeStringToBase64:@"X-Apple-Content-SHA256"];
   v45[0] = v24;
-  v25 = [a1 encodeStringToBase64:v18];
+  v25 = [self encodeStringToBase64:v18];
   v45[1] = v25;
-  [a1 encodeStringToBase64:@"X-Apple-HMAC-Secret-Version"];
+  [self encodeStringToBase64:@"X-Apple-HMAC-Secret-Version"];
   v26 = v38 = v18;
   v45[2] = v26;
-  v27 = [a1 encodeStringToBase64:v9];
+  v27 = [self encodeStringToBase64:versionCopy];
   v45[3] = v27;
-  [a1 encodeStringToBase64:@"X-Apple-HMAC-Sent-Timestamp"];
-  v39 = v17;
-  v29 = v28 = v9;
+  [self encodeStringToBase64:@"X-Apple-HMAC-Sent-Timestamp"];
+  v39 = query;
+  v29 = v28 = versionCopy;
   v45[4] = v29;
-  [a1 encodeStringToBase64:v19];
-  v30 = v37 = v19;
+  [self encodeStringToBase64:bucketedEpochTimeStamp];
+  v30 = v37 = bucketedEpochTimeStamp;
   v45[5] = v30;
   v45[6] = &stru_2862C4D88;
   v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:7];
-  [v20 addObjectsFromArray:v31];
+  [array addObjectsFromArray:v31];
 
-  v32 = [v20 componentsJoinedByString:@"|"];
-  v33 = [a1 HMAC_SHA256Digest:v32 key:v41];
+  v32 = [array componentsJoinedByString:@"|"];
+  v33 = [self HMAC_SHA256Digest:v32 key:secretCopy];
 
-  v34 = [a1 generateURLRequest:v43 secretVersion:v28 signature:v33 content:v38 timestamp:v37];
+  v34 = [self generateURLRequest:v43 secretVersion:v28 signature:v33 content:v38 timestamp:v37];
 
   v35 = *MEMORY[0x277D85DE8];
 
   return v34;
 }
 
-+ (id)generateURLRequest:(id)a3 secretVersion:(id)a4 signature:(id)a5 content:(id)a6 timestamp:(id)a7
++ (id)generateURLRequest:(id)request secretVersion:(id)version signature:(id)signature content:(id)content timestamp:(id)timestamp
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = [a3 mutableCopy];
+  timestampCopy = timestamp;
+  contentCopy = content;
+  signatureCopy = signature;
+  versionCopy = version;
+  v15 = [request mutableCopy];
   [v15 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-  [v15 setValue:v12 forHTTPHeaderField:@"X-Apple-Content-SHA256"];
+  [v15 setValue:contentCopy forHTTPHeaderField:@"X-Apple-Content-SHA256"];
 
-  [v15 setValue:v14 forHTTPHeaderField:@"X-Apple-HMAC-Secret-Version"];
-  [v15 setValue:v11 forHTTPHeaderField:@"X-Apple-HMAC-Sent-Timestamp"];
+  [v15 setValue:versionCopy forHTTPHeaderField:@"X-Apple-HMAC-Secret-Version"];
+  [v15 setValue:timestampCopy forHTTPHeaderField:@"X-Apple-HMAC-Sent-Timestamp"];
 
-  [v15 setValue:v13 forHTTPHeaderField:@"X-Apple-HMAC-Digest"];
+  [v15 setValue:signatureCopy forHTTPHeaderField:@"X-Apple-HMAC-Digest"];
 
   return v15;
 }
 
 + (id)bucketedEpochTimeStamp
 {
-  v2 = [MEMORY[0x277CBEAA8] date];
-  [v2 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%.0f", floor(v3 * 1000.0 / 300000.0) * 300000.0];
 
   return v4;
 }
 
-+ (id)encodeStringToBase64:(id)a3
++ (id)encodeStringToBase64:(id)base64
 {
-  v3 = [a3 dataUsingEncoding:4];
+  v3 = [base64 dataUsingEncoding:4];
   v4 = [v3 base64EncodedStringWithOptions:0];
 
   return v4;

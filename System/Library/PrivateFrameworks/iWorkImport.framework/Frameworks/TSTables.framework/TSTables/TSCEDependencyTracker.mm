@@ -1,253 +1,253 @@
 @interface TSCEDependencyTracker
-- ($85CD2974BE96D4886BB301820D1C36C2)spillSizeForCell:(const TSCECellRef *)a3;
-- (BOOL)cellHasDeepPrecedentInRange:(const TSCECellRef *)a3 cellRange:(const TSCERangeRef *)a4;
-- (BOOL)cellHasPrecedents:(const TSCECellRef *)a3;
-- (BOOL)cellHasThisCellPrecedent:(const TSCECellRef *)a3 precedent:(const TSCECellRef *)a4;
-- (BOOL)cellIsClean:(const TSCECellRef *)a3;
-- (BOOL)cellIsInACycle:(const TSCECellRef *)a3;
-- (BOOL)cellRefsReferringToGroupNodes:(const void *)a3 groupByUID:(const TSKUIDStruct *)a4 outCellRefs:(void *)a5;
+- ($85CD2974BE96D4886BB301820D1C36C2)spillSizeForCell:(const TSCECellRef *)cell;
+- (BOOL)cellHasDeepPrecedentInRange:(const TSCECellRef *)range cellRange:(const TSCERangeRef *)cellRange;
+- (BOOL)cellHasPrecedents:(const TSCECellRef *)precedents;
+- (BOOL)cellHasThisCellPrecedent:(const TSCECellRef *)precedent precedent:(const TSCECellRef *)a4;
+- (BOOL)cellIsClean:(const TSCECellRef *)clean;
+- (BOOL)cellIsInACycle:(const TSCECellRef *)cycle;
+- (BOOL)cellRefsReferringToGroupNodes:(const void *)nodes groupByUID:(const TSKUIDStruct *)d outCellRefs:(void *)refs;
 - (BOOL)containsAnyTable;
-- (BOOL)dgl_canDeleteOwnerDependencies:(unsigned __int16)a3;
-- (BOOL)dgl_cellHasDeepPrecedentInRange:(const TSCEInternalCellReference *)a3 cellRange:(const TSCEInternalRangeReference *)a4;
-- (BOOL)dgl_cellIsClean:(const TSCECellToEvaluate *)a3;
-- (BOOL)dgl_cellIsInACycle:(const TSCEInternalCellReference *)a3;
-- (BOOL)dgl_cellIsReadyForEvaluation:(const TSCECellToEvaluate *)a3;
-- (BOOL)dgl_cellRefsReferringToGroupNodes:(const void *)a3 groupByUID:(const TSKUIDStruct *)a4 outCellRefs:(void *)a5;
-- (BOOL)dgl_hasDirtyCellsIgnoringNRM:(BOOL)a3;
-- (BOOL)dgl_hasFormulaAt:(const TSCEInternalCellReference *)a3;
-- (BOOL)dgl_intCellIsClean:(const TSCEInternalCellReference *)a3;
-- (BOOL)dgl_ownerIDIsRegistered:(unsigned __int16)a3;
-- (BOOL)dgl_rangeRefIsDirty:(const TSCERangeRef *)a3;
+- (BOOL)dgl_canDeleteOwnerDependencies:(unsigned __int16)dependencies;
+- (BOOL)dgl_cellHasDeepPrecedentInRange:(const TSCEInternalCellReference *)range cellRange:(const TSCEInternalRangeReference *)cellRange;
+- (BOOL)dgl_cellIsClean:(const TSCECellToEvaluate *)clean;
+- (BOOL)dgl_cellIsInACycle:(const TSCEInternalCellReference *)cycle;
+- (BOOL)dgl_cellIsReadyForEvaluation:(const TSCECellToEvaluate *)evaluation;
+- (BOOL)dgl_cellRefsReferringToGroupNodes:(const void *)nodes groupByUID:(const TSKUIDStruct *)d outCellRefs:(void *)refs;
+- (BOOL)dgl_hasDirtyCellsIgnoringNRM:(BOOL)m;
+- (BOOL)dgl_hasFormulaAt:(const TSCEInternalCellReference *)at;
+- (BOOL)dgl_intCellIsClean:(const TSCEInternalCellReference *)clean;
+- (BOOL)dgl_ownerIDIsRegistered:(unsigned __int16)registered;
+- (BOOL)dgl_rangeRefIsDirty:(const TSCERangeRef *)dirty;
 - (BOOL)endBatchingGroupCellDirtying;
-- (BOOL)hasCalculatedPrecedents:(const TSCECellRef *)a3;
-- (BOOL)hasCalculatedPrecedentsInternal:(const TSCEInternalCellReference *)a3;
+- (BOOL)hasCalculatedPrecedents:(const TSCECellRef *)precedents;
+- (BOOL)hasCalculatedPrecedentsInternal:(const TSCEInternalCellReference *)internal;
 - (BOOL)hasCellRecordsToPrune;
 - (BOOL)hasDateTimeVolatileFunctions;
-- (BOOL)hasDirtyCellsIgnoringNRM:(BOOL)a3;
+- (BOOL)hasDirtyCellsIgnoringNRM:(BOOL)m;
 - (BOOL)hasEmbiggenedCoords;
-- (BOOL)hasFormulaAt:(const TSCECellRef *)a3;
+- (BOOL)hasFormulaAt:(const TSCECellRef *)at;
 - (BOOL)hasFormulaCellsUsingNowTodayRandom;
-- (BOOL)hasHorizontalSpills:(const TSKUIDStruct *)a3;
+- (BOOL)hasHorizontalSpills:(const TSKUIDStruct *)spills;
 - (BOOL)hasRemoteDataFunctions;
-- (BOOL)hasSpillingCellsIntersectingRange:(const TSUCellRect *)a3 inTableUID:(const TSKUIDStruct *)a4;
-- (BOOL)hasSpillingErrorsForTable:(const TSKUIDStruct *)a3;
-- (BOOL)hasSpillsOverlappingRange:(const TSUCellRect *)a3 inTableUID:(const TSKUIDStruct *)a4 outSpillRects:(void *)a5;
-- (BOOL)hasVerticalSpills:(const TSKUIDStruct *)a3;
-- (BOOL)intCellContainsAFormula:(const TSCEInternalCellReference *)a3;
-- (BOOL)intCellIsClean:(const TSCEInternalCellReference *)a3;
+- (BOOL)hasSpillingCellsIntersectingRange:(const TSUCellRect *)range inTableUID:(const TSKUIDStruct *)d;
+- (BOOL)hasSpillingErrorsForTable:(const TSKUIDStruct *)table;
+- (BOOL)hasSpillsOverlappingRange:(const TSUCellRect *)range inTableUID:(const TSKUIDStruct *)d outSpillRects:(void *)rects;
+- (BOOL)hasVerticalSpills:(const TSKUIDStruct *)spills;
+- (BOOL)intCellContainsAFormula:(const TSCEInternalCellReference *)formula;
+- (BOOL)intCellIsClean:(const TSCEInternalCellReference *)clean;
 - (BOOL)isBatchingGroupCellDirtying;
-- (BOOL)markIntCellRefDirtyIfCellContainsAFormula:(const TSCEInternalCellReference *)a3;
-- (BOOL)ownerIDIsRegistered:(unsigned __int16)a3;
-- (BOOL)ownerUIDIsRegistered:(const TSKUIDStruct *)a3;
-- (BOOL)rangeRefIsDirtyOrCurrentlyBeingEvaluated:(const TSCERangeRef *)a3;
-- (BOOL)setSpillSize:(id)a3 forCell:(const TSCECellRef *)a4 withOverlaps:(void *)a5;
+- (BOOL)markIntCellRefDirtyIfCellContainsAFormula:(const TSCEInternalCellReference *)formula;
+- (BOOL)ownerIDIsRegistered:(unsigned __int16)registered;
+- (BOOL)ownerUIDIsRegistered:(const TSKUIDStruct *)registered;
+- (BOOL)rangeRefIsDirtyOrCurrentlyBeingEvaluated:(const TSCERangeRef *)evaluated;
+- (BOOL)setSpillSize:(id)size forCell:(const TSCECellRef *)cell withOverlaps:(void *)overlaps;
 - (BOOL)verifyAllOwnersAreKnown;
-- (BOOL)verifyTableAndBodyRangesForTable:(const TSKUIDStruct *)a3;
-- (TSCECellCoordSet)allFormulaCoordsInOwner:(SEL)a3;
-- (TSCECellCoordSet)cellCoordinatesNeedingExcelImport:(SEL)a3;
-- (TSCECellCoordSet)cellCoordsWithError:(SEL)a3 inTable:(int64_t)a4;
-- (TSCECellCoordSet)cellsInACycleInOwner:(SEL)a3;
-- (TSCECellCoordSet)spillOriginsInRange:(SEL)a3;
-- (TSCECellCoordSet)verticalSpillCells:(SEL)a3;
-- (TSCECellRecord)dgl_findCellRecord:(const TSCECellRef *)a3 willModifyOnTile:(BOOL)a4;
-- (TSCECellRecord)dgl_findCellRecordInternal:(const TSCEInternalCellReference *)a3 willModifyOnTile:(BOOL)a4;
-- (TSCECellRef)cellRefForInternalCellReference:(SEL)a3;
-- (TSCECellRef)rootCauseForErrorInCell:(SEL)a3 inOwner:(TSUCellCoord)a4 outAtRootCell:(const TSKUIDStruct *)a5;
-- (TSCECellRefSet)formulaCellsAffectedByRewrite:(SEL)a3 postMove:(id)a4;
-- (TSCEDependencyTracker)initWithCalcEngine:(id)a3;
-- (TSCEDependencyTracker)initWithCalcEngine:(id)a3 archive:(const void *)a4 unarchiver:(id)a5;
-- (TSCEInternalCellRefSet)allCellRefsInOwner:(SEL)a3;
+- (BOOL)verifyTableAndBodyRangesForTable:(const TSKUIDStruct *)table;
+- (TSCECellCoordSet)allFormulaCoordsInOwner:(SEL)owner;
+- (TSCECellCoordSet)cellCoordinatesNeedingExcelImport:(SEL)import;
+- (TSCECellCoordSet)cellCoordsWithError:(SEL)error inTable:(int64_t)table;
+- (TSCECellCoordSet)cellsInACycleInOwner:(SEL)owner;
+- (TSCECellCoordSet)spillOriginsInRange:(SEL)range;
+- (TSCECellCoordSet)verticalSpillCells:(SEL)cells;
+- (TSCECellRecord)dgl_findCellRecord:(const TSCECellRef *)record willModifyOnTile:(BOOL)tile;
+- (TSCECellRecord)dgl_findCellRecordInternal:(const TSCEInternalCellReference *)internal willModifyOnTile:(BOOL)tile;
+- (TSCECellRef)cellRefForInternalCellReference:(SEL)reference;
+- (TSCECellRef)rootCauseForErrorInCell:(SEL)cell inOwner:(TSUCellCoord)owner outAtRootCell:(const TSKUIDStruct *)rootCell;
+- (TSCECellRefSet)formulaCellsAffectedByRewrite:(SEL)rewrite postMove:(id)move;
+- (TSCEDependencyTracker)initWithCalcEngine:(id)engine;
+- (TSCEDependencyTracker)initWithCalcEngine:(id)engine archive:(const void *)archive unarchiver:(id)unarchiver;
+- (TSCEInternalCellRefSet)allCellRefsInOwner:(SEL)owner;
 - (TSCEInternalCellRefSet)allDirtyCellRefs;
-- (TSCEInternalCellRefSet)cellDependentsOfCell:(SEL)a3;
-- (TSCEInternalCellRefSet)cellsInOwnerDependentOnBoth:(SEL)a3 precedent1:(const TSKUIDStruct *)a4 precedent2:(const TSCECellRef *)a5;
+- (TSCEInternalCellRefSet)cellDependentsOfCell:(SEL)cell;
+- (TSCEInternalCellRefSet)cellsInOwnerDependentOnBoth:(SEL)both precedent1:(const TSKUIDStruct *)precedent1 precedent2:(const TSCECellRef *)precedent2;
 - (TSCEInternalCellRefSet)corruptCellRefs;
 - (TSCEInternalCellReference)currentCellBeingModified;
-- (TSCEInternalCellReference)internalCellReferenceForCellRef:(const TSCECellRef *)a3;
-- (TSCEInternalRangeReference)internalRangeReferenceForRangeRef:(SEL)a3;
-- (TSCERangeRef)rangeRefForInternalRangeReference:(SEL)a3;
-- (TSCEReferenceSet)dgl_precedentsOfCell:(SEL)a3;
-- (TSCEReferenceSet)precedentsOfCell:(SEL)a3;
-- (TSKUIDStruct)formulaOwnerUIDForInternalFormulaOwnerID:(unsigned __int16)a3;
+- (TSCEInternalCellReference)internalCellReferenceForCellRef:(const TSCECellRef *)ref;
+- (TSCEInternalRangeReference)internalRangeReferenceForRangeRef:(SEL)ref;
+- (TSCERangeRef)rangeRefForInternalRangeReference:(SEL)reference;
+- (TSCEReferenceSet)dgl_precedentsOfCell:(SEL)cell;
+- (TSCEReferenceSet)precedentsOfCell:(SEL)cell;
+- (TSKUIDStruct)formulaOwnerUIDForInternalFormulaOwnerID:(unsigned __int16)d;
 - (id).cxx_construct;
-- (id)dgl_cellDependenciesForOwnerID:(unsigned __int16)a3;
-- (id)dgl_cellDependenciesForOwnerUID:(const TSKUIDStruct *)a3;
-- (id)dgl_errorsForOwnerID:(unsigned __int16)a3;
-- (id)dgl_errorsForOwnerUID:(const TSKUIDStruct *)a3;
-- (id)dgl_ownerDependenciesForOwnerID:(unsigned __int16)a3;
-- (id)dgl_ownerDependenciesForOwnerUID:(const TSKUIDStruct *)a3;
-- (id)dgl_ownerForOwnerID:(unsigned __int16)a3;
-- (id)dgl_rangeDependenciesForOwnerID:(unsigned __int16)a3;
-- (id)dgl_rangeDependenciesForOwnerUID:(const TSKUIDStruct *)a3;
-- (id)dgl_spanningColumnDependenciesForOwnerID:(unsigned __int16)a3;
-- (id)dgl_spanningColumnDependenciesForOwnerUID:(const TSKUIDStruct *)a3;
-- (id)dgl_spanningRowDependenciesForOwnerID:(unsigned __int16)a3;
-- (id)dgl_spanningRowDependenciesForOwnerUID:(const TSKUIDStruct *)a3;
-- (id)dgl_wholeOwnerDependenciesForOwnerID:(unsigned __int16)a3;
-- (id)dgl_wholeOwnerDependenciesForOwnerUID:(const TSKUIDStruct *)a3;
-- (id)errorForCell:(const TSCECellRef *)a3;
-- (id)evaluationInfoForCell:(TSCECellToEvaluate *)a3 outHasDynamicPrecedents:(BOOL *)a4 outIsInCycle:(BOOL *)a5;
-- (id)ownerForOwnerID:(unsigned __int16)a3;
-- (id)ownerForOwnerUID:(const TSKUIDStruct *)a3;
-- (id)rangeDependenciesForOwnerID:(unsigned __int16)a3;
-- (id)spanningColumnDependenciesForOwnerID:(unsigned __int16)a3;
-- (id)spanningRowDependenciesForOwnerID:(unsigned __int16)a3;
-- (id)warningsForCell:(const TSCECellRef *)a3;
-- (int)dgl_registerOwnerID:(unsigned __int16)a3 owner:(id)a4 ownerIndex:(unsigned __int16)a5;
-- (int)dgl_registerOwnerUID:(const TSKUIDStruct *)a3 owner:(id)a4 ownerIndex:(unsigned __int16)a5;
-- (int)registerOwnerID:(unsigned __int16)a3 owner:(id)a4 ownerIndex:(unsigned __int16)a5;
-- (int)registerOwnerUID:(const TSKUIDStruct *)a3 owner:(id)a4 ownerIndex:(unsigned __int16)a5;
+- (id)dgl_cellDependenciesForOwnerID:(unsigned __int16)d;
+- (id)dgl_cellDependenciesForOwnerUID:(const TSKUIDStruct *)d;
+- (id)dgl_errorsForOwnerID:(unsigned __int16)d;
+- (id)dgl_errorsForOwnerUID:(const TSKUIDStruct *)d;
+- (id)dgl_ownerDependenciesForOwnerID:(unsigned __int16)d;
+- (id)dgl_ownerDependenciesForOwnerUID:(const TSKUIDStruct *)d;
+- (id)dgl_ownerForOwnerID:(unsigned __int16)d;
+- (id)dgl_rangeDependenciesForOwnerID:(unsigned __int16)d;
+- (id)dgl_rangeDependenciesForOwnerUID:(const TSKUIDStruct *)d;
+- (id)dgl_spanningColumnDependenciesForOwnerID:(unsigned __int16)d;
+- (id)dgl_spanningColumnDependenciesForOwnerUID:(const TSKUIDStruct *)d;
+- (id)dgl_spanningRowDependenciesForOwnerID:(unsigned __int16)d;
+- (id)dgl_spanningRowDependenciesForOwnerUID:(const TSKUIDStruct *)d;
+- (id)dgl_wholeOwnerDependenciesForOwnerID:(unsigned __int16)d;
+- (id)dgl_wholeOwnerDependenciesForOwnerUID:(const TSKUIDStruct *)d;
+- (id)errorForCell:(const TSCECellRef *)cell;
+- (id)evaluationInfoForCell:(TSCECellToEvaluate *)cell outHasDynamicPrecedents:(BOOL *)precedents outIsInCycle:(BOOL *)cycle;
+- (id)ownerForOwnerID:(unsigned __int16)d;
+- (id)ownerForOwnerUID:(const TSKUIDStruct *)d;
+- (id)rangeDependenciesForOwnerID:(unsigned __int16)d;
+- (id)spanningColumnDependenciesForOwnerID:(unsigned __int16)d;
+- (id)spanningRowDependenciesForOwnerID:(unsigned __int16)d;
+- (id)warningsForCell:(const TSCECellRef *)cell;
+- (int)dgl_registerOwnerID:(unsigned __int16)d owner:(id)owner ownerIndex:(unsigned __int16)index;
+- (int)dgl_registerOwnerUID:(const TSKUIDStruct *)d owner:(id)owner ownerIndex:(unsigned __int16)index;
+- (int)registerOwnerID:(unsigned __int16)d owner:(id)owner ownerIndex:(unsigned __int16)index;
+- (int)registerOwnerUID:(const TSKUIDStruct *)d owner:(id)owner ownerIndex:(unsigned __int16)index;
 - (int64_t)countNumberOfFormulaCells;
 - (int64_t)dgl_numDirtyCells;
-- (int64_t)errorTypeForCell:(const TSCECellRef *)a3;
+- (int64_t)errorTypeForCell:(const TSCECellRef *)cell;
 - (int64_t)numDirtyCells;
 - (unint64_t)cellDependMemoryUseEstimate;
-- (unint64_t)dgl_computedNumberOfDirtyPrecedents:(const TSCEInternalCellReference *)a3;
-- (unint64_t)dgl_popNextLeavesIfAvailable:(void *)a3 numLeaves:(unint64_t)a4 leafQueue:(id)a5;
-- (unint64_t)dgl_updateNumberOfDirtyPrecedents:(const TSCEInternalCellReference *)a3;
-- (unint64_t)dgl_updateNumberOfDirtyPrecedents:(const TSCEInternalCellReference *)a3 cellDependencies:(id)a4 cellRecord:(TSCECellRecord *)a5;
-- (unint64_t)errorCountForOwner:(const TSKUIDStruct *)a3;
-- (unint64_t)numCellRecordsInOwnerUID:(const TSKUIDStruct *)a3;
-- (unint64_t)numDirtyCellsInOwnerID:(unsigned __int16)a3;
-- (unint64_t)numFormulaCellsInOwnerUID:(const TSKUIDStruct *)a3;
+- (unint64_t)dgl_computedNumberOfDirtyPrecedents:(const TSCEInternalCellReference *)precedents;
+- (unint64_t)dgl_popNextLeavesIfAvailable:(void *)available numLeaves:(unint64_t)leaves leafQueue:(id)queue;
+- (unint64_t)dgl_updateNumberOfDirtyPrecedents:(const TSCEInternalCellReference *)precedents;
+- (unint64_t)dgl_updateNumberOfDirtyPrecedents:(const TSCEInternalCellReference *)precedents cellDependencies:(id)dependencies cellRecord:(TSCECellRecord *)record;
+- (unint64_t)errorCountForOwner:(const TSKUIDStruct *)owner;
+- (unint64_t)numCellRecordsInOwnerUID:(const TSKUIDStruct *)d;
+- (unint64_t)numDirtyCellsInOwnerID:(unsigned __int16)d;
+- (unint64_t)numFormulaCellsInOwnerUID:(const TSKUIDStruct *)d;
 - (unordered_set<unsigned)ownerIDsWithRecordsToPrune;
-- (unsigned)dgl_ownerKindForOwnerID:(unsigned __int16)a3;
-- (unsigned)dgl_removePrecedentsFromOwnerInPhases:(unsigned __int16)a3 startPhase:(unsigned int)a4 startTime:(id)a5 timeout:(double)a6;
-- (unsigned)internalFormulaOwnerIDForFormulaOwnerUID:(const TSKUIDStruct *)a3 createIfMissing:(BOOL)a4;
-- (unsigned)ownerKindForOwnerID:(unsigned __int16)a3;
+- (unsigned)dgl_ownerKindForOwnerID:(unsigned __int16)d;
+- (unsigned)dgl_removePrecedentsFromOwnerInPhases:(unsigned __int16)phases startPhase:(unsigned int)phase startTime:(id)time timeout:(double)timeout;
+- (unsigned)internalFormulaOwnerIDForFormulaOwnerUID:(const TSKUIDStruct *)d createIfMissing:(BOOL)missing;
+- (unsigned)ownerKindForOwnerID:(unsigned __int16)d;
 - (vector<TSCECellToEvaluate,)popNextLeaves:(TSCEDependencyTracker *)self;
-- (vector<TSUCellCoord,)cellsReferencingRange:(TSCEDependencyTracker *)self fromOwner:(SEL)a3 skipSpanning:(const TSCERangeRef *)a4;
-- (vector<TSUCellCoord,)dgl_cellsWithRecordsInRange:(TSCEDependencyTracker *)self formulaCellsOnly:(SEL)a3;
-- (vector<TSUCellCoord,)formulaCoordsInRange:(TSCEDependencyTracker *)self inOwnerUID:(SEL)a3;
-- (void)addSubOwnerAliasesForUpgrade:(id)a3;
+- (vector<TSUCellCoord,)cellsReferencingRange:(TSCEDependencyTracker *)self fromOwner:(SEL)owner skipSpanning:(const TSCERangeRef *)spanning;
+- (vector<TSUCellCoord,)dgl_cellsWithRecordsInRange:(TSCEDependencyTracker *)self formulaCellsOnly:(SEL)only;
+- (vector<TSUCellCoord,)formulaCoordsInRange:(TSCEDependencyTracker *)self inOwnerUID:(SEL)d;
+- (void)addSubOwnerAliasesForUpgrade:(id)upgrade;
 - (void)assertDirtyPrecedentsCountConsistency;
-- (void)assertForInconsistentDependGraph:(unsigned __int16)a3 assertMessage:(id)a4;
+- (void)assertForInconsistentDependGraph:(unsigned __int16)graph assertMessage:(id)message;
 - (void)beginBatchingGroupCellDirtying;
 - (void)beginSuppressingWillModifyCalls;
-- (void)cellRefsReferringToGroupBy:(const TSKUIDStruct *)a3 outCellRefs:(void *)a4;
+- (void)cellRefsReferringToGroupBy:(const TSKUIDStruct *)by outCellRefs:(void *)refs;
 - (void)clearCellsCurrentlyBeingEvaluated;
-- (void)clearErrorAndWarningsForCell:(TSUCellCoord)a3 inOwner:(const TSKUIDStruct *)a4;
-- (void)clearErrorAndWarningsForCells:(const void *)a3;
-- (void)clearOwnerIDHavingRecordsToPrune:(unsigned __int16)a3;
-- (void)clearSpillSizeForCell:(const TSCECellRef *)a3;
-- (void)clearSpillSizesInRange:(const TSCERangeRef *)a3;
+- (void)clearErrorAndWarningsForCell:(TSUCellCoord)cell inOwner:(const TSKUIDStruct *)owner;
+- (void)clearErrorAndWarningsForCells:(const void *)cells;
+- (void)clearOwnerIDHavingRecordsToPrune:(unsigned __int16)prune;
+- (void)clearSpillSizeForCell:(const TSCECellRef *)cell;
+- (void)clearSpillSizesInRange:(const TSCERangeRef *)range;
 - (void)dealloc;
 - (void)detectAndRepairConsistencyViolations;
 - (void)detectAndRepairDirtyCellsAreOnLeafQueue;
-- (void)dgl_cellRefsForCycleCellsReferringToCell:(const TSCEInternalCellReference *)a3 outCellRefs:(void *)a4;
-- (void)dgl_clearCycleFlagsOnCellAndDependents:(TSCEInternalCellReference)a3 startCellRecord:(TSCECellRecord *)a4;
-- (void)dgl_deleteOwnerDependenciesIfPossible:(unsigned __int16)a3;
-- (void)dgl_dirtyAllCellsInOwnerID:(unsigned __int16)a3;
+- (void)dgl_cellRefsForCycleCellsReferringToCell:(const TSCEInternalCellReference *)cell outCellRefs:(void *)refs;
+- (void)dgl_clearCycleFlagsOnCellAndDependents:(TSCEInternalCellReference)dependents startCellRecord:(TSCECellRecord *)record;
+- (void)dgl_deleteOwnerDependenciesIfPossible:(unsigned __int16)possible;
+- (void)dgl_dirtyAllCellsInOwnerID:(unsigned __int16)d;
 - (void)dgl_dirtyCellsInToDirtyQueue;
 - (void)dgl_dirtyDateVolatileFunctions;
 - (void)dgl_dirtyRandomVolatileFunctions;
 - (void)dgl_dirtyTimeVolatileFunctions;
 - (void)dgl_findAndRecordCyclesInDirtyCells;
-- (void)dgl_formulaCellRefsReferringToOwnerUIDs:(const void *)a3 outFormulaCells:(void *)a4;
-- (void)dgl_formulaCellsAffectedByGeometryChangeToTable:(const TSKUIDStruct *)a3 outFormulaCells:(void *)a4;
-- (void)dgl_formulaCellsReferencingUuidsInSpec:(id)a3 outFormulaCells:(void *)a4;
-- (void)dgl_loadCacheForCell:(TSCECellToEvaluate *)a3;
-- (void)dgl_markCellDirty:(const TSCEInternalCellReference *)a3;
-- (void)dgl_markCellRefAsDirty:(const TSCEInternalCellReference *)a3;
-- (void)dgl_markCellRefAsDirty:(const TSCEInternalCellReference *)a3 cellDependencies:(id)a4 cellRecord:(TSCECellRecord *)a5;
-- (void)dgl_markCellsDirtyTraversingDependents:(TSCEInternalCellReference)a3 startCellRecord:(TSCECellRecord *)a4;
-- (void)dgl_markDependentsDirty:(const TSCEInternalCellReference *)a3;
+- (void)dgl_formulaCellRefsReferringToOwnerUIDs:(const void *)ds outFormulaCells:(void *)cells;
+- (void)dgl_formulaCellsAffectedByGeometryChangeToTable:(const TSKUIDStruct *)table outFormulaCells:(void *)cells;
+- (void)dgl_formulaCellsReferencingUuidsInSpec:(id)spec outFormulaCells:(void *)cells;
+- (void)dgl_loadCacheForCell:(TSCECellToEvaluate *)cell;
+- (void)dgl_markCellDirty:(const TSCEInternalCellReference *)dirty;
+- (void)dgl_markCellRefAsDirty:(const TSCEInternalCellReference *)dirty;
+- (void)dgl_markCellRefAsDirty:(const TSCEInternalCellReference *)dirty cellDependencies:(id)dependencies cellRecord:(TSCECellRecord *)record;
+- (void)dgl_markCellsDirtyTraversingDependents:(TSCEInternalCellReference)dependents startCellRecord:(TSCECellRecord *)record;
+- (void)dgl_markDependentsDirty:(const TSCEInternalCellReference *)dirty;
 - (void)dgl_markRandomVolatileFunctionsAsDirty;
-- (void)dgl_pushReferenceForImmediateEvaluation:(const TSCEInternalCellReference *)a3 pushOnFront:(BOOL)a4;
-- (void)dgl_removeCellRefFromAllUuidMaps:(const TSCEInternalCellReference *)a3;
-- (void)dgl_removeFormulaForOwnerID:(unsigned __int16)a3 cellCoord:(TSUCellCoord)a4;
-- (void)dgl_replaceCellWithFormulaForOwner:(unsigned __int16)a3 formulaCoord:(TSUCellCoord)a4 precedents:(id)a5 replaceOptions:(TSCEReplaceFormulaOptions *)a6;
-- (void)dgl_setError:(id)a3 andWarnings:(id)a4 forCell:(TSUCellCoord)a5 inOwnerID:(unsigned __int16)a6;
-- (void)dgl_unregisterOwner:(const TSKUIDStruct *)a3 ownerID:(unsigned __int16)a4;
-- (void)dgl_updateGraphWithCleanReference:(TSCECellToEvaluate *)a3 skipCycleCheck:(BOOL)a4;
-- (void)dgl_updateGraphWithCleanReference:(const TSCEInternalCellReference *)a3 cellRecord:(TSCECellRecord *)a4;
+- (void)dgl_pushReferenceForImmediateEvaluation:(const TSCEInternalCellReference *)evaluation pushOnFront:(BOOL)front;
+- (void)dgl_removeCellRefFromAllUuidMaps:(const TSCEInternalCellReference *)maps;
+- (void)dgl_removeFormulaForOwnerID:(unsigned __int16)d cellCoord:(TSUCellCoord)coord;
+- (void)dgl_replaceCellWithFormulaForOwner:(unsigned __int16)owner formulaCoord:(TSUCellCoord)coord precedents:(id)precedents replaceOptions:(TSCEReplaceFormulaOptions *)options;
+- (void)dgl_setError:(id)error andWarnings:(id)warnings forCell:(TSUCellCoord)cell inOwnerID:(unsigned __int16)d;
+- (void)dgl_unregisterOwner:(const TSKUIDStruct *)owner ownerID:(unsigned __int16)d;
+- (void)dgl_updateGraphWithCleanReference:(TSCECellToEvaluate *)reference skipCycleCheck:(BOOL)check;
+- (void)dgl_updateGraphWithCleanReference:(const TSCEInternalCellReference *)reference cellRecord:(TSCECellRecord *)record;
 - (void)dirtyAllCellsInAllOwners;
-- (void)dirtyAllCellsInOwnerID:(unsigned __int16)a3;
-- (void)dirtyAllCellsInOwnerUID:(const TSKUIDStruct *)a3;
+- (void)dirtyAllCellsInOwnerID:(unsigned __int16)d;
+- (void)dirtyAllCellsInOwnerUID:(const TSKUIDStruct *)d;
 - (void)dirtyAllFunctions;
 - (void)dirtyCellsWithErrors;
-- (void)dirtyCellsWithSpillErrorsInTable:(const TSKUIDStruct *)a3;
+- (void)dirtyCellsWithSpillErrorsInTable:(const TSKUIDStruct *)table;
 - (void)dirtyDateTimeVolatileFunctions;
 - (void)dirtyDateVolatileFunctions;
 - (void)dirtyForSpanningRowBug;
-- (void)dirtyGeometryVolatileFunctions:(const TSKUIDStruct *)a3;
+- (void)dirtyGeometryVolatileFunctions:(const TSKUIDStruct *)functions;
 - (void)dirtyIndirectCalls;
 - (void)dirtyRandomVolatileFunctions;
 - (void)dirtyRemoteDataVolatileFunctions;
-- (void)dirtyRemoteDataVolatileFunctionsForKeys:(id)a3;
+- (void)dirtyRemoteDataVolatileFunctionsForKeys:(id)keys;
 - (void)dirtyTimeVolatileFunctions;
-- (void)doneEvaluatingCell:(const TSCEInternalCellReference *)a3;
-- (void)encodeToArchive:(void *)a3 save31FormatAlso:(BOOL)a4 embiggenedFormatOnly:(BOOL)a5 archiver:(id)a6;
+- (void)doneEvaluatingCell:(const TSCEInternalCellReference *)cell;
+- (void)encodeToArchive:(void *)archive save31FormatAlso:(BOOL)also embiggenedFormatOnly:(BOOL)only archiver:(id)archiver;
 - (void)endSuppressingWillModifyCalls;
-- (void)enumerateFormulaOwnersUsingBlock:(id)a3;
-- (void)evaluationCompletedForCells:(void *)a3 resultState:(TSCERecalculationState)a4;
+- (void)enumerateFormulaOwnersUsingBlock:(id)block;
+- (void)evaluationCompletedForCells:(void *)cells resultState:(TSCERecalculationState)state;
 - (void)findAndRecordCyclesInDirtyCells;
 - (void)flushInProgressDirtying;
-- (void)formulaCellsForDeletedOwner:(id)a3 outFormulaCells:(void *)a4;
-- (void)formulaCellsForGroupNodeChanges:(id)a3 outFormulaCells:(void *)a4;
-- (void)formulaCellsForGroupNodeUIDReassignment:(id)a3 outFormulaCells:(void *)a4;
-- (void)formulaCellsForInsertRows:(id)a3 outFormulaCells:(void *)a4;
-- (void)formulaCellsForInsertedOwner:(id)a3 outFormulaCells:(void *)a4;
-- (void)formulaCellsForMergeCells:(id)a3 outFormulaCells:(void *)a4;
-- (void)formulaCellsForMergeOriginMove:(id)a3 outFormulaCells:(void *)a4;
-- (void)formulaCellsForMoveRegion:(id)a3 outFormulaCells:(void *)a4;
-- (void)formulaCellsForMoveRows:(id)a3 outFormulaCells:(void *)a4;
-- (void)formulaCellsForPivotRuleChange:(id)a3 outFormulaCells:(void *)a4;
-- (void)formulaCellsForRemoveRows:(id)a3 outFormulaCells:(void *)a4;
-- (void)formulaCellsForSortRows:(id)a3 outFormulaCells:(void *)a4;
-- (void)formulaCellsForTableTranspose:(id)a3 outFormulaCells:(void *)a4;
-- (void)formulaCellsForTableUIDReassignment:(id)a3 outFormulaCells:(void *)a4;
-- (void)headerStateOfTableChanged:(const TSKUIDStruct *)a3 changedRows:(BOOL)a4;
-- (void)incrementalMarkCellRefDirty:(id)a3;
-- (void)loadCacheForCell:(TSCECellToEvaluate *)a3;
+- (void)formulaCellsForDeletedOwner:(id)owner outFormulaCells:(void *)cells;
+- (void)formulaCellsForGroupNodeChanges:(id)changes outFormulaCells:(void *)cells;
+- (void)formulaCellsForGroupNodeUIDReassignment:(id)reassignment outFormulaCells:(void *)cells;
+- (void)formulaCellsForInsertRows:(id)rows outFormulaCells:(void *)cells;
+- (void)formulaCellsForInsertedOwner:(id)owner outFormulaCells:(void *)cells;
+- (void)formulaCellsForMergeCells:(id)cells outFormulaCells:(void *)formulaCells;
+- (void)formulaCellsForMergeOriginMove:(id)move outFormulaCells:(void *)cells;
+- (void)formulaCellsForMoveRegion:(id)region outFormulaCells:(void *)cells;
+- (void)formulaCellsForMoveRows:(id)rows outFormulaCells:(void *)cells;
+- (void)formulaCellsForPivotRuleChange:(id)change outFormulaCells:(void *)cells;
+- (void)formulaCellsForRemoveRows:(id)rows outFormulaCells:(void *)cells;
+- (void)formulaCellsForSortRows:(id)rows outFormulaCells:(void *)cells;
+- (void)formulaCellsForTableTranspose:(id)transpose outFormulaCells:(void *)cells;
+- (void)formulaCellsForTableUIDReassignment:(id)reassignment outFormulaCells:(void *)cells;
+- (void)headerStateOfTableChanged:(const TSKUIDStruct *)changed changedRows:(BOOL)rows;
+- (void)incrementalMarkCellRefDirty:(id)dirty;
+- (void)loadCacheForCell:(TSCECellToEvaluate *)cell;
 - (void)markEverythingClean;
-- (void)markIntRangeRefAsDirty:(const TSCEInternalRangeReference *)a3;
-- (void)markOnlyDependentsDirty:(TSCEInternalCellReference)a3;
-- (void)markOwnerIDHavingRecordsToPrune:(unsigned __int16)a3;
+- (void)markIntRangeRefAsDirty:(const TSCEInternalRangeReference *)dirty;
+- (void)markOnlyDependentsDirty:(TSCEInternalCellReference)dirty;
+- (void)markOwnerIDHavingRecordsToPrune:(unsigned __int16)prune;
 - (void)markRandomVolatileFunctionsAsDirty;
-- (void)markRangeRefAsDirty:(const TSCERangeRef *)a3;
-- (void)noteCorruptCellRef:(const TSCEInternalCellReference *)a3;
-- (void)processPruningOfCellRecords:(double)a3;
-- (void)processUnregisteringOwners:(double)a3;
-- (void)pushCellsForImmediateEvaluation:(const void *)a3 pushOnFront:(BOOL)a4;
-- (void)pushReferenceForImmediateEvaluation:(const TSCEInternalCellReference *)a3 cellRecord:(TSCECellRecord *)a4 pushOnFront:(BOOL)a5;
+- (void)markRangeRefAsDirty:(const TSCERangeRef *)dirty;
+- (void)noteCorruptCellRef:(const TSCEInternalCellReference *)ref;
+- (void)processPruningOfCellRecords:(double)records;
+- (void)processUnregisteringOwners:(double)owners;
+- (void)pushCellsForImmediateEvaluation:(const void *)evaluation pushOnFront:(BOOL)front;
+- (void)pushReferenceForImmediateEvaluation:(const TSCEInternalCellReference *)evaluation cellRecord:(TSCECellRecord *)record pushOnFront:(BOOL)front;
 - (void)registerFormulaOwners;
-- (void)removeAllPrecedentsFromOwner:(const TSKUIDStruct *)a3;
-- (void)removeFormulaForOwner:(const TSKUIDStruct *)a3 cellCoord:(TSUCellCoord)a4;
-- (void)removeFormulasAt:(const void *)a3;
-- (void)removeFormulasFromRange:(TSCERangeRef *)a3;
-- (void)replaceCellWithFormulaForOwner:(const TSKUIDStruct *)a3 formulaCoord:(TSUCellCoord)a4 precedents:(id)a5 replaceOptions:(TSCEReplaceFormulaOptions *)a6;
-- (void)replaceRemoteDataKeysInterestedInForCell:(TSCECellRef *)a3 specifierSet:(id)a4;
-- (void)resetAllExternalFormulasReferringToOwnerUIDs:(const void *)a3 upgradeMinion:(id)a4;
-- (void)resetCorruptCellRefs:(const void *)a3;
-- (void)scheduleMarkCellRefAsDirty:(const TSCECellRef *)a3;
-- (void)scheduleMarkIntCellRefAsDirty:(TSCEInternalCellReference)a3;
-- (void)scheduleRepairingSpanningFormulasInOwner:(const TSKUIDStruct *)a3 upgradeMinion:(id)a4;
-- (void)setError:(id)a3 andWarnings:(id)a4 forCell:(TSUCellCoord)a5 inOwner:(const TSKUIDStruct *)a6;
-- (void)setHasCalculatedPrecedents:(const TSCECellRef *)a3 setting:(BOOL)a4;
-- (void)setHasCalculatedPrecedentsInternal:(const TSCEInternalCellReference *)a3 setting:(BOOL)a4;
-- (void)setTableAndBodyRangesForTable:(const TSCERangeCoordinate *)a3 bodyRange:(const TSCERangeCoordinate *)a4 tableID:(unsigned __int16)a5;
-- (void)setTableAndBodyRangesForTable:(const TSCERangeCoordinate *)a3 bodyRange:(const TSCERangeCoordinate *)a4 tableUID:(const TSKUIDStruct *)a5;
-- (void)unregisterOwner:(const TSKUIDStruct *)a3;
-- (void)updateNumberOfDirtyPrecedents:(const void *)a3;
-- (void)upgradeOneOwnerUID:(const TSKUIDStruct *)a3 updatedOwnerUID:(const TSKUIDStruct *)a4 baseOwnerUID:(const TSKUIDStruct *)a5 ownerKind:(unsigned __int16)a6;
-- (void)upgradeToSubOwnerUIDForOwners:(id)a3;
+- (void)removeAllPrecedentsFromOwner:(const TSKUIDStruct *)owner;
+- (void)removeFormulaForOwner:(const TSKUIDStruct *)owner cellCoord:(TSUCellCoord)coord;
+- (void)removeFormulasAt:(const void *)at;
+- (void)removeFormulasFromRange:(TSCERangeRef *)range;
+- (void)replaceCellWithFormulaForOwner:(const TSKUIDStruct *)owner formulaCoord:(TSUCellCoord)coord precedents:(id)precedents replaceOptions:(TSCEReplaceFormulaOptions *)options;
+- (void)replaceRemoteDataKeysInterestedInForCell:(TSCECellRef *)cell specifierSet:(id)set;
+- (void)resetAllExternalFormulasReferringToOwnerUIDs:(const void *)ds upgradeMinion:(id)minion;
+- (void)resetCorruptCellRefs:(const void *)refs;
+- (void)scheduleMarkCellRefAsDirty:(const TSCECellRef *)dirty;
+- (void)scheduleMarkIntCellRefAsDirty:(TSCEInternalCellReference)dirty;
+- (void)scheduleRepairingSpanningFormulasInOwner:(const TSKUIDStruct *)owner upgradeMinion:(id)minion;
+- (void)setError:(id)error andWarnings:(id)warnings forCell:(TSUCellCoord)cell inOwner:(const TSKUIDStruct *)owner;
+- (void)setHasCalculatedPrecedents:(const TSCECellRef *)precedents setting:(BOOL)setting;
+- (void)setHasCalculatedPrecedentsInternal:(const TSCEInternalCellReference *)internal setting:(BOOL)setting;
+- (void)setTableAndBodyRangesForTable:(const TSCERangeCoordinate *)table bodyRange:(const TSCERangeCoordinate *)range tableID:(unsigned __int16)d;
+- (void)setTableAndBodyRangesForTable:(const TSCERangeCoordinate *)table bodyRange:(const TSCERangeCoordinate *)range tableUID:(const TSKUIDStruct *)d;
+- (void)unregisterOwner:(const TSKUIDStruct *)owner;
+- (void)updateNumberOfDirtyPrecedents:(const void *)precedents;
+- (void)upgradeOneOwnerUID:(const TSKUIDStruct *)d updatedOwnerUID:(const TSKUIDStruct *)iD baseOwnerUID:(const TSKUIDStruct *)uID ownerKind:(unsigned __int16)kind;
+- (void)upgradeToSubOwnerUIDForOwners:(id)owners;
 - (void)willClose;
 - (void)willModify;
-- (void)wroteSpillingCells:(const void *)a3 forTable:(const TSKUIDStruct *)a4;
+- (void)wroteSpillingCells:(const void *)cells forTable:(const TSKUIDStruct *)table;
 @end
 
 @implementation TSCEDependencyTracker
 
-- (TSCEDependencyTracker)initWithCalcEngine:(id)a3
+- (TSCEDependencyTracker)initWithCalcEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v19.receiver = self;
   v19.super_class = TSCEDependencyTracker;
   v5 = [(TSCEDependencyTracker *)&v19 init];
   v6 = v5;
   if (v5)
   {
-    v5->_calcEngine = v4;
+    v5->_calcEngine = engineCopy;
     v5->_registeredOwnerIdCache = -1;
     atomic_store(0, &v5->_numberOfFormulas);
     v5->_batchingGroupCellDirtyingLevel = 0;
@@ -339,20 +339,20 @@
   return v9;
 }
 
-- (int)dgl_registerOwnerID:(unsigned __int16)a3 owner:(id)a4 ownerIndex:(unsigned __int16)a5
+- (int)dgl_registerOwnerID:(unsigned __int16)d owner:(id)owner ownerIndex:(unsigned __int16)index
 {
-  v5 = a5;
-  v6 = a3;
-  v52 = a3;
-  v8 = a4;
-  v50 = objc_msgSend_formulaOwnerUIDForInternalFormulaOwnerID_(self, v9, v6, v10, v11);
+  indexCopy = index;
+  dCopy = d;
+  dCopy2 = d;
+  ownerCopy = owner;
+  v50 = objc_msgSend_formulaOwnerUIDForInternalFormulaOwnerID_(self, v9, dCopy, v10, v11);
   v51 = v12;
-  if (v6 != 0xFFFF)
+  if (dCopy != 0xFFFF)
   {
-    if (sub_2210C3024(&self->_formulaOwnerDependencies.__table_.__bucket_list_.__ptr_, &v52))
+    if (sub_2210C3024(&self->_formulaOwnerDependencies.__table_.__bucket_list_.__ptr_, &dCopy2))
     {
-      v53 = &v52;
-      v13 = sub_221376DD0(&self->_formulaOwnerDependencies.__table_.__bucket_list_.__ptr_, &v52)[3];
+      v53 = &dCopy2;
+      v13 = sub_221376DD0(&self->_formulaOwnerDependencies.__table_.__bucket_list_.__ptr_, &dCopy2)[3];
       if (objc_msgSend_isRegisteredWithCalcEngine(v13, v14, v15, v16, v17, v50, v51))
       {
         v22 = objc_msgSend_formulaOwner(v13, v18, v19, v20, v21);
@@ -369,11 +369,11 @@
         }
       }
 
-      objc_msgSend_setOwnerIndex_(v13, v18, v5, v20, v21);
-      objc_msgSend_setFormulaOwner_(v13, v24, v8, v25, v26);
-      if (objc_msgSend_evaluationMode(v8, v27, v28, v29, v30) == 1)
+      objc_msgSend_setOwnerIndex_(v13, v18, indexCopy, v20, v21);
+      objc_msgSend_setFormulaOwner_(v13, v24, ownerCopy, v25, v26);
+      if (objc_msgSend_evaluationMode(ownerCopy, v27, v28, v29, v30) == 1)
       {
-        objc_msgSend_addMultiEvalOwnerID_(self->_leafQueue, v31, v52, v32, v33);
+        objc_msgSend_addMultiEvalOwnerID_(self->_leafQueue, v31, dCopy2, v32, v33);
       }
 
       objc_msgSend_setIsRegisteredWithCalcEngine_(v13, v31, 1, v32, v33);
@@ -392,17 +392,17 @@ LABEL_17:
     {
       v34 = [TSCEFormulaOwnerDependencies alloc];
       v39 = objc_msgSend_context(self->_calcEngine, v35, v36, v37, v38, v50, v51);
-      v13 = objc_msgSend_initWithContext_dependencyTracker_ownerID_ownerUID_owner_ownerIndex_(v34, v40, v39, self, v52, &v50, v8, v5);
+      v13 = objc_msgSend_initWithContext_dependencyTracker_ownerID_ownerUID_owner_ownerIndex_(v34, v40, v39, self, dCopy2, &v50, ownerCopy, indexCopy);
 
-      v53 = &v52;
-      v41 = sub_221376DD0(&self->_formulaOwnerDependencies.__table_.__bucket_list_.__ptr_, &v52);
+      v53 = &dCopy2;
+      v41 = sub_221376DD0(&self->_formulaOwnerDependencies.__table_.__bucket_list_.__ptr_, &dCopy2);
       objc_storeStrong(v41 + 3, v13);
-      if (objc_msgSend_evaluationMode(v8, v42, v43, v44, v45) == 1)
+      if (objc_msgSend_evaluationMode(ownerCopy, v42, v43, v44, v45) == 1)
       {
-        objc_msgSend_addMultiEvalOwnerID_(self->_leafQueue, v46, v52, v47, v48);
+        objc_msgSend_addMultiEvalOwnerID_(self->_leafQueue, v46, dCopy2, v47, v48);
       }
 
-      objc_msgSend_setIsRegisteredWithCalcEngine_(v13, v46, v8 != 0, v47, v48);
+      objc_msgSend_setIsRegisteredWithCalcEngine_(v13, v46, ownerCopy != 0, v47, v48);
       if (__C == -1)
       {
         v23 = 0;
@@ -422,24 +422,24 @@ LABEL_18:
   return v23;
 }
 
-- (int)dgl_registerOwnerUID:(const TSKUIDStruct *)a3 owner:(id)a4 ownerIndex:(unsigned __int16)a5
+- (int)dgl_registerOwnerUID:(const TSKUIDStruct *)d owner:(id)owner ownerIndex:(unsigned __int16)index
 {
-  v5 = a5;
-  v8 = a4;
-  IfMissing = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_createIfMissing_(self, v9, a3, 1, v10);
-  LODWORD(v5) = objc_msgSend_dgl_registerOwnerID_owner_ownerIndex_(self, v12, IfMissing, v8, v5);
+  indexCopy = index;
+  ownerCopy = owner;
+  IfMissing = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_createIfMissing_(self, v9, d, 1, v10);
+  LODWORD(indexCopy) = objc_msgSend_dgl_registerOwnerID_owner_ownerIndex_(self, v12, IfMissing, ownerCopy, indexCopy);
 
-  return v5;
+  return indexCopy;
 }
 
-- (int)registerOwnerID:(unsigned __int16)a3 owner:(id)a4 ownerIndex:(unsigned __int16)a5
+- (int)registerOwnerID:(unsigned __int16)d owner:(id)owner ownerIndex:(unsigned __int16)index
 {
-  v5 = a5;
-  v6 = a3;
-  v8 = a4;
-  if (v8)
+  indexCopy = index;
+  dCopy = d;
+  ownerCopy = owner;
+  if (ownerCopy)
   {
-    v9 = v8;
+    v9 = ownerCopy;
     v13 = TSUProtocolCast();
     if (!v13)
     {
@@ -460,7 +460,7 @@ LABEL_18:
 
   p_dependencyGraphLock = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
-  v27 = objc_msgSend_dgl_registerOwnerID_owner_ownerIndex_(self, v26, v6, v13, v5);
+  v27 = objc_msgSend_dgl_registerOwnerID_owner_ownerIndex_(self, v26, dCopy, v13, indexCopy);
   os_unfair_lock_unlock(&self->_dependencyGraphLock);
   v30 = 0;
   sub_2212E22F0(&p_dependencyGraphLock);
@@ -468,24 +468,24 @@ LABEL_18:
   return v27;
 }
 
-- (int)registerOwnerUID:(const TSKUIDStruct *)a3 owner:(id)a4 ownerIndex:(unsigned __int16)a5
+- (int)registerOwnerUID:(const TSKUIDStruct *)d owner:(id)owner ownerIndex:(unsigned __int16)index
 {
-  v5 = a5;
-  v8 = a4;
-  IfMissing = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_createIfMissing_(self, v9, a3, 1, v10);
-  LODWORD(v5) = objc_msgSend_registerOwnerID_owner_ownerIndex_(self, v12, IfMissing, v8, v5);
+  indexCopy = index;
+  ownerCopy = owner;
+  IfMissing = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_createIfMissing_(self, v9, d, 1, v10);
+  LODWORD(indexCopy) = objc_msgSend_registerOwnerID_owner_ownerIndex_(self, v12, IfMissing, ownerCopy, indexCopy);
 
-  return v5;
+  return indexCopy;
 }
 
-- (BOOL)dgl_ownerIDIsRegistered:(unsigned __int16)a3
+- (BOOL)dgl_ownerIDIsRegistered:(unsigned __int16)registered
 {
-  if (a3 == 0xFFFF)
+  if (registered == 0xFFFF)
   {
     return 0;
   }
 
-  v5 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, a2, a3, v3, v4);
+  v5 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, a2, registered, v3, v4);
   if (!objc_msgSend_isRegisteredWithCalcEngine(v5, v6, v7, v8, v9))
   {
     return 0;
@@ -497,28 +497,28 @@ LABEL_18:
   return v15;
 }
 
-- (BOOL)ownerIDIsRegistered:(unsigned __int16)a3
+- (BOOL)ownerIDIsRegistered:(unsigned __int16)registered
 {
-  if (a3 == 0xFFFF)
+  if (registered == 0xFFFF)
   {
     LOBYTE(v5) = 0;
   }
 
   else
   {
-    v3 = a3;
+    registeredCopy = registered;
     LOBYTE(v5) = 1;
-    if (self->_registeredOwnerIdCache != a3)
+    if (self->_registeredOwnerIdCache != registered)
     {
       p_dependencyGraphLock = &self->_dependencyGraphLock;
       os_unfair_lock_lock(&self->_dependencyGraphLock);
       LOBYTE(v11) = 1;
-      v5 = objc_msgSend_dgl_ownerIDIsRegistered_(self, v6, v3, v7, v8, p_dependencyGraphLock, v11);
+      v5 = objc_msgSend_dgl_ownerIDIsRegistered_(self, v6, registeredCopy, v7, v8, p_dependencyGraphLock, v11);
       os_unfair_lock_unlock(&self->_dependencyGraphLock);
       LOBYTE(v11) = 0;
       if (v5)
       {
-        self->_registeredOwnerIdCache = v3;
+        self->_registeredOwnerIdCache = registeredCopy;
       }
 
       sub_2212E22F0(&p_dependencyGraphLock);
@@ -528,34 +528,34 @@ LABEL_18:
   return v5;
 }
 
-- (BOOL)ownerUIDIsRegistered:(const TSKUIDStruct *)a3
+- (BOOL)ownerUIDIsRegistered:(const TSKUIDStruct *)registered
 {
-  IfMissing = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_createIfMissing_(self, a2, a3, 0, v3);
+  IfMissing = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_createIfMissing_(self, a2, registered, 0, v3);
 
   return objc_msgSend_ownerIDIsRegistered_(self, v5, IfMissing, v7, v8);
 }
 
-- (id)dgl_ownerForOwnerID:(unsigned __int16)a3
+- (id)dgl_ownerForOwnerID:(unsigned __int16)d
 {
-  if (a3 == 0xFFFF)
+  if (d == 0xFFFF)
   {
     v11 = 0;
   }
 
   else
   {
-    v6 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, a2, a3, v3, v4);
+    v6 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, a2, d, v3, v4);
     v11 = objc_msgSend_formulaOwner(v6, v7, v8, v9, v10);
   }
 
   return v11;
 }
 
-- (void)dgl_loadCacheForCell:(TSCECellToEvaluate *)a3
+- (void)dgl_loadCacheForCell:(TSCECellToEvaluate *)cell
 {
-  if (a3->var2)
+  if (cell->var2)
   {
-    v5 = a3->var1 == 0;
+    v5 = cell->var1 == 0;
   }
 
   else
@@ -565,27 +565,27 @@ LABEL_18:
 
   if (v5)
   {
-    tableID = a3->var0.tableID;
+    tableID = cell->var0.tableID;
     if (tableID != 0xFFFF)
     {
       v8 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, a2, tableID, v3, v4);
-      a3->var1 = v8;
+      cell->var1 = v8;
       v13 = objc_msgSend_cellDependencies(v8, v9, v10, v11, v12);
       if (v13)
       {
         v16 = v13;
-        a3->var2 = objc_msgSend_findCellRecord_willModifyOnTile_(v13, v14, a3, 0, v15);
+        cell->var2 = objc_msgSend_findCellRecord_willModifyOnTile_(v13, v14, cell, 0, v15);
         v13 = v16;
       }
     }
   }
 }
 
-- (void)loadCacheForCell:(TSCECellToEvaluate *)a3
+- (void)loadCacheForCell:(TSCECellToEvaluate *)cell
 {
-  if (a3->var2)
+  if (cell->var2)
   {
-    v3 = a3->var1 == 0;
+    v3 = cell->var1 == 0;
   }
 
   else
@@ -599,36 +599,36 @@ LABEL_18:
     v10 = &self->_dependencyGraphLock;
     os_unfair_lock_lock(&self->_dependencyGraphLock);
     LOBYTE(v11) = 1;
-    objc_msgSend_dgl_loadCacheForCell_(self, v7, a3, v8, v9, v10, v11);
+    objc_msgSend_dgl_loadCacheForCell_(self, v7, cell, v8, v9, v10, v11);
     os_unfair_lock_unlock(p_dependencyGraphLock);
     LOBYTE(v11) = 0;
     sub_2212E22F0(&v10);
   }
 }
 
-- (id)evaluationInfoForCell:(TSCECellToEvaluate *)a3 outHasDynamicPrecedents:(BOOL *)a4 outIsInCycle:(BOOL *)a5
+- (id)evaluationInfoForCell:(TSCECellToEvaluate *)cell outHasDynamicPrecedents:(BOOL *)precedents outIsInCycle:(BOOL *)cycle
 {
-  var2 = a3->var2;
-  if (var2 || (objc_msgSend_loadCacheForCell_(self, a2, a3, a4, a5), var2 = a3->var2, *a4 = 0, *a5 = 0, var2))
+  var2 = cell->var2;
+  if (var2 || (objc_msgSend_loadCacheForCell_(self, a2, cell, precedents, cycle), var2 = cell->var2, *precedents = 0, *cycle = 0, var2))
   {
     var6 = var2->var6;
-    *a4 = (var6 & 8) != 0;
-    *a5 = (var6 & 2) != 0;
+    *precedents = (var6 & 8) != 0;
+    *cycle = (var6 & 2) != 0;
   }
 
-  v10 = objc_msgSend_formulaOwner(a3->var1, a2, a3, a4, a5);
+  v10 = objc_msgSend_formulaOwner(cell->var1, a2, cell, precedents, cycle);
 
   return v10;
 }
 
-- (void)evaluationCompletedForCells:(void *)a3 resultState:(TSCERecalculationState)a4
+- (void)evaluationCompletedForCells:(void *)cells resultState:(TSCERecalculationState)state
 {
   p_dependencyGraphLock = &self->_dependencyGraphLock;
   lock = &self->_dependencyGraphLock;
   v38 = 0;
   os_unfair_lock_lock(&self->_evaluationInProgressLock);
-  v8 = *(a3 + 1);
-  v9 = *(a3 + 2);
+  v8 = *(cells + 1);
+  v9 = *(cells + 2);
   if (v8 != v9)
   {
     do
@@ -641,12 +641,12 @@ LABEL_18:
     p_dependencyGraphLock = lock;
   }
 
-  var0 = a4.var0;
+  var0 = state.var0;
   os_unfair_lock_unlock(&self->_evaluationInProgressLock);
   os_unfair_lock_lock(p_dependencyGraphLock);
   v38 = 1;
-  v13 = *(a3 + 1);
-  v14 = *(a3 + 2);
+  v13 = *(cells + 1);
+  v14 = *(cells + 2);
   v15 = v13 == v14;
   if ((var0 & 0x80) != 0)
   {
@@ -746,14 +746,14 @@ LABEL_18:
   sub_2212E22F0(&lock);
 }
 
-- (id)ownerForOwnerID:(unsigned __int16)a3
+- (id)ownerForOwnerID:(unsigned __int16)d
 {
-  v3 = a3;
+  dCopy = d;
   p_dependencyGraphLock = &self->_dependencyGraphLock;
   v11 = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   LOBYTE(v12) = 1;
-  v9 = objc_msgSend_dgl_ownerForOwnerID_(self, v6, v3, v7, v8, v11, v12);
+  v9 = objc_msgSend_dgl_ownerForOwnerID_(self, v6, dCopy, v7, v8, v11, v12);
   os_unfair_lock_unlock(p_dependencyGraphLock);
   LOBYTE(v12) = 0;
   sub_2212E22F0(&v11);
@@ -761,21 +761,21 @@ LABEL_18:
   return v9;
 }
 
-- (id)ownerForOwnerUID:(const TSKUIDStruct *)a3
+- (id)ownerForOwnerUID:(const TSKUIDStruct *)d
 {
-  IfMissing = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_createIfMissing_(self, a2, a3, 0, v3);
+  IfMissing = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_createIfMissing_(self, a2, d, 0, v3);
 
   return MEMORY[0x2821F9670](self, sel_ownerForOwnerID_, IfMissing, v6, v7);
 }
 
-- (BOOL)dgl_canDeleteOwnerDependencies:(unsigned __int16)a3
+- (BOOL)dgl_canDeleteOwnerDependencies:(unsigned __int16)dependencies
 {
   if (self->_duringSubOwnerUIDUpgrade)
   {
     return 1;
   }
 
-  v5 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, a2, a3, v3, v4);
+  v5 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, a2, dependencies, v3, v4);
   if (!v5)
   {
     return 1;
@@ -833,15 +833,15 @@ LABEL_18:
   return isEmpty;
 }
 
-- (void)dgl_deleteOwnerDependenciesIfPossible:(unsigned __int16)a3
+- (void)dgl_deleteOwnerDependenciesIfPossible:(unsigned __int16)possible
 {
-  v5 = a3;
-  v10 = a3;
-  if (objc_msgSend_dgl_canDeleteOwnerDependencies_(self, a2, a3, v3, v4))
+  possibleCopy = possible;
+  possibleCopy2 = possible;
+  if (objc_msgSend_dgl_canDeleteOwnerDependencies_(self, a2, possible, v3, v4))
   {
-    objc_msgSend_removeMultiEvalOwnerID_(self->_leafQueue, v7, v5, v8, v9);
-    sub_221377038(&self->_formulaOwnerDependencies.__table_.__bucket_list_.__ptr_, &v10);
-    sub_221260148(&self->_formulaOwnerIDMap, v10);
+    objc_msgSend_removeMultiEvalOwnerID_(self->_leafQueue, v7, possibleCopy, v8, v9);
+    sub_221377038(&self->_formulaOwnerDependencies.__table_.__bucket_list_.__ptr_, &possibleCopy2);
+    sub_221260148(&self->_formulaOwnerIDMap, possibleCopy2);
     if (__C != -1)
     {
       sub_2216F77BC();
@@ -849,12 +849,12 @@ LABEL_18:
   }
 }
 
-- (void)dgl_dirtyAllCellsInOwnerID:(unsigned __int16)a3
+- (void)dgl_dirtyAllCellsInOwnerID:(unsigned __int16)d
 {
-  v66 = a3;
-  if (a3 != 0xFFFF)
+  dCopy = d;
+  if (d != 0xFFFF)
   {
-    v4 = sub_2210C3024(&self->_formulaOwnerDependencies.__table_.__bucket_list_.__ptr_, &v66);
+    v4 = sub_2210C3024(&self->_formulaOwnerDependencies.__table_.__bucket_list_.__ptr_, &dCopy);
     if (v4)
     {
       v9 = v4[3];
@@ -903,30 +903,30 @@ LABEL_18:
   }
 }
 
-- (void)dirtyAllCellsInOwnerID:(unsigned __int16)a3
+- (void)dirtyAllCellsInOwnerID:(unsigned __int16)d
 {
-  if (a3 != 0xFFFF)
+  if (d != 0xFFFF)
   {
-    v3 = a3;
+    dCopy = d;
     p_dependencyGraphLock = &self->_dependencyGraphLock;
     v9 = &self->_dependencyGraphLock;
     os_unfair_lock_lock(&self->_dependencyGraphLock);
     LOBYTE(v10) = 1;
-    objc_msgSend_dgl_dirtyAllCellsInOwnerID_(self, v6, v3, v7, v8, v9, v10);
+    objc_msgSend_dgl_dirtyAllCellsInOwnerID_(self, v6, dCopy, v7, v8, v9, v10);
     os_unfair_lock_unlock(p_dependencyGraphLock);
     LOBYTE(v10) = 0;
     sub_2212E22F0(&v9);
   }
 }
 
-- (void)dirtyAllCellsInOwnerUID:(const TSKUIDStruct *)a3
+- (void)dirtyAllCellsInOwnerUID:(const TSKUIDStruct *)d
 {
-  IfMissing = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_createIfMissing_(self, a2, a3, 1, v3);
+  IfMissing = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_createIfMissing_(self, a2, d, 1, v3);
 
   MEMORY[0x2821F9670](self, sel_dirtyAllCellsInOwnerID_, IfMissing, v6, v7);
 }
 
-- (TSCEInternalCellRefSet)allCellRefsInOwner:(SEL)a3
+- (TSCEInternalCellRefSet)allCellRefsInOwner:(SEL)owner
 {
   v26 = a4;
   retstr->_coordsForOwnerId.__table_.__bucket_list_ = 0u;
@@ -934,14 +934,14 @@ LABEL_18:
   retstr->_coordsForOwnerId.__table_.__max_load_factor_ = 1.0;
   if (a4 != 0xFFFF)
   {
-    v5 = self;
+    selfCopy = self;
     lock = &self->_coordsForOwnerId.__table_.__bucket_list_.__deleter_;
     os_unfair_lock_lock(&self->_coordsForOwnerId.__table_.__bucket_list_.__deleter_);
     v25 = 1;
-    if (sub_2210C3024(&v5[6]._coordsForOwnerId.__table_.__size_, &v26))
+    if (sub_2210C3024(&selfCopy[6]._coordsForOwnerId.__table_.__size_, &v26))
     {
       *&v22[0] = &v26;
-      v6 = sub_221376DD0(&v5[6]._coordsForOwnerId.__table_.__size_, &v26)[3];
+      v6 = sub_221376DD0(&selfCopy[6]._coordsForOwnerId.__table_.__size_, &v26)[3];
       v11 = objc_msgSend_cellDependencies(v6, v7, v8, v9, v10, &v26);
 
       if (v11)
@@ -1028,12 +1028,12 @@ LABEL_18:
   sub_2212E22F0(&lock);
 }
 
-- (void)assertForInconsistentDependGraph:(unsigned __int16)a3 assertMessage:(id)a4
+- (void)assertForInconsistentDependGraph:(unsigned __int16)graph assertMessage:(id)message
 {
-  v5 = a3;
-  v22 = objc_msgSend_referencesToDirty(self->_calcEngine, a2, a3, a4, v4);
+  graphCopy = graph;
+  v22 = objc_msgSend_referencesToDirty(self->_calcEngine, a2, graph, message, v4);
   shouldCleanGraphForConsistencyViolation = objc_msgSend_shouldCleanGraphForConsistencyViolation(v22, v7, v8, v9, v10);
-  if (((shouldCleanGraphForConsistencyViolation | objc_msgSend_shouldPerformDetectAndRepairConsistencyViolations(v22, v12, v13, v14, v15)) & 1) == 0 && (objc_msgSend_ownerIdIsUnregistering_(self, v16, v5, v17, v18) & 1) == 0)
+  if (((shouldCleanGraphForConsistencyViolation | objc_msgSend_shouldPerformDetectAndRepairConsistencyViolations(v22, v12, v13, v14, v15)) & 1) == 0 && (objc_msgSend_ownerIdIsUnregistering_(self, v16, graphCopy, v17, v18) & 1) == 0)
   {
     objc_msgSend_setShouldPerformDetectAndRepairConsistencyViolations_(v22, v19, 1, v20, v21);
   }
@@ -1084,26 +1084,26 @@ LABEL_8:
   }
 }
 
-- (void)unregisterOwner:(const TSKUIDStruct *)a3
+- (void)unregisterOwner:(const TSKUIDStruct *)owner
 {
-  IfMissing = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_createIfMissing_(self, a2, a3, 0, v3);
+  IfMissing = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_createIfMissing_(self, a2, owner, 0, v3);
   self->_registeredOwnerIdCache = -1;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   LOBYTE(v10) = 1;
-  objc_msgSend_dgl_unregisterOwner_ownerID_(self, v7, a3, IfMissing, v8, &self->_dependencyGraphLock, v10);
+  objc_msgSend_dgl_unregisterOwner_ownerID_(self, v7, owner, IfMissing, v8, &self->_dependencyGraphLock, v10);
   os_unfair_lock_unlock(&self->_dependencyGraphLock);
   LOBYTE(v10) = 0;
   sub_2212E22F0(&v9);
 }
 
-- (void)dgl_unregisterOwner:(const TSKUIDStruct *)a3 ownerID:(unsigned __int16)a4
+- (void)dgl_unregisterOwner:(const TSKUIDStruct *)owner ownerID:(unsigned __int16)d
 {
-  v5 = a4;
-  v7 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, a2, a4, a4, v4);
+  dCopy = d;
+  v7 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, a2, d, d, v4);
   v12 = v7;
   if (v7 && objc_msgSend_isRegisteredWithCalcEngine(v7, v8, v9, v10, v11))
   {
-    v16 = objc_msgSend_tableResolverForTableID_(self->_calcEngine, v13, v5, v14, v15);
+    v16 = objc_msgSend_tableResolverForTableID_(self->_calcEngine, v13, dCopy, v14, v15);
     v21 = v16;
     v68 = 0uLL;
     if (v16)
@@ -1177,37 +1177,37 @@ LABEL_8:
   sub_2212E22F0(&lock);
 }
 
-- (unsigned)dgl_ownerKindForOwnerID:(unsigned __int16)a3
+- (unsigned)dgl_ownerKindForOwnerID:(unsigned __int16)d
 {
-  v13 = a3;
-  v6 = objc_msgSend_dgl_ownerIDIsRegistered_(self, a2, a3, v3, v4);
+  dCopy = d;
+  v6 = objc_msgSend_dgl_ownerIDIsRegistered_(self, a2, d, v3, v4);
   if (v6)
   {
-    v14 = &v13;
-    v7 = sub_221376DD0(&self->_formulaOwnerDependencies.__table_.__bucket_list_.__ptr_, &v13);
+    v14 = &dCopy;
+    v7 = sub_221376DD0(&self->_formulaOwnerDependencies.__table_.__bucket_list_.__ptr_, &dCopy);
     LOWORD(v6) = objc_msgSend_ownerIndex(v7[3], v8, v9, v10, v11);
   }
 
   return v6;
 }
 
-- (unsigned)ownerKindForOwnerID:(unsigned __int16)a3
+- (unsigned)ownerKindForOwnerID:(unsigned __int16)d
 {
-  v3 = a3;
+  dCopy = d;
   p_dependencyGraphLock = &self->_dependencyGraphLock;
   v10 = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   LOBYTE(v11) = 1;
-  LOWORD(v3) = objc_msgSend_dgl_ownerKindForOwnerID_(self, v6, v3, v7, v8, v10, v11);
+  LOWORD(dCopy) = objc_msgSend_dgl_ownerKindForOwnerID_(self, v6, dCopy, v7, v8, v10, v11);
   os_unfair_lock_unlock(p_dependencyGraphLock);
   LOBYTE(v11) = 0;
   sub_2212E22F0(&v10);
-  return v3;
+  return dCopy;
 }
 
-- (void)enumerateFormulaOwnersUsingBlock:(id)a3
+- (void)enumerateFormulaOwnersUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v24 = 0;
   v21 = 0u;
   v22 = 0u;
@@ -1230,7 +1230,7 @@ LABEL_8:
     v11 = i[3];
     v12 = objc_msgSend_formulaOwnerUid(v11, v6, v7, v8, v9);
     v17 = objc_msgSend_formulaOwner(v11, v13, v14, v15, v16, v12, v13);
-    v4[2](v4, &v18, v17, &v24);
+    blockCopy[2](blockCopy, &v18, v17, &v24);
 
     if (v24)
     {
@@ -1242,15 +1242,15 @@ LABEL_8:
   sub_221087B80(&v21);
 }
 
-- (void)dgl_removeCellRefFromAllUuidMaps:(const TSCEInternalCellReference *)a3
+- (void)dgl_removeCellRefFromAllUuidMaps:(const TSCEInternalCellReference *)maps
 {
-  v7 = objc_msgSend_uuidReferenceMap(self->_calcEngine, a2, a3, v3, v4);
-  objc_msgSend_removeCellRef_(v7, v8, a3, v9, v10);
+  v7 = objc_msgSend_uuidReferenceMap(self->_calcEngine, a2, maps, v3, v4);
+  objc_msgSend_removeCellRef_(v7, v8, maps, v9, v10);
 
   v15 = objc_msgSend_groupNodeReferenceMap(self->_calcEngine, v11, v12, v13, v14);
-  objc_msgSend_removeCellRef_(v15, v16, a3, v17, v18);
+  objc_msgSend_removeCellRef_(v15, v16, maps, v17, v18);
 
-  v22 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, v19, a3->tableID, v20, v21);
+  v22 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, v19, maps->tableID, v20, v21);
   if (v22)
   {
     v27 = objc_msgSend_uuidReferences(v22, v23, v24, v25, v26);
@@ -1258,37 +1258,37 @@ LABEL_8:
     if (v27)
     {
 
-      MEMORY[0x2821F9670](v27, sel_removeCellCoord_, a3, v28, v29);
+      MEMORY[0x2821F9670](v27, sel_removeCellCoord_, maps, v28, v29);
     }
   }
 }
 
-- (void)dgl_removeFormulaForOwnerID:(unsigned __int16)a3 cellCoord:(TSUCellCoord)a4
+- (void)dgl_removeFormulaForOwnerID:(unsigned __int16)d cellCoord:(TSUCellCoord)coord
 {
-  v5 = a3;
-  v71 = a4;
-  v7 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, a2, a3, *&a4, v4);
+  dCopy = d;
+  coordCopy = coord;
+  v7 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, a2, d, *&coord, v4);
   v12 = objc_msgSend_cellDependencies(v7, v8, v9, v10, v11);
   v15 = v12;
   if (v12)
   {
-    CellRecord_willModifyOnTile = objc_msgSend_findCellRecord_willModifyOnTile_(v12, v13, &v71, 1, v14);
+    CellRecord_willModifyOnTile = objc_msgSend_findCellRecord_willModifyOnTile_(v12, v13, &coordCopy, 1, v14);
     if (CellRecord_willModifyOnTile && (*(CellRecord_willModifyOnTile + 38) & 4) != 0)
     {
       TSCEReplaceFormulaOptions::TSCEReplaceFormulaOptions(&v70, 0, 1);
-      v21 = v71;
+      v21 = coordCopy;
       noPrecedents = self->_noPrecedents;
       TSCEReplaceFormulaOptions::TSCEReplaceFormulaOptions(&v69, &v70);
-      objc_msgSend_dgl_replaceCellWithFormulaForOwner_formulaCoord_precedents_replaceOptions_(self, v23, v5, v21, noPrecedents, &v69);
+      objc_msgSend_dgl_replaceCellWithFormulaForOwner_formulaCoord_precedents_replaceOptions_(self, v23, dCopy, v21, noPrecedents, &v69);
 
       atomic_fetch_add(&self->_numberOfFormulas, 0xFFFFFFFFFFFFFFFFLL);
-      v28 = objc_msgSend_findCellRecord_willModifyOnTile_(v15, v24, &v71, 1, v25);
+      v28 = objc_msgSend_findCellRecord_willModifyOnTile_(v15, v24, &coordCopy, 1, v25);
       if (v28)
       {
         objc_msgSend_setContainsFormula_containsFormula_(v15, v26, v28, 0, v27);
         if ((sub_2215C5AB8(v28) & 1) == 0 && !sub_2215C5AF0(v28))
         {
-          objc_msgSend_markCellRecordForPruning_(v15, v29, &v71, v30, v31);
+          objc_msgSend_markCellRecordForPruning_(v15, v29, &coordCopy, v30, v31);
         }
       }
     }
@@ -1297,18 +1297,18 @@ LABEL_8:
     v37 = v32;
     if (v32)
     {
-      objc_msgSend_clearErrorAndWarningsForCell_(v32, v33, &v71, v35, v36);
+      objc_msgSend_clearErrorAndWarningsForCell_(v32, v33, &coordCopy, v35, v36);
     }
 
     v38 = objc_msgSend_spillSizes(v7, v33, v34, v35, v36);
     v42 = v38;
     if (v38)
     {
-      objc_msgSend_clearSpillSizeForCell_(v38, v39, &v71, v40, v41);
+      objc_msgSend_clearSpillSizeForCell_(v38, v39, &coordCopy, v40, v41);
     }
 
-    v67 = *&v71 & 0xFFFFFFFFFFFFLL;
-    v68 = v5;
+    v67 = *&coordCopy & 0xFFFFFFFFFFFFLL;
+    v68 = dCopy;
     objc_msgSend_dgl_removeCellRefFromAllUuidMaps_(self, v39, &v67, v40, v41);
     v47 = objc_msgSend_referencesToDirty(self->_calcEngine, v43, v44, v45, v46);
     objc_msgSend_dirtyInternalCellRef_(v47, v48, &v67, v49, v50);
@@ -1324,24 +1324,24 @@ LABEL_8:
   }
 }
 
-- (void)removeFormulaForOwner:(const TSKUIDStruct *)a3 cellCoord:(TSUCellCoord)a4
+- (void)removeFormulaForOwner:(const TSKUIDStruct *)owner cellCoord:(TSUCellCoord)coord
 {
-  IfMissing = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_createIfMissing_(self, a2, a3, 1, v4);
+  IfMissing = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_createIfMissing_(self, a2, owner, 1, v4);
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   LOBYTE(v11) = 1;
-  objc_msgSend_dgl_removeFormulaForOwnerID_cellCoord_(self, v8, IfMissing, *&a4, v9, &self->_dependencyGraphLock, v11);
+  objc_msgSend_dgl_removeFormulaForOwnerID_cellCoord_(self, v8, IfMissing, *&coord, v9, &self->_dependencyGraphLock, v11);
   os_unfair_lock_unlock(&self->_dependencyGraphLock);
   LOBYTE(v11) = 0;
   sub_2212E22F0(&v10);
 }
 
-- (void)removeFormulasFromRange:(TSCERangeRef *)a3
+- (void)removeFormulasFromRange:(TSCERangeRef *)range
 {
   lock = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   v17 = 1;
-  objc_msgSend_dgl_cellsWithRecordsInRange_formulaCellsOnly_(self, v5, a3, 1, v6);
-  IfMissing = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_createIfMissing_(self, v7, &a3->_tableUID, 1, v8);
+  objc_msgSend_dgl_cellsWithRecordsInRange_formulaCellsOnly_(self, v5, range, 1, v6);
+  IfMissing = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_createIfMissing_(self, v7, &range->_tableUID, 1, v8);
   v12 = __p;
   if (__p != v15)
   {
@@ -1364,9 +1364,9 @@ LABEL_8:
   sub_2212E22F0(&lock);
 }
 
-- (void)removeFormulasAt:(const void *)a3
+- (void)removeFormulasAt:(const void *)at
 {
-  if ((TSCECellRefSet::isEmpty(a3) & 1) == 0)
+  if ((TSCECellRefSet::isEmpty(at) & 1) == 0)
   {
     p_dependencyGraphLock = &self->_dependencyGraphLock;
     os_unfair_lock_lock(&self->_dependencyGraphLock);
@@ -1402,7 +1402,7 @@ LABEL_8:
     v5[6] = v10;
     v5[7] = v8;
     v5[8] = v6;
-    TSCECellRefSet::enumerateOwnersUsingBlock(a3, v5);
+    TSCECellRefSet::enumerateOwnersUsingBlock(at, v5);
     _Block_object_dispose(v6, 8);
 
     _Block_object_dispose(v8, 8);
@@ -1415,7 +1415,7 @@ LABEL_8:
   }
 }
 
-- (vector<TSUCellCoord,)formulaCoordsInRange:(TSCEDependencyTracker *)self inOwnerUID:(SEL)a3
+- (vector<TSUCellCoord,)formulaCoordsInRange:(TSCEDependencyTracker *)self inOwnerUID:(SEL)d
 {
   v22 = 0;
   v23 = &v22;
@@ -1426,7 +1426,7 @@ LABEL_8:
   v29 = 0;
   v30 = 0;
   __p = 0;
-  IfMissing = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_createIfMissing_(self, a3, a5, 1, v5);
+  IfMissing = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_createIfMissing_(self, d, a5, 1, v5);
   p_dependencyGraphLock = &self->_dependencyGraphLock;
   v20 = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
@@ -1464,10 +1464,10 @@ LABEL_8:
   return result;
 }
 
-- (void)scheduleRepairingSpanningFormulasInOwner:(const TSKUIDStruct *)a3 upgradeMinion:(id)a4
+- (void)scheduleRepairingSpanningFormulasInOwner:(const TSKUIDStruct *)owner upgradeMinion:(id)minion
 {
-  v6 = a4;
-  if (v6)
+  minionCopy = minion;
+  if (minionCopy)
   {
     v23[0] = 0;
     v23[1] = 0;
@@ -1475,8 +1475,8 @@ LABEL_8:
     lock = &self->_dependencyGraphLock;
     os_unfair_lock_lock(&self->_dependencyGraphLock);
     v21 = 1;
-    v10 = objc_msgSend_dgl_spanningRowDependenciesForOwnerUID_(self, v7, a3, v8, v9);
-    v17 = objc_msgSend_dgl_spanningColumnDependenciesForOwnerUID_(self, v11, a3, v12, v13);
+    v10 = objc_msgSend_dgl_spanningRowDependenciesForOwnerUID_(self, v7, owner, v8, v9);
+    v17 = objc_msgSend_dgl_spanningColumnDependenciesForOwnerUID_(self, v11, owner, v12, v13);
     if (v10)
     {
       objc_msgSend_allFormulaCells_(v10, v14, &v22, v15, v16);
@@ -1493,7 +1493,7 @@ LABEL_8:
     v18[1] = 3221225472;
     v18[2] = sub_2213659B0;
     v18[3] = &unk_27845FBD8;
-    v19 = v6;
+    v19 = minionCopy;
     TSCECellRefSet::enumerateCellRefsUsingBlock(&v22, v18);
 
     sub_2212E22F0(&lock);
@@ -1501,24 +1501,24 @@ LABEL_8:
   }
 }
 
-- (void)resetAllExternalFormulasReferringToOwnerUIDs:(const void *)a3 upgradeMinion:(id)a4
+- (void)resetAllExternalFormulasReferringToOwnerUIDs:(const void *)ds upgradeMinion:(id)minion
 {
-  v9 = a4;
-  if (v9)
+  minionCopy = minion;
+  if (minionCopy)
   {
     v28[0] = 0;
     v28[1] = 0;
     v27 = v28;
     p_dependencyGraphLock = &self->_dependencyGraphLock;
     os_unfair_lock_lock(&self->_dependencyGraphLock);
-    objc_msgSend_dgl_formulaCellRefsReferringToOwnerUIDs_outFormulaCells_(self, v10, a3, &v27, v11);
+    objc_msgSend_dgl_formulaCellRefsReferringToOwnerUIDs_outFormulaCells_(self, v10, ds, &v27, v11);
     os_unfair_lock_unlock(&self->_dependencyGraphLock);
     v26 = 0;
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = sub_221365B84;
     v23[3] = &unk_27845FBD8;
-    v24 = v9;
+    v24 = minionCopy;
     TSCECellRefSet::enumerateCellRefsUsingBlock(&v27, v23);
 
     sub_2212E22F0(&p_dependencyGraphLock);
@@ -1536,7 +1536,7 @@ LABEL_8:
   }
 }
 
-- (TSCECellCoordSet)allFormulaCoordsInOwner:(SEL)a3
+- (TSCECellCoordSet)allFormulaCoordsInOwner:(SEL)owner
 {
   v18 = 0;
   v19 = &v18;
@@ -1576,32 +1576,32 @@ LABEL_8:
   return result;
 }
 
-- (void)dgl_setError:(id)a3 andWarnings:(id)a4 forCell:(TSUCellCoord)a5 inOwnerID:(unsigned __int16)a6
+- (void)dgl_setError:(id)error andWarnings:(id)warnings forCell:(TSUCellCoord)cell inOwnerID:(unsigned __int16)d
 {
-  v6 = a6;
-  v45 = a5;
-  v9 = a3;
-  v10 = a4;
-  v14 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, v11, v6, v12, v13);
+  dCopy = d;
+  cellCopy = cell;
+  errorCopy = error;
+  warningsCopy = warnings;
+  v14 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, v11, dCopy, v12, v13);
   v23 = objc_msgSend_errors(v14, v15, v16, v17, v18);
   if (v23)
   {
-    if (!v9 || (objc_msgSend_isAbortedError(v9, v19, v20, v21, v22) & 1) != 0)
+    if (!errorCopy || (objc_msgSend_isAbortedError(errorCopy, v19, v20, v21, v22) & 1) != 0)
     {
       goto LABEL_10;
     }
 
-    v25 = objc_msgSend_errorType(v9, v19, v24, v21, v22);
-    if (objc_msgSend_isErrorReferenceError(v9, v26, v27, v28, v29) || objc_msgSend_isUnsupportedFunctionError(v9, v19, v30, v21, v22))
+    v25 = objc_msgSend_errorType(errorCopy, v19, v24, v21, v22);
+    if (objc_msgSend_isErrorReferenceError(errorCopy, v26, v27, v28, v29) || objc_msgSend_isUnsupportedFunctionError(errorCopy, v19, v30, v21, v22))
     {
-      objc_msgSend_rangeRef(v9, v19, v30, v21, v22);
+      objc_msgSend_rangeRef(errorCopy, v19, v30, v21, v22);
       v31 = v41;
-      objc_msgSend_rangeRef(v9, v32, v33, v34, v35);
+      objc_msgSend_rangeRef(errorCopy, v32, v33, v34, v35);
       v43 = v31;
       v44 = v40;
       v41 = objc_msgSend_internalCellReferenceForCellRef_(self, v36, &v43, v37, v38);
       v42 = v39;
-      objc_msgSend_replaceErrorForCell_error_errDueToCellRef_(v23, v39, &v45, v9, &v41);
+      objc_msgSend_replaceErrorForCell_error_errDueToCellRef_(v23, v39, &cellCopy, errorCopy, &v41);
       if (!v25)
       {
         goto LABEL_10;
@@ -1613,46 +1613,46 @@ LABEL_8:
       if (!v25)
       {
 LABEL_10:
-        objc_msgSend_clearErrorAndWarningsForCell_(v23, v19, &v45, v21, v22);
+        objc_msgSend_clearErrorAndWarningsForCell_(v23, v19, &cellCopy, v21, v22);
         goto LABEL_11;
       }
 
       v41 = 0x7FFF7FFFFFFFLL;
       v42 = 0xFFFF;
-      objc_msgSend_replaceErrorForCell_error_errDueToCellRef_(v23, v19, &v45, v9, &v41);
+      objc_msgSend_replaceErrorForCell_error_errDueToCellRef_(v23, v19, &cellCopy, errorCopy, &v41);
     }
 
 LABEL_11:
-    objc_msgSend_setWarnings_forCell_(v23, v19, v10, &v45, v22);
+    objc_msgSend_setWarnings_forCell_(v23, v19, warningsCopy, &cellCopy, v22);
   }
 }
 
-- (void)setError:(id)a3 andWarnings:(id)a4 forCell:(TSUCellCoord)a5 inOwner:(const TSKUIDStruct *)a6
+- (void)setError:(id)error andWarnings:(id)warnings forCell:(TSUCellCoord)cell inOwner:(const TSKUIDStruct *)owner
 {
-  v10 = a3;
-  v11 = a4;
-  IfMissing = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_createIfMissing_(self, v12, a6, 1, v13);
+  errorCopy = error;
+  warningsCopy = warnings;
+  IfMissing = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_createIfMissing_(self, v12, owner, 1, v13);
   p_dependencyGraphLock = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
-  objc_msgSend_dgl_setError_andWarnings_forCell_inOwnerID_(self, v15, v10, v11, *&a5, IfMissing);
+  objc_msgSend_dgl_setError_andWarnings_forCell_inOwnerID_(self, v15, errorCopy, warningsCopy, *&cell, IfMissing);
   os_unfair_lock_unlock(&self->_dependencyGraphLock);
   v22 = 0;
   calcEngine = self->_calcEngine;
-  v19 = a5;
-  v20 = *a6;
-  objc_msgSend_replaceSpillError_ifCachedforSpillingOriginCellRef_(calcEngine, v17, v10, &v19, v18);
+  cellCopy = cell;
+  v20 = *owner;
+  objc_msgSend_replaceSpillError_ifCachedforSpillingOriginCellRef_(calcEngine, v17, errorCopy, &cellCopy, v18);
   sub_2212E22F0(&p_dependencyGraphLock);
 }
 
-- (int64_t)errorTypeForCell:(const TSCECellRef *)a3
+- (int64_t)errorTypeForCell:(const TSCECellRef *)cell
 {
   lock = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   v23 = 1;
-  tableUID = a3->_tableUID;
+  tableUID = cell->_tableUID;
   v8 = objc_msgSend_dgl_errorsForOwnerUID_(self, v5, &tableUID, v6, v7);
   v12 = v8;
-  if (v8 && (tableUID._lower = a3->coordinate, (v13 = objc_msgSend_errorCellForCell_(v8, v9, &tableUID, v10, v11)) != 0) && (v18 = *v13) != 0)
+  if (v8 && (tableUID._lower = cell->coordinate, (v13 = objc_msgSend_errorCellForCell_(v8, v9, &tableUID, v10, v11)) != 0) && (v18 = *v13) != 0)
   {
     v19 = objc_msgSend_errorType(v18, v14, v15, v16, v17);
   }
@@ -1669,15 +1669,15 @@ LABEL_11:
   return v19;
 }
 
-- (id)errorForCell:(const TSCECellRef *)a3
+- (id)errorForCell:(const TSCECellRef *)cell
 {
   lock = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   v18 = 1;
-  tableUID = a3->_tableUID;
+  tableUID = cell->_tableUID;
   v8 = objc_msgSend_dgl_errorsForOwnerUID_(self, v5, &tableUID, v6, v7);
   v12 = v8;
-  if (v8 && (tableUID._lower = a3->coordinate, (v13 = objc_msgSend_errorCellForCell_(v8, v9, &tableUID, v10, v11)) != 0))
+  if (v8 && (tableUID._lower = cell->coordinate, (v13 = objc_msgSend_errorCellForCell_(v8, v9, &tableUID, v10, v11)) != 0))
   {
     v14 = *v13;
   }
@@ -1695,22 +1695,22 @@ LABEL_11:
   return v14;
 }
 
-- (void)clearErrorAndWarningsForCell:(TSUCellCoord)a3 inOwner:(const TSKUIDStruct *)a4
+- (void)clearErrorAndWarningsForCell:(TSUCellCoord)cell inOwner:(const TSKUIDStruct *)owner
 {
-  IfMissing = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_createIfMissing_(self, a2, a4, 1, v4);
+  IfMissing = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_createIfMissing_(self, a2, owner, 1, v4);
   p_dependencyGraphLock = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
-  objc_msgSend_dgl_setError_andWarnings_forCell_inOwnerID_(self, v9, 0, 0, *&a3, IfMissing);
+  objc_msgSend_dgl_setError_andWarnings_forCell_inOwnerID_(self, v9, 0, 0, *&cell, IfMissing);
   os_unfair_lock_unlock(&self->_dependencyGraphLock);
   v16 = 0;
   calcEngine = self->_calcEngine;
-  v13 = a3;
-  v14 = *a4;
-  objc_msgSend_replaceSpillError_ifCachedforSpillingOriginCellRef_(calcEngine, v11, 0, &v13, v12);
+  cellCopy = cell;
+  v14 = *owner;
+  objc_msgSend_replaceSpillError_ifCachedforSpillingOriginCellRef_(calcEngine, v11, 0, &cellCopy, v12);
   sub_2212E22F0(&p_dependencyGraphLock);
 }
 
-- (void)clearErrorAndWarningsForCells:(const void *)a3
+- (void)clearErrorAndWarningsForCells:(const void *)cells
 {
   p_dependencyGraphLock = &self->_dependencyGraphLock;
   v11 = &self->_dependencyGraphLock;
@@ -1735,7 +1735,7 @@ LABEL_11:
   v7[5] = v8;
   v7[6] = v9;
   v7[4] = self;
-  TSCECellRefSet::enumerateCellRefsUsingBlock(a3, v7);
+  TSCECellRefSet::enumerateCellRefsUsingBlock(cells, v7);
   os_unfair_lock_unlock(p_dependencyGraphLock);
   v12 = 0;
   v6[0] = MEMORY[0x277D85DD0];
@@ -1743,21 +1743,21 @@ LABEL_11:
   v6[2] = sub_221366548;
   v6[3] = &unk_27845FBD8;
   v6[4] = self;
-  TSCECellRefSet::enumerateCellRefsUsingBlock(a3, v6);
+  TSCECellRefSet::enumerateCellRefsUsingBlock(cells, v6);
   _Block_object_dispose(v8, 8);
   _Block_object_dispose(v9, 8);
   sub_2212E22F0(&v11);
 }
 
-- (id)warningsForCell:(const TSCECellRef *)a3
+- (id)warningsForCell:(const TSCECellRef *)cell
 {
   lock = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   v18 = 1;
-  tableUID = a3->_tableUID;
+  tableUID = cell->_tableUID;
   v8 = objc_msgSend_dgl_errorsForOwnerUID_(self, v5, &tableUID, v6, v7);
   v12 = v8;
-  if (v8 && (tableUID._lower = a3->coordinate, (v13 = objc_msgSend_errorCellForCell_(v8, v9, &tableUID, v10, v11)) != 0))
+  if (v8 && (tableUID._lower = cell->coordinate, (v13 = objc_msgSend_errorCellForCell_(v8, v9, &tableUID, v10, v11)) != 0))
   {
     v14 = *(v13 + 8);
   }
@@ -1775,19 +1775,19 @@ LABEL_11:
   return v14;
 }
 
-- (BOOL)setSpillSize:(id)a3 forCell:(const TSCECellRef *)a4 withOverlaps:(void *)a5
+- (BOOL)setSpillSize:(id)size forCell:(const TSCECellRef *)cell withOverlaps:(void *)overlaps
 {
-  v40.origin = a4->coordinate;
-  v40.size = a3;
+  v40.origin = cell->coordinate;
+  v40.size = size;
   if (TSUCellRect::isSingleCell(&v40))
   {
-    objc_msgSend_clearSpillSizeForCell_(self, v9, a4, v10, v11);
+    objc_msgSend_clearSpillSizeForCell_(self, v9, cell, v10, v11);
     return 1;
   }
 
   else
   {
-    v37[0] = a4->_tableUID;
+    v37[0] = cell->_tableUID;
     v13 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, v9, v37, v10, v11);
     lock = &self->_dependencyGraphLock;
     os_unfair_lock_lock(&self->_dependencyGraphLock);
@@ -1795,15 +1795,15 @@ LABEL_11:
     v17 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, v14, v13, v15, v16);
     v22 = objc_msgSend_spillSizes(v17, v18, v19, v20, v21);
     v25 = v22;
-    if (v22 && (objc_msgSend_hasSpillsOverlappingRange_outSpillRects_(v22, v23, &v40, a5, v24) & 1) == 0)
+    if (v22 && (objc_msgSend_hasSpillsOverlappingRange_outSpillRects_(v22, v23, &v40, overlaps, v24) & 1) == 0)
     {
-      *&v37[0] = a4->coordinate;
-      objc_msgSend_replaceSpillSizeForCell_spillSize_(v25, v26, v37, *&a3, v27);
+      *&v37[0] = cell->coordinate;
+      objc_msgSend_replaceSpillSizeForCell_spillSize_(v25, v26, v37, *&size, v27);
       os_unfair_lock_unlock(lock);
       v39 = 0;
       calcEngine = self->_calcEngine;
-      tableUID = a4->_tableUID;
-      coordinate = a4->coordinate;
+      tableUID = cell->_tableUID;
+      coordinate = cell->coordinate;
       objc_msgSend_spillChangedPrecedentForTableUID_spillOrigin_(TSCESpillOwner, v29, &tableUID, &coordinate, v30);
       objc_msgSend_markCellRefAsDirty_(calcEngine, v31, v37, v32, v33);
       v12 = 1;
@@ -1822,9 +1822,9 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)hasSpillsOverlappingRange:(const TSUCellRect *)a3 inTableUID:(const TSKUIDStruct *)a4 outSpillRects:(void *)a5
+- (BOOL)hasSpillsOverlappingRange:(const TSUCellRect *)range inTableUID:(const TSKUIDStruct *)d outSpillRects:(void *)rects
 {
-  v8 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, a4, a4, a5);
+  v8 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, d, d, rects);
   lock = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   v24 = 1;
@@ -1833,7 +1833,7 @@ LABEL_11:
   v20 = v17;
   if (v17)
   {
-    hasSpillsOverlappingRange_outSpillRects = objc_msgSend_hasSpillsOverlappingRange_outSpillRects_(v17, v18, a3, a5, v19, lock);
+    hasSpillsOverlappingRange_outSpillRects = objc_msgSend_hasSpillsOverlappingRange_outSpillRects_(v17, v18, range, rects, v19, lock);
   }
 
   else
@@ -1848,9 +1848,9 @@ LABEL_11:
   return hasSpillsOverlappingRange_outSpillRects;
 }
 
-- (BOOL)hasSpillingCellsIntersectingRange:(const TSUCellRect *)a3 inTableUID:(const TSKUIDStruct *)a4
+- (BOOL)hasSpillingCellsIntersectingRange:(const TSUCellRect *)range inTableUID:(const TSKUIDStruct *)d
 {
-  v7 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, a4, a4, v4);
+  v7 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, d, d, v4);
   lock = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   v24 = 1;
@@ -1859,7 +1859,7 @@ LABEL_11:
   v20 = v16;
   if (v16)
   {
-    hasSpillingCellsIntersectingRange = objc_msgSend_hasSpillingCellsIntersectingRange_(v16, v17, a3, v18, v19, lock);
+    hasSpillingCellsIntersectingRange = objc_msgSend_hasSpillingCellsIntersectingRange_(v16, v17, range, v18, v19, lock);
   }
 
   else
@@ -1874,9 +1874,9 @@ LABEL_11:
   return hasSpillingCellsIntersectingRange;
 }
 
-- (void)clearSpillSizeForCell:(const TSCECellRef *)a3
+- (void)clearSpillSizeForCell:(const TSCECellRef *)cell
 {
-  *lock = a3->_tableUID;
+  *lock = cell->_tableUID;
   v7 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, lock, v3, v4);
   lock[0] = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
@@ -1886,7 +1886,7 @@ LABEL_11:
   v20 = v16;
   if (v16)
   {
-    coordinate = a3->coordinate;
+    coordinate = cell->coordinate;
     objc_msgSend_clearSpillSizeForCell_(v16, v17, &coordinate, v18, v19);
   }
 
@@ -1896,10 +1896,10 @@ LABEL_11:
   sub_2212E22F0(lock);
 }
 
-- (void)clearSpillSizesInRange:(const TSCERangeRef *)a3
+- (void)clearSpillSizesInRange:(const TSCERangeRef *)range
 {
-  v7 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, &a3->_tableUID, v3, v4);
-  TSCERangeCoordinate::asCellRect(&a3->range);
+  v7 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, &range->_tableUID, v3, v4);
+  TSCERangeCoordinate::asCellRect(&range->range);
   v25[0] = v8;
   v25[1] = v9;
   lock = &self->_dependencyGraphLock;
@@ -1919,9 +1919,9 @@ LABEL_11:
   sub_2212E22F0(&lock);
 }
 
-- (TSCECellCoordSet)spillOriginsInRange:(SEL)a3
+- (TSCECellCoordSet)spillOriginsInRange:(SEL)range
 {
-  v9 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a3, &a4->_tableUID, v4, v5);
+  v9 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, range, &a4->_tableUID, v4, v5);
   TSCERangeCoordinate::asCellRect(&a4->range);
   retstr->_rowsPerColumn.__tree_.__end_node_.__left_ = 0;
   retstr->_rowsPerColumn.__tree_.__begin_node_ = &retstr->_rowsPerColumn.__tree_.__end_node_;
@@ -1949,9 +1949,9 @@ LABEL_11:
   return sub_2212E22F0(&lock);
 }
 
-- ($85CD2974BE96D4886BB301820D1C36C2)spillSizeForCell:(const TSCECellRef *)a3
+- ($85CD2974BE96D4886BB301820D1C36C2)spillSizeForCell:(const TSCECellRef *)cell
 {
-  *lock = a3->_tableUID;
+  *lock = cell->_tableUID;
   v7 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, lock, v3, v4);
   lock[0] = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
@@ -1961,7 +1961,7 @@ LABEL_11:
   v20 = v16;
   if (v16)
   {
-    coordinate = a3->coordinate;
+    coordinate = cell->coordinate;
     v21 = objc_msgSend_spillSizeForCell_(v16, v17, &coordinate, v18, v19);
   }
 
@@ -1977,9 +1977,9 @@ LABEL_11:
   return v21;
 }
 
-- (BOOL)hasVerticalSpills:(const TSKUIDStruct *)a3
+- (BOOL)hasVerticalSpills:(const TSKUIDStruct *)spills
 {
-  v6 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, a3, v3, v4);
+  v6 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, spills, v3, v4);
   lock = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   v24 = 1;
@@ -2003,9 +2003,9 @@ LABEL_11:
   return hasVerticalSpills;
 }
 
-- (TSCECellCoordSet)verticalSpillCells:(SEL)a3
+- (TSCECellCoordSet)verticalSpillCells:(SEL)cells
 {
-  v8 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a3, a4, v4, v5);
+  v8 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, cells, a4, v4, v5);
   lock = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   v27 = 1;
@@ -2030,9 +2030,9 @@ LABEL_11:
   return sub_2212E22F0(&lock);
 }
 
-- (BOOL)hasHorizontalSpills:(const TSKUIDStruct *)a3
+- (BOOL)hasHorizontalSpills:(const TSKUIDStruct *)spills
 {
-  v6 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, a3, v3, v4);
+  v6 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, spills, v3, v4);
   lock = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   v24 = 1;
@@ -2056,9 +2056,9 @@ LABEL_11:
   return hasHorizontalSpills;
 }
 
-- (TSCECellCoordSet)cellCoordsWithError:(SEL)a3 inTable:(int64_t)a4
+- (TSCECellCoordSet)cellCoordsWithError:(SEL)error inTable:(int64_t)table
 {
-  v9 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a3, a5, a5, v5);
+  v9 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, error, a5, a5, v5);
   p_dependencyGraphLock = &self->_dependencyGraphLock;
   v22 = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
@@ -2072,7 +2072,7 @@ LABEL_11:
   v18 = v14;
   if (v14)
   {
-    objc_msgSend_cellCoordsWithError_(v14, v15, a4, v16, v17);
+    objc_msgSend_cellCoordsWithError_(v14, v15, table, v16, v17);
     TSCECellCoordSet::operator=(retstr, v20);
     sub_22107C860(v21, v21[1]);
     p_dependencyGraphLock = v22;
@@ -2084,13 +2084,13 @@ LABEL_11:
   return sub_2212E22F0(&v22);
 }
 
-- (TSCECellRef)rootCauseForErrorInCell:(SEL)a3 inOwner:(TSUCellCoord)a4 outAtRootCell:(const TSKUIDStruct *)a5
+- (TSCECellRef)rootCauseForErrorInCell:(SEL)cell inOwner:(TSUCellCoord)owner outAtRootCell:(const TSKUIDStruct *)rootCell
 {
   retstr->_tableUID._lower = 0;
   retstr->_tableUID._upper = 0;
   retstr->coordinate = 0x7FFF7FFFFFFFLL;
-  v41.coordinate = a4;
-  v41._tableUID = *a5;
+  v41.coordinate = owner;
+  v41._tableUID = *rootCell;
   lock = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   v40 = 1;
@@ -2170,9 +2170,9 @@ LABEL_15:
   return sub_2212E22F0(&lock);
 }
 
-- (unint64_t)errorCountForOwner:(const TSKUIDStruct *)a3
+- (unint64_t)errorCountForOwner:(const TSKUIDStruct *)owner
 {
-  v6 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, a3, v3, v4);
+  v6 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, owner, v3, v4);
   if (v6 == 0xFFFF)
   {
     return 0;
@@ -2202,28 +2202,28 @@ LABEL_15:
   return v22;
 }
 
-- (unsigned)dgl_removePrecedentsFromOwnerInPhases:(unsigned __int16)a3 startPhase:(unsigned int)a4 startTime:(id)a5 timeout:(double)a6
+- (unsigned)dgl_removePrecedentsFromOwnerInPhases:(unsigned __int16)phases startPhase:(unsigned int)phase startTime:(id)time timeout:(double)timeout
 {
-  v8 = a3;
-  v113 = a3;
-  v13 = a5;
+  phasesCopy = phases;
+  phasesCopy2 = phases;
+  timeCopy = time;
   __p = 0;
   v111 = 0;
   v112 = 0;
-  if (v8 == 0xFFFF)
+  if (phasesCopy == 0xFFFF)
   {
     goto LABEL_8;
   }
 
-  v14 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, v10, v8, v11, v12);
+  v14 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, v10, phasesCopy, v11, v12);
   v16 = v14;
   if (!v14)
   {
-    sub_221266D14(&__p, &v113);
+    sub_221266D14(&__p, &phasesCopy2);
     goto LABEL_8;
   }
 
-  if (a4 <= 1)
+  if (phase <= 1)
   {
     v17 = objc_msgSend_uuidReferences(v14, v10, v15, v11, v12);
     objc_msgSend_clear(v17, v18, v19, v20, v21);
@@ -2231,12 +2231,12 @@ LABEL_15:
     v26 = objc_msgSend_rangeDependencies(v16, v22, v23, v24, v25);
     objc_msgSend_deleteAllReferencesFromThisTable(v26, v27, v28, v29, v30);
 
-    if (v13)
+    if (timeCopy)
     {
-      objc_msgSend_timeIntervalSinceNow(v13, v10, v15, v11, v12);
-      if (-v31 > a6)
+      objc_msgSend_timeIntervalSinceNow(timeCopy, v10, v15, v11, v12);
+      if (-v31 > timeout)
       {
-        v32 = 2;
+        phaseCopy = 2;
         goto LABEL_29;
       }
     }
@@ -2245,9 +2245,9 @@ LABEL_33:
     v45 = objc_msgSend_spanningRowDependencies(v16, v10, v15, v11, v12);
     objc_msgSend_removeAllPrecedents(v45, v46, v47, v48, v49);
 
-    if (v13 && (objc_msgSend_timeIntervalSinceNow(v13, v50, v51, v52, v53), -v54 > a6) || (objc_msgSend_shouldAbortRecalculation(self->_calcEngine, v50, v51, v52, v53) & 1) != 0)
+    if (timeCopy && (objc_msgSend_timeIntervalSinceNow(timeCopy, v50, v51, v52, v53), -v54 > timeout) || (objc_msgSend_shouldAbortRecalculation(self->_calcEngine, v50, v51, v52, v53) & 1) != 0)
     {
-      v32 = 3;
+      phaseCopy = 3;
       goto LABEL_29;
     }
 
@@ -2255,34 +2255,34 @@ LABEL_38:
     v55 = objc_msgSend_spanningColumnDependencies(v16, v10, v15, v11, v12);
     objc_msgSend_removeAllPrecedents(v55, v56, v57, v58, v59);
 
-    if (v13 && (objc_msgSend_timeIntervalSinceNow(v13, v60, v61, v62, v63), -v64 > a6) || (objc_msgSend_shouldAbortRecalculation(self->_calcEngine, v60, v61, v62, v63) & 1) != 0)
+    if (timeCopy && (objc_msgSend_timeIntervalSinceNow(timeCopy, v60, v61, v62, v63), -v64 > timeout) || (objc_msgSend_shouldAbortRecalculation(self->_calcEngine, v60, v61, v62, v63) & 1) != 0)
     {
-      v32 = 4;
+      phaseCopy = 4;
       goto LABEL_29;
     }
 
     goto LABEL_43;
   }
 
-  if (a4 == 2)
+  if (phase == 2)
   {
     goto LABEL_33;
   }
 
-  if (a4 <= 3)
+  if (phase <= 3)
   {
     goto LABEL_38;
   }
 
-  v32 = a4;
-  if (a4 != 4)
+  phaseCopy = phase;
+  if (phase != 4)
   {
 LABEL_58:
-    if (a4 > 5)
+    if (phase > 5)
     {
-      if (a4 != 6)
+      if (phase != 6)
       {
-        if (v32 != 100)
+        if (phaseCopy != 100)
         {
           goto LABEL_29;
         }
@@ -2299,18 +2299,18 @@ LABEL_58:
       v85 = objc_msgSend_wholeOwnerDependencies(v16, v81, v82, v83, v84);
       objc_msgSend_removeAllPrecedents(v85, v86, v87, v88, v89);
 
-      if (v13 && (objc_msgSend_timeIntervalSinceNow(v13, v90, v91, v92, v93), -v94 > a6) || (objc_msgSend_shouldAbortRecalculation(self->_calcEngine, v90, v91, v92, v93) & 1) != 0)
+      if (timeCopy && (objc_msgSend_timeIntervalSinceNow(timeCopy, v90, v91, v92, v93), -v94 > timeout) || (objc_msgSend_shouldAbortRecalculation(self->_calcEngine, v90, v91, v92, v93) & 1) != 0)
       {
-        v32 = 6;
+        phaseCopy = 6;
         goto LABEL_29;
       }
     }
 
     v95 = objc_msgSend_uuidReferenceMap(self->_calcEngine, v10, v15, v11, v12);
-    objc_msgSend_removeAllCellRefsInOwner_(v95, v96, v113, v97, v98);
+    objc_msgSend_removeAllCellRefsInOwner_(v95, v96, phasesCopy2, v97, v98);
 
     v103 = objc_msgSend_groupNodeReferenceMap(self->_calcEngine, v99, v100, v101, v102);
-    objc_msgSend_removeAllCellRefsInOwner_(v103, v104, v113, v105, v106);
+    objc_msgSend_removeAllCellRefsInOwner_(v103, v104, phasesCopy2, v105, v106);
 
 LABEL_8:
     for (i = self->_formulaOwnerDependencies.__table_.__first_node_.__next_; i; i = *i)
@@ -2347,7 +2347,7 @@ LABEL_8:
       for (k = 1; ; ++k)
       {
         objc_msgSend_dgl_deleteOwnerDependenciesIfPossible_(self, v34, *v38, v35, v36);
-        if (!v13 || (k & 0xF) != 0)
+        if (!timeCopy || (k & 0xF) != 0)
         {
           if (++v38 == v39)
           {
@@ -2357,9 +2357,9 @@ LABEL_8:
 
         else
         {
-          objc_msgSend_timeIntervalSinceNow(v13, v34, v41, v35, v36);
+          objc_msgSend_timeIntervalSinceNow(timeCopy, v34, v41, v35, v36);
           ++v38;
-          if (-v42 > a6 || v38 == v39)
+          if (-v42 > timeout || v38 == v39)
           {
             break;
           }
@@ -2368,7 +2368,7 @@ LABEL_8:
     }
 
     sub_2210BDEC0(v108);
-    v32 = 100;
+    phaseCopy = 100;
     goto LABEL_29;
   }
 
@@ -2380,26 +2380,26 @@ LABEL_43:
   {
     if ((v70 & 1) == 0)
     {
-      v32 = 5;
+      phaseCopy = 5;
       goto LABEL_52;
     }
 
     v71 = objc_msgSend_cellDependencies(v16, v10, v15, v11, v12);
     v70 = objc_msgSend_removeSomePrecedents_markDependentsDirty_(v71, v72, 1000, 0, v73);
 
-    if (v13)
+    if (timeCopy)
     {
-      objc_msgSend_timeIntervalSinceNow(v13, v10, v15, v11, v12);
-      if (-v74 > a6)
+      objc_msgSend_timeIntervalSinceNow(timeCopy, v10, v15, v11, v12);
+      if (-v74 > timeout)
       {
         if (v70)
         {
-          v32 = 4;
+          phaseCopy = 4;
         }
 
         else
         {
-          v32 = 5;
+          phaseCopy = 5;
         }
 
         goto LABEL_57;
@@ -2410,23 +2410,23 @@ LABEL_43:
   while (!objc_msgSend_shouldAbortRecalculation(self->_calcEngine, v10, v15, v11, v12));
   if (v70)
   {
-    v32 = 4;
+    phaseCopy = 4;
   }
 
   else
   {
-    v32 = 5;
+    phaseCopy = 5;
   }
 
 LABEL_52:
-  if (!v13)
+  if (!timeCopy)
   {
     goto LABEL_58;
   }
 
 LABEL_57:
-  objc_msgSend_timeIntervalSinceNow(v13, v10, v15, v11, v12);
-  if (-v75 <= a6)
+  objc_msgSend_timeIntervalSinceNow(timeCopy, v10, v15, v11, v12);
+  if (-v75 <= timeout)
   {
     goto LABEL_58;
   }
@@ -2438,10 +2438,10 @@ LABEL_29:
     operator delete(__p);
   }
 
-  return v32;
+  return phaseCopy;
 }
 
-- (void)processUnregisteringOwners:(double)a3
+- (void)processUnregisteringOwners:(double)owners
 {
   if (self->_hasOwnerIdsToUnregister)
   {
@@ -2471,7 +2471,7 @@ LABEL_29:
             break;
           }
 
-          v19 = objc_msgSend_dgl_removePrecedentsFromOwnerInPhases_startPhase_startTime_timeout_(self, v18, v12, *(end - 1), v10, a3);
+          v19 = objc_msgSend_dgl_removePrecedentsFromOwnerInPhases_startPhase_startTime_timeout_(self, v18, v12, *(end - 1), v10, owners);
           if (v19 != 100)
           {
             *(end - 1) = v19;
@@ -2496,9 +2496,9 @@ LABEL_29:
   }
 }
 
-- (void)removeAllPrecedentsFromOwner:(const TSKUIDStruct *)a3
+- (void)removeAllPrecedentsFromOwner:(const TSKUIDStruct *)owner
 {
-  v6 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, a3, v3, v4);
+  v6 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, owner, v3, v4);
   v95 = v6;
   lock = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
@@ -2541,9 +2541,9 @@ LABEL_29:
   sub_2212E22F0(&lock);
 }
 
-- (BOOL)dgl_hasFormulaAt:(const TSCEInternalCellReference *)a3
+- (BOOL)dgl_hasFormulaAt:(const TSCEInternalCellReference *)at
 {
-  CellRecordInternal_willModifyOnTile = objc_msgSend_dgl_findCellRecordInternal_willModifyOnTile_(self, a2, a3, 0, v3);
+  CellRecordInternal_willModifyOnTile = objc_msgSend_dgl_findCellRecordInternal_willModifyOnTile_(self, a2, at, 0, v3);
   if (CellRecordInternal_willModifyOnTile)
   {
     LODWORD(CellRecordInternal_willModifyOnTile) = (*(CellRecordInternal_willModifyOnTile + 38) >> 2) & 1;
@@ -2552,18 +2552,18 @@ LABEL_29:
   return CellRecordInternal_willModifyOnTile;
 }
 
-- (void)dgl_replaceCellWithFormulaForOwner:(unsigned __int16)a3 formulaCoord:(TSUCellCoord)a4 precedents:(id)a5 replaceOptions:(TSCEReplaceFormulaOptions *)a6
+- (void)dgl_replaceCellWithFormulaForOwner:(unsigned __int16)owner formulaCoord:(TSUCellCoord)coord precedents:(id)precedents replaceOptions:(TSCEReplaceFormulaOptions *)options
 {
-  *v132 = a3;
-  v142[0] = a4;
-  v13 = a5;
-  v131 = a6;
-  if (a6->var2)
+  *v132 = owner;
+  v142[0] = coord;
+  precedentsCopy = precedents;
+  optionsCopy = options;
+  if (options->var2)
   {
-    v136.coordinate = (*&a4 & 0xFFFFFFFFFFFFLL);
+    v136.coordinate = (*&coord & 0xFFFFFFFFFFFFLL);
     LODWORD(v136._tableUID._lower) = *v132;
     objc_msgSend_dgl_precedentsOfCell_(self, v9, &v136, v11, v12);
-    v18 = objc_msgSend_referenceSet(v13, v14, v15, v16, v17);
+    v18 = objc_msgSend_referenceSet(precedentsCopy, v14, v15, v16, v17);
     if (TSCEReferenceSet::isEqualToDepTrackerPrecedents(v18, &v141, v19, v20, v21))
     {
       if (!TSCEReferenceSet::isEmpty(&v141, v22, v23, v24, v25))
@@ -2586,9 +2586,9 @@ LABEL_29:
     }
   }
 
-  if (v13)
+  if (precedentsCopy)
   {
-    v30 = objc_msgSend_isEmpty(v13, v9, v10, v11, v12) ^ 1;
+    v30 = objc_msgSend_isEmpty(precedentsCopy, v9, v10, v11, v12) ^ 1;
   }
 
   else
@@ -2613,7 +2613,7 @@ LABEL_29:
     v48 = v43;
     if (v43)
     {
-      if (!v131->var3)
+      if (!optionsCopy->var3)
       {
         v49 = objc_msgSend_spillSizes(v43, v44, v45, v46, v47);
         v53 = v49;
@@ -2628,7 +2628,7 @@ LABEL_29:
       objc_msgSend_spillPrecedentForTableUID_(TSCEHauntedOwner, v54, v135, v55, v56);
       if (v30)
       {
-        v61 = objc_msgSend_referenceSet(v13, v57, v58, v59, v60);
+        v61 = objc_msgSend_referenceSet(precedentsCopy, v57, v58, v59, v60);
         v62 = TSCEReferenceSet::containsRef(v61, &v136);
       }
 
@@ -2649,7 +2649,7 @@ LABEL_29:
         v140 = v67;
         if (v67 != 0xFFFF && (v66 & 0x101FFFFFFFFFFFFLL) != 0x7FFF7FFFFFFFLL)
         {
-          if (!v62 || (v71 = objc_msgSend_referenceSet(v13, v67, v68, v69, v70), CellRefForOwner = TSCEReferenceSet::firstCellRefForOwner(v71, *v132, v72, v73, v74), CellRefForOwner != v139) || ((v139 ^ CellRefForOwner) & 0x101FFFF00000000) != 0 || v140 != v67)
+          if (!v62 || (v71 = objc_msgSend_referenceSet(precedentsCopy, v67, v68, v69, v70), CellRefForOwner = TSCEReferenceSet::firstCellRefForOwner(v71, *v132, v72, v73, v74), CellRefForOwner != v139) || ((v139 ^ CellRefForOwner) & 0x101FFFF00000000) != 0 || v140 != v67)
           {
             v76 = objc_msgSend_referencesToDirty(self->_calcEngine, v67, v68, v69, v70);
             objc_msgSend_dirtyInternalCellRef_(v76, v77, &v139, v78, v79);
@@ -2703,7 +2703,7 @@ LABEL_29:
 
       v137 = v142[0] & 0xFFFFFFFFFFFFLL;
       v138 = *v132;
-      if (!v131->var3)
+      if (!optionsCopy->var3)
       {
         objc_msgSend_dgl_removeCellRefFromAllUuidMaps_(self, v123, &v137, v125, v126);
       }
@@ -2715,39 +2715,39 @@ LABEL_29:
 LABEL_43:
 }
 
-- (void)replaceCellWithFormulaForOwner:(const TSKUIDStruct *)a3 formulaCoord:(TSUCellCoord)a4 precedents:(id)a5 replaceOptions:(TSCEReplaceFormulaOptions *)a6
+- (void)replaceCellWithFormulaForOwner:(const TSKUIDStruct *)owner formulaCoord:(TSUCellCoord)coord precedents:(id)precedents replaceOptions:(TSCEReplaceFormulaOptions *)options
 {
-  v38 = a4;
-  v9 = a5;
-  v13 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, v10, a3, v11, v12);
-  if (!TSUCellCoord::verifyCoordIsSane(&v38) || ((*&v38 & 0xFFFF00000000) == 0x7FFF00000000 ? (v17 = v38.row == 0x7FFFFFFFLL) : (v17 = 1), !v17 || v38.row == 0x7FFFFFFFLL && (*&v38 & 0xFFFF00000000) != 0x7FFF00000000))
+  coordCopy = coord;
+  precedentsCopy = precedents;
+  v13 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, v10, owner, v11, v12);
+  if (!TSUCellCoord::verifyCoordIsSane(&coordCopy) || ((*&coordCopy & 0xFFFF00000000) == 0x7FFF00000000 ? (v17 = coordCopy.row == 0x7FFFFFFFLL) : (v17 = 1), !v17 || coordCopy.row == 0x7FFFFFFFLL && (*&coordCopy & 0xFFFF00000000) != 0x7FFF00000000))
   {
     v18 = MEMORY[0x277D81150];
     v19 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, "[TSCEDependencyTracker replaceCellWithFormulaForOwner:formulaCoord:precedents:replaceOptions:]", v15, v16);
     v23 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v20, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEDependencyTracker.mm", v21, v22);
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v18, v24, v19, v23, 2331, 0, "Not expecting insane, or spanning coordinates here: (%lu,%lu)", v38.column, v38.row);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v18, v24, v19, v23, 2331, 0, "Not expecting insane, or spanning coordinates here: (%lu,%lu)", coordCopy.column, coordCopy.row);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26, v27, v28);
   }
 
-  if (!a6->var1 || (lock.coordinate = (*&v38 & 0xFFFFFFFFFFFFLL), LODWORD(lock._tableUID._lower) = v13, (objc_msgSend_markIntCellRefDirtyIfCellContainsAFormula_(self, v14, &lock, v15, v16) & 1) == 0))
+  if (!options->var1 || (lock.coordinate = (*&coordCopy & 0xFFFFFFFFFFFFLL), LODWORD(lock._tableUID._lower) = v13, (objc_msgSend_markIntCellRefDirtyIfCellContainsAFormula_(self, v14, &lock, v15, v16) & 1) == 0))
   {
-    if (!a6->var2)
+    if (!options->var2)
     {
-      objc_msgSend_spillPrecedentForTableUID_(TSCEHauntedOwner, v14, a3, v15, v16);
-      v33 = objc_msgSend_referenceSet(v9, v29, v30, v31, v32);
+      objc_msgSend_spillPrecedentForTableUID_(TSCEHauntedOwner, v14, owner, v15, v16);
+      v33 = objc_msgSend_referenceSet(precedentsCopy, v29, v30, v31, v32);
       if (TSCEReferenceSet::containsRef(v33, &lock))
       {
-        a6->var2 = 1;
+        options->var2 = 1;
       }
     }
 
     lock.coordinate = &self->_dependencyGraphLock;
     os_unfair_lock_lock(&self->_dependencyGraphLock);
     LOBYTE(lock._tableUID._lower) = 1;
-    v34 = v38;
-    TSCEReplaceFormulaOptions::TSCEReplaceFormulaOptions(&v36, a6);
-    objc_msgSend_dgl_replaceCellWithFormulaForOwner_formulaCoord_precedents_replaceOptions_(self, v35, v13, v34, v9, &v36);
+    v34 = coordCopy;
+    TSCEReplaceFormulaOptions::TSCEReplaceFormulaOptions(&v36, options);
+    objc_msgSend_dgl_replaceCellWithFormulaForOwner_formulaCoord_precedents_replaceOptions_(self, v35, v13, v34, precedentsCopy, &v36);
 
     os_unfair_lock_unlock(*&lock.coordinate);
     LOBYTE(lock._tableUID._lower) = 0;
@@ -2755,12 +2755,12 @@ LABEL_43:
   }
 }
 
-- (void)replaceRemoteDataKeysInterestedInForCell:(TSCECellRef *)a3 specifierSet:(id)a4
+- (void)replaceRemoteDataKeysInterestedInForCell:(TSCECellRef *)cell specifierSet:(id)set
 {
-  v6 = a4;
+  setCopy = set;
   lock = &self->_dependencyGraphLock;
   v38 = 0;
-  tableUID = a3->_tableUID;
+  tableUID = cell->_tableUID;
   v10 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, v7, &tableUID, v8, v9);
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   v38 = 1;
@@ -2768,7 +2768,7 @@ LABEL_43:
   {
     v17 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, v14, v10, v15, v16);
     v22 = objc_msgSend_volatileDependencies(v17, v18, v19, v20, v21);
-    objc_msgSend_replaceRemoteDataKeyInterestedInForReference_specifierSet_(v22, v23, a3, v6, v24);
+    objc_msgSend_replaceRemoteDataKeyInterestedInForReference_specifierSet_(v22, v23, cell, setCopy, v24);
   }
 
   else
@@ -2786,10 +2786,10 @@ LABEL_43:
   sub_2212E22F0(&lock);
 }
 
-- (void)formulaCellsForDeletedOwner:(id)a3 outFormulaCells:(void *)a4
+- (void)formulaCellsForDeletedOwner:(id)owner outFormulaCells:(void *)cells
 {
-  v6 = a3;
-  v53[0] = objc_msgSend_tableUID(v6, v7, v8, v9, v10);
+  ownerCopy = owner;
+  v53[0] = objc_msgSend_tableUID(ownerCopy, v7, v8, v9, v10);
   v53[1] = v11;
   lock = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
@@ -2803,7 +2803,7 @@ LABEL_43:
     if (v21)
     {
       v26 = objc_msgSend_cellDependencies(v20, v22, v23, v24, v25);
-      objc_msgSend_formulaCellsReferencingThisOwner_(v26, v27, a4, v28, v29);
+      objc_msgSend_formulaCellsReferencingThisOwner_(v26, v27, cells, v28, v29);
     }
 
     v30 = objc_msgSend_rangeDependencies(v20, v22, v23, v24, v25);
@@ -2811,7 +2811,7 @@ LABEL_43:
     if (v30)
     {
       v35 = objc_msgSend_rangeDependencies(v20, v31, v32, v33, v34);
-      objc_msgSend_allFormulaCells_(v35, v36, a4, v37, v38);
+      objc_msgSend_allFormulaCells_(v35, v36, cells, v37, v38);
     }
 
     v39 = objc_msgSend_spanningColumnDependencies(v20, v31, v32, v33, v34);
@@ -2819,7 +2819,7 @@ LABEL_43:
     if (v39)
     {
       v44 = objc_msgSend_spanningColumnDependencies(v20, v40, v41, v42, v43);
-      objc_msgSend_formulaCellsReferencingIndices_endIndex_outFormulaCells_(v44, v45, 0, 999, a4);
+      objc_msgSend_formulaCellsReferencingIndices_endIndex_outFormulaCells_(v44, v45, 0, 999, cells);
     }
 
     v46 = objc_msgSend_spanningRowDependencies(v20, v40, v41, v42, v43);
@@ -2827,20 +2827,20 @@ LABEL_43:
     if (v46)
     {
       v49 = objc_msgSend_spanningRowDependencies(v20, v16, v47, v48, v19);
-      objc_msgSend_formulaCellsReferencingIndices_endIndex_outFormulaCells_(v49, v50, 0, 999999, a4);
+      objc_msgSend_formulaCellsReferencingIndices_endIndex_outFormulaCells_(v49, v50, 0, 999999, cells);
     }
   }
 
-  objc_msgSend_dgl_formulaCellsReferencingUuidsInSpec_outFormulaCells_(self, v16, v6, a4, v19, lock);
+  objc_msgSend_dgl_formulaCellsReferencingUuidsInSpec_outFormulaCells_(self, v16, ownerCopy, cells, v19, lock);
   os_unfair_lock_unlock(lock);
   v52 = 0;
   sub_2212E22F0(&lock);
 }
 
-- (void)formulaCellsForInsertedOwner:(id)a3 outFormulaCells:(void *)a4
+- (void)formulaCellsForInsertedOwner:(id)owner outFormulaCells:(void *)cells
 {
-  v6 = a3;
-  if (objc_msgSend_rewriteType(v6, v7, v8, v9, v10))
+  ownerCopy = owner;
+  if (objc_msgSend_rewriteType(ownerCopy, v7, v8, v9, v10))
   {
     v14 = MEMORY[0x277D81150];
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "[TSCEDependencyTracker formulaCellsForInsertedOwner:outFormulaCells:]", v12, v13);
@@ -2852,15 +2852,15 @@ LABEL_43:
 
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   LOBYTE(v28) = 1;
-  objc_msgSend_dgl_formulaCellsReferencingUuidsInSpec_outFormulaCells_(self, v25, v6, a4, v26, &self->_dependencyGraphLock, v28);
+  objc_msgSend_dgl_formulaCellsReferencingUuidsInSpec_outFormulaCells_(self, v25, ownerCopy, cells, v26, &self->_dependencyGraphLock, v28);
   os_unfair_lock_unlock(&self->_dependencyGraphLock);
   LOBYTE(v28) = 0;
   sub_2212E22F0(&v27);
 }
 
-- (void)dgl_formulaCellsAffectedByGeometryChangeToTable:(const TSKUIDStruct *)a3 outFormulaCells:(void *)a4
+- (void)dgl_formulaCellsAffectedByGeometryChangeToTable:(const TSKUIDStruct *)table outFormulaCells:(void *)cells
 {
-  objc_msgSend_geometryPrecedentForTableUID_(TSCEHauntedOwner, a2, a3, a4, v4);
+  objc_msgSend_geometryPrecedentForTableUID_(TSCEHauntedOwner, a2, table, cells, v4);
   v24 = v26;
   v10 = objc_msgSend_dgl_ownerDependenciesForOwnerUID_(self, v7, &v24, v8, v9);
   if (v10)
@@ -2873,15 +2873,15 @@ LABEL_43:
       v21 = objc_msgSend_cellDependencies(v15, v17, v18, v19, v20);
       *&v24 = v25;
       *(&v24 + 1) = v25;
-      objc_msgSend_formulaCellsReferencingCellsInRange_outFormulaCells_(v21, v22, &v24, a4, v23);
+      objc_msgSend_formulaCellsReferencingCellsInRange_outFormulaCells_(v21, v22, &v24, cells, v23);
     }
   }
 }
 
-- (void)formulaCellsForTableTranspose:(id)a3 outFormulaCells:(void *)a4
+- (void)formulaCellsForTableTranspose:(id)transpose outFormulaCells:(void *)cells
 {
-  v6 = a3;
-  if (objc_msgSend_rewriteType(v6, v7, v8, v9, v10) != 11)
+  transposeCopy = transpose;
+  if (objc_msgSend_rewriteType(transposeCopy, v7, v8, v9, v10) != 11)
   {
     v14 = MEMORY[0x277D81150];
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "[TSCEDependencyTracker formulaCellsForTableTranspose:outFormulaCells:]", v12, v13);
@@ -2894,7 +2894,7 @@ LABEL_43:
   lock = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   v83 = 1;
-  v80 = objc_msgSend_tableUID(v6, v25, v26, v27, v28);
+  v80 = objc_msgSend_tableUID(transposeCopy, v25, v26, v27, v28);
   v81 = v29;
   v32 = objc_msgSend_dgl_ownerDependenciesForOwnerUID_(self, v29, &v80, v30, v31);
   v37 = v32;
@@ -2905,10 +2905,10 @@ LABEL_43:
     if (v38)
     {
       v43 = objc_msgSend_cellDependencies(v37, v39, v40, v41, v42);
-      objc_msgSend_formulaCellsInThisOwner_(v43, v44, a4, v45, v46);
+      objc_msgSend_formulaCellsInThisOwner_(v43, v44, cells, v45, v46);
 
       v51 = objc_msgSend_cellDependencies(v37, v47, v48, v49, v50);
-      objc_msgSend_formulaCellsReferencingThisOwner_(v51, v52, a4, v53, v54);
+      objc_msgSend_formulaCellsReferencingThisOwner_(v51, v52, cells, v53, v54);
     }
 
     v55 = objc_msgSend_rangeDependencies(v37, v39, v40, v41, v42);
@@ -2916,7 +2916,7 @@ LABEL_43:
     if (v55)
     {
       v60 = objc_msgSend_rangeDependencies(v37, v56, v57, v58, v59);
-      objc_msgSend_allFormulaCells_(v60, v61, a4, v62, v63);
+      objc_msgSend_allFormulaCells_(v60, v61, cells, v62, v63);
     }
 
     v64 = objc_msgSend_spanningColumnDependencies(v37, v56, v57, v58, v59);
@@ -2924,7 +2924,7 @@ LABEL_43:
     if (v64)
     {
       v69 = objc_msgSend_spanningColumnDependencies(v37, v65, v66, v67, v68);
-      objc_msgSend_formulaCellsReferencingIndices_endIndex_outFormulaCells_(v69, v70, 0, 999, a4);
+      objc_msgSend_formulaCellsReferencingIndices_endIndex_outFormulaCells_(v69, v70, 0, 999, cells);
     }
 
     v71 = objc_msgSend_spanningRowDependencies(v37, v65, v66, v67, v68);
@@ -2932,12 +2932,12 @@ LABEL_43:
     if (v71)
     {
       v76 = objc_msgSend_spanningRowDependencies(v37, v72, v73, v74, v75);
-      objc_msgSend_formulaCellsReferencingIndices_endIndex_outFormulaCells_(v76, v77, 0, 999999, a4);
+      objc_msgSend_formulaCellsReferencingIndices_endIndex_outFormulaCells_(v76, v77, 0, 999999, cells);
     }
 
     v80 = objc_msgSend_formulaOwnerUid(v37, v72, v73, v74, v75);
     v81 = v78;
-    objc_msgSend_dgl_formulaCellsAffectedByGeometryChangeToTable_outFormulaCells_(self, v78, &v80, a4, v79);
+    objc_msgSend_dgl_formulaCellsAffectedByGeometryChangeToTable_outFormulaCells_(self, v78, &v80, cells, v79);
   }
 
   os_unfair_lock_unlock(lock);
@@ -2945,11 +2945,11 @@ LABEL_43:
   sub_2212E22F0(&lock);
 }
 
-- (void)formulaCellsForRemoveRows:(id)a3 outFormulaCells:(void *)a4
+- (void)formulaCellsForRemoveRows:(id)rows outFormulaCells:(void *)cells
 {
-  v6 = a3;
-  v11 = objc_msgSend_rowColumnInfo(v6, v7, v8, v9, v10);
-  *&v99 = objc_msgSend_tableUID(v6, v12, v13, v14, v15);
+  rowsCopy = rows;
+  v11 = objc_msgSend_rowColumnInfo(rowsCopy, v7, v8, v9, v10);
+  *&v99 = objc_msgSend_tableUID(rowsCopy, v12, v13, v14, v15);
   *(&v99 + 1) = v16;
   p_dependencyGraphLock = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
@@ -2959,20 +2959,20 @@ LABEL_43:
   if (v20)
   {
     v26 = objc_msgSend_cellDependencies(v20, v21, v22, v23, v24);
-    objc_msgSend_formulaCellsReferencingCellsAffectedByRemoveRows_outFormulaCells_(v26, v27, v6, a4, v28);
+    objc_msgSend_formulaCellsReferencingCellsAffectedByRemoveRows_outFormulaCells_(v26, v27, rowsCopy, cells, v28);
 
     v33 = objc_msgSend_cellDependencies(v25, v29, v30, v31, v32);
-    v88 = objc_msgSend_affectedRange(v6, v34, v35, v36, v37);
+    v88 = objc_msgSend_affectedRange(rowsCopy, v34, v35, v36, v37);
     v89 = v38;
-    objc_msgSend_formulaCellsInRange_rewriteSpec_outFormulaCells_(v33, v38, &v88, v6, a4);
+    objc_msgSend_formulaCellsInRange_rewriteSpec_outFormulaCells_(v33, v38, &v88, rowsCopy, cells);
 
     v43 = objc_msgSend_rangeDependencies(v25, v39, v40, v41, v42);
-    objc_msgSend_formulaCellsReferencingRangesAffectedByRewriteSpec_outFormulaCells_(v43, v44, v6, a4, v45);
+    objc_msgSend_formulaCellsReferencingRangesAffectedByRewriteSpec_outFormulaCells_(v43, v44, rowsCopy, cells, v45);
 
     if (objc_msgSend_isRows(v11, v46, v47, v48, v49))
     {
       v54 = objc_msgSend_spanningRowDependencies(v25, v50, v51, v52, v53);
-      objc_msgSend_formulaCellsReferencingRangesAffectedByRemoveRows_outFormulaCells_(v54, v55, v6, a4, v56);
+      objc_msgSend_formulaCellsReferencingRangesAffectedByRemoveRows_outFormulaCells_(v54, v55, rowsCopy, cells, v56);
 
       objc_msgSend_spanningColumnDependencies(v25, v57, v58, v59, v60);
     }
@@ -2980,20 +2980,20 @@ LABEL_43:
     else
     {
       v65 = objc_msgSend_spanningColumnDependencies(v25, v50, v51, v52, v53);
-      objc_msgSend_formulaCellsReferencingRangesAffectedByRemoveRows_outFormulaCells_(v65, v66, v6, a4, v67);
+      objc_msgSend_formulaCellsReferencingRangesAffectedByRemoveRows_outFormulaCells_(v65, v66, rowsCopy, cells, v67);
 
       objc_msgSend_spanningRowDependencies(v25, v68, v69, v70, v71);
     }
     v61 = ;
-    objc_msgSend_allFormulaCells_(v61, v62, a4, v63, v64);
+    objc_msgSend_allFormulaCells_(v61, v62, cells, v63, v64);
 
     v88 = objc_msgSend_formulaOwnerUid(v25, v72, v73, v74, v75);
     v89 = v76;
-    objc_msgSend_dgl_formulaCellsAffectedByGeometryChangeToTable_outFormulaCells_(self, v76, &v88, a4, v77);
-    objc_msgSend_dgl_formulaCellsReferencingUuidsInSpec_outFormulaCells_(self, v78, v6, a4, v79);
-    if (objc_msgSend_forSpillFormulasOnly(v6, v80, v81, v82, v83))
+    objc_msgSend_dgl_formulaCellsAffectedByGeometryChangeToTable_outFormulaCells_(self, v76, &v88, cells, v77);
+    objc_msgSend_dgl_formulaCellsReferencingUuidsInSpec_outFormulaCells_(self, v78, rowsCopy, cells, v79);
+    if (objc_msgSend_forSpillFormulasOnly(rowsCopy, v80, v81, v82, v83))
     {
-      if ((TSCECellRefSet::isEmpty(a4) & 1) == 0)
+      if ((TSCECellRefSet::isEmpty(cells) & 1) == 0)
       {
         v88 = 0;
         v89 = &v88;
@@ -3010,12 +3010,12 @@ LABEL_43:
         v86[3] = &unk_2784632F0;
         v87 = v99;
         v86[4] = &v88;
-        TSCECellRefSet::enumerateOwnersUsingBlock(a4, v86);
+        TSCECellRefSet::enumerateOwnersUsingBlock(cells, v86);
         v84 = v89[6];
         v85 = v89[7];
         while (v84 != v85)
         {
-          TSCECellRefSet::removeAllCellRefsForOwner(a4, v84++);
+          TSCECellRefSet::removeAllCellRefsForOwner(cells, v84++);
         }
 
         _Block_object_dispose(&v88, 8);
@@ -3033,11 +3033,11 @@ LABEL_43:
   sub_2212E22F0(&p_dependencyGraphLock);
 }
 
-- (void)formulaCellsForInsertRows:(id)a3 outFormulaCells:(void *)a4
+- (void)formulaCellsForInsertRows:(id)rows outFormulaCells:(void *)cells
 {
-  v6 = a3;
-  v11 = objc_msgSend_rowColumnInfo(v6, v7, v8, v9, v10);
-  v114[0] = objc_msgSend_tableUID(v6, v12, v13, v14, v15);
+  rowsCopy = rows;
+  v11 = objc_msgSend_rowColumnInfo(rowsCopy, v7, v8, v9, v10);
+  v114[0] = objc_msgSend_tableUID(rowsCopy, v12, v13, v14, v15);
   v114[1] = v16;
   v18 = objc_msgSend_resolverForTableUID_(self->_calcEngine, v16, v114[0], v16, v17);
   lock = &self->_dependencyGraphLock;
@@ -3048,15 +3048,15 @@ LABEL_43:
   if (v22)
   {
     v28 = objc_msgSend_cellDependencies(v22, v23, v24, v25, v26);
-    objc_msgSend_formulaCellsReferencingCellsAffectedByInsertRows_outFormulaCells_(v28, v29, v6, a4, v30);
+    objc_msgSend_formulaCellsReferencingCellsAffectedByInsertRows_outFormulaCells_(v28, v29, rowsCopy, cells, v30);
 
     v35 = objc_msgSend_cellDependencies(v27, v31, v32, v33, v34);
-    v110 = objc_msgSend_affectedRange(v6, v36, v37, v38, v39);
+    v110 = objc_msgSend_affectedRange(rowsCopy, v36, v37, v38, v39);
     v111 = v40;
-    objc_msgSend_formulaCellsInRange_rewriteSpec_outFormulaCells_(v35, v40, &v110, v6, a4);
+    objc_msgSend_formulaCellsInRange_rewriteSpec_outFormulaCells_(v35, v40, &v110, rowsCopy, cells);
 
     v45 = objc_msgSend_rangeDependencies(v27, v41, v42, v43, v44);
-    objc_msgSend_formulaCellsReferencingRangesAffectedByRewriteSpec_outFormulaCells_(v45, v46, v6, a4, v47);
+    objc_msgSend_formulaCellsReferencingRangesAffectedByRewriteSpec_outFormulaCells_(v45, v46, rowsCopy, cells, v47);
 
     v52 = objc_msgSend_insertAtUid(v11, v48, v49, v50, v51);
     if (v52 | v53 && v18)
@@ -3079,13 +3079,13 @@ LABEL_43:
         v111 = v110;
       }
 
-      objc_msgSend_formulaCellsReferencingRange_outFormulaCells_(v71, v69, &v110, a4, v70);
+      objc_msgSend_formulaCellsReferencingRange_outFormulaCells_(v71, v69, &v110, cells, v70);
     }
 
     if (objc_msgSend_isRows(v11, v53, v54, v55, v56))
     {
       v84 = objc_msgSend_spanningRowDependencies(v27, v80, v81, v82, v83);
-      objc_msgSend_formulaCellsReferencingRangesAffectedByInsertRows_outFormulaCells_(v84, v85, v6, a4, v86);
+      objc_msgSend_formulaCellsReferencingRangesAffectedByInsertRows_outFormulaCells_(v84, v85, rowsCopy, cells, v86);
 
       objc_msgSend_spanningColumnDependencies(v27, v87, v88, v89, v90);
     }
@@ -3093,17 +3093,17 @@ LABEL_43:
     else
     {
       v95 = objc_msgSend_spanningColumnDependencies(v27, v80, v81, v82, v83);
-      objc_msgSend_formulaCellsReferencingRangesAffectedByInsertRows_outFormulaCells_(v95, v96, v6, a4, v97);
+      objc_msgSend_formulaCellsReferencingRangesAffectedByInsertRows_outFormulaCells_(v95, v96, rowsCopy, cells, v97);
 
       objc_msgSend_spanningRowDependencies(v27, v98, v99, v100, v101);
     }
     v91 = ;
-    objc_msgSend_allFormulaCells_(v91, v92, a4, v93, v94);
+    objc_msgSend_allFormulaCells_(v91, v92, cells, v93, v94);
 
     v110 = objc_msgSend_formulaOwnerUid(v27, v102, v103, v104, v105);
     v111 = v106;
-    objc_msgSend_dgl_formulaCellsAffectedByGeometryChangeToTable_outFormulaCells_(self, v106, &v110, a4, v107);
-    objc_msgSend_dgl_formulaCellsReferencingUuidsInSpec_outFormulaCells_(self, v108, v6, a4, v109);
+    objc_msgSend_dgl_formulaCellsAffectedByGeometryChangeToTable_outFormulaCells_(self, v106, &v110, cells, v107);
+    objc_msgSend_dgl_formulaCellsReferencingUuidsInSpec_outFormulaCells_(self, v108, rowsCopy, cells, v109);
   }
 
   os_unfair_lock_unlock(lock);
@@ -3111,11 +3111,11 @@ LABEL_43:
   sub_2212E22F0(&lock);
 }
 
-- (void)formulaCellsForMoveRows:(id)a3 outFormulaCells:(void *)a4
+- (void)formulaCellsForMoveRows:(id)rows outFormulaCells:(void *)cells
 {
-  v6 = a3;
-  v11 = objc_msgSend_rowColumnInfo(v6, v7, v8, v9, v10);
-  v87[0] = objc_msgSend_tableUID(v6, v12, v13, v14, v15);
+  rowsCopy = rows;
+  v11 = objc_msgSend_rowColumnInfo(rowsCopy, v7, v8, v9, v10);
+  v87[0] = objc_msgSend_tableUID(rowsCopy, v12, v13, v14, v15);
   v87[1] = v16;
   p_dependencyGraphLock = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
@@ -3125,15 +3125,15 @@ LABEL_43:
   if (v20)
   {
     v26 = objc_msgSend_cellDependencies(v20, v21, v22, v23, v24);
-    objc_msgSend_formulaCellsReferencingCellsAffectedByMoveRows_outFormulaCells_(v26, v27, v6, a4, v28);
+    objc_msgSend_formulaCellsReferencingCellsAffectedByMoveRows_outFormulaCells_(v26, v27, rowsCopy, cells, v28);
 
     v33 = objc_msgSend_cellDependencies(v25, v29, v30, v31, v32);
-    v83 = objc_msgSend_affectedRange(v6, v34, v35, v36, v37);
+    v83 = objc_msgSend_affectedRange(rowsCopy, v34, v35, v36, v37);
     v84 = v38;
-    objc_msgSend_formulaCellsInRange_rewriteSpec_outFormulaCells_(v33, v38, &v83, v6, a4);
+    objc_msgSend_formulaCellsInRange_rewriteSpec_outFormulaCells_(v33, v38, &v83, rowsCopy, cells);
 
     v43 = objc_msgSend_rangeDependencies(v25, v39, v40, v41, v42);
-    objc_msgSend_formulaCellsReferencingRangesAffectedByRewriteSpec_outFormulaCells_(v43, v44, v6, a4, v45);
+    objc_msgSend_formulaCellsReferencingRangesAffectedByRewriteSpec_outFormulaCells_(v43, v44, rowsCopy, cells, v45);
 
     if (objc_msgSend_isRows(v11, v46, v47, v48, v49))
     {
@@ -3145,11 +3145,11 @@ LABEL_43:
       objc_msgSend_spanningColumnDependencies(v25, v50, v51, v52, v53);
     }
     v54 = ;
-    objc_msgSend_formulaCellsReferencingRangesAffectedByMoveRows_outFormulaCells_(v54, v55, v6, a4, v56);
+    objc_msgSend_formulaCellsReferencingRangesAffectedByMoveRows_outFormulaCells_(v54, v55, rowsCopy, cells, v56);
 
     v83 = objc_msgSend_formulaOwnerUid(v25, v57, v58, v59, v60);
     v84 = v61;
-    objc_msgSend_dgl_formulaCellsAffectedByGeometryChangeToTable_outFormulaCells_(self, v61, &v83, a4, v62);
+    objc_msgSend_dgl_formulaCellsAffectedByGeometryChangeToTable_outFormulaCells_(self, v61, &v83, cells, v62);
     if (objc_msgSend_isRows(v11, v63, v64, v65, v66))
     {
       v71 = objc_msgSend_rowOrColumnIndices(v11, v67, v68, v69, v70);
@@ -3159,8 +3159,8 @@ LABEL_43:
       v82[2] = sub_22136AA6C;
       v82[3] = &unk_278463318;
       v82[5] = v25;
-      v82[4] = v6;
-      v82[6] = a4;
+      v82[4] = rowsCopy;
+      v82[6] = cells;
       objc_msgSend_enumerateRangesUsingBlock_(v71, v73, v82, v74, v75);
     }
 
@@ -3173,12 +3173,12 @@ LABEL_43:
       v81[2] = sub_22136AAE0;
       v81[3] = &unk_278463318;
       v81[5] = v25;
-      v81[4] = v6;
-      v81[6] = a4;
+      v81[4] = rowsCopy;
+      v81[6] = cells;
       objc_msgSend_enumerateRangesUsingBlock_(v71, v76, v81, v77, v78);
     }
 
-    objc_msgSend_dgl_formulaCellsReferencingUuidsInSpec_outFormulaCells_(self, v79, v6, a4, v80);
+    objc_msgSend_dgl_formulaCellsReferencingUuidsInSpec_outFormulaCells_(self, v79, rowsCopy, cells, v80);
   }
 
   os_unfair_lock_unlock(p_dependencyGraphLock);
@@ -3186,11 +3186,11 @@ LABEL_43:
   sub_2212E22F0(&p_dependencyGraphLock);
 }
 
-- (void)formulaCellsForSortRows:(id)a3 outFormulaCells:(void *)a4
+- (void)formulaCellsForSortRows:(id)rows outFormulaCells:(void *)cells
 {
-  v6 = a3;
-  v11 = objc_msgSend_rowColumnInfo(v6, v7, v8, v9, v10);
-  v100[0] = objc_msgSend_affectedOwnerUID(v6, v12, v13, v14, v15);
+  rowsCopy = rows;
+  v11 = objc_msgSend_rowColumnInfo(rowsCopy, v7, v8, v9, v10);
+  v100[0] = objc_msgSend_affectedOwnerUID(rowsCopy, v12, v13, v14, v15);
   v100[1] = v16;
   v19 = objc_msgSend_tableResolverForTableUID_(self->_calcEngine, v16, v100, v17, v18);
   p_dependencyGraphLock = &self->_dependencyGraphLock;
@@ -3211,8 +3211,8 @@ LABEL_43:
         v97[2] = sub_22136B000;
         v97[3] = &unk_278463340;
         v97[4] = v32;
-        v97[5] = v6;
-        v97[6] = a4;
+        v97[5] = rowsCopy;
+        v97[6] = cells;
         objc_msgSend_enumerateRangesUsingBlock_(v37, v39, v97, v40, v41);
       }
 
@@ -3225,8 +3225,8 @@ LABEL_43:
         v96[2] = sub_22136B048;
         v96[3] = &unk_278463340;
         v96[4] = v32;
-        v96[5] = v6;
-        v96[6] = a4;
+        v96[5] = rowsCopy;
+        v96[6] = cells;
         objc_msgSend_enumerateRangesUsingBlock_(v37, v42, v96, v43, v44);
       }
     }
@@ -3247,8 +3247,8 @@ LABEL_43:
           v94[2] = sub_22136B09C;
           v94[3] = &unk_278463340;
           v94[4] = v52;
-          v94[5] = v6;
-          v94[6] = a4;
+          v94[5] = rowsCopy;
+          v94[6] = cells;
           objc_msgSend_enumerateRangesUsingBlock_(v57, v59, v94, v60, v61);
         }
 
@@ -3261,8 +3261,8 @@ LABEL_43:
           v93[2] = sub_22136B0E4;
           v93[3] = &unk_278463340;
           v93[4] = v52;
-          v93[5] = v6;
-          v93[6] = a4;
+          v93[5] = rowsCopy;
+          v93[6] = cells;
           objc_msgSend_enumerateRangesUsingBlock_(v57, v62, v93, v63, v64);
         }
       }
@@ -3278,7 +3278,7 @@ LABEL_43:
         if (v74)
         {
           v79 = objc_msgSend_cellDependencies(v73, v75, v76, v77, v78);
-          objc_msgSend_formulaCellsInThisOwner_(v79, v80, a4, v81, v82);
+          objc_msgSend_formulaCellsInThisOwner_(v79, v80, cells, v81, v82);
         }
 
         v83 = objc_msgSend_rangeDependencies(v73, v75, v76, v77, v78);
@@ -3286,7 +3286,7 @@ LABEL_43:
         if (v83)
         {
           v88 = objc_msgSend_rangeDependencies(v73, v84, v85, v86, v87);
-          objc_msgSend_allFormulaCells_(v88, v89, a4, v90, v91);
+          objc_msgSend_allFormulaCells_(v88, v89, cells, v90, v91);
         }
       }
     }
@@ -3297,10 +3297,10 @@ LABEL_43:
   sub_2212E22F0(&p_dependencyGraphLock);
 }
 
-- (void)formulaCellsForMoveRegion:(id)a3 outFormulaCells:(void *)a4
+- (void)formulaCellsForMoveRegion:(id)region outFormulaCells:(void *)cells
 {
-  v6 = a3;
-  v11 = objc_msgSend_regionMovedInfo(v6, v7, v8, v9, v10);
+  regionCopy = region;
+  v11 = objc_msgSend_regionMovedInfo(regionCopy, v7, v8, v9, v10);
   p_dependencyGraphLock = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   v262 = 1;
@@ -3332,7 +3332,7 @@ LABEL_43:
   v258[1] = 3221225472;
   v258[2] = sub_22136BA1C;
   v258[3] = &unk_278463368;
-  v260 = a4;
+  cellsCopy = cells;
   v57 = v243;
   v259 = v57;
   objc_msgSend_applyBlockToRecordsAtIndexes_rowIndexes_cellRestrictions_doWillModify_block_(v245, v58, v46, v56, 1, 0, v258);
@@ -3351,7 +3351,7 @@ LABEL_43:
     v255[1] = 3221225472;
     v255[2] = sub_22136BA68;
     v255[3] = &unk_278463388;
-    v255[4] = a4;
+    v255[4] = cells;
     v256 = v257;
     objc_msgSend_applyBlockToRecordsAtIndexes_rowIndexes_cellRestrictions_doWillModify_block_(v240, v86, v75, v85, 1, 0, v255);
   }
@@ -3363,11 +3363,11 @@ LABEL_43:
   v101 = objc_msgSend_indexes(v96, v97, v98, v99, v100);
 
   v241 = v101;
-  objc_msgSend_formulaCellsReferencingIndexes_rowIndexes_outFormulaCells_(v245, v102, v244, v101, a4);
-  objc_msgSend_formulaCellsReferencingIndexes_rowIndexes_outFormulaCells_(v242, v103, v244, v101, a4);
+  objc_msgSend_formulaCellsReferencingIndexes_rowIndexes_outFormulaCells_(v245, v102, v244, v101, cells);
+  objc_msgSend_formulaCellsReferencingIndexes_rowIndexes_outFormulaCells_(v242, v103, v244, v101, cells);
   if (objc_msgSend_spanningRows(v57, v104, v105, v106, v107))
   {
-    v239 = v6;
+    v239 = regionCopy;
     v112 = objc_msgSend_spanningRowDependencies(v19, v108, v109, v110, v111);
     v117 = objc_msgSend_srcRowUids(v57, v113, v114, v115, v116);
     v122 = objc_msgSend_indexes(v117, v118, v119, v120, v121);
@@ -3377,7 +3377,7 @@ LABEL_43:
     v253[3] = &unk_2784633B0;
     v123 = v112;
     v254[0] = v123;
-    v254[1] = a4;
+    v254[1] = cells;
     objc_msgSend_enumerateRangesUsingBlock_(v122, v124, v253, v125, v126);
     v127 = v254;
   }
@@ -3389,7 +3389,7 @@ LABEL_43:
       goto LABEL_10;
     }
 
-    v239 = v6;
+    v239 = regionCopy;
     v132 = objc_msgSend_spanningColumnDependencies(v19, v128, v129, v130, v131);
     v117 = objc_msgSend_srcColumnUids(v57, v133, v134, v135, v136);
     v122 = objc_msgSend_indexes(v117, v137, v138, v139, v140);
@@ -3399,29 +3399,29 @@ LABEL_43:
     v251[3] = &unk_2784633B0;
     v123 = v132;
     v252[0] = v123;
-    v252[1] = a4;
+    v252[1] = cells;
     objc_msgSend_enumerateRangesUsingBlock_(v122, v141, v251, v142, v143);
     v127 = v252;
   }
 
-  v6 = v239;
+  regionCopy = v239;
 LABEL_10:
   __p = objc_msgSend_formulaOwnerUid(v19, v128, v129, v130, v131);
   v248 = v144;
-  objc_msgSend_dgl_formulaCellsAffectedByGeometryChangeToTable_outFormulaCells_(self, v144, &__p, a4, v145);
+  objc_msgSend_dgl_formulaCellsAffectedByGeometryChangeToTable_outFormulaCells_(self, v144, &__p, cells, v145);
   v150 = objc_msgSend_cellDependencies(v32, v146, v147, v148, v149);
   v155 = objc_msgSend_rangeDependencies(v32, v151, v152, v153, v154);
   v160 = objc_msgSend_dstColumnUids(v57, v156, v157, v158, v159);
   v165 = objc_msgSend_indexes(v160, v161, v162, v163, v164);
   v170 = objc_msgSend_dstRowUids(v57, v166, v167, v168, v169);
   v175 = objc_msgSend_indexes(v170, v171, v172, v173, v174);
-  objc_msgSend_formulaCellsReferencingIndexes_rowIndexes_outFormulaCells_(v150, v176, v165, v175, a4);
+  objc_msgSend_formulaCellsReferencingIndexes_rowIndexes_outFormulaCells_(v150, v176, v165, v175, cells);
 
   v181 = objc_msgSend_dstColumnUids(v57, v177, v178, v179, v180);
   v186 = objc_msgSend_indexes(v181, v182, v183, v184, v185);
   v191 = objc_msgSend_dstRowUids(v57, v187, v188, v189, v190);
   v196 = objc_msgSend_indexes(v191, v192, v193, v194, v195);
-  objc_msgSend_formulaCellsReferencingIndexes_rowIndexes_outFormulaCells_(v155, v197, v186, v196, a4);
+  objc_msgSend_formulaCellsReferencingIndexes_rowIndexes_outFormulaCells_(v155, v197, v186, v196, cells);
 
   calcEngine = self->_calcEngine;
   v203 = objc_msgSend_srcRegion(v57, v199, v200, v201, v202);
@@ -3437,7 +3437,7 @@ LABEL_10:
     v250[1] = v221;
     v225 = objc_msgSend_srcRowUids(v57, v221, v222, v223, v224);
     v230 = objc_msgSend_uids(v225, v226, v227, v228, v229);
-    v232 = objc_msgSend_dgl_cellRefsReferringToGroupNodes_groupByUID_outCellRefs_(self, v231, v230, v250, a4);
+    v232 = objc_msgSend_dgl_cellRefsReferringToGroupNodes_groupByUID_outCellRefs_(self, v231, v230, v250, cells);
 
     v11 = v243;
     if (v232)
@@ -3448,7 +3448,7 @@ LABEL_10:
       *&v246 = objc_msgSend_groupByRootUid(TSCECategoryRef, v233, v234, v235, v236);
       *(&v246 + 1) = v237;
       sub_221083454(&__p, &v246);
-      objc_msgSend_dgl_cellRefsReferringToGroupNodes_groupByUID_outCellRefs_(self, v238, &__p, v250, a4);
+      objc_msgSend_dgl_cellRefsReferringToGroupNodes_groupByUID_outCellRefs_(self, v238, &__p, v250, cells);
       if (__p)
       {
         v248 = __p;
@@ -3465,10 +3465,10 @@ LABEL_17:
   sub_2212E22F0(&p_dependencyGraphLock);
 }
 
-- (void)formulaCellsForMergeCells:(id)a3 outFormulaCells:(void *)a4
+- (void)formulaCellsForMergeCells:(id)cells outFormulaCells:(void *)formulaCells
 {
-  v167 = a3;
-  if (objc_msgSend_rewriteType(v167, v6, v7, v8, v9) != 7 && objc_msgSend_rewriteType(v167, v10, v11, v12, v13) != 8 && objc_msgSend_rewriteType(v167, v10, v11, v12, v13) != 17)
+  cellsCopy = cells;
+  if (objc_msgSend_rewriteType(cellsCopy, v6, v7, v8, v9) != 7 && objc_msgSend_rewriteType(cellsCopy, v10, v11, v12, v13) != 8 && objc_msgSend_rewriteType(cellsCopy, v10, v11, v12, v13) != 17)
   {
     v14 = MEMORY[0x277D81150];
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSCEDependencyTracker formulaCellsForMergeCells:outFormulaCells:]", v12, v13);
@@ -3478,14 +3478,14 @@ LABEL_17:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v21, v22, v23, v24);
   }
 
-  v25 = v167;
-  v26 = objc_msgSend_mergeInfo(v167, v10, v11, v12, v13);
+  v25 = cellsCopy;
+  v26 = objc_msgSend_mergeInfo(cellsCopy, v10, v11, v12, v13);
   v31 = objc_msgSend_mergeRegion(v26, v27, v28, v29, v30);
   p_dependencyGraphLock = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   v177 = 1;
   v162 = v31;
-  v168.coordinate = objc_msgSend_affectedOwnerUID(v167, v32, v33, v34, v35);
+  v168.coordinate = objc_msgSend_affectedOwnerUID(cellsCopy, v32, v33, v34, v35);
   v168._tableUID._lower = v36;
   v39 = objc_msgSend_dgl_ownerDependenciesForOwnerUID_(self, v36, &v168, v37, v38);
   v44 = v39;
@@ -3500,13 +3500,13 @@ LABEL_17:
     v66 = objc_msgSend_indexes(v61, v62, v63, v64, v65);
     v71 = objc_msgSend_rowUids(v31, v67, v68, v69, v70);
     v76 = objc_msgSend_indexes(v71, v72, v73, v74, v75);
-    objc_msgSend_formulaCellsReferencingIndexes_rowIndexes_outFormulaCells_(v164, v77, v66, v76, a4);
+    objc_msgSend_formulaCellsReferencingIndexes_rowIndexes_outFormulaCells_(v164, v77, v66, v76, formulaCells);
 
     v82 = objc_msgSend_columnUids(v31, v78, v79, v80, v81);
     v87 = objc_msgSend_indexes(v82, v83, v84, v85, v86);
     v92 = objc_msgSend_rowUids(v31, v88, v89, v90, v91);
     v97 = objc_msgSend_indexes(v92, v93, v94, v95, v96);
-    objc_msgSend_formulaCellsReferencingIndexes_rowIndexes_outFormulaCells_(v163, v98, v87, v97, a4);
+    objc_msgSend_formulaCellsReferencingIndexes_rowIndexes_outFormulaCells_(v163, v98, v87, v97, formulaCells);
 
     if (v166)
     {
@@ -3517,7 +3517,7 @@ LABEL_17:
       v173[2] = sub_22136C120;
       v173[3] = &unk_2784633B0;
       v174 = v166;
-      v175 = a4;
+      formulaCellsCopy = formulaCells;
       objc_msgSend_enumerateRangesUsingBlock_(v108, v109, v173, v110, v111);
     }
 
@@ -3530,35 +3530,35 @@ LABEL_17:
       v170[2] = sub_22136C138;
       v170[3] = &unk_2784633B0;
       v171 = v165;
-      v172 = a4;
+      formulaCellsCopy2 = formulaCells;
       objc_msgSend_enumerateRangesUsingBlock_(v117, v118, v170, v119, v120);
     }
 
     v168.coordinate = objc_msgSend_formulaOwnerUid(v44, v99, v100, v101, v102);
     v168._tableUID._lower = v121;
-    objc_msgSend_dgl_formulaCellsAffectedByGeometryChangeToTable_outFormulaCells_(self, v121, &v168, a4, v122);
+    objc_msgSend_dgl_formulaCellsAffectedByGeometryChangeToTable_outFormulaCells_(self, v121, &v168, formulaCells, v122);
     v127 = objc_msgSend_mergeSource(v26, v123, v124, v125, v126);
     v132 = *v127;
     if (v127->row != 0x7FFFFFFF && (v132 & 0xFFFF00000000) != 0x7FFF00000000)
     {
       v168.coordinate = *v127;
       v168._tableUID._lower = v132;
-      objc_msgSend_formulaCellsInRange_rewriteSpec_outFormulaCells_(v164, v128, &v168, v167, a4);
-      v169[0] = objc_msgSend_affectedConditionalStyleOwnerUID(v167, v133, v134, v135, v136);
+      objc_msgSend_formulaCellsInRange_rewriteSpec_outFormulaCells_(v164, v128, &v168, cellsCopy, formulaCells);
+      v169[0] = objc_msgSend_affectedConditionalStyleOwnerUID(cellsCopy, v133, v134, v135, v136);
       v169[1] = v137;
       v140 = objc_msgSend_dgl_cellDependenciesForOwnerUID_(self, v137, v169, v138, v139);
       v142 = v140;
       if (v140)
       {
-        objc_msgSend_formulaCellsInRange_rewriteSpec_outFormulaCells_(v140, v141, &v168, v167, a4);
+        objc_msgSend_formulaCellsInRange_rewriteSpec_outFormulaCells_(v140, v141, &v168, cellsCopy, formulaCells);
       }
     }
 
-    if (objc_msgSend_rewriteType(v167, v128, v129, v130, v131) != 17 && (TSCECellRefSet::isEmpty(a4) & 1) == 0)
+    if (objc_msgSend_rewriteType(cellsCopy, v128, v129, v130, v131) != 17 && (TSCECellRefSet::isEmpty(formulaCells) & 1) == 0)
     {
       v147 = objc_msgSend_mergingRange(v31, v143, v144, v145, v146);
       v149 = v148;
-      v153 = objc_msgSend_affectedOwnerUID(v167, v148, v150, v151, v152);
+      v153 = objc_msgSend_affectedOwnerUID(cellsCopy, v148, v150, v151, v152);
       if (WORD2(v147) <= WORD2(v149))
       {
         v155 = v153;
@@ -3587,7 +3587,7 @@ LABEL_17:
                 v168.coordinate = (v158 | v160);
                 v168._tableUID._lower = v155;
                 v168._tableUID._upper = v156;
-                TSCECellRefSet::removeCellRef(a4, &v168);
+                TSCECellRefSet::removeCellRef(formulaCells, &v168);
               }
 
               ++v160;
@@ -3603,7 +3603,7 @@ LABEL_17:
       }
     }
 
-    v25 = v167;
+    v25 = cellsCopy;
     v26 = v161;
     v31 = v162;
   }
@@ -3613,10 +3613,10 @@ LABEL_17:
   sub_2212E22F0(&p_dependencyGraphLock);
 }
 
-- (void)formulaCellsForMergeOriginMove:(id)a3 outFormulaCells:(void *)a4
+- (void)formulaCellsForMergeOriginMove:(id)move outFormulaCells:(void *)cells
 {
-  v6 = a3;
-  if (objc_msgSend_rewriteType(v6, v7, v8, v9, v10) != 9)
+  moveCopy = move;
+  if (objc_msgSend_rewriteType(moveCopy, v7, v8, v9, v10) != 9)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "[TSCEDependencyTracker formulaCellsForMergeOriginMove:outFormulaCells:]", v13, v14);
@@ -3626,10 +3626,10 @@ LABEL_17:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v22, v23, v24, v25);
   }
 
-  v26 = objc_msgSend_mergeOriginMovedInfo(v6, v11, v12, v13, v14);
-  v64[0] = objc_msgSend_affectedOwnerUID(v6, v27, v28, v29, v30);
+  v26 = objc_msgSend_mergeOriginMovedInfo(moveCopy, v11, v12, v13, v14);
+  v64[0] = objc_msgSend_affectedOwnerUID(moveCopy, v27, v28, v29, v30);
   v64[1] = v31;
-  v63[0] = objc_msgSend_conditionalStyleOwnerUID(v6, v31, v32, v33, v34);
+  v63[0] = objc_msgSend_conditionalStyleOwnerUID(moveCopy, v31, v32, v33, v34);
   v63[1] = v35;
   p_dependencyGraphLock = &self->_dependencyGraphLock;
   v61 = &self->_dependencyGraphLock;
@@ -3643,8 +3643,8 @@ LABEL_17:
       v49 = i[3];
       v59 = i[2];
       v60 = v59;
-      objc_msgSend_formulaCellsReferencingCellsInRange_outFormulaCells_(v44, v45, &v59, a4, v47, v49, v49);
-      objc_msgSend_formulaCellsInRange_rewriteSpec_outFormulaCells_(v44, v50, &v58, v6, a4);
+      objc_msgSend_formulaCellsReferencingCellsInRange_outFormulaCells_(v44, v45, &v59, cells, v47, v49, v49);
+      objc_msgSend_formulaCellsInRange_rewriteSpec_outFormulaCells_(v44, v50, &v58, moveCopy, cells);
     }
 
     v55 = objc_msgSend_dgl_cellDependenciesForOwnerUID_(self, v45, v63, v46, v47);
@@ -3654,7 +3654,7 @@ LABEL_17:
       {
         v59 = j[3];
         v60 = v59;
-        objc_msgSend_formulaCellsInRange_rewriteSpec_outFormulaCells_(v55, v56, &v59, v6, a4);
+        objc_msgSend_formulaCellsInRange_rewriteSpec_outFormulaCells_(v55, v56, &v59, moveCopy, cells);
       }
     }
 
@@ -3667,10 +3667,10 @@ LABEL_17:
   sub_2212E22F0(&v61);
 }
 
-- (void)formulaCellsForTableUIDReassignment:(id)a3 outFormulaCells:(void *)a4
+- (void)formulaCellsForTableUIDReassignment:(id)reassignment outFormulaCells:(void *)cells
 {
-  v6 = a3;
-  if (objc_msgSend_rewriteType(v6, v7, v8, v9, v10) != 10)
+  reassignmentCopy = reassignment;
+  if (objc_msgSend_rewriteType(reassignmentCopy, v7, v8, v9, v10) != 10)
   {
     v14 = MEMORY[0x277D81150];
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "[TSCEDependencyTracker formulaCellsForTableUIDReassignment:outFormulaCells:]", v12, v13);
@@ -3682,16 +3682,16 @@ LABEL_17:
 
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   LOBYTE(v28) = 1;
-  objc_msgSend_dgl_formulaCellsReferencingUuidsInSpec_outFormulaCells_(self, v25, v6, a4, v26, &self->_dependencyGraphLock, v28);
+  objc_msgSend_dgl_formulaCellsReferencingUuidsInSpec_outFormulaCells_(self, v25, reassignmentCopy, cells, v26, &self->_dependencyGraphLock, v28);
   os_unfair_lock_unlock(&self->_dependencyGraphLock);
   LOBYTE(v28) = 0;
   sub_2212E22F0(&v27);
 }
 
-- (void)formulaCellsForGroupNodeChanges:(id)a3 outFormulaCells:(void *)a4
+- (void)formulaCellsForGroupNodeChanges:(id)changes outFormulaCells:(void *)cells
 {
-  v6 = a3;
-  if (objc_msgSend_rewriteType(v6, v7, v8, v9, v10) != 16)
+  changesCopy = changes;
+  if (objc_msgSend_rewriteType(changesCopy, v7, v8, v9, v10) != 16)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "[TSCEDependencyTracker formulaCellsForGroupNodeChanges:outFormulaCells:]", v13, v14);
@@ -3701,20 +3701,20 @@ LABEL_17:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v22, v23, v24, v25);
   }
 
-  v26 = objc_msgSend_groupByChange(v6, v11, v12, v13, v14);
+  v26 = objc_msgSend_groupByChange(changesCopy, v11, v12, v13, v14);
   v31 = v26;
   if (v26)
   {
     v34[0] = objc_msgSend_groupByUid(v26, v27, v28, v29, v30);
     v34[1] = v32;
-    objc_msgSend_cellRefsReferringToGroupBy_outCellRefs_(self, v32, v34, a4, v33);
+    objc_msgSend_cellRefsReferringToGroupBy_outCellRefs_(self, v32, v34, cells, v33);
   }
 }
 
-- (void)formulaCellsForPivotRuleChange:(id)a3 outFormulaCells:(void *)a4
+- (void)formulaCellsForPivotRuleChange:(id)change outFormulaCells:(void *)cells
 {
-  v6 = a3;
-  if (objc_msgSend_rewriteType(v6, v7, v8, v9, v10) != 18)
+  changeCopy = change;
+  if (objc_msgSend_rewriteType(changeCopy, v7, v8, v9, v10) != 18)
   {
     v14 = MEMORY[0x277D81150];
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "[TSCEDependencyTracker formulaCellsForPivotRuleChange:outFormulaCells:]", v12, v13);
@@ -3726,16 +3726,16 @@ LABEL_17:
 
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   LOBYTE(v28) = 1;
-  objc_msgSend_dgl_formulaCellsReferencingUuidsInSpec_outFormulaCells_(self, v25, v6, a4, v26, &self->_dependencyGraphLock, v28);
+  objc_msgSend_dgl_formulaCellsReferencingUuidsInSpec_outFormulaCells_(self, v25, changeCopy, cells, v26, &self->_dependencyGraphLock, v28);
   os_unfair_lock_unlock(&self->_dependencyGraphLock);
   LOBYTE(v28) = 0;
   sub_2212E22F0(&v27);
 }
 
-- (void)formulaCellsForGroupNodeUIDReassignment:(id)a3 outFormulaCells:(void *)a4
+- (void)formulaCellsForGroupNodeUIDReassignment:(id)reassignment outFormulaCells:(void *)cells
 {
-  v6 = a3;
-  if (objc_msgSend_rewriteType(v6, v7, v8, v9, v10) != 13)
+  reassignmentCopy = reassignment;
+  if (objc_msgSend_rewriteType(reassignmentCopy, v7, v8, v9, v10) != 13)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "[TSCEDependencyTracker formulaCellsForGroupNodeUIDReassignment:outFormulaCells:]", v13, v14);
@@ -3745,13 +3745,13 @@ LABEL_17:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v22, v23, v24, v25);
   }
 
-  v26 = objc_msgSend_groupNodeUIDInfo(v6, v11, v12, v13, v14);
+  v26 = objc_msgSend_groupNodeUIDInfo(reassignmentCopy, v11, v12, v13, v14);
   v31 = v26;
   if (v26)
   {
     objc_msgSend_originalGroupNodeUIDs(v26, v27, v28, v29, v30);
     v36 = objc_msgSend_groupByUid(v31, v32, v33, v34, v35);
-    objc_msgSend_cellRefsReferringToGroupNodes_groupByUID_outCellRefs_(self, v37, __p, v36, a4);
+    objc_msgSend_cellRefsReferringToGroupNodes_groupByUID_outCellRefs_(self, v37, __p, v36, cells);
     if (__p[0])
     {
       __p[1] = __p[0];
@@ -3760,16 +3760,16 @@ LABEL_17:
   }
 }
 
-- (void)dgl_formulaCellRefsReferringToOwnerUIDs:(const void *)a3 outFormulaCells:(void *)a4
+- (void)dgl_formulaCellRefsReferringToOwnerUIDs:(const void *)ds outFormulaCells:(void *)cells
 {
   for (i = self->_formulaOwnerDependencies.__table_.__first_node_.__next_; i; i = *i)
   {
-    v8 = objc_msgSend_uuidReferences(i[3], a2, a3, a4, v4);
-    objc_msgSend_getCellRefs_referringToOwners_(v8, v9, a4, a3, v10);
+    v8 = objc_msgSend_uuidReferences(i[3], a2, ds, cells, v4);
+    objc_msgSend_getCellRefs_referringToOwners_(v8, v9, cells, ds, v10);
   }
 }
 
-- (BOOL)dgl_cellRefsReferringToGroupNodes:(const void *)a3 groupByUID:(const TSKUIDStruct *)a4 outCellRefs:(void *)a5
+- (BOOL)dgl_cellRefsReferringToGroupNodes:(const void *)nodes groupByUID:(const TSKUIDStruct *)d outCellRefs:(void *)refs
 {
   next = self->_formulaOwnerDependencies.__table_.__first_node_.__next_;
   if (next)
@@ -3778,11 +3778,11 @@ LABEL_17:
     do
     {
       v10 = next[3];
-      v11 = objc_msgSend_ownerIndex(v10, a2, a3, a4, a5);
+      v11 = objc_msgSend_ownerIndex(v10, a2, nodes, d, refs);
       if (v11 != 8 && (v11 - 1306) <= 0xFFFFFBB2)
       {
-        v12 = objc_msgSend_uuidReferences(v10, a2, a3, a4, a5);
-        v9 |= objc_msgSend_getCellRefs_referringToOwnerUID_referringToUuids_(v12, v13, a5, a4, a3);
+        v12 = objc_msgSend_uuidReferences(v10, a2, nodes, d, refs);
+        v9 |= objc_msgSend_getCellRefs_referringToOwnerUID_referringToUuids_(v12, v13, refs, d, nodes);
       }
 
       next = *next;
@@ -3799,20 +3799,20 @@ LABEL_17:
   return v9 & 1;
 }
 
-- (BOOL)cellRefsReferringToGroupNodes:(const void *)a3 groupByUID:(const TSKUIDStruct *)a4 outCellRefs:(void *)a5
+- (BOOL)cellRefsReferringToGroupNodes:(const void *)nodes groupByUID:(const TSKUIDStruct *)d outCellRefs:(void *)refs
 {
   p_dependencyGraphLock = &self->_dependencyGraphLock;
   v12 = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   LOBYTE(v13) = 1;
-  LOBYTE(a5) = objc_msgSend_dgl_cellRefsReferringToGroupNodes_groupByUID_outCellRefs_(self, v10, a3, a4, a5, v12, v13);
+  LOBYTE(refs) = objc_msgSend_dgl_cellRefsReferringToGroupNodes_groupByUID_outCellRefs_(self, v10, nodes, d, refs, v12, v13);
   os_unfair_lock_unlock(p_dependencyGraphLock);
   LOBYTE(v13) = 0;
   sub_2212E22F0(&v12);
-  return a5;
+  return refs;
 }
 
-- (void)cellRefsReferringToGroupBy:(const TSKUIDStruct *)a3 outCellRefs:(void *)a4
+- (void)cellRefsReferringToGroupBy:(const TSKUIDStruct *)by outCellRefs:(void *)refs
 {
   p_dependencyGraphLock = &self->_dependencyGraphLock;
   v18 = &self->_dependencyGraphLock;
@@ -3828,7 +3828,7 @@ LABEL_17:
       if (v14 != 8 && (v14 - 1306) <= 0xFBB2u)
       {
         v15 = objc_msgSend_uuidReferences(v13, v8, v9, v10, v11);
-        objc_msgSend_getAllCellRefs_referringToOwnerUID_(v15, v16, a4, a3, v17);
+        objc_msgSend_getAllCellRefs_referringToOwnerUID_(v15, v16, refs, by, v17);
       }
 
       next = *next;
@@ -3843,22 +3843,22 @@ LABEL_17:
   sub_2212E22F0(&v18);
 }
 
-- (void)dgl_formulaCellsReferencingUuidsInSpec:(id)a3 outFormulaCells:(void *)a4
+- (void)dgl_formulaCellsReferencingUuidsInSpec:(id)spec outFormulaCells:(void *)cells
 {
-  v6 = a3;
-  v11 = objc_msgSend_rewriteType(v6, v7, v8, v9, v10);
+  specCopy = spec;
+  v11 = objc_msgSend_rewriteType(specCopy, v7, v8, v9, v10);
   if (v11 < 2)
   {
     __p = 0;
     v92 = 0;
     v93 = 0;
-    *&v89 = objc_msgSend_tableUID(v6, v12, v13, v14, v15);
+    *&v89 = objc_msgSend_tableUID(specCopy, v12, v13, v14, v15);
     *(&v89 + 1) = v19;
     sub_221083454(&__p, &v89);
-    v24 = objc_msgSend_fromTableUID(v6, v20, v21, v22, v23);
+    v24 = objc_msgSend_fromTableUID(specCopy, v20, v21, v22, v23);
     if (v24 | v25)
     {
-      *&v89 = objc_msgSend_fromTableUID(v6, v25, v26, v27, v28);
+      *&v89 = objc_msgSend_fromTableUID(specCopy, v25, v26, v27, v28);
       *(&v89 + 1) = v29;
       sub_221083454(&__p, &v89);
       v34 = objc_msgSend_tableUIDHistory(self->_calcEngine, v30, v31, v32, v33);
@@ -3866,7 +3866,7 @@ LABEL_17:
       if (v34)
       {
         v40 = objc_msgSend_tableUIDMap(v34, v35, v36, v37, v38);
-        *&v89 = objc_msgSend_fromTableUID(v6, v41, v42, v43, v44);
+        *&v89 = objc_msgSend_fromTableUID(specCopy, v41, v42, v43, v44);
         *(&v89 + 1) = v45;
         v46 = sub_221119F90(v40, &v89);
         if (v46)
@@ -3876,28 +3876,28 @@ LABEL_17:
       }
     }
 
-    v47 = objc_msgSend_conditionalStyleOwnerUID(v6, v25, v26, v27, v28);
+    v47 = objc_msgSend_conditionalStyleOwnerUID(specCopy, v25, v26, v27, v28);
     if (v47 | v48)
     {
-      *&v89 = objc_msgSend_conditionalStyleOwnerUID(v6, v48, v49, v50, v51);
+      *&v89 = objc_msgSend_conditionalStyleOwnerUID(specCopy, v48, v49, v50, v51);
       *(&v89 + 1) = v52;
       sub_221083454(&__p, &v89);
     }
 
-    v53 = objc_msgSend_groupByUID(v6, v48, v49, v50, v51);
+    v53 = objc_msgSend_groupByUID(specCopy, v48, v49, v50, v51);
     if (v53 | v54)
     {
-      *&v89 = objc_msgSend_groupByUID(v6, v54, v55, v56, v57);
+      *&v89 = objc_msgSend_groupByUID(specCopy, v54, v55, v56, v57);
       *(&v89 + 1) = v58;
       sub_221083454(&__p, &v89);
     }
 
-    objc_msgSend_dgl_formulaCellRefsReferringToOwnerUIDs_outFormulaCells_(self, v54, &__p, a4, v57);
+    objc_msgSend_dgl_formulaCellRefsReferringToOwnerUIDs_outFormulaCells_(self, v54, &__p, cells, v57);
   }
 
   else if (v11 == 10)
   {
-    v59 = objc_msgSend_tableUIDInfo(v6, v12, v13, v14, v15);
+    v59 = objc_msgSend_tableUIDInfo(specCopy, v12, v13, v14, v15);
     v64 = v59;
     if (v59)
     {
@@ -3956,7 +3956,7 @@ LABEL_17:
       }
     }
 
-    objc_msgSend_dgl_formulaCellRefsReferringToOwnerUIDs_outFormulaCells_(self, v77, &__p, a4, v80, v89);
+    objc_msgSend_dgl_formulaCellRefsReferringToOwnerUIDs_outFormulaCells_(self, v77, &__p, cells, v80, v89);
   }
 
   else if (v11 == 18)
@@ -3964,17 +3964,17 @@ LABEL_17:
     __p = 0;
     v92 = 0;
     v93 = 0;
-    *&v89 = objc_msgSend_tableUID(v6, v12, v13, v14, v15);
+    *&v89 = objc_msgSend_tableUID(specCopy, v12, v13, v14, v15);
     *(&v89 + 1) = v16;
     sub_221083454(&__p, &v89);
-    objc_msgSend_dgl_formulaCellRefsReferringToOwnerUIDs_outFormulaCells_(self, v17, &__p, a4, v18);
+    objc_msgSend_dgl_formulaCellRefsReferringToOwnerUIDs_outFormulaCells_(self, v17, &__p, cells, v18);
   }
 
   else
   {
-    if (v6)
+    if (specCopy)
     {
-      objc_msgSend_expandedRowColumnUuids(v6, v12, v13, v14, v15);
+      objc_msgSend_expandedRowColumnUuids(specCopy, v12, v13, v14, v15);
     }
 
     else
@@ -3987,9 +3987,9 @@ LABEL_17:
     for (i = self->_formulaOwnerDependencies.__table_.__first_node_.__next_; i; i = *i)
     {
       v66 = objc_msgSend_uuidReferences(i[3], v12, v13, v14, v15);
-      *&v89 = objc_msgSend_tableUID(v6, v67, v68, v69, v70);
+      *&v89 = objc_msgSend_tableUID(specCopy, v67, v68, v69, v70);
       *(&v89 + 1) = v71;
-      objc_msgSend_getCellRefs_referringToOwnerUID_referringToUuids_(v66, v71, a4, &v89, &__p);
+      objc_msgSend_getCellRefs_referringToOwnerUID_referringToUuids_(v66, v71, cells, &v89, &__p);
     }
   }
 
@@ -4000,15 +4000,15 @@ LABEL_17:
   }
 }
 
-- (TSCECellRefSet)formulaCellsAffectedByRewrite:(SEL)a3 postMove:(id)a4
+- (TSCECellRefSet)formulaCellsAffectedByRewrite:(SEL)rewrite postMove:(id)move
 {
   v5 = a5;
-  v8 = a4;
+  moveCopy = move;
   retstr->_coordsForOwnerUid.__tree_.__size_ = 0;
   retstr->_coordsForOwnerUid.__tree_.__end_node_.__left_ = 0;
   retstr->_coordsForOwnerUid.__tree_.__begin_node_ = &retstr->_coordsForOwnerUid.__tree_.__end_node_;
-  v32 = v8;
-  v13 = objc_msgSend_rewriteType(v8, v9, v10, v11, v12);
+  v32 = moveCopy;
+  v13 = objc_msgSend_rewriteType(moveCopy, v9, v10, v11, v12);
   if (objc_msgSend_rewriteTypeUsesAmendRewriteSpec_(TSCEDependencyTracker, v14, v13, v15, v16) <= v5)
   {
     switch(v13)
@@ -4075,25 +4075,25 @@ LABEL_17:
   return result;
 }
 
-- (id)dgl_cellDependenciesForOwnerUID:(const TSKUIDStruct *)a3
+- (id)dgl_cellDependenciesForOwnerUID:(const TSKUIDStruct *)d
 {
-  if (*a3 == 0)
+  if (*d == 0)
   {
     v11 = 0;
   }
 
   else
   {
-    v7 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, a3, v3, v4);
+    v7 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, d, v3, v4);
     v11 = objc_msgSend_dgl_cellDependenciesForOwnerID_(self, v8, v7, v9, v10);
   }
 
   return v11;
 }
 
-- (id)dgl_cellDependenciesForOwnerID:(unsigned __int16)a3
+- (id)dgl_cellDependenciesForOwnerID:(unsigned __int16)d
 {
-  v5 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, a2, a3, v3, v4);
+  v5 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, a2, d, v3, v4);
   if (v5)
   {
     v5 = objc_msgSend_cellDependencies(v5, v6, v7, v8, v9);
@@ -4102,9 +4102,9 @@ LABEL_17:
   return v5;
 }
 
-- (id)dgl_rangeDependenciesForOwnerID:(unsigned __int16)a3
+- (id)dgl_rangeDependenciesForOwnerID:(unsigned __int16)d
 {
-  v5 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, a2, a3, v3, v4);
+  v5 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, a2, d, v3, v4);
   if (v5)
   {
     v5 = objc_msgSend_rangeDependencies(v5, v6, v7, v8, v9);
@@ -4113,21 +4113,21 @@ LABEL_17:
   return v5;
 }
 
-- (id)dgl_rangeDependenciesForOwnerUID:(const TSKUIDStruct *)a3
+- (id)dgl_rangeDependenciesForOwnerUID:(const TSKUIDStruct *)d
 {
-  v7 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, a3, v3, v4);
+  v7 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, d, v3, v4);
 
   return objc_msgSend_dgl_rangeDependenciesForOwnerID_(self, v6, v7, v8, v9);
 }
 
-- (id)rangeDependenciesForOwnerID:(unsigned __int16)a3
+- (id)rangeDependenciesForOwnerID:(unsigned __int16)d
 {
-  v3 = a3;
+  dCopy = d;
   p_dependencyGraphLock = &self->_dependencyGraphLock;
   v11 = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   LOBYTE(v12) = 1;
-  v9 = objc_msgSend_dgl_rangeDependenciesForOwnerID_(self, v6, v3, v7, v8, v11, v12);
+  v9 = objc_msgSend_dgl_rangeDependenciesForOwnerID_(self, v6, dCopy, v7, v8, v11, v12);
   os_unfair_lock_unlock(p_dependencyGraphLock);
   LOBYTE(v12) = 0;
   sub_2212E22F0(&v11);
@@ -4135,9 +4135,9 @@ LABEL_17:
   return v9;
 }
 
-- (id)dgl_spanningRowDependenciesForOwnerID:(unsigned __int16)a3
+- (id)dgl_spanningRowDependenciesForOwnerID:(unsigned __int16)d
 {
-  v5 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, a2, a3, v3, v4);
+  v5 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, a2, d, v3, v4);
   if (v5)
   {
     v5 = objc_msgSend_spanningRowDependencies(v5, v6, v7, v8, v9);
@@ -4146,21 +4146,21 @@ LABEL_17:
   return v5;
 }
 
-- (id)dgl_spanningRowDependenciesForOwnerUID:(const TSKUIDStruct *)a3
+- (id)dgl_spanningRowDependenciesForOwnerUID:(const TSKUIDStruct *)d
 {
-  v7 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, a3, v3, v4);
+  v7 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, d, v3, v4);
 
   return objc_msgSend_dgl_spanningRowDependenciesForOwnerID_(self, v6, v7, v8, v9);
 }
 
-- (id)spanningRowDependenciesForOwnerID:(unsigned __int16)a3
+- (id)spanningRowDependenciesForOwnerID:(unsigned __int16)d
 {
-  v3 = a3;
+  dCopy = d;
   p_dependencyGraphLock = &self->_dependencyGraphLock;
   v11 = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   LOBYTE(v12) = 1;
-  v9 = objc_msgSend_dgl_spanningRowDependenciesForOwnerID_(self, v6, v3, v7, v8, v11, v12);
+  v9 = objc_msgSend_dgl_spanningRowDependenciesForOwnerID_(self, v6, dCopy, v7, v8, v11, v12);
   os_unfair_lock_unlock(p_dependencyGraphLock);
   LOBYTE(v12) = 0;
   sub_2212E22F0(&v11);
@@ -4168,9 +4168,9 @@ LABEL_17:
   return v9;
 }
 
-- (id)dgl_spanningColumnDependenciesForOwnerID:(unsigned __int16)a3
+- (id)dgl_spanningColumnDependenciesForOwnerID:(unsigned __int16)d
 {
-  v5 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, a2, a3, v3, v4);
+  v5 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, a2, d, v3, v4);
   if (v5)
   {
     v5 = objc_msgSend_spanningColumnDependencies(v5, v6, v7, v8, v9);
@@ -4179,21 +4179,21 @@ LABEL_17:
   return v5;
 }
 
-- (id)dgl_spanningColumnDependenciesForOwnerUID:(const TSKUIDStruct *)a3
+- (id)dgl_spanningColumnDependenciesForOwnerUID:(const TSKUIDStruct *)d
 {
-  v7 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, a3, v3, v4);
+  v7 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, d, v3, v4);
 
   return objc_msgSend_dgl_spanningColumnDependenciesForOwnerID_(self, v6, v7, v8, v9);
 }
 
-- (id)spanningColumnDependenciesForOwnerID:(unsigned __int16)a3
+- (id)spanningColumnDependenciesForOwnerID:(unsigned __int16)d
 {
-  v3 = a3;
+  dCopy = d;
   p_dependencyGraphLock = &self->_dependencyGraphLock;
   v11 = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   LOBYTE(v12) = 1;
-  v9 = objc_msgSend_dgl_spanningColumnDependenciesForOwnerID_(self, v6, v3, v7, v8, v11, v12);
+  v9 = objc_msgSend_dgl_spanningColumnDependenciesForOwnerID_(self, v6, dCopy, v7, v8, v11, v12);
   os_unfair_lock_unlock(p_dependencyGraphLock);
   LOBYTE(v12) = 0;
   sub_2212E22F0(&v11);
@@ -4201,9 +4201,9 @@ LABEL_17:
   return v9;
 }
 
-- (id)dgl_wholeOwnerDependenciesForOwnerID:(unsigned __int16)a3
+- (id)dgl_wholeOwnerDependenciesForOwnerID:(unsigned __int16)d
 {
-  v5 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, a2, a3, v3, v4);
+  v5 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, a2, d, v3, v4);
   if (v5)
   {
     v5 = objc_msgSend_wholeOwnerDependencies(v5, v6, v7, v8, v9);
@@ -4212,16 +4212,16 @@ LABEL_17:
   return v5;
 }
 
-- (id)dgl_wholeOwnerDependenciesForOwnerUID:(const TSKUIDStruct *)a3
+- (id)dgl_wholeOwnerDependenciesForOwnerUID:(const TSKUIDStruct *)d
 {
-  v7 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, a3, v3, v4);
+  v7 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, d, v3, v4);
 
   return objc_msgSend_dgl_wholeOwnerDependenciesForOwnerID_(self, v6, v7, v8, v9);
 }
 
-- (id)dgl_errorsForOwnerID:(unsigned __int16)a3
+- (id)dgl_errorsForOwnerID:(unsigned __int16)d
 {
-  v5 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, a2, a3, v3, v4);
+  v5 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, a2, d, v3, v4);
   if (v5)
   {
     v5 = objc_msgSend_errors(v5, v6, v7, v8, v9);
@@ -4230,35 +4230,35 @@ LABEL_17:
   return v5;
 }
 
-- (id)dgl_errorsForOwnerUID:(const TSKUIDStruct *)a3
+- (id)dgl_errorsForOwnerUID:(const TSKUIDStruct *)d
 {
-  v7 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, a3, v3, v4);
+  v7 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, d, v3, v4);
 
   return objc_msgSend_dgl_errorsForOwnerID_(self, v6, v7, v8, v9);
 }
 
-- (unsigned)internalFormulaOwnerIDForFormulaOwnerUID:(const TSKUIDStruct *)a3 createIfMissing:(BOOL)a4
+- (unsigned)internalFormulaOwnerIDForFormulaOwnerUID:(const TSKUIDStruct *)d createIfMissing:(BOOL)missing
 {
-  if (*a3 == 0)
+  if (*d == 0)
   {
     return -1;
   }
 
   p_formulaOwnerIDMap = &self->_formulaOwnerIDMap;
-  if (a4)
+  if (missing)
   {
-    return sub_2212601C0(p_formulaOwnerIDMap, &a3->_lower);
+    return sub_2212601C0(p_formulaOwnerIDMap, &d->_lower);
   }
 
   else
   {
-    return sub_22125FA08(p_formulaOwnerIDMap, a3->_lower, a3->_upper);
+    return sub_22125FA08(p_formulaOwnerIDMap, d->_lower, d->_upper);
   }
 }
 
-- (TSKUIDStruct)formulaOwnerUIDForInternalFormulaOwnerID:(unsigned __int16)a3
+- (TSKUIDStruct)formulaOwnerUIDForInternalFormulaOwnerID:(unsigned __int16)d
 {
-  if (a3 == 0xFFFF)
+  if (d == 0xFFFF)
   {
     v3 = 0;
     v4 = 0;
@@ -4266,7 +4266,7 @@ LABEL_17:
 
   else
   {
-    v3 = sub_22125FFE0(&self->_formulaOwnerIDMap, a3);
+    v3 = sub_22125FFE0(&self->_formulaOwnerIDMap, d);
   }
 
   result._upper = v4;
@@ -4274,15 +4274,15 @@ LABEL_17:
   return result;
 }
 
-- (TSCECellRecord)dgl_findCellRecord:(const TSCECellRef *)a3 willModifyOnTile:(BOOL)a4
+- (TSCECellRecord)dgl_findCellRecord:(const TSCECellRef *)record willModifyOnTile:(BOOL)tile
 {
-  v5 = a4;
-  tableUID = a3->_tableUID;
-  v7 = objc_msgSend_dgl_cellDependenciesForOwnerUID_(self, a2, &tableUID, a4, v4);
+  tileCopy = tile;
+  tableUID = record->_tableUID;
+  v7 = objc_msgSend_dgl_cellDependenciesForOwnerUID_(self, a2, &tableUID, tile, v4);
   v10 = v7;
   if (v7)
   {
-    CellRecord_willModifyOnTile = objc_msgSend_findCellRecord_willModifyOnTile_(v7, v8, a3, v5, v9);
+    CellRecord_willModifyOnTile = objc_msgSend_findCellRecord_willModifyOnTile_(v7, v8, record, tileCopy, v9);
   }
 
   else
@@ -4293,14 +4293,14 @@ LABEL_17:
   return CellRecord_willModifyOnTile;
 }
 
-- (TSCECellRecord)dgl_findCellRecordInternal:(const TSCEInternalCellReference *)a3 willModifyOnTile:(BOOL)a4
+- (TSCECellRecord)dgl_findCellRecordInternal:(const TSCEInternalCellReference *)internal willModifyOnTile:(BOOL)tile
 {
-  v5 = a4;
-  v7 = objc_msgSend_dgl_cellDependenciesForOwnerID_(self, a2, a3->tableID, a4, v4);
+  tileCopy = tile;
+  v7 = objc_msgSend_dgl_cellDependenciesForOwnerID_(self, a2, internal->tableID, tile, v4);
   v10 = v7;
   if (v7)
   {
-    CellRecord_willModifyOnTile = objc_msgSend_findCellRecord_willModifyOnTile_(v7, v8, a3, v5, v9);
+    CellRecord_willModifyOnTile = objc_msgSend_findCellRecord_willModifyOnTile_(v7, v8, internal, tileCopy, v9);
   }
 
   else
@@ -4311,9 +4311,9 @@ LABEL_17:
   return CellRecord_willModifyOnTile;
 }
 
-- (void)dgl_clearCycleFlagsOnCellAndDependents:(TSCEInternalCellReference)a3 startCellRecord:(TSCECellRecord *)a4
+- (void)dgl_clearCycleFlagsOnCellAndDependents:(TSCEInternalCellReference)dependents startCellRecord:(TSCECellRecord *)record
 {
-  v44 = a3;
+  dependentsCopy = dependents;
   v36 = 0;
   v37 = &v36;
   v38 = 0x5812000000;
@@ -4340,7 +4340,7 @@ LABEL_17:
 
   v25[0] = &v26;
   v7 = sub_2213773B0(v29 + 6, &v26);
-  objc_msgSend_addCellRef_(v7[4], v8, &v44, v9, v10);
+  objc_msgSend_addCellRef_(v7[4], v8, &dependentsCopy, v9, v10);
   v25[0] = 0;
   v25[1] = v25;
   v25[2] = 0x2050000000;
@@ -4369,7 +4369,7 @@ LABEL_17:
       v22 = v27;
       v21[7] = &v28;
       v21[8] = &v36;
-      v21[9] = a4;
+      v21[9] = record;
       objc_msgSend_enumerateCellRefsUsingBlock_(v13, v14, v21, v15, v16);
       sub_221377650(v29 + 6, &v26);
       v17 = v29[8];
@@ -4400,9 +4400,9 @@ LABEL_17:
   sub_221122744(v42);
 }
 
-- (void)dgl_markCellsDirtyTraversingDependents:(TSCEInternalCellReference)a3 startCellRecord:(TSCECellRecord *)a4
+- (void)dgl_markCellsDirtyTraversingDependents:(TSCEInternalCellReference)dependents startCellRecord:(TSCECellRecord *)record
 {
-  v35 = a3;
+  dependentsCopy = dependents;
   v27 = 0;
   v28 = &v27;
   v29 = 0x5812000000;
@@ -4425,7 +4425,7 @@ LABEL_17:
 
   v24[0] = &v25;
   v8 = sub_2213773B0(v28 + 6, &v25);
-  objc_msgSend_addCellRef_(v8[4], v9, &v35, v10, v11);
+  objc_msgSend_addCellRef_(v8[4], v9, &dependentsCopy, v10, v11);
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x2050000000;
@@ -4450,7 +4450,7 @@ LABEL_17:
       v20[5] = v24;
       v22 = v13 & 1;
       v20[7] = &v27;
-      v20[8] = a4;
+      v20[8] = record;
       v20[9] = v25;
       v21 = v26;
       v20[6] = v23;
@@ -4476,13 +4476,13 @@ LABEL_17:
   sub_221087AA4(v33);
 }
 
-- (void)noteCorruptCellRef:(const TSCEInternalCellReference *)a3
+- (void)noteCorruptCellRef:(const TSCEInternalCellReference *)ref
 {
-  if (a3->tableID != -1 && (*&a3->coordinate & 0x101FFFFFFFFFFFFLL) != 0x7FFF7FFFFFFFLL)
+  if (ref->tableID != -1 && (*&ref->coordinate & 0x101FFFFFFFFFFFFLL) != 0x7FFF7FFFFFFFLL)
   {
     os_unfair_lock_lock(&self->_corruptedCellRefsMutex);
-    sub_2212E0198(&self->_corruptedCellRefs._coordsForOwnerId.__table_.__bucket_list_.__ptr_, a3);
-    sub_2212DFCE8(&self->_corruptedCellRefs._coordsForOwnerId.__table_.__bucket_list_.__ptr_, a3);
+    sub_2212E0198(&self->_corruptedCellRefs._coordsForOwnerId.__table_.__bucket_list_.__ptr_, ref);
+    sub_2212DFCE8(&self->_corruptedCellRefs._coordsForOwnerId.__table_.__bucket_list_.__ptr_, ref);
 
     os_unfair_lock_unlock(&self->_corruptedCellRefsMutex);
   }
@@ -4500,9 +4500,9 @@ LABEL_17:
   return result;
 }
 
-- (void)resetCorruptCellRefs:(const void *)a3
+- (void)resetCorruptCellRefs:(const void *)refs
 {
-  if (!sub_2212E0280(a3))
+  if (!sub_2212E0280(refs))
   {
     os_unfair_lock_lock(&self->_corruptedCellRefsMutex);
     v5[0] = MEMORY[0x277D85DD0];
@@ -4510,14 +4510,14 @@ LABEL_17:
     v5[2] = sub_22136E5D8;
     v5[3] = &unk_27845F540;
     v5[4] = self;
-    sub_2212DFEC0(a3, v5);
+    sub_2212DFEC0(refs, v5);
     os_unfair_lock_unlock(&self->_corruptedCellRefsMutex);
   }
 }
 
-- (void)pushReferenceForImmediateEvaluation:(const TSCEInternalCellReference *)a3 cellRecord:(TSCECellRecord *)a4 pushOnFront:(BOOL)a5
+- (void)pushReferenceForImmediateEvaluation:(const TSCEInternalCellReference *)evaluation cellRecord:(TSCECellRecord *)record pushOnFront:(BOOL)front
 {
-  if (a4 && (a4->var6 & 0x100) == 0 && objc_msgSend_addLeaf_withOptions_(self->_leafQueue, a2, a3, a5, a5) && (objc_msgSend_recalculationIsPaused(self->_calcEngine, v6, v7, v8, v9) & 1) == 0)
+  if (record && (record->var6 & 0x100) == 0 && objc_msgSend_addLeaf_withOptions_(self->_leafQueue, a2, evaluation, front, front) && (objc_msgSend_recalculationIsPaused(self->_calcEngine, v6, v7, v8, v9) & 1) == 0)
   {
     objc_initWeak(&location, self->_calcEngine);
     v10 = dispatch_get_global_queue(0, 0);
@@ -4533,31 +4533,31 @@ LABEL_17:
   }
 }
 
-- (void)dgl_pushReferenceForImmediateEvaluation:(const TSCEInternalCellReference *)a3 pushOnFront:(BOOL)a4
+- (void)dgl_pushReferenceForImmediateEvaluation:(const TSCEInternalCellReference *)evaluation pushOnFront:(BOOL)front
 {
-  v5 = a4;
-  CellRecordInternal_willModifyOnTile = objc_msgSend_dgl_findCellRecordInternal_willModifyOnTile_(self, a2, a3, 0, v4);
+  frontCopy = front;
+  CellRecordInternal_willModifyOnTile = objc_msgSend_dgl_findCellRecordInternal_willModifyOnTile_(self, a2, evaluation, 0, v4);
   if (CellRecordInternal_willModifyOnTile && *(CellRecordInternal_willModifyOnTile + 16) <= 1uLL)
   {
 
-    objc_msgSend_pushReferenceForImmediateEvaluation_cellRecord_pushOnFront_(self, v9, a3, CellRecordInternal_willModifyOnTile, v5);
+    objc_msgSend_pushReferenceForImmediateEvaluation_cellRecord_pushOnFront_(self, v9, evaluation, CellRecordInternal_willModifyOnTile, frontCopy);
   }
 }
 
-- (void)pushCellsForImmediateEvaluation:(const void *)a3 pushOnFront:(BOOL)a4
+- (void)pushCellsForImmediateEvaluation:(const void *)evaluation pushOnFront:(BOOL)front
 {
-  v4 = a4;
+  frontCopy = front;
   p_dependencyGraphLock = &self->_dependencyGraphLock;
   v12 = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   LOBYTE(v13) = 1;
-  v10 = *a3;
-  v11 = *(a3 + 1);
+  v10 = *evaluation;
+  v11 = *(evaluation + 1);
   if (v10 != v11)
   {
     do
     {
-      objc_msgSend_dgl_pushReferenceForImmediateEvaluation_pushOnFront_(self, v8, v10, v4, v9, v12, v13);
+      objc_msgSend_dgl_pushReferenceForImmediateEvaluation_pushOnFront_(self, v8, v10, frontCopy, v9, v12, v13);
       v10 += 32;
     }
 
@@ -4570,40 +4570,40 @@ LABEL_17:
   sub_2212E22F0(&v12);
 }
 
-- (void)dgl_markCellDirty:(const TSCEInternalCellReference *)a3
+- (void)dgl_markCellDirty:(const TSCEInternalCellReference *)dirty
 {
-  objc_msgSend_dgl_markDependentsDirty_(self, a2, a3, v3, v4);
+  objc_msgSend_dgl_markDependentsDirty_(self, a2, dirty, v3, v4);
 
-  objc_msgSend_dgl_pushReferenceForImmediateEvaluation_pushOnFront_(self, v7, a3, 0, v8);
+  objc_msgSend_dgl_pushReferenceForImmediateEvaluation_pushOnFront_(self, v7, dirty, 0, v8);
 }
 
-- (void)dgl_markDependentsDirty:(const TSCEInternalCellReference *)a3
+- (void)dgl_markDependentsDirty:(const TSCEInternalCellReference *)dirty
 {
-  if (objc_msgSend_dgl_intCellIsClean_(self, a2, a3, v3, v4))
+  if (objc_msgSend_dgl_intCellIsClean_(self, a2, dirty, v3, v4))
   {
-    coordinate = a3->coordinate;
-    v10 = *&a3->tableID;
-    CellRecordInternal_willModifyOnTile = objc_msgSend_dgl_findCellRecordInternal_willModifyOnTile_(self, v7, a3, 1, v8);
+    coordinate = dirty->coordinate;
+    v10 = *&dirty->tableID;
+    CellRecordInternal_willModifyOnTile = objc_msgSend_dgl_findCellRecordInternal_willModifyOnTile_(self, v7, dirty, 1, v8);
 
     objc_msgSend_dgl_markCellsDirtyTraversingDependents_startCellRecord_(self, v11, coordinate, v10, CellRecordInternal_willModifyOnTile);
   }
 }
 
-- (void)markOnlyDependentsDirty:(TSCEInternalCellReference)a3
+- (void)markOnlyDependentsDirty:(TSCEInternalCellReference)dirty
 {
-  v22 = a3;
-  objc_msgSend_flushInProgressDirtying(self, a2, *&a3.coordinate, *&a3.tableID, v3);
+  dirtyCopy = dirty;
+  objc_msgSend_flushInProgressDirtying(self, a2, *&dirty.coordinate, *&dirty.tableID, v3);
   v19 = 0;
   lock = &self->_dependencyGraphLock;
-  coordinate = v22.coordinate;
-  LODWORD(v17) = *&v22.tableID;
+  coordinate = dirtyCopy.coordinate;
+  LODWORD(v17) = *&dirtyCopy.tableID;
   v18 = 0;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   v21 = 1;
   objc_msgSend_dgl_loadCacheForCell_(self, v5, &coordinate, v6, v7);
   if (objc_msgSend_dgl_cellIsClean_(self, v8, &coordinate, v9, v10))
   {
-    objc_msgSend_dgl_markDependentsDirty_(self, v11, &v22, v12, v13, coordinate, v17, v18, v19, lock);
+    objc_msgSend_dgl_markDependentsDirty_(self, v11, &dirtyCopy, v12, v13, coordinate, v17, v18, v19, lock);
     objc_msgSend_dgl_updateGraphWithCleanReference_skipCycleCheck_(self, v14, &coordinate, 0, v15);
   }
 
@@ -4612,9 +4612,9 @@ LABEL_17:
   sub_2212E22F0(&lock);
 }
 
-- (void)wroteSpillingCells:(const void *)a3 forTable:(const TSKUIDStruct *)a4
+- (void)wroteSpillingCells:(const void *)cells forTable:(const TSKUIDStruct *)table
 {
-  v7 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, a4, a4, v4);
+  v7 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, table, table, v4);
   if (v7 != 0xFFFF)
   {
     v12 = v7;
@@ -4628,47 +4628,47 @@ LABEL_17:
     v13[3] = &unk_278462C88;
     v14 = v12;
     v13[4] = self;
-    TSCECellCoordSet::enumerateCoordsUsingBlock(a3, v13);
+    TSCECellCoordSet::enumerateCoordsUsingBlock(cells, v13);
     os_unfair_lock_unlock(&self->_dependencyGraphLock);
     v16 = 0;
     sub_2212E22F0(&p_dependencyGraphLock);
   }
 }
 
-- (void)incrementalMarkCellRefDirty:(id)a3
+- (void)incrementalMarkCellRefDirty:(id)dirty
 {
-  v4 = a3;
-  v9 = objc_msgSend_startCellRef(v4, v5, v6, v7, v8) & 0x101FFFFFFFFFFFFLL;
+  dirtyCopy = dirty;
+  v9 = objc_msgSend_startCellRef(dirtyCopy, v5, v6, v7, v8) & 0x101FFFFFFFFFFFFLL;
   if (v10 != -1 && v9 != 0x7FFF7FFFFFFFLL)
   {
     p_dependencyGraphLock = &self->_dependencyGraphLock;
     os_unfair_lock_lock(&self->_dependencyGraphLock);
     v82 = 1;
-    if (objc_msgSend_isDoneDirtying(v4, v12, v13, v14, v15))
+    if (objc_msgSend_isDoneDirtying(dirtyCopy, v12, v13, v14, v15))
     {
-      started = objc_msgSend_startCellRef(v4, v16, v17, v18, v19);
+      started = objc_msgSend_startCellRef(dirtyCopy, v16, v17, v18, v19);
       LODWORD(p_started) = v20;
       if (objc_msgSend_dgl_intCellIsClean_(self, v20, &started, v21, v22))
       {
-        objc_msgSend_startDirtyingCellRef(v4, v23, v24, v25, v26);
+        objc_msgSend_startDirtyingCellRef(dirtyCopy, v23, v24, v25, v26);
       }
 
       else
       {
         objc_msgSend_dgl_pushReferenceForImmediateEvaluation_pushOnFront_(self, v23, &started, 0, v26);
-        objc_msgSend_stopDirtyingCellRef(v4, v27, v28, v29, v30);
+        objc_msgSend_stopDirtyingCellRef(dirtyCopy, v27, v28, v29, v30);
       }
     }
 
-    if ((objc_msgSend_isDoneDirtying(v4, v16, v17, v18, v19) & 1) == 0)
+    if ((objc_msgSend_isDoneDirtying(dirtyCopy, v16, v17, v18, v19) & 1) == 0)
     {
-      v39 = objc_msgSend_dependentsToDirtyByFromRef(v4, v31, v32, v33, v34);
+      v39 = objc_msgSend_dependentsToDirtyByFromRef(dirtyCopy, v31, v32, v33, v34);
       v79 = 0x7FFF7FFFFFFFLL;
       v80 = 0xFFFF;
       v40 = v39[2];
       v41 = (!v40 || (v79 = *(v40 + 16), v80 = *(v40 + 24), (v79 & 0x101FFFFFFFFFFFFLL) == 0x7FFF7FFFFFFFLL)) && v80 == -1;
-      v42 = objc_msgSend_startTime(v4, v35, v36, v37, v38);
-      objc_msgSend_timeout(v4, v43, v44, v45, v46);
+      v42 = objc_msgSend_startTime(dirtyCopy, v35, v36, v37, v38);
+      objc_msgSend_timeout(dirtyCopy, v43, v44, v45, v46);
       v52 = v51;
       started = 0;
       p_started = &started;
@@ -4724,10 +4724,10 @@ LABEL_17:
       else
       {
 LABEL_20:
-        v69 = objc_msgSend_startCellRef(v4, v47, v48, v49, v50);
+        v69 = objc_msgSend_startCellRef(dirtyCopy, v47, v48, v49, v50);
         v70 = v63;
         objc_msgSend_dgl_pushReferenceForImmediateEvaluation_pushOnFront_(self, v63, &v69, 0, v64);
-        objc_msgSend_stopDirtyingCellRef(v4, v65, v66, v67, v68);
+        objc_msgSend_stopDirtyingCellRef(dirtyCopy, v65, v66, v67, v68);
       }
 
       _Block_object_dispose(v74, 8);
@@ -4740,21 +4740,21 @@ LABEL_20:
   }
 }
 
-- (void)scheduleMarkCellRefAsDirty:(const TSCECellRef *)a3
+- (void)scheduleMarkCellRefAsDirty:(const TSCECellRef *)dirty
 {
-  v7 = objc_msgSend_internalCellReferenceForCellRef_(self, a2, a3, v3, v4);
+  v7 = objc_msgSend_internalCellReferenceForCellRef_(self, a2, dirty, v3, v4);
 
   objc_msgSend_scheduleMarkIntCellRefAsDirty_(self, v6, v7, v6, v8);
 }
 
-- (void)scheduleMarkIntCellRefAsDirty:(TSCEInternalCellReference)a3
+- (void)scheduleMarkIntCellRefAsDirty:(TSCEInternalCellReference)dirty
 {
-  coordinate = a3.coordinate;
-  LODWORD(v10) = *&a3.tableID;
+  coordinate = dirty.coordinate;
+  LODWORD(v10) = *&dirty.tableID;
   calcEngine = self->_calcEngine;
   if (calcEngine)
   {
-    v5 = objc_msgSend_referencesToDirty(calcEngine, a2, *&a3.coordinate, *&a3.tableID, v3, coordinate, v10);
+    v5 = objc_msgSend_referencesToDirty(calcEngine, a2, *&dirty.coordinate, *&dirty.tableID, v3, coordinate, v10);
     objc_msgSend_dirtyInternalCellRef_(v5, v6, &coordinate, v7, v8);
   }
 }
@@ -4769,10 +4769,10 @@ LABEL_20:
   }
 }
 
-- (void)markIntRangeRefAsDirty:(const TSCEInternalRangeReference *)a3
+- (void)markIntRangeRefAsDirty:(const TSCEInternalRangeReference *)dirty
 {
-  var1 = a3->var1;
-  var0 = a3->var0;
+  var1 = dirty->var1;
+  var0 = dirty->var0;
   p_dependencyGraphLock = &self->_dependencyGraphLock;
   v46 = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
@@ -4852,12 +4852,12 @@ LABEL_20:
   sub_2212E22F0(&v46);
 }
 
-- (void)markRangeRefAsDirty:(const TSCERangeRef *)a3
+- (void)markRangeRefAsDirty:(const TSCERangeRef *)dirty
 {
   v9[0] = 0;
   v9[1] = 0;
   v10 = 0;
-  objc_msgSend_internalRangeReferenceForRangeRef_(self, a2, a3, v3, v4);
+  objc_msgSend_internalRangeReferenceForRangeRef_(self, a2, dirty, v3, v4);
   objc_msgSend_markIntRangeRefAsDirty_(self, v6, v9, v7, v8);
 }
 
@@ -4979,34 +4979,34 @@ LABEL_20:
   sub_2212E22F0(&lock);
 }
 
-- (void)dgl_markCellRefAsDirty:(const TSCEInternalCellReference *)a3 cellDependencies:(id)a4 cellRecord:(TSCECellRecord *)a5
+- (void)dgl_markCellRefAsDirty:(const TSCEInternalCellReference *)dirty cellDependencies:(id)dependencies cellRecord:(TSCECellRecord *)record
 {
-  v11 = a4;
-  if (v11 && (!a5 || !a5->var2))
+  dependenciesCopy = dependencies;
+  if (dependenciesCopy && (!record || !record->var2))
   {
-    objc_msgSend_dgl_markCellsDirtyTraversingDependents_startCellRecord_(self, v8, *&a3->coordinate, *&a3->tableID, a5);
-    if (a5 && (a5->var6 & 4) != 0)
+    objc_msgSend_dgl_markCellsDirtyTraversingDependents_startCellRecord_(self, v8, *&dirty->coordinate, *&dirty->tableID, record);
+    if (record && (record->var6 & 4) != 0)
     {
-      if (a5->var2 <= 1)
+      if (record->var2 <= 1)
       {
-        objc_msgSend_dgl_pushReferenceForImmediateEvaluation_pushOnFront_(self, v9, a3, 0, v10);
+        objc_msgSend_dgl_pushReferenceForImmediateEvaluation_pushOnFront_(self, v9, dirty, 0, v10);
       }
     }
 
     else
     {
-      objc_msgSend_dgl_updateGraphWithCleanReference_cellRecord_(self, v9, a3, a5, v10);
+      objc_msgSend_dgl_updateGraphWithCleanReference_cellRecord_(self, v9, dirty, record, v10);
     }
   }
 }
 
-- (void)dgl_markCellRefAsDirty:(const TSCEInternalCellReference *)a3
+- (void)dgl_markCellRefAsDirty:(const TSCEInternalCellReference *)dirty
 {
-  v11 = objc_msgSend_dgl_cellDependenciesForOwnerID_(self, a2, a3->tableID, v3, v4);
+  v11 = objc_msgSend_dgl_cellDependenciesForOwnerID_(self, a2, dirty->tableID, v3, v4);
   if (v11)
   {
-    CellRecord_willModifyOnTile = objc_msgSend_findCellRecord_willModifyOnTile_(v11, v7, a3, 1, v8);
-    objc_msgSend_dgl_markCellRefAsDirty_cellDependencies_cellRecord_(self, v10, a3, v11, CellRecord_willModifyOnTile);
+    CellRecord_willModifyOnTile = objc_msgSend_findCellRecord_willModifyOnTile_(v11, v7, dirty, 1, v8);
+    objc_msgSend_dgl_markCellRefAsDirty_cellDependencies_cellRecord_(self, v10, dirty, v11, CellRecord_willModifyOnTile);
   }
 }
 
@@ -5229,15 +5229,15 @@ LABEL_8:
 
 - (BOOL)isBatchingGroupCellDirtying
 {
-  v2 = self;
+  selfCopy = self;
   p_dependencyGraphLock = &self->_dependencyGraphLock;
   v5 = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
-  LOBYTE(v2) = v2->_batchingGroupCellDirtyingLevel != 0;
+  LOBYTE(selfCopy) = selfCopy->_batchingGroupCellDirtyingLevel != 0;
   os_unfair_lock_unlock(p_dependencyGraphLock);
   v6 = 0;
   sub_2212E22F0(&v5);
-  return v2;
+  return selfCopy;
 }
 
 - (void)dgl_markRandomVolatileFunctionsAsDirty
@@ -5464,13 +5464,13 @@ LABEL_8:
   sub_2212E22F0(&v27);
 }
 
-- (void)dirtyCellsWithSpillErrorsInTable:(const TSKUIDStruct *)a3
+- (void)dirtyCellsWithSpillErrorsInTable:(const TSKUIDStruct *)table
 {
-  v7 = objc_msgSend_referencesToDirty(self->_calcEngine, a2, a3, v3, v4);
+  v7 = objc_msgSend_referencesToDirty(self->_calcEngine, a2, table, v3, v4);
   lock = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   v32 = 1;
-  v11 = objc_msgSend_dgl_ownerDependenciesForOwnerUID_(self, v8, a3, v9, v10);
+  v11 = objc_msgSend_dgl_ownerDependenciesForOwnerUID_(self, v8, table, v9, v10);
   v16 = objc_msgSend_errors(v11, v12, v13, v14, v15);
   v21 = v16;
   if (v16)
@@ -5487,12 +5487,12 @@ LABEL_8:
   sub_2212E22F0(&lock);
 }
 
-- (BOOL)hasSpillingErrorsForTable:(const TSKUIDStruct *)a3
+- (BOOL)hasSpillingErrorsForTable:(const TSKUIDStruct *)table
 {
   lock = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   v23 = 1;
-  v8 = objc_msgSend_dgl_ownerDependenciesForOwnerUID_(self, v5, a3, v6, v7);
+  v8 = objc_msgSend_dgl_ownerDependenciesForOwnerUID_(self, v5, table, v6, v7);
   v13 = objc_msgSend_errors(v8, v9, v10, v11, v12);
   v18 = v13;
   if (v13)
@@ -5514,9 +5514,9 @@ LABEL_8:
   return v19;
 }
 
-- (void)dirtyGeometryVolatileFunctions:(const TSKUIDStruct *)a3
+- (void)dirtyGeometryVolatileFunctions:(const TSKUIDStruct *)functions
 {
-  v6 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, a3, v3, v4);
+  v6 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, functions, v3, v4);
   v11 = objc_msgSend_referencesToDirty(self->_calcEngine, v7, v8, v9, v10);
   lock = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
@@ -5570,9 +5570,9 @@ LABEL_8:
   sub_2212E22F0(&v28);
 }
 
-- (void)dirtyRemoteDataVolatileFunctionsForKeys:(id)a3
+- (void)dirtyRemoteDataVolatileFunctionsForKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   objc_msgSend_flushInProgressDirtying(self, v5, v6, v7, v8);
   v13 = objc_msgSend_referencesToDirty(self->_calcEngine, v9, v10, v11, v12);
   lock = &self->_dependencyGraphLock;
@@ -5590,7 +5590,7 @@ LABEL_8:
       if (v21)
       {
         v22 = objc_msgSend_volatileDependencies(v20, v14, v15, v16, v17);
-        v19 |= objc_msgSend_dirtyRemoteDataVolatileCellsForKeys_refsToDirty_(v22, v23, v4, v13, v24);
+        v19 |= objc_msgSend_dirtyRemoteDataVolatileCellsForKeys_refsToDirty_(v22, v23, keysCopy, v13, v24);
       }
 
       next = *next;
@@ -5646,15 +5646,15 @@ LABEL_8:
   sub_2212E22F0(&v16);
 }
 
-- (void)headerStateOfTableChanged:(const TSKUIDStruct *)a3 changedRows:(BOOL)a4
+- (void)headerStateOfTableChanged:(const TSKUIDStruct *)changed changedRows:(BOOL)rows
 {
-  v5 = a4;
-  v7 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, a3, a4, v4);
+  rowsCopy = rows;
+  v7 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, changed, rows, v4);
   lock = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   v23 = 1;
   v11 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, v8, v7, v9, v10);
-  if (v5)
+  if (rowsCopy)
   {
     objc_msgSend_spanningColumnDependencies(v11, v12, v13, v14, v15, lock);
   }
@@ -5676,9 +5676,9 @@ LABEL_8:
   sub_2212E22F0(&lock);
 }
 
-- (unint64_t)dgl_computedNumberOfDirtyPrecedents:(const TSCEInternalCellReference *)a3
+- (unint64_t)dgl_computedNumberOfDirtyPrecedents:(const TSCEInternalCellReference *)precedents
 {
-  v6 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, a2, a3->tableID, v3, v4);
+  v6 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, a2, precedents->tableID, v3, v4);
   if (!v6)
   {
     return 0;
@@ -5686,54 +5686,54 @@ LABEL_8:
 
   v11 = v6;
   v12 = objc_msgSend_cellDependencies(v6, v7, v8, v9, v10);
-  isCellInACycle = objc_msgSend_isCellInACycle_(v12, v13, a3, v14, v15);
-  v20 = objc_msgSend_computedNumberOfDirtyPrecedents_(v12, v17, a3, v18, v19);
+  isCellInACycle = objc_msgSend_isCellInACycle_(v12, v13, precedents, v14, v15);
+  v20 = objc_msgSend_computedNumberOfDirtyPrecedents_(v12, v17, precedents, v18, v19);
   v25 = objc_msgSend_rangeDependencies(v11, v21, v22, v23, v24);
-  v28 = objc_msgSend_computedNumberOfDirtyPrecedents_cellIsInACycle_(v25, v26, *&a3->coordinate, isCellInACycle, v27);
+  v28 = objc_msgSend_computedNumberOfDirtyPrecedents_cellIsInACycle_(v25, v26, *&precedents->coordinate, isCellInACycle, v27);
   v33 = objc_msgSend_spanningColumnDependencies(v11, v29, v30, v31, v32);
-  v36 = objc_msgSend_computedNumberOfDirtyPrecedents_cellIsInACycle_(v33, v34, *&a3->coordinate, isCellInACycle, v35);
+  v36 = objc_msgSend_computedNumberOfDirtyPrecedents_cellIsInACycle_(v33, v34, *&precedents->coordinate, isCellInACycle, v35);
 
   v41 = objc_msgSend_spanningRowDependencies(v11, v37, v38, v39, v40);
-  v44 = v28 + v20 + v36 + objc_msgSend_computedNumberOfDirtyPrecedents_cellIsInACycle_(v41, v42, *&a3->coordinate, isCellInACycle, v43);
+  v44 = v28 + v20 + v36 + objc_msgSend_computedNumberOfDirtyPrecedents_cellIsInACycle_(v41, v42, *&precedents->coordinate, isCellInACycle, v43);
 
   return v44;
 }
 
-- (unint64_t)dgl_updateNumberOfDirtyPrecedents:(const TSCEInternalCellReference *)a3 cellDependencies:(id)a4 cellRecord:(TSCECellRecord *)a5
+- (unint64_t)dgl_updateNumberOfDirtyPrecedents:(const TSCEInternalCellReference *)precedents cellDependencies:(id)dependencies cellRecord:(TSCECellRecord *)record
 {
-  v8 = a4;
-  v12 = objc_msgSend_dgl_computedNumberOfDirtyPrecedents_(self, v9, a3, v10, v11);
+  dependenciesCopy = dependencies;
+  v12 = objc_msgSend_dgl_computedNumberOfDirtyPrecedents_(self, v9, precedents, v10, v11);
   v16 = v12;
-  if (!v8 || !a5)
+  if (!dependenciesCopy || !record)
   {
     goto LABEL_14;
   }
 
-  var2 = a5->var2;
+  var2 = record->var2;
   if (v12)
   {
     if (!var2)
     {
-      objc_msgSend_dgl_markDependentsDirty_(self, v13, a3, v14, v15);
+      objc_msgSend_dgl_markDependentsDirty_(self, v13, precedents, v14, v15);
     }
 
-    a5->var6 &= ~0x100u;
-    objc_msgSend_setDirtySelfPlusPrecedentsCount_dirtyCount_(v8, v13, a5, v16 + 1, v15);
+    record->var6 &= ~0x100u;
+    objc_msgSend_setDirtySelfPlusPrecedentsCount_dirtyCount_(dependenciesCopy, v13, record, v16 + 1, v15);
     goto LABEL_12;
   }
 
-  var6 = a5->var6;
+  var6 = record->var6;
   if (var2 >= 2)
   {
-    a5->var6 = var6 & 0xFEFF;
+    record->var6 = var6 & 0xFEFF;
 LABEL_11:
-    objc_msgSend_setDirtySelfPlusPrecedentsCount_dirtyCount_(v8, v13, a5, 1, v15);
+    objc_msgSend_setDirtySelfPlusPrecedentsCount_dirtyCount_(dependenciesCopy, v13, record, 1, v15);
     goto LABEL_12;
   }
 
-  if ((a5->var6 & 0x100) != 0)
+  if ((record->var6 & 0x100) != 0)
   {
-    a5->var6 = var6 & 0xFEFF;
+    record->var6 = var6 & 0xFEFF;
     if (var2)
     {
       goto LABEL_11;
@@ -5741,9 +5741,9 @@ LABEL_11:
   }
 
 LABEL_12:
-  if (a5->var2 == 1)
+  if (record->var2 == 1)
   {
-    objc_msgSend_dgl_pushReferenceForImmediateEvaluation_pushOnFront_(self, v13, a3, 0, v15);
+    objc_msgSend_dgl_pushReferenceForImmediateEvaluation_pushOnFront_(self, v13, precedents, 0, v15);
   }
 
 LABEL_14:
@@ -5751,19 +5751,19 @@ LABEL_14:
   return v16;
 }
 
-- (unint64_t)dgl_updateNumberOfDirtyPrecedents:(const TSCEInternalCellReference *)a3
+- (unint64_t)dgl_updateNumberOfDirtyPrecedents:(const TSCEInternalCellReference *)precedents
 {
-  v7 = objc_msgSend_dgl_cellDependenciesForOwnerID_(self, a2, a3->tableID, v3, v4);
+  v7 = objc_msgSend_dgl_cellDependenciesForOwnerID_(self, a2, precedents->tableID, v3, v4);
   v10 = v7;
   if (v7)
   {
-    CellRecord_willModifyOnTile = objc_msgSend_findCellRecord_willModifyOnTile_(v7, v8, a3, 1, v9);
-    updated = objc_msgSend_dgl_updateNumberOfDirtyPrecedents_cellDependencies_cellRecord_(self, v12, a3, v10, CellRecord_willModifyOnTile);
+    CellRecord_willModifyOnTile = objc_msgSend_findCellRecord_willModifyOnTile_(v7, v8, precedents, 1, v9);
+    updated = objc_msgSend_dgl_updateNumberOfDirtyPrecedents_cellDependencies_cellRecord_(self, v12, precedents, v10, CellRecord_willModifyOnTile);
   }
 
   else
   {
-    updated = objc_msgSend_dgl_updateNumberOfDirtyPrecedents_cellDependencies_cellRecord_(self, v8, a3, 0, 0);
+    updated = objc_msgSend_dgl_updateNumberOfDirtyPrecedents_cellDependencies_cellRecord_(self, v8, precedents, 0, 0);
   }
 
   v14 = updated;
@@ -5771,7 +5771,7 @@ LABEL_14:
   return v14;
 }
 
-- (void)updateNumberOfDirtyPrecedents:(const void *)a3
+- (void)updateNumberOfDirtyPrecedents:(const void *)precedents
 {
   p_dependencyGraphLock = &self->_dependencyGraphLock;
   v7 = &self->_dependencyGraphLock;
@@ -5782,48 +5782,48 @@ LABEL_14:
   v6[2] = sub_2213712F4;
   v6[3] = &unk_27845F540;
   v6[4] = self;
-  sub_2212DFEC0(a3, v6);
+  sub_2212DFEC0(precedents, v6);
   os_unfair_lock_unlock(p_dependencyGraphLock);
   v8 = 0;
   sub_2212E22F0(&v7);
 }
 
-- (void)dgl_cellRefsForCycleCellsReferringToCell:(const TSCEInternalCellReference *)a3 outCellRefs:(void *)a4
+- (void)dgl_cellRefsForCycleCellsReferringToCell:(const TSCEInternalCellReference *)cell outCellRefs:(void *)refs
 {
-  v7 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, a2, a3->tableID, a4, v4);
+  v7 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, a2, cell->tableID, refs, v4);
   v30 = objc_msgSend_cellDependencies(v7, v8, v9, v10, v11);
   if (v30)
   {
-    objc_msgSend_cellRefsForCycleCellsReferringToCell_outCellRefs_(v30, v12, a3, a4, v15);
+    objc_msgSend_cellRefsForCycleCellsReferringToCell_outCellRefs_(v30, v12, cell, refs, v15);
   }
 
   v16 = objc_msgSend_rangeDependencies(v7, v12, v13, v14, v15);
   v21 = v16;
   if (v16)
   {
-    objc_msgSend_cellRefsForCycleCellsReferringToCell_outCellRefs_(v16, v17, a3, a4, v20);
+    objc_msgSend_cellRefsForCycleCellsReferringToCell_outCellRefs_(v16, v17, cell, refs, v20);
   }
 
   v22 = objc_msgSend_spanningColumnDependencies(v7, v17, v18, v19, v20);
-  objc_msgSend_cellRefsForFormulasReferringToIndex_outCellRefs_cycleCellsOnly_(v22, v23, a3->coordinate.column, a4, 1);
+  objc_msgSend_cellRefsForFormulasReferringToIndex_outCellRefs_cycleCellsOnly_(v22, v23, cell->coordinate.column, refs, 1);
   v28 = objc_msgSend_spanningRowDependencies(v7, v24, v25, v26, v27);
-  objc_msgSend_cellRefsForFormulasReferringToIndex_outCellRefs_cycleCellsOnly_(v28, v29, a3->coordinate.row, a4, 1);
+  objc_msgSend_cellRefsForFormulasReferringToIndex_outCellRefs_cycleCellsOnly_(v28, v29, cell->coordinate.row, refs, 1);
 }
 
-- (unint64_t)dgl_popNextLeavesIfAvailable:(void *)a3 numLeaves:(unint64_t)a4 leafQueue:(id)a5
+- (unint64_t)dgl_popNextLeavesIfAvailable:(void *)available numLeaves:(unint64_t)leaves leafQueue:(id)queue
 {
-  v12 = a5;
+  queueCopy = queue;
   v13 = 0;
-  while (v13 < a4)
+  while (v13 < leaves)
   {
-    if (objc_msgSend_isSingleEvalQueueEmpty(v12, v8, v9, v10, v11))
+    if (objc_msgSend_isSingleEvalQueueEmpty(queueCopy, v8, v9, v10, v11))
     {
       break;
     }
 
     v54 = 0;
     v53 = 0;
-    v53 = objc_msgSend_popLeaf(v12, v14, v15, v16, v17);
+    v53 = objc_msgSend_popLeaf(queueCopy, v14, v15, v16, v17);
     v54 = v8;
     if (v8 != 0xFFFF)
     {
@@ -5849,18 +5849,18 @@ LABEL_14:
         os_unfair_lock_lock(&self->_evaluationInProgressLock);
         if ((sub_2212E0198(&self->_evaluationInProgressCells._coordsForOwnerId.__table_.__bucket_list_.__ptr_, &v53) & 1) == 0)
         {
-          v32 = *(a3 + 1);
-          v33 = *(a3 + 2);
+          v32 = *(available + 1);
+          v33 = *(available + 2);
           if (v32 >= v33)
           {
-            v41 = (v32 - *a3) >> 5;
+            v41 = (v32 - *available) >> 5;
             v42 = v41 + 1;
             if ((v41 + 1) >> 59)
             {
               sub_22107C148();
             }
 
-            v43 = v33 - *a3;
+            v43 = v33 - *available;
             if (v43 >> 4 > v42)
             {
               v42 = v43 >> 4;
@@ -5878,7 +5878,7 @@ LABEL_14:
 
             if (v44)
             {
-              sub_22123E9D0(a3, v44);
+              sub_22123E9D0(available, v44);
             }
 
             v45 = (32 * v41);
@@ -5886,13 +5886,13 @@ LABEL_14:
             *v45 = v51;
             v45[1] = v46;
             v35 = 32 * v41 + 32;
-            v47 = *(a3 + 1) - *a3;
+            v47 = *(available + 1) - *available;
             v48 = 32 * v41 - v47;
-            memcpy(v45 - v47, *a3, v47);
-            v49 = *a3;
-            *a3 = v48;
-            *(a3 + 1) = v35;
-            *(a3 + 2) = 0;
+            memcpy(v45 - v47, *available, v47);
+            v49 = *available;
+            *available = v48;
+            *(available + 1) = v35;
+            *(available + 2) = 0;
             if (v49)
             {
               operator delete(v49);
@@ -5907,7 +5907,7 @@ LABEL_14:
             v35 = (v32 + 2);
           }
 
-          *(a3 + 1) = v35;
+          *(available + 1) = v35;
           sub_2212DFCE8(&self->_evaluationInProgressCells._coordsForOwnerId.__table_.__bucket_list_.__ptr_, &v53);
           ++v13;
         }
@@ -6144,20 +6144,20 @@ LABEL_25:
   sub_2210BDEC0(&v10 + 8);
 }
 
-- (void)doneEvaluatingCell:(const TSCEInternalCellReference *)a3
+- (void)doneEvaluatingCell:(const TSCEInternalCellReference *)cell
 {
   os_unfair_lock_lock(&self->_evaluationInProgressLock);
-  sub_2212DFDD0(&self->_evaluationInProgressCells._coordsForOwnerId.__table_.__bucket_list_.__ptr_, a3);
+  sub_2212DFDD0(&self->_evaluationInProgressCells._coordsForOwnerId.__table_.__bucket_list_.__ptr_, cell);
 
   os_unfair_lock_unlock(&self->_evaluationInProgressLock);
 }
 
-- (BOOL)rangeRefIsDirtyOrCurrentlyBeingEvaluated:(const TSCERangeRef *)a3
+- (BOOL)rangeRefIsDirtyOrCurrentlyBeingEvaluated:(const TSCERangeRef *)evaluated
 {
   p_dependencyGraphLock = &self->_dependencyGraphLock;
   v16 = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
-  IsDirty = objc_msgSend_dgl_rangeRefIsDirty_(self, v6, a3, v7, v8);
+  IsDirty = objc_msgSend_dgl_rangeRefIsDirty_(self, v6, evaluated, v7, v8);
   os_unfair_lock_unlock(p_dependencyGraphLock);
   v17 = 0;
   if (IsDirty)
@@ -6175,7 +6175,7 @@ LABEL_25:
 
     else
     {
-      objc_msgSend_internalRangeReferenceForRangeRef_(self, v11, a3, v12, v13);
+      objc_msgSend_internalRangeReferenceForRangeRef_(self, v11, evaluated, v12, v13);
       v10 = sub_2212E01E8(&self->_evaluationInProgressCells._coordsForOwnerId.__table_.__bucket_list_.__ptr_, v15);
     }
 
@@ -6186,24 +6186,24 @@ LABEL_25:
   return v10;
 }
 
-- (void)markOwnerIDHavingRecordsToPrune:(unsigned __int16)a3
+- (void)markOwnerIDHavingRecordsToPrune:(unsigned __int16)prune
 {
-  v4 = a3;
-  if (a3 != 0xFFFF)
+  pruneCopy = prune;
+  if (prune != 0xFFFF)
   {
     os_unfair_lock_lock(&self->_ownerIDsWithRecordsToPruneLock);
-    sub_22123E79C(&self->_ownerIDsWithRecordsToPrune.__table_.__bucket_list_.__ptr_, &v4);
+    sub_22123E79C(&self->_ownerIDsWithRecordsToPrune.__table_.__bucket_list_.__ptr_, &pruneCopy);
     os_unfair_lock_unlock(&self->_ownerIDsWithRecordsToPruneLock);
   }
 }
 
-- (void)clearOwnerIDHavingRecordsToPrune:(unsigned __int16)a3
+- (void)clearOwnerIDHavingRecordsToPrune:(unsigned __int16)prune
 {
-  v4 = a3;
-  if (a3 != 0xFFFF)
+  pruneCopy = prune;
+  if (prune != 0xFFFF)
   {
     os_unfair_lock_lock(&self->_ownerIDsWithRecordsToPruneLock);
-    sub_221142C34(&self->_ownerIDsWithRecordsToPrune.__table_.__bucket_list_.__ptr_, &v4);
+    sub_221142C34(&self->_ownerIDsWithRecordsToPrune.__table_.__bucket_list_.__ptr_, &pruneCopy);
     os_unfair_lock_unlock(&self->_ownerIDsWithRecordsToPruneLock);
   }
 }
@@ -6232,7 +6232,7 @@ LABEL_25:
   return result;
 }
 
-- (void)processPruningOfCellRecords:(double)a3
+- (void)processPruningOfCellRecords:(double)records
 {
   if (objc_msgSend_hasCellRecordsToPrune(self, a2, v3, v4, v5))
   {
@@ -6247,13 +6247,13 @@ LABEL_25:
       v22 = v17;
       if (v17)
       {
-        objc_msgSend_pruneEmptyCellRecords_timeout_(v17, v18, v8, v20, v21, a3);
+        objc_msgSend_pruneEmptyCellRecords_timeout_(v17, v18, v8, v20, v21, records);
       }
 
       objc_msgSend_timeIntervalSinceNow(v8, v18, v19, v20, v21);
       v24 = -v23;
 
-      if (v24 > a3)
+      if (v24 > records)
       {
         break;
       }
@@ -6267,11 +6267,11 @@ LABEL_25:
   }
 }
 
-- (void)dgl_updateGraphWithCleanReference:(TSCECellToEvaluate *)a3 skipCycleCheck:(BOOL)a4
+- (void)dgl_updateGraphWithCleanReference:(TSCECellToEvaluate *)reference skipCycleCheck:(BOOL)check
 {
-  objc_msgSend_dgl_loadCacheForCell_(self, a2, a3, a4, v4);
-  var1 = a3->var1;
-  var2 = a3->var2;
+  objc_msgSend_dgl_loadCacheForCell_(self, a2, reference, check, v4);
+  var1 = reference->var1;
+  var2 = reference->var2;
   if (var2)
   {
     var6 = var2->var6;
@@ -6280,11 +6280,11 @@ LABEL_25:
       return;
     }
 
-    v30 = objc_msgSend_cellDependencies(a3->var1, v6, v7, v8, v9);
+    v30 = objc_msgSend_cellDependencies(reference->var1, v6, v7, v8, v9);
     if (v30)
     {
-      nullsub_75(a3);
-      objc_msgSend_markCellCleanAndPushNextLeaves_(v30, v14, a3, v15, v16);
+      nullsub_75(reference);
+      objc_msgSend_markCellCleanAndPushNextLeaves_(v30, v14, reference, v15, v16);
     }
 
     v17 = (var6 >> 1) & 1;
@@ -6298,38 +6298,38 @@ LABEL_25:
   v31 = objc_msgSend_rangeDependencies(var1, v6, v7, v8, v9);
   if (v31)
   {
-    objc_msgSend_decrementReferringDirtyCountAndPushNextLeaves_referencingCellIsInACycle_(v31, v18, a3, v17, v21);
+    objc_msgSend_decrementReferringDirtyCountAndPushNextLeaves_referencingCellIsInACycle_(v31, v18, reference, v17, v21);
   }
 
   v22 = objc_msgSend_spanningColumnDependencies(var1, v18, v19, v20, v21);
   v29 = objc_msgSend_spanningRowDependencies(var1, v23, v24, v25, v26);
   if (v22)
   {
-    objc_msgSend_decrementReferringDirtyCountAndPushNextLeaves_referencingCellIsInACycle_(v22, v27, a3, v17, v28);
+    objc_msgSend_decrementReferringDirtyCountAndPushNextLeaves_referencingCellIsInACycle_(v22, v27, reference, v17, v28);
   }
 
   if (v29)
   {
-    objc_msgSend_decrementReferringDirtyCountAndPushNextLeaves_referencingCellIsInACycle_(v29, v27, a3, v17, v28);
+    objc_msgSend_decrementReferringDirtyCountAndPushNextLeaves_referencingCellIsInACycle_(v29, v27, reference, v17, v28);
   }
 }
 
-- (void)dgl_updateGraphWithCleanReference:(const TSCEInternalCellReference *)a3 cellRecord:(TSCECellRecord *)a4
+- (void)dgl_updateGraphWithCleanReference:(const TSCEInternalCellReference *)reference cellRecord:(TSCECellRecord *)record
 {
-  v8 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, a2, a3->tableID, a4, v4);
-  v11 = *a3;
+  v8 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, a2, reference->tableID, record, v4);
+  v11 = *reference;
   v12 = v8;
-  v13 = a4;
+  recordCopy = record;
   objc_msgSend_dgl_updateGraphWithCleanReference_skipCycleCheck_(self, v9, &v11, 0, v10);
 }
 
-- (BOOL)dgl_cellIsClean:(const TSCECellToEvaluate *)a3
+- (BOOL)dgl_cellIsClean:(const TSCECellToEvaluate *)clean
 {
-  v6 = objc_msgSend_cellDependencies(a3->var1, a2, a3, v3, v4);
+  v6 = objc_msgSend_cellDependencies(clean->var1, a2, clean, v3, v4);
   v10 = v6;
   if (v6)
   {
-    IsClean = objc_msgSend_cellIsClean_(v6, v7, a3, v8, v9);
+    IsClean = objc_msgSend_cellIsClean_(v6, v7, clean, v8, v9);
   }
 
   else
@@ -6340,13 +6340,13 @@ LABEL_25:
   return IsClean;
 }
 
-- (BOOL)dgl_intCellIsClean:(const TSCEInternalCellReference *)a3
+- (BOOL)dgl_intCellIsClean:(const TSCEInternalCellReference *)clean
 {
-  v6 = objc_msgSend_dgl_cellDependenciesForOwnerID_(self, a2, a3->tableID, v3, v4);
+  v6 = objc_msgSend_dgl_cellDependenciesForOwnerID_(self, a2, clean->tableID, v3, v4);
   v10 = v6;
   if (v6)
   {
-    IsClean = objc_msgSend_cellIsClean_(v6, v7, a3, v8, v9);
+    IsClean = objc_msgSend_cellIsClean_(v6, v7, clean, v8, v9);
   }
 
   else
@@ -6357,21 +6357,21 @@ LABEL_25:
   return IsClean;
 }
 
-- (BOOL)intCellIsClean:(const TSCEInternalCellReference *)a3
+- (BOOL)intCellIsClean:(const TSCEInternalCellReference *)clean
 {
-  if (a3->tableID == -1)
+  if (clean->tableID == -1)
   {
     return 1;
   }
 
   IsClean = 1;
-  if ((*&a3->coordinate & 0x101FFFFFFFFFFFFLL) != 0x7FFF7FFFFFFFLL)
+  if ((*&clean->coordinate & 0x101FFFFFFFFFFFFLL) != 0x7FFF7FFFFFFFLL)
   {
     p_dependencyGraphLock = &self->_dependencyGraphLock;
     v11 = &self->_dependencyGraphLock;
     os_unfair_lock_lock(&self->_dependencyGraphLock);
     LOBYTE(v12) = 1;
-    IsClean = objc_msgSend_dgl_intCellIsClean_(self, v7, a3, v8, v9, v11, v12);
+    IsClean = objc_msgSend_dgl_intCellIsClean_(self, v7, clean, v8, v9, v11, v12);
     os_unfair_lock_unlock(p_dependencyGraphLock);
     LOBYTE(v12) = 0;
     sub_2212E22F0(&v11);
@@ -6380,20 +6380,20 @@ LABEL_25:
   return IsClean;
 }
 
-- (BOOL)cellIsClean:(const TSCECellRef *)a3
+- (BOOL)cellIsClean:(const TSCECellRef *)clean
 {
-  v10 = objc_msgSend_internalCellReferenceForCellRef_(self, a2, a3, v3, v4);
+  v10 = objc_msgSend_internalCellReferenceForCellRef_(self, a2, clean, v3, v4);
   v11 = v6;
   return objc_msgSend_intCellIsClean_(self, v6, &v10, v7, v8);
 }
 
-- (BOOL)dgl_rangeRefIsDirty:(const TSCERangeRef *)a3
+- (BOOL)dgl_rangeRefIsDirty:(const TSCERangeRef *)dirty
 {
-  v6 = objc_msgSend_dgl_cellDependenciesForOwnerUID_(self, a2, &a3->_tableUID, v3, v4);
+  v6 = objc_msgSend_dgl_cellDependenciesForOwnerUID_(self, a2, &dirty->_tableUID, v3, v4);
   v9 = v6;
   if (v6)
   {
-    v10 = objc_msgSend_countRecordsInRange_cellRestrictions_(v6, v7, a3, 2, v8) != 0;
+    v10 = objc_msgSend_countRecordsInRange_cellRestrictions_(v6, v7, dirty, 2, v8) != 0;
   }
 
   else
@@ -6404,12 +6404,12 @@ LABEL_25:
   return v10;
 }
 
-- (BOOL)dgl_cellIsReadyForEvaluation:(const TSCECellToEvaluate *)a3
+- (BOOL)dgl_cellIsReadyForEvaluation:(const TSCECellToEvaluate *)evaluation
 {
-  v6 = objc_msgSend_dgl_ownerIDIsRegistered_(self, a2, a3->var0.tableID, v3, v4);
+  v6 = objc_msgSend_dgl_ownerIDIsRegistered_(self, a2, evaluation->var0.tableID, v3, v4);
   if (v6)
   {
-    var2 = a3->var2;
+    var2 = evaluation->var2;
     if (var2)
     {
       LOBYTE(v6) = var2->var2 == 1;
@@ -6424,14 +6424,14 @@ LABEL_25:
   return v6;
 }
 
-- (unint64_t)numDirtyCellsInOwnerID:(unsigned __int16)a3
+- (unint64_t)numDirtyCellsInOwnerID:(unsigned __int16)d
 {
-  v3 = a3;
+  dCopy = d;
   p_dependencyGraphLock = &self->_dependencyGraphLock;
   lock = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   v18 = 1;
-  v9 = objc_msgSend_dgl_cellDependenciesForOwnerID_(self, v6, v3, v7, v8);
+  v9 = objc_msgSend_dgl_cellDependenciesForOwnerID_(self, v6, dCopy, v7, v8);
   v14 = v9;
   if (v9)
   {
@@ -6451,13 +6451,13 @@ LABEL_25:
   return v15;
 }
 
-- (BOOL)hasFormulaAt:(const TSCECellRef *)a3
+- (BOOL)hasFormulaAt:(const TSCECellRef *)at
 {
   p_dependencyGraphLock = &self->_dependencyGraphLock;
   v11 = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   LOBYTE(v12) = 1;
-  CellRecord_willModifyOnTile = objc_msgSend_dgl_findCellRecord_willModifyOnTile_(self, v6, a3, 0, v7, v11, v12);
+  CellRecord_willModifyOnTile = objc_msgSend_dgl_findCellRecord_willModifyOnTile_(self, v6, at, 0, v7, v11, v12);
   if (CellRecord_willModifyOnTile)
   {
     v9 = (*(CellRecord_willModifyOnTile + 38) >> 2) & 1;
@@ -6474,7 +6474,7 @@ LABEL_25:
   return v9;
 }
 
-- (BOOL)dgl_hasDirtyCellsIgnoringNRM:(BOOL)a3
+- (BOOL)dgl_hasDirtyCellsIgnoringNRM:(BOOL)m
 {
   next = self->_formulaOwnerDependencies.__table_.__first_node_.__next_;
   if (!next)
@@ -6482,12 +6482,12 @@ LABEL_25:
     return 0;
   }
 
-  v6 = a3;
+  mCopy = m;
   while (1)
   {
-    if (!v6 || objc_msgSend_ownerIndex(next[3], a2, a3, v3, v4) != 7)
+    if (!mCopy || objc_msgSend_ownerIndex(next[3], a2, m, v3, v4) != 7)
     {
-      v7 = objc_msgSend_cellDependencies(next[3], a2, a3, v3, v4);
+      v7 = objc_msgSend_cellDependencies(next[3], a2, m, v3, v4);
       hasDirtyCells = objc_msgSend_hasDirtyCells(v7, v8, v9, v10, v11);
 
       if (hasDirtyCells)
@@ -6528,18 +6528,18 @@ LABEL_25:
   return v6;
 }
 
-- (BOOL)hasDirtyCellsIgnoringNRM:(BOOL)a3
+- (BOOL)hasDirtyCellsIgnoringNRM:(BOOL)m
 {
-  v3 = a3;
+  mCopy = m;
   p_dependencyGraphLock = &self->_dependencyGraphLock;
   v10 = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   LOBYTE(v11) = 1;
-  LOBYTE(v3) = objc_msgSend_dgl_hasDirtyCellsIgnoringNRM_(self, v6, v3, v7, v8, v10, v11);
+  LOBYTE(mCopy) = objc_msgSend_dgl_hasDirtyCellsIgnoringNRM_(self, v6, mCopy, v7, v8, v10, v11);
   os_unfair_lock_unlock(p_dependencyGraphLock);
   LOBYTE(v11) = 0;
   sub_2212E22F0(&v10);
-  return v3;
+  return mCopy;
 }
 
 - (int64_t)numDirtyCells
@@ -6586,9 +6586,9 @@ LABEL_25:
   return p_first_node != 0;
 }
 
-- (unint64_t)numFormulaCellsInOwnerUID:(const TSKUIDStruct *)a3
+- (unint64_t)numFormulaCellsInOwnerUID:(const TSKUIDStruct *)d
 {
-  v6 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, a3, v3, v4);
+  v6 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, d, v3, v4);
   p_dependencyGraphLock = &self->_dependencyGraphLock;
   lock = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
@@ -6613,13 +6613,13 @@ LABEL_25:
   return v17;
 }
 
-- (unint64_t)numCellRecordsInOwnerUID:(const TSKUIDStruct *)a3
+- (unint64_t)numCellRecordsInOwnerUID:(const TSKUIDStruct *)d
 {
   p_dependencyGraphLock = &self->_dependencyGraphLock;
   lock = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   v18 = 1;
-  v9 = objc_msgSend_dgl_cellDependenciesForOwnerUID_(self, v6, a3, v7, v8);
+  v9 = objc_msgSend_dgl_cellDependenciesForOwnerUID_(self, v6, d, v7, v8);
   v14 = v9;
   if (v9)
   {
@@ -6673,13 +6673,13 @@ LABEL_25:
   return p_first_node != 0;
 }
 
-- (vector<TSUCellCoord,)dgl_cellsWithRecordsInRange:(TSCEDependencyTracker *)self formulaCellsOnly:(SEL)a3
+- (vector<TSUCellCoord,)dgl_cellsWithRecordsInRange:(TSCEDependencyTracker *)self formulaCellsOnly:(SEL)only
 {
   v6 = a5;
   retstr->__begin_ = 0;
   retstr->__end_ = 0;
   retstr->__cap_ = 0;
-  v9 = objc_msgSend_dgl_ownerDependenciesForOwnerUID_(self, a3, &a4->_tableUID, a5, v5);
+  v9 = objc_msgSend_dgl_ownerDependenciesForOwnerUID_(self, only, &a4->_tableUID, a5, v5);
   v14 = objc_msgSend_cellDependencies(v9, v10, v11, v12, v13);
   v17 = v14;
   if (v14)
@@ -6727,7 +6727,7 @@ LABEL_11:
   return v23;
 }
 
-- (vector<TSUCellCoord,)cellsReferencingRange:(TSCEDependencyTracker *)self fromOwner:(SEL)a3 skipSpanning:(const TSCERangeRef *)a4
+- (vector<TSUCellCoord,)cellsReferencingRange:(TSCEDependencyTracker *)self fromOwner:(SEL)owner skipSpanning:(const TSCERangeRef *)spanning
 {
   v7 = a5;
   v54 = 0;
@@ -6742,7 +6742,7 @@ LABEL_11:
   lock = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   v53 = 1;
-  v14 = objc_msgSend_dgl_ownerDependenciesForOwnerUID_(self, v11, &a4->_tableUID, v12, v13);
+  v14 = objc_msgSend_dgl_ownerDependenciesForOwnerUID_(self, v11, &spanning->_tableUID, v12, v13);
   v19 = v14;
   if (v14)
   {
@@ -6750,22 +6750,22 @@ LABEL_11:
     v25 = v20;
     if (v20)
     {
-      objc_msgSend_cellsReferencingRange_fromOwnerID_outFormulaCoords_(v20, v21, a4, v7, (v55 + 6));
+      objc_msgSend_cellsReferencingRange_fromOwnerID_outFormulaCoords_(v20, v21, spanning, v7, (v55 + 6));
     }
 
     v26 = objc_msgSend_rangeDependencies(v19, v21, v22, v23, v24);
     v31 = v26;
     if (v26)
     {
-      objc_msgSend_formulaCoordsReferencingRange_inOwnerID_outFormulaCells_(v26, v27, *&a4->range._topLeft, *&a4->range._bottomRight, v7, v55 + 6);
+      objc_msgSend_formulaCoordsReferencingRange_inOwnerID_outFormulaCells_(v26, v27, *&spanning->range._topLeft, *&spanning->range._bottomRight, v7, v55 + 6);
     }
 
     if (!a6)
     {
-      row = a4->range._topLeft.row;
-      column = a4->range._topLeft.column;
-      v33 = a4->range._bottomRight.row;
-      v34 = a4->range._bottomRight.column;
+      row = spanning->range._topLeft.row;
+      column = spanning->range._topLeft.column;
+      v33 = spanning->range._bottomRight.row;
+      v34 = spanning->range._bottomRight.column;
       v51._coordsForOwnerUid.__tree_.__end_node_.__left_ = 0;
       v51._coordsForOwnerUid.__tree_.__size_ = 0;
       v51._coordsForOwnerUid.__tree_.__begin_node_ = &v51._coordsForOwnerUid.__tree_.__end_node_;
@@ -6815,13 +6815,13 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)dgl_cellIsInACycle:(const TSCEInternalCellReference *)a3
+- (BOOL)dgl_cellIsInACycle:(const TSCEInternalCellReference *)cycle
 {
-  v6 = objc_msgSend_dgl_cellDependenciesForOwnerID_(self, a2, a3->tableID, v3, v4);
+  v6 = objc_msgSend_dgl_cellDependenciesForOwnerID_(self, a2, cycle->tableID, v3, v4);
   v10 = v6;
   if (v6)
   {
-    isCellInACycle = objc_msgSend_isCellInACycle_(v6, v7, a3, v8, v9);
+    isCellInACycle = objc_msgSend_isCellInACycle_(v6, v7, cycle, v8, v9);
   }
 
   else
@@ -6832,10 +6832,10 @@ LABEL_11:
   return isCellInACycle;
 }
 
-- (BOOL)cellIsInACycle:(const TSCECellRef *)a3
+- (BOOL)cellIsInACycle:(const TSCECellRef *)cycle
 {
-  v3 = *&a3->coordinate == 0x7FFFFFFF || (*&a3->coordinate & 0xFFFF00000000) == 0x7FFF00000000;
-  if (v3 || *&a3->_tableUID == 0)
+  v3 = *&cycle->coordinate == 0x7FFFFFFF || (*&cycle->coordinate & 0xFFFF00000000) == 0x7FFF00000000;
+  if (v3 || *&cycle->_tableUID == 0)
   {
     return 0;
   }
@@ -6843,7 +6843,7 @@ LABEL_11:
   lock = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   v17 = 1;
-  v14 = objc_msgSend_internalCellReferenceForCellRef_(self, v6, a3, v7, v8);
+  v14 = objc_msgSend_internalCellReferenceForCellRef_(self, v6, cycle, v7, v8);
   v15 = v9;
   v12 = objc_msgSend_dgl_cellIsInACycle_(self, v9, &v14, v10, v11);
   os_unfair_lock_unlock(lock);
@@ -6852,7 +6852,7 @@ LABEL_11:
   return v12;
 }
 
-- (TSCECellCoordSet)cellsInACycleInOwner:(SEL)a3
+- (TSCECellCoordSet)cellsInACycleInOwner:(SEL)owner
 {
   retstr->_rowsPerColumn.__tree_.__end_node_.__left_ = 0;
   retstr->_rowsPerColumn.__tree_.__begin_node_ = &retstr->_rowsPerColumn.__tree_.__end_node_;
@@ -6861,13 +6861,13 @@ LABEL_11:
   retstr->_rectRepresentation.size = 0;
   if (*a4 != 0)
   {
-    v7 = self;
-    v8 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a3, a4, v4, v5);
-    v9 = v7 + 2;
-    v21 = v7 + 2;
-    os_unfair_lock_lock(v7 + 2);
+    selfCopy = self;
+    v8 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, owner, a4, v4, v5);
+    v9 = selfCopy + 2;
+    v21 = selfCopy + 2;
+    os_unfair_lock_lock(selfCopy + 2);
     v22 = 1;
-    v13 = objc_msgSend_dgl_cellDependenciesForOwnerID_(v7, v10, v8, v11, v12);
+    v13 = objc_msgSend_dgl_cellDependenciesForOwnerID_(selfCopy, v10, v8, v11, v12);
     v18 = v13;
     if (v13)
     {
@@ -6886,16 +6886,16 @@ LABEL_11:
   return self;
 }
 
-- (BOOL)markIntCellRefDirtyIfCellContainsAFormula:(const TSCEInternalCellReference *)a3
+- (BOOL)markIntCellRefDirtyIfCellContainsAFormula:(const TSCEInternalCellReference *)formula
 {
   lock = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   v18 = 1;
-  v8 = objc_msgSend_dgl_cellDependenciesForOwnerID_(self, v5, a3->tableID, v6, v7);
+  v8 = objc_msgSend_dgl_cellDependenciesForOwnerID_(self, v5, formula->tableID, v6, v7);
   v12 = v8;
-  if (v8 && objc_msgSend_containsFormula_(v8, v9, a3, v10, v11, lock))
+  if (v8 && objc_msgSend_containsFormula_(v8, v9, formula, v10, v11, lock))
   {
-    objc_msgSend_scheduleMarkIntCellRefAsDirty_(self, v13, *&a3->coordinate, *&a3->tableID, v14);
+    objc_msgSend_scheduleMarkIntCellRefAsDirty_(self, v13, *&formula->coordinate, *&formula->tableID, v14);
     v15 = 1;
   }
 
@@ -6911,9 +6911,9 @@ LABEL_11:
   return v15;
 }
 
-- (BOOL)intCellContainsAFormula:(const TSCEInternalCellReference *)a3
+- (BOOL)intCellContainsAFormula:(const TSCEInternalCellReference *)formula
 {
-  if (a3->tableID == -1 || (*&a3->coordinate & 0x101FFFFFFFFFFFFLL) == 0x7FFF7FFFFFFFLL)
+  if (formula->tableID == -1 || (*&formula->coordinate & 0x101FFFFFFFFFFFFLL) == 0x7FFF7FFFFFFFLL)
   {
     return 0;
   }
@@ -6922,11 +6922,11 @@ LABEL_11:
   lock = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   v17 = 1;
-  v10 = objc_msgSend_dgl_cellDependenciesForOwnerID_(self, v7, a3->tableID, v8, v9);
+  v10 = objc_msgSend_dgl_cellDependenciesForOwnerID_(self, v7, formula->tableID, v8, v9);
   v14 = v10;
   if (v10)
   {
-    v4 = objc_msgSend_containsFormula_(v10, v11, a3, v12, v13);
+    v4 = objc_msgSend_containsFormula_(v10, v11, formula, v12, v13);
     p_dependencyGraphLock = lock;
   }
 
@@ -6942,17 +6942,17 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)hasCalculatedPrecedents:(const TSCECellRef *)a3
+- (BOOL)hasCalculatedPrecedents:(const TSCECellRef *)precedents
 {
-  v10 = objc_msgSend_internalCellReferenceForCellRef_(self, a2, a3, v3, v4);
+  v10 = objc_msgSend_internalCellReferenceForCellRef_(self, a2, precedents, v3, v4);
   v11 = v6;
   return objc_msgSend_hasCalculatedPrecedentsInternal_(self, v6, &v10, v7, v8);
 }
 
-- (BOOL)hasCalculatedPrecedentsInternal:(const TSCEInternalCellReference *)a3
+- (BOOL)hasCalculatedPrecedentsInternal:(const TSCEInternalCellReference *)internal
 {
-  tableID = a3->tableID;
-  if (tableID == 0xFFFF || (*&a3->coordinate & 0x101FFFFFFFFFFFFLL) == 0x7FFF7FFFFFFFLL)
+  tableID = internal->tableID;
+  if (tableID == 0xFFFF || (*&internal->coordinate & 0x101FFFFFFFFFFFFLL) == 0x7FFF7FFFFFFFLL)
   {
     LOBYTE(v7) = 0;
   }
@@ -6961,7 +6961,7 @@ LABEL_11:
   {
     v8 = objc_msgSend_dgl_cellDependenciesForOwnerID_(self, a2, tableID, v3, v4);
     v11 = v8;
-    if (v8 && (CellRecord_willModifyOnTile = objc_msgSend_findCellRecord_willModifyOnTile_(v8, v9, a3, 0, v10)) != 0)
+    if (v8 && (CellRecord_willModifyOnTile = objc_msgSend_findCellRecord_willModifyOnTile_(v8, v9, internal, 0, v10)) != 0)
     {
       v7 = (*(CellRecord_willModifyOnTile + 38) >> 3) & 1;
     }
@@ -6975,27 +6975,27 @@ LABEL_11:
   return v7;
 }
 
-- (void)setHasCalculatedPrecedents:(const TSCECellRef *)a3 setting:(BOOL)a4
+- (void)setHasCalculatedPrecedents:(const TSCECellRef *)precedents setting:(BOOL)setting
 {
-  v5 = a4;
-  v9 = objc_msgSend_internalCellReferenceForCellRef_(self, a2, a3, a4, v4);
+  settingCopy = setting;
+  v9 = objc_msgSend_internalCellReferenceForCellRef_(self, a2, precedents, setting, v4);
   v10 = v7;
-  objc_msgSend_setHasCalculatedPrecedentsInternal_setting_(self, v7, &v9, v5, v8);
+  objc_msgSend_setHasCalculatedPrecedentsInternal_setting_(self, v7, &v9, settingCopy, v8);
 }
 
-- (void)setHasCalculatedPrecedentsInternal:(const TSCEInternalCellReference *)a3 setting:(BOOL)a4
+- (void)setHasCalculatedPrecedentsInternal:(const TSCEInternalCellReference *)internal setting:(BOOL)setting
 {
-  v5 = a4;
-  v7 = objc_msgSend_dgl_cellDependenciesForOwnerID_(self, a2, a3->tableID, a4, v4);
+  settingCopy = setting;
+  v7 = objc_msgSend_dgl_cellDependenciesForOwnerID_(self, a2, internal->tableID, setting, v4);
   v9 = v7;
   if (v7)
   {
     v12 = v7;
-    CellRecord_willModifyOnTile = objc_msgSend_findCellRecord_willModifyOnTile_(v7, v7, a3, 1, v8);
+    CellRecord_willModifyOnTile = objc_msgSend_findCellRecord_willModifyOnTile_(v7, v7, internal, 1, v8);
     v9 = v12;
     if (CellRecord_willModifyOnTile)
     {
-      if (v5)
+      if (settingCopy)
       {
         v11 = 8;
       }
@@ -7018,9 +7018,9 @@ LABEL_11:
   os_unfair_lock_unlock(&self->_evaluationInProgressLock);
 }
 
-- (BOOL)cellHasPrecedents:(const TSCECellRef *)a3
+- (BOOL)cellHasPrecedents:(const TSCECellRef *)precedents
 {
-  v7 = objc_msgSend_internalCellReferenceForCellRef_(self, a2, a3, v3, v4);
+  v7 = objc_msgSend_internalCellReferenceForCellRef_(self, a2, precedents, v3, v4);
   v9 = v8;
   v72 = v7;
   v73 = v8;
@@ -7040,22 +7040,22 @@ LABEL_11:
   {
     v29 = objc_msgSend_rangeDependencies(v18, v20, v21, v22, v23);
 
-    if (!v29 || (objc_msgSend_rangeDependencies(v18, v30, v31, v32, v33), v34 = objc_claimAutoreleasedReturnValue(), v38 = objc_msgSend_hasPrecedentsAtCoord_(v34, v35, a3, v36, v37), v34, (v38 & 1) == 0))
+    if (!v29 || (objc_msgSend_rangeDependencies(v18, v30, v31, v32, v33), v34 = objc_claimAutoreleasedReturnValue(), v38 = objc_msgSend_hasPrecedentsAtCoord_(v34, v35, precedents, v36, v37), v34, (v38 & 1) == 0))
     {
       v39 = objc_msgSend_spanningRowDependencies(v18, v30, v31, v32, v33);
 
-      if (!v39 || (objc_msgSend_spanningRowDependencies(v18, v40, v41, v42, v43), v44 = objc_claimAutoreleasedReturnValue(), v48 = objc_msgSend_hasPrecedentsAtCoord_(v44, v45, a3, v46, v47), v44, (v48 & 1) == 0))
+      if (!v39 || (objc_msgSend_spanningRowDependencies(v18, v40, v41, v42, v43), v44 = objc_claimAutoreleasedReturnValue(), v48 = objc_msgSend_hasPrecedentsAtCoord_(v44, v45, precedents, v46, v47), v44, (v48 & 1) == 0))
       {
         v49 = objc_msgSend_spanningColumnDependencies(v18, v40, v41, v42, v43);
 
-        if (!v49 || (objc_msgSend_spanningColumnDependencies(v18, v50, v51, v52, v53), v54 = objc_claimAutoreleasedReturnValue(), hasPrecedentsAtCoord = objc_msgSend_hasPrecedentsAtCoord_(v54, v55, a3, v56, v57), v54, (hasPrecedentsAtCoord & 1) == 0))
+        if (!v49 || (objc_msgSend_spanningColumnDependencies(v18, v50, v51, v52, v53), v54 = objc_claimAutoreleasedReturnValue(), hasPrecedentsAtCoord = objc_msgSend_hasPrecedentsAtCoord_(v54, v55, precedents, v56, v57), v54, (hasPrecedentsAtCoord & 1) == 0))
         {
           v60 = objc_msgSend_volatileDependencies(v18, v50, v51, v52, v53);
 
           if (v60)
           {
             v65 = objc_msgSend_volatileDependencies(v18, v61, v62, v63, v64);
-            hasRemoteDataPrecedentsAtCoord = objc_msgSend_hasRemoteDataPrecedentsAtCoord_(v65, v66, a3, v67, v68);
+            hasRemoteDataPrecedentsAtCoord = objc_msgSend_hasRemoteDataPrecedentsAtCoord_(v65, v66, precedents, v67, v68);
 
             goto LABEL_14;
           }
@@ -7076,7 +7076,7 @@ LABEL_14:
   return hasRemoteDataPrecedentsAtCoord;
 }
 
-- (TSCEReferenceSet)dgl_precedentsOfCell:(SEL)a3
+- (TSCEReferenceSet)dgl_precedentsOfCell:(SEL)cell
 {
   TSCEReferenceSet::TSCEReferenceSet(retstr, self);
   result = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, v7, a4->tableID, v8, v9);
@@ -7135,7 +7135,7 @@ LABEL_14:
   return result;
 }
 
-- (TSCEReferenceSet)precedentsOfCell:(SEL)a3
+- (TSCEReferenceSet)precedentsOfCell:(SEL)cell
 {
   TSCEReferenceSet::TSCEReferenceSet(retstr, self);
   v18 = objc_msgSend_internalCellReferenceForCellRef_(self, v7, a4, v8, v9);
@@ -7151,9 +7151,9 @@ LABEL_14:
   return sub_2212E22F0(&p_dependencyGraphLock);
 }
 
-- (BOOL)cellHasThisCellPrecedent:(const TSCECellRef *)a3 precedent:(const TSCECellRef *)a4
+- (BOOL)cellHasThisCellPrecedent:(const TSCECellRef *)precedent precedent:(const TSCECellRef *)a4
 {
-  v7 = objc_msgSend_internalCellReferenceForCellRef_(self, a2, a3, a4, v4);
+  v7 = objc_msgSend_internalCellReferenceForCellRef_(self, a2, precedent, a4, v4);
   v9 = v8;
   v35 = v7;
   v36 = v8;
@@ -7186,9 +7186,9 @@ LABEL_14:
   return v21;
 }
 
-- (BOOL)dgl_cellHasDeepPrecedentInRange:(const TSCEInternalCellReference *)a3 cellRange:(const TSCEInternalRangeReference *)a4
+- (BOOL)dgl_cellHasDeepPrecedentInRange:(const TSCEInternalCellReference *)range cellRange:(const TSCEInternalRangeReference *)cellRange
 {
-  v7 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, a2, a3->tableID, a4, v4);
+  v7 = objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, a2, range->tableID, cellRange, v4);
   if (!v7)
   {
     return 0;
@@ -7197,23 +7197,23 @@ LABEL_14:
   v12 = v7;
   v13 = objc_msgSend_cellDependencies(v7, v8, v9, v10, v11);
 
-  if (!v13 || (objc_msgSend_cellDependencies(v12, v14, v15, v16, v17), v18 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend_cellHasDeepPrecedentInRange_cellRange_(v18, v19, a3, a4, v20), v18, (v21 & 1) == 0))
+  if (!v13 || (objc_msgSend_cellDependencies(v12, v14, v15, v16, v17), v18 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend_cellHasDeepPrecedentInRange_cellRange_(v18, v19, range, cellRange, v20), v18, (v21 & 1) == 0))
   {
     v22 = objc_msgSend_rangeDependencies(v12, v14, v15, v16, v17);
-    HasDeepPrecedentInRange_cellRange = objc_msgSend_cellHasDeepPrecedentInRange_cellRange_(v22, v23, a3, a4, v24);
+    HasDeepPrecedentInRange_cellRange = objc_msgSend_cellHasDeepPrecedentInRange_cellRange_(v22, v23, range, cellRange, v24);
 
     if ((HasDeepPrecedentInRange_cellRange & 1) == 0)
     {
       v30 = objc_msgSend_spanningColumnDependencies(v12, v26, v27, v28, v29);
 
-      if (!v30 || (objc_msgSend_spanningColumnDependencies(v12, v31, v32, v33, v34), v35 = objc_claimAutoreleasedReturnValue(), v38 = objc_msgSend_cellHasDeepPrecedentInRange_cellRange_(v35, v36, a3, a4, v37), v35, (v38 & 1) == 0))
+      if (!v30 || (objc_msgSend_spanningColumnDependencies(v12, v31, v32, v33, v34), v35 = objc_claimAutoreleasedReturnValue(), v38 = objc_msgSend_cellHasDeepPrecedentInRange_cellRange_(v35, v36, range, cellRange, v37), v35, (v38 & 1) == 0))
       {
         v40 = objc_msgSend_spanningRowDependencies(v12, v31, v32, v33, v34);
 
         if (v40)
         {
           v45 = objc_msgSend_spanningRowDependencies(v12, v41, v42, v43, v44);
-          v39 = objc_msgSend_cellHasDeepPrecedentInRange_cellRange_(v45, v46, a3, a4, v47);
+          v39 = objc_msgSend_cellHasDeepPrecedentInRange_cellRange_(v45, v46, range, cellRange, v47);
 
           return v39;
         }
@@ -7226,26 +7226,26 @@ LABEL_14:
   return 1;
 }
 
-- (BOOL)cellHasDeepPrecedentInRange:(const TSCECellRef *)a3 cellRange:(const TSCERangeRef *)a4
+- (BOOL)cellHasDeepPrecedentInRange:(const TSCECellRef *)range cellRange:(const TSCERangeRef *)cellRange
 {
-  v6 = self;
-  v18 = objc_msgSend_internalCellReferenceForCellRef_(self, a2, a3, a4, v4);
+  selfCopy = self;
+  v18 = objc_msgSend_internalCellReferenceForCellRef_(self, a2, range, cellRange, v4);
   v19 = v7;
   v16[0] = 0;
   v16[1] = 0;
   v17 = 0;
-  objc_msgSend_internalRangeReferenceForRangeRef_(v6, v7, a4, v8, v9);
-  p_dependencyGraphLock = &v6->_dependencyGraphLock;
-  v14 = &v6->_dependencyGraphLock;
-  os_unfair_lock_lock(&v6->_dependencyGraphLock);
-  LOBYTE(v6) = objc_msgSend_dgl_cellHasDeepPrecedentInRange_cellRange_(v6, v11, &v18, v16, v12);
+  objc_msgSend_internalRangeReferenceForRangeRef_(selfCopy, v7, cellRange, v8, v9);
+  p_dependencyGraphLock = &selfCopy->_dependencyGraphLock;
+  v14 = &selfCopy->_dependencyGraphLock;
+  os_unfair_lock_lock(&selfCopy->_dependencyGraphLock);
+  LOBYTE(selfCopy) = objc_msgSend_dgl_cellHasDeepPrecedentInRange_cellRange_(selfCopy, v11, &v18, v16, v12);
   os_unfair_lock_unlock(p_dependencyGraphLock);
   v15 = 0;
   sub_2212E22F0(&v14);
-  return v6;
+  return selfCopy;
 }
 
-- (TSCEInternalCellRefSet)cellDependentsOfCell:(SEL)a3
+- (TSCEInternalCellRefSet)cellDependentsOfCell:(SEL)cell
 {
   retstr->_coordsForOwnerId.__table_.__bucket_list_ = 0u;
   *&retstr->_coordsForOwnerId.__table_.__first_node_.__next_ = 0u;
@@ -7272,7 +7272,7 @@ LABEL_14:
   return sub_2212E22F0(&lock);
 }
 
-- (TSCEInternalCellRefSet)cellsInOwnerDependentOnBoth:(SEL)a3 precedent1:(const TSKUIDStruct *)a4 precedent2:(const TSCECellRef *)a5
+- (TSCEInternalCellRefSet)cellsInOwnerDependentOnBoth:(SEL)both precedent1:(const TSKUIDStruct *)precedent1 precedent2:(const TSCECellRef *)precedent2
 {
   retstr->_coordsForOwnerId.__table_.__bucket_list_ = 0u;
   *&retstr->_coordsForOwnerId.__table_.__first_node_.__next_ = 0u;
@@ -7280,7 +7280,7 @@ LABEL_14:
   p_dependencyGraphLock = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
   v45 = 1;
-  v14 = objc_msgSend_dgl_ownerDependenciesForOwnerUID_(self, v11, a4, v12, v13);
+  v14 = objc_msgSend_dgl_ownerDependenciesForOwnerUID_(self, v11, precedent1, v12, v13);
   v19 = v14;
   if (v14)
   {
@@ -7288,7 +7288,7 @@ LABEL_14:
 
     if (v20)
     {
-      v42 = objc_msgSend_internalCellReferenceForCellRef_(self, v21, a5, v22, v23);
+      v42 = objc_msgSend_internalCellReferenceForCellRef_(self, v21, precedent2, v22, v23);
       v43 = v24;
       v39._rowsPerColumn.__tree_.__size_ = 0;
       v40 = objc_msgSend_internalCellReferenceForCellRef_(self, v24, a6, v25, v26);
@@ -7311,14 +7311,14 @@ LABEL_14:
   return sub_2212E22F0(&p_dependencyGraphLock);
 }
 
-- (TSCECellCoordSet)cellCoordinatesNeedingExcelImport:(SEL)a3
+- (TSCECellCoordSet)cellCoordinatesNeedingExcelImport:(SEL)import
 {
   retstr->_rowsPerColumn.__tree_.__end_node_.__left_ = 0;
   retstr->_rowsPerColumn.__tree_.__begin_node_ = &retstr->_rowsPerColumn.__tree_.__end_node_;
   retstr->_rowsPerColumn.__tree_.__size_ = 0;
   retstr->_rectRepresentation.origin = 0;
   retstr->_rectRepresentation.size = 0;
-  v8 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a3, a4, v4, v5);
+  v8 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, import, a4, v4, v5);
   p_dependencyGraphLock = &self->_dependencyGraphLock;
   v26 = &self->_dependencyGraphLock;
   os_unfair_lock_lock(&self->_dependencyGraphLock);
@@ -7350,17 +7350,17 @@ LABEL_14:
   return sub_2212E22F0(&v26);
 }
 
-- (void)setTableAndBodyRangesForTable:(const TSCERangeCoordinate *)a3 bodyRange:(const TSCERangeCoordinate *)a4 tableID:(unsigned __int16)a5
+- (void)setTableAndBodyRangesForTable:(const TSCERangeCoordinate *)table bodyRange:(const TSCERangeCoordinate *)range tableID:(unsigned __int16)d
 {
-  if (a5 != 0xFFFF)
+  if (d != 0xFFFF)
   {
-    v5 = a5;
+    dCopy = d;
     lock = &self->_dependencyGraphLock;
     os_unfair_lock_lock(&self->_dependencyGraphLock);
-    v12 = objc_msgSend_dgl_spanningColumnDependenciesForOwnerID_(self, v9, v5, v10, v11);
-    objc_msgSend_setTableRangesForTable_bodyRange_(v12, v13, a3, a4, v14);
-    v18 = objc_msgSend_dgl_spanningRowDependenciesForOwnerID_(self, v15, v5, v16, v17);
-    objc_msgSend_setTableRangesForTable_bodyRange_(v18, v19, a3, a4, v20);
+    v12 = objc_msgSend_dgl_spanningColumnDependenciesForOwnerID_(self, v9, dCopy, v10, v11);
+    objc_msgSend_setTableRangesForTable_bodyRange_(v12, v13, table, range, v14);
+    v18 = objc_msgSend_dgl_spanningRowDependenciesForOwnerID_(self, v15, dCopy, v16, v17);
+    objc_msgSend_setTableRangesForTable_bodyRange_(v18, v19, table, range, v20);
     os_unfair_lock_unlock(lock);
     v22 = 0;
 
@@ -7368,16 +7368,16 @@ LABEL_14:
   }
 }
 
-- (void)setTableAndBodyRangesForTable:(const TSCERangeCoordinate *)a3 bodyRange:(const TSCERangeCoordinate *)a4 tableUID:(const TSKUIDStruct *)a5
+- (void)setTableAndBodyRangesForTable:(const TSCERangeCoordinate *)table bodyRange:(const TSCERangeCoordinate *)range tableUID:(const TSKUIDStruct *)d
 {
-  v9 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, a5, a4, a5);
+  v9 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, d, range, d);
 
-  objc_msgSend_setTableAndBodyRangesForTable_bodyRange_tableID_(self, v8, a3, a4, v9);
+  objc_msgSend_setTableAndBodyRangesForTable_bodyRange_tableID_(self, v8, table, range, v9);
 }
 
-- (BOOL)verifyTableAndBodyRangesForTable:(const TSKUIDStruct *)a3
+- (BOOL)verifyTableAndBodyRangesForTable:(const TSKUIDStruct *)table
 {
-  v6 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, a3, v3, v4);
+  v6 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, table, v3, v4);
   v7 = 1;
   if (v6 != 0xFFFF)
   {
@@ -7414,17 +7414,17 @@ LABEL_14:
   return v7;
 }
 
-- (id)dgl_ownerDependenciesForOwnerID:(unsigned __int16)a3
+- (id)dgl_ownerDependenciesForOwnerID:(unsigned __int16)d
 {
-  v5 = a3;
-  if (a3 == 0xFFFF)
+  dCopy = d;
+  if (d == 0xFFFF)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = sub_2210C3024(&self->_formulaOwnerDependencies.__table_.__bucket_list_.__ptr_, &v5);
+    v3 = sub_2210C3024(&self->_formulaOwnerDependencies.__table_.__bucket_list_.__ptr_, &dCopy);
     if (v3)
     {
       v3 = v3[3];
@@ -7434,9 +7434,9 @@ LABEL_14:
   return v3;
 }
 
-- (id)dgl_ownerDependenciesForOwnerUID:(const TSKUIDStruct *)a3
+- (id)dgl_ownerDependenciesForOwnerUID:(const TSKUIDStruct *)d
 {
-  v7 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, a3, v3, v4);
+  v7 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, d, v3, v4);
 
   return objc_msgSend_dgl_ownerDependenciesForOwnerID_(self, v6, v7, v8, v9);
 }
@@ -7557,68 +7557,68 @@ LABEL_14:
   sub_2212E22F0(&v16);
 }
 
-- (TSCEInternalCellReference)internalCellReferenceForCellRef:(const TSCECellRef *)a3
+- (TSCEInternalCellReference)internalCellReferenceForCellRef:(const TSCECellRef *)ref
 {
-  tableUID = a3->_tableUID;
+  tableUID = ref->_tableUID;
   v6 = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a2, &tableUID, v3, v4);
-  v7 = *&a3->coordinate & 0xFFFFFFFFFFFFLL;
+  v7 = *&ref->coordinate & 0xFFFFFFFFFFFFLL;
   result.coordinate = v7;
   result.tableID = v6;
   result.reserved = HIWORD(v6);
   return result;
 }
 
-- (TSCECellRef)cellRefForInternalCellReference:(SEL)a3
+- (TSCECellRef)cellRefForInternalCellReference:(SEL)reference
 {
-  result = objc_msgSend_formulaOwnerUIDForInternalFormulaOwnerID_(self, a3, a4->tableID, v4, v5);
+  result = objc_msgSend_formulaOwnerUIDForInternalFormulaOwnerID_(self, reference, a4->tableID, v4, v5);
   retstr->coordinate = a4->coordinate;
   retstr->_tableUID._lower = result;
   retstr->_tableUID._upper = v9;
   return result;
 }
 
-- (TSCEInternalRangeReference)internalRangeReferenceForRangeRef:(SEL)a3
+- (TSCEInternalRangeReference)internalRangeReferenceForRangeRef:(SEL)ref
 {
-  result = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, a3, &a4->_tableUID, v4, v5);
+  result = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_(self, ref, &a4->_tableUID, v4, v5);
   *&retstr->var1 = 0;
   retstr->var0 = a4->range;
   retstr->var1 = result;
   return result;
 }
 
-- (TSCERangeRef)rangeRefForInternalRangeReference:(SEL)a3
+- (TSCERangeRef)rangeRefForInternalRangeReference:(SEL)reference
 {
-  result = objc_msgSend_formulaOwnerUIDForInternalFormulaOwnerID_(self, a3, a4->var1, v4, v5);
+  result = objc_msgSend_formulaOwnerUIDForInternalFormulaOwnerID_(self, reference, a4->var1, v4, v5);
   retstr->range = a4->var0;
   retstr->_tableUID._lower = result;
   retstr->_tableUID._upper = v9;
   return result;
 }
 
-- (void)encodeToArchive:(void *)a3 save31FormatAlso:(BOOL)a4 embiggenedFormatOnly:(BOOL)a5 archiver:(id)a6
+- (void)encodeToArchive:(void *)archive save31FormatAlso:(BOOL)also embiggenedFormatOnly:(BOOL)only archiver:(id)archiver
 {
-  v6 = a5;
-  v7 = a4;
-  v10 = a6;
-  *(a3 + 4) |= 1u;
-  v11 = *(a3 + 15);
+  onlyCopy = only;
+  alsoCopy = also;
+  archiverCopy = archiver;
+  *(archive + 4) |= 1u;
+  v11 = *(archive + 15);
   if (!v11)
   {
-    v12 = *(a3 + 1);
+    v12 = *(archive + 1);
     if (v12)
     {
       v12 = *(v12 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v11 = google::protobuf::Arena::CreateMaybeMessage<TSCE::OwnerIDMapArchive>(v12);
-    *(a3 + 15) = v11;
+    *(archive + 15) = v11;
   }
 
   sub_22125F390(&self->_formulaOwnerIDMap, v11);
   v17 = atomic_load(&self->_numberOfFormulas);
-  *(a3 + 4) |= 2u;
-  *(a3 + 16) = v17;
-  if (v7 && ~v6 && (objc_msgSend_containsAnyTable(self, v13, v14, v15, v16) & 1) == 0)
+  *(archive + 4) |= 2u;
+  *(archive + 16) = v17;
+  if (alsoCopy && ~onlyCopy && (objc_msgSend_containsAnyTable(self, v13, v14, v15, v16) & 1) == 0)
   {
     for (i = self->_formulaOwnerDependencies.__table_.__first_node_.__next_; i; i = *i)
     {
@@ -7674,41 +7674,41 @@ LABEL_7:
     v21 = j[3];
     if (v21)
     {
-      objc_msgSend_setSaveAsEmbiggenedFormat_(j[3], v13, v6, v15, v16);
-      v24 = *(a3 + 14);
+      objc_msgSend_setSaveAsEmbiggenedFormat_(j[3], v13, onlyCopy, v15, v16);
+      v24 = *(archive + 14);
       if (!v24)
       {
         goto LABEL_15;
       }
 
-      v25 = *(a3 + 26);
+      v25 = *(archive + 26);
       v26 = *v24;
       if (v25 >= *v24)
       {
-        if (v26 == *(a3 + 27))
+        if (v26 == *(archive + 27))
         {
 LABEL_15:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 96));
-          v24 = *(a3 + 14);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 96));
+          v24 = *(archive + 14);
           v26 = *v24;
         }
 
         *v24 = v26 + 1;
-        v27 = MEMORY[0x223DA0390](*(a3 + 12));
-        v28 = *(a3 + 26);
-        v29 = *(a3 + 14) + 8 * v28;
-        *(a3 + 26) = v28 + 1;
+        v27 = MEMORY[0x223DA0390](*(archive + 12));
+        v28 = *(archive + 26);
+        v29 = *(archive + 14) + 8 * v28;
+        *(archive + 26) = v28 + 1;
         *(v29 + 8) = v27;
-        objc_msgSend_setStrongReference_message_(v10, v30, v21, v27, v31);
+        objc_msgSend_setStrongReference_message_(archiverCopy, v30, v21, v27, v31);
         continue;
       }
 
-      *(a3 + 26) = v25 + 1;
-      objc_msgSend_setStrongReference_message_(v10, v22, v21, *&v24[2 * v25 + 2], v23);
+      *(archive + 26) = v25 + 1;
+      objc_msgSend_setStrongReference_message_(archiverCopy, v22, v21, *&v24[2 * v25 + 2], v23);
     }
   }
 
-  objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v10, v13, 6, a3, v16);
+  objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(archiverCopy, v13, 6, archive, v16);
   if (v19)
   {
     next = self->_formulaOwnerDependencies.__table_.__first_node_.__next_;
@@ -7722,20 +7722,20 @@ LABEL_15:
         v176._upper = 0;
         v176._lower = objc_msgSend_formulaOwnerUIDForInternalFormulaOwnerID_(self, v32, v37, v33, v34, v175);
         v176._upper = v38;
-        v39 = *(a3 + 5);
+        v39 = *(archive + 5);
         if (!v39)
         {
           goto LABEL_25;
         }
 
-        v40 = *(a3 + 8);
+        v40 = *(archive + 8);
         v41 = *v39;
         if (v40 >= *v39)
         {
           break;
         }
 
-        *(a3 + 8) = v40 + 1;
+        *(archive + 8) = v40 + 1;
         v42 = *&v39[2 * v40 + 2];
 LABEL_27:
         *(v42 + 16) |= 1u;
@@ -7930,7 +7930,7 @@ LABEL_27:
               *(v42 + 72) = v142;
             }
 
-            objc_msgSend_setWeakReference_message_(v10, v138, v141, v142, v140);
+            objc_msgSend_setWeakReference_message_(archiverCopy, v138, v141, v142, v140);
           }
 
           else
@@ -7951,19 +7951,19 @@ LABEL_27:
         }
       }
 
-      if (v41 == *(a3 + 9))
+      if (v41 == *(archive + 9))
       {
 LABEL_25:
-        google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 24));
-        v39 = *(a3 + 5);
+        google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 24));
+        v39 = *(archive + 5);
         v41 = *v39;
       }
 
       *v39 = v41 + 1;
-      v42 = google::protobuf::Arena::CreateMaybeMessage<TSCE::FormulaOwnerInfoArchive>(*(a3 + 3));
-      v43 = *(a3 + 8);
-      v44 = *(a3 + 5) + 8 * v43;
-      *(a3 + 8) = v43 + 1;
+      v42 = google::protobuf::Arena::CreateMaybeMessage<TSCE::FormulaOwnerInfoArchive>(*(archive + 3));
+      v43 = *(archive + 8);
+      v44 = *(archive + 5) + 8 * v43;
+      *(archive + 8) = v43 + 1;
       *(v44 + 8) = v42;
       goto LABEL_27;
     }
@@ -7972,23 +7972,23 @@ LABEL_25:
 LABEL_84:
 }
 
-- (TSCEDependencyTracker)initWithCalcEngine:(id)a3 archive:(const void *)a4 unarchiver:(id)a5
+- (TSCEDependencyTracker)initWithCalcEngine:(id)engine archive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v8 = a3;
-  v9 = a5;
-  v13 = objc_msgSend_initWithCalcEngine_(self, v10, v8, v11, v12);
+  engineCopy = engine;
+  unarchiverCopy = unarchiver;
+  v13 = objc_msgSend_initWithCalcEngine_(self, v10, engineCopy, v11, v12);
   v18 = v13;
   if (v13)
   {
-    v19 = *(a4 + 8);
-    if (*(a4 + 16))
+    v19 = *(archive + 8);
+    if (*(archive + 16))
     {
-      sub_22125F640(v13 + 24, *(a4 + 15));
+      sub_22125F640(v13 + 24, *(archive + 15));
     }
 
     else
     {
-      objc_msgSend_willModifyForUpgrade(v8, v14, v15, v16, v17);
+      objc_msgSend_willModifyForUpgrade(engineCopy, v14, v15, v16, v17);
       if (v19 >= 1)
       {
         v20 = 8;
@@ -8005,7 +8005,7 @@ LABEL_84:
       }
     }
 
-    v24 = *(a4 + 26);
+    v24 = *(archive + 26);
     if (v24)
     {
       v109[0] = MEMORY[0x277D85DD0];
@@ -8013,9 +8013,9 @@ LABEL_84:
       v109[2] = sub_221375AB0;
       v109[3] = &unk_27845D8D8;
       v110 = v18;
-      v25 = v9;
+      v25 = unarchiverCopy;
       v26 = objc_opt_class();
-      objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v25, v27, a4 + 96, v26, 0, v109);
+      objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v25, v27, archive + 96, v26, 0, v109);
     }
 
     else
@@ -8026,13 +8026,13 @@ LABEL_84:
       v108 = 1;
       if (v19 >= 1)
       {
-        v95 = v8;
+        v95 = engineCopy;
         v29 = v19;
         v30 = 8;
         v94 = v19;
         do
         {
-          v31 = *(*(a4 + 5) + v30);
+          v31 = *(*(archive + 5) + v30);
           v105 = 0;
           v106 = 0;
           v105 = TSKUIDStruct::loadFromMessage();
@@ -8187,7 +8187,7 @@ LABEL_84:
               v102[2] = sub_221375E58;
               v102[3] = &unk_2784634F0;
               v103 = v39;
-              sub_221375DAC(v9, v89, &unk_2835174A8, v102);
+              sub_221375DAC(unarchiverCopy, v89, &unk_2835174A8, v102);
             }
           }
 
@@ -8198,7 +8198,7 @@ LABEL_84:
         while (v29);
         p_dependencyGraphLock = v107;
         LODWORD(v19) = v94;
-        v8 = v95;
+        engineCopy = v95;
         v24 = 0;
       }
 
@@ -8213,7 +8213,7 @@ LABEL_84:
     v96[3] = &unk_278463518;
     v99 = v24;
     v97 = v18;
-    v98 = v9;
+    v98 = unarchiverCopy;
     v100 = v19;
     v101 = 1;
     objc_msgSend_addFinalizeHandler_(v98, v90, v96, v91, v92);
@@ -8360,61 +8360,61 @@ LABEL_84:
   sub_2210BDEC0(v64);
 }
 
-- (void)addSubOwnerAliasesForUpgrade:(id)a3
+- (void)addSubOwnerAliasesForUpgrade:(id)upgrade
 {
-  v4 = a3;
-  v79 = objc_msgSend_hiddenStateForRowsOwnerUID(v4, v5, v6, v7, v8);
+  upgradeCopy = upgrade;
+  v79 = objc_msgSend_hiddenStateForRowsOwnerUID(upgradeCopy, v5, v6, v7, v8);
   v80 = v9;
-  HiddenStateForRowsOwnerUID = objc_msgSend_nextHiddenStateForRowsOwnerUID(v4, v9, v10, v11, v12);
+  HiddenStateForRowsOwnerUID = objc_msgSend_nextHiddenStateForRowsOwnerUID(upgradeCopy, v9, v10, v11, v12);
   v78 = v13;
   sub_221260314(&self->_formulaOwnerIDMap, &v79, &HiddenStateForRowsOwnerUID);
-  v79 = objc_msgSend_hiddenStateForColumnsOwnerUID(v4, v14, v15, v16, v17);
+  v79 = objc_msgSend_hiddenStateForColumnsOwnerUID(upgradeCopy, v14, v15, v16, v17);
   v80 = v18;
-  HiddenStateForRowsOwnerUID = objc_msgSend_nextHiddenStateForColumnsOwnerUID(v4, v18, v19, v20, v21);
+  HiddenStateForRowsOwnerUID = objc_msgSend_nextHiddenStateForColumnsOwnerUID(upgradeCopy, v18, v19, v20, v21);
   v78 = v22;
   sub_221260314(&self->_formulaOwnerIDMap, &v79, &HiddenStateForRowsOwnerUID);
-  v79 = objc_msgSend_conditionalStyleOwnerUID(v4, v23, v24, v25, v26);
+  v79 = objc_msgSend_conditionalStyleOwnerUID(upgradeCopy, v23, v24, v25, v26);
   v80 = v27;
-  HiddenStateForRowsOwnerUID = objc_msgSend_nextConditionalStyleOwnerUID(v4, v27, v28, v29, v30);
+  HiddenStateForRowsOwnerUID = objc_msgSend_nextConditionalStyleOwnerUID(upgradeCopy, v27, v28, v29, v30);
   v78 = v31;
   sub_221260314(&self->_formulaOwnerIDMap, &v79, &HiddenStateForRowsOwnerUID);
-  v79 = objc_msgSend_sortRuleReferenceTrackerOwnerUID(v4, v32, v33, v34, v35);
+  v79 = objc_msgSend_sortRuleReferenceTrackerOwnerUID(upgradeCopy, v32, v33, v34, v35);
   v80 = v36;
-  HiddenStateForRowsOwnerUID = objc_msgSend_nextSortRuleReferenceTrackerOwnerUID(v4, v36, v37, v38, v39);
+  HiddenStateForRowsOwnerUID = objc_msgSend_nextSortRuleReferenceTrackerOwnerUID(upgradeCopy, v36, v37, v38, v39);
   v78 = v40;
   sub_221260314(&self->_formulaOwnerIDMap, &v79, &HiddenStateForRowsOwnerUID);
-  v79 = objc_msgSend_mergeOwnerUID(v4, v41, v42, v43, v44);
+  v79 = objc_msgSend_mergeOwnerUID(upgradeCopy, v41, v42, v43, v44);
   v80 = v45;
-  HiddenStateForRowsOwnerUID = objc_msgSend_nextMergeOwnerUID(v4, v45, v46, v47, v48);
+  HiddenStateForRowsOwnerUID = objc_msgSend_nextMergeOwnerUID(upgradeCopy, v45, v46, v47, v48);
   v78 = v49;
   sub_221260314(&self->_formulaOwnerIDMap, &v79, &HiddenStateForRowsOwnerUID);
-  v79 = objc_msgSend_pencilAnnotationOwnerUID(v4, v50, v51, v52, v53);
+  v79 = objc_msgSend_pencilAnnotationOwnerUID(upgradeCopy, v50, v51, v52, v53);
   v80 = v54;
-  HiddenStateForRowsOwnerUID = objc_msgSend_nextPencilAnnotationOwnerUID(v4, v54, v55, v56, v57);
+  HiddenStateForRowsOwnerUID = objc_msgSend_nextPencilAnnotationOwnerUID(upgradeCopy, v54, v55, v56, v57);
   v78 = v58;
   sub_221260314(&self->_formulaOwnerIDMap, &v79, &HiddenStateForRowsOwnerUID);
-  v79 = objc_msgSend_categoryAggregatesOwnerUID(v4, v59, v60, v61, v62);
+  v79 = objc_msgSend_categoryAggregatesOwnerUID(upgradeCopy, v59, v60, v61, v62);
   v80 = v63;
-  HiddenStateForRowsOwnerUID = objc_msgSend_nextCategoryAggregatesOwnerUID(v4, v63, v64, v65, v66);
+  HiddenStateForRowsOwnerUID = objc_msgSend_nextCategoryAggregatesOwnerUID(upgradeCopy, v63, v64, v65, v66);
   v78 = v67;
   sub_221260314(&self->_formulaOwnerIDMap, &v79, &HiddenStateForRowsOwnerUID);
-  v79 = objc_msgSend_groupByUID(v4, v68, v69, v70, v71);
+  v79 = objc_msgSend_groupByUID(upgradeCopy, v68, v69, v70, v71);
   v80 = v72;
-  HiddenStateForRowsOwnerUID = objc_msgSend_nextGroupByUID(v4, v72, v73, v74, v75);
+  HiddenStateForRowsOwnerUID = objc_msgSend_nextGroupByUID(upgradeCopy, v72, v73, v74, v75);
   v78 = v76;
   sub_221260314(&self->_formulaOwnerIDMap, &v79, &HiddenStateForRowsOwnerUID);
 }
 
-- (void)upgradeOneOwnerUID:(const TSKUIDStruct *)a3 updatedOwnerUID:(const TSKUIDStruct *)a4 baseOwnerUID:(const TSKUIDStruct *)a5 ownerKind:(unsigned __int16)a6
+- (void)upgradeOneOwnerUID:(const TSKUIDStruct *)d updatedOwnerUID:(const TSKUIDStruct *)iD baseOwnerUID:(const TSKUIDStruct *)uID ownerKind:(unsigned __int16)kind
 {
-  v6 = a6;
-  if (*a3 != *a4)
+  kindCopy = kind;
+  if (*d != *iD)
   {
-    IfMissing = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_createIfMissing_(self, a2, a3, 0, a5);
+    IfMissing = objc_msgSend_internalFormulaOwnerIDForFormulaOwnerUID_createIfMissing_(self, a2, d, 0, uID);
     v15 = IfMissing;
     if (IfMissing != 0xFFFF)
     {
-      sub_221260398(&self->_formulaOwnerIDMap, IfMissing, a4);
+      sub_221260398(&self->_formulaOwnerIDMap, IfMissing, iD);
       v11 = sub_2210C3024(&self->_formulaOwnerDependencies.__table_.__bucket_list_.__ptr_, &v15);
       if (v11)
       {
@@ -8422,19 +8422,19 @@ LABEL_84:
         v14 = v12;
         if (v12)
         {
-          objc_msgSend_resetOwnerUIDForUpgrade_forBaseOwner_ownerKind_(v12, v13, a4, a5, v6);
+          objc_msgSend_resetOwnerUIDForUpgrade_forBaseOwner_ownerKind_(v12, v13, iD, uID, kindCopy);
         }
       }
     }
   }
 }
 
-- (void)upgradeToSubOwnerUIDForOwners:(id)a3
+- (void)upgradeToSubOwnerUIDForOwners:(id)owners
 {
-  v4 = a3;
-  v9 = objc_msgSend_tableUID(v4, v5, v6, v7, v8);
+  ownersCopy = owners;
+  v9 = objc_msgSend_tableUID(ownersCopy, v5, v6, v7, v8);
   v11 = v10;
-  if (v9 != objc_msgSend_nextTableUID(v4, v10, v12, v13, v14) || v11 != v15)
+  if (v9 != objc_msgSend_nextTableUID(ownersCopy, v10, v12, v13, v14) || v11 != v15)
   {
     v19 = MEMORY[0x277D81150];
     v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "[TSCEDependencyTracker upgradeToSubOwnerUIDForOwners:]", v17, v18);
@@ -8444,46 +8444,46 @@ LABEL_84:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v26, v27, v28, v29);
   }
 
-  v106[0] = objc_msgSend_nextTableUID(v4, v15, v16, v17, v18);
+  v106[0] = objc_msgSend_nextTableUID(ownersCopy, v15, v16, v17, v18);
   v106[1] = v30;
-  v104 = objc_msgSend_hiddenStateForRowsOwnerUID(v4, v30, v31, v32, v33);
+  v104 = objc_msgSend_hiddenStateForRowsOwnerUID(ownersCopy, v30, v31, v32, v33);
   v105 = v34;
-  HiddenStateForRowsOwnerUID = objc_msgSend_nextHiddenStateForRowsOwnerUID(v4, v34, v35, v36, v37);
+  HiddenStateForRowsOwnerUID = objc_msgSend_nextHiddenStateForRowsOwnerUID(ownersCopy, v34, v35, v36, v37);
   v103 = v38;
   objc_msgSend_upgradeOneOwnerUID_updatedOwnerUID_baseOwnerUID_ownerKind_(self, v38, &v104, &HiddenStateForRowsOwnerUID, v106, 4);
-  v104 = objc_msgSend_hiddenStateForColumnsOwnerUID(v4, v39, v40, v41, v42);
+  v104 = objc_msgSend_hiddenStateForColumnsOwnerUID(ownersCopy, v39, v40, v41, v42);
   v105 = v43;
-  HiddenStateForRowsOwnerUID = objc_msgSend_nextHiddenStateForColumnsOwnerUID(v4, v43, v44, v45, v46);
+  HiddenStateForRowsOwnerUID = objc_msgSend_nextHiddenStateForColumnsOwnerUID(ownersCopy, v43, v44, v45, v46);
   v103 = v47;
   objc_msgSend_upgradeOneOwnerUID_updatedOwnerUID_baseOwnerUID_ownerKind_(self, v47, &v104, &HiddenStateForRowsOwnerUID, v106, 11);
-  v104 = objc_msgSend_conditionalStyleOwnerUID(v4, v48, v49, v50, v51);
+  v104 = objc_msgSend_conditionalStyleOwnerUID(ownersCopy, v48, v49, v50, v51);
   v105 = v52;
-  HiddenStateForRowsOwnerUID = objc_msgSend_nextConditionalStyleOwnerUID(v4, v52, v53, v54, v55);
+  HiddenStateForRowsOwnerUID = objc_msgSend_nextConditionalStyleOwnerUID(ownersCopy, v52, v53, v54, v55);
   v103 = v56;
   objc_msgSend_upgradeOneOwnerUID_updatedOwnerUID_baseOwnerUID_ownerKind_(self, v56, &v104, &HiddenStateForRowsOwnerUID, v106, 3);
-  v104 = objc_msgSend_sortRuleReferenceTrackerOwnerUID(v4, v57, v58, v59, v60);
+  v104 = objc_msgSend_sortRuleReferenceTrackerOwnerUID(ownersCopy, v57, v58, v59, v60);
   v105 = v61;
-  HiddenStateForRowsOwnerUID = objc_msgSend_nextSortRuleReferenceTrackerOwnerUID(v4, v61, v62, v63, v64);
+  HiddenStateForRowsOwnerUID = objc_msgSend_nextSortRuleReferenceTrackerOwnerUID(ownersCopy, v61, v62, v63, v64);
   v103 = v65;
   objc_msgSend_upgradeOneOwnerUID_updatedOwnerUID_baseOwnerUID_ownerKind_(self, v65, &v104, &HiddenStateForRowsOwnerUID, v106, 6);
-  v104 = objc_msgSend_mergeOwnerUID(v4, v66, v67, v68, v69);
+  v104 = objc_msgSend_mergeOwnerUID(ownersCopy, v66, v67, v68, v69);
   v105 = v70;
-  HiddenStateForRowsOwnerUID = objc_msgSend_nextMergeOwnerUID(v4, v70, v71, v72, v73);
+  HiddenStateForRowsOwnerUID = objc_msgSend_nextMergeOwnerUID(ownersCopy, v70, v71, v72, v73);
   v103 = v74;
   objc_msgSend_upgradeOneOwnerUID_updatedOwnerUID_baseOwnerUID_ownerKind_(self, v74, &v104, &HiddenStateForRowsOwnerUID, v106, 5);
-  v104 = objc_msgSend_pencilAnnotationOwnerUID(v4, v75, v76, v77, v78);
+  v104 = objc_msgSend_pencilAnnotationOwnerUID(ownersCopy, v75, v76, v77, v78);
   v105 = v79;
-  HiddenStateForRowsOwnerUID = objc_msgSend_nextPencilAnnotationOwnerUID(v4, v79, v80, v81, v82);
+  HiddenStateForRowsOwnerUID = objc_msgSend_nextPencilAnnotationOwnerUID(ownersCopy, v79, v80, v81, v82);
   v103 = v83;
   objc_msgSend_upgradeOneOwnerUID_updatedOwnerUID_baseOwnerUID_ownerKind_(self, v83, &v104, &HiddenStateForRowsOwnerUID, v106, 10);
-  v104 = objc_msgSend_categoryAggregatesOwnerUID(v4, v84, v85, v86, v87);
+  v104 = objc_msgSend_categoryAggregatesOwnerUID(ownersCopy, v84, v85, v86, v87);
   v105 = v88;
-  HiddenStateForRowsOwnerUID = objc_msgSend_nextCategoryAggregatesOwnerUID(v4, v88, v89, v90, v91);
+  HiddenStateForRowsOwnerUID = objc_msgSend_nextCategoryAggregatesOwnerUID(ownersCopy, v88, v89, v90, v91);
   v103 = v92;
   objc_msgSend_upgradeOneOwnerUID_updatedOwnerUID_baseOwnerUID_ownerKind_(self, v92, &v104, &HiddenStateForRowsOwnerUID, v106, 9);
-  v104 = objc_msgSend_groupByUID(v4, v93, v94, v95, v96);
+  v104 = objc_msgSend_groupByUID(ownersCopy, v93, v94, v95, v96);
   v105 = v97;
-  HiddenStateForRowsOwnerUID = objc_msgSend_nextGroupByUID(v4, v97, v98, v99, v100);
+  HiddenStateForRowsOwnerUID = objc_msgSend_nextGroupByUID(ownersCopy, v97, v98, v99, v100);
   v103 = v101;
   objc_msgSend_upgradeOneOwnerUID_updatedOwnerUID_baseOwnerUID_ownerKind_(self, v101, &v104, &HiddenStateForRowsOwnerUID, v106, 8);
 }

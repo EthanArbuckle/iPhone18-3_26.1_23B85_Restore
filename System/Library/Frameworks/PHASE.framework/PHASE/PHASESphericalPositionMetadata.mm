@@ -1,11 +1,11 @@
 @interface PHASESphericalPositionMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PHASESphericalPositionMetadata)init;
-- (PHASESphericalPositionMetadata)initWithAzimuth:(float)a3 elevation:(float)a4;
-- (PHASESphericalPositionMetadata)initWithAzimuth:(float)a3 elevation:(float)a4 distance:(float)a5;
+- (PHASESphericalPositionMetadata)initWithAzimuth:(float)azimuth elevation:(float)elevation;
+- (PHASESphericalPositionMetadata)initWithAzimuth:(float)azimuth elevation:(float)elevation distance:(float)distance;
 - (float)distance;
 - (unint64_t)hash;
-- (void)setDistance:(float)a3;
+- (void)setDistance:(float)distance;
 @end
 
 @implementation PHASESphericalPositionMetadata
@@ -23,14 +23,14 @@
   return [(PHASESphericalPositionMetadata *)self initWithAzimuth:v9 elevation:v10 distance:v8];
 }
 
-- (PHASESphericalPositionMetadata)initWithAzimuth:(float)a3 elevation:(float)a4
+- (PHASESphericalPositionMetadata)initWithAzimuth:(float)azimuth elevation:(float)elevation
 {
   [(PHASESphericalPositionMetadata *)self doesNotRecognizeSelector:a2];
 
   return 0;
 }
 
-- (PHASESphericalPositionMetadata)initWithAzimuth:(float)a3 elevation:(float)a4 distance:(float)a5
+- (PHASESphericalPositionMetadata)initWithAzimuth:(float)azimuth elevation:(float)elevation distance:(float)distance
 {
   v11.receiver = self;
   v11.super_class = PHASESphericalPositionMetadata;
@@ -41,21 +41,21 @@
     internalDistanceLock = v6->_internalDistanceLock;
     v6->_internalDistanceLock = v7;
 
-    *&v9 = a5;
+    *&v9 = distance;
     [(PHASESphericalPositionMetadata *)v6 setDistance:v9];
   }
 
   return v6;
 }
 
-- (void)setDistance:(float)a3
+- (void)setDistance:(float)distance
 {
   +[PHASESphericalPositionMetadata minimumDistance];
-  if (v5 <= a3 && (+[PHASESphericalPositionMetadata maximumDistance], v6 >= a3))
+  if (v5 <= distance && (+[PHASESphericalPositionMetadata maximumDistance], v6 >= distance))
   {
     obj = self->_internalDistanceLock;
     objc_sync_enter(obj);
-    self->_internalDistance = a3;
+    self->_internalDistance = distance;
     objc_sync_exit(obj);
   }
 
@@ -66,7 +66,7 @@
     +[PHASESphericalPositionMetadata minimumDistance];
     v10 = v9;
     +[PHASESphericalPositionMetadata maximumDistance];
-    [v7 raise:v8 format:{@"The distance: %f is out of range [%f, %f].", a3, *&v10, v11}];
+    [v7 raise:v8 format:{@"The distance: %f is out of range [%f, %f].", distance, *&v10, v11}];
   }
 }
 
@@ -80,10 +80,10 @@
   return internalDistance;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -93,7 +93,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v16.receiver = self;
       v16.super_class = PHASESphericalPositionMetadata;
       if ([(PHASEAngularPositionMetadata *)&v16 isEqual:v5])

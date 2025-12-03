@@ -1,20 +1,20 @@
 @interface WFAskLLMConversation
-- (_TtC10ContentKit20WFAskLLMConversation)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC10ContentKit20WFAskLLMConversation)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFAskLLMConversation
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
+  coderCopy = coder;
+  selfCopy = self;
   sub_21E1D4A38();
 }
 
-- (_TtC10ContentKit20WFAskLLMConversation)initWithCoder:(id)a3
+- (_TtC10ContentKit20WFAskLLMConversation)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   WFAskLLMConversation.init(coder:)();
   return result;
 }

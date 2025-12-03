@@ -1,22 +1,22 @@
 @interface _CHWorkoutSummaryTabbedLabelContainer
 - (CGSize)intrinsicContentSize;
-- (_CHWorkoutSummaryTabbedLabelContainer)initWithFrame:(CGRect)a3;
+- (_CHWorkoutSummaryTabbedLabelContainer)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setAverageText:(id)a3;
-- (void)setText:(id)a3;
-- (void)setTextColor:(id)a3;
-- (void)setTitleText:(id)a3;
-- (void)setTotalText:(id)a3;
+- (void)setAverageText:(id)text;
+- (void)setText:(id)text;
+- (void)setTextColor:(id)color;
+- (void)setTitleText:(id)text;
+- (void)setTotalText:(id)text;
 - (void)sizeToFit;
 @end
 
 @implementation _CHWorkoutSummaryTabbedLabelContainer
 
-- (_CHWorkoutSummaryTabbedLabelContainer)initWithFrame:(CGRect)a3
+- (_CHWorkoutSummaryTabbedLabelContainer)initWithFrame:(CGRect)frame
 {
   v25.receiver = self;
   v25.super_class = _CHWorkoutSummaryTabbedLabelContainer;
-  v3 = [(_CHWorkoutSummaryTabbedLabelContainer *)&v25 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_CHWorkoutSummaryTabbedLabelContainer *)&v25 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor clearColor];
@@ -76,18 +76,18 @@
   return v3;
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  objc_storeStrong(&self->_textColor, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_textColor, color);
+  colorCopy = color;
   [(UILabel *)self->_totalLabel setTextColor:self->_textColor];
   [(UILabel *)self->_averageLabel setTextColor:self->_textColor];
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  v6 = a3;
-  objc_storeStrong(&self->_titleText, a3);
+  textCopy = text;
+  objc_storeStrong(&self->_titleText, text);
   [(UILabel *)self->_titleLabel setText:self->_titleText];
   if ([(NSString *)self->_titleText length])
   {
@@ -102,10 +102,10 @@
   [(UILabel *)self->_titleLabel setTextAlignment:v5];
 }
 
-- (void)setTotalText:(id)a3
+- (void)setTotalText:(id)text
 {
-  v6 = a3;
-  objc_storeStrong(&self->_totalText, a3);
+  textCopy = text;
+  objc_storeStrong(&self->_totalText, text);
   [(UILabel *)self->_totalLabel setText:self->_totalText];
   if ([(NSString *)self->_totalText length])
   {
@@ -120,10 +120,10 @@
   [(UILabel *)self->_totalLabel setTextAlignment:v5];
 }
 
-- (void)setAverageText:(id)a3
+- (void)setAverageText:(id)text
 {
-  v6 = a3;
-  objc_storeStrong(&self->_averageText, a3);
+  textCopy = text;
+  objc_storeStrong(&self->_averageText, text);
   [(UILabel *)self->_averageLabel setText:self->_averageText];
   if ([(NSString *)self->_averageText length])
   {
@@ -138,13 +138,13 @@
   [(UILabel *)self->_averageLabel setTextAlignment:v5];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   titleLabel = self->_titleLabel;
-  v5 = a3;
-  [(UILabel *)titleLabel setText:v5];
-  [(UILabel *)self->_totalLabel setText:v5];
-  [(UILabel *)self->_averageLabel setText:v5];
+  textCopy = text;
+  [(UILabel *)titleLabel setText:textCopy];
+  [(UILabel *)self->_totalLabel setText:textCopy];
+  [(UILabel *)self->_averageLabel setText:textCopy];
 }
 
 - (void)layoutSubviews

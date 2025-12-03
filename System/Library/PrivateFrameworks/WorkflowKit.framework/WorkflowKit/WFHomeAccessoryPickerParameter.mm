@@ -1,32 +1,32 @@
 @interface WFHomeAccessoryPickerParameter
-- (id)localizedLabelForState:(id)a3;
+- (id)localizedLabelForState:(id)state;
 @end
 
 @implementation WFHomeAccessoryPickerParameter
 
-- (id)localizedLabelForState:(id)a3
+- (id)localizedLabelForState:(id)state
 {
-  if (a3)
+  if (state)
   {
-    v3 = [a3 triggerActionSetsBuilder];
-    if ([v3 hasActions])
+    triggerActionSetsBuilder = [state triggerActionSetsBuilder];
+    if ([triggerActionSetsBuilder hasActions])
     {
-      v4 = [v3 actionSetsSummary];
-      v5 = [v4 summaryText];
+      actionSetsSummary = [triggerActionSetsBuilder actionSetsSummary];
+      summaryText = [actionSetsSummary summaryText];
     }
 
     else
     {
-      v5 = 0;
+      summaryText = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    summaryText = 0;
   }
 
-  return v5;
+  return summaryText;
 }
 
 @end

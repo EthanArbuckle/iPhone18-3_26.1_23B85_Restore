@@ -1,34 +1,34 @@
 @interface APAttributionCacheElement
-+ (id)cachedElementForBundleIdentifier:(id)a3;
-+ (id)elementWithToken:(id)a3 andBundle:(id)a4 andAppTrackingStatus:(BOOL)a5 andToroID:(id)a6;
++ (id)cachedElementForBundleIdentifier:(id)identifier;
++ (id)elementWithToken:(id)token andBundle:(id)bundle andAppTrackingStatus:(BOOL)status andToroID:(id)d;
 + (void)cacheStore;
 + (void)cleanCache;
 + (void)clearCache;
-- (APAttributionCacheElement)initWith:(id)a3 andToken:(id)a4 andAppTrackingStatus:(BOOL)a5 andToroID:(id)a6;
+- (APAttributionCacheElement)initWith:(id)with andToken:(id)token andAppTrackingStatus:(BOOL)status andToroID:(id)d;
 - (BOOL)checkExpiry;
-- (BOOL)didAppTrackingStateChange:(BOOL)a3;
-- (BOOL)didToroIDChange:(id)a3;
+- (BOOL)didAppTrackingStateChange:(BOOL)change;
+- (BOOL)didToroIDChange:(id)change;
 - (BOOL)isExpired;
-- (BOOL)isValidCheckWithToroID:(id)a3 andTrackingStatus:(BOOL)a4;
+- (BOOL)isValidCheckWithToroID:(id)d andTrackingStatus:(BOOL)status;
 @end
 
 @implementation APAttributionCacheElement
 
-- (APAttributionCacheElement)initWith:(id)a3 andToken:(id)a4 andAppTrackingStatus:(BOOL)a5 andToroID:(id)a6
+- (APAttributionCacheElement)initWith:(id)with andToken:(id)token andAppTrackingStatus:(BOOL)status andToroID:(id)d
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  withCopy = with;
+  tokenCopy = token;
+  dCopy = d;
   v19.receiver = self;
   v19.super_class = APAttributionCacheElement;
   v14 = [(APAttributionCacheElement *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_bundleID, a3);
-    objc_storeStrong(&v15->_token, a4);
-    v15->_appAdTrackingStatus = a5;
-    objc_storeStrong(&v15->_toroID, a6);
+    objc_storeStrong(&v14->_bundleID, with);
+    objc_storeStrong(&v15->_token, token);
+    v15->_appAdTrackingStatus = status;
+    objc_storeStrong(&v15->_toroID, d);
     v16 = +[NSDate date];
     [v16 timeIntervalSince1970];
     v15->_timestamp = v17;
@@ -37,19 +37,19 @@
   return v15;
 }
 
-+ (id)elementWithToken:(id)a3 andBundle:(id)a4 andAppTrackingStatus:(BOOL)a5 andToroID:(id)a6
++ (id)elementWithToken:(id)token andBundle:(id)bundle andAppTrackingStatus:(BOOL)status andToroID:(id)d
 {
-  v7 = a5;
-  v9 = a4;
-  v10 = a6;
-  v11 = a3;
+  statusCopy = status;
+  bundleCopy = bundle;
+  dCopy = d;
+  tokenCopy = token;
   +[APAttributionCacheElement cacheStore];
-  v12 = [[APAttributionCacheElement alloc] initWith:v9 andToken:v11 andAppTrackingStatus:v7 andToroID:v10];
+  v12 = [[APAttributionCacheElement alloc] initWith:bundleCopy andToken:tokenCopy andAppTrackingStatus:statusCopy andToroID:dCopy];
 
   if (v12)
   {
     [qword_1004DF700 lock];
-    [qword_1004DF708 setObject:v12 forKey:v9];
+    [qword_1004DF708 setObject:v12 forKey:bundleCopy];
     [qword_1004DF700 unlock];
   }
 
@@ -58,16 +58,16 @@
   return v12;
 }
 
-+ (id)cachedElementForBundleIdentifier:(id)a3
++ (id)cachedElementForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   +[APAttributionCacheElement cacheStore];
   [qword_1004DF700 lock];
-  v4 = [qword_1004DF708 objectForKeyedSubscript:v3];
+  v4 = [qword_1004DF708 objectForKeyedSubscript:identifierCopy];
 
   if (v4)
   {
-    v4 = [qword_1004DF708 objectForKeyedSubscript:v3];
+    v4 = [qword_1004DF708 objectForKeyedSubscript:identifierCopy];
   }
 
   [qword_1004DF700 unlock];
@@ -87,8 +87,8 @@
 {
   [qword_1004DF700 lock];
   v3 = qword_1004DF708;
-  v4 = [(APAttributionCacheElement *)self bundleID];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  bundleID = [(APAttributionCacheElement *)self bundleID];
+  v5 = [v3 objectForKeyedSubscript:bundleID];
 
   if (v5)
   {
@@ -96,8 +96,8 @@
     [v6 timeIntervalSince1970];
     v8 = v7;
     v9 = qword_1004DF708;
-    v10 = [(APAttributionCacheElement *)self bundleID];
-    v11 = [v9 objectForKeyedSubscript:v10];
+    bundleID2 = [(APAttributionCacheElement *)self bundleID];
+    v11 = [v9 objectForKeyedSubscript:bundleID2];
     [v11 timestamp];
     v13 = v8 - v12;
 
@@ -108,8 +108,8 @@
     }
 
     v14 = qword_1004DF708;
-    v15 = [(APAttributionCacheElement *)self bundleID];
-    [v14 removeObjectForKey:v15];
+    bundleID3 = [(APAttributionCacheElement *)self bundleID];
+    [v14 removeObjectForKey:bundleID3];
   }
 
   v16 = 1;
@@ -118,15 +118,15 @@ LABEL_6:
   return v16;
 }
 
-- (BOOL)didAppTrackingStateChange:(BOOL)a3
+- (BOOL)didAppTrackingStateChange:(BOOL)change
 {
-  v4 = [(APAttributionCacheElement *)self appAdTrackingStatus]^ a3;
+  v4 = [(APAttributionCacheElement *)self appAdTrackingStatus]^ change;
   if (v4 == 1)
   {
     [qword_1004DF700 lock];
     v5 = qword_1004DF708;
-    v6 = [(APAttributionCacheElement *)self bundleID];
-    [v5 removeObjectForKey:v6];
+    bundleID = [(APAttributionCacheElement *)self bundleID];
+    [v5 removeObjectForKey:bundleID];
 
     [qword_1004DF700 unlock];
   }
@@ -134,11 +134,11 @@ LABEL_6:
   return v4;
 }
 
-- (BOOL)didToroIDChange:(id)a3
+- (BOOL)didToroIDChange:(id)change
 {
-  v4 = a3;
-  v5 = [(APAttributionCacheElement *)self toroID];
-  if (v5 && (v6 = v5, -[APAttributionCacheElement toroID](self, "toroID"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isEqual:v4], v7, v6, (v8 & 1) != 0))
+  changeCopy = change;
+  toroID = [(APAttributionCacheElement *)self toroID];
+  if (toroID && (v6 = toroID, -[APAttributionCacheElement toroID](self, "toroID"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isEqual:changeCopy], v7, v6, (v8 & 1) != 0))
   {
     v9 = 0;
   }
@@ -158,18 +158,18 @@ LABEL_6:
   [v3 timeIntervalSince1970];
   v5 = v4;
   v6 = qword_1004DF708;
-  v7 = [(APAttributionCacheElement *)self bundleID];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  bundleID = [(APAttributionCacheElement *)self bundleID];
+  v8 = [v6 objectForKeyedSubscript:bundleID];
   [v8 timestamp];
   v10 = v5 - v9 > 300.0;
 
   return v10;
 }
 
-- (BOOL)isValidCheckWithToroID:(id)a3 andTrackingStatus:(BOOL)a4
+- (BOOL)isValidCheckWithToroID:(id)d andTrackingStatus:(BOOL)status
 {
-  v4 = a4;
-  if ([(APAttributionCacheElement *)self didToroIDChange:a3]|| [(APAttributionCacheElement *)self didAppTrackingStateChange:v4])
+  statusCopy = status;
+  if ([(APAttributionCacheElement *)self didToroIDChange:d]|| [(APAttributionCacheElement *)self didAppTrackingStateChange:statusCopy])
   {
     return 0;
   }
@@ -188,8 +188,8 @@ LABEL_6:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [qword_1004DF708 allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v22 count:16];
+  allKeys = [qword_1004DF708 allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v14 objects:v22 count:16];
   if (v4)
   {
     v6 = v4;
@@ -202,14 +202,14 @@ LABEL_6:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
         v10 = [qword_1004DF708 objectForKeyedSubscript:{v9, v13}];
-        v11 = [v10 checkExpiry];
+        checkExpiry = [v10 checkExpiry];
 
-        if (v11)
+        if (checkExpiry)
         {
           v12 = APLogForCategory();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -225,7 +225,7 @@ LABEL_6:
         }
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v14 objects:v22 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v14 objects:v22 count:16];
     }
 
     while (v6);

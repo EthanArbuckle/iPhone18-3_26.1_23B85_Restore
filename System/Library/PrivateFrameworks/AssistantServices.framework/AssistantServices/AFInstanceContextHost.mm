@@ -1,10 +1,10 @@
 @interface AFInstanceContextHost
 - (AFInstanceContextHost)init;
 - (BOOL)isCurrent;
-- (id)createXPCConnectionForMachService:(const char *)a3 targetQueue:(id)a4 flags:(unint64_t)a5;
-- (id)createXPCConnectionWithMachServiceName:(id)a3 options:(unint64_t)a4;
-- (id)createXPCListenerForMachService:(const char *)a3 targetQueue:(id)a4 flags:(unint64_t)a5;
-- (id)createXPCListenerWithMachServiceName:(id)a3;
+- (id)createXPCConnectionForMachService:(const char *)service targetQueue:(id)queue flags:(unint64_t)flags;
+- (id)createXPCConnectionWithMachServiceName:(id)name options:(unint64_t)options;
+- (id)createXPCListenerForMachService:(const char *)service targetQueue:(id)queue flags:(unint64_t)flags;
+- (id)createXPCListenerWithMachServiceName:(id)name;
 - (id)description;
 @end
 
@@ -39,39 +39,39 @@
 - (BOOL)isCurrent
 {
   v2 = +[AFInstanceContext currentContext];
-  v3 = [v2 isDefault];
+  isDefault = [v2 isDefault];
 
-  return v3;
+  return isDefault;
 }
 
-- (id)createXPCListenerForMachService:(const char *)a3 targetQueue:(id)a4 flags:(unint64_t)a5
+- (id)createXPCListenerForMachService:(const char *)service targetQueue:(id)queue flags:(unint64_t)flags
 {
-  mach_service = xpc_connection_create_mach_service(a3, a4, a5 | 1);
+  mach_service = xpc_connection_create_mach_service(service, queue, flags | 1);
 
   return mach_service;
 }
 
-- (id)createXPCConnectionForMachService:(const char *)a3 targetQueue:(id)a4 flags:(unint64_t)a5
+- (id)createXPCConnectionForMachService:(const char *)service targetQueue:(id)queue flags:(unint64_t)flags
 {
-  mach_service = xpc_connection_create_mach_service(a3, a4, a5);
+  mach_service = xpc_connection_create_mach_service(service, queue, flags);
 
   return mach_service;
 }
 
-- (id)createXPCListenerWithMachServiceName:(id)a3
+- (id)createXPCListenerWithMachServiceName:(id)name
 {
   v3 = MEMORY[0x1E696B0D8];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithMachServiceName:v4];
+  nameCopy = name;
+  v5 = [[v3 alloc] initWithMachServiceName:nameCopy];
 
   return v5;
 }
 
-- (id)createXPCConnectionWithMachServiceName:(id)a3 options:(unint64_t)a4
+- (id)createXPCConnectionWithMachServiceName:(id)name options:(unint64_t)options
 {
   v5 = MEMORY[0x1E696B0B8];
-  v6 = a3;
-  v7 = [[v5 alloc] initWithMachServiceName:v6 options:a4];
+  nameCopy = name;
+  v7 = [[v5 alloc] initWithMachServiceName:nameCopy options:options];
 
   return v7;
 }

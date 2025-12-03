@@ -1,5 +1,5 @@
 @interface RecommendationController
-- (void)recommendationEnablementProgressDidUpdateWithRecommendationID:(id)a3 progress:(double)a4;
+- (void)recommendationEnablementProgressDidUpdateWithRecommendationID:(id)d progress:(double)progress;
 - (void)recommendationsDidUpdate;
 @end
 
@@ -21,7 +21,7 @@
   sub_68AE4(0, 0, v6, &unk_8A650, v8);
 }
 
-- (void)recommendationEnablementProgressDidUpdateWithRecommendationID:(id)a3 progress:(double)a4
+- (void)recommendationEnablementProgressDidUpdateWithRecommendationID:(id)d progress:(double)progress
 {
   v6 = sub_147EC(&unk_B8240, &qword_88F50);
   v7 = *(*(v6 - 8) + 64);
@@ -37,7 +37,7 @@
   *(v14 + 32) = self;
   *(v14 + 40) = v10;
   *(v14 + 48) = v12;
-  *(v14 + 56) = a4;
+  *(v14 + 56) = progress;
 
   sub_68AE4(0, 0, v9, &unk_8A648, v14);
 }

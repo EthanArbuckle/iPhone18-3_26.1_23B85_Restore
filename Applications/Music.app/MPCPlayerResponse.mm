@@ -1,14 +1,14 @@
 @interface MPCPlayerResponse
-- (id)attributionMetadataFor:(id)a3;
+- (id)attributionMetadataFor:(id)for;
 @end
 
 @implementation MPCPlayerResponse
 
-- (id)attributionMetadataFor:(id)a3
+- (id)attributionMetadataFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_10077AE00(v4);
+  forCopy = for;
+  selfCopy = self;
+  v6 = sub_10077AE00(forCopy);
 
   return v6;
 }

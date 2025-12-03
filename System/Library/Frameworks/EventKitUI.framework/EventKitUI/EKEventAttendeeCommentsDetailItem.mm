@@ -1,15 +1,15 @@
 @interface EKEventAttendeeCommentsDetailItem
-- (BOOL)configureWithEvent:(id)a3 calendar:(id)a4 preview:(BOOL)a5;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
-- (id)detailViewControllerWithFrame:(CGRect)a3 forSubitemAtIndex:(unint64_t)a4;
+- (BOOL)configureWithEvent:(id)event calendar:(id)calendar preview:(BOOL)preview;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
+- (id)detailViewControllerWithFrame:(CGRect)frame forSubitemAtIndex:(unint64_t)index;
 - (unint64_t)_numComments;
 @end
 
 @implementation EKEventAttendeeCommentsDetailItem
 
-- (BOOL)configureWithEvent:(id)a3 calendar:(id)a4 preview:(BOOL)a5
+- (BOOL)configureWithEvent:(id)event calendar:(id)calendar preview:(BOOL)preview
 {
-  v6 = [(EKEvent *)self->super._event isSelfOrganized:a3];
+  v6 = [(EKEvent *)self->super._event isSelfOrganized:event];
   if (v6)
   {
     LOBYTE(v6) = [(EKEventAttendeeCommentsDetailItem *)self _numComments]!= 0;
@@ -25,8 +25,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(EKEvent *)self->super._event attendees];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  attendees = [(EKEvent *)self->super._event attendees];
+  v3 = [attendees countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -38,11 +38,11 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(attendees);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) comment];
-        v9 = [MEMORY[0x1E6993410] stringWithAutoCommentRemoved:v8];
+        comment = [*(*(&v11 + 1) + 8 * i) comment];
+        v9 = [MEMORY[0x1E6993410] stringWithAutoCommentRemoved:comment];
 
         if ([v9 length])
         {
@@ -50,7 +50,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [attendees countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);
@@ -64,30 +64,30 @@
   return v5;
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
   v4 = [[EKUITableViewCell alloc] initWithStyle:1 reuseIdentifier:0];
   v5 = EventKitUIBundle();
   v6 = [v5 localizedStringForKey:@"Comments" value:&stru_1F4EF6790 table:0];
-  v7 = [(EKUITableViewCell *)v4 textLabel];
-  [v7 setText:v6];
+  textLabel = [(EKUITableViewCell *)v4 textLabel];
+  [textLabel setText:v6];
 
   [(EKEventAttendeeCommentsDetailItem *)self _numComments];
   v8 = CUIKLocalizedStringForInteger();
-  v9 = [(EKUITableViewCell *)v4 detailTextLabel];
-  [v9 setText:v8];
+  detailTextLabel = [(EKUITableViewCell *)v4 detailTextLabel];
+  [detailTextLabel setText:v8];
 
   [(EKUITableViewCell *)v4 setAccessoryType:1];
 
   return v4;
 }
 
-- (id)detailViewControllerWithFrame:(CGRect)a3 forSubitemAtIndex:(unint64_t)a4
+- (id)detailViewControllerWithFrame:(CGRect)frame forSubitemAtIndex:(unint64_t)index
 {
   v5 = [[EKEventAttendeeCommentsEditViewController alloc] initWithEKEvent:self->super._event];
-  v6 = [(EKEventDetailItem *)self viewControllerToPresentFrom];
-  v7 = [v6 navigationDelegate];
-  [(EKEventAttendeeCommentsEditViewController *)v5 setNavigationDelegate:v7];
+  viewControllerToPresentFrom = [(EKEventDetailItem *)self viewControllerToPresentFrom];
+  navigationDelegate = [viewControllerToPresentFrom navigationDelegate];
+  [(EKEventAttendeeCommentsEditViewController *)v5 setNavigationDelegate:navigationDelegate];
 
   return v5;
 }

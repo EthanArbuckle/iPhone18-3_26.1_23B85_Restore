@@ -10,10 +10,10 @@
   v5 = a3;
   if (!v5)
   {
-    [(NSDictionary(Accounts) *)a2 ac_mapValues:a1];
+    [(NSDictionary(Accounts) *)a2 ac_mapValues:self];
   }
 
-  v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(self, "count")}];
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __39__NSDictionary_Accounts__ac_mapValues___block_invoke;
@@ -22,7 +22,7 @@
   v16 = v5;
   v7 = v5;
   v8 = v6;
-  [a1 enumerateKeysAndObjectsUsingBlock:&v11];
+  [self enumerateKeysAndObjectsUsingBlock:&v11];
   v9 = [v8 copy];
 
   return v9;
@@ -33,10 +33,10 @@
   v5 = a3;
   if (!v5)
   {
-    [(NSDictionary(Accounts) *)a2 ac_mapValuesNullable:a1];
+    [(NSDictionary(Accounts) *)a2 ac_mapValuesNullable:self];
   }
 
-  v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(self, "count")}];
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __47__NSDictionary_Accounts__ac_mapValuesNullable___block_invoke;
@@ -45,7 +45,7 @@
   v16 = v5;
   v7 = v6;
   v8 = v5;
-  [a1 enumerateKeysAndObjectsUsingBlock:&v11];
+  [self enumerateKeysAndObjectsUsingBlock:&v11];
   v9 = [v7 copy];
 
   return v9;

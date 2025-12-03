@@ -1,16 +1,16 @@
 @interface _SiriUINavigationContentView
-- (_SiriUINavigationContentView)initWithFrame:(CGRect)a3;
+- (_SiriUINavigationContentView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setContentView:(id)a3;
+- (void)setContentView:(id)view;
 @end
 
 @implementation _SiriUINavigationContentView
 
-- (_SiriUINavigationContentView)initWithFrame:(CGRect)a3
+- (_SiriUINavigationContentView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _SiriUINavigationContentView;
-  v3 = [(_SiriUINavigationContentView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_SiriUINavigationContentView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -97,24 +97,24 @@
       }
     }
 
-    v30 = [(_SiriUINavigationContentView *)self contentView];
-    [v30 setFrame:{v29, v27, v22, v19}];
+    contentView = [(_SiriUINavigationContentView *)self contentView];
+    [contentView setFrame:{v29, v27, v22, v19}];
   }
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
-  if (self->_contentView != v5)
+  viewCopy = view;
+  if (self->_contentView != viewCopy)
   {
-    v7 = v5;
-    v6 = [(_SiriUINavigationContentView *)self contentView];
-    [v6 removeFromSuperview];
-    objc_storeStrong(&self->_contentView, a3);
+    v7 = viewCopy;
+    contentView = [(_SiriUINavigationContentView *)self contentView];
+    [contentView removeFromSuperview];
+    objc_storeStrong(&self->_contentView, view);
     [(UIView *)self->_contentView recursive_setSemanticContentAttribute:SiriLanguageSemanticContentAttribute()];
     [(_SiriUINavigationContentView *)self addSubview:v7];
 
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 

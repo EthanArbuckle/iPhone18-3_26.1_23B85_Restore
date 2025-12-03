@@ -14,9 +14,9 @@
   v4 = [(CoreDAVItem *)&v8 description];
   [v3 appendFormat:@"[%@]", v4];
 
-  v5 = [(CoreDAVBulkRequestsSetItem *)self crudItem];
-  v6 = [(CoreDAVBulkRequestsSetItem *)self simpleItem];
-  [v3 appendFormat:@"\n  CRUD %@\nSimple %@", v5, v6];
+  crudItem = [(CoreDAVBulkRequestsSetItem *)self crudItem];
+  simpleItem = [(CoreDAVBulkRequestsSetItem *)self simpleItem];
+  [v3 appendFormat:@"\n  CRUD %@\nSimple %@", crudItem, simpleItem];
 
   return v3;
 }
@@ -24,7 +24,7 @@
 + (id)copyParseRules
 {
   v3 = +[CoreDAVItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -37,7 +37,7 @@
     v5 = [v13 initWithObjectsAndKeys:{v6, v7, v8, v9, 0}];
 
     v10 = +[CoreDAVItem parseRuleCache];
-    v11 = NSStringFromClass(a1);
+    v11 = NSStringFromClass(self);
     [v10 setObject:v5 forKey:v11];
   }
 
@@ -49,16 +49,16 @@
   if (self->_crudItem || self->_simpleItem)
   {
     v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v4 = [(CoreDAVBulkRequestsItem *)self->_crudItem dictRepresentation];
-    if (v4)
+    dictRepresentation = [(CoreDAVBulkRequestsItem *)self->_crudItem dictRepresentation];
+    if (dictRepresentation)
     {
-      [v3 setObject:v4 forKey:@"crud"];
+      [v3 setObject:dictRepresentation forKey:@"crud"];
     }
 
-    v5 = [(CoreDAVBulkRequestsItem *)self->_simpleItem dictRepresentation];
-    if (v5)
+    dictRepresentation2 = [(CoreDAVBulkRequestsItem *)self->_simpleItem dictRepresentation];
+    if (dictRepresentation2)
     {
-      [v3 setObject:v5 forKey:@"simple"];
+      [v3 setObject:dictRepresentation2 forKey:@"simple"];
     }
   }
 

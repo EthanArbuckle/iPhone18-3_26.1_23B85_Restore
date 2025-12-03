@@ -1,24 +1,24 @@
 @interface SafariClearBrowsingDataInterval
-- (SafariClearBrowsingDataInterval)initWithDescription:(id)a3 dateAfterWhichDataShouldBeClearedBlock:(id)a4;
+- (SafariClearBrowsingDataInterval)initWithDescription:(id)description dateAfterWhichDataShouldBeClearedBlock:(id)block;
 - (id)description;
 @end
 
 @implementation SafariClearBrowsingDataInterval
 
-- (SafariClearBrowsingDataInterval)initWithDescription:(id)a3 dateAfterWhichDataShouldBeClearedBlock:(id)a4
+- (SafariClearBrowsingDataInterval)initWithDescription:(id)description dateAfterWhichDataShouldBeClearedBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  descriptionCopy = description;
+  blockCopy = block;
   v15.receiver = self;
   v15.super_class = SafariClearBrowsingDataInterval;
   v8 = [(SafariClearBrowsingDataInterval *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [descriptionCopy copy];
     descriptionOfInterval = v8->_descriptionOfInterval;
     v8->_descriptionOfInterval = v9;
 
-    v11 = [v7 copy];
+    v11 = [blockCopy copy];
     dateAfterWhichDataShouldBeClearedBlock = v8->_dateAfterWhichDataShouldBeClearedBlock;
     v8->_dateAfterWhichDataShouldBeClearedBlock = v11;
 

@@ -1,9 +1,9 @@
 @interface BRCAutoBugCaptureReporter
 + (id)sharedABCReporter;
-- (BOOL)_shouldIgnoreReportForOperationType:(id)a3 ofSubtype:(id)a4 forError:(id)a5;
+- (BOOL)_shouldIgnoreReportForOperationType:(id)type ofSubtype:(id)subtype forError:(id)error;
 - (id)_init;
-- (void)_captureLogsForOperationType:(id)a3 ofSubtype:(id)a4 withContext:(id)a5 timeout:(double)a6;
-- (void)captureLogsForOperationType:(id)a3 ofSubtype:(id)a4 withContext:(id)a5 waitForCompletion:(BOOL)a6;
+- (void)_captureLogsForOperationType:(id)type ofSubtype:(id)subtype withContext:(id)context timeout:(double)timeout;
+- (void)captureLogsForOperationType:(id)type ofSubtype:(id)subtype withContext:(id)context waitForCompletion:(BOOL)completion;
 @end
 
 @implementation BRCAutoBugCaptureReporter
@@ -39,9 +39,9 @@ uint64_t __46__BRCAutoBugCaptureReporter_sharedABCReporter__block_invoke()
     v2->_reporterOperationRejectedThrottlePeriod = v4;
 
     v5 = [BRCUserDefaults defaultsForMangledID:0];
-    v6 = [v5 autoBugCaptureReporterThrottleCapacity];
+    autoBugCaptureReporterThrottleCapacity = [v5 autoBugCaptureReporterThrottleCapacity];
 
-    v7 = [[BRCLRUDictionary alloc] initWithMaximumCapacity:v6];
+    v7 = [[BRCLRUDictionary alloc] initWithMaximumCapacity:autoBugCaptureReporterThrottleCapacity];
     reporterOperationRejectedThrottle = v2->_reporterOperationRejectedThrottle;
     v2->_reporterOperationRejectedThrottle = v7;
   }
@@ -49,33 +49,33 @@ uint64_t __46__BRCAutoBugCaptureReporter_sharedABCReporter__block_invoke()
   return v2;
 }
 
-- (void)_captureLogsForOperationType:(id)a3 ofSubtype:(id)a4 withContext:(id)a5 timeout:(double)a6
+- (void)_captureLogsForOperationType:(id)type ofSubtype:(id)subtype withContext:(id)context timeout:(double)timeout
 {
   v44 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v10, v11];
+  typeCopy = type;
+  subtypeCopy = subtype;
+  contextCopy = context;
+  subtypeCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", typeCopy, subtypeCopy];
   v14 = self->_reporterOperationRejectedThrottle;
   objc_sync_enter(v14);
-  v15 = [(BRCLRUDictionary *)self->_reporterOperationRejectedThrottle objectForKeyedSubscript:v13];
+  v15 = [(BRCLRUDictionary *)self->_reporterOperationRejectedThrottle objectForKeyedSubscript:subtypeCopy];
   if (v15)
   {
     v16 = brc_current_date_nsec();
-    v17 = [v15 longLongValue];
+    longLongValue = [v15 longLongValue];
     reporterOperationRejectedThrottlePeriod = self->_reporterOperationRejectedThrottlePeriod;
-    if (v16 - v17 < brc_interval_to_nsec())
+    if (v16 - longLongValue < brc_interval_to_nsec())
     {
       v19 = brc_bread_crumbs();
       v20 = brc_default_log();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138413314;
-        v35 = v10;
+        v35 = typeCopy;
         v36 = 2112;
-        v37 = v11;
+        v37 = subtypeCopy;
         v38 = 2112;
-        v39 = v12;
+        v39 = contextCopy;
         v40 = 2112;
         v41 = v15;
         v42 = 2112;
@@ -87,7 +87,7 @@ uint64_t __46__BRCAutoBugCaptureReporter_sharedABCReporter__block_invoke()
       goto LABEL_15;
     }
 
-    [(BRCLRUDictionary *)self->_reporterOperationRejectedThrottle removeObjectForKey:v13];
+    [(BRCLRUDictionary *)self->_reporterOperationRejectedThrottle removeObjectForKey:subtypeCopy];
   }
 
   objc_sync_exit(v14);
@@ -96,32 +96,32 @@ uint64_t __46__BRCAutoBugCaptureReporter_sharedABCReporter__block_invoke()
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413058;
-    v35 = v10;
+    v35 = typeCopy;
     v36 = 2112;
-    v37 = v11;
+    v37 = subtypeCopy;
     v38 = 2112;
-    v39 = v12;
+    v39 = contextCopy;
     v40 = 2112;
     v41 = v21;
     _os_log_debug_impl(&dword_223E7A000, v22, OS_LOG_TYPE_DEBUG, "[DEBUG] Sending ABC report with signature: type = %@, subtype = %@, subtype context = %@%@", buf, 0x2Au);
   }
 
   v14 = objc_opt_new();
-  v23 = [(BRCLRUDictionary *)v14 signatureWithDomain:@"iCloudDrive" type:v10 subType:v11 subtypeContext:v12 detectedProcess:@"bird" triggerThresholdValues:0];
+  v23 = [(BRCLRUDictionary *)v14 signatureWithDomain:@"iCloudDrive" type:typeCopy subType:subtypeCopy subtypeContext:contextCopy detectedProcess:@"bird" triggerThresholdValues:0];
   v24 = dispatch_group_create();
   dispatch_group_enter(v24);
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __88__BRCAutoBugCaptureReporter__captureLogsForOperationType_ofSubtype_withContext_timeout___block_invoke;
   v30[3] = &unk_278500DF0;
-  v31 = v13;
-  v32 = self;
+  v31 = subtypeCopy;
+  selfCopy = self;
   v25 = v24;
   v33 = v25;
   [(BRCLRUDictionary *)v14 snapshotWithSignature:v23 delay:0 events:0 payload:0 actions:v30 reply:0.0];
-  if (a6 > 0.0)
+  if (timeout > 0.0)
   {
-    v26 = dispatch_time(0, (a6 * 1000000000.0));
+    v26 = dispatch_time(0, (timeout * 1000000000.0));
     if (dispatch_group_wait(v25, v26))
     {
       v27 = brc_bread_crumbs();
@@ -187,26 +187,26 @@ void __88__BRCAutoBugCaptureReporter__captureLogsForOperationType_ofSubtype_with
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)captureLogsForOperationType:(id)a3 ofSubtype:(id)a4 withContext:(id)a5 waitForCompletion:(BOOL)a6
+- (void)captureLogsForOperationType:(id)type ofSubtype:(id)subtype withContext:(id)context waitForCompletion:(BOOL)completion
 {
   v6 = 0.0;
-  if (a6)
+  if (completion)
   {
     v6 = 10.0;
   }
 
-  [(BRCAutoBugCaptureReporter *)self _captureLogsForOperationType:a3 ofSubtype:a4 withContext:a5 timeout:v6];
+  [(BRCAutoBugCaptureReporter *)self _captureLogsForOperationType:type ofSubtype:subtype withContext:context timeout:v6];
 }
 
-- (BOOL)_shouldIgnoreReportForOperationType:(id)a3 ofSubtype:(id)a4 forError:(id)a5
+- (BOOL)_shouldIgnoreReportForOperationType:(id)type ofSubtype:(id)subtype forError:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (![v7 isEqualToString:@"SyncHealth"] || (objc_msgSend(v8, "isEqualToString:", @"SyncUp") & 1) == 0 && !objc_msgSend(v8, "isEqualToString:", @"SyncDown") || (objc_msgSend(v9, "domain"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqualToString:", *MEMORY[0x277CBBF50]), v10, !v11))
+  typeCopy = type;
+  subtypeCopy = subtype;
+  errorCopy = error;
+  if (![typeCopy isEqualToString:@"SyncHealth"] || (objc_msgSend(subtypeCopy, "isEqualToString:", @"SyncUp") & 1) == 0 && !objc_msgSend(subtypeCopy, "isEqualToString:", @"SyncDown") || (objc_msgSend(errorCopy, "domain"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqualToString:", *MEMORY[0x277CBBF50]), v10, !v11))
   {
 LABEL_9:
-    if ([v7 isEqualToString:@"SyncHealth"] && objc_msgSend(v8, "isEqualToString:", @"SyncDown") && objc_msgSend(v9, "brc_isCloudKitErrorZoneMigrated"))
+    if ([typeCopy isEqualToString:@"SyncHealth"] && objc_msgSend(subtypeCopy, "isEqualToString:", @"SyncDown") && objc_msgSend(errorCopy, "brc_isCloudKitErrorZoneMigrated"))
     {
       v12 = [BRCUserDefaults defaultsForMangledID:0];
       if ([v12 ignoreCKCZMigrationAlreadyDoneErrorForABC])
@@ -215,14 +215,14 @@ LABEL_9:
         v17 = brc_default_log();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
-          [BRCAutoBugCaptureReporter _shouldIgnoreReportForOperationType:v9 ofSubtype:? forError:?];
+          [BRCAutoBugCaptureReporter _shouldIgnoreReportForOperationType:errorCopy ofSubtype:? forError:?];
         }
 
         goto LABEL_22;
       }
     }
 
-    if ([v7 isEqualToString:@"SyncHealth"] && objc_msgSend(v8, "isEqualToString:", @"Upload") && objc_msgSend(v9, "brc_isCloudKitMMCSItemNotAvailable"))
+    if ([typeCopy isEqualToString:@"SyncHealth"] && objc_msgSend(subtypeCopy, "isEqualToString:", @"Upload") && objc_msgSend(errorCopy, "brc_isCloudKitMMCSItemNotAvailable"))
     {
       v12 = [BRCUserDefaults defaultsForMangledID:0];
       if ([v12 ignoreCKMMCSItemNotAvailableErrorForABC])
@@ -231,7 +231,7 @@ LABEL_9:
         v17 = brc_default_log();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
-          [BRCAutoBugCaptureReporter _shouldIgnoreReportForOperationType:v9 ofSubtype:? forError:?];
+          [BRCAutoBugCaptureReporter _shouldIgnoreReportForOperationType:errorCopy ofSubtype:? forError:?];
         }
 
         goto LABEL_22;
@@ -243,9 +243,9 @@ LABEL_9:
   }
 
   v12 = [BRCUserDefaults defaultsForMangledID:0];
-  v13 = [v12 ignoredCKErrorsForABC];
-  v14 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v9, "code")}];
-  v15 = [v13 containsObject:v14];
+  ignoredCKErrorsForABC = [v12 ignoredCKErrorsForABC];
+  v14 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
+  v15 = [ignoredCKErrorsForABC containsObject:v14];
 
   if (!v15)
   {
@@ -257,7 +257,7 @@ LABEL_9:
   v17 = brc_default_log();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    [BRCAutoBugCaptureReporter _shouldIgnoreReportForOperationType:v9 ofSubtype:? forError:?];
+    [BRCAutoBugCaptureReporter _shouldIgnoreReportForOperationType:errorCopy ofSubtype:? forError:?];
   }
 
 LABEL_22:

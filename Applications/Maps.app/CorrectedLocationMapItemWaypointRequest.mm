@@ -1,13 +1,13 @@
 @interface CorrectedLocationMapItemWaypointRequest
 - (CLLocationCoordinate2D)coordinate;
-- (CorrectedLocationMapItemWaypointRequest)initWithCorrectedCoordinate:(CLLocationCoordinate2D)a3 mapItem:(id)a4;
-- (CorrectedLocationMapItemWaypointRequest)initWithMapItem:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CorrectedLocationMapItemWaypointRequest)initWithCorrectedCoordinate:(CLLocationCoordinate2D)coordinate mapItem:(id)item;
+- (CorrectedLocationMapItemWaypointRequest)initWithMapItem:(id)item;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
-- (id)loadComposedWaypointWithTraits:(id)a3 clientResolvedCompletionHandler:(id)a4 completionHandler:(id)a5 networkActivityHandler:(id)a6;
-- (void)_maps_buildDescriptionWithBlock:(id)a3;
-- (void)recordRAPInformation:(id)a3;
+- (id)loadComposedWaypointWithTraits:(id)traits clientResolvedCompletionHandler:(id)handler completionHandler:(id)completionHandler networkActivityHandler:(id)activityHandler;
+- (void)_maps_buildDescriptionWithBlock:(id)block;
+- (void)recordRAPInformation:(id)information;
 @end
 
 @implementation CorrectedLocationMapItemWaypointRequest
@@ -21,49 +21,49 @@
   return result;
 }
 
-- (void)recordRAPInformation:(id)a3
+- (void)recordRAPInformation:(id)information
 {
-  v3 = self;
+  selfCopy = self;
   v6.receiver = self;
   v6.super_class = CorrectedLocationMapItemWaypointRequest;
-  v4 = a3;
-  [(MapItemWaypointRequest *)&v6 recordRAPInformation:v4];
+  informationCopy = information;
+  [(MapItemWaypointRequest *)&v6 recordRAPInformation:informationCopy];
   v5 = objc_alloc_init(GEOLatLng);
-  v3 += 2;
-  [v5 setLat:{*v3, v6.receiver, v6.super_class}];
-  [v5 setLng:v3[1]];
-  [v4 setCoordinate:v5];
+  selfCopy += 2;
+  [v5 setLat:{*selfCopy, v6.receiver, v6.super_class}];
+  [v5 setLng:selfCopy[1]];
+  [informationCopy setCoordinate:v5];
 }
 
-- (id)loadComposedWaypointWithTraits:(id)a3 clientResolvedCompletionHandler:(id)a4 completionHandler:(id)a5 networkActivityHandler:(id)a6
+- (id)loadComposedWaypointWithTraits:(id)traits clientResolvedCompletionHandler:(id)handler completionHandler:(id)completionHandler networkActivityHandler:(id)activityHandler
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a3;
+  activityHandlerCopy = activityHandler;
+  completionHandlerCopy = completionHandler;
+  traitsCopy = traits;
   v12 = [GEOLocation alloc];
   [(CorrectedLocationMapItemWaypointRequest *)self coordinate];
   v13 = [v12 initWithGEOCoordinate:?];
-  v14 = [(MKMapItem *)self->super._mapItem _geoMapItem];
-  v15 = sub_100C2093C(v10);
+  _geoMapItem = [(MKMapItem *)self->super._mapItem _geoMapItem];
+  v15 = sub_100C2093C(completionHandlerCopy);
 
-  v16 = [GEOComposedWaypoint composedWaypointForLocation:v13 mapItem:v14 traits:v11 completionHandler:v15 networkActivityHandler:v9];
+  v16 = [GEOComposedWaypoint composedWaypointForLocation:v13 mapItem:_geoMapItem traits:traitsCopy completionHandler:v15 networkActivityHandler:activityHandlerCopy];
 
   return v16;
 }
 
-- (void)_maps_buildDescriptionWithBlock:(id)a3
+- (void)_maps_buildDescriptionWithBlock:(id)block
 {
   v6.receiver = self;
   v6.super_class = CorrectedLocationMapItemWaypointRequest;
-  v4 = a3;
-  [(MapItemWaypointRequest *)&v6 _maps_buildDescriptionWithBlock:v4];
+  blockCopy = block;
+  [(MapItemWaypointRequest *)&v6 _maps_buildDescriptionWithBlock:blockCopy];
   v5 = [NSString stringWithFormat:@"(%lf, %lf)", *&self->_coordinate.latitude, *&self->_coordinate.longitude, v6.receiver, v6.super_class];
-  v4[2](v4, @"coordinate", v5);
+  blockCopy[2](blockCopy, @"coordinate", v5);
 }
 
 - (id)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100F3B74C;
@@ -71,8 +71,8 @@
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(CorrectedLocationMapItemWaypointRequest *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(CorrectedLocationMapItemWaypointRequest *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -106,7 +106,7 @@ LABEL_9:
 
 - (id)description
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100F3B99C;
@@ -114,8 +114,8 @@ LABEL_9:
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(CorrectedLocationMapItemWaypointRequest *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(CorrectedLocationMapItemWaypointRequest *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -147,9 +147,9 @@ LABEL_9:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   mapItem = self->super._mapItem;
   latitude = self->_coordinate.latitude;
   longitude = self->_coordinate.longitude;
@@ -157,7 +157,7 @@ LABEL_9:
   return [v4 initWithCorrectedCoordinate:mapItem mapItem:{latitude, longitude}];
 }
 
-- (CorrectedLocationMapItemWaypointRequest)initWithMapItem:(id)a3
+- (CorrectedLocationMapItemWaypointRequest)initWithMapItem:(id)item
 {
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
@@ -167,16 +167,16 @@ LABEL_9:
   return 0;
 }
 
-- (CorrectedLocationMapItemWaypointRequest)initWithCorrectedCoordinate:(CLLocationCoordinate2D)a3 mapItem:(id)a4
+- (CorrectedLocationMapItemWaypointRequest)initWithCorrectedCoordinate:(CLLocationCoordinate2D)coordinate mapItem:(id)item
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v6 = 0;
-  if (fabs(a3.longitude) <= 180.0 && a3.latitude >= -90.0 && a3.latitude <= 90.0)
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  selfCopy = 0;
+  if (fabs(coordinate.longitude) <= 180.0 && coordinate.latitude >= -90.0 && coordinate.latitude <= 90.0)
   {
     v9.receiver = self;
     v9.super_class = CorrectedLocationMapItemWaypointRequest;
-    v7 = [(MapItemWaypointRequest *)&v9 initWithMapItem:a4];
+    v7 = [(MapItemWaypointRequest *)&v9 initWithMapItem:item];
     if (v7)
     {
       v7->_coordinate.latitude = latitude;
@@ -184,10 +184,10 @@ LABEL_9:
     }
 
     self = v7;
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

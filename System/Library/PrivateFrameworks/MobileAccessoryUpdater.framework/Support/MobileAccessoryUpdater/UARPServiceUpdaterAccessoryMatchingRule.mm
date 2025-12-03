@@ -1,24 +1,24 @@
 @interface UARPServiceUpdaterAccessoryMatchingRule
-- (BOOL)isEqual:(id)a3;
-- (UARPServiceUpdaterAccessoryMatchingRule)initWithCoder:(id)a3;
-- (UARPServiceUpdaterAccessoryMatchingRule)initWithIdentifier:(id)a3 xpcEventStream:(id)a4 matchingDictionary:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (UARPServiceUpdaterAccessoryMatchingRule)initWithCoder:(id)coder;
+- (UARPServiceUpdaterAccessoryMatchingRule)initWithIdentifier:(id)identifier xpcEventStream:(id)stream matchingDictionary:(id)dictionary;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UARPServiceUpdaterAccessoryMatchingRule
 
-- (UARPServiceUpdaterAccessoryMatchingRule)initWithIdentifier:(id)a3 xpcEventStream:(id)a4 matchingDictionary:(id)a5
+- (UARPServiceUpdaterAccessoryMatchingRule)initWithIdentifier:(id)identifier xpcEventStream:(id)stream matchingDictionary:(id)dictionary
 {
   v10.receiver = self;
   v10.super_class = UARPServiceUpdaterAccessoryMatchingRule;
   v8 = [(UARPServiceUpdaterAccessoryMatchingRule *)&v10 init];
   if (v8)
   {
-    v8->_identifier = [a3 copy];
-    v8->_xpcEventStream = [a4 copy];
-    v8->_matchingDictionary = [a5 copy];
+    v8->_identifier = [identifier copy];
+    v8->_xpcEventStream = [stream copy];
+    v8->_matchingDictionary = [dictionary copy];
   }
 
   return v8;
@@ -31,46 +31,46 @@
   [(UARPServiceUpdaterAccessoryMatchingRule *)&v3 dealloc];
 }
 
-- (UARPServiceUpdaterAccessoryMatchingRule)initWithCoder:(id)a3
+- (UARPServiceUpdaterAccessoryMatchingRule)initWithCoder:(id)coder
 {
-  v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"xpcEventStream"];
+  v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"xpcEventStream"];
   v8[0] = objc_opt_class();
   v8[1] = objc_opt_class();
   v8[2] = objc_opt_class();
   v8[3] = objc_opt_class();
-  return -[UARPServiceUpdaterAccessoryMatchingRule initWithIdentifier:xpcEventStream:matchingDictionary:](self, "initWithIdentifier:xpcEventStream:matchingDictionary:", v5, v6, [a3 decodeObjectOfClasses:+[NSSet setWithArray:](NSSet forKey:{"setWithArray:", +[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", v8, 4)), @"matchingDictionary"}]);
+  return -[UARPServiceUpdaterAccessoryMatchingRule initWithIdentifier:xpcEventStream:matchingDictionary:](self, "initWithIdentifier:xpcEventStream:matchingDictionary:", v5, v6, [coder decodeObjectOfClasses:+[NSSet setWithArray:](NSSet forKey:{"setWithArray:", +[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", v8, 4)), @"matchingDictionary"}]);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_identifier forKey:@"identifier"];
-  [a3 encodeObject:self->_xpcEventStream forKey:@"xpcEventStream"];
+  [coder encodeObject:self->_identifier forKey:@"identifier"];
+  [coder encodeObject:self->_xpcEventStream forKey:@"xpcEventStream"];
   matchingDictionary = self->_matchingDictionary;
 
-  [a3 encodeObject:matchingDictionary forKey:@"matchingDictionary"];
+  [coder encodeObject:matchingDictionary forKey:@"matchingDictionary"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (self == a3)
+    if (self == equal)
     {
       LOBYTE(v5) = 1;
     }
 
     else
     {
-      v5 = [(NSString *)self->_identifier isEqual:*(a3 + 1)];
+      v5 = [(NSString *)self->_identifier isEqual:*(equal + 1)];
       if (v5)
       {
-        v5 = [(NSString *)self->_xpcEventStream isEqual:*(a3 + 2)];
+        v5 = [(NSString *)self->_xpcEventStream isEqual:*(equal + 2)];
         if (v5)
         {
           matchingDictionary = self->_matchingDictionary;
-          v7 = *(a3 + 3);
+          v7 = *(equal + 3);
 
           LOBYTE(v5) = [(NSDictionary *)matchingDictionary isEqual:v7];
         }

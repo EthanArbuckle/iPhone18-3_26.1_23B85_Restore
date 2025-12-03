@@ -1,22 +1,22 @@
 @interface NFTrustDBApplet
-- (NFTrustDBApplet)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (NFTrustDBApplet)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NFTrustDBApplet
 
-- (NFTrustDBApplet)initWithCoder:(id)a3
+- (NFTrustDBApplet)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = NFTrustDBApplet;
-  v5 = [(NFTrustObject *)&v19 initWithCoder:v4];
+  v5 = [(NFTrustObject *)&v19 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"instanceAID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"instanceAID"];
     [(NFTrustDBApplet *)v5 setValue:v6 forKey:@"instanceAID"];
 
-    v7 = [NFNSCheckedDecoder coder:v4 decodeArrayOfClass:objc_opt_class() forKey:@"map"];
+    v7 = [NFNSCheckedDecoder coder:coderCopy decodeArrayOfClass:objc_opt_class() forKey:@"map"];
     [(NFTrustDBApplet *)v5 setValue:v7 forKey:@"map"];
 
     v8 = [(NFTrustDBApplet *)v5 map];
@@ -58,14 +58,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(NFTrustDBApplet *)self instanceAID];
-  [v4 encodeObject:v5 forKey:@"instanceAID"];
+  coderCopy = coder;
+  instanceAID = [(NFTrustDBApplet *)self instanceAID];
+  [coderCopy encodeObject:instanceAID forKey:@"instanceAID"];
 
   v6 = [(NFTrustDBApplet *)self map];
-  [v4 encodeObject:v6 forKey:@"map"];
+  [coderCopy encodeObject:v6 forKey:@"map"];
 }
 
 @end

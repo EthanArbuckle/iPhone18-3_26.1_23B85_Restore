@@ -1,40 +1,40 @@
 @interface PKApplyCollectionViewController
-- (PKApplyCollectionViewController)initWithController:(id)a3 setupDelegate:(id)a4 context:(int64_t)a5 applyPage:(id)a6;
+- (PKApplyCollectionViewController)initWithController:(id)controller setupDelegate:(id)delegate context:(int64_t)context applyPage:(id)page;
 - (PKPaymentSetupViewControllerDelegate)setupDelegate;
 - (id)_secondaryButton;
 - (void)_cancelPressed;
-- (void)_reportViewDidAppear:(BOOL)a3;
+- (void)_reportViewDidAppear:(BOOL)appear;
 - (void)_withdrawApplicationTapped;
-- (void)didTapFooterLink:(id)a3;
-- (void)didTapLearnMore:(id)a3;
-- (void)didTapLink:(id)a3 termsIdentifier:(id)a4 analyticsIdentifier:(id)a5;
-- (void)displayDisplayableError:(id)a3;
+- (void)didTapFooterLink:(id)link;
+- (void)didTapLearnMore:(id)more;
+- (void)didTapLink:(id)link termsIdentifier:(id)identifier analyticsIdentifier:(id)analyticsIdentifier;
+- (void)displayDisplayableError:(id)error;
 - (void)handleNextStep;
-- (void)handleNextViewController:(id)a3 displayableError:(id)a4;
+- (void)handleNextViewController:(id)controller displayableError:(id)error;
 - (void)primaryButtonTapped;
 - (void)secondaryButtonTapped;
 - (void)terminateSetupFlow;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation PKApplyCollectionViewController
 
-- (PKApplyCollectionViewController)initWithController:(id)a3 setupDelegate:(id)a4 context:(int64_t)a5 applyPage:(id)a6
+- (PKApplyCollectionViewController)initWithController:(id)controller setupDelegate:(id)delegate context:(int64_t)context applyPage:(id)page
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  controllerCopy = controller;
+  delegateCopy = delegate;
+  pageCopy = page;
   v17.receiver = self;
   v17.super_class = PKApplyCollectionViewController;
-  v14 = [(PKPaymentSetupOptionsViewController *)&v17 initWithContext:a5];
+  v14 = [(PKPaymentSetupOptionsViewController *)&v17 initWithContext:context];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_setupDelegate, v12);
-    objc_storeStrong(&v15->_page, a6);
-    objc_storeStrong(&v15->_controller, a3);
+    objc_storeWeak(&v14->_setupDelegate, delegateCopy);
+    objc_storeStrong(&v15->_page, page);
+    objc_storeStrong(&v15->_controller, controller);
   }
 
   return v15;
@@ -46,60 +46,60 @@
   v38.receiver = self;
   v38.super_class = PKApplyCollectionViewController;
   [(PKPaymentSetupOptionsViewController *)&v38 viewDidLoad];
-  v28 = [(PKPaymentSetupOptionsViewController *)self headerView];
-  [v28 setTitleAccessoriesEnabled:0];
-  [v28 setAdditionalBottomPadding:15.0];
+  headerView = [(PKPaymentSetupOptionsViewController *)self headerView];
+  [headerView setTitleAccessoriesEnabled:0];
+  [headerView setAdditionalBottomPadding:15.0];
   v24 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel__cancelPressed];
-  v3 = [(PKApplyCollectionViewController *)self navigationItem];
+  navigationItem = [(PKApplyCollectionViewController *)self navigationItem];
   v40[0] = v24;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:1];
-  [v3 setLeftBarButtonItems:v4 animated:0];
+  [navigationItem setLeftBarButtonItems:v4 animated:0];
 
-  v23 = [(PKApplyCollectionViewController *)self navigationItem];
-  [v23 setHidesBackButton:1];
-  v30 = [(PKPaymentSetupOptionsViewController *)self dockView];
-  v22 = [v30 footerView];
-  v5 = [(PKDynamicProvisioningPageContent *)self->_page title];
-  [(PKPaymentSetupOptionsViewController *)self setTitleText:v5];
+  navigationItem2 = [(PKApplyCollectionViewController *)self navigationItem];
+  [navigationItem2 setHidesBackButton:1];
+  dockView = [(PKPaymentSetupOptionsViewController *)self dockView];
+  footerView = [dockView footerView];
+  title = [(PKDynamicProvisioningPageContent *)self->_page title];
+  [(PKPaymentSetupOptionsViewController *)self setTitleText:title];
 
-  v6 = [(PKDynamicProvisioningPageContent *)self->_page subtitle];
-  [(PKPaymentSetupOptionsViewController *)self setSubtitleText:v6];
+  subtitle = [(PKDynamicProvisioningPageContent *)self->_page subtitle];
+  [(PKPaymentSetupOptionsViewController *)self setSubtitleText:subtitle];
 
-  v27 = [(PKDynamicProvisioningPageContent *)self->_page primaryActionTitle];
-  if (v27)
+  primaryActionTitle = [(PKDynamicProvisioningPageContent *)self->_page primaryActionTitle];
+  if (primaryActionTitle)
   {
-    v7 = [v30 primaryButton];
-    [v7 setTitle:v27 forState:0];
+    primaryButton = [dockView primaryButton];
+    [primaryButton setTitle:primaryActionTitle forState:0];
 
-    v8 = [v30 primaryButton];
-    [v8 addTarget:self action:sel_primaryButtonTapped forControlEvents:64];
+    primaryButton2 = [dockView primaryButton];
+    [primaryButton2 addTarget:self action:sel_primaryButtonTapped forControlEvents:64];
   }
 
   else
   {
-    [v30 setPrimaryButton:0];
+    [dockView setPrimaryButton:0];
   }
 
-  v26 = [(PKDynamicProvisioningPageContent *)self->_page secondaryActionTitle];
-  if (v26)
+  secondaryActionTitle = [(PKDynamicProvisioningPageContent *)self->_page secondaryActionTitle];
+  if (secondaryActionTitle)
   {
-    v9 = [(PKApplyCollectionViewController *)self _secondaryButton];
-    [v22 setSetUpLaterButton:v9];
-    [v9 setTitle:v26 forState:0];
-    [v9 addTarget:self action:sel_secondaryButtonTapped forControlEvents:64];
+    _secondaryButton = [(PKApplyCollectionViewController *)self _secondaryButton];
+    [footerView setSetUpLaterButton:_secondaryButton];
+    [_secondaryButton setTitle:secondaryActionTitle forState:0];
+    [_secondaryButton addTarget:self action:sel_secondaryButtonTapped forControlEvents:64];
   }
 
   else
   {
-    [v22 setSetUpLaterButton:0];
+    [footerView setSetUpLaterButton:0];
   }
 
-  v29 = [(PKDynamicProvisioningPageContent *)self->_page footerContent];
-  v25 = [v29 footerText];
-  if (v29 && v25)
+  footerContent = [(PKDynamicProvisioningPageContent *)self->_page footerContent];
+  footerText = [footerContent footerText];
+  if (footerContent && footerText)
   {
     v21 = objc_alloc_init(PKMultiHyperlinkView);
-    [(PKMultiHyperlinkView *)v21 setText:v25];
+    [(PKMultiHyperlinkView *)v21 setText:footerText];
     [(PKMultiHyperlinkView *)v21 setTextAlignment:1];
     objc_initWeak(&location, self);
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -107,8 +107,8 @@
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v11 = [v29 links];
-    v12 = [v11 countByEnumeratingWithState:&v33 objects:v39 count:16];
+    links = [footerContent links];
+    v12 = [links countByEnumeratingWithState:&v33 objects:v39 count:16];
     if (v12)
     {
       v13 = *v34;
@@ -118,25 +118,25 @@
         {
           if (*v34 != v13)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(links);
           }
 
           v15 = *(*(&v33 + 1) + 8 * i);
           v16 = [PKTextRangeHyperlink alloc];
-          v17 = [v15 linkText];
+          linkText = [v15 linkText];
           v31[0] = MEMORY[0x1E69E9820];
           v31[1] = 3221225472;
           v31[2] = __46__PKApplyCollectionViewController_viewDidLoad__block_invoke;
           v31[3] = &unk_1E80110E0;
           objc_copyWeak(&v32, &location);
           v31[4] = v15;
-          v18 = [(PKTextRangeHyperlink *)v16 initWithLinkText:v17 action:v31];
+          v18 = [(PKTextRangeHyperlink *)v16 initWithLinkText:linkText action:v31];
 
           [v10 safelyAddObject:v18];
           objc_destroyWeak(&v32);
         }
 
-        v12 = [v11 countByEnumeratingWithState:&v33 objects:v39 count:16];
+        v12 = [links countByEnumeratingWithState:&v33 objects:v39 count:16];
       }
 
       while (v12);
@@ -158,7 +158,7 @@
     {
     }
 
-    [v30 setAdditionalView:v21];
+    [dockView setAdditionalView:v21];
 
     objc_destroyWeak(&location);
   }
@@ -175,27 +175,27 @@ void __46__PKApplyCollectionViewController_viewDidLoad__block_invoke(uint64_t a1
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKApplyCollectionViewController;
-  [(PKPaymentSetupOptionsViewController *)&v4 viewDidAppear:a3];
+  [(PKPaymentSetupOptionsViewController *)&v4 viewDidAppear:appear];
   [(PKApplyCollectionViewController *)self _reportViewDidAppear:1];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKApplyCollectionViewController;
-  [(PKApplyCollectionViewController *)&v4 viewDidDisappear:a3];
+  [(PKApplyCollectionViewController *)&v4 viewDidDisappear:disappear];
   [(PKApplyCollectionViewController *)self _reportViewDidAppear:0];
 }
 
-- (void)_reportViewDidAppear:(BOOL)a3
+- (void)_reportViewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = MEMORY[0x1E69BA818];
-  if (!a3)
+  if (!appear)
   {
     v5 = MEMORY[0x1E69BA820];
   }
@@ -203,22 +203,22 @@ void __46__PKApplyCollectionViewController_viewDidLoad__block_invoke(uint64_t a1
   v6 = MEMORY[0x1E695DF90];
   v7 = *v5;
   v12 = objc_alloc_init(v6);
-  v8 = [(PKApplyCollectionViewController *)self additionalAnalyticsDictionaryForViewAppearing:v3];
+  v8 = [(PKApplyCollectionViewController *)self additionalAnalyticsDictionaryForViewAppearing:appearCopy];
   [v12 addEntriesFromDictionary:v8];
 
   [v12 setObject:v7 forKey:*MEMORY[0x1E69BA680]];
-  v9 = [(PKApplyCollectionViewController *)self controller];
-  v10 = [(PKApplyCollectionViewController *)self currentPage];
-  v11 = [(PKApplyCollectionViewController *)self pageTag];
-  [v9 reportAnalyticsDictionaryForPage:v10 pageTag:v11 additionalValues:v12];
+  controller = [(PKApplyCollectionViewController *)self controller];
+  currentPage = [(PKApplyCollectionViewController *)self currentPage];
+  pageTag = [(PKApplyCollectionViewController *)self pageTag];
+  [controller reportAnalyticsDictionaryForPage:currentPage pageTag:pageTag additionalValues:v12];
 }
 
 - (void)primaryButtonTapped
 {
   v17[2] = *MEMORY[0x1E69E9840];
   controller = self->_controller;
-  v4 = [(PKApplyCollectionViewController *)self currentPage];
-  v5 = [(PKApplyCollectionViewController *)self pageTag];
+  currentPage = [(PKApplyCollectionViewController *)self currentPage];
+  pageTag = [(PKApplyCollectionViewController *)self pageTag];
   v6 = *MEMORY[0x1E69BA440];
   v16[0] = *MEMORY[0x1E69BA680];
   v16[1] = v6;
@@ -226,23 +226,23 @@ void __46__PKApplyCollectionViewController_viewDidLoad__block_invoke(uint64_t a1
   v17[0] = *MEMORY[0x1E69BA6F0];
   v17[1] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:2];
-  [(PKApplyController *)controller reportAnalyticsDictionaryForPage:v4 pageTag:v5 additionalValues:v8];
+  [(PKApplyController *)controller reportAnalyticsDictionaryForPage:currentPage pageTag:pageTag additionalValues:v8];
 
   primaryButtonAction = self->_primaryButtonAction;
   if (!primaryButtonAction || primaryButtonAction[2]())
   {
     [(PKPaymentSetupOptionsViewController *)self setShowNavigationBarSpinner:1];
-    v10 = [(PKApplyCollectionViewController *)self currentPage];
-    v11 = [(PKApplyCollectionViewController *)self controller];
-    v12 = [v10 primaryActionIdentifier];
-    v13 = [v10 footerContent];
-    v14 = [v13 termsIdentifiers];
+    currentPage2 = [(PKApplyCollectionViewController *)self currentPage];
+    controller = [(PKApplyCollectionViewController *)self controller];
+    primaryActionIdentifier = [currentPage2 primaryActionIdentifier];
+    footerContent = [currentPage2 footerContent];
+    termsIdentifiers = [footerContent termsIdentifiers];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __54__PKApplyCollectionViewController_primaryButtonTapped__block_invoke;
     v15[3] = &unk_1E8011D00;
     v15[4] = self;
-    [v11 submitActionIdentifier:v12 termsIdentifiers:v14 odiAttributesDictionary:0 completion:v15];
+    [controller submitActionIdentifier:primaryActionIdentifier termsIdentifiers:termsIdentifiers odiAttributesDictionary:0 completion:v15];
   }
 }
 
@@ -261,11 +261,11 @@ void __46__PKApplyCollectionViewController_viewDidLoad__block_invoke(uint64_t a1
 {
   v3 = [MEMORY[0x1E69DC738] buttonWithType:1];
   [v3 setExclusiveTouch:1];
-  v4 = [v3 titleLabel];
-  [v4 setNumberOfLines:0];
-  [v4 setTextAlignment:1];
+  titleLabel = [v3 titleLabel];
+  [titleLabel setNumberOfLines:0];
+  [titleLabel setTextAlignment:1];
   v5 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC50]);
-  [v4 setFont:v5];
+  [titleLabel setFont:v5];
 
   [v3 addTarget:self action:sel_secondaryButtonTapped forControlEvents:64];
 
@@ -283,8 +283,8 @@ void __46__PKApplyCollectionViewController_viewDidLoad__block_invoke(uint64_t a1
   v4 = [(PKApplyController *)self->_controller cancelAlertWithContinueAction:v3];
   if (v4)
   {
-    v5 = [(PKApplyCollectionViewController *)self navigationController];
-    [v5 presentViewController:v4 animated:1 completion:0];
+    navigationController = [(PKApplyCollectionViewController *)self navigationController];
+    [navigationController presentViewController:v4 animated:1 completion:0];
   }
 
   else
@@ -414,25 +414,25 @@ void __49__PKApplyCollectionViewController_handleNextStep__block_invoke(uint64_t
   }
 }
 
-- (void)handleNextViewController:(id)a3 displayableError:(id)a4
+- (void)handleNextViewController:(id)controller displayableError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  controllerCopy = controller;
+  errorCopy = error;
+  v8 = errorCopy;
+  if (controllerCopy)
   {
-    v9 = [(PKApplyCollectionViewController *)self navigationController];
+    navigationController = [(PKApplyCollectionViewController *)self navigationController];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __77__PKApplyCollectionViewController_handleNextViewController_displayableError___block_invoke;
     v10[3] = &unk_1E8011D28;
     v10[4] = self;
-    [v9 pk_presentPaymentSetupViewController:v6 animated:1 completion:v10];
+    [navigationController pk_presentPaymentSetupViewController:controllerCopy animated:1 completion:v10];
   }
 
-  else if (v7)
+  else if (errorCopy)
   {
-    [(PKApplyCollectionViewController *)self displayDisplayableError:v7];
+    [(PKApplyCollectionViewController *)self displayDisplayableError:errorCopy];
   }
 
   else
@@ -455,16 +455,16 @@ uint64_t __77__PKApplyCollectionViewController_handleNextViewController_displaya
   return result;
 }
 
-- (void)displayDisplayableError:(id)a3
+- (void)displayDisplayableError:(id)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 underlyingErrors];
-  v6 = [v5 firstObject];
+  errorCopy = error;
+  underlyingErrors = [errorCopy underlyingErrors];
+  firstObject = [underlyingErrors firstObject];
 
-  v7 = [v6 domain];
+  domain = [firstObject domain];
   v8 = *MEMORY[0x1E69BB758];
-  v9 = v7;
+  v9 = domain;
   v10 = v9;
   if (v9 == v8)
   {
@@ -487,25 +487,25 @@ LABEL_10:
     }
   }
 
-  v12 = [v6 code];
+  code = [firstObject code];
 
-  if (v12 == 1)
+  if (code == 1)
   {
     [(PKPaymentSetupOptionsViewController *)self setShowNavigationBarSpinner:0];
     goto LABEL_17;
   }
 
 LABEL_11:
-  v13 = PKAlertForDisplayableErrorWithHandlers(v4, 0, 0, 0);
+  v13 = PKAlertForDisplayableErrorWithHandlers(errorCopy, 0, 0, 0);
   if (v13)
   {
-    v14 = [(PKApplyCollectionViewController *)self navigationController];
+    navigationController = [(PKApplyCollectionViewController *)self navigationController];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __59__PKApplyCollectionViewController_displayDisplayableError___block_invoke;
     v16[3] = &unk_1E8010970;
     v16[4] = self;
-    [v14 presentViewController:v13 animated:1 completion:v16];
+    [navigationController presentViewController:v13 animated:1 completion:v16];
   }
 
   else
@@ -514,7 +514,7 @@ LABEL_11:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v4;
+      v18 = errorCopy;
       _os_log_impl(&dword_1BD026000, v15, OS_LOG_TYPE_DEFAULT, "Error could not generate alertController for: %@", buf, 0xCu);
     }
 
@@ -543,61 +543,61 @@ LABEL_17:
 
   else
   {
-    v6 = [(PKApplyCollectionViewController *)self presentingViewController];
-    [v6 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(PKApplyCollectionViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)didTapLearnMore:(id)a3
+- (void)didTapLearnMore:(id)more
 {
-  v4 = a3;
-  v6 = [v4 buttonURL];
-  v5 = [v4 termsIdentifier];
+  moreCopy = more;
+  buttonURL = [moreCopy buttonURL];
+  termsIdentifier = [moreCopy termsIdentifier];
 
-  [(PKApplyCollectionViewController *)self didTapLink:v6 termsIdentifier:v5 analyticsIdentifier:0];
+  [(PKApplyCollectionViewController *)self didTapLink:buttonURL termsIdentifier:termsIdentifier analyticsIdentifier:0];
 }
 
-- (void)didTapFooterLink:(id)a3
+- (void)didTapFooterLink:(id)link
 {
-  v4 = a3;
-  v7 = [v4 linkURL];
-  v5 = [v4 termsIdentifier];
-  v6 = [v4 analyticsIdentifier];
+  linkCopy = link;
+  linkURL = [linkCopy linkURL];
+  termsIdentifier = [linkCopy termsIdentifier];
+  analyticsIdentifier = [linkCopy analyticsIdentifier];
 
-  [(PKApplyCollectionViewController *)self didTapLink:v7 termsIdentifier:v5 analyticsIdentifier:v6];
+  [(PKApplyCollectionViewController *)self didTapLink:linkURL termsIdentifier:termsIdentifier analyticsIdentifier:analyticsIdentifier];
 }
 
-- (void)didTapLink:(id)a3 termsIdentifier:(id)a4 analyticsIdentifier:(id)a5
+- (void)didTapLink:(id)link termsIdentifier:(id)identifier analyticsIdentifier:(id)analyticsIdentifier
 {
   v31[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PKApplyCollectionViewController *)self controller];
-  v12 = [v11 account];
+  linkCopy = link;
+  identifierCopy = identifier;
+  analyticsIdentifierCopy = analyticsIdentifier;
+  controller = [(PKApplyCollectionViewController *)self controller];
+  account = [controller account];
 
-  if (v10)
+  if (analyticsIdentifierCopy)
   {
-    v13 = [(PKApplyCollectionViewController *)self controller];
-    v14 = [(PKApplyCollectionViewController *)self currentPage];
-    v15 = [(PKApplyCollectionViewController *)self pageTag];
+    controller2 = [(PKApplyCollectionViewController *)self controller];
+    currentPage = [(PKApplyCollectionViewController *)self currentPage];
+    pageTag = [(PKApplyCollectionViewController *)self pageTag];
     v16 = *MEMORY[0x1E69BA6F0];
     v17 = *MEMORY[0x1E69BA440];
     v30[0] = *MEMORY[0x1E69BA680];
     v30[1] = v17;
     v31[0] = v16;
-    v31[1] = v10;
+    v31[1] = analyticsIdentifierCopy;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:2];
-    [v13 reportAnalyticsDictionaryForPage:v14 pageTag:v15 additionalValues:v18];
+    [controller2 reportAnalyticsDictionaryForPage:currentPage pageTag:pageTag additionalValues:v18];
   }
 
-  if (v9)
+  if (identifierCopy)
   {
-    if (v12)
+    if (account)
     {
       v19 = [PKAccountTermsAndConditionsController alloc];
-      v20 = [MEMORY[0x1E69B8EF8] sharedService];
-      v21 = [(PKAccountTermsAndConditionsController *)v19 initWithAccount:v12 webService:v20 context:[(PKPaymentSetupOptionsViewController *)self context] termsIdentifier:v9];
+      mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+      v21 = [(PKAccountTermsAndConditionsController *)v19 initWithAccount:account webService:mEMORY[0x1E69B8EF8] context:[(PKPaymentSetupOptionsViewController *)self context] termsIdentifier:identifierCopy];
       termsController = self->_termsController;
       self->_termsController = v21;
 
@@ -619,25 +619,25 @@ LABEL_17:
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(location[0]) = 138412290;
-        *(location + 4) = v9;
+        *(location + 4) = identifierCopy;
         _os_log_impl(&dword_1BD026000, v25, OS_LOG_TYPE_DEFAULT, "Error: there is no account on PKApplyController in order to open termsIdentifier %@", location, 0xCu);
       }
     }
   }
 
-  else if (v8)
+  else if (linkCopy)
   {
     if (PKIsURLHttpScheme())
     {
-      v24 = [objc_alloc(MEMORY[0x1E697A838]) initWithURL:v8];
+      v24 = [objc_alloc(MEMORY[0x1E697A838]) initWithURL:linkCopy];
       [v24 setModalPresentationStyle:2];
       [(PKApplyCollectionViewController *)self presentViewController:v24 animated:1 completion:0];
     }
 
     else
     {
-      v26 = [MEMORY[0x1E6963608] defaultWorkspace];
-      [v26 openSensitiveURL:v8 withOptions:0];
+      defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+      [defaultWorkspace openSensitiveURL:linkCopy withOptions:0];
     }
   }
 }

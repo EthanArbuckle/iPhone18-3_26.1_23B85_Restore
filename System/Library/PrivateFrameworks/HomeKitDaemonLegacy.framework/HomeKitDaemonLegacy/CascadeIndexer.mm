@@ -1,10 +1,10 @@
 @interface CascadeIndexer
-- (void)handleDonateNowNotification:(id)a3;
+- (void)handleDonateNowNotification:(id)notification;
 @end
 
 @implementation CascadeIndexer
 
-- (void)handleDonateNowNotification:(id)a3
+- (void)handleDonateNowNotification:(id)notification
 {
   isa = self->super.isa;
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(qword_27F5A2C48, &unk_253D48880);

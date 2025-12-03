@@ -1,26 +1,26 @@
 @interface BLTRemotePingSubscriberService
 - (BLTPingSubscribing)delegate;
-- (BLTRemotePingSubscriberService)initWithMachServiceName:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BLTRemotePingSubscriberService)initWithMachServiceName:(id)name;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (void)_connect;
 - (void)_createXPCService;
 - (void)dealloc;
-- (void)getWillNanoPresentNotificationForSectionID:(id)a3 completion:(id)a4;
-- (void)getWillNanoPresentNotificationForSectionID:(id)a3 subsectionIDs:(id)a4 completion:(id)a5;
-- (void)pingWithBulletin:(id)a3;
-- (void)pingWithBulletin:(id)a3 ack:(id)a4;
-- (void)pingWithRecordID:(id)a3 forSectionID:(id)a4;
-- (void)pingWithRecordID:(id)a3 forSectionID:(id)a4 ack:(id)a5;
-- (void)sendBulletinSummary:(id)a3;
-- (void)subscribeWithMachServiceName:(id)a3;
-- (void)unsubscribeFromSectionID:(id)a3;
+- (void)getWillNanoPresentNotificationForSectionID:(id)d completion:(id)completion;
+- (void)getWillNanoPresentNotificationForSectionID:(id)d subsectionIDs:(id)ds completion:(id)completion;
+- (void)pingWithBulletin:(id)bulletin;
+- (void)pingWithBulletin:(id)bulletin ack:(id)ack;
+- (void)pingWithRecordID:(id)d forSectionID:(id)iD;
+- (void)pingWithRecordID:(id)d forSectionID:(id)iD ack:(id)ack;
+- (void)sendBulletinSummary:(id)summary;
+- (void)subscribeWithMachServiceName:(id)name;
+- (void)unsubscribeFromSectionID:(id)d;
 @end
 
 @implementation BLTRemotePingSubscriberService
 
-- (BLTRemotePingSubscriberService)initWithMachServiceName:(id)a3
+- (BLTRemotePingSubscriberService)initWithMachServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = BLTRemotePingSubscriberService;
   v5 = [(BLTRemotePingSubscriberService *)&v10 init];
@@ -28,7 +28,7 @@
   {
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v5, BLTDaemonRestarted, @"BLTDaemonRestartedNotification", 0, 0);
-    v7 = [v4 copy];
+    v7 = [nameCopy copy];
     machServiceName = v5->_machServiceName;
     v5->_machServiceName = v7;
 
@@ -56,82 +56,82 @@
   [(BLTRemotePingSubscriberService *)&v6 dealloc];
 }
 
-- (void)unsubscribeFromSectionID:(id)a3
+- (void)unsubscribeFromSectionID:(id)d
 {
   connectionToServer = self->_connectionToServer;
-  v4 = a3;
-  v5 = [(NSXPCConnection *)connectionToServer remoteObjectProxy];
-  [v5 unsubscribeFromSectionID:v4];
+  dCopy = d;
+  remoteObjectProxy = [(NSXPCConnection *)connectionToServer remoteObjectProxy];
+  [remoteObjectProxy unsubscribeFromSectionID:dCopy];
 }
 
-- (void)pingWithBulletin:(id)a3
+- (void)pingWithBulletin:(id)bulletin
 {
-  v4 = a3;
+  bulletinCopy = bulletin;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained pingWithBulletin:v4];
+  [WeakRetained pingWithBulletin:bulletinCopy];
 }
 
-- (void)pingWithBulletin:(id)a3 ack:(id)a4
+- (void)pingWithBulletin:(id)bulletin ack:(id)ack
 {
-  v6 = a4;
-  v7 = a3;
+  ackCopy = ack;
+  bulletinCopy = bulletin;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained pingWithBulletin:v7 ack:v6];
+  [WeakRetained pingWithBulletin:bulletinCopy ack:ackCopy];
 }
 
-- (void)pingWithRecordID:(id)a3 forSectionID:(id)a4
+- (void)pingWithRecordID:(id)d forSectionID:(id)iD
 {
-  v6 = a4;
-  v7 = a3;
+  iDCopy = iD;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained pingWithRecordID:v7 forSectionID:v6];
+  [WeakRetained pingWithRecordID:dCopy forSectionID:iDCopy];
 }
 
-- (void)pingWithRecordID:(id)a3 forSectionID:(id)a4 ack:(id)a5
+- (void)pingWithRecordID:(id)d forSectionID:(id)iD ack:(id)ack
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  ackCopy = ack;
+  iDCopy = iD;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained pingWithRecordID:v10 forSectionID:v9 ack:v8];
+  [WeakRetained pingWithRecordID:dCopy forSectionID:iDCopy ack:ackCopy];
 }
 
-- (void)sendBulletinSummary:(id)a3
+- (void)sendBulletinSummary:(id)summary
 {
   connectionToServer = self->_connectionToServer;
-  v4 = a3;
-  v5 = [(NSXPCConnection *)connectionToServer remoteObjectProxy];
-  [v5 sendBulletinSummary:v4];
+  summaryCopy = summary;
+  remoteObjectProxy = [(NSXPCConnection *)connectionToServer remoteObjectProxy];
+  [remoteObjectProxy sendBulletinSummary:summaryCopy];
 }
 
-- (void)getWillNanoPresentNotificationForSectionID:(id)a3 completion:(id)a4
+- (void)getWillNanoPresentNotificationForSectionID:(id)d completion:(id)completion
 {
   connectionToServer = self->_connectionToServer;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NSXPCConnection *)connectionToServer remoteObjectProxy];
-  [v8 getWillNanoPresentNotificationForSectionID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  remoteObjectProxy = [(NSXPCConnection *)connectionToServer remoteObjectProxy];
+  [remoteObjectProxy getWillNanoPresentNotificationForSectionID:dCopy completion:completionCopy];
 }
 
-- (void)getWillNanoPresentNotificationForSectionID:(id)a3 subsectionIDs:(id)a4 completion:(id)a5
+- (void)getWillNanoPresentNotificationForSectionID:(id)d subsectionIDs:(id)ds completion:(id)completion
 {
   connectionToServer = self->_connectionToServer;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(NSXPCConnection *)connectionToServer remoteObjectProxy];
-  [v11 getWillNanoPresentNotificationForSectionID:v10 subsectionIDs:v9 completion:v8];
+  completionCopy = completion;
+  dsCopy = ds;
+  dCopy = d;
+  remoteObjectProxy = [(NSXPCConnection *)connectionToServer remoteObjectProxy];
+  [remoteObjectProxy getWillNanoPresentNotificationForSectionID:dCopy subsectionIDs:dsCopy completion:completionCopy];
 }
 
-- (void)subscribeWithMachServiceName:(id)a3
+- (void)subscribeWithMachServiceName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   machServiceName = self->_machServiceName;
   self->_machServiceName = v4;
 
   [(BLTRemotePingSubscriberService *)self _createXPCService];
-  v6 = [(NSXPCConnection *)self->_connectionToServer remoteObjectProxy];
-  [v6 subscribeWithMachServiceName:self->_machServiceName];
+  remoteObjectProxy = [(NSXPCConnection *)self->_connectionToServer remoteObjectProxy];
+  [remoteObjectProxy subscribeWithMachServiceName:self->_machServiceName];
 }
 
 - (void)_connect
@@ -154,8 +154,8 @@
   [(NSXPCConnection *)self->_connectionToServer resume];
   if (self->_machServiceName)
   {
-    v9 = [(NSXPCConnection *)self->_connectionToServer exportedObject];
-    [v9 subscribeWithMachServiceName:self->_machServiceName];
+    exportedObject = [(NSXPCConnection *)self->_connectionToServer exportedObject];
+    [exportedObject subscribeWithMachServiceName:self->_machServiceName];
   }
 
   v23 = 0u;
@@ -163,9 +163,9 @@
   v21 = 0u;
   v22 = 0u;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v11 = [WeakRetained subscriptionInfos];
+  subscriptionInfos = [WeakRetained subscriptionInfos];
 
-  v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v12 = [subscriptionInfos countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v12)
   {
     v13 = v12;
@@ -177,19 +177,19 @@
       {
         if (*v22 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(subscriptionInfos);
         }
 
         v16 = *(*(&v21 + 1) + 8 * v15);
-        v17 = [(NSXPCConnection *)self->_connectionToServer remoteObjectProxy];
-        v18 = [v16 sectionID];
-        [v17 subscribeToSectionID:v18 forFullBulletins:objc_msgSend(v16 withAck:"forBulletin") ackAllowedOnLocalConnection:{objc_msgSend(v16, "canAck"), objc_msgSend(v16, "canAckOnLocalConnection")}];
+        remoteObjectProxy = [(NSXPCConnection *)self->_connectionToServer remoteObjectProxy];
+        sectionID = [v16 sectionID];
+        [remoteObjectProxy subscribeToSectionID:sectionID forFullBulletins:objc_msgSend(v16 withAck:"forBulletin") ackAllowedOnLocalConnection:{objc_msgSend(v16, "canAck"), objc_msgSend(v16, "canAckOnLocalConnection")}];
 
         ++v15;
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v13 = [subscriptionInfos countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v13);
@@ -217,15 +217,15 @@
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 valueForEntitlement:@"com.apple.bulletindistributor.remotepingsubscriber"];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = [connectionCopy valueForEntitlement:@"com.apple.bulletindistributor.remotepingsubscriber"];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && ([v8 BOOLValue])
   {
-    objc_storeStrong(&self->_connectionFromServer, a4);
+    objc_storeStrong(&self->_connectionFromServer, connection);
     [(NSXPCConnection *)self->_connectionFromServer setExportedObject:self];
     connectionFromServer = self->_connectionFromServer;
     v10 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_285454D28];

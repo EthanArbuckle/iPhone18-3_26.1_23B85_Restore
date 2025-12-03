@@ -1,5 +1,5 @@
 @interface NSDateComponents
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isLeapMonth;
 - (BOOL)isRepeatedDay;
 - (BOOL)isValidDateInCalendar:(NSCalendar *)calendar;
@@ -23,15 +23,15 @@
 - (NSInteger)year;
 - (NSInteger)yearForWeekOfYear;
 - (NSTimeZone)timeZone;
-- (id)_initWithCFDateComponents:(__CFDateComponents *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithCFDateComponents:(__CFDateComponents *)components;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int64_t)dayOfYear;
 - (unint64_t)hash;
 - (void)dealloc;
 - (void)setCalendar:(NSCalendar *)calendar;
 - (void)setDay:(NSInteger)day;
-- (void)setDayOfYear:(int64_t)a3;
+- (void)setDayOfYear:(int64_t)year;
 - (void)setEra:(NSInteger)era;
 - (void)setHour:(NSInteger)hour;
 - (void)setLeapMonth:(BOOL)leapMonth;
@@ -39,7 +39,7 @@
 - (void)setMonth:(NSInteger)month;
 - (void)setNanosecond:(NSInteger)nanosecond;
 - (void)setQuarter:(NSInteger)quarter;
-- (void)setRepeatedDay:(BOOL)a3;
+- (void)setRepeatedDay:(BOOL)day;
 - (void)setSecond:(NSInteger)second;
 - (void)setTimeZone:(NSTimeZone *)timeZone;
 - (void)setValue:(NSInteger)value forComponent:(NSCalendarUnit)unit;
@@ -214,15 +214,15 @@
 
 - (NSDate)date
 {
-  v3 = [(NSDateComponents *)self timeZone];
-  if (v3)
+  timeZone = [(NSDateComponents *)self timeZone];
+  if (timeZone)
   {
-    [(NSCalendar *)[(NSDateComponents *)self calendar] setTimeZone:v3];
+    [(NSCalendar *)[(NSDateComponents *)self calendar] setTimeZone:timeZone];
   }
 
-  v4 = [(NSDateComponents *)self calendar];
+  calendar = [(NSDateComponents *)self calendar];
 
-  return [(NSCalendar *)v4 dateFromComponents:self];
+  return [(NSCalendar *)calendar dateFromComponents:self];
 }
 
 - (id)description
@@ -240,10 +240,10 @@
   return result;
 }
 
-- (id)_initWithCFDateComponents:(__CFDateComponents *)a3
+- (id)_initWithCFDateComponents:(__CFDateComponents *)components
 {
   IndexedIvars = object_getIndexedIvars(self);
-  *IndexedIvars = CFDateComponentsCreateCopy(&__kCFAllocatorSystemDefault, a3, v6, v7, v8, v9, v10, v11);
+  *IndexedIvars = CFDateComponentsCreateCopy(&__kCFAllocatorSystemDefault, components, v6, v7, v8, v9, v10, v11);
   return self;
 }
 
@@ -254,30 +254,30 @@
   return CFHash(v2);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3 || (objc_opt_isKindOfClass() & 1) == 0)
+  if (!equal || (objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
   v5 = *object_getIndexedIvars(self);
-  IndexedIvars = object_getIndexedIvars(a3);
+  IndexedIvars = object_getIndexedIvars(equal);
   return CFEqual(v5, *IndexedIvars) != 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
   if (v5 == NSDateComponents)
   {
     IndexedIvars = object_getIndexedIvars(self);
-    v9 = [NSDateComponents allocWithZone:a3];
+    v9 = [NSDateComponents allocWithZone:zone];
     v10 = *IndexedIvars;
 
     return [(NSDateComponents *)v9 _initWithCFDateComponents:v10];
@@ -285,7 +285,7 @@
 
   else
   {
-    v6 = [[(__objc2_class *)v5 allocWithZone:a3] init];
+    v6 = [[(__objc2_class *)v5 allocWithZone:zone] init];
     [(__objc2_class *)v6 setCalendar:[(NSDateComponents *)self calendar]];
     [(__objc2_class *)v6 setTimeZone:[(NSDateComponents *)self timeZone]];
     [(__objc2_class *)v6 setEra:[(NSDateComponents *)self era]];
@@ -444,11 +444,11 @@
   CFDateComponentsSetValue(v4, 0x4000, yearForWeekOfYear);
 }
 
-- (void)setDayOfYear:(int64_t)a3
+- (void)setDayOfYear:(int64_t)year
 {
   v4 = *object_getIndexedIvars(self);
 
-  CFDateComponentsSetValue(v4, 0x10000, a3);
+  CFDateComponentsSetValue(v4, 0x10000, year);
 }
 
 - (void)setLeapMonth:(BOOL)leapMonth
@@ -459,12 +459,12 @@
   CFDateComponentsSetValue(v4, 0x40000000, v3);
 }
 
-- (void)setRepeatedDay:(BOOL)a3
+- (void)setRepeatedDay:(BOOL)day
 {
-  v3 = a3;
+  dayCopy = day;
   v4 = *object_getIndexedIvars(self);
 
-  CFDateComponentsSetValue(v4, 0xFFFFFFFF80000000, v3);
+  CFDateComponentsSetValue(v4, 0xFFFFFFFF80000000, dayCopy);
 }
 
 - (void)setValue:(NSInteger)value forComponent:(NSCalendarUnit)unit

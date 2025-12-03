@@ -1,26 +1,26 @@
 @interface HKMCCycleTimelineFlowLayout
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3;
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4;
-- (CGRect)_pillFrameAtZoomIndex:(int64_t)a3;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity;
+- (CGRect)_pillFrameAtZoomIndex:(int64_t)index;
 - (CGSize)configuredSize;
-- (HKMCCycleTimelineFlowLayout)initWithYOffset:(double)a3 pillConfigurations:(id)a4 introPillConfiguration:(id)a5 pillAspectRatio:(double)a6;
-- (double)_pillOriginXAtZoomIndex:(int64_t)a3 centerPill:(BOOL)a4;
-- (id)_configurationAtIndex:(int64_t)a3;
-- (id)invalidationContextForBoundsChange:(CGRect)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (void)_configureLayoutAttributes:(id)a3;
+- (HKMCCycleTimelineFlowLayout)initWithYOffset:(double)offset pillConfigurations:(id)configurations introPillConfiguration:(id)configuration pillAspectRatio:(double)ratio;
+- (double)_pillOriginXAtZoomIndex:(int64_t)index centerPill:(BOOL)pill;
+- (id)_configurationAtIndex:(int64_t)index;
+- (id)invalidationContextForBoundsChange:(CGRect)change;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (void)_configureLayoutAttributes:(id)attributes;
 - (void)prepareLayout;
 @end
 
 @implementation HKMCCycleTimelineFlowLayout
 
-- (HKMCCycleTimelineFlowLayout)initWithYOffset:(double)a3 pillConfigurations:(id)a4 introPillConfiguration:(id)a5 pillAspectRatio:(double)a6
+- (HKMCCycleTimelineFlowLayout)initWithYOffset:(double)offset pillConfigurations:(id)configurations introPillConfiguration:(id)configuration pillAspectRatio:(double)ratio
 {
   v38 = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a5;
-  if (![v12 count])
+  configurationsCopy = configurations;
+  configurationCopy = configuration;
+  if (![configurationsCopy count])
   {
     [HKMCCycleTimelineFlowLayout initWithYOffset:a2 pillConfigurations:self introPillConfiguration:? pillAspectRatio:?];
   }
@@ -31,16 +31,16 @@
   v15 = v14;
   if (v14)
   {
-    v31 = v13;
-    v14->_yOffset = a3;
-    objc_storeStrong(&v14->_pillConfigurations, a4);
-    objc_storeStrong(&v15->_introPillConfiguration, a5);
-    v15->_pillAspectRatio = a6;
-    v16 = -[NSArray objectAtIndexedSubscript:](v15->_pillConfigurations, "objectAtIndexedSubscript:", [v12 count] >> 1);
-    [v16 heightWithAspectRatio:a6];
+    v31 = configurationCopy;
+    v14->_yOffset = offset;
+    objc_storeStrong(&v14->_pillConfigurations, configurations);
+    objc_storeStrong(&v15->_introPillConfiguration, configuration);
+    v15->_pillAspectRatio = ratio;
+    v16 = -[NSArray objectAtIndexedSubscript:](v15->_pillConfigurations, "objectAtIndexedSubscript:", [configurationsCopy count] >> 1);
+    [v16 heightWithAspectRatio:ratio];
     v15->_centerPillHeight = v17;
     [v16 width];
-    v18 = v15->_centerPillHeight + a3;
+    v18 = v15->_centerPillHeight + offset;
     v15->_cellSize.width = v19;
     v15->_cellSize.height = v18;
     v15->_totalZoomWidth = 0.0;
@@ -81,7 +81,7 @@
     [(UICollectionViewFlowLayout *)v15 setMinimumInteritemSpacing:0.0];
     [(UICollectionViewFlowLayout *)v15 setItemSize:v15->_cellSize.width, v15->_cellSize.height];
 
-    v13 = v31;
+    configurationCopy = v31;
   }
 
   v29 = *MEMORY[0x277D85DE8];
@@ -97,12 +97,12 @@
   return result;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
   v17 = *MEMORY[0x277D85DE8];
   v15.receiver = self;
   v15.super_class = HKMCCycleTimelineFlowLayout;
-  v4 = [(UICollectionViewFlowLayout *)&v15 layoutAttributesForElementsInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(UICollectionViewFlowLayout *)&v15 layoutAttributesForElementsInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -135,51 +135,51 @@
   return v4;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v6.receiver = self;
   v6.super_class = HKMCCycleTimelineFlowLayout;
-  v4 = [(UICollectionViewFlowLayout *)&v6 layoutAttributesForItemAtIndexPath:a3];
+  v4 = [(UICollectionViewFlowLayout *)&v6 layoutAttributesForItemAtIndexPath:path];
   [(HKMCCycleTimelineFlowLayout *)self _configureLayoutAttributes:v4];
 
   return v4;
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity
 {
-  v5 = [(HKMCCycleTimelineFlowLayout *)self collectionView:a3.x];
+  v5 = [(HKMCCycleTimelineFlowLayout *)self collectionView:offset.x];
   [v5 bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(NSIndexPath *)self->_centerIndexPath item];
+  item = [(NSIndexPath *)self->_centerIndexPath item];
   width = self->_cellSize.width;
   v19.origin.x = v7;
   v19.origin.y = v9;
   v19.size.width = v11;
   v19.size.height = v13;
-  v16 = (CGRectGetWidth(v19) - width) * -0.5 + v14 * width;
+  v16 = (CGRectGetWidth(v19) - width) * -0.5 + item * width;
   v17 = 0.0;
   result.y = v17;
   result.x = v16;
   return result;
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset
 {
-  [(HKMCCycleTimelineFlowLayout *)self targetContentOffsetForProposedContentOffset:a3.x withScrollingVelocity:a3.y, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
+  [(HKMCCycleTimelineFlowLayout *)self targetContentOffsetForProposedContentOffset:offset.x withScrollingVelocity:offset.y, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (id)invalidationContextForBoundsChange:(CGRect)a3
+- (id)invalidationContextForBoundsChange:(CGRect)change
 {
   v5.receiver = self;
   v5.super_class = HKMCCycleTimelineFlowLayout;
-  v3 = [(UICollectionViewFlowLayout *)&v5 invalidationContextForBoundsChange:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UICollectionViewFlowLayout *)&v5 invalidationContextForBoundsChange:change.origin.x, change.origin.y, change.size.width, change.size.height];
   [v3 setInvalidateFlowLayoutAttributes:0];
   [v3 setInvalidateFlowLayoutDelegateMetrics:0];
 
@@ -191,13 +191,13 @@
   v34.receiver = self;
   v34.super_class = HKMCCycleTimelineFlowLayout;
   [(UICollectionViewFlowLayout *)&v34 prepareLayout];
-  v3 = [(HKMCCycleTimelineFlowLayout *)self collectionView];
-  [v3 bounds];
+  collectionView = [(HKMCCycleTimelineFlowLayout *)self collectionView];
+  [collectionView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 contentOffset];
+  [collectionView contentOffset];
   v13 = v12;
   v14 = v12 + v9 * 0.5;
   v35.origin.x = v5;
@@ -209,7 +209,7 @@
   v36.origin.y = v7;
   v36.size.width = v9;
   v36.size.height = v11;
-  v16 = [v3 indexPathForItemAtPoint:{MidX, CGRectGetMidY(v36)}];
+  v16 = [collectionView indexPathForItemAtPoint:{MidX, CGRectGetMidY(v36)}];
   centerIndexPath = self->_centerIndexPath;
   self->_centerIndexPath = v16;
 
@@ -228,8 +228,8 @@
   v37.size.width = v25;
   v37.size.height = v27;
   self->_offsetFactor = (CGRectGetMidX(v37) - v14) / self->_cellSize.width;
-  v28 = [(NSIndexPath *)self->_centerIndexPath item];
-  v29 = v28 - [(NSArray *)self->_pillConfigurations count]/ 2;
+  item = [(NSIndexPath *)self->_centerIndexPath item];
+  v29 = item - [(NSArray *)self->_pillConfigurations count]/ 2;
   p_zoomRange = &self->_zoomRange;
   if (v29 <= 1)
   {
@@ -252,14 +252,14 @@
   self->_zoomAreaOffset = v13 + (v9 - self->_totalZoomWidth) * 0.5;
 }
 
-- (void)_configureLayoutAttributes:(id)a3
+- (void)_configureLayoutAttributes:(id)attributes
 {
-  v18 = a3;
-  v4 = [v18 indexPath];
-  v5 = [v4 item];
+  attributesCopy = attributes;
+  indexPath = [attributesCopy indexPath];
+  item = [indexPath item];
 
   location = self->_zoomRange.location;
-  if (v5 < location || v5 - location >= self->_zoomRange.length)
+  if (item < location || item - location >= self->_zoomRange.length)
   {
     width = self->_cellSize.width;
     height = self->_cellSize.height;
@@ -276,26 +276,26 @@
     width = v20.size.width;
     height = v20.size.height;
     v12 = fabs(CGRectGetMidX(v20) / self->_totalZoomWidth * 2.0 + -1.0);
-    [v18 frame];
+    [attributesCopy frame];
     v14 = x - (v13 - self->_zoomAreaOffset);
-    v15 = [(HKMCCycleTimelineFlowLayout *)self collectionView];
-    v16 = [v15 effectiveUserInterfaceLayoutDirection];
+    collectionView = [(HKMCCycleTimelineFlowLayout *)self collectionView];
+    effectiveUserInterfaceLayoutDirection = [collectionView effectiveUserInterfaceLayoutDirection];
 
-    if (v16 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
-      [v18 frame];
+      [attributesCopy frame];
       v14 = v17 - v14 - width;
     }
   }
 
-  [v18 setPillFrame:{v14, y, width, height}];
-  [v18 setShrinkFactor:v12];
+  [attributesCopy setPillFrame:{v14, y, width, height}];
+  [attributesCopy setShrinkFactor:v12];
 }
 
-- (CGRect)_pillFrameAtZoomIndex:(int64_t)a3
+- (CGRect)_pillFrameAtZoomIndex:(int64_t)index
 {
-  v5 = [(HKMCCycleTimelineFlowLayout *)self _configurationAtIndex:a3 - 1];
-  v6 = [(HKMCCycleTimelineFlowLayout *)self _configurationAtIndex:a3];
+  v5 = [(HKMCCycleTimelineFlowLayout *)self _configurationAtIndex:index - 1];
+  v6 = [(HKMCCycleTimelineFlowLayout *)self _configurationAtIndex:index];
   [v5 width];
   v8 = v7;
   [v6 width];
@@ -314,7 +314,7 @@
   }
 
   v15 = v14 * self->_pillAspectRatio;
-  [(HKMCCycleTimelineFlowLayout *)self _pillOriginXAtZoomIndex:a3 centerPill:1];
+  [(HKMCCycleTimelineFlowLayout *)self _pillOriginXAtZoomIndex:index centerPill:1];
   v17 = v16;
   v18 = self->_yOffset + (self->_centerPillHeight - v15) * 0.5;
 
@@ -329,22 +329,22 @@
   return result;
 }
 
-- (double)_pillOriginXAtZoomIndex:(int64_t)a3 centerPill:(BOOL)a4
+- (double)_pillOriginXAtZoomIndex:(int64_t)index centerPill:(BOOL)pill
 {
-  v4 = a4;
-  v7 = a3 - 1;
-  if (a3 < 1)
+  pillCopy = pill;
+  v7 = index - 1;
+  if (index < 1)
   {
     v9 = 0.0;
   }
 
   else
   {
-    [(HKMCCycleTimelineFlowLayout *)self _pillOriginXAtZoomIndex:a3 - 1 centerPill:0];
+    [(HKMCCycleTimelineFlowLayout *)self _pillOriginXAtZoomIndex:index - 1 centerPill:0];
     v9 = v8;
   }
 
-  v10 = [(HKMCCycleTimelineFlowLayout *)self _configurationAtIndex:a3 - 2];
+  v10 = [(HKMCCycleTimelineFlowLayout *)self _configurationAtIndex:index - 2];
   v11 = [(HKMCCycleTimelineFlowLayout *)self _configurationAtIndex:v7];
   [v10 width];
   v13 = v12;
@@ -376,12 +376,12 @@
   }
 
   v27 = v9 + v19 + v25;
-  if (v4)
+  if (pillCopy)
   {
     v28 = [(HKMCCycleTimelineFlowLayout *)self _configurationAtIndex:v7];
     [v28 spacing];
     v30 = v29;
-    v31 = [(HKMCCycleTimelineFlowLayout *)self _configurationAtIndex:a3];
+    v31 = [(HKMCCycleTimelineFlowLayout *)self _configurationAtIndex:index];
     [v31 spacing];
     v32 = self->_offsetFactor;
     v34 = v33 - v30;
@@ -403,16 +403,16 @@
   return v27;
 }
 
-- (id)_configurationAtIndex:(int64_t)a3
+- (id)_configurationAtIndex:(int64_t)index
 {
-  if (a3 < 0 || [(NSArray *)self->_pillConfigurations count]<= a3)
+  if (index < 0 || [(NSArray *)self->_pillConfigurations count]<= index)
   {
     v5 = self->_introPillConfiguration;
   }
 
   else
   {
-    v5 = [(NSArray *)self->_pillConfigurations objectAtIndexedSubscript:a3];
+    v5 = [(NSArray *)self->_pillConfigurations objectAtIndexedSubscript:index];
   }
 
   return v5;

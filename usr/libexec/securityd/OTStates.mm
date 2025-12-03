@@ -30,7 +30,7 @@
   block[1] = 3221225472;
   block[2] = sub_10019F0E8;
   block[3] = &unk_100346E68;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10039E248 != -1)
   {
     dispatch_once(&qword_10039E248, block);
@@ -83,7 +83,7 @@
   block[1] = 3221225472;
   block[2] = sub_10019F4EC;
   block[3] = &unk_100346E68;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10039E208 != -1)
   {
     dispatch_once(&qword_10039E208, block);
@@ -100,7 +100,7 @@
   v4[1] = 3221225472;
   v4[2] = sub_10019F6AC;
   v4[3] = &unk_100346988;
-  v4[4] = a1;
+  v4[4] = self;
   v4[5] = a2;
   if (qword_10039E1F8 != -1)
   {
@@ -118,7 +118,7 @@
   v4[1] = 3221225472;
   v4[2] = sub_10019F964;
   v4[3] = &unk_100346988;
-  v4[4] = a1;
+  v4[4] = self;
   v4[5] = a2;
   if (qword_10039E1E8 != -1)
   {

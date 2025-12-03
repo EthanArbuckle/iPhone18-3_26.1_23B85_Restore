@@ -1,5 +1,5 @@
 @interface _BCPPTImageSet
-+ (id)imageSetWithEntry:(id)a3;
++ (id)imageSetWithEntry:(id)entry;
 - (id)imageColor;
 - (id)primaryEntry;
 @end
@@ -20,15 +20,15 @@
   return [v0 objectAtIndexedSubscript:v2];
 }
 
-+ (id)imageSetWithEntry:(id)a3
++ (id)imageSetWithEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   v4 = objc_opt_new();
   v5 = +[NSUUID UUID];
-  v6 = [v5 UUIDString];
-  [v4 setIdentifier:v6];
+  uUIDString = [v5 UUIDString];
+  [v4 setIdentifier:uUIDString];
 
-  v10 = v3;
+  v10 = entryCopy;
   v7 = [NSArray arrayWithObjects:&v10 count:1];
   v8 = [NSSet setWithArray:v7];
 
@@ -39,11 +39,11 @@
 
 - (id)primaryEntry
 {
-  v2 = [(_BCPPTImageSet *)self imageEntries];
-  v3 = [v2 allObjects];
-  v4 = [v3 firstObject];
+  imageEntries = [(_BCPPTImageSet *)self imageEntries];
+  allObjects = [imageEntries allObjects];
+  firstObject = [allObjects firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 @end

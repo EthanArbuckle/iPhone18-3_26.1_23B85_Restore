@@ -1,9 +1,9 @@
 @interface VSOpusEncoder
-- (VSOpusEncoder)initWithSourceASBD:(AudioStreamBasicDescription *)a3;
-- (void)encodeChunk:(id)a3;
+- (VSOpusEncoder)initWithSourceASBD:(AudioStreamBasicDescription *)d;
+- (void)encodeChunk:(id)chunk;
 - (void)endEncoding;
-- (void)setErrorHandler:(id)a3;
-- (void)setOpusDataHandler:(id)a3;
+- (void)setErrorHandler:(id)handler;
+- (void)setOpusDataHandler:(id)handler;
 @end
 
 @implementation VSOpusEncoder
@@ -16,13 +16,13 @@
   [(AVAudioConverter *)converter reset];
 }
 
-- (void)encodeChunk:(id)a3
+- (void)encodeChunk:(id)chunk
 {
-  v4 = a3;
-  v5 = [v4 length];
+  chunkCopy = chunk;
+  v5 = [chunkCopy length];
   v6 = v5 / [(AVAudioFormat *)self->_fromFormat streamDescription][24];
-  v19 = [MEMORY[0x277CBEB28] data];
-  v7 = [MEMORY[0x277CBEB28] data];
+  data = [MEMORY[0x277CBEB28] data];
+  data2 = [MEMORY[0x277CBEB28] data];
   v21 = 0;
   v28[0] = 0;
   v28[1] = v28;
@@ -41,15 +41,15 @@
     v26 = v6;
     v25 = v28;
     v23[4] = self;
-    v10 = v4;
+    v10 = chunkCopy;
     v24 = v10;
     v11 = [(AVAudioConverter *)converter convertToBuffer:outputBuffer error:&v27 withInputFromBlock:v23];
     v12 = v27;
     if (v11 <= 1)
     {
-      [v19 appendBytes:*(-[AVAudioCompressedBuffer audioBufferList](self->_outputBuffer length:{"audioBufferList") + 16), *(-[AVAudioCompressedBuffer audioBufferList](self->_outputBuffer, "audioBufferList") + 12)}];
+      [data appendBytes:*(-[AVAudioCompressedBuffer audioBufferList](self->_outputBuffer length:{"audioBufferList") + 16), *(-[AVAudioCompressedBuffer audioBufferList](self->_outputBuffer, "audioBufferList") + 12)}];
       v13 = v6;
-      v14 = v4;
+      v14 = chunkCopy;
       v15 = 0;
       v16 = 0;
       v22 = 0uLL;
@@ -57,14 +57,14 @@
       {
         v22 = [(AVAudioCompressedBuffer *)self->_outputBuffer packetDescriptions][v15];
         *&v22 = v22 + self->_opusDataOffset;
-        [v7 appendBytes:&v22 length:16];
+        [data2 appendBytes:&v22 length:16];
         ++v16;
         v15 += 16;
       }
 
       self->_opusDataOffset = v22 + HIDWORD(v22);
       v21 += [(AVAudioCompressedBuffer *)self->_outputBuffer packetCount];
-      v4 = v14;
+      chunkCopy = v14;
       v6 = v13;
     }
   }
@@ -84,7 +84,7 @@
     opusDataHandler = self->_opusDataHandler;
     if (opusDataHandler)
     {
-      opusDataHandler[2](opusDataHandler, v19, v21, v7);
+      opusDataHandler[2](opusDataHandler, data, v21, data2);
     }
   }
 
@@ -148,21 +148,21 @@ LABEL_13:
   return v11;
 }
 
-- (void)setErrorHandler:(id)a3
+- (void)setErrorHandler:(id)handler
 {
-  v4 = MEMORY[0x2743CEF70](a3, a2);
+  v4 = MEMORY[0x2743CEF70](handler, a2);
   errorHandler = self->_errorHandler;
   self->_errorHandler = v4;
 }
 
-- (void)setOpusDataHandler:(id)a3
+- (void)setOpusDataHandler:(id)handler
 {
-  v4 = MEMORY[0x2743CEF70](a3, a2);
+  v4 = MEMORY[0x2743CEF70](handler, a2);
   opusDataHandler = self->_opusDataHandler;
   self->_opusDataHandler = v4;
 }
 
-- (VSOpusEncoder)initWithSourceASBD:(AudioStreamBasicDescription *)a3
+- (VSOpusEncoder)initWithSourceASBD:(AudioStreamBasicDescription *)d
 {
   v25 = *MEMORY[0x277D85DE8];
   v22.receiver = self;
@@ -170,7 +170,7 @@ LABEL_13:
   v4 = [(VSOpusEncoder *)&v22 init];
   if (v4)
   {
-    v5 = [objc_alloc(MEMORY[0x277CB83A8]) initWithStreamDescription:a3];
+    v5 = [objc_alloc(MEMORY[0x277CB83A8]) initWithStreamDescription:d];
     fromFormat = v4->_fromFormat;
     v4->_fromFormat = v5;
 
@@ -203,10 +203,10 @@ LABEL_13:
 
     v13 = objc_alloc(MEMORY[0x277CB8370]);
     v14 = v4->_toFormat;
-    v15 = [(AVAudioConverter *)v4->_converter maximumOutputPacketSize];
-    if (v15)
+    maximumOutputPacketSize = [(AVAudioConverter *)v4->_converter maximumOutputPacketSize];
+    if (maximumOutputPacketSize)
     {
-      v16 = v15;
+      v16 = maximumOutputPacketSize;
     }
 
     else

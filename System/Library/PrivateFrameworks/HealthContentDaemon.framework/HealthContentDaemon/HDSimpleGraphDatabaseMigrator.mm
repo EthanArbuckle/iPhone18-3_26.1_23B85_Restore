@@ -1,18 +1,18 @@
 @interface HDSimpleGraphDatabaseMigrator
 + (id)_futureMigrationSteps;
 + (id)_migrationSteps;
-+ (id)migrationStepsWithBehavior:(id)a3;
++ (id)migrationStepsWithBehavior:(id)behavior;
 @end
 
 @implementation HDSimpleGraphDatabaseMigrator
 
-+ (id)migrationStepsWithBehavior:(id)a3
++ (id)migrationStepsWithBehavior:(id)behavior
 {
-  v3 = a3;
+  behaviorCopy = behavior;
   v4 = +[HDSimpleGraphDatabaseMigrator _migrationSteps];
-  v5 = [v3 supportsOntologyDatabaseFutureMigrations];
+  supportsOntologyDatabaseFutureMigrations = [behaviorCopy supportsOntologyDatabaseFutureMigrations];
 
-  if (v5)
+  if (supportsOntologyDatabaseFutureMigrations)
   {
     v6 = +[HDSimpleGraphDatabaseMigrator _futureMigrationSteps];
     v7 = [v4 arrayByAddingObjectsFromArray:v6];

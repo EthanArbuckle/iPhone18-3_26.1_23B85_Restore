@@ -1,7 +1,7 @@
 @interface MTL4CommandQueueDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTL4CommandQueueDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -38,10 +38,10 @@
   [(MTL4CommandQueueDescriptor *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(MTL4CommandQueueDescriptor);
-  v5->_label = [(NSString *)self->_label copyWithZone:a3];
+  v5->_label = [(NSString *)self->_label copyWithZone:zone];
   feedbackQueue = self->_feedbackQueue;
   v5->_feedbackQueue = feedbackQueue;
   if (feedbackQueue)
@@ -52,9 +52,9 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v7) = 1;
   }
@@ -62,12 +62,12 @@
   else
   {
     Class = object_getClass(self);
-    if (Class == object_getClass(a3) && (v6 = *(a3 + 2), v6 == self->_label))
+    if (Class == object_getClass(equal) && (v6 = *(equal + 2), v6 == self->_label))
     {
       v7 = [(NSString *)v6 isEqualToString:?];
       if (v7)
       {
-        LOBYTE(v7) = *(a3 + 3) == self->_feedbackQueue;
+        LOBYTE(v7) = *(equal + 3) == self->_feedbackQueue;
       }
     }
 

@@ -1,13 +1,13 @@
 @interface EspressoWrapper
 + (id)cache;
-+ (id)cachedEspressoWrapper:(id)a3;
-+ (id)pathFromBaseName:(id)a3;
++ (id)cachedEspressoWrapper:(id)wrapper;
++ (id)pathFromBaseName:(id)name;
 + (void)clearCache;
-- (BOOL)hasBlob:(const char *)a3;
-- (EspressoWrapper)initWithPath:(id)a3;
-- (int)bind:(const char *)a3 buffer:(__CVBuffer *)a4;
+- (BOOL)hasBlob:(const char *)blob;
+- (EspressoWrapper)initWithPath:(id)path;
+- (int)bind:(const char *)bind buffer:(__CVBuffer *)buffer;
 - (int)execute;
-- (int)executeAsync:(id)a3;
+- (int)executeAsync:(id)async;
 - (void)buildAsync;
 - (void)dealloc;
 @end
@@ -26,15 +26,15 @@
   return v3;
 }
 
-- (EspressoWrapper)initWithPath:(id)a3
+- (EspressoWrapper)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v13.receiver = self;
   v13.super_class = EspressoWrapper;
   v5 = [(EspressoWrapper *)&v13 init];
   path = v5->_path;
-  v5->_path = v4;
-  v7 = v4;
+  v5->_path = pathCopy;
+  v7 = pathCopy;
 
   v8 = dispatch_queue_create("EspressoWrapper", 0);
   queue = v5->_queue;
@@ -44,20 +44,20 @@
   return v5;
 }
 
-+ (id)cachedEspressoWrapper:(id)a3
++ (id)cachedEspressoWrapper:(id)wrapper
 {
-  v4 = a3;
-  v7 = objc_msgSend_cache(a1, v5, v6);
-  v9 = objc_msgSend_objectForKey_(v7, v8, v4);
+  wrapperCopy = wrapper;
+  v7 = objc_msgSend_cache(self, v5, v6);
+  v9 = objc_msgSend_objectForKey_(v7, v8, wrapperCopy);
 
   if (!v9)
   {
-    v10 = [a1 alloc];
-    v9 = objc_msgSend_initWithPath_(v10, v11, v4);
+    v10 = [self alloc];
+    v9 = objc_msgSend_initWithPath_(v10, v11, wrapperCopy);
     if (v9)
     {
-      v14 = objc_msgSend_cache(a1, v12, v13);
-      objc_msgSend_setObject_forKey_(v14, v15, v9, v4);
+      v14 = objc_msgSend_cache(self, v12, v13);
+      objc_msgSend_setObject_forKey_(v14, v15, v9, wrapperCopy);
     }
   }
 
@@ -66,16 +66,16 @@
 
 + (void)clearCache
 {
-  v5 = objc_msgSend_cache(a1, a2, v2);
+  v5 = objc_msgSend_cache(self, a2, v2);
   objc_msgSend_removeAllObjects(v5, v3, v4);
 }
 
-+ (id)pathFromBaseName:(id)a3
++ (id)pathFromBaseName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = NSClassFromString(&cfstr_Bwespressoinfe.isa);
   v5 = NSSelectorFromString(&cfstr_Espressonetwor.isa);
-  if ((objc_opt_respondsToSelector() & 1) == 0 || (v8 = objc_msgSend_methodForSelector_(v4, v6, v5)) == 0 || (v8(v4, v5, v3, 1), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend_path(v9, v10, v11), v12 = objc_claimAutoreleasedReturnValue(), v9, !v12))
+  if ((objc_opt_respondsToSelector() & 1) == 0 || (v8 = objc_msgSend_methodForSelector_(v4, v6, v5)) == 0 || (v8(v4, v5, nameCopy, 1), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend_path(v9, v10, v11), v12 = objc_claimAutoreleasedReturnValue(), v9, !v12))
   {
     v13 = objc_msgSend_defaultManager(MEMORY[0x29EDB9FB8], v6, v7);
     objc_msgSend_contentsOfDirectoryAtPath_error_(v13, v14, @"/System/Library/ImagingNetworks", 0);
@@ -98,7 +98,7 @@
           }
 
           v22 = *(*(&v25 + 1) + 8 * i);
-          if (objc_msgSend_hasPrefix_(v22, v18, v3) && (objc_msgSend_hasSuffix_(v22, v18, @".espresso.net") & 1) != 0)
+          if (objc_msgSend_hasPrefix_(v22, v18, nameCopy) && (objc_msgSend_hasSuffix_(v22, v18, @".espresso.net") & 1) != 0)
           {
             v12 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v18, @"/System/Library/ImagingNetworks/%@", v22);
             goto LABEL_15;
@@ -144,27 +144,27 @@ LABEL_15:
   dispatch_async(queue, block);
 }
 
-- (int)bind:(const char *)a3 buffer:(__CVBuffer *)a4
+- (int)bind:(const char *)bind buffer:(__CVBuffer *)buffer
 {
   if (!self->_built)
   {
     return -1;
   }
 
-  v8 = objc_msgSend_plan(self, a2, a3);
+  v8 = objc_msgSend_plan(self, a2, bind);
   v11 = objc_msgSend_planIdx(self, v9, v10);
 
-  return MEMORY[0x2A1C5FF20](v8, v11, a3, 0, a4);
+  return MEMORY[0x2A1C5FF20](v8, v11, bind, 0, buffer);
 }
 
-- (BOOL)hasBlob:(const char *)a3
+- (BOOL)hasBlob:(const char *)blob
 {
   if (!self->_built)
   {
     return 0;
   }
 
-  objc_msgSend_plan(self, a2, a3);
+  objc_msgSend_plan(self, a2, blob);
   objc_msgSend_planIdx(self, v4, v5);
   return espresso_network_query_blob_shape() == 0;
 }
@@ -182,15 +182,15 @@ LABEL_15:
   return MEMORY[0x2A1C5FF60](v5);
 }
 
-- (int)executeAsync:(id)a3
+- (int)executeAsync:(id)async
 {
-  v6 = a3;
+  asyncCopy = async;
   if (self->_built)
   {
     objc_msgSend_plan(self, v4, v5);
     objc_msgSend_planIdx(self, v7, v8);
     v9 = dispatch_queue_create(0, 0);
-    v12 = v6;
+    v12 = asyncCopy;
     v10 = espresso_plan_submit();
   }
 

@@ -1,5 +1,5 @@
 @interface AXMDataPoint
-- (AXMDataPoint)initWithX:(id)a3 y:(id)a4 additionalValues:(id)a5 label:(id)a6;
+- (AXMDataPoint)initWithX:(id)x y:(id)y additionalValues:(id)values label:(id)label;
 - (AXMDataPointValue)timeEncodingValue;
 - (AXMDataPointValue)zCategoryAxisValue;
 - (AXMDataPointValue)zNumericAxisValue;
@@ -8,60 +8,60 @@
 - (NSNumber)volumeEncodingValue;
 - (NSString)label;
 - (NSString)timbreEncodingValue;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)setLabel:(id)a3;
+- (void)setLabel:(id)label;
 @end
 
 @implementation AXMDataPoint
 
-- (AXMDataPoint)initWithX:(id)a3 y:(id)a4 additionalValues:(id)a5 label:(id)a6
+- (AXMDataPoint)initWithX:(id)x y:(id)y additionalValues:(id)values label:(id)label
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  xCopy = x;
+  yCopy = y;
+  valuesCopy = values;
+  labelCopy = label;
   v20.receiver = self;
   v20.super_class = AXMDataPoint;
   v15 = [(AXMDataPoint *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_xValue, a3);
-    objc_storeStrong(&v16->_yValue, a4);
-    v17 = [v13 copy];
+    objc_storeStrong(&v15->_xValue, x);
+    objc_storeStrong(&v16->_yValue, y);
+    v17 = [valuesCopy copy];
     additionalValues = v16->_additionalValues;
     v16->_additionalValues = v17;
 
-    [(AXMDataPoint *)v16 setLabel:v14];
+    [(AXMDataPoint *)v16 setLabel:labelCopy];
   }
 
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [AXMDataPoint allocWithZone:a3];
-  v5 = [(AXMDataPoint *)self xValue];
-  v6 = [(AXMDataPoint *)self yValue];
-  v7 = [(AXMDataPoint *)self additionalValues];
-  v8 = [(AXMDataPoint *)self label];
-  v9 = [(AXMDataPoint *)v4 initWithX:v5 y:v6 additionalValues:v7 label:v8];
+  v4 = [AXMDataPoint allocWithZone:zone];
+  xValue = [(AXMDataPoint *)self xValue];
+  yValue = [(AXMDataPoint *)self yValue];
+  additionalValues = [(AXMDataPoint *)self additionalValues];
+  label = [(AXMDataPoint *)self label];
+  v9 = [(AXMDataPoint *)v4 initWithX:xValue y:yValue additionalValues:additionalValues label:label];
 
   return v9;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = a3;
-  v6 = v4;
-  if (v4)
+  labelCopy = label;
+  v6 = labelCopy;
+  if (labelCopy)
   {
-    v4 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v4];
+    labelCopy = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:labelCopy];
   }
 
   attributedLabel = self->_attributedLabel;
-  self->_attributedLabel = v4;
+  self->_attributedLabel = labelCopy;
 }
 
 - (AXMDataPointValue)zCategoryAxisValue
@@ -71,8 +71,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(AXMDataPoint *)self additionalValues];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  additionalValues = [(AXMDataPoint *)self additionalValues];
+  v3 = [additionalValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = *v10;
@@ -82,20 +82,20 @@
       {
         if (*v10 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(additionalValues);
         }
 
         v6 = *(*(&v9 + 1) + 8 * i);
-        v7 = [v6 category];
+        category = [v6 category];
 
-        if (v7)
+        if (category)
         {
           v3 = v6;
           goto LABEL_11;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v3 = [additionalValues countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v3)
       {
         continue;
@@ -117,8 +117,8 @@ LABEL_11:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(AXMDataPoint *)self additionalValues];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  additionalValues = [(AXMDataPoint *)self additionalValues];
+  v3 = [additionalValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = *v10;
@@ -128,20 +128,20 @@ LABEL_11:
       {
         if (*v10 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(additionalValues);
         }
 
         v6 = *(*(&v9 + 1) + 8 * i);
-        v7 = [v6 category];
+        category = [v6 category];
 
-        if (!v7)
+        if (!category)
         {
           v3 = v6;
           goto LABEL_11;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v3 = [additionalValues countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v3)
       {
         continue;
@@ -158,33 +158,33 @@ LABEL_11:
 
 - (NSString)label
 {
-  v2 = [(AXMDataPoint *)self attributedLabel];
-  v3 = [v2 string];
+  attributedLabel = [(AXMDataPoint *)self attributedLabel];
+  string = [attributedLabel string];
 
-  return v3;
+  return string;
 }
 
 - (id)description
 {
-  v3 = [(AXMDataPoint *)self xValue];
-  v4 = [v3 category];
-  if (v4)
+  xValue = [(AXMDataPoint *)self xValue];
+  category = [xValue category];
+  if (category)
   {
-    v5 = [(AXMDataPoint *)self xValue];
-    [v5 category];
+    xValue2 = [(AXMDataPoint *)self xValue];
+    [xValue2 category];
   }
 
   else
   {
     v6 = MEMORY[0x1E696AD98];
-    v5 = [(AXMDataPoint *)self xValue];
-    [v5 number];
+    xValue2 = [(AXMDataPoint *)self xValue];
+    [xValue2 number];
     [v6 numberWithDouble:?];
   }
   v29 = ;
 
-  v7 = [(AXMDataPoint *)self additionalValues];
-  v8 = [v7 count];
+  additionalValues = [(AXMDataPoint *)self additionalValues];
+  v8 = [additionalValues count];
 
   if (v8)
   {
@@ -192,21 +192,21 @@ LABEL_11:
     v10 = &stru_1F23EA908;
     do
     {
-      v11 = [(AXMDataPoint *)self additionalValues];
-      v12 = [v11 objectAtIndexedSubscript:v9];
-      v13 = [v12 category];
-      if (v13)
+      additionalValues2 = [(AXMDataPoint *)self additionalValues];
+      v12 = [additionalValues2 objectAtIndexedSubscript:v9];
+      category2 = [v12 category];
+      if (category2)
       {
-        v14 = [(AXMDataPoint *)self additionalValues];
-        v15 = [v14 objectAtIndexedSubscript:v9];
+        additionalValues3 = [(AXMDataPoint *)self additionalValues];
+        v15 = [additionalValues3 objectAtIndexedSubscript:v9];
         [v15 category];
       }
 
       else
       {
         v16 = MEMORY[0x1E696AD98];
-        v14 = [(AXMDataPoint *)self additionalValues];
-        v15 = [v14 objectAtIndexedSubscript:v9];
+        additionalValues3 = [(AXMDataPoint *)self additionalValues];
+        v15 = [additionalValues3 objectAtIndexedSubscript:v9];
         [v15 number];
         [v16 numberWithDouble:?];
       }
@@ -215,8 +215,8 @@ LABEL_11:
       v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@\t", v10, v17];
 
       ++v9;
-      v19 = [(AXMDataPoint *)self additionalValues];
-      v20 = [v19 count];
+      additionalValues4 = [(AXMDataPoint *)self additionalValues];
+      v20 = [additionalValues4 count];
 
       v10 = v18;
     }
@@ -231,12 +231,12 @@ LABEL_11:
 
   v21 = MEMORY[0x1E696AEC0];
   v22 = MEMORY[0x1E696AD98];
-  v23 = [(AXMDataPoint *)self yValue];
-  [v23 number];
+  yValue = [(AXMDataPoint *)self yValue];
+  [yValue number];
   v24 = [v22 numberWithDouble:?];
-  v25 = [(AXMDataPoint *)self label];
-  v26 = [(AXMDataPoint *)self valueDescription];
-  v27 = [v21 stringWithFormat:@"(%@\t%@\t%@\tlabel=%@\tdesc=%@)", v29, v24, v18, v25, v26];
+  label = [(AXMDataPoint *)self label];
+  valueDescription = [(AXMDataPoint *)self valueDescription];
+  v27 = [v21 stringWithFormat:@"(%@\t%@\t%@\tlabel=%@\tdesc=%@)", v29, v24, v18, label, valueDescription];
 
   return v27;
 }
@@ -251,19 +251,19 @@ LABEL_11:
 
   else
   {
-    v5 = [(AXMDataPoint *)self xValue];
-    v6 = [v5 category];
-    v7 = [(AXMDataPoint *)self xValue];
-    v8 = v7;
-    if (v6)
+    xValue = [(AXMDataPoint *)self xValue];
+    category = [xValue category];
+    xValue2 = [(AXMDataPoint *)self xValue];
+    v8 = xValue2;
+    if (category)
     {
-      v9 = [v7 category];
-      v3 = [AXMDataPointValue valueWithCategory:v9];
+      category2 = [xValue2 category];
+      v3 = [AXMDataPointValue valueWithCategory:category2];
     }
 
     else
     {
-      [v7 number];
+      [xValue2 number];
       v3 = [AXMDataPointValue valueWithNumber:?];
     }
   }
@@ -282,8 +282,8 @@ LABEL_11:
   else
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(AXMDataPoint *)self yValue];
-    [v5 number];
+    yValue = [(AXMDataPoint *)self yValue];
+    [yValue number];
     v3 = [v4 numberWithDouble:?];
   }
 
@@ -301,8 +301,8 @@ LABEL_11:
   else
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(AXMDataPoint *)self zNumericAxisValue];
-    [v5 number];
+    zNumericAxisValue = [(AXMDataPoint *)self zNumericAxisValue];
+    [zNumericAxisValue number];
     v3 = [v4 numberWithDouble:?];
   }
 
@@ -320,8 +320,8 @@ LABEL_11:
   else
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(AXMDataPoint *)self zNumericAxisValue];
-    [v5 number];
+    zNumericAxisValue = [(AXMDataPoint *)self zNumericAxisValue];
+    [zNumericAxisValue number];
     v3 = [v4 numberWithDouble:?];
   }
 
@@ -333,16 +333,16 @@ LABEL_11:
   timbreEncodingValue = self->_timbreEncodingValue;
   if (timbreEncodingValue)
   {
-    v3 = timbreEncodingValue;
+    category = timbreEncodingValue;
   }
 
   else
   {
-    v4 = [(AXMDataPoint *)self zCategoryAxisValue];
-    v3 = [v4 category];
+    zCategoryAxisValue = [(AXMDataPoint *)self zCategoryAxisValue];
+    category = [zCategoryAxisValue category];
   }
 
-  return v3;
+  return category;
 }
 
 @end

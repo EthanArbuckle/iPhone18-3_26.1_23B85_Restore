@@ -1,31 +1,31 @@
 @interface DSThermalLogLine
 - (BOOL)isTrapEntry;
 - (BOOL)isTrapEvent;
-- (DSThermalLogLine)initWithLogLine:(id)a3;
+- (DSThermalLogLine)initWithLogLine:(id)line;
 @end
 
 @implementation DSThermalLogLine
 
-- (DSThermalLogLine)initWithLogLine:(id)a3
+- (DSThermalLogLine)initWithLogLine:(id)line
 {
   v13.receiver = self;
   v13.super_class = DSThermalLogLine;
-  v3 = [(DSLogLine *)&v13 initWithLogLine:a3];
+  v3 = [(DSLogLine *)&v13 initWithLogLine:line];
   v4 = v3;
   if (v3)
   {
-    v5 = [(DSLogLine *)v3 type];
+    type = [(DSLogLine *)v3 type];
     eventType = v4->_eventType;
-    v4->_eventType = v5;
+    v4->_eventType = type;
 
     [(DSLogLine *)v4 setType:@"Thermal"];
-    v7 = [(DSLogLine *)v4 fields];
-    v8 = [v7 count] - 1;
+    fields = [(DSLogLine *)v4 fields];
+    v8 = [fields count] - 1;
 
     if ([(DSThermalLogLine *)v4 isTrapEvent])
     {
-      v9 = [(DSLogLine *)v4 fields];
-      v10 = [v9 count];
+      fields2 = [(DSLogLine *)v4 fields];
+      v10 = [fields2 count];
 
       if (v10 >= 4)
       {
@@ -42,16 +42,16 @@
 
 - (BOOL)isTrapEvent
 {
-  v3 = [(DSThermalLogLine *)self eventType];
-  if ([v3 isEqualToString:@"ThermalUIAlertEnter"])
+  eventType = [(DSThermalLogLine *)self eventType];
+  if ([eventType isEqualToString:@"ThermalUIAlertEnter"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(DSThermalLogLine *)self eventType];
-    v4 = [v5 isEqualToString:@"ThermalUIAlertExit"];
+    eventType2 = [(DSThermalLogLine *)self eventType];
+    v4 = [eventType2 isEqualToString:@"ThermalUIAlertExit"];
   }
 
   return v4;
@@ -59,8 +59,8 @@
 
 - (BOOL)isTrapEntry
 {
-  v2 = [(DSThermalLogLine *)self eventType];
-  v3 = [v2 isEqualToString:@"ThermalUIAlertEnter"];
+  eventType = [(DSThermalLogLine *)self eventType];
+  v3 = [eventType isEqualToString:@"ThermalUIAlertEnter"];
 
   return v3;
 }

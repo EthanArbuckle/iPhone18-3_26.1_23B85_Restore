@@ -1,21 +1,21 @@
 @interface NEIKEv2AddressList
-+ (CFStringRef)normalizeServerAddress:(void *)a3 path:;
-+ (__CFString)getSynthesizedIPv6Address:(uint64_t)a1 outgoingIf:(void *)a2 nat64Prefixes:(uint64_t)a3 numNat64Prefixes:(int)a4;
++ (CFStringRef)normalizeServerAddress:(void *)address path:;
++ (__CFString)getSynthesizedIPv6Address:(uint64_t)address outgoingIf:(void *)if nat64Prefixes:(uint64_t)prefixes numNat64Prefixes:(int)nat64Prefixes;
 @end
 
 @implementation NEIKEv2AddressList
 
-+ (__CFString)getSynthesizedIPv6Address:(uint64_t)a1 outgoingIf:(void *)a2 nat64Prefixes:(uint64_t)a3 numNat64Prefixes:(int)a4
++ (__CFString)getSynthesizedIPv6Address:(uint64_t)address outgoingIf:(void *)if nat64Prefixes:(uint64_t)prefixes numNat64Prefixes:(int)nat64Prefixes
 {
-  LODWORD(v4) = a4;
-  v6 = a2;
+  LODWORD(v4) = nat64Prefixes;
+  ifCopy = if;
   objc_opt_self();
-  if (NEGetAddressFamilyFromString(v6) == 30)
+  if (NEGetAddressFamilyFromString(ifCopy) == 30)
   {
     goto LABEL_11;
   }
 
-  if (!NECreateAddressStructFromString(v6, 0, 0))
+  if (!NECreateAddressStructFromString(ifCopy, 0, 0))
   {
     v7 = ne_log_obj();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -44,7 +44,7 @@ LABEL_11:
       break;
     }
 
-    a3 += 16;
+    prefixes += 16;
     if (!--v4)
     {
       goto LABEL_11;
@@ -57,11 +57,11 @@ LABEL_12:
   return v8;
 }
 
-+ (CFStringRef)normalizeServerAddress:(void *)a3 path:
++ (CFStringRef)normalizeServerAddress:(void *)address path:
 {
   v16.data = *MEMORY[0x1E69E9840];
   v4 = a2;
-  v5 = a3;
+  addressCopy = address;
   objc_opt_self();
   if (!v4)
   {
@@ -72,15 +72,15 @@ LABEL_12:
   if (NEGetAddressFamilyFromString(v4) == 30)
   {
     v10 = NECreateAddressStructFromString(v4, 0, 0);
-    v11 = [v5 scopedInterface];
-    if (v11)
+    scopedInterface = [addressCopy scopedInterface];
+    if (scopedInterface)
     {
-      [v5 scopedInterface];
+      [addressCopy scopedInterface];
     }
 
     else
     {
-      [v5 interface];
+      [addressCopy interface];
     }
     v12 = ;
     [v12 interfaceIndex];

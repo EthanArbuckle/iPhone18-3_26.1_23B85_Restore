@@ -1,12 +1,12 @@
 @interface AXKeyRepeatController
-- (double)maximumValueForSpecifier:(id)a3;
-- (double)minimumValueForSpecifier:(id)a3;
-- (double)valueForSpecifier:(id)a3;
-- (id)keyRepeatEnabled:(id)a3;
+- (double)maximumValueForSpecifier:(id)specifier;
+- (double)minimumValueForSpecifier:(id)specifier;
+- (double)valueForSpecifier:(id)specifier;
+- (id)keyRepeatEnabled:(id)enabled;
 - (id)specifiers;
-- (id)stringValueForSpecifier:(id)a3;
-- (void)setKeyRepeatEnabled:(id)a3 specifier:(id)a4;
-- (void)specifier:(id)a3 setValue:(double)a4;
+- (id)stringValueForSpecifier:(id)specifier;
+- (void)setKeyRepeatEnabled:(id)enabled specifier:(id)specifier;
+- (void)specifier:(id)specifier setValue:(double)value;
 - (void)viewDidLoad;
 @end
 
@@ -17,10 +17,10 @@
   v6.receiver = self;
   v6.super_class = AXKeyRepeatController;
   [(AXKeyRepeatController *)&v6 viewDidLoad];
-  v3 = [(AXKeyRepeatController *)self table];
+  table = [(AXKeyRepeatController *)self table];
   v4 = objc_opt_class();
   v5 = +[AXUISettingsEditableTableCellWithStepper cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 }
 
 - (id)specifiers
@@ -64,8 +64,8 @@
 
     if (_AXSKeyRepeatEnabled())
     {
-      v18 = [(AXKeyRepeatController *)self keyRepeatSpecificSpecifiers];
-      [v5 addObjectsFromArray:v18];
+      keyRepeatSpecificSpecifiers = [(AXKeyRepeatController *)self keyRepeatSpecificSpecifiers];
+      [v5 addObjectsFromArray:keyRepeatSpecificSpecifiers];
     }
 
     v19 = *&self->AXUISettingsBaseListController_opaque[v3];
@@ -77,60 +77,60 @@
   return v4;
 }
 
-- (void)setKeyRepeatEnabled:(id)a3 specifier:(id)a4
+- (void)setKeyRepeatEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = _AXSKeyRepeatEnabled();
-  v7 = [v5 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  if ((((v6 == 0) ^ v7) & 1) == 0)
+  if ((((v6 == 0) ^ bOOLValue) & 1) == 0)
   {
     _AXSSetKeyRepeatEnabled();
-    if (v7)
+    if (bOOLValue)
     {
-      v18 = [(AXKeyRepeatController *)self keyRepeatSpecificSpecifiers];
+      keyRepeatSpecificSpecifiers = [(AXKeyRepeatController *)self keyRepeatSpecificSpecifiers];
       [AXKeyRepeatController insertContiguousSpecifiers:"insertContiguousSpecifiers:afterSpecifierID:animated:" afterSpecifierID:? animated:?];
     }
 
     else
     {
-      v8 = [(AXKeyRepeatController *)self keyRepeatIntervalSpecifier];
-      v9 = [(AXKeyRepeatController *)self indexPathForSpecifier:v8];
+      keyRepeatIntervalSpecifier = [(AXKeyRepeatController *)self keyRepeatIntervalSpecifier];
+      v9 = [(AXKeyRepeatController *)self indexPathForSpecifier:keyRepeatIntervalSpecifier];
 
-      v10 = [(AXKeyRepeatController *)self table];
-      v11 = [v10 cellForRowAtIndexPath:v9];
+      table = [(AXKeyRepeatController *)self table];
+      v11 = [table cellForRowAtIndexPath:v9];
 
-      v12 = [v11 nameTextField];
-      [v12 resignFirstResponder];
+      nameTextField = [v11 nameTextField];
+      [nameTextField resignFirstResponder];
 
-      v13 = [(AXKeyRepeatController *)self keyRepeatDelaySpecifier];
-      v18 = [(AXKeyRepeatController *)self indexPathForSpecifier:v13];
+      keyRepeatDelaySpecifier = [(AXKeyRepeatController *)self keyRepeatDelaySpecifier];
+      keyRepeatSpecificSpecifiers = [(AXKeyRepeatController *)self indexPathForSpecifier:keyRepeatDelaySpecifier];
 
-      v14 = [(AXKeyRepeatController *)self table];
-      v15 = [v14 cellForRowAtIndexPath:v18];
+      table2 = [(AXKeyRepeatController *)self table];
+      v15 = [table2 cellForRowAtIndexPath:keyRepeatSpecificSpecifiers];
 
-      v16 = [v15 nameTextField];
-      [v16 resignFirstResponder];
+      nameTextField2 = [v15 nameTextField];
+      [nameTextField2 resignFirstResponder];
 
-      v17 = [(AXKeyRepeatController *)self keyRepeatSpecificSpecifiers];
-      [(AXKeyRepeatController *)self removeContiguousSpecifiers:v17 animated:1];
+      keyRepeatSpecificSpecifiers2 = [(AXKeyRepeatController *)self keyRepeatSpecificSpecifiers];
+      [(AXKeyRepeatController *)self removeContiguousSpecifiers:keyRepeatSpecificSpecifiers2 animated:1];
     }
   }
 }
 
-- (id)keyRepeatEnabled:(id)a3
+- (id)keyRepeatEnabled:(id)enabled
 {
   v3 = _AXSKeyRepeatEnabled();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (double)valueForSpecifier:(id)a3
+- (double)valueForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(AXKeyRepeatController *)self keyRepeatIntervalSpecifier];
+  specifierCopy = specifier;
+  keyRepeatIntervalSpecifier = [(AXKeyRepeatController *)self keyRepeatIntervalSpecifier];
 
-  if (v5 == v4)
+  if (keyRepeatIntervalSpecifier == specifierCopy)
   {
     _AXSKeyRepeatInterval();
 LABEL_6:
@@ -138,9 +138,9 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v6 = [(AXKeyRepeatController *)self keyRepeatDelaySpecifier];
+  keyRepeatDelaySpecifier = [(AXKeyRepeatController *)self keyRepeatDelaySpecifier];
 
-  if (v6 == v4)
+  if (keyRepeatDelaySpecifier == specifierCopy)
   {
     _AXSKeyRepeatDelay();
     goto LABEL_6;
@@ -153,21 +153,21 @@ LABEL_7:
   return v7;
 }
 
-- (void)specifier:(id)a3 setValue:(double)a4
+- (void)specifier:(id)specifier setValue:(double)value
 {
-  v7 = a3;
-  v5 = [(AXKeyRepeatController *)self keyRepeatIntervalSpecifier];
+  specifierCopy = specifier;
+  keyRepeatIntervalSpecifier = [(AXKeyRepeatController *)self keyRepeatIntervalSpecifier];
 
-  if (v5 == v7)
+  if (keyRepeatIntervalSpecifier == specifierCopy)
   {
     _AXSSetKeyRepeatInterval();
   }
 
   else
   {
-    v6 = [(AXKeyRepeatController *)self keyRepeatDelaySpecifier];
+    keyRepeatDelaySpecifier = [(AXKeyRepeatController *)self keyRepeatDelaySpecifier];
 
-    if (v6 == v7)
+    if (keyRepeatDelaySpecifier == specifierCopy)
     {
       _AXSSetKeyRepeatDelay();
     }
@@ -179,12 +179,12 @@ LABEL_7:
   }
 }
 
-- (double)minimumValueForSpecifier:(id)a3
+- (double)minimumValueForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(AXKeyRepeatController *)self keyRepeatIntervalSpecifier];
+  specifierCopy = specifier;
+  keyRepeatIntervalSpecifier = [(AXKeyRepeatController *)self keyRepeatIntervalSpecifier];
 
-  if (v5 == v4)
+  if (keyRepeatIntervalSpecifier == specifierCopy)
   {
     v8 = &kAXSKeyRepeatIntervalMinimum;
 LABEL_6:
@@ -192,9 +192,9 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v6 = [(AXKeyRepeatController *)self keyRepeatDelaySpecifier];
+  keyRepeatDelaySpecifier = [(AXKeyRepeatController *)self keyRepeatDelaySpecifier];
 
-  if (v6 == v4)
+  if (keyRepeatDelaySpecifier == specifierCopy)
   {
     v8 = &kAXSKeyRepeatDelayMinimum;
     goto LABEL_6;
@@ -215,12 +215,12 @@ LABEL_7:
   return v7;
 }
 
-- (double)maximumValueForSpecifier:(id)a3
+- (double)maximumValueForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(AXKeyRepeatController *)self keyRepeatIntervalSpecifier];
+  specifierCopy = specifier;
+  keyRepeatIntervalSpecifier = [(AXKeyRepeatController *)self keyRepeatIntervalSpecifier];
 
-  if (v5 == v4)
+  if (keyRepeatIntervalSpecifier == specifierCopy)
   {
     v8 = &kAXSKeyRepeatIntervalMaximum;
 LABEL_6:
@@ -228,9 +228,9 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v6 = [(AXKeyRepeatController *)self keyRepeatDelaySpecifier];
+  keyRepeatDelaySpecifier = [(AXKeyRepeatController *)self keyRepeatDelaySpecifier];
 
-  if (v6 == v4)
+  if (keyRepeatDelaySpecifier == specifierCopy)
   {
     v8 = &kAXSKeyRepeatDelayMaximum;
     goto LABEL_6;
@@ -243,9 +243,9 @@ LABEL_7:
   return v7;
 }
 
-- (id)stringValueForSpecifier:(id)a3
+- (id)stringValueForSpecifier:(id)specifier
 {
-  [(AXKeyRepeatController *)self valueForSpecifier:a3];
+  [(AXKeyRepeatController *)self valueForSpecifier:specifier];
   v3 = [NSNumber numberWithDouble:?];
   v4 = AXFormatNumberWithOptions();
 

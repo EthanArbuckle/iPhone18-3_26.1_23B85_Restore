@@ -1,15 +1,15 @@
 @interface _INPBWellnessObjectResultValue
-- (BOOL)isEqual:(id)a3;
-- (_INPBWellnessObjectResultValue)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBWellnessObjectResultValue)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsResultType:(id)a3;
+- (int)StringAsResultType:(id)type;
 - (unint64_t)hash;
-- (void)addValues:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setResultType:(int)a3;
-- (void)setValues:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addValues:(id)values;
+- (void)encodeWithCoder:(id)coder;
+- (void)setResultType:(int)type;
+- (void)setValues:(id)values;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBWellnessObjectResultValue
@@ -17,34 +17,34 @@
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBWellnessObjectResultValue *)self recordDate];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"recordDate"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  recordDate = [(_INPBWellnessObjectResultValue *)self recordDate];
+  dictionaryRepresentation = [recordDate dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"recordDate"];
 
   if ([(_INPBWellnessObjectResultValue *)self hasResultType])
   {
-    v6 = [(_INPBWellnessObjectResultValue *)self resultType];
-    if (v6 >= 0xA)
+    resultType = [(_INPBWellnessObjectResultValue *)self resultType];
+    if (resultType >= 0xA)
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v6];
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", resultType];
     }
 
     else
     {
-      v7 = off_1E7283528[v6];
+      v7 = off_1E7283528[resultType];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"resultType"];
+    [dictionary setObject:v7 forKeyedSubscript:@"resultType"];
   }
 
-  v8 = [(_INPBWellnessObjectResultValue *)self unit];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"unit"];
+  unit = [(_INPBWellnessObjectResultValue *)self unit];
+  dictionaryRepresentation2 = [unit dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"unit"];
 
   if ([(NSArray *)self->_values count])
   {
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -64,8 +64,8 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v10 addObject:v16];
+          dictionaryRepresentation3 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation3];
         }
 
         v13 = [(NSArray *)v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -74,12 +74,12 @@
       while (v13);
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"values"];
+    [dictionary setObject:array forKeyedSubscript:@"values"];
   }
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -100,28 +100,28 @@
   return v5 ^ v6 ^ [(NSArray *)self->_values hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
-  v5 = [(_INPBWellnessObjectResultValue *)self recordDate];
-  v6 = [v4 recordDate];
-  if ((v5 != 0) == (v6 == 0))
+  recordDate = [(_INPBWellnessObjectResultValue *)self recordDate];
+  recordDate2 = [equalCopy recordDate];
+  if ((recordDate != 0) == (recordDate2 == 0))
   {
     goto LABEL_20;
   }
 
-  v7 = [(_INPBWellnessObjectResultValue *)self recordDate];
-  if (v7)
+  recordDate3 = [(_INPBWellnessObjectResultValue *)self recordDate];
+  if (recordDate3)
   {
-    v8 = v7;
-    v9 = [(_INPBWellnessObjectResultValue *)self recordDate];
-    v10 = [v4 recordDate];
-    v11 = [v9 isEqual:v10];
+    v8 = recordDate3;
+    recordDate4 = [(_INPBWellnessObjectResultValue *)self recordDate];
+    recordDate5 = [equalCopy recordDate];
+    v11 = [recordDate4 isEqual:recordDate5];
 
     if (!v11)
     {
@@ -133,38 +133,38 @@
   {
   }
 
-  v12 = [(_INPBWellnessObjectResultValue *)self hasResultType];
-  if (v12 != [v4 hasResultType])
+  hasResultType = [(_INPBWellnessObjectResultValue *)self hasResultType];
+  if (hasResultType != [equalCopy hasResultType])
   {
     goto LABEL_21;
   }
 
   if ([(_INPBWellnessObjectResultValue *)self hasResultType])
   {
-    if ([v4 hasResultType])
+    if ([equalCopy hasResultType])
     {
       resultType = self->_resultType;
-      if (resultType != [v4 resultType])
+      if (resultType != [equalCopy resultType])
       {
         goto LABEL_21;
       }
     }
   }
 
-  v5 = [(_INPBWellnessObjectResultValue *)self unit];
-  v6 = [v4 unit];
-  if ((v5 != 0) == (v6 == 0))
+  recordDate = [(_INPBWellnessObjectResultValue *)self unit];
+  recordDate2 = [equalCopy unit];
+  if ((recordDate != 0) == (recordDate2 == 0))
   {
     goto LABEL_20;
   }
 
-  v14 = [(_INPBWellnessObjectResultValue *)self unit];
-  if (v14)
+  unit = [(_INPBWellnessObjectResultValue *)self unit];
+  if (unit)
   {
-    v15 = v14;
-    v16 = [(_INPBWellnessObjectResultValue *)self unit];
-    v17 = [v4 unit];
-    v18 = [v16 isEqual:v17];
+    v15 = unit;
+    unit2 = [(_INPBWellnessObjectResultValue *)self unit];
+    unit3 = [equalCopy unit];
+    v18 = [unit2 isEqual:unit3];
 
     if (!v18)
     {
@@ -176,12 +176,12 @@
   {
   }
 
-  v5 = [(_INPBWellnessObjectResultValue *)self values];
-  v6 = [v4 values];
-  if ((v5 != 0) != (v6 == 0))
+  recordDate = [(_INPBWellnessObjectResultValue *)self values];
+  recordDate2 = [equalCopy values];
+  if ((recordDate != 0) != (recordDate2 == 0))
   {
-    v19 = [(_INPBWellnessObjectResultValue *)self values];
-    if (!v19)
+    values = [(_INPBWellnessObjectResultValue *)self values];
+    if (!values)
     {
 
 LABEL_24:
@@ -189,10 +189,10 @@ LABEL_24:
       goto LABEL_22;
     }
 
-    v20 = v19;
-    v21 = [(_INPBWellnessObjectResultValue *)self values];
-    v22 = [v4 values];
-    v23 = [v21 isEqual:v22];
+    v20 = values;
+    values2 = [(_INPBWellnessObjectResultValue *)self values];
+    values3 = [equalCopy values];
+    v23 = [values2 isEqual:values3];
 
     if (v23)
     {
@@ -212,10 +212,10 @@ LABEL_22:
   return v24;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBWellnessObjectResultValue allocWithZone:](_INPBWellnessObjectResultValue init];
-  v6 = [(_INPBDateTimeRange *)self->_recordDate copyWithZone:a3];
+  v6 = [(_INPBDateTimeRange *)self->_recordDate copyWithZone:zone];
   [(_INPBWellnessObjectResultValue *)v5 setRecordDate:v6];
 
   if ([(_INPBWellnessObjectResultValue *)self hasResultType])
@@ -223,48 +223,48 @@ LABEL_22:
     [(_INPBWellnessObjectResultValue *)v5 setResultType:[(_INPBWellnessObjectResultValue *)self resultType]];
   }
 
-  v7 = [(_INPBString *)self->_unit copyWithZone:a3];
+  v7 = [(_INPBString *)self->_unit copyWithZone:zone];
   [(_INPBWellnessObjectResultValue *)v5 setUnit:v7];
 
-  v8 = [(NSArray *)self->_values copyWithZone:a3];
+  v8 = [(NSArray *)self->_values copyWithZone:zone];
   [(_INPBWellnessObjectResultValue *)v5 setValues:v8];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBWellnessObjectResultValue *)self data];
+  coderCopy = coder;
+  data = [(_INPBWellnessObjectResultValue *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBWellnessObjectResultValue)initWithCoder:(id)a3
+- (_INPBWellnessObjectResultValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBWellnessObjectResultValue *)self initWithData:v6];
+    self = [(_INPBWellnessObjectResultValue *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_INPBWellnessObjectResultValue *)self recordDate];
+  toCopy = to;
+  recordDate = [(_INPBWellnessObjectResultValue *)self recordDate];
 
-  if (v5)
+  if (recordDate)
   {
-    v6 = [(_INPBWellnessObjectResultValue *)self recordDate];
+    recordDate2 = [(_INPBWellnessObjectResultValue *)self recordDate];
     PBDataWriterWriteSubmessage();
   }
 
@@ -274,11 +274,11 @@ LABEL_22:
     PBDataWriterWriteInt32Field();
   }
 
-  v8 = [(_INPBWellnessObjectResultValue *)self unit];
+  unit = [(_INPBWellnessObjectResultValue *)self unit];
 
-  if (v8)
+  if (unit)
   {
-    v9 = [(_INPBWellnessObjectResultValue *)self unit];
+    unit2 = [(_INPBWellnessObjectResultValue *)self unit];
     PBDataWriterWriteSubmessage();
   }
 
@@ -317,82 +317,82 @@ LABEL_22:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addValues:(id)a3
+- (void)addValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   values = self->_values;
-  v8 = v4;
+  v8 = valuesCopy;
   if (!values)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_values;
-    self->_values = v6;
+    self->_values = array;
 
-    v4 = v8;
+    valuesCopy = v8;
     values = self->_values;
   }
 
-  [(NSArray *)values addObject:v4];
+  [(NSArray *)values addObject:valuesCopy];
 }
 
-- (void)setValues:(id)a3
+- (void)setValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   values = self->_values;
   self->_values = v4;
 
   MEMORY[0x1EEE66BB8](v4, values);
 }
 
-- (int)StringAsResultType:(id)a3
+- (int)StringAsResultType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_RESULT_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_RESULT_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"RAW"])
+  else if ([typeCopy isEqualToString:@"RAW"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"AVERAGE"])
+  else if ([typeCopy isEqualToString:@"AVERAGE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"MINIMUM"])
+  else if ([typeCopy isEqualToString:@"MINIMUM"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"MAXIMUM"])
+  else if ([typeCopy isEqualToString:@"MAXIMUM"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SUM"])
+  else if ([typeCopy isEqualToString:@"SUM"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"FIRST"])
+  else if ([typeCopy isEqualToString:@"FIRST"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"LAST"])
+  else if ([typeCopy isEqualToString:@"LAST"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"ABOVE"])
+  else if ([typeCopy isEqualToString:@"ABOVE"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"BELOW"])
+  else if ([typeCopy isEqualToString:@"BELOW"])
   {
     v4 = 9;
   }
@@ -405,10 +405,10 @@ LABEL_22:
   return v4;
 }
 
-- (void)setResultType:(int)a3
+- (void)setResultType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -416,7 +416,7 @@ LABEL_22:
   else
   {
     *&self->_has = has | 1;
-    self->_resultType = a3;
+    self->_resultType = type;
   }
 }
 

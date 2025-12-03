@@ -1,20 +1,20 @@
 @interface TUUIXPClientConnectionWeakWrapper
 - (TUUIXPCClient)wrappedObject;
-- (TUUIXPClientConnectionWeakWrapper)initWithWrappedObject:(id)a3;
+- (TUUIXPClientConnectionWeakWrapper)initWithWrappedObject:(id)object;
 @end
 
 @implementation TUUIXPClientConnectionWeakWrapper
 
-- (TUUIXPClientConnectionWeakWrapper)initWithWrappedObject:(id)a3
+- (TUUIXPClientConnectionWeakWrapper)initWithWrappedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v8.receiver = self;
   v8.super_class = TUUIXPClientConnectionWeakWrapper;
   v5 = [(TUUIXPClientConnectionWeakWrapper *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_wrappedObject, v4);
+    objc_storeWeak(&v5->_wrappedObject, objectCopy);
   }
 
   return v6;

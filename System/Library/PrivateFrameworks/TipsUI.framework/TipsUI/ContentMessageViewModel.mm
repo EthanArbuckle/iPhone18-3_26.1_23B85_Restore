@@ -1,17 +1,17 @@
 @interface ContentMessageViewModel
 + (NSURL)networkSettingsURL;
-+ (int64_t)typeFor:(id)a3;
++ (int64_t)typeFor:(id)for;
 - (ContentMessageViewModel)init;
-- (ContentMessageViewModel)initWithContentMessageType:(int64_t)a3 additionalContext:(id)a4;
-- (ContentMessageViewModel)initWithError:(id)a3 defaultMessage:(id)a4;
-- (ContentMessageViewModel)initWithTitle:(id)a3 message:(id)a4 symbolName:(id)a5;
-- (ContentMessageViewModel)initWithType:(int64_t)a3 additionalContext:(id)a4 defaultMessage:(id)a5;
+- (ContentMessageViewModel)initWithContentMessageType:(int64_t)type additionalContext:(id)context;
+- (ContentMessageViewModel)initWithError:(id)error defaultMessage:(id)message;
+- (ContentMessageViewModel)initWithTitle:(id)title message:(id)message symbolName:(id)name;
+- (ContentMessageViewModel)initWithType:(int64_t)type additionalContext:(id)context defaultMessage:(id)message;
 - (NSString)settingsText;
 - (NSURL)settingsURL;
 - (id)debugActionHandler;
-- (void)setDebugActionHandler:(id)a3;
-- (void)setSettingsText:(id)a3;
-- (void)setSettingsURL:(id)a3;
+- (void)setDebugActionHandler:(id)handler;
+- (void)setSettingsText:(id)text;
+- (void)setSettingsURL:(id)l;
 @end
 
 @implementation ContentMessageViewModel
@@ -38,12 +38,12 @@
   return v10;
 }
 
-- (void)setSettingsURL:(id)a3
+- (void)setSettingsURL:(id)l
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CF76C90);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v12 - v6;
-  if (a3)
+  if (l)
   {
     sub_220BCBF30();
     v8 = sub_220BCBF80();
@@ -58,7 +58,7 @@
 
   v10 = OBJC_IVAR___ContentMessageViewModel_settingsURL;
   swift_beginAccess();
-  v11 = self;
+  selfCopy = self;
   sub_220B55518(v7, self + v10);
   swift_endAccess();
 }
@@ -79,9 +79,9 @@
   return v2;
 }
 
-- (void)setSettingsText:(id)a3
+- (void)setSettingsText:(id)text
 {
-  if (a3)
+  if (text)
   {
     v4 = sub_220BCDBA0();
   }
@@ -121,9 +121,9 @@
   return v4;
 }
 
-- (void)setDebugActionHandler:(id)a3
+- (void)setDebugActionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -141,15 +141,15 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_220B3A128(v7);
 }
 
-- (ContentMessageViewModel)initWithContentMessageType:(int64_t)a3 additionalContext:(id)a4
+- (ContentMessageViewModel)initWithContentMessageType:(int64_t)type additionalContext:(id)context
 {
-  if (a4)
+  if (context)
   {
-    a4 = sub_220BCDBA0();
+    context = sub_220BCDBA0();
     v6 = v5;
   }
 
@@ -158,16 +158,16 @@
     v6 = 0;
   }
 
-  return ContentMessageViewModel.init(contentMessageType:additionalContext:)(a3, a4, v6);
+  return ContentMessageViewModel.init(contentMessageType:additionalContext:)(type, context, v6);
 }
 
-- (ContentMessageViewModel)initWithType:(int64_t)a3 additionalContext:(id)a4 defaultMessage:(id)a5
+- (ContentMessageViewModel)initWithType:(int64_t)type additionalContext:(id)context defaultMessage:(id)message
 {
-  if (!a4)
+  if (!context)
   {
     v7 = 0;
     v9 = 0;
-    if (a5)
+    if (message)
     {
       goto LABEL_3;
     }
@@ -175,12 +175,12 @@
 LABEL_5:
     v10 = 0;
     v12 = 0;
-    return ContentMessageViewModel.init(type:additionalContext:defaultMessage:)(a3, v7, v9, v10, v12);
+    return ContentMessageViewModel.init(type:additionalContext:defaultMessage:)(type, v7, v9, v10, v12);
   }
 
   v7 = sub_220BCDBA0();
   v9 = v8;
-  if (!a5)
+  if (!message)
   {
     goto LABEL_5;
   }
@@ -188,10 +188,10 @@ LABEL_5:
 LABEL_3:
   v10 = sub_220BCDBA0();
   v12 = v11;
-  return ContentMessageViewModel.init(type:additionalContext:defaultMessage:)(a3, v7, v9, v10, v12);
+  return ContentMessageViewModel.init(type:additionalContext:defaultMessage:)(type, v7, v9, v10, v12);
 }
 
-- (ContentMessageViewModel)initWithTitle:(id)a3 message:(id)a4 symbolName:(id)a5
+- (ContentMessageViewModel)initWithTitle:(id)title message:(id)message symbolName:(id)name
 {
   v6 = sub_220BCDBA0();
   v8 = v7;
@@ -222,9 +222,9 @@ LABEL_3:
   return [(ContentMessageViewModel *)&v23 init];
 }
 
-- (ContentMessageViewModel)initWithError:(id)a3 defaultMessage:(id)a4
+- (ContentMessageViewModel)initWithError:(id)error defaultMessage:(id)message
 {
-  if (a4)
+  if (message)
   {
     sub_220BCDBA0();
     v7 = v6;
@@ -235,8 +235,8 @@ LABEL_3:
     v7 = 0;
   }
 
-  v8 = a3;
-  v9 = _s6TipsUI23ContentMessageViewModelC4type3forAA0cD4TypeOSo7NSErrorCSg_tFZ_0(a3);
+  errorCopy = error;
+  v9 = _s6TipsUI23ContentMessageViewModelC4type3forAA0cD4TypeOSo7NSErrorCSg_tFZ_0(error);
   if (v7)
   {
     v10 = sub_220BCDB70();
@@ -279,10 +279,10 @@ LABEL_3:
   return v9;
 }
 
-+ (int64_t)typeFor:(id)a3
++ (int64_t)typeFor:(id)for
 {
-  v4 = a3;
-  v5 = _s6TipsUI23ContentMessageViewModelC4type3forAA0cD4TypeOSo7NSErrorCSg_tFZ_0(a3);
+  forCopy = for;
+  v5 = _s6TipsUI23ContentMessageViewModelC4type3forAA0cD4TypeOSo7NSErrorCSg_tFZ_0(for);
 
   return v5;
 }

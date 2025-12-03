@@ -1,9 +1,9 @@
 @interface MOEventInvite
 - (MOEventInvite)init;
-- (MOEventInvite)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MOEventInvite)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOEventInvite
@@ -21,45 +21,45 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   inviteEventTitle = self->_inviteEventTitle;
-  v5 = a3;
-  [v5 encodeObject:inviteEventTitle forKey:@"inviteEventTitle"];
-  [v5 encodeObject:self->_inviteEventPlaceName forKey:@"inviteEventPlaceName"];
-  [v5 encodeObject:self->_inviteEventLocation forKey:@"inviteEventLocation"];
-  [v5 encodeBool:self->_inviteEventIsAllDay forKey:@"inviteEventIsAllDay"];
-  [v5 encodeObject:self->_inviteEventOrganizers forKey:@"inviteEventOrganizers"];
-  [v5 encodeObject:self->_inviteEventAttendees forKey:@"inviteEventAttendees"];
+  coderCopy = coder;
+  [coderCopy encodeObject:inviteEventTitle forKey:@"inviteEventTitle"];
+  [coderCopy encodeObject:self->_inviteEventPlaceName forKey:@"inviteEventPlaceName"];
+  [coderCopy encodeObject:self->_inviteEventLocation forKey:@"inviteEventLocation"];
+  [coderCopy encodeBool:self->_inviteEventIsAllDay forKey:@"inviteEventIsAllDay"];
+  [coderCopy encodeObject:self->_inviteEventOrganizers forKey:@"inviteEventOrganizers"];
+  [coderCopy encodeObject:self->_inviteEventAttendees forKey:@"inviteEventAttendees"];
 }
 
-- (MOEventInvite)initWithCoder:(id)a3
+- (MOEventInvite)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = MOEventInvite;
   v5 = [(MOEventInvite *)&v25 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inviteEventTitle"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inviteEventTitle"];
     inviteEventTitle = v5->_inviteEventTitle;
     v5->_inviteEventTitle = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inviteEventPlaceName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inviteEventPlaceName"];
     inviteEventPlaceName = v5->_inviteEventPlaceName;
     v5->_inviteEventPlaceName = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inviteEventLocation"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inviteEventLocation"];
     inviteEventLocation = v5->_inviteEventLocation;
     v5->_inviteEventLocation = v10;
 
-    v5->_inviteEventIsAllDay = [v4 decodeBoolForKey:@"inviteEventIsAllDay"];
+    v5->_inviteEventIsAllDay = [coderCopy decodeBoolForKey:@"inviteEventIsAllDay"];
     v12 = objc_autoreleasePoolPush();
     v13 = [NSSet alloc];
     v14 = objc_opt_class();
     v15 = [v13 initWithObjects:{v14, objc_opt_class(), 0}];
     objc_autoreleasePoolPop(v12);
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"inviteEventOrganizers"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"inviteEventOrganizers"];
     inviteEventOrganizers = v5->_inviteEventOrganizers;
     v5->_inviteEventOrganizers = v16;
 
@@ -68,7 +68,7 @@
     v20 = objc_opt_class();
     v21 = [v19 initWithObjects:{v20, objc_opt_class(), 0}];
     objc_autoreleasePoolPop(v18);
-    v22 = [v4 decodeObjectOfClasses:v21 forKey:@"inviteEventAttendees"];
+    v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"inviteEventAttendees"];
     inviteEventAttendees = v5->_inviteEventAttendees;
     v5->_inviteEventAttendees = v22;
   }
@@ -76,7 +76,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MOEventInvite);
   objc_storeStrong(&v4->_inviteEventTitle, self->_inviteEventTitle);
@@ -90,8 +90,8 @@
 
 - (id)description
 {
-  v2 = [(NSString *)self->_inviteEventTitle mask];
-  v3 = [NSString stringWithFormat:@"invite event title, %@", v2];
+  mask = [(NSString *)self->_inviteEventTitle mask];
+  v3 = [NSString stringWithFormat:@"invite event title, %@", mask];
 
   return v3;
 }

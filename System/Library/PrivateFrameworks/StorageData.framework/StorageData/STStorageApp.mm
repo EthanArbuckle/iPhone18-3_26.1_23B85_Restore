@@ -10,9 +10,9 @@
 - (NSDictionary)infoDict;
 - (STSizeVector)appSize;
 - (STSizeVector)internalSizes;
-- (STStorageApp)initWithAppRecord:(id)a3 usageBundle:(id)a4;
-- (STStorageApp)initWithBundleIdentifier:(id)a3;
-- (STStorageApp)initWithBundleIdentifier:(id)a3 name:(id)a4 vendorName:(id)a5;
+- (STStorageApp)initWithAppRecord:(id)record usageBundle:(id)bundle;
+- (STStorageApp)initWithBundleIdentifier:(id)identifier;
+- (STStorageApp)initWithBundleIdentifier:(id)identifier name:(id)name vendorName:(id)vendorName;
 - (id)appPath;
 - (id)appProxy;
 - (id)dataPath;
@@ -23,21 +23,21 @@
 - (int64_t)sizeOfMLData;
 - (int64_t)staticSize;
 - (int64_t)totalSize;
-- (void)_postNotify:(id)a3;
-- (void)addNumber:(int64_t)a3 toDict:(id)a4 forKey:(id)a5;
+- (void)_postNotify:(id)notify;
+- (void)addNumber:(int64_t)number toDict:(id)dict forKey:(id)key;
 - (void)notifyAppSizeChanged;
-- (void)postNotify:(id)a3;
+- (void)postNotify:(id)notify;
 - (void)refreshAppState;
-- (void)setAppRecord:(id)a3;
-- (void)setExternalSizes:(id)a3;
+- (void)setAppRecord:(id)record;
+- (void)setExternalSizes:(id)sizes;
 @end
 
 @implementation STStorageApp
 
-- (STStorageApp)initWithAppRecord:(id)a3 usageBundle:(id)a4
+- (STStorageApp)initWithAppRecord:(id)record usageBundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  bundleCopy = bundle;
   v12.receiver = self;
   v12.super_class = STStorageApp;
   v8 = [(STStorageApp *)&v12 init];
@@ -47,59 +47,59 @@
     extSizesVar = v8->_extSizesVar;
     v8->_extSizesVar = v9;
 
-    [(STStorageApp *)v8 setAppRecord:v6];
-    objc_storeStrong(&v8->_usageBundle, a4);
+    [(STStorageApp *)v8 setAppRecord:recordCopy];
+    objc_storeStrong(&v8->_usageBundle, bundle);
   }
 
   return v8;
 }
 
-- (STStorageApp)initWithBundleIdentifier:(id)a3
+- (STStorageApp)initWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v27 = 0;
-  v5 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v4 allowPlaceholder:1 error:&v27];
+  v5 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:identifierCopy allowPlaceholder:1 error:&v27];
   v6 = v27;
   if (v6)
   {
     v7 = v6;
-    v8 = [v6 code];
-    STLog(2, @"%li loading application record for %@", v9, v10, v11, v12, v13, v14, v8);
+    code = [v6 code];
+    STLog(2, @"%li loading application record for %@", v9, v10, v11, v12, v13, v14, code);
 
     v26 = 0;
-    v15 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifierOfSystemPlaceholder:v4 error:&v26];
+    v15 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifierOfSystemPlaceholder:identifierCopy error:&v26];
     v16 = v26;
 
     if (v16)
     {
-      v17 = [v16 code];
-      STLog(2, @"%li loading placeholder application record for %@", v18, v19, v20, v21, v22, v23, v17);
+      code2 = [v16 code];
+      STLog(2, @"%li loading placeholder application record for %@", v18, v19, v20, v21, v22, v23, code2);
 
-      v24 = 0;
+      selfCopy2 = 0;
     }
 
     else
     {
       self = [(STStorageApp *)self initWithAppRecord:v15];
-      v24 = self;
+      selfCopy2 = self;
     }
   }
 
   else
   {
     self = [(STStorageApp *)self initWithAppRecord:v5];
-    v24 = self;
+    selfCopy2 = self;
     v15 = v5;
   }
 
-  return v24;
+  return selfCopy2;
 }
 
-- (STStorageApp)initWithBundleIdentifier:(id)a3 name:(id)a4 vendorName:(id)a5
+- (STStorageApp)initWithBundleIdentifier:(id)identifier name:(id)name vendorName:(id)vendorName
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  nameCopy = name;
+  vendorNameCopy = vendorName;
   v16.receiver = self;
   v16.super_class = STStorageApp;
   v12 = [(STStorageApp *)&v16 init];
@@ -109,11 +109,11 @@
     extSizesVar = v12->_extSizesVar;
     v12->_extSizesVar = v13;
 
-    objc_storeStrong(&v12->_bundleIdentifier, a3);
-    objc_storeStrong(&v12->_appIdentifier, a3);
+    objc_storeStrong(&v12->_bundleIdentifier, identifier);
+    objc_storeStrong(&v12->_appIdentifier, identifier);
     v12->_appKind = 2;
-    objc_storeStrong(&v12->_name, a4);
-    objc_storeStrong(&v12->_vendorName, a5);
+    objc_storeStrong(&v12->_name, name);
+    objc_storeStrong(&v12->_vendorName, vendorName);
   }
 
   return v12;
@@ -137,9 +137,9 @@
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 code];
+      code = [v8 code];
       v18 = self->_bundleIdentifier;
-      STLog(2, @"%li loading application record for %@", v11, v12, v13, v14, v15, v16, v10);
+      STLog(2, @"%li loading application record for %@", v11, v12, v13, v14, v15, v16, code);
       v4 = 0;
     }
 
@@ -156,11 +156,11 @@
 {
   if (![(STStorageApp *)self isPseudoApp])
   {
-    v4 = [(STStorageApp *)self appRecord];
-    v5 = [v4 applicationState];
-    if ([v5 isValid])
+    appRecord = [(STStorageApp *)self appRecord];
+    applicationState = [appRecord applicationState];
+    if ([applicationState isValid])
     {
-      if ([v5 isInstalled])
+      if ([applicationState isInstalled])
       {
         v3 = 0;
 LABEL_11:
@@ -168,16 +168,16 @@ LABEL_11:
         return v3;
       }
 
-      if ([v5 isDowngraded])
+      if ([applicationState isDowngraded])
       {
         v3 = 3;
         goto LABEL_11;
       }
 
-      v6 = [v4 installType];
-      if (v6 <= 0xA)
+      installType = [appRecord installType];
+      if (installType <= 0xA)
       {
-        v3 = dword_26BBAB1A0[v6];
+        v3 = dword_26BBAB1A0[installType];
         goto LABEL_11;
       }
     }
@@ -191,38 +191,38 @@ LABEL_11:
 
 - (id)appProxy
 {
-  v2 = [(STStorageApp *)self appRecord];
-  v3 = [v2 compatibilityObject];
+  appRecord = [(STStorageApp *)self appRecord];
+  compatibilityObject = [appRecord compatibilityObject];
 
-  return v3;
+  return compatibilityObject;
 }
 
-- (void)setAppRecord:(id)a3
+- (void)setAppRecord:(id)record
 {
-  v36 = a3;
-  v4 = [v36 persistentIdentifier];
+  recordCopy = record;
+  persistentIdentifier = [recordCopy persistentIdentifier];
   lsid = self->_lsid;
-  self->_lsid = v4;
+  self->_lsid = persistentIdentifier;
 
-  v6 = [v36 bundleIdentifier];
+  bundleIdentifier = [recordCopy bundleIdentifier];
   bundleIdentifier = self->_bundleIdentifier;
-  self->_bundleIdentifier = v6;
+  self->_bundleIdentifier = bundleIdentifier;
 
   objc_storeStrong(&self->_appIdentifier, self->_bundleIdentifier);
-  v8 = [v36 applicationState];
-  v9 = [v36 iTunesMetadata];
-  if ([v8 isInstalled] & 1) != 0 || (objc_msgSend(v8, "isPlaceholder"))
+  applicationState = [recordCopy applicationState];
+  iTunesMetadata = [recordCopy iTunesMetadata];
+  if ([applicationState isInstalled] & 1) != 0 || (objc_msgSend(applicationState, "isPlaceholder"))
   {
-    v10 = [v36 localizedName];
+    localizedName = [recordCopy localizedName];
   }
 
   else
   {
-    v10 = [v9 itemName];
+    localizedName = [iTunesMetadata itemName];
   }
 
-  v11 = v10;
-  if ([v10 length])
+  v11 = localizedName;
+  if ([localizedName length])
   {
     v12 = v11;
     name = self->_name;
@@ -231,23 +231,23 @@ LABEL_11:
 
   else
   {
-    name = [v36 compatibilityObject];
-    v14 = [name localizedName];
+    name = [recordCopy compatibilityObject];
+    localizedName2 = [name localizedName];
     v15 = self->_name;
-    self->_name = v14;
+    self->_name = localizedName2;
   }
 
-  v16 = [v9 artistName];
-  if (-[STStorageApp isApple](self, "isApple") && (![v16 length] || objc_msgSend(v16, "isEqualToString:", @"Apple")))
+  artistName = [iTunesMetadata artistName];
+  if (-[STStorageApp isApple](self, "isApple") && (![artistName length] || objc_msgSend(artistName, "isEqualToString:", @"Apple")))
   {
     v17 = @"Apple Inc.";
 
-    v16 = v17;
+    artistName = v17;
   }
 
-  objc_storeStrong(&self->_vendorName, v16);
-  v18 = [(STStorageApp *)self appRecord];
-  v19 = [v18 shortVersionString];
+  objc_storeStrong(&self->_vendorName, artistName);
+  appRecord = [(STStorageApp *)self appRecord];
+  shortVersionString = [appRecord shortVersionString];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -255,67 +255,67 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v20 = [v19 stringValue];
+      stringValue = [shortVersionString stringValue];
     }
 
     else
     {
-      v20 = &stru_287C88100;
+      stringValue = &stru_287C88100;
     }
 
-    v19 = v20;
+    shortVersionString = stringValue;
   }
 
   versionString = self->_versionString;
-  self->_versionString = v19;
-  v22 = v19;
+  self->_versionString = shortVersionString;
+  v22 = shortVersionString;
 
-  if ([v36 isDeletable])
+  if ([recordCopy isDeletable])
   {
-    v23 = [v36 isDeletableSystemApplication];
+    isDeletableSystemApplication = [recordCopy isDeletableSystemApplication];
   }
 
   else
   {
-    v23 = 1;
+    isDeletableSystemApplication = 1;
   }
 
-  self->_appKind = v23;
+  self->_appKind = isDeletableSystemApplication;
   self->_isPseudoApp = 0;
-  v24 = [v36 appClipMetadata];
-  self->_isAppClip = v24 != 0;
+  appClipMetadata = [recordCopy appClipMetadata];
+  self->_isAppClip = appClipMetadata != 0;
 
-  v25 = [v36 supportsOpenInPlace];
-  v26 = 0;
-  if (v25)
+  supportsOpenInPlace = [recordCopy supportsOpenInPlace];
+  isFileSharingEnabled = 0;
+  if (supportsOpenInPlace)
   {
-    v26 = [v36 isFileSharingEnabled];
+    isFileSharingEnabled = [recordCopy isFileSharingEnabled];
   }
 
-  self->_isDocumentApp = v26;
+  self->_isDocumentApp = isFileSharingEnabled;
   v27 = STPersonaCopyPersonaUniqueStrings();
-  v28 = [v36 bundleIdentifier];
-  v29 = [v36 linkedParentApplication];
-  v30 = [v29 bundleIdentifier];
+  bundleIdentifier2 = [recordCopy bundleIdentifier];
+  linkedParentApplication = [recordCopy linkedParentApplication];
+  bundleIdentifier3 = [linkedParentApplication bundleIdentifier];
   parentAppIdentifier = self->_parentAppIdentifier;
-  self->_parentAppIdentifier = v30;
+  self->_parentAppIdentifier = bundleIdentifier3;
 
-  v32 = [STContainer containerWithIdentifier:v28 containerClass:1 personaUniqueString:0];
+  v32 = [STContainer containerWithIdentifier:bundleIdentifier2 containerClass:1 personaUniqueString:0];
   appContainer = self->_appContainer;
   self->_appContainer = v32;
 
-  v34 = DataContainersFromAppRecordWithPersonas(v36, v27);
+  v34 = DataContainersFromAppRecordWithPersonas(recordCopy, v27);
   dataContainers = self->_dataContainers;
   self->_dataContainers = v34;
 }
 
 - (BOOL)isApple
 {
-  v3 = [(STStorageApp *)self appRecord];
-  v4 = v3;
-  if (v3)
+  appRecord = [(STStorageApp *)self appRecord];
+  v4 = appRecord;
+  if (appRecord)
   {
-    v5 = [v3 developerType] == 1;
+    v5 = [appRecord developerType] == 1;
   }
 
   else
@@ -335,25 +335,25 @@ LABEL_11:
       return 0;
     }
 
-    v4 = [(STStorageApp *)self name];
-    v5 = [v4 length];
+    name = [(STStorageApp *)self name];
+    v5 = [name length];
 
     if (!v5)
     {
       return 0;
     }
 
-    v6 = [(STStorageApp *)self appRecord];
-    v7 = v6;
-    if (!v6)
+    appRecord = [(STStorageApp *)self appRecord];
+    v7 = appRecord;
+    if (!appRecord)
     {
       goto LABEL_21;
     }
 
-    v8 = [v6 applicationState];
-    v9 = [v8 isRestricted];
+    applicationState = [appRecord applicationState];
+    isRestricted = [applicationState isRestricted];
 
-    if (v9)
+    if (isRestricted)
     {
       v3 = 0;
 LABEL_17:
@@ -366,15 +366,15 @@ LABEL_17:
 LABEL_21:
       if (!self->_usageBundle)
       {
-        v10 = [(STStorageApp *)self mediaTypes];
-        v11 = [v10 count];
+        mediaTypes = [(STStorageApp *)self mediaTypes];
+        v11 = [mediaTypes count];
 
         if (!v11)
         {
-          v12 = [(STStorageApp *)self externalSizes];
-          v13 = [v12 isZero];
+          externalSizes = [(STStorageApp *)self externalSizes];
+          isZero = [externalSizes isZero];
 
-          if (v13)
+          if (isZero)
           {
             v3 = [(STStorageApp *)self appKind]== 2;
             goto LABEL_17;
@@ -390,24 +390,24 @@ LABEL_21:
   return 1;
 }
 
-- (void)_postNotify:(id)a3
+- (void)_postNotify:(id)notify
 {
   v4 = MEMORY[0x277CCAB98];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
-  [v6 postNotificationName:v5 object:self->_bundleIdentifier];
+  notifyCopy = notify;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter postNotificationName:notifyCopy object:self->_bundleIdentifier];
 }
 
-- (void)postNotify:(id)a3
+- (void)postNotify:(id)notify
 {
-  v4 = a3;
+  notifyCopy = notify;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __27__STStorageApp_postNotify___block_invoke;
   v6[3] = &unk_279D1CEB0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = notifyCopy;
+  v5 = notifyCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -424,16 +424,16 @@ uint64_t __27__STStorageApp_postNotify___block_invoke(uint64_t a1)
 {
   if (![(NSString *)self->_bundleIdentifier isEqualToString:@"com.apple.Health"])
   {
-    v4 = [(STStorageApp *)self appRecord];
-    v5 = v4;
-    if (v4)
+    appRecord = [(STStorageApp *)self appRecord];
+    v5 = appRecord;
+    if (appRecord)
     {
-      if (([v4 isDeletableSystemApplication] & 1) != 0 || objc_msgSend(v5, "isSystemPlaceholder"))
+      if (([appRecord isDeletableSystemApplication] & 1) != 0 || objc_msgSend(v5, "isSystemPlaceholder"))
       {
-        v6 = [MEMORY[0x277D262A0] sharedConnection];
-        v7 = [v6 isSystemAppRemovalAllowed];
+        mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+        isSystemAppRemovalAllowed = [mEMORY[0x277D262A0] isSystemAppRemovalAllowed];
 LABEL_7:
-        v3 = v7;
+        v3 = isSystemAppRemovalAllowed;
 
 LABEL_11:
         return v3;
@@ -441,8 +441,8 @@ LABEL_11:
 
       if ([v5 isDeletable])
       {
-        v6 = [MEMORY[0x277D262A0] sharedConnection];
-        v7 = [v6 isAppRemovalAllowed];
+        mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+        isSystemAppRemovalAllowed = [mEMORY[0x277D262A0] isAppRemovalAllowed];
         goto LABEL_7;
       }
     }
@@ -456,110 +456,110 @@ LABEL_11:
 
 - (BOOL)isDemotable
 {
-  v2 = [(STStorageApp *)self appRecord];
-  v3 = v2;
-  if (v2)
+  appRecord = [(STStorageApp *)self appRecord];
+  v3 = appRecord;
+  if (appRecord)
   {
-    v4 = [v2 appClipMetadata];
+    appClipMetadata = [appRecord appClipMetadata];
 
-    if (!v4)
+    if (!appClipMetadata)
     {
       if (([v3 isDeletableSystemApplication] & 1) != 0 || objc_msgSend(v3, "isSystemPlaceholder"))
       {
-        v7 = [MEMORY[0x277D262A0] sharedConnection];
-        v5 = [v7 isSystemAppRemovalAllowed];
+        mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+        isSystemAppRemovalAllowed = [mEMORY[0x277D262A0] isSystemAppRemovalAllowed];
 
         goto LABEL_4;
       }
 
       if ([v3 isDeletable])
       {
-        v8 = [MEMORY[0x277D262A0] sharedConnection];
-        v9 = [v8 isAppRemovalAllowed];
+        mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+        isAppRemovalAllowed = [mEMORY[0x277D262A0]2 isAppRemovalAllowed];
 
-        if (v9)
+        if (isAppRemovalAllowed)
         {
-          v5 = [v3 isAppStoreVendable];
+          isSystemAppRemovalAllowed = [v3 isAppStoreVendable];
           goto LABEL_4;
         }
       }
     }
   }
 
-  v5 = 0;
+  isSystemAppRemovalAllowed = 0;
 LABEL_4:
 
-  return v5;
+  return isSystemAppRemovalAllowed;
 }
 
 - (BOOL)isDemoted
 {
-  v2 = [(STStorageApp *)self appRecord];
-  v3 = v2;
-  if (v2)
+  appRecord = [(STStorageApp *)self appRecord];
+  v3 = appRecord;
+  if (appRecord)
   {
-    v4 = [v2 applicationState];
-    v5 = [v4 isPlaceholder];
+    applicationState = [appRecord applicationState];
+    isPlaceholder = [applicationState isPlaceholder];
   }
 
   else
   {
-    v5 = 0;
+    isPlaceholder = 0;
   }
 
-  return v5;
+  return isPlaceholder;
 }
 
 - (id)appPath
 {
-  v2 = [(STStorageApp *)self appRecord];
-  v3 = v2;
-  if (v2)
+  appRecord = [(STStorageApp *)self appRecord];
+  v3 = appRecord;
+  if (appRecord)
   {
-    v4 = [v2 bundleContainerURL];
-    v5 = [v4 path];
+    bundleContainerURL = [appRecord bundleContainerURL];
+    path = [bundleContainerURL path];
   }
 
   else
   {
-    v5 = 0;
+    path = 0;
   }
 
-  return v5;
+  return path;
 }
 
 - (id)dataPath
 {
-  v2 = [(STStorageApp *)self appRecord];
-  v3 = v2;
-  if (v2)
+  appRecord = [(STStorageApp *)self appRecord];
+  v3 = appRecord;
+  if (appRecord)
   {
-    v4 = [v2 dataContainerURL];
-    v5 = [v4 path];
+    dataContainerURL = [appRecord dataContainerURL];
+    path = [dataContainerURL path];
   }
 
   else
   {
-    v5 = 0;
+    path = 0;
   }
 
-  return v5;
+  return path;
 }
 
 - (NSArray)documents
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (self->_isDocumentApp)
   {
-    v4 = [(STStorageApp *)self dataPath];
-    v5 = [v4 stringByAppendingPathComponent:@"Documents"];
+    dataPath = [(STStorageApp *)self dataPath];
+    v5 = [dataPath stringByAppendingPathComponent:@"Documents"];
 
     if ([v5 length])
     {
-      v6 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v7 = [MEMORY[0x277CBEBC0] fileURLWithPath:v5 isDirectory:1];
-      v8 = [v6 enumeratorAtURL:v7 includingPropertiesForKeys:0 options:6 errorHandler:0];
+      v8 = [defaultManager enumeratorAtURL:v7 includingPropertiesForKeys:0 options:6 errorHandler:0];
 
       v22 = 0u;
       v23 = 0u;
@@ -595,7 +595,7 @@ LABEL_4:
 
             else
             {
-              [v3 addObject:v15];
+              [array addObject:v15];
             }
           }
 
@@ -609,7 +609,7 @@ LABEL_4:
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
 - (void)notifyAppSizeChanged
@@ -619,55 +619,55 @@ LABEL_4:
   [(STStorageApp *)self postNotify:@"com.apple.storage.appinfoChanged"];
 }
 
-- (void)setExternalSizes:(id)a3
+- (void)setExternalSizes:(id)sizes
 {
-  v5 = a3;
-  v4 = [(STStorageApp *)self extSizesVar];
-  if (([v5 isEqual:v4] & 1) == 0)
+  sizesCopy = sizes;
+  extSizesVar = [(STStorageApp *)self extSizesVar];
+  if (([sizesCopy isEqual:extSizesVar] & 1) == 0)
   {
-    [(STStorageApp *)self setExtSizesVar:v5];
-    self->_externalSize = [v5 userTotal];
-    self->_externalPurgeableSize = [v5 purgeable];
+    [(STStorageApp *)self setExtSizesVar:sizesCopy];
+    self->_externalSize = [sizesCopy userTotal];
+    self->_externalPurgeableSize = [sizesCopy purgeable];
     [(STStorageApp *)self notifyAppSizeChanged];
   }
 }
 
 - (STSizeVector)internalSizes
 {
-  v3 = [(STStorageApp *)self intSizesVar];
-  if (!v3)
+  intSizesVar = [(STStorageApp *)self intSizesVar];
+  if (!intSizesVar)
   {
-    v4 = [(STStorageApp *)self updateAppSizes];
-    v3 = [(STStorageApp *)self intSizesVar];
+    updateAppSizes = [(STStorageApp *)self updateAppSizes];
+    intSizesVar = [(STStorageApp *)self intSizesVar];
   }
 
-  return v3;
+  return intSizesVar;
 }
 
 - (STSizeVector)appSize
 {
-  v3 = [(STStorageApp *)self appSizesVar];
-  if (!v3)
+  appSizesVar = [(STStorageApp *)self appSizesVar];
+  if (!appSizesVar)
   {
-    v3 = [(STStorageApp *)self updateAppSizes];
+    appSizesVar = [(STStorageApp *)self updateAppSizes];
   }
 
-  return v3;
+  return appSizesVar;
 }
 
 - (int64_t)sizeOfMLData
 {
-  v2 = [(STStorageApp *)self bundleIdentifier];
+  bundleIdentifier = [(STStorageApp *)self bundleIdentifier];
   v3 = +[STStorageCacheDelete sharedMonitor];
-  v4 = [v3 cacheDeleteDict];
+  cacheDeleteDict = [v3 cacheDeleteDict];
 
-  v5 = [v4 objectForKey:@"CACHE_DELETE_ITEMIZED_NONPURGEABLE"];
+  v5 = [cacheDeleteDict objectForKey:@"CACHE_DELETE_ITEMIZED_NONPURGEABLE"];
   v6 = [v5 objectForKey:@"com.apple.aned.CacheDelete"];
   v7 = [v6 objectForKey:@"COREML_NON_PURGEABLE_BY_APP"];
-  v8 = [v7 objectForKey:v2];
-  v9 = [v8 longLongValue];
+  v8 = [v7 objectForKey:bundleIdentifier];
+  longLongValue = [v8 longLongValue];
 
-  return v9;
+  return longLongValue;
 }
 
 - (id)updateAppSizes
@@ -675,10 +675,10 @@ LABEL_4:
   v35[1] = *MEMORY[0x277D85DE8];
   v3 = +[STSizeVector zero];
   v4 = +[STSizeVector zero];
-  v5 = [(STStorageApp *)self appRecord];
-  if (v5)
+  appRecord = [(STStorageApp *)self appRecord];
+  if (appRecord)
   {
-    v6 = v5;
+    v6 = appRecord;
 LABEL_3:
     v7 = 0;
     goto LABEL_6;
@@ -696,14 +696,14 @@ LABEL_3:
   v6 = [v8 initWithBundleIdentifier:bundleIdentifier allowPlaceholder:1 error:&v34];
   v7 = v34;
 LABEL_6:
-  v10 = [v6 bundleContainerURL];
-  v31 = v10;
-  if (v10)
+  bundleContainerURL = [v6 bundleContainerURL];
+  v31 = bundleContainerURL;
+  if (bundleContainerURL)
   {
     v33 = 0;
     v11 = *MEMORY[0x277CBEA30];
     v32 = 0;
-    [v10 getResourceValue:&v33 forKey:v11 error:&v32];
+    [bundleContainerURL getResourceValue:&v33 forKey:v11 error:&v32];
     v12 = v33;
     v13 = v32;
     v14 = v12;
@@ -741,11 +741,11 @@ LABEL_6:
   self->_dataPurgeableSize = [v3 purgeable];
   self->_sharedContainerSize = [v4 dynamic];
   self->_sharedPurgeableSize = [v4 purgeable];
-  v19 = [(STStorageApp *)self extSizesVar];
-  self->_externalSize = [v19 dynamic];
-  self->_externalPurgeableSize = [v19 purgeable];
+  extSizesVar = [(STStorageApp *)self extSizesVar];
+  self->_externalSize = [extSizesVar dynamic];
+  self->_externalPurgeableSize = [extSizesVar purgeable];
   v20 = [STSizeVector fixed:self->_appContainerSize dynamic:self->_sharedContainerSize + self->_dataContainerSize + self->_coreMLDataSize purgeable:self->_sharedPurgeableSize + self->_dataPurgeableSize + self->_assetPurgeableSize];
-  v21 = [v20 plus:v19];
+  v21 = [v20 plus:extSizesVar];
   [(STStorageApp *)self setIntSizesVar:v20];
   [(STStorageApp *)self setAppSizesVar:v21];
   if ((_os_feature_enabled_impl() & 1) == 0)
@@ -755,8 +755,8 @@ LABEL_6:
     v22 = v4;
     v23 = v6;
     v25 = v24 = v7;
-    v26 = [(STStorageApp *)self bundleIdentifier];
-    v27 = [v25 launchDateForApp:v26];
+    bundleIdentifier = [(STStorageApp *)self bundleIdentifier];
+    v27 = [v25 launchDateForApp:bundleIdentifier];
     [(STStorageApp *)self setLastUsedDate:v27];
 
     v7 = v24;
@@ -782,8 +782,8 @@ LABEL_6:
     v7 = v12;
     if (v6)
     {
-      v8 = [v6 persistentIdentifier];
-      v9 = [v8 isEqualToData:v3];
+      persistentIdentifier = [v6 persistentIdentifier];
+      v9 = [persistentIdentifier isEqualToData:v3];
 
       if ((v9 & 1) == 0)
       {
@@ -805,34 +805,34 @@ LABEL_6:
 
 - (int64_t)staticSize
 {
-  v2 = [(STStorageApp *)self appSize];
-  v3 = [v2 fixed];
+  appSize = [(STStorageApp *)self appSize];
+  fixed = [appSize fixed];
 
-  return v3;
+  return fixed;
 }
 
 - (int64_t)docsAndDataSize
 {
-  v2 = [(STStorageApp *)self appSize];
-  v3 = [v2 docsAndData];
+  appSize = [(STStorageApp *)self appSize];
+  docsAndData = [appSize docsAndData];
 
-  return v3;
+  return docsAndData;
 }
 
 - (int64_t)dynamicSize
 {
-  v2 = [(STStorageApp *)self appSize];
-  v3 = [v2 dynamic];
+  appSize = [(STStorageApp *)self appSize];
+  dynamic = [appSize dynamic];
 
-  return v3;
+  return dynamic;
 }
 
 - (int64_t)totalSize
 {
-  v2 = [(STStorageApp *)self appSize];
-  v3 = [v2 userTotal];
+  appSize = [(STStorageApp *)self appSize];
+  userTotal = [appSize userTotal];
 
-  return v3;
+  return userTotal;
 }
 
 + (id)sizeOfPluginKitContainers
@@ -843,29 +843,29 @@ LABEL_6:
   return v3;
 }
 
-- (void)addNumber:(int64_t)a3 toDict:(id)a4 forKey:(id)a5
+- (void)addNumber:(int64_t)number toDict:(id)dict forKey:(id)key
 {
-  if (a3)
+  if (number)
   {
     v7 = MEMORY[0x277CCABB0];
-    v8 = a5;
-    v9 = a4;
-    v10 = [v7 numberWithLongLong:a3];
-    [v9 setObject:v10 forKey:v8];
+    keyCopy = key;
+    dictCopy = dict;
+    v10 = [v7 numberWithLongLong:number];
+    [dictCopy setObject:v10 forKey:keyCopy];
   }
 }
 
 - (NSDictionary)infoDict
 {
   v3 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:6];
-  v4 = [(STStorageApp *)self name];
-  [v3 setObject:v4 forKeyedSubscript:@"name"];
+  name = [(STStorageApp *)self name];
+  [v3 setObject:name forKeyedSubscript:@"name"];
 
-  v5 = [(STStorageApp *)self vendorName];
-  [v3 setObject:v5 forKeyedSubscript:@"vendor"];
+  vendorName = [(STStorageApp *)self vendorName];
+  [v3 setObject:vendorName forKeyedSubscript:@"vendor"];
 
-  v6 = [(STStorageApp *)self bundleIdentifier];
-  [v3 setObject:v6 forKeyedSubscript:@"id"];
+  bundleIdentifier = [(STStorageApp *)self bundleIdentifier];
+  [v3 setObject:bundleIdentifier forKeyedSubscript:@"id"];
 
   if (self->_isAppClip)
   {
@@ -877,26 +877,26 @@ LABEL_6:
     [v3 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"is-placeholder"];
   }
 
-  v7 = [(STStorageApp *)self lastUsedDate];
+  lastUsedDate = [(STStorageApp *)self lastUsedDate];
 
-  if (v7)
+  if (lastUsedDate)
   {
-    v8 = [(STStorageApp *)self lastUsedDate];
-    [v3 setObject:v8 forKeyedSubscript:@"last-used"];
+    lastUsedDate2 = [(STStorageApp *)self lastUsedDate];
+    [v3 setObject:lastUsedDate2 forKeyedSubscript:@"last-used"];
   }
 
   v9 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:6];
-  v10 = [(STStorageApp *)self internalSizes];
-  v11 = [(STStorageApp *)self externalSizes];
-  v12 = [v10 plus:v11];
+  internalSizes = [(STStorageApp *)self internalSizes];
+  externalSizes = [(STStorageApp *)self externalSizes];
+  v12 = [internalSizes plus:externalSizes];
   -[STStorageApp addNumber:toDict:forKey:](self, "addNumber:toDict:forKey:", [v12 userTotal], v9, @"total");
-  -[STStorageApp addNumber:toDict:forKey:](self, "addNumber:toDict:forKey:", [v10 fixed], v9, @"fixed");
-  -[STStorageApp addNumber:toDict:forKey:](self, "addNumber:toDict:forKey:", [v10 dynamic], v9, @"dynamic");
-  -[STStorageApp addNumber:toDict:forKey:](self, "addNumber:toDict:forKey:", [v10 purgeable], v9, @"purgeable");
-  if (([v11 isZero] & 1) == 0)
+  -[STStorageApp addNumber:toDict:forKey:](self, "addNumber:toDict:forKey:", [internalSizes fixed], v9, @"fixed");
+  -[STStorageApp addNumber:toDict:forKey:](self, "addNumber:toDict:forKey:", [internalSizes dynamic], v9, @"dynamic");
+  -[STStorageApp addNumber:toDict:forKey:](self, "addNumber:toDict:forKey:", [internalSizes purgeable], v9, @"purgeable");
+  if (([externalSizes isZero] & 1) == 0)
   {
-    -[STStorageApp addNumber:toDict:forKey:](self, "addNumber:toDict:forKey:", [v11 dynamic] + objc_msgSend(v11, "fixed"), v9, @"external");
-    -[STStorageApp addNumber:toDict:forKey:](self, "addNumber:toDict:forKey:", [v11 purgeable], v9, @"ext-purgeable");
+    -[STStorageApp addNumber:toDict:forKey:](self, "addNumber:toDict:forKey:", [externalSizes dynamic] + objc_msgSend(externalSizes, "fixed"), v9, @"external");
+    -[STStorageApp addNumber:toDict:forKey:](self, "addNumber:toDict:forKey:", [externalSizes purgeable], v9, @"ext-purgeable");
   }
 
   [v3 setObject:v9 forKeyedSubscript:@"sizes"];

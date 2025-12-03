@@ -1,9 +1,9 @@
 @interface MenstrualCyclesOnboardingPickerViewController
-- (_TtC24MenstrualCyclesAppPlugin45MenstrualCyclesOnboardingPickerViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC24MenstrualCyclesAppPlugin45MenstrualCyclesOnboardingPickerViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5;
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4;
-- (void)cancelButtonTapped:(id)a3;
+- (_TtC24MenstrualCyclesAppPlugin45MenstrualCyclesOnboardingPickerViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC24MenstrualCyclesAppPlugin45MenstrualCyclesOnboardingPickerViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component;
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component;
+- (void)cancelButtonTapped:(id)tapped;
 - (void)viewDidLoad;
 @end
 
@@ -11,37 +11,37 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E1C7B48();
 }
 
-- (void)cancelButtonTapped:(id)a3
+- (void)cancelButtonTapped:(id)tapped
 {
   v5 = swift_allocObject();
   swift_unknownObjectWeakInit();
-  v6 = a3;
-  v8 = self;
+  tappedCopy = tapped;
+  selfCopy = self;
 
-  v7 = sub_29DE9ABAC(a3, sub_29E1C8D54, v5);
+  v7 = sub_29DE9ABAC(tapped, sub_29E1C8D54, v5);
 
-  [(MenstrualCyclesOnboardingPickerViewController *)v8 presentViewController:v7 animated:1 completion:0];
+  [(MenstrualCyclesOnboardingPickerViewController *)selfCopy presentViewController:v7 animated:1 completion:0];
 }
 
-- (_TtC24MenstrualCyclesAppPlugin45MenstrualCyclesOnboardingPickerViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC24MenstrualCyclesAppPlugin45MenstrualCyclesOnboardingPickerViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC24MenstrualCyclesAppPlugin45MenstrualCyclesOnboardingPickerViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC24MenstrualCyclesAppPlugin45MenstrualCyclesOnboardingPickerViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component
 {
   if (*(self + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin45MenstrualCyclesOnboardingPickerViewController_pickerType + 16))
   {
@@ -68,11 +68,11 @@ LABEL_7:
   return self;
 }
 
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component
 {
-  v7 = a3;
-  v8 = self;
-  sub_29E1C8C84(a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_29E1C8C84(row);
   v10 = v9;
 
   if (v10)

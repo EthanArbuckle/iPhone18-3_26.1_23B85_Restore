@@ -1,44 +1,44 @@
 @interface HDOntologyFeatureCoordinator
-+ (BOOL)_markNotCurrentEntriesAsNotRequiredForItem:(void *)a3 transaction:(uint64_t)a4 error:;
-+ (BOOL)unitTesting_processRequiredShardItemWithIdentifier:(id)a3 options:(unint64_t)a4 profile:(id)a5 error:(id *)a6;
-+ (uint64_t)_processRequiredShardItems:(void *)a3 profile:(void *)a4 transaction:(uint64_t *)a5 error:;
-+ (void)_logTriggeredOntologyUpdateResultsWithSuccess:(void *)a3 error:;
-- (BOOL)_insertEntry:(void *)a3 transaction:(uint64_t)a4 error:;
-- (BOOL)_updateDesiredStateDateForEntry:(void *)a3 transaction:(uint64_t)a4 error:;
-- (BOOL)markShardsWithIdentifiers:(id)a3 options:(unint64_t)a4 error:(id *)a5;
++ (BOOL)_markNotCurrentEntriesAsNotRequiredForItem:(void *)item transaction:(uint64_t)transaction error:;
++ (BOOL)unitTesting_processRequiredShardItemWithIdentifier:(id)identifier options:(unint64_t)options profile:(id)profile error:(id *)error;
++ (uint64_t)_processRequiredShardItems:(void *)items profile:(void *)profile transaction:(uint64_t *)transaction error:;
++ (void)_logTriggeredOntologyUpdateResultsWithSuccess:(void *)success error:;
+- (BOOL)_insertEntry:(void *)entry transaction:(uint64_t)transaction error:;
+- (BOOL)_updateDesiredStateDateForEntry:(void *)entry transaction:(uint64_t)transaction error:;
+- (BOOL)markShardsWithIdentifiers:(id)identifiers options:(unint64_t)options error:(id *)error;
 - (HDOntologyFeatureCoordinator)init;
-- (HDOntologyFeatureCoordinator)initWithOntologyUpdateCoordinator:(id)a3;
+- (HDOntologyFeatureCoordinator)initWithOntologyUpdateCoordinator:(id)coordinator;
 - (HDOntologyUpdateCoordinator)updateCoordinator;
 - (NSDictionary)shardRequirementStatuses;
-- (double)_minimumTimeToLiveForEntry:(uint64_t)a1;
-- (id)_metadataKeyForFirstLauchWithEntry:(uint64_t)a1;
+- (double)_minimumTimeToLiveForEntry:(uint64_t)entry;
+- (id)_metadataKeyForFirstLauchWithEntry:(uint64_t)entry;
 - (id)_observationQueue_requireShardByIdentifier;
-- (uint64_t)_canMakeFeatureRequestForShardWithIdentifier:(char)a3 options:(uint64_t)a4 error:;
-- (uint64_t)_createOrUpdateEntryForItem:(void *)a3 transaction:(uint64_t)a4 error:;
-- (uint64_t)_hasTimeToLiveExpiredForEntry:(uint64_t)a1;
-- (uint64_t)_insertNewEntryForItem:(uint64_t)a1 transaction:(void *)a2 error:(void *)a3;
-- (uint64_t)_markFirstLaunchRequestForEntry:(void *)a3 transaction:(uint64_t)a4 error:;
-- (uint64_t)_markShardsWithIdentifiers:(uint64_t)a3 options:(uint64_t)a4 error:;
+- (uint64_t)_canMakeFeatureRequestForShardWithIdentifier:(char)identifier options:(uint64_t)options error:;
+- (uint64_t)_createOrUpdateEntryForItem:(void *)item transaction:(uint64_t)transaction error:;
+- (uint64_t)_hasTimeToLiveExpiredForEntry:(uint64_t)entry;
+- (uint64_t)_insertNewEntryForItem:(uint64_t)item transaction:(void *)transaction error:(void *)error;
+- (uint64_t)_markFirstLaunchRequestForEntry:(void *)entry transaction:(uint64_t)transaction error:;
+- (uint64_t)_markShardsWithIdentifiers:(uint64_t)identifiers options:(uint64_t)options error:;
 - (uint64_t)_observationQueue_isPrimaryProfileReady;
-- (uint64_t)_performOrJournalFeatureCoordinatorRequireOperationForItems:(uint64_t)a3 error:;
-- (uint64_t)_persistedEntryWithIdentifier:(uint64_t)a3 entryOut:(void *)a4 transaction:(uint64_t)a5 error:;
-- (uint64_t)_updateDesiredIfRequiredForEntry:(char)a3 options:(uint64_t)a4 newDesiredState:(void *)a5 transaction:(uint64_t)a6 error:;
-- (uint64_t)_updateDesiredStateIfRequiredForEntry:(char)a3 options:(void *)a4 transaction:(uint64_t)a5 error:;
-- (void)_callDidInsertEntryTestHookForEntry:(void *)a3 transaction:;
-- (void)_featureEvaluatorForIdentifier:(void *)a1;
+- (uint64_t)_performOrJournalFeatureCoordinatorRequireOperationForItems:(uint64_t)items error:;
+- (uint64_t)_persistedEntryWithIdentifier:(uint64_t)identifier entryOut:(void *)out transaction:(uint64_t)transaction error:;
+- (uint64_t)_updateDesiredIfRequiredForEntry:(char)entry options:(uint64_t)options newDesiredState:(void *)state transaction:(uint64_t)transaction error:;
+- (uint64_t)_updateDesiredStateIfRequiredForEntry:(char)entry options:(void *)options transaction:(uint64_t)transaction error:;
+- (void)_callDidInsertEntryTestHookForEntry:(void *)entry transaction:;
+- (void)_featureEvaluatorForIdentifier:(void *)identifier;
 - (void)_loadFeatureEvaluators;
-- (void)_logRequiredShardsByIdentifier:(uint64_t)a1;
-- (void)_markEntriesOrLogErrorForItems:(uint64_t)a1;
-- (void)_observationQueue_evaluteRequiredFeaturesWithReason:(uint64_t)a1;
+- (void)_logRequiredShardsByIdentifier:(uint64_t)identifier;
+- (void)_markEntriesOrLogErrorForItems:(uint64_t)items;
+- (void)_observationQueue_evaluteRequiredFeaturesWithReason:(uint64_t)reason;
 - (void)_observationQueue_registerProfileReadyObservers;
-- (void)_registerObserversForProfile:(uint64_t)a1;
+- (void)_registerObserversForProfile:(uint64_t)profile;
 - (void)_triggerGatedOntologyUpdate;
-- (void)daemonReady:(id)a3;
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4;
-- (void)evaluteRequiredShardsForEvalulator:(id)a3 reason:(id)a4;
-- (void)profileDidBecomeReady:(id)a3;
+- (void)daemonReady:(id)ready;
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available;
+- (void)evaluteRequiredShardsForEvalulator:(id)evalulator reason:(id)reason;
+- (void)profileDidBecomeReady:(id)ready;
 - (void)profileListDidChange;
-- (void)setShardRequirementStatuses:(uint64_t)a1;
+- (void)setShardRequirementStatuses:(uint64_t)statuses;
 @end
 
 @implementation HDOntologyFeatureCoordinator
@@ -51,13 +51,13 @@
     dispatch_assert_queue_V2(*(result + 8));
     v3 = *(v2 + 16);
     WeakRetained = objc_loadWeakRetained((v2 + 64));
-    v5 = [WeakRetained profile];
-    [v5 profileIdentifier];
+    profile = [WeakRetained profile];
+    [profile profileIdentifier];
     objc_claimAutoreleasedReturnValue();
     v6 = [OUTLINED_FUNCTION_4_1() objectForKeyedSubscript:v1];
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
 
-    return v7;
+    return bOOLValue;
   }
 
   return result;
@@ -66,27 +66,27 @@
 - (id)_observationQueue_requireShardByIdentifier
 {
   v42 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    dispatch_assert_queue_V2(*(a1 + 8));
+    selfCopy = self;
+    dispatch_assert_queue_V2(*(self + 8));
     v2 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    WeakRetained = objc_loadWeakRetained(v1 + 8);
-    v4 = [WeakRetained daemon];
-    v5 = [v4 profileManager];
+    WeakRetained = objc_loadWeakRetained(selfCopy + 8);
+    daemon = [WeakRetained daemon];
+    profileManager = [daemon profileManager];
 
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    obj = [v5 allProfileIdentifiers];
+    obj = [profileManager allProfileIdentifiers];
     v6 = [obj countByEnumeratingWithState:&v36 objects:v41 count:16];
     if (v6)
     {
       v7 = v6;
       v8 = *v37;
-      v27 = v5;
-      v28 = v1;
+      v27 = profileManager;
+      v28 = selfCopy;
       v26 = *v37;
       do
       {
@@ -100,20 +100,20 @@
           }
 
           v10 = *(*(&v36 + 1) + 8 * v9);
-          v11 = [v5 profileForIdentifier:{v10, v26, v27, v28}];
+          v11 = [profileManager profileForIdentifier:{v10, v26, v27, v28}];
           if (v11)
           {
-            v12 = [v1[2] objectForKeyedSubscript:v10];
-            v13 = [v12 BOOLValue];
+            v12 = [selfCopy[2] objectForKeyedSubscript:v10];
+            bOOLValue = [v12 BOOLValue];
 
-            if (v13)
+            if (bOOLValue)
             {
               v31 = v9;
               v34 = 0u;
               v35 = 0u;
               v32 = 0u;
               v33 = 0u;
-              v14 = v1[3];
+              v14 = selfCopy[3];
               v15 = [v14 countByEnumeratingWithState:&v32 objects:v40 count:16];
               if (v15)
               {
@@ -129,22 +129,22 @@
                     }
 
                     v19 = *(*(&v32 + 1) + 8 * i);
-                    v20 = [v19 featureIdentifier];
-                    v21 = [v2 objectForKeyedSubscript:v20];
+                    featureIdentifier = [v19 featureIdentifier];
+                    v21 = [v2 objectForKeyedSubscript:featureIdentifier];
                     if (!v21)
                     {
                       v21 = &unk_286374658;
-                      [v2 setObject:&unk_286374658 forKeyedSubscript:v20];
+                      [v2 setObject:&unk_286374658 forKeyedSubscript:featureIdentifier];
                     }
 
                     if ([v21 integerValue] != 1)
                     {
                       v22 = [OUTLINED_FUNCTION_1_3() requiresFeatureShardForProfile:v11];
-                      if (v22 == 1 || (!v13 ? (v23 = v22 == 2) : (v23 = 0), v23))
+                      if (v22 == 1 || (!bOOLValue ? (v23 = v22 == 2) : (v23 = 0), v23))
                       {
                         [MEMORY[0x277CCABB0] numberWithInteger:v22];
                         objc_claimAutoreleasedReturnValue();
-                        [OUTLINED_FUNCTION_5() setObject:v19 forKeyedSubscript:v20];
+                        [OUTLINED_FUNCTION_5() setObject:v19 forKeyedSubscript:featureIdentifier];
                       }
                     }
                   }
@@ -155,8 +155,8 @@
                 while (v16);
               }
 
-              v5 = v27;
-              v1 = v28;
+              profileManager = v27;
+              selfCopy = v28;
               v8 = v26;
               v7 = v29;
               v9 = v31;
@@ -173,7 +173,7 @@
       while (v7);
     }
 
-    [(HDOntologyFeatureCoordinator *)v1 setShardRequirementStatuses:v2];
+    [(HDOntologyFeatureCoordinator *)selfCopy setShardRequirementStatuses:v2];
   }
 
   else
@@ -196,16 +196,16 @@
   return 0;
 }
 
-- (HDOntologyFeatureCoordinator)initWithOntologyUpdateCoordinator:(id)a3
+- (HDOntologyFeatureCoordinator)initWithOntologyUpdateCoordinator:(id)coordinator
 {
-  v4 = a3;
+  coordinatorCopy = coordinator;
   v15.receiver = self;
   v15.super_class = HDOntologyFeatureCoordinator;
   v5 = [(HDOntologyFeatureCoordinator *)&v15 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_updateCoordinator, v4);
+    objc_storeWeak(&v5->_updateCoordinator, coordinatorCopy);
     v7 = HKCreateSerialDispatchQueue();
     observationQueue = v6->_observationQueue;
     v6->_observationQueue = v7;
@@ -220,19 +220,19 @@
 
     v6->_unitTesting_minimumTimeToLive = -1.0;
     WeakRetained = objc_loadWeakRetained(&v6->_updateCoordinator);
-    v13 = [WeakRetained daemon];
-    [v13 registerDaemonReadyObserver:v6 queue:v6->_observationQueue];
+    daemon = [WeakRetained daemon];
+    [daemon registerDaemonReadyObserver:v6 queue:v6->_observationQueue];
   }
 
   return v6;
 }
 
-- (BOOL)markShardsWithIdentifiers:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)markShardsWithIdentifiers:(id)identifiers options:(unint64_t)options error:(id *)error
 {
-  v8 = a3;
-  if ([v8 count])
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count])
   {
-    v9 = [(HDOntologyFeatureCoordinator *)self _markShardsWithIdentifiers:v8 options:a4 error:a5];
+    v9 = [(HDOntologyFeatureCoordinator *)self _markShardsWithIdentifiers:identifiersCopy options:options error:error];
   }
 
   else
@@ -243,10 +243,10 @@
   return v9;
 }
 
-- (void)evaluteRequiredShardsForEvalulator:(id)a3 reason:(id)a4
+- (void)evaluteRequiredShardsForEvalulator:(id)evalulator reason:(id)reason
 {
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", a3, a4];
-  [(HDOntologyFeatureCoordinator *)self _observationQueue_evaluteRequiredFeaturesWithReason:v5];
+  reason = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", evalulator, reason];
+  [(HDOntologyFeatureCoordinator *)self _observationQueue_evaluteRequiredFeaturesWithReason:reason];
 }
 
 - (NSDictionary)shardRequirementStatuses
@@ -258,46 +258,46 @@
   return v3;
 }
 
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available
 {
-  v4 = a4;
+  availableCopy = available;
   dispatch_assert_queue_V2(self->_observationQueue);
-  if (v4)
+  if (availableCopy)
   {
 
     [(HDOntologyFeatureCoordinator *)self _observationQueue_evaluteRequiredFeaturesWithReason:?];
   }
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
   dispatch_assert_queue_V2(self->_observationQueue);
   [(HDOntologyFeatureCoordinator *)self _loadFeatureEvaluators];
   WeakRetained = objc_loadWeakRetained(&self->_updateCoordinator);
-  v5 = [WeakRetained daemon];
-  v6 = [v5 profileManager];
-  [v6 addProfileManagerObserver:self queue:self->_observationQueue];
+  daemon = [WeakRetained daemon];
+  profileManager = [daemon profileManager];
+  [profileManager addProfileManagerObserver:self queue:self->_observationQueue];
 
   v8 = objc_loadWeakRetained(&self->_updateCoordinator);
-  v7 = [v8 profile];
-  [v7 registerProfileReadyObserver:self queue:self->_observationQueue];
+  profile = [v8 profile];
+  [profile registerProfileReadyObserver:self queue:self->_observationQueue];
 }
 
-+ (uint64_t)_processRequiredShardItems:(void *)a3 profile:(void *)a4 transaction:(uint64_t *)a5 error:
++ (uint64_t)_processRequiredShardItems:(void *)items profile:(void *)profile transaction:(uint64_t *)transaction error:
 {
   v41 = *MEMORY[0x277D85DE8];
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
+  itemsCopy = items;
+  profileCopy = profile;
   v11 = objc_opt_self();
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
   v34 = 0;
-  v12 = [v9 daemon];
-  v13 = [v12 ontologyUpdateCoordinator];
+  daemon = [itemsCopy daemon];
+  ontologyUpdateCoordinator = [daemon ontologyUpdateCoordinator];
 
-  v14 = [v13 featureCoordinator];
+  featureCoordinator = [ontologyUpdateCoordinator featureCoordinator];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __85__HDOntologyFeatureCoordinator__processRequiredShardItems_profile_transaction_error___block_invoke;
@@ -305,10 +305,10 @@
   v15 = v8;
   v27 = v15;
   v30 = v11;
-  v16 = v14;
+  v16 = featureCoordinator;
   v28 = v16;
   v29 = &v31;
-  v17 = [v13 performOntologyTransactionForWrite:1 databaseTransaction:v10 error:a5 transactionHandler:v26];
+  v17 = [ontologyUpdateCoordinator performOntologyTransactionForWrite:1 databaseTransaction:profileCopy error:transaction transactionHandler:v26];
   _HKInitializeLogging();
   v18 = HKLogHealthOntology();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -332,7 +332,7 @@
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     v22 = HKStringFromBool();
-    v23 = *a5;
+    v23 = *transaction;
     *buf = 138543874;
     v36 = v11;
     v37 = 2112;
@@ -491,10 +491,10 @@ uint64_t __63__HDOntologyFeatureCoordinator__featureEvaluatorForIdentifier___blo
   return v9;
 }
 
-+ (void)_logTriggeredOntologyUpdateResultsWithSuccess:(void *)a3 error:
++ (void)_logTriggeredOntologyUpdateResultsWithSuccess:(void *)success error:
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  successCopy = success;
   v5 = objc_opt_self();
   _HKInitializeLogging();
   v6 = HKLogHealthOntology();
@@ -518,7 +518,7 @@ LABEL_6:
     v12 = 138543618;
     v13 = v5;
     v14 = 2114;
-    v15 = v4;
+    v15 = successCopy;
     v8 = "%{public}@: Failure triggered ontology update: %{public}@";
     v9 = v6;
     v10 = 22;
@@ -562,11 +562,11 @@ uint64_t __105__HDOntologyFeatureCoordinator_unitTesting_processRequiredShardIte
   return WeakRetained;
 }
 
-- (uint64_t)_markShardsWithIdentifiers:(uint64_t)a3 options:(uint64_t)a4 error:
+- (uint64_t)_markShardsWithIdentifiers:(uint64_t)identifiers options:(uint64_t)options error:
 {
   v29 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  if (a1)
+  if (self)
   {
     _HKInitializeLogging();
     v8 = HKLogHealthOntology();
@@ -575,7 +575,7 @@ uint64_t __105__HDOntologyFeatureCoordinator_unitTesting_processRequiredShardIte
       v9 = [v7 componentsJoinedByString:{@", "}];
       v10 = HKStringFromOntologyFeatureRequestOptions();
       *buf = 138543874;
-      v24 = a1;
+      selfCopy = self;
       v25 = 2114;
       v26 = v9;
       v27 = 2114;
@@ -601,14 +601,14 @@ uint64_t __105__HDOntologyFeatureCoordinator_unitTesting_processRequiredShardIte
           }
 
           v18 = *(8 * i);
-          if (![(HDOntologyFeatureCoordinator *)a1 _canMakeFeatureRequestForShardWithIdentifier:v18 options:a3 error:a4])
+          if (![(HDOntologyFeatureCoordinator *)self _canMakeFeatureRequestForShardWithIdentifier:v18 options:identifiers error:options])
           {
 
             v20 = 0;
             goto LABEL_14;
           }
 
-          v19 = [[_HDRequiredShardItem alloc] initWithShardIdentfier:v18 options:a3];
+          v19 = [[_HDRequiredShardItem alloc] initWithShardIdentfier:v18 options:identifiers];
           [v11 addObject:v19];
         }
 
@@ -623,7 +623,7 @@ uint64_t __105__HDOntologyFeatureCoordinator_unitTesting_processRequiredShardIte
       }
     }
 
-    v20 = [(HDOntologyFeatureCoordinator *)a1 _performOrJournalFeatureCoordinatorRequireOperationForItems:v11 error:a4];
+    v20 = [(HDOntologyFeatureCoordinator *)self _performOrJournalFeatureCoordinatorRequireOperationForItems:v11 error:options];
 LABEL_14:
   }
 
@@ -636,28 +636,28 @@ LABEL_14:
   return v20;
 }
 
-- (void)_observationQueue_evaluteRequiredFeaturesWithReason:(uint64_t)a1
+- (void)_observationQueue_evaluteRequiredFeaturesWithReason:(uint64_t)reason
 {
   v31 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (reason)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
-    WeakRetained = objc_loadWeakRetained((a1 + 64));
-    v5 = [WeakRetained daemon];
-    v6 = [v5 behavior];
-    v7 = [v6 supportsOntologyFeatureEvaluation];
+    dispatch_assert_queue_V2(*(reason + 8));
+    WeakRetained = objc_loadWeakRetained((reason + 64));
+    daemon = [WeakRetained daemon];
+    behavior = [daemon behavior];
+    supportsOntologyFeatureEvaluation = [behavior supportsOntologyFeatureEvaluation];
 
-    if (v7)
+    if (supportsOntologyFeatureEvaluation)
     {
-      if ([(HDOntologyFeatureCoordinator *)a1 _observationQueue_isPrimaryProfileReady])
+      if ([(HDOntologyFeatureCoordinator *)reason _observationQueue_isPrimaryProfileReady])
       {
         _HKInitializeLogging();
         v9 = HKLogHealthOntology();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          v28 = a1;
+          reasonCopy2 = reason;
           v29 = 2114;
           v30 = v3;
           _os_log_impl(&dword_2514A1000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: Re-evaluate required features due to %{public}@", buf, 0x16u);
@@ -665,7 +665,7 @@ LABEL_14:
 
         v20 = v3;
 
-        [(HDOntologyFeatureCoordinator *)a1 _observationQueue_requireShardByIdentifier];
+        [(HDOntologyFeatureCoordinator *)reason _observationQueue_requireShardByIdentifier];
         objc_claimAutoreleasedReturnValue();
         v10 = OUTLINED_FUNCTION_4_1();
         [(HDOntologyFeatureCoordinator *)v10 _logRequiredShardsByIdentifier:v9];
@@ -693,14 +693,14 @@ LABEL_14:
               if (HKIsKnownOntologyShardIdentifier())
               {
                 v17 = [v11 objectForKeyedSubscript:v16];
-                v18 = [v17 integerValue];
+                integerValue = [v17 integerValue];
 
-                if (v18 == 2)
+                if (integerValue == 2)
                 {
                   continue;
                 }
 
-                v19 = [[_HDRequiredShardItem alloc] initWithShardIdentfier:v16 options:v18 == 1];
+                v19 = [[_HDRequiredShardItem alloc] initWithShardIdentfier:v16 options:integerValue == 1];
                 [v21 addObject:v19];
               }
 
@@ -711,7 +711,7 @@ LABEL_14:
                 if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138543618;
-                  v28 = a1;
+                  reasonCopy2 = reason;
                   v29 = 2112;
                   v30 = v16;
                   _os_log_impl(&dword_2514A1000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: Cannot mark shard with identifier %@ because it's unknown", buf, 0x16u);
@@ -725,7 +725,7 @@ LABEL_14:
           while (v13);
         }
 
-        [(HDOntologyFeatureCoordinator *)a1 _markEntriesOrLogErrorForItems:v21];
+        [(HDOntologyFeatureCoordinator *)reason _markEntriesOrLogErrorForItems:v21];
         v3 = v20;
       }
     }
@@ -734,42 +734,42 @@ LABEL_14:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setShardRequirementStatuses:(uint64_t)a1
+- (void)setShardRequirementStatuses:(uint64_t)statuses
 {
   v4 = a2;
-  if (a1)
+  if (statuses)
   {
-    os_unfair_lock_lock((a1 + 32));
-    objc_storeStrong((a1 + 40), a2);
-    os_unfair_lock_unlock((a1 + 32));
+    os_unfair_lock_lock((statuses + 32));
+    objc_storeStrong((statuses + 40), a2);
+    os_unfair_lock_unlock((statuses + 32));
   }
 }
 
 - (void)_loadFeatureEvaluators
 {
   v48[1] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v3 = objc_alloc(MEMORY[0x277CBEB18]);
     v4 = [HDOntologyCHRFeatureEvaluator alloc];
-    objc_loadWeakRetained((a1 + 64));
+    objc_loadWeakRetained((self + 64));
     v5 = [OUTLINED_FUNCTION_1_3() initWithOntologyUpdateCoordinator:v1];
     v48[0] = v5;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v48 count:1];
     v7 = [v3 initWithArray:v6];
 
-    WeakRetained = objc_loadWeakRetained((a1 + 64));
-    v9 = [WeakRetained daemon];
+    WeakRetained = objc_loadWeakRetained((self + 64));
+    daemon = [WeakRetained daemon];
 
-    v10 = [v9 pluginManager];
-    v11 = [v10 pluginsConformingToProtocol:&unk_286387828];
-    v12 = [v11 allValues];
+    pluginManager = [daemon pluginManager];
+    v11 = [pluginManager pluginsConformingToProtocol:&unk_286387828];
+    allValues = [v11 allValues];
 
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    obj = v12;
+    obj = allValues;
     v30 = [obj countByEnumeratingWithState:&v38 objects:v47 count:16];
     if (v30)
     {
@@ -786,7 +786,7 @@ LABEL_14:
 
           v31 = *(*(&v38 + 1) + 8 * v13);
           v32 = v13;
-          v14 = [v31 ontologyFeatureEvaluatorsForDaemon:v9];
+          v14 = [v31 ontologyFeatureEvaluatorsForDaemon:daemon];
           v34 = 0u;
           v35 = 0u;
           v36 = 0u;
@@ -814,9 +814,9 @@ LABEL_14:
                 v20 = [v7 hk_firstObjectPassingTest:v33];
                 if (v20)
                 {
-                  v28 = [MEMORY[0x277CCA890] currentHandler];
-                  v27 = [v19 featureIdentifier];
-                  [v28 handleFailureInMethod:sel__loadFeatureEvaluators object:a1 file:@"HDOntologyFeatureCoordinator.m" lineNumber:234 description:{@"%@ is attemping to register as evaluator for %@, but %@ is already registered.", v31, v27, v20}];
+                  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+                  featureIdentifier = [v19 featureIdentifier];
+                  [currentHandler handleFailureInMethod:sel__loadFeatureEvaluators object:self file:@"HDOntologyFeatureCoordinator.m" lineNumber:234 description:{@"%@ is attemping to register as evaluator for %@, but %@ is already registered.", v31, featureIdentifier, v20}];
                 }
 
                 [v7 addObject:v19];
@@ -844,15 +844,15 @@ LABEL_14:
     {
       v22 = [v7 hk_map:&__block_literal_global_4];
       *buf = 138543618;
-      v43 = a1;
+      selfCopy = self;
       v44 = 2112;
       v45 = v22;
       _os_log_impl(&dword_2514A1000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@: loaded feature evaluators: %@", buf, 0x16u);
     }
 
     v23 = [v7 copy];
-    v24 = *(a1 + 24);
-    *(a1 + 24) = v23;
+    v24 = *(self + 24);
+    *(self + 24) = v23;
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -869,14 +869,14 @@ LABEL_14:
 - (void)_observationQueue_registerProfileReadyObservers
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
-    WeakRetained = objc_loadWeakRetained((a1 + 64));
-    v3 = [WeakRetained daemon];
-    v4 = [v3 profileManager];
+    dispatch_assert_queue_V2(*(self + 8));
+    WeakRetained = objc_loadWeakRetained((self + 64));
+    daemon = [WeakRetained daemon];
+    profileManager = [daemon profileManager];
 
-    v5 = [v4 allProfileIdentifiers];
+    allProfileIdentifiers = [profileManager allProfileIdentifiers];
     OUTLINED_FUNCTION_3_1();
     v7 = [v6 countByEnumeratingWithState:? objects:? count:?];
     if (v7)
@@ -889,27 +889,27 @@ LABEL_14:
         {
           if (MEMORY[0] != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allProfileIdentifiers);
           }
 
-          v11 = [v4 profileForIdentifier:*(8 * i)];
+          v11 = [profileManager profileForIdentifier:*(8 * i)];
           v12 = v11;
           if (v11)
           {
-            v13 = *(a1 + 16);
-            v14 = [v11 profileIdentifier];
-            v15 = [v13 objectForKeyedSubscript:v14];
-            v16 = [v15 BOOLValue];
+            v13 = *(self + 16);
+            profileIdentifier = [v11 profileIdentifier];
+            v15 = [v13 objectForKeyedSubscript:profileIdentifier];
+            bOOLValue = [v15 BOOLValue];
 
-            if ((v16 & 1) == 0)
+            if ((bOOLValue & 1) == 0)
             {
-              [v12 registerProfileReadyObserver:a1 queue:*(a1 + 8)];
+              [v12 registerProfileReadyObserver:self queue:*(self + 8)];
             }
           }
         }
 
         OUTLINED_FUNCTION_3_1();
-        v8 = [v5 countByEnumeratingWithState:? objects:? count:?];
+        v8 = [allProfileIdentifiers countByEnumeratingWithState:? objects:? count:?];
       }
 
       while (v8);
@@ -919,36 +919,36 @@ LABEL_14:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   observationQueue = self->_observationQueue;
-  v6 = a3;
+  readyCopy = ready;
   v7 = OUTLINED_FUNCTION_1_3();
   dispatch_assert_queue_V2(v7);
   observationQueue_isProfileReady = self->_observationQueue_isProfileReady;
-  v9 = [v3 profileIdentifier];
-  [(NSMutableDictionary *)observationQueue_isProfileReady setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v9];
+  profileIdentifier = [v3 profileIdentifier];
+  [(NSMutableDictionary *)observationQueue_isProfileReady setObject:MEMORY[0x277CBEC38] forKeyedSubscript:profileIdentifier];
 
   [(HDOntologyFeatureCoordinator *)self _registerObserversForProfile:v3];
 
   [(HDOntologyFeatureCoordinator *)self _observationQueue_evaluteRequiredFeaturesWithReason:?];
 }
 
-- (void)_registerObserversForProfile:(uint64_t)a1
+- (void)_registerObserversForProfile:(uint64_t)profile
 {
   v17 = *MEMORY[0x277D85DE8];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (profile)
   {
-    v5 = [v3 database];
-    [v5 addProtectedDataObserver:a1 queue:*(a1 + 8)];
+    database = [v3 database];
+    [database addProtectedDataObserver:profile queue:*(profile + 8)];
 
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = *(a1 + 24);
+    v6 = *(profile + 24);
     v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
@@ -964,7 +964,7 @@ LABEL_14:
             objc_enumerationMutation(v6);
           }
 
-          [*(*(&v12 + 1) + 8 * v10++) registerRequiredObserversForProfile:v4 queue:{*(a1 + 8), v12}];
+          [*(*(&v12 + 1) + 8 * v10++) registerRequiredObserversForProfile:v4 queue:{*(profile + 8), v12}];
         }
 
         while (v8 != v10);
@@ -978,11 +978,11 @@ LABEL_14:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)_createOrUpdateEntryForItem:(void *)a3 transaction:(uint64_t)a4 error:
+- (uint64_t)_createOrUpdateEntryForItem:(void *)item transaction:(uint64_t)transaction error:
 {
   v7 = a2;
-  v8 = a3;
-  if (a1 && (OUTLINED_FUNCTION_2_2(), [(HDOntologyFeatureCoordinator *)v9 _markNotCurrentEntriesAsNotRequiredForItem:v10 transaction:v11 error:v12]))
+  itemCopy = item;
+  if (self && (OUTLINED_FUNCTION_2_2(), [(HDOntologyFeatureCoordinator *)v9 _markNotCurrentEntriesAsNotRequiredForItem:v10 transaction:v11 error:v12]))
   {
     if (v7)
     {
@@ -996,7 +996,7 @@ LABEL_14:
 
     v24 = 0;
     v16 = v15;
-    v17 = [(HDOntologyFeatureCoordinator *)a1 _persistedEntryWithIdentifier:v16 entryOut:&v24 transaction:v8 error:a4];
+    v17 = [(HDOntologyFeatureCoordinator *)self _persistedEntryWithIdentifier:v16 entryOut:&v24 transaction:itemCopy error:transaction];
     v18 = v24;
 
     v13 = 0;
@@ -1014,7 +1014,7 @@ LABEL_14:
           LOBYTE(v23) = 0;
         }
 
-        v22 = [(HDOntologyFeatureCoordinator *)a1 _updateDesiredStateIfRequiredForEntry:v18 options:v23 transaction:v8 error:a4];
+        v22 = [(HDOntologyFeatureCoordinator *)self _updateDesiredStateIfRequiredForEntry:v18 options:v23 transaction:itemCopy error:transaction];
       }
 
       else
@@ -1038,29 +1038,29 @@ LABEL_14:
 - (void)_triggerGatedOntologyUpdate
 {
   v7 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     _HKInitializeLogging();
     v2 = HKLogHealthOntology();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 138543362;
-      v6 = a1;
+      selfCopy = self;
       _os_log_impl(&dword_2514A1000, v2, OS_LOG_TYPE_DEFAULT, "%{public}@: Trigger gated ontology update", &v5, 0xCu);
     }
 
-    WeakRetained = objc_loadWeakRetained((a1 + 64));
+    WeakRetained = objc_loadWeakRetained((self + 64));
     [WeakRetained triggerGatedUpdateWithMaximumDelay:&__block_literal_global_366 completion:5.0];
   }
 
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)_markNotCurrentEntriesAsNotRequiredForItem:(void *)a3 transaction:(uint64_t)a4 error:
++ (BOOL)_markNotCurrentEntriesAsNotRequiredForItem:(void *)item transaction:(uint64_t)transaction error:
 {
   v29[2] = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
+  itemCopy = item;
   objc_opt_self();
   if (v5)
   {
@@ -1099,27 +1099,27 @@ LABEL_14:
   v28[0] = @"desired_state";
   v28[1] = @"desired_state_date";
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:2];
-  v22 = [v6 graphDatabase];
+  graphDatabase = [itemCopy graphDatabase];
 
-  v23 = [v22 underlyingDatabase];
-  v24 = [(HDSQLiteEntity *)HDOntologyShardRegistryEntity updateProperties:v21 predicate:v20 database:v23 error:a4 bindingHandler:&__block_literal_global_340_0];
+  underlyingDatabase = [graphDatabase underlyingDatabase];
+  v24 = [(HDSQLiteEntity *)HDOntologyShardRegistryEntity updateProperties:v21 predicate:v20 database:underlyingDatabase error:transaction bindingHandler:&__block_literal_global_340_0];
 
   v25 = *MEMORY[0x277D85DE8];
   return v24;
 }
 
-- (uint64_t)_persistedEntryWithIdentifier:(uint64_t)a3 entryOut:(void *)a4 transaction:(uint64_t)a5 error:
+- (uint64_t)_persistedEntryWithIdentifier:(uint64_t)identifier entryOut:(void *)out transaction:(uint64_t)transaction error:
 {
   if (result)
   {
     v8 = result;
-    v9 = a4;
+    outCopy = out;
     v10 = a2;
     v11 = HKOntologyShardSchemaTypeForShardIdentifier();
     v12 = HKCurrentSchemaVersionForShardIdentifier();
     WeakRetained = objc_loadWeakRetained((v8 + 64));
-    v14 = [WeakRetained shardRegistry];
-    v15 = [v14 entryWithIdentifier:v10 schemaType:v11 schemaVersion:v12 entryOut:a3 transaction:v9 error:a5];
+    shardRegistry = [WeakRetained shardRegistry];
+    v15 = [shardRegistry entryWithIdentifier:v10 schemaType:v11 schemaVersion:v12 entryOut:identifier transaction:outCopy error:transaction];
 
     return v15;
   }
@@ -1127,16 +1127,16 @@ LABEL_14:
   return result;
 }
 
-- (uint64_t)_updateDesiredStateIfRequiredForEntry:(char)a3 options:(void *)a4 transaction:(uint64_t)a5 error:
+- (uint64_t)_updateDesiredStateIfRequiredForEntry:(char)entry options:(void *)options transaction:(uint64_t)transaction error:
 {
   v9 = a2;
-  v10 = a4;
-  if (!a1)
+  optionsCopy = options;
+  if (!self)
   {
     goto LABEL_14;
   }
 
-  if (a3)
+  if (entry)
   {
     v11 = 3;
   }
@@ -1148,11 +1148,11 @@ LABEL_14:
 
   if ([v9 desiredState] != v11)
   {
-    v12 = [(HDOntologyFeatureCoordinator *)a1 _updateDesiredIfRequiredForEntry:v9 options:a3 newDesiredState:v11 transaction:v10 error:a5];
+    v12 = [(HDOntologyFeatureCoordinator *)self _updateDesiredIfRequiredForEntry:v9 options:entry newDesiredState:v11 transaction:optionsCopy error:transaction];
     goto LABEL_8;
   }
 
-  if ((~a3 & 5) != 0)
+  if ((~entry & 5) != 0)
   {
     v12 = 2;
     goto LABEL_8;
@@ -1181,31 +1181,31 @@ LABEL_8:
   return v12;
 }
 
-- (uint64_t)_insertNewEntryForItem:(uint64_t)a1 transaction:(void *)a2 error:(void *)a3
+- (uint64_t)_insertNewEntryForItem:(uint64_t)item transaction:(void *)transaction error:(void *)error
 {
-  v5 = a2;
-  v6 = a3;
-  if (!a1)
+  transactionCopy = transaction;
+  errorCopy = error;
+  if (!item)
   {
     v23 = 0;
     goto LABEL_23;
   }
 
-  if (v5)
+  if (transactionCopy)
   {
-    v7 = v5[1];
+    v7 = transactionCopy[1];
   }
 
   v8 = HKOntologyShardSchemaTypeForShardIdentifier();
-  if (v5)
+  if (transactionCopy)
   {
-    v9 = v5[1];
+    v9 = transactionCopy[1];
   }
 
   v10 = HKCurrentSchemaVersionForShardIdentifier();
-  if (v5)
+  if (transactionCopy)
   {
-    v11 = v5[2];
+    v11 = transactionCopy[2];
     v12 = objc_alloc(MEMORY[0x277CCD760]);
     v13 = (v11 & 1) == 0;
     if (v11)
@@ -1218,7 +1218,7 @@ LABEL_8:
       v14 = 1;
     }
 
-    v15 = v5[1];
+    v15 = transactionCopy[1];
     v16 = (v11 & 2) == 0;
   }
 
@@ -1273,50 +1273,50 @@ LABEL_23:
   return v23;
 }
 
-- (uint64_t)_markFirstLaunchRequestForEntry:(void *)a3 transaction:(uint64_t)a4 error:
+- (uint64_t)_markFirstLaunchRequestForEntry:(void *)entry transaction:(uint64_t)transaction error:
 {
-  v7 = a3;
-  if (a1)
+  entryCopy = entry;
+  if (self)
   {
-    [(HDOntologyFeatureCoordinator *)a1 _metadataKeyForFirstLauchWithEntry:a2];
+    [(HDOntologyFeatureCoordinator *)self _metadataKeyForFirstLauchWithEntry:a2];
     objc_claimAutoreleasedReturnValue();
-    v8 = [OUTLINED_FUNCTION_5() graphDatabase];
+    graphDatabase = [OUTLINED_FUNCTION_5() graphDatabase];
     v16 = 0;
-    v9 = [v8 metadataValueForKey:a2 valueOut:&v16 error:a4];
+    v9 = [graphDatabase metadataValueForKey:a2 valueOut:&v16 error:transaction];
     v10 = v16;
 
-    a1 = 0;
+    self = 0;
     if (v9)
     {
       if (v10)
       {
-        a1 = 2;
+        self = 2;
       }
 
       else
       {
-        v11 = [v7 graphDatabase];
-        v12 = [MEMORY[0x277CBEAA8] date];
+        graphDatabase2 = [entryCopy graphDatabase];
+        date = [MEMORY[0x277CBEAA8] date];
         v13 = HKDiagnosticStringFromDate();
-        v14 = [v11 setMetadataValue:v13 forKey:a2 error:a4];
+        v14 = [graphDatabase2 setMetadataValue:v13 forKey:a2 error:transaction];
 
-        a1 = v14;
+        self = v14;
       }
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (BOOL)_insertEntry:(void *)a3 transaction:(uint64_t)a4 error:
+- (BOOL)_insertEntry:(void *)entry transaction:(uint64_t)transaction error:
 {
   if (result)
   {
-    v6 = a3;
+    entryCopy = entry;
     v7 = a2;
     v8 = OUTLINED_FUNCTION_1_3();
-    [(HDOntologyFeatureCoordinator *)v8 _callDidInsertEntryTestHookForEntry:a2 transaction:v6];
-    v9 = [HDOntologyShardRegistry insertEntry:a2 transaction:v6 error:a4];
+    [(HDOntologyFeatureCoordinator *)v8 _callDidInsertEntryTestHookForEntry:a2 transaction:entryCopy];
+    v9 = [HDOntologyShardRegistry insertEntry:a2 transaction:entryCopy error:transaction];
 
     return v9;
   }
@@ -1324,19 +1324,19 @@ LABEL_23:
   return result;
 }
 
-- (uint64_t)_updateDesiredIfRequiredForEntry:(char)a3 options:(uint64_t)a4 newDesiredState:(void *)a5 transaction:(uint64_t)a6 error:
+- (uint64_t)_updateDesiredIfRequiredForEntry:(char)entry options:(uint64_t)options newDesiredState:(void *)state transaction:(uint64_t)transaction error:
 {
   v11 = a2;
-  v12 = a5;
-  if (!a1)
+  stateCopy = state;
+  if (!self)
   {
     v14 = 0;
     goto LABEL_14;
   }
 
-  if ((~a3 & 3) != 0)
+  if ((~entry & 3) != 0)
   {
-    if ((a3 & 5) == 0 && ![(HDOntologyFeatureCoordinator *)a1 _hasTimeToLiveExpiredForEntry:v11])
+    if ((entry & 5) == 0 && ![(HDOntologyFeatureCoordinator *)self _hasTimeToLiveExpiredForEntry:v11])
     {
       v14 = 2;
       goto LABEL_14;
@@ -1345,7 +1345,7 @@ LABEL_23:
 
   else
   {
-    v13 = [(HDOntologyFeatureCoordinator *)a1 _markFirstLaunchRequestForEntry:v11 transaction:v12 error:a6];
+    v13 = [(HDOntologyFeatureCoordinator *)self _markFirstLaunchRequestForEntry:v11 transaction:stateCopy error:transaction];
     if (v13 != 1)
     {
       v14 = v13;
@@ -1353,11 +1353,11 @@ LABEL_23:
     }
   }
 
-  v15 = [v11 copyWithDesiredState:a4];
+  v15 = [v11 copyWithDesiredState:options];
 
-  v16 = [(HDOntologyFeatureCoordinator *)a1 _insertEntry:v15 transaction:v12 error:a6];
+  v16 = [(HDOntologyFeatureCoordinator *)self _insertEntry:v15 transaction:stateCopy error:transaction];
   v17 = 1;
-  if ((a3 & 1) == 0)
+  if ((entry & 1) == 0)
   {
     v17 = 2;
   }
@@ -1378,27 +1378,27 @@ LABEL_14:
   return v14;
 }
 
-- (BOOL)_updateDesiredStateDateForEntry:(void *)a3 transaction:(uint64_t)a4 error:
+- (BOOL)_updateDesiredStateDateForEntry:(void *)entry transaction:(uint64_t)transaction error:
 {
   v28[3] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v25 = MEMORY[0x277D10B20];
     v5 = MEMORY[0x277D10B18];
-    v6 = a3;
+    entryCopy = entry;
     v7 = a2;
-    v8 = [v7 identifier];
-    v9 = [v5 predicateWithProperty:@"identifier" equalToValue:v8];
+    identifier = [v7 identifier];
+    v9 = [v5 predicateWithProperty:@"identifier" equalToValue:identifier];
     v28[0] = v9;
     v10 = MEMORY[0x277D10B18];
-    v11 = [v7 schemaType];
-    v12 = [v10 predicateWithProperty:@"schema_type" equalToValue:v11];
+    schemaType = [v7 schemaType];
+    v12 = [v10 predicateWithProperty:@"schema_type" equalToValue:schemaType];
     v28[1] = v12;
     v13 = MEMORY[0x277D10B18];
     v14 = MEMORY[0x277CCABB0];
-    v15 = [v7 schemaVersion];
+    schemaVersion = [v7 schemaVersion];
 
-    v16 = [v14 numberWithInteger:v15];
+    v16 = [v14 numberWithInteger:schemaVersion];
     v17 = [v13 predicateWithProperty:@"schema_version" equalToValue:v16];
     v28[2] = v17;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:3];
@@ -1407,10 +1407,10 @@ LABEL_14:
     v27 = @"desired_state_date";
     [MEMORY[0x277CBEA60] arrayWithObjects:&v27 count:1];
     objc_claimAutoreleasedReturnValue();
-    v20 = [OUTLINED_FUNCTION_1_3() graphDatabase];
+    graphDatabase = [OUTLINED_FUNCTION_1_3() graphDatabase];
 
-    v21 = [v20 underlyingDatabase];
-    v22 = [(HDSQLiteEntity *)HDOntologyShardRegistryEntity updateProperties:v8 predicate:v19 database:v21 error:a4 bindingHandler:&__block_literal_global_350];
+    underlyingDatabase = [graphDatabase underlyingDatabase];
+    v22 = [(HDSQLiteEntity *)HDOntologyShardRegistryEntity updateProperties:identifier predicate:v19 database:underlyingDatabase error:transaction bindingHandler:&__block_literal_global_350];
   }
 
   else
@@ -1422,21 +1422,21 @@ LABEL_14:
   return v22;
 }
 
-- (uint64_t)_hasTimeToLiveExpiredForEntry:(uint64_t)a1
+- (uint64_t)_hasTimeToLiveExpiredForEntry:(uint64_t)entry
 {
   v23 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (entry)
   {
-    v4 = [(HDOntologyFeatureCoordinator *)a1 _minimumTimeToLiveForEntry:v3];
+    v4 = [(HDOntologyFeatureCoordinator *)entry _minimumTimeToLiveForEntry:v3];
     Current = CFAbsoluteTimeGetCurrent();
-    v6 = [v3 desiredStateDate];
-    [v6 timeIntervalSinceReferenceDate];
+    desiredStateDate = [v3 desiredStateDate];
+    [desiredStateDate timeIntervalSinceReferenceDate];
     v8 = v4 + v7;
 
     if (Current <= v8)
     {
-      a1 = 0;
+      entry = 0;
     }
 
     else
@@ -1445,11 +1445,11 @@ LABEL_14:
       v9 = HKLogHealthOntology();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [v3 desiredStateDate];
+        desiredStateDate2 = [v3 desiredStateDate];
         v11 = HKDiagnosticStringFromDate();
         v12 = HKDiagnosticStringFromDuration();
         v15 = 138544130;
-        v16 = a1;
+        entryCopy = entry;
         v17 = 2114;
         v18 = v3;
         v19 = 2114;
@@ -1459,17 +1459,17 @@ LABEL_14:
         _os_log_impl(&dword_2514A1000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ TTL has expired because %{public}@ is more than %{public}@ before now", &v15, 0x2Au);
       }
 
-      a1 = 1;
+      entry = 1;
     }
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return a1;
+  return entry;
 }
 
-- (id)_metadataKeyForFirstLauchWithEntry:(uint64_t)a1
+- (id)_metadataKeyForFirstLauchWithEntry:(uint64_t)entry
 {
-  if (a1)
+  if (entry)
   {
     v5 = a2;
     v6 = objc_alloc(OUTLINED_FUNCTION_5());
@@ -1477,9 +1477,9 @@ LABEL_14:
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_1_3() schemaType];
     objc_claimAutoreleasedReturnValue();
-    v7 = [OUTLINED_FUNCTION_4_1() schemaVersion];
+    schemaVersion = [OUTLINED_FUNCTION_4_1() schemaVersion];
 
-    v8 = [v6 initWithFormat:@"firstLaunch-%@:%@:%ld", v3, v4, v7];
+    v8 = [v6 initWithFormat:@"firstLaunch-%@:%@:%ld", v3, v4, schemaVersion];
   }
 
   else
@@ -1490,13 +1490,13 @@ LABEL_14:
   return v8;
 }
 
-- (double)_minimumTimeToLiveForEntry:(uint64_t)a1
+- (double)_minimumTimeToLiveForEntry:(uint64_t)entry
 {
   v4 = a2;
   v5 = v4;
-  if (a1)
+  if (entry)
   {
-    v6 = *(a1 + 56);
+    v6 = *(entry + 56);
     if (v6 < 0.0)
     {
       [v4 identifier];
@@ -1530,59 +1530,59 @@ LABEL_14:
   return v6;
 }
 
-- (void)_featureEvaluatorForIdentifier:(void *)a1
+- (void)_featureEvaluatorForIdentifier:(void *)identifier
 {
   v3 = a2;
-  if (a1)
+  if (identifier)
   {
-    v4 = a1[3];
+    v4 = identifier[3];
     OUTLINED_FUNCTION_1();
     OUTLINED_FUNCTION_6_0();
     v7 = __63__HDOntologyFeatureCoordinator__featureEvaluatorForIdentifier___block_invoke;
     v8 = &unk_2796B95D0;
     v9 = v3;
-    a1 = [v4 hk_firstObjectPassingTest:v6];
+    identifier = [v4 hk_firstObjectPassingTest:v6];
   }
 
-  return a1;
+  return identifier;
 }
 
-- (void)_callDidInsertEntryTestHookForEntry:(void *)a3 transaction:
+- (void)_callDidInsertEntryTestHookForEntry:(void *)entry transaction:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  entryCopy = entry;
+  if (self)
   {
-    v7 = MEMORY[0x253078050](*(a1 + 48));
+    v7 = MEMORY[0x253078050](*(self + 48));
     if (v7)
     {
-      v8 = [v6 graphDatabase];
+      graphDatabase = [entryCopy graphDatabase];
       OUTLINED_FUNCTION_1();
       OUTLINED_FUNCTION_6_0();
       v10 = __80__HDOntologyFeatureCoordinator__callDidInsertEntryTestHookForEntry_transaction___block_invoke;
       v11 = &unk_2796B96A0;
       v14 = v7;
-      v12 = a1;
+      selfCopy = self;
       v13 = v5;
-      [v8 onCommit:v9 orRollback:0];
+      [graphDatabase onCommit:v9 orRollback:0];
     }
   }
 }
 
-- (void)_logRequiredShardsByIdentifier:(uint64_t)a1
+- (void)_logRequiredShardsByIdentifier:(uint64_t)identifier
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = a2;
-  if (a1)
+  if (identifier)
   {
     [objc_alloc(MEMORY[0x277CCAB68]) initWithFormat:@"["];
-    v5 = [OUTLINED_FUNCTION_5() allKeys];
+    allKeys = [OUTLINED_FUNCTION_5() allKeys];
     OUTLINED_FUNCTION_1();
     OUTLINED_FUNCTION_6_0();
     v9 = __63__HDOntologyFeatureCoordinator__logRequiredShardsByIdentifier___block_invoke;
     v10 = &unk_2796B9678;
     v11 = v4;
-    [v2 hk_appendComponentsJoinedByString:@" container:" componentGenerator:{v5, v8}];
+    [v2 hk_appendComponentsJoinedByString:@" container:" componentGenerator:{allKeys, v8}];
 
     [v2 appendFormat:@"]"];
     _HKInitializeLogging();
@@ -1590,7 +1590,7 @@ LABEL_14:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v13 = a1;
+      identifierCopy = identifier;
       v14 = 2112;
       v15 = v2;
       _os_log_impl(&dword_2514A1000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: underlying conditions require shards: %@", buf, 0x16u);
@@ -1600,14 +1600,14 @@ LABEL_14:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_markEntriesOrLogErrorForItems:(uint64_t)a1
+- (void)_markEntriesOrLogErrorForItems:(uint64_t)items
 {
   v17 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (items)
   {
     v10 = 0;
-    v4 = [(HDOntologyFeatureCoordinator *)a1 _performOrJournalFeatureCoordinatorRequireOperationForItems:v3 error:&v10];
+    v4 = [(HDOntologyFeatureCoordinator *)items _performOrJournalFeatureCoordinatorRequireOperationForItems:v3 error:&v10];
     v5 = v10;
     if ((v4 & 1) == 0)
     {
@@ -1618,7 +1618,7 @@ LABEL_14:
       {
         v9 = [v6 componentsJoinedByString:{@", "}];
         *buf = 138543874;
-        v12 = a1;
+        itemsCopy = items;
         v13 = 2114;
         v14 = v5;
         v15 = 2114;
@@ -1631,7 +1631,7 @@ LABEL_14:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)_performOrJournalFeatureCoordinatorRequireOperationForItems:(uint64_t)a3 error:
+- (uint64_t)_performOrJournalFeatureCoordinatorRequireOperationForItems:(uint64_t)items error:
 {
   if (result)
   {
@@ -1644,8 +1644,8 @@ LABEL_14:
     [WeakRetained lockUpdateLock];
 
     v10 = objc_loadWeakRetained((v5 + 64));
-    v11 = [v10 profile];
-    v12 = [v8 performOrJournalWithProfile:v11 error:a3];
+    profile = [v10 profile];
+    v12 = [v8 performOrJournalWithProfile:profile error:items];
 
     v13 = objc_loadWeakRetained((v5 + 64));
     [v13 unlockUpdateLock];
@@ -1656,29 +1656,29 @@ LABEL_14:
   return result;
 }
 
-- (uint64_t)_canMakeFeatureRequestForShardWithIdentifier:(char)a3 options:(uint64_t)a4 error:
+- (uint64_t)_canMakeFeatureRequestForShardWithIdentifier:(char)identifier options:(uint64_t)options error:
 {
   v7 = a2;
-  if (!a1)
+  if (!self)
   {
     goto LABEL_6;
   }
 
   if ((HKIsKnownOntologyShardIdentifier() & 1) == 0)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:{@"%@ is not a known shard identifier", v7}];
+    [MEMORY[0x277CCA9B8] hk_assignError:options code:3 format:{@"%@ is not a known shard identifier", v7}];
 LABEL_6:
     v8 = 0;
     goto LABEL_7;
   }
 
-  if (a3)
+  if (identifier)
   {
-    v10 = [(HDOntologyFeatureCoordinator *)a1 _featureEvaluatorForIdentifier:v7];
+    v10 = [(HDOntologyFeatureCoordinator *)self _featureEvaluatorForIdentifier:v7];
     v11 = v10;
     if (v10)
     {
-      v8 = [v10 canRequireShardWithError:a4];
+      v8 = [v10 canRequireShardWithError:options];
     }
 
     else
@@ -1697,26 +1697,26 @@ LABEL_7:
   return v8;
 }
 
-+ (BOOL)unitTesting_processRequiredShardItemWithIdentifier:(id)a3 options:(unint64_t)a4 profile:(id)a5 error:(id *)a6
++ (BOOL)unitTesting_processRequiredShardItemWithIdentifier:(id)identifier options:(unint64_t)options profile:(id)profile error:(id *)error
 {
-  v10 = a5;
-  v11 = a3;
-  v12 = [[_HDRequiredShardItem alloc] initWithShardIdentfier:v11 options:a4];
+  profileCopy = profile;
+  identifierCopy = identifier;
+  v12 = [[_HDRequiredShardItem alloc] initWithShardIdentfier:identifierCopy options:options];
 
-  v13 = [MEMORY[0x277D10788] contextForReadingProtectedData];
-  v14 = [v10 database];
+  contextForReadingProtectedData = [MEMORY[0x277D10788] contextForReadingProtectedData];
+  database = [profileCopy database];
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_6_0();
   v19 = __105__HDOntologyFeatureCoordinator_unitTesting_processRequiredShardItemWithIdentifier_options_profile_error___block_invoke;
   v20 = &unk_2796B96C8;
-  v22 = v10;
-  v23 = a1;
+  v22 = profileCopy;
+  selfCopy = self;
   v21 = v12;
-  v15 = v10;
+  v15 = profileCopy;
   v16 = v12;
-  LOBYTE(a6) = [v14 performTransactionWithContext:v13 error:a6 block:v18 inaccessibilityHandler:0];
+  LOBYTE(error) = [database performTransactionWithContext:contextForReadingProtectedData error:error block:v18 inaccessibilityHandler:0];
 
-  return a6;
+  return error;
 }
 
 @end

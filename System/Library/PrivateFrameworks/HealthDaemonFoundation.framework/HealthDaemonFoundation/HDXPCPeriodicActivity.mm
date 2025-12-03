@@ -1,8 +1,8 @@
 @interface HDXPCPeriodicActivity
-+ (void)registerDisabledPeriodicActivityWithName:(id)a3 loggingCategory:(id)a4;
++ (void)registerDisabledPeriodicActivityWithName:(id)name loggingCategory:(id)category;
 - (BOOL)isWaiting;
 - (BOOL)shouldDefer;
-- (HDXPCPeriodicActivity)initWithName:(id)a3 baseInterval:(double)a4 criteria:(id)a5 loggingCategory:(id)a6 handler:(id)a7;
+- (HDXPCPeriodicActivity)initWithName:(id)name baseInterval:(double)interval criteria:(id)criteria loggingCategory:(id)category handler:(id)handler;
 - (NSDate)earliestRunDate;
 - (NSDate)lastSuccessfulRunDate;
 - (OS_xpc_object)criteria;
@@ -10,32 +10,32 @@
 - (OS_xpc_object)currentCriteria;
 - (double)_lock_modifiedIntervalForCurrentState;
 - (double)modifiedIntervalForCurrentState;
-- (id)_dateForDefaultsKey:(uint64_t)a1;
+- (id)_dateForDefaultsKey:(uint64_t)key;
 - (id)description;
-- (id)xpcActivity_copyCriteria:(id)a3;
+- (id)xpcActivity_copyCriteria:(id)criteria;
 - (int64_t)errorCount;
 - (uint64_t)_lock_errorCount;
-- (void)_handleXPCActivityCallback:(uint64_t)a1;
-- (void)_lock_activityFinishedWithResult:(void *)a3 minimumRetryInterval:(void *)a4 activityStartDate:(double)a5 error:;
+- (void)_handleXPCActivityCallback:(uint64_t)callback;
+- (void)_lock_activityFinishedWithResult:(void *)result minimumRetryInterval:(void *)interval activityStartDate:(double)date error:;
 - (void)_lock_incrementErrorCount;
-- (void)_lock_setCriteria:(uint64_t)a1;
-- (void)_lock_setLastSuccessfulRunDate:(const os_unfair_lock *)a1;
-- (void)_performActivity:(uint64_t)a1;
-- (void)_performCurrentActivityWithCompletion:(uint64_t)a1;
-- (void)_updateStateForFinishedActivity:(uint64_t)a3 result:;
+- (void)_lock_setCriteria:(uint64_t)criteria;
+- (void)_lock_setLastSuccessfulRunDate:(const os_unfair_lock *)date;
+- (void)_performActivity:(uint64_t)activity;
+- (void)_performCurrentActivityWithCompletion:(uint64_t)completion;
+- (void)_updateStateForFinishedActivity:(uint64_t)activity result:;
 - (void)dealloc;
-- (void)didPerformActivityWithResult:(int64_t)a3 minimumRetryInterval:(double)a4 activityStartDate:(id)a5 error:(id)a6;
+- (void)didPerformActivityWithResult:(int64_t)result minimumRetryInterval:(double)interval activityStartDate:(id)date error:(id)error;
 - (void)externalConditionsChanged;
 - (void)registerActivity;
-- (void)resetIntervalWithCriteria:(id)a3;
-- (void)setCriteria:(id)a3;
+- (void)resetIntervalWithCriteria:(id)criteria;
+- (void)setCriteria:(id)criteria;
 - (void)unitTest_reset;
-- (void)unitTest_setActivityShim:(id)a3;
-- (void)unitTest_synthesizeActivityFireWithCompletion:(id)a3;
+- (void)unitTest_setActivityShim:(id)shim;
+- (void)unitTest_synthesizeActivityFireWithCompletion:(id)completion;
 - (void)unregisterActivity;
 - (void)updateCriteriaForModifiedIntervalForCurrentState;
-- (void)xpcActivity_register:(const char *)a3 criteria:(id)a4 handler:(id)a5;
-- (void)xpcActivity_unregister:(const char *)a3;
+- (void)xpcActivity_register:(const char *)activity_register criteria:(id)criteria handler:(id)handler;
+- (void)xpcActivity_unregister:(const char *)activity_unregister;
 @end
 
 @implementation HDXPCPeriodicActivity
@@ -84,32 +84,32 @@ LABEL_10:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (HDXPCPeriodicActivity)initWithName:(id)a3 baseInterval:(double)a4 criteria:(id)a5 loggingCategory:(id)a6 handler:(id)a7
+- (HDXPCPeriodicActivity)initWithName:(id)name baseInterval:(double)interval criteria:(id)criteria loggingCategory:(id)category handler:(id)handler
 {
   v38 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  nameCopy = name;
+  criteriaCopy = criteria;
+  categoryCopy = category;
+  handlerCopy = handler;
   v31.receiver = self;
   v31.super_class = HDXPCPeriodicActivity;
   v16 = [(HDXPCPeriodicActivity *)&v31 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [nameCopy copy];
     name = v16->_name;
     v16->_name = v17;
 
-    v16->_baseInterval = a4;
-    v19 = xpc_copy(v13);
+    v16->_baseInterval = interval;
+    v19 = xpc_copy(criteriaCopy);
     criteria = v16->_criteria;
     v16->_criteria = v19;
 
-    v21 = [v15 copy];
+    v21 = [handlerCopy copy];
     handler = v16->_handler;
     v16->_handler = v21;
 
-    objc_storeStrong(&v16->_loggingCategory, a6);
+    objc_storeStrong(&v16->_loggingCategory, category);
     v16->_lock._os_unfair_lock_opaque = 0;
     os_unfair_lock_lock(&v16->_lock);
     _HKInitializeLogging();
@@ -120,13 +120,13 @@ LABEL_10:
       v27 = loggingCategory;
       v28 = _HDXPCPeriodicActivityLastSuccessfulRunUserDefaultsKey(v26);
       v29 = [(HDXPCPeriodicActivity *)v16 _dateForDefaultsKey:v28];
-      v30 = [(HDXPCPeriodicActivity *)v16 _lock_errorCount];
+      _lock_errorCount = [(HDXPCPeriodicActivity *)v16 _lock_errorCount];
       *buf = 138543874;
-      v33 = v12;
+      v33 = nameCopy;
       v34 = 2112;
       v35 = v29;
       v36 = 2048;
-      v37 = v30;
+      v37 = _lock_errorCount;
       _os_log_impl(&dword_25156C000, v27, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Initialized; Last Success: %@ (%ld errors since)", buf, 0x20u);
     }
 
@@ -140,36 +140,36 @@ LABEL_10:
 
 - (void)dealloc
 {
-  OUTLINED_FUNCTION_4(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_4(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_1_0();
   _os_log_fault_impl(&dword_25156C000, v1, OS_LOG_TYPE_FAULT, "[%{public}@]: Client bug: Dealloc before unregistration.", v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)registerDisabledPeriodicActivityWithName:(id)a3 loggingCategory:(id)a4
++ (void)registerDisabledPeriodicActivityWithName:(id)name loggingCategory:(id)category
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  categoryCopy = category;
   if ((HDIsUnitTesting() & 1) == 0)
   {
     _HKInitializeLogging();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(categoryCopy, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v14 = v5;
-      _os_log_impl(&dword_25156C000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Registering DISABLED.", buf, 0xCu);
+      v14 = nameCopy;
+      _os_log_impl(&dword_25156C000, categoryCopy, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Registering DISABLED.", buf, 0xCu);
     }
 
-    v7 = [v5 UTF8String];
+    uTF8String = [nameCopy UTF8String];
     v8 = *MEMORY[0x277D86238];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __82__HDXPCPeriodicActivity_registerDisabledPeriodicActivityWithName_loggingCategory___block_invoke;
     v10[3] = &unk_2796BD878;
-    v11 = v6;
-    v12 = v5;
-    xpc_activity_register(v7, v8, v10);
+    v11 = categoryCopy;
+    v12 = nameCopy;
+    xpc_activity_register(uTF8String, v8, v10);
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -231,14 +231,14 @@ void __82__HDXPCPeriodicActivity_registerDisabledPeriodicActivityWithName_loggin
 
     objc_initWeak(buf, self);
     WeakRetained = objc_loadWeakRetained(&self->_activityShim);
-    v7 = [(NSString *)self->_name UTF8String];
+    uTF8String = [(NSString *)self->_name UTF8String];
     criteria = self->_criteria;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __41__HDXPCPeriodicActivity_registerActivity__block_invoke;
     v10[3] = &unk_2796BD8A0;
     objc_copyWeak(&v11, buf);
-    [WeakRetained xpcActivity_register:v7 criteria:criteria handler:v10];
+    [WeakRetained xpcActivity_register:uTF8String criteria:criteria handler:v10];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(buf);
@@ -290,11 +290,11 @@ void __41__HDXPCPeriodicActivity_registerActivity__block_invoke(uint64_t a1, voi
   return v3;
 }
 
-- (void)setCriteria:(id)a3
+- (void)setCriteria:(id)criteria
 {
-  v4 = a3;
+  criteriaCopy = criteria;
   os_unfair_lock_lock(&self->_lock);
-  [(HDXPCPeriodicActivity *)self _lock_setCriteria:v4];
+  [(HDXPCPeriodicActivity *)self _lock_setCriteria:criteriaCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -308,23 +308,23 @@ void __41__HDXPCPeriodicActivity_registerActivity__block_invoke(uint64_t a1, voi
   return v3;
 }
 
-- (void)didPerformActivityWithResult:(int64_t)a3 minimumRetryInterval:(double)a4 activityStartDate:(id)a5 error:(id)a6
+- (void)didPerformActivityWithResult:(int64_t)result minimumRetryInterval:(double)interval activityStartDate:(id)date error:(id)error
 {
-  v10 = a6;
-  v11 = a5;
+  errorCopy = error;
+  dateCopy = date;
   os_unfair_lock_lock(&self->_lock);
-  [(HDXPCPeriodicActivity *)self _lock_activityFinishedWithResult:a3 minimumRetryInterval:v11 activityStartDate:v10 error:a4];
+  [(HDXPCPeriodicActivity *)self _lock_activityFinishedWithResult:result minimumRetryInterval:dateCopy activityStartDate:errorCopy error:interval];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
 - (BOOL)shouldDefer
 {
-  v3 = [(HDXPCPeriodicActivity *)self currentActivity];
-  if (v3)
+  currentActivity = [(HDXPCPeriodicActivity *)self currentActivity];
+  if (currentActivity)
   {
     WeakRetained = objc_loadWeakRetained(&self->_activityShim);
-    v5 = [WeakRetained xpcActivity_shouldDefer:v3];
+    v5 = [WeakRetained xpcActivity_shouldDefer:currentActivity];
   }
 
   else
@@ -345,11 +345,11 @@ void __41__HDXPCPeriodicActivity_registerActivity__block_invoke(uint64_t a1, voi
 
 - (OS_xpc_object)currentCriteria
 {
-  v3 = [(HDXPCPeriodicActivity *)self currentActivity];
-  if (v3)
+  currentActivity = [(HDXPCPeriodicActivity *)self currentActivity];
+  if (currentActivity)
   {
     WeakRetained = objc_loadWeakRetained(&self->_activityShim);
-    v5 = [WeakRetained xpcActivity_copyCriteria:v3];
+    v5 = [WeakRetained xpcActivity_copyCriteria:currentActivity];
   }
 
   else
@@ -363,14 +363,14 @@ void __41__HDXPCPeriodicActivity_registerActivity__block_invoke(uint64_t a1, voi
 - (double)modifiedIntervalForCurrentState
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HDXPCPeriodicActivity *)self _lock_modifiedIntervalForCurrentState];
+  _lock_modifiedIntervalForCurrentState = [(HDXPCPeriodicActivity *)self _lock_modifiedIntervalForCurrentState];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_modifiedIntervalForCurrentState;
 }
 
-- (void)resetIntervalWithCriteria:(id)a3
+- (void)resetIntervalWithCriteria:(id)criteria
 {
-  [(HDXPCPeriodicActivity *)self setCriteria:a3];
+  [(HDXPCPeriodicActivity *)self setCriteria:criteria];
   [(HDXPCPeriodicActivity *)self unregisterActivity];
 
   [(HDXPCPeriodicActivity *)self registerActivity];
@@ -535,40 +535,40 @@ LABEL_19:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateStateForFinishedActivity:(uint64_t)a3 result:
+- (void)_updateStateForFinishedActivity:(uint64_t)activity result:
 {
   v5 = a2;
   v6 = v5;
-  if (!a1 || !v5)
+  if (!self || !v5)
   {
     goto LABEL_25;
   }
 
-  if (a3 <= 1)
+  if (activity <= 1)
   {
-    if (!a3)
+    if (!activity)
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 56));
+      WeakRetained = objc_loadWeakRetained((self + 56));
       v14 = [WeakRetained xpcActivity_setCompletionStatus:0 activity:v6];
 
       if ((v14 & 1) == 0)
       {
         _HKInitializeLogging();
-        if (os_log_type_enabled(*(a1 + 72), OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(*(self + 72), OS_LOG_TYPE_ERROR))
         {
-          [HDXPCPeriodicActivity _updateStateForFinishedActivity:a1 result:?];
+          [HDXPCPeriodicActivity _updateStateForFinishedActivity:self result:?];
         }
       }
 
       goto LABEL_25;
     }
 
-    if (a3 == 1)
+    if (activity == 1)
     {
       _HKInitializeLogging();
-      if (os_log_type_enabled(*(a1 + 72), OS_LOG_TYPE_FAULT))
+      if (os_log_type_enabled(*(self + 72), OS_LOG_TYPE_FAULT))
       {
-        [HDXPCPeriodicActivity _updateStateForFinishedActivity:a1 result:?];
+        [HDXPCPeriodicActivity _updateStateForFinishedActivity:self result:?];
       }
 
       goto LABEL_25;
@@ -577,24 +577,24 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if ((a3 - 2) >= 2)
+  if ((activity - 2) >= 2)
   {
-    if (a3 == 4)
+    if (activity == 4)
     {
-      v9 = objc_loadWeakRetained((a1 + 56));
+      v9 = objc_loadWeakRetained((self + 56));
       v10 = [v9 xpcActivity_shouldDefer:v6];
 
       if (v10)
       {
-        v11 = objc_loadWeakRetained((a1 + 56));
+        v11 = objc_loadWeakRetained((self + 56));
         v12 = [v11 xpcActivity_setState:3 activity:v6];
 
         if ((v12 & 1) == 0)
         {
           _HKInitializeLogging();
-          if (os_log_type_enabled(*(a1 + 72), OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(*(self + 72), OS_LOG_TYPE_ERROR))
           {
-            [HDXPCPeriodicActivity _updateStateForFinishedActivity:a1 result:?];
+            [HDXPCPeriodicActivity _updateStateForFinishedActivity:self result:?];
           }
         }
       }
@@ -602,21 +602,21 @@ LABEL_19:
       else
       {
         _HKInitializeLogging();
-        if (os_log_type_enabled(*(a1 + 72), OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(*(self + 72), OS_LOG_TYPE_ERROR))
         {
-          [HDXPCPeriodicActivity _updateStateForFinishedActivity:a1 result:?];
+          [HDXPCPeriodicActivity _updateStateForFinishedActivity:self result:?];
         }
 
-        os_unfair_lock_lock((a1 + 8));
-        [(HDXPCPeriodicActivity *)a1 _lock_incrementErrorCount];
-        os_unfair_lock_unlock((a1 + 8));
-        v17 = objc_loadWeakRetained((a1 + 56));
+        os_unfair_lock_lock((self + 8));
+        [(HDXPCPeriodicActivity *)self _lock_incrementErrorCount];
+        os_unfair_lock_unlock((self + 8));
+        v17 = objc_loadWeakRetained((self + 56));
         v18 = [v17 xpcActivity_setCompletionStatus:1 activity:v6];
 
         if ((v18 & 1) == 0)
         {
           _HKInitializeLogging();
-          if (os_log_type_enabled(*(a1 + 72), OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(*(self + 72), OS_LOG_TYPE_ERROR))
           {
             goto LABEL_24;
           }
@@ -628,18 +628,18 @@ LABEL_19:
 
 LABEL_20:
     _HKInitializeLogging();
-    if (os_log_type_enabled(*(a1 + 72), OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(*(self + 72), OS_LOG_TYPE_ERROR))
     {
-      [HDXPCPeriodicActivity _updateStateForFinishedActivity:a1 result:?];
+      [HDXPCPeriodicActivity _updateStateForFinishedActivity:self result:?];
     }
 
-    v15 = objc_loadWeakRetained((a1 + 56));
+    v15 = objc_loadWeakRetained((self + 56));
     v16 = [v15 xpcActivity_setCompletionStatus:0 activity:v6];
 
     if ((v16 & 1) == 0)
     {
       _HKInitializeLogging();
-      if (os_log_type_enabled(*(a1 + 72), OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(*(self + 72), OS_LOG_TYPE_ERROR))
       {
         goto LABEL_24;
       }
@@ -648,74 +648,74 @@ LABEL_20:
     goto LABEL_25;
   }
 
-  v7 = objc_loadWeakRetained((a1 + 56));
+  v7 = objc_loadWeakRetained((self + 56));
   v8 = [v7 xpcActivity_setCompletionStatus:3 activity:v6];
 
   if ((v8 & 1) == 0)
   {
     _HKInitializeLogging();
-    if (os_log_type_enabled(*(a1 + 72), OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(*(self + 72), OS_LOG_TYPE_ERROR))
     {
 LABEL_24:
-      [HDXPCPeriodicActivity _updateStateForFinishedActivity:a1 result:?];
+      [HDXPCPeriodicActivity _updateStateForFinishedActivity:self result:?];
     }
   }
 
 LABEL_25:
 }
 
-- (void)xpcActivity_register:(const char *)a3 criteria:(id)a4 handler:(id)a5
+- (void)xpcActivity_register:(const char *)activity_register criteria:(id)criteria handler:(id)handler
 {
-  criteria = a4;
-  v7 = a5;
+  criteria = criteria;
+  handlerCopy = handler;
   if ((HDIsUnitTesting() & 1) == 0)
   {
-    xpc_activity_register(a3, criteria, v7);
+    xpc_activity_register(activity_register, criteria, handlerCopy);
   }
 }
 
-- (void)xpcActivity_unregister:(const char *)a3
+- (void)xpcActivity_unregister:(const char *)activity_unregister
 {
   if ((HDIsUnitTesting() & 1) == 0)
   {
 
-    xpc_activity_unregister(a3);
+    xpc_activity_unregister(activity_unregister);
   }
 }
 
-- (id)xpcActivity_copyCriteria:(id)a3
+- (id)xpcActivity_copyCriteria:(id)criteria
 {
-  v3 = xpc_activity_copy_criteria(a3);
+  v3 = xpc_activity_copy_criteria(criteria);
 
   return v3;
 }
 
-- (void)unitTest_setActivityShim:(id)a3
+- (void)unitTest_setActivityShim:(id)shim
 {
-  v5 = a3;
+  shimCopy = shim;
   os_unfair_lock_lock(&self->_lock);
-  if (v5)
+  if (shimCopy)
   {
-    v4 = v5;
+    selfCopy = shimCopy;
   }
 
   else
   {
-    v4 = self;
+    selfCopy = self;
   }
 
-  objc_storeWeak(&self->_activityShim, v4);
+  objc_storeWeak(&self->_activityShim, selfCopy);
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)_dateForDefaultsKey:(uint64_t)a1
+- (id)_dateForDefaultsKey:(uint64_t)key
 {
-  if (a1)
+  if (key)
   {
     v2 = MEMORY[0x277CBEBD0];
     v3 = a2;
-    v4 = [v2 standardUserDefaults];
-    v5 = [v4 objectForKey:v3];
+    standardUserDefaults = [v2 standardUserDefaults];
+    v5 = [standardUserDefaults objectForKey:v3];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -795,13 +795,13 @@ LABEL_5:
   return v12;
 }
 
-- (void)_handleXPCActivityCallback:(uint64_t)a1
+- (void)_handleXPCActivityCallback:(uint64_t)callback
 {
   v23 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (callback)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 56));
+    WeakRetained = objc_loadWeakRetained((callback + 56));
     v5 = [WeakRetained xpcActivity_getState:v3];
 
     _HKInitializeLogging();
@@ -810,17 +810,17 @@ LABEL_5:
     {
       if (v6)
       {
-        v15 = *(a1 + 64);
+        v15 = *(callback + 64);
         OUTLINED_FUNCTION_1_0();
         OUTLINED_FUNCTION_3(&dword_25156C000, v16, v17, "[%{public}@]: Fired.", v18, v19, v20, v21, v22);
       }
 
-      [(HDXPCPeriodicActivity *)a1 _performActivity:v3];
+      [(HDXPCPeriodicActivity *)callback _performActivity:v3];
     }
 
     else if (v6)
     {
-      v7 = *(a1 + 64);
+      v7 = *(callback + 64);
       OUTLINED_FUNCTION_1_0();
       OUTLINED_FUNCTION_3(&dword_25156C000, v8, v9, "[%{public}@]: Checked in.", v10, v11, v12, v13, v22);
     }
@@ -829,54 +829,54 @@ LABEL_5:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_lock_setCriteria:(uint64_t)a1
+- (void)_lock_setCriteria:(uint64_t)criteria
 {
   object2 = a2;
-  if (a1)
+  if (criteria)
   {
-    os_unfair_lock_assert_owner((a1 + 8));
-    if (!xpc_equal(*(a1 + 16), object2))
+    os_unfair_lock_assert_owner((criteria + 8));
+    if (!xpc_equal(*(criteria + 16), object2))
     {
       v3 = xpc_copy(object2);
-      v4 = *(a1 + 16);
-      *(a1 + 16) = v3;
+      v4 = *(criteria + 16);
+      *(criteria + 16) = v3;
 
-      if (*(a1 + 24))
+      if (*(criteria + 24))
       {
-        WeakRetained = objc_loadWeakRetained((a1 + 56));
-        [WeakRetained xpcActivity_setCriteria:object2 activity:*(a1 + 24)];
+        WeakRetained = objc_loadWeakRetained((criteria + 56));
+        [WeakRetained xpcActivity_setCriteria:object2 activity:*(criteria + 24)];
       }
 
       else
       {
-        [a1 unregisterActivity];
-        [a1 registerActivity];
+        [criteria unregisterActivity];
+        [criteria registerActivity];
       }
     }
   }
 }
 
-- (void)_lock_activityFinishedWithResult:(void *)a3 minimumRetryInterval:(void *)a4 activityStartDate:(double)a5 error:
+- (void)_lock_activityFinishedWithResult:(void *)result minimumRetryInterval:(void *)interval activityStartDate:(double)date error:
 {
   v40 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  if (a1)
+  resultCopy = result;
+  intervalCopy = interval;
+  if (self)
   {
-    os_unfair_lock_assert_owner((a1 + 8));
-    v11 = fmax(a5, 0.0);
-    v12 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    os_unfair_lock_assert_owner((self + 8));
+    v11 = fmax(date, 0.0);
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
     if (v11 <= 0.0)
     {
-      v13 = _HDXPCPeriodicActivityEarliestNextRunUserDefaultsKey(*(a1 + 64));
-      [v12 removeObjectForKey:v13];
+      v13 = _HDXPCPeriodicActivityEarliestNextRunUserDefaultsKey(*(self + 64));
+      [standardUserDefaults removeObjectForKey:v13];
     }
 
     else
     {
       v13 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:v11];
-      v14 = _HDXPCPeriodicActivityEarliestNextRunUserDefaultsKey(*(a1 + 64));
-      [v12 setObject:v13 forKey:v14];
+      v14 = _HDXPCPeriodicActivityEarliestNextRunUserDefaultsKey(*(self + 64));
+      [standardUserDefaults setObject:v13 forKey:v14];
     }
 
     switch(a2)
@@ -886,20 +886,20 @@ LABEL_5:
         v34 = OUTLINED_FUNCTION_10();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
         {
-          v35 = *(a1 + 64);
+          v35 = *(self + 64);
           OUTLINED_FUNCTION_0();
           v39 = v11;
           _os_log_impl(&dword_25156C000, a2, OS_LOG_TYPE_DEFAULT, "[%{public}@]: succeeded with minimum retry interval: %lfs", v37, 0x16u);
         }
 
-        [(HDXPCPeriodicActivity *)a1 _lock_setLastSuccessfulRunDate:v9];
+        [(HDXPCPeriodicActivity *)self _lock_setLastSuccessfulRunDate:resultCopy];
         goto LABEL_11;
       case 1uLL:
         _HKInitializeLogging();
         v15 = OUTLINED_FUNCTION_10();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
-          v16 = *(a1 + 64);
+          v16 = *(self + 64);
           OUTLINED_FUNCTION_1_0();
           _os_log_impl(&dword_25156C000, a2, OS_LOG_TYPE_DEFAULT, "[%{public}@]: waiting for external conditions to change", v37, 0xCu);
         }
@@ -914,7 +914,7 @@ LABEL_8:
           goto LABEL_11;
         }
 
-        v18 = *(a1 + 64);
+        v18 = *(self + 64);
         OUTLINED_FUNCTION_0();
         OUTLINED_FUNCTION_11();
         OUTLINED_FUNCTION_8();
@@ -925,14 +925,14 @@ LABEL_8:
         v27 = OUTLINED_FUNCTION_10();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
         {
-          v28 = *(a1 + 64);
+          v28 = *(self + 64);
           OUTLINED_FUNCTION_0();
           OUTLINED_FUNCTION_11();
           OUTLINED_FUNCTION_8();
           _os_log_error_impl(v29, v30, v31, v32, v33, 0x20u);
         }
 
-        [(HDXPCPeriodicActivity *)a1 _lock_incrementErrorCount];
+        [(HDXPCPeriodicActivity *)self _lock_incrementErrorCount];
         goto LABEL_11;
       case 4uLL:
         _HKInitializeLogging();
@@ -942,10 +942,10 @@ LABEL_8:
           goto LABEL_11;
         }
 
-        v36 = *(a1 + 64);
+        v36 = *(self + 64);
         OUTLINED_FUNCTION_1_0();
         v38 = 2114;
-        v39 = *&v10;
+        v39 = *&intervalCopy;
         OUTLINED_FUNCTION_8();
         v24 = 22;
         break;
@@ -965,9 +965,9 @@ LABEL_11:
 {
   v3 = OUTLINED_FUNCTION_5(self);
   os_unfair_lock_lock(v3);
-  v4 = [(HDXPCPeriodicActivity *)v2 _lock_errorCount];
+  _lock_errorCount = [(HDXPCPeriodicActivity *)v2 _lock_errorCount];
   os_unfair_lock_unlock(v2 + 2);
-  return v4;
+  return _lock_errorCount;
 }
 
 - (NSDate)lastSuccessfulRunDate
@@ -994,33 +994,33 @@ LABEL_11:
   return v5;
 }
 
-- (void)_performCurrentActivityWithCompletion:(uint64_t)a1
+- (void)_performCurrentActivityWithCompletion:(uint64_t)completion
 {
   v35 = *MEMORY[0x277D85DE8];
   v4 = a2;
-  if (a1)
+  if (completion)
   {
-    os_unfair_lock_lock((a1 + 8));
-    if ((*(a1 + 32) & 0xFFFFFFFFFFFFFFFDLL) == 1)
+    os_unfair_lock_lock((completion + 8));
+    if ((*(completion + 32) & 0xFFFFFFFFFFFFFFFDLL) == 1)
     {
-      *(a1 + 32) = 2;
-      v5 = *(a1 + 24);
-      *(a1 + 40) = 0;
-      os_unfair_lock_unlock((a1 + 8));
-      v6 = [MEMORY[0x277CCD288] transactionWithOwner:a1 activityName:*(a1 + 64)];
+      *(completion + 32) = 2;
+      v5 = *(completion + 24);
+      *(completion + 40) = 0;
+      os_unfair_lock_unlock((completion + 8));
+      v6 = [MEMORY[0x277CCD288] transactionWithOwner:completion activityName:*(completion + 64)];
       Current = CFAbsoluteTimeGetCurrent();
       _HKInitializeLogging();
-      v8 = *(a1 + 72);
+      v8 = *(completion + 72);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = *(a1 + 64);
+        v9 = *(completion + 64);
         *buf = 138543362;
         v32 = v9;
         _os_log_impl(&dword_25156C000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Calling out to client handler", buf, 0xCu);
       }
 
       v10 = _HKLogPersistedSignposts();
-      v11 = os_signpost_id_make_with_pointer(v10, a1);
+      v11 = os_signpost_id_make_with_pointer(v10, completion);
 
       _HKInitializeLogging();
       v12 = _HKLogPersistedSignposts();
@@ -1032,19 +1032,19 @@ LABEL_11:
         v15 = v14;
         if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v14))
         {
-          v16 = *(a1 + 64);
+          v16 = *(completion + 64);
           *buf = 138543362;
           v32 = v16;
           _os_signpost_emit_with_name_impl(&dword_25156C000, v15, OS_SIGNPOST_INTERVAL_BEGIN, v11, "HDXPCPeriodicActivity", "name=%{public}@", buf, 0xCu);
         }
       }
 
-      v17 = *(a1 + 48);
+      v17 = *(completion + 48);
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
       v25[2] = __63__HDXPCPeriodicActivity__performCurrentActivityWithCompletion___block_invoke;
       v25[3] = &unk_2796BD8E8;
-      v25[4] = a1;
+      v25[4] = completion;
       v29 = Current;
       v30 = v11;
       v27 = v5;
@@ -1053,16 +1053,16 @@ LABEL_11:
       v18 = *(v17 + 16);
       v19 = v5;
       v20 = v6;
-      v18(v17, a1, v25);
+      v18(v17, completion, v25);
     }
 
     else
     {
-      os_unfair_lock_unlock((a1 + 8));
+      os_unfair_lock_unlock((completion + 8));
       _HKInitializeLogging();
       if (OUTLINED_FUNCTION_6())
       {
-        v21 = *(a1 + 64);
+        v21 = *(completion + 64);
         v22 = v2;
         v23 = NSStringFromSelector(sel__performCurrentActivityWithCompletion_);
         *buf = 138543618;
@@ -1079,25 +1079,25 @@ LABEL_11:
 
 - (double)_lock_modifiedIntervalForCurrentState
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v3 = OUTLINED_FUNCTION_5(a1);
+  v3 = OUTLINED_FUNCTION_5(self);
   os_unfair_lock_assert_owner(v3);
   v4 = *(v1 + 80);
-  v5 = [(HDXPCPeriodicActivity *)v1 _lock_errorCount];
-  if (v5 >= 1)
+  _lock_errorCount = [(HDXPCPeriodicActivity *)v1 _lock_errorCount];
+  if (_lock_errorCount >= 1)
   {
     v4 = *(v1 + 80);
     v6 = 0.0;
-    if (v5 != 1)
+    if (_lock_errorCount != 1)
     {
       v7 = 20;
-      if (v5 < 0x14)
+      if (_lock_errorCount < 0x14)
       {
-        v7 = v5;
+        v7 = _lock_errorCount;
       }
 
       v6 = exp2((v7 - 2)) * (v4 * 0.025);
@@ -1136,46 +1136,46 @@ LABEL_11:
 {
   v3 = OUTLINED_FUNCTION_5(self);
   os_unfair_lock_lock(v3);
-  v4 = [(HDXPCPeriodicActivity *)v2 _lock_modifiedIntervalForCurrentState];
-  xpc_dictionary_set_int64(*(v2 + 16), *MEMORY[0x277D86288], v4);
+  _lock_modifiedIntervalForCurrentState = [(HDXPCPeriodicActivity *)v2 _lock_modifiedIntervalForCurrentState];
+  xpc_dictionary_set_int64(*(v2 + 16), *MEMORY[0x277D86288], _lock_modifiedIntervalForCurrentState);
   [(HDXPCPeriodicActivity *)v2 _lock_setCriteria:?];
 
   os_unfair_lock_unlock((v2 + 8));
 }
 
-- (void)_performActivity:(uint64_t)a1
+- (void)_performActivity:(uint64_t)activity
 {
   v27 = *MEMORY[0x277D85DE8];
   v4 = a2;
-  if (a1)
+  if (activity)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 56));
+    WeakRetained = objc_loadWeakRetained((activity + 56));
     v6 = [WeakRetained xpcActivity_setState:4 activity:v4];
 
     if (v6)
     {
-      os_unfair_lock_lock((a1 + 8));
-      if (*(a1 + 32))
+      os_unfair_lock_lock((activity + 8));
+      if (*(activity + 32))
       {
-        os_unfair_lock_unlock((a1 + 8));
+        os_unfair_lock_unlock((activity + 8));
         _HKInitializeLogging();
         if (OUTLINED_FUNCTION_6())
         {
-          v7 = *(a1 + 64);
+          v7 = *(activity + 64);
           OUTLINED_FUNCTION_1_0();
           OUTLINED_FUNCTION_3(&dword_25156C000, v8, v9, "[%{public}@]: Fired while already in progress; finishing activity immediately.", v10, v11, v12, v13, v26[0]);
         }
 
-        v14 = objc_loadWeakRetained((a1 + 56));
+        v14 = objc_loadWeakRetained((activity + 56));
         v15 = [v14 xpcActivity_setState:5 activity:v4];
 
         if ((v15 & 1) == 0)
         {
           _HKInitializeLogging();
-          v16 = *(a1 + 72);
+          v16 = *(activity + 72);
           if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
           {
-            v17 = *(a1 + 64);
+            v17 = *(activity + 64);
             OUTLINED_FUNCTION_1_0();
             _os_log_error_impl(&dword_25156C000, v16, OS_LOG_TYPE_ERROR, "[%{public}@]: Failed to set activity state during unexpected fire event.", v26, 0xCu);
           }
@@ -1184,10 +1184,10 @@ LABEL_11:
 
       else
       {
-        *(a1 + 32) = 1;
-        objc_storeStrong((a1 + 24), a2);
-        os_unfair_lock_unlock((a1 + 8));
-        [(HDXPCPeriodicActivity *)a1 _performCurrentActivityWithCompletion:?];
+        *(activity + 32) = 1;
+        objc_storeStrong((activity + 24), a2);
+        os_unfair_lock_unlock((activity + 8));
+        [(HDXPCPeriodicActivity *)activity _performCurrentActivityWithCompletion:?];
       }
     }
 
@@ -1196,7 +1196,7 @@ LABEL_11:
       _HKInitializeLogging();
       if (OUTLINED_FUNCTION_6())
       {
-        v18 = *(a1 + 64);
+        v18 = *(activity + 64);
         OUTLINED_FUNCTION_1_0();
         OUTLINED_FUNCTION_3(&dword_25156C000, v19, v20, "[%{public}@]: Failed to continue activity.", v21, v22, v23, v24, v26[0]);
       }
@@ -1208,23 +1208,23 @@ LABEL_11:
 
 - (void)_lock_incrementErrorCount
 {
-  if (a1)
+  if (self)
   {
-    v2 = OUTLINED_FUNCTION_5(a1);
+    v2 = OUTLINED_FUNCTION_5(self);
     os_unfair_lock_assert_owner(v2);
-    v3 = [(HDXPCPeriodicActivity *)v1 _lock_errorCount];
-    v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    _lock_errorCount = [(HDXPCPeriodicActivity *)v1 _lock_errorCount];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
     v4 = _HDXPCPeriodicActivityErrorCountUserDefaultsKey(*(v1 + 64));
-    [v5 setInteger:v3 + 1 forKey:v4];
+    [standardUserDefaults setInteger:_lock_errorCount + 1 forKey:v4];
   }
 }
 
-- (void)_lock_setLastSuccessfulRunDate:(const os_unfair_lock *)a1
+- (void)_lock_setLastSuccessfulRunDate:(const os_unfair_lock *)date
 {
   v8 = a2;
-  if (a1)
+  if (date)
   {
-    os_unfair_lock_assert_owner(a1 + 2);
+    os_unfair_lock_assert_owner(date + 2);
     if (v8)
     {
       [MEMORY[0x277CBEBD0] standardUserDefaults];
@@ -1262,9 +1262,9 @@ LABEL_11:
   os_unfair_lock_unlock(&v2[2]);
 }
 
-- (void)unitTest_synthesizeActivityFireWithCompletion:(id)a3
+- (void)unitTest_synthesizeActivityFireWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
   [(HDXPCPeriodicActivity *)self _lock_setLastSuccessfulRunDate:?];
   self->_state = 1;
@@ -1273,8 +1273,8 @@ LABEL_11:
   v6[1] = 3221225472;
   v6[2] = __71__HDXPCPeriodicActivity_unitTest_synthesizeActivityFireWithCompletion___block_invoke;
   v6[3] = &unk_2796BD910;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(HDXPCPeriodicActivity *)self _performCurrentActivityWithCompletion:v6];
 }
 

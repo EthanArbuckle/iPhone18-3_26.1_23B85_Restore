@@ -1,18 +1,18 @@
 @interface SCATAggregateElementProvider
-- (BOOL)containsElement:(id)a3;
+- (BOOL)containsElement:(id)element;
 - (NSString)description;
 - (SCATAggregateElementProvider)init;
-- (id)addProviderWithElements:(id)a3 passingTest:(id)a4;
-- (id)elementAfter:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5;
-- (id)elementBefore:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5;
-- (id)firstElementWithOptions:(int *)a3;
-- (id)lastElementWithOptions:(int *)a3;
-- (unint64_t)_indexOfProviderAfterProviderWithIndex:(unint64_t)a3 didWrap:(BOOL *)a4;
-- (unint64_t)_indexOfProviderBeforeProviderWithIndex:(unint64_t)a3 didWrap:(BOOL *)a4;
-- (unint64_t)_indexOfProviderContainingElement:(id)a3;
-- (void)addProvider:(id)a3;
+- (id)addProviderWithElements:(id)elements passingTest:(id)test;
+- (id)elementAfter:(id)after didWrap:(BOOL *)wrap options:(int *)options;
+- (id)elementBefore:(id)before didWrap:(BOOL *)wrap options:(int *)options;
+- (id)firstElementWithOptions:(int *)options;
+- (id)lastElementWithOptions:(int *)options;
+- (unint64_t)_indexOfProviderAfterProviderWithIndex:(unint64_t)index didWrap:(BOOL *)wrap;
+- (unint64_t)_indexOfProviderBeforeProviderWithIndex:(unint64_t)index didWrap:(BOOL *)wrap;
+- (unint64_t)_indexOfProviderContainingElement:(id)element;
+- (void)addProvider:(id)provider;
 - (void)removeAllProviders;
-- (void)removeProvider:(id)a3;
+- (void)removeProvider:(id)provider;
 @end
 
 @implementation SCATAggregateElementProvider
@@ -41,8 +41,8 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(SCATAggregateElementProvider *)self providers];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  providers = [(SCATAggregateElementProvider *)self providers];
+  v5 = [providers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -53,13 +53,13 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(providers);
         }
 
         [v3 appendFormat:@"  %@\n", *(*(&v10 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [providers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -68,25 +68,25 @@
   return v3;
 }
 
-- (void)addProvider:(id)a3
+- (void)addProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(SCATAggregateElementProvider *)self providers];
-  [v5 addObject:v4];
+  providerCopy = provider;
+  providers = [(SCATAggregateElementProvider *)self providers];
+  [providers addObject:providerCopy];
 }
 
-- (id)addProviderWithElements:(id)a3 passingTest:(id)a4
+- (id)addProviderWithElements:(id)elements passingTest:(id)test
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  elementsCopy = elements;
+  testCopy = test;
+  if (testCopy)
   {
     v8 = +[NSMutableArray array];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v9 = v6;
+    v9 = elementsCopy;
     v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
@@ -102,7 +102,7 @@
           }
 
           v14 = *(*(&v18 + 1) + 8 * i);
-          if (v7[2](v7, v14))
+          if (testCopy[2](testCopy, v14))
           {
             [v8 addObject:{v14, v18}];
           }
@@ -117,14 +117,14 @@
 
   else
   {
-    v8 = v6;
+    v8 = elementsCopy;
   }
 
   if ([v8 count])
   {
     v15 = [[SCATStaticElementProvider alloc] initWithElements:v8];
-    v16 = [(SCATAggregateElementProvider *)self providers];
-    [v16 addObject:v15];
+    providers = [(SCATAggregateElementProvider *)self providers];
+    [providers addObject:v15];
   }
 
   else
@@ -135,30 +135,30 @@
   return v15;
 }
 
-- (void)removeProvider:(id)a3
+- (void)removeProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(SCATAggregateElementProvider *)self providers];
-  [v5 removeObject:v4];
+  providerCopy = provider;
+  providers = [(SCATAggregateElementProvider *)self providers];
+  [providers removeObject:providerCopy];
 }
 
 - (void)removeAllProviders
 {
-  v2 = [(SCATAggregateElementProvider *)self providers];
-  [v2 removeAllObjects];
+  providers = [(SCATAggregateElementProvider *)self providers];
+  [providers removeAllObjects];
 }
 
-- (unint64_t)_indexOfProviderAfterProviderWithIndex:(unint64_t)a3 didWrap:(BOOL *)a4
+- (unint64_t)_indexOfProviderAfterProviderWithIndex:(unint64_t)index didWrap:(BOOL *)wrap
 {
-  v6 = [(SCATAggregateElementProvider *)self providers];
-  v7 = [v6 count];
+  providers = [(SCATAggregateElementProvider *)self providers];
+  v7 = [providers count];
 
-  v9 = a3 != 0x7FFFFFFFFFFFFFFFLL && v7 != 0;
-  v10 = a3 + 1;
-  if (a4)
+  v9 = index != 0x7FFFFFFFFFFFFFFFLL && v7 != 0;
+  v10 = index + 1;
+  if (wrap)
   {
     v11 = v10 == v7 && v9;
-    *a4 = v11;
+    *wrap = v11;
   }
 
   if (v10 == v7)
@@ -177,28 +177,28 @@
   }
 }
 
-- (unint64_t)_indexOfProviderBeforeProviderWithIndex:(unint64_t)a3 didWrap:(BOOL *)a4
+- (unint64_t)_indexOfProviderBeforeProviderWithIndex:(unint64_t)index didWrap:(BOOL *)wrap
 {
-  v6 = [(SCATAggregateElementProvider *)self providers];
-  v7 = [v6 count];
+  providers = [(SCATAggregateElementProvider *)self providers];
+  v7 = [providers count];
 
-  if (a4)
+  if (wrap)
   {
-    *a4 = a3 == 0;
+    *wrap = index == 0;
   }
 
-  if (a3)
+  if (index)
   {
-    v8 = a3;
+    indexCopy = index;
   }
 
   else
   {
-    v8 = v7;
+    indexCopy = v7;
   }
 
-  v9 = v8 - 1;
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  v9 = indexCopy - 1;
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -209,22 +209,22 @@
   }
 }
 
-- (unint64_t)_indexOfProviderContainingElement:(id)a3
+- (unint64_t)_indexOfProviderContainingElement:(id)element
 {
-  v4 = a3;
-  v5 = [(SCATAggregateElementProvider *)self providers];
-  v6 = [v5 count];
+  elementCopy = element;
+  providers = [(SCATAggregateElementProvider *)self providers];
+  v6 = [providers count];
 
   if (v6)
   {
     v7 = 0;
     while (1)
     {
-      v8 = [(SCATAggregateElementProvider *)self providers];
-      v9 = [v8 objectAtIndex:v7];
+      providers2 = [(SCATAggregateElementProvider *)self providers];
+      v9 = [providers2 objectAtIndex:v7];
 
-      LOBYTE(v8) = [v9 containsElement:v4];
-      if (v8)
+      LOBYTE(providers2) = [v9 containsElement:elementCopy];
+      if (providers2)
       {
         break;
       }
@@ -245,17 +245,17 @@ LABEL_5:
   return v7;
 }
 
-- (id)firstElementWithOptions:(int *)a3
+- (id)firstElementWithOptions:(int *)options
 {
-  v5 = [(SCATAggregateElementProvider *)self providers];
-  v6 = [v5 count];
+  providers = [(SCATAggregateElementProvider *)self providers];
+  v6 = [providers count];
 
   if (v6)
   {
-    v7 = [(SCATAggregateElementProvider *)self providers];
-    v8 = [v7 objectAtIndex:0];
+    providers2 = [(SCATAggregateElementProvider *)self providers];
+    v8 = [providers2 objectAtIndex:0];
 
-    v9 = [v8 firstElementWithOptions:a3];
+    v9 = [v8 firstElementWithOptions:options];
   }
 
   else
@@ -266,17 +266,17 @@ LABEL_5:
   return v9;
 }
 
-- (id)lastElementWithOptions:(int *)a3
+- (id)lastElementWithOptions:(int *)options
 {
-  v5 = [(SCATAggregateElementProvider *)self providers];
-  v6 = [v5 count];
+  providers = [(SCATAggregateElementProvider *)self providers];
+  v6 = [providers count];
 
   if (v6)
   {
-    v7 = [(SCATAggregateElementProvider *)self providers];
-    v8 = [v7 lastObject];
+    providers2 = [(SCATAggregateElementProvider *)self providers];
+    lastObject = [providers2 lastObject];
 
-    v9 = [v8 lastElementWithOptions:a3];
+    v9 = [lastObject lastElementWithOptions:options];
   }
 
   else
@@ -287,11 +287,11 @@ LABEL_5:
   return v9;
 }
 
-- (id)elementBefore:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5
+- (id)elementBefore:(id)before didWrap:(BOOL *)wrap options:(int *)options
 {
-  v8 = a3;
+  beforeCopy = before;
   v21 = 0;
-  v9 = [(SCATAggregateElementProvider *)self _indexOfProviderContainingElement:v8];
+  v9 = [(SCATAggregateElementProvider *)self _indexOfProviderContainingElement:beforeCopy];
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v10 = 0;
@@ -299,11 +299,11 @@ LABEL_5:
 
   else
   {
-    v11 = [(SCATAggregateElementProvider *)self providers];
-    v10 = [v11 objectAtIndex:v9];
+    providers = [(SCATAggregateElementProvider *)self providers];
+    v10 = [providers objectAtIndex:v9];
   }
 
-  v12 = [v10 elementBefore:v8 didWrap:&v21 options:a5];
+  v12 = [v10 elementBefore:beforeCopy didWrap:&v21 options:options];
   if (v21 == 1)
   {
     v20 = 0;
@@ -316,15 +316,15 @@ LABEL_5:
     else
     {
       v16 = v13;
-      v17 = [(SCATAggregateElementProvider *)self providers];
-      v14 = [v17 objectAtIndex:v16];
+      providers2 = [(SCATAggregateElementProvider *)self providers];
+      v14 = [providers2 objectAtIndex:v16];
     }
 
     v15 = v20;
-    v18 = [v14 lastElementWithOptions:a5];
+    v18 = [v14 lastElementWithOptions:options];
 
     v12 = v18;
-    if (!a4)
+    if (!wrap)
     {
       goto LABEL_12;
     }
@@ -333,10 +333,10 @@ LABEL_5:
   }
 
   v15 = 0;
-  if (a4)
+  if (wrap)
   {
 LABEL_11:
-    *a4 = v15 & 1;
+    *wrap = v15 & 1;
   }
 
 LABEL_12:
@@ -344,11 +344,11 @@ LABEL_12:
   return v12;
 }
 
-- (id)elementAfter:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5
+- (id)elementAfter:(id)after didWrap:(BOOL *)wrap options:(int *)options
 {
-  v8 = a3;
+  afterCopy = after;
   v21 = 0;
-  v9 = [(SCATAggregateElementProvider *)self _indexOfProviderContainingElement:v8];
+  v9 = [(SCATAggregateElementProvider *)self _indexOfProviderContainingElement:afterCopy];
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v10 = 0;
@@ -356,11 +356,11 @@ LABEL_12:
 
   else
   {
-    v11 = [(SCATAggregateElementProvider *)self providers];
-    v10 = [v11 objectAtIndex:v9];
+    providers = [(SCATAggregateElementProvider *)self providers];
+    v10 = [providers objectAtIndex:v9];
   }
 
-  v12 = [v10 elementAfter:v8 didWrap:&v21 options:a5];
+  v12 = [v10 elementAfter:afterCopy didWrap:&v21 options:options];
   if (v21 == 1)
   {
     v20 = 0;
@@ -373,15 +373,15 @@ LABEL_12:
     else
     {
       v16 = v13;
-      v17 = [(SCATAggregateElementProvider *)self providers];
-      v14 = [v17 objectAtIndex:v16];
+      providers2 = [(SCATAggregateElementProvider *)self providers];
+      v14 = [providers2 objectAtIndex:v16];
     }
 
     v15 = v20;
-    v18 = [v14 firstElementWithOptions:a5];
+    v18 = [v14 firstElementWithOptions:options];
 
     v12 = v18;
-    if (!a4)
+    if (!wrap)
     {
       goto LABEL_12;
     }
@@ -390,10 +390,10 @@ LABEL_12:
   }
 
   v15 = 0;
-  if (a4)
+  if (wrap)
   {
 LABEL_11:
-    *a4 = v15 & 1;
+    *wrap = v15 & 1;
   }
 
 LABEL_12:
@@ -401,15 +401,15 @@ LABEL_12:
   return v12;
 }
 
-- (BOOL)containsElement:(id)a3
+- (BOOL)containsElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(SCATAggregateElementProvider *)self providers];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  providers = [(SCATAggregateElementProvider *)self providers];
+  v6 = [providers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -419,17 +419,17 @@ LABEL_12:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(providers);
         }
 
-        if ([*(*(&v10 + 1) + 8 * i) containsElement:v4])
+        if ([*(*(&v10 + 1) + 8 * i) containsElement:elementCopy])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [providers countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         continue;

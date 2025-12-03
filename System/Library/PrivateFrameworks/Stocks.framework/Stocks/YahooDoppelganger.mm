@@ -1,16 +1,16 @@
 @interface YahooDoppelganger
-+ (BOOL)waitForAllDoppelgangersUpToTimeout:(double)a3;
-+ (id)newDoppelgangerMatchingRequestPattern:(id)a3;
-+ (id)prepDoppelgangerForChartResponseWithSymbol:(id)a3 numberOfDataPoints:(int64_t)a4;
-+ (id)prepDoppelgangerForNewsResponseWithSymbol:(id)a3 numberOfNewsItems:(int64_t)a4;
-+ (id)prepDoppelgangerForQuotesResponseWithSymbols:(id)a3 includeMetdata:(BOOL)a4;
-+ (id)prepDoppelgangerWithRequestPattern:(id)a3 response:(id)a4;
-+ (void)_doppelgangerFinished:(id)a3;
-+ (void)_spewDoppelgangerArray:(id)a3 named:(id)a4;
++ (BOOL)waitForAllDoppelgangersUpToTimeout:(double)timeout;
++ (id)newDoppelgangerMatchingRequestPattern:(id)pattern;
++ (id)prepDoppelgangerForChartResponseWithSymbol:(id)symbol numberOfDataPoints:(int64_t)points;
++ (id)prepDoppelgangerForNewsResponseWithSymbol:(id)symbol numberOfNewsItems:(int64_t)items;
++ (id)prepDoppelgangerForQuotesResponseWithSymbols:(id)symbols includeMetdata:(BOOL)metdata;
++ (id)prepDoppelgangerWithRequestPattern:(id)pattern response:(id)response;
++ (void)_doppelgangerFinished:(id)finished;
++ (void)_spewDoppelgangerArray:(id)array named:(id)named;
 + (void)clearDoppelgangerData;
 + (void)hookIntoYQLRequestIfNeeded;
 + (void)spewDoppelgangerData;
-- (BOOL)matchesRequest:(id)a3;
+- (BOOL)matchesRequest:(id)request;
 - (NSURLSessionDataDelegate)delegate;
 - (YahooDoppelganger)init;
 - (void)_relayDataChunk;
@@ -30,9 +30,9 @@
   }
 }
 
-+ (id)newDoppelgangerMatchingRequestPattern:(id)a3
++ (id)newDoppelgangerMatchingRequestPattern:(id)pattern
 {
-  v3 = a3;
+  patternCopy = pattern;
   if (!preppedDoppelgangers)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -41,41 +41,41 @@
   }
 
   v6 = objc_opt_new();
-  [v6 setExpectedRequestPattern:v3];
+  [v6 setExpectedRequestPattern:patternCopy];
   [preppedDoppelgangers addObject:v6];
 
   return v6;
 }
 
-+ (id)prepDoppelgangerWithRequestPattern:(id)a3 response:(id)a4
++ (id)prepDoppelgangerWithRequestPattern:(id)pattern response:(id)response
 {
-  v6 = a4;
-  v7 = a3;
-  [a1 hookIntoYQLRequestIfNeeded];
-  v8 = [a1 newDoppelgangerMatchingRequestPattern:v7];
+  responseCopy = response;
+  patternCopy = pattern;
+  [self hookIntoYQLRequestIfNeeded];
+  v8 = [self newDoppelgangerMatchingRequestPattern:patternCopy];
 
-  v9 = [v6 dataUsingEncoding:4];
+  v9 = [responseCopy dataUsingEncoding:4];
 
   [v8 setResponse:v9];
 
   return v8;
 }
 
-+ (id)prepDoppelgangerForQuotesResponseWithSymbols:(id)a3 includeMetdata:(BOOL)a4
++ (id)prepDoppelgangerForQuotesResponseWithSymbols:(id)symbols includeMetdata:(BOOL)metdata
 {
-  v29 = a4;
+  metdataCopy = metdata;
   v47 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  symbolsCopy = symbols;
   srandom(4u);
-  [a1 hookIntoYQLRequestIfNeeded];
-  v26 = [a1 newDoppelgangerMatchingRequestPattern:@".*getquotes.*"];
+  [self hookIntoYQLRequestIfNeeded];
+  v26 = [self newDoppelgangerMatchingRequestPattern:@".*getquotes.*"];
   v6 = [MEMORY[0x277CCAB68] stringWithString:@"<?xml version=1.0 encoding=UTF-8?><response><result type=getquotes timestamp=0>"];
-  [v6 appendFormat:@"<list count=%lu total=%lu>", objc_msgSend(v5, "count"), objc_msgSend(v5, "count")];
+  [v6 appendFormat:@"<list count=%lu total=%lu>", objc_msgSend(symbolsCopy, "count"), objc_msgSend(symbolsCopy, "count")];
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v5;
+  obj = symbolsCopy;
   v30 = [obj countByEnumeratingWithState:&v40 objects:v46 count:16];
   if (v30)
   {
@@ -127,7 +127,7 @@
         [v6 appendFormat:@"<marketcap>%@</marketcap>", v15];
 
         [v6 appendString:@"<status>1</status>"];
-        if (v29)
+        if (metdataCopy)
         {
           v34 = 0u;
           v35 = 0u;
@@ -181,12 +181,12 @@
   return v26;
 }
 
-+ (id)prepDoppelgangerForNewsResponseWithSymbol:(id)a3 numberOfNewsItems:(int64_t)a4
++ (id)prepDoppelgangerForNewsResponseWithSymbol:(id)symbol numberOfNewsItems:(int64_t)items
 {
-  v6 = a3;
+  symbolCopy = symbol;
   srandom(4u);
-  [a1 hookIntoYQLRequestIfNeeded];
-  v7 = [a1 newDoppelgangerMatchingRequestPattern:@".*getnews.*"];
+  [self hookIntoYQLRequestIfNeeded];
+  v7 = [self newDoppelgangerMatchingRequestPattern:@".*getnews.*"];
   v8 = prepDoppelgangerForNewsResponseWithSymbol_numberOfNewsItems__response;
   if (!prepDoppelgangerForNewsResponseWithSymbol_numberOfNewsItems__response)
   {
@@ -195,8 +195,8 @@
     v10 = prepDoppelgangerForNewsResponseWithSymbol_numberOfNewsItems__response;
     prepDoppelgangerForNewsResponseWithSymbol_numberOfNewsItems__response = v9;
 
-    [prepDoppelgangerForNewsResponseWithSymbol_numberOfNewsItems__response appendFormat:@"<feed><symbol>%@</symbol><timestamp>0</timestamp><expires></expires><list count=%lu>", v6, a4];
-    if (a4 >= 1)
+    [prepDoppelgangerForNewsResponseWithSymbol_numberOfNewsItems__response appendFormat:@"<feed><symbol>%@</symbol><timestamp>0</timestamp><expires></expires><list count=%lu>", symbolCopy, items];
+    if (items >= 1)
     {
       do
       {
@@ -216,10 +216,10 @@
         [v15 appendFormat:@"<summary>%@</summary>", v16];
 
         [prepDoppelgangerForNewsResponseWithSymbol_numberOfNewsItems__response appendString:@"</item>"];
-        --a4;
+        --items;
       }
 
-      while (a4);
+      while (items);
     }
 
     [prepDoppelgangerForNewsResponseWithSymbol_numberOfNewsItems__response appendString:@"</list></feed></list></result></response>"];
@@ -233,13 +233,13 @@
   return v7;
 }
 
-+ (id)prepDoppelgangerForChartResponseWithSymbol:(id)a3 numberOfDataPoints:(int64_t)a4
++ (id)prepDoppelgangerForChartResponseWithSymbol:(id)symbol numberOfDataPoints:(int64_t)points
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  symbolCopy = symbol;
   srandom(4u);
-  [a1 hookIntoYQLRequestIfNeeded];
-  v7 = [a1 newDoppelgangerMatchingRequestPattern:@".*getchart.*"];
+  [self hookIntoYQLRequestIfNeeded];
+  v7 = [self newDoppelgangerMatchingRequestPattern:@".*getchart.*"];
   v8 = prepDoppelgangerForChartResponseWithSymbol_numberOfDataPoints__response;
   if (!prepDoppelgangerForChartResponseWithSymbol_numberOfDataPoints__response)
   {
@@ -248,13 +248,13 @@
     v10 = prepDoppelgangerForChartResponseWithSymbol_numberOfDataPoints__response;
     prepDoppelgangerForChartResponseWithSymbol_numberOfDataPoints__response = v9;
 
-    [prepDoppelgangerForChartResponseWithSymbol_numberOfDataPoints__response appendFormat:@"<list count=%li total=%li>", a4, a4];
-    v22 = v6;
-    [prepDoppelgangerForChartResponseWithSymbol_numberOfDataPoints__response appendFormat:@"<meta><symbol>%@</symbol><marketopen>0</marketopen><marketclose>0</marketclose><gmtoffset>0</gmtoffset></meta>", v6];
-    if (a4 >= 1)
+    [prepDoppelgangerForChartResponseWithSymbol_numberOfDataPoints__response appendFormat:@"<list count=%li total=%li>", points, points];
+    v22 = symbolCopy;
+    [prepDoppelgangerForChartResponseWithSymbol_numberOfDataPoints__response appendFormat:@"<meta><symbol>%@</symbol><marketopen>0</marketopen><marketclose>0</marketclose><gmtoffset>0</gmtoffset></meta>", symbolCopy];
+    if (points >= 1)
     {
       v11 = 0;
-      v23 = a4;
+      pointsCopy = points;
       do
       {
         v24 = v11;
@@ -293,13 +293,13 @@
         v11 = v24 + 1;
       }
 
-      while (v24 + 1 != v23);
+      while (v24 + 1 != pointsCopy);
     }
 
     [prepDoppelgangerForChartResponseWithSymbol_numberOfDataPoints__response appendString:@"</list></result></response>"];
     v8 = prepDoppelgangerForChartResponseWithSymbol_numberOfDataPoints__response;
     v7 = v21;
-    v6 = v22;
+    symbolCopy = v22;
   }
 
   v19 = [v8 dataUsingEncoding:4];
@@ -308,44 +308,44 @@
   return v7;
 }
 
-+ (void)_doppelgangerFinished:(id)a3
++ (void)_doppelgangerFinished:(id)finished
 {
-  v3 = a3;
-  v6 = v3;
+  finishedCopy = finished;
+  v6 = finishedCopy;
   if (!finishedDoppelgangers)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v5 = finishedDoppelgangers;
     finishedDoppelgangers = v4;
 
-    v3 = v6;
+    finishedCopy = v6;
   }
 
-  [activeDoppelgangers removeObject:v3];
+  [activeDoppelgangers removeObject:finishedCopy];
   [finishedDoppelgangers addObject:v6];
 }
 
-+ (void)_spewDoppelgangerArray:(id)a3 named:(id)a4
++ (void)_spewDoppelgangerArray:(id)array named:(id)named
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  arrayCopy = array;
+  namedCopy = named;
+  if ([arrayCopy count])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v26 = v6;
+      v26 = namedCopy;
       _os_log_impl(&dword_26BAAD000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "  %@", buf, 0xCu);
     }
 
-    v18 = v6;
-    v19 = v5;
+    v18 = namedCopy;
+    v19 = arrayCopy;
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v7 = v5;
+    v7 = arrayCopy;
     v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v8)
     {
@@ -369,13 +369,13 @@
             _os_log_impl(&dword_26BAAD000, v11, OS_LOG_TYPE_DEFAULT, "    %@", buf, 0xCu);
           }
 
-          v14 = [v13 response];
+          response = [v13 response];
 
-          if (v14 && os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+          if (response && os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
           {
             v15 = objc_alloc(MEMORY[0x277CCACA8]);
-            v16 = [v13 response];
-            v17 = [v15 initWithData:v16 encoding:4];
+            response2 = [v13 response];
+            v17 = [v15 initWithData:response2 encoding:4];
             *buf = 138412290;
             v26 = v17;
             _os_log_impl(&dword_26BAAD000, v11, OS_LOG_TYPE_DEFAULT, "      Response: %@", buf, 0xCu);
@@ -388,8 +388,8 @@
       while (v9);
     }
 
-    v6 = v18;
-    v5 = v19;
+    namedCopy = v18;
+    arrayCopy = v19;
   }
 }
 
@@ -401,9 +401,9 @@
     _os_log_impl(&dword_26BAAD000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "** Beginning YahooDoppelganger dump **", buf, 2u);
   }
 
-  [a1 _spewDoppelgangerArray:preppedDoppelgangers named:@"Doppelgangers that have not received a request"];
-  [a1 _spewDoppelgangerArray:activeDoppelgangers named:@"Doppelgangers actively sending data"];
-  [a1 _spewDoppelgangerArray:finishedDoppelgangers named:@"Doppelgangers finished sending data"];
+  [self _spewDoppelgangerArray:preppedDoppelgangers named:@"Doppelgangers that have not received a request"];
+  [self _spewDoppelgangerArray:activeDoppelgangers named:@"Doppelgangers actively sending data"];
+  [self _spewDoppelgangerArray:finishedDoppelgangers named:@"Doppelgangers finished sending data"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
@@ -423,13 +423,13 @@
   finishedDoppelgangers = 0;
 }
 
-- (BOOL)matchesRequest:(id)a3
+- (BOOL)matchesRequest:(id)request
 {
-  v4 = [a3 URL];
-  v5 = [v4 absoluteString];
+  v4 = [request URL];
+  absoluteString = [v4 absoluteString];
 
   v6 = [MEMORY[0x277CCAC30] predicateWithFormat:@"self matches %@", self->_expectedRequestPattern];
-  LOBYTE(v4) = [v6 evaluateWithObject:v5];
+  LOBYTE(v4) = [v6 evaluateWithObject:absoluteString];
 
   return v4;
 }
@@ -447,7 +447,7 @@
   return result;
 }
 
-+ (BOOL)waitForAllDoppelgangersUpToTimeout:(double)a3
++ (BOOL)waitForAllDoppelgangersUpToTimeout:(double)timeout
 {
   v4 = 0.0;
   do
@@ -458,14 +458,14 @@
       break;
     }
 
-    v6 = [MEMORY[0x277CBEB88] currentRunLoop];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
     v7 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:0.100000001];
-    [v6 runUntilDate:v7];
+    [currentRunLoop runUntilDate:v7];
 
     v4 = v4 + 0.1;
   }
 
-  while (v4 < a3);
+  while (v4 < timeout);
   return v5 == 0;
 }
 

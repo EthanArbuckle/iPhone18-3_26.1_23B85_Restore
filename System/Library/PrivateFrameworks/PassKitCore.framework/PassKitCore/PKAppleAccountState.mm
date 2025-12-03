@@ -1,59 +1,59 @@
 @interface PKAppleAccountState
-- (PKAppleAccountState)initWithAccount:(id)a3;
-- (PKAppleAccountState)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKAppleAccountState)initWithAccount:(id)account;
+- (PKAppleAccountState)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAppleAccountState
 
-- (PKAppleAccountState)initWithAccount:(id)a3
+- (PKAppleAccountState)initWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = PKAppleAccountState;
   v5 = [(PKAppleAccountState *)&v9 init];
   if (v5)
   {
-    v6 = [v4 identifier];
+    identifier = [accountCopy identifier];
     identifier = v5->_identifier;
-    v5->_identifier = v6;
+    v5->_identifier = identifier;
 
-    v5->_isWalletDataclassEnabled = [v4 isEnabledForDataclass:*MEMORY[0x1E6959700]];
-    v5->_isUbiquityDataclassEnabled = [v4 isEnabledForDataclass:*MEMORY[0x1E6959718]];
-    v5->_isManaged = [v4 aa_isManagedAppleID];
-    v5->_isPrimary = [v4 aa_isAccountClass:*MEMORY[0x1E698B760]];
+    v5->_isWalletDataclassEnabled = [accountCopy isEnabledForDataclass:*MEMORY[0x1E6959700]];
+    v5->_isUbiquityDataclassEnabled = [accountCopy isEnabledForDataclass:*MEMORY[0x1E6959718]];
+    v5->_isManaged = [accountCopy aa_isManagedAppleID];
+    v5->_isPrimary = [accountCopy aa_isAccountClass:*MEMORY[0x1E698B760]];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeBool:self->_isWalletDataclassEnabled forKey:@"isWalletDataclassEnabled"];
-  [v5 encodeBool:self->_isUbiquityDataclassEnabled forKey:@"isUbiquityDataclassEnabled"];
-  [v5 encodeBool:self->_isManaged forKey:@"isManaged"];
-  [v5 encodeBool:self->_isPrimary forKey:@"isPrimary"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeBool:self->_isWalletDataclassEnabled forKey:@"isWalletDataclassEnabled"];
+  [coderCopy encodeBool:self->_isUbiquityDataclassEnabled forKey:@"isUbiquityDataclassEnabled"];
+  [coderCopy encodeBool:self->_isManaged forKey:@"isManaged"];
+  [coderCopy encodeBool:self->_isPrimary forKey:@"isPrimary"];
 }
 
-- (PKAppleAccountState)initWithCoder:(id)a3
+- (PKAppleAccountState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKAppleAccountState;
   v5 = [(PKAppleAccountState *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v5->_isWalletDataclassEnabled = [v4 decodeBoolForKey:@"isWalletDataclassEnabled"];
-    v5->_isUbiquityDataclassEnabled = [v4 decodeBoolForKey:@"isUbiquityDataclassEnabled"];
-    v5->_isManaged = [v4 decodeBoolForKey:@"isManaged"];
-    v5->_isPrimary = [v4 decodeBoolForKey:@"isPrimary"];
+    v5->_isWalletDataclassEnabled = [coderCopy decodeBoolForKey:@"isWalletDataclassEnabled"];
+    v5->_isUbiquityDataclassEnabled = [coderCopy decodeBoolForKey:@"isUbiquityDataclassEnabled"];
+    v5->_isManaged = [coderCopy decodeBoolForKey:@"isManaged"];
+    v5->_isPrimary = [coderCopy decodeBoolForKey:@"isPrimary"];
   }
 
   return v5;

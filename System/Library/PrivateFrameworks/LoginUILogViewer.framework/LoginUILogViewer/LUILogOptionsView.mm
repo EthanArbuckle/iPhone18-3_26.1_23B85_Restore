@@ -1,18 +1,18 @@
 @interface LUILogOptionsView
-- (LUILogOptionsView)initWithFrame:(CGRect)a3;
+- (LUILogOptionsView)initWithFrame:(CGRect)frame;
 - (id)_createButtonStackView;
-- (id)_createButtonWithTitle:(id)a3;
+- (id)_createButtonWithTitle:(id)title;
 - (void)_setup;
 - (void)layoutSubviews;
 @end
 
 @implementation LUILogOptionsView
 
-- (LUILogOptionsView)initWithFrame:(CGRect)a3
+- (LUILogOptionsView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = LUILogOptionsView;
-  v3 = [(LUILogOptionsView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(LUILogOptionsView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -24,9 +24,9 @@
 
 - (void)_setup
 {
-  v3 = [(LUILogOptionsView *)self _createButtonStackView];
+  _createButtonStackView = [(LUILogOptionsView *)self _createButtonStackView];
   buttonStackView = self->_buttonStackView;
-  self->_buttonStackView = v3;
+  self->_buttonStackView = _createButtonStackView;
 
   v5 = self->_buttonStackView;
 
@@ -38,22 +38,22 @@
   v14.receiver = self;
   v14.super_class = LUILogOptionsView;
   [(LUILogOptionsView *)&v14 layoutSubviews];
-  v3 = [(LUILogOptionsView *)self buttonStackView];
-  v4 = [v3 widthAnchor];
-  v5 = [v4 constraintEqualToConstant:200.0];
+  buttonStackView = [(LUILogOptionsView *)self buttonStackView];
+  widthAnchor = [buttonStackView widthAnchor];
+  v5 = [widthAnchor constraintEqualToConstant:200.0];
   [v5 setActive:1];
 
-  v6 = [(LUILogOptionsView *)self buttonStackView];
-  v7 = [v6 heightAnchor];
+  buttonStackView2 = [(LUILogOptionsView *)self buttonStackView];
+  heightAnchor = [buttonStackView2 heightAnchor];
   [(LUILogOptionsView *)self frame];
-  v8 = [v7 constraintEqualToConstant:CGRectGetHeight(v15) + -100.0];
+  v8 = [heightAnchor constraintEqualToConstant:CGRectGetHeight(v15) + -100.0];
   [v8 setActive:1];
 
   [(LUILogOptionsView *)self center];
   v10 = v9;
   v12 = v11;
-  v13 = [(LUILogOptionsView *)self buttonStackView];
-  [v13 setCenter:{v10, v12}];
+  buttonStackView3 = [(LUILogOptionsView *)self buttonStackView];
+  [buttonStackView3 setCenter:{v10, v12}];
 }
 
 - (id)_createButtonStackView
@@ -98,39 +98,39 @@
   return v17;
 }
 
-- (id)_createButtonWithTitle:(id)a3
+- (id)_createButtonWithTitle:(id)title
 {
   v3 = MEMORY[0x277D75220];
-  v4 = a3;
+  titleCopy = title;
   v5 = [[v3 alloc] initWithFrame:{0.0, 0.0, 200.0, 50.0}];
-  [v5 setTitle:v4 forState:0];
+  [v5 setTitle:titleCopy forState:0];
 
-  v6 = [MEMORY[0x277D75348] whiteColor];
-  [v5 setTintColor:v6];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [v5 setTintColor:whiteColor];
 
-  v7 = [MEMORY[0x277D75348] whiteColor];
-  [v5 setTitleColor:v7 forState:0];
+  whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+  [v5 setTitleColor:whiteColor2 forState:0];
 
-  v8 = [MEMORY[0x277D75348] grayColor];
-  [v5 setTitleColor:v8 forState:2];
+  grayColor = [MEMORY[0x277D75348] grayColor];
+  [v5 setTitleColor:grayColor forState:2];
 
-  v9 = [v5 layer];
-  [v9 setCornerRadius:5.0];
+  layer = [v5 layer];
+  [layer setCornerRadius:5.0];
 
-  v10 = [MEMORY[0x277D75348] whiteColor];
-  v11 = [v10 CGColor];
-  v12 = [v5 layer];
-  [v12 setBorderColor:v11];
+  whiteColor3 = [MEMORY[0x277D75348] whiteColor];
+  cGColor = [whiteColor3 CGColor];
+  layer2 = [v5 layer];
+  [layer2 setBorderColor:cGColor];
 
-  v13 = [v5 layer];
-  [v13 setBorderWidth:1.5];
+  layer3 = [v5 layer];
+  [layer3 setBorderWidth:1.5];
 
-  v14 = [v5 widthAnchor];
-  v15 = [v14 constraintEqualToConstant:200.0];
+  widthAnchor = [v5 widthAnchor];
+  v15 = [widthAnchor constraintEqualToConstant:200.0];
   [v15 setActive:1];
 
-  v16 = [v5 heightAnchor];
-  v17 = [v16 constraintEqualToConstant:50.0];
+  heightAnchor = [v5 heightAnchor];
+  v17 = [heightAnchor constraintEqualToConstant:50.0];
   [v17 setActive:1];
 
   return v5;

@@ -1,29 +1,29 @@
 @interface CSAssetTelemetryReporter
 + (id)sharedReporter;
-- (void)reportAssetMapFailTelemetryForError:(id)a3 assetSpecifier:(id)a4 assetConfigVersion:(id)a5;
-- (void)reportAssetMapLatencyTelemetry:(double)a3 assetSpecifier:(id)a4 assetConfigVersion:(id)a5;
-- (void)submitSecureAssetMapFailDiagnosticReportForError:(id)a3;
+- (void)reportAssetMapFailTelemetryForError:(id)error assetSpecifier:(id)specifier assetConfigVersion:(id)version;
+- (void)reportAssetMapLatencyTelemetry:(double)telemetry assetSpecifier:(id)specifier assetConfigVersion:(id)version;
+- (void)submitSecureAssetMapFailDiagnosticReportForError:(id)error;
 @end
 
 @implementation CSAssetTelemetryReporter
 
-- (void)submitSecureAssetMapFailDiagnosticReportForError:(id)a3
+- (void)submitSecureAssetMapFailDiagnosticReportForError:(id)error
 {
   v16[3] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy)
   {
-    v5 = [v3 domain];
+    domain = [errorCopy domain];
 
-    if (v5)
+    if (domain)
     {
-      v6 = [v4 userInfo];
-      v7 = v6;
+      userInfo = [v4 userInfo];
+      v7 = userInfo;
       v8 = MEMORY[0x1E695E0F8];
-      if (v6)
+      if (userInfo)
       {
-        v8 = v6;
+        v8 = userInfo;
       }
 
       v9 = v8;
@@ -33,9 +33,9 @@
       v11 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "code")}];
       v16[0] = v11;
       v15[1] = @"ErrorDomain";
-      v12 = [v4 domain];
+      domain2 = [v4 domain];
       v15[2] = @"UserInfo";
-      v16[1] = v12;
+      v16[1] = domain2;
       v16[2] = v9;
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:3];
 
@@ -46,14 +46,14 @@
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportAssetMapLatencyTelemetry:(double)a3 assetSpecifier:(id)a4 assetConfigVersion:(id)a5
+- (void)reportAssetMapLatencyTelemetry:(double)telemetry assetSpecifier:(id)specifier assetConfigVersion:(id)version
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (a3 >= 0.000000001 && v7 != 0 && v8 != 0)
+  specifierCopy = specifier;
+  versionCopy = version;
+  v9 = versionCopy;
+  if (telemetry >= 0.000000001 && specifierCopy != 0 && versionCopy != 0)
   {
-    v12 = v7;
+    v12 = specifierCopy;
     v13 = v9;
     AnalyticsSendEventLazy();
   }
@@ -90,23 +90,23 @@ id __93__CSAssetTelemetryReporter_reportAssetMapLatencyTelemetry_assetSpecifier_
   return v6;
 }
 
-- (void)reportAssetMapFailTelemetryForError:(id)a3 assetSpecifier:(id)a4 assetConfigVersion:(id)a5
+- (void)reportAssetMapFailTelemetryForError:(id)error assetSpecifier:(id)specifier assetConfigVersion:(id)version
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  errorCopy = error;
+  specifierCopy = specifier;
+  versionCopy = version;
+  v10 = versionCopy;
+  if (specifierCopy)
   {
-    if (v9)
+    if (versionCopy)
     {
-      v11 = [v7 domain];
+      domain = [errorCopy domain];
 
-      if (v11)
+      if (domain)
       {
-        v12 = v8;
+        v12 = specifierCopy;
         v13 = v10;
-        v14 = v7;
+        v14 = errorCopy;
         AnalyticsSendEventLazy();
       }
     }

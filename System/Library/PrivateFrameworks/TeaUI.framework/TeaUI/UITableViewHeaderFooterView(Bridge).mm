@@ -6,15 +6,15 @@
 
 - (double)ts_cellSeparatorInsets
 {
-  v2 = [a1 tableView];
+  tableView = [self tableView];
 
-  if (!v2)
+  if (!tableView)
   {
     return *MEMORY[0x1E69DDCE0];
   }
 
-  v3 = [a1 tableView];
-  [v3 separatorInset];
+  tableView2 = [self tableView];
+  [tableView2 separatorInset];
   v5 = v4;
 
   return v5;

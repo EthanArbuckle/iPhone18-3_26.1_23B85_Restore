@@ -1,7 +1,7 @@
 @interface IMDebugViewController
 - (void)dismiss;
 - (void)gatherData;
-- (void)setScreenShotImage:(id)a3;
+- (void)setScreenShotImage:(id)image;
 - (void)shareData;
 - (void)viewDidLoad;
 @end
@@ -13,16 +13,16 @@
   v65.receiver = self;
   v65.super_class = IMDebugViewController;
   [(IMDebugViewController *)&v65 viewDidLoad];
-  v3 = [(IMDebugViewController *)self navigationItem];
-  [v3 setTitle:@"Debug"];
+  navigationItem = [(IMDebugViewController *)self navigationItem];
+  [navigationItem setTitle:@"Debug"];
 
   v4 = +[UIColor systemBackgroundColor];
-  v5 = [(IMDebugViewController *)self view];
-  [v5 setBackgroundColor:v4];
+  view = [(IMDebugViewController *)self view];
+  [view setBackgroundColor:v4];
 
   v56 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"dismiss"];
-  v6 = [(IMDebugViewController *)self navigationItem];
-  [v6 setLeftBarButtonItem:v56];
+  navigationItem2 = [(IMDebugViewController *)self navigationItem];
+  [navigationItem2 setLeftBarButtonItem:v56];
 
   v61 = objc_alloc_init(UIStackView);
   [v61 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -31,20 +31,20 @@
   v7 = +[UIColor clearColor];
   [v61 setBackgroundColor:v7];
 
-  v8 = [(IMDebugViewController *)self view];
-  [v8 addSubview:v61];
+  view2 = [(IMDebugViewController *)self view];
+  [view2 addSubview:v61];
 
   [(IMDebugViewController *)self setStackView:v61];
   v9 = [UIImageView alloc];
-  v10 = [(IMDebugViewController *)self screenShotPreviewImage];
-  v57 = [v9 initWithImage:v10];
+  screenShotPreviewImage = [(IMDebugViewController *)self screenShotPreviewImage];
+  v57 = [v9 initWithImage:screenShotPreviewImage];
 
   [v57 setContentMode:1];
   LODWORD(v11) = 1132068864;
   [v57 setContentCompressionResistancePriority:1 forAxis:v11];
   [v57 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v12 = [(IMDebugViewController *)self stackView];
-  [v12 addArrangedSubview:v57];
+  stackView = [(IMDebugViewController *)self stackView];
+  [stackView addArrangedSubview:v57];
 
   [(IMDebugViewController *)self setScreenShotImageView:v57];
   v60 = objc_alloc_init(UIView);
@@ -57,8 +57,8 @@
   [v58 setContentCompressionResistancePriority:1 forAxis:v14];
   [v58 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v60 addSubview:v58];
-  v15 = [(IMDebugViewController *)self stackView];
-  [v15 addArrangedSubview:v60];
+  stackView2 = [(IMDebugViewController *)self stackView];
+  [stackView2 addArrangedSubview:v60];
 
   [(IMDebugViewController *)self setProgressView:v58];
   [(IMDebugViewController *)self setProgressViewContainer:v60];
@@ -78,52 +78,52 @@
   LODWORD(v18) = 1148846080;
   [v59 setContentHuggingPriority:1 forAxis:v18];
   [v59 setTitle:@"Share Debug Data" forState:0];
-  v19 = [(IMDebugViewController *)self stackView];
-  [v19 addArrangedSubview:v59];
+  stackView3 = [(IMDebugViewController *)self stackView];
+  [stackView3 addArrangedSubview:v59];
 
   [(IMDebugViewController *)self setActionButton:v59];
-  v52 = [v61 topAnchor];
-  v54 = [(IMDebugViewController *)self view];
-  v53 = [v54 safeAreaLayoutGuide];
-  v51 = [v53 topAnchor];
-  v50 = [v52 constraintEqualToSystemSpacingBelowAnchor:v51 multiplier:1.0];
+  topAnchor = [v61 topAnchor];
+  view3 = [(IMDebugViewController *)self view];
+  safeAreaLayoutGuide = [view3 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v50 = [topAnchor constraintEqualToSystemSpacingBelowAnchor:topAnchor2 multiplier:1.0];
   v66[0] = v50;
-  v49 = [(IMDebugViewController *)self view];
-  v48 = [v49 safeAreaLayoutGuide];
-  v47 = [v48 bottomAnchor];
-  v46 = [v61 bottomAnchor];
-  v45 = [v47 constraintEqualToSystemSpacingBelowAnchor:v46 multiplier:1.0];
+  view4 = [(IMDebugViewController *)self view];
+  safeAreaLayoutGuide2 = [view4 safeAreaLayoutGuide];
+  bottomAnchor = [safeAreaLayoutGuide2 bottomAnchor];
+  bottomAnchor2 = [v61 bottomAnchor];
+  v45 = [bottomAnchor constraintEqualToSystemSpacingBelowAnchor:bottomAnchor2 multiplier:1.0];
   v66[1] = v45;
-  v42 = [v61 leadingAnchor];
-  v44 = [(IMDebugViewController *)self view];
-  v43 = [v44 safeAreaLayoutGuide];
-  v41 = [v43 leadingAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41 constant:16.0];
+  leadingAnchor = [v61 leadingAnchor];
+  view5 = [(IMDebugViewController *)self view];
+  safeAreaLayoutGuide3 = [view5 safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide3 leadingAnchor];
+  v40 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v66[2] = v40;
-  v37 = [v61 trailingAnchor];
-  v39 = [(IMDebugViewController *)self view];
-  v38 = [v39 safeAreaLayoutGuide];
-  v36 = [v38 trailingAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36 constant:-16.0];
+  trailingAnchor = [v61 trailingAnchor];
+  view6 = [(IMDebugViewController *)self view];
+  safeAreaLayoutGuide4 = [view6 safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide4 trailingAnchor];
+  v35 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
   v66[3] = v35;
-  v34 = [v59 heightAnchor];
-  v33 = [v34 constraintGreaterThanOrEqualToConstant:44.0];
+  heightAnchor = [v59 heightAnchor];
+  v33 = [heightAnchor constraintGreaterThanOrEqualToConstant:44.0];
   v66[4] = v33;
-  v32 = [v60 heightAnchor];
-  v31 = [v59 heightAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31];
+  heightAnchor2 = [v60 heightAnchor];
+  heightAnchor3 = [v59 heightAnchor];
+  v30 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
   v66[5] = v30;
-  v20 = [v58 leadingAnchor];
-  v21 = [v60 leadingAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  leadingAnchor3 = [v58 leadingAnchor];
+  leadingAnchor4 = [v60 leadingAnchor];
+  v22 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v66[6] = v22;
-  v23 = [v58 trailingAnchor];
-  v24 = [v60 trailingAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  trailingAnchor3 = [v58 trailingAnchor];
+  trailingAnchor4 = [v60 trailingAnchor];
+  v25 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v66[7] = v25;
-  v26 = [v58 centerYAnchor];
-  v27 = [v60 centerYAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  centerYAnchor = [v58 centerYAnchor];
+  centerYAnchor2 = [v60 centerYAnchor];
+  v28 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v66[8] = v28;
   v29 = [NSArray arrayWithObjects:v66 count:9];
   [NSLayoutConstraint activateConstraints:v29];
@@ -140,27 +140,27 @@ void __36__IMDebugViewController_viewDidLoad__block_invoke(uint64_t a1)
 
 - (void)gatherData
 {
-  v3 = [(IMDebugViewController *)self progressViewContainer];
-  v4 = [(IMDebugViewController *)self progressView];
-  v5 = [(IMDebugViewController *)self actionButton];
-  [v4 setProgress:0.0];
-  [v3 setHidden:0];
-  [v5 setHidden:1];
+  progressViewContainer = [(IMDebugViewController *)self progressViewContainer];
+  progressView = [(IMDebugViewController *)self progressView];
+  actionButton = [(IMDebugViewController *)self actionButton];
+  [progressView setProgress:0.0];
+  [progressViewContainer setHidden:0];
+  [actionButton setHidden:1];
   objc_initWeak(&location, self);
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = __35__IMDebugViewController_gatherData__block_invoke;
   v13[3] = &unk_105D0;
-  v6 = v4;
+  v6 = progressView;
   v14 = v6;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __35__IMDebugViewController_gatherData__block_invoke_2;
   v9[3] = &unk_105F8;
   objc_copyWeak(&v12, &location);
-  v7 = v3;
+  v7 = progressViewContainer;
   v10 = v7;
-  v8 = v5;
+  v8 = actionButton;
   v11 = v8;
   [IMDebugDataManager writeDebugData:v13 completion:v9];
 
@@ -182,19 +182,19 @@ void __35__IMDebugViewController_gatherData__block_invoke_2(id *a1, void *a2)
 
 - (void)shareData
 {
-  v3 = [(IMDebugViewController *)self dataUrl];
+  dataUrl = [(IMDebugViewController *)self dataUrl];
 
-  if (v3)
+  if (dataUrl)
   {
     v4 = [UIActivityViewController alloc];
-    v5 = [(IMDebugViewController *)self dataUrl];
-    v10 = v5;
+    dataUrl2 = [(IMDebugViewController *)self dataUrl];
+    v10 = dataUrl2;
     v6 = [NSArray arrayWithObjects:&v10 count:1];
     v7 = [v4 initWithActivityItems:v6 applicationActivities:0];
 
-    v8 = [(IMDebugViewController *)self actionButton];
-    v9 = [v7 popoverPresentationController];
-    [v9 setSourceView:v8];
+    actionButton = [(IMDebugViewController *)self actionButton];
+    popoverPresentationController = [v7 popoverPresentationController];
+    [popoverPresentationController setSourceView:actionButton];
 
     [(IMDebugViewController *)self presentViewController:v7 animated:1 completion:0];
   }
@@ -202,17 +202,17 @@ void __35__IMDebugViewController_gatherData__block_invoke_2(id *a1, void *a2)
 
 - (void)dismiss
 {
-  v2 = [(IMDebugViewController *)self presentingViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(IMDebugViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)setScreenShotImage:(id)a3
+- (void)setScreenShotImage:(id)image
 {
-  objc_storeStrong(&self->_screenShotImage, a3);
-  v5 = a3;
-  [v5 size];
+  objc_storeStrong(&self->_screenShotImage, image);
+  imageCopy = image;
+  [imageCopy size];
   v7 = v6 * 0.5;
-  [v5 size];
+  [imageCopy size];
   v9 = v8 * 0.5;
   v10 = +[UIScreen mainScreen];
   [v10 scale];
@@ -221,15 +221,15 @@ void __35__IMDebugViewController_gatherData__block_invoke_2(id *a1, void *a2)
   v18.height = v9;
   UIGraphicsBeginImageContextWithOptions(v18, 0, v12);
 
-  [v5 drawInRect:{0.0, 0.0, v7, v9}];
+  [imageCopy drawInRect:{0.0, 0.0, v7, v9}];
   v13 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   screenShotPreviewImage = self->_screenShotPreviewImage;
   self->_screenShotPreviewImage = v13;
 
-  v16 = [(IMDebugViewController *)self screenShotImageView];
-  v15 = [(IMDebugViewController *)self screenShotPreviewImage];
-  [v16 setImage:v15];
+  screenShotImageView = [(IMDebugViewController *)self screenShotImageView];
+  screenShotPreviewImage = [(IMDebugViewController *)self screenShotPreviewImage];
+  [screenShotImageView setImage:screenShotPreviewImage];
 }
 
 @end

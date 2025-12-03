@@ -1,40 +1,40 @@
 @interface CACOnboardingCommandGroup
 + (id)allCommandGroups;
-+ (id)groupWithIdentifier:(id)a3;
-+ (id)groupsFromIdentifiers:(id)a3;
-- (CACOnboardingCommandGroup)initWithGroupTitle:(id)a3 commands:(id)a4;
++ (id)groupWithIdentifier:(id)identifier;
++ (id)groupsFromIdentifiers:(id)identifiers;
+- (CACOnboardingCommandGroup)initWithGroupTitle:(id)title commands:(id)commands;
 @end
 
 @implementation CACOnboardingCommandGroup
 
-- (CACOnboardingCommandGroup)initWithGroupTitle:(id)a3 commands:(id)a4
+- (CACOnboardingCommandGroup)initWithGroupTitle:(id)title commands:(id)commands
 {
-  v7 = a3;
-  v8 = a4;
+  titleCopy = title;
+  commandsCopy = commands;
   v12.receiver = self;
   v12.super_class = CACOnboardingCommandGroup;
   v9 = [(CACOnboardingCommandGroup *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_groupTitle, a3);
-    objc_storeStrong(&v10->_commands, a4);
+    objc_storeStrong(&v9->_groupTitle, title);
+    objc_storeStrong(&v10->_commands, commands);
   }
 
   return v10;
 }
 
-+ (id)groupWithIdentifier:(id)a3
++ (id)groupWithIdentifier:(id)identifier
 {
   v48 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[CACPreferences sharedPreferences];
-  v5 = [v4 builtInCommandsTable];
-  v6 = [v5 objectForKey:@"OverviewSections"];
+  builtInCommandsTable = [v4 builtInCommandsTable];
+  v6 = [builtInCommandsTable objectForKey:@"OverviewSections"];
 
   v7 = +[CACPreferences sharedPreferences];
-  v8 = [v7 builtInCommandsTable];
-  v9 = [v8 objectForKey:@"OrderedOverviewSectionIdentifiers"];
+  builtInCommandsTable2 = [v7 builtInCommandsTable];
+  v9 = [builtInCommandsTable2 objectForKey:@"OrderedOverviewSectionIdentifiers"];
 
   v44 = 0u;
   v45 = 0u;
@@ -58,12 +58,12 @@
         v15 = *(*(&v42 + 1) + 8 * i);
         v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"OverviewSectionTitle.%@", v15];
         v17 = [CACLocaleUtilities localizedUIStringForKey:v16];
-        if ([v15 isEqualToString:v3])
+        if ([v15 isEqualToString:identifierCopy])
         {
           v33 = v17;
           v34 = v16;
           v35 = v10;
-          v19 = [MEMORY[0x277CBEB18] array];
+          array = [MEMORY[0x277CBEB18] array];
           v36 = v6;
           v20 = [v6 objectForKey:v15];
           v21 = [v20 objectForKey:@"CommandIdentifiers"];
@@ -94,7 +94,7 @@
                 v29 = [CACLocaleUtilities localizedUIStringForKey:@"Onboarding.Command.Format.Title"];
                 v30 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v29 validFormatSpecifiers:@"%@" error:0, v28];
                 v31 = [CACOnboardingFeature featureWithTitleText:v30 helperText:0];
-                [v19 addObject:v31];
+                [array addObject:v31];
               }
 
               v23 = [obj countByEnumeratingWithState:&v38 objects:v46 count:16];
@@ -103,7 +103,7 @@
             while (v23);
           }
 
-          v18 = [[CACOnboardingCommandGroup alloc] initWithGroupTitle:v33 commands:v19];
+          v18 = [[CACOnboardingCommandGroup alloc] initWithGroupTitle:v33 commands:array];
           v6 = v36;
           v10 = v35;
           goto LABEL_18;
@@ -126,16 +126,16 @@ LABEL_18:
   return v18;
 }
 
-+ (id)groupsFromIdentifiers:(id)a3
++ (id)groupsFromIdentifiers:(id)identifiers
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  identifiersCopy = identifiers;
+  array = [MEMORY[0x277CBEB18] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = identifiersCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -153,7 +153,7 @@ LABEL_18:
         v10 = [CACOnboardingCommandGroup groupWithIdentifier:*(*(&v12 + 1) + 8 * i), v12];
         if (v10)
         {
-          [v4 addObject:v10];
+          [array addObject:v10];
         }
       }
 
@@ -163,14 +163,14 @@ LABEL_18:
     while (v7);
   }
 
-  return v4;
+  return array;
 }
 
 + (id)allCommandGroups
 {
   v2 = +[CACPreferences sharedPreferences];
-  v3 = [v2 builtInCommandsTable];
-  v4 = [v3 objectForKey:@"OrderedOverviewSectionIdentifiers"];
+  builtInCommandsTable = [v2 builtInCommandsTable];
+  v4 = [builtInCommandsTable objectForKey:@"OrderedOverviewSectionIdentifiers"];
 
   v5 = [CACOnboardingCommandGroup groupsFromIdentifiers:v4];
 

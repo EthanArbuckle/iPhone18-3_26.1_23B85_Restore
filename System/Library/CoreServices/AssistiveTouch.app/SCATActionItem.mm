@@ -1,34 +1,34 @@
 @interface SCATActionItem
-+ (id)fromAction:(int64_t)a3;
-+ (id)fromSwitch:(id)a3 longPress:(BOOL)a4;
++ (id)fromAction:(int64_t)action;
++ (id)fromSwitch:(id)switch longPress:(BOOL)press;
 - (id)description;
 @end
 
 @implementation SCATActionItem
 
-+ (id)fromAction:(int64_t)a3
++ (id)fromAction:(int64_t)action
 {
   v4 = objc_opt_new();
-  [v4 setAction:a3];
+  [v4 setAction:action];
 
   return v4;
 }
 
-+ (id)fromSwitch:(id)a3 longPress:(BOOL)a4
++ (id)fromSwitch:(id)switch longPress:(BOOL)press
 {
-  v4 = a4;
-  v5 = a3;
+  pressCopy = press;
+  switchCopy = switch;
   v6 = objc_opt_new();
-  if (v4)
+  if (pressCopy)
   {
-    [v6 setAction:{objc_msgSend(v5, "longPressAction")}];
-    [v5 longPressShortcutIdentifier];
+    [v6 setAction:{objc_msgSend(switchCopy, "longPressAction")}];
+    [switchCopy longPressShortcutIdentifier];
   }
 
   else
   {
-    [v6 setAction:{objc_msgSend(v5, "action")}];
-    [v5 shortcutIdentifier];
+    [v6 setAction:{objc_msgSend(switchCopy, "action")}];
+    [switchCopy shortcutIdentifier];
   }
   v7 = ;
 
@@ -43,8 +43,8 @@
   v8.super_class = SCATActionItem;
   v3 = [(SCATActionItem *)&v8 description];
   v4 = [NSNumber numberWithInteger:[(SCATActionItem *)self action]];
-  v5 = [(SCATActionItem *)self shortcutIdentifier];
-  v6 = [NSString stringWithFormat:@"%@ action: %@, shortcut: %@", v3, v4, v5];
+  shortcutIdentifier = [(SCATActionItem *)self shortcutIdentifier];
+  v6 = [NSString stringWithFormat:@"%@ action: %@, shortcut: %@", v3, v4, shortcutIdentifier];
 
   return v6;
 }

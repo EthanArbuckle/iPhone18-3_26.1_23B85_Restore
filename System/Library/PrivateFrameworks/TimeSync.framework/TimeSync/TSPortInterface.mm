@@ -1,31 +1,31 @@
 @interface TSPortInterface
-- (TSPortInterface)initWithgPTPPort:(id)a3 onClockIdentifier:(unint64_t)a4;
-- (void)didTimeoutOnMACLookupForPort:(id)a3;
-- (void)setMACLookupTimeoutCallback:(void *)a3 refcon:(void *)a4;
+- (TSPortInterface)initWithgPTPPort:(id)port onClockIdentifier:(unint64_t)identifier;
+- (void)didTimeoutOnMACLookupForPort:(id)port;
+- (void)setMACLookupTimeoutCallback:(void *)callback refcon:(void *)refcon;
 @end
 
 @implementation TSPortInterface
 
-- (TSPortInterface)initWithgPTPPort:(id)a3 onClockIdentifier:(unint64_t)a4
+- (TSPortInterface)initWithgPTPPort:(id)port onClockIdentifier:(unint64_t)identifier
 {
-  v7 = a3;
+  portCopy = port;
   v13.receiver = self;
   v13.super_class = TSPortInterface;
   v8 = [(TSPortInterface *)&v13 init];
   if (v8)
   {
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.timesync.TSPortInterface.0x%016llx.%hu.notifications", a4, objc_msgSend(v7, "portNumber")];
+    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.timesync.TSPortInterface.0x%016llx.%hu.notifications", identifier, objc_msgSend(portCopy, "portNumber")];
     v10 = dispatch_queue_create([v9 UTF8String], 0);
     notificationsQueue = v8->_notificationsQueue;
     v8->_notificationsQueue = v10;
 
-    objc_storeStrong(&v8->_port, a3);
+    objc_storeStrong(&v8->_port, port);
   }
 
   return v8;
 }
 
-- (void)setMACLookupTimeoutCallback:(void *)a3 refcon:(void *)a4
+- (void)setMACLookupTimeoutCallback:(void *)callback refcon:(void *)refcon
 {
   notificationsQueue = self->_notificationsQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -33,8 +33,8 @@
   block[2] = __54__TSPortInterface_setMACLookupTimeoutCallback_refcon___block_invoke;
   block[3] = &unk_279DBDF78;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = callback;
+  block[6] = refcon;
   dispatch_sync(notificationsQueue, block);
 }
 
@@ -69,19 +69,19 @@ void __54__TSPortInterface_setMACLookupTimeoutCallback_refcon___block_invoke(uin
   *(*(a1 + 32) + 24) = *(a1 + 48);
 }
 
-- (void)didTimeoutOnMACLookupForPort:(id)a3
+- (void)didTimeoutOnMACLookupForPort:(id)port
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  portCopy = port;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v5 = [(TSPortInterface *)self description];
     *buf = 136315650;
-    v12 = [v5 UTF8String];
+    uTF8String = [v5 UTF8String];
     v13 = 1024;
-    v14 = [v4 portNumber];
+    portNumber = [portCopy portNumber];
     v15 = 2048;
-    v16 = [v4 clockIdentifier];
+    clockIdentifier = [portCopy clockIdentifier];
     _os_log_impl(&dword_26F080000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s didTimeoutOnMACLookupForPort:%hu (0x%016llx)\n", buf, 0x1Cu);
   }
 
@@ -91,8 +91,8 @@ void __54__TSPortInterface_setMACLookupTimeoutCallback_refcon___block_invoke(uin
   v9[2] = __48__TSPortInterface_didTimeoutOnMACLookupForPort___block_invoke;
   v9[3] = &unk_279DBD738;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = portCopy;
+  v7 = portCopy;
   dispatch_async(notificationsQueue, v9);
 
   v8 = *MEMORY[0x277D85DE8];

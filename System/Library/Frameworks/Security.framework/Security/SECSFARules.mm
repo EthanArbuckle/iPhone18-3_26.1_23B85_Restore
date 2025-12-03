@@ -1,30 +1,30 @@
 @interface SECSFARules
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsConfigVersion:(id)a3;
+- (int)StringAsConfigVersion:(id)version;
 - (int)configVersion;
 - (unint64_t)hash;
-- (void)addEventFilter:(id)a3;
-- (void)addEventRules:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addEventFilter:(id)filter;
+- (void)addEventRules:(id)rules;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SECSFARules
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = *(v4 + 4);
+  v5 = *(fromCopy + 4);
   v6 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v6)
   {
@@ -49,7 +49,7 @@
   }
 
   allowedBuilds = self->_allowedBuilds;
-  v11 = *(v4 + 1);
+  v11 = *(fromCopy + 1);
   if (allowedBuilds)
   {
     if (v11)
@@ -67,7 +67,7 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = *(v4 + 3);
+  v12 = *(fromCopy + 3);
   v13 = [v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v13)
   {
@@ -91,9 +91,9 @@
     while (v14);
   }
 
-  if (*(v4 + 40))
+  if (*(fromCopy + 40))
   {
-    self->_configVersion = *(v4 + 4);
+    self->_configVersion = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
@@ -118,16 +118,16 @@
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
   eventRules = self->_eventRules;
-  if (eventRules | *(v4 + 4))
+  if (eventRules | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)eventRules isEqual:?])
     {
@@ -136,7 +136,7 @@
   }
 
   allowedBuilds = self->_allowedBuilds;
-  if (allowedBuilds | *(v4 + 1))
+  if (allowedBuilds | *(equalCopy + 1))
   {
     if (![(SECSFAVersionMatch *)allowedBuilds isEqual:?])
     {
@@ -145,7 +145,7 @@
   }
 
   eventFilters = self->_eventFilters;
-  if (eventFilters | *(v4 + 3))
+  if (eventFilters | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)eventFilters isEqual:?])
     {
@@ -153,10 +153,10 @@
     }
   }
 
-  v8 = (*(v4 + 40) & 1) == 0;
+  v8 = (*(equalCopy + 40) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) != 0 && self->_configVersion == *(v4 + 4))
+    if ((*(equalCopy + 40) & 1) != 0 && self->_configVersion == *(equalCopy + 4))
     {
       v8 = 1;
       goto LABEL_13;
@@ -171,10 +171,10 @@ LABEL_13:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -195,7 +195,7 @@ LABEL_13:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v26 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v26 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addEventRules:v11];
 
         ++v10;
@@ -208,7 +208,7 @@ LABEL_13:
     while (v8);
   }
 
-  v12 = [(SECSFAVersionMatch *)self->_allowedBuilds copyWithZone:a3];
+  v12 = [(SECSFAVersionMatch *)self->_allowedBuilds copyWithZone:zone];
   v13 = *(v5 + 8);
   *(v5 + 8) = v12;
 
@@ -232,7 +232,7 @@ LABEL_13:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v22 + 1) + 8 * v18) copyWithZone:{a3, v22}];
+        v19 = [*(*(&v22 + 1) + 8 * v18) copyWithZone:{zone, v22}];
         [v5 addEventFilter:v19];
 
         ++v18;
@@ -255,55 +255,55 @@ LABEL_13:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if ([(SECSFARules *)self eventRulesCount])
   {
-    [v12 clearEventRules];
-    v4 = [(SECSFARules *)self eventRulesCount];
-    if (v4)
+    [toCopy clearEventRules];
+    eventRulesCount = [(SECSFARules *)self eventRulesCount];
+    if (eventRulesCount)
     {
-      v5 = v4;
+      v5 = eventRulesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SECSFARules *)self eventRulesAtIndex:i];
-        [v12 addEventRules:v7];
+        [toCopy addEventRules:v7];
       }
     }
   }
 
   if (self->_allowedBuilds)
   {
-    [v12 setAllowedBuilds:?];
+    [toCopy setAllowedBuilds:?];
   }
 
   if ([(SECSFARules *)self eventFiltersCount])
   {
-    [v12 clearEventFilters];
-    v8 = [(SECSFARules *)self eventFiltersCount];
-    if (v8)
+    [toCopy clearEventFilters];
+    eventFiltersCount = [(SECSFARules *)self eventFiltersCount];
+    if (eventFiltersCount)
     {
-      v9 = v8;
+      v9 = eventFiltersCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(SECSFARules *)self eventFilterAtIndex:j];
-        [v12 addEventFilter:v11];
+        [toCopy addEventFilter:v11];
       }
     }
   }
 
   if (*&self->_has)
   {
-    *(v12 + 4) = self->_configVersion;
-    *(v12 + 40) |= 1u;
+    *(toCopy + 4) = self->_configVersion;
+    *(toCopy + 40) |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -382,16 +382,16 @@ LABEL_13:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -400,18 +400,18 @@ LABEL_13:
       while (1)
       {
         LOBYTE(v25) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v25 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v25 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v25 & 0x7F) << v6;
@@ -429,11 +429,11 @@ LABEL_13:
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v14 = v13 >> 3;
@@ -445,7 +445,7 @@ LABEL_15:
           [(SECSFARules *)self addEventFilter:v15];
           v25 = 0xAAAAAAAAAAAAAAAALL;
           v26 = 0xAAAAAAAAAAAAAAAALL;
-          if (!PBReaderPlaceMark() || !SECSFAEventFilterReadFrom(v15, a3))
+          if (!PBReaderPlaceMark() || !SECSFAEventFilterReadFrom(v15, from))
           {
 LABEL_48:
 
@@ -464,18 +464,18 @@ LABEL_48:
           while (1)
           {
             LOBYTE(v25) = 0;
-            v19 = [a3 position] + 1;
-            if (v19 >= [a3 position] && (v20 = objc_msgSend(a3, "position") + 1, v20 <= objc_msgSend(a3, "length")))
+            v19 = [from position] + 1;
+            if (v19 >= [from position] && (v20 = objc_msgSend(from, "position") + 1, v20 <= objc_msgSend(from, "length")))
             {
-              v21 = [a3 data];
-              [v21 getBytes:&v25 range:{objc_msgSend(a3, "position"), 1}];
+              data2 = [from data];
+              [data2 getBytes:&v25 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v18 |= (v25 & 0x7F) << v16;
@@ -493,7 +493,7 @@ LABEL_48:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v22 = 0;
           }
@@ -517,7 +517,7 @@ LABEL_45:
           [(SECSFARules *)self addEventRules:v15];
           v25 = 0xAAAAAAAAAAAAAAAALL;
           v26 = 0xAAAAAAAAAAAAAAAALL;
-          if (!PBReaderPlaceMark() || !SECSFAEventRuleReadFrom(v15, a3))
+          if (!PBReaderPlaceMark() || !SECSFAEventRuleReadFrom(v15, from))
           {
             goto LABEL_48;
           }
@@ -531,7 +531,7 @@ LABEL_45:
           objc_storeStrong(&self->_allowedBuilds, v15);
           v25 = 0xAAAAAAAAAAAAAAAALL;
           v26 = 0xAAAAAAAAAAAAAAAALL;
-          if (!PBReaderPlaceMark() || !SECSFAVersionMatchReadFrom(v15, a3))
+          if (!PBReaderPlaceMark() || !SECSFAVersionMatchReadFrom(v15, from))
           {
             goto LABEL_48;
           }
@@ -549,19 +549,19 @@ LABEL_41:
       }
 
 LABEL_46:
-      v23 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v23 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
 - (id)dictionaryRepresentation
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_eventRules count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_eventRules, "count")}];
@@ -584,8 +584,8 @@ LABEL_46:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v28 objects:v33 count:16];
@@ -594,14 +594,14 @@ LABEL_46:
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"eventRules"];
+    [dictionary setObject:v4 forKey:@"eventRules"];
   }
 
   allowedBuilds = self->_allowedBuilds;
   if (allowedBuilds)
   {
-    v12 = [(SECSFAVersionMatch *)allowedBuilds dictionaryRepresentation];
-    [v3 setObject:v12 forKey:@"allowedBuilds"];
+    dictionaryRepresentation2 = [(SECSFAVersionMatch *)allowedBuilds dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"allowedBuilds"];
   }
 
   if ([(NSMutableArray *)self->_eventFilters count])
@@ -626,8 +626,8 @@ LABEL_46:
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v24 + 1) + 8 * j) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation3 = [*(*(&v24 + 1) + 8 * j) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation3];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v24 objects:v32 count:16];
@@ -636,7 +636,7 @@ LABEL_46:
       while (v16);
     }
 
-    [v3 setObject:v13 forKey:@"eventFilter"];
+    [dictionary setObject:v13 forKey:@"eventFilter"];
   }
 
   if (*&self->_has)
@@ -657,12 +657,12 @@ LABEL_46:
       v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", self->_configVersion];
     }
 
-    [v3 setObject:v21 forKey:@"configVersion"];
+    [dictionary setObject:v21 forKey:@"configVersion"];
   }
 
   v22 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -671,19 +671,19 @@ LABEL_46:
   v8.receiver = self;
   v8.super_class = SECSFARules;
   v4 = [(SECSFARules *)&v8 description];
-  v5 = [(SECSFARules *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SECSFARules *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsConfigVersion:(id)a3
+- (int)StringAsConfigVersion:(id)version
 {
-  v3 = a3;
+  versionCopy = version;
   v4 = 1;
-  if (([v3 isEqualToString:@"version1"] & 1) == 0)
+  if (([versionCopy isEqualToString:@"version1"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"version2"])
+    if ([versionCopy isEqualToString:@"version2"])
     {
       v4 = 2;
     }
@@ -710,40 +710,40 @@ LABEL_46:
   }
 }
 
-- (void)addEventFilter:(id)a3
+- (void)addEventFilter:(id)filter
 {
-  v4 = a3;
+  filterCopy = filter;
   eventFilters = self->_eventFilters;
-  v8 = v4;
+  v8 = filterCopy;
   if (!eventFilters)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_eventFilters;
     self->_eventFilters = v6;
 
-    v4 = v8;
+    filterCopy = v8;
     eventFilters = self->_eventFilters;
   }
 
-  [(NSMutableArray *)eventFilters addObject:v4];
+  [(NSMutableArray *)eventFilters addObject:filterCopy];
 }
 
-- (void)addEventRules:(id)a3
+- (void)addEventRules:(id)rules
 {
-  v4 = a3;
+  rulesCopy = rules;
   eventRules = self->_eventRules;
-  v8 = v4;
+  v8 = rulesCopy;
   if (!eventRules)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_eventRules;
     self->_eventRules = v6;
 
-    v4 = v8;
+    rulesCopy = v8;
     eventRules = self->_eventRules;
   }
 
-  [(NSMutableArray *)eventRules addObject:v4];
+  [(NSMutableArray *)eventRules addObject:rulesCopy];
 }
 
 @end

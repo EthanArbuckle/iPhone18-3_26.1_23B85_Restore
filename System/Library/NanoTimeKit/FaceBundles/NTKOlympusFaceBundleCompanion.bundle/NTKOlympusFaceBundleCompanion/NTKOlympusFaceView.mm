@@ -1,40 +1,40 @@
 @interface NTKOlympusFaceView
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4;
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device;
 + (int64_t)uiSensitivity;
 - (BOOL)isCircularDialWithBezel;
-- (NTKOlympusFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (double)_bezelUtilityComplicationAlphaForEditMode:(int64_t)a3;
-- (double)_complicationAlphaForEditMode:(int64_t)a3;
-- (double)_contentAlphaForEditMode:(int64_t)a3;
-- (double)_dialAlphaForEditMode:(int64_t)a3;
-- (double)_editSpeedForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (double)_minimumBreathingScaleForComplicationSlot:(id)a3;
-- (double)_timeAlphaForEditMode:(int64_t)a3;
+- (NTKOlympusFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (double)_bezelUtilityComplicationAlphaForEditMode:(int64_t)mode;
+- (double)_complicationAlphaForEditMode:(int64_t)mode;
+- (double)_contentAlphaForEditMode:(int64_t)mode;
+- (double)_dialAlphaForEditMode:(int64_t)mode;
+- (double)_editSpeedForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (double)_minimumBreathingScaleForComplicationSlot:(id)slot;
+- (double)_timeAlphaForEditMode:(int64_t)mode;
 - (double)bezelComplicationTextWidthInRadius;
 - (double)circleDiameter;
 - (double)contentViewScale;
 - (id)_additionalPrelaunchApplicationIdentifiers;
 - (id)_additonalViewsToApplyDesaturationDuringComplicationEditing;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options;
 - (id)createFaceColorPalette;
 - (id)palette;
 - (id)utilityBezelComplicationView;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyContentViewTranform:(CGAffineTransform *)a3;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyContentViewTranform:(CGAffineTransform *)tranform;
 - (void)_applyDataMode;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromComplication:(id)a4 toComplication:(id)a5 slot:(id)a6;
-- (void)_applyTransitionFraction:(double)a3 fromDial:(unint64_t)a4 toDial:(unint64_t)a5;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
-- (void)_applyTransitionFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromComplication:(id)complication toComplication:(id)toComplication slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromDial:(unint64_t)dial toDial:(unint64_t)toDial;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle;
 - (void)_cleanupAfterEditing;
-- (void)_cleanupAfterTransitionComplicationSlot:(id)a3 selectedComplication:(id)a4;
-- (void)_cleanupAfterTransitionToOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)_configureForEditMode:(int64_t)a3;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
-- (void)_configureTimeView:(id)a3;
+- (void)_cleanupAfterTransitionComplicationSlot:(id)slot selectedComplication:(id)complication;
+- (void)_cleanupAfterTransitionToOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
+- (void)_configureForEditMode:(int64_t)mode;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
+- (void)_configureTimeView:(id)view;
 - (void)_createAnalogBackgroundIfNeeded;
 - (void)_loadSnapshotContentViews;
 - (void)_prepareForEditing;
@@ -46,22 +46,22 @@
 - (void)_tearDownOlympusView;
 - (void)_unloadSnapshotContentViews;
 - (void)_updateBackgroundViewAlpha;
-- (void)_updateDialBezelComplicationColor:(id)a3;
+- (void)_updateDialBezelComplicationColor:(id)color;
 - (void)_updateDialTicksForBezelText;
 - (void)applyColorOnAnalogHands;
-- (void)applyTransitionToCircularDialWithBezelFraction:(double)a3;
-- (void)configureComplicationAlphaFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (void)applyTransitionToCircularDialWithBezelFraction:(double)fraction;
+- (void)configureComplicationAlphaFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)configureViewsForEditing;
 - (void)createAndRemoveViewsForCurrentStateIfNeeded;
 - (void)createOlympusViewIfNeeded;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)openVictoryAppFromRect:(CGRect)a3;
-- (void)setCircularMaskForCircularDialFraction:(double)a3 circleDiameter:(double)a4;
-- (void)setCurrentDial:(unint64_t)a3;
-- (void)setCurrentStyle:(unint64_t)a3;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)setTimeOffset:(double)a3;
+- (void)openVictoryAppFromRect:(CGRect)rect;
+- (void)setCircularMaskForCircularDialFraction:(double)fraction circleDiameter:(double)diameter;
+- (void)setCurrentDial:(unint64_t)dial;
+- (void)setCurrentStyle:(unint64_t)style;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)setTimeOffset:(double)offset;
 - (void)setupViewsForCurrentState;
 - (void)tearDownDialView;
 - (void)updateCircularMask;
@@ -72,30 +72,30 @@
 + (int64_t)uiSensitivity
 {
   v2 = +[CLKRenderingContext sharedRenderingContext];
-  v3 = [v2 device];
+  device = [v2 device];
   v4 = NTKSensitivityForVictoryFaces();
 
   return v4;
 }
 
-- (NTKOlympusFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKOlympusFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v8 = a4;
+  deviceCopy = device;
   v22.receiver = self;
   v22.super_class = NTKOlympusFaceView;
-  v9 = [(NTKOlympusFaceView *)&v22 initWithFaceStyle:a3 forDevice:v8 clientIdentifier:a5];
+  v9 = [(NTKOlympusFaceView *)&v22 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifier];
   v10 = v9;
   if (v9)
   {
     [(NTKOlympusFaceView *)v9 setClipsToBounds:1];
-    v11 = [(NTKOlympusFaceView *)v10 layer];
-    [v11 setMasksToBounds:1];
+    layer = [(NTKOlympusFaceView *)v10 layer];
+    [layer setMasksToBounds:1];
 
     v12 = objc_alloc_init(NTKCompositeComplicationFactory);
     v13 = [NTKWhistlerAnalogFaceViewComplicationFactory alloc];
-    v14 = [(NTKOlympusFaceView *)v10 device];
-    sub_52F8(v14, v14);
-    v16 = [v13 initWithFaceView:v10 dialDiameter:v8 device:v15];
+    device = [(NTKOlympusFaceView *)v10 device];
+    sub_52F8(device, device);
+    v16 = [v13 initWithFaceView:v10 dialDiameter:deviceCopy device:v15];
 
     [v16 setUsesNarrowTopSlots:1];
     v23[0] = NTKComplicationSlotTopLeft;
@@ -105,10 +105,10 @@
     v17 = [NSArray arrayWithObjects:v23 count:4];
     [v12 registerFactory:v16 forSlots:v17];
 
-    v18 = [[NTKUtilityComplicationFactory alloc] initForDevice:v8];
+    v18 = [[NTKUtilityComplicationFactory alloc] initForDevice:deviceCopy];
     [v18 setFaceView:v10];
-    v19 = [(NTKOlympusFaceView *)v10 device];
-    sub_52F8(v19, v19);
+    device2 = [(NTKOlympusFaceView *)v10 device];
+    sub_52F8(device2, device2);
     [v18 setDialDiameter:v20];
 
     [v12 registerFactory:v18 forSlot:NTKComplicationSlotBezel];
@@ -135,11 +135,11 @@
 
 - (id)palette
 {
-  v3 = [(NTKOlympusFaceView *)self faceColorPalette];
-  [v3 setStyle:self->_currentStyle];
-  [v3 setDial:self->_currentDial];
+  faceColorPalette = [(NTKOlympusFaceView *)self faceColorPalette];
+  [faceColorPalette setStyle:self->_currentStyle];
+  [faceColorPalette setDial:self->_currentDial];
 
-  return v3;
+  return faceColorPalette;
 }
 
 - (void)_loadSnapshotContentViews
@@ -165,19 +165,19 @@
   self->_currentStyle = [v3 style];
 
   currentStyle = self->_currentStyle;
-  v5 = [(NTKOlympusFaceView *)self olympusView];
-  [v5 setCurrentStyle:currentStyle];
+  olympusView = [(NTKOlympusFaceView *)self olympusView];
+  [olympusView setCurrentStyle:currentStyle];
 
   v6 = [(NTKOlympusFaceView *)self optionForCustomEditMode:12 slot:0];
   self->_currentDial = [v6 dialShape];
 
   currentDial = self->_currentDial;
-  v8 = [(NTKOlympusFaceView *)self olympusView];
-  [v8 setCurrentDial:currentDial];
+  olympusView2 = [(NTKOlympusFaceView *)self olympusView];
+  [olympusView2 setCurrentDial:currentDial];
 
-  v9 = [(NTKOlympusFaceView *)self palette];
-  v10 = [(NTKOlympusFaceView *)self olympusView];
-  [v10 setCurrentColorPalette:v9];
+  palette = [(NTKOlympusFaceView *)self palette];
+  olympusView3 = [(NTKOlympusFaceView *)self olympusView];
+  [olympusView3 setCurrentColorPalette:palette];
 
   [(NTKOlympusFaceView *)self createAndRemoveViewsForCurrentStateIfNeeded];
   [(NTKOlympusFaceView *)self _setupController];
@@ -187,16 +187,16 @@
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(NTKOlympusFaceView *)self device];
-  v21 = [v11 initWithFrame:v20 forDeviceCornerRadius:{v13, v15, v17, v19}];
+  device = [(NTKOlympusFaceView *)self device];
+  v21 = [v11 initWithFrame:device forDeviceCornerRadius:{v13, v15, v17, v19}];
   cornerView = self->_cornerView;
   self->_cornerView = v21;
 
-  v23 = [(NTKOlympusFaceView *)self contentView];
-  [v23 addSubview:self->_cornerView];
+  contentView = [(NTKOlympusFaceView *)self contentView];
+  [contentView addSubview:self->_cornerView];
 
-  v24 = [(NTKOlympusFaceView *)self timeView];
-  [(NTKOlympusFaceView *)self _configureTimeView:v24];
+  timeView = [(NTKOlympusFaceView *)self timeView];
+  [(NTKOlympusFaceView *)self _configureTimeView:timeView];
 
   [(NTKOlympusFaceView *)self _updateDialTicksForBezelText];
 }
@@ -257,13 +257,13 @@
       [(NTKOlympusFaceView *)self _setupDialViewIfNeeded];
     }
 
-    v5 = [(NTKOlympusFaceView *)self timeView];
-    [(NTKOlympusFaceView *)self _configureTimeView:v5];
+    timeView = [(NTKOlympusFaceView *)self timeView];
+    [(NTKOlympusFaceView *)self _configureTimeView:timeView];
 
     [(NTKOlympusFaceView *)self setupViewsForCurrentState];
-    v7 = [(NTKOlympusFaceView *)self contentView];
-    v6 = [(NTKOlympusFaceView *)self cornerView];
-    [v7 bringSubviewToFront:v6];
+    contentView = [(NTKOlympusFaceView *)self contentView];
+    cornerView = [(NTKOlympusFaceView *)self cornerView];
+    [contentView bringSubviewToFront:cornerView];
   }
 }
 
@@ -273,16 +273,16 @@
   if (self->_analogBackgroundView)
   {
     currentDial = self->_currentDial;
-    v4 = [(NTKOlympusFaceView *)self palette];
-    [v4 setDial:currentDial];
+    palette = [(NTKOlympusFaceView *)self palette];
+    [palette setDial:currentDial];
 
     currentStyle = self->_currentStyle;
-    v6 = [(NTKOlympusFaceView *)self palette];
-    [v6 setStyle:currentStyle];
+    palette2 = [(NTKOlympusFaceView *)self palette];
+    [palette2 setStyle:currentStyle];
 
     v7 = [NTKOlympusAnalogBackgroundPalette alloc];
-    v8 = [(NTKOlympusFaceView *)self palette];
-    v9 = [v7 initWithOlympusColorPalette:v8];
+    palette3 = [(NTKOlympusFaceView *)self palette];
+    v9 = [v7 initWithOlympusColorPalette:palette3];
 
     [(NTKVictoryAnalogBackgroundView *)self->_analogBackgroundView applyTransitionFraction:self->_currentStyle fromOlympusStyle:self->_currentStyle toOlympusStyle:1.0];
     [(NTKVictoryAnalogBackgroundView *)self->_analogBackgroundView setPalette:v9];
@@ -298,9 +298,9 @@
 
   if (self->_currentDial == 1)
   {
-    v11 = [(NTKOlympusFaceView *)self contentView];
-    v12 = [v11 layer];
-    [v12 setMask:0];
+    contentView = [(NTKOlympusFaceView *)self contentView];
+    layer = [contentView layer];
+    [layer setMask:0];
 
     v13 = 1;
   }
@@ -330,16 +330,16 @@
     [(NTKOlympusFaceView *)self setupViewsForCurrentState];
     [(NTKOlympusFaceView *)self _applyTransitionFraction:self->_currentDial fromDial:self->_currentDial toDial:1.0];
     [(NTKOlympusFaceView *)self _applyTransitionFraction:self->_currentStyle fromStyle:self->_currentStyle toStyle:1.0];
-    v5 = [(NTKOlympusFaceView *)self palette];
-    v6 = [(NTKOlympusFaceView *)self palette];
-    [(NTKOlympusFaceView *)self _applyTransitionFraction:v5 fromColorPalette:v6 toColorPalette:0 animateElements:1.0];
+    palette = [(NTKOlympusFaceView *)self palette];
+    palette2 = [(NTKOlympusFaceView *)self palette];
+    [(NTKOlympusFaceView *)self _applyTransitionFraction:palette fromColorPalette:palette2 toColorPalette:0 animateElements:1.0];
 
     [(NTKOlympusFaceView *)self contentViewScale];
     CGAffineTransformMakeScale(&v10, v7, v7);
     [(NTKOlympusFaceView *)self _applyContentViewTranform:&v10];
-    v8 = [(NTKOlympusFaceView *)self contentView];
-    v9 = [(NTKOlympusFaceView *)self cornerView];
-    [v8 bringSubviewToFront:v9];
+    contentView = [(NTKOlympusFaceView *)self contentView];
+    cornerView = [(NTKOlympusFaceView *)self cornerView];
+    [contentView bringSubviewToFront:cornerView];
   }
 }
 
@@ -348,10 +348,10 @@
   analogBackgroundView = self->_analogBackgroundView;
   if (!analogBackgroundView)
   {
-    v4 = [(NTKOlympusFaceView *)self device];
+    device = [(NTKOlympusFaceView *)self device];
     v5 = [NTKVictoryAnalogBackgroundView alloc];
-    [v4 screenBounds];
-    v6 = [v5 initWithFrame:v4 forDevice:?];
+    [device screenBounds];
+    v6 = [v5 initWithFrame:device forDevice:?];
     v7 = self->_analogBackgroundView;
     self->_analogBackgroundView = v6;
 
@@ -366,13 +366,13 @@
     analogBackgroundView = self->_analogBackgroundView;
   }
 
-  v10 = [(NTKVictoryAnalogBackgroundView *)analogBackgroundView superview];
-  v11 = [(NTKOlympusFaceView *)self contentView];
+  superview = [(NTKVictoryAnalogBackgroundView *)analogBackgroundView superview];
+  contentView = [(NTKOlympusFaceView *)self contentView];
 
-  if (v10 != v11)
+  if (superview != contentView)
   {
-    v12 = [(NTKOlympusFaceView *)self contentView];
-    [v12 addSubview:self->_analogBackgroundView];
+    contentView2 = [(NTKOlympusFaceView *)self contentView];
+    [contentView2 addSubview:self->_analogBackgroundView];
   }
 
   [(NTKVictoryAnalogBackgroundView *)self->_analogBackgroundView setHidden:0];
@@ -383,11 +383,11 @@
   dialView = self->_dialView;
   if (!dialView)
   {
-    v4 = [(NTKOlympusFaceView *)self device];
-    sub_52F8(v4, v4);
+    device = [(NTKOlympusFaceView *)self device];
+    sub_52F8(device, device);
 
     [(NTKOlympusFaceView *)self bounds];
-    v5 = [(NTKOlympusFaceView *)self device];
+    device2 = [(NTKOlympusFaceView *)self device];
     CLKSizeCenteredInRectForDevice();
     v7 = v6;
     v9 = v8;
@@ -395,16 +395,16 @@
     v13 = v12;
 
     v14 = [NTKCircularAnalogDialView alloc];
-    v15 = [(NTKOlympusFaceView *)self device];
-    v16 = [v14 initWithFrame:v15 forDevice:0 hideHourTicks:{v7, v9, v11, v13}];
+    device3 = [(NTKOlympusFaceView *)self device];
+    v16 = [v14 initWithFrame:device3 forDevice:0 hideHourTicks:{v7, v9, v11, v13}];
     v17 = self->_dialView;
     self->_dialView = v16;
 
     [(NTKCircularAnalogDialView *)self->_dialView showAllTicksInDial];
     v18 = self->_dialView;
-    v19 = [(NTKOlympusFaceView *)self palette];
-    v20 = [(NTKOlympusFaceView *)self palette];
-    [(NTKCircularAnalogDialView *)v18 applyColorTransitionFraction:v19 fromColorPalette:v20 toColorPalette:1.0];
+    palette = [(NTKOlympusFaceView *)self palette];
+    palette2 = [(NTKOlympusFaceView *)self palette];
+    [(NTKCircularAnalogDialView *)v18 applyColorTransitionFraction:palette fromColorPalette:palette2 toColorPalette:1.0];
 
     v21 = self->_dialView;
     v22 = +[UIColor clearColor];
@@ -416,9 +416,9 @@
     dialView = self->_dialView;
   }
 
-  v24 = [(NTKCircularAnalogDialView *)dialView superview];
+  superview = [(NTKCircularAnalogDialView *)dialView superview];
 
-  if (v24 != self)
+  if (superview != self)
   {
     [(NTKOlympusFaceView *)self insertSubview:self->_dialView atIndex:0];
   }
@@ -441,12 +441,12 @@
   if (!self->_olympusView)
   {
     v3 = [NTKOlympusTimeView alloc];
-    v4 = [(NTKOlympusFaceView *)self device];
+    device = [(NTKOlympusFaceView *)self device];
     currentDial = self->_currentDial;
     currentStyle = self->_currentStyle;
-    v7 = [(NTKOlympusFaceView *)self palette];
-    v8 = [(NTKOlympusFaceView *)self currentDisplayDate];
-    v9 = [v3 initWithDevice:v4 dial:currentDial style:currentStyle colorPalette:v7 date:v8];
+    palette = [(NTKOlympusFaceView *)self palette];
+    currentDisplayDate = [(NTKOlympusFaceView *)self currentDisplayDate];
+    v9 = [v3 initWithDevice:device dial:currentDial style:currentStyle colorPalette:palette date:currentDisplayDate];
     olympusView = self->_olympusView;
     self->_olympusView = v9;
 
@@ -458,17 +458,17 @@
     [(NTKOlympusTimeView *)v12 setTransform:&v17];
     [(NTKOlympusController *)self->_olympusController setOlympusView:self->_olympusView];
     analogBackgroundView = self->_analogBackgroundView;
-    v14 = [(NTKOlympusFaceView *)self contentView];
-    v15 = v14;
+    contentView = [(NTKOlympusFaceView *)self contentView];
+    v15 = contentView;
     v16 = self->_olympusView;
     if (analogBackgroundView)
     {
-      [v14 insertSubview:v16 belowSubview:self->_analogBackgroundView];
+      [contentView insertSubview:v16 belowSubview:self->_analogBackgroundView];
     }
 
     else
     {
-      [v14 addSubview:v16];
+      [contentView addSubview:v16];
     }
   }
 }
@@ -487,31 +487,31 @@
   self->_dialView = 0;
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v6 = a3;
+  viewCopy = view;
   v13.receiver = self;
   v13.super_class = NTKOlympusFaceView;
-  [(NTKOlympusFaceView *)&v13 _configureComplicationView:v6 forSlot:a4];
-  v7 = [(NTKOlympusFaceView *)self palette];
-  v8 = [v7 cornerComplicationsAccentColor];
-  [(NTKOlympusFaceView *)self setComplicationColor:v8];
+  [(NTKOlympusFaceView *)&v13 _configureComplicationView:viewCopy forSlot:slot];
+  palette = [(NTKOlympusFaceView *)self palette];
+  cornerComplicationsAccentColor = [palette cornerComplicationsAccentColor];
+  [(NTKOlympusFaceView *)self setComplicationColor:cornerComplicationsAccentColor];
 
-  v9 = [(NTKOlympusFaceView *)self complicationColor];
-  [(NTKOlympusFaceView *)self setInterpolatedComplicationColor:v9];
+  complicationColor = [(NTKOlympusFaceView *)self complicationColor];
+  [(NTKOlympusFaceView *)self setInterpolatedComplicationColor:complicationColor];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 updateMonochromeColor];
+    [viewCopy updateMonochromeColor];
   }
 
-  if ([v6 conformsToProtocol:&OBJC_PROTOCOL___NTKUtilityComplicationView])
+  if ([viewCopy conformsToProtocol:&OBJC_PROTOCOL___NTKUtilityComplicationView])
   {
-    v10 = v6;
-    v11 = [(NTKOlympusFaceView *)self palette];
-    v12 = [v11 bezelComplicationColor];
-    [v10 setForegroundColor:v12];
+    v10 = viewCopy;
+    palette2 = [(NTKOlympusFaceView *)self palette];
+    bezelComplicationColor = [palette2 bezelComplicationColor];
+    [v10 setForegroundColor:bezelComplicationColor];
   }
 }
 
@@ -525,38 +525,38 @@
 
 - (void)_applyDataMode
 {
-  v3 = [(NTKOlympusFaceView *)self dataMode];
-  [(NTKOlympusController *)self->_olympusController applyDataMode:v3];
-  v4 = v3 == &dword_0 + 1;
+  dataMode = [(NTKOlympusFaceView *)self dataMode];
+  [(NTKOlympusController *)self->_olympusController applyDataMode:dataMode];
+  v4 = dataMode == &dword_0 + 1;
   [(NTKOlympusTimeView *)self->_olympusView setUserInteractionEnabled:v4];
   analogBackgroundView = self->_analogBackgroundView;
 
   [(NTKVictoryAnalogBackgroundView *)analogBackgroundView setUserInteractionEnabled:v4];
 }
 
-- (void)setTimeOffset:(double)a3
+- (void)setTimeOffset:(double)offset
 {
   v5.receiver = self;
   v5.super_class = NTKOlympusFaceView;
   [(NTKOlympusFaceView *)&v5 setTimeOffset:?];
-  [(NTKOlympusTimeView *)self->_olympusView setTimeOffset:a3];
+  [(NTKOlympusTimeView *)self->_olympusView setTimeOffset:offset];
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
   v7.receiver = self;
   v7.super_class = NTKOlympusFaceView;
-  v6 = a3;
-  [(NTKOlympusFaceView *)&v7 setOverrideDate:v6 duration:a4];
-  [(NTKOlympusController *)self->_olympusController setOverrideDate:v6 duration:a4, v7.receiver, v7.super_class];
+  dateCopy = date;
+  [(NTKOlympusFaceView *)&v7 setOverrideDate:dateCopy duration:duration];
+  [(NTKOlympusController *)self->_olympusController setOverrideDate:dateCopy duration:duration, v7.receiver, v7.super_class];
 }
 
-- (void)_configureTimeView:(id)a3
+- (void)_configureTimeView:(id)view
 {
   v9.receiver = self;
   v9.super_class = NTKOlympusFaceView;
-  v4 = a3;
-  [(NTKOlympusFaceView *)&v9 _configureTimeView:v4];
+  viewCopy = view;
+  [(NTKOlympusFaceView *)&v9 _configureTimeView:viewCopy];
   v5 = [(NTKOlympusFaceView *)self _showAnalogHands:v9.receiver];
   v6 = 0.0;
   if (v5)
@@ -564,12 +564,12 @@
     v6 = 1.0;
   }
 
-  [v4 setAlpha:v6];
-  [v4 setHidden:{-[NTKOlympusFaceView _showAnalogHands](self, "_showAnalogHands") ^ 1}];
-  v7 = [v4 secondHandView];
+  [viewCopy setAlpha:v6];
+  [viewCopy setHidden:{-[NTKOlympusFaceView _showAnalogHands](self, "_showAnalogHands") ^ 1}];
+  secondHandView = [viewCopy secondHandView];
 
   v8 = +[UIColor blackColor];
-  [v7 setHandDotColor:v8];
+  [secondHandView setHandDotColor:v8];
 
   [(NTKOlympusFaceView *)self applyColorOnAnalogHands];
 }
@@ -622,11 +622,11 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v4 = [(NTKOlympusFaceView *)self isCircularDialWithBezel];
-  [(NTKCircularAnalogDialView *)self->_dialView setHidden:v4 ^ 1];
+  isCircularDialWithBezel = [(NTKOlympusFaceView *)self isCircularDialWithBezel];
+  [(NTKCircularAnalogDialView *)self->_dialView setHidden:isCircularDialWithBezel ^ 1];
   dialView = self->_dialView;
   v5 = 1.0;
-  if ((v4 & 1) == 0)
+  if ((isCircularDialWithBezel & 1) == 0)
   {
     goto LABEL_4;
   }
@@ -634,74 +634,74 @@ LABEL_4:
 LABEL_5:
   [(NTKCircularAnalogDialView *)dialView setAlpha:v5];
   [(NTKOlympusFaceView *)self createAndRemoveViewsForCurrentStateIfNeeded];
-  v6 = [(NTKOlympusFaceView *)self delegate];
-  [v6 faceViewDidChangeWantsStatusBarIconShadow];
+  delegate = [(NTKOlympusFaceView *)self delegate];
+  [delegate faceViewDidChangeWantsStatusBarIconShadow];
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   v18.receiver = self;
   v18.super_class = NTKOlympusFaceView;
   [NTKOlympusFaceView _configureForTransitionFraction:"_configureForTransitionFraction:fromEditMode:toEditMode:" fromEditMode:? toEditMode:?];
-  [(NTKOlympusFaceView *)self _contentAlphaForEditMode:a4];
-  [(NTKOlympusFaceView *)self _contentAlphaForEditMode:a5];
+  [(NTKOlympusFaceView *)self _contentAlphaForEditMode:mode];
+  [(NTKOlympusFaceView *)self _contentAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v10 = v9;
-  v11 = [(NTKOlympusFaceView *)self contentView];
-  [v11 setAlpha:v10];
+  contentView = [(NTKOlympusFaceView *)self contentView];
+  [contentView setAlpha:v10];
 
-  [(NTKOlympusFaceView *)self _timeAlphaForEditMode:a4];
-  [(NTKOlympusFaceView *)self _timeAlphaForEditMode:a5];
+  [(NTKOlympusFaceView *)self _timeAlphaForEditMode:mode];
+  [(NTKOlympusFaceView *)self _timeAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v13 = v12;
-  v14 = [(NTKOlympusFaceView *)self timeView];
-  [v14 setAlpha:v13];
+  timeView = [(NTKOlympusFaceView *)self timeView];
+  [timeView setAlpha:v13];
 
-  [(NTKOlympusFaceView *)self _dialAlphaForEditMode:a4];
-  [(NTKOlympusFaceView *)self _dialAlphaForEditMode:a5];
+  [(NTKOlympusFaceView *)self _dialAlphaForEditMode:mode];
+  [(NTKOlympusFaceView *)self _dialAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v16 = v15;
-  v17 = [(NTKOlympusFaceView *)self dialView];
-  [v17 setAlpha:v16];
+  dialView = [(NTKOlympusFaceView *)self dialView];
+  [dialView setAlpha:v16];
 
-  [(NTKOlympusFaceView *)self configureComplicationAlphaFraction:a4 fromEditMode:a5 toEditMode:a3];
+  [(NTKOlympusFaceView *)self configureComplicationAlphaFraction:mode fromEditMode:editMode toEditMode:fraction];
 }
 
-- (void)_configureForEditMode:(int64_t)a3
+- (void)_configureForEditMode:(int64_t)mode
 {
   v5.receiver = self;
   v5.super_class = NTKOlympusFaceView;
   [(NTKOlympusFaceView *)&v5 _configureForEditMode:?];
-  [(NTKOlympusFaceView *)self configureComplicationAlphaFraction:a3 fromEditMode:a3 toEditMode:1.0];
+  [(NTKOlympusFaceView *)self configureComplicationAlphaFraction:mode fromEditMode:mode toEditMode:1.0];
 }
 
-- (void)_cleanupAfterTransitionComplicationSlot:(id)a3 selectedComplication:(id)a4
+- (void)_cleanupAfterTransitionComplicationSlot:(id)slot selectedComplication:(id)complication
 {
   v5.receiver = self;
   v5.super_class = NTKOlympusFaceView;
-  [(NTKOlympusFaceView *)&v5 _cleanupAfterTransitionComplicationSlot:a3 selectedComplication:a4];
+  [(NTKOlympusFaceView *)&v5 _cleanupAfterTransitionComplicationSlot:slot selectedComplication:complication];
   [(NTKOlympusFaceView *)self _updateDialTicksForBezelText];
 }
 
-- (void)configureComplicationAlphaFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)configureComplicationAlphaFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
-  [(NTKOlympusFaceView *)self _complicationAlphaForEditMode:a4];
-  [(NTKOlympusFaceView *)self _complicationAlphaForEditMode:a5];
+  [(NTKOlympusFaceView *)self _complicationAlphaForEditMode:mode];
+  [(NTKOlympusFaceView *)self _complicationAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v8 = v7;
-  v9 = [(NTKOlympusFaceView *)self complicationContainerView];
-  [v9 setAlpha:v8];
+  complicationContainerView = [(NTKOlympusFaceView *)self complicationContainerView];
+  [complicationContainerView setAlpha:v8];
 }
 
-- (double)_complicationAlphaForEditMode:(int64_t)a3
+- (double)_complicationAlphaForEditMode:(int64_t)mode
 {
-  if (a3 > 0xA)
+  if (mode > 0xA)
   {
     return NTKEditModeDimmedAlpha;
   }
 
   result = 1.0;
-  if (((1 << a3) & 0x403) == 0)
+  if (((1 << mode) & 0x403) == 0)
   {
     return NTKEditModeDimmedAlpha;
   }
@@ -709,15 +709,15 @@ LABEL_5:
   return result;
 }
 
-- (double)_bezelUtilityComplicationAlphaForEditMode:(int64_t)a3
+- (double)_bezelUtilityComplicationAlphaForEditMode:(int64_t)mode
 {
-  if (a3 > 0xC)
+  if (mode > 0xC)
   {
     return NTKEditModeDimmedAlpha;
   }
 
   result = 1.0;
-  if (((1 << a3) & 0x1003) == 0)
+  if (((1 << mode) & 0x1003) == 0)
   {
     return NTKEditModeDimmedAlpha;
   }
@@ -725,21 +725,21 @@ LABEL_5:
   return result;
 }
 
-- (double)_dialAlphaForEditMode:(int64_t)a3
+- (double)_dialAlphaForEditMode:(int64_t)mode
 {
   result = 1.0;
   v4 = 0.5;
-  if (a3 == 1)
+  if (mode == 1)
   {
     v4 = 0.0;
   }
 
-  if (a3 == 12)
+  if (mode == 12)
   {
     v4 = 1.0;
   }
 
-  if (a3)
+  if (mode)
   {
     return v4;
   }
@@ -747,10 +747,10 @@ LABEL_5:
   return result;
 }
 
-- (double)_contentAlphaForEditMode:(int64_t)a3
+- (double)_contentAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 != 1)
+  if (mode != 1)
   {
     return 1.0;
   }
@@ -758,16 +758,16 @@ LABEL_5:
   return result;
 }
 
-- (double)_timeAlphaForEditMode:(int64_t)a3
+- (double)_timeAlphaForEditMode:(int64_t)mode
 {
-  v4 = [(NTKOlympusFaceView *)self _showAnalogHands];
+  _showAnalogHands = [(NTKOlympusFaceView *)self _showAnalogHands];
   result = NTKEditModeDimmedAlpha;
-  if (a3 != 1)
+  if (mode != 1)
   {
     result = 1.0;
   }
 
-  if (!v4)
+  if (!_showAnalogHands)
   {
     return 0.0;
   }
@@ -775,22 +775,22 @@ LABEL_5:
   return result;
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v12 = a3;
-  v8 = a5;
-  if (a4 == 10)
+  optionCopy = option;
+  slotCopy = slot;
+  if (mode == 10)
   {
-    v10 = [(NTKOlympusFaceView *)self palette];
-    v11 = [(NTKOlympusFaceView *)self palette];
-    [(NTKOlympusFaceView *)self _applyTransitionFraction:v10 fromColorPalette:v11 toColorPalette:0 animateElements:1.0];
+    palette = [(NTKOlympusFaceView *)self palette];
+    palette2 = [(NTKOlympusFaceView *)self palette];
+    [(NTKOlympusFaceView *)self _applyTransitionFraction:palette fromColorPalette:palette2 toColorPalette:0 animateElements:1.0];
 
     [(NTKOlympusFaceView *)self applyColorOnAnalogHands];
   }
 
   else
   {
-    if (a4 == 12)
+    if (mode == 12)
     {
       v9 = [(NTKOlympusFaceView *)self optionForCustomEditMode:12 slot:0];
       -[NTKOlympusFaceView setCurrentDial:](self, "setCurrentDial:", [v9 dialShape]);
@@ -798,7 +798,7 @@ LABEL_5:
 
     else
     {
-      if (a4 != 15)
+      if (mode != 15)
       {
         goto LABEL_8;
       }
@@ -828,73 +828,73 @@ LABEL_8:
 
 - (void)applyColorOnAnalogHands
 {
-  v3 = [(NTKOlympusFaceView *)self palette];
-  v10 = [v3 largeHandsColor];
+  palette = [(NTKOlympusFaceView *)self palette];
+  largeHandsColor = [palette largeHandsColor];
 
-  v4 = [(NTKOlympusFaceView *)self timeView];
-  v5 = [v4 minuteHandView];
-  [v5 setColor:v10];
+  timeView = [(NTKOlympusFaceView *)self timeView];
+  minuteHandView = [timeView minuteHandView];
+  [minuteHandView setColor:largeHandsColor];
 
-  v6 = [v4 hourHandView];
-  [v6 setColor:v10];
+  hourHandView = [timeView hourHandView];
+  [hourHandView setColor:largeHandsColor];
 
-  v7 = [v4 secondHandView];
-  v8 = [(NTKOlympusFaceView *)self palette];
-  v9 = [v8 secondHandColor];
-  [v7 setColor:v9];
+  secondHandView = [timeView secondHandView];
+  palette2 = [(NTKOlympusFaceView *)self palette];
+  secondHandColor = [palette2 secondHandColor];
+  [secondHandView setColor:secondHandColor];
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v18 = a4;
-  v12 = a5;
-  v13 = a7;
-  switch(a6)
+  optionCopy = option;
+  toOptionCopy = toOption;
+  slotCopy = slot;
+  switch(mode)
   {
     case 10:
-      v14 = [(NTKOlympusFaceView *)self interpolatedColorPalette];
-      v15 = [v14 fromPalette];
-      v16 = [(NTKOlympusFaceView *)self interpolatedColorPalette];
-      v17 = [v16 toPalette];
-      [(NTKOlympusFaceView *)self _applyTransitionFraction:v15 fromColorPalette:v17 toColorPalette:1 animateElements:a3];
+      interpolatedColorPalette = [(NTKOlympusFaceView *)self interpolatedColorPalette];
+      fromPalette = [interpolatedColorPalette fromPalette];
+      interpolatedColorPalette2 = [(NTKOlympusFaceView *)self interpolatedColorPalette];
+      toPalette = [interpolatedColorPalette2 toPalette];
+      [(NTKOlympusFaceView *)self _applyTransitionFraction:fromPalette fromColorPalette:toPalette toColorPalette:1 animateElements:fraction];
 
       break;
     case 15:
-      -[NTKOlympusFaceView _applyTransitionFraction:fromStyle:toStyle:](self, "_applyTransitionFraction:fromStyle:toStyle:", [v18 style], objc_msgSend(v12, "style"), a3);
+      -[NTKOlympusFaceView _applyTransitionFraction:fromStyle:toStyle:](self, "_applyTransitionFraction:fromStyle:toStyle:", [optionCopy style], objc_msgSend(toOptionCopy, "style"), fraction);
       break;
     case 12:
-      -[NTKOlympusFaceView _applyTransitionFraction:fromDial:toDial:](self, "_applyTransitionFraction:fromDial:toDial:", [v18 dialShape], objc_msgSend(v12, "dialShape"), a3);
+      -[NTKOlympusFaceView _applyTransitionFraction:fromDial:toDial:](self, "_applyTransitionFraction:fromDial:toDial:", [optionCopy dialShape], objc_msgSend(toOptionCopy, "dialShape"), fraction);
       break;
   }
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromDial:(unint64_t)a4 toDial:(unint64_t)a5
+- (void)_applyTransitionFraction:(double)fraction fromDial:(unint64_t)dial toDial:(unint64_t)toDial
 {
-  if (a4 == a5)
+  if (dial == toDial)
   {
 
-    [(NTKOlympusFaceView *)self setCurrentDial:a3];
+    [(NTKOlympusFaceView *)self setCurrentDial:fraction];
   }
 
   else
   {
-    if (a5 == 1 && a4 == 0)
+    if (toDial == 1 && dial == 0)
     {
-      v9 = 1.0 - a3;
+      fractionCopy = 1.0 - fraction;
     }
 
     else
     {
-      v9 = a3;
+      fractionCopy = fraction;
     }
 
     [(NTKOlympusFaceView *)self circleDiameter];
-    [(NTKOlympusFaceView *)self setCircularMaskForCircularDialFraction:v9 circleDiameter:v10];
+    [(NTKOlympusFaceView *)self setCircularMaskForCircularDialFraction:fractionCopy circleDiameter:v10];
     CLKCompressFraction();
     v12 = v11;
-    v13 = [(NTKOlympusFaceView *)self dialView];
+    dialView = [(NTKOlympusFaceView *)self dialView];
     [(NTKOlympusFaceView *)self bezelComplicationTextWidthInRadius];
-    [v13 fillDialTransitionWithFraction:v12 bezelTextWidthRadians:v14];
+    [dialView fillDialTransitionWithFraction:v12 bezelTextWidthRadians:v14];
 
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
@@ -902,19 +902,19 @@ LABEL_8:
     v22[3] = &unk_10378;
     *&v22[4] = v12;
     [(NTKOlympusFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v22];
-    v15 = [(NTKOlympusFaceView *)self analogBackgroundView];
-    [v15 applyTransitionFraction:a4 fromDialShape:a5 toDialShape:v9];
+    analogBackgroundView = [(NTKOlympusFaceView *)self analogBackgroundView];
+    [analogBackgroundView applyTransitionFraction:dial fromDialShape:toDial toDialShape:fractionCopy];
 
-    [(NTKOlympusTimeView *)self->_olympusView applyTransitionFraction:a4 fromDial:a5 toDial:v9];
-    v16 = [(NTKOlympusFaceView *)self palette];
-    v17 = [v16 copy];
+    [(NTKOlympusTimeView *)self->_olympusView applyTransitionFraction:dial fromDial:toDial toDial:fractionCopy];
+    palette = [(NTKOlympusFaceView *)self palette];
+    v17 = [palette copy];
 
-    [v17 setDial:a4];
-    v18 = [(NTKOlympusFaceView *)self palette];
-    v19 = [v18 copy];
+    [v17 setDial:dial];
+    palette2 = [(NTKOlympusFaceView *)self palette];
+    v19 = [palette2 copy];
 
-    [v17 setDial:a5];
-    [(NTKOlympusFaceView *)self _applyTransitionFraction:v17 fromColorPalette:v19 toColorPalette:0 animateElements:v9];
+    [v17 setDial:toDial];
+    [(NTKOlympusFaceView *)self _applyTransitionFraction:v17 fromColorPalette:v19 toColorPalette:0 animateElements:fractionCopy];
     [(NTKOlympusFaceView *)self isCircularDialWithBezel];
     CLKInterpolateBetweenFloatsClipped();
     CGAffineTransformMakeScale(&v21, v20, v20);
@@ -922,15 +922,15 @@ LABEL_8:
   }
 }
 
-- (void)setCurrentDial:(unint64_t)a3
+- (void)setCurrentDial:(unint64_t)dial
 {
-  self->_currentDial = a3;
-  v5 = [(NTKOlympusFaceView *)self analogBackgroundView];
-  [v5 setDialShape:a3];
+  self->_currentDial = dial;
+  analogBackgroundView = [(NTKOlympusFaceView *)self analogBackgroundView];
+  [analogBackgroundView setDialShape:dial];
 
   currentDial = self->_currentDial;
-  v7 = [(NTKOlympusFaceView *)self olympusView];
-  [v7 setCurrentDial:currentDial];
+  olympusView = [(NTKOlympusFaceView *)self olympusView];
+  [olympusView setCurrentDial:currentDial];
 
   [(NTKCircularAnalogDialView *)self->_dialView setHidden:[(NTKOlympusFaceView *)self isCircularDialWithBezel]^ 1];
   if (self->_currentDial)
@@ -950,7 +950,7 @@ LABEL_8:
   [(NTKOlympusFaceView *)self _applyContentViewTranform:&v11];
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5
+- (void)_applyTransitionFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle
 {
   if (self->_currentDial == 1)
   {
@@ -963,96 +963,96 @@ LABEL_8:
   }
 
   [(NTKCircularAnalogDialView *)self->_dialView setHidden:v9];
-  v10 = [(NTKOlympusFaceView *)self timeView];
-  [v10 setHidden:0];
+  timeView = [(NTKOlympusFaceView *)self timeView];
+  [timeView setHidden:0];
 
-  v11 = [(NTKOlympusFaceView *)self olympusView];
-  [v11 applyTransitionFraction:a4 fromStyle:a5 toStyle:a3];
+  olympusView = [(NTKOlympusFaceView *)self olympusView];
+  [olympusView applyTransitionFraction:style fromStyle:toStyle toStyle:fraction];
 
   CLKCompressFraction();
   v13 = v12;
-  v14 = [(NTKOlympusFaceView *)self timeView];
-  [v14 setAlpha:v13];
+  timeView2 = [(NTKOlympusFaceView *)self timeView];
+  [timeView2 setAlpha:v13];
 
-  v15 = [(NTKOlympusFaceView *)self dialView];
-  v16 = [(NTKOlympusFaceView *)self timeView];
-  [v16 alpha];
+  dialView = [(NTKOlympusFaceView *)self dialView];
+  timeView3 = [(NTKOlympusFaceView *)self timeView];
+  [timeView3 alpha];
   v18 = v17;
   [(NTKOlympusFaceView *)self bezelComplicationTextWidthInRadius];
-  [v15 setHourTicksOpacity:v18 bezelTextWidthRadians:v19];
+  [dialView setHourTicksOpacity:v18 bezelTextWidthRadians:v19];
 
   CLKCompressFraction();
   v21 = v20;
   [(NTKVictoryAnalogBackgroundView *)self->_analogBackgroundView setAlpha:?];
   [(NTKOlympusTimeView *)self->_olympusView setAlpha:1.0 - v21];
-  [(NTKVictoryAnalogBackgroundView *)self->_analogBackgroundView applyTransitionFraction:a4 fromOlympusStyle:a5 toOlympusStyle:a3];
-  v22 = [(NTKOlympusFaceView *)self palette];
-  v25 = [v22 copy];
+  [(NTKVictoryAnalogBackgroundView *)self->_analogBackgroundView applyTransitionFraction:style fromOlympusStyle:toStyle toOlympusStyle:fraction];
+  palette = [(NTKOlympusFaceView *)self palette];
+  v25 = [palette copy];
 
-  [v25 setStyle:a4];
-  v23 = [(NTKOlympusFaceView *)self palette];
-  v24 = [v23 copy];
+  [v25 setStyle:style];
+  palette2 = [(NTKOlympusFaceView *)self palette];
+  v24 = [palette2 copy];
 
-  [v24 setStyle:a5];
-  [(NTKOlympusFaceView *)self _applyTransitionFraction:v25 fromColorPalette:v24 toColorPalette:0 animateElements:a3];
+  [v24 setStyle:toStyle];
+  [(NTKOlympusFaceView *)self _applyTransitionFraction:v25 fromColorPalette:v24 toColorPalette:0 animateElements:fraction];
 }
 
-- (void)_updateDialBezelComplicationColor:(id)a3
+- (void)_updateDialBezelComplicationColor:(id)color
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_41E4;
   v5[3] = &unk_103A0;
-  v6 = a3;
-  v4 = v6;
+  colorCopy = color;
+  v4 = colorCopy;
   [(NTKOlympusFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v5];
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromComplication:(id)a4 toComplication:(id)a5 slot:(id)a6
+- (void)_applyTransitionFraction:(double)fraction fromComplication:(id)complication toComplication:(id)toComplication slot:(id)slot
 {
-  v10 = a4;
-  v11 = a5;
+  complicationCopy = complication;
+  toComplicationCopy = toComplication;
   v17.receiver = self;
   v17.super_class = NTKOlympusFaceView;
-  v12 = a6;
-  [(NTKOlympusFaceView *)&v17 _applyTransitionFraction:v10 fromComplication:v11 toComplication:v12 slot:a3];
+  slotCopy = slot;
+  [(NTKOlympusFaceView *)&v17 _applyTransitionFraction:complicationCopy fromComplication:toComplicationCopy toComplication:slotCopy slot:fraction];
   v13 = NTKComplicationSlotBezel;
 
-  if (v13 == v12)
+  if (v13 == slotCopy)
   {
-    if (![v10 complicationType] || (v15 = objc_msgSend(v11, "complicationType"), v14 = 1.0, !v15))
+    if (![complicationCopy complicationType] || (v15 = objc_msgSend(toComplicationCopy, "complicationType"), fractionCopy = 1.0, !v15))
     {
-      if ([v10 complicationType] || objc_msgSend(v11, "complicationType"))
+      if ([complicationCopy complicationType] || objc_msgSend(toComplicationCopy, "complicationType"))
       {
-        v16 = [v11 complicationType];
-        v14 = 1.0 - a3;
-        if (v16)
+        complicationType = [toComplicationCopy complicationType];
+        fractionCopy = 1.0 - fraction;
+        if (complicationType)
         {
-          v14 = a3;
+          fractionCopy = fraction;
         }
       }
 
       else
       {
-        v14 = 0.0;
+        fractionCopy = 0.0;
       }
     }
 
-    [(NTKOlympusFaceView *)self applyTransitionToCircularDialWithBezelFraction:v14];
+    [(NTKOlympusFaceView *)self applyTransitionToCircularDialWithBezelFraction:fractionCopy];
   }
 }
 
-- (void)_applyContentViewTranform:(CGAffineTransform *)a3
+- (void)_applyContentViewTranform:(CGAffineTransform *)tranform
 {
-  v5 = *&a3->c;
-  v7 = *&a3->a;
+  v5 = *&tranform->c;
+  v7 = *&tranform->a;
   v8 = v5;
-  v9 = *&a3->tx;
+  v9 = *&tranform->tx;
   [(NTKVictoryAnalogBackgroundView *)self->_analogBackgroundView setTransform:&v7];
-  v6 = *&a3->c;
-  v7 = *&a3->a;
+  v6 = *&tranform->c;
+  v7 = *&tranform->a;
   v8 = v6;
-  v9 = *&a3->tx;
+  v9 = *&tranform->tx;
   [(NTKOlympusTimeView *)self->_olympusView setTransform:&v7];
 }
 
@@ -1072,10 +1072,10 @@ LABEL_8:
   return result;
 }
 
-- (void)applyTransitionToCircularDialWithBezelFraction:(double)a3
+- (void)applyTransitionToCircularDialWithBezelFraction:(double)fraction
 {
-  v4 = [(NTKOlympusFaceView *)self device];
-  sub_52F8(v4, v4);
+  device = [(NTKOlympusFaceView *)self device];
+  sub_52F8(device, device);
 
   CLKInterpolateBetweenFloatsClipped();
   [(NTKOlympusFaceView *)self setCircularMaskForCircularDialFraction:1.0 circleDiameter:v5];
@@ -1089,8 +1089,8 @@ LABEL_8:
 
 - (double)circleDiameter
 {
-  v3 = [(NTKOlympusFaceView *)self device];
-  v4 = sub_52F8(v3, v3);
+  device = [(NTKOlympusFaceView *)self device];
+  v4 = sub_52F8(device, device);
   v6 = v5;
 
   if ([(NTKOlympusFaceView *)self isCircularDialWithBezel])
@@ -1106,11 +1106,11 @@ LABEL_8:
 
 - (BOOL)isCircularDialWithBezel
 {
-  v3 = [(NTKOlympusFaceView *)self delegate];
-  if (v3)
+  delegate = [(NTKOlympusFaceView *)self delegate];
+  if (delegate)
   {
-    v4 = [(NTKOlympusFaceView *)self delegate];
-    v5 = [v4 faceViewComplicationIsEmptyForSlot:NTKComplicationSlotBezel] ^ 1;
+    delegate2 = [(NTKOlympusFaceView *)self delegate];
+    v5 = [delegate2 faceViewComplicationIsEmptyForSlot:NTKComplicationSlotBezel] ^ 1;
   }
 
   else
@@ -1138,7 +1138,7 @@ LABEL_8:
   [(NTKOlympusFaceView *)self setCircularMaskForCircularDialFraction:v3 circleDiameter:v4];
 }
 
-- (void)setCircularMaskForCircularDialFraction:(double)a3 circleDiameter:(double)a4
+- (void)setCircularMaskForCircularDialFraction:(double)fraction circleDiameter:(double)diameter
 {
   [(NTKCircularAnalogDialView *)self->_dialView setHidden:[(NTKOlympusFaceView *)self isCircularDialWithBezel]^ 1];
   CLKCompressFraction();
@@ -1156,41 +1156,41 @@ LABEL_8:
   v13 = [UIBezierPath bezierPathWithOvalInRect:v11, v12 * 0.5 - v9, v8, v8];
   v14 = +[CAShapeLayer layer];
   [v14 setPath:{objc_msgSend(v13, "CGPath")}];
-  v15 = [(NTKOlympusFaceView *)self contentView];
-  v16 = [v15 layer];
-  [v16 setMask:v14];
+  contentView = [(NTKOlympusFaceView *)self contentView];
+  layer = [contentView layer];
+  [layer setMask:v14];
 
   [(NTKOlympusFaceView *)self contentViewScale];
   CGAffineTransformMakeScale(&v18, v17, v17);
   [(NTKOlympusFaceView *)self _applyContentViewTranform:&v18];
 }
 
-- (void)_cleanupAfterTransitionToOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_cleanupAfterTransitionToOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v5.receiver = self;
   v5.super_class = NTKOlympusFaceView;
-  [(NTKOlympusFaceView *)&v5 _cleanupAfterTransitionToOption:a3 forCustomEditMode:a4 slot:a5];
+  [(NTKOlympusFaceView *)&v5 _cleanupAfterTransitionToOption:option forCustomEditMode:mode slot:slot];
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v11.receiver = self;
   v11.super_class = NTKOlympusFaceView;
-  [(NTKOlympusFaceView *)&v11 _applyRubberBandingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4)
+  [(NTKOlympusFaceView *)&v11 _applyRubberBandingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode)
   {
     NTKScaleForRubberBandingFraction();
     memset(&v10, 0, sizeof(v10));
     CGAffineTransformMakeScale(&v10, v7, v7);
-    v8 = [(NTKOlympusFaceView *)self foregroundContainerView];
+    foregroundContainerView = [(NTKOlympusFaceView *)self foregroundContainerView];
     v9 = v10;
-    [v8 setTransform:&v9];
+    [foregroundContainerView setTransform:&v9];
   }
 }
 
-- (double)_editSpeedForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (double)_editSpeedForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a3 != 10)
+  if (mode != 10)
   {
     return NTKEditSpeedCustomEditModeDefault;
   }
@@ -1199,16 +1199,16 @@ LABEL_8:
   v9 = v5;
   v7.receiver = self;
   v7.super_class = NTKOlympusFaceView;
-  [(NTKOlympusFaceView *)&v7 _editSpeedForCustomEditMode:a3 slot:a4];
+  [(NTKOlympusFaceView *)&v7 _editSpeedForCustomEditMode:mode slot:slot];
   return result;
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v10.receiver = self;
   v10.super_class = NTKOlympusFaceView;
-  [(NTKOlympusFaceView *)&v10 _applyBreathingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4)
+  [(NTKOlympusFaceView *)&v10 _applyBreathingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode)
   {
     NTKLargeElementScaleForBreathingFraction();
     memset(&v9, 0, sizeof(v9));
@@ -1218,10 +1218,10 @@ LABEL_8:
   }
 }
 
-- (double)_minimumBreathingScaleForComplicationSlot:(id)a3
+- (double)_minimumBreathingScaleForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  if ([v4 isEqualToString:NTKComplicationSlotBezel])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:NTKComplicationSlotBezel])
   {
     v5 = NTKLargeElementMinimumBreathingScale;
   }
@@ -1230,22 +1230,22 @@ LABEL_8:
   {
     v8.receiver = self;
     v8.super_class = NTKOlympusFaceView;
-    [(NTKOlympusFaceView *)&v8 _minimumBreathingScaleForComplicationSlot:v4];
+    [(NTKOlympusFaceView *)&v8 _minimumBreathingScaleForComplicationSlot:slotCopy];
     v5 = v6;
   }
 
   return v5;
 }
 
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device
 {
   v4 = &off_10B28;
-  if (a3 != 12)
+  if (options != 12)
   {
     v4 = 0;
   }
 
-  if (a3 == 15)
+  if (options == 15)
   {
     return &off_10B10;
   }
@@ -1256,29 +1256,29 @@ LABEL_8:
   }
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (a4 == 15 || a4 == 12)
+  optionCopy = option;
+  optionsCopy = options;
+  v10 = optionsCopy;
+  if (mode == 15 || mode == 12)
   {
-    v11 = [v9 objectForKeyedSubscript:&off_107B0];
+    v11 = [optionsCopy objectForKeyedSubscript:&off_107B0];
     v12 = [v10 objectForKeyedSubscript:&off_10768];
     v13 = v12;
-    if (a4 == 15)
+    if (mode == 15)
     {
       v14 = v11;
-      v11 = v8;
+      v11 = optionCopy;
     }
 
     else
     {
       v14 = v12;
-      v13 = v8;
+      v13 = optionCopy;
     }
 
-    v16 = v8;
+    v16 = optionCopy;
 
     v17 = [v10 objectForKeyedSubscript:&off_10780];
     if (!qword_15B20)
@@ -1293,8 +1293,8 @@ LABEL_8:
     if (!v15)
     {
       v21 = [NTKOlympusFaceView alloc];
-      v22 = [(NTKOlympusFaceView *)self device];
-      v23 = [(NTKOlympusFaceView *)v21 initWithFaceStyle:35 forDevice:v22 clientIdentifier:0];
+      device = [(NTKOlympusFaceView *)self device];
+      v23 = [(NTKOlympusFaceView *)v21 initWithFaceStyle:35 forDevice:device clientIdentifier:0];
 
       [(NTKOlympusFaceView *)self frame];
       [(NTKOlympusFaceView *)v23 setFrame:?];
@@ -1311,8 +1311,8 @@ LABEL_8:
       v31.width = v25;
       v31.height = v26;
       UIGraphicsBeginImageContextWithOptions(v31, 0, 0.0);
-      v27 = [(NTKOlympusFaceView *)v23 layer];
-      [v27 renderInContext:UIGraphicsGetCurrentContext()];
+      layer = [(NTKOlympusFaceView *)v23 layer];
+      [layer renderInContext:UIGraphicsGetCurrentContext()];
 
       v15 = UIGraphicsGetImageFromCurrentImageContext();
       UIGraphicsEndImageContext();
@@ -1324,23 +1324,23 @@ LABEL_8:
   {
     v29.receiver = self;
     v29.super_class = NTKOlympusFaceView;
-    v15 = [(NTKOlympusFaceView *)&v29 _swatchImageForEditOption:v8 mode:a4 withSelectedOptions:v9];
+    v15 = [(NTKOlympusFaceView *)&v29 _swatchImageForEditOption:optionCopy mode:mode withSelectedOptions:optionsCopy];
   }
 
   return v15;
 }
 
-- (void)openVictoryAppFromRect:(CGRect)a3
+- (void)openVictoryAppFromRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(NTKOlympusFaceView *)self delegate];
-  [NTKVictoryAppLauncher attemptLaunchWithDelegate:v8];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  delegate = [(NTKOlympusFaceView *)self delegate];
+  [NTKVictoryAppLauncher attemptLaunchWithDelegate:delegate];
 
-  v9 = [(NTKOlympusFaceView *)self delegate];
-  [v9 faceViewRequestedLaunchFromRect:{x, y, width, height}];
+  delegate2 = [(NTKOlympusFaceView *)self delegate];
+  [delegate2 faceViewRequestedLaunchFromRect:{x, y, width, height}];
 }
 
 - (id)_additonalViewsToApplyDesaturationDuringComplicationEditing
@@ -1363,8 +1363,8 @@ LABEL_8:
 
 - (double)bezelComplicationTextWidthInRadius
 {
-  v2 = [(NTKOlympusFaceView *)self utilityBezelComplicationView];
-  [v2 textWidthInRadians];
+  utilityBezelComplicationView = [(NTKOlympusFaceView *)self utilityBezelComplicationView];
+  [utilityBezelComplicationView textWidthInRadians];
   v4 = v3;
 
   return v4;
@@ -1373,31 +1373,31 @@ LABEL_8:
 - (id)utilityBezelComplicationView
 {
   v2 = [(NTKOlympusFaceView *)self normalComplicationDisplayWrapperForSlot:NTKComplicationSlotBezel];
-  v3 = [v2 display];
-  v4 = [v3 conformsToProtocol:&OBJC_PROTOCOL___NTKUtilityFlatComplicationView];
+  display = [v2 display];
+  v4 = [display conformsToProtocol:&OBJC_PROTOCOL___NTKUtilityFlatComplicationView];
 
   if (v4)
   {
-    v5 = [v2 display];
+    display2 = [v2 display];
   }
 
   else
   {
-    v5 = 0;
+    display2 = 0;
   }
 
-  return v5;
+  return display2;
 }
 
-- (void)setCurrentStyle:(unint64_t)a3
+- (void)setCurrentStyle:(unint64_t)style
 {
-  self->_currentStyle = a3;
-  v5 = [(NTKOlympusFaceView *)self olympusView];
-  [v5 setCurrentStyle:a3];
+  self->_currentStyle = style;
+  olympusView = [(NTKOlympusFaceView *)self olympusView];
+  [olympusView setCurrentStyle:style];
 
   [(NTKOlympusFaceView *)self _updateBackgroundViewAlpha];
-  v6 = [(NTKOlympusFaceView *)self analogBackgroundView];
-  [v6 applyTransitionFraction:self->_currentStyle fromOlympusStyle:self->_currentStyle toOlympusStyle:1.0];
+  analogBackgroundView = [(NTKOlympusFaceView *)self analogBackgroundView];
+  [analogBackgroundView applyTransitionFraction:self->_currentStyle fromOlympusStyle:self->_currentStyle toOlympusStyle:1.0];
 }
 
 - (void)_updateBackgroundViewAlpha

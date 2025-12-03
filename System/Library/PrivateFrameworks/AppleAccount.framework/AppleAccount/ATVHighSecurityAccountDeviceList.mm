@@ -8,9 +8,9 @@
 - (id)urlString
 {
   v2 = +[AAURLConfiguration urlConfiguration];
-  v3 = [v2 deviceListURL];
+  deviceListURL = [v2 deviceListURL];
 
-  return v3;
+  return deviceListURL;
 }
 
 - (id)urlRequest
@@ -18,12 +18,12 @@
   v25 = *MEMORY[0x1E69E9840];
   v22.receiver = self;
   v22.super_class = ATVHighSecurityAccountDeviceList;
-  v3 = [(AARequest *)&v22 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(AARequest *)&v22 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
   [v4 setHTTPMethod:@"POST"];
-  v5 = [(ACAccount *)self->super._account aa_password];
-  if (v5 && (v6 = v5, [(ACAccount *)self->super._account username], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
+  aa_password = [(ACAccount *)self->super._account aa_password];
+  if (aa_password && (v6 = aa_password, [(ACAccount *)self->super._account username], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
   {
     v8 = _AALogSystem();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -33,20 +33,20 @@
     }
 
     v9 = MEMORY[0x1E696AEC0];
-    v10 = [(ACAccount *)self->super._account username];
-    v11 = [(ACAccount *)self->super._account aa_password];
-    v12 = [v9 stringWithFormat:@"%@:%@", v10, v11];
+    username = [(ACAccount *)self->super._account username];
+    aa_password2 = [(ACAccount *)self->super._account aa_password];
+    v12 = [v9 stringWithFormat:@"%@:%@", username, aa_password2];
 
     v13 = 1;
   }
 
   else
   {
-    v10 = _AALogSystem();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    username = _AALogSystem();
+    if (os_log_type_enabled(username, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1B6F6A000, v10, OS_LOG_TYPE_DEFAULT, "ERROR: Missing account username or password", buf, 2u);
+      _os_log_impl(&dword_1B6F6A000, username, OS_LOG_TYPE_DEFAULT, "ERROR: Missing account username or password", buf, 2u);
     }
 
     v13 = 0;

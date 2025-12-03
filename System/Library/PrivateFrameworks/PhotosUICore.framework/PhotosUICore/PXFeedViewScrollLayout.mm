@@ -1,9 +1,9 @@
 @interface PXFeedViewScrollLayout
 - (PXFeedViewScrollLayout)init;
-- (PXFeedViewScrollLayout)initWithViewModel:(id)a3 displayingFeedContentLayout:(id)a4;
+- (PXFeedViewScrollLayout)initWithViewModel:(id)model displayingFeedContentLayout:(id)layout;
 - (UIEdgeInsets)safeAreaInsets;
-- (id)itemPlacementControllerForItemReference:(id)a3;
-- (int64_t)sublayoutIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5;
+- (id)itemPlacementControllerForItemReference:(id)reference;
+- (int64_t)sublayoutIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference;
 - (void)_invalidateAnchorForVisibleArea;
 - (void)_invalidateContentSize;
 - (void)_invalidateScrollParameters;
@@ -11,26 +11,26 @@
 - (void)_updateContentSize;
 - (void)_updateScrollParameters;
 - (void)clearLastVisibleAreaAnchoringInformation;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)referenceSizeDidChange;
-- (void)scrollLayoutWillEndScrolling:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5 currentContentOffset:(CGPoint)a6;
+- (void)scrollLayoutWillEndScrolling:(id)scrolling withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset currentContentOffset:(CGPoint)contentOffset;
 - (void)update;
 @end
 
 @implementation PXFeedViewScrollLayout
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v8 = a3;
-  if (ViewModelObservationContext_152974 == a5)
+  observableCopy = observable;
+  if (ViewModelObservationContext_152974 == context)
   {
-    if ((a4 & 8) != 0)
+    if ((change & 8) != 0)
     {
       [(PXFeedViewScrollLayout *)self _invalidateContentSize];
       [(PXFeedViewScrollLayout *)self _invalidateScrollParameters];
     }
 
-    if ((a4 & 0xA) != 0)
+    if ((change & 0xA) != 0)
     {
       [(PXFeedViewScrollLayout *)self _invalidateAnchorForVisibleArea];
     }
@@ -40,20 +40,20 @@
   {
     v9.receiver = self;
     v9.super_class = PXFeedViewScrollLayout;
-    [(PXFeedViewScrollLayout *)&v9 observable:v8 didChange:a4 context:a5];
+    [(PXFeedViewScrollLayout *)&v9 observable:observableCopy didChange:change context:context];
   }
 }
 
-- (void)scrollLayoutWillEndScrolling:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5 currentContentOffset:(CGPoint)a6
+- (void)scrollLayoutWillEndScrolling:(id)scrolling withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset currentContentOffset:(CGPoint)contentOffset
 {
-  v7 = [(PXFeedViewScrollLayout *)self viewModel];
-  v10 = [v7 spec];
+  viewModel = [(PXFeedViewScrollLayout *)self viewModel];
+  spec = [viewModel spec];
 
-  v8 = [v10 scrollBehavior];
-  v9 = [(PXFeedViewScrollLayout *)self contentLayout];
-  [v9 visibleRect];
+  scrollBehavior = [spec scrollBehavior];
+  contentLayout = [(PXFeedViewScrollLayout *)self contentLayout];
+  [contentLayout visibleRect];
 
-  [v8 axis];
+  [scrollBehavior axis];
   PXPointValueForAxis();
 }
 
@@ -69,8 +69,8 @@
   else
   {
     self->_isClearingLastVisibleAreaAnchoringInformation = 1;
-    v3 = [(PXFeedViewScrollLayout *)self rootLayout];
-    [v3 clearLastVisibleAreaAnchoringInformation];
+    rootLayout = [(PXFeedViewScrollLayout *)self rootLayout];
+    [rootLayout clearLastVisibleAreaAnchoringInformation];
 
     self->_isClearingLastVisibleAreaAnchoringInformation = 0;
   }
@@ -78,22 +78,22 @@
 
 - (void)_updateScrollParameters
 {
-  v3 = [(PXFeedViewScrollLayout *)self viewModel];
-  v6 = [v3 spec];
+  viewModel = [(PXFeedViewScrollLayout *)self viewModel];
+  spec = [viewModel spec];
 
-  v4 = [v6 scrollBehavior];
-  v5 = [v4 decelerationRate];
+  scrollBehavior = [spec scrollBehavior];
+  decelerationRate = [scrollBehavior decelerationRate];
 
-  if (v5 <= 1)
+  if (decelerationRate <= 1)
   {
-    [(PXFeedViewScrollLayout *)self setScrollDecelerationRate:v5];
+    [(PXFeedViewScrollLayout *)self setScrollDecelerationRate:decelerationRate];
   }
 
-  -[PXFeedViewScrollLayout setShowsVerticalScrollIndicator:](self, "setShowsVerticalScrollIndicator:", [v6 wantsScrollIndicators]);
-  -[PXFeedViewScrollLayout setShowsHorizontalScrollIndicator:](self, "setShowsHorizontalScrollIndicator:", [v6 wantsScrollIndicators]);
-  [v6 verticalScrollIndicatorInsets];
+  -[PXFeedViewScrollLayout setShowsVerticalScrollIndicator:](self, "setShowsVerticalScrollIndicator:", [spec wantsScrollIndicators]);
+  -[PXFeedViewScrollLayout setShowsHorizontalScrollIndicator:](self, "setShowsHorizontalScrollIndicator:", [spec wantsScrollIndicators]);
+  [spec verticalScrollIndicatorInsets];
   [(PXFeedViewScrollLayout *)self setVerticalScrollIndicatorInsets:?];
-  [v6 horizontalScrollIndicatorInsets];
+  [spec horizontalScrollIndicatorInsets];
   [(PXFeedViewScrollLayout *)self setHorizontalScrollIndicatorInsets:?];
 }
 
@@ -113,9 +113,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 2) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXFeedViewScrollLayout _invalidateScrollParameters]"];
-      [v6 handleFailureInFunction:v7 file:@"PXFeedViewScrollLayout.m" lineNumber:125 description:{@"invalidating %lu after it already has been updated", 2}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXFeedViewScrollLayout.m" lineNumber:125 description:{@"invalidating %lu after it already has been updated", 2}];
 
       abort();
     }
@@ -142,12 +142,12 @@ LABEL_5:
   [(PXFeedViewScrollLayout *)self referenceSize];
   v4 = v3;
   v6 = v5;
-  v7 = [(PXFeedViewScrollLayout *)self viewModel];
-  v12 = [v7 spec];
+  viewModel = [(PXFeedViewScrollLayout *)self viewModel];
+  spec = [viewModel spec];
 
-  if (v12)
+  if (spec)
   {
-    [v12 sizeThatFits:{v4, v6}];
+    [spec sizeThatFits:{v4, v6}];
     v4 = v8;
     v6 = v9;
   }
@@ -175,9 +175,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXFeedViewScrollLayout _invalidateContentSize]"];
-      [v6 handleFailureInFunction:v7 file:@"PXFeedViewScrollLayout.m" lineNumber:113 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXFeedViewScrollLayout.m" lineNumber:113 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -201,9 +201,9 @@ LABEL_5:
 
 - (void)_updateAnchorForVisibleArea
 {
-  v4 = [(PXFeedViewScrollLayout *)self rootLayout];
-  v2 = [v4 createAnchorForVisibleArea];
-  v3 = [v2 autoInvalidate];
+  rootLayout = [(PXFeedViewScrollLayout *)self rootLayout];
+  createAnchorForVisibleArea = [rootLayout createAnchorForVisibleArea];
+  autoInvalidate = [createAnchorForVisibleArea autoInvalidate];
 }
 
 - (void)_invalidateAnchorForVisibleArea
@@ -222,9 +222,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 4) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXFeedViewScrollLayout _invalidateAnchorForVisibleArea]"];
-      [v6 handleFailureInFunction:v7 file:@"PXFeedViewScrollLayout.m" lineNumber:104 description:{@"invalidating %lu after it already has been updated", 4}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXFeedViewScrollLayout.m" lineNumber:104 description:{@"invalidating %lu after it already has been updated", 4}];
 
       abort();
     }
@@ -255,9 +255,9 @@ LABEL_5:
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXFeedViewScrollLayout update]"];
-      [v7 handleFailureInFunction:v8 file:@"PXFeedViewScrollLayout.m" lineNumber:89 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v8 file:@"PXFeedViewScrollLayout.m" lineNumber:89 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -270,9 +270,9 @@ LABEL_5:
       [(PXFeedViewScrollLayout *)self _updateAnchorForVisibleArea];
       if (!p_updateFlags->isPerformingUpdate)
       {
-        v9 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXFeedViewScrollLayout update]"];
-        [v9 handleFailureInFunction:v10 file:@"PXFeedViewScrollLayout.m" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+        [currentHandler2 handleFailureInFunction:v10 file:@"PXFeedViewScrollLayout.m" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
       }
     }
 
@@ -286,9 +286,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXFeedViewScrollLayout update]"];
-      [v11 handleFailureInFunction:v12 file:@"PXFeedViewScrollLayout.m" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler3 handleFailureInFunction:v12 file:@"PXFeedViewScrollLayout.m" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v6 = p_updateFlags->needsUpdate;
@@ -303,9 +303,9 @@ LABEL_5:
     p_updateFlags->isPerformingUpdate = 0;
     if (v6)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXFeedViewScrollLayout update]"];
-      [v13 handleFailureInFunction:v14 file:@"PXFeedViewScrollLayout.m" lineNumber:99 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler4 handleFailureInFunction:v14 file:@"PXFeedViewScrollLayout.m" lineNumber:99 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 
@@ -314,22 +314,22 @@ LABEL_5:
   [(PXFeedViewScrollLayout *)&v15 update];
 }
 
-- (id)itemPlacementControllerForItemReference:(id)a3
+- (id)itemPlacementControllerForItemReference:(id)reference
 {
-  v4 = a3;
-  v5 = [(PXFeedViewScrollLayout *)self feedContentLayout];
-  v6 = [v5 itemPlacementControllerForItemReference:v4];
+  referenceCopy = reference;
+  feedContentLayout = [(PXFeedViewScrollLayout *)self feedContentLayout];
+  v6 = [feedContentLayout itemPlacementControllerForItemReference:referenceCopy];
 
   return v6;
 }
 
-- (int64_t)sublayoutIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5
+- (int64_t)sublayoutIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference
 {
-  v7 = a3;
-  v8 = [(PXFeedViewScrollLayout *)self contentLayout];
-  if (v8)
+  referenceCopy = reference;
+  contentLayout = [(PXFeedViewScrollLayout *)self contentLayout];
+  if (contentLayout)
   {
-    v9 = [(PXFeedViewScrollLayout *)self indexOfSublayout:v8];
+    v9 = [(PXFeedViewScrollLayout *)self indexOfSublayout:contentLayout];
   }
 
   else
@@ -337,17 +337,17 @@ LABEL_5:
     v9 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v10 = v7;
-  *a5 = v7;
+  v10 = referenceCopy;
+  *objectReference = referenceCopy;
 
   return v9;
 }
 
 - (UIEdgeInsets)safeAreaInsets
 {
-  v3 = [(PXFeedViewScrollLayout *)self viewModel];
-  v4 = [v3 spec];
-  if ([v4 wantsSafeAreaInsets])
+  viewModel = [(PXFeedViewScrollLayout *)self viewModel];
+  spec = [viewModel spec];
+  if ([spec wantsSafeAreaInsets])
   {
     v17.receiver = self;
     v17.super_class = PXFeedViewScrollLayout;
@@ -385,20 +385,20 @@ LABEL_5:
   [(PXFeedViewScrollLayout *)self _invalidateContentSize];
 }
 
-- (PXFeedViewScrollLayout)initWithViewModel:(id)a3 displayingFeedContentLayout:(id)a4
+- (PXFeedViewScrollLayout)initWithViewModel:(id)model displayingFeedContentLayout:(id)layout
 {
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  layoutCopy = layout;
   v12.receiver = self;
   v12.super_class = PXFeedViewScrollLayout;
   v9 = [(PXFeedViewScrollLayout *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_viewModel, a3);
+    objc_storeStrong(&v9->_viewModel, model);
     [(PXFeedViewModel *)v10->_viewModel registerChangeObserver:v10 context:ViewModelObservationContext_152974];
-    objc_storeStrong(&v10->_feedContentLayout, a4);
-    [(PXFeedViewScrollLayout *)v10 setContentLayout:v8];
+    objc_storeStrong(&v10->_feedContentLayout, layout);
+    [(PXFeedViewScrollLayout *)v10 setContentLayout:layoutCopy];
     [(PXFeedViewScrollLayout *)v10 setDelegate:v10];
     [(PXFeedViewScrollLayout *)v10 _invalidateScrollParameters];
   }
@@ -408,8 +408,8 @@ LABEL_5:
 
 - (PXFeedViewScrollLayout)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXFeedViewScrollLayout.m" lineNumber:38 description:{@"%s is not available as initializer", "-[PXFeedViewScrollLayout init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXFeedViewScrollLayout.m" lineNumber:38 description:{@"%s is not available as initializer", "-[PXFeedViewScrollLayout init]"}];
 
   abort();
 }

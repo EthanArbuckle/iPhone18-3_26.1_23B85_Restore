@@ -1,10 +1,10 @@
 @interface MSAccounts
-+ (BOOL)deleteAccountsWithUniqueIdentifiers:(id)a3 error:(id *)a4;
++ (BOOL)deleteAccountsWithUniqueIdentifiers:(id)identifiers error:(id *)error;
 + (BOOL)hasActiveAccounts;
 + (id)attachmentCapabilities;
-+ (id)customSignatureForSendingEmailAddress:(id)a3;
-+ (void)mailboxListingForAccountWithUniqueIdentifier:(id)a3 keys:(id)a4 completionBlock:(id)a5;
-- (void)_simulateServicesMethod:(id)a3 arguments:(id)a4 callback:(id)a5;
++ (id)customSignatureForSendingEmailAddress:(id)address;
++ (void)mailboxListingForAccountWithUniqueIdentifier:(id)identifier keys:(id)keys completionBlock:(id)block;
+- (void)_simulateServicesMethod:(id)method arguments:(id)arguments callback:(id)callback;
 @end
 
 @implementation MSAccounts
@@ -18,7 +18,7 @@
   v2 = objc_alloc_init(MSAccounts);
   [(MSMailDefaultService *)v2 setShouldLaunchMobileMail:1];
   v3 = dispatch_semaphore_create(0);
-  v4 = [MEMORY[0x1E695DEC8] array];
+  array = [MEMORY[0x1E695DEC8] array];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __31__MSAccounts_hasActiveAccounts__block_invoke;
@@ -26,7 +26,7 @@
   v9 = &v10;
   v5 = v3;
   v8 = v5;
-  [(MSAccounts *)v2 _listAccountKeys:v4 originatingBundleID:0 sourceAccountManagement:1 handler:v7];
+  [(MSAccounts *)v2 _listAccountKeys:array originatingBundleID:0 sourceAccountManagement:1 handler:v7];
 
   dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
   LOBYTE(v3) = *(v11 + 24);
@@ -54,10 +54,10 @@ void __83__MSAccounts__listAccountKeys_originatingBundleID_sourceAccountManageme
   (*(*(a1 + 32) + 16))();
 }
 
-+ (id)customSignatureForSendingEmailAddress:(id)a3
++ (id)customSignatureForSendingEmailAddress:(id)address
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  addressCopy = address;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -66,9 +66,9 @@ void __83__MSAccounts__listAccountKeys_originatingBundleID_sourceAccountManageme
   v20 = 0;
   v4 = objc_alloc_init(MSAccounts);
   [(MSMailDefaultService *)v4 setShouldLaunchMobileMail:1];
-  if (v3)
+  if (addressCopy)
   {
-    v5 = v3;
+    v5 = addressCopy;
   }
 
   else
@@ -109,9 +109,9 @@ void __52__MSAccounts_customSignatureForSendingEmailAddress___block_invoke(uint6
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (BOOL)deleteAccountsWithUniqueIdentifiers:(id)a3 error:(id *)a4
++ (BOOL)deleteAccountsWithUniqueIdentifiers:(id)identifiers error:(id *)error
 {
-  v5 = a3;
+  identifiersCopy = identifiers;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -124,7 +124,7 @@ void __52__MSAccounts_customSignatureForSendingEmailAddress___block_invoke(uint6
   v21 = 0;
   v6 = objc_alloc_init(MSAccounts);
   [(MSMailDefaultService *)v6 setShouldLaunchMobileMail:1];
-  v7 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v5, @"accountUniqueIdentifiers", 0}];
+  v7 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{identifiersCopy, @"accountUniqueIdentifiers", 0}];
   v8 = dispatch_semaphore_create(0);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -137,9 +137,9 @@ void __52__MSAccounts_customSignatureForSendingEmailAddress___block_invoke(uint6
   [(MSService *)v6 _callServicesMethod:@"RemoveAccounts" arguments:v7 callback:v12];
   dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
   v10 = *(v23 + 24);
-  if (a4 && (v23[3] & 1) == 0)
+  if (error && (v23[3] & 1) == 0)
   {
-    *a4 = v17[5];
+    *error = v17[5];
     v10 = *(v23 + 24);
   }
 
@@ -164,21 +164,21 @@ void __56__MSAccounts_deleteAccountsWithUniqueIdentifiers_error___block_invoke(u
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (void)mailboxListingForAccountWithUniqueIdentifier:(id)a3 keys:(id)a4 completionBlock:(id)a5
++ (void)mailboxListingForAccountWithUniqueIdentifier:(id)identifier keys:(id)keys completionBlock:(id)block
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  keysCopy = keys;
+  blockCopy = block;
   v10 = objc_alloc_init(MSAccounts);
   [(MSMailDefaultService *)v10 setShouldLaunchMobileMail:1];
   v11 = objc_autoreleasePoolPush();
-  v21 = v7;
+  v21 = identifierCopy;
   v22[0] = @"accountUniqueIdentifiers";
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1];
   v22[1] = @"keys";
   v23[0] = v12;
-  v23[1] = v8;
+  v23[1] = keysCopy;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:2];
 
   v14 = dispatch_semaphore_create(0);
@@ -186,7 +186,7 @@ void __56__MSAccounts_deleteAccountsWithUniqueIdentifiers_error___block_invoke(u
   v18[1] = 3221225472;
   v18[2] = __80__MSAccounts_mailboxListingForAccountWithUniqueIdentifier_keys_completionBlock___block_invoke;
   v18[3] = &unk_1E855EA10;
-  v15 = v9;
+  v15 = blockCopy;
   v19 = v14;
   v20 = v15;
   v16 = v14;
@@ -258,13 +258,13 @@ void __36__MSAccounts_attachmentCapabilities__block_invoke(uint64_t a1, void *a2
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)_simulateServicesMethod:(id)a3 arguments:(id)a4 callback:(id)a5
+- (void)_simulateServicesMethod:(id)method arguments:(id)arguments callback:(id)callback
 {
   v22[16] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isEqualToString:@"ListAccounts"])
+  methodCopy = method;
+  argumentsCopy = arguments;
+  callbackCopy = callback;
+  if ([methodCopy isEqualToString:@"ListAccounts"])
   {
     v21[0] = @"uniqueID";
     v21[1] = @"fullUserName";
@@ -305,23 +305,23 @@ void __36__MSAccounts_attachmentCapabilities__block_invoke(uint64_t a1, void *a2
     v20 = v12;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
 
-    v10[2](v10, v13, 0);
+    callbackCopy[2](callbackCopy, v13, 0);
   }
 
   else
   {
-    if (![v8 isEqualToString:@"CustomSignature"])
+    if (![methodCopy isEqualToString:@"CustomSignature"])
     {
       v15.receiver = self;
       v15.super_class = MSAccounts;
-      [(MSService *)&v15 _simulateServicesMethod:v8 arguments:v9 callback:v10];
+      [(MSService *)&v15 _simulateServicesMethod:methodCopy arguments:argumentsCopy callback:callbackCopy];
       goto LABEL_7;
     }
 
     v16 = @"signature";
     v17 = @"Sent from my iPhone Simulator";
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v17 forKeys:&v16 count:1];
-    v10[2](v10, v11, 0);
+    callbackCopy[2](callbackCopy, v11, 0);
   }
 
 LABEL_7:

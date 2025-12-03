@@ -1,34 +1,34 @@
 @interface _SFPBCardMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBCardMetadata)initWithDictionary:(id)a3;
-- (_SFPBCardMetadata)initWithFacade:(id)a3;
-- (_SFPBCardMetadata)initWithJSON:(id)a3;
+- (_SFPBCardMetadata)initWithDictionary:(id)dictionary;
+- (_SFPBCardMetadata)initWithFacade:(id)facade;
+- (_SFPBCardMetadata)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setQueryToSearchAcrossAllDomains:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setQueryToSearchAcrossAllDomains:(id)domains;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBCardMetadata
 
-- (_SFPBCardMetadata)initWithFacade:(id)a3
+- (_SFPBCardMetadata)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBCardMetadata *)self init];
   if (v5)
   {
-    if ([v4 hasIsServerEntity])
+    if ([facadeCopy hasIsServerEntity])
     {
-      -[_SFPBCardMetadata setIsServerEntity:](v5, "setIsServerEntity:", [v4 isServerEntity]);
+      -[_SFPBCardMetadata setIsServerEntity:](v5, "setIsServerEntity:", [facadeCopy isServerEntity]);
     }
 
-    v6 = [v4 queryToSearchAcrossAllDomains];
+    queryToSearchAcrossAllDomains = [facadeCopy queryToSearchAcrossAllDomains];
 
-    if (v6)
+    if (queryToSearchAcrossAllDomains)
     {
-      v7 = [v4 queryToSearchAcrossAllDomains];
-      [(_SFPBCardMetadata *)v5 setQueryToSearchAcrossAllDomains:v7];
+      queryToSearchAcrossAllDomains2 = [facadeCopy queryToSearchAcrossAllDomains];
+      [(_SFPBCardMetadata *)v5 setQueryToSearchAcrossAllDomains:queryToSearchAcrossAllDomains2];
     }
 
     v8 = v5;
@@ -37,22 +37,22 @@
   return v5;
 }
 
-- (_SFPBCardMetadata)initWithDictionary:(id)a3
+- (_SFPBCardMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = _SFPBCardMetadata;
   v5 = [(_SFPBCardMetadata *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isServerEntity"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isServerEntity"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBCardMetadata setIsServerEntity:](v5, "setIsServerEntity:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"queryToSearchAcrossAllDomains"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"queryToSearchAcrossAllDomains"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,30 +66,30 @@
   return v5;
 }
 
-- (_SFPBCardMetadata)initWithJSON:(id)a3
+- (_SFPBCardMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBCardMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBCardMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBCardMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -102,21 +102,21 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_isServerEntity)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBCardMetadata isServerEntity](self, "isServerEntity")}];
-    [v3 setObject:v4 forKeyedSubscript:@"isServerEntity"];
+    [dictionary setObject:v4 forKeyedSubscript:@"isServerEntity"];
   }
 
   if (self->_queryToSearchAcrossAllDomains)
   {
-    v5 = [(_SFPBCardMetadata *)self queryToSearchAcrossAllDomains];
-    v6 = [v5 copy];
-    [v3 setObject:v6 forKeyedSubscript:@"queryToSearchAcrossAllDomains"];
+    queryToSearchAcrossAllDomains = [(_SFPBCardMetadata *)self queryToSearchAcrossAllDomains];
+    v6 = [queryToSearchAcrossAllDomains copy];
+    [dictionary setObject:v6 forKeyedSubscript:@"queryToSearchAcrossAllDomains"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -134,21 +134,21 @@
   return [(NSString *)self->_queryToSearchAcrossAllDomains hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     isServerEntity = self->_isServerEntity;
-    if (isServerEntity == [v4 isServerEntity])
+    if (isServerEntity == [equalCopy isServerEntity])
     {
-      v6 = [(_SFPBCardMetadata *)self queryToSearchAcrossAllDomains];
-      v7 = [v4 queryToSearchAcrossAllDomains];
-      v8 = v7;
-      if ((v6 != 0) != (v7 == 0))
+      queryToSearchAcrossAllDomains = [(_SFPBCardMetadata *)self queryToSearchAcrossAllDomains];
+      queryToSearchAcrossAllDomains2 = [equalCopy queryToSearchAcrossAllDomains];
+      v8 = queryToSearchAcrossAllDomains2;
+      if ((queryToSearchAcrossAllDomains != 0) != (queryToSearchAcrossAllDomains2 == 0))
       {
-        v9 = [(_SFPBCardMetadata *)self queryToSearchAcrossAllDomains];
-        if (!v9)
+        queryToSearchAcrossAllDomains3 = [(_SFPBCardMetadata *)self queryToSearchAcrossAllDomains];
+        if (!queryToSearchAcrossAllDomains3)
         {
 
 LABEL_11:
@@ -156,10 +156,10 @@ LABEL_11:
           goto LABEL_9;
         }
 
-        v10 = v9;
-        v11 = [(_SFPBCardMetadata *)self queryToSearchAcrossAllDomains];
-        v12 = [v4 queryToSearchAcrossAllDomains];
-        v13 = [v11 isEqual:v12];
+        v10 = queryToSearchAcrossAllDomains3;
+        queryToSearchAcrossAllDomains4 = [(_SFPBCardMetadata *)self queryToSearchAcrossAllDomains];
+        queryToSearchAcrossAllDomains5 = [equalCopy queryToSearchAcrossAllDomains];
+        v13 = [queryToSearchAcrossAllDomains4 isEqual:queryToSearchAcrossAllDomains5];
 
         if (v13)
         {
@@ -179,24 +179,24 @@ LABEL_9:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if ([(_SFPBCardMetadata *)self isServerEntity])
   {
     PBDataWriterWriteBOOLField();
   }
 
-  v4 = [(_SFPBCardMetadata *)self queryToSearchAcrossAllDomains];
-  if (v4)
+  queryToSearchAcrossAllDomains = [(_SFPBCardMetadata *)self queryToSearchAcrossAllDomains];
+  if (queryToSearchAcrossAllDomains)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setQueryToSearchAcrossAllDomains:(id)a3
+- (void)setQueryToSearchAcrossAllDomains:(id)domains
 {
-  v4 = [a3 copy];
+  v4 = [domains copy];
   queryToSearchAcrossAllDomains = self->_queryToSearchAcrossAllDomains;
   self->_queryToSearchAcrossAllDomains = v4;
 

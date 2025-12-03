@@ -1,10 +1,10 @@
 @interface MDFixedModeProvider
-- (MDFixedModeProvider)initWithFixedMode:(unint64_t)a3;
+- (MDFixedModeProvider)initWithFixedMode:(unint64_t)mode;
 @end
 
 @implementation MDFixedModeProvider
 
-- (MDFixedModeProvider)initWithFixedMode:(unint64_t)a3
+- (MDFixedModeProvider)initWithFixedMode:(unint64_t)mode
 {
   v8.receiver = self;
   v8.super_class = MDFixedModeProvider;
@@ -12,7 +12,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_fixedMode = a3;
+    v4->_fixedMode = mode;
     v6 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEBUG))
     {

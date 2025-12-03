@@ -1,26 +1,26 @@
 @interface ConversationHeaderContentView
-- (ConversationHeaderContentView)initWithFrame:(CGRect)a3;
-- (int64_t)_automaticTextAlignmentForText:(id)a3;
+- (ConversationHeaderContentView)initWithFrame:(CGRect)frame;
+- (int64_t)_automaticTextAlignmentForText:(id)text;
 - (unint64_t)numberOfLines;
 - (void)_createPrimaryViews;
 - (void)_updateAnchorPoint;
-- (void)_updateTextAlignmentForText:(id)a3;
+- (void)_updateTextAlignmentForText:(id)text;
 - (void)layoutMarginsDidChange;
 - (void)reflow;
-- (void)setBounds:(CGRect)a3;
-- (void)setContentWidth:(double)a3;
-- (void)setFont:(id)a3;
-- (void)setNumberOfLines:(unint64_t)a3;
-- (void)setText:(id)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setContentWidth:(double)width;
+- (void)setFont:(id)font;
+- (void)setNumberOfLines:(unint64_t)lines;
+- (void)setText:(id)text;
 @end
 
 @implementation ConversationHeaderContentView
 
-- (ConversationHeaderContentView)initWithFrame:(CGRect)a3
+- (ConversationHeaderContentView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = ConversationHeaderContentView;
-  v3 = [(ConversationHeaderContentView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ConversationHeaderContentView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -37,34 +37,34 @@
   [(ConversationHeaderContentView *)self setTextLabel:?];
 
   v7 = +[UIColor clearColor];
-  v3 = [(ConversationHeaderContentView *)self textLabel];
-  [v3 setBackgroundColor:v7];
+  textLabel = [(ConversationHeaderContentView *)self textLabel];
+  [textLabel setBackgroundColor:v7];
 
-  v8 = [(ConversationHeaderContentView *)self textLabel];
-  [v8 setLineBreakMode:4];
+  textLabel2 = [(ConversationHeaderContentView *)self textLabel];
+  [textLabel2 setLineBreakMode:4];
 
-  v9 = [(ConversationHeaderContentView *)self textLabel];
-  [v9 setNumberOfLines:1];
+  textLabel3 = [(ConversationHeaderContentView *)self textLabel];
+  [textLabel3 setNumberOfLines:1];
 
   v10 = +[UIColor labelColor];
-  v4 = [(ConversationHeaderContentView *)self textLabel];
-  [v4 setTextColor:v10];
+  textLabel4 = [(ConversationHeaderContentView *)self textLabel];
+  [textLabel4 setTextColor:v10];
 
   v5 = MSAccessibilityIdentifierMailMessageViewSubjectLabel;
-  v11 = [(ConversationHeaderContentView *)self textLabel];
-  [v11 setAccessibilityIdentifier:v5];
+  textLabel5 = [(ConversationHeaderContentView *)self textLabel];
+  [textLabel5 setAccessibilityIdentifier:v5];
 
-  v12 = [(ConversationHeaderContentView *)self textLabel];
+  textLabel6 = [(ConversationHeaderContentView *)self textLabel];
   [(ConversationHeaderContentView *)self addSubview:?];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = CGRectGetWidth(a3);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v8 = CGRectGetWidth(bounds);
   [(ConversationHeaderContentView *)self bounds];
   v9 = v8 - CGRectGetWidth(v14);
   if (v9 >= 0.0)
@@ -82,9 +82,9 @@
   [(ConversationHeaderContentView *)&v13 setBounds:x, y, width, height];
   if (v10 > 0.00000011920929)
   {
-    v11 = [(ConversationHeaderContentView *)self textLabel];
-    v12 = [v11 text];
-    [(ConversationHeaderContentView *)self _updateTextAlignmentForText:v12];
+    textLabel = [(ConversationHeaderContentView *)self textLabel];
+    text = [textLabel text];
+    [(ConversationHeaderContentView *)self _updateTextAlignmentForText:text];
 
     [(ConversationHeaderContentView *)self reflow];
   }
@@ -95,41 +95,41 @@
   v5.receiver = self;
   v5.super_class = ConversationHeaderContentView;
   [(ConversationHeaderContentView *)&v5 layoutMarginsDidChange];
-  v3 = [(ConversationHeaderContentView *)self textLabel];
-  v4 = [v3 text];
-  [(ConversationHeaderContentView *)self _updateTextAlignmentForText:v4];
+  textLabel = [(ConversationHeaderContentView *)self textLabel];
+  text = [textLabel text];
+  [(ConversationHeaderContentView *)self _updateTextAlignmentForText:text];
 
   [(ConversationHeaderContentView *)self reflow];
 }
 
-- (void)_updateTextAlignmentForText:(id)a3
+- (void)_updateTextAlignmentForText:(id)text
 {
-  v9 = a3;
-  if ([v9 length])
+  textCopy = text;
+  if ([textCopy length])
   {
     v4 = [(ConversationHeaderContentView *)self textAlignment]- 1;
-    v5 = v4 >= 4 ? [(ConversationHeaderContentView *)self _automaticTextAlignmentForText:v9]: qword_1004FBFA0[v4];
-    v6 = [(ConversationHeaderContentView *)self textLabel];
-    v7 = [v6 textAlignment];
+    v5 = v4 >= 4 ? [(ConversationHeaderContentView *)self _automaticTextAlignmentForText:textCopy]: qword_1004FBFA0[v4];
+    textLabel = [(ConversationHeaderContentView *)self textLabel];
+    textAlignment = [textLabel textAlignment];
 
-    if (v7 != v5)
+    if (textAlignment != v5)
     {
-      v8 = [(ConversationHeaderContentView *)self textLabel];
-      [v8 setTextAlignment:v5];
+      textLabel2 = [(ConversationHeaderContentView *)self textLabel];
+      [textLabel2 setTextAlignment:v5];
     }
   }
 }
 
-- (int64_t)_automaticTextAlignmentForText:(id)a3
+- (int64_t)_automaticTextAlignmentForText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v26 = NSFontAttributeName;
-  v5 = [(ConversationHeaderContentView *)self textLabel];
-  v6 = [v5 font];
-  v27 = v6;
+  textLabel = [(ConversationHeaderContentView *)self textLabel];
+  font = [textLabel font];
+  v27 = font;
   v7 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
 
-  [v4 sizeWithAttributes:v7];
+  [textCopy sizeWithAttributes:v7];
   v9 = v8;
   [(ConversationHeaderContentView *)self bounds];
   v11 = v10;
@@ -145,7 +145,7 @@
   v28.size.width = v22;
   if (CGRectGetWidth(v28) - v9 <= 20.0)
   {
-    if ([v4 _isNaturallyRTL])
+    if ([textCopy _isNaturallyRTL])
     {
       v24 = 2;
     }
@@ -164,30 +164,30 @@
   return v24;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   [(ConversationHeaderContentView *)self _updateTextAlignmentForText:?];
-  v4 = [(ConversationHeaderContentView *)self textLabel];
-  [v4 setText:v5];
+  textLabel = [(ConversationHeaderContentView *)self textLabel];
+  [textLabel setText:textCopy];
 
   [(ConversationHeaderContentView *)self reflow];
 }
 
-- (void)setContentWidth:(double)a3
+- (void)setContentWidth:(double)width
 {
-  if (self->_contentWidth != a3)
+  if (self->_contentWidth != width)
   {
-    self->_contentWidth = a3;
+    self->_contentWidth = width;
     [(ConversationHeaderContentView *)self reflow];
   }
 }
 
 - (void)reflow
 {
-  v3 = [(ConversationHeaderContentView *)self textLabel];
-  v4 = [v3 text];
-  v5 = [v4 length];
+  textLabel = [(ConversationHeaderContentView *)self textLabel];
+  text = [textLabel text];
+  v5 = [text length];
 
   if (v5)
   {
@@ -197,24 +197,24 @@
     v9 = v8;
     [(ConversationHeaderContentView *)self layoutMargins];
     v11 = v7 - (v9 + v10);
-    v12 = [(ConversationHeaderContentView *)self textLabel];
-    [v12 sizeThatFits:{v11, 0.0}];
+    textLabel2 = [(ConversationHeaderContentView *)self textLabel];
+    [textLabel2 sizeThatFits:{v11, 0.0}];
     v14 = v13;
 
     [(ConversationHeaderContentView *)self topToFirstBaseline];
-    v15 = [(ConversationHeaderContentView *)self textLabel];
-    [v15 _firstLineBaseline];
+    textLabel3 = [(ConversationHeaderContentView *)self textLabel];
+    [textLabel3 _firstLineBaseline];
 
     UIRoundToViewScale();
     v17 = v16;
     [(ConversationHeaderContentView *)self layoutMargins];
     v19 = v18;
-    v20 = [(ConversationHeaderContentView *)self textLabel];
-    [v20 setFrame:{v19, v17, v11, v14}];
+    textLabel4 = [(ConversationHeaderContentView *)self textLabel];
+    [textLabel4 setFrame:{v19, v17, v11, v14}];
 
     [(ConversationHeaderContentView *)self lastBaselineToBottom];
-    v21 = [(ConversationHeaderContentView *)self textLabel];
-    [v21 _lastLineBaseline];
+    textLabel5 = [(ConversationHeaderContentView *)self textLabel];
+    [textLabel5 _lastLineBaseline];
 
     UIRoundToViewScale();
     v23 = v22;
@@ -231,31 +231,31 @@
   }
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v7 = a3;
-  v4 = [(ConversationHeaderContentView *)self textLabel];
-  [v4 setFont:v7];
+  fontCopy = font;
+  textLabel = [(ConversationHeaderContentView *)self textLabel];
+  [textLabel setFont:fontCopy];
 
-  v5 = [(ConversationHeaderContentView *)self textLabel];
-  v6 = [v5 text];
-  [(ConversationHeaderContentView *)self _updateTextAlignmentForText:v6];
+  textLabel2 = [(ConversationHeaderContentView *)self textLabel];
+  text = [textLabel2 text];
+  [(ConversationHeaderContentView *)self _updateTextAlignmentForText:text];
 
   [(ConversationHeaderContentView *)self reflow];
 }
 
-- (void)setNumberOfLines:(unint64_t)a3
+- (void)setNumberOfLines:(unint64_t)lines
 {
-  v4 = [(ConversationHeaderContentView *)self textLabel];
-  [v4 setNumberOfLines:a3];
+  textLabel = [(ConversationHeaderContentView *)self textLabel];
+  [textLabel setNumberOfLines:lines];
 }
 
 - (unint64_t)numberOfLines
 {
-  v2 = [(ConversationHeaderContentView *)self textLabel];
-  v3 = [v2 numberOfLines];
+  textLabel = [(ConversationHeaderContentView *)self textLabel];
+  numberOfLines = [textLabel numberOfLines];
 
-  return v3;
+  return numberOfLines;
 }
 
 - (void)_updateAnchorPoint
@@ -272,8 +272,8 @@
   v17.size.width = v8;
   v17.size.height = v10;
   v13 = v12 / CGRectGetHeight(v17);
-  v14 = [(ConversationHeaderContentView *)self layer];
-  [v14 setAnchorPoint:{CGPointZero.x, v13}];
+  layer = [(ConversationHeaderContentView *)self layer];
+  [layer setAnchorPoint:{CGPointZero.x, v13}];
 
   [(ConversationHeaderContentView *)self topToFirstBaseline];
   UIRoundToViewScale();

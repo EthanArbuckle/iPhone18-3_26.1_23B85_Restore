@@ -1,22 +1,22 @@
 @interface DBSArrangementLayoutViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (DBSArrangementLayoutViewAccessibility)initWithDataSource:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (DBSArrangementLayoutViewAccessibility)initWithDataSource:(id)source;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)placeCurrentDisplayAtLocation:(unint64_t)a3;
+- (void)placeCurrentDisplayAtLocation:(unint64_t)location;
 @end
 
 @implementation DBSArrangementLayoutViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"DBSArrangementLayoutView" hasProperty:@"northDisplay" withType:"@"];
-  [v3 validateClass:@"DBSArrangementLayoutView" hasProperty:@"eastDisplay" withType:"@"];
-  [v3 validateClass:@"DBSArrangementLayoutView" hasProperty:@"southDisplay" withType:"@"];
-  [v3 validateClass:@"DBSArrangementLayoutView" hasProperty:@"westDisplay" withType:"@"];
-  [v3 validateClass:@"DBSNativeDisplayIconView" hasProperty:@"nameField" withType:"@"];
-  [v3 validateClass:@"DBSArrangementLayoutView" hasInstanceMethod:@"initWithDataSource:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"DBSArrangementLayoutView" hasInstanceMethod:@"placeCurrentDisplayAtLocation:" withFullSignature:{"v", "Q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"DBSArrangementLayoutView" hasProperty:@"northDisplay" withType:"@"];
+  [validationsCopy validateClass:@"DBSArrangementLayoutView" hasProperty:@"eastDisplay" withType:"@"];
+  [validationsCopy validateClass:@"DBSArrangementLayoutView" hasProperty:@"southDisplay" withType:"@"];
+  [validationsCopy validateClass:@"DBSArrangementLayoutView" hasProperty:@"westDisplay" withType:"@"];
+  [validationsCopy validateClass:@"DBSNativeDisplayIconView" hasProperty:@"nameField" withType:"@"];
+  [validationsCopy validateClass:@"DBSArrangementLayoutView" hasInstanceMethod:@"initWithDataSource:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"DBSArrangementLayoutView" hasInstanceMethod:@"placeCurrentDisplayAtLocation:" withFullSignature:{"v", "Q", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -41,41 +41,41 @@
   [v9 setAccessibilityLabel:v10];
 }
 
-- (DBSArrangementLayoutViewAccessibility)initWithDataSource:(id)a3
+- (DBSArrangementLayoutViewAccessibility)initWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   [(DBSArrangementLayoutViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
   v7.receiver = self;
   v7.super_class = DBSArrangementLayoutViewAccessibility;
-  v5 = [(DBSArrangementLayoutViewAccessibility *)&v7 initWithDataSource:v4];
+  v5 = [(DBSArrangementLayoutViewAccessibility *)&v7 initWithDataSource:sourceCopy];
 
   return v5;
 }
 
-- (void)placeCurrentDisplayAtLocation:(unint64_t)a3
+- (void)placeCurrentDisplayAtLocation:(unint64_t)location
 {
   v12.receiver = self;
   v12.super_class = DBSArrangementLayoutViewAccessibility;
   [(DBSArrangementLayoutViewAccessibility *)&v12 placeCurrentDisplayAtLocation:?];
-  if ([(DBSArrangementLayoutViewAccessibility *)self _axDisplayLocation]!= a3)
+  if ([(DBSArrangementLayoutViewAccessibility *)self _axDisplayLocation]!= location)
   {
-    [(DBSArrangementLayoutViewAccessibility *)self _axSetDisplayLocation:a3];
+    [(DBSArrangementLayoutViewAccessibility *)self _axSetDisplayLocation:location];
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
     v5 = 0;
-    if (a3 <= 3)
+    if (location <= 3)
     {
-      v5 = [(DBSArrangementLayoutViewAccessibility *)self safeValueForKey:off_29F2BB170[a3]];
+      v5 = [(DBSArrangementLayoutViewAccessibility *)self safeValueForKey:off_29F2BB170[location]];
     }
 
     v6 = [v5 safeValueForKey:@"nameField"];
-    v7 = [v6 accessibilityLabel];
+    accessibilityLabel = [v6 accessibilityLabel];
 
     v8 = MEMORY[0x29EDBA0F8];
     v9 = accessibilityLocalizedString(@"arrangement.announcement");
     v10 = &stru_2A218EAE8;
-    if (v7)
+    if (accessibilityLabel)
     {
-      v10 = v7;
+      v10 = accessibilityLabel;
     }
 
     v11 = [v8 localizedStringWithFormat:v9, v10];

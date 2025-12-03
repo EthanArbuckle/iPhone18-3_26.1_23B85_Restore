@@ -7,22 +7,22 @@
 
 - (void)didEnter
 {
-  v3 = [(HKSPStateMachineState *)self stateMachine];
-  v4 = [v3 currentContext];
-  v5 = [v4 hasStateTransitionOrInitializing];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  currentContext = [stateMachine currentContext];
+  hasStateTransitionOrInitializing = [currentContext hasStateTransitionOrInitializing];
 
-  if (v5)
+  if (hasStateTransitionOrInitializing)
   {
-    v6 = [(HKSPStateMachineState *)self stateMachine];
-    [v6 environmentShouldMigrateData];
+    stateMachine2 = [(HKSPStateMachineState *)self stateMachine];
+    [stateMachine2 environmentShouldMigrateData];
   }
 }
 
 - (void)dataMigrationDidComplete
 {
-  v3 = [(HKSPStateMachineState *)self stateMachine];
-  v2 = [v3 readyState];
-  [v3 enterState:v2];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  readyState = [stateMachine readyState];
+  [stateMachine enterState:readyState];
 }
 
 @end

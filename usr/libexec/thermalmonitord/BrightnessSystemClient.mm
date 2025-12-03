@@ -1,11 +1,11 @@
 @interface BrightnessSystemClient
-- (id)monitorDisplayOnStateForReason:(id)a3 handler:(id)a4;
-- (id)monitorKeys:(id)a3 forReason:(id)a4 handler:(id)a5;
+- (id)monitorDisplayOnStateForReason:(id)reason handler:(id)handler;
+- (id)monitorKeys:(id)keys forReason:(id)reason handler:(id)handler;
 @end
 
 @implementation BrightnessSystemClient
 
-- (id)monitorDisplayOnStateForReason:(id)a3 handler:(id)a4
+- (id)monitorDisplayOnStateForReason:(id)reason handler:(id)handler
 {
   v9[0] = 0;
   v9[1] = v9;
@@ -21,23 +21,23 @@
   v6[3] = &unk_100085C28;
   v6[5] = v7;
   v6[6] = v9;
-  v6[4] = a4;
-  v4 = [(BrightnessSystemClient *)self monitorKeys:&off_10008D8C0 forReason:a3 handler:v6];
+  v6[4] = handler;
+  v4 = [(BrightnessSystemClient *)self monitorKeys:&off_10008D8C0 forReason:reason handler:v6];
   _Block_object_dispose(v7, 8);
   _Block_object_dispose(v9, 8);
   return v4;
 }
 
-- (id)monitorKeys:(id)a3 forReason:(id)a4 handler:(id)a5
+- (id)monitorKeys:(id)keys forReason:(id)reason handler:(id)handler
 {
-  [(BrightnessSystemClient *)self registerNotificationBlock:a5 forProperties:a3];
+  [(BrightnessSystemClient *)self registerNotificationBlock:handler forProperties:keys];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000265B8;
   v9[3] = &unk_100085C50;
   v9[4] = self;
-  v9[5] = a3;
-  return -[TMSimpleAssertion initWithIdentifier:forReason:invalidationBlock:]([TMSimpleAssertion alloc], "initWithIdentifier:forReason:invalidationBlock:", +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"BrightnessSystemClient keys (%@)", [a3 componentsJoinedByString:@"|"]), a4, v9);
+  v9[5] = keys;
+  return -[TMSimpleAssertion initWithIdentifier:forReason:invalidationBlock:]([TMSimpleAssertion alloc], "initWithIdentifier:forReason:invalidationBlock:", +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"BrightnessSystemClient keys (%@)", [keys componentsJoinedByString:@"|"]), reason, v9);
 }
 
 @end

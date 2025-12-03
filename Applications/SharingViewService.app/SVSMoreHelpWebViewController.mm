@@ -1,21 +1,21 @@
 @interface SVSMoreHelpWebViewController
 - (_TtC18SharingViewService28SVSMoreHelpWebViewController)init;
-- (_TtC18SharingViewService28SVSMoreHelpWebViewController)initWithCoder:(id)a3;
-- (_TtC18SharingViewService28SVSMoreHelpWebViewController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (_TtC18SharingViewService28SVSMoreHelpWebViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC18SharingViewService28SVSMoreHelpWebViewController)initWithURL:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC18SharingViewService28SVSMoreHelpWebViewController)initWithCoder:(id)coder;
+- (_TtC18SharingViewService28SVSMoreHelpWebViewController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (_TtC18SharingViewService28SVSMoreHelpWebViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC18SharingViewService28SVSMoreHelpWebViewController)initWithURL:(id)l;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation SVSMoreHelpWebViewController
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = type metadata accessor for SVSMoreHelpWebViewController();
   v4 = v6.receiver;
-  [(SVSMoreHelpWebViewController *)&v6 viewDidDisappear:v3];
+  [(SVSMoreHelpWebViewController *)&v6 viewDidDisappear:disappearCopy];
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
@@ -32,45 +32,45 @@
   return [(SVSMoreHelpWebViewController *)&v4 init];
 }
 
-- (_TtC18SharingViewService28SVSMoreHelpWebViewController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (_TtC18SharingViewService28SVSMoreHelpWebViewController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   swift_unknownObjectWeakInit();
   v8.receiver = self;
   v8.super_class = type metadata accessor for SVSMoreHelpWebViewController();
-  return [(SVSMoreHelpWebViewController *)&v8 initWithNavigationBarClass:a3 toolbarClass:a4];
+  return [(SVSMoreHelpWebViewController *)&v8 initWithNavigationBarClass:class toolbarClass:toolbarClass];
 }
 
-- (_TtC18SharingViewService28SVSMoreHelpWebViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18SharingViewService28SVSMoreHelpWebViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     swift_unknownObjectWeakInit();
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = String._bridgeToObjectiveC()();
   }
 
   else
   {
     swift_unknownObjectWeakInit();
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for SVSMoreHelpWebViewController();
-  v9 = [(SVSMoreHelpWebViewController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(SVSMoreHelpWebViewController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC18SharingViewService28SVSMoreHelpWebViewController)initWithCoder:(id)a3
+- (_TtC18SharingViewService28SVSMoreHelpWebViewController)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   v8.receiver = self;
   v8.super_class = type metadata accessor for SVSMoreHelpWebViewController();
-  v5 = a3;
-  v6 = [(SVSMoreHelpWebViewController *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(SVSMoreHelpWebViewController *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {
@@ -79,12 +79,12 @@
   return v6;
 }
 
-- (_TtC18SharingViewService28SVSMoreHelpWebViewController)initWithURL:(id)a3
+- (_TtC18SharingViewService28SVSMoreHelpWebViewController)initWithURL:(id)l
 {
   v4 = sub_100005DCC(&qword_1001BA7B0);
   __chkstk_darwin(v4 - 8);
   v6 = &v10 - v5;
-  if (a3)
+  if (l)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = type metadata accessor for URL();

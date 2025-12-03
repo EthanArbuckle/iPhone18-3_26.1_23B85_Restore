@@ -1,10 +1,10 @@
 @interface PVLivePlayerCameraSource
 - (PVLivePlayerCameraSource)init;
-- (id)imageBufferForHostTime:(double)a3;
+- (id)imageBufferForHostTime:(double)time;
 - (void)cameraFrameSetDropped;
-- (void)cameraFrameSetRecieved:(id)a3;
+- (void)cameraFrameSetRecieved:(id)recieved;
 - (void)dealloc;
-- (void)registerRenderLink:(id)a3;
+- (void)registerRenderLink:(id)link;
 @end
 
 @implementation PVLivePlayerCameraSource
@@ -34,17 +34,17 @@
   [(PVLivePlayerCameraSource *)&v4 dealloc];
 }
 
-- (void)cameraFrameSetRecieved:(id)a3
+- (void)cameraFrameSetRecieved:(id)recieved
 {
-  v7 = a3;
+  recievedCopy = recieved;
   lock = self->_lock;
   HGSynchronizable::Lock(lock);
-  objc_storeStrong(&self->_mostRecentFrameSet, a3);
+  objc_storeStrong(&self->_mostRecentFrameSet, recieved);
   v6 = self->_renderLink;
   HGSynchronizable::Unlock(lock);
   if (v6)
   {
-    [(PVLivePlayerCameraRenderLink *)v6 cameraSourceRecievedFrameSet:v7];
+    [(PVLivePlayerCameraRenderLink *)v6 cameraSourceRecievedFrameSet:recievedCopy];
   }
 }
 
@@ -60,16 +60,16 @@
   }
 }
 
-- (void)registerRenderLink:(id)a3
+- (void)registerRenderLink:(id)link
 {
-  v6 = a3;
+  linkCopy = link;
   lock = self->_lock;
   HGSynchronizable::Lock(lock);
-  objc_storeStrong(&self->_renderLink, a3);
+  objc_storeStrong(&self->_renderLink, link);
   HGSynchronizable::Unlock(lock);
 }
 
-- (id)imageBufferForHostTime:(double)a3
+- (id)imageBufferForHostTime:(double)time
 {
   lock = self->_lock;
   HGSynchronizable::Lock(lock);

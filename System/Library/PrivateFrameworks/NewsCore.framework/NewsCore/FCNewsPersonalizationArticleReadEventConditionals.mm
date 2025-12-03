@@ -1,20 +1,20 @@
 @interface FCNewsPersonalizationArticleReadEventConditionals
-- (FCNewsPersonalizationArticleReadEventConditionals)initWithDictionary:(id)a3;
+- (FCNewsPersonalizationArticleReadEventConditionals)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation FCNewsPersonalizationArticleReadEventConditionals
 
-- (FCNewsPersonalizationArticleReadEventConditionals)initWithDictionary:(id)a3
+- (FCNewsPersonalizationArticleReadEventConditionals)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v7.receiver = self;
   v7.super_class = FCNewsPersonalizationArticleReadEventConditionals;
   v5 = [(FCNewsPersonalizationArticleReadEventConditionals *)&v7 init];
   if (v5)
   {
-    v5->_minimumDuration = FCAppConfigurationDoubleValue(v4, @"minimumDuration", 0.0);
-    v5->_minimumScrollEventCount = FCAppConfigurationIntegerValue(v4, @"minimumScrollEventCount", 0);
+    v5->_minimumDuration = FCAppConfigurationDoubleValue(dictionaryCopy, @"minimumDuration", 0.0);
+    v5->_minimumScrollEventCount = FCAppConfigurationIntegerValue(dictionaryCopy, @"minimumScrollEventCount", 0);
   }
 
   return v5;

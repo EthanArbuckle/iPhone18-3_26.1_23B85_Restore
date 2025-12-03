@@ -1,15 +1,15 @@
 @interface _CertInfoGradientLabel
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_CertInfoGradientLabel)initWithTrusted:(BOOL)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_CertInfoGradientLabel)initWithTrusted:(BOOL)trusted;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation _CertInfoGradientLabel
 
-- (_CertInfoGradientLabel)initWithTrusted:(BOOL)a3
+- (_CertInfoGradientLabel)initWithTrusted:(BOOL)trusted
 {
-  v3 = a3;
+  trustedCopy = trusted;
   v26 = *MEMORY[0x277D85DE8];
   v24.receiver = self;
   v24.super_class = _CertInfoGradientLabel;
@@ -19,7 +19,7 @@
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v6 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CertInfo"];
     v7 = v6;
-    if (v3)
+    if (trustedCopy)
     {
       v8 = @"TRUSTED";
     }
@@ -39,7 +39,7 @@
 
     [(_CertInfoGradientLabel *)v4 setBackgroundColor:0];
     [(_CertInfoGradientLabel *)v4 setOpaque:0];
-    if (v3)
+    if (trustedCopy)
     {
       v13 = [MEMORY[0x277D755B8] imageNamed:@"TrustedCheckmark" inBundle:v5];
       checkImage = v4->_checkImage;
@@ -98,7 +98,7 @@
   [(_CertInfoGradientLabel *)&v4 dealloc];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   [(NSString *)self->_text _legacy_sizeWithFont:self->_font constrainedToSize:4 lineBreakMode:*(MEMORY[0x277CBF390] + 16), *(MEMORY[0x277CBF390] + 24)];
   v5 = v4;
@@ -117,7 +117,7 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v18 = *MEMORY[0x277D85DE8];
   CurrentContext = UIGraphicsGetCurrentContext();

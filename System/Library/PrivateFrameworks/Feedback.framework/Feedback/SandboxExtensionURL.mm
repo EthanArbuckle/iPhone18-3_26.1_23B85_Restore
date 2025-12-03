@@ -1,21 +1,21 @@
 @interface SandboxExtensionURL
 - (_TtC8Feedback19SandboxExtensionURL)init;
-- (_TtC8Feedback19SandboxExtensionURL)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC8Feedback19SandboxExtensionURL)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SandboxExtensionURL
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B8B8782C(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1B8B8782C(coderCopy);
 }
 
-- (_TtC8Feedback19SandboxExtensionURL)initWithCoder:(id)a3
+- (_TtC8Feedback19SandboxExtensionURL)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = sub_1B8B88A30();
 
   return v4;

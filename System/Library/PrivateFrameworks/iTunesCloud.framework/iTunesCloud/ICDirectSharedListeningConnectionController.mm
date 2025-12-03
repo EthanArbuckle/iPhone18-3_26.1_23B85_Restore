@@ -1,76 +1,76 @@
 @interface ICDirectSharedListeningConnectionController
-- (ICDirectSharedListeningConnectionController)initWithSessionIdentifier:(id)a3 identity:(id)a4 bundleID:(id)a5;
-- (void)_handleQRDataSourceError:(id)a3;
-- (void)connection:(id)a3 didEndWithError:(id)a4;
-- (void)connection:(id)a3 didReceiveMessage:(id)a4;
-- (void)connectionDidStart:(id)a3;
+- (ICDirectSharedListeningConnectionController)initWithSessionIdentifier:(id)identifier identity:(id)identity bundleID:(id)d;
+- (void)_handleQRDataSourceError:(id)error;
+- (void)connection:(id)connection didEndWithError:(id)error;
+- (void)connection:(id)connection didReceiveMessage:(id)message;
+- (void)connectionDidStart:(id)start;
 - (void)dealloc;
-- (void)sendMessage:(id)a3;
+- (void)sendMessage:(id)message;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation ICDirectSharedListeningConnectionController
 
-- (void)connectionDidStart:(id)a3
+- (void)connectionDidStart:(id)start
 {
   v15 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
   [(ICDirectSharedListeningConnectionController *)self setState:4];
   os_unfair_lock_unlock(&self->_lock);
-  v4 = [(ICDirectSharedListeningConnectionController *)self report];
+  report = [(ICDirectSharedListeningConnectionController *)self report];
 
-  if (v4)
+  if (report)
   {
     v5 = os_log_create("com.apple.amp.iTunesCloud", "QuickRelay_Oversize");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(ICDirectSharedListeningConnectionController *)self report];
-      v7 = [v6 formattedReport];
+      report2 = [(ICDirectSharedListeningConnectionController *)self report];
+      formattedReport = [report2 formattedReport];
       *buf = 138412290;
-      v14 = v7;
+      v14 = formattedReport;
       _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "[ICSharedListeningConnectionController][D] %@", buf, 0xCu);
     }
 
     [(ICDirectSharedListeningConnectionController *)self setReport:0];
   }
 
-  v8 = [(ICSharedListeningConnectionController *)self delegate];
+  delegate = [(ICSharedListeningConnectionController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [(ICDirectSharedListeningConnectionController *)self delegateQueue];
+    delegateQueue = [(ICDirectSharedListeningConnectionController *)self delegateQueue];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __66__ICDirectSharedListeningConnectionController_connectionDidStart___block_invoke;
     v10[3] = &unk_1E7BFA078;
-    v11 = v8;
-    v12 = self;
-    dispatch_async(v9, v10);
+    v11 = delegate;
+    selfCopy = self;
+    dispatch_async(delegateQueue, v10);
   }
 }
 
-- (void)connection:(id)a3 didReceiveMessage:(id)a4
+- (void)connection:(id)connection didReceiveMessage:(id)message
 {
-  v5 = a4;
-  v6 = [(ICSharedListeningConnectionController *)self delegate];
+  messageCopy = message;
+  delegate = [(ICSharedListeningConnectionController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(ICDirectSharedListeningConnectionController *)self delegateQueue];
+    delegateQueue = [(ICDirectSharedListeningConnectionController *)self delegateQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __76__ICDirectSharedListeningConnectionController_connection_didReceiveMessage___block_invoke;
     block[3] = &unk_1E7BFA178;
-    v9 = v6;
-    v10 = self;
-    v11 = v5;
-    dispatch_async(v7, block);
+    v9 = delegate;
+    selfCopy = self;
+    v11 = messageCopy;
+    dispatch_async(delegateQueue, block);
   }
 }
 
-- (void)connection:(id)a3 didEndWithError:(id)a4
+- (void)connection:(id)connection didEndWithError:(id)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
   if ([(ICDirectSharedListeningConnectionController *)self state]>= 3)
   {
@@ -78,56 +78,56 @@
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  v6 = [(ICDirectSharedListeningConnectionController *)self report];
+  report = [(ICDirectSharedListeningConnectionController *)self report];
 
-  if (v6)
+  if (report)
   {
     v7 = os_log_create("com.apple.amp.iTunesCloud", "QuickRelay_Oversize");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(ICDirectSharedListeningConnectionController *)self report];
-      v9 = [v8 formattedReport];
+      report2 = [(ICDirectSharedListeningConnectionController *)self report];
+      formattedReport = [report2 formattedReport];
       *buf = 138412290;
-      v17 = v9;
+      v17 = formattedReport;
       _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEFAULT, "[ICSharedListeningConnectionController][D] %@", buf, 0xCu);
     }
 
     [(ICDirectSharedListeningConnectionController *)self setReport:0];
   }
 
-  v10 = [(ICSharedListeningConnectionController *)self delegate];
+  delegate = [(ICSharedListeningConnectionController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v11 = [(ICDirectSharedListeningConnectionController *)self delegateQueue];
+    delegateQueue = [(ICDirectSharedListeningConnectionController *)self delegateQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __74__ICDirectSharedListeningConnectionController_connection_didEndWithError___block_invoke;
     block[3] = &unk_1E7BFA178;
-    v13 = v10;
-    v14 = self;
-    v15 = v5;
-    dispatch_async(v11, block);
+    v13 = delegate;
+    selfCopy = self;
+    v15 = errorCopy;
+    dispatch_async(delegateQueue, block);
   }
 }
 
-- (void)_handleQRDataSourceError:(id)a3
+- (void)_handleQRDataSourceError:(id)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
   [(ICDirectSharedListeningConnectionController *)self setState:-1];
   os_unfair_lock_unlock(&self->_lock);
-  v5 = [(ICDirectSharedListeningConnectionController *)self report];
+  report = [(ICDirectSharedListeningConnectionController *)self report];
 
-  if (v5)
+  if (report)
   {
     v6 = os_log_create("com.apple.amp.iTunesCloud", "QuickRelay_Oversize");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(ICDirectSharedListeningConnectionController *)self report];
-      v8 = [v7 formattedReport];
+      report2 = [(ICDirectSharedListeningConnectionController *)self report];
+      formattedReport = [report2 formattedReport];
       *buf = 138412290;
-      v16 = v8;
+      v16 = formattedReport;
       _os_log_impl(&dword_1B4491000, v6, OS_LOG_TYPE_DEFAULT, "[ICSharedListeningConnectionController][D] %@", buf, 0xCu);
     }
 
@@ -135,47 +135,47 @@
   }
 
   [(ICDirectSharedListeningConnectionController *)self stop];
-  v9 = [(ICSharedListeningConnectionController *)self delegate];
+  delegate = [(ICSharedListeningConnectionController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v10 = [(ICDirectSharedListeningConnectionController *)self delegateQueue];
+    delegateQueue = [(ICDirectSharedListeningConnectionController *)self delegateQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __72__ICDirectSharedListeningConnectionController__handleQRDataSourceError___block_invoke;
     block[3] = &unk_1E7BFA178;
-    v12 = v9;
-    v13 = self;
-    v14 = v4;
-    dispatch_async(v10, block);
+    v12 = delegate;
+    selfCopy = self;
+    v14 = errorCopy;
+    dispatch_async(delegateQueue, block);
   }
 }
 
-- (void)sendMessage:(id)a3
+- (void)sendMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(ICDirectSharedListeningConnectionController *)self connection];
-  [v5 sendMessage:v4];
+  messageCopy = message;
+  connection = [(ICDirectSharedListeningConnectionController *)self connection];
+  [connection sendMessage:messageCopy];
 }
 
 - (void)stop
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(ICDirectSharedListeningConnectionController *)self connection];
-  [v3 stop];
+  connection = [(ICDirectSharedListeningConnectionController *)self connection];
+  [connection stop];
 
   os_unfair_lock_lock(&self->_lock);
-  v4 = [(ICDirectSharedListeningConnectionController *)self assertion];
+  assertion = [(ICDirectSharedListeningConnectionController *)self assertion];
 
-  if (v4)
+  if (assertion)
   {
     v5 = os_log_create("com.apple.amp.iTunesCloud", "QuickRelay");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(ICDirectSharedListeningConnectionController *)self assertion];
+      assertion2 = [(ICDirectSharedListeningConnectionController *)self assertion];
       v7 = 134218242;
-      v8 = self;
+      selfCopy = self;
       v9 = 2112;
-      v10 = v6;
+      v10 = assertion2;
       _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "[ICSharedListeningConnectionController][D] <%p> Releasing assertion %@.", &v7, 0x16u);
     }
 
@@ -191,23 +191,23 @@
 {
   v32 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(ICDirectSharedListeningConnectionController *)self assertion];
+  assertion = [(ICDirectSharedListeningConnectionController *)self assertion];
 
-  if (!v3)
+  if (!assertion)
   {
     v4 = objc_alloc(MEMORY[0x1E69B14D0]);
-    v5 = [(ICSharedListeningConnectionController *)self bundleID];
-    v6 = [v4 initWithName:@"SharedListeningAssertion" bundleID:v5 subsystem:@"QuickRelay" reason:1 flags:3];
+    bundleID = [(ICSharedListeningConnectionController *)self bundleID];
+    v6 = [v4 initWithName:@"SharedListeningAssertion" bundleID:bundleID subsystem:@"QuickRelay" reason:1 flags:3];
     [(ICDirectSharedListeningConnectionController *)self setAssertion:v6];
 
     v7 = os_log_create("com.apple.amp.iTunesCloud", "QuickRelay");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(ICDirectSharedListeningConnectionController *)self assertion];
+      assertion2 = [(ICDirectSharedListeningConnectionController *)self assertion];
       *buf = 134218242;
-      v29 = self;
+      selfCopy2 = self;
       v30 = 2112;
-      v31 = v8;
+      v31 = assertion2;
       _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEFAULT, "[ICSharedListeningConnectionController][D] <%p> Taking out assertion %@.", buf, 0x16u);
     }
   }
@@ -218,7 +218,7 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v29 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B4491000, v11, OS_LOG_TYPE_DEFAULT, "[ICSharedListeningConnectionController][D] <%p> Begin session discovery and connection.", buf, 0xCu);
     }
 
@@ -226,18 +226,18 @@
     v12 = objc_opt_new();
     [(ICDirectSharedListeningConnectionController *)self setReport:v12];
 
-    v13 = [(ICSharedListeningConnectionController *)self sessionIdentifier];
-    if (v13)
+    sessionIdentifier = [(ICSharedListeningConnectionController *)self sessionIdentifier];
+    if (sessionIdentifier)
     {
-      v14 = [(ICSharedListeningConnectionController *)self sessionIdentifier];
-      v15 = [(ICSharedListeningConnectionController *)self identity];
-      v16 = [ICLiveLinkQRConnectionDataSource dataSourceForExistingSharedListeningSession:v14 identity:v15];
+      sessionIdentifier2 = [(ICSharedListeningConnectionController *)self sessionIdentifier];
+      identity = [(ICSharedListeningConnectionController *)self identity];
+      v16 = [ICLiveLinkQRConnectionDataSource dataSourceForExistingSharedListeningSession:sessionIdentifier2 identity:identity];
     }
 
     else
     {
-      v14 = [(ICSharedListeningConnectionController *)self identity];
-      v16 = [ICLiveLinkQRConnectionDataSource dataSourceForNewSharedListeningSessionWithIdentity:v14];
+      sessionIdentifier2 = [(ICSharedListeningConnectionController *)self identity];
+      v16 = [ICLiveLinkQRConnectionDataSource dataSourceForNewSharedListeningSessionWithIdentity:sessionIdentifier2];
     }
 
     objc_initWeak(buf, self);
@@ -247,29 +247,29 @@
     v26[3] = &unk_1E7BF92B8;
     objc_copyWeak(&v27, buf);
     [v16 setDataSourceErrorHandler:v26];
-    v17 = [(ICDirectSharedListeningConnectionController *)self report];
-    [v16 setReport:v17];
+    report = [(ICDirectSharedListeningConnectionController *)self report];
+    [v16 setReport:report];
 
     v18 = MEMORY[0x1E69B1480];
     v19 = objc_opt_new();
     v20 = [v18 connectionWithDataSource:v16 messageCoder:v19];
     [(ICDirectSharedListeningConnectionController *)self setConnection:v20];
 
-    v21 = [(ICDirectSharedListeningConnectionController *)self connection];
-    [v21 setDelegate:self];
+    connection = [(ICDirectSharedListeningConnectionController *)self connection];
+    [connection setDelegate:self];
 
-    v22 = [(ICDirectSharedListeningConnectionController *)self report];
-    v23 = [(ICDirectSharedListeningConnectionController *)self connection];
-    [v23 setReport:v22];
+    report2 = [(ICDirectSharedListeningConnectionController *)self report];
+    connection2 = [(ICDirectSharedListeningConnectionController *)self connection];
+    [connection2 setReport:report2];
 
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __52__ICDirectSharedListeningConnectionController_start__block_invoke_2;
     v24[3] = &unk_1E7BF92E0;
     v24[4] = self;
-    v10 = v16;
-    v25 = v10;
-    [v10 populateWithCompletion:v24];
+    connection3 = v16;
+    v25 = connection3;
+    [connection3 populateWithCompletion:v24];
 
     objc_destroyWeak(&v27);
     objc_destroyWeak(buf);
@@ -285,8 +285,8 @@
       _os_log_impl(&dword_1B4491000, v9, OS_LOG_TYPE_DEFAULT, "[ICSharedListeningConnectionController][D] Start connection for populated controller.", buf, 2u);
     }
 
-    v10 = [(ICDirectSharedListeningConnectionController *)self connection];
-    [v10 start];
+    connection3 = [(ICDirectSharedListeningConnectionController *)self connection];
+    [connection3 start];
 LABEL_22:
 
     goto LABEL_23;
@@ -294,11 +294,11 @@ LABEL_22:
 
   if ([(ICDirectSharedListeningConnectionController *)self state]!= 1 && [(ICDirectSharedListeningConnectionController *)self state]!= 3 && [(ICDirectSharedListeningConnectionController *)self state]!= 4 && [(ICDirectSharedListeningConnectionController *)self state]== -1)
   {
-    v10 = _ICLogCategoryQuickRelay();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    connection3 = _ICLogCategoryQuickRelay();
+    if (os_log_type_enabled(connection3, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_impl(&dword_1B4491000, v10, OS_LOG_TYPE_ERROR, "[ICSharedListeningConnectionController][D] Client trying to start controller in invalidated state.", buf, 2u);
+      _os_log_impl(&dword_1B4491000, connection3, OS_LOG_TYPE_ERROR, "[ICSharedListeningConnectionController][D] Client trying to start controller in invalidated state.", buf, 2u);
     }
 
     goto LABEL_22;
@@ -354,7 +354,7 @@ void __52__ICDirectSharedListeningConnectionController_start__block_invoke_2(uin
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "[ICSharedListeningConnectionController][D] <%p> Deallocating.", buf, 0xCu);
   }
 
@@ -363,11 +363,11 @@ void __52__ICDirectSharedListeningConnectionController_start__block_invoke_2(uin
   [(ICDirectSharedListeningConnectionController *)&v4 dealloc];
 }
 
-- (ICDirectSharedListeningConnectionController)initWithSessionIdentifier:(id)a3 identity:(id)a4 bundleID:(id)a5
+- (ICDirectSharedListeningConnectionController)initWithSessionIdentifier:(id)identifier identity:(id)identity bundleID:(id)d
 {
   v10.receiver = self;
   v10.super_class = ICDirectSharedListeningConnectionController;
-  v5 = [(ICSharedListeningConnectionController *)&v10 initWithSessionIdentifier:a3 identity:a4 bundleID:a5];
+  v5 = [(ICSharedListeningConnectionController *)&v10 initWithSessionIdentifier:identifier identity:identity bundleID:d];
   if (v5)
   {
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);

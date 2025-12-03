@@ -1,13 +1,13 @@
 @interface CRLShapeLineSegmentKnobTracker
 - (BOOL)shouldHideOtherKnobs;
-- (CRLShapeLineSegmentKnobTracker)initWithRep:(id)a3 knob:(id)a4;
+- (CRLShapeLineSegmentKnobTracker)initWithRep:(id)rep knob:(id)knob;
 - (id)currentGeometry;
 - (id)p_HUDLabelText;
 - (void)beginMovingKnob;
 - (void)dealloc;
 - (void)endMovingKnob;
-- (void)moveKnobToCanvasPosition:(CGPoint)a3;
-- (void)moveKnobToRepPosition:(CGPoint)a3;
+- (void)moveKnobToCanvasPosition:(CGPoint)position;
+- (void)moveKnobToRepPosition:(CGPoint)position;
 - (void)p_enforceMinimumLength;
 - (void)p_hideHUD;
 - (void)p_updateHUD;
@@ -16,13 +16,13 @@
 
 @implementation CRLShapeLineSegmentKnobTracker
 
-- (CRLShapeLineSegmentKnobTracker)initWithRep:(id)a3 knob:(id)a4
+- (CRLShapeLineSegmentKnobTracker)initWithRep:(id)rep knob:(id)knob
 {
-  v6 = a3;
-  v7 = a4;
+  repCopy = rep;
+  knobCopy = knob;
   v39.receiver = self;
   v39.super_class = CRLShapeLineSegmentKnobTracker;
-  v8 = [(CRLCanvasKnobTracker *)&v39 initWithRep:v6 knob:v7];
+  v8 = [(CRLCanvasKnobTracker *)&v39 initWithRep:repCopy knob:knobCopy];
   if (v8)
   {
     objc_opt_class();
@@ -55,7 +55,7 @@
       [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:54 isFatal:0 description:"wrong rep class for line segment knob tracker"];
     }
 
-    if ([v7 tag] != 11 && objc_msgSend(v7, "tag") != 10)
+    if ([knobCopy tag] != 11 && objc_msgSend(knobCopy, "tag") != 10)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -84,10 +84,10 @@
       [CRLAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:55 isFatal:0 description:"wrong knob for line segment knob tracker"];
     }
 
-    v15 = [v6 layout];
-    v16 = [v15 pathIsLineSegment];
+    layout = [repCopy layout];
+    pathIsLineSegment = [layout pathIsLineSegment];
 
-    if ((v16 & 1) == 0)
+    if ((pathIsLineSegment & 1) == 0)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -117,37 +117,37 @@
     }
 
     v8[80] = 1;
-    v20 = [v8 shapeRep];
-    v21 = [v20 shapeLayout];
+    shapeRep = [v8 shapeRep];
+    shapeLayout = [shapeRep shapeLayout];
 
     v22 = v8 + 128;
-    if ([v7 tag] == 11)
+    if ([knobCopy tag] == 11)
     {
-      [v21 unclippedHeadPoint];
+      [shapeLayout unclippedHeadPoint];
       *v22 = v23;
       *(v8 + 17) = v24;
       *(v8 + 6) = *v22;
-      [v21 unclippedTailPoint];
+      [shapeLayout unclippedTailPoint];
     }
 
     else
     {
-      [v21 unclippedTailPoint];
+      [shapeLayout unclippedTailPoint];
       *v22 = v27;
       *(v8 + 17) = v28;
       *(v8 + 6) = *v22;
-      [v21 unclippedHeadPoint];
+      [shapeLayout unclippedHeadPoint];
     }
 
     *(v8 + 14) = v25;
     *(v8 + 15) = v26;
-    [v21 unclippedTailPoint];
+    [shapeLayout unclippedTailPoint];
     v30 = v29;
     v32 = v31;
-    [v21 unclippedHeadPoint];
+    [shapeLayout unclippedHeadPoint];
     *(v8 + 18) = sub_100120ABC(v30, v32, v33, v34, 0.5);
     *(v8 + 19) = v35;
-    [v21 pathBounds];
+    [shapeLayout pathBounds];
     *(v8 + 20) = v36;
     *(v8 + 21) = v37;
   }
@@ -165,12 +165,12 @@
 
 - (id)currentGeometry
 {
-  v3 = [(CRLShapeLineSegmentKnobTracker *)self shapeRep];
-  v4 = [v3 shapeLayout];
+  shapeRep = [(CRLShapeLineSegmentKnobTracker *)self shapeRep];
+  shapeLayout = [shapeRep shapeLayout];
 
-  v5 = [(CRLShapeLineSegmentKnobTracker *)self resizeFromCenter];
+  resizeFromCenter = [(CRLShapeLineSegmentKnobTracker *)self resizeFromCenter];
   v6 = &OBJC_IVAR___CRLShapeLineSegmentKnobTracker_mOriginalFixedPoint;
-  if (v5)
+  if (resizeFromCenter)
   {
     v6 = &OBJC_IVAR___CRLShapeLineSegmentKnobTracker_mOriginalMiddlePoint;
   }
@@ -180,11 +180,11 @@
   v9 = v7[1];
   memset(&v19, 0, sizeof(v19));
   sub_100139F80(0, &v19, v8, v9, self->mOriginalKnobCenter.x, self->mOriginalKnobCenter.y, v8, v9, self->mNewKnobCenter.x, self->mNewKnobCenter.y);
-  v10 = [v4 originalPureGeometry];
-  v11 = v10;
-  if (v10)
+  originalPureGeometry = [shapeLayout originalPureGeometry];
+  v11 = originalPureGeometry;
+  if (originalPureGeometry)
   {
-    [v10 transform];
+    [originalPureGeometry transform];
   }
 
   else
@@ -196,9 +196,9 @@
   sub_100139D98(&v16, v17, &v18);
   v19 = v18;
 
-  v12 = [v4 originalPureGeometry];
+  originalPureGeometry2 = [shapeLayout originalPureGeometry];
   v18 = v19;
-  v13 = [v12 geometryByTransformingBy:&v18];
+  v13 = [originalPureGeometry2 geometryByTransformingBy:&v18];
   v14 = [[CRLCanvasInfoGeometry alloc] initWithLayoutGeometry:v13];
 
   return v14;
@@ -209,24 +209,24 @@
   v6.receiver = self;
   v6.super_class = CRLShapeLineSegmentKnobTracker;
   [(CRLCanvasKnobTracker *)&v6 beginMovingKnob];
-  v3 = [(CRLShapeLineSegmentKnobTracker *)self shapeRep];
-  v4 = [v3 dynamicMoveLineSegmentDidBegin];
+  shapeRep = [(CRLShapeLineSegmentKnobTracker *)self shapeRep];
+  dynamicMoveLineSegmentDidBegin = [shapeRep dynamicMoveLineSegmentDidBegin];
   mResizingLayout = self->mResizingLayout;
-  self->mResizingLayout = v4;
+  self->mResizingLayout = dynamicMoveLineSegmentDidBegin;
 
   [(CRLShapeLineSegmentKnobTracker *)self performSelector:"p_showHUDAndGuidesAfterDelay:" withObject:0 afterDelay:0.5];
 }
 
-- (void)moveKnobToCanvasPosition:(CGPoint)a3
+- (void)moveKnobToCanvasPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   v4 = [(CRLCanvasKnobTracker *)self rep];
-  v5 = [v4 layout];
-  v6 = v5;
-  if (v5)
+  layout = [v4 layout];
+  v6 = layout;
+  if (layout)
   {
-    [v5 originalTransformInRoot];
+    [layout originalTransformInRoot];
   }
 
   else
@@ -240,13 +240,13 @@
   [(CRLShapeLineSegmentKnobTracker *)self moveKnobToRepPosition:*&v9];
 }
 
-- (void)moveKnobToRepPosition:(CGPoint)a3
+- (void)moveKnobToRepPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(CRLShapeLineSegmentKnobTracker *)self shapeRep];
-  v7 = [v6 interactiveCanvasController];
-  v8 = [v7 guideController];
+  y = position.y;
+  x = position.x;
+  shapeRep = [(CRLShapeLineSegmentKnobTracker *)self shapeRep];
+  interactiveCanvasController = [shapeRep interactiveCanvasController];
+  guideController = [interactiveCanvasController guideController];
 
   if ([(CRLShapeLineSegmentKnobTracker *)self snapEnabled])
   {
@@ -279,9 +279,9 @@
     else
     {
       v11 = 1;
-      if ([v6 wantsGuidesWhileResizing])
+      if ([shapeRep wantsGuidesWhileResizing])
       {
-        [v8 beginAlignmentOperationForRep:v6];
+        [guideController beginAlignmentOperationForRep:shapeRep];
         self->mBeganAlignmentOperation = 1;
       }
     }
@@ -297,12 +297,12 @@
     goto LABEL_30;
   }
 
-  v14 = v8;
+  v14 = guideController;
   v84 = p_mNewKnobCenter->x;
   v86 = self->mNewKnobCenter.y;
-  v15 = [(CRLShapeLineSegmentKnobTracker *)self resizeFromCenter];
+  resizeFromCenter = [(CRLShapeLineSegmentKnobTracker *)self resizeFromCenter];
   v16 = &OBJC_IVAR___CRLShapeLineSegmentKnobTracker_mOriginalFixedPoint;
-  if (v15)
+  if (resizeFromCenter)
   {
     v16 = &OBJC_IVAR___CRLShapeLineSegmentKnobTracker_mOriginalMiddlePoint;
   }
@@ -315,12 +315,12 @@
   v21 = -1;
   do
   {
-    v22 = [v6 layout];
-    v23 = [v22 originalPureGeometry];
-    v24 = v23;
-    if (v23)
+    layout = [shapeRep layout];
+    originalPureGeometry = [layout originalPureGeometry];
+    v24 = originalPureGeometry;
+    if (originalPureGeometry)
     {
-      [v23 transform];
+      [originalPureGeometry transform];
     }
 
     else
@@ -363,14 +363,14 @@ LABEL_22:
   while (v19 != 8);
   p_mNewKnobCenter->x = v84;
   self->mNewKnobCenter.y = v86;
-  v8 = v14;
+  guideController = v14;
 LABEL_30:
-  [v6 dynamicallyMovingLineSegmentWithTracker:self];
+  [shapeRep dynamicallyMovingLineSegmentWithTracker:self];
   [(CRLShapeLineSegmentKnobTracker *)self p_validateLayout];
   if (!v9 || !self->mBeganAlignmentOperation)
   {
-    [v8 hideAlignmentGuides];
-    [v8 hideSizingGuides];
+    [guideController hideAlignmentGuides];
+    [guideController hideSizingGuides];
     goto LABEL_35;
   }
 
@@ -379,12 +379,12 @@ LABEL_30:
   v39 = v38;
   v41 = v40;
   v43 = v42;
-  v44 = [v6 layout];
-  v45 = [v44 originalPureGeometry];
-  v46 = v45;
-  if (v45)
+  layout2 = [shapeRep layout];
+  originalPureGeometry2 = [layout2 originalPureGeometry];
+  v46 = originalPureGeometry2;
+  if (originalPureGeometry2)
   {
-    [v45 transform];
+    [originalPureGeometry2 transform];
     v47 = *&v93.a;
     v48 = *&v93.c;
     v49 = *&v93.tx;
@@ -442,33 +442,33 @@ LABEL_30:
   }
 
   v57 = [(CRLCanvasKnobTracker *)self rep];
-  v58 = [v57 wantsGuidesWhileResizing];
+  wantsGuidesWhileResizing = [v57 wantsGuidesWhileResizing];
 
-  if (v58)
+  if (wantsGuidesWhileResizing)
   {
     v85 = v56;
-    v87 = v8;
-    v59 = [(CRLShapeLineSegmentKnobTracker *)self resizeFromCenter];
+    v87 = guideController;
+    resizeFromCenter2 = [(CRLShapeLineSegmentKnobTracker *)self resizeFromCenter];
     v60 = [(CRLCanvasKnobTracker *)self rep];
-    v61 = [v60 interactiveCanvasController];
-    v62 = [v61 canvasBackground];
+    interactiveCanvasController2 = [v60 interactiveCanvasController];
+    canvasBackground = [interactiveCanvasController2 canvasBackground];
 
-    v63 = [v62 alignmentProvider];
+    alignmentProvider = [canvasBackground alignmentProvider];
     v64 = [(CRLCanvasKnobTracker *)self rep];
-    v65 = [v64 interactiveCanvasController];
-    v66 = [v65 isCanvasBackgroundAlignmentSnappingEnabled];
+    interactiveCanvasController3 = [v64 interactiveCanvasController];
+    isCanvasBackgroundAlignmentSnappingEnabled = [interactiveCanvasController3 isCanvasBackgroundAlignmentSnappingEnabled];
 
-    if (v66 && v63)
+    if (isCanvasBackgroundAlignmentSnappingEnabled && alignmentProvider)
     {
-      [v63 alignmentPointForPoint:*&v90];
+      [alignmentProvider alignmentPointForPoint:*&v90];
       v82 = v68;
       v83 = v67;
-      v69 = [v6 layout];
-      v70 = [v69 originalPureGeometry];
-      v71 = v70;
-      if (v70)
+      layout3 = [shapeRep layout];
+      originalPureGeometry3 = [layout3 originalPureGeometry];
+      v71 = originalPureGeometry3;
+      if (originalPureGeometry3)
       {
-        [v70 transform];
+        [originalPureGeometry3 transform];
       }
 
       else
@@ -480,18 +480,18 @@ LABEL_30:
       *p_mNewKnobCenter = vaddq_f64(*&v93.tx, vmlaq_n_f64(vmulq_n_f64(*&v93.c, v82), *&v93.a, v83));
 
       [(CRLShapeLineSegmentKnobTracker *)self p_enforceMinimumLength];
-      [v6 dynamicallyMovingLineSegmentWithTracker:self];
+      [shapeRep dynamicallyMovingLineSegmentWithTracker:self];
       v73 = CGPointZero.x;
       v72 = CGPointZero.y;
       v56 = v85;
-      v8 = v87;
+      guideController = v87;
     }
 
     else
     {
       v56 = v85;
-      v8 = v87;
-      [v87 snapRectToGuides:v85 forKnobTag:v59 ^ 1 snapSize:{v37, v39, v41, v43}];
+      guideController = v87;
+      [v87 snapRectToGuides:v85 forKnobTag:resizeFromCenter2 ^ 1 snapSize:{v37, v39, v41, v43}];
       v73 = v74;
       v72 = v75;
     }
@@ -576,12 +576,12 @@ LABEL_73:
     v76 = sub_10011F334(v90.f64[0], v90.f64[1], v73);
     v88 = v77;
     v91 = v76;
-    v78 = [v6 layout];
-    v79 = [v78 originalPureGeometry];
-    v80 = v79;
-    if (v79)
+    layout4 = [shapeRep layout];
+    originalPureGeometry4 = [layout4 originalPureGeometry];
+    v80 = originalPureGeometry4;
+    if (originalPureGeometry4)
     {
-      [v79 transform];
+      [originalPureGeometry4 transform];
     }
 
     else
@@ -624,23 +624,23 @@ LABEL_73:
       v41 = v41 + v73;
     }
 
-    [v6 dynamicallyMovingLineSegmentWithTracker:self];
+    [shapeRep dynamicallyMovingLineSegmentWithTracker:self];
     [(CRLShapeLineSegmentKnobTracker *)self p_validateLayout];
   }
 
   [(CRLShapeLineSegmentKnobTracker *)self p_enforceMinimumLength];
   if ([(CRLShapeLineSegmentKnobTracker *)self shouldDisplayGuides])
   {
-    [v8 showGuidesAlignedWithRect:v56 forKnobTag:1 shouldRenderX:1 shouldRenderY:-[CRLShapeLineSegmentKnobTracker resizeFromCenter](self shouldRenderSizeGuides:{"resizeFromCenter") ^ 1, v37, v39, v41, v43}];
+    [guideController showGuidesAlignedWithRect:v56 forKnobTag:1 shouldRenderX:1 shouldRenderY:-[CRLShapeLineSegmentKnobTracker resizeFromCenter](self shouldRenderSizeGuides:{"resizeFromCenter") ^ 1, v37, v39, v41, v43}];
   }
 
   else
   {
-    [v8 hideAlignmentGuides];
+    [guideController hideAlignmentGuides];
   }
 
 LABEL_35:
-  [v6 invalidateKnobPositions];
+  [shapeRep invalidateKnobPositions];
   [(CRLShapeLineSegmentKnobTracker *)self p_cancelDelayedHUDAndGuides];
   [(CRLShapeLineSegmentKnobTracker *)self p_updateHUD];
 }
@@ -659,16 +659,16 @@ LABEL_35:
 
 - (void)endMovingKnob
 {
-  v3 = [(CRLShapeLineSegmentKnobTracker *)self shapeRep];
-  v4 = [(CRLShapeLineSegmentKnobTracker *)self didChangeGeometry];
+  shapeRep = [(CRLShapeLineSegmentKnobTracker *)self shapeRep];
+  didChangeGeometry = [(CRLShapeLineSegmentKnobTracker *)self didChangeGeometry];
   v5 = [(CRLCanvasKnobTracker *)self rep];
-  v6 = [v5 interactiveCanvasController];
+  interactiveCanvasController = [v5 interactiveCanvasController];
 
-  v7 = [v6 commandController];
-  v8 = [v7 groupingLevel];
-  if (v8)
+  commandController = [interactiveCanvasController commandController];
+  groupingLevel = [commandController groupingLevel];
+  if (groupingLevel)
   {
-    if (!v4)
+    if (!didChangeGeometry)
     {
       goto LABEL_4;
     }
@@ -677,41 +677,41 @@ LABEL_35:
   }
 
   v18 = [CRLCanvasCommandSelectionBehavior alloc];
-  v19 = [v6 canvasEditor];
-  v20 = [(CRLCanvasCommandSelectionBehavior *)v18 initWithCanvasEditor:v19];
+  canvasEditor = [interactiveCanvasController canvasEditor];
+  v20 = [(CRLCanvasCommandSelectionBehavior *)v18 initWithCanvasEditor:canvasEditor];
 
-  [v7 openGroupWithSelectionBehavior:v20];
+  [commandController openGroupWithSelectionBehavior:v20];
   v21 = +[NSBundle mainBundle];
   v22 = [v21 localizedStringForKey:@"Resize" value:0 table:@"UndoStrings"];
-  [v7 setCurrentGroupActionString:v22];
+  [commandController setCurrentGroupActionString:v22];
 
-  if (v4)
+  if (didChangeGeometry)
   {
 LABEL_3:
-    v9 = [(CRLShapeLineSegmentKnobTracker *)self currentGeometry];
+    currentGeometry = [(CRLShapeLineSegmentKnobTracker *)self currentGeometry];
     v10 = [(CRLCanvasKnobTracker *)self rep];
-    v11 = [v10 infoForTransforming];
+    infoForTransforming = [v10 infoForTransforming];
 
     v12 = [_TtC8Freeform25CRLCommandSetInfoGeometry alloc];
     v13 = objc_opt_class();
-    v14 = sub_100013F00(v13, v11);
-    v15 = [(CRLCommandSetInfoGeometry *)v12 initWithBoardItem:v14 geometry:v9];
+    v14 = sub_100013F00(v13, infoForTransforming);
+    v15 = [(CRLCommandSetInfoGeometry *)v12 initWithBoardItem:v14 geometry:currentGeometry];
 
-    [v7 enqueueCommand:v15];
+    [commandController enqueueCommand:v15];
   }
 
 LABEL_4:
-  [v3 dynamicMoveLineSegmentDidEndWithTracker:self];
-  if (!v8)
+  [shapeRep dynamicMoveLineSegmentDidEndWithTracker:self];
+  if (!groupingLevel)
   {
-    [v7 closeGroup];
+    [commandController closeGroup];
   }
 
   if (self->mBeganAlignmentOperation)
   {
-    v16 = [v3 interactiveCanvasController];
-    v17 = [v16 guideController];
-    [v17 endAlignmentOperation];
+    interactiveCanvasController2 = [shapeRep interactiveCanvasController];
+    guideController = [interactiveCanvasController2 guideController];
+    [guideController endAlignmentOperation];
   }
 
   [(CRLShapeLineSegmentKnobTracker *)self p_cancelDelayedHUDAndGuides];
@@ -724,10 +724,10 @@ LABEL_4:
 - (void)p_validateLayout
 {
   v2 = [(CRLCanvasKnobTracker *)self rep];
-  v4 = [v2 layout];
+  layout = [v2 layout];
 
-  v3 = [v4 layoutController];
-  [v3 validateLayoutWithDependencies:v4];
+  layoutController = [layout layoutController];
+  [layoutController validateLayoutWithDependencies:layout];
 }
 
 - (void)p_enforceMinimumLength
@@ -756,12 +756,12 @@ LABEL_4:
 
 - (id)p_HUDLabelText
 {
-  v3 = [(CRLShapeLineSegmentKnobTracker *)self currentGeometry];
+  currentGeometry = [(CRLShapeLineSegmentKnobTracker *)self currentGeometry];
   v4 = sub_100120090(self->mOriginalFixedPoint.x, self->mOriginalFixedPoint.y, self->mNewKnobCenter.x, self->mNewKnobCenter.y);
   v5 = [(CRLCanvasKnobTracker *)self rep];
-  v6 = [v5 interactiveCanvasController];
-  [v3 angle];
-  v8 = [v6 unitStringForAngle:sub_1004C31F4(v7) andLength:v4];
+  interactiveCanvasController = [v5 interactiveCanvasController];
+  [currentGeometry angle];
+  v8 = [interactiveCanvasController unitStringForAngle:sub_1004C31F4(v7) andLength:v4];
 
   return v8;
 }
@@ -771,16 +771,16 @@ LABEL_4:
   if (![(CRLCanvasKnobTracker *)self isInspectorDrivenTracking])
   {
     v3 = [(CRLCanvasKnobTracker *)self rep];
-    v7 = [v3 interactiveCanvasController];
+    interactiveCanvasController = [v3 interactiveCanvasController];
 
     v4 = +[CRLCanvasHUDController sharedHUDController];
-    v5 = [(CRLShapeLineSegmentKnobTracker *)self p_HUDLabelText];
-    [v4 setLabelText:v5];
+    p_HUDLabelText = [(CRLShapeLineSegmentKnobTracker *)self p_HUDLabelText];
+    [v4 setLabelText:p_HUDLabelText];
 
-    v6 = [v7 canvasView];
+    canvasView = [interactiveCanvasController canvasView];
     [(CRLCanvasKnobTracker *)self currentPosition];
-    [v7 convertUnscaledToBoundsPoint:?];
-    [v4 showHUDForKey:self forTouchPoint:v6 inCanvasView:? withUpwardsNudge:?];
+    [interactiveCanvasController convertUnscaledToBoundsPoint:?];
+    [v4 showHUDForKey:self forTouchPoint:canvasView inCanvasView:? withUpwardsNudge:?];
   }
 }
 

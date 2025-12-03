@@ -1,12 +1,12 @@
 @interface HFReaderWriterCache
 - (HFReaderWriterCache)init;
-- (id)objectForKey:(id)a3;
-- (id)tryObjectForKey:(id)a3;
+- (id)objectForKey:(id)key;
+- (id)tryObjectForKey:(id)key;
 - (void)dealloc;
-- (void)performBlockWithWriteLock:(id)a3;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 onlyIfNoObjectForKey:(id)a4;
+- (void)performBlockWithWriteLock:(id)lock;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setObject:(id)object onlyIfNoObjectForKey:(id)key;
 @end
 
 @implementation HFReaderWriterCache
@@ -62,10 +62,10 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v5 = pthread_rwlock_rdlock(&self->_rwlock);
   if (v5)
   {
@@ -84,8 +84,8 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v11 = [(HFReaderWriterCache *)self cachedObjects];
-  v8 = [v11 objectForKey:v4];
+  cachedObjects = [(HFReaderWriterCache *)self cachedObjects];
+  v8 = [cachedObjects objectForKey:keyCopy];
 
   v12 = pthread_rwlock_unlock(&self->_rwlock);
   if (v12)
@@ -109,10 +109,10 @@ LABEL_6:
   return v8;
 }
 
-- (id)tryObjectForKey:(id)a3
+- (id)tryObjectForKey:(id)key
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   if (pthread_rwlock_tryrdlock(&self->_rwlock))
   {
     v5 = 0;
@@ -120,8 +120,8 @@ LABEL_6:
 
   else
   {
-    v6 = [(HFReaderWriterCache *)self cachedObjects];
-    v5 = [v6 objectForKey:v4];
+    cachedObjects = [(HFReaderWriterCache *)self cachedObjects];
+    v5 = [cachedObjects objectForKey:keyCopy];
 
     v7 = pthread_rwlock_unlock(&self->_rwlock);
     if (v7)
@@ -142,33 +142,33 @@ LABEL_6:
   return v5;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  keyCopy = key;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __40__HFReaderWriterCache_setObject_forKey___block_invoke;
   v10[3] = &unk_277DF38D8;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = objectCopy;
+  v12 = keyCopy;
+  v8 = keyCopy;
+  v9 = objectCopy;
   [(HFReaderWriterCache *)self performBlockWithWriteLock:v10];
 }
 
-- (void)setObject:(id)a3 onlyIfNoObjectForKey:(id)a4
+- (void)setObject:(id)object onlyIfNoObjectForKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  keyCopy = key;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __54__HFReaderWriterCache_setObject_onlyIfNoObjectForKey___block_invoke;
   v10[3] = &unk_277DF38D8;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = keyCopy;
+  v12 = objectCopy;
+  v8 = objectCopy;
+  v9 = keyCopy;
   [(HFReaderWriterCache *)self performBlockWithWriteLock:v10];
 }
 
@@ -183,22 +183,22 @@ void __54__HFReaderWriterCache_setObject_onlyIfNoObjectForKey___block_invoke(uin
   }
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__HFReaderWriterCache_removeObjectForKey___block_invoke;
   v6[3] = &unk_277DF3900;
-  v7 = v4;
-  v5 = v4;
+  v7 = keyCopy;
+  v5 = keyCopy;
   [(HFReaderWriterCache *)self performBlockWithWriteLock:v6];
 }
 
-- (void)performBlockWithWriteLock:(id)a3
+- (void)performBlockWithWriteLock:(id)lock
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lockCopy = lock;
   v5 = pthread_rwlock_wrlock(&self->_rwlock);
   if (v5)
   {
@@ -217,8 +217,8 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v9 = [(HFReaderWriterCache *)self cachedObjects];
-  v4[2](v4, v9);
+  cachedObjects = [(HFReaderWriterCache *)self cachedObjects];
+  lockCopy[2](lockCopy, cachedObjects);
 
   v10 = pthread_rwlock_unlock(&self->_rwlock);
   if (v10)

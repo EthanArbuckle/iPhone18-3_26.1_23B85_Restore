@@ -1,55 +1,55 @@
 @interface ATXNowPlayingDuetEvent
-+ (int64_t)duetPlaybackStateFromATXPlaybackState:(int64_t)a3;
-- (ATXNowPlayingDuetEvent)initWithATXEvent:(id)a3;
-- (ATXNowPlayingDuetEvent)initWithBundleId:(id)a3 track:(id)a4 nowPlayingState:(int64_t)a5 startDate:(id)a6 endDate:(id)a7;
-- (ATXNowPlayingDuetEvent)initWithCoder:(id)a3;
++ (int64_t)duetPlaybackStateFromATXPlaybackState:(int64_t)state;
+- (ATXNowPlayingDuetEvent)initWithATXEvent:(id)event;
+- (ATXNowPlayingDuetEvent)initWithBundleId:(id)id track:(id)track nowPlayingState:(int64_t)state startDate:(id)date endDate:(id)endDate;
+- (ATXNowPlayingDuetEvent)initWithCoder:(id)coder;
 - (ATXNowPlayingDuetEvent)initWithCurrentContextStoreValues;
-- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
+- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)integer key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
 - (id)description;
 - (id)identifier;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXNowPlayingDuetEvent
 
-- (ATXNowPlayingDuetEvent)initWithBundleId:(id)a3 track:(id)a4 nowPlayingState:(int64_t)a5 startDate:(id)a6 endDate:(id)a7
+- (ATXNowPlayingDuetEvent)initWithBundleId:(id)id track:(id)track nowPlayingState:(int64_t)state startDate:(id)date endDate:(id)endDate
 {
-  v12 = a3;
-  v13 = a4;
+  idCopy = id;
+  trackCopy = track;
   v20.receiver = self;
   v20.super_class = ATXNowPlayingDuetEvent;
-  v14 = [(ATXDuetEvent *)&v20 initWithStartDate:a6 endDate:a7];
+  v14 = [(ATXDuetEvent *)&v20 initWithStartDate:date endDate:endDate];
   if (v14)
   {
-    v15 = [v12 copy];
+    v15 = [idCopy copy];
     bundleId = v14->_bundleId;
     v14->_bundleId = v15;
 
-    v17 = [v13 copy];
+    v17 = [trackCopy copy];
     track = v14->_track;
     v14->_track = v17;
 
-    v14->_nowPlayingState = a5;
+    v14->_nowPlayingState = state;
   }
 
   return v14;
 }
 
-- (ATXNowPlayingDuetEvent)initWithATXEvent:(id)a3
+- (ATXNowPlayingDuetEvent)initWithATXEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 bundleID];
-    v7 = [v5 title];
+    v5 = eventCopy;
+    bundleID = [v5 bundleID];
+    title = [v5 title];
     v8 = +[ATXNowPlayingDuetEvent duetPlaybackStateFromATXPlaybackState:](ATXNowPlayingDuetEvent, "duetPlaybackStateFromATXPlaybackState:", [v5 playbackState]);
-    v9 = [v5 startTime];
-    v10 = [v5 endTime];
+    startTime = [v5 startTime];
+    endTime = [v5 endTime];
 
-    self = [(ATXNowPlayingDuetEvent *)self initWithBundleId:v6 track:v7 nowPlayingState:v8 startDate:v9 endDate:v10];
-    v11 = self;
+    self = [(ATXNowPlayingDuetEvent *)self initWithBundleId:bundleID track:title nowPlayingState:v8 startDate:startTime endDate:endTime];
+    selfCopy = self;
   }
 
   else
@@ -57,20 +57,20 @@
     v12 = __atxlog_handle_default();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [(ATXNowPlayingDuetEvent *)v4 initWithATXEvent:v12];
+      [(ATXNowPlayingDuetEvent *)eventCopy initWithATXEvent:v12];
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (ATXNowPlayingDuetEvent)initWithCurrentContextStoreValues
 {
-  v3 = [MEMORY[0x277CFE318] userContext];
-  v4 = [MEMORY[0x277CFE338] keyPathForNowPlayingDataDictionary];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  userContext = [MEMORY[0x277CFE318] userContext];
+  keyPathForNowPlayingDataDictionary = [MEMORY[0x277CFE338] keyPathForNowPlayingDataDictionary];
+  v5 = [userContext objectForKeyedSubscript:keyPathForNowPlayingDataDictionary];
 
   if (!v5)
   {
@@ -98,8 +98,8 @@
     goto LABEL_25;
   }
 
-  v6 = [MEMORY[0x277CFE338] nowPlayingStatusKey];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  nowPlayingStatusKey = [MEMORY[0x277CFE338] nowPlayingStatusKey];
+  v7 = [v5 objectForKeyedSubscript:nowPlayingStatusKey];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -117,12 +117,12 @@
     goto LABEL_25;
   }
 
-  v9 = [MEMORY[0x277CFE338] nowPlayingStatusKey];
-  v10 = [v5 objectForKeyedSubscript:v9];
-  v11 = [v10 integerValue];
+  nowPlayingStatusKey2 = [MEMORY[0x277CFE338] nowPlayingStatusKey];
+  v10 = [v5 objectForKeyedSubscript:nowPlayingStatusKey2];
+  integerValue = [v10 integerValue];
 
-  v12 = [MEMORY[0x277CFE338] nowPlayingBundleIdKey];
-  v13 = [v5 objectForKeyedSubscript:v12];
+  nowPlayingBundleIdKey = [MEMORY[0x277CFE338] nowPlayingBundleIdKey];
+  v13 = [v5 objectForKeyedSubscript:nowPlayingBundleIdKey];
   objc_opt_class();
   v14 = objc_opt_isKindOfClass();
 
@@ -140,12 +140,12 @@
 LABEL_25:
     [v33 raise:v34 format:v35];
 LABEL_26:
-    v30 = 0;
+    selfCopy = 0;
     goto LABEL_27;
   }
 
-  v15 = [MEMORY[0x277CFE338] nowPlayingBundleIdKey];
-  v16 = [v5 objectForKeyedSubscript:v15];
+  nowPlayingBundleIdKey2 = [MEMORY[0x277CFE338] nowPlayingBundleIdKey];
+  v16 = [v5 objectForKeyedSubscript:nowPlayingBundleIdKey2];
   v17 = v16;
   if (v16)
   {
@@ -159,15 +159,15 @@ LABEL_26:
 
   v19 = v18;
 
-  v20 = [MEMORY[0x277CFE338] nowPlayingTrackKey];
-  v21 = [v5 objectForKeyedSubscript:v20];
+  nowPlayingTrackKey = [MEMORY[0x277CFE338] nowPlayingTrackKey];
+  v21 = [v5 objectForKeyedSubscript:nowPlayingTrackKey];
   objc_opt_class();
   v22 = objc_opt_isKindOfClass();
 
   if (v22)
   {
-    v23 = [MEMORY[0x277CFE338] nowPlayingTrackKey];
-    v24 = [v5 objectForKeyedSubscript:v23];
+    nowPlayingTrackKey2 = [MEMORY[0x277CFE338] nowPlayingTrackKey];
+    v24 = [v5 objectForKeyedSubscript:nowPlayingTrackKey2];
     v25 = v24;
     if (v24)
     {
@@ -181,11 +181,11 @@ LABEL_26:
 
     v27 = v26;
 
-    v28 = [MEMORY[0x277CBEAA8] date];
-    v29 = [(ATXNowPlayingDuetEvent *)self initWithBundleId:v19 track:v27 nowPlayingState:v11 startDate:v28 endDate:v28];
+    date = [MEMORY[0x277CBEAA8] date];
+    v29 = [(ATXNowPlayingDuetEvent *)self initWithBundleId:v19 track:v27 nowPlayingState:integerValue startDate:date endDate:date];
 
     self = v29;
-    v30 = self;
+    selfCopy = self;
   }
 
   else
@@ -197,11 +197,11 @@ LABEL_26:
     }
 
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:@"Value for 'nowPlayingTrackKey' in ContextStore's 'keyPathForNowPlayingDataDictionary' is not an NSString."];
-    v30 = 0;
+    selfCopy = 0;
   }
 
 LABEL_27:
-  return v30;
+  return selfCopy;
 }
 
 - (id)identifier
@@ -219,53 +219,53 @@ LABEL_27:
   bundleId = self->_bundleId;
   track = self->_track;
   nowPlayingState = self->_nowPlayingState;
-  v7 = [(ATXDuetEvent *)self startDate];
-  v8 = [(ATXDuetEvent *)self endDate];
-  v9 = [v3 initWithFormat:@"App bundleId: %@, Track: %@, Now playing status: %ld, start date: %@, end date: %@", bundleId, track, nowPlayingState, v7, v8];
+  startDate = [(ATXDuetEvent *)self startDate];
+  endDate = [(ATXDuetEvent *)self endDate];
+  v9 = [v3 initWithFormat:@"App bundleId: %@, Track: %@, Now playing status: %ld, start date: %@, end date: %@", bundleId, track, nowPlayingState, startDate, endDate];
 
   return v9;
 }
 
-+ (int64_t)duetPlaybackStateFromATXPlaybackState:(int64_t)a3
++ (int64_t)duetPlaybackStateFromATXPlaybackState:(int64_t)state
 {
-  if ((a3 - 1) >= 5)
+  if ((state - 1) >= 5)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return state;
   }
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)integer key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!integer)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x277CCA9B8]);
       v22 = *MEMORY[0x277CCA450];
-      v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode key %@", v11, v22];
+      v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode key %@", keyCopy, v22];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -277,83 +277,83 @@ LABEL_7:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(ATXDuetEvent *)self startDate];
-  [v8 encodeObject:v4 forKey:@"codingKeyForStartDate"];
+  coderCopy = coder;
+  startDate = [(ATXDuetEvent *)self startDate];
+  [coderCopy encodeObject:startDate forKey:@"codingKeyForStartDate"];
 
-  v5 = [(ATXDuetEvent *)self endDate];
-  [v8 encodeObject:v5 forKey:@"codingKeyForEndDate"];
+  endDate = [(ATXDuetEvent *)self endDate];
+  [coderCopy encodeObject:endDate forKey:@"codingKeyForEndDate"];
 
-  v6 = [(ATXNowPlayingDuetEvent *)self bundleId];
-  [v8 encodeObject:v6 forKey:@"codingKeyForBundleId"];
+  bundleId = [(ATXNowPlayingDuetEvent *)self bundleId];
+  [coderCopy encodeObject:bundleId forKey:@"codingKeyForBundleId"];
 
-  v7 = [(ATXNowPlayingDuetEvent *)self track];
-  [v8 encodeObject:v7 forKey:@"codingKeyForTrack"];
+  track = [(ATXNowPlayingDuetEvent *)self track];
+  [coderCopy encodeObject:track forKey:@"codingKeyForTrack"];
 
-  [v8 encodeInteger:-[ATXNowPlayingDuetEvent nowPlayingState](self forKey:{"nowPlayingState"), @"codingKeyForNowPlayingState"}];
+  [coderCopy encodeInteger:-[ATXNowPlayingDuetEvent nowPlayingState](self forKey:{"nowPlayingState"), @"codingKeyForNowPlayingState"}];
 }
 
-- (ATXNowPlayingDuetEvent)initWithCoder:(id)a3
+- (ATXNowPlayingDuetEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x277D42620];
   v6 = objc_opt_class();
   v7 = __atxlog_handle_anchor();
-  v8 = [v5 robustDecodeObjectOfClass:v6 forKey:@"codingKeyForStartDate" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.proactive.ATXDuetEvent.NowPlaying" errorCode:-1 logHandle:v7];
+  v8 = [v5 robustDecodeObjectOfClass:v6 forKey:@"codingKeyForStartDate" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.proactive.ATXDuetEvent.NowPlaying" errorCode:-1 logHandle:v7];
 
-  if (v8 && ([v4 error], v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
+  if (v8 && ([coderCopy error], v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
   {
     v11 = MEMORY[0x277D42620];
     v12 = objc_opt_class();
     v13 = __atxlog_handle_anchor();
-    v14 = [v11 robustDecodeObjectOfClass:v12 forKey:@"codingKeyForEndDate" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.proactive.ATXDuetEvent.NowPlaying" errorCode:-1 logHandle:v13];
+    v14 = [v11 robustDecodeObjectOfClass:v12 forKey:@"codingKeyForEndDate" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.proactive.ATXDuetEvent.NowPlaying" errorCode:-1 logHandle:v13];
 
-    if (v14 && ([v4 error], v15 = objc_claimAutoreleasedReturnValue(), v15, !v15))
+    if (v14 && ([coderCopy error], v15 = objc_claimAutoreleasedReturnValue(), v15, !v15))
     {
       v16 = MEMORY[0x277D42620];
       v17 = objc_opt_class();
       v18 = __atxlog_handle_anchor();
-      v19 = [v16 robustDecodeObjectOfClass:v17 forKey:@"codingKeyForBundleId" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.proactive.ATXDuetEvent.NowPlaying" errorCode:-1 logHandle:v18];
+      v19 = [v16 robustDecodeObjectOfClass:v17 forKey:@"codingKeyForBundleId" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.proactive.ATXDuetEvent.NowPlaying" errorCode:-1 logHandle:v18];
 
-      if (v19 && ([v4 error], v20 = objc_claimAutoreleasedReturnValue(), v20, !v20))
+      if (v19 && ([coderCopy error], v20 = objc_claimAutoreleasedReturnValue(), v20, !v20))
       {
         v21 = MEMORY[0x277D42620];
         v22 = objc_opt_class();
         v23 = __atxlog_handle_anchor();
-        v24 = [v21 robustDecodeObjectOfClass:v22 forKey:@"codingKeyForTrack" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.proactive.ATXDuetEvent.NowPlaying" errorCode:-1 logHandle:v23];
+        v24 = [v21 robustDecodeObjectOfClass:v22 forKey:@"codingKeyForTrack" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.proactive.ATXDuetEvent.NowPlaying" errorCode:-1 logHandle:v23];
 
-        if (!v24 || ([v4 error], v25 = objc_claimAutoreleasedReturnValue(), v25, v25) || (v26 = objc_msgSend(v4, "decodeIntegerForKey:", @"codingKeyForNowPlayingState"), -[ATXNowPlayingDuetEvent checkAndReportDecodingFailureIfNeededForNSInteger:key:coder:errorDomain:errorCode:](self, "checkAndReportDecodingFailureIfNeededForNSInteger:key:coder:errorDomain:errorCode:", v26, @"codingKeyForNowPlayingState", v4, @"com.apple.proactive.ATXDuetEvent.NowPlaying", -1)))
+        if (!v24 || ([coderCopy error], v25 = objc_claimAutoreleasedReturnValue(), v25, v25) || (v26 = objc_msgSend(coderCopy, "decodeIntegerForKey:", @"codingKeyForNowPlayingState"), -[ATXNowPlayingDuetEvent checkAndReportDecodingFailureIfNeededForNSInteger:key:coder:errorDomain:errorCode:](self, "checkAndReportDecodingFailureIfNeededForNSInteger:key:coder:errorDomain:errorCode:", v26, @"codingKeyForNowPlayingState", coderCopy, @"com.apple.proactive.ATXDuetEvent.NowPlaying", -1)))
         {
-          v10 = 0;
+          selfCopy = 0;
         }
 
         else
         {
           self = [(ATXNowPlayingDuetEvent *)self initWithBundleId:v19 track:v24 nowPlayingState:v26 startDate:v8 endDate:v14];
-          v10 = self;
+          selfCopy = self;
         }
       }
 
       else
       {
-        v10 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (void)initWithATXEvent:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

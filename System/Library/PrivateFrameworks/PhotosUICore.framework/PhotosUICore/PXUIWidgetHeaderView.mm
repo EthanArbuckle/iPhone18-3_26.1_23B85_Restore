@@ -2,19 +2,19 @@
 - (BOOL)_canComposeTitleWithSubtitle;
 - (BOOL)_hasAccessibilityLargeText;
 - (BOOL)_hasSubtitle;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (PXUIWidgetHeaderViewDelegate)delegate;
 - (UIEdgeInsets)contentInsets;
-- (id)_captionButtonCreateIfNeeded:(BOOL)a3;
-- (id)_captionLabelCreateIfNeeded:(BOOL)a3;
-- (id)_subtitleButtonCreateIfNeeded:(BOOL)a3;
-- (id)_subtitleLabelCreateIfNeeded:(BOOL)a3;
-- (id)_titleLabelCreateIfNeeded:(BOOL)a3;
-- (id)_visualEffectViewCreateIfNeeded:(BOOL)a3;
-- (void)_handleCaptionButton:(id)a3;
-- (void)_handleSubtitleButton:(id)a3;
-- (void)_setConstraints:(id)a3;
-- (void)_setHasContent:(BOOL)a3;
+- (id)_captionButtonCreateIfNeeded:(BOOL)needed;
+- (id)_captionLabelCreateIfNeeded:(BOOL)needed;
+- (id)_subtitleButtonCreateIfNeeded:(BOOL)needed;
+- (id)_subtitleLabelCreateIfNeeded:(BOOL)needed;
+- (id)_titleLabelCreateIfNeeded:(BOOL)needed;
+- (id)_visualEffectViewCreateIfNeeded:(BOOL)needed;
+- (void)_handleCaptionButton:(id)button;
+- (void)_handleSubtitleButton:(id)button;
+- (void)_setConstraints:(id)constraints;
+- (void)_setHasContent:(BOOL)content;
 - (void)_setNeedsUpdate;
 - (void)_updateCaptionIfNeeded;
 - (void)_updateHasContentIfNeeded;
@@ -22,22 +22,22 @@
 - (void)_updateSubtitleIfNeeded;
 - (void)_updateTitleIfNeeded;
 - (void)layoutSubviews;
-- (void)performChanges:(id)a3;
-- (void)setAllowUserInteractionWithCaption:(BOOL)a3;
-- (void)setAllowUserInteractionWithSubtitle:(BOOL)a3;
-- (void)setCaption:(id)a3;
-- (void)setContentInsets:(UIEdgeInsets)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDistanceBetweenTitleBaselineAndSubtitleBaseline:(double)a3;
-- (void)setHorizontalSpacingBetweenTitleAndSubtitle:(double)a3;
-- (void)setLayoutStyle:(int64_t)a3;
-- (void)setMinimumDistanceBetweenLastBaselineAndBottom:(double)a3;
-- (void)setMinimumDistanceBetweenTopAndFirstBaseline:(double)a3;
-- (void)setPrimaryFont:(id)a3;
-- (void)setSecondaryFont:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTextColor:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)performChanges:(id)changes;
+- (void)setAllowUserInteractionWithCaption:(BOOL)caption;
+- (void)setAllowUserInteractionWithSubtitle:(BOOL)subtitle;
+- (void)setCaption:(id)caption;
+- (void)setContentInsets:(UIEdgeInsets)insets;
+- (void)setDelegate:(id)delegate;
+- (void)setDistanceBetweenTitleBaselineAndSubtitleBaseline:(double)baseline;
+- (void)setHorizontalSpacingBetweenTitleAndSubtitle:(double)subtitle;
+- (void)setLayoutStyle:(int64_t)style;
+- (void)setMinimumDistanceBetweenLastBaselineAndBottom:(double)bottom;
+- (void)setMinimumDistanceBetweenTopAndFirstBaseline:(double)baseline;
+- (void)setPrimaryFont:(id)font;
+- (void)setSecondaryFont:(id)font;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTextColor:(id)color;
+- (void)setTitle:(id)title;
 @end
 
 @implementation PXUIWidgetHeaderView
@@ -68,12 +68,12 @@
   if (self->_needsUpdateFlags.caption)
   {
     self->_needsUpdateFlags.caption = 0;
-    v3 = [(PXUIWidgetHeaderView *)self caption];
-    v4 = [(PXUIWidgetHeaderView *)self secondaryFont];
-    v5 = v4;
-    if (v4)
+    caption = [(PXUIWidgetHeaderView *)self caption];
+    secondaryFont = [(PXUIWidgetHeaderView *)self secondaryFont];
+    v5 = secondaryFont;
+    if (secondaryFont)
     {
-      v6 = v4;
+      v6 = secondaryFont;
     }
 
     else
@@ -83,29 +83,29 @@
 
     v7 = v6;
 
-    v8 = [(PXUIWidgetHeaderView *)self textColor];
-    v9 = [v3 length] != 0;
-    v10 = [(PXUIWidgetHeaderView *)self allowUserInteractionWithCaption];
-    v11 = v9 && !v10;
-    v12 = v9 & v10;
+    textColor = [(PXUIWidgetHeaderView *)self textColor];
+    v9 = [caption length] != 0;
+    allowUserInteractionWithCaption = [(PXUIWidgetHeaderView *)self allowUserInteractionWithCaption];
+    v11 = v9 && !allowUserInteractionWithCaption;
+    v12 = v9 & allowUserInteractionWithCaption;
     v13 = [(PXUIWidgetHeaderView *)self _captionLabelCreateIfNeeded:v11];
     v14 = [(PXUIWidgetHeaderView *)self _captionButtonCreateIfNeeded:v12];
     if (v11 == 1)
     {
-      [v13 setText:v3];
+      [v13 setText:caption];
       [v13 setFont:v7];
-      [v13 setTextColor:v8];
+      [v13 setTextColor:textColor];
     }
 
     if (v12)
     {
-      if (v3)
+      if (caption)
       {
         v15 = objc_alloc(MEMORY[0x1E696AAB0]);
         v22 = *MEMORY[0x1E69DB648];
         v23[0] = v7;
         v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-        v17 = [v15 initWithString:v3 attributes:v16];
+        v17 = [v15 initWithString:caption attributes:v16];
       }
 
       else
@@ -143,12 +143,12 @@ void __46__PXUIWidgetHeaderView__updateCaptionIfNeeded__block_invoke(uint64_t a1
   if (self->_needsUpdateFlags.subtitle)
   {
     self->_needsUpdateFlags.subtitle = 0;
-    v3 = [(PXUIWidgetHeaderView *)self subtitle];
-    v4 = [(PXUIWidgetHeaderView *)self secondaryFont];
-    v5 = v4;
-    if (v4)
+    subtitle = [(PXUIWidgetHeaderView *)self subtitle];
+    secondaryFont = [(PXUIWidgetHeaderView *)self secondaryFont];
+    v5 = secondaryFont;
+    if (secondaryFont)
     {
-      v6 = v4;
+      v6 = secondaryFont;
     }
 
     else
@@ -158,21 +158,21 @@ void __46__PXUIWidgetHeaderView__updateCaptionIfNeeded__block_invoke(uint64_t a1
 
     v7 = v6;
 
-    v8 = [(PXUIWidgetHeaderView *)self textColor];
-    v9 = [(PXUIWidgetHeaderView *)self allowUserInteractionWithSubtitle];
-    v10 = [(PXUIWidgetHeaderView *)self _canComposeTitleWithSubtitle];
-    if (v10)
+    textColor = [(PXUIWidgetHeaderView *)self textColor];
+    allowUserInteractionWithSubtitle = [(PXUIWidgetHeaderView *)self allowUserInteractionWithSubtitle];
+    _canComposeTitleWithSubtitle = [(PXUIWidgetHeaderView *)self _canComposeTitleWithSubtitle];
+    if (_canComposeTitleWithSubtitle)
     {
 
-      v3 = 0;
+      subtitle = 0;
     }
 
-    v11 = [v3 length] != 0;
-    v12 = v11 && !v9;
-    v13 = v11 & v9;
+    v11 = [subtitle length] != 0;
+    v12 = v11 && !allowUserInteractionWithSubtitle;
+    v13 = v11 & allowUserInteractionWithSubtitle;
     v14 = [(PXUIWidgetHeaderView *)self _subtitleLabelCreateIfNeeded:v12];
     v15 = v14;
-    if (v10)
+    if (_canComposeTitleWithSubtitle)
     {
       [v14 setText:0];
     }
@@ -180,20 +180,20 @@ void __46__PXUIWidgetHeaderView__updateCaptionIfNeeded__block_invoke(uint64_t a1
     v16 = [(PXUIWidgetHeaderView *)self _subtitleButtonCreateIfNeeded:v13];
     if (v12)
     {
-      [v15 setText:v3];
+      [v15 setText:subtitle];
       [v15 setFont:v7];
-      [v15 setTextColor:v8];
+      [v15 setTextColor:textColor];
     }
 
     if (v13)
     {
-      if (v3)
+      if (subtitle)
       {
         v17 = objc_alloc(MEMORY[0x1E696AAB0]);
         v24 = *MEMORY[0x1E69DB648];
         v25[0] = v7;
         v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
-        v19 = [v17 initWithString:v3 attributes:v18];
+        v19 = [v17 initWithString:subtitle attributes:v18];
       }
 
       else
@@ -241,12 +241,12 @@ void __47__PXUIWidgetHeaderView__updateSubtitleIfNeeded__block_invoke(uint64_t a
   if (self->_needsUpdateFlags.title)
   {
     self->_needsUpdateFlags.title = 0;
-    v16 = [(PXUIWidgetHeaderView *)self title];
-    v4 = [(PXUIWidgetHeaderView *)self primaryFont];
-    v5 = v4;
-    if (v4)
+    title = [(PXUIWidgetHeaderView *)self title];
+    primaryFont = [(PXUIWidgetHeaderView *)self primaryFont];
+    v5 = primaryFont;
+    if (primaryFont)
     {
-      v6 = v4;
+      v6 = primaryFont;
     }
 
     else
@@ -256,24 +256,24 @@ void __47__PXUIWidgetHeaderView__updateSubtitleIfNeeded__block_invoke(uint64_t a
 
     v7 = v6;
 
-    v8 = [(PXUIWidgetHeaderView *)self textColor];
-    v9 = [v16 length];
+    textColor = [(PXUIWidgetHeaderView *)self textColor];
+    v9 = [title length];
     v10 = [(PXUIWidgetHeaderView *)self _titleLabelCreateIfNeeded:v9 != 0];
     if (v9 && [(PXUIWidgetHeaderView *)self _canComposeTitleWithSubtitle])
     {
       v11 = MEMORY[0x1E696AEC0];
-      v12 = [(PXUIWidgetHeaderView *)self subtitle];
-      v13 = [v11 stringWithFormat:@"%@ %@ %@", v16, @"·", v12];
+      subtitle = [(PXUIWidgetHeaderView *)self subtitle];
+      v13 = [v11 stringWithFormat:@"%@ %@ %@", title, @"·", subtitle];
 
-      v16 = v13;
+      title = v13;
     }
 
-    [v10 setText:v16];
+    [v10 setText:title];
     [v10 setHidden:v9 == 0];
     [v10 setFont:v7];
-    [v10 setTextColor:v8];
-    v14 = [(PXUIWidgetHeaderView *)self _hasAccessibilityLargeText];
-    if (v14)
+    [v10 setTextColor:textColor];
+    _hasAccessibilityLargeText = [(PXUIWidgetHeaderView *)self _hasAccessibilityLargeText];
+    if (_hasAccessibilityLargeText)
     {
       v15 = 0;
     }
@@ -283,7 +283,7 @@ void __47__PXUIWidgetHeaderView__updateSubtitleIfNeeded__block_invoke(uint64_t a
       v15 = 4;
     }
 
-    [v10 setNumberOfLines:!v14];
+    [v10 setNumberOfLines:!_hasAccessibilityLargeText];
     [v10 setLineBreakMode:v15];
     [(PXUIWidgetHeaderView *)self setNeedsLayout];
   }
@@ -294,8 +294,8 @@ void __47__PXUIWidgetHeaderView__updateSubtitleIfNeeded__block_invoke(uint64_t a
   if (self->_needsUpdateFlags.hasContent)
   {
     self->_needsUpdateFlags.hasContent = 0;
-    v4 = [(PXUIWidgetHeaderView *)self title];
-    v5 = [v4 length];
+    title = [(PXUIWidgetHeaderView *)self title];
+    v5 = [title length];
 
     if (v5 || (-[PXUIWidgetHeaderView subtitle](self, "subtitle"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 length], v6, v7))
     {
@@ -304,8 +304,8 @@ void __47__PXUIWidgetHeaderView__updateSubtitleIfNeeded__block_invoke(uint64_t a
 
     else
     {
-      v9 = [(PXUIWidgetHeaderView *)self caption];
-      v8 = [v9 length] != 0;
+      caption = [(PXUIWidgetHeaderView *)self caption];
+      v8 = [caption length] != 0;
     }
 
     [(PXUIWidgetHeaderView *)self _setHasContent:v8];
@@ -316,8 +316,8 @@ void __47__PXUIWidgetHeaderView__updateSubtitleIfNeeded__block_invoke(uint64_t a
 {
   if (!self->_isPerformingChanges && !self->_isPerformingUpdates)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PXUIWidgetHeaderView.m" lineNumber:544 description:@"not inside -performChanges: or _updateIfNeeded"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXUIWidgetHeaderView.m" lineNumber:544 description:@"not inside -performChanges: or _updateIfNeeded"];
   }
 }
 
@@ -334,49 +334,49 @@ void __47__PXUIWidgetHeaderView__updateSubtitleIfNeeded__block_invoke(uint64_t a
     self->_isPerformingUpdates = isPerformingUpdates;
     if ([(PXUIWidgetHeaderView *)self _needsUpdate])
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v5 handleFailureInMethod:a2 object:self file:@"PXUIWidgetHeaderView.m" lineNumber:531 description:@"update still needed after update pass"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXUIWidgetHeaderView.m" lineNumber:531 description:@"update still needed after update pass"];
     }
   }
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   isPerformingChanges = self->_isPerformingChanges;
   self->_isPerformingChanges = 1;
-  v6 = v4;
-  if (v4)
+  v6 = changesCopy;
+  if (changesCopy)
   {
-    v4[2](v4);
-    v4 = v6;
+    changesCopy[2](changesCopy);
+    changesCopy = v6;
   }
 
   self->_isPerformingChanges = isPerformingChanges;
   if (!isPerformingChanges)
   {
     [(PXUIWidgetHeaderView *)self _updateIfNeeded];
-    v4 = v6;
+    changesCopy = v6;
   }
 }
 
-- (void)_handleCaptionButton:(id)a3
+- (void)_handleCaptionButton:(id)button
 {
   if (self->_delegateRespondsTo.didSelectCaption)
   {
-    v5 = a3;
-    v6 = [(PXUIWidgetHeaderView *)self delegate];
-    [v6 widgetHeaderView:self didSelectCaption:v5];
+    buttonCopy = button;
+    delegate = [(PXUIWidgetHeaderView *)self delegate];
+    [delegate widgetHeaderView:self didSelectCaption:buttonCopy];
   }
 }
 
-- (void)_handleSubtitleButton:(id)a3
+- (void)_handleSubtitleButton:(id)button
 {
   if (self->_delegateRespondsTo.didSelectSubtitle)
   {
-    v5 = a3;
-    v6 = [(PXUIWidgetHeaderView *)self delegate];
-    [v6 widgetHeaderView:self didSelectSubtitle:v5];
+    buttonCopy = button;
+    delegate = [(PXUIWidgetHeaderView *)self delegate];
+    [delegate widgetHeaderView:self didSelectSubtitle:buttonCopy];
   }
 }
 
@@ -384,37 +384,37 @@ void __47__PXUIWidgetHeaderView__updateSubtitleIfNeeded__block_invoke(uint64_t a
 {
   if ([(PXUIWidgetHeaderView *)self layoutStyle]== 2)
   {
-    v3 = [(PXUIWidgetHeaderView *)self _hasSubtitle];
-    if (v3)
+    _hasSubtitle = [(PXUIWidgetHeaderView *)self _hasSubtitle];
+    if (_hasSubtitle)
     {
-      LOBYTE(v3) = ![(PXUIWidgetHeaderView *)self allowUserInteractionWithSubtitle];
+      LOBYTE(_hasSubtitle) = ![(PXUIWidgetHeaderView *)self allowUserInteractionWithSubtitle];
     }
   }
 
   else
   {
-    LOBYTE(v3) = 0;
+    LOBYTE(_hasSubtitle) = 0;
   }
 
-  return v3;
+  return _hasSubtitle;
 }
 
 - (BOOL)_hasSubtitle
 {
-  v2 = [(PXUIWidgetHeaderView *)self subtitle];
-  v3 = [v2 length] != 0;
+  subtitle = [(PXUIWidgetHeaderView *)self subtitle];
+  v3 = [subtitle length] != 0;
 
   return v3;
 }
 
-- (void)_setConstraints:(id)a3
+- (void)_setConstraints:(id)constraints
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->__constraints != v4)
+  constraintsCopy = constraints;
+  v5 = constraintsCopy;
+  if (self->__constraints != constraintsCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)v4 isEqual:?];
+    v9 = constraintsCopy;
+    v6 = [(NSArray *)constraintsCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -438,16 +438,16 @@ void __47__PXUIWidgetHeaderView__updateSubtitleIfNeeded__block_invoke(uint64_t a
   }
 }
 
-- (void)_setHasContent:(BOOL)a3
+- (void)_setHasContent:(BOOL)content
 {
-  if (self->__hasContent != a3)
+  if (self->__hasContent != content)
   {
-    self->__hasContent = a3;
+    self->__hasContent = content;
     [(PXUIWidgetHeaderView *)self setNeedsLayout];
   }
 }
 
-- (id)_captionButtonCreateIfNeeded:(BOOL)a3
+- (id)_captionButtonCreateIfNeeded:(BOOL)needed
 {
   captionButton = self->__captionButton;
   if (!captionButton)
@@ -464,7 +464,7 @@ void __47__PXUIWidgetHeaderView__updateSubtitleIfNeeded__block_invoke(uint64_t a
   return captionButton;
 }
 
-- (id)_captionLabelCreateIfNeeded:(BOOL)a3
+- (id)_captionLabelCreateIfNeeded:(BOOL)needed
 {
   captionLabel = self->__captionLabel;
   if (captionLabel)
@@ -474,7 +474,7 @@ void __47__PXUIWidgetHeaderView__updateSubtitleIfNeeded__block_invoke(uint64_t a
 
   else
   {
-    v5 = !a3;
+    v5 = !needed;
   }
 
   if (!v5)
@@ -490,7 +490,7 @@ void __47__PXUIWidgetHeaderView__updateSubtitleIfNeeded__block_invoke(uint64_t a
   return captionLabel;
 }
 
-- (id)_subtitleButtonCreateIfNeeded:(BOOL)a3
+- (id)_subtitleButtonCreateIfNeeded:(BOOL)needed
 {
   subtitleButton = self->__subtitleButton;
   if (subtitleButton)
@@ -500,7 +500,7 @@ void __47__PXUIWidgetHeaderView__updateSubtitleIfNeeded__block_invoke(uint64_t a
 
   else
   {
-    v5 = !a3;
+    v5 = !needed;
   }
 
   if (!v5)
@@ -517,7 +517,7 @@ void __47__PXUIWidgetHeaderView__updateSubtitleIfNeeded__block_invoke(uint64_t a
   return subtitleButton;
 }
 
-- (id)_subtitleLabelCreateIfNeeded:(BOOL)a3
+- (id)_subtitleLabelCreateIfNeeded:(BOOL)needed
 {
   subtitleLabel = self->__subtitleLabel;
   if (subtitleLabel)
@@ -527,7 +527,7 @@ void __47__PXUIWidgetHeaderView__updateSubtitleIfNeeded__block_invoke(uint64_t a
 
   else
   {
-    v5 = !a3;
+    v5 = !needed;
   }
 
   if (!v5)
@@ -540,16 +540,16 @@ void __47__PXUIWidgetHeaderView__updateSubtitleIfNeeded__block_invoke(uint64_t a
     visualEffectView = self->__visualEffectView;
     if (visualEffectView)
     {
-      v9 = [(UIVisualEffectView *)visualEffectView contentView];
+      selfCopy = [(UIVisualEffectView *)visualEffectView contentView];
     }
 
     else
     {
-      v9 = self;
+      selfCopy = self;
     }
 
-    v10 = v9;
-    [(PXUIWidgetHeaderView *)v9 addSubview:self->__subtitleLabel];
+    v10 = selfCopy;
+    [(PXUIWidgetHeaderView *)selfCopy addSubview:self->__subtitleLabel];
 
     subtitleLabel = self->__subtitleLabel;
   }
@@ -557,7 +557,7 @@ void __47__PXUIWidgetHeaderView__updateSubtitleIfNeeded__block_invoke(uint64_t a
   return subtitleLabel;
 }
 
-- (id)_titleLabelCreateIfNeeded:(BOOL)a3
+- (id)_titleLabelCreateIfNeeded:(BOOL)needed
 {
   titleLabel = self->__titleLabel;
   if (titleLabel)
@@ -567,7 +567,7 @@ void __47__PXUIWidgetHeaderView__updateSubtitleIfNeeded__block_invoke(uint64_t a
 
   else
   {
-    v5 = !a3;
+    v5 = !needed;
   }
 
   if (!v5)
@@ -579,16 +579,16 @@ void __47__PXUIWidgetHeaderView__updateSubtitleIfNeeded__block_invoke(uint64_t a
     visualEffectView = self->__visualEffectView;
     if (visualEffectView)
     {
-      v9 = [(UIVisualEffectView *)visualEffectView contentView];
+      selfCopy = [(UIVisualEffectView *)visualEffectView contentView];
     }
 
     else
     {
-      v9 = self;
+      selfCopy = self;
     }
 
-    v10 = v9;
-    [(PXUIWidgetHeaderView *)v9 addSubview:self->__titleLabel];
+    v10 = selfCopy;
+    [(PXUIWidgetHeaderView *)selfCopy addSubview:self->__titleLabel];
 
     titleLabel = self->__titleLabel;
   }
@@ -596,7 +596,7 @@ void __47__PXUIWidgetHeaderView__updateSubtitleIfNeeded__block_invoke(uint64_t a
   return titleLabel;
 }
 
-- (id)_visualEffectViewCreateIfNeeded:(BOOL)a3
+- (id)_visualEffectViewCreateIfNeeded:(BOOL)needed
 {
   visualEffectView = self->__visualEffectView;
   if (visualEffectView)
@@ -606,7 +606,7 @@ void __47__PXUIWidgetHeaderView__updateSubtitleIfNeeded__block_invoke(uint64_t a
 
   else
   {
-    v5 = !a3;
+    v5 = !needed;
   }
 
   if (!v5)
@@ -624,10 +624,10 @@ void __47__PXUIWidgetHeaderView__updateSubtitleIfNeeded__block_invoke(uint64_t a
   return visualEffectView;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(PXUIWidgetHeaderView *)self layoutIfNeeded:a3.width];
+  width = fits.width;
+  [(PXUIWidgetHeaderView *)self layoutIfNeeded:fits.width];
   [(PXUIWidgetHeaderView *)self _currentHeight];
   v6 = v5;
   v7 = width;
@@ -647,7 +647,7 @@ void __47__PXUIWidgetHeaderView__updateSubtitleIfNeeded__block_invoke(uint64_t a
   v14 = 0;
   if ([(PXUIWidgetHeaderView *)self _hasContent])
   {
-    v4 = [(PXUIWidgetHeaderView *)self layoutStyle];
+    layoutStyle = [(PXUIWidgetHeaderView *)self layoutStyle];
     [(PXUIWidgetHeaderView *)self bounds];
     x = v16.origin.x;
     y = v16.origin.y;
@@ -655,8 +655,8 @@ void __47__PXUIWidgetHeaderView__updateSubtitleIfNeeded__block_invoke(uint64_t a
     height = v16.size.height;
     if (CGRectIsEmpty(v16))
     {
-      v9 = [(PXUIWidgetHeaderView *)self px_screen];
-      [v9 bounds];
+      px_screen = [(PXUIWidgetHeaderView *)self px_screen];
+      [px_screen bounds];
       width = CGRectGetWidth(v17);
     }
 
@@ -668,7 +668,7 @@ void __47__PXUIWidgetHeaderView__updateSubtitleIfNeeded__block_invoke(uint64_t a
     *&v10[7] = y;
     *&v10[8] = width;
     *&v10[9] = height;
-    v10[10] = v4;
+    v10[10] = layoutStyle;
     v10[11] = a2;
     v10[4] = self;
     v10[5] = &v11;
@@ -978,85 +978,85 @@ LABEL_46:
 
 - (BOOL)_hasAccessibilityLargeText
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3)
+  if (userInterfaceIdiom)
   {
     return 0;
   }
 
-  v5 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v5);
+  preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   return IsAccessibilityCategory;
 }
 
-- (void)setMinimumDistanceBetweenLastBaselineAndBottom:(double)a3
+- (void)setMinimumDistanceBetweenLastBaselineAndBottom:(double)bottom
 {
-  if (self->_minimumDistanceBetweenLastBaselineAndBottom != a3)
+  if (self->_minimumDistanceBetweenLastBaselineAndBottom != bottom)
   {
-    self->_minimumDistanceBetweenLastBaselineAndBottom = a3;
+    self->_minimumDistanceBetweenLastBaselineAndBottom = bottom;
     [(PXUIWidgetHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)setHorizontalSpacingBetweenTitleAndSubtitle:(double)a3
+- (void)setHorizontalSpacingBetweenTitleAndSubtitle:(double)subtitle
 {
-  if (self->_horizontalSpacingBetweenTitleAndSubtitle != a3)
+  if (self->_horizontalSpacingBetweenTitleAndSubtitle != subtitle)
   {
-    self->_horizontalSpacingBetweenTitleAndSubtitle = a3;
+    self->_horizontalSpacingBetweenTitleAndSubtitle = subtitle;
     [(PXUIWidgetHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)setDistanceBetweenTitleBaselineAndSubtitleBaseline:(double)a3
+- (void)setDistanceBetweenTitleBaselineAndSubtitleBaseline:(double)baseline
 {
-  if (self->_distanceBetweenTitleBaselineAndSubtitleBaseline != a3)
+  if (self->_distanceBetweenTitleBaselineAndSubtitleBaseline != baseline)
   {
-    self->_distanceBetweenTitleBaselineAndSubtitleBaseline = a3;
+    self->_distanceBetweenTitleBaselineAndSubtitleBaseline = baseline;
     [(PXUIWidgetHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)setMinimumDistanceBetweenTopAndFirstBaseline:(double)a3
+- (void)setMinimumDistanceBetweenTopAndFirstBaseline:(double)baseline
 {
-  if (self->_minimumDistanceBetweenTopAndFirstBaseline != a3)
+  if (self->_minimumDistanceBetweenTopAndFirstBaseline != baseline)
   {
-    self->_minimumDistanceBetweenTopAndFirstBaseline = a3;
+    self->_minimumDistanceBetweenTopAndFirstBaseline = baseline;
     [(PXUIWidgetHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)setContentInsets:(UIEdgeInsets)a3
+- (void)setContentInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_contentInsets.top), vceqq_f64(v4, *&self->_contentInsets.bottom)))) & 1) == 0)
   {
-    self->_contentInsets = a3;
+    self->_contentInsets = insets;
     [(PXUIWidgetHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)setLayoutStyle:(int64_t)a3
+- (void)setLayoutStyle:(int64_t)style
 {
-  if (self->_layoutStyle != a3)
+  if (self->_layoutStyle != style)
   {
-    self->_layoutStyle = a3;
+    self->_layoutStyle = style;
     [(PXUIWidgetHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)setAllowUserInteractionWithCaption:(BOOL)a3
+- (void)setAllowUserInteractionWithCaption:(BOOL)caption
 {
-  if (self->_allowUserInteractionWithCaption != a3)
+  if (self->_allowUserInteractionWithCaption != caption)
   {
     v6[7] = v3;
     v6[8] = v4;
-    self->_allowUserInteractionWithCaption = a3;
+    self->_allowUserInteractionWithCaption = caption;
     [(PXUIWidgetHeaderView *)self setNeedsLayout];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -1067,13 +1067,13 @@ LABEL_46:
   }
 }
 
-- (void)setAllowUserInteractionWithSubtitle:(BOOL)a3
+- (void)setAllowUserInteractionWithSubtitle:(BOOL)subtitle
 {
-  if (self->_allowUserInteractionWithSubtitle != a3)
+  if (self->_allowUserInteractionWithSubtitle != subtitle)
   {
     v6[7] = v3;
     v6[8] = v4;
-    self->_allowUserInteractionWithSubtitle = a3;
+    self->_allowUserInteractionWithSubtitle = subtitle;
     [(PXUIWidgetHeaderView *)self setNeedsLayout];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -1084,13 +1084,13 @@ LABEL_46:
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_textColor != v5 && ([(UIColor *)v5 isEqual:?]& 1) == 0)
+  colorCopy = color;
+  v6 = colorCopy;
+  if (self->_textColor != colorCopy && ([(UIColor *)colorCopy isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_textColor, a3);
+    objc_storeStrong(&self->_textColor, color);
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __37__PXUIWidgetHeaderView_setTextColor___block_invoke;
@@ -1109,13 +1109,13 @@ uint64_t __37__PXUIWidgetHeaderView_setTextColor___block_invoke(uint64_t a1)
   return [v2 _invalidateCaption];
 }
 
-- (void)setSecondaryFont:(id)a3
+- (void)setSecondaryFont:(id)font
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_secondaryFont != v5 && ([(UIFont *)v5 isEqual:?]& 1) == 0)
+  fontCopy = font;
+  v6 = fontCopy;
+  if (self->_secondaryFont != fontCopy && ([(UIFont *)fontCopy isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_secondaryFont, a3);
+    objc_storeStrong(&self->_secondaryFont, font);
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __41__PXUIWidgetHeaderView_setSecondaryFont___block_invoke;
@@ -1133,13 +1133,13 @@ uint64_t __41__PXUIWidgetHeaderView_setSecondaryFont___block_invoke(uint64_t a1)
   return [v2 _invalidateCaption];
 }
 
-- (void)setPrimaryFont:(id)a3
+- (void)setPrimaryFont:(id)font
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_primaryFont != v5 && ([(UIFont *)v5 isEqual:?]& 1) == 0)
+  fontCopy = font;
+  v6 = fontCopy;
+  if (self->_primaryFont != fontCopy && ([(UIFont *)fontCopy isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_primaryFont, a3);
+    objc_storeStrong(&self->_primaryFont, font);
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __39__PXUIWidgetHeaderView_setPrimaryFont___block_invoke;
@@ -1149,11 +1149,11 @@ uint64_t __41__PXUIWidgetHeaderView_setSecondaryFont___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setCaption:(id)a3
+- (void)setCaption:(id)caption
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_caption != v4 && ([(NSString *)v4 isEqual:?]& 1) == 0)
+  captionCopy = caption;
+  v5 = captionCopy;
+  if (self->_caption != captionCopy && ([(NSString *)captionCopy isEqual:?]& 1) == 0)
   {
     v6 = [(NSString *)v5 copy];
     caption = self->_caption;
@@ -1176,18 +1176,18 @@ uint64_t __35__PXUIWidgetHeaderView_setCaption___block_invoke(uint64_t a1)
   return [v2 _invalidateCaption];
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_subtitle != v4 && ([(NSString *)v4 isEqual:?]& 1) == 0)
+  subtitleCopy = subtitle;
+  v5 = subtitleCopy;
+  if (self->_subtitle != subtitleCopy && ([(NSString *)subtitleCopy isEqual:?]& 1) == 0)
   {
-    v6 = [(PXUIWidgetHeaderView *)self _hasSubtitle];
+    _hasSubtitle = [(PXUIWidgetHeaderView *)self _hasSubtitle];
     v7 = [(NSString *)v5 copy];
     subtitle = self->_subtitle;
     self->_subtitle = v7;
 
-    if (v6 != [(PXUIWidgetHeaderView *)self _hasSubtitle])
+    if (_hasSubtitle != [(PXUIWidgetHeaderView *)self _hasSubtitle])
     {
       [(PXUIWidgetHeaderView *)self setNeedsLayout];
     }
@@ -1209,11 +1209,11 @@ uint64_t __36__PXUIWidgetHeaderView_setSubtitle___block_invoke(uint64_t a1)
   return [v2 _invalidateSubtitle];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_title != v4 && ([(NSString *)v4 isEqual:?]& 1) == 0)
+  titleCopy = title;
+  v5 = titleCopy;
+  if (self->_title != titleCopy && ([(NSString *)titleCopy isEqual:?]& 1) == 0)
   {
     v6 = [(NSString *)v5 copy];
     title = self->_title;
@@ -1236,9 +1236,9 @@ uint64_t __33__PXUIWidgetHeaderView_setTitle___block_invoke(uint64_t a1)
   return [v2 _invalidateTitle];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)

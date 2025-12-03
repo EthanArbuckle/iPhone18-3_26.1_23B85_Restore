@@ -1,15 +1,15 @@
 @interface ATXBBNotificationManager
 + (id)sharedInstance;
-- (ATXBBNotificationManager)initWithDebugOutput:(BOOL)a3;
-- (BOOL)_purgeNotificationsWithMinDate:(id)a3;
+- (ATXBBNotificationManager)initWithDebugOutput:(BOOL)output;
+- (BOOL)_purgeNotificationsWithMinDate:(id)date;
 - (id)recentNotifications;
-- (void)addNotificationForBundleId:(id)a3 withPublicationDate:(id)a4;
+- (void)addNotificationForBundleId:(id)id withPublicationDate:(id)date;
 - (void)recentNotifications;
 @end
 
 @implementation ATXBBNotificationManager
 
-- (ATXBBNotificationManager)initWithDebugOutput:(BOOL)a3
+- (ATXBBNotificationManager)initWithDebugOutput:(BOOL)output
 {
   v14.receiver = self;
   v14.super_class = ATXBBNotificationManager;
@@ -18,13 +18,13 @@
   {
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
-    v7 = [v6 UTF8String];
+    uTF8String = [v6 UTF8String];
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v9 = dispatch_queue_create(v7, v8);
+    v9 = dispatch_queue_create(uTF8String, v8);
     queue = v4->_queue;
     v4->_queue = v9;
 
-    v4->_debugOutput = a3;
+    v4->_debugOutput = output;
     v11 = objc_opt_new();
     recentNotifications = v4->_recentNotifications;
     v4->_recentNotifications = v11;
@@ -54,20 +54,20 @@ uint64_t __42__ATXBBNotificationManager_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (void)addNotificationForBundleId:(id)a3 withPublicationDate:(id)a4
+- (void)addNotificationForBundleId:(id)id withPublicationDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  dateCopy = date;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __75__ATXBBNotificationManager_addNotificationForBundleId_withPublicationDate___block_invoke;
   block[3] = &unk_278597828;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
+  v12 = idCopy;
+  v13 = dateCopy;
+  selfCopy = self;
+  v9 = dateCopy;
+  v10 = idCopy;
   dispatch_async(queue, block);
 }
 
@@ -152,9 +152,9 @@ LABEL_18:
 LABEL_19:
 }
 
-- (BOOL)_purgeNotificationsWithMinDate:(id)a3
+- (BOOL)_purgeNotificationsWithMinDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   dispatch_assert_queue_V2(self->_queue);
   v5 = [(NSMutableDictionary *)self->_recentNotifications count];
   if (v5 >= 0x64)
@@ -165,7 +165,7 @@ LABEL_19:
     v18 = 3221225472;
     v19 = __59__ATXBBNotificationManager__purgeNotificationsWithMinDate___block_invoke;
     v20 = &unk_27859F388;
-    v21 = v4;
+    v21 = dateCopy;
     v8 = [(NSMutableDictionary *)recentNotifications keysOfEntriesPassingTest:&v17];
     v9 = MEMORY[0x277D85E08];
     if (self->_debugOutput)
@@ -178,8 +178,8 @@ LABEL_19:
     }
 
     v12 = self->_recentNotifications;
-    v13 = [v8 allObjects];
-    [(NSMutableDictionary *)v12 removeObjectsForKeys:v13];
+    allObjects = [v8 allObjects];
+    [(NSMutableDictionary *)v12 removeObjectsForKeys:allObjects];
 
     if (self->_debugOutput)
     {
@@ -241,7 +241,7 @@ uint64_t __47__ATXBBNotificationManager_recentNotifications__block_invoke(uint64
 - (void)recentNotifications
 {
   v6 = *MEMORY[0x277D85DE8];
-  v2 = *(*a1 + 40);
+  v2 = *(*self + 40);
   v4 = 138412290;
   v5 = v2;
   _os_log_debug_impl(&dword_2263AA000, a2, OS_LOG_TYPE_DEBUG, "Recent notifications: %@", &v4, 0xCu);

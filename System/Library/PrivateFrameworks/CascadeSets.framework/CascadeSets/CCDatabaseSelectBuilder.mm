@@ -1,33 +1,33 @@
 @interface CCDatabaseSelectBuilder
-- (CCDatabaseSelectBuilder)initWithTableName:(id)a3;
+- (CCDatabaseSelectBuilder)initWithTableName:(id)name;
 - (id)build;
-- (void)setColumns:(id)a3;
-- (void)setColumns:(id)a3 withTablePrefixes:(id)a4;
-- (void)setCommandCriterion:(id)a3;
-- (void)setCommandOrder:(id)a3;
-- (void)setJoinWithType:(int64_t)a3 tables:(id)a4;
+- (void)setColumns:(id)columns;
+- (void)setColumns:(id)columns withTablePrefixes:(id)prefixes;
+- (void)setCommandCriterion:(id)criterion;
+- (void)setCommandOrder:(id)order;
+- (void)setJoinWithType:(int64_t)type tables:(id)tables;
 @end
 
 @implementation CCDatabaseSelectBuilder
 
 - (id)build
 {
-  v3 = [(CCDatabaseCommandBuilder *)self tableName];
+  tableName = [(CCDatabaseCommandBuilder *)self tableName];
   columns = self->_columns;
   count = self->_count;
   join = self->_join;
-  v7 = [(CCDatabaseCommandBuilder *)self criterion];
+  criterion = [(CCDatabaseCommandBuilder *)self criterion];
   limit = self->_limit;
-  v9 = [CCSQLCommandGenerator selectFromTableWithName:v3 columns:columns count:count join:join criterion:v7 order:self->_order limit:limit offset:self->_offset];
+  v9 = [CCSQLCommandGenerator selectFromTableWithName:tableName columns:columns count:count join:join criterion:criterion order:self->_order limit:limit offset:self->_offset];
 
   return v9;
 }
 
-- (CCDatabaseSelectBuilder)initWithTableName:(id)a3
+- (CCDatabaseSelectBuilder)initWithTableName:(id)name
 {
   v10.receiver = self;
   v10.super_class = CCDatabaseSelectBuilder;
-  v3 = [(CCDatabaseCommandBuilder *)&v10 initWithTableName:a3];
+  v3 = [(CCDatabaseCommandBuilder *)&v10 initWithTableName:name];
   v4 = v3;
   if (v3)
   {
@@ -48,59 +48,59 @@
   return v4;
 }
 
-- (void)setCommandCriterion:(id)a3
+- (void)setCommandCriterion:(id)criterion
 {
   v3.receiver = self;
   v3.super_class = CCDatabaseSelectBuilder;
-  [(CCDatabaseCommandBuilder *)&v3 setCommandCriterion:a3];
+  [(CCDatabaseCommandBuilder *)&v3 setCommandCriterion:criterion];
 }
 
-- (void)setJoinWithType:(int64_t)a3 tables:(id)a4
+- (void)setJoinWithType:(int64_t)type tables:(id)tables
 {
-  v6 = a4;
-  v7 = [[CCSQLCommandJoin alloc] initWithJoinType:a3 joinTables:v6];
+  tablesCopy = tables;
+  v7 = [[CCSQLCommandJoin alloc] initWithJoinType:type joinTables:tablesCopy];
 
   join = self->_join;
   self->_join = v7;
 }
 
-- (void)setCommandOrder:(id)a3
+- (void)setCommandOrder:(id)order
 {
-  v4 = [a3 copy];
+  v4 = [order copy];
   order = self->_order;
   self->_order = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setColumns:(id)a3
+- (void)setColumns:(id)columns
 {
-  v4 = [a3 copy];
+  v4 = [columns copy];
   columns = self->_columns;
   self->_columns = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setColumns:(id)a3 withTablePrefixes:(id)a4
+- (void)setColumns:(id)columns withTablePrefixes:(id)prefixes
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v12, "count")}];
-  if ([v12 count])
+  columnsCopy = columns;
+  prefixesCopy = prefixes;
+  v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(columnsCopy, "count")}];
+  if ([columnsCopy count])
   {
     v8 = 0;
     do
     {
-      v9 = [v12 objectAtIndex:v8];
-      if ([v6 count] <= v8)
+      v9 = [columnsCopy objectAtIndex:v8];
+      if ([prefixesCopy count] <= v8)
       {
         v10 = 0;
       }
 
       else
       {
-        v10 = [v6 objectAtIndex:v8];
+        v10 = [prefixesCopy objectAtIndex:v8];
       }
 
       v11 = [CCSQLCommandGenerator prefixColumnName:v9 withTableName:v10];
@@ -109,7 +109,7 @@
       ++v8;
     }
 
-    while (v8 < [v12 count]);
+    while (v8 < [columnsCopy count]);
   }
 
   [(CCDatabaseSelectBuilder *)self setColumns:v7];

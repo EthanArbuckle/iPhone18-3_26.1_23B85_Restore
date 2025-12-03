@@ -1,43 +1,43 @@
 @interface MRColorComponents
-- (BOOL)isEqual:(id)a3;
-- (MRColorComponents)initWithProtobuf:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MRColorComponents)initWithProtobuf:(id)protobuf;
 - (_MRColorProtobuf)protobuf;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation MRColorComponents
 
-- (MRColorComponents)initWithProtobuf:(id)a3
+- (MRColorComponents)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
-  if (v4)
+  protobufCopy = protobuf;
+  if (protobufCopy)
   {
     v12.receiver = self;
     v12.super_class = MRColorComponents;
     v5 = [(MRColorComponents *)&v12 init];
     if (v5)
     {
-      [v4 red];
+      [protobufCopy red];
       v5->_red = v6;
-      [v4 green];
+      [protobufCopy green];
       v5->_green = v7;
-      [v4 blue];
+      [protobufCopy blue];
       v5->_blue = v8;
-      [v4 alpha];
+      [protobufCopy alpha];
       v5->_alpha = v9;
     }
 
     self = v5;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (_MRColorProtobuf)protobuf
@@ -69,10 +69,10 @@
   return [v3 stringWithFormat:@"<%@: %p red = %f, green = %f, blue = %f, alpha = %f>", v4, self, *&v6, *&v8, *&v10, v11];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v15 = 1;
   }
@@ -82,7 +82,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(MRColorComponents *)v5 red];
       v7 = v6;
       [(MRColorComponents *)self red];
@@ -109,9 +109,9 @@
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [(MRColorComponents *)self red];
   [v4 setRed:?];
   [(MRColorComponents *)self green];

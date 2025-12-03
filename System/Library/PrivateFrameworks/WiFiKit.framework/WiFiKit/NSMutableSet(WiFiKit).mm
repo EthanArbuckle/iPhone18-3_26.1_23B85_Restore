@@ -8,8 +8,8 @@
 {
   v31 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v22 = a1;
-  v5 = [a1 mutableCopy];
+  selfCopy = self;
+  v5 = [self mutableCopy];
   [v5 intersectSet:v4];
   v28 = 0u;
   v29 = 0u;
@@ -45,11 +45,11 @@
           v15 = v8;
           v16 = v4;
           v17 = v10;
-          v18 = [v13 anyObject];
-          if ([v18 compare:v12] == 1)
+          anyObject = [v13 anyObject];
+          if ([anyObject compare:v12] == 1)
           {
-            [v22 removeObject:v12];
-            [v22 addObject:v18];
+            [selfCopy removeObject:v12];
+            [selfCopy addObject:anyObject];
           }
 
           v10 = v17;
@@ -66,11 +66,11 @@
   }
 
   v19 = [v4 mutableCopy];
-  [v19 minusSet:v22];
+  [v19 minusSet:selfCopy];
   if ([v19 count])
   {
-    v20 = [v19 allObjects];
-    [v22 addObjectsFromArray:v20];
+    allObjects = [v19 allObjects];
+    [selfCopy addObjectsFromArray:allObjects];
   }
 
   v21 = *MEMORY[0x277D85DE8];

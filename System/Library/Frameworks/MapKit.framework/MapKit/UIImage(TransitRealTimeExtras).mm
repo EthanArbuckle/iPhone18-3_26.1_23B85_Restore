@@ -12,8 +12,8 @@
   if (v5)
   {
     v6 = +[MKArtworkDataSourceCache sharedInstance];
-    v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v7 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v9 = v8;
 
     v10 = [v6 imageForArtwork:v5 size:8 featureType:0 scale:a3 nightMode:v9];
@@ -35,7 +35,7 @@
 
 + (id)_mapkit_liveTransitIndicatorImageApplyingColorForStatus:()TransitRealTimeExtras darkMode:
 {
-  v5 = [a1 _mapkit_liveTransitIndicatorImageUsingDarkMode:a4];
+  v5 = [self _mapkit_liveTransitIndicatorImageUsingDarkMode:a4];
   v6 = MKTransitLiveDepartureColorForLiveStatus(a3);
   v7 = [v5 _flatImageWithColor:v6];
 

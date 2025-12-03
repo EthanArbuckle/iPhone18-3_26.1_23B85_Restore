@@ -1,13 +1,13 @@
 @interface MCMCommandCreateOrLookupAppGroupByAppGroupIdentifier
-+ (BOOL)secureRestrictedContainerIfNeededWithMetadata:(id)a3 entitlements:(id)a4 error:(id *)a5;
++ (BOOL)secureRestrictedContainerIfNeededWithMetadata:(id)metadata entitlements:(id)entitlements error:(id *)error;
 + (Class)incomingMessageClass;
 + (unint64_t)command;
 - (BOOL)preflightClientAllowed;
-- (MCMCommandCreateOrLookupAppGroupByAppGroupIdentifier)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5;
+- (MCMCommandCreateOrLookupAppGroupByAppGroupIdentifier)initWithMessage:(id)message context:(id)context reply:(id)reply;
 - (NSString)appGroupIdentifier;
-- (id)_finalizeWithRealPathWithReason:(unint64_t *)a3 containerIdentity:(id)a4 clientNegatesReference:(BOOL)a5 error:(id *)a6;
-- (id)_finalizeWithSynthesizedPathWithReason:(unint64_t *)a3 containerConfig:(id)a4 error:(id *)a5;
-- (id)_tokenForContainerPath:(id)a3 containerIdentity:(id)a4 reason:(unint64_t *)a5 error:(id *)a6;
+- (id)_finalizeWithRealPathWithReason:(unint64_t *)reason containerIdentity:(id)identity clientNegatesReference:(BOOL)reference error:(id *)error;
+- (id)_finalizeWithSynthesizedPathWithReason:(unint64_t *)reason containerConfig:(id)config error:(id *)error;
+- (id)_tokenForContainerPath:(id)path containerIdentity:(id)identity reason:(unint64_t *)reason error:(id *)error;
 - (unsigned)expectedPersonaKernelID;
 - (void)execute;
 @end
@@ -33,28 +33,28 @@
 {
   v43[1] = *MEMORY[0x1E69E9840];
   v39 = objc_autoreleasePoolPush();
-  v3 = [(MCMCommand *)self context];
-  v4 = [v3 clientIdentity];
+  context = [(MCMCommand *)self context];
+  clientIdentity = [context clientIdentity];
 
   v43[0] = 0;
-  v5 = [v4 codeSignInfo];
-  v6 = [v5 entitlements];
-  v7 = [(MCMCommandCreateOrLookupAppGroupByAppGroupIdentifier *)self appGroupIdentifier];
-  v36 = [v6 negatesReferenceToAppGroupIdentifier:v7];
+  codeSignInfo = [clientIdentity codeSignInfo];
+  entitlements = [codeSignInfo entitlements];
+  appGroupIdentifier = [(MCMCommandCreateOrLookupAppGroupByAppGroupIdentifier *)self appGroupIdentifier];
+  v36 = [entitlements negatesReferenceToAppGroupIdentifier:appGroupIdentifier];
 
-  v8 = v4;
+  v8 = clientIdentity;
   v9 = self->_appGroupIdentifier;
   v42 = 1;
-  v10 = [(MCMCommand *)self context];
-  v11 = [v10 globalConfiguration];
-  v12 = [v11 staticConfig];
-  v13 = [v12 configForContainerClass:7];
+  context2 = [(MCMCommand *)self context];
+  globalConfiguration = [context2 globalConfiguration];
+  staticConfig = [globalConfiguration staticConfig];
+  v13 = [staticConfig configForContainerClass:7];
 
-  v14 = [(MCMCommand *)self context];
-  v15 = [v14 userIdentityCache];
-  v16 = [(MCMCommand *)self warnings];
+  context3 = [(MCMCommand *)self context];
+  userIdentityCache = [context3 userIdentityCache];
+  warnings = [(MCMCommand *)self warnings];
   v41 = 0;
-  v17 = [MCMXPCMessageBase legacyUserIdentityForIdentifier:v9 targetUserIdentity:0 containerConfig:v13 clientIdentity:v8 userIdentityCache:v15 warnings:v16 error:&v41];
+  v17 = [MCMXPCMessageBase legacyUserIdentityForIdentifier:v9 targetUserIdentity:0 containerConfig:v13 clientIdentity:v8 userIdentityCache:userIdentityCache warnings:warnings error:&v41];
   v18 = v41;
 
   v19 = v17;
@@ -69,19 +69,19 @@ LABEL_22:
     v26 = [(MCMResultBase *)[MCMResultWithContainerBase alloc] initWithError:v18];
     v27 = v18;
 LABEL_23:
-    v34 = [(MCMCommand *)self resultPromise];
-    [v34 completeWithResult:v26];
+    resultPromise = [(MCMCommand *)self resultPromise];
+    [resultPromise completeWithResult:v26];
 
     objc_autoreleasePoolPop(v39);
     v35 = *MEMORY[0x1E69E9840];
     return;
   }
 
-  v20 = [v8 platform];
-  v21 = [(MCMCommand *)self context];
-  [v21 userIdentityCache];
+  platform = [v8 platform];
+  context4 = [(MCMCommand *)self context];
+  [context4 userIdentityCache];
   v23 = v22 = v8;
-  v19 = [MCMContainerIdentity containerIdentityWithUserIdentity:v17 identifier:v9 containerConfig:v13 platform:v20 userIdentityCache:v23 error:&v42];
+  v19 = [MCMContainerIdentity containerIdentityWithUserIdentity:v17 identifier:v9 containerConfig:v13 platform:platform userIdentityCache:v23 error:&v42];
 
   if (!v19)
   {
@@ -175,21 +175,21 @@ LABEL_17:
   return result;
 }
 
-- (id)_tokenForContainerPath:(id)a3 containerIdentity:(id)a4 reason:(unint64_t *)a5 error:(id *)a6
+- (id)_tokenForContainerPath:(id)path containerIdentity:(id)identity reason:(unint64_t *)reason error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a3;
+  identityCopy = identity;
+  pathCopy = path;
   v12 = [MCMSandboxExtension alloc];
-  v13 = [(MCMCommand *)self context];
-  v14 = [v13 clientIdentity];
-  v15 = [(MCMSandboxExtension *)v12 initWithClientIdentity:v14 containerPath:v11 containerIdentity:v10];
+  context = [(MCMCommand *)self context];
+  clientIdentity = [context clientIdentity];
+  v15 = [(MCMSandboxExtension *)v12 initWithClientIdentity:clientIdentity containerPath:pathCopy containerIdentity:identityCopy];
 
   if (v15)
   {
     [(MCMSandboxExtension *)v15 setUseLegacyExtensionPolicy:1];
     [(MCMSandboxExtension *)v15 setUseProxiedClientForTarget:1];
-    v16 = [(MCMSandboxExtension *)v15 tokenForPart:0 partDomain:0 error:a6];
+    v16 = [(MCMSandboxExtension *)v15 tokenForPart:0 partDomain:0 error:error];
   }
 
   else
@@ -197,27 +197,27 @@ LABEL_17:
     v16 = 0;
   }
 
-  *a5 = [(MCMSandboxExtension *)v15 reason];
+  *reason = [(MCMSandboxExtension *)v15 reason];
 
   v17 = *MEMORY[0x1E69E9840];
 
   return v16;
 }
 
-- (id)_finalizeWithSynthesizedPathWithReason:(unint64_t *)a3 containerConfig:(id)a4 error:(id *)a5
+- (id)_finalizeWithSynthesizedPathWithReason:(unint64_t *)reason containerConfig:(id)config error:(id *)error
 {
   v56 = *MEMORY[0x1E69E9840];
-  v52 = a4;
-  v7 = [(MCMCommand *)self context];
-  v8 = [v7 clientIdentity];
+  configCopy = config;
+  context = [(MCMCommand *)self context];
+  clientIdentity = [context clientIdentity];
 
   v53 = 1;
-  v9 = [MEMORY[0x1E696AFB0] UUID];
-  v10 = [v8 userIdentity];
-  v11 = [v8 posixUser];
-  v12 = [v10 userIdentityWithPOSIXUser:v11];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  userIdentity = [clientIdentity userIdentity];
+  posixUser = [clientIdentity posixUser];
+  v12 = [userIdentity userIdentityWithPOSIXUser:posixUser];
 
-  v51 = v9;
+  v51 = uUID;
   if (!v12)
   {
     v32 = [[MCMError alloc] initWithErrorType:155 category:0];
@@ -229,12 +229,12 @@ LABEL_17:
     goto LABEL_11;
   }
 
-  v49 = a3;
-  v13 = [(MCMCommandCreateOrLookupAppGroupByAppGroupIdentifier *)self appGroupIdentifier];
-  v14 = [v8 platform];
-  v15 = [(MCMCommand *)self context];
-  v16 = [v15 userIdentityCache];
-  v17 = [MCMConcreteContainerIdentity containerIdentityWithUUID:v9 userIdentity:v12 identifier:v13 containerConfig:v52 platform:v14 userIdentityCache:v16 error:&v53];
+  reasonCopy = reason;
+  appGroupIdentifier = [(MCMCommandCreateOrLookupAppGroupByAppGroupIdentifier *)self appGroupIdentifier];
+  platform = [clientIdentity platform];
+  context2 = [(MCMCommand *)self context];
+  userIdentityCache = [context2 userIdentityCache];
+  v17 = [MCMConcreteContainerIdentity containerIdentityWithUUID:uUID userIdentity:v12 identifier:appGroupIdentifier containerConfig:configCopy platform:platform userIdentityCache:userIdentityCache error:&v53];
 
   if (!v17)
   {
@@ -247,22 +247,22 @@ LABEL_10:
     v20 = 0;
     v21 = 0;
     v31 = 0;
-    a3 = v49;
+    reason = reasonCopy;
     goto LABEL_11;
   }
 
   v18 = +[MCMFileManager defaultManager];
-  v19 = [(MCMCommandCreateOrLookupAppGroupByAppGroupIdentifier *)self appGroupIdentifier];
-  v20 = [v18 fsSanitizedStringFromString:v19 allowSpaces:1];
+  appGroupIdentifier2 = [(MCMCommandCreateOrLookupAppGroupByAppGroupIdentifier *)self appGroupIdentifier];
+  v20 = [v18 fsSanitizedStringFromString:appGroupIdentifier2 allowSpaces:1];
 
   if (!v20)
   {
     v37 = container_log_handle_for_category();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
-      v42 = [(MCMCommandCreateOrLookupAppGroupByAppGroupIdentifier *)self appGroupIdentifier];
+      appGroupIdentifier3 = [(MCMCommandCreateOrLookupAppGroupByAppGroupIdentifier *)self appGroupIdentifier];
       *buf = 138543362;
-      v55 = v42;
+      v55 = appGroupIdentifier3;
       _os_log_error_impl(&dword_1DF2C3000, v37, OS_LOG_TYPE_ERROR, "Invalid app group identifier [%{public}@]", buf, 0xCu);
     }
 
@@ -276,38 +276,38 @@ LABEL_10:
   v22 = [MCMResultWithContainerBase alloc];
   [v21 containerPathIdentifier];
   v23 = v48 = v12;
-  v24 = [v17 identifier];
-  v46 = [v17 containerClass];
-  v47 = [v17 userIdentity];
-  v25 = [v47 posixUser];
-  v45 = [v17 userIdentity];
-  v26 = [v45 personaUniqueString];
-  v27 = [v21 containerDataURL];
+  identifier = [v17 identifier];
+  containerClass = [v17 containerClass];
+  userIdentity2 = [v17 userIdentity];
+  posixUser2 = [userIdentity2 posixUser];
+  userIdentity3 = [v17 userIdentity];
+  personaUniqueString = [userIdentity3 personaUniqueString];
+  containerDataURL = [v21 containerDataURL];
   LOBYTE(v44) = 0;
   LOBYTE(v43) = 1;
   v28 = v22;
-  v29 = v8;
-  v30 = v25;
-  v31 = [(MCMResultWithContainerBase *)v28 initWithUUID:v51 containerPathIdentifier:v23 identifier:v24 containerClass:v46 POSIXUser:v25 personaUniqueString:v26 sandboxToken:0 existed:v43 url:v27 info:0 transient:v44 userManagedAssetsRelPath:0 creator:0];
+  v29 = clientIdentity;
+  v30 = posixUser2;
+  v31 = [(MCMResultWithContainerBase *)v28 initWithUUID:v51 containerPathIdentifier:v23 identifier:identifier containerClass:containerClass POSIXUser:posixUser2 personaUniqueString:personaUniqueString sandboxToken:0 existed:v43 url:containerDataURL info:0 transient:v44 userManagedAssetsRelPath:0 creator:0];
 
-  v8 = v29;
+  clientIdentity = v29;
   v12 = v48;
-  a3 = v49;
+  reason = reasonCopy;
   v32 = 0;
   v33 = 1;
 LABEL_11:
-  if (!a5 || v31)
+  if (!error || v31)
   {
-    if (a3 && v31)
+    if (reason && v31)
     {
-      *a3 = v33;
+      *reason = v33;
     }
   }
 
   else
   {
     v38 = v32;
-    *a5 = v32;
+    *error = v32;
   }
 
   v39 = v31;
@@ -317,88 +317,88 @@ LABEL_11:
   return v39;
 }
 
-- (id)_finalizeWithRealPathWithReason:(unint64_t *)a3 containerIdentity:(id)a4 clientNegatesReference:(BOOL)a5 error:(id *)a6
+- (id)_finalizeWithRealPathWithReason:(unint64_t *)reason containerIdentity:(id)identity clientNegatesReference:(BOOL)reference error:(id *)error
 {
-  v6 = a5;
+  referenceCopy = reference;
   v58[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  identityCopy = identity;
   v58[0] = 0;
-  v9 = [(MCMCommand *)self context];
-  v10 = [v9 containerFactory];
+  context = [(MCMCommand *)self context];
+  containerFactory = [context containerFactory];
   v57 = 0;
-  v11 = [v10 containerForContainerIdentity:v8 createIfNecessary:!v6 error:&v57];
+  v11 = [containerFactory containerForContainerIdentity:identityCopy createIfNecessary:!referenceCopy error:&v57];
   v12 = v57;
 
   if (v11)
   {
     v51 = v11;
-    v13 = [v11 metadataMinimal];
-    v14 = [v8 containerConfig];
-    v15 = [v14 registerDynamicProtectionWithRestrictedEntitlement];
+    metadataMinimal = [v11 metadataMinimal];
+    containerConfig = [identityCopy containerConfig];
+    registerDynamicProtectionWithRestrictedEntitlement = [containerConfig registerDynamicProtectionWithRestrictedEntitlement];
 
-    v52 = v8;
-    if (v15)
+    v52 = identityCopy;
+    if (registerDynamicProtectionWithRestrictedEntitlement)
     {
-      v16 = [(MCMCommand *)self context];
-      v17 = [v16 clientIdentity];
-      v18 = [v17 codeSignInfo];
-      v19 = [v18 entitlements];
+      context2 = [(MCMCommand *)self context];
+      clientIdentity = [context2 clientIdentity];
+      codeSignInfo = [clientIdentity codeSignInfo];
+      entitlements = [codeSignInfo entitlements];
 
       v56 = v12;
-      LODWORD(v17) = [MCMCommandCreateOrLookupAppGroupByAppGroupIdentifier secureRestrictedContainerIfNeededWithMetadata:v13 entitlements:v19 error:&v56];
+      LODWORD(clientIdentity) = [MCMCommandCreateOrLookupAppGroupByAppGroupIdentifier secureRestrictedContainerIfNeededWithMetadata:metadataMinimal entitlements:entitlements error:&v56];
       v20 = v56;
 
-      if (!v17)
+      if (!clientIdentity)
       {
         v33 = 0;
         v35 = 0;
         v34 = 0;
         v36 = 0;
         v12 = v20;
-        v8 = v52;
+        identityCopy = v52;
 LABEL_12:
         v11 = v51;
         goto LABEL_13;
       }
 
       v12 = v20;
-      v8 = v52;
+      identityCopy = v52;
     }
 
     v21 = v12;
-    v22 = [v13 containerPath];
-    v23 = [v13 containerIdentity];
+    containerPath = [metadataMinimal containerPath];
+    containerIdentity = [metadataMinimal containerIdentity];
     v55 = v12;
-    v24 = [(MCMCommandCreateOrLookupAppGroupByAppGroupIdentifier *)self _tokenForContainerPath:v22 containerIdentity:v23 reason:v58 error:&v55];
+    v24 = [(MCMCommandCreateOrLookupAppGroupByAppGroupIdentifier *)self _tokenForContainerPath:containerPath containerIdentity:containerIdentity reason:v58 error:&v55];
     v12 = v55;
 
     if (v24 || !v12 || [v12 type] == 90)
     {
-      v49 = [v13 containerPath];
-      v45 = [v49 containerDataURL];
+      containerPath2 = [metadataMinimal containerPath];
+      containerDataURL = [containerPath2 containerDataURL];
       v47 = [MCMResultWithContainerBase alloc];
-      v46 = [v13 uuid];
-      v50 = [v13 containerPath];
-      v25 = [v50 containerPathIdentifier];
-      v26 = [v13 identifier];
-      v44 = [v13 containerClass];
-      v27 = [v13 userIdentity];
-      v28 = [v27 posixUser];
-      v29 = [v13 userIdentity];
-      v30 = [v29 personaUniqueString];
+      uuid = [metadataMinimal uuid];
+      containerPath3 = [metadataMinimal containerPath];
+      containerPathIdentifier = [containerPath3 containerPathIdentifier];
+      identifier = [metadataMinimal identifier];
+      containerClass = [metadataMinimal containerClass];
+      userIdentity = [metadataMinimal userIdentity];
+      posixUser = [userIdentity posixUser];
+      userIdentity2 = [metadataMinimal userIdentity];
+      personaUniqueString = [userIdentity2 personaUniqueString];
       LOBYTE(v43) = 0;
-      LOBYTE(v42) = [v13 existed];
+      LOBYTE(v42) = [metadataMinimal existed];
       v41 = v24;
       v31 = v47;
       v48 = v24;
-      v32 = v25;
-      v33 = [(MCMResultWithContainerBase *)v31 initWithUUID:v46 containerPathIdentifier:v25 identifier:v26 containerClass:v44 POSIXUser:v28 personaUniqueString:v30 sandboxToken:v41 existed:v42 url:v45 info:0 transient:v43 userManagedAssetsRelPath:0 creator:0];
+      v32 = containerPathIdentifier;
+      v33 = [(MCMResultWithContainerBase *)v31 initWithUUID:uuid containerPathIdentifier:containerPathIdentifier identifier:identifier containerClass:containerClass POSIXUser:posixUser personaUniqueString:personaUniqueString sandboxToken:v41 existed:v42 url:containerDataURL info:0 transient:v43 userManagedAssetsRelPath:0 creator:0];
 
-      v34 = v49;
-      v8 = v52;
+      v34 = containerPath2;
+      identityCopy = v52;
 
       v35 = v48;
-      v36 = v45;
+      v36 = containerDataURL;
     }
 
     else
@@ -413,23 +413,23 @@ LABEL_12:
   }
 
   v33 = 0;
-  v13 = 0;
+  metadataMinimal = 0;
   v35 = 0;
   v34 = 0;
   v36 = 0;
 LABEL_13:
-  if (!a6 || v33)
+  if (!error || v33)
   {
-    if (a3 && v33)
+    if (reason && v33)
     {
-      *a3 = v58[0];
+      *reason = v58[0];
     }
   }
 
   else
   {
     v37 = v12;
-    *a6 = v12;
+    *error = v12;
   }
 
   v38 = v33;
@@ -438,40 +438,40 @@ LABEL_13:
   return v33;
 }
 
-- (MCMCommandCreateOrLookupAppGroupByAppGroupIdentifier)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5
+- (MCMCommandCreateOrLookupAppGroupByAppGroupIdentifier)initWithMessage:(id)message context:(id)context reply:(id)reply
 {
   v15 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  messageCopy = message;
   v14.receiver = self;
   v14.super_class = MCMCommandCreateOrLookupAppGroupByAppGroupIdentifier;
-  v9 = [(MCMCommand *)&v14 initWithMessage:v8 context:a4 reply:a5];
+  v9 = [(MCMCommand *)&v14 initWithMessage:messageCopy context:context reply:reply];
   if (v9)
   {
-    v10 = [v8 appGroupIdentifier];
+    appGroupIdentifier = [messageCopy appGroupIdentifier];
     appGroupIdentifier = v9->_appGroupIdentifier;
-    v9->_appGroupIdentifier = v10;
+    v9->_appGroupIdentifier = appGroupIdentifier;
   }
 
   v12 = *MEMORY[0x1E69E9840];
   return v9;
 }
 
-+ (BOOL)secureRestrictedContainerIfNeededWithMetadata:(id)a3 entitlements:(id)a4 error:(id *)a5
++ (BOOL)secureRestrictedContainerIfNeededWithMetadata:(id)metadata entitlements:(id)entitlements error:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 identifier];
-  v10 = [v8 containerPath];
+  entitlementsCopy = entitlements;
+  metadataCopy = metadata;
+  identifier = [metadataCopy identifier];
+  containerPath = [metadataCopy containerPath];
 
-  v11 = [v10 containerRootURL];
+  containerRootURL = [containerPath containerRootURL];
 
   v12 = [MCMFileHandle alloc];
-  v13 = [v11 path];
+  path = [containerRootURL path];
   LOBYTE(v32) = 0;
-  v14 = [(MCMFileHandle *)v12 initWithPath:v13 relativeToFileHandle:0 direction:10 symlinks:1 createMode:0 createDPClass:0 openLazily:v32];
+  v14 = [(MCMFileHandle *)v12 initWithPath:path relativeToFileHandle:0 direction:10 symlinks:1 createMode:0 createDPClass:0 openLazily:v32];
 
-  v15 = [v7 isOwnerOfProtectedAppGroupContainerWithIdentifier:v9];
+  v15 = [entitlementsCopy isOwnerOfProtectedAppGroupContainerWithIdentifier:identifier];
   v16 = 0;
   if (!v15)
   {
@@ -499,11 +499,11 @@ LABEL_7:
     {
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [v11 path];
+        path2 = [containerRootURL path];
         *buf = 138412546;
-        v36 = v9;
+        v36 = identifier;
         v37 = 2112;
-        v38 = v23;
+        v38 = path2;
         _os_log_impl(&dword_1DF2C3000, v22, OS_LOG_TYPE_DEFAULT, "[%@] Registered app group container at [%@] for protection", buf, 0x16u);
       }
 
@@ -512,17 +512,17 @@ LABEL_7:
 
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v31 = [v11 path];
+      path3 = [containerRootURL path];
       *buf = 138412802;
-      v36 = v9;
+      v36 = identifier;
       v37 = 2112;
-      v38 = v31;
+      v38 = path3;
       v39 = 2112;
       v40 = v16;
       _os_log_error_impl(&dword_1DF2C3000, v22, OS_LOG_TYPE_ERROR, "[%@] Failed to register app group container at [%@] for protection; error = %@", buf, 0x20u);
     }
 
-    v24 = [[MCMError alloc] initWithNSError:v16 url:v11 defaultErrorType:145];
+    v24 = [[MCMError alloc] initWithNSError:v16 url:containerRootURL defaultErrorType:145];
     v19 = v16;
   }
 
@@ -531,25 +531,25 @@ LABEL_7:
     v26 = container_log_handle_for_category();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      v30 = [v11 path];
+      path4 = [containerRootURL path];
       *buf = 138412802;
-      v36 = v9;
+      v36 = identifier;
       v37 = 2112;
-      v38 = v30;
+      v38 = path4;
       v39 = 2112;
       v40 = v19;
       _os_log_error_impl(&dword_1DF2C3000, v26, OS_LOG_TYPE_ERROR, "[%@] Failed to open %@ during app group protection check; error = %@", buf, 0x20u);
     }
 
-    v24 = [[MCMError alloc] initWithNSError:v19 url:v11 defaultErrorType:144];
+    v24 = [[MCMError alloc] initWithNSError:v19 url:containerRootURL defaultErrorType:144];
   }
 
   [(MCMFileHandle *)v14 close];
-  if (a5)
+  if (error)
   {
     v27 = v24;
     v25 = 0;
-    *a5 = v24;
+    *error = v24;
   }
 
   else

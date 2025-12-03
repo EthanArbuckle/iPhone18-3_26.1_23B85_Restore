@@ -3,28 +3,28 @@
 - (BOOL)canBePaused;
 - (BOOL)needsPowerAssertion;
 - (NSString)downloadPhase;
-- (id)_initWithMessage:(id)a3 controlConnection:(id)a4;
-- (void)_finishWithType:(int)a3 error:(id)a4;
-- (void)_setBool:(BOOL)a3 forSessionProperty:(const char *)a4;
+- (id)_initWithMessage:(id)message controlConnection:(id)connection;
+- (void)_finishWithType:(int)type error:(id)error;
+- (void)_setBool:(BOOL)bool forSessionProperty:(const char *)property;
 - (void)dealloc;
-- (void)finishSessionWithSuccess:(BOOL)a3 error:(id)a4;
-- (void)setPercentComplete:(float)a3;
-- (void)setStatusDescription:(id)a3;
+- (void)finishSessionWithSuccess:(BOOL)success error:(id)error;
+- (void)setPercentComplete:(float)complete;
+- (void)setStatusDescription:(id)description;
 @end
 
 @implementation SSDownloadHandlerSession
 
-- (id)_initWithMessage:(id)a3 controlConnection:(id)a4
+- (id)_initWithMessage:(id)message controlConnection:(id)connection
 {
   v7.receiver = self;
   v7.super_class = SSDownloadHandlerSession;
-  v5 = [(SSDownloadSession *)&v7 _initWithMessage:a3 controlConnection:a4];
+  v5 = [(SSDownloadSession *)&v7 _initWithMessage:message controlConnection:connection];
   if (v5)
   {
     objc_opt_class();
-    v5[6] = SSXPCDictionaryCopyCFObjectWithClass(a3, "4");
+    v5[6] = SSXPCDictionaryCopyCFObjectWithClass(message, "4");
     objc_opt_class();
-    v5[7] = SSXPCDictionaryCopyCFObjectWithClass(a3, "5");
+    v5[7] = SSXPCDictionaryCopyCFObjectWithClass(message, "5");
   }
 
   return v5;
@@ -101,9 +101,9 @@
   return v3;
 }
 
-- (void)finishSessionWithSuccess:(BOOL)a3 error:(id)a4
+- (void)finishSessionWithSuccess:(BOOL)success error:(id)error
 {
-  if (a3)
+  if (success)
   {
     v4 = 2;
   }
@@ -113,7 +113,7 @@
     v4 = 0;
   }
 
-  [(SSDownloadHandlerSession *)self _finishWithType:v4 error:a4];
+  [(SSDownloadHandlerSession *)self _finishWithType:v4 error:error];
 }
 
 - (BOOL)needsPowerAssertion
@@ -130,7 +130,7 @@
   return v4;
 }
 
-- (void)setPercentComplete:(float)a3
+- (void)setPercentComplete:(float)complete
 {
   v22 = *MEMORY[0x1E69E9840];
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
@@ -141,15 +141,15 @@
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
     if (os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_FAULT))
@@ -181,12 +181,12 @@
   v18 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_int64(v18, "0", 4);
   xpc_dictionary_set_int64(v18, "1", self->super._sessionID);
-  xpc_dictionary_set_double(v18, "2", a3);
+  xpc_dictionary_set_double(v18, "2", complete);
   [(SSXPCConnection *)self->super._controlConnection sendMessage:v18];
   xpc_release(v18);
 }
 
-- (void)setStatusDescription:(id)a3
+- (void)setStatusDescription:(id)description
 {
   v22 = *MEMORY[0x1E69E9840];
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
@@ -197,15 +197,15 @@
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
     if (os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_FAULT))
@@ -237,12 +237,12 @@
   v18 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_int64(v18, "0", 51);
   xpc_dictionary_set_int64(v18, "1", self->super._sessionID);
-  SSXPCDictionarySetCFObject(v18, "2", a3);
+  SSXPCDictionarySetCFObject(v18, "2", description);
   [(SSXPCConnection *)self->super._controlConnection sendMessage:v18];
   xpc_release(v18);
 }
 
-- (void)_finishWithType:(int)a3 error:(id)a4
+- (void)_finishWithType:(int)type error:(id)error
 {
   v24 = *MEMORY[0x1E69E9840];
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
@@ -253,15 +253,15 @@
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
+    shouldLog = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
     if (os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_FAULT))
@@ -293,13 +293,13 @@
   v20 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_int64(v20, "0", 2);
   xpc_dictionary_set_int64(v20, "1", self->super._sessionID);
-  xpc_dictionary_set_int64(v20, "2", a3);
-  SSXPCDictionarySetCFObject(v20, "3", a4);
+  xpc_dictionary_set_int64(v20, "2", type);
+  SSXPCDictionarySetCFObject(v20, "3", error);
   [(SSXPCConnection *)self->super._controlConnection sendMessage:v20];
   xpc_release(v20);
 }
 
-- (void)_setBool:(BOOL)a3 forSessionProperty:(const char *)a4
+- (void)_setBool:(BOOL)bool forSessionProperty:(const char *)property
 {
   v25 = *MEMORY[0x1E69E9840];
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
@@ -310,15 +310,15 @@
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
+    shouldLog = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
     if (os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_FAULT))
@@ -351,7 +351,7 @@
   xpc_dictionary_set_int64(v20, "0", 30);
   xpc_dictionary_set_int64(v20, "1", self->super._sessionID);
   v21 = xpc_dictionary_create(0, 0, 0);
-  xpc_dictionary_set_BOOL(v21, a4, a3);
+  xpc_dictionary_set_BOOL(v21, property, bool);
   xpc_dictionary_set_value(v20, "2", v21);
   xpc_release(v21);
   [(SSXPCConnection *)self->super._controlConnection sendMessage:v20];

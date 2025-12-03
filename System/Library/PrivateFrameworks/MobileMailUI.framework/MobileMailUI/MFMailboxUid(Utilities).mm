@@ -131,28 +131,28 @@
 - (uint64_t)iconName
 {
   v2 = objc_opt_class();
-  v3 = [a1 mailboxType];
+  mailboxType = [self mailboxType];
 
-  return [v2 iconNameForType:v3];
+  return [v2 iconNameForType:mailboxType];
 }
 
 - (uint64_t)icon
 {
   v2 = objc_opt_class();
-  v3 = [a1 mailboxType];
+  mailboxType = [self mailboxType];
 
-  return [v2 iconForType:v3];
+  return [v2 iconForType:mailboxType];
 }
 
 - (uint64_t)level
 {
-  v1 = [a1 parent];
-  if (!v1)
+  parent = [self parent];
+  if (!parent)
   {
     return 0;
   }
 
-  v2 = v1;
+  v2 = parent;
   v3 = 0;
   do
   {
@@ -161,41 +161,41 @@
       break;
     }
 
-    v4 = [v2 parent];
+    parent2 = [v2 parent];
     v3 = (v3 + 1);
 
-    v2 = v4;
+    v2 = parent2;
   }
 
-  while (v4);
+  while (parent2);
 
   return v3;
 }
 
 - (id)foundInDescriptionIncludingAccount:()Utilities
 {
-  v5 = [a1 displayNameUsingSpecialNames];
-  v6 = [MEMORY[0x277CCA8D8] mainBundle];
-  v7 = [v6 localizedStringForKey:@"MAILBOX_SUFFIX" value:&stru_2826D1AD8 table:@"Main"];
-  if ([v5 hasSuffix:v7])
+  displayNameUsingSpecialNames = [self displayNameUsingSpecialNames];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v7 = [mainBundle localizedStringForKey:@"MAILBOX_SUFFIX" value:&stru_2826D1AD8 table:@"Main"];
+  if ([displayNameUsingSpecialNames hasSuffix:v7])
   {
     v8 = 1;
   }
 
   else
   {
-    v9 = [MEMORY[0x277CCA8D8] mainBundle];
-    v10 = [v9 localizedStringForKey:@"BOX_SUFFIX" value:&stru_2826D1AD8 table:@"Main"];
-    if ([v5 hasSuffix:v10])
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v10 = [mainBundle2 localizedStringForKey:@"BOX_SUFFIX" value:&stru_2826D1AD8 table:@"Main"];
+    if ([displayNameUsingSpecialNames hasSuffix:v10])
     {
       v8 = 1;
     }
 
     else
     {
-      v11 = [MEMORY[0x277CCA8D8] mainBundle];
-      v12 = [v11 localizedStringForKey:@"FOLDER_SUFFIX" value:&stru_2826D1AD8 table:@"Main"];
-      v8 = [v5 hasSuffix:v12];
+      mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+      v12 = [mainBundle3 localizedStringForKey:@"FOLDER_SUFFIX" value:&stru_2826D1AD8 table:@"Main"];
+      v8 = [displayNameUsingSpecialNames hasSuffix:v12];
     }
   }
 
@@ -204,21 +204,21 @@
     goto LABEL_12;
   }
 
-  v13 = [a1 type];
-  if ((v13 - 2) >= 4 && v13 != 7)
+  type = [self type];
+  if ((type - 2) >= 4 && type != 7)
   {
     goto LABEL_12;
   }
 
-  v14 = [a1 account];
-  v15 = [v14 displayName];
+  account = [self account];
+  displayName = [account displayName];
 
-  if (!v15 || (_folderNameFormatString(1, v8), v16 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x277CCACA8] stringWithFormat:v16, v15, v5], v17 = objc_claimAutoreleasedReturnValue(), v16, v15, !v17))
+  if (!displayName || (_folderNameFormatString(1, v8), v16 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x277CCACA8] stringWithFormat:v16, displayName, displayNameUsingSpecialNames], v17 = objc_claimAutoreleasedReturnValue(), v16, displayName, !v17))
   {
 LABEL_12:
     v18 = MEMORY[0x277CCACA8];
     v19 = _folderNameFormatString(0, v8);
-    v17 = [v18 stringWithFormat:v19, v5];
+    v17 = [v18 stringWithFormat:v19, displayNameUsingSpecialNames];
   }
 
   return v17;
@@ -227,9 +227,9 @@ LABEL_12:
 - (id)tinyDisplayIconWithColor:()Utilities
 {
   v4 = a3;
-  v5 = [a1 type];
+  type = [self type];
   v6 = MEMORY[0x277D281C8];
-  if (v5 != 4)
+  if (type != 4)
   {
     v6 = MEMORY[0x277D281A0];
   }

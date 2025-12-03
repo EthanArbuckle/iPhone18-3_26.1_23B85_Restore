@@ -1,48 +1,48 @@
 @interface GSRenderer
-- (BOOL)encodeSplatting:(id)a3 withSorter:(id)a4 renderPassDescriptor:(id)a5 renderDescriptor:(id)a6 error:(id *)a7;
-- (GSRenderer)initWithDevice:(id)a3 colorPixelFormat:(unint64_t)a4 depthPixelFormat:(unint64_t)a5 sampleCount:(unint64_t)a6 error:(id *)a7;
+- (BOOL)encodeSplatting:(id)splatting withSorter:(id)sorter renderPassDescriptor:(id)descriptor renderDescriptor:(id)renderDescriptor error:(id *)error;
+- (GSRenderer)initWithDevice:(id)device colorPixelFormat:(unint64_t)format depthPixelFormat:(unint64_t)pixelFormat sampleCount:(unint64_t)count error:(id *)error;
 - (id).cxx_construct;
-- (id)createRenderPassDescriptorForColorTarget:(id)a3 depthTarget:(id)a4 colorIntermediate:(id)a5 depthIntermediate:(id)a6 rasterizationRateMap:(id)a7 error:(id *)a8;
-- (id)createRenderPassDescriptorForColorTarget:(id)a3 depthTarget:(id)a4 rasterizationRateMap:(id)a5 error:(id *)a6;
+- (id)createRenderPassDescriptorForColorTarget:(id)target depthTarget:(id)depthTarget colorIntermediate:(id)intermediate depthIntermediate:(id)depthIntermediate rasterizationRateMap:(id)map error:(id *)error;
+- (id)createRenderPassDescriptorForColorTarget:(id)target depthTarget:(id)depthTarget rasterizationRateMap:(id)map error:(id *)error;
 - (shared_ptr<apple3dgs::Renderer>)impl;
-- (void)setImpl:(shared_ptr<apple3dgs::Renderer>)a3;
+- (void)setImpl:(shared_ptr<apple3dgs::Renderer>)impl;
 @end
 
 @implementation GSRenderer
 
-- (GSRenderer)initWithDevice:(id)a3 colorPixelFormat:(unint64_t)a4 depthPixelFormat:(unint64_t)a5 sampleCount:(unint64_t)a6 error:(id *)a7
+- (GSRenderer)initWithDevice:(id)device colorPixelFormat:(unint64_t)format depthPixelFormat:(unint64_t)pixelFormat sampleCount:(unint64_t)count error:(id *)error
 {
-  v8 = a3;
+  deviceCopy = device;
   v10.receiver = self;
   v10.super_class = GSRenderer;
   [(GSRenderer *)&v10 init];
   operator new();
 }
 
-- (id)createRenderPassDescriptorForColorTarget:(id)a3 depthTarget:(id)a4 rasterizationRateMap:(id)a5 error:(id *)a6
+- (id)createRenderPassDescriptorForColorTarget:(id)target depthTarget:(id)depthTarget rasterizationRateMap:(id)map error:(id *)error
 {
-  v6 = apple3dgs::Renderer::CreateRenderPassDescriptor(self->_impl.__ptr_, a3, a4, a5);
+  v6 = apple3dgs::Renderer::CreateRenderPassDescriptor(self->_impl.__ptr_, target, depthTarget, map);
 
   return v6;
 }
 
-- (id)createRenderPassDescriptorForColorTarget:(id)a3 depthTarget:(id)a4 colorIntermediate:(id)a5 depthIntermediate:(id)a6 rasterizationRateMap:(id)a7 error:(id *)a8
+- (id)createRenderPassDescriptorForColorTarget:(id)target depthTarget:(id)depthTarget colorIntermediate:(id)intermediate depthIntermediate:(id)depthIntermediate rasterizationRateMap:(id)map error:(id *)error
 {
-  v8 = apple3dgs::Renderer::CreateRenderPassDescriptor(self->_impl.__ptr_, a3, a4, a5, a6, a7);
+  v8 = apple3dgs::Renderer::CreateRenderPassDescriptor(self->_impl.__ptr_, target, depthTarget, intermediate, depthIntermediate, map);
 
   return v8;
 }
 
-- (BOOL)encodeSplatting:(id)a3 withSorter:(id)a4 renderPassDescriptor:(id)a5 renderDescriptor:(id)a6 error:(id *)a7
+- (BOOL)encodeSplatting:(id)splatting withSorter:(id)sorter renderPassDescriptor:(id)descriptor renderDescriptor:(id)renderDescriptor error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  splattingCopy = splatting;
+  sorterCopy = sorter;
+  descriptorCopy = descriptor;
+  renderDescriptorCopy = renderDescriptor;
   ptr = self->_impl.__ptr_;
-  if (v13)
+  if (sorterCopy)
   {
-    [v13 impl];
+    [sorterCopy impl];
     v17 = v22;
   }
 
@@ -52,8 +52,8 @@
     v23 = 0;
   }
 
-  [v15 impl];
-  v18 = apple3dgs::Renderer::EncodeSplatting(ptr, v12, v17, v14, v20, a7);
+  [renderDescriptorCopy impl];
+  v18 = apple3dgs::Renderer::EncodeSplatting(ptr, splattingCopy, v17, descriptorCopy, v20, error);
   if (v21 && !atomic_fetch_add(&v21->__shared_owners_, 0xFFFFFFFFFFFFFFFFLL))
   {
     (v21->__on_zero_shared)();
@@ -84,10 +84,10 @@
   return result;
 }
 
-- (void)setImpl:(shared_ptr<apple3dgs::Renderer>)a3
+- (void)setImpl:(shared_ptr<apple3dgs::Renderer>)impl
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *impl.__ptr_;
+  v3 = *(impl.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);

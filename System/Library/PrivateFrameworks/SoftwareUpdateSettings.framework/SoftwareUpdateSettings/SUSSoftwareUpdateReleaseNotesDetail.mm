@@ -1,8 +1,8 @@
 @interface SUSSoftwareUpdateReleaseNotesDetail
 - (SUSSoftwareUpdateReleaseNotesDetail)init;
-- (void)setReleaseNotes:(id)a3;
+- (void)setReleaseNotes:(id)notes;
 - (void)viewDidLoad;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler;
 @end
 
 @implementation SUSSoftwareUpdateReleaseNotesDetail
@@ -34,133 +34,133 @@
 
 - (void)viewDidLoad
 {
-  v56 = self;
+  selfCopy = self;
   v55[1] = a2;
   v18 = MEMORY[0x277CCACA8];
   v20 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v19 = [v20 localizedStringForKey:@"RELEASE_NOTES_HTML_FONT" value:&stru_287B74428 table:@"Software Update"];
-  v55[0] = [v18 stringWithFormat:@"<span style=%@>%@</span>", v19, v56->_releaseNotes];
+  v55[0] = [v18 stringWithFormat:@"<span style=%@>%@</span>", v19, selfCopy->_releaseNotes];
   MEMORY[0x277D82BD8](v19);
   MEMORY[0x277D82BD8](v20);
   v2 = objc_alloc(MEMORY[0x277CE3850]);
   v3 = [v2 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-  webView = v56->_webView;
-  v56->_webView = v3;
+  webView = selfCopy->_webView;
+  selfCopy->_webView = v3;
   *&v5 = MEMORY[0x277D82BD8](webView).n128_u64[0];
-  v21 = [(SUSSoftwareUpdateReleaseNotesDetail *)v56 webView];
-  [(WKWebView *)v21 setNavigationDelegate:v56];
-  *&v6 = MEMORY[0x277D82BD8](v21).n128_u64[0];
-  v22 = [(SUSSoftwareUpdateReleaseNotesDetail *)v56 webView];
-  v7 = [(WKWebView *)v22 loadHTMLString:v55[0] baseURL:?];
-  *&v8 = MEMORY[0x277D82BD8](v22).n128_u64[0];
-  v23 = [(SUSSoftwareUpdateReleaseNotesDetail *)v56 webView];
-  [(WKWebView *)v23 setTranslatesAutoresizingMaskIntoConstraints:0];
-  *&v9 = MEMORY[0x277D82BD8](v23).n128_u64[0];
-  v24 = [(SUSSoftwareUpdateReleaseNotesDetail *)v56 webView];
-  [(WKWebView *)v24 setOpaque:0];
-  *&v10 = MEMORY[0x277D82BD8](v24).n128_u64[0];
-  v26 = [(SUSSoftwareUpdateReleaseNotesDetail *)v56 webView];
-  v25 = [MEMORY[0x277D75348] clearColor];
-  [(WKWebView *)v26 setBackgroundColor:?];
-  MEMORY[0x277D82BD8](v25);
-  *&v11 = MEMORY[0x277D82BD8](v26).n128_u64[0];
-  v27 = [(SUSSoftwareUpdateReleaseNotesDetail *)v56 webView];
-  [(WKWebView *)v27 setAccessibilityIdentifier:@"SUSSoftwareUpdateReleaseNotesDetailReleaseNotes"];
-  *&v12 = MEMORY[0x277D82BD8](v27).n128_u64[0];
-  v29 = [(SUSSoftwareUpdateReleaseNotesDetail *)v56 view];
-  v28 = [(SUSSoftwareUpdateReleaseNotesDetail *)v56 webView];
-  [v29 addSubview:?];
-  MEMORY[0x277D82BD8](v28);
-  *&v13 = MEMORY[0x277D82BD8](v29).n128_u64[0];
-  v35 = [(SUSSoftwareUpdateReleaseNotesDetail *)v56 webView];
-  v34 = [(WKWebView *)v35 topAnchor];
-  v33 = [(SUSSoftwareUpdateReleaseNotesDetail *)v56 view];
-  v32 = [v33 safeAreaLayoutGuide];
-  v31 = [v32 topAnchor];
-  v30 = [v34 constraintEqualToAnchor:?];
+  webView = [(SUSSoftwareUpdateReleaseNotesDetail *)selfCopy webView];
+  [(WKWebView *)webView setNavigationDelegate:selfCopy];
+  *&v6 = MEMORY[0x277D82BD8](webView).n128_u64[0];
+  webView2 = [(SUSSoftwareUpdateReleaseNotesDetail *)selfCopy webView];
+  v7 = [(WKWebView *)webView2 loadHTMLString:v55[0] baseURL:?];
+  *&v8 = MEMORY[0x277D82BD8](webView2).n128_u64[0];
+  webView3 = [(SUSSoftwareUpdateReleaseNotesDetail *)selfCopy webView];
+  [(WKWebView *)webView3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  *&v9 = MEMORY[0x277D82BD8](webView3).n128_u64[0];
+  webView4 = [(SUSSoftwareUpdateReleaseNotesDetail *)selfCopy webView];
+  [(WKWebView *)webView4 setOpaque:0];
+  *&v10 = MEMORY[0x277D82BD8](webView4).n128_u64[0];
+  webView5 = [(SUSSoftwareUpdateReleaseNotesDetail *)selfCopy webView];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(WKWebView *)webView5 setBackgroundColor:?];
+  MEMORY[0x277D82BD8](clearColor);
+  *&v11 = MEMORY[0x277D82BD8](webView5).n128_u64[0];
+  webView6 = [(SUSSoftwareUpdateReleaseNotesDetail *)selfCopy webView];
+  [(WKWebView *)webView6 setAccessibilityIdentifier:@"SUSSoftwareUpdateReleaseNotesDetailReleaseNotes"];
+  *&v12 = MEMORY[0x277D82BD8](webView6).n128_u64[0];
+  view = [(SUSSoftwareUpdateReleaseNotesDetail *)selfCopy view];
+  webView7 = [(SUSSoftwareUpdateReleaseNotesDetail *)selfCopy webView];
+  [view addSubview:?];
+  MEMORY[0x277D82BD8](webView7);
+  *&v13 = MEMORY[0x277D82BD8](view).n128_u64[0];
+  webView8 = [(SUSSoftwareUpdateReleaseNotesDetail *)selfCopy webView];
+  topAnchor = [(WKWebView *)webView8 topAnchor];
+  view2 = [(SUSSoftwareUpdateReleaseNotesDetail *)selfCopy view];
+  safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v30 = [topAnchor constraintEqualToAnchor:?];
   [v30 setActive:1];
   MEMORY[0x277D82BD8](v30);
-  MEMORY[0x277D82BD8](v31);
-  MEMORY[0x277D82BD8](v32);
-  MEMORY[0x277D82BD8](v33);
-  MEMORY[0x277D82BD8](v34);
-  *&v14 = MEMORY[0x277D82BD8](v35).n128_u64[0];
-  v41 = [(SUSSoftwareUpdateReleaseNotesDetail *)v56 webView];
-  v40 = [(WKWebView *)v41 leadingAnchor];
-  v39 = [(SUSSoftwareUpdateReleaseNotesDetail *)v56 view];
-  v38 = [v39 safeAreaLayoutGuide];
-  v37 = [v38 leadingAnchor];
-  v36 = [v40 constraintEqualToAnchor:?];
+  MEMORY[0x277D82BD8](topAnchor2);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide);
+  MEMORY[0x277D82BD8](view2);
+  MEMORY[0x277D82BD8](topAnchor);
+  *&v14 = MEMORY[0x277D82BD8](webView8).n128_u64[0];
+  webView9 = [(SUSSoftwareUpdateReleaseNotesDetail *)selfCopy webView];
+  leadingAnchor = [(WKWebView *)webView9 leadingAnchor];
+  view3 = [(SUSSoftwareUpdateReleaseNotesDetail *)selfCopy view];
+  safeAreaLayoutGuide2 = [view3 safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide2 leadingAnchor];
+  v36 = [leadingAnchor constraintEqualToAnchor:?];
   [v36 setActive:1];
   MEMORY[0x277D82BD8](v36);
-  MEMORY[0x277D82BD8](v37);
-  MEMORY[0x277D82BD8](v38);
-  MEMORY[0x277D82BD8](v39);
-  MEMORY[0x277D82BD8](v40);
-  *&v15 = MEMORY[0x277D82BD8](v41).n128_u64[0];
-  v47 = [(SUSSoftwareUpdateReleaseNotesDetail *)v56 webView];
-  v46 = [(WKWebView *)v47 trailingAnchor];
-  v45 = [(SUSSoftwareUpdateReleaseNotesDetail *)v56 view];
-  v44 = [v45 safeAreaLayoutGuide];
-  v43 = [v44 trailingAnchor];
-  v42 = [v46 constraintEqualToAnchor:?];
+  MEMORY[0x277D82BD8](leadingAnchor2);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide2);
+  MEMORY[0x277D82BD8](view3);
+  MEMORY[0x277D82BD8](leadingAnchor);
+  *&v15 = MEMORY[0x277D82BD8](webView9).n128_u64[0];
+  webView10 = [(SUSSoftwareUpdateReleaseNotesDetail *)selfCopy webView];
+  trailingAnchor = [(WKWebView *)webView10 trailingAnchor];
+  view4 = [(SUSSoftwareUpdateReleaseNotesDetail *)selfCopy view];
+  safeAreaLayoutGuide3 = [view4 safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide3 trailingAnchor];
+  v42 = [trailingAnchor constraintEqualToAnchor:?];
   [v42 setActive:1];
   MEMORY[0x277D82BD8](v42);
-  MEMORY[0x277D82BD8](v43);
-  MEMORY[0x277D82BD8](v44);
-  MEMORY[0x277D82BD8](v45);
-  MEMORY[0x277D82BD8](v46);
-  *&v16 = MEMORY[0x277D82BD8](v47).n128_u64[0];
-  v53 = [(SUSSoftwareUpdateReleaseNotesDetail *)v56 webView];
-  v52 = [(WKWebView *)v53 bottomAnchor];
-  v51 = [(SUSSoftwareUpdateReleaseNotesDetail *)v56 view];
-  v50 = [v51 safeAreaLayoutGuide];
-  v49 = [v50 bottomAnchor];
-  v48 = [v52 constraintEqualToAnchor:?];
+  MEMORY[0x277D82BD8](trailingAnchor2);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide3);
+  MEMORY[0x277D82BD8](view4);
+  MEMORY[0x277D82BD8](trailingAnchor);
+  *&v16 = MEMORY[0x277D82BD8](webView10).n128_u64[0];
+  webView11 = [(SUSSoftwareUpdateReleaseNotesDetail *)selfCopy webView];
+  bottomAnchor = [(WKWebView *)webView11 bottomAnchor];
+  view5 = [(SUSSoftwareUpdateReleaseNotesDetail *)selfCopy view];
+  safeAreaLayoutGuide4 = [view5 safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide4 bottomAnchor];
+  v48 = [bottomAnchor constraintEqualToAnchor:?];
   [v48 setActive:1];
   MEMORY[0x277D82BD8](v48);
-  MEMORY[0x277D82BD8](v49);
-  MEMORY[0x277D82BD8](v50);
-  MEMORY[0x277D82BD8](v51);
-  MEMORY[0x277D82BD8](v52);
-  *&v17 = MEMORY[0x277D82BD8](v53).n128_u64[0];
-  v54.receiver = v56;
+  MEMORY[0x277D82BD8](bottomAnchor2);
+  MEMORY[0x277D82BD8](safeAreaLayoutGuide4);
+  MEMORY[0x277D82BD8](view5);
+  MEMORY[0x277D82BD8](bottomAnchor);
+  *&v17 = MEMORY[0x277D82BD8](webView11).n128_u64[0];
+  v54.receiver = selfCopy;
   v54.super_class = SUSSoftwareUpdateReleaseNotesDetail;
   [(SUSSoftwareUpdateReleaseNotesDetail *)&v54 viewDidLoad];
   objc_storeStrong(v55, 0);
 }
 
-- (void)setReleaseNotes:(id)a3
+- (void)setReleaseNotes:(id)notes
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (location[0] != v9->_releaseNotes)
+  objc_storeStrong(location, notes);
+  if (location[0] != selfCopy->_releaseNotes)
   {
-    objc_storeStrong(&v9->_releaseNotes, location[0]);
+    objc_storeStrong(&selfCopy->_releaseNotes, location[0]);
     v5 = +[SUSReleaseNotesProcessor sharedInstance];
-    v7 = [(SUSReleaseNotesProcessor *)v5 normalizeHtmlReleaseNotes:v9->_releaseNotes];
+    v7 = [(SUSReleaseNotesProcessor *)v5 normalizeHtmlReleaseNotes:selfCopy->_releaseNotes];
     *&v3 = MEMORY[0x277D82BD8](v5).n128_u64[0];
-    v6 = [(SUSSoftwareUpdateReleaseNotesDetail *)v9 webView];
-    v4 = [(WKWebView *)v6 loadHTMLString:v7 baseURL:?];
-    MEMORY[0x277D82BD8](v6);
+    webView = [(SUSSoftwareUpdateReleaseNotesDetail *)selfCopy webView];
+    v4 = [(WKWebView *)webView loadHTMLString:v7 baseURL:?];
+    MEMORY[0x277D82BD8](webView);
     objc_storeStrong(&v7, 0);
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, action);
   v11 = 0;
-  objc_storeStrong(&v11, a5);
+  objc_storeStrong(&v11, handler);
   if ([v12 navigationType])
   {
     (*(v11 + 2))(v11, 1);
@@ -168,13 +168,13 @@
 
   else
   {
-    v8 = [MEMORY[0x277D75128] sharedApplication];
-    v7 = [v12 request];
-    v6 = [v7 URL];
-    [v8 openURL:? options:? completionHandler:?];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    request = [v12 request];
+    v6 = [request URL];
+    [mEMORY[0x277D75128] openURL:? options:? completionHandler:?];
     MEMORY[0x277D82BD8](v6);
-    MEMORY[0x277D82BD8](v7);
-    v5 = MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](request);
+    v5 = MEMORY[0x277D82BD8](mEMORY[0x277D75128]);
     (*(v11 + 2))(v11, 0, v5);
   }
 

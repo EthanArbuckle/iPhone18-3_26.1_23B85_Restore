@@ -6,14 +6,14 @@
 
 - (id)ic_componentsForSearchHighlighting
 {
-  v2 = [MEMORY[0x1E695DF70] array];
-  v3 = [a1 givenName];
-  [v2 ic_addNonNilObject:v3];
+  array = [MEMORY[0x1E695DF70] array];
+  givenName = [self givenName];
+  [array ic_addNonNilObject:givenName];
 
-  v4 = [a1 familyName];
-  [v2 ic_addNonNilObject:v4];
+  familyName = [self familyName];
+  [array ic_addNonNilObject:familyName];
 
-  return v2;
+  return array;
 }
 
 @end

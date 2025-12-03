@@ -1,17 +1,17 @@
 @interface PRXSelectionIndicatorView
 - (CGSize)intrinsicContentSize;
-- (PRXSelectionIndicatorView)initWithFrame:(CGRect)a3;
-- (void)setSelected:(BOOL)a3;
+- (PRXSelectionIndicatorView)initWithFrame:(CGRect)frame;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation PRXSelectionIndicatorView
 
-- (PRXSelectionIndicatorView)initWithFrame:(CGRect)a3
+- (PRXSelectionIndicatorView)initWithFrame:(CGRect)frame
 {
   v36[4] = *MEMORY[0x277D85DE8];
   v35.receiver = self;
   v35.super_class = PRXSelectionIndicatorView;
-  v3 = [(PRXSelectionIndicatorView *)&v35 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PRXSelectionIndicatorView *)&v35 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x277D755D0] configurationWithScale:3];
@@ -32,28 +32,28 @@
     deselectedImageView = v3->_deselectedImageView;
     v3->_deselectedImageView = v11;
 
-    v13 = [MEMORY[0x277D75348] systemFillColor];
-    [(UIImageView *)v3->_deselectedImageView setTintColor:v13];
+    systemFillColor = [MEMORY[0x277D75348] systemFillColor];
+    [(UIImageView *)v3->_deselectedImageView setTintColor:systemFillColor];
 
     [(UIImageView *)v3->_deselectedImageView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIImageView *)v3->_deselectedImageView setPreferredSymbolConfiguration:v4];
     [(PRXSelectionIndicatorView *)v3 addSubview:v3->_deselectedImageView];
     v29 = MEMORY[0x277CCAAD0];
-    v33 = [(UIImageView *)v3->_selectedImageView centerXAnchor];
-    v32 = [(PRXSelectionIndicatorView *)v3 centerXAnchor];
-    v31 = [v33 constraintEqualToAnchor:v32];
+    centerXAnchor = [(UIImageView *)v3->_selectedImageView centerXAnchor];
+    centerXAnchor2 = [(PRXSelectionIndicatorView *)v3 centerXAnchor];
+    v31 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v36[0] = v31;
-    v30 = [(UIImageView *)v3->_deselectedImageView centerXAnchor];
-    v14 = [(PRXSelectionIndicatorView *)v3 centerXAnchor];
-    v15 = [v30 constraintEqualToAnchor:v14];
+    centerXAnchor3 = [(UIImageView *)v3->_deselectedImageView centerXAnchor];
+    centerXAnchor4 = [(PRXSelectionIndicatorView *)v3 centerXAnchor];
+    v15 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v36[1] = v15;
-    v16 = [(UIImageView *)v3->_selectedImageView centerYAnchor];
-    v17 = [(PRXSelectionIndicatorView *)v3 centerYAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    centerYAnchor = [(UIImageView *)v3->_selectedImageView centerYAnchor];
+    centerYAnchor2 = [(PRXSelectionIndicatorView *)v3 centerYAnchor];
+    v18 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v36[2] = v18;
-    v19 = [(UIImageView *)v3->_deselectedImageView centerYAnchor];
-    v20 = [(PRXSelectionIndicatorView *)v3 centerYAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    centerYAnchor3 = [(UIImageView *)v3->_deselectedImageView centerYAnchor];
+    centerYAnchor4 = [(PRXSelectionIndicatorView *)v3 centerYAnchor];
+    v21 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v36[3] = v21;
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:4];
     [v29 activateConstraints:v22];
@@ -72,16 +72,16 @@
   return v3;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
-    v4 = a3;
-    self->_selected = a3;
-    [(UIImageView *)self->_selectedImageView setHidden:!a3];
+    selectedCopy = selected;
+    self->_selected = selected;
+    [(UIImageView *)self->_selectedImageView setHidden:!selected];
     deselectedImageView = self->_deselectedImageView;
 
-    [(UIImageView *)deselectedImageView setHidden:v4];
+    [(UIImageView *)deselectedImageView setHidden:selectedCopy];
   }
 }
 

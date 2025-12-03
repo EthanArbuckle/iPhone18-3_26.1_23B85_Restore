@@ -1,24 +1,24 @@
 @interface TNTheme
 - (void)bootstrapBlackHardCodedTheme;
 - (void)bootstrapWhiteHardCodedTheme;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
 - (void)p_initDefaultHardCodedStyles;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
-- (void)setTablePrototypes:(id)a3;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setTablePrototypes:(id)prototypes;
 @end
 
 @implementation TNTheme
 
-- (void)setTablePrototypes:(id)a3
+- (void)setTablePrototypes:(id)prototypes
 {
-  if (self->mTablePrototypes != a3)
+  if (self->mTablePrototypes != prototypes)
   {
-    objc_msgSend_willModify(self, a2, a3);
-    v5 = a3;
+    objc_msgSend_willModify(self, a2, prototypes);
+    prototypesCopy = prototypes;
 
-    self->mTablePrototypes = a3;
+    self->mTablePrototypes = prototypes;
   }
 }
 
@@ -54,11 +54,11 @@
   MEMORY[0x2821F9670](self, sel_bootstrapThemeAlternate_, 4);
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  if (*(a3 + 6))
+  if (*(archive + 6))
   {
-    v4 = *(a3 + 6);
+    v4 = *(archive + 6);
   }
 
   else
@@ -68,35 +68,35 @@
 
   v5.receiver = self;
   v5.super_class = TNTheme;
-  [(TSATheme *)&v5 loadFromArchive:v4 unarchiver:a4];
+  [(TSATheme *)&v5 loadFromArchive:v4 unarchiver:unarchiver];
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
   google::protobuf::internal::AssignDescriptors();
-  v7 = objc_msgSend_messageWithDescriptor_(a3, v5, off_2812DAFE8[30]);
+  v7 = objc_msgSend_messageWithDescriptor_(unarchiver, v5, off_2812DAFE8[30]);
 
-  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v7, a3);
+  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v7, unarchiver);
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = sub_275F17158;
   v4[3] = &unk_27A6A2C88;
   v4[5] = self;
-  v4[6] = a3;
-  v4[4] = a4;
-  objc_msgSend_pushScopeForField_message_usingBlock_(a4, a2, 1, a3, v4);
+  v4[6] = archive;
+  v4[4] = archiver;
+  objc_msgSend_pushScopeForField_message_usingBlock_(archiver, a2, 1, archive, v4);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
   google::protobuf::internal::AssignDescriptors();
-  v7 = objc_msgSend_messageWithNewFunction_descriptor_(a3, v5, sub_275F1725C, off_2812DAFE8[30]);
+  v7 = objc_msgSend_messageWithNewFunction_descriptor_(archiver, v5, sub_275F1725C, off_2812DAFE8[30]);
 
-  objc_msgSend_saveToArchive_archiver_(self, v6, v7, a3);
+  objc_msgSend_saveToArchive_archiver_(self, v6, v7, archiver);
 }
 
 @end

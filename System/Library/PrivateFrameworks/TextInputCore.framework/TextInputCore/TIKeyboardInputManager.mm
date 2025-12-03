@@ -1,43 +1,43 @@
 @interface TIKeyboardInputManager
-+ (id)dynamicDictionaryFilePathForInputMode:(id)a3;
++ (id)dynamicDictionaryFilePathForInputMode:(id)mode;
 + (id)keyboardUserDirectory;
-+ (id)offlineLearningHandleForInputMode:(id)a3;
-+ (id)recentsFilePathForIdentifier:(id)a3;
++ (id)offlineLearningHandleForInputMode:(id)mode;
++ (id)recentsFilePathForIdentifier:(id)identifier;
 + (id)userDictionaryWordKeyPairsFilePath;
 + (id)vulgarWordUsageDatabaseFileName;
-+ (int)shiftContextForShiftState:(int)a3 autocapitalizationType:(unint64_t)a4;
-+ (void)clearRecentsFileForIdentifier:(id)a3;
++ (int)shiftContextForShiftState:(int)state autocapitalizationType:(unint64_t)type;
++ (void)clearRecentsFileForIdentifier:(id)identifier;
 + (void)removeAllDynamicDictionaries;
-+ (void)removeDynamicDictionaryForInputMode:(id)a3;
++ (void)removeDynamicDictionaryForInputMode:(id)mode;
 + (void)resetResponseKit;
-- ($71865D49803C3560DF570D424868A38C)lexiconInfoForInputMode:(SEL)a3;
-- ($71865D49803C3560DF570D424868A38C)lexiconInfoForMultilingualDynamic:(SEL)a3;
+- ($71865D49803C3560DF570D424868A38C)lexiconInfoForInputMode:(SEL)mode;
+- ($71865D49803C3560DF570D424868A38C)lexiconInfoForMultilingualDynamic:(SEL)dynamic;
 - ($71865D49803C3560DF570D424868A38C)lexiconInformation;
-- (BOOL)_canStartSentenceAfterString:(id)a3 maxRecursionDepth:(unint64_t)a4;
-- (BOOL)_canSuggestPhraseCandidate:(void *)a3 withStem:;
-- (BOOL)acceptsRange:(_NSRange)a3 inString:(id)a4;
-- (BOOL)autocorrectionWasRecentlyRejected:(id)a3;
+- (BOOL)_canStartSentenceAfterString:(id)string maxRecursionDepth:(unint64_t)depth;
+- (BOOL)_canSuggestPhraseCandidate:(void *)candidate withStem:;
+- (BOOL)acceptsRange:(_NSRange)range inString:(id)string;
+- (BOOL)autocorrectionWasRecentlyRejected:(id)rejected;
 - (BOOL)autocorrectionWasRecentlyRejectedForCurrentInput;
-- (BOOL)canComputeSentenceContextForInputStem:(id)a3;
+- (BOOL)canComputeSentenceContextForInputStem:(id)stem;
 - (BOOL)canGenerateCompletionCandidates;
 - (BOOL)canHandleKeyHitTest;
-- (BOOL)canRetrocorrectInputAtIndex:(unsigned int)a3;
-- (BOOL)canStartSentenceAfterString:(id)a3;
-- (BOOL)canTrimInputAtIndex:(unsigned int)a3;
-- (BOOL)closeCandidateGenerationContextWithResults:(id)a3;
-- (BOOL)closeCandidateGenerationContextWithResults:(id)a3 forced:(BOOL)a4;
+- (BOOL)canRetrocorrectInputAtIndex:(unsigned int)index;
+- (BOOL)canStartSentenceAfterString:(id)string;
+- (BOOL)canTrimInputAtIndex:(unsigned int)index;
+- (BOOL)closeCandidateGenerationContextWithResults:(id)results;
+- (BOOL)closeCandidateGenerationContextWithResults:(id)results forced:(BOOL)forced;
 - (BOOL)deletesComposedTextByComposedCharacterSequence;
-- (BOOL)dictionaryContainsWord:(id)a3;
+- (BOOL)dictionaryContainsWord:(id)word;
 - (BOOL)dictionaryUsesExternalEncoding;
-- (BOOL)directlyBlockedByNegativeLearning:(id)a3 correction:(id)a4 ignoreSoft:(BOOL)a5 retrocorrectionComponent:(BOOL)a6;
+- (BOOL)directlyBlockedByNegativeLearning:(id)learning correction:(id)correction ignoreSoft:(BOOL)soft retrocorrectionComponent:(BOOL)component;
 - (BOOL)doesComposeText;
 - (BOOL)doesSelectedTextGenerateEmojiCandidates;
 - (BOOL)enablesProactiveQuickType;
-- (BOOL)generateAutofillFormWithKeyboardState:(id)a3 completionHandler:(id)a4;
+- (BOOL)generateAutofillFormWithKeyboardState:(id)state completionHandler:(id)handler;
 - (BOOL)hasLegacyInputStem;
 - (BOOL)hasLegacyInputString;
 - (BOOL)inHardwareKeyboardMode;
-- (BOOL)isContinuousPathCandidate:(id)a3 replacementForOriginalConversion:(id)a4;
+- (BOOL)isContinuousPathCandidate:(id)candidate replacementForOriginalConversion:(id)conversion;
 - (BOOL)isEditingExistingWord;
 - (BOOL)isHardwareKeyboardAutocorrectionEnabled;
 - (BOOL)isLinguisticResourceUpdateScheduled;
@@ -46,132 +46,132 @@
 - (BOOL)isTypologyEnabled;
 - (BOOL)newInputAcceptsUserSelectedCandidate;
 - (BOOL)nextInputWouldStartSentence;
-- (BOOL)nextInputWouldStartSentenceAfterInput:(id)a3;
+- (BOOL)nextInputWouldStartSentenceAfterInput:(id)input;
 - (BOOL)shouldAddModifierSymbolsToWordCharacters;
-- (BOOL)shouldAllowContextWord:(id)a3;
-- (BOOL)shouldAllowCorrectionOfAcceptedCandidate:(id)a3;
+- (BOOL)shouldAllowContextWord:(id)word;
+- (BOOL)shouldAllowCorrectionOfAcceptedCandidate:(id)candidate;
 - (BOOL)shouldAutocapitalizePredictionAfterSpace;
-- (BOOL)shouldBlockAutocorrection:(id)a3;
+- (BOOL)shouldBlockAutocorrection:(id)autocorrection;
 - (BOOL)shouldDropInputStem;
 - (BOOL)shouldExtendPriorWord;
 - (BOOL)shouldGenerateInlineCompletions;
 - (BOOL)shouldGeneratePredictionsForCurrentContext;
 - (BOOL)shouldGenerateSuggestionsForSelectedText;
-- (BOOL)shouldInsertSpaceBeforeInput:(id)a3;
+- (BOOL)shouldInsertSpaceBeforeInput:(id)input;
 - (BOOL)shouldInsertSpaceBeforePredictions;
-- (BOOL)shouldLearnWord:(id)a3;
+- (BOOL)shouldLearnWord:(id)word;
 - (BOOL)shouldOfferStickers;
 - (BOOL)shouldOmitEmojiCandidates;
-- (BOOL)shouldPromoteAutocorrectionsToInlineCompletions:(id)a3;
-- (BOOL)shouldPromoteInlineCompletionsToAutocorrections:(id)a3 inlineCompletions:(id)a4;
+- (BOOL)shouldPromoteAutocorrectionsToInlineCompletions:(id)completions;
+- (BOOL)shouldPromoteInlineCompletionsToAutocorrections:(id)autocorrections inlineCompletions:(id)completions;
 - (BOOL)shouldSkipCandidateSelection;
-- (BOOL)shouldSkipShortcutConversionForDocumentState:(id)a3;
+- (BOOL)shouldSkipShortcutConversionForDocumentState:(id)state;
 - (BOOL)shouldSuppressLanguageSelectionEvidence;
 - (BOOL)shouldSuppressTokenIDLookups;
 - (BOOL)shouldUpdateDictionary;
 - (BOOL)shouldUpdateLanguageModel;
 - (BOOL)spaceAndNextInputWouldStartSentence;
-- (BOOL)stringEndsWithClosingQuote:(id)a3;
-- (BOOL)stringEndsWord:(id)a3;
-- (BOOL)suggestionBlocklistMatchesStrings:(id)a3;
+- (BOOL)stringEndsWithClosingQuote:(id)quote;
+- (BOOL)stringEndsWord:(id)word;
+- (BOOL)suggestionBlocklistMatchesStrings:(id)strings;
 - (BOOL)supportsLearning;
 - (BOOL)supportsReversionUI;
-- (BOOL)updateAdaptationContextToKeyboardState:(id)a3 from:(id)a4;
+- (BOOL)updateAdaptationContextToKeyboardState:(id)state from:(id)from;
 - (BOOL)updateLanguageModelForKeyboardState;
 - (BOOL)usesContinuousPath;
 - (BOOL)usesMLTapTyping;
 - (BOOL)usesRetrocorrection;
-- (LanguageModelContext)sentenceContextForInputStem:(SEL)a3 inputContext:(id)a4;
+- (LanguageModelContext)sentenceContextForInputStem:(SEL)stem inputContext:(id)context;
 - (NSArray)languageModelAssets;
 - (NSCharacterSet)allowPredictionCharacterSet;
 - (RefPtr<KB::DictionaryContainer>)getDictionary;
 - (TIEmojiCandidateGenerator)emojiCandidateGenerator;
-- (TIInlineCompletionAnalyticsMetadata)inlineCompletionMetadataFrom:(SEL)a3 andBundleId:(id)a4;
+- (TIInlineCompletionAnalyticsMetadata)inlineCompletionMetadataFrom:(SEL)from andBundleId:(id)id;
 - (TIKeyboardFeatureSpecialization)keyboardFeatureSpecialization;
-- (TIKeyboardInputManager)initWithConfig:(id)a3 keyboardState:(id)a4;
-- (TIKeyboardInputManager)initWithConfig:(id)a3 keyboardState:(id)a4 languageSelectionController:(id)a5;
-- (TIKeyboardInputManager)initWithInputMode:(id)a3 keyboardState:(id)a4;
+- (TIKeyboardInputManager)initWithConfig:(id)config keyboardState:(id)state;
+- (TIKeyboardInputManager)initWithConfig:(id)config keyboardState:(id)state languageSelectionController:(id)controller;
+- (TIKeyboardInputManager)initWithInputMode:(id)mode keyboardState:(id)state;
 - (TIKeyboardInputManagerState)currentState;
 - (TILanguageSelectionController)languageSelectionController;
 - (TISmartPunctuationOptions)smartOptions;
 - (TIStickerCandidateGenerator)stickerCandidateGenerator;
 - (TISupplementalLexiconController)currentCandidateGenerationContextSupplementalLexicons;
-- (TITokenID)addWord:(id)a3 contextTokens:(id)a4 surfaceFormPtr:(id *)a5;
-- (_NSRange)acceptableRangeFromRange:(_NSRange)a3 inText:(id)a4 withSelectionLocation:(unint64_t)a5;
+- (TITokenID)addWord:(id)word contextTokens:(id)tokens surfaceFormPtr:(id *)ptr;
+- (_NSRange)acceptableRangeFromRange:(_NSRange)range inText:(id)text withSelectionLocation:(unint64_t)location;
 - (_NSRange)candidateRange;
 - (_NSRange)inputStringRangeFromRevisionHistory;
-- (_NSRange)legacyInputRangeForTokenRange:(_NSRange)a3;
-- (_NSRange)rangeOfUnclosedQuoteMatchingQuote:(id)a3 inString:(id)a4 range:(_NSRange)a5;
-- (_NSRange)shortcutSearchRangeForString:(id)a3;
-- (_NSRange)smartSelectionRangeForTextInDocument:(id)a3 inRange:(_NSRange)a4 language:(id)a5 tokenizedRanges:(id)a6 options:(unint64_t)a7;
+- (_NSRange)legacyInputRangeForTokenRange:(_NSRange)range;
+- (_NSRange)rangeOfUnclosedQuoteMatchingQuote:(id)quote inString:(id)string range:(_NSRange)range;
+- (_NSRange)shortcutSearchRangeForString:(id)string;
+- (_NSRange)smartSelectionRangeForTextInDocument:(id)document inRange:(_NSRange)range language:(id)language tokenizedRanges:(id)ranges options:(unint64_t)options;
 - (const)precomposedCharacterSet;
 - (double)continuousPathLanguageWeight;
 - (float)scoreCandidates:;
 - (id).cxx_construct;
-- (id)_supplementalCompletionCandidates:(unint64_t)a3;
+- (id)_supplementalCompletionCandidates:(unint64_t)candidates;
 - (id)autocorrection;
-- (id)autocorrectionCandidateForInput:(id)a3 rawInput:(id)a4 withCandidate:(const void *)a5 insertingSpace:(BOOL)a6 sharedPrefixLength:(unint64_t)a7;
+- (id)autocorrectionCandidateForInput:(id)input rawInput:(id)rawInput withCandidate:(const void *)candidate insertingSpace:(BOOL)space sharedPrefixLength:(unint64_t)length;
 - (id)autocorrectionCandidates;
 - (id)autocorrectionList;
-- (id)autocorrectionListForEmptyInputWithDesiredCandidateCount:(unint64_t)a3;
+- (id)autocorrectionListForEmptyInputWithDesiredCandidateCount:(unint64_t)count;
 - (id)autocorrectionListForSelectedText;
-- (id)autocorrectionListWithCandidateCount:(unint64_t)a3;
-- (id)autocorrectionRecordForWord:(id)a3;
-- (id)cachedAutocorrectionListResponseFor:(id)a3;
+- (id)autocorrectionListWithCandidateCount:(unint64_t)count;
+- (id)autocorrectionRecordForWord:(id)word;
+- (id)cachedAutocorrectionListResponseFor:(id)for;
 - (id)candidateResultSet;
-- (id)candidateResultSetFromCandidates:(id)a3 proactiveTriggers:(id)a4;
+- (id)candidateResultSetFromCandidates:(id)candidates proactiveTriggers:(id)triggers;
 - (id)candidates;
-- (id)candidatesForString:(id)a3;
-- (id)cannedResponseCandidatesForString:(id)a3;
-- (id)checkRejectionHistory:(id)a3;
+- (id)candidatesForString:(id)string;
+- (id)cannedResponseCandidatesForString:(id)string;
+- (id)checkRejectionHistory:(id)history;
 - (id)clauseDelimitingCharacters;
 - (id)closingQuotes;
-- (id)completionCandidates:(unint64_t)a3;
+- (id)completionCandidates:(unint64_t)candidates;
 - (id)configurationPropertyList;
-- (id)contextBeforeWithDesiredLength:(unint64_t)a3;
-- (id)continuousPathCandidates:(unint64_t)a3;
+- (id)contextBeforeWithDesiredLength:(unint64_t)length;
+- (id)continuousPathCandidates:(unint64_t)candidates;
 - (id)currentInputModeIdentifier;
 - (id)currentWordStem;
 - (id)defaultCandidate;
-- (id)deleteComposedTextFromIndex:(unint64_t)a3 count:(unint64_t *)a4;
-- (id)deleteFromInput:(unint64_t *)a3;
-- (id)deletedSuffixOfInputContext:(id)a3 whenDeletingFromInputString:(id)a4 withInputIndex:(unint64_t)a5 deletionCount:(unint64_t)a6;
-- (id)deltaDictionaryPathForInputMode:(id)a3;
+- (id)deleteComposedTextFromIndex:(unint64_t)index count:(unint64_t *)count;
+- (id)deleteFromInput:(unint64_t *)input;
+- (id)deletedSuffixOfInputContext:(id)context whenDeletingFromInputString:(id)string withInputIndex:(unint64_t)index deletionCount:(unint64_t)count;
+- (id)deltaDictionaryPathForInputMode:(id)mode;
 - (id)dictionaryInputMode;
-- (id)dictionaryStringForExternalString:(id)a3;
-- (id)dynamicDictionaryPathForInputMode:(id)a3;
+- (id)dictionaryStringForExternalString:(id)string;
+- (id)dynamicDictionaryPathForInputMode:(id)mode;
 - (id)dynamicResourcePath;
-- (id)extendedAutocorrection:(id)a3 spanningInputsForCandidates:(id)a4 emojis:(id)a5;
+- (id)extendedAutocorrection:(id)autocorrection spanningInputsForCandidates:(id)candidates emojis:(id)emojis;
 - (id)externalInputStem;
 - (id)externalInputString;
-- (id)externalStringForDictionaryString:(id)a3;
-- (id)externalStringToInternal:(id)a3;
-- (id)filterDuplicatePredictions:(id)a3 autocorrection:(id)a4;
-- (id)finishGeneratingInlineCompletions:(id)a3 completion:(id)a4 syncResponse:(BOOL)a5;
-- (id)generateAndRenderProactiveSuggestionsWithTriggers:(id)a3 withAdditionalPredictions:(id)a4 withInput:(id)a5;
-- (id)generateCellularCandidatesWithKeyboardState:(id)a3;
-- (id)generateInlineCompletions:(id)a3 withPrefix:(id)a4;
-- (id)generateOneTimeCodeCandidatesWithKeyboardState:(id)a3;
-- (id)generateReplacementsForString:(id)a3 keyLayout:(id)a4;
-- (id)generateTypingAutocorrectionsWithCandidateRange:(_NSRange)a3;
-- (id)groupedCandidatesFromCandidates:(id)a3 usingSortingMethod:(id)a4;
-- (id)handleAcceptedCandidate:(id)a3 keyboardState:(id)a4;
-- (id)handleKeyboardInput:(id)a3;
+- (id)externalStringForDictionaryString:(id)string;
+- (id)externalStringToInternal:(id)internal;
+- (id)filterDuplicatePredictions:(id)predictions autocorrection:(id)autocorrection;
+- (id)finishGeneratingInlineCompletions:(id)completions completion:(id)completion syncResponse:(BOOL)response;
+- (id)generateAndRenderProactiveSuggestionsWithTriggers:(id)triggers withAdditionalPredictions:(id)predictions withInput:(id)input;
+- (id)generateCellularCandidatesWithKeyboardState:(id)state;
+- (id)generateInlineCompletions:(id)completions withPrefix:(id)prefix;
+- (id)generateOneTimeCodeCandidatesWithKeyboardState:(id)state;
+- (id)generateReplacementsForString:(id)string keyLayout:(id)layout;
+- (id)generateTypingAutocorrectionsWithCandidateRange:(_NSRange)range;
+- (id)groupedCandidatesFromCandidates:(id)candidates usingSortingMethod:(id)method;
+- (id)handleAcceptedCandidate:(id)candidate keyboardState:(id)state;
+- (id)handleKeyboardInput:(id)input;
 - (id)humanReadableTrace;
-- (id)indexesOfDuplicatesInCandidates:(id)a3;
-- (id)inlineCompletions:(CandidateCollection *)a3 matchedStem:(String *)a4;
+- (id)indexesOfDuplicatesInCandidates:(id)candidates;
+- (id)inlineCompletions:(CandidateCollection *)completions matchedStem:(String *)stem;
 - (id)inputContext;
 - (id)inputStem;
 - (id)inputString;
-- (id)inputStringFromDocumentState:(id)a3;
+- (id)inputStringFromDocumentState:(id)state;
 - (id)internalInputStem;
 - (id)internalInputString;
-- (id)internalStringToExternal:(id)a3;
+- (id)internalStringToExternal:(id)external;
 - (id)keyboardBehaviors;
 - (id)keyboardConfiguration;
 - (id)keyboardConfigurationLayoutTag;
-- (id)languageModelAssetsForInputMode:(id)a3;
-- (id)layoutTagsForLayout:(id)a3;
+- (id)languageModelAssetsForInputMode:(id)mode;
+- (id)layoutTagsForLayout:(id)layout;
 - (id)lexiconLocales;
 - (id)linguisticContext;
 - (id)markedText;
@@ -179,32 +179,32 @@
 - (id)newKeyboardContext;
 - (id)nonstopPunctuationCharacters;
 - (id)openingQuotes;
-- (id)originatingAutocorrectionListForCandidate:(id)a3;
+- (id)originatingAutocorrectionListForCandidate:(id)candidate;
 - (id)pathToDeltaStaticDictionary;
 - (id)pathToDynamicDictionary;
 - (id)pathToPhraseDictionary;
 - (id)pathToStaticDictionary;
-- (id)phraseCandidateCompletedByWord:(const String *)a3 allowNoSuggest:(BOOL)a4 forAutocorrection:(BOOL)a5 shiftContext:(int)a6;
-- (id)phraseDictionaryPathForInputMode:(id)a3;
-- (id)promoteAutocorrectionsToInlineCompletions:(id)a3 matchedStem:(String *)a4;
+- (id)phraseCandidateCompletedByWord:(const String *)word allowNoSuggest:(BOOL)suggest forAutocorrection:(BOOL)autocorrection shiftContext:(int)context;
+- (id)phraseDictionaryPathForInputMode:(id)mode;
+- (id)promoteAutocorrectionsToInlineCompletions:(id)completions matchedStem:(String *)stem;
 - (id)replacementForDoubleSpace;
 - (id)resourceInputModes;
-- (id)revisionListFromAutocorrectionList:(id)a3 afterAcceptingCandidate:(id)a4;
+- (id)revisionListFromAutocorrectionList:(id)list afterAcceptingCandidate:(id)candidate;
 - (id)sentenceDelimitingCharacters;
 - (id)sentencePrefixingCharacters;
 - (id)sentenceTrailingCharacters;
 - (id)shadowTyping;
-- (id)shortcutCompletionsForDocumentState:(id)a3;
-- (id)shortcutConversionForDocumentState:(id)a3;
-- (id)shortcutConversionForString:(id)a3 stringStartsInMiddleOfWord:(BOOL)a4;
+- (id)shortcutCompletionsForDocumentState:(id)state;
+- (id)shortcutConversionForDocumentState:(id)state;
+- (id)shortcutConversionForString:(id)string stringStartsInMiddleOfWord:(BOOL)word;
 - (id)sortMethodIndexes;
 - (id)sortMethodTitles;
-- (id)sortMethodsGroupsForCandidates:(id)a3;
+- (id)sortMethodsGroupsForCandidates:(id)candidates;
 - (id)sortMethodsShowExtensionCandidates;
 - (id)sortingMethods;
 - (id)spaceDeletingCharacters;
-- (id)staticDictionaryPathForInputMode:(id)a3;
-- (id)suffixOfDesiredString:(id)a3 toAppendToInputString:(id)a4 withInputIndex:(unint64_t)a5 afterDeletionCount:(unint64_t *)a6;
+- (id)staticDictionaryPathForInputMode:(id)mode;
+- (id)suffixOfDesiredString:(id)string toAppendToInputString:(id)inputString withInputIndex:(unint64_t)index afterDeletionCount:(unint64_t *)count;
 - (id)supplementalAutocorrection;
 - (id)supplementalAutocorrectionCandidates;
 - (id)supplementalLexiconWordExtraCharacters;
@@ -212,153 +212,153 @@
 - (id)terminatorsPrecedingAutospace;
 - (id)terminatorsPreventingAutocorrection;
 - (id)testingParameters;
-- (id)titleForSortingMethod:(id)a3;
+- (id)titleForSortingMethod:(id)method;
 - (id)trialParameters;
 - (id)trimmedInputStem;
 - (id)trimmedInputStemAfterLathamConversion;
 - (id)typedStringForEmptyAutocorrection;
-- (id)usageTrackingKeyForStatistic:(id)a3;
+- (id)usageTrackingKeyForStatistic:(id)statistic;
 - (id)wordCharacters;
-- (id)wordInInputStem:(id)a3 atIndex:(unint64_t)a4;
+- (id)wordInInputStem:(id)stem atIndex:(unint64_t)index;
 - (id)wordSeparator;
-- (int)TIInlineCompletionAcceptanceRejectionTypefromTIRegisterLearningMode:(id)a3;
-- (int)precisionPointFromTrialOverride:(id)a3;
+- (int)TIInlineCompletionAcceptanceRejectionTypefromTIRegisterLearningMode:(id)mode;
+- (int)precisionPointFromTrialOverride:(id)override;
 - (int)shiftContext;
-- (int64_t)addTouch:(id)a3 shouldHitTest:(BOOL)a4;
-- (int64_t)performHitTestForTouchEvent:(id)a3 keyboardState:(id)a4;
+- (int64_t)addTouch:(id)touch shouldHitTest:(BOOL)test;
+- (int64_t)performHitTestForTouchEvent:(id)event keyboardState:(id)state;
 - (shared_ptr<KB::LanguageModel>)loadNewLanguageModel;
 - (shared_ptr<KB::LanguageModel>)loadedLightweightLanguageModel;
-- (unint64_t)countOfWordsIninputStem:(id)a3;
-- (unint64_t)internalIndexOfInputStemSuffix:(id)a3;
+- (unint64_t)countOfWordsIninputStem:(id)stem;
+- (unint64_t)internalIndexOfInputStemSuffix:(id)suffix;
 - (unint64_t)maxPriorWordTokensAfterTrimming;
 - (unint64_t)maximumShortcutLengthAllowed;
 - (unint64_t)shouldSuppressLearning;
-- (unsigned)adjustedSourceMaskFromCandidate:(id)a3;
-- (unsigned)externalIndexToInternal:(unsigned int)a3;
+- (unsigned)adjustedSourceMaskFromCandidate:(id)candidate;
+- (unsigned)externalIndexToInternal:(unsigned int)internal;
 - (unsigned)inputCount;
 - (unsigned)inputIndex;
-- (unsigned)internalIndexToExternal:(unsigned int)a3;
+- (unsigned)internalIndexToExternal:(unsigned int)external;
 - (unsigned)predominantLexiconInContext;
-- (unsigned)simulateAutoshiftIfNecessaryForFlags:(unsigned int)a3;
-- (unsigned)sourceMaskForWord:(Word *)a3;
-- (unsigned)sourceMaskForWordString:(String *)a3 caseSensitive:(BOOL)a4;
+- (unsigned)simulateAutoshiftIfNecessaryForFlags:(unsigned int)flags;
+- (unsigned)sourceMaskForWord:(Word *)word;
+- (unsigned)sourceMaskForWordString:(String *)string caseSensitive:(BOOL)sensitive;
 - (vector<std::string,)multilingualLocalesOnDisk;
 - (void)_recalcSupplementalPrefix;
-- (void)acceptCurrentCandidateIfSelectedWithContext:(id)a3;
-- (void)acceptCurrentCandidateWithContext:(id)a3;
+- (void)acceptCurrentCandidateIfSelectedWithContext:(id)context;
+- (void)acceptCurrentCandidateWithContext:(id)context;
 - (void)acceptInput;
-- (void)acceptingCandidateWithTrigger:(id)a3;
-- (void)addInput:(id)a3 withContext:(id)a4;
-- (void)addItemToConversationHistoryWithText:(id)a3 timestamp:(id)a4 senderID:(id)a5 recipientIdentifiers:(id)a6;
-- (void)addMultilingualLexiconsFromDiskToVector:(void *)a3 excluding:(const void *)a4;
-- (void)addSynthesizedTouchToInput:(id)a3 keyboardState:(id)a4;
-- (void)adjustPhraseBoundaryInForwardDirection:(BOOL)a3 granularity:(int)a4;
-- (void)attachToDynamicResourceDirectory:(id)a3;
-- (void)candidateRejected:(id)a3;
-- (void)candidatesOfferedFeedback:(id)a3 keyboardState:(id)a4;
-- (void)changingContextWithTrigger:(id)a3;
+- (void)acceptingCandidateWithTrigger:(id)trigger;
+- (void)addInput:(id)input withContext:(id)context;
+- (void)addItemToConversationHistoryWithText:(id)text timestamp:(id)timestamp senderID:(id)d recipientIdentifiers:(id)identifiers;
+- (void)addMultilingualLexiconsFromDiskToVector:(void *)vector excluding:(const void *)excluding;
+- (void)addSynthesizedTouchToInput:(id)input keyboardState:(id)state;
+- (void)adjustPhraseBoundaryInForwardDirection:(BOOL)direction granularity:(int)granularity;
+- (void)attachToDynamicResourceDirectory:(id)directory;
+- (void)candidateRejected:(id)rejected;
+- (void)candidatesOfferedFeedback:(id)feedback keyboardState:(id)state;
+- (void)changingContextWithTrigger:(id)trigger;
 - (void)checkAndUpdateAdditionalLexicons;
 - (void)checkAutocorrectionDictionaries;
 - (void)clearHumanReadableTrace;
 - (void)clearInput;
 - (void)clearSoftLearning;
-- (void)continuousPathCandidateRejected:(id)a3;
+- (void)continuousPathCandidateRejected:(id)rejected;
 - (void)dealloc;
-- (void)decrementLanguageModelCount:(id)a3 tokenID:(TITokenID)a4 contextTokens:(id)a5;
-- (void)deleteFromInputWithContext:(id)a3;
+- (void)decrementLanguageModelCount:(id)count tokenID:(TITokenID)d contextTokens:(id)tokens;
+- (void)deleteFromInputWithContext:(id)context;
 - (void)detachFromDynamicResourceDirectory;
-- (void)didUpdateInputModes:(id)a3;
+- (void)didUpdateInputModes:(id)modes;
 - (void)displayedCandidateRejected;
 - (void)dropInput;
-- (void)dynamicDictionariesRemoved:(id)a3;
-- (void)dynamicResourceDirectorySet:(id)a3;
-- (void)endTypingSessionWithInteractionObservers:(id)a3;
-- (void)enumerateWordSuffixesOfString:(id)a3 inRange:(_NSRange)a4 usingBlock:(id)a5;
-- (void)fetchAssetAvailabilityStatusForInputMode:(id)a3 completionHandler:(id)a4;
-- (void)fetchTypingSessionParams:(id)a3;
-- (void)fillReversedConversationHistoryInContext:(id)a3;
-- (void)finishGeneratingAutocorrectionsWithCandidates:(id)a3 candidateRange:(_NSRange)a4 candidateHandler:(id)a5;
+- (void)dynamicDictionariesRemoved:(id)removed;
+- (void)dynamicResourceDirectorySet:(id)set;
+- (void)endTypingSessionWithInteractionObservers:(id)observers;
+- (void)enumerateWordSuffixesOfString:(id)string inRange:(_NSRange)range usingBlock:(id)block;
+- (void)fetchAssetAvailabilityStatusForInputMode:(id)mode completionHandler:(id)handler;
+- (void)fetchTypingSessionParams:(id)params;
+- (void)fillReversedConversationHistoryInContext:(id)context;
+- (void)finishGeneratingAutocorrectionsWithCandidates:(id)candidates candidateRange:(_NSRange)range candidateHandler:(id)handler;
 - (void)finishGeneratingCandidates;
-- (void)finishGeneratingResponseKitProactiveSuggestions:(id)a3 candidateRange:(_NSRange)a4 completion:(id)a5;
-- (void)generateAndRenderProactiveSuggestionsWithTriggers:(id)a3 withAdditionalPredictions:(id)a4 withInput:(id)a5 async:(BOOL)a6 completionHandler:(id)a7;
-- (void)generateAutocorrectionsWithKeyboardState:(id)a3 candidateRange:(_NSRange)a4 candidateHandler:(id)a5;
-- (void)generateCandidatesWithKeyboardState:(id)a3 candidateRange:(_NSRange)a4 candidateHandler:(id)a5;
-- (void)generateCannedResponseCandidatesAsyncForString:(id)a3 completionHandler:(id)a4;
-- (void)incrementUsageTrackingKey:(id)a3;
-- (void)incrementUsageTrackingKeyForAppWithIsSentence:(BOOL)a3;
-- (void)incrementUsageTrackingKeyForAutocorrectionStatistic:(id)a3 autocorrectionTypes:(unsigned int)a4;
+- (void)finishGeneratingResponseKitProactiveSuggestions:(id)suggestions candidateRange:(_NSRange)range completion:(id)completion;
+- (void)generateAndRenderProactiveSuggestionsWithTriggers:(id)triggers withAdditionalPredictions:(id)predictions withInput:(id)input async:(BOOL)async completionHandler:(id)handler;
+- (void)generateAutocorrectionsWithKeyboardState:(id)state candidateRange:(_NSRange)range candidateHandler:(id)handler;
+- (void)generateCandidatesWithKeyboardState:(id)state candidateRange:(_NSRange)range candidateHandler:(id)handler;
+- (void)generateCannedResponseCandidatesAsyncForString:(id)string completionHandler:(id)handler;
+- (void)incrementUsageTrackingKey:(id)key;
+- (void)incrementUsageTrackingKeyForAppWithIsSentence:(BOOL)sentence;
+- (void)incrementUsageTrackingKeyForAutocorrectionStatistic:(id)statistic autocorrectionTypes:(unsigned int)types;
 - (void)incrementUsageTrackingKeysForDeleteFromInput;
 - (void)initImplementation;
-- (void)insertSpaceBeforeInputWithContext:(id)a3;
+- (void)insertSpaceBeforeInputWithContext:(id)context;
 - (void)installTypologyTraceLogger;
 - (void)learnRecentMessageUserIsRespondingTo;
 - (void)loadDictionaries;
-- (void)logDiscoverabilityEvent:(int)a3 userInfo:(id)a4;
-- (void)logInlineCompletionsToTypology:(id)a3 candidate:(id)a4;
+- (void)logDiscoverabilityEvent:(int)event userInfo:(id)info;
+- (void)logInlineCompletionsToTypology:(id)typology candidate:(id)candidate;
 - (void)logTestingParametersToTypology;
-- (void)logToTypologyRecorderWithString:(id)a3;
-- (void)mobileAssetsChanged:(id)a3;
-- (void)openCandidateGenerationContextWithCandidateHandler:(id)a3;
-- (void)parseRecentMessage:(void *)a3;
+- (void)logToTypologyRecorderWithString:(id)string;
+- (void)mobileAssetsChanged:(id)changed;
+- (void)openCandidateGenerationContextWithCandidateHandler:(id)handler;
+- (void)parseRecentMessage:(void *)message;
 - (void)popCandidateGenerationContextFromStack;
 - (void)prepareForKeyboardActivity;
-- (void)promoteInlineCompletionToAutocorrections:(id)a3 predictions:(id)a4 inlineCompletion:(id)a5 outReconciledAutocorrections:(id *)a6 outReconciledPredictions:(id *)a7 matchedStem:(String *)a8;
+- (void)promoteInlineCompletionToAutocorrections:(id)autocorrections predictions:(id)predictions inlineCompletion:(id)completion outReconciledAutocorrections:(id *)reconciledAutocorrections outReconciledPredictions:(id *)reconciledPredictions matchedStem:(String *)stem;
 - (void)pushCandidateGenerationContextOnStack;
-- (void)pushCandidateGenerationContextWithResults:(id)a3;
-- (void)reconcileCandidates:(void *)a3 forTypedString:(String *)a4 withPhraseCandidate:(void *)a5 replacing:(const String *)a6;
-- (void)reconcileConversions:(id)a3;
-- (void)reconcileInlineCompletionAndAutocorrections:(id)a3 inlineCompletions:(id)a4 predictions:(id)a5 outReconciledAutocorrections:(id *)a6 outReconciledInlineCompletions:(id *)a7 outReconciledPredictions:(id *)a8 matchedStem:(String *)a9;
-- (void)recordAcceptedAutocorrection:(id)a3 fromPredictiveInputBar:(BOOL)a4;
-- (void)recordRejectedAutocorrectionForAcceptedText:(id)a3 fromPredictiveInputBar:(BOOL)a4;
-- (void)recordSuggestedAutocorrectionList:(id)a3;
+- (void)pushCandidateGenerationContextWithResults:(id)results;
+- (void)reconcileCandidates:(void *)candidates forTypedString:(String *)string withPhraseCandidate:(void *)candidate replacing:(const String *)replacing;
+- (void)reconcileConversions:(id)conversions;
+- (void)reconcileInlineCompletionAndAutocorrections:(id)autocorrections inlineCompletions:(id)completions predictions:(id)predictions outReconciledAutocorrections:(id *)reconciledAutocorrections outReconciledInlineCompletions:(id *)inlineCompletions outReconciledPredictions:(id *)reconciledPredictions matchedStem:(String *)stem;
+- (void)recordAcceptedAutocorrection:(id)autocorrection fromPredictiveInputBar:(BOOL)bar;
+- (void)recordRejectedAutocorrectionForAcceptedText:(id)text fromPredictiveInputBar:(BOOL)bar;
+- (void)recordSuggestedAutocorrectionList:(id)list;
 - (void)refreshInputManagerState;
-- (void)registerLearning:(id)a3 fullCandidate:(id)a4 keyboardState:(id)a5 mode:(id)a6;
-- (void)registerLearningForCompletion:(id)a3 fullCompletion:(id)a4 context:(id)a5 prefix:(id)a6 mode:(id)a7;
-- (void)registerRevisionFrom:(id)a3 to:(id)a4 contextTokens:(id)a5;
+- (void)registerLearning:(id)learning fullCandidate:(id)candidate keyboardState:(id)state mode:(id)mode;
+- (void)registerLearningForCompletion:(id)completion fullCompletion:(id)fullCompletion context:(id)context prefix:(id)prefix mode:(id)mode;
+- (void)registerRevisionFrom:(id)from to:(id)to contextTokens:(id)tokens;
 - (void)rejectionsDatabase;
 - (void)releaseAndRemoveRejectionsDatabase;
 - (void)releaseDynamicLanguageModel;
 - (void)resetConversationHistory;
 - (void)resume;
 - (void)runMaintenanceTask;
-- (void)scheduleLinguisticResourceUpdateWithReason:(id)a3;
-- (void)scoreCandidates:(void *)a3;
+- (void)scheduleLinguisticResourceUpdateWithReason:(id)reason;
+- (void)scoreCandidates:(void *)candidates;
 - (void)setAutoshiftFromInputContext;
-- (void)setInHardwareKeyboardMode:(BOOL)a3;
-- (void)setInput:(id)a3;
-- (void)setKeyLayout:(id)a3;
-- (void)setKeyboardState:(id)a3;
-- (void)setLinguisticResourceStatus:(unint64_t)a3 reason:(id)a4;
+- (void)setInHardwareKeyboardMode:(BOOL)mode;
+- (void)setInput:(id)input;
+- (void)setKeyLayout:(id)layout;
+- (void)setKeyboardState:(id)state;
+- (void)setLinguisticResourceStatus:(unint64_t)status reason:(id)reason;
 - (void)setMarkedText;
-- (void)setOriginalInput:(id)a3;
+- (void)setOriginalInput:(id)input;
 - (void)setPhraseBoundaryIfNecessary;
-- (void)setRejectedAutocorrection:(id)a3 forInput:(id)a4;
-- (void)setUserInterfaceIdiom:(int64_t)a3;
-- (void)skipHitTestForTouchEvent:(id)a3 keyboardState:(id)a4;
-- (void)softLearningRegisterAccepted:(id)a3 typed:(id)a4;
-- (void)softLearningRegisterDeleted:(id)a3;
+- (void)setRejectedAutocorrection:(id)autocorrection forInput:(id)input;
+- (void)setUserInterfaceIdiom:(int64_t)idiom;
+- (void)skipHitTestForTouchEvent:(id)event keyboardState:(id)state;
+- (void)softLearningRegisterAccepted:(id)accepted typed:(id)typed;
+- (void)softLearningRegisterDeleted:(id)deleted;
 - (void)storeLanguageModelDynamicDataIncludingCache;
 - (void)suspend;
-- (void)syncMarkedTextForKeyboardState:(id)a3 afterContextChange:(BOOL)a4;
-- (void)syncToKeyboardState:(id)a3;
-- (void)syncToLayoutState:(id)a3;
-- (void)synchronizeConversationHistoryWithInputContextHistory:(id)a3;
-- (void)textAccepted:(id)a3 fromPredictiveInputBar:(BOOL)a4 withInput:(id)a5;
-- (void)tokenizeString:(const String *)a3 context:(void *)a4 sentences:(unsigned int *)a5;
-- (void)trackProactiveMetrics:(id)a3 keyboardState:(id)a4;
-- (void)transferErrorCorrectionFlagsToInputCandidate:(void *)a3;
+- (void)syncMarkedTextForKeyboardState:(id)state afterContextChange:(BOOL)change;
+- (void)syncToKeyboardState:(id)state;
+- (void)syncToLayoutState:(id)state;
+- (void)synchronizeConversationHistoryWithInputContextHistory:(id)history;
+- (void)textAccepted:(id)accepted fromPredictiveInputBar:(BOOL)bar withInput:(id)input;
+- (void)tokenizeString:(const String *)string context:(void *)context sentences:(unsigned int *)sentences;
+- (void)trackProactiveMetrics:(id)metrics keyboardState:(id)state;
+- (void)transferErrorCorrectionFlagsToInputCandidate:(void *)candidate;
 - (void)trimInput;
 - (void)trimInputAfterLathamConversion;
 - (void)updateComposedText;
 - (void)updateDictionaryAndLanguageModel;
-- (void)updateDynamicDirectoryForScreenLockState:(BOOL)a3;
-- (void)updateForRevisitedString:(id)a3;
+- (void)updateDynamicDirectoryForScreenLockState:(BOOL)state;
+- (void)updateForRevisitedString:(id)string;
 - (void)updateInlineCompletionOperatingPointForPrimaryLocale;
 - (void)updateInputContext;
-- (void)updateResponseModelForKeyboardState:(id)a3;
+- (void)updateResponseModelForKeyboardState:(id)state;
 - (void)updateTrialFavoniusLanguagePowerForPrimaryLocale;
 - (void)updateTrialNegativeLearningFlagForPrimaryLocale;
-- (void)willChangeToKeyboardState:(id)a3 afterContextChange:(BOOL)a4;
+- (void)willChangeToKeyboardState:(id)state afterContextChange:(BOOL)change;
 - (void)willDropInputStem;
 @end
 
@@ -371,9 +371,9 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(TIKeyboardInputManagerBase *)self inputMode];
-    v6 = [v5 normalizedIdentifier];
-    v7 = [v4 stringWithFormat:@"%s Resume (inputMode=%@)", "-[TIKeyboardInputManager resume]", v6];
+    inputMode = [(TIKeyboardInputManagerBase *)self inputMode];
+    normalizedIdentifier = [inputMode normalizedIdentifier];
+    v7 = [v4 stringWithFormat:@"%s Resume (inputMode=%@)", "-[TIKeyboardInputManager resume]", normalizedIdentifier];
     *buf = 138412290;
     v12 = v7;
     _os_log_impl(&dword_22CA55000, v3, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
@@ -391,56 +391,56 @@
 
 - (BOOL)isLinguisticResourceUpdateScheduled
 {
-  v3 = [(TIKeyboardInputManager *)self linguisticResourceStatus];
-  if (v3 != 1)
+  linguisticResourceStatus = [(TIKeyboardInputManager *)self linguisticResourceStatus];
+  if (linguisticResourceStatus != 1)
   {
-    LOBYTE(v3) = [(TIKeyboardInputManager *)self linguisticResourceStatus]== 2;
+    LOBYTE(linguisticResourceStatus) = [(TIKeyboardInputManager *)self linguisticResourceStatus]== 2;
   }
 
-  return v3;
+  return linguisticResourceStatus;
 }
 
 - (id)configurationPropertyList
 {
-  v2 = [(TIKeyboardInputManager *)self config];
-  v3 = [v2 propertyList];
+  config = [(TIKeyboardInputManager *)self config];
+  propertyList = [config propertyList];
 
-  return v3;
+  return propertyList;
 }
 
 - (void)_recalcSupplementalPrefix
 {
   v3 = +[TITransientLexiconManager sharedInstance];
-  v4 = [v3 supplementalLexicons];
-  v5 = [(TIKeyboardInputManager *)self keyboardState];
-  v6 = [v4 lexiconWithIdentifier:{objc_msgSend(v5, "supplementalLexiconIdentifier")}];
+  supplementalLexicons = [v3 supplementalLexicons];
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  v6 = [supplementalLexicons lexiconWithIdentifier:{objc_msgSend(keyboardState, "supplementalLexiconIdentifier")}];
 
   if (v6)
   {
-    v7 = [(TIKeyboardInputManager *)self keyboardState];
-    v8 = [v7 documentState];
-    v9 = [v8 markedText];
-    v10 = [v9 length];
+    keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+    documentState = [keyboardState2 documentState];
+    markedText = [documentState markedText];
+    v10 = [markedText length];
 
     v11 = 0;
     if (self->m_impl && !v10)
     {
-      v12 = [(TIKeyboardInputManager *)self inputContext];
-      v13 = [(TIKeyboardInputManager *)self inputStem];
-      v11 = [v12 stringByAppendingString:v13];
+      inputContext = [(TIKeyboardInputManager *)self inputContext];
+      inputStem = [(TIKeyboardInputManager *)self inputStem];
+      v11 = [inputContext stringByAppendingString:inputStem];
     }
 
     if (![v11 length])
     {
-      v14 = [(TIKeyboardInputManager *)self keyboardState];
-      v15 = [v14 documentState];
-      v16 = [v15 string];
+      keyboardState3 = [(TIKeyboardInputManager *)self keyboardState];
+      documentState2 = [keyboardState3 documentState];
+      string = [documentState2 string];
 
-      v11 = v16;
+      v11 = string;
     }
 
-    v17 = [v6 core_searchPrefixSet];
-    v18 = [v11 _ti_supplementalPrefixOfLastToken:v17];
+    core_searchPrefixSet = [v6 core_searchPrefixSet];
+    v18 = [v11 _ti_supplementalPrefixOfLastToken:core_searchPrefixSet];
   }
 
   else
@@ -492,16 +492,16 @@
     }
 
     v6 = [TIKBAnalyticsMetricsContext alloc];
-    v7 = [(TIKeyboardInputManager *)self keyboardState];
-    v8 = [(TIKeyboardInputManager *)self languageSelectionController];
-    v9 = [v8 activeInputModes];
-    v10 = [(TIKeyboardInputManager *)self testingParameters];
-    v11 = [(TIKBAnalyticsMetricsContext *)v6 initWithKeyboardState:v7 activeInputModes:v9 testingParameters:v10];
+    keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+    languageSelectionController = [(TIKeyboardInputManager *)self languageSelectionController];
+    activeInputModes = [languageSelectionController activeInputModes];
+    testingParameters = [(TIKeyboardInputManager *)self testingParameters];
+    v11 = [(TIKBAnalyticsMetricsContext *)v6 initWithKeyboardState:keyboardState activeInputModes:activeInputModes testingParameters:testingParameters];
 
     v12 = *(self->m_impl + 34);
-    v13 = [(TIKeyboardInputManager *)self keyboardState];
-    v14 = [v13 clientIdentifier];
-    [(TIKeyboardInputManager *)self inlineCompletionMetadataFrom:v11 andBundleId:v14];
+    keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+    clientIdentifier = [keyboardState2 clientIdentifier];
+    [(TIKeyboardInputManager *)self inlineCompletionMetadataFrom:v11 andBundleId:clientIdentifier];
     (*(*v12 + 256))(v12, v17);
     if (v36 && v35 == 1)
     {
@@ -576,15 +576,15 @@
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
         v9 = MEMORY[0x277CCACA8];
-        v10 = [(TIKeyboardInputManager *)self linguisticResourceStatus];
-        if (v10 > 2)
+        linguisticResourceStatus = [(TIKeyboardInputManager *)self linguisticResourceStatus];
+        if (linguisticResourceStatus > 2)
         {
           v11 = "Unknown";
         }
 
         else
         {
-          v11 = off_278731828[v10];
+          v11 = off_278731828[linguisticResourceStatus];
         }
 
         v12 = "False";
@@ -612,8 +612,8 @@
 
 - (TILanguageSelectionController)languageSelectionController
 {
-  v3 = [(TIKeyboardInputManager *)self getTestingStateObject];
-  if (v3)
+  getTestingStateObject = [(TIKeyboardInputManager *)self getTestingStateObject];
+  if (getTestingStateObject)
   {
   }
 
@@ -663,9 +663,9 @@ uint64_t __52__TIKeyboardInputManager_mul_shouldUpdateDictionary__block_invoke(u
 {
   v14 = *MEMORY[0x277D85DE8];
   v3 = +[TITrialManagerProxy sharedManager];
-  v4 = [(TIKeyboardInputManagerBase *)self inputMode];
-  v5 = [v4 locale];
-  v6 = [v3 inlineCompletionOperatingPointOverrideForLocale:v5];
+  inputMode = [(TIKeyboardInputManagerBase *)self inputMode];
+  locale = [inputMode locale];
+  v6 = [v3 inlineCompletionOperatingPointOverrideForLocale:locale];
 
   if (!v6 || (v7 = [(TIKeyboardInputManager *)self precisionPointFromTrialOverride:v6], v7 == -1))
   {
@@ -700,8 +700,8 @@ uint64_t __52__TIKeyboardInputManager_mul_shouldUpdateDictionary__block_invoke(u
     return 0;
   }
 
-  v3 = [(TIKeyboardInputManager *)self keyboardState];
-  if (([v3 secureTextEntry] & 1) == 0)
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  if (([keyboardState secureTextEntry] & 1) == 0)
   {
     v5 = TI_DEVICE_UNLOCKED_SINCE_BOOT();
 
@@ -712,8 +712,8 @@ uint64_t __52__TIKeyboardInputManager_mul_shouldUpdateDictionary__block_invoke(u
       {
         if (**(v6 + 8) != *(*(v6 + 8) + 8))
         {
-          v3 = [(TIKeyboardState *)self->_keyboardState textInputTraits];
-          v4 = [v3 autocorrectionType] != 1;
+          keyboardState = [(TIKeyboardState *)self->_keyboardState textInputTraits];
+          v4 = [keyboardState autocorrectionType] != 1;
           goto LABEL_4;
         }
       }
@@ -739,17 +739,17 @@ LABEL_4:
   if ((TI_IS_INTERNAL_INSTALL::is_internal_install & 1) != 0 || (-[TIKeyboardInputManager languageSelectionController](self, "languageSelectionController"), v3 = objc_claimAutoreleasedReturnValue(), [v3 activeInputModes], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "count"), v4, v3, v5 < 2))
   {
     v13 = +[TITrialManagerProxy sharedManager];
-    v7 = [(TIKeyboardInputManagerBase *)self inputMode];
-    v8 = [v7 locale];
-    v9 = [v13 isNegativeLearningEnabledForLocale:v8];
+    inputMode = [(TIKeyboardInputManagerBase *)self inputMode];
+    locale = [inputMode locale];
+    v9 = [v13 isNegativeLearningEnabledForLocale:locale];
 
     if (v9)
     {
-      v10 = [v9 BOOLValue];
+      bOOLValue = [v9 BOOLValue];
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
         v12 = "disabled";
-        if (v10)
+        if (bOOLValue)
         {
           v12 = "enabled";
         }
@@ -761,7 +761,7 @@ LABEL_4:
         _os_log_debug_impl(&dword_22CA55000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%s  Trial: overriding adaptation_autocorrection_rejection_v2 to %s", buf, 0x16u);
       }
 
-      adaptation_autocorrection_rejection_v2_override_for_trial = v10 | 0x100;
+      adaptation_autocorrection_rejection_v2_override_for_trial = bOOLValue | 0x100;
     }
 
     else
@@ -784,9 +784,9 @@ LABEL_4:
 {
   v19 = *MEMORY[0x277D85DE8];
   v3 = +[TITrialManagerProxy sharedManager];
-  v4 = [(TIKeyboardInputManagerBase *)self inputMode];
-  v5 = [v4 locale];
-  v6 = [v3 favoniusLanguagePowerOverrideForLocale:v5];
+  inputMode = [(TIKeyboardInputManagerBase *)self inputMode];
+  locale = [inputMode locale];
+  v6 = [v3 favoniusLanguagePowerOverrideForLocale:locale];
 
   if (v6)
   {
@@ -807,15 +807,15 @@ LABEL_4:
 
   else
   {
-    v8 = [(TIKeyboardInputManager *)self config];
-    v9 = [v8 favoniusLanguageModelWeight];
+    config = [(TIKeyboardInputManager *)self config];
+    favoniusLanguageModelWeight = [config favoniusLanguageModelWeight];
 
     v10 = self->m_impl;
-    if (v9)
+    if (favoniusLanguageModelWeight)
     {
-      v11 = [(TIKeyboardInputManager *)self config];
-      v12 = [v11 favoniusLanguageModelWeight];
-      [v12 floatValue];
+      config2 = [(TIKeyboardInputManager *)self config];
+      favoniusLanguageModelWeight2 = [config2 favoniusLanguageModelWeight];
+      [favoniusLanguageModelWeight2 floatValue];
       (*(*v10[28] + 496))();
     }
 
@@ -839,18 +839,18 @@ LABEL_4:
 
 - (id)currentInputModeIdentifier
 {
-  v2 = [(TIKeyboardInputManager *)self keyboardState];
-  v3 = [v2 inputMode];
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  inputMode = [keyboardState inputMode];
 
-  return v3;
+  return inputMode;
 }
 
 - (BOOL)shouldExtendPriorWord
 {
-  v2 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-  v3 = [v2 shouldExtendPriorWord];
+  keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+  shouldExtendPriorWord = [keyboardFeatureSpecialization shouldExtendPriorWord];
 
-  return v3;
+  return shouldExtendPriorWord;
 }
 
 - (TIKeyboardFeatureSpecialization)keyboardFeatureSpecialization
@@ -858,16 +858,16 @@ LABEL_4:
   keyboardFeatureSpecialization = self->_keyboardFeatureSpecialization;
   if (!keyboardFeatureSpecialization)
   {
-    v4 = [(TIKeyboardInputManagerBase *)self inputMode];
-    v5 = [TIKeyboardFeatureSpecialization createSpecializationForInputMode:v4];
+    inputMode = [(TIKeyboardInputManagerBase *)self inputMode];
+    v5 = [TIKeyboardFeatureSpecialization createSpecializationForInputMode:inputMode];
     v6 = self->_keyboardFeatureSpecialization;
     self->_keyboardFeatureSpecialization = v5;
 
-    v7 = [(TIKeyboardInputManager *)self config];
-    -[TIKeyboardFeatureSpecialization setUseRelaxedOVSPolicy:](self->_keyboardFeatureSpecialization, "setUseRelaxedOVSPolicy:", [v7 allowRelaxedOVSPolicy]);
+    config = [(TIKeyboardInputManager *)self config];
+    -[TIKeyboardFeatureSpecialization setUseRelaxedOVSPolicy:](self->_keyboardFeatureSpecialization, "setUseRelaxedOVSPolicy:", [config allowRelaxedOVSPolicy]);
 
-    v8 = [(TIKeyboardInputManager *)self config];
-    -[TIKeyboardFeatureSpecialization setSkipCandidateQualityFilter:](self->_keyboardFeatureSpecialization, "setSkipCandidateQualityFilter:", [v8 skipCandidateQualityFilter]);
+    config2 = [(TIKeyboardInputManager *)self config];
+    -[TIKeyboardFeatureSpecialization setSkipCandidateQualityFilter:](self->_keyboardFeatureSpecialization, "setSkipCandidateQualityFilter:", [config2 skipCandidateQualityFilter]);
 
     keyboardFeatureSpecialization = self->_keyboardFeatureSpecialization;
   }
@@ -877,16 +877,16 @@ LABEL_4:
 
 - (id)wordSeparator
 {
-  v2 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-  v3 = [v2 wordSeparator];
+  keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+  wordSeparator = [keyboardFeatureSpecialization wordSeparator];
 
-  return v3;
+  return wordSeparator;
 }
 
 - (_NSRange)inputStringRangeFromRevisionHistory
 {
-  v3 = [(TIKeyboardInputManager *)self revisionHistory];
-  v4 = [v3 selectedRange];
+  revisionHistory = [(TIKeyboardInputManager *)self revisionHistory];
+  selectedRange = [revisionHistory selectedRange];
   v6 = v5;
 
   v27 = 0;
@@ -903,16 +903,16 @@ LABEL_4:
   v24 = __Block_byref_object_dispose__326;
   v25 = "";
   v26 = xmmword_22CC889D0;
-  v7 = [(TIKeyboardInputManager *)self revisionHistory];
+  revisionHistory2 = [(TIKeyboardInputManager *)self revisionHistory];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __61__TIKeyboardInputManager_inputStringRangeFromRevisionHistory__block_invoke;
   v19[3] = &unk_278731568;
-  v19[6] = v4;
+  v19[6] = selectedRange;
   v19[7] = v6;
   v19[4] = &v20;
   v19[5] = &v27;
-  [v7 enumerateSentenceStemUsingBlock:v19];
+  [revisionHistory2 enumerateSentenceStemUsingBlock:v19];
 
   v8 = v28[6];
   v9 = 0x7FFFFFFFFFFFFFFFLL;
@@ -934,9 +934,9 @@ LABEL_4:
   else
   {
     v12 = v28[7];
-    v13 = [(TIKeyboardInputManager *)self revisionHistory];
-    v14 = [v13 documentText];
-    v9 = [(TIKeyboardInputManager *)self acceptableRangeFromRange:v8 inText:v12 withSelectionLocation:v14, v4];
+    revisionHistory3 = [(TIKeyboardInputManager *)self revisionHistory];
+    documentText = [revisionHistory3 documentText];
+    v9 = [(TIKeyboardInputManager *)self acceptableRangeFromRange:v8 inText:v12 withSelectionLocation:documentText, selectedRange];
     v11 = v15;
   }
 
@@ -973,8 +973,8 @@ LABEL_4:
       }
     }
 
-    v7 = [(TIKeyboardInputManager *)self autocorrectionListsSuggestedForCurrentInput];
-    [v7 removeAllObjects];
+    autocorrectionListsSuggestedForCurrentInput = [(TIKeyboardInputManager *)self autocorrectionListsSuggestedForCurrentInput];
+    [autocorrectionListsSuggestedForCurrentInput removeAllObjects];
 
     [(TIKeyboardInputManager *)self setHitTestCorrectedInputMatchingCandidate:0];
     [(TIKeyboardInputManager *)self setLastAcceptedText:0];
@@ -1004,24 +1004,24 @@ LABEL_4:
   v24 = *MEMORY[0x277D85DE8];
   if (self->m_impl)
   {
-    v3 = [(TIKeyboardInputManager *)self keyboardState];
-    v4 = [v3 documentState];
-    v5 = [v4 contextBeforeInput];
-    v6 = v5;
+    keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+    documentState = [keyboardState documentState];
+    contextBeforeInput = [documentState contextBeforeInput];
+    v6 = contextBeforeInput;
     v7 = &stru_283FDFAF8;
-    if (v5)
+    if (contextBeforeInput)
     {
-      v7 = v5;
+      v7 = contextBeforeInput;
     }
 
     v8 = v7;
 
-    v9 = [(TIKeyboardInputManager *)self inputStem];
-    if ([v9 length])
+    inputStem = [(TIKeyboardInputManager *)self inputStem];
+    if ([inputStem length])
     {
-      if ([(__CFString *)v8 hasSuffix:v9])
+      if ([(__CFString *)v8 hasSuffix:inputStem])
       {
-        v10 = -[__CFString substringToIndex:](v8, "substringToIndex:", -[__CFString length](v8, "length") - [v9 length]);
+        v10 = -[__CFString substringToIndex:](v8, "substringToIndex:", -[__CFString length](v8, "length") - [inputStem length]);
       }
 
       else
@@ -1037,7 +1037,7 @@ LABEL_4:
     {
       v12 = [(TIKeyboardInputManager *)self externalStringToInternal:v8];
       KB::utf8_string(v12, v22);
-      [(TIKeyboardInputManager *)self sentenceContextForInputStem:v9 inputContext:v8];
+      [(TIKeyboardInputManager *)self sentenceContextForInputStem:inputStem inputContext:v8];
       KB::String::operator=((m_impl + 440), v22);
       KB::LanguageModelContext::operator=((m_impl + 472), &v14);
       v21 = &v20;
@@ -1097,20 +1097,20 @@ LABEL_4:
 {
   if (self->m_impl)
   {
-    v3 = [(TIKeyboardInputManager *)self keyboardState];
-    v4 = [v3 autocapitalizationType];
+    keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+    autocapitalizationType = [keyboardState autocapitalizationType];
 
-    if (v4)
+    if (autocapitalizationType)
     {
-      if (v4 == 2)
+      if (autocapitalizationType == 2)
       {
-        v5 = [(TIKeyboardInputManager *)self inputContext];
-        LODWORD(v4) = [(TIKeyboardInputManager *)self canStartSentenceAfterString:v5];
+        inputContext = [(TIKeyboardInputManager *)self inputContext];
+        LODWORD(autocapitalizationType) = [(TIKeyboardInputManager *)self canStartSentenceAfterString:inputContext];
       }
 
       else
       {
-        LODWORD(v4) = 1;
+        LODWORD(autocapitalizationType) = 1;
       }
     }
 
@@ -1119,7 +1119,7 @@ LABEL_4:
     {
       v7 = *(v6 + 32);
       v8 = v7 & 0xFFFFFFFD;
-      if ((v7 & v4) != 0)
+      if ((v7 & autocapitalizationType) != 0)
       {
         v9 = 2;
       }
@@ -1138,13 +1138,13 @@ LABEL_4:
 {
   if (self->m_impl)
   {
-    v3 = [(TIKeyboardInputManager *)self config];
-    if ([v3 isTesting])
+    config = [(TIKeyboardInputManager *)self config];
+    if ([config isTesting])
     {
-      v4 = [(TIKeyboardInputManagerBase *)self typologyPreferences];
-      v5 = [v4 isInternalDeviceWithForcedTypologyLoggingForTesting];
+      typologyPreferences = [(TIKeyboardInputManagerBase *)self typologyPreferences];
+      isInternalDeviceWithForcedTypologyLoggingForTesting = [typologyPreferences isInternalDeviceWithForcedTypologyLoggingForTesting];
 
-      if (!v5)
+      if (!isInternalDeviceWithForcedTypologyLoggingForTesting)
       {
         return;
       }
@@ -1154,13 +1154,13 @@ LABEL_4:
     {
     }
 
-    v6 = [(TIKeyboardInputManagerBase *)self typologyPreferences];
-    if ([v6 typologyLoggingEnabled])
+    typologyPreferences2 = [(TIKeyboardInputManagerBase *)self typologyPreferences];
+    if ([typologyPreferences2 typologyLoggingEnabled])
     {
-      v7 = [(TIKeyboardInputManager *)self keyboardState];
-      v8 = [v7 secureTextEntry];
-      v9 = v8;
-      v10 = v8 ^ 1;
+      keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+      secureTextEntry = [keyboardState secureTextEntry];
+      v9 = secureTextEntry;
+      v10 = secureTextEntry ^ 1;
 
       p_m_typology_recorder = &self->m_typology_recorder;
       if ((self->m_typology_recorder.__ptr_ != 0) == v10)
@@ -1232,10 +1232,10 @@ LABEL_4:
     emojiCandidateGenerator = self->_emojiCandidateGenerator;
     if (!emojiCandidateGenerator)
     {
-      v4 = [(TIKeyboardInputManager *)self languageSelectionController];
-      v5 = [v4 activeInputModes];
+      languageSelectionController = [(TIKeyboardInputManager *)self languageSelectionController];
+      activeInputModes = [languageSelectionController activeInputModes];
 
-      v6 = [[TIEmojiCandidateGenerator alloc] initWithActiveInputModes:v5 inputManager:self];
+      v6 = [[TIEmojiCandidateGenerator alloc] initWithActiveInputModes:activeInputModes inputManager:self];
       v7 = self->_emojiCandidateGenerator;
       self->_emojiCandidateGenerator = v6;
 
@@ -1255,11 +1255,11 @@ LABEL_4:
 
 - (id)testingParameters
 {
-  v2 = [(TIKeyboardInputManager *)self trialParameters];
-  v3 = v2;
-  if (v2)
+  trialParameters = [(TIKeyboardInputManager *)self trialParameters];
+  v3 = trialParameters;
+  if (trialParameters)
   {
-    v4 = v2;
+    v4 = trialParameters;
   }
 
   else
@@ -1272,158 +1272,158 @@ LABEL_4:
 
 - (id)trialParameters
 {
-  v2 = [(TIKeyboardInputManager *)self dictionaryInputMode];
+  dictionaryInputMode = [(TIKeyboardInputManager *)self dictionaryInputMode];
   v3 = +[TITrialManagerProxy sharedManager];
-  v4 = [v2 locale];
-  v5 = [v3 encodedCATrialParametersForLocale:v4];
+  locale = [dictionaryInputMode locale];
+  v5 = [v3 encodedCATrialParametersForLocale:locale];
 
   return v5;
 }
 
 - (id)dictionaryInputMode
 {
-  v3 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-  v4 = [v3 dictionaryInputMode];
-  v5 = v4;
-  if (v4)
+  keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+  dictionaryInputMode = [keyboardFeatureSpecialization dictionaryInputMode];
+  v5 = dictionaryInputMode;
+  if (dictionaryInputMode)
   {
-    v6 = v4;
+    inputMode = dictionaryInputMode;
   }
 
   else
   {
-    v7 = [(TIKeyboardInputManager *)self config];
-    v6 = [v7 inputMode];
+    config = [(TIKeyboardInputManager *)self config];
+    inputMode = [config inputMode];
   }
 
-  return v6;
+  return inputMode;
 }
 
 - (id)keyboardConfiguration
 {
   [(TIKeyboardInputManager *)self refreshInputManagerState];
   v3 = objc_alloc_init(MEMORY[0x277D6F3E0]);
-  v4 = [(TIKeyboardInputManager *)self currentState];
-  [v3 setInputManagerState:v4];
+  currentState = [(TIKeyboardInputManager *)self currentState];
+  [v3 setInputManagerState:currentState];
 
-  v5 = [(TIKeyboardInputManager *)self keyboardState];
-  v6 = [v5 inputForMarkedText];
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  inputForMarkedText = [keyboardState inputForMarkedText];
 
-  if (v6)
+  if (inputForMarkedText)
   {
-    v7 = [(TIKeyboardInputManager *)self markedText];
-    [v3 setIntermediateText:v7];
+    markedText = [(TIKeyboardInputManager *)self markedText];
+    [v3 setIntermediateText:markedText];
   }
 
-  v8 = [(TIKeyboardInputManager *)self keyboardConfigurationLayoutTag];
-  [v3 setLayoutTag:v8];
+  keyboardConfigurationLayoutTag = [(TIKeyboardInputManager *)self keyboardConfigurationLayoutTag];
+  [v3 setLayoutTag:keyboardConfigurationLayoutTag];
 
-  v9 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-  v10 = [(TIKeyboardInputManager *)self keyboardState];
-  v11 = [v9 accentKeyStringForKeyboardState:v10];
+  keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+  keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+  v11 = [keyboardFeatureSpecialization accentKeyStringForKeyboardState:keyboardState2];
   [v3 setAccentKeyString:v11];
 
-  v12 = [(TIKeyboardInputManager *)self contextualDisplayKeys];
-  [v3 setContextualDisplayKeys:v12];
+  contextualDisplayKeys = [(TIKeyboardInputManager *)self contextualDisplayKeys];
+  [v3 setContextualDisplayKeys:contextualDisplayKeys];
 
   [v3 setAssertDefaultKeyPlane:{-[TIKeyboardInputManager keyboardConfigurationAssertDefaultKeyPlane](self, "keyboardConfigurationAssertDefaultKeyPlane")}];
-  v13 = [(TIKeyboardInputManager *)self trialParameters];
-  [v3 setTrialParameters:v13];
+  trialParameters = [(TIKeyboardInputManager *)self trialParameters];
+  [v3 setTrialParameters:trialParameters];
 
   return v3;
 }
 
 - (void)refreshInputManagerState
 {
-  v5 = [(TIKeyboardInputManager *)self usesCandidateSelection];
-  v6 = v5;
-  if (v5)
+  usesCandidateSelection = [(TIKeyboardInputManager *)self usesCandidateSelection];
+  v6 = usesCandidateSelection;
+  if (usesCandidateSelection)
   {
     [(TIKeyboardInputManager *)self inputString];
   }
 
   else
   {
-    v2 = [(TIKeyboardInputManager *)self keyboardState];
-    v3 = [v2 documentState];
-    [(TIKeyboardInputManager *)self inputStringFromDocumentState:v3];
+    keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+    documentState = [keyboardState documentState];
+    [(TIKeyboardInputManager *)self inputStringFromDocumentState:documentState];
   }
   v7 = ;
-  v8 = [(TIKeyboardInputManager *)self currentState];
-  [v8 setInputString:v7];
+  currentState = [(TIKeyboardInputManager *)self currentState];
+  [currentState setInputString:v7];
 
   if (!v6)
   {
 
-    v7 = v2;
+    v7 = keyboardState;
   }
 
-  v9 = [(TIKeyboardInputManager *)self _hasSupplementalPrefix];
-  v10 = [(TIKeyboardInputManager *)self currentState];
-  [v10 setHasSupplementalPrefix:v9];
+  _hasSupplementalPrefix = [(TIKeyboardInputManager *)self _hasSupplementalPrefix];
+  currentState2 = [(TIKeyboardInputManager *)self currentState];
+  [currentState2 setHasSupplementalPrefix:_hasSupplementalPrefix];
 
-  v11 = [(TIKeyboardInputManager *)self inputCount];
-  v12 = [(TIKeyboardInputManager *)self currentState];
-  [v12 setInputCount:v11];
+  inputCount = [(TIKeyboardInputManager *)self inputCount];
+  currentState3 = [(TIKeyboardInputManager *)self currentState];
+  [currentState3 setInputCount:inputCount];
 
-  v13 = [(TIKeyboardInputManager *)self inputIndex];
-  v14 = [(TIKeyboardInputManager *)self currentState];
-  [v14 setInputIndex:v13];
+  inputIndex = [(TIKeyboardInputManager *)self inputIndex];
+  currentState4 = [(TIKeyboardInputManager *)self currentState];
+  [currentState4 setInputIndex:inputIndex];
 
-  v15 = [(TIKeyboardInputManager *)self nextInputWouldStartSentence];
-  v16 = [(TIKeyboardInputManager *)self currentState];
-  [v16 setNextInputWouldStartSentence:v15];
+  nextInputWouldStartSentence = [(TIKeyboardInputManager *)self nextInputWouldStartSentence];
+  currentState5 = [(TIKeyboardInputManager *)self currentState];
+  [currentState5 setNextInputWouldStartSentence:nextInputWouldStartSentence];
 
-  v17 = [(TIKeyboardInputManager *)self shadowTyping];
-  v18 = [(TIKeyboardInputManager *)self currentState];
-  [v18 setShadowTyping:v17];
+  shadowTyping = [(TIKeyboardInputManager *)self shadowTyping];
+  currentState6 = [(TIKeyboardInputManager *)self currentState];
+  [currentState6 setShadowTyping:shadowTyping];
 
-  v19 = [(TIKeyboardInputManager *)self keyEventMap];
-  v20 = [(TIKeyboardInputManager *)self currentState];
-  [v20 setKeyEventMap:v19];
+  keyEventMap = [(TIKeyboardInputManager *)self keyEventMap];
+  currentState7 = [(TIKeyboardInputManager *)self currentState];
+  [currentState7 setKeyEventMap:keyEventMap];
 
-  v21 = [(TIKeyboardInputManager *)self replacementForDoubleSpace];
-  v22 = [(TIKeyboardInputManager *)self currentState];
-  [v22 setReplacementForDoubleSpace:v21];
+  replacementForDoubleSpace = [(TIKeyboardInputManager *)self replacementForDoubleSpace];
+  currentState8 = [(TIKeyboardInputManager *)self currentState];
+  [currentState8 setReplacementForDoubleSpace:replacementForDoubleSpace];
 
-  v23 = [(TIKeyboardInputManager *)self keyboardState];
-  v24 = [v23 documentState];
-  v25 = [(TIKeyboardInputManager *)self shortcutCompletionsForDocumentState:v24];
-  v26 = [(TIKeyboardInputManager *)self currentState];
-  [v26 setShortcutCompletions:v25];
+  keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+  documentState2 = [keyboardState2 documentState];
+  v25 = [(TIKeyboardInputManager *)self shortcutCompletionsForDocumentState:documentState2];
+  currentState9 = [(TIKeyboardInputManager *)self currentState];
+  [currentState9 setShortcutCompletions:v25];
 
-  v27 = [(TIKeyboardInputManager *)self inputsToReject];
-  v28 = [(TIKeyboardInputManager *)self currentState];
-  [v28 setInputsToReject:v27];
+  inputsToReject = [(TIKeyboardInputManager *)self inputsToReject];
+  currentState10 = [(TIKeyboardInputManager *)self currentState];
+  [currentState10 setInputsToReject:inputsToReject];
 
-  v29 = [(TIKeyboardInputManager *)self suppressPlaceholderCandidate];
-  v30 = [(TIKeyboardInputManager *)self currentState];
-  [v30 setSuppressPlaceholderCandidate:v29];
+  suppressPlaceholderCandidate = [(TIKeyboardInputManager *)self suppressPlaceholderCandidate];
+  currentState11 = [(TIKeyboardInputManager *)self currentState];
+  [currentState11 setSuppressPlaceholderCandidate:suppressPlaceholderCandidate];
 
-  v31 = [(TIKeyboardInputManager *)self supportsNumberKeySelection];
-  v32 = [(TIKeyboardInputManager *)self currentState];
-  [v32 setSupportsNumberKeySelection:v31];
+  supportsNumberKeySelection = [(TIKeyboardInputManager *)self supportsNumberKeySelection];
+  currentState12 = [(TIKeyboardInputManager *)self currentState];
+  [currentState12 setSupportsNumberKeySelection:supportsNumberKeySelection];
 
-  v33 = [(TIKeyboardInputManager *)self usesPunctuationKeysForRowNavigation];
-  v34 = [(TIKeyboardInputManager *)self currentState];
-  [v34 setUsesPunctuationKeysForRowNavigation:v33];
+  usesPunctuationKeysForRowNavigation = [(TIKeyboardInputManager *)self usesPunctuationKeysForRowNavigation];
+  currentState13 = [(TIKeyboardInputManager *)self currentState];
+  [currentState13 setUsesPunctuationKeysForRowNavigation:usesPunctuationKeysForRowNavigation];
 
-  v35 = [(TIKeyboardInputManager *)self usesLiveConversion];
-  v36 = [(TIKeyboardInputManager *)self currentState];
-  [v36 setUsesLiveConversion:v35];
+  usesLiveConversion = [(TIKeyboardInputManager *)self usesLiveConversion];
+  currentState14 = [(TIKeyboardInputManager *)self currentState];
+  [currentState14 setUsesLiveConversion:usesLiveConversion];
 
-  v37 = [(TIKeyboardInputManager *)self delayedCandidateList];
-  v38 = [(TIKeyboardInputManager *)self currentState];
-  [v38 setDelayedCandidateList:v37];
+  delayedCandidateList = [(TIKeyboardInputManager *)self delayedCandidateList];
+  currentState15 = [(TIKeyboardInputManager *)self currentState];
+  [currentState15 setDelayedCandidateList:delayedCandidateList];
 
-  v39 = [(TIKeyboardInputManager *)self currentState];
-  v57 = [v39 inputString];
+  currentState16 = [(TIKeyboardInputManager *)self currentState];
+  inputString = [currentState16 inputString];
 
-  v40 = [v57 length];
+  v40 = [inputString length];
   if (v40)
   {
-    v38 = [(TIKeyboardInputManager *)self textCheckerExemptions];
-    v41 = [v38 stringIsExemptFromChecker:v57];
+    currentState15 = [(TIKeyboardInputManager *)self textCheckerExemptions];
+    v41 = [currentState15 stringIsExemptFromChecker:inputString];
   }
 
   else
@@ -1431,16 +1431,16 @@ LABEL_4:
     v41 = 0;
   }
 
-  v42 = [(TIKeyboardInputManager *)self currentState];
-  [v42 setInputStringIsExemptFromChecker:v41];
+  currentState17 = [(TIKeyboardInputManager *)self currentState];
+  [currentState17 setInputStringIsExemptFromChecker:v41];
 
   if (v40)
   {
   }
 
-  if (v57)
+  if (inputString)
   {
-    v43 = [(TIKeyboardInputManager *)self autocorrectionRecordForWord:v57];
+    v43 = [(TIKeyboardInputManager *)self autocorrectionRecordForWord:inputString];
   }
 
   else
@@ -1448,46 +1448,46 @@ LABEL_4:
     v43 = 0;
   }
 
-  v44 = [(TIKeyboardInputManager *)self currentState];
-  [v44 setAutocorrectionRecordForInputString:v43];
+  currentState18 = [(TIKeyboardInputManager *)self currentState];
+  [currentState18 setAutocorrectionRecordForInputString:v43];
 
-  if (v57)
+  if (inputString)
   {
   }
 
-  v45 = [(TIKeyboardInputManager *)self usesContinuousPath];
-  v46 = [(TIKeyboardInputManager *)self currentState];
-  [v46 setUsesContinuousPath:v45];
+  usesContinuousPath = [(TIKeyboardInputManager *)self usesContinuousPath];
+  currentState19 = [(TIKeyboardInputManager *)self currentState];
+  [currentState19 setUsesContinuousPath:usesContinuousPath];
 
-  v47 = [(TIKeyboardInputManager *)self shouldFixupIncompleteRomaji];
-  v48 = [(TIKeyboardInputManager *)self currentState];
-  [v48 setShouldFixupIncompleteRomaji:v47];
+  shouldFixupIncompleteRomaji = [(TIKeyboardInputManager *)self shouldFixupIncompleteRomaji];
+  currentState20 = [(TIKeyboardInputManager *)self currentState];
+  [currentState20 setShouldFixupIncompleteRomaji:shouldFixupIncompleteRomaji];
 
-  v49 = [(TIKeyboardInputManager *)self acceptAutocorrectionCommitsInline];
-  v50 = [(TIKeyboardInputManager *)self currentState];
-  [v50 setAcceptAutocorrectionCommitsInline:v49];
+  acceptAutocorrectionCommitsInline = [(TIKeyboardInputManager *)self acceptAutocorrectionCommitsInline];
+  currentState21 = [(TIKeyboardInputManager *)self currentState];
+  [currentState21 setAcceptAutocorrectionCommitsInline:acceptAutocorrectionCommitsInline];
 
-  v51 = [(TIKeyboardInputManager *)self config];
-  v52 = [v51 shouldIgnoreCPRequirements];
-  v53 = [(TIKeyboardInputManager *)self currentState];
-  [v53 setIgnoreContinuousPathRequirements:v52];
+  config = [(TIKeyboardInputManager *)self config];
+  shouldIgnoreCPRequirements = [config shouldIgnoreCPRequirements];
+  currentState22 = [(TIKeyboardInputManager *)self currentState];
+  [currentState22 setIgnoreContinuousPathRequirements:shouldIgnoreCPRequirements];
 
-  v54 = [(TIKeyboardInputManager *)self lastAcceptedText];
-  if (v54)
+  lastAcceptedText = [(TIKeyboardInputManager *)self lastAcceptedText];
+  if (lastAcceptedText)
   {
-    v52 = [(TIKeyboardInputManager *)self lastAcceptedText];
-    v55 = [v52 learningFlagsMask];
+    shouldIgnoreCPRequirements = [(TIKeyboardInputManager *)self lastAcceptedText];
+    learningFlagsMask = [shouldIgnoreCPRequirements learningFlagsMask];
   }
 
   else
   {
-    v55 = 0;
+    learningFlagsMask = 0;
   }
 
-  v56 = [(TIKeyboardInputManager *)self currentState];
-  [v56 setLearningFlagsMaskForLastAcceptedCandidate:v55];
+  currentState23 = [(TIKeyboardInputManager *)self currentState];
+  [currentState23 setLearningFlagsMaskForLastAcceptedCandidate:learningFlagsMask];
 
-  if (v54)
+  if (lastAcceptedText)
   {
   }
 }
@@ -1497,9 +1497,9 @@ LABEL_4:
   currentState = self->_currentState;
   if (!currentState)
   {
-    v4 = [(TIKeyboardInputManager *)self newInputManagerState];
+    newInputManagerState = [(TIKeyboardInputManager *)self newInputManagerState];
     v5 = self->_currentState;
-    self->_currentState = v4;
+    self->_currentState = newInputManagerState;
 
     currentState = self->_currentState;
   }
@@ -1539,8 +1539,8 @@ LABEL_4:
 {
   if ([(TIKeyboardInputManager *)self shouldInsertSpaceBeforeInput:0])
   {
-    v3 = [(TIKeyboardInputManager *)self wordSeparator];
-    v4 = [(TIKeyboardInputManager *)self nextInputWouldStartSentenceAfterInput:v3];
+    wordSeparator = [(TIKeyboardInputManager *)self wordSeparator];
+    v4 = [(TIKeyboardInputManager *)self nextInputWouldStartSentenceAfterInput:wordSeparator];
 
     return v4;
   }
@@ -1580,10 +1580,10 @@ LABEL_4:
 
 - (id)replacementForDoubleSpace
 {
-  v2 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-  v3 = [v2 replacementForDoubleSpace];
+  keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+  replacementForDoubleSpace = [keyboardFeatureSpecialization replacementForDoubleSpace];
 
-  return v3;
+  return replacementForDoubleSpace;
 }
 
 - (BOOL)usesContinuousPath
@@ -1593,26 +1593,26 @@ LABEL_4:
     return 0;
   }
 
-  v4 = [(TIKeyboardInputManager *)self config];
-  if ([v4 usesContinuousPath])
+  config = [(TIKeyboardInputManager *)self config];
+  if ([config usesContinuousPath])
   {
-    v3 = 1;
+    usesContinuousPathForAccessibility = 1;
   }
 
   else
   {
-    v5 = [(TIKeyboardInputManager *)self config];
-    v3 = [v5 usesContinuousPathForAccessibility];
+    config2 = [(TIKeyboardInputManager *)self config];
+    usesContinuousPathForAccessibility = [config2 usesContinuousPathForAccessibility];
   }
 
-  return v3;
+  return usesContinuousPathForAccessibility;
 }
 
 - (id)keyboardConfigurationLayoutTag
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [(TIKeyboardLayoutState *)self->_layoutState softwareLayout];
-  v4 = [(TIKeyboardInputManager *)self layoutTagsForLayout:v3];
+  softwareLayout = [(TIKeyboardLayoutState *)self->_layoutState softwareLayout];
+  v4 = [(TIKeyboardInputManager *)self layoutTagsForLayout:softwareLayout];
 
   if ([v4 count])
   {
@@ -1637,17 +1637,17 @@ LABEL_4:
           }
 
           v9 = *(*(&v26 + 1) + 8 * i);
-          v10 = [v9 allKeys];
-          v11 = [v10 firstObject];
+          allKeys = [v9 allKeys];
+          firstObject = [allKeys firstObject];
 
-          v12 = [v9 objectForKeyedSubscript:v11];
-          v13 = [(TIKeyboardInputManager *)self keyboardState];
-          v14 = [v13 documentState];
-          v15 = [v14 contextBeforeInput];
+          v12 = [v9 objectForKeyedSubscript:firstObject];
+          keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+          documentState = [keyboardState documentState];
+          contextBeforeInput = [documentState contextBeforeInput];
 
-          v16 = [v15 length];
-          v17 = [v15 length];
-          if ([v15 length])
+          v16 = [contextBeforeInput length];
+          v17 = [contextBeforeInput length];
+          if ([contextBeforeInput length])
           {
             if (v16 <= 0xA)
             {
@@ -1669,7 +1669,7 @@ LABEL_4:
               v19 = v17 - 10;
             }
 
-            v20 = [v15 rangeOfCharacterFromSet:v12 options:4 range:{v19, v18}];
+            v20 = [contextBeforeInput rangeOfCharacterFromSet:v12 options:4 range:{v19, v18}];
           }
 
           else
@@ -1678,7 +1678,7 @@ LABEL_4:
             v20 = 0x7FFFFFFFFFFFFFFFLL;
           }
 
-          if (v20 != 0x7FFFFFFFFFFFFFFFLL && v20 + v21 == [v15 length])
+          if (v20 != 0x7FFFFFFFFFFFFFFFLL && v20 + v21 == [contextBeforeInput length])
           {
 
             goto LABEL_23;
@@ -1694,25 +1694,25 @@ LABEL_4:
         break;
       }
 
-      v11 = @"Default";
+      firstObject = @"Default";
 LABEL_23:
       v4 = v24;
     }
 
     else
     {
-      v11 = @"Default";
+      firstObject = @"Default";
     }
   }
 
   else
   {
-    v11 = 0;
+    firstObject = 0;
   }
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return firstObject;
 }
 
 uint64_t __51__TIKeyboardInputManager_mul_keyboardConfiguration__block_invoke(uint64_t a1, void *a2)
@@ -1793,25 +1793,25 @@ LABEL_6:
 
 - (id)dynamicResourcePath
 {
-  v2 = [(TIKeyboardInputManager *)self config];
-  v3 = [v2 dynamicResourcePath];
+  config = [(TIKeyboardInputManager *)self config];
+  dynamicResourcePath = [config dynamicResourcePath];
 
-  return v3;
+  return dynamicResourcePath;
 }
 
 - (BOOL)shouldSuppressTokenIDLookups
 {
-  v3 = [(TIKeyboardInputManager *)self keyboardState];
-  v4 = [v3 secureTextEntry];
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  secureTextEntry = [keyboardState secureTextEntry];
 
-  if (v4)
+  if (secureTextEntry)
   {
     return 1;
   }
 
-  v6 = [(TIKeyboardInputManager *)self keyboardState];
-  v7 = [v6 textInputTraits];
-  v5 = [v7 autocorrectionType] == 1;
+  keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+  textInputTraits = [keyboardState2 textInputTraits];
+  v5 = [textInputTraits autocorrectionType] == 1;
 
   return v5;
 }
@@ -2466,12 +2466,12 @@ uint64_t __74__TIKeyboardInputManager_mul_textContentTypesPreferringSecondaryInp
   return WeakRetained;
 }
 
-- (unsigned)sourceMaskForWord:(Word *)a3
+- (unsigned)sourceMaskForWord:(Word *)word
 {
-  var8 = a3->var8;
+  var8 = word->var8;
   if ((var8 & 0x40000) != 0)
   {
-    if (a3->var18)
+    if (word->var18)
     {
       v4 = 0x20000;
     }
@@ -2489,7 +2489,7 @@ uint64_t __74__TIKeyboardInputManager_mul_textContentTypesPreferringSecondaryInp
 
   if ((var8 & 0x80032000) != 0)
   {
-    if (a3->var18)
+    if (word->var18)
     {
       v5 = 0x40000;
     }
@@ -2502,7 +2502,7 @@ uint64_t __74__TIKeyboardInputManager_mul_textContentTypesPreferringSecondaryInp
     v4 |= v5;
   }
 
-  if (a3->var19.var0.var2)
+  if (word->var19.var0.var2)
   {
     v4 |= 0x400u;
   }
@@ -2514,10 +2514,10 @@ uint64_t __74__TIKeyboardInputManager_mul_textContentTypesPreferringSecondaryInp
   return v9.i32[0] | (var8 >> 21) & 0x80 | v9.i32[1] | (var8 >> 19) & 0x100 | v7 | v4;
 }
 
-- (unsigned)sourceMaskForWordString:(String *)a3 caseSensitive:(BOOL)a4
+- (unsigned)sourceMaskForWordString:(String *)string caseSensitive:(BOOL)sensitive
 {
   v15 = *MEMORY[0x277D85DE8];
-  TIInputManager::matching_words_from_dictionary(self->m_impl, a3, a3, a4, &v11);
+  TIInputManager::matching_words_from_dictionary(self->m_impl, string, string, sensitive, &v11);
   v5 = v11;
   v6 = v12;
   if (v11 == v12)
@@ -2546,18 +2546,18 @@ uint64_t __74__TIKeyboardInputManager_mul_textContentTypesPreferringSecondaryInp
   return v7;
 }
 
-- (unsigned)adjustedSourceMaskFromCandidate:(id)a3
+- (unsigned)adjustedSourceMaskFromCandidate:(id)candidate
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 sourceMask];
+  candidateCopy = candidate;
+  sourceMask = [candidateCopy sourceMask];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v6 = [v4 candidate];
-    v7 = [(TIKeyboardInputManagerBase *)self inputMode];
-    v8 = [v7 locale];
-    KB::utf8_string_tokens_from_string(v6, v27);
+    candidate = [candidateCopy candidate];
+    inputMode = [(TIKeyboardInputManagerBase *)self inputMode];
+    locale = [inputMode locale];
+    KB::utf8_string_tokens_from_string(candidate, v27);
 
     v9 = v27[0];
     v10 = v27[1];
@@ -2589,7 +2589,7 @@ uint64_t __74__TIKeyboardInputManager_mul_textContentTypesPreferringSecondaryInp
         }
       }
 
-      v5 |= v11;
+      sourceMask |= v11;
       v9 = (v9 + 32);
     }
 
@@ -2600,34 +2600,34 @@ uint64_t __74__TIKeyboardInputManager_mul_textContentTypesPreferringSecondaryInp
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 |= 4u;
+    sourceMask |= 4u;
   }
 
-  if ([v4 isResponseKitCandidate])
+  if ([candidateCopy isResponseKitCandidate])
   {
-    v13 = v5 | 0x2000;
+    v13 = sourceMask | 0x2000;
   }
 
   else
   {
-    v13 = v5;
+    v13 = sourceMask;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [v4 proactiveTrigger];
+    proactiveTrigger = [candidateCopy proactiveTrigger];
 
-    if (v14)
+    if (proactiveTrigger)
     {
       v13 |= 0x40u;
     }
   }
 
-  v15 = [v4 candidate];
-  v16 = [v15 _containsEmoji];
+  candidate2 = [candidateCopy candidate];
+  _containsEmoji = [candidate2 _containsEmoji];
 
-  if (v16)
+  if (_containsEmoji)
   {
     v17 = v13 | 0x4000;
   }
@@ -2637,7 +2637,7 @@ uint64_t __74__TIKeyboardInputManager_mul_textContentTypesPreferringSecondaryInp
     v17 = v13;
   }
 
-  if ([v4 isToucanInlineCompletionCandidate])
+  if ([candidateCopy isToucanInlineCompletionCandidate])
   {
     v17 |= 0x80000u;
   }
@@ -2648,12 +2648,12 @@ uint64_t __74__TIKeyboardInputManager_mul_textContentTypesPreferringSecondaryInp
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
       v21 = MEMORY[0x277CCACA8];
-      v22 = [v4 candidate];
-      v23 = [v4 input];
-      [v4 sourceMask];
+      candidate3 = [candidateCopy candidate];
+      input = [candidateCopy input];
+      [candidateCopy sourceMask];
       v24 = TIStatisticCandidateSourceAsString();
       v25 = TIStatisticCandidateSourceAsString();
-      v26 = [v21 stringWithFormat:@"%s SourceMaskTesting |%@|%@|%@|%@|", "-[TIKeyboardInputManager adjustedSourceMaskFromCandidate:]", v22, v23, v24, v25];
+      v26 = [v21 stringWithFormat:@"%s SourceMaskTesting |%@|%@|%@|%@|", "-[TIKeyboardInputManager adjustedSourceMaskFromCandidate:]", candidate3, input, v24, v25];
       LODWORD(buf[0]) = 138412290;
       *(buf + 4) = v26;
       _os_log_debug_impl(&dword_22CA55000, v18, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
@@ -2668,13 +2668,13 @@ uint64_t __74__TIKeyboardInputManager_mul_textContentTypesPreferringSecondaryInp
 {
   if (TI_DEVICE_UNLOCKED_SINCE_BOOT() && [(TIKeyboardInputManager *)self isStickerSuggestionsEnabled])
   {
-    v3 = [MEMORY[0x277CBEAF8] currentLocale];
-    v4 = [v3 languageCode];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    languageCode = [currentLocale languageCode];
 
-    v5 = [(TIKeyboardInputManagerBase *)self inputMode];
-    v6 = [v5 languageWithRegion];
+    inputMode = [(TIKeyboardInputManagerBase *)self inputMode];
+    languageWithRegion = [inputMode languageWithRegion];
 
-    if ((_os_feature_enabled_impl() & 1) != 0 || [v4 hasPrefix:@"en"] && objc_msgSend(v6, "hasPrefix:", @"en"))
+    if ((_os_feature_enabled_impl() & 1) != 0 || [languageCode hasPrefix:@"en"] && objc_msgSend(languageWithRegion, "hasPrefix:", @"en"))
     {
       v7 = +[TIStickerCandidateGenerator sharedInstance];
     }
@@ -2693,21 +2693,21 @@ uint64_t __74__TIKeyboardInputManager_mul_textContentTypesPreferringSecondaryInp
   return v7;
 }
 
-- (void)didUpdateInputModes:(id)a3
+- (void)didUpdateInputModes:(id)modes
 {
-  v5 = [a3 activeInputModes];
-  v4 = [(TIKeyboardInputManager *)self emojiCandidateGenerator];
-  [v4 updateForActiveInputModes:v5];
+  activeInputModes = [modes activeInputModes];
+  emojiCandidateGenerator = [(TIKeyboardInputManager *)self emojiCandidateGenerator];
+  [emojiCandidateGenerator updateForActiveInputModes:activeInputModes];
 }
 
 - (id)resourceInputModes
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v2 = [(TIKeyboardInputManager *)self dictionaryInputMode];
-  v3 = v2;
-  if (v2)
+  dictionaryInputMode = [(TIKeyboardInputManager *)self dictionaryInputMode];
+  v3 = dictionaryInputMode;
+  if (dictionaryInputMode)
   {
-    v7[0] = v2;
+    v7[0] = dictionaryInputMode;
     v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
   }
 
@@ -2728,13 +2728,13 @@ uint64_t __74__TIKeyboardInputManager_mul_textContentTypesPreferringSecondaryInp
     return 0;
   }
 
-  v3 = [(TIKeyboardInputManager *)self keyboardState];
-  v4 = [v3 documentState];
-  v5 = [v4 contextBeforeInput];
-  v6 = v5;
-  if (v5)
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  documentState = [keyboardState documentState];
+  contextBeforeInput = [documentState contextBeforeInput];
+  v6 = contextBeforeInput;
+  if (contextBeforeInput)
   {
-    v7 = v5;
+    v7 = contextBeforeInput;
   }
 
   else
@@ -2763,7 +2763,7 @@ uint64_t __74__TIKeyboardInputManager_mul_textContentTypesPreferringSecondaryInp
   return v9;
 }
 
-- (BOOL)acceptsRange:(_NSRange)a3 inString:(id)a4
+- (BOOL)acceptsRange:(_NSRange)range inString:(id)string
 {
   v7 = 0;
   v8 = &v7;
@@ -2775,7 +2775,7 @@ uint64_t __74__TIKeyboardInputManager_mul_textContentTypesPreferringSecondaryInp
   v6[3] = &unk_278731720;
   v6[4] = self;
   v6[5] = &v7;
-  [a4 _enumerateLongCharactersInRange:a3.location usingBlock:{a3.length, v6}];
+  [string _enumerateLongCharactersInRange:range.location usingBlock:{range.length, v6}];
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
   return v4;
@@ -2791,23 +2791,23 @@ uint64_t __48__TIKeyboardInputManager_acceptsRange_inString___block_invoke(uint6
 
 - (id)candidateResultSet
 {
-  v3 = [(TIKeyboardInputManager *)self candidates];
-  v4 = [(TIKeyboardInputManager *)self candidateResultSetFromCandidates:v3];
+  candidates = [(TIKeyboardInputManager *)self candidates];
+  v4 = [(TIKeyboardInputManager *)self candidateResultSetFromCandidates:candidates];
 
   return v4;
 }
 
 - (BOOL)doesSelectedTextGenerateEmojiCandidates
 {
-  v3 = [(TIKeyboardInputManager *)self keyboardState];
-  v4 = [v3 documentState];
-  v5 = [v4 selectedText];
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  documentState = [keyboardState documentState];
+  selectedText = [documentState selectedText];
 
-  if (v5)
+  if (selectedText)
   {
-    v6 = [(TIKeyboardInputManager *)self emojiCandidateGenerator];
-    v7 = [MEMORY[0x277CBEA60] arrayWithObject:v5];
-    v8 = [v6 emojiReplacementCandidates:v7];
+    emojiCandidateGenerator = [(TIKeyboardInputManager *)self emojiCandidateGenerator];
+    v7 = [MEMORY[0x277CBEA60] arrayWithObject:selectedText];
+    v8 = [emojiCandidateGenerator emojiReplacementCandidates:v7];
   }
 
   else
@@ -2823,9 +2823,9 @@ uint64_t __48__TIKeyboardInputManager_acceptsRange_inString___block_invoke(uint6
 - (id)typedStringForEmptyAutocorrection
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(TIKeyboardInputManager *)self revisionHistory];
+  revisionHistory = [(TIKeyboardInputManager *)self revisionHistory];
 
-  if (v3)
+  if (revisionHistory)
   {
     v16 = 0;
     v17 = &v16;
@@ -2833,27 +2833,27 @@ uint64_t __48__TIKeyboardInputManager_acceptsRange_inString___block_invoke(uint6
     v19 = __Block_byref_object_copy__11451;
     v20 = __Block_byref_object_dispose__11452;
     v21 = &stru_283FDFAF8;
-    v4 = [(TIKeyboardInputManager *)self revisionHistory];
-    v5 = [v4 selectedRange];
+    revisionHistory2 = [(TIKeyboardInputManager *)self revisionHistory];
+    selectedRange = [revisionHistory2 selectedRange];
 
-    v6 = [(TIKeyboardInputManager *)self revisionHistory];
+    revisionHistory3 = [(TIKeyboardInputManager *)self revisionHistory];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __59__TIKeyboardInputManager_typedStringForEmptyAutocorrection__block_invoke;
     v15[3] = &unk_2787316F8;
     v15[5] = &v16;
-    v15[6] = v5;
+    v15[6] = selectedRange;
     v15[4] = self;
-    [v6 enumerateSentenceStemUsingBlock:v15];
+    [revisionHistory3 enumerateSentenceStemUsingBlock:v15];
 
     v7 = *(v17 + 5);
     if (!CEMStringIsSingleEmoji())
     {
-      v8 = [(TIKeyboardInputManager *)self inputStem];
+      inputStem = [(TIKeyboardInputManager *)self inputStem];
       v9 = [*(v17 + 5) length];
-      if (v9 > [v8 length])
+      if (v9 > [inputStem length])
       {
-        objc_storeStrong(v17 + 5, v8);
+        objc_storeStrong(v17 + 5, inputStem);
       }
     }
 
@@ -2920,26 +2920,26 @@ LABEL_11:
 
 - (BOOL)shouldGeneratePredictionsForCurrentContext
 {
-  v3 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  v4 = [v3 predictionEnabled];
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+  predictionEnabled = [mEMORY[0x277D6F470] predictionEnabled];
 
-  v5 = [(TIKeyboardInputManager *)self config];
-  if (([v5 usesWordNgramModel] & 1) == 0)
+  config = [(TIKeyboardInputManager *)self config];
+  if (([config usesWordNgramModel] & 1) == 0)
   {
-    v7 = [(TIKeyboardInputManagerBase *)self inputMode];
-    v8 = [v7 supportsMultilingualKeyboard];
+    inputMode = [(TIKeyboardInputManagerBase *)self inputMode];
+    supportsMultilingualKeyboard = [inputMode supportsMultilingualKeyboard];
 
-    if ((v8 & v4 & 1) == 0)
+    if ((supportsMultilingualKeyboard & predictionEnabled & 1) == 0)
     {
       return 0;
     }
 
 LABEL_5:
-    v9 = [(TIKeyboardInputManager *)self keyboardState];
-    v10 = [v9 documentState];
-    v11 = [v10 contextBeforeInput];
+    keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+    documentState = [keyboardState documentState];
+    contextBeforeInput = [documentState contextBeforeInput];
 
-    if (![v11 length])
+    if (![contextBeforeInput length])
     {
       v6 = 1;
 LABEL_19:
@@ -2947,10 +2947,10 @@ LABEL_19:
       return v6;
     }
 
-    v12 = [v11 rangeOfComposedCharacterSequenceAtIndex:{objc_msgSend(v11, "length") - 1}];
-    v14 = [v11 substringWithRange:{v12, v13}];
-    v15 = [(TIKeyboardInputManager *)self allowPredictionCharacterSet];
-    v16 = [v14 rangeOfCharacterFromSet:v15];
+    v12 = [contextBeforeInput rangeOfComposedCharacterSequenceAtIndex:{objc_msgSend(contextBeforeInput, "length") - 1}];
+    v14 = [contextBeforeInput substringWithRange:{v12, v13}];
+    allowPredictionCharacterSet = [(TIKeyboardInputManager *)self allowPredictionCharacterSet];
+    v16 = [v14 rangeOfCharacterFromSet:allowPredictionCharacterSet];
 
     if (v16 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -2965,28 +2965,28 @@ LABEL_18:
 
       if (_os_feature_enabled_impl())
       {
-        v17 = [(TIKeyboardInputManager *)self keyboardState];
-        v18 = [v17 needContactAutofill];
+        keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+        needContactAutofill = [keyboardState2 needContactAutofill];
       }
 
       else
       {
-        v18 = 0;
+        needContactAutofill = 0;
       }
 
-      v19 = [(TIKeyboardInputManagerBase *)self inputMode];
-      v20 = [v19 languageWithRegion];
-      v21 = [v20 isEqualToString:@"th_TH"];
+      inputMode2 = [(TIKeyboardInputManagerBase *)self inputMode];
+      languageWithRegion = [inputMode2 languageWithRegion];
+      v21 = [languageWithRegion isEqualToString:@"th_TH"];
 
       if (v21)
       {
-        if (!(([(TIKeyboardInputManager *)self inputIndex]== 0) | v18 & 1))
+        if (!(([(TIKeyboardInputManager *)self inputIndex]== 0) | needContactAutofill & 1))
         {
           goto LABEL_8;
         }
       }
 
-      else if ((v18 & 1) == 0)
+      else if ((needContactAutofill & 1) == 0)
       {
         goto LABEL_8;
       }
@@ -2996,7 +2996,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (v4)
+  if (predictionEnabled)
   {
     goto LABEL_5;
   }
@@ -3010,22 +3010,22 @@ LABEL_18:
   if (!allowPredictionCharacterSet)
   {
     v4 = [MEMORY[0x277CCAB68] stringWithString:{@" \n\t(., ?!:)@#"}];;
-    v5 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-    v6 = [v5 sentencePrefixingCharacters];
-    [v4 appendString:v6];
+    keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+    sentencePrefixingCharacters = [keyboardFeatureSpecialization sentencePrefixingCharacters];
+    [v4 appendString:sentencePrefixingCharacters];
 
-    v7 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-    v8 = [v7 sentenceDelimitingCharacters];
-    [v4 appendString:v8];
+    keyboardFeatureSpecialization2 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+    sentenceDelimitingCharacters = [keyboardFeatureSpecialization2 sentenceDelimitingCharacters];
+    [v4 appendString:sentenceDelimitingCharacters];
 
-    v9 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-    v10 = [v9 sentenceTrailingCharacters];
-    [v4 appendString:v10];
+    keyboardFeatureSpecialization3 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+    sentenceTrailingCharacters = [keyboardFeatureSpecialization3 sentenceTrailingCharacters];
+    [v4 appendString:sentenceTrailingCharacters];
 
     v11 = MEMORY[0x277CCA900];
-    v12 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-    v13 = [v12 wordMedialPunctuationCharacters];
-    v14 = [v11 characterSetWithCharactersInString:v13];
+    keyboardFeatureSpecialization4 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+    wordMedialPunctuationCharacters = [keyboardFeatureSpecialization4 wordMedialPunctuationCharacters];
+    v14 = [v11 characterSetWithCharactersInString:wordMedialPunctuationCharacters];
 
     [v4 _removeCharactersFromSet:v14];
     v15 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:v4];
@@ -3038,15 +3038,15 @@ LABEL_18:
   return allowPredictionCharacterSet;
 }
 
-- (void)reconcileConversions:(id)a3
+- (void)reconcileConversions:(id)conversions
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  conversionsCopy = conversions;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v34 objects:v38 count:16];
+  v4 = [conversionsCopy countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3058,23 +3058,23 @@ LABEL_18:
       {
         if (*v35 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(conversionsCopy);
         }
 
         v9 = *(*(&v34 + 1) + 8 * i);
-        v10 = [v9 input];
-        v11 = [v10 length];
+        input = [v9 input];
+        v11 = [input length];
         v12 = [(__CFString *)v7 length];
 
         if (v11 > v12)
         {
-          v13 = [v9 input];
+          input2 = [v9 input];
 
-          v7 = v13;
+          v7 = input2;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v34 objects:v38 count:16];
+      v5 = [conversionsCopy countByEnumeratingWithState:&v34 objects:v38 count:16];
     }
 
     while (v5);
@@ -3085,39 +3085,39 @@ LABEL_18:
     v7 = &stru_283FDFAF8;
   }
 
-  if ([v3 count])
+  if ([conversionsCopy count])
   {
     v14 = 0;
     do
     {
-      v15 = [v3 objectAtIndex:v14];
+      v15 = [conversionsCopy objectAtIndex:v14];
       v16 = [(__CFString *)v7 length];
-      v17 = [v15 input];
-      v18 = v16 - [v17 length];
+      input3 = [v15 input];
+      v18 = v16 - [input3 length];
 
       if (v18 >= 1)
       {
         v19 = [(__CFString *)v7 substringToIndex:v18];
-        v20 = [v15 input];
-        v21 = [v19 stringByAppendingString:v20];
+        input4 = [v15 input];
+        v21 = [v19 stringByAppendingString:input4];
 
-        v22 = [v15 candidate];
+        candidate = [v15 candidate];
         v33 = v19;
-        v23 = [v19 stringByAppendingString:v22];
+        v23 = [v19 stringByAppendingString:candidate];
 
-        v24 = [v15 wordOriginFeedbackID];
-        v25 = [v15 usageTrackingMask];
-        v26 = [v15 sourceMask];
-        v27 = [objc_alloc(MEMORY[0x277D6F568]) initWithCandidate:v23 forInput:v21 rawInput:0 wordOriginFeedbackID:v24 usageTrackingMask:v25 sourceMask:v26];
+        wordOriginFeedbackID = [v15 wordOriginFeedbackID];
+        usageTrackingMask = [v15 usageTrackingMask];
+        sourceMask = [v15 sourceMask];
+        v27 = [objc_alloc(MEMORY[0x277D6F568]) initWithCandidate:v23 forInput:v21 rawInput:0 wordOriginFeedbackID:wordOriginFeedbackID usageTrackingMask:usageTrackingMask sourceMask:sourceMask];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           v28 = v15;
           [v27 setIsFromPhraseDictionary:{objc_msgSend(v28, "isFromPhraseDictionary")}];
           [v27 setIsFromTextChecker:{objc_msgSend(v28, "isFromTextChecker")}];
-          v29 = [v28 isContinuousPathConversion];
+          isContinuousPathConversion = [v28 isContinuousPathConversion];
 
-          [v27 setContinuousPathConversion:v29];
+          [v27 setContinuousPathConversion:isContinuousPathConversion];
         }
 
         if (self->_supplementalPrefix)
@@ -3125,33 +3125,33 @@ LABEL_18:
           [v27 core_updateWithSupplementalItemPrefix:?];
         }
 
-        v30 = [v15 supplementalItemIdentifiers];
-        [v27 setSupplementalItemIdentifiers:v30];
+        supplementalItemIdentifiers = [v15 supplementalItemIdentifiers];
+        [v27 setSupplementalItemIdentifiers:supplementalItemIdentifiers];
 
-        [v3 replaceObjectAtIndex:v14 withObject:v27];
+        [conversionsCopy replaceObjectAtIndex:v14 withObject:v27];
       }
 
       ++v14;
     }
 
-    while (v14 < [v3 count]);
+    while (v14 < [conversionsCopy count]);
   }
 
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (id)extendedAutocorrection:(id)a3 spanningInputsForCandidates:(id)a4 emojis:(id)a5
+- (id)extendedAutocorrection:(id)autocorrection spanningInputsForCandidates:(id)candidates emojis:(id)emojis
 {
-  v49 = self;
+  selfCopy = self;
   v59 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v52 = a5;
-  v9 = [v7 candidate];
-  v10 = v9;
-  if (v9)
+  autocorrectionCopy = autocorrection;
+  candidatesCopy = candidates;
+  emojisCopy = emojis;
+  candidate = [autocorrectionCopy candidate];
+  v10 = candidate;
+  if (candidate)
   {
-    v11 = v9;
+    v11 = candidate;
   }
 
   else
@@ -3161,12 +3161,12 @@ LABEL_18:
 
   v53 = v11;
 
-  v51 = v7;
-  v12 = [v7 input];
-  v13 = v12;
-  if (v12)
+  v51 = autocorrectionCopy;
+  input = [autocorrectionCopy input];
+  v13 = input;
+  if (input)
   {
-    v14 = v12;
+    v14 = input;
   }
 
   else
@@ -3180,7 +3180,7 @@ LABEL_18:
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v16 = v8;
+  v16 = candidatesCopy;
   v17 = [v16 countByEnumeratingWithState:&v54 objects:v58 count:16];
   if (v17)
   {
@@ -3198,14 +3198,14 @@ LABEL_18:
         v21 = *(*(&v54 + 1) + 8 * i);
         if (([v21 isSupplementalItemCandidate] & 1) == 0)
         {
-          v22 = [v21 input];
-          if (![v22 length])
+          input2 = [v21 input];
+          if (![input2 length])
           {
             goto LABEL_21;
           }
 
-          v23 = [v21 input];
-          if (([(__CFString *)v15 hasSuffix:v23]& 1) != 0)
+          input3 = [v21 input];
+          if (([(__CFString *)v15 hasSuffix:input3]& 1) != 0)
           {
             goto LABEL_20;
           }
@@ -3214,17 +3214,17 @@ LABEL_18:
           {
 
 LABEL_19:
-            v26 = [v21 input];
-            v27 = [v26 length];
+            input4 = [v21 input];
+            v27 = [input4 length];
             v28 = v27 - [(__CFString *)v15 length];
 
-            v29 = [v21 input];
-            v22 = [v29 substringToIndex:v28];
+            input5 = [v21 input];
+            input2 = [input5 substringToIndex:v28];
 
-            v30 = [v22 stringByAppendingString:v53];
+            v30 = [input2 stringByAppendingString:v53];
 
-            [v22 stringByAppendingString:v15];
-            v15 = v23 = v15;
+            [input2 stringByAppendingString:v15];
+            v15 = input3 = v15;
             v53 = v30;
 LABEL_20:
 
@@ -3232,8 +3232,8 @@ LABEL_21:
             continue;
           }
 
-          v24 = [v21 input];
-          v25 = [v24 hasSuffix:v15];
+          input6 = [v21 input];
+          v25 = [input6 hasSuffix:v15];
 
           if (v25)
           {
@@ -3248,23 +3248,23 @@ LABEL_21:
     while (v18);
   }
 
-  v31 = v52;
-  if ([v52 count])
+  v31 = emojisCopy;
+  if ([emojisCopy count])
   {
-    v32 = [v52 firstObject];
-    v33 = [v32 input];
+    firstObject = [emojisCopy firstObject];
+    input7 = [firstObject input];
     v34 = v51;
-    if ([v33 containsString:@" "])
+    if ([input7 containsString:@" "])
     {
-      v35 = [v33 length];
+      v35 = [input7 length];
       if (v35 > [(__CFString *)v15 length])
       {
-        if ([v33 hasSuffix:v15])
+        if ([input7 hasSuffix:v15])
         {
-          v36 = [v33 substringToIndex:{objc_msgSend(v33, "length") - -[__CFString length](v15, "length")}];
+          v36 = [input7 substringToIndex:{objc_msgSend(input7, "length") - -[__CFString length](v15, "length")}];
           v37 = [v36 stringByAppendingString:v53];
 
-          v38 = v33;
+          v38 = input7;
           v15 = v38;
           v53 = v37;
         }
@@ -3277,21 +3277,21 @@ LABEL_21:
     v34 = v51;
   }
 
-  v39 = [v34 input];
+  input8 = [v34 input];
 
-  if (v15 == v39)
+  if (v15 == input8)
   {
     v45 = v34;
   }
 
   else
   {
-    v40 = [v34 wordOriginFeedbackID];
-    v41 = [v34 usageTrackingMask];
-    v42 = [v34 sourceMask];
+    wordOriginFeedbackID = [v34 wordOriginFeedbackID];
+    usageTrackingMask = [v34 usageTrackingMask];
+    sourceMask = [v34 sourceMask];
     v43 = objc_alloc(MEMORY[0x277D6F568]);
-    v44 = [v34 rawInput];
-    v45 = [v43 initWithCandidate:v53 forInput:v15 rawInput:v44 wordOriginFeedbackID:v40 usageTrackingMask:v41 sourceMask:v42];
+    rawInput = [v34 rawInput];
+    v45 = [v43 initWithCandidate:v53 forInput:v15 rawInput:rawInput wordOriginFeedbackID:wordOriginFeedbackID usageTrackingMask:usageTrackingMask sourceMask:sourceMask];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -3300,14 +3300,14 @@ LABEL_21:
       [v45 setIsFromTextChecker:{objc_msgSend(v34, "isFromTextChecker")}];
     }
 
-    v31 = v52;
+    v31 = emojisCopy;
     if (*(v50 + 284))
     {
       [v45 core_updateWithSupplementalItemPrefix:?];
     }
 
-    v46 = [v34 supplementalItemIdentifiers];
-    [v45 setSupplementalItemIdentifiers:v46];
+    supplementalItemIdentifiers = [v34 supplementalItemIdentifiers];
+    [v45 setSupplementalItemIdentifiers:supplementalItemIdentifiers];
   }
 
   v47 = *MEMORY[0x277D85DE8];
@@ -3315,7 +3315,7 @@ LABEL_21:
   return v45;
 }
 
-- (id)completionCandidates:(unint64_t)a3
+- (id)completionCandidates:(unint64_t)candidates
 {
   v36 = *MEMORY[0x277D85DE8];
   kdebug_trace();
@@ -3331,7 +3331,7 @@ LABEL_21:
     }
   }
 
-  v7 = [(TIKeyboardInputManager *)self shiftContext];
+  shiftContext = [(TIKeyboardInputManager *)self shiftContext];
   (*(*self->m_impl + 24))(buf);
   v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:0x1CAC083126E978D5 * ((v30 - *buf) >> 3)];
   v10 = KB::ns_string(v34, v9);
@@ -3352,7 +3352,7 @@ LABEL_20:
 
     v14 = v11;
     KB::Candidate::capitalized_string(v12, &v27);
-    v15 = [(TIKeyboardInputManager *)self phraseCandidateCompletedByWord:&v27 allowNoSuggest:0 forAutocorrection:0 shiftContext:v7];
+    v15 = [(TIKeyboardInputManager *)self phraseCandidateCompletedByWord:&v27 allowNoSuggest:0 forAutocorrection:0 shiftContext:shiftContext];
     if (v28 && BYTE6(v27) == 1)
     {
       free(v28);
@@ -3427,10 +3427,10 @@ LABEL_21:
   return v8;
 }
 
-- (BOOL)_canSuggestPhraseCandidate:(void *)a3 withStem:
+- (BOOL)_canSuggestPhraseCandidate:(void *)candidate withStem:
 {
-  v5 = a3;
-  if (a1)
+  candidateCopy = candidate;
+  if (self)
   {
     if (!*a2)
     {
@@ -3460,11 +3460,11 @@ LABEL_21:
     while (!v10);
     if (v8 && (KB::Candidate::is_phrase_from_supplemental_lexicon(a2) & 1) == 0)
     {
-      v13 = [a1 keyboardFeatureSpecialization];
-      v14 = [a1 prefixLengthOfInput:v5 sharedWithCandidate:a2 useCandidateLength:{objc_msgSend(v13, "shouldConvertCandidateToExternal") ^ 1}];
+      keyboardFeatureSpecialization = [self keyboardFeatureSpecialization];
+      v14 = [self prefixLengthOfInput:candidateCopy sharedWithCandidate:a2 useCandidateLength:{objc_msgSend(keyboardFeatureSpecialization, "shouldConvertCandidateToExternal") ^ 1}];
 
-      LODWORD(v13) = *a2;
-      v11 = v13 - KB::Candidate::index_of_word_containing_position(a2, v14) == 1;
+      LODWORD(keyboardFeatureSpecialization) = *a2;
+      v11 = keyboardFeatureSpecialization - KB::Candidate::index_of_word_containing_position(a2, v14) == 1;
     }
 
     else
@@ -3485,26 +3485,26 @@ LABEL_11:
 - (id)newKeyboardContext
 {
   v3 = [TIKeyboardInputManagerKeyboardContext alloc];
-  v4 = [(TIKeyboardInputManager *)self keyboardState];
-  v5 = [(TIKeyboardInputManagerKeyboardContext *)v3 initWithKeyboardState:v4];
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  v5 = [(TIKeyboardInputManagerKeyboardContext *)v3 initWithKeyboardState:keyboardState];
 
-  v6 = [(TIKeyboardInputManager *)self revisionHistory];
-  [(TIKeyboardInputManagerKeyboardContext *)v5 setRevisionHistory:v6];
+  revisionHistory = [(TIKeyboardInputManager *)self revisionHistory];
+  [(TIKeyboardInputManagerKeyboardContext *)v5 setRevisionHistory:revisionHistory];
 
   return v5;
 }
 
 - (int)shiftContext
 {
-  v3 = [(TIKeyboardInputManager *)self keyboardState];
-  v4 = [v3 shiftState];
-  v5 = [(TIKeyboardInputManager *)self keyboardState];
-  v6 = +[TIKeyboardInputManager shiftContextForShiftState:autocapitalizationType:](TIKeyboardInputManager, "shiftContextForShiftState:autocapitalizationType:", v4, [v5 autocapitalizationType]);
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  shiftState = [keyboardState shiftState];
+  keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+  v6 = +[TIKeyboardInputManager shiftContextForShiftState:autocapitalizationType:](TIKeyboardInputManager, "shiftContextForShiftState:autocapitalizationType:", shiftState, [keyboardState2 autocapitalizationType]);
 
   return v6;
 }
 
-- (id)autocorrectionListForEmptyInputWithDesiredCandidateCount:(unint64_t)a3
+- (id)autocorrectionListForEmptyInputWithDesiredCandidateCount:(unint64_t)count
 {
   kdebug_trace();
   v5 = kac_get_log();
@@ -3519,30 +3519,30 @@ LABEL_11:
     }
   }
 
-  v8 = [MEMORY[0x277CBEB18] array];
-  v9 = [MEMORY[0x277CBEB18] array];
-  v10 = [(TIKeyboardInputManager *)self emojiCandidateGenerator];
-  v11 = [(TIKeyboardInputManager *)self keyboardState];
-  v12 = [v10 emojiAdornmentCandidatesForKeyboardState:v11];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  emojiCandidateGenerator = [(TIKeyboardInputManager *)self emojiCandidateGenerator];
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  v12 = [emojiCandidateGenerator emojiAdornmentCandidatesForKeyboardState:keyboardState];
 
-  v13 = [(TIKeyboardInputManager *)self keyboardState];
-  v14 = [v13 documentState];
-  v15 = [v14 documentIsEmpty];
+  keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+  documentState = [keyboardState2 documentState];
+  documentIsEmpty = [documentState documentIsEmpty];
 
-  if (v15)
+  if (documentIsEmpty)
   {
-    v16 = [(TIKeyboardInputManager *)self keyboardState];
-    v17 = [v16 responseContext];
-    if (v17)
+    keyboardState3 = [(TIKeyboardInputManager *)self keyboardState];
+    responseContext = [keyboardState3 responseContext];
+    if (responseContext)
     {
     }
 
     else
     {
-      v18 = [(TIKeyboardInputManager *)self keyboardState];
-      v19 = [v18 inputContextHistory];
+      keyboardState4 = [(TIKeyboardInputManager *)self keyboardState];
+      inputContextHistory = [keyboardState4 inputContextHistory];
 
-      if (!v19)
+      if (!inputContextHistory)
       {
         goto LABEL_9;
       }
@@ -3550,59 +3550,59 @@ LABEL_11:
 
     [(TIKeyboardInputManager *)self learnRecentMessageUserIsRespondingTo];
 LABEL_9:
-    v20 = [(TIKeyboardInputManager *)self keyboardState];
-    v21 = [v20 textInputTraits];
-    v22 = [v21 textContentType];
+    keyboardState5 = [(TIKeyboardInputManager *)self keyboardState];
+    textInputTraits = [keyboardState5 textInputTraits];
+    textContentType = [textInputTraits textContentType];
 
-    if (v22 && [v22 length])
+    if (textContentType && [textContentType length])
     {
       v47 = v12;
-      v23 = [(TIKeyboardInputManager *)self keyboardState];
-      v24 = [v23 textInputTraits];
-      v25 = [v24 textContentType];
-      v26 = [TIProactiveQuickTypeManager proactiveTriggerForTextContentType:v25];
+      keyboardState6 = [(TIKeyboardInputManager *)self keyboardState];
+      textInputTraits2 = [keyboardState6 textInputTraits];
+      textContentType2 = [textInputTraits2 textContentType];
+      v26 = [TIProactiveQuickTypeManager proactiveTriggerForTextContentType:textContentType2];
 
       if (v26)
       {
-        [v9 addObject:v26];
+        [array2 addObject:v26];
       }
 
       v12 = v47;
     }
   }
 
-  v27 = [(TIKeyboardInputManager *)self predictionCandidates:a3 predictionType:3];
-  v28 = [v27 predictions];
-  [v8 addObjectsFromArray:v28];
+  v27 = [(TIKeyboardInputManager *)self predictionCandidates:count predictionType:3];
+  predictions = [v27 predictions];
+  [array addObjectsFromArray:predictions];
 
-  v29 = [(TIKeyboardInputManager *)self indexesOfDuplicatesInCandidates:v8];
-  [v8 removeObjectsAtIndexes:v29];
+  v29 = [(TIKeyboardInputManager *)self indexesOfDuplicatesInCandidates:array];
+  [array removeObjectsAtIndexes:v29];
 
-  v30 = [v27 proactiveTriggers];
-  [v9 addObjectsFromArray:v30];
+  proactiveTriggers = [v27 proactiveTriggers];
+  [array2 addObjectsFromArray:proactiveTriggers];
 
   if (_os_feature_enabled_impl())
   {
     v45 = v27;
-    v46 = v8;
+    v46 = array;
     v48 = v12;
-    v31 = [(TIKeyboardInputManager *)self keyboardState];
-    v32 = [v31 textInputTraits];
-    v33 = [v32 textContentType];
-    v34 = [(TIKeyboardInputManager *)self keyboardState];
-    v35 = [v34 documentState];
-    v36 = [v35 contextBeforeInput];
+    keyboardState7 = [(TIKeyboardInputManager *)self keyboardState];
+    textInputTraits3 = [keyboardState7 textInputTraits];
+    textContentType3 = [textInputTraits3 textContentType];
+    keyboardState8 = [(TIKeyboardInputManager *)self keyboardState];
+    documentState2 = [keyboardState8 documentState];
+    contextBeforeInput = [documentState2 contextBeforeInput];
     [(TIKeyboardInputManager *)self keyboardState];
-    v38 = v37 = v9;
-    v39 = +[TIProactiveQuickTypeManager proactiveTriggerForTextContentType:withContextBeforeInput:autofillMode:](TIProactiveQuickTypeManager, "proactiveTriggerForTextContentType:withContextBeforeInput:autofillMode:", v33, v36, [v38 autofillMode]);
+    v38 = v37 = array2;
+    v39 = +[TIProactiveQuickTypeManager proactiveTriggerForTextContentType:withContextBeforeInput:autofillMode:](TIProactiveQuickTypeManager, "proactiveTriggerForTextContentType:withContextBeforeInput:autofillMode:", textContentType3, contextBeforeInput, [v38 autofillMode]);
 
-    v9 = v37;
+    array2 = v37;
     if (v39)
     {
       [v37 addObject:v39];
     }
 
-    v8 = v46;
+    array = v46;
     v12 = v48;
     v27 = v45;
   }
@@ -3620,23 +3620,23 @@ LABEL_9:
     }
   }
 
-  v43 = [MEMORY[0x277D6F328] listWithPredictions:v8 emojiList:v12 proactiveTriggers:v9];
+  v43 = [MEMORY[0x277D6F328] listWithPredictions:array emojiList:v12 proactiveTriggers:array2];
 
   return v43;
 }
 
-- (id)indexesOfDuplicatesInCandidates:(id)a3
+- (id)indexesOfDuplicatesInCandidates:(id)candidates
 {
   v3 = MEMORY[0x277CBEB58];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  candidatesCopy = candidates;
+  v5 = [[v3 alloc] initWithCapacity:{objc_msgSend(candidatesCopy, "count")}];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __58__TIKeyboardInputManager_indexesOfDuplicatesInCandidates___block_invoke;
   v9[3] = &unk_278732EF8;
   v10 = v5;
   v6 = v5;
-  v7 = [v4 indexesOfObjectsPassingTest:v9];
+  v7 = [candidatesCopy indexesOfObjectsPassingTest:v9];
 
   return v7;
 }
@@ -3654,7 +3654,7 @@ BOOL __58__TIKeyboardInputManager_indexesOfDuplicatesInCandidates___block_invoke
   return v4 != 0;
 }
 
-- (id)continuousPathCandidates:(unint64_t)a3
+- (id)continuousPathCandidates:(unint64_t)candidates
 {
   v175 = *MEMORY[0x277D85DE8];
   v3 = *(self->m_impl + 33);
@@ -3664,34 +3664,34 @@ BOOL __58__TIKeyboardInputManager_indexesOfDuplicatesInCandidates___block_invoke
     goto LABEL_164;
   }
 
-  v4 = self;
-  v5 = [(TIKeyboardInputManager *)self keyboardState];
-  v6 = [v5 documentState];
-  v7 = [v6 selectedText];
-  v8 = v7;
-  if (v7)
+  selfCopy = self;
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  documentState = [keyboardState documentState];
+  selectedText = [documentState selectedText];
+  v8 = selectedText;
+  if (selectedText)
   {
-    v9 = v7;
+    inputStem = selectedText;
   }
 
   else
   {
-    v9 = [(TIKeyboardInputManager *)v4 inputStem];
+    inputStem = [(TIKeyboardInputManager *)selfCopy inputStem];
   }
 
-  v151 = v9;
+  v151 = inputStem;
 
-  v11 = [(TIKeyboardInputManager *)v4 keyboardState];
-  v12 = [v11 documentState];
-  v13 = [v12 selectedText];
-  if (v13)
+  keyboardState2 = [(TIKeyboardInputManager *)selfCopy keyboardState];
+  documentState2 = [keyboardState2 documentState];
+  selectedText2 = [documentState2 selectedText];
+  if (selectedText2)
   {
     v149 = 0;
   }
 
   else
   {
-    TIInputManager::input_substring(v4->m_impl + 4, 0, *(v4->m_impl + 24), &v162);
+    TIInputManager::input_substring(selfCopy->m_impl + 4, 0, *(selfCopy->m_impl + 24), &v162);
     v149 = KB::ns_string(&v162, v14);
     if (v163 && BYTE6(v162) == 1)
     {
@@ -3699,19 +3699,19 @@ BOOL __58__TIKeyboardInputManager_indexesOfDuplicatesInCandidates___block_invoke
     }
   }
 
-  if (![(TIKeyboardInputManager *)v4 inputIndex]&& [(TIKeyboardInputManager *)v4 shouldInsertSpaceBeforePredictions])
+  if (![(TIKeyboardInputManager *)selfCopy inputIndex]&& [(TIKeyboardInputManager *)selfCopy shouldInsertSpaceBeforePredictions])
   {
     v15 = 1;
-    v16 = a3;
+    candidatesCopy5 = candidates;
     goto LABEL_22;
   }
 
-  m_impl = v4->m_impl;
-  v16 = a3;
+  m_impl = selfCopy->m_impl;
+  candidatesCopy5 = candidates;
   if (m_impl[220])
   {
     v18 = [MEMORY[0x277CCACA8] _stringWithUnichar:KB::String::last((m_impl + 220))];
-    if (-[TIKeyboardInputManager stringEndsWord:](v4, "stringEndsWord:", v18) || ([v18 isEqualToString:@"'"] & 1) != 0)
+    if (-[TIKeyboardInputManager stringEndsWord:](selfCopy, "stringEndsWord:", v18) || ([v18 isEqualToString:@"'"] & 1) != 0)
     {
       v15 = 0;
     }
@@ -3722,19 +3722,19 @@ BOOL __58__TIKeyboardInputManager_indexesOfDuplicatesInCandidates___block_invoke
     }
 
 LABEL_22:
-    v19 = [(TIKeyboardInputManager *)v4 shiftContext];
-    v155 = v19;
-    if (v15 && !v19)
+    shiftContext = [(TIKeyboardInputManager *)selfCopy shiftContext];
+    shiftContext2 = shiftContext;
+    if (v15 && !shiftContext)
     {
-      if ([(TIKeyboardInputManager *)v4 shouldAutocapitalizePredictionAfterSpace])
+      if ([(TIKeyboardInputManager *)selfCopy shouldAutocapitalizePredictionAfterSpace])
       {
-        v20 = [(TIKeyboardInputManager *)v4 keyboardState];
-        v155 = +[TIKeyboardInputManager shiftContextForShiftState:autocapitalizationType:](TIKeyboardInputManager, "shiftContextForShiftState:autocapitalizationType:", 2, [v20 autocapitalizationType]);
+        keyboardState3 = [(TIKeyboardInputManager *)selfCopy keyboardState];
+        shiftContext2 = +[TIKeyboardInputManager shiftContextForShiftState:autocapitalizationType:](TIKeyboardInputManager, "shiftContextForShiftState:autocapitalizationType:", 2, [keyboardState3 autocapitalizationType]);
       }
 
       else
       {
-        v155 = 0;
+        shiftContext2 = 0;
       }
 
       v15 = 1;
@@ -3743,25 +3743,25 @@ LABEL_22:
     goto LABEL_28;
   }
 
-  v155 = [(TIKeyboardInputManager *)v4 shiftContext];
+  shiftContext2 = [(TIKeyboardInputManager *)selfCopy shiftContext];
   v15 = 0;
 LABEL_28:
-  v21 = [(TIKeyboardInputManager *)v4 _hasSupplementalPrefix];
-  v22 = !v21 | KB::SetInputHasSupplementalPrefixForScope::s_inputHasSupplementalPrefix;
+  _hasSupplementalPrefix = [(TIKeyboardInputManager *)selfCopy _hasSupplementalPrefix];
+  v22 = !_hasSupplementalPrefix | KB::SetInputHasSupplementalPrefixForScope::s_inputHasSupplementalPrefix;
   if ((v22 & 1) == 0)
   {
     KB::SetInputHasSupplementalPrefixForScope::s_inputHasSupplementalPrefix = 1;
   }
 
-  v23 = v4->m_impl;
+  v23 = selfCopy->m_impl;
   v168 = MEMORY[0x277D85DD0];
   v169 = 0x40000000;
   v170 = ___ZN14TIInputManager6lookupEN2KB10LookupTypeEj14TIShiftContext_block_invoke;
   v171 = &__block_descriptor_tmp_7_5139;
   v172 = v23;
   v173 = 5;
-  v174 = v155;
-  TIInputManager::perform_lookup(v23, 5, v16, &v168, &v162);
+  v174 = shiftContext2;
+  TIInputManager::perform_lookup(v23, 5, candidatesCopy5, &v168, &v162);
   v24 = v162;
   v25 = v163;
   if (v162 == v163)
@@ -3934,7 +3934,7 @@ LABEL_63:
 
         while (v45 != v39);
         v39 = v163;
-        v16 = a3;
+        candidatesCopy5 = candidates;
       }
 
       v15 = v154;
@@ -3946,31 +3946,31 @@ LABEL_67:
   if (v162 != v163)
   {
     v145 = v22;
-    v51 = [(TIKeyboardInputManager *)v4 rejectedConversionsForCurrentContinuousPath];
-    v52 = [v51 count];
+    rejectedConversionsForCurrentContinuousPath = [(TIKeyboardInputManager *)selfCopy rejectedConversionsForCurrentContinuousPath];
+    v52 = [rejectedConversionsForCurrentContinuousPath count];
 
     v54 = v162;
     if (v52)
     {
       v55 = v163;
-      v56 = v4;
+      v56 = selfCopy;
       if (v54 != v55)
       {
         do
         {
-          v57 = [(TIKeyboardInputManager *)v56 lastAcceptedText];
+          lastAcceptedText = [(TIKeyboardInputManager *)v56 lastAcceptedText];
 
-          if (v57)
+          if (lastAcceptedText)
           {
             if (*v54 < 2uLL)
             {
               goto LABEL_83;
             }
 
-            v58 = [(TIKeyboardInputManager *)v56 rejectedConversionsForCurrentContinuousPath];
+            rejectedConversionsForCurrentContinuousPath2 = [(TIKeyboardInputManager *)v56 rejectedConversionsForCurrentContinuousPath];
             KB::Word::capitalized_string(*(v54 + 1), &v168);
             v60 = KB::ns_string(&v168, v59);
-            v61 = [v58 containsObject:v60];
+            v61 = [rejectedConversionsForCurrentContinuousPath2 containsObject:v60];
 
             if (v169 && BYTE6(v168) == 1)
             {
@@ -3986,10 +3986,10 @@ LABEL_67:
 
           else
           {
-            v62 = [(TIKeyboardInputManager *)v56 rejectedConversionsForCurrentContinuousPath];
+            rejectedConversionsForCurrentContinuousPath3 = [(TIKeyboardInputManager *)v56 rejectedConversionsForCurrentContinuousPath];
             KB::Candidate::capitalized_string(v54, &v168);
             v64 = KB::ns_string(&v168, v63);
-            v65 = [v62 containsObject:v64];
+            v65 = [rejectedConversionsForCurrentContinuousPath3 containsObject:v64];
 
             if (v169 && BYTE6(v168) == 1)
             {
@@ -4048,7 +4048,7 @@ LABEL_91:
       free(v161);
     }
 
-    v68 = [(TIKeyboardInputManager *)v4 phraseCandidateCompletedByWord:&v168 allowNoSuggest:0 forAutocorrection:1 shiftContext:v155];
+    v68 = [(TIKeyboardInputManager *)selfCopy phraseCandidateCompletedByWord:&v168 allowNoSuggest:0 forAutocorrection:1 shiftContext:shiftContext2];
     if (!v68)
     {
       if (*v54)
@@ -4077,79 +4077,79 @@ LABEL_91:
         }
       }
 
-      v68 = [(TIKeyboardInputManager *)v4 autocorrectionCandidateForInput:v151 rawInput:v149 withCandidate:v54 insertingSpace:v15 sharedPrefixLength:0x7FFFFFFFFFFFFFFFLL];
+      v68 = [(TIKeyboardInputManager *)selfCopy autocorrectionCandidateForInput:v151 rawInput:v149 withCandidate:v54 insertingSpace:v15 sharedPrefixLength:0x7FFFFFFFFFFFFFFFLL];
     }
 
     v74 = 1;
     [v68 setContinuousPathConversion:1];
-    v75 = [(TIKeyboardInputManager *)v4 config];
-    if ([v75 usesContinuousPathProgressiveCandidates])
+    config = [(TIKeyboardInputManager *)selfCopy config];
+    if ([config usesContinuousPathProgressiveCandidates])
     {
-      v74 = *(v4->m_impl + 436) ^ 1;
+      v74 = *(selfCopy->m_impl + 436) ^ 1;
     }
 
     [v68 setShouldAccept:v74 & 1];
 
-    if (*(v4->m_impl + 24) < -858993459 * ((*(v4->m_impl + 2) - *(v4->m_impl + 1)) >> 3))
+    if (*(selfCopy->m_impl + 24) < -858993459 * ((*(selfCopy->m_impl + 2) - *(selfCopy->m_impl + 1)) >> 3))
     {
       [v68 setShouldInsertSpaceAfterSelection:1];
     }
 
     v76 = *(v54 + 192);
     v77 = 0.0;
-    v78 = v155;
+    v78 = shiftContext2;
     if (v76 > 0.00001)
     {
       v77 = (*(v54 + 193) / v76);
     }
 
     [v68 setExcessPathRatio:v77];
-    v150 = [v68 candidate];
+    candidate = [v68 candidate];
     if (![v151 length])
     {
-      v79 = [(TIKeyboardInputManager *)v4 config];
-      v80 = [v79 insertsSpaceAfterPredictiveInput];
+      config2 = [(TIKeyboardInputManager *)selfCopy config];
+      insertsSpaceAfterPredictiveInput = [config2 insertsSpaceAfterPredictiveInput];
 
-      if (v80)
+      if (insertsSpaceAfterPredictiveInput)
       {
-        v81 = [(TIKeyboardInputManager *)v4 wordSeparator];
-        v82 = [v150 stringByAppendingString:v81];
+        wordSeparator = [(TIKeyboardInputManager *)selfCopy wordSeparator];
+        v82 = [candidate stringByAppendingString:wordSeparator];
 
-        v150 = v82;
+        candidate = v82;
       }
     }
 
-    v148 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v83 = [MEMORY[0x277CBEB58] set];
     v152 = v68;
-    v84 = [v68 candidate];
-    [v83 addObject:v84];
+    candidate2 = [v68 candidate];
+    [v83 addObject:candidate2];
 
     v87 = v162;
     v86 = v163;
     v147 = v83;
-    if ((0x1CAC083126E978D5 * ((v163 - v162) >> 3)) < 2 || !v16)
+    if ((0x1CAC083126E978D5 * ((v163 - v162) >> 3)) < 2 || !candidatesCopy5)
     {
 LABEL_151:
-      [(TIKeyboardInputManager *)v4 reconcileConversions:v148];
-      v129 = [(TIKeyboardInputManager *)v4 keyboardState];
-      v130 = [v129 layoutState];
-      v131 = [v130 inputMode];
+      [(TIKeyboardInputManager *)selfCopy reconcileConversions:array];
+      keyboardState4 = [(TIKeyboardInputManager *)selfCopy keyboardState];
+      layoutState = [keyboardState4 layoutState];
+      inputMode = [layoutState inputMode];
       v132 = TIStatisticGetKeyForInputMode();
       TIStatisticScalarIncrement();
 
       v133 = MEMORY[0x277CCACA8];
-      v134 = [(TIKeyboardInputManager *)v4 keyboardState];
-      v135 = [v134 documentState];
-      v136 = [v135 contextBeforeInput];
-      v137 = [v152 candidate];
-      v138 = [v133 stringWithFormat:@"%@ %@", v136, v137];
+      keyboardState5 = [(TIKeyboardInputManager *)selfCopy keyboardState];
+      documentState3 = [keyboardState5 documentState];
+      contextBeforeInput = [documentState3 contextBeforeInput];
+      candidate3 = [v152 candidate];
+      v137 = [v133 stringWithFormat:@"%@ %@", contextBeforeInput, candidate3];
 
-      v139 = [(TIKeyboardInputManager *)v4 emojiCandidateGenerator];
-      v140 = [v139 emojiReplacementCandidatesForText:v138];
+      emojiCandidateGenerator = [(TIKeyboardInputManager *)selfCopy emojiCandidateGenerator];
+      v140 = [emojiCandidateGenerator emojiReplacementCandidatesForText:v137];
 
       v141 = [objc_alloc(MEMORY[0x277D6F348]) initWithAutocorrection:v152 alternateCorrections:0];
-      v10 = [MEMORY[0x277D6F328] listWithCorrections:v141 predictions:v148 emojiList:v140 proactiveTriggers:0];
+      v10 = [MEMORY[0x277D6F328] listWithCorrections:v141 predictions:array emojiList:v140 proactiveTriggers:0];
 
 LABEL_152:
       if (v169)
@@ -4173,7 +4173,7 @@ LABEL_152:
 
     v156 = 0;
     v88 = 1;
-    v146 = v4;
+    v146 = selfCopy;
     while (1)
     {
       v89 = (v87 + 1000 * v88);
@@ -4184,7 +4184,7 @@ LABEL_152:
 
 LABEL_146:
       v88 = (v88 + 1);
-      if (0x1CAC083126E978D5 * ((v86 - v87) >> 3) <= v88 || v156 >= v16)
+      if (0x1CAC083126E978D5 * ((v86 - v87) >> 3) <= v88 || v156 >= candidatesCopy5)
       {
         goto LABEL_151;
       }
@@ -4210,7 +4210,7 @@ LABEL_146:
       free(v158);
     }
 
-    v91 = [(TIKeyboardInputManager *)v4 phraseCandidateCompletedByWord:v159 allowNoSuggest:0 forAutocorrection:0 shiftContext:v78];
+    v91 = [(TIKeyboardInputManager *)selfCopy phraseCandidateCompletedByWord:v159 allowNoSuggest:0 forAutocorrection:0 shiftContext:v78];
     if (!v91)
     {
       if (*v89)
@@ -4239,11 +4239,11 @@ LABEL_146:
         }
       }
 
-      v91 = [(TIKeyboardInputManager *)v4 autocorrectionCandidateForInput:v151 rawInput:v149 withCandidate:v89 insertingSpace:v15 sharedPrefixLength:0x7FFFFFFFFFFFFFFFLL];
+      v91 = [(TIKeyboardInputManager *)selfCopy autocorrectionCandidateForInput:v151 rawInput:v149 withCandidate:v89 insertingSpace:v15 sharedPrefixLength:0x7FFFFFFFFFFFFFFFLL];
     }
 
-    v97 = [v91 candidate];
-    v98 = [v83 containsObject:v97];
+    candidate4 = [v91 candidate];
+    v98 = [v83 containsObject:candidate4];
 
     if (v98)
     {
@@ -4260,8 +4260,8 @@ LABEL_142:
       goto LABEL_146;
     }
 
-    v99 = [v91 candidate];
-    [v83 addObject:v99];
+    candidate5 = [v91 candidate];
+    [v83 addObject:candidate5];
 
     [v91 setContinuousPathConversion:1];
     v100 = v89[192];
@@ -4272,33 +4272,33 @@ LABEL_142:
     }
 
     [v91 setExcessPathRatio:v101];
-    v102 = [v91 candidate];
-    v103 = v150;
-    v104 = [v152 input];
-    v105 = [v104 length];
-    v106 = [v91 input];
-    v107 = [v106 length];
+    candidate6 = [v91 candidate];
+    v103 = candidate;
+    input = [v152 input];
+    v105 = [input length];
+    input2 = [v91 input];
+    v107 = [input2 length];
 
-    v108 = [v152 input];
-    v109 = v108;
+    input3 = [v152 input];
+    v109 = input3;
     if (v105 <= v107)
     {
-      v116 = [v108 length];
-      v117 = [v91 input];
-      v118 = [v117 length];
+      v116 = [input3 length];
+      input4 = [v91 input];
+      v118 = [input4 length];
 
       if (v116 >= v118)
       {
-        v16 = a3;
+        candidatesCopy5 = candidates;
         v83 = v147;
         goto LABEL_138;
       }
 
-      v119 = [v91 input];
-      v120 = [v91 input];
-      v121 = [v120 length];
-      v122 = [v152 input];
-      v113 = [v119 substringToIndex:{v121 - objc_msgSend(v122, "length")}];
+      input5 = [v91 input];
+      input6 = [v91 input];
+      v121 = [input6 length];
+      input7 = [v152 input];
+      v113 = [input5 substringToIndex:{v121 - objc_msgSend(input7, "length")}];
 
       v123 = [v113 stringByAppendingString:v103];
       v115 = v103;
@@ -4307,25 +4307,25 @@ LABEL_142:
 
     else
     {
-      v110 = [v152 input];
-      v111 = [v110 length];
-      v112 = [v91 input];
-      v113 = [v109 substringToIndex:{v111 - objc_msgSend(v112, "length")}];
+      input8 = [v152 input];
+      v111 = [input8 length];
+      input9 = [v91 input];
+      v113 = [v109 substringToIndex:{v111 - objc_msgSend(input9, "length")}];
 
       v15 = v154;
-      v114 = [v113 stringByAppendingString:v102];
-      v115 = v102;
-      v102 = v114;
+      v114 = [v113 stringByAppendingString:candidate6];
+      v115 = candidate6;
+      candidate6 = v114;
     }
 
     v83 = v147;
 
-    v16 = a3;
+    candidatesCopy5 = candidates;
 LABEL_138:
-    v124 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v125 = [v102 stringByTrimmingCharactersInSet:v124];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v125 = [candidate6 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-    if ([v125 isEqualToString:v102])
+    if ([v125 isEqualToString:candidate6])
     {
       v126 = 0;
     }
@@ -4335,12 +4335,12 @@ LABEL_138:
       v126 = v125;
     }
 
-    v127 = [v91 candidateByReplacingWithCandidate:v102 input:v103 label:v126];
-    [v148 addObject:v127];
+    v127 = [v91 candidateByReplacingWithCandidate:candidate6 input:v103 label:v126];
+    [array addObject:v127];
     ++v156;
 
-    v4 = v146;
-    v78 = v155;
+    selfCopy = v146;
+    v78 = shiftContext2;
     goto LABEL_142;
   }
 
@@ -4372,39 +4372,39 @@ LABEL_164:
 
 - (BOOL)shouldInsertSpaceBeforePredictions
 {
-  v3 = [(TIKeyboardInputManager *)self keyboardState];
-  v4 = [v3 documentState];
-  v5 = [v4 contextBeforeInput];
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  documentState = [keyboardState documentState];
+  contextBeforeInput = [documentState contextBeforeInput];
 
-  if (![v5 length])
+  if (![contextBeforeInput length])
   {
     v12 = 0;
     goto LABEL_12;
   }
 
-  v6 = [v5 rangeOfComposedCharacterSequenceAtIndex:{objc_msgSend(v5, "length") - 1}];
-  v8 = [v5 substringWithRange:{v6, v7}];
-  v9 = [(TIKeyboardInputManager *)self terminatorsPrecedingAutospace];
-  v10 = [v9 characterSet];
-  if ([v8 rangeOfCharacterFromSet:v10] != 0x7FFFFFFFFFFFFFFFLL)
+  v6 = [contextBeforeInput rangeOfComposedCharacterSequenceAtIndex:{objc_msgSend(contextBeforeInput, "length") - 1}];
+  v8 = [contextBeforeInput substringWithRange:{v6, v7}];
+  terminatorsPrecedingAutospace = [(TIKeyboardInputManager *)self terminatorsPrecedingAutospace];
+  characterSet = [terminatorsPrecedingAutospace characterSet];
+  if ([v8 rangeOfCharacterFromSet:characterSet] != 0x7FFFFFFFFFFFFFFFLL)
   {
 
     goto LABEL_7;
   }
 
-  v11 = [v8 _containsEmoji];
+  _containsEmoji = [v8 _containsEmoji];
 
-  if (v11)
+  if (_containsEmoji)
   {
 LABEL_7:
     v12 = 1;
     goto LABEL_8;
   }
 
-  v12 = [(TIKeyboardInputManager *)self stringEndsWithClosingQuote:v5];
+  v12 = [(TIKeyboardInputManager *)self stringEndsWithClosingQuote:contextBeforeInput];
 LABEL_8:
-  v13 = [(TIKeyboardInputManager *)self lastAcceptedText];
-  if ([v13 isContinuousPathConversion])
+  lastAcceptedText = [(TIKeyboardInputManager *)self lastAcceptedText];
+  if ([lastAcceptedText isContinuousPathConversion])
   {
     v14 = [v8 isEqualToString:@" "];
 
@@ -4419,19 +4419,19 @@ LABEL_12:
   return v12 & 1;
 }
 
-- (BOOL)stringEndsWithClosingQuote:(id)a3
+- (BOOL)stringEndsWithClosingQuote:(id)quote
 {
-  v4 = a3;
-  if ([v4 length])
+  quoteCopy = quote;
+  if ([quoteCopy length])
   {
-    v5 = [v4 rangeOfComposedCharacterSequenceAtIndex:{objc_msgSend(v4, "length") - 1}];
-    v7 = [v4 substringWithRange:{v5, v6}];
-    v8 = [(TIKeyboardInputManager *)self smartOptions];
-    if ([v8 usesDirectionalQuotes])
+    v5 = [quoteCopy rangeOfComposedCharacterSequenceAtIndex:{objc_msgSend(quoteCopy, "length") - 1}];
+    v7 = [quoteCopy substringWithRange:{v5, v6}];
+    smartOptions = [(TIKeyboardInputManager *)self smartOptions];
+    if ([smartOptions usesDirectionalQuotes])
     {
-      v9 = [(TIKeyboardInputManager *)self closingQuotes];
-      v10 = [v9 characterSet];
-      v11 = [v7 rangeOfCharacterFromSet:v10];
+      closingQuotes = [(TIKeyboardInputManager *)self closingQuotes];
+      characterSet = [closingQuotes characterSet];
+      v11 = [v7 rangeOfCharacterFromSet:characterSet];
 
       if (v11 != 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -4446,12 +4446,12 @@ LABEL_17:
     {
     }
 
-    v13 = [(TIKeyboardInputManager *)self smartOptions];
-    if ([v13 usesDirectionalQuotes])
+    smartOptions2 = [(TIKeyboardInputManager *)self smartOptions];
+    if ([smartOptions2 usesDirectionalQuotes])
     {
-      v14 = [(TIKeyboardInputManager *)self openingQuotes];
-      v15 = [v14 characterSet];
-      v16 = [v7 rangeOfCharacterFromSet:v15];
+      openingQuotes = [(TIKeyboardInputManager *)self openingQuotes];
+      characterSet2 = [openingQuotes characterSet];
+      v16 = [v7 rangeOfCharacterFromSet:characterSet2];
 
       if (v16 != 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -4482,8 +4482,8 @@ LABEL_13:
       }
     }
 
-    v17 = [v4 rangeOfComposedCharacterSequenceAtIndex:v5 - 1];
-    v19 = [v4 substringWithRange:{v17, v18}];
+    v17 = [quoteCopy rangeOfComposedCharacterSequenceAtIndex:v5 - 1];
+    v19 = [quoteCopy substringWithRange:{v17, v18}];
     v20 = [@"}]'”’. ?!;:?…"], "rangeOfString:", v19) != 0x7FFFFFFFFFFFFFFFLL;
     v12 = v20 | ![(TIKeyboardInputManager *)self stringEndsWord:v19];
 
@@ -4496,34 +4496,34 @@ LABEL_18:
   return v12 & 1;
 }
 
-- (_NSRange)rangeOfUnclosedQuoteMatchingQuote:(id)a3 inString:(id)a4 range:(_NSRange)a5
+- (_NSRange)rangeOfUnclosedQuoteMatchingQuote:(id)quote inString:(id)string range:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v9 = a3;
-  v10 = a4;
-  if (![v9 length])
+  length = range.length;
+  location = range.location;
+  quoteCopy = quote;
+  stringCopy = string;
+  if (![quoteCopy length])
   {
     goto LABEL_5;
   }
 
-  v11 = [v9 characterAtIndex:0];
+  v11 = [quoteCopy characterAtIndex:0];
   v12 = v11;
   if (v11 == 34)
   {
-    v49 = v9;
-    v22 = [(TIKeyboardInputManager *)self smartOptions];
-    v23 = [v22 rightDoubleQuote];
+    v49 = quoteCopy;
+    smartOptions = [(TIKeyboardInputManager *)self smartOptions];
+    rightDoubleQuote = [smartOptions rightDoubleQuote];
     v24 = v12;
-    v25 = [v23 length] != 1;
+    v25 = [rightDoubleQuote length] != 1;
 
-    v26 = [(TIKeyboardInputManager *)self smartOptions];
-    v27 = [v26 leftDoubleQuote];
-    v15 = [v27 characterAtIndex:0];
+    smartOptions2 = [(TIKeyboardInputManager *)self smartOptions];
+    leftDoubleQuote = [smartOptions2 leftDoubleQuote];
+    v15 = [leftDoubleQuote characterAtIndex:0];
 
-    v16 = [(TIKeyboardInputManager *)self smartOptions];
-    v17 = [v16 rightDoubleQuote];
-    v18 = v17;
+    smartOptions3 = [(TIKeyboardInputManager *)self smartOptions];
+    rightDoubleQuote2 = [smartOptions3 rightDoubleQuote];
+    v18 = rightDoubleQuote2;
     v19 = v25;
     v12 = v24;
     goto LABEL_7;
@@ -4537,17 +4537,17 @@ LABEL_5:
     goto LABEL_25;
   }
 
-  v49 = v9;
-  v13 = [(TIKeyboardInputManager *)self smartOptions];
-  v14 = [v13 leftSingleQuote];
-  v15 = [v14 characterAtIndex:0];
+  v49 = quoteCopy;
+  smartOptions4 = [(TIKeyboardInputManager *)self smartOptions];
+  leftSingleQuote = [smartOptions4 leftSingleQuote];
+  v15 = [leftSingleQuote characterAtIndex:0];
 
-  v16 = [(TIKeyboardInputManager *)self smartOptions];
-  v17 = [v16 rightSingleQuote];
-  v18 = v17;
+  smartOptions3 = [(TIKeyboardInputManager *)self smartOptions];
+  rightDoubleQuote2 = [smartOptions3 rightSingleQuote];
+  v18 = rightDoubleQuote2;
   v19 = 0;
 LABEL_7:
-  v28 = [v17 characterAtIndex:v19];
+  v28 = [rightDoubleQuote2 characterAtIndex:v19];
 
   v29 = [MEMORY[0x277CCAB50] characterSetWithRange:{v12, 1}];
   [v29 addCharactersInRange:{v15, 1}];
@@ -4557,11 +4557,11 @@ LABEL_7:
   {
     v30 = v15;
     v51 = location + length;
-    v48 = v10;
+    v48 = stringCopy;
     v50 = v28;
     do
     {
-      v31 = [v10 rangeOfCharacterFromSet:v52 options:6 range:{location, length}];
+      v31 = [stringCopy rangeOfCharacterFromSet:v52 options:6 range:{location, length}];
       if (v31 == 0x7FFFFFFFFFFFFFFFLL)
       {
         break;
@@ -4569,7 +4569,7 @@ LABEL_7:
 
       v21 = v31;
       v20 = v32;
-      v33 = [v10 characterAtIndex:v31];
+      v33 = [stringCopy characterAtIndex:v31];
       if (v33 == v30)
       {
         goto LABEL_24;
@@ -4590,8 +4590,8 @@ LABEL_7:
 
         else
         {
-          v34 = [v10 rangeOfComposedCharacterSequenceAtIndex:v21 - 1];
-          v36 = [v10 substringWithRange:{v34, v35}];
+          v34 = [stringCopy rangeOfComposedCharacterSequenceAtIndex:v21 - 1];
+          v36 = [stringCopy substringWithRange:{v34, v35}];
           v37 = ![(TIKeyboardInputManager *)self stringEndsWord:v36];
         }
 
@@ -4602,8 +4602,8 @@ LABEL_7:
 
         else
         {
-          v38 = [v10 rangeOfComposedCharacterSequenceAtIndex:?];
-          [v10 substringWithRange:{v38, v39}];
+          v38 = [stringCopy rangeOfComposedCharacterSequenceAtIndex:?];
+          [stringCopy substringWithRange:{v38, v39}];
           v40 = v21 - location;
           v41 = v30;
           v42 = v12;
@@ -4614,7 +4614,7 @@ LABEL_7:
           v12 = v42;
           v30 = v41;
           length = v40;
-          v10 = v48;
+          stringCopy = v48;
           if (((v37 | v45) & 1) == 0)
           {
             goto LABEL_24;
@@ -4637,7 +4637,7 @@ LABEL_7:
   v21 = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_24:
 
-  v9 = v49;
+  quoteCopy = v49;
 LABEL_25:
 
   v46 = v21;
@@ -4649,24 +4649,24 @@ LABEL_25:
 
 - (BOOL)shouldAutocapitalizePredictionAfterSpace
 {
-  v3 = [(TIKeyboardInputManager *)self keyboardState];
-  v4 = [v3 autocapitalizationEnabled];
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  autocapitalizationEnabled = [keyboardState autocapitalizationEnabled];
 
-  if (!v4)
+  if (!autocapitalizationEnabled)
   {
     return 0;
   }
 
-  v5 = [(TIKeyboardInputManager *)self keyboardState];
-  v6 = [v5 autocapitalizationType];
+  keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+  autocapitalizationType = [keyboardState2 autocapitalizationType];
 
   result = 1;
-  if (v6 == 1 || v6 == 3)
+  if (autocapitalizationType == 1 || autocapitalizationType == 3)
   {
     return result;
   }
 
-  if (v6 != 2)
+  if (autocapitalizationType != 2)
   {
     return 0;
   }
@@ -4676,40 +4676,40 @@ LABEL_25:
 
 - (BOOL)shouldGenerateSuggestionsForSelectedText
 {
-  v3 = [(TIKeyboardInputManager *)self keyboardState];
-  v4 = [v3 documentState];
-  v5 = [v4 selectedText];
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  documentState = [keyboardState documentState];
+  selectedText = [documentState selectedText];
 
-  if (([v5 length] - 1) > 0x3F)
+  if (([selectedText length] - 1) > 0x3F)
   {
     v8 = 0;
   }
 
   else
   {
-    v6 = [(TIKeyboardInputManager *)self revisionHistory];
-    v7 = [v6 currentWord];
-    v8 = [v7 isEqualToString:v5];
+    revisionHistory = [(TIKeyboardInputManager *)self revisionHistory];
+    currentWord = [revisionHistory currentWord];
+    v8 = [currentWord isEqualToString:selectedText];
   }
 
   return v8;
 }
 
-- (void)reconcileCandidates:(void *)a3 forTypedString:(String *)a4 withPhraseCandidate:(void *)a5 replacing:(const String *)a6
+- (void)reconcileCandidates:(void *)candidates forTypedString:(String *)string withPhraseCandidate:(void *)candidate replacing:(const String *)replacing
 {
   v29 = *MEMORY[0x277D85DE8];
-  var2 = a4->var2;
+  var2 = string->var2;
   if (!var2)
   {
-    KB::String::compute_length(&a4->var0);
-    var2 = a4->var2;
+    KB::String::compute_length(&string->var0);
+    var2 = string->var2;
   }
 
-  v11 = a6->var2;
+  v11 = replacing->var2;
   if (!v11)
   {
-    KB::String::compute_length(&a6->var0);
-    v11 = a6->var2;
+    KB::String::compute_length(&replacing->var0);
+    v11 = replacing->var2;
   }
 
   v12 = (var2 - v11);
@@ -4717,29 +4717,29 @@ LABEL_25:
   {
     if (v12 < 0)
     {
-      KB::String::operator=(a4, a6);
-      v17 = *a3;
+      KB::String::operator=(string, replacing);
+      v17 = *candidates;
         ;
       }
 
-      *(a3 + 1) = v17;
+      *(candidates + 1) = v17;
     }
   }
 
   else
   {
-    if (a4->var4)
+    if (string->var4)
     {
-      var4 = a4->var4;
+      var4 = string->var4;
     }
 
     else
     {
-      var4 = a4->var5;
+      var4 = string->var5;
     }
 
     v23 = var4;
-    var0 = a4->var0;
+    var0 = string->var0;
     v24 = 0;
     v25 = var0;
     v26 = 0;
@@ -4753,9 +4753,9 @@ LABEL_25:
     v22 = v20;
     std::__advance[abi:nn200100]<KB::String::iterator>(&v21, v12);
     v15 = KB::String::String(v27, &v23, &v21);
-    KB::String::append(v15, a6);
+    KB::String::append(v15, replacing);
     KB::Candidate::Candidate(&v23, v27, 0);
-    KB::Candidate::operator=(a5, &v23);
+    KB::Candidate::operator=(candidate, &v23);
     KB::Candidate::~Candidate(&v23);
     if (v28 && v27[6] == 1)
     {
@@ -4769,17 +4769,17 @@ LABEL_25:
 - (id)autocorrectionListForSelectedText
 {
   v15[4] = *MEMORY[0x277D85DE8];
-  v3 = [(TIKeyboardInputManager *)self keyboardState];
-  v4 = [v3 documentState];
-  v5 = [v4 selectedText];
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  documentState = [keyboardState documentState];
+  selectedText = [documentState selectedText];
 
-  v6 = [(TIKeyboardInputManager *)self autocorrectionListsForWordsInDocument];
-  v7 = [v6 objectForKey:v5];
+  autocorrectionListsForWordsInDocument = [(TIKeyboardInputManager *)self autocorrectionListsForWordsInDocument];
+  v7 = [autocorrectionListsForWordsInDocument objectForKey:selectedText];
 
   if (!v7 || (-[TIKeyboardInputManager keyboardState](self, "keyboardState"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 shiftState], v8, v9 != 2) && (v9 || -[TIKeyboardInputManager nextInputWouldStartSentence](self, "nextInputWouldStartSentence")))
   {
     m_impl = self->m_impl;
-    v11 = [(TIKeyboardInputManager *)self externalStringToInternal:v5];
+    v11 = [(TIKeyboardInputManager *)self externalStringToInternal:selectedText];
     KB::utf8_string(v11, v15);
     TIInputManager::candidates_for_string(m_impl, v15, [(TIKeyboardInputManager *)self shiftContext]);
   }
@@ -4800,18 +4800,18 @@ uint64_t __59__TIKeyboardInputManager_autocorrectionListForSelectedText__block_i
   return v4;
 }
 
-- (id)cachedAutocorrectionListResponseFor:(id)a3
+- (id)cachedAutocorrectionListResponseFor:(id)for
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  forCopy = for;
+  v5 = forCopy;
+  if (!forCopy)
   {
     v6 = 0;
     goto LABEL_10;
   }
 
-  KB::String::String(v12, [v4 UTF8String]);
+  KB::String::String(v12, [forCopy UTF8String]);
   KB::DynamicDictionary::word_from_supplemental_lexicon(*(*(self->m_impl + 33) + 24), v12, v10);
   if (v11)
   {
@@ -4821,8 +4821,8 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v7 = [(TIKeyboardInputManager *)self autocorrectionListsForWordsInDocument];
-  v6 = [v7 objectForKey:v5];
+  autocorrectionListsForWordsInDocument = [(TIKeyboardInputManager *)self autocorrectionListsForWordsInDocument];
+  v6 = [autocorrectionListsForWordsInDocument objectForKey:v5];
 
   if (v11)
   {
@@ -4842,23 +4842,23 @@ LABEL_10:
   return v6;
 }
 
-- (void)generateCannedResponseCandidatesAsyncForString:(id)a3 completionHandler:(id)a4
+- (void)generateCannedResponseCandidatesAsyncForString:(id)string completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  stringCopy = string;
   v15 = +[TIResponseKitManager sharedTIResponseKitManager];
-  v8 = [(TIKeyboardInputManagerBase *)self inputMode];
-  v9 = [v8 normalizedIdentifier];
-  v10 = [(TIKeyboardInputManager *)self keyboardState];
-  v11 = [v10 clientIdentifier];
-  v12 = [(TIKeyboardInputManager *)self keyboardState];
-  v13 = [v12 recipientIdentifier];
+  inputMode = [(TIKeyboardInputManagerBase *)self inputMode];
+  normalizedIdentifier = [inputMode normalizedIdentifier];
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  clientIdentifier = [keyboardState clientIdentifier];
+  keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+  recipientIdentifier = [keyboardState2 recipientIdentifier];
   BYTE2(v14) = 1;
   LOWORD(v14) = 1;
-  [v15 generateResponseKitSuggestionsForString:v7 withLanguage:v9 withClientID:v11 withRecipientID:v13 withAdditionalPredictions:0 desiredCandidateCount:10 shouldDisableAutoCaps:v14 stringIsBlocklisted:v6 async:? completionHandler:?];
+  [v15 generateResponseKitSuggestionsForString:stringCopy withLanguage:normalizedIdentifier withClientID:clientIdentifier withRecipientID:recipientIdentifier withAdditionalPredictions:0 desiredCandidateCount:10 shouldDisableAutoCaps:v14 stringIsBlocklisted:handlerCopy async:? completionHandler:?];
 }
 
-- (id)cannedResponseCandidatesForString:(id)a3
+- (id)cannedResponseCandidatesForString:(id)string
 {
   v16 = 0;
   v17 = &v16;
@@ -4866,14 +4866,14 @@ LABEL_10:
   v19 = __Block_byref_object_copy__11451;
   v20 = __Block_byref_object_dispose__11452;
   v21 = 0;
-  v4 = a3;
+  stringCopy = string;
   v5 = +[TIResponseKitManager sharedTIResponseKitManager];
-  v6 = [(TIKeyboardInputManagerBase *)self inputMode];
-  v7 = [v6 normalizedIdentifier];
-  v8 = [(TIKeyboardInputManager *)self keyboardState];
-  v9 = [v8 clientIdentifier];
-  v10 = [(TIKeyboardInputManager *)self keyboardState];
-  v11 = [v10 recipientIdentifier];
+  inputMode = [(TIKeyboardInputManagerBase *)self inputMode];
+  normalizedIdentifier = [inputMode normalizedIdentifier];
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  clientIdentifier = [keyboardState clientIdentifier];
+  keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+  recipientIdentifier = [keyboardState2 recipientIdentifier];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __60__TIKeyboardInputManager_cannedResponseCandidatesForString___block_invoke;
@@ -4881,7 +4881,7 @@ LABEL_10:
   v15[4] = &v16;
   BYTE2(v14) = 0;
   LOWORD(v14) = 1;
-  [v5 generateResponseKitSuggestionsForString:v4 withLanguage:v7 withClientID:v9 withRecipientID:v11 withAdditionalPredictions:0 desiredCandidateCount:10 shouldDisableAutoCaps:v14 stringIsBlocklisted:v15 async:? completionHandler:?];
+  [v5 generateResponseKitSuggestionsForString:stringCopy withLanguage:normalizedIdentifier withClientID:clientIdentifier withRecipientID:recipientIdentifier withAdditionalPredictions:0 desiredCandidateCount:10 shouldDisableAutoCaps:v14 stringIsBlocklisted:v15 async:? completionHandler:?];
 
   v12 = v17[5];
   _Block_object_dispose(&v16, 8);
@@ -4889,40 +4889,40 @@ LABEL_10:
   return v12;
 }
 
-- (void)updateResponseModelForKeyboardState:(id)a3
+- (void)updateResponseModelForKeyboardState:(id)state
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  stateCopy = state;
+  v5 = stateCopy;
+  if (stateCopy)
   {
-    v7 = v4;
-    v4 = [v4 secureTextEntry];
+    v7 = stateCopy;
+    stateCopy = [stateCopy secureTextEntry];
     v5 = v7;
-    if ((v4 & 1) == 0)
+    if ((stateCopy & 1) == 0)
     {
-      v4 = TI_DEVICE_UNLOCKED_SINCE_BOOT();
+      stateCopy = TI_DEVICE_UNLOCKED_SINCE_BOOT();
       v5 = v7;
-      if (v4)
+      if (stateCopy)
       {
-        v6 = [v7 inputContextHistory];
-        [(TIKeyboardInputManager *)self synchronizeConversationHistoryWithInputContextHistory:v6];
+        inputContextHistory = [v7 inputContextHistory];
+        [(TIKeyboardInputManager *)self synchronizeConversationHistoryWithInputContextHistory:inputContextHistory];
 
         v5 = v7;
       }
     }
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](stateCopy, v5);
 }
 
-- (BOOL)shouldAllowContextWord:(id)a3
+- (BOOL)shouldAllowContextWord:(id)word
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  wordCopy = word;
   m_impl = self->m_impl;
   if (m_impl && (v6 = m_impl[33]) != 0 && **(v6 + 8) != *(*(v6 + 8) + 8))
   {
-    v7 = [(TIKeyboardInputManager *)self dictionaryStringForExternalString:v4];
+    v7 = [(TIKeyboardInputManager *)self dictionaryStringForExternalString:wordCopy];
     KB::utf8_string(v7, v18);
     v14 = 0;
     v15 = 0;
@@ -4979,8 +4979,8 @@ LABEL_10:
   m_impl = self->m_impl;
   if (m_impl && m_impl[34] && ![(TIKeyboardInputManager *)self isLinguisticResourceUpdateScheduled])
   {
-    v7 = [(TIKeyboardInputManager *)self inputStem];
-    v8 = [(TIKeyboardInputManager *)self dictionaryStringForExternalString:v7];
+    inputStem = [(TIKeyboardInputManager *)self inputStem];
+    v8 = [(TIKeyboardInputManager *)self dictionaryStringForExternalString:inputStem];
     KB::utf8_string(v8, v9);
 
     v4 = (*(**(self->m_impl + 34) + 504))();
@@ -4999,9 +4999,9 @@ LABEL_10:
   return v4;
 }
 
-- (BOOL)suggestionBlocklistMatchesStrings:(id)a3
+- (BOOL)suggestionBlocklistMatchesStrings:(id)strings
 {
-  v4 = a3;
+  stringsCopy = strings;
   m_impl = self->m_impl;
   if (m_impl && (v6 = *(m_impl + 34)) != 0)
   {
@@ -5049,7 +5049,7 @@ LABEL_10:
       atomic_fetch_add_explicit(&v7->__shared_owners_, 1uLL, memory_order_relaxed);
     }
 
-    v9 = [v4 indexOfObjectPassingTest:v12] != 0x7FFFFFFFFFFFFFFFLL;
+    v9 = [stringsCopy indexOfObjectPassingTest:v12] != 0x7FFFFFFFFFFFFFFFLL;
     if (v13)
     {
       std::__shared_weak_count::__release_shared[abi:nn200100](v13);
@@ -5106,25 +5106,25 @@ void __60__TIKeyboardInputManager_suggestionBlocklistMatchesStrings___block_invo
   return v4;
 }
 
-- (id)shortcutConversionForString:(id)a3 stringStartsInMiddleOfWord:(BOOL)a4
+- (id)shortcutConversionForString:(id)string stringStartsInMiddleOfWord:(BOOL)word
 {
-  v4 = a4;
-  v6 = a3;
+  wordCopy = word;
+  stringCopy = string;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__11451;
   v20 = __Block_byref_object_dispose__11452;
   v21 = 0;
-  v7 = [(TIKeyboardInputManager *)self shortcutSearchRangeForString:v6];
+  v7 = [(TIKeyboardInputManager *)self shortcutSearchRangeForString:stringCopy];
   if (v8 < 0x41)
   {
     v9 = v7;
     v10 = v8;
-    if (!v7 && v4)
+    if (!v7 && wordCopy)
     {
       v11 = objc_alloc_init(MEMORY[0x277D6F560]);
-      [v11 setString:v6 withSearchRange:{0, v10}];
+      [v11 setString:stringCopy withSearchRange:{0, v10}];
       if ([v11 advanceToNextToken])
       {
         v9 = 0;
@@ -5133,7 +5133,7 @@ void __60__TIKeyboardInputManager_suggestionBlocklistMatchesStrings___block_invo
       else
       {
         v9 = v12;
-        v10 = [v6 length] - v12;
+        v10 = [stringCopy length] - v12;
       }
     }
 
@@ -5143,7 +5143,7 @@ void __60__TIKeyboardInputManager_suggestionBlocklistMatchesStrings___block_invo
     v15[3] = &unk_2787316A8;
     v15[4] = self;
     v15[5] = &v16;
-    [(TIKeyboardInputManager *)self enumerateWordSuffixesOfString:v6 inRange:v9 usingBlock:v10, v15];
+    [(TIKeyboardInputManager *)self enumerateWordSuffixesOfString:stringCopy inRange:v9 usingBlock:v10, v15];
   }
 
   v13 = v17[5];
@@ -5191,15 +5191,15 @@ void __81__TIKeyboardInputManager_shortcutConversionForString_stringStartsInMidd
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (_NSRange)shortcutSearchRangeForString:(id)a3
+- (_NSRange)shortcutSearchRangeForString:(id)string
 {
   v3 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a3)
+  if (string)
   {
     v4 = MEMORY[0x277CCA900];
-    v5 = a3;
-    v6 = [v4 whitespaceAndNewlineCharacterSet];
-    v7 = [v5 rangeOfCharacterFromSet:v6 options:4];
+    stringCopy = string;
+    whitespaceAndNewlineCharacterSet = [v4 whitespaceAndNewlineCharacterSet];
+    v7 = [stringCopy rangeOfCharacterFromSet:whitespaceAndNewlineCharacterSet options:4];
     v9 = v8;
 
     if (v7 == 0x7FFFFFFFFFFFFFFFLL)
@@ -5212,7 +5212,7 @@ void __81__TIKeyboardInputManager_shortcutConversionForString_stringStartsInMidd
       v3 = v7 + v9;
     }
 
-    v10 = [v5 length];
+    v10 = [stringCopy length];
 
     v11 = v10 - v3;
   }
@@ -5228,24 +5228,24 @@ void __81__TIKeyboardInputManager_shortcutConversionForString_stringStartsInMidd
   return result;
 }
 
-- (BOOL)shouldSkipShortcutConversionForDocumentState:(id)a3
+- (BOOL)shouldSkipShortcutConversionForDocumentState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 selectedText];
+  stateCopy = state;
+  selectedText = [stateCopy selectedText];
 
-  if (v4 || ([v3 markedText], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  if (selectedText || ([stateCopy markedText], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     v6 = 1;
   }
 
   else
   {
-    v8 = [v3 contextAfterInput];
-    if ([v8 length])
+    contextAfterInput = [stateCopy contextAfterInput];
+    if ([contextAfterInput length])
     {
-      v9 = [v3 contextAfterInput];
-      v10 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-      v6 = [v9 rangeOfCharacterFromSet:v10] != 0;
+      contextAfterInput2 = [stateCopy contextAfterInput];
+      whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+      v6 = [contextAfterInput2 rangeOfCharacterFromSet:whitespaceAndNewlineCharacterSet] != 0;
     }
 
     else
@@ -5257,12 +5257,12 @@ void __81__TIKeyboardInputManager_shortcutConversionForString_stringStartsInMidd
   return v6;
 }
 
-- (void)enumerateWordSuffixesOfString:(id)a3 inRange:(_NSRange)a4 usingBlock:(id)a5
+- (void)enumerateWordSuffixesOfString:(id)string inRange:(_NSRange)range usingBlock:(id)block
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a3;
-  v9 = a5;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  blockCopy = block;
   if (length)
   {
     v28 = 0;
@@ -5275,28 +5275,28 @@ void __81__TIKeyboardInputManager_shortcutConversionForString_stringStartsInMidd
     v22 = __75__TIKeyboardInputManager_enumerateWordSuffixesOfString_inRange_usingBlock___block_invoke;
     v23 = &unk_278731680;
     v27 = location + length;
-    v11 = v8;
+    v11 = stringCopy;
     v24 = v11;
-    v25 = v9;
+    v25 = blockCopy;
     v26 = &v28;
     v12 = _Block_copy(&v20);
     v13 = objc_alloc_init(MEMORY[0x277D6F560]);
     [v13 setString:v11 withSearchRange:{location, length, v20, v21, v22, v23}];
-    v14 = [v13 advanceToNextToken];
+    advanceToNextToken = [v13 advanceToNextToken];
     if (v15)
     {
-      v16 = v14;
+      advanceToNextToken2 = advanceToNextToken;
       v17 = v15;
       do
       {
-        if (v16 <= location)
+        if (advanceToNextToken2 <= location)
         {
           v18 = v29;
         }
 
         else
         {
-          [v11 enumerateSubstringsInRange:location options:v16 - location usingBlock:{514, v12}];
+          [v11 enumerateSubstringsInRange:location options:advanceToNextToken2 - location usingBlock:{514, v12}];
           v18 = v29;
           if (v29[3])
           {
@@ -5304,14 +5304,14 @@ void __81__TIKeyboardInputManager_shortcutConversionForString_stringStartsInMidd
           }
         }
 
-        v12[2](v12, 0, v16, v17, v16, v17, v18 + 3);
+        v12[2](v12, 0, advanceToNextToken2, v17, advanceToNextToken2, v17, v18 + 3);
         if (*(v29 + 24) == 1)
         {
           break;
         }
 
-        location = v16 + v17;
-        v16 = [v13 advanceToNextToken];
+        location = advanceToNextToken2 + v17;
+        advanceToNextToken2 = [v13 advanceToNextToken];
         v17 = v19;
       }
 
@@ -5336,13 +5336,13 @@ void __75__TIKeyboardInputManager_enumerateWordSuffixesOfString_inRange_usingBlo
   *a7 = *(*(*(a1 + 48) + 8) + 24);
 }
 
-- (id)autocorrectionCandidateForInput:(id)a3 rawInput:(id)a4 withCandidate:(const void *)a5 insertingSpace:(BOOL)a6 sharedPrefixLength:(unint64_t)a7
+- (id)autocorrectionCandidateForInput:(id)input rawInput:(id)rawInput withCandidate:(const void *)candidate insertingSpace:(BOOL)space sharedPrefixLength:(unint64_t)length
 {
-  v8 = a6;
+  spaceCopy = space;
   v122 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  KB::Candidate::capitalized_string(a5, v120);
+  inputCopy = input;
+  rawInputCopy = rawInput;
+  KB::Candidate::capitalized_string(candidate, v120);
   v15 = KB::ns_string(v120, v14);
   if (v121)
   {
@@ -5359,21 +5359,21 @@ void __75__TIKeyboardInputManager_enumerateWordSuffixesOfString_inRange_usingBlo
     free(v121);
   }
 
-  v17 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-  v18 = [v17 shouldConvertCandidateToExternal];
+  keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+  shouldConvertCandidateToExternal = [keyboardFeatureSpecialization shouldConvertCandidateToExternal];
 
-  if (v18)
+  if (shouldConvertCandidateToExternal)
   {
     v19 = [(TIKeyboardInputManager *)self internalStringToExternal:v15];
 
     v15 = v19;
   }
 
-  if (v8)
+  if (spaceCopy)
   {
     v20 = v15;
-    v21 = [(TIKeyboardInputManager *)self wordSeparator];
-    v15 = [v21 stringByAppendingString:v20];
+    wordSeparator = [(TIKeyboardInputManager *)self wordSeparator];
+    v15 = [wordSeparator stringByAppendingString:v20];
     v118 = v20;
   }
 
@@ -5382,38 +5382,38 @@ void __75__TIKeyboardInputManager_enumerateWordSuffixesOfString_inRange_usingBlo
     v118 = 0;
   }
 
-  v22 = a7;
-  if (a7 == 0x7FFFFFFFFFFFFFFFLL)
+  lengthCopy2 = length;
+  if (length == 0x7FFFFFFFFFFFFFFFLL)
   {
-    a7 = [(TIKeyboardInputManager *)self prefixLengthOfInput:v12 sharedWithCandidate:a5];
-    v23 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-    v22 = a7;
-    if (([v23 shouldConvertCandidateToExternal] & 1) == 0)
+    length = [(TIKeyboardInputManager *)self prefixLengthOfInput:inputCopy sharedWithCandidate:candidate];
+    keyboardFeatureSpecialization2 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+    lengthCopy2 = length;
+    if (([keyboardFeatureSpecialization2 shouldConvertCandidateToExternal] & 1) == 0)
     {
-      v22 = [(TIKeyboardInputManager *)self prefixLengthOfInput:v12 sharedWithCandidate:a5 useCandidateLength:1];
+      lengthCopy2 = [(TIKeyboardInputManager *)self prefixLengthOfInput:inputCopy sharedWithCandidate:candidate useCandidateLength:1];
     }
   }
 
-  if (a7)
+  if (length)
   {
-    v24 = [v12 substringFromIndex:a7];
+    v24 = [inputCopy substringFromIndex:length];
 
-    v12 = v24;
+    inputCopy = v24;
   }
 
-  if (v22 && v22 < [v15 length])
+  if (lengthCopy2 && lengthCopy2 < [v15 length])
   {
-    v25 = [v15 substringFromIndex:v22];
+    v25 = [v15 substringFromIndex:lengthCopy2];
 
     v15 = v25;
   }
 
-  v26 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-  v119 = self;
-  if ([v26 shouldConvertAutocorrectionCandidatesToFullWidth])
+  keyboardFeatureSpecialization3 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+  selfCopy = self;
+  if ([keyboardFeatureSpecialization3 shouldConvertAutocorrectionCandidatesToFullWidth])
   {
-    v27 = [v12 _lastGrapheme];
-    if ([v27 _containsFullwidthLettersAndNumbers])
+    _lastGrapheme = [inputCopy _lastGrapheme];
+    if ([_lastGrapheme _containsFullwidthLettersAndNumbers])
     {
     }
 
@@ -5421,14 +5421,14 @@ void __75__TIKeyboardInputManager_enumerateWordSuffixesOfString_inRange_usingBlo
     {
       [(TIKeyboardInputManager *)self keyboardState];
       v117 = v15;
-      v28 = v12;
-      v30 = v29 = v13;
-      v31 = [v30 layoutState];
-      v32 = [v31 layoutTag];
-      v33 = [v32 isEqualToString:@"Fullwidth"];
+      v28 = inputCopy;
+      v30 = v29 = rawInputCopy;
+      layoutState = [v30 layoutState];
+      layoutTag = [layoutState layoutTag];
+      v33 = [layoutTag isEqualToString:@"Fullwidth"];
 
-      v13 = v29;
-      v12 = v28;
+      rawInputCopy = v29;
+      inputCopy = v28;
       v15 = v117;
 
       if (!v33)
@@ -5438,13 +5438,13 @@ void __75__TIKeyboardInputManager_enumerateWordSuffixesOfString_inRange_usingBlo
     }
 
     [v15 _stringByConvertingFromHalfWidthToFullWidth];
-    v15 = v26 = v15;
+    v15 = keyboardFeatureSpecialization3 = v15;
   }
 
 LABEL_27:
-  if ((*a5 & 0xFFFFFFFE) != 0)
+  if ((*candidate & 0xFFFFFFFE) != 0)
   {
-    v34 = KB::Candidate::index_of_word_containing_position(a5, a7);
+    v34 = KB::Candidate::index_of_word_containing_position(candidate, length);
   }
 
   else
@@ -5452,13 +5452,13 @@ LABEL_27:
     v34 = 0;
   }
 
-  v35 = [v15 isEqualToString:v12] ^ 1;
+  v35 = [v15 isEqualToString:inputCopy] ^ 1;
   v36 = v34;
-  v38 = *a5;
-  v37 = *(a5 + 1);
+  v38 = *candidate;
+  v37 = *(candidate + 1);
   v39 = v37 + 240 * v34;
-  v40 = v37 + 240 * *a5;
-  if (*a5 == v34)
+  v40 = v37 + 240 * *candidate;
+  if (*candidate == v34)
   {
     if (v39 != v40)
     {
@@ -5511,7 +5511,7 @@ LABEL_51:
     v41 -= 240;
     if (!v41)
     {
-      v42 = v37 + 240 * *a5;
+      v42 = v37 + 240 * *candidate;
       break;
     }
   }
@@ -5534,7 +5534,7 @@ LABEL_51:
     v77 -= 240;
     if (!v77)
     {
-      v78 = v37 + 240 * *a5;
+      v78 = v37 + 240 * *candidate;
       break;
     }
   }
@@ -5557,7 +5557,7 @@ LABEL_51:
     v79 -= 240;
     if (!v79)
     {
-      v80 = v37 + 240 * *a5;
+      v80 = v37 + 240 * *candidate;
       break;
     }
   }
@@ -5580,7 +5580,7 @@ LABEL_51:
     v81 -= 240;
     if (!v81)
     {
-      v82 = v37 + 240 * *a5;
+      v82 = v37 + 240 * *candidate;
       break;
     }
   }
@@ -5603,7 +5603,7 @@ LABEL_51:
     v83 -= 240;
     if (!v83)
     {
-      v84 = v37 + 240 * *a5;
+      v84 = v37 + 240 * *candidate;
       break;
     }
   }
@@ -5625,7 +5625,7 @@ LABEL_51:
     v85 -= 240;
     if (!v85)
     {
-      v39 = v37 + 240 * *a5;
+      v39 = v37 + 240 * *candidate;
       break;
     }
   }
@@ -5670,46 +5670,46 @@ LABEL_51:
   }
 
 LABEL_54:
-  if (KB::Candidate::has_error_correction_type(a5, v34, 2))
+  if (KB::Candidate::has_error_correction_type(candidate, v34, 2))
   {
     v44 |= 0x400u;
   }
 
-  if (KB::Candidate::has_error_correction_type(a5, v34, 4))
+  if (KB::Candidate::has_error_correction_type(candidate, v34, 4))
   {
     v44 |= 0x800u;
   }
 
-  if (KB::Candidate::has_error_correction_type(a5, v34, 8))
+  if (KB::Candidate::has_error_correction_type(candidate, v34, 8))
   {
     v44 |= 0x1000u;
   }
 
-  if (KB::Candidate::has_error_correction_type(a5, v34, 16))
+  if (KB::Candidate::has_error_correction_type(candidate, v34, 16))
   {
     v44 |= 0x4000u;
   }
 
-  if (KB::Candidate::has_error_correction_type(a5, v34, 32))
+  if (KB::Candidate::has_error_correction_type(candidate, v34, 32))
   {
     v44 |= 0x8000u;
   }
 
-  has_error_correction_type = KB::Candidate::has_error_correction_type(a5, v34, 64);
+  has_error_correction_type = KB::Candidate::has_error_correction_type(candidate, v34, 64);
   v46 = v44 | 0x10000;
   if (!has_error_correction_type)
   {
     v46 = v44;
   }
 
-  v47 = v46 | HIWORD(*(*(a5 + 1) + 240 * *a5 - 136)) & 8;
-  v48 = [v12 rangeOfString:@" "];
+  v47 = v46 | HIWORD(*(*(candidate + 1) + 240 * *candidate - 136)) & 8;
+  v48 = [inputCopy rangeOfString:@" "];
   v49 = [v15 rangeOfString:@" "];
   if (v48 == 0x7FFFFFFFFFFFFFFFLL)
   {
     if (v49 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      if (v49 < [v12 length])
+      if (v49 < [inputCopy length])
       {
         v47 |= 0x10u;
       }
@@ -5736,9 +5736,9 @@ LABEL_54:
     v47 |= v50;
   }
 
-  v51 = *a5;
-  v52 = *(a5 + 1);
-  if (*a5)
+  v51 = *candidate;
+  v52 = *(candidate + 1);
+  if (*candidate)
   {
     v53 = (v52 + 192);
     v54 = 240 * v51;
@@ -5763,7 +5763,7 @@ LABEL_54:
 
 LABEL_81:
   v56 = v52 + 240 * v51;
-  if (*(a5 + 960))
+  if (*(candidate + 960))
   {
     v57 = v47 | 0x20000;
   }
@@ -6167,7 +6167,7 @@ LABEL_115:
     v65 = v64 | 0x200;
   }
 
-  if (*(a5 + 963))
+  if (*(candidate + 963))
   {
     v66 = v65 | 0x1000;
   }
@@ -6177,15 +6177,15 @@ LABEL_115:
     v66 = v65;
   }
 
-  v67 = [objc_alloc(MEMORY[0x277D6F568]) initWithCandidate:v15 forInput:v12 rawInput:v13 wordOriginFeedbackID:*(a5 + 194) usageTrackingMask:v57 sourceMask:v66 learningFlagsMask:*(a5 + 963)];
+  v67 = [objc_alloc(MEMORY[0x277D6F568]) initWithCandidate:v15 forInput:inputCopy rawInput:rawInputCopy wordOriginFeedbackID:*(candidate + 194) usageTrackingMask:v57 sourceMask:v66 learningFlagsMask:*(candidate + 963)];
   v68 = v67;
-  v69 = *a5;
-  if (*a5)
+  v69 = *candidate;
+  if (*candidate)
   {
     v70 = 240 * v69;
-    v71 = *(a5 + 1);
+    v71 = *(candidate + 1);
     v73 = v118;
-    v72 = v119;
+    v72 = selfCopy;
     while ((*(v71 + 105) & 0x80) == 0)
     {
       v71 += 240;
@@ -6199,12 +6199,12 @@ LABEL_115:
 
   else
   {
-    v71 = *(a5 + 1);
+    v71 = *(candidate + 1);
     v73 = v118;
-    v72 = v119;
+    v72 = selfCopy;
   }
 
-  if (v71 != *(a5 + 1) + 240 * v69)
+  if (v71 != *(candidate + 1) + 240 * v69)
   {
     [v67 setIsFromTextChecker:1];
   }
@@ -6215,7 +6215,7 @@ LABEL_129:
     [v68 core_updateWithSupplementalItemPrefix:?];
   }
 
-  if (v36 >= *a5)
+  if (v36 >= *candidate)
   {
     [v68 setSupplementalItemIdentifiers:MEMORY[0x277CBEBF8]];
     if (!v73)
@@ -6226,7 +6226,7 @@ LABEL_129:
     goto LABEL_135;
   }
 
-  v74 = KB::createNSArray<std::unordered_set<unsigned long long> const&>(*(a5 + 1) + 240 * v36 + 200);
+  v74 = KB::createNSArray<std::unordered_set<unsigned long long> const&>(*(candidate + 1) + 240 * v36 + 200);
   [v68 setSupplementalItemIdentifiers:v74];
 
   if (v73)
@@ -6236,8 +6236,8 @@ LABEL_135:
   }
 
 LABEL_136:
-  [v68 setTypingEngine:*(a5 + 248)];
-  populateAutocorrectionAccuracyFields(v68, a5);
+  [v68 setTypingEngine:*(candidate + 248)];
+  populateAutocorrectionAccuracyFields(v68, candidate);
 
   v75 = *MEMORY[0x277D85DE8];
 
@@ -6300,7 +6300,7 @@ LABEL_14:
   return result;
 }
 
-- (id)phraseCandidateCompletedByWord:(const String *)a3 allowNoSuggest:(BOOL)a4 forAutocorrection:(BOOL)a5 shiftContext:(int)a6
+- (id)phraseCandidateCompletedByWord:(const String *)word allowNoSuggest:(BOOL)suggest forAutocorrection:(BOOL)autocorrection shiftContext:(int)context
 {
   v50 = *MEMORY[0x277D85DE8];
   if (!self->m_impl)
@@ -6308,16 +6308,16 @@ LABEL_14:
     goto LABEL_25;
   }
 
-  v7 = a5;
-  v8 = a4;
-  v11 = [(TIKeyboardInputManager *)self config];
-  if (([v11 usesRetrocorrection] & 1) == 0)
+  autocorrectionCopy = autocorrection;
+  suggestCopy = suggest;
+  config = [(TIKeyboardInputManager *)self config];
+  if (([config usesRetrocorrection] & 1) == 0)
   {
 
     goto LABEL_25;
   }
 
-  var0 = a3->var0;
+  var0 = word->var0;
 
   if (!var0)
   {
@@ -6331,21 +6331,21 @@ LABEL_25:
   v47 = 0;
   v48 = 0;
   v49 = 0;
-  TIInputManager::phrase_completed_by_word(self->m_impl, a3, &v45, v8, v7, a6, &v42);
+  TIInputManager::phrase_completed_by_word(self->m_impl, word, &v45, suggestCopy, autocorrectionCopy, context, &v42);
   if (v42)
   {
     v14 = KB::ns_string(&v45, v13);
     v15 = [(TIKeyboardInputManager *)self internalStringToExternal:v14];
-    v16 = [(TIKeyboardInputManager *)self keyboardState];
-    v17 = [v16 documentState];
-    v18 = [v17 selectedText];
+    keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+    documentState = [keyboardState documentState];
+    selectedText = [documentState selectedText];
 
-    if (v18)
+    if (selectedText)
     {
-      v19 = [(TIKeyboardInputManager *)self keyboardState];
-      v20 = [v19 documentState];
-      v21 = [v20 selectedText];
-      v22 = [v15 stringByAppendingString:v21];
+      keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+      documentState2 = [keyboardState2 documentState];
+      selectedText2 = [documentState2 selectedText];
+      v22 = [v15 stringByAppendingString:selectedText2];
 
       v15 = v22;
     }
@@ -6472,46 +6472,46 @@ BOOL __85__TIKeyboardInputManager_prefixLengthOfInput_sharedWithCandidate_useCan
   return v6;
 }
 
-- (BOOL)canStartSentenceAfterString:(id)a3
+- (BOOL)canStartSentenceAfterString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = 0;
-  if (v4 && self->m_impl)
+  if (stringCopy && self->m_impl)
   {
-    v6 = [(TIKeyboardInputManager *)self autoshiftRegexLoader];
+    autoshiftRegexLoader = [(TIKeyboardInputManager *)self autoshiftRegexLoader];
 
-    if (v6)
+    if (autoshiftRegexLoader)
     {
       goto LABEL_4;
     }
 
-    v7 = [(TIKeyboardInputManager *)self sentenceDelimitingCharacters];
-    v8 = [(TIKeyboardInputManager *)self sentenceTrailingCharacters];
-    v9 = [(TIKeyboardInputManager *)self sentencePrefixingCharacters];
-    v10 = [TIAutoshiftRegularExpressionLoader loaderWithSentenceDelimiters:v7 trailingChars:v8 prefixChars:v9];
+    sentenceDelimitingCharacters = [(TIKeyboardInputManager *)self sentenceDelimitingCharacters];
+    sentenceTrailingCharacters = [(TIKeyboardInputManager *)self sentenceTrailingCharacters];
+    sentencePrefixingCharacters = [(TIKeyboardInputManager *)self sentencePrefixingCharacters];
+    v10 = [TIAutoshiftRegularExpressionLoader loaderWithSentenceDelimiters:sentenceDelimitingCharacters trailingChars:sentenceTrailingCharacters prefixChars:sentencePrefixingCharacters];
     [(TIKeyboardInputManager *)self setAutoshiftRegexLoader:v10];
 
-    if (![v4 length])
+    if (![stringCopy length])
     {
       goto LABEL_7;
     }
 
-    if (![v4 hasSuffix:@"\n"])
+    if (![stringCopy hasSuffix:@"\n"])
     {
 LABEL_4:
-      v5 = [(TIKeyboardInputManager *)self _canStartSentenceAfterString:v4 maxRecursionDepth:2];
+      v5 = [(TIKeyboardInputManager *)self _canStartSentenceAfterString:stringCopy maxRecursionDepth:2];
     }
 
     else
     {
 LABEL_7:
-      v11 = [(TIKeyboardInputManager *)self config];
-      v12 = [v11 isTesting];
+      config = [(TIKeyboardInputManager *)self config];
+      isTesting = [config isTesting];
 
-      if ((v12 & 1) == 0)
+      if ((isTesting & 1) == 0)
       {
-        v13 = [(TIKeyboardInputManager *)self autoshiftRegexLoader];
-        [v13 startBackgroundLoad];
+        autoshiftRegexLoader2 = [(TIKeyboardInputManager *)self autoshiftRegexLoader];
+        [autoshiftRegexLoader2 startBackgroundLoad];
       }
 
       v5 = 1;
@@ -6521,14 +6521,14 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)_canStartSentenceAfterString:(id)a3 maxRecursionDepth:(unint64_t)a4
+- (BOOL)_canStartSentenceAfterString:(id)string maxRecursionDepth:(unint64_t)depth
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(TIKeyboardInputManager *)self autoshiftRegexLoader];
-  v8 = [v7 regex];
+  stringCopy = string;
+  autoshiftRegexLoader = [(TIKeyboardInputManager *)self autoshiftRegexLoader];
+  regex = [autoshiftRegexLoader regex];
 
-  v9 = [v8 firstMatchInString:v6 options:0 range:{0, objc_msgSend(v6, "length")}];
+  v9 = [regex firstMatchInString:stringCopy options:0 range:{0, objc_msgSend(stringCopy, "length")}];
   v10 = v9;
   if (!v9)
   {
@@ -6542,12 +6542,12 @@ LABEL_7:
     v14 = v12;
     v15 = v12 + v13;
     v16 = v12 + v13 - 1;
-    if ([v6 characterAtIndex:v16] != 46)
+    if ([stringCopy characterAtIndex:v16] != 46)
     {
       goto LABEL_8;
     }
 
-    if (v16 && [v6 characterAtIndex:v15 - 2] == 46)
+    if (v16 && [stringCopy characterAtIndex:v15 - 2] == 46)
     {
 LABEL_6:
       v11 = 0;
@@ -6561,16 +6561,16 @@ LABEL_8:
       goto LABEL_16;
     }
 
-    v17 = [v6 substringWithRange:{v14, v16 - v14}];
+    v17 = [stringCopy substringWithRange:{v14, v16 - v14}];
     v18 = [(TIKeyboardInputManager *)self externalStringToInternal:v17];
     KB::utf8_string(v18, v25);
 
     v20 = KB::string_capitalization(v25, v19);
     v21 = 0;
-    if (a4 && v20 == 1)
+    if (depth && v20 == 1)
     {
-      v22 = [v6 substringToIndex:v14];
-      v21 = [(TIKeyboardInputManager *)self _canStartSentenceAfterString:v22 maxRecursionDepth:a4 - 1];
+      v22 = [stringCopy substringToIndex:v14];
+      v21 = [(TIKeyboardInputManager *)self _canStartSentenceAfterString:v22 maxRecursionDepth:depth - 1];
     }
 
     v11 = TIInputManager::period_ends_sentence_after_word(self->m_impl, v25, v21);
@@ -6588,53 +6588,53 @@ LABEL_16:
 
 - (BOOL)spaceAndNextInputWouldStartSentence
 {
-  v2 = self;
-  v3 = [(TIKeyboardInputManager *)self wordSeparator];
-  LOBYTE(v2) = [(TIKeyboardInputManager *)v2 nextInputWouldStartSentenceAfterInput:v3];
+  selfCopy = self;
+  wordSeparator = [(TIKeyboardInputManager *)self wordSeparator];
+  LOBYTE(selfCopy) = [(TIKeyboardInputManager *)selfCopy nextInputWouldStartSentenceAfterInput:wordSeparator];
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)nextInputWouldStartSentenceAfterInput:(id)a3
+- (BOOL)nextInputWouldStartSentenceAfterInput:(id)input
 {
-  v4 = a3;
-  v5 = [(TIKeyboardInputManager *)self keyboardState];
-  v6 = [v5 autocapitalizationEnabled];
+  inputCopy = input;
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  autocapitalizationEnabled = [keyboardState autocapitalizationEnabled];
 
-  if (!v6)
+  if (!autocapitalizationEnabled)
   {
     goto LABEL_4;
   }
 
-  v7 = [(TIKeyboardInputManager *)self keyboardState];
-  v8 = [v7 autocapitalizationType];
+  keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+  autocapitalizationType = [keyboardState2 autocapitalizationType];
 
-  if (v8 != 2)
+  if (autocapitalizationType != 2)
   {
     goto LABEL_4;
   }
 
-  v9 = [(TIKeyboardInputManager *)self keyboardState];
-  v10 = [v9 documentState];
-  v11 = [v10 markedText];
+  keyboardState3 = [(TIKeyboardInputManager *)self keyboardState];
+  documentState = [keyboardState3 documentState];
+  markedText = [documentState markedText];
 
-  if (!v11)
+  if (!markedText)
   {
-    v14 = [(TIKeyboardInputManager *)self keyboardState];
-    v15 = [v14 documentState];
-    v16 = [v15 contextBeforeInput];
-    v17 = v16;
+    keyboardState4 = [(TIKeyboardInputManager *)self keyboardState];
+    documentState2 = [keyboardState4 documentState];
+    contextBeforeInput = [documentState2 contextBeforeInput];
+    v17 = contextBeforeInput;
     v18 = &stru_283FDFAF8;
-    if (v16)
+    if (contextBeforeInput)
     {
-      v18 = v16;
+      v18 = contextBeforeInput;
     }
 
     v19 = v18;
 
-    if (v4)
+    if (inputCopy)
     {
-      v20 = [(__CFString *)v19 stringByAppendingString:v4];
+      v20 = [(__CFString *)v19 stringByAppendingString:inputCopy];
 
       v19 = v20;
     }
@@ -6653,34 +6653,34 @@ LABEL_4:
 
 - (id)sentenceTrailingCharacters
 {
-  v2 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-  v3 = [v2 sentenceTrailingCharacters];
+  keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+  sentenceTrailingCharacters = [keyboardFeatureSpecialization sentenceTrailingCharacters];
 
-  return v3;
+  return sentenceTrailingCharacters;
 }
 
 - (id)clauseDelimitingCharacters
 {
-  v2 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-  v3 = [v2 clauseDelimitingCharacters];
+  keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+  clauseDelimitingCharacters = [keyboardFeatureSpecialization clauseDelimitingCharacters];
 
-  return v3;
+  return clauseDelimitingCharacters;
 }
 
 - (id)sentenceDelimitingCharacters
 {
-  v2 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-  v3 = [v2 sentenceDelimitingCharacters];
+  keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+  sentenceDelimitingCharacters = [keyboardFeatureSpecialization sentenceDelimitingCharacters];
 
-  return v3;
+  return sentenceDelimitingCharacters;
 }
 
 - (id)sentencePrefixingCharacters
 {
-  v2 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-  v3 = [v2 sentencePrefixingCharacters];
+  keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+  sentencePrefixingCharacters = [keyboardFeatureSpecialization sentencePrefixingCharacters];
 
-  return v3;
+  return sentencePrefixingCharacters;
 }
 
 - (id)supplementalLexiconWordExtraCharacters
@@ -6688,10 +6688,10 @@ LABEL_4:
   supplementalLexiconWordExtraCharacters = self->_supplementalLexiconWordExtraCharacters;
   if (!supplementalLexiconWordExtraCharacters)
   {
-    v4 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-    v5 = [v4 supplementalLexiconWordExtraCharacters];
+    keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+    supplementalLexiconWordExtraCharacters = [keyboardFeatureSpecialization supplementalLexiconWordExtraCharacters];
     v6 = self->_supplementalLexiconWordExtraCharacters;
-    self->_supplementalLexiconWordExtraCharacters = v5;
+    self->_supplementalLexiconWordExtraCharacters = supplementalLexiconWordExtraCharacters;
 
     supplementalLexiconWordExtraCharacters = self->_supplementalLexiconWordExtraCharacters;
   }
@@ -6704,10 +6704,10 @@ LABEL_4:
   wordCharacters = self->_wordCharacters;
   if (!wordCharacters)
   {
-    v4 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-    v5 = [v4 wordCharacters];
+    keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+    wordCharacters = [keyboardFeatureSpecialization wordCharacters];
     v6 = self->_wordCharacters;
-    self->_wordCharacters = v5;
+    self->_wordCharacters = wordCharacters;
 
     wordCharacters = self->_wordCharacters;
   }
@@ -6717,50 +6717,50 @@ LABEL_4:
 
 - (const)precomposedCharacterSet
 {
-  v2 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-  v3 = [v2 precomposedCharacterSet];
+  keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+  precomposedCharacterSet = [keyboardFeatureSpecialization precomposedCharacterSet];
 
-  return v3;
+  return precomposedCharacterSet;
 }
 
-- (void)setUserInterfaceIdiom:(int64_t)a3
+- (void)setUserInterfaceIdiom:(int64_t)idiom
 {
-  if (self->_userInterfaceIdiom != a3)
+  if (self->_userInterfaceIdiom != idiom)
   {
-    self->_userInterfaceIdiom = a3;
-    v5 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-    [v5 setCurrentUserInterfaceIdiom:a3];
+    self->_userInterfaceIdiom = idiom;
+    keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+    [keyboardFeatureSpecialization setCurrentUserInterfaceIdiom:idiom];
   }
 }
 
 - (id)nonstopPunctuationCharacters
 {
-  v2 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-  v3 = [v2 nonstopPunctuationCharacters];
+  keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+  nonstopPunctuationCharacters = [keyboardFeatureSpecialization nonstopPunctuationCharacters];
 
-  return v3;
+  return nonstopPunctuationCharacters;
 }
 
-- (void)updateForRevisitedString:(id)a3
+- (void)updateForRevisitedString:(id)string
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TIKeyboardInputManager *)self revisionHistory];
+  stringCopy = string;
+  revisionHistory = [(TIKeyboardInputManager *)self revisionHistory];
 
-  if (v5)
+  if (revisionHistory)
   {
-    v6 = [(TIKeyboardInputManager *)self revisionHistory];
-    v7 = [v6 currentWord];
-    v8 = [v4 isEqualToString:v7];
+    revisionHistory2 = [(TIKeyboardInputManager *)self revisionHistory];
+    currentWord = [revisionHistory2 currentWord];
+    v8 = [stringCopy isEqualToString:currentWord];
 
     if (v8)
     {
-      v9 = [(TIKeyboardInputManager *)self revisionHistory];
-      v10 = [v9 currentUserTyping];
+      revisionHistory3 = [(TIKeyboardInputManager *)self revisionHistory];
+      currentUserTyping = [revisionHistory3 currentUserTyping];
 
-      if (v10)
+      if (currentUserTyping)
       {
-        v11 = [(TIKeyboardInputManager *)self externalStringToInternal:v10];
+        v11 = [(TIKeyboardInputManager *)self externalStringToInternal:currentUserTyping];
         m_impl = self->m_impl;
         KB::utf8_string(v11, v16);
         KB::String::operator=((m_impl + 64), v16);
@@ -6769,9 +6769,9 @@ LABEL_4:
           free(v18);
         }
 
-        if (([v10 isEqualToString:v4] & 1) == 0)
+        if (([currentUserTyping isEqualToString:stringCopy] & 1) == 0)
         {
-          v13 = [(TIKeyboardInputManager *)self dictionaryStringForExternalString:v10];
+          v13 = [(TIKeyboardInputManager *)self dictionaryStringForExternalString:currentUserTyping];
           v14 = self->m_impl;
           KB::utf8_string(v13, v16);
           KB::String::operator=((*(v14[33] + 24) + 56), v16);
@@ -6787,46 +6787,46 @@ LABEL_4:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)autocorrectionRecordForWord:(id)a3
+- (id)autocorrectionRecordForWord:(id)word
 {
-  v4 = a3;
-  v5 = [(TIKeyboardInputManager *)self autocorrectionHistory];
-  v6 = [v5 objectForKey:v4];
+  wordCopy = word;
+  autocorrectionHistory = [(TIKeyboardInputManager *)self autocorrectionHistory];
+  v6 = [autocorrectionHistory objectForKey:wordCopy];
 
   if (!v6)
   {
-    v7 = [(TIKeyboardInputManager *)self rejectedAutocorrections];
-    v6 = [v7 objectForKey:v4];
+    rejectedAutocorrections = [(TIKeyboardInputManager *)self rejectedAutocorrections];
+    v6 = [rejectedAutocorrections objectForKey:wordCopy];
   }
 
   return v6;
 }
 
-- (void)recordAcceptedAutocorrection:(id)a3 fromPredictiveInputBar:(BOOL)a4
+- (void)recordAcceptedAutocorrection:(id)autocorrection fromPredictiveInputBar:(BOOL)bar
 {
-  v4 = a4;
+  barCopy = bar;
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(TIKeyboardInputManager *)self originatingAutocorrectionListForCandidate:v6];
+  autocorrectionCopy = autocorrection;
+  v7 = [(TIKeyboardInputManager *)self originatingAutocorrectionListForCandidate:autocorrectionCopy];
   if (([v7 hasSupplementalItems] & 1) == 0)
   {
-    if (v7 && ([v6 isSupplementalItemCandidate] & 1) == 0)
+    if (v7 && ([autocorrectionCopy isSupplementalItemCandidate] & 1) == 0)
     {
-      v8 = [v6 candidate];
-      v9 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-      v10 = [v8 stringByTrimmingCharactersInSet:v9];
+      candidate = [autocorrectionCopy candidate];
+      whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+      v10 = [candidate stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-      v11 = [(TIKeyboardInputManager *)self revisionListFromAutocorrectionList:v7 afterAcceptingCandidate:v6];
-      v12 = [(TIKeyboardInputManager *)self autocorrectionListsForWordsInDocument];
-      [v12 setObject:v11 forKey:v10];
+      v11 = [(TIKeyboardInputManager *)self revisionListFromAutocorrectionList:v7 afterAcceptingCandidate:autocorrectionCopy];
+      autocorrectionListsForWordsInDocument = [(TIKeyboardInputManager *)self autocorrectionListsForWordsInDocument];
+      [autocorrectionListsForWordsInDocument setObject:v11 forKey:v10];
     }
 
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v13 = [v6 candidate];
-    v14 = [v13 componentsSeparatedByString:@" "];
+    candidate2 = [autocorrectionCopy candidate];
+    v14 = [candidate2 componentsSeparatedByString:@" "];
 
     v15 = [v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v15)
@@ -6845,10 +6845,10 @@ LABEL_4:
           v19 = *(*(&v23 + 1) + 8 * i);
           if ([v19 length])
           {
-            v20 = [(TIKeyboardInputManager *)self autocorrectionHistory];
-            [v20 setObject:v6 forKey:v19];
+            autocorrectionHistory = [(TIKeyboardInputManager *)self autocorrectionHistory];
+            [autocorrectionHistory setObject:autocorrectionCopy forKey:v19];
 
-            if (v4)
+            if (barCopy)
             {
               [(TIKeyboardInputManager *)self recentPredictiveInputSelections];
             }
@@ -6858,7 +6858,7 @@ LABEL_4:
               [(TIKeyboardInputManager *)self recentAutocorrections];
             }
             v21 = ;
-            [v21 setObject:v6 forKey:v19];
+            [v21 setObject:autocorrectionCopy forKey:v19];
           }
         }
 
@@ -6872,35 +6872,35 @@ LABEL_4:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)revisionListFromAutocorrectionList:(id)a3 afterAcceptingCandidate:(id)a4
+- (id)revisionListFromAutocorrectionList:(id)list afterAcceptingCandidate:(id)candidate
 {
   v73 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v62 = [MEMORY[0x277CBEB18] array];
-  if ([v6 isContinuousPathConversion])
+  listCopy = list;
+  candidateCopy = candidate;
+  array = [MEMORY[0x277CBEB18] array];
+  if ([candidateCopy isContinuousPathConversion])
   {
-    v7 = [v5 corrections];
-    v8 = [v7 autocorrection];
+    corrections = [listCopy corrections];
+    autocorrection = [corrections autocorrection];
 
-    if (v8)
+    if (autocorrection)
     {
-      if ([v8 isAutocorrection])
+      if ([autocorrection isAutocorrection])
       {
-        v9 = [v8 candidate];
-        v10 = [v6 candidate];
-        v11 = [v9 isEqualToString:v10];
+        candidate = [autocorrection candidate];
+        candidate2 = [candidateCopy candidate];
+        v11 = [candidate isEqualToString:candidate2];
 
         if ((v11 & 1) == 0)
         {
-          v12 = [v8 candidate];
-          v13 = [v6 candidate];
-          v14 = __85__TIKeyboardInputManager_revisionListFromAutocorrectionList_afterAcceptingCandidate___block_invoke(v12, v13, [v8 usageTrackingMask], objc_msgSend(v8, "sourceMask"));
+          candidate3 = [autocorrection candidate];
+          candidate4 = [candidateCopy candidate];
+          v14 = __85__TIKeyboardInputManager_revisionListFromAutocorrectionList_afterAcceptingCandidate___block_invoke(candidate3, candidate4, [autocorrection usageTrackingMask], objc_msgSend(autocorrection, "sourceMask"));
 
-          v15 = [v8 supplementalItemIdentifiers];
-          [v14 setSupplementalItemIdentifiers:v15];
+          supplementalItemIdentifiers = [autocorrection supplementalItemIdentifiers];
+          [v14 setSupplementalItemIdentifiers:supplementalItemIdentifiers];
 
-          [v62 addObject:v14];
+          [array addObject:v14];
         }
       }
     }
@@ -6909,7 +6909,7 @@ LABEL_4:
     v66 = 0u;
     v63 = 0u;
     v64 = 0u;
-    obj = [v5 predictions];
+    obj = [listCopy predictions];
     v16 = [obj countByEnumeratingWithState:&v63 objects:v71 count:16];
     if (v16)
     {
@@ -6925,20 +6925,20 @@ LABEL_4:
           }
 
           v20 = *(*(&v63 + 1) + 8 * i);
-          v21 = [v20 candidate];
-          v22 = [v6 candidate];
-          v23 = [v21 isEqualToString:v22];
+          candidate5 = [v20 candidate];
+          candidate6 = [candidateCopy candidate];
+          v23 = [candidate5 isEqualToString:candidate6];
 
           if ((v23 & 1) == 0)
           {
-            v24 = [v20 candidate];
-            v25 = [v6 candidate];
-            v26 = __85__TIKeyboardInputManager_revisionListFromAutocorrectionList_afterAcceptingCandidate___block_invoke(v24, v25, [v20 usageTrackingMask], objc_msgSend(v20, "sourceMask"));
+            candidate7 = [v20 candidate];
+            candidate8 = [candidateCopy candidate];
+            v26 = __85__TIKeyboardInputManager_revisionListFromAutocorrectionList_afterAcceptingCandidate___block_invoke(candidate7, candidate8, [v20 usageTrackingMask], objc_msgSend(v20, "sourceMask"));
 
-            v27 = [v20 supplementalItemIdentifiers];
-            [v26 setSupplementalItemIdentifiers:v27];
+            supplementalItemIdentifiers2 = [v20 supplementalItemIdentifiers];
+            [v26 setSupplementalItemIdentifiers:supplementalItemIdentifiers2];
 
-            [v62 addObject:v26];
+            [array addObject:v26];
           }
         }
 
@@ -6951,25 +6951,25 @@ LABEL_4:
     goto LABEL_36;
   }
 
-  v8 = [v6 candidate];
-  obj = [v6 input];
-  if (([obj isEqualToString:v8] & 1) == 0)
+  autocorrection = [candidateCopy candidate];
+  obj = [candidateCopy input];
+  if (([obj isEqualToString:autocorrection] & 1) == 0)
   {
-    v28 = __85__TIKeyboardInputManager_revisionListFromAutocorrectionList_afterAcceptingCandidate___block_invoke(obj, v8, 1, 0);
-    [v62 addObject:v28];
+    v28 = __85__TIKeyboardInputManager_revisionListFromAutocorrectionList_afterAcceptingCandidate___block_invoke(obj, autocorrection, 1, 0);
+    [array addObject:v28];
   }
 
-  v29 = [v5 corrections];
-  v30 = [v29 autocorrection];
-  if (!v30)
+  corrections2 = [listCopy corrections];
+  autocorrection2 = [corrections2 autocorrection];
+  if (!autocorrection2)
   {
     goto LABEL_23;
   }
 
-  v31 = v30;
-  v32 = [v5 corrections];
-  v33 = [v32 autocorrection];
-  if (![v33 isAutocorrection])
+  autocorrection5 = autocorrection2;
+  corrections3 = [listCopy corrections];
+  autocorrection3 = [corrections3 autocorrection];
+  if (![autocorrection3 isAutocorrection])
   {
 LABEL_22:
 
@@ -6977,23 +6977,23 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v34 = [v5 corrections];
-  v35 = [v34 autocorrection];
-  v36 = [v35 candidate];
-  v57 = [v36 isEqualToString:v8];
+  corrections4 = [listCopy corrections];
+  autocorrection4 = [corrections4 autocorrection];
+  candidate9 = [autocorrection4 candidate];
+  v57 = [candidate9 isEqualToString:autocorrection];
 
   if ((v57 & 1) == 0)
   {
-    v29 = [v5 corrections];
-    v31 = [v29 autocorrection];
-    v32 = [v31 candidate];
-    v33 = [v5 corrections];
-    v58 = [v33 autocorrection];
-    v37 = [v58 usageTrackingMask];
-    v38 = [v5 corrections];
-    v39 = [v38 autocorrection];
-    v40 = __85__TIKeyboardInputManager_revisionListFromAutocorrectionList_afterAcceptingCandidate___block_invoke(v32, v8, v37, [v39 sourceMask]);
-    [v62 addObject:v40];
+    corrections2 = [listCopy corrections];
+    autocorrection5 = [corrections2 autocorrection];
+    corrections3 = [autocorrection5 candidate];
+    autocorrection3 = [listCopy corrections];
+    v33Autocorrection = [autocorrection3 autocorrection];
+    usageTrackingMask = [v33Autocorrection usageTrackingMask];
+    corrections5 = [listCopy corrections];
+    autocorrection6 = [corrections5 autocorrection];
+    v40 = __85__TIKeyboardInputManager_revisionListFromAutocorrectionList_afterAcceptingCandidate___block_invoke(corrections3, autocorrection, usageTrackingMask, [autocorrection6 sourceMask]);
+    [array addObject:v40];
 
     goto LABEL_22;
   }
@@ -7003,8 +7003,8 @@ LABEL_24:
   v70 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v41 = [v5 predictions];
-  v42 = [v41 countByEnumeratingWithState:&v67 objects:v72 count:16];
+  predictions = [listCopy predictions];
+  v42 = [predictions countByEnumeratingWithState:&v67 objects:v72 count:16];
   if (v42)
   {
     v43 = v42;
@@ -7015,42 +7015,42 @@ LABEL_24:
       {
         if (*v68 != v44)
         {
-          objc_enumerationMutation(v41);
+          objc_enumerationMutation(predictions);
         }
 
         v46 = *(*(&v67 + 1) + 8 * j);
-        v47 = [v46 candidate];
-        v48 = [v47 isEqualToString:v8];
+        candidate10 = [v46 candidate];
+        v48 = [candidate10 isEqualToString:autocorrection];
 
         if ((v48 & 1) == 0)
         {
-          v49 = [v46 candidate];
-          v50 = __85__TIKeyboardInputManager_revisionListFromAutocorrectionList_afterAcceptingCandidate___block_invoke(v49, v8, [v46 usageTrackingMask], objc_msgSend(v46, "sourceMask"));
+          candidate11 = [v46 candidate];
+          v50 = __85__TIKeyboardInputManager_revisionListFromAutocorrectionList_afterAcceptingCandidate___block_invoke(candidate11, autocorrection, [v46 usageTrackingMask], objc_msgSend(v46, "sourceMask"));
 
-          v51 = [v46 supplementalItemIdentifiers];
-          [v50 setSupplementalItemIdentifiers:v51];
+          supplementalItemIdentifiers3 = [v46 supplementalItemIdentifiers];
+          [v50 setSupplementalItemIdentifiers:supplementalItemIdentifiers3];
 
           if (self->_supplementalPrefix)
           {
             [v50 core_updateWithSupplementalItemPrefix:?];
           }
 
-          [v62 addObject:v50];
+          [array addObject:v50];
         }
       }
 
-      v43 = [v41 countByEnumeratingWithState:&v67 objects:v72 count:16];
+      v43 = [predictions countByEnumeratingWithState:&v67 objects:v72 count:16];
     }
 
     while (v43);
   }
 
-  v5 = v59;
+  listCopy = v59;
 LABEL_36:
 
   v52 = MEMORY[0x277D6F328];
-  v53 = [v5 emojiList];
-  v54 = [v52 listWithCorrections:0 predictions:v62 emojiList:v53];
+  emojiList = [listCopy emojiList];
+  v54 = [v52 listWithCorrections:0 predictions:array emojiList:emojiList];
 
   v55 = *MEMORY[0x277D85DE8];
 
@@ -7076,65 +7076,65 @@ id __85__TIKeyboardInputManager_revisionListFromAutocorrectionList_afterAcceptin
   return v11;
 }
 
-- (id)originatingAutocorrectionListForCandidate:(id)a3
+- (id)originatingAutocorrectionListForCandidate:(id)candidate
 {
-  v4 = a3;
-  if (([v4 isContinuousPathConversion] & 1) == 0)
+  candidateCopy = candidate;
+  if (([candidateCopy isContinuousPathConversion] & 1) == 0)
   {
-    v10 = [(TIKeyboardInputManager *)self autocorrectionListsSuggestedForCurrentInput];
-    v8 = [v4 input];
-    v11 = [v10 objectForKey:v8];
+    autocorrectionListsSuggestedForCurrentInput = [(TIKeyboardInputManager *)self autocorrectionListsSuggestedForCurrentInput];
+    input = [candidateCopy input];
+    v11 = [autocorrectionListsSuggestedForCurrentInput objectForKey:input];
 LABEL_5:
     v9 = v11;
     goto LABEL_12;
   }
 
-  v5 = [v4 input];
-  v6 = [v5 isEqualToString:&stru_283FDFAF8];
+  input2 = [candidateCopy input];
+  v6 = [input2 isEqualToString:&stru_283FDFAF8];
 
-  v7 = [(TIKeyboardInputManager *)self autocorrectionListsSuggestedForCurrentInput];
+  autocorrectionListsSuggestedForCurrentInput2 = [(TIKeyboardInputManager *)self autocorrectionListsSuggestedForCurrentInput];
   if (v6)
   {
-    v8 = [v4 candidate];
-    v9 = [v7 objectForKey:v8];
-    v10 = v7;
+    input = [candidateCopy candidate];
+    v9 = [autocorrectionListsSuggestedForCurrentInput2 objectForKey:input];
+    autocorrectionListsSuggestedForCurrentInput = autocorrectionListsSuggestedForCurrentInput2;
     goto LABEL_12;
   }
 
-  v12 = [v4 input];
-  v10 = [v7 objectForKey:v12];
+  input3 = [candidateCopy input];
+  autocorrectionListsSuggestedForCurrentInput = [autocorrectionListsSuggestedForCurrentInput2 objectForKey:input3];
 
-  if (v10)
+  if (autocorrectionListsSuggestedForCurrentInput)
   {
-    v13 = [v10 corrections];
-    v8 = [v13 autocorrection];
+    corrections = [autocorrectionListsSuggestedForCurrentInput corrections];
+    input = [corrections autocorrection];
 
-    if ([v8 isContinuousPathConversion] && -[TIKeyboardInputManager isContinuousPathCandidate:replacementForOriginalConversion:](self, "isContinuousPathCandidate:replacementForOriginalConversion:", v4, v8))
+    if ([input isContinuousPathConversion] && -[TIKeyboardInputManager isContinuousPathCandidate:replacementForOriginalConversion:](self, "isContinuousPathCandidate:replacementForOriginalConversion:", candidateCopy, input))
     {
-      v11 = v10;
-      v10 = v11;
+      v11 = autocorrectionListsSuggestedForCurrentInput;
+      autocorrectionListsSuggestedForCurrentInput = v11;
       goto LABEL_5;
     }
   }
 
-  v8 = [(TIKeyboardInputManager *)self autocorrectionListsSuggestedForCurrentInput];
-  v14 = [v4 candidate];
-  v9 = [v8 objectForKey:v14];
+  input = [(TIKeyboardInputManager *)self autocorrectionListsSuggestedForCurrentInput];
+  candidate = [candidateCopy candidate];
+  v9 = [input objectForKey:candidate];
 
 LABEL_12:
 
   return v9;
 }
 
-- (BOOL)isContinuousPathCandidate:(id)a3 replacementForOriginalConversion:(id)a4
+- (BOOL)isContinuousPathCandidate:(id)candidate replacementForOriginalConversion:(id)conversion
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isContinuousPathConversion] && objc_msgSend(v6, "isContinuousPathConversion") && (objc_msgSend(v5, "input"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", &stru_283FDFAF8), v7, (v8 & 1) == 0))
+  candidateCopy = candidate;
+  conversionCopy = conversion;
+  if ([candidateCopy isContinuousPathConversion] && objc_msgSend(conversionCopy, "isContinuousPathConversion") && (objc_msgSend(candidateCopy, "input"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", &stru_283FDFAF8), v7, (v8 & 1) == 0))
   {
-    v11 = [v6 candidate];
-    v12 = [v5 input];
-    v9 = [v11 hasSuffix:v12];
+    candidate = [conversionCopy candidate];
+    input = [candidateCopy input];
+    v9 = [candidate hasSuffix:input];
   }
 
   else
@@ -7145,81 +7145,81 @@ LABEL_12:
   return v9;
 }
 
-- (void)recordSuggestedAutocorrectionList:(id)a3
+- (void)recordSuggestedAutocorrectionList:(id)list
 {
-  v11 = a3;
-  v4 = [v11 corrections];
-  v5 = [v4 autocorrection];
+  listCopy = list;
+  corrections = [listCopy corrections];
+  autocorrection = [corrections autocorrection];
 
-  if (!v5)
+  if (!autocorrection)
   {
     goto LABEL_10;
   }
 
-  if ([v5 isContinuousPathConversion])
+  if ([autocorrection isContinuousPathConversion])
   {
-    v6 = [(TIKeyboardInputManager *)self autocorrectionListsSuggestedForCurrentInput];
-    v7 = [v5 candidate];
+    autocorrectionListsSuggestedForCurrentInput = [(TIKeyboardInputManager *)self autocorrectionListsSuggestedForCurrentInput];
+    candidate = [autocorrection candidate];
 LABEL_6:
-    v10 = v7;
-    [v6 setObject:v11 forKey:v7];
+    v10 = candidate;
+    [autocorrectionListsSuggestedForCurrentInput setObject:listCopy forKey:candidate];
 
     goto LABEL_7;
   }
 
-  v8 = [v5 input];
-  v9 = [v8 length];
+  input = [autocorrection input];
+  v9 = [input length];
 
   if (v9)
   {
-    v6 = [(TIKeyboardInputManager *)self autocorrectionListsSuggestedForCurrentInput];
-    v7 = [v5 input];
+    autocorrectionListsSuggestedForCurrentInput = [(TIKeyboardInputManager *)self autocorrectionListsSuggestedForCurrentInput];
+    candidate = [autocorrection input];
     goto LABEL_6;
   }
 
 LABEL_7:
-  if ([v5 usageTrackingMask] && (objc_msgSend(v5, "isAutocorrection") & 1) == 0)
+  if ([autocorrection usageTrackingMask] && (objc_msgSend(autocorrection, "isAutocorrection") & 1) == 0)
   {
-    [(TIKeyboardInputManager *)self setHitTestCorrectedInputMatchingCandidate:v5];
+    [(TIKeyboardInputManager *)self setHitTestCorrectedInputMatchingCandidate:autocorrection];
   }
 
 LABEL_10:
 }
 
-- (BOOL)shouldAllowCorrectionOfAcceptedCandidate:(id)a3
+- (BOOL)shouldAllowCorrectionOfAcceptedCandidate:(id)candidate
 {
-  v3 = a3;
-  if (objc_opt_respondsToSelector() & 1) != 0 && ([v3 isFromPhraseDictionary] & 1) != 0 || (objc_opt_respondsToSelector() & 1) != 0 && (objc_msgSend(v3, "isFromTextChecker") & 1) != 0 || (objc_msgSend(v3, "isForShortcutConversion"))
+  candidateCopy = candidate;
+  if (objc_opt_respondsToSelector() & 1) != 0 && ([candidateCopy isFromPhraseDictionary] & 1) != 0 || (objc_opt_respondsToSelector() & 1) != 0 && (objc_msgSend(candidateCopy, "isFromTextChecker") & 1) != 0 || (objc_msgSend(candidateCopy, "isForShortcutConversion"))
   {
-    v4 = 0;
+    isAutocorrection = 0;
   }
 
   else
   {
-    v6 = [v3 input];
-    if (v6)
+    input = [candidateCopy input];
+    if (input)
     {
-      v7 = v6;
-      v8 = [v3 input];
-      v9 = [v3 candidate];
-      if ([v8 isEqualToString:v9])
+      v7 = input;
+      input2 = [candidateCopy input];
+      candidate = [candidateCopy candidate];
+      if ([input2 isEqualToString:candidate])
       {
-        v4 = 1;
+        isAutocorrection = 1;
       }
 
       else
       {
-        v4 = [v3 isAutocorrection];
+        isAutocorrection = [candidateCopy isAutocorrection];
       }
     }
 
     else
     {
-      v4 = 1;
+      isAutocorrection = 1;
     }
   }
 
-  return v4 & 1;
+  return isAutocorrection & 1;
 }
 
 - (void)displayedCandidateRejected
@@ -7232,17 +7232,17 @@ LABEL_10:
   }
 }
 
-- (void)setOriginalInput:(id)a3
+- (void)setOriginalInput:(id)input
 {
   v9 = *MEMORY[0x277D85DE8];
   if (self->m_impl)
   {
-    v4 = a3;
-    v5 = [(TIKeyboardInputManager *)self externalStringToInternal:v4];
+    inputCopy = input;
+    v5 = [(TIKeyboardInputManager *)self externalStringToInternal:inputCopy];
     KB::utf8_string(v5, v7);
 
     KB::String::operator=((self->m_impl + 32), v7);
-    [(TIKeyboardInputManager *)self updateForRevisitedString:v4];
+    [(TIKeyboardInputManager *)self updateForRevisitedString:inputCopy];
 
     if (v8)
     {
@@ -7344,7 +7344,7 @@ LABEL_10:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)deleteComposedTextFromIndex:(unint64_t)a3 count:(unint64_t *)a4
+- (id)deleteComposedTextFromIndex:(unint64_t)index count:(unint64_t *)count
 {
   v27 = *MEMORY[0x277D85DE8];
   if ([(TIKeyboardInputManager *)self deletesComposedTextByComposedCharacterSequence])
@@ -7358,7 +7358,7 @@ LABEL_10:
       free(v26);
     }
 
-    v10 = [v9 rangeOfComposedCharacterSequenceAtIndex:a3 - 1];
+    v10 = [v9 rangeOfComposedCharacterSequenceAtIndex:index - 1];
     v12 = [v9 substringWithRange:{v10, v11}];
     m_impl = self->m_impl;
     v14 = [(TIKeyboardInputManager *)self externalStringToInternal:v12];
@@ -7393,7 +7393,7 @@ LABEL_10:
     free(v26);
   }
 
-  v21 = [(TIKeyboardInputManager *)self suffixOfDesiredString:v20 toAppendToInputString:self->m_composedText withInputIndex:a3 afterDeletionCount:a4];
+  v21 = [(TIKeyboardInputManager *)self suffixOfDesiredString:v20 toAppendToInputString:self->m_composedText withInputIndex:index afterDeletionCount:count];
   [(NSMutableString *)self->m_composedText setString:v17];
   if (![v21 length])
   {
@@ -7406,11 +7406,11 @@ LABEL_10:
   return v21;
 }
 
-- (id)deleteFromInput:(unint64_t *)a3
+- (id)deleteFromInput:(unint64_t *)input
 {
-  if (a3)
+  if (input)
   {
-    *a3 = 1;
+    *input = 1;
   }
 
   if (!self->m_impl)
@@ -7423,17 +7423,17 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  v5 = [(TIKeyboardInputManager *)self keyboardState];
-  v6 = [v5 documentState];
-  v7 = [v6 markedText];
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  documentState = [keyboardState documentState];
+  markedText = [documentState markedText];
 
-  if (!v7)
+  if (!markedText)
   {
 LABEL_7:
-    v9 = [(TIKeyboardInputManager *)self inputIndex];
+    inputIndex = [(TIKeyboardInputManager *)self inputIndex];
     if ([(NSMutableString *)self->m_composedText length])
     {
-      v8 = [(TIKeyboardInputManager *)self deleteComposedTextFromIndex:v9 count:a3];
+      v8 = [(TIKeyboardInputManager *)self deleteComposedTextFromIndex:inputIndex count:input];
     }
 
     else
@@ -7454,22 +7454,22 @@ LABEL_6:
   return v8;
 }
 
-- (void)insertSpaceBeforeInputWithContext:(id)a3
+- (void)insertSpaceBeforeInputWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v19 = 0;
-  v5 = [(TIKeyboardInputManager *)self inputString];
-  v6 = [(TIKeyboardInputManager *)self inputIndex];
-  v7 = [(TIKeyboardInputManager *)self inputContext];
-  v8 = [(TIKeyboardInputManager *)self lastAcceptedText];
-  if ([v8 isContinuousPathConversion])
+  inputString = [(TIKeyboardInputManager *)self inputString];
+  inputIndex = [(TIKeyboardInputManager *)self inputIndex];
+  inputContext = [(TIKeyboardInputManager *)self inputContext];
+  lastAcceptedText = [(TIKeyboardInputManager *)self lastAcceptedText];
+  if ([lastAcceptedText isContinuousPathConversion])
   {
-    v9 = [(TIKeyboardInputManager *)self lastAcceptedText];
-    v10 = [v9 shouldAccept];
+    lastAcceptedText2 = [(TIKeyboardInputManager *)self lastAcceptedText];
+    shouldAccept = [lastAcceptedText2 shouldAccept];
 
-    if (v10)
+    if (shouldAccept)
     {
-      v11 = [(TIKeyboardInputManager *)self pathedWordSeparator];
+      pathedWordSeparator = [(TIKeyboardInputManager *)self pathedWordSeparator];
       goto LABEL_6;
     }
   }
@@ -7478,11 +7478,11 @@ LABEL_6:
   {
   }
 
-  v11 = [(TIKeyboardInputManager *)self wordSeparator];
+  pathedWordSeparator = [(TIKeyboardInputManager *)self wordSeparator];
 LABEL_6:
-  v12 = v11;
-  v13 = [(TIKeyboardInputManager *)self addInput:v11 flags:128 point:&v19 firstDelete:0.0, 0.0];
-  v14 = [(TIKeyboardInputManager *)self deletedSuffixOfInputContext:v7 whenDeletingFromInputString:v5 withInputIndex:v6 deletionCount:v19];
+  v12 = pathedWordSeparator;
+  v13 = [(TIKeyboardInputManager *)self addInput:pathedWordSeparator flags:128 point:&v19 firstDelete:0.0, 0.0];
+  v14 = [(TIKeyboardInputManager *)self deletedSuffixOfInputContext:inputContext whenDeletingFromInputString:inputString withInputIndex:inputIndex deletionCount:v19];
   v15 = v14;
   if (v13)
   {
@@ -7498,32 +7498,32 @@ LABEL_6:
 
   if (v19)
   {
-    [v4 deleteBackward:?];
+    [contextCopy deleteBackward:?];
   }
 
   if ([v17 length])
   {
-    [v4 insertText:v17];
+    [contextCopy insertText:v17];
   }
 
-  v18 = [v4 output];
-  [v18 setDelimitingPrefix:v12];
+  output = [contextCopy output];
+  [output setDelimitingPrefix:v12];
 
   [(TIKeyboardInputManager *)self dropInput];
 }
 
-- (void)setInput:(id)a3
+- (void)setInput:(id)input
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  inputCopy = input;
   if (self->m_impl)
   {
-    v5 = [(TIKeyboardInputManager *)self autocorrectionListsSuggestedForCurrentInput];
-    [v5 removeAllObjects];
+    autocorrectionListsSuggestedForCurrentInput = [(TIKeyboardInputManager *)self autocorrectionListsSuggestedForCurrentInput];
+    [autocorrectionListsSuggestedForCurrentInput removeAllObjects];
 
     [(TIKeyboardInputManager *)self checkAutocorrectionDictionaries];
     m_impl = self->m_impl;
-    v7 = [(TIKeyboardInputManager *)self externalStringToInternal:v4];
+    v7 = [(TIKeyboardInputManager *)self externalStringToInternal:inputCopy];
     KB::utf8_string(v7, v10);
     TIInputManager::set_input(m_impl, v10);
     if (v11 && v10[6] == 1)
@@ -7535,10 +7535,10 @@ LABEL_6:
     m_composedText = self->m_composedText;
     if (m_composedText)
     {
-      [(NSMutableString *)m_composedText setString:v4];
+      [(NSMutableString *)m_composedText setString:inputCopy];
     }
 
-    [(TIKeyboardInputManager *)self updateForRevisitedString:v4];
+    [(TIKeyboardInputManager *)self updateForRevisitedString:inputCopy];
     [(TIKeyboardInputManager *)self setLastAcceptedText:0];
   }
 
@@ -7599,8 +7599,8 @@ uint64_t __42__TIKeyboardInputManager_dropInputPrefix___block_invoke(uint64_t a1
   {
     if ([(TIKeyboardInputManager *)self usesRetrocorrection])
     {
-      v4 = [(TIKeyboardInputManager *)self trimmedInputStemAfterLathamConversion];
-      v5 = [(TIKeyboardInputManager *)self internalIndexOfInputStemSuffix:v4];
+      trimmedInputStemAfterLathamConversion = [(TIKeyboardInputManager *)self trimmedInputStemAfterLathamConversion];
+      v5 = [(TIKeyboardInputManager *)self internalIndexOfInputStemSuffix:trimmedInputStemAfterLathamConversion];
       if (v5 == 0x7FFFFFFFFFFFFFFFLL)
       {
         goto LABEL_13;
@@ -7642,14 +7642,14 @@ LABEL_13:
 
 - (id)trimmedInputStemAfterLathamConversion
 {
-  v3 = [(TIKeyboardInputManager *)self revisionHistory];
+  revisionHistory = [(TIKeyboardInputManager *)self revisionHistory];
 
-  if (v3)
+  if (revisionHistory)
   {
     m_impl = self->m_impl;
     if (m_impl)
     {
-      v3 = &stru_283FDFAF8;
+      revisionHistory = &stru_283FDFAF8;
       if (m_impl[24])
       {
         v11 = 0;
@@ -7662,10 +7662,10 @@ LABEL_13:
         v10[1] = v10;
         v10[2] = 0x2020000000;
         v10[3] = 0;
-        v5 = [(TIKeyboardInputManager *)self revisionHistory];
-        v6 = [v5 selectedRange];
+        revisionHistory2 = [(TIKeyboardInputManager *)self revisionHistory];
+        selectedRange = [revisionHistory2 selectedRange];
 
-        v7 = [(TIKeyboardInputManager *)self revisionHistory];
+        revisionHistory3 = [(TIKeyboardInputManager *)self revisionHistory];
         v9[0] = MEMORY[0x277D85DD0];
         v9[1] = 3221225472;
         v9[2] = __63__TIKeyboardInputManager_trimmedInputStemAfterLathamConversion__block_invoke;
@@ -7673,10 +7673,10 @@ LABEL_13:
         v9[4] = self;
         v9[5] = &v11;
         v9[6] = v10;
-        v9[7] = v6;
-        [v7 enumerateSentenceStemUsingBlock:v9];
+        v9[7] = selectedRange;
+        [revisionHistory3 enumerateSentenceStemUsingBlock:v9];
 
-        v3 = v12[5];
+        revisionHistory = v12[5];
         _Block_object_dispose(v10, 8);
         _Block_object_dispose(&v11, 8);
       }
@@ -7684,11 +7684,11 @@ LABEL_13:
 
     else
     {
-      v3 = 0;
+      revisionHistory = 0;
     }
   }
 
-  return v3;
+  return revisionHistory;
 }
 
 void __63__TIKeyboardInputManager_trimmedInputStemAfterLathamConversion__block_invoke(uint64_t a1, uint64_t a2, unint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, _BYTE *a8)
@@ -7714,8 +7714,8 @@ void __63__TIKeyboardInputManager_trimmedInputStemAfterLathamConversion__block_i
     v4 = 0x7FFFFFFFFFFFFFFFLL;
     if ([(TIKeyboardInputManager *)self usesRetrocorrection])
     {
-      v5 = [(TIKeyboardInputManager *)self trimmedInputStem];
-      v6 = [(TIKeyboardInputManager *)self internalIndexOfInputStemSuffix:v5];
+      trimmedInputStem = [(TIKeyboardInputManager *)self trimmedInputStem];
+      v6 = [(TIKeyboardInputManager *)self internalIndexOfInputStemSuffix:trimmedInputStem];
       if (v6 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v7 = v6;
@@ -7768,11 +7768,11 @@ LABEL_12:
   }
 }
 
-- (BOOL)canRetrocorrectInputAtIndex:(unsigned int)a3
+- (BOOL)canRetrocorrectInputAtIndex:(unsigned int)index
 {
   v14 = *MEMORY[0x277D85DE8];
-  KB::String::String(v12, (*(self->m_impl + 1) + 40 * a3));
-  v5 = *(*(self->m_impl + 1) + 40 * a3 + 32);
+  KB::String::String(v12, (*(self->m_impl + 1) + 40 * index));
+  v5 = *(*(self->m_impl + 1) + 40 * index + 32);
   v7 = KB::ns_string(v12, v6);
   v9 = 0;
   if (!KB::string_has_numbers(v12, v8) && (v5 & 0x13) != 1)
@@ -7797,7 +7797,7 @@ LABEL_12:
   return v9;
 }
 
-- (BOOL)canTrimInputAtIndex:(unsigned int)a3
+- (BOOL)canTrimInputAtIndex:(unsigned int)index
 {
   v16 = *MEMORY[0x277D85DE8];
   m_impl = self->m_impl;
@@ -7807,9 +7807,9 @@ LABEL_12:
     v4 = *(m_impl + 55);
   }
 
-  if (v4 <= a3)
+  if (v4 <= index)
   {
-    TIInputManager::input_substring(m_impl + 4, 0, a3, v10);
+    TIInputManager::input_substring(m_impl + 4, 0, index, v10);
     KB::String::String(v13, (m_impl + 440));
     KB::String::append(v13, v10);
     if (v12 && v11 == 1)
@@ -7817,7 +7817,7 @@ LABEL_12:
       free(v12);
     }
 
-    TIInputManager::input_substring(self->m_impl + 4, a3, -858993459 * ((*(self->m_impl + 2) - *(self->m_impl + 1)) >> 3) - a3, v10);
+    TIInputManager::input_substring(self->m_impl + 4, index, -858993459 * ((*(self->m_impl + 2) - *(self->m_impl + 1)) >> 3) - index, v10);
     candidates = TIInputManager::should_generate_candidates(self->m_impl, v13, v10, 0);
     if (v12 && v11 == 1)
     {
@@ -7839,18 +7839,18 @@ LABEL_12:
   return candidates;
 }
 
-- (unint64_t)internalIndexOfInputStemSuffix:(id)a3
+- (unint64_t)internalIndexOfInputStemSuffix:(id)suffix
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  suffixCopy = suffix;
+  v5 = suffixCopy;
   v6 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v4 && self->m_impl)
+  if (suffixCopy && self->m_impl)
   {
-    if ([v4 length])
+    if ([suffixCopy length])
     {
-      v7 = [(TIKeyboardInputManager *)self inputStem];
-      v8 = [v7 rangeOfString:v5 options:12];
+      inputStem = [(TIKeyboardInputManager *)self inputStem];
+      v8 = [inputStem rangeOfString:v5 options:12];
       if (v8 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v9 = v8;
@@ -7863,7 +7863,7 @@ LABEL_12:
           v14 = KB::ns_string(v19, v13);
           v15 = [(TIKeyboardInputManager *)self internalStringToExternal:v14];
 
-          v16 = [v7 substringToIndex:v9];
+          v16 = [inputStem substringToIndex:v9];
           LODWORD(v14) = [v15 isEqualToString:v16];
 
           if (v14)
@@ -7889,13 +7889,13 @@ LABEL_12:
   return v6;
 }
 
-- (id)wordInInputStem:(id)a3 atIndex:(unint64_t)a4
+- (id)wordInInputStem:(id)stem atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(TIKeyboardInputManager *)self revisionHistory];
+  stemCopy = stem;
+  revisionHistory = [(TIKeyboardInputManager *)self revisionHistory];
 
   v8 = &stru_283FDFAF8;
-  if (v7)
+  if (revisionHistory)
   {
     v15 = 0;
     v16 = &v15;
@@ -7903,15 +7903,15 @@ LABEL_12:
     v18 = __Block_byref_object_copy__11451;
     v19 = __Block_byref_object_dispose__11452;
     v20 = &stru_283FDFAF8;
-    v9 = [(TIKeyboardInputManager *)self countOfWordsIninputStem:v6];
-    if (v9 > a4)
+    v9 = [(TIKeyboardInputManager *)self countOfWordsIninputStem:stemCopy];
+    if (v9 > index)
     {
-      v10 = v9 + ~a4;
+      v10 = v9 + ~index;
       v14[0] = 0;
       v14[1] = v14;
       v14[2] = 0x2020000000;
       v14[3] = 0;
-      v11 = [(TIKeyboardInputManager *)self revisionHistory];
+      revisionHistory2 = [(TIKeyboardInputManager *)self revisionHistory];
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __50__TIKeyboardInputManager_wordInInputStem_atIndex___block_invoke;
@@ -7919,7 +7919,7 @@ LABEL_12:
       v13[5] = &v15;
       v13[6] = v10;
       v13[4] = v14;
-      [v11 enumerateSentenceStemUsingBlock:v13];
+      [revisionHistory2 enumerateSentenceStemUsingBlock:v13];
 
       _Block_object_dispose(v14, 8);
     }
@@ -7952,30 +7952,30 @@ void __50__TIKeyboardInputManager_wordInInputStem_atIndex___block_invoke(void *a
   }
 }
 
-- (unint64_t)countOfWordsIninputStem:(id)a3
+- (unint64_t)countOfWordsIninputStem:(id)stem
 {
-  v4 = a3;
-  v5 = [(TIKeyboardInputManager *)self revisionHistory];
+  stemCopy = stem;
+  revisionHistory = [(TIKeyboardInputManager *)self revisionHistory];
 
-  if (v5)
+  if (revisionHistory)
   {
     v13 = 0;
     v14 = &v13;
     v15 = 0x2020000000;
     v16 = 0;
-    v6 = [(TIKeyboardInputManager *)self revisionHistory];
-    v7 = [v6 selectedRange];
+    revisionHistory2 = [(TIKeyboardInputManager *)self revisionHistory];
+    selectedRange = [revisionHistory2 selectedRange];
 
-    v8 = [v4 length];
-    v9 = [(TIKeyboardInputManager *)self revisionHistory];
+    v8 = [stemCopy length];
+    revisionHistory3 = [(TIKeyboardInputManager *)self revisionHistory];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __50__TIKeyboardInputManager_countOfWordsIninputStem___block_invoke;
     v12[3] = &unk_2787315E0;
-    v12[5] = v7;
+    v12[5] = selectedRange;
     v12[6] = v8;
     v12[4] = &v13;
-    [v9 enumerateSentenceStemUsingBlock:v12];
+    [revisionHistory3 enumerateSentenceStemUsingBlock:v12];
 
     v10 = v14[3];
     _Block_object_dispose(&v13, 8);
@@ -8002,14 +8002,14 @@ void *__50__TIKeyboardInputManager_countOfWordsIninputStem___block_invoke(void *
 
 - (id)trimmedInputStem
 {
-  v3 = [(TIKeyboardInputManager *)self revisionHistory];
+  revisionHistory = [(TIKeyboardInputManager *)self revisionHistory];
 
-  if (v3)
+  if (revisionHistory)
   {
     m_impl = self->m_impl;
     if (m_impl)
     {
-      v3 = &stru_283FDFAF8;
+      revisionHistory = &stru_283FDFAF8;
       if (m_impl[24])
       {
         v12 = 0;
@@ -8022,11 +8022,11 @@ void *__50__TIKeyboardInputManager_countOfWordsIninputStem___block_invoke(void *
         v11[1] = v11;
         v11[2] = 0x2020000000;
         v11[3] = 0;
-        v5 = [(TIKeyboardInputManager *)self maxPriorWordTokensAfterTrimming];
-        v6 = [(TIKeyboardInputManager *)self revisionHistory];
-        v7 = [v6 selectedRange];
+        maxPriorWordTokensAfterTrimming = [(TIKeyboardInputManager *)self maxPriorWordTokensAfterTrimming];
+        revisionHistory2 = [(TIKeyboardInputManager *)self revisionHistory];
+        selectedRange = [revisionHistory2 selectedRange];
 
-        v8 = [(TIKeyboardInputManager *)self revisionHistory];
+        revisionHistory3 = [(TIKeyboardInputManager *)self revisionHistory];
         v10[0] = MEMORY[0x277D85DD0];
         v10[1] = 3221225472;
         v10[2] = __42__TIKeyboardInputManager_trimmedInputStem__block_invoke;
@@ -8034,11 +8034,11 @@ void *__50__TIKeyboardInputManager_countOfWordsIninputStem___block_invoke(void *
         v10[4] = self;
         v10[5] = &v12;
         v10[6] = v11;
-        v10[7] = v7;
-        v10[8] = v5;
-        [v8 enumerateSentenceStemUsingBlock:v10];
+        v10[7] = selectedRange;
+        v10[8] = maxPriorWordTokensAfterTrimming;
+        [revisionHistory3 enumerateSentenceStemUsingBlock:v10];
 
-        v3 = v13[5];
+        revisionHistory = v13[5];
         _Block_object_dispose(v11, 8);
         _Block_object_dispose(&v12, 8);
       }
@@ -8046,11 +8046,11 @@ void *__50__TIKeyboardInputManager_countOfWordsIninputStem___block_invoke(void *
 
     else
     {
-      v3 = 0;
+      revisionHistory = 0;
     }
   }
 
-  return v3;
+  return revisionHistory;
 }
 
 void __42__TIKeyboardInputManager_trimmedInputStem__block_invoke(uint64_t a1, uint64_t a2, unint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, _BYTE *a8)
@@ -8091,38 +8091,38 @@ LABEL_4:
 
 - (unint64_t)maxPriorWordTokensAfterTrimming
 {
-  v2 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-  v3 = [v2 maxPriorWordTokensAfterTrimming];
+  keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+  maxPriorWordTokensAfterTrimming = [keyboardFeatureSpecialization maxPriorWordTokensAfterTrimming];
 
-  return v3;
+  return maxPriorWordTokensAfterTrimming;
 }
 
-- (void)fillReversedConversationHistoryInContext:(id)a3
+- (void)fillReversedConversationHistoryInContext:(id)context
 {
-  v31 = a3;
-  v4 = [v31 lmContext];
+  contextCopy = context;
+  lmContext = [contextCopy lmContext];
   v5 = *(self->m_impl + 34);
   if (v5)
   {
     if ((*(*v5 + 184))(v5))
     {
-      v6 = *(v4 + 48);
-      if (v6 <= 2 && *(v4 + 24) - *(v4 + 16) <= 0x1FFuLL)
+      v6 = *(lmContext + 48);
+      if (v6 <= 2 && *(lmContext + 24) - *(lmContext + 16) <= 0x1FFuLL)
       {
-        v7 = *v4;
-        if (!*v4)
+        v7 = *lmContext;
+        if (!*lmContext)
         {
           operator new();
         }
 
-        v8 = *(v4 + 8);
+        v8 = *(lmContext + 8);
         if (v8)
         {
           atomic_fetch_add_explicit(&v8->__shared_owners_, 1uLL, memory_order_relaxed);
         }
 
         v28 = v8;
-        v29 = self;
+        selfCopy = self;
         p_conversation_history = &self->conversation_history;
         end = self->conversation_history.__end_;
         v30 = &self->conversation_history;
@@ -8194,7 +8194,7 @@ LABEL_4:
               }
 
               while (v24 != v21);
-              self = v29;
+              self = selfCopy;
               do
               {
                 std::allocator_traits<std::allocator<KB::LanguageModelContext>>::destroy[abi:nn200100]<KB::LanguageModelContext,void,0>(v20);
@@ -8237,16 +8237,16 @@ LABEL_4:
   }
 }
 
-- (LanguageModelContext)sentenceContextForInputStem:(SEL)a3 inputContext:(id)a4
+- (LanguageModelContext)sentenceContextForInputStem:(SEL)stem inputContext:(id)context
 {
   v67 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  contextCopy = context;
   v9 = a5;
-  if ([(TIKeyboardInputManager *)self canComputeSentenceContextForInputStem:v8])
+  if ([(TIKeyboardInputManager *)self canComputeSentenceContextForInputStem:contextCopy])
   {
     v41 = v9;
     v10 = objc_alloc_init(TIContextTokens);
-    v11 = [(TIContextTokens *)v10 lmContext];
+    lmContext = [(TIContextTokens *)v10 lmContext];
     v55 = 0;
     v56 = &v55;
     v57 = 0x4812000000;
@@ -8261,11 +8261,11 @@ LABEL_4:
     v53 = 0x2020000000;
     v54 = 1;
     v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v13 = [(TIKeyboardInputManager *)self revisionHistory];
-    v14 = [v13 selectedRange];
-    v15 = v14 - [v8 length];
+    revisionHistory = [(TIKeyboardInputManager *)self revisionHistory];
+    selectedRange = [revisionHistory selectedRange];
+    v15 = selectedRange - [contextCopy length];
 
-    v16 = [(TIKeyboardInputManager *)self revisionHistory];
+    revisionHistory2 = [(TIKeyboardInputManager *)self revisionHistory];
     v46[0] = MEMORY[0x277D85DD0];
     v46[1] = 3221225472;
     v46[2] = __67__TIKeyboardInputManager_sentenceContextForInputStem_inputContext___block_invoke;
@@ -8275,7 +8275,7 @@ LABEL_4:
     v48 = &v51;
     v17 = v12;
     v47 = v17;
-    [v16 enumerateSentenceStemUsingBlock:v46];
+    [revisionHistory2 enumerateSentenceStemUsingBlock:v46];
 
     v18 = std::vector<TITokenID>::vector[abi:nn200100](&v44, v56 + 6);
     if (v44 != v45)
@@ -8305,7 +8305,7 @@ LABEL_4:
       if (v44 == v45)
       {
         std::string::basic_string[abi:nn200100]<0>(&v64, "");
-        KB::LanguageModelContext::append(v11, 0x100000000uLL, &v64, 0);
+        KB::LanguageModelContext::append(lmContext, 0x100000000uLL, &v64, 0);
         if (v66 < 0)
         {
           operator delete(v64);
@@ -8331,7 +8331,7 @@ LABEL_4:
         v27 = [v17 objectAtIndex:v26];
         if (!*(v44 + 2 * v26 + 1))
         {
-          v28 = language_modeling::v1::LinguisticContext::tokenSpan((v11 + 8));
+          v28 = language_modeling::v1::LinguisticContext::tokenSpan((lmContext + 8));
           if (v29)
           {
             if (*(v28 + 32 * v29 - 8) == 1)
@@ -8357,7 +8357,7 @@ LABEL_4:
         v32 = [(TIKeyboardInputManager *)self shouldAllowContextWord:v27, v41];
         v33 = *(v44 + v26);
         std::string::basic_string[abi:nn200100]<0>(&v64, [v27 UTF8String]);
-        KB::LanguageModelContext::append(v11, v33, &v64, !v32);
+        KB::LanguageModelContext::append(lmContext, v33, &v64, !v32);
         if (v66 < 0)
         {
           operator delete(v64);
@@ -8367,17 +8367,17 @@ LABEL_4:
         v25 = v45 - v44;
       }
 
-      v34 = v11[3] - v11[2];
+      v34 = lmContext[3] - lmContext[2];
       if (v34)
       {
-        v35 = v11[3];
+        v35 = lmContext[3];
         v36 = *(v35 - 4) << 32;
         if (v36 == 0x600000000)
         {
           std::string::basic_string[abi:nn200100]<0>(__p, "");
           KB::LanguageModelContext::debug_string_for_token(0x200000000uLL, __p, &v64);
           v38 = 0x200000000;
-          KB::LanguageModelContext::append(v11, v38, &v64, 0);
+          KB::LanguageModelContext::append(lmContext, v38, &v64, 0);
           if (v65 && BYTE6(v64) == 1)
           {
             free(v65);
@@ -8389,7 +8389,7 @@ LABEL_4:
           }
 
           std::string::basic_string[abi:nn200100]<0>(&v64, "");
-          KB::LanguageModelContext::append(v11, 0x100000000uLL, &v64, 0);
+          KB::LanguageModelContext::append(lmContext, 0x100000000uLL, &v64, 0);
           if (v66 < 0)
           {
             operator delete(v64);
@@ -8402,12 +8402,12 @@ LABEL_4:
           {
             KB::String::empty_string(v18);
             v37 = 0x100000000;
-            KB::LanguageModelContext::append(v11, v37, &KB::String::empty_string(void)::empty_string, 0);
+            KB::LanguageModelContext::append(lmContext, v37, &KB::String::empty_string(void)::empty_string, 0);
           }
 
           else
           {
-            KB::LanguageModelContext::pop_back(v11);
+            KB::LanguageModelContext::pop_back(lmContext);
           }
         }
       }
@@ -8415,7 +8415,7 @@ LABEL_4:
       [(TIKeyboardInputManager *)self fillReversedConversationHistoryInContext:v10, v41];
     }
 
-    KB::LanguageModelContext::LanguageModelContext(retstr, v11);
+    KB::LanguageModelContext::LanguageModelContext(retstr, lmContext);
     if (v44)
     {
       v45 = v44;
@@ -8549,7 +8549,7 @@ uint64_t __67__TIKeyboardInputManager_sentenceContextForInputStem_inputContext__
   return MEMORY[0x2821F96F8](v13, v14);
 }
 
-- (void)parseRecentMessage:(void *)a3
+- (void)parseRecentMessage:(void *)message
 {
   v8 = 0u;
   v9 = 0u;
@@ -8559,11 +8559,11 @@ uint64_t __67__TIKeyboardInputManager_sentenceContextForInputStem_inputContext__
   language_modeling::v1::LinguisticContext::LinguisticContext(v11);
   memset(&v11[8], 0, 24);
   v5 = 0;
-  [(TIKeyboardInputManager *)self tokenizeString:a3 context:&v6 sentences:&v5];
+  [(TIKeyboardInputManager *)self tokenizeString:message context:&v6 sentences:&v5];
   operator new();
 }
 
-- (void)tokenizeString:(const String *)a3 context:(void *)a4 sentences:(unsigned int *)a5
+- (void)tokenizeString:(const String *)string context:(void *)context sentences:(unsigned int *)sentences
 {
   v16 = *MEMORY[0x277D85DE8];
   v10[0] = 0;
@@ -8589,9 +8589,9 @@ uint64_t __67__TIKeyboardInputManager_sentenceContextForInputStem_inputContext__
   v7[4] = self;
   v7[5] = v10;
   v7[6] = v8;
-  v7[7] = a4;
-  v7[8] = a5;
-  (*(*v5 + 552))(v5, a3, v7);
+  v7[7] = context;
+  v7[8] = sentences;
+  (*(*v5 + 552))(v5, string, v7);
   _Block_object_dispose(v8, 8);
   _Block_object_dispose(v10, 8);
   if (v14 && v13 == 1)
@@ -8639,23 +8639,23 @@ void __59__TIKeyboardInputManager_tokenizeString_context_sentences___block_invok
   return v3;
 }
 
-- (BOOL)canComputeSentenceContextForInputStem:(id)a3
+- (BOOL)canComputeSentenceContextForInputStem:(id)stem
 {
-  v4 = a3;
-  v5 = [(TIKeyboardInputManager *)self revisionHistory];
+  stemCopy = stem;
+  revisionHistory = [(TIKeyboardInputManager *)self revisionHistory];
 
-  if (v5 && (v6 = [v4 length], -[TIKeyboardInputManager revisionHistory](self, "revisionHistory"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "selectedRange"), v7, v6 <= v8))
+  if (revisionHistory && (v6 = [stemCopy length], -[TIKeyboardInputManager revisionHistory](self, "revisionHistory"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "selectedRange"), v7, v6 <= v8))
   {
-    if ([v4 length])
+    if ([stemCopy length])
     {
-      v10 = [(TIKeyboardInputManager *)self revisionHistory];
-      v11 = [v10 selectedRange];
-      v12 = v11 - [v4 length];
-      v13 = [v4 length];
+      revisionHistory2 = [(TIKeyboardInputManager *)self revisionHistory];
+      selectedRange = [revisionHistory2 selectedRange];
+      v12 = selectedRange - [stemCopy length];
+      v13 = [stemCopy length];
 
-      v14 = [(TIKeyboardInputManager *)self revisionHistory];
-      v15 = [v14 documentText];
-      v16 = [v15 rangeOfString:v4 options:2 range:{v12, v13}];
+      revisionHistory3 = [(TIKeyboardInputManager *)self revisionHistory];
+      documentText = [revisionHistory3 documentText];
+      v16 = [documentText rangeOfString:stemCopy options:2 range:{v12, v13}];
       v18 = v17;
 
       v9 = v12 == v16 && v13 == v18;
@@ -8702,31 +8702,31 @@ void *__61__TIKeyboardInputManager_inputStringRangeFromRevisionHistory__block_in
   return result;
 }
 
-- (_NSRange)acceptableRangeFromRange:(_NSRange)a3 inText:(id)a4 withSelectionLocation:(unint64_t)a5
+- (_NSRange)acceptableRangeFromRange:(_NSRange)range inText:(id)text withSelectionLocation:(unint64_t)location
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = a4;
-  v10 = v9;
-  if (a5 >= location && (v11 = location + length >= a5, v12 = location + length - a5, v11))
+  length = range.length;
+  location = range.location;
+  textCopy = text;
+  v10 = textCopy;
+  if (location >= location && (v11 = location + length >= location, v12 = location + length - location, v11))
   {
     v28 = 0;
     v29 = &v28;
     v30 = 0x2020000000;
-    v31 = a5;
+    locationCopy = location;
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __80__TIKeyboardInputManager_acceptableRangeFromRange_inText_withSelectionLocation___block_invoke;
     v25[3] = &unk_278731540;
     v25[4] = self;
-    v15 = v9;
+    v15 = textCopy;
     v26 = v15;
     v27 = &v28;
-    [v15 enumerateSubstringsInRange:a5 options:v12 usingBlock:{514, v25}];
+    [v15 enumerateSubstringsInRange:location options:v12 usingBlock:{514, v25}];
     v21 = 0;
     v22 = &v21;
     v23 = 0x2020000000;
-    v24 = a5;
+    locationCopy2 = location;
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __80__TIKeyboardInputManager_acceptableRangeFromRange_inText_withSelectionLocation___block_invoke_2;
@@ -8734,7 +8734,7 @@ void *__61__TIKeyboardInputManager_inputStringRangeFromRevisionHistory__block_in
     v18[4] = self;
     v19 = v15;
     v20 = &v21;
-    [v19 enumerateSubstringsInRange:location options:a5 - location usingBlock:{770, v18}];
+    [v19 enumerateSubstringsInRange:location options:location - location usingBlock:{770, v18}];
     v14 = v22[3];
     v13 = v29[3] - v14;
 
@@ -8787,20 +8787,20 @@ uint64_t __80__TIKeyboardInputManager_acceptableRangeFromRange_inText_withSelect
   return result;
 }
 
-- (_NSRange)legacyInputRangeForTokenRange:(_NSRange)a3
+- (_NSRange)legacyInputRangeForTokenRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
-  v20 = a3.location;
+  v20 = range.location;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
-  v16 = a3.location + a3.length;
-  v6 = [(TIKeyboardInputManager *)self revisionHistory];
-  v7 = [v6 documentText];
+  v16 = range.location + range.length;
+  revisionHistory = [(TIKeyboardInputManager *)self revisionHistory];
+  documentText = [revisionHistory documentText];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __56__TIKeyboardInputManager_legacyInputRangeForTokenRange___block_invoke;
@@ -8808,7 +8808,7 @@ uint64_t __80__TIKeyboardInputManager_acceptableRangeFromRange_inText_withSelect
   v12[4] = self;
   v12[5] = &v17;
   v12[6] = &v13;
-  [v7 enumerateSubstringsInRange:location options:length usingBlock:{2, v12}];
+  [documentText enumerateSubstringsInRange:location options:length usingBlock:{2, v12}];
 
   v8 = v18[3];
   v9 = v14[3] - v8;
@@ -8841,31 +8841,31 @@ void __56__TIKeyboardInputManager_legacyInputRangeForTokenRange___block_invoke(u
   }
 }
 
-- (unsigned)simulateAutoshiftIfNecessaryForFlags:(unsigned int)a3
+- (unsigned)simulateAutoshiftIfNecessaryForFlags:(unsigned int)flags
 {
-  v3 = a3;
-  if (a3)
+  flagsCopy = flags;
+  if (flags)
   {
-    v5 = [(TIKeyboardInputManager *)self keyboardState];
-    if ([v5 autocapitalizationEnabled])
+    keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+    if ([keyboardState autocapitalizationEnabled])
     {
     }
 
     else
     {
-      v6 = [(TIKeyboardInputManager *)self keyboardState];
-      v7 = [v6 autocapitalizationType];
+      keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+      autocapitalizationType = [keyboardState2 autocapitalizationType];
 
-      if (v7 == 2)
+      if (autocapitalizationType == 2)
       {
-        v8 = [(TIKeyboardInputManager *)self keyboardState];
-        v9 = [v8 documentState];
-        v10 = [v9 contextBeforeInput];
-        v11 = v10;
+        keyboardState3 = [(TIKeyboardInputManager *)self keyboardState];
+        documentState = [keyboardState3 documentState];
+        contextBeforeInput = [documentState contextBeforeInput];
+        v11 = contextBeforeInput;
         v12 = &stru_283FDFAF8;
-        if (v10)
+        if (contextBeforeInput)
         {
-          v12 = v10;
+          v12 = contextBeforeInput;
         }
 
         v13 = v12;
@@ -8873,13 +8873,13 @@ void __56__TIKeyboardInputManager_legacyInputRangeForTokenRange___block_invoke(u
         v14 = [(TIKeyboardInputManager *)self canStartSentenceAfterString:v13];
         if (v14)
         {
-          v3 |= 2u;
+          flagsCopy |= 2u;
         }
       }
     }
   }
 
-  return v3;
+  return flagsCopy;
 }
 
 - (BOOL)hasLegacyInputString
@@ -8951,7 +8951,7 @@ void __56__TIKeyboardInputManager_legacyInputRangeForTokenRange___block_invoke(u
   return v4 < v3;
 }
 
-- (void)mobileAssetsChanged:(id)a3
+- (void)mobileAssetsChanged:(id)changed
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = TIAssetsOSLogFacility();
@@ -8967,10 +8967,10 @@ void __56__TIKeyboardInputManager_legacyInputRangeForTokenRange___block_invoke(u
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLinguisticResourceStatus:(unint64_t)a3 reason:(id)a4
+- (void)setLinguisticResourceStatus:(unint64_t)status reason:(id)reason
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  reasonCopy = reason;
   if (TICanLogMessageAtLevel_onceToken != -1)
   {
     dispatch_once(&TICanLogMessageAtLevel_onceToken, &__block_literal_global_24093);
@@ -8982,31 +8982,31 @@ void __56__TIKeyboardInputManager_legacyInputRangeForTokenRange___block_invoke(u
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       v9 = MEMORY[0x277CCACA8];
-      v10 = [(TIKeyboardInputManager *)self linguisticResourceStatus];
-      if (v10 > 2)
+      linguisticResourceStatus = [(TIKeyboardInputManager *)self linguisticResourceStatus];
+      if (linguisticResourceStatus > 2)
       {
         v11 = "Unknown";
       }
 
       else
       {
-        v11 = off_278731828[v10];
+        v11 = off_278731828[linguisticResourceStatus];
       }
 
-      if (a3 > 2)
+      if (status > 2)
       {
         v12 = "Unknown";
       }
 
       else
       {
-        v12 = off_278731828[a3];
+        v12 = off_278731828[status];
       }
 
       v13 = @"None";
-      if (v6)
+      if (reasonCopy)
       {
-        v13 = v6;
+        v13 = reasonCopy;
       }
 
       v14 = [v9 stringWithFormat:@"%s linguisticResourceStatus: %s -> %s (%@)", "-[TIKeyboardInputManager setLinguisticResourceStatus:reason:]", v11, v12, v13];
@@ -9016,7 +9016,7 @@ void __56__TIKeyboardInputManager_legacyInputRangeForTokenRange___block_invoke(u
     }
   }
 
-  self->_linguisticResourceStatus = a3;
+  self->_linguisticResourceStatus = status;
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -9040,16 +9040,16 @@ void __56__TIKeyboardInputManager_legacyInputRangeForTokenRange___block_invoke(u
 
   else
   {
-    v8 = [(TIKeyboardInputManager *)self config];
-    v28 = [v8 usesWordNgramModel];
+    config = [(TIKeyboardInputManager *)self config];
+    usesWordNgramModel = [config usesWordNgramModel];
 
-    v29 = [(TIKeyboardInputManager *)self dynamicResourcePath];
-    v9 = [(TIKeyboardInputManager *)self config];
-    if ([v9 usesCustomNgramModel])
+    dynamicResourcePath = [(TIKeyboardInputManager *)self dynamicResourcePath];
+    config2 = [(TIKeyboardInputManager *)self config];
+    if ([config2 usesCustomNgramModel])
     {
-      v10 = [(TIKeyboardInputManager *)self config];
-      v11 = [v10 ngramModelPath];
-      v32[0] = v11;
+      config3 = [(TIKeyboardInputManager *)self config];
+      ngramModelPath = [config3 ngramModelPath];
+      v32[0] = ngramModelPath;
       v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:1];
     }
 
@@ -9058,21 +9058,21 @@ void __56__TIKeyboardInputManager_legacyInputRangeForTokenRange___block_invoke(u
       v12 = 0;
     }
 
-    v27 = [(TIKeyboardInputManager *)self languageModelAssets];
-    v13 = [(TIKeyboardInputManager *)self dictionaryInputMode];
-    v14 = [v13 preferredModelLocaleIdentifier];
-    v15 = [v13 preferredModelLocaleIsMultilingual];
-    v16 = [(TIKeyboardInputManagerBase *)self inputMode];
-    v17 = [v16 isSiriMode];
-    LOBYTE(v26) = [v13 doesSupportInlineCompletion];
-    BYTE2(v25) = v17;
+    languageModelAssets = [(TIKeyboardInputManager *)self languageModelAssets];
+    dictionaryInputMode = [(TIKeyboardInputManager *)self dictionaryInputMode];
+    preferredModelLocaleIdentifier = [dictionaryInputMode preferredModelLocaleIdentifier];
+    preferredModelLocaleIsMultilingual = [dictionaryInputMode preferredModelLocaleIsMultilingual];
+    inputMode = [(TIKeyboardInputManagerBase *)self inputMode];
+    isSiriMode = [inputMode isSiriMode];
+    LOBYTE(v26) = [dictionaryInputMode doesSupportInlineCompletion];
+    BYTE2(v25) = isSiriMode;
     LOWORD(v25) = 0;
-    v18 = [TILanguageModelLoaderManager sharedLanguageModelLoaderForModelLocaleIdentifier:"sharedLanguageModelLoaderForModelLocaleIdentifier:isMultilingualModel:customResourcePaths:dynamicResourcePath:mobileAssets:usesLinguisticContext:isMultiLingualModeEnabled:validEnglishTransformerMultilingualConfig:isSiriMode:trialParameters:isInlineCompletionEnabled:" isMultilingualModel:v14 customResourcePaths:v15 dynamicResourcePath:v12 mobileAssets:v29 usesLinguisticContext:v27 isMultiLingualModeEnabled:v28 validEnglishTransformerMultilingualConfig:v25 isSiriMode:0 trialParameters:v26 isInlineCompletionEnabled:?];
+    v18 = [TILanguageModelLoaderManager sharedLanguageModelLoaderForModelLocaleIdentifier:"sharedLanguageModelLoaderForModelLocaleIdentifier:isMultilingualModel:customResourcePaths:dynamicResourcePath:mobileAssets:usesLinguisticContext:isMultiLingualModeEnabled:validEnglishTransformerMultilingualConfig:isSiriMode:trialParameters:isInlineCompletionEnabled:" isMultilingualModel:preferredModelLocaleIdentifier customResourcePaths:preferredModelLocaleIsMultilingual dynamicResourcePath:v12 mobileAssets:dynamicResourcePath usesLinguisticContext:languageModelAssets isMultiLingualModeEnabled:usesWordNgramModel validEnglishTransformerMultilingualConfig:v25 isSiriMode:0 trialParameters:v26 isInlineCompletionEnabled:?];
 
-    v19 = [(TIKeyboardInputManager *)self lexiconLocales];
+    lexiconLocales = [(TIKeyboardInputManager *)self lexiconLocales];
     if (v18)
     {
-      [v18 lightweightLanguageModelForLanguageLocales:v19];
+      [v18 lightweightLanguageModelForLanguageLocales:lexiconLocales];
     }
 
     else
@@ -9081,8 +9081,8 @@ void __56__TIKeyboardInputManager_legacyInputRangeForTokenRange___block_invoke(u
       v31 = 0;
     }
 
-    v20 = [(TIKeyboardInputManager *)self config];
-    (*(*v30 + 72))(v30, [v20 includeLightWeightLanguageModelMobileAssets]);
+    config4 = [(TIKeyboardInputManager *)self config];
+    (*(*v30 + 72))(v30, [config4 includeLightWeightLanguageModelMobileAssets]);
 
     v22 = v30;
     v21 = v31;
@@ -9120,13 +9120,13 @@ void __56__TIKeyboardInputManager_legacyInputRangeForTokenRange___block_invoke(u
   return result;
 }
 
-- (void)scoreCandidates:(void *)a3
+- (void)scoreCandidates:(void *)candidates
 {
   v5[4] = *MEMORY[0x277D85DE8];
   ptr = self->_refinery.__ptr_;
   v5[0] = &unk_283FDAE00;
   v5[3] = v5;
-  (*(*ptr + 56))(ptr, a3, v5);
+  (*(*ptr + 56))(ptr, candidates, v5);
   std::__function::__value_func<void ()(KB::Candidate &,float)>::~__value_func[abi:nn200100](v5);
   v4 = *MEMORY[0x277D85DE8];
 }
@@ -9178,11 +9178,11 @@ void __56__TIKeyboardInputManager_legacyInputRangeForTokenRange___block_invoke(u
 
     if ((*(*v16 + 32))())
     {
-      v8 = [(TIKeyboardInputManager *)self config];
-      [v8 isTesting];
+      config = [(TIKeyboardInputManager *)self config];
+      [config isTesting];
 
-      v9 = [(TIKeyboardInputManager *)self config];
-      [v9 maxWordsPerPrediction];
+      config2 = [(TIKeyboardInputManager *)self config];
+      [config2 maxWordsPerPrediction];
 
       v10 = self->m_impl;
       v11 = v10[33];
@@ -9224,26 +9224,26 @@ void __56__TIKeyboardInputManager_legacyInputRangeForTokenRange___block_invoke(u
 {
   v39 = v2;
   v47[1] = *MEMORY[0x277D85DE8];
-  v4 = [(TIKeyboardInputManager *)self config];
-  HIDWORD(v36) = [v4 usesWordNgramModel];
+  config = [(TIKeyboardInputManager *)self config];
+  HIDWORD(v36) = [config usesWordNgramModel];
 
-  v5 = [(TIKeyboardInputManager *)self config];
-  if ([v5 usesAdaptation])
+  config2 = [(TIKeyboardInputManager *)self config];
+  if ([config2 usesAdaptation])
   {
-    v40 = [(TIKeyboardInputManager *)self dynamicResourcePath];
+    dynamicResourcePath = [(TIKeyboardInputManager *)self dynamicResourcePath];
   }
 
   else
   {
-    v40 = 0;
+    dynamicResourcePath = 0;
   }
 
-  v6 = [(TIKeyboardInputManager *)self config];
-  if ([v6 usesCustomNgramModel])
+  config3 = [(TIKeyboardInputManager *)self config];
+  if ([config3 usesCustomNgramModel])
   {
-    v7 = [(TIKeyboardInputManager *)self config];
-    v8 = [v7 ngramModelPath];
-    v47[0] = v8;
+    config4 = [(TIKeyboardInputManager *)self config];
+    ngramModelPath = [config4 ngramModelPath];
+    v47[0] = ngramModelPath;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:1];
   }
 
@@ -9252,53 +9252,53 @@ void __56__TIKeyboardInputManager_legacyInputRangeForTokenRange___block_invoke(u
     v9 = 0;
   }
 
-  v10 = [(TIKeyboardInputManager *)self languageModelAssets];
-  v11 = [(TIKeyboardInputManager *)self dictionaryInputMode];
+  languageModelAssets = [(TIKeyboardInputManager *)self languageModelAssets];
+  dictionaryInputMode = [(TIKeyboardInputManager *)self dictionaryInputMode];
   v12 = +[TITrialManagerProxy sharedManager];
-  v13 = [v11 locale];
-  v14 = [v12 encodedLMTrialParametersForLocale:v13];
+  locale = [dictionaryInputMode locale];
+  v14 = [v12 encodedLMTrialParametersForLocale:locale];
 
-  v15 = [v11 preferredModelLocaleIdentifier];
-  v16 = [v11 preferredModelLocaleIsMultilingual];
-  v17 = [(TIKeyboardInputManagerBase *)self inputMode];
-  v18 = [v17 isSiriMode];
-  LOBYTE(v36) = [v11 doesSupportInlineCompletion];
-  v37 = v10;
-  BYTE2(v35) = v18;
+  preferredModelLocaleIdentifier = [dictionaryInputMode preferredModelLocaleIdentifier];
+  preferredModelLocaleIsMultilingual = [dictionaryInputMode preferredModelLocaleIsMultilingual];
+  inputMode = [(TIKeyboardInputManagerBase *)self inputMode];
+  isSiriMode = [inputMode isSiriMode];
+  LOBYTE(v36) = [dictionaryInputMode doesSupportInlineCompletion];
+  v37 = languageModelAssets;
+  BYTE2(v35) = isSiriMode;
   LOWORD(v35) = 0;
   v38 = v9;
-  v19 = [TILanguageModelLoaderManager sharedLanguageModelLoaderForModelLocaleIdentifier:"sharedLanguageModelLoaderForModelLocaleIdentifier:isMultilingualModel:customResourcePaths:dynamicResourcePath:mobileAssets:usesLinguisticContext:isMultiLingualModeEnabled:validEnglishTransformerMultilingualConfig:isSiriMode:trialParameters:isInlineCompletionEnabled:" isMultilingualModel:v15 customResourcePaths:v16 dynamicResourcePath:v9 mobileAssets:v40 usesLinguisticContext:v10 isMultiLingualModeEnabled:HIDWORD(v36) validEnglishTransformerMultilingualConfig:v35 isSiriMode:v14 trialParameters:v36 isInlineCompletionEnabled:?];
+  v19 = [TILanguageModelLoaderManager sharedLanguageModelLoaderForModelLocaleIdentifier:"sharedLanguageModelLoaderForModelLocaleIdentifier:isMultilingualModel:customResourcePaths:dynamicResourcePath:mobileAssets:usesLinguisticContext:isMultiLingualModeEnabled:validEnglishTransformerMultilingualConfig:isSiriMode:trialParameters:isInlineCompletionEnabled:" isMultilingualModel:preferredModelLocaleIdentifier customResourcePaths:preferredModelLocaleIsMultilingual dynamicResourcePath:v9 mobileAssets:dynamicResourcePath usesLinguisticContext:languageModelAssets isMultiLingualModeEnabled:HIDWORD(v36) validEnglishTransformerMultilingualConfig:v35 isSiriMode:v14 trialParameters:v36 isInlineCompletionEnabled:?];
 
-  v20 = [(TIKeyboardInputManager *)self keyboardState];
-  v21 = [v20 clientIdentifier];
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  clientIdentifier = [keyboardState clientIdentifier];
 
-  v22 = [(TIKeyboardInputManager *)self keyboardState];
-  v23 = [v22 recipientIdentifier];
+  keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+  recipientIdentifier = [keyboardState2 recipientIdentifier];
 
   v45[0] = 0;
   v45[1] = v45;
   v45[2] = 0x3032000000;
   v45[3] = __Block_byref_object_copy__11451;
   v45[4] = __Block_byref_object_dispose__11452;
-  v24 = self;
-  v46 = v24;
-  v25 = [(TIKeyboardInputManager *)v24 keyboardState];
-  v26 = [v25 clientIdentifier];
-  v27 = [(TIKeyboardInputManager *)v24 keyboardState];
-  v28 = [v27 recipientIdentifier];
-  v29 = [(TIKeyboardInputManager *)v24 lexiconLocales];
+  selfCopy = self;
+  v46 = selfCopy;
+  keyboardState3 = [(TIKeyboardInputManager *)selfCopy keyboardState];
+  clientIdentifier2 = [keyboardState3 clientIdentifier];
+  keyboardState4 = [(TIKeyboardInputManager *)selfCopy keyboardState];
+  recipientIdentifier2 = [keyboardState4 recipientIdentifier];
+  lexiconLocales = [(TIKeyboardInputManager *)selfCopy lexiconLocales];
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
   v41[2] = __46__TIKeyboardInputManager_loadNewLanguageModel__block_invoke;
   v41[3] = &unk_2787314C8;
-  v30 = v21;
+  v30 = clientIdentifier;
   v42 = v30;
   v44 = v45;
-  v31 = v23;
+  v31 = recipientIdentifier;
   v43 = v31;
   if (v19)
   {
-    [v19 sharedLanguageModelForClient:v26 withRecipient:v28 forLanguageLocales:v29 completion:v41];
+    [v19 sharedLanguageModelForClient:clientIdentifier2 withRecipient:recipientIdentifier2 forLanguageLocales:lexiconLocales completion:v41];
   }
 
   else
@@ -9348,34 +9348,34 @@ LABEL_6:
   *(v11 + 40) = 0;
 }
 
-- (void)updateDynamicDirectoryForScreenLockState:(BOOL)a3
+- (void)updateDynamicDirectoryForScreenLockState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v14[1] = *MEMORY[0x277D85DE8];
-  v5 = [(TIKeyboardInputManager *)self config];
-  v6 = [v5 usesAdaptation];
+  config = [(TIKeyboardInputManager *)self config];
+  usesAdaptation = [config usesAdaptation];
 
-  v7 = self->_isDeviceLockFlagValid && self->_wasDeviceLockedLastSync != v3;
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  v9 = v8;
+  v7 = self->_isDeviceLockFlagValid && self->_wasDeviceLockedLastSync != stateCopy;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v9 = defaultCenter;
   if (v7)
   {
-    if ((v6 & v3) == 1)
+    if ((usesAdaptation & stateCopy) == 1)
     {
-      [v8 postNotificationName:@"TIKeyboardInputManagerDynamicResourceDirectorySetNotification" object:self userInfo:0];
+      [defaultCenter postNotificationName:@"TIKeyboardInputManagerDynamicResourceDirectorySetNotification" object:self userInfo:0];
     }
 
-    else if (((v6 | v3) & 1) == 0)
+    else if (((usesAdaptation | stateCopy) & 1) == 0)
     {
       v13 = @"dynamicResourcePath";
-      v10 = [objc_opt_class() keyboardUserDirectory];
-      v14[0] = v10;
+      keyboardUserDirectory = [objc_opt_class() keyboardUserDirectory];
+      v14[0] = keyboardUserDirectory;
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
       [v9 postNotificationName:@"TIKeyboardInputManagerDynamicResourceDirectorySetNotification" object:self userInfo:v11];
     }
   }
 
-  self->_wasDeviceLockedLastSync = v3;
+  self->_wasDeviceLockedLastSync = stateCopy;
   self->_isDeviceLockFlagValid = 1;
 
   v12 = *MEMORY[0x277D85DE8];
@@ -9383,9 +9383,9 @@ LABEL_6:
 
 - (id)pathToDynamicDictionary
 {
-  v3 = [(TIKeyboardInputManager *)self config];
-  v4 = [v3 inputMode];
-  v5 = [(TIKeyboardInputManager *)self dynamicDictionaryPathForInputMode:v4];
+  config = [(TIKeyboardInputManager *)self config];
+  inputMode = [config inputMode];
+  v5 = [(TIKeyboardInputManager *)self dynamicDictionaryPathForInputMode:inputMode];
 
   return v5;
 }
@@ -9394,32 +9394,32 @@ LABEL_6:
 {
   if (self->m_typology_recorder.__ptr_)
   {
-    v4 = [(TIKeyboardInputManager *)self testingParameters];
-    v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"LM trial param: %@", v4];
+    testingParameters = [(TIKeyboardInputManager *)self testingParameters];
+    v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"LM trial param: %@", testingParameters];
     [(TIKeyboardInputManager *)self logToTypologyRecorderWithString:v3];
   }
 }
 
 - (NSArray)languageModelAssets
 {
-  v3 = [(TIKeyboardInputManager *)self dictionaryInputMode];
-  v4 = [(TIKeyboardInputManager *)self languageModelAssetsForInputMode:v3];
+  dictionaryInputMode = [(TIKeyboardInputManager *)self dictionaryInputMode];
+  v4 = [(TIKeyboardInputManager *)self languageModelAssetsForInputMode:dictionaryInputMode];
 
   return v4;
 }
 
-- (id)languageModelAssetsForInputMode:(id)a3
+- (id)languageModelAssetsForInputMode:(id)mode
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  modeCopy = mode;
+  v4 = modeCopy;
+  if (modeCopy)
   {
-    if ([v3 isSiriMode])
+    if ([modeCopy isSiriMode])
     {
-      v5 = [v4 preferredModelLocaleIsMultilingual];
+      preferredModelLocaleIsMultilingual = [v4 preferredModelLocaleIsMultilingual];
       v6 = @"SiriLanguageModel";
-      if (v5)
+      if (preferredModelLocaleIsMultilingual)
       {
         v6 = @"SiriMultilingualLanguageModel";
       }
@@ -9431,8 +9431,8 @@ LABEL_6:
     }
 
     v8 = v6;
-    v9 = [v4 preferredModelLocaleIdentifier];
-    v10 = +[TIInputMode inputModeWithIdentifier:isSiriMode:](TIInputMode, "inputModeWithIdentifier:isSiriMode:", v9, [v4 isSiriMode]);
+    preferredModelLocaleIdentifier = [v4 preferredModelLocaleIdentifier];
+    v10 = +[TIInputMode inputModeWithIdentifier:isSiriMode:](TIInputMode, "inputModeWithIdentifier:isSiriMode:", preferredModelLocaleIdentifier, [v4 isSiriMode]);
 
     v11 = +[TIAssetManager sharedAssetManager];
     v12 = [v11 ddsAssetContentItemsWithContentType:v8 inputMode:v10 filteredWithRegion:0];
@@ -9450,17 +9450,17 @@ LABEL_6:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       v15 = MEMORY[0x277CCACA8];
-      v16 = [v4 normalizedIdentifier];
+      normalizedIdentifier = [v4 normalizedIdentifier];
       v17 = [v12 count];
-      v18 = [v12 firstObject];
-      v19 = [v18 path];
-      v20 = [v15 stringWithFormat:@"%s Language model asset count and path for %@: (%lu, %@)", "-[TIKeyboardInputManager languageModelAssetsForInputMode:]", v16, v17, v19];
+      firstObject = [v12 firstObject];
+      path = [firstObject path];
+      v20 = [v15 stringWithFormat:@"%s Language model asset count and path for %@: (%lu, %@)", "-[TIKeyboardInputManager languageModelAssetsForInputMode:]", normalizedIdentifier, v17, path];
       *buf = 138412290;
       v37 = v20;
       _os_log_impl(&dword_22CA55000, v14, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
     }
 
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
@@ -9480,9 +9480,9 @@ LABEL_6:
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v31 + 1) + 8 * i) path];
-          v27 = [v26 path];
-          [v7 addObject:v27];
+          path2 = [*(*(&v31 + 1) + 8 * i) path];
+          v26Path = [path2 path];
+          [array addObject:v26Path];
         }
 
         v23 = [v21 countByEnumeratingWithState:&v31 objects:v35 count:16];
@@ -9494,22 +9494,22 @@ LABEL_6:
 
   else
   {
-    v7 = MEMORY[0x277CBEBF8];
+    array = MEMORY[0x277CBEBF8];
   }
 
   v28 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return array;
 }
 
-- (id)dynamicDictionaryPathForInputMode:(id)a3
+- (id)dynamicDictionaryPathForInputMode:(id)mode
 {
-  if (a3)
+  if (mode)
   {
-    v4 = [a3 languageWithRegion];
-    v5 = [(TIKeyboardInputManager *)self config];
-    v6 = [v5 dynamicResourcePath];
-    v7 = UIKeyboardDynamicDictionaryFileWithSiriMode(v4, v6, 0);
+    languageWithRegion = [mode languageWithRegion];
+    config = [(TIKeyboardInputManager *)self config];
+    dynamicResourcePath = [config dynamicResourcePath];
+    v7 = UIKeyboardDynamicDictionaryFileWithSiriMode(languageWithRegion, dynamicResourcePath, 0);
   }
 
   else
@@ -9522,33 +9522,33 @@ LABEL_6:
 
 - (id)pathToPhraseDictionary
 {
-  v3 = [(TIKeyboardInputManager *)self dictionaryInputMode];
-  v4 = [(TIKeyboardInputManager *)self phraseDictionaryPathForInputMode:v3];
+  dictionaryInputMode = [(TIKeyboardInputManager *)self dictionaryInputMode];
+  v4 = [(TIKeyboardInputManager *)self phraseDictionaryPathForInputMode:dictionaryInputMode];
 
   return v4;
 }
 
-- (id)phraseDictionaryPathForInputMode:(id)a3
+- (id)phraseDictionaryPathForInputMode:(id)mode
 {
-  v4 = a3;
-  if (v4)
+  modeCopy = mode;
+  if (modeCopy)
   {
-    v5 = [(TIKeyboardInputManager *)self config];
-    v6 = [v5 usesCustomStaticDictionary];
+    config = [(TIKeyboardInputManager *)self config];
+    usesCustomStaticDictionary = [config usesCustomStaticDictionary];
 
-    if (v6)
+    if (usesCustomStaticDictionary)
     {
       v7 = MEMORY[0x277CCACA8];
-      v8 = [(TIKeyboardInputManager *)self config];
-      v9 = [v8 staticDictionaryPath];
+      config2 = [(TIKeyboardInputManager *)self config];
+      staticDictionaryPath = [config2 staticDictionaryPath];
       v10 = *MEMORY[0x277D6F660];
-      v11 = [v4 languageWithRegion];
-      v12 = [v7 stringWithFormat:@"%@/%@%@.dat", v9, v10, v11];
+      languageWithRegion = [modeCopy languageWithRegion];
+      v12 = [v7 stringWithFormat:@"%@/%@%@.dat", staticDictionaryPath, v10, languageWithRegion];
 
-      v13 = [MEMORY[0x277CCAA00] defaultManager];
-      LOBYTE(v8) = [v13 fileExistsAtPath:v12];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      LOBYTE(config2) = [defaultManager fileExistsAtPath:v12];
 
-      if ((v8 & 1) == 0)
+      if ((config2 & 1) == 0)
       {
         v14 = 0;
         goto LABEL_8;
@@ -9557,7 +9557,7 @@ LABEL_6:
 
     else
     {
-      v12 = UIKeyboardPhraseLexiconPathForInputMode(v4);
+      v12 = UIKeyboardPhraseLexiconPathForInputMode(modeCopy);
     }
 
     v14 = v12;
@@ -9577,33 +9577,33 @@ LABEL_8:
 
 - (id)pathToDeltaStaticDictionary
 {
-  v3 = [(TIKeyboardInputManager *)self dictionaryInputMode];
-  v4 = [(TIKeyboardInputManager *)self deltaDictionaryPathForInputMode:v3];
+  dictionaryInputMode = [(TIKeyboardInputManager *)self dictionaryInputMode];
+  v4 = [(TIKeyboardInputManager *)self deltaDictionaryPathForInputMode:dictionaryInputMode];
 
   return v4;
 }
 
-- (id)deltaDictionaryPathForInputMode:(id)a3
+- (id)deltaDictionaryPathForInputMode:(id)mode
 {
-  v4 = a3;
-  if (v4)
+  modeCopy = mode;
+  if (modeCopy)
   {
-    v5 = [(TIKeyboardInputManager *)self config];
-    v6 = [v5 usesCustomStaticDictionary];
+    config = [(TIKeyboardInputManager *)self config];
+    usesCustomStaticDictionary = [config usesCustomStaticDictionary];
 
-    if (v6)
+    if (usesCustomStaticDictionary)
     {
       v7 = MEMORY[0x277CCACA8];
-      v8 = [(TIKeyboardInputManager *)self config];
-      v9 = [v8 staticDictionaryPath];
+      config2 = [(TIKeyboardInputManager *)self config];
+      staticDictionaryPath = [config2 staticDictionaryPath];
       v10 = *MEMORY[0x277D6F658];
-      v11 = [v4 languageWithRegion];
-      v12 = [v7 stringWithFormat:@"%@/%@%@.dat", v9, v10, v11];
+      languageWithRegion = [modeCopy languageWithRegion];
+      v12 = [v7 stringWithFormat:@"%@/%@%@.dat", staticDictionaryPath, v10, languageWithRegion];
 
-      v13 = [MEMORY[0x277CCAA00] defaultManager];
-      LOBYTE(v8) = [v13 fileExistsAtPath:v12];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      LOBYTE(config2) = [defaultManager fileExistsAtPath:v12];
 
-      if ((v8 & 1) == 0)
+      if ((config2 & 1) == 0)
       {
         v14 = 0;
         goto LABEL_8;
@@ -9612,7 +9612,7 @@ LABEL_8:
 
     else
     {
-      v12 = UIKeyboardDeltaLexiconPathForInputMode(v4);
+      v12 = UIKeyboardDeltaLexiconPathForInputMode(modeCopy);
     }
 
     v14 = v12;
@@ -9633,8 +9633,8 @@ LABEL_8:
 - (id)pathToStaticDictionary
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(TIKeyboardInputManager *)self dictionaryInputMode];
-  v4 = [(TIKeyboardInputManager *)self staticDictionaryPathForInputMode:v3];
+  dictionaryInputMode = [(TIKeyboardInputManager *)self dictionaryInputMode];
+  v4 = [(TIKeyboardInputManager *)self staticDictionaryPathForInputMode:dictionaryInputMode];
 
   if (!v4)
   {
@@ -9658,32 +9658,32 @@ LABEL_8:
   return v4;
 }
 
-- (id)staticDictionaryPathForInputMode:(id)a3
+- (id)staticDictionaryPathForInputMode:(id)mode
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  modeCopy = mode;
+  if (!modeCopy)
   {
     v13 = 0;
     goto LABEL_6;
   }
 
-  v5 = [(TIKeyboardInputManager *)self config];
-  v6 = [v5 usesCustomStaticDictionary];
+  config = [(TIKeyboardInputManager *)self config];
+  usesCustomStaticDictionary = [config usesCustomStaticDictionary];
 
-  if (!v6)
+  if (!usesCustomStaticDictionary)
   {
-    v16 = [v4 normalizedIdentifier];
+    normalizedIdentifier = [modeCopy normalizedIdentifier];
     v17 = TIInputModeUseMorphemeLevelLexicon();
 
     if (v17)
     {
-      UIKeyboardMorphemeLexiconPathForInputMode(v4);
+      UIKeyboardMorphemeLexiconPathForInputMode(modeCopy);
     }
 
     else
     {
-      UIKeyboardUnigramLexiconPathForInputMode(v4);
+      UIKeyboardUnigramLexiconPathForInputMode(modeCopy);
     }
     v13 = ;
     if (TICanLogMessageAtLevel_onceToken != -1)
@@ -9697,15 +9697,15 @@ LABEL_8:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
         v21 = MEMORY[0x277CCACA8];
-        v22 = [(TIKeyboardInputManager *)self linguisticResourceStatus];
-        if (v22 > 2)
+        linguisticResourceStatus = [(TIKeyboardInputManager *)self linguisticResourceStatus];
+        if (linguisticResourceStatus > 2)
         {
           v23 = "Unknown";
         }
 
         else
         {
-          v23 = off_278731828[v22];
+          v23 = off_278731828[linguisticResourceStatus];
         }
 
         v24 = [v21 stringWithFormat:@"%s linguisticResourceStatus: %s, staticDictPath: %s", "-[TIKeyboardInputManager staticDictionaryPathForInputMode:]", v23, objc_msgSend(v13, "UTF8String")];
@@ -9719,17 +9719,17 @@ LABEL_8:
   }
 
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(TIKeyboardInputManager *)self config];
-  v9 = [v8 staticDictionaryPath];
+  config2 = [(TIKeyboardInputManager *)self config];
+  staticDictionaryPath = [config2 staticDictionaryPath];
   v10 = *MEMORY[0x277D6F788];
-  v11 = [v4 locale];
-  v12 = [v11 languageCode];
-  v13 = [v7 stringWithFormat:@"%@/%@%@.dat", v9, v10, v12];
+  locale = [modeCopy locale];
+  languageCode = [locale languageCode];
+  v13 = [v7 stringWithFormat:@"%@/%@%@.dat", staticDictionaryPath, v10, languageCode];
 
-  v14 = [MEMORY[0x277CCAA00] defaultManager];
-  LOBYTE(v9) = [v14 fileExistsAtPath:v13];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  LOBYTE(staticDictionaryPath) = [defaultManager fileExistsAtPath:v13];
 
-  if ((v9 & 1) == 0)
+  if ((staticDictionaryPath & 1) == 0)
   {
 LABEL_6:
     v15 = 0;
@@ -9746,7 +9746,7 @@ LABEL_16:
   return v15;
 }
 
-- (void)addMultilingualLexiconsFromDiskToVector:(void *)a3 excluding:(const void *)a4
+- (void)addMultilingualLexiconsFromDiskToVector:(void *)vector excluding:(const void *)excluding
 {
   v49 = *MEMORY[0x277D85DE8];
   [(TIKeyboardInputManager *)self multilingualLocalesOnDisk];
@@ -9777,7 +9777,7 @@ LABEL_16:
     }
 
     v11 = std::__murmur2_or_cityhash<unsigned long,64ul>::operator()[abi:nn200100](v9, v10);
-    v12 = *(a4 + 8);
+    v12 = *(excluding + 8);
     if (v12)
     {
       v13 = v11;
@@ -9798,7 +9798,7 @@ LABEL_16:
         v16 = (*&v12 - 1) & v11;
       }
 
-      v17 = *(*a4 + 8 * v16);
+      v17 = *(*excluding + 8 * v16);
       if (v17)
       {
         v18 = *v17;
@@ -9846,18 +9846,18 @@ LABEL_16:
 
     v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:v9];
     [(TIKeyboardInputManager *)self lexiconInfoForMultilingualDynamic:v20];
-    v22 = *(a3 + 1);
-    v21 = *(a3 + 2);
+    v22 = *(vector + 1);
+    v21 = *(vector + 2);
     if (v22 >= v21)
     {
-      v24 = 0x2E8BA2E8BA2E8BA3 * ((v22 - *a3) >> 4);
+      v24 = 0x2E8BA2E8BA2E8BA3 * ((v22 - *vector) >> 4);
       v25 = v24 + 1;
       if ((v24 + 1) > 0x1745D1745D1745DLL)
       {
         std::vector<unsigned long>::__throw_length_error[abi:nn200100]();
       }
 
-      v26 = 0x2E8BA2E8BA2E8BA3 * ((v21 - *a3) >> 4);
+      v26 = 0x2E8BA2E8BA2E8BA3 * ((v21 - *vector) >> 4);
       if (2 * v26 > v25)
       {
         v25 = 2 * v26;
@@ -9873,7 +9873,7 @@ LABEL_16:
         v27 = v25;
       }
 
-      v38[4] = a3;
+      v38[4] = vector;
       if (v27)
       {
         std::__allocate_at_least[abi:nn200100]<std::allocator<KB::LexiconInfo>>(v27);
@@ -9882,14 +9882,14 @@ LABEL_16:
       v28 = 176 * v24;
       std::allocator_traits<std::allocator<KB::LexiconInfo>>::construct[abi:nn200100]<KB::LexiconInfo,KB::LexiconInfo,void,0>(176 * v24, &v39);
       v23 = 176 * v24 + 176;
-      v29 = *(a3 + 1);
-      v30 = v28 + *a3 - v29;
-      std::__uninitialized_allocator_relocate[abi:nn200100]<std::allocator<KB::LexiconInfo>,KB::LexiconInfo*>(*a3, v29, v30);
-      v31 = *a3;
-      *a3 = v30;
-      *(a3 + 1) = v23;
-      v32 = *(a3 + 2);
-      *(a3 + 2) = 0;
+      v29 = *(vector + 1);
+      v30 = v28 + *vector - v29;
+      std::__uninitialized_allocator_relocate[abi:nn200100]<std::allocator<KB::LexiconInfo>,KB::LexiconInfo*>(*vector, v29, v30);
+      v31 = *vector;
+      *vector = v30;
+      *(vector + 1) = v23;
+      v32 = *(vector + 2);
+      *(vector + 2) = 0;
       v38[2] = v31;
       v38[3] = v32;
       v38[0] = v31;
@@ -9899,11 +9899,11 @@ LABEL_16:
 
     else
     {
-      std::allocator_traits<std::allocator<KB::LexiconInfo>>::construct[abi:nn200100]<KB::LexiconInfo,KB::LexiconInfo,void,0>(*(a3 + 1), &v39);
+      std::allocator_traits<std::allocator<KB::LexiconInfo>>::construct[abi:nn200100]<KB::LexiconInfo,KB::LexiconInfo,void,0>(*(vector + 1), &v39);
       v23 = v22 + 176;
     }
 
-    *(a3 + 1) = v23;
+    *(vector + 1) = v23;
     if (v48 && v47 == 1)
     {
       free(v48);
@@ -9944,10 +9944,10 @@ LABEL_52:
 
 - (vector<std::string,)multilingualLocalesOnDisk
 {
-  v4 = [(TIKeyboardInputManager *)self dynamicResourcePath];
-  v5 = [v4 UTF8String];
+  dynamicResourcePath = [(TIKeyboardInputManager *)self dynamicResourcePath];
+  uTF8String = [dynamicResourcePath UTF8String];
   memset(&v47, 0, sizeof(v47));
-  v6 = (v5 - 1);
+  v6 = (uTF8String - 1);
   do
   {
     v7 = v6->__r_.__value_.__s.__data_[1];
@@ -9955,7 +9955,7 @@ LABEL_52:
   }
 
   while (v7);
-  std::string::append[abi:nn200100]<char const*,0>(&v47.__pn_, v5, v6);
+  std::string::append[abi:nn200100]<char const*,0>(&v47.__pn_, uTF8String, v6);
 
   if (std::__fs::filesystem::path::__filename(&v47).__size_)
   {
@@ -10351,7 +10351,7 @@ LABEL_109:
   return result;
 }
 
-- ($71865D49803C3560DF570D424868A38C)lexiconInfoForMultilingualDynamic:(SEL)a3
+- ($71865D49803C3560DF570D424868A38C)lexiconInfoForMultilingualDynamic:(SEL)dynamic
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v5 = @"mul";
@@ -10364,8 +10364,8 @@ LABEL_109:
     v8 = [v6 arrayWithObjects:v13 count:2];
     v5 = [v8 componentsJoinedByString:@"-"];
 
-    v9 = [v7 UTF8String];
-    v10 = TILexiconIDForLocaleIdentifier(v9);
+    uTF8String = [v7 UTF8String];
+    v10 = TILexiconIDForLocaleIdentifier(uTF8String);
   }
 
   else
@@ -10402,25 +10402,25 @@ LABEL_109:
   return result;
 }
 
-- ($71865D49803C3560DF570D424868A38C)lexiconInfoForInputMode:(SEL)a3
+- ($71865D49803C3560DF570D424868A38C)lexiconInfoForInputMode:(SEL)mode
 {
   v24 = *MEMORY[0x277D85DE8];
   v6 = a4;
-  v7 = [v6 locale];
-  v8 = [v7 localeIdentifier];
+  locale = [v6 locale];
+  localeIdentifier = [locale localeIdentifier];
 
-  v9 = TILexiconIDForLocaleIdentifier([v8 UTF8String]);
+  v9 = TILexiconIDForLocaleIdentifier([localeIdentifier UTF8String]);
   if ([v6 wantsMultilingualUnionOVS])
   {
-    v10 = [v6 wantsMultilingualUnionOVS];
+    wantsMultilingualUnionOVS = [v6 wantsMultilingualUnionOVS];
   }
 
   else
   {
-    v10 = 0;
+    wantsMultilingualUnionOVS = 0;
   }
 
-  KB::utf8_string(v8, retstr);
+  KB::utf8_string(localeIdentifier, retstr);
   *&retstr->var1.var0 = 0x100000;
   p_var1 = &retstr->var1;
   p_var1->var2 = 0;
@@ -10446,7 +10446,7 @@ LABEL_109:
   p_var1[3].var4 = 0;
   p_var1[3].var5[0] = 0;
   *&p_var1[4].var0 = v9;
-  LOBYTE(p_var1[4].var2) = v10;
+  LOBYTE(p_var1[4].var2) = wantsMultilingualUnionOVS;
   LODWORD(p_var1[4].var4) = 0;
   v15 = [(TIKeyboardInputManager *)self staticDictionaryPathForInputMode:v6];
   if ([(KB *)v15 length])
@@ -10530,11 +10530,11 @@ LABEL_109:
       }
     }
 
-    v4 = [(TIKeyboardInputManager *)self dictionaryInputMode];
-    v5 = [v4 languageWithRegion];
+    dictionaryInputMode = [(TIKeyboardInputManager *)self dictionaryInputMode];
+    languageWithRegion = [dictionaryInputMode languageWithRegion];
 
     m_impl = self->m_impl;
-    KB::utf8_string(v5, buf);
+    KB::utf8_string(languageWithRegion, buf);
     TIInputManager::set_locale_identifier(m_impl, buf);
     if (*&buf[8])
     {
@@ -10554,22 +10554,22 @@ LABEL_109:
 - ($71865D49803C3560DF570D424868A38C)lexiconInformation
 {
   v31[2] = *MEMORY[0x277D85DE8];
-  v5 = [(TIKeyboardInputManager *)self dictionaryInputMode];
-  v6 = [v5 locale];
-  v7 = [v6 localeIdentifier];
+  dictionaryInputMode = [(TIKeyboardInputManager *)self dictionaryInputMode];
+  locale = [dictionaryInputMode locale];
+  localeIdentifier = [locale localeIdentifier];
 
-  KB::utf8_string(v7, v28);
-  v8 = [(TIKeyboardInputManager *)self pathToStaticDictionary];
-  KB::utf8_string(v8, v26);
+  KB::utf8_string(localeIdentifier, v28);
+  pathToStaticDictionary = [(TIKeyboardInputManager *)self pathToStaticDictionary];
+  KB::utf8_string(pathToStaticDictionary, v26);
 
-  v9 = [(TIKeyboardInputManager *)self pathToDeltaStaticDictionary];
-  KB::utf8_string(v9, v24);
+  pathToDeltaStaticDictionary = [(TIKeyboardInputManager *)self pathToDeltaStaticDictionary];
+  KB::utf8_string(pathToDeltaStaticDictionary, v24);
 
-  v10 = [(TIKeyboardInputManager *)self pathToPhraseDictionary];
-  KB::utf8_string(v10, v22);
+  pathToPhraseDictionary = [(TIKeyboardInputManager *)self pathToPhraseDictionary];
+  KB::utf8_string(pathToPhraseDictionary, v22);
 
-  v11 = [(TIKeyboardInputManager *)self pathToDynamicDictionary];
-  KB::utf8_string(v11, v20);
+  pathToDynamicDictionary = [(TIKeyboardInputManager *)self pathToDynamicDictionary];
+  KB::utf8_string(pathToDynamicDictionary, v20);
 
   v12 = v30;
   if (!v30)
@@ -10588,16 +10588,16 @@ LABEL_109:
   }
 
   v14 = TILexiconIDForLocaleIdentifier(v13);
-  v15 = [(TIKeyboardInputManagerBase *)self inputMode];
-  if ([v15 wantsMultilingualUnionOVS])
+  inputMode = [(TIKeyboardInputManagerBase *)self inputMode];
+  if ([inputMode wantsMultilingualUnionOVS])
   {
-    v16 = [(TIKeyboardInputManagerBase *)self inputMode];
-    v17 = [v16 wantsMultilingualUnionOVS];
+    inputMode2 = [(TIKeyboardInputManagerBase *)self inputMode];
+    wantsMultilingualUnionOVS = [inputMode2 wantsMultilingualUnionOVS];
   }
 
   else
   {
-    v17 = 0;
+    wantsMultilingualUnionOVS = 0;
   }
 
   KB::String::String(retstr, v28);
@@ -10606,7 +10606,7 @@ LABEL_109:
   KB::String::String(&retstr->var3, v22);
   KB::String::String(&retstr->var4, v20);
   retstr->var5 = v14;
-  retstr->var6 = v17;
+  retstr->var6 = wantsMultilingualUnionOVS;
   retstr->var7 = 1.0;
   if (v21 && v20[6] == 1)
   {
@@ -10640,9 +10640,9 @@ LABEL_109:
 - (id)lexiconLocales
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v2 = [(TIKeyboardInputManager *)self dictionaryInputMode];
-  v3 = [v2 locale];
-  v7[0] = v3;
+  dictionaryInputMode = [(TIKeyboardInputManager *)self dictionaryInputMode];
+  locale = [dictionaryInputMode locale];
+  v7[0] = locale;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
 
   v5 = *MEMORY[0x277D85DE8];
@@ -10655,18 +10655,18 @@ LABEL_109:
   result = self->m_impl;
   if (!result)
   {
-    v4 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-    v5 = [(TIKeyboardInputManager *)self config];
-    v6 = [v5 dynamicResourcePath];
-    self->m_impl = [v4 createInputManager:v6];
+    keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+    config = [(TIKeyboardInputManager *)self config];
+    dynamicResourcePath = [config dynamicResourcePath];
+    self->m_impl = [keyboardFeatureSpecialization createInputManager:dynamicResourcePath];
 
     if (self->m_impl)
     {
-      v7 = [(TIKeyboardInputManager *)self config];
-      v8 = [v7 usesContinuousPathRetrocorrection];
+      config2 = [(TIKeyboardInputManager *)self config];
+      usesContinuousPathRetrocorrection = [config2 usesContinuousPathRetrocorrection];
 
       result = self->m_impl;
-      if (v8)
+      if (usesContinuousPathRetrocorrection)
       {
         v9 = *(result + 28);
         if (v9)
@@ -10686,17 +10686,17 @@ LABEL_109:
   return result;
 }
 
-- (id)externalStringForDictionaryString:(id)a3
+- (id)externalStringForDictionaryString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if ([(TIKeyboardInputManager *)self dictionaryUsesExternalEncoding])
   {
-    v5 = v4;
+    v5 = stringCopy;
   }
 
   else
   {
-    v5 = [(TIKeyboardInputManager *)self internalStringToExternal:v4];
+    v5 = [(TIKeyboardInputManager *)self internalStringToExternal:stringCopy];
   }
 
   v6 = v5;
@@ -10704,9 +10704,9 @@ LABEL_109:
   return v6;
 }
 
-- (id)dictionaryStringForExternalString:(id)a3
+- (id)dictionaryStringForExternalString:(id)string
 {
-  v4 = [a3 stringByReplacingOccurrencesOfString:@"’" withString:@"'"];
+  v4 = [string stringByReplacingOccurrencesOfString:@"’" withString:@"'"];
   if ([(TIKeyboardInputManager *)self dictionaryUsesExternalEncoding])
   {
     v5 = v4;
@@ -10724,18 +10724,18 @@ LABEL_109:
 
 - (BOOL)dictionaryUsesExternalEncoding
 {
-  v2 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-  v3 = [v2 dictionaryUsesExternalEncoding];
+  keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+  dictionaryUsesExternalEncoding = [keyboardFeatureSpecialization dictionaryUsesExternalEncoding];
 
-  return v3;
+  return dictionaryUsesExternalEncoding;
 }
 
-- (unsigned)externalIndexToInternal:(unsigned int)a3
+- (unsigned)externalIndexToInternal:(unsigned int)internal
 {
   m_impl = self->m_impl;
   if (!m_impl)
   {
-    return a3;
+    return internal;
   }
 
   m_composedText = self->m_composedText;
@@ -10743,51 +10743,51 @@ LABEL_109:
   {
     v7 = [(NSMutableString *)m_composedText length];
     v8 = self->m_composedText;
-    if (v7 <= a3)
+    if (v7 <= internal)
     {
       v9 = [(TIKeyboardInputManager *)self externalStringToInternal:self->m_composedText];
-      a3 = [v9 length];
+      internal = [v9 length];
     }
 
     else
     {
-      v9 = [(NSMutableString *)self->m_composedText substringToIndex:a3];
+      v9 = [(NSMutableString *)self->m_composedText substringToIndex:internal];
       v10 = [(TIKeyboardInputManager *)self externalStringToInternal:v9];
-      a3 = [v10 length];
+      internal = [v10 length];
     }
 
     m_impl = self->m_impl;
     if (!m_impl)
     {
-      return a3;
+      return internal;
     }
   }
 
   v11 = -858993459 * ((m_impl[2] - m_impl[1]) >> 3);
-  if (a3 >= v11)
+  if (internal >= v11)
   {
     return v11;
   }
 
   else
   {
-    return a3;
+    return internal;
   }
 }
 
-- (unsigned)internalIndexToExternal:(unsigned int)a3
+- (unsigned)internalIndexToExternal:(unsigned int)external
 {
-  v3 = a3;
+  externalCopy = external;
   v13 = *MEMORY[0x277D85DE8];
   m_impl = self->m_impl;
   if (m_impl)
   {
     if (self->m_composedText)
     {
-      TIInputManager::input_substring(m_impl + 4, 0, a3, v11);
+      TIInputManager::input_substring(m_impl + 4, 0, external, v11);
       v7 = KB::ns_string(v11, v6);
       v8 = [(TIKeyboardInputManager *)self internalStringToExternal:v7];
-      v3 = [v8 length];
+      externalCopy = [v8 length];
 
       if (v12)
       {
@@ -10800,23 +10800,23 @@ LABEL_109:
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return v3;
+  return externalCopy;
 }
 
-- (id)internalStringToExternal:(id)a3
+- (id)internalStringToExternal:(id)external
 {
-  v4 = a3;
-  v5 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-  v6 = [v5 internalStringToExternal:v4];
+  externalCopy = external;
+  keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+  v6 = [keyboardFeatureSpecialization internalStringToExternal:externalCopy];
 
   return v6;
 }
 
-- (id)externalStringToInternal:(id)a3
+- (id)externalStringToInternal:(id)internal
 {
-  v4 = a3;
-  v5 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-  v6 = [v5 externalStringToInternal:v4];
+  internalCopy = internal;
+  keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+  v6 = [keyboardFeatureSpecialization externalStringToInternal:internalCopy];
 
   return v6;
 }
@@ -10843,29 +10843,29 @@ LABEL_109:
 
 - (BOOL)deletesComposedTextByComposedCharacterSequence
 {
-  v2 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-  v3 = [v2 deletesByComposedCharacterSequence];
+  keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+  deletesByComposedCharacterSequence = [keyboardFeatureSpecialization deletesByComposedCharacterSequence];
 
-  return v3;
+  return deletesByComposedCharacterSequence;
 }
 
-- (BOOL)stringEndsWord:(id)a3
+- (BOOL)stringEndsWord:(id)word
 {
-  v4 = a3;
-  v5 = [(TIKeyboardInputManager *)self currentState];
-  v6 = [v5 stringEndsWord:v4];
+  wordCopy = word;
+  currentState = [(TIKeyboardInputManager *)self currentState];
+  v6 = [currentState stringEndsWord:wordCopy];
 
   return v6;
 }
 
-- (id)deletedSuffixOfInputContext:(id)a3 whenDeletingFromInputString:(id)a4 withInputIndex:(unint64_t)a5 deletionCount:(unint64_t)a6
+- (id)deletedSuffixOfInputContext:(id)context whenDeletingFromInputString:(id)string withInputIndex:(unint64_t)index deletionCount:(unint64_t)count
 {
-  v9 = a3;
-  v10 = a4;
-  if (a6)
+  contextCopy = context;
+  stringCopy = string;
+  if (count)
   {
-    v11 = [v9 stringByAppendingString:v10];
-    v12 = [v9 length] + a5;
+    v11 = [contextCopy stringByAppendingString:stringCopy];
+    v12 = [contextCopy length] + index;
     if (v12)
     {
       v13 = 0;
@@ -10882,7 +10882,7 @@ LABEL_109:
         if (v14)
         {
           v12 = v14;
-          if (v13 < a6)
+          if (v13 < count)
           {
             continue;
           }
@@ -10901,9 +10901,9 @@ LABEL_109:
     }
 
 LABEL_11:
-    if (v13 == a6 && v15 < [v9 length])
+    if (v13 == count && v15 < [contextCopy length])
     {
-      v16 = [v9 substringFromIndex:v15];
+      v16 = [contextCopy substringFromIndex:v15];
     }
 
     else
@@ -10920,72 +10920,72 @@ LABEL_11:
   return v16;
 }
 
-- (id)suffixOfDesiredString:(id)a3 toAppendToInputString:(id)a4 withInputIndex:(unint64_t)a5 afterDeletionCount:(unint64_t *)a6
+- (id)suffixOfDesiredString:(id)string toAppendToInputString:(id)inputString withInputIndex:(unint64_t)index afterDeletionCount:(unint64_t *)count
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (a6)
+  stringCopy = string;
+  inputStringCopy = inputString;
+  v11 = inputStringCopy;
+  if (count)
   {
-    *a6 = 0;
+    *count = 0;
   }
 
-  if ([v10 length] < a5)
+  if ([inputStringCopy length] < index)
   {
-    a5 = [v11 length];
+    index = [v11 length];
   }
 
-  if (a5)
+  if (index)
   {
     do
     {
-      v12 = [v11 substringToIndex:a5];
-      v13 = [v9 hasPrefix:v12];
+      v12 = [v11 substringToIndex:index];
+      v13 = [stringCopy hasPrefix:v12];
 
       if (v13)
       {
         break;
       }
 
-      v14 = [v11 _rangeOfBackwardDeletionClusterAtIndex:a5 - 1];
-      a5 = v14;
-      if (a6)
+      v14 = [v11 _rangeOfBackwardDeletionClusterAtIndex:index - 1];
+      index = v14;
+      if (count)
       {
-        ++*a6;
+        ++*count;
       }
     }
 
     while (v14);
   }
 
-  v15 = [v9 substringFromIndex:a5];
+  v15 = [stringCopy substringFromIndex:index];
 
   return v15;
 }
 
-- (BOOL)shouldInsertSpaceBeforeInput:(id)a3
+- (BOOL)shouldInsertSpaceBeforeInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   if (![(TIKeyboardInputManager *)self usesCandidateSelection])
   {
-    v5 = [(TIKeyboardInputManager *)self config];
-    v6 = [v5 insertsSpaceAfterPredictiveInput];
+    config = [(TIKeyboardInputManager *)self config];
+    insertsSpaceAfterPredictiveInput = [config insertsSpaceAfterPredictiveInput];
 
-    if ((v6 & 1) == 0)
+    if ((insertsSpaceAfterPredictiveInput & 1) == 0)
     {
-      v8 = [(TIKeyboardInputManager *)self lastAcceptedText];
-      v9 = v8;
-      if (!v8 || ![v8 isContinuousPathConversion] || !objc_msgSend(v9, "shouldAccept"))
+      lastAcceptedText = [(TIKeyboardInputManager *)self lastAcceptedText];
+      v9 = lastAcceptedText;
+      if (!lastAcceptedText || ![lastAcceptedText isContinuousPathConversion] || !objc_msgSend(v9, "shouldAccept"))
       {
         goto LABEL_16;
       }
 
-      v10 = [(TIKeyboardInputManager *)self wordSeparator];
-      if ([v10 length])
+      wordSeparator = [(TIKeyboardInputManager *)self wordSeparator];
+      if ([wordSeparator length])
       {
-        v11 = [v9 candidate];
-        v12 = [(TIKeyboardInputManager *)self wordSeparator];
-        v13 = [v11 hasSuffix:v12];
+        candidate = [v9 candidate];
+        wordSeparator2 = [(TIKeyboardInputManager *)self wordSeparator];
+        v13 = [candidate hasSuffix:wordSeparator2];
 
         if (v13)
         {
@@ -10997,10 +10997,10 @@ LABEL_11:
       {
       }
 
-      if ([v4 length])
+      if ([inputCopy length])
       {
-        v14 = [(TIKeyboardInputManager *)self wordSeparator];
-        if ([v4 isEqualToString:v14])
+        wordSeparator3 = [(TIKeyboardInputManager *)self wordSeparator];
+        if ([inputCopy isEqualToString:wordSeparator3])
         {
 LABEL_15:
 
@@ -11011,23 +11011,23 @@ LABEL_17:
           goto LABEL_18;
         }
 
-        v15 = [(TIKeyboardInputManager *)self pathedWordSeparator];
-        if ([v4 isEqualToString:v15])
+        pathedWordSeparator = [(TIKeyboardInputManager *)self pathedWordSeparator];
+        if ([inputCopy isEqualToString:pathedWordSeparator])
         {
 
           goto LABEL_15;
         }
 
-        v17 = [v4 isEqualToString:@"\n"];
+        v17 = [inputCopy isEqualToString:@"\n"];
 
         if (v17)
         {
           goto LABEL_16;
         }
 
-        v18 = [(TIKeyboardInputManager *)self terminatorsDeletingAutospace];
-        v19 = [v18 characterSet];
-        v20 = [v19 characterIsMember:{objc_msgSend(v4, "characterAtIndex:", 0)}];
+        terminatorsDeletingAutospace = [(TIKeyboardInputManager *)self terminatorsDeletingAutospace];
+        characterSet = [terminatorsDeletingAutospace characterSet];
+        v20 = [characterSet characterIsMember:{objc_msgSend(inputCopy, "characterAtIndex:", 0)}];
 
         if (v20)
         {
@@ -11038,9 +11038,9 @@ LABEL_17:
         {
           if ([v9 shouldAccept])
           {
-            v21 = [(TIKeyboardInputManager *)self spaceDeletingCharacters];
-            v22 = [v21 characterSet];
-            v23 = [v22 characterIsMember:{objc_msgSend(v4, "characterAtIndex:", 0)}];
+            spaceDeletingCharacters = [(TIKeyboardInputManager *)self spaceDeletingCharacters];
+            characterSet2 = [spaceDeletingCharacters characterSet];
+            v23 = [characterSet2 characterIsMember:{objc_msgSend(inputCopy, "characterAtIndex:", 0)}];
 
             if (v23)
             {
@@ -11049,11 +11049,11 @@ LABEL_17:
           }
         }
 
-        v24 = [(TIKeyboardInputManager *)self keyboardState];
-        v25 = [v24 documentState];
-        v26 = [v25 contextBeforeInput];
+        keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+        documentState = [keyboardState documentState];
+        contextBeforeInput = [documentState contextBeforeInput];
 
-        v27 = -[TIKeyboardInputManager rangeOfUnclosedQuoteMatchingQuote:inString:range:](self, "rangeOfUnclosedQuoteMatchingQuote:inString:range:", v4, v26, 0, [v26 length]);
+        v27 = -[TIKeyboardInputManager rangeOfUnclosedQuoteMatchingQuote:inString:range:](self, "rangeOfUnclosedQuoteMatchingQuote:inString:range:", inputCopy, contextBeforeInput, 0, [contextBeforeInput length]);
         if (v27 != 0x7FFFFFFFFFFFFFFFLL)
         {
           goto LABEL_16;
@@ -11071,47 +11071,47 @@ LABEL_18:
   return v7;
 }
 
-- (void)textAccepted:(id)a3 fromPredictiveInputBar:(BOOL)a4 withInput:(id)a5
+- (void)textAccepted:(id)accepted fromPredictiveInputBar:(BOOL)bar withInput:(id)input
 {
-  v6 = a4;
+  barCopy = bar;
   v162 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v149 = v6;
-  if (v6)
+  acceptedCopy = accepted;
+  inputCopy = input;
+  v149 = barCopy;
+  if (barCopy)
   {
-    if ([v8 isResponseKitCandidate])
+    if ([acceptedCopy isResponseKitCandidate])
     {
       v10 = +[TIProactiveQuickTypeManager sharedInstance];
-      v11 = [v10 usePQT2Flow];
+      usePQT2Flow = [v10 usePQT2Flow];
 
-      if (v11)
+      if (usePQT2Flow)
       {
         v12 = +[TIProactiveQuickTypeManager sharedInstance];
-        v13 = [v8 candidate];
-        [v12 provideFeedbackForString:v13 type:1 style:1];
+        candidate = [acceptedCopy candidate];
+        [v12 provideFeedbackForString:candidate type:1 style:1];
       }
     }
   }
 
-  if (!v8 || !self->m_impl)
+  if (!acceptedCopy || !self->m_impl)
   {
     goto LABEL_99;
   }
 
-  if (([v8 isAutocorrection] & 1) == 0)
+  if (([acceptedCopy isAutocorrection] & 1) == 0)
   {
-    v14 = [(TIKeyboardInputManager *)self lastAcceptedText];
-    if (v14)
+    lastAcceptedText = [(TIKeyboardInputManager *)self lastAcceptedText];
+    if (lastAcceptedText)
     {
-      v15 = v14;
-      v16 = [(TIKeyboardInputManager *)self lastAcceptedText];
-      if ([v16 isContinuousPathConversion])
+      v15 = lastAcceptedText;
+      lastAcceptedText2 = [(TIKeyboardInputManager *)self lastAcceptedText];
+      if ([lastAcceptedText2 isContinuousPathConversion])
       {
-        v17 = [(TIKeyboardInputManager *)self lastAcceptedText];
-        v18 = [v17 candidate];
-        v19 = [v8 candidate];
-        v20 = [v18 isEqualToString:v19];
+        lastAcceptedText3 = [(TIKeyboardInputManager *)self lastAcceptedText];
+        candidate2 = [lastAcceptedText3 candidate];
+        candidate3 = [acceptedCopy candidate];
+        v20 = [candidate2 isEqualToString:candidate3];
 
         if (v20)
         {
@@ -11125,111 +11125,111 @@ LABEL_18:
     }
   }
 
-  v21 = [(TIKeyboardInputManager *)self revisionHistory];
+  revisionHistory = [(TIKeyboardInputManager *)self revisionHistory];
 
-  if (v21)
+  if (revisionHistory)
   {
-    if ([v8 isAutocorrection])
+    if ([acceptedCopy isAutocorrection])
     {
-      [(TIKeyboardInputManager *)self recordAcceptedAutocorrection:v8 fromPredictiveInputBar:v6];
+      [(TIKeyboardInputManager *)self recordAcceptedAutocorrection:acceptedCopy fromPredictiveInputBar:barCopy];
     }
 
     else
     {
-      [(TIKeyboardInputManager *)self recordRejectedAutocorrectionForAcceptedText:v8 fromPredictiveInputBar:v6];
+      [(TIKeyboardInputManager *)self recordRejectedAutocorrectionForAcceptedText:acceptedCopy fromPredictiveInputBar:barCopy];
       if ([(TIKeyboardInputManager *)self rejectionsDatabase])
       {
-        if (v6)
+        if (barCopy)
         {
-          v54 = [v8 candidate];
-          v55 = [v8 input];
-          v56 = [v54 isEqualToString:v55];
+          candidate4 = [acceptedCopy candidate];
+          input = [acceptedCopy input];
+          v56 = [candidate4 isEqualToString:input];
 
           if (v56)
           {
-            v57 = [(TIKeyboardInputManager *)self autocorrectionForCurrentStem];
-            v58 = [v8 input];
-            v59 = [v57 objectForKey:v58];
+            autocorrectionForCurrentStem = [(TIKeyboardInputManager *)self autocorrectionForCurrentStem];
+            input2 = [acceptedCopy input];
+            v59 = [autocorrectionForCurrentStem objectForKey:input2];
 
-            v60 = [(TIKeyboardInputManager *)self revisionHistory];
-            v61 = [v8 input];
-            [v60 rejectCandidate:v59 forInput:v61 hint:3];
+            revisionHistory2 = [(TIKeyboardInputManager *)self revisionHistory];
+            input3 = [acceptedCopy input];
+            [revisionHistory2 rejectCandidate:v59 forInput:input3 hint:3];
           }
         }
       }
     }
 
-    if (([v9 isSynthesizedByAcceptingCandidate] & 1) != 0 || !objc_msgSend(v8, "isAutocorrection"))
+    if (([inputCopy isSynthesizedByAcceptingCandidate] & 1) != 0 || !objc_msgSend(acceptedCopy, "isAutocorrection"))
     {
       v29 = 0;
     }
 
     else
     {
-      v22 = [(TIKeyboardInputManager *)self autocorrectionListsSuggestedForCurrentInput];
-      v23 = [v8 input];
-      v24 = [v22 objectForKeyedSubscript:v23];
-      v25 = [v24 autocorrection];
-      v26 = [v25 candidate];
-      [v8 candidate];
-      v28 = v27 = v9;
-      v29 = [v26 isEqualToString:v28];
+      autocorrectionListsSuggestedForCurrentInput = [(TIKeyboardInputManager *)self autocorrectionListsSuggestedForCurrentInput];
+      input4 = [acceptedCopy input];
+      v24 = [autocorrectionListsSuggestedForCurrentInput objectForKeyedSubscript:input4];
+      autocorrection = [v24 autocorrection];
+      candidate5 = [autocorrection candidate];
+      [acceptedCopy candidate];
+      v28 = v27 = inputCopy;
+      v29 = [candidate5 isEqualToString:v28];
 
-      v9 = v27;
+      inputCopy = v27;
     }
 
-    v30 = [(TIKeyboardInputManager *)self revisionHistory];
-    [v30 acceptText:v8 isAutocorrection:v29 isAutoshifted:TIInputManager::is_autoshift(self->m_impl)];
+    revisionHistory3 = [(TIKeyboardInputManager *)self revisionHistory];
+    [revisionHistory3 acceptText:acceptedCopy isAutocorrection:v29 isAutoshifted:TIInputManager::is_autoshift(self->m_impl)];
   }
 
-  v31 = [(TIKeyboardInputManager *)self rejectionsDatabase];
-  if (v31)
+  rejectionsDatabase = [(TIKeyboardInputManager *)self rejectionsDatabase];
+  if (rejectionsDatabase)
   {
-    v32 = v31;
-    if ([v9 isSynthesizedByAcceptingCandidate])
+    v32 = rejectionsDatabase;
+    if ([inputCopy isSynthesizedByAcceptingCandidate])
     {
-      v33 = [v8 input];
-      v34 = [v8 candidate];
-      v35 = [v33 isEqualToString:v34];
+      input5 = [acceptedCopy input];
+      candidate6 = [acceptedCopy candidate];
+      v35 = [input5 isEqualToString:candidate6];
 
       if ((v35 & 1) == 0)
       {
-        v36 = [v8 input];
-        v37 = [v36 UTF8String];
-        v38 = [v8 candidate];
-        TI::RejectionsDatabase::insert_acceptance(*v32, v37, [v38 UTF8String]);
+        input6 = [acceptedCopy input];
+        uTF8String = [input6 UTF8String];
+        candidate7 = [acceptedCopy candidate];
+        TI::RejectionsDatabase::insert_acceptance(*v32, uTF8String, [candidate7 UTF8String]);
       }
     }
   }
 
-  v39 = [(TIKeyboardInputManagerBase *)self inputMode];
-  v40 = v8;
-  v41 = v39;
+  inputMode = [(TIKeyboardInputManagerBase *)self inputMode];
+  v40 = acceptedCopy;
+  v41 = inputMode;
   v42 = +[_TIStatisticsProactiveTracker sharedInstance];
-  v43 = [v42 lastAutocorrectionList];
+  lastAutocorrectionList = [v42 lastAutocorrectionList];
   v44 = _TIQueueBackground();
   v45 = v42;
   TIDispatchAsync();
 
-  v148 = v9;
-  if (v43)
+  v148 = inputCopy;
+  if (lastAutocorrectionList)
   {
     v146 = v41;
-    v46 = [v43 corrections];
-    v47 = [v46 autocorrection];
-    if (v47)
+    corrections = [lastAutocorrectionList corrections];
+    autocorrection2 = [corrections autocorrection];
+    if (autocorrection2)
     {
-      v48 = v47;
-      v49 = [v43 corrections];
-      v50 = [v49 autocorrection];
-      v51 = [v50 usageTrackingMask];
+      v48 = autocorrection2;
+      corrections2 = [lastAutocorrectionList corrections];
+      autocorrection3 = [corrections2 autocorrection];
+      usageTrackingMask = [autocorrection3 usageTrackingMask];
 
-      if ((v51 & 0x2000) != 0)
+      if ((usageTrackingMask & 0x2000) != 0)
       {
-        v52 = [v43 corrections];
-        v53 = [v52 autocorrection];
+        corrections3 = [lastAutocorrectionList corrections];
+        autocorrection4 = [corrections3 autocorrection];
 LABEL_46:
-        v68 = v53;
+        v68 = autocorrection4;
 
         if (!v68)
         {
@@ -11242,7 +11242,7 @@ LABEL_46:
         v67 = v68;
         TIDispatchAsync();
 
-        v52 = v154;
+        corrections3 = v154;
 LABEL_48:
 
 LABEL_50:
@@ -11254,21 +11254,21 @@ LABEL_50:
           TIDispatchAsync();
         }
 
-        v71 = [v45 responseKitEntryOffered];
+        responseKitEntryOffered = [v45 responseKitEntryOffered];
 
-        if (v71)
+        if (responseKitEntryOffered)
         {
           v145 = v67;
-          v72 = [v45 responseKitEntryOffered];
+          responseKitEntryOffered2 = [v45 responseKitEntryOffered];
           [v45 setResponseKitEntryOffered:0];
           v73 = _TIQueueBackground();
           v74 = v146;
-          v75 = v72;
+          v75 = responseKitEntryOffered2;
           TIDispatchAsync();
 
-          v76 = [v40 responseKitCategory];
+          responseKitCategory = [v40 responseKitCategory];
 
-          if (v76)
+          if (responseKitCategory)
           {
             v77 = _TIQueueBackground();
             v150 = v74;
@@ -11280,7 +11280,7 @@ LABEL_50:
         }
 
         v41 = v146;
-        v9 = v148;
+        inputCopy = v148;
         goto LABEL_57;
       }
     }
@@ -11293,8 +11293,8 @@ LABEL_50:
     v161 = 0u;
     v158 = 0u;
     v159 = 0u;
-    v52 = [v43 predictions];
-    v62 = [v52 countByEnumeratingWithState:&v158 objects:v155 count:16];
+    corrections3 = [lastAutocorrectionList predictions];
+    v62 = [corrections3 countByEnumeratingWithState:&v158 objects:v155 count:16];
     if (v62)
     {
       v63 = v62;
@@ -11305,18 +11305,18 @@ LABEL_50:
         {
           if (*v159 != v64)
           {
-            objc_enumerationMutation(v52);
+            objc_enumerationMutation(corrections3);
           }
 
           v66 = *(*(&v158 + 1) + 8 * i);
           if (([v66 usageTrackingMask] & 0x2000) != 0 && (objc_msgSend(v66, "sourceMask") & 0x8000) == 0 && (objc_msgSend(v66, "sourceMask") & 0x20000) == 0)
           {
-            v53 = v66;
+            autocorrection4 = v66;
             goto LABEL_46;
           }
         }
 
-        v63 = [v52 countByEnumeratingWithState:&v158 objects:v155 count:16];
+        v63 = [corrections3 countByEnumeratingWithState:&v158 objects:v155 count:16];
         if (v63)
         {
           continue;
@@ -11334,16 +11334,16 @@ LABEL_57:
 
   if (![(TIKeyboardInputManager *)self usesCandidateSelection])
   {
-    v78 = [(TIKeyboardInputManager *)self shiftContext];
-    v147 = [(TIKeyboardInputManager *)self inputStem];
+    shiftContext = [(TIKeyboardInputManager *)self shiftContext];
+    inputStem = [(TIKeyboardInputManager *)self inputStem];
     m_impl = self->m_impl;
-    v80 = [v40 candidate];
-    v81 = [(TIKeyboardInputManager *)self externalStringToInternal:v80];
+    candidate8 = [v40 candidate];
+    v81 = [(TIKeyboardInputManager *)self externalStringToInternal:candidate8];
     KB::utf8_string(v81, v155);
-    v82 = [v40 input];
-    v83 = [(TIKeyboardInputManager *)self externalStringToInternal:v82];
+    input7 = [v40 input];
+    v83 = [(TIKeyboardInputManager *)self externalStringToInternal:input7];
     KB::utf8_string(v83, &v158);
-    TIInputManager::text_accepted(m_impl, v155, &v158, [v40 wordOriginFeedbackID], v78, objc_msgSend(v40, "isContinuousPathConversion"));
+    TIInputManager::text_accepted(m_impl, v155, &v158, [v40 wordOriginFeedbackID], shiftContext, objc_msgSend(v40, "isContinuousPathConversion"));
     if (*(&v158 + 1) && BYTE6(v158) == 1)
     {
       free(*(&v158 + 1));
@@ -11355,7 +11355,7 @@ LABEL_57:
     }
 
     [(TIKeyboardInputManager *)self updateComposedText];
-    v9 = v148;
+    inputCopy = v148;
     if (![(TIKeyboardInputManager *)self shouldAllowCorrectionOfAcceptedCandidate:v40])
     {
       v84 = self->m_impl;
@@ -11375,21 +11375,21 @@ LABEL_57:
       v84[55] = v85;
     }
 
-    v87 = [(TIKeyboardInputManager *)self keyboardState];
-    v88 = [v87 documentState];
-    v89 = [v40 input];
-    v90 = [v40 candidate];
-    v91 = [v88 documentStateAfterReplacingText:v89 withText:v90];
-    v92 = [(TIKeyboardInputManager *)self keyboardState];
-    [v92 setDocumentState:v91];
+    keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+    documentState = [keyboardState documentState];
+    input8 = [v40 input];
+    candidate9 = [v40 candidate];
+    v91 = [documentState documentStateAfterReplacingText:input8 withText:candidate9];
+    keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+    [keyboardState2 setDocumentState:v91];
 
     if ([v40 isContinuousPathConversion])
     {
       TIInputManager::clear_continuous_path(self->m_impl);
-      v93 = [(TIKeyboardInputManager *)self config];
-      v94 = [v93 usesContinuousPathRetrocorrection];
+      config = [(TIKeyboardInputManager *)self config];
+      usesContinuousPathRetrocorrection = [config usesContinuousPathRetrocorrection];
 
-      if ((v94 & 1) != 0 && !v149)
+      if ((usesContinuousPathRetrocorrection & 1) != 0 && !v149)
       {
         [(TIKeyboardInputManager *)self trimInputAfterLathamConversion];
       }
@@ -11409,36 +11409,36 @@ LABEL_57:
     if ([(TIKeyboardInputManager *)self shouldMonitorTypingSession])
     {
       v95 = [v40 candidateByReplacingWithSourceMask:{-[TIKeyboardInputManager adjustedSourceMaskFromCandidate:](self, "adjustedSourceMaskFromCandidate:", v40)}];
-      v96 = [(TIKeyboardInputManager *)self typingSessionMonitor];
-      v97 = [(TIKeyboardInputManager *)self keyboardState];
-      v98 = [v97 documentState];
-      v99 = [(TIKeyboardInputManager *)self inputContext];
-      v100 = [(TIKeyboardInputManager *)self keyboardState];
+      typingSessionMonitor = [(TIKeyboardInputManager *)self typingSessionMonitor];
+      keyboardState3 = [(TIKeyboardInputManager *)self keyboardState];
+      documentState2 = [keyboardState3 documentState];
+      inputContext = [(TIKeyboardInputManager *)self inputContext];
+      keyboardState4 = [(TIKeyboardInputManager *)self keyboardState];
       LOBYTE(v144) = 0;
-      [v96 candidateAccepted:v95 withInput:v148 documentState:v98 inputContext:v99 inputStem:v147 predictionBarHit:v149 useCandidateSelection:v144 candidateIndex:0x7FFFFFFFFFFFFFFFLL keyboardState:v100];
+      [typingSessionMonitor candidateAccepted:v95 withInput:v148 documentState:documentState2 inputContext:inputContext inputStem:inputStem predictionBarHit:v149 useCandidateSelection:v144 candidateIndex:0x7FFFFFFFFFFFFFFFLL keyboardState:keyboardState4];
     }
 
-    v101 = [(TIKeyboardInputManager *)self hitTestCorrectedInputMatchingCandidate];
+    hitTestCorrectedInputMatchingCandidate = [(TIKeyboardInputManager *)self hitTestCorrectedInputMatchingCandidate];
 
-    if (v101)
+    if (hitTestCorrectedInputMatchingCandidate)
     {
       if (([v40 isAutocorrection] & 1) == 0)
       {
-        v102 = [v40 input];
-        v103 = [(TIKeyboardInputManager *)self hitTestCorrectedInputMatchingCandidate];
-        v104 = [v103 input];
-        v105 = [v102 isEqualToString:v104];
+        input9 = [v40 input];
+        hitTestCorrectedInputMatchingCandidate2 = [(TIKeyboardInputManager *)self hitTestCorrectedInputMatchingCandidate];
+        input10 = [hitTestCorrectedInputMatchingCandidate2 input];
+        v105 = [input9 isEqualToString:input10];
 
         if (v105)
         {
-          v106 = [v40 input];
-          v107 = [(TIKeyboardInputManager *)self findTokenIDForWord:v106 contextTokens:0 tokenLookupMode:0];
+          input11 = [v40 input];
+          v107 = [(TIKeyboardInputManager *)self findTokenIDForWord:input11 contextTokens:0 tokenLookupMode:0];
 
           if (HIDWORD(*&v107))
           {
             v108 = *MEMORY[0x277D6FAC0];
-            v109 = [(TIKeyboardInputManager *)self hitTestCorrectedInputMatchingCandidate];
-            -[TIKeyboardInputManager incrementUsageTrackingKeyForAutocorrectionStatistic:autocorrectionTypes:](self, "incrementUsageTrackingKeyForAutocorrectionStatistic:autocorrectionTypes:", v108, [v109 usageTrackingMask]);
+            hitTestCorrectedInputMatchingCandidate3 = [(TIKeyboardInputManager *)self hitTestCorrectedInputMatchingCandidate];
+            -[TIKeyboardInputManager incrementUsageTrackingKeyForAutocorrectionStatistic:autocorrectionTypes:](self, "incrementUsageTrackingKeyForAutocorrectionStatistic:autocorrectionTypes:", v108, [hitTestCorrectedInputMatchingCandidate3 usageTrackingMask]);
           }
         }
       }
@@ -11446,9 +11446,9 @@ LABEL_57:
       [(TIKeyboardInputManager *)self setHitTestCorrectedInputMatchingCandidate:0];
     }
 
-    v110 = [(TIKeyboardInputManager *)self lastAcceptedText];
+    lastAcceptedText4 = [(TIKeyboardInputManager *)self lastAcceptedText];
 
-    if (v110)
+    if (lastAcceptedText4)
     {
       [(TIKeyboardInputManager *)self setRejectedConversionsForCurrentContinuousPath:0];
     }
@@ -11457,16 +11457,16 @@ LABEL_57:
     v112 = v111;
     if ([v111 isContinuousPathConversion])
     {
-      v113 = [v111 candidate];
-      v114 = [(TIKeyboardInputManager *)self wordSeparator];
-      v115 = [v113 hasPrefix:v114];
+      candidate10 = [v111 candidate];
+      wordSeparator = [(TIKeyboardInputManager *)self wordSeparator];
+      v115 = [candidate10 hasPrefix:wordSeparator];
 
       v112 = v111;
       if (v115)
       {
-        v116 = [v111 candidate];
-        v117 = [(TIKeyboardInputManager *)self wordSeparator];
-        v118 = [v116 substringFromIndex:{objc_msgSend(v117, "length")}];
+        candidate11 = [v111 candidate];
+        wordSeparator2 = [(TIKeyboardInputManager *)self wordSeparator];
+        v118 = [candidate11 substringFromIndex:{objc_msgSend(wordSeparator2, "length")}];
         v112 = [v111 candidateByReplacingWithCandidate:v118];
       }
     }
@@ -11475,18 +11475,18 @@ LABEL_57:
     [(TIKeyboardInputManager *)self refreshInputManagerState];
     if ([v112 shouldInsertSpaceAfterSelection])
     {
-      v119 = [(TIKeyboardInputManager *)self wordSeparator];
-      v120 = [v119 length];
+      wordSeparator3 = [(TIKeyboardInputManager *)self wordSeparator];
+      v120 = [wordSeparator3 length];
 
       if (v120)
       {
-        v121 = [(TIKeyboardInputManager *)self keyboardState];
-        v122 = [v121 documentState];
-        v123 = [(TIKeyboardInputManager *)self wordSeparator];
-        v124 = [v122 documentStateAfterInsertingTextAfterSelection:v123];
+        keyboardState5 = [(TIKeyboardInputManager *)self keyboardState];
+        documentState3 = [keyboardState5 documentState];
+        wordSeparator4 = [(TIKeyboardInputManager *)self wordSeparator];
+        v124 = [documentState3 documentStateAfterInsertingTextAfterSelection:wordSeparator4];
 
-        v125 = [(TIKeyboardInputManager *)self keyboardState];
-        v126 = [v125 copy];
+        keyboardState6 = [(TIKeyboardInputManager *)self keyboardState];
+        v126 = [keyboardState6 copy];
 
         [v126 setDocumentState:v124];
         [(TIKeyboardInputManager *)self syncToKeyboardState:v126];
@@ -11498,54 +11498,54 @@ LABEL_57:
       goto LABEL_98;
     }
 
-    v127 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
-    v128 = [v127 asynchronous];
+    candidateHandlerForOpenRequest = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
+    asynchronous = [candidateHandlerForOpenRequest asynchronous];
 
-    if (!v128)
+    if (!asynchronous)
     {
       goto LABEL_98;
     }
 
     v129 = [(TIKeyboardInputManager *)self predictionCandidates:4 predictionType:3];
-    v130 = [v129 proactiveTriggers];
-    if (v130)
+    proactiveTriggers = [v129 proactiveTriggers];
+    if (proactiveTriggers)
     {
-      v131 = v130;
-      v132 = [(TIKeyboardInputManager *)self lastContinuousPathAutocorrection];
-      v133 = [v132 emojiList];
-      if ([v133 count])
+      v131 = proactiveTriggers;
+      lastContinuousPathAutocorrection = [(TIKeyboardInputManager *)self lastContinuousPathAutocorrection];
+      emojiList = [lastContinuousPathAutocorrection emojiList];
+      if ([emojiList count])
       {
       }
 
       else
       {
-        v137 = [(TIKeyboardInputManager *)self proactiveSuggestionsGenerationBlock];
+        proactiveSuggestionsGenerationBlock = [(TIKeyboardInputManager *)self proactiveSuggestionsGenerationBlock];
 
-        if (v137)
+        if (proactiveSuggestionsGenerationBlock)
         {
           v138 = MEMORY[0x277D6F328];
-          v139 = [(TIKeyboardInputManager *)self lastContinuousPathAutocorrection];
-          v140 = [v139 corrections];
-          v141 = [v129 proactiveTriggers];
-          v142 = [v138 listWithCorrections:v140 predictions:0 emojiList:0 proactiveTriggers:v141];
+          lastContinuousPathAutocorrection2 = [(TIKeyboardInputManager *)self lastContinuousPathAutocorrection];
+          corrections4 = [lastContinuousPathAutocorrection2 corrections];
+          proactiveTriggers2 = [v129 proactiveTriggers];
+          v142 = [v138 listWithCorrections:corrections4 predictions:0 emojiList:0 proactiveTriggers:proactiveTriggers2];
 
-          v143 = [(TIKeyboardInputManager *)self proactiveSuggestionsGenerationBlock];
-          (v143)[2](v143, v142);
+          proactiveSuggestionsGenerationBlock2 = [(TIKeyboardInputManager *)self proactiveSuggestionsGenerationBlock];
+          (proactiveSuggestionsGenerationBlock2)[2](proactiveSuggestionsGenerationBlock2, v142);
 
           goto LABEL_97;
         }
       }
     }
 
-    v134 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
-    [v134 close];
+    candidateHandlerForOpenRequest2 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
+    [candidateHandlerForOpenRequest2 close];
 
     [(TIKeyboardInputManager *)self setCandidateHandlerForOpenRequest:0];
 LABEL_97:
 
 LABEL_98:
-    v135 = [(TIKeyboardInputManager *)self autocorrectionForCurrentStem];
-    [v135 removeAllObjects];
+    autocorrectionForCurrentStem2 = [(TIKeyboardInputManager *)self autocorrectionForCurrentStem];
+    [autocorrectionForCurrentStem2 removeAllObjects];
 
     [(TIKeyboardInputManager *)self setDeleteKeyCount:0];
   }
@@ -11555,16 +11555,16 @@ LABEL_99:
   v136 = *MEMORY[0x277D85DE8];
 }
 
-- (void)adjustPhraseBoundaryInForwardDirection:(BOOL)a3 granularity:(int)a4
+- (void)adjustPhraseBoundaryInForwardDirection:(BOOL)direction granularity:(int)granularity
 {
-  v5 = a3;
-  v7 = [(TIKeyboardInputManager *)self phraseBoundary];
-  if (v7 > [(TIKeyboardInputManager *)self inputCount]|| ![(TIKeyboardInputManager *)self supportsSetPhraseBoundary])
+  directionCopy = direction;
+  phraseBoundary = [(TIKeyboardInputManager *)self phraseBoundary];
+  if (phraseBoundary > [(TIKeyboardInputManager *)self inputCount]|| ![(TIKeyboardInputManager *)self supportsSetPhraseBoundary])
   {
     return;
   }
 
-  if (v5)
+  if (directionCopy)
   {
     v8 = 1;
   }
@@ -11574,32 +11574,32 @@ LABEL_99:
     v8 = -1;
   }
 
-  if (v5)
+  if (directionCopy)
   {
-    v9 = [(TIKeyboardInputManager *)self inputCount];
-    if (a4 < 2)
+    inputCount = [(TIKeyboardInputManager *)self inputCount];
+    if (granularity < 2)
     {
-      v10 = v9;
+      v10 = inputCount;
       goto LABEL_10;
     }
 
-    v11 = [(TIKeyboardInputManager *)self inputCount];
+    inputCount2 = [(TIKeyboardInputManager *)self inputCount];
   }
 
   else
   {
     v10 = 0;
-    v11 = 0;
-    if (a4 <= 1)
+    inputCount2 = 0;
+    if (granularity <= 1)
     {
 LABEL_10:
-      if (v7 != v10)
+      if (phraseBoundary != v10)
       {
-        v12 = v8 + v7;
+        v12 = v8 + phraseBoundary;
         do
         {
           [(TIKeyboardInputManager *)self setPhraseBoundary:v12];
-          if ([(TIKeyboardInputManager *)self phraseBoundary]!= v7)
+          if ([(TIKeyboardInputManager *)self phraseBoundary]!= phraseBoundary)
           {
             break;
           }
@@ -11615,44 +11615,44 @@ LABEL_10:
     }
   }
 
-  [(TIKeyboardInputManager *)self setPhraseBoundary:v11];
+  [(TIKeyboardInputManager *)self setPhraseBoundary:inputCount2];
 }
 
-- (_NSRange)smartSelectionRangeForTextInDocument:(id)a3 inRange:(_NSRange)a4 language:(id)a5 tokenizedRanges:(id)a6 options:(unint64_t)a7
+- (_NSRange)smartSelectionRangeForTextInDocument:(id)document inRange:(_NSRange)range language:(id)language tokenizedRanges:(id)ranges options:(unint64_t)options
 {
-  v7 = [(TISmartSelector *)self->_smartSelector selectionRangeForTextInDocument:a3 inRange:a4.location language:a4.length tokenizedRanges:a5 options:a6, a7];
+  options = [(TISmartSelector *)self->_smartSelector selectionRangeForTextInDocument:document inRange:range.location language:range.length tokenizedRanges:language options:ranges, options];
   result.length = v8;
-  result.location = v7;
+  result.location = options;
   return result;
 }
 
-- (void)skipHitTestForTouchEvent:(id)a3 keyboardState:(id)a4
+- (void)skipHitTestForTouchEvent:(id)event keyboardState:(id)state
 {
-  v7 = a3;
-  v6 = [a4 keyLayout];
-  [(TIKeyboardInputManager *)self setKeyLayout:v6];
+  eventCopy = event;
+  keyLayout = [state keyLayout];
+  [(TIKeyboardInputManager *)self setKeyLayout:keyLayout];
 
-  [(TIKeyboardInputManager *)self addTouch:v7 shouldHitTest:0];
+  [(TIKeyboardInputManager *)self addTouch:eventCopy shouldHitTest:0];
 }
 
-- (int64_t)performHitTestForTouchEvent:(id)a3 keyboardState:(id)a4
+- (int64_t)performHitTestForTouchEvent:(id)event keyboardState:(id)state
 {
-  v6 = a3;
-  v7 = [a4 keyLayout];
-  [(TIKeyboardInputManager *)self setKeyLayout:v7];
+  eventCopy = event;
+  keyLayout = [state keyLayout];
+  [(TIKeyboardInputManager *)self setKeyLayout:keyLayout];
 
-  v8 = [(TIKeyboardInputManager *)self addTouch:v6 shouldHitTest:1];
+  v8 = [(TIKeyboardInputManager *)self addTouch:eventCopy shouldHitTest:1];
   return v8;
 }
 
-- (void)setKeyLayout:(id)a3
+- (void)setKeyLayout:(id)layout
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (([(TIKeyboardLayout *)self->_keyLayout isEqual:v5]& 1) == 0)
+  layoutCopy = layout;
+  if (([(TIKeyboardLayout *)self->_keyLayout isEqual:layoutCopy]& 1) == 0)
   {
-    [(TIKeyboardInputManager *)self keyLayoutWillChangeTo:v5 from:self->_keyLayout];
-    objc_storeStrong(&self->_keyLayout, a3);
+    [(TIKeyboardInputManager *)self keyLayoutWillChangeTo:layoutCopy from:self->_keyLayout];
+    objc_storeStrong(&self->_keyLayout, layout);
     m_impl = self->m_impl;
     if (m_impl)
     {
@@ -11666,15 +11666,15 @@ LABEL_10:
       [(TIKeyboardLayout *)keyLayout enumerateKeysUsingBlock:v17];
       [(TIKeyboardInputManager *)self keyLayoutDidChangeTo:self->_keyLayout];
       v8 = self->m_impl;
-      v9 = [(TIKeyboardLayout *)self->_keyLayout usesTwoHands];
-      v8[320] = v9;
+      usesTwoHands = [(TIKeyboardLayout *)self->_keyLayout usesTwoHands];
+      v8[320] = usesTwoHands;
       v10 = *(v8 + 45);
       if (v10)
       {
-        *(v10 + 112) = v9;
+        *(v10 + 112) = usesTwoHands;
       }
 
-      v11 = [(TIKeyboardInputManager *)self currentInputModeIdentifier];
+      currentInputModeIdentifier = [(TIKeyboardInputManager *)self currentInputModeIdentifier];
       v12 = TIInputModeGetSWLayout();
 
       v13 = self->m_impl;
@@ -11690,9 +11690,9 @@ LABEL_10:
 
     if ([(TIKeyboardInputManager *)self shouldMonitorTypingSession])
     {
-      v14 = [(TIKeyboardInputManager *)self typingSessionMonitor];
-      v15 = [(TIKeyboardInputManager *)self keyboardState];
-      [v14 layoutDidChange:v5 keyboardState:v15];
+      typingSessionMonitor = [(TIKeyboardInputManager *)self typingSessionMonitor];
+      keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+      [typingSessionMonitor layoutDidChange:layoutCopy keyboardState:keyboardState];
     }
   }
 
@@ -11752,59 +11752,59 @@ void __39__TIKeyboardInputManager_setKeyLayout___block_invoke(uint64_t a1, const
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)generateReplacementsForString:(id)a3 keyLayout:(id)a4
+- (id)generateReplacementsForString:(id)string keyLayout:(id)layout
 {
-  v6 = a3;
-  [(TIKeyboardInputManager *)self setKeyLayout:a4];
-  v7 = [(TIKeyboardInputManager *)self candidatesForString:v6];
+  stringCopy = string;
+  [(TIKeyboardInputManager *)self setKeyLayout:layout];
+  v7 = [(TIKeyboardInputManager *)self candidatesForString:stringCopy];
 
   return v7;
 }
 
-- (id)handleAcceptedCandidate:(id)a3 keyboardState:(id)a4
+- (id)handleAcceptedCandidate:(id)candidate keyboardState:(id)state
 {
-  v6 = a3;
-  [(TIKeyboardInputManager *)self setKeyboardState:a4];
-  v7 = [(TIKeyboardInputManager *)self didAcceptCandidate:v6];
+  candidateCopy = candidate;
+  [(TIKeyboardInputManager *)self setKeyboardState:state];
+  v7 = [(TIKeyboardInputManager *)self didAcceptCandidate:candidateCopy];
 
   v8 = objc_alloc_init(MEMORY[0x277D6F3E8]);
-  v9 = [(TIKeyboardInputManager *)self remainingInput];
-  [v8 setString:v9];
+  remainingInput = [(TIKeyboardInputManager *)self remainingInput];
+  [v8 setString:remainingInput];
 
   [(TIKeyboardInputManager *)self clearInput];
-  v10 = [v8 string];
-  v11 = [v10 length];
+  string = [v8 string];
+  v11 = [string length];
 
   if (v11)
   {
     v12 = [TIKeyboardInputManagerKeyboardContext alloc];
-    v13 = [(TIKeyboardInputManager *)self keyboardState];
-    v14 = [(TIKeyboardInputManagerKeyboardContext *)v12 initWithKeyboardState:v13];
+    keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+    v14 = [(TIKeyboardInputManagerKeyboardContext *)v12 initWithKeyboardState:keyboardState];
 
     [(TIKeyboardInputManager *)self addInput:v8 withContext:v14];
-    v15 = [(TIKeyboardInputManagerKeyboardContext *)v14 output];
-    v16 = [v15 insertionText];
+    output = [(TIKeyboardInputManagerKeyboardContext *)v14 output];
+    insertionText = [output insertionText];
 
-    if (v16)
+    if (insertionText)
     {
-      v17 = [(TIKeyboardInputManagerKeyboardContext *)v14 output];
-      v18 = [v17 insertionText];
-      v19 = [v7 stringByAppendingString:v18];
+      output2 = [(TIKeyboardInputManagerKeyboardContext *)v14 output];
+      insertionText2 = [output2 insertionText];
+      v19 = [v7 stringByAppendingString:insertionText2];
       v20 = v19;
       if (v19)
       {
-        v21 = v19;
+        insertionText3 = v19;
       }
 
       else
       {
-        v22 = [(TIKeyboardInputManagerKeyboardContext *)v14 output];
-        v21 = [v22 insertionText];
+        output3 = [(TIKeyboardInputManagerKeyboardContext *)v14 output];
+        insertionText3 = [output3 insertionText];
 
-        v7 = v22;
+        v7 = output3;
       }
 
-      v7 = v21;
+      v7 = insertionText3;
     }
   }
 
@@ -11814,40 +11814,40 @@ void __39__TIKeyboardInputManager_setKeyLayout___block_invoke(uint64_t a1, const
   return v7;
 }
 
-- (void)changingContextWithTrigger:(id)a3
+- (void)changingContextWithTrigger:(id)trigger
 {
-  v5 = a3;
+  triggerCopy = trigger;
   if ([(TIKeyboardInputManager *)self shouldMonitorTypingSession])
   {
-    v4 = [(TIKeyboardInputManager *)self typingSessionMonitor];
-    [v4 changingContextWithTrigger:v5];
+    typingSessionMonitor = [(TIKeyboardInputManager *)self typingSessionMonitor];
+    [typingSessionMonitor changingContextWithTrigger:triggerCopy];
   }
 }
 
-- (void)acceptingCandidateWithTrigger:(id)a3
+- (void)acceptingCandidateWithTrigger:(id)trigger
 {
-  v5 = a3;
+  triggerCopy = trigger;
   if ([(TIKeyboardInputManager *)self shouldMonitorTypingSession])
   {
-    v4 = [(TIKeyboardInputManager *)self typingSessionMonitor];
-    [v4 acceptingCandidateWithTrigger:v5];
+    typingSessionMonitor = [(TIKeyboardInputManager *)self typingSessionMonitor];
+    [typingSessionMonitor acceptingCandidateWithTrigger:triggerCopy];
   }
 }
 
-- (void)candidatesOfferedFeedback:(id)a3 keyboardState:(id)a4
+- (void)candidatesOfferedFeedback:(id)feedback keyboardState:(id)state
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v18 = v6;
+  feedbackCopy = feedback;
+  stateCopy = state;
+  v18 = feedbackCopy;
   v8 = +[_TIStatisticsProactiveTracker sharedInstance];
   [v8 setLastAutocorrectionList:v18];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = [v18 predictions];
-  v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  predictions = [v18 predictions];
+  v10 = [predictions countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
     v11 = v10;
@@ -11858,20 +11858,20 @@ void __39__TIKeyboardInputManager_setKeyLayout___block_invoke(uint64_t a1, const
       {
         if (*v20 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(predictions);
         }
 
         v14 = *(*(&v19 + 1) + 8 * i);
-        v15 = [v14 responseKitCategory];
+        responseKitCategory = [v14 responseKitCategory];
 
-        if (v15)
+        if (responseKitCategory)
         {
           [v8 setResponseKitEntryOffered:v14];
           goto LABEL_11;
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v11 = [predictions countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v11)
       {
         continue;
@@ -11885,8 +11885,8 @@ LABEL_11:
 
   if ([(TIKeyboardInputManager *)self shouldMonitorTypingSession])
   {
-    v16 = [(TIKeyboardInputManager *)self typingSessionMonitor];
-    [v16 candidatesOffered:v18 keyboardState:v7];
+    typingSessionMonitor = [(TIKeyboardInputManager *)self typingSessionMonitor];
+    [typingSessionMonitor candidatesOffered:v18 keyboardState:stateCopy];
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -11894,18 +11894,18 @@ LABEL_11:
 
 - (void)finishGeneratingCandidates
 {
-  v5 = [(TIKeyboardInputManager *)self candidateResultSet];
-  if (([v5 isDummySet] & 1) == 0)
+  candidateResultSet = [(TIKeyboardInputManager *)self candidateResultSet];
+  if (([candidateResultSet isDummySet] & 1) == 0)
   {
-    v3 = v5;
-    if (v5)
+    v3 = candidateResultSet;
+    if (candidateResultSet)
     {
-      v4 = [(TIKeyboardInputManager *)self usesCandidateSelection];
-      v3 = v5;
-      if (v4)
+      usesCandidateSelection = [(TIKeyboardInputManager *)self usesCandidateSelection];
+      v3 = candidateResultSet;
+      if (usesCandidateSelection)
       {
         [(TIKeyboardInputManager *)self setMarkedText];
-        v3 = v5;
+        v3 = candidateResultSet;
       }
     }
 
@@ -11913,27 +11913,27 @@ LABEL_11:
   }
 }
 
-- (void)generateCandidatesWithKeyboardState:(id)a3 candidateRange:(_NSRange)a4 candidateHandler:(id)a5
+- (void)generateCandidatesWithKeyboardState:(id)state candidateRange:(_NSRange)range candidateHandler:(id)handler
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
+  length = range.length;
+  location = range.location;
+  stateCopy = state;
+  handlerCopy = handler;
   [(TIKeyboardInputManager *)self setCandidateRange:location, length];
-  [(TIKeyboardInputManager *)self openCandidateGenerationContextWithCandidateHandler:v10];
+  [(TIKeyboardInputManager *)self openCandidateGenerationContextWithCandidateHandler:handlerCopy];
 
-  [(TIKeyboardInputManager *)self setKeyboardState:v9];
+  [(TIKeyboardInputManager *)self setKeyboardState:stateCopy];
   [(TIKeyboardInputManager *)self setPhraseBoundaryIfNecessary];
   if ((*(self->m_impl + 108) & 0x80000000) != 0)
   {
-    v11 = [v9 inputForMarkedText];
-    v12 = [v11 length];
+    inputForMarkedText = [stateCopy inputForMarkedText];
+    v12 = [inputForMarkedText length];
 
     if (!v12)
     {
-      if (([v9 needOneTimeCodeAutofill] & 1) != 0 || objc_msgSend(v9, "autofillMode") == 3)
+      if (([stateCopy needOneTimeCodeAutofill] & 1) != 0 || objc_msgSend(stateCopy, "autofillMode") == 3)
       {
-        v13 = [(TIKeyboardInputManager *)self generateOneTimeCodeCandidatesWithKeyboardState:v9];
+        v13 = [(TIKeyboardInputManager *)self generateOneTimeCodeCandidatesWithKeyboardState:stateCopy];
         if ([v13 count])
         {
 LABEL_8:
@@ -11944,23 +11944,23 @@ LABEL_8:
         }
       }
 
-      if ([v9 needCellularAutofill] && objc_msgSend(v9, "autofillMode") == 8)
+      if ([stateCopy needCellularAutofill] && objc_msgSend(stateCopy, "autofillMode") == 8)
       {
-        v13 = [(TIKeyboardInputManager *)self generateCellularCandidatesWithKeyboardState:v9];
+        v13 = [(TIKeyboardInputManager *)self generateCellularCandidatesWithKeyboardState:stateCopy];
         if ([v13 count])
         {
           goto LABEL_8;
         }
       }
 
-      if (([v9 needAutofill] & 1) != 0 || objc_msgSend(v9, "autofillMode") == 1 || objc_msgSend(v9, "autofillMode") == 2 || objc_msgSend(v9, "autofillMode") == 7)
+      if (([stateCopy needAutofill] & 1) != 0 || objc_msgSend(stateCopy, "autofillMode") == 1 || objc_msgSend(stateCopy, "autofillMode") == 2 || objc_msgSend(stateCopy, "autofillMode") == 7)
       {
         v15[0] = MEMORY[0x277D85DD0];
         v15[1] = 3221225472;
         v15[2] = __94__TIKeyboardInputManager_generateCandidatesWithKeyboardState_candidateRange_candidateHandler___block_invoke;
         v15[3] = &unk_2787320D0;
         v15[4] = self;
-        [(TIKeyboardInputManager *)self generateAutofillFormWithKeyboardState:v9 completionHandler:v15];
+        [(TIKeyboardInputManager *)self generateAutofillFormWithKeyboardState:stateCopy completionHandler:v15];
         goto LABEL_4;
       }
     }
@@ -11985,33 +11985,33 @@ void __94__TIKeyboardInputManager_generateCandidatesWithKeyboardState_candidateR
   }
 }
 
-- (void)finishGeneratingResponseKitProactiveSuggestions:(id)a3 candidateRange:(_NSRange)a4 completion:(id)a5
+- (void)finishGeneratingResponseKitProactiveSuggestions:(id)suggestions candidateRange:(_NSRange)range completion:(id)completion
 {
-  length = a4.length;
-  v84 = a4.location;
+  length = range.length;
+  v84 = range.location;
   v128[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  suggestionsCopy = suggestions;
+  completionCopy = completion;
   v120 = 0;
   v121 = &v120;
   v122 = 0x3032000000;
   v123 = __Block_byref_object_copy__11451;
   v124 = __Block_byref_object_dispose__11452;
-  v10 = v8;
+  v10 = suggestionsCopy;
   v125 = v10;
-  v11 = [MEMORY[0x277CCAE80] currentConnection];
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
   v114 = 0;
   v115 = &v114;
   v116 = 0x3032000000;
   v117 = __Block_byref_object_copy__11451;
   v118 = __Block_byref_object_dispose__11452;
-  v12 = [(TIKeyboardInputManager *)self keyboardState];
-  v13 = [v12 autofillContext];
-  v119 = [v13 objectForKey:*MEMORY[0x277D6F9B0]];
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  autofillContext = [keyboardState autofillContext];
+  v119 = [autofillContext objectForKey:*MEMORY[0x277D6F9B0]];
 
   if (!v115[5])
   {
-    v14 = [TIXPCUtils obtainApplicationIdentifierFromConnection:v11];
+    v14 = [TIXPCUtils obtainApplicationIdentifierFromConnection:currentConnection];
     v15 = v115[5];
     v115[5] = v14;
   }
@@ -12021,19 +12021,19 @@ void __94__TIKeyboardInputManager_generateCandidatesWithKeyboardState_candidateR
   v110 = 0x3032000000;
   v111 = __Block_byref_object_copy__11451;
   v112 = __Block_byref_object_dispose__11452;
-  v16 = [(TIKeyboardInputManager *)self keyboardState];
-  v17 = [v16 autofillContext];
-  v113 = [v17 objectForKey:*MEMORY[0x277D6F9C0]];
+  keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+  autofillContext2 = [keyboardState2 autofillContext];
+  v113 = [autofillContext2 objectForKey:*MEMORY[0x277D6F9C0]];
 
   if (!v109[5])
   {
-    v18 = [TIXPCUtils obtainBundleIdentifierFromConnection:v11];
+    v18 = [TIXPCUtils obtainBundleIdentifierFromConnection:currentConnection];
     v19 = v109[5];
     v109[5] = v18;
   }
 
-  v20 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
-  v21 = [v20 asynchronous];
+  candidateHandlerForOpenRequest = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
+  asynchronous = [candidateHandlerForOpenRequest asynchronous];
 
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -12042,7 +12042,7 @@ void __94__TIKeyboardInputManager_generateCandidatesWithKeyboardState_candidateR
   aBlock[3] = &unk_278731388;
   aBlock[4] = self;
   v105 = &v120;
-  v22 = v9;
+  v22 = completionCopy;
   v104 = v22;
   objc_copyWeak(&v106, &location);
   v23 = _Block_copy(aBlock);
@@ -12073,32 +12073,32 @@ void __94__TIKeyboardInputManager_generateCandidatesWithKeyboardState_candidateR
   v90[3] = &unk_278731478;
   v92 = &v120;
   objc_copyWeak(&v93, &location);
-  v80 = v21;
-  v94 = v21;
+  v80 = asynchronous;
+  v94 = asynchronous;
   v81 = v26;
   v91 = v81;
   [(TIKeyboardInputManager *)self setProactiveSuggestionsGenerationBlock:v90];
   [(TIKeyboardInputManager *)self setLastNumCandidatesRequest:v84 + length];
   v85 = +[TIProactiveQuickTypeManager sharedInstance];
-  v27 = [(TIKeyboardInputManager *)self keyboardState];
-  v28 = [v27 documentState];
-  if ([v28 documentIsEmpty])
+  keyboardState3 = [(TIKeyboardInputManager *)self keyboardState];
+  documentState = [keyboardState3 documentState];
+  if ([documentState documentIsEmpty])
   {
-    v29 = [(TIKeyboardInputManager *)self keyboardState];
-    v30 = [v29 responseContext];
+    keyboardState4 = [(TIKeyboardInputManager *)self keyboardState];
+    responseContext = [keyboardState4 responseContext];
     v78 = length;
-    if (v30)
+    if (responseContext)
     {
       v31 = [v85 usePQT2Flow] ^ 1;
-      v32 = v11;
+      v32 = currentConnection;
     }
 
     else
     {
       v76 = v22;
-      v33 = [(TIKeyboardInputManager *)self keyboardState];
-      v34 = [v33 inputContextHistory];
-      if (v34)
+      keyboardState5 = [(TIKeyboardInputManager *)self keyboardState];
+      inputContextHistory = [keyboardState5 inputContextHistory];
+      if (inputContextHistory)
       {
         v31 = [v85 usePQT2Flow] ^ 1;
       }
@@ -12108,17 +12108,17 @@ void __94__TIKeyboardInputManager_generateCandidatesWithKeyboardState_candidateR
         v31 = 0;
       }
 
-      v32 = v11;
+      v32 = currentConnection;
       v22 = v76;
     }
 
     if (v31)
     {
-      v35 = [v121[5] corrections];
-      v36 = [v35 autocorrection];
-      v37 = [v36 isContinuousPathConversion];
+      corrections = [v121[5] corrections];
+      autocorrection = [corrections autocorrection];
+      isContinuousPathConversion = [autocorrection isContinuousPathConversion];
 
-      if (v37)
+      if (isContinuousPathConversion)
       {
         v38 = v121[5];
         std::string::basic_string[abi:nn200100]<0>(v88, "Predictions");
@@ -12134,17 +12134,17 @@ LABEL_21:
 
       else
       {
-        v47 = [(TIKeyboardInputManager *)self keyboardState];
-        v48 = [v47 shiftState];
+        keyboardState6 = [(TIKeyboardInputManager *)self keyboardState];
+        shiftState = [keyboardState6 shiftState];
 
-        v49 = [(TIKeyboardInputManager *)self keyboardState];
-        v50 = [v49 responseContext];
+        keyboardState7 = [(TIKeyboardInputManager *)self keyboardState];
+        responseContext2 = [keyboardState7 responseContext];
 
-        if (v50)
+        if (responseContext2)
         {
-          v51 = [(TIKeyboardInputManager *)self keyboardState];
-          v52 = [v51 responseContext];
-          v128[0] = v52;
+          keyboardState8 = [(TIKeyboardInputManager *)self keyboardState];
+          responseContext3 = [keyboardState8 responseContext];
+          v128[0] = responseContext3;
           v53 = [MEMORY[0x277CBEA60] arrayWithObjects:v128 count:1];
           v75 = [(TIKeyboardInputManager *)self suggestionBlocklistMatchesStrings:v53];
         }
@@ -12168,35 +12168,35 @@ LABEL_21:
           if (os_log_type_enabled(v54, OS_LOG_TYPE_DEBUG))
           {
             v64 = MEMORY[0x277CCACA8];
-            v65 = [(TIKeyboardInputManager *)self keyboardState];
-            [v65 inputContextHistory];
-            v67 = v66 = v48;
-            v68 = [v67 mostRecentTextEntryLogString];
-            v69 = [v64 stringWithFormat:@"%s InputContext Last Entry: %@", "-[TIKeyboardInputManager finishGeneratingResponseKitProactiveSuggestions:candidateRange:completion:]", v68];
+            keyboardState9 = [(TIKeyboardInputManager *)self keyboardState];
+            [keyboardState9 inputContextHistory];
+            v67 = v66 = shiftState;
+            mostRecentTextEntryLogString = [v67 mostRecentTextEntryLogString];
+            v69 = [v64 stringWithFormat:@"%s InputContext Last Entry: %@", "-[TIKeyboardInputManager finishGeneratingResponseKitProactiveSuggestions:candidateRange:completion:]", mostRecentTextEntryLogString];
             *buf = 138412290;
             v127 = v69;
             _os_log_debug_impl(&dword_22CA55000, v54, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
 
-            v48 = v66;
+            shiftState = v66;
           }
         }
 
-        v71 = v48 != 2;
+        v71 = shiftState != 2;
         v55 = +[TIResponseKitManager sharedTIResponseKitManager];
-        v73 = [(TIKeyboardInputManager *)self keyboardState];
-        v56 = [v73 responseContext];
-        v72 = [(TIKeyboardInputManagerBase *)self inputMode];
-        v57 = [v72 normalizedIdentifier];
-        v58 = [(TIKeyboardInputManager *)self keyboardState];
-        v59 = [v58 clientIdentifier];
-        v60 = [(TIKeyboardInputManager *)self keyboardState];
-        v61 = [v60 recipientIdentifier];
+        keyboardState10 = [(TIKeyboardInputManager *)self keyboardState];
+        responseContext4 = [keyboardState10 responseContext];
+        inputMode = [(TIKeyboardInputManagerBase *)self inputMode];
+        normalizedIdentifier = [inputMode normalizedIdentifier];
+        keyboardState11 = [(TIKeyboardInputManager *)self keyboardState];
+        clientIdentifier = [keyboardState11 clientIdentifier];
+        keyboardState12 = [(TIKeyboardInputManager *)self keyboardState];
+        recipientIdentifier = [keyboardState12 recipientIdentifier];
         v62 = v121[5];
-        v63 = [(TIKeyboardInputManager *)self proactiveSuggestionsGenerationBlock];
+        proactiveSuggestionsGenerationBlock = [(TIKeyboardInputManager *)self proactiveSuggestionsGenerationBlock];
         BYTE2(v70) = v80;
         BYTE1(v70) = v75;
         LOBYTE(v70) = v71;
-        [v55 generateResponseKitSuggestionsForString:v56 withLanguage:v57 withClientID:v59 withRecipientID:v61 withAdditionalPredictions:v62 desiredCandidateCount:v84 + v78 shouldDisableAutoCaps:v70 stringIsBlocklisted:v63 async:? completionHandler:?];
+        [v55 generateResponseKitSuggestionsForString:responseContext4 withLanguage:normalizedIdentifier withClientID:clientIdentifier withRecipientID:recipientIdentifier withAdditionalPredictions:v62 desiredCandidateCount:v84 + v78 shouldDisableAutoCaps:v70 stringIsBlocklisted:proactiveSuggestionsGenerationBlock async:? completionHandler:?];
 
         v32 = v74;
         v24 = v79;
@@ -12210,25 +12210,25 @@ LABEL_21:
   else
   {
 
-    v32 = v11;
+    v32 = currentConnection;
   }
 
-  v40 = [v121[5] corrections];
-  v41 = [v40 autocorrection];
-  if (([v41 isContinuousPathConversion] & 1) == 0)
+  corrections2 = [v121[5] corrections];
+  autocorrection2 = [corrections2 autocorrection];
+  if (([autocorrection2 isContinuousPathConversion] & 1) == 0)
   {
 
     goto LABEL_23;
   }
 
-  v42 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
-  v43 = [v42 asynchronous];
+  candidateHandlerForOpenRequest2 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
+  asynchronous2 = [candidateHandlerForOpenRequest2 asynchronous];
 
-  if ((v43 & 1) == 0)
+  if ((asynchronous2 & 1) == 0)
   {
 LABEL_23:
-    v45 = [(TIKeyboardInputManager *)self proactiveSuggestionsGenerationBlock];
-    v45[2](v45, v121[5]);
+    proactiveSuggestionsGenerationBlock2 = [(TIKeyboardInputManager *)self proactiveSuggestionsGenerationBlock];
+    proactiveSuggestionsGenerationBlock2[2](proactiveSuggestionsGenerationBlock2, v121[5]);
 
     [(TIKeyboardInputManager *)self setLastContinuousPathAutocorrection:0];
     goto LABEL_24;
@@ -12736,13 +12736,13 @@ void __100__TIKeyboardInputManager_finishGeneratingResponseKitProactiveSuggestio
 {
   v22 = 0;
   v3 = +[_TILanguageLikelihoodModel sharedLanguageLikelihoodModel];
-  v4 = [(TIKeyboardState *)self->_keyboardState clientIdentifier];
-  v5 = [v3 emojiUsageCountForApp:v4 lastEmojiCountUpdateTime:&v22];
+  clientIdentifier = [(TIKeyboardState *)self->_keyboardState clientIdentifier];
+  v5 = [v3 emojiUsageCountForApp:clientIdentifier lastEmojiCountUpdateTime:&v22];
 
   if ([(TIKeyboardInputManager *)self isStickerSuggestionsEnabled])
   {
-    v6 = [(TIKeyboardInputManager *)self stickerCandidateGenerator];
-    v7 = v6 != 0;
+    stickerCandidateGenerator = [(TIKeyboardInputManager *)self stickerCandidateGenerator];
+    v7 = stickerCandidateGenerator != 0;
   }
 
   else
@@ -12750,8 +12750,8 @@ void __100__TIKeyboardInputManager_finishGeneratingResponseKitProactiveSuggestio
     v7 = 0;
   }
 
-  v8 = [(TIKeyboardState *)self->_keyboardState clientIdentifier];
-  v9 = [TICandidateGatingManager stickerUsageCountForApp:v8];
+  clientIdentifier2 = [(TIKeyboardState *)self->_keyboardState clientIdentifier];
+  v9 = [TICandidateGatingManager stickerUsageCountForApp:clientIdentifier2];
 
   if (_os_feature_enabled_impl())
   {
@@ -12761,15 +12761,15 @@ void __100__TIKeyboardInputManager_finishGeneratingResponseKitProactiveSuggestio
 
   else
   {
-    v13 = [MEMORY[0x277CBEAF8] currentLocale];
-    v14 = [v13 languageCode];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    languageCode = [currentLocale languageCode];
 
-    v15 = [(TIKeyboardInputManagerBase *)self inputMode];
-    v16 = [v15 languageWithRegion];
+    inputMode = [(TIKeyboardInputManagerBase *)self inputMode];
+    languageWithRegion = [inputMode languageWithRegion];
 
-    if (v7 && (v5 <= 2 ? (v17 = v9 == 0) : (v17 = 0), !v17 && [v14 hasPrefix:@"en"]))
+    if (v7 && (v5 <= 2 ? (v17 = v9 == 0) : (v17 = 0), !v17 && [languageCode hasPrefix:@"en"]))
     {
-      v12 = [v16 hasPrefix:@"en"];
+      v12 = [languageWithRegion hasPrefix:@"en"];
     }
 
     else
@@ -12793,17 +12793,17 @@ void __100__TIKeyboardInputManager_finishGeneratingResponseKitProactiveSuggestio
     return 0;
   }
 
-  v19 = [(TIKeyboardInputManager *)self keyboardState];
-  v20 = [v19 imageSuggestionEnabled];
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  imageSuggestionEnabled = [keyboardState imageSuggestionEnabled];
 
-  return v20;
+  return imageSuggestionEnabled;
 }
 
-- (id)finishGeneratingInlineCompletions:(id)a3 completion:(id)a4 syncResponse:(BOOL)a5
+- (id)finishGeneratingInlineCompletions:(id)completions completion:(id)completion syncResponse:(BOOL)response
 {
   v85 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  completionsCopy = completions;
+  completionCopy = completion;
   kdebug_trace();
   v9 = kac_get_log();
   v10 = os_signpost_id_make_with_pointer(v9, (self ^ 0x10));
@@ -12822,7 +12822,7 @@ void __100__TIKeyboardInputManager_finishGeneratingResponseKitProactiveSuggestio
   v60 = 0x3032000000;
   v61 = __Block_byref_object_copy__11451;
   v62 = __Block_byref_object_dispose__11452;
-  v43 = v7;
+  v43 = completionsCopy;
   v63 = v43;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -12830,7 +12830,7 @@ void __100__TIKeyboardInputManager_finishGeneratingResponseKitProactiveSuggestio
   aBlock[3] = &unk_278731360;
   aBlock[4] = self;
   v57 = &v58;
-  v42 = v8;
+  v42 = completionCopy;
   v56 = v42;
   v12 = _Block_copy(aBlock);
   TIInputManager::input_substring(self->m_impl + 4, 0, *(self->m_impl + 24), v83);
@@ -12842,7 +12842,7 @@ void __100__TIKeyboardInputManager_finishGeneratingResponseKitProactiveSuggestio
     KB::String::String(v74, v80);
     KB::CandidateCollection::CandidateCollection(v51, v70);
     KB::String::String(v68, v74);
-    v14 = [(TIKeyboardInputManager *)self inlineCompletions:v51 matchedStem:v68];
+    inlineCompletions = [(TIKeyboardInputManager *)self inlineCompletions:v51 matchedStem:v68];
     if (v69 && v68[6] == 1)
     {
       free(v69);
@@ -12856,17 +12856,17 @@ void __100__TIKeyboardInputManager_finishGeneratingResponseKitProactiveSuggestio
     std::vector<KB::Candidate>::__destroy_vector::operator()[abi:nn200100](&v64);
     v64 = v51;
     std::vector<KB::Candidate>::__destroy_vector::operator()[abi:nn200100](&v64);
-    if (v14)
+    if (inlineCompletions)
     {
-      if ([v14 count])
+      if ([inlineCompletions count])
       {
-        v40 = v14;
+        v40 = inlineCompletions;
         v41 = v12;
         v49 = 0u;
         v50 = 0u;
         v47 = 0u;
         v48 = 0u;
-        v15 = v14;
+        v15 = inlineCompletions;
         v16 = [v15 countByEnumeratingWithState:&v47 objects:v67 count:16];
         if (v16)
         {
@@ -12891,8 +12891,8 @@ void __100__TIKeyboardInputManager_finishGeneratingResponseKitProactiveSuggestio
               }
 
               v23 = v19;
-              v24 = [v21 candidate];
-              v19 = [(__CFString *)v19 stringByAppendingString:v24];
+              candidate = [v21 candidate];
+              v19 = [(__CFString *)v19 stringByAppendingString:candidate];
             }
 
             v17 = [v15 countByEnumeratingWithState:&v47 objects:v67 count:16];
@@ -12907,7 +12907,7 @@ void __100__TIKeyboardInputManager_finishGeneratingResponseKitProactiveSuggestio
         }
 
         [(TIKeyboardInputManager *)self logInlineCompletionsToTypology:@"Sending cached inline completion to UI" candidate:v19];
-        v14 = v40;
+        inlineCompletions = v40;
         v13 = v41;
       }
 
@@ -12934,16 +12934,16 @@ void __100__TIKeyboardInputManager_finishGeneratingResponseKitProactiveSuggestio
 
   else
   {
-    v14 = [v59[5] inlineCompletions];
+    inlineCompletions = [v59[5] inlineCompletions];
   }
 
-  v25 = [v59[5] corrections];
-  v26 = [v59[5] predictions];
+  corrections = [v59[5] corrections];
+  predictions = [v59[5] predictions];
   v45 = 0;
   v46 = 0;
   v44 = 0;
   TIInputManager::input_substring(self->m_impl + 4, 0, *(self->m_impl + 24), v65);
-  [(TIKeyboardInputManager *)self reconcileInlineCompletionAndAutocorrections:v25 inlineCompletions:v14 predictions:v26 outReconciledAutocorrections:&v46 outReconciledInlineCompletions:&v45 outReconciledPredictions:&v44 matchedStem:v65];
+  [(TIKeyboardInputManager *)self reconcileInlineCompletionAndAutocorrections:corrections inlineCompletions:inlineCompletions predictions:predictions outReconciledAutocorrections:&v46 outReconciledInlineCompletions:&v45 outReconciledPredictions:&v44 matchedStem:v65];
   v27 = v46;
   v28 = v45;
   v29 = v44;
@@ -12953,19 +12953,19 @@ void __100__TIKeyboardInputManager_finishGeneratingResponseKitProactiveSuggestio
   }
 
   v30 = v29;
-  v31 = [v27 autocorrection];
+  autocorrection = [v27 autocorrection];
 
   v32 = v30;
-  if (v31)
+  if (autocorrection)
   {
-    v33 = [v27 autocorrection];
-    v32 = [(TIKeyboardInputManager *)self filterDuplicatePredictions:v30 autocorrection:v33];
+    autocorrection2 = [v27 autocorrection];
+    v32 = [(TIKeyboardInputManager *)self filterDuplicatePredictions:v30 autocorrection:autocorrection2];
   }
 
   v34 = MEMORY[0x277D6F328];
-  v35 = [v59[5] emojiList];
-  v36 = [v59[5] proactiveTriggers];
-  v37 = [v34 listWithCorrections:v27 predictions:v32 emojiList:v35 inlineCompletionList:v28 proactiveTriggers:v36];
+  emojiList = [v59[5] emojiList];
+  proactiveTriggers = [v59[5] proactiveTriggers];
+  v37 = [v34 listWithCorrections:v27 predictions:v32 emojiList:emojiList inlineCompletionList:v28 proactiveTriggers:proactiveTriggers];
 
   if (v82 == 1)
   {
@@ -13050,7 +13050,7 @@ void __84__TIKeyboardInputManager_finishGeneratingInlineCompletions_completion_s
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)finishGeneratingAutocorrectionsWithCandidates:(id)a3 candidateRange:(_NSRange)a4 candidateHandler:(id)a5
+- (void)finishGeneratingAutocorrectionsWithCandidates:(id)candidates candidateRange:(_NSRange)range candidateHandler:(id)handler
 {
   v52 = *MEMORY[0x277D85DE8];
   v36 = 0;
@@ -13058,10 +13058,10 @@ void __84__TIKeyboardInputManager_finishGeneratingInlineCompletions_completion_s
   v38 = 0x3032000000;
   v39 = __Block_byref_object_copy__11451;
   v40 = __Block_byref_object_dispose__11452;
-  v31 = a3;
-  v41 = v31;
-  v6 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
-  v7 = [v6 requestToken];
+  candidatesCopy = candidates;
+  v41 = candidatesCopy;
+  candidateHandlerForOpenRequest = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
+  requestToken = [candidateHandlerForOpenRequest requestToken];
 
   TIInputManager::input_substring(self->m_impl + 4, 0, *(self->m_impl + 24), v50);
   v8 = dispatch_group_create();
@@ -13071,7 +13071,7 @@ void __84__TIKeyboardInputManager_finishGeneratingInlineCompletions_completion_s
   aBlock[2] = __104__TIKeyboardInputManager_finishGeneratingAutocorrectionsWithCandidates_candidateRange_candidateHandler___block_invoke;
   aBlock[3] = &unk_278731338;
   objc_copyWeak(&v34, &location);
-  v9 = v7;
+  v9 = requestToken;
   v33 = v9;
   v10 = _Block_copy(aBlock);
   v42[0] = MEMORY[0x277D85DD0];
@@ -13082,31 +13082,31 @@ void __84__TIKeyboardInputManager_finishGeneratingInlineCompletions_completion_s
   v11 = v8;
   v46 = &v36;
   v43 = v11;
-  v44 = self;
+  selfCopy = self;
   KB::String::String(v48, v50);
   v12 = v9;
   v45 = v12;
   v13 = _Block_copy(v42);
-  v14 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
-  v15 = [v14 asynchronous];
+  candidateHandlerForOpenRequest2 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
+  asynchronous = [candidateHandlerForOpenRequest2 asynchronous];
 
-  v16 = [(TIKeyboardInputManager *)self config];
-  v17 = [v16 isTesting];
+  config = [(TIKeyboardInputManager *)self config];
+  isTesting = [config isTesting];
 
-  if (v15 && v17)
+  if (asynchronous && isTesting)
   {
-    v18 = [(TIKeyboardInputManager *)self keyboardState];
-    v15 = [v18 needAutofill];
+    keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+    asynchronous = [keyboardState needAutofill];
   }
 
-  v19 = [v37[5] corrections];
-  v20 = [v19 autocorrection];
-  v21 = [v20 isContinuousPathConversion];
+  corrections = [v37[5] corrections];
+  autocorrection = [corrections autocorrection];
+  isContinuousPathConversion = [autocorrection isContinuousPathConversion];
 
-  if (v21)
+  if (isContinuousPathConversion)
   {
-    v22 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
-    [v22 pushCandidates:v37[5]];
+    candidateHandlerForOpenRequest3 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
+    [candidateHandlerForOpenRequest3 pushCandidates:v37[5]];
   }
 
   else
@@ -13114,22 +13114,22 @@ void __84__TIKeyboardInputManager_finishGeneratingInlineCompletions_completion_s
     if ([(TIKeyboardInputManager *)self shouldGenerateInlineCompletions])
     {
       dispatch_group_enter(v11);
-      v23 = [(TIKeyboardInputManager *)self finishGeneratingInlineCompletions:v37[5] completion:v13 syncResponse:v15 ^ 1u];
+      v23 = [(TIKeyboardInputManager *)self finishGeneratingInlineCompletions:v37[5] completion:v13 syncResponse:asynchronous ^ 1u];
       v24 = v37[5];
       v37[5] = v23;
     }
 
-    v22 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
+    candidateHandlerForOpenRequest3 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
     v25 = MEMORY[0x277D6F328];
-    v26 = [v37[5] corrections];
-    v27 = [v37[5] inlineCompletions];
-    v28 = [v25 listWithCorrections:v26 inlineCompletionList:v27];
-    [v22 pushCandidates:v28];
+    corrections2 = [v37[5] corrections];
+    inlineCompletions = [v37[5] inlineCompletions];
+    v28 = [v25 listWithCorrections:corrections2 inlineCompletionList:inlineCompletions];
+    [candidateHandlerForOpenRequest3 pushCandidates:v28];
   }
 
   dispatch_group_enter(v11);
-  [(TIKeyboardInputManager *)self finishGeneratingResponseKitProactiveSuggestions:v37[5] candidateRange:a4.location completion:a4.length, v13];
-  if (v15)
+  [(TIKeyboardInputManager *)self finishGeneratingResponseKitProactiveSuggestions:v37[5] candidateRange:range.location completion:range.length, v13];
+  if (asynchronous)
   {
     dispatch_group_notify(v11, MEMORY[0x277D85CD0], v10);
   }
@@ -13550,11 +13550,11 @@ LABEL_76:
   v90 = *MEMORY[0x277D85DE8];
 }
 
-- (id)generateInlineCompletions:(id)a3 withPrefix:(id)a4
+- (id)generateInlineCompletions:(id)completions withPrefix:(id)prefix
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  completionsCopy = completions;
+  prefixCopy = prefix;
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
@@ -13563,27 +13563,27 @@ LABEL_76:
   language_modeling::v1::LinguisticContext::LinguisticContext(&v23);
   memset(v24, 0, 24);
   v17 = 0;
-  KB::utf8_string(v6, &v32);
+  KB::utf8_string(completionsCopy, &v32);
   [(TIKeyboardInputManager *)self tokenizeString:&v32 context:&v18 sentences:&v17];
   if (v33 && BYTE6(v32) == 1)
   {
     free(v33);
   }
 
-  KB::utf8_string(v7, v38);
+  KB::utf8_string(prefixCopy, v38);
   m_impl = self->m_impl;
   if (m_impl[34])
   {
-    v9 = [(TIKeyboardInputManager *)self keyboardState];
-    v10 = [v9 clientIdentifier];
+    keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+    clientIdentifier = [keyboardState clientIdentifier];
 
     m_impl = self->m_impl;
-    if (v10)
+    if (clientIdentifier)
     {
       v11 = m_impl[34];
-      v12 = [(TIKeyboardInputManager *)self keyboardState];
-      v13 = [v12 clientIdentifier];
-      KB::utf8_string(v13, &v32);
+      keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+      clientIdentifier2 = [keyboardState2 clientIdentifier];
+      KB::utf8_string(clientIdentifier2, &v32);
       (*(*v11 + 264))(v11, &v32);
       if (v33 && BYTE6(v32) == 1)
       {
@@ -13668,15 +13668,15 @@ uint64_t __63__TIKeyboardInputManager_generateInlineCompletions_withPrefix___blo
   return result;
 }
 
-- (id)generateTypingAutocorrectionsWithCandidateRange:(_NSRange)a3
+- (id)generateTypingAutocorrectionsWithCandidateRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = +[TIProactiveQuickTypeManager sharedInstance];
-  v7 = [v6 isAutoPopupEnabled];
+  isAutoPopupEnabled = [v6 isAutoPopupEnabled];
 
-  v8 = [(TIKeyboardInputManager *)self keyboardState];
-  if ([v8 autocorrectionListUIDisplayed])
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  if ([keyboardState autocorrectionListUIDisplayed])
   {
 
 LABEL_4:
@@ -13684,23 +13684,23 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v9 = [(TIKeyboardInputManager *)self keyboardState];
-  v10 = [v9 longPredictionListEnabled];
+  keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+  longPredictionListEnabled = [keyboardState2 longPredictionListEnabled];
 
-  if (v10)
+  if (longPredictionListEnabled)
   {
     goto LABEL_4;
   }
 
-  if (!v7)
+  if (!isAutoPopupEnabled)
   {
-    v18 = [(TIKeyboardInputManager *)self supplementalAutocorrectionCandidates];
-    if (!v18)
+    supplementalAutocorrectionCandidates = [(TIKeyboardInputManager *)self supplementalAutocorrectionCandidates];
+    if (!supplementalAutocorrectionCandidates)
     {
-      v18 = [(TIKeyboardInputManager *)self autocorrectionCandidates];
+      supplementalAutocorrectionCandidates = [(TIKeyboardInputManager *)self autocorrectionCandidates];
     }
 
-    v11 = [MEMORY[0x277D6F328] listWithCorrections:v18];
+    v11 = [MEMORY[0x277D6F328] listWithCorrections:supplementalAutocorrectionCandidates];
 
 LABEL_5:
     if (v11)
@@ -13716,9 +13716,9 @@ LABEL_5:
   {
     v14 = v13;
     v15 = MEMORY[0x277D6F328];
-    v16 = [v13 corrections];
-    v17 = [v14 proactiveTriggers];
-    v11 = [v15 listWithCorrections:v16 predictions:0 emojiList:0 proactiveTriggers:v17];
+    corrections = [v13 corrections];
+    proactiveTriggers = [v14 proactiveTriggers];
+    v11 = [v15 listWithCorrections:corrections predictions:0 emojiList:0 proactiveTriggers:proactiveTriggers];
 
     goto LABEL_5;
   }
@@ -13731,46 +13731,46 @@ LABEL_7:
   return v11;
 }
 
-- (void)generateAutocorrectionsWithKeyboardState:(id)a3 candidateRange:(_NSRange)a4 candidateHandler:(id)a5
+- (void)generateAutocorrectionsWithKeyboardState:(id)state candidateRange:(_NSRange)range candidateHandler:(id)handler
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  [(TIKeyboardInputManager *)self setKeyboardState:v9];
-  v11 = [(TIKeyboardInputManager *)self _hasSupplementalPrefix];
+  length = range.length;
+  location = range.location;
+  stateCopy = state;
+  handlerCopy = handler;
+  [(TIKeyboardInputManager *)self setKeyboardState:stateCopy];
+  _hasSupplementalPrefix = [(TIKeyboardInputManager *)self _hasSupplementalPrefix];
   v12 = &unk_27D9ED000;
-  v13 = !v11 | KB::SetOnlySearchSupplementalLexiconForScope::s_shouldOnlySearchSupplementalLexicon;
+  v13 = !_hasSupplementalPrefix | KB::SetOnlySearchSupplementalLexiconForScope::s_shouldOnlySearchSupplementalLexicon;
   if ((v13 & 1) == 0)
   {
     KB::SetOnlySearchSupplementalLexiconForScope::s_shouldOnlySearchSupplementalLexicon = 1;
   }
 
-  if (v10)
+  if (handlerCopy)
   {
     v14 = +[TIProactiveQuickTypeManager sharedInstance];
-    v15 = [v14 isAutoPopupEnabled];
+    isAutoPopupEnabled = [v14 isAutoPopupEnabled];
 
-    v16 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
+    candidateHandlerForOpenRequest = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
 
-    if (v16)
+    if (candidateHandlerForOpenRequest)
     {
-      v17 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
-      [v17 close];
+      candidateHandlerForOpenRequest2 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
+      [candidateHandlerForOpenRequest2 close];
 
       [(TIKeyboardInputManager *)self setCandidateHandlerForOpenRequest:0];
     }
 
-    [(TIKeyboardInputManager *)self setCandidateHandlerForOpenRequest:v10];
-    v18 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
-    [v18 open];
+    [(TIKeyboardInputManager *)self setCandidateHandlerForOpenRequest:handlerCopy];
+    candidateHandlerForOpenRequest3 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
+    [candidateHandlerForOpenRequest3 open];
 
     if ((*(self->m_impl + 108) & 0x80000000) == 0)
     {
       goto LABEL_7;
     }
 
-    if (([v9 needOneTimeCodeAutofill] & 1) != 0 || objc_msgSend(v9, "autofillMode") == 3)
+    if (([stateCopy needOneTimeCodeAutofill] & 1) != 0 || objc_msgSend(stateCopy, "autofillMode") == 3)
     {
       v48 = length;
       v51 = location;
@@ -13787,7 +13787,7 @@ LABEL_7:
         }
       }
 
-      v33 = [(TIKeyboardInputManager *)self generateOneTimeCodeCandidatesWithKeyboardState:v9];
+      v33 = [(TIKeyboardInputManager *)self generateOneTimeCodeCandidatesWithKeyboardState:stateCopy];
       kdebug_trace();
       v34 = kac_get_log();
       v35 = os_signpost_id_make_with_pointer(v34, (self ^ 0x11));
@@ -13821,10 +13821,10 @@ LABEL_7:
       }
     }
 
-    if ([v9 needCellularAutofill] && objc_msgSend(v9, "autofillMode") == 8)
+    if ([stateCopy needCellularAutofill] && objc_msgSend(stateCopy, "autofillMode") == 8)
     {
       v37 = location;
-      v38 = [(TIKeyboardInputManager *)self generateCellularCandidatesWithKeyboardState:v9];
+      v38 = [(TIKeyboardInputManager *)self generateCellularCandidatesWithKeyboardState:stateCopy];
       if ([v38 count])
       {
         v19 = [MEMORY[0x277D6F328] listWithCorrections:0 predictions:v38 emojiList:0];
@@ -13835,8 +13835,8 @@ LABEL_7:
 LABEL_27:
           if (([v19 empty] & 1) == 0)
           {
-            [v10 pushCandidates:v19];
-            [v10 close];
+            [handlerCopy pushCandidates:v19];
+            [handlerCopy close];
             [(TIKeyboardInputManager *)self setCandidateHandlerForOpenRequest:0];
 LABEL_13:
 
@@ -13844,42 +13844,42 @@ LABEL_13:
           }
 
 LABEL_8:
-          v20 = [(TIKeyboardInputManager *)self pregeneratedTypingAutocorrections];
-          if (!v20)
+          pregeneratedTypingAutocorrections = [(TIKeyboardInputManager *)self pregeneratedTypingAutocorrections];
+          if (!pregeneratedTypingAutocorrections)
           {
             goto LABEL_11;
           }
 
-          v21 = v20;
+          v21 = pregeneratedTypingAutocorrections;
           [(TIKeyboardInputManager *)self keyboardState];
           v22 = v50 = location;
           [v22 documentState];
-          v49 = self;
+          selfCopy = self;
           v23 = v19;
           v25 = v24 = length;
-          v26 = [v9 documentState];
-          v27 = [v25 isEqual:v26];
+          documentState = [stateCopy documentState];
+          v27 = [v25 isEqual:documentState];
 
           v12 = &unk_27D9ED000;
           length = v24;
           v19 = v23;
-          self = v49;
+          self = selfCopy;
 
           location = v50;
           if (v27)
           {
-            v28 = [(TIKeyboardInputManager *)v49 pregeneratedTypingAutocorrections];
+            pregeneratedTypingAutocorrections2 = [(TIKeyboardInputManager *)selfCopy pregeneratedTypingAutocorrections];
           }
 
           else
           {
 LABEL_11:
-            v28 = [(TIKeyboardInputManager *)self generateTypingAutocorrectionsWithCandidateRange:location, length];
+            pregeneratedTypingAutocorrections2 = [(TIKeyboardInputManager *)self generateTypingAutocorrectionsWithCandidateRange:location, length];
           }
 
-          v29 = v28;
+          v29 = pregeneratedTypingAutocorrections2;
           [(TIKeyboardInputManager *)self setPregeneratedTypingAutocorrections:0];
-          [(TIKeyboardInputManager *)self finishGeneratingAutocorrectionsWithCandidates:v29 candidateRange:location candidateHandler:length, v10];
+          [(TIKeyboardInputManager *)self finishGeneratingAutocorrectionsWithCandidates:v29 candidateRange:location candidateHandler:length, handlerCopy];
 
           goto LABEL_13;
         }
@@ -13892,7 +13892,7 @@ LABEL_11:
       }
     }
 
-    if (!v15)
+    if (!isAutoPopupEnabled)
     {
 LABEL_7:
       v19 = 0;
@@ -13900,9 +13900,9 @@ LABEL_7:
     }
 
     v39 = location;
-    if ([v9 needAutofill])
+    if ([stateCopy needAutofill])
     {
-      if ([v9 needContactAutofill])
+      if ([stateCopy needContactAutofill])
       {
         goto LABEL_51;
       }
@@ -13926,11 +13926,11 @@ LABEL_43:
       v52[2] = __99__TIKeyboardInputManager_generateAutocorrectionsWithKeyboardState_candidateRange_candidateHandler___block_invoke;
       v52[3] = &unk_2787312E8;
       v52[4] = self;
-      v46 = v10;
+      v46 = handlerCopy;
       v53 = v46;
       v54 = v39;
       v55 = length;
-      if ([(TIKeyboardInputManager *)self generateAutofillFormWithKeyboardState:v9 completionHandler:v52])
+      if ([(TIKeyboardInputManager *)self generateAutofillFormWithKeyboardState:stateCopy completionHandler:v52])
       {
         v47 = [MEMORY[0x277D6F328] listWithCorrections:0 predictions:0];
         [v46 pushCandidates:v47];
@@ -13944,13 +13944,13 @@ LABEL_43:
       goto LABEL_16;
     }
 
-    v40 = [v9 autofillContext];
-    v41 = [v40 objectForKeyedSubscript:*MEMORY[0x277D6F9C8]];
-    if (([v41 isEqualToString:@"webauthn"] & 1) != 0 || objc_msgSend(v9, "autofillMode"))
+    autofillContext = [stateCopy autofillContext];
+    v41 = [autofillContext objectForKeyedSubscript:*MEMORY[0x277D6F9C8]];
+    if (([v41 isEqualToString:@"webauthn"] & 1) != 0 || objc_msgSend(stateCopy, "autofillMode"))
     {
-      v42 = [v9 needContactAutofill];
+      needContactAutofill = [stateCopy needContactAutofill];
 
-      if ((v42 & 1) == 0)
+      if ((needContactAutofill & 1) == 0)
       {
         goto LABEL_43;
       }
@@ -14007,17 +14007,17 @@ void __99__TIKeyboardInputManager_generateAutocorrectionsWithKeyboardState_candi
   }
 }
 
-- (id)generateCellularCandidatesWithKeyboardState:(id)a3
+- (id)generateCellularCandidatesWithKeyboardState:(id)state
 {
-  v4 = a3;
-  v5 = [(TIKeyboardInputManager *)self keyboardState];
-  v6 = [v5 isScreenLocked];
+  stateCopy = state;
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  isScreenLocked = [keyboardState isScreenLocked];
 
-  if ((v6 & 1) == 0 && [v4 needCellularAutofill] && objc_msgSend(v4, "autofillMode") == 8)
+  if ((isScreenLocked & 1) == 0 && [stateCopy needCellularAutofill] && objc_msgSend(stateCopy, "autofillMode") == 8)
   {
     v7 = +[TIAppAutofillManager sharedInstance];
-    v8 = [v4 secureCandidateRenderTraits];
-    v9 = [v7 generateCellularCandidatesWithRenderTraits:v8 withKeyboardState:v4];
+    secureCandidateRenderTraits = [stateCopy secureCandidateRenderTraits];
+    v9 = [v7 generateCellularCandidatesWithRenderTraits:secureCandidateRenderTraits withKeyboardState:stateCopy];
   }
 
   else
@@ -14028,17 +14028,17 @@ void __99__TIKeyboardInputManager_generateAutocorrectionsWithKeyboardState_candi
   return v9;
 }
 
-- (id)generateOneTimeCodeCandidatesWithKeyboardState:(id)a3
+- (id)generateOneTimeCodeCandidatesWithKeyboardState:(id)state
 {
-  v4 = a3;
-  v5 = [(TIKeyboardInputManager *)self keyboardState];
-  v6 = [v5 isScreenLocked];
+  stateCopy = state;
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  isScreenLocked = [keyboardState isScreenLocked];
 
-  if ((v6 & 1) == 0 && (([v4 needOneTimeCodeAutofill] & 1) != 0 || objc_msgSend(v4, "autofillMode") == 3))
+  if ((isScreenLocked & 1) == 0 && (([stateCopy needOneTimeCodeAutofill] & 1) != 0 || objc_msgSend(stateCopy, "autofillMode") == 3))
   {
     v8 = +[TIAppAutofillManager sharedInstance];
-    v9 = [v4 secureCandidateRenderTraits];
-    v7 = [v8 generateOneTimeCodeCandidatesWithRenderTraits:v9 withKeyboardState:v4];
+    secureCandidateRenderTraits = [stateCopy secureCandidateRenderTraits];
+    v7 = [v8 generateOneTimeCodeCandidatesWithRenderTraits:secureCandidateRenderTraits withKeyboardState:stateCopy];
   }
 
   else
@@ -14049,49 +14049,49 @@ void __99__TIKeyboardInputManager_generateAutocorrectionsWithKeyboardState_candi
   return v7;
 }
 
-- (BOOL)generateAutofillFormWithKeyboardState:(id)a3 completionHandler:(id)a4
+- (BOOL)generateAutofillFormWithKeyboardState:(id)state completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TIKeyboardInputManager *)self keyboardState];
-  v9 = [v8 isScreenLocked];
+  stateCopy = state;
+  handlerCopy = handler;
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  isScreenLocked = [keyboardState isScreenLocked];
 
-  if (v9)
+  if (isScreenLocked)
   {
     goto LABEL_2;
   }
 
-  if (([v6 needAutofill] & 1) != 0 || objc_msgSend(v6, "autofillMode") == 1 || (objc_msgSend(v6, "autofillContext"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "objectForKeyedSubscript:", *MEMORY[0x277D6F9C8]), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", @"webauthn"), v12, v11, v13))
+  if (([stateCopy needAutofill] & 1) != 0 || objc_msgSend(stateCopy, "autofillMode") == 1 || (objc_msgSend(stateCopy, "autofillContext"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "objectForKeyedSubscript:", *MEMORY[0x277D6F9C8]), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", @"webauthn"), v12, v11, v13))
   {
     v14 = +[TIAppAutofillManager sharedInstance];
-    v15 = [v6 secureCandidateRenderTraits];
+    secureCandidateRenderTraits = [stateCopy secureCandidateRenderTraits];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __82__TIKeyboardInputManager_generateAutofillFormWithKeyboardState_completionHandler___block_invoke;
     v21[3] = &unk_2787312C0;
-    v22 = v7;
-    [v14 generateAutofillFormCandidatesWithRenderTraits:v15 withKeyboardState:v6 completion:v21];
+    v22 = handlerCopy;
+    [v14 generateAutofillFormCandidatesWithRenderTraits:secureCandidateRenderTraits withKeyboardState:stateCopy completion:v21];
 
     v10 = 1;
     goto LABEL_8;
   }
 
-  if ([v6 autofillMode] == 2 || objc_msgSend(v6, "autofillMode") == 7)
+  if ([stateCopy autofillMode] == 2 || objc_msgSend(stateCopy, "autofillMode") == 7)
   {
     v17 = +[TIAppAutofillManager sharedInstance];
-    v18 = [v6 secureCandidateRenderTraits];
+    secureCandidateRenderTraits2 = [stateCopy secureCandidateRenderTraits];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __82__TIKeyboardInputManager_generateAutofillFormWithKeyboardState_completionHandler___block_invoke_3;
     v19[3] = &unk_2787312C0;
-    v20 = v7;
-    [v17 generateAutofillFormSuggestedUsernameWithRenderTraits:v18 withKeyboardState:v6 completionHandler:v19];
+    v20 = handlerCopy;
+    [v17 generateAutofillFormSuggestedUsernameWithRenderTraits:secureCandidateRenderTraits2 withKeyboardState:stateCopy completionHandler:v19];
   }
 
   else
   {
 LABEL_2:
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
   v10 = 0;
@@ -14108,41 +14108,41 @@ void __82__TIKeyboardInputManager_generateAutofillFormWithKeyboardState_completi
   TIDispatchAsync();
 }
 
-- (void)trackProactiveMetrics:(id)a3 keyboardState:(id)a4
+- (void)trackProactiveMetrics:(id)metrics keyboardState:(id)state
 {
-  v5 = a4;
-  v6 = a3;
+  stateCopy = state;
+  metricsCopy = metrics;
   v11 = +[TIConnectionsMetricsTracker sharedInstance];
-  v7 = [v5 documentState];
-  v8 = [v7 documentIsEmpty];
-  v9 = [v5 textInputTraits];
+  documentState = [stateCopy documentState];
+  documentIsEmpty = [documentState documentIsEmpty];
+  textInputTraits = [stateCopy textInputTraits];
 
-  v10 = [v9 textContentType];
-  [v11 trackTextFieldEntryWithEmpty:v8 fieldType:v10 trigger:v6];
+  textContentType = [textInputTraits textContentType];
+  [v11 trackTextFieldEntryWithEmpty:documentIsEmpty fieldType:textContentType trigger:metricsCopy];
 }
 
-- (void)deleteFromInputWithContext:(id)a3
+- (void)deleteFromInputWithContext:(id)context
 {
   v75 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TIKeyboardInputManager *)self currentWordStem];
-  v6 = [(TIKeyboardInputManager *)self autocorrectionForCurrentStem];
-  v7 = [v6 objectForKey:v5];
+  contextCopy = context;
+  currentWordStem = [(TIKeyboardInputManager *)self currentWordStem];
+  autocorrectionForCurrentStem = [(TIKeyboardInputManager *)self autocorrectionForCurrentStem];
+  v7 = [autocorrectionForCurrentStem objectForKey:currentWordStem];
 
   if ([v7 length])
   {
-    [(TIKeyboardInputManager *)self setRejectedAutocorrection:v7 forInput:v5];
+    [(TIKeyboardInputManager *)self setRejectedAutocorrection:v7 forInput:currentWordStem];
   }
 
-  v8 = [(TIKeyboardInputManager *)self autocorrectionHistory];
-  v9 = [v8 objectForKey:v5];
+  autocorrectionHistory = [(TIKeyboardInputManager *)self autocorrectionHistory];
+  v9 = [autocorrectionHistory objectForKey:currentWordStem];
 
-  v10 = [v9 candidate];
+  candidate = [v9 candidate];
 
-  if ([v10 length])
+  if ([candidate length])
   {
-    v11 = [v9 input];
-    [(TIKeyboardInputManager *)self setRejectedAutocorrection:v10 forInput:v11];
+    input = [v9 input];
+    [(TIKeyboardInputManager *)self setRejectedAutocorrection:candidate forInput:input];
   }
 
   if (![(TIKeyboardInputManager *)self inputCount]&& [(TIKeyboardInputManager *)self usesCandidateSelection])
@@ -14153,15 +14153,15 @@ void __82__TIKeyboardInputManager_generateAutofillFormWithKeyboardState_completi
   v72 = 0;
   if (![(TIKeyboardInputManager *)self inputIndex])
   {
-    v13 = [(TIKeyboardInputManager *)self keyboardState];
-    v14 = [v13 documentState];
-    v15 = [v14 markedText];
-    if (v15)
+    keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+    documentState = [keyboardState documentState];
+    markedText = [documentState markedText];
+    if (markedText)
     {
-      v16 = v15;
-      v17 = [(TIKeyboardInputManager *)self supportsSetPhraseBoundary];
+      v16 = markedText;
+      supportsSetPhraseBoundary = [(TIKeyboardInputManager *)self supportsSetPhraseBoundary];
 
-      if (v17)
+      if (supportsSetPhraseBoundary)
       {
         goto LABEL_30;
       }
@@ -14171,61 +14171,61 @@ void __82__TIKeyboardInputManager_generateAutofillFormWithKeyboardState_completi
     {
     }
 
-    v37 = [(TIKeyboardInputManager *)self lastAcceptedText];
-    if (v37)
+    lastAcceptedText = [(TIKeyboardInputManager *)self lastAcceptedText];
+    if (lastAcceptedText)
     {
-      v38 = v37;
-      v39 = [(TIKeyboardInputManager *)self lastAcceptedText];
-      if ([v39 isContinuousPathConversion])
+      v38 = lastAcceptedText;
+      lastAcceptedText2 = [(TIKeyboardInputManager *)self lastAcceptedText];
+      if ([lastAcceptedText2 isContinuousPathConversion])
       {
-        v40 = [(TIKeyboardInputManager *)self config];
-        v41 = [v40 continuousPathDeleteWholeWord];
+        config = [(TIKeyboardInputManager *)self config];
+        continuousPathDeleteWholeWord = [config continuousPathDeleteWholeWord];
 
-        if (v41)
+        if (continuousPathDeleteWholeWord)
         {
-          v42 = [(TIKeyboardInputManager *)self lastAcceptedText];
-          v43 = [v42 candidate];
+          lastAcceptedText3 = [(TIKeyboardInputManager *)self lastAcceptedText];
+          candidate2 = [lastAcceptedText3 candidate];
 
-          v44 = [(TIKeyboardInputManager *)self lastAcceptedText];
-          v45 = [v44 input];
-          if (v45)
+          lastAcceptedText4 = [(TIKeyboardInputManager *)self lastAcceptedText];
+          input2 = [lastAcceptedText4 input];
+          if (input2)
           {
-            v46 = v45;
-            v68 = v10;
-            v70 = v5;
+            v46 = input2;
+            v68 = candidate;
+            v70 = currentWordStem;
             v47 = v9;
-            v48 = [(TIKeyboardInputManager *)self lastAcceptedText];
-            v49 = [v48 input];
-            v50 = [(TIKeyboardInputManager *)self pathedWordSeparator];
-            v51 = [v49 stringByAppendingString:v50];
-            v67 = [v43 hasPrefix:v51];
+            lastAcceptedText5 = [(TIKeyboardInputManager *)self lastAcceptedText];
+            input3 = [lastAcceptedText5 input];
+            pathedWordSeparator = [(TIKeyboardInputManager *)self pathedWordSeparator];
+            v51 = [input3 stringByAppendingString:pathedWordSeparator];
+            v67 = [candidate2 hasPrefix:v51];
 
             if (!v67)
             {
-              v54 = v4;
+              v54 = contextCopy;
               v9 = v47;
-              v10 = v68;
-              v5 = v70;
+              candidate = v68;
+              currentWordStem = v70;
               goto LABEL_47;
             }
 
-            v44 = [(TIKeyboardInputManager *)self lastAcceptedText];
-            v52 = [v44 input];
-            v53 = [v43 substringFromIndex:{objc_msgSend(v52, "length") + 1}];
+            lastAcceptedText4 = [(TIKeyboardInputManager *)self lastAcceptedText];
+            input4 = [lastAcceptedText4 input];
+            v53 = [candidate2 substringFromIndex:{objc_msgSend(input4, "length") + 1}];
 
-            v43 = v53;
+            candidate2 = v53;
             v9 = v47;
-            v10 = v68;
-            v5 = v70;
+            candidate = v68;
+            currentWordStem = v70;
           }
 
-          v54 = v4;
+          v54 = contextCopy;
 
 LABEL_47:
           m_impl = self->m_impl;
           if (m_impl)
           {
-            KB::utf8_string(v43, v73);
+            KB::utf8_string(candidate2, v73);
             v61 = m_impl[28];
             if (v61)
             {
@@ -14238,31 +14238,31 @@ LABEL_47:
             }
           }
 
-          v4 = v54;
-          [v54 deleteTextBackward:v43];
-          v62 = [(TIKeyboardInputManager *)self lastAcceptedText];
-          [(TIKeyboardInputManager *)self continuousPathCandidateRejected:v62];
+          contextCopy = v54;
+          [v54 deleteTextBackward:candidate2];
+          lastAcceptedText6 = [(TIKeyboardInputManager *)self lastAcceptedText];
+          [(TIKeyboardInputManager *)self continuousPathCandidateRejected:lastAcceptedText6];
 
           [(TIKeyboardInputManager *)self setLastAcceptedText:0];
-          v55 = 1;
+          lastAcceptedText7 = 1;
 LABEL_54:
           if ([(TIKeyboardInputManager *)self usesCandidateSelection])
           {
-            v63 = [(TIKeyboardInputManager *)self keyboardState];
-            [(TIKeyboardInputManager *)self syncMarkedTextForKeyboardState:v63 afterContextChange:0];
+            keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+            [(TIKeyboardInputManager *)self syncMarkedTextForKeyboardState:keyboardState2 afterContextChange:0];
           }
 
           else
           {
             if ([(TIKeyboardInputManager *)self shouldMonitorTypingSession])
             {
-              v64 = [(TIKeyboardInputManager *)self typingSessionMonitor];
-              [v64 changingContextWithTrigger:*MEMORY[0x277D6F600]];
+              typingSessionMonitor = [(TIKeyboardInputManager *)self typingSessionMonitor];
+              [typingSessionMonitor changingContextWithTrigger:*MEMORY[0x277D6F600]];
             }
 
-            v65 = [(TIKeyboardInputManager *)self keyboardState];
-            v66 = [v65 documentState];
-            [(TIKeyboardInputManager *)self setInputStringFromDocumentState:v66 isDeleteEvent:1 didDeleteLastAcceptedPath:v55];
+            keyboardState3 = [(TIKeyboardInputManager *)self keyboardState];
+            documentState2 = [keyboardState3 documentState];
+            [(TIKeyboardInputManager *)self setInputStringFromDocumentState:documentState2 isDeleteEvent:1 didDeleteLastAcceptedPath:lastAcceptedText7];
           }
 
           goto LABEL_30;
@@ -14274,22 +14274,22 @@ LABEL_54:
       }
     }
 
-    [v4 deleteBackward:1];
-    v55 = [(TIKeyboardInputManager *)self lastAcceptedText];
-    if (v55)
+    [contextCopy deleteBackward:1];
+    lastAcceptedText7 = [(TIKeyboardInputManager *)self lastAcceptedText];
+    if (lastAcceptedText7)
     {
-      v56 = [(TIKeyboardInputManager *)self lastAcceptedText];
-      v57 = [v56 isContinuousPathConversion];
+      lastAcceptedText8 = [(TIKeyboardInputManager *)self lastAcceptedText];
+      isContinuousPathConversion = [lastAcceptedText8 isContinuousPathConversion];
 
-      if (v57)
+      if (isContinuousPathConversion)
       {
-        v58 = [(TIKeyboardInputManager *)self lastAcceptedText];
-        [(TIKeyboardInputManager *)self continuousPathCandidateRejected:v58];
+        lastAcceptedText9 = [(TIKeyboardInputManager *)self lastAcceptedText];
+        [(TIKeyboardInputManager *)self continuousPathCandidateRejected:lastAcceptedText9];
 
         [(TIKeyboardInputManager *)self setLastAcceptedText:0];
       }
 
-      v55 = 0;
+      lastAcceptedText7 = 0;
     }
 
     goto LABEL_54;
@@ -14298,21 +14298,21 @@ LABEL_54:
   if (![(TIKeyboardInputManager *)self usesCandidateSelection])
   {
 LABEL_16:
-    v69 = v5;
-    v20 = v10;
+    v69 = currentWordStem;
+    v20 = candidate;
     v21 = v9;
-    v22 = v4;
-    v23 = [(TIKeyboardInputManager *)self hasLegacyInputStem];
-    v24 = [(TIKeyboardInputManager *)self inputString];
-    v25 = [(TIKeyboardInputManager *)self inputIndex];
-    v26 = [(TIKeyboardInputManager *)self inputContext];
-    if (v23)
+    v22 = contextCopy;
+    hasLegacyInputStem = [(TIKeyboardInputManager *)self hasLegacyInputStem];
+    inputString = [(TIKeyboardInputManager *)self inputString];
+    inputIndex = [(TIKeyboardInputManager *)self inputIndex];
+    inputContext = [(TIKeyboardInputManager *)self inputContext];
+    if (hasLegacyInputStem)
     {
       [(TIKeyboardInputManager *)self displayedCandidateRejected];
     }
 
     v27 = [(TIKeyboardInputManager *)self deleteFromInput:&v72];
-    v28 = [(TIKeyboardInputManager *)self deletedSuffixOfInputContext:v26 whenDeletingFromInputString:v24 withInputIndex:v25 deletionCount:v72];
+    v28 = [(TIKeyboardInputManager *)self deletedSuffixOfInputContext:inputContext whenDeletingFromInputString:inputString withInputIndex:inputIndex deletionCount:v72];
     v29 = v28;
     if (v27)
     {
@@ -14327,7 +14327,7 @@ LABEL_16:
     v31 = [v28 stringByAppendingString:v30];
 
     v32 = [v31 length];
-    v4 = v22;
+    contextCopy = v22;
     if (v72)
     {
       [v22 deleteBackward:?];
@@ -14338,38 +14338,38 @@ LABEL_16:
       [v22 insertText:v31];
     }
 
-    if (!v23 && [(TIKeyboardInputManager *)self shouldExtendPriorWord]&& [(TIKeyboardInputManager *)self hasLegacyInputStem])
+    if (!hasLegacyInputStem && [(TIKeyboardInputManager *)self shouldExtendPriorWord]&& [(TIKeyboardInputManager *)self hasLegacyInputStem])
     {
-      v33 = [(TIKeyboardInputManager *)self keyboardState];
-      v34 = [v33 documentState];
+      keyboardState4 = [(TIKeyboardInputManager *)self keyboardState];
+      documentState3 = [keyboardState4 documentState];
       v71[0] = MEMORY[0x277D85DD0];
       v71[1] = 3221225472;
       v71[2] = __53__TIKeyboardInputManager_deleteFromInputWithContext___block_invoke;
       v71[3] = &unk_278731200;
       v71[4] = self;
-      v35 = [v34 inputStringWithTerminatorPredicate:v71];
+      v35 = [documentState3 inputStringWithTerminatorPredicate:v71];
 
-      v4 = v22;
+      contextCopy = v22;
       [(TIKeyboardInputManager *)self setOriginalInput:v35];
     }
 
     v9 = v21;
-    v10 = v20;
-    v5 = v69;
+    candidate = v20;
+    currentWordStem = v69;
     goto LABEL_30;
   }
 
-  v12 = [(TIKeyboardInputManager *)self keyboardState];
-  if ([v12 shouldSkipCandidateSelection])
+  keyboardState5 = [(TIKeyboardInputManager *)self keyboardState];
+  if ([keyboardState5 shouldSkipCandidateSelection])
   {
 
     goto LABEL_16;
   }
 
-  v18 = [(TIKeyboardInputManager *)self keyboardState];
-  v19 = [v18 suppressingCandidateSelection];
+  keyboardState6 = [(TIKeyboardInputManager *)self keyboardState];
+  suppressingCandidateSelection = [keyboardState6 suppressingCandidateSelection];
 
-  if (v19)
+  if (suppressingCandidateSelection)
   {
     goto LABEL_16;
   }
@@ -14386,60 +14386,60 @@ LABEL_30:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)continuousPathCandidateRejected:(id)a3
+- (void)continuousPathCandidateRejected:(id)rejected
 {
-  v4 = [a3 candidate];
-  v5 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  candidate = [rejected candidate];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v6 = [candidate stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   v10 = [v6 stringByReplacingOccurrencesOfString:@"’" withString:@"'"];
 
-  v7 = [(TIKeyboardInputManager *)self rejectedConversionsForCurrentContinuousPath];
+  rejectedConversionsForCurrentContinuousPath = [(TIKeyboardInputManager *)self rejectedConversionsForCurrentContinuousPath];
 
-  if (!v7)
+  if (!rejectedConversionsForCurrentContinuousPath)
   {
     v8 = [MEMORY[0x277CBEB58] set];
     [(TIKeyboardInputManager *)self setRejectedConversionsForCurrentContinuousPath:v8];
   }
 
-  v9 = [(TIKeyboardInputManager *)self rejectedConversionsForCurrentContinuousPath];
-  [v9 addObject:v10];
+  rejectedConversionsForCurrentContinuousPath2 = [(TIKeyboardInputManager *)self rejectedConversionsForCurrentContinuousPath];
+  [rejectedConversionsForCurrentContinuousPath2 addObject:v10];
 }
 
-- (void)addInput:(id)a3 withContext:(id)a4
+- (void)addInput:(id)input withContext:(id)context
 {
   v66 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 string];
-  v9 = [v8 length];
+  inputCopy = input;
+  contextCopy = context;
+  string = [inputCopy string];
+  v9 = [string length];
 
   if (v9)
   {
-    v10 = [(TIKeyboardInputManager *)self keyboardState];
-    v11 = [v6 isUppercase];
-    if ([v6 isAutoshifted])
+    keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+    isUppercase = [inputCopy isUppercase];
+    if ([inputCopy isAutoshifted])
     {
-      v11 |= 2u;
+      isUppercase |= 2u;
     }
 
-    if ([v6 isPopupVariant])
+    if ([inputCopy isPopupVariant])
     {
-      v11 |= 4u;
+      isUppercase |= 4u;
     }
 
-    if ([v6 isMultitap])
+    if ([inputCopy isMultitap])
     {
-      v12 = v11 | 8;
+      v12 = isUppercase | 8;
     }
 
     else
     {
-      v12 = v11;
+      v12 = isUppercase;
     }
 
-    v13 = [v6 isGesture];
-    if (([v6 isPopupVariant] | v13))
+    isGesture = [inputCopy isGesture];
+    if (([inputCopy isPopupVariant] | isGesture))
     {
       v14 = v12 | 4;
     }
@@ -14449,7 +14449,7 @@ LABEL_30:
       v14 = v12;
     }
 
-    if ([v6 isSynthesizedByAcceptingCandidate])
+    if ([inputCopy isSynthesizedByAcceptingCandidate])
     {
       v15 = v14 | 0x80;
     }
@@ -14459,27 +14459,27 @@ LABEL_30:
       v15 = v14;
     }
 
-    v16 = [v6 string];
-    v17 = [(TIKeyboardInputManager *)self shouldInsertSpaceBeforeInput:v16];
+    string2 = [inputCopy string];
+    v17 = [(TIKeyboardInputManager *)self shouldInsertSpaceBeforeInput:string2];
 
     if (v17)
     {
-      [(TIKeyboardInputManager *)self insertSpaceBeforeInputWithContext:v7];
+      [(TIKeyboardInputManager *)self insertSpaceBeforeInputWithContext:contextCopy];
     }
 
     v63 = 0;
-    v18 = [(TIKeyboardInputManager *)self inputString];
-    v19 = [(TIKeyboardInputManager *)self inputIndex];
-    v20 = [(TIKeyboardInputManager *)self inputContext];
-    v21 = [v6 string];
-    v22 = [v6 touchEvent];
-    [v22 location];
+    inputString = [(TIKeyboardInputManager *)self inputString];
+    inputIndex = [(TIKeyboardInputManager *)self inputIndex];
+    inputContext = [(TIKeyboardInputManager *)self inputContext];
+    string3 = [inputCopy string];
+    touchEvent = [inputCopy touchEvent];
+    [touchEvent location];
     v23 = v15;
-    v24 = v18;
-    v25 = [(TIKeyboardInputManager *)self addInput:v21 flags:v23 point:&v63 firstDelete:?];
+    v24 = inputString;
+    v25 = [(TIKeyboardInputManager *)self addInput:string3 flags:v23 point:&v63 firstDelete:?];
 
-    v62 = v20;
-    v26 = [(TIKeyboardInputManager *)self deletedSuffixOfInputContext:v20 whenDeletingFromInputString:v24 withInputIndex:v19 deletionCount:v63];
+    v62 = inputContext;
+    v26 = [(TIKeyboardInputManager *)self deletedSuffixOfInputContext:inputContext whenDeletingFromInputString:v24 withInputIndex:inputIndex deletionCount:v63];
     v27 = v26;
     if (v25)
     {
@@ -14503,16 +14503,16 @@ LABEL_30:
       v30 = 1;
     }
 
-    if ([v10 shouldSkipCandidateSelection] & 1) != 0 || (objc_msgSend(v10, "suppressingCandidateSelection") & 1) != 0 || ((v30 | -[TIKeyboardInputManager shouldCommitInputString](self, "shouldCommitInputString")))
+    if ([keyboardState shouldSkipCandidateSelection] & 1) != 0 || (objc_msgSend(keyboardState, "suppressingCandidateSelection") & 1) != 0 || ((v30 | -[TIKeyboardInputManager shouldCommitInputString](self, "shouldCommitInputString")))
     {
-      v33 = [(TIKeyboardInputManager *)self keyboardState];
-      v34 = [v33 documentState];
-      v35 = [v34 selectedText];
+      keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+      documentState = [keyboardState2 documentState];
+      selectedText = [documentState selectedText];
 
       v36 = [v29 length];
       if (v63)
       {
-        if (v35)
+        if (selectedText)
         {
           ++v63;
         }
@@ -14520,10 +14520,10 @@ LABEL_30:
         else
         {
           v37 = v29;
-          v38 = [v10 documentState];
-          v39 = [v38 markedText];
+          documentState2 = [keyboardState documentState];
+          markedText = [documentState2 markedText];
 
-          if (v39)
+          if (markedText)
           {
             ++v63;
           }
@@ -14531,30 +14531,30 @@ LABEL_30:
           v29 = v37;
         }
 
-        [v7 deleteBackward:?];
+        [contextCopy deleteBackward:?];
       }
 
       if (v36)
       {
-        [v7 insertText:v29];
+        [contextCopy insertText:v29];
       }
 
-      if ([v10 shortcutConversionEnabled])
+      if ([keyboardState shortcutConversionEnabled])
       {
-        v40 = [v10 documentState];
-        v41 = [(TIKeyboardInputManager *)self shortcutConversionForDocumentState:v40];
-        [v7 output];
+        documentState3 = [keyboardState documentState];
+        v41 = [(TIKeyboardInputManager *)self shortcutConversionForDocumentState:documentState3];
+        [contextCopy output];
         v43 = v42 = v29;
         [v43 setShortcutConversion:v41];
 
         v29 = v42;
       }
 
-      if (v35 && [(TIKeyboardInputManager *)self shouldExtendPriorWord])
+      if (selectedText && [(TIKeyboardInputManager *)self shouldExtendPriorWord])
       {
-        v44 = [(TIKeyboardInputManager *)self keyboardState];
-        v45 = [v44 documentState];
-        [(TIKeyboardInputManager *)self setInputStringFromDocumentState:v45 isDeleteEvent:0];
+        keyboardState3 = [(TIKeyboardInputManager *)self keyboardState];
+        documentState4 = [keyboardState3 documentState];
+        [(TIKeyboardInputManager *)self setInputStringFromDocumentState:documentState4 isDeleteEvent:0];
       }
 
       else
@@ -14568,32 +14568,32 @@ LABEL_30:
       [(TIKeyboardInputManager *)self setMarkedText];
     }
 
-    if ([v6 isSynthesizedByAcceptingCandidate])
+    if ([inputCopy isSynthesizedByAcceptingCandidate])
     {
       [(TIKeyboardInputManager *)self dropInput];
     }
 
-    v46 = [(TIKeyboardInputManager *)self lastAcceptedText];
+    lastAcceptedText = [(TIKeyboardInputManager *)self lastAcceptedText];
 
-    if (v46)
+    if (lastAcceptedText)
     {
-      if ([v6 isSynthesizedByAcceptingCandidate])
+      if ([inputCopy isSynthesizedByAcceptingCandidate])
       {
-        v60 = [(TIKeyboardInputManager *)self lastAcceptedText];
-        v47 = [(TIKeyboardInputManager *)self lastAcceptedText];
-        v48 = [v47 candidate];
-        [v6 string];
+        lastAcceptedText2 = [(TIKeyboardInputManager *)self lastAcceptedText];
+        lastAcceptedText3 = [(TIKeyboardInputManager *)self lastAcceptedText];
+        candidate = [lastAcceptedText3 candidate];
+        [inputCopy string];
         v49 = v61 = v29;
-        v50 = [v48 stringByAppendingString:v49];
-        [v60 candidateByReplacingWithCandidate:v50];
-        v51 = v10;
-        v52 = v7;
+        v50 = [candidate stringByAppendingString:v49];
+        [lastAcceptedText2 candidateByReplacingWithCandidate:v50];
+        v51 = keyboardState;
+        v52 = contextCopy;
         v54 = v53 = v24;
         [(TIKeyboardInputManager *)self setLastAcceptedText:v54];
 
         v24 = v53;
-        v7 = v52;
-        v10 = v51;
+        contextCopy = v52;
+        keyboardState = v51;
 
         v29 = v61;
       }
@@ -14612,8 +14612,8 @@ LABEL_30:
       free(v65);
     }
 
-    v57 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-    v58 = [v57 shouldClearInput:v56];
+    keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+    v58 = [keyboardFeatureSpecialization shouldClearInput:v56];
 
     if (v58)
     {
@@ -14621,10 +14621,10 @@ LABEL_30:
     }
   }
 
-  else if ([v6 isSynthesizedByAcceptingCandidate])
+  else if ([inputCopy isSynthesizedByAcceptingCandidate])
   {
-    v31 = [(TIKeyboardInputManager *)self wordSeparator];
-    v32 = [v31 length];
+    wordSeparator = [(TIKeyboardInputManager *)self wordSeparator];
+    v32 = [wordSeparator length];
 
     if (!v32)
     {
@@ -14635,33 +14635,33 @@ LABEL_30:
   v59 = *MEMORY[0x277D85DE8];
 }
 
-- (id)handleKeyboardInput:(id)a3
+- (id)handleKeyboardInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v5 = [TIKeyboardInputManagerKeyboardContext alloc];
-  v6 = [(TIKeyboardInputManager *)self keyboardState];
-  v7 = [(TIKeyboardInputManagerKeyboardContext *)v5 initWithKeyboardState:v6];
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  v7 = [(TIKeyboardInputManagerKeyboardContext *)v5 initWithKeyboardState:keyboardState];
 
-  v8 = [(TIKeyboardInputManager *)self revisionHistory];
-  [(TIKeyboardInputManagerKeyboardContext *)v7 setRevisionHistory:v8];
+  revisionHistory = [(TIKeyboardInputManager *)self revisionHistory];
+  [(TIKeyboardInputManagerKeyboardContext *)v7 setRevisionHistory:revisionHistory];
 
-  v9 = [v4 output];
+  output = [inputCopy output];
 
-  if (v9)
+  if (output)
   {
     if (![(TIKeyboardInputManager *)self doesComposeText])
     {
-      v32 = 0;
+      output7 = 0;
       goto LABEL_32;
     }
 
-    v10 = [(TIKeyboardInputManager *)self inputStem];
-    v11 = [MEMORY[0x277CCAB68] string];
-    v12 = [v10 length];
-    v13 = [v4 output];
-    v14 = [v13 deletionCount];
+    inputStem = [(TIKeyboardInputManager *)self inputStem];
+    string = [MEMORY[0x277CCAB68] string];
+    v12 = [inputStem length];
+    output2 = [inputCopy output];
+    deletionCount = [output2 deletionCount];
 
-    if (v14)
+    if (deletionCount)
     {
       v15 = v12 - 1;
       if (((v12 - 1) & 0x80000000) == 0)
@@ -14669,15 +14669,15 @@ LABEL_30:
         v16 = 1;
         do
         {
-          v17 = [v10 _rangeOfBackwardDeletionClusterAtIndex:v15];
+          v17 = [inputStem _rangeOfBackwardDeletionClusterAtIndex:v15];
           v19 = v18;
-          v20 = [v10 substringWithRange:{v17, v18}];
-          [v11 insertString:v20 atIndex:0];
+          v20 = [inputStem substringWithRange:{v17, v18}];
+          [string insertString:v20 atIndex:0];
 
-          v21 = [v4 output];
-          v22 = [v21 deletionCount];
+          output3 = [inputCopy output];
+          deletionCount2 = [output3 deletionCount];
 
-          if (v22 <= v16)
+          if (deletionCount2 <= v16)
           {
             break;
           }
@@ -14690,7 +14690,7 @@ LABEL_30:
       }
     }
 
-    v23 = *(self->m_impl + 24) - -[TIKeyboardInputManager externalIndexToInternal:](self, "externalIndexToInternal:", [v10 length] - objc_msgSend(v11, "length"));
+    v23 = *(self->m_impl + 24) - -[TIKeyboardInputManager externalIndexToInternal:](self, "externalIndexToInternal:", [inputStem length] - objc_msgSend(string, "length"));
     if (v23 >= 1)
     {
       do
@@ -14702,108 +14702,108 @@ LABEL_30:
       while (v23);
     }
 
-    v24 = objc_alloc_init(MEMORY[0x277D6F3E8]);
-    v25 = [v4 output];
-    v26 = [v25 insertionText];
-    [v24 setString:v26];
+    keyboardState5 = objc_alloc_init(MEMORY[0x277D6F3E8]);
+    output4 = [inputCopy output];
+    insertionText = [output4 insertionText];
+    [keyboardState5 setString:insertionText];
 
-    [(TIKeyboardInputManager *)self addInput:v24 withContext:v7];
-    v27 = [(TIKeyboardInputManager *)self keyboardState];
-    v28 = [v27 documentState];
-    v29 = [v28 markedText];
-    v30 = [v29 length];
+    [(TIKeyboardInputManager *)self addInput:keyboardState5 withContext:v7];
+    keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+    documentState = [keyboardState2 documentState];
+    markedText = [documentState markedText];
+    v30 = [markedText length];
 
     if (v30)
     {
-      v31 = [v24 string];
-      [(TIKeyboardInputManagerKeyboardContext *)v7 unmarkText:v31];
+      string2 = [keyboardState5 string];
+      [(TIKeyboardInputManagerKeyboardContext *)v7 unmarkText:string2];
 
       [(TIKeyboardInputManager *)self clearInput];
     }
 
-    v32 = 0;
+    output7 = 0;
     goto LABEL_30;
   }
 
-  v10 = [v4 string];
-  [(TIKeyboardInputManager *)self setLastInputString:v10];
-  if (![v4 isDoubleSpace])
+  inputStem = [inputCopy string];
+  [(TIKeyboardInputManager *)self setLastInputString:inputStem];
+  if (![inputCopy isDoubleSpace])
   {
-    if ([v4 isBackspace])
+    if ([inputCopy isBackspace])
     {
       [(TIKeyboardInputManager *)self incrementUsageTrackingKeysForDeleteFromInput];
       [(TIKeyboardInputManager *)self deleteFromInputWithContext:v7];
-      v35 = [(TIKeyboardInputManagerKeyboardContext *)v7 output];
-      [v35 setProducedByDeleteInput:1];
+      output5 = [(TIKeyboardInputManagerKeyboardContext *)v7 output];
+      [output5 setProducedByDeleteInput:1];
     }
 
     else
     {
-      v36 = [(TIKeyboardInputManager *)self usesCandidateSelection];
-      if (!v10 || !v36 || ![(TIKeyboardInputManager *)self stringEndsWord:v10])
+      usesCandidateSelection = [(TIKeyboardInputManager *)self usesCandidateSelection];
+      if (!inputStem || !usesCandidateSelection || ![(TIKeyboardInputManager *)self stringEndsWord:inputStem])
       {
-        v37 = [(TIKeyboardInputManager *)self keyboardState];
-        v38 = [v37 textInputTraits];
-        if (([v38 secureTextEntry] & 1) == 0)
+        keyboardState3 = [(TIKeyboardInputManager *)self keyboardState];
+        textInputTraits = [keyboardState3 textInputTraits];
+        if (([textInputTraits secureTextEntry] & 1) == 0)
         {
-          v39 = [(TIKeyboardInputManager *)self keyboardState];
-          v40 = [v39 layoutState];
-          v41 = [v40 layoutTag];
-          v42 = [v41 isEqualToString:@"Fullwidth"];
+          keyboardState4 = [(TIKeyboardInputManager *)self keyboardState];
+          layoutState = [keyboardState4 layoutState];
+          layoutTag = [layoutState layoutTag];
+          v42 = [layoutTag isEqualToString:@"Fullwidth"];
 
           if (!v42)
           {
             goto LABEL_27;
           }
 
-          v37 = [v4 string];
-          v38 = [v37 _stringByConvertingFromHalfWidthToFullWidth];
-          [v4 setString:v38];
+          keyboardState3 = [inputCopy string];
+          textInputTraits = [keyboardState3 _stringByConvertingFromHalfWidthToFullWidth];
+          [inputCopy setString:textInputTraits];
         }
 
         goto LABEL_27;
       }
 
-      [(TIKeyboardInputManagerKeyboardContext *)v7 insertText:v10];
+      [(TIKeyboardInputManagerKeyboardContext *)v7 insertText:inputStem];
       [(TIKeyboardInputManager *)self clearInput];
-      v35 = [(TIKeyboardInputManager *)self keyboardState];
-      [(TIKeyboardInputManager *)self syncMarkedTextForKeyboardState:v35 afterContextChange:0];
+      output5 = [(TIKeyboardInputManager *)self keyboardState];
+      [(TIKeyboardInputManager *)self syncMarkedTextForKeyboardState:output5 afterContextChange:0];
     }
 
     goto LABEL_28;
   }
 
-  v33 = [(TIKeyboardInputManager *)self replacementForDoubleSpace];
-  [v4 setString:v33];
+  replacementForDoubleSpace = [(TIKeyboardInputManager *)self replacementForDoubleSpace];
+  [inputCopy setString:replacementForDoubleSpace];
 
-  v34 = [(TIKeyboardInputManagerKeyboardContext *)v7 output];
-  [v34 setUnmarkIfNecessary:1];
+  output6 = [(TIKeyboardInputManagerKeyboardContext *)v7 output];
+  [output6 setUnmarkIfNecessary:1];
 
   [(TIKeyboardInputManager *)self deleteFromInputWithContext:v7];
 LABEL_27:
-  [(TIKeyboardInputManager *)self addInput:v4 withContext:v7];
+  [(TIKeyboardInputManager *)self addInput:inputCopy withContext:v7];
 LABEL_28:
   self->super._hasHandledInput = 1;
   [(TIKeyboardInputManager *)self _recalcSupplementalPrefix];
-  v32 = [(TIKeyboardInputManagerKeyboardContext *)v7 output];
+  output7 = [(TIKeyboardInputManagerKeyboardContext *)v7 output];
   if ([(TIKeyboardInputManager *)self shouldMonitorTypingSession])
   {
-    v11 = [(TIKeyboardInputManager *)self typingSessionMonitor];
-    v24 = [(TIKeyboardInputManager *)self keyboardState];
-    [v11 addKeyInput:v4 keyboardState:v24];
+    string = [(TIKeyboardInputManager *)self typingSessionMonitor];
+    keyboardState5 = [(TIKeyboardInputManager *)self keyboardState];
+    [string addKeyInput:inputCopy keyboardState:keyboardState5];
 LABEL_30:
   }
 
 LABEL_32:
 
-  return v32;
+  return output7;
 }
 
-- (void)logDiscoverabilityEvent:(int)a3 userInfo:(id)a4
+- (void)logDiscoverabilityEvent:(int)event userInfo:(id)info
 {
-  if (a3)
+  if (event)
   {
-    if (a3 != 1)
+    if (event != 1)
     {
       return;
     }
@@ -14817,9 +14817,9 @@ LABEL_32:
   }
 
   v8 = [[TPSDiscoverabilitySignal alloc] initWithIdentifier:v5];
-  v6 = [(TIKeyboardInputManagerBase *)self inputMode];
-  v7 = [v6 normalizedIdentifier];
-  [(TPSDiscoverabilitySignal *)v8 setContext:v7];
+  inputMode = [(TIKeyboardInputManagerBase *)self inputMode];
+  normalizedIdentifier = [inputMode normalizedIdentifier];
+  [(TPSDiscoverabilitySignal *)v8 setContext:normalizedIdentifier];
 
   [(TPSDiscoverabilitySignal *)v8 donateSignalWithCompletion:&__block_literal_global_213];
 }
@@ -14870,38 +14870,38 @@ LABEL_9:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncToKeyboardState:(id)a3
+- (void)syncToKeyboardState:(id)state
 {
-  v16 = a3;
-  v4 = [(TIKeyboardInputManager *)self keyboardState];
-  v5 = [v4 documentState];
-  if (!v5)
+  stateCopy = state;
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  documentState = [keyboardState documentState];
+  if (!documentState)
   {
-    v12 = [v16 documentState];
-    if (v12)
+    documentState2 = [stateCopy documentState];
+    if (documentState2)
     {
 
       goto LABEL_11;
     }
   }
 
-  v6 = [(TIKeyboardInputManager *)self usesCandidateSelection];
-  v7 = [v16 documentState];
-  v8 = [(TIKeyboardInputManager *)self keyboardState];
-  v9 = [v8 documentState];
-  if (v6)
+  usesCandidateSelection = [(TIKeyboardInputManager *)self usesCandidateSelection];
+  documentState3 = [stateCopy documentState];
+  keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+  documentState4 = [keyboardState2 documentState];
+  if (usesCandidateSelection)
   {
-    v10 = [v7 isEqual:v9];
+    v10 = [documentState3 isEqual:documentState4];
   }
 
   else
   {
-    v10 = [v7 isEqualIgnoringMarkedText:v9];
+    v10 = [documentState3 isEqualIgnoringMarkedText:documentState4];
   }
 
   v11 = v10 ^ 1;
 
-  if (v5)
+  if (documentState)
   {
 
     if (v11)
@@ -14926,38 +14926,38 @@ LABEL_11:
 
   v14 = 0;
 LABEL_13:
-  [(TIKeyboardInputManager *)self willChangeToKeyboardState:v16 afterContextChange:v14];
-  -[TIKeyboardInputManager updateDynamicDirectoryForScreenLockState:](self, "updateDynamicDirectoryForScreenLockState:", [v16 isScreenLocked]);
-  v15 = [(TIKeyboardInputManager *)self keyboardState];
-  [(TIKeyboardInputManager *)self setKeyboardState:v16];
-  [(TIKeyboardInputManager *)self syncToKeyboardState:v16 from:v15 afterContextChange:v14];
+  [(TIKeyboardInputManager *)self willChangeToKeyboardState:stateCopy afterContextChange:v14];
+  -[TIKeyboardInputManager updateDynamicDirectoryForScreenLockState:](self, "updateDynamicDirectoryForScreenLockState:", [stateCopy isScreenLocked]);
+  keyboardState3 = [(TIKeyboardInputManager *)self keyboardState];
+  [(TIKeyboardInputManager *)self setKeyboardState:stateCopy];
+  [(TIKeyboardInputManager *)self syncToKeyboardState:stateCopy from:keyboardState3 afterContextChange:v14];
 }
 
-- (void)setKeyboardState:(id)a3
+- (void)setKeyboardState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v67 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  stateCopy2 = state;
   if (_os_feature_enabled_impl())
   {
     m_impl = self->m_impl;
     if (m_impl)
     {
-      v45 = v3;
+      v45 = stateCopy;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
-        v44 = [v5 clientIdentifier];
+        clientIdentifier = [stateCopy2 clientIdentifier];
         LODWORD(v66.__first_) = 136315394;
         *(&v66.__first_ + 4) = "[TIKeyboardInputManager setKeyboardState:]";
         WORD2(v66.__begin_) = 2080;
-        *(&v66.__begin_ + 6) = [v44 UTF8String];
+        *(&v66.__begin_ + 6) = [clientIdentifier UTF8String];
         _os_log_debug_impl(&dword_22CA55000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%s  Passing client ID to the vulgar word usage database wrapper; client ID: %s", &v66, 0x16u);
 
         m_impl = self->m_impl;
       }
 
-      v7 = [v5 clientIdentifier];
-      KB::retain_ptr<__CFDictionary const*>::operator=(m_impl + 80, v7);
+      clientIdentifier2 = [stateCopy2 clientIdentifier];
+      KB::retain_ptr<__CFDictionary const*>::operator=(m_impl + 80, clientIdentifier2);
 
       v61 = 0;
       v62 = 0;
@@ -14966,12 +14966,12 @@ LABEL_13:
       v58 = 0u;
       v59 = 0u;
       v60 = 0u;
-      v46 = v5;
-      v8 = [v5 inputContextHistory];
-      v9 = [v8 recipientIdentifiers];
-      v10 = [v9 allObjects];
+      v46 = stateCopy2;
+      inputContextHistory = [stateCopy2 inputContextHistory];
+      recipientIdentifiers = [inputContextHistory recipientIdentifiers];
+      allObjects = [recipientIdentifiers allObjects];
 
-      v11 = [v10 countByEnumeratingWithState:&v57 objects:v65 count:16];
+      v11 = [allObjects countByEnumeratingWithState:&v57 objects:v65 count:16];
       if (v11)
       {
         v12 = v11;
@@ -14982,7 +14982,7 @@ LABEL_13:
           {
             if (*v58 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(allObjects);
             }
 
             std::string::basic_string[abi:nn200100]<0>(__p, [*(*(&v57 + 1) + 8 * i) UTF8String]);
@@ -15053,7 +15053,7 @@ LABEL_13:
             }
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v57 objects:v65 count:16];
+          v12 = [allObjects countByEnumeratingWithState:&v57 objects:v65 count:16];
         }
 
         while (v12);
@@ -15075,7 +15075,7 @@ LABEL_13:
       std::vector<std::string>::__init_with_size[abi:nn200100]<std::string*,std::string*>(&v52, v61, v62, 0xAAAAAAAAAAAAAAABLL * ((v62 - v61) >> 3));
       v27 = v26 + 27;
       v36 = &v26[27] == &v52;
-      v3 = v45;
+      stateCopy = v45;
       if (!v36)
       {
         std::vector<std::string>::__assign_with_size[abi:nn200100]<std::string*,std::string*>(v27, v52, v53, 0xAAAAAAAAAAAAAAABLL * ((v53 - v52) >> 3));
@@ -15085,7 +15085,7 @@ LABEL_13:
       std::vector<std::string>::__destroy_vector::operator()[abi:nn200100](&v66);
       v66.__first_ = &v61;
       std::vector<std::string>::__destroy_vector::operator()[abi:nn200100](&v66);
-      v5 = v46;
+      stateCopy2 = v46;
     }
   }
 
@@ -15099,11 +15099,11 @@ LABEL_13:
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v29 = [v5 inputContextHistory];
-    v30 = [v29 recipientNames];
-    v31 = [v30 allObjects];
+    inputContextHistory2 = [stateCopy2 inputContextHistory];
+    recipientNames = [inputContextHistory2 recipientNames];
+    allObjects2 = [recipientNames allObjects];
 
-    v32 = [v31 countByEnumeratingWithState:&v48 objects:v64 count:16];
+    v32 = [allObjects2 countByEnumeratingWithState:&v48 objects:v64 count:16];
     if (v32)
     {
       v33 = v32;
@@ -15114,7 +15114,7 @@ LABEL_13:
         {
           if (*v49 != v34)
           {
-            objc_enumerationMutation(v31);
+            objc_enumerationMutation(allObjects2);
           }
 
           KB::utf8_string(*(*(&v48 + 1) + 8 * j), &v66);
@@ -15135,7 +15135,7 @@ LABEL_13:
           }
         }
 
-        v33 = [v31 countByEnumeratingWithState:&v48 objects:v64 count:16];
+        v33 = [allObjects2 countByEnumeratingWithState:&v48 objects:v64 count:16];
       }
 
       while (v33);
@@ -15160,18 +15160,18 @@ LABEL_13:
     std::vector<KB::String>::__destroy_vector::operator()[abi:nn200100](&v66);
   }
 
-  objc_storeStrong(&self->_keyboardState, v3);
-  v38 = [v5 clientIdentifier];
-  if (v38)
+  objc_storeStrong(&self->_keyboardState, stateCopy);
+  clientIdentifier3 = [stateCopy2 clientIdentifier];
+  if (clientIdentifier3)
   {
-    v39 = v38;
-    v40 = [(TIKeyboardInputManager *)self shouldMonitorTypingSession];
+    v39 = clientIdentifier3;
+    shouldMonitorTypingSession = [(TIKeyboardInputManager *)self shouldMonitorTypingSession];
 
-    if (v40)
+    if (shouldMonitorTypingSession)
     {
-      v41 = [(TIKeyboardInputManager *)self typingSessionMonitor];
-      v42 = [v5 clientIdentifier];
-      [v41 setClientID:v42 keyboardState:v5];
+      typingSessionMonitor = [(TIKeyboardInputManager *)self typingSessionMonitor];
+      clientIdentifier4 = [stateCopy2 clientIdentifier];
+      [typingSessionMonitor setClientID:clientIdentifier4 keyboardState:stateCopy2];
     }
   }
 
@@ -15191,17 +15191,17 @@ LABEL_13:
   }
 }
 
-- (void)endTypingSessionWithInteractionObservers:(id)a3
+- (void)endTypingSessionWithInteractionObservers:(id)observers
 {
-  v4 = a3;
+  observersCopy = observers;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __67__TIKeyboardInputManager_endTypingSessionWithInteractionObservers___block_invoke;
   v6[3] = &unk_278731278;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = observersCopy;
+  v5 = observersCopy;
   [(TIKeyboardInputManager *)self fetchTypingSessionParams:v6];
 
   objc_destroyWeak(&v8);
@@ -15242,33 +15242,33 @@ void __67__TIKeyboardInputManager_endTypingSessionWithInteractionObservers___blo
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(TIKeyboardInputManagerBase *)self inputMode];
-    v6 = [v5 normalizedIdentifier];
-    v7 = [v4 stringWithFormat:@"%s Suspend (inputMode=%@)", "-[TIKeyboardInputManager suspend]", v6];
+    inputMode = [(TIKeyboardInputManagerBase *)self inputMode];
+    normalizedIdentifier = [inputMode normalizedIdentifier];
+    v7 = [v4 stringWithFormat:@"%s Suspend (inputMode=%@)", "-[TIKeyboardInputManager suspend]", normalizedIdentifier];
     LODWORD(buf) = 138412290;
     *(&buf + 4) = v7;
     _os_log_impl(&dword_22CA55000, v3, OS_LOG_TYPE_INFO, "%@", &buf, 0xCu);
   }
 
   [(TIKeyboardInputManager *)self logTestingParametersToTypology];
-  v8 = [(TIKeyboardInputManager *)self config];
-  if (([v8 disableAnalytics] & 1) == 0)
+  config = [(TIKeyboardInputManager *)self config];
+  if (([config disableAnalytics] & 1) == 0)
   {
-    v9 = [(TIKeyboardInputManager *)self keyboardState];
-    v10 = [v9 layoutState];
-    v11 = [v10 inputMode];
+    keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+    layoutState = [keyboardState layoutState];
+    inputMode2 = [layoutState inputMode];
 
-    if (!v11)
+    if (!inputMode2)
     {
       goto LABEL_14;
     }
 
     v12 = (*(**(self->m_impl + 28) + 456))(*(self->m_impl + 28));
-    v8 = [(TIKeyboardInputManager *)self config];
-    v13 = [v8 usesContinuousPath];
-    v14 = [(TIKeyboardInputManager *)self keyboardState];
-    v15 = [v14 layoutState];
-    v16 = [v15 inputMode];
+    config = [(TIKeyboardInputManager *)self config];
+    usesContinuousPath = [config usesContinuousPath];
+    keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+    layoutState2 = [keyboardState2 layoutState];
+    inputMode3 = [layoutState2 inputMode];
     v17 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.keyboard"];
     *&buf = MEMORY[0x277D85DD0];
     *(&buf + 1) = 3221225472;
@@ -15292,7 +15292,7 @@ void __67__TIKeyboardInputManager_endTypingSessionWithInteractionObservers___blo
     }
 
     TIStatisticsReportCPStats_didDiscover |= v19 > 3;
-    if (v13)
+    if (usesContinuousPath)
     {
       v20 = *MEMORY[0x277D6FC20];
       v21 = TIStatisticGetKeyForInputMode();
@@ -15307,37 +15307,37 @@ void __67__TIKeyboardInputManager_endTypingSessionWithInteractionObservers___blo
 
 LABEL_14:
   [(TIKeyboardInputManager *)self willChangeToKeyboardState:0 afterContextChange:1];
-  v23 = [(TIKeyboardInputManager *)self recentAutocorrections];
-  [v23 removeAllObjects];
+  recentAutocorrections = [(TIKeyboardInputManager *)self recentAutocorrections];
+  [recentAutocorrections removeAllObjects];
 
-  v24 = [(TIKeyboardInputManager *)self recentPredictiveInputSelections];
-  [v24 removeAllObjects];
+  recentPredictiveInputSelections = [(TIKeyboardInputManager *)self recentPredictiveInputSelections];
+  [recentPredictiveInputSelections removeAllObjects];
 
-  v25 = [(TIKeyboardInputManager *)self revisionHistory];
-  [v25 acceptCurrentSentence];
+  revisionHistory = [(TIKeyboardInputManager *)self revisionHistory];
+  [revisionHistory acceptCurrentSentence];
 
-  v26 = [(TIKeyboardInputManager *)self revisionHistory];
-  [v26 syncToDocumentState:0];
+  revisionHistory2 = [(TIKeyboardInputManager *)self revisionHistory];
+  [revisionHistory2 syncToDocumentState:0];
 
-  v27 = [(TIKeyboardInputManager *)self languageSelectionController];
-  [v27 flushBuffer];
+  languageSelectionController = [(TIKeyboardInputManager *)self languageSelectionController];
+  [languageSelectionController flushBuffer];
 
   [(TIKeyboardInputManager *)self clearInput];
   [(TIKeyboardInputManager *)self setDeleteKeyCount:0];
-  v28 = [(TIKeyboardInputManager *)self rejectedAutocorrectionsDisplayedOrInserted];
-  [v28 removeAllObjects];
+  rejectedAutocorrectionsDisplayedOrInserted = [(TIKeyboardInputManager *)self rejectedAutocorrectionsDisplayedOrInserted];
+  [rejectedAutocorrectionsDisplayedOrInserted removeAllObjects];
 
-  v29 = [(TIKeyboardInputManager *)self rejectedAutocorrectionsDisplayedOrInsertedInverse];
-  [v29 removeAllObjects];
+  rejectedAutocorrectionsDisplayedOrInsertedInverse = [(TIKeyboardInputManager *)self rejectedAutocorrectionsDisplayedOrInsertedInverse];
+  [rejectedAutocorrectionsDisplayedOrInsertedInverse removeAllObjects];
 
-  v30 = [(TIKeyboardInputManager *)self autocorrectionForCurrentStem];
-  [v30 removeAllObjects];
+  autocorrectionForCurrentStem = [(TIKeyboardInputManager *)self autocorrectionForCurrentStem];
+  [autocorrectionForCurrentStem removeAllObjects];
 
   std::unique_ptr<TI::RejectionsDatabase>::reset[abi:nn200100](&self->m_rejectionsDatabase, 0);
-  v31 = [(TIKeyboardInputManager *)self keyboardState];
-  v32 = [v31 secureTextEntry];
+  keyboardState3 = [(TIKeyboardInputManager *)self keyboardState];
+  secureTextEntry = [keyboardState3 secureTextEntry];
 
-  if (v32)
+  if (secureTextEntry)
   {
     currentState = self->_currentState;
     self->_currentState = 0;
@@ -15362,8 +15362,8 @@ LABEL_14:
   }
 
   [(TIKeyboardInputManager *)self resetLMCache:0];
-  v38 = [(TIKeyboardInputManager *)self stickerCandidateGenerator];
-  [v38 clearCache];
+  stickerCandidateGenerator = [(TIKeyboardInputManager *)self stickerCandidateGenerator];
+  [stickerCandidateGenerator clearCache];
 
   v39 = self->m_impl;
   if (v39)
@@ -15391,10 +15391,10 @@ LABEL_14:
 
   if ([(TIKeyboardInputManager *)self shouldMonitorTypingSession])
   {
-    v44 = [(TIKeyboardInputManager *)self typingSessionMonitor];
-    v45 = [v44 resetInteractionObserversForNextSession];
+    typingSessionMonitor = [(TIKeyboardInputManager *)self typingSessionMonitor];
+    resetInteractionObserversForNextSession = [typingSessionMonitor resetInteractionObserversForNextSession];
 
-    [(TIKeyboardInputManager *)self endTypingSessionWithInteractionObservers:v45];
+    [(TIKeyboardInputManager *)self endTypingSessionWithInteractionObservers:resetInteractionObserversForNextSession];
   }
 
   keyLayout = self->_keyLayout;
@@ -15404,72 +15404,72 @@ LABEL_14:
   v47 = *MEMORY[0x277D85DE8];
 }
 
-- (void)acceptCurrentCandidateIfSelectedWithContext:(id)a3
+- (void)acceptCurrentCandidateIfSelectedWithContext:(id)context
 {
-  v10 = a3;
-  v4 = [(TIKeyboardInputManager *)self keyboardState];
-  v5 = [v4 userSelectedCurrentCandidate];
+  contextCopy = context;
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  userSelectedCurrentCandidate = [keyboardState userSelectedCurrentCandidate];
 
-  if (v5)
+  if (userSelectedCurrentCandidate)
   {
-    v6 = [(TIKeyboardInputManager *)self keyboardState];
-    v7 = [v6 currentCandidate];
+    keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+    currentCandidate = [keyboardState2 currentCandidate];
 
-    [v10 acceptCandidate:v7];
-    v8 = [(TIKeyboardInputManager *)self keyboardState];
-    v9 = [(TIKeyboardInputManager *)self handleAcceptedCandidate:v7 keyboardState:v8];
+    [contextCopy acceptCandidate:currentCandidate];
+    keyboardState3 = [(TIKeyboardInputManager *)self keyboardState];
+    v9 = [(TIKeyboardInputManager *)self handleAcceptedCandidate:currentCandidate keyboardState:keyboardState3];
 
     if (v9)
     {
-      [v10 unmarkText:v9];
+      [contextCopy unmarkText:v9];
     }
   }
 }
 
-- (void)acceptCurrentCandidateWithContext:(id)a3
+- (void)acceptCurrentCandidateWithContext:(id)context
 {
-  v11 = a3;
-  v4 = [(TIKeyboardInputManager *)self keyboardState];
-  v5 = [v4 currentCandidate];
-  v6 = v5;
-  if (v5)
+  contextCopy = context;
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  currentCandidate = [keyboardState currentCandidate];
+  v6 = currentCandidate;
+  if (currentCandidate)
   {
-    v7 = v5;
+    defaultCandidate = currentCandidate;
   }
 
   else
   {
-    v7 = [(TIKeyboardInputManager *)self defaultCandidate];
+    defaultCandidate = [(TIKeyboardInputManager *)self defaultCandidate];
   }
 
-  v8 = v7;
+  v8 = defaultCandidate;
 
-  [v11 acceptCandidate:v8];
-  v9 = [(TIKeyboardInputManager *)self keyboardState];
-  v10 = [(TIKeyboardInputManager *)self handleAcceptedCandidate:v8 keyboardState:v9];
+  [contextCopy acceptCandidate:v8];
+  keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+  v10 = [(TIKeyboardInputManager *)self handleAcceptedCandidate:v8 keyboardState:keyboardState2];
 
   if (v10)
   {
-    [v11 unmarkText:v10];
+    [contextCopy unmarkText:v10];
   }
 }
 
-- (id)candidateResultSetFromCandidates:(id)a3 proactiveTriggers:(id)a4
+- (id)candidateResultSetFromCandidates:(id)candidates proactiveTriggers:(id)triggers
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  candidatesCopy = candidates;
+  triggersCopy = triggers;
+  v8 = triggersCopy;
+  if (!candidatesCopy)
   {
     v25 = 0;
     goto LABEL_16;
   }
 
-  v41 = v7;
-  v9 = [v6 count];
-  if ([v6 count] >= 2)
+  v41 = triggersCopy;
+  v9 = [candidatesCopy count];
+  if ([candidatesCopy count] >= 2)
   {
-    v10 = [v6 objectAtIndex:1];
+    v10 = [candidatesCopy objectAtIndex:1];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -15480,19 +15480,19 @@ LABEL_14:
         goto LABEL_6;
       }
 
-      v12 = [(TIKeyboardInputManager *)self keyboardState];
-      v13 = [v12 splitKeyboardMode];
+      keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+      splitKeyboardMode = [keyboardState splitKeyboardMode];
 
-      if ((v13 & 1) == 0)
+      if ((splitKeyboardMode & 1) == 0)
       {
         goto LABEL_6;
       }
 
 LABEL_8:
-      v28 = v6;
-      v29 = [(TIKeyboardInputManager *)self candidateRange];
-      v30 = v9 - v29;
-      if (v9 <= v29)
+      v28 = candidatesCopy;
+      candidateRange = [(TIKeyboardInputManager *)self candidateRange];
+      v30 = v9 - candidateRange;
+      if (v9 <= candidateRange)
       {
         v31 = 0;
         v8 = v41;
@@ -15500,7 +15500,7 @@ LABEL_8:
 
       else
       {
-        v31 = v29;
+        v31 = candidateRange;
         [(TIKeyboardInputManager *)self candidateRange];
         v8 = v41;
         if (v32 < v30)
@@ -15515,28 +15515,28 @@ LABEL_8:
       }
 
       v35 = MEMORY[0x277D6F3D0];
-      v36 = [(TIKeyboardInputManager *)self initialSelectedIndex];
-      v37 = [(TIKeyboardInputManager *)self defaultCandidate];
-      v38 = [(TIKeyboardInputManager *)self sortMethodTitles];
-      v25 = [v35 setWithCandidates:v28 initialSelectedIndex:v36 defaultCandidate:v37 sortMethods:v38 sortMethodGroups:0 indexTitles:0 showExtensionCandidates:0 disambiguationCandidates:0 selectedDisambiguationCandidateIndex:0x7FFFFFFFFFFFFFFFLL proactiveTriggers:v8];
+      initialSelectedIndex = [(TIKeyboardInputManager *)self initialSelectedIndex];
+      defaultCandidate = [(TIKeyboardInputManager *)self defaultCandidate];
+      sortMethodTitles = [(TIKeyboardInputManager *)self sortMethodTitles];
+      v25 = [v35 setWithCandidates:v28 initialSelectedIndex:initialSelectedIndex defaultCandidate:defaultCandidate sortMethods:sortMethodTitles sortMethodGroups:0 indexTitles:0 showExtensionCandidates:0 disambiguationCandidates:0 selectedDisambiguationCandidateIndex:0x7FFFFFFFFFFFFFFFLL proactiveTriggers:v8];
 
       [v25 setBatchCandidateLocation:v31];
       goto LABEL_15;
     }
   }
 
-  v26 = [(TIKeyboardInputManager *)self keyboardState];
-  v27 = [v26 needsCandidateMetadata];
+  keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+  needsCandidateMetadata = [keyboardState2 needsCandidateMetadata];
 
-  if (!v27)
+  if (!needsCandidateMetadata)
   {
     goto LABEL_8;
   }
 
 LABEL_6:
-  v14 = [(TIKeyboardInputManager *)self sortMethodTitles];
-  v15 = [(TIKeyboardInputManager *)self sortMethodsGroupsForCandidates:v6];
-  v40 = [(TIKeyboardInputManager *)self sortMethodIndexes];
+  sortMethodTitles2 = [(TIKeyboardInputManager *)self sortMethodTitles];
+  v15 = [(TIKeyboardInputManager *)self sortMethodsGroupsForCandidates:candidatesCopy];
+  sortMethodIndexes = [(TIKeyboardInputManager *)self sortMethodIndexes];
   v16 = MEMORY[0x277CCAC30];
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
@@ -15545,15 +15545,15 @@ LABEL_6:
   v43 = v15;
   v17 = v15;
   v18 = [v16 predicateWithBlock:v42];
-  v19 = [v14 filteredArrayUsingPredicate:v18];
+  v19 = [sortMethodTitles2 filteredArrayUsingPredicate:v18];
 
   v20 = MEMORY[0x277D6F3D0];
-  v21 = [(TIKeyboardInputManager *)self initialSelectedIndex];
+  initialSelectedIndex2 = [(TIKeyboardInputManager *)self initialSelectedIndex];
   [(TIKeyboardInputManager *)self defaultCandidate];
   v23 = v22 = v9;
-  v24 = [(TIKeyboardInputManager *)self sortMethodsShowExtensionCandidates];
+  sortMethodsShowExtensionCandidates = [(TIKeyboardInputManager *)self sortMethodsShowExtensionCandidates];
   v8 = v41;
-  v25 = [v20 setWithCandidates:v6 initialSelectedIndex:v21 defaultCandidate:v23 sortMethods:v19 sortMethodGroups:v17 indexTitles:v40 showExtensionCandidates:v24 disambiguationCandidates:0 selectedDisambiguationCandidateIndex:0x7FFFFFFFFFFFFFFFLL proactiveTriggers:v41];
+  v25 = [v20 setWithCandidates:candidatesCopy initialSelectedIndex:initialSelectedIndex2 defaultCandidate:v23 sortMethods:v19 sortMethodGroups:v17 indexTitles:sortMethodIndexes showExtensionCandidates:sortMethodsShowExtensionCandidates disambiguationCandidates:0 selectedDisambiguationCandidateIndex:0x7FFFFFFFFFFFFFFFLL proactiveTriggers:v41];
 
   v9 = v22;
 LABEL_15:
@@ -15574,15 +15574,15 @@ BOOL __77__TIKeyboardInputManager_candidateResultSetFromCandidates_proactiveTrig
 - (id)sortMethodsShowExtensionCandidates
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(TIKeyboardInputManager *)self sortingMethods];
-  if ([v3 count])
+  sortingMethods = [(TIKeyboardInputManager *)self sortingMethods];
+  if ([sortingMethods count])
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v5 = v3;
+    v5 = sortingMethods;
     v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
@@ -15601,7 +15601,7 @@ BOOL __77__TIKeyboardInputManager_candidateResultSetFromCandidates_proactiveTrig
           v11 = [(TIKeyboardInputManager *)self titleForSortingMethod:v10, v16];
           v12 = [(TIKeyboardInputManager *)self alwaysShowExtensionCandidatesForSortingMethod:v10];
           v13 = [MEMORY[0x277CCABB0] numberWithBool:v12];
-          [v4 setObject:v13 forKey:v11];
+          [dictionary setObject:v13 forKey:v11];
         }
 
         v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -15613,26 +15613,26 @@ BOOL __77__TIKeyboardInputManager_candidateResultSetFromCandidates_proactiveTrig
 
   else
   {
-    v4 = 0;
+    dictionary = 0;
   }
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return dictionary;
 }
 
 - (id)sortMethodIndexes
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(TIKeyboardInputManager *)self sortingMethods];
-  if ([v3 count])
+  sortingMethods = [(TIKeyboardInputManager *)self sortingMethods];
+  if ([sortingMethods count])
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = v3;
+    v5 = sortingMethods;
     v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
@@ -15652,7 +15652,7 @@ BOOL __77__TIKeyboardInputManager_candidateResultSetFromCandidates_proactiveTrig
           v12 = [(TIKeyboardInputManager *)self indexTitlesForGroupTitles:0 sortingMethod:v10];
           if (v12)
           {
-            [v4 setObject:v12 forKey:v11];
+            [dictionary setObject:v12 forKey:v11];
           }
         }
 
@@ -15665,28 +15665,28 @@ BOOL __77__TIKeyboardInputManager_candidateResultSetFromCandidates_proactiveTrig
 
   else
   {
-    v4 = 0;
+    dictionary = 0;
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return dictionary;
 }
 
-- (id)sortMethodsGroupsForCandidates:(id)a3
+- (id)sortMethodsGroupsForCandidates:(id)candidates
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TIKeyboardInputManager *)self sortingMethods];
-  if ([v5 count])
+  candidatesCopy = candidates;
+  sortingMethods = [(TIKeyboardInputManager *)self sortingMethods];
+  if ([sortingMethods count])
   {
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v18 = v5;
-    v7 = v5;
+    v18 = sortingMethods;
+    v7 = sortingMethods;
     v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v8)
     {
@@ -15704,8 +15704,8 @@ BOOL __77__TIKeyboardInputManager_candidateResultSetFromCandidates_proactiveTrig
           v12 = *(*(&v19 + 1) + 8 * i);
           v13 = objc_autoreleasePoolPush();
           v14 = [(TIKeyboardInputManager *)self titleForSortingMethod:v12];
-          v15 = [(TIKeyboardInputManager *)self groupedCandidatesFromCandidates:v4 usingSortingMethod:v12];
-          [v6 setObject:v15 forKey:v14];
+          v15 = [(TIKeyboardInputManager *)self groupedCandidatesFromCandidates:candidatesCopy usingSortingMethod:v12];
+          [dictionary setObject:v15 forKey:v14];
 
           objc_autoreleasePoolPop(v13);
         }
@@ -15716,31 +15716,31 @@ BOOL __77__TIKeyboardInputManager_candidateResultSetFromCandidates_proactiveTrig
       while (v9);
     }
 
-    v5 = v18;
+    sortingMethods = v18;
   }
 
   else
   {
-    v6 = 0;
+    dictionary = 0;
   }
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return dictionary;
 }
 
 - (id)sortMethodTitles
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(TIKeyboardInputManager *)self sortingMethods];
-  if ([v3 count])
+  sortingMethods = [(TIKeyboardInputManager *)self sortingMethods];
+  if ([sortingMethods count])
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v3;
+    v5 = sortingMethods;
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
@@ -15756,7 +15756,7 @@ BOOL __77__TIKeyboardInputManager_candidateResultSetFromCandidates_proactiveTrig
           }
 
           v10 = [(TIKeyboardInputManager *)self titleForSortingMethod:*(*(&v13 + 1) + 8 * i), v13];
-          [v4 addObject:v10];
+          [array addObject:v10];
         }
 
         v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -15768,59 +15768,59 @@ BOOL __77__TIKeyboardInputManager_candidateResultSetFromCandidates_proactiveTrig
 
   else
   {
-    v4 = 0;
+    array = 0;
   }
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return array;
 }
 
 - (BOOL)shouldSkipCandidateSelection
 {
-  v2 = [(TIKeyboardInputManager *)self keyboardState];
-  v3 = [v2 shouldSkipCandidateSelection];
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  shouldSkipCandidateSelection = [keyboardState shouldSkipCandidateSelection];
 
-  return v3;
+  return shouldSkipCandidateSelection;
 }
 
 - (id)markedText
 {
-  v3 = [(TIKeyboardInputManager *)self rawInputString];
-  v4 = [(TIKeyboardInputManager *)self inputString];
-  v5 = [(TIKeyboardInputManager *)self inputIndex];
-  v6 = [(TIKeyboardInputManager *)self searchStringForMarkedText];
-  v7 = [(TIKeyboardInputManager *)self lastInputString];
-  v8 = [MEMORY[0x277D6F3F8] intermediateTextWithInputString:v3 displayString:v4 selectionLocation:v5 searchString:v6 lastInputString:v7];
+  rawInputString = [(TIKeyboardInputManager *)self rawInputString];
+  inputString = [(TIKeyboardInputManager *)self inputString];
+  inputIndex = [(TIKeyboardInputManager *)self inputIndex];
+  searchStringForMarkedText = [(TIKeyboardInputManager *)self searchStringForMarkedText];
+  lastInputString = [(TIKeyboardInputManager *)self lastInputString];
+  v8 = [MEMORY[0x277D6F3F8] intermediateTextWithInputString:rawInputString displayString:inputString selectionLocation:inputIndex searchString:searchStringForMarkedText lastInputString:lastInputString];
 
   return v8;
 }
 
 - (void)setMarkedText
 {
-  v3 = [(TIKeyboardInputManager *)self rawInputString];
-  v4 = [(TIKeyboardInputManager *)self keyboardState];
-  [v4 setInputForMarkedText:v3];
+  rawInputString = [(TIKeyboardInputManager *)self rawInputString];
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  [keyboardState setInputForMarkedText:rawInputString];
 
-  v5 = [(TIKeyboardInputManager *)self searchStringForMarkedText];
-  v6 = [(TIKeyboardInputManager *)self keyboardState];
-  [v6 setSearchStringForMarkedText:v5];
+  searchStringForMarkedText = [(TIKeyboardInputManager *)self searchStringForMarkedText];
+  keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+  [keyboardState2 setSearchStringForMarkedText:searchStringForMarkedText];
 
-  v12 = [(TIKeyboardInputManager *)self inputString];
-  v7 = [(TIKeyboardInputManager *)self inputIndex];
-  v8 = [(TIKeyboardInputManager *)self keyboardState];
-  v9 = [v8 documentState];
-  v10 = [v9 documentStateAfterSettingMarkedText:v12 selectedRange:{v7, 0}];
-  v11 = [(TIKeyboardInputManager *)self keyboardState];
-  [v11 setDocumentState:v10];
+  inputString = [(TIKeyboardInputManager *)self inputString];
+  inputIndex = [(TIKeyboardInputManager *)self inputIndex];
+  keyboardState3 = [(TIKeyboardInputManager *)self keyboardState];
+  documentState = [keyboardState3 documentState];
+  v10 = [documentState documentStateAfterSettingMarkedText:inputString selectedRange:{inputIndex, 0}];
+  keyboardState4 = [(TIKeyboardInputManager *)self keyboardState];
+  [keyboardState4 setDocumentState:v10];
 }
 
 - (BOOL)shouldOmitEmojiCandidates
 {
-  v3 = [(TIKeyboardInputManager *)self userInterfaceIdiom];
-  v4 = [(TIKeyboardInputManager *)self keyboardState];
+  userInterfaceIdiom = [(TIKeyboardInputManager *)self userInterfaceIdiom];
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
   v5 = 1;
-  if (([v4 omitEmojiCandidates] & 1) == 0 && v3 != 2)
+  if (([keyboardState omitEmojiCandidates] & 1) == 0 && userInterfaceIdiom != 2)
   {
     v5 = [(TIKeyboardInputManager *)self userInterfaceIdiom]== 3;
   }
@@ -15830,52 +15830,52 @@ BOOL __77__TIKeyboardInputManager_candidateResultSetFromCandidates_proactiveTrig
 
 - (BOOL)isStickerSuggestionsEnabled
 {
-  v3 = [(TIKeyboardInputManager *)self config];
-  if ([v3 isTesting])
+  config = [(TIKeyboardInputManager *)self config];
+  if ([config isTesting])
   {
-    v4 = [(TIKeyboardInputManager *)self config];
-    v5 = [v4 stickerSuggestionsEnabled];
+    config2 = [(TIKeyboardInputManager *)self config];
+    stickerSuggestionsEnabled = [config2 stickerSuggestionsEnabled];
   }
 
   else
   {
-    v5 = 1;
+    stickerSuggestionsEnabled = 1;
   }
 
-  return _os_feature_enabled_impl() & v5;
+  return _os_feature_enabled_impl() & stickerSuggestionsEnabled;
 }
 
-- (id)contextBeforeWithDesiredLength:(unint64_t)a3
+- (id)contextBeforeWithDesiredLength:(unint64_t)length
 {
-  v4 = [(TIKeyboardInputManager *)self keyboardState];
-  v5 = [v4 documentState];
-  v6 = [v5 contextBeforeInput];
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  documentState = [keyboardState documentState];
+  contextBeforeInput = [documentState contextBeforeInput];
 
-  v7 = [v6 length];
-  v8 = v7 - a3;
-  if (v7 > a3)
+  v7 = [contextBeforeInput length];
+  v8 = v7 - length;
+  if (v7 > length)
   {
     if (v8 < v7)
     {
-      v8 = [v6 rangeOfComposedCharacterSequenceAtIndex:?];
+      v8 = [contextBeforeInput rangeOfComposedCharacterSequenceAtIndex:?];
     }
 
-    v9 = [v6 substringFromIndex:v8];
+    v9 = [contextBeforeInput substringFromIndex:v8];
 
-    v6 = v9;
+    contextBeforeInput = v9;
   }
 
-  return v6;
+  return contextBeforeInput;
 }
 
-- (id)inputStringFromDocumentState:(id)a3
+- (id)inputStringFromDocumentState:(id)state
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __55__TIKeyboardInputManager_inputStringFromDocumentState___block_invoke;
   v5[3] = &unk_278731200;
   v5[4] = self;
-  v3 = [a3 inputStringWithTerminatorPredicate:v5];
+  v3 = [state inputStringWithTerminatorPredicate:v5];
 
   return v3;
 }
@@ -15899,27 +15899,27 @@ uint64_t __55__TIKeyboardInputManager_inputStringFromDocumentState___block_invok
 
 - (BOOL)shouldAddModifierSymbolsToWordCharacters
 {
-  v2 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-  v3 = [v2 shouldAddModifierSymbolsToWordCharacters];
+  keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+  shouldAddModifierSymbolsToWordCharacters = [keyboardFeatureSpecialization shouldAddModifierSymbolsToWordCharacters];
 
-  return v3;
+  return shouldAddModifierSymbolsToWordCharacters;
 }
 
 - (id)keyboardBehaviors
 {
-  v2 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-  v3 = [v2 keyboardBehaviors];
+  keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+  keyboardBehaviors = [keyboardFeatureSpecialization keyboardBehaviors];
 
-  return v3;
+  return keyboardBehaviors;
 }
 
-- (id)layoutTagsForLayout:(id)a3
+- (id)layoutTagsForLayout:(id)layout
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  layoutCopy = layout;
+  if (layoutCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_cachedLayoutTags objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_cachedLayoutTags objectForKeyedSubscript:layoutCopy];
     if (v5)
     {
       v6 = v5;
@@ -15927,17 +15927,17 @@ uint64_t __55__TIKeyboardInputManager_inputStringFromDocumentState___block_invok
 
     else
     {
-      v7 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-      v8 = [v7 layoutTags];
-      v9 = [v8 objectForKeyedSubscript:v4];
+      keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+      layoutTags = [keyboardFeatureSpecialization layoutTags];
+      v9 = [layoutTags objectForKeyedSubscript:layoutCopy];
 
       if (![v9 count])
       {
         goto LABEL_14;
       }
 
-      v26 = self;
-      v27 = v4;
+      selfCopy = self;
+      v27 = layoutCopy;
       v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v9, "count")}];
       v29 = 0u;
       v30 = 0u;
@@ -15974,8 +15974,8 @@ uint64_t __55__TIKeyboardInputManager_inputStringFromDocumentState___block_invok
         while (v12);
       }
 
-      self = v26;
-      v4 = v27;
+      self = selfCopy;
+      layoutCopy = v27;
       if (!v10)
       {
 LABEL_14:
@@ -15985,14 +15985,14 @@ LABEL_14:
       cachedLayoutTags = self->_cachedLayoutTags;
       if (!cachedLayoutTags)
       {
-        v22 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
         v23 = self->_cachedLayoutTags;
-        self->_cachedLayoutTags = v22;
+        self->_cachedLayoutTags = dictionary;
 
         cachedLayoutTags = self->_cachedLayoutTags;
       }
 
-      [(NSMutableDictionary *)cachedLayoutTags setObject:v10 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)cachedLayoutTags setObject:v10 forKeyedSubscript:layoutCopy];
       v6 = v10;
     }
   }
@@ -16007,19 +16007,19 @@ LABEL_14:
   return v6;
 }
 
-- (BOOL)updateAdaptationContextToKeyboardState:(id)a3 from:(id)a4
+- (BOOL)updateAdaptationContextToKeyboardState:(id)state from:(id)from
 {
-  v5 = a3;
-  v6 = a4;
+  stateCopy = state;
+  fromCopy = from;
   v7 = MEMORY[0x277CCACA8];
-  v8 = [v5 recipientIdentifier];
-  v9 = [v6 recipientIdentifier];
-  if ([v7 _string:v8 matchesString:v9])
+  recipientIdentifier = [stateCopy recipientIdentifier];
+  recipientIdentifier2 = [fromCopy recipientIdentifier];
+  if ([v7 _string:recipientIdentifier matchesString:recipientIdentifier2])
   {
     v10 = MEMORY[0x277CCACA8];
-    v11 = [v5 clientIdentifier];
-    v12 = [v6 clientIdentifier];
-    v13 = [v10 _string:v11 matchesString:v12] ^ 1;
+    clientIdentifier = [stateCopy clientIdentifier];
+    clientIdentifier2 = [fromCopy clientIdentifier];
+    v13 = [v10 _string:clientIdentifier matchesString:clientIdentifier2] ^ 1;
   }
 
   else
@@ -16030,28 +16030,28 @@ LABEL_14:
   return v13;
 }
 
-- (void)willChangeToKeyboardState:(id)a3 afterContextChange:(BOOL)a4
+- (void)willChangeToKeyboardState:(id)state afterContextChange:(BOOL)change
 {
-  v4 = a4;
-  v28 = a3;
-  v6 = [v28 documentIdentifier];
-  if (v6)
+  changeCopy = change;
+  stateCopy = state;
+  documentIdentifier = [stateCopy documentIdentifier];
+  if (documentIdentifier)
   {
 
 LABEL_4:
-    v9 = [v28 documentIdentifier];
-    if (v9)
+    documentIdentifier2 = [stateCopy documentIdentifier];
+    if (documentIdentifier2)
     {
-      v10 = v9;
-      v11 = [(TIKeyboardInputManager *)self keyboardState];
-      v12 = [v11 documentIdentifier];
+      v10 = documentIdentifier2;
+      keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+      documentIdentifier3 = [keyboardState documentIdentifier];
 
-      if (v12)
+      if (documentIdentifier3)
       {
-        v13 = [v28 documentIdentifier];
-        v14 = [(TIKeyboardInputManager *)self keyboardState];
-        v15 = [v14 documentIdentifier];
-        v16 = [v13 isEqual:v15];
+        documentIdentifier4 = [stateCopy documentIdentifier];
+        keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+        documentIdentifier5 = [keyboardState2 documentIdentifier];
+        v16 = [documentIdentifier4 isEqual:documentIdentifier5];
 
         if (v16)
         {
@@ -16063,38 +16063,38 @@ LABEL_4:
     goto LABEL_9;
   }
 
-  v7 = [(TIKeyboardInputManager *)self keyboardState];
-  v8 = [v7 documentIdentifier];
+  keyboardState3 = [(TIKeyboardInputManager *)self keyboardState];
+  documentIdentifier6 = [keyboardState3 documentIdentifier];
 
-  if (v8)
+  if (documentIdentifier6)
   {
     goto LABEL_4;
   }
 
-  if (!v4)
+  if (!changeCopy)
   {
     goto LABEL_14;
   }
 
 LABEL_9:
-  v17 = [(TIKeyboardInputManager *)self keyboardState];
-  v18 = [v17 textInputTraits];
-  v19 = [v18 recentInputIdentifier];
+  keyboardState4 = [(TIKeyboardInputManager *)self keyboardState];
+  textInputTraits = [keyboardState4 textInputTraits];
+  recentInputIdentifier = [textInputTraits recentInputIdentifier];
 
-  if (v19)
+  if (recentInputIdentifier)
   {
     v20 = MEMORY[0x277D6F478];
-    v21 = [(TIKeyboardInputManager *)self keyboardState];
-    v22 = [v21 documentState];
-    v23 = [v22 contextBeforeInput];
-    v24 = [TIKeyboardInputManager recentsFilePathForIdentifier:v19];
-    [v20 storeInput:v23 forSystemIdentifier:v19 atPath:v24];
+    keyboardState5 = [(TIKeyboardInputManager *)self keyboardState];
+    documentState = [keyboardState5 documentState];
+    contextBeforeInput = [documentState contextBeforeInput];
+    v24 = [TIKeyboardInputManager recentsFilePathForIdentifier:recentInputIdentifier];
+    [v20 storeInput:contextBeforeInput forSystemIdentifier:recentInputIdentifier atPath:v24];
   }
 
   if (![(TIKeyboardInputManager *)self usesCandidateSelection])
   {
-    v25 = [(TIKeyboardInputManager *)self revisionHistory];
-    [v25 syncToDocumentState:0];
+    revisionHistory = [(TIKeyboardInputManager *)self revisionHistory];
+    [revisionHistory syncToDocumentState:0];
   }
 
   v26 = [[TILRUDictionary alloc] initWithMaximumCapacity:20];
@@ -16102,18 +16102,18 @@ LABEL_9:
   self->_autocorrectionListsForWordsInDocument = v26;
 
 LABEL_14:
-  [(TIKeyboardInputManager *)self updateResponseModelForKeyboardState:v28];
+  [(TIKeyboardInputManager *)self updateResponseModelForKeyboardState:stateCopy];
 }
 
-- (void)syncMarkedTextForKeyboardState:(id)a3 afterContextChange:(BOOL)a4
+- (void)syncMarkedTextForKeyboardState:(id)state afterContextChange:(BOOL)change
 {
-  v4 = a4;
-  v25 = a3;
-  v6 = [v25 inputForMarkedText];
-  v7 = v6;
-  if (v6)
+  changeCopy = change;
+  stateCopy = state;
+  inputForMarkedText = [stateCopy inputForMarkedText];
+  v7 = inputForMarkedText;
+  if (inputForMarkedText)
   {
-    v8 = v6;
+    v8 = inputForMarkedText;
   }
 
   else
@@ -16124,18 +16124,18 @@ LABEL_14:
   v9 = v8;
 
   v10 = [(__CFString *)v9 length];
-  v11 = [(TIKeyboardInputManager *)self rawInputString];
-  if ([(__CFString *)v9 isEqualToString:v11])
+  rawInputString = [(TIKeyboardInputManager *)self rawInputString];
+  if ([(__CFString *)v9 isEqualToString:rawInputString])
   {
 
-    if (v10 || !v4)
+    if (v10 || !changeCopy)
     {
-      v12 = [v25 documentState];
-      v13 = [v12 markedText];
-      v14 = v13;
-      if (v13)
+      documentState = [stateCopy documentState];
+      markedText = [documentState markedText];
+      v14 = markedText;
+      if (markedText)
       {
-        v15 = v13;
+        v15 = markedText;
       }
 
       else
@@ -16145,8 +16145,8 @@ LABEL_14:
 
       v16 = v15;
 
-      v17 = [(TIKeyboardInputManager *)self inputString];
-      v18 = [(__CFString *)v16 isEqualToString:v17];
+      inputString = [(TIKeyboardInputManager *)self inputString];
+      v18 = [(__CFString *)v16 isEqualToString:inputString];
 
       if (v18)
       {
@@ -16166,13 +16166,13 @@ LABEL_14:
   {
   }
 
-  v19 = [(TIKeyboardInputManager *)self rawInputString];
-  v20 = [(__CFString *)v9 isEqualToString:v19];
+  rawInputString2 = [(TIKeyboardInputManager *)self rawInputString];
+  v20 = [(__CFString *)v9 isEqualToString:rawInputString2];
 
   if ((v20 & 1) != 0 || [(TIKeyboardInputManager *)self shouldClearInputOnMarkedTextOutOfSync])
   {
     [(TIKeyboardInputManager *)self clearInput];
-    if (v4)
+    if (changeCopy)
     {
       [(TIKeyboardInputManager *)self inputLocationChanged];
     }
@@ -16182,8 +16182,8 @@ LABEL_14:
       v21 = objc_alloc_init(MEMORY[0x277D6F3E8]);
       [v21 setString:v9];
       v22 = [TIKeyboardInputManagerKeyboardContext alloc];
-      v23 = [(TIKeyboardInputManager *)self keyboardState];
-      v24 = [(TIKeyboardInputManagerKeyboardContext *)v22 initWithKeyboardState:v23];
+      keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+      v24 = [(TIKeyboardInputManagerKeyboardContext *)v22 initWithKeyboardState:keyboardState];
 
       [(TIKeyboardInputManager *)self addInput:v21 withContext:v24];
     }
@@ -16192,23 +16192,23 @@ LABEL_14:
 LABEL_20:
 }
 
-- (void)syncToLayoutState:(id)a3
+- (void)syncToLayoutState:(id)state
 {
-  v8 = a3;
-  s_interface_idiom_is_pad = [v8 userInterfaceIdiom] == 1;
-  if (v8)
+  stateCopy = state;
+  s_interface_idiom_is_pad = [stateCopy userInterfaceIdiom] == 1;
+  if (stateCopy)
   {
-    v4 = [v8 userInterfaceIdiom];
+    userInterfaceIdiom = [stateCopy userInterfaceIdiom];
   }
 
   else
   {
-    v4 = -1;
+    userInterfaceIdiom = -1;
   }
 
-  [(TIKeyboardInputManager *)self setUserInterfaceIdiom:v4];
-  v5 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-  [v5 specializeInputManager:self->m_impl forLayoutState:v8];
+  [(TIKeyboardInputManager *)self setUserInterfaceIdiom:userInterfaceIdiom];
+  keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+  [keyboardFeatureSpecialization specializeInputManager:self->m_impl forLayoutState:stateCopy];
 
   m_impl = self->m_impl;
   if (m_impl)
@@ -16222,11 +16222,11 @@ LABEL_20:
 
 - (void)incrementUsageTrackingKeysForDeleteFromInput
 {
-  v3 = [(TIKeyboardInputManager *)self keyboardState];
-  v4 = [v3 documentState];
-  v5 = [v4 deletingBackwardsWillRemoveText];
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  documentState = [keyboardState documentState];
+  deletingBackwardsWillRemoveText = [documentState deletingBackwardsWillRemoveText];
 
-  if (v5)
+  if (deletingBackwardsWillRemoveText)
   {
     v6 = [(TIKeyboardInputManager *)self usageTrackingKeyForStatistic:*MEMORY[0x277D6FAF8]];
     TIStatisticScalarIncrement();
@@ -16234,41 +16234,41 @@ LABEL_20:
 
   if (![(TIKeyboardInputManager *)self usesCandidateSelection])
   {
-    v21 = [(TIKeyboardInputManager *)self inputString];
-    if (![v21 length])
+    inputString = [(TIKeyboardInputManager *)self inputString];
+    if (![inputString length])
     {
-      v7 = [(TIKeyboardInputManager *)self keyboardState];
-      v8 = [v7 documentState];
-      v9 = [v8 selectedText];
+      keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+      documentState2 = [keyboardState2 documentState];
+      selectedText = [documentState2 selectedText];
 
-      v21 = v9;
+      inputString = selectedText;
     }
 
-    v10 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v11 = [v21 componentsSeparatedByCharactersInSet:v10];
-    v12 = [v11 lastObject];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v11 = [inputString componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
+    lastObject = [v11 lastObject];
 
-    if (![v12 length])
+    if (![lastObject length])
     {
       goto LABEL_17;
     }
 
-    v13 = [(TIKeyboardInputManager *)self recentAutocorrections];
-    v14 = [v13 objectForKey:v12];
+    recentAutocorrections = [(TIKeyboardInputManager *)self recentAutocorrections];
+    v14 = [recentAutocorrections objectForKey:lastObject];
 
-    v15 = [(TIKeyboardInputManager *)self recentPredictiveInputSelections];
-    v16 = [v15 objectForKey:v12];
+    recentPredictiveInputSelections = [(TIKeyboardInputManager *)self recentPredictiveInputSelections];
+    v16 = [recentPredictiveInputSelections objectForKey:lastObject];
 
     if (![v14 isAutocorrection] || v16)
     {
-      v20 = [v16 isAutocorrection];
+      isAutocorrection = [v16 isAutocorrection];
       v17 = MEMORY[0x277D6FAE8];
-      if (v20)
+      if (isAutocorrection)
       {
         v17 = MEMORY[0x277D6FAE0];
       }
 
-      if ((v20 & 1) == 0 && !v16)
+      if ((isAutocorrection & 1) == 0 && !v16)
       {
         goto LABEL_16;
       }
@@ -16292,37 +16292,37 @@ LABEL_17:
   }
 }
 
-- (void)incrementUsageTrackingKeyForAppWithIsSentence:(BOOL)a3
+- (void)incrementUsageTrackingKeyForAppWithIsSentence:(BOOL)sentence
 {
-  v3 = a3;
+  sentenceCopy = sentence;
   if (![(TIKeyboardInputManager *)self shouldSuppressTokenIDLookups])
   {
-    v5 = [(TIKeyboardInputManager *)self config];
-    v6 = [v5 disableAnalytics];
+    config = [(TIKeyboardInputManager *)self config];
+    disableAnalytics = [config disableAnalytics];
 
-    if ((v6 & 1) == 0)
+    if ((disableAnalytics & 1) == 0)
     {
       if ([TIKeyboardInputManager incrementUsageTrackingKeyForAppWithIsSentence:]::onceToken != -1)
       {
         dispatch_once(&[TIKeyboardInputManager incrementUsageTrackingKeyForAppWithIsSentence:]::onceToken, &__block_literal_global_11663);
       }
 
-      v7 = [(TIKeyboardInputManager *)self keyboardState];
-      v13 = [v7 clientIdentifier];
+      keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+      clientIdentifier = [keyboardState clientIdentifier];
 
-      if ([v13 isEqualToString:@"com.apple.MobileSMS"])
+      if ([clientIdentifier isEqualToString:@"com.apple.MobileSMS"])
       {
         v8 = MEMORY[0x277D6FBA0];
         v9 = MEMORY[0x277D6FB98];
       }
 
-      else if ([v13 isEqualToString:@"com.apple.mobilemail"])
+      else if ([clientIdentifier isEqualToString:@"com.apple.mobilemail"])
       {
         v8 = MEMORY[0x277D6FB90];
         v9 = MEMORY[0x277D6FB88];
       }
 
-      else if ([v13 hasPrefix:@"com.apple"])
+      else if ([clientIdentifier hasPrefix:@"com.apple"])
       {
         v8 = MEMORY[0x277D6FB50];
         v9 = MEMORY[0x277D6FB48];
@@ -16330,7 +16330,7 @@ LABEL_17:
 
       else
       {
-        v10 = [-[TIKeyboardInputManager incrementUsageTrackingKeyForAppWithIsSentence:]::translationApps containsObject:v13];
+        v10 = [-[TIKeyboardInputManager incrementUsageTrackingKeyForAppWithIsSentence:]::translationApps containsObject:clientIdentifier];
         v9 = MEMORY[0x277D6FBC8];
         if (v10)
         {
@@ -16339,7 +16339,7 @@ LABEL_17:
 
         else
         {
-          v11 = [-[TIKeyboardInputManager incrementUsageTrackingKeyForAppWithIsSentence:]::messagingApps containsObject:v13];
+          v11 = [-[TIKeyboardInputManager incrementUsageTrackingKeyForAppWithIsSentence:]::messagingApps containsObject:clientIdentifier];
           if (v11)
           {
             v9 = MEMORY[0x277D6FBF8];
@@ -16353,7 +16353,7 @@ LABEL_17:
         }
       }
 
-      if (v3)
+      if (sentenceCopy)
       {
         v8 = v9;
       }
@@ -16377,40 +16377,40 @@ uint64_t __72__TIKeyboardInputManager_incrementUsageTrackingKeyForAppWithIsSente
   return MEMORY[0x2821F96F8](v2, v3);
 }
 
-- (void)incrementUsageTrackingKey:(id)a3
+- (void)incrementUsageTrackingKey:(id)key
 {
-  v7 = a3;
-  v4 = [(TIKeyboardInputManager *)self config];
-  v5 = [v4 disableAnalytics];
+  keyCopy = key;
+  config = [(TIKeyboardInputManager *)self config];
+  disableAnalytics = [config disableAnalytics];
 
-  if ((v5 & 1) == 0)
+  if ((disableAnalytics & 1) == 0)
   {
-    v6 = [(TIKeyboardInputManager *)self usageTrackingKeyForStatistic:v7];
+    v6 = [(TIKeyboardInputManager *)self usageTrackingKeyForStatistic:keyCopy];
     TIStatisticScalarIncrement();
   }
 }
 
-- (void)incrementUsageTrackingKeyForAutocorrectionStatistic:(id)a3 autocorrectionTypes:(unsigned int)a4
+- (void)incrementUsageTrackingKeyForAutocorrectionStatistic:(id)statistic autocorrectionTypes:(unsigned int)types
 {
-  v10 = a3;
-  v5 = [(TIKeyboardInputManager *)self config];
-  v6 = [v5 disableAnalytics];
+  statisticCopy = statistic;
+  config = [(TIKeyboardInputManager *)self config];
+  disableAnalytics = [config disableAnalytics];
 
-  if ((v6 & 1) == 0)
+  if ((disableAnalytics & 1) == 0)
   {
-    v7 = [(TIKeyboardInputManager *)self keyboardState];
-    v8 = [v7 layoutState];
-    v9 = [v8 inputMode];
+    keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+    layoutState = [keyboardState layoutState];
+    inputMode = [layoutState inputMode];
     TIStatisticScalarIncrementAutocorrectionKey();
   }
 }
 
-- (id)usageTrackingKeyForStatistic:(id)a3
+- (id)usageTrackingKeyForStatistic:(id)statistic
 {
-  v4 = a3;
-  v5 = [(TIKeyboardInputManager *)self keyboardState];
-  v6 = [v5 layoutState];
-  v7 = [v6 inputMode];
+  statisticCopy = statistic;
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  layoutState = [keyboardState layoutState];
+  inputMode = [layoutState inputMode];
   v8 = TIStatisticGetKeyForInputMode();
 
   return v8;
@@ -16418,125 +16418,125 @@ uint64_t __72__TIKeyboardInputManager_incrementUsageTrackingKeyForAppWithIsSente
 
 - (void)popCandidateGenerationContextFromStack
 {
-  v3 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
-  [v3 close];
+  candidateHandlerForOpenRequest = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
+  [candidateHandlerForOpenRequest close];
 
   [(TIKeyboardInputManager *)self setCandidateHandlerForOpenRequest:0];
-  v4 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequestStack];
-  v5 = [v4 count];
+  candidateHandlerForOpenRequestStack = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequestStack];
+  v5 = [candidateHandlerForOpenRequestStack count];
 
   if (v5)
   {
-    v6 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequestStack];
-    v7 = [v6 lastObject];
-    [(TIKeyboardInputManager *)self setCandidateHandlerForOpenRequest:v7];
+    candidateHandlerForOpenRequestStack2 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequestStack];
+    lastObject = [candidateHandlerForOpenRequestStack2 lastObject];
+    [(TIKeyboardInputManager *)self setCandidateHandlerForOpenRequest:lastObject];
 
-    v8 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequestStack];
-    [v8 removeLastObject];
+    candidateHandlerForOpenRequestStack3 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequestStack];
+    [candidateHandlerForOpenRequestStack3 removeLastObject];
   }
 }
 
 - (void)pushCandidateGenerationContextOnStack
 {
-  v3 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequestStack];
+  candidateHandlerForOpenRequestStack = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequestStack];
 
-  if (!v3)
+  if (!candidateHandlerForOpenRequestStack)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
-    [(TIKeyboardInputManager *)self setCandidateHandlerForOpenRequestStack:v4];
+    array = [MEMORY[0x277CBEB18] array];
+    [(TIKeyboardInputManager *)self setCandidateHandlerForOpenRequestStack:array];
   }
 
-  v5 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequestStack];
-  v6 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
-  [v5 addObject:v6];
+  candidateHandlerForOpenRequestStack2 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequestStack];
+  candidateHandlerForOpenRequest = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
+  [candidateHandlerForOpenRequestStack2 addObject:candidateHandlerForOpenRequest];
 
   [(TIKeyboardInputManager *)self setCandidateHandlerForOpenRequest:0];
 }
 
-- (BOOL)closeCandidateGenerationContextWithResults:(id)a3 forced:(BOOL)a4
+- (BOOL)closeCandidateGenerationContextWithResults:(id)results forced:(BOOL)forced
 {
-  v4 = a4;
-  [(TIKeyboardInputManager *)self pushCandidateGenerationContextWithResults:a3];
-  v6 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
+  forcedCopy = forced;
+  [(TIKeyboardInputManager *)self pushCandidateGenerationContextWithResults:results];
+  candidateHandlerForOpenRequest = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
 
-  if (!v6)
+  if (!candidateHandlerForOpenRequest)
   {
-    v4 = 0;
+    forcedCopy = 0;
   }
 
-  if (v4)
+  if (forcedCopy)
   {
-    v7 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
-    [v7 close];
+    candidateHandlerForOpenRequest2 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
+    [candidateHandlerForOpenRequest2 close];
 
     [(TIKeyboardInputManager *)self setCandidateHandlerForOpenRequest:0];
   }
 
-  return v4;
+  return forcedCopy;
 }
 
-- (BOOL)closeCandidateGenerationContextWithResults:(id)a3
+- (BOOL)closeCandidateGenerationContextWithResults:(id)results
 {
-  v4 = a3;
-  v5 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
-  LOBYTE(self) = -[TIKeyboardInputManager closeCandidateGenerationContextWithResults:forced:](self, "closeCandidateGenerationContextWithResults:forced:", v4, [v5 asynchronous] ^ 1);
+  resultsCopy = results;
+  candidateHandlerForOpenRequest = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
+  LOBYTE(self) = -[TIKeyboardInputManager closeCandidateGenerationContextWithResults:forced:](self, "closeCandidateGenerationContextWithResults:forced:", resultsCopy, [candidateHandlerForOpenRequest asynchronous] ^ 1);
 
   return self;
 }
 
-- (void)pushCandidateGenerationContextWithResults:(id)a3
+- (void)pushCandidateGenerationContextWithResults:(id)results
 {
-  v17 = a3;
-  v4 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
+  resultsCopy = results;
+  candidateHandlerForOpenRequest = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
 
-  if (v4)
+  if (candidateHandlerForOpenRequest)
   {
-    v5 = [(TIKeyboardInputManager *)self keyboardState];
-    v6 = [v5 inputForMarkedText];
+    keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+    inputForMarkedText = [keyboardState inputForMarkedText];
 
-    if (v6)
+    if (inputForMarkedText)
     {
-      v7 = [(TIKeyboardInputManager *)self markedText];
-      [v17 setUncommittedText:v7];
+      markedText = [(TIKeyboardInputManager *)self markedText];
+      [resultsCopy setUncommittedText:markedText];
     }
 
-    if (v17)
+    if (resultsCopy)
     {
-      v8 = [v17 proactiveTriggers];
-      v9 = [v8 firstObject];
-      v10 = [(TIKeyboardInputManager *)self keyboardState];
-      [(TIKeyboardInputManager *)self trackProactiveMetrics:v9 keyboardState:v10];
+      proactiveTriggers = [resultsCopy proactiveTriggers];
+      firstObject = [proactiveTriggers firstObject];
+      keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+      [(TIKeyboardInputManager *)self trackProactiveMetrics:firstObject keyboardState:keyboardState2];
 
       v11 = objc_alloc(MEMORY[0x277D6F328]);
-      v12 = [v17 candidates];
-      v13 = [v11 initWithCandidates:v12];
+      candidates = [resultsCopy candidates];
+      v13 = [v11 initWithCandidates:candidates];
 
-      v14 = [(TIKeyboardInputManager *)self typingSessionMonitor];
-      v15 = [(TIKeyboardInputManager *)self keyboardState];
-      [v14 candidatesOffered:v13 keyboardState:v15];
+      typingSessionMonitor = [(TIKeyboardInputManager *)self typingSessionMonitor];
+      keyboardState3 = [(TIKeyboardInputManager *)self keyboardState];
+      [typingSessionMonitor candidatesOffered:v13 keyboardState:keyboardState3];
     }
 
-    v16 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
-    [v16 pushCandidateResultSet:v17];
+    candidateHandlerForOpenRequest2 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
+    [candidateHandlerForOpenRequest2 pushCandidateResultSet:resultsCopy];
   }
 }
 
-- (void)openCandidateGenerationContextWithCandidateHandler:(id)a3
+- (void)openCandidateGenerationContextWithCandidateHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(TIKeyboardInputManager *)self closeCandidateGenerationContextWithResults:0 forced:1];
-  [(TIKeyboardInputManager *)self setCandidateHandlerForOpenRequest:v4];
+  [(TIKeyboardInputManager *)self setCandidateHandlerForOpenRequest:handlerCopy];
 
-  v5 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
-  [v5 open];
+  candidateHandlerForOpenRequest = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
+  [candidateHandlerForOpenRequest open];
 }
 
-- (void)scheduleLinguisticResourceUpdateWithReason:(id)a3
+- (void)scheduleLinguisticResourceUpdateWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   if (![(TIKeyboardInputManager *)self isLinguisticResourceUpdateScheduled])
   {
-    [(TIKeyboardInputManager *)self setLinguisticResourceStatus:1 reason:v4];
+    [(TIKeyboardInputManager *)self setLinguisticResourceStatus:1 reason:reasonCopy];
   }
 }
 
@@ -16557,9 +16557,9 @@ uint64_t __72__TIKeyboardInputManager_incrementUsageTrackingKeyForAppWithIsSente
   if (!smartOptions)
   {
     v4 = MEMORY[0x277D6F488];
-    v5 = [(TIKeyboardInputManagerBase *)self inputMode];
-    v6 = [v5 locale];
-    v7 = [v4 smartPunctuationOptionsForLocale:v6];
+    inputMode = [(TIKeyboardInputManagerBase *)self inputMode];
+    locale = [inputMode locale];
+    v7 = [v4 smartPunctuationOptionsForLocale:locale];
     v8 = self->_smartOptions;
     self->_smartOptions = v7;
 
@@ -16582,46 +16582,46 @@ uint64_t __72__TIKeyboardInputManager_incrementUsageTrackingKeyForAppWithIsSente
   [v3 setUsesAutoDeleteWord:{-[TIKeyboardInputManager usesAutoDeleteWord](self, "usesAutoDeleteWord")}];
   [v3 setAutoquoteType:{-[TIKeyboardInputManager autoquoteType](self, "autoquoteType")}];
   [v3 setUsesCandidateSelection:{-[TIKeyboardInputManager usesCandidateSelection](self, "usesCandidateSelection")}];
-  v4 = [(TIKeyboardInputManager *)self keyboardState];
-  [v3 setUsesAutocorrectionLists:{objc_msgSend(v4, "autocorrectionListUIDisplayed")}];
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  [v3 setUsesAutocorrectionLists:{objc_msgSend(keyboardState, "autocorrectionListUIDisplayed")}];
 
   [v3 setCommitsAcceptedCandidate:{-[TIKeyboardInputManager commitsAcceptedCandidate](self, "commitsAcceptedCandidate")}];
   [v3 setNewInputAcceptsUserSelectedCandidate:{-[TIKeyboardInputManager newInputAcceptsUserSelectedCandidate](self, "newInputAcceptsUserSelectedCandidate")}];
   [v3 setInitialCandidateBatchCount:{-[TIKeyboardInputManager initialCandidateBatchCount](self, "initialCandidateBatchCount")}];
-  v5 = [(TIKeyboardInputManager *)self wordSeparator];
-  [v3 setWordSeparator:v5];
+  wordSeparator = [(TIKeyboardInputManager *)self wordSeparator];
+  [v3 setWordSeparator:wordSeparator];
 
   [v3 setShouldAddModifierSymbolsToWordCharacters:{-[TIKeyboardInputManager shouldAddModifierSymbolsToWordCharacters](self, "shouldAddModifierSymbolsToWordCharacters")}];
-  v6 = [(TIKeyboardInputManager *)self wordCharacters];
-  [v3 setWordCharacters:v6];
+  wordCharacters = [(TIKeyboardInputManager *)self wordCharacters];
+  [v3 setWordCharacters:wordCharacters];
 
-  v7 = [(TIKeyboardInputManager *)self supplementalLexiconWordExtraCharacters];
-  [v3 setSupplementalLexiconWordExtraCharacters:v7];
+  supplementalLexiconWordExtraCharacters = [(TIKeyboardInputManager *)self supplementalLexiconWordExtraCharacters];
+  [v3 setSupplementalLexiconWordExtraCharacters:supplementalLexiconWordExtraCharacters];
 
-  v8 = [(TIKeyboardInputManager *)self terminatorsPreventingAutocorrection];
-  [v3 setTerminatorsPreventingAutocorrection:v8];
+  terminatorsPreventingAutocorrection = [(TIKeyboardInputManager *)self terminatorsPreventingAutocorrection];
+  [v3 setTerminatorsPreventingAutocorrection:terminatorsPreventingAutocorrection];
 
-  v9 = [(TIKeyboardInputManager *)self terminatorsDeletingAutospace];
-  [v3 setTerminatorsDeletingAutospace:v9];
+  terminatorsDeletingAutospace = [(TIKeyboardInputManager *)self terminatorsDeletingAutospace];
+  [v3 setTerminatorsDeletingAutospace:terminatorsDeletingAutospace];
 
-  v10 = [(TIKeyboardInputManager *)self keyboardBehaviors];
-  [v3 setKeyboardBehaviors:v10];
+  keyboardBehaviors = [(TIKeyboardInputManager *)self keyboardBehaviors];
+  [v3 setKeyboardBehaviors:keyboardBehaviors];
 
   [v3 setUsesContinuousPath:{-[TIKeyboardInputManager usesContinuousPath](self, "usesContinuousPath")}];
-  v11 = [(TIKeyboardInputManager *)self config];
-  [v3 setUsesContinuousPathProgressiveCandidates:{objc_msgSend(v11, "usesContinuousPathProgressiveCandidates")}];
+  config = [(TIKeyboardInputManager *)self config];
+  [v3 setUsesContinuousPathProgressiveCandidates:{objc_msgSend(config, "usesContinuousPathProgressiveCandidates")}];
 
-  v12 = [(TIKeyboardInputManager *)self config];
-  [v3 setInsertsSpaceAfterPredictiveInput:{objc_msgSend(v12, "insertsSpaceAfterPredictiveInput")}];
+  config2 = [(TIKeyboardInputManager *)self config];
+  [v3 setInsertsSpaceAfterPredictiveInput:{objc_msgSend(config2, "insertsSpaceAfterPredictiveInput")}];
 
-  v13 = [(TIKeyboardInputManager *)self config];
-  [v3 setIgnoreContinuousPathRequirements:{objc_msgSend(v13, "shouldIgnoreCPRequirements")}];
+  config3 = [(TIKeyboardInputManager *)self config];
+  [v3 setIgnoreContinuousPathRequirements:{objc_msgSend(config3, "shouldIgnoreCPRequirements")}];
 
-  v14 = [(TIKeyboardInputManager *)self lastAcceptedText];
-  if (v14)
+  lastAcceptedText = [(TIKeyboardInputManager *)self lastAcceptedText];
+  if (lastAcceptedText)
   {
-    v15 = [(TIKeyboardInputManager *)self lastAcceptedText];
-    [v3 setLearningFlagsMaskForLastAcceptedCandidate:{objc_msgSend(v15, "learningFlagsMask")}];
+    lastAcceptedText2 = [(TIKeyboardInputManager *)self lastAcceptedText];
+    [v3 setLearningFlagsMaskForLastAcceptedCandidate:{objc_msgSend(lastAcceptedText2, "learningFlagsMask")}];
   }
 
   else
@@ -16640,8 +16640,8 @@ uint64_t __72__TIKeyboardInputManager_incrementUsageTrackingKeyForAppWithIsSente
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(TIKeyboardInputManagerBase *)self inputMode];
-    v6 = [v4 stringWithFormat:@"%s Removing input manager for %@", "-[TIKeyboardInputManager dealloc]", v5];
+    inputMode = [(TIKeyboardInputManagerBase *)self inputMode];
+    v6 = [v4 stringWithFormat:@"%s Removing input manager for %@", "-[TIKeyboardInputManager dealloc]", inputMode];
     *buf = 138412290;
     v15 = v6;
     _os_log_impl(&dword_22CA55000, v3, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
@@ -16662,15 +16662,15 @@ uint64_t __72__TIKeyboardInputManager_incrementUsageTrackingKeyForAppWithIsSente
     self->m_impl = 0;
   }
 
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v9 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(TIRevisionHistory *)self->_revisionHistory setDelegate:0];
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v10 removeObserver:self];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self];
 
-  v11 = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
-  [v11 close];
+  candidateHandlerForOpenRequest = [(TIKeyboardInputManager *)self candidateHandlerForOpenRequest];
+  [candidateHandlerForOpenRequest close];
 
   [(TIKeyboardInputManager *)self setCandidateHandlerForOpenRequest:0];
   v13.receiver = self;
@@ -16679,47 +16679,47 @@ uint64_t __72__TIKeyboardInputManager_incrementUsageTrackingKeyForAppWithIsSente
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (TIKeyboardInputManager)initWithConfig:(id)a3 keyboardState:(id)a4 languageSelectionController:(id)a5
+- (TIKeyboardInputManager)initWithConfig:(id)config keyboardState:(id)state languageSelectionController:(id)controller
 {
-  objc_storeStrong(&self->_languageSelectionController, a5);
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [(TIKeyboardInputManager *)self initWithConfig:v11 keyboardState:v10];
+  objc_storeStrong(&self->_languageSelectionController, controller);
+  controllerCopy = controller;
+  stateCopy = state;
+  configCopy = config;
+  v12 = [(TIKeyboardInputManager *)self initWithConfig:configCopy keyboardState:stateCopy];
 
   [(TILanguageSelectionController *)v12->_languageSelectionController setDelegate:v12];
   return v12;
 }
 
-- (TIKeyboardInputManager)initWithConfig:(id)a3 keyboardState:(id)a4
+- (TIKeyboardInputManager)initWithConfig:(id)config keyboardState:(id)state
 {
   v42 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 inputMode];
+  configCopy = config;
+  stateCopy = state;
+  inputMode = [configCopy inputMode];
   v41.receiver = self;
   v41.super_class = TIKeyboardInputManager;
-  v10 = [(TIKeyboardInputManagerBase *)&v41 initWithInputMode:v9 keyboardState:v8];
+  v10 = [(TIKeyboardInputManagerBase *)&v41 initWithInputMode:inputMode keyboardState:stateCopy];
 
   if (v10)
   {
-    [(TIKeyboardInputManager *)v10 setKeyboardState:v8];
+    [(TIKeyboardInputManager *)v10 setKeyboardState:stateCopy];
     v11 = +[TIKeyboardAssertionManager sharedAssertionManager];
     [v11 addAssertionForObject:v10];
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:v10 selector:sel_dynamicDictionariesRemoved_ name:@"TIKeyboardInputManagerDynamicDictionariesRemovedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel_dynamicDictionariesRemoved_ name:@"TIKeyboardInputManagerDynamicDictionariesRemovedNotification" object:0];
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 addObserver:v10 selector:sel_dynamicResourceDirectorySet_ name:@"TIKeyboardInputManagerDynamicResourceDirectorySetNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v10 selector:sel_dynamicResourceDirectorySet_ name:@"TIKeyboardInputManagerDynamicResourceDirectorySetNotification" object:0];
 
     v14 = +[TIAppAutofillManager sharedInstance];
-    v15 = [v14 secureCandidateRenderer];
-    v16 = [(TIKeyboardInputManagerBase *)v10 inputMode];
-    v17 = [v16 languageWithRegion];
-    [v15 setLocaleIdentifier:v17];
+    secureCandidateRenderer = [v14 secureCandidateRenderer];
+    inputMode2 = [(TIKeyboardInputManagerBase *)v10 inputMode];
+    languageWithRegion = [inputMode2 languageWithRegion];
+    [secureCandidateRenderer setLocaleIdentifier:languageWithRegion];
 
-    objc_storeStrong(&v10->_config, a3);
+    objc_storeStrong(&v10->_config, config);
     v18 = [[TILRUDictionary alloc] initWithMaximumCapacity:200];
     autocorrectionHistory = v10->_autocorrectionHistory;
     v10->_autocorrectionHistory = v18;
@@ -16758,11 +16758,11 @@ uint64_t __72__TIKeyboardInputManager_incrementUsageTrackingKeyForAppWithIsSente
 
     v10->_isEditingWordPrefix = 0;
     v10->m_impl = [(TIKeyboardInputManager *)v10 initImplementation];
-    v36 = [(TIKeyboardInputManager *)v10 config];
-    [v36 isTesting];
+    config = [(TIKeyboardInputManager *)v10 config];
+    [config isTesting];
 
-    v37 = [(TIKeyboardInputManager *)v10 config];
-    [v37 isTesting];
+    config2 = [(TIKeyboardInputManager *)v10 config];
+    [config2 isTesting];
 
     m_impl = v10->m_impl;
     [(TIKeyboardInputManager *)v10 config];
@@ -16795,33 +16795,33 @@ void __55__TIKeyboardInputManager_initWithConfig_keyboardState___block_invoke_2(
   }
 }
 
-- (TIKeyboardInputManager)initWithInputMode:(id)a3 keyboardState:(id)a4
+- (TIKeyboardInputManager)initWithInputMode:(id)mode keyboardState:(id)state
 {
-  v6 = a4;
-  v7 = [TIKeyboardInputManagerConfig configurationForInputMode:a3];
-  v8 = [(TIKeyboardInputManager *)self initWithConfig:v7 keyboardState:v6];
+  stateCopy = state;
+  v7 = [TIKeyboardInputManagerConfig configurationForInputMode:mode];
+  v8 = [(TIKeyboardInputManager *)self initWithConfig:v7 keyboardState:stateCopy];
 
   return v8;
 }
 
-+ (id)offlineLearningHandleForInputMode:(id)a3
++ (id)offlineLearningHandleForInputMode:(id)mode
 {
-  v3 = a3;
-  v4 = [v3 normalizedIdentifier];
+  modeCopy = mode;
+  normalizedIdentifier = [modeCopy normalizedIdentifier];
   v5 = TIGetInputModeProperties();
 
   v6 = [v5 objectForKey:*MEMORY[0x277D6F6D8]];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  v8 = [[TILanguageModelOfflineLearningHandleFavonius alloc] initWithInputMode:v3];
-  [(TILanguageModelOfflineLearningHandle *)v8 setValid:v7];
+  v8 = [[TILanguageModelOfflineLearningHandleFavonius alloc] initWithInputMode:modeCopy];
+  [(TILanguageModelOfflineLearningHandle *)v8 setValid:bOOLValue];
 
   return v8;
 }
 
-+ (int)shiftContextForShiftState:(int)a3 autocapitalizationType:(unint64_t)a4
++ (int)shiftContextForShiftState:(int)state autocapitalizationType:(unint64_t)type
 {
-  if (a4 == 1)
+  if (type == 1)
   {
     v4 = 3;
   }
@@ -16831,17 +16831,17 @@ void __55__TIKeyboardInputManager_initWithConfig_keyboardState___block_invoke_2(
     v4 = 2;
   }
 
-  if (a4 == 3)
+  if (type == 3)
   {
     v4 = 4;
   }
 
-  if (a3 != 2)
+  if (state != 2)
   {
     v4 = 0;
   }
 
-  if (a3 == 3)
+  if (state == 3)
   {
     v5 = 5;
   }
@@ -16851,7 +16851,7 @@ void __55__TIKeyboardInputManager_initWithConfig_keyboardState___block_invoke_2(
     v5 = v4;
   }
 
-  if (a3 == 1)
+  if (state == 1)
   {
     return 1;
   }
@@ -16862,29 +16862,29 @@ void __55__TIKeyboardInputManager_initWithConfig_keyboardState___block_invoke_2(
   }
 }
 
-- (int64_t)addTouch:(id)a3 shouldHitTest:(BOOL)a4
+- (int64_t)addTouch:(id)touch shouldHitTest:(BOOL)test
 {
-  v5 = a3;
+  touchCopy = touch;
   if (self->m_impl)
   {
     if ([(TIKeyboardInputManager *)self shouldMonitorTypingSession])
     {
-      v6 = [(TIKeyboardInputManager *)self typingSessionMonitor];
-      [v6 addTouchEvent:v5];
+      typingSessionMonitor = [(TIKeyboardInputManager *)self typingSessionMonitor];
+      [typingSessionMonitor addTouchEvent:touchCopy];
     }
 
     m_impl = self->m_impl;
-    [v5 location];
-    v8 = [v5 stage];
-    [v5 timestamp];
-    v9 = [v5 pathIndex];
-    v10 = [v5 fingerID];
-    [v5 radius];
-    v11 = [v5 forcedKeyCode];
-    [v5 continuousPathState];
-    v12 = TIInputManager::add_touch(m_impl, v8, v9, v10, v11);
+    [touchCopy location];
+    stage = [touchCopy stage];
+    [touchCopy timestamp];
+    pathIndex = [touchCopy pathIndex];
+    fingerID = [touchCopy fingerID];
+    [touchCopy radius];
+    forcedKeyCode = [touchCopy forcedKeyCode];
+    [touchCopy continuousPathState];
+    v12 = TIInputManager::add_touch(m_impl, stage, pathIndex, fingerID, forcedKeyCode);
     v13 = v12;
-    if ([v5 stage] != 2 && v12 != -2)
+    if ([touchCopy stage] != 2 && v12 != -2)
     {
       goto LABEL_14;
     }
@@ -16906,7 +16906,7 @@ void __55__TIKeyboardInputManager_initWithConfig_keyboardState___block_invoke_2(
 LABEL_13:
     self->_lastHitTestKeycode = v12;
 LABEL_14:
-    [(TIKeyboardInputManager *)self setPreviousTouchEvent:v5];
+    [(TIKeyboardInputManager *)self setPreviousTouchEvent:touchCopy];
     goto LABEL_15;
   }
 
@@ -16923,19 +16923,19 @@ LABEL_15:
     dispatch_once(&TIGetKeyboardDisableHitTestingValue(void)::onceToken, &__block_literal_global_1333);
   }
 
-  v3 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  v4 = [v3 valueForPreferenceKey:@"KeyboardDisableHitTesting"];
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+  v4 = [mEMORY[0x277D6F470] valueForPreferenceKey:@"KeyboardDisableHitTesting"];
 
-  LOBYTE(v3) = [v4 BOOLValue];
-  if (v3)
+  LOBYTE(mEMORY[0x277D6F470]) = [v4 BOOLValue];
+  if (mEMORY[0x277D6F470])
   {
     return 0;
   }
 
-  v6 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-  v7 = [v6 canHandleKeyHitTest];
+  keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+  canHandleKeyHitTest = [keyboardFeatureSpecialization canHandleKeyHitTest];
 
-  return v7;
+  return canHandleKeyHitTest;
 }
 
 - (id)externalInputString
@@ -17032,18 +17032,18 @@ LABEL_15:
   return v3;
 }
 
-- (void)fetchAssetAvailabilityStatusForInputMode:(id)a3 completionHandler:(id)a4
+- (void)fetchAssetAvailabilityStatusForInputMode:(id)mode completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  modeCopy = mode;
   v7 = +[TIAssetManager sharedAssetManager];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __101__TIKeyboardInputManager_TestingSupport__fetchAssetAvailabilityStatusForInputMode_completionHandler___block_invoke;
   v9[3] = &unk_2787312C0;
-  v10 = v5;
-  v8 = v5;
-  [v7 ddsAssetsForInputMode:v6 cachedOnly:0 completion:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [v7 ddsAssetsForInputMode:modeCopy cachedOnly:0 completion:v9];
 }
 
 uint64_t __101__TIKeyboardInputManager_TestingSupport__fetchAssetAvailabilityStatusForInputMode_completionHandler___block_invoke(uint64_t result, void *a2)
@@ -17060,28 +17060,28 @@ uint64_t __101__TIKeyboardInputManager_TestingSupport__fetchAssetAvailabilitySta
   return result;
 }
 
-- (void)fetchTypingSessionParams:(id)a3
+- (void)fetchTypingSessionParams:(id)params
 {
-  v4 = a3;
-  v5 = [(TIKeyboardInputManager *)self languageSelectionController];
-  v6 = [v5 activeInputModes];
+  paramsCopy = params;
+  languageSelectionController = [(TIKeyboardInputManager *)self languageSelectionController];
+  activeInputModes = [languageSelectionController activeInputModes];
 
-  v7 = [(TIKeyboardInputManager *)self wordSeparator];
-  v8 = [(TIKeyboardInputManager *)self testingParameters];
-  v9 = [(TIKeyboardInputManagerBase *)self inputMode];
+  wordSeparator = [(TIKeyboardInputManager *)self wordSeparator];
+  testingParameters = [(TIKeyboardInputManager *)self testingParameters];
+  inputMode = [(TIKeyboardInputManagerBase *)self inputMode];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __67__TIKeyboardInputManager_TestingSupport__fetchTypingSessionParams___block_invoke;
   v14[3] = &unk_278731808;
-  v15 = v6;
-  v16 = v7;
-  v17 = v8;
-  v18 = v4;
-  v10 = v4;
-  v11 = v8;
-  v12 = v7;
-  v13 = v6;
-  [(TIKeyboardInputManager *)self fetchAssetAvailabilityStatusForInputMode:v9 completionHandler:v14];
+  v15 = activeInputModes;
+  v16 = wordSeparator;
+  v17 = testingParameters;
+  v18 = paramsCopy;
+  v10 = paramsCopy;
+  v11 = testingParameters;
+  v12 = wordSeparator;
+  v13 = activeInputModes;
+  [(TIKeyboardInputManager *)self fetchAssetAvailabilityStatusForInputMode:inputMode completionHandler:v14];
 }
 
 void __67__TIKeyboardInputManager_TestingSupport__fetchTypingSessionParams___block_invoke(void *a1, uint64_t a2)
@@ -17102,12 +17102,12 @@ void __67__TIKeyboardInputManager_TestingSupport__fetchTypingSessionParams___blo
   return self;
 }
 
-- (BOOL)dictionaryContainsWord:(id)a3
+- (BOOL)dictionaryContainsWord:(id)word
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TIKeyboardInputManager *)self dictionaryStringForExternalString:v4];
-  v6 = [(TIKeyboardInputManager *)self dictionaryStringForExternalString:v4];
+  wordCopy = word;
+  v5 = [(TIKeyboardInputManager *)self dictionaryStringForExternalString:wordCopy];
+  v6 = [(TIKeyboardInputManager *)self dictionaryStringForExternalString:wordCopy];
 
   m_impl = self->m_impl;
   KB::utf8_string(v6, v13);
@@ -17127,28 +17127,28 @@ void __67__TIKeyboardInputManager_TestingSupport__fetchTypingSessionParams___blo
   return v8;
 }
 
-- (void)logToTypologyRecorderWithString:(id)a3
+- (void)logToTypologyRecorderWithString:(id)string
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  stringCopy = string;
+  v5 = stringCopy;
+  if (stringCopy)
   {
     ptr = self->m_typology_recorder.__ptr_;
     if (ptr)
     {
-      v7 = v4;
-      CFStringAppend(*(ptr + 1), v4);
+      v7 = stringCopy;
+      CFStringAppend(*(ptr + 1), stringCopy);
       v5 = v7;
     }
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](stringCopy, v5);
 }
 
 - (BOOL)isTypologyEnabled
 {
-  v2 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  v3 = [v2 BOOLForKey:53];
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+  v3 = [mEMORY[0x277D6F470] BOOLForKey:53];
 
   return v3;
 }
@@ -17200,34 +17200,34 @@ void __67__TIKeyboardInputManager_TestingSupport__fetchTypingSessionParams___blo
   return v4;
 }
 
-- (void)addSynthesizedTouchToInput:(id)a3 keyboardState:(id)a4
+- (void)addSynthesizedTouchToInput:(id)input keyboardState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 string];
-  v9 = [v8 length];
+  inputCopy = input;
+  stateCopy = state;
+  string = [inputCopy string];
+  v9 = [string length];
 
   if (v9)
   {
-    v10 = [v6 string];
-    v11 = [v10 lowercaseString];
+    string2 = [inputCopy string];
+    lowercaseString = [string2 lowercaseString];
 
-    v12 = [v6 string];
-    v13 = [v11 isEqualToString:v12];
+    string3 = [inputCopy string];
+    v13 = [lowercaseString isEqualToString:string3];
 
     if ((v13 & 1) == 0)
     {
-      [v6 setUppercase:1];
+      [inputCopy setUppercase:1];
       if ([(TIKeyboardInputManager *)self nextInputWouldStartSentence])
       {
-        [v6 setAutoshifted:1];
+        [inputCopy setAutoshifted:1];
       }
     }
   }
 
   else
   {
-    v11 = 0;
+    lowercaseString = 0;
   }
 
   v35 = 0;
@@ -17243,23 +17243,23 @@ void __67__TIKeyboardInputManager_TestingSupport__fetchTypingSessionParams___blo
   v14 = *(MEMORY[0x277CBF398] + 16);
   v33 = *MEMORY[0x277CBF398];
   v34 = v14;
-  if (v11 || [v6 isBackspace])
+  if (lowercaseString || [inputCopy isBackspace])
   {
-    v15 = [v7 keyLayout];
+    keyLayout = [stateCopy keyLayout];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __98__TIKeyboardInputManager_TIHardwareKeyboardExperiments__addSynthesizedTouchToInput_keyboardState___block_invoke;
     v22[3] = &unk_278731798;
-    v23 = v11;
-    v24 = v6;
+    v23 = lowercaseString;
+    v24 = inputCopy;
     v25 = &v27;
     v26 = &v35;
-    [v15 enumerateKeysUsingBlock:v22];
+    [keyLayout enumerateKeysUsingBlock:v22];
   }
 
   if (*(v36 + 6) == -1)
   {
-    [v6 setPopupVariant:1];
+    [inputCopy setPopupVariant:1];
   }
 
   else
@@ -17269,7 +17269,7 @@ void __67__TIKeyboardInputManager_TestingSupport__fetchTypingSessionParams___blo
     v18 = MEMORY[0x277D6F440];
     v20 = KB::system_uptime(v19);
     v21 = [v18 touchEventWithStage:2 location:0 radius:*(v36 + 6) timestamp:MidX pathIndex:MidY forcedKeyCode:{12.0, v20}];
-    [v6 setTouchEvent:v21];
+    [inputCopy setTouchEvent:v21];
   }
 
   _Block_object_dispose(&v27, 8);
@@ -17293,49 +17293,49 @@ void __98__TIKeyboardInputManager_TIHardwareKeyboardExperiments__addSynthesizedT
 
 - (BOOL)isHardwareKeyboardAutocorrectionEnabled
 {
-  v3 = [(TIKeyboardInputManager *)self keyboardState];
-  v4 = [v3 hardwareKeyboardMode];
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  hardwareKeyboardMode = [keyboardState hardwareKeyboardMode];
 
-  if (!v4)
+  if (!hardwareKeyboardMode)
   {
     return 0;
   }
 
-  v5 = [(TIKeyboardInputManager *)self keyboardState];
-  v6 = [v5 autocorrectionEnabled];
+  keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+  autocorrectionEnabled = [keyboardState2 autocorrectionEnabled];
 
-  return v6;
+  return autocorrectionEnabled;
 }
 
-- (id)shortcutConversionForDocumentState:(id)a3
+- (id)shortcutConversionForDocumentState:(id)state
 {
-  v4 = a3;
-  if ([(TIKeyboardInputManager *)self shouldSkipShortcutConversionForDocumentState:v4])
+  stateCopy = state;
+  if ([(TIKeyboardInputManager *)self shouldSkipShortcutConversionForDocumentState:stateCopy])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [v4 contextBeforeInput];
-    v5 = [(TIKeyboardInputManager *)self shortcutConversionForString:v6 stringStartsInMiddleOfWord:0];
+    contextBeforeInput = [stateCopy contextBeforeInput];
+    v5 = [(TIKeyboardInputManager *)self shortcutConversionForString:contextBeforeInput stringStartsInMiddleOfWord:0];
   }
 
   return v5;
 }
 
-- (id)shortcutCompletionsForDocumentState:(id)a3
+- (id)shortcutCompletionsForDocumentState:(id)state
 {
-  v4 = a3;
-  if ([(TIKeyboardInputManager *)self shouldSkipShortcutConversionForDocumentState:v4])
+  stateCopy = state;
+  if ([(TIKeyboardInputManager *)self shouldSkipShortcutConversionForDocumentState:stateCopy])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [v4 contextBeforeInput];
-    v7 = [(TIKeyboardInputManager *)self shortcutSearchRangeForString:v6];
+    contextBeforeInput = [stateCopy contextBeforeInput];
+    v7 = [(TIKeyboardInputManager *)self shortcutSearchRangeForString:contextBeforeInput];
     if (v8 <= 0x40)
     {
       v9 = v7;
@@ -17345,15 +17345,15 @@ void __98__TIKeyboardInputManager_TIHardwareKeyboardExperiments__addSynthesizedT
       v17 = 3221225472;
       v18 = __82__TIKeyboardInputManager_ShortcutConversion__shortcutCompletionsForDocumentState___block_invoke;
       v19 = &unk_278733528;
-      v20 = self;
+      selfCopy = self;
       v12 = v11;
       v21 = v12;
-      [(TIKeyboardInputManager *)self enumerateWordSuffixesOfString:v6 inRange:v9 usingBlock:v10, &v16];
+      [(TIKeyboardInputManager *)self enumerateWordSuffixesOfString:contextBeforeInput inRange:v9 usingBlock:v10, &v16];
       v13 = [v12 length];
       if (v13)
       {
-        v14 = [v12 uppercaseString];
-        [v12 appendString:v14];
+        uppercaseString = [v12 uppercaseString];
+        [v12 appendString:uppercaseString];
 
         v13 = [objc_alloc(MEMORY[0x277D6F330]) initWithCharactersInString:v12];
       }
@@ -17413,17 +17413,17 @@ void __82__TIKeyboardInputManager_ShortcutConversion__shortcutCompletionsForDocu
   }
 }
 
-- (id)groupedCandidatesFromCandidates:(id)a3 usingSortingMethod:(id)a4
+- (id)groupedCandidatesFromCandidates:(id)candidates usingSortingMethod:(id)method
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(TIKeyboardInputManager *)self keyboardState];
-  v7 = [v6 longPredictionListEnabled];
+  candidatesCopy = candidates;
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  longPredictionListEnabled = [keyboardState longPredictionListEnabled];
 
-  if (v7)
+  if (longPredictionListEnabled)
   {
     v8 = objc_alloc(MEMORY[0x277D6F3C8]);
-    v9 = [MEMORY[0x277CBEB70] orderedSetWithArray:v5];
+    v9 = [MEMORY[0x277CBEB70] orderedSetWithArray:candidatesCopy];
     v10 = [v8 initWithTitle:0 candidates:v9];
     v14[0] = v10;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
@@ -17439,15 +17439,15 @@ void __82__TIKeyboardInputManager_ShortcutConversion__shortcutCompletionsForDocu
   return v11;
 }
 
-- (id)titleForSortingMethod:(id)a3
+- (id)titleForSortingMethod:(id)method
 {
-  v4 = a3;
-  v5 = [(TIKeyboardInputManager *)self keyboardState];
-  v6 = [v5 longPredictionListEnabled];
+  methodCopy = method;
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  longPredictionListEnabled = [keyboardState longPredictionListEnabled];
 
-  if (v6)
+  if (longPredictionListEnabled)
   {
-    v7 = v4;
+    v7 = methodCopy;
   }
 
   else
@@ -17460,10 +17460,10 @@ void __82__TIKeyboardInputManager_ShortcutConversion__shortcutCompletionsForDocu
 
 - (id)sortingMethods
 {
-  v2 = [(TIKeyboardInputManager *)self keyboardState];
-  v3 = [v2 longPredictionListEnabled];
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  longPredictionListEnabled = [keyboardState longPredictionListEnabled];
 
-  if (v3)
+  if (longPredictionListEnabled)
   {
     return &unk_28400B9D0;
   }
@@ -17480,13 +17480,13 @@ void __82__TIKeyboardInputManager_ShortcutConversion__shortcutCompletionsForDocu
   if (!openingQuotes)
   {
     v4 = [objc_alloc(MEMORY[0x277D6F458]) initWithCharactersInString:@"“‘"];
-    v5 = [(TIKeyboardInputManager *)self smartOptions];
-    v6 = [v5 leftDoubleQuote];
-    [v4 addCharactersInString:v6];
+    smartOptions = [(TIKeyboardInputManager *)self smartOptions];
+    leftDoubleQuote = [smartOptions leftDoubleQuote];
+    [v4 addCharactersInString:leftDoubleQuote];
 
-    v7 = [(TIKeyboardInputManager *)self smartOptions];
-    v8 = [v7 leftSingleQuote];
-    [v4 addCharactersInString:v8];
+    smartOptions2 = [(TIKeyboardInputManager *)self smartOptions];
+    leftSingleQuote = [smartOptions2 leftSingleQuote];
+    [v4 addCharactersInString:leftSingleQuote];
 
     v9 = self->_openingQuotes;
     self->_openingQuotes = v4;
@@ -17503,13 +17503,13 @@ void __82__TIKeyboardInputManager_ShortcutConversion__shortcutCompletionsForDocu
   if (!closingQuotes)
   {
     v4 = [objc_alloc(MEMORY[0x277D6F458]) initWithCharactersInString:@"”’"];
-    v5 = [(TIKeyboardInputManager *)self smartOptions];
-    v6 = [v5 rightDoubleQuote];
-    [v4 addCharactersInString:v6];
+    smartOptions = [(TIKeyboardInputManager *)self smartOptions];
+    rightDoubleQuote = [smartOptions rightDoubleQuote];
+    [v4 addCharactersInString:rightDoubleQuote];
 
-    v7 = [(TIKeyboardInputManager *)self smartOptions];
-    v8 = [v7 rightSingleQuote];
-    [v4 addCharactersInString:v8];
+    smartOptions2 = [(TIKeyboardInputManager *)self smartOptions];
+    rightSingleQuote = [smartOptions2 rightSingleQuote];
+    [v4 addCharactersInString:rightSingleQuote];
 
     v9 = self->_closingQuotes;
     self->_closingQuotes = v4;
@@ -17522,10 +17522,10 @@ void __82__TIKeyboardInputManager_ShortcutConversion__shortcutCompletionsForDocu
 
 - (id)spaceDeletingCharacters
 {
-  v2 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-  v3 = [v2 spaceDeletingCharacters];
+  keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+  spaceDeletingCharacters = [keyboardFeatureSpecialization spaceDeletingCharacters];
 
-  return v3;
+  return spaceDeletingCharacters;
 }
 
 - (id)terminatorsPrecedingAutospace
@@ -17560,10 +17560,10 @@ void __78__TIKeyboardInputManager_ResultSpecializations__terminatorsPrecedingAut
 
 - (id)terminatorsDeletingAutospace
 {
-  v2 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-  v3 = [v2 terminatorsDeletingAutospace];
+  keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+  terminatorsDeletingAutospace = [keyboardFeatureSpecialization terminatorsDeletingAutospace];
 
-  return v3;
+  return terminatorsDeletingAutospace;
 }
 
 - (id)terminatorsPreventingAutocorrection
@@ -17590,25 +17590,25 @@ uint64_t __84__TIKeyboardInputManager_ResultSpecializations__terminatorsPreventi
 - (id)defaultCandidate
 {
   v3 = objc_alloc(MEMORY[0x277D6F3D8]);
-  v4 = [(TIKeyboardInputManager *)self inputStem];
-  v5 = [v3 initWithUnchangedInput:v4];
+  inputStem = [(TIKeyboardInputManager *)self inputStem];
+  v5 = [v3 initWithUnchangedInput:inputStem];
 
   return v5;
 }
 
 - (BOOL)newInputAcceptsUserSelectedCandidate
 {
-  v3 = [(TIKeyboardInputManager *)self keyboardState];
-  if ([v3 hardwareKeyboardMode])
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  if ([keyboardState hardwareKeyboardMode])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(TIKeyboardInputManager *)self keyboardState];
-    v6 = [v5 layoutState];
-    v4 = [v6 userInterfaceIdiom] != 2;
+    keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+    layoutState = [keyboardState2 layoutState];
+    v4 = [layoutState userInterfaceIdiom] != 2;
   }
 
   return v4;
@@ -17616,8 +17616,8 @@ uint64_t __84__TIKeyboardInputManager_ResultSpecializations__terminatorsPreventi
 
 - (double)continuousPathLanguageWeight
 {
-  v2 = [(TIKeyboardInputManager *)self config];
-  [v2 continuousPathLanguageWeight];
+  config = [(TIKeyboardInputManager *)self config];
+  [config continuousPathLanguageWeight];
   v4 = v3;
 
   return v4;
@@ -17632,24 +17632,24 @@ uint64_t __84__TIKeyboardInputManager_ResultSpecializations__terminatorsPreventi
 
   else
   {
-    v4 = [(TIKeyboardInputManager *)self keyboardState];
-    if ([v4 hardwareKeyboardMode])
+    keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+    if ([keyboardState hardwareKeyboardMode])
     {
       LOBYTE(v3) = 0;
     }
 
     else
     {
-      v5 = [(TIKeyboardInputManager *)self keyboardState];
-      if ([v5 splitKeyboardMode])
+      keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+      if ([keyboardState2 splitKeyboardMode])
       {
         LOBYTE(v3) = 0;
       }
 
       else
       {
-        v6 = [(TIKeyboardInputManager *)self keyboardState];
-        v3 = [v6 floatingKeyboardMode] ^ 1;
+        keyboardState3 = [(TIKeyboardInputManager *)self keyboardState];
+        v3 = [keyboardState3 floatingKeyboardMode] ^ 1;
       }
     }
   }
@@ -17661,38 +17661,38 @@ uint64_t __84__TIKeyboardInputManager_ResultSpecializations__terminatorsPreventi
 {
   if ([(TIKeyboardInputManager *)self supportsSetPhraseBoundary]&& ![(TIKeyboardInputManager *)self isProgressivelyPathing])
   {
-    v3 = [(TIKeyboardInputManager *)self keyboardState];
-    v7 = [v3 documentState];
+    keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+    documentState = [keyboardState documentState];
 
-    v4 = v7;
-    if (v7)
+    v4 = documentState;
+    if (documentState)
     {
-      v5 = [v7 selectedRangeInMarkedText];
-      v4 = v7;
-      if (v5 != 0x7FFFFFFFFFFFFFFFLL)
+      selectedRangeInMarkedText = [documentState selectedRangeInMarkedText];
+      v4 = documentState;
+      if (selectedRangeInMarkedText != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v6 = v5 == [(TIKeyboardInputManager *)self phraseBoundary];
-        v4 = v7;
+        v6 = selectedRangeInMarkedText == [(TIKeyboardInputManager *)self phraseBoundary];
+        v4 = documentState;
         if (!v6)
         {
-          [(TIKeyboardInputManager *)self setPhraseBoundary:v5];
-          v4 = v7;
+          [(TIKeyboardInputManager *)self setPhraseBoundary:selectedRangeInMarkedText];
+          v4 = documentState;
         }
       }
     }
   }
 }
 
-- (id)candidatesForString:(id)a3
+- (id)candidatesForString:(id)string
 {
   v13[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (self->m_impl && [v4 length] <= 0x40 && (objc_msgSend(v5, "_looksLikeURL") & 1) == 0)
+  stringCopy = string;
+  v5 = stringCopy;
+  if (self->m_impl && [stringCopy length] <= 0x40 && (objc_msgSend(v5, "_looksLikeURL") & 1) == 0)
   {
     v8 = 2 * (u_isupper([v5 _firstLongCharacter]) != 0);
-    v9 = [(TIKeyboardInputManager *)self keyboardState];
-    v10 = +[TIKeyboardInputManager shiftContextForShiftState:autocapitalizationType:](TIKeyboardInputManager, "shiftContextForShiftState:autocapitalizationType:", v8, [v9 autocapitalizationType]);
+    keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+    v10 = +[TIKeyboardInputManager shiftContextForShiftState:autocapitalizationType:](TIKeyboardInputManager, "shiftContextForShiftState:autocapitalizationType:", v8, [keyboardState autocapitalizationType]);
 
     m_impl = self->m_impl;
     v12 = [(TIKeyboardInputManager *)self externalStringToInternal:v5];
@@ -17707,16 +17707,16 @@ uint64_t __84__TIKeyboardInputManager_ResultSpecializations__terminatorsPreventi
 
 - (id)candidates
 {
-  v3 = [(TIKeyboardInputManager *)self keyboardState];
-  v4 = [v3 inputMode];
-  v5 = [TIInputMode inputModeWithIdentifier:v4];
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  inputMode = [keyboardState inputMode];
+  v5 = [TIInputMode inputModeWithIdentifier:inputMode];
 
-  v6 = [(TIKeyboardInputManagerBase *)self inputMode];
-  v7 = v6 != v5;
+  inputMode2 = [(TIKeyboardInputManagerBase *)self inputMode];
+  v7 = inputMode2 != v5;
 
-  v8 = [v5 supportsPrediction];
-  v9 = [(TIKeyboardInputManager *)self keyboardState];
-  if ([v9 longPredictionListEnabled])
+  supportsPrediction = [v5 supportsPrediction];
+  keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+  if ([keyboardState2 longPredictionListEnabled])
   {
   }
 
@@ -17724,20 +17724,20 @@ uint64_t __84__TIKeyboardInputManager_ResultSpecializations__terminatorsPreventi
   {
 
     v10 = 0;
-    if (v6 == v5 || (v8 & 1) == 0)
+    if (inputMode2 == v5 || (supportsPrediction & 1) == 0)
     {
       goto LABEL_8;
     }
   }
 
-  v11 = [MEMORY[0x277CBEB18] array];
-  v12 = [(TIKeyboardInputManager *)self keyboardState];
-  v13 = [v12 documentState];
-  v14 = [(TIKeyboardInputManager *)self shortcutConversionForDocumentState:v13];
+  array = [MEMORY[0x277CBEB18] array];
+  keyboardState3 = [(TIKeyboardInputManager *)self keyboardState];
+  documentState = [keyboardState3 documentState];
+  v14 = [(TIKeyboardInputManager *)self shortcutConversionForDocumentState:documentState];
 
   if (v14)
   {
-    [v11 addObject:v14];
+    [array addObject:v14];
   }
 
   v15 = [TIAccumulatingCandidateHandler alloc];
@@ -17745,17 +17745,17 @@ uint64_t __84__TIKeyboardInputManager_ResultSpecializations__terminatorsPreventi
   v22 = 3221225472;
   v23 = __59__TIKeyboardInputManager_ResultSpecializations__candidates__block_invoke;
   v24 = &unk_278731770;
-  v16 = v11;
+  v16 = array;
   v28 = v7;
-  v29 = v8;
+  v29 = supportsPrediction;
   v25 = v16;
-  v26 = self;
+  selfCopy = self;
   v27 = v14;
   v17 = v14;
   v18 = [(TIAccumulatingCandidateHandler *)v15 initWithHandlerBlock:&v21];
   [(TIKeyboardInputManager *)self pushCandidateGenerationContextOnStack:v21];
-  v19 = [(TIKeyboardInputManager *)self keyboardState];
-  [(TIKeyboardInputManager *)self generateAutocorrectionsWithKeyboardState:v19 candidateRange:0 candidateHandler:20, v18];
+  keyboardState4 = [(TIKeyboardInputManager *)self keyboardState];
+  [(TIKeyboardInputManager *)self generateAutocorrectionsWithKeyboardState:keyboardState4 candidateRange:0 candidateHandler:20, v18];
 
   [(TIKeyboardInputManager *)self popCandidateGenerationContextFromStack];
   v10 = v16;
@@ -17857,7 +17857,7 @@ LABEL_10:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)autocorrectionListWithCandidateCount:(unint64_t)a3
+- (id)autocorrectionListWithCandidateCount:(unint64_t)count
 {
   v83[1] = *MEMORY[0x277D85DE8];
   if (!self->m_impl)
@@ -17876,10 +17876,10 @@ LABEL_10:
     v5 = _Block_copy(aBlock);
     if ((*(self->m_impl + 108) & 0x80000000) == 0)
     {
-      v6 = [(TIKeyboardInputManager *)self continuousPathCandidates:a3];
+      autocorrectionListForSelectedText = [(TIKeyboardInputManager *)self continuousPathCandidates:count];
 LABEL_12:
-      v9 = v6;
-      v7 = v5[2](v5, v6);
+      v9 = autocorrectionListForSelectedText;
+      v7 = v5[2](v5, autocorrectionListForSelectedText);
 LABEL_13:
 
 LABEL_14:
@@ -17888,13 +17888,13 @@ LABEL_14:
 
     if ([(TIKeyboardInputManager *)self shouldGenerateSuggestionsForSelectedText]|| [(TIKeyboardInputManager *)self doesSelectedTextGenerateEmojiCandidates])
     {
-      v6 = [(TIKeyboardInputManager *)self autocorrectionListForSelectedText];
+      autocorrectionListForSelectedText = [(TIKeyboardInputManager *)self autocorrectionListForSelectedText];
       goto LABEL_12;
     }
 
     if ([(TIKeyboardInputManager *)self shouldGeneratePredictionsForCurrentContext])
     {
-      v6 = [(TIKeyboardInputManager *)self autocorrectionListForEmptyInputWithDesiredCandidateCount:a3];
+      autocorrectionListForSelectedText = [(TIKeyboardInputManager *)self autocorrectionListForEmptyInputWithDesiredCandidateCount:count];
       goto LABEL_12;
     }
 
@@ -17911,11 +17911,11 @@ LABEL_14:
 LABEL_24:
         v12 = 0;
 LABEL_27:
-        v16 = [(TIKeyboardInputManager *)self inputCount];
-        if (v16 == [(TIKeyboardInputManager *)self inputIndex]&& [(TIKeyboardInputManager *)self inputIndex]&& !(*(**(self->m_impl + 28) + 232))(*(self->m_impl + 28)))
+        inputCount = [(TIKeyboardInputManager *)self inputCount];
+        if (inputCount == [(TIKeyboardInputManager *)self inputIndex]&& [(TIKeyboardInputManager *)self inputIndex]&& !(*(**(self->m_impl + 28) + 232))(*(self->m_impl + 28)))
         {
-          v17 = [(TIKeyboardInputManager *)self inputString];
-          v7 = [(TIKeyboardInputManager *)self cachedAutocorrectionListResponseFor:v17];
+          inputString = [(TIKeyboardInputManager *)self inputString];
+          v7 = [(TIKeyboardInputManager *)self cachedAutocorrectionListResponseFor:inputString];
 
           if (v7 != 0 && !v12)
           {
@@ -17926,53 +17926,53 @@ LABEL_27:
         if ([(TIKeyboardInputManager *)self _hasSupplementalPrefix])
         {
           v18 = objc_alloc(MEMORY[0x277CBEB18]);
-          v19 = [(TIKeyboardInputManager *)self _supplementalCompletionCandidates:a3];
+          v19 = [(TIKeyboardInputManager *)self _supplementalCompletionCandidates:count];
           v20 = [v18 initWithArray:v19];
 
           if (!v12)
           {
-            v21 = [(TIKeyboardInputManager *)self supplementalAutocorrectionCandidates];
+            supplementalAutocorrectionCandidates = [(TIKeyboardInputManager *)self supplementalAutocorrectionCandidates];
 LABEL_38:
-            v22 = v21;
-            v23 = [v21 autocorrection];
+            v22 = supplementalAutocorrectionCandidates;
+            autocorrection = [supplementalAutocorrectionCandidates autocorrection];
 LABEL_39:
-            v24 = [v22 alternateCorrections];
-            if ([v22 autocorrectionBlocked] && objc_msgSend(v24, "count"))
+            alternateCorrections = [v22 alternateCorrections];
+            if ([v22 autocorrectionBlocked] && objc_msgSend(alternateCorrections, "count"))
             {
-              v25 = [v24 objectAtIndexedSubscript:0];
+              v25 = [alternateCorrections objectAtIndexedSubscript:0];
               v83[0] = v25;
               v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v83 count:1];
               v27 = [v26 arrayByAddingObjectsFromArray:v20];
 
-              v28 = [v24 subarrayWithRange:{1, objc_msgSend(v24, "count") - 1}];
+              v28 = [alternateCorrections subarrayWithRange:{1, objc_msgSend(alternateCorrections, "count") - 1}];
 
-              v24 = v28;
+              alternateCorrections = v28;
               v20 = v27;
             }
 
-            v69 = v24;
-            v29 = [(TIKeyboardInputManager *)self typedStringForEmptyAutocorrection];
-            if (!v23)
+            v69 = alternateCorrections;
+            typedStringForEmptyAutocorrection = [(TIKeyboardInputManager *)self typedStringForEmptyAutocorrection];
+            if (!autocorrection)
             {
-              v23 = [MEMORY[0x277D6F3D8] candidateWithUnchangedInput:v29];
+              autocorrection = [MEMORY[0x277D6F3D8] candidateWithUnchangedInput:typedStringForEmptyAutocorrection];
             }
 
-            v30 = [(TIKeyboardInputManager *)self emojiCandidateGenerator];
-            v31 = [(TIKeyboardInputManager *)self keyboardState];
-            v66 = [v30 emojiReplacementCandidatesForKeyboardState:v31];
+            emojiCandidateGenerator = [(TIKeyboardInputManager *)self emojiCandidateGenerator];
+            keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+            v66 = [emojiCandidateGenerator emojiReplacementCandidatesForKeyboardState:keyboardState];
 
-            v71 = self;
+            selfCopy = self;
             v72 = v5;
-            v68 = v29;
-            if ([v23 isSupplementalItemCandidate] && !-[TIKeyboardInputManager _hasSupplementalPrefix](self, "_hasSupplementalPrefix"))
+            v68 = typedStringForEmptyAutocorrection;
+            if ([autocorrection isSupplementalItemCandidate] && !-[TIKeyboardInputManager _hasSupplementalPrefix](self, "_hasSupplementalPrefix"))
             {
 
-              v23 = 0;
+              autocorrection = 0;
             }
 
-            v70 = a3;
-            v75 = [MEMORY[0x277CBEB18] arrayWithCapacity:{a3, v66}];
-            v32 = v23;
+            countCopy = count;
+            v75 = [MEMORY[0x277CBEB18] arrayWithCapacity:{count, v66}];
+            v32 = autocorrection;
             v77 = 0u;
             v78 = 0u;
             v79 = 0u;
@@ -17996,8 +17996,8 @@ LABEL_39:
                   }
 
                   v38 = *(*(&v77 + 1) + 8 * v37);
-                  v39 = [v38 candidate];
-                  v40 = [v39 isEqualToString:&stru_283FDFAF8];
+                  candidate = [v38 candidate];
+                  v40 = [candidate isEqualToString:&stru_283FDFAF8];
 
                   if ((v40 & 1) == 0)
                   {
@@ -18010,10 +18010,10 @@ LABEL_39:
                     v42 = [v75 indexOfObjectPassingTest:v41];
                     if (v42 == 0x7FFFFFFFFFFFFFFFLL)
                     {
-                      v43 = [v38 candidate];
-                      v44 = [v32 candidate];
+                      candidate2 = [v38 candidate];
+                      candidate3 = [v32 candidate];
                       v45 = v32;
-                      v46 = [v43 isEqualToString:v44];
+                      v46 = [candidate2 isEqualToString:candidate3];
 
                       if (v46 && (v47 = [v38 isSupplementalItemCandidate], v47 == objc_msgSend(v45, "isSupplementalItemCandidate")))
                       {
@@ -18027,12 +18027,12 @@ LABEL_39:
                           {
                             v53 = v32;
                             v54 = v38;
-                            v55 = [v53 lexiconLocale];
+                            lexiconLocale = [v53 lexiconLocale];
 
-                            if (!v55)
+                            if (!lexiconLocale)
                             {
-                              v56 = [v54 lexiconLocale];
-                              [v53 setLexiconLocale:v56];
+                              lexiconLocale2 = [v54 lexiconLocale];
+                              [v53 setLexiconLocale:lexiconLocale2];
                             }
 
                             v32 = v73;
@@ -18052,10 +18052,10 @@ LABEL_39:
                         if (v38)
                         {
                           v48 = v38;
-                          v49 = [v48 candidate];
-                          v50 = [v48 input];
+                          candidate4 = [v48 candidate];
+                          input = [v48 input];
 
-                          LOBYTE(v48) = [v49 isEqualToString:v50];
+                          LOBYTE(v48) = [candidate4 isEqualToString:input];
                           v32 = v73;
                           if ((v48 & 1) == 0)
                           {
@@ -18088,7 +18088,7 @@ LABEL_59:
               while (v57);
             }
 
-            if ([v75 count] <= v70)
+            if ([v75 count] <= countCopy)
             {
               v58 = v75;
             }
@@ -18100,11 +18100,11 @@ LABEL_59:
 
             v59 = v58;
             v5 = v72;
-            v60 = [(TIKeyboardInputManager *)v71 extendedAutocorrection:v32 spanningInputsForCandidates:v58 emojis:v67];
-            v61 = [(TIKeyboardInputManager *)v71 autocorrectionForCurrentStem];
-            v62 = [v60 candidate];
-            v63 = [(TIKeyboardInputManager *)v71 currentWordStem];
-            [v61 setObject:v62 forKey:v63];
+            v60 = [(TIKeyboardInputManager *)selfCopy extendedAutocorrection:v32 spanningInputsForCandidates:v58 emojis:v67];
+            autocorrectionForCurrentStem = [(TIKeyboardInputManager *)selfCopy autocorrectionForCurrentStem];
+            candidate5 = [v60 candidate];
+            currentWordStem = [(TIKeyboardInputManager *)selfCopy currentWordStem];
+            [autocorrectionForCurrentStem setObject:candidate5 forKey:currentWordStem];
 
             v64 = [objc_alloc(MEMORY[0x277D6F348]) initWithAutocorrection:v60 alternateCorrections:v69];
             v65 = [MEMORY[0x277D6F328] listWithCorrections:v64 predictions:v59 emojiList:v67];
@@ -18117,16 +18117,16 @@ LABEL_59:
 
         else
         {
-          v20 = -[TIKeyboardInputManager completionCandidates:](self, "completionCandidates:", a3 - [0 count]);
+          v20 = -[TIKeyboardInputManager completionCandidates:](self, "completionCandidates:", count - [0 count]);
           if (!v12)
           {
-            v21 = [(TIKeyboardInputManager *)self autocorrectionCandidates];
+            supplementalAutocorrectionCandidates = [(TIKeyboardInputManager *)self autocorrectionCandidates];
             goto LABEL_38;
           }
         }
 
         v22 = 0;
-        v23 = 0;
+        autocorrection = 0;
         goto LABEL_39;
       }
     }
@@ -18136,21 +18136,21 @@ LABEL_59:
       goto LABEL_24;
     }
 
-    v13 = [(TIKeyboardInputManager *)self rejectedAutocorrections];
-    v14 = [(TIKeyboardInputManager *)self inputString];
-    v15 = [v13 objectForKey:v14];
+    rejectedAutocorrections = [(TIKeyboardInputManager *)self rejectedAutocorrections];
+    inputString2 = [(TIKeyboardInputManager *)self inputString];
+    v15 = [rejectedAutocorrections objectForKey:inputString2];
     v12 = v15 != 0;
 
     goto LABEL_27;
   }
 
-  v8 = [(TIKeyboardInputManager *)self supplementalAutocorrectionCandidates];
-  if (!v8)
+  supplementalAutocorrectionCandidates2 = [(TIKeyboardInputManager *)self supplementalAutocorrectionCandidates];
+  if (!supplementalAutocorrectionCandidates2)
   {
-    v8 = [(TIKeyboardInputManager *)self autocorrectionCandidates];
+    supplementalAutocorrectionCandidates2 = [(TIKeyboardInputManager *)self autocorrectionCandidates];
   }
 
-  v7 = [MEMORY[0x277D6F328] listWithCorrections:v8];
+  v7 = [MEMORY[0x277D6F328] listWithCorrections:supplementalAutocorrectionCandidates2];
 
 LABEL_15:
   v10 = *MEMORY[0x277D85DE8];
@@ -18179,25 +18179,25 @@ uint64_t __86__TIKeyboardInputManager_ResultSpecializations__autocorrectionListW
 {
   if (TITransientLexiconManagerGetActiveSupplementalLexiconWords())
   {
-    v3 = 1;
+    supportsMultilingualKeyboard = 1;
   }
 
   else
   {
-    v4 = [(TIKeyboardInputManager *)self config];
-    if ([v4 usesWordNgramModel])
+    config = [(TIKeyboardInputManager *)self config];
+    if ([config usesWordNgramModel])
     {
-      v3 = 1;
+      supportsMultilingualKeyboard = 1;
     }
 
     else
     {
-      v5 = [(TIKeyboardInputManagerBase *)self inputMode];
-      v3 = [v5 supportsMultilingualKeyboard];
+      inputMode = [(TIKeyboardInputManagerBase *)self inputMode];
+      supportsMultilingualKeyboard = [inputMode supportsMultilingualKeyboard];
     }
   }
 
-  return v3 & 1;
+  return supportsMultilingualKeyboard & 1;
 }
 
 - (id)autocorrectionList
@@ -18208,13 +18208,13 @@ uint64_t __86__TIKeyboardInputManager_ResultSpecializations__autocorrectionListW
   return v3;
 }
 
-- (void)transferErrorCorrectionFlagsToInputCandidate:(void *)a3
+- (void)transferErrorCorrectionFlagsToInputCandidate:(void *)candidate
 {
-  if (*a3)
+  if (*candidate)
   {
     v4 = 0;
-    v5 = *(a3 + 1);
-    v6 = 240 * *a3;
+    v5 = *(candidate + 1);
+    v6 = 240 * *candidate;
     do
     {
       v7 = *(v5 + 4);
@@ -18247,15 +18247,15 @@ uint64_t __86__TIKeyboardInputManager_ResultSpecializations__autocorrectionListW
     goto LABEL_9;
   }
 
-  v3 = [(TIKeyboardInputManager *)self keyboardState];
-  if (![v3 autocorrectionEnabled] || !-[TIKeyboardInputManager allowsAutocorrectionForCurrentInputString](self, "allowsAutocorrectionForCurrentInputString"))
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  if (![keyboardState autocorrectionEnabled] || !-[TIKeyboardInputManager allowsAutocorrectionForCurrentInputString](self, "allowsAutocorrectionForCurrentInputString"))
   {
 
     goto LABEL_9;
   }
 
-  v4 = [(TIKeyboardInputManagerBase *)self inputMode];
-  v5 = [v4 originalIdentifier];
+  inputMode = [(TIKeyboardInputManagerBase *)self inputMode];
+  originalIdentifier = [inputMode originalIdentifier];
   ShouldDisableAutocorrection = TIKeyboardShouldDisableAutocorrection();
 
   if (ShouldDisableAutocorrection)
@@ -18263,16 +18263,16 @@ uint64_t __86__TIKeyboardInputManager_ResultSpecializations__autocorrectionListW
     goto LABEL_9;
   }
 
-  v7 = [(TIKeyboardInputManager *)self keyboardState];
-  if (![v7 hardwareKeyboardMode])
+  keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+  if (![keyboardState2 hardwareKeyboardMode])
   {
 
     goto LABEL_14;
   }
 
-  v8 = [(TIKeyboardInputManager *)self isHardwareKeyboardAutocorrectionEnabled];
+  isHardwareKeyboardAutocorrectionEnabled = [(TIKeyboardInputManager *)self isHardwareKeyboardAutocorrectionEnabled];
 
-  if (!v8)
+  if (!isHardwareKeyboardAutocorrectionEnabled)
   {
 LABEL_9:
     v10 = 0;
@@ -18290,16 +18290,16 @@ LABEL_14:
   v15 = KB::ns_string((*(m_impl + 1) + 40 * (v14 - 1)), v9);
   if (![(TIKeyboardInputManager *)self stringEndsWord:v15]&& (![(TIKeyboardInputManager *)self isEditingExistingWord]|| [(TIKeyboardInputManager *)self _hasSupplementalPrefix]))
   {
-    v16 = [(TIKeyboardInputManager *)self currentWordStem];
-    v17 = [(TIKeyboardInputManager *)self dictionaryStringForExternalString:v16];
-    v18 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-    v19 = [v18 allowsAutocorrectionOfValidWords];
+    currentWordStem = [(TIKeyboardInputManager *)self currentWordStem];
+    v17 = [(TIKeyboardInputManager *)self dictionaryStringForExternalString:currentWordStem];
+    keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+    allowsAutocorrectionOfValidWords = [keyboardFeatureSpecialization allowsAutocorrectionOfValidWords];
 
-    if ((v19 & 1) == 0)
+    if ((allowsAutocorrectionOfValidWords & 1) == 0)
     {
       v20 = self->m_impl;
       KB::utf8_string(v17, &v93);
-      KB::utf8_string(v16, buf);
+      KB::utf8_string(currentWordStem, buf);
       v21 = TIInputManager::dictionary_contains_word(v20, &v93, buf, 0);
       if (*&buf[8] && buf[6] == 1)
       {
@@ -18328,28 +18328,28 @@ LABEL_120:
     v25 = v97;
     v71 = v24;
     KB::utf8_string(v24, v97);
-    v26 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-    if ([v26 canConvertExternalToExternal])
+    keyboardFeatureSpecialization2 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+    if ([keyboardFeatureSpecialization2 canConvertExternalToExternal])
     {
-      v27 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-      if ([v27 shouldConvertCandidateToExternal])
+      keyboardFeatureSpecialization3 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+      if ([keyboardFeatureSpecialization3 shouldConvertCandidateToExternal])
       {
         v25 = v99;
       }
     }
 
     KB::Candidate::Candidate(&v93, v25, 0);
-    v28 = [(TIKeyboardInputManager *)self shiftContext];
-    v29 = [(TIKeyboardInputManager *)self phraseCandidateCompletedByWord:v97 allowNoSuggest:1 forAutocorrection:1 shiftContext:v28];
+    shiftContext = [(TIKeyboardInputManager *)self shiftContext];
+    v29 = [(TIKeyboardInputManager *)self phraseCandidateCompletedByWord:v97 allowNoSuggest:1 forAutocorrection:1 shiftContext:shiftContext];
     [v29 setConfidence:0];
-    v30 = [(TIKeyboardInputManager *)self keyboardState];
-    v31 = [v30 hardwareKeyboardMode];
+    keyboardState3 = [(TIKeyboardInputManager *)self keyboardState];
+    hardwareKeyboardMode = [keyboardState3 hardwareKeyboardMode];
 
-    if (!v29 && v31)
+    if (!v29 && hardwareKeyboardMode)
     {
       v32 = self->m_impl;
       KB::utf8_string(v17, buf);
-      KB::utf8_string(v16, v73);
+      KB::utf8_string(currentWordStem, v73);
       v33 = TIInputManager::dictionary_contains_word(v32, buf, v73, 1);
       if (v74 && v73[6] == 1)
       {
@@ -18436,10 +18436,10 @@ LABEL_114:
       KB::String::String(v78, (&v85 + 4));
       if (*v73 == v74 && v75 != v76)
       {
-        v62 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-        v63 = [v62 canConvertExternalToExternal];
+        keyboardFeatureSpecialization4 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+        canConvertExternalToExternal = [keyboardFeatureSpecialization4 canConvertExternalToExternal];
 
-        if (v63)
+        if (canConvertExternalToExternal)
         {
           KB::Candidate::operator=(&v93, v75);
           std::optional<KB::String>::operator=[abi:nn200100]<KB::String,void>(v90, v78);
@@ -18469,7 +18469,7 @@ LABEL_114:
       }
 
       KB::Candidate::capitalized_string(&v93, v73);
-      v29 = [(TIKeyboardInputManager *)self phraseCandidateCompletedByWord:v73 allowNoSuggest:0 forAutocorrection:1 shiftContext:v28];
+      v29 = [(TIKeyboardInputManager *)self phraseCandidateCompletedByWord:v73 allowNoSuggest:0 forAutocorrection:1 shiftContext:shiftContext];
       if (v74 && v73[6] == 1)
       {
         free(v74);
@@ -18538,7 +18538,7 @@ LABEL_64:
         v48 = v49;
         v45 = v48;
 LABEL_77:
-        v69 = v16;
+        v69 = currentWordStem;
         v51 = [(TIKeyboardInputManager *)self internalStringToExternal:v45 ignoreCompositionDisabled:1];
         if ((v93 & 0xFFFFFFFE) != 0)
         {
@@ -18554,25 +18554,25 @@ LABEL_77:
         if (v52 == 1 && ![(TIKeyboardInputManager *)self _canSuggestPhraseCandidate:v51 withStem:?])
         {
           kdebug_trace();
-          v53 = kac_get_log();
-          v60 = os_signpost_id_make_with_pointer(v53, (self ^ 0x14));
+          array = kac_get_log();
+          v60 = os_signpost_id_make_with_pointer(array, (self ^ 0x14));
           if (v60 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
           {
             v61 = v60;
-            if (os_signpost_enabled(v53))
+            if (os_signpost_enabled(array))
             {
               *v73 = 0;
-              _os_signpost_emit_with_name_impl(&dword_22CA55000, v53, OS_SIGNPOST_INTERVAL_END, v61, "kbdManager.generateOnlyAutocorrections", &unk_22CCA4FEF, v73, 2u);
+              _os_signpost_emit_with_name_impl(&dword_22CA55000, array, OS_SIGNPOST_INTERVAL_END, v61, "kbdManager.generateOnlyAutocorrections", &unk_22CCA4FEF, v73, 2u);
             }
           }
 
           v10 = 0;
-          v54 = v53;
+          v54 = array;
         }
 
         else
         {
-          v53 = [MEMORY[0x277CBEB18] array];
+          array = [MEMORY[0x277CBEB18] array];
           v68 = v48;
           if (v39)
           {
@@ -18583,7 +18583,7 @@ LABEL_77:
               v39 = [(TIKeyboardInputManager *)self shouldBlockAutocorrection:v54];
               if (v39)
               {
-                [v53 addObject:v54];
+                [array addObject:v54];
 
                 v54 = 0;
               }
@@ -18598,13 +18598,13 @@ LABEL_77:
                   [v56 setConfidence:2];
                   if (v54)
                   {
-                    v57 = [v54 input];
-                    v58 = [v56 input];
-                    v59 = [v57 isEqualToString:v58];
+                    input = [v54 input];
+                    input2 = [v56 input];
+                    v59 = [input isEqualToString:input2];
 
                     if (v59)
                     {
-                      [v53 addObject:v56];
+                      [array addObject:v56];
                     }
                   }
 
@@ -18628,7 +18628,7 @@ LABEL_77:
             v54 = [(TIKeyboardInputManager *)self checkRejectionHistory:v29];
           }
 
-          v10 = [objc_alloc(MEMORY[0x277D6F348]) initWithAutocorrection:v54 alternateCorrections:v53 autocorrectionBlocked:v39];
+          v10 = [objc_alloc(MEMORY[0x277D6F348]) initWithAutocorrection:v54 alternateCorrections:array autocorrectionBlocked:v39];
           kdebug_trace();
           v64 = kac_get_log();
           v65 = os_signpost_id_make_with_pointer(v64, (self ^ 0x14));
@@ -18645,7 +18645,7 @@ LABEL_77:
           v48 = v68;
         }
 
-        v16 = v69;
+        currentWordStem = v69;
         v15 = v70;
 LABEL_107:
         v34 = v71;
@@ -18699,16 +18699,16 @@ LABEL_10:
 
 - (id)autocorrection
 {
-  v2 = [(TIKeyboardInputManager *)self autocorrectionCandidates];
-  v3 = [v2 autocorrection];
+  autocorrectionCandidates = [(TIKeyboardInputManager *)self autocorrectionCandidates];
+  autocorrection = [autocorrectionCandidates autocorrection];
 
-  return v3;
+  return autocorrection;
 }
 
 - (id)supplementalAutocorrectionCandidates
 {
-  v3 = [(TIKeyboardInputManager *)self keyboardState];
-  if (([v3 canSuggestSupplementalItemsForCurrentSelection] & 1) == 0)
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  if (([keyboardState canSuggestSupplementalItemsForCurrentSelection] & 1) == 0)
   {
 
 LABEL_9:
@@ -18716,10 +18716,10 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v4 = [(TIKeyboardInputManager *)self keyboardState];
-  v5 = [v4 supplementalLexiconIdentifier];
+  keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+  supplementalLexiconIdentifier = [keyboardState2 supplementalLexiconIdentifier];
 
-  if (!v5 || ![(TIKeyboardInputManager *)self _hasSupplementalPrefix])
+  if (!supplementalLexiconIdentifier || ![(TIKeyboardInputManager *)self _hasSupplementalPrefix])
   {
     goto LABEL_9;
   }
@@ -18730,13 +18730,13 @@ LABEL_9:
     KB::SetInputHasSupplementalPrefixForScope::s_inputHasSupplementalPrefix = 1;
   }
 
-  v7 = [(TIKeyboardInputManager *)self autocorrection];
-  v8 = [v7 supplementalItemIdentifiers];
-  v9 = [v8 count];
+  autocorrection = [(TIKeyboardInputManager *)self autocorrection];
+  supplementalItemIdentifiers = [autocorrection supplementalItemIdentifiers];
+  v9 = [supplementalItemIdentifiers count];
 
   if (v9 == 1)
   {
-    v10 = [objc_alloc(MEMORY[0x277D6F348]) initWithAutocorrection:v7 alternateCorrections:0];
+    v10 = [objc_alloc(MEMORY[0x277D6F348]) initWithAutocorrection:autocorrection alternateCorrections:0];
   }
 
   else
@@ -18756,31 +18756,31 @@ LABEL_10:
 
 - (id)supplementalAutocorrection
 {
-  v2 = [(TIKeyboardInputManager *)self supplementalAutocorrectionCandidates];
-  v3 = [v2 autocorrection];
+  supplementalAutocorrectionCandidates = [(TIKeyboardInputManager *)self supplementalAutocorrectionCandidates];
+  autocorrection = [supplementalAutocorrectionCandidates autocorrection];
 
-  return v3;
+  return autocorrection;
 }
 
-- (id)_supplementalCompletionCandidates:(unint64_t)a3
+- (id)_supplementalCompletionCandidates:(unint64_t)candidates
 {
-  v5 = [(TIKeyboardInputManager *)self keyboardState];
-  if ([v5 canSuggestSupplementalItemsForCurrentSelection])
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  if ([keyboardState canSuggestSupplementalItemsForCurrentSelection])
   {
-    v6 = [(TIKeyboardInputManager *)self keyboardState];
-    v7 = [v6 supplementalLexiconIdentifier];
+    keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+    supplementalLexiconIdentifier = [keyboardState2 supplementalLexiconIdentifier];
 
-    if (v7)
+    if (supplementalLexiconIdentifier)
     {
       if (![(TIKeyboardInputManager *)self _hasSupplementalPrefix]|| KB::SetInputHasSupplementalPrefixForScope::s_inputHasSupplementalPrefix)
       {
-        v8 = [(TIKeyboardInputManager *)self completionCandidates:a3];
+        v8 = [(TIKeyboardInputManager *)self completionCandidates:candidates];
       }
 
       else
       {
         KB::SetInputHasSupplementalPrefixForScope::s_inputHasSupplementalPrefix = 1;
-        v8 = [(TIKeyboardInputManager *)self completionCandidates:a3];
+        v8 = [(TIKeyboardInputManager *)self completionCandidates:candidates];
         KB::SetInputHasSupplementalPrefixForScope::s_inputHasSupplementalPrefix = 0;
       }
 
@@ -18798,7 +18798,7 @@ LABEL_8:
   return v8;
 }
 
-- (id)generateAndRenderProactiveSuggestionsWithTriggers:(id)a3 withAdditionalPredictions:(id)a4 withInput:(id)a5
+- (id)generateAndRenderProactiveSuggestionsWithTriggers:(id)triggers withAdditionalPredictions:(id)predictions withInput:(id)input
 {
   v8 = 0;
   v9 = &v8;
@@ -18811,38 +18811,38 @@ LABEL_8:
   v7[2] = __132__TIKeyboardInputManager_ProactiveQuickType__generateAndRenderProactiveSuggestionsWithTriggers_withAdditionalPredictions_withInput___block_invoke;
   v7[3] = &unk_278731EE8;
   v7[4] = &v8;
-  [(TIKeyboardInputManager *)self generateAndRenderProactiveSuggestionsWithTriggers:a3 withAdditionalPredictions:a4 withInput:a5 async:0 completionHandler:v7];
+  [(TIKeyboardInputManager *)self generateAndRenderProactiveSuggestionsWithTriggers:triggers withAdditionalPredictions:predictions withInput:input async:0 completionHandler:v7];
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
 
   return v5;
 }
 
-- (void)generateAndRenderProactiveSuggestionsWithTriggers:(id)a3 withAdditionalPredictions:(id)a4 withInput:(id)a5 async:(BOOL)a6 completionHandler:(id)a7
+- (void)generateAndRenderProactiveSuggestionsWithTriggers:(id)triggers withAdditionalPredictions:(id)predictions withInput:(id)input async:(BOOL)async completionHandler:(id)handler
 {
-  v8 = a6;
+  asyncCopy = async;
   v101[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a7;
-  v14 = [(TIKeyboardInputManager *)self keyboardState];
-  LODWORD(a4) = [v14 isScreenLocked];
+  triggersCopy = triggers;
+  predictionsCopy = predictions;
+  handlerCopy = handler;
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  LODWORD(predictions) = [keyboardState isScreenLocked];
 
-  if (!a4)
+  if (!predictions)
   {
-    v92 = v8;
-    v15 = [(TIKeyboardInputManager *)self keyboardState];
-    v16 = [v15 documentState];
+    v92 = asyncCopy;
+    keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+    documentState = [keyboardState2 documentState];
 
-    v17 = [v16 contextBeforeInput];
-    v97 = v16;
-    v18 = [v16 contextAfterInput];
+    contextBeforeInput = [documentState contextBeforeInput];
+    v97 = documentState;
+    contextAfterInput = [documentState contextAfterInput];
     v99 = +[TIProactiveQuickTypeManager sharedInstance];
-    v98 = v17;
-    if ([v17 length])
+    v98 = contextBeforeInput;
+    if ([contextBeforeInput length])
     {
-      v19 = [MEMORY[0x277CCA900] alphanumericCharacterSet];
-      v20 = [v19 characterIsMember:{objc_msgSend(v17, "characterAtIndex:", objc_msgSend(v17, "length") - 1)}];
+      alphanumericCharacterSet = [MEMORY[0x277CCA900] alphanumericCharacterSet];
+      v20 = [alphanumericCharacterSet characterIsMember:{objc_msgSend(contextBeforeInput, "characterAtIndex:", objc_msgSend(contextBeforeInput, "length") - 1)}];
 
       v21 = v20 ^ 1;
     }
@@ -18852,10 +18852,10 @@ LABEL_8:
       v21 = 1;
     }
 
-    if ([v18 length])
+    if ([contextAfterInput length])
     {
-      v22 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-      v23 = [v22 characterIsMember:{objc_msgSend(v18, "characterAtIndex:", 0)}];
+      whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+      v23 = [whitespaceAndNewlineCharacterSet characterIsMember:{objc_msgSend(contextAfterInput, "characterAtIndex:", 0)}];
 
       v24 = v23 ^ 1;
     }
@@ -18865,7 +18865,7 @@ LABEL_8:
       v24 = 0;
     }
 
-    v96 = v18;
+    v96 = contextAfterInput;
     if ((v21 | v24))
     {
       v25 = 1;
@@ -18873,42 +18873,42 @@ LABEL_8:
 
     else
     {
-      v26 = [(TIKeyboardInputManager *)self inputStem];
-      v25 = [v26 length] == 0;
+      inputStem = [(TIKeyboardInputManager *)self inputStem];
+      v25 = [inputStem length] == 0;
     }
 
-    v27 = [(TIKeyboardInputManager *)self lastContinuousPathAutocorrection];
-    v28 = [v27 corrections];
-    v29 = [v28 autocorrection];
-    v30 = [v29 candidate];
-    v31 = [(TIKeyboardInputManager *)self inputStem];
-    v94 = [v30 hasSuffix:v31];
+    lastContinuousPathAutocorrection = [(TIKeyboardInputManager *)self lastContinuousPathAutocorrection];
+    corrections = [lastContinuousPathAutocorrection corrections];
+    autocorrection = [corrections autocorrection];
+    candidate = [autocorrection candidate];
+    inputStem2 = [(TIKeyboardInputManager *)self inputStem];
+    v94 = [candidate hasSuffix:inputStem2];
 
     v32 = v99;
     if (([v99 usePQT2Flow] & 1) == 0 && !(v25 | ((objc_msgSend(v99, "isAutoCompleteEnabled") & 1) == 0) | v94 & 1))
     {
-      v33 = [(TIKeyboardInputManager *)self keyboardState];
-      v34 = [v33 needContactAutofill];
+      keyboardState3 = [(TIKeyboardInputManager *)self keyboardState];
+      needContactAutofill = [keyboardState3 needContactAutofill];
 
-      if ((v34 & 1) == 0)
+      if ((needContactAutofill & 1) == 0)
       {
-        v47 = [(TIKeyboardInputManager *)self keyboardState];
-        [(TIKeyboardInputManager *)self trackProactiveMetrics:0 keyboardState:v47];
+        keyboardState4 = [(TIKeyboardInputManager *)self keyboardState];
+        [(TIKeyboardInputManager *)self trackProactiveMetrics:0 keyboardState:keyboardState4];
 
         v95 = +[TIAppAutofillManager sharedInstance];
-        v48 = [v95 secureCandidateRenderer];
-        v49 = [(TIKeyboardInputManager *)self keyboardState];
-        v50 = [v49 secureCandidateRenderTraits];
-        v51 = [(TIKeyboardInputManager *)self keyboardState];
-        v52 = [v51 textInputTraits];
-        [v52 textContentType];
-        v53 = v13;
-        v55 = v54 = v12;
+        secureCandidateRenderer = [v95 secureCandidateRenderer];
+        keyboardState5 = [(TIKeyboardInputManager *)self keyboardState];
+        secureCandidateRenderTraits = [keyboardState5 secureCandidateRenderTraits];
+        keyboardState6 = [(TIKeyboardInputManager *)self keyboardState];
+        textInputTraits = [keyboardState6 textInputTraits];
+        [textInputTraits textContentType];
+        v53 = handlerCopy;
+        v55 = v54 = predictionsCopy;
         v56 = v98;
-        [v99 generateAndRenderProactiveSuggestionsWithInput:v98 withSecureCandidateRenderer:v48 withRenderTraits:v50 textContentType:v55 async:v92 completion:v53];
+        [v99 generateAndRenderProactiveSuggestionsWithInput:v98 withSecureCandidateRenderer:secureCandidateRenderer withRenderTraits:secureCandidateRenderTraits textContentType:v55 async:v92 completion:v53];
 
-        v12 = v54;
-        v13 = v53;
+        predictionsCopy = v54;
+        handlerCopy = v53;
 
         v32 = v99;
 LABEL_35:
@@ -18922,24 +18922,24 @@ LABEL_35:
       if ([v99 usePQT2Flow])
       {
 LABEL_20:
-        v39 = [(TIKeyboardInputManager *)self keyboardState];
-        v40 = [v39 supportedPayloadIds];
-        v41 = [v40 count];
+        keyboardState7 = [(TIKeyboardInputManager *)self keyboardState];
+        supportedPayloadIds = [keyboardState7 supportedPayloadIds];
+        v41 = [supportedPayloadIds count];
 
         if (v41)
         {
           v42 = MEMORY[0x277CBEB98];
-          v43 = [(TIKeyboardInputManager *)self keyboardState];
-          v44 = [v43 supportedPayloadIds];
-          v91 = [v42 setWithArray:v44];
+          keyboardState8 = [(TIKeyboardInputManager *)self keyboardState];
+          supportedPayloadIds2 = [keyboardState8 supportedPayloadIds];
+          v91 = [v42 setWithArray:supportedPayloadIds2];
         }
 
         else
         {
-          v45 = [(TIKeyboardInputManager *)self keyboardState];
-          v46 = [v45 canSendCurrentLocation];
+          keyboardState9 = [(TIKeyboardInputManager *)self keyboardState];
+          canSendCurrentLocation = [keyboardState9 canSendCurrentLocation];
 
-          if (v46)
+          if (canSendCurrentLocation)
           {
             v91 = [MEMORY[0x277CBEB98] setWithObject:@"com.apple.messages.currentLocation"];
           }
@@ -18956,19 +18956,19 @@ LABEL_20:
         aBlock[3] = &unk_2787317E0;
         aBlock[4] = self;
         v62 = _Block_copy(aBlock);
-        v63 = [(TIKeyboardInputManager *)self keyboardState];
-        v89 = [v63 shiftState];
+        keyboardState10 = [(TIKeyboardInputManager *)self keyboardState];
+        shiftState = [keyboardState10 shiftState];
 
-        v64 = [(TIKeyboardInputManager *)self keyboardState];
-        v65 = [v64 responseContext];
+        keyboardState11 = [(TIKeyboardInputManager *)self keyboardState];
+        responseContext = [keyboardState11 responseContext];
 
-        v90 = v11;
-        v88 = v12;
-        if (v65)
+        v90 = triggersCopy;
+        v88 = predictionsCopy;
+        if (responseContext)
         {
-          v66 = [(TIKeyboardInputManager *)self keyboardState];
-          v67 = [v66 responseContext];
-          v101[0] = v67;
+          keyboardState12 = [(TIKeyboardInputManager *)self keyboardState];
+          responseContext2 = [keyboardState12 responseContext];
+          v101[0] = responseContext2;
           v68 = [MEMORY[0x277CBEA60] arrayWithObjects:v101 count:1];
           v69 = [(TIKeyboardInputManager *)self suggestionBlocklistMatchesStrings:v68];
         }
@@ -18979,68 +18979,68 @@ LABEL_20:
         }
 
         v70 = v92;
-        v71 = [(TIKeyboardInputManager *)self keyboardState];
+        keyboardState13 = [(TIKeyboardInputManager *)self keyboardState];
         v93 = +[TIAppAutofillManager sharedInstance];
-        v87 = [v93 secureCandidateRenderer];
-        v86 = [(TIKeyboardInputManager *)self keyboardState];
-        v85 = [v86 secureCandidateRenderTraits];
+        secureCandidateRenderer2 = [v93 secureCandidateRenderer];
+        keyboardState14 = [(TIKeyboardInputManager *)self keyboardState];
+        secureCandidateRenderTraits2 = [keyboardState14 secureCandidateRenderTraits];
         v84 = [v98 stringByAppendingString:@" "];
-        v83 = [(TIKeyboardInputManager *)self keyboardState];
-        v72 = [v83 recipientIdentifier];
-        v82 = [(TIKeyboardInputManager *)self keyboardState];
-        v73 = [v82 clientIdentifier];
-        v81 = [(TIKeyboardInputManagerBase *)self inputMode];
-        v74 = [v81 languageWithRegion];
+        keyboardState15 = [(TIKeyboardInputManager *)self keyboardState];
+        recipientIdentifier = [keyboardState15 recipientIdentifier];
+        keyboardState16 = [(TIKeyboardInputManager *)self keyboardState];
+        clientIdentifier = [keyboardState16 clientIdentifier];
+        inputMode = [(TIKeyboardInputManagerBase *)self inputMode];
+        languageWithRegion = [inputMode languageWithRegion];
         if (v94)
         {
-          v75 = [(TIKeyboardInputManager *)self shouldInsertSpaceBeforePredictions];
+          shouldInsertSpaceBeforePredictions = [(TIKeyboardInputManager *)self shouldInsertSpaceBeforePredictions];
         }
 
         else
         {
-          v75 = 0;
+          shouldInsertSpaceBeforePredictions = 0;
         }
 
         LOBYTE(v79) = v70;
         BYTE1(v78) = v69;
-        LOBYTE(v78) = v75;
-        BYTE2(v78) = v89 != 2;
+        LOBYTE(v78) = shouldInsertSpaceBeforePredictions;
+        BYTE2(v78) = shiftState != 2;
         v32 = v99;
-        v80 = v71;
-        v76 = v71;
-        v12 = v88;
-        [v99 generateAndRenderProactiveSuggestionsForInput:v90 withKeyboardState:v76 withAdditionalPredictions:v88 withSecureCandidateRenderer:v87 withRenderTraits:v85 withInput:v84 withRecipient:v72 withApplication:v73 withLocale:v74 nextInputWillInsertAutospace:v78 withIsResponseDenyListed:v91 withShouldDisableAutoCaps:v62 withAvailableApps:v79 logBlock:v13 async:? completion:?];
+        v80 = keyboardState13;
+        v76 = keyboardState13;
+        predictionsCopy = v88;
+        [v99 generateAndRenderProactiveSuggestionsForInput:v90 withKeyboardState:v76 withAdditionalPredictions:v88 withSecureCandidateRenderer:secureCandidateRenderer2 withRenderTraits:secureCandidateRenderTraits2 withInput:v84 withRecipient:recipientIdentifier withApplication:clientIdentifier withLocale:languageWithRegion nextInputWillInsertAutospace:v78 withIsResponseDenyListed:v91 withShouldDisableAutoCaps:v62 withAvailableApps:v79 logBlock:handlerCopy async:? completion:?];
 
-        v11 = v90;
+        triggersCopy = v90;
         goto LABEL_34;
       }
 
-      v35 = [v11 firstObject];
-      v36 = [(TIKeyboardInputManager *)self keyboardState];
-      [(TIKeyboardInputManager *)self trackProactiveMetrics:v35 keyboardState:v36];
+      firstObject = [triggersCopy firstObject];
+      keyboardState17 = [(TIKeyboardInputManager *)self keyboardState];
+      [(TIKeyboardInputManager *)self trackProactiveMetrics:firstObject keyboardState:keyboardState17];
 
-      if ([v11 count])
+      if ([triggersCopy count])
       {
         if (![(TIKeyboardInputManager *)self enablesProactiveQuickType])
         {
           v37 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_1262];
-          v38 = [v11 filteredArrayUsingPredicate:v37];
+          v38 = [triggersCopy filteredArrayUsingPredicate:v37];
 
-          v11 = v38;
+          triggersCopy = v38;
         }
 
         goto LABEL_20;
       }
 
-      v57 = [(TIKeyboardInputManagerBase *)self inputMode];
-      v58 = [v57 languageWithRegion];
-      v59 = [(TIKeyboardInputManager *)self keyboardState];
-      v60 = [v59 textInputTraits];
-      v61 = [v60 textContentType];
-      [v99 userActionWithNoNewTriggers:v58 fieldType:v61];
+      inputMode2 = [(TIKeyboardInputManagerBase *)self inputMode];
+      languageWithRegion2 = [inputMode2 languageWithRegion];
+      keyboardState18 = [(TIKeyboardInputManager *)self keyboardState];
+      textInputTraits2 = [keyboardState18 textInputTraits];
+      textContentType = [textInputTraits2 textContentType];
+      [v99 userActionWithNoNewTriggers:languageWithRegion2 fieldType:textContentType];
 
       v32 = v99;
-      v13[2](v13, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
 
 LABEL_34:
@@ -19048,7 +19048,7 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  v13[2](v13, 0);
+  handlerCopy[2](handlerCopy, 0);
 LABEL_36:
 
   v77 = *MEMORY[0x277D85DE8];
@@ -19063,18 +19063,18 @@ void __156__TIKeyboardInputManager_ProactiveQuickType__generateAndRenderProactiv
 
 - (BOOL)enablesProactiveQuickType
 {
-  v3 = [(TIKeyboardInputManager *)self keyboardState];
-  v4 = [v3 textInputTraits];
-  if ([v4 disablePrediction])
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  textInputTraits = [keyboardState textInputTraits];
+  if ([textInputTraits disablePrediction])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(TIKeyboardInputManager *)self keyboardState];
-    v7 = [v6 textInputTraits];
-    v5 = [v7 autocorrectionType] != 1;
+    keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+    textInputTraits2 = [keyboardState2 textInputTraits];
+    v5 = [textInputTraits2 autocorrectionType] != 1;
   }
 
   return v5;
@@ -19091,40 +19091,40 @@ void __156__TIKeyboardInputManager_ProactiveQuickType__generateAndRenderProactiv
   return m_impl & 1;
 }
 
-- (void)setInHardwareKeyboardMode:(BOOL)a3
+- (void)setInHardwareKeyboardMode:(BOOL)mode
 {
   m_impl = self->m_impl;
   if (m_impl)
   {
-    m_impl[729] = a3;
+    m_impl[729] = mode;
   }
 }
 
 - (BOOL)supportsLearning
 {
-  v2 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-  v3 = [v2 supportsLearning];
+  keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+  supportsLearning = [keyboardFeatureSpecialization supportsLearning];
 
-  return v3;
+  return supportsLearning;
 }
 
 - (BOOL)supportsReversionUI
 {
-  v2 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-  v3 = [v2 supportsReversionUI];
+  keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+  supportsReversionUI = [keyboardFeatureSpecialization supportsReversionUI];
 
-  return v3;
+  return supportsReversionUI;
 }
 
 - (BOOL)doesComposeText
 {
-  v2 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-  v3 = [v2 doesComposeText];
+  keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+  doesComposeText = [keyboardFeatureSpecialization doesComposeText];
 
-  return v3;
+  return doesComposeText;
 }
 
-- (void)dynamicDictionariesRemoved:(id)a3
+- (void)dynamicDictionariesRemoved:(id)removed
 {
   [(TIKeyboardInputManager *)self clearDynamicDictionary];
   [(TIKeyboardInputManager *)self releaseDynamicLanguageModel];
@@ -19158,29 +19158,29 @@ void __156__TIKeyboardInputManager_ProactiveQuickType__generateAndRenderProactiv
   [v2 resetResponseKit];
 }
 
-+ (void)clearRecentsFileForIdentifier:(id)a3
++ (void)clearRecentsFileForIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = MEMORY[0x277CCAA00];
-    v5 = a3;
-    v7 = [v4 defaultManager];
-    v6 = [a1 recentsFilePathForIdentifier:v5];
+    identifierCopy = identifier;
+    defaultManager = [v4 defaultManager];
+    v6 = [self recentsFilePathForIdentifier:identifierCopy];
 
-    [v7 removeItemAtPath:v6 error:0];
+    [defaultManager removeItemAtPath:v6 error:0];
   }
 }
 
-+ (id)recentsFilePathForIdentifier:(id)a3
++ (id)recentsFilePathForIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (v3)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     {
       +[TIKeyboardInputManager(DynamicDictionarySpecializations) recentsFilePathForIdentifier:]::dir = TI_KB_USER_DIRECTORY();
     }
 
-    v4 = [+[TIKeyboardInputManager(DynamicDictionarySpecializations) recentsFilePathForIdentifier:]::dir stringByAppendingPathComponent:v3];
+    v4 = [+[TIKeyboardInputManager(DynamicDictionarySpecializations) recentsFilePathForIdentifier:]::dir stringByAppendingPathComponent:identifierCopy];
     v5 = [v4 stringByAppendingPathExtension:@"recents"];
   }
 
@@ -19199,10 +19199,10 @@ void __156__TIKeyboardInputManager_ProactiveQuickType__generateAndRenderProactiv
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v2 = [MEMORY[0x277D6F380] sharedInputModeController];
-  v3 = [v2 supportedInputModeIdentifiers];
+  mEMORY[0x277D6F380] = [MEMORY[0x277D6F380] sharedInputModeController];
+  supportedInputModeIdentifiers = [mEMORY[0x277D6F380] supportedInputModeIdentifiers];
 
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v20 count:16];
+  v4 = [supportedInputModeIdentifiers countByEnumeratingWithState:&v14 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -19214,7 +19214,7 @@ void __156__TIKeyboardInputManager_ProactiveQuickType__generateAndRenderProactiv
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(supportedInputModeIdentifiers);
         }
 
         v8 = *(*(&v14 + 1) + 8 * v7);
@@ -19246,7 +19246,7 @@ void __156__TIKeyboardInputManager_ProactiveQuickType__generateAndRenderProactiv
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v20 count:16];
+      v5 = [supportedInputModeIdentifiers countByEnumeratingWithState:&v14 objects:v20 count:16];
     }
 
     while (v5);
@@ -19255,9 +19255,9 @@ void __156__TIKeyboardInputManager_ProactiveQuickType__generateAndRenderProactiv
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)removeDynamicDictionaryForInputMode:(id)a3
++ (void)removeDynamicDictionaryForInputMode:(id)mode
 {
-  v3 = [a1 dynamicDictionaryFilePathForInputMode:a3];
+  v3 = [self dynamicDictionaryFilePathForInputMode:mode];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277CCAA00]);
@@ -19269,12 +19269,12 @@ void __156__TIKeyboardInputManager_ProactiveQuickType__generateAndRenderProactiv
   }
 }
 
-+ (id)dynamicDictionaryFilePathForInputMode:(id)a3
++ (id)dynamicDictionaryFilePathForInputMode:(id)mode
 {
-  v4 = a3;
-  if ([v4 length])
+  modeCopy = mode;
+  if ([modeCopy length])
   {
-    if ([v4 isEqualToString:@"en_US"])
+    if ([modeCopy isEqualToString:@"en_US"])
     {
       v5 = @"dynamic-text.dat";
     }
@@ -19285,8 +19285,8 @@ void __156__TIKeyboardInputManager_ProactiveQuickType__generateAndRenderProactiv
       v5 = [v7 stringByAppendingString:@"-dynamic-text.dat"];
     }
 
-    v8 = [a1 keyboardUserDirectory];
-    v6 = [v8 stringByAppendingPathComponent:v5];
+    keyboardUserDirectory = [self keyboardUserDirectory];
+    v6 = [keyboardUserDirectory stringByAppendingPathComponent:v5];
   }
 
   else
@@ -19299,8 +19299,8 @@ void __156__TIKeyboardInputManager_ProactiveQuickType__generateAndRenderProactiv
 
 + (id)userDictionaryWordKeyPairsFilePath
 {
-  v2 = [a1 keyboardUserDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"UserDictionaryWordKeyPairs.plist"];
+  keyboardUserDirectory = [self keyboardUserDirectory];
+  v3 = [keyboardUserDirectory stringByAppendingPathComponent:@"UserDictionaryWordKeyPairs.plist"];
 
   return v3;
 }
@@ -19321,21 +19321,21 @@ void __156__TIKeyboardInputManager_ProactiveQuickType__generateAndRenderProactiv
   return v3;
 }
 
-- (void)setRejectedAutocorrection:(id)a3 forInput:(id)a4
+- (void)setRejectedAutocorrection:(id)autocorrection forInput:(id)input
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TIKeyboardInputManager *)self rejectedAutocorrectionsDisplayedOrInserted];
-  [v8 setObject:v6 forKey:v7];
+  inputCopy = input;
+  autocorrectionCopy = autocorrection;
+  rejectedAutocorrectionsDisplayedOrInserted = [(TIKeyboardInputManager *)self rejectedAutocorrectionsDisplayedOrInserted];
+  [rejectedAutocorrectionsDisplayedOrInserted setObject:inputCopy forKey:autocorrectionCopy];
 
-  v9 = [(TIKeyboardInputManager *)self rejectedAutocorrectionsDisplayedOrInsertedInverse];
-  [v9 setObject:v7 forKey:v6];
+  rejectedAutocorrectionsDisplayedOrInsertedInverse = [(TIKeyboardInputManager *)self rejectedAutocorrectionsDisplayedOrInsertedInverse];
+  [rejectedAutocorrectionsDisplayedOrInsertedInverse setObject:autocorrectionCopy forKey:inputCopy];
 }
 
-- (void)dynamicResourceDirectorySet:(id)a3
+- (void)dynamicResourceDirectorySet:(id)set
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"dynamicResourcePath"];
+  userInfo = [set userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"dynamicResourcePath"];
 
   if (v5 && [v5 length])
   {
@@ -19348,22 +19348,22 @@ void __156__TIKeyboardInputManager_ProactiveQuickType__generateAndRenderProactiv
   }
 }
 
-- (void)attachToDynamicResourceDirectory:(id)a3
+- (void)attachToDynamicResourceDirectory:(id)directory
 {
-  v4 = a3;
-  v5 = [(TIKeyboardInputManager *)self config];
-  v6 = [v5 usesAdaptation];
+  directoryCopy = directory;
+  config = [(TIKeyboardInputManager *)self config];
+  usesAdaptation = [config usesAdaptation];
 
-  if (v6)
+  if (usesAdaptation)
   {
     [(TIKeyboardInputManager *)self detachFromDynamicResourceDirectory];
   }
 
-  v7 = [(TIKeyboardInputManager *)self config];
-  [v7 setDynamicResourcePath:v4];
+  config2 = [(TIKeyboardInputManager *)self config];
+  [config2 setDynamicResourcePath:directoryCopy];
 
-  v8 = [(TIKeyboardInputManager *)self config];
-  [v8 setUsesAdaptation:1];
+  config3 = [(TIKeyboardInputManager *)self config];
+  [config3 setUsesAdaptation:1];
 
   m_impl = self->m_impl;
   if (m_impl)
@@ -19374,7 +19374,7 @@ void __156__TIKeyboardInputManager_ProactiveQuickType__generateAndRenderProactiv
       goto LABEL_8;
     }
 
-    std::string::basic_string[abi:nn200100]<0>(&__p, [v4 UTF8String]);
+    std::string::basic_string[abi:nn200100]<0>(&__p, [directoryCopy UTF8String]);
     (*(*v10 + 112))(v10, &__p);
     if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
     {
@@ -19385,7 +19385,7 @@ void __156__TIKeyboardInputManager_ProactiveQuickType__generateAndRenderProactiv
     if (m_impl)
     {
 LABEL_8:
-      std::string::basic_string[abi:nn200100]<0>(&__p, [v4 UTF8String]);
+      std::string::basic_string[abi:nn200100]<0>(&__p, [directoryCopy UTF8String]);
       TI::VulgarWordUsageDatabaseWrapper::attach_to_dynamic_resource_directory(m_impl + 79, &__p);
       if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
       {
@@ -19407,8 +19407,8 @@ LABEL_8:
     }
   }
 
-  v5 = [(TIKeyboardInputManager *)self config];
-  [v5 setUsesAdaptation:0];
+  config = [(TIKeyboardInputManager *)self config];
+  [config setUsesAdaptation:0];
 
   std::unique_ptr<TI::RejectionsDatabase>::reset[abi:nn200100](&self->m_rejectionsDatabase, 0);
   v6 = self->m_impl;
@@ -19428,11 +19428,11 @@ LABEL_8:
 
 - (void)clearSoftLearning
 {
-  v2 = [(TIKeyboardInputManager *)self rejectionsDatabase];
-  if (v2)
+  rejectionsDatabase = [(TIKeyboardInputManager *)self rejectionsDatabase];
+  if (rejectionsDatabase)
   {
 
-    TI::RejectionsDatabase::soft_clear_memory(v2);
+    TI::RejectionsDatabase::soft_clear_memory(rejectionsDatabase);
   }
 }
 
@@ -19461,79 +19461,79 @@ LABEL_8:
     }
 
     std::unique_ptr<TI::RejectionsDatabase>::reset[abi:nn200100](&self->m_rejectionsDatabase, 0);
-    v9 = [MEMORY[0x277CCAA00] defaultManager];
-    [v9 removeItemAtPath:v8 error:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager removeItemAtPath:v8 error:0];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recordRejectedAutocorrectionForAcceptedText:(id)a3 fromPredictiveInputBar:(BOOL)a4
+- (void)recordRejectedAutocorrectionForAcceptedText:(id)text fromPredictiveInputBar:(BOOL)bar
 {
-  v4 = a4;
+  barCopy = bar;
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 candidate];
-  v8 = [v6 input];
-  v9 = [v7 isEqualToString:v8];
+  textCopy = text;
+  candidate = [textCopy candidate];
+  input = [textCopy input];
+  v9 = [candidate isEqualToString:input];
 
   if (v9)
   {
-    v10 = [(TIKeyboardInputManager *)self autocorrectionListsSuggestedForCurrentInput];
-    v11 = [v6 input];
-    v12 = [v10 objectForKey:v11];
+    autocorrectionListsSuggestedForCurrentInput = [(TIKeyboardInputManager *)self autocorrectionListsSuggestedForCurrentInput];
+    input2 = [textCopy input];
+    v12 = [autocorrectionListsSuggestedForCurrentInput objectForKey:input2];
 
-    v13 = [v6 input];
-    v14 = [v12 corrections];
-    v15 = [v14 autocorrection];
+    input3 = [textCopy input];
+    corrections = [v12 corrections];
+    autocorrection = [corrections autocorrection];
   }
 
   else
   {
-    v16 = [(TIKeyboardInputManager *)self autocorrectionHistory];
-    v17 = [v6 input];
-    v15 = [v16 objectForKey:v17];
+    autocorrectionHistory = [(TIKeyboardInputManager *)self autocorrectionHistory];
+    input4 = [textCopy input];
+    autocorrection = [autocorrectionHistory objectForKey:input4];
 
-    v18 = [(TIKeyboardInputManager *)self autocorrectionListsForWordsInDocument];
-    v19 = [v6 input];
-    v12 = [v18 objectForKey:v19];
+    autocorrectionListsForWordsInDocument = [(TIKeyboardInputManager *)self autocorrectionListsForWordsInDocument];
+    input5 = [textCopy input];
+    v12 = [autocorrectionListsForWordsInDocument objectForKey:input5];
 
-    v13 = [v6 candidate];
+    input3 = [textCopy candidate];
   }
 
   if (([v12 hasSupplementalItems] & 1) == 0)
   {
-    if (v12 && ([v6 isSupplementalItemCandidate] & 1) == 0)
+    if (v12 && ([textCopy isSupplementalItemCandidate] & 1) == 0)
     {
-      v20 = [(TIKeyboardInputManager *)self revisionListFromAutocorrectionList:v12 afterAcceptingCandidate:v6];
-      v21 = [(TIKeyboardInputManager *)self autocorrectionListsForWordsInDocument];
-      v22 = [v6 input];
-      [v21 setObject:v20 forKey:v22];
+      v20 = [(TIKeyboardInputManager *)self revisionListFromAutocorrectionList:v12 afterAcceptingCandidate:textCopy];
+      autocorrectionListsForWordsInDocument2 = [(TIKeyboardInputManager *)self autocorrectionListsForWordsInDocument];
+      input6 = [textCopy input];
+      [autocorrectionListsForWordsInDocument2 setObject:v20 forKey:input6];
     }
 
-    if ([v15 isAutocorrection])
+    if ([autocorrection isAutocorrection])
     {
-      v23 = [(TIKeyboardInputManager *)self rejectedAutocorrections];
-      [v23 setObject:v15 forKey:v13];
+      rejectedAutocorrections = [(TIKeyboardInputManager *)self rejectedAutocorrections];
+      [rejectedAutocorrections setObject:autocorrection forKey:input3];
 
-      v24 = [(TIKeyboardInputManager *)self autocorrectionHistory];
-      v25 = [v15 candidate];
-      [v24 removeObjectForKey:v25];
+      autocorrectionHistory2 = [(TIKeyboardInputManager *)self autocorrectionHistory];
+      candidate2 = [autocorrection candidate];
+      [autocorrectionHistory2 removeObjectForKey:candidate2];
     }
 
-    else if (v4)
+    else if (barCopy)
     {
-      v39 = v13;
-      v40 = v15;
-      v41 = v6;
+      v39 = input3;
+      v40 = autocorrection;
+      v41 = textCopy;
       v44 = 0u;
       v45 = 0u;
       v42 = 0u;
       v43 = 0u;
-      v26 = [v12 corrections];
-      v27 = [v26 autocorrection];
-      v28 = [v27 candidate];
-      v29 = [v28 componentsSeparatedByString:@" "];
+      corrections2 = [v12 corrections];
+      autocorrection2 = [corrections2 autocorrection];
+      candidate3 = [autocorrection2 candidate];
+      v29 = [candidate3 componentsSeparatedByString:@" "];
 
       v30 = [v29 countByEnumeratingWithState:&v42 objects:v46 count:16];
       if (v30)
@@ -19552,10 +19552,10 @@ LABEL_8:
             v34 = *(*(&v42 + 1) + 8 * i);
             if ([v34 length])
             {
-              v35 = [(TIKeyboardInputManager *)self recentPredictiveInputSelections];
-              v36 = [v12 corrections];
-              v37 = [v36 autocorrection];
-              [v35 setObject:v37 forKey:v34];
+              recentPredictiveInputSelections = [(TIKeyboardInputManager *)self recentPredictiveInputSelections];
+              corrections3 = [v12 corrections];
+              autocorrection3 = [corrections3 autocorrection];
+              [recentPredictiveInputSelections setObject:autocorrection3 forKey:v34];
             }
           }
 
@@ -19565,9 +19565,9 @@ LABEL_8:
         while (v31);
       }
 
-      v15 = v40;
-      v6 = v41;
-      v13 = v39;
+      autocorrection = v40;
+      textCopy = v41;
+      input3 = v39;
     }
   }
 
@@ -19579,8 +19579,8 @@ LABEL_8:
   ppStmt[2] = *MEMORY[0x277D85DE8];
   if (self->m_impl)
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
-    [v3 timeIntervalSinceReferenceDate];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceReferenceDate];
     v5 = v4;
 
     v6 = *(self->m_impl + 28);
@@ -19590,11 +19590,11 @@ LABEL_8:
     }
   }
 
-  v7 = [(TIKeyboardInputManager *)self rejectionsDatabase];
-  if (v7)
+  rejectionsDatabase = [(TIKeyboardInputManager *)self rejectionsDatabase];
+  if (rejectionsDatabase)
   {
     v8 = 1;
-    v9 = *v7;
+    v9 = *rejectionsDatabase;
     while (2)
     {
       ppStmt[0] = 0;
@@ -19655,17 +19655,17 @@ LABEL_17:
 
 - (BOOL)autocorrectionWasRecentlyRejectedForCurrentInput
 {
-  v3 = [(TIKeyboardInputManager *)self rejectedAutocorrectionsDisplayedOrInsertedInverse];
-  v4 = [(TIKeyboardInputManager *)self currentWordStem];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  rejectedAutocorrectionsDisplayedOrInsertedInverse = [(TIKeyboardInputManager *)self rejectedAutocorrectionsDisplayedOrInsertedInverse];
+  currentWordStem = [(TIKeyboardInputManager *)self currentWordStem];
+  v5 = [rejectedAutocorrectionsDisplayedOrInsertedInverse objectForKeyedSubscript:currentWordStem];
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (BOOL)autocorrectionWasRecentlyRejected:(id)a3
+- (BOOL)autocorrectionWasRecentlyRejected:(id)rejected
 {
-  if (!a3)
+  if (!rejected)
   {
     return 0;
   }
@@ -19676,11 +19676,11 @@ LABEL_17:
   return v4;
 }
 
-- (BOOL)shouldBlockAutocorrection:(id)a3
+- (BOOL)shouldBlockAutocorrection:(id)autocorrection
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (-[TIKeyboardInputManager _hasSupplementalPrefix](self, "_hasSupplementalPrefix") && [v4 isSupplementalItemCandidate])
+  autocorrectionCopy = autocorrection;
+  if (-[TIKeyboardInputManager _hasSupplementalPrefix](self, "_hasSupplementalPrefix") && [autocorrectionCopy isSupplementalItemCandidate])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -19705,22 +19705,22 @@ LABEL_17:
     goto LABEL_23;
   }
 
-  v5 = [v4 candidate];
-  if (v5)
+  candidate = [autocorrectionCopy candidate];
+  if (candidate)
   {
-    v6 = v5;
-    v7 = [v4 isSupplementalItemCandidate];
+    v6 = candidate;
+    isSupplementalItemCandidate = [autocorrectionCopy isSupplementalItemCandidate];
 
-    if ((v7 & 1) == 0)
+    if ((isSupplementalItemCandidate & 1) == 0)
     {
-      v8 = [(TIKeyboardInputManager *)self rejectedAutocorrectionsDisplayedOrInserted];
-      v9 = [v4 candidate];
-      v10 = [v8 objectForKey:v9];
+      rejectedAutocorrectionsDisplayedOrInserted = [(TIKeyboardInputManager *)self rejectedAutocorrectionsDisplayedOrInserted];
+      candidate2 = [autocorrectionCopy candidate];
+      currentWord = [rejectedAutocorrectionsDisplayedOrInserted objectForKey:candidate2];
 
-      if (v10)
+      if (currentWord)
       {
-        v11 = [(TIKeyboardInputManager *)self currentWordStem];
-        if ([v10 isEqualToString:v11] && (objc_msgSend(v10, "length") != 1 || (objc_msgSend(v4, "sourceMask") & 0x8000) == 0 && (objc_msgSend(v4, "sourceMask") & 0x20000) == 0 || (objc_msgSend(v4, "usageTrackingMask") & 2) == 0) || objc_msgSend(v11, "length") >= 2 && objc_msgSend(v11, "length") <= 0x20 && objc_msgSend(v10, "_editDistanceFrom:", v11) == 1)
+        currentWordStem = [(TIKeyboardInputManager *)self currentWordStem];
+        if ([currentWord isEqualToString:currentWordStem] && (objc_msgSend(currentWord, "length") != 1 || (objc_msgSend(autocorrectionCopy, "sourceMask") & 0x8000) == 0 && (objc_msgSend(autocorrectionCopy, "sourceMask") & 0x20000) == 0 || (objc_msgSend(autocorrectionCopy, "usageTrackingMask") & 2) == 0) || objc_msgSend(currentWordStem, "length") >= 2 && objc_msgSend(currentWordStem, "length") <= 0x20 && objc_msgSend(currentWord, "_editDistanceFrom:", currentWordStem) == 1)
         {
 
 LABEL_28:
@@ -19731,43 +19731,43 @@ LABEL_28:
   }
 
 LABEL_23:
-  if (!v4)
+  if (!autocorrectionCopy)
   {
     goto LABEL_32;
   }
 
-  v12 = [v4 input];
-  v13 = [v4 candidate];
-  v14 = [(TIKeyboardInputManager *)self blockedByNegativeLearning:v12 correction:v13 ignoreSoft:0];
+  input = [autocorrectionCopy input];
+  candidate3 = [autocorrectionCopy candidate];
+  v14 = [(TIKeyboardInputManager *)self blockedByNegativeLearning:input correction:candidate3 ignoreSoft:0];
 
   if (!v14)
   {
-    v15 = [(TIKeyboardInputManager *)self revisionHistory];
-    v10 = [v15 currentWord];
+    revisionHistory = [(TIKeyboardInputManager *)self revisionHistory];
+    currentWord = [revisionHistory currentWord];
 
-    v16 = [v10 length];
-    v17 = [v4 input];
-    if (v16 <= [v17 length])
+    v16 = [currentWord length];
+    input2 = [autocorrectionCopy input];
+    if (v16 <= [input2 length])
     {
     }
 
     else
     {
-      v18 = [v4 input];
-      v19 = [v10 hasSuffix:v18];
+      input3 = [autocorrectionCopy input];
+      v19 = [currentWord hasSuffix:input3];
 
       if (v19)
       {
-        v20 = [v10 length];
-        v21 = [v4 input];
-        v22 = [v10 substringToIndex:{v20 - objc_msgSend(v21, "length")}];
+        v20 = [currentWord length];
+        input4 = [autocorrectionCopy input];
+        v22 = [currentWord substringToIndex:{v20 - objc_msgSend(input4, "length")}];
 
-        v23 = [v4 candidate];
-        v30[1] = v23;
+        candidate4 = [autocorrectionCopy candidate];
+        v30[1] = candidate4;
         v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:2];
         v25 = [v24 componentsJoinedByString:&stru_283FDFAF8];
 
-        v26 = [(TIKeyboardInputManager *)self blockedByNegativeLearning:v10 correction:v25 ignoreSoft:0];
+        v26 = [(TIKeyboardInputManager *)self blockedByNegativeLearning:currentWord correction:v25 ignoreSoft:0];
         if (v26)
         {
           goto LABEL_28;
@@ -19788,35 +19788,35 @@ LABEL_33:
   return v27;
 }
 
-- (id)checkRejectionHistory:(id)a3
+- (id)checkRejectionHistory:(id)history
 {
-  v4 = a3;
-  if ([(TIKeyboardInputManager *)self shouldBlockAutocorrection:v4])
+  historyCopy = history;
+  if ([(TIKeyboardInputManager *)self shouldBlockAutocorrection:historyCopy])
   {
 
-    v4 = 0;
+    historyCopy = 0;
   }
 
-  return v4;
+  return historyCopy;
 }
 
-- (void)registerLearningForCompletion:(id)a3 fullCompletion:(id)a4 context:(id)a5 prefix:(id)a6 mode:(id)a7
+- (void)registerLearningForCompletion:(id)completion fullCompletion:(id)fullCompletion context:(id)context prefix:(id)prefix mode:(id)mode
 {
   v35 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
-  v15 = [(TIKeyboardInputManager *)self config];
-  v16 = [v15 disableAnalytics];
+  completionCopy = completion;
+  fullCompletionCopy = fullCompletion;
+  prefixCopy = prefix;
+  modeCopy = mode;
+  config = [(TIKeyboardInputManager *)self config];
+  disableAnalytics = [config disableAnalytics];
 
-  if ((v16 & 1) == 0)
+  if ((disableAnalytics & 1) == 0)
   {
     m_impl = self->m_impl;
-    KB::utf8_string(v11, &v34);
-    KB::utf8_string(v13, &v31);
-    KB::utf8_string(v13, &__p);
-    (*(*m_impl[28] + 88))(m_impl[28], &v34, &v31, &__p, [(TIKeyboardInputManager *)self TIInlineCompletionAcceptanceRejectionTypefromTIRegisterLearningMode:v14]);
+    KB::utf8_string(completionCopy, &v34);
+    KB::utf8_string(prefixCopy, &v31);
+    KB::utf8_string(prefixCopy, &__p);
+    (*(*m_impl[28] + 88))(m_impl[28], &v34, &v31, &__p, [(TIKeyboardInputManager *)self TIInlineCompletionAcceptanceRejectionTypefromTIRegisterLearningMode:modeCopy]);
     if (v29 && BYTE6(__p) == 1)
     {
       free(v29);
@@ -19836,7 +19836,7 @@ LABEL_33:
   if (TIIsRegisterLearningModeRejection() && (v18 = [(TIKeyboardInputManager *)self rejectionsDatabase]) != 0)
   {
     v19 = v18;
-    v20 = [v14 isEqualToString:*MEMORY[0x277D6FA58]];
+    v20 = [modeCopy isEqualToString:*MEMORY[0x277D6FA58]];
     v21 = @"hard";
     if (v20)
     {
@@ -19844,11 +19844,11 @@ LABEL_33:
     }
 
     v27 = v21;
-    v22 = [(TIKeyboardInputManager *)self dictionaryStringForExternalString:v11];
+    v22 = [(TIKeyboardInputManager *)self dictionaryStringForExternalString:completionCopy];
 
-    v23 = [(TIKeyboardInputManager *)self dictionaryStringForExternalString:v12];
+    v23 = [(TIKeyboardInputManager *)self dictionaryStringForExternalString:fullCompletionCopy];
 
-    v24 = [(TIKeyboardInputManager *)self dictionaryStringForExternalString:v13];
+    v24 = [(TIKeyboardInputManager *)self dictionaryStringForExternalString:prefixCopy];
 
     std::string::basic_string[abi:nn200100]<0>(&v34, [v22 UTF8String]);
     std::string::basic_string[abi:nn200100]<0>(&v31, [v23 UTF8String]);
@@ -19874,25 +19874,25 @@ LABEL_33:
 
   else
   {
-    v24 = v13;
-    v23 = v12;
-    v22 = v11;
+    v24 = prefixCopy;
+    v23 = fullCompletionCopy;
+    v22 = completionCopy;
   }
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerLearning:(id)a3 fullCandidate:(id)a4 keyboardState:(id)a5 mode:(id)a6
+- (void)registerLearning:(id)learning fullCandidate:(id)candidate keyboardState:(id)state mode:(id)mode
 {
-  v23 = a3;
-  v9 = a4;
-  v10 = a6;
-  if (([v23 isToucanInlineCompletionCandidate] & 1) != 0 || objc_msgSend(v9, "isToucanInlineCompletionCandidate"))
+  learningCopy = learning;
+  candidateCopy = candidate;
+  modeCopy = mode;
+  if (([learningCopy isToucanInlineCompletionCandidate] & 1) != 0 || objc_msgSend(candidateCopy, "isToucanInlineCompletionCandidate"))
   {
-    v11 = [v23 candidate];
-    v12 = [v9 candidate];
-    v13 = [v23 input];
-    [(TIKeyboardInputManager *)self registerLearningForCompletion:v11 fullCompletion:v12 context:0 prefix:v13 mode:v10];
+    candidate = [learningCopy candidate];
+    candidate2 = [candidateCopy candidate];
+    input = [learningCopy input];
+    [(TIKeyboardInputManager *)self registerLearningForCompletion:candidate fullCompletion:candidate2 context:0 prefix:input mode:modeCopy];
 
 LABEL_4:
     goto LABEL_5;
@@ -19903,17 +19903,17 @@ LABEL_4:
     [(TIKeyboardInputManager *)self acceptInput];
     if (self->m_impl)
     {
-      v14 = [v23 candidate];
-      if (v14)
+      candidate3 = [learningCopy candidate];
+      if (candidate3)
       {
-        v15 = v14;
-        v16 = [v23 candidate];
-        v17 = [v23 input];
-        v18 = [v16 isEqualToString:v17];
+        v15 = candidate3;
+        candidate4 = [learningCopy candidate];
+        input2 = [learningCopy input];
+        v18 = [candidate4 isEqualToString:input2];
 
         if ((v18 & 1) == 0)
         {
-          if ([v10 isEqualToString:*MEMORY[0x277D6FA58]])
+          if ([modeCopy isEqualToString:*MEMORY[0x277D6FA58]])
           {
             v19 = 2;
           }
@@ -19923,14 +19923,14 @@ LABEL_4:
             v19 = 1;
           }
 
-          v20 = [(TIKeyboardInputManager *)self revisionHistory];
-          v21 = [v23 candidate];
-          v22 = [v23 input];
-          [v20 rejectCandidate:v21 forInput:v22 hint:v19];
+          revisionHistory = [(TIKeyboardInputManager *)self revisionHistory];
+          candidate5 = [learningCopy candidate];
+          input3 = [learningCopy input];
+          [revisionHistory rejectCandidate:candidate5 forInput:input3 hint:v19];
 
-          v11 = [v23 candidate];
-          v12 = [v23 input];
-          [(TIKeyboardInputManager *)self setRejectedAutocorrection:v11 forInput:v12];
+          candidate = [learningCopy candidate];
+          candidate2 = [learningCopy input];
+          [(TIKeyboardInputManager *)self setRejectedAutocorrection:candidate forInput:candidate2];
           goto LABEL_4;
         }
       }
@@ -19940,14 +19940,14 @@ LABEL_4:
 LABEL_5:
 }
 
-- (void)candidateRejected:(id)a3
+- (void)candidateRejected:(id)rejected
 {
-  v14 = a3;
-  if ([v14 isToucanInlineCompletionCandidate])
+  rejectedCopy = rejected;
+  if ([rejectedCopy isToucanInlineCompletionCandidate])
   {
-    v4 = [v14 candidate];
-    v5 = [v14 input];
-    [(TIKeyboardInputManager *)self registerLearningForCompletion:v4 fullCompletion:&stru_283FDFAF8 context:0 prefix:v5 mode:*MEMORY[0x277D6FA38]];
+    candidate = [rejectedCopy candidate];
+    input = [rejectedCopy input];
+    [(TIKeyboardInputManager *)self registerLearningForCompletion:candidate fullCompletion:&stru_283FDFAF8 context:0 prefix:input mode:*MEMORY[0x277D6FA38]];
 LABEL_3:
 
     goto LABEL_7;
@@ -19956,24 +19956,24 @@ LABEL_3:
   [(TIKeyboardInputManager *)self acceptInput];
   if (self->m_impl)
   {
-    v6 = [v14 candidate];
-    if (v6)
+    candidate2 = [rejectedCopy candidate];
+    if (candidate2)
     {
-      v7 = v6;
-      v8 = [v14 candidate];
-      v9 = [v14 input];
-      v10 = [v8 isEqualToString:v9];
+      v7 = candidate2;
+      candidate3 = [rejectedCopy candidate];
+      input2 = [rejectedCopy input];
+      v10 = [candidate3 isEqualToString:input2];
 
       if ((v10 & 1) == 0)
       {
-        v11 = [(TIKeyboardInputManager *)self revisionHistory];
-        v12 = [v14 candidate];
-        v13 = [v14 input];
-        [v11 rejectCandidate:v12 forInput:v13 hint:1];
+        revisionHistory = [(TIKeyboardInputManager *)self revisionHistory];
+        candidate4 = [rejectedCopy candidate];
+        input3 = [rejectedCopy input];
+        [revisionHistory rejectCandidate:candidate4 forInput:input3 hint:1];
 
-        v4 = [v14 candidate];
-        v5 = [v14 input];
-        [(TIKeyboardInputManager *)self setRejectedAutocorrection:v4 forInput:v5];
+        candidate = [rejectedCopy candidate];
+        input = [rejectedCopy input];
+        [(TIKeyboardInputManager *)self setRejectedAutocorrection:candidate forInput:input];
         goto LABEL_3;
       }
     }
@@ -19982,23 +19982,23 @@ LABEL_3:
 LABEL_7:
 }
 
-- (TITokenID)addWord:(id)a3 contextTokens:(id)a4 surfaceFormPtr:(id *)a5
+- (TITokenID)addWord:(id)word contextTokens:(id)tokens surfaceFormPtr:(id *)ptr
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  *a5 = 0;
+  wordCopy = word;
+  tokensCopy = tokens;
+  *ptr = 0;
   m_impl = self->m_impl;
-  if (!m_impl || !m_impl[34] || ![v8 length] || !-[TIKeyboardInputManager shouldLearnWord:](self, "shouldLearnWord:", v8))
+  if (!m_impl || !m_impl[34] || ![wordCopy length] || !-[TIKeyboardInputManager shouldLearnWord:](self, "shouldLearnWord:", wordCopy))
   {
     v14 = 0;
     LODWORD(v12) = 0;
     goto LABEL_10;
   }
 
-  v11 = lmContextOrEmpty(v9);
+  v11 = lmContextOrEmpty(tokensCopy);
   LODWORD(v12) = (*(**(self->m_impl + 34) + 440))();
-  v13 = [(TIKeyboardInputManager *)self findTokenIDForWord:v8 contextTokens:v9 tokenLookupMode:12];
+  v13 = [(TIKeyboardInputManager *)self findTokenIDForWord:wordCopy contextTokens:tokensCopy tokenLookupMode:12];
   if (HIDWORD(*&v13))
   {
     LODWORD(v12) = v13.lexicon_id;
@@ -20011,29 +20011,29 @@ LABEL_7:
     {
       if (*(v17 + 32 * v18 - 8) == 1)
       {
-        v19 = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
-        v20 = [v19 shouldLearnLowercaseAtBeginningOfSentence];
+        keyboardFeatureSpecialization = [(TIKeyboardInputManager *)self keyboardFeatureSpecialization];
+        shouldLearnLowercaseAtBeginningOfSentence = [keyboardFeatureSpecialization shouldLearnLowercaseAtBeginningOfSentence];
 
-        if (v20)
+        if (shouldLearnLowercaseAtBeginningOfSentence)
         {
-          v21 = [(TIKeyboardInputManagerBase *)self inputMode];
-          v22 = [v21 locale];
-          v23 = [v8 capitalizedStringWithLocale:v22];
+          inputMode = [(TIKeyboardInputManagerBase *)self inputMode];
+          locale = [inputMode locale];
+          v23 = [wordCopy capitalizedStringWithLocale:locale];
 
-          if ([v23 isEqualToString:v8])
+          if ([v23 isEqualToString:wordCopy])
           {
-            v24 = [(TIKeyboardInputManagerBase *)self inputMode];
-            v25 = [v24 locale];
-            v26 = [v8 lowercaseStringWithLocale:v25];
+            inputMode2 = [(TIKeyboardInputManagerBase *)self inputMode];
+            locale2 = [inputMode2 locale];
+            v26 = [wordCopy lowercaseStringWithLocale:locale2];
 
-            *a5 = [v26 copy];
-            v8 = v26;
+            *ptr = [v26 copy];
+            wordCopy = v26;
           }
         }
       }
     }
 
-    v27 = [(TIKeyboardInputManager *)self dictionaryStringForExternalString:v8];
+    v27 = [(TIKeyboardInputManager *)self dictionaryStringForExternalString:wordCopy];
     v28 = (*(**(self->m_impl + 34) + 336))();
     v29 = HIDWORD(v28);
     if (HIDWORD(v28))
@@ -20052,9 +20052,9 @@ LABEL_7:
       v31 = TIOSLogFacility();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
       {
-        if (*a5)
+        if (*ptr)
         {
-          v32 = *a5;
+          v32 = *ptr;
         }
 
         else
@@ -20062,7 +20062,7 @@ LABEL_7:
           v32 = &stru_283FDFAF8;
         }
 
-        v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s TOKEN: add token, word = %@, result = %u/%u/%@", "-[TIKeyboardInputManager(Learning) addWord:contextTokens:surfaceFormPtr:]", v8, v12, v29, v32];
+        v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s TOKEN: add token, word = %@, result = %u/%u/%@", "-[TIKeyboardInputManager(Learning) addWord:contextTokens:surfaceFormPtr:]", wordCopy, v12, v29, v32];
         *buf = 138412290;
         v37 = v33;
         _os_log_debug_impl(&dword_22CA55000, v31, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
@@ -20071,7 +20071,7 @@ LABEL_7:
 
     else
     {
-      v30 = (*(**(self->m_impl + 34) + 320))(*(self->m_impl + 34), v8, self->m_impl + 264);
+      v30 = (*(**(self->m_impl + 34) + 320))(*(self->m_impl + 34), wordCopy, self->m_impl + 264);
       v29 = HIDWORD(v30);
       if (!HIDWORD(v30))
       {
@@ -20096,9 +20096,9 @@ LABEL_33:
       v31 = TIOSLogFacility();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
       {
-        if (*a5)
+        if (*ptr)
         {
-          v34 = *a5;
+          v34 = *ptr;
         }
 
         else
@@ -20106,7 +20106,7 @@ LABEL_33:
           v34 = &stru_283FDFAF8;
         }
 
-        v35 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s TOKEN: add token, word = %@, returning existing token id = %u/%u/%@", "-[TIKeyboardInputManager(Learning) addWord:contextTokens:surfaceFormPtr:]", v8, v12, v29, v34];
+        v35 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s TOKEN: add token, word = %@, returning existing token id = %u/%u/%@", "-[TIKeyboardInputManager(Learning) addWord:contextTokens:surfaceFormPtr:]", wordCopy, v12, v29, v34];
         *buf = 138412290;
         v37 = v35;
         _os_log_debug_impl(&dword_22CA55000, v31, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
@@ -20134,24 +20134,24 @@ LABEL_12:
     return;
   }
 
-  v17 = [(TIKeyboardInputManager *)self keyboardState];
-  v5 = [v17 responseContext];
-  if (v5)
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  responseContext = [keyboardState responseContext];
+  if (responseContext)
   {
-    v6 = v5;
-    v7 = [(TIKeyboardInputManager *)self keyboardState];
-    v8 = [v7 inputContextHistory];
+    v6 = responseContext;
+    keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+    inputContextHistory = [keyboardState2 inputContextHistory];
 
-    if (!v8)
+    if (!inputContextHistory)
     {
       v9 = *(self->m_impl + 34);
-      v10 = [(TIKeyboardInputManager *)self keyboardState];
-      v11 = [v10 responseContext];
-      KB::utf8_string(v11, v18);
+      keyboardState3 = [(TIKeyboardInputManager *)self keyboardState];
+      responseContext2 = [keyboardState3 responseContext];
+      KB::utf8_string(responseContext2, v18);
       v12 = self->m_impl;
-      v13 = [(TIKeyboardInputManager *)self keyboardState];
-      v14 = [v13 recipientIdentifier];
-      (*(*v9 + 392))(v9, v18, v12 + 264, v14, 2, 0.0);
+      keyboardState4 = [(TIKeyboardInputManager *)self keyboardState];
+      recipientIdentifier = [keyboardState4 recipientIdentifier];
+      (*(*v9 + 392))(v9, v18, v12 + 264, recipientIdentifier, 2, 0.0);
 
       if (v19)
       {
@@ -20168,19 +20168,19 @@ LABEL_12:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)synchronizeConversationHistoryWithInputContextHistory:(id)a3
+- (void)synchronizeConversationHistoryWithInputContextHistory:(id)history
 {
-  v5 = a3;
-  v6 = [(TIKeyboardInputManager *)self keyboardState];
-  v7 = [v6 inputContextHistory];
+  historyCopy = history;
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  inputContextHistory = [keyboardState inputContextHistory];
 
-  v8 = [v7 recipientIdentifiers];
-  if (v8)
+  recipientIdentifiers = [inputContextHistory recipientIdentifiers];
+  if (recipientIdentifiers)
   {
-    v9 = v8;
-    v10 = [v7 recipientIdentifiers];
-    v11 = [v5 recipientIdentifiers];
-    v12 = [v10 isEqualToSet:v11];
+    v9 = recipientIdentifiers;
+    recipientIdentifiers2 = [inputContextHistory recipientIdentifiers];
+    recipientIdentifiers3 = [historyCopy recipientIdentifiers];
+    v12 = [recipientIdentifiers2 isEqualToSet:recipientIdentifiers3];
 
     if ((v12 & 1) == 0)
     {
@@ -20193,12 +20193,12 @@ LABEL_12:
   v14 = self->_synchronizedInputContextHistory;
   if (v14)
   {
-    [(TIInputContextHistory *)v14 appendPendingEntriesFromInputContextHistory:v5];
+    [(TIInputContextHistory *)v14 appendPendingEntriesFromInputContextHistory:historyCopy];
   }
 
   else
   {
-    objc_storeStrong(&self->_synchronizedInputContextHistory, a3);
+    objc_storeStrong(&self->_synchronizedInputContextHistory, history);
   }
 
   if ([(TIInputContextHistory *)self->_synchronizedInputContextHistory hasPendingEntries])
@@ -20245,13 +20245,13 @@ LABEL_12:
   }
 }
 
-- (void)addItemToConversationHistoryWithText:(id)a3 timestamp:(id)a4 senderID:(id)a5 recipientIdentifiers:(id)a6
+- (void)addItemToConversationHistoryWithText:(id)text timestamp:(id)timestamp senderID:(id)d recipientIdentifiers:(id)identifiers
 {
   v94 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  textCopy = text;
+  timestampCopy = timestamp;
+  dCopy = d;
+  identifiersCopy = identifiers;
   m_impl = self->m_impl;
   if (!m_impl)
   {
@@ -20274,15 +20274,15 @@ LABEL_12:
     goto LABEL_67;
   }
 
-  v16 = [v10 length];
+  v16 = [textCopy length];
   if (v16 > [MEMORY[0x277D6F370] maxEntryLength])
   {
     goto LABEL_67;
   }
 
-  v17 = [(TIInputContextHistory *)self->_synchronizedInputContextHistory senderIdentifiers];
-  v18 = [v17 count];
-  if (v12)
+  senderIdentifiers = [(TIInputContextHistory *)self->_synchronizedInputContextHistory senderIdentifiers];
+  v18 = [senderIdentifiers count];
+  if (dCopy)
   {
     v19 = v18 == 0;
   }
@@ -20293,13 +20293,13 @@ LABEL_12:
   }
 
   v20 = !v19;
-  v21 = v12;
+  v21 = dCopy;
   if (!v19)
   {
-    if (![v17 containsObject:v12])
+    if (![senderIdentifiers containsObject:dCopy])
     {
       v20 = 0;
-      v21 = v12;
+      v21 = dCopy;
       goto LABEL_18;
     }
 
@@ -20338,7 +20338,7 @@ LABEL_19:
     atomic_fetch_add(v24, 1u);
   }
 
-  [v10 _stringWithLongestWhitespaceDelimitedSuffixOfMaxLength:200];
+  [textCopy _stringWithLongestWhitespaceDelimitedSuffixOfMaxLength:200];
   v76 = p_conversation_history = &self->conversation_history;
   KB::utf8_string(v76, v90);
   v92 = 0;
@@ -20496,16 +20496,16 @@ LABEL_19:
     atomic_fetch_add_explicit(&v23->__shared_weak_owners_, 1uLL, memory_order_relaxed);
   }
 
-  v49 = v10;
+  v49 = textCopy;
   v78 = v49;
   v86 = v72;
-  v79 = v13;
-  v73 = v17;
+  v79 = identifiersCopy;
+  v73 = senderIdentifiers;
   v80 = v73;
-  v50 = v12;
+  v50 = dCopy;
   v81 = v50;
   v83 = v87;
-  v51 = v11;
+  v51 = timestampCopy;
   v82 = v51;
   [v48 performTaskInBackground:v77];
 
@@ -20513,26 +20513,26 @@ LABEL_19:
   {
     synchronizedInputContextHistory = self->_synchronizedInputContextHistory;
     v67 = v49;
-    v68 = [(TIInputContextHistory *)synchronizedInputContextHistory mostRecentNonSenderTextEntry];
+    mostRecentNonSenderTextEntry = [(TIInputContextHistory *)synchronizedInputContextHistory mostRecentNonSenderTextEntry];
     v65 = +[TIResponseKitManager sharedTIResponseKitManager];
-    v75 = [(TIKeyboardInputManagerBase *)self inputMode];
-    v53 = [v75 normalizedIdentifier];
-    v69 = [(TIKeyboardInputManager *)self keyboardState];
-    [v69 clientIdentifier];
+    inputMode = [(TIKeyboardInputManagerBase *)self inputMode];
+    normalizedIdentifier = [inputMode normalizedIdentifier];
+    keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+    [keyboardState clientIdentifier];
     v55 = v54 = v51;
-    v56 = [(TIKeyboardInputManager *)self keyboardState];
-    v57 = [v56 recipientIdentifier];
+    keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+    recipientIdentifier = [keyboardState2 recipientIdentifier];
     LOBYTE(v63) = 1;
     v62 = v54;
-    v58 = v68;
-    [v65 registerResponseKitResponse:v67 forMessage:v68 withLanguage:v53 withClientID:v55 withSenderID:v50 withRecipientID:v57 withTimestamp:v62 shouldUpdateConversationHistory:v63];
+    v58 = mostRecentNonSenderTextEntry;
+    [v65 registerResponseKitResponse:v67 forMessage:mostRecentNonSenderTextEntry withLanguage:normalizedIdentifier withClientID:v55 withSenderID:v50 withRecipientID:recipientIdentifier withTimestamp:v62 shouldUpdateConversationHistory:v63];
 
     v23 = v70;
   }
 
   else
   {
-    if (!v49 || !v51 || !v12)
+    if (!v49 || !v51 || !dCopy)
     {
       goto LABEL_60;
     }
@@ -20693,29 +20693,29 @@ LABEL_18:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerRevisionFrom:(id)a3 to:(id)a4 contextTokens:(id)a5
+- (void)registerRevisionFrom:(id)from to:(id)to contextTokens:(id)tokens
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && v9)
+  fromCopy = from;
+  toCopy = to;
+  tokensCopy = tokens;
+  if (fromCopy && toCopy)
   {
-    if (([v9 isEqualToString:v8] & 1) == 0)
+    if (([toCopy isEqualToString:fromCopy] & 1) == 0)
     {
-      v11 = [(TIKeyboardInputManager *)self rejectionsDatabase];
-      if (v11)
+      rejectionsDatabase = [(TIKeyboardInputManager *)self rejectionsDatabase];
+      if (rejectionsDatabase)
       {
-        v12 = v11;
-        v13 = [(TIKeyboardInputManager *)self dictionaryStringForExternalString:v8];
+        v12 = rejectionsDatabase;
+        v13 = [(TIKeyboardInputManager *)self dictionaryStringForExternalString:fromCopy];
 
-        v14 = [(TIKeyboardInputManager *)self dictionaryStringForExternalString:v9];
+        v14 = [(TIKeyboardInputManager *)self dictionaryStringForExternalString:toCopy];
 
         v15 = TI::RejectionsDatabase::insert_acceptance(*v12, [v13 UTF8String], objc_msgSend(v14, "UTF8String"));
         [(TIKeyboardInputManager *)self logToTypologyRecorderWithString:v15];
 
-        v9 = v14;
-        v8 = v13;
+        toCopy = v14;
+        fromCopy = v13;
       }
     }
   }
@@ -20730,20 +20730,20 @@ LABEL_18:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)softLearningRegisterDeleted:(id)a3
+- (void)softLearningRegisterDeleted:(id)deleted
 {
-  v4 = a3;
-  v5 = [(TIKeyboardInputManager *)self rejectionsDatabase];
-  if (v5)
+  deletedCopy = deleted;
+  rejectionsDatabase = [(TIKeyboardInputManager *)self rejectionsDatabase];
+  if (rejectionsDatabase)
   {
-    v6 = v5;
-    v7 = [(TIKeyboardInputManager *)self dictionaryStringForExternalString:v4];
+    v6 = rejectionsDatabase;
+    v7 = [(TIKeyboardInputManager *)self dictionaryStringForExternalString:deletedCopy];
 
     v8 = [MEMORY[0x277CBEAA8] now];
     [v8 timeIntervalSince1970];
     v10 = v9;
 
-    v4 = v7;
+    deletedCopy = v7;
     std::string::basic_string[abi:nn200100]<0>(__p, [v7 UTF8String]);
     TI::RejectionsDatabase::soft_add_deleted(v6, __p, v10);
     if (v13 < 0)
@@ -20756,17 +20756,17 @@ LABEL_18:
   }
 }
 
-- (void)softLearningRegisterAccepted:(id)a3 typed:(id)a4
+- (void)softLearningRegisterAccepted:(id)accepted typed:(id)typed
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TIKeyboardInputManager *)self rejectionsDatabase];
-  if (v8)
+  acceptedCopy = accepted;
+  typedCopy = typed;
+  rejectionsDatabase = [(TIKeyboardInputManager *)self rejectionsDatabase];
+  if (rejectionsDatabase)
   {
-    v9 = v8;
-    v10 = [(TIKeyboardInputManager *)self dictionaryStringForExternalString:v6];
+    v9 = rejectionsDatabase;
+    v10 = [(TIKeyboardInputManager *)self dictionaryStringForExternalString:acceptedCopy];
 
-    v11 = [(TIKeyboardInputManager *)self dictionaryStringForExternalString:v7];
+    v11 = [(TIKeyboardInputManager *)self dictionaryStringForExternalString:typedCopy];
 
     v12 = [MEMORY[0x277CBEAA8] now];
     [v12 timeIntervalSince1970];
@@ -20840,42 +20840,42 @@ LABEL_18:
 
   else
   {
-    v11 = v7;
-    v10 = v6;
+    v11 = typedCopy;
+    v10 = acceptedCopy;
   }
 }
 
-- (BOOL)directlyBlockedByNegativeLearning:(id)a3 correction:(id)a4 ignoreSoft:(BOOL)a5 retrocorrectionComponent:(BOOL)a6
+- (BOOL)directlyBlockedByNegativeLearning:(id)learning correction:(id)correction ignoreSoft:(BOOL)soft retrocorrectionComponent:(BOOL)component
 {
-  v7 = a6;
-  v11 = a3;
-  v12 = a4;
-  v13 = [(TIKeyboardInputManager *)self rejectionsDatabase];
-  if (v13)
+  componentCopy = component;
+  learningCopy = learning;
+  correctionCopy = correction;
+  rejectionsDatabase = [(TIKeyboardInputManager *)self rejectionsDatabase];
+  if (rejectionsDatabase)
   {
-    v14 = v13;
+    v14 = rejectionsDatabase;
     v15 = [MEMORY[0x277CBEAA8] now];
     [v15 timeIntervalSince1970];
     v17 = v16;
 
     v18 = @"autocorrection";
-    if (v7)
+    if (componentCopy)
     {
       v18 = @"retrocorrection component";
     }
 
     v19 = v18;
-    if (!a5)
+    if (!soft)
     {
-      if ([(__CFString *)v11 length]== 1 && [(__CFString *)v12 length]== 1)
+      if ([(__CFString *)learningCopy length]== 1 && [(__CFString *)correctionCopy length]== 1)
       {
         v20 = 1;
       }
 
       else
       {
-        v22 = v12;
-        v23 = v11;
+        v22 = correctionCopy;
+        v23 = learningCopy;
         v24 = [(__CFString *)v23 _stringByReplacingCharactersInSet:CFCharacterSetGetPredefined(kCFCharacterSetPunctuation) withString:&stru_283FDFAF8];
 
         v25 = [(__CFString *)v22 _stringByReplacingCharactersInSet:CFCharacterSetGetPredefined(kCFCharacterSetPunctuation) withString:&stru_283FDFAF8];
@@ -20883,7 +20883,7 @@ LABEL_18:
         v26 = [v24 compare:v25 options:129];
         if (v26)
         {
-          v27 = v7;
+          v27 = componentCopy;
         }
 
         else
@@ -20902,8 +20902,8 @@ LABEL_18:
         }
       }
 
-      KB::std_string(v11, &v46);
-      KB::std_string(v12, __p);
+      KB::std_string(learningCopy, &v46);
+      KB::std_string(correctionCopy, __p);
       should_block = TI::RejectionsDatabase::soft_should_block(v14, &v46, __p, v20, v17);
       if (v44 < 0)
       {
@@ -20923,8 +20923,8 @@ LABEL_18:
       {
 LABEL_19:
 LABEL_41:
-        v40 = [MEMORY[0x277CCACA8] stringWithFormat:v29, v19, v11, v12];
-        [(TIKeyboardInputManager *)self logToTypologyRecorderWithString:v40];
+        correctionCopy = [MEMORY[0x277CCACA8] stringWithFormat:v29, v19, learningCopy, correctionCopy];
+        [(TIKeyboardInputManager *)self logToTypologyRecorderWithString:correctionCopy];
 
         v21 = 1;
 LABEL_43:
@@ -20933,8 +20933,8 @@ LABEL_43:
       }
     }
 
-    v30 = [(__CFString *)v11 UTF8String];
-    v42 = [(__CFString *)v12 UTF8String];
+    uTF8String = [(__CFString *)learningCopy UTF8String];
+    uTF8String2 = [(__CFString *)correctionCopy UTF8String];
     v31 = *v14;
     ppStmt = 0;
     std::ostringstream::basic_ostringstream[abi:nn200100](&v46);
@@ -20974,10 +20974,10 @@ LABEL_43:
     {
       v34 = ppStmt;
       v35 = sqlite3_bind_parameter_index(ppStmt, ":typed");
-      sqlite3_bind_text(v34, v35, v30, -1, 0);
+      sqlite3_bind_text(v34, v35, uTF8String, -1, 0);
       v31 = ppStmt;
       v36 = sqlite3_bind_parameter_index(ppStmt, ":correction");
-      sqlite3_bind_text(v31, v36, v42, -1, 0);
+      sqlite3_bind_text(v31, v36, uTF8String2, -1, 0);
       v37 = sqlite3_step(ppStmt);
       v33 = v37 == 100;
       if (v37 == 100)
@@ -21024,36 +21024,36 @@ LABEL_44:
   return v21;
 }
 
-- (void)decrementLanguageModelCount:(id)a3 tokenID:(TITokenID)a4 contextTokens:(id)a5
+- (void)decrementLanguageModelCount:(id)count tokenID:(TITokenID)d contextTokens:(id)tokens
 {
   v83 = *MEMORY[0x277D85DE8];
-  v66 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
+  dCopy = d;
+  countCopy = count;
+  tokensCopy = tokens;
+  v10 = tokensCopy;
   m_impl = self->m_impl;
   if (!m_impl || !m_impl[34])
   {
     goto LABEL_76;
   }
 
-  v12 = lmContextOrEmpty(v9);
+  v12 = lmContextOrEmpty(tokensCopy);
   if (![(TIKeyboardInputManager *)self shouldSuppressLanguageSelectionEvidence])
   {
     [(TIKeyboardInputManager *)self languageSelectionController];
     v14 = v13 = v10;
     v15 = *(v12 + 3) - *(v12 + 2);
-    [v14 removeTokenString:v8 tokenID:a4 context:? contextLength:?];
+    [v14 removeTokenString:countCopy tokenID:d context:? contextLength:?];
 
     v10 = v13;
   }
 
-  v16 = [(TIKeyboardInputManager *)self shouldSuppressLearning];
-  if (v16 == 4)
+  shouldSuppressLearning = [(TIKeyboardInputManager *)self shouldSuppressLearning];
+  if (shouldSuppressLearning == 4)
   {
     v17 = *(self->m_impl + 34);
-    KB::utf8_string(v8, v79);
-    (*(*v17 + 352))(v17, v79, &v66, v12);
+    KB::utf8_string(countCopy, v79);
+    (*(*v17 + 352))(v17, v79, &dCopy, v12);
     if (v81 && v80 == 1)
     {
       free(v81);
@@ -21062,22 +21062,22 @@ LABEL_44:
     goto LABEL_10;
   }
 
-  if (v16 - 3 <= 1)
+  if (shouldSuppressLearning - 3 <= 1)
   {
 LABEL_10:
     v18 = *(self->m_impl + 33);
-    KB::utf8_string(v8, &__p);
+    KB::utf8_string(countCopy, &__p);
     KB::DictionaryContainer::closest_static_match(v18, &__p, v79);
     if (__p.__r_.__value_.__l.__size_ && __p.__r_.__value_.__s.__data_[6] == 1)
     {
       free(__p.__r_.__value_.__l.__size_);
     }
 
-    if (_os_feature_enabled_impl() && (v82[91] & 8) != 0 && (*(**(self->m_impl + 34) + 400))(*(self->m_impl + 34), v66.lexicon_id))
+    if (_os_feature_enabled_impl() && (v82[91] & 8) != 0 && (*(**(self->m_impl + 34) + 400))(*(self->m_impl + 34), dCopy.lexicon_id))
     {
       v48 = v10;
-      v19 = [(TIKeyboardInputManager *)self keyboardState];
-      v49 = [v19 clientIdentifier];
+      keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+      clientIdentifier = [keyboardState clientIdentifier];
 
       v63 = 0;
       v64 = 0;
@@ -21086,12 +21086,12 @@ LABEL_10:
       v60 = 0u;
       v61 = 0u;
       v62 = 0u;
-      v20 = [(TIKeyboardInputManager *)self keyboardState];
-      v21 = [v20 inputContextHistory];
-      v22 = [v21 recipientIdentifiers];
-      v23 = [v22 allObjects];
+      keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+      inputContextHistory = [keyboardState2 inputContextHistory];
+      recipientIdentifiers = [inputContextHistory recipientIdentifiers];
+      allObjects = [recipientIdentifiers allObjects];
 
-      v24 = [v23 countByEnumeratingWithState:&v59 objects:v77 count:16];
+      v24 = [allObjects countByEnumeratingWithState:&v59 objects:v77 count:16];
       if (v24)
       {
         v25 = v24;
@@ -21102,7 +21102,7 @@ LABEL_10:
           {
             if (*v60 != v26)
             {
-              objc_enumerationMutation(v23);
+              objc_enumerationMutation(allObjects);
             }
 
             std::string::basic_string[abi:nn200100]<0>(&__p, [*(*(&v59 + 1) + 8 * i) UTF8String]);
@@ -21113,13 +21113,13 @@ LABEL_10:
             }
           }
 
-          v25 = [v23 countByEnumeratingWithState:&v59 objects:v77 count:16];
+          v25 = [allObjects countByEnumeratingWithState:&v59 objects:v77 count:16];
         }
 
         while (v25);
       }
 
-      v28 = TILocaleIdentifierForLexiconID(v66.lexicon_id);
+      v28 = TILocaleIdentifierForLexiconID(dCopy.lexicon_id);
       v54 = self->m_impl;
       v55 = v28;
       v29 = v81;
@@ -21139,19 +21139,19 @@ LABEL_10:
       }
 
       __s = v30;
-      v31 = [v49 UTF8String];
+      uTF8String = [clientIdentifier UTF8String];
       v57 = 0;
       v58 = 0;
       v56 = 0;
       std::vector<std::string>::__init_with_size[abi:nn200100]<std::string*,std::string*>(&v56, v63, v64, 0xAAAAAAAAAAAAAAABLL * ((v64 - v63) >> 3));
-      v53 = v31;
-      if (v31)
+      v53 = uTF8String;
+      if (uTF8String)
       {
         v32 = v56;
         v51 = v57;
         if (v57 != v56)
         {
-          v50 = v8;
+          v50 = countCopy;
           while (1)
           {
             if (*(v32 + 23) < 0)
@@ -21235,7 +21235,7 @@ LABEL_56:
             }
 
             v32 += 24;
-            v8 = v50;
+            countCopy = v50;
             if (v32 == v51)
             {
               goto LABEL_69;
@@ -21247,7 +21247,7 @@ LABEL_56:
         std::string::basic_string[abi:nn200100]<0>(&__p, __s);
         KB::cf_string(&__p, v71);
         v42 = v71[0];
-        std::string::basic_string[abi:nn200100]<0>(v75, v31);
+        std::string::basic_string[abi:nn200100]<0>(v75, uTF8String);
         KB::cf_string(v75, v68);
         v43 = v68[0];
         options_with_word_locale(v74, v55);
@@ -21298,7 +21298,7 @@ LABEL_69:
   }
 
   v45 = self->m_impl;
-  KB::utf8_string(v8, v79);
+  KB::utf8_string(countCopy, v79);
   v46 = v45[28];
   if (v46)
   {
@@ -21315,19 +21315,19 @@ LABEL_76:
   v47 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldLearnWord:(id)a3
+- (BOOL)shouldLearnWord:(id)word
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  wordCopy = word;
   if (![(TIKeyboardInputManager *)self supportsLearning])
   {
-    KB::utf8_string(v4, v10);
+    KB::utf8_string(wordCopy, v10);
     goto LABEL_5;
   }
 
-  v5 = [(TIKeyboardInputManager *)self shouldSuppressLearning];
-  KB::utf8_string(v4, v10);
-  if (v5 != 4)
+  shouldSuppressLearning = [(TIKeyboardInputManager *)self shouldSuppressLearning];
+  KB::utf8_string(wordCopy, v10);
+  if (shouldSuppressLearning != 4)
   {
 LABEL_5:
     v7 = 0;
@@ -21347,19 +21347,19 @@ LABEL_6:
 
 - (BOOL)shouldSuppressLanguageSelectionEvidence
 {
-  v2 = [(TIKeyboardInputManager *)self keyboardState];
-  v3 = [v2 textInputTraits];
-  v4 = [v3 autocorrectionType] == 1;
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  textInputTraits = [keyboardState textInputTraits];
+  v4 = [textInputTraits autocorrectionType] == 1;
 
   return v4;
 }
 
 - (unint64_t)shouldSuppressLearning
 {
-  v3 = [(TIKeyboardInputManager *)self keyboardState];
-  v4 = [v3 secureTextEntry];
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  secureTextEntry = [keyboardState secureTextEntry];
 
-  if (v4)
+  if (secureTextEntry)
   {
     return 0;
   }
@@ -21369,27 +21369,27 @@ LABEL_6:
     return 1;
   }
 
-  v6 = [(TIKeyboardInputManager *)self config];
-  v7 = [v6 usesAdaptation];
+  config = [(TIKeyboardInputManager *)self config];
+  usesAdaptation = [config usesAdaptation];
 
-  if (!v7)
+  if (!usesAdaptation)
   {
     return 1;
   }
 
-  v8 = [(TIKeyboardInputManager *)self keyboardState];
-  v9 = [v8 textInputTraits];
-  v10 = [v9 autocorrectionType];
+  keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+  textInputTraits = [keyboardState2 textInputTraits];
+  autocorrectionType = [textInputTraits autocorrectionType];
 
-  if (v10 == 1)
+  if (autocorrectionType == 1)
   {
     return 2;
   }
 
-  v11 = [(TIKeyboardInputManager *)self currentState];
-  v12 = [v11 learningFlagsMaskForLastAcceptedCandidate];
+  currentState = [(TIKeyboardInputManager *)self currentState];
+  learningFlagsMaskForLastAcceptedCandidate = [currentState learningFlagsMaskForLastAcceptedCandidate];
 
-  if (v12)
+  if (learningFlagsMaskForLastAcceptedCandidate)
   {
     return 3;
   }
@@ -21415,17 +21415,17 @@ LABEL_6:
     return 0;
   }
 
-  v3 = [(TIKeyboardInputManager *)self config];
-  if ([v3 negativeLearningDisabled])
+  config = [(TIKeyboardInputManager *)self config];
+  if ([config negativeLearningDisabled])
   {
 
     return 0;
   }
 
-  v4 = [(TIKeyboardInputManager *)self config];
-  v5 = [v4 usesAdaptation];
+  config2 = [(TIKeyboardInputManager *)self config];
+  usesAdaptation = [config2 usesAdaptation];
 
-  if (!v5)
+  if (!usesAdaptation)
   {
     return 0;
   }
@@ -21439,9 +21439,9 @@ LABEL_6:
   return result;
 }
 
-- (int)precisionPointFromTrialOverride:(id)a3
+- (int)precisionPointFromTrialOverride:(id)override
 {
-  result = [a3 intValue];
+  result = [override intValue];
   if ((result - 70) > 0x14 || ((1 << (result - 70)) & 0x100401) == 0)
   {
     return -1;
@@ -21450,41 +21450,41 @@ LABEL_6:
   return result;
 }
 
-- (TIInlineCompletionAnalyticsMetadata)inlineCompletionMetadataFrom:(SEL)a3 andBundleId:(id)a4
+- (TIInlineCompletionAnalyticsMetadata)inlineCompletionMetadataFrom:(SEL)from andBundleId:(id)id
 {
   v43 = *MEMORY[0x277D85DE8];
   v7 = a5;
-  v8 = a4;
-  v9 = [v8 inputLanguage];
-  KB::utf8_string(v9, v41);
+  idCopy = id;
+  inputLanguage = [idCopy inputLanguage];
+  KB::utf8_string(inputLanguage, v41);
 
-  v10 = [v8 inputRegion];
-  KB::utf8_string(v10, v39);
+  inputRegion = [idCopy inputRegion];
+  KB::utf8_string(inputRegion, v39);
 
-  v11 = [v8 inputVariant];
-  KB::utf8_string(v11, v37);
+  inputVariant = [idCopy inputVariant];
+  KB::utf8_string(inputVariant, v37);
 
-  v12 = [v8 secondaryLanguage];
-  KB::utf8_string(v12, v35);
+  secondaryLanguage = [idCopy secondaryLanguage];
+  KB::utf8_string(secondaryLanguage, v35);
 
-  v13 = [v8 secondaryRegion];
-  KB::utf8_string(v13, v33);
+  secondaryRegion = [idCopy secondaryRegion];
+  KB::utf8_string(secondaryRegion, v33);
 
-  v14 = [v8 layoutName];
-  KB::utf8_string(v14, v31);
+  layoutName = [idCopy layoutName];
+  KB::utf8_string(layoutName, v31);
 
-  LOBYTE(v14) = [v8 keyboardType];
-  v15 = [v8 testingParameters];
-  v16 = [v15 objectForKeyedSubscript:*MEMORY[0x277D6FCF8]];
+  LOBYTE(layoutName) = [idCopy keyboardType];
+  testingParameters = [idCopy testingParameters];
+  v16 = [testingParameters objectForKeyedSubscript:*MEMORY[0x277D6FCF8]];
   KB::utf8_string(v16, v29);
 
-  v17 = [v8 testingParameters];
-  v18 = [v17 objectForKeyedSubscript:*MEMORY[0x277D6FCF0]];
+  testingParameters2 = [idCopy testingParameters];
+  v18 = [testingParameters2 objectForKeyedSubscript:*MEMORY[0x277D6FCF0]];
   KB::utf8_string(v18, v27);
 
-  v19 = [v8 testingParameters];
+  testingParameters3 = [idCopy testingParameters];
 
-  v20 = [v19 objectForKeyedSubscript:*MEMORY[0x277D6FD00]];
+  v20 = [testingParameters3 objectForKeyedSubscript:*MEMORY[0x277D6FD00]];
   KB::utf8_string(v20, v25);
 
   KB::utf8_string(v7, v23);
@@ -21494,7 +21494,7 @@ LABEL_6:
   KB::String::String(&retstr->var3, v35);
   KB::String::String(&retstr->var4, v33);
   KB::String::String(&retstr->var5, v31);
-  retstr->var6 = v14;
+  retstr->var6 = layoutName;
   KB::String::String(&retstr->var7, v23);
   KB::String::String(&retstr->var8, v27);
   KB::String::String(&retstr->var9, v29);
@@ -21554,65 +21554,65 @@ LABEL_6:
   return result;
 }
 
-- (int)TIInlineCompletionAcceptanceRejectionTypefromTIRegisterLearningMode:(id)a3
+- (int)TIInlineCompletionAcceptanceRejectionTypefromTIRegisterLearningMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x277D6FA28]])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:*MEMORY[0x277D6FA28]])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D6FA18]])
+  else if ([modeCopy isEqualToString:*MEMORY[0x277D6FA18]])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D6FA30]])
+  else if ([modeCopy isEqualToString:*MEMORY[0x277D6FA30]])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D6FA20]])
+  else if ([modeCopy isEqualToString:*MEMORY[0x277D6FA20]])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D6FA10]])
+  else if ([modeCopy isEqualToString:*MEMORY[0x277D6FA10]])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D6FA68]])
+  else if ([modeCopy isEqualToString:*MEMORY[0x277D6FA68]])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D6FA60]])
+  else if ([modeCopy isEqualToString:*MEMORY[0x277D6FA60]])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D6FA50]])
+  else if ([modeCopy isEqualToString:*MEMORY[0x277D6FA50]])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D6FA38]])
+  else if ([modeCopy isEqualToString:*MEMORY[0x277D6FA38]])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D6FA58]])
+  else if ([modeCopy isEqualToString:*MEMORY[0x277D6FA58]])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D6FA40]])
+  else if ([modeCopy isEqualToString:*MEMORY[0x277D6FA40]])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D6FA48]])
+  else if ([modeCopy isEqualToString:*MEMORY[0x277D6FA48]])
   {
     v4 = 12;
   }
@@ -21628,8 +21628,8 @@ LABEL_6:
 - (BOOL)shouldGenerateInlineCompletions
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(TIKeyboardInputManager *)self config];
-  if ([v3 isTesting])
+  config = [(TIKeyboardInputManager *)self config];
+  if ([config isTesting])
   {
     v4 = _os_feature_enabled_impl();
 
@@ -21650,10 +21650,10 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v5 = [(TIKeyboardInputManager *)self keyboardState];
-  v6 = [v5 inlineCompletionEnabled];
+  keyboardState = [(TIKeyboardInputManager *)self keyboardState];
+  inlineCompletionEnabled = [keyboardState inlineCompletionEnabled];
 
-  if (!v6)
+  if (!inlineCompletionEnabled)
   {
     goto LABEL_9;
   }
@@ -21665,9 +21665,9 @@ LABEL_9:
 
   else
   {
-    v10 = [(TIKeyboardInputManager *)self keyboardState];
-    v11 = [v10 clientIdentifier];
-    KB::utf8_string(v11, v12);
+    keyboardState2 = [(TIKeyboardInputManager *)self keyboardState];
+    clientIdentifier = [keyboardState2 clientIdentifier];
+    KB::utf8_string(clientIdentifier, v12);
     v7 = isInlineCompletionDefaultAllowlistedApp(v12);
     if (v13 && v12[6] == 1)
     {
@@ -21680,19 +21680,19 @@ LABEL_10:
   return v7;
 }
 
-- (BOOL)shouldPromoteInlineCompletionsToAutocorrections:(id)a3 inlineCompletions:(id)a4
+- (BOOL)shouldPromoteInlineCompletionsToAutocorrections:(id)autocorrections inlineCompletions:(id)completions
 {
-  v5 = a3;
-  v6 = a4;
+  autocorrectionsCopy = autocorrections;
+  completionsCopy = completions;
   if (_os_feature_enabled_impl())
   {
-    v7 = [v5 autocorrection];
-    v8 = [v7 isContinuousPathConversion];
+    autocorrection = [autocorrectionsCopy autocorrection];
+    isContinuousPathConversion = [autocorrection isContinuousPathConversion];
 
     v9 = 0;
-    if (v6 && (v8 & 1) == 0)
+    if (completionsCopy && (isContinuousPathConversion & 1) == 0)
     {
-      v9 = [v6 count] != 0;
+      v9 = [completionsCopy count] != 0;
     }
   }
 
@@ -21704,17 +21704,17 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)shouldPromoteAutocorrectionsToInlineCompletions:(id)a3
+- (BOOL)shouldPromoteAutocorrectionsToInlineCompletions:(id)completions
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (_os_feature_enabled_impl() && ([v4 isContinuousPathConversion] & 1) == 0)
+  completionsCopy = completions;
+  if (_os_feature_enabled_impl() && ([completionsCopy isContinuousPathConversion] & 1) == 0)
   {
-    v8 = [v4 lexiconLocale];
-    KB::String::String(v19, [v8 UTF8String]);
+    lexiconLocale = [completionsCopy lexiconLocale];
+    KB::String::String(v19, [lexiconLocale UTF8String]);
 
     m_impl = self->m_impl;
-    if (m_impl && (v10 = m_impl[34]) != 0 && ((*(*v10 + 168))(v10, v19) & 1) != 0 || ([v4 sourceMask] & 8) != 0)
+    if (m_impl && (v10 = m_impl[34]) != 0 && ((*(*v10 + 168))(v10, v19) & 1) != 0 || ([completionsCopy sourceMask] & 8) != 0)
     {
       v5 = 1;
     }
@@ -21722,9 +21722,9 @@ LABEL_10:
     else
     {
       v11 = MEMORY[0x277CCACA8];
-      v12 = [v4 candidate];
-      v13 = [v4 lexiconLocale];
-      v14 = [v11 stringWithFormat:@"Suppressed promotion of %@ (locale: %@, mask: %u) \n", v12, v13, objc_msgSend(v4, "sourceMask")];
+      candidate = [completionsCopy candidate];
+      lexiconLocale2 = [completionsCopy lexiconLocale];
+      v14 = [v11 stringWithFormat:@"Suppressed promotion of %@ (locale: %@, mask: %u) \n", candidate, lexiconLocale2, objc_msgSend(completionsCopy, "sourceMask")];
 
       [(TIKeyboardInputManager *)self logToTypologyRecorderWithString:v14];
       v15 = TIInlineCompletionsOSLogFacility();
@@ -21754,11 +21754,11 @@ LABEL_10:
   return v5;
 }
 
-- (id)promoteAutocorrectionsToInlineCompletions:(id)a3 matchedStem:(String *)a4
+- (id)promoteAutocorrectionsToInlineCompletions:(id)completions matchedStem:(String *)stem
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!a4->var0)
+  completionsCopy = completions;
+  if (!stem->var0)
   {
     v10 = 0;
     goto LABEL_19;
@@ -21769,15 +21769,15 @@ LABEL_10:
   v22 = " \t\n";
   LODWORD(v21) = 1048579;
   v23 = 0;
-  KB::string_split_after(a4, &v21, v17);
+  KB::string_split_after(stem, &v21, v17);
   if (v22 && BYTE6(v21) == 1)
   {
     free(v22);
   }
 
-  v7 = [v6 autocorrection];
-  v8 = [v7 candidate];
-  KB::String::String(&v21, [v8 UTF8String]);
+  autocorrection = [completionsCopy autocorrection];
+  candidate = [autocorrection candidate];
+  KB::String::String(&v21, [candidate UTF8String]);
 
   KB::String::String(v18, (v17[1] - 32));
   v9 = *(self->m_impl + 33);
@@ -21798,15 +21798,15 @@ LABEL_7:
     if (KB::CollatorWrapper::sortkey_starts_with((*(v9 + 8) + 72), &v21, v18))
     {
       v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:1];
-      v11 = [v6 autocorrection];
-      [v11 setConfidence:3];
+      autocorrection2 = [completionsCopy autocorrection];
+      [autocorrection2 setConfidence:3];
 
-      v12 = [v6 autocorrection];
-      [v10 addObject:v12];
+      autocorrection3 = [completionsCopy autocorrection];
+      [v10 addObject:autocorrection3];
 
-      v13 = [v6 autocorrection];
-      v14 = [v13 candidate];
-      [(TIKeyboardInputManager *)self logInlineCompletionsToTypology:@"Promoting autocorrection to inline completion" candidate:v14];
+      autocorrection4 = [completionsCopy autocorrection];
+      candidate2 = [autocorrection4 candidate];
+      [(TIKeyboardInputManager *)self logInlineCompletionsToTypology:@"Promoting autocorrection to inline completion" candidate:candidate2];
 
 LABEL_10:
       WTF::RefCounted<KB::DictionaryContainer>::deref(v9);
@@ -21839,18 +21839,18 @@ LABEL_19:
   return v10;
 }
 
-- (id)filterDuplicatePredictions:(id)a3 autocorrection:(id)a4
+- (id)filterDuplicatePredictions:(id)predictions autocorrection:(id)autocorrection
 {
-  v26 = self;
+  selfCopy = self;
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v28 = [MEMORY[0x277CBEB18] array];
+  predictionsCopy = predictions;
+  autocorrectionCopy = autocorrection;
+  array = [MEMORY[0x277CBEB18] array];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v5;
+  obj = predictionsCopy;
   v7 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v7)
   {
@@ -21867,11 +21867,11 @@ LABEL_19:
         }
 
         v11 = *(*(&v30 + 1) + 8 * i);
-        v12 = [v11 supplementalItemIdentifiers];
-        v13 = v12;
-        if (v12)
+        supplementalItemIdentifiers = [v11 supplementalItemIdentifiers];
+        v13 = supplementalItemIdentifiers;
+        if (supplementalItemIdentifiers)
         {
-          v14 = v12;
+          v14 = supplementalItemIdentifiers;
         }
 
         else
@@ -21881,11 +21881,11 @@ LABEL_19:
 
         v15 = v14;
 
-        v16 = [v6 supplementalItemIdentifiers];
-        v17 = v16;
-        if (v16)
+        supplementalItemIdentifiers2 = [autocorrectionCopy supplementalItemIdentifiers];
+        v17 = supplementalItemIdentifiers2;
+        if (supplementalItemIdentifiers2)
         {
-          v18 = v16;
+          v18 = supplementalItemIdentifiers2;
         }
 
         else
@@ -21895,16 +21895,16 @@ LABEL_19:
 
         v19 = v18;
 
-        v20 = [v11 candidate];
-        v21 = [v6 candidate];
-        if ([v20 isEqualToString:v21])
+        candidate = [v11 candidate];
+        candidate2 = [autocorrectionCopy candidate];
+        if ([candidate isEqualToString:candidate2])
         {
           v22 = [v15 isEqualToArray:v19];
 
           if (v22)
           {
-            v23 = [v11 candidate];
-            [(TIKeyboardInputManager *)v26 logInlineCompletionsToTypology:@"Removed duplicate prediction due to inline promotion to autocorrection" candidate:v23];
+            candidate3 = [v11 candidate];
+            [(TIKeyboardInputManager *)selfCopy logInlineCompletionsToTypology:@"Removed duplicate prediction due to inline promotion to autocorrection" candidate:candidate3];
 
             goto LABEL_17;
           }
@@ -21914,7 +21914,7 @@ LABEL_19:
         {
         }
 
-        [v28 addObject:v11];
+        [array addObject:v11];
 LABEL_17:
       }
 
@@ -21926,25 +21926,25 @@ LABEL_17:
 
   v24 = *MEMORY[0x277D85DE8];
 
-  return v28;
+  return array;
 }
 
-- (void)promoteInlineCompletionToAutocorrections:(id)a3 predictions:(id)a4 inlineCompletion:(id)a5 outReconciledAutocorrections:(id *)a6 outReconciledPredictions:(id *)a7 matchedStem:(String *)a8
+- (void)promoteInlineCompletionToAutocorrections:(id)autocorrections predictions:(id)predictions inlineCompletion:(id)completion outReconciledAutocorrections:(id *)reconciledAutocorrections outReconciledPredictions:(id *)reconciledPredictions matchedStem:(String *)stem
 {
   v66 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = v15;
-  *a7 = v15;
-  v18 = v14;
-  *a6 = v14;
-  v19 = [v16 candidate];
-  v20 = [v19 componentsSeparatedByString:@" "];
+  autocorrectionsCopy = autocorrections;
+  predictionsCopy = predictions;
+  completionCopy = completion;
+  v17 = predictionsCopy;
+  *reconciledPredictions = predictionsCopy;
+  v18 = autocorrectionsCopy;
+  *reconciledAutocorrections = autocorrectionsCopy;
+  candidate = [completionCopy candidate];
+  v20 = [candidate componentsSeparatedByString:@" "];
 
-  if (a8->var0)
+  if (stem->var0)
   {
-    v21 = KB::String::last(a8) == 32;
+    v21 = KB::String::last(stem) == 32;
   }
 
   else
@@ -21965,14 +21965,14 @@ LABEL_17:
     v64 = " \t\n";
     LODWORD(v63) = 1048579;
     v65 = 0;
-    KB::string_split_after(a8, &v63, v61);
+    KB::string_split_after(stem, &v63, v61);
     if (v64 && BYTE6(v63) == 1)
     {
       free(v64);
     }
 
-    v51 = a7;
-    if (a8->var0 && KB::String::last(a8) != 32)
+    reconciledPredictionsCopy = reconciledPredictions;
+    if (stem->var0 && KB::String::last(stem) != 32)
     {
       v23 = KB::ns_string((v61[1] - 32), v22);
     }
@@ -21982,65 +21982,65 @@ LABEL_17:
       v23 = &stru_283FDFAF8;
     }
 
-    v55 = self;
+    selfCopy = self;
     v53 = [(TIKeyboardInputManager *)self internalStringToExternal:v23 ignoreCompositionDisabled:1];
     v54 = v23;
-    v24 = [objc_alloc(MEMORY[0x277D6F568]) initWithCandidate:v56 forInput:v53 rawInput:v23 wordOriginFeedbackID:objc_msgSend(v16 usageTrackingMask:"wordOriginFeedbackID") sourceMask:objc_msgSend(v16 learningFlagsMask:{"usageTrackingMask"), objc_msgSend(v16, "sourceMask"), objc_msgSend(v16, "learningFlagsMask")}];
+    v24 = [objc_alloc(MEMORY[0x277D6F568]) initWithCandidate:v56 forInput:v53 rawInput:v23 wordOriginFeedbackID:objc_msgSend(completionCopy usageTrackingMask:"wordOriginFeedbackID") sourceMask:objc_msgSend(completionCopy learningFlagsMask:{"usageTrackingMask"), objc_msgSend(completionCopy, "sourceMask"), objc_msgSend(completionCopy, "learningFlagsMask")}];
     if ([v20 count] == 1 || (_os_feature_enabled_impl() & 1) == 0)
     {
       v45 = objc_alloc(MEMORY[0x277D6F348]);
-      if (v14)
+      if (autocorrectionsCopy)
       {
-        v46 = [v14 alternateCorrections];
+        alternateCorrections = [autocorrectionsCopy alternateCorrections];
       }
 
       else
       {
-        v46 = 0;
+        alternateCorrections = 0;
       }
 
-      *a6 = [v45 initWithAutocorrection:v24 alternateCorrections:v46];
-      if (v14)
+      *reconciledAutocorrections = [v45 initWithAutocorrection:v24 alternateCorrections:alternateCorrections];
+      if (autocorrectionsCopy)
       {
       }
 
-      v33 = [v24 candidate];
-      [(TIKeyboardInputManager *)self logInlineCompletionsToTypology:@"Promoting (single word) inline completion  to autocorrection" candidate:v33];
+      candidate2 = [v24 candidate];
+      [(TIKeyboardInputManager *)self logInlineCompletionsToTypology:@"Promoting (single word) inline completion  to autocorrection" candidate:candidate2];
     }
 
     else
     {
       v48 = v20;
-      v49 = v16;
-      if (v14)
+      v49 = completionCopy;
+      if (autocorrectionsCopy)
       {
-        v25 = [v14 autocorrection];
-        v26 = [v25 input];
+        autocorrection = [autocorrectionsCopy autocorrection];
+        input = [autocorrection input];
 
-        if (v26)
+        if (input)
         {
-          v27 = [v14 autocorrection];
+          autocorrection2 = [autocorrectionsCopy autocorrection];
           v28 = MEMORY[0x277D6F3D8];
-          v29 = [v27 input];
-          v30 = [v28 candidateWithUnchangedInput:v29];
+          input2 = [autocorrection2 input];
+          v30 = [v28 candidateWithUnchangedInput:input2];
 
           v31 = objc_alloc(MEMORY[0x277D6F348]);
-          v32 = [v14 alternateCorrections];
-          *a6 = [v31 initWithAutocorrection:v30 alternateCorrections:v32];
+          alternateCorrections2 = [autocorrectionsCopy alternateCorrections];
+          *reconciledAutocorrections = [v31 initWithAutocorrection:v30 alternateCorrections:alternateCorrections2];
         }
       }
 
-      v52 = v14;
-      v33 = [MEMORY[0x277CBEB18] array];
+      v52 = autocorrectionsCopy;
+      candidate2 = [MEMORY[0x277CBEB18] array];
       v34 = [v24 copy];
-      [v33 addObject:v34];
+      [candidate2 addObject:v34];
 
       v59 = 0u;
       v60 = 0u;
       v57 = 0u;
       v58 = 0u;
-      v50 = v15;
-      v35 = v15;
+      v50 = predictionsCopy;
+      v35 = predictionsCopy;
       v36 = [v35 countByEnumeratingWithState:&v57 objects:v62 count:16];
       if (v36)
       {
@@ -22056,13 +22056,13 @@ LABEL_17:
             }
 
             v40 = *(*(&v57 + 1) + 8 * i);
-            v41 = [v40 candidate];
-            v42 = [v24 candidate];
-            v43 = [v41 isEqualToString:v42];
+            candidate3 = [v40 candidate];
+            candidate4 = [v24 candidate];
+            v43 = [candidate3 isEqualToString:candidate4];
 
             if ((v43 & 1) == 0)
             {
-              [v33 addObject:v40];
+              [candidate2 addObject:v40];
             }
           }
 
@@ -22072,13 +22072,13 @@ LABEL_17:
         while (v37);
       }
 
-      *v51 = [v33 copy];
-      v44 = [v24 candidate];
-      [(TIKeyboardInputManager *)v55 logInlineCompletionsToTypology:@"Promoting (first word of multi word) inline completion  to prediction" candidate:v44];
+      *reconciledPredictionsCopy = [candidate2 copy];
+      candidate5 = [v24 candidate];
+      [(TIKeyboardInputManager *)selfCopy logInlineCompletionsToTypology:@"Promoting (first word of multi word) inline completion  to prediction" candidate:candidate5];
 
-      v14 = v52;
-      v16 = v49;
-      v15 = v50;
+      autocorrectionsCopy = v52;
+      completionCopy = v49;
+      predictionsCopy = v50;
       v20 = v48;
     }
 
@@ -22089,80 +22089,80 @@ LABEL_17:
   v47 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reconcileInlineCompletionAndAutocorrections:(id)a3 inlineCompletions:(id)a4 predictions:(id)a5 outReconciledAutocorrections:(id *)a6 outReconciledInlineCompletions:(id *)a7 outReconciledPredictions:(id *)a8 matchedStem:(String *)a9
+- (void)reconcileInlineCompletionAndAutocorrections:(id)autocorrections inlineCompletions:(id)completions predictions:(id)predictions outReconciledAutocorrections:(id *)reconciledAutocorrections outReconciledInlineCompletions:(id *)inlineCompletions outReconciledPredictions:(id *)reconciledPredictions matchedStem:(String *)stem
 {
   v69 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = [v15 autocorrection];
-  v19 = v15;
-  *a6 = v15;
-  v20 = v16;
-  *a7 = v16;
-  v21 = v17;
-  *a8 = v17;
-  if ([(TIKeyboardInputManager *)self shouldPromoteInlineCompletionsToAutocorrections:v15 inlineCompletions:v16])
+  autocorrectionsCopy = autocorrections;
+  completionsCopy = completions;
+  predictionsCopy = predictions;
+  autocorrection = [autocorrectionsCopy autocorrection];
+  v19 = autocorrectionsCopy;
+  *reconciledAutocorrections = autocorrectionsCopy;
+  v20 = completionsCopy;
+  *inlineCompletions = completionsCopy;
+  v21 = predictionsCopy;
+  *reconciledPredictions = predictionsCopy;
+  if ([(TIKeyboardInputManager *)self shouldPromoteInlineCompletionsToAutocorrections:autocorrectionsCopy inlineCompletions:completionsCopy])
   {
-    v56 = a8;
-    v22 = [v16 objectAtIndexedSubscript:0];
-    v57 = self;
-    if (![v18 isAutocorrection])
+    reconciledPredictionsCopy = reconciledPredictions;
+    v22 = [completionsCopy objectAtIndexedSubscript:0];
+    selfCopy = self;
+    if (![autocorrection isAutocorrection])
     {
       goto LABEL_5;
     }
 
-    v23 = [v18 staticLinguisticLikelihood];
-    if (!v23)
+    staticLinguisticLikelihood = [autocorrection staticLinguisticLikelihood];
+    if (!staticLinguisticLikelihood)
     {
       goto LABEL_5;
     }
 
-    v24 = v23;
-    v25 = [v22 staticLinguisticLikelihood];
-    [v25 floatValue];
+    v24 = staticLinguisticLikelihood;
+    staticLinguisticLikelihood2 = [v22 staticLinguisticLikelihood];
+    [staticLinguisticLikelihood2 floatValue];
     v27 = v26;
-    [v18 staticLinguisticLikelihood];
-    v29 = v28 = v18;
+    [autocorrection staticLinguisticLikelihood];
+    v29 = v28 = autocorrection;
     [v29 floatValue];
     v31 = v30;
 
-    v18 = v28;
-    self = v57;
+    autocorrection = v28;
+    self = selfCopy;
 
     if (v27 <= v31)
     {
-      v49 = [v22 candidate];
-      [(TIKeyboardInputManager *)v57 logInlineCompletionsToTypology:@"Inline completion linguistically inferior to an autocorrect candidate and will be suppressed. Inline completion candidate: " candidate:v49];
+      candidate = [v22 candidate];
+      [(TIKeyboardInputManager *)selfCopy logInlineCompletionsToTypology:@"Inline completion linguistically inferior to an autocorrect candidate and will be suppressed. Inline completion candidate: " candidate:candidate];
 
-      *a7 = 0;
+      *inlineCompletions = 0;
     }
 
     else
     {
 LABEL_5:
-      v32 = [v22 candidate];
-      [(TIKeyboardInputManager *)self logInlineCompletionsToTypology:@"Inline completion linguistically superior - will promote to autocorrect. Inline completion: " candidate:v32];
+      candidate2 = [v22 candidate];
+      [(TIKeyboardInputManager *)self logInlineCompletionsToTypology:@"Inline completion linguistically superior - will promote to autocorrect. Inline completion: " candidate:candidate2];
 
-      KB::String::String(v67, a9);
-      [(TIKeyboardInputManager *)self promoteInlineCompletionToAutocorrections:v15 predictions:v17 inlineCompletion:v22 outReconciledAutocorrections:a6 outReconciledPredictions:v56 matchedStem:v67];
+      KB::String::String(v67, stem);
+      [(TIKeyboardInputManager *)self promoteInlineCompletionToAutocorrections:autocorrectionsCopy predictions:predictionsCopy inlineCompletion:v22 outReconciledAutocorrections:reconciledAutocorrections outReconciledPredictions:reconciledPredictionsCopy matchedStem:v67];
       if (v68 && v67[6] == 1)
       {
         free(v68);
       }
 
-      if (*a6)
+      if (*reconciledAutocorrections)
       {
-        v33 = [v22 supplementalItemIdentifiers];
-        v34 = [v33 count];
+        supplementalItemIdentifiers = [v22 supplementalItemIdentifiers];
+        v34 = [supplementalItemIdentifiers count];
 
         if (v34)
         {
-          v53 = v18;
-          v54 = a7;
-          v55 = v17;
-          v35 = [v22 candidate];
-          v36 = [v35 componentsSeparatedByString:@" "];
+          v53 = autocorrection;
+          inlineCompletionsCopy = inlineCompletions;
+          v55 = predictionsCopy;
+          candidate3 = [v22 candidate];
+          v36 = [candidate3 componentsSeparatedByString:@" "];
           v37 = [v36 count];
 
           if (v37 == 1)
@@ -22174,15 +22174,15 @@ LABEL_5:
               _os_log_debug_impl(&dword_22CA55000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%s  The inline completion being offered contains supplemental identifiers, removing it, and offering a prediction instead", buf, 0xCu);
             }
 
-            v38 = [MEMORY[0x277CBEB18] array];
+            array = [MEMORY[0x277CBEB18] array];
             v39 = [v22 copy];
-            [v38 addObject:v39];
+            [array addObject:v39];
 
             v60 = 0u;
             v61 = 0u;
             v58 = 0u;
             v59 = 0u;
-            v40 = v17;
+            v40 = predictionsCopy;
             v41 = [v40 countByEnumeratingWithState:&v58 objects:v64 count:16];
             if (v41)
             {
@@ -22198,13 +22198,13 @@ LABEL_5:
                   }
 
                   v45 = *(*(&v58 + 1) + 8 * i);
-                  v46 = [v45 candidate];
-                  v47 = [v22 candidate];
-                  v48 = [v46 isEqualToString:v47];
+                  candidate4 = [v45 candidate];
+                  candidate5 = [v22 candidate];
+                  v48 = [candidate4 isEqualToString:candidate5];
 
                   if ((v48 & 1) == 0)
                   {
-                    [v38 addObject:v45];
+                    [array addObject:v45];
                   }
                 }
 
@@ -22214,9 +22214,9 @@ LABEL_5:
               while (v42);
             }
 
-            *v56 = [v38 copy];
-            v16 = v51;
-            v15 = v52;
+            *reconciledPredictionsCopy = [array copy];
+            completionsCopy = v51;
+            autocorrectionsCopy = v52;
           }
 
           else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -22227,25 +22227,25 @@ LABEL_5:
           }
 
           [v22 setSupplementalItemIdentifiers:0];
-          a7 = v54;
-          v17 = v55;
-          v18 = v53;
+          inlineCompletions = inlineCompletionsCopy;
+          predictionsCopy = v55;
+          autocorrection = v53;
         }
       }
     }
 
-    self = v57;
+    self = selfCopy;
   }
 
-  if ([v18 isAutocorrection] && (!*a7 || !objc_msgSend(*a7, "count")))
+  if ([autocorrection isAutocorrection] && (!*inlineCompletions || !objc_msgSend(*inlineCompletions, "count")))
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([(TIKeyboardInputManager *)self shouldPromoteAutocorrectionsToInlineCompletions:v18])
+      if ([(TIKeyboardInputManager *)self shouldPromoteAutocorrectionsToInlineCompletions:autocorrection])
       {
-        KB::String::String(v62, a9);
-        *a7 = [(TIKeyboardInputManager *)self promoteAutocorrectionsToInlineCompletions:v15 matchedStem:v62];
+        KB::String::String(v62, stem);
+        *inlineCompletions = [(TIKeyboardInputManager *)self promoteAutocorrectionsToInlineCompletions:autocorrectionsCopy matchedStem:v62];
         if (v63)
         {
           if (v62[6] == 1)
@@ -22260,22 +22260,22 @@ LABEL_5:
   v50 = *MEMORY[0x277D85DE8];
 }
 
-- (id)inlineCompletions:(CandidateCollection *)a3 matchedStem:(String *)a4
+- (id)inlineCompletions:(CandidateCollection *)completions matchedStem:(String *)stem
 {
   v26 = *MEMORY[0x277D85DE8];
-  v21 = [MEMORY[0x277CBEB18] arrayWithCapacity:0x1CAC083126E978D5 * ((a3->var0.var1 - a3->var0.var0) >> 3)];
+  v21 = [MEMORY[0x277CBEB18] arrayWithCapacity:0x1CAC083126E978D5 * ((completions->var0.var1 - completions->var0.var0) >> 3)];
   WORD2(v23) = 0;
   BYTE6(v23) = 0;
   v24 = " \t\n";
   LODWORD(v23) = 1048579;
   v25 = 0;
-  KB::string_split_after(a4, &v23, v22);
+  KB::string_split_after(stem, &v23, v22);
   if (v24 && BYTE6(v23) == 1)
   {
     free(v24);
   }
 
-  if (a4->var0)
+  if (stem->var0)
   {
     KB::String::String(&v23, (v22[1] - 32));
   }
@@ -22292,8 +22292,8 @@ LABEL_5:
   }
 
   v9 = [(TIKeyboardInputManager *)self internalStringToExternal:v8 ignoreCompositionDisabled:1];
-  var0 = a3->var0.var0;
-  var1 = a3->var0.var1;
+  var0 = completions->var0.var0;
+  var1 = completions->var0.var1;
   while (var0 != var1)
   {
     if (*var0)
@@ -22322,21 +22322,21 @@ LABEL_5:
   return v21;
 }
 
-- (void)logInlineCompletionsToTypology:(id)a3 candidate:(id)a4
+- (void)logInlineCompletionsToTypology:(id)typology candidate:(id)candidate
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  typologyCopy = typology;
+  candidateCopy = candidate;
   v8 = TIInlineCompletionsOSLogFacility();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s %@", "-[TIKeyboardInputManager(InlineCompletions) logInlineCompletionsToTypology:candidate:]", v6];
+    typologyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%s %@", "-[TIKeyboardInputManager(InlineCompletions) logInlineCompletionsToTypology:candidate:]", typologyCopy];
     *buf = 138412290;
-    v15 = v9;
+    v15 = typologyCopy;
     _os_log_impl(&dword_22CA55000, v8, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
   }
 
-  if (v7)
+  if (candidateCopy)
     v10 = {;
     v11 = TIInlineCompletionsOSLogFacility();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -22352,7 +22352,7 @@ LABEL_5:
 
   else
   {
-    [(TIKeyboardInputManager *)self logToTypologyRecorderWithString:v6];
+    [(TIKeyboardInputManager *)self logToTypologyRecorderWithString:typologyCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];

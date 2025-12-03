@@ -1,13 +1,13 @@
 @interface MSVSQLDatabase
 - (MSVSQLDatabase)initWithMemory;
-- (MSVSQLDatabase)initWithMemoryNamed:(id)a3;
-- (MSVSQLDatabase)initWithURL:(id)a3 error:(id *)a4;
+- (MSVSQLDatabase)initWithMemoryNamed:(id)named;
+- (MSVSQLDatabase)initWithURL:(id)l error:(id *)error;
 - (NSString)description;
-- (id)markdownTableForSQL:(id)a3;
-- (id)markdownTableForStatement:(id)a3;
-- (id)markdownTableForTableNamed:(id)a3;
-- (id)resultsForStatement:(id)a3;
-- (id)transactionWithName:(id)a3 error:(id *)a4;
+- (id)markdownTableForSQL:(id)l;
+- (id)markdownTableForStatement:(id)statement;
+- (id)markdownTableForTableNamed:(id)named;
+- (id)resultsForStatement:(id)statement;
+- (id)transactionWithName:(id)name error:(id *)error;
 @end
 
 @implementation MSVSQLDatabase
@@ -25,10 +25,10 @@
   return [v3 stringWithFormat:@"<%@: %p uri=%@>", v4, self, connection];
 }
 
-- (id)markdownTableForTableNamed:(id)a3
+- (id)markdownTableForTableNamed:(id)named
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT * FROM %@", a3];
-  v5 = [(MSVSQLDatabase *)self statementWithString:v4 error:0];
+  named = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT * FROM %@", named];
+  v5 = [(MSVSQLDatabase *)self statementWithString:named error:0];
 
   v6 = [(MSVSQLDatabase *)self markdownTableForStatement:v5];
   [v5 invalidate];
@@ -36,19 +36,19 @@
   return v6;
 }
 
-- (id)markdownTableForStatement:(id)a3
+- (id)markdownTableForStatement:(id)statement
 {
-  v3 = [(MSVSQLDatabase *)self resultsForStatement:a3];
-  v4 = [v3 markdownTable];
+  v3 = [(MSVSQLDatabase *)self resultsForStatement:statement];
+  markdownTable = [v3 markdownTable];
 
-  return v4;
+  return markdownTable;
 }
 
-- (id)markdownTableForSQL:(id)a3
+- (id)markdownTableForSQL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = [(MSVSQLDatabase *)self transactionWithName:@"markdown-table" error:0];
-  v6 = [v5 statementWithString:v4 error:0];
+  v6 = [v5 statementWithString:lCopy error:0];
 
   v7 = [(MSVSQLDatabase *)self markdownTableForStatement:v6];
   [v6 invalidate];
@@ -57,21 +57,21 @@
   return v7;
 }
 
-- (id)resultsForStatement:(id)a3
+- (id)resultsForStatement:(id)statement
 {
-  v3 = a3;
-  v4 = [[MSVSQLRowEnumerator alloc] initWithStatement:v3];
+  statementCopy = statement;
+  v4 = [[MSVSQLRowEnumerator alloc] initWithStatement:statementCopy];
 
   return v4;
 }
 
-- (id)transactionWithName:(id)a3 error:(id *)a4
+- (id)transactionWithName:(id)name error:(id *)error
 {
-  v6 = a3;
-  v7 = [(_MSVSQLConnection *)&self->_connection->super.isa mutableCloneWithError:a4];
+  nameCopy = name;
+  v7 = [(_MSVSQLConnection *)&self->_connection->super.isa mutableCloneWithError:error];
   if (v7)
   {
-    v8 = [[MSVSQLDatabaseTransaction alloc] initWithConnection:v7 name:v6 error:a4];
+    v8 = [[MSVSQLDatabaseTransaction alloc] initWithConnection:v7 name:nameCopy error:error];
   }
 
   else
@@ -82,15 +82,15 @@
   return v8;
 }
 
-- (MSVSQLDatabase)initWithURL:(id)a3 error:(id *)a4
+- (MSVSQLDatabase)initWithURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v7 = [(MSVSQLDatabase *)self init];
   if (v7)
   {
     v8 = [_MSVSQLConnection alloc];
-    v9 = [v6 path];
-    v10 = [(_MSVSQLConnection *)v8 initWithDatabaseURI:v9 options:0 error:a4];
+    path = [lCopy path];
+    v10 = [(_MSVSQLConnection *)v8 initWithDatabaseURI:path options:0 error:error];
     connection = v7->_connection;
     v7->_connection = v10;
 
@@ -100,7 +100,7 @@
       goto LABEL_6;
     }
 
-    v12 = [v6 copy];
+    v12 = [lCopy copy];
     databaseURL = v7->_databaseURL;
     v7->_databaseURL = v12;
   }
@@ -111,14 +111,14 @@ LABEL_6:
   return v14;
 }
 
-- (MSVSQLDatabase)initWithMemoryNamed:(id)a3
+- (MSVSQLDatabase)initWithMemoryNamed:(id)named
 {
-  v4 = a3;
+  namedCopy = named;
   v5 = [(MSVSQLDatabase *)self init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"file:%@?mode=memory&cache=shared", v4];
-    v7 = [[_MSVSQLConnection alloc] initWithDatabaseURI:v6 options:1 error:0];
+    namedCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"file:%@?mode=memory&cache=shared", namedCopy];
+    v7 = [[_MSVSQLConnection alloc] initWithDatabaseURI:namedCopy options:1 error:0];
     connection = v5->_connection;
     v5->_connection = v7;
   }
@@ -128,10 +128,10 @@ LABEL_6:
 
 - (MSVSQLDatabase)initWithMemory
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [v3 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v5 = [(MSVSQLDatabase *)self initWithMemoryNamed:v4];
+  v5 = [(MSVSQLDatabase *)self initWithMemoryNamed:uUIDString];
   return v5;
 }
 

@@ -1,9 +1,9 @@
 @interface StepByStepUIViewController
 - (void)dealloc;
 - (void)loadView;
-- (void)stepByStepUpdateProgress:(id)a3 forState:(int)a4;
-- (void)syncTopoUIForTarget:(id)a3 andSource:(id)a4 andNetwork:(id)a5 connectionType:(id)a6;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)stepByStepUpdateProgress:(id)progress forState:(int)state;
+- (void)syncTopoUIForTarget:(id)target andSource:(id)source andNetwork:(id)network connectionType:(id)type;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation StepByStepUIViewController
@@ -76,35 +76,35 @@
   objc_msgSend_setTableView_(self, v85, v84);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = objc_msgSend_tableView(self, a2, a3);
+  appearCopy = appear;
+  v5 = objc_msgSend_tableView(self, a2, appear);
   objc_msgSend_setTableFooterView_(v5, v6, 0);
   v7.receiver = self;
   v7.super_class = StepByStepUIViewController;
-  [(AUUITableViewController *)&v7 viewWillAppear:v3];
+  [(AUUITableViewController *)&v7 viewWillAppear:appearCopy];
 }
 
-- (void)syncTopoUIForTarget:(id)a3 andSource:(id)a4 andNetwork:(id)a5 connectionType:(id)a6
+- (void)syncTopoUIForTarget:(id)target andSource:(id)source andNetwork:(id)network connectionType:(id)type
 {
-  v9 = a4;
+  sourceCopy = source;
   v12 = MEMORY[0x277CCABB0];
-  v13 = sub_23EB6A2C0(a3, a2, a3, a4, a5, a6, v6, v7);
+  v13 = sub_23EB6A2C0(target, a2, target, source, network, type, v6, v7);
   v15 = objc_msgSend_numberWithInteger_(v12, v14, v13);
   v16 = MEMORY[0x277CCABB0];
-  v24 = sub_23EB6A294(a3, v17, v18, v19, v20, v21, v22, v23);
+  v24 = sub_23EB6A294(target, v17, v18, v19, v20, v21, v22, v23);
   v95 = objc_msgSend_numberWithInteger_(v16, v25, v24);
-  if (v9)
+  if (sourceCopy)
   {
     v28 = MEMORY[0x277CCABB0];
-    v29 = objc_msgSend_scanInfoAppleProductID_(WiFiUtils, v26, v9);
+    v29 = objc_msgSend_scanInfoAppleProductID_(WiFiUtils, v26, sourceCopy);
     v31 = objc_msgSend_numberWithInteger_(v28, v30, v29);
     v39 = MEMORY[0x277CCABB0];
     if (v31)
     {
       v40 = v31;
-      v41 = sub_23EB6A1FC(v9);
+      v41 = sub_23EB6A1FC(sourceCopy);
       v43 = objc_msgSend_numberWithInteger_(v39, v42, v41);
       v46 = objc_msgSend_integerValue(v40, v44, v45);
       v49 = objc_msgSend_integerValue(v43, v47, v48);
@@ -113,15 +113,15 @@
 
     else
     {
-      v51 = sub_23EB6A2C0(v9, v32, v33, v34, v35, v36, v37, v38);
+      v51 = sub_23EB6A2C0(sourceCopy, v32, v33, v34, v35, v36, v37, v38);
       v40 = objc_msgSend_numberWithInteger_(v39, v52, v51);
       v53 = MEMORY[0x277CCABB0];
-      v61 = sub_23EB6A294(v9, v54, v55, v56, v57, v58, v59, v60);
+      v61 = sub_23EB6A294(sourceCopy, v54, v55, v56, v57, v58, v59, v60);
       v43 = objc_msgSend_numberWithInteger_(v53, v62, v61);
-      v50 = objc_msgSend_objectForKey_(v9, v63, @"name");
+      v50 = objc_msgSend_objectForKey_(sourceCopy, v63, @"name");
     }
 
-    v9 = v50;
+    sourceCopy = v50;
   }
 
   else
@@ -131,7 +131,7 @@
   }
 
   v64 = objc_msgSend_integerValue(v15, v26, v27);
-  v72 = sub_23EB6A294(a3, v65, v66, v67, v68, v69, v70, v71);
+  v72 = sub_23EB6A294(target, v65, v66, v67, v68, v69, v70, v71);
   v73 = sub_23EB6D7A8(v64, v72);
   v76 = objc_msgSend_parentController(self, v74, v75);
   v79 = objc_msgSend__assistantUIController(v76, v77, v78);
@@ -139,14 +139,14 @@
   v85 = objc_msgSend_layer(v82, v83, v84);
   v88 = objc_msgSend_topoLayout(self, v86, v87);
   v91 = objc_msgSend_topoView(self, v89, v90);
-  v94 = objc_msgSend_modifyTopoUIInLayer_withLayout_andOwningView_targetProductID_targetDeviceKind_targetName_targetWiFiName_sourceProductID_sourceDeviceKind_sourceName_sourceWiFiName_connectionType_(v79, v92, v85, v88, v91, v15, v95, v73, a5, v40, v43, v9, a5, a6);
+  v94 = objc_msgSend_modifyTopoUIInLayer_withLayout_andOwningView_targetProductID_targetDeviceKind_targetName_targetWiFiName_sourceProductID_sourceDeviceKind_sourceName_sourceWiFiName_connectionType_(v79, v92, v85, v88, v91, v15, v95, v73, network, v40, v43, sourceCopy, network, type);
 
   objc_msgSend_setTopoLayout_(self, v93, v94);
 }
 
-- (void)stepByStepUpdateProgress:(id)a3 forState:(int)a4
+- (void)stepByStepUpdateProgress:(id)progress forState:(int)state
 {
-  if (objc_msgSend_tableView(self, a2, a3, *&a4) && objc_msgSend_tableFooterContainerView(self, v6, v7) && objc_msgSend_spinnerWithStatusBelowView(self, v8, v9) && objc_msgSend_spinnerWithStatusBelowLabel(self, v10, v11))
+  if (objc_msgSend_tableView(self, a2, progress, *&state) && objc_msgSend_tableFooterContainerView(self, v6, v7) && objc_msgSend_spinnerWithStatusBelowView(self, v8, v9) && objc_msgSend_spinnerWithStatusBelowLabel(self, v10, v11))
   {
     v14 = objc_msgSend_navigationItem(self, v12, v13);
     v17 = objc_msgSend_rightBarButtonItem(v14, v15, v16);
@@ -170,9 +170,9 @@
     objc_msgSend_startAnimating(self->spinnerWithStatusBelowSpinner, v24, v25);
     spinnerWithStatusBelowLabel = self->spinnerWithStatusBelowLabel;
     spinnerWithStatusBelowView = self->spinnerWithStatusBelowView;
-    if (objc_msgSend_length(a3, v51, v52))
+    if (objc_msgSend_length(progress, v51, v52))
     {
-      objc_msgSend_setText_(spinnerWithStatusBelowLabel, v53, a3);
+      objc_msgSend_setText_(spinnerWithStatusBelowLabel, v53, progress);
     }
 
     else

@@ -1,29 +1,29 @@
 @interface BKLibraryManagerAccountIdentifiers
-- (BKLibraryManagerAccountIdentifiers)initWithAsset:(id)a3;
-- (BKLibraryManagerAccountIdentifiers)initWithPurchasedDSID:(id)a3 downloadedDSID:(id)a4 familyID:(id)a5;
+- (BKLibraryManagerAccountIdentifiers)initWithAsset:(id)asset;
+- (BKLibraryManagerAccountIdentifiers)initWithPurchasedDSID:(id)d downloadedDSID:(id)iD familyID:(id)familyID;
 @end
 
 @implementation BKLibraryManagerAccountIdentifiers
 
-- (BKLibraryManagerAccountIdentifiers)initWithPurchasedDSID:(id)a3 downloadedDSID:(id)a4 familyID:(id)a5
+- (BKLibraryManagerAccountIdentifiers)initWithPurchasedDSID:(id)d downloadedDSID:(id)iD familyID:(id)familyID
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  familyIDCopy = familyID;
   v19.receiver = self;
   v19.super_class = BKLibraryManagerAccountIdentifiers;
   v11 = [(BKLibraryManagerAccountIdentifiers *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dCopy copy];
     purchasedDSID = v11->_purchasedDSID;
     v11->_purchasedDSID = v12;
 
-    v14 = [v9 copy];
+    v14 = [iDCopy copy];
     downloadedDSID = v11->_downloadedDSID;
     v11->_downloadedDSID = v14;
 
-    v16 = [v10 copy];
+    v16 = [familyIDCopy copy];
     familyID = v11->_familyID;
     v11->_familyID = v16;
   }
@@ -31,14 +31,14 @@
   return v11;
 }
 
-- (BKLibraryManagerAccountIdentifiers)initWithAsset:(id)a3
+- (BKLibraryManagerAccountIdentifiers)initWithAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [v4 purchasedDSID];
-  v6 = [v4 downloadedDSID];
-  v7 = [v4 familyID];
+  assetCopy = asset;
+  purchasedDSID = [assetCopy purchasedDSID];
+  downloadedDSID = [assetCopy downloadedDSID];
+  familyID = [assetCopy familyID];
 
-  v8 = [(BKLibraryManagerAccountIdentifiers *)self initWithPurchasedDSID:v5 downloadedDSID:v6 familyID:v7];
+  v8 = [(BKLibraryManagerAccountIdentifiers *)self initWithPurchasedDSID:purchasedDSID downloadedDSID:downloadedDSID familyID:familyID];
   return v8;
 }
 

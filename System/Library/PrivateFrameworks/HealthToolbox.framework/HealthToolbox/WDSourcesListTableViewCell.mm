@@ -1,19 +1,19 @@
 @interface WDSourcesListTableViewCell
-- (WDSourcesListTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)_handleReturnedImage:(id)a3 forSource:(id)a4 fetchError:(id)a5;
+- (WDSourcesListTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)_handleReturnedImage:(id)image forSource:(id)source fetchError:(id)error;
 - (void)prepareForReuse;
-- (void)setSourceModel:(id)a3;
+- (void)setSourceModel:(id)model;
 - (void)setUpSubviews;
 - (void)setupConstraints;
 @end
 
 @implementation WDSourcesListTableViewCell
 
-- (WDSourcesListTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (WDSourcesListTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = WDSourcesListTableViewCell;
-  v4 = [(WDSourcesListTableViewCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(WDSourcesListTableViewCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -34,141 +34,141 @@
 
 - (void)setUpSubviews
 {
-  v3 = [MEMORY[0x277D75348] secondarySystemGroupedBackgroundColor];
-  [(WDSourcesListTableViewCell *)self setBackgroundColor:v3];
+  secondarySystemGroupedBackgroundColor = [MEMORY[0x277D75348] secondarySystemGroupedBackgroundColor];
+  [(WDSourcesListTableViewCell *)self setBackgroundColor:secondarySystemGroupedBackgroundColor];
 
   v4 = objc_alloc_init(MEMORY[0x277D755E8]);
   [(WDSourcesListTableViewCell *)self setIconImage:v4];
 
-  v5 = [(WDSourcesListTableViewCell *)self iconImage];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  iconImage = [(WDSourcesListTableViewCell *)self iconImage];
+  [iconImage setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(WDSourcesListTableViewCell *)self iconImage];
-  [v6 setAdjustsImageSizeForAccessibilityContentSizeCategory:1];
+  iconImage2 = [(WDSourcesListTableViewCell *)self iconImage];
+  [iconImage2 setAdjustsImageSizeForAccessibilityContentSizeCategory:1];
 
-  v7 = [(WDSourcesListTableViewCell *)self iconImage];
-  [v7 setContentMode:2];
+  iconImage3 = [(WDSourcesListTableViewCell *)self iconImage];
+  [iconImage3 setContentMode:2];
 
-  v8 = [(WDSourcesListTableViewCell *)self contentView];
-  v9 = [(WDSourcesListTableViewCell *)self iconImage];
-  [v8 addSubview:v9];
+  contentView = [(WDSourcesListTableViewCell *)self contentView];
+  iconImage4 = [(WDSourcesListTableViewCell *)self iconImage];
+  [contentView addSubview:iconImage4];
 
   v10 = objc_alloc_init(MEMORY[0x277D756B8]);
   [(WDSourcesListTableViewCell *)self setTitleLabel:v10];
 
   v11 = [MEMORY[0x277D74300] hk_preferredFontForTextStyle:*MEMORY[0x277D76918]];
-  v12 = [(WDSourcesListTableViewCell *)self titleLabel];
-  [v12 setFont:v11];
+  titleLabel = [(WDSourcesListTableViewCell *)self titleLabel];
+  [titleLabel setFont:v11];
 
-  v13 = [(WDSourcesListTableViewCell *)self titleLabel];
-  [v13 setAdjustsFontForContentSizeCategory:1];
+  titleLabel2 = [(WDSourcesListTableViewCell *)self titleLabel];
+  [titleLabel2 setAdjustsFontForContentSizeCategory:1];
 
-  v14 = [(WDSourcesListTableViewCell *)self titleLabel];
-  [v14 setTextAlignment:4];
+  titleLabel3 = [(WDSourcesListTableViewCell *)self titleLabel];
+  [titleLabel3 setTextAlignment:4];
 
-  v15 = [(WDSourcesListTableViewCell *)self titleLabel];
-  [v15 setNumberOfLines:0];
+  titleLabel4 = [(WDSourcesListTableViewCell *)self titleLabel];
+  [titleLabel4 setNumberOfLines:0];
 
-  v16 = [(WDSourcesListTableViewCell *)self titleLabel];
-  [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel5 = [(WDSourcesListTableViewCell *)self titleLabel];
+  [titleLabel5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v18 = [(WDSourcesListTableViewCell *)self contentView];
-  v17 = [(WDSourcesListTableViewCell *)self titleLabel];
-  [v18 addSubview:v17];
+  contentView2 = [(WDSourcesListTableViewCell *)self contentView];
+  titleLabel6 = [(WDSourcesListTableViewCell *)self titleLabel];
+  [contentView2 addSubview:titleLabel6];
 }
 
 - (void)setupConstraints
 {
-  v3 = [(WDSourcesListTableViewCell *)self iconImage];
-  v4 = [v3 leadingAnchor];
-  v5 = [(WDSourcesListTableViewCell *)self contentView];
-  v6 = [v5 leadingAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6 constant:16.0];
+  iconImage = [(WDSourcesListTableViewCell *)self iconImage];
+  leadingAnchor = [iconImage leadingAnchor];
+  contentView = [(WDSourcesListTableViewCell *)self contentView];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   [v7 setActive:1];
 
-  v8 = [(WDSourcesListTableViewCell *)self iconImage];
-  v9 = [v8 widthAnchor];
-  v10 = [v9 constraintEqualToConstant:29.0];
+  iconImage2 = [(WDSourcesListTableViewCell *)self iconImage];
+  widthAnchor = [iconImage2 widthAnchor];
+  v10 = [widthAnchor constraintEqualToConstant:29.0];
   [v10 setActive:1];
 
-  v11 = [(WDSourcesListTableViewCell *)self iconImage];
-  v12 = [v11 heightAnchor];
-  v13 = [v12 constraintEqualToConstant:29.0];
+  iconImage3 = [(WDSourcesListTableViewCell *)self iconImage];
+  heightAnchor = [iconImage3 heightAnchor];
+  v13 = [heightAnchor constraintEqualToConstant:29.0];
   [v13 setActive:1];
 
-  v14 = [(WDSourcesListTableViewCell *)self iconImage];
-  v15 = [v14 centerYAnchor];
-  v16 = [(WDSourcesListTableViewCell *)self contentView];
-  v17 = [v16 centerYAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17];
+  iconImage4 = [(WDSourcesListTableViewCell *)self iconImage];
+  centerYAnchor = [iconImage4 centerYAnchor];
+  contentView2 = [(WDSourcesListTableViewCell *)self contentView];
+  centerYAnchor2 = [contentView2 centerYAnchor];
+  v18 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v18 setActive:1];
 
-  v19 = [(WDSourcesListTableViewCell *)self titleLabel];
-  v20 = [v19 leadingAnchor];
-  v21 = [(WDSourcesListTableViewCell *)self iconImage];
-  v22 = [v21 trailingAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22 constant:16.0];
+  titleLabel = [(WDSourcesListTableViewCell *)self titleLabel];
+  leadingAnchor3 = [titleLabel leadingAnchor];
+  iconImage5 = [(WDSourcesListTableViewCell *)self iconImage];
+  trailingAnchor = [iconImage5 trailingAnchor];
+  v23 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:16.0];
   [v23 setActive:1];
 
-  v24 = [(WDSourcesListTableViewCell *)self titleLabel];
-  v25 = [v24 topAnchor];
-  v26 = [(WDSourcesListTableViewCell *)self contentView];
-  v27 = [v26 topAnchor];
-  v28 = [v25 constraintEqualToAnchor:v27 constant:16.0];
+  titleLabel2 = [(WDSourcesListTableViewCell *)self titleLabel];
+  topAnchor = [titleLabel2 topAnchor];
+  contentView3 = [(WDSourcesListTableViewCell *)self contentView];
+  topAnchor2 = [contentView3 topAnchor];
+  v28 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:16.0];
   [v28 setActive:1];
 
-  v29 = [(WDSourcesListTableViewCell *)self titleLabel];
-  v30 = [v29 trailingAnchor];
-  v31 = [(WDSourcesListTableViewCell *)self contentView];
-  v32 = [v31 trailingAnchor];
-  v33 = [v30 constraintEqualToAnchor:v32 constant:-16.0];
+  titleLabel3 = [(WDSourcesListTableViewCell *)self titleLabel];
+  trailingAnchor2 = [titleLabel3 trailingAnchor];
+  contentView4 = [(WDSourcesListTableViewCell *)self contentView];
+  trailingAnchor3 = [contentView4 trailingAnchor];
+  v33 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-16.0];
   [v33 setActive:1];
 
-  v34 = [(WDSourcesListTableViewCell *)self titleLabel];
-  v35 = [v34 bottomAnchor];
-  v36 = [(WDSourcesListTableViewCell *)self contentView];
-  v37 = [v36 bottomAnchor];
-  v38 = [v35 constraintLessThanOrEqualToAnchor:v37 constant:-16.0];
+  titleLabel4 = [(WDSourcesListTableViewCell *)self titleLabel];
+  bottomAnchor = [titleLabel4 bottomAnchor];
+  contentView5 = [(WDSourcesListTableViewCell *)self contentView];
+  bottomAnchor2 = [contentView5 bottomAnchor];
+  v38 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2 constant:-16.0];
   [v38 setActive:1];
 
   [(WDSourcesListTableViewCell *)self setSeparatorInset:0.0, 61.0, 0.0, 0.0];
 }
 
-- (void)setSourceModel:(id)a3
+- (void)setSourceModel:(id)model
 {
-  v5 = a3;
-  if (self->_sourceModel != v5)
+  modelCopy = model;
+  if (self->_sourceModel != modelCopy)
   {
-    objc_storeStrong(&self->_sourceModel, a3);
-    if (v5)
+    objc_storeStrong(&self->_sourceModel, model);
+    if (modelCopy)
     {
-      v6 = [(HKSourceDataModel *)v5 source];
-      if ([v6 _isConnectedGymSource])
+      source = [(HKSourceDataModel *)modelCopy source];
+      if ([source _isConnectedGymSource])
       {
         HKConnectedGymSourceName();
       }
 
       else
       {
-        [v6 name];
+        [source name];
       }
       v9 = ;
-      v10 = [(WDSourcesListTableViewCell *)self titleLabel];
-      [v10 setText:v9];
+      titleLabel = [(WDSourcesListTableViewCell *)self titleLabel];
+      [titleLabel setText:v9];
 
-      v11 = [(HKSourceDataModel *)v5 icon];
+      icon = [(HKSourceDataModel *)modelCopy icon];
 
-      if (v11)
+      if (icon)
       {
-        v12 = [(HKSourceDataModel *)v5 icon];
-        v13 = [(WDSourcesListTableViewCell *)self iconImage];
-        [v13 setImage:v12];
+        icon2 = [(HKSourceDataModel *)modelCopy icon];
+        iconImage = [(WDSourcesListTableViewCell *)self iconImage];
+        [iconImage setImage:icon2];
       }
 
       else
       {
         objc_initWeak(&location, self);
-        v14 = [MEMORY[0x277D127A8] sharedImageManager];
+        mEMORY[0x277D127A8] = [MEMORY[0x277D127A8] sharedImageManager];
         v22[0] = MEMORY[0x277D85DD0];
         v22[1] = 3221225472;
         v22[2] = __45__WDSourcesListTableViewCell_setSourceModel___block_invoke;
@@ -179,27 +179,27 @@
         v19[2] = __45__WDSourcesListTableViewCell_setSourceModel___block_invoke_2;
         v19[3] = &unk_2796E8198;
         objc_copyWeak(&v21, &location);
-        v20 = v6;
-        [v14 loadIconForSource:v20 syncHandler:v22 asyncHandler:v19];
+        v20 = source;
+        [mEMORY[0x277D127A8] loadIconForSource:v20 syncHandler:v22 asyncHandler:v19];
 
         objc_destroyWeak(&v21);
         objc_destroyWeak(&location);
       }
 
       v15 = *MEMORY[0x277D12788];
-      v16 = [(WDSourcesListTableViewCell *)self titleLabel];
-      v17 = [v16 text];
-      v18 = [v15 stringByAppendingFormat:@".Source.%@", v17];
+      titleLabel2 = [(WDSourcesListTableViewCell *)self titleLabel];
+      text = [titleLabel2 text];
+      v18 = [v15 stringByAppendingFormat:@".Source.%@", text];
       [(WDSourcesListTableViewCell *)self setAccessibilityIdentifier:v18];
     }
 
     else
     {
-      v7 = [(WDSourcesListTableViewCell *)self titleLabel];
-      [v7 setText:0];
+      titleLabel3 = [(WDSourcesListTableViewCell *)self titleLabel];
+      [titleLabel3 setText:0];
 
-      v8 = [(WDSourcesListTableViewCell *)self iconImage];
-      [v8 setImage:0];
+      iconImage2 = [(WDSourcesListTableViewCell *)self iconImage];
+      [iconImage2 setImage:0];
     }
   }
 }
@@ -237,23 +237,23 @@ void __45__WDSourcesListTableViewCell_setSourceModel___block_invoke_3(uint64_t a
   [WeakRetained _handleReturnedImage:*(a1 + 32) forSource:*(a1 + 40) fetchError:*(a1 + 48)];
 }
 
-- (void)_handleReturnedImage:(id)a3 forSource:(id)a4 fetchError:(id)a5
+- (void)_handleReturnedImage:(id)image forSource:(id)source fetchError:(id)error
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v14)
+  imageCopy = image;
+  sourceCopy = source;
+  errorCopy = error;
+  if (imageCopy)
   {
-    if (!v9)
+    if (!errorCopy)
     {
-      v10 = [(WDSourcesListTableViewCell *)self sourceModel];
-      v11 = [v10 source];
-      v12 = [v8 isEqual:v11];
+      sourceModel = [(WDSourcesListTableViewCell *)self sourceModel];
+      source = [sourceModel source];
+      v12 = [sourceCopy isEqual:source];
 
       if (v12)
       {
-        v13 = [(WDSourcesListTableViewCell *)self iconImage];
-        [v13 setImage:v14];
+        iconImage = [(WDSourcesListTableViewCell *)self iconImage];
+        [iconImage setImage:imageCopy];
       }
     }
   }

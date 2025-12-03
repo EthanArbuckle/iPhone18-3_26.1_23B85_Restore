@@ -1,19 +1,19 @@
 @interface CHBracketsMatchingStep
-- (CHBracketsMatchingStep)initWithCodemap:(id)a3;
-- (id)process:(id)a3 options:(id)a4;
+- (CHBracketsMatchingStep)initWithCodemap:(id)codemap;
+- (id)process:(id)process options:(id)options;
 @end
 
 @implementation CHBracketsMatchingStep
 
-- (CHBracketsMatchingStep)initWithCodemap:(id)a3
+- (CHBracketsMatchingStep)initWithCodemap:(id)codemap
 {
-  v4 = a3;
+  codemapCopy = codemap;
   v26.receiver = self;
   v26.super_class = CHBracketsMatchingStep;
   v9 = [(CHBracketsMatchingStep *)&v26 init];
   if (v9)
   {
-    objc_msgSend_createLatexHelperFromMathCodemap_(CHMathPostProcessingManager, v5, v4, v6, v7, v8);
+    objc_msgSend_createLatexHelperFromMathCodemap_(CHMathPostProcessingManager, v5, codemapCopy, v6, v7, v8);
     ptr = v9->latexHelper.__ptr_;
     v9->latexHelper.__ptr_ = v25;
     if (ptr)
@@ -32,11 +32,11 @@
   return v9;
 }
 
-- (id)process:(id)a3 options:(id)a4
+- (id)process:(id)process options:(id)options
 {
   v182 = *MEMORY[0x1E69E9840];
-  v146 = a3;
-  v141 = a4;
+  processCopy = process;
+  optionsCopy = options;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -55,7 +55,7 @@
   v142 = v152;
   while (1)
   {
-    v18 = objc_msgSend_result(v146, v12, v13, v14, v15, v16, v141, v142, v143);
+    v18 = objc_msgSend_result(processCopy, v12, v13, v14, v15, v16, optionsCopy, v142, v143);
     v24 = objc_msgSend_transcriptionPaths(v18, v19, v20, v21, v22, v23);
     v30 = v17 < objc_msgSend_count(v24, v25, v26, v27, v28, v29);
 
@@ -64,7 +64,7 @@
       break;
     }
 
-    v36 = objc_msgSend_result(v146, v31, v32, v33, v34, v35);
+    v36 = objc_msgSend_result(processCopy, v31, v32, v33, v34, v35);
     v42 = objc_msgSend_transcriptionPaths(v36, v37, v38, v39, v40, v41);
     v145 = objc_msgSend_objectAtIndexedSubscript_(v42, v43, v17, v44, v45, v46);
 
@@ -105,8 +105,8 @@
     __p = 0u;
     v162 = 0u;
     v163 = 0u;
-    v58 = objc_msgSend_result(v146, v53, v54, v55, v56, v57);
-    v64 = objc_msgSend_result(v146, v59, v60, v61, v62, v63);
+    v58 = objc_msgSend_result(processCopy, v53, v54, v55, v56, v57);
+    v64 = objc_msgSend_result(processCopy, v59, v60, v61, v62, v63);
     v70 = objc_msgSend_tokenColumnCount(v64, v65, v66, v67, v68, v69);
     v151[0] = MEMORY[0x1E69E9820];
     v151[1] = 3221225472;
@@ -118,7 +118,7 @@
     v157 = v159;
     v158 = buf;
     v153 = v71;
-    v154 = self;
+    selfCopy = self;
     objc_msgSend_enumerateTokensInTranscriptionPath_columnRange_tokenProcessingBlock_(v58, v72, v145, 0, v70, v151);
 
     objc_msgSend_addObject_(v144, v73, v71, v74, v75, v76);
@@ -392,9 +392,9 @@ LABEL_73:
 
   v130 = [CHTokenizedMathResult alloc];
   v135 = objc_msgSend_initWithBestPathTokens_(v130, v131, v97, v132, v133, v134);
-  objc_msgSend_setResult_(v146, v136, v135, v137, v138, v139);
+  objc_msgSend_setResult_(processCopy, v136, v135, v137, v138, v139);
 
-  return v146;
+  return processCopy;
 }
 
 @end

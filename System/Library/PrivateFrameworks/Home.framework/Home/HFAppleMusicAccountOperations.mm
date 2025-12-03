@@ -1,22 +1,22 @@
 @interface HFAppleMusicAccountOperations
-+ (id)_completeLoginForAccessory:(id)a3 results:(id)a4 error:(id)a5;
-+ (id)_validateRemoteLoginHandlerForAccessory:(id)a3;
-+ (id)executeCompanionLoginForAccessory:(id)a3 account:(id)a4;
-+ (id)executeProxyLoginForAccessory:(id)a3 context:(id)a4;
-+ (id)logoutAccessories:(id)a3;
++ (id)_completeLoginForAccessory:(id)accessory results:(id)results error:(id)error;
++ (id)_validateRemoteLoginHandlerForAccessory:(id)accessory;
++ (id)executeCompanionLoginForAccessory:(id)accessory account:(id)account;
++ (id)executeProxyLoginForAccessory:(id)accessory context:(id)context;
++ (id)logoutAccessories:(id)accessories;
 @end
 
 @implementation HFAppleMusicAccountOperations
 
-+ (id)executeCompanionLoginForAccessory:(id)a3 account:(id)a4
++ (id)executeCompanionLoginForAccessory:(id)accessory account:(id)account
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  accessoryCopy = accessory;
+  accountCopy = account;
+  v9 = accountCopy;
+  if (accessoryCopy)
   {
-    if (v8)
+    if (accountCopy)
     {
       goto LABEL_3;
     }
@@ -24,8 +24,8 @@
 
   else
   {
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:a1 file:@"HFAppleMusicAccountArbitrator.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"accessory"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFAppleMusicAccountArbitrator.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"accessory"}];
 
     if (v9)
     {
@@ -33,15 +33,15 @@
     }
   }
 
-  v24 = [MEMORY[0x277CCA890] currentHandler];
-  [v24 handleFailureInMethod:a2 object:a1 file:@"HFAppleMusicAccountArbitrator.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"account"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HFAppleMusicAccountArbitrator.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"account"}];
 
 LABEL_3:
   v10 = +[HFMediaDispatcher sharedDispatcher];
-  v11 = [v10 appleMusicAccountStore];
+  appleMusicAccountStore = [v10 appleMusicAccountStore];
 
-  v12 = [v11 accountTypeWithAccountTypeIdentifier:*MEMORY[0x277CB8C58]];
-  v13 = [v11 accountsWithAccountType:v12];
+  v12 = [appleMusicAccountStore accountTypeWithAccountTypeIdentifier:*MEMORY[0x277CB8C58]];
+  v13 = [appleMusicAccountStore accountsWithAccountType:v12];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __75__HFAppleMusicAccountOperations_executeCompanionLoginForAccessory_account___block_invoke;
@@ -57,8 +57,8 @@ LABEL_3:
     v25[1] = 3221225472;
     v25[2] = __75__HFAppleMusicAccountOperations_executeCompanionLoginForAccessory_account___block_invoke_2;
     v25[3] = &unk_277DFAC08;
-    v28 = a1;
-    v26 = v7;
+    selfCopy = self;
+    v26 = accessoryCopy;
     v27 = v15;
     v17 = [v16 lazyFutureWithBlock:v25];
 
@@ -69,7 +69,7 @@ LABEL_3:
   {
     v19 = MEMORY[0x277CCA9B8];
     v31 = @"accessory";
-    v32[0] = v7;
+    v32[0] = accessoryCopy;
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:&v31 count:1];
     v20 = [v19 hf_errorWithCode:10 operation:@"AppleMusicProxyLogin" options:v18];
     v17 = [v16 futureWithError:v20];
@@ -114,14 +114,14 @@ void __75__HFAppleMusicAccountOperations_executeCompanionLoginForAccessory_accou
   [v4 companionLoginWithAccount:v2 completion:v5];
 }
 
-+ (id)executeProxyLoginForAccessory:(id)a3 context:(id)a4
++ (id)executeProxyLoginForAccessory:(id)accessory context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  accessoryCopy = accessory;
+  contextCopy = context;
+  v9 = contextCopy;
+  if (accessoryCopy)
   {
-    if (v8)
+    if (contextCopy)
     {
       goto LABEL_3;
     }
@@ -129,8 +129,8 @@ void __75__HFAppleMusicAccountOperations_executeCompanionLoginForAccessory_accou
 
   else
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"HFAppleMusicAccountArbitrator.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"accessory"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFAppleMusicAccountArbitrator.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"accessory"}];
 
     if (v9)
     {
@@ -138,8 +138,8 @@ void __75__HFAppleMusicAccountOperations_executeCompanionLoginForAccessory_accou
     }
   }
 
-  v16 = [MEMORY[0x277CCA890] currentHandler];
-  [v16 handleFailureInMethod:a2 object:a1 file:@"HFAppleMusicAccountArbitrator.m" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HFAppleMusicAccountArbitrator.m" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"context"}];
 
 LABEL_3:
   v10 = MEMORY[0x277D2C900];
@@ -148,10 +148,10 @@ LABEL_3:
   v17[2] = __71__HFAppleMusicAccountOperations_executeProxyLoginForAccessory_context___block_invoke;
   v17[3] = &unk_277DFAC08;
   v19 = v9;
-  v20 = a1;
-  v18 = v7;
+  selfCopy = self;
+  v18 = accessoryCopy;
   v11 = v9;
-  v12 = v7;
+  v12 = accessoryCopy;
   v13 = [v10 lazyFutureWithBlock:v17];
 
   return v13;
@@ -271,14 +271,14 @@ void __71__HFAppleMusicAccountOperations_executeProxyLoginForAccessory_context__
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)logoutAccessories:(id)a3
++ (id)logoutAccessories:(id)accessories
 {
   v51 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (![v5 count])
+  accessoriesCopy = accessories;
+  if (![accessoriesCopy count])
   {
-    v33 = [MEMORY[0x277CCA890] currentHandler];
-    [v33 handleFailureInMethod:a2 object:a1 file:@"HFAppleMusicAccountArbitrator.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"accessories.count >= 1"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFAppleMusicAccountArbitrator.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"accessories.count >= 1"}];
   }
 
   v6 = objc_opt_new();
@@ -286,7 +286,7 @@ void __71__HFAppleMusicAccountOperations_executeProxyLoginForAccessory_context__
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v7 = v5;
+  v7 = accessoriesCopy;
   v8 = [v7 countByEnumeratingWithState:&v41 objects:v50 count:16];
   if (v8)
   {
@@ -302,14 +302,14 @@ LABEL_5:
       }
 
       v12 = *(*(&v41 + 1) + 8 * v11);
-      v13 = [v12 remoteLoginHandler];
-      v14 = v13;
-      if (!v13)
+      remoteLoginHandler = [v12 remoteLoginHandler];
+      v14 = remoteLoginHandler;
+      if (!remoteLoginHandler)
       {
         break;
       }
 
-      if (([v13 isControllable] & 1) == 0)
+      if (([remoteLoginHandler isControllable] & 1) == 0)
       {
         v24 = MEMORY[0x277D2C900];
         v29 = MEMORY[0x277CCA9B8];
@@ -372,14 +372,14 @@ LABEL_12:
           objc_enumerationMutation(obj);
         }
 
-        v19 = [*(*(&v37 + 1) + 8 * i) remoteLoginHandler];
+        remoteLoginHandler2 = [*(*(&v37 + 1) + 8 * i) remoteLoginHandler];
         v20 = MEMORY[0x277D2C900];
         v35[0] = MEMORY[0x277D85DD0];
         v35[1] = 3221225472;
         v35[2] = __51__HFAppleMusicAccountOperations_logoutAccessories___block_invoke;
         v35[3] = &unk_277DF29A0;
-        v36 = v19;
-        v21 = v19;
+        v36 = remoteLoginHandler2;
+        v21 = remoteLoginHandler2;
         v22 = [v20 lazyFutureWithBlock:v35];
         [v6 addObject:v22];
       }
@@ -439,33 +439,33 @@ uint64_t __51__HFAppleMusicAccountOperations_logoutAccessories___block_invoke_3(
   }
 }
 
-+ (id)_completeLoginForAccessory:(id)a3 results:(id)a4 error:(id)a5
++ (id)_completeLoginForAccessory:(id)accessory results:(id)results error:(id)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  accessoryCopy = accessory;
+  resultsCopy = results;
+  errorCopy = error;
+  if (errorCopy)
   {
     v10 = HFLogForCategory(0);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v21 = v9;
+      v21 = errorCopy;
       _os_log_error_impl(&dword_20D9BF000, v10, OS_LOG_TYPE_ERROR, "Returning from _completeLoginForAccessory due to error  = [%@]", buf, 0xCu);
     }
 
-    v11 = [MEMORY[0x277D2C900] futureWithError:v9];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithError:errorCopy];
     goto LABEL_5;
   }
 
-  v13 = [v8 count];
+  v13 = [resultsCopy count];
   v14 = MEMORY[0x277D2C900];
   if (!v13)
   {
-    v11 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
 LABEL_5:
-    v12 = v11;
+    v12 = futureWithNoResult;
     goto LABEL_8;
   }
 
@@ -473,8 +473,8 @@ LABEL_5:
   v17[1] = 3221225472;
   v17[2] = __74__HFAppleMusicAccountOperations__completeLoginForAccessory_results_error___block_invoke;
   v17[3] = &unk_277DF4150;
-  v18 = v7;
-  v19 = v8;
+  v18 = accessoryCopy;
+  v19 = resultsCopy;
   v12 = [v14 futureWithErrorOnlyHandlerAdapterBlock:v17];
 
 LABEL_8:
@@ -497,17 +497,17 @@ void __74__HFAppleMusicAccountOperations__completeLoginForAccessory_results_erro
   [v5 proxyLoginWithAuthResults:*(a1 + 40) completion:v3];
 }
 
-+ (id)_validateRemoteLoginHandlerForAccessory:(id)a3
++ (id)_validateRemoteLoginHandlerForAccessory:(id)accessory
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 remoteLoginHandler];
-  v5 = v4;
-  if (v4)
+  accessoryCopy = accessory;
+  remoteLoginHandler = [accessoryCopy remoteLoginHandler];
+  v5 = remoteLoginHandler;
+  if (remoteLoginHandler)
   {
-    v6 = [v4 isControllable];
+    isControllable = [remoteLoginHandler isControllable];
     v7 = MEMORY[0x277D2C900];
-    if (v6)
+    if (isControllable)
     {
       v8 = [MEMORY[0x277D2C900] futureWithResult:v5];
       goto LABEL_7;
@@ -515,7 +515,7 @@ void __74__HFAppleMusicAccountOperations__completeLoginForAccessory_results_erro
 
     v13 = MEMORY[0x277CCA9B8];
     v17 = @"accessory";
-    v18 = v3;
+    v18 = accessoryCopy;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
     v11 = v13;
     v12 = 12;
@@ -526,7 +526,7 @@ void __74__HFAppleMusicAccountOperations__completeLoginForAccessory_results_erro
     v7 = MEMORY[0x277D2C900];
     v9 = MEMORY[0x277CCA9B8];
     v19 = @"accessory";
-    v20[0] = v3;
+    v20[0] = accessoryCopy;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
     v11 = v9;
     v12 = 11;

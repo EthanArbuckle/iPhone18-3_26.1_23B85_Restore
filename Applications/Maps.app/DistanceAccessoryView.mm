@@ -1,6 +1,6 @@
 @interface DistanceAccessoryView
 - (CGSize)intrinsicContentSize;
-- (DistanceAccessoryView)initWithFrame:(CGRect)a3;
+- (DistanceAccessoryView)initWithFrame:(CGRect)frame;
 - (NSCharacterSet)customDecimalCharacterSet;
 - (NSCharacterSet)customNonDecimalCharacterSet;
 - (NSDictionary)digitTextAttributes;
@@ -8,8 +8,8 @@
 - (UIFontDescriptor)roundedFontDescriptor;
 - (UIView)distanceLabel;
 - (void)layoutSubviews;
-- (void)setDisplayState:(int64_t)a3;
-- (void)setDistanceToNextManeuver:(double)a3;
+- (void)setDisplayState:(int64_t)state;
+- (void)setDistanceToNextManeuver:(double)maneuver;
 @end
 
 @implementation DistanceAccessoryView
@@ -23,16 +23,16 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(DistanceAccessoryView *)self distanceLabel];
-  [v3 intrinsicContentSize];
+  distanceLabel = [(DistanceAccessoryView *)self distanceLabel];
+  [distanceLabel intrinsicContentSize];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(DistanceAccessoryView *)self distanceLabel];
-  [v8 setFrame:{0.0, 0.0, v5, v7}];
+  distanceLabel2 = [(DistanceAccessoryView *)self distanceLabel];
+  [distanceLabel2 setFrame:{0.0, 0.0, v5, v7}];
 
-  v9 = [(DistanceAccessoryView *)self activityView];
-  [v9 setFrame:{0.0, 0.0, 20.0, 20.0}];
+  activityView = [(DistanceAccessoryView *)self activityView];
+  [activityView setFrame:{0.0, 0.0, 20.0, 20.0}];
 
   [(DistanceAccessoryView *)self invalidateIntrinsicContentSize];
 }
@@ -45,8 +45,8 @@
   {
     if ([(DistanceAccessoryView *)self displayState]== 2)
     {
-      v5 = [(DistanceAccessoryView *)self distanceLabel];
-      [v5 intrinsicContentSize];
+      distanceLabel = [(DistanceAccessoryView *)self distanceLabel];
+      [distanceLabel intrinsicContentSize];
       width = v6;
       height = v7;
     }
@@ -80,7 +80,7 @@
     v22[0] = &off_1016E72B0;
     v22[1] = &off_1016E72C8;
     v6 = [NSDictionary dictionaryWithObjects:v22 forKeys:v21 count:2];
-    v7 = [(DistanceAccessoryView *)self roundedFontDescriptor];
+    roundedFontDescriptor = [(DistanceAccessoryView *)self roundedFontDescriptor];
     v20[0] = v5;
     v19[0] = UIFontDescriptorTraitsAttribute;
     v19[1] = UIFontDescriptorFeatureSettingsAttribute;
@@ -88,7 +88,7 @@
     v8 = [NSArray arrayWithObjects:&v18 count:1];
     v20[1] = v8;
     v9 = [NSDictionary dictionaryWithObjects:v20 forKeys:v19 count:2];
-    v10 = [v7 fontDescriptorByAddingAttributes:v9];
+    v10 = [roundedFontDescriptor fontDescriptorByAddingAttributes:v9];
 
     v11 = [UIFont fontWithDescriptor:v10 size:15.0];
     v12 = [MapsTheme apertureKeyColor:NSFontAttributeName];
@@ -113,11 +113,11 @@
     v19 = v4;
     v5 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
 
-    v6 = [(DistanceAccessoryView *)self roundedFontDescriptor];
+    roundedFontDescriptor = [(DistanceAccessoryView *)self roundedFontDescriptor];
     v16 = UIFontDescriptorTraitsAttribute;
     v17 = v5;
     v7 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
-    v8 = [v6 fontDescriptorByAddingAttributes:v7];
+    v8 = [roundedFontDescriptor fontDescriptorByAddingAttributes:v7];
 
     v9 = [UIFont fontWithDescriptor:v8 size:8.0];
     v15[0] = v9;
@@ -142,9 +142,9 @@
   customDecimalCharacterSet = self->_customDecimalCharacterSet;
   if (!customDecimalCharacterSet)
   {
-    v4 = [(DistanceAccessoryView *)self customNonDecimalCharacterSet];
-    v5 = [v4 invertedSet];
-    v6 = [v5 mutableCopy];
+    customNonDecimalCharacterSet = [(DistanceAccessoryView *)self customNonDecimalCharacterSet];
+    invertedSet = [customNonDecimalCharacterSet invertedSet];
+    v6 = [invertedSet mutableCopy];
 
     [v6 addCharactersInString:@"."];
     v7 = [v6 copy];
@@ -184,8 +184,8 @@
   if (!roundedFontDescriptor)
   {
     v4 = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-    v5 = [v4 fontDescriptor];
-    v6 = [v5 fontDescriptorWithDesign:UIFontDescriptorSystemDesignRounded];
+    fontDescriptor = [v4 fontDescriptor];
+    v6 = [fontDescriptor fontDescriptorWithDesign:UIFontDescriptorSystemDesignRounded];
     v7 = self->_roundedFontDescriptor;
     self->_roundedFontDescriptor = v6;
 
@@ -195,12 +195,12 @@
   return roundedFontDescriptor;
 }
 
-- (void)setDistanceToNextManeuver:(double)a3
+- (void)setDistanceToNextManeuver:(double)maneuver
 {
-  self->_distanceToNextManeuver = a3;
+  self->_distanceToNextManeuver = maneuver;
   v4 = [NSString _navigation_localizedStringForDistance:1 context:0 extraDetail:?];
-  v5 = [(DistanceAccessoryView *)self previousDistanceString];
-  v6 = [v4 isEqualToString:v5];
+  previousDistanceString = [(DistanceAccessoryView *)self previousDistanceString];
+  v6 = [v4 isEqualToString:previousDistanceString];
 
   if ((v6 & 1) == 0)
   {
@@ -213,31 +213,31 @@
       {
         do
         {
-          v9 = [(DistanceAccessoryView *)self customDecimalCharacterSet];
+          customDecimalCharacterSet = [(DistanceAccessoryView *)self customDecimalCharacterSet];
           v30 = &stru_1016631F0;
-          [v8 scanCharactersFromSet:v9 intoString:&v30];
+          [v8 scanCharactersFromSet:customDecimalCharacterSet intoString:&v30];
           v10 = v30;
 
           if ([(__CFString *)v10 length])
           {
             v11 = [NSAttributedString alloc];
-            v12 = [(DistanceAccessoryView *)self digitTextAttributes];
-            v13 = [v11 initWithString:v10 attributes:v12];
+            digitTextAttributes = [(DistanceAccessoryView *)self digitTextAttributes];
+            v13 = [v11 initWithString:v10 attributes:digitTextAttributes];
 
             [v7 appendAttributedString:v13];
           }
 
-          v14 = [(DistanceAccessoryView *)self customNonDecimalCharacterSet];
+          customNonDecimalCharacterSet = [(DistanceAccessoryView *)self customNonDecimalCharacterSet];
           v29 = &stru_1016631F0;
-          [v8 scanCharactersFromSet:v14 intoString:&v29];
+          [v8 scanCharactersFromSet:customNonDecimalCharacterSet intoString:&v29];
           v15 = v29;
 
           if ([(__CFString *)v15 length])
           {
             v16 = [NSAttributedString alloc];
-            v17 = [(__CFString *)v15 uppercaseString];
-            v18 = [(DistanceAccessoryView *)self unitTextAttributes];
-            v19 = [v16 initWithString:v17 attributes:v18];
+            uppercaseString = [(__CFString *)v15 uppercaseString];
+            unitTextAttributes = [(DistanceAccessoryView *)self unitTextAttributes];
+            v19 = [v16 initWithString:uppercaseString attributes:unitTextAttributes];
 
             [v7 appendAttributedString:v19];
           }
@@ -252,8 +252,8 @@
     else
     {
       v21 = [NSAttributedString alloc];
-      v22 = [(DistanceAccessoryView *)self digitTextAttributes];
-      v20 = [v21 initWithString:v4 attributes:v22];
+      digitTextAttributes2 = [(DistanceAccessoryView *)self digitTextAttributes];
+      v20 = [v21 initWithString:v4 attributes:digitTextAttributes2];
     }
 
     v27[0] = _NSConcreteStackBlock;
@@ -272,34 +272,34 @@
 
     else
     {
-      v26 = [(DistanceAccessoryView *)self systemApertureElementContext];
-      [v26 setElementNeedsUpdateWithCoordinatedAnimations:v24];
+      systemApertureElementContext = [(DistanceAccessoryView *)self systemApertureElementContext];
+      [systemApertureElementContext setElementNeedsUpdateWithCoordinatedAnimations:v24];
     }
   }
 }
 
-- (void)setDisplayState:(int64_t)a3
+- (void)setDisplayState:(int64_t)state
 {
-  if (self->_displayState != a3)
+  if (self->_displayState != state)
   {
-    self->_displayState = a3;
-    v6 = a3 != 2;
-    v7 = [(DistanceAccessoryView *)self distanceLabel];
-    [v7 setHidden:v6];
+    self->_displayState = state;
+    v6 = state != 2;
+    distanceLabel = [(DistanceAccessoryView *)self distanceLabel];
+    [distanceLabel setHidden:v6];
 
-    v8 = [(DistanceAccessoryView *)self activityView];
-    [v8 setHidden:a3 != 3];
+    activityView = [(DistanceAccessoryView *)self activityView];
+    [activityView setHidden:state != 3];
 
-    v9 = [(DistanceAccessoryView *)self activityView];
-    v10 = v9;
-    if (a3 == 3)
+    activityView2 = [(DistanceAccessoryView *)self activityView];
+    v10 = activityView2;
+    if (state == 3)
     {
-      [v9 startAnimating];
+      [activityView2 startAnimating];
     }
 
     else
     {
-      [v9 stopAnimating];
+      [activityView2 stopAnimating];
     }
 
     [(DistanceAccessoryView *)self setNeedsLayout];
@@ -308,12 +308,12 @@
   }
 }
 
-- (DistanceAccessoryView)initWithFrame:(CGRect)a3
+- (DistanceAccessoryView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v18.receiver = self;
   v18.super_class = DistanceAccessoryView;
   v7 = [(DistanceAccessoryView *)&v18 initWithFrame:?];
@@ -328,8 +328,8 @@
     labelViewModel = v7->_labelViewModel;
     v7->_labelViewModel = v10;
 
-    v12 = [(DistanceAccessoryLabelViewModel *)v7->_labelViewModel labelView];
-    objc_storeWeak(&v7->_distanceLabel, v12);
+    labelView = [(DistanceAccessoryLabelViewModel *)v7->_labelViewModel labelView];
+    objc_storeWeak(&v7->_distanceLabel, labelView);
 
     WeakRetained = objc_loadWeakRetained(&v7->_distanceLabel);
     [WeakRetained setAccessibilityIdentifier:@"DistanceLabel"];

@@ -4,13 +4,13 @@
 - (WKWebView)webView;
 - (id)dequeueRequest;
 - (void)_measureContentAndSetFrame;
-- (void)_notifyRequesterAndSendNextRequestOfPreferredHeight:(double)a3 error:(id)a4;
+- (void)_notifyRequesterAndSendNextRequestOfPreferredHeight:(double)height error:(id)error;
 - (void)_sendNextRequest;
 - (void)_snapshotCurrentContent;
-- (void)enqueueRequest:(id)a3;
+- (void)enqueueRequest:(id)request;
 - (void)setDefaultFrameAndPositionWebView;
-- (void)setFrameAndPositionWebView:(CGRect)a3;
-- (void)setWebView:(id)a3;
+- (void)setFrameAndPositionWebView:(CGRect)view;
+- (void)setWebView:(id)view;
 @end
 
 @implementation BKTOCWebViewCellLoadQueue
@@ -30,9 +30,9 @@
   return v2;
 }
 
-- (void)enqueueRequest:(id)a3
+- (void)enqueueRequest:(id)request
 {
-  [(NSMutableOrderedSet *)self->_requests addObject:a3];
+  [(NSMutableOrderedSet *)self->_requests addObject:request];
 
   [(BKTOCWebViewCellLoadQueue *)self _sendNextRequest];
 }
@@ -41,33 +41,33 @@
 {
   if ([(NSMutableOrderedSet *)self->_requests count])
   {
-    v3 = [(NSMutableOrderedSet *)self->_requests lastObject];
+    lastObject = [(NSMutableOrderedSet *)self->_requests lastObject];
     [(NSMutableOrderedSet *)self->_requests removeObjectAtIndex:[(NSMutableOrderedSet *)self->_requests count]- 1];
   }
 
   else
   {
-    v3 = 0;
+    lastObject = 0;
   }
 
-  return v3;
+  return lastObject;
 }
 
-- (void)setWebView:(id)a3
+- (void)setWebView:(id)view
 {
-  v5 = a3;
-  v4 = objc_storeWeak(&self->_webView, v5);
-  [v5 setNavigationDelegate:self];
+  viewCopy = view;
+  v4 = objc_storeWeak(&self->_webView, viewCopy);
+  [viewCopy setNavigationDelegate:self];
 
   [(BKTOCWebViewCellLoadQueue *)self _sendNextRequest];
 }
 
-- (void)setFrameAndPositionWebView:(CGRect)a3
+- (void)setFrameAndPositionWebView:(CGRect)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  v7 = -CGRectGetWidth(a3);
+  height = view.size.height;
+  width = view.size.width;
+  y = view.origin.y;
+  v7 = -CGRectGetWidth(view);
   WeakRetained = objc_loadWeakRetained(&self->_webView);
   [WeakRetained setFrame:{v7, y, width, height}];
 }
@@ -91,26 +91,26 @@
     if (WeakRetained)
     {
       v4 = WeakRetained;
-      v5 = [(BKTOCWebViewCellLoadQueue *)self isEmpty];
+      isEmpty = [(BKTOCWebViewCellLoadQueue *)self isEmpty];
 
-      if ((v5 & 1) == 0)
+      if ((isEmpty & 1) == 0)
       {
-        v6 = [(BKTOCWebViewCellLoadQueue *)self dequeueRequest];
+        dequeueRequest = [(BKTOCWebViewCellLoadQueue *)self dequeueRequest];
         currentRequest = self->_currentRequest;
-        self->_currentRequest = v6;
+        self->_currentRequest = dequeueRequest;
 
         v8 = self->_currentRequest;
         if (v8)
         {
-          v9 = [(BKTOCWebViewCellLoadRequest *)v8 htmlContentString];
-          v14 = [v9 dataUsingEncoding:4];
+          htmlContentString = [(BKTOCWebViewCellLoadRequest *)v8 htmlContentString];
+          v14 = [htmlContentString dataUsingEncoding:4];
 
-          v10 = [(BKTOCWebViewCellLoadRequest *)self->_currentRequest baseURL];
+          baseURL = [(BKTOCWebViewCellLoadRequest *)self->_currentRequest baseURL];
           v11 = objc_loadWeakRetained(&self->_webView);
-          v12 = [v11 loadData:v14 MIMEType:BEXBEHTMLContentType characterEncodingName:BEUTF8StringEncodingName baseURL:v10];
+          v12 = [v11 loadData:v14 MIMEType:BEXBEHTMLContentType characterEncodingName:BEUTF8StringEncodingName baseURL:baseURL];
 
-          v13 = [(BKTOCWebViewCellLoadRequest *)self->_currentRequest requester];
-          [v13 contentBeganLoadingForRequest:self->_currentRequest];
+          requester = [(BKTOCWebViewCellLoadRequest *)self->_currentRequest requester];
+          [requester contentBeganLoadingForRequest:self->_currentRequest];
         }
       }
     }
@@ -149,12 +149,12 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_notifyRequesterAndSendNextRequestOfPreferredHeight:(double)a3 error:(id)a4
+- (void)_notifyRequesterAndSendNextRequestOfPreferredHeight:(double)height error:(id)error
 {
   currentRequest = self->_currentRequest;
-  v7 = a4;
-  v8 = [(BKTOCWebViewCellLoadRequest *)currentRequest requester];
-  [v8 contentFinishedLoadingForRequest:self->_currentRequest preferredHeight:v7 error:a3];
+  errorCopy = error;
+  requester = [(BKTOCWebViewCellLoadRequest *)currentRequest requester];
+  [requester contentFinishedLoadingForRequest:self->_currentRequest preferredHeight:errorCopy error:height];
 
   v9 = self->_currentRequest;
   self->_currentRequest = 0;

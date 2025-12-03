@@ -1,7 +1,7 @@
 @interface HUAnnounceNotificationSettingsItemProvider
 - (HMUser)user;
 - (HUAnnounceNotificationSettingsItemProvider)init;
-- (HUAnnounceNotificationSettingsItemProvider)initWithHome:(id)a3;
+- (HUAnnounceNotificationSettingsItemProvider)initWithHome:(id)home;
 - (id)_notificationModes;
 - (id)invalidationReasons;
 - (id)reloadItems;
@@ -9,16 +9,16 @@
 
 @implementation HUAnnounceNotificationSettingsItemProvider
 
-- (HUAnnounceNotificationSettingsItemProvider)initWithHome:(id)a3
+- (HUAnnounceNotificationSettingsItemProvider)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v11.receiver = self;
   v11.super_class = HUAnnounceNotificationSettingsItemProvider;
   v6 = [(HFItemProvider *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
     v8 = objc_opt_new();
     items = v7->_items;
     v7->_items = v8;
@@ -29,31 +29,31 @@
 
 - (HUAnnounceNotificationSettingsItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithUser_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HUAnnounceNotificationSettingsItemProvider.m" lineNumber:98 description:{@"%s is unavailable; use %@ instead", "-[HUAnnounceNotificationSettingsItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUAnnounceNotificationSettingsItemProvider.m" lineNumber:98 description:{@"%s is unavailable; use %@ instead", "-[HUAnnounceNotificationSettingsItemProvider init]", v5}];
 
   return 0;
 }
 
 - (HMUser)user
 {
-  v2 = [(HUAnnounceNotificationSettingsItemProvider *)self home];
-  v3 = [v2 currentUser];
+  home = [(HUAnnounceNotificationSettingsItemProvider *)self home];
+  currentUser = [home currentUser];
 
-  return v3;
+  return currentUser;
 }
 
 - (id)reloadItems
 {
   objc_initWeak(&location, self);
-  v3 = [(HUAnnounceNotificationSettingsItemProvider *)self _notificationModes];
+  _notificationModes = [(HUAnnounceNotificationSettingsItemProvider *)self _notificationModes];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__HUAnnounceNotificationSettingsItemProvider_reloadItems__block_invoke_3;
   v9[3] = &unk_277DB93F0;
   objc_copyWeak(&v10, &location);
-  v4 = [(HFItemProvider *)self reloadItemsWithObjects:v3 keyAdaptor:&__block_literal_global_32 itemAdaptor:&__block_literal_global_57_0 filter:0 itemMap:v9];
+  v4 = [(HFItemProvider *)self reloadItemsWithObjects:_notificationModes keyAdaptor:&__block_literal_global_32 itemAdaptor:&__block_literal_global_57_0 filter:0 itemMap:v9];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__HUAnnounceNotificationSettingsItemProvider_reloadItems__block_invoke_5;
@@ -152,8 +152,8 @@ id __57__HUAnnounceNotificationSettingsItemProvider_reloadItems__block_invoke_5(
 {
   v5.receiver = self;
   v5.super_class = HUAnnounceNotificationSettingsItemProvider;
-  v2 = [(HFItemProvider *)&v5 invalidationReasons];
-  v3 = [v2 setByAddingObject:*MEMORY[0x277D13B88]];
+  invalidationReasons = [(HFItemProvider *)&v5 invalidationReasons];
+  v3 = [invalidationReasons setByAddingObject:*MEMORY[0x277D13B88]];
 
   return v3;
 }
@@ -161,18 +161,18 @@ id __57__HUAnnounceNotificationSettingsItemProvider_reloadItems__block_invoke_5(
 - (id)_notificationModes
 {
   v3 = [MEMORY[0x277CBEB18] arrayWithObject:&unk_282490D40];
-  v4 = [MEMORY[0x277D147A8] sharedDispatcher];
-  [v4 authorizationStatus];
+  mEMORY[0x277D147A8] = [MEMORY[0x277D147A8] sharedDispatcher];
+  [mEMORY[0x277D147A8] authorizationStatus];
 
   if (HFLocationServicesAvailableForAuthorizationStatus())
   {
     [v3 addObject:&unk_282490D58];
-    v5 = [(HUAnnounceNotificationSettingsItemProvider *)self home];
-    v6 = [(HUAnnounceNotificationSettingsItemProvider *)self user];
-    v7 = [v5 homeAccessControlForUser:v6];
-    v8 = [v7 isRemoteAccessAllowed];
+    home = [(HUAnnounceNotificationSettingsItemProvider *)self home];
+    user = [(HUAnnounceNotificationSettingsItemProvider *)self user];
+    v7 = [home homeAccessControlForUser:user];
+    isRemoteAccessAllowed = [v7 isRemoteAccessAllowed];
 
-    if (v8)
+    if (isRemoteAccessAllowed)
     {
       [v3 addObject:&unk_282490D70];
     }

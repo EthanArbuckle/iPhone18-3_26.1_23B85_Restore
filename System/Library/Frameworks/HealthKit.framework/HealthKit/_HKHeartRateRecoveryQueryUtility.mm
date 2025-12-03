@@ -1,11 +1,11 @@
 @interface _HKHeartRateRecoveryQueryUtility
-+ (id)perMinuteWorkoutRecoveryHeartRateFromReadings:(id)a3 workoutEndDate:(id)a4;
-+ (id)predicateForWorkoutRecoveryTimeWithWorkout:(id)a3;
-+ (id)recoveryDateIntervalWithWorkout:(id)a3;
-+ (id)workoutRecoveryDateIntervalForWorkout:(id)a3 overlappingWorkouts:(id)a4;
-+ (id)workoutRecoveryHeartRatesForWorkout:(id)a3 recoveryDateInterval:(id)a4 readings:(id)a5;
-- (_HKHeartRateRecoveryQueryUtility)initWithHealthStore:(id)a3 workout:(id)a4 handler:(id)a5;
-- (void)_heartRatesPostWorkout:(id)a3 workoutRecoveryTimePredicate:(id)a4 completionHandler:(id)a5;
++ (id)perMinuteWorkoutRecoveryHeartRateFromReadings:(id)readings workoutEndDate:(id)date;
++ (id)predicateForWorkoutRecoveryTimeWithWorkout:(id)workout;
++ (id)recoveryDateIntervalWithWorkout:(id)workout;
++ (id)workoutRecoveryDateIntervalForWorkout:(id)workout overlappingWorkouts:(id)workouts;
++ (id)workoutRecoveryHeartRatesForWorkout:(id)workout recoveryDateInterval:(id)interval readings:(id)readings;
+- (_HKHeartRateRecoveryQueryUtility)initWithHealthStore:(id)store workout:(id)workout handler:(id)handler;
+- (void)_heartRatesPostWorkout:(id)workout workoutRecoveryTimePredicate:(id)predicate completionHandler:(id)handler;
 - (void)_setupQueries;
 - (void)dealloc;
 - (void)stop;
@@ -13,20 +13,20 @@
 
 @implementation _HKHeartRateRecoveryQueryUtility
 
-- (_HKHeartRateRecoveryQueryUtility)initWithHealthStore:(id)a3 workout:(id)a4 handler:(id)a5
+- (_HKHeartRateRecoveryQueryUtility)initWithHealthStore:(id)store workout:(id)workout handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  workoutCopy = workout;
+  handlerCopy = handler;
   v17.receiver = self;
   v17.super_class = _HKHeartRateRecoveryQueryUtility;
   v12 = [(_HKHeartRateRecoveryQueryUtility *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_healthStore, a3);
-    objc_storeStrong(&v13->_workout, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_healthStore, store);
+    objc_storeStrong(&v13->_workout, workout);
+    v14 = [handlerCopy copy];
     handler = v13->_handler;
     v13->_handler = v14;
 
@@ -82,12 +82,12 @@
   _Block_object_dispose(v13, 8);
 }
 
-- (void)_heartRatesPostWorkout:(id)a3 workoutRecoveryTimePredicate:(id)a4 completionHandler:(id)a5
+- (void)_heartRatesPostWorkout:(id)workout workoutRecoveryTimePredicate:(id)predicate completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [objc_opt_class() recoveryDateIntervalWithWorkout:v10];
+  handlerCopy = handler;
+  predicateCopy = predicate;
+  workoutCopy = workout;
+  v11 = [objc_opt_class() recoveryDateIntervalWithWorkout:workoutCopy];
 
   v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v13 = [HKQuantitySeriesSampleQuery alloc];
@@ -98,11 +98,11 @@
   v20[3] = &unk_1E737DDD0;
   v21 = v11;
   v22 = v12;
-  v23 = v8;
-  v15 = v8;
+  v23 = handlerCopy;
+  v15 = handlerCopy;
   v16 = v12;
   v17 = v11;
-  v18 = [(HKQuantitySeriesSampleQuery *)v13 initWithQuantityType:v14 predicate:v9 quantityHandler:v20];
+  v18 = [(HKQuantitySeriesSampleQuery *)v13 initWithQuantityType:v14 predicate:predicateCopy quantityHandler:v20];
 
   heartRateQuery = self->_heartRateQuery;
   self->_heartRateQuery = v18;
@@ -110,26 +110,26 @@
   [(HKHealthStore *)self->_healthStore executeQuery:self->_heartRateQuery];
 }
 
-+ (id)workoutRecoveryDateIntervalForWorkout:(id)a3 overlappingWorkouts:(id)a4
++ (id)workoutRecoveryDateIntervalForWorkout:(id)workout overlappingWorkouts:(id)workouts
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 endDate];
-  v9 = [a1 _recoveryEndDateWithStartDate:v8];
+  workoutCopy = workout;
+  workoutsCopy = workouts;
+  endDate = [workoutCopy endDate];
+  v9 = [self _recoveryEndDateWithStartDate:endDate];
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __94___HKHeartRateRecoveryQueryUtility_workoutRecoveryDateIntervalForWorkout_overlappingWorkouts___block_invoke;
   v38[3] = &unk_1E737DDF8;
-  v10 = v6;
+  v10 = workoutCopy;
   v39 = v10;
   v11 = v9;
   v40 = v11;
-  v32 = v8;
-  v33 = v7;
+  v32 = endDate;
+  v33 = workoutsCopy;
   v41 = v32;
-  v12 = [v7 hk_filter:v38];
-  v13 = [MEMORY[0x1E695DF00] distantFuture];
+  v12 = [workoutsCopy hk_filter:v38];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
@@ -150,14 +150,14 @@
         }
 
         v19 = *(*(&v34 + 1) + 8 * i);
-        v20 = [v19 startDate];
-        v21 = [v20 hk_isBeforeOrEqualToDate:v13];
+        startDate = [v19 startDate];
+        v21 = [startDate hk_isBeforeOrEqualToDate:distantFuture];
 
         if (v21)
         {
-          v22 = [v19 startDate];
+          startDate2 = [v19 startDate];
 
-          v13 = v22;
+          distantFuture = startDate2;
         }
       }
 
@@ -167,9 +167,9 @@
     while (v16);
   }
 
-  if ([v13 hk_isBeforeOrEqualToDate:v11])
+  if ([distantFuture hk_isBeforeOrEqualToDate:v11])
   {
-    v23 = v13;
+    v23 = distantFuture;
   }
 
   else
@@ -178,8 +178,8 @@
   }
 
   v24 = v23;
-  v25 = [v10 endDate];
-  v26 = [v25 compare:v24];
+  endDate2 = [v10 endDate];
+  v26 = [endDate2 compare:v24];
 
   if (v26 == 1)
   {
@@ -189,8 +189,8 @@
   else
   {
     v28 = objc_alloc(MEMORY[0x1E696AB80]);
-    v29 = [v10 endDate];
-    v27 = [v28 initWithStartDate:v29 endDate:v24];
+    endDate3 = [v10 endDate];
+    v27 = [v28 initWithStartDate:endDate3 endDate:v24];
   }
 
   v30 = *MEMORY[0x1E69E9840];
@@ -198,36 +198,36 @@
   return v27;
 }
 
-+ (id)workoutRecoveryHeartRatesForWorkout:(id)a3 recoveryDateInterval:(id)a4 readings:(id)a5
++ (id)workoutRecoveryHeartRatesForWorkout:(id)workout recoveryDateInterval:(id)interval readings:(id)readings
 {
-  v6 = a4;
+  intervalCopy = interval;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __102___HKHeartRateRecoveryQueryUtility_workoutRecoveryHeartRatesForWorkout_recoveryDateInterval_readings___block_invoke;
   v10[3] = &unk_1E737DE20;
-  v11 = v6;
-  v7 = v6;
-  v8 = [a5 hk_filter:v10];
+  v11 = intervalCopy;
+  v7 = intervalCopy;
+  v8 = [readings hk_filter:v10];
 
   return v8;
 }
 
-+ (id)perMinuteWorkoutRecoveryHeartRateFromReadings:(id)a3 workoutEndDate:(id)a4
++ (id)perMinuteWorkoutRecoveryHeartRateFromReadings:(id)readings workoutEndDate:(id)date
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  readingsCopy = readings;
+  dateCopy = date;
   v30 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v32 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v8 = objc_alloc(MEMORY[0x1E696AB80]);
-  v9 = [a1 _recoveryEndDateWithStartDate:v7];
-  v27 = [v8 initWithStartDate:v7 endDate:v9];
+  v9 = [self _recoveryEndDateWithStartDate:dateCopy];
+  v27 = [v8 initWithStartDate:dateCopy endDate:v9];
 
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v6;
+  obj = readingsCopy;
   v28 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v28)
   {
@@ -244,14 +244,14 @@
 
         v29 = v10;
         v31 = *(*(&v33 + 1) + 8 * v10);
-        v11 = [v31 date];
-        if ([v27 containsDate:v11])
+        date = [v31 date];
+        if ([v27 containsDate:date])
         {
           v12 = 0;
           for (i = 0; i != 3; ++i)
           {
-            v14 = [v7 dateByAddingTimeInterval:v12];
-            [v11 timeIntervalSinceDate:v14];
+            v14 = [dateCopy dateByAddingTimeInterval:v12];
+            [date timeIntervalSinceDate:v14];
             v16 = fabs(v15);
             v17 = [MEMORY[0x1E696AD98] numberWithInt:i];
             v18 = [v32 objectForKeyedSubscript:v17];
@@ -288,26 +288,26 @@
   return v30;
 }
 
-+ (id)predicateForWorkoutRecoveryTimeWithWorkout:(id)a3
++ (id)predicateForWorkoutRecoveryTimeWithWorkout:(id)workout
 {
-  v3 = [a1 recoveryDateIntervalWithWorkout:a3];
-  v4 = [v3 startDate];
-  v5 = [v3 endDate];
-  v6 = [HKQuery predicateForSamplesWithStartDate:v4 endDate:v5 inclusiveEndDates:1 options:0];
+  v3 = [self recoveryDateIntervalWithWorkout:workout];
+  startDate = [v3 startDate];
+  endDate = [v3 endDate];
+  v6 = [HKQuery predicateForSamplesWithStartDate:startDate endDate:endDate inclusiveEndDates:1 options:0];
 
   return v6;
 }
 
-+ (id)recoveryDateIntervalWithWorkout:(id)a3
++ (id)recoveryDateIntervalWithWorkout:(id)workout
 {
   v4 = MEMORY[0x1E696AB80];
-  v5 = a3;
+  workoutCopy = workout;
   v6 = [v4 alloc];
-  v7 = [v5 endDate];
-  v8 = [v5 endDate];
+  endDate = [workoutCopy endDate];
+  endDate2 = [workoutCopy endDate];
 
-  v9 = [a1 _recoveryEndDateWithStartDate:v8];
-  v10 = [v6 initWithStartDate:v7 endDate:v9];
+  v9 = [self _recoveryEndDateWithStartDate:endDate2];
+  v10 = [v6 initWithStartDate:endDate endDate:v9];
 
   return v10;
 }

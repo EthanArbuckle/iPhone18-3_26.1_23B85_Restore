@@ -1,12 +1,12 @@
 @interface CNCoreRecentsContactStore
 + (NSString)acceptedContactsAccountIdentifier;
 + (NSString)acceptedContactsDomainIdentifier;
-+ (id)coreRecentsDomainFromContactIdentifier:(id)a3;
-+ (id)coreRecentsDomainFromInternalIdentifier:(id)a3;
-+ (id)coreRecentsIdentifierFromInternalIdentifier:(id)a3;
-+ (id)internalIdentifierForDomain:(id)a3 recentsIdentifier:(id)a4;
++ (id)coreRecentsDomainFromContactIdentifier:(id)identifier;
++ (id)coreRecentsDomainFromInternalIdentifier:(id)identifier;
++ (id)coreRecentsIdentifierFromInternalIdentifier:(id)identifier;
++ (id)internalIdentifierForDomain:(id)domain recentsIdentifier:(id)identifier;
 + (id)storeIdentifier;
-- (CNCoreRecentsContactStore)initWithConfiguration:(id)a3 domains:(id)a4;
+- (CNCoreRecentsContactStore)initWithConfiguration:(id)configuration domains:(id)domains;
 @end
 
 @implementation CNCoreRecentsContactStore
@@ -48,7 +48,7 @@
   block[1] = 3221225472;
   block[2] = __44__CNCoreRecentsContactStore_storeIdentifier__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (storeIdentifier_cn_once_token_1 != -1)
   {
     dispatch_once(&storeIdentifier_cn_once_token_1, block);
@@ -67,30 +67,30 @@ void __44__CNCoreRecentsContactStore_storeIdentifier__block_invoke(uint64_t a1)
   storeIdentifier_cn_once_object_1 = v1;
 }
 
-+ (id)internalIdentifierForDomain:(id)a3 recentsIdentifier:(id)a4
++ (id)internalIdentifierForDomain:(id)domain recentsIdentifier:(id)identifier
 {
-  v5 = 0;
-  if (a3 && a4)
+  identifier = 0;
+  if (domain && identifier)
   {
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", a3, @":", a4];
+    identifier = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", domain, @":", identifier];
     v4 = vars8;
   }
 
+  return identifier;
+}
+
++ (id)coreRecentsDomainFromContactIdentifier:(id)identifier
+{
+  v4 = [self internalIdentifierFromContactIdentifier:identifier];
+  v5 = [self coreRecentsDomainFromInternalIdentifier:v4];
+
   return v5;
 }
 
-+ (id)coreRecentsDomainFromContactIdentifier:(id)a3
++ (id)coreRecentsDomainFromInternalIdentifier:(id)identifier
 {
-  v4 = [a1 internalIdentifierFromContactIdentifier:a3];
-  v5 = [a1 coreRecentsDomainFromInternalIdentifier:v4];
-
-  return v5;
-}
-
-+ (id)coreRecentsDomainFromInternalIdentifier:(id)a3
-{
-  v3 = a3;
-  v4 = [v3 rangeOfString:@":"];
+  identifierCopy = identifier;
+  v4 = [identifierCopy rangeOfString:@":"];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -98,16 +98,16 @@ void __44__CNCoreRecentsContactStore_storeIdentifier__block_invoke(uint64_t a1)
 
   else
   {
-    v5 = [v3 substringToIndex:v4];
+    v5 = [identifierCopy substringToIndex:v4];
   }
 
   return v5;
 }
 
-+ (id)coreRecentsIdentifierFromInternalIdentifier:(id)a3
++ (id)coreRecentsIdentifierFromInternalIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@":"];
+  identifierCopy = identifier;
+  v4 = [identifierCopy rangeOfString:@":"];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = 0;
@@ -115,7 +115,7 @@ void __44__CNCoreRecentsContactStore_storeIdentifier__block_invoke(uint64_t a1)
 
   else
   {
-    v6 = [v3 substringFromIndex:v4 + v5];
+    v6 = [identifierCopy substringFromIndex:v4 + v5];
   }
 
   return v6;
@@ -127,7 +127,7 @@ void __44__CNCoreRecentsContactStore_storeIdentifier__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __62__CNCoreRecentsContactStore_acceptedContactsAccountIdentifier__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (acceptedContactsAccountIdentifier_cn_once_token_0 != -1)
   {
     dispatch_once(&acceptedContactsAccountIdentifier_cn_once_token_0, block);
@@ -146,13 +146,13 @@ void __62__CNCoreRecentsContactStore_acceptedContactsAccountIdentifier__block_in
   acceptedContactsAccountIdentifier_cn_once_object_0 = v1;
 }
 
-- (CNCoreRecentsContactStore)initWithConfiguration:(id)a3 domains:(id)a4
+- (CNCoreRecentsContactStore)initWithConfiguration:(id)configuration domains:(id)domains
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[CNDataMapperConfiguration alloc] initWithContactStoreConfiguration:v7];
+  domainsCopy = domains;
+  configurationCopy = configuration;
+  v8 = [[CNDataMapperConfiguration alloc] initWithContactStoreConfiguration:configurationCopy];
 
-  v9 = [[CNCoreRecentsMapper alloc] initWithDomains:v6 configuration:v8];
+  v9 = [[CNCoreRecentsMapper alloc] initWithDomains:domainsCopy configuration:v8];
   v12.receiver = self;
   v12.super_class = CNCoreRecentsContactStore;
   v10 = [(CNDataMapperContactStore *)&v12 initWithDataMapper:v9 dataMapperConfiguration:v8];

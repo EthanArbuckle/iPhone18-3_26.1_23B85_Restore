@@ -2,17 +2,17 @@
 - (BOOL)isAvailable;
 - (FeatureDiscoveryModel)model;
 - (FeatureDiscoverySourceDelegate)delegate;
-- (LPRRoutingFeatureDiscoverySource)initWithPriority:(int64_t)a3 delegate:(id)a4;
+- (LPRRoutingFeatureDiscoverySource)initWithPriority:(int64_t)priority delegate:(id)delegate;
 - (unint64_t)numberOfLPRLVehicles;
 - (void)_didSelectModel;
 - (void)_didViewModel;
 - (void)_dismiss;
 - (void)_reloadAvailability;
 - (void)dealloc;
-- (void)setAvailable:(BOOL)a3;
-- (void)setTransportType:(int64_t)a3 routeCollection:(id)a4;
-- (void)valueChangedForGEOConfigKey:(id)a3;
-- (void)virtualGarageDidUpdate:(id)a3;
+- (void)setAvailable:(BOOL)available;
+- (void)setTransportType:(int64_t)type routeCollection:(id)collection;
+- (void)valueChangedForGEOConfigKey:(id)key;
+- (void)virtualGarageDidUpdate:(id)update;
 @end
 
 @implementation LPRRoutingFeatureDiscoverySource
@@ -24,9 +24,9 @@
   return WeakRetained;
 }
 
-- (void)virtualGarageDidUpdate:(id)a3
+- (void)virtualGarageDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   objc_initWeak(&location, self);
   isolationQueue = self->_isolationQueue;
   block[0] = _NSConcreteStackBlock;
@@ -34,17 +34,17 @@
   block[2] = sub_100A220B4;
   block[3] = &unk_101661340;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = updateCopy;
+  v6 = updateCopy;
   dispatch_async(isolationQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)valueChangedForGEOConfigKey:(id)a3
+- (void)valueChangedForGEOConfigKey:(id)key
 {
-  if (a3.var0 == MapsFeaturesConfig_EnableAlberta && a3.var1 == *(&MapsFeaturesConfig_EnableAlberta + 1))
+  if (key.var0 == MapsFeaturesConfig_EnableAlberta && key.var1 == *(&MapsFeaturesConfig_EnableAlberta + 1))
   {
     [(LPRRoutingFeatureDiscoverySource *)self _reloadAvailability];
   }
@@ -70,10 +70,10 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(LPRRoutingFeatureDiscoverySource *)self virtualGarage];
-  v3 = [v2 vehicles];
+  virtualGarage = [(LPRRoutingFeatureDiscoverySource *)self virtualGarage];
+  vehicles = [virtualGarage vehicles];
 
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [vehicles countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -85,18 +85,18 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(vehicles);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) licensePlate];
+        licensePlate = [*(*(&v11 + 1) + 8 * i) licensePlate];
 
-        if (v9)
+        if (licensePlate)
         {
           ++v6;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [vehicles countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -149,10 +149,10 @@
 
 - (FeatureDiscoveryModel)model
 {
-  v3 = [(LPRRoutingFeatureDiscoverySource *)self isAvailable];
+  isAvailable = [(LPRRoutingFeatureDiscoverySource *)self isAvailable];
   v4 = sub_10006250C();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
-  if (v3)
+  if (isAvailable)
   {
     if (v5)
     {
@@ -206,7 +206,7 @@
   return v12;
 }
 
-- (void)setAvailable:(BOOL)a3
+- (void)setAvailable:(BOOL)available
 {
   objc_initWeak(&location, self);
   isolationQueue = self->_isolationQueue;
@@ -215,7 +215,7 @@
   v6[2] = sub_100A22E74;
   v6[3] = &unk_101632728;
   objc_copyWeak(&v7, &location);
-  v8 = a3;
+  availableCopy = available;
   v6[4] = self;
   dispatch_async(isolationQueue, v6);
   objc_destroyWeak(&v7);
@@ -241,7 +241,7 @@
   return v3;
 }
 
-- (void)setTransportType:(int64_t)a3 routeCollection:(id)a4
+- (void)setTransportType:(int64_t)type routeCollection:(id)collection
 {
   objc_initWeak(&location, self);
   isolationQueue = self->_isolationQueue;
@@ -250,7 +250,7 @@
   block[2] = sub_100A231C0;
   block[3] = &unk_10165FBC0;
   objc_copyWeak(v8, &location);
-  v8[1] = a3;
+  v8[1] = type;
   dispatch_async(isolationQueue, block);
   objc_destroyWeak(v8);
   objc_destroyWeak(&location);
@@ -264,28 +264,28 @@
   [(LPRRoutingFeatureDiscoverySource *)&v3 dealloc];
 }
 
-- (LPRRoutingFeatureDiscoverySource)initWithPriority:(int64_t)a3 delegate:(id)a4
+- (LPRRoutingFeatureDiscoverySource)initWithPriority:(int64_t)priority delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v28.receiver = self;
   v28.super_class = LPRRoutingFeatureDiscoverySource;
   v7 = [(LPRRoutingFeatureDiscoverySource *)&v28 init];
   v8 = v7;
   if (v7)
   {
-    v7->_priority = a3;
-    objc_storeWeak(&v7->_delegate, v6);
+    v7->_priority = priority;
+    objc_storeWeak(&v7->_delegate, delegateCopy);
     v9 = [NSString stringWithFormat:@"com.apple.maps.featurediscovery.lprrouting.isolation.%p", v8];
-    v10 = [v9 UTF8String];
+    uTF8String = [v9 UTF8String];
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v12 = dispatch_queue_create(v10, v11);
+    v12 = dispatch_queue_create(uTF8String, v11);
     isolationQueue = v8->_isolationQueue;
     v8->_isolationQueue = v12;
 
     v14 = [NSString stringWithFormat:@"com.apple.maps.featurediscovery.lprrouting.callback.%p", v8];
-    v15 = [v14 UTF8String];
+    uTF8String2 = [v14 UTF8String];
     v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v17 = dispatch_queue_create(v15, v16);
+    v17 = dispatch_queue_create(uTF8String2, v16);
     callbackQueue = v8->_callbackQueue;
     v8->_callbackQueue = v17;
 

@@ -1,41 +1,41 @@
 @interface PROverlaySceneHostViewController
-- (PROverlaySceneHostViewController)initWithScene:(id)a3 contentSettings:(id)a4 contentsLuminance:(double)a5 safeAreaProvider:(id)a6;
-- (id)_sanitizedTitleStyleConfigurationForContentsLuminance:(double)a3;
+- (PROverlaySceneHostViewController)initWithScene:(id)scene contentSettings:(id)settings contentsLuminance:(double)luminance safeAreaProvider:(id)provider;
+- (id)_sanitizedTitleStyleConfigurationForContentsLuminance:(double)luminance;
 - (void)invalidate;
 - (void)loadView;
-- (void)setContentSettings:(id)a3;
-- (void)setContentsLuminance:(double)a3;
-- (void)setOverrideUserInterfaceStyle:(int64_t)a3;
+- (void)setContentSettings:(id)settings;
+- (void)setContentsLuminance:(double)luminance;
+- (void)setOverrideUserInterfaceStyle:(int64_t)style;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation PROverlaySceneHostViewController
 
-- (PROverlaySceneHostViewController)initWithScene:(id)a3 contentSettings:(id)a4 contentsLuminance:(double)a5 safeAreaProvider:(id)a6
+- (PROverlaySceneHostViewController)initWithScene:(id)scene contentSettings:(id)settings contentsLuminance:(double)luminance safeAreaProvider:(id)provider
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  sceneCopy = scene;
+  settingsCopy = settings;
+  providerCopy = provider;
   v36.receiver = self;
   v36.super_class = PROverlaySceneHostViewController;
   v14 = [(PROverlaySceneHostViewController *)&v36 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_scene, a3);
-    objc_storeStrong(&v15->_safeAreaProvider, a6);
-    v15->_contentsLuminance = a5;
+    objc_storeStrong(&v14->_scene, scene);
+    objc_storeStrong(&v15->_safeAreaProvider, provider);
+    v15->_contentsLuminance = luminance;
     [(FBScene *)v15->_scene setDelegate:v15];
     scene = v15->_scene;
     v28 = MEMORY[0x1E69E9820];
     v29 = 3221225472;
     v30 = __101__PROverlaySceneHostViewController_initWithScene_contentSettings_contentsLuminance_safeAreaProvider___block_invoke;
     v31 = &unk_1E7845268;
-    v32 = v13;
+    v32 = providerCopy;
     v17 = v15;
     v33 = v17;
-    v35 = a5;
-    v34 = v12;
+    luminanceCopy = luminance;
+    v34 = settingsCopy;
     [(FBScene *)scene configureParameters:&v28];
     v18 = [(FBScene *)v15->_scene uiPresentationManager:v28];
     v19 = [v18 createPresenterWithIdentifier:@"overlay"];
@@ -44,19 +44,19 @@
 
     [v17[125] modifyPresentationContext:&__block_literal_global_40];
     [v17[125] activate];
-    v21 = [v17[125] presentationView];
-    [v21 setClipsToBounds:1];
-    v22 = [v21 layer];
-    [v22 setName:@"PREditorOverlaySceneView"];
+    presentationView = [v17[125] presentationView];
+    [presentationView setClipsToBounds:1];
+    layer = [presentationView layer];
+    [layer setName:@"PREditorOverlaySceneView"];
 
     [(FBScene *)v15->_scene activateWithTransitionContext:0];
-    v23 = [v17 view];
-    v24 = [v17 view];
-    [v24 addSubview:v21];
+    view = [v17 view];
+    view2 = [v17 view];
+    [view2 addSubview:presentationView];
 
-    [v21 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [presentationView setTranslatesAutoresizingMaskIntoConstraints:0];
     v25 = MEMORY[0x1E696ACD8];
-    v26 = [v23 pui_constraintsPinningSubview:v21 toEdges:15];
+    v26 = [view pui_constraintsPinningSubview:presentationView toEdges:15];
     [v25 activateConstraints:v26];
   }
 
@@ -101,29 +101,29 @@ void __101__PROverlaySceneHostViewController_initWithScene_contentSettings_conte
   [v2 setShouldPassthroughHitTestEventsIfTransparent:0];
 }
 
-- (void)setContentSettings:(id)a3
+- (void)setContentSettings:(id)settings
 {
-  v5 = a3;
-  if (self->_contentSettings != v5)
+  settingsCopy = settings;
+  if (self->_contentSettings != settingsCopy)
   {
-    objc_storeStrong(&self->_contentSettings, a3);
+    objc_storeStrong(&self->_contentSettings, settings);
     scene = self->_scene;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __55__PROverlaySceneHostViewController_setContentSettings___block_invoke;
     v7[3] = &unk_1E7844708;
-    v8 = v5;
+    v8 = settingsCopy;
     [(FBScene *)scene performUpdate:v7];
   }
 }
 
-- (void)setContentsLuminance:(double)a3
+- (void)setContentsLuminance:(double)luminance
 {
-  if (self->_contentsLuminance != a3)
+  if (self->_contentsLuminance != luminance)
   {
     v11 = v3;
     v12 = v4;
-    self->_contentsLuminance = a3;
+    self->_contentsLuminance = luminance;
     v6 = [(PROverlaySceneHostViewController *)self _sanitizedTitleStyleConfigurationForContentsLuminance:?];
     scene = self->_scene;
     v9[0] = MEMORY[0x1E69E9820];
@@ -159,18 +159,18 @@ void __101__PROverlaySceneHostViewController_initWithScene_contentSettings_conte
   v13.receiver = self;
   v13.super_class = PROverlaySceneHostViewController;
   [(PROverlaySceneHostViewController *)&v13 viewDidLayoutSubviews];
-  v3 = [(PROverlaySceneHostViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = [v5 interfaceOrientation];
+  view = [(PROverlaySceneHostViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  interfaceOrientation = [windowScene interfaceOrientation];
 
-  [v3 bounds];
+  [view bounds];
   scene = self->_scene;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __57__PROverlaySceneHostViewController_viewDidLayoutSubviews__block_invoke;
   v12[3] = &unk_1E7845290;
-  if ((v6 - 3) >= 2)
+  if ((interfaceOrientation - 3) >= 2)
   {
     v10 = v7;
   }
@@ -182,7 +182,7 @@ void __101__PROverlaySceneHostViewController_initWithScene_contentSettings_conte
 
   v12[5] = 0;
   v12[6] = 0;
-  if ((v6 - 3) >= 2)
+  if ((interfaceOrientation - 3) >= 2)
   {
     v11 = v8;
   }
@@ -194,7 +194,7 @@ void __101__PROverlaySceneHostViewController_initWithScene_contentSettings_conte
 
   v12[7] = v10;
   v12[8] = v11;
-  v12[9] = v6;
+  v12[9] = interfaceOrientation;
   v12[4] = self;
   [(FBScene *)scene performUpdate:v12];
 }
@@ -212,7 +212,7 @@ void __57__PROverlaySceneHostViewController_viewDidLayoutSubviews__block_invoke(
   [v7 setSafeAreaInsetsPortrait:?];
 }
 
-- (void)setOverrideUserInterfaceStyle:(int64_t)a3
+- (void)setOverrideUserInterfaceStyle:(int64_t)style
 {
   v7.receiver = self;
   v7.super_class = PROverlaySceneHostViewController;
@@ -222,14 +222,14 @@ void __57__PROverlaySceneHostViewController_viewDidLayoutSubviews__block_invoke(
   v6[1] = 3221225472;
   v6[2] = __66__PROverlaySceneHostViewController_setOverrideUserInterfaceStyle___block_invoke;
   v6[3] = &__block_descriptor_40_e63_v24__0__FBSMutableSceneSettings_8__FBSSceneTransitionContext_16l;
-  v6[4] = a3;
+  v6[4] = style;
   [(FBScene *)scene performUpdate:v6];
 }
 
-- (id)_sanitizedTitleStyleConfigurationForContentsLuminance:(double)a3
+- (id)_sanitizedTitleStyleConfigurationForContentsLuminance:(double)luminance
 {
   v4 = objc_alloc_init(PRMutablePosterTitleStyleConfiguration);
-  [(PRMutablePosterTitleStyleConfiguration *)v4 setContentsLuminance:a3];
+  [(PRMutablePosterTitleStyleConfiguration *)v4 setContentsLuminance:luminance];
 
   return v4;
 }

@@ -1,24 +1,24 @@
 @interface FMFNoLocationView
-- (FMFNoLocationView)initWithFrame:(CGRect)a3;
+- (FMFNoLocationView)initWithFrame:(CGRect)frame;
 - (FMFNoLocationViewDelegate)delegate;
 - (UIImage)offlineProfileImage;
 - (void)addLayoutConstraints;
 - (void)dealloc;
-- (void)setAlpha:(double)a3;
-- (void)setDelegate:(id)a3;
+- (void)setAlpha:(double)alpha;
+- (void)setDelegate:(id)delegate;
 - (void)updateConstriantsForInsets;
 - (void)updateLabel;
-- (void)updateLabelNotification:(id)a3;
+- (void)updateLabelNotification:(id)notification;
 - (void)updatePersonImageViewImage;
 @end
 
 @implementation FMFNoLocationView
 
-- (FMFNoLocationView)initWithFrame:(CGRect)a3
+- (FMFNoLocationView)initWithFrame:(CGRect)frame
 {
   v27.receiver = self;
   v27.super_class = FMFNoLocationView;
-  v3 = [(FMFNoLocationView *)&v27 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(FMFNoLocationView *)&v27 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D75D18]);
@@ -36,8 +36,8 @@
     [(FMFNoLocationView *)v3 addSubview:v3->_blur];
     [(FMFNoLocationView *)v3 sendSubviewToBack:v3->_blur];
     v11 = objc_alloc(MEMORY[0x277D755E8]);
-    v12 = [(FMFNoLocationView *)v3 offlineProfileImage];
-    v13 = [v11 initWithImage:v12];
+    offlineProfileImage = [(FMFNoLocationView *)v3 offlineProfileImage];
+    v13 = [v11 initWithImage:offlineProfileImage];
     [(FMFNoLocationView *)v3 setOfflineProfileImageView:v13];
 
     [(FMFNoLocationView *)v3 addSubview:v3->_offlineProfileImageView];
@@ -64,16 +64,16 @@
     v23 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v16, v17, v18, v19}];
     [(FMFNoLocationView *)v3 setInsetView:v23];
 
-    v24 = [MEMORY[0x277D75348] clearColor];
-    [(UIView *)v3->_insetView setBackgroundColor:v24];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UIView *)v3->_insetView setBackgroundColor:clearColor];
 
     [(FMFNoLocationView *)v3 addSubview:v3->_insetView];
     [(FMFNoLocationView *)v3 addLayoutConstraints];
     [(FMFNoLocationView *)v3 setAlpha:0.0];
     [(FMFNoLocationView *)v3 updateLabel];
     [(FMFNoLocationView *)v3 updatePersonImageViewImage];
-    v25 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v25 addObserver:v3 selector:sel_updateLabelNotification_ name:@"locatingInProgressChanged" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_updateLabelNotification_ name:@"locatingInProgressChanged" object:0];
   }
 
   return v3;
@@ -81,17 +81,17 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"locatingInProgressChanged" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"locatingInProgressChanged" object:0];
 
   v4.receiver = self;
   v4.super_class = FMFNoLocationView;
   [(FMFNoLocationView *)&v4 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
 
   [(FMFNoLocationView *)self updateLabel];
 }
@@ -161,14 +161,14 @@
 
 - (void)updateConstriantsForInsets
 {
-  v4 = [(FMFNoLocationView *)self delegate];
-  [v4 edgeInsets];
+  delegate = [(FMFNoLocationView *)self delegate];
+  [delegate edgeInsets];
   [(NSLayoutConstraint *)self->_topInsetConstraint setConstant:?];
-  [v4 edgeInsets];
+  [delegate edgeInsets];
   [(NSLayoutConstraint *)self->_bottomInsetConstraint setConstant:v3];
 }
 
-- (void)updateLabelNotification:(id)a3
+- (void)updateLabelNotification:(id)notification
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -183,15 +183,15 @@
   v33 = *MEMORY[0x277D85DE8];
   if (![(FMFNoLocationView *)self blockLabelUpdates])
   {
-    v3 = [(FMFNoLocationView *)self delegate];
-    v4 = [v3 handlesShowingLocations];
-    if ([v4 count])
+    delegate = [(FMFNoLocationView *)self delegate];
+    handlesShowingLocations = [delegate handlesShowingLocations];
+    if ([handlesShowingLocations count])
     {
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v5 = v4;
+      v5 = handlesShowingLocations;
       v6 = [v5 countByEnumeratingWithState:&v24 objects:v32 count:16];
       if (v6)
       {
@@ -208,8 +208,8 @@
             }
 
             v10 = *(*(&v24 + 1) + 8 * v9);
-            v11 = [MEMORY[0x277D07BE0] sharedInstance];
-            v12 = [v11 cachedLocationForHandle:v10];
+            mEMORY[0x277D07BE0] = [MEMORY[0x277D07BE0] sharedInstance];
+            v12 = [mEMORY[0x277D07BE0] cachedLocationForHandle:v10];
 
             if (!v12)
             {
@@ -229,9 +229,9 @@ LABEL_19:
               goto LABEL_19;
             }
 
-            v13 = [v12 location];
+            location = [v12 location];
 
-            if (v13)
+            if (location)
             {
               goto LABEL_20;
             }
@@ -269,11 +269,11 @@ LABEL_20:
     v16 = LogCategory_Daemon();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v3 handlesShowingLocations];
+      handlesShowingLocations2 = [delegate handlesShowingLocations];
       *buf = 67109378;
       v29 = v14;
       v30 = 2112;
-      v31 = v17;
+      v31 = handlesShowingLocations2;
       _os_log_impl(&dword_24A4E3000, v16, OS_LOG_TYPE_DEFAULT, "Updating labels for FMFNoLocationView isLocating: %d handles: %@", buf, 0x12u);
     }
 
@@ -291,8 +291,8 @@ LABEL_20:
 
     v21 = [v18 localizedStringForKey:v20 value:&stru_285D99658 table:{@"LocalizableUI", v24}];
 
-    v22 = [(FMFNoLocationView *)self detailsLabel];
-    [v22 setText:v21];
+    detailsLabel = [(FMFNoLocationView *)self detailsLabel];
+    [detailsLabel setText:v21];
 
     [(UILabel *)self->_detailsLabel sizeToFit];
     [(UILabel *)self->_detailsLabel invalidateIntrinsicContentSize];
@@ -301,14 +301,14 @@ LABEL_20:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   [(FMFNoLocationView *)self alpha];
   v6 = v5;
   v7.receiver = self;
   v7.super_class = FMFNoLocationView;
-  [(FMFNoLocationView *)&v7 setAlpha:a3];
-  if (v6 != a3)
+  [(FMFNoLocationView *)&v7 setAlpha:alpha];
+  if (v6 != alpha)
   {
     [(FMFNoLocationView *)self updateConstriantsForInsets];
   }
@@ -320,8 +320,8 @@ LABEL_20:
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v3 imageNamed:@"person_noloc" inBundle:v4];
 
-  v5 = [(FMFNoLocationView *)self personImageView];
-  [v5 setImage:v6];
+  personImageView = [(FMFNoLocationView *)self personImageView];
+  [personImageView setImage:v6];
 }
 
 - (UIImage)offlineProfileImage

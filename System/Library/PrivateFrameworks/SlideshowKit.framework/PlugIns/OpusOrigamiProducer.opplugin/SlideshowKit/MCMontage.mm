@@ -1,11 +1,11 @@
 @interface MCMontage
 - (MCMontage)init;
-- (MCMontage)initWithData:(id)a3 error:(id *)a4;
-- (id)assetForObjectID:(id)a3;
+- (MCMontage)initWithData:(id)data error:(id *)error;
+- (id)assetForObjectID:(id)d;
 - (id)assets;
-- (id)audioAssetForFileAtPath:(id)a3;
+- (id)audioAssetForFileAtPath:(id)path;
 - (id)audioAssets;
-- (id)containerForObjectID:(id)a3;
+- (id)containerForObjectID:(id)d;
 - (id)createEffectContainer;
 - (id)createNavigatorContainer;
 - (id)createParallelizerContainer;
@@ -13,13 +13,13 @@
 - (id)data;
 - (id)imprint;
 - (id)initFromScratch;
-- (id)videoAssetForFileAtPath:(id)a3;
+- (id)videoAssetForFileAtPath:(id)path;
 - (id)videoAssets;
 - (unint64_t)uuidSeed;
 - (void)dealloc;
 - (void)demolish;
-- (void)forgetAboutContainer:(id)a3;
-- (void)registerContainer:(id)a3;
+- (void)forgetAboutContainer:(id)container;
+- (void)registerContainer:(id)container;
 @end
 
 @implementation MCMontage
@@ -56,13 +56,13 @@
   return v2;
 }
 
-- (MCMontage)initWithData:(id)a3 error:(id *)a4
+- (MCMontage)initWithData:(id)data error:(id *)error
 {
   v6 = [(MCMontage *)self init];
   if (v6)
   {
     v7 = v6;
-    v8 = [NSPropertyListSerialization propertyListWithData:a3 options:0 format:0 error:a4];
+    v8 = [NSPropertyListSerialization propertyListWithData:data options:0 format:0 error:error];
     v7->mImprintWhileLoading = v8;
     if (v8)
     {
@@ -256,8 +256,8 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v13 = [(NSMutableDictionary *)self->mContainersForObjectIDs allKeys];
-  v14 = [v13 countByEnumeratingWithState:&v17 objects:v29 count:16];
+  allKeys = [(NSMutableDictionary *)self->mContainersForObjectIDs allKeys];
+  v14 = [allKeys countByEnumeratingWithState:&v17 objects:v29 count:16];
   if (v14)
   {
     v15 = *v18;
@@ -267,13 +267,13 @@
       {
         if (*v18 != v15)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allKeys);
         }
 
         [-[NSMutableDictionary objectForKey:](self->mContainersForObjectIDs objectForKey:{*(*(&v17 + 1) + 8 * k)), "demolish"}];
       }
 
-      v14 = [v13 countByEnumeratingWithState:&v17 objects:v29 count:16];
+      v14 = [allKeys countByEnumeratingWithState:&v17 objects:v29 count:16];
     }
 
     while (v14);
@@ -293,8 +293,8 @@
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v5 = [(NSMutableDictionary *)self->mVideoAssetsForObjectIDs objectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v32 objects:v38 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->mVideoAssetsForObjectIDs objectEnumerator];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (v6)
   {
     v7 = *v33;
@@ -304,7 +304,7 @@
       {
         if (*v33 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v9 = *(*(&v32 + 1) + 8 * i);
@@ -314,7 +314,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v32 objects:v38 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v32 objects:v38 count:16];
     }
 
     while (v6);
@@ -326,8 +326,8 @@
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v11 = [(NSMutableDictionary *)self->mAudioAssetsForObjectIDs objectEnumerator];
-  v12 = [v11 countByEnumeratingWithState:&v28 objects:v37 count:16];
+  objectEnumerator2 = [(NSMutableDictionary *)self->mAudioAssetsForObjectIDs objectEnumerator];
+  v12 = [objectEnumerator2 countByEnumeratingWithState:&v28 objects:v37 count:16];
   if (v12)
   {
     v13 = *v29;
@@ -337,7 +337,7 @@
       {
         if (*v29 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(objectEnumerator2);
         }
 
         v15 = *(*(&v28 + 1) + 8 * j);
@@ -347,7 +347,7 @@
         }
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v28 objects:v37 count:16];
+      v12 = [objectEnumerator2 countByEnumeratingWithState:&v28 objects:v37 count:16];
     }
 
     while (v12);
@@ -361,8 +361,8 @@
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v18 = [(NSMutableDictionary *)self->mContainersForObjectIDs objectEnumerator];
-  v19 = [v18 countByEnumeratingWithState:&v24 objects:v36 count:16];
+  objectEnumerator3 = [(NSMutableDictionary *)self->mContainersForObjectIDs objectEnumerator];
+  v19 = [objectEnumerator3 countByEnumeratingWithState:&v24 objects:v36 count:16];
   if (v19)
   {
     v20 = *v25;
@@ -372,7 +372,7 @@
       {
         if (*v25 != v20)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(objectEnumerator3);
         }
 
         v22 = *(*(&v24 + 1) + 8 * k);
@@ -382,7 +382,7 @@
         }
       }
 
-      v19 = [v18 countByEnumeratingWithState:&v24 objects:v36 count:16];
+      v19 = [objectEnumerator3 countByEnumeratingWithState:&v24 objects:v36 count:16];
     }
 
     while (v19);
@@ -473,26 +473,26 @@
   return v3;
 }
 
-- (id)videoAssetForFileAtPath:(id)a3
+- (id)videoAssetForFileAtPath:(id)path
 {
-  if (a3)
+  if (path)
   {
-    v5 = a3;
+    pathCopy = path;
   }
 
   else
   {
-    v5 = @"DummyVideoAsset";
+    pathCopy = @"DummyVideoAsset";
   }
 
   mVideoAssetsForFilePaths = self->mVideoAssetsForFilePaths;
   objc_sync_enter(mVideoAssetsForFilePaths);
-  v7 = [(NSMutableDictionary *)self->mVideoAssetsForFilePaths objectForKey:v5];
+  v7 = [(NSMutableDictionary *)self->mVideoAssetsForFilePaths objectForKey:pathCopy];
   if (!v7)
   {
     v7 = [(MCObject *)[MCAssetVideo alloc] initFromScratchWithMontage:self];
-    [v7 setPath:a3];
-    [(NSMutableDictionary *)self->mVideoAssetsForFilePaths setObject:v7 forKey:v5];
+    [v7 setPath:path];
+    [(NSMutableDictionary *)self->mVideoAssetsForFilePaths setObject:v7 forKey:pathCopy];
     -[NSMutableDictionary setObject:forKey:](self->mVideoAssetsForObjectIDs, "setObject:forKey:", v7, [v7 objectID]);
   }
 
@@ -500,26 +500,26 @@
   return v7;
 }
 
-- (id)audioAssetForFileAtPath:(id)a3
+- (id)audioAssetForFileAtPath:(id)path
 {
-  if (a3)
+  if (path)
   {
-    v5 = a3;
+    pathCopy = path;
   }
 
   else
   {
-    v5 = @"DummyAudioAsset";
+    pathCopy = @"DummyAudioAsset";
   }
 
   mAudioAssetsForFilePaths = self->mAudioAssetsForFilePaths;
   objc_sync_enter(mAudioAssetsForFilePaths);
-  v7 = [(NSMutableDictionary *)self->mAudioAssetsForFilePaths objectForKey:v5];
+  v7 = [(NSMutableDictionary *)self->mAudioAssetsForFilePaths objectForKey:pathCopy];
   if (!v7)
   {
     v7 = [(MCObject *)[MCAssetAudio alloc] initFromScratchWithMontage:self];
-    [v7 setPath:a3];
-    [(NSMutableDictionary *)self->mAudioAssetsForFilePaths setObject:v7 forKey:v5];
+    [v7 setPath:path];
+    [(NSMutableDictionary *)self->mAudioAssetsForFilePaths setObject:v7 forKey:pathCopy];
     -[NSMutableDictionary setObject:forKey:](self->mAudioAssetsForObjectIDs, "setObject:forKey:", v7, [v7 objectID]);
   }
 
@@ -527,13 +527,13 @@
   return v7;
 }
 
-- (id)assetForObjectID:(id)a3
+- (id)assetForObjectID:(id)d
 {
   result = [(MCMontage *)self videoAssetForObjectID:?];
   if (!result)
   {
 
-    return [(MCMontage *)self audioAssetForObjectID:a3];
+    return [(MCMontage *)self audioAssetForObjectID:d];
   }
 
   return result;
@@ -689,15 +689,15 @@
   return v3;
 }
 
-- (id)containerForObjectID:(id)a3
+- (id)containerForObjectID:(id)d
 {
   mContainersForObjectIDs = self->mContainersForObjectIDs;
   objc_sync_enter(mContainersForObjectIDs);
-  v6 = [(NSMutableDictionary *)self->mContainersForObjectIDs objectForKey:a3];
+  v6 = [(NSMutableDictionary *)self->mContainersForObjectIDs objectForKey:d];
   if (!v6)
   {
     mImprintWhileLoading = self->mImprintWhileLoading;
-    if (mImprintWhileLoading && (v8 = [-[NSDictionary objectForKey:](mImprintWhileLoading objectForKey:{@"containers", "objectForKey:", a3}]) != 0)
+    if (mImprintWhileLoading && (v8 = [-[NSDictionary objectForKey:](mImprintWhileLoading objectForKey:{@"containers", "objectForKey:", d}]) != 0)
     {
       v6 = [MCObject objectWithImprint:v8 andMontage:self];
       [(NSMutableDictionary *)self->mContainersForObjectIDs setObject:v6 forKey:[(MCObject *)v6 objectID]];
@@ -715,20 +715,20 @@
   return v6;
 }
 
-- (void)registerContainer:(id)a3
+- (void)registerContainer:(id)container
 {
   mContainersForObjectIDs = self->mContainersForObjectIDs;
   objc_sync_enter(mContainersForObjectIDs);
-  -[NSMutableDictionary setObject:forKey:](self->mContainersForObjectIDs, "setObject:forKey:", a3, [a3 objectID]);
+  -[NSMutableDictionary setObject:forKey:](self->mContainersForObjectIDs, "setObject:forKey:", container, [container objectID]);
 
   objc_sync_exit(mContainersForObjectIDs);
 }
 
-- (void)forgetAboutContainer:(id)a3
+- (void)forgetAboutContainer:(id)container
 {
   mContainersForObjectIDs = self->mContainersForObjectIDs;
   objc_sync_enter(mContainersForObjectIDs);
-  -[NSMutableDictionary removeObjectForKey:](self->mContainersForObjectIDs, "removeObjectForKey:", [a3 objectID]);
+  -[NSMutableDictionary removeObjectForKey:](self->mContainersForObjectIDs, "removeObjectForKey:", [container objectID]);
 
   objc_sync_exit(mContainersForObjectIDs);
 }

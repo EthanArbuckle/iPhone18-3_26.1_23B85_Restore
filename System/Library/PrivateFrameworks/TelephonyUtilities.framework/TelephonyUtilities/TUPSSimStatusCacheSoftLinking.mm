@@ -34,12 +34,12 @@
 
   v5 = v4;
   _Block_object_dispose(&v10, 8);
-  v6 = [v4 sharedInstance];
-  v7 = [v6 subscriptionsInUse];
+  sharedInstance = [v4 sharedInstance];
+  subscriptionsInUse = [sharedInstance subscriptionsInUse];
 
   v8 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return subscriptionsInUse;
 }
 
 @end

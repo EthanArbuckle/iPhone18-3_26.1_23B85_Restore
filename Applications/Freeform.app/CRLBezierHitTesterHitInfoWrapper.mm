@@ -1,28 +1,28 @@
 @interface CRLBezierHitTesterHitInfoWrapper
 - ($83CD26A8C5B845DF12AAFDBAEBBD4A79)hitInfo;
-- (CRLBezierHitTesterHitInfoWrapper)initWithHitInfo:(id *)a3 hitPath:(id)a4;
+- (CRLBezierHitTesterHitInfoWrapper)initWithHitInfo:(id *)info hitPath:(id)path;
 - (id)description;
 @end
 
 @implementation CRLBezierHitTesterHitInfoWrapper
 
-- (CRLBezierHitTesterHitInfoWrapper)initWithHitInfo:(id *)a3 hitPath:(id)a4
+- (CRLBezierHitTesterHitInfoWrapper)initWithHitInfo:(id *)info hitPath:(id)path
 {
-  v7 = a4;
+  pathCopy = path;
   v14.receiver = self;
   v14.super_class = CRLBezierHitTesterHitInfoWrapper;
   v8 = [(CRLBezierHitTesterHitInfoWrapper *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    var0 = a3->var0;
-    var1 = a3->var1;
-    v12 = *&a3->var2;
-    v8->_hitInfo.distanceBetweenPoints = a3->var4;
+    var0 = info->var0;
+    var1 = info->var1;
+    v12 = *&info->var2;
+    v8->_hitInfo.distanceBetweenPoints = info->var4;
     v8->_hitInfo.hitPoint = var1;
     *&v8->_hitInfo.hitPathID = v12;
     v8->_hitInfo.testPoint = var0;
-    objc_storeStrong(&v8->_hitPath, a4);
+    objc_storeStrong(&v8->_hitPath, path);
   }
 
   return v9;

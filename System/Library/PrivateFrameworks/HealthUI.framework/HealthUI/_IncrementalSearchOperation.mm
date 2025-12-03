@@ -1,35 +1,35 @@
 @interface _IncrementalSearchOperation
-- (_IncrementalSearchOperation)initWithSearchString:(id)a3 searchBody:(id)a4 resultsBlock:(id)a5 finishedBlock:(id)a6;
+- (_IncrementalSearchOperation)initWithSearchString:(id)string searchBody:(id)body resultsBlock:(id)block finishedBlock:(id)finishedBlock;
 - (void)main;
 @end
 
 @implementation _IncrementalSearchOperation
 
-- (_IncrementalSearchOperation)initWithSearchString:(id)a3 searchBody:(id)a4 resultsBlock:(id)a5 finishedBlock:(id)a6
+- (_IncrementalSearchOperation)initWithSearchString:(id)string searchBody:(id)body resultsBlock:(id)block finishedBlock:(id)finishedBlock
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  stringCopy = string;
+  bodyCopy = body;
+  blockCopy = block;
+  finishedBlockCopy = finishedBlock;
   v26.receiver = self;
   v26.super_class = _IncrementalSearchOperation;
   v14 = [(_IncrementalSearchOperation *)&v26 init];
   if (v14)
   {
     v25 = 0;
-    v15 = [HKIncrementalSearchBar regularExpressionFromString:v10 quoteForJavascript:0 caseless:&v25];
+    v15 = [HKIncrementalSearchBar regularExpressionFromString:stringCopy quoteForJavascript:0 caseless:&v25];
     v24 = 0;
     v16 = [objc_alloc(MEMORY[0x1E696AE70]) initWithPattern:v15 options:v25 error:&v24];
     v17 = v24;
     regularExpression = v14->_regularExpression;
     v14->_regularExpression = v16;
 
-    objc_storeStrong(&v14->_searchBody, a4);
-    v19 = _Block_copy(v12);
+    objc_storeStrong(&v14->_searchBody, body);
+    v19 = _Block_copy(blockCopy);
     searchResultsBlock = v14->_searchResultsBlock;
     v14->_searchResultsBlock = v19;
 
-    v21 = _Block_copy(v13);
+    v21 = _Block_copy(finishedBlockCopy);
     searchFinishedBlock = v14->_searchFinishedBlock;
     v14->_searchFinishedBlock = v21;
   }

@@ -1,6 +1,6 @@
 @interface MTREnergyEVSEClusterChargingTargetScheduleStruct
 - (MTREnergyEVSEClusterChargingTargetScheduleStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -17,22 +17,22 @@
     dayOfWeekForSequence = v2->_dayOfWeekForSequence;
     v2->_dayOfWeekForSequence = &unk_284C3E588;
 
-    v5 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     chargingTargets = v3->_chargingTargets;
-    v3->_chargingTargets = v5;
+    v3->_chargingTargets = array;
   }
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTREnergyEVSEClusterChargingTargetScheduleStruct);
-  v5 = [(MTREnergyEVSEClusterChargingTargetScheduleStruct *)self dayOfWeekForSequence];
-  [(MTREnergyEVSEClusterChargingTargetScheduleStruct *)v4 setDayOfWeekForSequence:v5];
+  dayOfWeekForSequence = [(MTREnergyEVSEClusterChargingTargetScheduleStruct *)self dayOfWeekForSequence];
+  [(MTREnergyEVSEClusterChargingTargetScheduleStruct *)v4 setDayOfWeekForSequence:dayOfWeekForSequence];
 
-  v6 = [(MTREnergyEVSEClusterChargingTargetScheduleStruct *)self chargingTargets];
-  [(MTREnergyEVSEClusterChargingTargetScheduleStruct *)v4 setChargingTargets:v6];
+  chargingTargets = [(MTREnergyEVSEClusterChargingTargetScheduleStruct *)self chargingTargets];
+  [(MTREnergyEVSEClusterChargingTargetScheduleStruct *)v4 setChargingTargets:chargingTargets];
 
   return v4;
 }

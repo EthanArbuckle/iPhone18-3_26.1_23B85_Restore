@@ -1,13 +1,13 @@
 @interface PXEditAppDependencyManager
-+ (void)addPendingEditsRequestProviderDependency:(id)a3;
++ (void)addPendingEditsRequestProviderDependency:(id)dependency;
 @end
 
 @implementation PXEditAppDependencyManager
 
-+ (void)addPendingEditsRequestProviderDependency:(id)a3
++ (void)addPendingEditsRequestProviderDependency:(id)dependency
 {
   swift_unknownObjectRetain();
-  sub_1B36F932C(a3);
+  sub_1B36F932C(dependency);
 
   swift_unknownObjectRelease();
 }

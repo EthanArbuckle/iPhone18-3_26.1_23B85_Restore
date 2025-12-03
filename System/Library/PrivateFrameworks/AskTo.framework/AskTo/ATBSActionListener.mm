@@ -1,9 +1,9 @@
 @interface ATBSActionListener
 + (void)initialize;
-- (ATBSActionListener)initWithResponseHandler:(id)a3;
+- (ATBSActionListener)initWithResponseHandler:(id)handler;
 - (id)_uiApp;
-- (id)handleBSActions:(id)a3;
-- (void)appDidFinishLaunching:(id)a3;
+- (id)handleBSActions:(id)actions;
+- (void)appDidFinishLaunching:(id)launching;
 - (void)startListening;
 @end
 
@@ -11,7 +11,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     _BSActionListenerLogger = os_log_create("com.apple.AskTo", "BSActionListener");
 
@@ -19,27 +19,27 @@
   }
 }
 
-- (ATBSActionListener)initWithResponseHandler:(id)a3
+- (ATBSActionListener)initWithResponseHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v12.receiver = self;
   v12.super_class = ATBSActionListener;
   v6 = [(ATBSActionListener *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_responseHandler, a3);
-    v8 = [(ATBSActionListener *)v7 _uiApp];
+    objc_storeStrong(&v6->_responseHandler, handler);
+    _uiApp = [(ATBSActionListener *)v7 _uiApp];
     v9 = NSSelectorFromString(&cfstr_Hasapplication.isa);
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [v8 performSelector:v9])
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [_uiApp performSelector:v9])
     {
-      [v5 notifyApplicationDidFinishLaunching];
+      [handlerCopy notifyApplicationDidFinishLaunching];
     }
 
     else
     {
-      v10 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v10 addObserver:v7 selector:sel_appDidFinishLaunching_ name:@"UIApplicationDidFinishLaunchingNotification" object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v7 selector:sel_appDidFinishLaunching_ name:@"UIApplicationDidFinishLaunchingNotification" object:0];
     }
   }
 
@@ -78,19 +78,19 @@ SEL __28__ATBSActionListener__uiApp__block_invoke()
   return result;
 }
 
-- (void)appDidFinishLaunching:(id)a3
+- (void)appDidFinishLaunching:(id)launching
 {
-  v3 = [(ATBSActionListener *)self responseHandler];
-  [v3 notifyApplicationDidFinishLaunching];
+  responseHandler = [(ATBSActionListener *)self responseHandler];
+  [responseHandler notifyApplicationDidFinishLaunching];
 }
 
 - (void)startListening
 {
-  v3 = [(ATBSActionListener *)self _uiApp];
+  _uiApp = [(ATBSActionListener *)self _uiApp];
   v4 = NSSelectorFromString(&cfstr_Registerbsacti.isa);
   if (objc_opt_respondsToSelector())
   {
-    [v3 performSelector:v4 withObject:self];
+    [_uiApp performSelector:v4 withObject:self];
     v5 = _BSActionListenerLogger;
     if (os_log_type_enabled(_BSActionListenerLogger, OS_LOG_TYPE_DEFAULT))
     {
@@ -100,10 +100,10 @@ SEL __28__ATBSActionListener__uiApp__block_invoke()
   }
 }
 
-- (id)handleBSActions:(id)a3
+- (id)handleBSActions:(id)actions
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  actionsCopy = actions;
   v4 = _BSActionListenerLogger;
   if (os_log_type_enabled(_BSActionListenerLogger, OS_LOG_TYPE_DEFAULT))
   {
@@ -111,13 +111,13 @@ SEL __28__ATBSActionListener__uiApp__block_invoke()
     _os_log_impl(&dword_2258D2000, v4, OS_LOG_TYPE_DEFAULT, "handleBSActions: called", buf, 2u);
   }
 
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6 = [MEMORY[0x277CBEB58] set];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v7 = v3;
+  v7 = actionsCopy;
   v8 = [v7 countByEnumeratingWithState:&v26 objects:v32 count:16];
   if (v8)
   {
@@ -133,15 +133,15 @@ SEL __28__ATBSActionListener__uiApp__block_invoke()
         }
 
         v12 = *(*(&v26 + 1) + 8 * i);
-        v13 = [v12 info];
-        v14 = [v13 objectForSetting:483941];
+        info = [v12 info];
+        v14 = [info objectForSetting:483941];
 
         if (v14)
         {
           v15 = [ATResponseDecoder responseFromJSONData:v14];
           if (v15)
           {
-            [v5 addObject:v15];
+            [array addObject:v15];
             [v6 addObject:v12];
           }
 
@@ -173,7 +173,7 @@ SEL __28__ATBSActionListener__uiApp__block_invoke()
     while (v9);
   }
 
-  if ([v5 count])
+  if ([array count])
   {
     v18 = _BSActionListenerLogger;
     if (os_log_type_enabled(_BSActionListenerLogger, OS_LOG_TYPE_DEFAULT))
@@ -182,8 +182,8 @@ SEL __28__ATBSActionListener__uiApp__block_invoke()
       _os_log_impl(&dword_2258D2000, v18, OS_LOG_TYPE_DEFAULT, "handleBSActions: we have incoming responses to deliver to the client.", buf, 2u);
     }
 
-    v19 = [(ATBSActionListener *)self responseHandler];
-    [v19 processIncomingResponses:v5];
+    responseHandler = [(ATBSActionListener *)self responseHandler];
+    [responseHandler processIncomingResponses:array];
   }
 
   v20 = [v7 mutableCopy];

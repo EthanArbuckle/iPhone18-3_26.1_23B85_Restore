@@ -1,19 +1,19 @@
 @interface STViewAllActivityCoreAnalyticsEvent
 - (NSDictionary)payload;
-- (STViewAllActivityCoreAnalyticsEvent)initWithDaysSinceLastView:(int64_t)a3 userAgeGroup:(int64_t)a4 userIsManaged:(BOOL)a5 userIsRemote:(BOOL)a6;
+- (STViewAllActivityCoreAnalyticsEvent)initWithDaysSinceLastView:(int64_t)view userAgeGroup:(int64_t)group userIsManaged:(BOOL)managed userIsRemote:(BOOL)remote;
 @end
 
 @implementation STViewAllActivityCoreAnalyticsEvent
 
-- (STViewAllActivityCoreAnalyticsEvent)initWithDaysSinceLastView:(int64_t)a3 userAgeGroup:(int64_t)a4 userIsManaged:(BOOL)a5 userIsRemote:(BOOL)a6
+- (STViewAllActivityCoreAnalyticsEvent)initWithDaysSinceLastView:(int64_t)view userAgeGroup:(int64_t)group userIsManaged:(BOOL)managed userIsRemote:(BOOL)remote
 {
   v11.receiver = self;
   v11.super_class = STViewAllActivityCoreAnalyticsEvent;
   result = [(STViewAllActivityCoreAnalyticsEvent *)&v11 init];
-  result->_daysSinceLastView = a3;
-  result->_userAgeGroup = a4;
-  result->_userIsManaged = a5;
-  result->_userIsRemote = a6;
+  result->_daysSinceLastView = view;
+  result->_userAgeGroup = group;
+  result->_userIsManaged = managed;
+  result->_userIsRemote = remote;
   return result;
 }
 

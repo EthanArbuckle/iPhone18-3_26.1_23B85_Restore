@@ -1,14 +1,14 @@
 @interface TSTCellDiffArraySegment
-- (unint64_t)estimatedByteSizeOfElement:(id)a3;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
+- (unint64_t)estimatedByteSizeOfElement:(id)element;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSTCellDiffArraySegment
 
-- (unint64_t)estimatedByteSizeOfElement:(id)a3
+- (unint64_t)estimatedByteSizeOfElement:(id)element
 {
-  v3 = a3;
+  elementCopy = element;
   objc_opt_class();
   v4 = TSUDynamicCast();
   v9 = objc_msgSend_estimatedByteSize(v4, v5, v6, v7, v8);
@@ -16,19 +16,19 @@
   return v9;
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v7 = objc_msgSend_messageWithNewFunction_descriptor_(v4, v5, sub_22116E4E8, off_2812E4498[126], v6);
+  v7 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v5, sub_22116E4E8, off_2812E4498[126], v6);
 
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = sub_22116E2E0;
   v37[3] = &unk_27845FEF0;
-  v8 = v4;
+  v8 = archiverCopy;
   v38 = v8;
-  v39 = self;
+  selfCopy = self;
   objc_msgSend_pushScopeForField_message_usingBlock_(v8, v9, 1, v7, v37);
   v14 = objc_msgSend_count(self, v10, v11, v12, v13);
   sub_22116E554(__p, v14);
@@ -77,19 +77,19 @@ LABEL_10:
   }
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v8 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812E4498[126], v6, v7);
+  v8 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812E4498[126], v6, v7);
 
   v22 = MEMORY[0x277D85DD0];
   v23 = 3221225472;
   v24 = sub_22116E4A4;
   v25 = &unk_27845FF18;
-  v9 = v4;
+  v9 = unarchiverCopy;
   v26 = v9;
-  v27 = self;
+  selfCopy = self;
   objc_msgSend_pushScopeForField_message_usingBlock_(v9, v10, 1, v8, &v22);
   if (*(v8 + 32) >= 1)
   {

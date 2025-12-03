@@ -1,18 +1,18 @@
 @interface PairingNotification
-- (PairingNotification)initWithType:(int)a3 passkey:(unint64_t)a4 device:(id)a5;
+- (PairingNotification)initWithType:(int)type passkey:(unint64_t)passkey device:(id)device;
 @end
 
 @implementation PairingNotification
 
-- (PairingNotification)initWithType:(int)a3 passkey:(unint64_t)a4 device:(id)a5
+- (PairingNotification)initWithType:(int)type passkey:(unint64_t)passkey device:(id)device
 {
   v8.receiver = self;
   v8.super_class = PairingNotification;
-  result = [(UserNotification *)&v8 initWithType:4 device:a5 bundleID:0];
+  result = [(UserNotification *)&v8 initWithType:4 device:device bundleID:0];
   if (result)
   {
-    result->_pairingType = a3;
-    result->_passkey = a4;
+    result->_pairingType = type;
+    result->_passkey = passkey;
   }
 
   return result;

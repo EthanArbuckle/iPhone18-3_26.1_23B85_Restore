@@ -1,9 +1,9 @@
 @interface PUImportSectionBackgroundView
 - (BOOL)needsStroke;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)setBottomStrokeColor:(id)a3;
-- (void)setStrokeWidth:(double)a3;
+- (void)setBottomStrokeColor:(id)color;
+- (void)setStrokeWidth:(double)width;
 - (void)updateBottomStrokeViewIfNeeded;
 @end
 
@@ -14,10 +14,10 @@
   v13.receiver = self;
   v13.super_class = PUImportSectionBackgroundView;
   [(PUImportSectionBackgroundView *)&v13 layoutSubviews];
-  v3 = [(PUImportSectionBackgroundView *)self bottomStrokeView];
-  v4 = [v3 superview];
+  bottomStrokeView = [(PUImportSectionBackgroundView *)self bottomStrokeView];
+  superview = [bottomStrokeView superview];
 
-  if (v4)
+  if (superview)
   {
     [(PUImportSectionBackgroundView *)self bounds];
     v15 = CGRectIntegral(v14);
@@ -28,36 +28,36 @@
     v9 = MaxY - v8;
     [(PUImportSectionBackgroundView *)self strokeWidth];
     v11 = v10;
-    v12 = [(PUImportSectionBackgroundView *)self bottomStrokeView];
-    [v12 setFrame:{x, v9, width, v11}];
+    bottomStrokeView2 = [(PUImportSectionBackgroundView *)self bottomStrokeView];
+    [bottomStrokeView2 setFrame:{x, v9, width, v11}];
   }
 }
 
-- (void)setBottomStrokeColor:(id)a3
+- (void)setBottomStrokeColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   bottomStrokeColor = self->_bottomStrokeColor;
-  if (v5 | bottomStrokeColor)
+  if (colorCopy | bottomStrokeColor)
   {
-    v7 = v5;
-    bottomStrokeColor = [bottomStrokeColor isEqual:v5];
-    v5 = v7;
+    v7 = colorCopy;
+    bottomStrokeColor = [bottomStrokeColor isEqual:colorCopy];
+    colorCopy = v7;
     if ((bottomStrokeColor & 1) == 0)
     {
-      objc_storeStrong(&self->_bottomStrokeColor, a3);
+      objc_storeStrong(&self->_bottomStrokeColor, color);
       bottomStrokeColor = [(PUImportSectionBackgroundView *)self setNeedsBottomStrokeViewUpdate];
-      v5 = v7;
+      colorCopy = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](bottomStrokeColor, v5);
+  MEMORY[0x1EEE66BB8](bottomStrokeColor, colorCopy);
 }
 
-- (void)setStrokeWidth:(double)a3
+- (void)setStrokeWidth:(double)width
 {
-  if (self->_strokeWidth != a3)
+  if (self->_strokeWidth != width)
   {
-    self->_strokeWidth = a3;
+    self->_strokeWidth = width;
     [(PUImportSectionBackgroundView *)self setNeedsBottomStrokeViewUpdate];
   }
 }
@@ -65,20 +65,20 @@
 - (BOOL)needsStroke
 {
   v11 = 0.0;
-  v3 = [(PUImportSectionBackgroundView *)self bottomStrokeColor];
-  [v3 getRed:0 green:0 blue:0 alpha:&v11];
+  bottomStrokeColor = [(PUImportSectionBackgroundView *)self bottomStrokeColor];
+  [bottomStrokeColor getRed:0 green:0 blue:0 alpha:&v11];
 
   [(PUImportSectionBackgroundView *)self strokeWidth];
   result = 0;
   if (v4 != 0.0 && v11 != 0.0)
   {
-    v5 = [(PUImportSectionBackgroundView *)self bottomStrokeColor];
-    if (v5)
+    bottomStrokeColor2 = [(PUImportSectionBackgroundView *)self bottomStrokeColor];
+    if (bottomStrokeColor2)
     {
-      v6 = v5;
-      v7 = [(PUImportSectionBackgroundView *)self bottomStrokeColor];
-      v8 = [MEMORY[0x1E69DC888] clearColor];
-      v9 = [v7 isEqual:v8];
+      v6 = bottomStrokeColor2;
+      bottomStrokeColor3 = [(PUImportSectionBackgroundView *)self bottomStrokeColor];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      v9 = [bottomStrokeColor3 isEqual:clearColor];
 
       if (!v9)
       {
@@ -95,10 +95,10 @@
   if ([(PUImportSectionBackgroundView *)self needsBottomStrokeViewUpdate])
   {
     [(PUImportSectionBackgroundView *)self setNeedsBottomStrokeViewUpdate:0];
-    v3 = [(PUImportSectionBackgroundView *)self needsStroke];
-    v4 = [(PUImportSectionBackgroundView *)self bottomStrokeView];
-    v11 = v4;
-    if (v3)
+    needsStroke = [(PUImportSectionBackgroundView *)self needsStroke];
+    bottomStrokeView = [(PUImportSectionBackgroundView *)self bottomStrokeView];
+    v11 = bottomStrokeView;
+    if (needsStroke)
     {
 
       if (!v11)
@@ -107,45 +107,45 @@
         v6 = [v5 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
         [(PUImportSectionBackgroundView *)self setBottomStrokeView:v6];
 
-        v7 = [(PUImportSectionBackgroundView *)self bottomStrokeView];
-        [v7 setAutoresizingMask:8];
+        bottomStrokeView2 = [(PUImportSectionBackgroundView *)self bottomStrokeView];
+        [bottomStrokeView2 setAutoresizingMask:8];
       }
 
-      v8 = [(PUImportSectionBackgroundView *)self bottomStrokeView];
-      [(PUImportSectionBackgroundView *)self addSubview:v8];
+      bottomStrokeView3 = [(PUImportSectionBackgroundView *)self bottomStrokeView];
+      [(PUImportSectionBackgroundView *)self addSubview:bottomStrokeView3];
 
-      v9 = [(PUImportSectionBackgroundView *)self bottomStrokeColor];
-      v10 = [(PUImportSectionBackgroundView *)self bottomStrokeView];
-      [v10 setBackgroundColor:v9];
+      bottomStrokeColor = [(PUImportSectionBackgroundView *)self bottomStrokeColor];
+      bottomStrokeView4 = [(PUImportSectionBackgroundView *)self bottomStrokeView];
+      [bottomStrokeView4 setBackgroundColor:bottomStrokeColor];
 
       [(PUImportSectionBackgroundView *)self setNeedsLayout];
     }
 
     else
     {
-      [v4 removeFromSuperview];
+      [bottomStrokeView removeFromSuperview];
     }
   }
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v8.receiver = self;
   v8.super_class = PUImportSectionBackgroundView;
-  [(PUImportSectionBackgroundView *)&v8 applyLayoutAttributes:v4];
+  [(PUImportSectionBackgroundView *)&v8 applyLayoutAttributes:attributesCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 backgroundColor];
-    [(PUImportSectionBackgroundView *)self setBackgroundColor:v6];
+    v5 = attributesCopy;
+    backgroundColor = [v5 backgroundColor];
+    [(PUImportSectionBackgroundView *)self setBackgroundColor:backgroundColor];
 
     [v5 strokeWidth];
     [(PUImportSectionBackgroundView *)self setStrokeWidth:?];
-    v7 = [v5 bottomStrokeColor];
+    bottomStrokeColor = [v5 bottomStrokeColor];
 
-    [(PUImportSectionBackgroundView *)self setBottomStrokeColor:v7];
+    [(PUImportSectionBackgroundView *)self setBottomStrokeColor:bottomStrokeColor];
     [(PUImportSectionBackgroundView *)self updateBottomStrokeViewIfNeeded];
   }
 }

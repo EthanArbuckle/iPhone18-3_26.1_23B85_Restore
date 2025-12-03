@@ -104,8 +104,8 @@
 {
   v70 = *MEMORY[0x277D85DE8];
   v2 = objc_autoreleasePoolPush();
-  v3 = [a1 componentsSeparatedByString:@"$"];
-  v4 = [MEMORY[0x277CBEB18] array];
+  v3 = [self componentsSeparatedByString:@"$"];
+  array = [MEMORY[0x277CBEB18] array];
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
@@ -127,7 +127,7 @@
         }
 
         v11 = [*(*(&v64 + 1) + 8 * i) componentsSeparatedByString:@"|"];
-        [v4 addObject:v11];
+        [array addObject:v11];
         v12 = [v11 count];
         if (v8 <= v12)
         {
@@ -146,16 +146,16 @@
     v8 = 0;
   }
 
-  v13 = [v4 lastObject];
-  if ([v13 count] == 1)
+  lastObject = [array lastObject];
+  if ([lastObject count] == 1)
   {
-    v14 = [v4 lastObject];
-    v15 = [v14 objectAtIndexedSubscript:0];
+    lastObject2 = [array lastObject];
+    v15 = [lastObject2 objectAtIndexedSubscript:0];
     v16 = [v15 length];
 
     if (!v16)
     {
-      [v4 removeLastObject];
+      [array removeLastObject];
     }
   }
 
@@ -168,16 +168,16 @@
     v50 = v5;
     v51 = v2;
     v17 = malloc_type_calloc(8uLL, v8, 0x9230B1FEuLL);
-    v59 = malloc_type_calloc(8uLL, [v4 count], 0x76FD0194uLL);
-    v54 = v4;
-    if ([v4 count])
+    v59 = malloc_type_calloc(8uLL, [array count], 0x76FD0194uLL);
+    v54 = array;
+    if ([array count])
     {
       v18 = 0;
       v19 = 0;
       do
       {
         v52 = v19;
-        [v4 objectAtIndexedSubscript:v18];
+        [array objectAtIndexedSubscript:v18];
         v57 = v55 = v18;
         v20 = 0;
         v21 = 0;
@@ -250,7 +250,7 @@
         while (v8 > v21);
 
         v18 = (v52 + 1);
-        v4 = v54;
+        array = v54;
         v35 = [v54 count];
         v19 = v52 + 1;
       }
@@ -259,14 +259,14 @@
     }
 
     v8 = objc_alloc_init(MEMORY[0x277CCAB68]);
-    if ([v4 count])
+    if ([array count])
     {
       v36 = 0;
       v37 = 0;
       do
       {
         v53 = v37;
-        v38 = [v4 objectAtIndexedSubscript:v36];
+        v38 = [array objectAtIndexedSubscript:v36];
         if (v59[v36])
         {
           v39 = 0;
@@ -312,7 +312,7 @@
         }
 
         v36 = (v53 + 1);
-        v4 = v54;
+        array = v54;
         v48 = [v54 count];
         v37 = v53 + 1;
       }
@@ -333,27 +333,27 @@
 
 - (id)tsu_stringQuotedIfContainsCharacterSet:()TSUAdditions
 {
-  v4 = a1;
-  if ([v4 rangeOfCharacterFromSet:a3] != 0x7FFFFFFFFFFFFFFFLL)
+  selfCopy = self;
+  if ([selfCopy rangeOfCharacterFromSet:a3] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [v4 mutableCopy];
-    [v5 replaceOccurrencesOfString:@" withString:@" options:0 range:{0, objc_msgSend(v4, "length")}];
+    v5 = [selfCopy mutableCopy];
+    [v5 replaceOccurrencesOfString:@" withString:@" options:0 range:{0, objc_msgSend(selfCopy, "length")}];
     [v5 appendString:@""];
     [v5 insertString:@"" atIndex:0];
 
-    v4 = v5;
+    selfCopy = v5;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (id)tsu_stringByAppendingSeparator:()TSUAdditions format:
 {
   v11 = a3;
   v12 = [MEMORY[0x277CCACA8] tsu_stringWithFormat:a4 arguments:&a9];
-  if ([a1 length])
+  if ([self length])
   {
-    v13 = [a1 stringByAppendingFormat:@"%@%@", v11, v12];
+    v13 = [self stringByAppendingFormat:@"%@%@", v11, v12];
 
     v12 = v13;
   }
@@ -367,16 +367,16 @@
   v5 = [v4 localeSpecificStorageForKey:@"stringByAddingCSVEscapes"];
   if (!v5)
   {
-    v6 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v7 = [v6 mutableCopy];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v7 = [whitespaceAndNewlineCharacterSet mutableCopy];
 
-    v8 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v9 = [v8 invertedSet];
-    [v7 formIntersectionWithCharacterSet:v9];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    invertedSet = [whitespaceCharacterSet invertedSet];
+    [v7 formIntersectionWithCharacterSet:invertedSet];
 
     [v7 addCharactersInString:@""];
-    v10 = [v4 listSeparator];
-    if ([v10 length] != 1)
+    listSeparator = [v4 listSeparator];
+    if ([listSeparator length] != 1)
     {
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[NSString(TSUAdditions) tsu_stringByAddingCSVEscapesForLocale:]"];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/NSString_TSUAdditions.m"];
@@ -385,12 +385,12 @@
       +[OITSUAssertionHandler logBacktraceThrottled];
     }
 
-    [v7 addCharactersInString:v10];
+    [v7 addCharactersInString:listSeparator];
     v5 = [v7 copy];
     [v4 setLocaleSpecificStorage:v5 forKey:@"stringByAddingCSVEscapes"];
   }
 
-  v13 = [a1 tsu_stringQuotedIfContainsCharacterSet:v5];
+  v13 = [self tsu_stringQuotedIfContainsCharacterSet:v5];
 
   return v13;
 }
@@ -408,19 +408,19 @@
     +[OITSUAssertionHandler logBacktraceThrottled];
   }
 
-  v10 = a1;
-  v11 = [MEMORY[0x277CCAA00] defaultManager];
-  v12 = [v6 stringByAppendingPathComponent:v10];
-  v13 = [v11 fileExistsAtPath:v12];
+  selfCopy = self;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v12 = [v6 stringByAppendingPathComponent:selfCopy];
+  v13 = [defaultManager fileExistsAtPath:v12];
 
   if (v13)
   {
     context = objc_autoreleasePoolPush();
-    v14 = [v10 pathExtension];
-    if (v14)
+    pathExtension = [selfCopy pathExtension];
+    if (pathExtension)
     {
-      v15 = v14;
-      if ([(__CFString *)v14 length])
+      v15 = pathExtension;
+      if ([(__CFString *)pathExtension length])
       {
         v16 = [@"." stringByAppendingString:v15];
 
@@ -433,16 +433,16 @@
       v15 = &stru_286EE1130;
     }
 
-    v17 = [v10 stringByDeletingPathExtension];
+    stringByDeletingPathExtension = [selfCopy stringByDeletingPathExtension];
     v18 = 2;
     do
     {
-      v19 = v10;
+      v19 = selfCopy;
       v20 = (v18 + 1);
-      v10 = [MEMORY[0x277CCACA8] stringWithFormat:v7, v17, v18, v15];
+      selfCopy = [MEMORY[0x277CCACA8] stringWithFormat:v7, stringByDeletingPathExtension, v18, v15];
 
-      v21 = [v6 stringByAppendingPathComponent:v10];
-      v22 = [v11 fileExistsAtPath:v21];
+      v21 = [v6 stringByAppendingPathComponent:selfCopy];
+      v22 = [defaultManager fileExistsAtPath:v21];
 
       v18 = v20;
     }
@@ -452,22 +452,22 @@
     objc_autoreleasePoolPop(context);
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (__CFString)tsu_stringByFixingBrokenSurrogatePairs
 {
-  v1 = a1;
-  v2 = [(__CFString *)v1 length];
-  theString = v1;
+  selfCopy = self;
+  v2 = [(__CFString *)selfCopy length];
+  theString = selfCopy;
   v30 = 0;
   v31 = v2;
-  CharactersPtr = CFStringGetCharactersPtr(v1);
+  CharactersPtr = CFStringGetCharactersPtr(selfCopy);
   CStringPtr = 0;
   v28 = CharactersPtr;
   if (!CharactersPtr)
   {
-    CStringPtr = CFStringGetCStringPtr(v1, 0x600u);
+    CStringPtr = CFStringGetCStringPtr(selfCopy, 0x600u);
   }
 
   v25 = 0u;
@@ -535,22 +535,22 @@
 LABEL_37:
             if (!v6)
             {
-              v6 = [(__CFString *)v1 mutableCopyWithZone:0, v19, v20, v21, v22, v23, v24, v25, v26];
+              v6 = [(__CFString *)selfCopy mutableCopyWithZone:0, v19, v20, v21, v22, v23, v24, v25, v26];
 
-              v1 = v6;
+              selfCopy = v6;
             }
 
             [(__CFString *)v6 replaceCharactersInRange:v7 withString:1, @"\uFFFD", v19, v20, v21, v22, v23, v24, v25, v26];
-            v2 = [(__CFString *)v1 length];
-            theString = v1;
+            v2 = [(__CFString *)selfCopy length];
+            theString = selfCopy;
             v30 = 0;
             v31 = v2;
-            v16 = CFStringGetCharactersPtr(v1);
+            v16 = CFStringGetCharactersPtr(selfCopy);
             v17 = 0;
             v28 = v16;
             if (!v16)
             {
-              v17 = CFStringGetCStringPtr(v1, 0x600u);
+              v17 = CFStringGetCStringPtr(selfCopy, 0x600u);
             }
 
             v5 = 0;
@@ -629,7 +629,7 @@ LABEL_42:
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)tsu_stringByRemovingCharactersInSet:()TSUAdditions options:
@@ -637,16 +637,16 @@ LABEL_42:
   v6 = a3;
   if (v6)
   {
-    v7 = a1;
-    if ([v7 rangeOfCharacterFromSet:v6] == 0x7FFFFFFFFFFFFFFFLL)
+    selfCopy = self;
+    if ([selfCopy rangeOfCharacterFromSet:v6] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v8 = v7;
+      selfCopy2 = selfCopy;
     }
 
     else
     {
-      v8 = [MEMORY[0x277CCAB68] string];
-      v11 = [v7 length];
+      selfCopy2 = [MEMORY[0x277CCAB68] string];
+      v11 = [selfCopy length];
       if (v11)
       {
         v12 = v11;
@@ -655,7 +655,7 @@ LABEL_42:
         v15 = v11;
         do
         {
-          v16 = [v7 rangeOfCharacterFromSet:v6 options:v14 range:{v13, v15}];
+          v16 = [selfCopy rangeOfCharacterFromSet:v6 options:v14 range:{v13, v15}];
           if (v16 == 0x7FFFFFFFFFFFFFFFLL)
           {
             v18 = 0;
@@ -676,8 +676,8 @@ LABEL_42:
             v19 = v16;
           }
 
-          v20 = [v7 substringWithRange:{v13, v19 - v13}];
-          [v8 appendString:v20];
+          v20 = [selfCopy substringWithRange:{v13, v19 - v13}];
+          [selfCopy2 appendString:v20];
 
           v13 = v18 + v19;
           v15 = v12 - (v18 + v19);
@@ -695,25 +695,25 @@ LABEL_42:
     [OITSUAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:283 isFatal:0 description:"invalid nil value for '%{public}s'", "charSet"];
 
     +[OITSUAssertionHandler logBacktraceThrottled];
-    v8 = a1;
+    selfCopy2 = self;
   }
 
-  return v8;
+  return selfCopy2;
 }
 
 - (id)tsu_stringByReplacingInstancesOfCharactersInSet:()TSUAdditions withString:
 {
   v6 = a3;
   v7 = a4;
-  if ([a1 rangeOfCharacterFromSet:v6 options:2] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([self rangeOfCharacterFromSet:v6 options:2] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = [MEMORY[0x277CCAB68] stringWithCapacity:{objc_msgSend(a1, "length")}];
-    v10 = [MEMORY[0x277CCAC80] scannerWithString:a1];
+    v9 = [MEMORY[0x277CCAB68] stringWithCapacity:{objc_msgSend(self, "length")}];
+    v10 = [MEMORY[0x277CCAC80] scannerWithString:self];
     [v10 setCharactersToBeSkipped:0];
     if (([v10 isAtEnd] & 1) == 0)
     {
@@ -753,18 +753,18 @@ LABEL_42:
 LABEL_13:
     }
 
-    v8 = [MEMORY[0x277CCACA8] stringWithString:v9];
+    selfCopy = [MEMORY[0x277CCACA8] stringWithString:v9];
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (uint64_t)tsu_countInstancesOfString:()TSUAdditions options:
 {
   v6 = a3;
-  v7 = [a1 length];
+  v7 = [self length];
   v8 = [v6 length];
-  v9 = [a1 rangeOfString:v6 options:a4 range:{0, v7}];
+  v9 = [self rangeOfString:v6 options:a4 range:{0, v7}];
   v10 = 0;
   if (v9 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -775,7 +775,7 @@ LABEL_13:
       ++v10;
       v12 = v9 + v8;
       v7 = v7 - (v9 + v8) + v11;
-      v9 = [a1 rangeOfString:v6 options:a4 range:{v9 + v8, v7}];
+      v9 = [self rangeOfString:v6 options:a4 range:{v9 + v8, v7}];
       v11 = v12;
     }
 
@@ -792,31 +792,31 @@ LABEL_13:
     [NSString(TSUAdditions) tsu_escapeForIcuRegex];
   }
 
-  v2 = a1;
-  v3 = [v2 length];
-  *&v12 = [v2 rangeOfCharacterFromSet:tsu_escapeForIcuRegex_icuRegexCharSet];
+  selfCopy = self;
+  v3 = [selfCopy length];
+  *&v12 = [selfCopy rangeOfCharacterFromSet:tsu_escapeForIcuRegex_icuRegexCharSet];
   if (v12 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = v2;
+    v4 = selfCopy;
   }
 
   else
   {
     v5 = objc_alloc(MEMORY[0x277CCAB68]);
-    v6 = [v2 substringToIndex:v12];
+    v6 = [selfCopy substringToIndex:v12];
     v4 = [v5 initWithString:v6];
 
     if (v3 != v12)
     {
       do
       {
-        [v4 appendFormat:@"\\%C", objc_msgSend(v2, "characterAtIndex:", v12)];
+        [v4 appendFormat:@"\\%C", objc_msgSend(selfCopy, "characterAtIndex:", v12)];
         *&v12 = v12 + 1;
         *(&v12 + 1) = v3 - v12;
         v7 = v12;
         if (v3 != v12)
         {
-          *&v11 = [v2 rangeOfCharacterFromSet:tsu_escapeForIcuRegex_icuRegexCharSet options:0 range:v12];
+          *&v11 = [selfCopy rangeOfCharacterFromSet:tsu_escapeForIcuRegex_icuRegexCharSet options:0 range:v12];
           *(&v11 + 1) = v8;
           v12 = v11;
           if (v11 == 0x7FFFFFFFFFFFFFFFLL)
@@ -826,7 +826,7 @@ LABEL_13:
 
           if (v12 != v7)
           {
-            v9 = [v2 substringWithRange:{v7, v12 - v7}];
+            v9 = [selfCopy substringWithRange:{v7, v12 - v7}];
             [v4 appendString:v9];
           }
         }
@@ -842,15 +842,15 @@ LABEL_13:
 - (uint64_t)tsu_isDescendantOfPath:()TSUAdditions
 {
   v4 = a3;
-  v5 = [a1 pathComponents];
-  v6 = [v4 pathComponents];
-  v7 = [v6 count];
+  pathComponents = [self pathComponents];
+  pathComponents2 = [v4 pathComponents];
+  v7 = [pathComponents2 count];
   if (v7)
   {
     do
     {
       v8 = v7 - 1;
-      v9 = [v6 objectAtIndexedSubscript:v7 - 1];
+      v9 = [pathComponents2 objectAtIndexedSubscript:v7 - 1];
       v10 = [v9 isEqualToString:@"/"];
 
       if (!v10)
@@ -864,7 +864,7 @@ LABEL_13:
     while (v8);
   }
 
-  v11 = [v5 count];
+  v11 = [pathComponents count];
   v12 = v7 <= v11;
   if (v7 - 1 < v11)
   {
@@ -872,8 +872,8 @@ LABEL_13:
     v14 = 1;
     do
     {
-      v15 = [v5 objectAtIndexedSubscript:v13];
-      v16 = [v6 objectAtIndexedSubscript:v13];
+      v15 = [pathComponents objectAtIndexedSubscript:v13];
+      v16 = [pathComponents2 objectAtIndexedSubscript:v13];
       v12 = [v15 isEqualToString:v16];
 
       if (v7 <= v14)
@@ -893,18 +893,18 @@ LABEL_13:
 - (uint64_t)tsu_isChildOfPath:()TSUAdditions
 {
   v4 = a3;
-  v5 = [a1 pathComponents];
-  v6 = [v5 mutableCopy];
+  pathComponents = [self pathComponents];
+  v6 = [pathComponents mutableCopy];
 
-  v7 = [v4 pathComponents];
-  v8 = [v7 mutableCopy];
+  pathComponents2 = [v4 pathComponents];
+  v8 = [pathComponents2 mutableCopy];
 
   if ([v6 count] >= 2)
   {
     do
     {
-      v9 = [v6 lastObject];
-      v10 = [v9 isEqualToString:@"/"];
+      lastObject = [v6 lastObject];
+      v10 = [lastObject isEqualToString:@"/"];
 
       if (!v10)
       {
@@ -921,8 +921,8 @@ LABEL_13:
   {
     do
     {
-      v11 = [v8 lastObject];
-      v12 = [v11 isEqualToString:@"/"];
+      lastObject2 = [v8 lastObject];
+      v12 = [lastObject2 isEqualToString:@"/"];
 
       if (!v12)
       {
@@ -966,7 +966,7 @@ LABEL_13:
 
 - (id)tsu_stringWithRealpath
 {
-  v1 = realpath_DARWIN_EXTSN([a1 fileSystemRepresentation], 0);
+  v1 = realpath_DARWIN_EXTSN([self fileSystemRepresentation], 0);
   if (v1)
   {
     v2 = v1;
@@ -984,34 +984,34 @@ LABEL_13:
 
 - (id)tsu_substringWithComposedCharacterSequencesTruncatedToLength:()TSUAdditions
 {
-  if ([a1 length] <= a3)
+  if ([self length] <= a3)
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = [a1 substringToIndex:{objc_msgSend(a1, "rangeOfComposedCharacterSequenceAtIndex:", a3)}];
+    selfCopy = [self substringToIndex:{objc_msgSend(self, "rangeOfComposedCharacterSequenceAtIndex:", a3)}];
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)tsu_substringWithComposedCharacterSequencesToFileSystemLength:()TSUAdditions
 {
-  v5 = [a1 length];
+  v5 = [self length];
   v6 = 0;
   if (v5)
   {
     v7 = 0;
     do
     {
-      v8 = [a1 rangeOfComposedCharacterSequenceAtIndex:v6];
+      v8 = [self rangeOfComposedCharacterSequenceAtIndex:v6];
       v10 = v9;
-      v11 = [a1 substringWithRange:{v8, v9}];
-      v12 = [v11 fileSystemRepresentation];
+      v11 = [self substringWithRange:{v8, v9}];
+      fileSystemRepresentation = [v11 fileSystemRepresentation];
 
-      v7 += strlen(v12);
+      v7 += strlen(fileSystemRepresentation);
       if (v7 > a3)
       {
         break;
@@ -1025,15 +1025,15 @@ LABEL_13:
 
   if (v6 == v5)
   {
-    v13 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = [a1 substringToIndex:v6];
+    selfCopy = [self substringToIndex:v6];
   }
 
-  return v13;
+  return selfCopy;
 }
 
 - (__CFString)tsu_stringWithPathRelativeTo:()TSUAdditions
@@ -1042,14 +1042,14 @@ LABEL_13:
   if (v4)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = [a1 stringByStandardizingPath];
-    v7 = [v6 pathComponents];
+    stringByStandardizingPath = [self stringByStandardizingPath];
+    pathComponents = [stringByStandardizingPath pathComponents];
 
-    v8 = [v4 stringByStandardizingPath];
-    v9 = [v8 pathComponents];
+    stringByStandardizingPath2 = [v4 stringByStandardizingPath];
+    pathComponents2 = [stringByStandardizingPath2 pathComponents];
 
-    v10 = [v7 count];
-    v11 = [v9 count];
+    v10 = [pathComponents count];
+    v11 = [pathComponents2 count];
     if (v10 < v11)
     {
       goto LABEL_10;
@@ -1066,8 +1066,8 @@ LABEL_13:
     v14 = 1;
     do
     {
-      v15 = [v9 objectAtIndexedSubscript:v13];
-      v16 = [v7 objectAtIndexedSubscript:v13];
+      v15 = [pathComponents2 objectAtIndexedSubscript:v13];
+      v16 = [pathComponents objectAtIndexedSubscript:v13];
       v17 = [v15 isEqualToString:v16];
 
       if ((v17 & 1) == 0)
@@ -1096,7 +1096,7 @@ LABEL_8:
 
       else
       {
-        v20 = [v7 subarrayWithRange:{v12, v10 - v12}];
+        v20 = [pathComponents subarrayWithRange:{v12, v10 - v12}];
         v19 = [MEMORY[0x277CCACA8] pathWithComponents:v20];
       }
     }
@@ -1117,14 +1117,14 @@ LABEL_8:
   v6 = a3;
   if (a4)
   {
-    v7 = [a1 stringByStandardizingPath];
-    v8 = [v7 pathComponents];
+    stringByStandardizingPath = [self stringByStandardizingPath];
+    pathComponents = [stringByStandardizingPath pathComponents];
 
-    v9 = [v6 stringByStandardizingPath];
-    v10 = [v9 pathComponents];
+    stringByStandardizingPath2 = [v6 stringByStandardizingPath];
+    pathComponents2 = [stringByStandardizingPath2 pathComponents];
 
-    v11 = [v8 count];
-    v12 = [v10 count];
+    v11 = [pathComponents count];
+    v12 = [pathComponents2 count];
     v13 = v12;
     if (v12 >= v11)
     {
@@ -1142,8 +1142,8 @@ LABEL_8:
       v16 = 0;
       do
       {
-        v17 = [v10 objectAtIndexedSubscript:v15];
-        v18 = [v8 objectAtIndexedSubscript:v15];
+        v17 = [pathComponents2 objectAtIndexedSubscript:v15];
+        v18 = [pathComponents objectAtIndexedSubscript:v15];
         v19 = [v17 isEqualToString:v18];
 
         if (!v19)
@@ -1191,7 +1191,7 @@ LABEL_8:
     {
       do
       {
-        v24 = [v8 objectAtIndexedSubscript:v16];
+        v24 = [pathComponents objectAtIndexedSubscript:v16];
         v20 = [(__CFString *)v23 stringByAppendingPathComponent:v24];
 
         ++v16;
@@ -1204,7 +1204,7 @@ LABEL_8:
 
   else
   {
-    v20 = [a1 tsu_stringWithPathRelativeTo:v6];
+    v20 = [self tsu_stringWithPathRelativeTo:v6];
   }
 
   return v20;
@@ -1212,10 +1212,10 @@ LABEL_8:
 
 - (__CFString)tsu_stringByTrimmingCharactersInSetFromFront:()TSUAdditions
 {
-  v4 = a1;
-  v5 = [(__CFString *)v4 rangeOfCharacterFromSet:a3 options:8];
+  selfCopy = self;
+  v5 = [(__CFString *)selfCopy rangeOfCharacterFromSet:a3 options:8];
   v7 = v6;
-  if (v6 == [(__CFString *)v4 length])
+  if (v6 == [(__CFString *)selfCopy length])
   {
     v8 = &stru_286EE1130;
   }
@@ -1227,13 +1227,13 @@ LABEL_8:
       goto LABEL_6;
     }
 
-    v8 = [(__CFString *)v4 substringFromIndex:v7];
+    v8 = [(__CFString *)selfCopy substringFromIndex:v7];
   }
 
-  v4 = v8;
+  selfCopy = v8;
 LABEL_6:
 
-  return v4;
+  return selfCopy;
 }
 
 + (id)tsu_stringWithHexFromBytes:()TSUAdditions length:
@@ -1310,40 +1310,40 @@ LABEL_6:
 
 - (uint64_t)tsu_encodeStringBase64
 {
-  v1 = [a1 UTF8String];
-  v2 = strlen(v1);
+  uTF8String = [self UTF8String];
+  v2 = strlen(uTF8String);
   v3 = MEMORY[0x277CCACA8];
 
-  return [v3 tsu_stringByBase64EncodingBytes:v1 length:v2];
+  return [v3 tsu_stringByBase64EncodingBytes:uTF8String length:v2];
 }
 
 - (id)tsu_stringByMakingFirstCharacterLowercase
 {
-  v1 = a1;
-  if ([v1 length])
+  selfCopy = self;
+  if ([selfCopy length])
   {
-    v2 = [v1 substringToIndex:1];
-    v3 = [v2 lowercaseString];
-    if (([v2 isEqualToString:v3] & 1) == 0)
+    v2 = [selfCopy substringToIndex:1];
+    lowercaseString = [v2 lowercaseString];
+    if (([v2 isEqualToString:lowercaseString] & 1) == 0)
     {
-      v4 = [v1 substringFromIndex:1];
-      v5 = [v3 stringByAppendingString:v4];
+      v4 = [selfCopy substringFromIndex:1];
+      v5 = [lowercaseString stringByAppendingString:v4];
 
-      v1 = v5;
+      selfCopy = v5;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)tsu_stringByMakingFirstCharacterUppercase
 {
-  v2 = [a1 mutableCopy];
+  v2 = [self mutableCopy];
   if ([v2 length])
   {
-    v3 = [a1 substringToIndex:1];
-    v4 = [v3 uppercaseString];
-    [v2 replaceCharactersInRange:0 withString:{1, v4}];
+    v3 = [self substringToIndex:1];
+    uppercaseString = [v3 uppercaseString];
+    [v2 replaceCharactersInRange:0 withString:{1, uppercaseString}];
   }
 
   return v2;
@@ -1351,7 +1351,7 @@ LABEL_6:
 
 - (id)tsu_escapeXML
 {
-  v1 = [a1 mutableCopy];
+  v1 = [self mutableCopy];
   [v1 replaceOccurrencesOfString:@"&" withString:@"&amp;" options:0 range:{0, objc_msgSend(v1, "length")}];
   [v1 replaceOccurrencesOfString:@"<" withString:@"&lt;" options:0 range:{0, objc_msgSend(v1, "length")}];
   [v1 replaceOccurrencesOfString:@">" withString:@"&gt;" options:0 range:{0, objc_msgSend(v1, "length")}];
@@ -1361,7 +1361,7 @@ LABEL_6:
 
 - (id)tsu_unescapeXML
 {
-  v1 = [a1 mutableCopy];
+  v1 = [self mutableCopy];
   [v1 replaceOccurrencesOfString:@"&amp;" withString:@"&" options:0 range:{0, objc_msgSend(v1, "length")}];
   [v1 replaceOccurrencesOfString:@"&lt;" withString:@"<" options:0 range:{0, objc_msgSend(v1, "length")}];
   [v1 replaceOccurrencesOfString:@"&gt;" withString:@">" options:0 range:{0, objc_msgSend(v1, "length")}];
@@ -1371,8 +1371,8 @@ LABEL_6:
 
 - (BOOL)tsu_containsOnlyCharactersFromSet:()TSUAdditions
 {
-  v4 = [a3 invertedSet];
-  v5 = [a1 rangeOfCharacterFromSet:v4];
+  invertedSet = [a3 invertedSet];
+  v5 = [self rangeOfCharacterFromSet:invertedSet];
 
   return v5 == 0x7FFFFFFFFFFFFFFFLL;
 }
@@ -1380,15 +1380,15 @@ LABEL_6:
 - (id)tsu_tolerantStringByAppendingPathExtension:()TSUAdditions
 {
   v4 = a3;
-  if (([a1 isEqualToString:&stru_286EE1130] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", &stru_286EE1130))
+  if (([self isEqualToString:&stru_286EE1130] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", &stru_286EE1130))
   {
-    v5 = a1;
+    selfCopy = self;
 LABEL_4:
-    v6 = v5;
+    v6 = selfCopy;
     goto LABEL_5;
   }
 
-  if ([a1 isEqualToString:@"\\\\""])
+  if ([self isEqualToString:@"\\\\""])
   {
     v8 = [@"\\"" stringByAppendingPathExtension:v4];
     v9 = [@"\\"" stringByAppendingString:v8];
@@ -1396,13 +1396,13 @@ LABEL_4:
 
   else
   {
-    if (![a1 length] || objc_msgSend(a1, "characterAtIndex:", 0) != 126)
+    if (![self length] || objc_msgSend(self, "characterAtIndex:", 0) != 126)
     {
-      v5 = [a1 stringByAppendingPathExtension:v4];
+      selfCopy = [self stringByAppendingPathExtension:v4];
       goto LABEL_4;
     }
 
-    v10 = [@"X" stringByAppendingString:a1];
+    v10 = [@"X" stringByAppendingString:self];
     v8 = [v10 stringByAppendingPathExtension:v4];
 
     v9 = [v8 substringFromIndex:1];
@@ -1418,23 +1418,23 @@ LABEL_5:
 + (id)tsu_stringByHexEncodingData:()TSUAdditions
 {
   v3 = a3;
-  v4 = [MEMORY[0x277CCAB68] string];
-  v5 = [v3 bytes];
+  string = [MEMORY[0x277CCAB68] string];
+  bytes = [v3 bytes];
   v6 = [v3 length];
   if (v6)
   {
     v7 = v6;
     do
     {
-      v8 = *v5++;
-      [v4 appendFormat:@"%02x", v8];
+      v8 = *bytes++;
+      [string appendFormat:@"%02x", v8];
       --v7;
     }
 
     while (v7);
   }
 
-  v9 = [v4 copy];
+  v9 = [string copy];
 
   return v9;
 }
@@ -1447,7 +1447,7 @@ LABEL_5:
   {
     v10 = *a5;
     v11 = a5[1];
-    v12 = [a1 rangeOfString:v8 options:a4 range:{*a5, v11}];
+    v12 = [self rangeOfString:v8 options:a4 range:{*a5, v11}];
     v14 = v12;
     if (v12 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -1469,7 +1469,7 @@ LABEL_5:
 
   else
   {
-    v14 = [a1 rangeOfString:v8 options:a4 range:{0, objc_msgSend(v8, "length")}];
+    v14 = [self rangeOfString:v8 options:a4 range:{0, objc_msgSend(v8, "length")}];
   }
 
   return v14;
@@ -1479,19 +1479,19 @@ LABEL_5:
 {
   v6 = a3;
   v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x277CCAC80]) initWithString:a1];
+  v8 = [objc_alloc(MEMORY[0x277CCAC80]) initWithString:self];
   [v8 setCaseSensitive:1];
   [v8 setCharactersToBeSkipped:0];
   if (([v8 isAtEnd] & 1) == 0)
   {
     do
     {
-      v9 = [v8 scanLocation];
+      scanLocation = [v8 scanLocation];
       if ([v8 scanCharactersFromSet:v6 intoString:0])
       {
-        v10 = [v8 scanLocation];
+        scanLocation2 = [v8 scanLocation];
         v11 = 0;
-        v7[2](v7, v9, v10 - v9, &v11);
+        v7[2](v7, scanLocation, scanLocation2 - scanLocation, &v11);
         if (v11)
         {
           break;
@@ -1518,13 +1518,13 @@ LABEL_5:
   v35 = a3;
   v38 = a3;
   v5 = _Block_copy(aBlock);
-  v36 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v6 = [(__CFString *)a1 length];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v6 = [(__CFString *)self length];
   v7 = CFLocaleCopyCurrent();
   v40.location = 0;
   v31 = v6;
   v40.length = v6;
-  v8 = CFStringTokenizerCreate(*MEMORY[0x277CBECE8], a1, v40, 4uLL, v7);
+  v8 = CFStringTokenizerCreate(*MEMORY[0x277CBECE8], self, v40, 4uLL, v7);
   CFRelease(v7);
   v9 = CFStringTokenizerGoToTokenAtIndex(v8, 0);
   LODWORD(v10) = v9;
@@ -1540,7 +1540,7 @@ LABEL_5:
     length = CurrentTokenRange.length;
     v14 = 0;
     v15 = CurrentTokenRange.length;
-    v34 = a1;
+    selfCopy = self;
     do
     {
       if (location >= v14)
@@ -1575,7 +1575,7 @@ LABEL_5:
 
           else if ((v17 & 0x10) != 0 && length == 1)
           {
-            if ([v36 characterIsMember:{-[__CFString characterAtIndex:](a1, "characterAtIndex:", v19)}])
+            if ([whitespaceAndNewlineCharacterSet characterIsMember:{-[__CFString characterAtIndex:](self, "characterAtIndex:", v19)}])
             {
               v28 = 1;
               goto LABEL_21;
@@ -1634,8 +1634,8 @@ LABEL_21:
         v25 = v33;
       }
 
-      v26 = [(__CFString *)v34 substringWithRange:v24, v25, v30];
-      v27 = [v26 stringByTrimmingCharactersInSet:v36];
+      v26 = [(__CFString *)selfCopy substringWithRange:v24, v25, v30];
+      v27 = [v26 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
       if ([v27 length])
       {
@@ -1644,7 +1644,7 @@ LABEL_21:
 
       location = v19;
       v15 = v28;
-      a1 = v34;
+      self = selfCopy;
     }
 
     while (v19 != -1);
@@ -1667,20 +1667,20 @@ LABEL_21:
 
   v2 = tsu_stringWithoutAttachmentCharacters_sAttachmentCharacter;
 
-  return [a1 stringByReplacingOccurrencesOfString:v2 withString:&stru_286EE1130];
+  return [self stringByReplacingOccurrencesOfString:v2 withString:&stru_286EE1130];
 }
 
 - (id)tsu_middleTruncateToLength:()TSUAdditions
 {
-  v4 = a1;
-  if ([v4 length] <= a3)
+  selfCopy = self;
+  if ([selfCopy length] <= a3)
   {
-    v5 = v4;
+    v5 = selfCopy;
   }
 
   else
   {
-    v5 = [v4 mutableCopy];
+    v5 = [selfCopy mutableCopy];
     do
     {
       [v5 replaceCharactersInRange:(objc_msgSend(v5 withString:{"length") >> 1) - 1, 3, @"…"}];
@@ -1696,7 +1696,7 @@ LABEL_21:
 {
   if (a3)
   {
-    return [a1 isEqualToString:?];
+    return [self isEqualToString:?];
   }
 
   else
@@ -1707,10 +1707,10 @@ LABEL_21:
 
 - (id)tsu_stringWithNormalizedHyphensAndQuotationMarks
 {
-  v1 = [a1 tsu_stringWithNormalizedHyphens];
-  v2 = [v1 tsu_stringWithNormalizedQuotationMarks];
+  tsu_stringWithNormalizedHyphens = [self tsu_stringWithNormalizedHyphens];
+  tsu_stringWithNormalizedQuotationMarks = [tsu_stringWithNormalizedHyphens tsu_stringWithNormalizedQuotationMarks];
 
-  return v2;
+  return tsu_stringWithNormalizedQuotationMarks;
 }
 
 - (uint64_t)tsu_stringWithNormalizedHyphens
@@ -1722,7 +1722,7 @@ LABEL_21:
 
   v2 = tsu_stringWithNormalizedHyphens_hyphenSet;
 
-  return [a1 tsu_stringByReplacingInstancesOfCharactersInSet:v2 withString:@"-"];
+  return [self tsu_stringByReplacingInstancesOfCharactersInSet:v2 withString:@"-"];
 }
 
 - (uint64_t)tsu_stringWithNormalizedQuotationMarks
@@ -1734,7 +1734,7 @@ LABEL_21:
 
   v2 = tsu_stringWithNormalizedQuotationMarks_quotationSet;
 
-  return [a1 tsu_stringByReplacingInstancesOfCharactersInSet:v2 withString:@"'"];
+  return [self tsu_stringByReplacingInstancesOfCharactersInSet:v2 withString:@"'"];
 }
 
 @end

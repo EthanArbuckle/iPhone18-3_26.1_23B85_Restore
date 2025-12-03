@@ -1,27 +1,27 @@
 @interface HKHourlyActivitySummary
-- (id)dateComponentsForCalendar:(id)a3;
+- (id)dateComponentsForCalendar:(id)calendar;
 @end
 
 @implementation HKHourlyActivitySummary
 
-- (id)dateComponentsForCalendar:(id)a3
+- (id)dateComponentsForCalendar:(id)calendar
 {
-  v4 = a3;
-  v5 = [(HKHourlyActivitySummary *)self hourlyDateComponents];
-  v6 = [v5 calendar];
-  v7 = [v6 isEqual:v4];
+  calendarCopy = calendar;
+  hourlyDateComponents = [(HKHourlyActivitySummary *)self hourlyDateComponents];
+  calendar = [hourlyDateComponents calendar];
+  v7 = [calendar isEqual:calendarCopy];
 
   if (v7)
   {
-    v8 = [(HKHourlyActivitySummary *)self hourlyDateComponents];
+    hourlyDateComponents2 = [(HKHourlyActivitySummary *)self hourlyDateComponents];
   }
 
   else
   {
-    v8 = 0;
+    hourlyDateComponents2 = 0;
   }
 
-  return v8;
+  return hourlyDateComponents2;
 }
 
 @end

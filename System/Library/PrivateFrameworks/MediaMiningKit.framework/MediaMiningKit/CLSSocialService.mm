@@ -19,13 +19,13 @@
 {
   v6 = *MEMORY[0x277D85DE8];
   v2 = +[CLSLogging sharedLogging];
-  v3 = [v2 loggingConnection];
+  loggingConnection = [v2 loggingConnection];
 
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
   {
     v4 = 136315138;
     v5 = "[CLSSocialService invalidateMemoryCaches]";
-    _os_log_error_impl(&dword_22F907000, v3, OS_LOG_TYPE_ERROR, "%s need to be implemented", &v4, 0xCu);
+    _os_log_error_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_ERROR, "%s need to be implemented", &v4, 0xCu);
   }
 }
 

@@ -7,14 +7,14 @@
 
 - (id)pps_sqlPredicateForSelect
 {
-  v2 = [a1 leftExpression];
-  v3 = [a1 rightExpression];
-  v4 = [a1 predicateOperatorType];
-  if (v4 > 3)
+  leftExpression = [self leftExpression];
+  rightExpression = [self rightExpression];
+  predicateOperatorType = [self predicateOperatorType];
+  if (predicateOperatorType > 3)
   {
-    if (v4 > 6)
+    if (predicateOperatorType > 6)
     {
-      if (v4 == 7)
+      if (predicateOperatorType == 7)
       {
         v5 = 0;
         v6 = 7;
@@ -22,7 +22,7 @@
 
       else
       {
-        if (v4 != 10)
+        if (predicateOperatorType != 10)
         {
           goto LABEL_37;
         }
@@ -32,7 +32,7 @@
       }
     }
 
-    else if (v4 == 4)
+    else if (predicateOperatorType == 4)
     {
       v5 = 0;
       v6 = 1;
@@ -40,7 +40,7 @@
 
     else
     {
-      if (v4 != 5)
+      if (predicateOperatorType != 5)
       {
         goto LABEL_37;
       }
@@ -50,43 +50,43 @@
     }
 
 LABEL_19:
-    if ([v2 expressionType] == 3)
+    if ([leftExpression expressionType] == 3)
     {
-      [v2 keyPath];
+      [leftExpression keyPath];
     }
 
     else
     {
-      [v2 description];
+      [leftExpression description];
     }
     v7 = ;
-    v8 = [v3 expressionType];
-    if (v8)
+    expressionType = [rightExpression expressionType];
+    if (expressionType)
     {
       v9 = v5 ^ 1;
-      if (v8 != 14)
+      if (expressionType != 14)
       {
         v9 = 1;
       }
 
       if (v9)
       {
-        [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Unexpected constant value in right side of comparison expression: %@", a1}];
+        [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Unexpected constant value in right side of comparison expression: %@", self}];
         v11 = 0;
         goto LABEL_30;
       }
 
-      v10 = [v3 collection];
+      collection = [rightExpression collection];
     }
 
     else
     {
-      v10 = [v3 constantValue];
+      collection = [rightExpression constantValue];
     }
 
-    v11 = v10;
+    v11 = collection;
 LABEL_30:
-    v12 = [a1 _checkTypeForValue:v11 inKeyPath:v7];
+    v12 = [self _checkTypeForValue:v11 inKeyPath:v7];
 
     if (v5)
     {
@@ -102,10 +102,10 @@ LABEL_30:
     goto LABEL_34;
   }
 
-  if (v4 > 1)
+  if (predicateOperatorType > 1)
   {
     v5 = 0;
-    if (v4 == 2)
+    if (predicateOperatorType == 2)
     {
       v6 = 5;
     }
@@ -118,14 +118,14 @@ LABEL_30:
     goto LABEL_19;
   }
 
-  if (!v4)
+  if (!predicateOperatorType)
   {
     v5 = 0;
     v6 = 3;
     goto LABEL_19;
   }
 
-  if (v4 == 1)
+  if (predicateOperatorType == 1)
   {
     v5 = 0;
     v6 = 4;
@@ -133,7 +133,7 @@ LABEL_30:
   }
 
 LABEL_37:
-  [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Unsupported operator type in comparison expression: %@", a1}];
+  [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Unsupported operator type in comparison expression: %@", self}];
   v13 = 0;
 LABEL_34:
 
@@ -150,14 +150,14 @@ LABEL_34:
     if (v3)
     {
 LABEL_3:
-      v4 = v3;
+      null = v3;
 LABEL_16:
-      v6 = v4;
+      allObjects = null;
       goto LABEL_17;
     }
 
 LABEL_15:
-    v4 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
     goto LABEL_16;
   }
 
@@ -168,7 +168,7 @@ LABEL_15:
     {
       v5 = MEMORY[0x277CCABB0];
       [v3 timeIntervalSinceReferenceDate];
-      v4 = [v5 numberWithDouble:?];
+      null = [v5 numberWithDouble:?];
       goto LABEL_16;
     }
 
@@ -180,7 +180,7 @@ LABEL_15:
   {
     if (v3)
     {
-      v4 = [v3 UUIDString];
+      null = [v3 UUIDString];
       goto LABEL_16;
     }
 
@@ -192,7 +192,7 @@ LABEL_15:
   {
     if (v3)
     {
-      v4 = [v3 absoluteString];
+      null = [v3 absoluteString];
       goto LABEL_16;
     }
 
@@ -249,9 +249,9 @@ LABEL_15:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 && ![v15 expressionType])
         {
-          v16 = [v15 constantValue];
+          constantValue = [v15 constantValue];
 
-          v15 = v16;
+          v15 = constantValue;
         }
 
         [v9 addObject:{v15, v17}];
@@ -263,12 +263,12 @@ LABEL_15:
     while (v12);
   }
 
-  v6 = [v9 allObjects];
+  allObjects = [v9 allObjects];
 
 LABEL_17:
   v7 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return allObjects;
 }
 
 @end

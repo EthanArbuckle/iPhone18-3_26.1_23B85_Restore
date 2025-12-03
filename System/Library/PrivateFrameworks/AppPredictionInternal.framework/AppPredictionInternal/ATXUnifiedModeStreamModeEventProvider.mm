@@ -1,13 +1,13 @@
 @interface ATXUnifiedModeStreamModeEventProvider
-- (BOOL)isEventFromProvider:(id)a3;
-- (id)aggregationEventsFromEvent:(id)a3;
-- (id)biomePublisherWithBookmark:(id)a3;
-- (id)dateIntervalFromEvent:(id)a3;
+- (BOOL)isEventFromProvider:(id)provider;
+- (id)aggregationEventsFromEvent:(id)event;
+- (id)biomePublisherWithBookmark:(id)bookmark;
+- (id)dateIntervalFromEvent:(id)event;
 @end
 
 @implementation ATXUnifiedModeStreamModeEventProvider
 
-- (id)biomePublisherWithBookmark:(id)a3
+- (id)biomePublisherWithBookmark:(id)bookmark
 {
   v4 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceNow:-2419200.0];
   v5 = objc_opt_new();
@@ -30,28 +30,28 @@ BOOL __68__ATXUnifiedModeStreamModeEventProvider_biomePublisherWithBookmark___bl
   return v3 == ATXActivityTypeFromMode();
 }
 
-- (BOOL)isEventFromProvider:(id)a3
+- (BOOL)isEventFromProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (id)aggregationEventsFromEvent:(id)a3
+- (id)aggregationEventsFromEvent:(id)event
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(ATXUnifiedModeStreamModeEventProvider *)self isEventFromProvider:v4])
+  eventCopy = event;
+  if ([(ATXUnifiedModeStreamModeEventProvider *)self isEventFromProvider:eventCopy])
   {
-    v5 = [(ATXUnifiedModeStreamModeEventProvider *)self dateIntervalFromEvent:v4];
+    v5 = [(ATXUnifiedModeStreamModeEventProvider *)self dateIntervalFromEvent:eventCopy];
     if (v5)
     {
       v6 = [ATXModeEvent alloc];
-      v7 = [v5 startDate];
-      v8 = [v5 endDate];
-      v9 = [(ATXModeEvent *)v6 initWithStartDate:v7 endDate:v8];
+      startDate = [v5 startDate];
+      endDate = [v5 endDate];
+      v9 = [(ATXModeEvent *)v6 initWithStartDate:startDate endDate:endDate];
 
       v13[0] = v9;
       v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
@@ -73,13 +73,13 @@ BOOL __68__ATXUnifiedModeStreamModeEventProvider_biomePublisherWithBookmark___bl
   return v10;
 }
 
-- (id)dateIntervalFromEvent:(id)a3
+- (id)dateIntervalFromEvent:(id)event
 {
-  v4 = a3;
-  if ([(ATXUnifiedModeStreamModeEventProvider *)self isEventFromProvider:v4])
+  eventCopy = event;
+  if ([(ATXUnifiedModeStreamModeEventProvider *)self isEventFromProvider:eventCopy])
   {
     v5 = MEMORY[0x277CBEAA8];
-    v6 = v4;
+    v6 = eventCopy;
     v7 = [v5 alloc];
     [v6 startTime];
     v8 = [v7 initWithTimeIntervalSinceReferenceDate:?];

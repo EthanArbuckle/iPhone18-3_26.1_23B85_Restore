@@ -1,23 +1,23 @@
 @interface CHBLine2DType
-+ (id)chdChartTypeWithState:(id)a3;
++ (id)chdChartTypeWithState:(id)state;
 @end
 
 @implementation CHBLine2DType
 
-+ (id)chdChartTypeWithState:(id)a3
++ (id)chdChartTypeWithState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v4 = [CHDLine2DType alloc];
-  v5 = [v3 chart];
-  v6 = [(CHDLine2DType *)v4 initWithChart:v5];
+  chart = [stateCopy chart];
+  v6 = [(CHDLine2DType *)v4 initWithChart:chart];
 
-  if (*([v3 xlCurrentPlot] + 141) == 1)
+  if (*([stateCopy xlCurrentPlot] + 141) == 1)
   {
-    if ([v3 axisGroup] == 1)
+    if ([stateCopy axisGroup] == 1)
     {
-      v7 = [v3 chart];
-      v8 = [v7 plotArea];
-      [v8 setContainsVolumeStockType:1];
+      chart2 = [stateCopy chart];
+      plotArea = [chart2 plotArea];
+      [plotArea setContainsVolumeStockType:1];
     }
 
     else
@@ -26,7 +26,7 @@
     }
   }
 
-  [CHBLineType readWithState:v3 chartType:v6];
+  [CHBLineType readWithState:stateCopy chartType:v6];
 
   return v6;
 }

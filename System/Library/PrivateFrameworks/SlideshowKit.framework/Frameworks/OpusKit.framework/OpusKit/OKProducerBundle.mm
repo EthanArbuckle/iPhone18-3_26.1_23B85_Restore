@@ -1,12 +1,12 @@
 @interface OKProducerBundle
 - (OKProducerBundle)init;
-- (OKProducerBundle)initWithURL:(id)a3 bundleType:(unint64_t)a4;
+- (OKProducerBundle)initWithURL:(id)l bundleType:(unint64_t)type;
 - (double)version;
-- (id)URLForResource:(id)a3 withExtension:(id)a4;
+- (id)URLForResource:(id)resource withExtension:(id)extension;
 - (id)bundle;
 - (id)identifier;
 - (id)infoDictionary;
-- (id)localizedStringForKey:(id)a3 value:(id)a4 table:(id)a5;
+- (id)localizedStringForKey:(id)key value:(id)value table:(id)table;
 - (void)dealloc;
 @end
 
@@ -26,13 +26,13 @@
   return result;
 }
 
-- (OKProducerBundle)initWithURL:(id)a3 bundleType:(unint64_t)a4
+- (OKProducerBundle)initWithURL:(id)l bundleType:(unint64_t)type
 {
   v6 = [(OKProducerBundle *)self init];
   if (v6)
   {
-    v6->_url = [a3 copy];
-    v6->_type = a4;
+    v6->_url = [l copy];
+    v6->_type = type;
   }
 
   return v6;
@@ -93,10 +93,10 @@
   infoDictionary = self->_infoDictionary;
   if (!infoDictionary)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
-    [v4 addEntriesFromDictionary:{objc_msgSend(-[OKProducerBundle bundle](self, "bundle"), "infoDictionary")}];
-    [v4 addEntriesFromDictionary:{objc_msgSend(-[OKProducerBundle bundle](self, "bundle"), "localizedInfoDictionary")}];
-    infoDictionary = v4;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [dictionary addEntriesFromDictionary:{objc_msgSend(-[OKProducerBundle bundle](self, "bundle"), "infoDictionary")}];
+    [dictionary addEntriesFromDictionary:{objc_msgSend(-[OKProducerBundle bundle](self, "bundle"), "localizedInfoDictionary")}];
+    infoDictionary = dictionary;
     self->_infoDictionary = infoDictionary;
   }
 
@@ -106,9 +106,9 @@
 
 - (id)identifier
 {
-  v2 = [(OKProducerBundle *)self infoDictionary];
+  infoDictionary = [(OKProducerBundle *)self infoDictionary];
 
-  return [v2 objectForKey:@"OKProducerIdentifier"];
+  return [infoDictionary objectForKey:@"OKProducerIdentifier"];
 }
 
 - (double)version
@@ -119,18 +119,18 @@
   return result;
 }
 
-- (id)URLForResource:(id)a3 withExtension:(id)a4
+- (id)URLForResource:(id)resource withExtension:(id)extension
 {
-  v6 = [(OKProducerBundle *)self bundle];
+  bundle = [(OKProducerBundle *)self bundle];
 
-  return [v6 URLForResource:a3 withExtension:a4];
+  return [bundle URLForResource:resource withExtension:extension];
 }
 
-- (id)localizedStringForKey:(id)a3 value:(id)a4 table:(id)a5
+- (id)localizedStringForKey:(id)key value:(id)value table:(id)table
 {
-  v8 = [(OKProducerBundle *)self bundle];
+  bundle = [(OKProducerBundle *)self bundle];
 
-  return [v8 localizedStringForKey:a3 value:a4 table:a5];
+  return [bundle localizedStringForKey:key value:value table:table];
 }
 
 @end

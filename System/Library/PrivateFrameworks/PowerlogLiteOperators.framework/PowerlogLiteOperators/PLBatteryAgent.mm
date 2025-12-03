@@ -3,7 +3,7 @@
 + (BOOL)shouldLogBTM;
 + (BOOL)shouldLogCPMS;
 + (BOOL)shouldLogPPMDebugDetail;
-+ (id)connectStateStringToEnum:(id)a3;
++ (id)connectStateStringToEnum:(id)enum;
 + (id)entryAggregateDefinitionUILevel;
 + (id)entryAggregateDefinitions;
 + (id)entryEventBackwardDefinitionAdapter;
@@ -59,28 +59,28 @@
 + (id)entryEventPointDefinitionUPOStepper;
 + (id)entryEventPointDefinitions;
 + (void)load;
-- (BOOL)batterySerialChanged:(id)a3;
-- (BOOL)checkForPenaltyBox:(id)a3;
-- (BOOL)driverActive:(id)a3;
+- (BOOL)batterySerialChanged:(id)changed;
+- (BOOL)checkForPenaltyBox:(id)box;
+- (BOOL)driverActive:(id)active;
 - (BOOL)givePluggedInFreePass;
 - (BOOL)hasAppleSmartBattery;
 - (BOOL)isEABatteryConnectedNow;
 - (BOOL)isEAPencilConnectedNow;
-- (BOOL)isUPOEntry:(id)a3;
-- (BOOL)modifiedExternalChargerEntry:(id)a3;
-- (BOOL)shouldLogCPMSSnapshotWithReason:(unsigned __int8)a3 withTrigger:(int64_t)a4;
-- (BOOL)shouldWaitForLifetimeDataWithRawData:(id)a3;
+- (BOOL)isUPOEntry:(id)entry;
+- (BOOL)modifiedExternalChargerEntry:(id)entry;
+- (BOOL)shouldLogCPMSSnapshotWithReason:(unsigned __int8)reason withTrigger:(int64_t)trigger;
+- (BOOL)shouldWaitForLifetimeDataWithRawData:(id)data;
 - (PLBatteryAgent)init;
-- (id)ApplyPolicyToDOFU:(id)a3 forSerial:(id)a4;
-- (id)aggregateBUIVisitData:(id)a3 withBUIVisitsToday:(id)a4 andBUIVisitsLastHour:(id)a5 andTotalLogDuration:(double)a6;
-- (id)batteryEEEECode:(id)a3;
+- (id)ApplyPolicyToDOFU:(id)u forSerial:(id)serial;
+- (id)aggregateBUIVisitData:(id)data withBUIVisitsToday:(id)today andBUIVisitsLastHour:(id)hour andTotalLogDuration:(double)duration;
+- (id)batteryEEEECode:(id)code;
 - (id)createTimerForEABatteryCountLogging;
-- (id)dataFromHexString:(id)a3;
-- (id)dateNoEarlierThan:(unint64_t)a3 since:(id)a4 withDelta:(id)a5;
+- (id)dataFromHexString:(id)string;
+- (id)dateNoEarlierThan:(unint64_t)than since:(id)since withDelta:(id)delta;
 - (id)getBUIVisitsLastHour;
 - (id)getBUIVisitsToday;
 - (id)getBUIVisitsTotal;
-- (id)getBaseIdentifierFromDevice:(id)a3;
+- (id)getBaseIdentifierFromDevice:(id)device;
 - (id)getBatteryCalibration0Data;
 - (id)getBatteryShutdownData;
 - (id)getGaugingMitigationDict;
@@ -89,55 +89,55 @@
 - (id)getMitigatedUPOCountDefault;
 - (id)getUPOStepperData;
 - (id)isOriginalBattery;
-- (id)logEventBackwardBatteryWithRawData:(id)a3;
+- (id)logEventBackwardBatteryWithRawData:(id)data;
 - (id)lowBatteryLogPath;
 - (id)lowBatteryLogString;
-- (id)overrideBatteryData:(id)a3 withPath:(id)a4;
-- (id)parseBatterySerialNumber:(id)a3;
-- (id)parseFlashWearLevelData:(id)a3;
-- (id)parseITMiscStatusCounters:(id)a3;
-- (id)parseLowVoltageResidencyCounters:(id)a3;
-- (id)parseRawRaTableData:(id)a3;
-- (id)parseRawSafetyFaultCounter:(id)a3;
-- (id)parseTimeAtHighSoc:(id)a3;
-- (id)parseTimeAtHighSocHex:(id)a3;
-- (id)presentMaxRaFromRawData:(id)a3;
-- (id)weekOfManufacture:(id)a3;
+- (id)overrideBatteryData:(id)data withPath:(id)path;
+- (id)parseBatterySerialNumber:(id)number;
+- (id)parseFlashWearLevelData:(id)data;
+- (id)parseITMiscStatusCounters:(id)counters;
+- (id)parseLowVoltageResidencyCounters:(id)counters;
+- (id)parseRawRaTableData:(id)data;
+- (id)parseRawSafetyFaultCounter:(id)counter;
+- (id)parseTimeAtHighSoc:(id)soc;
+- (id)parseTimeAtHighSocHex:(id)hex;
+- (id)presentMaxRaFromRawData:(id)data;
+- (id)weekOfManufacture:(id)manufacture;
 - (int)batteryLifetimeUPOCount;
-- (int)calculateChargingState:(id)a3;
-- (int)calculateConnectedState:(id)a3;
+- (int)calculateChargingState:(id)state;
+- (int)calculateConnectedState:(id)state;
 - (int)deviceType;
 - (int)getBatteryHealthServiceFlags;
 - (int)getBatteryHealthServiceState;
 - (int)getBatteryMaximumCapacityPercent;
-- (int)getIconChargeState:(id)a3;
+- (int)getIconChargeState:(id)state;
 - (int)getMitigationDefaults;
 - (int64_t)xFlags;
-- (unint64_t)customConvertBase34ToBase10:(id)a3;
-- (void)accessoryConnected:(id)a3;
-- (void)accessoryConnectionEventNotification:(id)a3;
-- (void)accessoryDisconnectEventNotification:(id)a3;
-- (void)accessoryDisconnected:(id)a3;
-- (void)accountGaugePowerFromCurrentAccumulatorEntry:(id)a3;
+- (unint64_t)customConvertBase34ToBase10:(id)base10;
+- (void)accessoryConnected:(id)connected;
+- (void)accessoryConnectionEventNotification:(id)notification;
+- (void)accessoryDisconnectEventNotification:(id)notification;
+- (void)accessoryDisconnected:(id)disconnected;
+- (void)accountGaugePowerFromCurrentAccumulatorEntry:(id)entry;
 - (void)accountUSBCPowerOut;
-- (void)addPowerMeasurementToAccounting:(double)a3 withStartDate:(id)a4 withEndDate:(id)a5;
+- (void)addPowerMeasurementToAccounting:(double)accounting withStartDate:(id)date withEndDate:(id)endDate;
 - (void)aggdTimerFired;
 - (void)cancelEALogging;
-- (void)checkChargingInfoChange:(id)a3;
-- (void)createFixedChargingIntervals:(id)a3;
+- (void)checkChargingInfoChange:(id)change;
+- (void)createFixedChargingIntervals:(id)intervals;
 - (void)dataChanged;
 - (void)dealloc;
-- (void)detectEAPencilConnectionWithNotification:(id)a3;
-- (void)fakeLogEntry:(id)a3;
-- (void)flushCSMToAggdAtDate:(id)a3;
+- (void)detectEAPencilConnectionWithNotification:(id)notification;
+- (void)fakeLogEntry:(id)entry;
+- (void)flushCSMToAggdAtDate:(id)date;
 - (void)flushPowerOut;
-- (void)handleBDCAMALogging:(id)a3;
-- (void)handleCameraStreaming:(BOOL)a3 withProperties:(id)a4;
-- (void)handleCameraStreamingLogging:(id)a3;
-- (void)handleGaugingMitigationStateCallback:(int)a3;
-- (void)handleHeadphoneConnected:(id)a3;
-- (void)handleMitigationStateCallback:(int)a3;
-- (void)handleOnDeviceACAMSBC:(id)a3;
+- (void)handleBDCAMALogging:(id)logging;
+- (void)handleCameraStreaming:(BOOL)streaming withProperties:(id)properties;
+- (void)handleCameraStreamingLogging:(id)logging;
+- (void)handleGaugingMitigationStateCallback:(int)callback;
+- (void)handleHeadphoneConnected:(id)connected;
+- (void)handleMitigationStateCallback:(int)callback;
+- (void)handleOnDeviceACAMSBC:(id)c;
 - (void)handlePPMCallback;
 - (void)handleSBC;
 - (void)initCameraStreamingIntervalTracking;
@@ -146,79 +146,79 @@
 - (void)initSmartChargingLogging;
 - (void)initializeChargingStateIntervals;
 - (void)log;
-- (void)logAdapterDetails:(id)a3;
-- (void)logAdapterDetailsEntry:(id)a3;
-- (void)logAdapterDetailsToCA:(id)a3;
-- (void)logAdapterInfo:(id)a3;
-- (void)logAuthFail:(id)a3;
+- (void)logAdapterDetails:(id)details;
+- (void)logAdapterDetailsEntry:(id)entry;
+- (void)logAdapterDetailsToCA:(id)a;
+- (void)logAdapterInfo:(id)info;
+- (void)logAuthFail:(id)fail;
 - (void)logBTM;
-- (void)logBaselineToAggD:(id)a3;
-- (void)logBaselineToCA:(id)a3;
-- (void)logBatteryConfigToAggd:(id)a3;
-- (void)logBatteryConfigToCA:(id)a3;
-- (void)logBatteryEntry:(id)a3;
-- (void)logBatteryShutdownToCA:(id)a3;
-- (void)logCPMSSnapshotWithTrigger:(int64_t)a3;
-- (void)logChargingParametersToAggd:(id)a3;
-- (void)logChargingTimeToAggd:(double)a3;
-- (void)logCurrentAccumulatorWithRawData:(id)a3;
-- (void)logEABatteryConfig:(id)a3;
-- (void)logEABatteryConfigToCA:(id)a3;
-- (void)logEABatteryConnectedEventToAnalyticsIgnoreLastLogTimestamp:(BOOL)a3;
-- (void)logEABatteryConnectedTimeToAnalyticsWithEAConnectionState:(BOOL)a3;
+- (void)logBaselineToAggD:(id)d;
+- (void)logBaselineToCA:(id)a;
+- (void)logBatteryConfigToAggd:(id)aggd;
+- (void)logBatteryConfigToCA:(id)a;
+- (void)logBatteryEntry:(id)entry;
+- (void)logBatteryShutdownToCA:(id)a;
+- (void)logCPMSSnapshotWithTrigger:(int64_t)trigger;
+- (void)logChargingParametersToAggd:(id)aggd;
+- (void)logChargingTimeToAggd:(double)aggd;
+- (void)logCurrentAccumulatorWithRawData:(id)data;
+- (void)logEABatteryConfig:(id)config;
+- (void)logEABatteryConfigToCA:(id)a;
+- (void)logEABatteryConnectedEventToAnalyticsIgnoreLastLogTimestamp:(BOOL)timestamp;
+- (void)logEABatteryConnectedTimeToAnalyticsWithEAConnectionState:(BOOL)state;
 - (void)logEABatteryStatistics;
 - (void)logEventBackwardBattery;
 - (void)logEventBackwardChargingLimit;
 - (void)logEventBackwardHeatMap;
-- (void)logEventBackwardHeatMapCallback:(id)a3 andHeatMapType:(int64_t)a4;
+- (void)logEventBackwardHeatMapCallback:(id)callback andHeatMapType:(int64_t)type;
 - (void)logEventBackwardIconographyState;
 - (void)logEventBackwardKioskMode;
-- (void)logEventBackwardKioskModeCallback:(id)a3;
+- (void)logEventBackwardKioskModeCallback:(id)callback;
 - (void)logEventBackwardTrustedBatteryHealth;
-- (void)logEventForwardCalibration0InfowithData:(id)a3;
-- (void)logEventForwardCalibration0withData:(id)a3;
-- (void)logEventForwardCleanEnergyChargingWithPayload:(id)a3;
+- (void)logEventForwardCalibration0InfowithData:(id)data;
+- (void)logEventForwardCalibration0withData:(id)data;
+- (void)logEventForwardCleanEnergyChargingWithPayload:(id)payload;
 - (void)logEventForwardLPEM;
-- (void)logEventForwardMobileChargeMode:(id)a3;
-- (void)logEventForwardSmartChargingWithPayload:(id)a3;
-- (void)logEventForwardUPOStepperWithPayload:(id)a3;
+- (void)logEventForwardMobileChargeMode:(id)mode;
+- (void)logEventForwardSmartChargingWithPayload:(id)payload;
+- (void)logEventForwardUPOStepperWithPayload:(id)payload;
 - (void)logEventIntervalGasGauge;
 - (void)logEventNoneBatteryConfigCycleCountData;
-- (void)logEventNoneBatteryConfigWithRawData:(id)a3;
+- (void)logEventNoneBatteryConfigWithRawData:(id)data;
 - (void)logEventNoneUserType;
 - (void)logEventPointBatteryChargingUIVisit;
 - (void)logEventPointBatteryHealthUIVisit;
-- (void)logEventPointBatteryPanicShutdown:(id)a3;
+- (void)logEventPointBatteryPanicShutdown:(id)shutdown;
 - (void)logEventPointBatteryShutdown;
-- (void)logEventPointBatteryTrapInfo:(id)a3;
+- (void)logEventPointBatteryTrapInfo:(id)info;
 - (void)logEventPointBatteryUIAppDetailVisit;
 - (void)logEventPointBatteryUIDetailVisit;
-- (void)logEventPointBatteryUIInsightsAndSuggestionsWithPayload:(id)a3;
-- (void)logEventPointBatteryUIVisitWithPayload:(id)a3;
-- (void)logEventPointChargingInfoWithChargingData:(id)a3;
+- (void)logEventPointBatteryUIInsightsAndSuggestionsWithPayload:(id)payload;
+- (void)logEventPointBatteryUIVisitWithPayload:(id)payload;
+- (void)logEventPointChargingInfoWithChargingData:(id)data;
 - (void)logEventPointUPOStepper;
-- (void)logFedDetails:(id)a3;
-- (void)logFlashAgingToCA:(id)a3;
-- (void)logKioskModeEntryToAggd:(id)a3;
-- (void)logKioskModeEntryToCA:(id)a3;
-- (void)logOrionInfo:(id)a3;
-- (void)logPenaltyBoxDurationToAggd:(double)a3;
-- (void)logPortControllerInfo:(id)a3;
-- (void)logPowerOutDetails:(id)a3;
-- (void)logSlowChargingReasonToCA:(id)a3;
-- (void)logWatchdogDebugDumpToCA:(id)a3;
-- (void)logkBatteryRsenseOpenCountToCA:(id)a3;
-- (void)populateClientEntry:(id)a3 withBudget:(id)a4 withTemplate:(id)a5;
-- (void)pushFlashWearLevelDataToCA:(id)a3;
-- (void)pushTimeAtHighSocToAggD:(id)a3;
-- (void)setAggdIntegerValueFromEntry:(id)a3 forKey:(id)a4 withPrefix:(id)a5;
-- (void)setMitigatedUPOCountDefault:(id)a3;
-- (void)setMitigationStateDefault:(unint64_t)a3;
+- (void)logFedDetails:(id)details;
+- (void)logFlashAgingToCA:(id)a;
+- (void)logKioskModeEntryToAggd:(id)aggd;
+- (void)logKioskModeEntryToCA:(id)a;
+- (void)logOrionInfo:(id)info;
+- (void)logPenaltyBoxDurationToAggd:(double)aggd;
+- (void)logPortControllerInfo:(id)info;
+- (void)logPowerOutDetails:(id)details;
+- (void)logSlowChargingReasonToCA:(id)a;
+- (void)logWatchdogDebugDumpToCA:(id)a;
+- (void)logkBatteryRsenseOpenCountToCA:(id)a;
+- (void)populateClientEntry:(id)entry withBudget:(id)budget withTemplate:(id)template;
+- (void)pushFlashWearLevelDataToCA:(id)a;
+- (void)pushTimeAtHighSocToAggD:(id)d;
+- (void)setAggdIntegerValueFromEntry:(id)entry forKey:(id)key withPrefix:(id)prefix;
+- (void)setMitigatedUPOCountDefault:(id)default;
+- (void)setMitigationStateDefault:(unint64_t)default;
 - (void)setupAVSystemController;
 - (void)setupCSMLogging;
-- (void)setupEALoggingTriggeredByConnectionEvent:(BOOL)a3;
-- (void)showOrHideTLCNotification:(BOOL)a3 meetsTLCNotificationConditions:(BOOL)a4;
-- (void)updateCurrentSenseMonitorStatusWithEntry:(id)a3;
+- (void)setupEALoggingTriggeredByConnectionEvent:(BOOL)event;
+- (void)showOrHideTLCNotification:(BOOL)notification meetsTLCNotificationConditions:(BOOL)conditions;
+- (void)updateCurrentSenseMonitorStatusWithEntry:(id)entry;
 @end
 
 @implementation PLBatteryAgent
@@ -312,7 +312,7 @@ LABEL_16:
 - (id)getIOPSDevices
 {
   v43 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v3 = 0x277D3F000uLL;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
@@ -332,9 +332,9 @@ LABEL_16:
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"check Connected devices ..."];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent getIOPSDevices]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:3939];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:3939];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -364,7 +364,7 @@ LABEL_16:
       {
         v16 = Count;
         v17 = 0;
-        v37 = v2;
+        v37 = array;
         v36 = v12;
         do
         {
@@ -390,9 +390,9 @@ LABEL_16:
                 v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s-%d: powerSourceDescription=%@", "-[PLBatteryAgent getIOPSDevices]", 3959, v19];
                 v22 = MEMORY[0x277D3F178];
                 v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-                v24 = [v23 lastPathComponent];
+                lastPathComponent2 = [v23 lastPathComponent];
                 v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent getIOPSDevices]"];
-                [v22 logMessage:v21 fromFile:v24 fromFunction:v25 fromLineNumber:3959];
+                [v22 logMessage:v21 fromFile:lastPathComponent2 fromFunction:v25 fromLineNumber:3959];
 
                 v26 = PLLogCommon();
                 if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -402,13 +402,13 @@ LABEL_16:
                   _os_log_debug_impl(&dword_21A4C6000, v26, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
                 }
 
-                v2 = v37;
+                array = v37;
                 v3 = 0x277D3F000;
                 v12 = v36;
               }
             }
 
-            [v2 addObject:v19];
+            [array addObject:v19];
           }
 
           ++v17;
@@ -438,12 +438,12 @@ LABEL_16:
 
     if (byte_2811F3A86 == 1)
     {
-      v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"Connected devices=%@", v2];
+      v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"Connected devices=%@", array];
       v29 = MEMORY[0x277D3F178];
       v30 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-      v31 = [v30 lastPathComponent];
+      lastPathComponent3 = [v30 lastPathComponent];
       v32 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent getIOPSDevices]"];
-      [v29 logMessage:v28 fromFile:v31 fromFunction:v32 fromLineNumber:3973];
+      [v29 logMessage:v28 fromFile:lastPathComponent3 fromFunction:v32 fromLineNumber:3973];
 
       v33 = PLLogCommon();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
@@ -458,7 +458,7 @@ LABEL_16:
 LABEL_32:
   v34 = *MEMORY[0x277D85DE8];
 
-  return v2;
+  return array;
 }
 
 - (BOOL)isEAPencilConnectedNow
@@ -531,9 +531,9 @@ LABEL_11:
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"In Cancel EA Logging"];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent cancelEALogging]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:3877];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:3877];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -545,9 +545,9 @@ LABEL_11:
     }
   }
 
-  v10 = [(PLBatteryAgent *)self EABatteryTimer];
+  eABatteryTimer = [(PLBatteryAgent *)self EABatteryTimer];
 
-  if (v10)
+  if (eABatteryTimer)
   {
     [(PLBatteryAgent *)self logEABatteryConnectedTimeToAnalyticsWithEAConnectionState:1];
     if ([MEMORY[0x277D3F180] debugEnabled])
@@ -568,9 +568,9 @@ LABEL_11:
         v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"In Cancel EA Logging: Cancelled timer", v22, v23, v24, v25, v26];
         v13 = MEMORY[0x277D3F178];
         v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-        v15 = [v14 lastPathComponent];
+        lastPathComponent2 = [v14 lastPathComponent];
         v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent cancelEALogging]"];
-        [v13 logMessage:v12 fromFile:v15 fromFunction:v16 fromLineNumber:3881];
+        [v13 logMessage:v12 fromFile:lastPathComponent2 fromFunction:v16 fromLineNumber:3881];
 
         v17 = PLLogCommon();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -585,12 +585,12 @@ LABEL_11:
     v18 = [(PLBatteryAgent *)self EABatteryTimer:v22];
     [v18 setTimerActive:0];
 
-    v19 = [(PLBatteryAgent *)self EABatteryTimer];
-    [v19 invalidate];
+    eABatteryTimer2 = [(PLBatteryAgent *)self EABatteryTimer];
+    [eABatteryTimer2 invalidate];
 
     [(PLBatteryAgent *)self setEABatteryTimer:0];
-    v20 = [(PLBatteryAgent *)self significantBatteryChangeTimer];
-    [v20 cancel];
+    significantBatteryChangeTimer = [(PLBatteryAgent *)self significantBatteryChangeTimer];
+    [significantBatteryChangeTimer cancel];
 
     [(PLBatteryAgent *)self setLastkIOPSAppleBatteryCaseCumulativeCurrentKey:0];
   }
@@ -741,9 +741,9 @@ LABEL_23:
       {
         if (v24 == 27)
         {
-          v27 = [*(v25 + 2992) numberWithUnsignedInt:*v26];
+          convertFromSystemToMonotonic = [*(v25 + 2992) numberWithUnsignedInt:*v26];
           v28 = v6;
-          v29 = v27;
+          v29 = convertFromSystemToMonotonic;
           v30 = @"BTMProperty_Vmin";
         }
 
@@ -754,9 +754,9 @@ LABEL_23:
             goto LABEL_51;
           }
 
-          v27 = [*(v25 + 2992) numberWithUnsignedInt:*v26];
+          convertFromSystemToMonotonic = [*(v25 + 2992) numberWithUnsignedInt:*v26];
           v28 = v6;
-          v29 = v27;
+          v29 = convertFromSystemToMonotonic;
           v30 = @"BTMProperty_IforVmin";
         }
       }
@@ -764,11 +764,11 @@ LABEL_23:
       else if (v24 == 24)
       {
         v32 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:(*v26 / 0xF4240uLL)];
-        v27 = [v32 convertFromSystemToMonotonic];
+        convertFromSystemToMonotonic = [v32 convertFromSystemToMonotonic];
 
         v25 = 0x277CCA000;
         v28 = v6;
-        v29 = v27;
+        v29 = convertFromSystemToMonotonic;
         v30 = @"BTMProperty_TimestampforVmin1";
       }
 
@@ -779,9 +779,9 @@ LABEL_23:
           goto LABEL_51;
         }
 
-        v27 = [*(v25 + 2992) numberWithUnsignedInt:*v26];
+        convertFromSystemToMonotonic = [*(v25 + 2992) numberWithUnsignedInt:*v26];
         v28 = v6;
-        v29 = v27;
+        v29 = convertFromSystemToMonotonic;
         v30 = @"BTMProperty_OCVforVmin";
       }
     }
@@ -790,9 +790,9 @@ LABEL_23:
     {
       if (v24 == 21)
       {
-        v27 = [*(v25 + 2992) numberWithUnsignedInt:*v26];
+        convertFromSystemToMonotonic = [*(v25 + 2992) numberWithUnsignedInt:*v26];
         v28 = v6;
-        v29 = v27;
+        v29 = convertFromSystemToMonotonic;
         v30 = @"BTMProperty_Imax";
       }
 
@@ -803,9 +803,9 @@ LABEL_23:
           goto LABEL_51;
         }
 
-        v27 = [*(v25 + 2992) numberWithUnsignedInt:*v26];
+        convertFromSystemToMonotonic = [*(v25 + 2992) numberWithUnsignedInt:*v26];
         v28 = v6;
-        v29 = v27;
+        v29 = convertFromSystemToMonotonic;
         v30 = @"BTMProperty_VforImax";
       }
     }
@@ -813,11 +813,11 @@ LABEL_23:
     else if (v24 == 18)
     {
       v31 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:(*v26 / 0xF4240uLL)];
-      v27 = [v31 convertFromSystemToMonotonic];
+      convertFromSystemToMonotonic = [v31 convertFromSystemToMonotonic];
 
       v25 = 0x277CCA000;
       v28 = v6;
-      v29 = v27;
+      v29 = convertFromSystemToMonotonic;
       v30 = @"BTMProperty_TimestampforImax1";
     }
 
@@ -828,9 +828,9 @@ LABEL_23:
         goto LABEL_51;
       }
 
-      v27 = [*(v25 + 2992) numberWithUnsignedInt:*v26];
+      convertFromSystemToMonotonic = [*(v25 + 2992) numberWithUnsignedInt:*v26];
       v28 = v6;
-      v29 = v27;
+      v29 = convertFromSystemToMonotonic;
       v30 = @"BTMProperty_OCVforImax";
     }
 
@@ -970,7 +970,7 @@ void __42__PLBatteryAgent_initSmartChargingLogging__block_invoke(uint64_t a1, ui
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLBatteryAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -979,11 +979,11 @@ void __42__PLBatteryAgent_initSmartChargingLogging__block_invoke(uint64_t a1, ui
 {
   v9[2] = *MEMORY[0x277D85DE8];
   v8[0] = @"GasGauge";
-  v3 = [a1 entryEventIntervalDefinitionGasGauge];
+  entryEventIntervalDefinitionGasGauge = [self entryEventIntervalDefinitionGasGauge];
   v8[1] = @"Charging";
-  v9[0] = v3;
-  v4 = [a1 entryEventIntervalDefinitionCharging];
-  v9[1] = v4;
+  v9[0] = entryEventIntervalDefinitionGasGauge;
+  entryEventIntervalDefinitionCharging = [self entryEventIntervalDefinitionCharging];
+  v9[1] = entryEventIntervalDefinitionCharging;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -1003,9 +1003,9 @@ void __42__PLBatteryAgent_initSmartChargingLogging__block_invoke(uint64_t a1, ui
     v36[0] = v28;
     v35[1] = *MEMORY[0x277D3F540];
     v31[0] = @"timestampEnd";
-    v27 = [MEMORY[0x277D3F198] sharedInstance];
-    v26 = [v27 commonTypeDict_DateFormat];
-    v32[0] = v26;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_DateFormat = [mEMORY[0x277D3F198] commonTypeDict_DateFormat];
+    v32[0] = commonTypeDict_DateFormat;
     v31[1] = @"AvgCurrent";
     v2 = *MEMORY[0x277D3F5B0];
     v29[0] = *MEMORY[0x277D3F5A8];
@@ -1015,41 +1015,41 @@ void __42__PLBatteryAgent_initSmartChargingLogging__block_invoke(uint64_t a1, ui
     v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:2];
     v32[1] = v25;
     v31[2] = @"MinCurrent";
-    v24 = [MEMORY[0x277D3F198] sharedInstance];
-    v23 = [v24 commonTypeDict_IntegerFormat_withUnit_mA];
-    v32[2] = v23;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat_withUnit_mA = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat_withUnit_mA];
+    v32[2] = commonTypeDict_IntegerFormat_withUnit_mA;
     v31[3] = @"MaxCurrent";
-    v22 = [MEMORY[0x277D3F198] sharedInstance];
-    v21 = [v22 commonTypeDict_IntegerFormat_withUnit_mA];
-    v32[3] = v21;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat_withUnit_mA2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat_withUnit_mA];
+    v32[3] = commonTypeDict_IntegerFormat_withUnit_mA2;
     v31[4] = @"MinCurrentOffset";
-    v20 = [MEMORY[0x277D3F198] sharedInstance];
-    v19 = [v20 commonTypeDict_IntegerFormat_withUnit_s];
-    v32[4] = v19;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat_withUnit_s = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat_withUnit_s];
+    v32[4] = commonTypeDict_IntegerFormat_withUnit_s;
     v31[5] = @"MaxCurrentOffset";
-    v18 = [MEMORY[0x277D3F198] sharedInstance];
-    v17 = [v18 commonTypeDict_IntegerFormat_withUnit_s];
-    v32[5] = v17;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat_withUnit_s2 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat_withUnit_s];
+    v32[5] = commonTypeDict_IntegerFormat_withUnit_s2;
     v31[6] = @"Readings";
-    v16 = [MEMORY[0x277D3F198] sharedInstance];
-    v15 = [v16 commonTypeDict_IntegerFormat];
-    v32[6] = v15;
+    mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+    v32[6] = commonTypeDict_IntegerFormat;
     v31[7] = @"AvgPower";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_RealFormat_withUnit_mW];
-    v32[7] = v4;
+    mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat_withUnit_mW = [mEMORY[0x277D3F198]7 commonTypeDict_RealFormat_withUnit_mW];
+    v32[7] = commonTypeDict_RealFormat_withUnit_mW;
     v31[8] = @"TotalEnergy";
-    v5 = [MEMORY[0x277D3F198] sharedInstance];
-    v6 = [v5 commonTypeDict_RealFormat_withUnit_mWhr];
-    v32[8] = v6;
+    mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat_withUnit_mWhr = [mEMORY[0x277D3F198]8 commonTypeDict_RealFormat_withUnit_mWhr];
+    v32[8] = commonTypeDict_RealFormat_withUnit_mWhr;
     v31[9] = @"OverAllEnergy";
-    v7 = [MEMORY[0x277D3F198] sharedInstance];
-    v8 = [v7 commonTypeDict_RealFormat_withUnit_mWhr];
-    v32[9] = v8;
+    mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat_withUnit_mWhr2 = [mEMORY[0x277D3F198]9 commonTypeDict_RealFormat_withUnit_mWhr];
+    v32[9] = commonTypeDict_RealFormat_withUnit_mWhr2;
     v31[10] = @"OverAllPower";
-    v9 = [MEMORY[0x277D3F198] sharedInstance];
-    v10 = [v9 commonTypeDict_RealFormat_withUnit_mWhr];
-    v32[10] = v10;
+    mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat_withUnit_mWhr3 = [mEMORY[0x277D3F198]10 commonTypeDict_RealFormat_withUnit_mWhr];
+    v32[10] = commonTypeDict_RealFormat_withUnit_mWhr3;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:v31 count:11];
     v36[1] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:v35 count:2];
@@ -1080,17 +1080,17 @@ void __42__PLBatteryAgent_initSmartChargingLogging__block_invoke(uint64_t a1, ui
   v19[0] = v3;
   v18[1] = *MEMORY[0x277D3F540];
   v14[0] = @"timestampEnd";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_DateFormat];
-  v15[0] = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198] commonTypeDict_DateFormat];
+  v15[0] = commonTypeDict_DateFormat;
   v14[1] = @"intervalType";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v15[1] = v7;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v15[1] = commonTypeDict_IntegerFormat;
   v14[2] = @"chargeLimitTargetSoC";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v15[2] = v9;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v15[2] = commonTypeDict_IntegerFormat2;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:3];
   v19[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:2];
@@ -1147,13 +1147,13 @@ void __42__PLBatteryAgent_initSmartChargingLogging__block_invoke(uint64_t a1, ui
   v237 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v243 forKeys:v242 count:2];
   v247[1] = v237;
   v246[2] = @"NominalChargeCapacity";
-  v236 = [MEMORY[0x277D3F198] sharedInstance];
-  v235 = [v236 commonTypeDict_IntegerFormat];
-  v247[2] = v235;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v247[2] = commonTypeDict_IntegerFormat;
   v246[3] = @"AppleRawMaxCapacity";
-  v234 = [MEMORY[0x277D3F198] sharedInstance];
-  v233 = [v234 commonTypeDict_IntegerFormat_withUnit_mAh];
-  v247[3] = v233;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat_withUnit_mAh = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat_withUnit_mAh];
+  v247[3] = commonTypeDict_IntegerFormat_withUnit_mAh;
   v246[4] = @"TotalOperatingTime";
   v5 = *MEMORY[0x277D3F5B0];
   v240[0] = v3;
@@ -1163,449 +1163,449 @@ void __42__PLBatteryAgent_initSmartChargingLogging__block_invoke(uint64_t a1, ui
   v232 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v241 forKeys:v240 count:2];
   v247[4] = v232;
   v246[5] = @"AverageTemperature";
-  v231 = [MEMORY[0x277D3F198] sharedInstance];
-  v230 = [v231 commonTypeDict_IntegerFormat];
-  v247[5] = v230;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v247[5] = commonTypeDict_IntegerFormat2;
   v246[6] = @"CycleCount";
-  v229 = [MEMORY[0x277D3F198] sharedInstance];
-  v228 = [v229 commonTypeDict_IntegerFormat];
-  v247[6] = v228;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v247[6] = commonTypeDict_IntegerFormat3;
   v246[7] = @"CycleCountLastQmax";
-  v227 = [MEMORY[0x277D3F198] sharedInstance];
-  v226 = [v227 commonTypeDict_IntegerFormat];
-  v247[7] = v226;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v247[7] = commonTypeDict_IntegerFormat4;
   v246[8] = @"EEEECode";
-  v225 = [MEMORY[0x277D3F198] sharedInstance];
-  v224 = [v225 commonTypeDict_StringFormat];
-  v247[8] = v224;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]6 commonTypeDict_StringFormat];
+  v247[8] = commonTypeDict_StringFormat;
   v246[9] = @"FlashWriteCount";
-  v223 = [MEMORY[0x277D3F198] sharedInstance];
-  v222 = [v223 commonTypeDict_IntegerFormat];
-  v247[9] = v222;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v247[9] = commonTypeDict_IntegerFormat5;
   v246[10] = @"HighAvgCurrentLastRun";
-  v221 = [MEMORY[0x277D3F198] sharedInstance];
-  v220 = [v221 commonTypeDict_IntegerFormat];
-  v247[10] = v220;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v247[10] = commonTypeDict_IntegerFormat6;
   v246[11] = @"ITMiscStatus";
-  v219 = [MEMORY[0x277D3F198] sharedInstance];
-  v218 = [v219 commonTypeDict_IntegerFormat];
-  v247[11] = v218;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+  v247[11] = commonTypeDict_IntegerFormat7;
   v246[12] = @"ITSimulationCounter";
-  v217 = [MEMORY[0x277D3F198] sharedInstance];
-  v216 = [v217 commonTypeDict_IntegerFormat];
-  v247[12] = v216;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+  v247[12] = commonTypeDict_IntegerFormat8;
   v246[13] = @"LifetimeUPOCount";
-  v215 = [MEMORY[0x277D3F198] sharedInstance];
-  v214 = [v215 commonTypeDict_IntegerFormat];
-  v247[13] = v214;
+  mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]11 commonTypeDict_IntegerFormat];
+  v247[13] = commonTypeDict_IntegerFormat9;
   v246[14] = @"LowAvgCurrentLastRun";
-  v213 = [MEMORY[0x277D3F198] sharedInstance];
-  v212 = [v213 commonTypeDict_IntegerFormat];
-  v247[14] = v212;
+  mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat10 = [mEMORY[0x277D3F198]12 commonTypeDict_IntegerFormat];
+  v247[14] = commonTypeDict_IntegerFormat10;
   v246[15] = @"MaximumDeltaVoltage";
-  v211 = [MEMORY[0x277D3F198] sharedInstance];
-  v210 = [v211 commonTypeDict_IntegerFormat];
-  v247[15] = v210;
+  mEMORY[0x277D3F198]13 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat11 = [mEMORY[0x277D3F198]13 commonTypeDict_IntegerFormat];
+  v247[15] = commonTypeDict_IntegerFormat11;
   v246[16] = @"MinimumDeltaVoltage";
-  v209 = [MEMORY[0x277D3F198] sharedInstance];
-  v208 = [v209 commonTypeDict_IntegerFormat];
-  v247[16] = v208;
+  mEMORY[0x277D3F198]14 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat12 = [mEMORY[0x277D3F198]14 commonTypeDict_IntegerFormat];
+  v247[16] = commonTypeDict_IntegerFormat12;
   v246[17] = @"MaximumFCC";
-  v207 = [MEMORY[0x277D3F198] sharedInstance];
-  v206 = [v207 commonTypeDict_IntegerFormat];
-  v247[17] = v206;
+  mEMORY[0x277D3F198]15 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat13 = [mEMORY[0x277D3F198]15 commonTypeDict_IntegerFormat];
+  v247[17] = commonTypeDict_IntegerFormat13;
   v246[18] = @"MinimumFCC";
-  v205 = [MEMORY[0x277D3F198] sharedInstance];
-  v204 = [v205 commonTypeDict_IntegerFormat];
-  v247[18] = v204;
+  mEMORY[0x277D3F198]16 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat14 = [mEMORY[0x277D3F198]16 commonTypeDict_IntegerFormat];
+  v247[18] = commonTypeDict_IntegerFormat14;
   v246[19] = @"MaximumPackVoltage";
-  v203 = [MEMORY[0x277D3F198] sharedInstance];
-  v202 = [v203 commonTypeDict_IntegerFormat];
-  v247[19] = v202;
+  mEMORY[0x277D3F198]17 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat15 = [mEMORY[0x277D3F198]17 commonTypeDict_IntegerFormat];
+  v247[19] = commonTypeDict_IntegerFormat15;
   v246[20] = @"MinimumPackVoltage";
-  v201 = [MEMORY[0x277D3F198] sharedInstance];
-  v200 = [v201 commonTypeDict_IntegerFormat];
-  v247[20] = v200;
+  mEMORY[0x277D3F198]18 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat16 = [mEMORY[0x277D3F198]18 commonTypeDict_IntegerFormat];
+  v247[20] = commonTypeDict_IntegerFormat16;
   v246[21] = @"MaximumQmax";
-  v199 = [MEMORY[0x277D3F198] sharedInstance];
-  v198 = [v199 commonTypeDict_IntegerFormat];
-  v247[21] = v198;
+  mEMORY[0x277D3F198]19 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat17 = [mEMORY[0x277D3F198]19 commonTypeDict_IntegerFormat];
+  v247[21] = commonTypeDict_IntegerFormat17;
   v246[22] = @"MinimumQmax";
-  v197 = [MEMORY[0x277D3F198] sharedInstance];
-  v196 = [v197 commonTypeDict_IntegerFormat];
-  v247[22] = v196;
+  mEMORY[0x277D3F198]20 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat18 = [mEMORY[0x277D3F198]20 commonTypeDict_IntegerFormat];
+  v247[22] = commonTypeDict_IntegerFormat18;
   v246[23] = @"MaximumRa0-8";
-  v195 = [MEMORY[0x277D3F198] sharedInstance];
-  v194 = [v195 commonTypeDict_IntegerFormat];
-  v247[23] = v194;
+  mEMORY[0x277D3F198]21 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat19 = [mEMORY[0x277D3F198]21 commonTypeDict_IntegerFormat];
+  v247[23] = commonTypeDict_IntegerFormat19;
   v246[24] = @"MinimumRa0-8";
-  v193 = [MEMORY[0x277D3F198] sharedInstance];
-  v192 = [v193 commonTypeDict_IntegerFormat];
-  v247[24] = v192;
+  mEMORY[0x277D3F198]22 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat20 = [mEMORY[0x277D3F198]22 commonTypeDict_IntegerFormat];
+  v247[24] = commonTypeDict_IntegerFormat20;
   v246[25] = @"MaximumTemperature";
-  v191 = [MEMORY[0x277D3F198] sharedInstance];
-  v190 = [v191 commonTypeDict_IntegerFormat];
-  v247[25] = v190;
+  mEMORY[0x277D3F198]23 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat21 = [mEMORY[0x277D3F198]23 commonTypeDict_IntegerFormat];
+  v247[25] = commonTypeDict_IntegerFormat21;
   v246[26] = @"MinimumTemperature";
-  v189 = [MEMORY[0x277D3F198] sharedInstance];
-  v188 = [v189 commonTypeDict_IntegerFormat];
-  v247[26] = v188;
+  mEMORY[0x277D3F198]24 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat22 = [mEMORY[0x277D3F198]24 commonTypeDict_IntegerFormat];
+  v247[26] = commonTypeDict_IntegerFormat22;
   v246[27] = @"MaximumCapacityPercent";
-  v187 = [MEMORY[0x277D3F198] sharedInstance];
-  v186 = [v187 commonTypeDict_IntegerFormat];
-  v247[27] = v186;
+  mEMORY[0x277D3F198]25 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat23 = [mEMORY[0x277D3F198]25 commonTypeDict_IntegerFormat];
+  v247[27] = commonTypeDict_IntegerFormat23;
   v246[28] = @"MaximumChargeCurrent";
-  v185 = [MEMORY[0x277D3F198] sharedInstance];
-  v184 = [v185 commonTypeDict_IntegerFormat];
-  v247[28] = v184;
+  mEMORY[0x277D3F198]26 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat24 = [mEMORY[0x277D3F198]26 commonTypeDict_IntegerFormat];
+  v247[28] = commonTypeDict_IntegerFormat24;
   v246[29] = @"MaximumDischargeCurrent";
-  v183 = [MEMORY[0x277D3F198] sharedInstance];
-  v182 = [v183 commonTypeDict_IntegerFormat];
-  v247[29] = v182;
+  mEMORY[0x277D3F198]27 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat25 = [mEMORY[0x277D3F198]27 commonTypeDict_IntegerFormat];
+  v247[29] = commonTypeDict_IntegerFormat25;
   v246[30] = @"MaximumOverChargedCapacity";
-  v181 = [MEMORY[0x277D3F198] sharedInstance];
-  v180 = [v181 commonTypeDict_IntegerFormat];
-  v247[30] = v180;
+  mEMORY[0x277D3F198]28 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat26 = [mEMORY[0x277D3F198]28 commonTypeDict_IntegerFormat];
+  v247[30] = commonTypeDict_IntegerFormat26;
   v246[31] = @"MaximumOverDischargedCapacity";
-  v179 = [MEMORY[0x277D3F198] sharedInstance];
-  v178 = [v179 commonTypeDict_IntegerFormat];
-  v247[31] = v178;
+  mEMORY[0x277D3F198]29 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat27 = [mEMORY[0x277D3F198]29 commonTypeDict_IntegerFormat];
+  v247[31] = commonTypeDict_IntegerFormat27;
   v246[32] = @"OriginalBattery";
-  v177 = [MEMORY[0x277D3F198] sharedInstance];
-  v176 = [v177 commonTypeDict_BoolFormat];
-  v247[32] = v176;
+  mEMORY[0x277D3F198]30 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]30 commonTypeDict_BoolFormat];
+  v247[32] = commonTypeDict_BoolFormat;
   v246[33] = @"RaTable_1";
-  v175 = [MEMORY[0x277D3F198] sharedInstance];
-  v174 = [v175 commonTypeDict_IntegerFormat];
-  v247[33] = v174;
+  mEMORY[0x277D3F198]31 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat28 = [mEMORY[0x277D3F198]31 commonTypeDict_IntegerFormat];
+  v247[33] = commonTypeDict_IntegerFormat28;
   v246[34] = @"RaTable_2";
-  v173 = [MEMORY[0x277D3F198] sharedInstance];
-  v172 = [v173 commonTypeDict_IntegerFormat];
-  v247[34] = v172;
+  mEMORY[0x277D3F198]32 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat29 = [mEMORY[0x277D3F198]32 commonTypeDict_IntegerFormat];
+  v247[34] = commonTypeDict_IntegerFormat29;
   v246[35] = @"RaTable_3";
-  v171 = [MEMORY[0x277D3F198] sharedInstance];
-  v170 = [v171 commonTypeDict_IntegerFormat];
-  v247[35] = v170;
+  mEMORY[0x277D3F198]33 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat30 = [mEMORY[0x277D3F198]33 commonTypeDict_IntegerFormat];
+  v247[35] = commonTypeDict_IntegerFormat30;
   v246[36] = @"RaTable_4";
-  v169 = [MEMORY[0x277D3F198] sharedInstance];
-  v168 = [v169 commonTypeDict_IntegerFormat];
-  v247[36] = v168;
+  mEMORY[0x277D3F198]34 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat31 = [mEMORY[0x277D3F198]34 commonTypeDict_IntegerFormat];
+  v247[36] = commonTypeDict_IntegerFormat31;
   v246[37] = @"RaTable_5";
-  v167 = [MEMORY[0x277D3F198] sharedInstance];
-  v166 = [v167 commonTypeDict_IntegerFormat];
-  v247[37] = v166;
+  mEMORY[0x277D3F198]35 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat32 = [mEMORY[0x277D3F198]35 commonTypeDict_IntegerFormat];
+  v247[37] = commonTypeDict_IntegerFormat32;
   v246[38] = @"RaTable_6";
-  v165 = [MEMORY[0x277D3F198] sharedInstance];
-  v164 = [v165 commonTypeDict_IntegerFormat];
-  v247[38] = v164;
+  mEMORY[0x277D3F198]36 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat33 = [mEMORY[0x277D3F198]36 commonTypeDict_IntegerFormat];
+  v247[38] = commonTypeDict_IntegerFormat33;
   v246[39] = @"RaTable_7";
-  v163 = [MEMORY[0x277D3F198] sharedInstance];
-  v162 = [v163 commonTypeDict_IntegerFormat];
-  v247[39] = v162;
+  mEMORY[0x277D3F198]37 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat34 = [mEMORY[0x277D3F198]37 commonTypeDict_IntegerFormat];
+  v247[39] = commonTypeDict_IntegerFormat34;
   v246[40] = @"RaTable_8";
-  v161 = [MEMORY[0x277D3F198] sharedInstance];
-  v160 = [v161 commonTypeDict_IntegerFormat];
-  v247[40] = v160;
+  mEMORY[0x277D3F198]38 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat35 = [mEMORY[0x277D3F198]38 commonTypeDict_IntegerFormat];
+  v247[40] = commonTypeDict_IntegerFormat35;
   v246[41] = @"RaTable_9";
-  v159 = [MEMORY[0x277D3F198] sharedInstance];
-  v158 = [v159 commonTypeDict_IntegerFormat];
-  v247[41] = v158;
+  mEMORY[0x277D3F198]39 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat36 = [mEMORY[0x277D3F198]39 commonTypeDict_IntegerFormat];
+  v247[41] = commonTypeDict_IntegerFormat36;
   v246[42] = @"RaTable_10";
-  v157 = [MEMORY[0x277D3F198] sharedInstance];
-  v156 = [v157 commonTypeDict_IntegerFormat];
-  v247[42] = v156;
+  mEMORY[0x277D3F198]40 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat37 = [mEMORY[0x277D3F198]40 commonTypeDict_IntegerFormat];
+  v247[42] = commonTypeDict_IntegerFormat37;
   v246[43] = @"RaTable_11";
-  v155 = [MEMORY[0x277D3F198] sharedInstance];
-  v154 = [v155 commonTypeDict_IntegerFormat];
-  v247[43] = v154;
+  mEMORY[0x277D3F198]41 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat38 = [mEMORY[0x277D3F198]41 commonTypeDict_IntegerFormat];
+  v247[43] = commonTypeDict_IntegerFormat38;
   v246[44] = @"RaTable_12";
-  v153 = [MEMORY[0x277D3F198] sharedInstance];
-  v152 = [v153 commonTypeDict_IntegerFormat];
-  v247[44] = v152;
+  mEMORY[0x277D3F198]42 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat39 = [mEMORY[0x277D3F198]42 commonTypeDict_IntegerFormat];
+  v247[44] = commonTypeDict_IntegerFormat39;
   v246[45] = @"RaTable_13";
-  v151 = [MEMORY[0x277D3F198] sharedInstance];
-  v150 = [v151 commonTypeDict_IntegerFormat];
-  v247[45] = v150;
+  mEMORY[0x277D3F198]43 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat40 = [mEMORY[0x277D3F198]43 commonTypeDict_IntegerFormat];
+  v247[45] = commonTypeDict_IntegerFormat40;
   v246[46] = @"RaTable_14";
-  v149 = [MEMORY[0x277D3F198] sharedInstance];
-  v148 = [v149 commonTypeDict_IntegerFormat];
-  v247[46] = v148;
+  mEMORY[0x277D3F198]44 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat41 = [mEMORY[0x277D3F198]44 commonTypeDict_IntegerFormat];
+  v247[46] = commonTypeDict_IntegerFormat41;
   v246[47] = @"RaTable_15";
-  v147 = [MEMORY[0x277D3F198] sharedInstance];
-  v146 = [v147 commonTypeDict_IntegerFormat];
-  v247[47] = v146;
+  mEMORY[0x277D3F198]45 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat42 = [mEMORY[0x277D3F198]45 commonTypeDict_IntegerFormat];
+  v247[47] = commonTypeDict_IntegerFormat42;
   v246[48] = @"RaUpdateCounter";
-  v145 = [MEMORY[0x277D3F198] sharedInstance];
-  v144 = [v145 commonTypeDict_IntegerFormat];
-  v247[48] = v144;
+  mEMORY[0x277D3F198]46 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat43 = [mEMORY[0x277D3F198]46 commonTypeDict_IntegerFormat];
+  v247[48] = commonTypeDict_IntegerFormat43;
   v246[49] = @"RDISCnt";
-  v143 = [MEMORY[0x277D3F198] sharedInstance];
-  v142 = [v143 commonTypeDict_IntegerFormat];
-  v247[49] = v142;
+  mEMORY[0x277D3F198]47 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat44 = [mEMORY[0x277D3F198]47 commonTypeDict_IntegerFormat];
+  v247[49] = commonTypeDict_IntegerFormat44;
   v246[50] = @"TemperatureSamples";
-  v141 = [MEMORY[0x277D3F198] sharedInstance];
-  v140 = [v141 commonTypeDict_IntegerFormat];
-  v247[50] = v140;
+  mEMORY[0x277D3F198]48 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat45 = [mEMORY[0x277D3F198]48 commonTypeDict_IntegerFormat];
+  v247[50] = commonTypeDict_IntegerFormat45;
   v246[51] = @"TimeAbove95Perc";
-  v139 = [MEMORY[0x277D3F198] sharedInstance];
-  v138 = [v139 commonTypeDict_IntegerFormat];
-  v247[51] = v138;
+  mEMORY[0x277D3F198]49 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat46 = [mEMORY[0x277D3F198]49 commonTypeDict_IntegerFormat];
+  v247[51] = commonTypeDict_IntegerFormat46;
   v246[52] = @"UpdateTime";
-  v137 = [MEMORY[0x277D3F198] sharedInstance];
-  v136 = [v137 commonTypeDict_IntegerFormat];
-  v247[52] = v136;
+  mEMORY[0x277D3F198]50 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat47 = [mEMORY[0x277D3F198]50 commonTypeDict_IntegerFormat];
+  v247[52] = commonTypeDict_IntegerFormat47;
   v246[53] = @"WeekMfd";
-  v135 = [MEMORY[0x277D3F198] sharedInstance];
-  v134 = [v135 commonTypeDict_IntegerFormat];
-  v247[53] = v134;
+  mEMORY[0x277D3F198]51 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat48 = [mEMORY[0x277D3F198]51 commonTypeDict_IntegerFormat];
+  v247[53] = commonTypeDict_IntegerFormat48;
   v246[54] = @"Wom_1";
-  v133 = [MEMORY[0x277D3F198] sharedInstance];
-  v132 = [v133 commonTypeDict_IntegerFormat];
-  v247[54] = v132;
+  mEMORY[0x277D3F198]52 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat49 = [mEMORY[0x277D3F198]52 commonTypeDict_IntegerFormat];
+  v247[54] = commonTypeDict_IntegerFormat49;
   v246[55] = @"Wom_2";
-  v131 = [MEMORY[0x277D3F198] sharedInstance];
-  v130 = [v131 commonTypeDict_IntegerFormat];
-  v247[55] = v130;
+  mEMORY[0x277D3F198]53 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat50 = [mEMORY[0x277D3F198]53 commonTypeDict_IntegerFormat];
+  v247[55] = commonTypeDict_IntegerFormat50;
   v246[56] = @"LastUPOTimestamp";
-  v129 = [MEMORY[0x277D3F198] sharedInstance];
-  v128 = [v129 commonTypeDict_IntegerFormat];
-  v247[56] = v128;
+  mEMORY[0x277D3F198]54 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat51 = [mEMORY[0x277D3F198]54 commonTypeDict_IntegerFormat];
+  v247[56] = commonTypeDict_IntegerFormat51;
   v246[57] = @"ChemicalWeightedRa";
-  v127 = [MEMORY[0x277D3F198] sharedInstance];
-  v126 = [v127 commonTypeDict_IntegerFormat];
-  v247[57] = v126;
+  mEMORY[0x277D3F198]55 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat52 = [mEMORY[0x277D3F198]55 commonTypeDict_IntegerFormat];
+  v247[57] = commonTypeDict_IntegerFormat52;
   v246[58] = @"WeightedRa";
-  v125 = [MEMORY[0x277D3F198] sharedInstance];
-  v124 = [v125 commonTypeDict_IntegerFormat];
-  v247[58] = v124;
+  mEMORY[0x277D3F198]56 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat53 = [mEMORY[0x277D3F198]56 commonTypeDict_IntegerFormat];
+  v247[58] = commonTypeDict_IntegerFormat53;
   v246[59] = @"DOFU";
-  v123 = [MEMORY[0x277D3F198] sharedInstance];
-  v122 = [v123 commonTypeDict_IntegerFormat];
-  v247[59] = v122;
+  mEMORY[0x277D3F198]57 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat54 = [mEMORY[0x277D3F198]57 commonTypeDict_IntegerFormat];
+  v247[59] = commonTypeDict_IntegerFormat54;
   v246[60] = @"BatteryHealthMetric";
-  v121 = [MEMORY[0x277D3F198] sharedInstance];
-  v120 = [v121 commonTypeDict_IntegerFormat];
-  v247[60] = v120;
+  mEMORY[0x277D3F198]58 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat55 = [mEMORY[0x277D3F198]58 commonTypeDict_IntegerFormat];
+  v247[60] = commonTypeDict_IntegerFormat55;
   v246[61] = @"PeakPerformanceCapacity";
-  v119 = [MEMORY[0x277D3F198] sharedInstance];
-  v118 = [v119 commonTypeDict_IntegerFormat];
-  v247[61] = v118;
+  mEMORY[0x277D3F198]59 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat56 = [mEMORY[0x277D3F198]59 commonTypeDict_IntegerFormat];
+  v247[61] = commonTypeDict_IntegerFormat56;
   v246[62] = @"ServiceOption";
-  v117 = [MEMORY[0x277D3F198] sharedInstance];
-  v116 = [v117 commonTypeDict_IntegerFormat];
-  v247[62] = v116;
+  mEMORY[0x277D3F198]60 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat57 = [mEMORY[0x277D3F198]60 commonTypeDict_IntegerFormat];
+  v247[62] = commonTypeDict_IntegerFormat57;
   v246[63] = @"QmaxUpdSuccessCount";
-  v115 = [MEMORY[0x277D3F198] sharedInstance];
-  v114 = [v115 commonTypeDict_IntegerFormat];
-  v247[63] = v114;
+  mEMORY[0x277D3F198]61 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat58 = [mEMORY[0x277D3F198]61 commonTypeDict_IntegerFormat];
+  v247[63] = commonTypeDict_IntegerFormat58;
   v246[64] = @"QmaxUpdFailCount";
-  v113 = [MEMORY[0x277D3F198] sharedInstance];
-  v112 = [v113 commonTypeDict_IntegerFormat];
-  v247[64] = v112;
+  mEMORY[0x277D3F198]62 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat59 = [mEMORY[0x277D3F198]62 commonTypeDict_IntegerFormat];
+  v247[64] = commonTypeDict_IntegerFormat59;
   v246[65] = @"MinimumRa8";
-  v111 = [MEMORY[0x277D3F198] sharedInstance];
-  v110 = [v111 commonTypeDict_IntegerFormat];
-  v247[65] = v110;
+  mEMORY[0x277D3F198]63 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat60 = [mEMORY[0x277D3F198]63 commonTypeDict_IntegerFormat];
+  v247[65] = commonTypeDict_IntegerFormat60;
   v246[66] = @"MaximumRa8";
-  v109 = [MEMORY[0x277D3F198] sharedInstance];
-  v108 = [v109 commonTypeDict_IntegerFormat];
-  v247[66] = v108;
+  mEMORY[0x277D3F198]64 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat61 = [mEMORY[0x277D3F198]64 commonTypeDict_IntegerFormat];
+  v247[66] = commonTypeDict_IntegerFormat61;
   v246[67] = @"TimeAbove95PercRange1";
-  v107 = [MEMORY[0x277D3F198] sharedInstance];
-  v106 = [v107 commonTypeDict_IntegerFormat];
-  v247[67] = v106;
+  mEMORY[0x277D3F198]65 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat62 = [mEMORY[0x277D3F198]65 commonTypeDict_IntegerFormat];
+  v247[67] = commonTypeDict_IntegerFormat62;
   v246[68] = @"TimeAbove95PercRange2";
-  v105 = [MEMORY[0x277D3F198] sharedInstance];
-  v104 = [v105 commonTypeDict_IntegerFormat];
-  v247[68] = v104;
+  mEMORY[0x277D3F198]66 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat63 = [mEMORY[0x277D3F198]66 commonTypeDict_IntegerFormat];
+  v247[68] = commonTypeDict_IntegerFormat63;
   v246[69] = @"TimeAbove95PercRange3";
-  v103 = [MEMORY[0x277D3F198] sharedInstance];
-  v102 = [v103 commonTypeDict_IntegerFormat];
-  v247[69] = v102;
+  mEMORY[0x277D3F198]67 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat64 = [mEMORY[0x277D3F198]67 commonTypeDict_IntegerFormat];
+  v247[69] = commonTypeDict_IntegerFormat64;
   v246[70] = @"ResetCnt";
-  v101 = [MEMORY[0x277D3F198] sharedInstance];
-  v100 = [v101 commonTypeDict_IntegerFormat];
-  v247[70] = v100;
+  mEMORY[0x277D3F198]68 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat65 = [mEMORY[0x277D3F198]68 commonTypeDict_IntegerFormat];
+  v247[70] = commonTypeDict_IntegerFormat65;
   v246[71] = @"DailyMaxSoc";
-  v99 = [MEMORY[0x277D3F198] sharedInstance];
-  v98 = [v99 commonTypeDict_IntegerFormat];
-  v247[71] = v98;
+  mEMORY[0x277D3F198]69 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat66 = [mEMORY[0x277D3F198]69 commonTypeDict_IntegerFormat];
+  v247[71] = commonTypeDict_IntegerFormat66;
   v246[72] = @"DailyMinSoc";
-  v97 = [MEMORY[0x277D3F198] sharedInstance];
-  v96 = [v97 commonTypeDict_IntegerFormat];
-  v247[72] = v96;
+  mEMORY[0x277D3F198]70 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat67 = [mEMORY[0x277D3F198]70 commonTypeDict_IntegerFormat];
+  v247[72] = commonTypeDict_IntegerFormat67;
   v246[73] = @"KioskModeHighSocDays";
-  v95 = [MEMORY[0x277D3F198] sharedInstance];
-  v94 = [v95 commonTypeDict_IntegerFormat];
-  v247[73] = v94;
+  mEMORY[0x277D3F198]71 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat68 = [mEMORY[0x277D3F198]71 commonTypeDict_IntegerFormat];
+  v247[73] = commonTypeDict_IntegerFormat68;
   v246[74] = @"KioskModeLastHighSocHours";
-  v93 = [MEMORY[0x277D3F198] sharedInstance];
-  v92 = [v93 commonTypeDict_IntegerFormat];
-  v247[74] = v92;
+  mEMORY[0x277D3F198]72 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat69 = [mEMORY[0x277D3F198]72 commonTypeDict_IntegerFormat];
+  v247[74] = commonTypeDict_IntegerFormat69;
   v246[75] = @"xFlags";
-  v91 = [MEMORY[0x277D3F198] sharedInstance];
-  v90 = [v91 commonTypeDict_IntegerFormat];
-  v247[75] = v90;
+  mEMORY[0x277D3F198]73 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat70 = [mEMORY[0x277D3F198]73 commonTypeDict_IntegerFormat];
+  v247[75] = commonTypeDict_IntegerFormat70;
   v246[76] = @"GasGaugeFirmwareVersion";
-  v89 = [MEMORY[0x277D3F198] sharedInstance];
-  v88 = [v89 commonTypeDict_IntegerFormat];
-  v247[76] = v88;
+  mEMORY[0x277D3F198]74 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat71 = [mEMORY[0x277D3F198]74 commonTypeDict_IntegerFormat];
+  v247[76] = commonTypeDict_IntegerFormat71;
   v246[77] = @"batteryServiceFlags";
-  v87 = [MEMORY[0x277D3F198] sharedInstance];
-  v86 = [v87 commonTypeDict_IntegerFormat];
-  v247[77] = v86;
+  mEMORY[0x277D3F198]75 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat72 = [mEMORY[0x277D3F198]75 commonTypeDict_IntegerFormat];
+  v247[77] = commonTypeDict_IntegerFormat72;
   v246[78] = @"BatterySerialChanged";
-  v85 = [MEMORY[0x277D3F198] sharedInstance];
-  v84 = [v85 commonTypeDict_IntegerFormat];
-  v247[78] = v84;
+  mEMORY[0x277D3F198]76 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat73 = [mEMORY[0x277D3F198]76 commonTypeDict_IntegerFormat];
+  v247[78] = commonTypeDict_IntegerFormat73;
   v246[79] = @"ResetDataComms";
-  v83 = [MEMORY[0x277D3F198] sharedInstance];
-  v82 = [v83 commonTypeDict_IntegerFormat];
-  v247[79] = v82;
+  mEMORY[0x277D3F198]77 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat74 = [mEMORY[0x277D3F198]77 commonTypeDict_IntegerFormat];
+  v247[79] = commonTypeDict_IntegerFormat74;
   v246[80] = @"ResetDataFirmware";
-  v81 = [MEMORY[0x277D3F198] sharedInstance];
-  v80 = [v81 commonTypeDict_IntegerFormat];
-  v247[80] = v80;
+  mEMORY[0x277D3F198]78 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat75 = [mEMORY[0x277D3F198]78 commonTypeDict_IntegerFormat];
+  v247[80] = commonTypeDict_IntegerFormat75;
   v246[81] = @"ResetDataHardware";
-  v79 = [MEMORY[0x277D3F198] sharedInstance];
-  v78 = [v79 commonTypeDict_IntegerFormat];
-  v247[81] = v78;
+  mEMORY[0x277D3F198]79 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat76 = [mEMORY[0x277D3F198]79 commonTypeDict_IntegerFormat];
+  v247[81] = commonTypeDict_IntegerFormat76;
   v246[82] = @"ResetDataSoftware";
-  v77 = [MEMORY[0x277D3F198] sharedInstance];
-  v76 = [v77 commonTypeDict_IntegerFormat];
-  v247[82] = v76;
+  mEMORY[0x277D3F198]80 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat77 = [mEMORY[0x277D3F198]80 commonTypeDict_IntegerFormat];
+  v247[82] = commonTypeDict_IntegerFormat77;
   v246[83] = @"ResetDataWatchDog";
-  v75 = [MEMORY[0x277D3F198] sharedInstance];
-  v74 = [v75 commonTypeDict_IntegerFormat];
-  v247[83] = v74;
+  mEMORY[0x277D3F198]81 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat78 = [mEMORY[0x277D3F198]81 commonTypeDict_IntegerFormat];
+  v247[83] = commonTypeDict_IntegerFormat78;
   v246[84] = @"ResetDataSwWatchDog";
-  v73 = [MEMORY[0x277D3F198] sharedInstance];
-  v72 = [v73 commonTypeDict_IntegerFormat];
-  v247[84] = v72;
+  mEMORY[0x277D3F198]82 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat79 = [mEMORY[0x277D3F198]82 commonTypeDict_IntegerFormat];
+  v247[84] = commonTypeDict_IntegerFormat79;
   v246[85] = @"ResetDataHardFault";
-  v71 = [MEMORY[0x277D3F198] sharedInstance];
-  v70 = [v71 commonTypeDict_IntegerFormat];
-  v247[85] = v70;
+  mEMORY[0x277D3F198]83 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat80 = [mEMORY[0x277D3F198]83 commonTypeDict_IntegerFormat];
+  v247[85] = commonTypeDict_IntegerFormat80;
   v246[86] = @"ResetDataCorruption";
-  v69 = [MEMORY[0x277D3F198] sharedInstance];
-  v68 = [v69 commonTypeDict_IntegerFormat];
-  v247[86] = v68;
+  mEMORY[0x277D3F198]84 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat81 = [mEMORY[0x277D3F198]84 commonTypeDict_IntegerFormat];
+  v247[86] = commonTypeDict_IntegerFormat81;
   v246[87] = @"AlgoChemID";
-  v67 = [MEMORY[0x277D3F198] sharedInstance];
-  v66 = [v67 commonTypeDict_IntegerFormat];
-  v247[87] = v66;
+  mEMORY[0x277D3F198]85 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat82 = [mEMORY[0x277D3F198]85 commonTypeDict_IntegerFormat];
+  v247[87] = commonTypeDict_IntegerFormat82;
   v246[88] = @"ServiceOption";
-  v65 = [MEMORY[0x277D3F198] sharedInstance];
-  v64 = [v65 commonTypeDict_IntegerFormat];
-  v247[88] = v64;
+  mEMORY[0x277D3F198]86 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat83 = [mEMORY[0x277D3F198]86 commonTypeDict_IntegerFormat];
+  v247[88] = commonTypeDict_IntegerFormat83;
   v246[89] = @"GGUpdateStatus";
-  v63 = [MEMORY[0x277D3F198] sharedInstance];
-  v62 = [v63 commonTypeDict_IntegerFormat];
-  v247[89] = v62;
+  mEMORY[0x277D3F198]87 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat84 = [mEMORY[0x277D3F198]87 commonTypeDict_IntegerFormat];
+  v247[89] = commonTypeDict_IntegerFormat84;
   v246[90] = @"GGUpdateError";
-  v61 = [MEMORY[0x277D3F198] sharedInstance];
-  v60 = [v61 commonTypeDict_IntegerFormat];
-  v247[90] = v60;
+  mEMORY[0x277D3F198]88 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat85 = [mEMORY[0x277D3F198]88 commonTypeDict_IntegerFormat];
+  v247[90] = commonTypeDict_IntegerFormat85;
   v246[91] = @"GGUpdatePhase";
-  v59 = [MEMORY[0x277D3F198] sharedInstance];
-  v58 = [v59 commonTypeDict_IntegerFormat];
-  v247[91] = v58;
+  mEMORY[0x277D3F198]89 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat86 = [mEMORY[0x277D3F198]89 commonTypeDict_IntegerFormat];
+  v247[91] = commonTypeDict_IntegerFormat86;
   v246[92] = @"GGUpdateErrorPhase";
-  v57 = [MEMORY[0x277D3F198] sharedInstance];
-  v56 = [v57 commonTypeDict_IntegerFormat];
-  v247[92] = v56;
+  mEMORY[0x277D3F198]90 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat87 = [mEMORY[0x277D3F198]90 commonTypeDict_IntegerFormat];
+  v247[92] = commonTypeDict_IntegerFormat87;
   v246[93] = @"GGUpdateSubclassID";
-  v55 = [MEMORY[0x277D3F198] sharedInstance];
-  v54 = [v55 commonTypeDict_IntegerFormat];
-  v247[93] = v54;
+  mEMORY[0x277D3F198]91 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat88 = [mEMORY[0x277D3F198]91 commonTypeDict_IntegerFormat];
+  v247[93] = commonTypeDict_IntegerFormat88;
   v246[94] = @"GGUpdateBlock";
-  v53 = [MEMORY[0x277D3F198] sharedInstance];
-  v52 = [v53 commonTypeDict_IntegerFormat];
-  v247[94] = v52;
+  mEMORY[0x277D3F198]92 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat89 = [mEMORY[0x277D3F198]92 commonTypeDict_IntegerFormat];
+  v247[94] = commonTypeDict_IntegerFormat89;
   v246[95] = @"NCCMin";
-  v51 = [MEMORY[0x277D3F198] sharedInstance];
-  v50 = [v51 commonTypeDict_IntegerFormat];
-  v247[95] = v50;
+  mEMORY[0x277D3F198]93 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat90 = [mEMORY[0x277D3F198]93 commonTypeDict_IntegerFormat];
+  v247[95] = commonTypeDict_IntegerFormat90;
   v246[96] = @"NCCMax";
-  v49 = [MEMORY[0x277D3F198] sharedInstance];
-  v48 = [v49 commonTypeDict_IntegerFormat];
-  v247[96] = v48;
+  mEMORY[0x277D3F198]94 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat91 = [mEMORY[0x277D3F198]94 commonTypeDict_IntegerFormat];
+  v247[96] = commonTypeDict_IntegerFormat91;
   v246[97] = @"TimeAtHighSoc";
-  v47 = [MEMORY[0x277D3F198] sharedInstance];
-  v46 = [v47 commonTypeDict_RawDataFormat];
-  v247[97] = v46;
+  mEMORY[0x277D3F198]95 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RawDataFormat = [mEMORY[0x277D3F198]95 commonTypeDict_RawDataFormat];
+  v247[97] = commonTypeDict_RawDataFormat;
   v246[98] = @"LowVoltageResidencyCounters";
-  v45 = [MEMORY[0x277D3F198] sharedInstance];
-  v44 = [v45 commonTypeDict_RawDataFormat];
-  v247[98] = v44;
+  mEMORY[0x277D3F198]96 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RawDataFormat2 = [mEMORY[0x277D3F198]96 commonTypeDict_RawDataFormat];
+  v247[98] = commonTypeDict_RawDataFormat2;
   v246[99] = @"ncc";
-  v43 = [MEMORY[0x277D3F198] sharedInstance];
-  v42 = [v43 commonTypeDict_IntegerFormat];
-  v247[99] = v42;
+  mEMORY[0x277D3F198]97 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat92 = [mEMORY[0x277D3F198]97 commonTypeDict_IntegerFormat];
+  v247[99] = commonTypeDict_IntegerFormat92;
   v246[100] = @"nccAlt";
-  v41 = [MEMORY[0x277D3F198] sharedInstance];
-  v40 = [v41 commonTypeDict_IntegerFormat];
-  v247[100] = v40;
+  mEMORY[0x277D3F198]98 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat93 = [mEMORY[0x277D3F198]98 commonTypeDict_IntegerFormat];
+  v247[100] = commonTypeDict_IntegerFormat93;
   v246[101] = @"vact";
-  v39 = [MEMORY[0x277D3F198] sharedInstance];
-  v38 = [v39 commonTypeDict_BoolFormat];
-  v247[101] = v38;
+  mEMORY[0x277D3F198]99 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat2 = [mEMORY[0x277D3F198]99 commonTypeDict_BoolFormat];
+  v247[101] = commonTypeDict_BoolFormat2;
   v246[102] = @"DataFlashWriteCount";
-  v37 = [MEMORY[0x277D3F198] sharedInstance];
-  v36 = [v37 commonTypeDict_IntegerFormat];
-  v247[102] = v36;
+  mEMORY[0x277D3F198]100 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat94 = [mEMORY[0x277D3F198]100 commonTypeDict_IntegerFormat];
+  v247[102] = commonTypeDict_IntegerFormat94;
   v246[103] = @"calibrationFlags";
-  v35 = [MEMORY[0x277D3F198] sharedInstance];
-  v34 = [v35 commonTypeDict_IntegerFormat];
-  v247[103] = v34;
+  mEMORY[0x277D3F198]101 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat95 = [mEMORY[0x277D3F198]101 commonTypeDict_IntegerFormat];
+  v247[103] = commonTypeDict_IntegerFormat95;
   v246[104] = @"filteredNCC";
-  v33 = [MEMORY[0x277D3F198] sharedInstance];
-  v32 = [v33 commonTypeDict_IntegerFormat];
-  v247[104] = v32;
+  mEMORY[0x277D3F198]102 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat96 = [mEMORY[0x277D3F198]102 commonTypeDict_IntegerFormat];
+  v247[104] = commonTypeDict_IntegerFormat96;
   v246[105] = @"exitTotalOperatingTime";
-  v31 = [MEMORY[0x277D3F198] sharedInstance];
-  v30 = [v31 commonTypeDict_IntegerFormat];
-  v247[105] = v30;
+  mEMORY[0x277D3F198]103 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat97 = [mEMORY[0x277D3F198]103 commonTypeDict_IntegerFormat];
+  v247[105] = commonTypeDict_IntegerFormat97;
   v246[106] = @"svcTotalOperatingTime";
-  v29 = [MEMORY[0x277D3F198] sharedInstance];
-  v28 = [v29 commonTypeDict_IntegerFormat];
-  v247[106] = v28;
+  mEMORY[0x277D3F198]104 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat98 = [mEMORY[0x277D3F198]104 commonTypeDict_IntegerFormat];
+  v247[106] = commonTypeDict_IntegerFormat98;
   v246[107] = @"LastResetReason";
-  v27 = [MEMORY[0x277D3F198] sharedInstance];
-  v26 = [v27 commonTypeDict_IntegerFormat];
-  v247[107] = v26;
+  mEMORY[0x277D3F198]105 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat99 = [mEMORY[0x277D3F198]105 commonTypeDict_IntegerFormat];
+  v247[107] = commonTypeDict_IntegerFormat99;
   v246[108] = @"LifeTimeOCVRestCounter";
-  v25 = [MEMORY[0x277D3F198] sharedInstance];
-  v24 = [v25 commonTypeDict_IntegerFormat];
-  v247[108] = v24;
+  mEMORY[0x277D3F198]106 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat100 = [mEMORY[0x277D3F198]106 commonTypeDict_IntegerFormat];
+  v247[108] = commonTypeDict_IntegerFormat100;
   v246[109] = @"LifeTimeQmaxUpdateCounter";
-  v23 = [MEMORY[0x277D3F198] sharedInstance];
-  v22 = [v23 commonTypeDict_IntegerFormat];
-  v247[109] = v22;
+  mEMORY[0x277D3F198]107 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat101 = [mEMORY[0x277D3F198]107 commonTypeDict_IntegerFormat];
+  v247[109] = commonTypeDict_IntegerFormat101;
   v246[110] = @"LifeTimeOCVRestCounterHsp";
-  v21 = [MEMORY[0x277D3F198] sharedInstance];
-  v20 = [v21 commonTypeDict_IntegerFormat];
-  v247[110] = v20;
+  mEMORY[0x277D3F198]108 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat102 = [mEMORY[0x277D3F198]108 commonTypeDict_IntegerFormat];
+  v247[110] = commonTypeDict_IntegerFormat102;
   v246[111] = @"LifeTimeQmaxUpdateCounterHsp";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_IntegerFormat];
-  v247[111] = v18;
+  mEMORY[0x277D3F198]109 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat103 = [mEMORY[0x277D3F198]109 commonTypeDict_IntegerFormat];
+  v247[111] = commonTypeDict_IntegerFormat103;
   v246[112] = @"VacVoltageLimit";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v247[112] = v7;
+  mEMORY[0x277D3F198]110 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat104 = [mEMORY[0x277D3F198]110 commonTypeDict_IntegerFormat];
+  v247[112] = commonTypeDict_IntegerFormat104;
   v246[113] = @"FlashWearLevelData";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_RawDataFormat];
-  v247[113] = v9;
+  mEMORY[0x277D3F198]111 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RawDataFormat3 = [mEMORY[0x277D3F198]111 commonTypeDict_RawDataFormat];
+  v247[113] = commonTypeDict_RawDataFormat3;
   v246[114] = @"CommunicationError";
-  v10 = [MEMORY[0x277D3F198] sharedInstance];
-  v11 = [v10 commonTypeDict_IntegerFormat];
-  v247[114] = v11;
+  mEMORY[0x277D3F198]112 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat105 = [mEMORY[0x277D3F198]112 commonTypeDict_IntegerFormat];
+  v247[114] = commonTypeDict_IntegerFormat105;
   v246[115] = @"CoProcError";
-  v12 = [MEMORY[0x277D3F198] sharedInstance];
-  v13 = [v12 commonTypeDict_IntegerFormat];
-  v247[115] = v13;
+  mEMORY[0x277D3F198]113 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat106 = [mEMORY[0x277D3F198]113 commonTypeDict_IntegerFormat];
+  v247[115] = commonTypeDict_IntegerFormat106;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v247 forKeys:v246 count:116];
   v251[1] = v14;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v251 forKeys:v250 count:2];
@@ -1628,9 +1628,9 @@ void __42__PLBatteryAgent_initSmartChargingLogging__block_invoke(uint64_t a1, ui
   v15[0] = v3;
   v14[1] = *MEMORY[0x277D3F540];
   v10 = @"UserType";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v11 = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v11 = commonTypeDict_IntegerFormat;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v15[1] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
@@ -1644,44 +1644,44 @@ void __42__PLBatteryAgent_initSmartChargingLogging__block_invoke(uint64_t a1, ui
 {
   v20[13] = *MEMORY[0x277D85DE8];
   v19[0] = @"BatteryShutdown";
-  v18 = [a1 entryEventPointDefinitionBatteryShutdown];
-  v20[0] = v18;
+  entryEventPointDefinitionBatteryShutdown = [self entryEventPointDefinitionBatteryShutdown];
+  v20[0] = entryEventPointDefinitionBatteryShutdown;
   v19[1] = @"BatteryPanicShutdown";
-  v17 = [a1 entryEventPointDefinitionBatteryPanicShutdown];
-  v20[1] = v17;
+  entryEventPointDefinitionBatteryPanicShutdown = [self entryEventPointDefinitionBatteryPanicShutdown];
+  v20[1] = entryEventPointDefinitionBatteryPanicShutdown;
   v19[2] = @"TrapInfo";
-  v16 = [a1 entryEventPointDefinitionBatteryTrapInfo];
-  v20[2] = v16;
+  entryEventPointDefinitionBatteryTrapInfo = [self entryEventPointDefinitionBatteryTrapInfo];
+  v20[2] = entryEventPointDefinitionBatteryTrapInfo;
   v19[3] = @"ChargingInfo";
-  v15 = [a1 entryEventPointDefinitionChargingInfo];
-  v20[3] = v15;
+  entryEventPointDefinitionChargingInfo = [self entryEventPointDefinitionChargingInfo];
+  v20[3] = entryEventPointDefinitionChargingInfo;
   v19[4] = @"EABatteryConfig";
-  v3 = [a1 entryEventPointDefinitionEABatteryConfig];
-  v20[4] = v3;
+  entryEventPointDefinitionEABatteryConfig = [self entryEventPointDefinitionEABatteryConfig];
+  v20[4] = entryEventPointDefinitionEABatteryConfig;
   v19[5] = @"EAPencilConnect";
   v4 = +[PLBatteryAgent entryEventPointDefinitionEAPencil];
   v20[5] = v4;
   v19[6] = @"BatteryUILogging";
-  v5 = [a1 entryEventPointDefinitionBatteryUILogging];
-  v20[6] = v5;
+  entryEventPointDefinitionBatteryUILogging = [self entryEventPointDefinitionBatteryUILogging];
+  v20[6] = entryEventPointDefinitionBatteryUILogging;
   v19[7] = @"BatteryUIVisit";
-  v6 = [a1 entryEventPointDefinitionBatteryUIVisit];
-  v20[7] = v6;
+  entryEventPointDefinitionBatteryUIVisit = [self entryEventPointDefinitionBatteryUIVisit];
+  v20[7] = entryEventPointDefinitionBatteryUIVisit;
   v19[8] = @"UPOStepper";
-  v7 = [a1 entryEventPointDefinitionUPOStepper];
-  v20[8] = v7;
+  entryEventPointDefinitionUPOStepper = [self entryEventPointDefinitionUPOStepper];
+  v20[8] = entryEventPointDefinitionUPOStepper;
   v19[9] = @"BatterySample";
-  v8 = [a1 entryEventPointDefinitionBatterySample];
-  v20[9] = v8;
+  entryEventPointDefinitionBatterySample = [self entryEventPointDefinitionBatterySample];
+  v20[9] = entryEventPointDefinitionBatterySample;
   v19[10] = @"CPMSControlState";
-  v9 = [a1 entryEventPointDefinitionCPMSControlState];
-  v20[10] = v9;
+  entryEventPointDefinitionCPMSControlState = [self entryEventPointDefinitionCPMSControlState];
+  v20[10] = entryEventPointDefinitionCPMSControlState;
   v19[11] = @"CPMSClientState";
-  v10 = [a1 entryEventPointDefinitionCPMSClientState];
-  v20[11] = v10;
+  entryEventPointDefinitionCPMSClientState = [self entryEventPointDefinitionCPMSClientState];
+  v20[11] = entryEventPointDefinitionCPMSClientState;
   v19[12] = @"GasGaugeReconnect";
-  v11 = [a1 entryEventPointDefinitionGasGaugeReconnect];
-  v20[12] = v11;
+  entryEventPointDefinitionGasGaugeReconnect = [self entryEventPointDefinitionGasGaugeReconnect];
+  v20[12] = entryEventPointDefinitionGasGaugeReconnect;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:13];
 
   v13 = *MEMORY[0x277D85DE8];
@@ -1711,145 +1711,145 @@ uint64_t __31__PLBatteryAgent_shouldLogCPMS__block_invoke()
     v83[0] = v77;
     v82[1] = *MEMORY[0x277D3F540];
     v78[0] = @"mode";
-    v76 = [MEMORY[0x277D3F198] sharedInstance];
-    v75 = [v76 commonTypeDict_IntegerFormat];
-    v79[0] = v75;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v79[0] = commonTypeDict_IntegerFormat;
     v78[1] = @"source";
-    v74 = [MEMORY[0x277D3F198] sharedInstance];
-    v73 = [v74 commonTypeDict_IntegerFormat];
-    v79[1] = v73;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v79[1] = commonTypeDict_IntegerFormat2;
     v78[2] = @"flags";
-    v72 = [MEMORY[0x277D3F198] sharedInstance];
-    v71 = [v72 commonTypeDict_IntegerFormat];
-    v79[2] = v71;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+    v79[2] = commonTypeDict_IntegerFormat3;
     v78[3] = @"reason";
-    v70 = [MEMORY[0x277D3F198] sharedInstance];
-    v69 = [v70 commonTypeDict_IntegerFormat];
-    v79[3] = v69;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+    v79[3] = commonTypeDict_IntegerFormat4;
     v78[4] = @"droopCE";
-    v68 = [MEMORY[0x277D3F198] sharedInstance];
-    v67 = [v68 commonTypeDict_IntegerFormat];
-    v79[4] = v67;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+    v79[4] = commonTypeDict_IntegerFormat5;
     v78[5] = @"zeroSumCE";
-    v66 = [MEMORY[0x277D3F198] sharedInstance];
-    v65 = [v66 commonTypeDict_IntegerFormat];
-    v79[5] = v65;
+    mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+    v79[5] = commonTypeDict_IntegerFormat6;
     v78[6] = @"undroopCE";
-    v64 = [MEMORY[0x277D3F198] sharedInstance];
-    v63 = [v64 commonTypeDict_IntegerFormat];
-    v79[6] = v63;
+    mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+    v79[6] = commonTypeDict_IntegerFormat7;
     v78[7] = @"brownoutRiskEngaged";
-    v62 = [MEMORY[0x277D3F198] sharedInstance];
-    v61 = [v62 commonTypeDict_BoolFormat];
-    v79[7] = v61;
+    mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]8 commonTypeDict_BoolFormat];
+    v79[7] = commonTypeDict_BoolFormat;
     v78[8] = @"brownoutRiskSysCap";
-    v60 = [MEMORY[0x277D3F198] sharedInstance];
-    v59 = [v60 commonTypeDict_IntegerFormat];
-    v79[8] = v59;
+    mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+    v79[8] = commonTypeDict_IntegerFormat8;
     v78[9] = @"brownoutRiskPu";
-    v58 = [MEMORY[0x277D3F198] sharedInstance];
-    v57 = [v58 commonTypeDict_IntegerFormat];
-    v79[9] = v57;
+    mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+    v79[9] = commonTypeDict_IntegerFormat9;
     v78[10] = @"peakPowerPressureLevel";
-    v56 = [MEMORY[0x277D3F198] sharedInstance];
-    v55 = [v56 commonTypeDict_IntegerFormat];
-    v79[10] = v55;
+    mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat10 = [mEMORY[0x277D3F198]11 commonTypeDict_IntegerFormat];
+    v79[10] = commonTypeDict_IntegerFormat10;
     v78[11] = @"servoCE0";
-    v54 = [MEMORY[0x277D3F198] sharedInstance];
-    v53 = [v54 commonTypeDict_IntegerFormat];
-    v79[11] = v53;
+    mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat11 = [mEMORY[0x277D3F198]12 commonTypeDict_IntegerFormat];
+    v79[11] = commonTypeDict_IntegerFormat11;
     v78[12] = @"servoCE1";
-    v52 = [MEMORY[0x277D3F198] sharedInstance];
-    v51 = [v52 commonTypeDict_IntegerFormat];
-    v79[12] = v51;
+    mEMORY[0x277D3F198]13 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat12 = [mEMORY[0x277D3F198]13 commonTypeDict_IntegerFormat];
+    v79[12] = commonTypeDict_IntegerFormat12;
     v78[13] = @"servoCE2";
-    v50 = [MEMORY[0x277D3F198] sharedInstance];
-    v49 = [v50 commonTypeDict_IntegerFormat];
-    v79[13] = v49;
+    mEMORY[0x277D3F198]14 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat13 = [mEMORY[0x277D3F198]14 commonTypeDict_IntegerFormat];
+    v79[13] = commonTypeDict_IntegerFormat13;
     v78[14] = @"servoCE3";
-    v48 = [MEMORY[0x277D3F198] sharedInstance];
-    v47 = [v48 commonTypeDict_IntegerFormat];
-    v79[14] = v47;
+    mEMORY[0x277D3F198]15 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat14 = [mEMORY[0x277D3F198]15 commonTypeDict_IntegerFormat];
+    v79[14] = commonTypeDict_IntegerFormat14;
     v78[15] = @"servoCE4";
-    v46 = [MEMORY[0x277D3F198] sharedInstance];
-    v45 = [v46 commonTypeDict_IntegerFormat];
-    v79[15] = v45;
+    mEMORY[0x277D3F198]16 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat15 = [mEMORY[0x277D3F198]16 commonTypeDict_IntegerFormat];
+    v79[15] = commonTypeDict_IntegerFormat15;
     v78[16] = @"servoCE5";
-    v44 = [MEMORY[0x277D3F198] sharedInstance];
-    v43 = [v44 commonTypeDict_IntegerFormat];
-    v79[16] = v43;
+    mEMORY[0x277D3F198]17 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat16 = [mEMORY[0x277D3F198]17 commonTypeDict_IntegerFormat];
+    v79[16] = commonTypeDict_IntegerFormat16;
     v78[17] = @"servoCE6";
-    v42 = [MEMORY[0x277D3F198] sharedInstance];
-    v41 = [v42 commonTypeDict_IntegerFormat];
-    v79[17] = v41;
+    mEMORY[0x277D3F198]18 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat17 = [mEMORY[0x277D3F198]18 commonTypeDict_IntegerFormat];
+    v79[17] = commonTypeDict_IntegerFormat17;
     v78[18] = @"battPC0";
-    v40 = [MEMORY[0x277D3F198] sharedInstance];
-    v39 = [v40 commonTypeDict_IntegerFormat];
-    v79[18] = v39;
+    mEMORY[0x277D3F198]19 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat18 = [mEMORY[0x277D3F198]19 commonTypeDict_IntegerFormat];
+    v79[18] = commonTypeDict_IntegerFormat18;
     v78[19] = @"battPC1";
-    v38 = [MEMORY[0x277D3F198] sharedInstance];
-    v37 = [v38 commonTypeDict_IntegerFormat];
-    v79[19] = v37;
+    mEMORY[0x277D3F198]20 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat19 = [mEMORY[0x277D3F198]20 commonTypeDict_IntegerFormat];
+    v79[19] = commonTypeDict_IntegerFormat19;
     v78[20] = @"battPC2";
-    v36 = [MEMORY[0x277D3F198] sharedInstance];
-    v35 = [v36 commonTypeDict_IntegerFormat];
-    v79[20] = v35;
+    mEMORY[0x277D3F198]21 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat20 = [mEMORY[0x277D3F198]21 commonTypeDict_IntegerFormat];
+    v79[20] = commonTypeDict_IntegerFormat20;
     v78[21] = @"battPC3";
-    v34 = [MEMORY[0x277D3F198] sharedInstance];
-    v33 = [v34 commonTypeDict_IntegerFormat];
-    v79[21] = v33;
+    mEMORY[0x277D3F198]22 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat21 = [mEMORY[0x277D3F198]22 commonTypeDict_IntegerFormat];
+    v79[21] = commonTypeDict_IntegerFormat21;
     v78[22] = @"battPC4";
-    v32 = [MEMORY[0x277D3F198] sharedInstance];
-    v31 = [v32 commonTypeDict_IntegerFormat];
-    v79[22] = v31;
+    mEMORY[0x277D3F198]23 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat22 = [mEMORY[0x277D3F198]23 commonTypeDict_IntegerFormat];
+    v79[22] = commonTypeDict_IntegerFormat22;
     v78[23] = @"battPC5";
-    v30 = [MEMORY[0x277D3F198] sharedInstance];
-    v29 = [v30 commonTypeDict_IntegerFormat];
-    v79[23] = v29;
+    mEMORY[0x277D3F198]24 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat23 = [mEMORY[0x277D3F198]24 commonTypeDict_IntegerFormat];
+    v79[23] = commonTypeDict_IntegerFormat23;
     v78[24] = @"battPC6";
-    v28 = [MEMORY[0x277D3F198] sharedInstance];
-    v27 = [v28 commonTypeDict_IntegerFormat];
-    v79[24] = v27;
+    mEMORY[0x277D3F198]25 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat24 = [mEMORY[0x277D3F198]25 commonTypeDict_IntegerFormat];
+    v79[24] = commonTypeDict_IntegerFormat24;
     v78[25] = @"battPC7";
-    v26 = [MEMORY[0x277D3F198] sharedInstance];
-    v25 = [v26 commonTypeDict_IntegerFormat];
-    v79[25] = v25;
+    mEMORY[0x277D3F198]26 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat25 = [mEMORY[0x277D3F198]26 commonTypeDict_IntegerFormat];
+    v79[25] = commonTypeDict_IntegerFormat25;
     v78[26] = @"sysCap0";
-    v24 = [MEMORY[0x277D3F198] sharedInstance];
-    v23 = [v24 commonTypeDict_IntegerFormat];
-    v79[26] = v23;
+    mEMORY[0x277D3F198]27 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat26 = [mEMORY[0x277D3F198]27 commonTypeDict_IntegerFormat];
+    v79[26] = commonTypeDict_IntegerFormat26;
     v78[27] = @"sysCap1";
-    v22 = [MEMORY[0x277D3F198] sharedInstance];
-    v21 = [v22 commonTypeDict_IntegerFormat];
-    v79[27] = v21;
+    mEMORY[0x277D3F198]28 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat27 = [mEMORY[0x277D3F198]28 commonTypeDict_IntegerFormat];
+    v79[27] = commonTypeDict_IntegerFormat27;
     v78[28] = @"sysCap2";
-    v20 = [MEMORY[0x277D3F198] sharedInstance];
-    v19 = [v20 commonTypeDict_IntegerFormat];
-    v79[28] = v19;
+    mEMORY[0x277D3F198]29 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat28 = [mEMORY[0x277D3F198]29 commonTypeDict_IntegerFormat];
+    v79[28] = commonTypeDict_IntegerFormat28;
     v78[29] = @"remCapCE0";
-    v18 = [MEMORY[0x277D3F198] sharedInstance];
-    v17 = [v18 commonTypeDict_IntegerFormat];
-    v79[29] = v17;
+    mEMORY[0x277D3F198]30 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat29 = [mEMORY[0x277D3F198]30 commonTypeDict_IntegerFormat];
+    v79[29] = commonTypeDict_IntegerFormat29;
     v78[30] = @"remCapCE1";
-    v16 = [MEMORY[0x277D3F198] sharedInstance];
-    v15 = [v16 commonTypeDict_IntegerFormat];
-    v79[30] = v15;
+    mEMORY[0x277D3F198]31 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat30 = [mEMORY[0x277D3F198]31 commonTypeDict_IntegerFormat];
+    v79[30] = commonTypeDict_IntegerFormat30;
     v78[31] = @"remCapCE2";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_IntegerFormat];
-    v79[31] = v4;
+    mEMORY[0x277D3F198]32 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat31 = [mEMORY[0x277D3F198]32 commonTypeDict_IntegerFormat];
+    v79[31] = commonTypeDict_IntegerFormat31;
     v78[32] = @"remCapCE3";
-    v5 = [MEMORY[0x277D3F198] sharedInstance];
-    v6 = [v5 commonTypeDict_IntegerFormat];
-    v79[32] = v6;
+    mEMORY[0x277D3F198]33 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat32 = [mEMORY[0x277D3F198]33 commonTypeDict_IntegerFormat];
+    v79[32] = commonTypeDict_IntegerFormat32;
     v78[33] = @"remCapCE4";
-    v7 = [MEMORY[0x277D3F198] sharedInstance];
-    v8 = [v7 commonTypeDict_IntegerFormat];
-    v79[33] = v8;
+    mEMORY[0x277D3F198]34 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat33 = [mEMORY[0x277D3F198]34 commonTypeDict_IntegerFormat];
+    v79[33] = commonTypeDict_IntegerFormat33;
     v78[34] = @"remCapCE5";
-    v9 = [MEMORY[0x277D3F198] sharedInstance];
-    v10 = [v9 commonTypeDict_IntegerFormat];
-    v79[34] = v10;
+    mEMORY[0x277D3F198]35 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat34 = [mEMORY[0x277D3F198]35 commonTypeDict_IntegerFormat];
+    v79[34] = commonTypeDict_IntegerFormat34;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v79 forKeys:v78 count:35];
     v83[1] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v83 forKeys:v82 count:2];
@@ -1882,33 +1882,33 @@ uint64_t __31__PLBatteryAgent_shouldLogCPMS__block_invoke()
     v27[0] = v21;
     v26[1] = *MEMORY[0x277D3F540];
     v22[0] = @"client";
-    v20 = [MEMORY[0x277D3F198] sharedInstance];
-    v19 = [v20 commonTypeDict_IntegerFormat];
-    v23[0] = v19;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v23[0] = commonTypeDict_IntegerFormat;
     v22[1] = @"req0";
-    v18 = [MEMORY[0x277D3F198] sharedInstance];
-    v17 = [v18 commonTypeDict_IntegerFormat];
-    v23[1] = v17;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v23[1] = commonTypeDict_IntegerFormat2;
     v22[2] = @"req1";
-    v16 = [MEMORY[0x277D3F198] sharedInstance];
-    v15 = [v16 commonTypeDict_IntegerFormat];
-    v23[2] = v15;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+    v23[2] = commonTypeDict_IntegerFormat3;
     v22[3] = @"req2";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_IntegerFormat];
-    v23[3] = v4;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+    v23[3] = commonTypeDict_IntegerFormat4;
     v22[4] = @"grant0";
-    v5 = [MEMORY[0x277D3F198] sharedInstance];
-    v6 = [v5 commonTypeDict_IntegerFormat];
-    v23[4] = v6;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+    v23[4] = commonTypeDict_IntegerFormat5;
     v22[5] = @"grant1";
-    v7 = [MEMORY[0x277D3F198] sharedInstance];
-    v8 = [v7 commonTypeDict_IntegerFormat];
-    v23[5] = v8;
+    mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+    v23[5] = commonTypeDict_IntegerFormat6;
     v22[6] = @"grant2";
-    v9 = [MEMORY[0x277D3F198] sharedInstance];
-    v10 = [v9 commonTypeDict_IntegerFormat];
-    v23[6] = v10;
+    mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+    v23[6] = commonTypeDict_IntegerFormat7;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:7];
     v27[1] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:2];
@@ -1962,53 +1962,53 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
     v36[0] = v30;
     v35[1] = *MEMORY[0x277D3F540];
     v31[0] = @"TMS0";
-    v29 = [MEMORY[0x277D3F198] sharedInstance];
-    v28 = [v29 commonTypeDict_IntegerFormat];
-    v32[0] = v28;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v32[0] = commonTypeDict_IntegerFormat;
     v31[1] = @"CAPA";
-    v27 = [MEMORY[0x277D3F198] sharedInstance];
-    v26 = [v27 commonTypeDict_IntegerFormat];
-    v32[1] = v26;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v32[1] = commonTypeDict_IntegerFormat2;
     v31[2] = @"CCCs";
-    v25 = [MEMORY[0x277D3F198] sharedInstance];
-    v24 = [v25 commonTypeDict_IntegerFormat];
-    v32[2] = v24;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+    v32[2] = commonTypeDict_IntegerFormat3;
     v31[3] = @"PDD0";
-    v23 = [MEMORY[0x277D3F198] sharedInstance];
-    v22 = [v23 commonTypeDict_IntegerFormat];
-    v32[3] = v22;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+    v32[3] = commonTypeDict_IntegerFormat4;
     v31[4] = @"PDDc";
-    v21 = [MEMORY[0x277D3F198] sharedInstance];
-    v20 = [v21 commonTypeDict_IntegerFormat];
-    v32[4] = v20;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+    v32[4] = commonTypeDict_IntegerFormat5;
     v31[5] = @"GGTm";
-    v19 = [MEMORY[0x277D3F198] sharedInstance];
-    v18 = [v19 commonTypeDict_IntegerFormat];
-    v32[5] = v18;
+    mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+    v32[5] = commonTypeDict_IntegerFormat6;
     v31[6] = @"VOLT";
-    v17 = [MEMORY[0x277D3F198] sharedInstance];
-    v16 = [v17 commonTypeDict_IntegerFormat];
-    v32[6] = v16;
+    mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+    v32[6] = commonTypeDict_IntegerFormat7;
     v31[7] = @"STAT";
-    v15 = [MEMORY[0x277D3F198] sharedInstance];
-    v14 = [v15 commonTypeDict_IntegerFormat];
-    v32[7] = v14;
+    mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+    v32[7] = commonTypeDict_IntegerFormat8;
     v31[8] = @"TMSc";
-    v2 = [MEMORY[0x277D3F198] sharedInstance];
-    v3 = [v2 commonTypeDict_IntegerFormat];
-    v32[8] = v3;
+    mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+    v32[8] = commonTypeDict_IntegerFormat9;
     v31[9] = @"CCCu";
-    v4 = [MEMORY[0x277D3F198] sharedInstance];
-    v5 = [v4 commonTypeDict_IntegerFormat];
-    v32[9] = v5;
+    mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat10 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+    v32[9] = commonTypeDict_IntegerFormat10;
     v31[10] = @"CurrentTimeRTC";
-    v6 = [MEMORY[0x277D3F198] sharedInstance];
-    v7 = [v6 commonTypeDict_RealFormat];
-    v32[10] = v7;
+    mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat = [mEMORY[0x277D3F198]11 commonTypeDict_RealFormat];
+    v32[10] = commonTypeDict_RealFormat;
     v31[11] = @"BTLC";
-    v8 = [MEMORY[0x277D3F198] sharedInstance];
-    v9 = [v8 commonTypeDict_IntegerFormat];
-    v32[11] = v9;
+    mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat11 = [mEMORY[0x277D3F198]12 commonTypeDict_IntegerFormat];
+    v32[11] = commonTypeDict_IntegerFormat11;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:v31 count:12];
     v36[1] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:v35 count:2];
@@ -2036,25 +2036,25 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
     v22[0] = v16;
     v21[1] = *MEMORY[0x277D3F540];
     v17[0] = @"mcmCurrentState";
-    v15 = [MEMORY[0x277D3F198] sharedInstance];
-    v14 = [v15 commonTypeDict_IntegerFormat];
-    v18[0] = v14;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v18[0] = commonTypeDict_IntegerFormat;
     v17[1] = @"isChargePackConnected";
-    v2 = [MEMORY[0x277D3F198] sharedInstance];
-    v3 = [v2 commonTypeDict_IntegerFormat];
-    v18[1] = v3;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v18[1] = commonTypeDict_IntegerFormat2;
     v17[2] = @"mcmToppedOffInThisChargeSession";
-    v4 = [MEMORY[0x277D3F198] sharedInstance];
-    v5 = [v4 commonTypeDict_IntegerFormat];
-    v18[2] = v5;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+    v18[2] = commonTypeDict_IntegerFormat3;
     v17[3] = @"mcmForbidsCharging";
-    v6 = [MEMORY[0x277D3F198] sharedInstance];
-    v7 = [v6 commonTypeDict_IntegerFormat];
-    v18[3] = v7;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+    v18[3] = commonTypeDict_IntegerFormat4;
     v17[4] = @"batteryLevel";
-    v8 = [MEMORY[0x277D3F198] sharedInstance];
-    v9 = [v8 commonTypeDict_IntegerFormat];
-    v18[4] = v9;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+    v18[4] = commonTypeDict_IntegerFormat5;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:5];
     v22[1] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:2];
@@ -2085,9 +2085,9 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
     v15[0] = v3;
     v14[1] = *MEMORY[0x277D3F540];
     v10 = @"Reason";
-    v4 = [MEMORY[0x277D3F198] sharedInstance];
-    v5 = [v4 commonTypeDict_StringFormat];
-    v11 = v5;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
+    v11 = commonTypeDict_StringFormat;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
     v15[1] = v6;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
@@ -2115,9 +2115,9 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
     v14[0] = v2;
     v13[1] = *MEMORY[0x277D3F540];
     v9 = @"isPhysicallyAttached";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_BoolFormat];
-    v10 = v4;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
+    v10 = commonTypeDict_BoolFormat;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
     v14[1] = v5;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
@@ -2148,301 +2148,301 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
   v161[0] = v155;
   v160[1] = *MEMORY[0x277D3F540];
   v156[0] = @"BatteryShutdownTimestamp";
-  v154 = [MEMORY[0x277D3F198] sharedInstance];
-  v153 = [v154 commonTypeDict_DateFormat];
-  v157[0] = v153;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198] commonTypeDict_DateFormat];
+  v157[0] = commonTypeDict_DateFormat;
   v156[1] = @"UISOC";
-  v152 = [MEMORY[0x277D3F198] sharedInstance];
-  v151 = [v152 commonTypeDict_RealFormat];
-  v157[1] = v151;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat = [mEMORY[0x277D3F198]2 commonTypeDict_RealFormat];
+  v157[1] = commonTypeDict_RealFormat;
   v156[2] = @"Temperature";
-  v150 = [MEMORY[0x277D3F198] sharedInstance];
-  v149 = [v150 commonTypeDict_IntegerFormat];
-  v157[2] = v149;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v157[2] = commonTypeDict_IntegerFormat;
   v156[3] = @"PresentDOD";
-  v148 = [MEMORY[0x277D3F198] sharedInstance];
-  v147 = [v148 commonTypeDict_IntegerFormat];
-  v157[3] = v147;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v157[3] = commonTypeDict_IntegerFormat2;
   v156[4] = @"MaximumRa0-8";
-  v146 = [MEMORY[0x277D3F198] sharedInstance];
-  v145 = [v146 commonTypeDict_IntegerFormat];
-  v157[4] = v145;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v157[4] = commonTypeDict_IntegerFormat3;
   v156[5] = @"NominalChargeCapacity";
-  v144 = [MEMORY[0x277D3F198] sharedInstance];
-  v143 = [v144 commonTypeDict_IntegerFormat];
-  v157[5] = v143;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v157[5] = commonTypeDict_IntegerFormat4;
   v156[6] = @"NominalChargeCapacityPrevious";
-  v142 = [MEMORY[0x277D3F198] sharedInstance];
-  v141 = [v142 commonTypeDict_IntegerFormat];
-  v157[6] = v141;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v157[6] = commonTypeDict_IntegerFormat5;
   v156[7] = @"FullChargeCapacity";
-  v140 = [MEMORY[0x277D3F198] sharedInstance];
-  v139 = [v140 commonTypeDict_IntegerFormat];
-  v157[7] = v139;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v157[7] = commonTypeDict_IntegerFormat6;
   v156[8] = @"FullChargeCapacityPrevious";
-  v138 = [MEMORY[0x277D3F198] sharedInstance];
-  v137 = [v138 commonTypeDict_IntegerFormat];
-  v157[8] = v137;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+  v157[8] = commonTypeDict_IntegerFormat7;
   v156[9] = @"RemainingCapacity";
-  v136 = [MEMORY[0x277D3F198] sharedInstance];
-  v135 = [v136 commonTypeDict_IntegerFormat];
-  v157[9] = v135;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+  v157[9] = commonTypeDict_IntegerFormat8;
   v156[10] = @"RemainingCapacityPrevious";
-  v134 = [MEMORY[0x277D3F198] sharedInstance];
-  v133 = [v134 commonTypeDict_IntegerFormat];
-  v157[10] = v133;
+  mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]11 commonTypeDict_IntegerFormat];
+  v157[10] = commonTypeDict_IntegerFormat9;
   v156[11] = @"CycleCount";
-  v132 = [MEMORY[0x277D3F198] sharedInstance];
-  v131 = [v132 commonTypeDict_IntegerFormat];
-  v157[11] = v131;
+  mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat10 = [mEMORY[0x277D3F198]12 commonTypeDict_IntegerFormat];
+  v157[11] = commonTypeDict_IntegerFormat10;
   v156[12] = @"MaximumDischargeCurrent";
-  v130 = [MEMORY[0x277D3F198] sharedInstance];
-  v129 = [v130 commonTypeDict_IntegerFormat];
-  v157[12] = v129;
+  mEMORY[0x277D3F198]13 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat11 = [mEMORY[0x277D3F198]13 commonTypeDict_IntegerFormat];
+  v157[12] = commonTypeDict_IntegerFormat11;
   v156[13] = @"TimeAbove95Perc";
-  v128 = [MEMORY[0x277D3F198] sharedInstance];
-  v127 = [v128 commonTypeDict_IntegerFormat];
-  v157[13] = v127;
+  mEMORY[0x277D3F198]14 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat12 = [mEMORY[0x277D3F198]14 commonTypeDict_IntegerFormat];
+  v157[13] = commonTypeDict_IntegerFormat12;
   v156[14] = @"Voltage";
-  v126 = [MEMORY[0x277D3F198] sharedInstance];
-  v125 = [v126 commonTypeDict_IntegerFormat];
-  v157[14] = v125;
+  mEMORY[0x277D3F198]15 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat13 = [mEMORY[0x277D3F198]15 commonTypeDict_IntegerFormat];
+  v157[14] = commonTypeDict_IntegerFormat13;
   v156[15] = @"VoltagePrevious";
-  v124 = [MEMORY[0x277D3F198] sharedInstance];
-  v123 = [v124 commonTypeDict_IntegerFormat];
-  v157[15] = v123;
+  mEMORY[0x277D3F198]16 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat14 = [mEMORY[0x277D3F198]16 commonTypeDict_IntegerFormat];
+  v157[15] = commonTypeDict_IntegerFormat14;
   v156[16] = @"AverageCurrent";
-  v122 = [MEMORY[0x277D3F198] sharedInstance];
-  v121 = [v122 commonTypeDict_IntegerFormat];
-  v157[16] = v121;
+  mEMORY[0x277D3F198]17 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat15 = [mEMORY[0x277D3F198]17 commonTypeDict_IntegerFormat];
+  v157[16] = commonTypeDict_IntegerFormat15;
   v156[17] = @"AverageCurrentPrevious";
-  v120 = [MEMORY[0x277D3F198] sharedInstance];
-  v119 = [v120 commonTypeDict_IntegerFormat];
-  v157[17] = v119;
+  mEMORY[0x277D3F198]18 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat16 = [mEMORY[0x277D3F198]18 commonTypeDict_IntegerFormat];
+  v157[17] = commonTypeDict_IntegerFormat16;
   v156[18] = @"CycleCountLastQmax";
-  v118 = [MEMORY[0x277D3F198] sharedInstance];
-  v117 = [v118 commonTypeDict_IntegerFormat];
-  v157[18] = v117;
+  mEMORY[0x277D3F198]19 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat17 = [mEMORY[0x277D3F198]19 commonTypeDict_IntegerFormat];
+  v157[18] = commonTypeDict_IntegerFormat17;
   v156[19] = @"ResScale";
-  v116 = [MEMORY[0x277D3F198] sharedInstance];
-  v115 = [v116 commonTypeDict_IntegerFormat];
-  v157[19] = v115;
+  mEMORY[0x277D3F198]20 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat18 = [mEMORY[0x277D3F198]20 commonTypeDict_IntegerFormat];
+  v157[19] = commonTypeDict_IntegerFormat18;
   v156[20] = @"Qstart";
-  v114 = [MEMORY[0x277D3F198] sharedInstance];
-  v113 = [v114 commonTypeDict_IntegerFormat];
-  v157[20] = v113;
+  mEMORY[0x277D3F198]21 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat19 = [mEMORY[0x277D3F198]21 commonTypeDict_IntegerFormat];
+  v157[20] = commonTypeDict_IntegerFormat19;
   v156[21] = @"PassedCharge";
-  v112 = [MEMORY[0x277D3F198] sharedInstance];
-  v111 = [v112 commonTypeDict_IntegerFormat];
-  v157[21] = v111;
+  mEMORY[0x277D3F198]22 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat20 = [mEMORY[0x277D3F198]22 commonTypeDict_IntegerFormat];
+  v157[21] = commonTypeDict_IntegerFormat20;
   v156[22] = @"TimeSinceWake";
-  v110 = [MEMORY[0x277D3F198] sharedInstance];
-  v109 = [v110 commonTypeDict_IntegerFormat];
-  v157[22] = v109;
+  mEMORY[0x277D3F198]23 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat21 = [mEMORY[0x277D3F198]23 commonTypeDict_IntegerFormat];
+  v157[22] = commonTypeDict_IntegerFormat21;
   v156[23] = @"DOD0";
-  v108 = [MEMORY[0x277D3F198] sharedInstance];
-  v107 = [v108 commonTypeDict_IntegerFormat];
-  v157[23] = v107;
+  mEMORY[0x277D3F198]24 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat22 = [mEMORY[0x277D3F198]24 commonTypeDict_IntegerFormat];
+  v157[23] = commonTypeDict_IntegerFormat22;
   v156[24] = @"DLOG_0";
-  v106 = [MEMORY[0x277D3F198] sharedInstance];
-  v105 = [v106 commonTypeDict_IntegerFormat];
-  v157[24] = v105;
+  mEMORY[0x277D3F198]25 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat23 = [mEMORY[0x277D3F198]25 commonTypeDict_IntegerFormat];
+  v157[24] = commonTypeDict_IntegerFormat23;
   v156[25] = @"DLOG_1";
-  v104 = [MEMORY[0x277D3F198] sharedInstance];
-  v103 = [v104 commonTypeDict_IntegerFormat];
-  v157[25] = v103;
+  mEMORY[0x277D3F198]26 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat24 = [mEMORY[0x277D3F198]26 commonTypeDict_IntegerFormat];
+  v157[25] = commonTypeDict_IntegerFormat24;
   v156[26] = @"DLOG_2";
-  v102 = [MEMORY[0x277D3F198] sharedInstance];
-  v101 = [v102 commonTypeDict_IntegerFormat];
-  v157[26] = v101;
+  mEMORY[0x277D3F198]27 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat25 = [mEMORY[0x277D3F198]27 commonTypeDict_IntegerFormat];
+  v157[26] = commonTypeDict_IntegerFormat25;
   v156[27] = @"DLOG_3";
-  v100 = [MEMORY[0x277D3F198] sharedInstance];
-  v99 = [v100 commonTypeDict_IntegerFormat];
-  v157[27] = v99;
+  mEMORY[0x277D3F198]28 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat26 = [mEMORY[0x277D3F198]28 commonTypeDict_IntegerFormat];
+  v157[27] = commonTypeDict_IntegerFormat26;
   v156[28] = @"DLOG_4";
-  v98 = [MEMORY[0x277D3F198] sharedInstance];
-  v97 = [v98 commonTypeDict_IntegerFormat];
-  v157[28] = v97;
+  mEMORY[0x277D3F198]29 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat27 = [mEMORY[0x277D3F198]29 commonTypeDict_IntegerFormat];
+  v157[28] = commonTypeDict_IntegerFormat27;
   v156[29] = @"DLOG_5";
-  v96 = [MEMORY[0x277D3F198] sharedInstance];
-  v95 = [v96 commonTypeDict_IntegerFormat];
-  v157[29] = v95;
+  mEMORY[0x277D3F198]30 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat28 = [mEMORY[0x277D3F198]30 commonTypeDict_IntegerFormat];
+  v157[29] = commonTypeDict_IntegerFormat28;
   v156[30] = @"DLOG_6";
-  v94 = [MEMORY[0x277D3F198] sharedInstance];
-  v93 = [v94 commonTypeDict_IntegerFormat];
-  v157[30] = v93;
+  mEMORY[0x277D3F198]31 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat29 = [mEMORY[0x277D3F198]31 commonTypeDict_IntegerFormat];
+  v157[30] = commonTypeDict_IntegerFormat29;
   v156[31] = @"DLOG_7";
-  v92 = [MEMORY[0x277D3F198] sharedInstance];
-  v91 = [v92 commonTypeDict_IntegerFormat];
-  v157[31] = v91;
+  mEMORY[0x277D3F198]32 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat30 = [mEMORY[0x277D3F198]32 commonTypeDict_IntegerFormat];
+  v157[31] = commonTypeDict_IntegerFormat30;
   v156[32] = @"DLOG_8";
-  v90 = [MEMORY[0x277D3F198] sharedInstance];
-  v89 = [v90 commonTypeDict_IntegerFormat];
-  v157[32] = v89;
+  mEMORY[0x277D3F198]33 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat31 = [mEMORY[0x277D3F198]33 commonTypeDict_IntegerFormat];
+  v157[32] = commonTypeDict_IntegerFormat31;
   v156[33] = @"DLOG_9";
-  v88 = [MEMORY[0x277D3F198] sharedInstance];
-  v87 = [v88 commonTypeDict_IntegerFormat];
-  v157[33] = v87;
+  mEMORY[0x277D3F198]34 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat32 = [mEMORY[0x277D3F198]34 commonTypeDict_IntegerFormat];
+  v157[33] = commonTypeDict_IntegerFormat32;
   v156[34] = @"DLOG_10";
-  v86 = [MEMORY[0x277D3F198] sharedInstance];
-  v85 = [v86 commonTypeDict_IntegerFormat];
-  v157[34] = v85;
+  mEMORY[0x277D3F198]35 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat33 = [mEMORY[0x277D3F198]35 commonTypeDict_IntegerFormat];
+  v157[34] = commonTypeDict_IntegerFormat33;
   v156[35] = @"DLOG_11";
-  v84 = [MEMORY[0x277D3F198] sharedInstance];
-  v83 = [v84 commonTypeDict_IntegerFormat];
-  v157[35] = v83;
+  mEMORY[0x277D3F198]36 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat34 = [mEMORY[0x277D3F198]36 commonTypeDict_IntegerFormat];
+  v157[35] = commonTypeDict_IntegerFormat34;
   v156[36] = @"DLOG_12";
-  v82 = [MEMORY[0x277D3F198] sharedInstance];
-  v81 = [v82 commonTypeDict_IntegerFormat];
-  v157[36] = v81;
+  mEMORY[0x277D3F198]37 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat35 = [mEMORY[0x277D3F198]37 commonTypeDict_IntegerFormat];
+  v157[36] = commonTypeDict_IntegerFormat35;
   v156[37] = @"DLOG_13";
-  v80 = [MEMORY[0x277D3F198] sharedInstance];
-  v79 = [v80 commonTypeDict_IntegerFormat];
-  v157[37] = v79;
+  mEMORY[0x277D3F198]38 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat36 = [mEMORY[0x277D3F198]38 commonTypeDict_IntegerFormat];
+  v157[37] = commonTypeDict_IntegerFormat36;
   v156[38] = @"DLOG_14";
-  v78 = [MEMORY[0x277D3F198] sharedInstance];
-  v77 = [v78 commonTypeDict_IntegerFormat];
-  v157[38] = v77;
+  mEMORY[0x277D3F198]39 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat37 = [mEMORY[0x277D3F198]39 commonTypeDict_IntegerFormat];
+  v157[38] = commonTypeDict_IntegerFormat37;
   v156[39] = @"DLOG_15";
-  v76 = [MEMORY[0x277D3F198] sharedInstance];
-  v75 = [v76 commonTypeDict_IntegerFormat];
-  v157[39] = v75;
+  mEMORY[0x277D3F198]40 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat38 = [mEMORY[0x277D3F198]40 commonTypeDict_IntegerFormat];
+  v157[39] = commonTypeDict_IntegerFormat38;
   v156[40] = @"DLOG_16";
-  v74 = [MEMORY[0x277D3F198] sharedInstance];
-  v73 = [v74 commonTypeDict_IntegerFormat];
-  v157[40] = v73;
+  mEMORY[0x277D3F198]41 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat39 = [mEMORY[0x277D3F198]41 commonTypeDict_IntegerFormat];
+  v157[40] = commonTypeDict_IntegerFormat39;
   v156[41] = @"DLOG_17";
-  v72 = [MEMORY[0x277D3F198] sharedInstance];
-  v71 = [v72 commonTypeDict_IntegerFormat];
-  v157[41] = v71;
+  mEMORY[0x277D3F198]42 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat40 = [mEMORY[0x277D3F198]42 commonTypeDict_IntegerFormat];
+  v157[41] = commonTypeDict_IntegerFormat40;
   v156[42] = @"DLOG_18";
-  v70 = [MEMORY[0x277D3F198] sharedInstance];
-  v69 = [v70 commonTypeDict_IntegerFormat];
-  v157[42] = v69;
+  mEMORY[0x277D3F198]43 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat41 = [mEMORY[0x277D3F198]43 commonTypeDict_IntegerFormat];
+  v157[42] = commonTypeDict_IntegerFormat41;
   v156[43] = @"DLOG_19";
-  v68 = [MEMORY[0x277D3F198] sharedInstance];
-  v67 = [v68 commonTypeDict_IntegerFormat];
-  v157[43] = v67;
+  mEMORY[0x277D3F198]44 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat42 = [mEMORY[0x277D3F198]44 commonTypeDict_IntegerFormat];
+  v157[43] = commonTypeDict_IntegerFormat42;
   v156[44] = @"RaTable_1";
-  v66 = [MEMORY[0x277D3F198] sharedInstance];
-  v65 = [v66 commonTypeDict_IntegerFormat];
-  v157[44] = v65;
+  mEMORY[0x277D3F198]45 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat43 = [mEMORY[0x277D3F198]45 commonTypeDict_IntegerFormat];
+  v157[44] = commonTypeDict_IntegerFormat43;
   v156[45] = @"RaTable_2";
-  v64 = [MEMORY[0x277D3F198] sharedInstance];
-  v63 = [v64 commonTypeDict_IntegerFormat];
-  v157[45] = v63;
+  mEMORY[0x277D3F198]46 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat44 = [mEMORY[0x277D3F198]46 commonTypeDict_IntegerFormat];
+  v157[45] = commonTypeDict_IntegerFormat44;
   v156[46] = @"RaTable_3";
-  v62 = [MEMORY[0x277D3F198] sharedInstance];
-  v61 = [v62 commonTypeDict_IntegerFormat];
-  v157[46] = v61;
+  mEMORY[0x277D3F198]47 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat45 = [mEMORY[0x277D3F198]47 commonTypeDict_IntegerFormat];
+  v157[46] = commonTypeDict_IntegerFormat45;
   v156[47] = @"RaTable_4";
-  v60 = [MEMORY[0x277D3F198] sharedInstance];
-  v59 = [v60 commonTypeDict_IntegerFormat];
-  v157[47] = v59;
+  mEMORY[0x277D3F198]48 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat46 = [mEMORY[0x277D3F198]48 commonTypeDict_IntegerFormat];
+  v157[47] = commonTypeDict_IntegerFormat46;
   v156[48] = @"RaTable_5";
-  v58 = [MEMORY[0x277D3F198] sharedInstance];
-  v57 = [v58 commonTypeDict_IntegerFormat];
-  v157[48] = v57;
+  mEMORY[0x277D3F198]49 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat47 = [mEMORY[0x277D3F198]49 commonTypeDict_IntegerFormat];
+  v157[48] = commonTypeDict_IntegerFormat47;
   v156[49] = @"RaTable_6";
-  v56 = [MEMORY[0x277D3F198] sharedInstance];
-  v55 = [v56 commonTypeDict_IntegerFormat];
-  v157[49] = v55;
+  mEMORY[0x277D3F198]50 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat48 = [mEMORY[0x277D3F198]50 commonTypeDict_IntegerFormat];
+  v157[49] = commonTypeDict_IntegerFormat48;
   v156[50] = @"RaTable_7";
-  v54 = [MEMORY[0x277D3F198] sharedInstance];
-  v53 = [v54 commonTypeDict_IntegerFormat];
-  v157[50] = v53;
+  mEMORY[0x277D3F198]51 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat49 = [mEMORY[0x277D3F198]51 commonTypeDict_IntegerFormat];
+  v157[50] = commonTypeDict_IntegerFormat49;
   v156[51] = @"RaTable_8";
-  v52 = [MEMORY[0x277D3F198] sharedInstance];
-  v51 = [v52 commonTypeDict_IntegerFormat];
-  v157[51] = v51;
+  mEMORY[0x277D3F198]52 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat50 = [mEMORY[0x277D3F198]52 commonTypeDict_IntegerFormat];
+  v157[51] = commonTypeDict_IntegerFormat50;
   v156[52] = @"RaTable_9";
-  v50 = [MEMORY[0x277D3F198] sharedInstance];
-  v49 = [v50 commonTypeDict_IntegerFormat];
-  v157[52] = v49;
+  mEMORY[0x277D3F198]53 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat51 = [mEMORY[0x277D3F198]53 commonTypeDict_IntegerFormat];
+  v157[52] = commonTypeDict_IntegerFormat51;
   v156[53] = @"RaTable_10";
-  v48 = [MEMORY[0x277D3F198] sharedInstance];
-  v47 = [v48 commonTypeDict_IntegerFormat];
-  v157[53] = v47;
+  mEMORY[0x277D3F198]54 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat52 = [mEMORY[0x277D3F198]54 commonTypeDict_IntegerFormat];
+  v157[53] = commonTypeDict_IntegerFormat52;
   v156[54] = @"RaTable_11";
-  v46 = [MEMORY[0x277D3F198] sharedInstance];
-  v45 = [v46 commonTypeDict_IntegerFormat];
-  v157[54] = v45;
+  mEMORY[0x277D3F198]55 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat53 = [mEMORY[0x277D3F198]55 commonTypeDict_IntegerFormat];
+  v157[54] = commonTypeDict_IntegerFormat53;
   v156[55] = @"RaTable_12";
-  v44 = [MEMORY[0x277D3F198] sharedInstance];
-  v43 = [v44 commonTypeDict_IntegerFormat];
-  v157[55] = v43;
+  mEMORY[0x277D3F198]56 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat54 = [mEMORY[0x277D3F198]56 commonTypeDict_IntegerFormat];
+  v157[55] = commonTypeDict_IntegerFormat54;
   v156[56] = @"RaTable_13";
-  v42 = [MEMORY[0x277D3F198] sharedInstance];
-  v41 = [v42 commonTypeDict_IntegerFormat];
-  v157[56] = v41;
+  mEMORY[0x277D3F198]57 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat55 = [mEMORY[0x277D3F198]57 commonTypeDict_IntegerFormat];
+  v157[56] = commonTypeDict_IntegerFormat55;
   v156[57] = @"RaTable_14";
-  v40 = [MEMORY[0x277D3F198] sharedInstance];
-  v39 = [v40 commonTypeDict_IntegerFormat];
-  v157[57] = v39;
+  mEMORY[0x277D3F198]58 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat56 = [mEMORY[0x277D3F198]58 commonTypeDict_IntegerFormat];
+  v157[57] = commonTypeDict_IntegerFormat56;
   v156[58] = @"RaTable_15";
-  v38 = [MEMORY[0x277D3F198] sharedInstance];
-  v37 = [v38 commonTypeDict_IntegerFormat];
-  v157[58] = v37;
+  mEMORY[0x277D3F198]59 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat57 = [mEMORY[0x277D3F198]59 commonTypeDict_IntegerFormat];
+  v157[58] = commonTypeDict_IntegerFormat57;
   v156[59] = @"RSS";
-  v36 = [MEMORY[0x277D3F198] sharedInstance];
-  v35 = [v36 commonTypeDict_IntegerFormat];
-  v157[59] = v35;
+  mEMORY[0x277D3F198]60 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat58 = [mEMORY[0x277D3F198]60 commonTypeDict_IntegerFormat];
+  v157[59] = commonTypeDict_IntegerFormat58;
   v156[60] = @"LowBatteryLog";
-  v34 = [MEMORY[0x277D3F198] sharedInstance];
-  v33 = [v34 commonTypeDict_StringFormat];
-  v157[60] = v33;
+  mEMORY[0x277D3F198]61 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]61 commonTypeDict_StringFormat];
+  v157[60] = commonTypeDict_StringFormat;
   v156[61] = @"UpoReboot";
-  v32 = [MEMORY[0x277D3F198] sharedInstance];
-  v31 = [v32 commonTypeDict_BoolFormat];
-  v157[61] = v31;
+  mEMORY[0x277D3F198]62 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]62 commonTypeDict_BoolFormat];
+  v157[61] = commonTypeDict_BoolFormat;
   v156[62] = @"DataError";
-  v30 = [MEMORY[0x277D3F198] sharedInstance];
-  v29 = [v30 commonTypeDict_IntegerFormat];
-  v157[62] = v29;
+  mEMORY[0x277D3F198]63 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat59 = [mEMORY[0x277D3F198]63 commonTypeDict_IntegerFormat];
+  v157[62] = commonTypeDict_IntegerFormat59;
   v156[63] = @"FilteredCurrent";
-  v28 = [MEMORY[0x277D3F198] sharedInstance];
-  v27 = [v28 commonTypeDict_IntegerFormat];
-  v157[63] = v27;
+  mEMORY[0x277D3F198]64 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat60 = [mEMORY[0x277D3F198]64 commonTypeDict_IntegerFormat];
+  v157[63] = commonTypeDict_IntegerFormat60;
   v156[64] = @"ShutdownVoltage";
-  v26 = [MEMORY[0x277D3F198] sharedInstance];
-  v25 = [v26 commonTypeDict_IntegerFormat];
-  v157[64] = v25;
+  mEMORY[0x277D3F198]65 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat61 = [mEMORY[0x277D3F198]65 commonTypeDict_IntegerFormat];
+  v157[64] = commonTypeDict_IntegerFormat61;
   v156[65] = @"SOCFThreshold";
-  v24 = [MEMORY[0x277D3F198] sharedInstance];
-  v23 = [v24 commonTypeDict_IntegerFormat];
-  v157[65] = v23;
+  mEMORY[0x277D3F198]66 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat62 = [mEMORY[0x277D3F198]66 commonTypeDict_IntegerFormat];
+  v157[65] = commonTypeDict_IntegerFormat62;
   v156[66] = @"ShutdownSoc";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_IntegerFormat];
-  v157[66] = v21;
+  mEMORY[0x277D3F198]67 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat63 = [mEMORY[0x277D3F198]67 commonTypeDict_IntegerFormat];
+  v157[66] = commonTypeDict_IntegerFormat63;
   v156[67] = @"LPEMMode";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_IntegerFormat];
-  v157[67] = v19;
+  mEMORY[0x277D3F198]68 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat64 = [mEMORY[0x277D3F198]68 commonTypeDict_IntegerFormat];
+  v157[67] = commonTypeDict_IntegerFormat64;
   v156[68] = @"SOCAlarm";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_IntegerFormat];
-  v157[68] = v17;
+  mEMORY[0x277D3F198]69 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat65 = [mEMORY[0x277D3F198]69 commonTypeDict_IntegerFormat];
+  v157[68] = commonTypeDict_IntegerFormat65;
   v156[69] = @"SWRemcap";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_IntegerFormat];
-  v157[69] = v15;
+  mEMORY[0x277D3F198]70 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat66 = [mEMORY[0x277D3F198]70 commonTypeDict_IntegerFormat];
+  v157[69] = commonTypeDict_IntegerFormat66;
   v156[70] = @"SocSoc2";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v157[70] = v4;
+  mEMORY[0x277D3F198]71 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat67 = [mEMORY[0x277D3F198]71 commonTypeDict_IntegerFormat];
+  v157[70] = commonTypeDict_IntegerFormat67;
   v156[71] = @"SWFcc";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v157[71] = v6;
+  mEMORY[0x277D3F198]72 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat68 = [mEMORY[0x277D3F198]72 commonTypeDict_IntegerFormat];
+  v157[71] = commonTypeDict_IntegerFormat68;
   v156[72] = @"DynamicSOCVcut";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v157[72] = v8;
+  mEMORY[0x277D3F198]73 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat69 = [mEMORY[0x277D3F198]73 commonTypeDict_IntegerFormat];
+  v157[72] = commonTypeDict_IntegerFormat69;
   v156[73] = @"DataCriticalFlagsKey";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_IntegerFormat];
-  v157[73] = v10;
+  mEMORY[0x277D3F198]74 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat70 = [mEMORY[0x277D3F198]74 commonTypeDict_IntegerFormat];
+  v157[73] = commonTypeDict_IntegerFormat70;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v157 forKeys:v156 count:74];
   v161[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v161 forKeys:v160 count:2];
@@ -2462,9 +2462,9 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
   v14[0] = v2;
   v13[1] = *MEMORY[0x277D3F540];
   v9 = @"I2CLogData";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_RawDataFormat];
-  v10 = v4;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RawDataFormat = [mEMORY[0x277D3F198] commonTypeDict_RawDataFormat];
+  v10 = commonTypeDict_RawDataFormat;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   v14[1] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
@@ -2484,73 +2484,73 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
   v46[0] = v40;
   v45[1] = *MEMORY[0x277D3F540];
   v41[0] = @"ActivePayloads";
-  v39 = [MEMORY[0x277D3F198] sharedInstance];
-  v38 = [v39 commonTypeDict_IntegerFormat];
-  v42[0] = v38;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v42[0] = commonTypeDict_IntegerFormat;
   v41[1] = @"TimeOnCharger";
-  v37 = [MEMORY[0x277D3F198] sharedInstance];
-  v36 = [v37 commonTypeDict_IntegerFormat_withUnit_s];
-  v42[1] = v36;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat_withUnit_s = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat_withUnit_s];
+  v42[1] = commonTypeDict_IntegerFormat_withUnit_s;
   v41[2] = @"CloakEntryCount";
-  v35 = [MEMORY[0x277D3F198] sharedInstance];
-  v34 = [v35 commonTypeDict_IntegerFormat];
-  v42[2] = v34;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v42[2] = commonTypeDict_IntegerFormat2;
   v41[3] = @"PrechargeCount";
-  v33 = [MEMORY[0x277D3F198] sharedInstance];
-  v32 = [v33 commonTypeDict_IntegerFormat];
-  v42[3] = v32;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v42[3] = commonTypeDict_IntegerFormat3;
   v41[4] = @"AverageBattVirtualTemp";
-  v31 = [MEMORY[0x277D3F198] sharedInstance];
-  v30 = [v31 commonTypeDict_IntegerFormat];
-  v42[4] = v30;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v42[4] = commonTypeDict_IntegerFormat4;
   v41[5] = @"AverageBattSkinTemp";
-  v29 = [MEMORY[0x277D3F198] sharedInstance];
-  v28 = [v29 commonTypeDict_IntegerFormat];
-  v42[5] = v28;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v42[5] = commonTypeDict_IntegerFormat5;
   v41[6] = @"StartBatteryCapacity";
-  v27 = [MEMORY[0x277D3F198] sharedInstance];
-  v26 = [v27 commonTypeDict_IntegerFormat_withUnit_mAh];
-  v42[6] = v26;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat_withUnit_mAh = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat_withUnit_mAh];
+  v42[6] = commonTypeDict_IntegerFormat_withUnit_mAh;
   v41[7] = @"StartBatteryVoltage";
-  v25 = [MEMORY[0x277D3F198] sharedInstance];
-  v24 = [v25 commonTypeDict_IntegerFormat_withUnit_mV];
-  v42[7] = v24;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat_withUnit_mV = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat_withUnit_mV];
+  v42[7] = commonTypeDict_IntegerFormat_withUnit_mV;
   v41[8] = @"VbusType";
-  v23 = [MEMORY[0x277D3F198] sharedInstance];
-  v22 = [v23 commonTypeDict_BoolFormat];
-  v42[8] = v22;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]9 commonTypeDict_BoolFormat];
+  v42[8] = commonTypeDict_BoolFormat;
   v41[9] = @"AdapterType";
-  v21 = [MEMORY[0x277D3F198] sharedInstance];
-  v20 = [v21 commonTypeDict_IntegerFormat];
-  v42[9] = v20;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+  v42[9] = commonTypeDict_IntegerFormat6;
   v41[10] = @"WirelessChargingMode";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_BoolFormat];
-  v42[10] = v18;
+  mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat2 = [mEMORY[0x277D3F198]11 commonTypeDict_BoolFormat];
+  v42[10] = commonTypeDict_BoolFormat2;
   v41[11] = @"AdapterPower";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_IntegerFormat_withUnit_W];
-  v42[11] = v16;
+  mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat_withUnit_W = [mEMORY[0x277D3F198]12 commonTypeDict_IntegerFormat_withUnit_W];
+  v42[11] = commonTypeDict_IntegerFormat_withUnit_W;
   v41[12] = @"ResetCount";
-  v15 = [MEMORY[0x277D3F198] sharedInstance];
-  v14 = [v15 commonTypeDict_IntegerFormat];
-  v42[12] = v14;
+  mEMORY[0x277D3F198]13 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]13 commonTypeDict_IntegerFormat];
+  v42[12] = commonTypeDict_IntegerFormat7;
   v41[13] = @"HighPoweriBootCount";
-  v2 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v2 commonTypeDict_IntegerFormat];
-  v42[13] = v3;
+  mEMORY[0x277D3F198]14 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]14 commonTypeDict_IntegerFormat];
+  v42[13] = commonTypeDict_IntegerFormat8;
   v41[14] = @"APBootCount";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v42[14] = v5;
+  mEMORY[0x277D3F198]15 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]15 commonTypeDict_IntegerFormat];
+  v42[14] = commonTypeDict_IntegerFormat9;
   v41[15] = @"DisplayTimeBootCount";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v42[15] = v7;
+  mEMORY[0x277D3F198]16 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat10 = [mEMORY[0x277D3F198]16 commonTypeDict_IntegerFormat];
+  v42[15] = commonTypeDict_IntegerFormat10;
   v41[16] = @"Ok2SwitchCount";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v42[16] = v9;
+  mEMORY[0x277D3F198]17 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat11 = [mEMORY[0x277D3F198]17 commonTypeDict_IntegerFormat];
+  v42[16] = commonTypeDict_IntegerFormat11;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v42 forKeys:v41 count:17];
   v46[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v46 forKeys:v45 count:2];
@@ -2573,13 +2573,13 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
   v17[0] = v3;
   v16[1] = *MEMORY[0x277D3F540];
   v12[0] = @"Rbattx";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
   v12[1] = @"Rbattxy";
-  v13[0] = v5;
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v13[1] = v7;
+  v13[0] = commonTypeDict_IntegerFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v13[1] = commonTypeDict_IntegerFormat2;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
   v17[1] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
@@ -2607,21 +2607,21 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
   v22[0] = v16;
   v21[1] = *MEMORY[0x277D3F540];
   v17[0] = @"Visit";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v18[0] = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v18[0] = commonTypeDict_IntegerFormat;
   v17[1] = @"UsageSummary";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v18[1] = v7;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v18[1] = commonTypeDict_IntegerFormat2;
   v17[2] = @"Qualifiers";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v18[2] = v9;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v18[2] = commonTypeDict_IntegerFormat3;
   v17[3] = @"Insights";
-  v10 = [MEMORY[0x277D3F198] sharedInstance];
-  v11 = [v10 commonTypeDict_IntegerFormat];
-  v18[3] = v11;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v18[3] = commonTypeDict_IntegerFormat4;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:4];
   v22[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:2];
@@ -2646,177 +2646,177 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
     v99[0] = v93;
     v98[1] = *MEMORY[0x277D3F540];
     v94[0] = @"Connected";
-    v92 = [MEMORY[0x277D3F198] sharedInstance];
-    v91 = [v92 commonTypeDict_IntegerFormat];
-    v95[0] = v91;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v95[0] = commonTypeDict_IntegerFormat;
     v94[1] = @"Charging";
-    v90 = [MEMORY[0x277D3F198] sharedInstance];
-    v89 = [v90 commonTypeDict_IntegerFormat];
-    v95[1] = v89;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v95[1] = commonTypeDict_IntegerFormat2;
     v94[2] = @"DriverState";
-    v88 = [MEMORY[0x277D3F198] sharedInstance];
-    v87 = [v88 commonTypeDict_IntegerFormat];
-    v95[2] = v87;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+    v95[2] = commonTypeDict_IntegerFormat3;
     v94[3] = @"DriverStatusBits";
-    v86 = [MEMORY[0x277D3F198] sharedInstance];
-    v85 = [v86 commonTypeDict_IntegerFormat];
-    v95[3] = v85;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+    v95[3] = commonTypeDict_IntegerFormat4;
     v94[4] = @"FirmwareStatus";
-    v84 = [MEMORY[0x277D3F198] sharedInstance];
-    v83 = [v84 commonTypeDict_IntegerFormat];
-    v95[4] = v83;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+    v95[4] = commonTypeDict_IntegerFormat5;
     v94[5] = @"Frequency";
-    v82 = [MEMORY[0x277D3F198] sharedInstance];
-    v81 = [v82 commonTypeDict_IntegerFormat];
-    v95[5] = v81;
+    mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+    v95[5] = commonTypeDict_IntegerFormat6;
     v94[6] = @"RectifierCurrent";
-    v80 = [MEMORY[0x277D3F198] sharedInstance];
-    v79 = [v80 commonTypeDict_IntegerFormat];
-    v95[6] = v79;
+    mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+    v95[6] = commonTypeDict_IntegerFormat7;
     v94[7] = @"RectifierVoltage";
-    v78 = [MEMORY[0x277D3F198] sharedInstance];
-    v77 = [v78 commonTypeDict_IntegerFormat];
-    v95[7] = v77;
+    mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+    v95[7] = commonTypeDict_IntegerFormat8;
     v94[8] = @"PowerTarget";
-    v76 = [MEMORY[0x277D3F198] sharedInstance];
-    v75 = [v76 commonTypeDict_IntegerFormat];
-    v95[8] = v75;
+    mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+    v95[8] = commonTypeDict_IntegerFormat9;
     v94[9] = @"VoltageTarget";
-    v74 = [MEMORY[0x277D3F198] sharedInstance];
-    v73 = [v74 commonTypeDict_IntegerFormat];
-    v95[9] = v73;
+    mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat10 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+    v95[9] = commonTypeDict_IntegerFormat10;
     v94[10] = @"PowerBudget";
-    v72 = [MEMORY[0x277D3F198] sharedInstance];
-    v71 = [v72 commonTypeDict_IntegerFormat];
-    v95[10] = v71;
+    mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat11 = [mEMORY[0x277D3F198]11 commonTypeDict_IntegerFormat];
+    v95[10] = commonTypeDict_IntegerFormat11;
     v94[11] = @"TxGain1";
-    v70 = [MEMORY[0x277D3F198] sharedInstance];
-    v69 = [v70 commonTypeDict_IntegerFormat];
-    v95[11] = v69;
+    mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat12 = [mEMORY[0x277D3F198]12 commonTypeDict_IntegerFormat];
+    v95[11] = commonTypeDict_IntegerFormat12;
     v94[12] = @"TxGain2";
-    v68 = [MEMORY[0x277D3F198] sharedInstance];
-    v67 = [v68 commonTypeDict_IntegerFormat];
-    v95[12] = v67;
+    mEMORY[0x277D3F198]13 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat13 = [mEMORY[0x277D3F198]13 commonTypeDict_IntegerFormat];
+    v95[12] = commonTypeDict_IntegerFormat13;
     v94[13] = @"TxVersion";
-    v66 = [MEMORY[0x277D3F198] sharedInstance];
-    v65 = [v66 commonTypeDict_IntegerFormat];
-    v95[13] = v65;
+    mEMORY[0x277D3F198]14 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat14 = [mEMORY[0x277D3F198]14 commonTypeDict_IntegerFormat];
+    v95[13] = commonTypeDict_IntegerFormat14;
     v94[14] = @"SignalStrength";
-    v64 = [MEMORY[0x277D3F198] sharedInstance];
-    v63 = [v64 commonTypeDict_IntegerFormat];
-    v95[14] = v63;
+    mEMORY[0x277D3F198]15 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat15 = [mEMORY[0x277D3F198]15 commonTypeDict_IntegerFormat];
+    v95[14] = commonTypeDict_IntegerFormat15;
     v94[15] = @"NotCloakReason";
-    v62 = [MEMORY[0x277D3F198] sharedInstance];
-    v61 = [v62 commonTypeDict_IntegerFormat];
-    v95[15] = v61;
+    mEMORY[0x277D3F198]16 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat16 = [mEMORY[0x277D3F198]16 commonTypeDict_IntegerFormat];
+    v95[15] = commonTypeDict_IntegerFormat16;
     v94[16] = @"ModDepth";
-    v60 = [MEMORY[0x277D3F198] sharedInstance];
-    v59 = [v60 commonTypeDict_IntegerFormat];
-    v95[16] = v59;
+    mEMORY[0x277D3F198]17 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat17 = [mEMORY[0x277D3F198]17 commonTypeDict_IntegerFormat];
+    v95[16] = commonTypeDict_IntegerFormat17;
     v94[17] = @"HighFreq";
-    v58 = [MEMORY[0x277D3F198] sharedInstance];
-    v57 = [v58 commonTypeDict_BoolFormat];
-    v95[17] = v57;
+    mEMORY[0x277D3F198]18 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]18 commonTypeDict_BoolFormat];
+    v95[17] = commonTypeDict_BoolFormat;
     v94[18] = @"CloakReason";
-    v56 = [MEMORY[0x277D3F198] sharedInstance];
-    v55 = [v56 commonTypeDict_IntegerFormat];
-    v95[18] = v55;
+    mEMORY[0x277D3F198]19 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat18 = [mEMORY[0x277D3F198]19 commonTypeDict_IntegerFormat];
+    v95[18] = commonTypeDict_IntegerFormat18;
     v94[19] = @"InductiveFWMode";
-    v54 = [MEMORY[0x277D3F198] sharedInstance];
-    v53 = [v54 commonTypeDict_IntegerFormat];
-    v95[19] = v53;
+    mEMORY[0x277D3F198]20 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat19 = [mEMORY[0x277D3F198]20 commonTypeDict_IntegerFormat];
+    v95[19] = commonTypeDict_IntegerFormat19;
     v94[20] = @"OVPCount";
-    v52 = [MEMORY[0x277D3F198] sharedInstance];
-    v51 = [v52 commonTypeDict_IntegerFormat];
-    v95[20] = v51;
+    mEMORY[0x277D3F198]21 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat20 = [mEMORY[0x277D3F198]21 commonTypeDict_IntegerFormat];
+    v95[20] = commonTypeDict_IntegerFormat20;
     v94[21] = @"MagnetAttach";
-    v50 = [MEMORY[0x277D3F198] sharedInstance];
-    v49 = [v50 commonTypeDict_BoolFormat];
-    v95[21] = v49;
+    mEMORY[0x277D3F198]22 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat2 = [mEMORY[0x277D3F198]22 commonTypeDict_BoolFormat];
+    v95[21] = commonTypeDict_BoolFormat2;
     v94[22] = @"PTxType";
-    v48 = [MEMORY[0x277D3F198] sharedInstance];
-    v47 = [v48 commonTypeDict_IntegerFormat];
-    v95[22] = v47;
+    mEMORY[0x277D3F198]23 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat21 = [mEMORY[0x277D3F198]23 commonTypeDict_IntegerFormat];
+    v95[22] = commonTypeDict_IntegerFormat21;
     v94[23] = @"PowerNegotiable";
-    v46 = [MEMORY[0x277D3F198] sharedInstance];
-    v45 = [v46 commonTypeDict_IntegerFormat];
-    v95[23] = v45;
+    mEMORY[0x277D3F198]24 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat22 = [mEMORY[0x277D3F198]24 commonTypeDict_IntegerFormat];
+    v95[23] = commonTypeDict_IntegerFormat22;
     v94[24] = @"PowerPotential";
-    v44 = [MEMORY[0x277D3F198] sharedInstance];
-    v43 = [v44 commonTypeDict_IntegerFormat];
-    v95[24] = v43;
+    mEMORY[0x277D3F198]25 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat23 = [mEMORY[0x277D3F198]25 commonTypeDict_IntegerFormat];
+    v95[24] = commonTypeDict_IntegerFormat23;
     v94[25] = @"PowerLimitReason";
-    v42 = [MEMORY[0x277D3F198] sharedInstance];
-    v41 = [v42 commonTypeDict_IntegerFormat];
-    v95[25] = v41;
+    mEMORY[0x277D3F198]26 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat24 = [mEMORY[0x277D3F198]26 commonTypeDict_IntegerFormat];
+    v95[25] = commonTypeDict_IntegerFormat24;
     v94[26] = @"Prect";
-    v40 = [MEMORY[0x277D3F198] sharedInstance];
-    v39 = [v40 commonTypeDict_IntegerFormat];
-    v95[26] = v39;
+    mEMORY[0x277D3F198]27 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat25 = [mEMORY[0x277D3F198]27 commonTypeDict_IntegerFormat];
+    v95[26] = commonTypeDict_IntegerFormat25;
     v94[27] = @"IlimTarget";
-    v38 = [MEMORY[0x277D3F198] sharedInstance];
-    v37 = [v38 commonTypeDict_IntegerFormat];
-    v95[27] = v37;
+    mEMORY[0x277D3F198]28 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat26 = [mEMORY[0x277D3F198]28 commonTypeDict_IntegerFormat];
+    v95[27] = commonTypeDict_IntegerFormat26;
     v94[28] = @"IlimHeadroom";
-    v36 = [MEMORY[0x277D3F198] sharedInstance];
-    v35 = [v36 commonTypeDict_IntegerFormat];
-    v95[28] = v35;
+    mEMORY[0x277D3F198]29 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat27 = [mEMORY[0x277D3F198]29 commonTypeDict_IntegerFormat];
+    v95[28] = commonTypeDict_IntegerFormat27;
     v94[29] = @"TxGain3";
-    v34 = [MEMORY[0x277D3F198] sharedInstance];
-    v33 = [v34 commonTypeDict_IntegerFormat];
-    v95[29] = v33;
+    mEMORY[0x277D3F198]30 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat28 = [mEMORY[0x277D3F198]30 commonTypeDict_IntegerFormat];
+    v95[29] = commonTypeDict_IntegerFormat28;
     v94[30] = @"TxGain4";
-    v32 = [MEMORY[0x277D3F198] sharedInstance];
-    v31 = [v32 commonTypeDict_IntegerFormat];
-    v95[30] = v31;
+    mEMORY[0x277D3F198]31 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat29 = [mEMORY[0x277D3F198]31 commonTypeDict_IntegerFormat];
+    v95[30] = commonTypeDict_IntegerFormat29;
     v94[31] = @"PowerProfile";
-    v30 = [MEMORY[0x277D3F198] sharedInstance];
-    v29 = [v30 commonTypeDict_IntegerFormat];
-    v95[31] = v29;
+    mEMORY[0x277D3F198]32 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat30 = [mEMORY[0x277D3F198]32 commonTypeDict_IntegerFormat];
+    v95[31] = commonTypeDict_IntegerFormat30;
     v94[32] = @"PowerProfSwitch";
-    v28 = [MEMORY[0x277D3F198] sharedInstance];
-    v27 = [v28 commonTypeDict_IntegerFormat];
-    v95[32] = v27;
+    mEMORY[0x277D3F198]33 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat31 = [mEMORY[0x277D3F198]33 commonTypeDict_IntegerFormat];
+    v95[32] = commonTypeDict_IntegerFormat31;
     v94[33] = @"TxKest";
-    v26 = [MEMORY[0x277D3F198] sharedInstance];
-    v25 = [v26 commonTypeDict_IntegerFormat];
-    v95[33] = v25;
+    mEMORY[0x277D3F198]34 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat32 = [mEMORY[0x277D3F198]34 commonTypeDict_IntegerFormat];
+    v95[33] = commonTypeDict_IntegerFormat32;
     v94[34] = @"RxQippVer";
-    v24 = [MEMORY[0x277D3F198] sharedInstance];
-    v23 = [v24 commonTypeDict_IntegerFormat];
-    v95[34] = v23;
+    mEMORY[0x277D3F198]35 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat33 = [mEMORY[0x277D3F198]35 commonTypeDict_IntegerFormat];
+    v95[34] = commonTypeDict_IntegerFormat33;
     v94[35] = @"DplossStat";
-    v22 = [MEMORY[0x277D3F198] sharedInstance];
-    v21 = [v22 commonTypeDict_IntegerFormat];
-    v95[35] = v21;
+    mEMORY[0x277D3F198]36 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat34 = [mEMORY[0x277D3F198]36 commonTypeDict_IntegerFormat];
+    v95[35] = commonTypeDict_IntegerFormat34;
     v94[36] = @"MainCurrent";
-    v20 = [MEMORY[0x277D3F198] sharedInstance];
-    v19 = [v20 commonTypeDict_IntegerFormat];
-    v95[36] = v19;
+    mEMORY[0x277D3F198]37 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat35 = [mEMORY[0x277D3F198]37 commonTypeDict_IntegerFormat];
+    v95[36] = commonTypeDict_IntegerFormat35;
     v94[37] = @"AuthFodStatus";
-    v18 = [MEMORY[0x277D3F198] sharedInstance];
-    v17 = [v18 commonTypeDict_IntegerFormat];
-    v95[37] = v17;
+    mEMORY[0x277D3F198]38 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat36 = [mEMORY[0x277D3F198]38 commonTypeDict_IntegerFormat];
+    v95[37] = commonTypeDict_IntegerFormat36;
     v94[38] = @"InductiveCoexStatus";
-    v16 = [MEMORY[0x277D3F198] sharedInstance];
-    v15 = [v16 commonTypeDict_IntegerFormat];
-    v95[38] = v15;
+    mEMORY[0x277D3F198]39 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat37 = [mEMORY[0x277D3F198]39 commonTypeDict_IntegerFormat];
+    v95[38] = commonTypeDict_IntegerFormat37;
     v94[39] = @"VMID";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_IntegerFormat];
-    v95[39] = v4;
+    mEMORY[0x277D3F198]40 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat38 = [mEMORY[0x277D3F198]40 commonTypeDict_IntegerFormat];
+    v95[39] = commonTypeDict_IntegerFormat38;
     v94[40] = @"PowerConverterStatus";
-    v5 = [MEMORY[0x277D3F198] sharedInstance];
-    v6 = [v5 commonTypeDict_IntegerFormat];
-    v95[40] = v6;
+    mEMORY[0x277D3F198]41 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat39 = [mEMORY[0x277D3F198]41 commonTypeDict_IntegerFormat];
+    v95[40] = commonTypeDict_IntegerFormat39;
     v94[41] = @"CommStatus";
-    v7 = [MEMORY[0x277D3F198] sharedInstance];
-    v8 = [v7 commonTypeDict_IntegerFormat];
-    v95[41] = v8;
+    mEMORY[0x277D3F198]42 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat40 = [mEMORY[0x277D3F198]42 commonTypeDict_IntegerFormat];
+    v95[41] = commonTypeDict_IntegerFormat40;
     v94[42] = @"SlowChargerReason";
-    v9 = [MEMORY[0x277D3F198] sharedInstance];
-    v10 = [v9 commonTypeDict_IntegerFormat];
-    v95[42] = v10;
+    mEMORY[0x277D3F198]43 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat41 = [mEMORY[0x277D3F198]43 commonTypeDict_IntegerFormat];
+    v95[42] = commonTypeDict_IntegerFormat41;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v95 forKeys:v94 count:43];
     v99[1] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v99 forKeys:v98 count:2];
@@ -2849,29 +2849,29 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
     v25[0] = v19;
     v24[1] = *MEMORY[0x277D3F540];
     v20[0] = @"mitigatedUPOCount";
-    v18 = [MEMORY[0x277D3F198] sharedInstance];
-    v17 = [v18 commonTypeDict_IntegerFormat];
-    v21[0] = v17;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v21[0] = commonTypeDict_IntegerFormat;
     v20[1] = @"mitigationState";
-    v16 = [MEMORY[0x277D3F198] sharedInstance];
-    v15 = [v16 commonTypeDict_IntegerFormat];
-    v21[1] = v15;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v21[1] = commonTypeDict_IntegerFormat2;
     v20[2] = @"BatteryShutdownTimestamp";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_DateFormat];
-    v21[2] = v4;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_DateFormat = [mEMORY[0x277D3F198]3 commonTypeDict_DateFormat];
+    v21[2] = commonTypeDict_DateFormat;
     v20[3] = @"timeWindow";
-    v5 = [MEMORY[0x277D3F198] sharedInstance];
-    v6 = [v5 commonTypeDict_IntegerFormat];
-    v21[3] = v6;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+    v21[3] = commonTypeDict_IntegerFormat3;
     v20[4] = @"trueRa";
-    v7 = [MEMORY[0x277D3F198] sharedInstance];
-    v8 = [v7 commonTypeDict_IntegerFormat];
-    v21[4] = v8;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+    v21[4] = commonTypeDict_IntegerFormat4;
     v20[5] = @"virtualRa";
-    v9 = [MEMORY[0x277D3F198] sharedInstance];
-    v10 = [v9 commonTypeDict_IntegerFormat];
-    v21[5] = v10;
+    mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+    v21[5] = commonTypeDict_IntegerFormat5;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:6];
     v25[1] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:2];
@@ -2906,8 +2906,8 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
   v28 = +[PLBatteryAgent entryEventForwardDefinitionMitigationState];
   v34[4] = v28;
   v33[5] = @"IOPMUBootLPMLog";
-  v27 = [a1 entryEventForwardDefinitionIOPMUBootLPMLog];
-  v34[5] = v27;
+  entryEventForwardDefinitionIOPMUBootLPMLog = [self entryEventForwardDefinitionIOPMUBootLPMLog];
+  v34[5] = entryEventForwardDefinitionIOPMUBootLPMLog;
   v33[6] = @"SmartCharging";
   v26 = +[PLBatteryAgent entryEventForwardDefinitionSmartCharging];
   v34[6] = v26;
@@ -2960,11 +2960,11 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
   v8 = +[PLBatteryAgent entryEventForwardDefinitionOrionBuffer];
   v34[22] = v8;
   v33[23] = @"BatteryCalibration0Baseline";
-  v9 = [a1 entryEventForwardDefinitionCalibration0];
-  v34[23] = v9;
+  entryEventForwardDefinitionCalibration0 = [self entryEventForwardDefinitionCalibration0];
+  v34[23] = entryEventForwardDefinitionCalibration0;
   v33[24] = @"Calibration0Info";
-  v10 = [a1 entryEventForwardDefinitionCalibration0Info];
-  v34[24] = v10;
+  entryEventForwardDefinitionCalibration0Info = [self entryEventForwardDefinitionCalibration0Info];
+  v34[24] = entryEventForwardDefinitionCalibration0Info;
   v33[25] = @"MobileChargeMode";
   v11 = +[PLBatteryAgent entryEventForwardDefinitionMobileChargeMode];
   v34[25] = v11;
@@ -2990,141 +2990,141 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
     v80[0] = v74;
     v79[1] = *MEMORY[0x277D3F540];
     v75[0] = @"AlgoChemID";
-    v73 = [MEMORY[0x277D3F198] sharedInstance];
-    v72 = [v73 commonTypeDict_IntegerFormat];
-    v76[0] = v72;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v76[0] = commonTypeDict_IntegerFormat;
     v75[1] = @"AppleRawMaxCapacity";
-    v71 = [MEMORY[0x277D3F198] sharedInstance];
-    v70 = [v71 commonTypeDict_IntegerFormat];
-    v76[1] = v70;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v76[1] = commonTypeDict_IntegerFormat2;
     v75[2] = @"batteryServiceFlags";
-    v69 = [MEMORY[0x277D3F198] sharedInstance];
-    v68 = [v69 commonTypeDict_IntegerFormat];
-    v76[2] = v68;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+    v76[2] = commonTypeDict_IntegerFormat3;
     v75[3] = @"CycleCount";
-    v67 = [MEMORY[0x277D3F198] sharedInstance];
-    v66 = [v67 commonTypeDict_IntegerFormat];
-    v76[3] = v66;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+    v76[3] = commonTypeDict_IntegerFormat4;
     v75[4] = @"epoch";
-    v65 = [MEMORY[0x277D3F198] sharedInstance];
-    v64 = [v65 commonTypeDict_IntegerFormat];
-    v76[4] = v64;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+    v76[4] = commonTypeDict_IntegerFormat5;
     v75[5] = @"GasGaugeFirmwareVersion";
-    v63 = [MEMORY[0x277D3F198] sharedInstance];
-    v62 = [v63 commonTypeDict_IntegerFormat];
-    v76[5] = v62;
+    mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+    v76[5] = commonTypeDict_IntegerFormat6;
     v75[6] = @"LifetimeUPOCount";
-    v61 = [MEMORY[0x277D3F198] sharedInstance];
-    v60 = [v61 commonTypeDict_IntegerFormat];
-    v76[6] = v60;
+    mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+    v76[6] = commonTypeDict_IntegerFormat7;
     v75[7] = @"MaximumCapacityPercent";
-    v59 = [MEMORY[0x277D3F198] sharedInstance];
-    v58 = [v59 commonTypeDict_IntegerFormat];
-    v76[7] = v58;
+    mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+    v76[7] = commonTypeDict_IntegerFormat8;
     v75[8] = @"MaximumFCC";
-    v57 = [MEMORY[0x277D3F198] sharedInstance];
-    v56 = [v57 commonTypeDict_IntegerFormat];
-    v76[8] = v56;
+    mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+    v76[8] = commonTypeDict_IntegerFormat9;
     v75[9] = @"MinimumFCC";
-    v55 = [MEMORY[0x277D3F198] sharedInstance];
-    v54 = [v55 commonTypeDict_IntegerFormat];
-    v76[9] = v54;
+    mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat10 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+    v76[9] = commonTypeDict_IntegerFormat10;
     v75[10] = @"MaximumQmax";
-    v53 = [MEMORY[0x277D3F198] sharedInstance];
-    v52 = [v53 commonTypeDict_IntegerFormat];
-    v76[10] = v52;
+    mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat11 = [mEMORY[0x277D3F198]11 commonTypeDict_IntegerFormat];
+    v76[10] = commonTypeDict_IntegerFormat11;
     v75[11] = @"MinimumQmax";
-    v51 = [MEMORY[0x277D3F198] sharedInstance];
-    v50 = [v51 commonTypeDict_IntegerFormat];
-    v76[11] = v50;
+    mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat12 = [mEMORY[0x277D3F198]12 commonTypeDict_IntegerFormat];
+    v76[11] = commonTypeDict_IntegerFormat12;
     v75[12] = @"NCCMin";
-    v49 = [MEMORY[0x277D3F198] sharedInstance];
-    v48 = [v49 commonTypeDict_IntegerFormat];
-    v76[12] = v48;
+    mEMORY[0x277D3F198]13 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat13 = [mEMORY[0x277D3F198]13 commonTypeDict_IntegerFormat];
+    v76[12] = commonTypeDict_IntegerFormat13;
     v75[13] = @"NCCMax";
-    v47 = [MEMORY[0x277D3F198] sharedInstance];
-    v46 = [v47 commonTypeDict_IntegerFormat];
-    v76[13] = v46;
+    mEMORY[0x277D3F198]14 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat14 = [mEMORY[0x277D3F198]14 commonTypeDict_IntegerFormat];
+    v76[13] = commonTypeDict_IntegerFormat14;
     v75[14] = @"NominalChargeCapacity";
-    v45 = [MEMORY[0x277D3F198] sharedInstance];
-    v44 = [v45 commonTypeDict_IntegerFormat];
-    v76[14] = v44;
+    mEMORY[0x277D3F198]15 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat15 = [mEMORY[0x277D3F198]15 commonTypeDict_IntegerFormat];
+    v76[14] = commonTypeDict_IntegerFormat15;
     v75[15] = @"Qmax";
-    v43 = [MEMORY[0x277D3F198] sharedInstance];
-    v42 = [v43 commonTypeDict_IntegerFormat];
-    v76[15] = v42;
+    mEMORY[0x277D3F198]16 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat16 = [mEMORY[0x277D3F198]16 commonTypeDict_IntegerFormat];
+    v76[15] = commonTypeDict_IntegerFormat16;
     v75[16] = @"Ra00";
-    v41 = [MEMORY[0x277D3F198] sharedInstance];
-    v40 = [v41 commonTypeDict_IntegerFormat];
-    v76[16] = v40;
+    mEMORY[0x277D3F198]17 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat17 = [mEMORY[0x277D3F198]17 commonTypeDict_IntegerFormat];
+    v76[16] = commonTypeDict_IntegerFormat17;
     v75[17] = @"Ra01";
-    v39 = [MEMORY[0x277D3F198] sharedInstance];
-    v38 = [v39 commonTypeDict_IntegerFormat];
-    v76[17] = v38;
+    mEMORY[0x277D3F198]18 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat18 = [mEMORY[0x277D3F198]18 commonTypeDict_IntegerFormat];
+    v76[17] = commonTypeDict_IntegerFormat18;
     v75[18] = @"Ra02";
-    v37 = [MEMORY[0x277D3F198] sharedInstance];
-    v36 = [v37 commonTypeDict_IntegerFormat];
-    v76[18] = v36;
+    mEMORY[0x277D3F198]19 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat19 = [mEMORY[0x277D3F198]19 commonTypeDict_IntegerFormat];
+    v76[18] = commonTypeDict_IntegerFormat19;
     v75[19] = @"Ra03";
-    v35 = [MEMORY[0x277D3F198] sharedInstance];
-    v34 = [v35 commonTypeDict_IntegerFormat];
-    v76[19] = v34;
+    mEMORY[0x277D3F198]20 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat20 = [mEMORY[0x277D3F198]20 commonTypeDict_IntegerFormat];
+    v76[19] = commonTypeDict_IntegerFormat20;
     v75[20] = @"Ra04";
-    v33 = [MEMORY[0x277D3F198] sharedInstance];
-    v32 = [v33 commonTypeDict_IntegerFormat];
-    v76[20] = v32;
+    mEMORY[0x277D3F198]21 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat21 = [mEMORY[0x277D3F198]21 commonTypeDict_IntegerFormat];
+    v76[20] = commonTypeDict_IntegerFormat21;
     v75[21] = @"Ra05";
-    v31 = [MEMORY[0x277D3F198] sharedInstance];
-    v30 = [v31 commonTypeDict_IntegerFormat];
-    v76[21] = v30;
+    mEMORY[0x277D3F198]22 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat22 = [mEMORY[0x277D3F198]22 commonTypeDict_IntegerFormat];
+    v76[21] = commonTypeDict_IntegerFormat22;
     v75[22] = @"Ra06";
-    v29 = [MEMORY[0x277D3F198] sharedInstance];
-    v28 = [v29 commonTypeDict_IntegerFormat];
-    v76[22] = v28;
+    mEMORY[0x277D3F198]23 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat23 = [mEMORY[0x277D3F198]23 commonTypeDict_IntegerFormat];
+    v76[22] = commonTypeDict_IntegerFormat23;
     v75[23] = @"Ra07";
-    v27 = [MEMORY[0x277D3F198] sharedInstance];
-    v26 = [v27 commonTypeDict_IntegerFormat];
-    v76[23] = v26;
+    mEMORY[0x277D3F198]24 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat24 = [mEMORY[0x277D3F198]24 commonTypeDict_IntegerFormat];
+    v76[23] = commonTypeDict_IntegerFormat24;
     v75[24] = @"Ra08";
-    v25 = [MEMORY[0x277D3F198] sharedInstance];
-    v24 = [v25 commonTypeDict_IntegerFormat];
-    v76[24] = v24;
+    mEMORY[0x277D3F198]25 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat25 = [mEMORY[0x277D3F198]25 commonTypeDict_IntegerFormat];
+    v76[24] = commonTypeDict_IntegerFormat25;
     v75[25] = @"Ra09";
-    v23 = [MEMORY[0x277D3F198] sharedInstance];
-    v22 = [v23 commonTypeDict_IntegerFormat];
-    v76[25] = v22;
+    mEMORY[0x277D3F198]26 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat26 = [mEMORY[0x277D3F198]26 commonTypeDict_IntegerFormat];
+    v76[25] = commonTypeDict_IntegerFormat26;
     v75[26] = @"Ra10";
-    v21 = [MEMORY[0x277D3F198] sharedInstance];
-    v20 = [v21 commonTypeDict_IntegerFormat];
-    v76[26] = v20;
+    mEMORY[0x277D3F198]27 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat27 = [mEMORY[0x277D3F198]27 commonTypeDict_IntegerFormat];
+    v76[26] = commonTypeDict_IntegerFormat27;
     v75[27] = @"Ra11";
-    v19 = [MEMORY[0x277D3F198] sharedInstance];
-    v18 = [v19 commonTypeDict_IntegerFormat];
-    v76[27] = v18;
+    mEMORY[0x277D3F198]28 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat28 = [mEMORY[0x277D3F198]28 commonTypeDict_IntegerFormat];
+    v76[27] = commonTypeDict_IntegerFormat28;
     v75[28] = @"Ra12";
-    v17 = [MEMORY[0x277D3F198] sharedInstance];
-    v16 = [v17 commonTypeDict_IntegerFormat];
-    v76[28] = v16;
+    mEMORY[0x277D3F198]29 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat29 = [mEMORY[0x277D3F198]29 commonTypeDict_IntegerFormat];
+    v76[28] = commonTypeDict_IntegerFormat29;
     v75[29] = @"Ra13";
-    v15 = [MEMORY[0x277D3F198] sharedInstance];
-    v14 = [v15 commonTypeDict_IntegerFormat];
-    v76[29] = v14;
+    mEMORY[0x277D3F198]30 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat30 = [mEMORY[0x277D3F198]30 commonTypeDict_IntegerFormat];
+    v76[29] = commonTypeDict_IntegerFormat30;
     v75[30] = @"Ra14";
-    v2 = [MEMORY[0x277D3F198] sharedInstance];
-    v3 = [v2 commonTypeDict_IntegerFormat];
-    v76[30] = v3;
+    mEMORY[0x277D3F198]31 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat31 = [mEMORY[0x277D3F198]31 commonTypeDict_IntegerFormat];
+    v76[30] = commonTypeDict_IntegerFormat31;
     v75[31] = @"TotalOperatingTime";
-    v4 = [MEMORY[0x277D3F198] sharedInstance];
-    v5 = [v4 commonTypeDict_IntegerFormat];
-    v76[31] = v5;
+    mEMORY[0x277D3F198]32 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat32 = [mEMORY[0x277D3F198]32 commonTypeDict_IntegerFormat];
+    v76[31] = commonTypeDict_IntegerFormat32;
     v75[32] = @"WeightedRa";
-    v6 = [MEMORY[0x277D3F198] sharedInstance];
-    v7 = [v6 commonTypeDict_IntegerFormat];
-    v76[32] = v7;
+    mEMORY[0x277D3F198]33 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat33 = [mEMORY[0x277D3F198]33 commonTypeDict_IntegerFormat];
+    v76[32] = commonTypeDict_IntegerFormat33;
     v75[33] = @"TimeAtHighSoc";
-    v8 = [MEMORY[0x277D3F198] sharedInstance];
-    v9 = [v8 commonTypeDict_StringFormat];
-    v76[33] = v9;
+    mEMORY[0x277D3F198]34 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_StringFormat = [mEMORY[0x277D3F198]34 commonTypeDict_StringFormat];
+    v76[33] = commonTypeDict_StringFormat;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v76 forKeys:v75 count:34];
     v80[1] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v80 forKeys:v79 count:2];
@@ -3152,21 +3152,21 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
     v20[0] = v14;
     v19[1] = *MEMORY[0x277D3F540];
     v15[0] = @"IOAccessoryDetect";
-    v2 = [MEMORY[0x277D3F198] sharedInstance];
-    v3 = [v2 commonTypeDict_IntegerFormat];
-    v16[0] = v3;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v16[0] = commonTypeDict_IntegerFormat;
     v15[1] = @"IOAccessoryPowerMode";
-    v4 = [MEMORY[0x277D3F198] sharedInstance];
-    v5 = [v4 commonTypeDict_IntegerFormat];
-    v16[1] = v5;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v16[1] = commonTypeDict_IntegerFormat2;
     v15[2] = @"IOAccessoryActivePowerMode";
-    v6 = [MEMORY[0x277D3F198] sharedInstance];
-    v7 = [v6 commonTypeDict_IntegerFormat];
-    v16[2] = v7;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+    v16[2] = commonTypeDict_IntegerFormat3;
     v15[3] = @"Pencil";
-    v8 = [MEMORY[0x277D3F198] sharedInstance];
-    v9 = [v8 commonTypeDict_BoolFormat];
-    v16[3] = v9;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]4 commonTypeDict_BoolFormat];
+    v16[3] = commonTypeDict_BoolFormat;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:4];
     v20[1] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:2];
@@ -3197,53 +3197,53 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
     v37[0] = v31;
     v36[1] = *MEMORY[0x277D3F540];
     v32[0] = @"FedDualRolePower";
-    v30 = [MEMORY[0x277D3F198] sharedInstance];
-    v29 = [v30 commonTypeDict_BoolFormat];
-    v33[0] = v29;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
+    v33[0] = commonTypeDict_BoolFormat;
     v32[1] = @"FedPortPowerRole";
-    v28 = [MEMORY[0x277D3F198] sharedInstance];
-    v27 = [v28 commonTypeDict_BoolFormat];
-    v33[1] = v27;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_BoolFormat];
+    v33[1] = commonTypeDict_BoolFormat2;
     v32[2] = @"FedRemainingCapacity";
-    v26 = [MEMORY[0x277D3F198] sharedInstance];
-    v25 = [v26 commonTypeDict_IntegerFormat];
-    v33[2] = v25;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+    v33[2] = commonTypeDict_IntegerFormat;
     v32[3] = @"FedExternalConnected";
-    v24 = [MEMORY[0x277D3F198] sharedInstance];
-    v23 = [v24 commonTypeDict_BoolFormat];
-    v33[3] = v23;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat3 = [mEMORY[0x277D3F198]4 commonTypeDict_BoolFormat];
+    v33[3] = commonTypeDict_BoolFormat3;
     v32[4] = @"FedDesignCapacity";
-    v22 = [MEMORY[0x277D3F198] sharedInstance];
-    v21 = [v22 commonTypeDict_IntegerFormat];
-    v33[4] = v21;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+    v33[4] = commonTypeDict_IntegerFormat2;
     v32[5] = @"FedProductID";
-    v20 = [MEMORY[0x277D3F198] sharedInstance];
-    v19 = [v20 commonTypeDict_IntegerFormat];
-    v33[5] = v19;
+    mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+    v33[5] = commonTypeDict_IntegerFormat3;
     v32[6] = @"FedVendorID";
-    v18 = [MEMORY[0x277D3F198] sharedInstance];
-    v17 = [v18 commonTypeDict_IntegerFormat];
-    v33[6] = v17;
+    mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+    v33[6] = commonTypeDict_IntegerFormat4;
     v32[7] = @"FedStateOfCharge";
-    v16 = [MEMORY[0x277D3F198] sharedInstance];
-    v15 = [v16 commonTypeDict_IntegerFormat];
-    v33[7] = v15;
+    mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+    v33[7] = commonTypeDict_IntegerFormat5;
     v32[8] = @"FedPdSpecRevision";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_IntegerFormat];
-    v33[8] = v4;
+    mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+    v33[8] = commonTypeDict_IntegerFormat6;
     v32[9] = @"FedPwrPolicySt";
-    v5 = [MEMORY[0x277D3F198] sharedInstance];
-    v6 = [v5 commonTypeDict_IntegerFormat];
-    v33[9] = v6;
+    mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+    v33[9] = commonTypeDict_IntegerFormat7;
     v32[10] = @"FedSnkConfReason";
-    v7 = [MEMORY[0x277D3F198] sharedInstance];
-    v8 = [v7 commonTypeDict_IntegerFormat];
-    v33[10] = v8;
+    mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]11 commonTypeDict_IntegerFormat];
+    v33[10] = commonTypeDict_IntegerFormat8;
     v32[11] = @"FedSrcConfReason";
-    v9 = [MEMORY[0x277D3F198] sharedInstance];
-    v10 = [v9 commonTypeDict_IntegerFormat];
-    v33[11] = v10;
+    mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]12 commonTypeDict_IntegerFormat];
+    v33[11] = commonTypeDict_IntegerFormat9;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:12];
     v37[1] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:2];
@@ -3272,301 +3272,301 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
   v161[0] = v155;
   v160[1] = *MEMORY[0x277D3F540];
   v156[0] = @"PortControllerPortPDO0";
-  v154 = [MEMORY[0x277D3F198] sharedInstance];
-  v153 = [v154 commonTypeDict_IntegerFormat];
-  v157[0] = v153;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v157[0] = commonTypeDict_IntegerFormat;
   v156[1] = @"PortControllerPortPDO1";
-  v152 = [MEMORY[0x277D3F198] sharedInstance];
-  v151 = [v152 commonTypeDict_IntegerFormat];
-  v157[1] = v151;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v157[1] = commonTypeDict_IntegerFormat2;
   v156[2] = @"PortControllerPortPDO2";
-  v150 = [MEMORY[0x277D3F198] sharedInstance];
-  v149 = [v150 commonTypeDict_IntegerFormat];
-  v157[2] = v149;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v157[2] = commonTypeDict_IntegerFormat3;
   v156[3] = @"PortControllerPortPDO3";
-  v148 = [MEMORY[0x277D3F198] sharedInstance];
-  v147 = [v148 commonTypeDict_IntegerFormat];
-  v157[3] = v147;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v157[3] = commonTypeDict_IntegerFormat4;
   v156[4] = @"PortControllerPortPDO4";
-  v146 = [MEMORY[0x277D3F198] sharedInstance];
-  v145 = [v146 commonTypeDict_IntegerFormat];
-  v157[4] = v145;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v157[4] = commonTypeDict_IntegerFormat5;
   v156[5] = @"PortControllerPortPDO5";
-  v144 = [MEMORY[0x277D3F198] sharedInstance];
-  v143 = [v144 commonTypeDict_IntegerFormat];
-  v157[5] = v143;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v157[5] = commonTypeDict_IntegerFormat6;
   v156[6] = @"PortControllerPortPDO6";
-  v142 = [MEMORY[0x277D3F198] sharedInstance];
-  v141 = [v142 commonTypeDict_IntegerFormat];
-  v157[6] = v141;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v157[6] = commonTypeDict_IntegerFormat7;
   v156[7] = @"PortControllerPortPDO7";
-  v140 = [MEMORY[0x277D3F198] sharedInstance];
-  v139 = [v140 commonTypeDict_IntegerFormat];
-  v157[7] = v139;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v157[7] = commonTypeDict_IntegerFormat8;
   v156[8] = @"PortControllerPortPDO8";
-  v138 = [MEMORY[0x277D3F198] sharedInstance];
-  v137 = [v138 commonTypeDict_IntegerFormat];
-  v157[8] = v137;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+  v157[8] = commonTypeDict_IntegerFormat9;
   v156[9] = @"PortControllerPortPDO9";
-  v136 = [MEMORY[0x277D3F198] sharedInstance];
-  v135 = [v136 commonTypeDict_IntegerFormat];
-  v157[9] = v135;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat10 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+  v157[9] = commonTypeDict_IntegerFormat10;
   v156[10] = @"PortControllerPortPDO10";
-  v134 = [MEMORY[0x277D3F198] sharedInstance];
-  v133 = [v134 commonTypeDict_IntegerFormat];
-  v157[10] = v133;
+  mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat11 = [mEMORY[0x277D3F198]11 commonTypeDict_IntegerFormat];
+  v157[10] = commonTypeDict_IntegerFormat11;
   v156[11] = @"PortControllerPortPDO11";
-  v132 = [MEMORY[0x277D3F198] sharedInstance];
-  v131 = [v132 commonTypeDict_IntegerFormat];
-  v157[11] = v131;
+  mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat12 = [mEMORY[0x277D3F198]12 commonTypeDict_IntegerFormat];
+  v157[11] = commonTypeDict_IntegerFormat12;
   v156[12] = @"PortControllerPortPDO12";
-  v130 = [MEMORY[0x277D3F198] sharedInstance];
-  v129 = [v130 commonTypeDict_IntegerFormat];
-  v157[12] = v129;
+  mEMORY[0x277D3F198]13 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat13 = [mEMORY[0x277D3F198]13 commonTypeDict_IntegerFormat];
+  v157[12] = commonTypeDict_IntegerFormat13;
   v156[13] = @"PortControllerPortPDO13";
-  v128 = [MEMORY[0x277D3F198] sharedInstance];
-  v127 = [v128 commonTypeDict_IntegerFormat];
-  v157[13] = v127;
+  mEMORY[0x277D3F198]14 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat14 = [mEMORY[0x277D3F198]14 commonTypeDict_IntegerFormat];
+  v157[13] = commonTypeDict_IntegerFormat14;
   v156[14] = @"PortControllerPortPDO14";
-  v126 = [MEMORY[0x277D3F198] sharedInstance];
-  v125 = [v126 commonTypeDict_IntegerFormat];
-  v157[14] = v125;
+  mEMORY[0x277D3F198]15 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat15 = [mEMORY[0x277D3F198]15 commonTypeDict_IntegerFormat];
+  v157[14] = commonTypeDict_IntegerFormat15;
   v156[15] = @"PortControllerPortMode";
-  v124 = [MEMORY[0x277D3F198] sharedInstance];
-  v123 = [v124 commonTypeDict_IntegerFormat];
-  v157[15] = v123;
+  mEMORY[0x277D3F198]16 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat16 = [mEMORY[0x277D3F198]16 commonTypeDict_IntegerFormat];
+  v157[15] = commonTypeDict_IntegerFormat16;
   v156[16] = @"PortControllerFwVersion";
-  v122 = [MEMORY[0x277D3F198] sharedInstance];
-  v121 = [v122 commonTypeDict_IntegerFormat];
-  v157[16] = v121;
+  mEMORY[0x277D3F198]17 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat17 = [mEMORY[0x277D3F198]17 commonTypeDict_IntegerFormat];
+  v157[16] = commonTypeDict_IntegerFormat17;
   v156[17] = @"PortControllerElectionFailReason";
-  v120 = [MEMORY[0x277D3F198] sharedInstance];
-  v119 = [v120 commonTypeDict_IntegerFormat];
-  v157[17] = v119;
+  mEMORY[0x277D3F198]18 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat18 = [mEMORY[0x277D3F198]18 commonTypeDict_IntegerFormat];
+  v157[17] = commonTypeDict_IntegerFormat18;
   v156[18] = @"PortControllerActiveContractRdo";
-  v118 = [MEMORY[0x277D3F198] sharedInstance];
-  v117 = [v118 commonTypeDict_IntegerFormat];
-  v157[18] = v117;
+  mEMORY[0x277D3F198]19 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat19 = [mEMORY[0x277D3F198]19 commonTypeDict_IntegerFormat];
+  v157[18] = commonTypeDict_IntegerFormat19;
   v156[19] = @"PortControllerDnSt";
-  v116 = [MEMORY[0x277D3F198] sharedInstance];
-  v115 = [v116 commonTypeDict_IntegerFormat];
-  v157[19] = v115;
+  mEMORY[0x277D3F198]20 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat20 = [mEMORY[0x277D3F198]20 commonTypeDict_IntegerFormat];
+  v157[19] = commonTypeDict_IntegerFormat20;
   v156[20] = @"PortControllerFetStatus";
-  v114 = [MEMORY[0x277D3F198] sharedInstance];
-  v113 = [v114 commonTypeDict_IntegerFormat];
-  v157[20] = v113;
+  mEMORY[0x277D3F198]21 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat21 = [mEMORY[0x277D3F198]21 commonTypeDict_IntegerFormat];
+  v157[20] = commonTypeDict_IntegerFormat21;
   v156[21] = @"PortControllerPowerState";
-  v112 = [MEMORY[0x277D3F198] sharedInstance];
-  v111 = [v112 commonTypeDict_IntegerFormat];
-  v157[21] = v111;
+  mEMORY[0x277D3F198]22 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat22 = [mEMORY[0x277D3F198]22 commonTypeDict_IntegerFormat];
+  v157[21] = commonTypeDict_IntegerFormat22;
   v156[22] = @"PortControllerUvdmStatus";
-  v110 = [MEMORY[0x277D3F198] sharedInstance];
-  v109 = [v110 commonTypeDict_IntegerFormat];
-  v157[22] = v109;
+  mEMORY[0x277D3F198]23 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat23 = [mEMORY[0x277D3F198]23 commonTypeDict_IntegerFormat];
+  v157[22] = commonTypeDict_IntegerFormat23;
   v156[23] = @"PortControllerSrcTypes";
-  v108 = [MEMORY[0x277D3F198] sharedInstance];
-  v107 = [v108 commonTypeDict_IntegerFormat];
-  v157[23] = v107;
+  mEMORY[0x277D3F198]24 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat24 = [mEMORY[0x277D3F198]24 commonTypeDict_IntegerFormat];
+  v157[23] = commonTypeDict_IntegerFormat24;
   v156[24] = @"PortControllerLoserReason";
-  v106 = [MEMORY[0x277D3F198] sharedInstance];
-  v105 = [v106 commonTypeDict_IntegerFormat];
-  v157[24] = v105;
+  mEMORY[0x277D3F198]25 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat25 = [mEMORY[0x277D3F198]25 commonTypeDict_IntegerFormat];
+  v157[24] = commonTypeDict_IntegerFormat25;
   v156[25] = @"PortControllerNPDOs";
-  v104 = [MEMORY[0x277D3F198] sharedInstance];
-  v103 = [v104 commonTypeDict_IntegerFormat];
-  v157[25] = v103;
+  mEMORY[0x277D3F198]26 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat26 = [mEMORY[0x277D3F198]26 commonTypeDict_IntegerFormat];
+  v157[25] = commonTypeDict_IntegerFormat26;
   v156[26] = @"PortControllerNEprPDOs";
-  v102 = [MEMORY[0x277D3F198] sharedInstance];
-  v101 = [v102 commonTypeDict_IntegerFormat];
-  v157[26] = v101;
+  mEMORY[0x277D3F198]27 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat27 = [mEMORY[0x277D3F198]27 commonTypeDict_IntegerFormat];
+  v157[26] = commonTypeDict_IntegerFormat27;
   v156[27] = @"PortControllerPDst";
-  v100 = [MEMORY[0x277D3F198] sharedInstance];
-  v99 = [v100 commonTypeDict_IntegerFormat];
-  v157[27] = v99;
+  mEMORY[0x277D3F198]28 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat28 = [mEMORY[0x277D3F198]28 commonTypeDict_IntegerFormat];
+  v157[27] = commonTypeDict_IntegerFormat28;
   v156[28] = @"PortControllerCapMismatch";
-  v98 = [MEMORY[0x277D3F198] sharedInstance];
-  v97 = [v98 commonTypeDict_IntegerFormat];
-  v157[28] = v97;
+  mEMORY[0x277D3F198]29 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat29 = [mEMORY[0x277D3F198]29 commonTypeDict_IntegerFormat];
+  v157[28] = commonTypeDict_IntegerFormat29;
   v156[29] = @"PortControllerSrdoCount";
-  v96 = [MEMORY[0x277D3F198] sharedInstance];
-  v95 = [v96 commonTypeDict_IntegerFormat];
-  v157[29] = v95;
+  mEMORY[0x277D3F198]30 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat30 = [mEMORY[0x277D3F198]30 commonTypeDict_IntegerFormat];
+  v157[29] = commonTypeDict_IntegerFormat30;
   v156[30] = @"PortControllerSrdoRetryCount";
-  v94 = [MEMORY[0x277D3F198] sharedInstance];
-  v93 = [v94 commonTypeDict_IntegerFormat];
-  v157[30] = v93;
+  mEMORY[0x277D3F198]31 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat31 = [mEMORY[0x277D3F198]31 commonTypeDict_IntegerFormat];
+  v157[30] = commonTypeDict_IntegerFormat31;
   v156[31] = @"PortControllerSrdyCount";
-  v92 = [MEMORY[0x277D3F198] sharedInstance];
-  v91 = [v92 commonTypeDict_IntegerFormat];
-  v157[31] = v91;
+  mEMORY[0x277D3F198]32 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat32 = [mEMORY[0x277D3F198]32 commonTypeDict_IntegerFormat];
+  v157[31] = commonTypeDict_IntegerFormat32;
   v156[32] = @"PortControllerSrdyRejectCount";
-  v90 = [MEMORY[0x277D3F198] sharedInstance];
-  v89 = [v90 commonTypeDict_IntegerFormat];
-  v157[32] = v89;
+  mEMORY[0x277D3F198]33 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat33 = [mEMORY[0x277D3F198]33 commonTypeDict_IntegerFormat];
+  v157[32] = commonTypeDict_IntegerFormat33;
   v156[33] = @"PortControllerShortDetectCount";
-  v88 = [MEMORY[0x277D3F198] sharedInstance];
-  v87 = [v88 commonTypeDict_IntegerFormat];
-  v157[33] = v87;
+  mEMORY[0x277D3F198]34 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat34 = [mEMORY[0x277D3F198]34 commonTypeDict_IntegerFormat];
+  v157[33] = commonTypeDict_IntegerFormat34;
   v156[34] = @"PortControllerSrdoRejectCount";
-  v86 = [MEMORY[0x277D3F198] sharedInstance];
-  v85 = [v86 commonTypeDict_IntegerFormat];
-  v157[34] = v85;
+  mEMORY[0x277D3F198]35 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat35 = [mEMORY[0x277D3F198]35 commonTypeDict_IntegerFormat];
+  v157[34] = commonTypeDict_IntegerFormat35;
   v156[35] = @"PortControllerVdoFailCount";
-  v84 = [MEMORY[0x277D3F198] sharedInstance];
-  v83 = [v84 commonTypeDict_IntegerFormat];
-  v157[35] = v83;
+  mEMORY[0x277D3F198]36 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat36 = [mEMORY[0x277D3F198]36 commonTypeDict_IntegerFormat];
+  v157[35] = commonTypeDict_IntegerFormat36;
   v156[36] = @"PortControllerI2cErrCount";
-  v82 = [MEMORY[0x277D3F198] sharedInstance];
-  v81 = [v82 commonTypeDict_IntegerFormat];
-  v157[36] = v81;
+  mEMORY[0x277D3F198]37 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat37 = [mEMORY[0x277D3F198]37 commonTypeDict_IntegerFormat];
+  v157[36] = commonTypeDict_IntegerFormat37;
   v156[37] = @"PortControllerSurpriseAckCount";
-  v80 = [MEMORY[0x277D3F198] sharedInstance];
-  v79 = [v80 commonTypeDict_IntegerFormat];
-  v157[37] = v79;
+  mEMORY[0x277D3F198]38 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat38 = [mEMORY[0x277D3F198]38 commonTypeDict_IntegerFormat];
+  v157[37] = commonTypeDict_IntegerFormat38;
   v156[38] = @"PortControllerSurpriseNackCount";
-  v78 = [MEMORY[0x277D3F198] sharedInstance];
-  v77 = [v78 commonTypeDict_IntegerFormat];
-  v157[38] = v77;
+  mEMORY[0x277D3F198]39 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat39 = [mEMORY[0x277D3F198]39 commonTypeDict_IntegerFormat];
+  v157[38] = commonTypeDict_IntegerFormat39;
   v156[39] = @"PortControllerStuckCmdCount";
-  v76 = [MEMORY[0x277D3F198] sharedInstance];
-  v75 = [v76 commonTypeDict_IntegerFormat];
-  v157[39] = v75;
+  mEMORY[0x277D3F198]40 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat40 = [mEMORY[0x277D3F198]40 commonTypeDict_IntegerFormat];
+  v157[39] = commonTypeDict_IntegerFormat40;
   v156[40] = @"PortControllerWakeFailCount";
-  v74 = [MEMORY[0x277D3F198] sharedInstance];
-  v73 = [v74 commonTypeDict_IntegerFormat];
-  v157[40] = v73;
+  mEMORY[0x277D3F198]41 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat41 = [mEMORY[0x277D3F198]41 commonTypeDict_IntegerFormat];
+  v157[40] = commonTypeDict_IntegerFormat41;
   v156[41] = @"PortControllerAttachCount";
-  v72 = [MEMORY[0x277D3F198] sharedInstance];
-  v71 = [v72 commonTypeDict_IntegerFormat];
-  v157[41] = v71;
+  mEMORY[0x277D3F198]42 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat42 = [mEMORY[0x277D3F198]42 commonTypeDict_IntegerFormat];
+  v157[41] = commonTypeDict_IntegerFormat42;
   v156[42] = @"PortControllerDetachCount";
-  v70 = [MEMORY[0x277D3F198] sharedInstance];
-  v69 = [v70 commonTypeDict_IntegerFormat];
-  v157[42] = v69;
+  mEMORY[0x277D3F198]43 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat43 = [mEMORY[0x277D3F198]43 commonTypeDict_IntegerFormat];
+  v157[42] = commonTypeDict_IntegerFormat43;
   v156[43] = @"PortControllerPwrRoleSwapFailCount";
-  v68 = [MEMORY[0x277D3F198] sharedInstance];
-  v67 = [v68 commonTypeDict_IntegerFormat];
-  v157[43] = v67;
+  mEMORY[0x277D3F198]44 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat44 = [mEMORY[0x277D3F198]44 commonTypeDict_IntegerFormat];
+  v157[43] = commonTypeDict_IntegerFormat44;
   v156[44] = @"PortControllerPwrRoleSwapCount";
-  v66 = [MEMORY[0x277D3F198] sharedInstance];
-  v65 = [v66 commonTypeDict_IntegerFormat];
-  v157[44] = v65;
+  mEMORY[0x277D3F198]45 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat45 = [mEMORY[0x277D3F198]45 commonTypeDict_IntegerFormat];
+  v157[44] = commonTypeDict_IntegerFormat45;
   v156[45] = @"PortControllerDataRoleSwapFailCount";
-  v64 = [MEMORY[0x277D3F198] sharedInstance];
-  v63 = [v64 commonTypeDict_IntegerFormat];
-  v157[45] = v63;
+  mEMORY[0x277D3F198]46 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat46 = [mEMORY[0x277D3F198]46 commonTypeDict_IntegerFormat];
+  v157[45] = commonTypeDict_IntegerFormat46;
   v156[46] = @"PortControllerDataRoleSwapCount";
-  v62 = [MEMORY[0x277D3F198] sharedInstance];
-  v61 = [v62 commonTypeDict_IntegerFormat];
-  v157[46] = v61;
+  mEMORY[0x277D3F198]47 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat47 = [mEMORY[0x277D3F198]47 commonTypeDict_IntegerFormat];
+  v157[46] = commonTypeDict_IntegerFormat47;
   v156[47] = @"PortControllerInpFetEnFailCount";
-  v60 = [MEMORY[0x277D3F198] sharedInstance];
-  v59 = [v60 commonTypeDict_IntegerFormat];
-  v157[47] = v59;
+  mEMORY[0x277D3F198]48 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat48 = [mEMORY[0x277D3F198]48 commonTypeDict_IntegerFormat];
+  v157[47] = commonTypeDict_IntegerFormat48;
   v156[48] = @"PortControllerHardResetCount";
-  v58 = [MEMORY[0x277D3F198] sharedInstance];
-  v57 = [v58 commonTypeDict_IntegerFormat];
-  v157[48] = v57;
+  mEMORY[0x277D3F198]49 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat49 = [mEMORY[0x277D3F198]49 commonTypeDict_IntegerFormat];
+  v157[48] = commonTypeDict_IntegerFormat49;
   v156[49] = @"PortControllerIrqCntAppLd";
-  v56 = [MEMORY[0x277D3F198] sharedInstance];
-  v55 = [v56 commonTypeDict_IntegerFormat];
-  v157[49] = v55;
+  mEMORY[0x277D3F198]50 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat50 = [mEMORY[0x277D3F198]50 commonTypeDict_IntegerFormat];
+  v157[49] = commonTypeDict_IntegerFormat50;
   v156[50] = @"PortControllerIrqCntHrdRst";
-  v54 = [MEMORY[0x277D3F198] sharedInstance];
-  v53 = [v54 commonTypeDict_IntegerFormat];
-  v157[50] = v53;
+  mEMORY[0x277D3F198]51 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat51 = [mEMORY[0x277D3F198]51 commonTypeDict_IntegerFormat];
+  v157[50] = commonTypeDict_IntegerFormat51;
   v156[51] = @"PortControllerIrqCntPlg";
-  v52 = [MEMORY[0x277D3F198] sharedInstance];
-  v51 = [v52 commonTypeDict_IntegerFormat];
-  v157[51] = v51;
+  mEMORY[0x277D3F198]52 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat52 = [mEMORY[0x277D3F198]52 commonTypeDict_IntegerFormat];
+  v157[51] = commonTypeDict_IntegerFormat52;
   v156[52] = @"PortControllerIrqCntStsUpd";
-  v50 = [MEMORY[0x277D3F198] sharedInstance];
-  v49 = [v50 commonTypeDict_IntegerFormat];
-  v157[52] = v49;
+  mEMORY[0x277D3F198]53 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat53 = [mEMORY[0x277D3F198]53 commonTypeDict_IntegerFormat];
+  v157[52] = commonTypeDict_IntegerFormat53;
   v156[53] = @"PortControllerIrqCntPwrStsUpd";
-  v48 = [MEMORY[0x277D3F198] sharedInstance];
-  v47 = [v48 commonTypeDict_IntegerFormat];
-  v157[53] = v47;
+  mEMORY[0x277D3F198]54 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat54 = [mEMORY[0x277D3F198]54 commonTypeDict_IntegerFormat];
+  v157[53] = commonTypeDict_IntegerFormat54;
   v156[54] = @"PortControllerIrqCntRxSrcCap";
-  v46 = [MEMORY[0x277D3F198] sharedInstance];
-  v45 = [v46 commonTypeDict_IntegerFormat];
-  v157[54] = v45;
+  mEMORY[0x277D3F198]55 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat55 = [mEMORY[0x277D3F198]55 commonTypeDict_IntegerFormat];
+  v157[54] = commonTypeDict_IntegerFormat55;
   v156[55] = @"PortControllerIrqCntPdStsUpd";
-  v44 = [MEMORY[0x277D3F198] sharedInstance];
-  v43 = [v44 commonTypeDict_IntegerFormat];
-  v157[55] = v43;
+  mEMORY[0x277D3F198]56 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat56 = [mEMORY[0x277D3F198]56 commonTypeDict_IntegerFormat];
+  v157[55] = commonTypeDict_IntegerFormat56;
   v156[56] = @"PortControllerIrqCntRxIdSop";
-  v42 = [MEMORY[0x277D3F198] sharedInstance];
-  v41 = [v42 commonTypeDict_IntegerFormat];
-  v157[56] = v41;
+  mEMORY[0x277D3F198]57 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat57 = [mEMORY[0x277D3F198]57 commonTypeDict_IntegerFormat];
+  v157[56] = commonTypeDict_IntegerFormat57;
   v156[57] = @"PortControllerIrqCntUvdmEnum";
-  v40 = [MEMORY[0x277D3F198] sharedInstance];
-  v39 = [v40 commonTypeDict_IntegerFormat];
-  v157[57] = v39;
+  mEMORY[0x277D3F198]58 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat58 = [mEMORY[0x277D3F198]58 commonTypeDict_IntegerFormat];
+  v157[57] = commonTypeDict_IntegerFormat58;
   v156[58] = @"PortControllerIrqCntUvdmStsUpd";
-  v38 = [MEMORY[0x277D3F198] sharedInstance];
-  v37 = [v38 commonTypeDict_IntegerFormat];
-  v157[58] = v37;
+  mEMORY[0x277D3F198]59 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat59 = [mEMORY[0x277D3F198]59 commonTypeDict_IntegerFormat];
+  v157[58] = commonTypeDict_IntegerFormat59;
   v156[59] = @"PortControllerIrqCntUsb2Plg";
-  v36 = [MEMORY[0x277D3F198] sharedInstance];
-  v35 = [v36 commonTypeDict_IntegerFormat];
-  v157[59] = v35;
+  mEMORY[0x277D3F198]60 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat60 = [mEMORY[0x277D3F198]60 commonTypeDict_IntegerFormat];
+  v157[59] = commonTypeDict_IntegerFormat60;
   v156[60] = @"PortControllerIrqCntUsb2Wak";
-  v34 = [MEMORY[0x277D3F198] sharedInstance];
-  v33 = [v34 commonTypeDict_IntegerFormat];
-  v157[60] = v33;
+  mEMORY[0x277D3F198]61 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat61 = [mEMORY[0x277D3F198]61 commonTypeDict_IntegerFormat];
+  v157[60] = commonTypeDict_IntegerFormat61;
   v156[61] = @"PortControllerIrqCntConSrc";
-  v32 = [MEMORY[0x277D3F198] sharedInstance];
-  v31 = [v32 commonTypeDict_IntegerFormat];
-  v157[61] = v31;
+  mEMORY[0x277D3F198]62 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat62 = [mEMORY[0x277D3F198]62 commonTypeDict_IntegerFormat];
+  v157[61] = commonTypeDict_IntegerFormat62;
   v156[62] = @"PortControllerIrqCntRxSnkCap";
-  v30 = [MEMORY[0x277D3F198] sharedInstance];
-  v29 = [v30 commonTypeDict_IntegerFormat];
-  v157[62] = v29;
+  mEMORY[0x277D3F198]63 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat63 = [mEMORY[0x277D3F198]63 commonTypeDict_IntegerFormat];
+  v157[62] = commonTypeDict_IntegerFormat63;
   v156[63] = @"PortControllerIrqCntRxRdo";
-  v28 = [MEMORY[0x277D3F198] sharedInstance];
-  v27 = [v28 commonTypeDict_IntegerFormat];
-  v157[63] = v27;
+  mEMORY[0x277D3F198]64 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat64 = [mEMORY[0x277D3F198]64 commonTypeDict_IntegerFormat];
+  v157[63] = commonTypeDict_IntegerFormat64;
   v156[64] = @"PortControllerIrqCntAlert";
-  v26 = [MEMORY[0x277D3F198] sharedInstance];
-  v25 = [v26 commonTypeDict_IntegerFormat];
-  v157[64] = v25;
+  mEMORY[0x277D3F198]65 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat65 = [mEMORY[0x277D3F198]65 commonTypeDict_IntegerFormat];
+  v157[64] = commonTypeDict_IntegerFormat65;
   v156[65] = @"PortControllerIrqCntldcm";
-  v24 = [MEMORY[0x277D3F198] sharedInstance];
-  v23 = [v24 commonTypeDict_IntegerFormat];
-  v157[65] = v23;
+  mEMORY[0x277D3F198]66 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat66 = [mEMORY[0x277D3F198]66 commonTypeDict_IntegerFormat];
+  v157[65] = commonTypeDict_IntegerFormat66;
   v156[66] = @"PortControllerBootFlags";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_IntegerFormat];
-  v157[66] = v21;
+  mEMORY[0x277D3F198]67 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat67 = [mEMORY[0x277D3F198]67 commonTypeDict_IntegerFormat];
+  v157[66] = commonTypeDict_IntegerFormat67;
   v156[67] = @"PortControllerSlpWakDisTime";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_IntegerFormat];
-  v157[67] = v19;
+  mEMORY[0x277D3F198]68 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat68 = [mEMORY[0x277D3F198]68 commonTypeDict_IntegerFormat];
+  v157[67] = commonTypeDict_IntegerFormat68;
   v156[68] = @"PortControllerSlpWakDisCause";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_IntegerFormat];
-  v157[68] = v17;
+  mEMORY[0x277D3F198]69 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat69 = [mEMORY[0x277D3F198]69 commonTypeDict_IntegerFormat];
+  v157[68] = commonTypeDict_IntegerFormat69;
   v156[69] = @"PortControllerSlpWakIsSleepEnabled";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_IntegerFormat];
-  v157[69] = v15;
+  mEMORY[0x277D3F198]70 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat70 = [mEMORY[0x277D3F198]70 commonTypeDict_IntegerFormat];
+  v157[69] = commonTypeDict_IntegerFormat70;
   v156[70] = @"PortControllerWakeCmdFailCount";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v157[70] = v4;
+  mEMORY[0x277D3F198]71 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat71 = [mEMORY[0x277D3F198]71 commonTypeDict_IntegerFormat];
+  v157[70] = commonTypeDict_IntegerFormat71;
   v156[71] = @"PortControllerSleepCmdFailCount";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v157[71] = v6;
+  mEMORY[0x277D3F198]72 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat72 = [mEMORY[0x277D3F198]72 commonTypeDict_IntegerFormat];
+  v157[71] = commonTypeDict_IntegerFormat72;
   v156[72] = @"PortControllerWakeTimeoutCount";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v157[72] = v8;
+  mEMORY[0x277D3F198]73 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat73 = [mEMORY[0x277D3F198]73 commonTypeDict_IntegerFormat];
+  v157[72] = commonTypeDict_IntegerFormat73;
   v156[73] = @"PortControllerPortControllerIrqCntWakeAck";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_IntegerFormat];
-  v157[73] = v10;
+  mEMORY[0x277D3F198]74 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat74 = [mEMORY[0x277D3F198]74 commonTypeDict_IntegerFormat];
+  v157[73] = commonTypeDict_IntegerFormat74;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v157 forKeys:v156 count:74];
   v161[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v161 forKeys:v160 count:2];
@@ -3591,25 +3591,25 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
     v23[0] = v17;
     v22[1] = *MEMORY[0x277D3F540];
     v18[0] = @"OrionActiveRDOIndex";
-    v16 = [MEMORY[0x277D3F198] sharedInstance];
-    v15 = [v16 commonTypeDict_IntegerFormat];
-    v19[0] = v15;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v19[0] = commonTypeDict_IntegerFormat;
     v18[1] = @"OrionChargeCapable";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_IntegerFormat];
-    v19[1] = v4;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v19[1] = commonTypeDict_IntegerFormat2;
     v18[2] = @"OrionExternalConnected";
-    v5 = [MEMORY[0x277D3F198] sharedInstance];
-    v6 = [v5 commonTypeDict_IntegerFormat];
-    v19[2] = v6;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+    v19[2] = commonTypeDict_IntegerFormat3;
     v18[3] = @"OrionPresenceStatus";
-    v7 = [MEMORY[0x277D3F198] sharedInstance];
-    v8 = [v7 commonTypeDict_IntegerFormat];
-    v19[3] = v8;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+    v19[3] = commonTypeDict_IntegerFormat4;
     v18[4] = @"OrionVoltageConstraint";
-    v9 = [MEMORY[0x277D3F198] sharedInstance];
-    v10 = [v9 commonTypeDict_IntegerFormat];
-    v19[4] = v10;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+    v19[4] = commonTypeDict_IntegerFormat5;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:5];
     v23[1] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:2];
@@ -3640,9 +3640,9 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
     v15[0] = v3;
     v14[1] = *MEMORY[0x277D3F540];
     v10 = @"PortControllerEvtBuffer";
-    v4 = [MEMORY[0x277D3F198] sharedInstance];
-    v5 = [v4 commonTypeDict_RawDataFormat];
-    v11 = v5;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RawDataFormat = [mEMORY[0x277D3F198] commonTypeDict_RawDataFormat];
+    v11 = commonTypeDict_RawDataFormat;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
     v15[1] = v6;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
@@ -3673,9 +3673,9 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
     v15[0] = v3;
     v14[1] = *MEMORY[0x277D3F540];
     v10 = @"OrionEvtBuffer";
-    v4 = [MEMORY[0x277D3F198] sharedInstance];
-    v5 = [v4 commonTypeDict_RawDataFormat];
-    v11 = v5;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RawDataFormat = [mEMORY[0x277D3F198] commonTypeDict_RawDataFormat];
+    v11 = commonTypeDict_RawDataFormat;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
     v15[1] = v6;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
@@ -3703,41 +3703,41 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
     v30[0] = v24;
     v29[1] = *MEMORY[0x277D3F540];
     v25[0] = @"Is Present";
-    v23 = [MEMORY[0x277D3F198] sharedInstance];
-    v22 = [v23 commonTypeDict_IntegerFormat];
-    v26[0] = v22;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v26[0] = commonTypeDict_IntegerFormat;
     v25[1] = @"Power Source State";
-    v21 = [MEMORY[0x277D3F198] sharedInstance];
-    v20 = [v21 commonTypeDict_StringFormat];
-    v26[1] = v20;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+    v26[1] = commonTypeDict_StringFormat;
     v25[2] = @"Max Capacity";
-    v19 = [MEMORY[0x277D3F198] sharedInstance];
-    v18 = [v19 commonTypeDict_IntegerFormat_withUnit_mAh];
-    v26[2] = v18;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat_withUnit_mAh = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat_withUnit_mAh];
+    v26[2] = commonTypeDict_IntegerFormat_withUnit_mAh;
     v25[3] = @"Current Capacity";
-    v17 = [MEMORY[0x277D3F198] sharedInstance];
-    v16 = [v17 commonTypeDict_IntegerFormat_withUnit_mAh];
-    v26[3] = v16;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat_withUnit_mAh2 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat_withUnit_mAh];
+    v26[3] = commonTypeDict_IntegerFormat_withUnit_mAh2;
     v25[4] = @"Transport Type";
-    v15 = [MEMORY[0x277D3F198] sharedInstance];
-    v14 = [v15 commonTypeDict_StringFormat];
-    v26[4] = v14;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]5 commonTypeDict_StringFormat];
+    v26[4] = commonTypeDict_StringFormat2;
     v25[5] = @"Is Charging";
-    v2 = [MEMORY[0x277D3F198] sharedInstance];
-    v3 = [v2 commonTypeDict_IntegerFormat];
-    v26[5] = v3;
+    mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+    v26[5] = commonTypeDict_IntegerFormat2;
     v25[6] = @"Power Source ID";
-    v4 = [MEMORY[0x277D3F198] sharedInstance];
-    v5 = [v4 commonTypeDict_IntegerFormat];
-    v26[6] = v5;
+    mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+    v26[6] = commonTypeDict_IntegerFormat3;
     v25[7] = @"Type";
-    v6 = [MEMORY[0x277D3F198] sharedInstance];
-    v7 = [v6 commonTypeDict_StringFormat];
-    v26[7] = v7;
+    mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_StringFormat3 = [mEMORY[0x277D3F198]8 commonTypeDict_StringFormat];
+    v26[7] = commonTypeDict_StringFormat3;
     v25[8] = @"Temperature";
-    v8 = [MEMORY[0x277D3F198] sharedInstance];
-    v9 = [v8 commonTypeDict_IntegerFormat];
-    v26[8] = v9;
+    mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+    v26[8] = commonTypeDict_IntegerFormat4;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:9];
     v30[1] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:2];
@@ -3765,9 +3765,9 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
     v14[0] = v2;
     v13[1] = *MEMORY[0x277D3F540];
     v9 = @"IOAccessoryPowerMode";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_IntegerFormat];
-    v10 = v4;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v10 = commonTypeDict_IntegerFormat;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
     v14[1] = v5;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
@@ -3795,49 +3795,49 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
     v34[0] = v28;
     v33[1] = *MEMORY[0x277D3F540];
     v29[0] = @"ConnectState";
-    v27 = [MEMORY[0x277D3F198] sharedInstance];
-    v26 = [v27 commonTypeDict_IntegerFormat];
-    v30[0] = v26;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v30[0] = commonTypeDict_IntegerFormat;
     v29[1] = @"ResetCount";
-    v25 = [MEMORY[0x277D3F198] sharedInstance];
-    v24 = [v25 commonTypeDict_IntegerFormat];
-    v30[1] = v24;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v30[1] = commonTypeDict_IntegerFormat2;
     v29[2] = @"EEEECode";
-    v23 = [MEMORY[0x277D3F198] sharedInstance];
-    v22 = [v23 commonTypeDict_StringFormat];
-    v30[2] = v22;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_StringFormat = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat];
+    v30[2] = commonTypeDict_StringFormat;
     v29[3] = @"Cloaked";
-    v21 = [MEMORY[0x277D3F198] sharedInstance];
-    v20 = [v21 commonTypeDict_BoolFormat];
-    v30[3] = v20;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]4 commonTypeDict_BoolFormat];
+    v30[3] = commonTypeDict_BoolFormat;
     v29[4] = @"FWStatus";
-    v19 = [MEMORY[0x277D3F198] sharedInstance];
-    v18 = [v19 commonTypeDict_IntegerFormat];
-    v30[4] = v18;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+    v30[4] = commonTypeDict_IntegerFormat3;
     v29[5] = @"LinkEfficiency";
-    v17 = [MEMORY[0x277D3F198] sharedInstance];
-    v16 = [v17 commonTypeDict_IntegerFormat];
-    v30[5] = v16;
+    mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+    v30[5] = commonTypeDict_IntegerFormat4;
     v29[6] = @"CloakReason";
-    v15 = [MEMORY[0x277D3F198] sharedInstance];
-    v14 = [v15 commonTypeDict_IntegerFormat];
-    v30[6] = v14;
+    mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+    v30[6] = commonTypeDict_IntegerFormat5;
     v29[7] = @"DeviceInfoChipVariant";
-    v2 = [MEMORY[0x277D3F198] sharedInstance];
-    v3 = [v2 commonTypeDict_IntegerFormat];
-    v30[7] = v3;
+    mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+    v30[7] = commonTypeDict_IntegerFormat6;
     v29[8] = @"DeviceInfoRegionCode";
-    v4 = [MEMORY[0x277D3F198] sharedInstance];
-    v5 = [v4 commonTypeDict_IntegerFormat];
-    v30[8] = v5;
+    mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+    v30[8] = commonTypeDict_IntegerFormat7;
     v29[9] = @"PuckClassification";
-    v6 = [MEMORY[0x277D3F198] sharedInstance];
-    v7 = [v6 commonTypeDict_IntegerFormat];
-    v30[9] = v7;
+    mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+    v30[9] = commonTypeDict_IntegerFormat8;
     v29[10] = @"HFPolicy";
-    v8 = [MEMORY[0x277D3F198] sharedInstance];
-    v9 = [v8 commonTypeDict_RawDataFormat];
-    v30[10] = v9;
+    mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RawDataFormat = [mEMORY[0x277D3F198]11 commonTypeDict_RawDataFormat];
+    v30[10] = commonTypeDict_RawDataFormat;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:11];
     v34[1] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:v33 count:2];
@@ -3853,9 +3853,9 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
   return v11;
 }
 
-+ (id)connectStateStringToEnum:(id)a3
++ (id)connectStateStringToEnum:(id)enum
 {
-  v3 = [&unk_282C14D48 indexOfObject:a3];
+  v3 = [&unk_282C14D48 indexOfObject:enum];
   if (v3 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = &unk_282C11F10;
@@ -3881,21 +3881,21 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
     v20[0] = v14;
     v19[1] = *MEMORY[0x277D3F540];
     v15[0] = @"RAv";
-    v2 = [MEMORY[0x277D3F198] sharedInstance];
-    v3 = [v2 commonTypeDict_IntegerFormat];
-    v16[0] = v3;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v16[0] = commonTypeDict_IntegerFormat;
     v15[1] = @"VirtualRADelta";
-    v4 = [MEMORY[0x277D3F198] sharedInstance];
-    v5 = [v4 commonTypeDict_IntegerFormat];
-    v16[1] = v5;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v16[1] = commonTypeDict_IntegerFormat2;
     v15[2] = @"MitigationState";
-    v6 = [MEMORY[0x277D3F198] sharedInstance];
-    v7 = [v6 commonTypeDict_IntegerFormat];
-    v16[2] = v7;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+    v16[2] = commonTypeDict_IntegerFormat3;
     v15[3] = @"RAvTimeWindow";
-    v8 = [MEMORY[0x277D3F198] sharedInstance];
-    v9 = [v8 commonTypeDict_IntegerFormat];
-    v16[3] = v9;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+    v16[3] = commonTypeDict_IntegerFormat4;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:4];
     v20[1] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:2];
@@ -3923,13 +3923,13 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
     v16[0] = v2;
     v15[1] = *MEMORY[0x277D3F540];
     v11[0] = @"MitigationState";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_IntegerFormat];
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
     v11[1] = @"MitigationDisabled";
-    v12[0] = v4;
-    v5 = [MEMORY[0x277D3F198] sharedInstance];
-    v6 = [v5 commonTypeDict_BoolFormat];
-    v12[1] = v6;
+    v12[0] = commonTypeDict_IntegerFormat;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]2 commonTypeDict_BoolFormat];
+    v12[1] = commonTypeDict_BoolFormat;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
     v16[1] = v7;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
@@ -3957,65 +3957,65 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
     v42[0] = v36;
     v41[1] = *MEMORY[0x277D3F540];
     v37[0] = @"status";
-    v35 = [MEMORY[0x277D3F198] sharedInstance];
-    v34 = [v35 commonTypeDict_IntegerFormat];
-    v38[0] = v34;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v38[0] = commonTypeDict_IntegerFormat;
     v37[1] = @"checkpoint";
-    v33 = [MEMORY[0x277D3F198] sharedInstance];
-    v32 = [v33 commonTypeDict_IntegerFormat];
-    v38[1] = v32;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v38[1] = commonTypeDict_IntegerFormat2;
     v37[2] = @"decisionMaker";
-    v31 = [MEMORY[0x277D3F198] sharedInstance];
-    v30 = [v31 commonTypeDict_IntegerFormat];
-    v38[2] = v30;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+    v38[2] = commonTypeDict_IntegerFormat3;
     v37[3] = @"decisionTime";
-    v29 = [MEMORY[0x277D3F198] sharedInstance];
-    v28 = [v29 commonTypeDict_IntegerFormat];
-    v38[3] = v28;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+    v38[3] = commonTypeDict_IntegerFormat4;
     v37[4] = @"timeTillTopOff";
-    v27 = [MEMORY[0x277D3F198] sharedInstance];
-    v26 = [v27 commonTypeDict_IntegerFormat];
-    v38[4] = v26;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+    v38[4] = commonTypeDict_IntegerFormat5;
     v37[5] = @"modelVersion";
-    v25 = [MEMORY[0x277D3F198] sharedInstance];
-    v24 = [v25 commonTypeDict_RealFormat];
-    v38[5] = v24;
+    mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat = [mEMORY[0x277D3F198]6 commonTypeDict_RealFormat];
+    v38[5] = commonTypeDict_RealFormat;
     v37[6] = @"engagementModelVersion";
-    v23 = [MEMORY[0x277D3F198] sharedInstance];
-    v22 = [v23 commonTypeDict_RealFormat];
-    v38[6] = v22;
+    mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_RealFormat2 = [mEMORY[0x277D3F198]7 commonTypeDict_RealFormat];
+    v38[6] = commonTypeDict_RealFormat2;
     v37[7] = @"engagementProbability";
-    v21 = [MEMORY[0x277D3F198] sharedInstance];
-    v20 = [v21 commonTypeDict_IntegerFormat];
-    v38[7] = v20;
+    mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+    v38[7] = commonTypeDict_IntegerFormat6;
     v37[8] = @"durationPrediction";
-    v19 = [MEMORY[0x277D3F198] sharedInstance];
-    v18 = [v19 commonTypeDict_IntegerFormat];
-    v38[8] = v18;
+    mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+    v38[8] = commonTypeDict_IntegerFormat7;
     v37[9] = @"state";
-    v17 = [MEMORY[0x277D3F198] sharedInstance];
-    v16 = [v17 commonTypeDict_IntegerFormat];
-    v38[9] = v16;
+    mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+    v38[9] = commonTypeDict_IntegerFormat8;
     v37[10] = @"isEngaged";
-    v15 = [MEMORY[0x277D3F198] sharedInstance];
-    v14 = [v15 commonTypeDict_BoolFormat];
-    v38[10] = v14;
+    mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]11 commonTypeDict_BoolFormat];
+    v38[10] = commonTypeDict_BoolFormat;
     v37[11] = @"isLimited";
-    v2 = [MEMORY[0x277D3F198] sharedInstance];
-    v3 = [v2 commonTypeDict_BoolFormat];
-    v38[11] = v3;
+    mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat2 = [mEMORY[0x277D3F198]12 commonTypeDict_BoolFormat];
+    v38[11] = commonTypeDict_BoolFormat2;
     v37[12] = @"isFixed";
-    v4 = [MEMORY[0x277D3F198] sharedInstance];
-    v5 = [v4 commonTypeDict_BoolFormat];
-    v38[12] = v5;
+    mEMORY[0x277D3F198]13 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat3 = [mEMORY[0x277D3F198]13 commonTypeDict_BoolFormat];
+    v38[12] = commonTypeDict_BoolFormat3;
     v37[13] = @"chargeLimitTargetSoC";
-    v6 = [MEMORY[0x277D3F198] sharedInstance];
-    v7 = [v6 commonTypeDict_IntegerFormat];
-    v38[13] = v7;
+    mEMORY[0x277D3F198]14 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]14 commonTypeDict_IntegerFormat];
+    v38[13] = commonTypeDict_IntegerFormat9;
     v37[14] = @"recommendedChargeLimit";
-    v8 = [MEMORY[0x277D3F198] sharedInstance];
-    v9 = [v8 commonTypeDict_IntegerFormat];
-    v38[14] = v9;
+    mEMORY[0x277D3F198]15 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat10 = [mEMORY[0x277D3F198]15 commonTypeDict_IntegerFormat];
+    v38[14] = commonTypeDict_IntegerFormat10;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:v37 count:15];
     v42[1] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v42 forKeys:v41 count:2];
@@ -4043,17 +4043,17 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
     v18[0] = v2;
     v17[1] = *MEMORY[0x277D3F540];
     v13[0] = @"status";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_IntegerFormat];
-    v14[0] = v4;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v14[0] = commonTypeDict_IntegerFormat;
     v13[1] = @"isPaused";
-    v5 = [MEMORY[0x277D3F198] sharedInstance];
-    v6 = [v5 commonTypeDict_BoolFormat];
-    v14[1] = v6;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]2 commonTypeDict_BoolFormat];
+    v14[1] = commonTypeDict_BoolFormat;
     v13[2] = @"cecState";
-    v7 = [MEMORY[0x277D3F198] sharedInstance];
-    v8 = [v7 commonTypeDict_IntegerFormat];
-    v14[2] = v8;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+    v14[2] = commonTypeDict_IntegerFormat2;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:3];
     v18[1] = v9;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
@@ -4079,25 +4079,25 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
   v22[0] = v16;
   v21[1] = *MEMORY[0x277D3F540];
   v17[0] = @"Manufacturer";
-  v15 = [MEMORY[0x277D3F198] sharedInstance];
-  v14 = [v15 commonTypeDict_StringFormat];
-  v18[0] = v14;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
+  v18[0] = commonTypeDict_StringFormat;
   v17[1] = @"Model";
-  v2 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v2 commonTypeDict_StringFormat];
-  v18[1] = v3;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v18[1] = commonTypeDict_StringFormat2;
   v17[2] = @"Watts";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v18[2] = v5;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v18[2] = commonTypeDict_IntegerFormat;
   v17[3] = @"isWireless";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_BoolFormat];
-  v18[3] = v7;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]4 commonTypeDict_BoolFormat];
+  v18[3] = commonTypeDict_BoolFormat;
   v17[4] = @"AdapterPowerTier";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v18[4] = v9;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v18[4] = commonTypeDict_IntegerFormat2;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:5];
   v22[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:2];
@@ -4254,17 +4254,17 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
   v128 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v268 forKeys:v267 count:3];
   v273[1] = v128;
   v272[2] = @"AtCriticalLevel";
-  v127 = [MEMORY[0x277D3F198] sharedInstance];
-  v126 = [v127 commonTypeDict_BoolFormat];
-  v273[2] = v126;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
+  v273[2] = commonTypeDict_BoolFormat;
   v272[3] = @"Voltage";
-  v125 = [MEMORY[0x277D3F198] sharedInstance];
-  v124 = [v125 commonTypeDict_IntegerFormat_withUnit_mV];
-  v273[3] = v124;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat_withUnit_mV = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat_withUnit_mV];
+  v273[3] = commonTypeDict_IntegerFormat_withUnit_mV;
   v272[4] = @"AppleRawBatteryVoltage";
-  v123 = [MEMORY[0x277D3F198] sharedInstance];
-  v122 = [v123 commonTypeDict_IntegerFormat_withUnit_mV];
-  v273[4] = v122;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat_withUnit_mV2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat_withUnit_mV];
+  v273[4] = commonTypeDict_IntegerFormat_withUnit_mV2;
   v272[5] = @"AdapterVoltage";
   v7 = *MEMORY[0x277D3F538];
   v265[0] = v4;
@@ -4274,9 +4274,9 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
   v121 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v266 forKeys:v265 count:2];
   v273[5] = v121;
   v272[6] = @"InstantAmperage";
-  v120 = [MEMORY[0x277D3F198] sharedInstance];
-  v119 = [v120 commonTypeDict_IntegerFormat_withUnit_mA];
-  v273[6] = v119;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat_withUnit_mA = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat_withUnit_mA];
+  v273[6] = commonTypeDict_IntegerFormat_withUnit_mA;
   v272[7] = @"FullAvailableCapacity";
   v263[0] = v4;
   v263[1] = v5;
@@ -4287,41 +4287,41 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
   v118 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v264 forKeys:v263 count:3];
   v273[7] = v118;
   v272[8] = @"CurrentCapacity";
-  v117 = [MEMORY[0x277D3F198] sharedInstance];
-  v116 = [v117 commonTypeDict_IntegerFormat_withUnit_mAh];
-  v273[8] = v116;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat_withUnit_mAh = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat_withUnit_mAh];
+  v273[8] = commonTypeDict_IntegerFormat_withUnit_mAh;
   v272[9] = @"AppleRawCurrentCapacity";
-  v115 = [MEMORY[0x277D3F198] sharedInstance];
-  v114 = [v115 commonTypeDict_IntegerFormat_withUnit_mAh];
-  v273[9] = v114;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat_withUnit_mAh2 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat_withUnit_mAh];
+  v273[9] = commonTypeDict_IntegerFormat_withUnit_mAh2;
   v272[10] = @"MaxCapacity";
-  v113 = [MEMORY[0x277D3F198] sharedInstance];
-  v112 = [v113 commonTypeDict_IntegerFormat_withUnit_mAh];
-  v273[10] = v112;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat_withUnit_mAh3 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat_withUnit_mAh];
+  v273[10] = commonTypeDict_IntegerFormat_withUnit_mAh3;
   v272[11] = @"AppleRawMaxCapacity";
-  v111 = [MEMORY[0x277D3F198] sharedInstance];
-  v110 = [v111 commonTypeDict_IntegerFormat_withUnit_mAh];
-  v273[11] = v110;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat_withUnit_mAh4 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat_withUnit_mAh];
+  v273[11] = commonTypeDict_IntegerFormat_withUnit_mAh4;
   v272[12] = @"DesignCapacity";
-  v109 = [MEMORY[0x277D3F198] sharedInstance];
-  v108 = [v109 commonTypeDict_IntegerFormat_withUnit_mAh];
-  v273[12] = v108;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat_withUnit_mAh5 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat_withUnit_mAh];
+  v273[12] = commonTypeDict_IntegerFormat_withUnit_mAh5;
   v272[13] = @"CycleCount";
-  v107 = [MEMORY[0x277D3F198] sharedInstance];
-  v106 = [v107 commonTypeDict_IntegerFormat];
-  v273[13] = v106;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+  v273[13] = commonTypeDict_IntegerFormat;
   v272[14] = @"ChargeStatus";
-  v105 = [MEMORY[0x277D3F198] sharedInstance];
-  v104 = [v105 commonTypeDict_StringFormat];
-  v273[14] = v104;
+  mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]11 commonTypeDict_StringFormat];
+  v273[14] = commonTypeDict_StringFormat;
   v272[15] = @"IsCharging";
-  v103 = [MEMORY[0x277D3F198] sharedInstance];
-  v102 = [v103 commonTypeDict_BoolFormat];
-  v273[15] = v102;
+  mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat2 = [mEMORY[0x277D3F198]12 commonTypeDict_BoolFormat];
+  v273[15] = commonTypeDict_BoolFormat2;
   v272[16] = @"FullyCharged";
-  v101 = [MEMORY[0x277D3F198] sharedInstance];
-  v100 = [v101 commonTypeDict_BoolFormat];
-  v273[16] = v100;
+  mEMORY[0x277D3F198]13 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat3 = [mEMORY[0x277D3F198]13 commonTypeDict_BoolFormat];
+  v273[16] = commonTypeDict_BoolFormat3;
   v272[17] = @"ChargingCurrent";
   v261[0] = v4;
   v261[1] = v5;
@@ -4385,13 +4385,13 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
   v92 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v248 forKeys:v247 count:2];
   v273[24] = v92;
   v272[25] = @"ExternalConnected";
-  v91 = [MEMORY[0x277D3F198] sharedInstance];
-  v90 = [v91 commonTypeDict_BoolFormat];
-  v273[25] = v90;
+  mEMORY[0x277D3F198]14 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat4 = [mEMORY[0x277D3F198]14 commonTypeDict_BoolFormat];
+  v273[25] = commonTypeDict_BoolFormat4;
   v272[26] = @"NominalChargeCapacity";
-  v89 = [MEMORY[0x277D3F198] sharedInstance];
-  v88 = [v89 commonTypeDict_IntegerFormat];
-  v273[26] = v88;
+  mEMORY[0x277D3F198]15 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]15 commonTypeDict_IntegerFormat];
+  v273[26] = commonTypeDict_IntegerFormat2;
   v272[27] = @"ChemID";
   v245[0] = v4;
   v245[1] = v7;
@@ -4400,13 +4400,13 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
   v87 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v246 forKeys:v245 count:2];
   v273[27] = v87;
   v272[28] = @"AbsoluteCapacity";
-  v86 = [MEMORY[0x277D3F198] sharedInstance];
-  v85 = [v86 commonTypeDict_IntegerFormat];
-  v273[28] = v85;
+  mEMORY[0x277D3F198]16 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]16 commonTypeDict_IntegerFormat];
+  v273[28] = commonTypeDict_IntegerFormat3;
   v272[29] = @"PresentDOD";
-  v84 = [MEMORY[0x277D3F198] sharedInstance];
-  v83 = [v84 commonTypeDict_IntegerFormat];
-  v273[29] = v83;
+  mEMORY[0x277D3F198]17 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]17 commonTypeDict_IntegerFormat];
+  v273[29] = commonTypeDict_IntegerFormat4;
   v272[30] = @"QmaxCell0";
   v243[0] = v4;
   v243[1] = v6;
@@ -4504,13 +4504,13 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
   v69 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v220 forKeys:v219 count:2];
   v273[42] = v69;
   v272[43] = @"PresentMaxRa0-8";
-  v68 = [MEMORY[0x277D3F198] sharedInstance];
-  v67 = [v68 commonTypeDict_IntegerFormat];
-  v273[43] = v67;
+  mEMORY[0x277D3F198]18 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]18 commonTypeDict_IntegerFormat];
+  v273[43] = commonTypeDict_IntegerFormat5;
   v272[44] = @"LifetimeMaxRa0-8Updated";
-  v66 = [MEMORY[0x277D3F198] sharedInstance];
-  v65 = [v66 commonTypeDict_BoolFormat];
-  v273[44] = v65;
+  mEMORY[0x277D3F198]19 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat5 = [mEMORY[0x277D3F198]19 commonTypeDict_BoolFormat];
+  v273[44] = commonTypeDict_BoolFormat5;
   v272[45] = @"Flags";
   v216[0] = v4;
   v216[1] = v7;
@@ -4638,9 +4638,9 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
   v47 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v183 forKeys:v182 count:2];
   v273[62] = v47;
   v272[63] = @"VirtualTemperature";
-  v46 = [MEMORY[0x277D3F198] sharedInstance];
-  v45 = [v46 commonTypeDict_IntegerFormat];
-  v273[63] = v45;
+  mEMORY[0x277D3F198]20 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]20 commonTypeDict_IntegerFormat];
+  v273[63] = commonTypeDict_IntegerFormat6;
   v272[64] = @"SWRemCap";
   v180[0] = v4;
   v180[1] = v7;
@@ -4712,21 +4712,21 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
   v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v163 forKeys:v162 count:2];
   v273[73] = v35;
   v272[74] = @"Port1FilteredPower";
-  v34 = [MEMORY[0x277D3F198] sharedInstance];
-  v33 = [v34 commonTypeDict_IntegerFormat];
-  v273[74] = v33;
+  mEMORY[0x277D3F198]21 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]21 commonTypeDict_IntegerFormat];
+  v273[74] = commonTypeDict_IntegerFormat7;
   v272[75] = @"Port1Current";
-  v32 = [MEMORY[0x277D3F198] sharedInstance];
-  v31 = [v32 commonTypeDict_IntegerFormat];
-  v273[75] = v31;
+  mEMORY[0x277D3F198]22 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]22 commonTypeDict_IntegerFormat];
+  v273[75] = commonTypeDict_IntegerFormat8;
   v272[76] = @"Port1Voltage";
-  v30 = [MEMORY[0x277D3F198] sharedInstance];
-  v29 = [v30 commonTypeDict_IntegerFormat];
-  v273[76] = v29;
+  mEMORY[0x277D3F198]23 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]23 commonTypeDict_IntegerFormat];
+  v273[76] = commonTypeDict_IntegerFormat9;
   v272[77] = @"Port1Power";
-  v28 = [MEMORY[0x277D3F198] sharedInstance];
-  v27 = [v28 commonTypeDict_IntegerFormat];
-  v273[77] = v27;
+  mEMORY[0x277D3F198]24 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat10 = [mEMORY[0x277D3F198]24 commonTypeDict_IntegerFormat];
+  v273[77] = commonTypeDict_IntegerFormat10;
   v272[78] = @"ChargerRegisterStatus";
   v160[0] = v4;
   v160[1] = v7;
@@ -4864,9 +4864,9 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
   v14[1] = @"IsCharging";
   v15[0] = v5;
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_BoolFormat];
-  v15[1] = v7;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
+  v15[1] = commonTypeDict_BoolFormat;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
   v19[1] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:2];
@@ -4888,65 +4888,65 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
     v88[0] = v56;
     v87[1] = *MEMORY[0x277D3F540];
     v83[0] = @"Battery Case Available Current";
-    v55 = [MEMORY[0x277D3F198] sharedInstance];
-    v54 = [v55 commonTypeDict_IntegerFormat];
-    v84[0] = v54;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v84[0] = commonTypeDict_IntegerFormat;
     v83[1] = @"Is Present";
-    v53 = [MEMORY[0x277D3F198] sharedInstance];
-    v52 = [v53 commonTypeDict_IntegerFormat];
-    v84[1] = v52;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v84[1] = commonTypeDict_IntegerFormat2;
     v83[2] = @"Power Source State";
-    v51 = [MEMORY[0x277D3F198] sharedInstance];
-    v50 = [v51 commonTypeDict_StringFormat];
-    v84[2] = v50;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_StringFormat = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat];
+    v84[2] = commonTypeDict_StringFormat;
     v83[3] = @"Name";
-    v49 = [MEMORY[0x277D3F198] sharedInstance];
-    v48 = [v49 commonTypeDict_StringFormat];
-    v84[3] = v48;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_StringFormat];
+    v84[3] = commonTypeDict_StringFormat2;
     v83[4] = @"Max Capacity";
-    v47 = [MEMORY[0x277D3F198] sharedInstance];
-    v46 = [v47 commonTypeDict_IntegerFormat_withUnit_mAh];
-    v84[4] = v46;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat_withUnit_mAh = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat_withUnit_mAh];
+    v84[4] = commonTypeDict_IntegerFormat_withUnit_mAh;
     v83[5] = @"Current";
-    v45 = [MEMORY[0x277D3F198] sharedInstance];
-    v44 = [v45 commonTypeDict_IntegerFormat_withUnit_mA];
-    v84[5] = v44;
+    mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat_withUnit_mA = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat_withUnit_mA];
+    v84[5] = commonTypeDict_IntegerFormat_withUnit_mA;
     v83[6] = @"Voltage";
-    v43 = [MEMORY[0x277D3F198] sharedInstance];
-    v42 = [v43 commonTypeDict_IntegerFormat_withUnit_mV];
-    v84[6] = v42;
+    mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat_withUnit_mV = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat_withUnit_mV];
+    v84[6] = commonTypeDict_IntegerFormat_withUnit_mV;
     v83[7] = @"Current Capacity";
-    v41 = [MEMORY[0x277D3F198] sharedInstance];
-    v40 = [v41 commonTypeDict_IntegerFormat_withUnit_mAh];
-    v84[7] = v40;
+    mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat_withUnit_mAh2 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat_withUnit_mAh];
+    v84[7] = commonTypeDict_IntegerFormat_withUnit_mAh2;
     v83[8] = @"Transport Type";
-    v39 = [MEMORY[0x277D3F198] sharedInstance];
-    v38 = [v39 commonTypeDict_StringFormat];
-    v84[8] = v38;
+    mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_StringFormat3 = [mEMORY[0x277D3F198]9 commonTypeDict_StringFormat];
+    v84[8] = commonTypeDict_StringFormat3;
     v83[9] = @"Is Charging";
-    v37 = [MEMORY[0x277D3F198] sharedInstance];
-    v36 = [v37 commonTypeDict_IntegerFormat];
-    v84[9] = v36;
+    mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+    v84[9] = commonTypeDict_IntegerFormat3;
     v83[10] = @"Power Source ID";
-    v35 = [MEMORY[0x277D3F198] sharedInstance];
-    v34 = [v35 commonTypeDict_IntegerFormat];
-    v84[10] = v34;
+    mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]11 commonTypeDict_IntegerFormat];
+    v84[10] = commonTypeDict_IntegerFormat4;
     v83[11] = @"Time to Empty";
-    v33 = [MEMORY[0x277D3F198] sharedInstance];
-    v32 = [v33 commonTypeDict_IntegerFormat];
-    v84[11] = v32;
+    mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]12 commonTypeDict_IntegerFormat];
+    v84[11] = commonTypeDict_IntegerFormat5;
     v83[12] = @"Type";
-    v31 = [MEMORY[0x277D3F198] sharedInstance];
-    v30 = [v31 commonTypeDict_StringFormat];
-    v84[12] = v30;
+    mEMORY[0x277D3F198]13 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_StringFormat4 = [mEMORY[0x277D3F198]13 commonTypeDict_StringFormat];
+    v84[12] = commonTypeDict_StringFormat4;
     v83[13] = @"Temperature";
-    v29 = [MEMORY[0x277D3F198] sharedInstance];
-    v28 = [v29 commonTypeDict_IntegerFormat];
-    v84[13] = v28;
+    mEMORY[0x277D3F198]14 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]14 commonTypeDict_IntegerFormat];
+    v84[13] = commonTypeDict_IntegerFormat6;
     v83[14] = @"AppleRawCurrentCapacity";
-    v27 = [MEMORY[0x277D3F198] sharedInstance];
-    v26 = [v27 commonTypeDict_IntegerFormat_withUnit_mAh];
-    v84[14] = v26;
+    mEMORY[0x277D3F198]15 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat_withUnit_mAh3 = [mEMORY[0x277D3F198]15 commonTypeDict_IntegerFormat_withUnit_mAh];
+    v84[14] = commonTypeDict_IntegerFormat_withUnit_mAh3;
     v83[15] = @"Battery Case Cumulative Current";
     v3 = *MEMORY[0x277D3F5B0];
     v81[0] = *MEMORY[0x277D3F5A8];
@@ -5007,9 +5007,9 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v68 forKeys:v67 count:2];
     v84[22] = v18;
     v83[23] = @"FamilyCode";
-    v17 = [MEMORY[0x277D3F198] sharedInstance];
-    v16 = [v17 commonTypeDict_IntegerFormat];
-    v84[23] = v16;
+    mEMORY[0x277D3F198]16 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]16 commonTypeDict_IntegerFormat];
+    v84[23] = commonTypeDict_IntegerFormat7;
     v83[24] = @"AvailablePower";
     v65[0] = v2;
     v65[1] = v4;
@@ -5032,9 +5032,9 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v62 forKeys:v61 count:2];
     v84[26] = v6;
     v83[27] = @"CycleCount";
-    v7 = [MEMORY[0x277D3F198] sharedInstance];
-    v8 = [v7 commonTypeDict_IntegerFormat];
-    v84[27] = v8;
+    mEMORY[0x277D3F198]17 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]17 commonTypeDict_IntegerFormat];
+    v84[27] = commonTypeDict_IntegerFormat8;
     v83[28] = @"NominalChargeCapacity";
     v59[0] = v2;
     v59[1] = v4;
@@ -5289,37 +5289,37 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
     v29[0] = v23;
     v28[1] = *MEMORY[0x277D3F540];
     v24[0] = @"BTMProperty_TimestampforImax1";
-    v22 = [MEMORY[0x277D3F198] sharedInstance];
-    v21 = [v22 commonTypeDict_DateFormat];
-    v25[0] = v21;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_DateFormat = [mEMORY[0x277D3F198] commonTypeDict_DateFormat];
+    v25[0] = commonTypeDict_DateFormat;
     v24[1] = @"BTMProperty_OCVforImax";
-    v20 = [MEMORY[0x277D3F198] sharedInstance];
-    v19 = [v20 commonTypeDict_IntegerFormat];
-    v25[1] = v19;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v25[1] = commonTypeDict_IntegerFormat;
     v24[2] = @"BTMProperty_Imax";
-    v18 = [MEMORY[0x277D3F198] sharedInstance];
-    v17 = [v18 commonTypeDict_IntegerFormat];
-    v25[2] = v17;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+    v25[2] = commonTypeDict_IntegerFormat2;
     v24[3] = @"BTMProperty_VforImax";
-    v16 = [MEMORY[0x277D3F198] sharedInstance];
-    v15 = [v16 commonTypeDict_IntegerFormat];
-    v25[3] = v15;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+    v25[3] = commonTypeDict_IntegerFormat3;
     v24[4] = @"BTMProperty_TimestampforVmin1";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_DateFormat];
-    v25[4] = v4;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_DateFormat2 = [mEMORY[0x277D3F198]5 commonTypeDict_DateFormat];
+    v25[4] = commonTypeDict_DateFormat2;
     v24[5] = @"BTMProperty_OCVforVmin";
-    v5 = [MEMORY[0x277D3F198] sharedInstance];
-    v6 = [v5 commonTypeDict_IntegerFormat];
-    v25[5] = v6;
+    mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+    v25[5] = commonTypeDict_IntegerFormat4;
     v24[6] = @"BTMProperty_Vmin";
-    v7 = [MEMORY[0x277D3F198] sharedInstance];
-    v8 = [v7 commonTypeDict_IntegerFormat];
-    v25[6] = v8;
+    mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+    v25[6] = commonTypeDict_IntegerFormat5;
     v24[7] = @"BTMProperty_IforVmin";
-    v9 = [MEMORY[0x277D3F198] sharedInstance];
-    v10 = [v9 commonTypeDict_IntegerFormat];
-    v25[7] = v10;
+    mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+    v25[7] = commonTypeDict_IntegerFormat6;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:8];
     v29[1] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:2];
@@ -5345,21 +5345,21 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
   v20[0] = v14;
   v19[1] = *MEMORY[0x277D3F540];
   v15[0] = @"TrustedDataEnabled";
-  v2 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v2 commonTypeDict_IntegerFormat];
-  v16[0] = v3;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v16[0] = commonTypeDict_IntegerFormat;
   v15[1] = @"TrustedDataFailedTimestamp";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_DateFormat];
-  v16[1] = v5;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]2 commonTypeDict_DateFormat];
+  v16[1] = commonTypeDict_DateFormat;
   v15[2] = @"TrustedDataTimestamp";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_DateFormat];
-  v16[2] = v7;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_DateFormat];
+  v16[2] = commonTypeDict_DateFormat2;
   v15[3] = @"TrustedDataFailedCount";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v16[3] = v9;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v16[3] = commonTypeDict_IntegerFormat2;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:4];
   v20[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:2];
@@ -5379,53 +5379,53 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
   v36[0] = v30;
   v35[1] = *MEMORY[0x277D3F540];
   v31[0] = @"AccumulatedAdapterEfficiencyLoss";
-  v29 = [MEMORY[0x277D3F198] sharedInstance];
-  v28 = [v29 commonTypeDict_IntegerFormat];
-  v32[0] = v28;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v32[0] = commonTypeDict_IntegerFormat;
   v31[1] = @"AccumulatedSystemLoad";
-  v27 = [MEMORY[0x277D3F198] sharedInstance];
-  v26 = [v27 commonTypeDict_IntegerFormat];
-  v32[1] = v26;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v32[1] = commonTypeDict_IntegerFormat2;
   v31[2] = @"AccumulatedSystemPowerIn";
-  v25 = [MEMORY[0x277D3F198] sharedInstance];
-  v24 = [v25 commonTypeDict_IntegerFormat];
-  v32[2] = v24;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v32[2] = commonTypeDict_IntegerFormat3;
   v31[3] = @"AdapterEfficiencyLoss";
-  v23 = [MEMORY[0x277D3F198] sharedInstance];
-  v22 = [v23 commonTypeDict_IntegerFormat];
-  v32[3] = v22;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v32[3] = commonTypeDict_IntegerFormat4;
   v31[4] = @"AdapterEfficiencyLossAccumulatorCount";
-  v21 = [MEMORY[0x277D3F198] sharedInstance];
-  v20 = [v21 commonTypeDict_IntegerFormat];
-  v32[4] = v20;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v32[4] = commonTypeDict_IntegerFormat5;
   v31[5] = @"SystemLoad";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_IntegerFormat];
-  v32[5] = v18;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v32[5] = commonTypeDict_IntegerFormat6;
   v31[6] = @"SystemLoadAccumulatorCount";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_IntegerFormat];
-  v32[6] = v16;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v32[6] = commonTypeDict_IntegerFormat7;
   v31[7] = @"SystemPowerIn";
-  v15 = [MEMORY[0x277D3F198] sharedInstance];
-  v14 = [v15 commonTypeDict_IntegerFormat];
-  v32[7] = v14;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v32[7] = commonTypeDict_IntegerFormat8;
   v31[8] = @"SystemPowerInAccumulatorCount";
-  v2 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v2 commonTypeDict_IntegerFormat];
-  v32[8] = v3;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+  v32[8] = commonTypeDict_IntegerFormat9;
   v31[9] = @"SystemInputVoltage";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v32[9] = v5;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat10 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+  v32[9] = commonTypeDict_IntegerFormat10;
   v31[10] = @"SystemInputCurrent";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v32[10] = v7;
+  mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat11 = [mEMORY[0x277D3F198]11 commonTypeDict_IntegerFormat];
+  v32[10] = commonTypeDict_IntegerFormat11;
   v31[11] = @"PowerTelemetryErrorCount";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v32[11] = v9;
+  mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat12 = [mEMORY[0x277D3F198]12 commonTypeDict_IntegerFormat];
+  v32[11] = commonTypeDict_IntegerFormat12;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:v31 count:12];
   v36[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:v35 count:2];
@@ -5445,97 +5445,97 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
   v58[0] = v52;
   v57[1] = *MEMORY[0x277D3F540];
   v53[0] = @"FilteredPower";
-  v51 = [MEMORY[0x277D3F198] sharedInstance];
-  v50 = [v51 commonTypeDict_IntegerFormat];
-  v54[0] = v50;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v54[0] = commonTypeDict_IntegerFormat;
   v53[1] = @"Current";
-  v49 = [MEMORY[0x277D3F198] sharedInstance];
-  v48 = [v49 commonTypeDict_IntegerFormat];
-  v54[1] = v48;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v54[1] = commonTypeDict_IntegerFormat2;
   v53[2] = @"AdapterVoltage";
-  v47 = [MEMORY[0x277D3F198] sharedInstance];
-  v46 = [v47 commonTypeDict_IntegerFormat];
-  v54[2] = v46;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v54[2] = commonTypeDict_IntegerFormat3;
   v53[3] = @"Watts";
-  v45 = [MEMORY[0x277D3F198] sharedInstance];
-  v44 = [v45 commonTypeDict_IntegerFormat];
-  v54[3] = v44;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v54[3] = commonTypeDict_IntegerFormat4;
   v53[4] = @"ConfiguredCurrent";
-  v43 = [MEMORY[0x277D3F198] sharedInstance];
-  v42 = [v43 commonTypeDict_IntegerFormat];
-  v54[4] = v42;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v54[4] = commonTypeDict_IntegerFormat5;
   v53[5] = @"ConfiguredVoltage";
-  v41 = [MEMORY[0x277D3F198] sharedInstance];
-  v40 = [v41 commonTypeDict_IntegerFormat];
-  v54[5] = v40;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v54[5] = commonTypeDict_IntegerFormat6;
   v53[6] = @"AccumulatedPower";
-  v39 = [MEMORY[0x277D3F198] sharedInstance];
-  v38 = [v39 commonTypeDict_IntegerFormat];
-  v54[6] = v38;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v54[6] = commonTypeDict_IntegerFormat7;
   v53[7] = @"AccumulatorCount";
-  v37 = [MEMORY[0x277D3F198] sharedInstance];
-  v36 = [v37 commonTypeDict_IntegerFormat];
-  v54[7] = v36;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v54[7] = commonTypeDict_IntegerFormat8;
   v53[8] = @"AccumulatorErrorCount";
-  v35 = [MEMORY[0x277D3F198] sharedInstance];
-  v34 = [v35 commonTypeDict_IntegerFormat];
-  v54[8] = v34;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+  v54[8] = commonTypeDict_IntegerFormat9;
   v53[9] = @"PortType";
-  v33 = [MEMORY[0x277D3F198] sharedInstance];
-  v32 = [v33 commonTypeDict_IntegerFormat];
-  v54[9] = v32;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat10 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+  v54[9] = commonTypeDict_IntegerFormat10;
   v53[10] = @"PortIndex";
-  v31 = [MEMORY[0x277D3F198] sharedInstance];
-  v30 = [v31 commonTypeDict_IntegerFormat];
-  v54[10] = v30;
+  mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat11 = [mEMORY[0x277D3F198]11 commonTypeDict_IntegerFormat];
+  v54[10] = commonTypeDict_IntegerFormat11;
   v53[11] = @"VConnAccumulatedPower";
-  v29 = [MEMORY[0x277D3F198] sharedInstance];
-  v28 = [v29 commonTypeDict_IntegerFormat];
-  v54[11] = v28;
+  mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat12 = [mEMORY[0x277D3F198]12 commonTypeDict_IntegerFormat];
+  v54[11] = commonTypeDict_IntegerFormat12;
   v53[12] = @"VConnMaxCurrent";
-  v27 = [MEMORY[0x277D3F198] sharedInstance];
-  v26 = [v27 commonTypeDict_IntegerFormat];
-  v54[12] = v26;
+  mEMORY[0x277D3F198]13 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat13 = [mEMORY[0x277D3F198]13 commonTypeDict_IntegerFormat];
+  v54[12] = commonTypeDict_IntegerFormat13;
   v53[13] = @"VConnCurrent";
-  v25 = [MEMORY[0x277D3F198] sharedInstance];
-  v24 = [v25 commonTypeDict_IntegerFormat];
-  v54[13] = v24;
+  mEMORY[0x277D3F198]14 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat14 = [mEMORY[0x277D3F198]14 commonTypeDict_IntegerFormat];
+  v54[13] = commonTypeDict_IntegerFormat14;
   v53[14] = @"VConnAccumulatorErrorCount";
-  v23 = [MEMORY[0x277D3F198] sharedInstance];
-  v22 = [v23 commonTypeDict_IntegerFormat];
-  v54[14] = v22;
+  mEMORY[0x277D3F198]15 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat15 = [mEMORY[0x277D3F198]15 commonTypeDict_IntegerFormat];
+  v54[14] = commonTypeDict_IntegerFormat15;
   v53[15] = @"VConnAccumulatorCount";
-  v21 = [MEMORY[0x277D3F198] sharedInstance];
-  v20 = [v21 commonTypeDict_IntegerFormat];
-  v54[15] = v20;
+  mEMORY[0x277D3F198]16 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat16 = [mEMORY[0x277D3F198]16 commonTypeDict_IntegerFormat];
+  v54[15] = commonTypeDict_IntegerFormat16;
   v53[16] = @"VConnPower";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_IntegerFormat];
-  v54[16] = v18;
+  mEMORY[0x277D3F198]17 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat17 = [mEMORY[0x277D3F198]17 commonTypeDict_IntegerFormat];
+  v54[16] = commonTypeDict_IntegerFormat17;
   v53[17] = @"CPMSBudget";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_IntegerFormat];
-  v54[17] = v16;
+  mEMORY[0x277D3F198]18 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat18 = [mEMORY[0x277D3F198]18 commonTypeDict_IntegerFormat];
+  v54[17] = commonTypeDict_IntegerFormat18;
   v53[18] = @"PowerState";
-  v15 = [MEMORY[0x277D3F198] sharedInstance];
-  v14 = [v15 commonTypeDict_IntegerFormat];
-  v54[18] = v14;
+  mEMORY[0x277D3F198]19 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat19 = [mEMORY[0x277D3F198]19 commonTypeDict_IntegerFormat];
+  v54[18] = commonTypeDict_IntegerFormat19;
   v53[19] = @"PDPowermW";
-  v2 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v2 commonTypeDict_IntegerFormat];
-  v54[19] = v3;
+  mEMORY[0x277D3F198]20 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat20 = [mEMORY[0x277D3F198]20 commonTypeDict_IntegerFormat];
+  v54[19] = commonTypeDict_IntegerFormat20;
   v53[20] = @"USBSleepPoolPowermW";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v54[20] = v5;
+  mEMORY[0x277D3F198]21 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat21 = [mEMORY[0x277D3F198]21 commonTypeDict_IntegerFormat];
+  v54[20] = commonTypeDict_IntegerFormat21;
   v53[21] = @"USBWakePoolPowermW";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v54[21] = v7;
+  mEMORY[0x277D3F198]22 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat22 = [mEMORY[0x277D3F198]22 commonTypeDict_IntegerFormat];
+  v54[21] = commonTypeDict_IntegerFormat22;
   v53[22] = @"NumLDCMCollisions";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v54[22] = v9;
+  mEMORY[0x277D3F198]23 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat23 = [mEMORY[0x277D3F198]23 commonTypeDict_IntegerFormat];
+  v54[22] = commonTypeDict_IntegerFormat23;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v54 forKeys:v53 count:23];
   v58[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v58 forKeys:v57 count:2];
@@ -5557,25 +5557,25 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
     v22[0] = v16;
     v21[1] = *MEMORY[0x277D3F540];
     v17[0] = @"CurrentAccumulator";
-    v15 = [MEMORY[0x277D3F198] sharedInstance];
-    v14 = [v15 commonTypeDict_IntegerFormat];
-    v18[0] = v14;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v18[0] = commonTypeDict_IntegerFormat;
     v17[1] = @"CurrentAccumulatorCount";
-    v2 = [MEMORY[0x277D3F198] sharedInstance];
-    v3 = [v2 commonTypeDict_IntegerFormat];
-    v18[1] = v3;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v18[1] = commonTypeDict_IntegerFormat2;
     v17[2] = @"Cell1CurrentAccumulator";
-    v4 = [MEMORY[0x277D3F198] sharedInstance];
-    v5 = [v4 commonTypeDict_IntegerFormat];
-    v18[2] = v5;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+    v18[2] = commonTypeDict_IntegerFormat3;
     v17[3] = @"Cell2CurrentAccumulator";
-    v6 = [MEMORY[0x277D3F198] sharedInstance];
-    v7 = [v6 commonTypeDict_IntegerFormat];
-    v18[3] = v7;
+    mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+    v18[3] = commonTypeDict_IntegerFormat4;
     v17[4] = @"CellCurrentAccumulatorCount";
-    v8 = [MEMORY[0x277D3F198] sharedInstance];
-    v9 = [v8 commonTypeDict_IntegerFormat];
-    v18[4] = v9;
+    mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+    v18[4] = commonTypeDict_IntegerFormat5;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:5];
     v22[1] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:2];
@@ -5601,21 +5601,21 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
   v20[0] = v14;
   v19[1] = *MEMORY[0x277D3F540];
   v15[0] = @"Temperature";
-  v2 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v2 commonTypeDict_IntegerFormat];
-  v16[0] = v3;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v16[0] = commonTypeDict_IntegerFormat;
   v15[1] = @"Bin";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v16[1] = v5;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v16[1] = commonTypeDict_IntegerFormat2;
   v15[2] = @"TimeInMinutes";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v16[2] = v7;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v16[2] = commonTypeDict_IntegerFormat3;
   v15[3] = @"HeatMapType";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v16[3] = v9;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v16[3] = commonTypeDict_IntegerFormat4;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:4];
   v20[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:2];
@@ -5635,21 +5635,21 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
   v20[0] = v14;
   v19[1] = *MEMORY[0x277D3F540];
   v15[0] = @"Temperature";
-  v2 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v2 commonTypeDict_IntegerFormat];
-  v16[0] = v3;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v16[0] = commonTypeDict_IntegerFormat;
   v15[1] = @"Bin";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v16[1] = v5;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v16[1] = commonTypeDict_IntegerFormat2;
   v15[2] = @"TimeInMinutes";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v16[2] = v7;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v16[2] = commonTypeDict_IntegerFormat3;
   v15[3] = @"HeatMapType";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v16[3] = v9;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v16[3] = commonTypeDict_IntegerFormat4;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:4];
   v20[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:2];
@@ -5669,21 +5669,21 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
   v20[0] = v14;
   v19[1] = *MEMORY[0x277D3F540];
   v15[0] = @"Temperature";
-  v2 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v2 commonTypeDict_IntegerFormat];
-  v16[0] = v3;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v16[0] = commonTypeDict_IntegerFormat;
   v15[1] = @"Bin";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v16[1] = v5;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v16[1] = commonTypeDict_IntegerFormat2;
   v15[2] = @"TimeInMinutes";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v16[2] = v7;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v16[2] = commonTypeDict_IntegerFormat3;
   v15[3] = @"HeatMapType";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v16[3] = v9;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v16[3] = commonTypeDict_IntegerFormat4;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:4];
   v20[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:2];
@@ -5703,45 +5703,45 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
   v32[0] = v26;
   v31[1] = *MEMORY[0x277D3F540];
   v27[0] = @"KioskModeEntries";
-  v25 = [MEMORY[0x277D3F198] sharedInstance];
-  v24 = [v25 commonTypeDict_IntegerFormat];
-  v28[0] = v24;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v28[0] = commonTypeDict_IntegerFormat;
   v27[1] = @"KioskModeExits";
-  v23 = [MEMORY[0x277D3F198] sharedInstance];
-  v22 = [v23 commonTypeDict_IntegerFormat];
-  v28[1] = v22;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v28[1] = commonTypeDict_IntegerFormat2;
   v27[2] = @"KioskModeResidency0";
-  v21 = [MEMORY[0x277D3F198] sharedInstance];
-  v20 = [v21 commonTypeDict_IntegerFormat];
-  v28[2] = v20;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v28[2] = commonTypeDict_IntegerFormat3;
   v27[3] = @"KioskModeResidency1";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_IntegerFormat];
-  v28[3] = v18;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v28[3] = commonTypeDict_IntegerFormat4;
   v27[4] = @"KioskModeResidency2";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_IntegerFormat];
-  v28[4] = v16;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v28[4] = commonTypeDict_IntegerFormat5;
   v27[5] = @"KioskModeResidency3";
-  v15 = [MEMORY[0x277D3F198] sharedInstance];
-  v14 = [v15 commonTypeDict_IntegerFormat];
-  v28[5] = v14;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v28[5] = commonTypeDict_IntegerFormat6;
   v27[6] = @"KioskModeHighSocResidency0";
-  v2 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v2 commonTypeDict_IntegerFormat];
-  v28[6] = v3;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v28[6] = commonTypeDict_IntegerFormat7;
   v27[7] = @"KioskModeHighSocResidency1";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v28[7] = v5;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v28[7] = commonTypeDict_IntegerFormat8;
   v27[8] = @"KioskModeHighSocResidency2";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v28[8] = v7;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+  v28[8] = commonTypeDict_IntegerFormat9;
   v27[9] = @"KioskModeHighSocResidency3";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v28[9] = v9;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat10 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+  v28[9] = commonTypeDict_IntegerFormat10;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:10];
   v32[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:v31 count:2];
@@ -5761,29 +5761,29 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
   v24[0] = v18;
   v23[1] = *MEMORY[0x277D3F540];
   v19[0] = @"lastDOD0Update";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_IntegerFormat];
-  v20[0] = v16;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v20[0] = commonTypeDict_IntegerFormat;
   v19[1] = @"lastFullChargeDate";
-  v15 = [MEMORY[0x277D3F198] sharedInstance];
-  v14 = [v15 commonTypeDict_IntegerFormat];
-  v20[1] = v14;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v20[1] = commonTypeDict_IntegerFormat2;
   v19[2] = @"lastFullChargeReq";
-  v2 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v2 commonTypeDict_BoolFormat];
-  v20[2] = v3;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]3 commonTypeDict_BoolFormat];
+  v20[2] = commonTypeDict_BoolFormat;
   v19[3] = @"lastQMaxUpdate";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v20[3] = v5;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v20[3] = commonTypeDict_IntegerFormat3;
   v19[4] = @"lastQualQMaxDate";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v20[4] = v7;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v20[4] = commonTypeDict_IntegerFormat4;
   v19[5] = @"lastQualQmaxDODValue";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v20[5] = v9;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v20[5] = commonTypeDict_IntegerFormat5;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:6];
   v24[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:2];
@@ -5806,9 +5806,9 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
   v15[0] = v3;
   v14[1] = *MEMORY[0x277D3F540];
   v10 = @"chargeStatus";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v11 = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v11 = commonTypeDict_IntegerFormat;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v15[1] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
@@ -5846,13 +5846,13 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
   v25[0] = v3;
   v24[1] = *MEMORY[0x277D3F540];
   v20[0] = @"Level";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
   v20[1] = @"energyConsumed";
-  v21[0] = v5;
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v21[1] = v7;
+  v21[0] = commonTypeDict_IntegerFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v21[1] = commonTypeDict_IntegerFormat2;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
   v25[1] = v8;
   v24[2] = *MEMORY[0x277D3F478];
@@ -5890,7 +5890,7 @@ uint64_t __41__PLBatteryAgent_shouldLogPPMDebugDetail__block_invoke()
       {
 LABEL_60:
         self = v4;
-        v25 = self;
+        selfCopy = self;
         goto LABEL_31;
       }
 
@@ -5908,9 +5908,9 @@ LABEL_60:
       v4->_prevConnectedState = 0;
       v4->_prevChargingState = 0;
       v4->_inPenaltyBox = 0;
-      v6 = [(PLBatteryAgent *)v4 getMitigatedUPOCountDefault];
+      getMitigatedUPOCountDefault = [(PLBatteryAgent *)v4 getMitigatedUPOCountDefault];
       mitigatedUPOCount = v4->_mitigatedUPOCount;
-      v4->_mitigatedUPOCount = v6;
+      v4->_mitigatedUPOCount = getMitigatedUPOCountDefault;
 
       v4->_lifetimeDataLogged = 0;
       v4->_ppmEventLoggingCount = 0;
@@ -5952,9 +5952,9 @@ LABEL_60:
 
       if (+[PLBatteryAgent hasExternalAccessory])
       {
-        v13 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         trackedAccessories = v4->_trackedAccessories;
-        v4->_trackedAccessories = v13;
+        v4->_trackedAccessories = array;
 
         v4->_priIOAccessoryPowerMode = -1;
       }
@@ -5974,9 +5974,9 @@ LABEL_60:
           v19 = PLLogCommon();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
           {
-            v64 = [(PLIOKitOperatorComposition *)v4->_magsafeIOService serviceName];
+            serviceName = [(PLIOKitOperatorComposition *)v4->_magsafeIOService serviceName];
             *buf = 138412290;
-            *v72 = v64;
+            *v72 = serviceName;
             _os_log_debug_impl(&dword_21A4C6000, v19, OS_LOG_TYPE_DEBUG, "connected to IOKit: %@", buf, 0xCu);
           }
 
@@ -6009,9 +6009,9 @@ LABEL_60:
       v21 = PLLogCommon();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
       {
-        v60 = [(PLBatteryAgent *)v4 isTLCNotificationSurfaced];
+        isTLCNotificationSurfaced = [(PLBatteryAgent *)v4 isTLCNotificationSurfaced];
         *buf = 67109120;
-        *v72 = v60;
+        *v72 = isTLCNotificationSurfaced;
         _os_log_debug_impl(&dword_21A4C6000, v21, OS_LOG_TYPE_DEBUG, "TLC: Notification Surfaced Value at Bootup: %d", buf, 8u);
       }
 
@@ -6021,9 +6021,9 @@ LABEL_60:
       v22 = PLLogCommon();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
       {
-        v61 = [(PLBatteryAgent *)v4 lastTLCEntryStartTime];
+        lastTLCEntryStartTime = [(PLBatteryAgent *)v4 lastTLCEntryStartTime];
         *buf = 138412290;
-        *v72 = v61;
+        *v72 = lastTLCEntryStartTime;
         _os_log_debug_impl(&dword_21A4C6000, v22, OS_LOG_TYPE_DEBUG, "TLC: Last TLC Entry Start Time at Bootup: %@", buf, 0xCu);
       }
 
@@ -6041,12 +6041,12 @@ LABEL_60:
       v28 = PLLogCommon();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
       {
-        v62 = [(PLBatteryAgent *)v4 isTLCNotificationSurfaced];
-        v63 = [(PLBatteryAgent *)v4 demoMode];
+        isTLCNotificationSurfaced2 = [(PLBatteryAgent *)v4 isTLCNotificationSurfaced];
+        demoMode = [(PLBatteryAgent *)v4 demoMode];
         *buf = 67109376;
-        *v72 = v62;
+        *v72 = isTLCNotificationSurfaced2;
         *&v72[4] = 1024;
-        *&v72[6] = v63;
+        *&v72[6] = demoMode;
         _os_log_debug_impl(&dword_21A4C6000, v28, OS_LOG_TYPE_DEBUG, "TLC: isTLCNotificationSurfaced: %d  BUI Demo Mode: %d", buf, 0xEu);
       }
 
@@ -6056,7 +6056,7 @@ LABEL_60:
       v68[2] = __22__PLBatteryAgent_init__block_invoke_3292;
       v68[3] = &unk_27825CE10;
       self = v4;
-      v69 = self;
+      selfCopy2 = self;
       v30 = [v29 initWithOperator:self forService:@"IOPMPowerSource" withBlock:v68];
       iokitPowerSource = self->_iokitPowerSource;
       self->_iokitPowerSource = v30;
@@ -6067,19 +6067,19 @@ LABEL_60:
         {
           v33 = objc_alloc(MEMORY[0x277D3F250]);
           v34 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:20.0];
-          v35 = [(PLOperator *)self workQueue];
+          workQueue = [(PLOperator *)self workQueue];
           v66[0] = MEMORY[0x277D85DD0];
           v66[1] = 3221225472;
           v66[2] = __22__PLBatteryAgent_init__block_invoke_3354;
           v66[3] = &unk_278259C40;
-          v36 = self;
-          v67 = v36;
-          v37 = [v33 initWithFireDate:v34 withInterval:1 withTolerance:0 repeats:v35 withUserInfo:v66 withQueue:20.0 withBlock:0.0];
-          gasGaugeTimer = v36->_gasGaugeTimer;
-          v36->_gasGaugeTimer = v37;
+          selfCopy3 = self;
+          v67 = selfCopy3;
+          v37 = [v33 initWithFireDate:v34 withInterval:1 withTolerance:0 repeats:workQueue withUserInfo:v66 withQueue:20.0 withBlock:0.0];
+          gasGaugeTimer = selfCopy3->_gasGaugeTimer;
+          selfCopy3->_gasGaugeTimer = v37;
 
-          [(PLBatteryAgent *)v36 setAllowGasGaugeRead:0];
-          [(PLBatteryAgent *)v36 gasGaugeOpenAndStartLogging];
+          [(PLBatteryAgent *)selfCopy3 setAllowGasGaugeRead:0];
+          [(PLBatteryAgent *)selfCopy3 gasGaugeOpenAndStartLogging];
         }
 
         else
@@ -6092,30 +6092,30 @@ LABEL_60:
 
         if ([(PLOperator *)self isDebugEnabled])
         {
-          v39 = [MEMORY[0x277CCAB98] defaultCenter];
-          [v39 addObserver:self selector:sel_fakeLogEntry_ name:@"PLBatteryAgent.fakeLogEntry" object:0];
+          defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+          [defaultCenter addObserver:self selector:sel_fakeLogEntry_ name:@"PLBatteryAgent.fakeLogEntry" object:0];
         }
 
-        v40 = [MEMORY[0x277D3F1B8] hasInductiveCharging];
-        v41 = [MEMORY[0x277CCAB98] defaultCenter];
-        v42 = v41;
-        if (v40)
+        hasInductiveCharging = [MEMORY[0x277D3F1B8] hasInductiveCharging];
+        defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+        v42 = defaultCenter2;
+        if (hasInductiveCharging)
         {
-          [v41 addObserver:self selector:sel_accessoryConnectionEventNotification_ name:@"PLCAAccessoryAttachedNotification" object:0];
+          [defaultCenter2 addObserver:self selector:sel_accessoryConnectionEventNotification_ name:@"PLCAAccessoryAttachedNotification" object:0];
 
-          v43 = [MEMORY[0x277CCAB98] defaultCenter];
-          [v43 addObserver:self selector:sel_accessoryDisconnectEventNotification_ name:@"PLCAAccessoryDetachedNotification" object:0];
+          defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+          [defaultCenter3 addObserver:self selector:sel_accessoryDisconnectEventNotification_ name:@"PLCAAccessoryDetachedNotification" object:0];
         }
 
         else
         {
-          [v41 addObserver:self selector:sel_accessoryConnected_ name:*MEMORY[0x277CC5E88] object:0];
+          [defaultCenter2 addObserver:self selector:sel_accessoryConnected_ name:*MEMORY[0x277CC5E88] object:0];
 
-          v44 = [MEMORY[0x277CCAB98] defaultCenter];
-          [v44 addObserver:self selector:sel_accessoryDisconnected_ name:*MEMORY[0x277CC5E90] object:0];
+          defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+          [defaultCenter4 addObserver:self selector:sel_accessoryDisconnected_ name:*MEMORY[0x277CC5E90] object:0];
 
-          v43 = [MEMORY[0x277CC5FB0] sharedAccessoryManager];
-          [v43 registerForLocalNotifications];
+          defaultCenter3 = [MEMORY[0x277CC5FB0] sharedAccessoryManager];
+          [defaultCenter3 registerForLocalNotifications];
         }
 
         if (+[PLBatteryAgent hasExternalAccessory])
@@ -6138,9 +6138,9 @@ LABEL_60:
               v46 = [MEMORY[0x277CCACA8] stringWithFormat:@"Notification registered"];
               v47 = MEMORY[0x277D3F178];
               v48 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-              v49 = [v48 lastPathComponent];
+              lastPathComponent = [v48 lastPathComponent];
               v50 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent init]"];
-              [v47 logMessage:v46 fromFile:v49 fromFunction:v50 fromLineNumber:3603];
+              [v47 logMessage:v46 fromFile:lastPathComponent fromFunction:v50 fromLineNumber:3603];
 
               v51 = PLLogCommon();
               if (os_log_type_enabled(v51, OS_LOG_TYPE_DEBUG))
@@ -6195,11 +6195,11 @@ LABEL_60:
     }
   }
 
-  v25 = 0;
+  selfCopy = 0;
 LABEL_31:
 
   v26 = *MEMORY[0x277D85DE8];
-  return v25;
+  return selfCopy;
 }
 
 void __22__PLBatteryAgent_init__block_invoke_3292(uint64_t a1, uint64_t a2, int a3)
@@ -6942,14 +6942,14 @@ uint64_t __22__PLBatteryAgent_init__block_invoke_2_3376(uint64_t a1)
     [(PLBatteryAgent *)self gasGaugeStopLoggingAndClose];
     if (([MEMORY[0x277D3F1B8] hasInductiveCharging] & 1) == 0)
     {
-      v3 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v3 removeObserver:self name:*MEMORY[0x277CC5E88] object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter removeObserver:self name:*MEMORY[0x277CC5E88] object:0];
 
-      v4 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v4 removeObserver:self name:*MEMORY[0x277CC5E90] object:0];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter2 removeObserver:self name:*MEMORY[0x277CC5E90] object:0];
 
-      v5 = [MEMORY[0x277CC5FB0] sharedAccessoryManager];
-      [v5 unregisterForLocalNotifications];
+      mEMORY[0x277CC5FB0] = [MEMORY[0x277CC5FB0] sharedAccessoryManager];
+      [mEMORY[0x277CC5FB0] unregisterForLocalNotifications];
     }
   }
 
@@ -6966,15 +6966,15 @@ void __38__PLBatteryAgent_hasAppleSmartBattery__block_invoke(uint64_t a1)
   byte_2811F3A7E = [(__CFString *)v2 isEqualToString:@"AppleSmartBattery"];
 }
 
-- (BOOL)modifiedExternalChargerEntry:(id)a3
+- (BOOL)modifiedExternalChargerEntry:(id)entry
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  entryCopy = entry;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = [v3 keys];
+  obj = [entryCopy keys];
   v4 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (!v4)
   {
@@ -6993,7 +6993,7 @@ void __38__PLBatteryAgent_hasAppleSmartBattery__block_invoke(uint64_t a1)
       }
 
       v8 = *(*(&v22 + 1) + 8 * i);
-      v9 = [v3 objectForKeyedSubscript:v8];
+      v9 = [entryCopy objectForKeyedSubscript:v8];
       if (v9)
       {
       }
@@ -7008,7 +7008,7 @@ void __38__PLBatteryAgent_hasAppleSmartBattery__block_invoke(uint64_t a1)
         }
       }
 
-      v11 = [v3 objectForKeyedSubscript:v8];
+      v11 = [entryCopy objectForKeyedSubscript:v8];
       if (objc_opt_respondsToSelector())
       {
         v12 = [(PLEntry *)self->_lastChargerEntry objectForKeyedSubscript:v8];
@@ -7016,7 +7016,7 @@ void __38__PLBatteryAgent_hasAppleSmartBattery__block_invoke(uint64_t a1)
 
         if (v13)
         {
-          v14 = [v3 objectForKeyedSubscript:v8];
+          v14 = [entryCopy objectForKeyedSubscript:v8];
           v15 = [(PLEntry *)self->_lastChargerEntry objectForKeyedSubscript:v8];
           v16 = [v14 compare:v15];
 
@@ -7069,14 +7069,14 @@ uint64_t __40__PLBatteryAgent_hasChargingInfoLogging__block_invoke()
   return result;
 }
 
-- (void)showOrHideTLCNotification:(BOOL)a3 meetsTLCNotificationConditions:(BOOL)a4
+- (void)showOrHideTLCNotification:(BOOL)notification meetsTLCNotificationConditions:(BOOL)conditions
 {
-  v4 = a4;
+  conditionsCopy = conditions;
   v27 = *MEMORY[0x277D85DE8];
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v7 = [(PLBatteryAgent *)self isTLCNotificationSurfaced];
-  v8 = v7;
-  if (!v4)
+  isTLCNotificationSurfaced = [(PLBatteryAgent *)self isTLCNotificationSurfaced];
+  v8 = isTLCNotificationSurfaced;
+  if (!conditionsCopy)
   {
     v10 = PLLogCommon();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG);
@@ -7135,9 +7135,9 @@ LABEL_13:
       {
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
         {
-          v23 = [v17 BOOLValue];
+          bOOLValue = [v17 BOOLValue];
           v25 = 67109120;
-          LODWORD(v26) = v23;
+          LODWORD(v26) = bOOLValue;
           _os_log_debug_impl(&dword_21A4C6000, v19, OS_LOG_TYPE_DEBUG, "TLC: Reading response from Notification Service: %d", &v25, 8u);
         }
 
@@ -7145,9 +7145,9 @@ LABEL_13:
         v20 = PLLogCommon();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
         {
-          v24 = [v17 BOOLValue];
+          bOOLValue2 = [v17 BOOLValue];
           v25 = 67109120;
-          LODWORD(v26) = v24;
+          LODWORD(v26) = bOOLValue2;
           _os_log_debug_impl(&dword_21A4C6000, v20, OS_LOG_TYPE_DEBUG, "TLC: Writing %d response to defaults", &v25, 8u);
         }
 
@@ -7185,7 +7185,7 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  if (!v7 && ![(PLBatteryAgent *)self cleanEnergyChargingEngaged])
+  if (!isTLCNotificationSurfaced && ![(PLBatteryAgent *)self cleanEnergyChargingEngaged])
   {
     v9 = PLLogCommon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -7203,9 +7203,9 @@ LABEL_35:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setupEALoggingTriggeredByConnectionEvent:(BOOL)a3
+- (void)setupEALoggingTriggeredByConnectionEvent:(BOOL)event
 {
-  v3 = a3;
+  eventCopy = event;
   v42 = *MEMORY[0x277D85DE8];
   if (+[PLBatteryAgent hasExternalAccessory])
   {
@@ -7227,9 +7227,9 @@ LABEL_35:
         v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"In Setup EA Logging"];
         v7 = MEMORY[0x277D3F178];
         v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-        v9 = [v8 lastPathComponent];
+        lastPathComponent = [v8 lastPathComponent];
         v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent setupEALoggingTriggeredByConnectionEvent:]"];
-        [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:3845];
+        [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:3845];
 
         v11 = PLLogCommon();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -7241,7 +7241,7 @@ LABEL_35:
       }
     }
 
-    if (v3)
+    if (eventCopy)
     {
       v12 = PLLogCommon();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -7253,33 +7253,33 @@ LABEL_35:
       [(PLBatteryAgent *)self logEABatteryConnectedEventToAnalyticsIgnoreLastLogTimestamp:1];
     }
 
-    v13 = [(PLBatteryAgent *)self EABatteryTimer];
+    eABatteryTimer = [(PLBatteryAgent *)self EABatteryTimer];
 
-    if (!v13)
+    if (!eABatteryTimer)
     {
       [(PLBatteryAgent *)self logEABatteryConnectedEventToAnalyticsIgnoreLastLogTimestamp:0];
       v14 = objc_alloc(MEMORY[0x277D3F250]);
       v15 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:20.0];
-      v16 = [(PLOperator *)self workQueue];
+      workQueue = [(PLOperator *)self workQueue];
       v38[0] = MEMORY[0x277D85DD0];
       v38[1] = 3221225472;
       v38[2] = __59__PLBatteryAgent_setupEALoggingTriggeredByConnectionEvent___block_invoke_3446;
       v38[3] = &unk_278259C40;
       v38[4] = self;
-      v17 = [v14 initWithFireDate:v15 withInterval:1 withTolerance:0 repeats:v16 withUserInfo:v38 withQueue:20.0 withBlock:0.0];
+      v17 = [v14 initWithFireDate:v15 withInterval:1 withTolerance:0 repeats:workQueue withUserInfo:v38 withQueue:20.0 withBlock:0.0];
       [(PLBatteryAgent *)self setEABatteryTimer:v17];
 
       [(PLOperator *)self defaultDoubleForKey:@"B244SBCInterval"];
       v19 = v18;
       v20 = MEMORY[0x277D3F1E0];
       v21 = [MEMORY[0x277CBEAA8] monotonicDateWithTimeIntervalSinceNow:?];
-      v22 = [(PLOperator *)self workQueue];
+      workQueue2 = [(PLOperator *)self workQueue];
       v37[0] = MEMORY[0x277D85DD0];
       v37[1] = 3221225472;
       v37[2] = __59__PLBatteryAgent_setupEALoggingTriggeredByConnectionEvent___block_invoke_2;
       v37[3] = &unk_27825B230;
       v37[4] = self;
-      v23 = [v20 scheduledTimerWithMonotonicFireDate:v21 withInterval:v22 withQueue:v37 withBlock:v19];
+      v23 = [v20 scheduledTimerWithMonotonicFireDate:v21 withInterval:workQueue2 withQueue:v37 withBlock:v19];
       [(PLBatteryAgent *)self setSignificantBatteryChangeTimer:v23];
     }
 
@@ -7301,9 +7301,9 @@ LABEL_35:
         v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"In Setup EA Logging: Done", v32, v33, v34, v35, v36];
         v26 = MEMORY[0x277D3F178];
         v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-        v28 = [v27 lastPathComponent];
+        lastPathComponent2 = [v27 lastPathComponent];
         v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent setupEALoggingTriggeredByConnectionEvent:]"];
-        [v26 logMessage:v25 fromFile:v28 fromFunction:v29 fromLineNumber:3871];
+        [v26 logMessage:v25 fromFile:lastPathComponent2 fromFunction:v29 fromLineNumber:3871];
 
         v30 = PLLogCommon();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
@@ -7361,19 +7361,19 @@ uint64_t __33__PLBatteryAgent_cancelEALogging__block_invoke_3466(uint64_t a1)
   return result;
 }
 
-- (void)accessoryDisconnected:(id)a3
+- (void)accessoryDisconnected:(id)disconnected
 {
-  v4 = a3;
+  disconnectedCopy = disconnected;
   if (+[PLBatteryAgent hasExternalAccessory])
   {
-    v5 = [(PLOperator *)self workQueue];
+    workQueue = [(PLOperator *)self workQueue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __40__PLBatteryAgent_accessoryDisconnected___block_invoke;
     v6[3] = &unk_278259658;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = disconnectedCopy;
+    dispatch_async(workQueue, v6);
   }
 }
 
@@ -7385,19 +7385,19 @@ uint64_t __40__PLBatteryAgent_accessoryDisconnected___block_invoke(uint64_t a1)
   return [v2 refreshEABatteryStatusTriggeredByConnectionEvent:1];
 }
 
-- (void)accessoryConnected:(id)a3
+- (void)accessoryConnected:(id)connected
 {
-  v4 = a3;
+  connectedCopy = connected;
   if (+[PLBatteryAgent hasExternalAccessory])
   {
-    v5 = [(PLOperator *)self workQueue];
+    workQueue = [(PLOperator *)self workQueue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __37__PLBatteryAgent_accessoryConnected___block_invoke;
     v6[3] = &unk_278259658;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = connectedCopy;
+    dispatch_async(workQueue, v6);
   }
 }
 
@@ -7414,17 +7414,17 @@ uint64_t __37__PLBatteryAgent_accessoryConnected___block_invoke(uint64_t a1)
   return [*(a1 + 32) refreshEABatteryStatusTriggeredByConnectionEvent:1];
 }
 
-- (void)accessoryConnectionEventNotification:(id)a3
+- (void)accessoryConnectionEventNotification:(id)notification
 {
   if (+[PLBatteryAgent hasExternalAccessory])
   {
-    v4 = [(PLOperator *)self workQueue];
+    workQueue = [(PLOperator *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __55__PLBatteryAgent_accessoryConnectionEventNotification___block_invoke;
     block[3] = &unk_2782591D0;
     block[4] = self;
-    dispatch_async(v4, block);
+    dispatch_async(workQueue, block);
   }
 }
 
@@ -7441,17 +7441,17 @@ uint64_t __55__PLBatteryAgent_accessoryConnectionEventNotification___block_invok
   return [*(a1 + 32) setShouldLogEABatteryConfig:1];
 }
 
-- (void)accessoryDisconnectEventNotification:(id)a3
+- (void)accessoryDisconnectEventNotification:(id)notification
 {
   if (+[PLBatteryAgent hasExternalAccessory])
   {
-    v4 = [(PLOperator *)self workQueue];
+    workQueue = [(PLOperator *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __55__PLBatteryAgent_accessoryDisconnectEventNotification___block_invoke;
     block[3] = &unk_2782591D0;
     block[4] = self;
-    dispatch_async(v4, block);
+    dispatch_async(workQueue, block);
   }
 }
 
@@ -7488,19 +7488,19 @@ uint64_t __32__PLBatteryAgent_getIOPSDevices__block_invoke_3481(uint64_t a1)
   return result;
 }
 
-- (id)getBaseIdentifierFromDevice:(id)a3
+- (id)getBaseIdentifierFromDevice:(id)device
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  deviceCopy = device;
   if (+[PLBatteryAgent hasExternalAccessory])
   {
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"Vendor ID"];
-    v5 = [v3 objectForKey:v4];
-    v6 = [v5 intValue];
+    v5 = [deviceCopy objectForKey:v4];
+    intValue = [v5 intValue];
 
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"Product ID"];
-    v8 = [v3 objectForKey:v7];
-    v9 = [v8 intValue];
+    v8 = [deviceCopy objectForKey:v7];
+    intValue2 = [v8 intValue];
 
     if ([MEMORY[0x277D3F180] debugEnabled])
     {
@@ -7517,12 +7517,12 @@ uint64_t __32__PLBatteryAgent_getIOPSDevices__block_invoke_3481(uint64_t a1)
 
       if (byte_2811F3A87 == 1)
       {
-        v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s-%d: vendorID=%d, productID=%d", "-[PLBatteryAgent getBaseIdentifierFromDevice:]", 3984, v6, v9];
+        v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s-%d: vendorID=%d, productID=%d", "-[PLBatteryAgent getBaseIdentifierFromDevice:]", 3984, intValue, intValue2];
         v12 = MEMORY[0x277D3F178];
         v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-        v14 = [v13 lastPathComponent];
+        lastPathComponent = [v13 lastPathComponent];
         v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent getBaseIdentifierFromDevice:]"];
-        [v12 logMessage:v11 fromFile:v14 fromFunction:v15 fromLineNumber:3984];
+        [v12 logMessage:v11 fromFile:lastPathComponent fromFunction:v15 fromLineNumber:3984];
 
         v16 = PLLogCommon();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -7535,9 +7535,9 @@ uint64_t __32__PLBatteryAgent_getIOPSDevices__block_invoke_3481(uint64_t a1)
     }
 
     v17 = 0;
-    if (v6 != 0xFFFF && v6 && v9 && v9 != 0xFFFF)
+    if (intValue != 0xFFFF && intValue && intValue2 && intValue2 != 0xFFFF)
     {
-      v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d-%d", v6, v9];
+      v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d-%d", intValue, intValue2];
     }
   }
 
@@ -7566,12 +7566,12 @@ uint64_t __46__PLBatteryAgent_getBaseIdentifierFromDevice___block_invoke(uint64_
     goto LABEL_29;
   }
 
-  v3 = [(PLBatteryAgent *)self getIOPSDevices];
+  getIOPSDevices = [(PLBatteryAgent *)self getIOPSDevices];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v40 objects:v48 count:16];
+  v4 = [getIOPSDevices countByEnumeratingWithState:&v40 objects:v48 count:16];
   if (!v4)
   {
     goto LABEL_27;
@@ -7588,21 +7588,21 @@ uint64_t __46__PLBatteryAgent_getBaseIdentifierFromDevice___block_invoke(uint64_
     {
       if (*v41 != v8)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(getIOPSDevices);
       }
 
       v10 = *(*(&v40 + 1) + 8 * i);
       v11 = [(PLBatteryAgent *)self getBaseIdentifierFromDevice:v10, v39];
-      v12 = [(PLBatteryAgent *)self trackedAccessories];
-      v13 = [v12 containsObject:v11];
+      trackedAccessories = [(PLBatteryAgent *)self trackedAccessories];
+      v13 = [trackedAccessories containsObject:v11];
 
       if (v13)
       {
         if ([v11 isEqualToString:@"76-546"])
         {
           v14 = objc_alloc(MEMORY[0x277D3F190]);
-          v15 = [(PLBatteryAgent *)self entryKeyEAPencilStats];
-          v16 = [v14 initWithEntryKey:v15 withRawData:v10];
+          entryKeyEAPencilStats = [(PLBatteryAgent *)self entryKeyEAPencilStats];
+          v16 = [v14 initWithEntryKey:entryKeyEAPencilStats withRawData:v10];
 
           [(PLOperator *)self logEntry:v16];
           goto LABEL_22;
@@ -7611,8 +7611,8 @@ uint64_t __46__PLBatteryAgent_getBaseIdentifierFromDevice___block_invoke(uint64_
         if (([v11 isEqualToString:@"1452-5013"] & 1) != 0 || (objc_msgSend(v11, "isEqualToString:", @"1452-5016") & 1) != 0 || (objc_msgSend(v11, "isEqualToString:", @"1452-5017") & 1) != 0 || objc_msgSend(v11, "isEqualToString:", @"1452-5026"))
         {
           v17 = objc_alloc(MEMORY[0x277D3F190]);
-          v18 = [(PLBatteryAgent *)self entryKeyEABattery];
-          v16 = [v17 initWithEntryKey:v18 withRawData:v10];
+          entryKeyEABattery = [(PLBatteryAgent *)self entryKeyEABattery];
+          v16 = [v17 initWithEntryKey:entryKeyEABattery withRawData:v10];
 
           [(PLOperator *)self logEntry:v16];
           [(PLBatteryAgent *)self logEABatteryConfig:v10];
@@ -7621,7 +7621,7 @@ uint64_t __46__PLBatteryAgent_getBaseIdentifierFromDevice___block_invoke(uint64_
           v21 = v20;
 
           v22 = [v16 objectForKeyedSubscript:@"Max Capacity"];
-          v23 = [v22 intValue];
+          intValue = [v22 intValue];
 
           v24 = PLLogCommon();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -7629,27 +7629,27 @@ uint64_t __46__PLBatteryAgent_getBaseIdentifierFromDevice___block_invoke(uint64_
             *buf = v39;
             v45 = v21;
             v46 = 1024;
-            v47 = v23;
+            v47 = intValue;
             _os_log_debug_impl(&dword_21A4C6000, v24, OS_LOG_TYPE_DEBUG, "EALevel: %f / %d", buf, 0x12u);
           }
 
-          if (v23 < 1)
+          if (intValue < 1)
           {
             v25 = -1.0;
           }
 
           else
           {
-            v25 = v21 / v23 * 100.0;
+            v25 = v21 / intValue * 100.0;
           }
 
           [(PLBatteryAgent *)self setEABatteryLevel:v25];
-          v26 = [(PLBatteryAgent *)self lastkIOPSAppleBatteryCaseCumulativeCurrentKey];
+          lastkIOPSAppleBatteryCaseCumulativeCurrentKey = [(PLBatteryAgent *)self lastkIOPSAppleBatteryCaseCumulativeCurrentKey];
 
-          if (v26)
+          if (lastkIOPSAppleBatteryCaseCumulativeCurrentKey)
           {
-            v27 = [(PLBatteryAgent *)self lastkIOPSAppleBatteryCaseCumulativeCurrentKey];
-            [v27 doubleValue];
+            lastkIOPSAppleBatteryCaseCumulativeCurrentKey2 = [(PLBatteryAgent *)self lastkIOPSAppleBatteryCaseCumulativeCurrentKey];
+            [lastkIOPSAppleBatteryCaseCumulativeCurrentKey2 doubleValue];
             v29 = v28;
             v30 = [v16 objectForKeyedSubscript:@"Battery Case Cumulative Current"];
             [v30 doubleValue];
@@ -7673,7 +7673,7 @@ LABEL_22:
       }
     }
 
-    v6 = [v3 countByEnumeratingWithState:&v40 objects:v48 count:16];
+    v6 = [getIOPSDevices countByEnumeratingWithState:&v40 objects:v48 count:16];
   }
 
   while (v6);
@@ -7687,12 +7687,12 @@ LABEL_29:
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logEABatteryConfigToCA:(id)a3
+- (void)logEABatteryConfigToCA:(id)a
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 definedKeys];
-  v6 = [v5 mutableCopy];
+  aCopy = a;
+  definedKeys = [aCopy definedKeys];
+  v6 = [definedKeys mutableCopy];
 
   v18 = objc_opt_new();
   [v6 addObjectsFromArray:&unk_282C15660];
@@ -7716,8 +7716,8 @@ LABEL_29:
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        [(PLBatteryAgent *)self setAggdIntegerValueFromEntry:v4 forKey:v11 withPrefix:@"com.apple.power.battery.eabatteryconfig."];
-        v12 = [v4 objectForKeyedSubscript:v11];
+        [(PLBatteryAgent *)self setAggdIntegerValueFromEntry:aCopy forKey:v11 withPrefix:@"com.apple.power.battery.eabatteryconfig."];
+        v12 = [aCopy objectForKeyedSubscript:v11];
         v13 = v11;
         if ([v13 rangeOfString:@"-"] != 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -7749,13 +7749,13 @@ LABEL_29:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logEABatteryConfig:(id)a3
+- (void)logEABatteryConfig:(id)config
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configCopy = config;
   if ([(PLBatteryAgent *)self shouldLogEABatteryConfig])
   {
-    v5 = [v4 objectForKeyedSubscript:@"Debug Information"];
+    v5 = [configCopy objectForKeyedSubscript:@"Debug Information"];
 
     if (v5)
     {
@@ -7774,12 +7774,12 @@ LABEL_29:
 
         if (byte_2811F3A88 == 1)
         {
-          v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"The payload is %@", v4, block, v19, v20, v21, v22];
+          v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"The payload is %@", configCopy, block, v19, v20, v21, v22];
           v8 = MEMORY[0x277D3F178];
           v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-          v10 = [v9 lastPathComponent];
+          lastPathComponent = [v9 lastPathComponent];
           v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent logEABatteryConfig:]"];
-          [v8 logMessage:v7 fromFile:v10 fromFunction:v11 fromLineNumber:4105];
+          [v8 logMessage:v7 fromFile:lastPathComponent fromFunction:v11 fromLineNumber:4105];
 
           v12 = PLLogCommon();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -7792,12 +7792,12 @@ LABEL_29:
       }
 
       v13 = [(PLOperator *)PLBatteryAgent entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"EABatteryConfig"];
-      v14 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v13 withRawData:v4];
+      v14 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v13 withRawData:configCopy];
       [(PLOperator *)self logEntry:v14];
-      v15 = [v4 objectForKeyedSubscript:@"Nominal Capacity"];
+      v15 = [configCopy objectForKeyedSubscript:@"Nominal Capacity"];
       [v14 setObject:v15 forKeyedSubscript:@"NominalChargeCapacity"];
 
-      v16 = [v4 objectForKeyedSubscript:@"CycleCount"];
+      v16 = [configCopy objectForKeyedSubscript:@"CycleCount"];
       [v14 setObject:v16 forKeyedSubscript:@"CycleCount"];
 
       [(PLBatteryAgent *)self logEABatteryConfigToCA:v14];
@@ -7815,11 +7815,11 @@ uint64_t __37__PLBatteryAgent_logEABatteryConfig___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)logEABatteryConnectedEventToAnalyticsIgnoreLastLogTimestamp:(BOOL)a3
+- (void)logEABatteryConnectedEventToAnalyticsIgnoreLastLogTimestamp:(BOOL)timestamp
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277CBEAA8] monotonicDate];
-  [(PLBatteryAgent *)self setLastEABatteryConnectedTime:v5];
+  timestampCopy = timestamp;
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  [(PLBatteryAgent *)self setLastEABatteryConnectedTime:monotonicDate];
 
   v6 = PLLogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -7828,12 +7828,12 @@ uint64_t __37__PLBatteryAgent_logEABatteryConfig___block_invoke(uint64_t a1)
     _os_log_debug_impl(&dword_21A4C6000, v6, OS_LOG_TYPE_DEBUG, "[BATTERY] logEABatteryConnectedEventToAnalytics", buf, 2u);
   }
 
-  v7 = [MEMORY[0x277CBEAA8] monotonicDate];
+  monotonicDate2 = [MEMORY[0x277CBEAA8] monotonicDate];
   [MEMORY[0x277D3F180] doubleForKey:@"LastEABatteryConnectCountLogTimestamp" ifNotSet:0.0];
   v9 = v8;
-  [v7 timeIntervalSince1970];
+  [monotonicDate2 timeIntervalSince1970];
   v11 = v10;
-  if (v9 == 0.0 || v3)
+  if (v9 == 0.0 || timestampCopy)
   {
     v13 = PLLogCommon();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -7852,23 +7852,23 @@ LABEL_14:
     v16 = [MEMORY[0x277CCABB0] numberWithDouble:v11];
     [v15 setObject:v16 forKey:@"LastEABatteryConnectCountLogTimestamp" saveToDisk:1];
 
-    v17 = [(PLBatteryAgent *)self eaBatteryConnectCountTimer];
+    eaBatteryConnectCountTimer = [(PLBatteryAgent *)self eaBatteryConnectCountTimer];
 
-    if (v17)
+    if (eaBatteryConnectCountTimer)
     {
-      v18 = [(PLBatteryAgent *)self eaBatteryConnectCountTimer];
-      [v18 invalidate];
+      eaBatteryConnectCountTimer2 = [(PLBatteryAgent *)self eaBatteryConnectCountTimer];
+      [eaBatteryConnectCountTimer2 invalidate];
 
-      v19 = [MEMORY[0x277CBEAA8] date];
-      v20 = [v19 dateByAddingTimeInterval:86400.0];
-      v21 = [(PLBatteryAgent *)self eaBatteryConnectCountTimer];
-      [v21 setFireDate:v20];
+      date = [MEMORY[0x277CBEAA8] date];
+      v20 = [date dateByAddingTimeInterval:86400.0];
+      eaBatteryConnectCountTimer3 = [(PLBatteryAgent *)self eaBatteryConnectCountTimer];
+      [eaBatteryConnectCountTimer3 setFireDate:v20];
     }
 
     else
     {
-      v19 = [(PLBatteryAgent *)self createTimerForEABatteryCountLogging];
-      [(PLBatteryAgent *)self setEaBatteryConnectCountTimer:v19];
+      date = [(PLBatteryAgent *)self createTimerForEABatteryCountLogging];
+      [(PLBatteryAgent *)self setEaBatteryConnectCountTimer:date];
     }
 
     v22 = PLLogCommon();
@@ -7893,12 +7893,12 @@ LABEL_14:
 LABEL_20:
 }
 
-- (void)logEABatteryConnectedTimeToAnalyticsWithEAConnectionState:(BOOL)a3
+- (void)logEABatteryConnectedTimeToAnalyticsWithEAConnectionState:(BOOL)state
 {
-  v3 = a3;
-  v5 = [(PLBatteryAgent *)self lastEABatteryConnectedTime];
+  stateCopy = state;
+  lastEABatteryConnectedTime = [(PLBatteryAgent *)self lastEABatteryConnectedTime];
 
-  if (v5)
+  if (lastEABatteryConnectedTime)
   {
     v6 = PLLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -7907,26 +7907,26 @@ LABEL_20:
       _os_log_debug_impl(&dword_21A4C6000, v6, OS_LOG_TYPE_DEBUG, "[BATTERY] logEABatteryConnectedTimeToAnalyticsWithEAConnectionState", buf, 2u);
     }
 
-    v7 = [MEMORY[0x277CBEAA8] monotonicDate];
-    v8 = [(PLBatteryAgent *)self lastEABatteryConnectedTime];
-    [v7 timeIntervalSinceDate:v8];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+    lastEABatteryConnectedTime2 = [(PLBatteryAgent *)self lastEABatteryConnectedTime];
+    [monotonicDate timeIntervalSinceDate:lastEABatteryConnectedTime2];
     v10 = v9;
 
-    if (v3)
+    if (stateCopy)
     {
       [(PLBatteryAgent *)self setLastEABatteryConnectedTime:0];
     }
 
     else
     {
-      v11 = [MEMORY[0x277CBEAA8] monotonicDate];
-      [(PLBatteryAgent *)self setLastEABatteryConnectedTime:v11];
+      monotonicDate2 = [MEMORY[0x277CBEAA8] monotonicDate];
+      [(PLBatteryAgent *)self setLastEABatteryConnectedTime:monotonicDate2];
     }
 
-    v12 = [(PLBatteryAgent *)self deviceIsPluggedIn];
-    v13 = [v12 BOOLValue];
+    deviceIsPluggedIn = [(PLBatteryAgent *)self deviceIsPluggedIn];
+    bOOLValue = [deviceIsPluggedIn BOOLValue];
 
-    if ((v13 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       v14 = PLLogCommon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -7957,36 +7957,36 @@ id __76__PLBatteryAgent_logEABatteryConnectedTimeToAnalyticsWithEAConnectionStat
 - (id)createTimerForEABatteryCountLogging
 {
   v3 = objc_alloc(MEMORY[0x277D3F250]);
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = [v4 dateByAddingTimeInterval:86400.0];
-  v6 = [(PLOperator *)self workQueue];
+  date = [MEMORY[0x277CBEAA8] date];
+  v5 = [date dateByAddingTimeInterval:86400.0];
+  workQueue = [(PLOperator *)self workQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __53__PLBatteryAgent_createTimerForEABatteryCountLogging__block_invoke;
   v9[3] = &unk_278259C40;
   v9[4] = self;
-  v7 = [v3 initWithFireDate:v5 withInterval:1 withTolerance:0 repeats:v6 withUserInfo:v9 withQueue:86400.0 withBlock:1.0];
+  v7 = [v3 initWithFireDate:v5 withInterval:1 withTolerance:0 repeats:workQueue withUserInfo:v9 withQueue:86400.0 withBlock:1.0];
 
   return v7;
 }
 
-- (BOOL)isUPOEntry:(id)a3
+- (BOOL)isUPOEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   if ([MEMORY[0x277D3F180] BOOLForKey:@"UPO_Debug" ifNotSet:0])
   {
     v4 = 1;
   }
 
-  else if (v3)
+  else if (entryCopy)
   {
-    v5 = [v3 objectForKeyedSubscript:@"UISOC"];
-    v6 = [v5 intValue];
+    v5 = [entryCopy objectForKeyedSubscript:@"UISOC"];
+    intValue = [v5 intValue];
 
-    v7 = [v3 objectForKeyedSubscript:@"Temperature"];
-    v8 = [v7 intValue];
+    v7 = [entryCopy objectForKeyedSubscript:@"Temperature"];
+    intValue2 = [v7 intValue];
 
-    v4 = v6 > 10 && v8 > 0;
+    v4 = intValue > 10 && intValue2 > 0;
   }
 
   else
@@ -7997,33 +7997,33 @@ id __76__PLBatteryAgent_logEABatteryConnectedTimeToAnalyticsWithEAConnectionStat
   return v4;
 }
 
-- (void)detectEAPencilConnectionWithNotification:(id)a3
+- (void)detectEAPencilConnectionWithNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v14 = [v4 objectForKey:@"EAAccessoryKey"];
+  userInfo = [notification userInfo];
+  v14 = [userInfo objectForKey:@"EAAccessoryKey"];
 
-  v5 = [v14 name];
-  v6 = [v5 isEqualToString:@"Apple Pencil"];
+  name = [v14 name];
+  v6 = [name isEqualToString:@"Apple Pencil"];
 
   v7 = v14;
   if (v6)
   {
-    v8 = [v14 isConnected];
-    v9 = [(PLBatteryAgent *)self trackedAccessories];
-    v10 = v9;
-    if (v8)
+    isConnected = [v14 isConnected];
+    trackedAccessories = [(PLBatteryAgent *)self trackedAccessories];
+    v10 = trackedAccessories;
+    if (isConnected)
     {
-      [v9 addObject:@"76-546"];
+      [trackedAccessories addObject:@"76-546"];
     }
 
     else
     {
-      [v9 removeObject:@"76-546"];
+      [trackedAccessories removeObject:@"76-546"];
     }
 
     v11 = [(PLOperator *)PLBatteryAgent entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"EAPencilConnect"];
     v12 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v11];
-    v13 = [MEMORY[0x277CCABB0] numberWithBool:v8];
+    v13 = [MEMORY[0x277CCABB0] numberWithBool:isConnected];
     [v12 setObject:v13 forKeyedSubscript:@"isPhysicallyAttached"];
 
     [(PLOperator *)self logEntry:v12];
@@ -8049,8 +8049,8 @@ id __76__PLBatteryAgent_logEABatteryConnectedTimeToAnalyticsWithEAConnectionStat
     v3 = [MEMORY[0x277D3F218] sharedSemaphoreForKey:*MEMORY[0x277D3F468]];
     [(PLBatteryAgent *)self setCanSleepSemaphore:v3];
 
-    v4 = [(PLBatteryAgent *)self canSleepSemaphore];
-    [v4 signalInterestByObject:self];
+    canSleepSemaphore = [(PLBatteryAgent *)self canSleepSemaphore];
+    [canSleepSemaphore signalInterestByObject:self];
 
     v143[0] = MEMORY[0x277D85DD0];
     v143[1] = 3221225472;
@@ -8100,13 +8100,13 @@ id __76__PLBatteryAgent_logEABatteryConnectedTimeToAnalyticsWithEAConnectionStat
   [(PLBatteryAgent *)self setBatteryDischargeCurrentResponder:v17];
 
   v18 = objc_alloc(MEMORY[0x277D3F278]);
-  v19 = [(PLOperator *)self workQueue];
+  workQueue = [(PLOperator *)self workQueue];
   v140[0] = MEMORY[0x277D85DD0];
   v140[1] = 3221225472;
   v140[2] = __42__PLBatteryAgent_initOperatorDependancies__block_invoke_3668;
   v140[3] = &unk_278259810;
   v140[4] = self;
-  v20 = [v18 initWithWorkQueue:v19 withRegistration:&unk_282C18D78 withBlock:v140];
+  v20 = [v18 initWithWorkQueue:workQueue withRegistration:&unk_282C18D78 withBlock:v140];
   [(PLBatteryAgent *)self setBatteryChargingStateResponder:v20];
 
   v21 = 0x277D3F000uLL;
@@ -8138,9 +8138,9 @@ id __76__PLBatteryAgent_logEABatteryConnectedTimeToAnalyticsWithEAConnectionStat
       v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not register IOAccessoryManager callback"];
       v27 = MEMORY[0x277D3F178];
       v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-      v29 = [v28 lastPathComponent];
+      lastPathComponent = [v28 lastPathComponent];
       v30 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent initOperatorDependancies]"];
-      [v27 logMessage:v26 fromFile:v29 fromFunction:v30 fromLineNumber:4549];
+      [v27 logMessage:v26 fromFile:lastPathComponent fromFunction:v30 fromLineNumber:4549];
 
       v31 = PLLogCommon();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
@@ -8185,13 +8185,13 @@ id __76__PLBatteryAgent_logEABatteryConnectedTimeToAnalyticsWithEAConnectionStat
   {
     state64[0] = 0;
     *out_token = 0;
-    v37 = [(PLOperator *)self workQueue];
+    workQueue2 = [(PLOperator *)self workQueue];
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __42__PLBatteryAgent_initOperatorDependancies__block_invoke_3715;
     handler[3] = &unk_278260C40;
     handler[4] = self;
-    v38 = notify_register_dispatch("com.apple.thermalmonitor.ageAwareMitigationState", &out_token[1], v37, handler);
+    v38 = notify_register_dispatch("com.apple.thermalmonitor.ageAwareMitigationState", &out_token[1], workQueue2, handler);
 
     if (v38 && [MEMORY[0x277D3F180] debugEnabled])
     {
@@ -8211,9 +8211,9 @@ id __76__PLBatteryAgent_logEABatteryConnectedTimeToAnalyticsWithEAConnectionStat
         v40 = [MEMORY[0x277CCACA8] stringWithFormat:@"notify_register_dispatch failed %d %s", v38, "com.apple.thermalmonitor.ageAwareMitigationState"];
         v41 = MEMORY[0x277D3F178];
         v42 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-        v43 = [v42 lastPathComponent];
+        lastPathComponent2 = [v42 lastPathComponent];
         v44 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent initOperatorDependancies]"];
-        [v41 logMessage:v40 fromFile:v43 fromFunction:v44 fromLineNumber:4594];
+        [v41 logMessage:v40 fromFile:lastPathComponent2 fromFunction:v44 fromLineNumber:4594];
 
         v45 = PLLogCommon();
         if (os_log_type_enabled(v45, OS_LOG_TYPE_DEBUG))
@@ -8225,13 +8225,13 @@ id __76__PLBatteryAgent_logEABatteryConnectedTimeToAnalyticsWithEAConnectionStat
       }
     }
 
-    v46 = [(PLOperator *)self workQueue];
+    workQueue3 = [(PLOperator *)self workQueue];
     v132[0] = MEMORY[0x277D85DD0];
     v132[1] = 3221225472;
     v132[2] = __42__PLBatteryAgent_initOperatorDependancies__block_invoke_3724;
     v132[3] = &unk_278260C40;
     v132[4] = self;
-    v47 = notify_register_dispatch("com.apple.thermalmonitor.ageAwareMitigationsDisabled", out_token, v46, v132);
+    v47 = notify_register_dispatch("com.apple.thermalmonitor.ageAwareMitigationsDisabled", out_token, workQueue3, v132);
 
     if (v47 && [MEMORY[0x277D3F180] debugEnabled])
     {
@@ -8251,9 +8251,9 @@ id __76__PLBatteryAgent_logEABatteryConnectedTimeToAnalyticsWithEAConnectionStat
         v49 = [MEMORY[0x277CCACA8] stringWithFormat:@"notify_register_dispatch failed %d %s", v47, "com.apple.thermalmonitor.ageAwareMitigationsDisabled"];
         v50 = MEMORY[0x277D3F178];
         v51 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-        v52 = [v51 lastPathComponent];
+        lastPathComponent3 = [v51 lastPathComponent];
         v53 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent initOperatorDependancies]"];
-        [v50 logMessage:v49 fromFile:v52 fromFunction:v53 fromLineNumber:4601];
+        [v50 logMessage:v49 fromFile:lastPathComponent3 fromFunction:v53 fromLineNumber:4601];
 
         v54 = PLLogCommon();
         if (os_log_type_enabled(v54, OS_LOG_TYPE_DEBUG))
@@ -8287,9 +8287,9 @@ id __76__PLBatteryAgent_logEABatteryConnectedTimeToAnalyticsWithEAConnectionStat
           v58 = [MEMORY[0x277CCACA8] stringWithFormat:@"notify_get_state failed %d %s", v56, "com.apple.thermalmonitor.ageAwareMitigationState"];
           v59 = MEMORY[0x277D3F178];
           v60 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-          v61 = [v60 lastPathComponent];
+          lastPathComponent4 = [v60 lastPathComponent];
           v62 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent initOperatorDependancies]"];
-          [v59 logMessage:v58 fromFile:v61 fromFunction:v62 fromLineNumber:4608];
+          [v59 logMessage:v58 fromFile:lastPathComponent4 fromFunction:v62 fromLineNumber:4608];
 
           v63 = PLLogCommon();
           if (os_log_type_enabled(v63, OS_LOG_TYPE_DEBUG))
@@ -8327,13 +8327,13 @@ id __76__PLBatteryAgent_logEABatteryConnectedTimeToAnalyticsWithEAConnectionStat
   {
     v67 = objc_alloc(MEMORY[0x277D3F250]);
     v68 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:3600.0];
-    v69 = [(PLOperator *)self workQueue];
+    workQueue4 = [(PLOperator *)self workQueue];
     v128[0] = MEMORY[0x277D85DD0];
     v128[1] = 3221225472;
     v128[2] = __42__PLBatteryAgent_initOperatorDependancies__block_invoke_3744;
     v128[3] = &unk_278259C40;
     v128[4] = self;
-    v70 = [v67 initWithFireDate:v68 withInterval:1 withTolerance:0 repeats:v69 withUserInfo:v128 withQueue:3600.0 withBlock:0.0];
+    v70 = [v67 initWithFireDate:v68 withInterval:1 withTolerance:0 repeats:workQueue4 withUserInfo:v128 withQueue:3600.0 withBlock:0.0];
     ppmEventThresholdTimer = self->_ppmEventThresholdTimer;
     self->_ppmEventThresholdTimer = v70;
   }
@@ -8359,13 +8359,13 @@ id __76__PLBatteryAgent_logEABatteryConnectedTimeToAnalyticsWithEAConnectionStat
   if (+[PLBatteryAgent shouldLogCPMS])
   {
     v77 = objc_alloc(MEMORY[0x277D3F160]);
-    v78 = [(PLOperator *)self workQueue];
+    workQueue5 = [(PLOperator *)self workQueue];
     v126[0] = MEMORY[0x277D85DD0];
     v126[1] = 3221225472;
     v126[2] = __42__PLBatteryAgent_initOperatorDependancies__block_invoke_3770;
     v126[3] = &unk_2782597E8;
     v126[4] = self;
-    v79 = [v77 initWithWorkQueue:v78 forNotification:@"com.apple.powerlogd.logCPMS" requireState:0 withBlock:v126];
+    v79 = [v77 initWithWorkQueue:workQueue5 forNotification:@"com.apple.powerlogd.logCPMS" requireState:0 withBlock:v126];
     [(PLBatteryAgent *)self setCpmsDebugNotification:v79];
 
     [(PLBatteryAgent *)self logCPMSSnapshotWithTrigger:2];
@@ -8378,8 +8378,8 @@ id __76__PLBatteryAgent_logEABatteryConnectedTimeToAnalyticsWithEAConnectionStat
     if (v80)
     {
       v81 = v80;
-      v82 = [(PLOperator *)self workQueue];
-      IOHIDManagerSetDispatchQueue(v81, v82);
+      workQueue6 = [(PLOperator *)self workQueue];
+      IOHIDManagerSetDispatchQueue(v81, workQueue6);
 
       v145[0] = @"AppleBTM";
       v144[0] = @"IOClass";
@@ -8446,54 +8446,54 @@ id __76__PLBatteryAgent_logEABatteryConnectedTimeToAnalyticsWithEAConnectionStat
   [(PLBatteryAgent *)self setBatteryUIInsightsListener:v93];
 
   v94 = objc_alloc(MEMORY[0x277D3F160]);
-  v95 = [(PLOperator *)self workQueue];
+  workQueue7 = [(PLOperator *)self workQueue];
   v121[0] = MEMORY[0x277D85DD0];
   v121[1] = 3221225472;
   v121[2] = __42__PLBatteryAgent_initOperatorDependancies__block_invoke_5_3822;
   v121[3] = &unk_2782597E8;
   v121[4] = self;
-  v96 = [v94 initWithWorkQueue:v95 forNotification:@"com.apple.powerlogd.logBatteryHealthUIVisit" requireState:0 withBlock:v121];
+  v96 = [v94 initWithWorkQueue:workQueue7 forNotification:@"com.apple.powerlogd.logBatteryHealthUIVisit" requireState:0 withBlock:v121];
   [(PLBatteryAgent *)self setBatteryHealthUIVisitNotification:v96];
 
   v97 = objc_alloc(MEMORY[0x277D3F160]);
-  v98 = [(PLOperator *)self workQueue];
+  workQueue8 = [(PLOperator *)self workQueue];
   v120[0] = MEMORY[0x277D85DD0];
   v120[1] = 3221225472;
   v120[2] = __42__PLBatteryAgent_initOperatorDependancies__block_invoke_6_3826;
   v120[3] = &unk_2782597E8;
   v120[4] = self;
-  v99 = [v97 initWithWorkQueue:v98 forNotification:@"com.apple.powerlogd.logBatteryChargingUIVisit" requireState:0 withBlock:v120];
+  v99 = [v97 initWithWorkQueue:workQueue8 forNotification:@"com.apple.powerlogd.logBatteryChargingUIVisit" requireState:0 withBlock:v120];
   [(PLBatteryAgent *)self setBatteryChargingUIVisitNotification:v99];
 
   v100 = objc_alloc(MEMORY[0x277D3F160]);
-  v101 = [(PLOperator *)self workQueue];
+  workQueue9 = [(PLOperator *)self workQueue];
   v119[0] = MEMORY[0x277D85DD0];
   v119[1] = 3221225472;
   v119[2] = __42__PLBatteryAgent_initOperatorDependancies__block_invoke_7_3830;
   v119[3] = &unk_2782597E8;
   v119[4] = self;
-  v102 = [v100 initWithWorkQueue:v101 forNotification:@"com.apple.powerlog.ShowAllUsageViewVisit" requireState:0 withBlock:v119];
+  v102 = [v100 initWithWorkQueue:workQueue9 forNotification:@"com.apple.powerlog.ShowAllUsageViewVisit" requireState:0 withBlock:v119];
   [(PLBatteryAgent *)self setBatteryDetailVisitNotification:v102];
 
   v103 = objc_alloc(MEMORY[0x277D3F160]);
-  v104 = [(PLOperator *)self workQueue];
+  workQueue10 = [(PLOperator *)self workQueue];
   v118[0] = MEMORY[0x277D85DD0];
   v118[1] = 3221225472;
   v118[2] = __42__PLBatteryAgent_initOperatorDependancies__block_invoke_8;
   v118[3] = &unk_2782597E8;
   v118[4] = self;
-  v105 = [v103 initWithWorkQueue:v104 forNotification:@"com.apple.powerlog.AppDetailViewVisit" requireState:0 withBlock:v118];
+  v105 = [v103 initWithWorkQueue:workQueue10 forNotification:@"com.apple.powerlog.AppDetailViewVisit" requireState:0 withBlock:v118];
   [(PLBatteryAgent *)self setBatteryAppDetailVisitNotification:v105];
 
   *v147 = 0;
   out_token[1] = 0;
-  v106 = [(PLOperator *)self workQueue];
+  workQueue11 = [(PLOperator *)self workQueue];
   v117[0] = MEMORY[0x277D85DD0];
   v117[1] = 3221225472;
   v117[2] = __42__PLBatteryAgent_initOperatorDependancies__block_invoke_9;
   v117[3] = &unk_278260C40;
   v117[4] = self;
-  v107 = notify_register_dispatch("com.apple.system.powersources.gaugingmitigation", &out_token[1], v106, v117);
+  v107 = notify_register_dispatch("com.apple.system.powersources.gaugingmitigation", &out_token[1], workQueue11, v117);
 
   if (v107)
   {
@@ -8525,13 +8525,13 @@ id __76__PLBatteryAgent_logEABatteryConnectedTimeToAnalyticsWithEAConnectionStat
   }
 
   out_token[0] = 0;
-  v112 = [(PLOperator *)self workQueue];
+  workQueue12 = [(PLOperator *)self workQueue];
   v116[0] = MEMORY[0x277D85DD0];
   v116[1] = 3221225472;
   v116[2] = __42__PLBatteryAgent_initOperatorDependancies__block_invoke_3836;
   v116[3] = &unk_278260C40;
   v116[4] = self;
-  v113 = notify_register_dispatch("com.apple.system.powersources.chargingiconography", out_token, v112, v116);
+  v113 = notify_register_dispatch("com.apple.system.powersources.chargingiconography", out_token, workQueue12, v116);
 
   if (v113)
   {
@@ -9484,21 +9484,21 @@ uint64_t __30__PLBatteryAgent_shouldLogBTM__block_invoke()
   }
 }
 
-- (void)handleBDCAMALogging:(id)a3
+- (void)handleBDCAMALogging:(id)logging
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 objectForKeyedSubscript:@"StartTimestamp"], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  loggingCopy = logging;
+  v5 = loggingCopy;
+  if (loggingCopy && ([loggingCopy objectForKeyedSubscript:@"StartTimestamp"], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
     v7 = [v5 objectForKeyedSubscript:@"StartTimestamp"];
     [v7 doubleValue];
     v9 = v8 * 1000.0 / 1000000000.0;
 
     v10 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v9];
-    v11 = [v10 convertFromSystemToMonotonic];
-    v12 = [v5 allKeys];
-    v13 = [v12 mutableCopy];
+    convertFromSystemToMonotonic = [v10 convertFromSystemToMonotonic];
+    allKeys = [v5 allKeys];
+    v13 = [allKeys mutableCopy];
 
     [v13 removeObject:@"StartTimestamp"];
     v14 = PLLogCommon();
@@ -9509,7 +9509,7 @@ uint64_t __30__PLBatteryAgent_shouldLogBTM__block_invoke()
       v26 = 2112;
       v27 = v10;
       v28 = 2112;
-      v29 = v11;
+      v29 = convertFromSystemToMonotonic;
       _os_log_impl(&dword_21A4C6000, v14, OS_LOG_TYPE_DEFAULT, "[BDC_AMA] StartTimestamp = %f StartDate = %@ StartDateMonotonic = %@", buf, 0x20u);
     }
 
@@ -9527,10 +9527,10 @@ uint64_t __30__PLBatteryAgent_shouldLogBTM__block_invoke()
     v20[1] = 3221225472;
     v20[2] = __38__PLBatteryAgent_handleBDCAMALogging___block_invoke_3845;
     v20[3] = &unk_27825B088;
-    v21 = v11;
-    v22 = self;
+    v21 = convertFromSystemToMonotonic;
+    selfCopy = self;
     v23 = v5;
-    v17 = v11;
+    v17 = convertFromSystemToMonotonic;
     [v15 enumerateObjectsUsingBlock:v20];
   }
 
@@ -9559,14 +9559,14 @@ void __38__PLBatteryAgent_handleBDCAMALogging___block_invoke_3845(uint64_t a1, v
   [v5 logForSubsystem:@"BatteryDataCollection" category:@"BDC_AMA" data:v6 date:v7];
 }
 
-- (void)handleOnDeviceACAMSBC:(id)a3
+- (void)handleOnDeviceACAMSBC:(id)c
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  cCopy = c;
+  v5 = cCopy;
+  if (cCopy)
   {
-    v6 = [v4 allKeys];
-    v7 = [v6 mutableCopy];
+    allKeys = [cCopy allKeys];
+    v7 = [allKeys mutableCopy];
 
     v8 = [v7 sortedArrayUsingComparator:&__block_literal_global_3854];
     v9[0] = MEMORY[0x277D85DD0];
@@ -9574,7 +9574,7 @@ void __38__PLBatteryAgent_handleBDCAMALogging___block_invoke_3845(uint64_t a1, v
     v9[2] = __40__PLBatteryAgent_handleOnDeviceACAMSBC___block_invoke_2;
     v9[3] = &unk_278260C68;
     v10 = v5;
-    v11 = self;
+    selfCopy = self;
     [v8 enumerateObjectsUsingBlock:v9];
   }
 
@@ -9623,23 +9623,23 @@ void __40__PLBatteryAgent_handleOnDeviceACAMSBC___block_invoke_2(uint64_t a1, ui
   [(PLBatteryAgent *)self logEventNoneUserType];
 }
 
-- (void)fakeLogEntry:(id)a3
+- (void)fakeLogEntry:(id)entry
 {
-  v4 = [a3 userInfo];
-  v5 = v4;
-  if (v4)
+  userInfo = [entry userInfo];
+  v5 = userInfo;
+  if (userInfo)
   {
-    v6 = [v4 objectForKeyedSubscript:@"entry"];
+    v6 = [userInfo objectForKeyedSubscript:@"entry"];
     if (v6)
     {
-      v7 = [(PLOperator *)self workQueue];
+      workQueue = [(PLOperator *)self workQueue];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __31__PLBatteryAgent_fakeLogEntry___block_invoke;
       v8[3] = &unk_278259658;
       v8[4] = self;
       v9 = v6;
-      dispatch_async(v7, v8);
+      dispatch_async(workQueue, v8);
     }
   }
 }
@@ -9695,10 +9695,10 @@ uint64_t __31__PLBatteryAgent_fakeLogEntry___block_invoke_2(uint64_t a1)
 
 - (void)logEventPointUPOStepper
 {
-  v3 = [(PLBatteryAgent *)self getUPOStepperData];
-  if (v3)
+  getUPOStepperData = [(PLBatteryAgent *)self getUPOStepperData];
+  if (getUPOStepperData)
   {
-    v17 = v3;
+    v17 = getUPOStepperData;
     v4 = [(PLOperator *)PLBatteryAgent entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"UPOStepper"];
     v5 = [v17 objectForKeyedSubscript:@"upoMetrics"];
     v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v4 withRawData:v5];
@@ -9707,8 +9707,8 @@ uint64_t __31__PLBatteryAgent_fakeLogEntry___block_invoke_2(uint64_t a1)
     [v8 doubleValue];
     v9 = [v7 dateWithTimeIntervalSince1970:?];
 
-    v10 = [v9 convertFromSystemToMonotonic];
-    [v6 setObject:v10 forKeyedSubscript:@"BatteryShutdownTimestamp"];
+    convertFromSystemToMonotonic = [v9 convertFromSystemToMonotonic];
+    [v6 setObject:convertFromSystemToMonotonic forKeyedSubscript:@"BatteryShutdownTimestamp"];
 
     v11 = [v17 objectForKeyedSubscript:@"mitigatedUPOCount"];
     [v6 setObject:v11 forKeyedSubscript:@"mitigatedUPOCount"];
@@ -9734,14 +9734,14 @@ uint64_t __31__PLBatteryAgent_fakeLogEntry___block_invoke_2(uint64_t a1)
     ADClientSetValueForScalarKey();
 
     [(PLOperator *)self logEntry:v6];
-    v3 = v17;
+    getUPOStepperData = v17;
   }
 }
 
-- (void)logEventPointBatteryUIVisitWithPayload:(id)a3
+- (void)logEventPointBatteryUIVisitWithPayload:(id)payload
 {
   v4 = MEMORY[0x277D3F180];
-  v5 = a3;
+  payloadCopy = payload;
   if (([v4 objectExistsForKey:@"BUIVisitDefaultKey"] & 1) == 0)
   {
     [MEMORY[0x277D3F180] setObject:MEMORY[0x277CBEC38] forKey:@"BUIVisitDefaultKey" saveToDisk:1];
@@ -9750,23 +9750,23 @@ uint64_t __31__PLBatteryAgent_fakeLogEntry___block_invoke_2(uint64_t a1)
   v9 = [(PLOperator *)PLBatteryAgent entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"BatteryUIVisit"];
   v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v9];
   [v6 setObject:&unk_282C11FE8 forKeyedSubscript:@"Visit"];
-  v7 = [v5 objectForKeyedSubscript:@"UsageSummary"];
+  v7 = [payloadCopy objectForKeyedSubscript:@"UsageSummary"];
   [v6 setObject:v7 forKeyedSubscript:@"UsageSummary"];
 
-  v8 = [v5 objectForKeyedSubscript:@"Qualifiers"];
+  v8 = [payloadCopy objectForKeyedSubscript:@"Qualifiers"];
 
   [v6 setObject:v8 forKeyedSubscript:@"Qualifiers"];
   [(PLOperator *)self logEntry:v6];
 }
 
-- (void)logEventPointBatteryUIInsightsAndSuggestionsWithPayload:(id)a3
+- (void)logEventPointBatteryUIInsightsAndSuggestionsWithPayload:(id)payload
 {
   v4 = *MEMORY[0x277D3F5E8];
-  v5 = a3;
+  payloadCopy = payload;
   v8 = [(PLOperator *)PLBatteryAgent entryKeyForType:v4 andName:@"BatteryUIVisit"];
   v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v8];
   [v6 setObject:&unk_282C11FE8 forKeyedSubscript:@"Visit"];
-  v7 = [v5 objectForKeyedSubscript:@"Insights"];
+  v7 = [payloadCopy objectForKeyedSubscript:@"Insights"];
 
   [v6 setObject:v7 forKeyedSubscript:@"Insights"];
   [(PLOperator *)self logEntry:v6];
@@ -9826,34 +9826,34 @@ uint64_t __31__PLBatteryAgent_fakeLogEntry___block_invoke_2(uint64_t a1)
 
 - (id)getBUIVisitsTotal
 {
-  v2 = [MEMORY[0x277D3F210] sharedSQLiteConnection];
-  v3 = [v2 performQuery:{@"SELECT Visit, COUNT(*) AS Count FROM PLBatteryAgent_EventPoint_BatteryUIVisit GROUP BY Visit"}];;
+  mEMORY[0x277D3F210] = [MEMORY[0x277D3F210] sharedSQLiteConnection];
+  v3 = [mEMORY[0x277D3F210] performQuery:{@"SELECT Visit, COUNT(*) AS Count FROM PLBatteryAgent_EventPoint_BatteryUIVisit GROUP BY Visit"}];;
 
   return v3;
 }
 
 - (id)getBUIVisitsToday
 {
-  v2 = [MEMORY[0x277D3F210] sharedSQLiteConnection];
-  v3 = [v2 performQuery:{@"SELECT Visit, COUNT(*) AS Count FROM PLBatteryAgent_EventPoint_BatteryUIVisit WHERE timestamp > ((SELECT MAX(timestamp) FROM PLBatteryAgent_EventBackward_Battery)-86400) GROUP BY Visit"}];;
+  mEMORY[0x277D3F210] = [MEMORY[0x277D3F210] sharedSQLiteConnection];
+  v3 = [mEMORY[0x277D3F210] performQuery:{@"SELECT Visit, COUNT(*) AS Count FROM PLBatteryAgent_EventPoint_BatteryUIVisit WHERE timestamp > ((SELECT MAX(timestamp) FROM PLBatteryAgent_EventBackward_Battery)-86400) GROUP BY Visit"}];;
 
   return v3;
 }
 
 - (id)getBUIVisitsLastHour
 {
-  v2 = [MEMORY[0x277D3F210] sharedSQLiteConnection];
-  v3 = [v2 performQuery:{@"SELECT Visit, COUNT(*) AS Count FROM PLBatteryAgent_EventPoint_BatteryUIVisit WHERE timestamp > ((SELECT MAX(timestamp) FROM PLBatteryAgent_EventBackward_Battery)-3600) GROUP BY Visit"}];;
+  mEMORY[0x277D3F210] = [MEMORY[0x277D3F210] sharedSQLiteConnection];
+  v3 = [mEMORY[0x277D3F210] performQuery:{@"SELECT Visit, COUNT(*) AS Count FROM PLBatteryAgent_EventPoint_BatteryUIVisit WHERE timestamp > ((SELECT MAX(timestamp) FROM PLBatteryAgent_EventBackward_Battery)-3600) GROUP BY Visit"}];;
 
   return v3;
 }
 
-- (id)aggregateBUIVisitData:(id)a3 withBUIVisitsToday:(id)a4 andBUIVisitsLastHour:(id)a5 andTotalLogDuration:(double)a6
+- (id)aggregateBUIVisitData:(id)data withBUIVisitsToday:(id)today andBUIVisitsLastHour:(id)hour andTotalLogDuration:(double)duration
 {
   v66[10] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v25 = a4;
-  v24 = a5;
+  dataCopy = data;
+  todayCopy = today;
+  hourCopy = hour;
   v61 = 0;
   v62 = &v61;
   v63 = 0x2020000000;
@@ -9897,8 +9897,8 @@ uint64_t __31__PLBatteryAgent_fakeLogEntry___block_invoke_2(uint64_t a1)
   v28[4] = &v61;
   v28[5] = &v49;
   v28[6] = &v37;
-  v23 = v9;
-  [v9 enumerateObjectsUsingBlock:v28];
+  v23 = dataCopy;
+  [dataCopy enumerateObjectsUsingBlock:v28];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __100__PLBatteryAgent_aggregateBUIVisitData_withBUIVisitsToday_andBUIVisitsLastHour_andTotalLogDuration___block_invoke_2;
@@ -9906,7 +9906,7 @@ uint64_t __31__PLBatteryAgent_fakeLogEntry___block_invoke_2(uint64_t a1)
   v27[4] = &v57;
   v27[5] = &v45;
   v27[6] = &v33;
-  [v25 enumerateObjectsUsingBlock:v27];
+  [todayCopy enumerateObjectsUsingBlock:v27];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __100__PLBatteryAgent_aggregateBUIVisitData_withBUIVisitsToday_andBUIVisitsLastHour_andTotalLogDuration___block_invoke_3;
@@ -9914,7 +9914,7 @@ uint64_t __31__PLBatteryAgent_fakeLogEntry___block_invoke_2(uint64_t a1)
   v26[4] = &v53;
   v26[5] = &v41;
   v26[6] = &v29;
-  [v24 enumerateObjectsUsingBlock:v26];
+  [hourCopy enumerateObjectsUsingBlock:v26];
   v65[0] = @"BUIVisitsTotal";
   v10 = [MEMORY[0x277CCABB0] numberWithInt:*(v62 + 6)];
   v66[0] = v10;
@@ -9943,7 +9943,7 @@ uint64_t __31__PLBatteryAgent_fakeLogEntry___block_invoke_2(uint64_t a1)
   v18 = [MEMORY[0x277CCABB0] numberWithInt:*(v30 + 6)];
   v66[8] = v18;
   v65[9] = @"LogDuration";
-  v19 = [MEMORY[0x277CCABB0] numberWithDouble:a6];
+  v19 = [MEMORY[0x277CCABB0] numberWithDouble:duration];
   v66[9] = v19;
   v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v66 forKeys:v65 count:10];
 
@@ -10042,22 +10042,22 @@ void __100__PLBatteryAgent_aggregateBUIVisitData_withBUIVisitsToday_andBUIVisits
             {
               v14 = [v12 objectForKeyedSubscript:@"IOPMUBootLPMLog"];
               v15 = [v14 objectForKeyedSubscript:@"TMS0"];
-              v16 = [v15 unsignedIntegerValue];
+              unsignedIntegerValue = [v15 unsignedIntegerValue];
 
               v17 = [v12 objectForKeyedSubscript:@"IOPMUBootLPMLog"];
               v18 = [v17 objectForKeyedSubscript:@"TMSc"];
-              v19 = [v18 unsignedIntegerValue];
+              unsignedIntegerValue2 = [v18 unsignedIntegerValue];
 
-              v20 = [(PLOperator *)self storage];
-              v21 = [v20 lastEntryForKey:v3];
+              storage = [(PLOperator *)self storage];
+              v21 = [storage lastEntryForKey:v3];
 
               if (v21)
               {
                 v22 = [v21 objectForKeyedSubscript:@"TMS0"];
-                if ([v22 unsignedIntegerValue] == v16)
+                if ([v22 unsignedIntegerValue] == unsignedIntegerValue)
                 {
                   v23 = [v21 objectForKeyedSubscript:@"TMSc"];
-                  v24 = [v23 unsignedIntegerValue] != v19;
+                  v24 = [v23 unsignedIntegerValue] != unsignedIntegerValue2;
                 }
 
                 else
@@ -10071,12 +10071,12 @@ void __100__PLBatteryAgent_aggregateBUIVisitData_withBUIVisitsToday_andBUIVisits
                 v24 = 1;
               }
 
-              if (v16 && v19 && v24)
+              if (unsignedIntegerValue && unsignedIntegerValue2 && v24)
               {
                 v25 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v3];
                 v26 = MEMORY[0x277CCABB0];
-                v27 = [MEMORY[0x277D3F248] sharedInstance];
-                [v27 currentTimeFromTimeReference:2 toTimeReference:2];
+                mEMORY[0x277D3F248] = [MEMORY[0x277D3F248] sharedInstance];
+                [mEMORY[0x277D3F248] currentTimeFromTimeReference:2 toTimeReference:2];
                 v28 = v74 = v21;
                 [v28 timeIntervalSince1970];
                 v75 = [v26 numberWithDouble:?];
@@ -10293,11 +10293,11 @@ id __37__PLBatteryAgent_logEventForwardLPEM__block_invoke(uint64_t a1)
 - (void)logEventIntervalGasGauge
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [(PLBatteryAgent *)self allowGasGaugeRead];
-  v4 = [MEMORY[0x277D3F180] debugEnabled];
-  if (v3)
+  allowGasGaugeRead = [(PLBatteryAgent *)self allowGasGaugeRead];
+  debugEnabled = [MEMORY[0x277D3F180] debugEnabled];
+  if (allowGasGaugeRead)
   {
-    if (v4)
+    if (debugEnabled)
     {
       v5 = objc_opt_class();
       block[0] = MEMORY[0x277D85DD0];
@@ -10318,9 +10318,9 @@ id __37__PLBatteryAgent_logEventForwardLPEM__block_invoke(uint64_t a1)
         v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"reading the GasGauge"];
         v8 = MEMORY[0x277D3F178];
         v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-        v10 = [v9 lastPathComponent];
+        lastPathComponent = [v9 lastPathComponent];
         v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent logEventIntervalGasGauge]"];
-        [v8 logMessage:v7 fromFile:v10 fromFunction:v11 fromLineNumber:5233];
+        [v8 logMessage:v7 fromFile:lastPathComponent fromFunction:v11 fromLineNumber:5233];
 
         v12 = PLLogCommon();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -10335,7 +10335,7 @@ id __37__PLBatteryAgent_logEventForwardLPEM__block_invoke(uint64_t a1)
     [(PLBatteryAgent *)self gasGaugeRead];
   }
 
-  else if (v4)
+  else if (debugEnabled)
   {
     v13 = objc_opt_class();
     v22 = MEMORY[0x277D85DD0];
@@ -10356,9 +10356,9 @@ id __37__PLBatteryAgent_logEventForwardLPEM__block_invoke(uint64_t a1)
       v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"no reading the GasGauge allowed!", v22, v23, v24, v25];
       v16 = MEMORY[0x277D3F178];
       v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-      v18 = [v17 lastPathComponent];
+      lastPathComponent2 = [v17 lastPathComponent];
       v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent logEventIntervalGasGauge]"];
-      [v16 logMessage:v15 fromFile:v18 fromFunction:v19 fromLineNumber:5236];
+      [v16 logMessage:v15 fromFile:lastPathComponent2 fromFunction:v19 fromLineNumber:5236];
 
       v20 = PLLogCommon();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -10387,11 +10387,11 @@ uint64_t __42__PLBatteryAgent_logEventIntervalGasGauge__block_invoke_4051(uint64
   return result;
 }
 
-- (void)logEventPointChargingInfoWithChargingData:(id)a3
+- (void)logEventPointChargingInfoWithChargingData:(id)data
 {
   v69 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
     v5 = [(PLOperator *)PLBatteryAgent entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"ChargingInfo"];
     v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v5];
@@ -10401,127 +10401,127 @@ uint64_t __42__PLBatteryAgent_logEventIntervalGasGauge__block_invoke_4051(uint64
     v8 = [MEMORY[0x277CCABB0] numberWithInt:self->_prevChargingState];
     [v6 setObject:v8 forKeyedSubscript:@"Charging"];
 
-    v9 = [v4 objectForKeyedSubscript:@"DriverState"];
+    v9 = [dataCopy objectForKeyedSubscript:@"DriverState"];
     [v6 setObject:v9 forKeyedSubscript:@"DriverState"];
 
-    v10 = [v4 objectForKeyedSubscript:@"DriverStatusBits"];
+    v10 = [dataCopy objectForKeyedSubscript:@"DriverStatusBits"];
     [v6 setObject:v10 forKeyedSubscript:@"DriverStatusBits"];
 
-    v11 = [v4 objectForKeyedSubscript:@"FirmwareStatus"];
+    v11 = [dataCopy objectForKeyedSubscript:@"FirmwareStatus"];
     [v6 setObject:v11 forKeyedSubscript:@"FirmwareStatus"];
 
-    v12 = [v4 objectForKeyedSubscript:@"Frequency"];
+    v12 = [dataCopy objectForKeyedSubscript:@"Frequency"];
     [v6 setObject:v12 forKeyedSubscript:@"Frequency"];
 
-    v13 = [v4 objectForKeyedSubscript:@"RectifierCurrent"];
+    v13 = [dataCopy objectForKeyedSubscript:@"RectifierCurrent"];
     [v6 setObject:v13 forKeyedSubscript:@"RectifierCurrent"];
 
-    v14 = [v4 objectForKeyedSubscript:@"RectifierVoltage"];
+    v14 = [dataCopy objectForKeyedSubscript:@"RectifierVoltage"];
     [v6 setObject:v14 forKeyedSubscript:@"RectifierVoltage"];
 
-    v15 = [v4 objectForKeyedSubscript:@"PowerTarget"];
+    v15 = [dataCopy objectForKeyedSubscript:@"PowerTarget"];
     [v6 setObject:v15 forKeyedSubscript:@"PowerTarget"];
 
-    v16 = [v4 objectForKeyedSubscript:@"VoltageTarget"];
+    v16 = [dataCopy objectForKeyedSubscript:@"VoltageTarget"];
     [v6 setObject:v16 forKeyedSubscript:@"VoltageTarget"];
 
-    v17 = [v4 objectForKeyedSubscript:@"PowerBudget"];
+    v17 = [dataCopy objectForKeyedSubscript:@"PowerBudget"];
     [v6 setObject:v17 forKeyedSubscript:@"PowerBudget"];
 
-    v18 = [v4 objectForKeyedSubscript:@"TxGain1"];
+    v18 = [dataCopy objectForKeyedSubscript:@"TxGain1"];
     [v6 setObject:v18 forKeyedSubscript:@"TxGain1"];
 
-    v19 = [v4 objectForKeyedSubscript:@"TxGain2"];
+    v19 = [dataCopy objectForKeyedSubscript:@"TxGain2"];
     [v6 setObject:v19 forKeyedSubscript:@"TxGain2"];
 
-    v20 = [v4 objectForKeyedSubscript:@"TxVersion"];
+    v20 = [dataCopy objectForKeyedSubscript:@"TxVersion"];
     [v6 setObject:v20 forKeyedSubscript:@"TxVersion"];
 
-    v21 = [v4 objectForKeyedSubscript:@"SignalStrength"];
+    v21 = [dataCopy objectForKeyedSubscript:@"SignalStrength"];
     [v6 setObject:v21 forKeyedSubscript:@"SignalStrength"];
 
-    v22 = [v4 objectForKeyedSubscript:@"NotCloakReason"];
+    v22 = [dataCopy objectForKeyedSubscript:@"NotCloakReason"];
     [v6 setObject:v22 forKeyedSubscript:@"NotCloakReason"];
 
-    v23 = [v4 objectForKeyedSubscript:@"ModDepth"];
+    v23 = [dataCopy objectForKeyedSubscript:@"ModDepth"];
     [v6 setObject:v23 forKeyedSubscript:@"ModDepth"];
 
-    v24 = [v4 objectForKeyedSubscript:@"HighFreq"];
+    v24 = [dataCopy objectForKeyedSubscript:@"HighFreq"];
     [v6 setObject:v24 forKeyedSubscript:@"HighFreq"];
 
-    v25 = [v4 objectForKeyedSubscript:@"CloakReason"];
+    v25 = [dataCopy objectForKeyedSubscript:@"CloakReason"];
     [v6 setObject:v25 forKeyedSubscript:@"CloakReason"];
 
-    v26 = [v4 objectForKeyedSubscript:@"InductiveFWMode"];
+    v26 = [dataCopy objectForKeyedSubscript:@"InductiveFWMode"];
     [v6 setObject:v26 forKeyedSubscript:@"InductiveFWMode"];
 
-    v27 = [v4 objectForKeyedSubscript:@"OVPCount"];
+    v27 = [dataCopy objectForKeyedSubscript:@"OVPCount"];
     [v6 setObject:v27 forKeyedSubscript:@"OVPCount"];
 
-    v28 = [v4 objectForKeyedSubscript:@"MagnetAttach"];
+    v28 = [dataCopy objectForKeyedSubscript:@"MagnetAttach"];
     [v6 setObject:v28 forKeyedSubscript:@"MagnetAttach"];
 
-    v29 = [v4 objectForKeyedSubscript:@"PTxType"];
+    v29 = [dataCopy objectForKeyedSubscript:@"PTxType"];
     [v6 setObject:v29 forKeyedSubscript:@"PTxType"];
 
-    v30 = [v4 objectForKeyedSubscript:@"PowerNegotiable"];
+    v30 = [dataCopy objectForKeyedSubscript:@"PowerNegotiable"];
     [v6 setObject:v30 forKeyedSubscript:@"PowerNegotiable"];
 
-    v31 = [v4 objectForKeyedSubscript:@"PowerLimitReason"];
+    v31 = [dataCopy objectForKeyedSubscript:@"PowerLimitReason"];
     [v6 setObject:v31 forKeyedSubscript:@"PowerLimitReason"];
 
-    v32 = [v4 objectForKeyedSubscript:@"PowerPotential"];
+    v32 = [dataCopy objectForKeyedSubscript:@"PowerPotential"];
     [v6 setObject:v32 forKeyedSubscript:@"PowerPotential"];
 
-    v33 = [v4 objectForKeyedSubscript:@"Prect"];
+    v33 = [dataCopy objectForKeyedSubscript:@"Prect"];
     [v6 setObject:v33 forKeyedSubscript:@"Prect"];
 
-    v34 = [v4 objectForKeyedSubscript:@"IlimTarget"];
+    v34 = [dataCopy objectForKeyedSubscript:@"IlimTarget"];
     [v6 setObject:v34 forKeyedSubscript:@"IlimTarget"];
 
-    v35 = [v4 objectForKeyedSubscript:@"IlimHeadroom"];
+    v35 = [dataCopy objectForKeyedSubscript:@"IlimHeadroom"];
     [v6 setObject:v35 forKeyedSubscript:@"IlimHeadroom"];
 
-    v36 = [v4 objectForKeyedSubscript:@"TxGain3"];
+    v36 = [dataCopy objectForKeyedSubscript:@"TxGain3"];
     [v6 setObject:v36 forKeyedSubscript:@"TxGain3"];
 
-    v37 = [v4 objectForKeyedSubscript:@"TxGain4"];
+    v37 = [dataCopy objectForKeyedSubscript:@"TxGain4"];
     [v6 setObject:v37 forKeyedSubscript:@"TxGain4"];
 
-    v38 = [v4 objectForKeyedSubscript:@"PowerProfile"];
+    v38 = [dataCopy objectForKeyedSubscript:@"PowerProfile"];
     [v6 setObject:v38 forKeyedSubscript:@"PowerProfile"];
 
-    v39 = [v4 objectForKeyedSubscript:@"PowerProfSwitch"];
+    v39 = [dataCopy objectForKeyedSubscript:@"PowerProfSwitch"];
     [v6 setObject:v39 forKeyedSubscript:@"PowerProfSwitch"];
 
-    v40 = [v4 objectForKeyedSubscript:@"TxKest"];
+    v40 = [dataCopy objectForKeyedSubscript:@"TxKest"];
     [v6 setObject:v40 forKeyedSubscript:@"TxKest"];
 
-    v41 = [v4 objectForKeyedSubscript:@"RxQippVer"];
+    v41 = [dataCopy objectForKeyedSubscript:@"RxQippVer"];
     [v6 setObject:v41 forKeyedSubscript:@"RxQippVer"];
 
-    v42 = [v4 objectForKeyedSubscript:@"DplossStat"];
+    v42 = [dataCopy objectForKeyedSubscript:@"DplossStat"];
     [v6 setObject:v42 forKeyedSubscript:@"DplossStat"];
 
-    v43 = [v4 objectForKeyedSubscript:@"MainCurrent"];
+    v43 = [dataCopy objectForKeyedSubscript:@"MainCurrent"];
     [v6 setObject:v43 forKeyedSubscript:@"MainCurrent"];
 
-    v44 = [v4 objectForKeyedSubscript:@"AuthFodStatus"];
+    v44 = [dataCopy objectForKeyedSubscript:@"AuthFodStatus"];
     [v6 setObject:v44 forKeyedSubscript:@"AuthFodStatus"];
 
-    v45 = [v4 objectForKeyedSubscript:@"InductiveCoexStatus"];
+    v45 = [dataCopy objectForKeyedSubscript:@"InductiveCoexStatus"];
     [v6 setObject:v45 forKeyedSubscript:@"InductiveCoexStatus"];
 
-    v46 = [v4 objectForKeyedSubscript:@"VMID"];
+    v46 = [dataCopy objectForKeyedSubscript:@"VMID"];
     [v6 setObject:v46 forKeyedSubscript:@"VMID"];
 
-    v47 = [v4 objectForKeyedSubscript:@"PowerConverterStatus"];
+    v47 = [dataCopy objectForKeyedSubscript:@"PowerConverterStatus"];
     [v6 setObject:v47 forKeyedSubscript:@"PowerConverterStatus"];
 
-    v48 = [v4 objectForKeyedSubscript:@"CommStatus"];
+    v48 = [dataCopy objectForKeyedSubscript:@"CommStatus"];
     [v6 setObject:v48 forKeyedSubscript:@"CommStatus"];
 
-    v49 = [v4 objectForKeyedSubscript:@"SlowChargerReason"];
+    v49 = [dataCopy objectForKeyedSubscript:@"SlowChargerReason"];
     [v6 setObject:v49 forKeyedSubscript:@"SlowChargerReason"];
 
     if ([MEMORY[0x277D3F180] debugEnabled])
@@ -10539,12 +10539,12 @@ uint64_t __42__PLBatteryAgent_logEventIntervalGasGauge__block_invoke_4051(uint64
 
       if (byte_2811F3A98 == 1)
       {
-        v51 = [MEMORY[0x277CCACA8] stringWithFormat:@"Charging Data: %@", v4, block, v63, v64, v65, v66];
+        v51 = [MEMORY[0x277CCACA8] stringWithFormat:@"Charging Data: %@", dataCopy, block, v63, v64, v65, v66];
         v52 = MEMORY[0x277D3F178];
         v53 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-        v54 = [v53 lastPathComponent];
+        lastPathComponent = [v53 lastPathComponent];
         v55 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent logEventPointChargingInfoWithChargingData:]"];
-        [v52 logMessage:v51 fromFile:v54 fromFunction:v55 fromLineNumber:5289];
+        [v52 logMessage:v51 fromFile:lastPathComponent fromFunction:v55 fromLineNumber:5289];
 
         v56 = PLLogCommon();
         if (os_log_type_enabled(v56, OS_LOG_TYPE_DEBUG))
@@ -10564,7 +10564,7 @@ uint64_t __42__PLBatteryAgent_logEventIntervalGasGauge__block_invoke_4051(uint64
     [(PLBatteryAgent *)self setEntryChargingOld:v6];
     if ((self->_prevChargingState & 0x1B) != 0 || ([v6 objectForKeyedSubscript:@"DriverState"], v59 = objc_claimAutoreleasedReturnValue(), v60 = -[PLBatteryAgent driverActive:](self, "driverActive:", v59), v59, v60))
     {
-      [(PLBatteryAgent *)self logChargingParametersToAggd:v4];
+      [(PLBatteryAgent *)self logChargingParametersToAggd:dataCopy];
     }
   }
 
@@ -10578,19 +10578,19 @@ uint64_t __60__PLBatteryAgent_logEventPointChargingInfoWithChargingData___block_
   return result;
 }
 
-- (BOOL)driverActive:(id)a3
+- (BOOL)driverActive:(id)active
 {
-  v3 = a3;
-  v4 = v3;
-  v5 = v3 && [v3 intValue] == 3;
+  activeCopy = active;
+  v4 = activeCopy;
+  v5 = activeCopy && [activeCopy intValue] == 3;
 
   return v5;
 }
 
-- (void)logChargingParametersToAggd:(id)a3
+- (void)logChargingParametersToAggd:(id)aggd
 {
-  v4 = a3;
-  if (v4)
+  aggdCopy = aggd;
+  if (aggdCopy)
   {
     prevChargingState = self->_prevChargingState;
     if (prevChargingState == 8)
@@ -10614,7 +10614,7 @@ uint64_t __60__PLBatteryAgent_logEventPointChargingInfoWithChargingData___block_
     }
 
     v8 = objc_opt_new();
-    v9 = [v4 objectForKeyedSubscript:@"Frequency"];
+    v9 = [aggdCopy objectForKeyedSubscript:@"Frequency"];
 
     if (v9)
     {
@@ -10628,7 +10628,7 @@ uint64_t __60__PLBatteryAgent_logEventPointChargingInfoWithChargingData___block_
         v10 = @"com.apple.power.state.frequency";
       }
 
-      v11 = [v4 objectForKeyedSubscript:@"Frequency"];
+      v11 = [aggdCopy objectForKeyedSubscript:@"Frequency"];
       [v11 doubleValue];
       v13 = v12;
 
@@ -10637,11 +10637,11 @@ uint64_t __60__PLBatteryAgent_logEventPointChargingInfoWithChargingData___block_
       [v8 setObject:v14 forKeyedSubscript:@"Frequency"];
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"RectifierCurrent"];
+    v15 = [aggdCopy objectForKeyedSubscript:@"RectifierCurrent"];
 
     if (v15)
     {
-      v16 = [v4 objectForKeyedSubscript:@"RectifierCurrent"];
+      v16 = [aggdCopy objectForKeyedSubscript:@"RectifierCurrent"];
       [v16 doubleValue];
       v18 = v17;
 
@@ -10650,11 +10650,11 @@ uint64_t __60__PLBatteryAgent_logEventPointChargingInfoWithChargingData___block_
       [v8 setObject:v19 forKeyedSubscript:@"RectifierCurrent"];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"RectifierVoltage"];
+    v20 = [aggdCopy objectForKeyedSubscript:@"RectifierVoltage"];
 
     if (v20)
     {
-      v21 = [v4 objectForKeyedSubscript:@"RectifierVoltage"];
+      v21 = [aggdCopy objectForKeyedSubscript:@"RectifierVoltage"];
       [v21 doubleValue];
       v23 = v22;
 
@@ -10671,21 +10671,21 @@ uint64_t __60__PLBatteryAgent_logEventPointChargingInfoWithChargingData___block_
   }
 }
 
-- (void)checkChargingInfoChange:(id)a3
+- (void)checkChargingInfoChange:(id)change
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  changeCopy = change;
+  if (!changeCopy)
   {
     goto LABEL_28;
   }
 
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = [v4 objectForKey:@"AppleRawAdapterDetails"];
+  v6 = [changeCopy objectForKey:@"AppleRawAdapterDetails"];
   v7 = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v7)
   {
@@ -10706,7 +10706,7 @@ uint64_t __60__PLBatteryAgent_logEventPointChargingInfoWithChargingData___block_
         if (v12)
         {
           v13 = [v11 objectForKeyedSubscript:@"FamilyCode"];
-          [v5 addObject:v13];
+          [array addObject:v13];
         }
       }
 
@@ -10716,24 +10716,24 @@ uint64_t __60__PLBatteryAgent_logEventPointChargingInfoWithChargingData___block_
     while (v8);
   }
 
-  v14 = [(PLBatteryAgent *)self calculateConnectedState:v5];
-  v15 = [(PLBatteryAgent *)self calculateChargingState:v4];
-  v16 = [v4 objectForKeyedSubscript:@"ChargerData"];
+  v14 = [(PLBatteryAgent *)self calculateConnectedState:array];
+  v15 = [(PLBatteryAgent *)self calculateChargingState:changeCopy];
+  v16 = [changeCopy objectForKeyedSubscript:@"ChargerData"];
   v17 = [(PLBatteryAgent *)self checkForPenaltyBox:v16];
-  v18 = [MEMORY[0x277CBEAA8] monotonicDate];
-  v19 = v18;
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  v19 = monotonicDate;
   if (v17)
   {
     if (self->_lastTimePenaltyBoxIntervalUpdated)
     {
-      [v18 timeIntervalSinceDate:?];
+      [monotonicDate timeIntervalSinceDate:?];
       [(PLBatteryAgent *)self logPenaltyBoxDurationToAggd:?];
       v20 = 0;
     }
 
     else
     {
-      v20 = v18;
+      v20 = monotonicDate;
     }
 
     lastTimePenaltyBoxIntervalUpdated = self->_lastTimePenaltyBoxIntervalUpdated;
@@ -10796,16 +10796,16 @@ id __42__PLBatteryAgent_checkChargingInfoChange___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (BOOL)checkForPenaltyBox:(id)a3
+- (BOOL)checkForPenaltyBox:(id)box
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  boxCopy = box;
+  v5 = boxCopy;
+  if (!boxCopy)
   {
     goto LABEL_4;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"NotChargingReason"];
+  v6 = [boxCopy objectForKeyedSubscript:@"NotChargingReason"];
 
   if (!v6)
   {
@@ -10813,9 +10813,9 @@ id __42__PLBatteryAgent_checkChargingInfoChange___block_invoke(uint64_t a1)
   }
 
   v7 = [v5 objectForKeyedSubscript:@"NotChargingReason"];
-  v8 = [v7 intValue];
+  intValue = [v7 intValue];
 
-  v9 = (v8 & 0x180) == 256;
+  v9 = (intValue & 0x180) == 256;
   if (self->_inPenaltyBox != v9)
   {
     self->_inPenaltyBox = v9;
@@ -10831,7 +10831,7 @@ LABEL_4:
   return v10;
 }
 
-- (void)logPenaltyBoxDurationToAggd:(double)a3
+- (void)logPenaltyBoxDurationToAggd:(double)aggd
 {
   prevConnectedState = self->_prevConnectedState;
   if (prevConnectedState > 4)
@@ -10850,7 +10850,7 @@ LABEL_4:
     {
       if (prevConnectedState == 12 && self->_prevChargingState == 4)
       {
-        MEMORY[0x21CEDCD60](@"com.apple.power.state.f.penaltybox", a2, a3);
+        MEMORY[0x21CEDCD60](@"com.apple.power.state.f.penaltybox", a2, aggd);
 LABEL_16:
         v5 = @"com.apple.power.state.c.penaltybox";
         goto LABEL_24;
@@ -10866,7 +10866,7 @@ LABEL_23:
       goto LABEL_23;
     }
 
-    MEMORY[0x21CEDCD60](@"com.apple.power.state.e.penaltybox", a2, a3);
+    MEMORY[0x21CEDCD60](@"com.apple.power.state.e.penaltybox", a2, aggd);
 LABEL_22:
     v5 = @"com.apple.power.state.b.penaltybox";
     goto LABEL_24;
@@ -10899,7 +10899,7 @@ LABEL_22:
 
   v5 = @"com.apple.power.state.a.penaltybox";
 LABEL_24:
-  MEMORY[0x21CEDCD60](v5, a2, a3);
+  MEMORY[0x21CEDCD60](v5, a2, aggd);
   AnalyticsSendEventLazy();
 }
 
@@ -10915,7 +10915,7 @@ id __46__PLBatteryAgent_logPenaltyBoxDurationToAggd___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)logChargingTimeToAggd:(double)a3
+- (void)logChargingTimeToAggd:(double)aggd
 {
   prevConnectedState = self->_prevConnectedState;
   if (prevConnectedState > 5)
@@ -10977,7 +10977,7 @@ id __46__PLBatteryAgent_logPenaltyBoxDurationToAggd___block_invoke(uint64_t a1)
     {
       v4 = @"com.apple.power.state.c2.chargetime";
 LABEL_20:
-      MEMORY[0x21CEDCD60]([MEMORY[0x277CCACA8] stringWithFormat:v4], a3);
+      MEMORY[0x21CEDCD60]([MEMORY[0x277CCACA8] stringWithFormat:v4], aggd);
       AnalyticsSendEventLazy();
     }
   }
@@ -10995,15 +10995,15 @@ id __40__PLBatteryAgent_logChargingTimeToAggd___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (int)calculateConnectedState:(id)a3
+- (int)calculateConnectedState:(id)state
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  stateCopy = state;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [stateCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -11015,19 +11015,19 @@ id __40__PLBatteryAgent_logChargingTimeToAggd___block_invoke(uint64_t a1)
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(stateCopy);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) intValue];
-        if (v9 <= -536723450)
+        intValue = [*(*(&v12 + 1) + 8 * i) intValue];
+        if (intValue <= -536723450)
         {
-          if (v9 == -536723453)
+          if (intValue == -536723453)
           {
             v6 |= 2u;
             continue;
           }
 
-          if (v9 == -536723450)
+          if (intValue == -536723450)
           {
             v6 |= 1u;
             continue;
@@ -11036,7 +11036,7 @@ id __40__PLBatteryAgent_logChargingTimeToAggd___block_invoke(uint64_t a1)
 
         else
         {
-          switch(v9)
+          switch(intValue)
           {
             case -536723449:
               v6 |= 8u;
@@ -11052,7 +11052,7 @@ id __40__PLBatteryAgent_logChargingTimeToAggd___block_invoke(uint64_t a1)
         v6 |= 4u;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [stateCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (!v5)
       {
         goto LABEL_22;
@@ -11067,46 +11067,46 @@ LABEL_22:
   return v6;
 }
 
-- (int)calculateChargingState:(id)a3
+- (int)calculateChargingState:(id)state
 {
-  v3 = [a3 objectForKey:@"AdapterDetails"];
+  v3 = [state objectForKey:@"AdapterDetails"];
   v4 = v3;
   if (v3)
   {
     v5 = [v3 objectForKeyedSubscript:@"FamilyCode"];
-    v6 = [v5 intValue];
+    intValue = [v5 intValue];
 
-    if (v6 <= -536723450)
+    if (intValue <= -536723450)
     {
-      if (v6 == -536723453)
+      if (intValue == -536723453)
       {
-        v6 = 2;
+        intValue = 2;
       }
 
       else
       {
-        if (v6 != -536723450)
+        if (intValue != -536723450)
         {
 LABEL_14:
-          v6 = 4;
+          intValue = 4;
           goto LABEL_15;
         }
 
-        v6 = 1;
+        intValue = 1;
       }
     }
 
-    else if (v6 == -536723449)
+    else if (intValue == -536723449)
     {
-      v6 = 8;
+      intValue = 8;
     }
 
-    else if (v6 == -536723448)
+    else if (intValue == -536723448)
     {
-      v6 = 16;
+      intValue = 16;
     }
 
-    else if (v6)
+    else if (intValue)
     {
       goto LABEL_14;
     }
@@ -11114,30 +11114,30 @@ LABEL_14:
 
   else
   {
-    v6 = -1;
+    intValue = -1;
   }
 
 LABEL_15:
 
-  return v6;
+  return intValue;
 }
 
-- (void)logEventForwardCalibration0withData:(id)a3
+- (void)logEventForwardCalibration0withData:(id)data
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = PLLogCommon();
   v6 = v5;
-  if (v4)
+  if (dataCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v13 = 138412290;
-      v14 = v4;
+      v14 = dataCopy;
       _os_log_debug_impl(&dword_21A4C6000, v6, OS_LOG_TYPE_DEBUG, "calibration data %@", &v13, 0xCu);
     }
 
-    v6 = [v4 objectForKeyedSubscript:@"baseline"];
+    v6 = [dataCopy objectForKeyedSubscript:@"baseline"];
 
     v7 = [(PLOperator *)PLBatteryAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"BatteryCalibration0Baseline"];
     v8 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:v6];
@@ -11164,84 +11164,84 @@ LABEL_15:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logEventForwardCalibration0InfowithData:(id)a3
+- (void)logEventForwardCalibration0InfowithData:(id)data
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = PLLogCommon();
   v6 = v5;
-  if (v4)
+  if (dataCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v40 = 138412290;
-      v41 = v4;
+      v41 = dataCopy;
       _os_log_debug_impl(&dword_21A4C6000, v6, OS_LOG_TYPE_DEBUG, "calibration0Info data %@", &v40, 0xCu);
     }
 
     v6 = [(PLOperator *)PLBatteryAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"Calibration0Info"];
     v7 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v6];
-    v8 = [v4 objectForKeyedSubscript:@"status0"];
+    v8 = [dataCopy objectForKeyedSubscript:@"status0"];
 
     if (v8)
     {
-      v9 = [v4 objectForKeyedSubscript:@"status0"];
+      v9 = [dataCopy objectForKeyedSubscript:@"status0"];
       v10 = [v9 objectForKeyedSubscript:@"correction"];
       [v7 setObject:v10 forKeyedSubscript:@"status0correction"];
 
-      v11 = [v4 objectForKeyedSubscript:@"status0"];
+      v11 = [dataCopy objectForKeyedSubscript:@"status0"];
       v12 = [v11 objectForKeyedSubscript:@"status"];
       [v7 setObject:v12 forKeyedSubscript:@"status0status"];
 
       v13 = MEMORY[0x277CCABB0];
-      v14 = [v4 objectForKeyedSubscript:@"status0"];
+      v14 = [dataCopy objectForKeyedSubscript:@"status0"];
       v15 = [v14 objectForKeyedSubscript:@"epoch"];
       [v15 doubleValue];
       v17 = [v13 numberWithDouble:round(v16 / 1800.0) * 3600.0];
       [v7 setObject:v17 forKeyedSubscript:@"status0epoch"];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"status1"];
+    v18 = [dataCopy objectForKeyedSubscript:@"status1"];
 
     if (v18)
     {
-      v19 = [v4 objectForKeyedSubscript:@"status1"];
+      v19 = [dataCopy objectForKeyedSubscript:@"status1"];
       v20 = [v19 objectForKeyedSubscript:@"correction"];
       [v7 setObject:v20 forKeyedSubscript:@"status1correction"];
 
-      v21 = [v4 objectForKeyedSubscript:@"status1"];
+      v21 = [dataCopy objectForKeyedSubscript:@"status1"];
       v22 = [v21 objectForKeyedSubscript:@"status"];
       [v7 setObject:v22 forKeyedSubscript:@"status1status"];
 
       v23 = MEMORY[0x277CCABB0];
-      v24 = [v4 objectForKeyedSubscript:@"status1"];
+      v24 = [dataCopy objectForKeyedSubscript:@"status1"];
       v25 = [v24 objectForKeyedSubscript:@"epoch"];
       [v25 doubleValue];
       v27 = [v23 numberWithDouble:round(v26 / 1800.0) * 3600.0];
       [v7 setObject:v27 forKeyedSubscript:@"status1epoch"];
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"postCalibrationSnapshot"];
+    v28 = [dataCopy objectForKeyedSubscript:@"postCalibrationSnapshot"];
 
     if (v28)
     {
-      v29 = [v4 objectForKeyedSubscript:@"postCalibrationSnapshot"];
+      v29 = [dataCopy objectForKeyedSubscript:@"postCalibrationSnapshot"];
       v30 = [v29 objectForKeyedSubscript:@"ncc"];
       [v7 setObject:v30 forKeyedSubscript:@"ncc"];
 
-      v31 = [v4 objectForKeyedSubscript:@"postCalibrationSnapshot"];
+      v31 = [dataCopy objectForKeyedSubscript:@"postCalibrationSnapshot"];
       v32 = [v31 objectForKeyedSubscript:@"nccAlt"];
       [v7 setObject:v32 forKeyedSubscript:@"nccAlt"];
 
-      v33 = [v4 objectForKeyedSubscript:@"postCalibrationSnapshot"];
+      v33 = [dataCopy objectForKeyedSubscript:@"postCalibrationSnapshot"];
       v34 = [v33 objectForKeyedSubscript:@"Battery Service State"];
       [v7 setObject:v34 forKeyedSubscript:@"batteryServiceRecommended"];
 
-      v35 = [v4 objectForKeyedSubscript:@"postCalibrationSnapshot"];
+      v35 = [dataCopy objectForKeyedSubscript:@"postCalibrationSnapshot"];
       v36 = [v35 objectForKeyedSubscript:@"Maximum Capacity Percent"];
       [v7 setObject:v36 forKeyedSubscript:@"MaximumCapacityPercent"];
 
-      v37 = [v4 objectForKeyedSubscript:@"postCalibrationSnapshot"];
+      v37 = [dataCopy objectForKeyedSubscript:@"postCalibrationSnapshot"];
       v38 = [v37 objectForKeyedSubscript:@"Battery Service Flags"];
       [v7 setObject:v38 forKeyedSubscript:@"batteryServiceFlags"];
     }
@@ -11258,12 +11258,12 @@ LABEL_15:
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logEventForwardUPOStepperWithPayload:(id)a3
+- (void)logEventForwardUPOStepperWithPayload:(id)payload
 {
   v4 = *MEMORY[0x277D3F5D0];
-  v5 = a3;
+  payloadCopy = payload;
   v6 = [(PLOperator *)PLBatteryAgent entryKeyForType:v4 andName:@"UPOStepper"];
-  v7 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v6 withRawData:v5];
+  v7 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v6 withRawData:payloadCopy];
 
   v8 = [v7 objectForKeyedSubscript:@"RAv"];
   [v8 intValue];
@@ -11285,8 +11285,8 @@ LABEL_15:
   v12 = v7;
   AnalyticsSendEventLazy();
   [(PLOperator *)self logEntry:v12];
-  v13 = [(PLOperator *)self storage];
-  [v13 flushCachesWithReason:@"UPOStepper"];
+  storage = [(PLOperator *)self storage];
+  [storage flushCachesWithReason:@"UPOStepper"];
 }
 
 id __55__PLBatteryAgent_logEventForwardUPOStepperWithPayload___block_invoke(uint64_t a1)
@@ -11315,17 +11315,17 @@ id __55__PLBatteryAgent_logEventForwardUPOStepperWithPayload___block_invoke(uint
   return v2;
 }
 
-- (void)createFixedChargingIntervals:(id)a3
+- (void)createFixedChargingIntervals:(id)intervals
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  intervalsCopy = intervals;
   v5 = PLLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v20[0] = 67109376;
     v20[1] = [(PLBatteryAgent *)self smartChargingEngaged];
     v21 = 1024;
-    v22 = [(PLBatteryAgent *)self fixedChargingEngaged];
+    fixedChargingEngaged = [(PLBatteryAgent *)self fixedChargingEngaged];
     _os_log_debug_impl(&dword_21A4C6000, v5, OS_LOG_TYPE_DEBUG, "Smart Charging: %d, Fixed Charging: %d", v20, 0xEu);
   }
 
@@ -11348,10 +11348,10 @@ id __55__PLBatteryAgent_logEventForwardUPOStepperWithPayload___block_invoke(uint
       _os_log_debug_impl(&dword_21A4C6000, v11, OS_LOG_TYPE_DEBUG, "Unsupported device, just update OBC interval", v20, 2u);
     }
 
-    v12 = [(PLBatteryAgent *)self smartChargingEngaged];
-    v8 = [v4 entryDate];
-    v13 = self;
-    v14 = v12;
+    smartChargingEngaged = [(PLBatteryAgent *)self smartChargingEngaged];
+    entryDate = [intervalsCopy entryDate];
+    selfCopy3 = self;
+    v14 = smartChargingEngaged;
     goto LABEL_24;
   }
 
@@ -11366,11 +11366,11 @@ id __55__PLBatteryAgent_logEventForwardUPOStepperWithPayload___block_invoke(uint
         _os_log_debug_impl(&dword_21A4C6000, v17, OS_LOG_TYPE_DEBUG, "Open only OBC interval, close fixed", v20, 2u);
       }
 
-      v18 = [v4 entryDate];
-      [(PLBatteryAgent *)self updateIntervalForType:8 withState:0 andTime:v18];
+      entryDate2 = [intervalsCopy entryDate];
+      [(PLBatteryAgent *)self updateIntervalForType:8 withState:0 andTime:entryDate2];
 
-      v8 = [v4 entryDate];
-      v13 = self;
+      entryDate = [intervalsCopy entryDate];
+      selfCopy3 = self;
       v14 = 1;
     }
 
@@ -11383,16 +11383,16 @@ id __55__PLBatteryAgent_logEventForwardUPOStepperWithPayload___block_invoke(uint
         _os_log_debug_impl(&dword_21A4C6000, v15, OS_LOG_TYPE_DEBUG, "Close fixed and OBC intervals", v20, 2u);
       }
 
-      v16 = [v4 entryDate];
-      [(PLBatteryAgent *)self updateIntervalForType:8 withState:0 andTime:v16];
+      entryDate3 = [intervalsCopy entryDate];
+      [(PLBatteryAgent *)self updateIntervalForType:8 withState:0 andTime:entryDate3];
 
-      v8 = [v4 entryDate];
-      v13 = self;
+      entryDate = [intervalsCopy entryDate];
+      selfCopy3 = self;
       v14 = 0;
     }
 
 LABEL_24:
-    [(PLBatteryAgent *)v13 updateIntervalForType:2 withState:v14 andTime:v8];
+    [(PLBatteryAgent *)selfCopy3 updateIntervalForType:2 withState:v14 andTime:entryDate];
     goto LABEL_25;
   }
 
@@ -11403,12 +11403,12 @@ LABEL_24:
     _os_log_debug_impl(&dword_21A4C6000, v6, OS_LOG_TYPE_DEBUG, "Open only fixed interval, close OBC", v20, 2u);
   }
 
-  v7 = [v4 entryDate];
-  [(PLBatteryAgent *)self updateIntervalForType:2 withState:0 andTime:v7];
+  entryDate4 = [intervalsCopy entryDate];
+  [(PLBatteryAgent *)self updateIntervalForType:2 withState:0 andTime:entryDate4];
 
-  v8 = [v4 entryDate];
-  v9 = [v4 objectForKeyedSubscript:@"chargeLimitTargetSoC"];
-  [(PLBatteryAgent *)self updateIntervalForType:8 withState:1 andTime:v8 selectedChargedLimit:v9];
+  entryDate = [intervalsCopy entryDate];
+  v9 = [intervalsCopy objectForKeyedSubscript:@"chargeLimitTargetSoC"];
+  [(PLBatteryAgent *)self updateIntervalForType:8 withState:1 andTime:entryDate selectedChargedLimit:v9];
 
 LABEL_25:
   v19 = *MEMORY[0x277D85DE8];
@@ -11423,21 +11423,21 @@ id __71__PLBatteryAgent_logEventForwardMitigationStateWithState_userDisabled___b
   return v2;
 }
 
-- (void)logEventForwardSmartChargingWithPayload:(id)a3
+- (void)logEventForwardSmartChargingWithPayload:(id)payload
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  payloadCopy = payload;
+  if (payloadCopy)
   {
     v5 = [(PLOperator *)PLBatteryAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"SmartCharging"];
-    v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v5 withRawData:v4];
+    v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v5 withRawData:payloadCopy];
     v7 = [v6 objectForKeyedSubscript:@"decisionTime"];
     if (v7)
     {
       v8 = MEMORY[0x277CCABB0];
       v9 = [v6 objectForKeyedSubscript:@"decisionTime"];
-      v10 = [v9 convertFromSystemToMonotonic];
-      [v10 timeIntervalSince1970];
+      convertFromSystemToMonotonic = [v9 convertFromSystemToMonotonic];
+      [convertFromSystemToMonotonic timeIntervalSince1970];
       v12 = [v8 numberWithInt:v11];
       [v6 setObject:v12 forKeyedSubscript:@"decisionTime"];
     }
@@ -11447,14 +11447,14 @@ id __71__PLBatteryAgent_logEventForwardMitigationStateWithState_userDisabled___b
       [v6 setObject:&unk_282C11F10 forKeyedSubscript:@"decisionTime"];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"engagementProbability"];
+    v13 = [payloadCopy objectForKeyedSubscript:@"engagementProbability"];
     if (v13)
     {
-      v14 = [v4 objectForKeyedSubscript:@"engagementProbability"];
+      v14 = [payloadCopy objectForKeyedSubscript:@"engagementProbability"];
       if (objc_opt_respondsToSelector())
       {
         v15 = MEMORY[0x277CCABB0];
-        v16 = [v4 objectForKeyedSubscript:@"engagementProbability"];
+        v16 = [payloadCopy objectForKeyedSubscript:@"engagementProbability"];
         [v16 doubleValue];
         v18 = [v15 numberWithInt:(v17 * 100.0)];
         [v6 setObject:v18 forKeyedSubscript:@"engagementProbability"];
@@ -11471,14 +11471,14 @@ id __71__PLBatteryAgent_logEventForwardMitigationStateWithState_userDisabled___b
       [v6 setObject:&unk_282C11F10 forKeyedSubscript:@"engagementProbability"];
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"durationPrediction"];
+    v19 = [payloadCopy objectForKeyedSubscript:@"durationPrediction"];
     if (v19)
     {
-      v20 = [v4 objectForKeyedSubscript:@"durationPrediction"];
+      v20 = [payloadCopy objectForKeyedSubscript:@"durationPrediction"];
       if (objc_opt_respondsToSelector())
       {
         v21 = MEMORY[0x277CCABB0];
-        v22 = [v4 objectForKeyedSubscript:@"durationPrediction"];
+        v22 = [payloadCopy objectForKeyedSubscript:@"durationPrediction"];
         [v22 doubleValue];
         v24 = [v21 numberWithInt:(v23 * 10.0)];
         [v6 setObject:v24 forKeyedSubscript:@"durationPrediction"];
@@ -11495,7 +11495,7 @@ id __71__PLBatteryAgent_logEventForwardMitigationStateWithState_userDisabled___b
       [v6 setObject:&unk_282C11F10 forKeyedSubscript:@"durationPrediction"];
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"state"];
+    v25 = [payloadCopy objectForKeyedSubscript:@"state"];
     [v6 setObject:v25 forKeyedSubscript:@"state"];
 
     v26 = PLLogCommon();
@@ -11506,7 +11506,7 @@ id __71__PLBatteryAgent_logEventForwardMitigationStateWithState_userDisabled___b
     }
 
     [(PLOperator *)self logEntry:v6];
-    v27 = [v4 objectForKeyedSubscript:@"isManuallyChargeLimited"];
+    v27 = [payloadCopy objectForKeyedSubscript:@"isManuallyChargeLimited"];
     [v6 setObject:v27 forKeyedSubscript:@"isFixed"];
 
     v28 = [v6 objectForKeyedSubscript:@"isEngaged"];
@@ -11515,9 +11515,9 @@ id __71__PLBatteryAgent_logEventForwardMitigationStateWithState_userDisabled___b
     v29 = PLLogCommon();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
     {
-      v30 = [(PLBatteryAgent *)self smartChargingEngaged];
+      smartChargingEngaged = [(PLBatteryAgent *)self smartChargingEngaged];
       v38 = 67109120;
-      v39 = v30;
+      v39 = smartChargingEngaged;
       _os_log_impl(&dword_21A4C6000, v29, OS_LOG_TYPE_INFO, "Smart Charging State: %d", &v38, 8u);
     }
 
@@ -11528,18 +11528,18 @@ id __71__PLBatteryAgent_logEventForwardMitigationStateWithState_userDisabled___b
     if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
     {
       v33 = [v6 objectForKeyedSubscript:@"isFixed"];
-      v34 = [v33 intValue];
+      intValue = [v33 intValue];
       v38 = 67109120;
-      v39 = v34;
+      v39 = intValue;
       _os_log_impl(&dword_21A4C6000, v32, OS_LOG_TYPE_INFO, "Fixed limit enum: %d", &v38, 8u);
     }
 
     v35 = PLLogCommon();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
     {
-      v36 = [(PLBatteryAgent *)self fixedChargingEngaged];
+      fixedChargingEngaged = [(PLBatteryAgent *)self fixedChargingEngaged];
       v38 = 67109120;
-      v39 = v36;
+      v39 = fixedChargingEngaged;
       _os_log_impl(&dword_21A4C6000, v35, OS_LOG_TYPE_INFO, "Fixed limit State: %d", &v38, 8u);
     }
 
@@ -11549,14 +11549,14 @@ id __71__PLBatteryAgent_logEventForwardMitigationStateWithState_userDisabled___b
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logEventForwardCleanEnergyChargingWithPayload:(id)a3
+- (void)logEventForwardCleanEnergyChargingWithPayload:(id)payload
 {
-  if (a3)
+  if (payload)
   {
     v4 = *MEMORY[0x277D3F5D0];
-    v5 = a3;
+    payloadCopy = payload;
     v6 = [(PLOperator *)PLBatteryAgent entryKeyForType:v4 andName:@"CleanEnergyCharging"];
-    v7 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v6 withRawData:v5];
+    v7 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v6 withRawData:payloadCopy];
 
     v8 = PLLogCommon();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -11569,18 +11569,18 @@ id __71__PLBatteryAgent_logEventForwardMitigationStateWithState_userDisabled___b
     v9 = [v7 objectForKeyedSubscript:@"isPaused"];
     -[PLBatteryAgent setCleanEnergyChargingEngaged:](self, "setCleanEnergyChargingEngaged:", [v9 BOOLValue]);
 
-    v10 = [(PLBatteryAgent *)self cleanEnergyChargingEngaged];
-    v11 = [v7 entryDate];
-    [(PLBatteryAgent *)self updateIntervalForType:7 withState:v10 andTime:v11];
+    cleanEnergyChargingEngaged = [(PLBatteryAgent *)self cleanEnergyChargingEngaged];
+    entryDate = [v7 entryDate];
+    [(PLBatteryAgent *)self updateIntervalForType:7 withState:cleanEnergyChargingEngaged andTime:entryDate];
   }
 }
 
-- (void)logEventForwardMobileChargeMode:(id)a3
+- (void)logEventForwardMobileChargeMode:(id)mode
 {
   v4 = *MEMORY[0x277D3F5D0];
-  v5 = a3;
+  modeCopy = mode;
   v7 = [(PLOperator *)PLBatteryAgent entryKeyForType:v4 andName:@"MobileChargeMode"];
-  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:v5];
+  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:modeCopy];
 
   [(PLOperator *)self logEntry:v6];
 }
@@ -11604,20 +11604,20 @@ id __71__PLBatteryAgent_logEventForwardMitigationStateWithState_userDisabled___b
   }
 }
 
-- (id)dateNoEarlierThan:(unint64_t)a3 since:(id)a4 withDelta:(id)a5
+- (id)dateNoEarlierThan:(unint64_t)than since:(id)since withDelta:(id)delta
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  [v7 timeIntervalSinceDate:v8];
-  if ((v9 / 86400.0) <= a3)
+  sinceCopy = since;
+  deltaCopy = delta;
+  [sinceCopy timeIntervalSinceDate:deltaCopy];
+  if ((v9 / 86400.0) <= than)
   {
-    v12 = v8;
+    v12 = deltaCopy;
   }
 
   else
   {
-    v10 = (a3 * 86400.0);
+    v10 = (than * 86400.0);
     v11 = PLLogCommon();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
@@ -11626,7 +11626,7 @@ id __71__PLBatteryAgent_logEventForwardMitigationStateWithState_userDisabled___b
       _os_log_debug_impl(&dword_21A4C6000, v11, OS_LOG_TYPE_DEBUG, "offset of day to go backward is %d", v16, 8u);
     }
 
-    v12 = [v7 dateByAddingTimeInterval:-v10];
+    v12 = [sinceCopy dateByAddingTimeInterval:-v10];
   }
 
   v13 = v12;
@@ -11639,7 +11639,7 @@ id __71__PLBatteryAgent_logEventForwardMitigationStateWithState_userDisabled___b
 - (void)logEventBackwardHeatMap
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = [(PLOperator *)self workQueue];
+  workQueue = [(PLOperator *)self workQueue];
   block[5] = MEMORY[0x277D85DD0];
   block[6] = 3221225472;
   block[7] = __41__PLBatteryAgent_logEventBackwardHeatMap__block_invoke;
@@ -11665,9 +11665,9 @@ id __71__PLBatteryAgent_logEventForwardMitigationStateWithState_userDisabled___b
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"ChargingA Heat Map Error: %x", v4];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent logEventBackwardHeatMap]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:5874];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:5874];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -11679,7 +11679,7 @@ id __71__PLBatteryAgent_logEventForwardMitigationStateWithState_userDisabled___b
     }
   }
 
-  v12 = [(PLOperator *)self workQueue];
+  workQueue2 = [(PLOperator *)self workQueue];
   v32[5] = MEMORY[0x277D85DD0];
   v32[6] = 3221225472;
   v32[7] = __41__PLBatteryAgent_logEventBackwardHeatMap__block_invoke_4180;
@@ -11705,9 +11705,9 @@ id __71__PLBatteryAgent_logEventForwardMitigationStateWithState_userDisabled___b
       v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"ChargingB Heat Map Error: %x", v13];
       v16 = MEMORY[0x277D3F178];
       v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-      v18 = [v17 lastPathComponent];
+      lastPathComponent2 = [v17 lastPathComponent];
       v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent logEventBackwardHeatMap]"];
-      [v16 logMessage:v15 fromFile:v18 fromFunction:v19 fromLineNumber:5880];
+      [v16 logMessage:v15 fromFile:lastPathComponent2 fromFunction:v19 fromLineNumber:5880];
 
       v20 = PLLogCommon();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -11719,7 +11719,7 @@ id __71__PLBatteryAgent_logEventForwardMitigationStateWithState_userDisabled___b
     }
   }
 
-  v21 = [(PLOperator *)self workQueue];
+  workQueue3 = [(PLOperator *)self workQueue];
   v31[5] = MEMORY[0x277D85DD0];
   v31[6] = 3221225472;
   v31[7] = __41__PLBatteryAgent_logEventBackwardHeatMap__block_invoke_4187;
@@ -11745,9 +11745,9 @@ id __71__PLBatteryAgent_logEventForwardMitigationStateWithState_userDisabled___b
       v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"Discharging Heat Map Error: %x", v22];
       v25 = MEMORY[0x277D3F178];
       v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-      v27 = [v26 lastPathComponent];
+      lastPathComponent3 = [v26 lastPathComponent];
       v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent logEventBackwardHeatMap]"];
-      [v25 logMessage:v24 fromFile:v27 fromFunction:v28 fromLineNumber:5886];
+      [v25 logMessage:v24 fromFile:lastPathComponent3 fromFunction:v28 fromLineNumber:5886];
 
       v29 = PLLogCommon();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
@@ -11798,10 +11798,10 @@ uint64_t __41__PLBatteryAgent_logEventBackwardHeatMap__block_invoke_2_4190(uint6
   return result;
 }
 
-- (void)logEventBackwardHeatMapCallback:(id)a3 andHeatMapType:(int64_t)a4
+- (void)logEventBackwardHeatMapCallback:(id)callback andHeatMapType:(int64_t)type
 {
   v63 = *MEMORY[0x277D85DE8];
-  v5 = [a3 objectForKeyedSubscript:@"batteryHeatMapData"];
+  v5 = [callback objectForKeyedSubscript:@"batteryHeatMapData"];
   v6 = v5;
   if (v5)
   {
@@ -11809,22 +11809,22 @@ uint64_t __41__PLBatteryAgent_logEventBackwardHeatMap__block_invoke_2_4190(uint6
     if (v7)
     {
       v8 = [v6 objectForKeyedSubscript:@"HeatMapType"];
-      v9 = [v8 intValue];
+      intValue = [v8 intValue];
     }
 
     else
     {
-      v9 = 0;
+      intValue = 0;
     }
 
     v10 = &unk_282C156C0;
-    if (v9 == 1)
+    if (intValue == 1)
     {
       v10 = &unk_282C156A8;
     }
 
     v48 = v10;
-    if (v9 == 1)
+    if (intValue == 1)
     {
       v11 = @"SoC";
     }
@@ -11834,7 +11834,7 @@ uint64_t __41__PLBatteryAgent_logEventBackwardHeatMap__block_invoke_2_4190(uint6
       v11 = @"voltage";
     }
 
-    if (v9 == 1)
+    if (intValue == 1)
     {
       v12 = @"com.apple.power.battery.heatmap.soc";
     }
@@ -11846,8 +11846,8 @@ uint64_t __41__PLBatteryAgent_logEventBackwardHeatMap__block_invoke_2_4190(uint6
 
     v49 = v12;
     v50 = v11;
-    v46 = [MEMORY[0x277CBEAA8] monotonicDate];
-    if (a4 > 2)
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+    if (type > 2)
     {
       v47 = 0;
       v44 = 0;
@@ -11855,8 +11855,8 @@ uint64_t __41__PLBatteryAgent_logEventBackwardHeatMap__block_invoke_2_4190(uint6
 
     else
     {
-      v47 = off_278260F58[a4];
-      v44 = off_278260F70[a4];
+      v47 = off_278260F58[type];
+      v44 = off_278260F70[type];
     }
 
     v56 = 0u;
@@ -11894,9 +11894,9 @@ uint64_t __41__PLBatteryAgent_logEventBackwardHeatMap__block_invoke_2_4190(uint6
             for (i = 0; i != 25; ++i)
             {
               v23 = [v21 objectAtIndex:i];
-              v24 = [v23 intValue];
+              intValue2 = [v23 intValue];
 
-              if (v24)
+              if (intValue2)
               {
                 block[0] = MEMORY[0x277D85DD0];
                 block[1] = 3221225472;
@@ -11915,17 +11915,17 @@ uint64_t __41__PLBatteryAgent_logEventBackwardHeatMap__block_invoke_2_4190(uint6
                 {
                   v26 = [(PLOperator *)PLBatteryAgent entryKeyForType:v43 andName:v44];
                   v27 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v26];
-                  [v27 setEntryDate:v46];
+                  [v27 setEntryDate:monotonicDate];
                   v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v20];
                   [v27 setObject:v28 forKeyedSubscript:@"Temperature"];
 
                   v29 = [MEMORY[0x277CCABB0] numberWithInt:i];
                   [v27 setObject:v29 forKeyedSubscript:@"Bin"];
 
-                  v30 = [MEMORY[0x277CCABB0] numberWithInteger:v9];
+                  v30 = [MEMORY[0x277CCABB0] numberWithInteger:intValue];
                   [v27 setObject:v30 forKeyedSubscript:@"HeatMapType"];
 
-                  v31 = [MEMORY[0x277CCABB0] numberWithInt:v24];
+                  v31 = [MEMORY[0x277CCABB0] numberWithInt:intValue2];
                   [v27 setObject:v31 forKeyedSubscript:@"TimeInMinutes"];
 
                   [(PLOperator *)self logEntry:v27];
@@ -12003,7 +12003,7 @@ id __65__PLBatteryAgent_logEventBackwardHeatMapCallback_andHeatMapType___block_i
 - (void)logEventBackwardKioskMode
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(PLOperator *)self workQueue];
+  workQueue = [(PLOperator *)self workQueue];
   block[5] = MEMORY[0x277D85DD0];
   block[6] = 3221225472;
   block[7] = __43__PLBatteryAgent_logEventBackwardKioskMode__block_invoke;
@@ -12029,9 +12029,9 @@ id __65__PLBatteryAgent_logEventBackwardHeatMapCallback_andHeatMapType___block_i
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Kiosk Mode Lifetime Data Error: %x", v4];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent logEventBackwardKioskMode]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:6006];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:6006];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -12058,12 +12058,12 @@ uint64_t __43__PLBatteryAgent_logEventBackwardKioskMode__block_invoke_2(uint64_t
   return result;
 }
 
-- (void)logEventBackwardKioskModeCallback:(id)a3
+- (void)logEventBackwardKioskModeCallback:(id)callback
 {
   v22 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (callback)
   {
-    v4 = [a3 objectForKeyedSubscript:@"batteryKioskModeData"];
+    v4 = [callback objectForKeyedSubscript:@"batteryKioskModeData"];
     if ([MEMORY[0x277D3F180] debugEnabled])
     {
       v5 = objc_opt_class();
@@ -12082,9 +12082,9 @@ uint64_t __43__PLBatteryAgent_logEventBackwardKioskMode__block_invoke_2(uint64_t
         v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Kiosk Mode callback: %@", v4, block, v16, v17, v18, v19];
         v7 = MEMORY[0x277D3F178];
         v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-        v9 = [v8 lastPathComponent];
+        lastPathComponent = [v8 lastPathComponent];
         v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent logEventBackwardKioskModeCallback:]"];
-        [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:6015];
+        [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:6015];
 
         v11 = PLLogCommon();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -12118,31 +12118,31 @@ uint64_t __52__PLBatteryAgent_logEventBackwardKioskModeCallback___block_invoke(u
 
 - (void)logEventBackwardBattery
 {
-  v5 = [(PLBatteryAgent *)self iokitPowerSource];
-  v3 = [v5 properties];
-  v4 = [(PLBatteryAgent *)self logEventBackwardBatteryWithRawData:v3];
+  iokitPowerSource = [(PLBatteryAgent *)self iokitPowerSource];
+  properties = [iokitPowerSource properties];
+  v4 = [(PLBatteryAgent *)self logEventBackwardBatteryWithRawData:properties];
 }
 
-- (void)logBatteryEntry:(id)a3
+- (void)logBatteryEntry:(id)entry
 {
-  v4 = a3;
-  v6 = [v4 dictionary];
-  v5 = [v4 entryDate];
+  entryCopy = entry;
+  dictionary = [entryCopy dictionary];
+  entryDate = [entryCopy entryDate];
 
-  [(PLOperator *)self logForSubsystem:@"BatteryMetrics" category:@"Battery" data:v6 date:v5];
+  [(PLOperator *)self logForSubsystem:@"BatteryMetrics" category:@"Battery" data:dictionary date:entryDate];
 }
 
-- (id)logEventBackwardBatteryWithRawData:(id)a3
+- (id)logEventBackwardBatteryWithRawData:(id)data
 {
-  v4 = a3;
-  if (!v4)
+  dataCopy = data;
+  if (!dataCopy)
   {
     v16 = 0;
     goto LABEL_92;
   }
 
-  v5 = [[PLEventBackwardBatteryEntry alloc] initEntryWithRawData:v4];
-  v6 = [(PLBatteryAgent *)self presentMaxRaFromRawData:v4];
+  v5 = [[PLEventBackwardBatteryEntry alloc] initEntryWithRawData:dataCopy];
+  v6 = [(PLBatteryAgent *)self presentMaxRaFromRawData:dataCopy];
   v127 = v6;
   if (v6)
   {
@@ -12151,11 +12151,11 @@ uint64_t __52__PLBatteryAgent_logEventBackwardKioskModeCallback___block_invoke(u
     {
       [v5 setObject:v7 forKeyedSubscript:@"PresentMaxRa0-8"];
       self->_presentMaxRa = [v7 intValue];
-      v8 = [v4 objectForKey:@"BatteryData"];
+      v8 = [dataCopy objectForKey:@"BatteryData"];
       if (v8)
       {
         v9 = v8;
-        v10 = [v4 objectForKey:@"BatteryData"];
+        v10 = [dataCopy objectForKey:@"BatteryData"];
         v11 = [v10 objectForKey:@"LifetimeData"];
 
         if (v11)
@@ -12196,8 +12196,8 @@ uint64_t __52__PLBatteryAgent_logEventBackwardKioskModeCallback___block_invoke(u
     presentChemicalWeightedRa = self->_presentChemicalWeightedRa;
     ADClientSetValueForScalarKey();
     v26 = [MEMORY[0x277CCABB0] numberWithInt:{-[PLBatteryAgent presentChemicalWeightedRa](self, "presentChemicalWeightedRa")}];
-    v27 = [(PLBatteryAgent *)self lastBatteryConfigEntry];
-    [v27 setObject:v26 forKeyedSubscript:@"ChemicalWeightedRa"];
+    lastBatteryConfigEntry = [(PLBatteryAgent *)self lastBatteryConfigEntry];
+    [lastBatteryConfigEntry setObject:v26 forKeyedSubscript:@"ChemicalWeightedRa"];
 
     v23 = 1;
   }
@@ -12216,8 +12216,8 @@ uint64_t __52__PLBatteryAgent_logEventBackwardKioskModeCallback___block_invoke(u
     presentWeightedRa = self->_presentWeightedRa;
     ADClientSetValueForScalarKey();
     v35 = [MEMORY[0x277CCABB0] numberWithInt:{-[PLBatteryAgent presentWeightedRa](self, "presentWeightedRa")}];
-    v36 = [(PLBatteryAgent *)self lastBatteryConfigEntry];
-    [v36 setObject:v35 forKeyedSubscript:@"WeightedRa"];
+    lastBatteryConfigEntry2 = [(PLBatteryAgent *)self lastBatteryConfigEntry];
+    [lastBatteryConfigEntry2 setObject:v35 forKeyedSubscript:@"WeightedRa"];
 
     v23 = 1;
   }
@@ -12257,8 +12257,8 @@ uint64_t __52__PLBatteryAgent_logEventBackwardKioskModeCallback___block_invoke(u
   if (v23)
   {
 LABEL_31:
-    v51 = [(PLBatteryAgent *)self lastBatteryConfigEntry];
-    [(PLBatteryAgent *)self logBatteryConfigToCA:v51];
+    lastBatteryConfigEntry3 = [(PLBatteryAgent *)self lastBatteryConfigEntry];
+    [(PLBatteryAgent *)self logBatteryConfigToCA:lastBatteryConfigEntry3];
   }
 
 LABEL_32:
@@ -12326,9 +12326,9 @@ LABEL_32:
   v83 = [(PLBatteryAgent *)self parseITMiscStatusCounters:v82];
   if (v83)
   {
-    v84 = [(PLBatteryAgent *)self lastITMiscStatus];
+    lastITMiscStatus = [(PLBatteryAgent *)self lastITMiscStatus];
 
-    if (v84)
+    if (lastITMiscStatus)
     {
       v85 = objc_opt_new();
       v149[0] = MEMORY[0x277D85DD0];
@@ -12357,17 +12357,17 @@ LABEL_32:
 
   if (v87)
   {
-    v88 = [(PLBatteryAgent *)self prevBatteryCellDisconnectCount];
-    if (!v88)
+    prevBatteryCellDisconnectCount = [(PLBatteryAgent *)self prevBatteryCellDisconnectCount];
+    if (!prevBatteryCellDisconnectCount)
     {
       goto LABEL_61;
     }
 
-    v89 = v88;
-    v90 = [(PLBatteryAgent *)self prevBatteryCellDisconnectCount];
+    v89 = prevBatteryCellDisconnectCount;
+    prevBatteryCellDisconnectCount2 = [(PLBatteryAgent *)self prevBatteryCellDisconnectCount];
     v91 = [v5 objectForKeyedSubscript:@"BatteryCellDisconnectCount"];
 
-    if (v90 != v91)
+    if (prevBatteryCellDisconnectCount2 != v91)
     {
 LABEL_61:
       v92 = [v5 objectForKeyedSubscript:@"BatteryCellDisconnectCount"];
@@ -12391,40 +12391,40 @@ LABEL_61:
   if (v94)
   {
     v95 = [v5 objectForKeyedSubscript:@"GaugeResetCounter"];
-    v96 = [v95 intValue];
+    intValue = [v95 intValue];
 
-    v97 = [(PLBatteryAgent *)self prevGGResetCount];
+    prevGGResetCount = [(PLBatteryAgent *)self prevGGResetCount];
 
-    if (v97)
+    if (prevGGResetCount)
     {
-      v98 = [(PLBatteryAgent *)self prevGGResetCount];
-      v99 = [v98 intValue];
+      prevGGResetCount2 = [(PLBatteryAgent *)self prevGGResetCount];
+      intValue2 = [prevGGResetCount2 intValue];
     }
 
     else
     {
-      v98 = +[PLEventBackwardBatteryEntry entryKey];
-      v100 = [(PLOperator *)self storage];
-      v101 = [v100 lastEntryForKey:v98];
+      prevGGResetCount2 = +[PLEventBackwardBatteryEntry entryKey];
+      storage = [(PLOperator *)self storage];
+      v101 = [storage lastEntryForKey:prevGGResetCount2];
 
       if (v101)
       {
-        v99 = [v101 objectForKeyedSubscript:@"GaugeResetCounter"];
+        intValue2 = [v101 objectForKeyedSubscript:@"GaugeResetCounter"];
 
-        if (v99)
+        if (intValue2)
         {
           v102 = [v101 objectForKeyedSubscript:@"GaugeResetCounter"];
-          v99 = [v102 intValue];
+          intValue2 = [v102 intValue];
         }
       }
 
       else
       {
-        v99 = 0;
+        intValue2 = 0;
       }
     }
 
-    v103 = (v96 - v99);
+    v103 = (intValue - intValue2);
     if (v103 >= 1)
     {
       MEMORY[0x21CEDCD40](@"com.apple.power.battery.GaugeResetCounter", v103);
@@ -12438,11 +12438,11 @@ LABEL_61:
       [(PLBatteryAgent *)self setPrevGGResetCount:v104];
     }
 
-    v105 = [(PLBatteryAgent *)self prevGGResetCount];
+    prevGGResetCount3 = [(PLBatteryAgent *)self prevGGResetCount];
 
-    if (!v105)
+    if (!prevGGResetCount3)
     {
-      v106 = [MEMORY[0x277CCABB0] numberWithInt:v99];
+      v106 = [MEMORY[0x277CCABB0] numberWithInt:intValue2];
       [(PLBatteryAgent *)self setPrevGGResetCount:v106];
     }
   }
@@ -12452,23 +12452,23 @@ LABEL_61:
   if (v107)
   {
     v108 = [v5 objectForKeyedSubscript:@"DOD0"];
-    v109 = [v108 intValue];
+    intValue3 = [v108 intValue];
 
-    v110 = [(PLBatteryAgent *)self lastDOD0];
-    if (v110)
+    lastDOD0 = [(PLBatteryAgent *)self lastDOD0];
+    if (lastDOD0)
     {
-      v111 = v110;
-      v112 = [(PLBatteryAgent *)self lastDOD0];
-      v113 = [v112 intValue];
+      v111 = lastDOD0;
+      lastDOD02 = [(PLBatteryAgent *)self lastDOD0];
+      intValue4 = [lastDOD02 intValue];
 
-      if (v113 != v109)
+      if (intValue4 != intValue3)
       {
         MEMORY[0x21CEDCD40](@"com.apple.power.battery.DOD0Updated", 1);
         AnalyticsSendEventLazy();
       }
     }
 
-    v114 = [MEMORY[0x277CCABB0] numberWithInt:v109];
+    v114 = [MEMORY[0x277CCABB0] numberWithInt:intValue3];
     [(PLBatteryAgent *)self setLastDOD0:v114];
   }
 
@@ -12477,18 +12477,18 @@ LABEL_61:
   if (v115)
   {
     v116 = [v5 objectForKeyedSubscript:@"VacVoltageLimit"];
-    v117 = [v116 intValue];
+    intValue5 = [v116 intValue];
 
-    v118 = [(PLBatteryAgent *)self lastVacVoltageLimit];
-    if (v118)
+    lastVacVoltageLimit = [(PLBatteryAgent *)self lastVacVoltageLimit];
+    if (lastVacVoltageLimit)
     {
-      v119 = v118;
-      v120 = [(PLBatteryAgent *)self lastVacVoltageLimit];
-      v121 = [v120 intValue];
+      v119 = lastVacVoltageLimit;
+      lastVacVoltageLimit2 = [(PLBatteryAgent *)self lastVacVoltageLimit];
+      intValue6 = [lastVacVoltageLimit2 intValue];
 
-      if (v121 != v117)
+      if (intValue6 != intValue5)
       {
-        v122 = [MEMORY[0x277CCABB0] numberWithInt:v117];
+        v122 = [MEMORY[0x277CCABB0] numberWithInt:intValue5];
         [(PLBatteryAgent *)self setLastVacVoltageLimit:v122];
       }
     }
@@ -12497,9 +12497,9 @@ LABEL_61:
     v130 = 3221225472;
     v131 = __53__PLBatteryAgent_logEventBackwardBatteryWithRawData___block_invoke_6;
     v132 = &__block_descriptor_36_e19___NSDictionary_8__0l;
-    v133 = v117;
+    v133 = intValue5;
     AnalyticsSendEventLazy();
-    v123 = [MEMORY[0x277CCABB0] numberWithInt:v117];
+    v123 = [MEMORY[0x277CCABB0] numberWithInt:intValue5];
     [(PLBatteryAgent *)self setLastVacVoltageLimit:v123];
   }
 
@@ -12634,27 +12634,27 @@ id __53__PLBatteryAgent_logEventBackwardBatteryWithRawData___block_invoke_6(uint
 - (void)logEventBackwardChargingLimit
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [(PLBatteryAgent *)self getGaugingMitigationDict];
-  if (v3)
+  getGaugingMitigationDict = [(PLBatteryAgent *)self getGaugingMitigationDict];
+  if (getGaugingMitigationDict)
   {
-    v28 = self;
+    selfCopy = self;
     v27 = [(PLOperator *)PLBatteryAgent entryKeyForType:*MEMORY[0x277D3F5C8] andName:@"ChargingLimit"];
     v4 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v27];
-    v5 = [MEMORY[0x277CBEAA8] monotonicDate];
-    v6 = [v3 objectForKeyedSubscript:@"lastDOD0Update"];
-    [v5 timeIntervalSinceDate:v6];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+    v6 = [getGaugingMitigationDict objectForKeyedSubscript:@"lastDOD0Update"];
+    [monotonicDate timeIntervalSinceDate:v6];
     v8 = (v7 / 86400.0);
 
-    v9 = [v3 objectForKeyedSubscript:@"lastFullChargeDate"];
-    [v5 timeIntervalSinceDate:v9];
+    v9 = [getGaugingMitigationDict objectForKeyedSubscript:@"lastFullChargeDate"];
+    [monotonicDate timeIntervalSinceDate:v9];
     v11 = (v10 / 86400.0);
 
-    v12 = [v3 objectForKeyedSubscript:@"lastQMaxUpdate"];
-    [v5 timeIntervalSinceDate:v12];
+    v12 = [getGaugingMitigationDict objectForKeyedSubscript:@"lastQMaxUpdate"];
+    [monotonicDate timeIntervalSinceDate:v12];
     v14 = (v13 / 86400.0);
 
-    v15 = [v3 objectForKeyedSubscript:@"lastQualQMaxDate"];
-    [v5 timeIntervalSinceDate:v15];
+    v15 = [getGaugingMitigationDict objectForKeyedSubscript:@"lastQualQMaxDate"];
+    [monotonicDate timeIntervalSinceDate:v15];
     v17 = (v16 / 86400.0);
 
     v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v8];
@@ -12669,22 +12669,22 @@ id __53__PLBatteryAgent_logEventBackwardBatteryWithRawData___block_invoke_6(uint
     v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v17];
     [v4 setObject:v21 forKeyedSubscript:@"lastQualQMaxDate"];
 
-    v22 = [v3 objectForKeyedSubscript:@"lastFullChargeReq"];
+    v22 = [getGaugingMitigationDict objectForKeyedSubscript:@"lastFullChargeReq"];
     [v4 setObject:v22 forKeyedSubscript:@"lastFullChargeReq"];
 
-    v23 = [v3 objectForKeyedSubscript:@"lastQualQmaxDODValue"];
+    v23 = [getGaugingMitigationDict objectForKeyedSubscript:@"lastQualQmaxDODValue"];
     [v4 setObject:v23 forKeyedSubscript:@"lastQualQmaxDODValue"];
 
     v24 = PLLogCommon();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
-      v26 = [v4 dictionary];
+      dictionary = [v4 dictionary];
       *buf = 138412290;
-      v30 = v26;
+      v30 = dictionary;
       _os_log_debug_impl(&dword_21A4C6000, v24, OS_LOG_TYPE_DEBUG, "Logging current mitigation state: %@", buf, 0xCu);
     }
 
-    [(PLOperator *)v28 logEntry:v4];
+    [(PLOperator *)selfCopy logEntry:v4];
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -12726,30 +12726,30 @@ id __53__PLBatteryAgent_logEventBackwardBatteryWithRawData___block_invoke_6(uint
   return v5;
 }
 
-- (int)getIconChargeState:(id)a3
+- (int)getIconChargeState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Charging"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"Charging"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Disconnected"])
+  else if ([stateCopy isEqualToString:@"Disconnected"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Charging Completed"])
+  else if ([stateCopy isEqualToString:@"Charging Completed"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Charging Completed Limited"])
+  else if ([stateCopy isEqualToString:@"Charging Completed Limited"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Charging On Hold"])
+  else if ([stateCopy isEqualToString:@"Charging On Hold"])
   {
     v4 = 4;
   }
@@ -12765,11 +12765,11 @@ id __53__PLBatteryAgent_logEventBackwardBatteryWithRawData___block_invoke_6(uint
 - (void)logEventBackwardIconographyState
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(PLBatteryAgent *)self getIconographyStateDict];
-  if (v3)
+  getIconographyStateDict = [(PLBatteryAgent *)self getIconographyStateDict];
+  if (getIconographyStateDict)
   {
     v4 = [(PLOperator *)PLBatteryAgent entryKeyForType:*MEMORY[0x277D3F5C8] andName:@"Iconography"];
-    v5 = [v3 objectForKeyedSubscript:@"chargeStatus"];
+    v5 = [getIconographyStateDict objectForKeyedSubscript:@"chargeStatus"];
     v6 = [(PLBatteryAgent *)self getIconChargeState:v5];
 
     v7 = PLLogCommon();
@@ -12780,16 +12780,16 @@ id __53__PLBatteryAgent_logEventBackwardBatteryWithRawData___block_invoke_6(uint
       _os_log_debug_impl(&dword_21A4C6000, v7, OS_LOG_TYPE_DEBUG, "current state is : %u", &v13, 8u);
     }
 
-    v8 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v4 withRawData:v3];
+    v8 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v4 withRawData:getIconographyStateDict];
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v6];
     [v8 setObject:v9 forKeyedSubscript:@"chargeStatus"];
 
     v10 = PLLogCommon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v12 = [v8 dictionary];
+      dictionary = [v8 dictionary];
       v13 = 138412290;
-      v14 = v12;
+      v14 = dictionary;
       _os_log_debug_impl(&dword_21A4C6000, v10, OS_LOG_TYPE_DEBUG, "Logging Iconography charge state: %@", &v13, 0xCu);
     }
 
@@ -12806,8 +12806,8 @@ id __53__PLBatteryAgent_logEventBackwardBatteryWithRawData___block_invoke_6(uint
     v7 = [(PLOperator *)PLBatteryAgent entryKeyForType:*MEMORY[0x277D3F5E0] andName:@"UserType"];
     v3 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7];
     v4 = MEMORY[0x277CCABB0];
-    v5 = [MEMORY[0x277D36CC0] predictor];
-    v6 = [v4 numberWithInteger:{objc_msgSend(v5, "historicalClassification")}];
+    predictor = [MEMORY[0x277D36CC0] predictor];
+    v6 = [v4 numberWithInteger:{objc_msgSend(predictor, "historicalClassification")}];
     [v3 setObject:v6 forKeyedSubscript:@"UserType"];
 
     [(PLOperator *)self logEntry:v3];
@@ -12848,17 +12848,17 @@ id __53__PLBatteryAgent_logEventBackwardBatteryWithRawData___block_invoke_6(uint
   if (v9 && ([v9 objectForKeyedSubscript:@"IOPMUBootUPOCounter"], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
   {
     v12 = [v10 objectForKeyedSubscript:@"IOPMUBootUPOCounter"];
-    v13 = [v12 intValue];
+    intValue = [v12 intValue];
   }
 
   else
   {
-    v13 = -1;
+    intValue = -1;
   }
 
   IOObjectRelease(v8);
 
-  return v13;
+  return intValue;
 }
 
 - (id)lowBatteryLogPath
@@ -12869,8 +12869,8 @@ id __53__PLBatteryAgent_logEventBackwardBatteryWithRawData___block_invoke_6(uint
   v27 = __Block_byref_object_copy__13;
   v28 = __Block_byref_object_dispose__13;
   v29 = 0;
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [v2 contentsOfDirectoryAtPath:@"/var/mobile/Library/Logs/CrashReporter/" error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v3 = [defaultManager contentsOfDirectoryAtPath:@"/var/mobile/Library/Logs/CrashReporter/" error:0];
   if (v3)
   {
     v4 = MEMORY[0x277CCAC30];
@@ -12951,10 +12951,10 @@ void __35__PLBatteryAgent_lowBatteryLogPath__block_invoke(uint64_t a1)
 
 - (id)lowBatteryLogString
 {
-  v2 = [(PLBatteryAgent *)self lowBatteryLogPath];
-  if (v2)
+  lowBatteryLogPath = [(PLBatteryAgent *)self lowBatteryLogPath];
+  if (lowBatteryLogPath)
   {
-    v3 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:v2 encoding:4 error:0];
+    v3 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:lowBatteryLogPath encoding:4 error:0];
     v4 = [v3 componentsSeparatedByString:@"\n"];
     v5 = [v4 count];
     if (v5)
@@ -12995,10 +12995,10 @@ LABEL_9:
 - (id)isOriginalBattery
 {
   v21 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D3F1B8] hasBatteryModuleAuth];
+  hasBatteryModuleAuth = [MEMORY[0x277D3F1B8] hasBatteryModuleAuth];
   v3 = [MEMORY[0x277D3F208] kPLDeviceClassIsOneOf:{102027, 102028, 102029, 0}];
   v4 = 0;
-  if (v2)
+  if (hasBatteryModuleAuth)
   {
     v5 = v3 == 0;
   }
@@ -13038,9 +13038,9 @@ LABEL_9:
           v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not determine original battery"];
           v11 = MEMORY[0x277D3F178];
           v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-          v13 = [v12 lastPathComponent];
+          lastPathComponent = [v12 lastPathComponent];
           v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent isOriginalBattery]"];
-          [v11 logMessage:v10 fromFile:v13 fromFunction:v14 fromLineNumber:6507];
+          [v11 logMessage:v10 fromFile:lastPathComponent fromFunction:v14 fromLineNumber:6507];
 
           v15 = PLLogCommon();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -13068,24 +13068,24 @@ uint64_t __35__PLBatteryAgent_isOriginalBattery__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)parseBatterySerialNumber:(id)a3
+- (id)parseBatterySerialNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   v5 = objc_opt_new();
-  if (v4)
+  if (numberCopy)
   {
-    if ([v4 length] == 18)
+    if ([numberCopy length] == 18)
     {
-      v6 = [v4 substringWithRange:{0, 3}];
+      v6 = [numberCopy substringWithRange:{0, 3}];
       [v5 setObject:v6 forKeyedSubscript:@"vendor"];
 
-      v7 = [v4 substringWithRange:{3, 3}];
+      v7 = [numberCopy substringWithRange:{3, 3}];
       [v5 setObject:v7 forKeyedSubscript:@"dom"];
 
-      v8 = [v4 substringWithRange:{6, 5}];
+      v8 = [numberCopy substringWithRange:{6, 5}];
       [v5 setObject:v8 forKeyedSubscript:@"sequence"];
 
-      v9 = [v4 substringWithRange:{11, 7}];
+      v9 = [numberCopy substringWithRange:{11, 7}];
       [v5 setObject:v9 forKeyedSubscript:@"eeee_code"];
 
       v10 = [v5 objectForKeyedSubscript:@"dom"];
@@ -13102,38 +13102,38 @@ uint64_t __35__PLBatteryAgent_isOriginalBattery__block_invoke(uint64_t a1)
       v17 = [v16 valueForComponent:0x2000];
       v18 = [v16 valueForComponent:0x4000];
       v19 = [MEMORY[0x277CCABB0] numberWithInteger:v18];
-      v20 = [v19 stringValue];
+      stringValue = [v19 stringValue];
 
-      v21 = [v20 substringFromIndex:{objc_msgSend(v20, "length") - 1}];
+      v21 = [stringValue substringFromIndex:{objc_msgSend(stringValue, "length") - 1}];
       [v5 setObject:v21 forKeyedSubscript:@"year"];
 
       v22 = [MEMORY[0x277CCABB0] numberWithInteger:v17];
-      v23 = [v22 stringValue];
-      [v5 setObject:v23 forKeyedSubscript:@"week"];
+      stringValue2 = [v22 stringValue];
+      [v5 setObject:stringValue2 forKeyedSubscript:@"week"];
     }
 
     else
     {
-      if ([v4 length] == 17)
+      if ([numberCopy length] == 17)
       {
-        v24 = [v4 substringWithRange:{3, 1}];
+        v24 = [numberCopy substringWithRange:{3, 1}];
         [v5 setObject:v24 forKeyedSubscript:@"year"];
 
-        v25 = [v4 substringWithRange:{4, 2}];
+        v25 = [numberCopy substringWithRange:{4, 2}];
         [v5 setObject:v25 forKeyedSubscript:@"week"];
 
-        v26 = v4;
+        v26 = numberCopy;
         v27 = 11;
       }
 
       else
       {
-        if ([v4 length] != 12)
+        if ([numberCopy length] != 12)
         {
           goto LABEL_10;
         }
 
-        v26 = v4;
+        v26 = numberCopy;
         v27 = 8;
       }
 
@@ -13147,10 +13147,10 @@ LABEL_10:
   return v5;
 }
 
-- (unint64_t)customConvertBase34ToBase10:(id)a3
+- (unint64_t)customConvertBase34ToBase10:(id)base10
 {
   v20[24] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  base10Copy = base10;
   v19[0] = &unk_282C12090;
   v19[1] = &unk_282C120C0;
   v20[0] = &unk_282C120A8;
@@ -13200,13 +13200,13 @@ LABEL_10:
   v20[22] = &unk_282C124C8;
   v20[23] = &unk_282C124F8;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:24];
-  if ([v3 isEqualToString:@"000"])
+  if ([base10Copy isEqualToString:@"000"])
   {
     v5 = 39304;
     goto LABEL_15;
   }
 
-  if (![v3 length])
+  if (![base10Copy length])
   {
     goto LABEL_14;
   }
@@ -13216,7 +13216,7 @@ LABEL_10:
   v7 = 2;
   while (1)
   {
-    v8 = [v3 characterAtIndex:v6];
+    v8 = [base10Copy characterAtIndex:v6];
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v8];
     v10 = [v4 objectForKey:v9];
 
@@ -13234,7 +13234,7 @@ LABEL_9:
     v5 = v14;
     ++v6;
     --v7;
-    if ([v3 length] <= v6)
+    if ([base10Copy length] <= v6)
     {
       goto LABEL_15;
     }
@@ -13262,10 +13262,10 @@ LABEL_15:
   return v5;
 }
 
-- (id)weekOfManufacture:(id)a3
+- (id)weekOfManufacture:(id)manufacture
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"Serial"];
+  manufactureCopy = manufacture;
+  v5 = [manufactureCopy objectForKeyedSubscript:@"Serial"];
   if (!v5)
   {
     goto LABEL_8;
@@ -13299,10 +13299,10 @@ LABEL_9:
   return v13;
 }
 
-- (id)batteryEEEECode:(id)a3
+- (id)batteryEEEECode:(id)code
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"Serial"];
+  codeCopy = code;
+  v5 = [codeCopy objectForKeyedSubscript:@"Serial"];
   if (v5)
   {
     v6 = [(PLBatteryAgent *)self parseBatterySerialNumber:v5];
@@ -13317,21 +13317,21 @@ LABEL_9:
   return v7;
 }
 
-- (id)parseRawSafetyFaultCounter:(id)a3
+- (id)parseRawSafetyFaultCounter:(id)counter
 {
-  v3 = a3;
+  counterCopy = counter;
   v4 = objc_opt_new();
-  if (v3)
+  if (counterCopy)
   {
-    v5 = [v3 bytes];
-    v6 = [v3 length];
+    bytes = [counterCopy bytes];
+    v6 = [counterCopy length];
     v7 = (2 * v6) >= 0x13 ? 19 : 2 * v6;
     if (2 * v6)
     {
       v8 = 0;
       do
       {
-        v10 = *v5++;
+        v10 = *bytes++;
         v9 = v10;
         v11 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedShort:v10 & 0xF];
         [v4 addObject:v11];
@@ -13355,21 +13355,21 @@ LABEL_9:
   return v4;
 }
 
-- (id)parseRawRaTableData:(id)a3
+- (id)parseRawRaTableData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_opt_new();
-  if (v3)
+  if (dataCopy)
   {
-    v5 = [v3 length];
+    v5 = [dataCopy length];
     if (v5 >= 2)
     {
       v6 = v5;
-      v7 = [v3 bytes];
+      bytes = [dataCopy bytes];
       if (v6 >= 4)
       {
         v8 = (v6 >> 1) - 1;
-        v9 = (v7 + 1);
+        v9 = (bytes + 1);
         do
         {
           v10 = *(v9 - 1);
@@ -13390,18 +13390,18 @@ LABEL_9:
   return v4;
 }
 
-- (id)presentMaxRaFromRawData:(id)a3
+- (id)presentMaxRaFromRawData:(id)data
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:-2147483647];
-  if (v4)
+  if (dataCopy)
   {
-    v6 = [v4 objectForKeyedSubscript:@"BatteryData"];
+    v6 = [dataCopy objectForKeyedSubscript:@"BatteryData"];
     v7 = [v6 objectForKeyedSubscript:@"RaTableRaw"];
 
-    v8 = [v7 firstObject];
-    v9 = [(PLBatteryAgent *)self parseRawRaTableData:v8];
+    firstObject = [v7 firstObject];
+    v9 = [(PLBatteryAgent *)self parseRawRaTableData:firstObject];
     if ([v9 count] == 15)
     {
       v21 = v7;
@@ -13425,8 +13425,8 @@ LABEL_9:
             }
 
             v15 = *(*(&v22 + 1) + 8 * i);
-            v16 = [v15 intValue];
-            if (v16 > [v5 intValue])
+            intValue = [v15 intValue];
+            if (intValue > [v5 intValue])
             {
               v17 = v15;
 
@@ -13461,35 +13461,35 @@ LABEL_9:
   return v18;
 }
 
-- (id)parseITMiscStatusCounters:(id)a3
+- (id)parseITMiscStatusCounters:(id)counters
 {
   v16[8] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (counters)
   {
-    v3 = [a3 unsignedShortValue];
+    unsignedShortValue = [counters unsignedShortValue];
     v15[0] = @"QmaxDisqualified";
-    v4 = [MEMORY[0x277CCABB0] numberWithInt:v3 >> 14];
+    v4 = [MEMORY[0x277CCABB0] numberWithInt:unsignedShortValue >> 14];
     v16[0] = v4;
     v15[1] = @"QmaxDOD0";
-    v5 = [MEMORY[0x277CCABB0] numberWithInt:(v3 >> 12) & 3];
+    v5 = [MEMORY[0x277CCABB0] numberWithInt:(unsignedShortValue >> 12) & 3];
     v16[1] = v5;
     v15[2] = @"DOD0Update";
-    v6 = [MEMORY[0x277CCABB0] numberWithInt:(v3 >> 10) & 3];
+    v6 = [MEMORY[0x277CCABB0] numberWithInt:(unsignedShortValue >> 10) & 3];
     v16[2] = v6;
     v15[3] = @"QmaxAtEOC";
-    v7 = [MEMORY[0x277CCABB0] numberWithInt:(v3 >> 8) & 3];
+    v7 = [MEMORY[0x277CCABB0] numberWithInt:(unsignedShortValue >> 8) & 3];
     v16[3] = v7;
     v15[4] = @"FastQmaxUpdate";
-    v8 = [MEMORY[0x277CCABB0] numberWithInt:v3 >> 6];
+    v8 = [MEMORY[0x277CCABB0] numberWithInt:unsignedShortValue >> 6];
     v16[4] = v8;
     v15[5] = @"QmaxUpdate";
-    v9 = [MEMORY[0x277CCABB0] numberWithInt:(v3 >> 4) & 3];
+    v9 = [MEMORY[0x277CCABB0] numberWithInt:(unsignedShortValue >> 4) & 3];
     v16[5] = v9;
     v15[6] = @"RaUpdate";
-    v10 = [MEMORY[0x277CCABB0] numberWithInt:(v3 >> 2) & 3];
+    v10 = [MEMORY[0x277CCABB0] numberWithInt:(unsignedShortValue >> 2) & 3];
     v16[6] = v10;
     v15[7] = @"ITSimulation";
-    v11 = [MEMORY[0x277CCABB0] numberWithInt:v3 & 3];
+    v11 = [MEMORY[0x277CCABB0] numberWithInt:unsignedShortValue & 3];
     v16[7] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:8];
   }
@@ -13504,25 +13504,25 @@ LABEL_9:
   return v12;
 }
 
-- (id)parseTimeAtHighSoc:(id)a3
+- (id)parseTimeAtHighSoc:(id)soc
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  if (v3)
+  socCopy = soc;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (socCopy)
   {
-    v5 = [v3 length];
-    v6 = [v3 bytes];
+    v5 = [socCopy length];
+    bytes = [socCopy bytes];
     if (v5 >= 4)
     {
-      v7 = v6;
+      v7 = bytes;
       v8 = 0;
       do
       {
         NSLog(&cfstr_BinDU.isa, v8, *(v7 + 4 * v8));
         v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"bin%d", v8];
         v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(v7 + 4 * v8)];
-        [v4 setObject:v10 forKeyedSubscript:v9];
+        [dictionary setObject:v10 forKeyedSubscript:v9];
 
         ++v8;
       }
@@ -13531,9 +13531,9 @@ LABEL_9:
     }
   }
 
-  if ([v4 count])
+  if ([dictionary count])
   {
-    v11 = v4;
+    v11 = dictionary;
   }
 
   else
@@ -13546,25 +13546,25 @@ LABEL_9:
   return v11;
 }
 
-- (id)parseLowVoltageResidencyCounters:(id)a3
+- (id)parseLowVoltageResidencyCounters:(id)counters
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v13 = [MEMORY[0x277CBEB38] dictionary];
-  if (v3)
+  countersCopy = counters;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (countersCopy)
   {
-    v4 = [v3 length];
-    v5 = [v3 bytes];
+    v4 = [countersCopy length];
+    bytes = [countersCopy bytes];
     if (v4 >= 4)
     {
-      v6 = v5;
+      v6 = bytes;
       v7 = 0;
       do
       {
         NSLog(&cfstr_Lowvoltageresi_0.isa, v7, *(v6 + 4 * v7));
         v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"bin%d", v7];
         v9 = [MEMORY[0x277CCABB0] numberWithLong:{objc_msgSend(MEMORY[0x277D3F258], "roundToSigFig:withSigFig:", *(v6 + 4 * v7), 2)}];
-        [v13 setObject:v9 forKeyedSubscript:v8];
+        [dictionary setObject:v9 forKeyedSubscript:v8];
 
         ++v7;
       }
@@ -13573,9 +13573,9 @@ LABEL_9:
     }
   }
 
-  if ([v13 count])
+  if ([dictionary count])
   {
-    v10 = v13;
+    v10 = dictionary;
   }
 
   else
@@ -13588,15 +13588,15 @@ LABEL_9:
   return v10;
 }
 
-- (id)parseFlashWearLevelData:(id)a3
+- (id)parseFlashWearLevelData:(id)data
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  if (v3)
+  dataCopy = data;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (dataCopy)
   {
-    v5 = [v3 length];
-    v6 = [v3 bytes];
+    v5 = [dataCopy length];
+    bytes = [dataCopy bytes];
     v7 = [&unk_282C156F0 count];
     v8 = v5 >> 2 >= v7 ? v7 : v5 >> 2;
     if (v8)
@@ -13606,7 +13606,7 @@ LABEL_9:
         v10 = PLLogCommon();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
         {
-          v13 = *(v6 + 4 * i);
+          v13 = *(bytes + 4 * i);
           *buf = 67109376;
           v18[0] = i;
           LOWORD(v18[1]) = 1024;
@@ -13615,15 +13615,15 @@ LABEL_9:
         }
 
         v11 = [&unk_282C156F0 objectAtIndexedSubscript:i];
-        v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(v6 + 4 * i)];
-        [v4 setObject:v12 forKeyedSubscript:v11];
+        v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(bytes + 4 * i)];
+        [dictionary setObject:v12 forKeyedSubscript:v11];
       }
     }
   }
 
-  if ([v4 count])
+  if ([dictionary count])
   {
-    v14 = v4;
+    v14 = dictionary;
   }
 
   else
@@ -13656,13 +13656,13 @@ id __54__PLBatteryAgent_pushLowVoltageResidencyCountersToCA___block_invoke_2(uin
   return v2;
 }
 
-- (id)parseTimeAtHighSocHex:(id)a3
+- (id)parseTimeAtHighSocHex:(id)hex
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  hexCopy = hex;
+  if (hexCopy)
   {
-    v5 = [(PLBatteryAgent *)self dataFromHexString:v4];
+    v5 = [(PLBatteryAgent *)self dataFromHexString:hexCopy];
     v6 = [(PLBatteryAgent *)self parseTimeAtHighSoc:v5];
   }
 
@@ -13686,42 +13686,42 @@ id __54__PLBatteryAgent_pushLowVoltageResidencyCountersToCA___block_invoke_2(uin
   return v7;
 }
 
-- (id)dataFromHexString:(id)a3
+- (id)dataFromHexString:(id)string
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB28] data];
+  stringCopy = string;
+  data = [MEMORY[0x277CBEB28] data];
   v9 = 0;
-  v5 = [v3 length];
+  v5 = [stringCopy length];
   if (v5 >= 1)
   {
     v6 = 0;
     do
     {
-      __str[0] = [v3 characterAtIndex:v6];
-      __str[1] = [v3 characterAtIndex:v6 + 1];
+      __str[0] = [stringCopy characterAtIndex:v6];
+      __str[1] = [stringCopy characterAtIndex:v6 + 1];
       HIBYTE(v9) = strtol(__str, 0, 16);
-      [v4 appendBytes:&v9 + 1 length:1];
+      [data appendBytes:&v9 + 1 length:1];
       v6 += 2;
     }
 
     while (v6 < v5);
   }
 
-  return v4;
+  return data;
 }
 
-- (void)pushTimeAtHighSocToAggD:(id)a3
+- (void)pushTimeAtHighSocToAggD:(id)d
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
-  v5 = [v3 dictionary];
+  dCopy = d;
+  dictionary = [v3 dictionary];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__PLBatteryAgent_pushTimeAtHighSocToAggD___block_invoke;
   v7[3] = &unk_27825CDE8;
-  v6 = v5;
+  v6 = dictionary;
   v8 = v6;
-  [v4 enumerateKeysAndObjectsUsingBlock:v7];
+  [dCopy enumerateKeysAndObjectsUsingBlock:v7];
 
   if ([v6 count])
   {
@@ -13756,14 +13756,14 @@ id __40__PLBatteryAgent_pushTimeAtHighSocToCA___block_invoke_2(uint64_t a1)
   return v2;
 }
 
-- (void)pushFlashWearLevelDataToCA:(id)a3
+- (void)pushFlashWearLevelDataToCA:(id)a
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"factory"];
-  v5 = [v3 objectForKeyedSubscript:@"usr"];
-  v6 = [v3 objectForKeyedSubscript:@"log"];
-  v7 = [v3 objectForKeyedSubscript:@"bdc"];
+  aCopy = a;
+  v4 = [aCopy objectForKeyedSubscript:@"factory"];
+  v5 = [aCopy objectForKeyedSubscript:@"usr"];
+  v6 = [aCopy objectForKeyedSubscript:@"log"];
+  v7 = [aCopy objectForKeyedSubscript:@"bdc"];
 
   if (v4 && v5 && v6 && v7)
   {
@@ -13828,8 +13828,8 @@ id __45__PLBatteryAgent_pushFlashWearLevelDataToCA___block_invoke(void *a1)
   else
   {
     [v3 setObject:v6 forKeyedSubscript:@"mitigatedUPOCount"];
-    v10 = [v8 lastObject];
-    [v3 setObject:v10 forKeyedSubscript:@"upoMetrics"];
+    lastObject = [v8 lastObject];
+    [v3 setObject:lastObject forKeyedSubscript:@"upoMetrics"];
 
     [(PLBatteryAgent *)self setMitigatedUPOCountDefault:v6];
     v11 = v3;
@@ -13838,17 +13838,17 @@ id __45__PLBatteryAgent_pushFlashWearLevelDataToCA___block_invoke(void *a1)
   return v11;
 }
 
-- (void)setMitigatedUPOCountDefault:(id)a3
+- (void)setMitigatedUPOCountDefault:(id)default
 {
-  objc_storeStrong(&self->_mitigatedUPOCount, a3);
-  v4 = a3;
+  objc_storeStrong(&self->_mitigatedUPOCount, default);
+  defaultCopy = default;
   v5 = *MEMORY[0x277CBF040];
   v6 = *MEMORY[0x277CBF030];
   [MEMORY[0x277D3F258] containerPath];
   _CFPreferencesSetValueWithContainer();
-  v7 = [MEMORY[0x277D3F258] containerPath];
+  containerPath = [MEMORY[0x277D3F258] containerPath];
 
-  MEMORY[0x2821102A0](@"com.apple.powerlogd", v7);
+  MEMORY[0x2821102A0](@"com.apple.powerlogd", containerPath);
 }
 
 - (id)getMitigatedUPOCountDefault
@@ -13871,18 +13871,18 @@ id __45__PLBatteryAgent_pushFlashWearLevelDataToCA___block_invoke(void *a1)
   return [v5 snapshotFromIOEntry:MatchingService];
 }
 
-- (void)setAggdIntegerValueFromEntry:(id)a3 forKey:(id)a4 withPrefix:(id)a5
+- (void)setAggdIntegerValueFromEntry:(id)entry forKey:(id)key withPrefix:(id)prefix
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = [a3 objectForKeyedSubscript:v7];
+  keyCopy = key;
+  prefixCopy = prefix;
+  v9 = [entry objectForKeyedSubscript:keyCopy];
   if (v9)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v8 stringByAppendingString:v7];
+      v10 = [prefixCopy stringByAppendingString:keyCopy];
       v11 = PLLogBH();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
@@ -13901,18 +13901,18 @@ id __45__PLBatteryAgent_pushFlashWearLevelDataToCA___block_invoke(void *a1)
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logBatteryShutdownToCA:(id)a3
+- (void)logBatteryShutdownToCA:(id)a
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  aCopy = a;
   v25 = objc_opt_new();
-  v5 = [v4 objectForKeyedSubscript:@"DataError"];
+  v5 = [aCopy objectForKeyedSubscript:@"DataError"];
   v24 = v5;
   if (v5)
   {
-    v6 = [v5 intValue];
+    intValue = [v5 intValue];
     MEMORY[0x21CEDCD40](@"com.apple.power.batteryshutdown.Count", 1);
-    if (v6)
+    if (intValue)
     {
       goto LABEL_7;
     }
@@ -13923,10 +13923,10 @@ id __45__PLBatteryAgent_pushFlashWearLevelDataToCA___block_invoke(void *a1)
     MEMORY[0x21CEDCD40](@"com.apple.power.batteryshutdown.Count", 1);
   }
 
-  v7 = [v4 objectForKeyedSubscript:@"UISOC"];
-  v8 = [v7 intValue];
+  v7 = [aCopy objectForKeyedSubscript:@"UISOC"];
+  intValue2 = [v7 intValue];
 
-  if (v8 >= 11)
+  if (intValue2 >= 11)
   {
     MEMORY[0x21CEDCD40](@"com.apple.power.batteryshutdown.UPOCount", 1);
     [v25 setObject:&unk_282C11F70 forKeyedSubscript:@"UPOCount"];
@@ -13937,8 +13937,8 @@ LABEL_7:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v9 = [v4 definedKeys];
-  v10 = [v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  definedKeys = [aCopy definedKeys];
+  v10 = [definedKeys countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v10)
   {
     v11 = v10;
@@ -13950,37 +13950,37 @@ LABEL_7:
       {
         if (*v27 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(definedKeys);
         }
 
         v15 = *(*(&v26 + 1) + 8 * i);
         if (([v15 isEqualToString:@"BatteryShutdownTimestamp"] & 1) == 0 && (objc_msgSend(v15, "isEqualToString:", v13) & 1) == 0)
         {
-          v16 = [v4 objectForKeyedSubscript:v15];
+          v16 = [aCopy objectForKeyedSubscript:v15];
           if (v16)
           {
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v17 = v9;
+              v17 = definedKeys;
               v18 = v13;
-              v19 = v4;
-              v20 = self;
+              v19 = aCopy;
+              selfCopy = self;
               v21 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v16, "integerValue")}];
               [v25 setValue:v21 forKey:v15];
 
-              self = v20;
-              v4 = v19;
+              self = selfCopy;
+              aCopy = v19;
               v13 = v18;
-              v9 = v17;
+              definedKeys = v17;
             }
           }
 
-          [(PLBatteryAgent *)self setAggdIntegerValueFromEntry:v4 forKey:v15 withPrefix:@"com.apple.power.batteryshutdown."];
+          [(PLBatteryAgent *)self setAggdIntegerValueFromEntry:aCopy forKey:v15 withPrefix:@"com.apple.power.batteryshutdown."];
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v11 = [definedKeys countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v11);
@@ -14013,9 +14013,9 @@ LABEL_7:
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Aggd Timer Fired"];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent aggdTimerFired]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:7040];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:7040];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -14027,18 +14027,18 @@ LABEL_7:
     }
   }
 
-  v10 = [(PLBatteryAgent *)self lastBatteryConfigEntry];
+  lastBatteryConfigEntry = [(PLBatteryAgent *)self lastBatteryConfigEntry];
 
-  if (v10)
+  if (lastBatteryConfigEntry)
   {
-    v11 = [(PLBatteryAgent *)self lastBatteryConfigEntry];
-    [(PLBatteryAgent *)self logBatteryConfigToAggd:v11];
+    lastBatteryConfigEntry2 = [(PLBatteryAgent *)self lastBatteryConfigEntry];
+    [(PLBatteryAgent *)self logBatteryConfigToAggd:lastBatteryConfigEntry2];
 
-    v12 = [(PLBatteryAgent *)self lastBatteryConfigEntry];
-    [(PLBatteryAgent *)self logBatteryConfigToCA:v12];
+    lastBatteryConfigEntry3 = [(PLBatteryAgent *)self lastBatteryConfigEntry];
+    [(PLBatteryAgent *)self logBatteryConfigToCA:lastBatteryConfigEntry3];
 
-    v13 = [(PLBatteryAgent *)self lastBatteryConfigEntry];
-    v14 = [v13 objectForKeyedSubscript:@"xFlags"];
+    lastBatteryConfigEntry4 = [(PLBatteryAgent *)self lastBatteryConfigEntry];
+    v14 = [lastBatteryConfigEntry4 objectForKeyedSubscript:@"xFlags"];
 
     if (v14)
     {
@@ -14074,15 +14074,15 @@ id __32__PLBatteryAgent_aggdTimerFired__block_invoke_4792(uint64_t a1)
   return v2;
 }
 
-- (void)logBatteryConfigToAggd:(id)a3
+- (void)logBatteryConfigToAggd:(id)aggd
 {
   v20[24] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  aggdCopy = aggd;
+  v5 = aggdCopy;
+  if (aggdCopy)
   {
-    v6 = [v4 definedKeys];
-    v7 = [v6 mutableCopy];
+    definedKeys = [aggdCopy definedKeys];
+    v7 = [definedKeys mutableCopy];
 
     v20[0] = @"RSS";
     v20[1] = @"ChemID";
@@ -14144,10 +14144,10 @@ id __32__PLBatteryAgent_aggdTimerFired__block_invoke_4792(uint64_t a1)
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logBatteryConfigToCA:(id)a3
+- (void)logBatteryConfigToCA:(id)a
 {
   v36[26] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  aCopy = a;
   v4 = PLLogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -14155,11 +14155,11 @@ id __32__PLBatteryAgent_aggdTimerFired__block_invoke_4792(uint64_t a1)
     _os_log_debug_impl(&dword_21A4C6000, v4, OS_LOG_TYPE_DEBUG, "In logBatteryConfigtoCA", buf, 2u);
   }
 
-  if (v3)
+  if (aCopy)
   {
-    v27 = v3;
-    v5 = [v3 definedKeys];
-    v6 = [v5 mutableCopy];
+    v27 = aCopy;
+    definedKeys = [aCopy definedKeys];
+    v6 = [definedKeys mutableCopy];
 
     v7 = PLLogCommon();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -14210,7 +14210,7 @@ id __32__PLBatteryAgent_aggdTimerFired__block_invoke_4792(uint64_t a1)
     v30 = 0u;
     obj = v6;
     v9 = [obj countByEnumeratingWithState:&v29 objects:v35 count:16];
-    v3 = v27;
+    aCopy = v27;
     if (v9)
     {
       v10 = v9;
@@ -14234,14 +14234,14 @@ id __32__PLBatteryAgent_aggdTimerFired__block_invoke_4792(uint64_t a1)
             _os_log_debug_impl(&dword_21A4C6000, v14, OS_LOG_TYPE_DEBUG, "In logBatteryConfigtoCA. Adding key %@", buf, 0xCu);
           }
 
-          v15 = [v3 objectForKeyedSubscript:v13];
+          v15 = [aCopy objectForKeyedSubscript:v13];
           if ([v13 isEqualToString:@"DOFU"])
           {
-            v16 = [(PLBatteryAgent *)self serialNumber];
-            v17 = [(PLBatteryAgent *)self ApplyPolicyToDOFU:v15 forSerial:v16];
+            serialNumber = [(PLBatteryAgent *)self serialNumber];
+            v17 = [(PLBatteryAgent *)self ApplyPolicyToDOFU:v15 forSerial:serialNumber];
 
             v15 = v17;
-            v3 = v27;
+            aCopy = v27;
           }
 
           v18 = v13;
@@ -14291,19 +14291,19 @@ id __32__PLBatteryAgent_aggdTimerFired__block_invoke_4792(uint64_t a1)
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logBaselineToAggD:(id)a3
+- (void)logBaselineToAggD:(id)d
 {
-  v4 = a3;
-  v5 = [v4 definedKeys];
+  dCopy = d;
+  definedKeys = [dCopy definedKeys];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __36__PLBatteryAgent_logBaselineToAggD___block_invoke;
   v13[3] = &unk_278259C90;
   v13[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   v14 = v6;
-  [v5 enumerateObjectsUsingBlock:v13];
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  [definedKeys enumerateObjectsUsingBlock:v13];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v8 = [v6 objectForKeyedSubscript:@"TimeAtHighSoc"];
   v9 = [(PLBatteryAgent *)self parseTimeAtHighSocHex:v8];
 
@@ -14311,7 +14311,7 @@ id __32__PLBatteryAgent_aggdTimerFired__block_invoke_4792(uint64_t a1)
   v11[1] = 3221225472;
   v11[2] = __36__PLBatteryAgent_logBaselineToAggD___block_invoke_2;
   v11[3] = &unk_27825CDE8;
-  v10 = v7;
+  v10 = dictionary;
   v12 = v10;
   [v9 enumerateKeysAndObjectsUsingBlock:v11];
   if ([v10 count])
@@ -14327,17 +14327,17 @@ void __36__PLBatteryAgent_logBaselineToAggD___block_invoke_2(uint64_t a1, uint64
   [*(a1 + 32) setObject:v5 forKeyedSubscript:v6];
 }
 
-- (void)logBaselineToCA:(id)a3
+- (void)logBaselineToCA:(id)a
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 definedKeys];
+  aCopy = a;
+  definedKeys = [aCopy definedKeys];
   v21 = objc_opt_new();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = v4;
+  v5 = definedKeys;
   v6 = [v5 countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v6)
   {
@@ -14362,7 +14362,7 @@ void __36__PLBatteryAgent_logBaselineToAggD___block_invoke_2(uint64_t a1, uint64
           _os_log_debug_impl(&dword_21A4C6000, v11, OS_LOG_TYPE_DEBUG, "In logBaselinetoCA. Adding key %@", buf, 0xCu);
         }
 
-        v12 = [v3 objectForKeyedSubscript:v10];
+        v12 = [aCopy objectForKeyedSubscript:v10];
         v13 = v10;
         if ([v13 rangeOfString:@"-"] != 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -14399,7 +14399,7 @@ void __36__PLBatteryAgent_logBaselineToAggD___block_invoke_2(uint64_t a1, uint64
 
   v16 = v21;
   AnalyticsSendEventLazy();
-  v17 = [v3 objectForKeyedSubscript:@"TimeAtHighSoc"];
+  v17 = [aCopy objectForKeyedSubscript:@"TimeAtHighSoc"];
   v18 = [(PLBatteryAgent *)self parseTimeAtHighSocHex:v17];
 
   [v18 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_4810];
@@ -14426,9 +14426,9 @@ id __34__PLBatteryAgent_logBaselineToCA___block_invoke_3(uint64_t a1)
   return v2;
 }
 
-- (void)logKioskModeEntryToAggd:(id)a3
+- (void)logKioskModeEntryToAggd:(id)aggd
 {
-  v4 = a3;
+  aggdCopy = aggd;
   v5 = PLLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -14436,31 +14436,31 @@ id __34__PLBatteryAgent_logBaselineToCA___block_invoke_3(uint64_t a1)
     _os_log_debug_impl(&dword_21A4C6000, v5, OS_LOG_TYPE_DEBUG, "In log KioskMode aggd", buf, 2u);
   }
 
-  v6 = [v4 definedKeys];
+  definedKeys = [aggdCopy definedKeys];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __42__PLBatteryAgent_logKioskModeEntryToAggd___block_invoke;
   v8[3] = &unk_278259C90;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 enumerateObjectsUsingBlock:v8];
+  v9 = aggdCopy;
+  v7 = aggdCopy;
+  [definedKeys enumerateObjectsUsingBlock:v8];
 }
 
-- (void)logKioskModeEntryToCA:(id)a3
+- (void)logKioskModeEntryToCA:(id)a
 {
-  v3 = a3;
+  aCopy = a;
   v4 = objc_opt_new();
-  v5 = [v3 definedKeys];
+  definedKeys = [aCopy definedKeys];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __40__PLBatteryAgent_logKioskModeEntryToCA___block_invoke;
   v10[3] = &unk_278259C90;
-  v11 = v3;
+  v11 = aCopy;
   v6 = v4;
   v12 = v6;
-  v7 = v3;
-  [v5 enumerateObjectsUsingBlock:v10];
+  v7 = aCopy;
+  [definedKeys enumerateObjectsUsingBlock:v10];
 
   v9 = v6;
   v8 = v6;
@@ -14490,14 +14490,14 @@ void __40__PLBatteryAgent_logKioskModeEntryToCA___block_invoke(uint64_t a1, void
   }
 }
 
-- (void)logFlashAgingToCA:(id)a3
+- (void)logFlashAgingToCA:(id)a
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"BatteryData"];
+  aCopy = a;
+  v4 = [aCopy objectForKeyedSubscript:@"BatteryData"];
   v5 = [v4 objectForKeyedSubscript:@"LifetimeData"];
   v6 = [v5 objectForKeyedSubscript:@"FlashEraseCounter"];
 
-  v7 = [v3 objectForKeyedSubscript:@"BatteryData"];
+  v7 = [aCopy objectForKeyedSubscript:@"BatteryData"];
 
   v8 = [v7 objectForKeyedSubscript:@"LifetimeData"];
   v9 = [v8 objectForKeyedSubscript:@"FlashFailureCounter"];
@@ -14528,14 +14528,14 @@ id __36__PLBatteryAgent_logFlashAgingToCA___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)logSlowChargingReasonToCA:(id)a3
+- (void)logSlowChargingReasonToCA:(id)a
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"ChargerData"];
+  aCopy = a;
+  v4 = [aCopy objectForKeyedSubscript:@"ChargerData"];
 
   if (v4)
   {
-    v5 = [v3 objectForKeyedSubscript:@"ChargerData"];
+    v5 = [aCopy objectForKeyedSubscript:@"ChargerData"];
     v6 = [v5 objectForKeyedSubscript:@"SlowChargingReason"];
 
     if (v6)
@@ -14558,14 +14558,14 @@ id __44__PLBatteryAgent_logSlowChargingReasonToCA___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)logkBatteryRsenseOpenCountToCA:(id)a3
+- (void)logkBatteryRsenseOpenCountToCA:(id)a
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"BatteryData"];
+  aCopy = a;
+  v4 = [aCopy objectForKeyedSubscript:@"BatteryData"];
 
   if (v4)
   {
-    v5 = [v3 objectForKeyedSubscript:@"BatteryData"];
+    v5 = [aCopy objectForKeyedSubscript:@"BatteryData"];
     v6 = [v5 objectForKeyedSubscript:@"BatteryRsenseOpenCount"];
 
     if (v6)
@@ -14588,18 +14588,18 @@ id __49__PLBatteryAgent_logkBatteryRsenseOpenCountToCA___block_invoke(uint64_t a
   return v2;
 }
 
-- (id)ApplyPolicyToDOFU:(id)a3 forSerial:(id)a4
+- (id)ApplyPolicyToDOFU:(id)u forSerial:(id)serial
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = v6;
+  serialCopy = serial;
+  v7 = serialCopy;
   v8 = 0;
-  if (a3 && v6)
+  if (u && serialCopy)
   {
-    v9 = [a3 intValue];
-    if (v9)
+    intValue = [u intValue];
+    if (intValue)
     {
-      v10 = v9;
+      v10 = intValue;
       v11 = [(PLBatteryAgent *)self parseBatterySerialNumber:v7];
       v12 = v11;
       if (v11)
@@ -14660,13 +14660,13 @@ id __49__PLBatteryAgent_logkBatteryRsenseOpenCountToCA___block_invoke(uint64_t a
 
 - (void)logEventPointBatteryShutdown
 {
-  v2 = self;
+  selfCopy = self;
   v87[1] = *MEMORY[0x277D85DE8];
-  v3 = [(PLBatteryAgent *)self getBatteryShutdownData];
-  v4 = v3;
-  if (v3)
+  getBatteryShutdownData = [(PLBatteryAgent *)self getBatteryShutdownData];
+  v4 = getBatteryShutdownData;
+  if (getBatteryShutdownData)
   {
-    v5 = [v3 objectForKeyedSubscript:@"BatteryShutdownReason"];
+    v5 = [getBatteryShutdownData objectForKeyedSubscript:@"BatteryShutdownReason"];
     v6 = v5;
     if (v5 && [v5 count])
     {
@@ -14691,10 +14691,10 @@ id __49__PLBatteryAgent_logkBatteryRsenseOpenCountToCA___block_invoke(uint64_t a
       if (!v9 || ([v9 doubleValue], v14 != v13))
       {
         v81 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v13];
-        v84 = [v81 convertFromSystemToMonotonic];
-        [v84 timeIntervalSince1970];
+        convertFromSystemToMonotonic = [v81 convertFromSystemToMonotonic];
+        [convertFromSystemToMonotonic timeIntervalSince1970];
         v16 = v15;
-        [v8 setObject:v84 forKeyedSubscript:@"BatteryShutdownTimestamp"];
+        [v8 setObject:convertFromSystemToMonotonic forKeyedSubscript:@"BatteryShutdownTimestamp"];
         v17 = [v6 objectForKeyedSubscript:@"ShutDownUISoc"];
         [v8 setObject:v17 forKeyedSubscript:@"UISOC"];
 
@@ -14806,13 +14806,13 @@ id __49__PLBatteryAgent_logkBatteryRsenseOpenCountToCA___block_invoke(uint64_t a
         v53 = [v6 objectForKeyedSubscript:@"ShutdownDataCriticalFlagsKey"];
         [v8 setObject:v53 forKeyedSubscript:@"DataCriticalFlagsKey"];
 
-        v54 = [(PLBatteryAgent *)v2 lowBatteryLogString];
-        if (v54)
+        lowBatteryLogString = [(PLBatteryAgent *)selfCopy lowBatteryLogString];
+        if (lowBatteryLogString)
         {
-          [v8 setObject:v54 forKeyedSubscript:@"LowBatteryLog"];
+          [v8 setObject:lowBatteryLogString forKeyedSubscript:@"LowBatteryLog"];
         }
 
-        v80 = v54;
+        v80 = lowBatteryLogString;
         v83 = [v6 objectForKeyedSubscript:@"ShutDownDLog"];
         v79 = v9;
         if (v83)
@@ -14820,14 +14820,14 @@ id __49__PLBatteryAgent_logkBatteryRsenseOpenCountToCA___block_invoke(uint64_t a
           v55 = [v83 length];
           if (v55 >= 2)
           {
-            v77 = v2;
-            v56 = [v83 bytes];
+            v77 = selfCopy;
+            bytes = [v83 bytes];
             v57 = 0;
             v58 = 0;
             v59 = (v55 >> 1) + 1;
             do
             {
-              v60 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedLong:*(v56 + 2 * v57)];
+              v60 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedLong:*(bytes + 2 * v57)];
 
               v61 = [MEMORY[0x277CCACA8] stringWithFormat:@"DLOG_%d", v57];
               [v8 setObject:v60 forKeyedSubscript:v61];
@@ -14838,12 +14838,12 @@ id __49__PLBatteryAgent_logkBatteryRsenseOpenCountToCA___block_invoke(uint64_t a
 
             while (v59 != v57);
 
-            v2 = v77;
+            selfCopy = v77;
           }
         }
 
         v78 = [v6 objectForKeyedSubscript:@"ShutDownRaTableRaw"];
-        v62 = [(PLBatteryAgent *)v2 parseRawRaTableData:?];
+        v62 = [(PLBatteryAgent *)selfCopy parseRawRaTableData:?];
         for (i = 0; [v62 count] > i; ++i)
         {
           v64 = [v62 objectAtIndexedSubscript:i];
@@ -14851,23 +14851,23 @@ id __49__PLBatteryAgent_logkBatteryRsenseOpenCountToCA___block_invoke(uint64_t a
           [v8 setObject:v64 forKeyedSubscript:v65];
         }
 
-        [(PLOperator *)v2 logEntry:v8];
+        [(PLOperator *)selfCopy logEntry:v8];
         v86 = @"BatteryShutdownTimestamp";
         v66 = [v8 objectForKeyedSubscript:?];
         v87[0] = v66;
         v67 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v87 forKeys:&v86 count:1];
 
-        [(PLOperator *)v2 logForSubsystem:@"BatteryMetrics" category:@"BatteryShutdown" data:v67];
-        v68 = [MEMORY[0x277D3F2A0] sharedCore];
-        v69 = [v68 storage];
-        [v69 flushCachesWithReason:@"BatteryShutdownReason"];
+        [(PLOperator *)selfCopy logForSubsystem:@"BatteryMetrics" category:@"BatteryShutdown" data:v67];
+        mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+        storage = [mEMORY[0x277D3F2A0] storage];
+        [storage flushCachesWithReason:@"BatteryShutdownReason"];
 
-        [(PLBatteryAgent *)v2 logBatteryShutdownToCA:v8];
+        [(PLBatteryAgent *)selfCopy logBatteryShutdownToCA:v8];
         v70 = MEMORY[0x277D3F180];
         v71 = [MEMORY[0x277CCABB0] numberWithDouble:v13];
         [v70 setObject:v71 forKey:@"LastShutdownSystemTimestamp" saveToDisk:1];
 
-        if ([(PLBatteryAgent *)v2 isUPOEntry:v8])
+        if ([(PLBatteryAgent *)selfCopy isUPOEntry:v8])
         {
           v72 = MEMORY[0x277D3F180];
           v73 = [MEMORY[0x277CCABB0] numberWithDouble:v16];
@@ -14894,14 +14894,14 @@ uint64_t __46__PLBatteryAgent_logEventPointBatteryShutdown__block_invoke(uint64_
   return result;
 }
 
-- (void)logEventPointBatteryPanicShutdown:(id)a3
+- (void)logEventPointBatteryPanicShutdown:(id)shutdown
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  shutdownCopy = shutdown;
+  v5 = shutdownCopy;
+  if (shutdownCopy)
   {
-    v6 = [v4 objectForKeyedSubscript:@"I2CLog"];
+    v6 = [shutdownCopy objectForKeyedSubscript:@"I2CLog"];
     v7 = v6;
     if (v6 && [v6 count])
     {
@@ -14916,9 +14916,9 @@ uint64_t __46__PLBatteryAgent_logEventPointBatteryShutdown__block_invoke(uint64_
         [v11 setObject:v13 forKeyedSubscript:@"I2CLogData"];
 
         [(PLOperator *)self logEntry:v11];
-        v14 = [MEMORY[0x277D3F2A0] sharedCore];
-        v15 = [v14 storage];
-        [v15 flushCachesWithReason:@"PanicShutdown"];
+        mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+        storage = [mEMORY[0x277D3F2A0] storage];
+        [storage flushCachesWithReason:@"PanicShutdown"];
 
         v17 = v5;
         AnalyticsSendEventLazy();
@@ -14951,14 +14951,14 @@ uint64_t __52__PLBatteryAgent_logEventPointBatteryPanicShutdown___block_invoke_2
   return result;
 }
 
-- (void)logEventPointBatteryTrapInfo:(id)a3
+- (void)logEventPointBatteryTrapInfo:(id)info
 {
-  if (!a3)
+  if (!info)
   {
     return;
   }
 
-  v4 = [a3 objectForKeyedSubscript:@"DeadBatteryBootData"];
+  v4 = [info objectForKeyedSubscript:@"DeadBatteryBootData"];
   if (v4)
   {
     v31 = v4;
@@ -14981,9 +14981,9 @@ uint64_t __52__PLBatteryAgent_logEventPointBatteryPanicShutdown___block_invoke_2
       [v6 setObject:v8 forKeyedSubscript:@"ActivePayloads"];
 
       v9 = [v6 objectForKeyedSubscript:@"ActivePayloads"];
-      v10 = [v9 unsignedIntegerValue];
+      unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-      if (v10)
+      if (unsignedIntegerValue)
       {
         v11 = [v31 objectForKeyedSubscript:@"GeneralPayload"];
         v12 = v11;
@@ -15024,7 +15024,7 @@ uint64_t __52__PLBatteryAgent_logEventPointBatteryPanicShutdown___block_invoke_2
         [v6 setObject:v22 forKeyedSubscript:@"WirelessChargingMode"];
       }
 
-      if ((v10 & 2) != 0)
+      if ((unsignedIntegerValue & 2) != 0)
       {
         v23 = [v31 objectForKeyedSubscript:@"SMCBootManagementPayload"];
         v24 = v23;
@@ -15061,17 +15061,17 @@ LABEL_19:
   MEMORY[0x2821F96F8](v4);
 }
 
-- (void)logEventNoneBatteryConfigWithRawData:(id)a3
+- (void)logEventNoneBatteryConfigWithRawData:(id)data
 {
   v223[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4 && ([MEMORY[0x277D3F208] isDeviceClass:101001] & 1) == 0)
+  dataCopy = data;
+  if (dataCopy && ([MEMORY[0x277D3F208] isDeviceClass:101001] & 1) == 0)
   {
-    v211 = self;
+    selfCopy = self;
     v207 = [(PLOperator *)PLBatteryAgent entryKeyForType:*MEMORY[0x277D3F5E0] andName:@"BatteryConfig"];
     v5 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v207];
-    v6 = [v4 objectForKey:@"BatteryData"];
-    if (!v6 || ([v4 objectForKey:@"BatteryData"], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "objectForKey:", @"LifetimeData"), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v6, !v8))
+    v6 = [dataCopy objectForKey:@"BatteryData"];
+    if (!v6 || ([dataCopy objectForKey:@"BatteryData"], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "objectForKey:", @"LifetimeData"), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v6, !v8))
     {
       if (![MEMORY[0x277D3F208] isMac])
       {
@@ -15083,15 +15083,15 @@ LABEL_83:
       v8 = 0;
     }
 
-    [PLEventBackwardBatteryEntry populateQmaxForEntry:v5 withRawData:v4];
-    v9 = [v4 objectForKeyedSubscript:@"BatteryData"];
+    [PLEventBackwardBatteryEntry populateQmaxForEntry:v5 withRawData:dataCopy];
+    v9 = [dataCopy objectForKeyedSubscript:@"BatteryData"];
     v10 = [v9 objectForKeyedSubscript:@"Flags"];
     [v5 setObject:v10 forKeyedSubscript:@"Flags"];
 
-    v11 = [v4 objectForKeyedSubscript:@"NominalChargeCapacity"];
+    v11 = [dataCopy objectForKeyedSubscript:@"NominalChargeCapacity"];
     [v5 setObject:v11 forKeyedSubscript:@"NominalChargeCapacity"];
 
-    v12 = [v4 objectForKeyedSubscript:@"AppleRawMaxCapacity"];
+    v12 = [dataCopy objectForKeyedSubscript:@"AppleRawMaxCapacity"];
     [v5 setObject:v12 forKeyedSubscript:@"AppleRawMaxCapacity"];
 
     v13 = [v8 objectForKeyedSubscript:@"TotalOperatingTime"];
@@ -15196,9 +15196,9 @@ LABEL_83:
         _os_log_debug_impl(&dword_21A4C6000, v41, OS_LOG_TYPE_DEBUG, "collected TAHighSoc: %@", buf, 0xCu);
       }
 
-      v42 = [(PLBatteryAgent *)v211 parseTimeAtHighSoc:v39];
-      [(PLBatteryAgent *)v211 pushTimeAtHighSocToAggD:v42];
-      [(PLBatteryAgent *)v211 pushTimeAtHighSocToCA:v42];
+      v42 = [(PLBatteryAgent *)selfCopy parseTimeAtHighSoc:v39];
+      [(PLBatteryAgent *)selfCopy pushTimeAtHighSocToAggD:v42];
+      [(PLBatteryAgent *)selfCopy pushTimeAtHighSocToCA:v42];
     }
 
     v43 = [v8 objectForKeyedSubscript:@"TimeAbove95Perc"];
@@ -15219,8 +15219,8 @@ LABEL_83:
         _os_log_debug_impl(&dword_21A4C6000, v45, OS_LOG_TYPE_DEBUG, "collected LowVoltageResidencyCounters: %@", buf, 0xCu);
       }
 
-      v46 = [(PLBatteryAgent *)v211 parseLowVoltageResidencyCounters:v205];
-      [(PLBatteryAgent *)v211 pushLowVoltageResidencyCountersToCA:v46];
+      v46 = [(PLBatteryAgent *)selfCopy parseLowVoltageResidencyCounters:v205];
+      [(PLBatteryAgent *)selfCopy pushLowVoltageResidencyCountersToCA:v46];
     }
 
     v47 = [v8 objectForKeyedSubscript:@"UpdateTime"];
@@ -15256,31 +15256,31 @@ LABEL_83:
     v57 = [v8 objectForKeyedSubscript:@"NCCMax"];
     [v5 setObject:v57 forKeyedSubscript:@"NCCMax"];
 
-    v58 = [v4 objectForKeyedSubscript:@"BatteryData"];
+    v58 = [dataCopy objectForKeyedSubscript:@"BatteryData"];
     v59 = [v58 objectForKeyedSubscript:@"DataFlashWriteCount"];
     [v5 setObject:v59 forKeyedSubscript:@"DataFlashWriteCount"];
 
-    v60 = [v4 objectForKeyedSubscript:@"BatteryData"];
+    v60 = [dataCopy objectForKeyedSubscript:@"BatteryData"];
     v61 = [v60 objectForKeyedSubscript:@"ResetDataComms"];
     [v5 setObject:v61 forKeyedSubscript:@"ResetDataComms"];
 
-    v62 = [v4 objectForKeyedSubscript:@"BatteryData"];
+    v62 = [dataCopy objectForKeyedSubscript:@"BatteryData"];
     v63 = [v62 objectForKeyedSubscript:@"ResetDataFirmware"];
     [v5 setObject:v63 forKeyedSubscript:@"ResetDataFirmware"];
 
-    v64 = [v4 objectForKeyedSubscript:@"BatteryData"];
+    v64 = [dataCopy objectForKeyedSubscript:@"BatteryData"];
     v65 = [v64 objectForKeyedSubscript:@"ResetDataHardware"];
     [v5 setObject:v65 forKeyedSubscript:@"ResetDataHardware"];
 
-    v66 = [v4 objectForKeyedSubscript:@"BatteryData"];
+    v66 = [dataCopy objectForKeyedSubscript:@"BatteryData"];
     v67 = [v66 objectForKeyedSubscript:@"ResetDataSoftware"];
     [v5 setObject:v67 forKeyedSubscript:@"ResetDataSoftware"];
 
-    v68 = [v4 objectForKeyedSubscript:@"BatteryData"];
+    v68 = [dataCopy objectForKeyedSubscript:@"BatteryData"];
     v69 = [v68 objectForKeyedSubscript:@"ResetDataWatchDog"];
     [v5 setObject:v69 forKeyedSubscript:@"ResetDataWatchDog"];
 
-    v70 = [v4 objectForKeyedSubscript:@"BatteryData"];
+    v70 = [dataCopy objectForKeyedSubscript:@"BatteryData"];
     v206 = [v70 objectForKeyedSubscript:@"ResetData"];
 
     if (v206 && [v206 length] >= 0xB)
@@ -15294,53 +15294,53 @@ LABEL_83:
       }
 
       v72 = v206;
-      v73 = [v206 bytes];
-      v74 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v73[10]];
+      bytes = [v206 bytes];
+      v74 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:bytes[10]];
       [v5 setObject:v74 forKeyedSubscript:@"LastResetReason"];
 
       if ([MEMORY[0x277D3F208] isiPhone] && objc_msgSend(MEMORY[0x277D3F208], "kPLDeviceClass") > 102037 || objc_msgSend(MEMORY[0x277D3F208], "isWatch") && objc_msgSend(MEMORY[0x277D3F208], "kPLDeviceClass") >= 200045)
       {
-        v75 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v73[12]];
+        v75 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:bytes[12]];
         [v5 setObject:v75 forKeyedSubscript:@"ResetDataSwWatchDog"];
 
-        v76 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v73[14]];
+        v76 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:bytes[14]];
         [v5 setObject:v76 forKeyedSubscript:@"ResetDataHardFault"];
 
-        v77 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v73[16]];
+        v77 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:bytes[16]];
         [v5 setObject:v77 forKeyedSubscript:@"ResetDataCorruption"];
       }
     }
 
-    v78 = [v4 objectForKeyedSubscript:@"BatteryData"];
+    v78 = [dataCopy objectForKeyedSubscript:@"BatteryData"];
     v79 = [v78 objectForKeyedSubscript:@"CycleCount"];
     [v5 setObject:v79 forKeyedSubscript:@"CycleCount"];
 
-    v80 = [v4 objectForKeyedSubscript:@"ITSimulationCounter"];
+    v80 = [dataCopy objectForKeyedSubscript:@"ITSimulationCounter"];
     [v5 setObject:v80 forKeyedSubscript:@"ITSimulationCounter"];
 
-    v81 = [v4 objectForKeyedSubscript:@"RaUpdateCounter"];
+    v81 = [dataCopy objectForKeyedSubscript:@"RaUpdateCounter"];
     [v5 setObject:v81 forKeyedSubscript:@"RaUpdateCounter"];
 
-    v82 = [v4 objectForKeyedSubscript:@"BatteryData"];
+    v82 = [dataCopy objectForKeyedSubscript:@"BatteryData"];
     v83 = [v82 objectForKeyedSubscript:@"ITMiscStatus"];
     [v5 setObject:v83 forKeyedSubscript:@"ITMiscStatus"];
 
-    v84 = [v4 objectForKeyedSubscript:@"GasGaugeFirmwareVersion"];
+    v84 = [dataCopy objectForKeyedSubscript:@"GasGaugeFirmwareVersion"];
     [v5 setObject:v84 forKeyedSubscript:@"GasGaugeFirmwareVersion"];
 
     v222 = @"GasGaugeFirmwareVersion";
     v85 = [v5 objectForKeyedSubscript:@"GasGaugeFirmwareVersion"];
     v223[0] = v85;
     v86 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v223 forKeys:&v222 count:1];
-    v87 = [v5 entryDate];
-    [(PLOperator *)v211 logForSubsystem:@"BatteryMetrics" category:@"BatteryConfig" data:v86 date:v87];
+    entryDate = [v5 entryDate];
+    [(PLOperator *)selfCopy logForSubsystem:@"BatteryMetrics" category:@"BatteryConfig" data:v86 date:entryDate];
 
-    v88 = [v4 objectForKeyedSubscript:@"FlashWearLevelData"];
+    v88 = [dataCopy objectForKeyedSubscript:@"FlashWearLevelData"];
     LOBYTE(v85) = v88 == 0;
 
     if ((v85 & 1) == 0)
     {
-      v89 = [v4 objectForKeyedSubscript:@"FlashWearLevelData"];
+      v89 = [dataCopy objectForKeyedSubscript:@"FlashWearLevelData"];
       [v5 setObject:v89 forKeyedSubscript:@"FlashWearLevelData"];
       v90 = PLLogCommon();
       if (os_log_type_enabled(v90, OS_LOG_TYPE_DEBUG))
@@ -15351,65 +15351,65 @@ LABEL_83:
         _os_log_debug_impl(&dword_21A4C6000, v90, OS_LOG_TYPE_DEBUG, "collected flashWearLevelDataRaw: %@", buf, 0xCu);
       }
 
-      v91 = [(PLBatteryAgent *)v211 parseFlashWearLevelData:v89];
-      [(PLBatteryAgent *)v211 pushFlashWearLevelDataToCA:v91];
+      v91 = [(PLBatteryAgent *)selfCopy parseFlashWearLevelData:v89];
+      [(PLBatteryAgent *)selfCopy pushFlashWearLevelDataToCA:v91];
     }
 
-    v92 = [(PLBatteryAgent *)v211 getBatteryMaximumCapacityPercent];
-    if (v92 >= 1)
+    getBatteryMaximumCapacityPercent = [(PLBatteryAgent *)selfCopy getBatteryMaximumCapacityPercent];
+    if (getBatteryMaximumCapacityPercent >= 1)
     {
-      v93 = [MEMORY[0x277CCABB0] numberWithInt:v92];
+      v93 = [MEMORY[0x277CCABB0] numberWithInt:getBatteryMaximumCapacityPercent];
       [v5 setObject:v93 forKeyedSubscript:@"MaximumCapacityPercent"];
 
       v94 = PLLogBH();
       if (os_log_type_enabled(v94, OS_LOG_TYPE_INFO))
       {
         *buf = 67109120;
-        LODWORD(v217) = v92;
+        LODWORD(v217) = getBatteryMaximumCapacityPercent;
         _os_log_impl(&dword_21A4C6000, v94, OS_LOG_TYPE_INFO, "Maximum Capacity: %d", buf, 8u);
       }
     }
 
-    v95 = [v4 objectForKeyedSubscript:@"BatteryData"];
+    v95 = [dataCopy objectForKeyedSubscript:@"BatteryData"];
     v96 = [v95 objectForKeyedSubscript:@"AlgoChemID"];
     [v5 setObject:v96 forKeyedSubscript:@"AlgoChemID"];
 
-    v97 = [v4 objectForKeyedSubscript:@"ChargerData"];
+    v97 = [dataCopy objectForKeyedSubscript:@"ChargerData"];
     v98 = [v97 objectForKeyedSubscript:@"VacVoltageLimit"];
     [v5 setObject:v98 forKeyedSubscript:@"VacVoltageLimit"];
 
-    v210 = [(PLBatteryAgent *)v211 getBatteryCalibration0Data];
-    if (v210)
+    getBatteryCalibration0Data = [(PLBatteryAgent *)selfCopy getBatteryCalibration0Data];
+    if (getBatteryCalibration0Data)
     {
-      [(PLBatteryAgent *)v211 logEventForwardCalibration0withData:v210];
-      v99 = [v210 objectForKeyedSubscript:@"calibrationFlags"];
+      [(PLBatteryAgent *)selfCopy logEventForwardCalibration0withData:getBatteryCalibration0Data];
+      v99 = [getBatteryCalibration0Data objectForKeyedSubscript:@"calibrationFlags"];
       [v5 setObject:v99 forKeyedSubscript:@"calibrationFlags"];
 
-      v100 = [v210 objectForKeyedSubscript:@"filteredNCC"];
+      v100 = [getBatteryCalibration0Data objectForKeyedSubscript:@"filteredNCC"];
       [v5 setObject:v100 forKeyedSubscript:@"filteredNCC"];
 
-      v101 = [v210 objectForKeyedSubscript:@"exitTotalOperatingTime"];
+      v101 = [getBatteryCalibration0Data objectForKeyedSubscript:@"exitTotalOperatingTime"];
       [v5 setObject:v101 forKeyedSubscript:@"exitTotalOperatingTime"];
 
-      v102 = [v210 objectForKeyedSubscript:@"svcTotalOperatingTime"];
+      v102 = [getBatteryCalibration0Data objectForKeyedSubscript:@"svcTotalOperatingTime"];
       [v5 setObject:v102 forKeyedSubscript:@"svcTotalOperatingTime"];
     }
 
-    v103 = [v4 objectForKeyedSubscript:@"BatteryData"];
+    v103 = [dataCopy objectForKeyedSubscript:@"BatteryData"];
     v104 = [v103 objectForKeyedSubscript:@"RSS"];
     [v5 setObject:v104 forKeyedSubscript:@"RSS"];
 
-    v105 = [v4 objectForKeyedSubscript:@"BatteryData"];
+    v105 = [dataCopy objectForKeyedSubscript:@"BatteryData"];
     v106 = [v105 objectForKeyedSubscript:@"ChemID"];
     [v5 setObject:v106 forKeyedSubscript:@"ChemID"];
 
-    v107 = [v4 objectForKeyedSubscript:@"BatteryData"];
+    v107 = [dataCopy objectForKeyedSubscript:@"BatteryData"];
     v204 = [v107 objectForKeyedSubscript:@"RaTableRaw"];
 
     if ([v204 count])
     {
       v108 = [v204 objectAtIndexedSubscript:0];
-      v109 = [(PLBatteryAgent *)v211 parseRawRaTableData:v108];
+      v109 = [(PLBatteryAgent *)selfCopy parseRawRaTableData:v108];
       for (i = 0; [v109 count] > i; ++i)
       {
         v111 = [v109 objectAtIndexedSubscript:i];
@@ -15431,7 +15431,7 @@ LABEL_83:
     }
 
     v203 = [v8 objectForKeyedSubscript:@"SafetyFaultCounter"];
-    v115 = [(PLBatteryAgent *)v211 parseRawSafetyFaultCounter:?];
+    v115 = [(PLBatteryAgent *)selfCopy parseRawSafetyFaultCounter:?];
     v116 = PLLogBH();
     if (os_log_type_enabled(v116, OS_LOG_TYPE_DEBUG))
     {
@@ -15447,22 +15447,22 @@ LABEL_83:
       [v5 setObject:v118 forKeyedSubscript:v119];
     }
 
-    v120 = [MEMORY[0x277CCABB0] numberWithInt:{-[PLBatteryAgent batteryLifetimeUPOCount](v211, "batteryLifetimeUPOCount")}];
+    v120 = [MEMORY[0x277CCABB0] numberWithInt:{-[PLBatteryAgent batteryLifetimeUPOCount](selfCopy, "batteryLifetimeUPOCount")}];
     [v5 setObject:v120 forKeyedSubscript:@"LifetimeUPOCount"];
 
-    v121 = [v4 objectForKeyedSubscript:@"Serial"];
-    [(PLBatteryAgent *)v211 setSerialNumber:v121];
+    v121 = [dataCopy objectForKeyedSubscript:@"Serial"];
+    [(PLBatteryAgent *)selfCopy setSerialNumber:v121];
 
-    v122 = [(PLBatteryAgent *)v211 weekOfManufacture:v4];
+    v122 = [(PLBatteryAgent *)selfCopy weekOfManufacture:dataCopy];
     [v5 setObject:v122 forKeyedSubscript:@"WeekMfd"];
 
-    v123 = [v4 objectForKeyedSubscript:@"BatteryData"];
+    v123 = [dataCopy objectForKeyedSubscript:@"BatteryData"];
     v124 = [v123 objectForKeyedSubscript:@"DateOfFirstUse"];
     v125 = v124 == 0;
 
     if (!v125)
     {
-      v126 = [v4 objectForKeyedSubscript:@"BatteryData"];
+      v126 = [dataCopy objectForKeyedSubscript:@"BatteryData"];
       v127 = [v126 objectForKeyedSubscript:@"DateOfFirstUse"];
       [v127 doubleValue];
       v129 = v128;
@@ -15504,17 +15504,17 @@ LABEL_83:
       v135 = ;
       v221 = v135;
       v136 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v221 forKeys:&v220 count:1];
-      v137 = [v5 entryDate];
-      [(PLOperator *)v211 logForSubsystem:@"BatteryMetrics" category:@"BatteryConfig" data:v136 date:v137];
+      entryDate2 = [v5 entryDate];
+      [(PLOperator *)selfCopy logForSubsystem:@"BatteryMetrics" category:@"BatteryConfig" data:v136 date:entryDate2];
     }
 
-    v138 = [(PLBatteryAgent *)v211 batteryEEEECode:v4];
+    v138 = [(PLBatteryAgent *)selfCopy batteryEEEECode:dataCopy];
     [v5 setObject:v138 forKeyedSubscript:@"EEEECode"];
 
-    v139 = [(PLBatteryAgent *)v211 isOriginalBattery];
-    [v5 setObject:v139 forKeyedSubscript:@"OriginalBattery"];
+    isOriginalBattery = [(PLBatteryAgent *)selfCopy isOriginalBattery];
+    [v5 setObject:isOriginalBattery forKeyedSubscript:@"OriginalBattery"];
 
-    v140 = [(PLBatteryAgent *)v211 batterySerialChanged:v4];
+    v140 = [(PLBatteryAgent *)selfCopy batterySerialChanged:dataCopy];
     v141 = [MEMORY[0x277CCABB0] numberWithBool:v140];
     [v5 setObject:v141 forKeyedSubscript:@"BatterySerialChanged"];
 
@@ -15523,16 +15523,16 @@ LABEL_83:
       MEMORY[0x21CEDCD40](@"com.apple.power.battery.newSerial", 1);
     }
 
-    [PLEventBackwardBatteryEntry populateCellWOMForEntry:v5 withRawData:v4];
-    v142 = [v4 objectForKeyedSubscript:@"BatteryData"];
+    [PLEventBackwardBatteryEntry populateCellWOMForEntry:v5 withRawData:dataCopy];
+    v142 = [dataCopy objectForKeyedSubscript:@"BatteryData"];
     v143 = [v142 objectForKeyedSubscript:@"DailyMaxSoc"];
     [v5 setObject:v143 forKeyedSubscript:@"DailyMaxSoc"];
 
-    v144 = [v4 objectForKeyedSubscript:@"BatteryData"];
+    v144 = [dataCopy objectForKeyedSubscript:@"BatteryData"];
     v145 = [v144 objectForKeyedSubscript:@"DailyMinSoc"];
     [v5 setObject:v145 forKeyedSubscript:@"DailyMinSoc"];
 
-    v209 = [v4 objectForKey:@"KioskMode"];
+    v209 = [dataCopy objectForKey:@"KioskMode"];
     if (v209)
     {
       v146 = [v209 objectForKeyedSubscript:@"KioskModeHighSocDays"];
@@ -15545,7 +15545,7 @@ LABEL_83:
       [v5 setObject:v148 forKeyedSubscript:@"KioskModeHighSocSeconds"];
     }
 
-    v208 = [v4 objectForKeyedSubscript:@"GgDataFlashUpdate"];
+    v208 = [dataCopy objectForKeyedSubscript:@"GgDataFlashUpdate"];
     if (v208)
     {
       v149 = [v208 objectForKeyedSubscript:@"Status"];
@@ -15572,22 +15572,22 @@ LABEL_83:
       }
     }
 
-    v155 = [v4 objectForKeyedSubscript:@"BatteryData"];
+    v155 = [dataCopy objectForKeyedSubscript:@"BatteryData"];
     v156 = [v155 objectForKeyedSubscript:@"LifetimeData"];
     v157 = [v156 objectForKeyedSubscript:@"LTOCVRestCounter"];
     [v5 setObject:v157 forKeyedSubscript:@"LifeTimeOCVRestCounter"];
 
-    v158 = [v4 objectForKeyedSubscript:@"BatteryData"];
+    v158 = [dataCopy objectForKeyedSubscript:@"BatteryData"];
     v159 = [v158 objectForKeyedSubscript:@"LifetimeData"];
     v160 = [v159 objectForKeyedSubscript:@"LTQmaxUpdateCounter"];
     [v5 setObject:v160 forKeyedSubscript:@"LifeTimeQmaxUpdateCounter"];
 
-    v161 = [v4 objectForKeyedSubscript:@"BatteryData"];
+    v161 = [dataCopy objectForKeyedSubscript:@"BatteryData"];
     v162 = [v161 objectForKeyedSubscript:@"LifetimeData"];
     v163 = [v162 objectForKeyedSubscript:@"LTOCVRestCounterHsp"];
     [v5 setObject:v163 forKeyedSubscript:@"LifeTimeOCVRestCounterHsp"];
 
-    v164 = [v4 objectForKeyedSubscript:@"BatteryData"];
+    v164 = [dataCopy objectForKeyedSubscript:@"BatteryData"];
     v165 = [v164 objectForKeyedSubscript:@"LifetimeData"];
     v166 = [v165 objectForKeyedSubscript:@"LTQmaxUpdateCounterHsp"];
     [v5 setObject:v166 forKeyedSubscript:@"LifeTimeQmaxUpdateCounterHsp"];
@@ -15602,21 +15602,21 @@ LABEL_83:
     v170 = [MEMORY[0x277CCABB0] numberWithDouble:?];
     [v5 setObject:v170 forKeyedSubscript:@"LastUPOTimestamp"];
 
-    v171 = [v4 objectForKeyedSubscript:@"BatteryData"];
+    v171 = [dataCopy objectForKeyedSubscript:@"BatteryData"];
     v172 = [v171 objectForKeyedSubscript:@"ChemicalWeightedRa"];
     [v5 setObject:v172 forKeyedSubscript:@"ChemicalWeightedRa"];
 
-    [PLEventBackwardBatteryEntry populatewRaForEntry:v5 withRawData:v4];
-    v173 = [v4 objectForKeyedSubscript:@"BatteryData"];
+    [PLEventBackwardBatteryEntry populatewRaForEntry:v5 withRawData:dataCopy];
+    v173 = [dataCopy objectForKeyedSubscript:@"BatteryData"];
     v174 = [v173 objectForKeyedSubscript:@"BatteryHealthMetric"];
     [v5 setObject:v174 forKeyedSubscript:@"BatteryHealthMetric"];
 
-    v175 = [v4 objectForKeyedSubscript:@"BatteryData"];
+    v175 = [dataCopy objectForKeyedSubscript:@"BatteryData"];
     v176 = [v175 objectForKeyedSubscript:@"PeakPerformanceCapacity"];
     [v5 setObject:v176 forKeyedSubscript:@"PeakPerformanceCapacity"];
 
-    v177 = [MEMORY[0x277CCABB0] numberWithInt:{-[PLBatteryAgent getBatteryHealthServiceState](v211, "getBatteryHealthServiceState")}];
-    v178 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[PLBatteryAgent getBatteryHealthServiceFlags](v211, "getBatteryHealthServiceFlags")}];
+    v177 = [MEMORY[0x277CCABB0] numberWithInt:{-[PLBatteryAgent getBatteryHealthServiceState](selfCopy, "getBatteryHealthServiceState")}];
+    v178 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[PLBatteryAgent getBatteryHealthServiceFlags](selfCopy, "getBatteryHealthServiceFlags")}];
     [v5 setObject:v177 forKeyedSubscript:@"ServiceOption"];
     [v5 setObject:v178 forKeyedSubscript:@"batteryServiceFlags"];
     [v177 intValue];
@@ -15633,16 +15633,16 @@ LABEL_83:
       _os_log_impl(&dword_21A4C6000, v179, OS_LOG_TYPE_INFO, "BH State: %@. Flags: %@", buf, 0x16u);
     }
 
-    [(PLBatteryAgent *)v211 logAuthFail:v5];
+    [(PLBatteryAgent *)selfCopy logAuthFail:v5];
     if ([MEMORY[0x277D3F1B8] hasBatteryModuleAuth])
     {
-      v202 = [(PLBatteryAgent *)v211 xFlags];
-      v180 = [MEMORY[0x277CCABB0] numberWithInteger:v202];
+      xFlags = [(PLBatteryAgent *)selfCopy xFlags];
+      v180 = [MEMORY[0x277CCABB0] numberWithInteger:xFlags];
       [v5 setObject:v180 forKeyedSubscript:@"xFlags"];
 
-      if ((v202 & 0x2B) != 0)
+      if ((xFlags & 0x2B) != 0)
       {
-        [(PLOperator *)v211 defaultDoubleForKey:@"xFlagsRetryTimerInterval"];
+        [(PLOperator *)selfCopy defaultDoubleForKey:@"xFlagsRetryTimerInterval"];
         v182 = v181;
         if ([MEMORY[0x277D3F180] debugEnabled])
         {
@@ -15663,9 +15663,9 @@ LABEL_83:
             v201 = [MEMORY[0x277CCACA8] stringWithFormat:@"xFlags indicate error, will retry in %.1f seconds", *&v182];
             v200 = MEMORY[0x277D3F178];
             v185 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-            v186 = [v185 lastPathComponent];
+            lastPathComponent = [v185 lastPathComponent];
             v187 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent logEventNoneBatteryConfigWithRawData:]"];
-            [v200 logMessage:v201 fromFile:v186 fromFunction:v187 fromLineNumber:7954];
+            [v200 logMessage:v201 fromFile:lastPathComponent fromFunction:v187 fromLineNumber:7954];
 
             v188 = PLLogCommon();
             if (os_log_type_enabled(v188, OS_LOG_TYPE_DEBUG))
@@ -15679,16 +15679,16 @@ LABEL_83:
 
         v189 = objc_alloc(MEMORY[0x277D3F250]);
         v190 = [MEMORY[0x277CBEAA8] monotonicDateWithTimeIntervalSinceNow:v182];
-        v191 = [(PLOperator *)v211 workQueue];
+        workQueue = [(PLOperator *)selfCopy workQueue];
         v212[0] = MEMORY[0x277D85DD0];
         v212[1] = 3221225472;
         v212[2] = __55__PLBatteryAgent_logEventNoneBatteryConfigWithRawData___block_invoke_5048;
         v212[3] = &unk_278260DC0;
-        v212[4] = v211;
-        v214 = v202;
+        v212[4] = selfCopy;
+        v214 = xFlags;
         v213 = v5;
-        v192 = [v189 initWithFireDate:v190 withInterval:0 withTolerance:0 repeats:v191 withUserInfo:v212 withQueue:v182 withBlock:6.0e10];
-        [(PLBatteryAgent *)v211 setXFlagsRetryTimer:v192];
+        v192 = [v189 initWithFireDate:v190 withInterval:0 withTolerance:0 repeats:workQueue withUserInfo:v212 withQueue:v182 withBlock:6.0e10];
+        [(PLBatteryAgent *)selfCopy setXFlagsRetryTimer:v192];
       }
 
       else
@@ -15697,8 +15697,8 @@ LABEL_83:
       }
     }
 
-    [(PLOperator *)v211 logEntry:v5];
-    [(PLBatteryAgent *)v211 setLastBatteryConfigEntry:v5];
+    [(PLOperator *)selfCopy logEntry:v5];
+    [(PLBatteryAgent *)selfCopy setLastBatteryConfigEntry:v5];
     v193 = PLLogCommon();
     if (os_log_type_enabled(v193, OS_LOG_TYPE_DEBUG))
     {
@@ -15706,13 +15706,13 @@ LABEL_83:
       _os_log_debug_impl(&dword_21A4C6000, v193, OS_LOG_TYPE_DEBUG, "About to push data to CA", buf, 2u);
     }
 
-    [(PLBatteryAgent *)v211 logBatteryConfigToCA:v5];
-    [(PLBatteryAgent *)v211 logBatteryConfigToAggd:v5];
-    [(PLBatteryAgent *)v211 logWatchdogDebugDumpToCA:v4];
-    [(PLBatteryAgent *)v211 logFlashAgingToCA:v4];
-    [(PLBatteryAgent *)v211 logShallowChargingToCA:v4];
-    [(PLBatteryAgent *)v211 logSlowChargingReasonToCA:v4];
-    [(PLBatteryAgent *)v211 logkBatteryRsenseOpenCountToCA:v4];
+    [(PLBatteryAgent *)selfCopy logBatteryConfigToCA:v5];
+    [(PLBatteryAgent *)selfCopy logBatteryConfigToAggd:v5];
+    [(PLBatteryAgent *)selfCopy logWatchdogDebugDumpToCA:dataCopy];
+    [(PLBatteryAgent *)selfCopy logFlashAgingToCA:dataCopy];
+    [(PLBatteryAgent *)selfCopy logShallowChargingToCA:dataCopy];
+    [(PLBatteryAgent *)selfCopy logSlowChargingReasonToCA:dataCopy];
+    [(PLBatteryAgent *)selfCopy logkBatteryRsenseOpenCountToCA:dataCopy];
 
     goto LABEL_83;
   }
@@ -15899,7 +15899,7 @@ uint64_t __55__PLBatteryAgent_logEventNoneBatteryConfigWithRawData___block_invok
 - (void)logEventNoneBatteryConfigCycleCountData
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(PLOperator *)self workQueue];
+  workQueue = [(PLOperator *)self workQueue];
   block[5] = MEMORY[0x277D85DD0];
   block[6] = 3221225472;
   block[7] = __57__PLBatteryAgent_logEventNoneBatteryConfigCycleCountData__block_invoke;
@@ -15925,9 +15925,9 @@ uint64_t __55__PLBatteryAgent_logEventNoneBatteryConfigWithRawData___block_invok
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Battery Config Cycle Count Data Error: %x", v4];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent logEventNoneBatteryConfigCycleCountData]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:8075];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:8075];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -16106,46 +16106,46 @@ uint64_t __57__PLBatteryAgent_logEventNoneBatteryConfigCycleCountData__block_inv
 
 - (BOOL)givePluggedInFreePass
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MEMORY[0x277D3F258];
-  v4 = [(PLBatteryAgent *)self deviceIsPluggedIn];
-  v5 = [v4 BOOLValue];
-  [(PLBatteryAgent *)v2 batteryLevelPercent];
-  LOBYTE(v2) = [v3 isPingPongChargingWith:v5 andBatteryLevelPercent:?];
+  deviceIsPluggedIn = [(PLBatteryAgent *)self deviceIsPluggedIn];
+  bOOLValue = [deviceIsPluggedIn BOOLValue];
+  [(PLBatteryAgent *)selfCopy batteryLevelPercent];
+  LOBYTE(selfCopy) = [v3 isPingPongChargingWith:bOOLValue andBatteryLevelPercent:?];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)addPowerMeasurementToAccounting:(double)a3 withStartDate:(id)a4 withEndDate:(id)a5
+- (void)addPowerMeasurementToAccounting:(double)accounting withStartDate:(id)date withEndDate:(id)endDate
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277D3F0C0] sharedInstance];
-  [v10 addPowerMeasurementEventIntervalWithPower:v8 withStartDate:v9 withEndDate:a3];
+  dateCopy = date;
+  endDateCopy = endDate;
+  mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+  [mEMORY[0x277D3F0C0] addPowerMeasurementEventIntervalWithPower:dateCopy withStartDate:endDateCopy withEndDate:accounting];
 
   v11 = PLLogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v22 = 134218498;
-    v23 = a3;
+    accountingCopy = accounting;
     v24 = 2112;
-    v25 = *&v8;
+    v25 = *&dateCopy;
     v26 = 2112;
-    v27 = v9;
+    v27 = endDateCopy;
     _os_log_debug_impl(&dword_21A4C6000, v11, OS_LOG_TYPE_DEBUG, "added power %.2fmW for %@-%@", &v22, 0x20u);
   }
 
   v12 = [(PLOperator *)PLBatteryAgent entryKeyForType:*MEMORY[0x277D3F5B8] andName:@"UILevel"];
   v13 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v12];
-  [v9 timeIntervalSinceDate:v8];
+  [endDateCopy timeIntervalSinceDate:dateCopy];
   v15 = v14;
-  v16 = v14 / 3600.0 * a3;
+  v16 = v14 / 3600.0 * accounting;
   v17 = PLLogCommon();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
     v22 = 134218240;
-    v23 = v16;
+    accountingCopy = v16;
     v24 = 2048;
     v25 = v15;
     _os_log_debug_impl(&dword_21A4C6000, v17, OS_LOG_TYPE_DEBUG, "calculated energy %.2fmWh for %.2fs", &v22, 0x16u);
@@ -16156,7 +16156,7 @@ uint64_t __57__PLBatteryAgent_logEventNoneBatteryConfigCycleCountData__block_inv
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
   {
     v22 = 134217984;
-    v23 = v18;
+    accountingCopy = v18;
     _os_log_debug_impl(&dword_21A4C6000, v19, OS_LOG_TYPE_DEBUG, "scaled to %.2fuWh", &v22, 0xCu);
   }
 
@@ -16167,13 +16167,13 @@ uint64_t __57__PLBatteryAgent_logEventNoneBatteryConfigCycleCountData__block_inv
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logCurrentAccumulatorWithRawData:(id)a3
+- (void)logCurrentAccumulatorWithRawData:(id)data
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dataCopy = data;
+  v5 = dataCopy;
+  if (dataCopy)
   {
-    v6 = [v4 objectForKeyedSubscript:@"BatteryData"];
+    v6 = [dataCopy objectForKeyedSubscript:@"BatteryData"];
 
     if (v6)
     {
@@ -16234,26 +16234,26 @@ void __51__PLBatteryAgent_logCurrentAccumulatorWithRawData___block_invoke_2(uint
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v7];
 }
 
-- (void)accountGaugePowerFromCurrentAccumulatorEntry:(id)a3
+- (void)accountGaugePowerFromCurrentAccumulatorEntry:(id)entry
 {
-  v4 = a3;
-  if (v4)
+  entryCopy = entry;
+  if (entryCopy)
   {
-    v32 = v4;
-    v5 = [v4 objectForKeyedSubscript:@"CurrentAccumulator"];
-    v4 = v32;
+    v32 = entryCopy;
+    v5 = [entryCopy objectForKeyedSubscript:@"CurrentAccumulator"];
+    entryCopy = v32;
     if (v5)
     {
       v6 = [v32 objectForKeyedSubscript:@"CurrentAccumulatorCount"];
 
-      v4 = v32;
+      entryCopy = v32;
       if (v6)
       {
         v7 = [v32 objectForKeyedSubscript:@"CurrentAccumulator"];
-        v8 = [v7 intValue];
+        intValue = [v7 intValue];
 
         v9 = [v32 objectForKeyedSubscript:@"CurrentAccumulatorCount"];
-        v10 = [v9 intValue];
+        intValue2 = [v9 intValue];
 
         v11 = MEMORY[0x277CBEAA8];
         v12 = [v32 objectForKeyedSubscript:@"timestamp"];
@@ -16263,8 +16263,8 @@ void __51__PLBatteryAgent_logCurrentAccumulatorWithRawData___block_invoke_2(uint
         if (![(PLBatteryAgent *)self previousCurrentAccumulator]|| ![(PLBatteryAgent *)self previousCurrentAccumulatorCount]|| ([(PLBatteryAgent *)self previousCurrentAccumulatorDate], v14 = objc_claimAutoreleasedReturnValue(), v14, !v14))
         {
           v15 = [(PLOperator *)PLBatteryAgent entryKeyForType:*MEMORY[0x277D3F5C8] andName:@"CurrentAccumulator"];
-          v16 = [(PLOperator *)self storage];
-          v17 = [v16 lastEntryForKey:v15];
+          storage = [(PLOperator *)self storage];
+          v17 = [storage lastEntryForKey:v15];
 
           if (v17)
           {
@@ -16293,34 +16293,34 @@ void __51__PLBatteryAgent_logCurrentAccumulatorWithRawData___block_invoke_2(uint
 
           if (![(PLBatteryAgent *)self previousCurrentAccumulator]|| ![(PLBatteryAgent *)self previousCurrentAccumulatorCount])
           {
-            [(PLBatteryAgent *)self setPreviousCurrentAccumulator:v8];
-            [(PLBatteryAgent *)self setPreviousCurrentAccumulatorCount:v10];
+            [(PLBatteryAgent *)self setPreviousCurrentAccumulator:intValue];
+            [(PLBatteryAgent *)self setPreviousCurrentAccumulatorCount:intValue2];
             [(PLBatteryAgent *)self setPreviousCurrentAccumulatorDate:v13];
 
 LABEL_25:
-            v4 = v32;
+            entryCopy = v32;
             goto LABEL_26;
           }
         }
 
-        if (v10 > [(PLBatteryAgent *)self previousCurrentAccumulatorCount])
+        if (intValue2 > [(PLBatteryAgent *)self previousCurrentAccumulatorCount])
         {
-          v25 = [(PLBatteryAgent *)self previousCurrentAccumulator]- v8;
-          v26 = v25 / (v10 - [(PLBatteryAgent *)self previousCurrentAccumulatorCount]);
+          v25 = [(PLBatteryAgent *)self previousCurrentAccumulator]- intValue;
+          v26 = v25 / (intValue2 - [(PLBatteryAgent *)self previousCurrentAccumulatorCount]);
           [(PLBatteryAgent *)self rawBatteryVoltageVolt];
           v28 = v27 * v26;
-          v29 = [(PLBatteryAgent *)self givePluggedInFreePass];
-          if (v28 <= 0.0 || v29)
+          givePluggedInFreePass = [(PLBatteryAgent *)self givePluggedInFreePass];
+          if (v28 <= 0.0 || givePluggedInFreePass)
           {
             v28 = 0.0;
           }
 
-          v31 = [(PLBatteryAgent *)self previousCurrentAccumulatorDate];
-          [(PLBatteryAgent *)self addPowerMeasurementToAccounting:v31 withStartDate:v13 withEndDate:v28];
+          previousCurrentAccumulatorDate = [(PLBatteryAgent *)self previousCurrentAccumulatorDate];
+          [(PLBatteryAgent *)self addPowerMeasurementToAccounting:previousCurrentAccumulatorDate withStartDate:v13 withEndDate:v28];
         }
 
-        [(PLBatteryAgent *)self setPreviousCurrentAccumulator:v8];
-        [(PLBatteryAgent *)self setPreviousCurrentAccumulatorCount:v10];
+        [(PLBatteryAgent *)self setPreviousCurrentAccumulator:intValue];
+        [(PLBatteryAgent *)self setPreviousCurrentAccumulatorCount:intValue2];
         [(PLBatteryAgent *)self setPreviousCurrentAccumulatorDate:v13];
         goto LABEL_25;
       }
@@ -16330,10 +16330,10 @@ LABEL_25:
 LABEL_26:
 }
 
-- (BOOL)shouldWaitForLifetimeDataWithRawData:(id)a3
+- (BOOL)shouldWaitForLifetimeDataWithRawData:(id)data
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dataCopy = data;
   if ([MEMORY[0x277D3F208] isWatch])
   {
 LABEL_8:
@@ -16354,11 +16354,11 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v4 = [v3 objectForKeyedSubscript:@"ForceFullGGUpdateOnBoot"];
+  v4 = [dataCopy objectForKeyedSubscript:@"ForceFullGGUpdateOnBoot"];
 
   if (v4)
   {
-    v5 = [v3 objectForKeyedSubscript:@"ForceFullGGUpdateOnBoot"];
+    v5 = [dataCopy objectForKeyedSubscript:@"ForceFullGGUpdateOnBoot"];
     LOBYTE(v4) = [v5 BOOLValue];
   }
 
@@ -16407,10 +16407,10 @@ LABEL_43:
   CFDictionarySetValue(v3, @"IOParentMatch", v2);
   CFRelease(v2);
   v2 = [MEMORY[0x277D3F1C8] snapshotFromIOEntry:{IOServiceGetMatchingService(*MEMORY[0x277CD28A0], v4)}];
-  v6 = [MEMORY[0x277D3F180] debugEnabled];
+  debugEnabled = [MEMORY[0x277D3F180] debugEnabled];
   if (!v2)
   {
-    if (v6)
+    if (debugEnabled)
     {
       v38 = objc_opt_class();
       v110[0] = MEMORY[0x277D85DD0];
@@ -16428,9 +16428,9 @@ LABEL_43:
         v39 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to snapshot %s", "AppleAuthCPRelay"];
         v40 = MEMORY[0x277D3F178];
         v41 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-        v42 = [v41 lastPathComponent];
+        lastPathComponent = [v41 lastPathComponent];
         v43 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent xFlags]"];
-        [v40 logMessage:v39 fromFile:v42 fromFunction:v43 fromLineNumber:8408];
+        [v40 logMessage:v39 fromFile:lastPathComponent fromFunction:v43 fromLineNumber:8408];
 
         v44 = PLLogCommon();
         if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
@@ -16445,7 +16445,7 @@ LABEL_43:
     goto LABEL_42;
   }
 
-  if (v6)
+  if (debugEnabled)
   {
     v7 = objc_opt_class();
     block[0] = MEMORY[0x277D85DD0];
@@ -16466,9 +16466,9 @@ LABEL_43:
 
       v11 = MEMORY[0x277D3F178];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-      v13 = [v12 lastPathComponent];
+      lastPathComponent2 = [v12 lastPathComponent];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent xFlags]"];
-      [v11 logMessage:v10 fromFile:v13 fromFunction:v14 fromLineNumber:8413];
+      [v11 logMessage:v10 fromFile:lastPathComponent2 fromFunction:v14 fromLineNumber:8413];
 
       v15 = PLLogCommon();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -16501,9 +16501,9 @@ LABEL_43:
 
       v20 = MEMORY[0x277D3F178];
       v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-      v22 = [v21 lastPathComponent];
+      lastPathComponent3 = [v21 lastPathComponent];
       v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent xFlags]"];
-      [v20 logMessage:v19 fromFile:v22 fromFunction:v23 fromLineNumber:8414];
+      [v20 logMessage:v19 fromFile:lastPathComponent3 fromFunction:v23 fromLineNumber:8414];
 
       v24 = PLLogCommon();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -16536,9 +16536,9 @@ LABEL_43:
 
       v29 = MEMORY[0x277D3F178];
       v30 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-      v31 = [v30 lastPathComponent];
+      lastPathComponent4 = [v30 lastPathComponent];
       v32 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent xFlags]"];
-      [v29 logMessage:v28 fromFile:v31 fromFunction:v32 fromLineNumber:8415];
+      [v29 logMessage:v28 fromFile:lastPathComponent4 fromFunction:v32 fromLineNumber:8415];
 
       v33 = PLLogCommon();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
@@ -16555,9 +16555,9 @@ LABEL_43:
   if (v34)
   {
     v35 = [v2 objectForKeyedSubscript:@"isTrustedForUI"];
-    v36 = [v35 BOOLValue];
+    bOOLValue = [v35 BOOLValue];
 
-    if (v36)
+    if (bOOLValue)
     {
       v37 = 4;
       goto LABEL_61;
@@ -16581,9 +16581,9 @@ LABEL_43:
         v48 = [MEMORY[0x277CCACA8] stringWithFormat:@"isTrustedForUI failed"];
         v55 = MEMORY[0x277D3F178];
         v56 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-        v57 = [v56 lastPathComponent];
+        lastPathComponent5 = [v56 lastPathComponent];
         v58 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent xFlags]"];
-        [v55 logMessage:v48 fromFile:v57 fromFunction:v58 fromLineNumber:8422];
+        [v55 logMessage:v48 fromFile:lastPathComponent5 fromFunction:v58 fromLineNumber:8422];
 
         v53 = PLLogCommon();
         if (os_log_type_enabled(v53, OS_LOG_TYPE_DEBUG))
@@ -16623,9 +16623,9 @@ LABEL_58:
         v48 = [MEMORY[0x277CCACA8] stringWithFormat:@"isTrustedForUI missing"];
         v49 = MEMORY[0x277D3F178];
         v50 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-        v51 = [v50 lastPathComponent];
+        lastPathComponent6 = [v50 lastPathComponent];
         v52 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent xFlags]"];
-        [v49 logMessage:v48 fromFile:v51 fromFunction:v52 fromLineNumber:8426];
+        [v49 logMessage:v48 fromFile:lastPathComponent6 fromFunction:v52 fromLineNumber:8426];
 
         v53 = PLLogCommon();
         v37 = 2;
@@ -16650,9 +16650,9 @@ LABEL_61:
   if (v59)
   {
     v60 = [v2 objectForKeyedSubscript:@"AuthPassed"];
-    v61 = [v60 BOOLValue];
+    bOOLValue2 = [v60 BOOLValue];
 
-    if (v61)
+    if (bOOLValue2)
     {
       v37 |= 0x10uLL;
       goto LABEL_76;
@@ -16676,9 +16676,9 @@ LABEL_61:
         v63 = [MEMORY[0x277CCACA8] stringWithFormat:@"Auth Failed"];
         v70 = MEMORY[0x277D3F178];
         v71 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-        v72 = [v71 lastPathComponent];
+        lastPathComponent7 = [v71 lastPathComponent];
         v73 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent xFlags]"];
-        [v70 logMessage:v63 fromFile:v72 fromFunction:v73 fromLineNumber:8434];
+        [v70 logMessage:v63 fromFile:lastPathComponent7 fromFunction:v73 fromLineNumber:8434];
 
         v68 = PLLogCommon();
         if (!os_log_type_enabled(v68, OS_LOG_TYPE_DEBUG))
@@ -16714,9 +16714,9 @@ LABEL_61:
         v63 = [MEMORY[0x277CCACA8] stringWithFormat:@"AuthPassed missing"];
         v64 = MEMORY[0x277D3F178];
         v65 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-        v66 = [v65 lastPathComponent];
+        lastPathComponent8 = [v65 lastPathComponent];
         v67 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent xFlags]"];
-        [v64 logMessage:v63 fromFile:v66 fromFunction:v67 fromLineNumber:8438];
+        [v64 logMessage:v63 fromFile:lastPathComponent8 fromFunction:v67 fromLineNumber:8438];
 
         v68 = PLLogCommon();
         if (!os_log_type_enabled(v68, OS_LOG_TYPE_DEBUG))
@@ -16765,9 +16765,9 @@ LABEL_76:
     v76 = [MEMORY[0x277CCACA8] stringWithFormat:@"FDR Validation Missing"];
     v85 = MEMORY[0x277D3F178];
     v86 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-    v87 = [v86 lastPathComponent];
+    lastPathComponent9 = [v86 lastPathComponent];
     v88 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent xFlags]"];
-    [v85 logMessage:v76 fromFile:v87 fromFunction:v88 fromLineNumber:8451];
+    [v85 logMessage:v76 fromFile:lastPathComponent9 fromFunction:v88 fromLineNumber:8451];
 
     v78 = PLLogCommon();
     if (os_log_type_enabled(v78, OS_LOG_TYPE_DEBUG))
@@ -16810,9 +16810,9 @@ LABEL_93:
     v78 = [MEMORY[0x277CCACA8] stringWithFormat:@"FDR Validation Failed: %@", v76];
     v79 = MEMORY[0x277D3F178];
     v80 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-    v81 = [v80 lastPathComponent];
+    lastPathComponent10 = [v80 lastPathComponent];
     v82 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent xFlags]"];
-    [v79 logMessage:v78 fromFile:v81 fromFunction:v82 fromLineNumber:8447];
+    [v79 logMessage:v78 fromFile:lastPathComponent10 fromFunction:v82 fromLineNumber:8447];
 
     v83 = PLLogCommon();
     if (os_log_type_enabled(v83, OS_LOG_TYPE_DEBUG))
@@ -16844,18 +16844,18 @@ LABEL_95:
 
     if (byte_2811F3AB2 == 1)
     {
-      v90 = [MEMORY[0x277CCACA8] stringWithFormat:@"Got auth flags: %ld", v37, v96, v97, v98, v99, v100];
+      v100 = [MEMORY[0x277CCACA8] stringWithFormat:@"Got auth flags: %ld", v37, v96, v97, v98, v99, v100];
       v91 = MEMORY[0x277D3F178];
       v92 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-      v93 = [v92 lastPathComponent];
+      lastPathComponent11 = [v92 lastPathComponent];
       v94 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent xFlags]"];
-      [v91 logMessage:v90 fromFile:v93 fromFunction:v94 fromLineNumber:8453];
+      [v91 logMessage:v100 fromFile:lastPathComponent11 fromFunction:v94 fromLineNumber:8453];
 
       v95 = PLLogCommon();
       if (os_log_type_enabled(v95, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v112 = v90;
+        v112 = v100;
         _os_log_debug_impl(&dword_21A4C6000, v95, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
     }
@@ -16947,9 +16947,9 @@ uint64_t __24__PLBatteryAgent_xFlags__block_invoke_5171(uint64_t a1)
 - (void)setupCSMLogging
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAA8] monotonicDate];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
   csmLastFlushMonotonicDate = self->_csmLastFlushMonotonicDate;
-  self->_csmLastFlushMonotonicDate = v3;
+  self->_csmLastFlushMonotonicDate = monotonicDate;
 
   [(PLOperator *)self defaultDoubleForKey:@"RateLimiterCSMAggdUpdate"];
   self->_csmFlushInterval = v5;
@@ -16975,23 +16975,23 @@ uint64_t __24__PLBatteryAgent_xFlags__block_invoke_5171(uint64_t a1)
     }
 
     v8 = objc_alloc(MEMORY[0x277D3F160]);
-    v9 = [(PLOperator *)self workQueue];
+    workQueue = [(PLOperator *)self workQueue];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __33__PLBatteryAgent_setupCSMLogging__block_invoke;
     v17[3] = &unk_2782597E8;
     v17[4] = self;
-    v10 = [v8 initWithWorkQueue:v9 forNotification:@"com.apple.powerlogd.csm.override" requireState:1 withBlock:v17];
+    v10 = [v8 initWithWorkQueue:workQueue forNotification:@"com.apple.powerlogd.csm.override" requireState:1 withBlock:v17];
     [(PLBatteryAgent *)self setCsmOverrideNotification:v10];
 
     v11 = objc_alloc(MEMORY[0x277D3F160]);
-    v12 = [(PLOperator *)self workQueue];
+    workQueue2 = [(PLOperator *)self workQueue];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __33__PLBatteryAgent_setupCSMLogging__block_invoke_5184;
     v16[3] = &unk_2782597E8;
     v16[4] = self;
-    v13 = [v11 initWithWorkQueue:v12 forNotification:@"com.apple.powerlogd.csm.flush" requireState:0 withBlock:v16];
+    v13 = [v11 initWithWorkQueue:workQueue2 forNotification:@"com.apple.powerlogd.csm.flush" requireState:0 withBlock:v16];
     [(PLBatteryAgent *)self setCsmFlushNotification:v13];
   }
 
@@ -17029,42 +17029,42 @@ void __33__PLBatteryAgent_setupCSMLogging__block_invoke_5184(uint64_t a1)
   [v3 flushCSMToAggdAtDate:v4];
 }
 
-- (void)updateCurrentSenseMonitorStatusWithEntry:(id)a3
+- (void)updateCurrentSenseMonitorStatusWithEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"CurrentSenseMonitorStatus"];
-  v6 = [v5 intValue];
+  entryCopy = entry;
+  v5 = [entryCopy objectForKeyedSubscript:@"CurrentSenseMonitorStatus"];
+  intValue = [v5 intValue];
 
-  if (v6)
+  if (intValue)
   {
     [(PLBatteryAgent *)self setCsmFailureCount:[(PLBatteryAgent *)self csmFailureCount]+ 1];
   }
 
   [(PLBatteryAgent *)self setCsmTotalCount:[(PLBatteryAgent *)self csmTotalCount]+ 1];
-  v11 = [v4 entryDate];
+  entryDate = [entryCopy entryDate];
 
-  v7 = [(PLBatteryAgent *)self csmLastFlushMonotonicDate];
-  [v11 timeIntervalSinceDate:v7];
+  csmLastFlushMonotonicDate = [(PLBatteryAgent *)self csmLastFlushMonotonicDate];
+  [entryDate timeIntervalSinceDate:csmLastFlushMonotonicDate];
   v9 = v8;
 
   [(PLBatteryAgent *)self csmFlushInterval];
   if (v9 > v10)
   {
-    [(PLBatteryAgent *)self flushCSMToAggdAtDate:v11];
+    [(PLBatteryAgent *)self flushCSMToAggdAtDate:entryDate];
   }
 }
 
-- (void)flushCSMToAggdAtDate:(id)a3
+- (void)flushCSMToAggdAtDate:(id)date
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PLBatteryAgent *)self csmTotalCount];
-  v6 = [(PLBatteryAgent *)self csmFailureCount];
+  dateCopy = date;
+  csmTotalCount = [(PLBatteryAgent *)self csmTotalCount];
+  csmFailureCount = [(PLBatteryAgent *)self csmFailureCount];
   v17[0] = @"com.apple.power.battery.csm.totalCount";
-  v7 = [MEMORY[0x277CCABB0] numberWithLongLong:v5];
+  v7 = [MEMORY[0x277CCABB0] numberWithLongLong:csmTotalCount];
   v17[1] = @"com.apple.power.battery.csm.failureCount";
   v18[0] = v7;
-  v8 = [MEMORY[0x277CCABB0] numberWithLongLong:v6];
+  v8 = [MEMORY[0x277CCABB0] numberWithLongLong:csmFailureCount];
   v18[1] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
 
@@ -17072,18 +17072,18 @@ void __33__PLBatteryAgent_setupCSMLogging__block_invoke_5184(uint64_t a1)
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218240;
-    v14 = v5;
+    v14 = csmTotalCount;
     v15 = 2048;
-    v16 = v6;
+    v16 = csmFailureCount;
     _os_log_debug_impl(&dword_21A4C6000, v10, OS_LOG_TYPE_DEBUG, "csm: updating aggd with total %lld failures %lld", buf, 0x16u);
   }
 
   MEMORY[0x21CEDCD50](v9, 0);
   v12 = MEMORY[0x277D85DD0];
   AnalyticsSendEventLazy();
-  [(PLBatteryAgent *)self setCsmTotalCount:0, v12, 3221225472, __39__PLBatteryAgent_flushCSMToAggdAtDate___block_invoke, &__block_descriptor_48_e19___NSDictionary_8__0l, v5, v6];
+  [(PLBatteryAgent *)self setCsmTotalCount:0, v12, 3221225472, __39__PLBatteryAgent_flushCSMToAggdAtDate___block_invoke, &__block_descriptor_48_e19___NSDictionary_8__0l, csmTotalCount, csmFailureCount];
   [(PLBatteryAgent *)self setCsmFailureCount:0];
-  [(PLBatteryAgent *)self setCsmLastFlushMonotonicDate:v4];
+  [(PLBatteryAgent *)self setCsmLastFlushMonotonicDate:dateCopy];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -17100,9 +17100,9 @@ id __39__PLBatteryAgent_flushCSMToAggdAtDate___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)logAdapterInfo:(id)a3
+- (void)logAdapterInfo:(id)info
 {
-  v4 = [a3 objectForKeyedSubscript:@"PowerTelemetryData"];
+  v4 = [info objectForKeyedSubscript:@"PowerTelemetryData"];
   if (v4)
   {
     v19 = v4;
@@ -17149,12 +17149,12 @@ id __39__PLBatteryAgent_flushCSMToAggdAtDate___block_invoke(uint64_t a1)
   }
 }
 
-- (void)logPowerOutDetails:(id)a3
+- (void)logPowerOutDetails:(id)details
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (details)
   {
-    v4 = [a3 objectForKeyedSubscript:@"PowerOutDetails"];
+    v4 = [details objectForKeyedSubscript:@"PowerOutDetails"];
     v5 = PLLogCommon();
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
     if (v4)
@@ -17307,26 +17307,26 @@ void __37__PLBatteryAgent_logPowerOutDetails___block_invoke(uint64_t a1, void *a
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logAdapterDetails:(id)a3
+- (void)logAdapterDetails:(id)details
 {
-  if (!a3)
+  if (!details)
   {
     return;
   }
 
-  v4 = [a3 objectForKeyedSubscript:@"AdapterDetails"];
+  v4 = [details objectForKeyedSubscript:@"AdapterDetails"];
   if (v4)
   {
     v12 = v4;
     v5 = [v4 objectForKeyedSubscript:@"Watts"];
-    v6 = [v5 intValue];
+    intValue = [v5 intValue];
 
     v7 = [v12 objectForKeyedSubscript:@"Manufacturer"];
-    v8 = [(PLBatteryAgent *)self lastAdapterPower];
+    lastAdapterPower = [(PLBatteryAgent *)self lastAdapterPower];
 
-    if (!v8)
+    if (!lastAdapterPower)
     {
-      if (!v6)
+      if (!intValue)
       {
         goto LABEL_18;
       }
@@ -17334,10 +17334,10 @@ void __37__PLBatteryAgent_logPowerOutDetails___block_invoke(uint64_t a1, void *a
       goto LABEL_17;
     }
 
-    if (v6)
+    if (intValue)
     {
-      v8 = [(PLBatteryAgent *)self lastAdapterPower];
-      if ([v8 intValue] != v6)
+      lastAdapterPower = [(PLBatteryAgent *)self lastAdapterPower];
+      if ([lastAdapterPower intValue] != intValue)
       {
 
 LABEL_17:
@@ -17350,7 +17350,7 @@ LABEL_17:
 
 LABEL_18:
         [(PLBatteryAgent *)self setLastAdapterManufacturer:v7];
-        v11 = [MEMORY[0x277CCABB0] numberWithInt:v6];
+        v11 = [MEMORY[0x277CCABB0] numberWithInt:intValue];
         [(PLBatteryAgent *)self setLastAdapterPower:v11];
 
         v4 = v12;
@@ -17363,10 +17363,10 @@ LABEL_18:
       goto LABEL_18;
     }
 
-    v9 = [(PLBatteryAgent *)self lastAdapterManufacturer];
-    v10 = [v9 isEqualToString:v7];
+    lastAdapterManufacturer = [(PLBatteryAgent *)self lastAdapterManufacturer];
+    v10 = [lastAdapterManufacturer isEqualToString:v7];
 
-    if (v6)
+    if (intValue)
     {
     }
 
@@ -17381,16 +17381,16 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)logAdapterDetailsEntry:(id)a3
+- (void)logAdapterDetailsEntry:(id)entry
 {
-  v23 = a3;
+  entryCopy = entry;
   v4 = [(PLOperator *)PLBatteryAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"AdapterDetails"];
   v5 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v4];
-  v6 = [v23 objectForKeyedSubscript:@"Watts"];
-  v7 = [v6 intValue];
+  v6 = [entryCopy objectForKeyedSubscript:@"Watts"];
+  intValue = [v6 intValue];
 
-  v8 = [v23 objectForKeyedSubscript:@"Manufacturer"];
-  v9 = [v23 objectForKeyedSubscript:@"Model"];
+  v8 = [entryCopy objectForKeyedSubscript:@"Manufacturer"];
+  v9 = [entryCopy objectForKeyedSubscript:@"Model"];
   if (([(__CFString *)v8 isEqualToString:@"Apple, Inc"]& 1) != 0 || [(__CFString *)v8 isEqualToString:@"Apple Inc."])
   {
     v10 = v5;
@@ -17405,8 +17405,8 @@ LABEL_19:
 
   [v10 setObject:v11 forKeyedSubscript:@"Manufacturer"];
   v12 = [(__CFString *)v9 length];
-  v13 = [MEMORY[0x277CCA900] alphanumericCharacterSet];
-  v14 = [(__CFString *)v9 stringByTrimmingCharactersInSet:v13];
+  alphanumericCharacterSet = [MEMORY[0x277CCA900] alphanumericCharacterSet];
+  v14 = [(__CFString *)v9 stringByTrimmingCharactersInSet:alphanumericCharacterSet];
   v15 = [v14 isEqualToString:&stru_282B650A0];
 
   if ([(__CFString *)v9 hasPrefix:@"0x"]&& v12 == 6 && v15)
@@ -17422,37 +17422,37 @@ LABEL_19:
   }
 
   [v16 setObject:v17 forKeyedSubscript:@"Model"];
-  v18 = [v23 objectForKeyedSubscript:@"IsWireless"];
-  v19 = [v18 BOOLValue];
+  v18 = [entryCopy objectForKeyedSubscript:@"IsWireless"];
+  bOOLValue = [v18 BOOLValue];
 
-  v20 = [MEMORY[0x277CCABB0] numberWithBool:v19];
+  v20 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
   [v5 setObject:v20 forKeyedSubscript:@"isWireless"];
 
-  v21 = [MEMORY[0x277CCABB0] numberWithInt:v7];
+  v21 = [MEMORY[0x277CCABB0] numberWithInt:intValue];
   [v5 setObject:v21 forKeyedSubscript:@"Watts"];
 
-  v22 = [v23 objectForKeyedSubscript:@"AdapterPowerTier"];
+  v22 = [entryCopy objectForKeyedSubscript:@"AdapterPowerTier"];
   [v5 setObject:v22 forKeyedSubscript:@"AdapterPowerTier"];
 
   [(PLOperator *)self logEntry:v5];
   [(PLBatteryAgent *)self logAdapterDetailsToCA:v5];
 }
 
-- (void)logAdapterDetailsToCA:(id)a3
+- (void)logAdapterDetailsToCA:(id)a
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  aCopy = a;
   v4 = PLLogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [v3 dictionary];
+    dictionary = [aCopy dictionary];
     *buf = 138412290;
-    v10 = v5;
+    v10 = dictionary;
     _os_log_impl(&dword_21A4C6000, v4, OS_LOG_TYPE_INFO, "Pushing AdapterDetails to CA: %@", buf, 0xCu);
   }
 
-  v8 = v3;
-  v6 = v3;
+  v8 = aCopy;
+  v6 = aCopy;
   AnalyticsSendEventLazy();
 
   v7 = *MEMORY[0x277D85DE8];
@@ -17513,7 +17513,7 @@ id __40__PLBatteryAgent_logAdapterDetailsToCA___block_invoke(uint64_t a1)
     v12 = &unk_282C18E90;
   }
 
-  v13 = [MEMORY[0x277CBEAA8] monotonicDate];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
   v14 = PLLogCommon();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
@@ -17522,11 +17522,11 @@ id __40__PLBatteryAgent_logAdapterDetailsToCA___block_invoke(uint64_t a1)
     _os_log_impl(&dword_21A4C6000, v14, OS_LOG_TYPE_INFO, "Distribution Weight: %@", buf, 0xCu);
   }
 
-  v15 = [MEMORY[0x277D3F0C0] sharedInstance];
-  [v15 createPowerEventBackwardWithRootNodeID:61 withPower:v13 withEndDate:v6];
+  mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+  [mEMORY[0x277D3F0C0] createPowerEventBackwardWithRootNodeID:61 withPower:monotonicDate withEndDate:v6];
 
-  v16 = [MEMORY[0x277D3F0C0] sharedInstance];
-  [v16 createDistributionEventForwardWithDistributionID:49 withChildNodeNameToWeight:v12 withStartDate:v13];
+  mEMORY[0x277D3F0C0]2 = [MEMORY[0x277D3F0C0] sharedInstance];
+  [mEMORY[0x277D3F0C0]2 createDistributionEventForwardWithDistributionID:49 withChildNodeNameToWeight:v12 withStartDate:monotonicDate];
 
   v21 = @"time";
   v22 = v9;
@@ -17626,11 +17626,11 @@ id __40__PLBatteryAgent_logAdapterDetailsToCA___block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logFedDetails:(id)a3
+- (void)logFedDetails:(id)details
 {
-  if (a3)
+  if (details)
   {
-    v4 = [a3 objectForKeyedSubscript:@"FedDetails"];
+    v4 = [details objectForKeyedSubscript:@"FedDetails"];
     v5 = v4;
     if (v4)
     {
@@ -17655,9 +17655,9 @@ void __32__PLBatteryAgent_logFedDetails___block_invoke(uint64_t a1, void *a2, ui
   [*(a1 + 32) logEntry:v8];
 }
 
-- (void)logAuthFail:(id)a3
+- (void)logAuthFail:(id)fail
 {
-  v3 = a3;
+  failCopy = fail;
   v4 = IOServiceMatching("IOPMPowerSource");
   v5 = IOServiceMatching("AppleBatteryAuth");
   v6 = v5;
@@ -17691,7 +17691,7 @@ LABEL_8:
     if (v9)
     {
       v10 = [v8 objectForKeyedSubscript:@"CommunicationError"];
-      [v3 setObject:v10 forKeyedSubscript:@"CommunicationError"];
+      [failCopy setObject:v10 forKeyedSubscript:@"CommunicationError"];
     }
 
     v11 = [v8 objectForKeyedSubscript:@"CoProcError"];
@@ -17699,7 +17699,7 @@ LABEL_8:
     if (v11)
     {
       v12 = [v8 objectForKeyedSubscript:@"CoProcError"];
-      [v3 setObject:v12 forKeyedSubscript:@"CoProcError"];
+      [failCopy setObject:v12 forKeyedSubscript:@"CoProcError"];
     }
 
     v13 = v8;
@@ -17719,20 +17719,20 @@ id __30__PLBatteryAgent_logAuthFail___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)logPortControllerInfo:(id)a3
+- (void)logPortControllerInfo:(id)info
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (info)
   {
-    v4 = [a3 objectForKeyedSubscript:@"PortControllerInfo"];
+    v4 = [info objectForKeyedSubscript:@"PortControllerInfo"];
     if (v4)
     {
-      v5 = [MEMORY[0x277CBEAA8] monotonicDate];
+      monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
       v6 = PLLogCommon();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412546;
-        v17 = v5;
+        v17 = monotonicDate;
         v18 = 2112;
         v19 = v4;
         _os_log_debug_impl(&dword_21A4C6000, v6, OS_LOG_TYPE_DEBUG, "PortControllerInfo received at time:%@ is: %@", buf, 0x16u);
@@ -17742,16 +17742,16 @@ id __30__PLBatteryAgent_logAuthFail___block_invoke(uint64_t a1)
       v13[1] = 3221225472;
       v13[2] = __40__PLBatteryAgent_logPortControllerInfo___block_invoke;
       v13[3] = &unk_278260E58;
-      v7 = v5;
+      v7 = monotonicDate;
       v14 = v7;
-      v15 = self;
+      selfCopy = self;
       [v4 enumerateObjectsUsingBlock:v13];
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __40__PLBatteryAgent_logPortControllerInfo___block_invoke_3;
       v10[3] = &unk_278260E58;
       v11 = v7;
-      v12 = self;
+      selfCopy2 = self;
       v8 = v7;
       [v4 enumerateObjectsUsingBlock:v10];
     }
@@ -17877,12 +17877,12 @@ LABEL_19:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logOrionInfo:(id)a3
+- (void)logOrionInfo:(id)info
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (info)
   {
-    v4 = [a3 objectForKeyedSubscript:@"OrionInfo"];
+    v4 = [info objectForKeyedSubscript:@"OrionInfo"];
     if (v4)
     {
       v5 = PLLogCommon();
@@ -17906,10 +17906,10 @@ LABEL_19:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logWatchdogDebugDumpToCA:(id)a3
+- (void)logWatchdogDebugDumpToCA:(id)a
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [a3 objectForKeyedSubscript:@"BatteryData"];
+  v3 = [a objectForKeyedSubscript:@"BatteryData"];
   v4 = [v3 objectForKeyedSubscript:@"WatchdogDebugDump"];
 
   if (v4)
@@ -17946,11 +17946,11 @@ id __43__PLBatteryAgent_logWatchdogDebugDumpToCA___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)handleGaugingMitigationStateCallback:(int)a3
+- (void)handleGaugingMitigationStateCallback:(int)callback
 {
   v11 = *MEMORY[0x277D85DE8];
   state64 = 0;
-  state = notify_get_state(a3, &state64);
+  state = notify_get_state(callback, &state64);
   if (state)
   {
     v5 = state;
@@ -17971,11 +17971,11 @@ id __43__PLBatteryAgent_logWatchdogDebugDumpToCA___block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleMitigationStateCallback:(int)a3
+- (void)handleMitigationStateCallback:(int)callback
 {
   v22 = *MEMORY[0x277D85DE8];
   state64 = 0;
-  state = notify_get_state(a3, &state64);
+  state = notify_get_state(callback, &state64);
   if (state)
   {
     v5 = state;
@@ -17997,9 +17997,9 @@ id __43__PLBatteryAgent_logWatchdogDebugDumpToCA___block_invoke(uint64_t a1)
         v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"notify_get_state failed %d %s", v5, "com.apple.thermalmonitor.ageAwareMitigationState", block, v15, v16, v17, v18];
         v8 = MEMORY[0x277D3F178];
         v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-        v10 = [v9 lastPathComponent];
+        lastPathComponent = [v9 lastPathComponent];
         v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent handleMitigationStateCallback:]"];
-        [v8 logMessage:v7 fromFile:v10 fromFunction:v11 fromLineNumber:9088];
+        [v8 logMessage:v7 fromFile:lastPathComponent fromFunction:v11 fromLineNumber:9088];
 
         v12 = PLLogCommon();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -18027,13 +18027,13 @@ uint64_t __48__PLBatteryAgent_handleMitigationStateCallback___block_invoke(uint6
   return result;
 }
 
-- (void)setMitigationStateDefault:(unint64_t)a3
+- (void)setMitigationStateDefault:(unint64_t)default
 {
   v8 = [MEMORY[0x277D3F180] objectForKey:@"perfManagementState" ifNotSet:0];
-  if (!v8 || (v4 = [v8 intValue], v5 = v8, v4 != a3))
+  if (!v8 || (v4 = [v8 intValue], v5 = v8, v4 != default))
   {
     v6 = MEMORY[0x277D3F180];
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:default];
     [v6 setObject:v7 forKey:@"perfManagementState" saveToDisk:1];
 
     v5 = v8;
@@ -18049,15 +18049,15 @@ uint64_t __48__PLBatteryAgent_handleMitigationStateCallback___block_invoke(uint6
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 intValue];
+    intValue = [v4 intValue];
   }
 
   else
   {
-    v6 = 0;
+    intValue = 0;
   }
 
-  return v6;
+  return intValue;
 }
 
 - (int)getBatteryHealthServiceState
@@ -18068,15 +18068,15 @@ uint64_t __48__PLBatteryAgent_handleMitigationStateCallback___block_invoke(uint6
   {
     v6 = [v3 objectAtIndexedSubscript:0];
     v7 = [v6 objectForKeyedSubscript:@"Battery Service State"];
-    v8 = [v7 intValue];
+    intValue = [v7 intValue];
   }
 
   else
   {
-    v8 = -1;
+    intValue = -1;
   }
 
-  return v8;
+  return intValue;
 }
 
 - (int)getBatteryHealthServiceFlags
@@ -18087,15 +18087,15 @@ uint64_t __48__PLBatteryAgent_handleMitigationStateCallback___block_invoke(uint6
   {
     v6 = [v3 objectAtIndexedSubscript:0];
     v7 = [v6 objectForKeyedSubscript:@"Battery Service Flags"];
-    v8 = [v7 intValue];
+    intValue = [v7 intValue];
   }
 
   else
   {
-    v8 = 256;
+    intValue = 256;
   }
 
-  return v8;
+  return intValue;
 }
 
 - (int)getBatteryMaximumCapacityPercent
@@ -18106,15 +18106,15 @@ uint64_t __48__PLBatteryAgent_handleMitigationStateCallback___block_invoke(uint6
   {
     v6 = [v3 objectAtIndexedSubscript:0];
     v7 = [v6 objectForKeyedSubscript:@"Maximum Capacity Percent"];
-    v8 = [v7 intValue];
+    intValue = [v7 intValue];
   }
 
   else
   {
-    v8 = -1;
+    intValue = -1;
   }
 
-  return v8;
+  return intValue;
 }
 
 - (id)getBatteryCalibration0Data
@@ -18135,16 +18135,16 @@ uint64_t __48__PLBatteryAgent_handleMitigationStateCallback___block_invoke(uint6
   return v7;
 }
 
-- (BOOL)batterySerialChanged:(id)a3
+- (BOOL)batterySerialChanged:(id)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39__PLBatteryAgent_batterySerialChanged___block_invoke;
   block[3] = &unk_2782591D0;
-  v9 = v3;
+  v9 = changedCopy;
   v4 = qword_2811F3CD8;
-  v5 = v3;
+  v5 = changedCopy;
   if (v4 != -1)
   {
     dispatch_once(&qword_2811F3CD8, block);
@@ -18196,14 +18196,14 @@ void __39__PLBatteryAgent_batterySerialChanged___block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)overrideBatteryData:(id)a3 withPath:(id)a4
+- (id)overrideBatteryData:(id)data withPath:(id)path
 {
   v45 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  dataCopy = data;
+  pathCopy = path;
+  if (pathCopy)
   {
-    v7 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v6];
+    v7 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:pathCopy];
     v8 = PLLogBH();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_ERROR);
     if (v7)
@@ -18232,8 +18232,8 @@ void __39__PLBatteryAgent_batterySerialChanged___block_invoke(uint64_t a1)
       else
       {
         v39 = v11;
-        v12 = [v5 mutableCopy];
-        v13 = [v5 objectForKey:@"BatteryData"];
+        v12 = [dataCopy mutableCopy];
+        v13 = [dataCopy objectForKey:@"BatteryData"];
         v14 = [v13 mutableCopy];
 
         v15 = [v14 objectForKey:@"LifetimeData"];
@@ -18354,17 +18354,17 @@ void __39__PLBatteryAgent_batterySerialChanged___block_invoke(uint64_t a1)
         {
           if ([v29 intValue] == -1)
           {
-            v31 = self;
+            selfCopy2 = self;
             v32 = 0;
           }
 
           else
           {
-            v31 = self;
+            selfCopy2 = self;
             v32 = v30;
           }
 
-          [(PLBatteryAgent *)v31 setMitigatedUPOCount:v32];
+          [(PLBatteryAgent *)selfCopy2 setMitigatedUPOCount:v32];
         }
 
         v33 = PLLogBH();
@@ -18385,17 +18385,17 @@ void __39__PLBatteryAgent_batterySerialChanged___block_invoke(uint64_t a1)
       if (v9)
       {
         *buf = 138412290;
-        v44 = v6;
+        v44 = pathCopy;
         _os_log_error_impl(&dword_21A4C6000, v8, OS_LOG_TYPE_ERROR, "Invalid override dictionary at %@", buf, 0xCu);
       }
 
-      v18 = v5;
+      v18 = dataCopy;
     }
   }
 
   else
   {
-    v18 = v5;
+    v18 = dataCopy;
   }
 
   v34 = *MEMORY[0x277D85DE8];
@@ -18406,29 +18406,29 @@ void __39__PLBatteryAgent_batterySerialChanged___block_invoke(uint64_t a1)
 - (int)deviceType
 {
   v7 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D3F208] kPLDeviceClass];
+  kPLDeviceClass = [MEMORY[0x277D3F208] kPLDeviceClass];
   if ([MEMORY[0x277D3F180] objectExistsForKey:@"overrideDeviceType"])
   {
-    v2 = [MEMORY[0x277D3F180] longForKey:@"overrideDeviceType"];
+    kPLDeviceClass = [MEMORY[0x277D3F180] longForKey:@"overrideDeviceType"];
     v3 = PLLogBH();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
     {
       v6[0] = 67109120;
-      v6[1] = v2;
+      v6[1] = kPLDeviceClass;
       _os_log_error_impl(&dword_21A4C6000, v3, OS_LOG_TYPE_ERROR, "overriding device type to %d", v6, 8u);
     }
   }
 
   v4 = *MEMORY[0x277D85DE8];
-  return v2;
+  return kPLDeviceClass;
 }
 
 - (void)initCameraStreamingIntervalTracking
 {
   v32[3] = *MEMORY[0x277D85DE8];
   [(PLBatteryAgent *)self setupAVSystemController];
-  v3 = [(PLBatteryAgent *)self avSystemController];
-  v4 = [v3 attributeForKey:*MEMORY[0x277D26E28]];
+  avSystemController = [(PLBatteryAgent *)self avSystemController];
+  v4 = [avSystemController attributeForKey:*MEMORY[0x277D26E28]];
   -[PLBatteryAgent setCameraStreamingActive:](self, "setCameraStreamingActive:", [v4 BOOLValue]);
 
   v5 = PLLogCommon();
@@ -18449,26 +18449,26 @@ void __39__PLBatteryAgent_batterySerialChanged___block_invoke(uint64_t a1)
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:3];
   if (v10)
   {
-    v11 = [(PLBatteryAgent *)self avSystemController];
-    [v11 setAttribute:v10 forKey:*MEMORY[0x277D26DD0] error:0];
+    avSystemController2 = [(PLBatteryAgent *)self avSystemController];
+    [avSystemController2 setAttribute:v10 forKey:*MEMORY[0x277D26DD0] error:0];
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v13 = *v6;
-    v14 = [(PLBatteryAgent *)self avSystemController];
-    [v12 addObserver:self selector:sel_setupAVSystemController name:v13 object:v14];
+    avSystemController3 = [(PLBatteryAgent *)self avSystemController];
+    [defaultCenter addObserver:self selector:sel_setupAVSystemController name:v13 object:avSystemController3];
 
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
     v16 = *v7;
-    v17 = [(PLBatteryAgent *)self avSystemController];
-    [v15 addObserver:self selector:sel_handleCameraStreamingLogging_ name:v16 object:v17];
+    avSystemController4 = [(PLBatteryAgent *)self avSystemController];
+    [defaultCenter2 addObserver:self selector:sel_handleCameraStreamingLogging_ name:v16 object:avSystemController4];
 
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
     v19 = *v9;
-    v20 = [(PLBatteryAgent *)self avSystemController];
-    [v18 addObserver:self selector:sel_handleHeadphoneConnected_ name:v19 object:v20];
+    avSystemController5 = [(PLBatteryAgent *)self avSystemController];
+    [defaultCenter3 addObserver:self selector:sel_handleHeadphoneConnected_ name:v19 object:avSystemController5];
 
-    v21 = [(PLBatteryAgent *)self avSystemController];
-    v22 = [v21 attributeForKey:*MEMORY[0x277D26C08]];
+    avSystemController6 = [(PLBatteryAgent *)self avSystemController];
+    v22 = [avSystemController6 attributeForKey:*MEMORY[0x277D26C08]];
     [(PLBatteryAgent *)self setHeadphonesConnected:[v22 BOOLValue]];
 LABEL_5:
 
@@ -18490,18 +18490,18 @@ LABEL_5:
 
     if (byte_2811F3AB5 == 1)
     {
-      v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"No AV System Controller Notifications"];
+      avSystemController6 = [MEMORY[0x277CCACA8] stringWithFormat:@"No AV System Controller Notifications"];
       v24 = MEMORY[0x277D3F178];
       v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-      v26 = [v25 lastPathComponent];
+      lastPathComponent = [v25 lastPathComponent];
       v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent initCameraStreamingIntervalTracking]"];
-      [v24 logMessage:v21 fromFile:v26 fromFunction:v27 fromLineNumber:9392];
+      [v24 logMessage:avSystemController6 fromFile:lastPathComponent fromFunction:v27 fromLineNumber:9392];
 
       v22 = PLLogCommon();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v31 = v21;
+        v31 = avSystemController6;
         _os_log_debug_impl(&dword_21A4C6000, v22, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
 
@@ -18531,17 +18531,17 @@ uint64_t __53__PLBatteryAgent_initCameraStreamingIntervalTracking__block_invoke(
     _os_log_impl(&dword_21A4C6000, v3, OS_LOG_TYPE_INFO, "Setting up AV System Controller", buf, 2u);
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v5 = *MEMORY[0x277D26D40];
-  v6 = [(PLBatteryAgent *)self avSystemController];
-  [v4 removeObserver:self name:v5 object:v6];
+  avSystemController = [(PLBatteryAgent *)self avSystemController];
+  [defaultCenter removeObserver:self name:v5 object:avSystemController];
 
-  v7 = [MEMORY[0x277D26E58] sharedAVSystemController];
-  [(PLBatteryAgent *)self setAvSystemController:v7];
+  mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
+  [(PLBatteryAgent *)self setAvSystemController:mEMORY[0x277D26E58]];
 
-  v8 = [(PLBatteryAgent *)self avSystemController];
+  avSystemController2 = [(PLBatteryAgent *)self avSystemController];
 
-  if (!v8 && [MEMORY[0x277D3F180] debugEnabled])
+  if (!avSystemController2 && [MEMORY[0x277D3F180] debugEnabled])
   {
     v9 = objc_opt_class();
     block[0] = MEMORY[0x277D85DD0];
@@ -18559,9 +18559,9 @@ uint64_t __53__PLBatteryAgent_initCameraStreamingIntervalTracking__block_invoke(
       v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"AV System Controller not available"];
       v11 = MEMORY[0x277D3F178];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Hardware/PLBatteryAgent.m"];
-      v13 = [v12 lastPathComponent];
+      lastPathComponent = [v12 lastPathComponent];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBatteryAgent setupAVSystemController]"];
-      [v11 logMessage:v10 fromFile:v13 fromFunction:v14 fromLineNumber:9408];
+      [v11 logMessage:v10 fromFile:lastPathComponent fromFunction:v14 fromLineNumber:9408];
 
       v15 = PLLogCommon();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -18583,23 +18583,23 @@ uint64_t __41__PLBatteryAgent_setupAVSystemController__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)handleCameraStreamingLogging:(id)a3
+- (void)handleCameraStreamingLogging:(id)logging
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  loggingCopy = logging;
   v5 = PLLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v16 = 138412290;
-    v17 = v4;
+    v17 = loggingCopy;
     _os_log_impl(&dword_21A4C6000, v5, OS_LOG_TYPE_INFO, "received notification: %@\n", &v16, 0xCu);
   }
 
-  v6 = [v4 userInfo];
-  v7 = v6;
-  if (v6)
+  userInfo = [loggingCopy userInfo];
+  v7 = userInfo;
+  if (userInfo)
   {
-    v8 = [v6 objectForKey:*MEMORY[0x277D26E48]];
+    v8 = [userInfo objectForKey:*MEMORY[0x277D26E48]];
     v9 = v8;
     if (v8)
     {
@@ -18607,9 +18607,9 @@ uint64_t __41__PLBatteryAgent_setupAVSystemController__block_invoke(uint64_t a1)
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
-        v11 = [(PLBatteryAgent *)self cameraStreamingActive];
+        cameraStreamingActive = [(PLBatteryAgent *)self cameraStreamingActive];
         v16 = 67109120;
-        LODWORD(v17) = v11;
+        LODWORD(v17) = cameraStreamingActive;
         v12 = "cameraStreamingActive: %d\n";
         v13 = v10;
         v14 = 8;
@@ -18639,7 +18639,7 @@ LABEL_11:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v16 = 138412290;
-    v17 = v4;
+    v17 = loggingCopy;
     _os_log_impl(&dword_21A4C6000, v9, OS_LOG_TYPE_INFO, "notification misses userInfo dict:%@\n", &v16, 0xCu);
   }
 
@@ -18648,12 +18648,12 @@ LABEL_13:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleHeadphoneConnected:(id)a3
+- (void)handleHeadphoneConnected:(id)connected
 {
   v9 = *MEMORY[0x277D85DE8];
   [(PLBatteryAgent *)self flushPowerOut];
-  v4 = [(PLBatteryAgent *)self avSystemController];
-  v5 = [v4 attributeForKey:*MEMORY[0x277D26C08]];
+  avSystemController = [(PLBatteryAgent *)self avSystemController];
+  v5 = [avSystemController attributeForKey:*MEMORY[0x277D26C08]];
   -[PLBatteryAgent setHeadphonesConnected:](self, "setHeadphonesConnected:", [v5 BOOLValue]);
 
   v6 = PLLogCommon();
@@ -18667,10 +18667,10 @@ LABEL_13:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleCameraStreaming:(BOOL)a3 withProperties:(id)a4
+- (void)handleCameraStreaming:(BOOL)streaming withProperties:(id)properties
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  propertiesCopy = properties;
   v7 = PLLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -18681,13 +18681,13 @@ LABEL_13:
   v8 = PLLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [(PLBatteryAgent *)self cameraStreamingActive];
+    cameraStreamingActive = [(PLBatteryAgent *)self cameraStreamingActive];
     v25[0] = 67109120;
-    v25[1] = v9;
+    v25[1] = cameraStreamingActive;
     _os_log_impl(&dword_21A4C6000, v8, OS_LOG_TYPE_INFO, "Camera Streaming State: %d", v25, 8u);
   }
 
-  if (![(PLBatteryAgent *)self cameraStreamingActive]|| !a3)
+  if (![(PLBatteryAgent *)self cameraStreamingActive]|| !streaming)
   {
     v18 = PLLogCommon();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -18696,19 +18696,19 @@ LABEL_13:
       _os_log_impl(&dword_21A4C6000, v18, OS_LOG_TYPE_INFO, "Camera Streaming not active OR device not plugged in", v25, 2u);
     }
 
-    v19 = [v6 entryDate];
-    [(PLBatteryAgent *)self updateIntervalForType:4 withState:0 andTime:v19];
+    entryDate = [propertiesCopy entryDate];
+    [(PLBatteryAgent *)self updateIntervalForType:4 withState:0 andTime:entryDate];
 
-    v15 = [v6 entryDate];
-    v16 = self;
+    entryDate2 = [propertiesCopy entryDate];
+    selfCopy3 = self;
     v17 = 6;
     goto LABEL_14;
   }
 
-  v10 = [(ChargingStateProvider *)self->_chargingStateProvider chargingState];
+  chargingState = [(ChargingStateProvider *)self->_chargingStateProvider chargingState];
   v11 = PLLogCommon();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_INFO);
-  if (v10 == 3)
+  if (chargingState == 3)
   {
     if (v12)
     {
@@ -18716,19 +18716,19 @@ LABEL_13:
       _os_log_impl(&dword_21A4C6000, v11, OS_LOG_TYPE_INFO, "Open WTLC, close TLC, close camera streaming", v25, 2u);
     }
 
-    v13 = [v6 entryDate];
-    [(PLBatteryAgent *)self updateIntervalForType:6 withState:1 andTime:v13];
+    entryDate3 = [propertiesCopy entryDate];
+    [(PLBatteryAgent *)self updateIntervalForType:6 withState:1 andTime:entryDate3];
 
-    v14 = [v6 entryDate];
-    [(PLBatteryAgent *)self updateIntervalForType:4 withState:0 andTime:v14];
+    entryDate4 = [propertiesCopy entryDate];
+    [(PLBatteryAgent *)self updateIntervalForType:4 withState:0 andTime:entryDate4];
 
-    v15 = [v6 entryDate];
-    v16 = self;
+    entryDate2 = [propertiesCopy entryDate];
+    selfCopy3 = self;
     v17 = 3;
 LABEL_14:
     v20 = 0;
 LABEL_15:
-    [(PLBatteryAgent *)v16 updateIntervalForType:v17 withState:v20 andTime:v15];
+    [(PLBatteryAgent *)selfCopy3 updateIntervalForType:v17 withState:v20 andTime:entryDate2];
 
     goto LABEL_16;
   }
@@ -18739,17 +18739,17 @@ LABEL_15:
     _os_log_impl(&dword_21A4C6000, v11, OS_LOG_TYPE_INFO, "Close WTLC, close TLC, open camera streaming", v25, 2u);
   }
 
-  v22 = [v6 entryDate];
-  [(PLBatteryAgent *)self updateIntervalForType:6 withState:0 andTime:v22];
+  entryDate5 = [propertiesCopy entryDate];
+  [(PLBatteryAgent *)self updateIntervalForType:6 withState:0 andTime:entryDate5];
 
-  v23 = [v6 entryDate];
-  [(PLBatteryAgent *)self updateIntervalForType:3 withState:0 andTime:v23];
+  entryDate6 = [propertiesCopy entryDate];
+  [(PLBatteryAgent *)self updateIntervalForType:3 withState:0 andTime:entryDate6];
 
   [(PLBatteryAgent *)self batteryLevelPercent];
   if (v24 >= 75.0)
   {
-    v15 = [v6 entryDate];
-    v16 = self;
+    entryDate2 = [propertiesCopy entryDate];
+    selfCopy3 = self;
     v17 = 4;
     v20 = 1;
     goto LABEL_15;
@@ -18964,35 +18964,35 @@ uint64_t __48__PLBatteryAgent_initCleanEnergyChargingLogging__block_invoke_2(uin
   }
 
   [(PLBatteryAgent *)self initCameraStreamingIntervalTracking];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  [(PLBatteryAgent *)self setOpenChargingIntervals:v4];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [(PLBatteryAgent *)self setOpenChargingIntervals:dictionary];
 
-  v5 = [MEMORY[0x277CBEAA8] monotonicDate];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
   v6 = [(PLOperator *)PLBatteryAgent entryKeyForType:*MEMORY[0x277D3F5D8] andName:@"Charging"];
   [(PLBatteryAgent *)self setChargingIntervalsEntryKey:v6];
 
   v7 = 0;
-  v31 = v5;
+  v31 = monotonicDate;
   do
   {
     v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@=%d", @"intervalType", v7];
-    v9 = [(PLOperator *)self storage];
-    v10 = [(PLBatteryAgent *)self chargingIntervalsEntryKey];
+    storage = [(PLOperator *)self storage];
+    chargingIntervalsEntryKey = [(PLBatteryAgent *)self chargingIntervalsEntryKey];
     v44[0] = v8;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:1];
-    v12 = [v9 lastEntryForKey:v10 withFilters:v11];
+    v12 = [storage lastEntryForKey:chargingIntervalsEntryKey withFilters:v11];
 
     if (!v12)
     {
-      v14 = PLLogCommon();
-      if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+      openChargingIntervals2 = PLLogCommon();
+      if (!os_log_type_enabled(openChargingIntervals2, OS_LOG_TYPE_DEBUG))
       {
         goto LABEL_9;
       }
 
       *buf = 67109120;
       *v43 = v7;
-      v15 = v14;
+      v15 = openChargingIntervals2;
       v16 = "no previous %d interval";
       v17 = 8;
       goto LABEL_25;
@@ -19002,8 +19002,8 @@ uint64_t __48__PLBatteryAgent_initCleanEnergyChargingLogging__block_invoke_2(uin
 
     if (v13)
     {
-      v14 = PLLogCommon();
-      if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+      openChargingIntervals2 = PLLogCommon();
+      if (!os_log_type_enabled(openChargingIntervals2, OS_LOG_TYPE_DEBUG))
       {
         goto LABEL_9;
       }
@@ -19012,7 +19012,7 @@ uint64_t __48__PLBatteryAgent_initCleanEnergyChargingLogging__block_invoke_2(uin
       *v43 = v7;
       *&v43[4] = 2112;
       *&v43[6] = v12;
-      v15 = v14;
+      v15 = openChargingIntervals2;
       v16 = "last %d interval closed: %@";
       v17 = 18;
 LABEL_25:
@@ -19023,7 +19023,7 @@ LABEL_25:
     switch(v7)
     {
       case 6u:
-        [v12 setObject:v5 forKeyedSubscript:@"timestampEnd"];
+        [v12 setObject:monotonicDate forKeyedSubscript:@"timestampEnd"];
         v33[0] = MEMORY[0x277D85DD0];
         v33[1] = 3221225472;
         v33[2] = __50__PLBatteryAgent_initializeChargingStateIntervals__block_invoke_5361;
@@ -19031,10 +19031,10 @@ LABEL_25:
         v35 = 6;
         v34 = v12;
         [(PLOperator *)self updateEntry:v34 withBlock:v33];
-        v14 = v34;
+        openChargingIntervals2 = v34;
         break;
       case 4u:
-        [v12 setObject:v5 forKeyedSubscript:@"timestampEnd"];
+        [v12 setObject:monotonicDate forKeyedSubscript:@"timestampEnd"];
         v36[0] = MEMORY[0x277D85DD0];
         v36[1] = 3221225472;
         v36[2] = __50__PLBatteryAgent_initializeChargingStateIntervals__block_invoke_5360;
@@ -19042,10 +19042,10 @@ LABEL_25:
         v38 = 4;
         v37 = v12;
         [(PLOperator *)self updateEntry:v37 withBlock:v36];
-        v14 = v37;
+        openChargingIntervals2 = v37;
         break;
       case 3u:
-        [v12 setObject:v5 forKeyedSubscript:@"timestampEnd"];
+        [v12 setObject:monotonicDate forKeyedSubscript:@"timestampEnd"];
         v39[0] = MEMORY[0x277D85DD0];
         v39[1] = 3221225472;
         v39[2] = __50__PLBatteryAgent_initializeChargingStateIntervals__block_invoke;
@@ -19053,7 +19053,7 @@ LABEL_25:
         v41 = 3;
         v40 = v12;
         [(PLOperator *)self updateEntry:v40 withBlock:v39];
-        v14 = v40;
+        openChargingIntervals2 = v40;
         break;
       default:
         v18 = PLLogCommon();
@@ -19066,9 +19066,9 @@ LABEL_25:
           _os_log_debug_impl(&dword_21A4C6000, v18, OS_LOG_TYPE_DEBUG, "open %d interval %@", buf, 0x12u);
         }
 
-        v19 = [(PLBatteryAgent *)self openChargingIntervals];
+        openChargingIntervals = [(PLBatteryAgent *)self openChargingIntervals];
         v20 = [MEMORY[0x277CCABB0] numberWithShort:v7];
-        v21 = [v19 objectForKeyedSubscript:v20];
+        v21 = [openChargingIntervals objectForKeyedSubscript:v20];
 
         if (v21)
         {
@@ -19081,11 +19081,11 @@ LABEL_25:
           }
         }
 
-        v14 = [(PLBatteryAgent *)self openChargingIntervals];
+        openChargingIntervals2 = [(PLBatteryAgent *)self openChargingIntervals];
         v23 = [MEMORY[0x277CCABB0] numberWithShort:v7];
-        [v14 setObject:v12 forKeyedSubscript:v23];
+        [openChargingIntervals2 setObject:v12 forKeyedSubscript:v23];
 
-        v5 = v31;
+        monotonicDate = v31;
         break;
     }
 
@@ -19098,29 +19098,29 @@ LABEL_9:
   v24 = PLLogCommon();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
-    v25 = [(PLBatteryAgent *)self openChargingIntervals];
-    v26 = [v25 count];
+    openChargingIntervals3 = [(PLBatteryAgent *)self openChargingIntervals];
+    v26 = [openChargingIntervals3 count];
     *buf = 134217984;
     *v43 = v26;
     _os_log_impl(&dword_21A4C6000, v24, OS_LOG_TYPE_DEFAULT, "initialized charging interval tracking, %lu open", buf, 0xCu);
 
-    v5 = v31;
+    monotonicDate = v31;
   }
 
   [(PLBatteryAgent *)self setTLCOverrideValue:0];
   if ([MEMORY[0x277D3F208] internalBuild])
   {
     v27 = objc_alloc(MEMORY[0x277D3F160]);
-    v28 = [(PLOperator *)self workQueue];
+    workQueue = [(PLOperator *)self workQueue];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __50__PLBatteryAgent_initializeChargingStateIntervals__block_invoke_5365;
     v32[3] = &unk_2782597E8;
     v32[4] = self;
-    v29 = [v27 initWithWorkQueue:v28 forNotification:@"com.apple.powerlogd.tlc.override" requireState:1 withBlock:v32];
+    v29 = [v27 initWithWorkQueue:workQueue forNotification:@"com.apple.powerlogd.tlc.override" requireState:1 withBlock:v32];
     [(PLBatteryAgent *)self setTlcOverrideNotification:v29];
 
-    v5 = v31;
+    monotonicDate = v31;
   }
 
   v30 = *MEMORY[0x277D85DE8];
@@ -19227,21 +19227,21 @@ void __79__PLBatteryAgent_updateIntervalForType_withState_andTime_selectedCharge
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldLogCPMSSnapshotWithReason:(unsigned __int8)a3 withTrigger:(int64_t)a4
+- (BOOL)shouldLogCPMSSnapshotWithReason:(unsigned __int8)reason withTrigger:(int64_t)trigger
 {
-  if (a4)
+  if (trigger)
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = a3 == 0;
+    v4 = reason == 0;
   }
 
-  if (a4 == 1)
+  if (trigger == 1)
   {
-    return a3 != 0;
+    return reason != 0;
   }
 
   else
@@ -19250,22 +19250,22 @@ void __79__PLBatteryAgent_updateIntervalForType_withState_andTime_selectedCharge
   }
 }
 
-- (void)logCPMSSnapshotWithTrigger:(int64_t)a3
+- (void)logCPMSSnapshotWithTrigger:(int64_t)trigger
 {
   v53 = *MEMORY[0x277D85DE8];
   v4 = PLLogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    *&buf[4] = a3;
+    *&buf[4] = trigger;
     _os_log_impl(&dword_21A4C6000, v4, OS_LOG_TYPE_INFO, "cpms: getting snapshots with trigger 0x%X", buf, 8u);
   }
 
-  v5 = [MEMORY[0x277CF6EE0] copyCPMSControlStateSnapshots];
-  v6 = v5;
-  if (v5)
+  copyCPMSControlStateSnapshots = [MEMORY[0x277CF6EE0] copyCPMSControlStateSnapshots];
+  v6 = copyCPMSControlStateSnapshots;
+  if (copyCPMSControlStateSnapshots)
   {
-    v7 = [v5 sortedArrayUsingComparator:&__block_literal_global_5370];
+    v7 = [copyCPMSControlStateSnapshots sortedArrayUsingComparator:&__block_literal_global_5370];
     v8 = *MEMORY[0x277D3F5E8];
     v9 = [(PLOperator *)PLBatteryAgent entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"CPMSControlState"];
     v19 = [(PLOperator *)PLBatteryAgent entryKeyForType:v8 andName:@"CPMSClientState"];
@@ -19296,7 +19296,7 @@ void __79__PLBatteryAgent_updateIntervalForType_withState_andTime_selectedCharge
     v22[2] = __45__PLBatteryAgent_logCPMSSnapshotWithTrigger___block_invoke_2;
     v22[3] = &unk_278260F38;
     v22[4] = self;
-    v32 = a3;
+    triggerCopy = trigger;
     v12 = v9;
     v23 = v12;
     v27 = &v45;
@@ -19737,16 +19737,16 @@ void __45__PLBatteryAgent_logCPMSSnapshotWithTrigger___block_invoke_5377(uint64_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)populateClientEntry:(id)a3 withBudget:(id)a4 withTemplate:(id)a5
+- (void)populateClientEntry:(id)entry withBudget:(id)budget withTemplate:(id)template
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v7 && v8 && v9)
+  entryCopy = entry;
+  budgetCopy = budget;
+  templateCopy = template;
+  v10 = templateCopy;
+  if (entryCopy && budgetCopy && templateCopy)
   {
-    v11 = [v8 objectForKeyedSubscript:@"timescales"];
+    v11 = [budgetCopy objectForKeyedSubscript:@"timescales"];
     if (v11)
     {
       v14[0] = MEMORY[0x277D85DD0];
@@ -19754,7 +19754,7 @@ void __45__PLBatteryAgent_logCPMSSnapshotWithTrigger___block_invoke_5377(uint64_
       v14[2] = __62__PLBatteryAgent_populateClientEntry_withBudget_withTemplate___block_invoke;
       v14[3] = &unk_278260E58;
       v15 = v10;
-      v16 = v7;
+      v16 = entryCopy;
       [v11 enumerateObjectsUsingBlock:v14];
 
       v12 = v15;
@@ -19766,7 +19766,7 @@ void __45__PLBatteryAgent_logCPMSSnapshotWithTrigger___block_invoke_5377(uint64_
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v18 = v8;
+        v18 = budgetCopy;
         _os_log_error_impl(&dword_21A4C6000, v12, OS_LOG_TYPE_ERROR, "cpms: could not get timescale information for budget %@", buf, 0xCu);
       }
     }
@@ -19804,9 +19804,9 @@ void __62__PLBatteryAgent_populateClientEntry_withBudget_withTemplate___block_in
 
 - (void)dataChanged
 {
-  v3 = [(ChargingStateProvider *)self->_chargingStateProvider chargingState];
-  v4 = [MEMORY[0x277CBEAA8] monotonicDate];
-  [(PLBatteryAgent *)self updateIntervalForType:3 withState:v3 == 3 andTime:v4];
+  chargingState = [(ChargingStateProvider *)self->_chargingStateProvider chargingState];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  [(PLBatteryAgent *)self updateIntervalForType:3 withState:chargingState == 3 andTime:monotonicDate];
   v5 = _os_feature_enabled_impl();
   v6 = PLLogCommon();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
@@ -19818,7 +19818,7 @@ void __62__PLBatteryAgent_populateClientEntry_withBudget_withTemplate___block_in
       _os_log_debug_impl(&dword_21A4C6000, v6, OS_LOG_TYPE_DEBUG, "bui_tlc_notif_iOS feature flag is enabled.", buf, 2u);
     }
 
-    [(PLBatteryAgent *)self showOrHideTLCNotification:[(ChargingStateProvider *)self->_chargingStateProvider isExternallyConnected] meetsTLCNotificationConditions:v3 == 3];
+    [(PLBatteryAgent *)self showOrHideTLCNotification:[(ChargingStateProvider *)self->_chargingStateProvider isExternallyConnected] meetsTLCNotificationConditions:chargingState == 3];
   }
 
   else

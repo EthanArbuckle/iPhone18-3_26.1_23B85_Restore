@@ -1,31 +1,31 @@
 @interface HMDeviceSetupOperationHandlerBase
 + (id)logCategory;
-- (HMDeviceSetupOperationHandlerBase)initWithSetupSessionFactory:(id)a3;
+- (HMDeviceSetupOperationHandlerBase)initWithSetupSessionFactory:(id)factory;
 - (id)logIdentifier;
 - (void)configureSessionForMessages;
 - (void)dealloc;
-- (void)setupSession:(id)a3 didReceiveExchangeData:(id)a4 completionHandler:(id)a5;
+- (void)setupSession:(id)session didReceiveExchangeData:(id)data completionHandler:(id)handler;
 @end
 
 @implementation HMDeviceSetupOperationHandlerBase
 
 - (id)logIdentifier
 {
-  v2 = [(HMDeviceSetupOperationHandlerBase *)self setupSession];
-  v3 = [v2 identifier];
-  v4 = [v3 UUIDString];
+  setupSession = [(HMDeviceSetupOperationHandlerBase *)self setupSession];
+  identifier = [setupSession identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
-- (void)setupSession:(id)a3 didReceiveExchangeData:(id)a4 completionHandler:(id)a5
+- (void)setupSession:(id)session didReceiveExchangeData:(id)data completionHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  dataCopy = data;
+  handlerCopy = handler;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -36,10 +36,10 @@
   }
 
   objc_autoreleasePoolPop(v11);
-  if (v10)
+  if (handlerCopy)
   {
     v15 = [MEMORY[0x1E696ABC0] hmErrorWithCode:48];
-    v10[2](v10, 0, v15);
+    handlerCopy[2](handlerCopy, 0, v15);
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -47,18 +47,18 @@
 
 - (void)configureSessionForMessages
 {
-  v3 = [(HMDeviceSetupOperationHandlerBase *)self setupSession];
-  [v3 configure];
+  setupSession = [(HMDeviceSetupOperationHandlerBase *)self setupSession];
+  [setupSession configure];
 
-  v4 = [(HMDeviceSetupOperationHandlerBase *)self setupSession];
-  [v4 open];
+  setupSession2 = [(HMDeviceSetupOperationHandlerBase *)self setupSession];
+  [setupSession2 open];
 }
 
 - (void)dealloc
 {
   v14 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -71,24 +71,24 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDeviceSetupOperationHandlerBase *)v4 setupSession];
-  [v7 cleanUpSession];
+  setupSession = [(HMDeviceSetupOperationHandlerBase *)selfCopy setupSession];
+  [setupSession cleanUpSession];
 
-  v9.receiver = v4;
+  v9.receiver = selfCopy;
   v9.super_class = HMDeviceSetupOperationHandlerBase;
   [(HMDeviceSetupOperationHandlerBase *)&v9 dealloc];
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (HMDeviceSetupOperationHandlerBase)initWithSetupSessionFactory:(id)a3
+- (HMDeviceSetupOperationHandlerBase)initWithSetupSessionFactory:(id)factory
 {
-  v4 = a3;
+  factoryCopy = factory;
   v9.receiver = self;
   v9.super_class = HMDeviceSetupOperationHandlerBase;
   v5 = [(HMDeviceSetupOperationHandlerBase *)&v9 init];
   if (v5)
   {
-    v6 = v4[2](v4, v5);
+    v6 = factoryCopy[2](factoryCopy, v5);
     setupSession = v5->_setupSession;
     v5->_setupSession = v6;
   }

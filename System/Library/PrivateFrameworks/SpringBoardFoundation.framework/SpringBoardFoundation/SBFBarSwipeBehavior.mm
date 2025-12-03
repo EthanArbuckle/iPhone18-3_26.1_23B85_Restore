@@ -1,15 +1,15 @@
 @interface SBFBarSwipeBehavior
-- (SBFBarSwipeBehavior)initWithGrabberView:(id)a3 settleAffordanceAnimationBehaviorDescription:(id)a4;
+- (SBFBarSwipeBehavior)initWithGrabberView:(id)view settleAffordanceAnimationBehaviorDescription:(id)description;
 - (SBFBarSwipeBehaviorDelegate)delegate;
 - (id)_grabberViewContainerView;
 - (id)_settleAffordanceAnimationBehaviorDescription;
 - (void)_createFeedbackGenerator;
 - (void)_fireAction;
-- (void)_setGrabberAdditionalEdgeSpacing:(double)a3;
+- (void)_setGrabberAdditionalEdgeSpacing:(double)spacing;
 - (void)_settleGrabber;
-- (void)barSwipeInteractionChanged:(id)a3;
-- (void)barSwipeInteractionEnded:(id)a3;
-- (void)setFeedbackType:(int64_t)a3;
+- (void)barSwipeInteractionChanged:(id)changed;
+- (void)barSwipeInteractionEnded:(id)ended;
+- (void)setFeedbackType:(int64_t)type;
 @end
 
 @implementation SBFBarSwipeBehavior
@@ -27,11 +27,11 @@
   self->_dismissalFeedbackGenerator = v8;
 }
 
-- (SBFBarSwipeBehavior)initWithGrabberView:(id)a3 settleAffordanceAnimationBehaviorDescription:(id)a4
+- (SBFBarSwipeBehavior)initWithGrabberView:(id)view settleAffordanceAnimationBehaviorDescription:(id)description
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  viewCopy = view;
+  descriptionCopy = description;
+  if (!viewCopy)
   {
     [SBFBarSwipeBehavior initWithGrabberView:a2 settleAffordanceAnimationBehaviorDescription:self];
   }
@@ -42,8 +42,8 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_grabberView, a3);
-    objc_storeStrong(&v11->_settleAffordanceAnimationBehaviorDescription, a4);
+    objc_storeStrong(&v10->_grabberView, view);
+    objc_storeStrong(&v11->_settleAffordanceAnimationBehaviorDescription, description);
     v11->_feedbackType = 1010;
     [(SBFBarSwipeBehavior *)v11 _createFeedbackGenerator];
   }
@@ -51,20 +51,20 @@
   return v11;
 }
 
-- (void)setFeedbackType:(int64_t)a3
+- (void)setFeedbackType:(int64_t)type
 {
-  if (self->_feedbackType != a3)
+  if (self->_feedbackType != type)
   {
-    self->_feedbackType = a3;
+    self->_feedbackType = type;
     [(SBFBarSwipeBehavior *)self _createFeedbackGenerator];
   }
 }
 
-- (void)barSwipeInteractionChanged:(id)a3
+- (void)barSwipeInteractionChanged:(id)changed
 {
-  v4 = a3;
-  v9 = [(SBFBarSwipeBehavior *)self _grabberViewContainerView];
-  [v4 translationInView:?];
+  changedCopy = changed;
+  _grabberViewContainerView = [(SBFBarSwipeBehavior *)self _grabberViewContainerView];
+  [changedCopy translationInView:?];
   v6 = v5;
   v8 = v7;
 
@@ -76,14 +76,14 @@
   }
 }
 
-- (void)barSwipeInteractionEnded:(id)a3
+- (void)barSwipeInteractionEnded:(id)ended
 {
-  v4 = a3;
-  v13 = [(SBFBarSwipeBehavior *)self _grabberViewContainerView];
-  [v4 translationInView:v13];
+  endedCopy = ended;
+  _grabberViewContainerView = [(SBFBarSwipeBehavior *)self _grabberViewContainerView];
+  [endedCopy translationInView:_grabberViewContainerView];
   v6 = v5;
   v8 = v7;
-  [v4 velocityInView:v13];
+  [endedCopy velocityInView:_grabberViewContainerView];
   v10 = v9;
   v12 = v11;
 
@@ -117,30 +117,30 @@
 - (id)_grabberViewContainerView
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([WeakRetained barSwipeBehaviorGrabberViewContainer:self], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([WeakRetained barSwipeBehaviorGrabberViewContainer:self], (superview = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v4 = [(UIView *)self->_grabberView superview];
+    superview = [(UIView *)self->_grabberView superview];
   }
 
-  return v4;
+  return superview;
 }
 
 - (void)_settleGrabber
 {
-  v3 = [(SBFBarSwipeBehavior *)self _settleAffordanceAnimationBehaviorDescription];
+  _settleAffordanceAnimationBehaviorDescription = [(SBFBarSwipeBehavior *)self _settleAffordanceAnimationBehaviorDescription];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __37__SBFBarSwipeBehavior__settleGrabber__block_invoke;
   v4[3] = &unk_1E807F178;
   v4[4] = self;
-  [MEMORY[0x1E69DD250] _animateUsingSpringBehavior:v3 tracking:0 animations:v4 completion:0];
+  [MEMORY[0x1E69DD250] _animateUsingSpringBehavior:_settleAffordanceAnimationBehaviorDescription tracking:0 animations:v4 completion:0];
 }
 
-- (void)_setGrabberAdditionalEdgeSpacing:(double)a3
+- (void)_setGrabberAdditionalEdgeSpacing:(double)spacing
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_grabberViewAdditionalEdgeSpacing = a3;
+    self->_grabberViewAdditionalEdgeSpacing = spacing;
     [(UIView *)self->_grabberView setNeedsLayout];
     [(UIView *)self->_grabberView layoutIfNeeded];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -155,7 +155,7 @@
 {
   v7 = *MEMORY[0x1E69E9840];
   v3 = 138543618;
-  v4 = a1;
+  selfCopy = self;
   v5 = 2114;
   v6 = a2;
   _os_log_error_impl(&dword_1BEA11000, log, OS_LOG_TYPE_ERROR, "%{public}@: Delegate (%{public}@) doesn't implement required method 'barSwipeBehaviorActionPerformed:'", &v3, 0x16u);

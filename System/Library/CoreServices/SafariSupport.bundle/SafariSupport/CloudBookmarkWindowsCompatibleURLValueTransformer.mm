@@ -1,19 +1,19 @@
 @interface CloudBookmarkWindowsCompatibleURLValueTransformer
-- (BOOL)isEmptyValue:(id)a3;
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (BOOL)isEmptyValue:(id)value;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation CloudBookmarkWindowsCompatibleURLValueTransformer
 
-- (BOOL)isEmptyValue:(id)a3
+- (BOOL)isEmptyValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 absoluteString];
-    v5 = [v4 length] == 0;
+    absoluteString = [valueCopy absoluteString];
+    v5 = [absoluteString length] == 0;
   }
 
   else
@@ -24,14 +24,14 @@
   return v5;
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 absoluteString];
-    v5 = [v4 dataUsingEncoding:4];
+    absoluteString = [valueCopy absoluteString];
+    v5 = [absoluteString dataUsingEncoding:4];
   }
 
   else
@@ -42,13 +42,13 @@
   return v5;
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = valueCopy;
     if (v4)
     {
       v5 = [[NSString alloc] initWithData:v4 encoding:4];

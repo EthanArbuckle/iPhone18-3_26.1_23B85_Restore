@@ -1,34 +1,34 @@
 @interface PXToast
-+ (id)show:(id)a3;
-- (PXToast)initWithConfiguration:(id)a3;
-- (void)_dismissAnimated:(BOOL)a3 completionHandler:(id)a4;
-- (void)_handleSwipe:(id)a3;
++ (id)show:(id)show;
+- (PXToast)initWithConfiguration:(id)configuration;
+- (void)_dismissAnimated:(BOOL)animated completionHandler:(id)handler;
+- (void)_handleSwipe:(id)swipe;
 - (void)_present;
-- (void)dismissAnimated:(BOOL)a3 afterDelay:(double)a4;
-- (void)setBottomMargin:(double)a3;
-- (void)setIsShown:(BOOL)a3;
+- (void)dismissAnimated:(BOOL)animated afterDelay:(double)delay;
+- (void)setBottomMargin:(double)margin;
+- (void)setIsShown:(BOOL)shown;
 @end
 
 @implementation PXToast
 
-- (void)_handleSwipe:(id)a3
+- (void)_handleSwipe:(id)swipe
 {
-  if ([a3 state] == 3)
+  if ([swipe state] == 3)
   {
 
     [(PXToast *)self dismissAnimated:1];
   }
 }
 
-- (void)_dismissAnimated:(BOOL)a3 completionHandler:(id)a4
+- (void)_dismissAnimated:(BOOL)animated completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(PXToast *)self view];
+  animatedCopy = animated;
+  handlerCopy = handler;
+  view = [(PXToast *)self view];
   [(PXToastConfiguration *)self->_configuration setContentView:0];
-  v8 = [v7 window];
-  v9 = v8;
-  if (v4 && v8)
+  window = [view window];
+  v9 = window;
+  if (animatedCopy && window)
   {
     objc_initWeak(&location, self);
     v10 = MEMORY[0x1E69DD250];
@@ -42,14 +42,14 @@
     v17[1] = 3221225472;
     v17[2] = __46__PXToast__dismissAnimated_completionHandler___block_invoke_2;
     v17[3] = &unk_1E77349B0;
-    v11 = v7;
+    v11 = view;
     v18 = v11;
-    v19 = v6;
+    v19 = handlerCopy;
     objc_copyWeak(&v20, &location);
     [v10 animateWithDuration:0x10000 delay:v21 options:v17 animations:0.5 completion:0.0];
-    v12 = [v11 layer];
+    layer = [v11 layer];
     LODWORD(v13) = 1.0;
-    [v12 setOpacity:v13];
+    [layer setOpacity:v13];
 
     v14 = MEMORY[0x1E69DD250];
     v15[0] = MEMORY[0x1E69E9820];
@@ -65,9 +65,9 @@
 
   else
   {
-    [v7 removeFromSuperview];
+    [view removeFromSuperview];
     [(PXToast *)self setIsShown:0];
-    v6[2](v6);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -98,16 +98,16 @@ void __46__PXToast__dismissAnimated_completionHandler___block_invoke_3(uint64_t 
   [v1 setOpacity:0.0];
 }
 
-- (void)dismissAnimated:(BOOL)a3 afterDelay:(double)a4
+- (void)dismissAnimated:(BOOL)animated afterDelay:(double)delay
 {
   objc_initWeak(&location, self);
-  v6 = dispatch_time(0, (a4 * 1000000000.0));
+  v6 = dispatch_time(0, (delay * 1000000000.0));
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __38__PXToast_dismissAnimated_afterDelay___block_invoke;
   block[3] = &unk_1E774A170;
   objc_copyWeak(&v8, &location);
-  v9 = a3;
+  animatedCopy = animated;
   dispatch_after(v6, MEMORY[0x1E69E96A0], block);
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -119,14 +119,14 @@ void __38__PXToast_dismissAnimated_afterDelay___block_invoke(uint64_t a1)
   [WeakRetained _dismissAnimated:*(a1 + 40) completionHandler:&__block_literal_global_11];
 }
 
-- (void)setBottomMargin:(double)a3
+- (void)setBottomMargin:(double)margin
 {
-  if (self->_bottomMargin != a3)
+  if (self->_bottomMargin != margin)
   {
-    self->_bottomMargin = a3;
-    v4 = -a3;
-    v5 = [(PXToast *)self onscreenConstraint];
-    [v5 setConstant:v4];
+    self->_bottomMargin = margin;
+    v4 = -margin;
+    onscreenConstraint = [(PXToast *)self onscreenConstraint];
+    [onscreenConstraint setConstant:v4];
   }
 }
 
@@ -135,19 +135,19 @@ void __38__PXToast_dismissAnimated_afterDelay___block_invoke(uint64_t a1)
   v47[1] = *MEMORY[0x1E69E9840];
   if ((PFProcessIsLaunchedToExecuteTests() & 1) == 0 && ![(PXToast *)self isShown])
   {
-    v3 = [MEMORY[0x1E69DC668] sharedApplication];
-    v4 = [v3 px_firstKeyWindow];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    px_firstKeyWindow = [mEMORY[0x1E69DC668] px_firstKeyWindow];
 
-    v5 = [(PXToastConfiguration *)self->_configuration sourceView];
-    v6 = v5;
-    if (v5)
+    sourceView = [(PXToastConfiguration *)self->_configuration sourceView];
+    v6 = sourceView;
+    if (sourceView)
     {
-      v7 = v5;
+      v7 = sourceView;
     }
 
     else
     {
-      v7 = v4;
+      v7 = px_firstKeyWindow;
     }
 
     v8 = v7;
@@ -157,22 +157,22 @@ void __38__PXToast_dismissAnimated_afterDelay___block_invoke(uint64_t a1)
       PXAssertGetLog();
     }
 
-    v36 = v4;
+    v36 = px_firstKeyWindow;
     [(PXToast *)self setIsShown:1];
-    v9 = [(PXToastConfiguration *)self->_configuration contentView];
-    if (!v9)
+    contentView = [(PXToastConfiguration *)self->_configuration contentView];
+    if (!contentView)
     {
-      v9 = [[PXToastDefaultContentView alloc] initWithToastConfiguration:self->_configuration];
+      contentView = [[PXToastDefaultContentView alloc] initWithToastConfiguration:self->_configuration];
     }
 
-    [(PXToast *)self setView:v9];
-    [v8 addSubview:v9];
-    [v8 bringSubviewToFront:v9];
-    [(PXToastDefaultContentView *)v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(PXToast *)self setView:contentView];
+    [v8 addSubview:contentView];
+    [v8 bringSubviewToFront:contentView];
+    [(PXToastDefaultContentView *)contentView setTranslatesAutoresizingMaskIntoConstraints:0];
     v10 = MEMORY[0x1E696ACD8];
-    v11 = [(PXToastDefaultContentView *)v9 widthAnchor];
+    widthAnchor = [(PXToastDefaultContentView *)contentView widthAnchor];
     [v8 bounds];
-    v12 = [v11 constraintLessThanOrEqualToConstant:CGRectGetWidth(v48) + -20.0];
+    v12 = [widthAnchor constraintLessThanOrEqualToConstant:CGRectGetWidth(v48) + -20.0];
     v47[0] = v12;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:1];
     [v10 activateConstraints:v13];
@@ -181,22 +181,22 @@ void __38__PXToast_dismissAnimated_afterDelay___block_invoke(uint64_t a1)
     {
       v14 = [objc_alloc(MEMORY[0x1E69DCFC8]) initWithTarget:self action:sel__handleSwipe_];
       [v14 setDirection:8];
-      [(PXToastDefaultContentView *)v9 addGestureRecognizer:v14];
+      [(PXToastDefaultContentView *)contentView addGestureRecognizer:v14];
     }
 
-    v15 = [(PXToastDefaultContentView *)v9 bottomAnchor];
-    v16 = [v8 bottomAnchor];
+    bottomAnchor = [(PXToastDefaultContentView *)contentView bottomAnchor];
+    bottomAnchor2 = [v8 bottomAnchor];
     [(PXToast *)self bottomMargin];
-    v18 = [v15 constraintEqualToAnchor:v16 constant:-v17];
+    v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-v17];
 
-    v19 = [(PXToastDefaultContentView *)v9 topAnchor];
-    v20 = [v8 bottomAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20 constant:0.0];
+    topAnchor = [(PXToastDefaultContentView *)contentView topAnchor];
+    bottomAnchor3 = [v8 bottomAnchor];
+    v21 = [topAnchor constraintEqualToAnchor:bottomAnchor3 constant:0.0];
 
     v22 = MEMORY[0x1E696ACD8];
-    v23 = [(PXToastDefaultContentView *)v9 centerXAnchor];
-    v24 = [v8 centerXAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
+    centerXAnchor = [(PXToastDefaultContentView *)contentView centerXAnchor];
+    centerXAnchor2 = [v8 centerXAnchor];
+    v25 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v46[0] = v25;
     v46[1] = v21;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v46 count:2];
@@ -214,15 +214,15 @@ void __38__PXToast_dismissAnimated_afterDelay___block_invoke(uint64_t a1)
     v44 = v29;
     v45 = v8;
     [v27 animateWithDuration:0x20000 delay:v42 options:0 animations:0.5 completion:0.0];
-    v30 = [(PXToastDefaultContentView *)v9 layer];
-    [v30 setOpacity:0.0];
+    layer = [(PXToastDefaultContentView *)contentView layer];
+    [layer setOpacity:0.0];
 
     v31 = MEMORY[0x1E69DD250];
     v40[0] = MEMORY[0x1E69E9820];
     v40[1] = 3221225472;
     v40[2] = __19__PXToast__present__block_invoke_2;
     v40[3] = &unk_1E774C648;
-    v32 = v9;
+    v32 = contentView;
     v41 = v32;
     [v31 animateWithDuration:0x10000 delay:v40 options:0 animations:0.2 completion:0.3];
     [(PXToast *)self setOnscreenConstraint:v29];
@@ -267,13 +267,13 @@ void __19__PXToast__present__block_invoke_3(uint64_t a1)
   [WeakRetained dismissAnimated:1];
 }
 
-- (void)setIsShown:(BOOL)a3
+- (void)setIsShown:(BOOL)shown
 {
-  if (self->_isShown != a3)
+  if (self->_isShown != shown)
   {
-    self->_isShown = a3;
+    self->_isShown = shown;
     v4 = _activeToasts;
-    if (a3)
+    if (shown)
     {
       if (!_activeToasts)
       {
@@ -295,30 +295,30 @@ void __19__PXToast__present__block_invoke_3(uint64_t a1)
   }
 }
 
-- (PXToast)initWithConfiguration:(id)a3
+- (PXToast)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = PXToast;
   v6 = [(PXToast *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
-    [v5 bottomMargin];
+    objc_storeStrong(&v6->_configuration, configuration);
+    [configurationCopy bottomMargin];
     [(PXToast *)v7 setBottomMargin:?];
   }
 
   return v7;
 }
 
-+ (id)show:(id)a3
++ (id)show:(id)show
 {
-  v4 = a3;
+  showCopy = show;
   v5 = objc_alloc_init(PXToastConfiguration);
-  v4[2](v4, v5);
+  showCopy[2](showCopy, v5);
 
-  v6 = [[a1 alloc] initWithConfiguration:v5];
+  v6 = [[self alloc] initWithConfiguration:v5];
   [v6 _present];
 
   return v6;

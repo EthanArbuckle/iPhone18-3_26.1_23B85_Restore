@@ -1,17 +1,17 @@
 @interface DownloadStateIndicatorViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_localizedStringForDownloadState:(unint64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_localizedStringForDownloadState:(unint64_t)state;
 - (id)accessibilityLabel;
 @end
 
 @implementation DownloadStateIndicatorViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VideosUI.DownloadStateIndicatorView" hasSwiftField:@"viewModel" withSwiftType:"Optional<DownloadStateIndicatorViewModel>"];
-  [v3 validateClass:@"VideosUI.DownloadStateIndicatorViewModel" hasSwiftField:@"downloadModel" withSwiftType:"VUIDownloadButtonViewModel"];
-  [v3 validateClass:@"VUIDownloadButtonViewModel" hasProperty:@"downloadState" withType:"Q"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VideosUI.DownloadStateIndicatorView" hasSwiftField:@"viewModel" withSwiftType:"Optional<DownloadStateIndicatorViewModel>"];
+  [validationsCopy validateClass:@"VideosUI.DownloadStateIndicatorViewModel" hasSwiftField:@"downloadModel" withSwiftType:"VUIDownloadButtonViewModel"];
+  [validationsCopy validateClass:@"VUIDownloadButtonViewModel" hasProperty:@"downloadState" withType:"Q"];
 }
 
 - (id)accessibilityLabel
@@ -23,7 +23,7 @@
   return v5;
 }
 
-- (id)_localizedStringForDownloadState:(unint64_t)a3
+- (id)_localizedStringForDownloadState:(unint64_t)state
 {
   if (_localizedStringForDownloadState__onceToken != -1)
   {
@@ -31,7 +31,7 @@
   }
 
   v4 = _localizedStringForDownloadState__stateToKeyMap;
-  v5 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:a3];
+  v5 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:state];
   v6 = [v4 objectForKeyedSubscript:v5];
 
   if (v6)

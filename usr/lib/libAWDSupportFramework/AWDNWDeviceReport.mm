@@ -1,35 +1,35 @@
 @interface AWDNWDeviceReport
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsCellularMode:(id)a3;
-- (int)StringAsMotionState:(id)a3;
-- (int)StringAsThermalPressure:(id)a3;
+- (int)StringAsCellularMode:(id)mode;
+- (int)StringAsMotionState:(id)state;
+- (int)StringAsThermalPressure:(id)pressure;
 - (int)cellularMode;
 - (int)motionState;
 - (int)thermalPressure;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBatteryAtCriticalLevel:(BOOL)a3;
-- (void)setHasBatteryAtWarnLevel:(BOOL)a3;
-- (void)setHasBatteryCurrentCapacity:(BOOL)a3;
-- (void)setHasBatteryDesignCapacity:(BOOL)a3;
-- (void)setHasBatteryExternalPowerIsConnected:(BOOL)a3;
-- (void)setHasBatteryFullyCharged:(BOOL)a3;
-- (void)setHasBatteryIsCharging:(BOOL)a3;
-- (void)setHasBatteryMaximumCapacity:(BOOL)a3;
-- (void)setHasBatteryPercentage:(BOOL)a3;
-- (void)setHasBatteryTimeRemaining:(BOOL)a3;
-- (void)setHasBatteryVoltage:(BOOL)a3;
-- (void)setHasCellularMode:(BOOL)a3;
-- (void)setHasDevicePluggedIn:(BOOL)a3;
-- (void)setHasDeviceScreenOn:(BOOL)a3;
-- (void)setHasMotionState:(BOOL)a3;
-- (void)setHasThermalPressure:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasBatteryAtCriticalLevel:(BOOL)level;
+- (void)setHasBatteryAtWarnLevel:(BOOL)level;
+- (void)setHasBatteryCurrentCapacity:(BOOL)capacity;
+- (void)setHasBatteryDesignCapacity:(BOOL)capacity;
+- (void)setHasBatteryExternalPowerIsConnected:(BOOL)connected;
+- (void)setHasBatteryFullyCharged:(BOOL)charged;
+- (void)setHasBatteryIsCharging:(BOOL)charging;
+- (void)setHasBatteryMaximumCapacity:(BOOL)capacity;
+- (void)setHasBatteryPercentage:(BOOL)percentage;
+- (void)setHasBatteryTimeRemaining:(BOOL)remaining;
+- (void)setHasBatteryVoltage:(BOOL)voltage;
+- (void)setHasCellularMode:(BOOL)mode;
+- (void)setHasDevicePluggedIn:(BOOL)in;
+- (void)setHasDeviceScreenOn:(BOOL)on;
+- (void)setHasMotionState:(BOOL)state;
+- (void)setHasThermalPressure:(BOOL)pressure;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDNWDeviceReport
@@ -42,9 +42,9 @@
   [(AWDNWDeviceReport *)&v3 dealloc];
 }
 
-- (void)setHasBatteryPercentage:(BOOL)a3
+- (void)setHasBatteryPercentage:(BOOL)percentage
 {
-  if (a3)
+  if (percentage)
   {
     v3 = 16;
   }
@@ -57,9 +57,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasBatteryCurrentCapacity:(BOOL)a3
+- (void)setHasBatteryCurrentCapacity:(BOOL)capacity
 {
-  if (a3)
+  if (capacity)
   {
     v3 = 2;
   }
@@ -72,9 +72,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasBatteryMaximumCapacity:(BOOL)a3
+- (void)setHasBatteryMaximumCapacity:(BOOL)capacity
 {
-  if (a3)
+  if (capacity)
   {
     v3 = 8;
   }
@@ -87,9 +87,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasBatteryDesignCapacity:(BOOL)a3
+- (void)setHasBatteryDesignCapacity:(BOOL)capacity
 {
-  if (a3)
+  if (capacity)
   {
     v3 = 4;
   }
@@ -102,9 +102,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasBatteryVoltage:(BOOL)a3
+- (void)setHasBatteryVoltage:(BOOL)voltage
 {
-  if (a3)
+  if (voltage)
   {
     v3 = 64;
   }
@@ -117,9 +117,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasBatteryTimeRemaining:(BOOL)a3
+- (void)setHasBatteryTimeRemaining:(BOOL)remaining
 {
-  if (a3)
+  if (remaining)
   {
     v3 = 32;
   }
@@ -132,9 +132,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasBatteryExternalPowerIsConnected:(BOOL)a3
+- (void)setHasBatteryExternalPowerIsConnected:(BOOL)connected
 {
-  if (a3)
+  if (connected)
   {
     v3 = 4096;
   }
@@ -147,9 +147,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasBatteryIsCharging:(BOOL)a3
+- (void)setHasBatteryIsCharging:(BOOL)charging
 {
-  if (a3)
+  if (charging)
   {
     v3 = 0x4000;
   }
@@ -162,9 +162,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasBatteryFullyCharged:(BOOL)a3
+- (void)setHasBatteryFullyCharged:(BOOL)charged
 {
-  if (a3)
+  if (charged)
   {
     v3 = 0x2000;
   }
@@ -177,9 +177,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasBatteryAtWarnLevel:(BOOL)a3
+- (void)setHasBatteryAtWarnLevel:(BOOL)level
 {
-  if (a3)
+  if (level)
   {
     v3 = 2048;
   }
@@ -192,9 +192,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasBatteryAtCriticalLevel:(BOOL)a3
+- (void)setHasBatteryAtCriticalLevel:(BOOL)level
 {
-  if (a3)
+  if (level)
   {
     v3 = 1024;
   }
@@ -207,9 +207,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasDevicePluggedIn:(BOOL)a3
+- (void)setHasDevicePluggedIn:(BOOL)in
 {
-  if (a3)
+  if (in)
   {
     v3 = 0x8000;
   }
@@ -222,9 +222,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasDeviceScreenOn:(BOOL)a3
+- (void)setHasDeviceScreenOn:(BOOL)on
 {
-  if (a3)
+  if (on)
   {
     v3 = 0x10000;
   }
@@ -250,9 +250,9 @@
   }
 }
 
-- (void)setHasMotionState:(BOOL)a3
+- (void)setHasMotionState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 256;
   }
@@ -265,34 +265,34 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (int)StringAsMotionState:(id)a3
+- (int)StringAsMotionState:(id)state
 {
-  if ([a3 isEqualToString:@"NW_DEVICE_MOTION_STATE_UNKNOWN"])
+  if ([state isEqualToString:@"NW_DEVICE_MOTION_STATE_UNKNOWN"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"NW_DEVICE_MOTION_STATE_STATIONARY"])
+  if ([state isEqualToString:@"NW_DEVICE_MOTION_STATE_STATIONARY"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"NW_DEVICE_MOTION_STATE_MOVING"])
+  if ([state isEqualToString:@"NW_DEVICE_MOTION_STATE_MOVING"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"NW_DEVICE_MOTION_STATE_WALKING"])
+  if ([state isEqualToString:@"NW_DEVICE_MOTION_STATE_WALKING"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"NW_DEVICE_MOTION_STATE_RUNNING"])
+  if ([state isEqualToString:@"NW_DEVICE_MOTION_STATE_RUNNING"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"NW_DEVICE_MOTION_STATE_VEHICULAR"])
+  if ([state isEqualToString:@"NW_DEVICE_MOTION_STATE_VEHICULAR"])
   {
     return 5;
   }
@@ -313,9 +313,9 @@
   }
 }
 
-- (void)setHasThermalPressure:(BOOL)a3
+- (void)setHasThermalPressure:(BOOL)pressure
 {
-  if (a3)
+  if (pressure)
   {
     v3 = 512;
   }
@@ -328,54 +328,54 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (int)StringAsThermalPressure:(id)a3
+- (int)StringAsThermalPressure:(id)pressure
 {
-  if ([a3 isEqualToString:@"NW_DEVICE_THERMAL_PRESSURE_NOMINAL"])
+  if ([pressure isEqualToString:@"NW_DEVICE_THERMAL_PRESSURE_NOMINAL"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"NW_DEVICE_THERMAL_PRESSURE_MODERATE_MAC"])
+  if ([pressure isEqualToString:@"NW_DEVICE_THERMAL_PRESSURE_MODERATE_MAC"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"NW_DEVICE_THERMAL_PRESSURE_HEAVY_MAC"])
+  if ([pressure isEqualToString:@"NW_DEVICE_THERMAL_PRESSURE_HEAVY_MAC"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"NW_DEVICE_THERMAL_PRESSURE_TRAPPING_MAC"])
+  if ([pressure isEqualToString:@"NW_DEVICE_THERMAL_PRESSURE_TRAPPING_MAC"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"NW_DEVICE_THERMAL_PRESSURE_SLEEPING_MAC"])
+  if ([pressure isEqualToString:@"NW_DEVICE_THERMAL_PRESSURE_SLEEPING_MAC"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"NW_DEVICE_THERMAL_PRESSURE_LIGHT"])
+  if ([pressure isEqualToString:@"NW_DEVICE_THERMAL_PRESSURE_LIGHT"])
   {
     return 10;
   }
 
-  if ([a3 isEqualToString:@"NW_DEVICE_THERMAL_PRESSURE_MODERATE"])
+  if ([pressure isEqualToString:@"NW_DEVICE_THERMAL_PRESSURE_MODERATE"])
   {
     return 20;
   }
 
-  if ([a3 isEqualToString:@"NW_DEVICE_THERMAL_PRESSURE_HEAVY"])
+  if ([pressure isEqualToString:@"NW_DEVICE_THERMAL_PRESSURE_HEAVY"])
   {
     return 30;
   }
 
-  if ([a3 isEqualToString:@"NW_DEVICE_THERMAL_PRESSURE_TRAPPING"])
+  if ([pressure isEqualToString:@"NW_DEVICE_THERMAL_PRESSURE_TRAPPING"])
   {
     return 40;
   }
 
-  if ([a3 isEqualToString:@"NW_DEVICE_THERMAL_PRESSURE_SLEEPING"])
+  if ([pressure isEqualToString:@"NW_DEVICE_THERMAL_PRESSURE_SLEEPING"])
   {
     return 50;
   }
@@ -396,9 +396,9 @@
   }
 }
 
-- (void)setHasCellularMode:(BOOL)a3
+- (void)setHasCellularMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 128;
   }
@@ -411,24 +411,24 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (int)StringAsCellularMode:(id)a3
+- (int)StringAsCellularMode:(id)mode
 {
-  if ([a3 isEqualToString:@"NW_DEVICE_CELLULAR_MODE_UNKNOWN"])
+  if ([mode isEqualToString:@"NW_DEVICE_CELLULAR_MODE_UNKNOWN"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"NW_DEVICE_CELLULAR_MODE_OFF"])
+  if ([mode isEqualToString:@"NW_DEVICE_CELLULAR_MODE_OFF"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"NW_DEVICE_CELLULAR_MODE_AUTO"])
+  if ([mode isEqualToString:@"NW_DEVICE_CELLULAR_MODE_AUTO"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"NW_DEVICE_CELLULAR_MODE_ON"])
+  if ([mode isEqualToString:@"NW_DEVICE_CELLULAR_MODE_ON"])
   {
     return 3;
   }
@@ -445,11 +445,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((*&has & 0x10) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_batteryPercentage), @"batteryPercentage"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_batteryPercentage), @"batteryPercentage"}];
     has = self->_has;
     if ((*&has & 2) == 0)
     {
@@ -468,7 +468,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_batteryCurrentCapacity), @"batteryCurrentCapacity"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_batteryCurrentCapacity), @"batteryCurrentCapacity"}];
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -482,7 +482,7 @@ LABEL_4:
   }
 
 LABEL_21:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_batteryMaximumCapacity), @"batteryMaximumCapacity"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_batteryMaximumCapacity), @"batteryMaximumCapacity"}];
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -496,7 +496,7 @@ LABEL_5:
   }
 
 LABEL_22:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_batteryDesignCapacity), @"batteryDesignCapacity"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_batteryDesignCapacity), @"batteryDesignCapacity"}];
   has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -510,7 +510,7 @@ LABEL_6:
   }
 
 LABEL_23:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_batteryAbsoluteCapacity), @"batteryAbsoluteCapacity"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_batteryAbsoluteCapacity), @"batteryAbsoluteCapacity"}];
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -524,7 +524,7 @@ LABEL_7:
   }
 
 LABEL_24:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_batteryVoltage), @"batteryVoltage"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_batteryVoltage), @"batteryVoltage"}];
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -538,7 +538,7 @@ LABEL_8:
   }
 
 LABEL_25:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_batteryTimeRemaining), @"batteryTimeRemaining"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_batteryTimeRemaining), @"batteryTimeRemaining"}];
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -552,7 +552,7 @@ LABEL_9:
   }
 
 LABEL_26:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_batteryExternalPowerIsConnected), @"batteryExternalPowerIsConnected"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_batteryExternalPowerIsConnected), @"batteryExternalPowerIsConnected"}];
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -566,7 +566,7 @@ LABEL_10:
   }
 
 LABEL_27:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_batteryIsCharging), @"batteryIsCharging"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_batteryIsCharging), @"batteryIsCharging"}];
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -580,7 +580,7 @@ LABEL_11:
   }
 
 LABEL_28:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_batteryFullyCharged), @"batteryFullyCharged"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_batteryFullyCharged), @"batteryFullyCharged"}];
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -594,7 +594,7 @@ LABEL_12:
   }
 
 LABEL_29:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_batteryAtWarnLevel), @"batteryAtWarnLevel"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_batteryAtWarnLevel), @"batteryAtWarnLevel"}];
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -608,7 +608,7 @@ LABEL_13:
   }
 
 LABEL_30:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_batteryAtCriticalLevel), @"batteryAtCriticalLevel"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_batteryAtCriticalLevel), @"batteryAtCriticalLevel"}];
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -622,7 +622,7 @@ LABEL_14:
   }
 
 LABEL_31:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_devicePluggedIn), @"devicePluggedIn"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_devicePluggedIn), @"devicePluggedIn"}];
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -636,7 +636,7 @@ LABEL_15:
   }
 
 LABEL_32:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_deviceScreenOn), @"deviceScreenOn"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_deviceScreenOn), @"deviceScreenOn"}];
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -715,7 +715,7 @@ LABEL_37:
 
     v8 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"(unknown: %i)", self->_thermalPressure];
 LABEL_61:
-    [v3 setObject:v8 forKey:@"thermalPressure"];
+    [dictionary setObject:v8 forKey:@"thermalPressure"];
     if ((*&self->_has & 0x80) == 0)
     {
       goto LABEL_66;
@@ -733,7 +733,7 @@ LABEL_62:
       v10 = off_29EE329D0[cellularMode];
     }
 
-    [v3 setObject:v10 forKey:@"cellularMode"];
+    [dictionary setObject:v10 forKey:@"cellularMode"];
     goto LABEL_66;
   }
 
@@ -749,7 +749,7 @@ LABEL_33:
     v6 = off_29EE329A0[motionState];
   }
 
-  [v3 setObject:v6 forKey:@"motionState"];
+  [dictionary setObject:v6 forKey:@"motionState"];
   has = self->_has;
   if ((*&has & 0x200) != 0)
   {
@@ -766,13 +766,13 @@ LABEL_66:
   batteryAccumulator = self->_batteryAccumulator;
   if (batteryAccumulator)
   {
-    [v3 setObject:-[AWDNWAccumulator dictionaryRepresentation](batteryAccumulator forKey:{"dictionaryRepresentation"), @"batteryAccumulator"}];
+    [dictionary setObject:-[AWDNWAccumulator dictionaryRepresentation](batteryAccumulator forKey:{"dictionaryRepresentation"), @"batteryAccumulator"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((*&has & 0x10) != 0)
@@ -1024,13 +1024,13 @@ LABEL_19:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((*&has & 0x10) != 0)
   {
-    *(a3 + 9) = self->_batteryPercentage;
-    *(a3 + 17) |= 0x10u;
+    *(to + 9) = self->_batteryPercentage;
+    *(to + 17) |= 0x10u;
     has = self->_has;
     if ((*&has & 2) == 0)
     {
@@ -1049,8 +1049,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 6) = self->_batteryCurrentCapacity;
-  *(a3 + 17) |= 2u;
+  *(to + 6) = self->_batteryCurrentCapacity;
+  *(to + 17) |= 2u;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -1064,8 +1064,8 @@ LABEL_4:
   }
 
 LABEL_23:
-  *(a3 + 8) = self->_batteryMaximumCapacity;
-  *(a3 + 17) |= 8u;
+  *(to + 8) = self->_batteryMaximumCapacity;
+  *(to + 17) |= 8u;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -1079,8 +1079,8 @@ LABEL_5:
   }
 
 LABEL_24:
-  *(a3 + 7) = self->_batteryDesignCapacity;
-  *(a3 + 17) |= 4u;
+  *(to + 7) = self->_batteryDesignCapacity;
+  *(to + 17) |= 4u;
   has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -1094,8 +1094,8 @@ LABEL_6:
   }
 
 LABEL_25:
-  *(a3 + 2) = self->_batteryAbsoluteCapacity;
-  *(a3 + 17) |= 1u;
+  *(to + 2) = self->_batteryAbsoluteCapacity;
+  *(to + 17) |= 1u;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -1109,8 +1109,8 @@ LABEL_7:
   }
 
 LABEL_26:
-  *(a3 + 11) = self->_batteryVoltage;
-  *(a3 + 17) |= 0x40u;
+  *(to + 11) = self->_batteryVoltage;
+  *(to + 17) |= 0x40u;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -1124,8 +1124,8 @@ LABEL_8:
   }
 
 LABEL_27:
-  *(a3 + 10) = self->_batteryTimeRemaining;
-  *(a3 + 17) |= 0x20u;
+  *(to + 10) = self->_batteryTimeRemaining;
+  *(to + 17) |= 0x20u;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -1139,8 +1139,8 @@ LABEL_9:
   }
 
 LABEL_28:
-  *(a3 + 62) = self->_batteryExternalPowerIsConnected;
-  *(a3 + 17) |= 0x1000u;
+  *(to + 62) = self->_batteryExternalPowerIsConnected;
+  *(to + 17) |= 0x1000u;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -1154,8 +1154,8 @@ LABEL_10:
   }
 
 LABEL_29:
-  *(a3 + 64) = self->_batteryIsCharging;
-  *(a3 + 17) |= 0x4000u;
+  *(to + 64) = self->_batteryIsCharging;
+  *(to + 17) |= 0x4000u;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -1169,8 +1169,8 @@ LABEL_11:
   }
 
 LABEL_30:
-  *(a3 + 63) = self->_batteryFullyCharged;
-  *(a3 + 17) |= 0x2000u;
+  *(to + 63) = self->_batteryFullyCharged;
+  *(to + 17) |= 0x2000u;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -1184,8 +1184,8 @@ LABEL_12:
   }
 
 LABEL_31:
-  *(a3 + 61) = self->_batteryAtWarnLevel;
-  *(a3 + 17) |= 0x800u;
+  *(to + 61) = self->_batteryAtWarnLevel;
+  *(to + 17) |= 0x800u;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -1199,8 +1199,8 @@ LABEL_13:
   }
 
 LABEL_32:
-  *(a3 + 60) = self->_batteryAtCriticalLevel;
-  *(a3 + 17) |= 0x400u;
+  *(to + 60) = self->_batteryAtCriticalLevel;
+  *(to + 17) |= 0x400u;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -1214,8 +1214,8 @@ LABEL_14:
   }
 
 LABEL_33:
-  *(a3 + 65) = self->_devicePluggedIn;
-  *(a3 + 17) |= 0x8000u;
+  *(to + 65) = self->_devicePluggedIn;
+  *(to + 17) |= 0x8000u;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -1229,8 +1229,8 @@ LABEL_15:
   }
 
 LABEL_34:
-  *(a3 + 66) = self->_deviceScreenOn;
-  *(a3 + 17) |= 0x10000u;
+  *(to + 66) = self->_deviceScreenOn;
+  *(to + 17) |= 0x10000u;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -1244,8 +1244,8 @@ LABEL_16:
   }
 
 LABEL_35:
-  *(a3 + 13) = self->_motionState;
-  *(a3 + 17) |= 0x100u;
+  *(to + 13) = self->_motionState;
+  *(to + 17) |= 0x100u;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -1259,26 +1259,26 @@ LABEL_17:
   }
 
 LABEL_36:
-  *(a3 + 14) = self->_thermalPressure;
-  *(a3 + 17) |= 0x200u;
+  *(to + 14) = self->_thermalPressure;
+  *(to + 17) |= 0x200u;
   if ((*&self->_has & 0x80) != 0)
   {
 LABEL_18:
-    *(a3 + 12) = self->_cellularMode;
-    *(a3 + 17) |= 0x80u;
+    *(to + 12) = self->_cellularMode;
+    *(to + 17) |= 0x80u;
   }
 
 LABEL_19:
   batteryAccumulator = self->_batteryAccumulator;
   if (batteryAccumulator)
   {
-    [a3 setBatteryAccumulator:batteryAccumulator];
+    [to setBatteryAccumulator:batteryAccumulator];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((*&has & 0x10) != 0)
@@ -1524,23 +1524,23 @@ LABEL_18:
 
 LABEL_19:
 
-  v6[2] = [(AWDNWAccumulator *)self->_batteryAccumulator copyWithZone:a3];
+  v6[2] = [(AWDNWAccumulator *)self->_batteryAccumulator copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
   }
 
   has = self->_has;
-  v7 = *(a3 + 17);
+  v7 = *(equal + 17);
   if ((*&has & 0x10) != 0)
   {
-    if ((v7 & 0x10) == 0 || self->_batteryPercentage != *(a3 + 9))
+    if ((v7 & 0x10) == 0 || self->_batteryPercentage != *(equal + 9))
     {
       goto LABEL_110;
     }
@@ -1553,7 +1553,7 @@ LABEL_19:
 
   if ((*&has & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_batteryCurrentCapacity != *(a3 + 6))
+    if ((v7 & 2) == 0 || self->_batteryCurrentCapacity != *(equal + 6))
     {
       goto LABEL_110;
     }
@@ -1566,7 +1566,7 @@ LABEL_19:
 
   if ((*&has & 8) != 0)
   {
-    if ((v7 & 8) == 0 || self->_batteryMaximumCapacity != *(a3 + 8))
+    if ((v7 & 8) == 0 || self->_batteryMaximumCapacity != *(equal + 8))
     {
       goto LABEL_110;
     }
@@ -1579,7 +1579,7 @@ LABEL_19:
 
   if ((*&has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_batteryDesignCapacity != *(a3 + 7))
+    if ((v7 & 4) == 0 || self->_batteryDesignCapacity != *(equal + 7))
     {
       goto LABEL_110;
     }
@@ -1592,7 +1592,7 @@ LABEL_19:
 
   if (*&has)
   {
-    if ((v7 & 1) == 0 || self->_batteryAbsoluteCapacity != *(a3 + 2))
+    if ((v7 & 1) == 0 || self->_batteryAbsoluteCapacity != *(equal + 2))
     {
       goto LABEL_110;
     }
@@ -1605,7 +1605,7 @@ LABEL_19:
 
   if ((*&has & 0x40) != 0)
   {
-    if ((v7 & 0x40) == 0 || self->_batteryVoltage != *(a3 + 11))
+    if ((v7 & 0x40) == 0 || self->_batteryVoltage != *(equal + 11))
     {
       goto LABEL_110;
     }
@@ -1618,7 +1618,7 @@ LABEL_19:
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v7 & 0x20) == 0 || self->_batteryTimeRemaining != *(a3 + 10))
+    if ((v7 & 0x20) == 0 || self->_batteryTimeRemaining != *(equal + 10))
     {
       goto LABEL_110;
     }
@@ -1636,16 +1636,16 @@ LABEL_19:
       goto LABEL_110;
     }
 
-    v8 = *(a3 + 62);
+    v8 = *(equal + 62);
     if (self->_batteryExternalPowerIsConnected)
     {
-      if ((*(a3 + 62) & 1) == 0)
+      if ((*(equal + 62) & 1) == 0)
       {
         goto LABEL_110;
       }
     }
 
-    else if (*(a3 + 62))
+    else if (*(equal + 62))
     {
       goto LABEL_110;
     }
@@ -1663,16 +1663,16 @@ LABEL_19:
       goto LABEL_110;
     }
 
-    v9 = *(a3 + 64);
+    v9 = *(equal + 64);
     if (self->_batteryIsCharging)
     {
-      if ((*(a3 + 64) & 1) == 0)
+      if ((*(equal + 64) & 1) == 0)
       {
         goto LABEL_110;
       }
     }
 
-    else if (*(a3 + 64))
+    else if (*(equal + 64))
     {
       goto LABEL_110;
     }
@@ -1690,16 +1690,16 @@ LABEL_19:
       goto LABEL_110;
     }
 
-    v10 = *(a3 + 63);
+    v10 = *(equal + 63);
     if (self->_batteryFullyCharged)
     {
-      if ((*(a3 + 63) & 1) == 0)
+      if ((*(equal + 63) & 1) == 0)
       {
         goto LABEL_110;
       }
     }
 
-    else if (*(a3 + 63))
+    else if (*(equal + 63))
     {
       goto LABEL_110;
     }
@@ -1717,16 +1717,16 @@ LABEL_19:
       goto LABEL_110;
     }
 
-    v11 = *(a3 + 61);
+    v11 = *(equal + 61);
     if (self->_batteryAtWarnLevel)
     {
-      if ((*(a3 + 61) & 1) == 0)
+      if ((*(equal + 61) & 1) == 0)
       {
         goto LABEL_110;
       }
     }
 
-    else if (*(a3 + 61))
+    else if (*(equal + 61))
     {
       goto LABEL_110;
     }
@@ -1744,16 +1744,16 @@ LABEL_19:
       goto LABEL_110;
     }
 
-    v12 = *(a3 + 60);
+    v12 = *(equal + 60);
     if (self->_batteryAtCriticalLevel)
     {
-      if ((*(a3 + 60) & 1) == 0)
+      if ((*(equal + 60) & 1) == 0)
       {
         goto LABEL_110;
       }
     }
 
-    else if (*(a3 + 60))
+    else if (*(equal + 60))
     {
       goto LABEL_110;
     }
@@ -1771,16 +1771,16 @@ LABEL_19:
       goto LABEL_110;
     }
 
-    v13 = *(a3 + 65);
+    v13 = *(equal + 65);
     if (self->_devicePluggedIn)
     {
-      if ((*(a3 + 65) & 1) == 0)
+      if ((*(equal + 65) & 1) == 0)
       {
         goto LABEL_110;
       }
     }
 
-    else if (*(a3 + 65))
+    else if (*(equal + 65))
     {
       goto LABEL_110;
     }
@@ -1795,16 +1795,16 @@ LABEL_19:
   {
     if ((v7 & 0x10000) != 0)
     {
-      v14 = *(a3 + 66);
+      v14 = *(equal + 66);
       if (self->_deviceScreenOn)
       {
-        if ((*(a3 + 66) & 1) == 0)
+        if ((*(equal + 66) & 1) == 0)
         {
           goto LABEL_110;
         }
       }
 
-      else if (*(a3 + 66))
+      else if (*(equal + 66))
       {
         goto LABEL_110;
       }
@@ -1825,7 +1825,7 @@ LABEL_110:
 LABEL_51:
   if ((*&has & 0x100) != 0)
   {
-    if ((v7 & 0x100) == 0 || self->_motionState != *(a3 + 13))
+    if ((v7 & 0x100) == 0 || self->_motionState != *(equal + 13))
     {
       goto LABEL_110;
     }
@@ -1838,7 +1838,7 @@ LABEL_51:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v7 & 0x200) == 0 || self->_thermalPressure != *(a3 + 14))
+    if ((v7 & 0x200) == 0 || self->_thermalPressure != *(equal + 14))
     {
       goto LABEL_110;
     }
@@ -1851,7 +1851,7 @@ LABEL_51:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v7 & 0x80) == 0 || self->_cellularMode != *(a3 + 12))
+    if ((v7 & 0x80) == 0 || self->_cellularMode != *(equal + 12))
     {
       goto LABEL_110;
     }
@@ -1863,7 +1863,7 @@ LABEL_51:
   }
 
   batteryAccumulator = self->_batteryAccumulator;
-  if (batteryAccumulator | *(a3 + 2))
+  if (batteryAccumulator | *(equal + 2))
   {
 
     LOBYTE(v5) = [(AWDNWAccumulator *)batteryAccumulator isEqual:?];
@@ -2109,14 +2109,14 @@ LABEL_34:
   return v8 ^ v7 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ [(AWDNWAccumulator *)self->_batteryAccumulator hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 17);
+  v3 = *(from + 17);
   if ((v3 & 0x10) != 0)
   {
-    self->_batteryPercentage = *(a3 + 9);
+    self->_batteryPercentage = *(from + 9);
     *&self->_has |= 0x10u;
-    v3 = *(a3 + 17);
+    v3 = *(from + 17);
     if ((v3 & 2) == 0)
     {
 LABEL_3:
@@ -2134,9 +2134,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_batteryCurrentCapacity = *(a3 + 6);
+  self->_batteryCurrentCapacity = *(from + 6);
   *&self->_has |= 2u;
-  v3 = *(a3 + 17);
+  v3 = *(from + 17);
   if ((v3 & 8) == 0)
   {
 LABEL_4:
@@ -2149,9 +2149,9 @@ LABEL_4:
   }
 
 LABEL_24:
-  self->_batteryMaximumCapacity = *(a3 + 8);
+  self->_batteryMaximumCapacity = *(from + 8);
   *&self->_has |= 8u;
-  v3 = *(a3 + 17);
+  v3 = *(from + 17);
   if ((v3 & 4) == 0)
   {
 LABEL_5:
@@ -2164,9 +2164,9 @@ LABEL_5:
   }
 
 LABEL_25:
-  self->_batteryDesignCapacity = *(a3 + 7);
+  self->_batteryDesignCapacity = *(from + 7);
   *&self->_has |= 4u;
-  v3 = *(a3 + 17);
+  v3 = *(from + 17);
   if ((v3 & 1) == 0)
   {
 LABEL_6:
@@ -2179,9 +2179,9 @@ LABEL_6:
   }
 
 LABEL_26:
-  self->_batteryAbsoluteCapacity = *(a3 + 2);
+  self->_batteryAbsoluteCapacity = *(from + 2);
   *&self->_has |= 1u;
-  v3 = *(a3 + 17);
+  v3 = *(from + 17);
   if ((v3 & 0x40) == 0)
   {
 LABEL_7:
@@ -2194,9 +2194,9 @@ LABEL_7:
   }
 
 LABEL_27:
-  self->_batteryVoltage = *(a3 + 11);
+  self->_batteryVoltage = *(from + 11);
   *&self->_has |= 0x40u;
-  v3 = *(a3 + 17);
+  v3 = *(from + 17);
   if ((v3 & 0x20) == 0)
   {
 LABEL_8:
@@ -2209,9 +2209,9 @@ LABEL_8:
   }
 
 LABEL_28:
-  self->_batteryTimeRemaining = *(a3 + 10);
+  self->_batteryTimeRemaining = *(from + 10);
   *&self->_has |= 0x20u;
-  v3 = *(a3 + 17);
+  v3 = *(from + 17);
   if ((v3 & 0x1000) == 0)
   {
 LABEL_9:
@@ -2224,9 +2224,9 @@ LABEL_9:
   }
 
 LABEL_29:
-  self->_batteryExternalPowerIsConnected = *(a3 + 62);
+  self->_batteryExternalPowerIsConnected = *(from + 62);
   *&self->_has |= 0x1000u;
-  v3 = *(a3 + 17);
+  v3 = *(from + 17);
   if ((v3 & 0x4000) == 0)
   {
 LABEL_10:
@@ -2239,9 +2239,9 @@ LABEL_10:
   }
 
 LABEL_30:
-  self->_batteryIsCharging = *(a3 + 64);
+  self->_batteryIsCharging = *(from + 64);
   *&self->_has |= 0x4000u;
-  v3 = *(a3 + 17);
+  v3 = *(from + 17);
   if ((v3 & 0x2000) == 0)
   {
 LABEL_11:
@@ -2254,9 +2254,9 @@ LABEL_11:
   }
 
 LABEL_31:
-  self->_batteryFullyCharged = *(a3 + 63);
+  self->_batteryFullyCharged = *(from + 63);
   *&self->_has |= 0x2000u;
-  v3 = *(a3 + 17);
+  v3 = *(from + 17);
   if ((v3 & 0x800) == 0)
   {
 LABEL_12:
@@ -2269,9 +2269,9 @@ LABEL_12:
   }
 
 LABEL_32:
-  self->_batteryAtWarnLevel = *(a3 + 61);
+  self->_batteryAtWarnLevel = *(from + 61);
   *&self->_has |= 0x800u;
-  v3 = *(a3 + 17);
+  v3 = *(from + 17);
   if ((v3 & 0x400) == 0)
   {
 LABEL_13:
@@ -2284,9 +2284,9 @@ LABEL_13:
   }
 
 LABEL_33:
-  self->_batteryAtCriticalLevel = *(a3 + 60);
+  self->_batteryAtCriticalLevel = *(from + 60);
   *&self->_has |= 0x400u;
-  v3 = *(a3 + 17);
+  v3 = *(from + 17);
   if ((v3 & 0x8000) == 0)
   {
 LABEL_14:
@@ -2299,9 +2299,9 @@ LABEL_14:
   }
 
 LABEL_34:
-  self->_devicePluggedIn = *(a3 + 65);
+  self->_devicePluggedIn = *(from + 65);
   *&self->_has |= 0x8000u;
-  v3 = *(a3 + 17);
+  v3 = *(from + 17);
   if ((v3 & 0x10000) == 0)
   {
 LABEL_15:
@@ -2314,9 +2314,9 @@ LABEL_15:
   }
 
 LABEL_35:
-  self->_deviceScreenOn = *(a3 + 66);
+  self->_deviceScreenOn = *(from + 66);
   *&self->_has |= 0x10000u;
-  v3 = *(a3 + 17);
+  v3 = *(from + 17);
   if ((v3 & 0x100) == 0)
   {
 LABEL_16:
@@ -2329,9 +2329,9 @@ LABEL_16:
   }
 
 LABEL_36:
-  self->_motionState = *(a3 + 13);
+  self->_motionState = *(from + 13);
   *&self->_has |= 0x100u;
-  v3 = *(a3 + 17);
+  v3 = *(from + 17);
   if ((v3 & 0x200) == 0)
   {
 LABEL_17:
@@ -2344,17 +2344,17 @@ LABEL_17:
   }
 
 LABEL_37:
-  self->_thermalPressure = *(a3 + 14);
+  self->_thermalPressure = *(from + 14);
   *&self->_has |= 0x200u;
-  if ((*(a3 + 17) & 0x80) != 0)
+  if ((*(from + 17) & 0x80) != 0)
   {
 LABEL_18:
-    self->_cellularMode = *(a3 + 12);
+    self->_cellularMode = *(from + 12);
     *&self->_has |= 0x80u;
   }
 
 LABEL_19:
-  v4 = *(a3 + 2);
+  v4 = *(from + 2);
   if (self->_batteryAccumulator)
   {
     if (v4)

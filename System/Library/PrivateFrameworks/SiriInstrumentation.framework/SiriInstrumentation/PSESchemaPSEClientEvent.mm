@@ -1,19 +1,19 @@
 @interface PSESchemaPSEClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (PSESchemaPSEAlarmSignalGenerated)alarmSignalGenerated;
 - (PSESchemaPSEAppIntentSignalGenerated)appIntentSignalGenerated;
 - (PSESchemaPSECallSignalGenerated)callSignalGenerated;
-- (PSESchemaPSEClientEvent)initWithDictionary:(id)a3;
-- (PSESchemaPSEClientEvent)initWithJSON:(id)a3;
+- (PSESchemaPSEClientEvent)initWithDictionary:(id)dictionary;
+- (PSESchemaPSEClientEvent)initWithJSON:(id)n;
 - (PSESchemaPSEGenericSignalGenerated)genericSignalGenerated;
 - (PSESchemaPSEHomeFollowupSignalGenerated)homeFollowupSignalGenerated;
 - (PSESchemaPSEMapsSignalGenerated)mapsSignalGenerated;
 - (PSESchemaPSEMediaSignalGenerated)mediaSignalGenerated;
 - (PSESchemaPSEMessageSignalGenerated)messageSignalGenerated;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -29,28 +29,28 @@
 - (void)deleteMapsSignalGenerated;
 - (void)deleteMediaSignalGenerated;
 - (void)deleteMessageSignalGenerated;
-- (void)setAlarmSignalGenerated:(id)a3;
-- (void)setAppIntentSignalGenerated:(id)a3;
-- (void)setCallSignalGenerated:(id)a3;
-- (void)setGenericSignalGenerated:(id)a3;
-- (void)setHomeFollowupSignalGenerated:(id)a3;
-- (void)setMapsSignalGenerated:(id)a3;
-- (void)setMediaSignalGenerated:(id)a3;
-- (void)setMessageSignalGenerated:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setAlarmSignalGenerated:(id)generated;
+- (void)setAppIntentSignalGenerated:(id)generated;
+- (void)setCallSignalGenerated:(id)generated;
+- (void)setGenericSignalGenerated:(id)generated;
+- (void)setHomeFollowupSignalGenerated:(id)generated;
+- (void)setMapsSignalGenerated:(id)generated;
+- (void)setMediaSignalGenerated:(id)generated;
+- (void)setMessageSignalGenerated:(id)generated;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PSESchemaPSEClientEvent
 
-- (PSESchemaPSEClientEvent)initWithDictionary:(id)a3
+- (PSESchemaPSEClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v28.receiver = self;
   v28.super_class = PSESchemaPSEClientEvent;
   v5 = [(PSESchemaPSEClientEvent *)&v28 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -59,7 +59,7 @@
     }
 
     v27 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"genericSignalGenerated"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"genericSignalGenerated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,7 +67,7 @@
       [(PSESchemaPSEClientEvent *)v5 setGenericSignalGenerated:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:{@"callSignalGenerated", v8}];
+    v10 = [dictionaryCopy objectForKeyedSubscript:{@"callSignalGenerated", v8}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -75,7 +75,7 @@
       [(PSESchemaPSEClientEvent *)v5 setCallSignalGenerated:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"messageSignalGenerated"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"messageSignalGenerated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -83,7 +83,7 @@
       [(PSESchemaPSEClientEvent *)v5 setMessageSignalGenerated:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"mediaSignalGenerated"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"mediaSignalGenerated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -91,7 +91,7 @@
       [(PSESchemaPSEClientEvent *)v5 setMediaSignalGenerated:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"homeFollowupSignalGenerated"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"homeFollowupSignalGenerated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -99,7 +99,7 @@
       [(PSESchemaPSEClientEvent *)v5 setHomeFollowupSignalGenerated:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"mapsSignalGenerated"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"mapsSignalGenerated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -107,7 +107,7 @@
       [(PSESchemaPSEClientEvent *)v5 setMapsSignalGenerated:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"alarmSignalGenerated"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"alarmSignalGenerated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -115,7 +115,7 @@
       [(PSESchemaPSEClientEvent *)v5 setAlarmSignalGenerated:v21];
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"appIntentSignalGenerated"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"appIntentSignalGenerated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -129,30 +129,30 @@
   return v5;
 }
 
-- (PSESchemaPSEClientEvent)initWithJSON:(id)a3
+- (PSESchemaPSEClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PSESchemaPSEClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PSESchemaPSEClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PSESchemaPSEClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -165,154 +165,154 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_alarmSignalGenerated)
   {
-    v4 = [(PSESchemaPSEClientEvent *)self alarmSignalGenerated];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    alarmSignalGenerated = [(PSESchemaPSEClientEvent *)self alarmSignalGenerated];
+    dictionaryRepresentation = [alarmSignalGenerated dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"alarmSignalGenerated"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"alarmSignalGenerated"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"alarmSignalGenerated"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"alarmSignalGenerated"];
     }
   }
 
   if (self->_appIntentSignalGenerated)
   {
-    v7 = [(PSESchemaPSEClientEvent *)self appIntentSignalGenerated];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    appIntentSignalGenerated = [(PSESchemaPSEClientEvent *)self appIntentSignalGenerated];
+    dictionaryRepresentation2 = [appIntentSignalGenerated dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"appIntentSignalGenerated"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"appIntentSignalGenerated"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"appIntentSignalGenerated"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"appIntentSignalGenerated"];
     }
   }
 
   if (self->_callSignalGenerated)
   {
-    v10 = [(PSESchemaPSEClientEvent *)self callSignalGenerated];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    callSignalGenerated = [(PSESchemaPSEClientEvent *)self callSignalGenerated];
+    dictionaryRepresentation3 = [callSignalGenerated dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"callSignalGenerated"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"callSignalGenerated"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"callSignalGenerated"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"callSignalGenerated"];
     }
   }
 
   if (self->_eventMetadata)
   {
-    v13 = [(PSESchemaPSEClientEvent *)self eventMetadata];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    eventMetadata = [(PSESchemaPSEClientEvent *)self eventMetadata];
+    dictionaryRepresentation4 = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"eventMetadata"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_genericSignalGenerated)
   {
-    v16 = [(PSESchemaPSEClientEvent *)self genericSignalGenerated];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    genericSignalGenerated = [(PSESchemaPSEClientEvent *)self genericSignalGenerated];
+    dictionaryRepresentation5 = [genericSignalGenerated dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"genericSignalGenerated"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"genericSignalGenerated"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"genericSignalGenerated"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"genericSignalGenerated"];
     }
   }
 
   if (self->_homeFollowupSignalGenerated)
   {
-    v19 = [(PSESchemaPSEClientEvent *)self homeFollowupSignalGenerated];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    homeFollowupSignalGenerated = [(PSESchemaPSEClientEvent *)self homeFollowupSignalGenerated];
+    dictionaryRepresentation6 = [homeFollowupSignalGenerated dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"homeFollowupSignalGenerated"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"homeFollowupSignalGenerated"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"homeFollowupSignalGenerated"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"homeFollowupSignalGenerated"];
     }
   }
 
   if (self->_mapsSignalGenerated)
   {
-    v22 = [(PSESchemaPSEClientEvent *)self mapsSignalGenerated];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    mapsSignalGenerated = [(PSESchemaPSEClientEvent *)self mapsSignalGenerated];
+    dictionaryRepresentation7 = [mapsSignalGenerated dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"mapsSignalGenerated"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"mapsSignalGenerated"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"mapsSignalGenerated"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"mapsSignalGenerated"];
     }
   }
 
   if (self->_mediaSignalGenerated)
   {
-    v25 = [(PSESchemaPSEClientEvent *)self mediaSignalGenerated];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    mediaSignalGenerated = [(PSESchemaPSEClientEvent *)self mediaSignalGenerated];
+    dictionaryRepresentation8 = [mediaSignalGenerated dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"mediaSignalGenerated"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"mediaSignalGenerated"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"mediaSignalGenerated"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"mediaSignalGenerated"];
     }
   }
 
   if (self->_messageSignalGenerated)
   {
-    v28 = [(PSESchemaPSEClientEvent *)self messageSignalGenerated];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    messageSignalGenerated = [(PSESchemaPSEClientEvent *)self messageSignalGenerated];
+    dictionaryRepresentation9 = [messageSignalGenerated dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"messageSignalGenerated"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"messageSignalGenerated"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"messageSignalGenerated"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"messageSignalGenerated"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -328,34 +328,34 @@
   return v9 ^ v10 ^ [(PSESchemaPSEAppIntentSignalGenerated *)self->_appIntentSignalGenerated hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_48;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_48;
   }
 
-  v6 = [(PSESchemaPSEClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PSESchemaPSEClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v8 = [(PSESchemaPSEClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(PSESchemaPSEClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(PSESchemaPSEClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(PSESchemaPSEClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -367,20 +367,20 @@
   {
   }
 
-  v6 = [(PSESchemaPSEClientEvent *)self genericSignalGenerated];
-  v7 = [v4 genericSignalGenerated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PSESchemaPSEClientEvent *)self genericSignalGenerated];
+  eventMetadata2 = [equalCopy genericSignalGenerated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v13 = [(PSESchemaPSEClientEvent *)self genericSignalGenerated];
-  if (v13)
+  genericSignalGenerated = [(PSESchemaPSEClientEvent *)self genericSignalGenerated];
+  if (genericSignalGenerated)
   {
-    v14 = v13;
-    v15 = [(PSESchemaPSEClientEvent *)self genericSignalGenerated];
-    v16 = [v4 genericSignalGenerated];
-    v17 = [v15 isEqual:v16];
+    v14 = genericSignalGenerated;
+    genericSignalGenerated2 = [(PSESchemaPSEClientEvent *)self genericSignalGenerated];
+    genericSignalGenerated3 = [equalCopy genericSignalGenerated];
+    v17 = [genericSignalGenerated2 isEqual:genericSignalGenerated3];
 
     if (!v17)
     {
@@ -392,20 +392,20 @@
   {
   }
 
-  v6 = [(PSESchemaPSEClientEvent *)self callSignalGenerated];
-  v7 = [v4 callSignalGenerated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PSESchemaPSEClientEvent *)self callSignalGenerated];
+  eventMetadata2 = [equalCopy callSignalGenerated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v18 = [(PSESchemaPSEClientEvent *)self callSignalGenerated];
-  if (v18)
+  callSignalGenerated = [(PSESchemaPSEClientEvent *)self callSignalGenerated];
+  if (callSignalGenerated)
   {
-    v19 = v18;
-    v20 = [(PSESchemaPSEClientEvent *)self callSignalGenerated];
-    v21 = [v4 callSignalGenerated];
-    v22 = [v20 isEqual:v21];
+    v19 = callSignalGenerated;
+    callSignalGenerated2 = [(PSESchemaPSEClientEvent *)self callSignalGenerated];
+    callSignalGenerated3 = [equalCopy callSignalGenerated];
+    v22 = [callSignalGenerated2 isEqual:callSignalGenerated3];
 
     if (!v22)
     {
@@ -417,20 +417,20 @@
   {
   }
 
-  v6 = [(PSESchemaPSEClientEvent *)self messageSignalGenerated];
-  v7 = [v4 messageSignalGenerated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PSESchemaPSEClientEvent *)self messageSignalGenerated];
+  eventMetadata2 = [equalCopy messageSignalGenerated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v23 = [(PSESchemaPSEClientEvent *)self messageSignalGenerated];
-  if (v23)
+  messageSignalGenerated = [(PSESchemaPSEClientEvent *)self messageSignalGenerated];
+  if (messageSignalGenerated)
   {
-    v24 = v23;
-    v25 = [(PSESchemaPSEClientEvent *)self messageSignalGenerated];
-    v26 = [v4 messageSignalGenerated];
-    v27 = [v25 isEqual:v26];
+    v24 = messageSignalGenerated;
+    messageSignalGenerated2 = [(PSESchemaPSEClientEvent *)self messageSignalGenerated];
+    messageSignalGenerated3 = [equalCopy messageSignalGenerated];
+    v27 = [messageSignalGenerated2 isEqual:messageSignalGenerated3];
 
     if (!v27)
     {
@@ -442,20 +442,20 @@
   {
   }
 
-  v6 = [(PSESchemaPSEClientEvent *)self mediaSignalGenerated];
-  v7 = [v4 mediaSignalGenerated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PSESchemaPSEClientEvent *)self mediaSignalGenerated];
+  eventMetadata2 = [equalCopy mediaSignalGenerated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v28 = [(PSESchemaPSEClientEvent *)self mediaSignalGenerated];
-  if (v28)
+  mediaSignalGenerated = [(PSESchemaPSEClientEvent *)self mediaSignalGenerated];
+  if (mediaSignalGenerated)
   {
-    v29 = v28;
-    v30 = [(PSESchemaPSEClientEvent *)self mediaSignalGenerated];
-    v31 = [v4 mediaSignalGenerated];
-    v32 = [v30 isEqual:v31];
+    v29 = mediaSignalGenerated;
+    mediaSignalGenerated2 = [(PSESchemaPSEClientEvent *)self mediaSignalGenerated];
+    mediaSignalGenerated3 = [equalCopy mediaSignalGenerated];
+    v32 = [mediaSignalGenerated2 isEqual:mediaSignalGenerated3];
 
     if (!v32)
     {
@@ -467,20 +467,20 @@
   {
   }
 
-  v6 = [(PSESchemaPSEClientEvent *)self homeFollowupSignalGenerated];
-  v7 = [v4 homeFollowupSignalGenerated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PSESchemaPSEClientEvent *)self homeFollowupSignalGenerated];
+  eventMetadata2 = [equalCopy homeFollowupSignalGenerated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v33 = [(PSESchemaPSEClientEvent *)self homeFollowupSignalGenerated];
-  if (v33)
+  homeFollowupSignalGenerated = [(PSESchemaPSEClientEvent *)self homeFollowupSignalGenerated];
+  if (homeFollowupSignalGenerated)
   {
-    v34 = v33;
-    v35 = [(PSESchemaPSEClientEvent *)self homeFollowupSignalGenerated];
-    v36 = [v4 homeFollowupSignalGenerated];
-    v37 = [v35 isEqual:v36];
+    v34 = homeFollowupSignalGenerated;
+    homeFollowupSignalGenerated2 = [(PSESchemaPSEClientEvent *)self homeFollowupSignalGenerated];
+    homeFollowupSignalGenerated3 = [equalCopy homeFollowupSignalGenerated];
+    v37 = [homeFollowupSignalGenerated2 isEqual:homeFollowupSignalGenerated3];
 
     if (!v37)
     {
@@ -492,20 +492,20 @@
   {
   }
 
-  v6 = [(PSESchemaPSEClientEvent *)self mapsSignalGenerated];
-  v7 = [v4 mapsSignalGenerated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PSESchemaPSEClientEvent *)self mapsSignalGenerated];
+  eventMetadata2 = [equalCopy mapsSignalGenerated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v38 = [(PSESchemaPSEClientEvent *)self mapsSignalGenerated];
-  if (v38)
+  mapsSignalGenerated = [(PSESchemaPSEClientEvent *)self mapsSignalGenerated];
+  if (mapsSignalGenerated)
   {
-    v39 = v38;
-    v40 = [(PSESchemaPSEClientEvent *)self mapsSignalGenerated];
-    v41 = [v4 mapsSignalGenerated];
-    v42 = [v40 isEqual:v41];
+    v39 = mapsSignalGenerated;
+    mapsSignalGenerated2 = [(PSESchemaPSEClientEvent *)self mapsSignalGenerated];
+    mapsSignalGenerated3 = [equalCopy mapsSignalGenerated];
+    v42 = [mapsSignalGenerated2 isEqual:mapsSignalGenerated3];
 
     if (!v42)
     {
@@ -517,20 +517,20 @@
   {
   }
 
-  v6 = [(PSESchemaPSEClientEvent *)self alarmSignalGenerated];
-  v7 = [v4 alarmSignalGenerated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PSESchemaPSEClientEvent *)self alarmSignalGenerated];
+  eventMetadata2 = [equalCopy alarmSignalGenerated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_47;
   }
 
-  v43 = [(PSESchemaPSEClientEvent *)self alarmSignalGenerated];
-  if (v43)
+  alarmSignalGenerated = [(PSESchemaPSEClientEvent *)self alarmSignalGenerated];
+  if (alarmSignalGenerated)
   {
-    v44 = v43;
-    v45 = [(PSESchemaPSEClientEvent *)self alarmSignalGenerated];
-    v46 = [v4 alarmSignalGenerated];
-    v47 = [v45 isEqual:v46];
+    v44 = alarmSignalGenerated;
+    alarmSignalGenerated2 = [(PSESchemaPSEClientEvent *)self alarmSignalGenerated];
+    alarmSignalGenerated3 = [equalCopy alarmSignalGenerated];
+    v47 = [alarmSignalGenerated2 isEqual:alarmSignalGenerated3];
 
     if (!v47)
     {
@@ -542,12 +542,12 @@
   {
   }
 
-  v6 = [(PSESchemaPSEClientEvent *)self appIntentSignalGenerated];
-  v7 = [v4 appIntentSignalGenerated];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(PSESchemaPSEClientEvent *)self appIntentSignalGenerated];
+  eventMetadata2 = [equalCopy appIntentSignalGenerated];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v48 = [(PSESchemaPSEClientEvent *)self appIntentSignalGenerated];
-    if (!v48)
+    appIntentSignalGenerated = [(PSESchemaPSEClientEvent *)self appIntentSignalGenerated];
+    if (!appIntentSignalGenerated)
     {
 
 LABEL_51:
@@ -555,10 +555,10 @@ LABEL_51:
       goto LABEL_49;
     }
 
-    v49 = v48;
-    v50 = [(PSESchemaPSEClientEvent *)self appIntentSignalGenerated];
-    v51 = [v4 appIntentSignalGenerated];
-    v52 = [v50 isEqual:v51];
+    v49 = appIntentSignalGenerated;
+    appIntentSignalGenerated2 = [(PSESchemaPSEClientEvent *)self appIntentSignalGenerated];
+    appIntentSignalGenerated3 = [equalCopy appIntentSignalGenerated];
+    v52 = [appIntentSignalGenerated2 isEqual:appIntentSignalGenerated3];
 
     if (v52)
     {
@@ -578,82 +578,82 @@ LABEL_49:
   return v53;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v23 = a3;
-  v4 = [(PSESchemaPSEClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(PSESchemaPSEClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(PSESchemaPSEClientEvent *)self eventMetadata];
+    eventMetadata2 = [(PSESchemaPSEClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(PSESchemaPSEClientEvent *)self genericSignalGenerated];
+  genericSignalGenerated = [(PSESchemaPSEClientEvent *)self genericSignalGenerated];
 
-  if (v6)
+  if (genericSignalGenerated)
   {
-    v7 = [(PSESchemaPSEClientEvent *)self genericSignalGenerated];
+    genericSignalGenerated2 = [(PSESchemaPSEClientEvent *)self genericSignalGenerated];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(PSESchemaPSEClientEvent *)self callSignalGenerated];
+  callSignalGenerated = [(PSESchemaPSEClientEvent *)self callSignalGenerated];
 
-  if (v8)
+  if (callSignalGenerated)
   {
-    v9 = [(PSESchemaPSEClientEvent *)self callSignalGenerated];
+    callSignalGenerated2 = [(PSESchemaPSEClientEvent *)self callSignalGenerated];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(PSESchemaPSEClientEvent *)self messageSignalGenerated];
+  messageSignalGenerated = [(PSESchemaPSEClientEvent *)self messageSignalGenerated];
 
-  if (v10)
+  if (messageSignalGenerated)
   {
-    v11 = [(PSESchemaPSEClientEvent *)self messageSignalGenerated];
+    messageSignalGenerated2 = [(PSESchemaPSEClientEvent *)self messageSignalGenerated];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(PSESchemaPSEClientEvent *)self mediaSignalGenerated];
+  mediaSignalGenerated = [(PSESchemaPSEClientEvent *)self mediaSignalGenerated];
 
-  if (v12)
+  if (mediaSignalGenerated)
   {
-    v13 = [(PSESchemaPSEClientEvent *)self mediaSignalGenerated];
+    mediaSignalGenerated2 = [(PSESchemaPSEClientEvent *)self mediaSignalGenerated];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(PSESchemaPSEClientEvent *)self homeFollowupSignalGenerated];
+  homeFollowupSignalGenerated = [(PSESchemaPSEClientEvent *)self homeFollowupSignalGenerated];
 
-  if (v14)
+  if (homeFollowupSignalGenerated)
   {
-    v15 = [(PSESchemaPSEClientEvent *)self homeFollowupSignalGenerated];
+    homeFollowupSignalGenerated2 = [(PSESchemaPSEClientEvent *)self homeFollowupSignalGenerated];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(PSESchemaPSEClientEvent *)self mapsSignalGenerated];
+  mapsSignalGenerated = [(PSESchemaPSEClientEvent *)self mapsSignalGenerated];
 
-  if (v16)
+  if (mapsSignalGenerated)
   {
-    v17 = [(PSESchemaPSEClientEvent *)self mapsSignalGenerated];
+    mapsSignalGenerated2 = [(PSESchemaPSEClientEvent *)self mapsSignalGenerated];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(PSESchemaPSEClientEvent *)self alarmSignalGenerated];
+  alarmSignalGenerated = [(PSESchemaPSEClientEvent *)self alarmSignalGenerated];
 
-  if (v18)
+  if (alarmSignalGenerated)
   {
-    v19 = [(PSESchemaPSEClientEvent *)self alarmSignalGenerated];
+    alarmSignalGenerated2 = [(PSESchemaPSEClientEvent *)self alarmSignalGenerated];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(PSESchemaPSEClientEvent *)self appIntentSignalGenerated];
+  appIntentSignalGenerated = [(PSESchemaPSEClientEvent *)self appIntentSignalGenerated];
 
-  v21 = v23;
-  if (v20)
+  v21 = toCopy;
+  if (appIntentSignalGenerated)
   {
-    v22 = [(PSESchemaPSEClientEvent *)self appIntentSignalGenerated];
+    appIntentSignalGenerated2 = [(PSESchemaPSEClientEvent *)self appIntentSignalGenerated];
     PBDataWriterWriteSubmessage();
 
-    v21 = v23;
+    v21 = toCopy;
   }
 }
 
@@ -682,9 +682,9 @@ LABEL_49:
   return v3;
 }
 
-- (void)setAppIntentSignalGenerated:(id)a3
+- (void)setAppIntentSignalGenerated:(id)generated
 {
-  v4 = a3;
+  generatedCopy = generated;
   genericSignalGenerated = self->_genericSignalGenerated;
   self->_genericSignalGenerated = 0;
 
@@ -707,14 +707,14 @@ LABEL_49:
   self->_alarmSignalGenerated = 0;
 
   v12 = 108;
-  if (!v4)
+  if (!generatedCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   appIntentSignalGenerated = self->_appIntentSignalGenerated;
-  self->_appIntentSignalGenerated = v4;
+  self->_appIntentSignalGenerated = generatedCopy;
 }
 
 - (void)deleteAlarmSignalGenerated
@@ -742,9 +742,9 @@ LABEL_49:
   return v3;
 }
 
-- (void)setAlarmSignalGenerated:(id)a3
+- (void)setAlarmSignalGenerated:(id)generated
 {
-  v4 = a3;
+  generatedCopy = generated;
   genericSignalGenerated = self->_genericSignalGenerated;
   self->_genericSignalGenerated = 0;
 
@@ -767,14 +767,14 @@ LABEL_49:
   self->_appIntentSignalGenerated = 0;
 
   v12 = 107;
-  if (!v4)
+  if (!generatedCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   alarmSignalGenerated = self->_alarmSignalGenerated;
-  self->_alarmSignalGenerated = v4;
+  self->_alarmSignalGenerated = generatedCopy;
 }
 
 - (void)deleteMapsSignalGenerated
@@ -802,9 +802,9 @@ LABEL_49:
   return v3;
 }
 
-- (void)setMapsSignalGenerated:(id)a3
+- (void)setMapsSignalGenerated:(id)generated
 {
-  v4 = a3;
+  generatedCopy = generated;
   genericSignalGenerated = self->_genericSignalGenerated;
   self->_genericSignalGenerated = 0;
 
@@ -827,14 +827,14 @@ LABEL_49:
   self->_appIntentSignalGenerated = 0;
 
   v12 = 106;
-  if (!v4)
+  if (!generatedCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   mapsSignalGenerated = self->_mapsSignalGenerated;
-  self->_mapsSignalGenerated = v4;
+  self->_mapsSignalGenerated = generatedCopy;
 }
 
 - (void)deleteHomeFollowupSignalGenerated
@@ -862,9 +862,9 @@ LABEL_49:
   return v3;
 }
 
-- (void)setHomeFollowupSignalGenerated:(id)a3
+- (void)setHomeFollowupSignalGenerated:(id)generated
 {
-  v4 = a3;
+  generatedCopy = generated;
   genericSignalGenerated = self->_genericSignalGenerated;
   self->_genericSignalGenerated = 0;
 
@@ -887,14 +887,14 @@ LABEL_49:
   self->_appIntentSignalGenerated = 0;
 
   v12 = 105;
-  if (!v4)
+  if (!generatedCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   homeFollowupSignalGenerated = self->_homeFollowupSignalGenerated;
-  self->_homeFollowupSignalGenerated = v4;
+  self->_homeFollowupSignalGenerated = generatedCopy;
 }
 
 - (void)deleteMediaSignalGenerated
@@ -922,9 +922,9 @@ LABEL_49:
   return v3;
 }
 
-- (void)setMediaSignalGenerated:(id)a3
+- (void)setMediaSignalGenerated:(id)generated
 {
-  v4 = a3;
+  generatedCopy = generated;
   genericSignalGenerated = self->_genericSignalGenerated;
   self->_genericSignalGenerated = 0;
 
@@ -947,14 +947,14 @@ LABEL_49:
   self->_appIntentSignalGenerated = 0;
 
   v12 = 104;
-  if (!v4)
+  if (!generatedCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   mediaSignalGenerated = self->_mediaSignalGenerated;
-  self->_mediaSignalGenerated = v4;
+  self->_mediaSignalGenerated = generatedCopy;
 }
 
 - (void)deleteMessageSignalGenerated
@@ -982,9 +982,9 @@ LABEL_49:
   return v3;
 }
 
-- (void)setMessageSignalGenerated:(id)a3
+- (void)setMessageSignalGenerated:(id)generated
 {
-  v4 = a3;
+  generatedCopy = generated;
   genericSignalGenerated = self->_genericSignalGenerated;
   self->_genericSignalGenerated = 0;
 
@@ -1007,14 +1007,14 @@ LABEL_49:
   self->_appIntentSignalGenerated = 0;
 
   v12 = 103;
-  if (!v4)
+  if (!generatedCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   messageSignalGenerated = self->_messageSignalGenerated;
-  self->_messageSignalGenerated = v4;
+  self->_messageSignalGenerated = generatedCopy;
 }
 
 - (void)deleteCallSignalGenerated
@@ -1042,9 +1042,9 @@ LABEL_49:
   return v3;
 }
 
-- (void)setCallSignalGenerated:(id)a3
+- (void)setCallSignalGenerated:(id)generated
 {
-  v4 = a3;
+  generatedCopy = generated;
   genericSignalGenerated = self->_genericSignalGenerated;
   self->_genericSignalGenerated = 0;
 
@@ -1067,14 +1067,14 @@ LABEL_49:
   self->_appIntentSignalGenerated = 0;
 
   v12 = 102;
-  if (!v4)
+  if (!generatedCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   callSignalGenerated = self->_callSignalGenerated;
-  self->_callSignalGenerated = v4;
+  self->_callSignalGenerated = generatedCopy;
 }
 
 - (void)deleteGenericSignalGenerated
@@ -1102,9 +1102,9 @@ LABEL_49:
   return v3;
 }
 
-- (void)setGenericSignalGenerated:(id)a3
+- (void)setGenericSignalGenerated:(id)generated
 {
-  v4 = a3;
+  generatedCopy = generated;
   callSignalGenerated = self->_callSignalGenerated;
   self->_callSignalGenerated = 0;
 
@@ -1127,113 +1127,113 @@ LABEL_49:
   self->_appIntentSignalGenerated = 0;
 
   v12 = 101;
-  if (!v4)
+  if (!generatedCopy)
   {
     v12 = 0;
   }
 
   self->_whichEvent_Type = v12;
   genericSignalGenerated = self->_genericSignalGenerated;
-  self->_genericSignalGenerated = v4;
+  self->_genericSignalGenerated = generatedCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(PSESchemaPSEClientEvent *)self whichEvent_Type];
-  if (v2 - 101 > 7)
+  whichEvent_Type = [(PSESchemaPSEClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 7)
   {
     return @"com.apple.aiml.engagement.pse.PSEClientEvent";
   }
 
   else
   {
-    return off_1E78E1360[v2 - 101];
+    return off_1E78E1360[whichEvent_Type - 101];
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v34.receiver = self;
   v34.super_class = PSESchemaPSEClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v34 applySensitiveConditionsPolicy:v4];
-  v6 = [(PSESchemaPSEClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v34 applySensitiveConditionsPolicy:policyCopy];
+  eventMetadata = [(PSESchemaPSEClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PSESchemaPSEClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(PSESchemaPSEClientEvent *)self genericSignalGenerated];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  genericSignalGenerated = [(PSESchemaPSEClientEvent *)self genericSignalGenerated];
+  v10 = [genericSignalGenerated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(PSESchemaPSEClientEvent *)self deleteGenericSignalGenerated];
   }
 
-  v12 = [(PSESchemaPSEClientEvent *)self callSignalGenerated];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  callSignalGenerated = [(PSESchemaPSEClientEvent *)self callSignalGenerated];
+  v13 = [callSignalGenerated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(PSESchemaPSEClientEvent *)self deleteCallSignalGenerated];
   }
 
-  v15 = [(PSESchemaPSEClientEvent *)self messageSignalGenerated];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  messageSignalGenerated = [(PSESchemaPSEClientEvent *)self messageSignalGenerated];
+  v16 = [messageSignalGenerated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(PSESchemaPSEClientEvent *)self deleteMessageSignalGenerated];
   }
 
-  v18 = [(PSESchemaPSEClientEvent *)self mediaSignalGenerated];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  mediaSignalGenerated = [(PSESchemaPSEClientEvent *)self mediaSignalGenerated];
+  v19 = [mediaSignalGenerated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(PSESchemaPSEClientEvent *)self deleteMediaSignalGenerated];
   }
 
-  v21 = [(PSESchemaPSEClientEvent *)self homeFollowupSignalGenerated];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  homeFollowupSignalGenerated = [(PSESchemaPSEClientEvent *)self homeFollowupSignalGenerated];
+  v22 = [homeFollowupSignalGenerated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(PSESchemaPSEClientEvent *)self deleteHomeFollowupSignalGenerated];
   }
 
-  v24 = [(PSESchemaPSEClientEvent *)self mapsSignalGenerated];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  mapsSignalGenerated = [(PSESchemaPSEClientEvent *)self mapsSignalGenerated];
+  v25 = [mapsSignalGenerated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(PSESchemaPSEClientEvent *)self deleteMapsSignalGenerated];
   }
 
-  v27 = [(PSESchemaPSEClientEvent *)self alarmSignalGenerated];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  alarmSignalGenerated = [(PSESchemaPSEClientEvent *)self alarmSignalGenerated];
+  v28 = [alarmSignalGenerated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(PSESchemaPSEClientEvent *)self deleteAlarmSignalGenerated];
   }
 
-  v30 = [(PSESchemaPSEClientEvent *)self appIntentSignalGenerated];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  appIntentSignalGenerated = [(PSESchemaPSEClientEvent *)self appIntentSignalGenerated];
+  v31 = [appIntentSignalGenerated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(PSESchemaPSEClientEvent *)self deleteAppIntentSignalGenerated];
   }
@@ -1251,14 +1251,14 @@ LABEL_49:
 
 - (int)componentName
 {
-  v2 = [(PSESchemaPSEClientEvent *)self eventMetadata];
-  v3 = [v2 originalLastRequestId];
+  eventMetadata = [(PSESchemaPSEClientEvent *)self eventMetadata];
+  originalLastRequestId = [eventMetadata originalLastRequestId];
 
-  if (v3 && ([v3 value], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (originalLastRequestId && ([originalLastRequestId value], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
-    v6 = [v3 value];
-    v7 = [v6 length] != 0;
+    value = [originalLastRequestId value];
+    v7 = [value length] != 0;
   }
 
   else
@@ -1271,65 +1271,65 @@ LABEL_49:
 
 - (id)getComponentId
 {
-  v2 = [(PSESchemaPSEClientEvent *)self eventMetadata];
-  v3 = [v2 originalLastRequestId];
+  eventMetadata = [(PSESchemaPSEClientEvent *)self eventMetadata];
+  originalLastRequestId = [eventMetadata originalLastRequestId];
 
-  if (!v3)
+  if (!originalLastRequestId)
   {
     goto LABEL_5;
   }
 
-  v4 = [v3 value];
-  if (!v4)
+  value = [originalLastRequestId value];
+  if (!value)
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 value];
-  v6 = [v5 length];
+  value2 = [originalLastRequestId value];
+  v6 = [value2 length];
 
   if (v6)
   {
-    v4 = v3;
+    value = originalLastRequestId;
   }
 
   else
   {
 LABEL_5:
-    v4 = 0;
+    value = 0;
   }
 
 LABEL_6:
 
-  return v4;
+  return value;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(PSESchemaPSEClientEvent *)self whichEvent_Type];
-  if (v3 - 101 > 7)
+  whichEvent_Type = [(PSESchemaPSEClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 7)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78EAD38[v3 - 101]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78EAD38[whichEvent_Type - 101]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 101 > 7)
+  if (tag - 101 > 7)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78EAD78[a3 - 101];
+    return off_1E78EAD78[tag - 101];
   }
 }
 

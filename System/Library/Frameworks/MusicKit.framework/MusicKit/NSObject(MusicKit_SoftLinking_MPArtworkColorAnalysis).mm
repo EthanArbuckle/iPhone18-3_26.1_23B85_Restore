@@ -30,51 +30,51 @@
   _Block_object_dispose(&v7, 8);
   if (objc_opt_isKindOfClass())
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (uint64_t)musicKit_backgroundColor
 {
-  v1 = [a1 _musicKit_self_artworkColorAnalysis];
-  v2 = [v1 backgroundColor];
-  v3 = [v2 CGColor];
+  _musicKit_self_artworkColorAnalysis = [self _musicKit_self_artworkColorAnalysis];
+  backgroundColor = [_musicKit_self_artworkColorAnalysis backgroundColor];
+  cGColor = [backgroundColor CGColor];
 
-  return v3;
+  return cGColor;
 }
 
 - (uint64_t)musicKit_primaryTextColor
 {
-  v1 = [a1 _musicKit_self_artworkColorAnalysis];
-  v2 = [v1 primaryTextColor];
-  v3 = [v2 CGColor];
+  _musicKit_self_artworkColorAnalysis = [self _musicKit_self_artworkColorAnalysis];
+  primaryTextColor = [_musicKit_self_artworkColorAnalysis primaryTextColor];
+  cGColor = [primaryTextColor CGColor];
 
-  return v3;
+  return cGColor;
 }
 
 - (uint64_t)musicKit_secondaryTextColor
 {
-  v1 = [a1 _musicKit_self_artworkColorAnalysis];
-  v2 = [v1 secondaryTextColor];
-  v3 = [v2 CGColor];
+  _musicKit_self_artworkColorAnalysis = [self _musicKit_self_artworkColorAnalysis];
+  secondaryTextColor = [_musicKit_self_artworkColorAnalysis secondaryTextColor];
+  cGColor = [secondaryTextColor CGColor];
 
-  return v3;
+  return cGColor;
 }
 
 - (uint64_t)musicKit_tertiaryTextColor
 {
-  v1 = [a1 _musicKit_self_artworkColorAnalysis];
-  v2 = [v1 tertiaryTextColor];
-  v3 = [v2 CGColor];
+  _musicKit_self_artworkColorAnalysis = [self _musicKit_self_artworkColorAnalysis];
+  tertiaryTextColor = [_musicKit_self_artworkColorAnalysis tertiaryTextColor];
+  cGColor = [tertiaryTextColor CGColor];
 
-  return v3;
+  return cGColor;
 }
 
 @end

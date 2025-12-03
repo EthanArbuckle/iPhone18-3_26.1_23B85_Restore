@@ -2,43 +2,43 @@
 - ($F24F406B2B787EFB06265DBA3D28CBD5)_permittedValueRange;
 - (BOOL)_createDecorationIconViewIfNecessary;
 - (CGSize)intrinsicContentSize;
-- (HUQuickControlSliderView)initWithProfile:(id)a3;
-- (id)intrinsicSizeDescriptorForControlSize:(unint64_t)a3;
+- (HUQuickControlSliderView)initWithProfile:(id)profile;
+- (id)intrinsicSizeDescriptorForControlSize:(unint64_t)size;
 - (id)secondaryValue;
 - (id)value;
 - (void)_actuateTapticFeedback;
 - (void)_prepareForTapticFeedback;
-- (void)_updateDecorationIconDescriptorAnimated:(BOOL)a3;
+- (void)_updateDecorationIconDescriptorAnimated:(BOOL)animated;
 - (void)_updateOffState;
-- (void)_updateUIForReachabilityState:(unint64_t)a3;
+- (void)_updateUIForReachabilityState:(unint64_t)state;
 - (void)layoutSubviews;
-- (void)setProfile:(id)a3;
-- (void)setRawSliderValue:(double)a3;
-- (void)setSecondarySliderValue:(double)a3;
-- (void)setSecondaryValue:(id)a3;
-- (void)setSliderValue:(double)a3;
-- (void)setValue:(id)a3;
+- (void)setProfile:(id)profile;
+- (void)setRawSliderValue:(double)value;
+- (void)setSecondarySliderValue:(double)value;
+- (void)setSecondaryValue:(id)value;
+- (void)setSliderValue:(double)value;
+- (void)setValue:(id)value;
 @end
 
 @implementation HUQuickControlSliderView
 
-- (HUQuickControlSliderView)initWithProfile:(id)a3
+- (HUQuickControlSliderView)initWithProfile:(id)profile
 {
-  v5 = a3;
+  profileCopy = profile;
   v52.receiver = self;
   v52.super_class = HUQuickControlSliderView;
   v6 = [(HUQuickControlSliderView *)&v52 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_profile, a3);
+    objc_storeStrong(&v6->_profile, profile);
     v7->_reachabilityState = 0;
     [(HUQuickControlSliderView *)v7 _permittedValueRange];
     v7->_sliderValue = v8;
     if ([MEMORY[0x277D14CE8] shouldUseControlCenterMaterials])
     {
-      v9 = [MEMORY[0x277CFC960] controlCenterTertiaryMaterial];
-      [(HUQuickControlSliderView *)v7 setBackgroundView:v9];
+      controlCenterTertiaryMaterial = [MEMORY[0x277CFC960] controlCenterTertiaryMaterial];
+      [(HUQuickControlSliderView *)v7 setBackgroundView:controlCenterTertiaryMaterial];
     }
 
     else
@@ -46,82 +46,82 @@
       v10 = [[HUQuickControlBackgroundEffectView alloc] initWithEffectType:0];
       [(HUQuickControlSliderView *)v7 setBackgroundView:v10];
 
-      v9 = [MEMORY[0x277D75348] quaternarySystemFillColor];
-      v11 = [(HUQuickControlSliderView *)v7 backgroundView];
-      [v11 setTintColor:v9];
+      controlCenterTertiaryMaterial = [MEMORY[0x277D75348] quaternarySystemFillColor];
+      backgroundView = [(HUQuickControlSliderView *)v7 backgroundView];
+      [backgroundView setTintColor:controlCenterTertiaryMaterial];
     }
 
-    v12 = [(HUQuickControlSliderView *)v7 backgroundView];
-    [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+    backgroundView2 = [(HUQuickControlSliderView *)v7 backgroundView];
+    [backgroundView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v13 = [(HUQuickControlSliderView *)v7 backgroundView];
-    [(HUQuickControlSliderView *)v7 addSubview:v13];
+    backgroundView3 = [(HUQuickControlSliderView *)v7 backgroundView];
+    [(HUQuickControlSliderView *)v7 addSubview:backgroundView3];
 
-    v14 = [(HUQuickControlSliderView *)v7 layer];
-    [v14 setAllowsGroupOpacity:0];
+    layer = [(HUQuickControlSliderView *)v7 layer];
+    [layer setAllowsGroupOpacity:0];
 
-    v15 = [(HUQuickControlSliderView *)v7 layer];
-    [v15 setAllowsGroupBlending:0];
+    layer2 = [(HUQuickControlSliderView *)v7 layer];
+    [layer2 setAllowsGroupBlending:0];
 
-    v16 = [(HUQuickControlSliderView *)v7 layer];
-    [v16 setMasksToBounds:1];
+    layer3 = [(HUQuickControlSliderView *)v7 layer];
+    [layer3 setMasksToBounds:1];
 
     v17 = [HUQuickControlSliderValueOverlayView alloc];
     [(HUQuickControlSliderView *)v7 bounds];
     v18 = [(HUQuickControlSliderValueOverlayView *)v17 initWithFrame:?];
     [(HUQuickControlSliderView *)v7 setValueOverlayView:v18];
 
-    v19 = [(HUQuickControlSliderView *)v7 profile];
-    v20 = [v19 showGrabbers];
-    v21 = [(HUQuickControlSliderView *)v7 valueOverlayView];
-    [v21 setShowGrabbers:v20];
+    profile = [(HUQuickControlSliderView *)v7 profile];
+    showGrabbers = [profile showGrabbers];
+    valueOverlayView = [(HUQuickControlSliderView *)v7 valueOverlayView];
+    [valueOverlayView setShowGrabbers:showGrabbers];
 
-    v22 = [(HUQuickControlSliderView *)v7 valueOverlayView];
-    [(HUQuickControlSliderView *)v7 addSubview:v22];
+    valueOverlayView2 = [(HUQuickControlSliderView *)v7 valueOverlayView];
+    [(HUQuickControlSliderView *)v7 addSubview:valueOverlayView2];
 
     v23 = objc_alloc_init(MEMORY[0x277D75D18]);
     [(HUQuickControlSliderView *)v7 setBorderView:v23];
 
-    v24 = [MEMORY[0x277D75348] clearColor];
-    v25 = [(HUQuickControlSliderView *)v7 borderView];
-    [v25 setBackgroundColor:v24];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    borderView = [(HUQuickControlSliderView *)v7 borderView];
+    [borderView setBackgroundColor:clearColor];
 
-    v26 = [(HUQuickControlSliderView *)v7 borderView];
-    v27 = [v26 layer];
-    [v27 setBorderWidth:1.0];
+    borderView2 = [(HUQuickControlSliderView *)v7 borderView];
+    layer4 = [borderView2 layer];
+    [layer4 setBorderWidth:1.0];
 
-    v28 = [MEMORY[0x277D75348] systemBlackColor];
-    v29 = [v28 colorWithAlphaComponent:0.0500000007];
-    v30 = [v29 CGColor];
-    v31 = [(HUQuickControlSliderView *)v7 borderView];
-    v32 = [v31 layer];
-    [v32 setBorderColor:v30];
+    systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+    v29 = [systemBlackColor colorWithAlphaComponent:0.0500000007];
+    cGColor = [v29 CGColor];
+    borderView3 = [(HUQuickControlSliderView *)v7 borderView];
+    layer5 = [borderView3 layer];
+    [layer5 setBorderColor:cGColor];
 
-    v33 = [(HUQuickControlSliderView *)v7 borderView];
-    [v33 setTranslatesAutoresizingMaskIntoConstraints:0];
+    borderView4 = [(HUQuickControlSliderView *)v7 borderView];
+    [borderView4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v34 = [(HUQuickControlSliderView *)v7 borderView];
-    v35 = [v34 layer];
-    [v35 setMasksToBounds:1];
+    borderView5 = [(HUQuickControlSliderView *)v7 borderView];
+    layer6 = [borderView5 layer];
+    [layer6 setMasksToBounds:1];
 
-    v36 = [(HUQuickControlSliderView *)v7 borderView];
-    [(HUQuickControlSliderView *)v7 addSubview:v36];
+    borderView6 = [(HUQuickControlSliderView *)v7 borderView];
+    [(HUQuickControlSliderView *)v7 addSubview:borderView6];
 
-    v37 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v46 = MEMORY[0x277D85DD0];
     v47 = 3221225472;
     v48 = __44__HUQuickControlSliderView_initWithProfile___block_invoke;
     v49 = &unk_277DB9438;
-    v50 = v37;
+    v50 = array;
     v38 = v7;
     v51 = v38;
-    v39 = v37;
+    v39 = array;
     v40 = _Block_copy(&v46);
     v41 = [(HUQuickControlSliderView *)v38 backgroundView:v46];
     v40[2](v40, v41);
 
-    v42 = [(HUQuickControlSliderView *)v38 borderView];
-    v40[2](v40, v42);
+    borderView7 = [(HUQuickControlSliderView *)v38 borderView];
+    v40[2](v40, borderView7);
 
     LODWORD(v43) = 1148846080;
     [(HUQuickControlSliderView *)v38 setContentHuggingPriority:0 forAxis:v43];
@@ -174,11 +174,11 @@ void __44__HUQuickControlSliderView_initWithProfile___block_invoke(uint64_t a1, 
   return result;
 }
 
-- (void)setSliderValue:(double)a3
+- (void)setSliderValue:(double)value
 {
   [(HUQuickControlSliderView *)self setRawSliderValue:?];
   [(HUQuickControlSliderView *)self _permittedValueRange];
-  v7 = fmax(v6, fmin(a3, v5));
+  v7 = fmax(v6, fmin(value, v5));
   [(HUQuickControlSliderView *)self primaryNormalizedValue];
   v9 = v8 >= 1.0 || v7 < 1.0;
   if (!v9 || ([(HUQuickControlSliderView *)self primaryNormalizedValue], v10 > 0.0) && v7 <= 0.0)
@@ -209,10 +209,10 @@ uint64_t __43__HUQuickControlSliderView_setSliderValue___block_invoke(uint64_t a
   return [v3 setNeedsLayout];
 }
 
-- (void)setSecondarySliderValue:(double)a3
+- (void)setSecondarySliderValue:(double)value
 {
   [(HUQuickControlSliderView *)self _permittedValueRange];
-  v7 = fmax(v6, fmin(a3, v5));
+  v7 = fmax(v6, fmin(value, v5));
   [(HUQuickControlSliderView *)self secondaryNormalizedValue];
   v9 = v8 >= 1.0 || v7 < 1.0;
   if (!v9 || ([(HUQuickControlSliderView *)self secondaryNormalizedValue], v10 > 0.0) && v7 <= 0.0)
@@ -243,11 +243,11 @@ uint64_t __52__HUQuickControlSliderView_setSecondarySliderValue___block_invoke(u
   return [v3 setNeedsLayout];
 }
 
-- (void)setRawSliderValue:(double)a3
+- (void)setRawSliderValue:(double)value
 {
   if ((NACGFloatEqualToFloat() & 1) == 0)
   {
-    self->_rawSliderValue = a3;
+    self->_rawSliderValue = value;
 
     [(HUQuickControlSliderView *)self _updateOffState];
   }
@@ -255,10 +255,10 @@ uint64_t __52__HUQuickControlSliderView_setSecondarySliderValue___block_invoke(u
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(HUQuickControlSliderView *)self profile];
-  v3 = HUQuickControlSliderMetricsForControlSize([v2 controlSize]);
-  v4 = [v3 sizeDescriptor];
-  [v4 intrinsicSize];
+  profile = [(HUQuickControlSliderView *)self profile];
+  v3 = HUQuickControlSliderMetricsForControlSize([profile controlSize]);
+  sizeDescriptor = [v3 sizeDescriptor];
+  [sizeDescriptor intrinsicSize];
   v6 = v5;
   v8 = v7;
 
@@ -279,8 +279,8 @@ uint64_t __52__HUQuickControlSliderView_setSecondarySliderValue___block_invoke(u
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(HUQuickControlSliderView *)self profile];
-  v12 = HUQuickControlSliderMetricsForControlSize([v11 controlSize]);
+  profile = [(HUQuickControlSliderView *)self profile];
+  v12 = HUQuickControlSliderMetricsForControlSize([profile controlSize]);
   [v12 widthToCornerRadiusRatio];
   v14 = v13;
   [(HUQuickControlSliderView *)self bounds];
@@ -288,25 +288,25 @@ uint64_t __52__HUQuickControlSliderView_setSecondarySliderValue___block_invoke(u
 
   [(HUQuickControlSliderView *)self _continuousCornerRadius];
   v17 = v16;
-  v18 = [(HUQuickControlSliderView *)self borderView];
-  [v18 _setContinuousCornerRadius:v17];
+  borderView = [(HUQuickControlSliderView *)self borderView];
+  [borderView _setContinuousCornerRadius:v17];
 
-  v19 = [(HUQuickControlSliderView *)self profile];
-  v20 = [v19 controlSize];
-  v21 = [(HUQuickControlSliderView *)self valueOverlayView];
-  [v21 setControlSize:v20];
+  profile2 = [(HUQuickControlSliderView *)self profile];
+  controlSize = [profile2 controlSize];
+  valueOverlayView = [(HUQuickControlSliderView *)self valueOverlayView];
+  [valueOverlayView setControlSize:controlSize];
 
-  v22 = [(HUQuickControlSliderView *)self profile];
-  LODWORD(v20) = [v22 hasSecondaryValue];
+  profile3 = [(HUQuickControlSliderView *)self profile];
+  LODWORD(controlSize) = [profile3 hasSecondaryValue];
 
-  if (!v20)
+  if (!controlSize)
   {
-    v23 = [(HUQuickControlSliderView *)self profile];
-    v24 = [v23 preferredFillSection];
+    profile4 = [(HUQuickControlSliderView *)self profile];
+    preferredFillSection = [profile4 preferredFillSection];
 
     [(HUQuickControlSliderView *)self sliderValue];
     v26 = v25;
-    if (v24)
+    if (preferredFillSection)
     {
       [(HUQuickControlSliderView *)self bounds];
       v10 = (1.0 - v26) * v27;
@@ -322,10 +322,10 @@ uint64_t __52__HUQuickControlSliderView_setSecondarySliderValue___block_invoke(u
   [(HUQuickControlSliderView *)self bounds];
   v6 = v30 * v31;
 LABEL_6:
-  v32 = [(HUQuickControlSliderView *)self profile];
-  v33 = [v32 hasSecondaryValue];
+  profile5 = [(HUQuickControlSliderView *)self profile];
+  hasSecondaryValue = [profile5 hasSecondaryValue];
 
-  if (v33)
+  if (hasSecondaryValue)
   {
     [(HUQuickControlSliderView *)self bounds];
     v35 = v34 - v6;
@@ -335,11 +335,11 @@ LABEL_6:
     v10 = v35 - v37 * v38;
   }
 
-  v39 = [(HUQuickControlSliderView *)self valueOverlayView];
-  [v39 setHasSecondGrabber:v33];
+  valueOverlayView2 = [(HUQuickControlSliderView *)self valueOverlayView];
+  [valueOverlayView2 setHasSecondGrabber:hasSecondaryValue];
 
-  v40 = [(HUQuickControlSliderView *)self valueOverlayView];
-  [v40 setFrame:{v4, v6, v8, v10}];
+  valueOverlayView3 = [(HUQuickControlSliderView *)self valueOverlayView];
+  [valueOverlayView3 setFrame:{v4, v6, v8, v10}];
 
   v64[0] = MEMORY[0x277D85DD0];
   v64[1] = 3221225472;
@@ -347,25 +347,25 @@ LABEL_6:
   v64[3] = &unk_277DBE5A8;
   v64[4] = self;
   v41 = __42__HUQuickControlSliderView_layoutSubviews__block_invoke(v64);
-  v42 = [(HUQuickControlSliderView *)self valueOverlayView];
-  [v42 setPrimaryGrabberLocation:v41];
+  valueOverlayView4 = [(HUQuickControlSliderView *)self valueOverlayView];
+  [valueOverlayView4 setPrimaryGrabberLocation:v41];
 
-  v43 = [(HUQuickControlSliderView *)self profile];
-  v44 = [v43 tintColor];
-  v45 = [(HUQuickControlSliderView *)self valueOverlayView];
-  [v45 setLayerColor:v44];
+  profile6 = [(HUQuickControlSliderView *)self profile];
+  tintColor = [profile6 tintColor];
+  valueOverlayView5 = [(HUQuickControlSliderView *)self valueOverlayView];
+  [valueOverlayView5 setLayerColor:tintColor];
 
-  v46 = [(HUQuickControlSliderView *)self profile];
-  v47 = [v46 tintColor];
-  v48 = [(HUQuickControlSliderView *)self traitCollection];
-  [v48 userInterfaceStyle];
-  v49 = [(HUQuickControlSliderView *)self showOffState];
-  v51 = borderColorSurroundingColor(v47, v50, v49);
+  profile7 = [(HUQuickControlSliderView *)self profile];
+  tintColor2 = [profile7 tintColor];
+  traitCollection = [(HUQuickControlSliderView *)self traitCollection];
+  [traitCollection userInterfaceStyle];
+  showOffState = [(HUQuickControlSliderView *)self showOffState];
+  v51 = borderColorSurroundingColor(tintColor2, v50, showOffState);
 
-  v52 = [v51 CGColor];
-  v53 = [(HUQuickControlSliderView *)self borderView];
-  v54 = [v53 layer];
-  [v54 setBorderColor:v52];
+  cGColor = [v51 CGColor];
+  borderView2 = [(HUQuickControlSliderView *)self borderView];
+  layer = [borderView2 layer];
+  [layer setBorderColor:cGColor];
 
   HUDefaultSizeForIconSize();
   v56 = v55;
@@ -374,8 +374,8 @@ LABEL_6:
   v60 = v59 * 0.5 - v56 * 0.5;
   [(HUQuickControlSliderView *)self bounds];
   v62 = v61 - v58 - v60 + 4.0;
-  v63 = [(HUQuickControlSliderView *)self decorationIconView];
-  [v63 setFrame:{v60, v62, v56, v58}];
+  decorationIconView = [(HUQuickControlSliderView *)self decorationIconView];
+  [decorationIconView setFrame:{v60, v62, v56, v58}];
 
   [(HUQuickControlSliderView *)self _updateUIForReachabilityState:[(HUQuickControlSliderView *)self reachabilityState]];
 }
@@ -398,11 +398,11 @@ BOOL __42__HUQuickControlSliderView_layoutSubviews__block_invoke(uint64_t a1)
 
 - (void)_updateOffState
 {
-  v3 = [(HUQuickControlSliderView *)self profile];
-  v4 = [v3 hasOffState];
+  profile = [(HUQuickControlSliderView *)self profile];
+  hasOffState = [profile hasOffState];
 
-  v5 = self;
-  if (v4)
+  selfCopy2 = self;
+  if (hasOffState)
   {
     [(HUQuickControlSliderView *)self rawSliderValue];
     v11[1] = 3221225472;
@@ -413,7 +413,7 @@ BOOL __42__HUQuickControlSliderView_layoutSubviews__block_invoke(uint64_t a1)
     *&v11[5] = round(v6 * 100.0) / 100.0;
     __43__HUQuickControlSliderView__updateOffState__block_invoke(v11);
     v8 = v7 != 0;
-    v5 = self;
+    selfCopy2 = self;
   }
 
   else
@@ -421,10 +421,10 @@ BOOL __42__HUQuickControlSliderView_layoutSubviews__block_invoke(uint64_t a1)
     v8 = 0;
   }
 
-  [(HUQuickControlSliderView *)v5 setShowOffState:v8];
-  v9 = [(HUQuickControlSliderView *)self showOffState];
-  v10 = [(HUQuickControlSliderView *)self valueOverlayView];
-  [v10 setOff:v9];
+  [(HUQuickControlSliderView *)selfCopy2 setShowOffState:v8];
+  showOffState = [(HUQuickControlSliderView *)self showOffState];
+  valueOverlayView = [(HUQuickControlSliderView *)self valueOverlayView];
+  [valueOverlayView setOff:showOffState];
 
   [(HUQuickControlSliderView *)self _updateDecorationIconDescriptorAnimated:0];
 }
@@ -440,25 +440,25 @@ void __43__HUQuickControlSliderView__updateOffState__block_invoke(uint64_t a1)
   v3 = [objc_alloc(MEMORY[0x277D755F0]) initWithStyle:3];
   [(HUQuickControlSliderView *)self setFeedbackGenerator:v3];
 
-  v4 = [(HUQuickControlSliderView *)self feedbackGenerator];
-  [v4 prepare];
+  feedbackGenerator = [(HUQuickControlSliderView *)self feedbackGenerator];
+  [feedbackGenerator prepare];
 }
 
 - (void)_actuateTapticFeedback
 {
-  v3 = [(HUQuickControlSliderView *)self feedbackGenerator];
-  [v3 impactOccurred];
+  feedbackGenerator = [(HUQuickControlSliderView *)self feedbackGenerator];
+  [feedbackGenerator impactOccurred];
 
-  v4 = [(HUQuickControlSliderView *)self feedbackGenerator];
-  [v4 prepare];
+  feedbackGenerator2 = [(HUQuickControlSliderView *)self feedbackGenerator];
+  [feedbackGenerator2 prepare];
 }
 
-- (id)intrinsicSizeDescriptorForControlSize:(unint64_t)a3
+- (id)intrinsicSizeDescriptorForControlSize:(unint64_t)size
 {
-  v3 = HUQuickControlSliderMetricsForControlSize(a3);
-  v4 = [v3 sizeDescriptor];
+  v3 = HUQuickControlSliderMetricsForControlSize(size);
+  sizeDescriptor = [v3 sizeDescriptor];
 
-  return v4;
+  return sizeDescriptor;
 }
 
 - (id)value
@@ -469,19 +469,19 @@ void __43__HUQuickControlSliderView__updateOffState__block_invoke(uint64_t a1)
   return [v2 numberWithDouble:?];
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  if (a3)
+  if (value)
   {
-    v4 = a3;
+    valueCopy = value;
   }
 
   else
   {
-    v4 = &unk_282492000;
+    valueCopy = &unk_282492000;
   }
 
-  [v4 doubleValue];
+  [valueCopy doubleValue];
 
   [(HUQuickControlSliderView *)self setSliderValue:?];
 }
@@ -494,67 +494,67 @@ void __43__HUQuickControlSliderView__updateOffState__block_invoke(uint64_t a1)
   return [v2 numberWithDouble:?];
 }
 
-- (void)setSecondaryValue:(id)a3
+- (void)setSecondaryValue:(id)value
 {
-  if (a3)
+  if (value)
   {
-    v4 = a3;
+    valueCopy = value;
   }
 
   else
   {
-    v4 = &unk_282492000;
+    valueCopy = &unk_282492000;
   }
 
-  [v4 doubleValue];
+  [valueCopy doubleValue];
 
   [(HUQuickControlSliderView *)self setSecondarySliderValue:?];
 }
 
-- (void)setProfile:(id)a3
+- (void)setProfile:(id)profile
 {
-  v4 = a3;
-  v5 = [(HUQuickControlViewProfile *)self->_profile controlSize];
-  v6 = [(HUQuickControlViewProfile *)v4 controlSize];
+  profileCopy = profile;
+  controlSize = [(HUQuickControlViewProfile *)self->_profile controlSize];
+  controlSize2 = [(HUQuickControlViewProfile *)profileCopy controlSize];
   profile = self->_profile;
-  self->_profile = v4;
+  self->_profile = profileCopy;
 
   [(HUQuickControlSliderView *)self _updateOffState];
   [(HUQuickControlSliderView *)self setNeedsLayout];
-  if (v5 != v6)
+  if (controlSize != controlSize2)
   {
 
     [(HUQuickControlSliderView *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)_updateUIForReachabilityState:(unint64_t)a3
+- (void)_updateUIForReachabilityState:(unint64_t)state
 {
-  if (a3 <= 2)
+  if (state <= 2)
   {
-    [(HUQuickControlSliderView *)self setAlpha:dbl_20D5CB090[a3]];
+    [(HUQuickControlSliderView *)self setAlpha:dbl_20D5CB090[state]];
   }
 }
 
-- (void)_updateDecorationIconDescriptorAnimated:(BOOL)a3
+- (void)_updateDecorationIconDescriptorAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(HUQuickControlSliderView *)self profile];
-  v6 = [v5 decorationIconDescriptor];
+  animatedCopy = animated;
+  profile = [(HUQuickControlSliderView *)self profile];
+  decorationIconDescriptor = [profile decorationIconDescriptor];
 
-  if (v6)
+  if (decorationIconDescriptor)
   {
-    v7 = [(HUQuickControlSliderView *)self _createDecorationIconViewIfNecessary];
-    v8 = [(HUQuickControlSliderView *)self decorationIconView];
-    v9 = [(HUQuickControlSliderView *)self profile];
-    v10 = [v9 decorationIconDescriptor];
-    [v8 updateWithIconDescriptor:v10 displayStyle:3 animated:v3 & ~v7];
+    _createDecorationIconViewIfNecessary = [(HUQuickControlSliderView *)self _createDecorationIconViewIfNecessary];
+    decorationIconView = [(HUQuickControlSliderView *)self decorationIconView];
+    profile2 = [(HUQuickControlSliderView *)self profile];
+    decorationIconDescriptor2 = [profile2 decorationIconDescriptor];
+    [decorationIconView updateWithIconDescriptor:decorationIconDescriptor2 displayStyle:3 animated:animatedCopy & ~_createDecorationIconViewIfNecessary];
 
-    v11 = [(HUQuickControlSliderView *)self profile];
-    v12 = [v11 tintColor];
-    LODWORD(v8) = HUIsLightColor(v12);
+    profile3 = [(HUQuickControlSliderView *)self profile];
+    tintColor = [profile3 tintColor];
+    LODWORD(decorationIconView) = HUIsLightColor(tintColor);
 
-    if (v8)
+    if (decorationIconView)
     {
       [MEMORY[0x277D75348] systemGrayTintColor];
     }
@@ -564,14 +564,14 @@ void __43__HUQuickControlSliderView__updateOffState__block_invoke(uint64_t a1)
       [MEMORY[0x277D75348] systemWhiteColor];
     }
     v15 = ;
-    v14 = [(HUQuickControlSliderView *)self decorationIconView];
-    [v14 setTintColor:v15];
+    decorationIconView2 = [(HUQuickControlSliderView *)self decorationIconView];
+    [decorationIconView2 setTintColor:v15];
   }
 
   else
   {
-    v13 = [(HUQuickControlSliderView *)self decorationIconView];
-    [v13 removeFromSuperview];
+    decorationIconView3 = [(HUQuickControlSliderView *)self decorationIconView];
+    [decorationIconView3 removeFromSuperview];
 
     [(HUQuickControlSliderView *)self setDecorationIconView:0];
   }
@@ -579,27 +579,27 @@ void __43__HUQuickControlSliderView__updateOffState__block_invoke(uint64_t a1)
 
 - (BOOL)_createDecorationIconViewIfNecessary
 {
-  v3 = [(HUQuickControlSliderView *)self decorationIconView];
+  decorationIconView = [(HUQuickControlSliderView *)self decorationIconView];
 
-  if (!v3)
+  if (!decorationIconView)
   {
     v4 = objc_alloc_init(MEMORY[0x277D180D0]);
     [(HUQuickControlSliderView *)self setDecorationIconView:v4];
 
-    v5 = [(HUQuickControlSliderView *)self decorationIconView];
-    [v5 setDisplayContext:0];
+    decorationIconView2 = [(HUQuickControlSliderView *)self decorationIconView];
+    [decorationIconView2 setDisplayContext:0];
 
-    v6 = [MEMORY[0x277D75348] systemWhiteColor];
-    v7 = [(HUQuickControlSliderView *)self decorationIconView];
-    [v7 setTintColor:v6];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    decorationIconView3 = [(HUQuickControlSliderView *)self decorationIconView];
+    [decorationIconView3 setTintColor:systemWhiteColor];
 
-    v8 = [(HUQuickControlSliderView *)self decorationIconView];
-    [(HUQuickControlSliderView *)self addSubview:v8];
+    decorationIconView4 = [(HUQuickControlSliderView *)self decorationIconView];
+    [(HUQuickControlSliderView *)self addSubview:decorationIconView4];
 
     [(HUQuickControlSliderView *)self setNeedsLayout];
   }
 
-  return v3 == 0;
+  return decorationIconView == 0;
 }
 
 @end

@@ -26,7 +26,7 @@
 
 - (uint64_t)daysInWeek
 {
-  [a1 maximumRangeOfUnit:512];
+  [self maximumRangeOfUnit:512];
   if (v1 <= 0)
   {
     return 7;
@@ -52,7 +52,7 @@
 
 - (uint64_t)secondsInMinute
 {
-  [a1 maximumRangeOfUnit:128];
+  [self maximumRangeOfUnit:128];
   if (v1 <= 0)
   {
     return 60;
@@ -70,7 +70,7 @@
   block[1] = 3221225472;
   block[2] = __66__NSCalendar_CalClassAdditions__sharedAutoupdatingCurrentCalendar__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedAutoupdatingCurrentCalendar_onceToken != -1)
   {
     dispatch_once(&sharedAutoupdatingCurrentCalendar_onceToken, block);
@@ -83,7 +83,7 @@
 
 - (uint64_t)minutesInHour
 {
-  [a1 maximumRangeOfUnit:64];
+  [self maximumRangeOfUnit:64];
   if (v1 <= 0)
   {
     return 60;
@@ -97,7 +97,7 @@
 
 - (uint64_t)hoursInDay
 {
-  [a1 maximumRangeOfUnit:32];
+  [self maximumRangeOfUnit:32];
   if (v1 <= 0)
   {
     return 24;
@@ -124,21 +124,21 @@
 - (uint64_t)monthsInYearForDate:()CalClassAdditions
 {
   v4 = a3;
-  v5 = [v4 yearInCalendar:a1];
+  v5 = [v4 yearInCalendar:self];
   v6 = [MEMORY[0x1E695DF10] CalComponentForYears:v5];
-  v7 = [a1 dateFromComponents:v6];
-  if ([v4 yearInCalendar:a1] == v5)
+  v7 = [self dateFromComponents:v6];
+  if ([v4 yearInCalendar:self] == v5)
   {
     v8 = 0;
     v9 = v4;
     do
     {
-      v4 = [v7 dateByAddingMonths:++v8 inCalendar:a1];
+      v4 = [v7 dateByAddingMonths:++v8 inCalendar:self];
 
       v9 = v4;
     }
 
-    while ([v4 yearInCalendar:a1] == v5);
+    while ([v4 yearInCalendar:self] == v5);
   }
 
   else
@@ -151,16 +151,16 @@
 
 - (uint64_t)secondsInDay
 {
-  v2 = [a1 secondsInMinute];
-  v3 = [a1 minutesInHour] * v2;
-  return v3 * [a1 hoursInDay];
+  secondsInMinute = [self secondsInMinute];
+  v3 = [self minutesInHour] * secondsInMinute;
+  return v3 * [self hoursInDay];
 }
 
 - (id)dateBySanityCheckingDateRoundedToDay:()CalClassAdditions
 {
   v34 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [v4 hourInCalendar:a1];
+  v5 = [v4 hourInCalendar:self];
   if (v5)
   {
     v6 = v5;
@@ -169,10 +169,10 @@
     v9 = v7;
     if (v6 >= 12)
     {
-      v9 = [v7 dateByAddingDays:1 inCalendar:a1];
+      v9 = [v7 dateByAddingDays:1 inCalendar:self];
     }
 
-    v4 = [v9 dateRemovingTimeComponentsInCalendar:a1];
+    v4 = [v9 dateRemovingTimeComponentsInCalendar:self];
 
     if (([v4 isEqualToDate:v8] & 1) == 0)
     {
@@ -180,14 +180,14 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         v13 = [MEMORY[0x1E696AB78] localizedStringFromDate:v8 dateStyle:1 timeStyle:1];
-        v21 = [a1 timeZone];
-        v14 = [v21 descriptionForDate:v8];
+        timeZone = [self timeZone];
+        v14 = [timeZone descriptionForDate:v8];
         v15 = [MEMORY[0x1E696AB78] localizedStringFromDate:v4 dateStyle:1 timeStyle:1];
-        v20 = [a1 timeZone];
-        v16 = [v20 descriptionForDate:v4];
-        v17 = [a1 calendarIdentifier];
-        v18 = [a1 locale];
-        v19 = [v18 localeIdentifier];
+        timeZone2 = [self timeZone];
+        v16 = [timeZone2 descriptionForDate:v4];
+        calendarIdentifier = [self calendarIdentifier];
+        locale = [self locale];
+        localeIdentifier = [locale localeIdentifier];
         *buf = 138413570;
         v23 = v13;
         v24 = 2112;
@@ -197,9 +197,9 @@
         v28 = 2112;
         v29 = v16;
         v30 = 2112;
-        v31 = v17;
+        v31 = calendarIdentifier;
         v32 = 2112;
-        v33 = v19;
+        v33 = localeIdentifier;
         _os_log_error_impl(&dword_1B990D000, v10, OS_LOG_TYPE_ERROR, "ERROR: The given date could not be rounded to midnight. This date & time may not exist in the active calendar.\n\tInitial Start Date = %@ in %@;\n\tRevised Start Date = %@ in %@;\n\tCalendar/Locale = %@/%@;", buf, 0x3Eu);
       }
     }
@@ -221,15 +221,15 @@
 
   else
   {
-    v9 = [a1 components:48 fromDate:v6 toDate:v7 options:0];
+    v9 = [self components:48 fromDate:v6 toDate:v7 options:0];
     v8 = [v9 day];
     if ([v9 hour])
     {
-      v10 = [v6 hourInCalendar:a1];
-      v11 = [a1 timeZone];
-      v12 = [v11 secondsFromGMTForDate:v7];
-      v13 = [a1 timeZone];
-      v14 = v12 - [v13 secondsFromGMTForDate:v6];
+      v10 = [v6 hourInCalendar:self];
+      timeZone = [self timeZone];
+      v12 = [timeZone secondsFromGMTForDate:v7];
+      timeZone2 = [self timeZone];
+      v14 = v12 - [timeZone2 secondsFromGMTForDate:v6];
 
       if (v14 <= 0)
       {
@@ -259,7 +259,7 @@
 
 - (BOOL)dateIsFirstOfMonth:()CalClassAdditions
 {
-  v3 = [a1 components:2147483664 fromDate:a3];
+  v3 = [self components:2147483664 fromDate:a3];
   v4 = [v3 day] == 1;
 
   return v4;
@@ -268,14 +268,14 @@
 - (BOOL)dateIsFirstOfYear:()CalClassAdditions
 {
   v4 = a3;
-  v5 = [a1 components:14 fromDate:v4];
+  v5 = [self components:14 fromDate:v4];
   v6 = objc_opt_new();
   [v6 setEra:{objc_msgSend(v5, "era")}];
   [v6 setYear:{objc_msgSend(v5, "year")}];
-  v7 = [a1 dateFromComponents:v6];
+  v7 = [self dateFromComponents:v6];
   if (v7)
   {
-    v8 = [a1 compareDate:v7 toDate:v4 toUnitGranularity:16] == 0;
+    v8 = [self compareDate:v7 toDate:v4 toUnitGranularity:16] == 0;
   }
 
   else
@@ -290,15 +290,15 @@
 {
   v6 = a3;
   v7 = a4;
-  if ([a1 isDate:v6 inSameDayAsDate:v7])
+  if ([self isDate:v6 inSameDayAsDate:v7])
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [a1 startOfDayForDate:v6];
-    v10 = [a1 dateByAddingUnit:16 value:1 toDate:v9 options:0];
+    v9 = [self startOfDayForDate:v6];
+    v10 = [self dateByAddingUnit:16 value:1 toDate:v9 options:0];
     v8 = [v7 isEqualToDate:v10] ^ 1;
   }
 
@@ -309,12 +309,12 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 timeZone];
-  [a1 setTimeZone:v6];
+  timeZone = [self timeZone];
+  [self setTimeZone:v6];
 
-  v9 = [a1 dateFromComponents:v7];
+  v9 = [self dateFromComponents:v7];
 
-  [a1 setTimeZone:v8];
+  [self setTimeZone:timeZone];
 
   return v9;
 }
@@ -358,8 +358,8 @@
     [v6 setSecond:{-objc_msgSend(v6, "second")}];
   }
 
-  v7 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v8 = [v7 dateByAddingComponents:v6 toDate:v5 options:0];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v8 = [currentCalendar dateByAddingComponents:v6 toDate:v5 options:0];
 
   return v8;
 }
@@ -369,11 +369,11 @@
   v4 = a3;
   if (!v4 || ([MEMORY[0x1E695DFE8] timeZoneWithName:@"GMT"], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v4, "isEquivalentTo:", v5), v5, v6))
   {
-    v7 = [a1 CalGregorianGMTCalendar];
+    calGregorianGMTCalendar = [self CalGregorianGMTCalendar];
     goto LABEL_12;
   }
 
-  v8 = [v4 name];
+  name = [v4 name];
   os_unfair_lock_lock(&CalGregorianCalendarForTimeZone__lock);
   v9 = CalGregorianCalendarForTimeZone__calendarForTimeZoneCache;
   if (CalGregorianCalendarForTimeZone__calendarForTimeZoneCache)
@@ -392,12 +392,12 @@ LABEL_5:
     WeakRetained = v9;
   }
 
-  v7 = [WeakRetained objectForKey:v8];
-  if (!v7)
+  calGregorianGMTCalendar = [WeakRetained objectForKey:name];
+  if (!calGregorianGMTCalendar)
   {
-    v7 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
-    [v7 setTimeZone:v4];
-    [WeakRetained setObject:v7 forKey:v8];
+    calGregorianGMTCalendar = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
+    [calGregorianGMTCalendar setTimeZone:v4];
+    [WeakRetained setObject:calGregorianGMTCalendar forKey:name];
     v11 = [WeakRetained count];
     if (CalGregorianCalendarForTimeZone__calendarForTimeZoneCache)
     {
@@ -416,7 +416,7 @@ LABEL_5:
 
 LABEL_12:
 
-  return v7;
+  return calGregorianGMTCalendar;
 }
 
 + (id)CalCalendarWithUnsanitizedCalendarIdentifier:()CalClassAdditions
@@ -455,27 +455,27 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  v9 = [a1 dateFromComponents:v6];
-  v10 = [v7 endDate];
-  v11 = [v9 CalIsAfterDate:v10];
+  v9 = [self dateFromComponents:v6];
+  endDate = [v7 endDate];
+  v11 = [v9 CalIsAfterDate:endDate];
 
   if ((v11 & 1) == 0)
   {
-    v13 = [v7 startDate];
-    v14 = [v9 CalIsAfterDate:v13];
+    startDate = [v7 startDate];
+    v14 = [v9 CalIsAfterDate:startDate];
 
     if (v14)
     {
       v15 = [CalDateRange alloc];
-      v16 = [v7 endDate];
-      v17 = [(CalDateRange *)v15 initWithStartDate:v9 endDate:v16];
+      endDate2 = [v7 endDate];
+      v17 = [(CalDateRange *)v15 initWithStartDate:v9 endDate:endDate2];
 
       v7 = v17;
     }
 
 LABEL_10:
-    v18 = [v7 startDate];
-    v19 = [a1 nextDateAfterDate:v18 matchingHour:0 minute:0 second:0 options:6];
+    startDate2 = [v7 startDate];
+    v19 = [self nextDateAfterDate:startDate2 matchingHour:0 minute:0 second:0 options:6];
 
     v20 = objc_opt_new();
     v24[0] = MEMORY[0x1E69E9820];
@@ -486,7 +486,7 @@ LABEL_10:
     v25 = v7;
     v21 = v20;
     v26 = v21;
-    [a1 enumerateDatesStartingAfterDate:v19 matchingComponents:v8 options:256 usingBlock:v24];
+    [self enumerateDatesStartingAfterDate:v19 matchingComponents:v8 options:256 usingBlock:v24];
     v22 = v26;
     v12 = v21;
 
@@ -504,9 +504,9 @@ LABEL_12:
 + (id)CalDateFromBirthdayComponents:()CalClassAdditions
 {
   v3 = a3;
-  v4 = [MEMORY[0x1E695DFE8] defaultTimeZone];
-  v5 = [v3 calendar];
-  [v5 setTimeZone:v4];
+  defaultTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
+  calendar = [v3 calendar];
+  [calendar setTimeZone:defaultTimeZone];
 
   v24 = 0;
   v25 = &v24;
@@ -516,16 +516,16 @@ LABEL_12:
   v29 = 0;
   if ([v3 year] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [v3 calendar];
-    v7 = [v6 calendarIdentifier];
-    v8 = [*MEMORY[0x1E695D850] isEqualToString:v7];
+    calendar2 = [v3 calendar];
+    calendarIdentifier = [calendar2 calendarIdentifier];
+    v8 = [*MEMORY[0x1E695D850] isEqualToString:calendarIdentifier];
 
     if (v8)
     {
       v9 = [v3 copy];
       [v9 setYear:1604];
-      v10 = [v3 calendar];
-      v11 = [v10 dateFromComponents:v9];
+      calendar3 = [v3 calendar];
+      v11 = [calendar3 dateFromComponents:v9];
       v12 = v25[5];
       v25[5] = v11;
     }
@@ -537,8 +537,8 @@ LABEL_12:
       v23[2] = 0x2020000000;
       v23[3] = 0;
       [v3 setEra:0x7FFFFFFFFFFFFFFFLL];
-      v15 = [v3 calendar];
-      v16 = [MEMORY[0x1E695DEE8] CalYearlessDateThreshold];
+      calendar4 = [v3 calendar];
+      calYearlessDateThreshold = [MEMORY[0x1E695DEE8] CalYearlessDateThreshold];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __63__NSCalendar_CalClassAdditions__CalDateFromBirthdayComponents___block_invoke;
@@ -546,7 +546,7 @@ LABEL_12:
       v21 = &v24;
       v20 = v3;
       v22 = v23;
-      [v15 enumerateDatesStartingAfterDate:v16 matchingComponents:v20 options:6 usingBlock:v19];
+      [calendar4 enumerateDatesStartingAfterDate:calYearlessDateThreshold matchingComponents:v20 options:6 usingBlock:v19];
 
       _Block_object_dispose(v23, 8);
     }
@@ -554,9 +554,9 @@ LABEL_12:
 
   else
   {
-    v13 = [v3 date];
+    date = [v3 date];
     v14 = v25[5];
-    v25[5] = v13;
+    v25[5] = date;
   }
 
   v17 = v25[5];
@@ -571,14 +571,14 @@ LABEL_12:
   v11 = a6;
   v12 = objc_opt_new();
   v13 = v10;
-  v14 = [a1 dateByAddingUnit:a5 value:1 toDate:v13 options:0];
+  v14 = [self dateByAddingUnit:a5 value:1 toDate:v13 options:0];
   v15 = v13;
   if ([v13 isBeforeDate:v14])
   {
     v16 = v13;
     do
     {
-      v15 = [a1 dateByAddingUnit:a4 value:1 toDate:v16 options:0];
+      v15 = [self dateByAddingUnit:a4 value:1 toDate:v16 options:0];
 
       v17 = v11[2](v11, v15);
       [v12 addObject:v17];

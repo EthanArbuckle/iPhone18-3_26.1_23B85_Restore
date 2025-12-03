@@ -1,27 +1,27 @@
 @interface ChatCountRequestHandler
 - (_TtC7imagent23ChatCountRequestHandler)init;
-- (void)unreadCountFullReplacementWithCompletion:(id)a3;
-- (void)unreadCountWithCompletion:(id)a3;
+- (void)unreadCountFullReplacementWithCompletion:(id)completion;
+- (void)unreadCountWithCompletion:(id)completion;
 @end
 
 @implementation ChatCountRequestHandler
 
-- (void)unreadCountWithCompletion:(id)a3
+- (void)unreadCountWithCompletion:(id)completion
 {
-  v3 = _Block_copy(a3);
-  v4 = [objc_opt_self() sharedInstance];
-  v5 = [v4 unreadMessagesCount];
+  v3 = _Block_copy(completion);
+  sharedInstance = [objc_opt_self() sharedInstance];
+  unreadMessagesCount = [sharedInstance unreadMessagesCount];
 
-  v3[2](v3, v5);
+  v3[2](v3, unreadMessagesCount);
 
   _Block_release(v3);
 }
 
-- (void)unreadCountFullReplacementWithCompletion:(id)a3
+- (void)unreadCountFullReplacementWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   _Block_copy(v4);
-  v5 = self;
+  selfCopy = self;
   sub_100034270(v4);
   _Block_release(v4);
   _Block_release(v4);

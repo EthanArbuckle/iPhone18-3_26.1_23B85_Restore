@@ -1,21 +1,21 @@
 @interface AmbientPhotoFrameCuratedAssetsRequester
-- (void)passiveContentDataSourcePreviewAssetsDidChange:(id)a3;
-- (void)passiveContentPeoplePickerDataSourceChanged:(id)a3;
+- (void)passiveContentDataSourcePreviewAssetsDidChange:(id)change;
+- (void)passiveContentPeoplePickerDataSourceChanged:(id)changed;
 @end
 
 @implementation AmbientPhotoFrameCuratedAssetsRequester
 
-- (void)passiveContentDataSourcePreviewAssetsDidChange:(id)a3
+- (void)passiveContentDataSourcePreviewAssetsDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B37A7FE8(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1B37A7FE8(changeCopy);
 }
 
-- (void)passiveContentPeoplePickerDataSourceChanged:(id)a3
+- (void)passiveContentPeoplePickerDataSourceChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
+  changedCopy = changed;
+  selfCopy = self;
   sub_1B37A8290();
 }
 

@@ -1,13 +1,13 @@
 @interface STLocationStatusDomainDataChangeContext
-- (BOOL)isEqual:(id)a3;
-- (STLocationStatusDomainDataChangeContext)initWithCoder:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (STLocationStatusDomainDataChangeContext)initWithCoder:(id)coder;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)initWithChangeContext:(id)result;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STLocationStatusDomainDataChangeContext
@@ -18,96 +18,96 @@
   {
     v2 = result;
     v3 = a2;
-    v4 = [v3 isUserInitiated];
-    v5 = [v3 wantsProminentIndication];
+    isUserInitiated = [v3 isUserInitiated];
+    wantsProminentIndication = [v3 wantsProminentIndication];
 
     v6.receiver = v2;
     v6.super_class = STLocationStatusDomainDataChangeContext;
     result = objc_msgSendSuper2(&v6, sel_init);
     if (result)
     {
-      *(result + 8) = v4;
-      *(result + 9) = v5;
+      *(result + 8) = isUserInitiated;
+      *(result + 9) = wantsProminentIndication;
     }
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = [(STLocationStatusDomainDataChangeContext *)self isUserInitiated];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  isUserInitiated = [(STLocationStatusDomainDataChangeContext *)self isUserInitiated];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __51__STLocationStatusDomainDataChangeContext_isEqual___block_invoke;
   v18[3] = &unk_1E85DDD50;
-  v7 = v4;
+  v7 = equalCopy;
   v19 = v7;
-  v8 = [v5 appendBool:v6 counterpart:v18];
-  v9 = [(STLocationStatusDomainDataChangeContext *)self wantsProminentIndication];
+  v8 = [v5 appendBool:isUserInitiated counterpart:v18];
+  wantsProminentIndication = [(STLocationStatusDomainDataChangeContext *)self wantsProminentIndication];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __51__STLocationStatusDomainDataChangeContext_isEqual___block_invoke_2;
   v16 = &unk_1E85DDD50;
   v17 = v7;
   v10 = v7;
-  v11 = [v5 appendBool:v9 counterpart:&v13];
-  LOBYTE(v9) = [v5 isEqual];
+  v11 = [v5 appendBool:wantsProminentIndication counterpart:&v13];
+  LOBYTE(wantsProminentIndication) = [v5 isEqual];
 
-  return v9;
+  return wantsProminentIndication;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendBool:{-[STLocationStatusDomainDataChangeContext isUserInitiated](self, "isUserInitiated")}];
-  v5 = [v3 appendBool:{-[STLocationStatusDomainDataChangeContext wantsProminentIndication](self, "wantsProminentIndication")}];
-  v6 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendBool:{-[STLocationStatusDomainDataChangeContext isUserInitiated](self, "isUserInitiated")}];
+  v5 = [builder appendBool:{-[STLocationStatusDomainDataChangeContext wantsProminentIndication](self, "wantsProminentIndication")}];
+  v6 = [builder hash];
 
   return v6;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [STMutableLocationStatusDomainDataChangeContext allocWithZone:a3];
+  v4 = [STMutableLocationStatusDomainDataChangeContext allocWithZone:zone];
 
   return [(STLocationStatusDomainDataChangeContext *)v4 initWithChangeContext:?];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STLocationStatusDomainDataChangeContext *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STLocationStatusDomainDataChangeContext *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STLocationStatusDomainDataChangeContext *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STLocationStatusDomainDataChangeContext *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   if (self)
   {
-    v4 = a3;
-    v5 = [(STLocationStatusDomainDataChangeContext *)self succinctDescriptionBuilder];
-    [v5 setUseDebugDescription:0];
-    [v5 setActiveMultilinePrefix:v4];
+    prefixCopy = prefix;
+    succinctDescriptionBuilder = [(STLocationStatusDomainDataChangeContext *)self succinctDescriptionBuilder];
+    [succinctDescriptionBuilder setUseDebugDescription:0];
+    [succinctDescriptionBuilder setActiveMultilinePrefix:prefixCopy];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __91__STLocationStatusDomainDataChangeContext__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke;
     v9[3] = &unk_1E85DDD00;
-    v6 = v5;
+    v6 = succinctDescriptionBuilder;
     v10 = v6;
-    v11 = self;
-    [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+    selfCopy = self;
+    [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
     v7 = v6;
   }
@@ -120,18 +120,18 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[STLocationStatusDomainDataChangeContext isUserInitiated](self forKey:{"isUserInitiated"), @"userInitiated"}];
-  [v4 encodeBool:-[STLocationStatusDomainDataChangeContext wantsProminentIndication](self forKey:{"wantsProminentIndication"), @"wantsProminentIndication"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[STLocationStatusDomainDataChangeContext isUserInitiated](self forKey:{"isUserInitiated"), @"userInitiated"}];
+  [coderCopy encodeBool:-[STLocationStatusDomainDataChangeContext wantsProminentIndication](self forKey:{"wantsProminentIndication"), @"wantsProminentIndication"}];
 }
 
-- (STLocationStatusDomainDataChangeContext)initWithCoder:(id)a3
+- (STLocationStatusDomainDataChangeContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"userInitiated"];
-  v6 = [v4 decodeBoolForKey:@"wantsProminentIndication"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"userInitiated"];
+  v6 = [coderCopy decodeBoolForKey:@"wantsProminentIndication"];
 
   if (!self)
   {

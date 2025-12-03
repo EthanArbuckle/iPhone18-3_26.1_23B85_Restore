@@ -5,29 +5,29 @@
 - (UIDocumentPickerViewController)initForOpeningContentTypes:(NSArray *)contentTypes asCopy:(BOOL)asCopy;
 - (UIDocumentPickerViewController)initWithCoder:(NSCoder *)coder;
 - (UIDocumentPickerViewController)initWithDocumentTypes:(NSArray *)allowedUTIs inMode:(UIDocumentPickerMode)mode;
-- (UIDocumentPickerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (UIDocumentPickerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (UIDocumentPickerViewController)initWithURL:(NSURL *)url inMode:(UIDocumentPickerMode)mode;
 - (UIDocumentPickerViewController)initWithURLs:(NSArray *)urls inMode:(UIDocumentPickerMode)mode;
 - (_UIRemoteViewController)_containedRemoteViewController;
-- (id)_initForImportingDocumentsWithConversionRules:(id)a3;
+- (id)_initForImportingDocumentsWithConversionRules:(id)rules;
 - (id)delegate;
 - (unint64_t)pickerUserInterfaceStyle;
-- (void)_callDelegateWithSelectedURLsAndDismiss:(id)a3;
-- (void)_commonInitWithDocumentTypes:(void *)a1;
-- (void)_consumeSandboxExtensionForURL:(id)a3;
+- (void)_callDelegateWithSelectedURLsAndDismiss:(id)dismiss;
+- (void)_commonInitWithDocumentTypes:(void *)types;
+- (void)_consumeSandboxExtensionForURL:(id)l;
 - (void)_didTapCancel;
-- (void)_setChildViewController:(id)a3;
-- (void)_setForPickingDownloadsFolder:(BOOL)a3;
-- (void)_setIsContentManaged:(BOOL)a3;
+- (void)_setChildViewController:(id)controller;
+- (void)_setForPickingDownloadsFolder:(BOOL)folder;
+- (void)_setIsContentManaged:(BOOL)managed;
 - (void)_tellDelegateDocumentPickerWasCancelled;
 - (void)dealloc;
-- (void)documentBrowser:(id)a3 didPickDocumentURLs:(id)a4;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
+- (void)documentBrowser:(id)browser didPickDocumentURLs:(id)ls;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
 - (void)setAllowsMultipleSelection:(BOOL)allowsMultipleSelection;
-- (void)setPickerUserInterfaceStyle:(unint64_t)a3;
+- (void)setPickerUserInterfaceStyle:(unint64_t)style;
 - (void)setShouldShowFileExtensions:(BOOL)shouldShowFileExtensions;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation UIDocumentPickerViewController
@@ -37,23 +37,23 @@
   v7 = allowedUTIs;
   if (mode >= UIDocumentPickerModeExportToService)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerViewController.m" lineNumber:115 description:{@"%s can only be called with mode Import or Open", "-[UIDocumentPickerViewController initWithDocumentTypes:inMode:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDocumentPickerViewController.m" lineNumber:115 description:{@"%s can only be called with mode Import or Open", "-[UIDocumentPickerViewController initWithDocumentTypes:inMode:]"}];
   }
 
   if ([(NSArray *)v7 count]== 1)
   {
     v8 = MEMORY[0x1E6982C40];
-    v9 = [(NSArray *)v7 firstObject];
-    v10 = [v8 typeWithIdentifier:v9];
+    firstObject = [(NSArray *)v7 firstObject];
+    v10 = [v8 typeWithIdentifier:firstObject];
     v11 = [v10 isEqual:*MEMORY[0x1E6982DC8]];
 
     if (mode != UIDocumentPickerModeOpen)
     {
       if (v11)
       {
-        v16 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v16 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerViewController.m" lineNumber:118 description:{@"%s folder import is not supported, use open", "-[UIDocumentPickerViewController initWithDocumentTypes:inMode:]"}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerViewController.m" lineNumber:118 description:{@"%s folder import is not supported, use open", "-[UIDocumentPickerViewController initWithDocumentTypes:inMode:]"}];
       }
     }
   }
@@ -71,17 +71,17 @@
   return v13;
 }
 
-- (void)_commonInitWithDocumentTypes:(void *)a1
+- (void)_commonInitWithDocumentTypes:(void *)types
 {
   v22 = a2;
-  [a1 _setAutomaticallyDismissesAfterCompletion:1];
-  [a1 setDocumentTypes:v22];
-  v3 = [a1 documentPickerMode];
-  if (v3 <= 1)
+  [types _setAutomaticallyDismissesAfterCompletion:1];
+  [types setDocumentTypes:v22];
+  documentPickerMode = [types documentPickerMode];
+  if (documentPickerMode <= 1)
   {
-    if (v3)
+    if (documentPickerMode)
     {
-      if (v3 != 1)
+      if (documentPickerMode != 1)
       {
         goto LABEL_17;
       }
@@ -89,16 +89,16 @@
       if ([v22 count] == 1)
       {
         v4 = MEMORY[0x1E6982C40];
-        v5 = [v22 firstObject];
-        v6 = [v4 typeWithIdentifier:v5];
+        firstObject = [v22 firstObject];
+        v6 = [v4 typeWithIdentifier:firstObject];
         v7 = [v6 isEqual:*MEMORY[0x1E6982DC8]];
 
         if (v7)
         {
-          v8 = [getDOCConfigurationClass() configurationForFolderPicking];
+          configurationForFolderPicking = [getDOCConfigurationClass() configurationForFolderPicking];
 LABEL_15:
-          v10 = v8;
-          [a1 setConfiguration:v8];
+          uploadURLs = configurationForFolderPicking;
+          [types setConfiguration:configurationForFolderPicking];
           goto LABEL_16;
         }
       }
@@ -115,47 +115,47 @@ LABEL_15:
       v16 = 0;
     }
 
-    v8 = [DOCConfigurationClass configurationForImportingDocumentsWithContentTypes:v15 mode:v16];
+    configurationForFolderPicking = [DOCConfigurationClass configurationForImportingDocumentsWithContentTypes:v15 mode:v16];
     goto LABEL_15;
   }
 
-  if (v3 == 2)
+  if (documentPickerMode == 2)
   {
     v17 = getDOCConfigurationClass();
-    v10 = [a1 uploadURLs];
+    uploadURLs = [types uploadURLs];
     v11 = v17;
-    v12 = v10;
+    v12 = uploadURLs;
     v13 = 2;
   }
 
   else
   {
-    if (v3 != 3)
+    if (documentPickerMode != 3)
     {
       goto LABEL_17;
     }
 
     v9 = getDOCConfigurationClass();
-    v10 = [a1 uploadURLs];
+    uploadURLs = [types uploadURLs];
     v11 = v9;
-    v12 = v10;
+    v12 = uploadURLs;
     v13 = 3;
   }
 
   v18 = [v11 configurationForExportingDocumentsToURLs:v12 mode:v13];
-  [a1 setConfiguration:v18];
+  [types setConfiguration:v18];
 
 LABEL_16:
 LABEL_17:
-  v19 = [a1 configuration];
-  [v19 setForPickingDocuments:1];
+  configuration = [types configuration];
+  [configuration setForPickingDocuments:1];
 
   if ((dyld_program_sdk_at_least() & 1) == 0)
   {
     v20 = +[UIDevice currentDevice];
     v21 = [v20 userInterfaceIdiom] != 0;
 
-    [a1 setModalPresentationStyle:v21];
+    [types setModalPresentationStyle:v21];
   }
 }
 
@@ -185,8 +185,8 @@ LABEL_17:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v23 + 1) + 8 * v13) identifier];
-        [v8 addObject:v14];
+        identifier = [*(*(&v23 + 1) + 8 * v13) identifier];
+        [v8 addObject:identifier];
 
         ++v13;
       }
@@ -200,13 +200,13 @@ LABEL_17:
 
   if ([v8 count] == 1)
   {
-    v15 = [v8 firstObject];
-    v16 = UTTypeEqual(v15, *MEMORY[0x1E69637D0]);
+    firstObject = [v8 firstObject];
+    v16 = UTTypeEqual(firstObject, *MEMORY[0x1E69637D0]);
 
     if (v16 && v4)
     {
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v21 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerViewController.m" lineNumber:149 description:{@"%s folder import is not supported, use asCopy:false", "-[UIDocumentPickerViewController initForOpeningContentTypes:asCopy:]"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIDocumentPickerViewController.m" lineNumber:149 description:{@"%s folder import is not supported, use asCopy:false", "-[UIDocumentPickerViewController initForOpeningContentTypes:asCopy:]"}];
     }
   }
 
@@ -252,8 +252,8 @@ LABEL_17:
 
   else
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerViewController.m" lineNumber:175 description:{@"%s can only be called with mode Export or Move", "-[UIDocumentPickerViewController initWithURL:inMode:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDocumentPickerViewController.m" lineNumber:175 description:{@"%s can only be called with mode Export or Move", "-[UIDocumentPickerViewController initWithURL:inMode:]"}];
 
     if (v8)
     {
@@ -261,16 +261,16 @@ LABEL_17:
     }
   }
 
-  v19 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v19 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerViewController.m" lineNumber:176 description:{@"%s must be called with a valid URL", "-[UIDocumentPickerViewController initWithURL:inMode:]"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerViewController.m" lineNumber:176 description:{@"%s must be called with a valid URL", "-[UIDocumentPickerViewController initWithURL:inMode:]"}];
 
 LABEL_3:
-  v9 = [(NSURL *)v8 lastPathComponent];
+  lastPathComponent = [(NSURL *)v8 lastPathComponent];
 
-  if (!v9)
+  if (!lastPathComponent)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerViewController.m" lineNumber:177 description:{@"%s must be called with a URL pointing to a file", "-[UIDocumentPickerViewController initWithURL:inMode:]"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerViewController.m" lineNumber:177 description:{@"%s must be called with a URL pointing to a file", "-[UIDocumentPickerViewController initWithURL:inMode:]"}];
   }
 
   v24 = 0;
@@ -281,8 +281,8 @@ LABEL_3:
   v13 = v23;
   if (!v11)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerViewController.m" lineNumber:181 description:{@"%s must be called with a URL pointing to an existing file: %@", "-[UIDocumentPickerViewController initWithURL:inMode:]", v13}];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerViewController.m" lineNumber:181 description:{@"%s must be called with a URL pointing to an existing file: %@", "-[UIDocumentPickerViewController initWithURL:inMode:]", v13}];
   }
 
   v22.receiver = self;
@@ -310,8 +310,8 @@ LABEL_3:
   v27 = mode;
   if ((mode & 0xFFFFFFFFFFFFFFFELL) != 2)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerViewController.m" lineNumber:196 description:{@"%s can only be called with mode Export or Move", "-[UIDocumentPickerViewController initWithURLs:inMode:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDocumentPickerViewController.m" lineNumber:196 description:{@"%s can only be called with mode Export or Move", "-[UIDocumentPickerViewController initWithURLs:inMode:]"}];
 
     if (v6)
     {
@@ -319,8 +319,8 @@ LABEL_3:
     }
 
 LABEL_22:
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerViewController.m" lineNumber:197 description:{@"%s must be called with a valid URL", "-[UIDocumentPickerViewController initWithURLs:inMode:]"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerViewController.m" lineNumber:197 description:{@"%s must be called with a valid URL", "-[UIDocumentPickerViewController initWithURLs:inMode:]"}];
 
     goto LABEL_3;
   }
@@ -356,13 +356,13 @@ LABEL_3:
       }
 
       v13 = *(*(&v33 + 1) + 8 * v12);
-      v14 = [v13 startAccessingSecurityScopedResource];
-      v15 = [v13 lastPathComponent];
+      startAccessingSecurityScopedResource = [v13 startAccessingSecurityScopedResource];
+      lastPathComponent = [v13 lastPathComponent];
 
-      if (!v15)
+      if (!lastPathComponent)
       {
-        v19 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v19 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerViewController.m" lineNumber:202 description:{@"%s must be called with a URL pointing to a file", "-[UIDocumentPickerViewController initWithURLs:inMode:]"}];
+        currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler3 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerViewController.m" lineNumber:202 description:{@"%s must be called with a URL pointing to a file", "-[UIDocumentPickerViewController initWithURLs:inMode:]"}];
       }
 
       v31 = 0;
@@ -372,7 +372,7 @@ LABEL_3:
       v18 = v31;
       if (v16)
       {
-        if (!v14)
+        if (!startAccessingSecurityScopedResource)
         {
           goto LABEL_13;
         }
@@ -382,10 +382,10 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      v20 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v20 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerViewController.m" lineNumber:206 description:{@"%s must be called with a URL pointing to an existing file: %@", "-[UIDocumentPickerViewController initWithURLs:inMode:]", v18}];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler4 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerViewController.m" lineNumber:206 description:{@"%s must be called with a URL pointing to an existing file: %@", "-[UIDocumentPickerViewController initWithURLs:inMode:]", v18}];
 
-      if (v14)
+      if (startAccessingSecurityScopedResource)
       {
         goto LABEL_12;
       }
@@ -432,8 +432,8 @@ LABEL_18:
   v27 = v7;
   if (!v5)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerViewController.m" lineNumber:230 description:{@"%s must be called with a valid URL", "-[UIDocumentPickerViewController initForExportingURLs:asCopy:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDocumentPickerViewController.m" lineNumber:230 description:{@"%s must be called with a valid URL", "-[UIDocumentPickerViewController initForExportingURLs:asCopy:]"}];
   }
 
   v35 = 0u;
@@ -458,13 +458,13 @@ LABEL_18:
         }
 
         v14 = *(*(&v33 + 1) + 8 * v13);
-        v15 = [v14 startAccessingSecurityScopedResource];
-        v16 = [v14 lastPathComponent];
+        startAccessingSecurityScopedResource = [v14 startAccessingSecurityScopedResource];
+        lastPathComponent = [v14 lastPathComponent];
 
-        if (!v16)
+        if (!lastPathComponent)
         {
-          v20 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v20 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerViewController.m" lineNumber:235 description:{@"%s must be called with a URL pointing to a file", "-[UIDocumentPickerViewController initForExportingURLs:asCopy:]"}];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerViewController.m" lineNumber:235 description:{@"%s must be called with a URL pointing to a file", "-[UIDocumentPickerViewController initForExportingURLs:asCopy:]"}];
         }
 
         v31 = 0;
@@ -474,7 +474,7 @@ LABEL_18:
         v19 = v31;
         if (v17)
         {
-          if (!v15)
+          if (!startAccessingSecurityScopedResource)
           {
             goto LABEL_15;
           }
@@ -484,10 +484,10 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v21 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v21 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerViewController.m" lineNumber:239 description:{@"%s must be called with a URL pointing to an existing file: %@", "-[UIDocumentPickerViewController initForExportingURLs:asCopy:]", v19}];
+        currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler3 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerViewController.m" lineNumber:239 description:{@"%s must be called with a URL pointing to an existing file: %@", "-[UIDocumentPickerViewController initForExportingURLs:asCopy:]", v19}];
 
-        if (v15)
+        if (startAccessingSecurityScopedResource)
         {
           goto LABEL_14;
         }
@@ -519,9 +519,9 @@ LABEL_15:
   return v24;
 }
 
-- (id)_initForImportingDocumentsWithConversionRules:(id)a3
+- (id)_initForImportingDocumentsWithConversionRules:(id)rules
 {
-  v4 = a3;
+  rulesCopy = rules;
   v12.receiver = self;
   v12.super_class = UIDocumentPickerViewController;
   v5 = [(UIViewController *)&v12 initWithNibName:0 bundle:0];
@@ -530,11 +530,11 @@ LABEL_15:
   {
     [(UIDocumentPickerViewController *)v5 setDocumentPickerMode:0];
     [(UIDocumentPickerViewController *)v6 _setAutomaticallyDismissesAfterCompletion:1];
-    v7 = [getDOCConfigurationClass() configurationForImportingDocumentsWithConversionRules:v4];
+    v7 = [getDOCConfigurationClass() configurationForImportingDocumentsWithConversionRules:rulesCopy];
     [(UIDocumentPickerViewController *)v6 setConfiguration:v7];
 
-    v8 = [(UIDocumentPickerViewController *)v6 configuration];
-    [v8 setForPickingDocuments:1];
+    configuration = [(UIDocumentPickerViewController *)v6 configuration];
+    [configuration setForPickingDocuments:1];
 
     if ((dyld_program_sdk_at_least() & 1) == 0)
     {
@@ -552,56 +552,56 @@ LABEL_15:
 {
   v3 = allowsMultipleSelection;
   self->_allowsMultipleSelection = allowsMultipleSelection;
-  v4 = [(UIDocumentPickerViewController *)self _childViewController];
-  [v4 setAllowsPickingMultipleItems:v3];
+  _childViewController = [(UIDocumentPickerViewController *)self _childViewController];
+  [_childViewController setAllowsPickingMultipleItems:v3];
 }
 
 - (BOOL)shouldShowFileExtensions
 {
-  v2 = [(UIDocumentPickerViewController *)self _childViewController];
-  v3 = [v2 shouldShowFileExtensions];
+  _childViewController = [(UIDocumentPickerViewController *)self _childViewController];
+  shouldShowFileExtensions = [_childViewController shouldShowFileExtensions];
 
-  return v3;
+  return shouldShowFileExtensions;
 }
 
 - (void)setShouldShowFileExtensions:(BOOL)shouldShowFileExtensions
 {
   v3 = shouldShowFileExtensions;
-  v4 = [(UIDocumentPickerViewController *)self _childViewController];
-  [v4 setShouldShowFileExtensions:v3];
+  _childViewController = [(UIDocumentPickerViewController *)self _childViewController];
+  [_childViewController setShouldShowFileExtensions:v3];
 }
 
 - (unint64_t)pickerUserInterfaceStyle
 {
-  v2 = [(UIDocumentPickerViewController *)self _childViewController];
-  v3 = [v2 browserUserInterfaceStyle];
+  _childViewController = [(UIDocumentPickerViewController *)self _childViewController];
+  browserUserInterfaceStyle = [_childViewController browserUserInterfaceStyle];
 
-  return v3 == 1;
+  return browserUserInterfaceStyle == 1;
 }
 
-- (void)setPickerUserInterfaceStyle:(unint64_t)a3
+- (void)setPickerUserInterfaceStyle:(unint64_t)style
 {
-  if (a3 == 2)
+  if (style == 2)
   {
     v3 = 2;
   }
 
   else
   {
-    v3 = a3 == 1;
+    v3 = style == 1;
   }
 
-  v4 = [(UIDocumentPickerViewController *)self _childViewController];
-  [v4 setBrowserUserInterfaceStyle:v3];
+  _childViewController = [(UIDocumentPickerViewController *)self _childViewController];
+  [_childViewController setBrowserUserInterfaceStyle:v3];
 }
 
-- (void)documentBrowser:(id)a3 didPickDocumentURLs:(id)a4
+- (void)documentBrowser:(id)browser didPickDocumentURLs:(id)ls
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v7 || ![v7 count])
+  browserCopy = browser;
+  lsCopy = ls;
+  v8 = lsCopy;
+  if (!lsCopy || ![lsCopy count])
   {
     v9 = _UIDocumentLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -612,8 +612,8 @@ LABEL_15:
       _os_log_error_impl(&dword_188A29000, v9, OS_LOG_TYPE_ERROR, "%@ : didPickDocumentURLs called with nil or 0 URLS", buf, 0xCu);
     }
 
-    v10 = [(UIViewController *)self presentingViewController];
-    if (v10 && (v11 = v10, v12 = [(UIDocumentPickerViewController *)self _automaticallyDismissesAfterCompletion], v11, v12))
+    presentingViewController = [(UIViewController *)self presentingViewController];
+    if (presentingViewController && (v11 = presentingViewController, v12 = [(UIDocumentPickerViewController *)self _automaticallyDismissesAfterCompletion], v11, v12))
     {
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
@@ -635,10 +635,10 @@ LABEL_15:
   }
 }
 
-- (UIDocumentPickerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (UIDocumentPickerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v7 = MEMORY[0x1E695DF30];
   v8 = *MEMORY[0x1E695D940];
   v9 = MEMORY[0x1E696AEC0];
@@ -652,31 +652,31 @@ LABEL_15:
   objc_exception_throw(v14);
 }
 
-- (void)_setIsContentManaged:(BOOL)a3
+- (void)_setIsContentManaged:(BOOL)managed
 {
-  v3 = a3;
-  self->_isContentManaged = a3;
-  v4 = [(UIDocumentPickerViewController *)self configuration];
-  _UIShimSetIsContentManaged(v4, v3);
+  managedCopy = managed;
+  self->_isContentManaged = managed;
+  configuration = [(UIDocumentPickerViewController *)self configuration];
+  _UIShimSetIsContentManaged(configuration, managedCopy);
 }
 
-- (void)_setForPickingDownloadsFolder:(BOOL)a3
+- (void)_setForPickingDownloadsFolder:(BOOL)folder
 {
-  v3 = a3;
-  v5 = [(UIDocumentPickerViewController *)self configuration];
+  folderCopy = folder;
+  configuration = [(UIDocumentPickerViewController *)self configuration];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v8 = [(UIDocumentPickerViewController *)self configuration];
-    v7 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-    [v8 setValue:v7 forKey:@"forPickingDownloadsFolder"];
+    configuration2 = [(UIDocumentPickerViewController *)self configuration];
+    v7 = [MEMORY[0x1E696AD98] numberWithBool:folderCopy];
+    [configuration2 setValue:v7 forKey:@"forPickingDownloadsFolder"];
   }
 }
 
 - (BOOL)_forPickingDownloadsFolder
 {
-  v3 = [(UIDocumentPickerViewController *)self configuration];
+  configuration = [(UIDocumentPickerViewController *)self configuration];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -684,11 +684,11 @@ LABEL_15:
     return 0;
   }
 
-  v5 = [(UIDocumentPickerViewController *)self configuration];
-  v6 = [v5 valueForKey:@"forPickingDownloadsFolder"];
-  v7 = [v6 BOOLValue];
+  configuration2 = [(UIDocumentPickerViewController *)self configuration];
+  v6 = [configuration2 valueForKey:@"forPickingDownloadsFolder"];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 - (void)viewDidLoad
@@ -718,8 +718,8 @@ LABEL_15:
     v4 = v3;
     _Block_object_dispose(&v13, 8);
     v5 = [v3 alloc];
-    v6 = [(UIDocumentPickerViewController *)self configuration];
-    v7 = [v5 initWithConfiguration:v6];
+    configuration = [(UIDocumentPickerViewController *)self configuration];
+    v7 = [v5 initWithConfiguration:configuration];
 
     [v7 setAllowsDocumentCreation:0];
     [v7 setDelegate:self];
@@ -730,23 +730,23 @@ LABEL_15:
     [v7 setAdditionalTrailingNavigationBarButtonItems:v9];
 
     [(UIDocumentPickerViewController *)self _setChildViewController:v7];
-    v10 = [(UIViewController *)self presentationController];
-    [v10 setDelegate:self];
+    presentationController = [(UIViewController *)self presentationController];
+    [presentationController setDelegate:self];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = UIDocumentPickerViewController;
-  [(UIViewController *)&v7 viewWillAppear:a3];
-  v4 = [(UIDocumentPickerViewController *)self directoryURL];
+  [(UIViewController *)&v7 viewWillAppear:appear];
+  directoryURL = [(UIDocumentPickerViewController *)self directoryURL];
 
-  if (v4)
+  if (directoryURL)
   {
-    v5 = [(UIDocumentPickerViewController *)self _childViewController];
-    v6 = [(UIDocumentPickerViewController *)self directoryURL];
-    [v5 revealDocumentAtURL:v6 importIfNeeded:0 completion:&__block_literal_global_173];
+    _childViewController = [(UIDocumentPickerViewController *)self _childViewController];
+    directoryURL2 = [(UIDocumentPickerViewController *)self directoryURL];
+    [_childViewController revealDocumentAtURL:directoryURL2 importIfNeeded:0 completion:&__block_literal_global_173];
   }
 }
 
@@ -796,24 +796,24 @@ LABEL_15:
 {
   if ([(UIViewController *)self->_childViewController conformsToProtocol:&unk_1EFF5EDB0])
   {
-    v3 = [(UIViewController *)self->_childViewController _containedRemoteViewController];
+    _containedRemoteViewController = [(UIViewController *)self->_childViewController _containedRemoteViewController];
   }
 
   else
   {
-    v3 = 0;
+    _containedRemoteViewController = 0;
   }
 
-  return v3;
+  return _containedRemoteViewController;
 }
 
-- (void)_setChildViewController:(id)a3
+- (void)_setChildViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   if (self->_childViewController)
   {
-    v35 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v35 handleFailureInMethod:a2 object:self file:@"UIDocumentPickerViewController.m" lineNumber:607 description:{@"%s: remote view controller can only be set once", "-[UIDocumentPickerViewController _setChildViewController:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDocumentPickerViewController.m" lineNumber:607 description:{@"%s: remote view controller can only be set once", "-[UIDocumentPickerViewController _setChildViewController:]"}];
 
     childViewController = self->_childViewController;
   }
@@ -823,45 +823,45 @@ LABEL_15:
     childViewController = 0;
   }
 
-  self->_childViewController = v5;
-  v7 = v5;
+  self->_childViewController = controllerCopy;
+  v7 = controllerCopy;
 
   [(UIViewController *)self->_childViewController beginAppearanceTransition:1 animated:0];
   [(UIViewController *)self addChildViewController:self->_childViewController];
-  v8 = [(UIViewController *)self->_childViewController view];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [(UIViewController *)self->_childViewController view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v9 = [(UIViewController *)self view];
-  v10 = [(UIViewController *)self->_childViewController view];
-  [v9 addSubview:v10];
+  view2 = [(UIViewController *)self view];
+  view3 = [(UIViewController *)self->_childViewController view];
+  [view2 addSubview:view3];
 
-  v11 = [(UIViewController *)self view];
+  view4 = [(UIViewController *)self view];
   v12 = MEMORY[0x1E69977A0];
-  v13 = [(UIViewController *)self view];
-  v14 = [(UIViewController *)self->_childViewController view];
-  v15 = [v12 constraintWithItem:v13 attribute:7 relatedBy:0 toItem:v14 attribute:7 multiplier:1.0 constant:0.0];
-  [v11 addConstraint:v15];
+  view5 = [(UIViewController *)self view];
+  view6 = [(UIViewController *)self->_childViewController view];
+  v15 = [v12 constraintWithItem:view5 attribute:7 relatedBy:0 toItem:view6 attribute:7 multiplier:1.0 constant:0.0];
+  [view4 addConstraint:v15];
 
-  v16 = [(UIViewController *)self view];
+  view7 = [(UIViewController *)self view];
   v17 = MEMORY[0x1E69977A0];
-  v18 = [(UIViewController *)self view];
-  v19 = [(UIViewController *)self->_childViewController view];
-  v20 = [v17 constraintWithItem:v18 attribute:8 relatedBy:0 toItem:v19 attribute:8 multiplier:1.0 constant:0.0];
-  [v16 addConstraint:v20];
+  view8 = [(UIViewController *)self view];
+  view9 = [(UIViewController *)self->_childViewController view];
+  v20 = [v17 constraintWithItem:view8 attribute:8 relatedBy:0 toItem:view9 attribute:8 multiplier:1.0 constant:0.0];
+  [view7 addConstraint:v20];
 
-  v21 = [(UIViewController *)self view];
+  view10 = [(UIViewController *)self view];
   v22 = MEMORY[0x1E69977A0];
-  v23 = [(UIViewController *)self view];
-  v24 = [(UIViewController *)self->_childViewController view];
-  v25 = [v22 constraintWithItem:v23 attribute:1 relatedBy:0 toItem:v24 attribute:1 multiplier:1.0 constant:0.0];
-  [v21 addConstraint:v25];
+  view11 = [(UIViewController *)self view];
+  view12 = [(UIViewController *)self->_childViewController view];
+  v25 = [v22 constraintWithItem:view11 attribute:1 relatedBy:0 toItem:view12 attribute:1 multiplier:1.0 constant:0.0];
+  [view10 addConstraint:v25];
 
-  v26 = [(UIViewController *)self view];
+  view13 = [(UIViewController *)self view];
   v27 = MEMORY[0x1E69977A0];
-  v28 = [(UIViewController *)self view];
-  v29 = [(UIViewController *)self->_childViewController view];
-  v30 = [v27 constraintWithItem:v28 attribute:3 relatedBy:0 toItem:v29 attribute:3 multiplier:1.0 constant:0.0];
-  [v26 addConstraint:v30];
+  view14 = [(UIViewController *)self view];
+  view15 = [(UIViewController *)self->_childViewController view];
+  v30 = [v27 constraintWithItem:view14 attribute:3 relatedBy:0 toItem:view15 attribute:3 multiplier:1.0 constant:0.0];
+  [view13 addConstraint:v30];
 
   [(UIViewController *)self->_childViewController didMoveToParentViewController:self];
   [(UIViewController *)self->_childViewController endAppearanceTransition];
@@ -872,13 +872,13 @@ LABEL_15:
   [(UIViewController *)self setPreferredContentSize:v32, v34];
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v9.receiver = self;
   v9.super_class = UIDocumentPickerViewController;
-  v4 = a3;
-  [(UIViewController *)&v9 preferredContentSizeDidChangeForChildContentContainer:v4];
-  [v4 preferredContentSize];
+  containerCopy = container;
+  [(UIViewController *)&v9 preferredContentSizeDidChangeForChildContentContainer:containerCopy];
+  [containerCopy preferredContentSize];
   v6 = v5;
   v8 = v7;
 
@@ -887,31 +887,31 @@ LABEL_15:
 
 - (void)_tellDelegateDocumentPickerWasCancelled
 {
-  v4 = [(UIDocumentPickerViewController *)self delegate];
+  delegate = [(UIDocumentPickerViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 documentPickerWasCancelled:self];
+    [delegate documentPickerWasCancelled:self];
   }
 
-  v3 = [(UIDocumentPickerViewController *)self delegate];
+  delegate2 = [(UIDocumentPickerViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 documentPickerWasCancelled:self completion:&__block_literal_global_124_0];
+    [delegate2 documentPickerWasCancelled:self completion:&__block_literal_global_124_0];
   }
 }
 
-- (void)_callDelegateWithSelectedURLsAndDismiss:(id)a3
+- (void)_callDelegateWithSelectedURLsAndDismiss:(id)dismiss
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIViewController *)self presentingViewController];
+  dismissCopy = dismiss;
+  presentingViewController = [(UIViewController *)self presentingViewController];
   if ((dyld_program_sdk_at_least() & 1) == 0 && [(UIDocumentPickerViewController *)self documentPickerMode]== UIDocumentPickerModeOpen)
   {
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v6 = v4;
+    v6 = dismissCopy;
     v7 = [v6 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v7)
     {
@@ -944,14 +944,14 @@ LABEL_15:
 
   if (!dyld_program_sdk_at_least())
   {
-    v14 = [(UIDocumentPickerViewController *)self delegate];
+    delegate = [(UIDocumentPickerViewController *)self delegate];
     v15 = objc_opt_respondsToSelector();
 
-    v16 = [(UIDocumentPickerViewController *)self delegate];
-    v17 = v16;
+    delegate2 = [(UIDocumentPickerViewController *)self delegate];
+    delegate3 = delegate2;
     if (v15)
     {
-      [v16 documentPicker:self didPickDocumentsAtURLs:v4];
+      [delegate2 documentPicker:self didPickDocumentsAtURLs:dismissCopy];
     }
 
     else
@@ -961,26 +961,26 @@ LABEL_15:
       if ((v18 & 1) == 0)
       {
 LABEL_20:
-        [v5 dismissViewControllerAnimated:1 completion:0];
+        [presentingViewController dismissViewControllerAnimated:1 completion:0];
         goto LABEL_26;
       }
 
-      v17 = [(UIDocumentPickerViewController *)self delegate];
-      v19 = [v4 firstObject];
-      [v17 documentPicker:self didPickDocumentAtURL:v19];
+      delegate3 = [(UIDocumentPickerViewController *)self delegate];
+      firstObject = [dismissCopy firstObject];
+      [delegate3 documentPicker:self didPickDocumentAtURL:firstObject];
     }
 
     goto LABEL_20;
   }
 
-  if (v5)
+  if (presentingViewController)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __74__UIDocumentPickerViewController__callDelegateWithSelectedURLsAndDismiss___block_invoke;
     aBlock[3] = &unk_1E70F35B8;
     aBlock[4] = self;
-    v25 = v4;
+    v25 = dismissCopy;
     v13 = _Block_copy(aBlock);
     if ([(UIDocumentPickerViewController *)self _automaticallyDismissesAfterCompletion])
     {
@@ -989,7 +989,7 @@ LABEL_20:
       v22[2] = __74__UIDocumentPickerViewController__callDelegateWithSelectedURLsAndDismiss___block_invoke_2;
       v22[3] = &unk_1E70F0F78;
       v23 = v13;
-      [v5 dismissViewControllerAnimated:1 completion:v22];
+      [presentingViewController dismissViewControllerAnimated:1 completion:v22];
     }
 
     else
@@ -1000,11 +1000,11 @@ LABEL_20:
 
   else
   {
-    v20 = [(UIDocumentPickerViewController *)self delegate];
+    delegate4 = [(UIDocumentPickerViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v21 = [v4 firstObject];
-      [v20 documentPicker:self didPickDocumentAtURL:v21 completion:&__block_literal_global_132_0];
+      firstObject2 = [dismissCopy firstObject];
+      [delegate4 documentPicker:self didPickDocumentAtURL:firstObject2 completion:&__block_literal_global_132_0];
     }
   }
 
@@ -1041,8 +1041,8 @@ void __74__UIDocumentPickerViewController__callDelegateWithSelectedURLsAndDismis
 
 - (void)_didTapCancel
 {
-  v3 = [(UIViewController *)self presentingViewController];
-  if (v3 && (v4 = v3, v5 = [(UIDocumentPickerViewController *)self _automaticallyDismissesAfterCompletion], v4, v5))
+  presentingViewController = [(UIViewController *)self presentingViewController];
+  if (presentingViewController && (v4 = presentingViewController, v5 = [(UIDocumentPickerViewController *)self _automaticallyDismissesAfterCompletion], v4, v5))
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -1059,9 +1059,9 @@ void __74__UIDocumentPickerViewController__callDelegateWithSelectedURLsAndDismis
   }
 }
 
-- (void)_consumeSandboxExtensionForURL:(id)a3
+- (void)_consumeSandboxExtensionForURL:(id)l
 {
-  v8 = a3;
+  lCopy = l;
   securityScopedURLs = self->_securityScopedURLs;
   if (!securityScopedURLs)
   {
@@ -1076,8 +1076,8 @@ void __74__UIDocumentPickerViewController__callDelegateWithSelectedURLsAndDismis
   {
     do
     {
-      v7 = [(NSMutableArray *)self->_securityScopedURLs firstObject];
-      [v7 stopAccessingSecurityScopedResource];
+      firstObject = [(NSMutableArray *)self->_securityScopedURLs firstObject];
+      [firstObject stopAccessingSecurityScopedResource];
 
       [(NSMutableArray *)self->_securityScopedURLs removeObjectAtIndex:0];
     }
@@ -1085,9 +1085,9 @@ void __74__UIDocumentPickerViewController__callDelegateWithSelectedURLsAndDismis
     while ([(NSMutableArray *)self->_securityScopedURLs count]> 9);
   }
 
-  if ([v8 startAccessingSecurityScopedResource])
+  if ([lCopy startAccessingSecurityScopedResource])
   {
-    [(NSMutableArray *)self->_securityScopedURLs addObject:v8];
+    [(NSMutableArray *)self->_securityScopedURLs addObject:lCopy];
   }
 }
 

@@ -1,13 +1,13 @@
 @interface UIDirectionalLightEffectView
-- (_TtC5UIKit28UIDirectionalLightEffectView)initWithCoder:(id)a3;
-- (_TtC5UIKit28UIDirectionalLightEffectView)initWithFrame:(CGRect)a3;
+- (_TtC5UIKit28UIDirectionalLightEffectView)initWithCoder:(id)coder;
+- (_TtC5UIKit28UIDirectionalLightEffectView)initWithFrame:(CGRect)frame;
 - (void)didMoveToSuperview;
 - (void)layoutSubviews;
 @end
 
 @implementation UIDirectionalLightEffectView
 
-- (_TtC5UIKit28UIDirectionalLightEffectView)initWithCoder:(id)a3
+- (_TtC5UIKit28UIDirectionalLightEffectView)initWithCoder:(id)coder
 {
   v4 = self + OBJC_IVAR____TtC5UIKit28UIDirectionalLightEffectView_idleTimer;
   *(v4 + 1) = 0;
@@ -23,7 +23,7 @@
   return result;
 }
 
-- (_TtC5UIKit28UIDirectionalLightEffectView)initWithFrame:(CGRect)a3
+- (_TtC5UIKit28UIDirectionalLightEffectView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

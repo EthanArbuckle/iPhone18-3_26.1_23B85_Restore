@@ -1,18 +1,18 @@
 @interface OUPointCloud
-- (OUPointCloud)initWithCount:(unint64_t)a3 points:semanticLabels:semanticVotes:;
-- (OUPointCloud)initWithCount:(unint64_t)a3 points:semanticLabels:semanticVotes:colors:;
-- (OUPointCloud)initWithDictionary:(id)a3;
+- (OUPointCloud)initWithCount:(unint64_t)count points:semanticLabels:semanticVotes:;
+- (OUPointCloud)initWithCount:(unint64_t)count points:semanticLabels:semanticVotes:colors:;
+- (OUPointCloud)initWithDictionary:(id)dictionary;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)append:(unint64_t)a3 points:semanticLabels:semanticVotes:;
-- (void)append:(unint64_t)a3 points:semanticLabels:semanticVotes:colors:;
-- (void)resample:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)append:(unint64_t)append points:semanticLabels:semanticVotes:;
+- (void)append:(unint64_t)append points:semanticLabels:semanticVotes:colors:;
+- (void)resample:(unint64_t)resample;
 - (void)reset;
 @end
 
 @implementation OUPointCloud
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(OUPointCloud);
   v5 = v4;
@@ -27,14 +27,14 @@
   return v5;
 }
 
-- (OUPointCloud)initWithDictionary:(id)a3
+- (OUPointCloud)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(OUPointCloud *)self init];
-  v6 = [v4 objectForKeyedSubscript:@"count"];
-  v7 = [v6 unsignedIntegerValue];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"count"];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  v8 = [v4 objectForKeyedSubscript:@"colors"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"colors"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -47,12 +47,12 @@
   }
 
   v10 = v9;
-  v11 = [v10 bytes];
+  bytes = [v10 bytes];
   v12 = [v10 length];
   __p = 0;
   v55 = 0;
   v56 = 0;
-  std::vector<float>::__assign_with_size[abi:ne200100]<float const*,float const*>(&__p, v11, &v11[v12 & 0xFFFFFFFFFFFFFFFCLL], v12 >> 2);
+  std::vector<float>::__assign_with_size[abi:ne200100]<float const*,float const*>(&__p, bytes, &bytes[v12 & 0xFFFFFFFFFFFFFFFCLL], v12 >> 2);
 
   _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEEC2B8ne200100Em(&v57, ((v55 - __p) >> 2) / 3uLL);
   v13 = v57;
@@ -102,7 +102,7 @@
     operator delete(__p);
   }
 
-  v21 = [v4 objectForKeyedSubscript:@"points"];
+  v21 = [dictionaryCopy objectForKeyedSubscript:@"points"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -115,12 +115,12 @@
   }
 
   v23 = v22;
-  v24 = [v23 bytes];
+  bytes2 = [v23 bytes];
   v25 = [v23 length];
   __p = 0;
   v55 = 0;
   v56 = 0;
-  std::vector<float>::__assign_with_size[abi:ne200100]<float const*,float const*>(&__p, v24, &v24[v25 & 0xFFFFFFFFFFFFFFFCLL], v25 >> 2);
+  std::vector<float>::__assign_with_size[abi:ne200100]<float const*,float const*>(&__p, bytes2, &bytes2[v25 & 0xFFFFFFFFFFFFFFFCLL], v25 >> 2);
 
   _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEEC2B8ne200100Em(&v57, ((v55 - __p) >> 2) / 3uLL);
   v26 = v57;
@@ -170,7 +170,7 @@
     operator delete(__p);
   }
 
-  v34 = [v4 objectForKeyedSubscript:@"semanticLabels"];
+  v34 = [dictionaryCopy objectForKeyedSubscript:@"semanticLabels"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -183,12 +183,12 @@
   }
 
   v36 = v35;
-  v37 = [v36 bytes];
+  bytes3 = [v36 bytes];
   v38 = [v36 length];
   __p = 0;
   v55 = 0;
   v56 = 0;
-  std::vector<unsigned char>::__assign_with_size[abi:ne200100]<unsigned char const*,unsigned char const*>(&__p, v37, &v37[v38], v38);
+  std::vector<unsigned char>::__assign_with_size[abi:ne200100]<unsigned char const*,unsigned char const*>(&__p, bytes3, &bytes3[v38], v38);
 
   _ZNSt3__16vectorIDv4_hNS_9allocatorIS1_EEEC2B8ne200100Em(&v57, (v55 - __p) >> 2);
   v39 = v57;
@@ -231,7 +231,7 @@
     operator delete(__p);
   }
 
-  v43 = [v4 objectForKeyedSubscript:@"semanticVotes"];
+  v43 = [dictionaryCopy objectForKeyedSubscript:@"semanticVotes"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -244,12 +244,12 @@
   }
 
   v45 = v44;
-  v46 = [v45 bytes];
+  bytes4 = [v45 bytes];
   v47 = [v45 length];
   __p = 0;
   v55 = 0;
   v56 = 0;
-  std::vector<unsigned short>::__assign_with_size[abi:ne200100]<unsigned short const*,unsigned short const*>(&__p, v46, &v46[v47 & 0xFFFFFFFFFFFFFFFELL], v47 >> 1);
+  std::vector<unsigned short>::__assign_with_size[abi:ne200100]<unsigned short const*,unsigned short const*>(&__p, bytes4, &bytes4[v47 & 0xFFFFFFFFFFFFFFFELL], v47 >> 1);
 
   _ZNSt3__16vectorIDv4_tNS_9allocatorIS1_EEEC2B8ne200100Em(&v57, ((v55 - __p) >> 1) >> 2);
   v48 = v57;
@@ -292,7 +292,7 @@
     operator delete(__p);
   }
 
-  if (OUPointCloudCpp::IsValid(v5->_anon_8) && v7 == (*&v5->_anon_8[8] - *v5->_anon_8) >> 4)
+  if (OUPointCloudCpp::IsValid(v5->_anon_8) && unsignedIntegerValue == (*&v5->_anon_8[8] - *v5->_anon_8) >> 4)
   {
     v52 = v5;
   }
@@ -305,7 +305,7 @@
   return v52;
 }
 
-- (OUPointCloud)initWithCount:(unint64_t)a3 points:semanticLabels:semanticVotes:
+- (OUPointCloud)initWithCount:(unint64_t)count points:semanticLabels:semanticVotes:
 {
   v6 = v5;
   v7 = v4;
@@ -313,60 +313,60 @@
   v12.receiver = self;
   v12.super_class = OUPointCloud;
   v10 = [(OUPointCloud *)&v12 init];
-  _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE6resizeEm(v10 + 1, a3);
-  _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE6resizeEm(v10 + 4, a3);
-  _ZNSt3__16vectorIDv4_hNS_9allocatorIS1_EEE6resizeEm(v10 + 7, a3);
-  _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE6resizeEm(v10 + 10, a3);
-  memcpy(*(v10 + 4), v8, 16 * a3);
-  memcpy(*(v10 + 7), v7, 4 * a3);
-  memcpy(*(v10 + 10), v6, 8 * a3);
+  _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE6resizeEm(v10 + 1, count);
+  _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE6resizeEm(v10 + 4, count);
+  _ZNSt3__16vectorIDv4_hNS_9allocatorIS1_EEE6resizeEm(v10 + 7, count);
+  _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE6resizeEm(v10 + 10, count);
+  memcpy(*(v10 + 4), v8, 16 * count);
+  memcpy(*(v10 + 7), v7, 4 * count);
+  memcpy(*(v10 + 10), v6, 8 * count);
   return v10;
 }
 
-- (OUPointCloud)initWithCount:(unint64_t)a3 points:semanticLabels:semanticVotes:colors:
+- (OUPointCloud)initWithCount:(unint64_t)count points:semanticLabels:semanticVotes:colors:
 {
   v4 = v3;
   v6 = [OUPointCloud initWithCount:"initWithCount:points:semanticLabels:semanticVotes:" points:? semanticLabels:? semanticVotes:?];
-  memcpy(*v6->_anon_8, v4, 16 * a3);
+  memcpy(*v6->_anon_8, v4, 16 * count);
   return v6;
 }
 
-- (void)append:(unint64_t)a3 points:semanticLabels:semanticVotes:
+- (void)append:(unint64_t)append points:semanticLabels:semanticVotes:
 {
   v6 = v5;
   v7 = v4;
   v8 = v3;
   v11 = [(OUPointCloud *)self count];
-  _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE6resizeEm(self->_anon_8, v11 + a3);
-  _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE6resizeEm(&self->_anon_8[24], v11 + a3);
-  _ZNSt3__16vectorIDv4_hNS_9allocatorIS1_EEE6resizeEm(&self->_anon_8[48], v11 + a3);
-  _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE6resizeEm(&self->_anon_8[72], v11 + a3);
-  memcpy((*&self->_anon_8[24] + 16 * v11), v8, 16 * a3);
-  memcpy((*&self->_anon_8[48] + 4 * v11), v7, 4 * a3);
+  _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE6resizeEm(self->_anon_8, v11 + append);
+  _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE6resizeEm(&self->_anon_8[24], v11 + append);
+  _ZNSt3__16vectorIDv4_hNS_9allocatorIS1_EEE6resizeEm(&self->_anon_8[48], v11 + append);
+  _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE6resizeEm(&self->_anon_8[72], v11 + append);
+  memcpy((*&self->_anon_8[24] + 16 * v11), v8, 16 * append);
+  memcpy((*&self->_anon_8[48] + 4 * v11), v7, 4 * append);
   v12 = (*&self->_anon_8[72] + 8 * v11);
 
-  memcpy(v12, v6, 8 * a3);
+  memcpy(v12, v6, 8 * append);
 }
 
-- (void)append:(unint64_t)a3 points:semanticLabels:semanticVotes:colors:
+- (void)append:(unint64_t)append points:semanticLabels:semanticVotes:colors:
 {
   v7 = v6;
   v8 = v5;
   v9 = v4;
   v10 = v3;
   v13 = [(OUPointCloud *)self count];
-  [(OUPointCloud *)self append:a3 points:v10 semanticLabels:v9 semanticVotes:v8];
+  [(OUPointCloud *)self append:append points:v10 semanticLabels:v9 semanticVotes:v8];
   v14 = (*self->_anon_8 + 16 * v13);
 
-  memcpy(v14, v7, 16 * a3);
+  memcpy(v14, v7, 16 * append);
 }
 
-- (void)resample:(unint64_t)a3
+- (void)resample:(unint64_t)resample
 {
   v5 = [(OUPointCloud *)self count];
-  if (a3 && v5 > a3)
+  if (resample && v5 > resample)
   {
-    utils::Resample(v5, a3, &__p);
+    utils::Resample(v5, resample, &__p);
     v6 = v15 - __p;
     if (((v15 - __p) >> 3) >= 1)
     {

@@ -1,6 +1,6 @@
 @interface MTRDataTypePriceStruct
 - (MTRDataTypePriceStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -25,14 +25,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDataTypePriceStruct);
-  v5 = [(MTRDataTypePriceStruct *)self amount];
-  [(MTRDataTypePriceStruct *)v4 setAmount:v5];
+  amount = [(MTRDataTypePriceStruct *)self amount];
+  [(MTRDataTypePriceStruct *)v4 setAmount:amount];
 
-  v6 = [(MTRDataTypePriceStruct *)self currency];
-  [(MTRDataTypePriceStruct *)v4 setCurrency:v6];
+  currency = [(MTRDataTypePriceStruct *)self currency];
+  [(MTRDataTypePriceStruct *)v4 setCurrency:currency];
 
   return v4;
 }

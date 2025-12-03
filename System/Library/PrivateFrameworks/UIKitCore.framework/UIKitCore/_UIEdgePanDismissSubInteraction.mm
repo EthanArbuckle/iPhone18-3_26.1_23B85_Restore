@@ -1,12 +1,12 @@
 @interface _UIEdgePanDismissSubInteraction
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (UIView)view;
-- (void)didMoveToView:(id)a3;
-- (void)handlePan:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
+- (void)handlePan:(id)pan;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation _UIEdgePanDismissSubInteraction
@@ -18,39 +18,39 @@
   return Strong;
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_188C87024(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_188C87024(view);
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_188C87170(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_188C87170(view);
 }
 
-- (void)handlePan:(id)a3
+- (void)handlePan:(id)pan
 {
-  v4 = a3;
-  v5 = self;
-  sub_18913C9C0(v4);
+  panCopy = pan;
+  selfCopy = self;
+  sub_18913C9C0(panCopy);
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v6 = Strong;
     v7 = *(self + OBJC_IVAR____TtC5UIKit31_UIEdgePanDismissSubInteraction_gesture);
-    v8 = self;
-    v9 = [v6 delegate];
-    if (v9)
+    selfCopy = self;
+    delegate = [v6 delegate];
+    if (delegate)
     {
-      [v9 hysteresisForInteraction_];
+      [delegate hysteresisForInteraction_];
       v11 = v10;
       swift_unknownObjectRelease();
       v12 = v11;
@@ -67,30 +67,30 @@
   return 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_18913CE7C(v6, v7);
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  selfCopy = self;
+  v9 = sub_18913CE7C(recognizerCopy, gestureRecognizerCopy);
 
   return v9 & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_18913D1E8(v7);
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  selfCopy = self;
+  v9 = sub_18913D1E8(gestureRecognizerCopy);
 
   return v9 & 1;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
+  beginCopy = begin;
+  selfCopy = self;
   LOBYTE(self) = sub_18913D380();
 
   return self & 1;

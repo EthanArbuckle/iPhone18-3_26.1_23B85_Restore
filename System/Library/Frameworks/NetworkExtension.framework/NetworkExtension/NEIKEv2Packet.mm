@@ -1,22 +1,22 @@
 @interface NEIKEv2Packet
-- (BOOL)addNotification:(void *)a3 data:;
-- (BOOL)addNotifyPayload:(void *)a1;
+- (BOOL)addNotification:(void *)notification data:;
+- (BOOL)addNotifyPayload:(void *)payload;
 - (NSObject)initOutbound;
-- (id)copyPacketDatagramsForIKESA:(uint64_t)a1;
+- (id)copyPacketDatagramsForIKESA:(uint64_t)a;
 - (uint64_t)copyShortDescription;
-- (uint64_t)decryptReceivedPacketWithIKESA:(_BYTE *)a1;
+- (uint64_t)decryptReceivedPacketWithIKESA:(_BYTE *)a;
 - (uint64_t)hasErrors;
-- (uint64_t)hasNotification:(void *)a1;
+- (uint64_t)hasNotification:(void *)notification;
 - (uint64_t)initInbound;
-- (uint64_t)initResponse:(uint64_t)a1;
-- (uint64_t)parsePacketData:(uint64_t)a3 firstPayloadType:(void *)a4 ikeSA:;
-- (uint64_t)processDecryptedPacketForIKESA:(uint64_t)a1;
-- (void)addNotification:(void *)a3 fromArray:(void *)a4 toPayloads:;
-- (void)constructHeadersForNextPayloadType:(uint64_t)a3 payloadsLength:(unsigned int)a4 fragmentNumber:(unsigned int)a5 totalFragments:(void *)a6 securityContext:;
-- (void)copyNotification:(void *)a1;
+- (uint64_t)initResponse:(uint64_t)response;
+- (uint64_t)parsePacketData:(uint64_t)data firstPayloadType:(void *)type ikeSA:;
+- (uint64_t)processDecryptedPacketForIKESA:(uint64_t)a;
+- (void)addNotification:(void *)notification fromArray:(void *)array toPayloads:;
+- (void)constructHeadersForNextPayloadType:(uint64_t)type payloadsLength:(unsigned int)length fragmentNumber:(unsigned int)number totalFragments:(void *)fragments securityContext:;
+- (void)copyNotification:(void *)notification;
 - (void)filloutPayloads;
 - (void)gatherPayloads;
-- (void)setRawPayloads:(uint64_t)a1;
+- (void)setRawPayloads:(uint64_t)payloads;
 @end
 
 @implementation NEIKEv2Packet
@@ -47,7 +47,7 @@
   {
     v1 = result;
     v2 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v4 = [v1 typeDescription];
+    typeDescription = [v1 typeDescription];
     if (*(v1 + 11))
     {
       v5 = "I";
@@ -70,7 +70,7 @@
 
     v7 = *(v1 + 28);
     v8 = objc_getProperty(v1, v3, 32, 1);
-    v10 = [v2 initWithFormat:@"[%@ %s %s%d %@-%@]", v4, v5, v6, v7, v8, objc_getProperty(v1, v9, 40, 1)];
+    v10 = [v2 initWithFormat:@"[%@ %s %s%d %@-%@]", typeDescription, v5, v6, v7, v8, objc_getProperty(v1, v9, 40, 1)];
 
     return v10;
   }
@@ -78,26 +78,26 @@
   return result;
 }
 
-- (void)setRawPayloads:(uint64_t)a1
+- (void)setRawPayloads:(uint64_t)payloads
 {
-  if (a1)
+  if (payloads)
   {
-    objc_storeStrong((a1 + 80), a2);
+    objc_storeStrong((payloads + 80), a2);
   }
 }
 
-- (void)addNotification:(void *)a3 fromArray:(void *)a4 toPayloads:
+- (void)addNotification:(void *)notification fromArray:(void *)array toPayloads:
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (a1)
+  notificationCopy = notification;
+  arrayCopy = array;
+  if (self)
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = v7;
+    v9 = notificationCopy;
     v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
@@ -120,7 +120,7 @@
             {
               v16 = v14;
 
-              [v8 addObject:{v16, v18}];
+              [arrayCopy addObject:{v16, v18}];
               [v9 removeObject:v16];
               v9 = v16;
               goto LABEL_16;
@@ -151,12 +151,12 @@ LABEL_16:
 
 - (NSObject)initOutbound
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = NEIKEv2Packet;
   v1 = objc_msgSendSuper2(&v6, sel_init);
   if (!v1)
@@ -190,12 +190,12 @@ LABEL_10:
 
 - (uint64_t)initInbound
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = NEIKEv2Packet;
   v1 = objc_msgSendSuper2(&v6, sel_init);
   if (!v1)
@@ -228,37 +228,37 @@ LABEL_11:
   return v2;
 }
 
-- (uint64_t)initResponse:(uint64_t)a1
+- (uint64_t)initResponse:(uint64_t)response
 {
   v15 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (response)
   {
     if (v3)
     {
       if (v3[3])
       {
-        v12.receiver = a1;
+        v12.receiver = response;
         v12.super_class = NEIKEv2Packet;
         v5 = objc_msgSendSuper2(&v12, sel_init);
         if (!v5)
         {
-          a1 = ne_log_obj();
-          if (os_log_type_enabled(a1, OS_LOG_TYPE_FAULT))
+          response = ne_log_obj();
+          if (os_log_type_enabled(response, OS_LOG_TYPE_FAULT))
           {
             *buf = 0;
-            _os_log_fault_impl(&dword_1BA83C000, a1, OS_LOG_TYPE_FAULT, "[super init] failed", buf, 2u);
+            _os_log_fault_impl(&dword_1BA83C000, response, OS_LOG_TYPE_FAULT, "[super init] failed", buf, 2u);
           }
 
           goto LABEL_17;
         }
 
-        a1 = v5;
+        response = v5;
         if (![v5 isMemberOfClass:objc_opt_class()])
         {
-          *(a1 + 10) = 1;
-          *(a1 + 28) = v4[7];
+          *(response + 10) = 1;
+          *(response + 28) = v4[7];
           goto LABEL_7;
         }
 
@@ -268,7 +268,7 @@ LABEL_11:
 LABEL_16:
 
 LABEL_17:
-          a1 = 0;
+          response = 0;
           goto LABEL_7;
         }
 
@@ -313,15 +313,15 @@ LABEL_19:
 LABEL_7:
 
   v6 = *MEMORY[0x1E69E9840];
-  return a1;
+  return response;
 }
 
-- (void)constructHeadersForNextPayloadType:(uint64_t)a3 payloadsLength:(unsigned int)a4 fragmentNumber:(unsigned int)a5 totalFragments:(void *)a6 securityContext:
+- (void)constructHeadersForNextPayloadType:(uint64_t)type payloadsLength:(unsigned int)length fragmentNumber:(unsigned int)number totalFragments:(void *)fragments securityContext:
 {
-  v10 = a4 != 0;
-  v11 = a5 != 0;
-  v12 = a6;
-  v13 = [v12 overheadForPlaintextLength:a3];
+  v10 = length != 0;
+  v11 = number != 0;
+  fragmentsCopy = fragments;
+  v13 = [fragmentsCopy overheadForPlaintextLength:type];
   v14 = objc_alloc(MEMORY[0x1E695DF88]);
 
   v15 = !v10 || !v11;
@@ -342,7 +342,7 @@ LABEL_7:
     v17 = 53;
   }
 
-  if (a6)
+  if (fragments)
   {
     v18 = v16 + 28;
   }
@@ -352,7 +352,7 @@ LABEL_7:
     v18 = 28;
   }
 
-  if (a6)
+  if (fragments)
   {
     v19 = v17;
   }
@@ -365,35 +365,35 @@ LABEL_7:
   v20 = [v14 initWithCapacity:v18];
   v35 = 0;
   v21 = 32;
-  v31[0] = [objc_getProperty(a1 v22];
-  v31[1] = [objc_getProperty(a1 v23];
+  v31[0] = [objc_getProperty(self v22];
+  v31[1] = [objc_getProperty(self v23];
   v32 = v19;
   v33 = 32;
-  v34 = [a1 exchangeType];
-  if (*(a1 + 11))
+  exchangeType = [self exchangeType];
+  if (*(self + 11))
   {
     v35 = 8;
     v21 = 40;
   }
 
-  v24 = v13 + a3;
-  if (*(a1 + 10))
+  v24 = v13 + type;
+  if (*(self + 10))
   {
     v35 = v21;
   }
 
-  v36 = bswap32(*(a1 + 28));
+  v36 = bswap32(*(self + 28));
   v37 = bswap32(v18 + v24);
   [v20 appendBytes:v31 length:28];
-  if (a6)
+  if (fragments)
   {
     v30[0] = a2;
     v30[1] = bswap32(v24 + v16) >> 16;
     [v20 appendBytes:v30 length:4];
     if (v28)
     {
-      v29[0] = __rev16(a4);
-      v29[1] = __rev16(a5);
+      v29[0] = __rev16(length);
+      v29[1] = __rev16(number);
       [v20 appendBytes:v29 length:4];
     }
   }
@@ -401,25 +401,25 @@ LABEL_7:
   return v20;
 }
 
-- (id)copyPacketDatagramsForIKESA:(uint64_t)a1
+- (id)copyPacketDatagramsForIKESA:(uint64_t)a
 {
   v130 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (*(a1 + 12) != 1)
+  if (*(a + 12) != 1)
   {
-    v4 = *(a1 + 72);
+    v4 = *(a + 72);
     if (v4)
     {
       v5 = v4;
       goto LABEL_88;
     }
 
-    [a1 gatherPayloads];
-    v7 = [(NEIKEv2IKESA *)v3 initiatorSPI];
-    objc_setProperty_atomic(a1, v8, v7, 32);
+    [a gatherPayloads];
+    initiatorSPI = [(NEIKEv2IKESA *)v3 initiatorSPI];
+    objc_setProperty_atomic(a, v8, initiatorSPI, 32);
 
-    v10 = [(NEIKEv2IKESA *)v3 responderSPI];
-    objc_setProperty_atomic(a1, v11, v10, 40);
+    responderSPI = [(NEIKEv2IKESA *)v3 responderSPI];
+    objc_setProperty_atomic(a, v11, responderSPI, 40);
 
     if (v3)
     {
@@ -431,36 +431,36 @@ LABEL_7:
       v12 = 0;
     }
 
-    location = (a1 + 72);
-    *(a1 + 11) = v12 & 1;
-    v13 = *(a1 + 80);
+    location = (a + 72);
+    *(a + 11) = v12 & 1;
+    v13 = *(a + 80);
     v14 = [v13 count];
-    v113 = a1;
+    aCopy = a;
     if (v14)
     {
       v105 = v3;
       v115 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:2 * v14];
       v103 = v13;
-      v15 = [v13 objectEnumerator];
-      v16 = [v15 nextObject];
+      objectEnumerator = [v13 objectEnumerator];
+      nextObject = [objectEnumerator nextObject];
       v17 = 0;
       while (1)
       {
-        v18 = [v15 nextObject];
-        if (([v16 generatePayloadData] & 1) == 0)
+        nextObject2 = [objectEnumerator nextObject];
+        if (([nextObject generatePayloadData] & 1) == 0)
         {
           break;
         }
 
-        if (v16)
+        if (nextObject)
         {
-          v19 = v16[2];
-          v20 = v16[3];
-          v21 = v16[2];
-          v16[2] = 0;
+          v19 = nextObject[2];
+          v20 = nextObject[3];
+          v21 = nextObject[2];
+          nextObject[2] = 0;
 
-          v22 = v16[3];
-          v16[3] = 0;
+          v22 = nextObject[3];
+          nextObject[3] = 0;
         }
 
         else
@@ -470,7 +470,7 @@ LABEL_7:
         }
 
         *v128 = 0;
-        v128[0] = [v18 type];
+        v128[0] = [nextObject2 type];
         v23 = [v19 length];
         v120 = 0u;
         v121 = 0u;
@@ -517,16 +517,16 @@ LABEL_7:
         [v115 addObject:v30];
 
         [v115 addObjectsFromArray:v24];
-        v31 = v18;
+        v31 = nextObject2;
 
         v17 += v29;
-        v16 = v31;
+        nextObject = v31;
         if (!v31)
         {
 
           v13 = v103;
           v3 = v105;
-          a1 = v113;
+          a = aCopy;
           goto LABEL_25;
         }
       }
@@ -535,7 +535,7 @@ LABEL_7:
       if (os_log_type_enabled(v94, OS_LOG_TYPE_ERROR))
       {
         *v128 = 138412290;
-        *&v128[4] = v16;
+        *&v128[4] = nextObject;
         _os_log_error_impl(&dword_1BA83C000, v94, OS_LOG_TYPE_ERROR, "Failed to generate payload data for %@", v128, 0xCu);
       }
 
@@ -548,12 +548,12 @@ LABEL_7:
     v17 = 0;
     v115 = MEMORY[0x1E695E0F0];
 LABEL_25:
-    v32 = [v13 firstObject];
-    v33 = [v32 type];
+    firstObject = [v13 firstObject];
+    type = [firstObject type];
 
-    if (![a1 encryptPayloads])
+    if (![a encryptPayloads])
     {
-      v58 = [(NEIKEv2Packet *)a1 constructHeadersForNextPayloadType:v33 payloadsLength:v17 fragmentNumber:0 totalFragments:0 securityContext:0];
+      v58 = [(NEIKEv2Packet *)a constructHeadersForNextPayloadType:type payloadsLength:v17 fragmentNumber:0 totalFragments:0 securityContext:0];
       if (!v58)
       {
         v5 = 0;
@@ -620,16 +620,16 @@ LABEL_31:
         if (v3[10])
         {
           v41 = v3;
-          v43 = [(NEIKEv2IKESA *)v41 headerOverhead];
-          v45 = [(NEIKEv2IKESA *)v41 maximumPacketSize]- v43 - 32;
+          headerOverhead = [(NEIKEv2IKESA *)v41 headerOverhead];
+          v45 = [(NEIKEv2IKESA *)v41 maximumPacketSize]- headerOverhead - 32;
           v47 = objc_getProperty(v41, v46, 208, 1);
 
           LODWORD(v45) = [v47 maximumPayloadSizeWithinLimit:v45];
           if (v45 < v17)
           {
             v48 = v41;
-            v50 = [(NEIKEv2IKESA *)v48 headerOverhead];
-            v52 = [(NEIKEv2IKESA *)v48 maximumPacketSize]- v50 - 36;
+            headerOverhead2 = [(NEIKEv2IKESA *)v48 headerOverhead];
+            v52 = [(NEIKEv2IKESA *)v48 maximumPacketSize]- headerOverhead2 - 36;
             v54 = objc_getProperty(v48, v53, 208, 1);
             self = v48;
 
@@ -673,10 +673,10 @@ LABEL_31:
                 while (1)
                 {
                   v80 = v55 >= v78 ? v78 : v55;
-                  v81 = v33;
-                  v82 = v79 == 1 ? v33 : 0;
+                  v81 = type;
+                  v82 = v79 == 1 ? type : 0;
                   v83 = objc_getProperty(self, v76, 208, 1);
-                  v84 = [(NEIKEv2Packet *)v113 constructHeadersForNextPayloadType:v82 payloadsLength:v80 fragmentNumber:v79 totalFragments:v109 securityContext:v83];
+                  v84 = [(NEIKEv2Packet *)aCopy constructHeadersForNextPayloadType:v82 payloadsLength:v80 fragmentNumber:v79 totalFragments:v109 securityContext:v83];
 
                   if (!v84)
                   {
@@ -726,7 +726,7 @@ LABEL_31:
                   v78 -= v80;
 
                   v77 = ++v79;
-                  v33 = v81;
+                  type = v81;
                   v55 = v108;
                   if (v79 > v107)
                   {
@@ -802,7 +802,7 @@ LABEL_111:
       }
 
       v70 = Property;
-      v68 = [(NEIKEv2Packet *)v113 constructHeadersForNextPayloadType:v33 payloadsLength:v17 fragmentNumber:0 totalFragments:0 securityContext:v70];
+      v68 = [(NEIKEv2Packet *)aCopy constructHeadersForNextPayloadType:type payloadsLength:v17 fragmentNumber:0 totalFragments:0 securityContext:v70];
 
       obj = v68;
       if (!v68)
@@ -837,7 +837,7 @@ LABEL_114:
           v68 = obj;
 LABEL_82:
 
-          if ([v113 exchangeType] == 43 && !-[NEIKEv2IntermediatePacket constructAuthenticatedDataWithPayloads:payloadsLength:authenticatedHeaders:](v113, v36, v17, v68))
+          if ([aCopy exchangeType] == 43 && !-[NEIKEv2IntermediatePacket constructAuthenticatedDataWithPayloads:payloadsLength:authenticatedHeaders:](aCopy, v36, v17, v68))
           {
             obj = ne_log_obj();
             if (os_log_type_enabled(obj, OS_LOG_TYPE_ERROR))
@@ -937,12 +937,12 @@ LABEL_88:
   return v5;
 }
 
-- (uint64_t)parsePacketData:(uint64_t)a3 firstPayloadType:(void *)a4 ikeSA:
+- (uint64_t)parsePacketData:(uint64_t)data firstPayloadType:(void *)type ikeSA:
 {
   v96 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  self = a4;
-  if (!a1)
+  self = type;
+  if (!self)
   {
 LABEL_118:
     v63 = 0;
@@ -950,7 +950,7 @@ LABEL_118:
   }
 
   v8 = [v7 length];
-  if (*(a1 + 8))
+  if (*(self + 8))
   {
     v9 = 0;
   }
@@ -960,9 +960,9 @@ LABEL_118:
     v9 = 28;
   }
 
-  v10 = [v7 bytes];
+  bytes = [v7 bytes];
   v13 = v8 - v9;
-  if (!a3)
+  if (!data)
   {
 LABEL_105:
     if (v13)
@@ -970,11 +970,11 @@ LABEL_105:
       v77 = ne_log_obj();
       if (os_log_type_enabled(v77, OS_LOG_TYPE_ERROR))
       {
-        v79 = [(NEIKEv2Packet *)a1 copyShortDescription];
+        copyShortDescription = [(NEIKEv2Packet *)self copyShortDescription];
         *buf = 138412546;
-        v89 = v79;
+        v89 = copyShortDescription;
         v90 = 1024;
-        LODWORD(v91) = v13;
+        LODWORD(dataCopy8) = v13;
         _os_log_error_impl(&dword_1BA83C000, v77, OS_LOG_TYPE_ERROR, "%@ Found additional %u bytes after parsing completed", buf, 0x12u);
       }
     }
@@ -983,13 +983,13 @@ LABEL_105:
     goto LABEL_107;
   }
 
-  v14 = (v10 + v9);
+  v14 = (bytes + v9);
   *&v12 = 136315138;
   v80 = v12;
-  v82 = a1;
+  selfCopy = self;
   while (1)
   {
-    if (objc_getProperty(a1, v11, 48, 1))
+    if (objc_getProperty(self, v11, 48, 1))
     {
       goto LABEL_105;
     }
@@ -999,11 +999,11 @@ LABEL_105:
       v66 = ne_log_obj();
       if (os_log_type_enabled(v66, OS_LOG_TYPE_ERROR))
       {
-        v67 = [(NEIKEv2Packet *)a1 copyShortDescription];
+        copyShortDescription2 = [(NEIKEv2Packet *)self copyShortDescription];
         *buf = 138413058;
-        v89 = v67;
+        v89 = copyShortDescription2;
         v90 = 2048;
-        v91 = a3;
+        dataCopy8 = data;
         v92 = 1024;
         v93 = v13;
         v94 = 2048;
@@ -1026,11 +1026,11 @@ LABEL_117:
       v66 = ne_log_obj();
       if (os_log_type_enabled(v66, OS_LOG_TYPE_ERROR))
       {
-        v67 = [(NEIKEv2Packet *)a1 copyShortDescription];
+        copyShortDescription2 = [(NEIKEv2Packet *)self copyShortDescription];
         *buf = 138413058;
-        v89 = v67;
+        v89 = copyShortDescription2;
         v90 = 2048;
-        v91 = a3;
+        dataCopy8 = data;
         v92 = 1024;
         v93 = v15;
         v94 = 2048;
@@ -1050,11 +1050,11 @@ LABEL_117:
         goto LABEL_117;
       }
 
-      v67 = [(NEIKEv2Packet *)a1 copyShortDescription];
+      copyShortDescription2 = [(NEIKEv2Packet *)self copyShortDescription];
       *buf = 138413058;
-      v89 = v67;
+      v89 = copyShortDescription2;
       v90 = 2048;
-      v91 = a3;
+      dataCopy8 = data;
       v92 = 1024;
       v93 = v15;
       v94 = 1024;
@@ -1068,7 +1068,7 @@ LABEL_131:
       goto LABEL_117;
     }
 
-    if (a3 == 53 || a3 == 46)
+    if (data == 53 || data == 46)
     {
       v16 = objc_alloc(MEMORY[0x1E695DEF0]);
       v84[0] = MEMORY[0x1E69E9820];
@@ -1084,7 +1084,7 @@ LABEL_131:
       v17 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:v14 + 4 length:(v15 - 4) freeWhenDone:0];
     }
 
-    if (!self || a3 != 47 || (*(a1 + 10) & 1) == 0)
+    if (!self || data != 47 || (*(self + 10) & 1) == 0)
     {
       break;
     }
@@ -1093,10 +1093,10 @@ LABEL_131:
     v18 = v7;
     v19 = [NEIKEv2ResponseConfigPayload alloc];
     v21 = objc_getProperty(self, v20, 88, 1);
-    v22 = [v21 configurationRequest];
+    configurationRequest = [v21 configurationRequest];
     v23 = v17;
     v24 = v17;
-    v25 = v22;
+    v25 = configurationRequest;
     if (v19)
     {
       if (v24)
@@ -1142,7 +1142,7 @@ LABEL_25:
 
     v7 = v18;
     v17 = v23;
-    a1 = v82;
+    self = selfCopy;
     v13 = v81;
 LABEL_59:
 
@@ -1153,16 +1153,16 @@ LABEL_59:
       goto LABEL_89;
     }
 
-    if (a3 == 53 || a3 == 46)
+    if (data == 53 || data == 46)
     {
-      if ([a1 encryptPayloads])
+      if ([self encryptPayloads])
       {
-        if (*(a1 + 8) != 1)
+        if (*(self + 8) != 1)
         {
-          v39 = a1;
+          selfCopy2 = self;
           v40 = v17;
           v41 = v19;
-          objc_setProperty_atomic(v39, v42, v41, 48);
+          objc_setProperty_atomic(selfCopy2, v42, v41, 48);
           Property = objc_getProperty(v41, v43, 32, 1);
           v45 = MEMORY[0x1E695DF88];
           v46 = Property;
@@ -1176,14 +1176,14 @@ LABEL_59:
           v41[1].super.super.super.isa = v49;
           if ([(NEIKEv2ResponseConfigPayload *)v41 isFragment])
           {
-            *(v82 + 9) = 1;
-            *(v82 + 20) = *&v41[1].super.super._isInbound;
-            *(v82 + 24) = *(&v41[1].super.super._isInbound + 1);
+            *(selfCopy + 9) = 1;
+            *(selfCopy + 20) = *&v41[1].super.super._isInbound;
+            *(selfCopy + 24) = *(&v41[1].super.super._isInbound + 1);
           }
 
           v19 = v41;
           v17 = v40;
-          a1 = v82;
+          self = selfCopy;
           goto LABEL_67;
         }
 
@@ -1195,9 +1195,9 @@ LABEL_122:
           goto LABEL_126;
         }
 
-        v72 = [(NEIKEv2Packet *)a1 copyShortDescription];
+        copyShortDescription3 = [(NEIKEv2Packet *)self copyShortDescription];
         *buf = 138412290;
-        v89 = v72;
+        v89 = copyShortDescription3;
         v73 = "%@ Encrypted payload found in already decrypted packet";
         v74 = v71;
         v75 = 12;
@@ -1211,11 +1211,11 @@ LABEL_122:
           goto LABEL_122;
         }
 
-        v72 = [(NEIKEv2Packet *)a1 copyShortDescription];
+        copyShortDescription3 = [(NEIKEv2Packet *)self copyShortDescription];
         *buf = 138412546;
-        v89 = v72;
+        v89 = copyShortDescription3;
         v90 = 2048;
-        v91 = a3;
+        dataCopy8 = data;
         v73 = "%@ Encrypted payload type %zu is not permitted";
         v74 = v71;
         v75 = 22;
@@ -1226,20 +1226,20 @@ LABEL_122:
       goto LABEL_122;
     }
 
-    if (![a1 encryptPayloads] || *(a1 + 8) == 1)
+    if (![self encryptPayloads] || *(self + 8) == 1)
     {
-      v50 = *(a1 + 80);
+      v50 = *(self + 80);
       if (!v50)
       {
         v87 = v19;
         v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v87 count:1];
-        objc_storeStrong((a1 + 80), v41);
+        objc_storeStrong((self + 80), v41);
         goto LABEL_67;
       }
 
-      v51 = v50;
-      v41 = [v51 arrayByAddingObject:v19];
-      objc_storeStrong((a1 + 80), v41);
+      copyShortDescription5 = v50;
+      v41 = [copyShortDescription5 arrayByAddingObject:v19];
+      objc_storeStrong((self + 80), v41);
       goto LABEL_73;
     }
 
@@ -1249,11 +1249,11 @@ LABEL_122:
     {
       if (v52)
       {
-        v76 = [(NEIKEv2Packet *)a1 copyShortDescription];
+        copyShortDescription4 = [(NEIKEv2Packet *)self copyShortDescription];
         *buf = 138412546;
-        v89 = v76;
+        v89 = copyShortDescription4;
         v90 = 2048;
-        v91 = a3;
+        dataCopy8 = data;
         _os_log_error_impl(&dword_1BA83C000, &v41->super.super.super, OS_LOG_TYPE_ERROR, "%@ Unencrypted critical payload type %zu is not permitted", buf, 0x16u);
       }
 
@@ -1262,11 +1262,11 @@ LABEL_122:
 
     if (v52)
     {
-      v51 = [(NEIKEv2Packet *)a1 copyShortDescription];
+      copyShortDescription5 = [(NEIKEv2Packet *)self copyShortDescription];
       *buf = 138412546;
-      v89 = v51;
+      v89 = copyShortDescription5;
       v90 = 2048;
-      v91 = a3;
+      dataCopy8 = data;
       p_super = &v41->super.super.super;
       v54 = "%@ Unencrypted payload type %zu is not permitted, ignoring";
 LABEL_78:
@@ -1277,10 +1277,10 @@ LABEL_73:
 LABEL_67:
 
     v13 -= v15;
-    a3 = *v14;
+    data = *v14;
 
     v14 += v15;
-    if (!a3)
+    if (!data)
     {
       goto LABEL_105;
     }
@@ -1290,7 +1290,7 @@ LABEL_67:
   objc_opt_self();
   if (v21)
   {
-    switch(a3)
+    switch(data)
     {
       case '!':
         v29 = v17;
@@ -1322,7 +1322,7 @@ LABEL_80:
               v17 = v29;
               if (v56)
               {
-                a1 = v82;
+                self = selfCopy;
                 *(v56 + 8) = 1;
 LABEL_83:
 
@@ -1337,7 +1337,7 @@ LABEL_83:
               v17 = v29;
             }
 
-            a1 = v82;
+            self = selfCopy;
             goto LABEL_83;
           }
 
@@ -1357,7 +1357,7 @@ LABEL_83:
         }
 
         v17 = v29;
-        a1 = v82;
+        self = selfCopy;
         break;
       case '""':
         v32 = NEIKEv2KeyExchangePayload;
@@ -1429,7 +1429,7 @@ LABEL_55:
         if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
         {
           *buf = 67109120;
-          LODWORD(v89) = a3;
+          LODWORD(v89) = data;
           _os_log_impl(&dword_1BA83C000, v33, OS_LOG_TYPE_INFO, "Received unknown payload type %u, saving as custom", buf, 8u);
         }
 
@@ -1441,7 +1441,7 @@ LABEL_55:
           if (v35)
           {
             *(v35 + 8) = 1;
-            *(v35 + 32) = a3;
+            *(v35 + 32) = data;
           }
         }
 
@@ -1492,11 +1492,11 @@ LABEL_89:
       goto LABEL_67;
     }
 
-    v51 = [(NEIKEv2Packet *)a1 copyShortDescription];
+    copyShortDescription5 = [(NEIKEv2Packet *)self copyShortDescription];
     *buf = 138412546;
-    v89 = v51;
+    v89 = copyShortDescription5;
     v90 = 2048;
-    v91 = a3;
+    dataCopy8 = data;
     p_super = &v41->super.super.super;
     v54 = "%@ Failed to parse payload type %zu, ignoring";
     goto LABEL_78;
@@ -1504,11 +1504,11 @@ LABEL_89:
 
   if (v60)
   {
-    v78 = [(NEIKEv2Packet *)a1 copyShortDescription];
+    copyShortDescription6 = [(NEIKEv2Packet *)self copyShortDescription];
     *buf = 138412546;
-    v89 = v78;
+    v89 = copyShortDescription6;
     v90 = 2048;
-    v91 = a3;
+    dataCopy8 = data;
     _os_log_error_impl(&dword_1BA83C000, &v41->super.super.super, OS_LOG_TYPE_ERROR, "%@ Failed to parse critical payload type %zu", buf, 0x16u);
   }
 
@@ -1523,13 +1523,13 @@ LABEL_107:
   return v63;
 }
 
-- (uint64_t)processDecryptedPacketForIKESA:(uint64_t)a1
+- (uint64_t)processDecryptedPacketForIKESA:(uint64_t)a
 {
   v29 = *MEMORY[0x1E69E9840];
   v4 = a2;
-  if (a1)
+  if (a)
   {
-    if ((*(a1 + 8) & 1) == 0)
+    if ((*(a + 8) & 1) == 0)
     {
       v10 = ne_log_obj();
       if (!os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -1543,26 +1543,26 @@ LABEL_107:
       goto LABEL_26;
     }
 
-    Property = objc_getProperty(a1, v3, 48, 1);
+    Property = objc_getProperty(a, v3, 48, 1);
     if (Property && objc_getProperty(Property, v6, 40, 1))
     {
       if (v4)
       {
-        v8 = objc_getProperty(a1, v7, 48, 1);
+        v8 = objc_getProperty(a, v7, 48, 1);
         if (v8)
         {
           v8 = objc_getProperty(v8, v9, 32, 1);
         }
 
         v10 = v8;
-        v12 = objc_getProperty(a1, v11, 48, 1);
+        v12 = objc_getProperty(a, v11, 48, 1);
         if (v12)
         {
           v12 = objc_getProperty(v12, v13, 40, 1);
         }
 
         v14 = v12;
-        v16 = objc_getProperty(a1, v15, 48, 1);
+        v16 = objc_getProperty(a, v15, 48, 1);
         if (v16)
         {
           v18 = v16[6];
@@ -1573,14 +1573,14 @@ LABEL_107:
           v18 = 0;
         }
 
-        objc_setProperty_atomic(a1, v17, 0, 48);
-        if ([(NEIKEv2Packet *)a1 parsePacketData:v14 firstPayloadType:v18 ikeSA:v4])
+        objc_setProperty_atomic(a, v17, 0, 48);
+        if ([(NEIKEv2Packet *)a parsePacketData:v14 firstPayloadType:v18 ikeSA:v4])
         {
-          if ([a1 exchangeType] != 43 || (v26 = v14, objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", &v26, 1), v19 = objc_claimAutoreleasedReturnValue(), v20 = -[NEIKEv2IntermediatePacket constructAuthenticatedDataWithPayloads:payloadsLength:authenticatedHeaders:](a1, v19, objc_msgSend(v14, "length"), v10), v19, v20))
+          if ([a exchangeType] != 43 || (v26 = v14, objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", &v26, 1), v19 = objc_claimAutoreleasedReturnValue(), v20 = -[NEIKEv2IntermediatePacket constructAuthenticatedDataWithPayloads:payloadsLength:authenticatedHeaders:](a, v19, objc_msgSend(v14, "length"), v10), v19, v20))
           {
-            *(a1 + 9) = 0;
-            [a1 filloutPayloads];
-            a1 = 1;
+            *(a + 9) = 0;
+            [a filloutPayloads];
+            a = 1;
 LABEL_22:
 
             goto LABEL_23;
@@ -1589,14 +1589,14 @@ LABEL_22:
           v21 = ne_log_obj();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
           {
-            v25 = [(NEIKEv2Packet *)a1 copyShortDescription];
+            copyShortDescription = [(NEIKEv2Packet *)a copyShortDescription];
             *buf = 138412290;
-            v28 = v25;
+            v28 = copyShortDescription;
             _os_log_error_impl(&dword_1BA83C000, v21, OS_LOG_TYPE_ERROR, "%@ Failed to construct authenticated data vector", buf, 0xCu);
           }
         }
 
-        a1 = 0;
+        a = 0;
         goto LABEL_22;
       }
 
@@ -1624,19 +1624,19 @@ LABEL_26:
     }
 
 LABEL_17:
-    a1 = 0;
+    a = 0;
 LABEL_23:
   }
 
   v22 = *MEMORY[0x1E69E9840];
-  return a1;
+  return a;
 }
 
-- (uint64_t)decryptReceivedPacketWithIKESA:(_BYTE *)a1
+- (uint64_t)decryptReceivedPacketWithIKESA:(_BYTE *)a
 {
   v25 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if ((a1[8] & 1) != 0 || ![a1 encryptPayloads])
+  if ((a[8] & 1) != 0 || ![a encryptPayloads])
   {
     v14 = 1;
     goto LABEL_14;
@@ -1661,7 +1661,7 @@ LABEL_22:
     goto LABEL_14;
   }
 
-  v9 = objc_getProperty(a1, v7, 48, 1);
+  v9 = objc_getProperty(a, v7, 48, 1);
   if (v3)
   {
     v10 = objc_getProperty(v3, v8, 208, 1);
@@ -1715,10 +1715,10 @@ LABEL_21:
 
   objc_setProperty_atomic(v9, v18, v17, 40);
 
-  a1[8] = 1;
-  if ((a1[9] & 1) == 0)
+  a[8] = 1;
+  if ((a[9] & 1) == 0)
   {
-    v14 = [(NEIKEv2Packet *)a1 processDecryptedPacketForIKESA:v3];
+    v14 = [(NEIKEv2Packet *)a processDecryptedPacketForIKESA:v3];
   }
 
 LABEL_14:
@@ -1727,14 +1727,14 @@ LABEL_14:
   return v14;
 }
 
-- (void)copyNotification:(void *)a1
+- (void)copyNotification:(void *)notification
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = objc_getProperty(a1, a2, 64, 1);
+  v3 = objc_getProperty(notification, a2, 64, 1);
   v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
@@ -1785,16 +1785,16 @@ LABEL_15:
   return v11;
 }
 
-- (uint64_t)hasNotification:(void *)a1
+- (uint64_t)hasNotification:(void *)notification
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (notification)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v3 = objc_getProperty(a1, a2, 64, 1);
+    v3 = objc_getProperty(notification, a2, 64, 1);
     v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v4)
     {
@@ -1856,7 +1856,7 @@ LABEL_14:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = objc_getProperty(a1, a2, 64, 1);
+  v2 = objc_getProperty(self, a2, 64, 1);
   v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
@@ -1894,15 +1894,15 @@ LABEL_12:
   return v3;
 }
 
-- (BOOL)addNotifyPayload:(void *)a1
+- (BOOL)addNotifyPayload:(void *)payload
 {
   v15 = *MEMORY[0x1E69E9840];
   v4 = a2;
   if (v4)
   {
-    if (objc_getProperty(a1, v3, 64, 1))
+    if (objc_getProperty(payload, v3, 64, 1))
     {
-      v6 = [objc_getProperty(a1 v5];
+      v6 = [objc_getProperty(payload v5];
     }
 
     else
@@ -1912,7 +1912,7 @@ LABEL_12:
     }
 
     v8 = v6;
-    objc_setProperty_atomic(a1, v7, v6, 64);
+    objc_setProperty_atomic(payload, v7, v6, 64);
   }
 
   else
@@ -1930,10 +1930,10 @@ LABEL_12:
   return v4 != 0;
 }
 
-- (BOOL)addNotification:(void *)a3 data:
+- (BOOL)addNotification:(void *)notification data:
 {
-  v4 = [NEIKEv2NotifyPayload createNotifyPayloadType:a2 data:a3];
-  v5 = [(NEIKEv2Packet *)a1 addNotifyPayload:v4];
+  v4 = [NEIKEv2NotifyPayload createNotifyPayloadType:a2 data:notification];
+  v5 = [(NEIKEv2Packet *)self addNotifyPayload:v4];
 
   return v5;
 }

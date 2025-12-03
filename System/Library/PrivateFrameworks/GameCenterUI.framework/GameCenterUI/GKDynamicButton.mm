@@ -1,5 +1,5 @@
 @interface GKDynamicButton
-- (void)contentSizeCategoryDidChangeNotification:(id)a3;
+- (void)contentSizeCategoryDidChangeNotification:(id)notification;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
@@ -9,8 +9,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = GKDynamicButton;
@@ -19,34 +19,34 @@
 
 - (void)didMoveToWindow
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [(GKDynamicButton *)self window];
+  window = [(GKDynamicButton *)self window];
 
-  if (v4)
+  if (window)
   {
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:self selector:sel_contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x277D76810] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel_contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x277D76810] object:0];
 
     [(GKDynamicButton *)self contentSizeCategoryDidChangeNotification:0];
   }
 }
 
-- (void)contentSizeCategoryDidChangeNotification:(id)a3
+- (void)contentSizeCategoryDidChangeNotification:(id)notification
 {
-  v4 = [(GKDynamicButton *)self titleLabel];
-  v5 = [v4 font];
-  v6 = [v5 fontDescriptor];
-  v7 = [v6 fontAttributes];
-  v11 = [v7 objectForKeyedSubscript:*MEMORY[0x277D74378]];
+  titleLabel = [(GKDynamicButton *)self titleLabel];
+  font = [titleLabel font];
+  fontDescriptor = [font fontDescriptor];
+  fontAttributes = [fontDescriptor fontAttributes];
+  v11 = [fontAttributes objectForKeyedSubscript:*MEMORY[0x277D74378]];
 
   v8 = v11;
   if (v11)
   {
     v9 = [MEMORY[0x277D74300] preferredFontForTextStyle:v11];
-    v10 = [(GKDynamicButton *)self titleLabel];
-    [v10 setFont:v9];
+    titleLabel2 = [(GKDynamicButton *)self titleLabel];
+    [titleLabel2 setFont:v9];
 
     v8 = v11;
   }

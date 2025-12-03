@@ -20,9 +20,9 @@
 {
   if ([(NSMutableArray *)self count])
   {
-    v3 = [(NSMutableArray *)self lastObject];
+    lastObject = [(NSMutableArray *)self lastObject];
     [(NSMutableArray *)self removeLastObject];
-    [(NSMutableArray *)self insertObject:v3 atIndex:0];
+    [(NSMutableArray *)self insertObject:lastObject atIndex:0];
   }
 }
 

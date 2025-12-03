@@ -1,108 +1,108 @@
 @interface AKAuthorizationDaemonService
 - (AKAuthorizationDaemonService)init;
-- (AKAuthorizationDaemonService)initWithClient:(id)a3;
+- (AKAuthorizationDaemonService)initWithClient:(id)client;
 - (AKAuthorizationDaemonServiceDelegate)delegate;
-- (BOOL)_isPCSAccessForContext:(id)a3;
-- (BOOL)_shouldAllowPCSKeyAccessForContext:(id)a3;
-- (BOOL)_shouldEarlyReturnRequest:(id)a3 forCredentialState:(int64_t)a4;
-- (BOOL)_shouldStartSatoriVerificationForRequestContext:(id)a3;
-- (BOOL)_verifyEntitlementsForRequest:(id)a3;
-- (id)_accountDisplayNameWithPresentationContext:(id)a3;
-- (id)_clientForContext:(id)a3;
+- (BOOL)_isPCSAccessForContext:(id)context;
+- (BOOL)_shouldAllowPCSKeyAccessForContext:(id)context;
+- (BOOL)_shouldEarlyReturnRequest:(id)request forCredentialState:(int64_t)state;
+- (BOOL)_shouldStartSatoriVerificationForRequestContext:(id)context;
+- (BOOL)_verifyEntitlementsForRequest:(id)request;
+- (id)_accountDisplayNameWithPresentationContext:(id)context;
+- (id)_clientForContext:(id)context;
 - (id)_credentialStateController;
-- (id)authorizationContextHelperWithContext:(id)a3 client:(id)a4;
-- (id)authorizationContextWithUserResponse:(id)a3 client:(id)a4;
-- (int64_t)_credentialStateForRequestContext:(id)a3;
-- (void)_completeAuthorizationWithServerResponse:(id)a3 userResponse:(id)a4 client:(id)a5 completion:(id)a6;
-- (void)_createAndPerformRequest:(id)a3 completion:(id)a4;
-- (void)_determineUIAndPerformRequest:(id)a3 completion:(id)a4;
-- (void)_extractWebSessionAuthorizationFromResponse:(id)a3;
-- (void)_fetchAuthContextWithUserResponse:(id)a3 client:(id)a4 completion:(id)a5;
-- (void)_fetchCredentialsForAssociatedDomains:(id)a3 completion:(id)a4;
-- (void)_fetchSafariCredentialsWithCompletion:(id)a3;
-- (void)_getPresentationContextForRequestContext:(id)a3 client:(id)a4 completion:(id)a5;
-- (void)_initiateAuthorizationWithRequestContext:(id)a3 completion:(id)a4;
-- (void)_initiateRapportAuthorizationWithRequestContext:(id)a3 completion:(id)a4;
-- (void)_performRequest:(id)a3 completion:(id)a4;
-- (void)_performSRPAuthorizationForUserResponse:(id)a3 client:(id)a4 completion:(id)a5;
-- (void)_performSilentRequest:(id)a3 withCompletion:(id)a4;
-- (void)_prepareRequestContext:(id)a3 forCredentialState:(int64_t)a4;
-- (void)_processUserResponse:(id)a3 client:(id)a4 completion:(id)a5;
-- (void)_requestUserAuthorizationForContext:(id)a3 completion:(id)a4;
-- (void)_safePerformSRPWithUserResponse:(id)a3 client:(id)a4 completion:(id)a5;
-- (void)_sendPermissionRequestWithCompletion:(id)a3;
-- (void)_setupLoginChoicesForPresentationContext:(id)a3 sharedAccounts:(id)a4;
-- (void)_validateAndProcessUserResponse:(id)a3 client:(id)a4 completion:(id)a5;
-- (void)beginAuthorizationWithContext:(id)a3 completion:(id)a4;
-- (void)cancelAuthorizationWithContext:(id)a3 completion:(id)a4;
-- (void)continueAuthorizationWithContext:(id)a3 completion:(id)a4;
-- (void)continueFetchingIconForRequestContext:(id)a3 completion:(id)a4;
+- (id)authorizationContextHelperWithContext:(id)context client:(id)client;
+- (id)authorizationContextWithUserResponse:(id)response client:(id)client;
+- (int64_t)_credentialStateForRequestContext:(id)context;
+- (void)_completeAuthorizationWithServerResponse:(id)response userResponse:(id)userResponse client:(id)client completion:(id)completion;
+- (void)_createAndPerformRequest:(id)request completion:(id)completion;
+- (void)_determineUIAndPerformRequest:(id)request completion:(id)completion;
+- (void)_extractWebSessionAuthorizationFromResponse:(id)response;
+- (void)_fetchAuthContextWithUserResponse:(id)response client:(id)client completion:(id)completion;
+- (void)_fetchCredentialsForAssociatedDomains:(id)domains completion:(id)completion;
+- (void)_fetchSafariCredentialsWithCompletion:(id)completion;
+- (void)_getPresentationContextForRequestContext:(id)context client:(id)client completion:(id)completion;
+- (void)_initiateAuthorizationWithRequestContext:(id)context completion:(id)completion;
+- (void)_initiateRapportAuthorizationWithRequestContext:(id)context completion:(id)completion;
+- (void)_performRequest:(id)request completion:(id)completion;
+- (void)_performSRPAuthorizationForUserResponse:(id)response client:(id)client completion:(id)completion;
+- (void)_performSilentRequest:(id)request withCompletion:(id)completion;
+- (void)_prepareRequestContext:(id)context forCredentialState:(int64_t)state;
+- (void)_processUserResponse:(id)response client:(id)client completion:(id)completion;
+- (void)_requestUserAuthorizationForContext:(id)context completion:(id)completion;
+- (void)_safePerformSRPWithUserResponse:(id)response client:(id)client completion:(id)completion;
+- (void)_sendPermissionRequestWithCompletion:(id)completion;
+- (void)_setupLoginChoicesForPresentationContext:(id)context sharedAccounts:(id)accounts;
+- (void)_validateAndProcessUserResponse:(id)response client:(id)client completion:(id)completion;
+- (void)beginAuthorizationWithContext:(id)context completion:(id)completion;
+- (void)cancelAuthorizationWithContext:(id)context completion:(id)completion;
+- (void)continueAuthorizationWithContext:(id)context completion:(id)completion;
+- (void)continueFetchingIconForRequestContext:(id)context completion:(id)completion;
 - (void)dealloc;
-- (void)establishConnectionWithNotificationHandlerEndpoint:(id)a3 completion:(id)a4;
-- (void)establishConnectionWithStateBroadcastHandlerEndpoint:(id)a3 completion:(id)a4;
-- (void)fetchAllowListDomainsForSharingKeyWithCompletion:(id)a3;
-- (void)fetchAppleIDAuthorizationURLSetWithCompletion:(id)a3;
-- (void)fetchAppleIDAuthorizeHTMLResponseTemplateWithCompletion:(id)a3;
-- (void)fetchAppleOwnedDomainSetWithCompletion:(id)a3;
-- (void)fetchNativeTakeoverURLSetWithCompletion:(id)a3;
-- (void)fetchPrimaryApplicationInformationForWebServiceWithInfo:(id)a3 completion:(id)a4;
-- (void)fetchSharedKeyInfoWithCompletion:(id)a3;
-- (void)getCredentialStateForClientID:(id)a3 completion:(id)a4;
-- (void)getCredentialStateForRequest:(id)a3 completion:(id)a4;
-- (void)getPresentationContextForRequestContext:(id)a3 completion:(id)a4;
-- (void)performAuthorization:(id)a3 completion:(id)a4;
-- (void)performAuthorizationWithContext:(id)a3 withUserProvidedInformation:(id)a4 completion:(id)a5;
-- (void)presentAuthorizationUIForContext:(id)a3 completion:(id)a4;
-- (void)revokeUpgradeWithContext:(id)a3 completion:(id)a4;
-- (void)startDiscoveryWithCompletion:(id)a3;
-- (void)storeAuthorization:(id)a3 forProxiedRequest:(id)a4 completion:(id)a5;
+- (void)establishConnectionWithNotificationHandlerEndpoint:(id)endpoint completion:(id)completion;
+- (void)establishConnectionWithStateBroadcastHandlerEndpoint:(id)endpoint completion:(id)completion;
+- (void)fetchAllowListDomainsForSharingKeyWithCompletion:(id)completion;
+- (void)fetchAppleIDAuthorizationURLSetWithCompletion:(id)completion;
+- (void)fetchAppleIDAuthorizeHTMLResponseTemplateWithCompletion:(id)completion;
+- (void)fetchAppleOwnedDomainSetWithCompletion:(id)completion;
+- (void)fetchNativeTakeoverURLSetWithCompletion:(id)completion;
+- (void)fetchPrimaryApplicationInformationForWebServiceWithInfo:(id)info completion:(id)completion;
+- (void)fetchSharedKeyInfoWithCompletion:(id)completion;
+- (void)getCredentialStateForClientID:(id)d completion:(id)completion;
+- (void)getCredentialStateForRequest:(id)request completion:(id)completion;
+- (void)getPresentationContextForRequestContext:(id)context completion:(id)completion;
+- (void)performAuthorization:(id)authorization completion:(id)completion;
+- (void)performAuthorizationWithContext:(id)context withUserProvidedInformation:(id)information completion:(id)completion;
+- (void)presentAuthorizationUIForContext:(id)context completion:(id)completion;
+- (void)revokeUpgradeWithContext:(id)context completion:(id)completion;
+- (void)startDiscoveryWithCompletion:(id)completion;
+- (void)storeAuthorization:(id)authorization forProxiedRequest:(id)request completion:(id)completion;
 @end
 
 @implementation AKAuthorizationDaemonService
 
 - (AKAuthorizationDaemonService)init
 {
-  v3 = self;
+  selfCopy = self;
   [(AKAuthorizationDaemonService *)self doesNotRecognizeSelector:a2];
-  objc_storeStrong(&v3, 0);
+  objc_storeStrong(&selfCopy, 0);
   return 0;
 }
 
-- (AKAuthorizationDaemonService)initWithClient:(id)a3
+- (AKAuthorizationDaemonService)initWithClient:(id)client
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v24;
-  v24 = 0;
+  objc_storeStrong(location, client);
+  v3 = selfCopy;
+  selfCopy = 0;
   v22.receiver = v3;
   v22.super_class = AKAuthorizationDaemonService;
-  v24 = [(AKAuthorizationDaemonService *)&v22 init];
-  objc_storeStrong(&v24, v24);
-  if (v24)
+  selfCopy = [(AKAuthorizationDaemonService *)&v22 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v24->_client, location[0]);
+    objc_storeStrong(&selfCopy->_client, location[0]);
     v21 = 0;
-    v24->_authorizationRealUserLock._os_unfair_lock_opaque = 0;
+    selfCopy->_authorizationRealUserLock._os_unfair_lock_opaque = 0;
     v4 = +[AKAuthorizationSessionManager sharedInstance];
-    authSessionManager = v24->_authSessionManager;
-    v24->_authSessionManager = v4;
+    authSessionManager = selfCopy->_authSessionManager;
+    selfCopy->_authSessionManager = v4;
     _objc_release(authSessionManager);
     v6 = +[AKAccountManager sharedInstance];
-    accountManager = v24->_accountManager;
-    v24->_accountManager = v6;
+    accountManager = selfCopy->_accountManager;
+    selfCopy->_accountManager = v6;
     _objc_release(accountManager);
     v8 = +[AKAuthorizationStoreManager sharedInstance];
-    localAccountsStorageController = v24->_localAccountsStorageController;
-    v24->_localAccountsStorageController = v8;
+    localAccountsStorageController = selfCopy->_localAccountsStorageController;
+    selfCopy->_localAccountsStorageController = v8;
     _objc_release(localAccountsStorageController);
     v17 = [AKSharedAccountsStorageController alloc];
     v19 = objc_alloc_init(AAFKeychainManager);
     v18 = +[KCSharingGroupManager sharedInstance];
     v10 = [(AKSharedAccountsStorageController *)v17 initWithKeychainStorageController:v19 keychainGroupManager:?];
-    sharedAccountsStorageController = v24->_sharedAccountsStorageController;
-    v24->_sharedAccountsStorageController = v10;
+    sharedAccountsStorageController = selfCopy->_sharedAccountsStorageController;
+    selfCopy->_sharedAccountsStorageController = v10;
     _objc_release(sharedAccountsStorageController);
     _objc_release(v18);
     _objc_release(v19);
@@ -110,8 +110,8 @@
     {
       v12 = [AKAuthorizationRapportClient alloc];
       v13 = [(AKAuthorizationRapportClient *)v12 initWithClient:location[0]];
-      rapportClient = v24->_rapportClient;
-      v24->_rapportClient = v13;
+      rapportClient = selfCopy->_rapportClient;
+      selfCopy->_rapportClient = v13;
       _objc_release(rapportClient);
     }
 
@@ -125,89 +125,89 @@
     objc_storeStrong(&v20, 0);
   }
 
-  v16 = _objc_retain(v24);
+  v16 = _objc_retain(selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v24, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v16;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = _AKLogSiwa();
   type = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_DEBUG))
   {
-    sub_1000194D4(v6, v5);
+    sub_1000194D4(v6, selfCopy);
     _os_log_debug_impl(&_mh_execute_header, oslog[0], type, "%@ deallocated", v6, 0xCu);
   }
 
   objc_storeStrong(oslog, 0);
-  v2.receiver = v5;
+  v2.receiver = selfCopy;
   v2.super_class = AKAuthorizationDaemonService;
   [(AKAuthorizationDaemonService *)&v2 dealloc];
 }
 
-- (void)performAuthorization:(id)a3 completion:(id)a4
+- (void)performAuthorization:(id)authorization completion:(id)completion
 {
-  v34 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, authorization);
   v32 = 0;
-  objc_storeStrong(&v32, a4);
+  objc_storeStrong(&v32, completion);
   v31 = _AKLogSiwa();
   v30 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
   {
-    sub_1000194D4(v37, v34->_client);
+    sub_1000194D4(v37, selfCopy->_client);
     _os_log_impl(&_mh_execute_header, v31, v30, "Client before perform authorization execution %@", v37, 0xCu);
   }
 
   objc_storeStrong(&v31, 0);
-  v13 = [location[0] _proxiedClientBundleID];
+  _proxiedClientBundleID = [location[0] _proxiedClientBundleID];
   v28 = 0;
-  v14 = 0;
-  if (v13)
+  isPermittedToProxyAuthorizationBundleIdentifier = 0;
+  if (_proxiedClientBundleID)
   {
-    v29 = [location[0] _proxiedClientTeamID];
+    _proxiedClientTeamID = [location[0] _proxiedClientTeamID];
     v28 = 1;
-    v14 = 0;
-    if (v29)
+    isPermittedToProxyAuthorizationBundleIdentifier = 0;
+    if (_proxiedClientTeamID)
     {
-      v14 = [(AKClient *)v34->_client isPermittedToProxyAuthorizationBundleIdentifier];
+      isPermittedToProxyAuthorizationBundleIdentifier = [(AKClient *)selfCopy->_client isPermittedToProxyAuthorizationBundleIdentifier];
     }
   }
 
   if (v28)
   {
-    _objc_release(v29);
+    _objc_release(_proxiedClientTeamID);
   }
 
-  _objc_release(v13);
-  if (v14)
+  _objc_release(_proxiedClientBundleID);
+  if (isPermittedToProxyAuthorizationBundleIdentifier)
   {
     v27 = _AKLogSiwa();
     v26 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [location[0] _proxiedClientBundleID];
-      sub_1000194D4(v36, v12);
+      _proxiedClientBundleID2 = [location[0] _proxiedClientBundleID];
+      sub_1000194D4(v36, _proxiedClientBundleID2);
       _os_log_impl(&_mh_execute_header, v27, v26, "Proxied bundle detected (%@), proxying...", v36, 0xCu);
-      _objc_release(v12);
+      _objc_release(_proxiedClientBundleID2);
     }
 
     objc_storeStrong(&v27, 0);
     [location[0] set_shouldUseProxiedClientBundleIDForSRP:1];
     v10 = [AKOwnerProxyClient alloc];
     v9 = location[0];
-    v11 = [(AKClient *)v34->_client xpcConnection];
+    xpcConnection = [(AKClient *)selfCopy->_client xpcConnection];
     v4 = [(AKOwnerProxyClient *)v10 initWithCredentialRequest:v9 connection:?];
-    client = v34->_client;
-    v34->_client = &v4->super;
+    client = selfCopy->_client;
+    selfCopy->_client = &v4->super;
     _objc_release(client);
-    _objc_release(v11);
+    _objc_release(xpcConnection);
   }
 
   v25 = _AKLogSiwa();
@@ -219,9 +219,9 @@
   }
 
   objc_storeStrong(&v25, 0);
-  authSessionManager = v34->_authSessionManager;
+  authSessionManager = selfCopy->_authSessionManager;
   v6 = location[0];
-  v7 = v34->_client;
+  v7 = selfCopy->_client;
   v16 = _NSConcreteStackBlock;
   v17 = -1073741824;
   v18 = 0;
@@ -229,7 +229,7 @@
   v20 = &unk_100324A58;
   v23 = _objc_retain(v32);
   v21 = _objc_retain(location[0]);
-  v22 = _objc_retain(v34);
+  v22 = _objc_retain(selfCopy);
   [(AKAuthorizationSessionManager *)authSessionManager beginSessionWithContext:v6 client:v7 completion:&v16];
   objc_storeStrong(&v22, 0);
   objc_storeStrong(&v21, 0);
@@ -238,22 +238,22 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)getCredentialStateForRequest:(id)a3 completion:(id)a4
+- (void)getCredentialStateForRequest:(id)request completion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, completion);
   v15 = _AKLogSiwa();
   v14 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [location[0] userID];
-    sub_1000194D4(v19, v4);
+    userID = [location[0] userID];
+    sub_1000194D4(v19, userID);
     _os_log_impl(&_mh_execute_header, v15, v14, "Attempting to get credential state for User identifier: %@", v19, 0xCu);
-    _objc_release(v4);
+    _objc_release(userID);
   }
 
   objc_storeStrong(&v15, 0);
@@ -264,44 +264,44 @@
   v11 = &unk_100324A80;
   v12 = _objc_retain(v16);
   v13 = objc_retainBlock(&v7);
-  v6 = [(AKAuthorizationDaemonService *)v18 _credentialStateController];
-  [v6 getCredentialStateForRequest:location[0] completion:v13];
-  objc_storeStrong(&v6, 0);
+  _credentialStateController = [(AKAuthorizationDaemonService *)selfCopy _credentialStateController];
+  [_credentialStateController getCredentialStateForRequest:location[0] completion:v13];
+  objc_storeStrong(&_credentialStateController, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)getCredentialStateForClientID:(id)a3 completion:(id)a4
+- (void)getCredentialStateForClientID:(id)d completion:(id)completion
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  v5 = [(AKAuthorizationDaemonService *)v8 _credentialStateController];
-  [v5 getCredentialStateForClientID:location[0] completion:v6];
-  objc_storeStrong(&v5, 0);
+  objc_storeStrong(&v6, completion);
+  _credentialStateController = [(AKAuthorizationDaemonService *)selfCopy _credentialStateController];
+  [_credentialStateController getCredentialStateForClientID:location[0] completion:v6];
+  objc_storeStrong(&_credentialStateController, 0);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)startDiscoveryWithCompletion:(id)a3
+- (void)startDiscoveryWithCompletion:(id)completion
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(AKClient *)v22->_client hasOwnerAccess])
+  objc_storeStrong(location, completion);
+  if ([(AKClient *)selfCopy->_client hasOwnerAccess])
   {
     v3 = [AKAuthorizationEndorserRapportDiscovery alloc];
-    v4 = [(AKAuthorizationEndorserRapportDiscovery *)v3 initWithClient:v22->_client];
-    endorserRapportDiscovery = v22->_endorserRapportDiscovery;
-    v22->_endorserRapportDiscovery = v4;
+    v4 = [(AKAuthorizationEndorserRapportDiscovery *)v3 initWithClient:selfCopy->_client];
+    endorserRapportDiscovery = selfCopy->_endorserRapportDiscovery;
+    selfCopy->_endorserRapportDiscovery = v4;
     _objc_release(endorserRapportDiscovery);
-    v7 = v22->_endorserRapportDiscovery;
+    v7 = selfCopy->_endorserRapportDiscovery;
     v14 = _NSConcreteStackBlock;
     v15 = -1073741824;
     v16 = 0;
@@ -310,7 +310,7 @@
     v19 = _objc_retain(location[0]);
     [(AKAuthorizationEndorserRapportDiscovery *)v7 setDidDeactivateBlock:&v14];
     v13 = 0;
-    v6 = v22->_endorserRapportDiscovery;
+    v6 = selfCopy->_endorserRapportDiscovery;
     obj = 0;
     v8 = [(AKAuthorizationEndorserRapportDiscovery *)v6 activateWithError:&obj];
     objc_storeStrong(&v13, obj);
@@ -337,27 +337,27 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchAppleIDAuthorizationURLSetWithCompletion:(id)a3
+- (void)fetchAppleIDAuthorizationURLSetWithCompletion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v3 = location[0];
   v5 = [AKURLBag bagForAltDSID:0];
-  v4 = [v5 appleIDAuthorizationURLs];
+  appleIDAuthorizationURLs = [v5 appleIDAuthorizationURLs];
   v3[2]();
-  _objc_release(v4);
+  _objc_release(appleIDAuthorizationURLs);
   _objc_release(v5);
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchNativeTakeoverURLSetWithCompletion:(id)a3
+- (void)fetchNativeTakeoverURLSetWithCompletion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v15 = _AKLogNto();
   v14 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -383,12 +383,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchAppleOwnedDomainSetWithCompletion:(id)a3
+- (void)fetchAppleOwnedDomainSetWithCompletion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v14 = _AKLogNto();
   v13 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -401,7 +401,7 @@
 
   objc_storeStrong(&v14, 0);
   v5 = [AKURLBag bagForAltDSID:0];
-  v11 = [v5 appleOwnedDomains];
+  appleOwnedDomains = [v5 appleOwnedDomains];
   _objc_release(v5);
   v10 = _AKLogNto();
   v9 = OS_LOG_TYPE_DEFAULT;
@@ -414,17 +414,17 @@
   }
 
   objc_storeStrong(&v10, 0);
-  (*(location[0] + 2))(location[0], v11, 0);
-  objc_storeStrong(&v11, 0);
+  (*(location[0] + 2))(location[0], appleOwnedDomains, 0);
+  objc_storeStrong(&appleOwnedDomains, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchAllowListDomainsForSharingKeyWithCompletion:(id)a3
+- (void)fetchAllowListDomainsForSharingKeyWithCompletion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v14 = _AKLogSiwa();
   v13 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -437,7 +437,7 @@
 
   objc_storeStrong(&v14, 0);
   v5 = [AKURLBag bagForAltDSID:0];
-  v11 = [v5 allowListDomainsForSharingKey];
+  allowListDomainsForSharingKey = [v5 allowListDomainsForSharingKey];
   _objc_release(v5);
   v10 = _AKLogSiwa();
   v9 = OS_LOG_TYPE_DEFAULT;
@@ -450,19 +450,19 @@
   }
 
   objc_storeStrong(&v10, 0);
-  (*(location[0] + 2))(location[0], v11, 0);
-  objc_storeStrong(&v11, 0);
+  (*(location[0] + 2))(location[0], allowListDomainsForSharingKey, 0);
+  objc_storeStrong(&allowListDomainsForSharingKey, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)revokeUpgradeWithContext:(id)a3 completion:(id)a4
+- (void)revokeUpgradeWithContext:(id)context completion:(id)completion
 {
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v24 = 0;
-  objc_storeStrong(&v24, a4);
+  objc_storeStrong(&v24, completion);
   v17 = _NSConcreteStackBlock;
   v18 = -1073741824;
   v19 = 0;
@@ -470,12 +470,12 @@
   v21 = &unk_100321230;
   v22 = _objc_retain(v24);
   v23 = objc_retainBlock(&v17);
-  if ([(AKClient *)v26->_client hasInternalAccess])
+  if ([(AKClient *)selfCopy->_client hasInternalAccess])
   {
     v16 = objc_alloc_init(AKAuthorizationRevokeUpgradeController);
     v6 = v16;
     v4 = location[0];
-    client = v26->_client;
+    client = selfCopy->_client;
     v9 = _NSConcreteStackBlock;
     v10 = -1073741824;
     v11 = 0;
@@ -502,13 +502,13 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchAppleIDAuthorizeHTMLResponseTemplateWithCompletion:(id)a3
+- (void)fetchAppleIDAuthorizeHTMLResponseTemplateWithCompletion:(id)completion
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(AKClient *)v24->_client hasOwnerAccess])
+  objc_storeStrong(location, completion);
+  if ([(AKClient *)selfCopy->_client hasOwnerAccess])
   {
     v22 = _AKLogSiwa();
     v21 = OS_LOG_TYPE_DEFAULT;
@@ -522,12 +522,12 @@
 
     objc_storeStrong(&v22, 0);
     v19 = objc_opt_new();
-    v5 = [(AKAccountManager *)v24->_accountManager altDSIDforPrimaryiCloudAccount];
+    altDSIDforPrimaryiCloudAccount = [(AKAccountManager *)selfCopy->_accountManager altDSIDforPrimaryiCloudAccount];
     [v19 setAltDSID:?];
-    _objc_release(v5);
+    _objc_release(altDSIDforPrimaryiCloudAccount);
     v3 = [AKGrandSlamRequestProvider alloc];
     v18 = [(AKURLRequestProviderImpl *)v3 initWithContext:v19 urlBagKey:AKURLBagKeyAppleIDAuthorizeHTMLResponse shouldCacheResource:1];
-    [(AKURLRequestProviderImpl *)v18 setClient:v24->_client];
+    [(AKURLRequestProviderImpl *)v18 setClient:selfCopy->_client];
     [(AKGrandSlamRequestProvider *)v18 setAuthenticatedRequest:1];
     [(AKGrandSlamRequestProvider *)v18 setExpectedResponseType:2];
     v4 = [AKServiceControllerImpl alloc];
@@ -564,21 +564,21 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchPrimaryApplicationInformationForWebServiceWithInfo:(id)a3 completion:(id)a4
+- (void)fetchPrimaryApplicationInformationForWebServiceWithInfo:(id)info completion:(id)completion
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, info);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
-  if ([(AKClient *)v24->_client hasOwnerAccess])
+  objc_storeStrong(&v22, completion);
+  if ([(AKClient *)selfCopy->_client hasOwnerAccess])
   {
-    v17 = [(AKAccountManager *)v24->_accountManager altDSIDforPrimaryiCloudAccount];
-    if (v17)
+    altDSIDforPrimaryiCloudAccount = [(AKAccountManager *)selfCopy->_accountManager altDSIDforPrimaryiCloudAccount];
+    if (altDSIDforPrimaryiCloudAccount)
     {
       v4 = +[AKApplicationInformationController sharedController];
-      [v4 fetchPrimaryApplicationInformationForAltDSID:v17 appInformation:location[0] client:v24->_client completion:v22];
+      [v4 fetchPrimaryApplicationInformationForAltDSID:altDSIDforPrimaryiCloudAccount appInformation:location[0] client:selfCopy->_client completion:v22];
       _objc_release(v4);
       v18 = 0;
     }
@@ -603,7 +603,7 @@
       v18 = 1;
     }
 
-    objc_storeStrong(&v17, 0);
+    objc_storeStrong(&altDSIDforPrimaryiCloudAccount, 0);
   }
 
   else
@@ -630,15 +630,15 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)continueFetchingIconForRequestContext:(id)a3 completion:(id)a4
+- (void)continueFetchingIconForRequestContext:(id)context completion:(id)completion
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  if ([(AKClient *)v15->_client hasOwnerAccess])
+  objc_storeStrong(&v13, completion);
+  if ([(AKClient *)selfCopy->_client hasOwnerAccess])
   {
     v4 = +[AKAuthorizationIconManager sharedManager];
     [v4 continueFetchingIconWithRequestContext:location[0] completion:v13];
@@ -668,29 +668,29 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)establishConnectionWithNotificationHandlerEndpoint:(id)a3 completion:(id)a4
+- (void)establishConnectionWithNotificationHandlerEndpoint:(id)endpoint completion:(id)completion
 {
-  v36 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, endpoint);
   v34 = 0;
-  objc_storeStrong(&v34, a4);
-  if ([(AKClient *)v36->_client hasSiwaDefaultEntitlementAccess]|| [(AKClient *)v36->_client hasInternalAccess])
+  objc_storeStrong(&v34, completion);
+  if ([(AKClient *)selfCopy->_client hasSiwaDefaultEntitlementAccess]|| [(AKClient *)selfCopy->_client hasInternalAccess])
   {
-    v29 = [(AKAccountManager *)v36->_accountManager primaryAuthKitAccount];
-    if (([(AKAccountManager *)v36->_accountManager userUnderAgeForAccount:v29]& 1) == 0 || [(AKClient *)v36->_client hasSiwaUnderageEntitlementAccess]|| [(AKClient *)v36->_client hasInternalAccess])
+    primaryAuthKitAccount = [(AKAccountManager *)selfCopy->_accountManager primaryAuthKitAccount];
+    if (([(AKAccountManager *)selfCopy->_accountManager userUnderAgeForAccount:primaryAuthKitAccount]& 1) == 0 || [(AKClient *)selfCopy->_client hasSiwaUnderageEntitlementAccess]|| [(AKClient *)selfCopy->_client hasInternalAccess])
     {
       if (location[0])
       {
-        v25 = [(AKClient *)v36->_client bundleID];
-        if (v25)
+        bundleID = [(AKClient *)selfCopy->_client bundleID];
+        if (bundleID)
         {
           v24 = _AKLogSiwa();
           v23 = OS_LOG_TYPE_DEFAULT;
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
           {
-            sub_1000194D4(v37, v25);
+            sub_1000194D4(v37, bundleID);
             _os_log_impl(&_mh_execute_header, v24, v23, "Establishing connection with notification center for client (%@).", v37, 0xCu);
           }
 
@@ -702,11 +702,11 @@
           [v5 setRemoteObjectInterface:?];
           _objc_release(v6);
           v7 = +[AKAuthorizationConnectionManager sharedManager];
-          [v7 addConnection:v22 forBundleID:v25];
+          [v7 addConnection:v22 forBundleID:bundleID];
           _objc_release(v7);
-          v8 = [v22 remoteObjectProxy];
-          [v8 activate];
-          _objc_release(v8);
+          remoteObjectProxy = [v22 remoteObjectProxy];
+          [remoteObjectProxy activate];
+          _objc_release(remoteObjectProxy);
           (*(v34 + 2))(v34, 1, 0);
           objc_storeStrong(&v22, 0);
           v30 = 0;
@@ -721,7 +721,7 @@
           v30 = 1;
         }
 
-        objc_storeStrong(&v25, 0);
+        objc_storeStrong(&bundleID, 0);
       }
 
       else
@@ -754,7 +754,7 @@
       v30 = 1;
     }
 
-    objc_storeStrong(&v29, 0);
+    objc_storeStrong(&primaryAuthKitAccount, 0);
   }
 
   else
@@ -781,15 +781,15 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)establishConnectionWithStateBroadcastHandlerEndpoint:(id)a3 completion:(id)a4
+- (void)establishConnectionWithStateBroadcastHandlerEndpoint:(id)endpoint completion:(id)completion
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, endpoint);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
-  if ([(AKClient *)v23->_client hasPrivateAccess])
+  objc_storeStrong(&v21, completion);
+  if ([(AKClient *)selfCopy->_client hasPrivateAccess])
   {
     if (location[0])
     {
@@ -797,10 +797,10 @@
       v18 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [(AKClient *)v23->_client bundleID];
-        sub_1000194D4(v24, v11);
+        bundleID = [(AKClient *)selfCopy->_client bundleID];
+        sub_1000194D4(v24, bundleID);
         _os_log_impl(&_mh_execute_header, v19, v18, "Establishing connection with state broadcast handler for client (%@).", v24, 0xCu);
-        _objc_release(v11);
+        _objc_release(bundleID);
       }
 
       objc_storeStrong(&v19, 0);
@@ -812,13 +812,13 @@
       _objc_release(v6);
       v9 = +[AKAuthorizationConnectionManager sharedManager];
       v7 = v17;
-      v8 = [(AKClient *)v23->_client bundleID];
+      bundleID2 = [(AKClient *)selfCopy->_client bundleID];
       [v9 addConnection:v7 forBundleID:?];
-      _objc_release(v8);
+      _objc_release(bundleID2);
       _objc_release(v9);
-      v10 = [v17 remoteObjectProxy];
-      [v10 activate];
-      _objc_release(v10);
+      remoteObjectProxy = [v17 remoteObjectProxy];
+      [remoteObjectProxy activate];
+      _objc_release(remoteObjectProxy);
       (*(v21 + 2))(v21, 1, 0);
       objc_storeStrong(&v17, 0);
       v20 = 0;
@@ -847,40 +847,40 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)getPresentationContextForRequestContext:(id)a3 completion:(id)a4
+- (void)getPresentationContextForRequestContext:(id)context completion:(id)completion
 {
-  v35 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v33 = 0;
-  objc_storeStrong(&v33, a4);
-  if ([(AKClient *)v35->_client hasSiwaAccountListAccess]|| [(AKClient *)v35->_client hasOwnerAccess])
+  objc_storeStrong(&v33, completion);
+  if ([(AKClient *)selfCopy->_client hasSiwaAccountListAccess]|| [(AKClient *)selfCopy->_client hasOwnerAccess])
   {
-    v15 = [location[0] authorizationRequest];
+    authorizationRequest = [location[0] authorizationRequest];
     v31 = 0;
     v29 = 0;
     v16 = 0;
-    if (v15)
+    if (authorizationRequest)
     {
-      v32 = [location[0] authorizationRequest];
+      authorizationRequest2 = [location[0] authorizationRequest];
       v31 = 1;
-      v30 = [v32 authkitAccount];
+      authkitAccount = [authorizationRequest2 authkitAccount];
       v29 = 1;
-      v16 = v30 == 0;
+      v16 = authkitAccount == 0;
     }
 
     if (v29)
     {
-      _objc_release(v30);
+      _objc_release(authkitAccount);
     }
 
     if (v31)
     {
-      _objc_release(v32);
+      _objc_release(authorizationRequest2);
     }
 
-    _objc_release(v15);
+    _objc_release(authorizationRequest);
     if (v16)
     {
       v28 = _AKLogSiwa();
@@ -895,18 +895,18 @@
 
       objc_storeStrong(&v28, 0);
       v12 = +[AKAccountManager sharedInstance];
-      v11 = [(AKAccountManager *)v12 authKitAccountRequestingAuthorization];
-      v10 = [location[0] authorizationRequest];
-      [v10 setAuthkitAccount:v11];
-      _objc_release(v10);
-      _objc_release(v11);
+      authKitAccountRequestingAuthorization = [(AKAccountManager *)v12 authKitAccountRequestingAuthorization];
+      authorizationRequest3 = [location[0] authorizationRequest];
+      [authorizationRequest3 setAuthkitAccount:authKitAccountRequestingAuthorization];
+      _objc_release(authorizationRequest3);
+      _objc_release(authKitAccountRequestingAuthorization);
       _objc_release(v12);
     }
 
-    if ([(AKClient *)v35->_client hasSiwaAccountListAccess])
+    if ([(AKClient *)selfCopy->_client hasSiwaAccountListAccess])
     {
-      v25 = [(AKAuthorizationDaemonService *)v35 _credentialStateForRequestContext:location[0]];
-      [(AKAuthorizationDaemonService *)v35 _prepareRequestContext:location[0] forCredentialState:v25];
+      v25 = [(AKAuthorizationDaemonService *)selfCopy _credentialStateForRequestContext:location[0]];
+      [(AKAuthorizationDaemonService *)selfCopy _prepareRequestContext:location[0] forCredentialState:v25];
     }
 
     v24 = _AKLogSiwa();
@@ -920,8 +920,8 @@
     }
 
     objc_storeStrong(&v24, 0);
-    v21 = [(AKAuthorizationDaemonService *)v35 _clientForContext:location[0]];
-    [(AKAuthorizationDaemonService *)v35 _getPresentationContextForRequestContext:location[0] client:v21 completion:v33];
+    v21 = [(AKAuthorizationDaemonService *)selfCopy _clientForContext:location[0]];
+    [(AKAuthorizationDaemonService *)selfCopy _getPresentationContextForRequestContext:location[0] client:v21 completion:v33];
     objc_storeStrong(&v21, 0);
   }
 
@@ -948,12 +948,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchSharedKeyInfoWithCompletion:(id)a3
+- (void)fetchSharedKeyInfoWithCompletion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v24 = _AKLogSiwa();
   v23 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -967,11 +967,11 @@
   objc_storeStrong(&v24, 0);
   v21 = objc_opt_new();
   v8 = +[AKSecurePakeManager sharedManager];
-  v20 = [(AKSecurePakeManager *)v8 createRandomSharedKey];
+  createRandomSharedKey = [(AKSecurePakeManager *)v8 createRandomSharedKey];
   _objc_release(v8);
-  if (v20)
+  if (createRandomSharedKey)
   {
-    [v21 setObject:v20 forKeyedSubscript:@"sharing_key"];
+    [v21 setObject:createRandomSharedKey forKeyedSubscript:@"sharing_key"];
   }
 
   v19 = 0;
@@ -1020,7 +1020,7 @@
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v18, 0);
   objc_storeStrong(&v19, 0);
-  objc_storeStrong(&v20, 0);
+  objc_storeStrong(&createRandomSharedKey, 0);
   objc_storeStrong(&v21, 0);
   objc_storeStrong(location, 0);
 }
@@ -1028,9 +1028,9 @@
 - (id)_credentialStateController
 {
   v3 = +[AKFeatureManager sharedManager];
-  v4 = [v3 isSiwaCredentialSharingEnabled];
+  isSiwaCredentialSharingEnabled = [v3 isSiwaCredentialSharingEnabled];
   _objc_release(v3);
-  if (v4)
+  if (isSiwaCredentialSharingEnabled)
   {
     v6 = [[AKAuthorizationCredentialStateController alloc] initWithClient:self->_client accountManager:self->_accountManager localAccountsStorageController:self->_localAccountsStorageController sharedAccountsStorageController:self->_sharedAccountsStorageController];
   }
@@ -1043,13 +1043,13 @@
   return v6;
 }
 
-- (id)_clientForContext:(id)a3
+- (id)_clientForContext:(id)context
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v13 = [(AKAuthorizationSessionManager *)v15->_authSessionManager clientForContext:location[0]];
+  objc_storeStrong(location, context);
+  v13 = [(AKAuthorizationSessionManager *)selfCopy->_authSessionManager clientForContext:location[0]];
   if (v13)
   {
     v12 = _AKLogSiwa();
@@ -1078,7 +1078,7 @@
     }
 
     objc_storeStrong(&oslog, 0);
-    v16 = _objc_retain(v15->_client);
+    v16 = _objc_retain(selfCopy->_client);
     v10 = 1;
   }
 
@@ -1089,38 +1089,38 @@
   return v3;
 }
 
-- (void)_createAndPerformRequest:(id)a3 completion:(id)a4
+- (void)_createAndPerformRequest:(id)request completion:(id)completion
 {
-  v94 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v92 = 0;
-  objc_storeStrong(&v92, a4);
-  v41 = [location[0] authorizationRequest];
+  objc_storeStrong(&v92, completion);
+  authorizationRequest = [location[0] authorizationRequest];
   v90 = 0;
   v88 = 0;
   v42 = 0;
-  if (v41)
+  if (authorizationRequest)
   {
-    v91 = [location[0] authorizationRequest];
+    authorizationRequest2 = [location[0] authorizationRequest];
     v90 = 1;
-    v89 = [v91 authkitAccount];
+    authkitAccount = [authorizationRequest2 authkitAccount];
     v88 = 1;
-    v42 = v89 == 0;
+    v42 = authkitAccount == 0;
   }
 
   if (v88)
   {
-    _objc_release(v89);
+    _objc_release(authkitAccount);
   }
 
   if (v90)
   {
-    _objc_release(v91);
+    _objc_release(authorizationRequest2);
   }
 
-  _objc_release(v41);
+  _objc_release(authorizationRequest);
   if (v42)
   {
     v87 = _AKLogSiwa();
@@ -1135,42 +1135,42 @@
 
     objc_storeStrong(&v87, 0);
     v37 = +[AKAccountManager sharedInstance];
-    v36 = [(AKAccountManager *)v37 authKitAccountRequestingAuthorization];
-    v35 = [location[0] authorizationRequest];
-    [v35 setAuthkitAccount:v36];
-    _objc_release(v35);
-    _objc_release(v36);
+    authKitAccountRequestingAuthorization = [(AKAccountManager *)v37 authKitAccountRequestingAuthorization];
+    authorizationRequest3 = [location[0] authorizationRequest];
+    [authorizationRequest3 setAuthkitAccount:authKitAccountRequestingAuthorization];
+    _objc_release(authorizationRequest3);
+    _objc_release(authKitAccountRequestingAuthorization);
     _objc_release(v37);
   }
 
-  v84 = [(AKAuthorizationDaemonService *)v94 _verifyEntitlementsForRequest:location[0]];
+  v84 = [(AKAuthorizationDaemonService *)selfCopy _verifyEntitlementsForRequest:location[0]];
   if ((v84 & 1) == 1)
   {
-    v32 = [location[0] authorizationRequest];
-    _objc_release(v32);
-    if (!v32)
+    authorizationRequest4 = [location[0] authorizationRequest];
+    _objc_release(authorizationRequest4);
+    if (!authorizationRequest4)
     {
       goto LABEL_36;
     }
 
     v82 = _objc_retain(location[0]);
-    if ([(AKClient *)v94->_client authorizationClientProvidesUI])
+    if ([(AKClient *)selfCopy->_client authorizationClientProvidesUI])
     {
-      objc_storeStrong(&v82, v94->_originalRequestContext);
+      objc_storeStrong(&v82, selfCopy->_originalRequestContext);
     }
 
-    v81 = [(AKAuthorizationDaemonService *)v94 _credentialStateForRequestContext:v82];
-    accountManager = v94->_accountManager;
-    v28 = [location[0] authorizationRequest];
-    v30 = [v28 authkitAccount];
+    v81 = [(AKAuthorizationDaemonService *)selfCopy _credentialStateForRequestContext:v82];
+    accountManager = selfCopy->_accountManager;
+    authorizationRequest5 = [location[0] authorizationRequest];
+    authkitAccount2 = [authorizationRequest5 authkitAccount];
     v31 = 0;
     if (([(AKAccountManager *)accountManager userUnderAgeForAccount:?]& 1) != 0)
     {
       v31 = v81 != 1;
     }
 
-    _objc_release(v30);
-    _objc_release(v28);
+    _objc_release(authkitAccount2);
+    _objc_release(authorizationRequest5);
     if (v31)
     {
       v26 = v92;
@@ -1180,7 +1180,7 @@
       v83 = 1;
     }
 
-    else if ([(AKAuthorizationDaemonService *)v94 _shouldEarlyReturnRequest:v82 forCredentialState:v81])
+    else if ([(AKAuthorizationDaemonService *)selfCopy _shouldEarlyReturnRequest:v82 forCredentialState:v81])
     {
       v80 = _AKLogSiwa();
       v79 = OS_LOG_TYPE_DEFAULT;
@@ -1202,31 +1202,31 @@
 
     else
     {
-      [(AKAuthorizationDaemonService *)v94 _prepareRequestContext:v82 forCredentialState:v81];
-      v20 = [v82 authorizationRequest];
+      [(AKAuthorizationDaemonService *)selfCopy _prepareRequestContext:v82 forCredentialState:v81];
+      authorizationRequest6 = [v82 authorizationRequest];
       v76 = 0;
       v74 = 0;
       v21 = 0;
-      if ([v20 _isSilentAppTransfer])
+      if ([authorizationRequest6 _isSilentAppTransfer])
       {
-        v77 = [v82 authorizationRequest];
+        authorizationRequest7 = [v82 authorizationRequest];
         v76 = 1;
-        v75 = [v77 userIdentifier];
+        userIdentifier = [authorizationRequest7 userIdentifier];
         v74 = 1;
-        v21 = v75 != 0;
+        v21 = userIdentifier != 0;
       }
 
       if (v74)
       {
-        _objc_release(v75);
+        _objc_release(userIdentifier);
       }
 
       if (v76)
       {
-        _objc_release(v77);
+        _objc_release(authorizationRequest7);
       }
 
-      _objc_release(v20);
+      _objc_release(authorizationRequest6);
       if (v21)
       {
         v73 = _AKLogSiwa();
@@ -1256,24 +1256,24 @@ LABEL_36:
       v69 = 32;
       v70 = 0;
       v65 = 0;
-      v16 = [location[0] authorizationRequest];
+      authorizationRequest8 = [location[0] authorizationRequest];
       v17 = 0;
-      if (v16)
+      if (authorizationRequest8)
       {
-        v66 = [location[0] passwordRequest];
+        passwordRequest = [location[0] passwordRequest];
         v65 = 1;
-        v17 = v66 == 0;
+        v17 = passwordRequest == 0;
       }
 
       if (v65)
       {
-        _objc_release(v66);
+        _objc_release(passwordRequest);
       }
 
-      _objc_release(v16);
+      _objc_release(authorizationRequest8);
       if (v17)
       {
-        if ([(AKAuthorizationDaemonService *)v94 _shouldStartSatoriVerificationForRequestContext:location[0]])
+        if ([(AKAuthorizationDaemonService *)selfCopy _shouldStartSatoriVerificationForRequestContext:location[0]])
         {
           oslog = _AKLogSiwa();
           v63 = OS_LOG_TYPE_DEFAULT;
@@ -1287,26 +1287,26 @@ LABEL_36:
 
           objc_storeStrong(&oslog, 0);
           v13 = [AKCASatoriReporter alloc];
-          v12 = [location[0] requestIdentifier];
-          v11 = [v12 UUIDString];
+          requestIdentifier = [location[0] requestIdentifier];
+          uUIDString = [requestIdentifier UUIDString];
           v61 = [(AKCASatoriReporter *)v13 initWithRequestID:?];
-          _objc_release(v11);
-          _objc_release(v12);
+          _objc_release(uUIDString);
+          _objc_release(requestIdentifier);
           v10 = [AKSatoriController alloc];
-          v60 = [(AKSatoriController *)v10 initWithClient:v94->_client];
+          v60 = [(AKSatoriController *)v10 initWithClient:selfCopy->_client];
           [v60 setAnalyticsReport:v61];
           v9 = v60;
-          v8 = [location[0] authorizationRequest];
+          authorizationRequest9 = [location[0] authorizationRequest];
           v53 = _NSConcreteStackBlock;
           v54 = -1073741824;
           v55 = 0;
           v56 = sub_100154944;
           v57 = &unk_100324AF8;
-          v58 = _objc_retain(v94);
+          v58 = _objc_retain(selfCopy);
           v59[1] = v67;
           v59[0] = _objc_retain(v61);
-          [v9 fetchRealUserLikelihoodForRequest:v8 withCompletionHandler:&v53];
-          _objc_release(v8);
+          [v9 fetchRealUserLikelihoodForRequest:authorizationRequest9 withCompletionHandler:&v53];
+          _objc_release(authorizationRequest9);
           objc_storeStrong(v59, 0);
           objc_storeStrong(&v58, 0);
           objc_storeStrong(&v60, 0);
@@ -1329,14 +1329,14 @@ LABEL_36:
         }
       }
 
-      v5 = v94;
+      v5 = selfCopy;
       v4 = location[0];
       v43 = _NSConcreteStackBlock;
       v44 = -1073741824;
       v45 = 0;
       v46 = sub_100154BC8;
       v47 = &unk_100324B48;
-      v48 = _objc_retain(v94);
+      v48 = _objc_retain(selfCopy);
       v49[1] = v67;
       v49[0] = _objc_retain(v92);
       [(AKAuthorizationDaemonService *)v5 _determineUIAndPerformRequest:v4 completion:&v43];
@@ -1360,23 +1360,23 @@ LABEL_36:
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_shouldEarlyReturnRequest:(id)a3 forCredentialState:(int64_t)a4
+- (BOOL)_shouldEarlyReturnRequest:(id)request forCredentialState:(int64_t)state
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v9 = ([location[0] requestOptions] & 1) != 0;
-  v4 = [location[0] passwordRequest];
-  v7 = v4 == 0;
-  _objc_release(v4);
+  passwordRequest = [location[0] passwordRequest];
+  v7 = passwordRequest == 0;
+  _objc_release(passwordRequest);
   v8 = 0;
   if (v9)
   {
     v8 = 0;
     if (v7)
     {
-      v8 = a4 != 1;
+      v8 = state != 1;
     }
   }
 
@@ -1384,14 +1384,14 @@ LABEL_36:
   return v8;
 }
 
-- (void)_determineUIAndPerformRequest:(id)a3 completion:(id)a4
+- (void)_determineUIAndPerformRequest:(id)request completion:(id)completion
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, completion);
   if ([location[0] _shouldSkipAuthorizationUI])
   {
     v9 = _AKLogSiwa();
@@ -1405,36 +1405,36 @@ LABEL_36:
     }
 
     objc_storeStrong(&v9, 0);
-    [(AKAuthorizationDaemonService *)v12 _performSilentRequest:location[0] withCompletion:v10];
+    [(AKAuthorizationDaemonService *)selfCopy _performSilentRequest:location[0] withCompletion:v10];
   }
 
   else
   {
-    [(AKAuthorizationDaemonService *)v12 _performRequest:location[0] completion:v10];
+    [(AKAuthorizationDaemonService *)selfCopy _performRequest:location[0] completion:v10];
   }
 
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_performRequest:(id)a3 completion:(id)a4
+- (void)_performRequest:(id)request completion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
-  v4 = [location[0] passwordRequest];
-  v8 = v4 != 0;
-  _objc_release(v4);
+  objc_storeStrong(&v16, completion);
+  passwordRequest = [location[0] passwordRequest];
+  v8 = passwordRequest != 0;
+  _objc_release(passwordRequest);
   v15 = v8;
   v14 = 1;
   v9 = 1;
   if (([location[0] _shouldForceUI] & 1) == 0)
   {
     v9 = 1;
-    if (![(AKClient *)v18->_client authorizationRequiresRapport])
+    if (![(AKClient *)selfCopy->_client authorizationRequiresRapport])
     {
       v9 = 1;
       if (!v15)
@@ -1456,19 +1456,19 @@ LABEL_36:
   }
 
   objc_storeStrong(&v12, 0);
-  [(AKAuthorizationDaemonService *)v18 _initiateAuthorizationWithRequestContext:location[0] completion:v16];
+  [(AKAuthorizationDaemonService *)selfCopy _initiateAuthorizationWithRequestContext:location[0] completion:v16];
   objc_storeStrong(&v16, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_performSilentRequest:(id)a3 withCompletion:(id)a4
+- (void)_performSilentRequest:(id)request withCompletion:(id)completion
 {
-  v43 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v41 = 0;
-  objc_storeStrong(&v41, a4);
+  objc_storeStrong(&v41, completion);
   v40 = 0;
   v38 = 0;
   v23 = [AKAuthorizationValidator canPerformCredentialRequest:location[0] error:&v38];
@@ -1476,12 +1476,12 @@ LABEL_36:
   v39 = v23;
   if (v23)
   {
-    v33 = [location[0] authorizationRequest];
-    if (v33)
+    authorizationRequest = [location[0] authorizationRequest];
+    if (authorizationRequest)
     {
-      v19 = [v33 authkitAccount];
-      _objc_release(v19);
-      if (v19)
+      authkitAccount = [authorizationRequest authkitAccount];
+      _objc_release(authkitAccount);
+      if (authkitAccount)
       {
         v32 = _AKLogSiwa();
         v31 = OS_LOG_TYPE_DEFAULT;
@@ -1495,39 +1495,39 @@ LABEL_36:
 
         objc_storeStrong(&v32, 0);
         v29 = objc_opt_new();
-        [v29 setSelectedRequest:v33];
+        [v29 setSelectedRequest:authorizationRequest];
         v11 = objc_alloc_init(AKAuthorizationScopesUserSelection);
         [v29 setUserSelection:?];
         _objc_release(v11);
-        v12 = [location[0] _shouldForcePrivateEmail];
-        v13 = [v29 userSelection];
-        [v13 setMakePrivateEmail:v12];
-        _objc_release(v13);
+        _shouldForcePrivateEmail = [location[0] _shouldForcePrivateEmail];
+        userSelection = [v29 userSelection];
+        [userSelection setMakePrivateEmail:_shouldForcePrivateEmail];
+        _objc_release(userSelection);
         v27 = 0;
         v14 = 0;
-        if ([v33 _isAuthorizingUsingSharedAccount] == 1)
+        if ([authorizationRequest _isAuthorizingUsingSharedAccount] == 1)
         {
-          v28 = [v33 _sharedAccount];
+          _sharedAccount = [authorizationRequest _sharedAccount];
           v27 = 1;
-          v14 = v28 != 0;
+          v14 = _sharedAccount != 0;
         }
 
         if (v27)
         {
-          _objc_release(v28);
+          _objc_release(_sharedAccount);
         }
 
         if (v14)
         {
           v8 = [AKAuthorizationSharedAccountLoginChoice alloc];
-          v10 = [v33 _sharedAccount];
+          _sharedAccount2 = [authorizationRequest _sharedAccount];
           v9 = [v8 initWithSignInWithAppleAccount:?];
           [v29 setLoginChoice:?];
           _objc_release(v9);
-          _objc_release(v10);
+          _objc_release(_sharedAccount2);
         }
 
-        [(AKAuthorizationDaemonService *)v43 _safePerformSRPWithUserResponse:v29 client:v43->_client completion:v41];
+        [(AKAuthorizationDaemonService *)selfCopy _safePerformSRPWithUserResponse:v29 client:selfCopy->_client completion:v41];
         objc_storeStrong(&v29, 0);
       }
 
@@ -1559,7 +1559,7 @@ LABEL_36:
       _objc_release(v5);
     }
 
-    objc_storeStrong(&v33, 0);
+    objc_storeStrong(&authorizationRequest, 0);
     v34 = 0;
   }
 
@@ -1585,40 +1585,40 @@ LABEL_36:
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_verifyEntitlementsForRequest:(id)a3
+- (BOOL)_verifyEntitlementsForRequest:(id)request
 {
-  v58 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v56 = [(AKClient *)v58->_client hasOwnerAccess];
-  v55 = [(AKClient *)v58->_client hasInternalAccess];
-  v54 = [(AKClient *)v58->_client hasPrivateAccess];
-  accountManager = v58->_accountManager;
-  v28 = [location[0] authorizationRequest];
-  v27 = [v28 authkitAccount];
+  objc_storeStrong(location, request);
+  hasOwnerAccess = [(AKClient *)selfCopy->_client hasOwnerAccess];
+  hasInternalAccess = [(AKClient *)selfCopy->_client hasInternalAccess];
+  hasPrivateAccess = [(AKClient *)selfCopy->_client hasPrivateAccess];
+  accountManager = selfCopy->_accountManager;
+  authorizationRequest = [location[0] authorizationRequest];
+  authkitAccount = [authorizationRequest authkitAccount];
   v29 = [(AKAccountManager *)accountManager userUnderAgeForAccount:?];
-  _objc_release(v27);
-  _objc_release(v28);
+  _objc_release(authkitAccount);
+  _objc_release(authorizationRequest);
   v53 = v29;
-  v52 = 0;
-  v52 = [(AKAccountManager *)v58->_accountManager primaryiCloudAccountHasPendingDOB];
-  v30 = [location[0] passwordRequest];
+  primaryiCloudAccountHasPendingDOB = 0;
+  primaryiCloudAccountHasPendingDOB = [(AKAccountManager *)selfCopy->_accountManager primaryiCloudAccountHasPendingDOB];
+  passwordRequest = [location[0] passwordRequest];
   v49 = 0;
   v31 = 0;
-  if (v30)
+  if (passwordRequest)
   {
-    v50 = [location[0] authorizationRequest];
+    authorizationRequest2 = [location[0] authorizationRequest];
     v49 = 1;
-    v31 = v50 == 0;
+    v31 = authorizationRequest2 == 0;
   }
 
   if (v49)
   {
-    _objc_release(v50);
+    _objc_release(authorizationRequest2);
   }
 
-  _objc_release(v30);
+  _objc_release(passwordRequest);
   v51 = v31;
   v48 = _AKLogSiwa();
   v47 = OS_LOG_TYPE_DEFAULT;
@@ -1639,7 +1639,7 @@ LABEL_36:
   }
 
   objc_storeStrong(&v48, 0);
-  if (v56)
+  if (hasOwnerAccess)
   {
     v46 = _AKLogSiwa();
     v45 = OS_LOG_TYPE_DEFAULT;
@@ -1662,14 +1662,14 @@ LABEL_36:
     v41 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [NSNumber numberWithBool:v55 & 1];
+      v23 = [NSNumber numberWithBool:hasInternalAccess & 1];
       sub_1000194D4(v62, v23);
       _os_log_impl(&_mh_execute_header, v42, v41, "Internal request made by internal client? %@", v62, 0xCu);
       _objc_release(v23);
     }
 
     objc_storeStrong(&v42, 0);
-    v59 = v55 & 1;
+    v59 = hasInternalAccess & 1;
     v43 = 1;
   }
 
@@ -1681,44 +1681,44 @@ LABEL_36:
     v22 = 1;
     if ([location[0] _isFirstPartyLogin] != 1)
     {
-      v40 = [location[0] _iconData];
+      _iconData = [location[0] _iconData];
       v39 = 1;
       v22 = 1;
-      if (!v40)
+      if (!_iconData)
       {
-        v38 = [location[0] _iconName];
+        _iconName = [location[0] _iconName];
         v37 = 1;
         v22 = 1;
-        if (!v38)
+        if (!_iconName)
         {
-          v36 = [location[0] _upgradeContext];
+          _upgradeContext = [location[0] _upgradeContext];
           v35 = 1;
-          v22 = v36 != 0;
+          v22 = _upgradeContext != 0;
         }
       }
     }
 
     if (v35)
     {
-      _objc_release(v36);
+      _objc_release(_upgradeContext);
     }
 
     if (v37)
     {
-      _objc_release(v38);
+      _objc_release(_iconName);
     }
 
     if (v39)
     {
-      _objc_release(v40);
+      _objc_release(_iconData);
     }
 
     if (v22)
     {
       v21 = 1;
-      if ((v55 & 1) == 0)
+      if ((hasInternalAccess & 1) == 0)
       {
-        v21 = v54;
+        v21 = hasPrivateAccess;
       }
 
       v59 = v21 & 1;
@@ -1731,7 +1731,7 @@ LABEL_36:
       v33 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
-        if ([(AKClient *)v58->_client hasSiwaDefaultEntitlementAccess])
+        if ([(AKClient *)selfCopy->_client hasSiwaDefaultEntitlementAccess])
         {
           v4 = @"YES";
         }
@@ -1759,7 +1759,7 @@ LABEL_36:
       v32 = _AKLogSiwa();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
-        if ([(AKClient *)v58->_client hasSiwaUnderageEntitlementAccess])
+        if ([(AKClient *)selfCopy->_client hasSiwaUnderageEntitlementAccess])
         {
           v6 = @"YES";
         }
@@ -1784,41 +1784,41 @@ LABEL_36:
       }
 
       objc_storeStrong(&v32, 0);
-      if ([(AKClient *)v58->_client hasSiwaUnderageEntitlementAccess]|| [(AKClient *)v58->_client hasSiwaDefaultEntitlementAccess])
+      if ([(AKClient *)selfCopy->_client hasSiwaUnderageEntitlementAccess]|| [(AKClient *)selfCopy->_client hasSiwaDefaultEntitlementAccess])
       {
         v18 = +[AKFeatureManager sharedManager];
-        v19 = [v18 isTiburonU13Enabled];
+        isTiburonU13Enabled = [v18 isTiburonU13Enabled];
         _objc_release(v18);
-        v20 = 0;
+        hasSiwaUnderageEntitlementAccess = 0;
         if (v53)
         {
-          v20 = 0;
-          if (v19)
+          hasSiwaUnderageEntitlementAccess = 0;
+          if (isTiburonU13Enabled)
           {
-            v20 = [(AKClient *)v58->_client hasSiwaUnderageEntitlementAccess];
+            hasSiwaUnderageEntitlementAccess = [(AKClient *)selfCopy->_client hasSiwaUnderageEntitlementAccess];
           }
         }
 
-        v13 = v58->_accountManager;
-        v15 = [location[0] authorizationRequest];
-        v14 = [v15 authkitAccount];
+        v13 = selfCopy->_accountManager;
+        authorizationRequest3 = [location[0] authorizationRequest];
+        authkitAccount2 = [authorizationRequest3 authkitAccount];
         v16 = [(AKAccountManager *)v13 authorizationUsedForAccount:?];
-        _objc_release(v14);
-        _objc_release(v15);
+        _objc_release(authkitAccount2);
+        _objc_release(authorizationRequest3);
         v17 = 0;
-        if (v52)
+        if (primaryiCloudAccountHasPendingDOB)
         {
           v17 = v16;
         }
 
         v12 = 0;
-        if ((v53 & 1) == 0 || (v12 = v16, v11 = 0, (v19 & 1) == 0))
+        if ((v53 & 1) == 0 || (v12 = v16, hasSiwaDefaultEntitlementAccess = 0, (isTiburonU13Enabled & 1) == 0))
         {
-          v11 = [(AKClient *)v58->_client hasSiwaDefaultEntitlementAccess];
+          hasSiwaDefaultEntitlementAccess = [(AKClient *)selfCopy->_client hasSiwaDefaultEntitlementAccess];
         }
 
         v10 = 1;
-        if ((v20 & 1) == 0)
+        if ((hasSiwaUnderageEntitlementAccess & 1) == 0)
         {
           v10 = 1;
           if ((v17 & 1) == 0)
@@ -1826,7 +1826,7 @@ LABEL_36:
             v10 = 1;
             if ((v12 & 1) == 0)
             {
-              v10 = v11 & 1;
+              v10 = hasSiwaDefaultEntitlementAccess & 1;
             }
           }
         }
@@ -1838,10 +1838,10 @@ LABEL_36:
       else
       {
         v9 = 1;
-        if ((v55 & 1) == 0)
+        if ((hasInternalAccess & 1) == 0)
         {
           v9 = 1;
-          if ((v54 & 1) == 0)
+          if ((hasPrivateAccess & 1) == 0)
           {
             v9 = v51;
           }
@@ -1857,38 +1857,38 @@ LABEL_36:
   return v59 & 1;
 }
 
-- (void)_initiateAuthorizationWithRequestContext:(id)a3 completion:(id)a4
+- (void)_initiateAuthorizationWithRequestContext:(id)context completion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, completion);
   v8 = +[AKAuthorizationIconManager sharedManager];
   [v8 startFetchingIconWithRequestContext:location[0]];
   _objc_release(v8);
-  if ([(AKClient *)v18->_client authorizationRequiresRapport])
+  if ([(AKClient *)selfCopy->_client authorizationRequiresRapport])
   {
-    [(AKAuthorizationDaemonService *)v18 _initiateRapportAuthorizationWithRequestContext:location[0] completion:v16];
+    [(AKAuthorizationDaemonService *)selfCopy _initiateRapportAuthorizationWithRequestContext:location[0] completion:v16];
   }
 
-  else if ([(AKClient *)v18->_client authorizationClientProvidesUI])
+  else if ([(AKClient *)selfCopy->_client authorizationClientProvidesUI])
   {
-    [(AKAuthorizationDaemonService *)v18 presentAuthorizationUIForContext:v18->_originalRequestContext completion:v16];
+    [(AKAuthorizationDaemonService *)selfCopy presentAuthorizationUIForContext:selfCopy->_originalRequestContext completion:v16];
   }
 
   else
   {
-    v6 = v18;
+    v6 = selfCopy;
     v4 = location[0];
-    client = v18->_client;
+    client = selfCopy->_client;
     v9 = _NSConcreteStackBlock;
     v10 = -1073741824;
     v11 = 0;
     v12 = sub_10015645C;
     v13 = &unk_100324B70;
-    v14 = _objc_retain(v18);
+    v14 = _objc_retain(selfCopy);
     v15 = _objc_retain(v16);
     [(AKAuthorizationDaemonService *)v6 _getPresentationContextForRequestContext:v4 client:client completion:&v9];
     objc_storeStrong(&v15, 0);
@@ -1899,14 +1899,14 @@ LABEL_36:
   objc_storeStrong(location, 0);
 }
 
-- (void)_initiateRapportAuthorizationWithRequestContext:(id)a3 completion:(id)a4
+- (void)_initiateRapportAuthorizationWithRequestContext:(id)context completion:(id)completion
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
+  objc_storeStrong(&v17, completion);
   v16 = _AKLogSiwa();
   v15 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -1923,10 +1923,10 @@ LABEL_36:
   v13 = v7;
   if (v7)
   {
-    v6 = [location[0] authorizationRequest];
-    [v6 setAuthkitAccount:0];
-    _objc_release(v6);
-    [(AKAuthorizationRapportClient *)v19->_rapportClient performAuthorization:location[0] completion:v17];
+    authorizationRequest = [location[0] authorizationRequest];
+    [authorizationRequest setAuthkitAccount:0];
+    _objc_release(authorizationRequest);
+    [(AKAuthorizationRapportClient *)selfCopy->_rapportClient performAuthorization:location[0] completion:v17];
   }
 
   else
@@ -1950,14 +1950,14 @@ LABEL_36:
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_shouldStartSatoriVerificationForRequestContext:(id)a3
+- (BOOL)_shouldStartSatoriVerificationForRequestContext:(id)context
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v5 = 0;
-  if ([(AKAuthorizationDaemonService *)v7 _credentialStateForRequestContext:location[0]]== 2)
+  if ([(AKAuthorizationDaemonService *)selfCopy _credentialStateForRequestContext:location[0]]== 2)
   {
     v4 = 0;
     if (![location[0] _isWebLogin])
@@ -1972,21 +1972,21 @@ LABEL_36:
   return v5;
 }
 
-- (void)storeAuthorization:(id)a3 forProxiedRequest:(id)a4 completion:(id)a5
+- (void)storeAuthorization:(id)authorization forProxiedRequest:(id)request completion:(id)completion
 {
-  v35 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, authorization);
   v33 = 0;
-  objc_storeStrong(&v33, a4);
+  objc_storeStrong(&v33, request);
   v32 = 0;
-  objc_storeStrong(&v32, a5);
-  if ([(AKClient *)v35->_client hasPrivateAccess])
+  objc_storeStrong(&v32, completion);
+  if ([(AKClient *)selfCopy->_client hasPrivateAccess])
   {
-    v14 = [v33 _proxiedClientBundleID];
-    _objc_release(v14);
-    if (v14)
+    _proxiedClientBundleID = [v33 _proxiedClientBundleID];
+    _objc_release(_proxiedClientBundleID);
+    if (_proxiedClientBundleID)
     {
       v24 = _AKLogSiwa();
       v23 = OS_LOG_TYPE_DEFAULT;
@@ -2002,11 +2002,11 @@ LABEL_36:
       v21 = objc_alloc_init(AKApplicationAuthorizationController);
       v7 = v21;
       v6 = location[0];
-      v9 = [v33 authorizationRequest];
-      v8 = [v9 altDSID];
+      authorizationRequest = [v33 authorizationRequest];
+      altDSID = [authorizationRequest altDSID];
       [AKApplicationAuthorizationController storeAuthorization:v7 withAltDSID:"storeAuthorization:withAltDSID:forClient:" forClient:v6];
-      _objc_release(v8);
-      _objc_release(v9);
+      _objc_release(altDSID);
+      _objc_release(authorizationRequest);
       (*(v32 + 2))(v32, 1, 0);
       objc_storeStrong(&v21, 0);
       objc_storeStrong(&v22, 0);
@@ -2059,38 +2059,38 @@ LABEL_36:
   objc_storeStrong(location, 0);
 }
 
-- (void)_getPresentationContextForRequestContext:(id)a3 client:(id)a4 completion:(id)a5
+- (void)_getPresentationContextForRequestContext:(id)context client:(id)client completion:(id)completion
 {
-  v102 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v100 = 0;
-  objc_storeStrong(&v100, a4);
+  objc_storeStrong(&v100, client);
   v99 = 0;
-  objc_storeStrong(&v99, a5);
-  v43 = [location[0] authorizationRequest];
+  objc_storeStrong(&v99, completion);
+  authorizationRequest = [location[0] authorizationRequest];
   v96 = 0;
   v44 = 0;
-  if (v43)
+  if (authorizationRequest)
   {
-    v97 = [location[0] passwordRequest];
+    passwordRequest = [location[0] passwordRequest];
     v96 = 1;
-    v44 = v97 != 0;
+    v44 = passwordRequest != 0;
   }
 
   if (v96)
   {
-    _objc_release(v97);
+    _objc_release(passwordRequest);
   }
 
-  _objc_release(v43);
+  _objc_release(authorizationRequest);
   v98 = v44;
   if (v44)
   {
-    v40 = [location[0] authorizationRequest];
-    [v40 setRequestedScopes:0];
-    _objc_release(v40);
+    authorizationRequest2 = [location[0] authorizationRequest];
+    [authorizationRequest2 setRequestedScopes:0];
+    _objc_release(authorizationRequest2);
   }
 
   v95 = 0;
@@ -2101,54 +2101,54 @@ LABEL_36:
   if (v39)
   {
     v86 = [AKAuthorizationPresentationContext presentationContextForRequestContext:location[0] client:v100];
-    [v86 setSignInAllowsPCSKeyAccess:{-[AKAuthorizationDaemonService _shouldAllowPCSKeyAccessForContext:](v102, "_shouldAllowPCSKeyAccessForContext:", location[0])}];
+    [v86 setSignInAllowsPCSKeyAccess:{-[AKAuthorizationDaemonService _shouldAllowPCSKeyAccessForContext:](selfCopy, "_shouldAllowPCSKeyAccessForContext:", location[0])}];
     v85 = objc_alloc_init(AKUserInfoController);
     v84 = 0;
-    v35 = [v86 credentialRequestContext];
+    credentialRequestContext = [v86 credentialRequestContext];
     v82 = v84;
     v36 = [AKAuthorizationValidator canPerformAuthorizationRequest:"canPerformAuthorizationRequest:error:" error:?];
     objc_storeStrong(&v84, v82);
-    _objc_release(v35);
+    _objc_release(credentialRequestContext);
     v83 = v36;
     v81 = 0;
     v80 = 0;
     if ((v36 & 1) == 0)
     {
-      v34 = [v86 credentialRequestContext];
-      [v34 setAuthorizationRequest:0];
-      _objc_release(v34);
+      credentialRequestContext2 = [v86 credentialRequestContext];
+      [credentialRequestContext2 setAuthorizationRequest:0];
+      _objc_release(credentialRequestContext2);
     }
 
-    v32 = [v86 credentialRequestContext];
-    v79 = [v32 authorizationRequest];
-    _objc_release(v32);
-    v33 = [v86 credentialRequestContext];
-    v78 = [v33 passwordRequest];
-    _objc_release(v33);
+    credentialRequestContext3 = [v86 credentialRequestContext];
+    authorizationRequest3 = [credentialRequestContext3 authorizationRequest];
+    _objc_release(credentialRequestContext3);
+    credentialRequestContext4 = [v86 credentialRequestContext];
+    passwordRequest2 = [credentialRequestContext4 passwordRequest];
+    _objc_release(credentialRequestContext4);
     v77 = dispatch_group_create();
-    if (v79 && (v83 & 1) != 0)
+    if (authorizationRequest3 && (v83 & 1) != 0)
     {
       v76 = v81;
-      v29 = [v85 authorizationUserInformationForRequest:v79 shouldRequestUpdate:&v80 error:&v76];
+      v29 = [v85 authorizationUserInformationForRequest:authorizationRequest3 shouldRequestUpdate:&v80 error:&v76];
       objc_storeStrong(&v81, v76);
       [v86 setUserInformation:v29];
       _objc_release(v29);
-      v30 = [v79 requestedScopes];
+      requestedScopes = [authorizationRequest3 requestedScopes];
       v74 = 0;
       v31 = 1;
-      if (![v30 count])
+      if (![requestedScopes count])
       {
-        v75 = [v86 credentialRequestContext];
+        credentialRequestContext5 = [v86 credentialRequestContext];
         v74 = 1;
-        v31 = [v75 _isFirstPartyLogin] == 1;
+        v31 = [credentialRequestContext5 _isFirstPartyLogin] == 1;
       }
 
       if (v74)
       {
-        _objc_release(v75);
+        _objc_release(credentialRequestContext5);
       }
 
-      _objc_release(v30);
+      _objc_release(requestedScopes);
       if (v31)
       {
         if (v81)
@@ -2157,8 +2157,8 @@ LABEL_36:
           v87 = 1;
 LABEL_69:
           objc_storeStrong(&v77, 0);
-          objc_storeStrong(&v78, 0);
-          objc_storeStrong(&v79, 0);
+          objc_storeStrong(&passwordRequest2, 0);
+          objc_storeStrong(&authorizationRequest3, 0);
           objc_storeStrong(&v81, 0);
           objc_storeStrong(&v84, 0);
           objc_storeStrong(&v85, 0);
@@ -2169,57 +2169,57 @@ LABEL_69:
         if (v80)
         {
           v27 = v85;
-          v28 = [v79 altDSID];
+          altDSID = [authorizationRequest3 altDSID];
           [v27 fetchUserInformationForAltDSID:? client:? completion:?];
-          _objc_release(v28);
+          _objc_release(altDSID);
         }
       }
     }
 
     v25 = +[AKFeatureManager sharedManager];
-    v26 = 0;
+    _hasSharedAccounts = 0;
     if ([v25 isSiwaCredentialSharingEnabled])
     {
-      v26 = 0;
-      if (v79)
+      _hasSharedAccounts = 0;
+      if (authorizationRequest3)
       {
-        v26 = [v79 _hasSharedAccounts];
+        _hasSharedAccounts = [authorizationRequest3 _hasSharedAccounts];
       }
     }
 
     _objc_release(v25);
-    if (v26)
+    if (_hasSharedAccounts)
     {
       dispatch_group_enter(v77);
-      v24 = [v79 clientID];
+      clientID = [authorizationRequest3 clientID];
       v71 = 0;
-      if (v24)
+      if (clientID)
       {
-        v8 = _objc_retain(v24);
+        v8 = _objc_retain(clientID);
       }
 
       else
       {
-        v72 = [v100 bundleID];
+        bundleID = [v100 bundleID];
         v71 = 1;
-        v8 = _objc_retain(v72);
+        v8 = _objc_retain(bundleID);
       }
 
       v73 = v8;
       if (v71)
       {
-        _objc_release(v72);
+        _objc_release(bundleID);
       }
 
-      _objc_release(v24);
-      sharedAccountsStorageController = v102->_sharedAccountsStorageController;
+      _objc_release(clientID);
+      sharedAccountsStorageController = selfCopy->_sharedAccountsStorageController;
       v22 = v73;
       v64 = _NSConcreteStackBlock;
       v65 = -1073741824;
       v66 = 0;
       v67 = sub_100157D94;
       v68 = &unk_100324BB8;
-      v69 = _objc_retain(v102);
+      v69 = _objc_retain(selfCopy);
       v70 = _objc_retain(v77);
       [(AKSharedAccountsStorageController *)sharedAccountsStorageController fetchAccountsSharedWithCurrentUserWithClientID:v22 completionHandler:&v64];
       objc_storeStrong(&v70, 0);
@@ -2227,7 +2227,7 @@ LABEL_69:
       objc_storeStrong(&v73, 0);
     }
 
-    if (v78)
+    if (passwordRequest2)
     {
       dispatch_group_enter(v77);
       v56 = _NSConcreteStackBlock;
@@ -2235,35 +2235,35 @@ LABEL_69:
       v58 = 0;
       v59 = sub_100157EF0;
       v60 = &unk_100324BE0;
-      v61 = _objc_retain(v102);
+      v61 = _objc_retain(selfCopy);
       v62 = _objc_retain(v77);
       v63 = objc_retainBlock(&v56);
-      v21 = [v86 credentialRequestContext];
-      v55 = [v21 _proxiedAssociatedDomains];
-      _objc_release(v21);
-      if (v55)
+      credentialRequestContext6 = [v86 credentialRequestContext];
+      _proxiedAssociatedDomains = [credentialRequestContext6 _proxiedAssociatedDomains];
+      _objc_release(credentialRequestContext6);
+      if (_proxiedAssociatedDomains)
       {
-        [(AKAuthorizationDaemonService *)v102 _fetchCredentialsForAssociatedDomains:v55 completion:v63];
+        [(AKAuthorizationDaemonService *)selfCopy _fetchCredentialsForAssociatedDomains:_proxiedAssociatedDomains completion:v63];
       }
 
       else
       {
-        [(AKAuthorizationDaemonService *)v102 _fetchSafariCredentialsWithCompletion:v63];
+        [(AKAuthorizationDaemonService *)selfCopy _fetchSafariCredentialsWithCompletion:v63];
       }
 
-      objc_storeStrong(&v55, 0);
+      objc_storeStrong(&_proxiedAssociatedDomains, 0);
       objc_storeStrong(&v63, 0);
       objc_storeStrong(&v62, 0);
       objc_storeStrong(&v61, 0);
     }
 
     dispatch_group_wait(v77, 0xFFFFFFFFFFFFFFFFLL);
-    [(AKAuthorizationDaemonService *)v102 _setupLoginChoicesForPresentationContext:v86 sharedAccounts:v102->_sharedAccounts];
-    if (v78)
+    [(AKAuthorizationDaemonService *)selfCopy _setupLoginChoicesForPresentationContext:v86 sharedAccounts:selfCopy->_sharedAccounts];
+    if (passwordRequest2)
     {
-      v19 = [v86 loginChoices];
-      v20 = [v19 count];
-      _objc_release(v19);
+      loginChoices = [v86 loginChoices];
+      v20 = [loginChoices count];
+      _objc_release(loginChoices);
       if (!v20)
       {
         oslog = _AKLogSiwa();
@@ -2278,28 +2278,28 @@ LABEL_69:
 
         objc_storeStrong(&oslog, 0);
         v50 = 0;
-        v16 = 0;
-        if (v79)
+        _isRapportLogin = 0;
+        if (authorizationRequest3)
         {
-          v16 = 0;
+          _isRapportLogin = 0;
           if (v83)
           {
-            v51 = [v86 credentialRequestContext];
+            credentialRequestContext7 = [v86 credentialRequestContext];
             v50 = 1;
-            v16 = [v51 _isRapportLogin];
+            _isRapportLogin = [credentialRequestContext7 _isRapportLogin];
           }
         }
 
         if (v50)
         {
-          _objc_release(v51);
+          _objc_release(credentialRequestContext7);
         }
 
-        if (v16)
+        if (_isRapportLogin)
         {
-          v15 = [v86 credentialRequestContext];
-          [v15 setPasswordRequest:?];
-          _objc_release(v15);
+          credentialRequestContext8 = [v86 credentialRequestContext];
+          [credentialRequestContext8 setPasswordRequest:?];
+          _objc_release(credentialRequestContext8);
           (*(v99 + 2))();
         }
 
@@ -2315,7 +2315,7 @@ LABEL_69:
       }
     }
 
-    else if (!v79 || (v83 & 1) == 0)
+    else if (!authorizationRequest3 || (v83 & 1) == 0)
     {
       v49 = _AKLogSiwa();
       v48 = OS_LOG_TYPE_ERROR;
@@ -2404,14 +2404,14 @@ LABEL_70:
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_shouldAllowPCSKeyAccessForContext:(id)a3
+- (BOOL)_shouldAllowPCSKeyAccessForContext:(id)context
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v4 = 0;
-  if ([(AKAuthorizationDaemonService *)v6 _isPCSAccessForContext:location[0]])
+  if ([(AKAuthorizationDaemonService *)selfCopy _isPCSAccessForContext:location[0]])
   {
     v4 = +[AKCDPFactory isEligibleToArmDeviceForPCSAuth];
   }
@@ -2420,34 +2420,34 @@ LABEL_70:
   return v4 & 1;
 }
 
-- (BOOL)_isPCSAccessForContext:(id)a3
+- (BOOL)_isPCSAccessForContext:(id)context
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [location[0] authorizationRequest];
-  v5 = [v6 appProvidedData];
-  v4 = [v5 objectForKeyedSubscript:@"originURL"];
+  objc_storeStrong(location, context);
+  authorizationRequest = [location[0] authorizationRequest];
+  appProvidedData = [authorizationRequest appProvidedData];
+  v4 = [appProvidedData objectForKeyedSubscript:@"originURL"];
   v9 = [NSURL URLWithString:?];
   _objc_release(v4);
-  _objc_release(v5);
-  _objc_release(v6);
-  v7 = [(NSURL *)v9 host];
-  v8 = [(NSString *)v7 containsString:@"icloud.com"];
-  _objc_release(v7);
+  _objc_release(appProvidedData);
+  _objc_release(authorizationRequest);
+  host = [(NSURL *)v9 host];
+  v8 = [(NSString *)host containsString:@"icloud.com"];
+  _objc_release(host);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
   return v8;
 }
 
-- (void)_prepareRequestContext:(id)a3 forCredentialState:(int64_t)a4
+- (void)_prepareRequestContext:(id)context forCredentialState:(int64_t)state
 {
-  v34 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v32 = a4;
+  objc_storeStrong(location, context);
+  stateCopy = state;
   v31 = _AKLogSiwa();
   v30 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -2459,29 +2459,29 @@ LABEL_70:
   }
 
   objc_storeStrong(&v31, 0);
-  v28 = [location[0] authorizationRequest];
-  [v28 set_isSilentAppTransfer:0];
-  [v28 setExistingStatus:v32];
-  v27 = [(AKAccountManager *)v34->_accountManager primaryAuthKitAccount];
-  v26 = [(AKAccountManager *)v34->_accountManager userUnderAgeForAccount:v27];
+  authorizationRequest = [location[0] authorizationRequest];
+  [authorizationRequest set_isSilentAppTransfer:0];
+  [authorizationRequest setExistingStatus:stateCopy];
+  primaryAuthKitAccount = [(AKAccountManager *)selfCopy->_accountManager primaryAuthKitAccount];
+  v26 = [(AKAccountManager *)selfCopy->_accountManager userUnderAgeForAccount:primaryAuthKitAccount];
   v11 = +[AKFeatureManager sharedManager];
-  v25 = [v11 isTiburonU13Enabled];
+  isTiburonU13Enabled = [v11 isTiburonU13Enabled];
   _objc_release(v11);
   v12 = 1;
-  if (v32 != 1)
+  if (stateCopy != 1)
   {
     v12 = 1;
-    if (v32 != 4)
+    if (stateCopy != 4)
     {
-      v12 = v32 == 5;
+      v12 = stateCopy == 5;
     }
   }
 
   v24 = v12;
   v10 = 1;
-  if (v32 != 1)
+  if (stateCopy != 1)
   {
-    v10 = v32 == 5;
+    v10 = stateCopy == 5;
   }
 
   v23 = v10;
@@ -2491,25 +2491,25 @@ LABEL_70:
     v21 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v28 clientID];
-      sub_1000194D4(v38, v9);
+      clientID = [authorizationRequest clientID];
+      sub_1000194D4(v38, clientID);
       _os_log_impl(&_mh_execute_header, v22, v21, "Previous credential for client %@ is authorized", v38, 0xCu);
-      _objc_release(v9);
+      _objc_release(clientID);
     }
 
     objc_storeStrong(&v22, 0);
     if (v23)
     {
-      [v28 setRequestedScopes:&__NSArray0__struct];
+      [authorizationRequest setRequestedScopes:&__NSArray0__struct];
     }
 
     v8 = 1;
-    if (v32 != 4)
+    if (stateCopy != 4)
     {
-      v8 = v32 == 5;
+      v8 = stateCopy == 5;
     }
 
-    [v28 set_hasSharedAccounts:v8];
+    [authorizationRequest set_hasSharedAccounts:v8];
   }
 
   else if ([location[0] _isEligibleForUpgradeFromPassword])
@@ -2518,100 +2518,100 @@ LABEL_70:
     v19 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v28 requestedScopes];
-      sub_1000194D4(v37, v7);
+      requestedScopes = [authorizationRequest requestedScopes];
+      sub_1000194D4(v37, requestedScopes);
       _os_log_impl(&_mh_execute_header, v20, v19, "Resetting scopes %@ for upgrade from keychain", v37, 0xCu);
-      _objc_release(v7);
+      _objc_release(requestedScopes);
     }
 
     objc_storeStrong(&v20, 0);
-    [v28 setRequestedScopes:&__NSArray0__struct];
+    [authorizationRequest setRequestedScopes:&__NSArray0__struct];
   }
 
-  else if (v32 == 3)
+  else if (stateCopy == 3)
   {
     v18 = _AKLogSiwa();
     v17 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v28 clientID];
-      sub_1000194D4(v36, v6);
+      clientID2 = [authorizationRequest clientID];
+      sub_1000194D4(v36, clientID2);
       _os_log_impl(&_mh_execute_header, v18, v17, "Previous credential for client %@ is in transfer state", v36, 0xCu);
-      _objc_release(v6);
+      _objc_release(clientID2);
     }
 
     objc_storeStrong(&v18, 0);
-    [v28 setRequestedScopes:&__NSArray0__struct];
-    v5 = [v28 userIdentifier];
-    [v28 set_isSilentAppTransfer:v5 != 0];
-    _objc_release(v5);
+    [authorizationRequest setRequestedScopes:&__NSArray0__struct];
+    userIdentifier = [authorizationRequest userIdentifier];
+    [authorizationRequest set_isSilentAppTransfer:userIdentifier != 0];
+    _objc_release(userIdentifier);
   }
 
-  else if (v26 & 1) != 0 && (v25)
+  else if (v26 & 1) != 0 && (isTiburonU13Enabled)
   {
     oslog = _AKLogSiwa();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [v28 requestedScopes];
-      sub_1000194D4(v35, v4);
+      requestedScopes2 = [authorizationRequest requestedScopes];
+      sub_1000194D4(v35, requestedScopes2);
       _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Resetting scopes %@ for underage user.", v35, 0xCu);
-      _objc_release(v4);
+      _objc_release(requestedScopes2);
     }
 
     objc_storeStrong(&oslog, 0);
-    [v28 setRequestedScopes:&__NSArray0__struct];
+    [authorizationRequest setRequestedScopes:&__NSArray0__struct];
   }
 
-  objc_storeStrong(&v27, 0);
-  objc_storeStrong(&v28, 0);
+  objc_storeStrong(&primaryAuthKitAccount, 0);
+  objc_storeStrong(&authorizationRequest, 0);
   objc_storeStrong(location, 0);
 }
 
-- (int64_t)_credentialStateForRequestContext:(id)a3
+- (int64_t)_credentialStateForRequestContext:(id)context
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(AKAuthorizationDaemonService *)v7 _credentialStateController];
-  v4 = [v5 getInternalCredentialStateForCredentialRequestContext:location[0]];
-  objc_storeStrong(&v5, 0);
+  objc_storeStrong(location, context);
+  _credentialStateController = [(AKAuthorizationDaemonService *)selfCopy _credentialStateController];
+  v4 = [_credentialStateController getInternalCredentialStateForCredentialRequestContext:location[0]];
+  objc_storeStrong(&_credentialStateController, 0);
   objc_storeStrong(location, 0);
   return v4;
 }
 
-- (void)_setupLoginChoicesForPresentationContext:(id)a3 sharedAccounts:(id)a4
+- (void)_setupLoginChoicesForPresentationContext:(id)context sharedAccounts:(id)accounts
 {
-  v81 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v79 = 0;
-  objc_storeStrong(&v79, a4);
+  objc_storeStrong(&v79, accounts);
   v78 = objc_alloc_init(NSMutableArray);
-  v41 = [location[0] credentialRequestContext];
-  v77 = [v41 authorizationRequest];
-  _objc_release(v41);
+  credentialRequestContext = [location[0] credentialRequestContext];
+  authorizationRequest = [credentialRequestContext authorizationRequest];
+  _objc_release(credentialRequestContext);
   v76 = 0;
-  v43 = [location[0] userInformation];
-  v42 = [v43 isUnderage];
-  v44 = [v42 BOOLValue];
-  _objc_release(v42);
-  _objc_release(v43);
-  v75 = v44;
-  v74 = 0;
-  v74 = [(AKAccountManager *)v81->_accountManager primaryiCloudAccountHasPendingDOB];
+  userInformation = [location[0] userInformation];
+  isUnderage = [userInformation isUnderage];
+  bOOLValue = [isUnderage BOOLValue];
+  _objc_release(isUnderage);
+  _objc_release(userInformation);
+  v75 = bOOLValue;
+  primaryiCloudAccountHasPendingDOB = 0;
+  primaryiCloudAccountHasPendingDOB = [(AKAccountManager *)selfCopy->_accountManager primaryiCloudAccountHasPendingDOB];
   v45 = 1;
-  if ([v77 existingStatus] != 1)
+  if ([authorizationRequest existingStatus] != 1)
   {
-    v45 = [v77 existingStatus] == 5;
+    v45 = [authorizationRequest existingStatus] == 5;
   }
 
   v73 = v45;
   v39 = 1;
-  if ([v77 existingStatus] != 4)
+  if ([authorizationRequest existingStatus] != 4)
   {
-    v39 = [v77 existingStatus] == 5;
+    v39 = [authorizationRequest existingStatus] == 5;
   }
 
   v72 = v39;
@@ -2621,12 +2621,12 @@ LABEL_70:
     v38 = 0;
     if ((v75 & 1) == 0)
     {
-      v38 = v74 ^ 1;
+      v38 = primaryiCloudAccountHasPendingDOB ^ 1;
     }
   }
 
   v72 = v38 & 1;
-  if (v77)
+  if (authorizationRequest)
   {
     if (v73)
     {
@@ -2642,7 +2642,7 @@ LABEL_70:
 
       objc_storeStrong(&oslog, 0);
       v34 = [AKAuthorizationLoginChoice alloc];
-      v35 = [(AKAuthorizationDaemonService *)v81 _accountDisplayNameWithPresentationContext:location[0]];
+      v35 = [(AKAuthorizationDaemonService *)selfCopy _accountDisplayNameWithPresentationContext:location[0]];
       v68 = [v34 initWithUser:? site:?];
       _objc_release(v35);
       [v68 setAppleIDAuth:1];
@@ -2650,7 +2650,7 @@ LABEL_70:
       objc_storeStrong(&v68, 0);
     }
 
-    else if (v75 & 1) != 0 || (v74)
+    else if (v75 & 1) != 0 || (primaryiCloudAccountHasPendingDOB)
     {
       v64 = _AKLogSiwa();
       v63 = OS_LOG_TYPE_DEBUG;
@@ -2678,7 +2678,7 @@ LABEL_70:
       }
 
       objc_storeStrong(&v67, 0);
-      v76 = ([v77 shouldHideCreateOption] & 1) == 0;
+      v76 = ([authorizationRequest shouldHideCreateOption] & 1) == 0;
     }
 
     v28 = +[AKFeatureManager sharedManager];
@@ -2692,7 +2692,7 @@ LABEL_70:
     if (v29)
     {
       memset(__b, 0, sizeof(__b));
-      v26 = _objc_retain(v81->_sharedAccounts);
+      v26 = _objc_retain(selfCopy->_sharedAccounts);
       v27 = [(NSArray *)v26 countByEnumeratingWithState:__b objects:v85 count:16];
       if (v27)
       {
@@ -2715,10 +2715,10 @@ LABEL_70:
           if (os_log_type_enabled(v58, OS_LOG_TYPE_DEBUG))
           {
             v20 = v58;
-            v21 = [v59 user];
-            sub_1000194D4(v84, v21);
+            user = [v59 user];
+            sub_1000194D4(v84, user);
             _os_log_debug_impl(&_mh_execute_header, v20, v57, "setupLoginChoices: Adding shared credential choice - %@", v84, 0xCu);
-            _objc_release(v21);
+            _objc_release(user);
           }
 
           objc_storeStrong(&v58, 0);
@@ -2741,11 +2741,11 @@ LABEL_70:
     }
   }
 
-  v56 = [(NSArray *)v81->_safariPasswordCredentials count]!= 0;
+  v56 = [(NSArray *)selfCopy->_safariPasswordCredentials count]!= 0;
   if (v56)
   {
     memset(v54, 0, sizeof(v54));
-    v18 = _objc_retain(v81->_safariPasswordCredentials);
+    v18 = _objc_retain(selfCopy->_safariPasswordCredentials);
     v19 = [(NSArray *)v18 countByEnumeratingWithState:v54 objects:v83 count:16];
     if (v19)
     {
@@ -2762,20 +2762,20 @@ LABEL_70:
 
         v55 = *(v54[1] + 8 * v16);
         v11 = [AKAuthorizationLoginChoice alloc];
-        v13 = [v55 user];
-        v12 = [v55 site];
-        v53 = [v11 initWithUser:v13 site:?];
-        _objc_release(v12);
-        _objc_release(v13);
+        user2 = [v55 user];
+        site = [v55 site];
+        v53 = [v11 initWithUser:user2 site:?];
+        _objc_release(site);
+        _objc_release(user2);
         v52 = _AKLogSiwa();
         v51 = OS_LOG_TYPE_DEBUG;
         if (os_log_type_enabled(v52, OS_LOG_TYPE_DEBUG))
         {
           v9 = v52;
-          v10 = [v53 user];
-          sub_1000194D4(v82, v10);
+          user3 = [v53 user];
+          sub_1000194D4(v82, user3);
           _os_log_debug_impl(&_mh_execute_header, v9, v51, "setupLoginChoices: Adding safari credential choice - %@", v82, 0xCu);
-          _objc_release(v10);
+          _objc_release(user3);
         }
 
         objc_storeStrong(&v52, 0);
@@ -2808,10 +2808,10 @@ LABEL_70:
   v7 = 0;
   if (v76)
   {
-    v48 = [location[0] credentialRequestContext];
+    credentialRequestContext2 = [location[0] credentialRequestContext];
     v47 = 1;
     v7 = 0;
-    if ([v48 _isRapportLogin])
+    if ([credentialRequestContext2 _isRapportLogin])
     {
       v7 = v56;
     }
@@ -2819,14 +2819,14 @@ LABEL_70:
 
   if (v47)
   {
-    _objc_release(v48);
+    _objc_release(credentialRequestContext2);
   }
 
   v49 = v7;
   if (v7 || (v50 & 1) != 0)
   {
     v5 = [AKAuthorizationLoginChoice alloc];
-    v6 = [(AKAuthorizationDaemonService *)v81 _accountDisplayNameWithPresentationContext:location[0]];
+    v6 = [(AKAuthorizationDaemonService *)selfCopy _accountDisplayNameWithPresentationContext:location[0]];
     v46 = [v5 initWithUser:? site:?];
     _objc_release(v6);
     [v46 setAppleIDAuth:1];
@@ -2836,27 +2836,27 @@ LABEL_70:
   }
 
   [location[0] setLoginChoices:v78];
-  objc_storeStrong(&v77, 0);
+  objc_storeStrong(&authorizationRequest, 0);
   objc_storeStrong(&v78, 0);
   objc_storeStrong(&v79, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_fetchSafariCredentialsWithCompletion:(id)a3
+- (void)_fetchSafariCredentialsWithCompletion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v14 = 1;
   v13 = _AKLogSiwa();
   v12 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v5 = [(AKClient *)v16->_client appID];
-    sub_1000194D4(v17, v5);
+    appID = [(AKClient *)selfCopy->_client appID];
+    sub_1000194D4(v17, appID);
     _os_log_debug_impl(&_mh_execute_header, v13, v12, "Fetching credentials with: %@", v17, 0xCu);
-    _objc_release(v5);
+    _objc_release(appID);
   }
 
   objc_storeStrong(&v13, 0);
@@ -2870,27 +2870,27 @@ LABEL_70:
     v4 = 0;
   }
 
-  v3 = [(AKClient *)v16->_client appID];
+  appID2 = [(AKClient *)selfCopy->_client appID];
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
   v8 = 0;
   v9 = sub_100159600;
   v10 = &unk_100324C08;
   v11 = _objc_retain(location[0]);
-  [v4 getCredentialsForAppWithAppID:v3 completionHandler:&v6];
-  _objc_release(v3);
+  [v4 getCredentialsForAppWithAppID:appID2 completionHandler:&v6];
+  _objc_release(appID2);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_fetchCredentialsForAssociatedDomains:(id)a3 completion:(id)a4
+- (void)_fetchCredentialsForAssociatedDomains:(id)domains completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, domains);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, completion);
   v8 = _AKLogSiwa();
   v7 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -2917,14 +2917,14 @@ LABEL_70:
   objc_storeStrong(location, 0);
 }
 
-- (void)_requestUserAuthorizationForContext:(id)a3 completion:(id)a4
+- (void)_requestUserAuthorizationForContext:(id)context completion:(id)completion
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v27 = 0;
-  objc_storeStrong(&v27, a4);
+  objc_storeStrong(&v27, completion);
   v26 = _AKLogSiwa();
   v25 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -2942,14 +2942,14 @@ LABEL_70:
   v20 = sub_100159CB8;
   v21 = &unk_100324C30;
   v22 = _objc_retain(location[0]);
-  v23 = _objc_retain(v29);
+  v23 = _objc_retain(selfCopy);
   [(AKAuthorizationPresenter *)v4 setAuthorizationResponseValidator:&v17];
   v5 = +[AKAuthorizationIconManager sharedManager];
   [v5 setFetchIconBlockForPresenter:v24 withContext:location[0]];
   _objc_release(v5);
   v8 = v24;
   v6 = location[0];
-  client = v29->_client;
+  client = selfCopy->_client;
   v10 = _NSConcreteStackBlock;
   v11 = -1073741824;
   v12 = 0;
@@ -2967,20 +2967,20 @@ LABEL_70:
   objc_storeStrong(location, 0);
 }
 
-- (void)_safePerformSRPWithUserResponse:(id)a3 client:(id)a4 completion:(id)a5
+- (void)_safePerformSRPWithUserResponse:(id)response client:(id)client completion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, client);
   v15 = 0;
-  objc_storeStrong(&v15, a5);
-  v10 = [location[0] selectedRequest];
+  objc_storeStrong(&v15, completion);
+  selectedRequest = [location[0] selectedRequest];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  _objc_release(v10);
+  _objc_release(selectedRequest);
   if (isKindOfClass)
   {
     v14 = _AKLogSiwa();
@@ -2992,7 +2992,7 @@ LABEL_70:
     }
 
     objc_storeStrong(&v14, 0);
-    [(AKAuthorizationDaemonService *)v18 _performSRPAuthorizationForUserResponse:location[0] client:v16 completion:v15];
+    [(AKAuthorizationDaemonService *)selfCopy _performSRPAuthorizationForUserResponse:location[0] client:v16 completion:v15];
   }
 
   else
@@ -3000,10 +3000,10 @@ LABEL_70:
     v12 = _AKLogSiwa();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v7 = [location[0] selectedRequest];
-      sub_1000194D4(v19, v7);
+      selectedRequest2 = [location[0] selectedRequest];
+      sub_1000194D4(v19, selectedRequest2);
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Attempted to authorize request of unsupported type %@", v19, 0xCu);
-      _objc_release(v7);
+      _objc_release(selectedRequest2);
     }
 
     objc_storeStrong(&v12, 0);
@@ -3018,19 +3018,19 @@ LABEL_70:
   objc_storeStrong(location, 0);
 }
 
-- (void)_performSRPAuthorizationForUserResponse:(id)a3 client:(id)a4 completion:(id)a5
+- (void)_performSRPAuthorizationForUserResponse:(id)response client:(id)client completion:(id)completion
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
+  objc_storeStrong(&v23, client);
   v22 = 0;
-  objc_storeStrong(&v22, a5);
+  objc_storeStrong(&v22, completion);
   v5 = [AKSRPService alloc];
   v21 = [(AKSRPService *)v5 initWithClient:v23];
-  v10 = v25;
+  v10 = selfCopy;
   v8 = location[0];
   v9 = v23;
   v11 = _NSConcreteStackBlock;
@@ -3038,7 +3038,7 @@ LABEL_70:
   v13 = 0;
   v14 = sub_10015A434;
   v15 = &unk_100324C80;
-  v16 = _objc_retain(v25);
+  v16 = _objc_retain(selfCopy);
   v17 = _objc_retain(v23);
   v18 = _objc_retain(location[0]);
   v19 = _objc_retain(v21);
@@ -3055,27 +3055,27 @@ LABEL_70:
   objc_storeStrong(location, 0);
 }
 
-- (void)_fetchAuthContextWithUserResponse:(id)a3 client:(id)a4 completion:(id)a5
+- (void)_fetchAuthContextWithUserResponse:(id)response client:(id)client completion:(id)completion
 {
-  v35 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v33 = 0;
-  objc_storeStrong(&v33, a4);
+  objc_storeStrong(&v33, client);
   v32 = 0;
-  objc_storeStrong(&v32, a5);
-  v31 = [(AKAuthorizationDaemonService *)v35 authorizationContextWithUserResponse:location[0] client:v33];
-  v14 = [location[0] userSelection];
+  objc_storeStrong(&v32, completion);
+  v31 = [(AKAuthorizationDaemonService *)selfCopy authorizationContextWithUserResponse:location[0] client:v33];
+  userSelection = [location[0] userSelection];
   [v31 setUserSelection:?];
-  _objc_release(v14);
-  v15 = 0;
-  if (([(AKCredentialRequestContext *)v35->_originalRequestContext _isWebLogin]& 1) != 0)
+  _objc_release(userSelection);
+  _isFirstPartyLogin = 0;
+  if (([(AKCredentialRequestContext *)selfCopy->_originalRequestContext _isWebLogin]& 1) != 0)
   {
-    v15 = [(AKCredentialRequestContext *)v35->_originalRequestContext _isFirstPartyLogin];
+    _isFirstPartyLogin = [(AKCredentialRequestContext *)selfCopy->_originalRequestContext _isFirstPartyLogin];
   }
 
-  v30 = v15 & 1;
+  v30 = _isFirstPartyLogin & 1;
   v29 = _AKLogSiwa();
   v28 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
@@ -3088,10 +3088,10 @@ LABEL_70:
   if (v30)
   {
     v9 = +[AKCDPFactory walrusStatusLiveValue];
-    v23 = [v9 captureCurrentValue];
+    captureCurrentValue = [v9 captureCurrentValue];
     _objc_release(v9);
-    v22 = [v23 unsignedIntegerValue];
-    if (v22 == 1)
+    unsignedIntegerValue = [captureCurrentValue unsignedIntegerValue];
+    if (unsignedIntegerValue == 1)
     {
       v21 = _AKLogSiwa();
       v20 = 2;
@@ -3126,7 +3126,7 @@ LABEL_70:
       v24 = 0;
     }
 
-    objc_storeStrong(&v23, 0);
+    objc_storeStrong(&captureCurrentValue, 0);
   }
 
   else
@@ -3152,30 +3152,30 @@ LABEL_70:
   objc_storeStrong(location, 0);
 }
 
-- (void)_completeAuthorizationWithServerResponse:(id)a3 userResponse:(id)a4 client:(id)a5 completion:(id)a6
+- (void)_completeAuthorizationWithServerResponse:(id)response userResponse:(id)userResponse client:(id)client completion:(id)completion
 {
-  v78 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v76 = 0;
-  objc_storeStrong(&v76, a4);
+  objc_storeStrong(&v76, userResponse);
   v75 = 0;
-  objc_storeStrong(&v75, a5);
+  objc_storeStrong(&v75, client);
   v74 = 0;
-  objc_storeStrong(&v74, a6);
+  objc_storeStrong(&v74, completion);
   if (([location[0] isUnderAgeOfMajority] & 1) == 0 || objc_msgSend(location[0], "isFirstPartyApp"))
   {
     goto LABEL_14;
   }
 
-  accountManager = v78->_accountManager;
-  v40 = [location[0] altDSID];
+  accountManager = selfCopy->_accountManager;
+  altDSID = [location[0] altDSID];
   v73 = [AKAccountManager authKitAccountWithAltDSID:"authKitAccountWithAltDSID:error:" error:?];
-  _objc_release(v40);
-  -[AKAccountManager setUserUnderage:forAccount:](v78->_accountManager, "setUserUnderage:forAccount:", [location[0] isUnderAgeOfMajority], v73);
+  _objc_release(altDSID);
+  -[AKAccountManager setUserUnderage:forAccount:](selfCopy->_accountManager, "setUserUnderage:forAccount:", [location[0] isUnderAgeOfMajority], v73);
   v72 = 0;
-  v6 = v78->_accountManager;
+  v6 = selfCopy->_accountManager;
   v70 = 0;
   v41 = [(AKAccountManager *)v6 saveAccount:v73 error:&v70];
   objc_storeStrong(&v72, v70);
@@ -3193,7 +3193,7 @@ LABEL_70:
     objc_storeStrong(&v69, 0);
   }
 
-  v67 = [(AKAccountManager *)v78->_accountManager authorizationUsedForAccount:v73];
+  v67 = [(AKAccountManager *)selfCopy->_accountManager authorizationUsedForAccount:v73];
   v66 = _AKLogSiwa();
   v65 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v66, OS_LOG_TYPE_DEBUG))
@@ -3203,7 +3203,7 @@ LABEL_70:
   }
 
   objc_storeStrong(&v66, 0);
-  if ((v67 & 1) != 0 || [(AKClient *)v78->_client hasSiwaUnderageEntitlementAccess])
+  if ((v67 & 1) != 0 || [(AKClient *)selfCopy->_client hasSiwaUnderageEntitlementAccess])
   {
     v64 = 0;
   }
@@ -3222,81 +3222,81 @@ LABEL_70:
   if (!v64)
   {
 LABEL_14:
-    v63 = [v76 selectedRequest];
+    selectedRequest = [v76 selectedRequest];
     v62 = objc_alloc_init(AKAuthorization);
     v7 = [AKAuthorizationCredential alloc];
     v61 = [v7 initWithServerResponse:location[0]];
     [v62 setCredential:v61];
-    [v62 setAuthorizedRequest:v63];
-    [(AKAuthorizationDaemonService *)v78 _extractWebSessionAuthorizationFromResponse:location[0]];
-    v60 = [v61 userInformation];
-    v35 = [v63 requestedScopes];
-    v36 = [v35 containsObject:AKAuthorizationScopeEmail];
-    _objc_release(v35);
+    [v62 setAuthorizedRequest:selectedRequest];
+    [(AKAuthorizationDaemonService *)selfCopy _extractWebSessionAuthorizationFromResponse:location[0]];
+    userInformation = [v61 userInformation];
+    requestedScopes = [selectedRequest requestedScopes];
+    v36 = [requestedScopes containsObject:AKAuthorizationScopeEmail];
+    _objc_release(requestedScopes);
     if (v36)
     {
-      v33 = [v76 userSelection];
-      v34 = [v33 makePrivateEmail];
-      _objc_release(v33);
-      if (!v34)
+      userSelection = [v76 userSelection];
+      makePrivateEmail = [userSelection makePrivateEmail];
+      _objc_release(userSelection);
+      if (!makePrivateEmail)
       {
-        v32 = [v76 userSelection];
-        v31 = [v32 userInformation];
-        v30 = [v31 selectedEmail];
-        [v60 setSelectedEmail:?];
-        _objc_release(v30);
-        _objc_release(v31);
-        _objc_release(v32);
+        userSelection2 = [v76 userSelection];
+        userInformation2 = [userSelection2 userInformation];
+        selectedEmail = [userInformation2 selectedEmail];
+        [userInformation setSelectedEmail:?];
+        _objc_release(selectedEmail);
+        _objc_release(userInformation2);
+        _objc_release(userSelection2);
       }
     }
 
     else
     {
-      [v60 setSelectedEmail:0];
+      [userInformation setSelectedEmail:0];
     }
 
-    v28 = [v63 requestedScopes];
-    v29 = [v28 containsObject:AKAuthorizationScopeFullName];
-    _objc_release(v28);
+    requestedScopes2 = [selectedRequest requestedScopes];
+    v29 = [requestedScopes2 containsObject:AKAuthorizationScopeFullName];
+    _objc_release(requestedScopes2);
     if (v29)
     {
-      v24 = [v76 userSelection];
-      v23 = [v24 userInformation];
-      v22 = [v23 givenName];
-      [v60 setGivenName:?];
-      _objc_release(v22);
-      _objc_release(v23);
-      _objc_release(v24);
-      v27 = [v76 userSelection];
-      v26 = [v27 userInformation];
-      v25 = [v26 familyName];
-      [v60 setFamilyName:?];
-      _objc_release(v25);
-      _objc_release(v26);
-      _objc_release(v27);
+      userSelection3 = [v76 userSelection];
+      userInformation3 = [userSelection3 userInformation];
+      givenName = [userInformation3 givenName];
+      [userInformation setGivenName:?];
+      _objc_release(givenName);
+      _objc_release(userInformation3);
+      _objc_release(userSelection3);
+      userSelection4 = [v76 userSelection];
+      userInformation4 = [userSelection4 userInformation];
+      familyName = [userInformation4 familyName];
+      [userInformation setFamilyName:?];
+      _objc_release(familyName);
+      _objc_release(userInformation4);
+      _objc_release(userSelection4);
     }
 
-    if ([(AKClient *)v78->_client hasSiwaUnderageEntitlementAccess])
+    if ([(AKClient *)selfCopy->_client hasSiwaUnderageEntitlementAccess])
     {
-      [v60 setUserAgeRange:{(objc_msgSend(location[0], "isUnderAgeOfMajority") & 1) != 0}];
+      [userInformation setUserAgeRange:{(objc_msgSend(location[0], "isUnderAgeOfMajority") & 1) != 0}];
     }
 
     else
     {
-      [v60 setUserAgeRange:0];
+      [userInformation setUserAgeRange:0];
     }
 
-    if ([v63 isEligibleForUpgradeFromPassword])
+    if ([selectedRequest isEligibleForUpgradeFromPassword])
     {
       v8 = [AKOwnerProxyClient alloc];
-      v59 = [(AKOwnerProxyClient *)v8 initWithCredentialRequest:v78->_originalRequestContext];
+      v59 = [(AKOwnerProxyClient *)v8 initWithCredentialRequest:selfCopy->_originalRequestContext];
       v21 = objc_opt_new();
       v18 = v62;
-      v20 = [v76 selectedRequest];
-      v19 = [v20 altDSID];
+      selectedRequest2 = [v76 selectedRequest];
+      altDSID2 = [selectedRequest2 altDSID];
       [v21 storeAuthorization:v18 withAltDSID:? forClient:?];
-      _objc_release(v19);
-      _objc_release(v20);
+      _objc_release(altDSID2);
+      _objc_release(selectedRequest2);
       _objc_release(v21);
       objc_storeStrong(&v59, 0);
     }
@@ -3305,8 +3305,8 @@ LABEL_14:
     {
       if ([v76 hasSelectedSharedAccountForLogin])
       {
-        v58 = [location[0] signInWithAppleSharedAccountGroupID];
-        if (v58)
+        signInWithAppleSharedAccountGroupID = [location[0] signInWithAppleSharedAccountGroupID];
+        if (signInWithAppleSharedAccountGroupID)
         {
           v57 = _AKLogSiwa();
           v56 = OS_LOG_TYPE_DEFAULT;
@@ -3323,13 +3323,13 @@ LABEL_14:
           v53 = OS_LOG_TYPE_DEFAULT;
           if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
           {
-            sub_1000194D4(v79, v58);
+            sub_1000194D4(v79, signInWithAppleSharedAccountGroupID);
             _os_log_impl(&_mh_execute_header, oslog, v53, "Verifying if user is a member of group - %@", v79, 0xCu);
           }
 
           objc_storeStrong(&oslog, 0);
-          sharedAccountsStorageController = v78->_sharedAccountsStorageController;
-          v11 = v58;
+          sharedAccountsStorageController = selfCopy->_sharedAccountsStorageController;
+          v11 = signInWithAppleSharedAccountGroupID;
           v45 = _NSConcreteStackBlock;
           v46 = -1073741824;
           v47 = 0;
@@ -3337,7 +3337,7 @@ LABEL_14:
           v49 = &unk_100321E60;
           v52 = _objc_retain(v74);
           v50 = _objc_retain(v62);
-          v51 = _objc_retain(v58);
+          v51 = _objc_retain(signInWithAppleSharedAccountGroupID);
           [(AKSharedAccountsStorageController *)sharedAccountsStorageController isMemberOfGroupWithGroupID:v11 completion:&v45];
           v64 = 1;
           objc_storeStrong(&v51, 0);
@@ -3354,26 +3354,26 @@ LABEL_14:
           v64 = 1;
         }
 
-        objc_storeStrong(&v58, 0);
+        objc_storeStrong(&signInWithAppleSharedAccountGroupID, 0);
         goto LABEL_37;
       }
 
       v17 = objc_opt_new();
-      v16 = [v76 selectedRequest];
-      v15 = [v16 altDSID];
+      selectedRequest3 = [v76 selectedRequest];
+      altDSID3 = [selectedRequest3 altDSID];
       [v17 storeAuthorization:v62 withAltDSID:? forClient:?];
-      _objc_release(v15);
-      _objc_release(v16);
+      _objc_release(altDSID3);
+      _objc_release(selectedRequest3);
       _objc_release(v17);
     }
 
     (*(v74 + 2))(v74, v62, 0);
     v64 = 0;
 LABEL_37:
-    objc_storeStrong(&v60, 0);
+    objc_storeStrong(&userInformation, 0);
     objc_storeStrong(&v61, 0);
     objc_storeStrong(&v62, 0);
-    objc_storeStrong(&v63, 0);
+    objc_storeStrong(&selectedRequest, 0);
   }
 
   objc_storeStrong(&v74, 0);
@@ -3382,14 +3382,14 @@ LABEL_37:
   objc_storeStrong(location, 0);
 }
 
-- (id)authorizationContextHelperWithContext:(id)a3 client:(id)a4
+- (id)authorizationContextHelperWithContext:(id)context client:(id)client
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, client);
   v4 = [AKSRPAuthorizationContextHelper alloc];
   v10 = [(AKSRPAuthorizationContextHelper *)v4 initWithContext:location[0]];
   v9 = +[AKCDPFactory isWalrusEnabled];
@@ -3408,29 +3408,29 @@ LABEL_37:
   return v7;
 }
 
-- (id)authorizationContextWithUserResponse:(id)a3 client:(id)a4
+- (id)authorizationContextWithUserResponse:(id)response client:(id)client
 {
-  v73 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v71 = 0;
-  objc_storeStrong(&v71, a4);
-  v70 = [location[0] selectedRequest];
-  v69 = [[AKAuthorizationContext alloc] initWithRequest:v70];
+  objc_storeStrong(&v71, client);
+  selectedRequest = [location[0] selectedRequest];
+  v69 = [[AKAuthorizationContext alloc] initWithRequest:selectedRequest];
   [v69 setAppProvidedContext:@"AuthorizationServices"];
-  v37 = [v70 altDSID];
+  altDSID = [selectedRequest altDSID];
   [v69 setAltDSID:?];
-  _objc_release(v37);
-  v38 = [v71 bundleID];
+  _objc_release(altDSID);
+  bundleID = [v71 bundleID];
   [v69 setClientID:?];
-  _objc_release(v38);
-  v39 = [v71 teamID];
+  _objc_release(bundleID);
+  teamID = [v71 teamID];
   [v69 setTeamID:?];
-  _objc_release(v39);
-  [v69 setRealUserVerificationData:v73->_realUserVerificationResults];
-  v68 = [v71 hasInternalEntitledAccess];
-  if (v68)
+  _objc_release(teamID);
+  [v69 setRealUserVerificationData:selfCopy->_realUserVerificationResults];
+  hasInternalEntitledAccess = [v71 hasInternalEntitledAccess];
+  if (hasInternalEntitledAccess)
   {
     v67 = _AKLogSiwa();
     v66 = OS_LOG_TYPE_DEFAULT;
@@ -3443,14 +3443,14 @@ LABEL_37:
     }
 
     objc_storeStrong(&v67, 0);
-    v32 = [v70 appProvidedData];
-    v31 = [v32 copy];
+    appProvidedData = [selectedRequest appProvidedData];
+    v31 = [appProvidedData copy];
     [v69 setAppProvidedData:?];
     _objc_release(v31);
-    _objc_release(v32);
-    v33 = [v70 clientID];
-    _objc_release(v33);
-    if (v33)
+    _objc_release(appProvidedData);
+    clientID = [selectedRequest clientID];
+    _objc_release(clientID);
+    if (clientID)
     {
       v64 = _AKLogSiwa();
       v63 = OS_LOG_TYPE_DEFAULT;
@@ -3463,14 +3463,14 @@ LABEL_37:
       }
 
       objc_storeStrong(&v64, 0);
-      v28 = [v70 clientID];
+      clientID2 = [selectedRequest clientID];
       [v69 setClientID:?];
-      _objc_release(v28);
+      _objc_release(clientID2);
     }
 
-    v27 = [v70 teamID];
-    _objc_release(v27);
-    if (v27)
+    teamID2 = [selectedRequest teamID];
+    _objc_release(teamID2);
+    if (teamID2)
     {
       v61 = _AKLogSiwa();
       v60 = OS_LOG_TYPE_DEFAULT;
@@ -3483,14 +3483,14 @@ LABEL_37:
       }
 
       objc_storeStrong(&v61, 0);
-      v24 = [v70 teamID];
+      teamID3 = [selectedRequest teamID];
       [v69 setTeamID:?];
-      _objc_release(v24);
+      _objc_release(teamID3);
     }
 
-    v23 = [v69 teamID];
-    _objc_release(v23);
-    if (!v23)
+    teamID4 = [v69 teamID];
+    _objc_release(teamID4);
+    if (!teamID4)
     {
       v58 = _AKLogSiwa();
       v57 = OS_LOG_TYPE_DEFAULT;
@@ -3519,7 +3519,7 @@ LABEL_37:
     objc_storeStrong(&v55, 0);
   }
 
-  if ([v70 _clientAuthenticatedExternallyWithPassword] == 1)
+  if ([selectedRequest _clientAuthenticatedExternallyWithPassword] == 1)
   {
     v53 = _AKLogSiwa();
     v52 = OS_LOG_TYPE_DEFAULT;
@@ -3533,9 +3533,9 @@ LABEL_37:
 
     objc_storeStrong(&v53, 0);
     [v69 set_clientAuthenticatedExternallyWithPassword:1];
-    v18 = [v70 _externalAuthToken];
+    _externalAuthToken = [selectedRequest _externalAuthToken];
     [v69 set_externalAuthToken:?];
-    _objc_release(v18);
+    _objc_release(_externalAuthToken);
   }
 
   if ([location[0] hasSelectedSharedAccountForLogin])
@@ -3552,28 +3552,28 @@ LABEL_37:
 
     objc_storeStrong(&v50, 0);
     [v69 set_isAuthorizingForSharedSIWAAccount:1];
-    v47 = [location[0] loginChoice];
-    v9 = [v47 sharedAccount];
-    v8 = [v9 shareInfo];
-    v46 = [v8 groupID];
-    _objc_release(v8);
-    _objc_release(v9);
+    loginChoice = [location[0] loginChoice];
+    sharedAccount = [loginChoice sharedAccount];
+    shareInfo = [sharedAccount shareInfo];
+    groupID = [shareInfo groupID];
+    _objc_release(shareInfo);
+    _objc_release(sharedAccount);
     v45 = 0;
-    sharedAccountsStorageController = v73->_sharedAccountsStorageController;
-    v12 = [v47 sharedAccount];
+    sharedAccountsStorageController = selfCopy->_sharedAccountsStorageController;
+    sharedAccount2 = [loginChoice sharedAccount];
     v44 = v45;
     v11 = [AKSharedAccountsStorageController shareTokenForAccount:"shareTokenForAccount:inGroup:error:" inGroup:? error:?];
     objc_storeStrong(&v45, v44);
     [v69 set_sharedSIWAAccountShareToken:v11];
     _objc_release(v11);
-    _objc_release(v12);
-    v15 = [v47 sharedAccount];
-    v14 = [v15 shareInfo];
-    v13 = [v14 groupID];
+    _objc_release(sharedAccount2);
+    sharedAccount3 = [loginChoice sharedAccount];
+    shareInfo2 = [sharedAccount3 shareInfo];
+    groupID2 = [shareInfo2 groupID];
     [v69 set_sharedSIWAAccountGroupID:?];
-    _objc_release(v13);
-    _objc_release(v14);
-    _objc_release(v15);
+    _objc_release(groupID2);
+    _objc_release(shareInfo2);
+    _objc_release(sharedAccount3);
     if (v45)
     {
       oslog = _AKLogSiwa();
@@ -3590,8 +3590,8 @@ LABEL_37:
     }
 
     objc_storeStrong(&v45, 0);
-    objc_storeStrong(&v46, 0);
-    objc_storeStrong(&v47, 0);
+    objc_storeStrong(&groupID, 0);
+    objc_storeStrong(&loginChoice, 0);
   }
 
   v40 = _AKLogSiwa();
@@ -3604,42 +3604,42 @@ LABEL_37:
   objc_storeStrong(&v40, 0);
   v5 = _objc_retain(v69);
   objc_storeStrong(&v69, 0);
-  objc_storeStrong(&v70, 0);
+  objc_storeStrong(&selectedRequest, 0);
   objc_storeStrong(&v71, 0);
   objc_storeStrong(location, 0);
 
   return v5;
 }
 
-- (void)_extractWebSessionAuthorizationFromResponse:(id)a3
+- (void)_extractWebSessionAuthorizationFromResponse:(id)response
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   if ([location[0] isFirstPartyApp])
   {
     v16 = 0;
     v9 = +[AKCDPFactory walrusStatusLiveValue];
-    v15 = [v9 captureCurrentValue];
+    captureCurrentValue = [v9 captureCurrentValue];
     _objc_release(v9);
-    v14 = [v15 unsignedIntegerValue];
-    if (v14 == 1)
+    unsignedIntegerValue = [captureCurrentValue unsignedIntegerValue];
+    if (unsignedIntegerValue == 1)
     {
-      v8 = [location[0] serverProvidedData];
+      serverProvidedData = [location[0] serverProvidedData];
       v3 = [AKPCSAuthContext contextFromSRPServerResponseWithShorterTTL:?];
       v4 = v16;
       v16 = v3;
       _objc_release(v4);
-      _objc_release(v8);
+      _objc_release(serverProvidedData);
     }
 
     if (!v16)
     {
-      v7 = [location[0] serverProvidedData];
+      serverProvidedData2 = [location[0] serverProvidedData];
       v16 = [AKPCSAuthContext contextFromSRPServerResponse:?];
       _objc_release(0);
-      _objc_release(v7);
+      _objc_release(serverProvidedData2);
     }
 
     if (v16)
@@ -3666,7 +3666,7 @@ LABEL_37:
       v17 = 1;
     }
 
-    objc_storeStrong(&v15, 0);
+    objc_storeStrong(&captureCurrentValue, 0);
     objc_storeStrong(&v16, 0);
   }
 
@@ -3678,14 +3678,14 @@ LABEL_37:
   objc_storeStrong(location, 0);
 }
 
-- (void)presentAuthorizationUIForContext:(id)a3 completion:(id)a4
+- (void)presentAuthorizationUIForContext:(id)context completion:(id)completion
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
+  objc_storeStrong(&v22, completion);
   v21 = _AKLogSystem();
   v20 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -3695,7 +3695,7 @@ LABEL_37:
   }
 
   objc_storeStrong(&v21, 0);
-  client = v24->_client;
+  client = selfCopy->_client;
   v13 = _NSConcreteStackBlock;
   v14 = -1073741824;
   v15 = 0;
@@ -3733,31 +3733,31 @@ LABEL_37:
   objc_storeStrong(location, 0);
 }
 
-- (void)performAuthorizationWithContext:(id)a3 withUserProvidedInformation:(id)a4 completion:(id)a5
+- (void)performAuthorizationWithContext:(id)context withUserProvidedInformation:(id)information completion:(id)completion
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
+  objc_storeStrong(&v23, information);
   v22 = 0;
-  objc_storeStrong(&v22, a5);
-  if (!v25->_originalRequestContext)
+  objc_storeStrong(&v22, completion);
+  if (!selfCopy->_originalRequestContext)
   {
-    objc_storeStrong(&v25->_originalRequestContext, location[0]);
+    objc_storeStrong(&selfCopy->_originalRequestContext, location[0]);
   }
 
   v21 = _AKLogSiwa();
   v20 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    sub_1000194D4(v26, v25->_client);
+    sub_1000194D4(v26, selfCopy->_client);
     _os_log_impl(&_mh_execute_header, v21, v20, "Client before perform authorization for user info execution %@", v26, 0xCu);
   }
 
   objc_storeStrong(&v21, 0);
-  if ([(AKClient *)v25->_client hasOwnerAccess])
+  if ([(AKClient *)selfCopy->_client hasOwnerAccess])
   {
     v19 = _AKLogSiwa();
     v18 = OS_LOG_TYPE_DEFAULT;
@@ -3770,8 +3770,8 @@ LABEL_37:
     }
 
     objc_storeStrong(&v19, 0);
-    v16 = [(AKAuthorizationDaemonService *)v25 _clientForContext:location[0]];
-    [(AKAuthorizationDaemonService *)v25 _validateAndProcessUserResponse:v23 client:v16 completion:v22];
+    v16 = [(AKAuthorizationDaemonService *)selfCopy _clientForContext:location[0]];
+    [(AKAuthorizationDaemonService *)selfCopy _validateAndProcessUserResponse:v23 client:v16 completion:v22];
     objc_storeStrong(&v16, 0);
   }
 
@@ -3799,24 +3799,24 @@ LABEL_37:
   objc_storeStrong(location, 0);
 }
 
-- (void)_validateAndProcessUserResponse:(id)a3 client:(id)a4 completion:(id)a5
+- (void)_validateAndProcessUserResponse:(id)response client:(id)client completion:(id)completion
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v27 = 0;
-  objc_storeStrong(&v27, a4);
+  objc_storeStrong(&v27, client);
   v26 = 0;
-  objc_storeStrong(&v26, a5);
+  objc_storeStrong(&v26, completion);
   v10 = [AKCATiburonRequestAttemptReporter alloc];
-  v13 = [location[0] selectedRequest];
-  v12 = [v13 requestIdentifier];
-  v11 = [v12 UUIDString];
+  selectedRequest = [location[0] selectedRequest];
+  requestIdentifier = [selectedRequest requestIdentifier];
+  uUIDString = [requestIdentifier UUIDString];
   v25 = [(AKCATiburonRequestAttemptReporter *)v10 initWithRequestID:?];
-  _objc_release(v11);
-  _objc_release(v12);
-  _objc_release(v13);
+  _objc_release(uUIDString);
+  _objc_release(requestIdentifier);
+  _objc_release(selectedRequest);
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_10015D498;
@@ -3849,7 +3849,7 @@ LABEL_37:
   objc_storeStrong(&oslog, 0);
   if (v19)
   {
-    [(AKAuthorizationDaemonService *)v29 _processUserResponse:location[0] client:v27 completion:v24];
+    [(AKAuthorizationDaemonService *)selfCopy _processUserResponse:location[0] client:v27 completion:v24];
   }
 
   else
@@ -3885,29 +3885,29 @@ LABEL_37:
   objc_storeStrong(location, 0);
 }
 
-- (void)_processUserResponse:(id)a3 client:(id)a4 completion:(id)a5
+- (void)_processUserResponse:(id)response client:(id)client completion:(id)completion
 {
-  v51 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v49 = 0;
-  objc_storeStrong(&v49, a4);
+  objc_storeStrong(&v49, client);
   v48 = 0;
-  objc_storeStrong(&v48, a5);
-  WeakRetained = objc_loadWeakRetained(&v51->_delegate);
+  objc_storeStrong(&v48, completion);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained authorizationDaemonServiceWillProcessUserResponse:v51];
+    [WeakRetained authorizationDaemonServiceWillProcessUserResponse:selfCopy];
   }
 
   v27 = +[AKFeatureManager sharedManager];
-  v46 = [v27 isTiburonU13Enabled];
+  isTiburonU13Enabled = [v27 isTiburonU13Enabled];
   _objc_release(v27);
-  v28 = [location[0] selectedRequest];
+  selectedRequest = [location[0] selectedRequest];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  _objc_release(v28);
+  _objc_release(selectedRequest);
   if (isKindOfClass)
   {
     v45 = _AKLogSiwa();
@@ -3919,21 +3919,21 @@ LABEL_37:
     }
 
     objc_storeStrong(&v45, 0);
-    [(AKAuthorizationDaemonService *)v51 _safePerformSRPWithUserResponse:location[0] client:v49 completion:v48];
+    [(AKAuthorizationDaemonService *)selfCopy _safePerformSRPWithUserResponse:location[0] client:v49 completion:v48];
 LABEL_23:
     v38 = 0;
     goto LABEL_24;
   }
 
-  v25 = [location[0] selectedRequest];
+  selectedRequest2 = [location[0] selectedRequest];
   objc_opt_class();
   v26 = objc_opt_isKindOfClass();
-  _objc_release(v25);
+  _objc_release(selectedRequest2);
   if ((v26 & 1) == 0)
   {
-    if ([location[0] requestParentalPermission] & 1) != 0 && (v46)
+    if ([location[0] requestParentalPermission] & 1) != 0 && (isTiburonU13Enabled)
     {
-      [(AKAuthorizationDaemonService *)v51 _sendPermissionRequestWithCompletion:v48];
+      [(AKAuthorizationDaemonService *)selfCopy _sendPermissionRequestWithCompletion:v48];
     }
 
     else
@@ -3969,42 +3969,42 @@ LABEL_23:
   }
 
   objc_storeStrong(&v43, 0);
-  v22 = [location[0] loginChoice];
-  _objc_release(v22);
-  if (v22)
+  loginChoice = [location[0] loginChoice];
+  _objc_release(loginChoice);
+  if (loginChoice)
   {
     v37 = _AKLogSiwa();
     v36 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
       v18 = location[0];
-      v19 = [location[0] userSelection];
-      sub_10004DCC8(v52, v18, v19, v49);
+      userSelection = [location[0] userSelection];
+      sub_10004DCC8(v52, v18, userSelection, v49);
       _os_log_impl(&_mh_execute_header, v37, v36, "Got a response from user: %@, userSelection: %@ and client: %@", v52, 0x20u);
-      _objc_release(v19);
+      _objc_release(userSelection);
     }
 
     objc_storeStrong(&v37, 0);
     v35 = objc_alloc_init(AKAuthorization);
-    v9 = [location[0] loginChoiceIndex];
-    v10 = [v9 intValue];
-    _objc_release(v9);
-    v34[1] = v10;
+    loginChoiceIndex = [location[0] loginChoiceIndex];
+    intValue = [loginChoiceIndex intValue];
+    _objc_release(loginChoiceIndex);
+    v34[1] = intValue;
     v11 = [AKPasswordCredential alloc];
-    v16 = [(NSArray *)v51->_safariPasswordCredentials objectAtIndexedSubscript:v10];
-    v15 = [v16 user];
-    v14 = [(NSArray *)v51->_safariPasswordCredentials objectAtIndexedSubscript:v10];
-    v13 = [v14 password];
-    v12 = [v11 initWithUser:v15 password:?];
+    v16 = [(NSArray *)selfCopy->_safariPasswordCredentials objectAtIndexedSubscript:intValue];
+    user = [v16 user];
+    v14 = [(NSArray *)selfCopy->_safariPasswordCredentials objectAtIndexedSubscript:intValue];
+    password = [v14 password];
+    v12 = [v11 initWithUser:user password:?];
     [v35 setCredential:?];
     _objc_release(v12);
-    _objc_release(v13);
+    _objc_release(password);
     _objc_release(v14);
-    _objc_release(v15);
+    _objc_release(user);
     _objc_release(v16);
-    v17 = [location[0] selectedRequest];
+    selectedRequest3 = [location[0] selectedRequest];
     [v35 setAuthorizedRequest:?];
-    _objc_release(v17);
+    _objc_release(selectedRequest3);
     (*(v48 + 2))(v48, v35, 0);
     objc_storeStrong(&v35, 0);
     goto LABEL_23;
@@ -4031,34 +4031,34 @@ LABEL_24:
   objc_storeStrong(location, 0);
 }
 
-- (void)beginAuthorizationWithContext:(id)a3 completion:(id)a4
+- (void)beginAuthorizationWithContext:(id)context completion:(id)completion
 {
-  v54 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v52 = 0;
-  objc_storeStrong(&v52, a4);
-  if ([(AKAuthorizationDaemonService *)v54 _verifyEntitlementsForRequest:location[0]])
+  objc_storeStrong(&v52, completion);
+  if ([(AKAuthorizationDaemonService *)selfCopy _verifyEntitlementsForRequest:location[0]])
   {
-    if ([(AKClient *)v54->_client isPermittedToProxyAuthorizationBundleIdentifier])
+    if ([(AKClient *)selfCopy->_client isPermittedToProxyAuthorizationBundleIdentifier])
     {
-      v17 = [location[0] _proxiedClientBundleID];
+      _proxiedClientBundleID = [location[0] _proxiedClientBundleID];
       v43 = 0;
       v18 = 1;
-      if (v17)
+      if (_proxiedClientBundleID)
       {
-        v44 = [location[0] _proxiedClientTeamID];
+        _proxiedClientTeamID = [location[0] _proxiedClientTeamID];
         v43 = 1;
-        v18 = v44 == 0;
+        v18 = _proxiedClientTeamID == 0;
       }
 
       if (v43)
       {
-        _objc_release(v44);
+        _objc_release(_proxiedClientTeamID);
       }
 
-      _objc_release(v17);
+      _objc_release(_proxiedClientBundleID);
       if (v18)
       {
         v42 = _AKLogSiwa();
@@ -4085,22 +4085,22 @@ LABEL_24:
         v38 = OS_LOG_TYPE_DEFAULT;
         if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
         {
-          v12 = [location[0] _proxiedClientBundleID];
-          sub_1000194D4(v56, v12);
+          _proxiedClientBundleID2 = [location[0] _proxiedClientBundleID];
+          sub_1000194D4(v56, _proxiedClientBundleID2);
           _os_log_impl(&_mh_execute_header, v39, v38, "beginAuthorization - Proxied bundle detected (%@), proxying...", v56, 0xCu);
-          _objc_release(v12);
+          _objc_release(_proxiedClientBundleID2);
         }
 
         objc_storeStrong(&v39, 0);
         [location[0] set_clientShouldAuthenticateExternally:1];
         v10 = [AKOwnerProxyClient alloc];
         v9 = location[0];
-        v11 = [(AKClient *)v54->_client xpcConnection];
+        xpcConnection = [(AKClient *)selfCopy->_client xpcConnection];
         v4 = [(AKOwnerProxyClient *)v10 initWithCredentialRequest:v9 connection:?];
-        client = v54->_client;
-        v54->_client = &v4->super;
+        client = selfCopy->_client;
+        selfCopy->_client = &v4->super;
         _objc_release(client);
-        _objc_release(v11);
+        _objc_release(xpcConnection);
         v37 = _AKLogSiwa();
         v36 = OS_LOG_TYPE_DEFAULT;
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
@@ -4110,9 +4110,9 @@ LABEL_24:
         }
 
         objc_storeStrong(&v37, 0);
-        authSessionManager = v54->_authSessionManager;
+        authSessionManager = selfCopy->_authSessionManager;
         v6 = location[0];
-        v7 = v54->_client;
+        v7 = selfCopy->_client;
         v28 = _NSConcreteStackBlock;
         v29 = -1073741824;
         v30 = 0;
@@ -4120,7 +4120,7 @@ LABEL_24:
         v32 = &unk_100321DE8;
         v33 = _objc_retain(location[0]);
         v35 = _objc_retain(v52);
-        v34 = _objc_retain(v54);
+        v34 = _objc_retain(selfCopy);
         [(AKAuthorizationSessionManager *)authSessionManager beginSessionWithContext:v6 client:v7 completion:&v28];
         objc_storeStrong(&v34, 0);
         objc_storeStrong(&v35, 0);
@@ -4174,34 +4174,34 @@ LABEL_24:
   objc_storeStrong(location, 0);
 }
 
-- (void)continueAuthorizationWithContext:(id)a3 completion:(id)a4
+- (void)continueAuthorizationWithContext:(id)context completion:(id)completion
 {
-  v60 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v58 = 0;
-  objc_storeStrong(&v58, a4);
-  if ([(AKAuthorizationDaemonService *)v60 _verifyEntitlementsForRequest:location[0]])
+  objc_storeStrong(&v58, completion);
+  if ([(AKAuthorizationDaemonService *)selfCopy _verifyEntitlementsForRequest:location[0]])
   {
-    if ([(AKClient *)v60->_client isPermittedToProxyAuthorizationBundleIdentifier])
+    if ([(AKClient *)selfCopy->_client isPermittedToProxyAuthorizationBundleIdentifier])
     {
-      v22 = [location[0] _proxiedClientBundleID];
+      _proxiedClientBundleID = [location[0] _proxiedClientBundleID];
       v49 = 0;
       v23 = 1;
-      if (v22)
+      if (_proxiedClientBundleID)
       {
-        v50 = [location[0] _proxiedClientTeamID];
+        _proxiedClientTeamID = [location[0] _proxiedClientTeamID];
         v49 = 1;
-        v23 = v50 == 0;
+        v23 = _proxiedClientTeamID == 0;
       }
 
       if (v49)
       {
-        _objc_release(v50);
+        _objc_release(_proxiedClientTeamID);
       }
 
-      _objc_release(v22);
+      _objc_release(_proxiedClientBundleID);
       if (v23)
       {
         v48 = _AKLogSiwa();
@@ -4228,30 +4228,30 @@ LABEL_24:
         v44 = OS_LOG_TYPE_DEFAULT;
         if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
         {
-          v17 = [location[0] _proxiedClientBundleID];
-          sub_1000194D4(v61, v17);
+          _proxiedClientBundleID2 = [location[0] _proxiedClientBundleID];
+          sub_1000194D4(v61, _proxiedClientBundleID2);
           _os_log_impl(&_mh_execute_header, v45, v44, "continueAuthorization - Proxied bundle detected (%@), proxying...", v61, 0xCu);
-          _objc_release(v17);
+          _objc_release(_proxiedClientBundleID2);
         }
 
         objc_storeStrong(&v45, 0);
         [location[0] set_clientShouldAuthenticateExternally:1];
         v14 = [AKOwnerProxyClient alloc];
         v13 = location[0];
-        v15 = [(AKClient *)v60->_client xpcConnection];
+        xpcConnection = [(AKClient *)selfCopy->_client xpcConnection];
         v4 = [(AKOwnerProxyClient *)v14 initWithCredentialRequest:v13 connection:?];
-        client = v60->_client;
-        v60->_client = &v4->super;
+        client = selfCopy->_client;
+        selfCopy->_client = &v4->super;
         _objc_release(client);
-        _objc_release(v15);
-        v16 = [location[0] _continuationRequestIdentifier];
-        _objc_release(v16);
-        if (v16)
+        _objc_release(xpcConnection);
+        _continuationRequestIdentifier = [location[0] _continuationRequestIdentifier];
+        _objc_release(_continuationRequestIdentifier);
+        if (_continuationRequestIdentifier)
         {
           [location[0] set_clientShouldAuthenticateExternally:1];
-          authSessionManager = v60->_authSessionManager;
+          authSessionManager = selfCopy->_authSessionManager;
           v6 = location[0];
-          v7 = v60->_client;
+          v7 = selfCopy->_client;
           v33 = _NSConcreteStackBlock;
           v34 = -1073741824;
           v35 = 0;
@@ -4259,7 +4259,7 @@ LABEL_24:
           v37 = &unk_100324CF0;
           v38 = _objc_retain(location[0]);
           v40 = _objc_retain(v58);
-          v39 = _objc_retain(v60);
+          v39 = _objc_retain(selfCopy);
           [(AKAuthorizationSessionManager *)authSessionManager continueSessionWithContext:v6 client:v7 completion:&v33];
           objc_storeStrong(&v39, 0);
           objc_storeStrong(&v40, 0);
@@ -4334,14 +4334,14 @@ LABEL_24:
   objc_storeStrong(location, 0);
 }
 
-- (void)cancelAuthorizationWithContext:(id)a3 completion:(id)a4
+- (void)cancelAuthorizationWithContext:(id)context completion:(id)completion
 {
-  v52 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v50 = 0;
-  objc_storeStrong(&v50, a4);
+  objc_storeStrong(&v50, completion);
   v49 = _AKLogSiwa();
   v48 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
@@ -4351,26 +4351,26 @@ LABEL_24:
   }
 
   objc_storeStrong(&v49, 0);
-  if ([(AKAuthorizationDaemonService *)v52 _verifyEntitlementsForRequest:location[0]])
+  if ([(AKAuthorizationDaemonService *)selfCopy _verifyEntitlementsForRequest:location[0]])
   {
-    if ([(AKClient *)v52->_client isPermittedToProxyAuthorizationBundleIdentifier])
+    if ([(AKClient *)selfCopy->_client isPermittedToProxyAuthorizationBundleIdentifier])
     {
-      v17 = [location[0] _proxiedClientBundleID];
+      _proxiedClientBundleID = [location[0] _proxiedClientBundleID];
       v39 = 0;
       v18 = 1;
-      if (v17)
+      if (_proxiedClientBundleID)
       {
-        v40 = [location[0] _proxiedClientTeamID];
+        _proxiedClientTeamID = [location[0] _proxiedClientTeamID];
         v39 = 1;
-        v18 = v40 == 0;
+        v18 = _proxiedClientTeamID == 0;
       }
 
       if (v39)
       {
-        _objc_release(v40);
+        _objc_release(_proxiedClientTeamID);
       }
 
-      _objc_release(v17);
+      _objc_release(_proxiedClientBundleID);
       if (v18)
       {
         v38 = _AKLogSiwa();
@@ -4397,24 +4397,24 @@ LABEL_24:
         v34 = OS_LOG_TYPE_DEFAULT;
         if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
         {
-          v12 = [location[0] _proxiedClientBundleID];
-          sub_1000194D4(v53, v12);
+          _proxiedClientBundleID2 = [location[0] _proxiedClientBundleID];
+          sub_1000194D4(v53, _proxiedClientBundleID2);
           _os_log_impl(&_mh_execute_header, v35, v34, "cancelAuthorization - Proxied bundle detected (%@), proxying...", v53, 0xCu);
-          _objc_release(v12);
+          _objc_release(_proxiedClientBundleID2);
         }
 
         objc_storeStrong(&v35, 0);
         v7 = [AKOwnerProxyClient alloc];
         v6 = location[0];
-        v8 = [(AKClient *)v52->_client xpcConnection];
+        xpcConnection = [(AKClient *)selfCopy->_client xpcConnection];
         v4 = [(AKOwnerProxyClient *)v7 initWithCredentialRequest:v6 connection:?];
-        client = v52->_client;
-        v52->_client = &v4->super;
+        client = selfCopy->_client;
+        selfCopy->_client = &v4->super;
         _objc_release(client);
-        _objc_release(v8);
-        authSessionManager = v52->_authSessionManager;
+        _objc_release(xpcConnection);
+        authSessionManager = selfCopy->_authSessionManager;
         v9 = location[0];
-        v10 = v52->_client;
+        v10 = selfCopy->_client;
         v28 = _NSConcreteStackBlock;
         v29 = -1073741824;
         v30 = 0;
@@ -4472,12 +4472,12 @@ LABEL_24:
   objc_storeStrong(location, 0);
 }
 
-- (void)_sendPermissionRequestWithCompletion:(id)a3
+- (void)_sendPermissionRequestWithCompletion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v7 = _AKLogSiwa();
   v6 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -4493,24 +4493,24 @@ LABEL_24:
   objc_storeStrong(location, 0);
 }
 
-- (id)_accountDisplayNameWithPresentationContext:(id)a3
+- (id)_accountDisplayNameWithPresentationContext:(id)context
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v9 = +[AKAccountManager sharedInstance];
-  v8 = [(AKAccountManager *)v9 primaryiCloudAccount];
+  primaryiCloudAccount = [(AKAccountManager *)v9 primaryiCloudAccount];
   v7 = objc_alloc_init(NSPersonNameComponents);
-  v4 = [(AKAccountManager *)v9 givenNameForAccount:v8];
+  v4 = [(AKAccountManager *)v9 givenNameForAccount:primaryiCloudAccount];
   [v7 setGivenName:?];
   _objc_release(v4);
-  v5 = [(AKAccountManager *)v9 familyNameForAccount:v8];
+  v5 = [(AKAccountManager *)v9 familyNameForAccount:primaryiCloudAccount];
   [v7 setFamilyName:?];
   _objc_release(v5);
   v6 = [NSPersonNameComponentsFormatter localizedStringFromPersonNameComponents:v7 style:0 options:?];
   objc_storeStrong(&v7, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&primaryiCloudAccount, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 

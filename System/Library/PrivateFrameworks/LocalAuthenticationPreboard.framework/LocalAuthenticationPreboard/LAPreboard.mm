@@ -1,30 +1,30 @@
 @interface LAPreboard
 + (id)sharedInstance;
 - (BOOL)isRequired;
-- (BOOL)launchPreboardWithError:(id *)a3;
-- (LAPreboard)initWithController:(id)a3;
+- (BOOL)launchPreboardWithError:(id *)error;
+- (LAPreboard)initWithController:(id)controller;
 - (NSArray)items;
 - (NSString)confirmationTitle;
 - (NSString)iconSystemName;
 - (NSString)passcodeTitle;
-- (id)actionTitleWithHomeButton:(BOOL)a3;
+- (id)actionTitleWithHomeButton:(BOOL)button;
 - (int64_t)useCase;
-- (void)enableCurrentUseCaseWithPasscode:(id)a3 completion:(id)a4;
-- (void)setEnvironmentVariableWithPasscode:(id)a3 completion:(id)a4;
+- (void)enableCurrentUseCaseWithPasscode:(id)passcode completion:(id)completion;
+- (void)setEnvironmentVariableWithPasscode:(id)passcode completion:(id)completion;
 @end
 
 @implementation LAPreboard
 
-- (LAPreboard)initWithController:(id)a3
+- (LAPreboard)initWithController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = LAPreboard;
   v6 = [(LAPreboard *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_controller, a3);
+    objc_storeStrong(&v6->_controller, controller);
   }
 
   return v7;
@@ -51,17 +51,17 @@ uint64_t __28__LAPreboard_sharedInstance__block_invoke()
 
 - (NSString)iconSystemName
 {
-  v2 = self;
-  v3 = [(LAPreboard *)v2 useCase];
+  selfCopy = self;
+  useCase = [(LAPreboard *)selfCopy useCase];
 
-  if (v3 == 3)
+  if (useCase == 3)
   {
     v4 = 0xE400000000000000;
     v5 = 1918985575;
     goto LABEL_5;
   }
 
-  if (v3 == 4)
+  if (useCase == 4)
   {
     v4 = 0x80000002560E4E70;
     v5 = 0xD000000000000034;
@@ -79,7 +79,7 @@ LABEL_7:
 
 - (NSArray)items
 {
-  v2 = self;
+  selfCopy = self;
   LAPreboard.items.getter();
 
   type metadata accessor for LAPreboardItem();
@@ -88,12 +88,12 @@ LABEL_7:
   return v3.super.isa;
 }
 
-- (id)actionTitleWithHomeButton:(BOOL)a3
+- (id)actionTitleWithHomeButton:(BOOL)button
 {
-  v3 = a3;
-  v4 = self;
-  [(LAPreboard *)v4 useCase];
-  if (v3)
+  buttonCopy = button;
+  selfCopy = self;
+  [(LAPreboard *)selfCopy useCase];
+  if (buttonCopy)
   {
     v5 = static LocalizedStrings.pressHomeToContinue.getter();
   }
@@ -120,8 +120,8 @@ LABEL_7:
 
 - (NSString)passcodeTitle
 {
-  v2 = self;
-  [(LAPreboard *)v2 useCase];
+  selfCopy = self;
+  [(LAPreboard *)selfCopy useCase];
   v3 = static LocalizedStrings.enterPasscode.getter();
   v5 = v4;
 
@@ -132,8 +132,8 @@ LABEL_7:
 
 - (BOOL)isRequired
 {
-  v2 = self;
-  v3 = [-[LAPreboard controller](v2 controller)];
+  selfCopy = self;
+  v3 = [-[LAPreboard controller](selfCopy controller)];
 
   swift_unknownObjectRelease();
   return v3;
@@ -141,26 +141,26 @@ LABEL_7:
 
 - (int64_t)useCase
 {
-  v2 = self;
-  v3 = [-[LAPreboard controller](v2 controller)];
+  selfCopy = self;
+  v3 = [-[LAPreboard controller](selfCopy controller)];
   swift_unknownObjectRelease();
 
   return v3;
 }
 
-- (BOOL)launchPreboardWithError:(id *)a3
+- (BOOL)launchPreboardWithError:(id *)error
 {
-  v4 = self;
+  selfCopy = self;
   LAPreboard.launch()();
 
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v6 = _convertErrorToNSError(_:)();
 
       v7 = v6;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -171,9 +171,9 @@ LABEL_7:
   return v5 == 0;
 }
 
-- (void)setEnvironmentVariableWithPasscode:(id)a3 completion:(id)a4
+- (void)setEnvironmentVariableWithPasscode:(id)passcode completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   v11[4] = thunk for @escaping @callee_unowned @convention(block) (@unowned NSError?) -> ()partial apply;
@@ -183,22 +183,22 @@ LABEL_7:
   v11[2] = thunk for @escaping @callee_guaranteed @Sendable (@guaranteed Error?) -> ();
   v11[3] = &block_descriptor_26;
   v8 = _Block_copy(v11);
-  v9 = a3;
-  v10 = self;
+  passcodeCopy = passcode;
+  selfCopy = self;
 
-  [(LAPreboard *)v10 enableCurrentUseCaseWithPasscode:v9 completion:v8];
+  [(LAPreboard *)selfCopy enableCurrentUseCaseWithPasscode:passcodeCopy completion:v8];
 
   _Block_release(v8);
 }
 
-- (void)enableCurrentUseCaseWithPasscode:(id)a3 completion:(id)a4
+- (void)enableCurrentUseCaseWithPasscode:(id)passcode completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  v10 = [(LAPreboard *)v9 controller];
+  passcodeCopy = passcode;
+  selfCopy = self;
+  controller = [(LAPreboard *)selfCopy controller];
   v12[4] = thunk for @escaping @callee_unowned @convention(block) (@unowned NSError?) -> ()partial apply;
   v12[5] = v7;
   v12[0] = MEMORY[0x277D85DD0];
@@ -207,7 +207,7 @@ LABEL_7:
   v12[3] = &block_descriptor_19;
   v11 = _Block_copy(v12);
 
-  [v10 enableCurrentUseCaseWithPasscode:v8 completion:v11];
+  [controller enableCurrentUseCaseWithPasscode:passcodeCopy completion:v11];
 
   _Block_release(v11);
   swift_unknownObjectRelease();

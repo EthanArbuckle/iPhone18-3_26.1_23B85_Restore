@@ -1,18 +1,18 @@
 @interface TIKeyboardFeatureSpecialization_sk
-- (id)accentKeyStringForKeyboardState:(id)a3;
-- (id)externalStringToInternal:(id)a3;
-- (id)internalStringToExternal:(id)a3;
+- (id)accentKeyStringForKeyboardState:(id)state;
+- (id)externalStringToInternal:(id)internal;
+- (id)internalStringToExternal:(id)external;
 - (id)nonstopPunctuationCharacters;
 @end
 
 @implementation TIKeyboardFeatureSpecialization_sk
 
-- (id)accentKeyStringForKeyboardState:(id)a3
+- (id)accentKeyStringForKeyboardState:(id)state
 {
-  v3 = [a3 layoutState];
-  v4 = [v3 hasAccentKey];
+  layoutState = [state layoutState];
+  hasAccentKey = [layoutState hasAccentKey];
 
-  if (v4)
+  if (hasAccentKey)
   {
     return @"ˇ";
   }
@@ -23,13 +23,13 @@
   }
 }
 
-- (id)externalStringToInternal:(id)a3
+- (id)externalStringToInternal:(id)internal
 {
   v12[4] = *MEMORY[0x29EDCA608];
   v12[0] = 0x2C7000000B4;
-  v4 = a3;
+  internalCopy = internal;
   std::vector<unsigned int>::vector[abi:nn200100](__p, v12, 2uLL);
-  KB::utf8_string(v11, v4, v5);
+  KB::utf8_string(v11, internalCopy, v5);
 
   [(TIKeyboardFeatureSpecialization *)self precomposedCharacterSet];
   KB::decompose_diacritics();
@@ -47,10 +47,10 @@
   return v7;
 }
 
-- (id)internalStringToExternal:(id)a3
+- (id)internalStringToExternal:(id)external
 {
   v10 = *MEMORY[0x29EDCA608];
-  KB::utf8_string(v8, a3, a2);
+  KB::utf8_string(v8, external, a2);
   [(TIKeyboardFeatureSpecialization *)self precomposedCharacterSet];
   KB::compose_diacritics();
   v5 = KB::ns_string(v9, v4);
@@ -65,8 +65,8 @@
 {
   v5.receiver = self;
   v5.super_class = TIKeyboardFeatureSpecialization_sk;
-  v2 = [(TIKeyboardFeatureSpecialization *)&v5 nonstopPunctuationCharacters];
-  v3 = [v2 stringByAppendingString:@"ˇ´"];
+  nonstopPunctuationCharacters = [(TIKeyboardFeatureSpecialization *)&v5 nonstopPunctuationCharacters];
+  v3 = [nonstopPunctuationCharacters stringByAppendingString:@"ˇ´"];
 
   return v3;
 }

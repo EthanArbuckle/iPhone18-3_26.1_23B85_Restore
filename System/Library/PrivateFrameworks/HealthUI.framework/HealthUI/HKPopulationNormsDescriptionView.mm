@@ -1,6 +1,6 @@
 @interface HKPopulationNormsDescriptionView
 - (HKPopulationNormsDescriptionView)init;
-- (void)updateWithTitle:(id)a3 description:(id)a4;
+- (void)updateWithTitle:(id)title description:(id)description;
 @end
 
 @implementation HKPopulationNormsDescriptionView
@@ -40,10 +40,10 @@
   return v2;
 }
 
-- (void)updateWithTitle:(id)a3 description:(id)a4
+- (void)updateWithTitle:(id)title description:(id)description
 {
-  v6 = a4;
-  [(UILabel *)self->_classificationTitleLabel setText:a3];
+  descriptionCopy = description;
+  [(UILabel *)self->_classificationTitleLabel setText:title];
   v7 = MEMORY[0x1E69DD250];
   classificationDescriptionLabel = self->_classificationDescriptionLabel;
   v10[0] = MEMORY[0x1E69E9820];
@@ -51,8 +51,8 @@
   v10[2] = __64__HKPopulationNormsDescriptionView_updateWithTitle_description___block_invoke;
   v10[3] = &unk_1E81B5AD0;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
+  v11 = descriptionCopy;
+  v9 = descriptionCopy;
   [v7 transitionWithView:classificationDescriptionLabel duration:5242880 options:v10 animations:0 completion:0.2];
 }
 

@@ -1,8 +1,8 @@
 @interface CNAutocompleteDirectoryServerSearch
 - (CNAutocompleteDirectoryServerSearch)init;
-- (CNAutocompleteDirectoryServerSearch)initWithContactStore:(id)a3;
-- (id)executeRequest:(id)a3 completionHandler:(id)a4;
-- (id)fetchContactsForFetchRequest:(id)a3 completionHandler:(id)a4;
+- (CNAutocompleteDirectoryServerSearch)initWithContactStore:(id)store;
+- (id)executeRequest:(id)request completionHandler:(id)handler;
+- (id)fetchContactsForFetchRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation CNAutocompleteDirectoryServerSearch
@@ -15,40 +15,40 @@
   return v4;
 }
 
-- (CNAutocompleteDirectoryServerSearch)initWithContactStore:(id)a3
+- (CNAutocompleteDirectoryServerSearch)initWithContactStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = CNAutocompleteDirectoryServerSearch;
   v6 = [(CNAutocompleteDirectoryServerSearch *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contactStore, a3);
+    objc_storeStrong(&v6->_contactStore, store);
   }
 
   return v7;
 }
 
-- (id)executeRequest:(id)a3 completionHandler:(id)a4
+- (id)executeRequest:(id)request completionHandler:(id)handler
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CFBE10] currentEnvironment];
-  v9 = [v8 timeProvider];
-  [v9 timestamp];
+  requestCopy = request;
+  handlerCopy = handler;
+  currentEnvironment = [MEMORY[0x277CFBE10] currentEnvironment];
+  timeProvider = [currentEnvironment timeProvider];
+  [timeProvider timestamp];
   v11 = v10;
 
   v12 = CNALoggingContextTriage();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v6 triageIdentifier];
-    v14 = [v6 searchString];
+    triageIdentifier = [requestCopy triageIdentifier];
+    searchString = [requestCopy searchString];
     *buf = 138543618;
-    v31 = v13;
+    v31 = triageIdentifier;
     v32 = 2048;
-    v33 = [v14 length];
+    v33 = [searchString length];
     _os_log_impl(&dword_2155FE000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] Directory Servers: Will search (%lu letters)", buf, 0x16u);
   }
 
@@ -67,7 +67,7 @@
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v31 = v6;
+    v31 = requestCopy;
     _os_log_impl(&dword_2155FE000, v19, OS_LOG_TYPE_DEFAULT, "Executing request %p against directory servers", buf, 0xCu);
   }
 
@@ -75,12 +75,12 @@
   v25[1] = 3221225472;
   v25[2] = __72__CNAutocompleteDirectoryServerSearch_executeRequest_completionHandler___block_invoke;
   v25[3] = &unk_2781C4608;
-  v27 = v7;
+  v27 = handlerCopy;
   v28 = v16;
   v29 = v11;
-  v26 = v6;
-  v20 = v7;
-  v21 = v6;
+  v26 = requestCopy;
+  v20 = handlerCopy;
+  v21 = requestCopy;
   v22 = [(CNAutocompleteDirectoryServerSearch *)self fetchContactsForFetchRequest:v21 completionHandler:v25];
 
   v23 = *MEMORY[0x277D85DE8];
@@ -177,23 +177,23 @@ void __72__CNAutocompleteDirectoryServerSearch_executeRequest_completionHandler_
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (id)fetchContactsForFetchRequest:(id)a3 completionHandler:(id)a4
+- (id)fetchContactsForFetchRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CFBE10] currentEnvironment];
-  v9 = [v8 schedulerProvider];
-  v10 = [v9 backgroundScheduler];
+  requestCopy = request;
+  handlerCopy = handler;
+  currentEnvironment = [MEMORY[0x277CFBE10] currentEnvironment];
+  schedulerProvider = [currentEnvironment schedulerProvider];
+  backgroundScheduler = [schedulerProvider backgroundScheduler];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __86__CNAutocompleteDirectoryServerSearch_fetchContactsForFetchRequest_completionHandler___block_invoke;
   v15[3] = &unk_2781C4630;
-  v16 = v6;
-  v17 = self;
-  v18 = v7;
-  v11 = v7;
-  v12 = v6;
-  v13 = [v10 performCancelableBlock:v15];
+  v16 = requestCopy;
+  selfCopy = self;
+  v18 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = requestCopy;
+  v13 = [backgroundScheduler performCancelableBlock:v15];
 
   return v13;
 }

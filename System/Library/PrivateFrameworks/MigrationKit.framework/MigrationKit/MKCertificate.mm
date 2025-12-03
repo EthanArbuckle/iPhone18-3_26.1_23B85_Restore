@@ -1,11 +1,11 @@
 @interface MKCertificate
 - (MKCertificate)init;
-- (MKCertificate)initWithCertificate:(__SecCertificate *)a3 privateKey:(__SecKey *)a4;
-- (MKCertificate)initWithPEM:(id)a3;
-- (MKCertificate)initWithTrust:(__SecTrust *)a3;
-- (id)dataFromPEMFormattedData:(id)a3;
-- (id)pemFormattedCertificateData:(id)a3;
-- (void)_appendBase64Data:(id)a3 toString:(id)a4;
+- (MKCertificate)initWithCertificate:(__SecCertificate *)certificate privateKey:(__SecKey *)key;
+- (MKCertificate)initWithPEM:(id)m;
+- (MKCertificate)initWithTrust:(__SecTrust *)trust;
+- (id)dataFromPEMFormattedData:(id)data;
+- (id)pemFormattedCertificateData:(id)data;
+- (void)_appendBase64Data:(id)data toString:(id)string;
 - (void)dealloc;
 - (void)generateCertificate;
 @end
@@ -26,9 +26,9 @@
   return v3;
 }
 
-- (MKCertificate)initWithPEM:(id)a3
+- (MKCertificate)initWithPEM:(id)m
 {
-  v4 = a3;
+  mCopy = m;
   v10.receiver = self;
   v10.super_class = MKCertificate;
   v5 = [(MKCertificate *)&v10 init];
@@ -45,14 +45,14 @@
   return v5;
 }
 
-- (MKCertificate)initWithTrust:(__SecTrust *)a3
+- (MKCertificate)initWithTrust:(__SecTrust *)trust
 {
   v8.receiver = self;
   v8.super_class = MKCertificate;
   v4 = [(MKCertificate *)&v8 init];
   if (v4)
   {
-    v5 = SecTrustCopyCertificateChain(a3);
+    v5 = SecTrustCopyCertificateChain(trust);
     if (CFArrayGetCount(v5) >= 1)
     {
       CFArrayGetValueAtIndex(v5, 0);
@@ -66,14 +66,14 @@
   return v4;
 }
 
-- (MKCertificate)initWithCertificate:(__SecCertificate *)a3 privateKey:(__SecKey *)a4
+- (MKCertificate)initWithCertificate:(__SecCertificate *)certificate privateKey:(__SecKey *)key
 {
   v10.receiver = self;
   v10.super_class = MKCertificate;
   v5 = [(MKCertificate *)&v10 init];
   if (v5)
   {
-    v6 = SecCertificateCopyData(a3);
+    v6 = SecCertificateCopyData(certificate);
     [(MKCertificate *)v5 setCertificate:v6];
 
     v7 = SecCertificateCopySHA256Digest();
@@ -179,34 +179,34 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)pemFormattedCertificateData:(id)a3
+- (id)pemFormattedCertificateData:(id)data
 {
   v4 = MEMORY[0x277CCAB68];
-  v5 = a3;
-  v6 = [v4 string];
-  [v6 appendString:@"-----BEGIN CERTIFICATE-----\n"];
-  [(MKCertificate *)self _appendBase64Data:v5 toString:v6];
+  dataCopy = data;
+  string = [v4 string];
+  [string appendString:@"-----BEGIN CERTIFICATE-----\n"];
+  [(MKCertificate *)self _appendBase64Data:dataCopy toString:string];
 
-  [v6 appendString:@"\n-----END CERTIFICATE-----\n"];
-  v7 = [v6 dataUsingEncoding:4];
+  [string appendString:@"\n-----END CERTIFICATE-----\n"];
+  v7 = [string dataUsingEncoding:4];
 
   return v7;
 }
 
-- (void)_appendBase64Data:(id)a3 toString:(id)a4
+- (void)_appendBase64Data:(id)data toString:(id)string
 {
-  v5 = a4;
-  v6 = [a3 base64EncodedStringWithOptions:33];
-  [v5 appendString:v6];
+  stringCopy = string;
+  v6 = [data base64EncodedStringWithOptions:33];
+  [stringCopy appendString:v6];
 }
 
-- (id)dataFromPEMFormattedData:(id)a3
+- (id)dataFromPEMFormattedData:(id)data
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v3 encoding:4];
+  dataCopy = data;
+  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:dataCopy encoding:4];
   v5 = [v4 componentsSeparatedByString:@"\n"];
-  v6 = [MEMORY[0x277CCAB68] stringWithCapacity:{objc_msgSend(v3, "length")}];
+  v6 = [MEMORY[0x277CCAB68] stringWithCapacity:{objc_msgSend(dataCopy, "length")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;

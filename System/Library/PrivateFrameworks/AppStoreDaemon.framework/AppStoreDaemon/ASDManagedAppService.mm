@@ -2,10 +2,10 @@
 + (id)defaultService;
 + (id)interface;
 - (ASDManagedAppService)init;
-- (id)showVPPInviteForCurrentUser:(id)a3 orgName:(id)a4;
-- (void)requestStatusWithResultHandler:(id)a3;
-- (void)submitManifestRequest:(id)a3 withResultHandler:(id)a4;
-- (void)submitVPPRequest:(id)a3 withResultHandler:(id)a4;
+- (id)showVPPInviteForCurrentUser:(id)user orgName:(id)name;
+- (void)requestStatusWithResultHandler:(id)handler;
+- (void)submitManifestRequest:(id)request withResultHandler:(id)handler;
+- (void)submitVPPRequest:(id)request withResultHandler:(id)handler;
 @end
 
 @implementation ASDManagedAppService
@@ -33,7 +33,7 @@
   block[1] = 3221225472;
   block[2] = __38__ASDManagedAppService_defaultService__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED90D630 != -1)
   {
     dispatch_once(&qword_1ED90D630, block);
@@ -66,16 +66,16 @@ uint64_t __38__ASDManagedAppService_defaultService__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)requestStatusWithResultHandler:(id)a3
+- (void)requestStatusWithResultHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   serviceBroker = self->_serviceBroker;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__ASDManagedAppService_requestStatusWithResultHandler___block_invoke;
   v7[3] = &unk_1E7CDD630;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getManagedAppServiceWithCompletionHandler:v7];
 }
 
@@ -106,10 +106,10 @@ void __55__ASDManagedAppService_requestStatusWithResultHandler___block_invoke(ui
   }
 }
 
-- (id)showVPPInviteForCurrentUser:(id)a3 orgName:(id)a4
+- (id)showVPPInviteForCurrentUser:(id)user orgName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
+  userCopy = user;
+  nameCopy = name;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -133,7 +133,7 @@ void __55__ASDManagedAppService_requestStatusWithResultHandler___block_invoke(ui
   v13[2] = __60__ASDManagedAppService_showVPPInviteForCurrentUser_orgName___block_invoke_2;
   v13[3] = &unk_1E7CDBB80;
   v13[4] = &v16;
-  [v10 showVPPInviteForCurrentUser:v5 orgName:v6 withReplyHandler:v13];
+  [v10 showVPPInviteForCurrentUser:userCopy orgName:nameCopy withReplyHandler:v13];
 
   v11 = v17[5];
   _Block_object_dispose(&v16, 8);
@@ -141,19 +141,19 @@ void __55__ASDManagedAppService_requestStatusWithResultHandler___block_invoke(ui
   return v11;
 }
 
-- (void)submitManifestRequest:(id)a3 withResultHandler:(id)a4
+- (void)submitManifestRequest:(id)request withResultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   serviceBroker = self->_serviceBroker;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __64__ASDManagedAppService_submitManifestRequest_withResultHandler___block_invoke;
   v11[3] = &unk_1E7CDD680;
-  v12 = v6;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
+  v12 = requestCopy;
+  v13 = handlerCopy;
+  v9 = requestCopy;
+  v10 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getManagedAppServiceWithCompletionHandler:v11];
 }
 
@@ -195,19 +195,19 @@ void __64__ASDManagedAppService_submitManifestRequest_withResultHandler___block_
   (*(v2 + 16))(v2, v4, v5);
 }
 
-- (void)submitVPPRequest:(id)a3 withResultHandler:(id)a4
+- (void)submitVPPRequest:(id)request withResultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   serviceBroker = self->_serviceBroker;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __59__ASDManagedAppService_submitVPPRequest_withResultHandler___block_invoke;
   v11[3] = &unk_1E7CDD680;
-  v12 = v6;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
+  v12 = requestCopy;
+  v13 = handlerCopy;
+  v9 = requestCopy;
+  v10 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getManagedAppServiceWithCompletionHandler:v11];
 }
 

@@ -7,16 +7,16 @@
 
 - (uint64_t)_frame
 {
-  v1 = [a1 _web_parentWebFrameView];
+  _web_parentWebFrameView = [self _web_parentWebFrameView];
 
-  return [v1 webFrame];
+  return [_web_parentWebFrameView webFrame];
 }
 
 - (uint64_t)_webView
 {
-  v1 = [a1 _frame];
+  _frame = [self _frame];
 
-  return [v1 webView];
+  return [_frame webView];
 }
 
 @end

@@ -1,35 +1,35 @@
 @interface COSWristAttributeConfidenceSummary
-- (COSWristAttributeConfidenceSummary)initWithAttribute:(unint64_t)a3 andConfidenceValue:(double)a4;
-- (id)attributeDescription:(unint64_t)a3;
+- (COSWristAttributeConfidenceSummary)initWithAttribute:(unint64_t)attribute andConfidenceValue:(double)value;
+- (id)attributeDescription:(unint64_t)description;
 - (id)description;
 @end
 
 @implementation COSWristAttributeConfidenceSummary
 
-- (COSWristAttributeConfidenceSummary)initWithAttribute:(unint64_t)a3 andConfidenceValue:(double)a4
+- (COSWristAttributeConfidenceSummary)initWithAttribute:(unint64_t)attribute andConfidenceValue:(double)value
 {
   v7.receiver = self;
   v7.super_class = COSWristAttributeConfidenceSummary;
   result = [(COSWristAttributeConfidenceSummary *)&v7 init];
   if (result)
   {
-    result->_attribute = a3;
-    result->_confidence = a4;
+    result->_attribute = attribute;
+    result->_confidence = value;
   }
 
   return result;
 }
 
-- (id)attributeDescription:(unint64_t)a3
+- (id)attributeDescription:(unint64_t)description
 {
-  if (a3 > 8)
+  if (description > 8)
   {
     return &stru_10026E598;
   }
 
   else
   {
-    return *(&off_10026C020 + a3);
+    return *(&off_10026C020 + description);
   }
 }
 

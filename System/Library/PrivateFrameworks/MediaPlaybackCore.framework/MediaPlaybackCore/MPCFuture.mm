@@ -1,15 +1,15 @@
 @interface MPCFuture
-- (MPCFuture)initWithQueue:(id)a3;
+- (MPCFuture)initWithQueue:(id)queue;
 - (id)description;
-- (id)onCompletion:(id)a3;
-- (id)onFailure:(id)a3;
-- (id)onInvalid:(id)a3;
-- (id)onSuccess:(id)a3;
+- (id)onCompletion:(id)completion;
+- (id)onFailure:(id)failure;
+- (id)onInvalid:(id)invalid;
+- (id)onSuccess:(id)success;
 - (void)_onQueue_finalize;
 - (void)dealloc;
 - (void)disconnect;
-- (void)finishWithError:(id)a3;
-- (void)finishWithValue:(id)a3;
+- (void)finishWithError:(id)error;
+- (void)finishWithValue:(id)value;
 - (void)invalidate;
 @end
 
@@ -72,7 +72,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
     {
       *buf = 138543362;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1C5C61000, v3, OS_LOG_TYPE_FAULT, "Deallocating future that wasn't finalized or invalidated: %{public}@", buf, 0xCu);
     }
   }
@@ -174,18 +174,18 @@ void __23__MPCFuture_invalidate__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __29__MPCFuture_finishWithError___block_invoke;
   block[3] = &unk_1E82391E8;
-  v9 = v5;
+  v9 = errorCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
+  v7 = errorCopy;
   dispatch_sync(accessQueue, block);
 }
 
@@ -282,18 +282,18 @@ void __29__MPCFuture_finishWithError___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)finishWithValue:(id)a3
+- (void)finishWithValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __29__MPCFuture_finishWithValue___block_invoke;
   block[3] = &unk_1E82391E8;
-  v9 = v5;
+  v9 = valueCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
+  v7 = valueCopy;
   dispatch_sync(accessQueue, block);
 }
 
@@ -390,9 +390,9 @@ void __29__MPCFuture_finishWithValue___block_invoke_2(uint64_t a1)
   }
 }
 
-- (id)onInvalid:(id)a3
+- (id)onInvalid:(id)invalid
 {
-  v4 = a3;
+  invalidCopy = invalid;
   v5 = objc_alloc_init(MPCFutureInvalidationToken);
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -400,10 +400,10 @@ void __29__MPCFuture_finishWithValue___block_invoke_2(uint64_t a1)
   block[2] = __23__MPCFuture_onInvalid___block_invoke;
   block[3] = &unk_1E8239198;
   block[4] = self;
-  v14 = v4;
+  v14 = invalidCopy;
   v7 = v5;
   v13 = v7;
-  v8 = v4;
+  v8 = invalidCopy;
   dispatch_async(accessQueue, block);
   v9 = v13;
   v10 = v7;
@@ -444,17 +444,17 @@ void __23__MPCFuture_onInvalid___block_invoke(uint64_t a1)
   }
 }
 
-- (id)onCompletion:(id)a3
+- (id)onCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __26__MPCFuture_onCompletion___block_invoke;
   v8[3] = &unk_1E8239170;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(accessQueue, v8);
 
   return self;
@@ -499,17 +499,17 @@ void __26__MPCFuture_onCompletion___block_invoke(uint64_t a1)
   }
 }
 
-- (id)onFailure:(id)a3
+- (id)onFailure:(id)failure
 {
-  v4 = a3;
+  failureCopy = failure;
   accessQueue = self->_accessQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __23__MPCFuture_onFailure___block_invoke;
   v8[3] = &unk_1E8239170;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = failureCopy;
+  v6 = failureCopy;
   dispatch_async(accessQueue, v8);
 
   return self;
@@ -555,17 +555,17 @@ void __23__MPCFuture_onFailure___block_invoke(uint64_t a1)
   }
 }
 
-- (id)onSuccess:(id)a3
+- (id)onSuccess:(id)success
 {
-  v4 = a3;
+  successCopy = success;
   accessQueue = self->_accessQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __23__MPCFuture_onSuccess___block_invoke;
   v8[3] = &unk_1E8239170;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = successCopy;
+  v6 = successCopy;
   dispatch_async(accessQueue, v8);
 
   return self;
@@ -610,9 +610,9 @@ void __23__MPCFuture_onSuccess___block_invoke(uint64_t a1)
   }
 }
 
-- (MPCFuture)initWithQueue:(id)a3
+- (MPCFuture)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = MPCFuture;
   v6 = [(MPCFuture *)&v11 init];
@@ -623,7 +623,7 @@ void __23__MPCFuture_onSuccess___block_invoke(uint64_t a1)
     accessQueue = v6->_accessQueue;
     v6->_accessQueue = v8;
 
-    objc_storeStrong(&v6->_calloutQueue, a3);
+    objc_storeStrong(&v6->_calloutQueue, queue);
   }
 
   return v6;

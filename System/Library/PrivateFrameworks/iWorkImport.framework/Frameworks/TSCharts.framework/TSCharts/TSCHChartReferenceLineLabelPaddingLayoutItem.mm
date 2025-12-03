@@ -1,21 +1,21 @@
 @interface TSCHChartReferenceLineLabelPaddingLayoutItem
-- (BOOL)p_hasReferenceLineLabelsWithModel:(id)a3;
+- (BOOL)p_hasReferenceLineLabelsWithModel:(id)model;
 - (CGSize)calcMinSize;
-- (CGSize)p_calcMinSizeForModel:(id)a3;
-- (TSCHChartReferenceLineLabelPaddingLayoutItem)initWithParent:(id)a3 axisID:(id)a4;
+- (CGSize)p_calcMinSizeForModel:(id)model;
+- (TSCHChartReferenceLineLabelPaddingLayoutItem)initWithParent:(id)parent axisID:(id)d;
 @end
 
 @implementation TSCHChartReferenceLineLabelPaddingLayoutItem
 
-- (TSCHChartReferenceLineLabelPaddingLayoutItem)initWithParent:(id)a3 axisID:(id)a4
+- (TSCHChartReferenceLineLabelPaddingLayoutItem)initWithParent:(id)parent axisID:(id)d
 {
-  v7 = a4;
+  dCopy = d;
   v29.receiver = self;
   v29.super_class = TSCHChartReferenceLineLabelPaddingLayoutItem;
-  v9 = [(TSCHChartLayoutItem *)&v29 initWithParent:a3];
+  v9 = [(TSCHChartLayoutItem *)&v29 initWithParent:parent];
   if (v9)
   {
-    if (!a3)
+    if (!parent)
     {
       v13 = MEMORY[0x277D81150];
       v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, v10, v11, v12, "[TSCHChartReferenceLineLabelPaddingLayoutItem initWithParent:axisID:]");
@@ -25,7 +25,7 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v24, v25, v26, v27);
     }
 
-    objc_storeStrong(&v9->_axisID, a4);
+    objc_storeStrong(&v9->_axisID, d);
   }
 
   return v9;
@@ -71,11 +71,11 @@
   return result;
 }
 
-- (CGSize)p_calcMinSizeForModel:(id)a3
+- (CGSize)p_calcMinSizeForModel:(id)model
 {
   v8 = *MEMORY[0x277CBF3A8];
   v7 = *(MEMORY[0x277CBF3A8] + 8);
-  if (objc_msgSend_p_hasReferenceLineLabelsWithModel_(self, a2, v3, v4, v5, a3))
+  if (objc_msgSend_p_hasReferenceLineLabelsWithModel_(self, a2, v3, v4, v5, model))
   {
     v13 = objc_msgSend_parent(self, v9, v10, v11, v12);
     v18 = objc_msgSend_axisPosition(v13, v14, v15, v16, v17);
@@ -99,12 +99,12 @@
   return result;
 }
 
-- (BOOL)p_hasReferenceLineLabelsWithModel:(id)a3
+- (BOOL)p_hasReferenceLineLabelsWithModel:(id)model
 {
   v54 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modelCopy = model;
   v9 = objc_msgSend_axisID(self, v5, v6, v7, v8);
-  v14 = objc_msgSend_axisForID_(v4, v10, v11, v12, v13, v9);
+  v14 = objc_msgSend_axisForID_(modelCopy, v10, v11, v12, v13, v9);
 
   if (objc_msgSend_supportsReferenceLines(v14, v15, v16, v17, v18))
   {
@@ -116,7 +116,7 @@
     v28 = objc_msgSend_countByEnumeratingWithState_objects_count_(v22, v23, v24, v25, v26, &v49, v53, 16);
     if (v28)
     {
-      v48 = v4;
+      v48 = modelCopy;
       v32 = *v50;
       while (2)
       {
@@ -167,7 +167,7 @@
       }
 
 LABEL_30:
-      v4 = v48;
+      modelCopy = v48;
     }
   }
 

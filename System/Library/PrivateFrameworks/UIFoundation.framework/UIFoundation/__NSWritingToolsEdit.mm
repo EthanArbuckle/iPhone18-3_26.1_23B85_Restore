@@ -1,29 +1,29 @@
 @interface __NSWritingToolsEdit
-- (id)initWithRange:(void *)a3 delta:(void *)a4 identifier:(void *)a5;
+- (id)initWithRange:(void *)range delta:(void *)delta identifier:(void *)identifier;
 - (uint64_t)range;
 @end
 
 @implementation __NSWritingToolsEdit
 
-- (id)initWithRange:(void *)a3 delta:(void *)a4 identifier:(void *)a5
+- (id)initWithRange:(void *)range delta:(void *)delta identifier:(void *)identifier
 {
-  v10 = a5;
-  if (a1)
+  identifierCopy = identifier;
+  if (self)
   {
-    v13.receiver = a1;
+    v13.receiver = self;
     v13.super_class = __NSWritingToolsEdit;
     v11 = objc_msgSendSuper2(&v13, sel_init);
-    a1 = v11;
+    self = v11;
     if (v11)
     {
       v11[3] = a2;
-      v11[4] = a3;
-      v11[1] = a4;
-      objc_storeStrong(v11 + 2, a5);
+      v11[4] = range;
+      v11[1] = delta;
+      objc_storeStrong(v11 + 2, identifier);
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)range

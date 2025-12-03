@@ -4,30 +4,30 @@
 - (double)actualReallocatedRuntime;
 - (double)currentRuntime;
 - (double)remainingRuntime;
-- (id)initRuntimeTrackingGroupWithMaximumRuntime:(double)a3 inGroup:(id)a4 withWindow:(double)a5;
-- (void)activityEnded:(id)a3;
-- (void)activityStarted:(id)a3;
+- (id)initRuntimeTrackingGroupWithMaximumRuntime:(double)runtime inGroup:(id)group withWindow:(double)window;
+- (void)activityEnded:(id)ended;
+- (void)activityStarted:(id)started;
 @end
 
 @implementation _DASRuntimeTracker
 
-- (id)initRuntimeTrackingGroupWithMaximumRuntime:(double)a3 inGroup:(id)a4 withWindow:(double)a5
+- (id)initRuntimeTrackingGroupWithMaximumRuntime:(double)runtime inGroup:(id)group withWindow:(double)window
 {
-  v9 = a4;
+  groupCopy = group;
   v18.receiver = self;
   v18.super_class = _DASRuntimeTracker;
   v10 = [(_DASRuntimeTracker *)&v18 init];
   if (v10)
   {
-    v11 = [[_DASRunningTracker alloc] initRuntimeTrackerWithMaximumRuntime:a3];
+    v11 = [[_DASRunningTracker alloc] initRuntimeTrackerWithMaximumRuntime:runtime];
     runningTracker = v10->_runningTracker;
     v10->_runningTracker = v11;
 
     activeActivities = v10->_activeActivities;
     v10->_activeActivities = 0;
 
-    v10->_window = a5;
-    v14 = [v9 isEqualToString:off_10020A088[0]];
+    v10->_window = window;
+    v14 = [groupCopy isEqualToString:off_10020A088[0]];
     v15 = 0;
     if ((v14 & 1) == 0)
     {
@@ -37,15 +37,15 @@
     startDate = v10->_startDate;
     v10->_startDate = v15;
 
-    objc_storeStrong(&v10->_groupType, a4);
+    objc_storeStrong(&v10->_groupType, group);
   }
 
   return v10;
 }
 
-- (void)activityStarted:(id)a3
+- (void)activityStarted:(id)started
 {
-  v15 = a3;
+  startedCopy = started;
   activeActivities = self->_activeActivities;
   if (activeActivities)
   {
@@ -61,41 +61,41 @@
   self->_activeActivities = v5;
 
   v7 = self->_activeActivities;
-  v8 = [v15 uuid];
-  v9 = [v8 UUIDString];
-  v10 = [(NSMutableDictionary *)v7 objectForKeyedSubscript:v9];
+  uuid = [startedCopy uuid];
+  uUIDString = [uuid UUIDString];
+  v10 = [(NSMutableDictionary *)v7 objectForKeyedSubscript:uUIDString];
 
   if (!v10)
   {
-    v11 = [v15 startDate];
+    startDate = [startedCopy startDate];
     v12 = self->_activeActivities;
-    v13 = [v15 uuid];
-    v14 = [v13 UUIDString];
-    [(NSMutableDictionary *)v12 setObject:v11 forKeyedSubscript:v14];
+    uuid2 = [startedCopy uuid];
+    uUIDString2 = [uuid2 UUIDString];
+    [(NSMutableDictionary *)v12 setObject:startDate forKeyedSubscript:uUIDString2];
   }
 }
 
-- (void)activityEnded:(id)a3
+- (void)activityEnded:(id)ended
 {
-  v4 = a3;
-  v5 = v4;
+  endedCopy = ended;
+  v5 = endedCopy;
   activeActivities = self->_activeActivities;
   if (!activeActivities)
   {
     goto LABEL_4;
   }
 
-  v7 = [v4 uuid];
-  v8 = [v7 UUIDString];
-  v9 = [(NSMutableDictionary *)activeActivities objectForKeyedSubscript:v8];
+  uuid = [endedCopy uuid];
+  uUIDString = [uuid UUIDString];
+  v9 = [(NSMutableDictionary *)activeActivities objectForKeyedSubscript:uUIDString];
 
   if (v9)
   {
     [(_DASRunningTracker *)self->_runningTracker updateCurrentRuntimeWithActivity:v5];
     v10 = self->_activeActivities;
-    v11 = [v5 uuid];
-    v12 = [v11 UUIDString];
-    [(NSMutableDictionary *)v10 removeObjectForKey:v12];
+    uuid2 = [v5 uuid];
+    uUIDString2 = [uuid2 UUIDString];
+    [(NSMutableDictionary *)v10 removeObjectForKey:uUIDString2];
   }
 
   else

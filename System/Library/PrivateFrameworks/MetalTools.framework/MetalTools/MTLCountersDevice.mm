@@ -1,75 +1,75 @@
 @interface MTLCountersDevice
 - (BOOL)areWritableHeapsEnabled;
-- (MTLCountersDevice)initWithBaseObject:(id)a3 parent:(id)a4;
-- (id)_newRenderPipelineStateWithTileDescriptor:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6;
-- (id)newBufferWithBytes:(const void *)a3 length:(unint64_t)a4 options:(unint64_t)a5;
-- (id)newBufferWithBytesNoCopy:(void *)a3 length:(unint64_t)a4 options:(unint64_t)a5 deallocator:(id)a6;
-- (id)newBufferWithDescriptor:(id)a3;
-- (id)newBufferWithIOSurface:(__IOSurface *)a3;
-- (id)newBufferWithLength:(unint64_t)a3 options:(unint64_t)a4;
+- (MTLCountersDevice)initWithBaseObject:(id)object parent:(id)parent;
+- (id)_newRenderPipelineStateWithTileDescriptor:(id)descriptor options:(unint64_t)options reflection:(id *)reflection error:(id *)error;
+- (id)newBufferWithBytes:(const void *)bytes length:(unint64_t)length options:(unint64_t)options;
+- (id)newBufferWithBytesNoCopy:(void *)copy length:(unint64_t)length options:(unint64_t)options deallocator:(id)deallocator;
+- (id)newBufferWithDescriptor:(id)descriptor;
+- (id)newBufferWithIOSurface:(__IOSurface *)surface;
+- (id)newBufferWithLength:(unint64_t)length options:(unint64_t)options;
 - (id)newCommandQueue;
-- (id)newCommandQueueWithDescriptor:(id)a3;
-- (id)newCommandQueueWithMaxCommandBufferCount:(unint64_t)a3;
-- (id)newComputePipelineStateWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newComputePipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6;
-- (id)newComputePipelineStateWithFunction:(id)a3 error:(id *)a4;
-- (id)newComputePipelineStateWithFunction:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6;
-- (id)newComputePipelineStateWithImageFilterFunctionsSPI:(id)a3 imageFilterFunctionInfo:(id *)a4 error:(id *)a5;
-- (id)newDagStringWithGraphs:(id)a3;
+- (id)newCommandQueueWithDescriptor:(id)descriptor;
+- (id)newCommandQueueWithMaxCommandBufferCount:(unint64_t)count;
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options reflection:(id *)reflection error:(id *)error;
+- (id)newComputePipelineStateWithFunction:(id)function error:(id *)error;
+- (id)newComputePipelineStateWithFunction:(id)function options:(unint64_t)options reflection:(id *)reflection error:(id *)error;
+- (id)newComputePipelineStateWithImageFilterFunctionsSPI:(id)i imageFilterFunctionInfo:(id *)info error:(id *)error;
+- (id)newDagStringWithGraphs:(id)graphs;
 - (id)newDefaultLibrary;
-- (id)newDefaultLibraryWithBundle:(id)a3 error:(id *)a4;
-- (id)newDepthStencilStateWithDescriptor:(id)a3;
-- (id)newDynamicLibrary:(id)a3 computeDescriptor:(id)a4 error:(id *)a5;
-- (id)newDynamicLibrary:(id)a3 error:(id *)a4;
-- (id)newDynamicLibraryFromURL:(id)a3 error:(id *)a4;
-- (id)newDynamicLibraryWithURL:(id)a3 error:(id *)a4;
+- (id)newDefaultLibraryWithBundle:(id)bundle error:(id *)error;
+- (id)newDepthStencilStateWithDescriptor:(id)descriptor;
+- (id)newDynamicLibrary:(id)library computeDescriptor:(id)descriptor error:(id *)error;
+- (id)newDynamicLibrary:(id)library error:(id *)error;
+- (id)newDynamicLibraryFromURL:(id)l error:(id *)error;
+- (id)newDynamicLibraryWithURL:(id)l error:(id *)error;
 - (id)newFence;
-- (id)newFunctionWithGLCoreIR:(void *)a3 functionType:(unint64_t)a4;
-- (id)newFunctionWithGLCoreIR:(void *)a3 inputsDescription:(id)a4 functionType:(unint64_t)a5;
-- (id)newFunctionWithGLESIR:(void *)a3 functionType:(unint64_t)a4;
-- (id)newFunctionWithGLESIR:(void *)a3 inputsDescription:(id)a4 functionType:(unint64_t)a5;
-- (id)newFunctionWithGLIR:(void *)a3 functionType:(unint64_t)a4;
-- (id)newFunctionWithGLIR:(void *)a3 inputsDescription:(id)a4 functionType:(unint64_t)a5;
-- (id)newHeapWithDescriptor:(id)a3;
-- (id)newLibraryWithCIFilters:(id)a3 imageFilterFunctionInfo:(id *)a4 error:(id *)a5;
-- (id)newLibraryWithCIFiltersForComputePipeline:(id)a3 imageFilterFunctionInfo:(id *)a4 error:(id *)a5;
-- (id)newLibraryWithDAG:(id)a3 functions:(id)a4 error:(id *)a5;
-- (id)newLibraryWithData:(id)a3 error:(id *)a4;
-- (id)newLibraryWithFile:(id)a3 error:(id *)a4;
-- (id)newLibraryWithGraphs:(id)a3 functions:(id)a4 error:(id *)a5;
-- (id)newLibraryWithGraphsSPI:(id)a3 functions:(id)a4 error:(id *)a5;
-- (id)newLibraryWithImageFilterFunctionsSPI:(id)a3 imageFilterFunctionInfo:(id *)a4 error:(id *)a5;
-- (id)newLibraryWithSource:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)newLibraryWithStitchedDescriptor:(id)a3 error:(id *)a4;
-- (id)newLibraryWithStitchedDescriptorSPI:(id)a3 error:(id *)a4;
-- (id)newLibraryWithURL:(id)a3 error:(id *)a4;
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6;
-- (id)newSamplerStateWithDescriptor:(id)a3;
-- (id)newTextureWithBytesNoCopy:(void *)a3 length:(unint64_t)a4 descriptor:(id)a5 deallocator:(id)a6;
-- (id)newTextureWithDescriptor:(id)a3;
-- (id)newTextureWithDescriptor:(id)a3 iosurface:(__IOSurface *)a4 plane:(unint64_t)a5;
-- (void)_newRenderPipelineStateWithTileDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
+- (id)newFunctionWithGLCoreIR:(void *)r functionType:(unint64_t)type;
+- (id)newFunctionWithGLCoreIR:(void *)r inputsDescription:(id)description functionType:(unint64_t)type;
+- (id)newFunctionWithGLESIR:(void *)r functionType:(unint64_t)type;
+- (id)newFunctionWithGLESIR:(void *)r inputsDescription:(id)description functionType:(unint64_t)type;
+- (id)newFunctionWithGLIR:(void *)r functionType:(unint64_t)type;
+- (id)newFunctionWithGLIR:(void *)r inputsDescription:(id)description functionType:(unint64_t)type;
+- (id)newHeapWithDescriptor:(id)descriptor;
+- (id)newLibraryWithCIFilters:(id)filters imageFilterFunctionInfo:(id *)info error:(id *)error;
+- (id)newLibraryWithCIFiltersForComputePipeline:(id)pipeline imageFilterFunctionInfo:(id *)info error:(id *)error;
+- (id)newLibraryWithDAG:(id)g functions:(id)functions error:(id *)error;
+- (id)newLibraryWithData:(id)data error:(id *)error;
+- (id)newLibraryWithFile:(id)file error:(id *)error;
+- (id)newLibraryWithGraphs:(id)graphs functions:(id)functions error:(id *)error;
+- (id)newLibraryWithGraphsSPI:(id)i functions:(id)functions error:(id *)error;
+- (id)newLibraryWithImageFilterFunctionsSPI:(id)i imageFilterFunctionInfo:(id *)info error:(id *)error;
+- (id)newLibraryWithSource:(id)source options:(id)options error:(id *)error;
+- (id)newLibraryWithStitchedDescriptor:(id)descriptor error:(id *)error;
+- (id)newLibraryWithStitchedDescriptorSPI:(id)i error:(id *)error;
+- (id)newLibraryWithURL:(id)l error:(id *)error;
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options reflection:(id *)reflection error:(id *)error;
+- (id)newSamplerStateWithDescriptor:(id)descriptor;
+- (id)newTextureWithBytesNoCopy:(void *)copy length:(unint64_t)length descriptor:(id)descriptor deallocator:(id)deallocator;
+- (id)newTextureWithDescriptor:(id)descriptor;
+- (id)newTextureWithDescriptor:(id)descriptor iosurface:(__IOSurface *)iosurface plane:(unint64_t)plane;
+- (void)_newRenderPipelineStateWithTileDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler;
 - (void)dealloc;
-- (void)newComputePipelineStateWithDescriptor:(id)a3 completionHandler:(id)a4;
-- (void)newComputePipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)newComputePipelineStateWithFunction:(id)a3 completionHandler:(id)a4;
-- (void)newComputePipelineStateWithFunction:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)newLibraryWithSource:(id)a3 options:(id)a4 completionHandler:(id)a5;
-- (void)newLibraryWithStitchedDescriptor:(id)a3 completionHandler:(id)a4;
-- (void)newRenderPipelineStateWithDescriptor:(id)a3 completionHandler:(id)a4;
-- (void)newRenderPipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)newRenderPipelineStateWithTileDescriptor:(id)a3 completionHandler:(id)a4;
-- (void)newRenderPipelineStateWithTileDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
+- (void)newComputePipelineStateWithDescriptor:(id)descriptor completionHandler:(id)handler;
+- (void)newComputePipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler;
+- (void)newComputePipelineStateWithFunction:(id)function completionHandler:(id)handler;
+- (void)newComputePipelineStateWithFunction:(id)function options:(unint64_t)options completionHandler:(id)handler;
+- (void)newLibraryWithSource:(id)source options:(id)options completionHandler:(id)handler;
+- (void)newLibraryWithStitchedDescriptor:(id)descriptor completionHandler:(id)handler;
+- (void)newRenderPipelineStateWithDescriptor:(id)descriptor completionHandler:(id)handler;
+- (void)newRenderPipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler;
+- (void)newRenderPipelineStateWithTileDescriptor:(id)descriptor completionHandler:(id)handler;
+- (void)newRenderPipelineStateWithTileDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler;
 @end
 
 @implementation MTLCountersDevice
 
-- (MTLCountersDevice)initWithBaseObject:(id)a3 parent:(id)a4
+- (MTLCountersDevice)initWithBaseObject:(id)object parent:(id)parent
 {
   v6.receiver = self;
   v6.super_class = MTLCountersDevice;
-  v4 = [(MTLToolsDevice *)&v6 initWithBaseObject:a3 parent:a4];
+  v4 = [(MTLToolsDevice *)&v6 initWithBaseObject:object parent:parent];
   if (v4)
   {
     v4->_APITimingEnabled = MTLGetEnvDefault() != 0;
@@ -85,46 +85,46 @@
   [(MTLToolsDevice *)&v2 dealloc];
 }
 
-- (id)newFunctionWithGLCoreIR:(void *)a3 functionType:(unint64_t)a4
+- (id)newFunctionWithGLCoreIR:(void *)r functionType:(unint64_t)type
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v6 newFunctionWithGLCoreIR:a3 functionType:a4];
+  return [baseObject newFunctionWithGLCoreIR:r functionType:type];
 }
 
-- (id)newFunctionWithGLCoreIR:(void *)a3 inputsDescription:(id)a4 functionType:(unint64_t)a5
+- (id)newFunctionWithGLCoreIR:(void *)r inputsDescription:(id)description functionType:(unint64_t)type
 {
-  v8 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v8 newFunctionWithGLCoreIR:a3 inputsDescription:a4 functionType:a5];
+  return [baseObject newFunctionWithGLCoreIR:r inputsDescription:description functionType:type];
 }
 
-- (id)newFunctionWithGLESIR:(void *)a3 functionType:(unint64_t)a4
+- (id)newFunctionWithGLESIR:(void *)r functionType:(unint64_t)type
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v6 newFunctionWithGLESIR:a3 functionType:a4];
+  return [baseObject newFunctionWithGLESIR:r functionType:type];
 }
 
-- (id)newFunctionWithGLESIR:(void *)a3 inputsDescription:(id)a4 functionType:(unint64_t)a5
+- (id)newFunctionWithGLESIR:(void *)r inputsDescription:(id)description functionType:(unint64_t)type
 {
-  v8 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v8 newFunctionWithGLESIR:a3 inputsDescription:a4 functionType:a5];
+  return [baseObject newFunctionWithGLESIR:r inputsDescription:description functionType:type];
 }
 
-- (id)newFunctionWithGLIR:(void *)a3 functionType:(unint64_t)a4
+- (id)newFunctionWithGLIR:(void *)r functionType:(unint64_t)type
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v6 newFunctionWithGLIR:a3 functionType:a4];
+  return [baseObject newFunctionWithGLIR:r functionType:type];
 }
 
-- (id)newFunctionWithGLIR:(void *)a3 inputsDescription:(id)a4 functionType:(unint64_t)a5
+- (id)newFunctionWithGLIR:(void *)r inputsDescription:(id)description functionType:(unint64_t)type
 {
-  v8 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v8 newFunctionWithGLIR:a3 inputsDescription:a4 functionType:a5];
+  return [baseObject newFunctionWithGLIR:r inputsDescription:description functionType:type];
 }
 
 - (id)newCommandQueue
@@ -141,7 +141,7 @@
   return result;
 }
 
-- (id)newCommandQueueWithMaxCommandBufferCount:(unint64_t)a3
+- (id)newCommandQueueWithMaxCommandBufferCount:(unint64_t)count
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
@@ -155,7 +155,7 @@
   return result;
 }
 
-- (id)newCommandQueueWithDescriptor:(id)a3
+- (id)newCommandQueueWithDescriptor:(id)descriptor
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
@@ -171,376 +171,376 @@
 
 - (id)newFence
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 newFence];
+  return [baseObject newFence];
 }
 
-- (id)newHeapWithDescriptor:(id)a3
+- (id)newHeapWithDescriptor:(id)descriptor
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 newHeapWithDescriptor:a3];
+  return [baseObject newHeapWithDescriptor:descriptor];
 }
 
-- (id)newBufferWithLength:(unint64_t)a3 options:(unint64_t)a4
+- (id)newBufferWithLength:(unint64_t)length options:(unint64_t)options
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v6 newBufferWithLength:a3 options:a4];
+  return [baseObject newBufferWithLength:length options:options];
 }
 
-- (id)newBufferWithBytes:(const void *)a3 length:(unint64_t)a4 options:(unint64_t)a5
+- (id)newBufferWithBytes:(const void *)bytes length:(unint64_t)length options:(unint64_t)options
 {
-  v8 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v8 newBufferWithBytes:a3 length:a4 options:a5];
+  return [baseObject newBufferWithBytes:bytes length:length options:options];
 }
 
-- (id)newBufferWithBytesNoCopy:(void *)a3 length:(unint64_t)a4 options:(unint64_t)a5 deallocator:(id)a6
+- (id)newBufferWithBytesNoCopy:(void *)copy length:(unint64_t)length options:(unint64_t)options deallocator:(id)deallocator
 {
-  v10 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v10 newBufferWithBytesNoCopy:a3 length:a4 options:a5 deallocator:a6];
+  return [baseObject newBufferWithBytesNoCopy:copy length:length options:options deallocator:deallocator];
 }
 
-- (id)newBufferWithDescriptor:(id)a3
+- (id)newBufferWithDescriptor:(id)descriptor
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 newBufferWithDescriptor:a3];
+  return [baseObject newBufferWithDescriptor:descriptor];
 }
 
-- (id)newTextureWithBytesNoCopy:(void *)a3 length:(unint64_t)a4 descriptor:(id)a5 deallocator:(id)a6
+- (id)newTextureWithBytesNoCopy:(void *)copy length:(unint64_t)length descriptor:(id)descriptor deallocator:(id)deallocator
 {
-  v10 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v10 newTextureWithBytesNoCopy:a3 length:a4 descriptor:a5 deallocator:a6];
+  return [baseObject newTextureWithBytesNoCopy:copy length:length descriptor:descriptor deallocator:deallocator];
 }
 
-- (id)newDepthStencilStateWithDescriptor:(id)a3
+- (id)newDepthStencilStateWithDescriptor:(id)descriptor
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 newDepthStencilStateWithDescriptor:a3];
+  return [baseObject newDepthStencilStateWithDescriptor:descriptor];
 }
 
-- (id)newTextureWithDescriptor:(id)a3
+- (id)newTextureWithDescriptor:(id)descriptor
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 newTextureWithDescriptor:a3];
+  return [baseObject newTextureWithDescriptor:descriptor];
 }
 
-- (id)newSamplerStateWithDescriptor:(id)a3
+- (id)newSamplerStateWithDescriptor:(id)descriptor
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 newSamplerStateWithDescriptor:a3];
+  return [baseObject newSamplerStateWithDescriptor:descriptor];
 }
 
 - (id)newDefaultLibrary
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 newDefaultLibrary];
+  return [baseObject newDefaultLibrary];
 }
 
-- (id)newDefaultLibraryWithBundle:(id)a3 error:(id *)a4
+- (id)newDefaultLibraryWithBundle:(id)bundle error:(id *)error
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v6 newDefaultLibraryWithBundle:a3 error:a4];
+  return [baseObject newDefaultLibraryWithBundle:bundle error:error];
 }
 
-- (id)newLibraryWithFile:(id)a3 error:(id *)a4
+- (id)newLibraryWithFile:(id)file error:(id *)error
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v6 newLibraryWithFile:a3 error:a4];
+  return [baseObject newLibraryWithFile:file error:error];
 }
 
-- (id)newLibraryWithURL:(id)a3 error:(id *)a4
+- (id)newLibraryWithURL:(id)l error:(id *)error
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v6 newLibraryWithURL:a3 error:a4];
+  return [baseObject newLibraryWithURL:l error:error];
 }
 
-- (id)newLibraryWithData:(id)a3 error:(id *)a4
+- (id)newLibraryWithData:(id)data error:(id *)error
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v6 newLibraryWithData:a3 error:a4];
+  return [baseObject newLibraryWithData:data error:error];
 }
 
-- (id)newLibraryWithSource:(id)a3 options:(id)a4 error:(id *)a5
+- (id)newLibraryWithSource:(id)source options:(id)options error:(id *)error
 {
-  v8 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v8 newLibraryWithSource:a3 options:a4 error:a5];
+  return [baseObject newLibraryWithSource:source options:options error:error];
 }
 
-- (void)newLibraryWithSource:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)newLibraryWithSource:(id)source options:(id)options completionHandler:(id)handler
 {
-  v8 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v8 newLibraryWithSource:a3 options:a4 completionHandler:a5];
+  [baseObject newLibraryWithSource:source options:options completionHandler:handler];
 }
 
-- (id)newLibraryWithDAG:(id)a3 functions:(id)a4 error:(id *)a5
+- (id)newLibraryWithDAG:(id)g functions:(id)functions error:(id *)error
 {
-  v8 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v8 newLibraryWithDAG:a3 functions:a4 error:a5];
+  return [baseObject newLibraryWithDAG:g functions:functions error:error];
 }
 
-- (id)newLibraryWithGraphs:(id)a3 functions:(id)a4 error:(id *)a5
+- (id)newLibraryWithGraphs:(id)graphs functions:(id)functions error:(id *)error
 {
-  v8 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v8 newLibraryWithGraphs:a3 functions:a4 error:a5];
+  return [baseObject newLibraryWithGraphs:graphs functions:functions error:error];
 }
 
-- (id)newLibraryWithStitchedDescriptor:(id)a3 error:(id *)a4
+- (id)newLibraryWithStitchedDescriptor:(id)descriptor error:(id *)error
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v6 newLibraryWithStitchedDescriptor:a3 error:a4];
+  return [baseObject newLibraryWithStitchedDescriptor:descriptor error:error];
 }
 
-- (void)newLibraryWithStitchedDescriptor:(id)a3 completionHandler:(id)a4
+- (void)newLibraryWithStitchedDescriptor:(id)descriptor completionHandler:(id)handler
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 newLibraryWithStitchedDescriptor:a3 completionHandler:a4];
+  [baseObject newLibraryWithStitchedDescriptor:descriptor completionHandler:handler];
 }
 
-- (id)newLibraryWithStitchedDescriptorSPI:(id)a3 error:(id *)a4
+- (id)newLibraryWithStitchedDescriptorSPI:(id)i error:(id *)error
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v6 newLibraryWithStitchedDescriptorSPI:a3 error:a4];
+  return [baseObject newLibraryWithStitchedDescriptorSPI:i error:error];
 }
 
-- (id)newLibraryWithGraphsSPI:(id)a3 functions:(id)a4 error:(id *)a5
+- (id)newLibraryWithGraphsSPI:(id)i functions:(id)functions error:(id *)error
 {
-  v8 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v8 newLibraryWithGraphsSPI:a3 functions:a4 error:a5];
+  return [baseObject newLibraryWithGraphsSPI:i functions:functions error:error];
 }
 
-- (id)newDagStringWithGraphs:(id)a3
+- (id)newDagStringWithGraphs:(id)graphs
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 newDagStringWithGraphs:a3];
+  return [baseObject newDagStringWithGraphs:graphs];
 }
 
-- (id)newLibraryWithCIFilters:(id)a3 imageFilterFunctionInfo:(id *)a4 error:(id *)a5
+- (id)newLibraryWithCIFilters:(id)filters imageFilterFunctionInfo:(id *)info error:(id *)error
 {
-  v8 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v8 newLibraryWithCIFilters:a3 imageFilterFunctionInfo:a4 error:a5];
+  return [baseObject newLibraryWithCIFilters:filters imageFilterFunctionInfo:info error:error];
 }
 
-- (id)newLibraryWithImageFilterFunctionsSPI:(id)a3 imageFilterFunctionInfo:(id *)a4 error:(id *)a5
+- (id)newLibraryWithImageFilterFunctionsSPI:(id)i imageFilterFunctionInfo:(id *)info error:(id *)error
 {
-  v8 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v8 newLibraryWithImageFilterFunctionsSPI:a3 imageFilterFunctionInfo:a4 error:a5];
+  return [baseObject newLibraryWithImageFilterFunctionsSPI:i imageFilterFunctionInfo:info error:error];
 }
 
-- (id)newLibraryWithCIFiltersForComputePipeline:(id)a3 imageFilterFunctionInfo:(id *)a4 error:(id *)a5
+- (id)newLibraryWithCIFiltersForComputePipeline:(id)pipeline imageFilterFunctionInfo:(id *)info error:(id *)error
 {
-  v8 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v8 newLibraryWithCIFiltersForComputePipeline:a3 imageFilterFunctionInfo:a4 error:a5];
+  return [baseObject newLibraryWithCIFiltersForComputePipeline:pipeline imageFilterFunctionInfo:info error:error];
 }
 
-- (id)newDynamicLibraryWithURL:(id)a3 error:(id *)a4
+- (id)newDynamicLibraryWithURL:(id)l error:(id *)error
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v6 newDynamicLibraryWithURL:a3 error:a4];
+  return [baseObject newDynamicLibraryWithURL:l error:error];
 }
 
-- (id)newDynamicLibrary:(id)a3 error:(id *)a4
+- (id)newDynamicLibrary:(id)library error:(id *)error
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v6 newDynamicLibrary:a3 error:a4];
+  return [baseObject newDynamicLibrary:library error:error];
 }
 
-- (id)newDynamicLibrary:(id)a3 computeDescriptor:(id)a4 error:(id *)a5
+- (id)newDynamicLibrary:(id)library computeDescriptor:(id)descriptor error:(id *)error
 {
-  v8 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v8 newDynamicLibrary:a3 computeDescriptor:a4 error:a5];
+  return [baseObject newDynamicLibrary:library computeDescriptor:descriptor error:error];
 }
 
-- (id)newDynamicLibraryFromURL:(id)a3 error:(id *)a4
+- (id)newDynamicLibraryFromURL:(id)l error:(id *)error
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v6 newDynamicLibraryFromURL:a3 error:a4];
+  return [baseObject newDynamicLibraryFromURL:l error:error];
 }
 
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 error:(id *)a4
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor error:(id *)error
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v6 newRenderPipelineStateWithDescriptor:a3 error:a4];
+  return [baseObject newRenderPipelineStateWithDescriptor:descriptor error:error];
 }
 
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options reflection:(id *)reflection error:(id *)error
 {
-  v10 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v10 newRenderPipelineStateWithDescriptor:a3 options:a4 reflection:a5 error:a6];
+  return [baseObject newRenderPipelineStateWithDescriptor:descriptor options:options reflection:reflection error:error];
 }
 
-- (void)newRenderPipelineStateWithDescriptor:(id)a3 completionHandler:(id)a4
+- (void)newRenderPipelineStateWithDescriptor:(id)descriptor completionHandler:(id)handler
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 newRenderPipelineStateWithDescriptor:a3 completionHandler:a4];
+  [baseObject newRenderPipelineStateWithDescriptor:descriptor completionHandler:handler];
 }
 
-- (void)newRenderPipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)newRenderPipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler
 {
-  v8 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v8 newRenderPipelineStateWithDescriptor:a3 options:a4 completionHandler:a5];
+  [baseObject newRenderPipelineStateWithDescriptor:descriptor options:options completionHandler:handler];
 }
 
-- (id)newComputePipelineStateWithDescriptor:(id)a3 error:(id *)a4
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor error:(id *)error
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v6 newComputePipelineStateWithDescriptor:a3 error:a4];
+  return [baseObject newComputePipelineStateWithDescriptor:descriptor error:error];
 }
 
-- (id)newComputePipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options reflection:(id *)reflection error:(id *)error
 {
-  v10 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v10 newComputePipelineStateWithDescriptor:a3 options:a4 reflection:a5 error:a6];
+  return [baseObject newComputePipelineStateWithDescriptor:descriptor options:options reflection:reflection error:error];
 }
 
-- (void)newComputePipelineStateWithDescriptor:(id)a3 completionHandler:(id)a4
+- (void)newComputePipelineStateWithDescriptor:(id)descriptor completionHandler:(id)handler
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 newComputePipelineStateWithDescriptor:a3 completionHandler:a4];
+  [baseObject newComputePipelineStateWithDescriptor:descriptor completionHandler:handler];
 }
 
-- (void)newComputePipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)newComputePipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler
 {
-  v8 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v8 newComputePipelineStateWithDescriptor:a3 options:a4 completionHandler:a5];
+  [baseObject newComputePipelineStateWithDescriptor:descriptor options:options completionHandler:handler];
 }
 
-- (id)newComputePipelineStateWithFunction:(id)a3 error:(id *)a4
+- (id)newComputePipelineStateWithFunction:(id)function error:(id *)error
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v6 newComputePipelineStateWithFunction:a3 error:a4];
+  return [baseObject newComputePipelineStateWithFunction:function error:error];
 }
 
-- (id)newComputePipelineStateWithFunction:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6
+- (id)newComputePipelineStateWithFunction:(id)function options:(unint64_t)options reflection:(id *)reflection error:(id *)error
 {
-  v10 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v10 newComputePipelineStateWithFunction:a3 options:a4 reflection:a5 error:a6];
+  return [baseObject newComputePipelineStateWithFunction:function options:options reflection:reflection error:error];
 }
 
-- (void)newComputePipelineStateWithFunction:(id)a3 completionHandler:(id)a4
+- (void)newComputePipelineStateWithFunction:(id)function completionHandler:(id)handler
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 newComputePipelineStateWithFunction:a3 completionHandler:a4];
+  [baseObject newComputePipelineStateWithFunction:function completionHandler:handler];
 }
 
-- (void)newComputePipelineStateWithFunction:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)newComputePipelineStateWithFunction:(id)function options:(unint64_t)options completionHandler:(id)handler
 {
-  v8 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v8 newComputePipelineStateWithFunction:a3 options:a4 completionHandler:a5];
+  [baseObject newComputePipelineStateWithFunction:function options:options completionHandler:handler];
 }
 
-- (id)newComputePipelineStateWithImageFilterFunctionsSPI:(id)a3 imageFilterFunctionInfo:(id *)a4 error:(id *)a5
+- (id)newComputePipelineStateWithImageFilterFunctionsSPI:(id)i imageFilterFunctionInfo:(id *)info error:(id *)error
 {
-  v8 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v8 newComputePipelineStateWithImageFilterFunctionsSPI:a3 imageFilterFunctionInfo:a4 error:a5];
+  return [baseObject newComputePipelineStateWithImageFilterFunctionsSPI:i imageFilterFunctionInfo:info error:error];
 }
 
-- (id)_newRenderPipelineStateWithTileDescriptor:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6
+- (id)_newRenderPipelineStateWithTileDescriptor:(id)descriptor options:(unint64_t)options reflection:(id *)reflection error:(id *)error
 {
   v8 = 0;
   result = [-[MTLToolsObject baseObject](self "baseObject")];
-  if (a5)
+  if (reflection)
   {
-    *a5 = v8;
+    *reflection = v8;
   }
 
   return result;
 }
 
-- (void)_newRenderPipelineStateWithTileDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)_newRenderPipelineStateWithTileDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler
 {
-  v8 = [a3 copy];
+  v8 = [descriptor copy];
   v9 = [(MTLToolsDevice *)self unwrapMTLTileRenderPipelineDescriptor:v8];
-  v10 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __89__MTLCountersDevice__newRenderPipelineStateWithTileDescriptor_options_completionHandler___block_invoke;
   v11[3] = &unk_2787B3AE0;
-  v11[4] = a5;
-  [v10 newRenderPipelineStateWithTileDescriptor:v9 options:a4 completionHandler:v11];
+  v11[4] = handler;
+  [baseObject newRenderPipelineStateWithTileDescriptor:v9 options:options completionHandler:v11];
 }
 
-- (void)newRenderPipelineStateWithTileDescriptor:(id)a3 completionHandler:(id)a4
+- (void)newRenderPipelineStateWithTileDescriptor:(id)descriptor completionHandler:(id)handler
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __80__MTLCountersDevice_newRenderPipelineStateWithTileDescriptor_completionHandler___block_invoke;
   v4[3] = &unk_2787B3AE0;
-  v4[4] = a4;
-  [(MTLCountersDevice *)self _newRenderPipelineStateWithTileDescriptor:a3 options:0x20000 completionHandler:v4];
+  v4[4] = handler;
+  [(MTLCountersDevice *)self _newRenderPipelineStateWithTileDescriptor:descriptor options:0x20000 completionHandler:v4];
 }
 
-- (void)newRenderPipelineStateWithTileDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)newRenderPipelineStateWithTileDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __88__MTLCountersDevice_newRenderPipelineStateWithTileDescriptor_options_completionHandler___block_invoke;
   v5[3] = &unk_2787B3AE0;
-  v5[4] = a5;
-  [(MTLCountersDevice *)self _newRenderPipelineStateWithTileDescriptor:a3 options:a4 completionHandler:v5];
+  v5[4] = handler;
+  [(MTLCountersDevice *)self _newRenderPipelineStateWithTileDescriptor:descriptor options:options completionHandler:v5];
 }
 
-- (id)newTextureWithDescriptor:(id)a3 iosurface:(__IOSurface *)a4 plane:(unint64_t)a5
+- (id)newTextureWithDescriptor:(id)descriptor iosurface:(__IOSurface *)iosurface plane:(unint64_t)plane
 {
-  v8 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v8 newTextureWithDescriptor:a3 iosurface:a4 plane:a5];
+  return [baseObject newTextureWithDescriptor:descriptor iosurface:iosurface plane:plane];
 }
 
-- (id)newBufferWithIOSurface:(__IOSurface *)a3
+- (id)newBufferWithIOSurface:(__IOSurface *)surface
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 newBufferWithIOSurface:a3];
+  return [baseObject newBufferWithIOSurface:surface];
 }
 
 - (BOOL)areWritableHeapsEnabled
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 areWritableHeapsEnabled];
+  return [baseObject areWritableHeapsEnabled];
 }
 
 @end

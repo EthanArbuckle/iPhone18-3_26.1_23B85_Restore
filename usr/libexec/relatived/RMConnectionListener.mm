@@ -1,52 +1,52 @@
 @interface RMConnectionListener
-- (BOOL)isEndpointConnectionAllowed:(id)a3;
-- (RMConnectionListener)initWithQueue:(id)a3 entitlement:(id)a4 tccService:(id)a5 messageHandlerConstructor:(id)a6;
-- (id)_initWithQueue:(id)a3 entitlement:(id)a4 tccService:(id)a5 messageHandlerConstructor:(id)a6;
-- (void)endpointWasInterrupted:(id)a3;
-- (void)endpointWasInvalidated:(id)a3;
+- (BOOL)isEndpointConnectionAllowed:(id)allowed;
+- (RMConnectionListener)initWithQueue:(id)queue entitlement:(id)entitlement tccService:(id)service messageHandlerConstructor:(id)constructor;
+- (id)_initWithQueue:(id)queue entitlement:(id)entitlement tccService:(id)service messageHandlerConstructor:(id)constructor;
+- (void)endpointWasInterrupted:(id)interrupted;
+- (void)endpointWasInvalidated:(id)invalidated;
 - (void)invalidate;
-- (void)startListeningForService:(id)a3;
-- (void)traverseEndpointsAsynchronously:(id)a3;
+- (void)startListeningForService:(id)service;
+- (void)traverseEndpointsAsynchronously:(id)asynchronously;
 @end
 
 @implementation RMConnectionListener
 
-- (id)_initWithQueue:(id)a3 entitlement:(id)a4 tccService:(id)a5 messageHandlerConstructor:(id)a6
+- (id)_initWithQueue:(id)queue entitlement:(id)entitlement tccService:(id)service messageHandlerConstructor:(id)constructor
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  queueCopy = queue;
+  entitlementCopy = entitlement;
+  serviceCopy = service;
+  constructorCopy = constructor;
   v18.receiver = self;
   v18.super_class = RMConnectionListener;
   v14 = [(RMConnectionListener *)&v18 init];
   v15 = v14;
   if (v14)
   {
-    [(RMConnectionListener *)v14 setQueue:v10];
+    [(RMConnectionListener *)v14 setQueue:queueCopy];
     v16 = objc_opt_new();
     [(RMConnectionListener *)v15 setConnections:v16];
 
-    [(RMConnectionListener *)v15 setMessageHandlerConstructor:v13];
-    [(RMConnectionListener *)v15 setEntitlement:v11];
-    [(RMConnectionListener *)v15 setTccService:v12];
+    [(RMConnectionListener *)v15 setMessageHandlerConstructor:constructorCopy];
+    [(RMConnectionListener *)v15 setEntitlement:entitlementCopy];
+    [(RMConnectionListener *)v15 setTccService:serviceCopy];
   }
 
   return v15;
 }
 
-- (RMConnectionListener)initWithQueue:(id)a3 entitlement:(id)a4 tccService:(id)a5 messageHandlerConstructor:(id)a6
+- (RMConnectionListener)initWithQueue:(id)queue entitlement:(id)entitlement tccService:(id)service messageHandlerConstructor:(id)constructor
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v11)
+  queueCopy = queue;
+  entitlementCopy = entitlement;
+  serviceCopy = service;
+  constructorCopy = constructor;
+  if (entitlementCopy)
   {
-    if (v12)
+    if (serviceCopy)
     {
-      v14 = v13;
-      v15 = [(RMConnectionListener *)self _initWithQueue:v10 entitlement:v11 tccService:v12 messageHandlerConstructor:v13];
+      v14 = constructorCopy;
+      v15 = [(RMConnectionListener *)self _initWithQueue:queueCopy entitlement:entitlementCopy tccService:serviceCopy messageHandlerConstructor:constructorCopy];
 
       return v15;
     }
@@ -61,24 +61,24 @@
   return sub_100007640();
 }
 
-- (BOOL)isEndpointConnectionAllowed:(id)a3
+- (BOOL)isEndpointConnectionAllowed:(id)allowed
 {
-  v5 = a3;
-  v6 = [(RMConnectionListener *)self entitlement];
+  allowedCopy = allowed;
+  entitlement = [(RMConnectionListener *)self entitlement];
 
-  if (v6)
+  if (entitlement)
   {
-    v7 = [(RMConnectionListener *)self entitlement];
-    LODWORD(v6) = sub_100012420(v5, v7);
+    entitlement2 = [(RMConnectionListener *)self entitlement];
+    LODWORD(entitlement) = sub_100012420(allowedCopy, entitlement2);
   }
 
-  v8 = [(RMConnectionListener *)self tccService];
+  tccService = [(RMConnectionListener *)self tccService];
 
-  if (v8)
+  if (tccService)
   {
-    v9 = [(RMConnectionListener *)self entitlement];
+    entitlement3 = [(RMConnectionListener *)self entitlement];
 
-    if (!v9)
+    if (!entitlement3)
     {
       sub_10001300C();
 LABEL_27:
@@ -86,8 +86,8 @@ LABEL_27:
       goto LABEL_21;
     }
 
-    v10 = [(RMConnectionListener *)self tccService];
-    LODWORD(v8) = sub_1000128E4(v5, v10);
+    tccService2 = [(RMConnectionListener *)self tccService];
+    LODWORD(tccService) = sub_1000128E4(allowedCopy, tccService2);
   }
 
   if (qword_10002C0B8 != -1)
@@ -100,7 +100,7 @@ LABEL_27:
   if (os_log_type_enabled(qword_10002C0C0, OS_LOG_TYPE_DEFAULT))
   {
     v12 = "NO";
-    if (v6)
+    if (entitlement)
     {
       v13 = "YES";
     }
@@ -110,7 +110,7 @@ LABEL_27:
       v13 = "NO";
     }
 
-    if (v8)
+    if (tccService)
     {
       v12 = "YES";
     }
@@ -122,28 +122,28 @@ LABEL_27:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Client status: Entitled: %{public}s Authorized: %{public}s", &v28, 0x16u);
   }
 
-  if ((v6 | v8))
+  if ((entitlement | tccService))
   {
     goto LABEL_23;
   }
 
-  v14 = [(RMConnectionListener *)self entitlement];
+  entitlement4 = [(RMConnectionListener *)self entitlement];
 
-  if (!v14)
+  if (!entitlement4)
   {
     goto LABEL_23;
   }
 
-  v15 = [(RMConnectionListener *)self entitlement];
-  if (!v15)
+  entitlement5 = [(RMConnectionListener *)self entitlement];
+  if (!entitlement5)
   {
     goto LABEL_24;
   }
 
-  v16 = v15;
-  v17 = [(RMConnectionListener *)self deprecatedEntitlement];
+  v16 = entitlement5;
+  deprecatedEntitlement = [(RMConnectionListener *)self deprecatedEntitlement];
 
-  if (!v17 || ([(RMConnectionListener *)self deprecatedEntitlement], v18 = objc_claimAutoreleasedReturnValue(), v19 = sub_100012420(v5, v18), v18, !v19))
+  if (!deprecatedEntitlement || ([(RMConnectionListener *)self deprecatedEntitlement], v18 = objc_claimAutoreleasedReturnValue(), v19 = sub_100012420(allowedCopy, v18), v18, !v19))
   {
 LABEL_24:
     v26 = 0;
@@ -160,18 +160,18 @@ LABEL_21:
   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
   {
     v21 = v20;
-    v22 = sub_100012944(v5);
-    v23 = sub_100012990(v5);
-    v24 = [(RMConnectionListener *)self deprecatedEntitlement];
-    v25 = [(RMConnectionListener *)self entitlement];
+    v22 = sub_100012944(allowedCopy);
+    v23 = sub_100012990(allowedCopy);
+    deprecatedEntitlement2 = [(RMConnectionListener *)self deprecatedEntitlement];
+    entitlement6 = [(RMConnectionListener *)self entitlement];
     v28 = 138544131;
     v29 = v22;
     v30 = 1025;
     *v31 = v23;
     *&v31[4] = 2114;
-    *&v31[6] = v24;
+    *&v31[6] = deprecatedEntitlement2;
     v32 = 2114;
-    v33 = v25;
+    v33 = entitlement6;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Client %{public}@ (%{private}d) uses deprecated entitlement %{public}@: please use %{public}@ instead", &v28, 0x26u);
   }
 
@@ -182,19 +182,19 @@ LABEL_25:
   return v26;
 }
 
-- (void)startListeningForService:(id)a3
+- (void)startListeningForService:(id)service
 {
-  v4 = a3;
-  v5 = [v4 UTF8String];
-  v6 = [(RMConnectionListener *)self queue];
-  mach_service = xpc_connection_create_mach_service(v5, v6, 1uLL);
+  serviceCopy = service;
+  uTF8String = [serviceCopy UTF8String];
+  queue = [(RMConnectionListener *)self queue];
+  mach_service = xpc_connection_create_mach_service(uTF8String, queue, 1uLL);
   [(RMConnectionListener *)self setListener:mach_service];
 
-  v8 = [(RMConnectionListener *)self listener];
+  listener = [(RMConnectionListener *)self listener];
 
-  if (!v8)
+  if (!listener)
   {
-    sub_100013158(v4);
+    sub_100013158(serviceCopy);
   }
 
   if (qword_10002C0B8 != -1)
@@ -206,20 +206,20 @@ LABEL_25:
   if (os_log_type_enabled(qword_10002C0C0, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138477827;
-    v15 = v4;
+    v15 = serviceCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Registering handler for service: %{private}@", buf, 0xCu);
   }
 
-  v10 = [(RMConnectionListener *)self listener];
+  listener2 = [(RMConnectionListener *)self listener];
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_100007B84;
   handler[3] = &unk_100024D50;
   handler[4] = self;
-  xpc_connection_set_event_handler(v10, handler);
+  xpc_connection_set_event_handler(listener2, handler);
 
-  v11 = [(RMConnectionListener *)self listener];
-  xpc_connection_resume(v11);
+  listener3 = [(RMConnectionListener *)self listener];
+  xpc_connection_resume(listener3);
 
   if (qword_10002C0B8 != -1)
   {
@@ -230,46 +230,46 @@ LABEL_25:
   if (os_log_type_enabled(qword_10002C0C0, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138477827;
-    v15 = v4;
+    v15 = serviceCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Listener started for service: %{private}@", buf, 0xCu);
   }
 }
 
-- (void)traverseEndpointsAsynchronously:(id)a3
+- (void)traverseEndpointsAsynchronously:(id)asynchronously
 {
-  v4 = a3;
-  v5 = [(RMConnectionListener *)self queue];
+  asynchronouslyCopy = asynchronously;
+  queue = [(RMConnectionListener *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100008030;
   v7[3] = &unk_100024D78;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = asynchronouslyCopy;
+  v6 = asynchronouslyCopy;
+  dispatch_async(queue, v7);
 }
 
 - (void)invalidate
 {
-  v3 = [(RMConnectionListener *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(RMConnectionListener *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(RMConnectionListener *)self connections];
-  v5 = [v4 copy];
+  connections = [(RMConnectionListener *)self connections];
+  v5 = [connections copy];
 
   [v5 enumerateObjectsUsingBlock:&stru_100024DB8];
-  v6 = [(RMConnectionListener *)self connections];
-  [v6 removeAllObjects];
+  connections2 = [(RMConnectionListener *)self connections];
+  [connections2 removeAllObjects];
 
-  v7 = [(RMConnectionListener *)self listener];
-  xpc_connection_cancel(v7);
+  listener = [(RMConnectionListener *)self listener];
+  xpc_connection_cancel(listener);
 
   [(RMConnectionListener *)self setListener:0];
 }
 
-- (void)endpointWasInterrupted:(id)a3
+- (void)endpointWasInterrupted:(id)interrupted
 {
-  v3 = a3;
+  interruptedCopy = interrupted;
   if (qword_10002C0B8 != -1)
   {
     goto LABEL_13;
@@ -335,18 +335,18 @@ LABEL_13:
   }
 }
 
-- (void)endpointWasInvalidated:(id)a3
+- (void)endpointWasInvalidated:(id)invalidated
 {
-  v4 = a3;
-  v5 = [(RMConnectionListener *)self queue];
-  dispatch_assert_queue_V2(v5);
+  invalidatedCopy = invalidated;
+  queue = [(RMConnectionListener *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  sub_10001540C(v4, 0);
-  v6 = sub_100014DC4(v4);
+  sub_10001540C(invalidatedCopy, 0);
+  v6 = sub_100014DC4(invalidatedCopy);
 
   if (v6)
   {
-    sub_10001335C(self, v4);
+    sub_10001335C(self, invalidatedCopy);
   }
 
   else

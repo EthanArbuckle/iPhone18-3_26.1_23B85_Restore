@@ -1,13 +1,13 @@
 @interface PedestrianARUsageMigratorTask
 - (NavigationSession)navigationSession;
-- (PedestrianARUsageMigratorTask)initWithUsageTracker:(id)a3;
+- (PedestrianARUsageMigratorTask)initWithUsageTracker:(id)tracker;
 - (RoutePlanningSession)routePlanningSession;
 - (void)dealloc;
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5;
-- (void)routePlanningSession:(id)a3 didUpdateRouteCollectionResult:(id)a4 forTransportType:(int64_t)a5;
-- (void)setNavigationSession:(id)a3;
-- (void)setRouteCollection:(id)a3;
-- (void)setRoutePlanningSession:(id)a3;
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession;
+- (void)routePlanningSession:(id)session didUpdateRouteCollectionResult:(id)result forTransportType:(int64_t)type;
+- (void)setNavigationSession:(id)session;
+- (void)setRouteCollection:(id)collection;
+- (void)setRoutePlanningSession:(id)session;
 @end
 
 @implementation PedestrianARUsageMigratorTask
@@ -26,19 +26,19 @@
   return WeakRetained;
 }
 
-- (void)routePlanningSession:(id)a3 didUpdateRouteCollectionResult:(id)a4 forTransportType:(int64_t)a5
+- (void)routePlanningSession:(id)session didUpdateRouteCollectionResult:(id)result forTransportType:(int64_t)type
 {
-  v6 = [a3 currentRouteCollection];
-  [(PedestrianARUsageMigratorTask *)self setRouteCollection:v6];
+  currentRouteCollection = [session currentRouteCollection];
+  [(PedestrianARUsageMigratorTask *)self setRouteCollection:currentRouteCollection];
 }
 
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession
 {
-  v6 = a5;
+  toSessionCopy = toSession;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = toSessionCopy;
   }
 
   else
@@ -49,7 +49,7 @@
   v8 = v7;
   [(PedestrianARUsageMigratorTask *)self setRoutePlanningSession:v8];
 
-  v15 = v6;
+  v15 = toSessionCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -64,63 +64,63 @@
   v10 = v9;
 
   [(PedestrianARUsageMigratorTask *)self setNavigationSession:v10];
-  v11 = [(PedestrianARUsageMigratorTask *)self routePlanningSession];
-  v12 = [v11 currentRouteCollection];
-  if (v12)
+  routePlanningSession = [(PedestrianARUsageMigratorTask *)self routePlanningSession];
+  currentRouteCollection = [routePlanningSession currentRouteCollection];
+  if (currentRouteCollection)
   {
-    [(PedestrianARUsageMigratorTask *)self setRouteCollection:v12];
+    [(PedestrianARUsageMigratorTask *)self setRouteCollection:currentRouteCollection];
   }
 
   else
   {
-    v13 = [(PedestrianARUsageMigratorTask *)self navigationSession];
-    v14 = [v13 currentRouteCollection];
-    [(PedestrianARUsageMigratorTask *)self setRouteCollection:v14];
+    navigationSession = [(PedestrianARUsageMigratorTask *)self navigationSession];
+    currentRouteCollection2 = [navigationSession currentRouteCollection];
+    [(PedestrianARUsageMigratorTask *)self setRouteCollection:currentRouteCollection2];
   }
 }
 
-- (void)setRouteCollection:(id)a3
+- (void)setRouteCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   v6 = self->_routeCollection;
-  v7 = v5;
+  v7 = collectionCopy;
   if (v7 | v6)
   {
     v8 = [v6 isEqual:v7];
 
     if ((v8 & 1) == 0)
     {
-      v9 = [(RouteCollection *)self->_routeCollection currentRoute];
-      v10 = [v9 uniqueRouteID];
-      v11 = [v10 UUIDString];
+      currentRoute = [(RouteCollection *)self->_routeCollection currentRoute];
+      uniqueRouteID = [currentRoute uniqueRouteID];
+      uUIDString = [uniqueRouteID UUIDString];
 
-      v12 = [v7 currentRoute];
-      v13 = [v12 uniqueRouteID];
-      v14 = [v13 UUIDString];
+      currentRoute2 = [v7 currentRoute];
+      uniqueRouteID2 = [currentRoute2 uniqueRouteID];
+      uUIDString2 = [uniqueRouteID2 UUIDString];
 
-      if (v11 && v14 && ([v11 isEqualToString:v14] & 1) == 0)
+      if (uUIDString && uUIDString2 && ([uUIDString isEqualToString:uUIDString2] & 1) == 0)
       {
         v15 = sub_100C7500C();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
           v16 = 134349056;
-          v17 = self;
+          selfCopy = self;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "[%{public}p] Detected route ID changed; migrating usage flags now", &v16, 0xCu);
         }
 
-        [(PedestrianARSessionUsageTracker *)self->_usageTracker migrateUsageFromRoute:v11 toRoute:v14];
+        [(PedestrianARSessionUsageTracker *)self->_usageTracker migrateUsageFromRoute:uUIDString toRoute:uUIDString2];
       }
 
-      objc_storeStrong(&self->_routeCollection, a3);
+      objc_storeStrong(&self->_routeCollection, collection);
     }
   }
 }
 
-- (void)setNavigationSession:(id)a3
+- (void)setNavigationSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = objc_loadWeakRetained(&self->_navigationSession);
-  v6 = v4;
+  v6 = sessionCopy;
   if (v6 | v5)
   {
     obj = v6;
@@ -140,11 +140,11 @@
   }
 }
 
-- (void)setRoutePlanningSession:(id)a3
+- (void)setRoutePlanningSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = objc_loadWeakRetained(&self->_routePlanningSession);
-  v6 = v4;
+  v6 = sessionCopy;
   if (v6 | v5)
   {
     obj = v6;
@@ -170,7 +170,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -179,10 +179,10 @@
   [(PedestrianARUsageMigratorTask *)&v4 dealloc];
 }
 
-- (PedestrianARUsageMigratorTask)initWithUsageTracker:(id)a3
+- (PedestrianARUsageMigratorTask)initWithUsageTracker:(id)tracker
 {
-  v5 = a3;
-  if (!v5)
+  trackerCopy = tracker;
+  if (!trackerCopy)
   {
     v9 = sub_10006D178();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -224,7 +224,7 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "[%{public}p] Initializing", buf, 0xCu);
     }
 
-    objc_storeStrong(&v6->_usageTracker, a3);
+    objc_storeStrong(&v6->_usageTracker, tracker);
   }
 
   return v6;

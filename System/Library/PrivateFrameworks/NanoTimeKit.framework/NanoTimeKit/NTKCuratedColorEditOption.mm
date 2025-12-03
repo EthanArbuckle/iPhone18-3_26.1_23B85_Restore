@@ -1,20 +1,20 @@
 @interface NTKCuratedColorEditOption
-+ (id)_orderedValuesForDevice:(id)a3;
++ (id)_orderedValuesForDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 @end
 
 @implementation NTKCuratedColorEditOption
 
-+ (id)_orderedValuesForDevice:(id)a3
++ (id)_orderedValuesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = objc_opt_new();
-  v6 = [a1 curatedColorValuesForDevice:v4];
+  v6 = [self curatedColorValuesForDevice:deviceCopy];
   [v5 addObjectsFromArray:v6];
 
-  v14.receiver = a1;
+  v14.receiver = self;
   v14.super_class = &OBJC_METACLASS___NTKCuratedColorEditOption;
-  v7 = objc_msgSendSuper2(&v14, sel__orderedValuesForDevice_, v4);
+  v7 = objc_msgSendSuper2(&v14, sel__orderedValuesForDevice_, deviceCopy);
 
   v8 = [v7 mutableCopy];
   [v5 addObjectsFromArray:v8];
@@ -32,12 +32,12 @@
 {
   v12.receiver = self;
   v12.super_class = NTKCuratedColorEditOption;
-  v3 = [(NTKFaceColorEditOption *)&v12 _valueToFaceBundleStringDict];
-  v4 = [v3 mutableCopy];
+  _valueToFaceBundleStringDict = [(NTKFaceColorEditOption *)&v12 _valueToFaceBundleStringDict];
+  v4 = [_valueToFaceBundleStringDict mutableCopy];
 
   v5 = objc_opt_class();
-  v6 = [(NTKEditOption *)self device];
-  v7 = [v5 _curatedColorValuesForDevice:v6];
+  device = [(NTKEditOption *)self device];
+  v7 = [v5 _curatedColorValuesForDevice:device];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;

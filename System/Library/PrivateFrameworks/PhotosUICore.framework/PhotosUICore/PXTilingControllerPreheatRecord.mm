@@ -1,6 +1,6 @@
 @interface PXTilingControllerPreheatRecord
 - (PXTilingControllerPreheatHandler)preheatHandler;
-- (PXTilingControllerPreheatRecord)initWithPreheatHandler:(id)a3 context:(void *)a4;
+- (PXTilingControllerPreheatRecord)initWithPreheatHandler:(id)handler context:(void *)context;
 - (UIEdgeInsets)padding;
 @end
 
@@ -26,20 +26,20 @@
   return WeakRetained;
 }
 
-- (PXTilingControllerPreheatRecord)initWithPreheatHandler:(id)a3 context:(void *)a4
+- (PXTilingControllerPreheatRecord)initWithPreheatHandler:(id)handler context:(void *)context
 {
-  v6 = a3;
+  handlerCopy = handler;
   v12.receiver = self;
   v12.super_class = PXTilingControllerPreheatRecord;
   v7 = [(PXTilingControllerPreheatRecord *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_preheatHandler, v6);
-    v8->_context = a4;
-    v9 = [MEMORY[0x1E696AC90] indexSet];
+    objc_storeWeak(&v7->_preheatHandler, handlerCopy);
+    v8->_context = context;
+    indexSet = [MEMORY[0x1E696AC90] indexSet];
     preheatedTileIndexes = v8->_preheatedTileIndexes;
-    v8->_preheatedTileIndexes = v9;
+    v8->_preheatedTileIndexes = indexSet;
   }
 
   return v8;

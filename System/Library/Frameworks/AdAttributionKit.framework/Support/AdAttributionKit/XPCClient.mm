@@ -1,14 +1,14 @@
 @interface XPCClient
 - (_TtC20AttributionKitCommon9XPCClient)init;
-- (void)handleMessages:(id)a3;
+- (void)handleMessages:(id)messages;
 @end
 
 @implementation XPCClient
 
-- (void)handleMessages:(id)a3
+- (void)handleMessages:(id)messages
 {
-  v4 = a3;
-  v8 = self;
+  messagesCopy = messages;
+  selfCopy = self;
   v5 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
 

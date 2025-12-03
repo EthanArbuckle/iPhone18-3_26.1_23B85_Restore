@@ -1,12 +1,12 @@
 @interface PXSidebarItemChangeDetails
-+ (void)makeArrayIndexMovesIncremental:(id *)a3 count:(unint64_t)a4;
++ (void)makeArrayIndexMovesIncremental:(id *)incremental count:(unint64_t)count;
 - (BOOL)hasMoves;
 - (NSIndexSet)insertedIndexes;
 - (NSIndexSet)removedIndexes;
-- (PXSidebarItemChangeDetails)initWithArrayChangeDetails:(id)a3 previousDataSection:(id)a4;
+- (PXSidebarItemChangeDetails)initWithArrayChangeDetails:(id)details previousDataSection:(id)section;
 - (id)changedIndexes;
 - (id)description;
-- (void)enumerateMovedIndexesUsingBlock:(id)a3;
+- (void)enumerateMovedIndexesUsingBlock:(id)block;
 @end
 
 @implementation PXSidebarItemChangeDetails
@@ -16,23 +16,23 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[PXSidebarItemChangeDetails needsReload](self, "needsReload")}];
-  v6 = [(PXSidebarItemChangeDetails *)self removedIndexes];
-  v7 = [v6 px_shortDescription];
-  v8 = [(PXSidebarItemChangeDetails *)self insertedIndexes];
-  v9 = [v8 px_shortDescription];
-  v10 = [(PXSidebarItemChangeDetails *)self changedIndexes];
-  v11 = [v10 px_shortDescription];
-  v12 = [v3 stringWithFormat:@"<%@: %p needsReload:%@ removed:%@ inserted:%@ changed:%@>", v4, self, v5, v7, v9, v11];;
+  removedIndexes = [(PXSidebarItemChangeDetails *)self removedIndexes];
+  px_shortDescription = [removedIndexes px_shortDescription];
+  insertedIndexes = [(PXSidebarItemChangeDetails *)self insertedIndexes];
+  px_shortDescription2 = [insertedIndexes px_shortDescription];
+  changedIndexes = [(PXSidebarItemChangeDetails *)self changedIndexes];
+  px_shortDescription3 = [changedIndexes px_shortDescription];
+  v12 = [v3 stringWithFormat:@"<%@: %p needsReload:%@ removed:%@ inserted:%@ changed:%@>", v4, self, v5, px_shortDescription, px_shortDescription2, px_shortDescription3];;
 
   return v12;
 }
 
-- (void)enumerateMovedIndexesUsingBlock:(id)a3
+- (void)enumerateMovedIndexesUsingBlock:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXSidebarItemChangeDetails *)self arrayChangeDetails];
-  v6 = [v5 movesToIndexes];
+  blockCopy = block;
+  arrayChangeDetails = [(PXSidebarItemChangeDetails *)self arrayChangeDetails];
+  movesToIndexes = [arrayChangeDetails movesToIndexes];
 
   v19 = 0;
   v20 = &v19;
@@ -41,23 +41,23 @@
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
-  v18 = [v6 firstIndex];
+  firstIndex = [movesToIndexes firstIndex];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __62__PXSidebarItemChangeDetails_enumerateMovedIndexesUsingBlock___block_invoke;
   v14[3] = &unk_1E773B000;
   v14[4] = &v19;
   v14[5] = &v15;
-  [v6 enumerateIndexesUsingBlock:v14];
-  v7 = [v6 count];
+  [movesToIndexes enumerateIndexesUsingBlock:v14];
+  v7 = [movesToIndexes count];
   v8 = v20[3] + v7;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x2020000000;
   v13[3] = 0;
-  v9 = [v6 firstIndex];
-  v16[3] = v9;
-  v10 = [(PXSidebarItemChangeDetails *)self arrayChangeDetails];
+  firstIndex2 = [movesToIndexes firstIndex];
+  v16[3] = firstIndex2;
+  arrayChangeDetails2 = [(PXSidebarItemChangeDetails *)self arrayChangeDetails];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __62__PXSidebarItemChangeDetails_enumerateMovedIndexesUsingBlock___block_invoke_2;
@@ -65,7 +65,7 @@
   v12[4] = &v15;
   v12[5] = v13;
   v12[6] = &v12[-2 * v8];
-  [v10 enumerateMovedIndexesUsingBlock:v12];
+  [arrayChangeDetails2 enumerateMovedIndexesUsingBlock:v12];
 
   [objc_opt_class() makeArrayIndexMovesIncremental:&v12[-2 * v8] count:v8];
   if (v8)
@@ -73,7 +73,7 @@
     v11 = &v12[-2 * v8 + 1];
     do
     {
-      (*(v4 + 2))(v4, *(v11 - 1), *v11);
+      (*(blockCopy + 2))(blockCopy, *(v11 - 1), *v11);
       v11 += 2;
       --v8;
     }
@@ -113,50 +113,50 @@ void *__62__PXSidebarItemChangeDetails_enumerateMovedIndexesUsingBlock___block_i
 
 - (BOOL)hasMoves
 {
-  v2 = [(PXSidebarItemChangeDetails *)self arrayChangeDetails];
-  v3 = [v2 hasMoves];
+  arrayChangeDetails = [(PXSidebarItemChangeDetails *)self arrayChangeDetails];
+  hasMoves = [arrayChangeDetails hasMoves];
 
-  return v3;
+  return hasMoves;
 }
 
 - (id)changedIndexes
 {
-  v2 = [(PXSidebarItemChangeDetails *)self arrayChangeDetails];
-  v3 = [v2 changedIndexes];
+  arrayChangeDetails = [(PXSidebarItemChangeDetails *)self arrayChangeDetails];
+  changedIndexes = [arrayChangeDetails changedIndexes];
 
-  return v3;
+  return changedIndexes;
 }
 
 - (NSIndexSet)insertedIndexes
 {
-  v2 = [(PXSidebarItemChangeDetails *)self arrayChangeDetails];
-  v3 = [v2 insertedIndexes];
+  arrayChangeDetails = [(PXSidebarItemChangeDetails *)self arrayChangeDetails];
+  insertedIndexes = [arrayChangeDetails insertedIndexes];
 
-  return v3;
+  return insertedIndexes;
 }
 
 - (NSIndexSet)removedIndexes
 {
-  v2 = [(PXSidebarItemChangeDetails *)self arrayChangeDetails];
-  v3 = [v2 removedIndexes];
+  arrayChangeDetails = [(PXSidebarItemChangeDetails *)self arrayChangeDetails];
+  removedIndexes = [arrayChangeDetails removedIndexes];
 
-  return v3;
+  return removedIndexes;
 }
 
-- (PXSidebarItemChangeDetails)initWithArrayChangeDetails:(id)a3 previousDataSection:(id)a4
+- (PXSidebarItemChangeDetails)initWithArrayChangeDetails:(id)details previousDataSection:(id)section
 {
-  v7 = a3;
-  v8 = a4;
+  detailsCopy = details;
+  sectionCopy = section;
   v23.receiver = self;
   v23.super_class = PXSidebarItemChangeDetails;
   v9 = [(PXSidebarItemChangeDetails *)&v23 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_arrayChangeDetails, a3);
-    objc_storeStrong(&v10->_previousDataSection, a4);
-    v11 = [v7 removedIndexes];
-    if ([v11 count])
+    objc_storeStrong(&v9->_arrayChangeDetails, details);
+    objc_storeStrong(&v10->_previousDataSection, section);
+    removedIndexes = [detailsCopy removedIndexes];
+    if ([removedIndexes count])
     {
       v10->_hasContentChanges = 1;
       p_hasContentChanges = &v10->_hasContentChanges;
@@ -164,30 +164,30 @@ void *__62__PXSidebarItemChangeDetails_enumerateMovedIndexesUsingBlock___block_i
 
     else
     {
-      v13 = [v7 insertedIndexes];
-      v10->_hasContentChanges = [v13 count] != 0;
+      insertedIndexes = [detailsCopy insertedIndexes];
+      v10->_hasContentChanges = [insertedIndexes count] != 0;
       p_hasContentChanges = &v10->_hasContentChanges;
     }
 
-    if (*p_hasContentChanges && ([v7 hasMoves] & 1) != 0)
+    if (*p_hasContentChanges && ([detailsCopy hasMoves] & 1) != 0)
     {
       LOBYTE(v14) = 1;
     }
 
     else
     {
-      v14 = [v7 hasIncrementalChanges] ^ 1;
+      v14 = [detailsCopy hasIncrementalChanges] ^ 1;
     }
 
     v10->_needsReload = v14;
-    v15 = [v7 removedIndexes];
-    v16 = [v8 objectsAtIndexes:v15];
+    removedIndexes2 = [detailsCopy removedIndexes];
+    v16 = [sectionCopy objectsAtIndexes:removedIndexes2];
     removedItems = v10->_removedItems;
     v10->_removedItems = v16;
 
-    v18 = [v7 changedIndexes];
-    v19 = [v7 indexSetAfterRevertingChangesToIndexSet:v18];
-    v20 = [v8 objectsAtIndexes:v19];
+    changedIndexes = [detailsCopy changedIndexes];
+    v19 = [detailsCopy indexSetAfterRevertingChangesToIndexSet:changedIndexes];
+    v20 = [sectionCopy objectsAtIndexes:v19];
     changedItems = v10->_changedItems;
     v10->_changedItems = v20;
   }
@@ -195,26 +195,26 @@ void *__62__PXSidebarItemChangeDetails_enumerateMovedIndexesUsingBlock___block_i
   return v10;
 }
 
-+ (void)makeArrayIndexMovesIncremental:(id *)a3 count:(unint64_t)a4
++ (void)makeArrayIndexMovesIncremental:(id *)incremental count:(unint64_t)count
 {
-  if (a4)
+  if (count)
   {
     v4 = 0;
-    v5 = a4 - 1;
-    for (i = a3 + 1; ; ++i)
+    v5 = count - 1;
+    for (i = incremental + 1; ; ++i)
     {
-      v7 = &a3[v4];
+      v7 = &incremental[v4];
       var0 = v7->var0;
       var1 = v7->var1;
       ++v4;
-      if (var0 != var1 && v4 < a4)
+      if (var0 != var1 && v4 < count)
       {
         break;
       }
 
 LABEL_22:
       --v5;
-      if (v4 == a4)
+      if (v4 == count)
       {
         return;
       }

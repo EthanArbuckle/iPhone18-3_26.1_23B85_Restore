@@ -1,25 +1,25 @@
 @interface PKNotificationSettingsViewController
-- (BOOL)shouldMapSection:(unint64_t)a3;
+- (BOOL)shouldMapSection:(unint64_t)section;
 - (PKNotificationSettingsViewController)init;
-- (id)_accountCellForRow:(int64_t)a3 tableView:(id)a4;
-- (id)_newFeaturesCellForRow:(int64_t)a3 tableView:(id)a4;
-- (id)_offersCellForRow:(int64_t)a3 tableView:(id)a4;
-- (id)_ordersCellForRow:(int64_t)a3 tableView:(id)a4;
-- (id)_preauthorizedPaymentsCellForRow:(int64_t)a3 tableView:(id)a4;
-- (id)_transactionCellForRow:(int64_t)a3 tableView:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_handleLibraryUpdate:(id)a3;
+- (id)_accountCellForRow:(int64_t)row tableView:(id)view;
+- (id)_newFeaturesCellForRow:(int64_t)row tableView:(id)view;
+- (id)_offersCellForRow:(int64_t)row tableView:(id)view;
+- (id)_ordersCellForRow:(int64_t)row tableView:(id)view;
+- (id)_preauthorizedPaymentsCellForRow:(int64_t)row tableView:(id)view;
+- (id)_transactionCellForRow:(int64_t)row tableView:(id)view;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_handleLibraryUpdate:(id)update;
 - (void)_toggleNewFeatures;
 - (void)_toggleOffers;
 - (void)_toggleOrders;
 - (void)_togglePreauthorizedPayments;
 - (void)_toggleSavings;
-- (void)_updateVisibilityFor:(unint64_t)a3;
+- (void)_updateVisibilityFor:(unint64_t)for;
 - (void)dealloc;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -32,12 +32,12 @@
   v2 = -[PKSectionTableViewController initWithStyle:numberOfSections:](&v38, sel_initWithStyle_numberOfSections_, [MEMORY[0x1E69DD020] pkui_groupedStyleDefaultRoundedCornerBehavior], 6);
   if (v2)
   {
-    v3 = [MEMORY[0x1E69B8BD8] defaultDataProvider];
+    defaultDataProvider = [MEMORY[0x1E69B8BD8] defaultDataProvider];
     paymentDataProvider = v2->_paymentDataProvider;
-    v2->_paymentDataProvider = v3;
+    v2->_paymentDataProvider = defaultDataProvider;
 
-    v5 = [MEMORY[0x1E69B8A58] sharedInstance];
-    v6 = [v5 passesOfType:1];
+    mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+    v6 = [mEMORY[0x1E69B8A58] passesOfType:1];
     v7 = [v6 pk_arrayByApplyingBlock:&__block_literal_global_5];
 
     v8 = [v7 pk_createArrayByRemovingObjectsPassingTest:&__block_literal_global_36];
@@ -75,21 +75,21 @@
     v23 = [MEMORY[0x1E696AD98] numberWithInt:5];
     [(NSMutableArray *)v22 addObject:v23];
 
-    v24 = [MEMORY[0x1E69B8BD8] defaultDataProvider];
+    defaultDataProvider2 = [MEMORY[0x1E69B8BD8] defaultDataProvider];
     v25 = v2->_paymentDataProvider;
-    v2->_paymentDataProvider = v24;
+    v2->_paymentDataProvider = defaultDataProvider2;
 
-    v26 = [MEMORY[0x1E69B8400] sharedInstance];
+    mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
     v36[2] = __44__PKNotificationSettingsViewController_init__block_invoke_3;
     v36[3] = &unk_1E80112C0;
     v27 = v2;
     v37 = v27;
-    [v26 defaultAccountForFeature:5 completion:v36];
+    [mEMORY[0x1E69B8400] defaultAccountForFeature:5 completion:v36];
 
-    v28 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v28 addObserver:v27 selector:sel__handleLibraryUpdate_ name:*MEMORY[0x1E69BBBD8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v27 selector:sel__handleLibraryUpdate_ name:*MEMORY[0x1E69BBBD8] object:0];
 
     v29 = *MEMORY[0x1E69BB718];
     v30 = [MEMORY[0x1E69B8540] reporterForSubject:*MEMORY[0x1E69BB718]];
@@ -110,8 +110,8 @@
     closeButton = v27->_closeButton;
     v27->_closeButton = v32;
 
-    v34 = [(PKNotificationSettingsViewController *)v27 navigationItem];
-    [v34 setLeftBarButtonItem:v27->_closeButton animated:1];
+    navigationItem = [(PKNotificationSettingsViewController *)v27 navigationItem];
+    [navigationItem setLeftBarButtonItem:v27->_closeButton animated:1];
   }
 
   return v2;
@@ -157,8 +157,8 @@ void __44__PKNotificationSettingsViewController_init__block_invoke_3(uint64_t a1
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69BBBD8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69BBBD8] object:0];
 
   if (self->_beganAnalytics)
   {
@@ -181,35 +181,35 @@ void __44__PKNotificationSettingsViewController_init__block_invoke_3(uint64_t a1
   v6.receiver = self;
   v6.super_class = PKNotificationSettingsViewController;
   [(PKSectionTableViewController *)&v6 viewDidLoad];
-  v3 = [(PKNotificationSettingsViewController *)self tableView];
-  [v3 setAllowsSelection:1];
-  [v3 setRowHeight:*MEMORY[0x1E69DE3D0]];
-  v4 = [(PKNotificationSettingsViewController *)self navigationItem];
+  tableView = [(PKNotificationSettingsViewController *)self tableView];
+  [tableView setAllowsSelection:1];
+  [tableView setRowHeight:*MEMORY[0x1E69DE3D0]];
+  navigationItem = [(PKNotificationSettingsViewController *)self navigationItem];
   v5 = PKLocalizedPaymentString(&cfstr_MoreButtonTool.isa);
-  [v4 setTitle:v5];
+  [navigationItem setTitle:v5];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(NSMutableArray *)self->_visibleSections objectAtIndex:a4];
-  v5 = [v4 intValue];
+  v4 = [(NSMutableArray *)self->_visibleSections objectAtIndex:section];
+  intValue = [v4 intValue];
 
-  return v5 < 6;
+  return intValue < 6;
 }
 
-- (BOOL)shouldMapSection:(unint64_t)a3
+- (BOOL)shouldMapSection:(unint64_t)section
 {
-  if (a3 == 6)
+  if (section == 6)
   {
     return 0;
   }
 
-  if (a3 == 1)
+  if (section == 1)
   {
     return self->_savingsAccountIdentifier != 0;
   }
 
-  if (a3)
+  if (section)
   {
     return 1;
   }
@@ -217,61 +217,61 @@ void __44__PKNotificationSettingsViewController_init__block_invoke_3(uint64_t a1
   return [(NSArray *)self->_paymentPasses count:v3]!= 0;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(NSMutableArray *)self->_visibleSections objectAtIndex:a4];
+  v4 = [(NSMutableArray *)self->_visibleSections objectAtIndex:section];
   [v4 intValue];
 
   return 0;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[NSMutableArray objectAtIndex:](self->_visibleSections, "objectAtIndex:", [v7 section]);
-  v9 = [v8 intValue];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[NSMutableArray objectAtIndex:](self->_visibleSections, "objectAtIndex:", [pathCopy section]);
+  intValue = [v8 intValue];
 
   v10 = 0;
-  if (v9 > 2)
+  if (intValue > 2)
   {
-    switch(v9)
+    switch(intValue)
     {
       case 3:
-        v11 = -[PKNotificationSettingsViewController _preauthorizedPaymentsCellForRow:tableView:](self, "_preauthorizedPaymentsCellForRow:tableView:", [v7 row], v6);
+        v11 = -[PKNotificationSettingsViewController _preauthorizedPaymentsCellForRow:tableView:](self, "_preauthorizedPaymentsCellForRow:tableView:", [pathCopy row], viewCopy);
         break;
       case 4:
-        v11 = -[PKNotificationSettingsViewController _newFeaturesCellForRow:tableView:](self, "_newFeaturesCellForRow:tableView:", [v7 row], v6);
+        v11 = -[PKNotificationSettingsViewController _newFeaturesCellForRow:tableView:](self, "_newFeaturesCellForRow:tableView:", [pathCopy row], viewCopy);
         break;
       case 5:
-        v11 = -[PKNotificationSettingsViewController _offersCellForRow:tableView:](self, "_offersCellForRow:tableView:", [v7 row], v6);
+        v11 = -[PKNotificationSettingsViewController _offersCellForRow:tableView:](self, "_offersCellForRow:tableView:", [pathCopy row], viewCopy);
         break;
       default:
         goto LABEL_15;
     }
   }
 
-  else if (v9)
+  else if (intValue)
   {
-    if (v9 == 1)
+    if (intValue == 1)
     {
-      v11 = -[PKNotificationSettingsViewController _accountCellForRow:tableView:](self, "_accountCellForRow:tableView:", [v7 row], v6);
+      v11 = -[PKNotificationSettingsViewController _accountCellForRow:tableView:](self, "_accountCellForRow:tableView:", [pathCopy row], viewCopy);
     }
 
     else
     {
-      if (v9 != 2)
+      if (intValue != 2)
       {
         goto LABEL_15;
       }
 
-      v11 = -[PKNotificationSettingsViewController _ordersCellForRow:tableView:](self, "_ordersCellForRow:tableView:", [v7 row], v6);
+      v11 = -[PKNotificationSettingsViewController _ordersCellForRow:tableView:](self, "_ordersCellForRow:tableView:", [pathCopy row], viewCopy);
     }
   }
 
   else
   {
-    v11 = -[PKNotificationSettingsViewController _transactionCellForRow:tableView:](self, "_transactionCellForRow:tableView:", [v7 row], v6);
+    v11 = -[PKNotificationSettingsViewController _transactionCellForRow:tableView:](self, "_transactionCellForRow:tableView:", [pathCopy row], viewCopy);
   }
 
   v10 = v11;
@@ -280,11 +280,11 @@ LABEL_15:
   return v10;
 }
 
-- (id)_transactionCellForRow:(int64_t)a3 tableView:(id)a4
+- (id)_transactionCellForRow:(int64_t)row tableView:(id)view
 {
-  v5 = a4;
+  viewCopy = view;
   v6 = [(PKNotificationSettingsViewController *)self _reuseIdentifierForSection:0];
-  v7 = [v5 dequeueReusableCellWithIdentifier:v6];
+  v7 = [viewCopy dequeueReusableCellWithIdentifier:v6];
 
   if (!v7)
   {
@@ -298,11 +298,11 @@ LABEL_15:
   return v7;
 }
 
-- (id)_accountCellForRow:(int64_t)a3 tableView:(id)a4
+- (id)_accountCellForRow:(int64_t)row tableView:(id)view
 {
-  v5 = a4;
+  viewCopy = view;
   v6 = [(PKNotificationSettingsViewController *)self _reuseIdentifierForSection:1];
-  v7 = [v5 dequeueReusableCellWithIdentifier:v6];
+  v7 = [viewCopy dequeueReusableCellWithIdentifier:v6];
 
   savingsCell = self->_savingsCell;
   self->_savingsCell = v7;
@@ -327,19 +327,19 @@ LABEL_15:
 
 - (void)_toggleSavings
 {
-  v3 = [(PKSettingTableCell *)self->_savingsCell isOn];
+  isOn = [(PKSettingTableCell *)self->_savingsCell isOn];
   PKSetHasDisabledAPYUpdateNotificationsForAccountIdentifier();
   PKSetHasDisabledInterestPaidNotificationsForAccountIdentifier();
   savingsAccountIdentifier = self->_savingsAccountIdentifier;
 
-  MEMORY[0x1EEE255A8](savingsAccountIdentifier, !v3);
+  MEMORY[0x1EEE255A8](savingsAccountIdentifier, !isOn);
 }
 
-- (id)_preauthorizedPaymentsCellForRow:(int64_t)a3 tableView:(id)a4
+- (id)_preauthorizedPaymentsCellForRow:(int64_t)row tableView:(id)view
 {
-  v5 = a4;
+  viewCopy = view;
   v6 = [(PKNotificationSettingsViewController *)self _reuseIdentifierForSection:3];
-  v7 = [v5 dequeueReusableCellWithIdentifier:v6];
+  v7 = [viewCopy dequeueReusableCellWithIdentifier:v6];
 
   preauthorizedPaymentsCell = self->_preauthorizedPaymentsCell;
   self->_preauthorizedPaymentsCell = v7;
@@ -369,11 +369,11 @@ LABEL_15:
   MEMORY[0x1EEE255F8](v2);
 }
 
-- (id)_newFeaturesCellForRow:(int64_t)a3 tableView:(id)a4
+- (id)_newFeaturesCellForRow:(int64_t)row tableView:(id)view
 {
-  v5 = a4;
+  viewCopy = view;
   v6 = [(PKNotificationSettingsViewController *)self _reuseIdentifierForSection:4];
-  v7 = [v5 dequeueReusableCellWithIdentifier:v6];
+  v7 = [viewCopy dequeueReusableCellWithIdentifier:v6];
 
   newFeaturesCell = self->_newFeaturesCell;
   self->_newFeaturesCell = v7;
@@ -413,11 +413,11 @@ LABEL_15:
   [v2 subject:v3 sendEvent:v7];
 }
 
-- (id)_offersCellForRow:(int64_t)a3 tableView:(id)a4
+- (id)_offersCellForRow:(int64_t)row tableView:(id)view
 {
-  v5 = a4;
+  viewCopy = view;
   v6 = [(PKNotificationSettingsViewController *)self _reuseIdentifierForSection:5];
-  v7 = [v5 dequeueReusableCellWithIdentifier:v6];
+  v7 = [viewCopy dequeueReusableCellWithIdentifier:v6];
 
   offersCell = self->_offersCell;
   self->_offersCell = v7;
@@ -458,11 +458,11 @@ LABEL_15:
   [v2 subject:v3 sendEvent:v7];
 }
 
-- (id)_ordersCellForRow:(int64_t)a3 tableView:(id)a4
+- (id)_ordersCellForRow:(int64_t)row tableView:(id)view
 {
-  v5 = a4;
+  viewCopy = view;
   v6 = [(PKNotificationSettingsViewController *)self _reuseIdentifierForSection:2];
-  v7 = [v5 dequeueReusableCellWithIdentifier:v6];
+  v7 = [viewCopy dequeueReusableCellWithIdentifier:v6];
 
   ordersCell = self->_ordersCell;
   self->_ordersCell = v7;
@@ -488,27 +488,27 @@ LABEL_15:
 
 - (void)_toggleOrders
 {
-  v3 = [(PKSettingTableCell *)self->_ordersCell isOn];
+  isOn = [(PKSettingTableCell *)self->_ordersCell isOn];
   if (objc_opt_respondsToSelector())
   {
     paymentDataProvider = self->_paymentDataProvider;
 
-    [(PKPaymentDefaultDataProvider *)paymentDataProvider setOrderManagementNotificationsDisabled:!v3];
+    [(PKPaymentDefaultDataProvider *)paymentDataProvider setOrderManagementNotificationsDisabled:!isOn];
   }
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v4 = [(NSMutableArray *)self->_visibleSections objectAtIndex:a4];
-  v5 = [v4 intValue];
+  v4 = [(NSMutableArray *)self->_visibleSections objectAtIndex:section];
+  intValue = [v4 intValue];
 
-  if (v5 == 1)
+  if (intValue == 1)
   {
     v6 = @"NOTIFICATION_SETTINGS_ACCOUNT_FOOTER";
     goto LABEL_5;
   }
 
-  if (v5 == 3)
+  if (intValue == 3)
   {
     v6 = @"NOTIFICATION_SETTINGS_PREAUTHORIZED_PAYMENTS_FOOTER";
 LABEL_5:
@@ -522,27 +522,27 @@ LABEL_7:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = -[NSMutableArray objectAtIndex:](self->_visibleSections, "objectAtIndex:", [v6 section]);
-  v8 = [v7 intValue];
+  viewCopy = view;
+  pathCopy = path;
+  v7 = -[NSMutableArray objectAtIndex:](self->_visibleSections, "objectAtIndex:", [pathCopy section]);
+  intValue = [v7 intValue];
 
-  if (!v8)
+  if (!intValue)
   {
     v9 = [[PKPaymentTransactionNotificationSettingsViewController alloc] initWithPaymentPasses:self->_paymentPasses];
-    v10 = [(PKNotificationSettingsViewController *)self navigationController];
-    [v10 pushViewController:v9 animated:1];
+    navigationController = [(PKNotificationSettingsViewController *)self navigationController];
+    [navigationController pushViewController:v9 animated:1];
   }
 
-  [v11 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (void)_updateVisibilityFor:(unint64_t)a3
+- (void)_updateVisibilityFor:(unint64_t)for
 {
   v5 = [MEMORY[0x1E696AD98] numberWithInt:?];
-  if (!a3)
+  if (!for)
   {
     if ([(NSArray *)self->_paymentPasses count]&& (v6 = self->_visibleSections, v9[0] = MEMORY[0x1E69E9820], v9[1] = 3221225472, v9[2] = __61__PKNotificationSettingsViewController__updateVisibilityFor___block_invoke, v9[3] = &__block_descriptor_40_e18_B16__0__NSNumber_8l, v9[4] = 0, ([(NSMutableArray *)v6 pk_containsObjectPassingTest:v9]& 1) == 0))
     {
@@ -562,18 +562,18 @@ LABEL_7:
   }
 }
 
-- (void)_handleLibraryUpdate:(id)a3
+- (void)_handleLibraryUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69BBC00]];
+  updateCopy = update;
+  userInfo = [updateCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69BBC00]];
 
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69BBBD0]];
+  userInfo2 = [updateCopy userInfo];
+  v8 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E69BBBD0]];
 
-  v9 = [v4 userInfo];
+  userInfo3 = [updateCopy userInfo];
 
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x1E69BBBF8]];
+  v10 = [userInfo3 objectForKeyedSubscript:*MEMORY[0x1E69BBBF8]];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;

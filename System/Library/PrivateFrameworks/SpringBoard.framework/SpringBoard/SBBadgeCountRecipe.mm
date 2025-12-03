@@ -1,5 +1,5 @@
 @interface SBBadgeCountRecipe
-- (void)_changeBadge:(unint64_t)a3;
+- (void)_changeBadge:(unint64_t)badge;
 - (void)handleVolumeDecrease;
 @end
 
@@ -16,14 +16,14 @@
   [(SBBadgeCountRecipe *)self _changeBadge:?];
 }
 
-- (void)_changeBadge:(unint64_t)a3
+- (void)_changeBadge:(unint64_t)badge
 {
   v4 = +[SBApplicationController sharedInstance];
   v6 = [v4 applicationWithBundleIdentifier:@"com.apple.Test"];
 
   if (v6)
   {
-    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:badge];
     [v6 setBadgeValue:v5];
   }
 }

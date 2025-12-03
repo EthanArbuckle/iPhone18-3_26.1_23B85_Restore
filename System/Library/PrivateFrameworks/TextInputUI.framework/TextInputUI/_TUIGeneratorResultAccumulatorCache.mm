@@ -1,8 +1,8 @@
 @interface _TUIGeneratorResultAccumulatorCache
-- (_TUIGeneratorResultAccumulatorCache)initWithSize:(unint64_t)a3;
-- (id)accumulatorForToken:(id)a3 type:(int)a4;
+- (_TUIGeneratorResultAccumulatorCache)initWithSize:(unint64_t)size;
+- (id)accumulatorForToken:(id)token type:(int)type;
 - (unint64_t)count;
-- (void)addToCache:(id)a3 type:(int)a4;
+- (void)addToCache:(id)cache type:(int)type;
 - (void)emptyCache;
 @end
 
@@ -10,89 +10,89 @@
 
 - (void)emptyCache
 {
-  v3 = [(_TUIGeneratorResultAccumulatorCache *)self requestQueue];
-  [v3 removeAllObjects];
+  requestQueue = [(_TUIGeneratorResultAccumulatorCache *)self requestQueue];
+  [requestQueue removeAllObjects];
 
-  v4 = [(_TUIGeneratorResultAccumulatorCache *)self requestCache];
-  [v4 removeAllObjects];
+  requestCache = [(_TUIGeneratorResultAccumulatorCache *)self requestCache];
+  [requestCache removeAllObjects];
 }
 
 - (unint64_t)count
 {
-  v2 = [(_TUIGeneratorResultAccumulatorCache *)self requestQueue];
-  v3 = [v2 count];
+  requestQueue = [(_TUIGeneratorResultAccumulatorCache *)self requestQueue];
+  v3 = [requestQueue count];
 
   return v3;
 }
 
-- (void)addToCache:(id)a3 type:(int)a4
+- (void)addToCache:(id)cache type:(int)type
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = [v6 token];
-  v8 = [v7 shortIdentifier];
-  v18 = [v8 stringByAppendingFormat:@":%d", v4];
+  v4 = *&type;
+  cacheCopy = cache;
+  token = [cacheCopy token];
+  shortIdentifier = [token shortIdentifier];
+  v18 = [shortIdentifier stringByAppendingFormat:@":%d", v4];
 
-  v9 = [(_TUIGeneratorResultAccumulatorCache *)self requestCache];
-  [v9 setObject:v6 forKeyedSubscript:v18];
+  requestCache = [(_TUIGeneratorResultAccumulatorCache *)self requestCache];
+  [requestCache setObject:cacheCopy forKeyedSubscript:v18];
 
-  v10 = [(_TUIGeneratorResultAccumulatorCache *)self requestQueue];
-  [v10 addObject:v18];
+  requestQueue = [(_TUIGeneratorResultAccumulatorCache *)self requestQueue];
+  [requestQueue addObject:v18];
 
-  v11 = [(_TUIGeneratorResultAccumulatorCache *)self requestQueue];
-  if ([v11 count])
+  requestQueue2 = [(_TUIGeneratorResultAccumulatorCache *)self requestQueue];
+  if ([requestQueue2 count])
   {
-    v12 = [(_TUIGeneratorResultAccumulatorCache *)self requestQueue];
-    v13 = [v12 count];
-    v14 = [(_TUIGeneratorResultAccumulatorCache *)self maxSize];
+    requestQueue3 = [(_TUIGeneratorResultAccumulatorCache *)self requestQueue];
+    v13 = [requestQueue3 count];
+    maxSize = [(_TUIGeneratorResultAccumulatorCache *)self maxSize];
 
-    if (v13 <= v14)
+    if (v13 <= maxSize)
     {
       goto LABEL_5;
     }
 
-    v15 = [(_TUIGeneratorResultAccumulatorCache *)self requestQueue];
-    v11 = [v15 firstObject];
+    requestQueue4 = [(_TUIGeneratorResultAccumulatorCache *)self requestQueue];
+    requestQueue2 = [requestQueue4 firstObject];
 
-    v16 = [(_TUIGeneratorResultAccumulatorCache *)self requestQueue];
-    [v16 removeObjectAtIndex:0];
+    requestQueue5 = [(_TUIGeneratorResultAccumulatorCache *)self requestQueue];
+    [requestQueue5 removeObjectAtIndex:0];
 
-    v17 = [(_TUIGeneratorResultAccumulatorCache *)self requestCache];
-    [v17 removeObjectForKey:v11];
+    requestCache2 = [(_TUIGeneratorResultAccumulatorCache *)self requestCache];
+    [requestCache2 removeObjectForKey:requestQueue2];
   }
 
 LABEL_5:
 }
 
-- (id)accumulatorForToken:(id)a3 type:(int)a4
+- (id)accumulatorForToken:(id)token type:(int)type
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = [(_TUIGeneratorResultAccumulatorCache *)self requestCache];
-  v8 = [v6 shortIdentifier];
+  v4 = *&type;
+  tokenCopy = token;
+  requestCache = [(_TUIGeneratorResultAccumulatorCache *)self requestCache];
+  shortIdentifier = [tokenCopy shortIdentifier];
 
-  v9 = [v8 stringByAppendingFormat:@":%d", v4];
-  v10 = [v7 objectForKey:v9];
+  v9 = [shortIdentifier stringByAppendingFormat:@":%d", v4];
+  v10 = [requestCache objectForKey:v9];
 
   return v10;
 }
 
-- (_TUIGeneratorResultAccumulatorCache)initWithSize:(unint64_t)a3
+- (_TUIGeneratorResultAccumulatorCache)initWithSize:(unint64_t)size
 {
   v10.receiver = self;
   v10.super_class = _TUIGeneratorResultAccumulatorCache;
   v4 = [(_TUIGeneratorResultAccumulatorCache *)&v10 init];
   if (v4)
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     requestCache = v4->_requestCache;
-    v4->_requestCache = v5;
+    v4->_requestCache = dictionary;
 
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     requestQueue = v4->_requestQueue;
-    v4->_requestQueue = v7;
+    v4->_requestQueue = array;
 
-    v4->_maxSize = a3;
+    v4->_maxSize = size;
   }
 
   return v4;

@@ -2,8 +2,8 @@
 + (id)blurParametersArray;
 - (id)createCamera;
 - (id)createShadowsRenderer;
-- (void)updateCoordsAndTexcoords:(const void *)a3 zOffset:(float)a4 cameraPosition:(const void *)a5 quad:(id)a6 texcoords:(id)a7;
-- (void)updateShadowPlane:(id)a3 texcoords:(id)a4 scene:(id)a5 blurslack:(float)a6 angle:(float)a7 quality:(float)a8 planePadding:(box<glm::detail::tvec3<float>> *)a9;
+- (void)updateCoordsAndTexcoords:(const void *)texcoords zOffset:(float)offset cameraPosition:(const void *)position quad:(id)quad texcoords:(id)a7;
+- (void)updateShadowPlane:(id)plane texcoords:(id)texcoords scene:(id)scene blurslack:(float)blurslack angle:(float)angle quality:(float)quality planePadding:(box<glm::detail::tvec3<float>> *)padding;
 @end
 
 @implementation TSCH3DChartOrthographicShadowsSceneObject
@@ -16,21 +16,21 @@
   return v4;
 }
 
-- (void)updateCoordsAndTexcoords:(const void *)a3 zOffset:(float)a4 cameraPosition:(const void *)a5 quad:(id)a6 texcoords:(id)a7
+- (void)updateCoordsAndTexcoords:(const void *)texcoords zOffset:(float)offset cameraPosition:(const void *)position quad:(id)quad texcoords:(id)a7
 {
   v28 = *MEMORY[0x277D85DE8];
-  v11 = a6;
+  quadCopy = quad;
   v12 = a7;
-  v13 = *(a3 + 3);
-  v14 = (((*a3 + v13) * 0.5) - *a5) * 0.5;
-  v15 = *(a3 + 2) + a4;
-  v16 = v15 - *(a3 + 1);
-  v24[0] = *a3;
+  v13 = *(texcoords + 3);
+  v14 = (((*texcoords + v13) * 0.5) - *position) * 0.5;
+  v15 = *(texcoords + 2) + offset;
+  v16 = v15 - *(texcoords + 1);
+  v24[0] = *texcoords;
   v24[1] = 0.0;
   v24[2] = v16;
   *v25 = v13;
   v25[1] = 0;
-  v17 = v15 - *(a3 + 4);
+  v17 = v15 - *(texcoords + 4);
   *&v25[2] = v16;
   v26[0] = v13 + v14;
   v26[1] = 0.0;
@@ -42,7 +42,7 @@
   v21 = xmmword_2764D6280;
   v22 = xmmword_2764D6290;
   v23 = xmmword_2764D62A0;
-  v18 = sub_27618C648(v11);
+  v18 = sub_27618C648(quadCopy);
   v18[1] = *v18;
   sub_27618F4B4(v18, v24);
   sub_27618F4B4(v18, v25);
@@ -60,18 +60,18 @@
   sub_276161E1C(v19, &v23);
 }
 
-- (void)updateShadowPlane:(id)a3 texcoords:(id)a4 scene:(id)a5 blurslack:(float)a6 angle:(float)a7 quality:(float)a8 planePadding:(box<glm::detail::tvec3<float>> *)a9
+- (void)updateShadowPlane:(id)plane texcoords:(id)texcoords scene:(id)scene blurslack:(float)blurslack angle:(float)angle quality:(float)quality planePadding:(box<glm::detail::tvec3<float>> *)padding
 {
-  v15 = a3;
-  v16 = a4;
-  v18 = a5;
+  planeCopy = plane;
+  texcoordsCopy = texcoords;
+  sceneCopy = scene;
   if ((atomic_load_explicit(&qword_280A46858, memory_order_acquire) & 1) == 0)
   {
     sub_2764A6A84();
   }
 
-  v22 = objc_msgSend_camera(v18, v17, v19, v20, v21);
-  v27 = objc_msgSend_pipelineWithScene_(TSCH3DGet3DBoundsPipeline, v23, v24, v25, v26, v18);
+  v22 = objc_msgSend_camera(sceneCopy, v17, v19, v20, v21);
+  v27 = objc_msgSend_pipelineWithScene_(TSCH3DGet3DBoundsPipeline, v23, v24, v25, v26, sceneCopy);
   objc_msgSend_renderShadowScene_(self, v28, v29, v30, v31, v27);
   v36 = objc_msgSend_bounds(v27, v32, v33, v34, v35);
   v37 = *(v36 + 16);
@@ -88,11 +88,11 @@
   *&v39 = (*&v155[8] + *&v155[20]) * 0.5;
   v142 = COERCE_DOUBLE(vmul_f32(vadd_f32(*v155, *&v155[12]), 0x3F0000003F000000));
   v143 = *&v39;
-  v41 = objc_msgSend_main(v18, v40, v39, v142, 0.0000305175853);
-  objc_msgSend_shadowCameraDepthLimitAdjustmentFactorForScene_(v41, v42, v43, v44, v45, v18);
+  v41 = objc_msgSend_main(sceneCopy, v40, v39, v142, 0.0000305175853);
+  objc_msgSend_shadowCameraDepthLimitAdjustmentFactorForScene_(v41, v42, v43, v44, v45, sceneCopy);
   LODWORD(v47) = v46;
-  *&v48 = a7;
-  *&v49 = a8;
+  *&v48 = angle;
+  *&v49 = quality;
   objc_msgSend_calculateShadowCameraPosition_center_shadowQuality_depthLimitAdjustment_(self, v50, v48, v49, v47, &v142);
 
   v55 = qword_280A46860;
@@ -167,15 +167,15 @@
   v86 = *&v139[20];
   v87 = *v139;
   v88 = *&v139[12];
-  v89 = *&a9->_min.var0.var0;
-  var0 = a9->_min.var2.var0;
-  v127 = *&a9->_max.var0.var0;
-  v91 = a9->_max.var2.var0;
+  v89 = *&padding->_min.var0.var0;
+  var0 = padding->_min.var2.var0;
+  v127 = *&padding->_max.var0.var0;
+  v91 = padding->_max.var2.var0;
   v95 = objc_msgSend_lens(v22, v92, v127, v93, v94);
   v96 = v86 - v85;
   LODWORD(v97) = 0.5;
   v98 = (v85 + v86) * 0.5;
-  *&v99 = (a6 * 2.0) + 0.5;
+  *&v99 = (blurslack * 2.0) + 0.5;
   v129 = v99;
   v100 = *&v99 * v96;
   v101 = (v98 + (*&v99 * v96)) + v91;
@@ -202,9 +202,9 @@
   v132 = v130;
   v133 = v104;
   v134 = v128;
-  *&v124 = a6 + a6;
+  *&v124 = blurslack + blurslack;
   v135 = v101;
-  objc_msgSend_updateCoordsAndTexcoords_zOffset_cameraPosition_quad_texcoords_(self, v125, v124, v130, v126, &v132, v154, v15, v16);
+  objc_msgSend_updateCoordsAndTexcoords_zOffset_cameraPosition_quad_texcoords_(self, v125, v124, v130, v126, &v132, v154, planeCopy, texcoordsCopy);
 
   if (v159)
   {

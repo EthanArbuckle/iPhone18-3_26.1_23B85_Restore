@@ -2,7 +2,7 @@
 - (BOOL)isCalculateResultAttachmentView;
 - (BOOL)isLinkAttachmentView;
 - (CGSize)intrinsicContentSize;
-- (ICInlineAttachmentView)initWithTextAttachment:(id)a3 textContainer:(id)a4 forManualRendering:(BOOL)a5;
+- (ICInlineAttachmentView)initWithTextAttachment:(id)attachment textContainer:(id)container forManualRendering:(BOOL)rendering;
 - (ICInlineAttachmentViewAnimationDelegate)delegate;
 - (ICInlineTextAttachment)textAttachment;
 - (UIImage)imageForPrinting;
@@ -10,29 +10,29 @@
 - (double)baselineOffsetFromBottom;
 - (id)accessibilityAttributedLabel;
 - (id)createNewLabel;
-- (id)imageForTextPreviewInRange:(_NSRange)a3;
+- (id)imageForTextPreviewInRange:(_NSRange)range;
 - (unint64_t)accessibilityTraits;
 - (void)animateInsertionIfNecessary;
-- (void)attachmentDataChanged:(id)a3;
+- (void)attachmentDataChanged:(id)changed;
 - (void)beginRippleAnimation;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)endRippleAnimation;
-- (void)objectDidUpdateShare:(id)a3;
-- (void)setHighlightPatternRegexFinder:(id)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setTextContainerWidth:(double)a3;
-- (void)updateHighlightsWithAttributes:(id)a3;
+- (void)objectDidUpdateShare:(id)share;
+- (void)setHighlightPatternRegexFinder:(id)finder;
+- (void)setSelected:(BOOL)selected;
+- (void)setTextContainerWidth:(double)width;
+- (void)updateHighlightsWithAttributes:(id)attributes;
 - (void)updateLabel;
 - (void)updateRippleAnimation;
-- (void)updateStyleWithAttributes:(id)a3;
+- (void)updateStyleWithAttributes:(id)attributes;
 @end
 
 @implementation ICInlineAttachmentView
 
-- (ICInlineAttachmentView)initWithTextAttachment:(id)a3 textContainer:(id)a4 forManualRendering:(BOOL)a5
+- (ICInlineAttachmentView)initWithTextAttachment:(id)attachment textContainer:(id)container forManualRendering:(BOOL)rendering
 {
-  v6 = a3;
+  attachmentCopy = attachment;
   v15.receiver = self;
   v15.super_class = ICInlineAttachmentView;
   v7 = [(ICInlineAttachmentView *)&v15 initWithFrame:0.0, 0.0, 300.0, 100.0];
@@ -40,21 +40,21 @@
   if (v7)
   {
     v7->_textContainerWidth = 300.0;
-    objc_storeWeak(&v7->_textAttachment, v6);
-    v9 = [(ICInlineAttachmentView *)v8 isLinkAttachmentView]|| [(ICInlineAttachmentView *)v8 isCalculateResultAttachmentView];
-    [(ICInlineAttachmentView *)v8 setUserInteractionEnabled:v9];
+    objc_storeWeak(&v7->_textAttachment, attachmentCopy);
+    isCalculateResultAttachmentView = [(ICInlineAttachmentView *)v8 isLinkAttachmentView]|| [(ICInlineAttachmentView *)v8 isCalculateResultAttachmentView];
+    [(ICInlineAttachmentView *)v8 setUserInteractionEnabled:isCalculateResultAttachmentView];
     if ([(ICInlineAttachmentView *)v8 isUserInteractionEnabled]&& (objc_opt_respondsToSelector() & 1) != 0)
     {
       [(ICInlineAttachmentView *)v8 setupEventHandling];
     }
 
-    v10 = [v6 attachment];
-    v11 = [v10 ic_permanentObjectID];
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:v8 selector:sel_attachmentDataChanged_ name:*MEMORY[0x1E69B7498] object:v11];
+    attachment = [attachmentCopy attachment];
+    ic_permanentObjectID = [attachment ic_permanentObjectID];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel_attachmentDataChanged_ name:*MEMORY[0x1E69B7498] object:ic_permanentObjectID];
 
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 addObserver:v8 selector:sel_objectDidUpdateShare_ name:@"ICCloudSyncingObjectDidUpdateShare" object:v10];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v8 selector:sel_objectDidUpdateShare_ name:@"ICCloudSyncingObjectDidUpdateShare" object:attachment];
 
     [(ICInlineAttachmentView *)v8 setClipsToBounds:0];
     if (objc_opt_respondsToSelector())
@@ -68,8 +68,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ICInlineAttachmentView;
@@ -89,8 +89,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(ICInlineAttachmentView *)self label];
-  [v2 frame];
+  label = [(ICInlineAttachmentView *)self label];
+  [label frame];
   v4 = v3;
   v6 = v5;
 
@@ -106,9 +106,9 @@
   label = self->_label;
   if (!label)
   {
-    v4 = [(ICInlineAttachmentView *)self createNewLabel];
+    createNewLabel = [(ICInlineAttachmentView *)self createNewLabel];
     v5 = self->_label;
-    self->_label = v4;
+    self->_label = createNewLabel;
 
     [(ICInlineAttachmentView *)self addSubview:self->_label];
     label = self->_label;
@@ -127,60 +127,60 @@
   return v2;
 }
 
-- (void)attachmentDataChanged:(id)a3
+- (void)attachmentDataChanged:(id)changed
 {
-  v4 = [a3 object];
-  v5 = [(ICInlineAttachmentView *)self textAttachment];
-  v6 = [v5 attachment];
-  v7 = [v6 objectID];
+  object = [changed object];
+  textAttachment = [(ICInlineAttachmentView *)self textAttachment];
+  attachment = [textAttachment attachment];
+  objectID = [attachment objectID];
 
-  if (v4 == v7)
+  if (object == objectID)
   {
-    v8 = [(ICInlineAttachmentView *)self textAttachment];
-    v9 = [v8 attachment];
-    [v9 markDisplayTextNeedsUpdate];
+    textAttachment2 = [(ICInlineAttachmentView *)self textAttachment];
+    attachment2 = [textAttachment2 attachment];
+    [attachment2 markDisplayTextNeedsUpdate];
 
     [(ICInlineAttachmentView *)self updateLabel];
   }
 }
 
-- (void)objectDidUpdateShare:(id)a3
+- (void)objectDidUpdateShare:(id)share
 {
-  v15 = a3;
+  shareCopy = share;
   objc_opt_class();
-  v4 = [v15 object];
+  object = [shareCopy object];
   v5 = ICCheckedDynamicCast();
 
-  v6 = [(ICInlineAttachmentView *)self textAttachment];
-  v7 = [v6 attachment];
-  v8 = [v7 note];
+  textAttachment = [(ICInlineAttachmentView *)self textAttachment];
+  attachment = [textAttachment attachment];
+  note = [attachment note];
 
-  v9 = [v8 objectID];
-  LOBYTE(v7) = [v9 isEqual:v5];
+  objectID = [note objectID];
+  LOBYTE(attachment) = [objectID isEqual:v5];
 
-  if ((v7 & 1) == 0)
+  if ((attachment & 1) == 0)
   {
-    v10 = [v8 folder];
-    if (!v10)
+    folder = [note folder];
+    if (!folder)
     {
       goto LABEL_9;
     }
 
-    v11 = v10;
+    v11 = folder;
     while (1)
     {
-      v12 = [v11 objectID];
-      v13 = [v12 isEqual:v5];
+      objectID2 = [v11 objectID];
+      v13 = [objectID2 isEqual:v5];
 
       if (v13)
       {
         break;
       }
 
-      v14 = [v11 parent];
+      parent = [v11 parent];
 
-      v11 = v14;
-      if (!v14)
+      v11 = parent;
+      if (!parent)
       {
         goto LABEL_9;
       }
@@ -193,42 +193,42 @@ LABEL_9:
 
 - (void)updateLabel
 {
-  v3 = [(ICInlineAttachmentView *)self textAttachment];
-  v34 = [v3 attachment];
+  textAttachment = [(ICInlineAttachmentView *)self textAttachment];
+  attachment = [textAttachment attachment];
 
-  v4 = [v34 uiModel];
-  [v4 setSelected:{-[ICInlineAttachmentView isSelected](self, "isSelected")}];
-  v5 = [(ICInlineAttachmentView *)self surroundingAttributes];
-  v6 = [v4 attributedStringWithSurroundingAttributes:v5 formatter:0];
+  uiModel = [attachment uiModel];
+  [uiModel setSelected:{-[ICInlineAttachmentView isSelected](self, "isSelected")}];
+  surroundingAttributes = [(ICInlineAttachmentView *)self surroundingAttributes];
+  v6 = [uiModel attributedStringWithSurroundingAttributes:surroundingAttributes formatter:0];
 
-  v7 = [(ICInlineAttachmentView *)self surroundingAttributes];
-  v8 = [v4 highlightingAttributedString:v6 withSurroundingAttributes:v7];
+  surroundingAttributes2 = [(ICInlineAttachmentView *)self surroundingAttributes];
+  v8 = [uiModel highlightingAttributedString:v6 withSurroundingAttributes:surroundingAttributes2];
 
-  v9 = [(ICInlineAttachmentView *)self highlightPatternRegexFinder];
-  v10 = [v4 highlightingAttributedString:v8 withRegexMatches:v9];
+  highlightPatternRegexFinder = [(ICInlineAttachmentView *)self highlightPatternRegexFinder];
+  v10 = [uiModel highlightingAttributedString:v8 withRegexMatches:highlightPatternRegexFinder];
 
-  v11 = [(ICInlineAttachmentView *)self label];
-  [v11 setAttributedText:v10];
+  label = [(ICInlineAttachmentView *)self label];
+  [label setAttributedText:v10];
 
-  v12 = [(ICInlineAttachmentView *)self label];
-  [v12 sizeToFit];
+  label2 = [(ICInlineAttachmentView *)self label];
+  [label2 sizeToFit];
 
-  v13 = [(ICInlineAttachmentView *)self label];
-  [v13 frame];
+  label3 = [(ICInlineAttachmentView *)self label];
+  [label3 frame];
   v15 = v14;
   textContainerWidth = self->_textContainerWidth;
 
   if (v15 > textContainerWidth)
   {
-    v17 = [(ICInlineAttachmentView *)self label];
-    [v17 frame];
+    label4 = [(ICInlineAttachmentView *)self label];
+    [label4 frame];
     v19 = v18;
     v21 = v20;
     v23 = v22;
 
     v24 = self->_textContainerWidth;
-    v25 = [(ICInlineAttachmentView *)self label];
-    [v25 setFrame:{v19, v21, v24, v23}];
+    label5 = [(ICInlineAttachmentView *)self label];
+    [label5 setFrame:{v19, v21, v24, v23}];
   }
 
   if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
@@ -237,34 +237,34 @@ LABEL_9:
     v27 = v26;
     [(ICInlineAttachmentView *)self frame];
     v29 = v28;
-    v30 = [(ICInlineAttachmentView *)self label];
-    [v30 frame];
+    label6 = [(ICInlineAttachmentView *)self label];
+    [label6 frame];
     v32 = v31;
-    v33 = [(ICInlineAttachmentView *)self label];
-    [v33 frame];
+    label7 = [(ICInlineAttachmentView *)self label];
+    [label7 frame];
     [(ICInlineAttachmentView *)self setFrame:v27, v29, v32];
   }
 }
 
-- (void)setTextContainerWidth:(double)a3
+- (void)setTextContainerWidth:(double)width
 {
-  if (a3 > 0.0 && self->_textContainerWidth != a3)
+  if (width > 0.0 && self->_textContainerWidth != width)
   {
-    self->_textContainerWidth = a3;
+    self->_textContainerWidth = width;
     [(ICInlineAttachmentView *)self updateLabel];
   }
 }
 
-- (void)updateStyleWithAttributes:(id)a3
+- (void)updateStyleWithAttributes:(id)attributes
 {
-  v8 = a3;
-  if (v8)
+  attributesCopy = attributes;
+  if (attributesCopy)
   {
-    v4 = [(ICInlineAttachmentView *)self textAttachment];
-    v5 = [v4 attachment];
+    textAttachment = [(ICInlineAttachmentView *)self textAttachment];
+    attachment = [textAttachment attachment];
 
-    v6 = [v5 uiModel];
-    v7 = [objc_opt_class() filteredStyleAttributes:v8];
+    uiModel = [attachment uiModel];
+    v7 = [objc_opt_class() filteredStyleAttributes:attributesCopy];
     [(ICInlineAttachmentView *)self setSurroundingAttributes:v7];
   }
 
@@ -276,41 +276,41 @@ LABEL_9:
   [(ICInlineAttachmentView *)self updateLabel];
 }
 
-- (void)updateHighlightsWithAttributes:(id)a3
+- (void)updateHighlightsWithAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(ICInlineAttachmentView *)self textAttachment];
-  v6 = [v5 attachment];
-  v11 = [v6 uiModel];
+  attributesCopy = attributes;
+  textAttachment = [(ICInlineAttachmentView *)self textAttachment];
+  attachment = [textAttachment attachment];
+  uiModel = [attachment uiModel];
 
-  v7 = [(ICInlineAttachmentView *)self label];
-  v8 = [v7 attributedText];
-  v9 = [v11 highlightingAttributedString:v8 withSurroundingAttributes:v4];
+  label = [(ICInlineAttachmentView *)self label];
+  attributedText = [label attributedText];
+  v9 = [uiModel highlightingAttributedString:attributedText withSurroundingAttributes:attributesCopy];
 
-  v10 = [(ICInlineAttachmentView *)self label];
-  [v10 setAttributedText:v9];
+  label2 = [(ICInlineAttachmentView *)self label];
+  [label2 setAttributedText:v9];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
-    self->_selected = a3;
+    self->_selected = selected;
     [(ICInlineAttachmentView *)self updateLabel];
   }
 }
 
-- (void)setHighlightPatternRegexFinder:(id)a3
+- (void)setHighlightPatternRegexFinder:(id)finder
 {
-  objc_storeStrong(&self->_highlightPatternRegexFinder, a3);
+  objc_storeStrong(&self->_highlightPatternRegexFinder, finder);
 
   [(ICInlineAttachmentView *)self updateLabel];
 }
 
 - (double)baselineOffsetFromBottom
 {
-  v2 = [(ICInlineAttachmentView *)self label];
-  [v2 _baselineOffsetFromBottom];
+  label = [(ICInlineAttachmentView *)self label];
+  [label _baselineOffsetFromBottom];
   v4 = v3;
 
   return v4;
@@ -318,83 +318,83 @@ LABEL_9:
 
 - (void)animateInsertionIfNecessary
 {
-  v3 = [(ICInlineAttachmentView *)self textAttachment];
-  v7 = [v3 attachment];
+  textAttachment = [(ICInlineAttachmentView *)self textAttachment];
+  attachment = [textAttachment attachment];
 
-  if ([v7 animateInsertion])
+  if ([attachment animateInsertion])
   {
-    v4 = [(ICInlineAttachmentView *)self label];
-    v5 = [v4 attributedText];
-    v6 = [v5 string];
+    label = [(ICInlineAttachmentView *)self label];
+    attributedText = [label attributedText];
+    string = [attributedText string];
 
-    if ([ICAttributedStringRippler canAnimateString:v6])
+    if ([ICAttributedStringRippler canAnimateString:string])
     {
       [(ICInlineAttachmentView *)self beginRippleAnimation];
     }
 
-    [v7 setAnimateInsertion:0];
+    [attachment setAnimateInsertion:0];
   }
 }
 
 - (void)beginRippleAnimation
 {
-  v3 = [(ICInlineAttachmentView *)self rippler];
+  rippler = [(ICInlineAttachmentView *)self rippler];
 
-  if (v3)
+  if (rippler)
   {
     [(ICInlineAttachmentView *)self endRippleAnimation];
   }
 
   v4 = [ICAttributedStringRippler alloc];
-  v5 = [(ICInlineAttachmentView *)self label];
-  v6 = [v5 attributedText];
-  v7 = [(ICInlineAttachmentView *)self textAttachment];
-  v8 = [v7 attachment];
-  v9 = [v8 animatableRange];
-  v11 = [(ICAttributedStringRippler *)v4 initWithAttributedString:v6 animatedRange:v9, v10];
+  label = [(ICInlineAttachmentView *)self label];
+  attributedText = [label attributedText];
+  textAttachment = [(ICInlineAttachmentView *)self textAttachment];
+  attachment = [textAttachment attachment];
+  animatableRange = [attachment animatableRange];
+  v11 = [(ICAttributedStringRippler *)v4 initWithAttributedString:attributedText animatedRange:animatableRange, v10];
   [(ICInlineAttachmentView *)self setRippler:v11];
 
-  v12 = [(ICInlineAttachmentView *)self rippler];
-  [v12 start];
+  rippler2 = [(ICInlineAttachmentView *)self rippler];
+  [rippler2 start];
 
-  v13 = [(ICInlineAttachmentView *)self rippleAnimationTimer];
+  rippleAnimationTimer = [(ICInlineAttachmentView *)self rippleAnimationTimer];
 
-  if (!v13)
+  if (!rippleAnimationTimer)
   {
-    v14 = [MEMORY[0x1E69DCEB0] mainScreen];
-    v15 = [v14 displayLinkWithTarget:self selector:sel_updateRippleAnimation];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    v15 = [mainScreen displayLinkWithTarget:self selector:sel_updateRippleAnimation];
     [(ICInlineAttachmentView *)self setRippleAnimationTimer:v15];
 
     v16 = +[ICAttributedStringRippler framesPerSecond];
-    v17 = [(ICInlineAttachmentView *)self rippleAnimationTimer];
-    [v17 setPreferredFramesPerSecond:v16];
+    rippleAnimationTimer2 = [(ICInlineAttachmentView *)self rippleAnimationTimer];
+    [rippleAnimationTimer2 setPreferredFramesPerSecond:v16];
 
-    v19 = [(ICInlineAttachmentView *)self rippleAnimationTimer];
-    v18 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [v19 addToRunLoop:v18 forMode:*MEMORY[0x1E695D918]];
+    rippleAnimationTimer3 = [(ICInlineAttachmentView *)self rippleAnimationTimer];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [rippleAnimationTimer3 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695D918]];
   }
 }
 
 - (void)endRippleAnimation
 {
-  v3 = [(ICInlineAttachmentView *)self rippleAnimationTimer];
-  [v3 invalidate];
+  rippleAnimationTimer = [(ICInlineAttachmentView *)self rippleAnimationTimer];
+  [rippleAnimationTimer invalidate];
 
   [(ICInlineAttachmentView *)self setRippleAnimationTimer:0];
   [(ICInlineAttachmentView *)self updateLabel];
-  v4 = [(ICInlineAttachmentView *)self delegate];
-  [v4 redrawInlineAttachmentView:self];
+  delegate = [(ICInlineAttachmentView *)self delegate];
+  [delegate redrawInlineAttachmentView:self];
 
   [(ICInlineAttachmentView *)self setRippler:0];
 }
 
 - (void)updateRippleAnimation
 {
-  v3 = [(ICInlineAttachmentView *)self rippler];
-  v4 = [v3 currentTimeIndex];
+  rippler = [(ICInlineAttachmentView *)self rippler];
+  currentTimeIndex = [rippler currentTimeIndex];
 
-  v5 = [(ICInlineAttachmentView *)self rippler];
-  v6 = [v5 finishedForTimeIndex:v4];
+  rippler2 = [(ICInlineAttachmentView *)self rippler];
+  v6 = [rippler2 finishedForTimeIndex:currentTimeIndex];
 
   if (v6)
   {
@@ -404,57 +404,57 @@ LABEL_9:
 
   else
   {
-    v7 = [(ICInlineAttachmentView *)self rippler];
-    v21 = [v7 attributedStringForTimeIndex:v4];
+    rippler3 = [(ICInlineAttachmentView *)self rippler];
+    v21 = [rippler3 attributedStringForTimeIndex:currentTimeIndex];
 
-    v8 = [(ICInlineAttachmentView *)self label];
-    [v8 setAttributedText:v21];
+    label = [(ICInlineAttachmentView *)self label];
+    [label setAttributedText:v21];
 
-    v9 = [(ICInlineAttachmentView *)self label];
-    [v9 sizeToFit];
+    label2 = [(ICInlineAttachmentView *)self label];
+    [label2 sizeToFit];
 
-    v10 = [(ICInlineAttachmentView *)self label];
-    [v10 frame];
+    label3 = [(ICInlineAttachmentView *)self label];
+    [label3 frame];
     v12 = v11;
     v14 = v13;
     v16 = v15;
 
     [(ICInlineAttachmentView *)self frame];
     v18 = (v17 - v16) / 3.0 + (v17 - v16) / 3.0;
-    v19 = [(ICInlineAttachmentView *)self label];
-    [v19 setFrame:{v12, v18, v14, v16}];
+    label4 = [(ICInlineAttachmentView *)self label];
+    [label4 setFrame:{v12, v18, v14, v16}];
 
-    v20 = [(ICInlineAttachmentView *)self delegate];
-    [v20 redrawInlineAttachmentView:self];
+    delegate = [(ICInlineAttachmentView *)self delegate];
+    [delegate redrawInlineAttachmentView:self];
   }
 }
 
 - (BOOL)isLinkAttachmentView
 {
-  v2 = [(ICInlineAttachmentView *)self textAttachment];
-  v3 = [v2 attachment];
-  v4 = [v3 isLinkAttachment];
+  textAttachment = [(ICInlineAttachmentView *)self textAttachment];
+  attachment = [textAttachment attachment];
+  isLinkAttachment = [attachment isLinkAttachment];
 
-  return v4;
+  return isLinkAttachment;
 }
 
 - (BOOL)isCalculateResultAttachmentView
 {
-  v2 = [(ICInlineAttachmentView *)self textAttachment];
-  v3 = [v2 attachment];
-  v4 = [v3 isCalculateResultAttachment];
+  textAttachment = [(ICInlineAttachmentView *)self textAttachment];
+  attachment = [textAttachment attachment];
+  isCalculateResultAttachment = [attachment isCalculateResultAttachment];
 
-  return v4;
+  return isCalculateResultAttachment;
 }
 
-- (id)imageForTextPreviewInRange:(_NSRange)a3
+- (id)imageForTextPreviewInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v33[1] = *MEMORY[0x1E69E9840];
-  v6 = [(ICInlineAttachmentView *)self label];
-  v7 = [v6 attributedText];
-  v8 = [v7 mutableCopy];
+  label = [(ICInlineAttachmentView *)self label];
+  attributedText = [label attributedText];
+  v8 = [attributedText mutableCopy];
 
   v36.location = [v8 ic_range];
   v36.length = v9;
@@ -463,31 +463,31 @@ LABEL_9:
   v10 = NSIntersectionRange(v35, v36);
   v32 = *MEMORY[0x1E69DB650];
   v11 = v32;
-  v12 = [MEMORY[0x1E69DC888] clearColor];
-  v33[0] = v12;
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  v33[0] = clearColor;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:&v32 count:1];
-  v14 = [v8 ic_range];
-  [v8 addAttributes:v13 range:{v14, v15}];
+  ic_range = [v8 ic_range];
+  [v8 addAttributes:v13 range:{ic_range, v15}];
 
   v30[0] = v11;
-  v16 = [MEMORY[0x1E69DC888] blackColor];
-  v31[0] = v16;
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  v31[0] = blackColor;
   v30[1] = *MEMORY[0x1E69DB600];
-  v17 = [MEMORY[0x1E69DC888] clearColor];
-  v31[1] = v17;
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  v31[1] = clearColor2;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:2];
   [v8 addAttributes:v18 range:{v10.location, v10.length}];
 
-  v19 = [MEMORY[0x1E69DCA80] defaultFormat];
+  defaultFormat = [MEMORY[0x1E69DCA80] defaultFormat];
   v20 = objc_alloc(MEMORY[0x1E69DCA78]);
   [(ICInlineAttachmentView *)self bounds];
-  v23 = [v20 initWithSize:v19 format:{v21, v22}];
+  v23 = [v20 initWithSize:defaultFormat format:{v21, v22}];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __53__ICInlineAttachmentView_imageForTextPreviewInRange___block_invoke;
   v27[3] = &unk_1E8468BC8;
   v28 = v8;
-  v29 = self;
+  selfCopy = self;
   v24 = v8;
   v25 = [v23 imageWithActions:v27];
 
@@ -521,9 +521,9 @@ uint64_t __53__ICInlineAttachmentView_imageForTextPreviewInRange___block_invoke(
 - (id)accessibilityAttributedLabel
 {
   v2 = MEMORY[0x1E696AAB0];
-  v3 = [(ICInlineAttachmentView *)self label];
-  v4 = [v3 text];
-  v5 = [v2 icaxAttributedStringForSpeakingStringInLowerPitch:v4];
+  label = [(ICInlineAttachmentView *)self label];
+  text = [label text];
+  v5 = [v2 icaxAttributedStringForSpeakingStringInLowerPitch:text];
 
   return v5;
 }
@@ -532,11 +532,11 @@ uint64_t __53__ICInlineAttachmentView_imageForTextPreviewInRange___block_invoke(
 {
   v10.receiver = self;
   v10.super_class = ICInlineAttachmentView;
-  v3 = [(ICInlineAttachmentView *)&v10 accessibilityTraits];
-  v4 = [(ICInlineAttachmentView *)self textAttachment];
-  v5 = [v4 attachment];
-  v6 = [v5 typeUTI];
-  v7 = [v6 isEqualToString:*MEMORY[0x1E69B7558]];
+  accessibilityTraits = [(ICInlineAttachmentView *)&v10 accessibilityTraits];
+  textAttachment = [(ICInlineAttachmentView *)self textAttachment];
+  attachment = [textAttachment attachment];
+  typeUTI = [attachment typeUTI];
+  v7 = [typeUTI isEqualToString:*MEMORY[0x1E69B7558]];
 
   v8 = *MEMORY[0x1E69DD9E0];
   if (!v7)
@@ -544,7 +544,7 @@ uint64_t __53__ICInlineAttachmentView_imageForTextPreviewInRange___block_invoke(
     v8 = 0;
   }
 
-  return v8 | v3;
+  return v8 | accessibilityTraits;
 }
 
 - (ICInlineTextAttachment)textAttachment

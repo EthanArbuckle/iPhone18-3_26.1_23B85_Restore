@@ -1,26 +1,26 @@
 @interface INCodableEnumValueSynonym
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (INCodableEnum)_codableEnum;
 - (INCodableEnumValue)_codableEnumValue;
-- (INCodableEnumValueSynonym)initWithCoder:(id)a3;
+- (INCodableEnumValueSynonym)initWithCoder:(id)coder;
 - (NSString)localizedPronunciationHint;
 - (NSString)localizedSynonym;
 - (id)__INCodableEnumPronunciationHintIDKey;
 - (id)__INCodableEnumPronunciationHintKey;
 - (id)__INCodableEnumSynonymIDKey;
 - (id)__INCodableEnumSynonymKey;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (id)dictionaryRepresentationWithLocalizer:(id)a3;
-- (id)localizedPronunciationHintForLanguage:(id)a3;
-- (id)localizedPronunciationHintWithLocalizer:(id)a3;
-- (id)localizedSynonymForLanguage:(id)a3;
-- (id)localizedSynonymWithLocalizer:(id)a3;
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4;
+- (id)dictionaryRepresentationWithLocalizer:(id)localizer;
+- (id)localizedPronunciationHintForLanguage:(id)language;
+- (id)localizedPronunciationHintWithLocalizer:(id)localizer;
+- (id)localizedSynonymForLanguage:(id)language;
+- (id)localizedSynonymWithLocalizer:(id)localizer;
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithDictionary:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithDictionary:(id)dictionary;
 @end
 
 @implementation INCodableEnumValueSynonym
@@ -32,9 +32,9 @@
   return WeakRetained;
 }
 
-- (INCodableEnumValueSynonym)initWithCoder:(id)a3
+- (INCodableEnumValueSynonym)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = INCodableEnumValueSynonym;
   v5 = [(INCodableEnumValueSynonym *)&v18 init];
@@ -43,127 +43,127 @@
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"synonym"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"synonym"];
     [(INCodableEnumValueSynonym *)v5 setSynonym:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"synonymLocID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"synonymLocID"];
     [(INCodableEnumValueSynonym *)v5 setSynonymLocID:v10];
 
     v11 = MEMORY[0x1E695DFD8];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"pronunciationHint"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"pronunciationHint"];
     [(INCodableEnumValueSynonym *)v5 setPronunciationHint:v14];
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pronunciationHintLocID"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pronunciationHintLocID"];
     [(INCodableEnumValueSynonym *)v5 setPronunciationHintLocID:v15];
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_codableEnumValue"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_codableEnumValue"];
     [(INCodableEnumValueSynonym *)v5 _setCodableEnumValue:v16];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(INCodableEnumValueSynonym *)self synonym];
-  [v4 encodeObject:v5 forKey:@"synonym"];
+  coderCopy = coder;
+  synonym = [(INCodableEnumValueSynonym *)self synonym];
+  [coderCopy encodeObject:synonym forKey:@"synonym"];
 
-  v6 = [(INCodableEnumValueSynonym *)self synonymLocID];
-  [v4 encodeObject:v6 forKey:@"synonymLocID"];
+  synonymLocID = [(INCodableEnumValueSynonym *)self synonymLocID];
+  [coderCopy encodeObject:synonymLocID forKey:@"synonymLocID"];
 
-  v7 = [(INCodableEnumValueSynonym *)self pronunciationHint];
-  [v4 encodeObject:v7 forKey:@"pronunciationHint"];
+  pronunciationHint = [(INCodableEnumValueSynonym *)self pronunciationHint];
+  [coderCopy encodeObject:pronunciationHint forKey:@"pronunciationHint"];
 
-  v8 = [(INCodableEnumValueSynonym *)self pronunciationHintLocID];
-  [v4 encodeObject:v8 forKey:@"pronunciationHintLocID"];
+  pronunciationHintLocID = [(INCodableEnumValueSynonym *)self pronunciationHintLocID];
+  [coderCopy encodeObject:pronunciationHintLocID forKey:@"pronunciationHintLocID"];
 
-  v9 = [(INCodableEnumValueSynonym *)self _codableEnumValue];
-  [v4 encodeConditionalObject:v9 forKey:@"_codableEnumValue"];
+  _codableEnumValue = [(INCodableEnumValueSynonym *)self _codableEnumValue];
+  [coderCopy encodeConditionalObject:_codableEnumValue forKey:@"_codableEnumValue"];
 }
 
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [(INCodableEnumValueSynonym *)self synonym];
-  v9 = [v8 intents_encodeForPlistRepresentationWithParameters:v6];
-  [v7 intents_setPlistSafeObject:v9 forKey:@"synonym"];
+  parametersCopy = parameters;
+  dictionary = [v5 dictionary];
+  synonym = [(INCodableEnumValueSynonym *)self synonym];
+  v9 = [synonym intents_encodeForPlistRepresentationWithParameters:parametersCopy];
+  [dictionary intents_setPlistSafeObject:v9 forKey:@"synonym"];
 
-  v10 = [(INCodableEnumValueSynonym *)self synonymLocID];
-  [v7 intents_setPlistSafeObject:v10 forKey:@"synonymLocID"];
+  synonymLocID = [(INCodableEnumValueSynonym *)self synonymLocID];
+  [dictionary intents_setPlistSafeObject:synonymLocID forKey:@"synonymLocID"];
 
-  v11 = [(INCodableEnumValueSynonym *)self pronunciationHint];
-  v12 = [v11 intents_encodeForPlistRepresentationWithParameters:v6];
+  pronunciationHint = [(INCodableEnumValueSynonym *)self pronunciationHint];
+  v12 = [pronunciationHint intents_encodeForPlistRepresentationWithParameters:parametersCopy];
 
-  [v7 intents_setPlistSafeObject:v12 forKey:@"pronunciationHint"];
-  v13 = [(INCodableEnumValueSynonym *)self pronunciationHintLocID];
-  [v7 intents_setPlistSafeObject:v13 forKey:@"pronunciationHintLocID"];
+  [dictionary intents_setPlistSafeObject:v12 forKey:@"pronunciationHint"];
+  pronunciationHintLocID = [(INCodableEnumValueSynonym *)self pronunciationHintLocID];
+  [dictionary intents_setPlistSafeObject:pronunciationHintLocID forKey:@"pronunciationHintLocID"];
 
-  v14 = [v7 copy];
+  v14 = [dictionary copy];
 
   return v14;
 }
 
 - (INCodableEnum)_codableEnum
 {
-  v2 = [(INCodableEnumValueSynonym *)self _codableEnumValue];
-  v3 = [v2 _codableEnum];
+  _codableEnumValue = [(INCodableEnumValueSynonym *)self _codableEnumValue];
+  _codableEnum = [_codableEnumValue _codableEnum];
 
-  return v3;
+  return _codableEnum;
 }
 
-- (id)dictionaryRepresentationWithLocalizer:(id)a3
+- (id)dictionaryRepresentationWithLocalizer:(id)localizer
 {
   v24[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v21 = [(INCodableEnumValueSynonym *)self __INCodableEnumSynonymKey];
-  v23[0] = v21;
-  v5 = [(INCodableEnumValueSynonym *)self localizedSynonymWithLocalizer:v4];
-  v6 = v5;
-  if (!v5)
+  localizerCopy = localizer;
+  __INCodableEnumSynonymKey = [(INCodableEnumValueSynonym *)self __INCodableEnumSynonymKey];
+  v23[0] = __INCodableEnumSynonymKey;
+  null = [(INCodableEnumValueSynonym *)self localizedSynonymWithLocalizer:localizerCopy];
+  v6 = null;
+  if (!null)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19 = v5;
-  v24[0] = v5;
-  v20 = [(INCodableEnumValueSynonym *)self __INCodableEnumSynonymIDKey];
-  v23[1] = v20;
-  v7 = [(INCodableEnumValueSynonym *)self synonymLocID];
-  v8 = v7;
-  if (!v7)
+  v19 = null;
+  v24[0] = null;
+  __INCodableEnumSynonymIDKey = [(INCodableEnumValueSynonym *)self __INCodableEnumSynonymIDKey];
+  v23[1] = __INCodableEnumSynonymIDKey;
+  synonymLocID = [(INCodableEnumValueSynonym *)self synonymLocID];
+  null2 = synonymLocID;
+  if (!synonymLocID)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24[1] = v8;
-  v9 = [(INCodableEnumValueSynonym *)self __INCodableEnumPronunciationHintKey];
-  v23[2] = v9;
-  v22 = v4;
-  v10 = [(INCodableEnumValueSynonym *)self localizedPronunciationHintWithLocalizer:v4];
-  v11 = v10;
+  v24[1] = null2;
+  __INCodableEnumPronunciationHintKey = [(INCodableEnumValueSynonym *)self __INCodableEnumPronunciationHintKey];
+  v23[2] = __INCodableEnumPronunciationHintKey;
+  v22 = localizerCopy;
+  v10 = [(INCodableEnumValueSynonym *)self localizedPronunciationHintWithLocalizer:localizerCopy];
+  null3 = v10;
   if (!v10)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24[2] = v11;
-  v12 = [(INCodableEnumValueSynonym *)self __INCodableEnumPronunciationHintIDKey];
-  v23[3] = v12;
-  v13 = [(INCodableEnumValueSynonym *)self pronunciationHintLocID];
-  v14 = v13;
-  if (!v13)
+  v24[2] = null3;
+  __INCodableEnumPronunciationHintIDKey = [(INCodableEnumValueSynonym *)self __INCodableEnumPronunciationHintIDKey];
+  v23[3] = __INCodableEnumPronunciationHintIDKey;
+  pronunciationHintLocID = [(INCodableEnumValueSynonym *)self pronunciationHintLocID];
+  null4 = pronunciationHintLocID;
+  if (!pronunciationHintLocID)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24[3] = v14;
+  v24[3] = null4;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:4];
-  if (!v13)
+  if (!pronunciationHintLocID)
   {
   }
 
@@ -171,7 +171,7 @@
   {
   }
 
-  if (!v7)
+  if (!synonymLocID)
   {
   }
 
@@ -179,11 +179,11 @@
   {
   }
 
-  v16 = [v15 if_dictionaryWithNonEmptyValues];
+  if_dictionaryWithNonEmptyValues = [v15 if_dictionaryWithNonEmptyValues];
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v16;
+  return if_dictionaryWithNonEmptyValues;
 }
 
 - (id)dictionaryRepresentation
@@ -194,43 +194,43 @@
   return v4;
 }
 
-- (void)updateWithDictionary:(id)a3
+- (void)updateWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(INCodableEnumValueSynonym *)self __INCodableEnumSynonymKey];
-  v6 = [v4 objectForKey:v5];
+  dictionaryCopy = dictionary;
+  __INCodableEnumSynonymKey = [(INCodableEnumValueSynonym *)self __INCodableEnumSynonymKey];
+  v6 = [dictionaryCopy objectForKey:__INCodableEnumSynonymKey];
   [(INCodableEnumValueSynonym *)self setSynonym:v6];
 
-  v7 = [(INCodableEnumValueSynonym *)self __INCodableEnumSynonymIDKey];
-  v8 = [v4 objectForKey:v7];
+  __INCodableEnumSynonymIDKey = [(INCodableEnumValueSynonym *)self __INCodableEnumSynonymIDKey];
+  v8 = [dictionaryCopy objectForKey:__INCodableEnumSynonymIDKey];
   [(INCodableEnumValueSynonym *)self setSynonymLocID:v8];
 
-  v9 = [(INCodableEnumValueSynonym *)self __INCodableEnumPronunciationHintKey];
-  v10 = [v4 objectForKey:v9];
+  __INCodableEnumPronunciationHintKey = [(INCodableEnumValueSynonym *)self __INCodableEnumPronunciationHintKey];
+  v10 = [dictionaryCopy objectForKey:__INCodableEnumPronunciationHintKey];
   [(INCodableEnumValueSynonym *)self setPronunciationHint:v10];
 
-  v12 = [(INCodableEnumValueSynonym *)self __INCodableEnumPronunciationHintIDKey];
-  v11 = [v4 objectForKey:v12];
+  __INCodableEnumPronunciationHintIDKey = [(INCodableEnumValueSynonym *)self __INCodableEnumPronunciationHintIDKey];
+  v11 = [dictionaryCopy objectForKey:__INCodableEnumPronunciationHintIDKey];
 
   [(INCodableEnumValueSynonym *)self setPronunciationHintLocID:v11];
 }
 
-- (id)localizedPronunciationHintWithLocalizer:(id)a3
+- (id)localizedPronunciationHintWithLocalizer:(id)localizer
 {
-  v4 = a3;
-  v5 = [(INCodableEnumValueSynonym *)self _codableEnumValue];
-  v6 = [v5 _codableEnum];
-  v7 = [(INCodableEnumValueSynonym *)self pronunciationHintLocID];
-  v8 = [(INCodableEnumValueSynonym *)self pronunciationHint];
-  v9 = [v6 _localizationTable];
-  v10 = INLocalizedStringFromCodable(v7, v8, v9, v4, 0);
+  localizerCopy = localizer;
+  _codableEnumValue = [(INCodableEnumValueSynonym *)self _codableEnumValue];
+  _codableEnum = [_codableEnumValue _codableEnum];
+  pronunciationHintLocID = [(INCodableEnumValueSynonym *)self pronunciationHintLocID];
+  pronunciationHint = [(INCodableEnumValueSynonym *)self pronunciationHint];
+  _localizationTable = [_codableEnum _localizationTable];
+  v10 = INLocalizedStringFromCodable(pronunciationHintLocID, pronunciationHint, _localizationTable, localizerCopy, 0);
 
   return v10;
 }
 
-- (id)localizedPronunciationHintForLanguage:(id)a3
+- (id)localizedPronunciationHintForLanguage:(id)language
 {
-  v4 = [INStringLocalizer localizerForLanguage:a3];
+  v4 = [INStringLocalizer localizerForLanguage:language];
   v5 = [(INCodableEnumValueSynonym *)self localizedPronunciationHintWithLocalizer:v4];
 
   return v5;
@@ -244,22 +244,22 @@
   return v4;
 }
 
-- (id)localizedSynonymWithLocalizer:(id)a3
+- (id)localizedSynonymWithLocalizer:(id)localizer
 {
-  v4 = a3;
-  v5 = [(INCodableEnumValueSynonym *)self _codableEnumValue];
-  v6 = [v5 _codableEnum];
-  v7 = [(INCodableEnumValueSynonym *)self synonymLocID];
-  v8 = [(INCodableEnumValueSynonym *)self synonym];
-  v9 = [v6 _localizationTable];
-  v10 = INLocalizedStringFromCodable(v7, v8, v9, v4, 0);
+  localizerCopy = localizer;
+  _codableEnumValue = [(INCodableEnumValueSynonym *)self _codableEnumValue];
+  _codableEnum = [_codableEnumValue _codableEnum];
+  synonymLocID = [(INCodableEnumValueSynonym *)self synonymLocID];
+  synonym = [(INCodableEnumValueSynonym *)self synonym];
+  _localizationTable = [_codableEnum _localizationTable];
+  v10 = INLocalizedStringFromCodable(synonymLocID, synonym, _localizationTable, localizerCopy, 0);
 
   return v10;
 }
 
-- (id)localizedSynonymForLanguage:(id)a3
+- (id)localizedSynonymForLanguage:(id)language
 {
-  v4 = [INStringLocalizer localizerForLanguage:a3];
+  v4 = [INStringLocalizer localizerForLanguage:language];
   v5 = [(INCodableEnumValueSynonym *)self localizedSynonymWithLocalizer:v4];
 
   return v5;
@@ -273,15 +273,15 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(INCodableEnumValueSynonym *)self synonym];
-    v6 = [v4 synonym];
-    v7 = v5;
-    v8 = v6;
+    synonym = [(INCodableEnumValueSynonym *)self synonym];
+    synonym2 = [equalCopy synonym];
+    v7 = synonym;
+    v8 = synonym2;
     v9 = v8;
     if (v7 == v8)
     {
@@ -308,10 +308,10 @@ LABEL_30:
       }
     }
 
-    v14 = [(INCodableEnumValueSynonym *)self pronunciationHint];
-    v15 = [v4 pronunciationHint];
-    v12 = v14;
-    v16 = v15;
+    pronunciationHint = [(INCodableEnumValueSynonym *)self pronunciationHint];
+    pronunciationHint2 = [equalCopy pronunciationHint];
+    v12 = pronunciationHint;
+    v16 = pronunciationHint2;
     v11 = v16;
     if (v12 == v16)
     {
@@ -338,10 +338,10 @@ LABEL_29:
       }
     }
 
-    v20 = [(INCodableEnumValueSynonym *)self synonymLocID];
-    v21 = [v4 synonymLocID];
-    v18 = v20;
-    v22 = v21;
+    synonymLocID = [(INCodableEnumValueSynonym *)self synonymLocID];
+    synonymLocID2 = [equalCopy synonymLocID];
+    v18 = synonymLocID;
+    v22 = synonymLocID2;
     v17 = v22;
     v29 = v18;
     if (v18 == v22)
@@ -371,10 +371,10 @@ LABEL_28:
       }
     }
 
-    v25 = [(INCodableEnumValueSynonym *)self pronunciationHintLocID];
-    v26 = [v4 pronunciationHintLocID];
-    v18 = v25;
-    v27 = v26;
+    pronunciationHintLocID = [(INCodableEnumValueSynonym *)self pronunciationHintLocID];
+    pronunciationHintLocID2 = [equalCopy pronunciationHintLocID];
+    v18 = pronunciationHintLocID;
+    v27 = pronunciationHintLocID2;
     v23 = v27;
     if (v18 == v27)
     {
@@ -401,50 +401,50 @@ LABEL_31:
 
 - (unint64_t)hash
 {
-  v3 = [(INCodableEnumValueSynonym *)self synonym];
-  v4 = [v3 hash];
-  v5 = [(INCodableEnumValueSynonym *)self synonymLocID];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(INCodableEnumValueSynonym *)self pronunciationHint];
-  v8 = [v7 hash];
-  v9 = [(INCodableEnumValueSynonym *)self pronunciationHintLocID];
-  v10 = v8 ^ [v9 hash];
+  synonym = [(INCodableEnumValueSynonym *)self synonym];
+  v4 = [synonym hash];
+  synonymLocID = [(INCodableEnumValueSynonym *)self synonymLocID];
+  v6 = [synonymLocID hash] ^ v4;
+  pronunciationHint = [(INCodableEnumValueSynonym *)self pronunciationHint];
+  v8 = [pronunciationHint hash];
+  pronunciationHintLocID = [(INCodableEnumValueSynonym *)self pronunciationHintLocID];
+  v10 = v8 ^ [pronunciationHintLocID hash];
 
   return v6 ^ v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[INCodableEnumValueSynonym allocWithZone:?]];
-  v5 = [(INCodableEnumValueSynonym *)self pronunciationHint];
-  [(INCodableEnumValueSynonym *)v4 setPronunciationHint:v5];
+  pronunciationHint = [(INCodableEnumValueSynonym *)self pronunciationHint];
+  [(INCodableEnumValueSynonym *)v4 setPronunciationHint:pronunciationHint];
 
-  v6 = [(INCodableEnumValueSynonym *)self pronunciationHintLocID];
-  [(INCodableEnumValueSynonym *)v4 setPronunciationHintLocID:v6];
+  pronunciationHintLocID = [(INCodableEnumValueSynonym *)self pronunciationHintLocID];
+  [(INCodableEnumValueSynonym *)v4 setPronunciationHintLocID:pronunciationHintLocID];
 
-  v7 = [(INCodableEnumValueSynonym *)self synonym];
-  [(INCodableEnumValueSynonym *)v4 setSynonym:v7];
+  synonym = [(INCodableEnumValueSynonym *)self synonym];
+  [(INCodableEnumValueSynonym *)v4 setSynonym:synonym];
 
-  v8 = [(INCodableEnumValueSynonym *)self synonymLocID];
-  [(INCodableEnumValueSynonym *)v4 setSynonymLocID:v8];
+  synonymLocID = [(INCodableEnumValueSynonym *)self synonymLocID];
+  [(INCodableEnumValueSynonym *)v4 setSynonymLocID:synonymLocID];
 
   return v4;
 }
 
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = objc_alloc_init(INCodableEnumValueSynonym);
-  v6 = [v4 intents_stringForKey:@"synonymLocID"];
+  v6 = [representationCopy intents_stringForKey:@"synonymLocID"];
   [(INCodableEnumValueSynonym *)v5 setSynonymLocID:v6];
 
-  v7 = [v4 intents_stringForKey:@"pronunciationHintLocID"];
+  v7 = [representationCopy intents_stringForKey:@"pronunciationHintLocID"];
   [(INCodableEnumValueSynonym *)v5 setPronunciationHintLocID:v7];
 
-  v8 = [v4 intents_stringForKey:@"synonym"];
+  v8 = [representationCopy intents_stringForKey:@"synonym"];
   [(INCodableEnumValueSynonym *)v5 setSynonym:v8];
 
-  v9 = [v4 intents_stringForKey:@"pronunciationHint"];
+  v9 = [representationCopy intents_stringForKey:@"pronunciationHint"];
 
   [(INCodableEnumValueSynonym *)v5 setPronunciationHint:v9];
 
@@ -453,34 +453,34 @@ LABEL_31:
 
 - (id)__INCodableEnumSynonymIDKey
 {
-  v2 = [(INCodableEnumValueSynonym *)self _codableEnum];
-  v3 = [objc_opt_class() __INCodableEnumValueSynonymSynonymIDKey];
+  _codableEnum = [(INCodableEnumValueSynonym *)self _codableEnum];
+  __INCodableEnumValueSynonymSynonymIDKey = [objc_opt_class() __INCodableEnumValueSynonymSynonymIDKey];
 
-  return v3;
+  return __INCodableEnumValueSynonymSynonymIDKey;
 }
 
 - (id)__INCodableEnumSynonymKey
 {
-  v2 = [(INCodableEnumValueSynonym *)self _codableEnum];
-  v3 = [objc_opt_class() __INCodableEnumValueSynonymSynonymKey];
+  _codableEnum = [(INCodableEnumValueSynonym *)self _codableEnum];
+  __INCodableEnumValueSynonymSynonymKey = [objc_opt_class() __INCodableEnumValueSynonymSynonymKey];
 
-  return v3;
+  return __INCodableEnumValueSynonymSynonymKey;
 }
 
 - (id)__INCodableEnumPronunciationHintIDKey
 {
-  v2 = [(INCodableEnumValueSynonym *)self _codableEnum];
-  v3 = [objc_opt_class() __INCodableEnumValueSynonymPronunciationHintIDKey];
+  _codableEnum = [(INCodableEnumValueSynonym *)self _codableEnum];
+  __INCodableEnumValueSynonymPronunciationHintIDKey = [objc_opt_class() __INCodableEnumValueSynonymPronunciationHintIDKey];
 
-  return v3;
+  return __INCodableEnumValueSynonymPronunciationHintIDKey;
 }
 
 - (id)__INCodableEnumPronunciationHintKey
 {
-  v2 = [(INCodableEnumValueSynonym *)self _codableEnum];
-  v3 = [objc_opt_class() __INCodableEnumValueSynonymPronunciationHintKey];
+  _codableEnum = [(INCodableEnumValueSynonym *)self _codableEnum];
+  __INCodableEnumValueSynonymPronunciationHintKey = [objc_opt_class() __INCodableEnumValueSynonymPronunciationHintKey];
 
-  return v3;
+  return __INCodableEnumValueSynonymPronunciationHintKey;
 }
 
 @end

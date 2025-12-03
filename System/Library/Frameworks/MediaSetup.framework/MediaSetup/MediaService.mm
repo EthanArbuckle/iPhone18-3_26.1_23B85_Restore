@@ -1,21 +1,21 @@
 @interface MediaService
-- (MediaService)initWithCoder:(id)a3;
-- (MediaService)initWithMediaServiceIdentifier:(id)a3;
-- (MediaService)initWithServiceAccount:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5;
-- (id)_failWithError:(unint64_t)a3 errorString:(id)a4;
+- (MediaService)initWithCoder:(id)coder;
+- (MediaService)initWithMediaServiceIdentifier:(id)identifier;
+- (MediaService)initWithServiceAccount:(id)account bundleIdentifier:(id)identifier error:(id *)error;
+- (id)_failWithError:(unint64_t)error errorString:(id)string;
 - (id)basicPropertiesDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)jsonDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MediaService
 
-- (MediaService)initWithServiceAccount:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5
+- (MediaService)initWithServiceAccount:(id)account bundleIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  accountCopy = account;
+  identifierCopy = identifier;
   v38.receiver = self;
   v38.super_class = MediaService;
   v10 = [(MediaService *)&v38 init];
@@ -27,9 +27,9 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  if (!v8)
+  if (!accountCopy)
   {
-    if (a5)
+    if (error)
     {
       v30 = @"setupContext";
       v31 = 6;
@@ -41,10 +41,10 @@ LABEL_31:
     goto LABEL_38;
   }
 
-  objc_storeStrong(&v10->_bundleIdentifier, a4);
-  if (!v9)
+  objc_storeStrong(&v10->_bundleIdentifier, identifier);
+  if (!identifierCopy)
   {
-    if (a5)
+    if (error)
     {
       v30 = @"bundleIdentifier";
       v10 = v11;
@@ -55,13 +55,13 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v12 = [v8 serviceName];
+  serviceName = [accountCopy serviceName];
   serviceName = v11->_serviceName;
-  v11->_serviceName = v12;
+  v11->_serviceName = serviceName;
 
-  if (!v12)
+  if (!serviceName)
   {
-    if (a5)
+    if (error)
     {
       v30 = @"serviceName";
       v10 = v11;
@@ -72,11 +72,11 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v14 = [v8 clientID];
+  clientID = [accountCopy clientID];
 
-  if (!v14)
+  if (!clientID)
   {
-    if (a5)
+    if (error)
     {
       v30 = @"clientID";
       v10 = v11;
@@ -87,11 +87,11 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v15 = [v8 clientSecret];
+  clientSecret = [accountCopy clientSecret];
 
-  if (!v15)
+  if (!clientSecret)
   {
-    if (a5)
+    if (error)
     {
       v30 = @"clientSecret";
       v10 = v11;
@@ -102,13 +102,13 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v16 = [v8 accountName];
+  accountName = [accountCopy accountName];
   accountName = v11->_accountName;
-  v11->_accountName = v16;
+  v11->_accountName = accountName;
 
-  if (!v16)
+  if (!accountName)
   {
-    if (a5)
+    if (error)
     {
       v30 = @"accountName";
       v10 = v11;
@@ -119,13 +119,13 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v18 = [v8 configurationURL];
+  configurationURL = [accountCopy configurationURL];
   configURL = v11->_configURL;
-  v11->_configURL = v18;
+  v11->_configURL = configurationURL;
 
-  if (!v18)
+  if (!configurationURL)
   {
-    if (a5)
+    if (error)
     {
       v30 = @"configURL";
       v10 = v11;
@@ -136,11 +136,11 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v20 = [v8 authorizationTokenURL];
+  authorizationTokenURL = [accountCopy authorizationTokenURL];
 
-  if (!v20)
+  if (!authorizationTokenURL)
   {
-    if (a5)
+    if (error)
     {
       v30 = @"authorizationTokenURL";
       v10 = v11;
@@ -151,31 +151,31 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  [v8 authorizationScope];
+  [accountCopy authorizationScope];
 
-  v21 = [v8 clientID];
-  v22 = [v8 clientSecret];
-  v23 = [v8 authorizationTokenURL];
-  v24 = [v8 authorizationScope];
-  v25 = [CMSAuthenticationConfiguration authConfigurationWithClientID:v21 clientSecret:v22 authorizationURL:v23 scope:v24];
+  clientID2 = [accountCopy clientID];
+  clientSecret2 = [accountCopy clientSecret];
+  authorizationTokenURL2 = [accountCopy authorizationTokenURL];
+  authorizationScope = [accountCopy authorizationScope];
+  v25 = [CMSAuthenticationConfiguration authConfigurationWithClientID:clientID2 clientSecret:clientSecret2 authorizationURL:authorizationTokenURL2 scope:authorizationScope];
   authConfiguration = v11->_authConfiguration;
   v11->_authConfiguration = v25;
 
-  v27 = [v8 serviceID];
+  serviceID = [accountCopy serviceID];
 
-  if (!v27)
+  if (!serviceID)
   {
     NSLog(&cfstr_UsingRandomUui.isa);
-    v33 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     serviceID = v11->_serviceID;
-    v11->_serviceID = v33;
+    v11->_serviceID = uUID;
 
     goto LABEL_33;
   }
 
-  v28 = [v8 serviceID];
+  serviceID2 = [accountCopy serviceID];
   v29 = v11->_serviceID;
-  v11->_serviceID = v28;
+  v11->_serviceID = serviceID2;
 
   if (v11->_serviceID)
   {
@@ -196,7 +196,7 @@ LABEL_33:
     goto LABEL_37;
   }
 
-  if (!a5)
+  if (!error)
   {
     goto LABEL_31;
   }
@@ -207,22 +207,22 @@ LABEL_33:
   v31 = 9;
 LABEL_30:
   [(MediaService *)v10 _failWithError:v31 errorString:v30];
-  *a5 = v32 = 0;
+  *error = v32 = 0;
 LABEL_38:
 
   return v32;
 }
 
-- (id)_failWithError:(unint64_t)a3 errorString:(id)a4
+- (id)_failWithError:(unint64_t)error errorString:(id)string
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to initialize MediaService object, Nil %@", a4];
-  NSLog(&stru_284C4D138.isa, v5);
+  string = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to initialize MediaService object, Nil %@", string];
+  NSLog(&stru_284C4D138.isa, string);
   v6 = MEMORY[0x277CCA9B8];
   v11 = @"MSUserInfoErrorStringKey";
-  v12[0] = v5;
+  v12[0] = string;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-  v8 = [v6 errorWithDomain:@"com.apple.mediasetup.serviceonboarding.errorDomain" code:a3 userInfo:v7];
+  v8 = [v6 errorWithDomain:@"com.apple.mediasetup.serviceonboarding.errorDomain" code:error userInfo:v7];
 
   v9 = *MEMORY[0x277D85DE8];
 
@@ -231,8 +231,8 @@ LABEL_38:
 
 - (id)description
 {
-  v3 = [(MediaService *)self basicPropertiesDictionary];
-  v4 = [MEMORY[0x277CCAB68] stringWithFormat:@"<MediaService = %@", v3];
+  basicPropertiesDictionary = [(MediaService *)self basicPropertiesDictionary];
+  v4 = [MEMORY[0x277CCAB68] stringWithFormat:@"<MediaService = %@", basicPropertiesDictionary];
   v5 = v4;
   if (self->_authCredential)
   {
@@ -254,32 +254,32 @@ LABEL_38:
 
 - (id)jsonDictionary
 {
-  v3 = [(MediaService *)self basicPropertiesDictionary];
-  v4 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v3];
-  v5 = [(NSUUID *)self->_serviceID UUIDString];
-  [v4 na_safeSetObject:v5 forKey:@"serviceIdentifier"];
+  basicPropertiesDictionary = [(MediaService *)self basicPropertiesDictionary];
+  v4 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:basicPropertiesDictionary];
+  uUIDString = [(NSUUID *)self->_serviceID UUIDString];
+  [v4 na_safeSetObject:uUIDString forKey:@"serviceIdentifier"];
 
-  v6 = [(NSURL *)self->_configURL absoluteString];
-  [v4 na_safeSetObject:v6 forKey:@"configURL"];
+  absoluteString = [(NSURL *)self->_configURL absoluteString];
+  [v4 na_safeSetObject:absoluteString forKey:@"configURL"];
 
-  v7 = [(NSURL *)self->_iconImageURL absoluteString];
-  [v4 na_safeSetObject:v7 forKey:@"iconImageURL"];
+  absoluteString2 = [(NSURL *)self->_iconImageURL absoluteString];
+  [v4 na_safeSetObject:absoluteString2 forKey:@"iconImageURL"];
 
-  v8 = [(NSURL *)self->_remoteIconURL absoluteString];
-  [v4 na_safeSetObject:v8 forKey:@"remoteIconImageURL"];
+  absoluteString3 = [(NSURL *)self->_remoteIconURL absoluteString];
+  [v4 na_safeSetObject:absoluteString3 forKey:@"remoteIconImageURL"];
 
   authCredential = self->_authCredential;
   if (authCredential)
   {
-    v10 = [(CMSAuthenticationCredential *)authCredential jsonDictionary];
-    [v4 na_safeSetObject:v10 forKey:@"authCredential"];
+    jsonDictionary = [(CMSAuthenticationCredential *)authCredential jsonDictionary];
+    [v4 na_safeSetObject:jsonDictionary forKey:@"authCredential"];
   }
 
   authConfiguration = self->_authConfiguration;
   if (authConfiguration)
   {
-    v12 = [(CMSAuthenticationConfiguration *)authConfiguration jsonDictionary];
-    [v4 na_safeSetObject:v12 forKey:@"authConfiguration"];
+    jsonDictionary2 = [(CMSAuthenticationConfiguration *)authConfiguration jsonDictionary];
+    [v4 na_safeSetObject:jsonDictionary2 forKey:@"authConfiguration"];
   }
 
   alternateBundleIdentifiers = self->_alternateBundleIdentifiers;
@@ -291,41 +291,41 @@ LABEL_38:
   return v4;
 }
 
-- (MediaService)initWithCoder:(id)a3
+- (MediaService)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MSServiceIdentifierEncodedKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MSServiceIdentifierEncodedKey"];
   serviceID = self->_serviceID;
   self->_serviceID = v5;
 
-  v7 = [(NSUUID *)self->_serviceID UUIDString];
-  v8 = [(MediaService *)self initWithMediaServiceIdentifier:v7];
+  uUIDString = [(NSUUID *)self->_serviceID UUIDString];
+  v8 = [(MediaService *)self initWithMediaServiceIdentifier:uUIDString];
 
   if (v8)
   {
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MSServiceNameEncodedKey"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MSServiceNameEncodedKey"];
     serviceName = v8->_serviceName;
     v8->_serviceName = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MSBundleIdentifierEncodedKey"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MSBundleIdentifierEncodedKey"];
     bundleIdentifier = v8->_bundleIdentifier;
     v8->_bundleIdentifier = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MSAccountNameEncodedKey"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MSAccountNameEncodedKey"];
     accountName = v8->_accountName;
     v8->_accountName = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ServiceType"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ServiceType"];
     serviceType = v8->_serviceType;
     v8->_serviceType = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MSServiceRemovableEncodedKey"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MSServiceRemovableEncodedKey"];
     v8->_serviceRemovable = [v17 BOOLValue];
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MSUpdateListeningHistoryEncodedKey"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MSUpdateListeningHistoryEncodedKey"];
     v8->_updateListeningHistoryEnabled = [v18 BOOLValue];
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MSAuthCredentialEncodedKey"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MSAuthCredentialEncodedKey"];
     if (v19)
     {
       v20 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v19 error:0];
@@ -333,7 +333,7 @@ LABEL_38:
       v8->_authCredential = v20;
     }
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MSAuthConfigurationEncodedKey"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MSAuthConfigurationEncodedKey"];
     if (v22)
     {
       v23 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v22 error:0];
@@ -343,51 +343,51 @@ LABEL_38:
 
     if (!v8->_authCredential)
     {
-      v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MSAuthCredentialObjectEncodedKey"];
-      v26 = [v25 credential];
+      v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MSAuthCredentialObjectEncodedKey"];
+      credential = [v25 credential];
       v27 = v8->_authCredential;
-      v8->_authCredential = v26;
+      v8->_authCredential = credential;
     }
 
     if (!v8->_authConfiguration)
     {
-      v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MSAuthConfigurationObjectEncodedKey"];
-      v29 = [v28 configuration];
+      v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MSAuthConfigurationObjectEncodedKey"];
+      configuration = [v28 configuration];
       v30 = v8->_authConfiguration;
-      v8->_authConfiguration = v29;
+      v8->_authConfiguration = configuration;
     }
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MSAuthFatalErrorEncodedKey"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MSAuthFatalErrorEncodedKey"];
     v8->_authFatalError = [v31 BOOLValue];
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MSConfigPublicKeyEncodedKey"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MSConfigPublicKeyEncodedKey"];
     configPublicKey = v8->_configPublicKey;
     v8->_configPublicKey = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MSConfigETagEncodedKey"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MSConfigETagEncodedKey"];
     configETag = v8->_configETag;
     v8->_configETag = v34;
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MSconfigURLEncodedKey"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MSconfigURLEncodedKey"];
     configURL = v8->_configURL;
     v8->_configURL = v36;
 
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MSConfigAssetEncodedKey"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MSConfigAssetEncodedKey"];
     configAsset = v8->_configAsset;
     v8->_configAsset = v38;
 
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MSiconImageURLEncodedKey"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MSiconImageURLEncodedKey"];
     iconImageURL = v8->_iconImageURL;
     v8->_iconImageURL = v40;
 
-    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MSRemoteIconURLEncodedKey"];
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MSRemoteIconURLEncodedKey"];
     remoteIconURL = v8->_remoteIconURL;
     v8->_remoteIconURL = v42;
 
     v44 = MEMORY[0x277CBEB98];
     v45 = objc_opt_class();
     v46 = [v44 setWithObjects:{v45, objc_opt_class(), 0}];
-    v47 = [v4 decodeObjectOfClasses:v46 forKey:@"MSAlternateBundleIdentifiersEncodedKey"];
+    v47 = [coderCopy decodeObjectOfClasses:v46 forKey:@"MSAlternateBundleIdentifiersEncodedKey"];
     alternateBundleIdentifiers = v8->_alternateBundleIdentifiers;
     v8->_alternateBundleIdentifiers = v47;
   }
@@ -395,104 +395,104 @@ LABEL_38:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   serviceName = self->_serviceName;
-  v5 = a3;
-  [v5 encodeObject:serviceName forKey:@"MSServiceNameEncodedKey"];
-  [v5 encodeObject:self->_bundleIdentifier forKey:@"MSBundleIdentifierEncodedKey"];
-  [v5 encodeObject:self->_accountName forKey:@"MSAccountNameEncodedKey"];
-  [v5 encodeObject:self->_serviceID forKey:@"MSServiceIdentifierEncodedKey"];
-  [v5 encodeObject:self->_serviceType forKey:@"ServiceType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:serviceName forKey:@"MSServiceNameEncodedKey"];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"MSBundleIdentifierEncodedKey"];
+  [coderCopy encodeObject:self->_accountName forKey:@"MSAccountNameEncodedKey"];
+  [coderCopy encodeObject:self->_serviceID forKey:@"MSServiceIdentifierEncodedKey"];
+  [coderCopy encodeObject:self->_serviceType forKey:@"ServiceType"];
   v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_serviceRemovable];
-  [v5 encodeObject:v6 forKey:@"MSServiceRemovableEncodedKey"];
+  [coderCopy encodeObject:v6 forKey:@"MSServiceRemovableEncodedKey"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithBool:self->_updateListeningHistoryEnabled];
-  [v5 encodeObject:v7 forKey:@"MSUpdateListeningHistoryEncodedKey"];
+  [coderCopy encodeObject:v7 forKey:@"MSUpdateListeningHistoryEncodedKey"];
 
   v10 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self->_authCredential requiringSecureCoding:1 error:0];
-  [v5 encodeObject:v10 forKey:@"MSAuthCredentialEncodedKey"];
+  [coderCopy encodeObject:v10 forKey:@"MSAuthCredentialEncodedKey"];
   v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self->_authConfiguration requiringSecureCoding:1 error:0];
-  [v5 encodeObject:v8 forKey:@"MSAuthConfigurationEncodedKey"];
+  [coderCopy encodeObject:v8 forKey:@"MSAuthConfigurationEncodedKey"];
   v9 = [MEMORY[0x277CCABB0] numberWithBool:self->_authFatalError];
-  [v5 encodeObject:v9 forKey:@"MSAuthFatalErrorEncodedKey"];
+  [coderCopy encodeObject:v9 forKey:@"MSAuthFatalErrorEncodedKey"];
 
-  [v5 encodeObject:self->_iconImageURL forKey:@"MSiconImageURLEncodedKey"];
-  [v5 encodeObject:self->_remoteIconURL forKey:@"MSRemoteIconURLEncodedKey"];
-  [v5 encodeObject:self->_configPublicKey forKey:@"MSConfigPublicKeyEncodedKey"];
-  [v5 encodeObject:self->_configURL forKey:@"MSconfigURLEncodedKey"];
-  [v5 encodeObject:self->_configETag forKey:@"MSConfigETagEncodedKey"];
-  [v5 encodeObject:self->_configAsset forKey:@"MSConfigAssetEncodedKey"];
-  [v5 encodeObject:self->_alternateBundleIdentifiers forKey:@"MSAlternateBundleIdentifiersEncodedKey"];
+  [coderCopy encodeObject:self->_iconImageURL forKey:@"MSiconImageURLEncodedKey"];
+  [coderCopy encodeObject:self->_remoteIconURL forKey:@"MSRemoteIconURLEncodedKey"];
+  [coderCopy encodeObject:self->_configPublicKey forKey:@"MSConfigPublicKeyEncodedKey"];
+  [coderCopy encodeObject:self->_configURL forKey:@"MSconfigURLEncodedKey"];
+  [coderCopy encodeObject:self->_configETag forKey:@"MSConfigETagEncodedKey"];
+  [coderCopy encodeObject:self->_configAsset forKey:@"MSConfigAssetEncodedKey"];
+  [coderCopy encodeObject:self->_alternateBundleIdentifiers forKey:@"MSAlternateBundleIdentifiersEncodedKey"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSUUID *)self->_serviceID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSUUID *)self->_serviceID copyWithZone:zone];
   [v5 setServiceID:v6];
 
-  v7 = [(NSString *)self->_accountName copyWithZone:a3];
+  v7 = [(NSString *)self->_accountName copyWithZone:zone];
   [v5 setAccountName:v7];
 
-  v8 = [(NSString *)self->_serviceName copyWithZone:a3];
+  v8 = [(NSString *)self->_serviceName copyWithZone:zone];
   [v5 setServiceName:v8];
 
-  v9 = [(NSString *)self->_bundleIdentifier copyWithZone:a3];
+  v9 = [(NSString *)self->_bundleIdentifier copyWithZone:zone];
   [v5 setBundleIdentifier:v9];
 
-  v10 = [(NSString *)self->_serviceType copyWithZone:a3];
+  v10 = [(NSString *)self->_serviceType copyWithZone:zone];
   [v5 setServiceType:v10];
 
-  v11 = [(CMSAuthenticationCredential *)self->_authCredential copyWithZone:a3];
+  v11 = [(CMSAuthenticationCredential *)self->_authCredential copyWithZone:zone];
   [v5 setAuthCredential:v11];
 
-  v12 = [(CMSAuthenticationConfiguration *)self->_authConfiguration copyWithZone:a3];
+  v12 = [(CMSAuthenticationConfiguration *)self->_authConfiguration copyWithZone:zone];
   [v5 setAuthConfiguration:v12];
 
   [v5 setAuthFatalError:{-[MediaService authFatalError](self, "authFatalError")}];
   [v5 setUpdateListeningHistoryEnabled:{-[MediaService updateListeningHistoryEnabled](self, "updateListeningHistoryEnabled")}];
   [v5 setServiceRemovable:{-[MediaService isServiceRemovable](self, "isServiceRemovable")}];
-  v13 = [(NSURL *)self->_remoteIconURL copyWithZone:a3];
+  v13 = [(NSURL *)self->_remoteIconURL copyWithZone:zone];
   [v5 setRemoteIconURL:v13];
 
-  v14 = [(NSURL *)self->_iconImageURL copyWithZone:a3];
+  v14 = [(NSURL *)self->_iconImageURL copyWithZone:zone];
   [v5 setIconImageURL:v14];
 
-  v15 = [(NSData *)self->_configAsset copyWithZone:a3];
+  v15 = [(NSData *)self->_configAsset copyWithZone:zone];
   [v5 setConfigAsset:v15];
 
-  v16 = [(NSString *)self->_configPublicKey copyWithZone:a3];
+  v16 = [(NSString *)self->_configPublicKey copyWithZone:zone];
   [v5 setConfigPublicKey:v16];
 
-  v17 = [(NSString *)self->_configETag copyWithZone:a3];
+  v17 = [(NSString *)self->_configETag copyWithZone:zone];
   [v5 setConfigETag:v17];
 
-  v18 = [(NSURL *)self->_configURL copyWithZone:a3];
+  v18 = [(NSURL *)self->_configURL copyWithZone:zone];
   [v5 setConfigURL:v18];
 
-  v19 = [(NSArray *)self->_alternateBundleIdentifiers copyWithZone:a3];
+  v19 = [(NSArray *)self->_alternateBundleIdentifiers copyWithZone:zone];
   [v5 setAlternateBundleIdentifiers:v19];
 
   return v5;
 }
 
-- (MediaService)initWithMediaServiceIdentifier:(id)a3
+- (MediaService)initWithMediaServiceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = MediaService;
   v5 = [(MediaService *)&v10 init];
   if (v5)
   {
-    if (!v4)
+    if (!identifierCopy)
     {
       NSLog(&cfstr_FailedToInitia_0.isa);
       v8 = 0;
       goto LABEL_6;
     }
 
-    v6 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v4];
+    v6 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:identifierCopy];
     serviceID = v5->_serviceID;
     v5->_serviceID = v6;
   }

@@ -2,7 +2,7 @@
 - (BOOL)p_canFastForward;
 - (BOOL)p_canFastReverse;
 - (TSKAVPlayerController)init;
-- (TSKAVPlayerController)initWithPlayer:(id)a3 delegate:(id)a4;
+- (TSKAVPlayerController)initWithPlayer:(id)player delegate:(id)delegate;
 - (double)absoluteCurrentTime;
 - (double)absoluteDuration;
 - (double)currentTime;
@@ -13,39 +13,39 @@
 - (void)beginScrubbing;
 - (void)dealloc;
 - (void)endScrubbing;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)p_applicationDidResignActive;
 - (void)p_applyVolumeToPlayerItem;
-- (void)p_playbackDidFailWithError:(id)a3;
-- (void)p_playerItemDidPlayToEndTime:(id)a3;
+- (void)p_playbackDidFailWithError:(id)error;
+- (void)p_playerItemDidPlayToEndTime:(id)time;
 - (void)p_startObservingClosedCaptionDisplayEnabled;
 - (void)p_stopObservingClosedCaptionDisplayEnabled;
 - (void)p_updateClosedCaptionDisplayEnabled;
-- (void)playerItemDidPlayToEndTimeAtRate:(float)a3;
-- (void)scrubToTime:(double)a3 withTolerance:(double)a4 completionHandler:(id)a5;
+- (void)playerItemDidPlayToEndTimeAtRate:(float)rate;
+- (void)scrubToTime:(double)time withTolerance:(double)tolerance completionHandler:(id)handler;
 - (void)seekBackwardByOneFrame;
 - (void)seekForwardByOneFrame;
 - (void)seekToBeginning;
 - (void)seekToEnd;
-- (void)setEndTime:(double)a3;
-- (void)setFastForwarding:(BOOL)a3;
-- (void)setFastReversing:(BOOL)a3;
-- (void)setPlaying:(BOOL)a3;
-- (void)setRepeatMode:(int64_t)a3;
-- (void)setStartTime:(double)a3;
-- (void)setVolume:(float)a3;
+- (void)setEndTime:(double)time;
+- (void)setFastForwarding:(BOOL)forwarding;
+- (void)setFastReversing:(BOOL)reversing;
+- (void)setPlaying:(BOOL)playing;
+- (void)setRepeatMode:(int64_t)mode;
+- (void)setStartTime:(double)time;
+- (void)setVolume:(float)volume;
 - (void)teardown;
 @end
 
 @implementation TSKAVPlayerController
 
-- (TSKAVPlayerController)initWithPlayer:(id)a3 delegate:(id)a4
+- (TSKAVPlayerController)initWithPlayer:(id)player delegate:(id)delegate
 {
-  if (!a3)
+  if (!player)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKAVPlayerController initWithPlayer:delegate:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKAVPlayerController.m"), 59, @"Invalid parameter not satisfying: %s", "player != nil"}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKAVPlayerController.m"), 59, @"Invalid parameter not satisfying: %s", "player != nil"}];
   }
 
   v13.receiver = self;
@@ -56,10 +56,10 @@
   {
     v9->mRepeatMode = 0;
     v9->mVolume = 1.0;
-    v9->mDelegate = a4;
-    v11 = a3;
-    v10->mPlayer = v11;
-    [(AVPlayer *)v11 setActionAtItemEnd:2];
+    v9->mDelegate = delegate;
+    playerCopy = player;
+    v10->mPlayer = playerCopy;
+    [(AVPlayer *)playerCopy setActionAtItemEnd:2];
     [(AVPlayer *)v10->mPlayer addObserver:v10 forKeyPath:@"currentItem" options:7 context:TSKAVPlayerControllerAVPlayerCurrentItemObserverContext];
     [(AVPlayer *)v10->mPlayer addObserver:v10 forKeyPath:@"rate" options:7 context:TSKAVPlayerControllerAVPlayerRateObserverContext];
     [(TSKAVPlayerController *)v10 p_startObservingClosedCaptionDisplayEnabled];
@@ -70,9 +70,9 @@
 
 - (TSKAVPlayerController)init
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKAVPlayerController init]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKAVPlayerController.m"), 82, @"Do not call method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKAVPlayerController.m"), 82, @"Do not call method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Do not call method", "-[TSKAVPlayerController init]"), 0}]);
 }
 
@@ -80,9 +80,9 @@
 {
   if (self->mDelegate)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKAVPlayerController dealloc]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKAVPlayerController.m"), 88, @"-teardown must be called before dealloc"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKAVPlayerController.m"), 88, @"-teardown must be called before dealloc"}];
   }
 
   v5.receiver = self;
@@ -102,25 +102,25 @@
   {
     if ([(TSKAVPlayerController *)self isPlaying]|| [(TSKAVPlayerController *)self isFastReversing]|| [(TSKAVPlayerController *)self isFastForwarding])
     {
-      v4 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKAVPlayerController teardown]"];
-      [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKAVPlayerController.m"), 107, @"player controller should not be playing when it is told to teardown"}];
+      [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKAVPlayerController.m"), 107, @"player controller should not be playing when it is told to teardown"}];
     }
 
     [(TSKAVPlayerController *)self p_stopObservingClosedCaptionDisplayEnabled];
-    v6 = [(TSKAVPlayerController *)self player];
-    [(AVPlayer *)v6 setRate:0.0];
-    v7 = [(AVPlayer *)v6 currentItem];
-    if (v7)
+    player = [(TSKAVPlayerController *)self player];
+    [(AVPlayer *)player setRate:0.0];
+    currentItem = [(AVPlayer *)player currentItem];
+    if (currentItem)
     {
-      v8 = v7;
-      v9 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v9 removeObserver:self name:*MEMORY[0x277CE60C0] object:v8];
+      v8 = currentItem;
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter removeObserver:self name:*MEMORY[0x277CE60C0] object:v8];
     }
 
-    [(AVPlayer *)v6 removeObserver:self forKeyPath:@"currentItem" context:TSKAVPlayerControllerAVPlayerCurrentItemObserverContext];
-    [(AVPlayer *)v6 removeObserver:self forKeyPath:@"rate" context:TSKAVPlayerControllerAVPlayerRateObserverContext];
-    [(AVPlayer *)v6 replaceCurrentItemWithPlayerItem:0];
+    [(AVPlayer *)player removeObserver:self forKeyPath:@"currentItem" context:TSKAVPlayerControllerAVPlayerCurrentItemObserverContext];
+    [(AVPlayer *)player removeObserver:self forKeyPath:@"rate" context:TSKAVPlayerControllerAVPlayerRateObserverContext];
+    [(AVPlayer *)player replaceCurrentItemWithPlayerItem:0];
 
     self->mDelegate = 0;
   }
@@ -128,14 +128,14 @@
 
 - (double)duration
 {
-  v3 = [[(TSKAVPlayerController *)self player] currentItem];
-  if (!v3)
+  currentItem = [[(TSKAVPlayerController *)self player] currentItem];
+  if (!currentItem)
   {
     return NAN;
   }
 
   memset(&v8[1], 0, sizeof(CMTime));
-  [(AVPlayerItem *)v3 duration];
+  [(AVPlayerItem *)currentItem duration];
   if (0 >> 96 != 1)
   {
     return NAN;
@@ -150,14 +150,14 @@
 
 - (double)absoluteDuration
 {
-  v2 = [[(TSKAVPlayerController *)self player] currentItem];
-  if (!v2)
+  currentItem = [[(TSKAVPlayerController *)self player] currentItem];
+  if (!currentItem)
   {
     return NAN;
   }
 
   memset(&v4[1], 0, sizeof(CMTime));
-  [(AVPlayerItem *)v2 duration];
+  [(AVPlayerItem *)currentItem duration];
   if (0 >> 96 != 1)
   {
     return NAN;
@@ -169,14 +169,14 @@
 
 - (double)startTime
 {
-  v2 = [[(TSKAVPlayerController *)self player] currentItem];
-  if (!v2)
+  currentItem = [[(TSKAVPlayerController *)self player] currentItem];
+  if (!currentItem)
   {
     return NAN;
   }
 
   memset(&v4[1], 0, sizeof(CMTime));
-  [(AVPlayerItem *)v2 reversePlaybackEndTime];
+  [(AVPlayerItem *)currentItem reversePlaybackEndTime];
   result = 0.0;
   if (0 >> 96 == 1)
   {
@@ -187,14 +187,14 @@
   return result;
 }
 
-- (void)setStartTime:(double)a3
+- (void)setStartTime:(double)time
 {
-  v4 = [[(TSKAVPlayerController *)self player] currentItem];
-  if (v4)
+  currentItem = [[(TSKAVPlayerController *)self player] currentItem];
+  if (currentItem)
   {
-    v5 = v4;
+    v5 = currentItem;
     memset(&v10, 0, sizeof(v10));
-    CMTimeMakeWithSeconds(&v10, a3, 90000);
+    CMTimeMakeWithSeconds(&v10, time, 90000);
     memset(&v9, 0, sizeof(v9));
     [(AVPlayerItem *)v5 currentTime];
     time1 = v9;
@@ -214,15 +214,15 @@
 
 - (double)endTime
 {
-  v2 = [[(TSKAVPlayerController *)self player] currentItem];
-  if (!v2)
+  currentItem = [[(TSKAVPlayerController *)self player] currentItem];
+  if (!currentItem)
   {
     return NAN;
   }
 
-  v3 = v2;
+  v3 = currentItem;
   memset(&v6[1], 0, sizeof(CMTime));
-  [(AVPlayerItem *)v2 forwardPlaybackEndTime];
+  [(AVPlayerItem *)currentItem forwardPlaybackEndTime];
   if (0 >> 96 == 1)
   {
     v6[0] = v6[1];
@@ -230,10 +230,10 @@
 
   else
   {
-    v5 = [(AVPlayerItem *)v3 asset];
-    if (v5)
+    asset = [(AVPlayerItem *)v3 asset];
+    if (asset)
     {
-      [(AVAsset *)v5 duration];
+      [(AVAsset *)asset duration];
     }
 
     else
@@ -245,14 +245,14 @@
   return CMTimeGetSeconds(v6);
 }
 
-- (void)setEndTime:(double)a3
+- (void)setEndTime:(double)time
 {
-  v4 = [[(TSKAVPlayerController *)self player] currentItem];
-  if (v4)
+  currentItem = [[(TSKAVPlayerController *)self player] currentItem];
+  if (currentItem)
   {
-    v5 = v4;
+    v5 = currentItem;
     memset(&v10, 0, sizeof(v10));
-    CMTimeMakeWithSeconds(&v10, a3, 90000);
+    CMTimeMakeWithSeconds(&v10, time, 90000);
     memset(&v9, 0, sizeof(v9));
     [(AVPlayerItem *)v5 currentTime];
     time1 = v9;
@@ -270,16 +270,16 @@
   }
 }
 
-- (void)setRepeatMode:(int64_t)a3
+- (void)setRepeatMode:(int64_t)mode
 {
-  if (self->mRepeatMode != a3)
+  if (self->mRepeatMode != mode)
   {
-    self->mRepeatMode = a3;
-    v4 = [(TSKAVPlayerController *)self player];
+    self->mRepeatMode = mode;
+    player = [(TSKAVPlayerController *)self player];
     if (self->mRepeatMode != 2)
     {
-      v5 = v4;
-      [(AVPlayer *)v4 rate];
+      v5 = player;
+      [(AVPlayer *)player rate];
       if (*&v6 < 0.0)
       {
         LODWORD(v6) = 1.0;
@@ -290,11 +290,11 @@
   }
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
-  if (self->mVolume != a3)
+  if (self->mVolume != volume)
   {
-    self->mVolume = a3;
+    self->mVolume = volume;
     [(TSKAVPlayerController *)self p_applyVolumeToPlayerItem];
   }
 }
@@ -304,10 +304,10 @@
   v27 = *MEMORY[0x277D85DE8];
   [(TSKAVPlayerController *)self volume];
   v4 = v3;
-  v5 = [[(TSKAVPlayerController *)self player] currentItem];
-  if (v5)
+  currentItem = [[(TSKAVPlayerController *)self player] currentItem];
+  if (currentItem)
   {
-    v6 = v5;
+    v6 = currentItem;
     if (v4 == 1.0)
     {
       v17 = 0;
@@ -316,8 +316,8 @@
     else
     {
       v18 = objc_alloc_init(MEMORY[0x277CE6538]);
-      v7 = [(AVPlayerItem *)v6 asset];
-      v8 = [(AVAsset *)v7 tracksWithMediaType:*MEMORY[0x277CE5E48]];
+      asset = [(AVPlayerItem *)v6 asset];
+      v8 = [(AVAsset *)asset tracksWithMediaType:*MEMORY[0x277CE5E48]];
       v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSArray count](v8, "count")}];
       v22 = 0u;
       v23 = 0u;
@@ -369,11 +369,11 @@
 - (double)absoluteCurrentTime
 {
   self->_absoluteCurrentTime = 0.0;
-  v3 = [[(TSKAVPlayerController *)self player] currentItem];
-  if (v3)
+  currentItem = [[(TSKAVPlayerController *)self player] currentItem];
+  if (currentItem)
   {
-    v4 = v3;
-    if ([(AVPlayerItem *)v3 status]== AVPlayerItemStatusReadyToPlay)
+    v4 = currentItem;
+    if ([(AVPlayerItem *)currentItem status]== AVPlayerItemStatusReadyToPlay)
     {
       [(AVPlayerItem *)v4 currentTime];
       self->_absoluteCurrentTime = fmax(CMTimeGetSeconds(&time), 0.0);
@@ -385,12 +385,12 @@
 
 - (double)currentTime
 {
-  v3 = [[(TSKAVPlayerController *)self player] currentItem];
+  currentItem = [[(TSKAVPlayerController *)self player] currentItem];
   v4 = 0.0;
-  if (v3)
+  if (currentItem)
   {
-    v5 = v3;
-    if ([(AVPlayerItem *)v3 status]== AVPlayerItemStatusReadyToPlay)
+    v5 = currentItem;
+    if ([(AVPlayerItem *)currentItem status]== AVPlayerItemStatusReadyToPlay)
     {
       [(AVPlayerItem *)v5 currentTime];
       CMTimeGetSeconds(&time);
@@ -406,12 +406,12 @@
 
 - (double)remainingTime
 {
-  v3 = [[(TSKAVPlayerController *)self player] currentItem];
+  currentItem = [[(TSKAVPlayerController *)self player] currentItem];
   v4 = 0.0;
-  if (v3)
+  if (currentItem)
   {
-    v5 = v3;
-    if ([(AVPlayerItem *)v3 status]== AVPlayerItemStatusReadyToPlay)
+    v5 = currentItem;
+    if ([(AVPlayerItem *)currentItem status]== AVPlayerItemStatusReadyToPlay)
     {
       [(TSKAVPlayerController *)self endTime];
       v7 = v6;
@@ -438,29 +438,29 @@
     self->mScrubbingCount = v4 + 1;
     if (!v4)
     {
-      v5 = [(TSKAVPlayerController *)self player];
-      [(AVPlayer *)v5 rate];
+      player = [(TSKAVPlayerController *)self player];
+      [(AVPlayer *)player rate];
       self->mRateBeforeScrubbing = v6;
 
-      [(AVPlayer *)v5 setRate:0.0];
+      [(AVPlayer *)player setRate:0.0];
     }
   }
 }
 
-- (void)scrubToTime:(double)a3 withTolerance:(double)a4 completionHandler:(id)a5
+- (void)scrubToTime:(double)time withTolerance:(double)tolerance completionHandler:(id)handler
 {
   if (![(TSKAVPlayerController *)self isScrubbing])
   {
-    v9 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKAVPlayerController scrubToTime:withTolerance:completionHandler:]"];
-    [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKAVPlayerController.m"), 416, @"scrubbed to time when not in a scrubbing operation"}];
+    [currentHandler handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKAVPlayerController.m"), 416, @"scrubbed to time when not in a scrubbing operation"}];
   }
 
-  v11 = [(TSKAVPlayerController *)self player];
-  CMTimeMakeWithSeconds(&v14, a3, 90000);
-  CMTimeMakeWithSeconds(&v13, a4, 90000);
-  CMTimeMakeWithSeconds(&v12, a4, 90000);
-  [(AVPlayer *)v11 seekToTime:&v14 toleranceBefore:&v13 toleranceAfter:&v12 completionHandler:a5];
+  player = [(TSKAVPlayerController *)self player];
+  CMTimeMakeWithSeconds(&v14, time, 90000);
+  CMTimeMakeWithSeconds(&v13, tolerance, 90000);
+  CMTimeMakeWithSeconds(&v12, tolerance, 90000);
+  [(AVPlayer *)player seekToTime:&v14 toleranceBefore:&v13 toleranceAfter:&v12 completionHandler:handler];
 }
 
 - (void)endScrubbing
@@ -472,26 +472,26 @@
     self->mScrubbingCount = v6;
     if (!v6)
     {
-      v7 = [(TSKAVPlayerController *)self player];
-      v8 = [(AVPlayer *)v7 currentItem];
-      if (!v8)
+      player = [(TSKAVPlayerController *)self player];
+      currentItem = [(AVPlayer *)player currentItem];
+      if (!currentItem)
       {
         *&v9 = self->mRateBeforeScrubbing;
 LABEL_20:
-        [(AVPlayer *)v7 setRate:v9];
+        [(AVPlayer *)player setRate:v9];
         [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
         return;
       }
 
-      v10 = v8;
+      v10 = currentItem;
       memset(&v19, 0, sizeof(v19));
-      [(AVPlayerItem *)v8 forwardPlaybackEndTime];
+      [(AVPlayerItem *)currentItem forwardPlaybackEndTime];
       if (0 >> 96 == 1)
       {
-        v11 = [(TSKAVPlayerController *)self player];
-        if (v11)
+        player2 = [(TSKAVPlayerController *)self player];
+        if (player2)
         {
-          [(AVPlayer *)v11 currentTime];
+          [(AVPlayer *)player2 currentTime];
         }
 
         else
@@ -512,10 +512,10 @@ LABEL_20:
       [(AVPlayerItem *)v10 reversePlaybackEndTime];
       if ((time1.flags & 0x1D) == 1)
       {
-        v13 = [(TSKAVPlayerController *)self player];
-        if (v13)
+        player3 = [(TSKAVPlayerController *)self player];
+        if (player3)
         {
-          [(AVPlayer *)v13 currentTime];
+          [(AVPlayer *)player3 currentTime];
         }
 
         else
@@ -547,14 +547,14 @@ LABEL_20:
 
 - (void)seekForwardByOneFrame
 {
-  v3 = [[(TSKAVPlayerController *)self player] currentItem];
-  v4 = v3;
-  if (v3 && (memset(&v9, 0, sizeof(v9)), [(AVPlayerItem *)v3 forwardPlaybackEndTime], 0 >> 96 == 1))
+  currentItem = [[(TSKAVPlayerController *)self player] currentItem];
+  v4 = currentItem;
+  if (currentItem && (memset(&v9, 0, sizeof(v9)), [(AVPlayerItem *)currentItem forwardPlaybackEndTime], 0 >> 96 == 1))
   {
-    v5 = [(TSKAVPlayerController *)self player];
-    if (v5)
+    player = [(TSKAVPlayerController *)self player];
+    if (player)
     {
-      [(AVPlayer *)v5 currentTime];
+      [(AVPlayer *)player currentTime];
     }
 
     else
@@ -582,14 +582,14 @@ LABEL_20:
 
 - (void)seekBackwardByOneFrame
 {
-  v3 = [[(TSKAVPlayerController *)self player] currentItem];
-  v4 = v3;
-  if (v3 && (memset(&v9, 0, sizeof(v9)), [(AVPlayerItem *)v3 reversePlaybackEndTime], 0 >> 96 == 1))
+  currentItem = [[(TSKAVPlayerController *)self player] currentItem];
+  v4 = currentItem;
+  if (currentItem && (memset(&v9, 0, sizeof(v9)), [(AVPlayerItem *)currentItem reversePlaybackEndTime], 0 >> 96 == 1))
   {
-    v5 = [(TSKAVPlayerController *)self player];
-    if (v5)
+    player = [(TSKAVPlayerController *)self player];
+    if (player)
     {
-      [(AVPlayer *)v5 currentTime];
+      [(AVPlayer *)player currentTime];
     }
 
     else
@@ -617,11 +617,11 @@ LABEL_20:
 
 - (void)seekToBeginning
 {
-  v2 = [(TSKAVPlayerController *)self player];
-  v3 = [(AVPlayer *)v2 currentItem];
-  if (v3)
+  player = [(TSKAVPlayerController *)self player];
+  currentItem = [(AVPlayer *)player currentItem];
+  if (currentItem)
   {
-    [(AVPlayerItem *)v3 reversePlaybackEndTime];
+    [(AVPlayerItem *)currentItem reversePlaybackEndTime];
   }
 
   else
@@ -629,16 +629,16 @@ LABEL_20:
     memset(v4, 0, sizeof(v4));
   }
 
-  [(AVPlayer *)v2 seekToTime:v4];
+  [(AVPlayer *)player seekToTime:v4];
 }
 
 - (void)seekToEnd
 {
-  v2 = [(TSKAVPlayerController *)self player];
-  v3 = [(AVPlayer *)v2 currentItem];
-  if (v3)
+  player = [(TSKAVPlayerController *)self player];
+  currentItem = [(AVPlayer *)player currentItem];
+  if (currentItem)
   {
-    [(AVPlayerItem *)v3 forwardPlaybackEndTime];
+    [(AVPlayerItem *)currentItem forwardPlaybackEndTime];
   }
 
   else
@@ -646,30 +646,30 @@ LABEL_20:
     memset(v4, 0, sizeof(v4));
   }
 
-  [(AVPlayer *)v2 seekToTime:v4];
+  [(AVPlayer *)player seekToTime:v4];
 }
 
-- (void)setPlaying:(BOOL)a3
+- (void)setPlaying:(BOOL)playing
 {
-  if (self->mPlaying != a3)
+  if (self->mPlaying != playing)
   {
     v19 = v3;
     v20 = v4;
-    v5 = a3;
-    self->mPlaying = a3;
-    v7 = [(TSKAVPlayerController *)self player];
-    v8 = v7;
-    if (v5)
+    playingCopy = playing;
+    self->mPlaying = playing;
+    player = [(TSKAVPlayerController *)self player];
+    v8 = player;
+    if (playingCopy)
     {
-      [(AVPlayer *)v7 rate];
+      [(AVPlayer *)player rate];
       if (*&v9 == 0.0)
       {
-        v10 = [(AVPlayer *)v8 currentItem];
-        v11 = v10;
+        currentItem = [(AVPlayer *)v8 currentItem];
+        v11 = currentItem;
         memset(&v18[1], 0, sizeof(CMTime));
-        if (v10)
+        if (currentItem)
         {
-          [(AVPlayerItem *)v10 currentTime];
+          [(AVPlayerItem *)currentItem currentTime];
         }
 
         memset(v18, 0, 24);
@@ -706,18 +706,18 @@ LABEL_20:
 
 - (BOOL)p_canFastReverse
 {
-  v3 = [(TSKAVPlayerController *)self player];
-  v4 = [(AVPlayer *)v3 currentItem];
-  v5 = [(AVPlayerItem *)v4 canPlayFastReverse];
-  if (v5)
+  player = [(TSKAVPlayerController *)self player];
+  currentItem = [(AVPlayer *)player currentItem];
+  canPlayFastReverse = [(AVPlayerItem *)currentItem canPlayFastReverse];
+  if (canPlayFastReverse)
   {
-    [(AVPlayer *)v3 rate];
+    [(AVPlayer *)player rate];
     if (v6 == 0.0)
     {
       memset(&v12, 0, sizeof(v12));
-      if (v4)
+      if (currentItem)
       {
-        [(AVPlayerItem *)v4 currentTime];
+        [(AVPlayerItem *)currentItem currentTime];
       }
 
       memset(&v11, 0, sizeof(v11));
@@ -725,30 +725,30 @@ LABEL_20:
       CMTimeMakeWithSeconds(&v11, v7, 90000);
       time1 = v12;
       v9 = v11;
-      LOBYTE(v5) = CMTimeCompare(&time1, &v9) > 0;
+      LOBYTE(canPlayFastReverse) = CMTimeCompare(&time1, &v9) > 0;
     }
 
     else
     {
-      LOBYTE(v5) = 1;
+      LOBYTE(canPlayFastReverse) = 1;
     }
   }
 
-  return v5;
+  return canPlayFastReverse;
 }
 
-- (void)setFastReversing:(BOOL)a3
+- (void)setFastReversing:(BOOL)reversing
 {
-  if (self->mFastReversing != a3)
+  if (self->mFastReversing != reversing)
   {
-    if (a3)
+    if (reversing)
     {
       if ([(TSKAVPlayerController *)self p_canFastReverse])
       {
         self->mFastReversing = 1;
-        v4 = [(TSKAVPlayerController *)self player];
+        player = [(TSKAVPlayerController *)self player];
         LODWORD(v5) = -2.0;
-        [(AVPlayer *)v4 setRate:v5];
+        [(AVPlayer *)player setRate:v5];
 
         [(TSKAVPlayerController *)self setFastForwarding:0];
       }
@@ -759,9 +759,9 @@ LABEL_20:
       self->mFastReversing = 0;
       if (![(TSKAVPlayerController *)self isFastForwarding])
       {
-        v6 = [(TSKAVPlayerController *)self isPlaying];
-        v7 = [(TSKAVPlayerController *)self player];
-        if (v6)
+        isPlaying = [(TSKAVPlayerController *)self isPlaying];
+        player2 = [(TSKAVPlayerController *)self player];
+        if (isPlaying)
         {
           LODWORD(v8) = 1.0;
         }
@@ -771,7 +771,7 @@ LABEL_20:
           v8 = 0.0;
         }
 
-        [(AVPlayer *)v7 setRate:v8];
+        [(AVPlayer *)player2 setRate:v8];
       }
     }
   }
@@ -779,18 +779,18 @@ LABEL_20:
 
 - (BOOL)p_canFastForward
 {
-  v3 = [(TSKAVPlayerController *)self player];
-  v4 = [(AVPlayer *)v3 currentItem];
-  v5 = [(AVPlayerItem *)v4 canPlayFastForward];
-  if (v5)
+  player = [(TSKAVPlayerController *)self player];
+  currentItem = [(AVPlayer *)player currentItem];
+  canPlayFastForward = [(AVPlayerItem *)currentItem canPlayFastForward];
+  if (canPlayFastForward)
   {
-    [(AVPlayer *)v3 rate];
+    [(AVPlayer *)player rate];
     if (v6 == 0.0)
     {
       memset(&v12, 0, sizeof(v12));
-      if (v4)
+      if (currentItem)
       {
-        [(AVPlayerItem *)v4 currentTime];
+        [(AVPlayerItem *)currentItem currentTime];
       }
 
       memset(&v11, 0, sizeof(v11));
@@ -803,25 +803,25 @@ LABEL_20:
 
     else
     {
-      LOBYTE(v5) = 1;
+      LOBYTE(canPlayFastForward) = 1;
     }
   }
 
-  return v5;
+  return canPlayFastForward;
 }
 
-- (void)setFastForwarding:(BOOL)a3
+- (void)setFastForwarding:(BOOL)forwarding
 {
-  if (self->mFastForwarding != a3)
+  if (self->mFastForwarding != forwarding)
   {
-    if (a3)
+    if (forwarding)
     {
       if ([(TSKAVPlayerController *)self p_canFastForward])
       {
         self->mFastForwarding = 1;
-        v4 = [(TSKAVPlayerController *)self player];
+        player = [(TSKAVPlayerController *)self player];
         LODWORD(v5) = 2.0;
-        [(AVPlayer *)v4 setRate:v5];
+        [(AVPlayer *)player setRate:v5];
 
         [(TSKAVPlayerController *)self setFastReversing:0];
       }
@@ -832,9 +832,9 @@ LABEL_20:
       self->mFastForwarding = 0;
       if (![(TSKAVPlayerController *)self isFastReversing])
       {
-        v6 = [(TSKAVPlayerController *)self isPlaying];
-        v7 = [(TSKAVPlayerController *)self player];
-        if (v6)
+        isPlaying = [(TSKAVPlayerController *)self isPlaying];
+        player2 = [(TSKAVPlayerController *)self player];
+        if (isPlaying)
         {
           LODWORD(v8) = 1.0;
         }
@@ -844,7 +844,7 @@ LABEL_20:
           v8 = 0.0;
         }
 
-        [(AVPlayer *)v7 setRate:v8];
+        [(AVPlayer *)player2 setRate:v8];
       }
     }
   }
@@ -852,39 +852,39 @@ LABEL_20:
 
 - (void)p_startObservingClosedCaptionDisplayEnabled
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_p_closedCaptioningStatusDidChange_ name:*MEMORY[0x277D76458] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_p_closedCaptioningStatusDidChange_ name:*MEMORY[0x277D76458] object:0];
 
   [(TSKAVPlayerController *)self p_updateClosedCaptionDisplayEnabled];
 }
 
 - (void)p_stopObservingClosedCaptionDisplayEnabled
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v4 = *MEMORY[0x277D76458];
 
-  [v3 removeObserver:self name:v4 object:0];
+  [defaultCenter removeObserver:self name:v4 object:0];
 }
 
 - (void)p_updateClosedCaptionDisplayEnabled
 {
   IsClosedCaptioningEnabled = UIAccessibilityIsClosedCaptioningEnabled();
-  v4 = [(TSKAVPlayerController *)self player];
+  player = [(TSKAVPlayerController *)self player];
 
-  [(AVPlayer *)v4 setClosedCaptionDisplayEnabled:IsClosedCaptioningEnabled];
+  [(AVPlayer *)player setClosedCaptionDisplayEnabled:IsClosedCaptioningEnabled];
 }
 
-- (void)playerItemDidPlayToEndTimeAtRate:(float)a3
+- (void)playerItemDidPlayToEndTimeAtRate:(float)rate
 {
-  v4 = self;
+  selfCopy = self;
   [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
-  v5 = self;
-  v6 = [(TSKAVPlayerController *)self repeatMode];
-  if (v6)
+  selfCopy2 = self;
+  repeatMode = [(TSKAVPlayerController *)self repeatMode];
+  if (repeatMode)
   {
-    if (v6 == 2)
+    if (repeatMode == 2)
     {
-      if (a3 >= 0.0)
+      if (rate >= 0.0)
       {
         [(TSKAVPlayerController *)self endTime];
       }
@@ -896,17 +896,17 @@ LABEL_20:
 
       memset(&v19, 0, sizeof(v19));
       CMTimeMakeWithSeconds(&v19, v8, 90000);
-      v10 = [(TSKAVPlayerController *)self player];
-      *&v11 = -a3;
+      player = [(TSKAVPlayerController *)self player];
+      *&v11 = -rate;
       v18 = v19;
       v16 = *MEMORY[0x277CC0898];
       v17 = *(MEMORY[0x277CC0898] + 16);
-      [(AVPlayer *)v10 setRate:&v18 time:&v16 atHostTime:v11];
+      [(AVPlayer *)player setRate:&v18 time:&v16 atHostTime:v11];
     }
 
-    else if (v6 == 1)
+    else if (repeatMode == 1)
     {
-      if (a3 >= 0.0)
+      if (rate >= 0.0)
       {
         [(TSKAVPlayerController *)self startTime];
       }
@@ -918,41 +918,41 @@ LABEL_20:
 
       memset(&v19, 0, sizeof(v19));
       CMTimeMakeWithSeconds(&v19, v7, 90000);
-      v12 = [[(TSKAVPlayerController *)self player] currentItem];
+      currentItem = [[(TSKAVPlayerController *)self player] currentItem];
       v18 = v19;
       v16 = *MEMORY[0x277CC08F0];
       v17 = *(MEMORY[0x277CC08F0] + 16);
       v14 = v16;
       v15 = v17;
-      [(AVPlayerItem *)v12 seekToTime:&v18 toleranceBefore:&v16 toleranceAfter:&v14];
+      [(AVPlayerItem *)currentItem seekToTime:&v18 toleranceBefore:&v16 toleranceAfter:&v14];
     }
   }
 
   else
   {
-    v9 = self;
+    selfCopy3 = self;
     [(TSKAVPlayerController *)self setPlaying:0];
     [(TSKAVPlayerController *)self setFastReversing:0];
     [(TSKAVPlayerController *)self setFastForwarding:0];
-    if (a3 > 0.0)
+    if (rate > 0.0)
     {
       [(TSKAVPlayerControllerDelegate *)[(TSKAVPlayerController *)self delegate] playbackDidStopForPlayerController:self];
     }
   }
 }
 
-- (void)p_playerItemDidPlayToEndTime:(id)a3
+- (void)p_playerItemDidPlayToEndTime:(id)time
 {
   [[(TSKAVPlayerController *)self player] rate];
 
   [(TSKAVPlayerController *)self playerItemDidPlayToEndTimeAtRate:?];
 }
 
-- (void)p_playbackDidFailWithError:(id)a3
+- (void)p_playbackDidFailWithError:(id)error
 {
-  v5 = [(TSKAVPlayerController *)self delegate];
+  delegate = [(TSKAVPlayerController *)self delegate];
 
-  [(TSKAVPlayerControllerDelegate *)v5 playerController:self playbackDidFailWithError:a3];
+  [(TSKAVPlayerControllerDelegate *)delegate playerController:self playbackDidFailWithError:error];
 }
 
 - (void)p_applicationDidResignActive
@@ -960,28 +960,28 @@ LABEL_20:
   [(TSKAVPlayerController *)self setPlaying:0];
   [(TSKAVPlayerController *)self setFastReversing:0];
   [(TSKAVPlayerController *)self setFastForwarding:0];
-  v3 = [(TSKAVPlayerController *)self delegate];
+  delegate = [(TSKAVPlayerController *)self delegate];
 
-  [(TSKAVPlayerControllerDelegate *)v3 playbackDidStopForPlayerController:self];
+  [(TSKAVPlayerControllerDelegate *)delegate playbackDidStopForPlayerController:self];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v11 = [MEMORY[0x277CCAB98] defaultCenter];
-  if (TSKAVPlayerControllerAVPlayerCurrentItemObserverContext == a6)
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  if (TSKAVPlayerControllerAVPlayerCurrentItemObserverContext == context)
   {
-    v12 = [a5 objectForKey:*MEMORY[0x277CCA300]];
+    v12 = [change objectForKey:*MEMORY[0x277CCA300]];
     if (v12)
     {
       v13 = v12;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v11 removeObserver:self name:*MEMORY[0x277CE60C0] object:v13];
+        [defaultCenter removeObserver:self name:*MEMORY[0x277CE60C0] object:v13];
       }
     }
 
-    v14 = [a5 objectForKey:*MEMORY[0x277CCA2F0]];
+    v14 = [change objectForKey:*MEMORY[0x277CCA2F0]];
     if (v14)
     {
       v15 = v14;
@@ -990,17 +990,17 @@ LABEL_20:
       {
         if (![(TSKAVPlayerController *)self canPlay])
         {
-          v16 = [v15 asset];
+          asset = [v15 asset];
           v36[0] = MEMORY[0x277D85DD0];
           v36[1] = 3221225472;
           v36[2] = __72__TSKAVPlayerController_observeValueForKeyPath_ofObject_change_context___block_invoke;
           v36[3] = &unk_279D47708;
-          v36[4] = v16;
+          v36[4] = asset;
           v36[5] = self;
-          [v16 loadValuesAsynchronouslyForKeys:&unk_287DDCAE0 completionHandler:v36];
+          [asset loadValuesAsynchronouslyForKeys:&unk_287DDCAE0 completionHandler:v36];
         }
 
-        [v11 addObserver:self selector:sel_p_playerItemDidPlayToEndTime_ name:*MEMORY[0x277CE60C0] object:v15];
+        [defaultCenter addObserver:self selector:sel_p_playerItemDidPlayToEndTime_ name:*MEMORY[0x277CE60C0] object:v15];
         [(TSKAVPlayerController *)self p_applyVolumeToPlayerItem];
       }
     }
@@ -1008,30 +1008,30 @@ LABEL_20:
 
   else
   {
-    if (TSKAVPlayerControllerAVPlayerStatusObserverContext == a6)
+    if (TSKAVPlayerControllerAVPlayerStatusObserverContext == context)
     {
       if ([[(TSKAVPlayerController *)self player] status]!= AVPlayerStatusFailed)
       {
         return;
       }
 
-      v17 = [[(TSKAVPlayerController *)self player] error];
-      if (!v17)
+      error = [[(TSKAVPlayerController *)self player] error];
+      if (!error)
       {
-        v18 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKAVPlayerController observeValueForKeyPath:ofObject:change:context:]"];
-        [v18 handleFailureInFunction:v19 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKAVPlayerController.m"), 801, @"invalid nil value for '%s'", "playerError"}];
+        [currentHandler handleFailureInFunction:v19 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKAVPlayerController.m"), 801, @"invalid nil value for '%s'", "playerError"}];
       }
     }
 
     else
     {
-      if (TSKAVPlayerControllerAVPlayerItemStatusObserverContext != a6)
+      if (TSKAVPlayerControllerAVPlayerItemStatusObserverContext != context)
       {
-        if (TSKAVPlayerControllerAVPlayerRateObserverContext == a6)
+        if (TSKAVPlayerControllerAVPlayerRateObserverContext == context)
         {
           objc_opt_class();
-          [a5 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+          [change objectForKeyedSubscript:*MEMORY[0x277CCA300]];
           v23 = TSUDynamicCast();
           v24 = 0.0;
           v25 = 0.0;
@@ -1042,37 +1042,37 @@ LABEL_20:
           }
 
           objc_opt_class();
-          [a5 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+          [change objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
           v27 = TSUDynamicCast();
           if (v27 && ([v27 floatValue], v24 = v28, v25 == 0.0) && v28 != 0.0)
           {
-            v29 = [(TSKAVPlayerController *)self player];
+            player = [(TSKAVPlayerController *)self player];
             [+[TSKMoviePlaybackRegistry sharedMoviePlaybackRegistry](TSKMoviePlaybackRegistry "sharedMoviePlaybackRegistry")];
-            [v11 addObserver:self selector:sel_p_applicationDidResignActive name:*MEMORY[0x277D76768] object:0];
+            [defaultCenter addObserver:self selector:sel_p_applicationDidResignActive name:*MEMORY[0x277D76768] object:0];
             if (!self->mIsObservingStatus)
             {
-              [(AVPlayer *)v29 addObserver:self forKeyPath:@"status" options:4 context:TSKAVPlayerControllerAVPlayerStatusObserverContext];
-              [(AVPlayer *)v29 addObserver:self forKeyPath:@"currentItem.status" options:4 context:TSKAVPlayerControllerAVPlayerItemStatusObserverContext];
+              [(AVPlayer *)player addObserver:self forKeyPath:@"status" options:4 context:TSKAVPlayerControllerAVPlayerStatusObserverContext];
+              [(AVPlayer *)player addObserver:self forKeyPath:@"currentItem.status" options:4 context:TSKAVPlayerControllerAVPlayerItemStatusObserverContext];
               self->mIsObservingStatus = 1;
             }
 
-            [(AVPlayer *)v29 rate];
+            [(AVPlayer *)player rate];
             if (v30 == 0.0 && self->mIsObservingStatus)
             {
-              [(AVPlayer *)v29 removeObserver:self forKeyPath:@"currentItem.status" context:TSKAVPlayerControllerAVPlayerItemStatusObserverContext];
-              [(AVPlayer *)v29 removeObserver:self forKeyPath:@"status" context:TSKAVPlayerControllerAVPlayerStatusObserverContext];
+              [(AVPlayer *)player removeObserver:self forKeyPath:@"currentItem.status" context:TSKAVPlayerControllerAVPlayerItemStatusObserverContext];
+              [(AVPlayer *)player removeObserver:self forKeyPath:@"status" context:TSKAVPlayerControllerAVPlayerStatusObserverContext];
               self->mIsObservingStatus = 0;
             }
           }
 
           else if (v25 != 0.0 && v24 == 0.0)
           {
-            v31 = [(TSKAVPlayerController *)self player];
-            [v11 removeObserver:self name:*MEMORY[0x277D76768] object:0];
+            player2 = [(TSKAVPlayerController *)self player];
+            [defaultCenter removeObserver:self name:*MEMORY[0x277D76768] object:0];
             if (self->mIsObservingStatus)
             {
-              [(AVPlayer *)v31 removeObserver:self forKeyPath:@"currentItem.status" context:TSKAVPlayerControllerAVPlayerItemStatusObserverContext];
-              [(AVPlayer *)v31 removeObserver:self forKeyPath:@"status" context:TSKAVPlayerControllerAVPlayerStatusObserverContext];
+              [(AVPlayer *)player2 removeObserver:self forKeyPath:@"currentItem.status" context:TSKAVPlayerControllerAVPlayerItemStatusObserverContext];
+              [(AVPlayer *)player2 removeObserver:self forKeyPath:@"status" context:TSKAVPlayerControllerAVPlayerStatusObserverContext];
               self->mIsObservingStatus = 0;
             }
 
@@ -1096,28 +1096,28 @@ LABEL_20:
         {
           v34.receiver = self;
           v34.super_class = TSKAVPlayerController;
-          [(TSKAVPlayerController *)&v34 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:a6];
+          [(TSKAVPlayerController *)&v34 observeValueForKeyPath:path ofObject:object change:change context:context];
         }
 
         return;
       }
 
-      v20 = [[(TSKAVPlayerController *)self player] currentItem];
-      if ([(AVPlayerItem *)v20 status]!= AVPlayerItemStatusFailed)
+      currentItem = [[(TSKAVPlayerController *)self player] currentItem];
+      if ([(AVPlayerItem *)currentItem status]!= AVPlayerItemStatusFailed)
       {
         return;
       }
 
-      v17 = [(AVPlayerItem *)v20 error];
-      if (!v17)
+      error = [(AVPlayerItem *)currentItem error];
+      if (!error)
       {
-        v21 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
         v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKAVPlayerController observeValueForKeyPath:ofObject:change:context:]"];
-        [v21 handleFailureInFunction:v22 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKAVPlayerController.m"), 812, @"invalid nil value for '%s'", "playerItemError"}];
+        [currentHandler2 handleFailureInFunction:v22 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKAVPlayerController.m"), 812, @"invalid nil value for '%s'", "playerItemError"}];
       }
     }
 
-    [(TSKAVPlayerController *)self p_playbackDidFailWithError:v17];
+    [(TSKAVPlayerController *)self p_playbackDidFailWithError:error];
   }
 }
 

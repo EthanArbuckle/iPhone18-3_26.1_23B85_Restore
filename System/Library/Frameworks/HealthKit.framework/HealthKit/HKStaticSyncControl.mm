@@ -1,24 +1,24 @@
 @interface HKStaticSyncControl
 + (id)taskIdentifier;
-- (HKStaticSyncControl)initWithHealthStore:(id)a3;
-- (void)runStaticSyncExportWithOptions:(unint64_t)a3 storeIdentifier:(id)a4 URL:(id)a5 batchSize:(unint64_t)a6 progressHandler:(id)a7 completion:(id)a8;
-- (void)runStaticSyncImportWithOptions:(unint64_t)a3 storeIdentifier:(id)a4 URL:(id)a5 progressHandler:(id)a6 completion:(id)a7;
+- (HKStaticSyncControl)initWithHealthStore:(id)store;
+- (void)runStaticSyncExportWithOptions:(unint64_t)options storeIdentifier:(id)identifier URL:(id)l batchSize:(unint64_t)size progressHandler:(id)handler completion:(id)completion;
+- (void)runStaticSyncImportWithOptions:(unint64_t)options storeIdentifier:(id)identifier URL:(id)l progressHandler:(id)handler completion:(id)completion;
 @end
 
 @implementation HKStaticSyncControl
 
-- (HKStaticSyncControl)initWithHealthStore:(id)a3
+- (HKStaticSyncControl)initWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = HKStaticSyncControl;
   v5 = [(HKStaticSyncControl *)&v12 init];
   if (v5)
   {
     v6 = [HKTaskServerProxyProvider alloc];
-    v7 = [objc_opt_class() taskIdentifier];
-    v8 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [(HKTaskServerProxyProvider *)v6 initWithHealthStore:v4 taskIdentifier:v7 exportedObject:v5 taskUUID:v8];
+    taskIdentifier = [objc_opt_class() taskIdentifier];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v9 = [(HKTaskServerProxyProvider *)v6 initWithHealthStore:storeCopy taskIdentifier:taskIdentifier exportedObject:v5 taskUUID:uUID];
     proxyProvider = v5->_proxyProvider;
     v5->_proxyProvider = v9;
 
@@ -35,24 +35,24 @@
   return NSStringFromClass(v2);
 }
 
-- (void)runStaticSyncExportWithOptions:(unint64_t)a3 storeIdentifier:(id)a4 URL:(id)a5 batchSize:(unint64_t)a6 progressHandler:(id)a7 completion:(id)a8
+- (void)runStaticSyncExportWithOptions:(unint64_t)options storeIdentifier:(id)identifier URL:(id)l batchSize:(unint64_t)size progressHandler:(id)handler completion:(id)completion
 {
-  v14 = a4;
-  v15 = a5;
+  identifierCopy = identifier;
+  lCopy = l;
   proxyProvider = self->_proxyProvider;
-  v17 = a8;
-  v18 = [(HKProxyProvider *)proxyProvider clientQueueProgressHandlerWithHandler:a7];
-  v19 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v17];
+  completionCopy = completion;
+  v18 = [(HKProxyProvider *)proxyProvider clientQueueProgressHandlerWithHandler:handler];
+  v19 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   v20 = self->_proxyProvider;
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __111__HKStaticSyncControl_runStaticSyncExportWithOptions_storeIdentifier_URL_batchSize_progressHandler_completion___block_invoke;
   v27[3] = &unk_1E737DC48;
-  v28 = v14;
-  v29 = v15;
-  v32 = a3;
-  v33 = a6;
+  v28 = identifierCopy;
+  v29 = lCopy;
+  optionsCopy = options;
+  sizeCopy = size;
   v30 = v19;
   v31 = v18;
   v25[0] = MEMORY[0x1E69E9820];
@@ -62,8 +62,8 @@
   v26 = v30;
   v21 = v30;
   v22 = v18;
-  v23 = v15;
-  v24 = v14;
+  v23 = lCopy;
+  v24 = identifierCopy;
   [(HKProxyProvider *)v20 fetchProxyWithHandler:v27 errorHandler:v25];
 }
 
@@ -78,23 +78,23 @@ uint64_t __111__HKStaticSyncControl_runStaticSyncExportWithOptions_storeIdentifi
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)runStaticSyncImportWithOptions:(unint64_t)a3 storeIdentifier:(id)a4 URL:(id)a5 progressHandler:(id)a6 completion:(id)a7
+- (void)runStaticSyncImportWithOptions:(unint64_t)options storeIdentifier:(id)identifier URL:(id)l progressHandler:(id)handler completion:(id)completion
 {
-  v12 = a4;
-  v13 = a5;
+  identifierCopy = identifier;
+  lCopy = l;
   proxyProvider = self->_proxyProvider;
-  v15 = a7;
-  v16 = [(HKProxyProvider *)proxyProvider clientQueueProgressHandlerWithHandler:a6];
-  v17 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v15];
+  completionCopy = completion;
+  v16 = [(HKProxyProvider *)proxyProvider clientQueueProgressHandlerWithHandler:handler];
+  v17 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
   v18 = self->_proxyProvider;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __101__HKStaticSyncControl_runStaticSyncImportWithOptions_storeIdentifier_URL_progressHandler_completion___block_invoke;
   v25[3] = &unk_1E737DC70;
-  v30 = a3;
-  v26 = v12;
-  v27 = v13;
+  optionsCopy = options;
+  v26 = identifierCopy;
+  v27 = lCopy;
   v28 = v17;
   v29 = v16;
   v23[0] = MEMORY[0x1E69E9820];
@@ -104,8 +104,8 @@ uint64_t __111__HKStaticSyncControl_runStaticSyncExportWithOptions_storeIdentifi
   v24 = v28;
   v19 = v28;
   v20 = v16;
-  v21 = v13;
-  v22 = v12;
+  v21 = lCopy;
+  v22 = identifierCopy;
   [(HKProxyProvider *)v18 fetchProxyWithHandler:v25 errorHandler:v23];
 }
 

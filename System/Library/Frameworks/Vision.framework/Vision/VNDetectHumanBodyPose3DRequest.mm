@@ -1,29 +1,29 @@
 @interface VNDetectHumanBodyPose3DRequest
 + (id)_supportedJointNamesRevision1;
 + (id)_supportedJointsGroupsNamesRevision1;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
 - (NSArray)supportedJointNamesAndReturnError:(NSError *)error;
 - (NSArray)supportedJointsGroupNamesAndReturnError:(NSError *)error;
 - (VNDetectHumanBodyPose3DRequest)initWithCompletionHandler:(VNRequestCompletionHandler)completionHandler;
-- (VNDetectHumanBodyPose3DRequest)initWithFrameAnalysisSpacing:(id *)a3 completionHandler:(id)a4;
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4;
-- (void)_initializeStateForRevision:(unint64_t)a3;
-- (void)resolvedRevisionDidChangeFromRevision:(unint64_t)a3;
+- (VNDetectHumanBodyPose3DRequest)initWithFrameAnalysisSpacing:(id *)spacing completionHandler:(id)handler;
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error;
+- (void)_initializeStateForRevision:(unint64_t)revision;
+- (void)resolvedRevisionDidChangeFromRevision:(unint64_t)revision;
 @end
 
 @implementation VNDetectHumanBodyPose3DRequest
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [v8 session];
+  contextCopy = context;
+  session = [contextCopy session];
   v19 = 0;
-  v10 = [(VNRequest *)self applicableDetectorAndOptions:&v19 forRevision:a3 loadedInSession:v9 error:a5];
+  v10 = [(VNRequest *)self applicableDetectorAndOptions:&v19 forRevision:revision loadedInSession:session error:error];
   v11 = v19;
   if (v10)
   {
-    v12 = [v8 imageBufferAndReturnError:a5];
+    v12 = [contextCopy imageBufferAndReturnError:error];
     v13 = v12;
     if (v12)
     {
@@ -32,9 +32,9 @@
       [v11 setObject:v14 forKeyedSubscript:@"VNDetectorProcessOption_InputImageBuffers"];
 
       [v11 setObject:self->_bodyPosePipelineWrapper forKeyedSubscript:@"VNHumanBodyPose3DDetectorProcessOption_ABPKPipeline"];
-      v15 = [v8 qosClass];
+      qosClass = [contextCopy qosClass];
       [(VNImageBasedRequest *)self regionOfInterest];
-      v16 = [v10 processUsingQualityOfServiceClass:v15 options:v11 regionOfInterest:self warningRecorder:a5 error:0 progressHandler:?];
+      v16 = [v10 processUsingQualityOfServiceClass:qosClass options:v11 regionOfInterest:self warningRecorder:error error:0 progressHandler:?];
       v17 = v16 != 0;
       if (v16)
       {
@@ -56,26 +56,26 @@
   return v17;
 }
 
-- (void)resolvedRevisionDidChangeFromRevision:(unint64_t)a3
+- (void)resolvedRevisionDidChangeFromRevision:(unint64_t)revision
 {
   v4.receiver = self;
   v4.super_class = VNDetectHumanBodyPose3DRequest;
-  [(VNRequest *)&v4 resolvedRevisionDidChangeFromRevision:a3];
+  [(VNRequest *)&v4 resolvedRevisionDidChangeFromRevision:revision];
   [(VNDetectHumanBodyPose3DRequest *)self _initializeStateForRevision:[(VNRequest *)self resolvedRevision]];
 }
 
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error
 {
-  if (a3 == 1)
+  if (revision == 1)
   {
     v4 = @"VNHumanBodyPose3DDetectorType";
     v5 = @"VNHumanBodyPose3DDetectorType";
   }
 
-  else if (a4)
+  else if (error)
   {
     [VNError errorForUnsupportedRevision:"errorForUnsupportedRevision:ofRequest:" ofRequest:?];
-    *a4 = v4 = 0;
+    *error = v4 = 0;
   }
 
   else
@@ -88,58 +88,58 @@
 
 - (NSArray)supportedJointsGroupNamesAndReturnError:(NSError *)error
 {
-  v5 = [(VNRequest *)self resolvedRevision];
-  if (v5 == 1)
+  resolvedRevision = [(VNRequest *)self resolvedRevision];
+  if (resolvedRevision == 1)
   {
-    v6 = [objc_opt_class() _supportedJointsGroupsNamesRevision1];
+    _supportedJointsGroupsNamesRevision1 = [objc_opt_class() _supportedJointsGroupsNamesRevision1];
   }
 
   else if (error)
   {
-    v7 = [VNError errorForUnsupportedRevision:v5 ofRequest:self];
+    v7 = [VNError errorForUnsupportedRevision:resolvedRevision ofRequest:self];
     v8 = v7;
-    v6 = 0;
+    _supportedJointsGroupsNamesRevision1 = 0;
     *error = v7;
   }
 
   else
   {
-    v6 = 0;
+    _supportedJointsGroupsNamesRevision1 = 0;
   }
 
-  return v6;
+  return _supportedJointsGroupsNamesRevision1;
 }
 
 - (NSArray)supportedJointNamesAndReturnError:(NSError *)error
 {
-  v5 = [(VNRequest *)self resolvedRevision];
-  if (v5 == 1)
+  resolvedRevision = [(VNRequest *)self resolvedRevision];
+  if (resolvedRevision == 1)
   {
-    v6 = [objc_opt_class() _supportedJointNamesRevision1];
+    _supportedJointNamesRevision1 = [objc_opt_class() _supportedJointNamesRevision1];
   }
 
   else if (error)
   {
-    v7 = [VNError errorForUnsupportedRevision:v5 ofRequest:self];
+    v7 = [VNError errorForUnsupportedRevision:resolvedRevision ofRequest:self];
     v8 = v7;
-    v6 = 0;
+    _supportedJointNamesRevision1 = 0;
     *error = v7;
   }
 
   else
   {
-    v6 = 0;
+    _supportedJointNamesRevision1 = 0;
   }
 
-  return v6;
+  return _supportedJointNamesRevision1;
 }
 
-- (VNDetectHumanBodyPose3DRequest)initWithFrameAnalysisSpacing:(id *)a3 completionHandler:(id)a4
+- (VNDetectHumanBodyPose3DRequest)initWithFrameAnalysisSpacing:(id *)spacing completionHandler:(id)handler
 {
   v8.receiver = self;
   v8.super_class = VNDetectHumanBodyPose3DRequest;
-  v7 = *a3;
-  v4 = [(VNStatefulRequest *)&v8 initWithFrameAnalysisSpacing:&v7 completionHandler:a4];
+  v7 = *spacing;
+  v4 = [(VNStatefulRequest *)&v8 initWithFrameAnalysisSpacing:&v7 completionHandler:handler];
   v5 = v4;
   if (v4)
   {
@@ -156,7 +156,7 @@
   return [(VNDetectHumanBodyPose3DRequest *)self initWithFrameAnalysisSpacing:&v4 completionHandler:completionHandler];
 }
 
-- (void)_initializeStateForRevision:(unint64_t)a3
+- (void)_initializeStateForRevision:(unint64_t)revision
 {
   self->_bodyPosePipelineWrapper = objc_alloc_init(VNABPKPipelineWrapper);
 

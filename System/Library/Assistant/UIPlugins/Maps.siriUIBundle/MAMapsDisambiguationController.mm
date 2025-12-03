@@ -1,22 +1,22 @@
 @interface MAMapsDisambiguationController
-- (MAMapsDisambiguationController)initWithDisambiguationSnippet:(id)a3;
+- (MAMapsDisambiguationController)initWithDisambiguationSnippet:(id)snippet;
 - (SALocalSearchDisambiguationMap)disambiguationSnippet;
-- (double)desiredHeightForWidth:(double)a3;
+- (double)desiredHeightForWidth:(double)width;
 - (id)_listSnippetView;
 - (void)dealloc;
-- (void)listView:(id)a3 didChooseMapItem:(id)a4 accessoryButtonTapped:(BOOL)a5;
+- (void)listView:(id)view didChooseMapItem:(id)item accessoryButtonTapped:(BOOL)tapped;
 - (void)loadView;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 @end
 
 @implementation MAMapsDisambiguationController
 
-- (MAMapsDisambiguationController)initWithDisambiguationSnippet:(id)a3
+- (MAMapsDisambiguationController)initWithDisambiguationSnippet:(id)snippet
 {
   v6.receiver = self;
   v6.super_class = MAMapsDisambiguationController;
-  v3 = [(MABaseSnippetViewController *)&v6 initWithSnippet:a3];
+  v3 = [(MABaseSnippetViewController *)&v6 initWithSnippet:snippet];
   v4 = v3;
   if (v3)
   {
@@ -30,8 +30,8 @@
 {
   if ([(MAMapsDisambiguationController *)self isViewLoaded])
   {
-    v3 = [(MAMapsDisambiguationController *)self _listSnippetView];
-    [v3 setDelegate:0];
+    _listSnippetView = [(MAMapsDisambiguationController *)self _listSnippetView];
+    [_listSnippetView setDelegate:0];
   }
 
   v4.receiver = self;
@@ -44,10 +44,10 @@
   v6.receiver = self;
   v6.super_class = MAMapsDisambiguationController;
   [(MAMapsDisambiguationController *)&v6 loadView];
-  v3 = [(MAMapsDisambiguationController *)self disambiguationSnippet];
-  v4 = [v3 items];
+  disambiguationSnippet = [(MAMapsDisambiguationController *)self disambiguationSnippet];
+  items = [disambiguationSnippet items];
 
-  v5 = [[MAListSnippetView alloc] initWithFrame:v4 mapItems:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
+  v5 = [[MAListSnippetView alloc] initWithFrame:items mapItems:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   [(MAListSnippetView *)v5 setDelegate:self];
   [(MAListSnippetView *)v5 setShouldDisplayLocationDetail:1];
   [(MAListSnippetView *)v5 _ma_updateSemanticContentAttribute];
@@ -55,10 +55,10 @@
   [(MAMapsDisambiguationController *)self setView:v5];
 }
 
-- (double)desiredHeightForWidth:(double)a3
+- (double)desiredHeightForWidth:(double)width
 {
-  v3 = [(MAMapsDisambiguationController *)self _listSnippetView];
-  [v3 desiredHeight];
+  _listSnippetView = [(MAMapsDisambiguationController *)self _listSnippetView];
+  [_listSnippetView desiredHeight];
   v5 = v4;
 
   return v5;
@@ -66,75 +66,75 @@
 
 - (SALocalSearchDisambiguationMap)disambiguationSnippet
 {
-  v3 = [(MAMapsDisambiguationController *)self snippet];
+  snippet = [(MAMapsDisambiguationController *)self snippet];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(MAMapsDisambiguationController *)self snippet];
+    snippet2 = [(MAMapsDisambiguationController *)self snippet];
   }
 
   else
   {
-    v4 = 0;
+    snippet2 = 0;
   }
 
-  return v4;
+  return snippet2;
 }
 
 - (id)_listSnippetView
 {
-  v3 = [(MAMapsDisambiguationController *)self view];
+  view = [(MAMapsDisambiguationController *)self view];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(MAMapsDisambiguationController *)self view];
+    view2 = [(MAMapsDisambiguationController *)self view];
   }
 
   else
   {
-    v4 = 0;
+    view2 = 0;
   }
 
-  return v4;
+  return view2;
 }
 
-- (void)listView:(id)a3 didChooseMapItem:(id)a4 accessoryButtonTapped:(BOOL)a5
+- (void)listView:(id)view didChooseMapItem:(id)item accessoryButtonTapped:(BOOL)tapped
 {
-  v7 = a4;
-  v8 = [a3 mapItems];
-  v9 = [v8 indexOfObject:v7];
+  itemCopy = item;
+  mapItems = [view mapItems];
+  v9 = [mapItems indexOfObject:itemCopy];
 
-  v10 = [MKMapItem mapItemWithLocalSearchMapItem:v7];
+  v10 = [MKMapItem mapItemWithLocalSearchMapItem:itemCopy];
   v14 = [GEOPlaceActionDetails actionDetailsWithMapItem:v10 timestamp:v9 resultIndex:0.0];
 
-  v11 = [v7 placeData2];
-  [(MABaseSnippetViewController *)self captureUserAction:2007 details:v14 resultIndex:v9 mapItemPlaceData:v11];
+  placeData2 = [itemCopy placeData2];
+  [(MABaseSnippetViewController *)self captureUserAction:2007 details:v14 resultIndex:v9 mapItemPlaceData:placeData2];
 
-  v12 = [(MAMapsDisambiguationController *)self delegate];
-  v13 = [v7 commands];
+  delegate = [(MAMapsDisambiguationController *)self delegate];
+  commands = [itemCopy commands];
 
-  [v12 siriViewController:self performAceCommands:v13];
+  [delegate siriViewController:self performAceCommands:commands];
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v6 = [a4 lastObject];
-  v5 = [(MAMapsDisambiguationController *)self _listSnippetView];
-  [v5 setUserLocation:v6];
+  lastObject = [locations lastObject];
+  _listSnippetView = [(MAMapsDisambiguationController *)self _listSnippetView];
+  [_listSnippetView setUserLocation:lastObject];
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
   v7.receiver = self;
   v7.super_class = MAMapsDisambiguationController;
-  v4 = a3;
-  [(MABaseSnippetViewController *)&v7 locationManagerDidChangeAuthorization:v4];
-  v5 = [v4 authorizationStatus];
+  authorizationCopy = authorization;
+  [(MABaseSnippetViewController *)&v7 locationManagerDidChangeAuthorization:authorizationCopy];
+  authorizationStatus = [authorizationCopy authorizationStatus];
 
-  if (v5 == 2)
+  if (authorizationStatus == 2)
   {
-    v6 = [(MAMapsDisambiguationController *)self _listSnippetView];
-    [v6 setUserLocation:0];
+    _listSnippetView = [(MAMapsDisambiguationController *)self _listSnippetView];
+    [_listSnippetView setUserLocation:0];
   }
 }
 

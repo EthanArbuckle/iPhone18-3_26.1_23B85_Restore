@@ -1,22 +1,22 @@
 @interface PKTransactionMerchantLookupSource
-- (PKTransactionMerchantLookupSource)initWithTransaction:(id)a3 paymentApplication:(id)a4;
+- (PKTransactionMerchantLookupSource)initWithTransaction:(id)transaction paymentApplication:(id)application;
 - (id)mapsMerchantLookupRequest;
 @end
 
 @implementation PKTransactionMerchantLookupSource
 
-- (PKTransactionMerchantLookupSource)initWithTransaction:(id)a3 paymentApplication:(id)a4
+- (PKTransactionMerchantLookupSource)initWithTransaction:(id)transaction paymentApplication:(id)application
 {
-  v7 = a3;
-  v8 = a4;
+  transactionCopy = transaction;
+  applicationCopy = application;
   v12.receiver = self;
   v12.super_class = PKTransactionMerchantLookupSource;
   v9 = [(PKTransactionMerchantLookupSource *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_transaction, a3);
-    objc_storeStrong(&v10->_paymentApplication, a4);
+    objc_storeStrong(&v9->_transaction, transaction);
+    objc_storeStrong(&v10->_paymentApplication, application);
   }
 
   return v10;
@@ -24,23 +24,23 @@
 
 - (id)mapsMerchantLookupRequest
 {
-  v3 = [(PKPaymentTransaction *)self->_transaction effectiveTransactionSource];
+  effectiveTransactionSource = [(PKPaymentTransaction *)self->_transaction effectiveTransactionSource];
   [(PKPaymentTransaction *)self->_transaction transactionType];
-  if (v3 - 1 > 7)
+  if (effectiveTransactionSource - 1 > 7)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = qword_1ADB9AD20[v3 - 1];
+    v4 = qword_1ADB9AD20[effectiveTransactionSource - 1];
   }
 
-  v5 = [(PKPaymentTransaction *)self->_transaction merchant];
+  merchant = [(PKPaymentTransaction *)self->_transaction merchant];
   v6 = objc_alloc_init(getMKWalletMerchantLookupRequestClass[0]());
   [v6 setTransactionType:v4];
-  v7 = [(PKPaymentTransaction *)self->_transaction transactionDate];
-  [v6 setTransactionDate:v7];
+  transactionDate = [(PKPaymentTransaction *)self->_transaction transactionDate];
+  [v6 setTransactionDate:transactionDate];
 
   paymentApplication = self->_paymentApplication;
   if (paymentApplication)
@@ -49,85 +49,85 @@
     [v6 setPaymentNetwork:v9];
   }
 
-  v10 = [v5 industryCategory];
-  [v6 setIndustryCategory:v10];
+  industryCategory = [merchant industryCategory];
+  [v6 setIndustryCategory:industryCategory];
 
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v5, "industryCode")}];
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(merchant, "industryCode")}];
   [v6 setIndustryCode:v11];
 
-  v12 = [v5 city];
-  [v6 setMerchantCity:v12];
+  city = [merchant city];
+  [v6 setMerchantCity:city];
 
-  v13 = [v5 rawCity];
-  [v6 setMerchantRawCity:v13];
+  rawCity = [merchant rawCity];
+  [v6 setMerchantRawCity:rawCity];
 
-  v14 = [v5 state];
-  [v6 setMerchantState:v14];
+  state = [merchant state];
+  [v6 setMerchantState:state];
 
-  v15 = [v5 rawState];
-  [v6 setMerchantRawState:v15];
+  rawState = [merchant rawState];
+  [v6 setMerchantRawState:rawState];
 
-  v16 = [v5 zip];
+  v16 = [merchant zip];
   [v6 setMerchantZip:v16];
 
-  v17 = [v5 merchantIdentifier];
-  [v6 setMerchantId:v17];
+  merchantIdentifier = [merchant merchantIdentifier];
+  [v6 setMerchantId:merchantIdentifier];
 
-  v18 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v5, "cleanConfidenceLevel")}];
+  v18 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(merchant, "cleanConfidenceLevel")}];
   [v6 setMerchantCleanConfidenceLevel:v18];
 
-  v19 = [(PKPaymentTransaction *)self->_transaction currencyCode];
-  [v6 setTransactionCurrencyCode:v19];
+  currencyCode = [(PKPaymentTransaction *)self->_transaction currencyCode];
+  [v6 setTransactionCurrencyCode:currencyCode];
 
-  v20 = [v5 rawCANL];
-  [v6 setMerchantCanl:v20];
+  rawCANL = [merchant rawCANL];
+  [v6 setMerchantCanl:rawCANL];
 
-  v21 = [(PKPaymentTransaction *)self->_transaction identifier];
-  [v6 setTransactionId:v21];
+  identifier = [(PKPaymentTransaction *)self->_transaction identifier];
+  [v6 setTransactionId:identifier];
 
-  v22 = [v5 rawName];
-  [v6 setRawMerchantCode:v22];
+  rawName = [merchant rawName];
+  [v6 setRawMerchantCode:rawName];
 
-  v23 = [v5 name];
-  [v6 setMerchantCode:v23];
+  name = [merchant name];
+  [v6 setMerchantCode:name];
 
   v24 = [MEMORY[0x1E696AD98] numberWithBool:{-[PKPaymentTransaction isFuzzyMatched](self->_transaction, "isFuzzyMatched")}];
   [v6 setFuzzyMatched:v24];
 
-  v25 = [(PKPaymentTransaction *)self->_transaction clearingNetworkData];
+  clearingNetworkData = [(PKPaymentTransaction *)self->_transaction clearingNetworkData];
 
-  if (v25)
+  if (clearingNetworkData)
   {
     v26 = MEMORY[0x1E696ACB0];
-    v27 = [(PKPaymentTransaction *)self->_transaction clearingNetworkData];
+    clearingNetworkData2 = [(PKPaymentTransaction *)self->_transaction clearingNetworkData];
   }
 
   else
   {
-    v28 = [(PKPaymentTransaction *)self->_transaction authNetworkData];
+    authNetworkData = [(PKPaymentTransaction *)self->_transaction authNetworkData];
 
-    if (!v28)
+    if (!authNetworkData)
     {
       goto LABEL_16;
     }
 
     v26 = MEMORY[0x1E696ACB0];
-    v27 = [(PKPaymentTransaction *)self->_transaction authNetworkData];
+    clearingNetworkData2 = [(PKPaymentTransaction *)self->_transaction authNetworkData];
   }
 
-  v29 = v27;
-  v30 = [v27 dataUsingEncoding:4];
-  v28 = [v26 JSONObjectWithData:v30 options:0 error:0];
+  v29 = clearingNetworkData2;
+  v30 = [clearingNetworkData2 dataUsingEncoding:4];
+  authNetworkData = [v26 JSONObjectWithData:v30 options:0 error:0];
 
-  if (v28)
+  if (authNetworkData)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v31 = [v28 objectForKeyedSubscript:@"DE041"];
+      v31 = [authNetworkData objectForKeyedSubscript:@"DE041"];
       [v6 setTerminalId:v31];
 
-      v32 = [v28 objectForKeyedSubscript:@"DE048"];
+      v32 = [authNetworkData objectForKeyedSubscript:@"DE048"];
       if (v32)
       {
         objc_opt_class();
@@ -139,10 +139,10 @@
         }
       }
 
-      v35 = [v28 objectForKeyedSubscript:@"DE019"];
+      v35 = [authNetworkData objectForKeyedSubscript:@"DE019"];
       [v6 setMerchantCountryCode:v35];
 
-      v36 = [v28 objectForKeyedSubscript:@"DE018"];
+      v36 = [authNetworkData objectForKeyedSubscript:@"DE018"];
       [v6 setMerchantType:v36];
     }
   }
@@ -152,15 +152,15 @@ LABEL_16:
   {
     if (v4 == 3)
     {
-      v41 = [v5 webMerchantIdentifier];
-      [v6 setWarsawMerchantId:v41];
+      webMerchantIdentifier = [merchant webMerchantIdentifier];
+      [v6 setWarsawMerchantId:webMerchantIdentifier];
 
-      v42 = [v5 webMerchantName];
-      [v6 setWarsawMerchantName:v42];
+      webMerchantName = [merchant webMerchantName];
+      [v6 setWarsawMerchantName:webMerchantName];
 
-      v37 = [v5 originURL];
-      v38 = [v37 absoluteString];
-      [v6 setWarsawMerchantDomain:v38];
+      originURL = [merchant originURL];
+      absoluteString = [originURL absoluteString];
+      [v6 setWarsawMerchantDomain:absoluteString];
 LABEL_24:
 
       goto LABEL_25;
@@ -179,18 +179,18 @@ LABEL_24:
       goto LABEL_26;
     }
 
-    v37 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v5, "adamIdentifier")}];
-    v38 = [v37 stringValue];
-    [v6 setAdamId:v38];
+    originURL = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(merchant, "adamIdentifier")}];
+    absoluteString = [originURL stringValue];
+    [v6 setAdamId:absoluteString];
     goto LABEL_24;
   }
 
-  v39 = [(PKPaymentTransaction *)self->_transaction location];
-  v40 = PKGEOLocationFromCLLocation(v39);
+  location = [(PKPaymentTransaction *)self->_transaction location];
+  v40 = PKGEOLocationFromCLLocation(location);
   [v6 setLocation:v40];
 
-  v37 = [MEMORY[0x1E696AD98] numberWithBool:{-[PKPaymentTransaction isCoarseLocation](self->_transaction, "isCoarseLocation")}];
-  [v6 setCoarseLocationUsed:v37];
+  originURL = [MEMORY[0x1E696AD98] numberWithBool:{-[PKPaymentTransaction isCoarseLocation](self->_transaction, "isCoarseLocation")}];
+  [v6 setCoarseLocationUsed:originURL];
 LABEL_25:
 
 LABEL_26:

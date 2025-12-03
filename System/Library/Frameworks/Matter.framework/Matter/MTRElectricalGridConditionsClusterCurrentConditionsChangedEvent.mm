@@ -1,6 +1,6 @@
 @interface MTRElectricalGridConditionsClusterCurrentConditionsChangedEvent
 - (MTRElectricalGridConditionsClusterCurrentConditionsChangedEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -21,11 +21,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRElectricalGridConditionsClusterCurrentConditionsChangedEvent);
-  v5 = [(MTRElectricalGridConditionsClusterCurrentConditionsChangedEvent *)self currentConditions];
-  [(MTRElectricalGridConditionsClusterCurrentConditionsChangedEvent *)v4 setCurrentConditions:v5];
+  currentConditions = [(MTRElectricalGridConditionsClusterCurrentConditionsChangedEvent *)self currentConditions];
+  [(MTRElectricalGridConditionsClusterCurrentConditionsChangedEvent *)v4 setCurrentConditions:currentConditions];
 
   return v4;
 }

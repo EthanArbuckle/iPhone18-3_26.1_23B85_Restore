@@ -1,40 +1,40 @@
 @interface TTKDirSource
 - (id)getNextTestCase;
-- (id)init:(id)a3;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (void)loadLayouts:(id)a3;
+- (id)init:(id)init;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (void)loadLayouts:(id)layouts;
 - (void)loadRootDir;
 - (void)reset;
 @end
 
 @implementation TTKDirSource
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  if (!a3->var0)
+  if (!state->var0)
   {
-    a3->var2 = a3->var3;
+    state->var2 = state->var3;
   }
 
-  a3->var0 = 0;
-  if (a5)
+  state->var0 = 0;
+  if (count)
   {
     do
     {
-      v9 = [(TTKDirSource *)self getNextTestCase];
-      v10 = v9;
-      result = a3->var0;
-      if (!v9)
+      getNextTestCase = [(TTKDirSource *)self getNextTestCase];
+      v10 = getNextTestCase;
+      result = state->var0;
+      if (!getNextTestCase)
       {
         break;
       }
 
-      a3->var0 = result + 1;
-      a4[result] = v9;
-      result = a3->var0;
+      state->var0 = result + 1;
+      objects[result] = getNextTestCase;
+      result = state->var0;
     }
 
-    while (a3->var0 < a5);
+    while (state->var0 < count);
   }
 
   else
@@ -42,19 +42,19 @@
     result = 0;
   }
 
-  a3->var1 = a4;
+  state->var1 = objects;
   return result;
 }
 
-- (void)loadLayouts:(id)a3
+- (void)loadLayouts:(id)layouts
 {
   v69 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  layoutsCopy = layouts;
   v5 = objc_autoreleasePoolPush();
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v63 = 0;
-  v50 = v4;
-  v7 = [v6 contentsOfDirectoryAtPath:v4 error:&v63];
+  v50 = layoutsCopy;
+  v7 = [defaultManager contentsOfDirectoryAtPath:layoutsCopy error:&v63];
   v8 = v63;
 
   if (!v8)
@@ -94,24 +94,24 @@
             if ([v15 isEqualToString:@"layouts.json"])
             {
               v28 = [TTKTestCaseReader loadFromFile:v18];
-              v29 = [v28 inputMode];
+              inputMode = [v28 inputMode];
               v30 = MEMORY[0x277CBEB38];
-              v31 = [v28 layouts];
-              v32 = [v30 dictionaryWithDictionary:v31];
+              layouts = [v28 layouts];
+              v32 = [v30 dictionaryWithDictionary:layouts];
 
-              v33 = [v28 majorVersion];
-              v34 = [v28 minorVersion];
+              majorVersion = [v28 majorVersion];
+              minorVersion = [v28 minorVersion];
               [v28 fileVersion];
               if (self->_inputMode)
               {
-                v46 = v29;
+                v46 = inputMode;
                 v47 = v28;
                 v57 = 0u;
                 v58 = 0u;
                 v55 = 0u;
                 v56 = 0u;
-                v36 = [v32 allKeys];
-                v37 = [v36 countByEnumeratingWithState:&v55 objects:v66 count:16];
+                allKeys = [v32 allKeys];
+                v37 = [allKeys countByEnumeratingWithState:&v55 objects:v66 count:16];
                 if (v37)
                 {
                   v38 = v37;
@@ -122,7 +122,7 @@
                     {
                       if (*v56 != v39)
                       {
-                        objc_enumerationMutation(v36);
+                        objc_enumerationMutation(allKeys);
                       }
 
                       v41 = *(*(&v55 + 1) + 8 * j);
@@ -136,23 +136,23 @@
                       }
                     }
 
-                    v38 = [v36 countByEnumeratingWithState:&v55 objects:v66 count:16];
+                    v38 = [allKeys countByEnumeratingWithState:&v55 objects:v66 count:16];
                   }
 
                   while (v38);
                 }
 
-                v29 = v46;
+                inputMode = v46;
                 v28 = v47;
               }
 
               else
               {
                 v45 = v35;
-                objc_storeStrong(&self->_inputMode, v29);
+                objc_storeStrong(&self->_inputMode, inputMode);
                 objc_storeStrong(&self->_layouts, v32);
-                self->_majorVersion = v33;
-                self->_minorVersion = v34;
+                self->_majorVersion = majorVersion;
+                self->_minorVersion = minorVersion;
                 self->_fileVersion = v45;
               }
 
@@ -228,26 +228,26 @@ LABEL_35:
   currDir = self->_currDir;
   self->_currDir = &stru_287EC4808;
 
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   testCaseDirs = self->_testCaseDirs;
-  self->_testCaseDirs = v5;
+  self->_testCaseDirs = array;
 
-  v7 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   testCaseFiles = self->_testCaseFiles;
-  self->_testCaseFiles = v7;
+  self->_testCaseFiles = array2;
 
   [(TTKDirSource *)self loadRootDir];
 }
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  initCopy = init;
   v6 = TTKLogFacility();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315138;
-    v12 = [v5 cStringUsingEncoding:4];
+    v12 = [initCopy cStringUsingEncoding:4];
     _os_log_debug_impl(&dword_26D490000, v6, OS_LOG_TYPE_DEBUG, "Loading test cases from directory %s", buf, 0xCu);
   }
 
@@ -257,7 +257,7 @@ LABEL_35:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_rootDir, a3);
+    objc_storeStrong(&v7->_rootDir, init);
     [(TTKDirSource *)v8 reset];
   }
 
@@ -270,8 +270,8 @@ LABEL_35:
   currTestCaseSource = self->_currTestCaseSource;
   if (currTestCaseSource)
   {
-    v5 = [(TTKTestCaseSource *)currTestCaseSource getNextTestCase];
-    if (v5)
+    getNextTestCase = [(TTKTestCaseSource *)currTestCaseSource getNextTestCase];
+    if (getNextTestCase)
     {
       goto LABEL_10;
     }
@@ -294,31 +294,31 @@ LABEL_35:
     v14 = self->_currTestCaseSource;
     self->_currTestCaseSource = v13;
 
-    v15 = [(TTKTestCaseSource *)self->_currTestCaseSource layouts];
-    if ([v15 count])
+    layouts = [(TTKTestCaseSource *)self->_currTestCaseSource layouts];
+    if ([layouts count])
     {
-      v16 = [(TTKDirSource *)self onNewLayoutsFound];
+      onNewLayoutsFound = [(TTKDirSource *)self onNewLayoutsFound];
 
-      if (!v16)
+      if (!onNewLayoutsFound)
       {
 LABEL_9:
-        v5 = [(TTKDirSource *)self getNextTestCase];
+        getNextTestCase = [(TTKDirSource *)self getNextTestCase];
 
         goto LABEL_10;
       }
 
       v17 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:self->_layouts];
-      v18 = [(TTKTestCaseSource *)self->_currTestCaseSource layouts];
-      [(NSMutableDictionary *)v17 addEntriesFromDictionary:v18];
+      layouts2 = [(TTKTestCaseSource *)self->_currTestCaseSource layouts];
+      [(NSMutableDictionary *)v17 addEntriesFromDictionary:layouts2];
 
       layouts = self->_layouts;
       self->_layouts = v17;
       v20 = v17;
 
-      v15 = [(TTKDirSource *)self onNewLayoutsFound];
-      v21 = [(TTKTestCaseSource *)self->_currTestCaseSource layouts];
+      layouts = [(TTKDirSource *)self onNewLayoutsFound];
+      layouts3 = [(TTKTestCaseSource *)self->_currTestCaseSource layouts];
 
-      (v15)[2](v15, v21);
+      (layouts)[2](layouts, layouts3);
     }
 
     goto LABEL_9;
@@ -343,8 +343,8 @@ LABEL_9:
     else
     {
       v27 = MEMORY[0x277CBEB18];
-      v28 = [MEMORY[0x277CCAA00] defaultManager];
-      v29 = [v28 contentsOfDirectoryAtPath:v12 error:0];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      v29 = [defaultManager contentsOfDirectoryAtPath:v12 error:0];
       v30 = [v27 arrayWithArray:v29];
       testCaseFiles = self->_testCaseFiles;
       self->_testCaseFiles = v30;
@@ -355,18 +355,18 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v5 = 0;
+  getNextTestCase = 0;
 LABEL_10:
   objc_autoreleasePoolPop(v3);
 
-  return v5;
+  return getNextTestCase;
 }
 
 - (void)loadRootDir
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [v3 contentsOfDirectoryAtPath:self->_rootDir error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v4 = [defaultManager contentsOfDirectoryAtPath:self->_rootDir error:0];
 
   v5 = [v4 sortedArrayUsingSelector:sel_compare_];
 
@@ -433,8 +433,8 @@ LABEL_10:
           v19 = [v17 pathWithComponents:v18];
 
           v24 = 0;
-          v20 = [MEMORY[0x277CCAA00] defaultManager];
-          [v20 fileExistsAtPath:v19 isDirectory:&v24];
+          defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+          [defaultManager2 fileExistsAtPath:v19 isDirectory:&v24];
 
           p_testCaseDirs = &self->_testCaseDirs;
           if ((v24 & 1) != 0 || (v22 = [v16 isEqualToString:@"layouts.json"], p_testCaseDirs = p_testCaseFiles, (v22 & 1) == 0))

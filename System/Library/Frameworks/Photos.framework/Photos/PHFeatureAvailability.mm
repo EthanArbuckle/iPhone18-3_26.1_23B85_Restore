@@ -1,7 +1,7 @@
 @interface PHFeatureAvailability
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)debugDescription;
-- (id)initForFeature:(unint64_t)a3 withPLFeatureAvailability:(id)a4;
+- (id)initForFeature:(unint64_t)feature withPLFeatureAvailability:(id)availability;
 @end
 
 @implementation PHFeatureAvailability
@@ -22,8 +22,8 @@
   [(PHFeatureAvailability *)self fractionOfAllAssetsWithMediaAnalysisInSearchIndex];
   [v3 appendFormat:@"Search indexing progress (embeddings): %f\n", v8];
   [v3 appendFormat:@"Count of search indexing (embeddings): %lu\n", -[PHFeatureAvailability numberOfAssetsWithMediaAnalysisInSearchIndex](self, "numberOfAssetsWithMediaAnalysisInSearchIndex")];
-  v9 = [(PHFeatureAvailability *)self dateSearchIndexSnapshotLastUpdated];
-  [v3 appendFormat:@"Date search index last updated: %@\n", v9];
+  dateSearchIndexSnapshotLastUpdated = [(PHFeatureAvailability *)self dateSearchIndexSnapshotLastUpdated];
+  [v3 appendFormat:@"Date search index last updated: %@\n", dateSearchIndexSnapshotLastUpdated];
 
   [(PHFeatureAvailability *)self fractionOfCuratedAssetsWithSceneAnalysisInSearchIndex];
   [v3 appendFormat:@"Search indexing progress (curated assets scenes): %f\n", v10];
@@ -104,8 +104,8 @@
   }
 
   [v3 appendFormat:@"Availability was computed: %@\n", v20];
-  v21 = [(PHFeatureAvailability *)self dateComputed];
-  [v3 appendFormat:@"Availability was computed on date: %@\n", v21];
+  dateComputed = [(PHFeatureAvailability *)self dateComputed];
+  [v3 appendFormat:@"Availability was computed on date: %@\n", dateComputed];
 
   if ([(PHFeatureAvailability *)self isAvailable])
   {
@@ -122,10 +122,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v15 = 1;
   }
@@ -135,24 +135,24 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PHFeatureAvailability *)self dateComputed];
-      v7 = [(PHFeatureAvailability *)v5 dateComputed];
+      v5 = equalCopy;
+      dateComputed = [(PHFeatureAvailability *)self dateComputed];
+      dateComputed2 = [(PHFeatureAvailability *)v5 dateComputed];
       IsEqual = PLObjectIsEqual();
 
-      v9 = [(PHFeatureAvailability *)self lastFullVUIndexClusterDate];
-      v10 = [(PHFeatureAvailability *)v5 lastFullVUIndexClusterDate];
+      lastFullVUIndexClusterDate = [(PHFeatureAvailability *)self lastFullVUIndexClusterDate];
+      lastFullVUIndexClusterDate2 = [(PHFeatureAvailability *)v5 lastFullVUIndexClusterDate];
       v11 = PLObjectIsEqual();
 
-      v12 = [(PHFeatureAvailability *)self dateSearchIndexSnapshotLastUpdated];
-      v13 = [(PHFeatureAvailability *)v5 dateSearchIndexSnapshotLastUpdated];
+      dateSearchIndexSnapshotLastUpdated = [(PHFeatureAvailability *)self dateSearchIndexSnapshotLastUpdated];
+      dateSearchIndexSnapshotLastUpdated2 = [(PHFeatureAvailability *)v5 dateSearchIndexSnapshotLastUpdated];
       v14 = PLObjectIsEqual();
 
       v15 = 0;
       if (IsEqual && v11 && v14)
       {
-        v16 = [(PHFeatureAvailability *)self feature];
-        if (v16 == [(PHFeatureAvailability *)v5 feature]
+        feature = [(PHFeatureAvailability *)self feature];
+        if (feature == [(PHFeatureAvailability *)v5 feature]
           && (v17 = [(PHFeatureAvailability *)self wasComputed], v17 == [(PHFeatureAvailability *)v5 wasComputed])
           && (v18 = [(PHFeatureAvailability *)self photosKnowledgeGraphIsReady], v18 == [(PHFeatureAvailability *)v5 photosKnowledgeGraphIsReady])
           && (v19 = [(PHFeatureAvailability *)self vuIndexIsFullClustered], v19 == [(PHFeatureAvailability *)v5 vuIndexIsFullClustered])
@@ -195,66 +195,66 @@
   return v15;
 }
 
-- (id)initForFeature:(unint64_t)a3 withPLFeatureAvailability:(id)a4
+- (id)initForFeature:(unint64_t)feature withPLFeatureAvailability:(id)availability
 {
-  v6 = a4;
+  availabilityCopy = availability;
   v38.receiver = self;
   v38.super_class = PHFeatureAvailability;
   v7 = [(PHFeatureAvailability *)&v38 init];
   v8 = v7;
   if (v7)
   {
-    v7->_feature = a3;
-    if (v6)
+    v7->_feature = feature;
+    if (availabilityCopy)
     {
-      v9 = [v6 availabilityByFeature];
-      v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-      v11 = [v9 objectForKeyedSubscript:v10];
+      availabilityByFeature = [availabilityCopy availabilityByFeature];
+      v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:feature];
+      v11 = [availabilityByFeature objectForKeyedSubscript:v10];
 
       if (v11)
       {
-        v12 = [v6 processingSnapshot];
+        processingSnapshot = [availabilityCopy processingSnapshot];
         v8->_wasComputed = 1;
         v8->_isAvailable = [v11 BOOLValue];
-        [v12 fractionOfAllAssetsAnalyzedForScenes];
+        [processingSnapshot fractionOfAllAssetsAnalyzedForScenes];
         v8->_fractionOfAllAssetsAnalyzedForScenes = v13;
-        [v12 fractionOfAllAssetsWithSceneAnalysisInSearchIndex];
+        [processingSnapshot fractionOfAllAssetsWithSceneAnalysisInSearchIndex];
         v8->_fractionOfAllAssetsWithSceneAnalysisInSearchIndex = v14;
-        v8->_numberOfAssetsWithSceneAnalysisInSearchIndex = [v12 numberOfAssetsWithSceneAnalysisInSearchIndex];
-        [v12 fractionOfAllAssetsWithMediaAnalysisInSearchIndex];
+        v8->_numberOfAssetsWithSceneAnalysisInSearchIndex = [processingSnapshot numberOfAssetsWithSceneAnalysisInSearchIndex];
+        [processingSnapshot fractionOfAllAssetsWithMediaAnalysisInSearchIndex];
         v8->_fractionOfAllAssetsWithMediaAnalysisInSearchIndex = v15;
-        v8->_numberOfAssetsWithMediaAnalysisInSearchIndex = [v12 numberOfAssetsWithMediaAnalysisInSearchIndex];
-        [v12 fractionOfAllAssetsWithCaptions];
+        v8->_numberOfAssetsWithMediaAnalysisInSearchIndex = [processingSnapshot numberOfAssetsWithMediaAnalysisInSearchIndex];
+        [processingSnapshot fractionOfAllAssetsWithCaptions];
         v8->_fractionOfAllAssetsWithCaptions = v16;
-        v17 = [v12 dateSearchIndexSnapshotLastUpdated];
+        dateSearchIndexSnapshotLastUpdated = [processingSnapshot dateSearchIndexSnapshotLastUpdated];
         dateSearchIndexSnapshotLastUpdated = v8->_dateSearchIndexSnapshotLastUpdated;
-        v8->_dateSearchIndexSnapshotLastUpdated = v17;
+        v8->_dateSearchIndexSnapshotLastUpdated = dateSearchIndexSnapshotLastUpdated;
 
-        [v12 fractionOfCuratedAssetsWithSceneAnalysisInSearchIndex];
+        [processingSnapshot fractionOfCuratedAssetsWithSceneAnalysisInSearchIndex];
         v8->_fractionOfCuratedAssetsWithSceneAnalysisInSearchIndex = v19;
-        [v12 fractionOfCuratedAssetsWithEmbeddingsInVectorIndex];
+        [processingSnapshot fractionOfCuratedAssetsWithEmbeddingsInVectorIndex];
         v8->_fractionOfCuratedAssetsWithEmbeddingsInVectorIndex = v20;
-        [v12 fractionOfCuratedAssetsIndexedInVUClustering];
+        [processingSnapshot fractionOfCuratedAssetsIndexedInVUClustering];
         v8->_fractionOfCuratedAssetsIndexedInVUClustering = v21;
-        [v12 fractionOfCuratedAssetsWithCaptions];
+        [processingSnapshot fractionOfCuratedAssetsWithCaptions];
         v8->_fractionOfCuratedAssetsWithCaptions = v22;
-        [v12 fractionOfHighlightsEnriched];
+        [processingSnapshot fractionOfHighlightsEnriched];
         v8->_fractionOfHighlightsEnriched = v23;
-        v8->_photosKnowledgeGraphIsReady = [v12 photosKnowledgeGraphIsReady];
-        v8->_vuIndexIsFullClustered = [v12 vuIndexIsFullClustered];
-        v24 = [v12 lastFullVUIndexClusterDate];
+        v8->_photosKnowledgeGraphIsReady = [processingSnapshot photosKnowledgeGraphIsReady];
+        v8->_vuIndexIsFullClustered = [processingSnapshot vuIndexIsFullClustered];
+        lastFullVUIndexClusterDate = [processingSnapshot lastFullVUIndexClusterDate];
         lastFullVUIndexClusterDate = v8->_lastFullVUIndexClusterDate;
-        v8->_lastFullVUIndexClusterDate = v24;
+        v8->_lastFullVUIndexClusterDate = lastFullVUIndexClusterDate;
 
-        v8->_numberOfAssets = [v12 totalAssetCount];
-        v8->_numberOfCuratedAssets = [v12 totalCuratedAssetCount];
-        v8->_mediaAnalysisImageVersion = [v12 mediaAnalysisImageVersion];
-        v8->_hasConsistentMediaAnalysisImageVersion = [v12 hasConsistentMediaAnalysisImageVersion];
-        v26 = [v12 dateComputed];
+        v8->_numberOfAssets = [processingSnapshot totalAssetCount];
+        v8->_numberOfCuratedAssets = [processingSnapshot totalCuratedAssetCount];
+        v8->_mediaAnalysisImageVersion = [processingSnapshot mediaAnalysisImageVersion];
+        v8->_hasConsistentMediaAnalysisImageVersion = [processingSnapshot hasConsistentMediaAnalysisImageVersion];
+        dateComputed = [processingSnapshot dateComputed];
         dateComputed = v8->_dateComputed;
-        v8->_dateComputed = v26;
+        v8->_dateComputed = dateComputed;
 
-        v28 = [objc_alloc(MEMORY[0x1E69BE420]) initWithFeature:a3];
+        v28 = [objc_alloc(MEMORY[0x1E69BE420]) initWithFeature:feature];
         numberOfCuratedAssets = v8->_numberOfCuratedAssets;
         v8->_libraryHasEnoughCuratedAssets = numberOfCuratedAssets >= [v28 minimumNumberOfCuratedAssets];
         fractionOfCuratedAssetsWithEmbeddingsInVectorIndex = v8->_fractionOfCuratedAssetsWithEmbeddingsInVectorIndex;

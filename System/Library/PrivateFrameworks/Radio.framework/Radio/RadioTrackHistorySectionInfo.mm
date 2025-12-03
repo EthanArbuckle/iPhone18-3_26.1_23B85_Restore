@@ -1,11 +1,11 @@
 @interface RadioTrackHistorySectionInfo
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation RadioTrackHistorySectionInfo
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [[RadioMutableTrackHistorySectionInfo allocWithZone:?]];
   v5 = [(NSString *)self->_indexTitle copy];
@@ -24,7 +24,7 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[RadioTrackHistorySectionInfo allocWithZone:?]];
   v5 = [(NSString *)self->_indexTitle copy];

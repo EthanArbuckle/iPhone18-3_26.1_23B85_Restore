@@ -1,6 +1,6 @@
 @interface NPKLibrary
 + (id)sharedInstance;
-- (void)addPassData:(id)a3 completion:(id)a4;
+- (void)addPassData:(id)data completion:(id)completion;
 @end
 
 @implementation NPKLibrary
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __28__NPKLibrary_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -29,17 +29,17 @@ void __28__NPKLibrary_sharedInstance__block_invoke(uint64_t a1)
   sharedInstance_sharedInstance = v1;
 }
 
-- (void)addPassData:(id)a3 completion:(id)a4
+- (void)addPassData:(id)data completion:(id)completion
 {
-  v4 = a4;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __37__NPKLibrary_addPassData_completion___block_invoke;
     block[3] = &unk_279945198;
-    v7 = v4;
+    v7 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }

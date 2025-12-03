@@ -9,9 +9,9 @@
 
 - (id)CKUppercaseHexStringWithoutSpaces
 {
-  v1 = [a1 CKHexString];
-  v2 = [v1 uppercaseString];
-  v3 = [v2 mutableCopy];
+  cKHexString = [self CKHexString];
+  uppercaseString = [cKHexString uppercaseString];
+  v3 = [uppercaseString mutableCopy];
 
   [v3 replaceOccurrencesOfString:@" " withString:&stru_1EFA8C6C8 options:0 range:{0, objc_msgSend(v3, "length")}];
 
@@ -20,8 +20,8 @@
 
 - (id)CKLowercaseHexStringWithoutSpaces
 {
-  v1 = [a1 CKHexString];
-  v2 = [v1 mutableCopy];
+  cKHexString = [self CKHexString];
+  v2 = [cKHexString mutableCopy];
 
   [v2 replaceOccurrencesOfString:@" " withString:&stru_1EFA8C6C8 options:0 range:{0, objc_msgSend(v2, "length")}];
 
@@ -30,9 +30,9 @@
 
 - (id)CKHexString
 {
-  v1 = a1;
-  v2 = [v1 bytes];
-  v3 = [v1 length];
+  selfCopy = self;
+  bytes = [selfCopy bytes];
+  v3 = [selfCopy length];
   if (v3 > 0x5555555555555555)
   {
     v4 = 0;
@@ -46,7 +46,7 @@
   if (v6 >= 5)
   {
     v8 = 0;
-    v9 = v2;
+    v9 = bytes;
     v10 = v7;
     do
     {
@@ -101,7 +101,7 @@
   if (v6)
   {
 LABEL_17:
-    v17 = (v2 + v8);
+    v17 = (bytes + v8);
     do
     {
       if (*v17 <= 0x9Fu)

@@ -3,7 +3,7 @@
 - (IMDPhotosSyndicationLibraryChangeListener)init;
 - (PHFetchOptions)analysisFetchOptions;
 - (void)dealloc;
-- (void)photoLibraryDidChange:(id)a3;
+- (void)photoLibraryDidChange:(id)change;
 - (void)startListening;
 - (void)stopListening;
 @end
@@ -29,10 +29,10 @@
   v2 = [(IMDPhotosSyndicationLibraryChangeListener *)&v12 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-    v4 = [v3 photoAnalysisInSpotlightEnabled];
+    mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+    photoAnalysisInSpotlightEnabled = [mEMORY[0x277D1A9B8] photoAnalysisInSpotlightEnabled];
 
-    if (v4)
+    if (photoAnalysisInSpotlightEnabled)
     {
       v5 = [MEMORY[0x277CD9948] wellKnownPhotoLibraryURLForIdentifier:3];
       v6 = [objc_alloc(MEMORY[0x277CD9948]) initWithPhotoLibraryURL:v5];
@@ -60,10 +60,10 @@
 - (void)startListening
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  v4 = [v3 photoAnalysisInSpotlightEnabled];
+  mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  photoAnalysisInSpotlightEnabled = [mEMORY[0x277D1A9B8] photoAnalysisInSpotlightEnabled];
 
-  if (v4)
+  if (photoAnalysisInSpotlightEnabled)
   {
     if (IMOSLoggingEnabled())
     {
@@ -86,10 +86,10 @@
 - (void)stopListening
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  v4 = [v3 photoAnalysisInSpotlightEnabled];
+  mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  photoAnalysisInSpotlightEnabled = [mEMORY[0x277D1A9B8] photoAnalysisInSpotlightEnabled];
 
-  if (v4)
+  if (photoAnalysisInSpotlightEnabled)
   {
     if (IMOSLoggingEnabled())
     {
@@ -145,17 +145,17 @@
   return analysisFetchOptions;
 }
 
-- (void)photoLibraryDidChange:(id)a3
+- (void)photoLibraryDidChange:(id)change
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v14 = v4;
+      v14 = changeCopy;
       _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "Syndication library changed. Ingesting new analysis data. change: %@", buf, 0xCu);
     }
   }
@@ -165,22 +165,22 @@
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [v4 totalChangeCount];
+      totalChangeCount = [changeCopy totalChangeCount];
       *buf = 134217984;
-      v14 = v7;
+      v14 = totalChangeCount;
       _os_log_impl(&dword_22B4CC000, v6, OS_LOG_TYPE_INFO, "Total change count: %lu.", buf, 0xCu);
     }
   }
 
-  v8 = [(IMDPhotosSyndicationLibraryChangeListener *)self changeObservationQueue];
+  changeObservationQueue = [(IMDPhotosSyndicationLibraryChangeListener *)self changeObservationQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_22B5EE804;
   v11[3] = &unk_278702FA0;
   v11[4] = self;
-  v12 = v4;
-  v9 = v4;
-  dispatch_async(v8, v11);
+  v12 = changeCopy;
+  v9 = changeCopy;
+  dispatch_async(changeObservationQueue, v11);
 
   v10 = *MEMORY[0x277D85DE8];
 }

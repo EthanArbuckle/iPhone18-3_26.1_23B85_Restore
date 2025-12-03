@@ -1,18 +1,18 @@
 @interface UIPasteboard
-- (id)ic_dataForPasteboardTypes:(id)a3;
+- (id)ic_dataForPasteboardTypes:(id)types;
 @end
 
 @implementation UIPasteboard
 
-- (id)ic_dataForPasteboardTypes:(id)a3
+- (id)ic_dataForPasteboardTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v5 = +[NSMutableArray array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = typesCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {

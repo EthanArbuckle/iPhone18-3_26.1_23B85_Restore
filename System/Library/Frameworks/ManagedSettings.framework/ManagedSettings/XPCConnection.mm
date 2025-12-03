@@ -8,7 +8,7 @@
 {
   v2 = *self->nsXPCConnection;
 
-  v3 = [v2 remoteObjectProxy];
+  remoteObjectProxy = [v2 remoteObjectProxy];
   sub_20E4C67A0();
 
   swift_unknownObjectRelease();

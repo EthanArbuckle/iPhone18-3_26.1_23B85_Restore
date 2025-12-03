@@ -1,6 +1,6 @@
 @interface AXPhoenixDataLogger
 - (AXPhoenixDataLogger)init;
-- (void)logClassifierData:(id)a3 isDoubleTap:(BOOL)a4 startTime:(double)a5 endTime:(double)a6 completion:(id)a7;
+- (void)logClassifierData:(id)data isDoubleTap:(BOOL)tap startTime:(double)time endTime:(double)endTime completion:(id)completion;
 @end
 
 @implementation AXPhoenixDataLogger
@@ -28,19 +28,19 @@
   return v5;
 }
 
-- (void)logClassifierData:(id)a3 isDoubleTap:(BOOL)a4 startTime:(double)a5 endTime:(double)a6 completion:(id)a7
+- (void)logClassifierData:(id)data isDoubleTap:(BOOL)tap startTime:(double)time endTime:(double)endTime completion:(id)completion
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v22 = a4;
-  v21[2] = *&a5;
-  v21[1] = *&a6;
+  objc_storeStrong(location, data);
+  tapCopy = tap;
+  v21[2] = *&time;
+  v21[1] = *&endTime;
   v21[0] = 0;
-  objc_storeStrong(v21, a7);
-  objc_initWeak(&from, v24);
-  queue = [(AXPhoenixDataLogger *)v24 queue];
+  objc_storeStrong(v21, completion);
+  objc_initWeak(&from, selfCopy);
+  queue = [(AXPhoenixDataLogger *)selfCopy queue];
   v12 = MEMORY[0x277D85DD0];
   v13 = -1073741824;
   v14 = 0;

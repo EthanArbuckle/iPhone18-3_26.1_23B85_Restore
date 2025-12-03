@@ -1,5 +1,5 @@
 @interface TTRIAccountsListsCollectionCell
-- (_TtC9Reminders31TTRIAccountsListsCollectionCell)initWithCoder:(id)a3;
+- (_TtC9Reminders31TTRIAccountsListsCollectionCell)initWithCoder:(id)coder;
 - (void)invalidateIntrinsicContentSize;
 - (void)prepareForReuse;
 @end
@@ -21,7 +21,7 @@
   v8[2] = sub_100026440;
   v8[3] = &unk_100733228;
   v6 = _Block_copy(v8);
-  v7 = self;
+  selfCopy = self;
 
   [v3 performWithoutAnimation:v6];
   _Block_release(v6);
@@ -33,7 +33,7 @@
   }
 }
 
-- (_TtC9Reminders31TTRIAccountsListsCollectionCell)initWithCoder:(id)a3
+- (_TtC9Reminders31TTRIAccountsListsCollectionCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9Reminders31TTRIAccountsListsCollectionCell_viewModelObserver) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();

@@ -1,6 +1,6 @@
 @interface _LABKLog
 + (OS_os_log)log;
-+ (void)logClass:(Class)a3 selector:(SEL)a4 message:(id)a5;
++ (void)logClass:(Class)class selector:(SEL)selector message:(id)message;
 @end
 
 @implementation _LABKLog
@@ -17,18 +17,18 @@
   return v3;
 }
 
-+ (void)logClass:(Class)a3 selector:(SEL)a4 message:(id)a5
++ (void)logClass:(Class)class selector:(SEL)selector message:(id)message
 {
   v21 = *MEMORY[0x1E69E9840];
   v8 = MEMORY[0x1E696AEC0];
-  v9 = a5;
-  v10 = [[v8 alloc] initWithFormat:v9 arguments:&v22];
+  messageCopy = message;
+  v10 = [[v8 alloc] initWithFormat:messageCopy arguments:&v22];
 
-  v11 = [a1 log];
+  v11 = [self log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = NSStringFromClass(a3);
-    v13 = NSStringFromSelector(a4);
+    v12 = NSStringFromClass(class);
+    v13 = NSStringFromSelector(selector);
     *buf = 138412802;
     v16 = v12;
     v17 = 2112;

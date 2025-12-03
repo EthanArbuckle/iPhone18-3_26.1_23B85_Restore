@@ -1,17 +1,17 @@
 @interface WFStartTimerAction
 - (id)parameterOverrides;
-- (id)serializedParametersForDonatedIntent:(id)a3 allowDroppingUnconfigurableValues:(BOOL)a4;
+- (id)serializedParametersForDonatedIntent:(id)intent allowDroppingUnconfigurableValues:(BOOL)values;
 - (id)sessionKitSessionConfiguration;
 - (id)sessionKitSessionInvocationType;
-- (void)getValueForParameterData:(id)a3 ofProcessedParameters:(id)a4 completionHandler:(id)a5;
+- (void)getValueForParameterData:(id)data ofProcessedParameters:(id)parameters completionHandler:(id)handler;
 @end
 
 @implementation WFStartTimerAction
 
 - (id)sessionKitSessionInvocationType
 {
-  v2 = [MEMORY[0x277D79F18] currentDevice];
-  if (([v2 hasSystemAperture] & 1) != 0 || _os_feature_enabled_impl())
+  currentDevice = [MEMORY[0x277D79F18] currentDevice];
+  if (([currentDevice hasSystemAperture] & 1) != 0 || _os_feature_enabled_impl())
   {
     v3 = *MEMORY[0x277D7CBC0];
   }
@@ -27,8 +27,8 @@
 - (id)sessionKitSessionConfiguration
 {
   v9 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D79F18] currentDevice];
-  if ([v2 hasSystemAperture] & 1) != 0 || (_os_feature_enabled_impl())
+  currentDevice = [MEMORY[0x277D79F18] currentDevice];
+  if ([currentDevice hasSystemAperture] & 1) != 0 || (_os_feature_enabled_impl())
   {
     v3 = [objc_alloc(MEMORY[0x277D7C0E0]) initWithBundleIdentifier:@"com.apple.mobiletimerd" toastDurationPerRunSource:0];
   }
@@ -51,20 +51,20 @@
   return v3;
 }
 
-- (void)getValueForParameterData:(id)a3 ofProcessedParameters:(id)a4 completionHandler:(id)a5
+- (void)getValueForParameterData:(id)data ofProcessedParameters:(id)parameters completionHandler:(id)handler
 {
   v49[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [v10 name];
-  v12 = [v11 isEqualToString:@"duration"];
+  parametersCopy = parameters;
+  handlerCopy = handler;
+  dataCopy = data;
+  name = [dataCopy name];
+  v12 = [name isEqualToString:@"duration"];
 
   if (v12)
   {
-    v13 = [v10 name];
+    name2 = [dataCopy name];
 
-    v14 = [v8 objectForKey:v13];
+    v14 = [parametersCopy objectForKey:name2];
 
     if (v14)
     {
@@ -85,10 +85,10 @@
       v15 = 0;
     }
 
-    v10 = v15;
+    dataCopy = v15;
 
-    v16 = [v10 magnitude];
-    [v16 doubleValue];
+    magnitude = [dataCopy magnitude];
+    [magnitude doubleValue];
     v18 = v17;
 
     if (v18 <= 0.0)
@@ -100,21 +100,21 @@
       v49[0] = v36;
       v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:&v48 count:1];
       v38 = [v34 errorWithDomain:v35 code:5 userInfo:v37];
-      v9[2](v9, 0, v38);
+      handlerCopy[2](handlerCopy, 0, v38);
     }
 
     else
     {
       v19 = MEMORY[0x277D7C398];
-      v20 = [v10 unitString];
-      v21 = [v19 calendarUnitFromUnitString:v20];
+      unitString = [dataCopy unitString];
+      v21 = [v19 calendarUnitFromUnitString:unitString];
 
-      v22 = [MEMORY[0x277CBEAA8] date];
-      v23 = [MEMORY[0x277CBEA80] currentCalendar];
-      v24 = [v10 magnitude];
-      v25 = [v23 dateByAddingUnit:v21 value:objc_msgSend(v24 toDate:"integerValue") options:{v22, 0}];
+      date = [MEMORY[0x277CBEAA8] date];
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+      magnitude2 = [dataCopy magnitude];
+      v25 = [currentCalendar dateByAddingUnit:v21 value:objc_msgSend(magnitude2 toDate:"integerValue") options:{date, 0}];
 
-      [v25 timeIntervalSinceDate:v22];
+      [v25 timeIntervalSinceDate:date];
       v27 = v26;
       if (v26 >= 86400.0)
       {
@@ -125,19 +125,19 @@
         v47 = v41;
         v42 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v47 forKeys:&v46 count:1];
         v43 = [v39 errorWithDomain:v40 code:5 userInfo:v42];
-        v9[2](v9, 0, v43);
+        handlerCopy[2](handlerCopy, 0, v43);
       }
 
       else
       {
         v28 = objc_alloc(MEMORY[0x277CCAB10]);
-        v29 = [MEMORY[0x277CCADD0] seconds];
-        v30 = [v28 initWithDoubleValue:v29 unit:v27];
+        seconds = [MEMORY[0x277CCADD0] seconds];
+        v30 = [v28 initWithDoubleValue:seconds unit:v27];
 
         v31 = objc_alloc(MEMORY[0x277D23958]);
-        v32 = [MEMORY[0x277D23890] durationValueType];
-        v33 = [v31 initWithValue:v30 valueType:v32];
-        (v9)[2](v9, v33, 0);
+        durationValueType = [MEMORY[0x277D23890] durationValueType];
+        v33 = [v31 initWithValue:v30 valueType:durationValueType];
+        (handlerCopy)[2](handlerCopy, v33, 0);
       }
     }
   }
@@ -146,16 +146,16 @@
   {
     v45.receiver = self;
     v45.super_class = WFStartTimerAction;
-    [(WFAppIntentExecutionAction *)&v45 getValueForParameterData:v10 ofProcessedParameters:v8 completionHandler:v9];
+    [(WFAppIntentExecutionAction *)&v45 getValueForParameterData:dataCopy ofProcessedParameters:parametersCopy completionHandler:handlerCopy];
   }
 
   v44 = *MEMORY[0x277D85DE8];
 }
 
-- (id)serializedParametersForDonatedIntent:(id)a3 allowDroppingUnconfigurableValues:(BOOL)a4
+- (id)serializedParametersForDonatedIntent:(id)intent allowDroppingUnconfigurableValues:(BOOL)values
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  intentCopy = intent;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -163,21 +163,21 @@
     goto LABEL_8;
   }
 
-  v6 = v5;
-  v7 = [v6 type];
-  v8 = [v6 label];
-  if (v8)
+  v6 = intentCopy;
+  type = [v6 type];
+  label = [v6 label];
+  if (label)
   {
   }
 
-  else if ((v7 & 0xFFFFFFFFFFFFFFFDLL) == 0)
+  else if ((type & 0xFFFFFFFFFFFFFFFDLL) == 0)
   {
     v12 = [(WFStartTimerAction *)self parameterForKey:@"duration"];
     [v6 duration];
     v13 = [v12 stateForDuration:?];
     v15 = @"WFDuration";
-    v14 = [v13 serializedRepresentation];
-    v16[0] = v14;
+    serializedRepresentation = [v13 serializedRepresentation];
+    v16[0] = serializedRepresentation;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
 
     goto LABEL_7;
@@ -197,8 +197,8 @@ LABEL_8:
   v19[6] = *MEMORY[0x277D85DE8];
   v16.receiver = self;
   v16.super_class = WFStartTimerAction;
-  v2 = [(WFOverridableLinkAction *)&v16 parameterOverrides];
-  v3 = [v2 mutableCopy];
+  parameterOverrides = [(WFOverridableLinkAction *)&v16 parameterOverrides];
+  v3 = [parameterOverrides mutableCopy];
 
   v18[0] = *MEMORY[0x277D7CDF8];
   v4 = objc_opt_class();

@@ -8,7 +8,7 @@
 {
   v7.receiver = self;
   v7.super_class = _MFAtomTextViewAccessibility__ChatKit__MessageUI;
-  v3 = [(_MFAtomTextViewAccessibility__ChatKit__MessageUI *)&v7 accessibilityTraits];
+  accessibilityTraits = [(_MFAtomTextViewAccessibility__ChatKit__MessageUI *)&v7 accessibilityTraits];
   v4 = [(_MFAtomTextViewAccessibility__ChatKit__MessageUI *)self _accessibilityFindAncestor:&__block_literal_global_8 startWithSelf:0];
   if (v4)
   {
@@ -20,7 +20,7 @@
     v5 = -1;
   }
 
-  return v5 & v3;
+  return v5 & accessibilityTraits;
 }
 
 @end

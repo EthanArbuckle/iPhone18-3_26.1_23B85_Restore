@@ -1,26 +1,26 @@
 @interface _UITextLinkInteractionSession
 - (BOOL)_allowItemInteractions;
-- (BOOL)canInteractWithLinkAtPoint:(CGPoint)a3;
-- (BOOL)tapOnLinkWithGesture:(id)a3;
-- (_UITextLinkInteractionSession)initWithTextItemInteraction:(id)a3;
+- (BOOL)canInteractWithLinkAtPoint:(CGPoint)point;
+- (BOOL)tapOnLinkWithGesture:(id)gesture;
+- (_UITextLinkInteractionSession)initWithTextItemInteraction:(id)interaction;
 - (void)dealloc;
 @end
 
 @implementation _UITextLinkInteractionSession
 
-- (_UITextLinkInteractionSession)initWithTextItemInteraction:(id)a3
+- (_UITextLinkInteractionSession)initWithTextItemInteraction:(id)interaction
 {
-  v4 = a3;
+  interactionCopy = interaction;
   v8.receiver = self;
   v8.super_class = _UITextLinkInteractionSession;
   v5 = [(_UITextLinkInteractionSession *)&v8 init];
   if (v5)
   {
-    v6 = [v4 view];
+    view = [interactionCopy view];
     if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
     {
-      objc_storeWeak(&v5->_interaction, v4);
-      objc_storeWeak(&v5->_linkInteractionView, v6);
+      objc_storeWeak(&v5->_interaction, interactionCopy);
+      objc_storeWeak(&v5->_linkInteractionView, view);
     }
 
     else
@@ -43,10 +43,10 @@
   [(_UITextLinkInteractionSession *)&v4 dealloc];
 }
 
-- (BOOL)canInteractWithLinkAtPoint:(CGPoint)a3
+- (BOOL)canInteractWithLinkAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   WeakRetained = objc_loadWeakRetained(&self->_linkInteractionView);
   v6 = [WeakRetained willInteractWithLinkAtPoint:{x, y}];
 
@@ -56,16 +56,16 @@
 - (BOOL)_allowItemInteractions
 {
   WeakRetained = objc_loadWeakRetained(&self->_interaction);
-  v3 = [WeakRetained _allowItemInteractions];
+  _allowItemInteractions = [WeakRetained _allowItemInteractions];
 
-  return v3;
+  return _allowItemInteractions;
 }
 
-- (BOOL)tapOnLinkWithGesture:(id)a3
+- (BOOL)tapOnLinkWithGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   WeakRetained = objc_loadWeakRetained(&self->_linkInteractionView);
-  if (WeakRetained && -[_UITextLinkInteractionSession _allowItemInteractions](self, "_allowItemInteractions") && ([v4 view], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "location"), objc_msgSend(v6, "convertPoint:toView:", WeakRetained), v8 = v7, v10 = v9, v6, objc_msgSend(WeakRetained, "willInteractWithLinkAtPoint:", v8, v10)))
+  if (WeakRetained && -[_UITextLinkInteractionSession _allowItemInteractions](self, "_allowItemInteractions") && ([gestureCopy view], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(gestureCopy, "location"), objc_msgSend(v6, "convertPoint:toView:", WeakRetained), v8 = v7, v10 = v9, v6, objc_msgSend(WeakRetained, "willInteractWithLinkAtPoint:", v8, v10)))
   {
     [WeakRetained cancelInteractionWithLink];
     [WeakRetained tapLinkAtPoint:{v8, v10}];

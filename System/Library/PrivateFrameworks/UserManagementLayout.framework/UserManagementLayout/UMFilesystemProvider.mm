@@ -1,42 +1,42 @@
 @interface UMFilesystemProvider
-- (BOOL)atomicallyWriteData:(id)a3 toPath:(id)a4 error:(id *)a5;
-- (BOOL)chmodPath:(id)a3 withMode:(unsigned __int16)a4 error:(id *)a5;
-- (BOOL)chownPath:(id)a3 toUser:(unsigned int)a4 group:(unsigned int)a5 error:(id *)a6;
-- (BOOL)clonePath:(id)a3 toPath:(id)a4 error:(id *)a5 handler:(id)a6;
-- (BOOL)fileExistsAtPath:(id)a3 isDirectory:(BOOL *)a4;
-- (BOOL)makePath:(id)a3 mode:(unsigned __int16)a4 error:(id *)a5;
-- (BOOL)removeFileAtPath:(id)a3 error:(id *)a4;
-- (BOOL)removePath:(id)a3 error:(id *)a4;
-- (BOOL)renameFileFromPath:(id)a3 toPath:(id)a4 error:(id *)a5;
-- (BOOL)writeToFileWithDescriptor:(int)a3 string:(id)a4 error:(id *)a5;
-- (id)dataWithContentsOfFile:(id)a3 error:(id *)a4;
-- (int)openFileForAppendingAtPath:(id)a3 error:(id *)a4;
-- (int64_t)sizeOfFileWithDescriptor:(int)a3 error:(id *)a4;
+- (BOOL)atomicallyWriteData:(id)data toPath:(id)path error:(id *)error;
+- (BOOL)chmodPath:(id)path withMode:(unsigned __int16)mode error:(id *)error;
+- (BOOL)chownPath:(id)path toUser:(unsigned int)user group:(unsigned int)group error:(id *)error;
+- (BOOL)clonePath:(id)path toPath:(id)toPath error:(id *)error handler:(id)handler;
+- (BOOL)fileExistsAtPath:(id)path isDirectory:(BOOL *)directory;
+- (BOOL)makePath:(id)path mode:(unsigned __int16)mode error:(id *)error;
+- (BOOL)removeFileAtPath:(id)path error:(id *)error;
+- (BOOL)removePath:(id)path error:(id *)error;
+- (BOOL)renameFileFromPath:(id)path toPath:(id)toPath error:(id *)error;
+- (BOOL)writeToFileWithDescriptor:(int)descriptor string:(id)string error:(id *)error;
+- (id)dataWithContentsOfFile:(id)file error:(id *)error;
+- (int)openFileForAppendingAtPath:(id)path error:(id *)error;
+- (int64_t)sizeOfFileWithDescriptor:(int)descriptor error:(id *)error;
 @end
 
 @implementation UMFilesystemProvider
 
-- (BOOL)fileExistsAtPath:(id)a3 isDirectory:(BOOL *)a4
+- (BOOL)fileExistsAtPath:(id)path isDirectory:(BOOL *)directory
 {
   v5 = MEMORY[0x277CCAA00];
-  v6 = a3;
-  v7 = [v5 defaultManager];
-  LOBYTE(a4) = [v7 fileExistsAtPath:v6 isDirectory:a4];
+  pathCopy = path;
+  defaultManager = [v5 defaultManager];
+  LOBYTE(directory) = [defaultManager fileExistsAtPath:pathCopy isDirectory:directory];
 
-  return a4;
+  return directory;
 }
 
-- (id)dataWithContentsOfFile:(id)a3 error:(id *)a4
+- (id)dataWithContentsOfFile:(id)file error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (a4)
+  fileCopy = file;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   v37 = 0;
-  v6 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v5 options:0 error:&v37];
+  v6 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:fileCopy options:0 error:&v37];
   v7 = v37;
   v8 = v7;
   if (v6)
@@ -63,7 +63,7 @@
       if (v11)
       {
         v38 = 138412290;
-        v39 = v5;
+        v39 = fileCopy;
         v12 = _os_log_send_and_compose_impl();
         v13 = v12;
         if (v12)
@@ -83,22 +83,22 @@
     goto LABEL_28;
   }
 
-  if (!a4 || !v7)
+  if (!error || !v7)
   {
     goto LABEL_28;
   }
 
-  v14 = [v7 userInfo];
+  userInfo = [v7 userInfo];
   v15 = *MEMORY[0x277CCA7E8];
-  v16 = [v14 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+  v16 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
   if (v16)
   {
-    v17 = [v8 userInfo];
-    v18 = [v17 objectForKeyedSubscript:v15];
+    userInfo2 = [v8 userInfo];
+    v18 = [userInfo2 objectForKeyedSubscript:v15];
 
-    v19 = [v18 domain];
-    v20 = [v19 isEqualToString:*MEMORY[0x277CCA5B8]];
+    domain = [v18 domain];
+    v20 = [domain isEqualToString:*MEMORY[0x277CCA5B8]];
 
     if (v20)
     {
@@ -122,11 +122,11 @@
       if (v22)
       {
         v23 = v21;
-        v24 = [v18 code];
+        code = [v18 code];
         v38 = 138543618;
-        v39 = v5;
+        v39 = fileCopy;
         v40 = 1024;
-        LODWORD(v41) = v24;
+        LODWORD(v41) = code;
         v25 = _os_log_send_and_compose_impl();
 
         if (!v25)
@@ -165,7 +165,7 @@
       if (v34)
       {
         v38 = 138543618;
-        v39 = v5;
+        v39 = fileCopy;
         v40 = 2114;
         v41 = v18;
         v25 = _os_log_send_and_compose_impl();
@@ -176,7 +176,7 @@ LABEL_50:
 LABEL_51:
 
           v35 = v18;
-          *a4 = v18;
+          *error = v18;
 
           goto LABEL_28;
         }
@@ -213,7 +213,7 @@ LABEL_48:
     if (v30)
     {
       v38 = 138543618;
-      v39 = v5;
+      v39 = fileCopy;
       v40 = 2114;
       v41 = v8;
       v31 = _os_log_send_and_compose_impl();
@@ -233,7 +233,7 @@ LABEL_48:
   }
 
   v36 = v8;
-  *a4 = v8;
+  *error = v8;
 LABEL_28:
 
   v26 = *MEMORY[0x277D85DE8];
@@ -241,18 +241,18 @@ LABEL_28:
   return v6;
 }
 
-- (BOOL)atomicallyWriteData:(id)a3 toPath:(id)a4 error:(id *)a5
+- (BOOL)atomicallyWriteData:(id)data toPath:(id)path error:(id *)error
 {
   v86 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (a5)
+  dataCopy = data;
+  pathCopy = path;
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.writing", v8];
-  if (unlink([v9 UTF8String]))
+  pathCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.writing", pathCopy];
+  if (unlink([pathCopy UTF8String]))
   {
     v10 = *__error();
     if (v10 != 2)
@@ -283,9 +283,9 @@ LABEL_28:
       {
 LABEL_31:
         v80 = 138543874;
-        v81 = v8;
+        v81 = pathCopy;
         v82 = 2114;
-        *v83 = v9;
+        *v83 = pathCopy;
         *&v83[8] = 1024;
         *&v83[10] = v10;
         v24 = _os_log_send_and_compose_impl();
@@ -304,10 +304,10 @@ LABEL_42:
       free(v25);
 LABEL_43:
 
-      if (a5)
+      if (error)
       {
         [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:v10 userInfo:0];
-        *a5 = v31 = 0;
+        *error = v31 = 0;
       }
 
       else
@@ -319,7 +319,7 @@ LABEL_43:
     }
   }
 
-  v11 = open_dprotected_np([v9 UTF8String], 3585, 4, 0, 420);
+  v11 = open_dprotected_np([pathCopy UTF8String], 3585, 4, 0, 420);
   if (v11 == -1)
   {
     v10 = *__error();
@@ -354,11 +354,11 @@ LABEL_43:
   }
 
   v12 = v11;
-  v13 = write(v11, [v7 bytes], objc_msgSend(v7, "length"));
+  v13 = write(v11, [dataCopy bytes], objc_msgSend(dataCopy, "length"));
   if ((v13 & 0x8000000000000000) == 0)
   {
     v14 = v13;
-    if (v13 != [v7 length])
+    if (v13 != [dataCopy length])
     {
       if (qword_2810B88A8 != -1)
       {
@@ -378,11 +378,11 @@ LABEL_43:
         {
           v17 = v15;
           v80 = 138544130;
-          v81 = v8;
+          v81 = pathCopy;
           v82 = 1024;
           *v83 = v12;
           *&v83[4] = 2048;
-          *&v83[6] = [v7 length];
+          *&v83[6] = [dataCopy length];
           v84 = 2048;
           v85 = v14;
           LODWORD(v79) = 38;
@@ -429,7 +429,7 @@ LABEL_43:
         if (v36)
         {
           v80 = 138543874;
-          v81 = v8;
+          v81 = pathCopy;
           v82 = 1024;
           *v83 = v12;
           *&v83[4] = 1024;
@@ -445,7 +445,7 @@ LABEL_43:
       goto LABEL_96;
     }
 
-    if (renamex_np([v9 UTF8String], objc_msgSend(v8, "UTF8String"), 2u))
+    if (renamex_np([pathCopy UTF8String], objc_msgSend(pathCopy, "UTF8String"), 2u))
     {
       v33 = *__error();
       if (v33 != 2)
@@ -472,7 +472,7 @@ LABEL_43:
           if (v56)
           {
             v80 = 138543618;
-            v81 = v8;
+            v81 = pathCopy;
             v82 = 1024;
             *v83 = v33;
             LODWORD(v79) = 18;
@@ -496,7 +496,7 @@ LABEL_95:
 
 LABEL_96:
 
-        if (a5)
+        if (error)
         {
           v32 = v33;
           goto LABEL_98;
@@ -505,9 +505,9 @@ LABEL_96:
         goto LABEL_119;
       }
 
-      v39 = [v9 UTF8String];
-      v40 = [v8 UTF8String];
-      rename(v39, v40, v41);
+      uTF8String = [pathCopy UTF8String];
+      uTF8String2 = [pathCopy UTF8String];
+      rename(uTF8String, uTF8String2, v41);
       if (v42)
       {
         v43 = *__error();
@@ -533,7 +533,7 @@ LABEL_96:
           if (v46)
           {
             v80 = 138543874;
-            v81 = v8;
+            v81 = pathCopy;
             v82 = 1024;
             *v83 = 2;
             *&v83[4] = 1024;
@@ -556,7 +556,7 @@ LABEL_96:
           free(v48);
         }
 
-        if (a5)
+        if (error)
         {
           v57 = MEMORY[0x277CCA9B8];
           v58 = *MEMORY[0x277CCA5B8];
@@ -593,7 +593,7 @@ LABEL_96:
         if (v52)
         {
           v80 = 138543874;
-          v81 = v8;
+          v81 = pathCopy;
           v82 = 1024;
           *v83 = v12;
           *&v83[4] = 1024;
@@ -637,7 +637,7 @@ LABEL_96:
       if (v61)
       {
         v80 = 138543362;
-        v81 = v8;
+        v81 = pathCopy;
         v62 = _os_log_send_and_compose_impl();
         v63 = v62;
         if (v62)
@@ -677,11 +677,11 @@ LABEL_96:
     {
       v29 = v27;
       v80 = 138544130;
-      v81 = v8;
+      v81 = pathCopy;
       v82 = 1024;
       *v83 = v12;
       *&v83[4] = 2048;
-      *&v83[6] = [v7 length];
+      *&v83[6] = [dataCopy length];
       v84 = 1024;
       LODWORD(v85) = v26;
       LODWORD(v79) = 34;
@@ -702,7 +702,7 @@ LABEL_96:
     free(v30);
   }
 
-  if (a5)
+  if (error)
   {
     v32 = v26;
 LABEL_98:
@@ -710,7 +710,7 @@ LABEL_98:
     v58 = *MEMORY[0x277CCA5B8];
 LABEL_99:
     [v57 errorWithDomain:v58 code:v32 userInfo:{0, v78, v79}];
-    *a5 = v31 = 0;
+    *error = v31 = 0;
     goto LABEL_120;
   }
 
@@ -742,7 +742,7 @@ LABEL_120:
       if (v67)
       {
         v80 = 138543874;
-        v81 = v8;
+        v81 = pathCopy;
         v82 = 1024;
         *v83 = v12;
         *&v83[4] = 1024;
@@ -765,7 +765,7 @@ LABEL_120:
   }
 
 LABEL_133:
-  if (unlink([v9 UTF8String]))
+  if (unlink([pathCopy UTF8String]))
   {
     v70 = *__error();
     if (v70 != 2)
@@ -792,9 +792,9 @@ LABEL_133:
         if (v73)
         {
           v80 = 138543874;
-          v81 = v8;
+          v81 = pathCopy;
           v82 = 2114;
-          *v83 = v9;
+          *v83 = pathCopy;
           *&v83[8] = 1024;
           *&v83[10] = v70;
           v74 = _os_log_send_and_compose_impl();
@@ -819,109 +819,109 @@ LABEL_133:
   return v31;
 }
 
-- (int)openFileForAppendingAtPath:(id)a3 error:(id *)a4
+- (int)openFileForAppendingAtPath:(id)path error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v5 = open_dprotected_np([a3 UTF8String], 777, 4, 0, 420);
+  v5 = open_dprotected_np([path UTF8String], 777, 4, 0, 420);
   if (v5 == -1)
   {
     v6 = __error();
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:*v6 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:*v6 userInfo:0];
     }
   }
 
   return v5;
 }
 
-- (BOOL)writeToFileWithDescriptor:(int)a3 string:(id)a4 error:(id *)a5
+- (BOOL)writeToFileWithDescriptor:(int)descriptor string:(id)string error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
-  v7 = a4;
-  v8 = [v7 UTF8String];
-  v9 = [v7 length];
+  stringCopy = string;
+  uTF8String = [stringCopy UTF8String];
+  v9 = [stringCopy length];
 
-  v10 = write(a3, v8, v9);
+  v10 = write(descriptor, uTF8String, v9);
   if (v10 == -1)
   {
     v11 = __error();
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:*v11 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:*v11 userInfo:0];
     }
   }
 
   return v10 != -1;
 }
 
-- (int64_t)sizeOfFileWithDescriptor:(int)a3 error:(id *)a4
+- (int64_t)sizeOfFileWithDescriptor:(int)descriptor error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   memset(&v7, 0, sizeof(v7));
-  if (!fstat(a3, &v7))
+  if (!fstat(descriptor, &v7))
   {
     return v7.st_size;
   }
 
   v5 = __error();
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:*v5 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:*v5 userInfo:0];
   }
 
   return -1;
 }
 
-- (BOOL)renameFileFromPath:(id)a3 toPath:(id)a4 error:(id *)a5
+- (BOOL)renameFileFromPath:(id)path toPath:(id)toPath error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
-  v8 = a3;
-  v9 = a4;
-  v10 = [a3 UTF8String];
-  v11 = [v9 UTF8String];
+  pathCopy = path;
+  toPathCopy = toPath;
+  uTF8String = [path UTF8String];
+  uTF8String2 = [toPathCopy UTF8String];
 
-  rename(v10, v11, v12);
+  rename(uTF8String, uTF8String2, v12);
   v14 = v13;
   if (v13)
   {
     v15 = __error();
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:*v15 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:*v15 userInfo:0];
     }
   }
 
   return v14 == 0;
 }
 
-- (BOOL)removeFileAtPath:(id)a3 error:(id *)a4
+- (BOOL)removeFileAtPath:(id)path error:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  pathCopy = path;
+  v6 = pathCopy;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  if (!unlink([v5 UTF8String]))
+  if (!unlink([pathCopy UTF8String]))
   {
     if (qword_2810B88A8 != -1)
     {
@@ -1038,10 +1038,10 @@ LABEL_33:
     free(v19);
   }
 
-  if (a4)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:v14 userInfo:0];
-    *a4 = v20 = 0;
+    *error = v20 = 0;
   }
 
   else
@@ -1055,27 +1055,27 @@ LABEL_39:
   return v20;
 }
 
-- (BOOL)removePath:(id)a3 error:(id *)a4
+- (BOOL)removePath:(id)path error:(id *)error
 {
-  v6 = a3;
+  pathCopy = path;
   v7 = removefile_state_alloc();
-  LOBYTE(a4) = sub_22EE77128(self, v6, v7, a4);
+  LOBYTE(error) = sub_22EE77128(self, pathCopy, v7, error);
 
   removefile_state_free(v7);
-  return a4;
+  return error;
 }
 
-- (BOOL)chownPath:(id)a3 toUser:(unsigned int)a4 group:(unsigned int)a5 error:(id *)a6
+- (BOOL)chownPath:(id)path toUser:(unsigned int)user group:(unsigned int)group error:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = v9;
-  if (a6)
+  pathCopy = path;
+  v10 = pathCopy;
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
-  v11 = lchown([v9 UTF8String], a4, a5);
+  v11 = lchown([pathCopy UTF8String], user, group);
   if (v11)
   {
     v12 = *__error();
@@ -1116,9 +1116,9 @@ LABEL_39:
       free(v17);
     }
 
-    if (a6)
+    if (error)
     {
-      *a6 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:v12 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:v12 userInfo:0];
     }
   }
 
@@ -1126,17 +1126,17 @@ LABEL_39:
   return v11 == 0;
 }
 
-- (BOOL)chmodPath:(id)a3 withMode:(unsigned __int16)a4 error:(id *)a5
+- (BOOL)chmodPath:(id)path withMode:(unsigned __int16)mode error:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = v7;
-  if (a5)
+  pathCopy = path;
+  v8 = pathCopy;
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
-  v9 = chmod([v7 UTF8String], a4);
+  v9 = chmod([pathCopy UTF8String], mode);
   if (v9)
   {
     v10 = *__error();
@@ -1177,9 +1177,9 @@ LABEL_39:
       free(v15);
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:v10 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:v10 userInfo:0];
     }
   }
 
@@ -1187,17 +1187,17 @@ LABEL_39:
   return v9 == 0;
 }
 
-- (BOOL)makePath:(id)a3 mode:(unsigned __int16)a4 error:(id *)a5
+- (BOOL)makePath:(id)path mode:(unsigned __int16)mode error:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = v7;
-  if (a5)
+  pathCopy = path;
+  v8 = pathCopy;
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
-  v9 = mkpath_np([v7 UTF8String], a4);
+  v9 = mkpath_np([pathCopy UTF8String], mode);
   if (v9)
   {
     if (qword_2810B88A8 != -1)
@@ -1237,9 +1237,9 @@ LABEL_39:
       free(v14);
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:v9 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:v9 userInfo:0];
     }
   }
 
@@ -1247,22 +1247,22 @@ LABEL_39:
   return v9 == 0;
 }
 
-- (BOOL)clonePath:(id)a3 toPath:(id)a4 error:(id *)a5 handler:(id)a6
+- (BOOL)clonePath:(id)path toPath:(id)toPath error:(id *)error handler:(id)handler
 {
   v38 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  if (a5)
+  pathCopy = path;
+  toPathCopy = toPath;
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
-  v11 = a6;
+  handlerCopy = handler;
   v12 = copyfile_state_alloc();
-  copyfile_state_set(v12, 7u, v11);
+  copyfile_state_set(v12, 7u, handlerCopy);
 
   copyfile_state_set(v12, 6u, sub_22EE68C68);
-  v13 = copyfile([v9 UTF8String], objc_msgSend(v10, "UTF8String"), v12, 0xC800Fu);
+  v13 = copyfile([pathCopy UTF8String], objc_msgSend(toPathCopy, "UTF8String"), v12, 0xC800Fu);
   copyfile_state_free(v12);
   if (v13)
   {
@@ -1291,9 +1291,9 @@ LABEL_39:
         if (v17)
         {
           v32 = 138543874;
-          v33 = v9;
+          v33 = pathCopy;
           v34 = 2114;
-          v35 = v10;
+          v35 = toPathCopy;
           v36 = 1024;
           v37 = v14;
           LODWORD(v31) = 28;
@@ -1314,13 +1314,13 @@ LABEL_39:
         free(v19);
       }
 
-      if (a5)
+      if (error)
       {
         v25 = v14;
         v26 = MEMORY[0x277CCA9B8];
         v27 = *MEMORY[0x277CCA5B8];
 LABEL_31:
-        *a5 = [v26 errorWithDomain:v27 code:v25 userInfo:{0, v30, v31}];
+        *error = [v26 errorWithDomain:v27 code:v25 userInfo:{0, v30, v31}];
       }
     }
 
@@ -1348,9 +1348,9 @@ LABEL_31:
         if (v22)
         {
           v32 = 138543618;
-          v33 = v9;
+          v33 = pathCopy;
           v34 = 2114;
-          v35 = v10;
+          v35 = toPathCopy;
           LODWORD(v31) = 22;
           v30 = &v32;
           v23 = _os_log_send_and_compose_impl();
@@ -1369,7 +1369,7 @@ LABEL_31:
         free(v24);
       }
 
-      if (a5)
+      if (error)
       {
         v26 = MEMORY[0x277CCA9B8];
         v27 = *MEMORY[0x277CCA5B8];

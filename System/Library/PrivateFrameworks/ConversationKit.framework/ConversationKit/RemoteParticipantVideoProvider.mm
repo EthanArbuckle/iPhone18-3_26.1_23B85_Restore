@@ -1,52 +1,52 @@
 @interface RemoteParticipantVideoProvider
 - (NSString)debugDescription;
-- (void)remoteVideoClient:(id)a3 didDetectSensitiveContentWithAnalysis:(id)a4;
-- (void)remoteVideoClient:(id)a3 networkQualityDidDegrade:(BOOL)a4 info:(id)a5;
-- (void)remoteVideoClient:(id)a3 remoteMediaDidStall:(BOOL)a4;
-- (void)remoteVideoClient:(id)a3 remoteScreenAttributesDidChange:(id)a4;
-- (void)remoteVideoClient:(id)a3 remoteVideoAttributesDidChange:(id)a4;
-- (void)remoteVideoClient:(id)a3 remoteVideoDidPause:(BOOL)a4;
-- (void)remoteVideoClient:(id)a3 videoDidDegrade:(BOOL)a4;
-- (void)remoteVideoClient:(id)a3 videoDidSuspend:(BOOL)a4;
-- (void)remoteVideoClientDidReceiveFirstFrame:(id)a3;
+- (void)remoteVideoClient:(id)client didDetectSensitiveContentWithAnalysis:(id)analysis;
+- (void)remoteVideoClient:(id)client networkQualityDidDegrade:(BOOL)degrade info:(id)info;
+- (void)remoteVideoClient:(id)client remoteMediaDidStall:(BOOL)stall;
+- (void)remoteVideoClient:(id)client remoteScreenAttributesDidChange:(id)change;
+- (void)remoteVideoClient:(id)client remoteVideoAttributesDidChange:(id)change;
+- (void)remoteVideoClient:(id)client remoteVideoDidPause:(BOOL)pause;
+- (void)remoteVideoClient:(id)client videoDidDegrade:(BOOL)degrade;
+- (void)remoteVideoClient:(id)client videoDidSuspend:(BOOL)suspend;
+- (void)remoteVideoClientDidReceiveFirstFrame:(id)frame;
 @end
 
 @implementation RemoteParticipantVideoProvider
 
-- (void)remoteVideoClientDidReceiveFirstFrame:(id)a3
+- (void)remoteVideoClientDidReceiveFirstFrame:(id)frame
 {
-  v4 = a3;
-  v5 = self;
-  RemoteParticipantVideoProvider.remoteVideoClientDidReceiveFirstFrame(_:)(v4);
+  frameCopy = frame;
+  selfCopy = self;
+  RemoteParticipantVideoProvider.remoteVideoClientDidReceiveFirstFrame(_:)(frameCopy);
 }
 
-- (void)remoteVideoClient:(id)a3 videoDidSuspend:(BOOL)a4
+- (void)remoteVideoClient:(id)client videoDidSuspend:(BOOL)suspend
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = self;
-  RemoteParticipantVideoProvider.remoteVideoClient(_:videoDidSuspend:)(v6, v4);
+  suspendCopy = suspend;
+  clientCopy = client;
+  selfCopy = self;
+  RemoteParticipantVideoProvider.remoteVideoClient(_:videoDidSuspend:)(clientCopy, suspendCopy);
 }
 
-- (void)remoteVideoClient:(id)a3 remoteVideoDidPause:(BOOL)a4
+- (void)remoteVideoClient:(id)client remoteVideoDidPause:(BOOL)pause
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = self;
-  RemoteParticipantVideoProvider.remoteVideoClient(_:remoteVideoDidPause:)(v6, v4);
+  pauseCopy = pause;
+  clientCopy = client;
+  selfCopy = self;
+  RemoteParticipantVideoProvider.remoteVideoClient(_:remoteVideoDidPause:)(clientCopy, pauseCopy);
 }
 
-- (void)remoteVideoClient:(id)a3 videoDidDegrade:(BOOL)a4
+- (void)remoteVideoClient:(id)client videoDidDegrade:(BOOL)degrade
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = self;
-  RemoteParticipantVideoProvider.remoteVideoClient(_:videoDidDegrade:)(v6, v4);
+  degradeCopy = degrade;
+  clientCopy = client;
+  selfCopy = self;
+  RemoteParticipantVideoProvider.remoteVideoClient(_:videoDidDegrade:)(clientCopy, degradeCopy);
 }
 
-- (void)remoteVideoClient:(id)a3 networkQualityDidDegrade:(BOOL)a4 info:(id)a5
+- (void)remoteVideoClient:(id)client networkQualityDidDegrade:(BOOL)degrade info:(id)info
 {
-  if (a5)
+  if (info)
   {
     v8 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -56,61 +56,61 @@
     v8 = 0;
   }
 
-  v9 = a3;
-  v10 = self;
-  RemoteParticipantVideoProvider.remoteVideoClient(_:networkQualityDidDegrade:info:)(v9, a4, v8);
+  clientCopy = client;
+  selfCopy = self;
+  RemoteParticipantVideoProvider.remoteVideoClient(_:networkQualityDidDegrade:info:)(clientCopy, degrade, v8);
 }
 
-- (void)remoteVideoClient:(id)a3 remoteMediaDidStall:(BOOL)a4
+- (void)remoteVideoClient:(id)client remoteMediaDidStall:(BOOL)stall
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = self;
-  RemoteParticipantVideoProvider.remoteVideoClient(_:remoteMediaDidStall:)(v6, v4);
+  stallCopy = stall;
+  clientCopy = client;
+  selfCopy = self;
+  RemoteParticipantVideoProvider.remoteVideoClient(_:remoteMediaDidStall:)(clientCopy, stallCopy);
 }
 
-- (void)remoteVideoClient:(id)a3 remoteVideoAttributesDidChange:(id)a4
+- (void)remoteVideoClient:(id)client remoteVideoAttributesDidChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  RemoteParticipantVideoProvider.remoteVideoClient(_:remoteVideoAttributesDidChange:)(v6, v7);
+  clientCopy = client;
+  changeCopy = change;
+  selfCopy = self;
+  RemoteParticipantVideoProvider.remoteVideoClient(_:remoteVideoAttributesDidChange:)(clientCopy, changeCopy);
 }
 
-- (void)remoteVideoClient:(id)a3 remoteScreenAttributesDidChange:(id)a4
+- (void)remoteVideoClient:(id)client remoteScreenAttributesDidChange:(id)change
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  RemoteParticipantVideoProvider.remoteVideoClient(_:remoteScreenAttributesDidChange:)(a3, a4);
+  clientCopy = client;
+  changeCopy = change;
+  selfCopy = self;
+  RemoteParticipantVideoProvider.remoteVideoClient(_:remoteScreenAttributesDidChange:)(client, change);
 }
 
-- (void)remoteVideoClient:(id)a3 didDetectSensitiveContentWithAnalysis:(id)a4
+- (void)remoteVideoClient:(id)client didDetectSensitiveContentWithAnalysis:(id)analysis
 {
-  if (a4)
+  if (analysis)
   {
-    v6 = a3;
-    v7 = self;
-    v8 = a4;
+    clientCopy = client;
+    selfCopy = self;
+    analysisCopy = analysis;
     v9 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v11 = v10;
   }
 
   else
   {
-    v12 = a3;
-    v13 = self;
+    clientCopy2 = client;
+    selfCopy2 = self;
     v9 = 0;
     v11 = 0xF000000000000000;
   }
 
-  RemoteParticipantVideoProvider.remoteVideoClient(_:didDetectSensitiveContentWithAnalysis:)(a3, v9, v11);
+  RemoteParticipantVideoProvider.remoteVideoClient(_:didDetectSensitiveContentWithAnalysis:)(client, v9, v11);
   outlined consume of Data?(v9, v11);
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   v3 = RemoteParticipantVideoProvider.debugDescription.getter();
   v5 = v4;
 

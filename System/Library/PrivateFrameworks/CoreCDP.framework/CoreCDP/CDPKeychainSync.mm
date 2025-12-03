@@ -1,7 +1,7 @@
 @interface CDPKeychainSync
 + (BOOL)isUserVisibleKeychainSyncEnabled;
-+ (void)removeNonViewAwarePeersFromCircleWithContext:(id)a3 completion:(id)a4;
-+ (void)synchronizeKeychainSyncForContext:(id)a3 withCompletion:(id)a4;
++ (void)removeNonViewAwarePeersFromCircleWithContext:(id)context completion:(id)completion;
++ (void)synchronizeKeychainSyncForContext:(id)context withCompletion:(id)completion;
 @end
 
 @implementation CDPKeychainSync
@@ -31,14 +31,14 @@
   v8[3] = &unk_1E869DD10;
   v8[4] = buf;
   [v4 isUserVisibleKeychainSyncEnabledWithCompletion:v8];
-  v6 = [(CDPDaemonConnection *)v3 connection];
-  [v6 invalidate];
+  connection = [(CDPDaemonConnection *)v3 connection];
+  [connection invalidate];
 
-  LOBYTE(v6) = v10[24];
+  LOBYTE(connection) = v10[24];
   _Block_object_dispose(buf, 8);
 
   os_activity_scope_leave(&state);
-  return v6;
+  return connection;
 }
 
 void __51__CDPKeychainSync_isUserVisibleKeychainSyncEnabled__block_invoke(uint64_t a1, void *a2)
@@ -146,10 +146,10 @@ void __68__CDPKeychainSync_setUserVisibleKeychainSyncEnabled_withCompletion___bl
   [v3 invalidate];
 }
 
-+ (void)removeNonViewAwarePeersFromCircleWithContext:(id)a3 completion:(id)a4
++ (void)removeNonViewAwarePeersFromCircleWithContext:(id)context completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v7 = _os_activity_create(&dword_1DED99000, "cdp: Remove Legacy Peers", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -159,7 +159,7 @@ void __68__CDPKeychainSync_setUserVisibleKeychainSyncEnabled_withCompletion___bl
   v17[1] = 3221225472;
   v17[2] = __75__CDPKeychainSync_removeNonViewAwarePeersFromCircleWithContext_completion___block_invoke;
   v17[3] = &unk_1E869D588;
-  v9 = v6;
+  v9 = completionCopy;
   v18 = v9;
   v10 = [(CDPDaemonConnection *)v8 daemonWithErrorHandler:v17];
   v11 = _CDPLogSystem();
@@ -176,7 +176,7 @@ void __68__CDPKeychainSync_setUserVisibleKeychainSyncEnabled_withCompletion___bl
   v16 = v12;
   v13 = v8;
   v15 = v13;
-  [v10 removeNonViewAwarePeersFromCircleWithContext:v5 completion:v14];
+  [v10 removeNonViewAwarePeersFromCircleWithContext:contextCopy completion:v14];
 
   os_activity_scope_leave(&state);
 }
@@ -240,10 +240,10 @@ void __75__CDPKeychainSync_removeNonViewAwarePeersFromCircleWithContext_completi
   [v3 invalidate];
 }
 
-+ (void)synchronizeKeychainSyncForContext:(id)a3 withCompletion:(id)a4
++ (void)synchronizeKeychainSyncForContext:(id)context withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v7 = _os_activity_create(&dword_1DED99000, "cdp: Synchronize Keychain State", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -253,7 +253,7 @@ void __75__CDPKeychainSync_removeNonViewAwarePeersFromCircleWithContext_completi
   v17[1] = 3221225472;
   v17[2] = __68__CDPKeychainSync_synchronizeKeychainSyncForContext_withCompletion___block_invoke;
   v17[3] = &unk_1E869D588;
-  v9 = v6;
+  v9 = completionCopy;
   v18 = v9;
   v10 = [(CDPDaemonConnection *)v8 daemonWithErrorHandler:v17];
   v11 = _CDPLogSystem();
@@ -270,7 +270,7 @@ void __75__CDPKeychainSync_removeNonViewAwarePeersFromCircleWithContext_completi
   v16 = v12;
   v13 = v8;
   v15 = v13;
-  [v10 synchronizeUserVisibleKeychainSyncEligibilityForContext:v5 completion:v14];
+  [v10 synchronizeUserVisibleKeychainSyncEligibilityForContext:contextCopy completion:v14];
 
   os_activity_scope_leave(&state);
 }

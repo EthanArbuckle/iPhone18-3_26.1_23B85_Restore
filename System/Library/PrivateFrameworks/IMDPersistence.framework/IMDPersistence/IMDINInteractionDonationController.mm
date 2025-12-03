@@ -1,11 +1,11 @@
 @interface IMDINInteractionDonationController
 + (id)sharedController;
 - (id)_createSOSImage;
-- (id)createImageForNickname:(id)a3;
-- (id)createInteractionWithContext:(id)a3 updateHandler:(id)a4;
-- (id)createPersonFromHandle:(id)a3 contact:(id)a4 context:(id)a5 interactionUpdatedHandler:(id)a6;
-- (id)createPersonHandleFromHandle:(id)a3 contact:(id)a4;
-- (id)messageIndexingJobWithSize:(int64_t)a3 context:(id)a4 timingCollection:(id)a5;
+- (id)createImageForNickname:(id)nickname;
+- (id)createInteractionWithContext:(id)context updateHandler:(id)handler;
+- (id)createPersonFromHandle:(id)handle contact:(id)contact context:(id)context interactionUpdatedHandler:(id)handler;
+- (id)createPersonHandleFromHandle:(id)handle contact:(id)contact;
+- (id)messageIndexingJobWithSize:(int64_t)size context:(id)context timingCollection:(id)collection;
 @end
 
 @implementation IMDINInteractionDonationController
@@ -22,12 +22,12 @@
   return v3;
 }
 
-- (id)createPersonHandleFromHandle:(id)a3 contact:(id)a4
+- (id)createPersonHandleFromHandle:(id)handle contact:(id)contact
 {
   v49 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!MEMORY[0x1B8CAF9C0](v5))
+  handleCopy = handle;
+  contactCopy = contact;
+  if (!MEMORY[0x1B8CAF9C0](handleCopy))
   {
     if (!IMStringIsEmail())
     {
@@ -36,7 +36,7 @@
       goto LABEL_35;
     }
 
-    if (!v6)
+    if (!contactCopy)
     {
       v16 = 0;
       v18 = 1;
@@ -48,7 +48,7 @@
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v12 = objc_msgSend_emailAddresses(v6, v23, v24);
+    v12 = objc_msgSend_emailAddresses(contactCopy, v23, v24);
     v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v25, &v39, v47, 16);
     if (!v16)
     {
@@ -56,7 +56,7 @@
       goto LABEL_33;
     }
 
-    v38 = v6;
+    v38 = contactCopy;
     v28 = *v40;
     v18 = 1;
     while (2)
@@ -90,7 +90,7 @@
     }
   }
 
-  if (!v6)
+  if (!contactCopy)
   {
     v16 = 0;
     v18 = 2;
@@ -98,14 +98,14 @@
   }
 
   v7 = objc_alloc(MEMORY[0x1E695CF50]);
-  v11 = objc_msgSend_initWithStringValue_(v7, v8, v5);
+  v11 = objc_msgSend_initWithStringValue_(v7, v8, handleCopy);
   if (v11)
   {
     v45 = 0u;
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v12 = objc_msgSend_phoneNumbers(v6, v9, v10);
+    v12 = objc_msgSend_phoneNumbers(contactCopy, v9, v10);
     v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v13, &v43, v48, 16);
     if (!v16)
     {
@@ -113,7 +113,7 @@
       goto LABEL_33;
     }
 
-    v38 = v6;
+    v38 = contactCopy;
     v17 = *v44;
     v18 = 2;
     while (2)
@@ -146,7 +146,7 @@
     }
 
 LABEL_29:
-    v6 = v38;
+    contactCopy = v38;
 LABEL_33:
 
     goto LABEL_34;
@@ -158,17 +158,17 @@ LABEL_34:
 
 LABEL_35:
   v33 = objc_alloc(MEMORY[0x1E696E948]);
-  v35 = objc_msgSend_initWithValue_type_label_(v33, v34, v5, v18, v16);
+  v35 = objc_msgSend_initWithValue_type_label_(v33, v34, handleCopy, v18, v16);
 
   v36 = *MEMORY[0x1E69E9840];
 
   return v35;
 }
 
-- (id)createImageForNickname:(id)a3
+- (id)createImageForNickname:(id)nickname
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = objc_msgSend_avatar(a3, a2, a3);
+  v3 = objc_msgSend_avatar(nickname, a2, nickname);
   if (objc_msgSend_imageExists(v3, v4, v5))
   {
     v8 = objc_msgSend_imageFilePath(v3, v6, v7);
@@ -229,17 +229,17 @@ LABEL_35:
   return v14;
 }
 
-- (id)createPersonFromHandle:(id)a3 contact:(id)a4 context:(id)a5 interactionUpdatedHandler:(id)a6
+- (id)createPersonFromHandle:(id)handle contact:(id)contact context:(id)context interactionUpdatedHandler:(id)handler
 {
   v107 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v16 = objc_msgSend_identifier(v11, v14, v15);
-  v18 = objc_msgSend_createPersonHandleFromHandle_contact_(self, v17, v10, v11);
-  v20 = objc_msgSend_componentsForContact_(MEMORY[0x1E696ADF0], v19, v11);
-  if (objc_msgSend_hasSuffix_(v10, v21, *MEMORY[0x1E69A6EA0]))
+  handleCopy = handle;
+  contactCopy = contact;
+  contextCopy = context;
+  handlerCopy = handler;
+  v16 = objc_msgSend_identifier(contactCopy, v14, v15);
+  v18 = objc_msgSend_createPersonHandleFromHandle_contact_(self, v17, handleCopy, contactCopy);
+  v20 = objc_msgSend_componentsForContact_(MEMORY[0x1E696ADF0], v19, contactCopy);
+  if (objc_msgSend_hasSuffix_(handleCopy, v21, *MEMORY[0x1E69A6EA0]))
   {
     v22 = IMSharedUtilitiesFrameworkBundle();
     objc_msgSend_localizedStringForKey_value_table_(v22, v23, @"TS_NOTIFICATION_EMERGENCY_SOS_HANDLE", &stru_1F2FA9728, @"IMSharedUtilities-SYDROB_FEATURES");
@@ -259,7 +259,7 @@ LABEL_35:
 
   if (IMIsStringStewieRoadside())
   {
-    v32 = objc_msgSend_chatDisplayName(v12, v30, v31);
+    v32 = objc_msgSend_chatDisplayName(contextCopy, v30, v31);
     v33 = v32;
     if (v32)
     {
@@ -279,15 +279,15 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if ((MEMORY[0x1B8CAF990](v10) & 1) != 0 || objc_msgSend___im_isChatBot(v10, v34, v35))
+  if ((MEMORY[0x1B8CAF990](handleCopy) & 1) != 0 || objc_msgSend___im_isChatBot(handleCopy, v34, v35))
   {
     v33 = objc_msgSend_sharedInstance(MEMORY[0x1E69A7F40], v34, v35);
     v99[0] = MEMORY[0x1E69E9820];
     v99[1] = 3221225472;
     v99[2] = sub_1B7B85EE0;
     v99[3] = &unk_1E7CBB350;
-    v100 = v13;
-    v37 = objc_msgSend_businessNameForUID_updateHandler_(v33, v36, v10, v99);
+    v100 = handlerCopy;
+    v37 = objc_msgSend_businessNameForUID_updateHandler_(v33, v36, handleCopy, v99);
     if (objc_msgSend_length(v37, v38, v39))
     {
       v40 = v37;
@@ -302,7 +302,7 @@ LABEL_18:
         _os_log_impl(&dword_1B7AD5000, v43, OS_LOG_TYPE_INFO, "No cached business name, using placeholder business name, will call interaction update handler if business name fetch completes", buf, 2u);
       }
 
-      v40 = objc_msgSend_placeholderBusinessNameForBrandURI_(MEMORY[0x1E69A7F40], v44, v10);
+      v40 = objc_msgSend_placeholderBusinessNameForBrandURI_(MEMORY[0x1E69A7F40], v44, handleCopy);
     }
 
     v25 = v40;
@@ -310,11 +310,11 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (v11 && objc_msgSend_isCNContactAKnownContact_(MEMORY[0x1E69A7FD0], v34, v11))
+  if (contactCopy && objc_msgSend_isCNContactAKnownContact_(MEMORY[0x1E69A7FD0], v34, contactCopy))
   {
     v50 = objc_msgSend_sharedDefaults(MEMORY[0x1E695CE40], v34, v35);
     v53 = objc_msgSend_shortNameFormatPrefersNicknames(v50, v51, v52);
-    v25 = _IMDCoreSpotlightFullNameForContact(v11, v53);
+    v25 = _IMDCoreSpotlightFullNameForContact(contactCopy, v53);
     if (objc_msgSend_length(v25, v54, v55))
     {
       log = v50;
@@ -323,7 +323,7 @@ LABEL_18:
       if (os_log_type_enabled(v57, OS_LOG_TYPE_INFO))
       {
         *buf = 138412802;
-        v102 = v10;
+        v102 = handleCopy;
         v103 = 2112;
         v104 = v56;
         v105 = 2112;
@@ -350,7 +350,7 @@ LABEL_18:
   else
   {
     loga = v25;
-    v60 = _IMDCoreSpotlightNicknameForAddress(v10);
+    v60 = _IMDCoreSpotlightNicknameForAddress(handleCopy);
     if (v60)
     {
       v91 = v60;
@@ -367,7 +367,7 @@ LABEL_18:
         if (os_log_type_enabled(v66, OS_LOG_TYPE_INFO))
         {
           *buf = 138412802;
-          v102 = v10;
+          v102 = handleCopy;
           v103 = 2112;
           v104 = v87;
           v105 = 2112;
@@ -398,7 +398,7 @@ LABEL_18:
   if (!objc_msgSend_length(v25, v58, v59))
   {
     logb = v25;
-    v69 = _IMDCoreSpotlightSuggestedNameForAddress(v10);
+    v69 = _IMDCoreSpotlightSuggestedNameForAddress(handleCopy);
     v92 = v69;
     if (objc_msgSend_length(v69, v70, v71))
     {
@@ -408,7 +408,7 @@ LABEL_18:
       if (os_log_type_enabled(v73, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v102 = v10;
+        v102 = handleCopy;
         v103 = 2112;
         v104 = v72;
         _os_log_impl(&dword_1B7AD5000, v73, OS_LOG_TYPE_INFO, "For handle %@ used nickname to determine displayName %@ and no image", buf, 0x16u);
@@ -423,7 +423,7 @@ LABEL_18:
 
   if (!objc_msgSend_length(v25, v67, v68))
   {
-    v93 = objc_msgSend_uncanonicalizedSenderHandleID(v12, v74, v75);
+    v93 = objc_msgSend_uncanonicalizedSenderHandleID(contextCopy, v74, v75);
     if (!objc_msgSend_length(v93, v76, v77))
     {
       v86 = v93;
@@ -433,19 +433,19 @@ LABEL_54:
     }
 
     logc = v25;
-    v90 = objc_msgSend_uncanonicalizedSenderHandleID(v12, v78, v79);
+    v90 = objc_msgSend_uncanonicalizedSenderHandleID(contextCopy, v78, v79);
     v82 = objc_msgSend_lowercaseString(v90, v80, v81);
-    isEqualToString = objc_msgSend_isEqualToString_(v10, v83, v82);
+    isEqualToString = objc_msgSend_isEqualToString_(handleCopy, v83, v82);
 
     if (isEqualToString)
     {
-      v25 = objc_msgSend_uncanonicalizedSenderHandleID(v12, v84, v85);
+      v25 = objc_msgSend_uncanonicalizedSenderHandleID(contextCopy, v84, v85);
 
       logd = IMLogHandleForCategory();
       if (os_log_type_enabled(logd, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v102 = v10;
+        v102 = handleCopy;
         v103 = 2112;
         v104 = v25;
         _os_log_impl(&dword_1B7AD5000, logd, OS_LOG_TYPE_INFO, "For handle %@ used uncanonicalized address to determine displayName %@ and no image", buf, 0x16u);
@@ -467,18 +467,18 @@ LABEL_19:
   return isContactSuggestion_suggestionType;
 }
 
-- (id)createInteractionWithContext:(id)a3 updateHandler:(id)a4
+- (id)createInteractionWithContext:(id)context updateHandler:(id)handler
 {
   v247 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v234 = a4;
+  contextCopy = context;
+  handlerCopy = handler;
   v6 = 0x1E695D000uLL;
   v231 = objc_msgSend_array(MEMORY[0x1E695DF70], v7, v8);
   v240 = 0u;
   v241 = 0u;
   v242 = 0u;
   v243 = 0u;
-  v11 = objc_msgSend_chatParticipants(v5, v9, v10);
+  v11 = objc_msgSend_chatParticipants(contextCopy, v9, v10);
   v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v11, v12, &v240, v246, 16);
   if (!v13)
   {
@@ -491,14 +491,14 @@ LABEL_17:
       _os_log_impl(&dword_1B7AD5000, v34, OS_LOG_TYPE_INFO, "None of the current chat participants match the current senderID, creating a new person.", buf, 2u);
     }
 
-    v37 = objc_msgSend_senderHandleID(v5, v35, v36);
-    v18 = objc_msgSend_createPersonFromHandle_contact_context_interactionUpdatedHandler_(self, v38, v37, 0, v5, v234);
+    v37 = objc_msgSend_senderHandleID(contextCopy, v35, v36);
+    v18 = objc_msgSend_createPersonFromHandle_contact_context_interactionUpdatedHandler_(self, v38, v37, 0, contextCopy, handlerCopy);
 
     goto LABEL_20;
   }
 
   v16 = v13;
-  v17 = v5;
+  v17 = contextCopy;
   v18 = 0;
   v19 = *v241;
   do
@@ -513,7 +513,7 @@ LABEL_17:
       v21 = *(*(&v240 + 1) + 8 * i);
       v22 = objc_msgSend_handleID(v21, v14, v15);
       v25 = objc_msgSend_contact(v21, v23, v24);
-      v27 = objc_msgSend_createPersonFromHandle_contact_context_interactionUpdatedHandler_(self, v26, v22, v25, v17, v234);
+      v27 = objc_msgSend_createPersonFromHandle_contact_context_interactionUpdatedHandler_(self, v26, v22, v25, v17, handlerCopy);
 
       if (objc_msgSend_isSender(v21, v28, v29))
       {
@@ -541,7 +541,7 @@ LABEL_17:
 
   while (v16);
 
-  v5 = v17;
+  contextCopy = v17;
   v6 = 0x1E695D000;
   if (!v18)
   {
@@ -549,7 +549,7 @@ LABEL_17:
   }
 
 LABEL_20:
-  v39 = objc_msgSend_chatLastAddressedLocaleHandle(v5, v32, v33);
+  v39 = objc_msgSend_chatLastAddressedLocaleHandle(contextCopy, v32, v33);
   v40 = MEMORY[0x1B8CAF9C0]();
 
   if (v40)
@@ -559,14 +559,14 @@ LABEL_20:
 
   else
   {
-    v44 = objc_msgSend_chatLastAddressedLocaleHandle(v5, v41, v42);
+    v44 = objc_msgSend_chatLastAddressedLocaleHandle(contextCopy, v41, v42);
     LODWORD(v43) = IMStringIsEmail();
 
     v43 = v43;
   }
 
   v45 = objc_alloc(MEMORY[0x1E696E948]);
-  v48 = objc_msgSend_chatLastAddressedLocaleHandle(v5, v46, v47);
+  v48 = objc_msgSend_chatLastAddressedLocaleHandle(contextCopy, v46, v47);
   v50 = objc_msgSend_initWithValue_type_(v45, v49, v48, v43);
 
   v51 = objc_alloc(MEMORY[0x1E696E940]);
@@ -575,10 +575,10 @@ LABEL_20:
   objc_msgSend_setIsMe_(v53, v54, 1);
   v227 = v53;
   objc_msgSend_addObject_(v231, v55, v53);
-  v58 = objc_msgSend_chatStyle(v5, v56, v57);
-  isFilteredValue = objc_msgSend_isFilteredValue(v5, v59, v60);
-  v61 = v5;
-  v64 = objc_msgSend_chatParticipants(v5, v62, v63);
+  v58 = objc_msgSend_chatStyle(contextCopy, v56, v57);
+  isFilteredValue = objc_msgSend_isFilteredValue(contextCopy, v59, v60);
+  v61 = contextCopy;
+  v64 = objc_msgSend_chatParticipants(contextCopy, v62, v63);
   v65 = objc_alloc_init(*(v6 + 3952));
   v235 = 0u;
   v236 = 0u;
@@ -748,11 +748,11 @@ LABEL_20:
   return v201;
 }
 
-- (id)messageIndexingJobWithSize:(int64_t)a3 context:(id)a4 timingCollection:(id)a5
+- (id)messageIndexingJobWithSize:(int64_t)size context:(id)context timingCollection:(id)collection
 {
-  v5 = a4;
+  contextCopy = context;
   v6 = [IMDINInteractionMessageDonationJob alloc];
-  v8 = objc_msgSend_initWithContext_(v6, v7, v5);
+  v8 = objc_msgSend_initWithContext_(v6, v7, contextCopy);
 
   return v8;
 }

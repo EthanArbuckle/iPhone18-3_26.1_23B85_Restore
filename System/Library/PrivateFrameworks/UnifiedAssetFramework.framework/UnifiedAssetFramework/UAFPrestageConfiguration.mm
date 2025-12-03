@@ -1,11 +1,11 @@
 @interface UAFPrestageConfiguration
-+ (BOOL)isValid:(id)a3 error:(id *)a4;
-+ (BOOL)predicateMatch:(id)a3;
-+ (id)fromContentsOfURL:(id)a3 error:(id *)a4;
++ (BOOL)isValid:(id)valid error:(id *)error;
++ (BOOL)predicateMatch:(id)match;
++ (id)fromContentsOfURL:(id)l error:(id *)error;
 + (id)supportedFileVersions;
-- (UAFPrestageConfiguration)initWithDictionary:(id)a3;
-- (id)mergeAssetSetUsages:(id)a3;
-- (id)usages:(id)a3;
+- (UAFPrestageConfiguration)initWithDictionary:(id)dictionary;
+- (id)mergeAssetSetUsages:(id)usages;
+- (id)usages:(id)usages;
 @end
 
 @implementation UAFPrestageConfiguration
@@ -20,14 +20,14 @@
   return v2;
 }
 
-+ (BOOL)isValid:(id)a3 error:(id *)a4
++ (BOOL)isValid:(id)valid error:(id *)error
 {
   v55 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  validCopy = valid;
   v6 = +[UAFPrestageConfiguration supportedFileVersions];
-  v7 = [UAFConfiguration isValid:v5 fileType:@"PrestageConfiguration" fileVersions:v6 error:a4];
+  v7 = [UAFConfiguration isValid:validCopy fileType:@"PrestageConfiguration" fileVersions:v6 error:error];
 
-  if (!v7 || (v8 = 0x1E696A000uLL, ![UAFConfiguration isValidValue:v5 key:@"AssetSetName" kind:objc_opt_class() required:1 error:a4]) || (v9 = 0x1E695D000uLL, ![UAFConfiguration isValidValue:v5 key:@"ValidConfigs" kind:objc_opt_class() required:1 error:a4]))
+  if (!v7 || (v8 = 0x1E696A000uLL, ![UAFConfiguration isValidValue:validCopy key:@"AssetSetName" kind:objc_opt_class() required:1 error:error]) || (v9 = 0x1E695D000uLL, ![UAFConfiguration isValidValue:validCopy key:@"ValidConfigs" kind:objc_opt_class() required:1 error:error]))
   {
     v27 = 0;
     goto LABEL_28;
@@ -37,7 +37,7 @@
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v10 = [v5 objectForKeyedSubscript:@"ValidConfigs"];
+  v10 = [validCopy objectForKeyedSubscript:@"ValidConfigs"];
   v11 = [v10 countByEnumeratingWithState:&v45 objects:v54 count:16];
   if (!v11)
   {
@@ -82,7 +82,7 @@
 
       v16 = v15;
       v17 = *(v8 + 3776);
-      if (![UAFConfiguration isValidValue:v16 key:@"TargetingType" kind:objc_opt_class() required:1 error:a4])
+      if (![UAFConfiguration isValidValue:v16 key:@"TargetingType" kind:objc_opt_class() required:1 error:error])
       {
         goto LABEL_32;
       }
@@ -113,14 +113,14 @@ LABEL_32:
       }
 
       v19 = *(v8 + 3776);
-      if (![UAFConfiguration isValidValue:v16 key:@"TargetingPredicate" kind:objc_opt_class() required:1 error:a4])
+      if (![UAFConfiguration isValidValue:v16 key:@"TargetingPredicate" kind:objc_opt_class() required:1 error:error])
       {
         goto LABEL_40;
       }
 
 LABEL_15:
       v20 = *(v9 + 3784);
-      if (![UAFConfiguration isValidValue:v16 key:@"Usages" kind:objc_opt_class() required:1 error:a4])
+      if (![UAFConfiguration isValidValue:v16 key:@"Usages" kind:objc_opt_class() required:1 error:error])
       {
         goto LABEL_40;
       }
@@ -201,23 +201,23 @@ LABEL_28:
   return v27;
 }
 
-+ (id)fromContentsOfURL:(id)a3 error:(id *)a4
++ (id)fromContentsOfURL:(id)l error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (a4)
+  lCopy = l;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   v18 = 0;
-  v6 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:v5 error:&v18];
+  v6 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:lCopy error:&v18];
   v7 = v18;
   v8 = v7;
-  if (a4)
+  if (error)
   {
     v9 = v7;
-    *a4 = v8;
+    *error = v8;
   }
 
   if (v6)
@@ -232,7 +232,7 @@ LABEL_28:
 
   if (v10)
   {
-    if ([UAFPrestageConfiguration isValid:v6 error:a4])
+    if ([UAFPrestageConfiguration isValid:v6 error:error])
     {
       v15 = [[UAFPrestageConfiguration alloc] initWithDictionary:v6];
       goto LABEL_15;
@@ -244,7 +244,7 @@ LABEL_28:
       *buf = 136315394;
       v20 = "+[UAFPrestageConfiguration fromContentsOfURL:error:]";
       v21 = 2112;
-      v22 = v5;
+      v22 = lCopy;
       v12 = "%s Failed to validate UAFAssetSetConfiguration dictionary from %@";
       v13 = v11;
       v14 = 22;
@@ -260,7 +260,7 @@ LABEL_28:
       *buf = 136315650;
       v20 = "+[UAFPrestageConfiguration fromContentsOfURL:error:]";
       v21 = 2112;
-      v22 = v5;
+      v22 = lCopy;
       v23 = 2112;
       v24 = v8;
       v12 = "%s Failed to load UAFAssetSetConfiguration dictionary from %@: %@";
@@ -279,12 +279,12 @@ LABEL_15:
   return v15;
 }
 
-+ (BOOL)predicateMatch:(id)a3
++ (BOOL)predicateMatch:(id)match
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  matchCopy = match;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -305,7 +305,7 @@ LABEL_15:
 
         v10 = *(*(&v18 + 1) + 8 * i);
         v11 = [UAFCommonUtilities mobileGestaltQuery:v10];
-        [v5 setObject:v11 forKeyedSubscript:v10];
+        [dictionary2 setObject:v11 forKeyedSubscript:v10];
       }
 
       v7 = [&unk_1F3B73260 countByEnumeratingWithState:&v18 objects:v26 count:16];
@@ -314,9 +314,9 @@ LABEL_15:
     while (v7);
   }
 
-  [v4 addEntriesFromDictionary:v5];
+  [dictionary addEntriesFromDictionary:dictionary2];
   v12 = +[UAFCommonUtilities systemLanguage];
-  [v4 setObject:v12 forKeyedSubscript:@"SystemLanguage"];
+  [dictionary setObject:v12 forKeyedSubscript:@"SystemLanguage"];
 
   v13 = UAFGetLogCategory(&UAFLogContextClient);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -324,30 +324,30 @@ LABEL_15:
     *buf = 136315394;
     v23 = "+[UAFPrestageConfiguration predicateMatch:]";
     v24 = 2114;
-    v25 = v3;
+    v25 = matchCopy;
     _os_log_impl(&dword_1BCF2C000, v13, OS_LOG_TYPE_DEFAULT, "%s Evaluating predicate string: '%{public}@'", buf, 0x16u);
   }
 
-  v14 = [MEMORY[0x1E696AE18] predicateWithFormat:v3];
-  v15 = [v14 evaluateWithObject:v4];
+  v14 = [MEMORY[0x1E696AE18] predicateWithFormat:matchCopy];
+  v15 = [v14 evaluateWithObject:dictionary];
 
   v16 = *MEMORY[0x1E69E9840];
   return v15;
 }
 
-- (UAFPrestageConfiguration)initWithDictionary:(id)a3
+- (UAFPrestageConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = UAFPrestageConfiguration;
   v5 = [(UAFPrestageConfiguration *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"AssetSetName"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"AssetSetName"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"ValidConfigs"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"ValidConfigs"];
     v9 = [(UAFPrestageConfiguration *)v5 usages:v8];
     usages = v5->_usages;
     v5->_usages = v9;
@@ -358,23 +358,23 @@ LABEL_15:
   return v5;
 }
 
-- (id)usages:(id)a3
+- (id)usages:(id)usages
 {
   v24 = *MEMORY[0x1E69E9840];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = a3;
+  obj = usages;
   v3 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (!v3)
   {
-    v5 = 0;
+    array = 0;
     goto LABEL_21;
   }
 
   v4 = v3;
-  v5 = 0;
+  array = 0;
   v6 = *v20;
   do
   {
@@ -391,13 +391,13 @@ LABEL_15:
 
       if (v10)
       {
-        if (!v5)
+        if (!array)
         {
-          v5 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
         }
 
         v11 = [v8 objectForKeyedSubscript:@"Usages"];
-        v12 = [v5 arrayByAddingObjectsFromArray:v11];
+        v12 = [array arrayByAddingObjectsFromArray:v11];
         goto LABEL_10;
       }
 
@@ -409,18 +409,18 @@ LABEL_15:
         v11 = [v8 objectForKeyedSubscript:@"TargetingPredicate"];
         if ([UAFPrestageConfiguration predicateMatch:v11])
         {
-          if (!v5)
+          if (!array)
           {
-            v5 = [MEMORY[0x1E695DF70] array];
+            array = [MEMORY[0x1E695DF70] array];
           }
 
           v15 = [v8 objectForKeyedSubscript:@"Usages"];
-          v12 = [v5 arrayByAddingObjectsFromArray:v15];
+          v12 = [array arrayByAddingObjectsFromArray:v15];
 
-          v5 = v15;
+          array = v15;
 LABEL_10:
 
-          v5 = v12;
+          array = v12;
         }
 
         continue;
@@ -435,27 +435,27 @@ LABEL_21:
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return array;
 }
 
-- (id)mergeAssetSetUsages:(id)a3
+- (id)mergeAssetSetUsages:(id)usages
 {
-  v4 = a3;
+  usagesCopy = usages;
   if ([(NSArray *)self->_usages count])
   {
-    v5 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v4];
+    v5 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:usagesCopy];
     v6 = [MEMORY[0x1E695DFA8] set];
     v7 = [v5 objectForKeyedSubscript:self->_name];
     [v6 addObjectsFromArray:v7];
 
     [v6 addObjectsFromArray:self->_usages];
-    v8 = [v6 allObjects];
-    [v5 setObject:v8 forKeyedSubscript:self->_name];
+    allObjects = [v6 allObjects];
+    [v5 setObject:allObjects forKeyedSubscript:self->_name];
   }
 
   else
   {
-    v5 = v4;
+    v5 = usagesCopy;
   }
 
   return v5;

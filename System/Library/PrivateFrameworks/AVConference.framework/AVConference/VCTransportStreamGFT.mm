@@ -1,8 +1,8 @@
 @interface VCTransportStreamGFT
-- (VCTransportStreamGFT)initWithTransportSessionID:(unsigned int)a3 options:(id)a4;
-- (int)VCTransportStreamSendPacket:(id *)a3;
-- (int)receivePacket:(id *)a3;
-- (int)registerPacketCallbackContext:(void *)a3 callback:(id)a4;
+- (VCTransportStreamGFT)initWithTransportSessionID:(unsigned int)d options:(id)options;
+- (int)VCTransportStreamSendPacket:(id *)packet;
+- (int)receivePacket:(id *)packet;
+- (int)registerPacketCallbackContext:(void *)context callback:(id)callback;
 - (int)unregisterPacketCallback;
 - (void)VCTransportStreamUnblock;
 - (void)dealloc;
@@ -10,12 +10,12 @@
 
 @implementation VCTransportStreamGFT
 
-- (VCTransportStreamGFT)initWithTransportSessionID:(unsigned int)a3 options:(id)a4
+- (VCTransportStreamGFT)initWithTransportSessionID:(unsigned int)d options:(id)options
 {
   v32 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = VCTransportStreamGFT;
-  v5 = [(VCTransportStreamGFT *)&v17 init:*&a3];
+  v5 = [(VCTransportStreamGFT *)&v17 init:*&d];
   if (!v5)
   {
     return v5;
@@ -38,7 +38,7 @@
     goto LABEL_13;
   }
 
-  v5->_transportSessionID = a3;
+  v5->_transportSessionID = d;
   v5->_vtpReceiveSocket = v6;
   v5->_vtpCancelSocket = VTP_Socket(2, 1, 6);
   v5->_vtpCallbackId = -1;
@@ -110,7 +110,7 @@ LABEL_13:
       v11 = 1024;
       v12 = 77;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d dealloc [%p]", buf, 0x26u);
     }
   }
@@ -130,23 +130,23 @@ LABEL_13:
   [(VCTransportStreamGFT *)&v6 dealloc];
 }
 
-- (int)VCTransportStreamSendPacket:(id *)a3
+- (int)VCTransportStreamSendPacket:(id *)packet
 {
   v33 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (packet)
   {
     mediaQueue = self->_mediaQueue;
     if (mediaQueue)
     {
       *&v22[0] = 0;
-      v6 = VCMediaQueue_AllocMediaPacket(mediaQueue, a3->var5.streamIDs[0], 1, v22);
+      v6 = VCMediaQueue_AllocMediaPacket(mediaQueue, packet->var5.streamIDs[0], 1, v22);
       if (v6 < 0)
       {
         [(VCTransportStreamGFT *)v6 VCTransportStreamSendPacket:?];
         return v21;
       }
 
-      p_var5 = &a3->var5;
+      p_var5 = &packet->var5;
       v8 = micro();
       v9 = *&v22[0];
       *(*&v22[0] + 272) = v8;
@@ -180,11 +180,11 @@ LABEL_13:
     {
       v23 = 0u;
       v24 = 0u;
-      v17 = *a3->var5.streamIDs;
-      v24 = *&a3->var5.streamIDs[8];
+      v17 = *packet->var5.streamIDs;
+      v24 = *&packet->var5.streamIDs[8];
       v25 = 0u;
-      v18 = *&a3->var5.statsPayload.serverPacketInterval;
-      v25 = *&a3->var5.participantID;
+      v18 = *&packet->var5.statsPayload.serverPacketInterval;
+      v25 = *&packet->var5.participantID;
       v31 = 0u;
       v32 = 0u;
       v29 = 0u;
@@ -192,13 +192,13 @@ LABEL_13:
       memset(v22, 0, sizeof(v22));
       v26 = v18;
       v27 = 0u;
-      v27 = *&a3->var5.encryptionSequenceNumber;
+      v27 = *&packet->var5.encryptionSequenceNumber;
       v28 = 0u;
       vtpReceiveSocket = self->_vtpReceiveSocket;
       DWORD2(v22[0]) = self->_transportSessionID;
       v23 = v17;
       BYTE13(v24) = 1;
-      VTP_Send(vtpReceiveSocket, a3->var2, a3->var3, a3->var4, v22);
+      VTP_Send(vtpReceiveSocket, packet->var2, packet->var3, packet->var4, v22);
       return 0;
     }
   }
@@ -219,7 +219,7 @@ LABEL_13:
   return v16;
 }
 
-- (int)receivePacket:(id *)a3
+- (int)receivePacket:(id *)packet
 {
   v24 = *MEMORY[0x1E69E9840];
   p_vtpReceiveSocket = &self->_vtpReceiveSocket;
@@ -297,16 +297,16 @@ LABEL_13:
       {
         v14 = v22;
         v15 = v22 + 360;
-        *a3->var5.streamIDs = *(v22 + 360);
+        *packet->var5.streamIDs = *(v22 + 360);
         v16 = v15[1];
         v17 = v15[2];
         v18 = v15[4];
-        *&a3->var5.statsPayload.serverPacketInterval = v15[3];
-        *&a3->var5.encryptionSequenceNumber = v18;
-        *&a3->var5.streamIDs[8] = v16;
-        *&a3->var5.participantID = v17;
-        a3->var0 = *(v14 + 51);
-        a3->var1 = *v14;
+        *&packet->var5.statsPayload.serverPacketInterval = v15[3];
+        *&packet->var5.encryptionSequenceNumber = v18;
+        *&packet->var5.streamIDs[8] = v16;
+        *&packet->var5.participantID = v17;
+        packet->var0 = *(v14 + 51);
+        packet->var1 = *v14;
         VTP_ReleasePacket(&v22);
       }
     }
@@ -325,10 +325,10 @@ LABEL_13:
   }
 }
 
-- (int)registerPacketCallbackContext:(void *)a3 callback:(id)a4
+- (int)registerPacketCallbackContext:(void *)context callback:(id)callback
 {
   v31 = *MEMORY[0x1E69E9840];
-  if (a3 && a4)
+  if (context && callback)
   {
     vtpReceiveSocket = self->_vtpReceiveSocket;
     if (vtpReceiveSocket < 0x400)
@@ -349,8 +349,8 @@ LABEL_13:
           *(p_readFDsForCallback->fds_bits + ((vtpReceiveSocket >> 3) & 0x1FFFFFFC)) |= 1 << vtpReceiveSocket;
         }
 
-        self->_callback = _Block_copy(a4);
-        self->_callbackContext = a3;
+        self->_callback = _Block_copy(callback);
+        self->_callbackContext = context;
         v8 = 0;
         self->_vtpCallbackId = VTP_RegisterPacketCallback(self->_readFDsForCallback.fds_bits, self, &__block_literal_global_113);
       }
@@ -372,9 +372,9 @@ LABEL_13:
             v23 = 1024;
             v24 = 191;
             v25 = 2048;
-            v26 = self;
+            selfCopy3 = self;
             v27 = 1024;
-            LODWORD(v28) = vtpCallbackId;
+            LODWORD(callbackCopy) = vtpCallbackId;
             _os_log_error_impl(&dword_1DB56E000, v15, OS_LOG_TYPE_ERROR, " [%s] %s:%d transportStream[%p] already registered a vtpCallbackId [%d]", &v19, 0x2Cu);
             return -2144206844;
           }
@@ -399,9 +399,9 @@ LABEL_13:
           v23 = 1024;
           v24 = 186;
           v25 = 2048;
-          v26 = self;
+          selfCopy3 = self;
           v27 = 1024;
-          LODWORD(v28) = v11;
+          LODWORD(callbackCopy) = v11;
           _os_log_error_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_ERROR, " [%s] %s:%d transportStream[%p] socket[%d] is invalid", &v19, 0x2Cu);
           return -2144206806;
         }
@@ -425,11 +425,11 @@ LABEL_13:
         v23 = 1024;
         v24 = 181;
         v25 = 2048;
-        v26 = self;
+        selfCopy3 = self;
         v27 = 2048;
-        v28 = a4;
+        callbackCopy = callback;
         v29 = 2048;
-        v30 = a3;
+        contextCopy = context;
         _os_log_error_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_ERROR, " [%s] %s:%d transportStream[%p] callback %p or callback context %p is invalid", &v19, 0x3Au);
       }
     }
@@ -481,7 +481,7 @@ uint64_t __63__VCTransportStreamGFT_registerPacketCallbackContext_callback___blo
         v13 = 1024;
         v14 = 210;
         v15 = 2048;
-        v16 = self;
+        selfCopy = self;
         v17 = 1024;
         v18 = v8;
         _os_log_error_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_ERROR, " [%s] %s:%d transportStream[%p] cannot unregister an invalid vtpCallbackId [%d]", &v9, 0x2Cu);

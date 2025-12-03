@@ -4,17 +4,17 @@
 - (BOOL)replicatesEdges;
 - (CAMutableMeshTransform)init;
 - (NSString)depthNormalization;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int)subdivisionSteps;
-- (void)addFace:(CAMeshFace *)a3;
-- (void)addVertex:(CAMeshVertex *)a3;
-- (void)removeFaceAtIndex:(unint64_t)a3;
-- (void)removeVertexAtIndex:(unint64_t)a3;
-- (void)replaceFaceAtIndex:(unint64_t)a3 withFace:(CAMeshFace *)a4;
-- (void)replaceVertexAtIndex:(unint64_t)a3 withVertex:(CAMeshVertex *)a4;
-- (void)setPreallocatesBounds:(BOOL)a3;
-- (void)setReplicatesEdges:(BOOL)a3;
-- (void)setSubdivisionSteps:(int)a3;
+- (void)addFace:(CAMeshFace *)face;
+- (void)addVertex:(CAMeshVertex *)vertex;
+- (void)removeFaceAtIndex:(unint64_t)index;
+- (void)removeVertexAtIndex:(unint64_t)index;
+- (void)replaceFaceAtIndex:(unint64_t)index withFace:(CAMeshFace *)face;
+- (void)replaceVertexAtIndex:(unint64_t)index withVertex:(CAMeshVertex *)vertex;
+- (void)setPreallocatesBounds:(BOOL)bounds;
+- (void)setReplicatesEdges:(BOOL)edges;
+- (void)setSubdivisionSteps:(int)steps;
 @end
 
 @implementation CAMutableMeshTransform
@@ -51,19 +51,19 @@
   return [(CAMeshTransform *)&v3 depthNormalization];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CAMeshTransform alloc];
 
   return [(CAMeshTransform *)v4 _initWithMeshTransform:self];
 }
 
-- (void)removeFaceAtIndex:(unint64_t)a3
+- (void)removeFaceAtIndex:(unint64_t)index
 {
   impl = self->super._impl;
-  if (a3 >= (*(impl + 4) - *(impl + 3)) >> 5)
+  if (index >= (*(impl + 4) - *(impl + 3)) >> 5)
   {
-    [MEMORY[0x1E695DF30] raise:@"CAMeshTransform" format:{@"%@: trying to remove non-existent face %ld", self, a3}];
+    [MEMORY[0x1E695DF30] raise:@"CAMeshTransform" format:{@"%@: trying to remove non-existent face %ld", self, index}];
   }
 
   else
@@ -98,11 +98,11 @@
       }
 
       v12 = *(impl + 6);
-      v13 = 16 * a3;
+      v13 = 16 * index;
       v14 = v7[6];
-      if (a3)
+      if (index)
       {
-        memmove(v14, v12, 16 * a3);
+        memmove(v14, v12, 16 * index);
         v12 = *(impl + 6);
         v14 = v7[6];
       }
@@ -115,7 +115,7 @@
       }
 
       v17 = *(impl + 9);
-      v18 = a3 << 6;
+      v18 = index << 6;
       v19 = v7[9];
       if (v18)
       {
@@ -144,7 +144,7 @@
   }
 }
 
-- (void)addFace:(CAMeshFace *)a3
+- (void)addFace:(CAMeshFace *)face
 {
   v19 = *MEMORY[0x1E69E9840];
   impl = self->super._impl;
@@ -202,31 +202,31 @@
     v7[13].i8[4] = self->super._replicatesEdges;
     v7[13].i8[5] = self->super._preallocatesBounds;
     v16 = ((*&v7[7] - *&v7[6]) >> 4) - 1;
-    v17 = *a3->var1;
-    v18[0] = *a3->var0;
+    v17 = *face->var1;
+    v18[0] = *face->var0;
     v18[1] = v17;
     [(CAMutableMeshTransform *)self replaceFaceAtIndex:v16 withFace:v18];
   }
 }
 
-- (void)replaceFaceAtIndex:(unint64_t)a3 withFace:(CAMeshFace *)a4
+- (void)replaceFaceAtIndex:(unint64_t)index withFace:(CAMeshFace *)face
 {
   impl = self->super._impl;
   v5 = impl[6];
-  if (a3 >= (impl[7] - v5) >> 4)
+  if (index >= (impl[7] - v5) >> 4)
   {
-    [MEMORY[0x1E695DF30] raise:@"CAMeshTransform" format:{@"%@: trying to replace non-existent face %ld", self, a3}];
+    [MEMORY[0x1E695DF30] raise:@"CAMeshTransform" format:{@"%@: trying to replace non-existent face %ld", self, index}];
   }
 
   else
   {
     v6 = 0;
-    v7 = v5 + 16 * a3;
-    v8 = impl[9] + (a3 << 6) + 4;
+    v7 = v5 + 16 * index;
+    v8 = impl[9] + (index << 6) + 4;
     do
     {
-      *(v7 + v6 * 4) = a4->var0[v6];
-      *(v8 + 1 * v6) = a4->var1[v6];
+      *(v7 + v6 * 4) = face->var0[v6];
+      *(v8 + 1 * v6) = face->var1[v6];
       ++v6;
     }
 
@@ -235,12 +235,12 @@
   }
 }
 
-- (void)removeVertexAtIndex:(unint64_t)a3
+- (void)removeVertexAtIndex:(unint64_t)index
 {
   impl = self->super._impl;
-  if (a3 >= (*(impl + 4) - *(impl + 3)) >> 5)
+  if (index >= (*(impl + 4) - *(impl + 3)) >> 5)
   {
-    [MEMORY[0x1E695DF30] raise:@"CAMeshTransform" format:{@"%@: trying to remove non-existent vertex %ld", self, a3}];
+    [MEMORY[0x1E695DF30] raise:@"CAMeshTransform" format:{@"%@: trying to remove non-existent vertex %ld", self, index}];
   }
 
   else
@@ -256,11 +256,11 @@
       v7 = v6;
       v8 = CA::Render::MeshTransform::MeshTransform(v6, ((*(impl + 4) - *(impl + 3)) >> 5) - 1, (*(impl + 7) - *(impl + 6)) >> 4, *(impl + 25));
       v9 = *(impl + 3);
-      v10 = 32 * a3;
+      v10 = 32 * index;
       v11 = *(v8 + 24);
-      if (a3)
+      if (index)
       {
-        v12 = v9 + 32 * a3;
+        v12 = v9 + 32 * index;
         do
         {
           **&v11 = *v9;
@@ -317,7 +317,7 @@
         for (i = 0; i != 16; i += 4)
         {
           v25 = *(v22 + i);
-          if (v25 > a3)
+          if (v25 > index)
           {
             *(v22 + i) = v25 - 1;
           }
@@ -339,7 +339,7 @@
   }
 }
 
-- (void)addVertex:(CAMeshVertex *)a3
+- (void)addVertex:(CAMeshVertex *)vertex
 {
   v20 = *MEMORY[0x1E69E9840];
   impl = self->super._impl;
@@ -396,39 +396,39 @@
     v7[13].i8[4] = self->super._replicatesEdges;
     v7[13].i8[5] = self->super._preallocatesBounds;
     v16 = ((*&v7[4] - *&v7[3]) >> 5) - 1;
-    v17 = *&a3->var1.x;
-    v18[0] = a3->var0;
+    v17 = *&vertex->var1.x;
+    v18[0] = vertex->var0;
     v18[1] = v17;
-    z = a3->var1.z;
+    z = vertex->var1.z;
     [(CAMutableMeshTransform *)self replaceVertexAtIndex:v16 withVertex:v18];
   }
 }
 
-- (void)replaceVertexAtIndex:(unint64_t)a3 withVertex:(CAMeshVertex *)a4
+- (void)replaceVertexAtIndex:(unint64_t)index withVertex:(CAMeshVertex *)vertex
 {
   impl = self->super._impl;
   v7 = impl[3];
-  if (a3 >= (impl[4] - v7) >> 5)
+  if (index >= (impl[4] - v7) >> 5)
   {
-    [MEMORY[0x1E695DF30] raise:@"CAMeshTransform" format:{@"%@: trying to replace non-existent vertex %ld", self, a3, v4, v5}];
+    [MEMORY[0x1E695DF30] raise:@"CAMeshTransform" format:{@"%@: trying to replace non-existent vertex %ld", self, index, v4, v5}];
   }
 
   else
   {
-    v8 = (v7 + 32 * a3);
-    v9 = *&a4->var1.x;
-    *v8 = vcvt_f32_f64(a4->var0);
+    v8 = (v7 + 32 * index);
+    v9 = *&vertex->var1.x;
+    *v8 = vcvt_f32_f64(vertex->var0);
     v8[2] = vcvt_f32_f64(v9);
-    z = a4->var1.z;
+    z = vertex->var1.z;
     v8[3].f32[0] = z;
     v8[3].i32[1] = 1065353216;
     *(impl + 3) &= 0xFFFFD4FF;
   }
 }
 
-- (void)setPreallocatesBounds:(BOOL)a3
+- (void)setPreallocatesBounds:(BOOL)bounds
 {
-  self->super._preallocatesBounds = a3;
+  self->super._preallocatesBounds = bounds;
   impl = self->super._impl;
   if (impl)
   {
@@ -438,26 +438,26 @@
   }
 }
 
-- (void)setReplicatesEdges:(BOOL)a3
+- (void)setReplicatesEdges:(BOOL)edges
 {
-  self->super._replicatesEdges = a3;
+  self->super._replicatesEdges = edges;
   impl = self->super._impl;
   if (impl)
   {
     impl[12] = vmovn_s64(*&self->super._normalization);
-    impl[13].i8[4] = a3;
+    impl[13].i8[4] = edges;
     impl[13].i8[5] = self->super._preallocatesBounds;
   }
 }
 
-- (void)setSubdivisionSteps:(int)a3
+- (void)setSubdivisionSteps:(int)steps
 {
-  self->super._subdivisionSteps = a3;
+  self->super._subdivisionSteps = steps;
   impl = self->super._impl;
   if (impl)
   {
     impl[24] = self->super._normalization;
-    impl[25] = a3;
+    impl[25] = steps;
     *(impl + 108) = self->super._replicatesEdges;
     *(impl + 109) = self->super._preallocatesBounds;
   }
@@ -468,8 +468,8 @@
   v6 = *MEMORY[0x1E69E9840];
   v5.receiver = self;
   v5.super_class = CAMutableMeshTransform;
-  v2 = [(CAMeshTransform *)&v5 _init];
-  if (v2)
+  _init = [(CAMeshTransform *)&v5 _init];
+  if (_init)
   {
     if (x_malloc_get_zone::once != -1)
     {
@@ -491,10 +491,10 @@
       *(v3 + 26) = 0;
       *(v3 + 54) = 0;
       *(v3 + 25) = 0;
-      v2->i64[1] = v3;
-      *(v3 + 12) = vmovn_s64(v2[1]);
-      v3[108] = v2[2].i8[0];
-      v3[109] = v2[2].i8[1];
+      _init->i64[1] = v3;
+      *(v3 + 12) = vmovn_s64(_init[1]);
+      v3[108] = _init[2].i8[0];
+      v3[109] = _init[2].i8[1];
     }
 
     else
@@ -504,12 +504,12 @@
     }
   }
 
-  return v2;
+  return _init;
 }
 
 + (id)meshTransform
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }

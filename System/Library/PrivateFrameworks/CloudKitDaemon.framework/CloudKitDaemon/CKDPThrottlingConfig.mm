@@ -1,12 +1,12 @@
 @interface CKDPThrottlingConfig
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPThrottlingConfig
@@ -56,82 +56,82 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_label)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_criteria)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_rateLimit)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     ttlSec = self->_ttlSec;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   label = self->_label;
-  v9 = v4;
+  v9 = toCopy;
   if (label)
   {
-    objc_msgSend_setLabel_(v4, v5, label);
-    v4 = v9;
+    objc_msgSend_setLabel_(toCopy, v5, label);
+    toCopy = v9;
   }
 
   criteria = self->_criteria;
   if (criteria)
   {
     objc_msgSend_setCriteria_(v9, v5, criteria);
-    v4 = v9;
+    toCopy = v9;
   }
 
   rateLimit = self->_rateLimit;
   if (rateLimit)
   {
     objc_msgSend_setRateLimit_(v9, v5, rateLimit);
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 8) = self->_ttlSec;
-    *(v4 + 36) |= 1u;
+    *(toCopy + 8) = self->_ttlSec;
+    *(toCopy + 36) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_label, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_label, v11, zone);
   v13 = *(v10 + 16);
   *(v10 + 16) = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_criteria, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_criteria, v14, zone);
   v16 = *(v10 + 8);
   *(v10 + 8) = v15;
 
-  v18 = objc_msgSend_copyWithZone_(self->_rateLimit, v17, a3);
+  v18 = objc_msgSend_copyWithZone_(self->_rateLimit, v17, zone);
   v19 = *(v10 + 24);
   *(v10 + 24) = v18;
 
@@ -144,17 +144,17 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_12;
   }
 
   label = self->_label;
-  v9 = v4[2];
+  v9 = equalCopy[2];
   if (label | v9)
   {
     if (!objc_msgSend_isEqual_(label, v7, v9))
@@ -164,7 +164,7 @@
   }
 
   criteria = self->_criteria;
-  v11 = v4[1];
+  v11 = equalCopy[1];
   if (criteria | v11)
   {
     if (!objc_msgSend_isEqual_(criteria, v7, v11))
@@ -174,7 +174,7 @@
   }
 
   rateLimit = self->_rateLimit;
-  v13 = v4[3];
+  v13 = equalCopy[3];
   if (rateLimit | v13)
   {
     if (!objc_msgSend_isEqual_(rateLimit, v7, v13))
@@ -183,10 +183,10 @@
     }
   }
 
-  v14 = (*(v4 + 36) & 1) == 0;
+  v14 = (*(equalCopy + 36) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) != 0 && self->_ttlSec == *(v4 + 8))
+    if ((*(equalCopy + 36) & 1) != 0 && self->_ttlSec == *(equalCopy + 8))
     {
       v14 = 1;
       goto LABEL_13;
@@ -219,19 +219,19 @@ LABEL_13:
   return v7 ^ v4 ^ v10 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 2);
-  v10 = v4;
+  fromCopy = from;
+  v5 = *(fromCopy + 2);
+  v10 = fromCopy;
   if (v5)
   {
-    objc_msgSend_setLabel_(self, v4, v5);
-    v4 = v10;
+    objc_msgSend_setLabel_(self, fromCopy, v5);
+    fromCopy = v10;
   }
 
   criteria = self->_criteria;
-  v7 = *(v4 + 1);
+  v7 = *(fromCopy + 1);
   if (criteria)
   {
     if (!v7)
@@ -239,7 +239,7 @@ LABEL_13:
       goto LABEL_9;
     }
 
-    objc_msgSend_mergeFrom_(criteria, v4, v7);
+    objc_msgSend_mergeFrom_(criteria, fromCopy, v7);
   }
 
   else
@@ -249,13 +249,13 @@ LABEL_13:
       goto LABEL_9;
     }
 
-    objc_msgSend_setCriteria_(self, v4, v7);
+    objc_msgSend_setCriteria_(self, fromCopy, v7);
   }
 
-  v4 = v10;
+  fromCopy = v10;
 LABEL_9:
   rateLimit = self->_rateLimit;
-  v9 = *(v4 + 3);
+  v9 = *(fromCopy + 3);
   if (rateLimit)
   {
     if (!v9)
@@ -263,7 +263,7 @@ LABEL_9:
       goto LABEL_15;
     }
 
-    objc_msgSend_mergeFrom_(rateLimit, v4, v9);
+    objc_msgSend_mergeFrom_(rateLimit, fromCopy, v9);
   }
 
   else
@@ -273,14 +273,14 @@ LABEL_9:
       goto LABEL_15;
     }
 
-    objc_msgSend_setRateLimit_(self, v4, v9);
+    objc_msgSend_setRateLimit_(self, fromCopy, v9);
   }
 
-  v4 = v10;
+  fromCopy = v10;
 LABEL_15:
-  if (*(v4 + 36))
+  if (*(fromCopy + 36))
   {
-    self->_ttlSec = *(v4 + 8);
+    self->_ttlSec = *(fromCopy + 8);
     *&self->_has |= 1u;
   }
 

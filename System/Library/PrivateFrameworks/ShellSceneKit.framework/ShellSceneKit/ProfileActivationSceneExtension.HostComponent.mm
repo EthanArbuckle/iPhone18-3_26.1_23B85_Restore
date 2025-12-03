@@ -1,15 +1,15 @@
 @interface ProfileActivationSceneExtension.HostComponent
 - (_TtCC13ShellSceneKit31ProfileActivationSceneExtension13HostComponent)init;
 - (void)invalidate;
-- (void)setScene:(id)a3;
+- (void)setScene:(id)scene;
 @end
 
 @implementation ProfileActivationSceneExtension.HostComponent
 
-- (void)setScene:(id)a3
+- (void)setScene:(id)scene
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_265FE8358();
   swift_unknownObjectRelease();
 }

@@ -9,16 +9,16 @@
 
 - (id)_acs_formattedStringIncludeSymbol:()AssistantCardService
 {
-  v5 = [a1 amount];
-  if (v5 && (v6 = v5, [a1 currencyCode], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
+  amount = [self amount];
+  if (amount && (v6 = amount, [self currencyCode], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
   {
     if (_acs_formattedStringIncludeSymbol__once != -1)
     {
       [INCurrencyAmount(AssistantCardService) _acs_formattedStringIncludeSymbol:];
     }
 
-    v8 = [a1 currencyCode];
-    [_acs_formattedStringIncludeSymbol__sCurrencyFormatter setCurrencyCode:v8];
+    currencyCode = [self currencyCode];
+    [_acs_formattedStringIncludeSymbol__sCurrencyFormatter setCurrencyCode:currencyCode];
 
     if (a3)
     {
@@ -32,8 +32,8 @@
 
     [_acs_formattedStringIncludeSymbol__sCurrencyFormatter setCurrencySymbol:v9];
     v11 = _acs_formattedStringIncludeSymbol__sCurrencyFormatter;
-    v12 = [a1 amount];
-    v10 = [v11 stringFromNumber:v12];
+    amount2 = [self amount];
+    v10 = [v11 stringFromNumber:amount2];
   }
 
   else
@@ -47,8 +47,8 @@
 - (id)_acs_currencySymbol
 {
   v1 = MEMORY[0x277CD3B50];
-  v2 = [a1 currencyCode];
-  v3 = [v1 _acs_currencySymbolForCode:v2];
+  currencyCode = [self currencyCode];
+  v3 = [v1 _acs_currencySymbolForCode:currencyCode];
 
   return v3;
 }
@@ -111,27 +111,27 @@ LABEL_11:
   v4 = MEMORY[0x277CCABB8];
   v5 = a3;
   v6 = objc_alloc_init(v4);
-  v7 = [a1 _acs_localeForCode:v5];
+  v7 = [self _acs_localeForCode:v5];
 
   if (v7)
   {
     [v6 setLocale:v7];
     [v6 setNumberStyle:2];
-    v8 = [v6 currencySymbol];
-    if ([v8 length] >= 2)
+    currencySymbol = [v6 currencySymbol];
+    if ([currencySymbol length] >= 2)
     {
-      v9 = [v8 substringToIndex:1];
+      v9 = [currencySymbol substringToIndex:1];
 
-      v8 = v9;
+      currencySymbol = v9;
     }
   }
 
   else
   {
-    v8 = 0;
+    currencySymbol = 0;
   }
 
-  return v8;
+  return currencySymbol;
 }
 
 @end

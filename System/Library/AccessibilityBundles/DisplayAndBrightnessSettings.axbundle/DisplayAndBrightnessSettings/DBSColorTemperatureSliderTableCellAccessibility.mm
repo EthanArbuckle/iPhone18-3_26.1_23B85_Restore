@@ -6,8 +6,8 @@
 
 - (id)accessibilityValue
 {
-  v3 = [(DBSColorTemperatureSliderTableCellAccessibility *)self _accessibilityAbsoluteValue];
-  [v3 doubleValue];
+  _accessibilityAbsoluteValue = [(DBSColorTemperatureSliderTableCellAccessibility *)self _accessibilityAbsoluteValue];
+  [_accessibilityAbsoluteValue doubleValue];
   v5 = fabs(v4 + -0.5);
   if (v5 < 0.15)
   {
@@ -45,7 +45,7 @@ LABEL_11:
 LABEL_12:
   v11.receiver = self;
   v11.super_class = DBSColorTemperatureSliderTableCellAccessibility;
-  v10 = [(DBSColorTemperatureSliderTableCellAccessibility *)&v11 accessibilityValue];
+  accessibilityValue = [(DBSColorTemperatureSliderTableCellAccessibility *)&v11 accessibilityValue];
   v8 = __UIAXStringForVariables();
 
   return v8;

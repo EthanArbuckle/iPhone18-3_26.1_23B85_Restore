@@ -1,7 +1,7 @@
 @interface HOiCloudDisabledViewController
 - (void)preferencesButtonTapped;
-- (void)setDataSyncState:(unint64_t)a3;
-- (void)setStatus:(unint64_t)a3;
+- (void)setDataSyncState:(unint64_t)state;
+- (void)setStatus:(unint64_t)status;
 - (void)updateLabels;
 - (void)viewDidLoad;
 @end
@@ -14,8 +14,8 @@
   v118.super_class = HOiCloudDisabledViewController;
   [(HOiCloudDisabledViewController *)&v118 viewDidLoad];
   v3 = +[UIColor systemBackgroundColor];
-  v4 = [(HOiCloudDisabledViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(HOiCloudDisabledViewController *)self view];
+  [view setBackgroundColor:v3];
 
   v5 = objc_alloc_init(UIImageView);
   imageView = self->_imageView;
@@ -79,145 +79,145 @@
   [(HUColoredButton *)v25 setBackgroundColor:v26];
 
   [(HUColoredButton *)self->_preferencesButton setAccessibilityIdentifier:@"HOiCloudDisabledViewController.preferencesButton"];
-  v27 = [(HOiCloudDisabledViewController *)self view];
-  [v27 addSubview:self->_containerView];
+  view2 = [(HOiCloudDisabledViewController *)self view];
+  [view2 addSubview:self->_containerView];
 
-  v28 = [(HOiCloudDisabledViewController *)self containerView];
-  [v28 addSubview:self->_imageView];
+  containerView = [(HOiCloudDisabledViewController *)self containerView];
+  [containerView addSubview:self->_imageView];
 
-  v29 = [(HOiCloudDisabledViewController *)self containerView];
-  [v29 addSubview:self->_titleLabel];
+  containerView2 = [(HOiCloudDisabledViewController *)self containerView];
+  [containerView2 addSubview:self->_titleLabel];
 
-  v30 = [(HOiCloudDisabledViewController *)self containerView];
-  [v30 addSubview:self->_bodyLabel];
+  containerView3 = [(HOiCloudDisabledViewController *)self containerView];
+  [containerView3 addSubview:self->_bodyLabel];
 
-  v31 = [(HOiCloudDisabledViewController *)self containerView];
-  [v31 addSubview:self->_preferencesButton];
+  containerView4 = [(HOiCloudDisabledViewController *)self containerView];
+  [containerView4 addSubview:self->_preferencesButton];
 
   v32 = objc_opt_new();
-  v33 = [(UIView *)self->_containerView centerYAnchor];
-  v34 = [(HOiCloudDisabledViewController *)self view];
-  v35 = [v34 centerYAnchor];
-  v36 = [v33 constraintEqualToAnchor:v35];
+  centerYAnchor = [(UIView *)self->_containerView centerYAnchor];
+  view3 = [(HOiCloudDisabledViewController *)self view];
+  centerYAnchor2 = [view3 centerYAnchor];
+  v36 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v32 addObject:v36];
 
-  v37 = [(UIView *)self->_containerView widthAnchor];
-  v38 = [(HOiCloudDisabledViewController *)self view];
-  v39 = [v38 widthAnchor];
-  v40 = [v37 constraintEqualToAnchor:v39];
+  widthAnchor = [(UIView *)self->_containerView widthAnchor];
+  view4 = [(HOiCloudDisabledViewController *)self view];
+  widthAnchor2 = [view4 widthAnchor];
+  v40 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   [v32 addObject:v40];
 
-  v41 = [(UIView *)self->_containerView leadingAnchor];
-  v42 = [(HOiCloudDisabledViewController *)self view];
-  v43 = [v42 leadingAnchor];
-  v44 = [v41 constraintEqualToAnchor:v43];
+  leadingAnchor = [(UIView *)self->_containerView leadingAnchor];
+  view5 = [(HOiCloudDisabledViewController *)self view];
+  leadingAnchor2 = [view5 leadingAnchor];
+  v44 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v32 addObject:v44];
 
-  v45 = [(UIView *)self->_containerView trailingAnchor];
-  v46 = [(HOiCloudDisabledViewController *)self view];
-  v47 = [v46 trailingAnchor];
-  v48 = [v45 constraintEqualToAnchor:v47];
+  trailingAnchor = [(UIView *)self->_containerView trailingAnchor];
+  view6 = [(HOiCloudDisabledViewController *)self view];
+  trailingAnchor2 = [view6 trailingAnchor];
+  v48 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v32 addObject:v48];
 
-  v49 = [(UIImageView *)self->_imageView topAnchor];
-  v50 = [(HOiCloudDisabledViewController *)self containerView];
-  v51 = [v50 topAnchor];
-  v52 = [v49 constraintEqualToAnchor:v51];
+  topAnchor = [(UIImageView *)self->_imageView topAnchor];
+  containerView5 = [(HOiCloudDisabledViewController *)self containerView];
+  topAnchor2 = [containerView5 topAnchor];
+  v52 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v32 addObject:v52];
 
-  v53 = [(UIImageView *)self->_imageView widthAnchor];
-  v54 = [v53 constraintEqualToConstant:256.0];
+  widthAnchor3 = [(UIImageView *)self->_imageView widthAnchor];
+  v54 = [widthAnchor3 constraintEqualToConstant:256.0];
   [v32 addObject:v54];
 
-  v55 = [(UIImageView *)self->_imageView heightAnchor];
-  v56 = [v55 constraintEqualToConstant:256.0];
+  heightAnchor = [(UIImageView *)self->_imageView heightAnchor];
+  v56 = [heightAnchor constraintEqualToConstant:256.0];
   [v32 addObject:v56];
 
-  v57 = [(UIImageView *)self->_imageView centerXAnchor];
-  v58 = [(HOiCloudDisabledViewController *)self containerView];
-  v59 = [v58 centerXAnchor];
-  v60 = [v57 constraintEqualToAnchor:v59];
+  centerXAnchor = [(UIImageView *)self->_imageView centerXAnchor];
+  containerView6 = [(HOiCloudDisabledViewController *)self containerView];
+  centerXAnchor2 = [containerView6 centerXAnchor];
+  v60 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v32 addObject:v60];
 
-  v61 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v62 = [(HOiCloudDisabledViewController *)self containerView];
-  v63 = [v62 leadingAnchor];
-  v64 = [v61 constraintEqualToAnchor:v63];
+  leadingAnchor3 = [(UILabel *)self->_titleLabel leadingAnchor];
+  containerView7 = [(HOiCloudDisabledViewController *)self containerView];
+  leadingAnchor4 = [containerView7 leadingAnchor];
+  v64 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v32 addObject:v64];
 
-  v65 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v66 = [(HOiCloudDisabledViewController *)self containerView];
-  v67 = [v66 trailingAnchor];
-  v68 = [v65 constraintEqualToAnchor:v67];
+  trailingAnchor3 = [(UILabel *)self->_titleLabel trailingAnchor];
+  containerView8 = [(HOiCloudDisabledViewController *)self containerView];
+  trailingAnchor4 = [containerView8 trailingAnchor];
+  v68 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v32 addObject:v68];
 
-  v69 = [(UILabel *)self->_titleLabel topAnchor];
-  v70 = [(HOiCloudDisabledViewController *)self imageView];
-  v71 = [v70 bottomAnchor];
-  v72 = [v69 constraintEqualToAnchor:v71 constant:10.0];
+  topAnchor3 = [(UILabel *)self->_titleLabel topAnchor];
+  imageView = [(HOiCloudDisabledViewController *)self imageView];
+  bottomAnchor = [imageView bottomAnchor];
+  v72 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:10.0];
   [v32 addObject:v72];
 
-  v73 = [(UILabel *)self->_bodyLabel topAnchor];
-  v74 = [(HOiCloudDisabledViewController *)self titleLabel];
-  v75 = [v74 bottomAnchor];
-  v76 = [v73 constraintEqualToSystemSpacingBelowAnchor:v75 multiplier:1.0];
+  topAnchor4 = [(UILabel *)self->_bodyLabel topAnchor];
+  titleLabel = [(HOiCloudDisabledViewController *)self titleLabel];
+  bottomAnchor2 = [titleLabel bottomAnchor];
+  v76 = [topAnchor4 constraintEqualToSystemSpacingBelowAnchor:bottomAnchor2 multiplier:1.0];
   [v32 addObject:v76];
 
-  v77 = [(UILabel *)self->_bodyLabel centerXAnchor];
-  v78 = [(HOiCloudDisabledViewController *)self containerView];
-  v79 = [v78 centerXAnchor];
-  v80 = [v77 constraintEqualToAnchor:v79];
+  centerXAnchor3 = [(UILabel *)self->_bodyLabel centerXAnchor];
+  containerView9 = [(HOiCloudDisabledViewController *)self containerView];
+  centerXAnchor4 = [containerView9 centerXAnchor];
+  v80 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   [v32 addObject:v80];
 
-  v81 = [(UILabel *)self->_bodyLabel widthAnchor];
-  v82 = [(HOiCloudDisabledViewController *)self view];
-  [v82 frame];
-  v84 = [v81 constraintEqualToConstant:v83];
+  widthAnchor4 = [(UILabel *)self->_bodyLabel widthAnchor];
+  view7 = [(HOiCloudDisabledViewController *)self view];
+  [view7 frame];
+  v84 = [widthAnchor4 constraintEqualToConstant:v83];
   [(HOiCloudDisabledViewController *)self setBodyWidthConstraint:v84];
 
-  v85 = [(HOiCloudDisabledViewController *)self bodyWidthConstraint];
-  [v32 addObject:v85];
+  bodyWidthConstraint = [(HOiCloudDisabledViewController *)self bodyWidthConstraint];
+  [v32 addObject:bodyWidthConstraint];
 
-  v86 = [(HUColoredButton *)self->_preferencesButton centerXAnchor];
-  v87 = [(HOiCloudDisabledViewController *)self containerView];
-  v88 = [v87 centerXAnchor];
-  v89 = [v86 constraintEqualToAnchor:v88];
+  centerXAnchor5 = [(HUColoredButton *)self->_preferencesButton centerXAnchor];
+  containerView10 = [(HOiCloudDisabledViewController *)self containerView];
+  centerXAnchor6 = [containerView10 centerXAnchor];
+  v89 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
   [v32 addObject:v89];
 
-  v90 = [(HUColoredButton *)self->_preferencesButton topAnchor];
-  v91 = [(HOiCloudDisabledViewController *)self bodyLabel];
-  v92 = [v91 bottomAnchor];
-  v93 = [v90 constraintEqualToAnchor:v92 constant:40.0];
+  topAnchor5 = [(HUColoredButton *)self->_preferencesButton topAnchor];
+  bodyLabel = [(HOiCloudDisabledViewController *)self bodyLabel];
+  bottomAnchor3 = [bodyLabel bottomAnchor];
+  v93 = [topAnchor5 constraintEqualToAnchor:bottomAnchor3 constant:40.0];
   [v32 addObject:v93];
 
-  v94 = [(HUColoredButton *)self->_preferencesButton bottomAnchor];
-  v95 = [(HOiCloudDisabledViewController *)self containerView];
-  v96 = [v95 bottomAnchor];
-  v97 = [v94 constraintEqualToAnchor:v96];
+  bottomAnchor4 = [(HUColoredButton *)self->_preferencesButton bottomAnchor];
+  containerView11 = [(HOiCloudDisabledViewController *)self containerView];
+  bottomAnchor5 = [containerView11 bottomAnchor];
+  v97 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   [v32 addObject:v97];
 
-  v98 = [(HUColoredButton *)self->_preferencesButton leadingAnchor];
-  v99 = [(HOiCloudDisabledViewController *)self view];
-  v100 = [v99 layoutMarginsGuide];
-  v101 = [v100 leadingAnchor];
-  v102 = [v98 constraintGreaterThanOrEqualToAnchor:v101];
+  leadingAnchor5 = [(HUColoredButton *)self->_preferencesButton leadingAnchor];
+  view8 = [(HOiCloudDisabledViewController *)self view];
+  layoutMarginsGuide = [view8 layoutMarginsGuide];
+  leadingAnchor6 = [layoutMarginsGuide leadingAnchor];
+  v102 = [leadingAnchor5 constraintGreaterThanOrEqualToAnchor:leadingAnchor6];
 
   LODWORD(v103) = 1132068864;
   [v102 setPriority:v103];
-  v104 = [(HUColoredButton *)self->_preferencesButton trailingAnchor];
-  v105 = [(HOiCloudDisabledViewController *)self view];
-  v106 = [v105 layoutMarginsGuide];
-  v107 = [v106 trailingAnchor];
-  v108 = [v104 constraintLessThanOrEqualToAnchor:v107];
+  trailingAnchor5 = [(HUColoredButton *)self->_preferencesButton trailingAnchor];
+  view9 = [(HOiCloudDisabledViewController *)self view];
+  layoutMarginsGuide2 = [view9 layoutMarginsGuide];
+  trailingAnchor6 = [layoutMarginsGuide2 trailingAnchor];
+  v108 = [trailingAnchor5 constraintLessThanOrEqualToAnchor:trailingAnchor6];
 
   LODWORD(v109) = 1132068864;
   [v108 setPriority:v109];
-  v110 = [(HUColoredButton *)self->_preferencesButton widthAnchor];
-  v111 = [v110 constraintGreaterThanOrEqualToConstant:250.0];
+  widthAnchor5 = [(HUColoredButton *)self->_preferencesButton widthAnchor];
+  v111 = [widthAnchor5 constraintGreaterThanOrEqualToConstant:250.0];
   v119[0] = v111;
-  v112 = [(HUColoredButton *)self->_preferencesButton heightAnchor];
+  heightAnchor2 = [(HUColoredButton *)self->_preferencesButton heightAnchor];
   +[HUColoredButton defaultHeight];
-  v113 = [v112 constraintGreaterThanOrEqualToConstant:?];
+  v113 = [heightAnchor2 constraintGreaterThanOrEqualToConstant:?];
   v119[1] = v113;
   v119[2] = v102;
   v119[3] = v108;
@@ -231,7 +231,7 @@
   objc_destroyWeak(&location);
 }
 
-- (void)setDataSyncState:(unint64_t)a3
+- (void)setDataSyncState:(unint64_t)state
 {
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -244,20 +244,20 @@
     v11 = 2112;
     v12 = v7;
     v13 = 2048;
-    v14 = a3;
+    stateCopy = state;
     v15 = 2112;
     v16 = v8;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[HODataSyncingViewController:setDataSyncState] prev state = %lu (%@) | new state = %lu (%@)", &v9, 0x2Au);
   }
 
-  if (self->_dataSyncState != a3)
+  if (self->_dataSyncState != state)
   {
-    self->_dataSyncState = a3;
+    self->_dataSyncState = state;
     [(HOiCloudDisabledViewController *)self updateLabels];
   }
 }
 
-- (void)setStatus:(unint64_t)a3
+- (void)setStatus:(unint64_t)status
 {
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -266,35 +266,35 @@
     v7 = HMHomeManagerStatusToString();
     v8 = HMHomeManagerStatusToString();
     v9 = 134218754;
-    v10 = status;
+    statusCopy = status;
     v11 = 2112;
     v12 = v7;
     v13 = 2048;
-    v14 = a3;
+    statusCopy2 = status;
     v15 = 2112;
     v16 = v8;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[HODataSyncingViewController:setStatus] prev status = %lu (%@) | new status = %lu | (%@)", &v9, 0x2Au);
   }
 
-  if (self->_status != a3)
+  if (self->_status != status)
   {
-    self->_status = a3;
+    self->_status = status;
     [(HOiCloudDisabledViewController *)self updateLabels];
   }
 }
 
 - (void)updateLabels
 {
-  v3 = [(HOiCloudDisabledViewController *)self titleLabel];
-  if (!v3)
+  titleLabel = [(HOiCloudDisabledViewController *)self titleLabel];
+  if (!titleLabel)
   {
     return;
   }
 
-  v4 = v3;
-  v5 = [(HOiCloudDisabledViewController *)self bodyLabel];
+  v4 = titleLabel;
+  bodyLabel = [(HOiCloudDisabledViewController *)self bodyLabel];
 
-  if (!v5)
+  if (!bodyLabel)
   {
     return;
   }
@@ -302,39 +302,39 @@
   if (([(HOiCloudDisabledViewController *)self status]& 0x20) != 0)
   {
     v14 = sub_10002E168(@"HODataSyncingNoAccountAlertTitle");
-    v15 = [(HOiCloudDisabledViewController *)self titleLabel];
-    [v15 setText:v14];
+    titleLabel2 = [(HOiCloudDisabledViewController *)self titleLabel];
+    [titleLabel2 setText:v14];
 
     v16 = sub_10002E168(@"HODataSyncingNoAccountAlertBody");
-    v17 = [(HOiCloudDisabledViewController *)self bodyLabel];
-    [v17 setText:v16];
+    bodyLabel2 = [(HOiCloudDisabledViewController *)self bodyLabel];
+    [bodyLabel2 setText:v16];
 
-    v10 = [(HOiCloudDisabledViewController *)self bodyWidthConstraint];
-    [v10 setConstant:380.0];
+    bodyWidthConstraint = [(HOiCloudDisabledViewController *)self bodyWidthConstraint];
+    [bodyWidthConstraint setConstant:380.0];
     goto LABEL_8;
   }
 
   if ([(HOiCloudDisabledViewController *)self dataSyncState]== 3)
   {
     v6 = sub_10002E168(@"HODataSyncingTurnedOffAlertTitle");
-    v7 = [(HOiCloudDisabledViewController *)self titleLabel];
-    [v7 setText:v6];
+    titleLabel3 = [(HOiCloudDisabledViewController *)self titleLabel];
+    [titleLabel3 setText:v6];
 
     v8 = sub_10002E168(@"HODataSyncingTurnedOffAlertBody");
-    v9 = [(HOiCloudDisabledViewController *)self bodyLabel];
-    [v9 setText:v8];
+    bodyLabel3 = [(HOiCloudDisabledViewController *)self bodyLabel];
+    [bodyLabel3 setText:v8];
 
-    v10 = [(HOiCloudDisabledViewController *)self view];
-    [v10 frame];
+    bodyWidthConstraint = [(HOiCloudDisabledViewController *)self view];
+    [bodyWidthConstraint frame];
     v12 = v11;
-    v13 = [(HOiCloudDisabledViewController *)self bodyWidthConstraint];
-    [v13 setConstant:v12];
+    bodyWidthConstraint2 = [(HOiCloudDisabledViewController *)self bodyWidthConstraint];
+    [bodyWidthConstraint2 setConstant:v12];
 
 LABEL_8:
   }
 
-  v18 = [(HOiCloudDisabledViewController *)self view];
-  [v18 layoutIfNeeded];
+  view = [(HOiCloudDisabledViewController *)self view];
+  [view layoutIfNeeded];
 }
 
 - (void)preferencesButtonTapped

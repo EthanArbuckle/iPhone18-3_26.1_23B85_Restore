@@ -1,5 +1,5 @@
 @interface AVAssetVariantAudioAttributes
-- (AVAssetVariantAudioAttributes)initWithFigAlternateObjC:(id)a3;
+- (AVAssetVariantAudioAttributes)initWithFigAlternateObjC:(id)c;
 - (AVAssetVariantAudioRenditionSpecificAttributes)renditionSpecificAttributesForMediaOption:(AVMediaSelectionOption *)mediaSelectionOption;
 - (NSArray)formatIDs;
 - (id)description;
@@ -10,9 +10,9 @@
 
 - (NSArray)formatIDs
 {
-  v2 = [(FigAlternateObjC *)self->_figAlternateObjC audioAttributes];
+  audioAttributes = [(FigAlternateObjC *)self->_figAlternateObjC audioAttributes];
 
-  return [v2 formatIDs];
+  return [audioAttributes formatIDs];
 }
 
 - (AVAssetVariantAudioRenditionSpecificAttributes)renditionSpecificAttributesForMediaOption:(AVMediaSelectionOption *)mediaSelectionOption
@@ -44,14 +44,14 @@
   return [v3 stringWithFormat:@"<%@: %p, formatIDs:%@>", NSStringFromClass(v4), self, -[AVAssetVariantAudioAttributes formatIDs](self, "formatIDs")];
 }
 
-- (AVAssetVariantAudioAttributes)initWithFigAlternateObjC:(id)a3
+- (AVAssetVariantAudioAttributes)initWithFigAlternateObjC:(id)c
 {
   v6.receiver = self;
   v6.super_class = AVAssetVariantAudioAttributes;
   v4 = [(AVAssetVariantAudioAttributes *)&v6 init];
   if (v4)
   {
-    v4->_figAlternateObjC = a3;
+    v4->_figAlternateObjC = c;
     v4->_mutex = FigSimpleMutexCreate();
   }
 

@@ -1,43 +1,43 @@
 @interface RTScenarioTriggerManager
-+ (id)scenarioTriggerTypeToNotificationName:(unint64_t)a3;
-+ (id)settledStateName:(unint64_t)a3;
-+ (int64_t)settledStateTypeForScenarioTriggerSettledState:(unint64_t)a3;
-- (RTScenarioTriggerManager)initWithLocationStore:(id)a3 motionActivityManager:(id)a4 platform:(id)a5 settledState:(unint64_t)a6 settledStateTransitionStore:(id)a7 wifiFootprintMonitor:(id)a8;
-- (unint64_t)_notificationNameToScenarioTriggerType:(id)a3;
++ (id)scenarioTriggerTypeToNotificationName:(unint64_t)name;
++ (id)settledStateName:(unint64_t)name;
++ (int64_t)settledStateTypeForScenarioTriggerSettledState:(unint64_t)state;
+- (RTScenarioTriggerManager)initWithLocationStore:(id)store motionActivityManager:(id)manager platform:(id)platform settledState:(unint64_t)state settledStateTransitionStore:(id)transitionStore wifiFootprintMonitor:(id)monitor;
+- (unint64_t)_notificationNameToScenarioTriggerType:(id)type;
 - (void)_evaluateSettledState;
-- (void)_onMotionActivityManagerNotification:(id)a3;
-- (void)_onWiFiFootprintStateNotification:(id)a3;
-- (void)_postScenarioTriggerNotification:(id)a3;
-- (void)_startMonitoringScenarioTriggerOfType:(unint64_t)a3;
-- (void)_stopMonitoringScenarioTriggerOfType:(unint64_t)a3;
+- (void)_onMotionActivityManagerNotification:(id)notification;
+- (void)_onWiFiFootprintStateNotification:(id)notification;
+- (void)_postScenarioTriggerNotification:(id)notification;
+- (void)_startMonitoringScenarioTriggerOfType:(unint64_t)type;
+- (void)_stopMonitoringScenarioTriggerOfType:(unint64_t)type;
 - (void)dealloc;
-- (void)internalAddObserver:(id)a3 name:(id)a4;
-- (void)internalRemoveObserver:(id)a3 name:(id)a4;
-- (void)onMotionActivityManagerNotification:(id)a3;
-- (void)onWiFiFootprintStateNotification:(id)a3;
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5;
-- (void)postScenarioTriggerNotification:(id)a3;
-- (void)setInterestedInConstantFootprint:(unint64_t)a3;
-- (void)setInterestedInSettledState:(unint64_t)a3;
-- (void)setMonitoredScenarioTriggerTypes:(unint64_t)a3;
-- (void)setMotionSettledState:(unint64_t)a3;
-- (void)setSettledState:(unint64_t)a3;
-- (void)setSettledStateAndSubmitMetricsForSettledState:(unint64_t)a3;
-- (void)setWiFiFootprintState:(int64_t)a3;
-- (void)simulateScenarioTrigger:(id)a3 handler:(id)a4;
+- (void)internalAddObserver:(id)observer name:(id)name;
+- (void)internalRemoveObserver:(id)observer name:(id)name;
+- (void)onMotionActivityManagerNotification:(id)notification;
+- (void)onWiFiFootprintStateNotification:(id)notification;
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion;
+- (void)postScenarioTriggerNotification:(id)notification;
+- (void)setInterestedInConstantFootprint:(unint64_t)footprint;
+- (void)setInterestedInSettledState:(unint64_t)state;
+- (void)setMonitoredScenarioTriggerTypes:(unint64_t)types;
+- (void)setMotionSettledState:(unint64_t)state;
+- (void)setSettledState:(unint64_t)state;
+- (void)setSettledStateAndSubmitMetricsForSettledState:(unint64_t)state;
+- (void)setWiFiFootprintState:(int64_t)state;
+- (void)simulateScenarioTrigger:(id)trigger handler:(id)handler;
 @end
 
 @implementation RTScenarioTriggerManager
 
-+ (id)settledStateName:(unint64_t)a3
++ (id)settledStateName:(unint64_t)name
 {
   v3 = @"Unknown";
-  if (a3 == 2)
+  if (name == 2)
   {
     v3 = @"Settled";
   }
 
-  if (a3 == 1)
+  if (name == 1)
   {
     return @"Unsettled";
   }
@@ -48,22 +48,22 @@
   }
 }
 
-+ (id)scenarioTriggerTypeToNotificationName:(unint64_t)a3
++ (id)scenarioTriggerTypeToNotificationName:(unint64_t)name
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (name)
   {
-    if (a3 == 2)
+    if (name == 2)
     {
       v4 = RTScenarioTriggerManagerNotificationUnsettled;
       goto LABEL_6;
     }
 
-    if (a3 == 1)
+    if (name == 1)
     {
       v4 = RTScenarioTriggerManagerNotificationSettled;
 LABEL_6:
-      v5 = [(__objc2_class *)v4 notificationName];
+      notificationName = [(__objc2_class *)v4 notificationName];
       goto LABEL_11;
     }
 
@@ -71,7 +71,7 @@ LABEL_6:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v8 = 134218498;
-      v9 = a3;
+      nameCopy = name;
       v10 = 2080;
       v11 = "+[RTScenarioTriggerManager scenarioTriggerTypeToNotificationName:]";
       v12 = 1024;
@@ -80,21 +80,21 @@ LABEL_6:
     }
   }
 
-  v5 = 0;
+  notificationName = 0;
 LABEL_11:
 
-  return v5;
+  return notificationName;
 }
 
-- (RTScenarioTriggerManager)initWithLocationStore:(id)a3 motionActivityManager:(id)a4 platform:(id)a5 settledState:(unint64_t)a6 settledStateTransitionStore:(id)a7 wifiFootprintMonitor:(id)a8
+- (RTScenarioTriggerManager)initWithLocationStore:(id)store motionActivityManager:(id)manager platform:(id)platform settledState:(unint64_t)state settledStateTransitionStore:(id)transitionStore wifiFootprintMonitor:(id)monitor
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v26 = a7;
-  v18 = a8;
-  v25 = v18;
-  if (!v15)
+  storeCopy = store;
+  managerCopy = manager;
+  platformCopy = platform;
+  transitionStoreCopy = transitionStore;
+  monitorCopy = monitor;
+  v25 = monitorCopy;
+  if (!storeCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -109,7 +109,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (!v16)
+  if (!managerCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -122,7 +122,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v17)
+  if (!platformCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -135,7 +135,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v26)
+  if (!transitionStoreCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -148,7 +148,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v18)
+  if (!monitorCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -160,7 +160,7 @@ LABEL_19:
 
 LABEL_20:
 
-    v21 = 0;
+    selfCopy = 0;
     goto LABEL_21;
   }
 
@@ -171,20 +171,20 @@ LABEL_20:
   if (v19)
   {
     v19->_monitoredScenarioTriggerTypes = 0;
-    objc_storeStrong(&v19->_motionActivityManager, a4);
+    objc_storeStrong(&v19->_motionActivityManager, manager);
     v20->_motionSettledState = 0;
-    objc_storeStrong(&v20->_platform, a5);
-    v20->_settledState = a6;
-    objc_storeStrong(&v20->_settledStateTransitionStore, a7);
-    objc_storeStrong(&v20->_locationStore, a3);
-    objc_storeStrong(&v20->_wifiFootprintMonitor, a8);
+    objc_storeStrong(&v20->_platform, platform);
+    v20->_settledState = state;
+    objc_storeStrong(&v20->_settledStateTransitionStore, transitionStore);
+    objc_storeStrong(&v20->_locationStore, store);
+    objc_storeStrong(&v20->_wifiFootprintMonitor, monitor);
   }
 
   self = v20;
-  v21 = self;
+  selfCopy = self;
 LABEL_21:
 
-  return v21;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -197,15 +197,15 @@ LABEL_21:
   [(RTScenarioTriggerManager *)&v3 dealloc];
 }
 
-- (void)setInterestedInSettledState:(unint64_t)a3
+- (void)setInterestedInSettledState:(unint64_t)state
 {
   interestedInSettledState = self->_interestedInSettledState;
-  if (interestedInSettledState != a3)
+  if (interestedInSettledState != state)
   {
-    self->_interestedInSettledState = a3;
-    if (!a3 || interestedInSettledState)
+    self->_interestedInSettledState = state;
+    if (!state || interestedInSettledState)
     {
-      if (!a3 && interestedInSettledState)
+      if (!state && interestedInSettledState)
       {
         motionActivityManager = self->_motionActivityManager;
         v7 = +[(RTNotification *)RTMotionActivityManagerNotificationMotionSettledStateChange];
@@ -224,11 +224,11 @@ LABEL_21:
   }
 }
 
-- (void)setMotionSettledState:(unint64_t)a3
+- (void)setMotionSettledState:(unint64_t)state
 {
-  if (self->_motionSettledState != a3)
+  if (self->_motionSettledState != state)
   {
-    self->_motionSettledState = a3;
+    self->_motionSettledState = state;
     [(RTScenarioTriggerManager *)self _evaluateSettledState];
   }
 }
@@ -241,40 +241,40 @@ LABEL_21:
   }
 }
 
-+ (int64_t)settledStateTypeForScenarioTriggerSettledState:(unint64_t)a3
++ (int64_t)settledStateTypeForScenarioTriggerSettledState:(unint64_t)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return state == 1;
   }
 }
 
-- (void)setSettledStateAndSubmitMetricsForSettledState:(unint64_t)a3
+- (void)setSettledStateAndSubmitMetricsForSettledState:(unint64_t)state
 {
-  if (self->_settledState != a3)
+  if (self->_settledState != state)
   {
     v6 = [objc_opt_class() settledStateTypeForScenarioTriggerSettledState:self->_settledState];
-    v7 = [objc_opt_class() settledStateTypeForScenarioTriggerSettledState:a3];
-    [(RTScenarioTriggerManager *)self setSettledState:a3];
+    v7 = [objc_opt_class() settledStateTypeForScenarioTriggerSettledState:state];
+    [(RTScenarioTriggerManager *)self setSettledState:state];
     v8 = [RTSettledStateTransition alloc];
-    v9 = [MEMORY[0x277CBEAA8] date];
-    v10 = [(RTSettledStateTransition *)v8 initWithDate:v9 transitionFromType:v6 transitionToType:v7];
+    date = [MEMORY[0x277CBEAA8] date];
+    v10 = [(RTSettledStateTransition *)v8 initWithDate:date transitionFromType:v6 transitionToType:v7];
 
-    v11 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __75__RTScenarioTriggerManager_setSettledStateAndSubmitMetricsForSettledState___block_invoke;
     block[3] = &unk_2788C5020;
     v14 = v10;
-    v15 = self;
+    selfCopy = self;
     v16 = a2;
     v12 = v10;
-    dispatch_async(v11, block);
+    dispatch_async(queue, block);
   }
 }
 
@@ -316,13 +316,13 @@ void __75__RTScenarioTriggerManager_setSettledStateAndSubmitMetricsForSettledSta
   }
 }
 
-- (void)setSettledState:(unint64_t)a3
+- (void)setSettledState:(unint64_t)state
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (self->_settledState != a3)
+  if (self->_settledState != state)
   {
-    settledState = a3;
-    self->_settledState = a3;
+    settledState = state;
+    self->_settledState = state;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v5 = _rt_log_facility_get_os_log(RTLogFacilityScenarioTrigger);
@@ -360,15 +360,15 @@ void __75__RTScenarioTriggerManager_setSettledStateAndSubmitMetricsForSettledSta
   }
 }
 
-- (void)setInterestedInConstantFootprint:(unint64_t)a3
+- (void)setInterestedInConstantFootprint:(unint64_t)footprint
 {
   interestedInConstantFootprint = self->_interestedInConstantFootprint;
-  if (interestedInConstantFootprint != a3)
+  if (interestedInConstantFootprint != footprint)
   {
-    self->_interestedInConstantFootprint = a3;
-    if (!a3 || interestedInConstantFootprint)
+    self->_interestedInConstantFootprint = footprint;
+    if (!footprint || interestedInConstantFootprint)
     {
-      if (!a3 && interestedInConstantFootprint)
+      if (!footprint && interestedInConstantFootprint)
       {
         wifiFootprintMonitor = self->_wifiFootprintMonitor;
         v7 = +[(RTNotification *)RTWiFiFootprintStateNotification];
@@ -387,11 +387,11 @@ void __75__RTScenarioTriggerManager_setSettledStateAndSubmitMetricsForSettledSta
   }
 }
 
-- (void)setWiFiFootprintState:(int64_t)a3
+- (void)setWiFiFootprintState:(int64_t)state
 {
-  if (self->_wiFiFootprintState != a3)
+  if (self->_wiFiFootprintState != state)
   {
-    self->_wiFiFootprintState = a3;
+    self->_wiFiFootprintState = state;
     if ((self->_monitoredScenarioTriggerTypes & 3) != 0)
     {
       [(RTScenarioTriggerManager *)self _evaluateSettledState];
@@ -399,7 +399,7 @@ void __75__RTScenarioTriggerManager_setSettledStateAndSubmitMetricsForSettledSta
   }
 }
 
-- (void)_startMonitoringScenarioTriggerOfType:(unint64_t)a3
+- (void)_startMonitoringScenarioTriggerOfType:(unint64_t)type
 {
   v9 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -407,20 +407,20 @@ void __75__RTScenarioTriggerManager_setSettledStateAndSubmitMetricsForSettledSta
     v5 = _rt_log_facility_get_os_log(RTLogFacilityScenarioTrigger);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [MEMORY[0x277D01290] scenarioTriggerTypeToString:a3];
+      v6 = [MEMORY[0x277D01290] scenarioTriggerTypeToString:type];
       v7 = 138412290;
       v8 = v6;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "start monitoring scenario trigger, %@", &v7, 0xCu);
     }
   }
 
-  if (a3 - 1 <= 1)
+  if (type - 1 <= 1)
   {
     [(RTScenarioTriggerManager *)self setInterestedInSettledState:[(RTScenarioTriggerManager *)self interestedInSettledState]+ 1];
   }
 }
 
-- (void)_stopMonitoringScenarioTriggerOfType:(unint64_t)a3
+- (void)_stopMonitoringScenarioTriggerOfType:(unint64_t)type
 {
   v9 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -428,26 +428,26 @@ void __75__RTScenarioTriggerManager_setSettledStateAndSubmitMetricsForSettledSta
     v5 = _rt_log_facility_get_os_log(RTLogFacilityScenarioTrigger);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [MEMORY[0x277D01290] scenarioTriggerTypeToString:a3];
+      v6 = [MEMORY[0x277D01290] scenarioTriggerTypeToString:type];
       v7 = 138412290;
       v8 = v6;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "stop monitoring scenario trigger, %@", &v7, 0xCu);
     }
   }
 
-  if (a3 - 1 <= 1)
+  if (type - 1 <= 1)
   {
     [(RTScenarioTriggerManager *)self setInterestedInSettledState:[(RTScenarioTriggerManager *)self interestedInSettledState]- 1];
   }
 }
 
-- (void)setMonitoredScenarioTriggerTypes:(unint64_t)a3
+- (void)setMonitoredScenarioTriggerTypes:(unint64_t)types
 {
   monitoredScenarioTriggerTypes = self->_monitoredScenarioTriggerTypes;
-  if (monitoredScenarioTriggerTypes != a3)
+  if (monitoredScenarioTriggerTypes != types)
   {
-    self->_monitoredScenarioTriggerTypes = a3;
-    v5 = monitoredScenarioTriggerTypes ^ a3;
+    self->_monitoredScenarioTriggerTypes = types;
+    v5 = monitoredScenarioTriggerTypes ^ types;
     v6 = 1;
     do
     {
@@ -471,12 +471,12 @@ void __75__RTScenarioTriggerManager_setSettledStateAndSubmitMetricsForSettledSta
   }
 }
 
-- (unint64_t)_notificationNameToScenarioTriggerType:(id)a3
+- (unint64_t)_notificationNameToScenarioTriggerType:(id)type
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  typeCopy = type;
   v4 = +[(RTNotification *)RTScenarioTriggerManagerNotificationSettled];
-  v5 = [v3 isEqualToString:v4];
+  v5 = [typeCopy isEqualToString:v4];
 
   if (v5)
   {
@@ -486,7 +486,7 @@ void __75__RTScenarioTriggerManager_setSettledStateAndSubmitMetricsForSettledSta
   else
   {
     v7 = +[(RTNotification *)RTScenarioTriggerManagerNotificationUnsettled];
-    v8 = [v3 isEqualToString:v7];
+    v8 = [typeCopy isEqualToString:v7];
 
     if (v8)
     {
@@ -501,7 +501,7 @@ void __75__RTScenarioTriggerManager_setSettledStateAndSubmitMetricsForSettledSta
         if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
         {
           v11 = 138412290;
-          v12 = v3;
+          v12 = typeCopy;
           _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "notification, %@, does not map to scenario trigger type", &v11, 0xCu);
         }
       }
@@ -513,11 +513,11 @@ void __75__RTScenarioTriggerManager_setSettledStateAndSubmitMetricsForSettledSta
   return v6;
 }
 
-- (void)internalAddObserver:(id)a3 name:(id)a4
+- (void)internalAddObserver:(id)observer name:(id)name
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  nameCopy = name;
   if ([(RTPlatform *)self->_platform lowEndHardware]|| ![(RTPlatform *)self->_platform supportsScenarioTriggers])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -526,7 +526,7 @@ void __75__RTScenarioTriggerManager_setSettledStateAndSubmitMetricsForSettledSta
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         v18 = 138412290;
-        v19 = v7;
+        v19 = nameCopy;
         _os_log_impl(&dword_2304B3000, v13, OS_LOG_TYPE_INFO, "%@, not supported on this platform", &v18, 0xCu);
       }
     }
@@ -534,16 +534,16 @@ void __75__RTScenarioTriggerManager_setSettledStateAndSubmitMetricsForSettledSta
 
   else
   {
-    if ([(RTNotifier *)self getNumberOfObservers:v7]== 1)
+    if ([(RTNotifier *)self getNumberOfObservers:nameCopy]== 1)
     {
-      [(RTScenarioTriggerManager *)self setMonitoredScenarioTriggerTypes:[(RTScenarioTriggerManager *)self monitoredScenarioTriggerTypes]| [(RTScenarioTriggerManager *)self _notificationNameToScenarioTriggerType:v7]];
+      [(RTScenarioTriggerManager *)self setMonitoredScenarioTriggerTypes:[(RTScenarioTriggerManager *)self monitoredScenarioTriggerTypes]| [(RTScenarioTriggerManager *)self _notificationNameToScenarioTriggerType:nameCopy]];
     }
 
     settledState = self->_settledState;
     if (settledState == 2)
     {
       v9 = +[(RTNotification *)RTScenarioTriggerManagerNotificationSettled];
-      v10 = [v7 isEqualToString:v9];
+      v10 = [nameCopy isEqualToString:v9];
 
       if (v10)
       {
@@ -567,7 +567,7 @@ void __75__RTScenarioTriggerManager_setSettledStateAndSubmitMetricsForSettledSta
     if (settledState == 1)
     {
       v14 = +[(RTNotification *)RTScenarioTriggerManagerNotificationUnsettled];
-      v15 = [v7 isEqualToString:v14];
+      v15 = [nameCopy isEqualToString:v14];
 
       if (v15)
       {
@@ -580,15 +580,15 @@ void __75__RTScenarioTriggerManager_setSettledStateAndSubmitMetricsForSettledSta
 
     if (v12)
     {
-      [(RTNotifier *)self postNotification:v12 toObserver:v6];
+      [(RTNotifier *)self postNotification:v12 toObserver:observerCopy];
     }
   }
 }
 
-- (void)internalRemoveObserver:(id)a3 name:(id)a4
+- (void)internalRemoveObserver:(id)observer name:(id)name
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  nameCopy = name;
   if ([(RTPlatform *)self->_platform lowEndHardware]|| ![(RTPlatform *)self->_platform supportsScenarioTriggers])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -596,33 +596,33 @@ void __75__RTScenarioTriggerManager_setSettledStateAndSubmitMetricsForSettledSta
       v6 = _rt_log_facility_get_os_log(RTLogFacilityScenarioTrigger);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
-        v7 = [(RTPlatform *)self->_platform productType];
+        productType = [(RTPlatform *)self->_platform productType];
         v8 = 138412546;
-        v9 = v5;
+        v9 = nameCopy;
         v10 = 2112;
-        v11 = v7;
+        v11 = productType;
         _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%@ is not supported on %@", &v8, 0x16u);
       }
     }
   }
 
-  else if (![(RTNotifier *)self getNumberOfObservers:v5])
+  else if (![(RTNotifier *)self getNumberOfObservers:nameCopy])
   {
-    [(RTScenarioTriggerManager *)self setMonitoredScenarioTriggerTypes:[(RTScenarioTriggerManager *)self monitoredScenarioTriggerTypes]& ~[(RTScenarioTriggerManager *)self _notificationNameToScenarioTriggerType:v5]];
+    [(RTScenarioTriggerManager *)self setMonitoredScenarioTriggerTypes:[(RTScenarioTriggerManager *)self monitoredScenarioTriggerTypes]& ~[(RTScenarioTriggerManager *)self _notificationNameToScenarioTriggerType:nameCopy]];
   }
 }
 
-- (void)_onMotionActivityManagerNotification:(id)a3
+- (void)_onMotionActivityManagerNotification:(id)notification
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v6 = +[(RTNotification *)RTMotionActivityManagerNotificationMotionSettledStateChange];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [name isEqualToString:v6];
 
   if (v7)
   {
-    -[RTScenarioTriggerManager setMotionSettledState:](self, "setMotionSettledState:", [v4 settledState]);
+    -[RTScenarioTriggerManager setMotionSettledState:](self, "setMotionSettledState:", [notificationCopy settledState]);
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -630,39 +630,39 @@ void __75__RTScenarioTriggerManager_setSettledStateAndSubmitMetricsForSettledSta
     v8 = _rt_log_facility_get_os_log(RTLogFacilityScenarioTrigger);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [v4 name];
+      name2 = [notificationCopy name];
       v10 = 138412290;
-      v11 = v9;
+      v11 = name2;
       _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "unsupported notification, %@", &v10, 0xCu);
     }
   }
 }
 
-- (void)onMotionActivityManagerNotification:(id)a3
+- (void)onMotionActivityManagerNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__RTScenarioTriggerManager_onMotionActivityManagerNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onWiFiFootprintStateNotification:(id)a3
+- (void)_onWiFiFootprintStateNotification:(id)notification
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v6 = +[(RTNotification *)RTWiFiFootprintStateNotification];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [name isEqualToString:v6];
 
   if (v7)
   {
-    -[RTScenarioTriggerManager setWiFiFootprintState:](self, "setWiFiFootprintState:", [v4 state]);
+    -[RTScenarioTriggerManager setWiFiFootprintState:](self, "setWiFiFootprintState:", [notificationCopy state]);
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -670,79 +670,79 @@ void __75__RTScenarioTriggerManager_setSettledStateAndSubmitMetricsForSettledSta
     v8 = _rt_log_facility_get_os_log(RTLogFacilityScenarioTrigger);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [v4 name];
+      name2 = [notificationCopy name];
       v10 = 138412290;
-      v11 = v9;
+      v11 = name2;
       _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "unsupported notification, %@", &v10, 0xCu);
     }
   }
 }
 
-- (void)onWiFiFootprintStateNotification:(id)a3
+- (void)onWiFiFootprintStateNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__RTScenarioTriggerManager_onWiFiFootprintStateNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)postScenarioTriggerNotification:(id)a3
+- (void)postScenarioTriggerNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__RTScenarioTriggerManager_postScenarioTriggerNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_postScenarioTriggerNotification:(id)a3
+- (void)_postScenarioTriggerNotification:(id)notification
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityScenarioTrigger);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = notificationCopy;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "post %@", &v6, 0xCu);
     }
   }
 
-  if (v4)
+  if (notificationCopy)
   {
-    [(RTNotifier *)self postNotification:v4];
+    [(RTNotifier *)self postNotification:notificationCopy];
   }
 }
 
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(RTNotifier *)self queue];
+  dateCopy = date;
+  completionCopy = completion;
+  queue = [(RTNotifier *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __72__RTScenarioTriggerManager_performPurgeOfType_referenceDate_completion___block_invoke;
   v13[3] = &unk_2788C4C20;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = dateCopy;
+  v15 = completionCopy;
+  typeCopy = type;
+  v11 = completionCopy;
+  v12 = dateCopy;
+  dispatch_async(queue, v13);
 }
 
 void __72__RTScenarioTriggerManager_performPurgeOfType_referenceDate_completion___block_invoke(uint64_t a1)
@@ -824,21 +824,21 @@ void __72__RTScenarioTriggerManager_performPurgeOfType_referenceDate_completion_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)simulateScenarioTrigger:(id)a3 handler:(id)a4
+- (void)simulateScenarioTrigger:(id)trigger handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  triggerCopy = trigger;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__RTScenarioTriggerManager_Internal__simulateScenarioTrigger_handler___block_invoke;
   block[3] = &unk_2788C6210;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  selfCopy = self;
+  v14 = handlerCopy;
+  v12 = triggerCopy;
+  v9 = triggerCopy;
+  v10 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 void __70__RTScenarioTriggerManager_Internal__simulateScenarioTrigger_handler___block_invoke(uint64_t a1)

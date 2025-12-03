@@ -1,29 +1,29 @@
 @interface DODMLASRSchemaDODMLASRConfusionPairTier1
-- (BOOL)isEqual:(id)a3;
-- (DODMLASRSchemaDODMLASRConfusionPairTier1)initWithDictionary:(id)a3;
-- (DODMLASRSchemaDODMLASRConfusionPairTier1)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DODMLASRSchemaDODMLASRConfusionPairTier1)initWithDictionary:(id)dictionary;
+- (DODMLASRSchemaDODMLASRConfusionPairTier1)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addCorrectedTokens:(id)a3;
-- (void)addRecognizedTokens:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCorrectedTokens:(id)tokens;
+- (void)addRecognizedTokens:(id)tokens;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DODMLASRSchemaDODMLASRConfusionPairTier1
 
-- (DODMLASRSchemaDODMLASRConfusionPairTier1)initWithDictionary:(id)a3
+- (DODMLASRSchemaDODMLASRConfusionPairTier1)initWithDictionary:(id)dictionary
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v36.receiver = self;
   v36.super_class = DODMLASRSchemaDODMLASRConfusionPairTier1;
   v5 = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)&v36 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"recognizedTokens"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"recognizedTokens"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,7 +66,7 @@
       }
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"correctedTokens"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"correctedTokens"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -109,7 +109,7 @@
       }
     }
 
-    v22 = [v4 objectForKeyedSubscript:{@"leftContextToken", v28}];
+    v22 = [dictionaryCopy objectForKeyedSubscript:{@"leftContextToken", v28}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -117,7 +117,7 @@
       [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)v5 setLeftContextToken:v23];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"rightContextToken"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"rightContextToken"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -131,30 +131,30 @@
   return v5;
 }
 
-- (DODMLASRSchemaDODMLASRConfusionPairTier1)initWithJSON:(id)a3
+- (DODMLASRSchemaDODMLASRConfusionPairTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -167,38 +167,38 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_correctedTokens)
   {
-    v4 = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self correctedTokens];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"correctedTokens"];
+    correctedTokens = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self correctedTokens];
+    v5 = [correctedTokens copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"correctedTokens"];
   }
 
   if (self->_leftContextToken)
   {
-    v6 = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self leftContextToken];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"leftContextToken"];
+    leftContextToken = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self leftContextToken];
+    v7 = [leftContextToken copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"leftContextToken"];
   }
 
   if (self->_recognizedTokens)
   {
-    v8 = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self recognizedTokens];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"recognizedTokens"];
+    recognizedTokens = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self recognizedTokens];
+    v9 = [recognizedTokens copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"recognizedTokens"];
   }
 
   if (self->_rightContextToken)
   {
-    v10 = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self rightContextToken];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"rightContextToken"];
+    rightContextToken = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self rightContextToken];
+    v11 = [rightContextToken copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"rightContextToken"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -209,28 +209,28 @@
   return v4 ^ v5 ^ [(NSString *)self->_rightContextToken hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self recognizedTokens];
-  v6 = [v4 recognizedTokens];
-  if ((v5 != 0) == (v6 == 0))
+  recognizedTokens = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self recognizedTokens];
+  recognizedTokens2 = [equalCopy recognizedTokens];
+  if ((recognizedTokens != 0) == (recognizedTokens2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self recognizedTokens];
-  if (v7)
+  recognizedTokens3 = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self recognizedTokens];
+  if (recognizedTokens3)
   {
-    v8 = v7;
-    v9 = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self recognizedTokens];
-    v10 = [v4 recognizedTokens];
-    v11 = [v9 isEqual:v10];
+    v8 = recognizedTokens3;
+    recognizedTokens4 = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self recognizedTokens];
+    recognizedTokens5 = [equalCopy recognizedTokens];
+    v11 = [recognizedTokens4 isEqual:recognizedTokens5];
 
     if (!v11)
     {
@@ -242,20 +242,20 @@
   {
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self correctedTokens];
-  v6 = [v4 correctedTokens];
-  if ((v5 != 0) == (v6 == 0))
+  recognizedTokens = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self correctedTokens];
+  recognizedTokens2 = [equalCopy correctedTokens];
+  if ((recognizedTokens != 0) == (recognizedTokens2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self correctedTokens];
-  if (v12)
+  correctedTokens = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self correctedTokens];
+  if (correctedTokens)
   {
-    v13 = v12;
-    v14 = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self correctedTokens];
-    v15 = [v4 correctedTokens];
-    v16 = [v14 isEqual:v15];
+    v13 = correctedTokens;
+    correctedTokens2 = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self correctedTokens];
+    correctedTokens3 = [equalCopy correctedTokens];
+    v16 = [correctedTokens2 isEqual:correctedTokens3];
 
     if (!v16)
     {
@@ -267,20 +267,20 @@
   {
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self leftContextToken];
-  v6 = [v4 leftContextToken];
-  if ((v5 != 0) == (v6 == 0))
+  recognizedTokens = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self leftContextToken];
+  recognizedTokens2 = [equalCopy leftContextToken];
+  if ((recognizedTokens != 0) == (recognizedTokens2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self leftContextToken];
-  if (v17)
+  leftContextToken = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self leftContextToken];
+  if (leftContextToken)
   {
-    v18 = v17;
-    v19 = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self leftContextToken];
-    v20 = [v4 leftContextToken];
-    v21 = [v19 isEqual:v20];
+    v18 = leftContextToken;
+    leftContextToken2 = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self leftContextToken];
+    leftContextToken3 = [equalCopy leftContextToken];
+    v21 = [leftContextToken2 isEqual:leftContextToken3];
 
     if (!v21)
     {
@@ -292,12 +292,12 @@
   {
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self rightContextToken];
-  v6 = [v4 rightContextToken];
-  if ((v5 != 0) != (v6 == 0))
+  recognizedTokens = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self rightContextToken];
+  recognizedTokens2 = [equalCopy rightContextToken];
+  if ((recognizedTokens != 0) != (recognizedTokens2 == 0))
   {
-    v22 = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self rightContextToken];
-    if (!v22)
+    rightContextToken = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self rightContextToken];
+    if (!rightContextToken)
     {
 
 LABEL_25:
@@ -305,10 +305,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self rightContextToken];
-    v25 = [v4 rightContextToken];
-    v26 = [v24 isEqual:v25];
+    v23 = rightContextToken;
+    rightContextToken2 = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self rightContextToken];
+    rightContextToken3 = [equalCopy rightContextToken];
+    v26 = [rightContextToken2 isEqual:rightContextToken3];
 
     if (v26)
     {
@@ -328,10 +328,10 @@ LABEL_23:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -394,64 +394,64 @@ LABEL_23:
     while (v12);
   }
 
-  v15 = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self leftContextToken];
+  leftContextToken = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self leftContextToken];
 
-  if (v15)
+  if (leftContextToken)
   {
     PBDataWriterWriteStringField();
   }
 
-  v16 = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self rightContextToken];
+  rightContextToken = [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self rightContextToken];
 
-  if (v16)
+  if (rightContextToken)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)addCorrectedTokens:(id)a3
+- (void)addCorrectedTokens:(id)tokens
 {
-  v4 = a3;
+  tokensCopy = tokens;
   correctedTokens = self->_correctedTokens;
-  v8 = v4;
+  v8 = tokensCopy;
   if (!correctedTokens)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_correctedTokens;
-    self->_correctedTokens = v6;
+    self->_correctedTokens = array;
 
-    v4 = v8;
+    tokensCopy = v8;
     correctedTokens = self->_correctedTokens;
   }
 
-  [(NSArray *)correctedTokens addObject:v4];
+  [(NSArray *)correctedTokens addObject:tokensCopy];
 }
 
-- (void)addRecognizedTokens:(id)a3
+- (void)addRecognizedTokens:(id)tokens
 {
-  v4 = a3;
+  tokensCopy = tokens;
   recognizedTokens = self->_recognizedTokens;
-  v8 = v4;
+  v8 = tokensCopy;
   if (!recognizedTokens)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_recognizedTokens;
-    self->_recognizedTokens = v6;
+    self->_recognizedTokens = array;
 
-    v4 = v8;
+    tokensCopy = v8;
     recognizedTokens = self->_recognizedTokens;
   }
 
-  [(NSArray *)recognizedTokens addObject:v4];
+  [(NSArray *)recognizedTokens addObject:tokensCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v7.receiver = self;
   v7.super_class = DODMLASRSchemaDODMLASRConfusionPairTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self deleteRecognizedTokens];
     [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self deleteCorrectedTokens];
@@ -459,7 +459,7 @@ LABEL_23:
     [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self deleteRightContextToken];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self deleteRecognizedTokens];
     [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self deleteCorrectedTokens];
@@ -467,7 +467,7 @@ LABEL_23:
     [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self deleteRightContextToken];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self deleteRecognizedTokens];
     [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self deleteCorrectedTokens];
@@ -475,7 +475,7 @@ LABEL_23:
     [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self deleteRightContextToken];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self deleteRecognizedTokens];
     [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self deleteCorrectedTokens];
@@ -483,7 +483,7 @@ LABEL_23:
     [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self deleteRightContextToken];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self deleteRecognizedTokens];
     [(DODMLASRSchemaDODMLASRConfusionPairTier1 *)self deleteCorrectedTokens];

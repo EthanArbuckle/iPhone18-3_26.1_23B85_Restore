@@ -1,16 +1,16 @@
 @interface HMIPersonsModelEquivalencyTable
-- (BOOL)facesAreSamePersonFromSet:(id)a3 andSet:(id)a4 distanceThreshold:(double)a5 percentMatchingThreshold:(double)a6;
+- (BOOL)facesAreSamePersonFromSet:(id)set andSet:(id)andSet distanceThreshold:(double)threshold percentMatchingThreshold:(double)matchingThreshold;
 - (HMIPersonsModelEquivalencyTable)initWith;
-- (HMIPersonsModelEquivalencyTable)initWithPersonsModels:(id)a3 userDefinedPersonLinks:(id)a4 error:(id *)a5;
-- (id)equivalencyCellForPerson:(id)a3;
+- (HMIPersonsModelEquivalencyTable)initWithPersonsModels:(id)models userDefinedPersonLinks:(id)links error:(id *)error;
+- (id)equivalencyCellForPerson:(id)person;
 @end
 
 @implementation HMIPersonsModelEquivalencyTable
 
-- (HMIPersonsModelEquivalencyTable)initWithPersonsModels:(id)a3 userDefinedPersonLinks:(id)a4 error:(id *)a5
+- (HMIPersonsModelEquivalencyTable)initWithPersonsModels:(id)models userDefinedPersonLinks:(id)links error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  modelsCopy = models;
+  linksCopy = links;
   v43 = 0;
   v44 = &v43;
   v45 = 0x3032000000;
@@ -22,21 +22,21 @@
   v40[2] = __86__HMIPersonsModelEquivalencyTable_initWithPersonsModels_userDefinedPersonLinks_error___block_invoke;
   v40[3] = &unk_278755AC0;
   v42 = &v43;
-  v10 = self;
-  v41 = v10;
-  v11 = [v8 na_dictionaryByMappingValues:v40];
+  selfCopy = self;
+  v41 = selfCopy;
+  v11 = [modelsCopy na_dictionaryByMappingValues:v40];
   v12 = v44[5];
   if (v12)
   {
     v13 = v12;
     v14 = v13;
-    if (a5)
+    if (error)
     {
       v15 = v13;
-      *a5 = v14;
+      *error = v14;
     }
 
-    HMIErrorLog(v10, v14);
+    HMIErrorLog(selfCopy, v14);
 
     v16 = 0;
   }
@@ -48,24 +48,24 @@
     v38[2] = 0x3032000000;
     v38[3] = __Block_byref_object_copy__10;
     v38[4] = __Block_byref_object_dispose__10;
-    v39 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v32 = 0;
     v33 = &v32;
     v34 = 0x3032000000;
     v35 = __Block_byref_object_copy__10;
     v36 = __Block_byref_object_dispose__10;
-    v37 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __86__HMIPersonsModelEquivalencyTable_initWithPersonsModels_userDefinedPersonLinks_error___block_invoke_152;
     v27[3] = &unk_278755B38;
     v17 = v11;
     v28 = v17;
-    v18 = v10;
+    v18 = selfCopy;
     v29 = v18;
     v30 = v38;
     v31 = &v32;
-    [v9 enumerateKeysAndObjectsUsingBlock:v27];
+    [linksCopy enumerateKeysAndObjectsUsingBlock:v27];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __86__HMIPersonsModelEquivalencyTable_initWithPersonsModels_userDefinedPersonLinks_error___block_invoke_3;
@@ -490,13 +490,13 @@ uint64_t __86__HMIPersonsModelEquivalencyTable_initWithPersonsModels_userDefined
   return v5;
 }
 
-- (BOOL)facesAreSamePersonFromSet:(id)a3 andSet:(id)a4 distanceThreshold:(double)a5 percentMatchingThreshold:(double)a6
+- (BOOL)facesAreSamePersonFromSet:(id)set andSet:(id)andSet distanceThreshold:(double)threshold percentMatchingThreshold:(double)matchingThreshold
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [v9 count];
-  v12 = [v10 count] * v11;
-  v13 = v12 * a6;
+  setCopy = set;
+  andSetCopy = andSet;
+  v11 = [setCopy count];
+  v12 = [andSetCopy count] * v11;
+  v13 = v12 * matchingThreshold;
   if (v13 <= 2)
   {
     v14 = 2;
@@ -519,13 +519,13 @@ uint64_t __86__HMIPersonsModelEquivalencyTable_initWithPersonsModels_userDefined
   v18[1] = 3221225472;
   v18[2] = __111__HMIPersonsModelEquivalencyTable_facesAreSamePersonFromSet_andSet_distanceThreshold_percentMatchingThreshold___block_invoke;
   v18[3] = &unk_278755C28;
-  v15 = v10;
-  v22 = a5;
+  v15 = andSetCopy;
+  thresholdCopy = threshold;
   v19 = v15;
   v20 = &v25;
   v23 = v14;
   v21 = v24;
-  [v9 enumerateObjectsUsingBlock:v18];
+  [setCopy enumerateObjectsUsingBlock:v18];
   v16 = v26[3] >= v14;
 
   _Block_object_dispose(v24, 8);
@@ -570,11 +570,11 @@ void __111__HMIPersonsModelEquivalencyTable_facesAreSamePersonFromSet_andSet_dis
   }
 }
 
-- (id)equivalencyCellForPerson:(id)a3
+- (id)equivalencyCellForPerson:(id)person
 {
-  v4 = a3;
-  v5 = [(HMIPersonsModelEquivalencyTable *)self personToEquivalencyCell];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  personCopy = person;
+  personToEquivalencyCell = [(HMIPersonsModelEquivalencyTable *)self personToEquivalencyCell];
+  v6 = [personToEquivalencyCell objectForKeyedSubscript:personCopy];
 
   return v6;
 }

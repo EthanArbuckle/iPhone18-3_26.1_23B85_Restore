@@ -1,8 +1,8 @@
 @interface _SBUISystemApertureElementSourceAnimationContext
-- (void)addPendingAnimation:(id)a3;
-- (void)addSceneResizeAction:(id)a3;
+- (void)addPendingAnimation:(id)animation;
+- (void)addSceneResizeAction:(id)action;
 - (void)performPendingCoordinatedAnimations;
-- (void)removeSceneResizeAction:(id)a3;
+- (void)removeSceneResizeAction:(id)action;
 @end
 
 @implementation _SBUISystemApertureElementSourceAnimationContext
@@ -49,27 +49,27 @@
   }
 }
 
-- (void)addSceneResizeAction:(id)a3
+- (void)addSceneResizeAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   sceneResizeActions = self->_sceneResizeActions;
-  v8 = v4;
+  v8 = actionCopy;
   if (!sceneResizeActions)
   {
     v6 = [MEMORY[0x1E695DFA8] set];
     v7 = self->_sceneResizeActions;
     self->_sceneResizeActions = v6;
 
-    v4 = v8;
+    actionCopy = v8;
     sceneResizeActions = self->_sceneResizeActions;
   }
 
-  [(NSMutableSet *)sceneResizeActions addObject:v4];
+  [(NSMutableSet *)sceneResizeActions addObject:actionCopy];
 }
 
-- (void)removeSceneResizeAction:(id)a3
+- (void)removeSceneResizeAction:(id)action
 {
-  v5 = a3;
+  actionCopy = action;
   [(NSMutableSet *)self->_sceneResizeActions removeObject:?];
   if (![(NSMutableSet *)self->_sceneResizeActions count])
   {
@@ -77,22 +77,22 @@
     self->_sceneResizeActions = 0;
   }
 
-  if (([v5 isTransientLocal] & 1) == 0)
+  if (([actionCopy isTransientLocal] & 1) == 0)
   {
     [(_SBUISystemApertureElementSourceAnimationContext *)self disableSkippingSceneResizeActions];
   }
 }
 
-- (void)addPendingAnimation:(id)a3
+- (void)addPendingAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   pendingCoordinatedAnimations = self->_pendingCoordinatedAnimations;
-  v9 = v4;
+  v9 = animationCopy;
   if (!pendingCoordinatedAnimations)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_pendingCoordinatedAnimations;
-    self->_pendingCoordinatedAnimations = v6;
+    self->_pendingCoordinatedAnimations = array;
 
     pendingCoordinatedAnimations = self->_pendingCoordinatedAnimations;
   }

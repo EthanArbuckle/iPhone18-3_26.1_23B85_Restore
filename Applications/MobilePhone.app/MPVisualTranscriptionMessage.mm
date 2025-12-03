@@ -8,7 +8,7 @@
 
 - (NSAttributedString)attributedText
 {
-  v2 = self;
+  selfCopy = self;
   v3 = VisualTranscriptionMessage.attributedText.getter();
 
   return v3;
@@ -17,15 +17,15 @@
 - (NSString)text
 {
   v2 = *(&self->super.isa + OBJC_IVAR___MPVisualTranscriptionMessage_vmTranscript);
-  v3 = self;
-  v4 = [v2 transcriptionString];
-  if (!v4)
+  selfCopy = self;
+  transcriptionString = [v2 transcriptionString];
+  if (!transcriptionString)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v4 = String._bridgeToObjectiveC()();
+    transcriptionString = String._bridgeToObjectiveC()();
   }
 
-  return v4;
+  return transcriptionString;
 }
 
 - (MPVisualTranscriptionMessage)init

@@ -1,22 +1,22 @@
 @interface PGRelationshipHomeAnalyzer
-- (PGRelationshipHomeAnalyzer)initWithRelationshipProcessor:(id)a3;
-- (void)runAnalysisWithProgressBlock:(id)a3;
+- (PGRelationshipHomeAnalyzer)initWithRelationshipProcessor:(id)processor;
+- (void)runAnalysisWithProgressBlock:(id)block;
 @end
 
 @implementation PGRelationshipHomeAnalyzer
 
-- (void)runAnalysisWithProgressBlock:(id)a3
+- (void)runAnalysisWithProgressBlock:(id)block
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   v5 = 0.0;
   if (!v4 || (Current = CFAbsoluteTimeGetCurrent(), Current < 0.01))
   {
     v7 = 0;
 LABEL_4:
     WeakRetained = objc_loadWeakRetained(&self->_processor);
-    v9 = [WeakRetained momentNodes];
-    v10 = [PGPeopleInferencesConveniences momentNodesAtHomeInMomentNodes:v9];
+    momentNodes = [WeakRetained momentNodes];
+    v10 = [PGPeopleInferencesConveniences momentNodesAtHomeInMomentNodes:momentNodes];
 
     v11 = [v10 count];
     if (v11)
@@ -24,8 +24,8 @@ LABEL_4:
       v12 = v11;
       v25 = v7;
       v26 = v4;
-      v13 = [WeakRetained personNodes];
-      v14 = [PGPeopleInferencesConveniences countedPersonNodesFromMomentNodes:v10 amongPersonNodes:v13];
+      personNodes = [WeakRetained personNodes];
+      v14 = [PGPeopleInferencesConveniences countedPersonNodesFromMomentNodes:v10 amongPersonNodes:personNodes];
 
       v29 = 0u;
       v30 = 0u;
@@ -48,8 +48,8 @@ LABEL_4:
 
             v20 = *(*(&v27 + 1) + 8 * i);
             v21 = [v15 countForObject:v20];
-            v22 = [v20 localIdentifier];
-            v23 = [WeakRetained relationshipAnalyzerPropertiesForPersonLocalIdentifier:v22];
+            localIdentifier = [v20 localIdentifier];
+            v23 = [WeakRetained relationshipAnalyzerPropertiesForPersonLocalIdentifier:localIdentifier];
 
             if (v23)
             {
@@ -111,16 +111,16 @@ LABEL_21:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (PGRelationshipHomeAnalyzer)initWithRelationshipProcessor:(id)a3
+- (PGRelationshipHomeAnalyzer)initWithRelationshipProcessor:(id)processor
 {
-  v4 = a3;
+  processorCopy = processor;
   v8.receiver = self;
   v8.super_class = PGRelationshipHomeAnalyzer;
   v5 = [(PGRelationshipHomeAnalyzer *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_processor, v4);
+    objc_storeWeak(&v5->_processor, processorCopy);
   }
 
   return v6;

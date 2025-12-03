@@ -1,10 +1,10 @@
 @interface FRNewsReferralItemWidgetArticleList
 - (FRNewsReferralItemWidgetArticleList)init;
-- (FRNewsReferralItemWidgetArticleList)initWithEncodableElement:(id)a3 assetHandlesByRemoteURL:(id)a4;
-- (FRNewsReferralItemWidgetArticleList)initWithJSONArray:(id)a3 flintDocumentURLAssetHandlesByRemoteURL:(id)a4;
+- (FRNewsReferralItemWidgetArticleList)initWithEncodableElement:(id)element assetHandlesByRemoteURL:(id)l;
+- (FRNewsReferralItemWidgetArticleList)initWithJSONArray:(id)array flintDocumentURLAssetHandlesByRemoteURL:(id)l;
 - (NSArray)JSONArray;
 - (NSArray)assetHandles;
-- (id)referredArticlesWithAssetManager:(id)a3;
+- (id)referredArticlesWithAssetManager:(id)manager;
 @end
 
 @implementation FRNewsReferralItemWidgetArticleList
@@ -32,20 +32,20 @@
   objc_exception_throw(v4);
 }
 
-- (FRNewsReferralItemWidgetArticleList)initWithJSONArray:(id)a3 flintDocumentURLAssetHandlesByRemoteURL:(id)a4
+- (FRNewsReferralItemWidgetArticleList)initWithJSONArray:(id)array flintDocumentURLAssetHandlesByRemoteURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  arrayCopy = array;
+  lCopy = l;
+  if (!arrayCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100004340();
-    if (v7)
+    if (lCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v7)
+  else if (lCopy)
   {
     goto LABEL_6;
   }
@@ -56,30 +56,30 @@
   }
 
 LABEL_6:
-  v8 = [[FRNewsReferralItemWidgetArticleListEncodableElement alloc] initWithJSONArray:v6];
-  v9 = [(FRNewsReferralItemWidgetArticleList *)self initWithEncodableElement:v8 assetHandlesByRemoteURL:v7];
+  v8 = [[FRNewsReferralItemWidgetArticleListEncodableElement alloc] initWithJSONArray:arrayCopy];
+  v9 = [(FRNewsReferralItemWidgetArticleList *)self initWithEncodableElement:v8 assetHandlesByRemoteURL:lCopy];
 
   return v9;
 }
 
 - (NSArray)JSONArray
 {
-  v2 = [(FRNewsReferralItemWidgetArticleList *)self myEncodableElement];
-  v3 = [v2 JSONArray];
+  myEncodableElement = [(FRNewsReferralItemWidgetArticleList *)self myEncodableElement];
+  jSONArray = [myEncodableElement JSONArray];
 
-  return v3;
+  return jSONArray;
 }
 
-- (id)referredArticlesWithAssetManager:(id)a3
+- (id)referredArticlesWithAssetManager:(id)manager
 {
-  v20 = a3;
-  if (!v20 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  managerCopy = manager;
+  if (!managerCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_1000044C8();
   }
 
   v30 = objc_opt_new();
-  v21 = self;
+  selfCopy = self;
   [(FRNewsReferralItemWidgetArticleList *)self JSONArray];
   v40 = 0u;
   v41 = 0u;
@@ -122,8 +122,8 @@ LABEL_6:
             v9 = [NSURL URLWithString:v8];
             if (v9)
             {
-              v10 = [(FRNewsReferralItemWidgetArticleList *)v21 flintDocumentURLAssetHandlesByRemoteURL];
-              v11 = [v10 objectForKeyedSubscript:v9];
+              flintDocumentURLAssetHandlesByRemoteURL = [(FRNewsReferralItemWidgetArticleList *)selfCopy flintDocumentURLAssetHandlesByRemoteURL];
+              v11 = [flintDocumentURLAssetHandlesByRemoteURL objectForKeyedSubscript:v9];
 
               v12 = v11;
 LABEL_15:
@@ -189,20 +189,20 @@ LABEL_25:
   return v30;
 }
 
-- (FRNewsReferralItemWidgetArticleList)initWithEncodableElement:(id)a3 assetHandlesByRemoteURL:(id)a4
+- (FRNewsReferralItemWidgetArticleList)initWithEncodableElement:(id)element assetHandlesByRemoteURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  elementCopy = element;
+  lCopy = l;
+  if (!elementCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10000458C();
-    if (v7)
+    if (lCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v7)
+  else if (lCopy)
   {
     goto LABEL_6;
   }
@@ -218,11 +218,11 @@ LABEL_6:
   v8 = [(FRNewsReferralItemWidgetArticleList *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [elementCopy copy];
     myEncodableElement = v8->_myEncodableElement;
     v8->_myEncodableElement = v9;
 
-    v11 = [v7 copy];
+    v11 = [lCopy copy];
     flintDocumentURLAssetHandlesByRemoteURL = v8->_flintDocumentURLAssetHandlesByRemoteURL;
     v8->_flintDocumentURLAssetHandlesByRemoteURL = v11;
   }
@@ -232,10 +232,10 @@ LABEL_6:
 
 - (NSArray)assetHandles
 {
-  v2 = [(FRNewsReferralItemWidgetArticleList *)self flintDocumentURLAssetHandlesByRemoteURL];
-  v3 = [v2 allValues];
+  flintDocumentURLAssetHandlesByRemoteURL = [(FRNewsReferralItemWidgetArticleList *)self flintDocumentURLAssetHandlesByRemoteURL];
+  allValues = [flintDocumentURLAssetHandlesByRemoteURL allValues];
 
-  return v3;
+  return allValues;
 }
 
 @end

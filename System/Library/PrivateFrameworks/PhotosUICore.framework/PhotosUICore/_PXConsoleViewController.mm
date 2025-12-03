@@ -1,25 +1,25 @@
 @interface _PXConsoleViewController
 - (UITextView)_textView;
 - (_PXConsoleViewController)init;
-- (void)_presentSharingViewController:(id)a3;
-- (void)appendOutput:(id)a3;
+- (void)_presentSharingViewController:(id)controller;
+- (void)appendOutput:(id)output;
 - (void)loadView;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation _PXConsoleViewController
 
-- (void)_presentSharingViewController:(id)a3
+- (void)_presentSharingViewController:(id)controller
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = [(_PXConsoleViewController *)self _textView];
-  v5 = [v4 text];
-  v6 = v5;
+  _textView = [(_PXConsoleViewController *)self _textView];
+  text = [_textView text];
+  v6 = text;
   v7 = &stru_1F1741150;
-  if (v5)
+  if (text)
   {
-    v7 = v5;
+    v7 = text;
   }
 
   v8 = v7;
@@ -30,9 +30,9 @@
 
   v11 = [v9 initWithActivityItems:v10 applicationActivities:0];
   [(_PXConsoleViewController *)self presentViewController:v11 animated:1 completion:0];
-  v12 = [v11 popoverPresentationController];
-  v13 = [(_PXConsoleViewController *)self _shareBarButtonItem];
-  [v12 setBarButtonItem:v13];
+  popoverPresentationController = [v11 popoverPresentationController];
+  _shareBarButtonItem = [(_PXConsoleViewController *)self _shareBarButtonItem];
+  [popoverPresentationController setBarButtonItem:_shareBarButtonItem];
 }
 
 - (UITextView)_textView
@@ -40,20 +40,20 @@
   textView = self->__textView;
   if (!textView)
   {
-    v4 = [(_PXConsoleViewController *)self view];
+    view = [(_PXConsoleViewController *)self view];
     textView = self->__textView;
   }
 
   return textView;
 }
 
-- (void)appendOutput:(id)a3
+- (void)appendOutput:(id)output
 {
-  v3 = a3;
+  outputCopy = output;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = outputCopy;
   }
 
   else
@@ -61,7 +61,7 @@
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v6 = [v3 description];
+      v6 = [outputCopy description];
       v7 = v6;
       v8 = &stru_1F1741150;
       if (v6)
@@ -77,34 +77,34 @@ LABEL_9:
       px_dispatch_on_main_queue();
     }
 
-    v4 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v3];
+    v4 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:outputCopy];
   }
 
   v5 = v4;
   goto LABEL_9;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = _PXConsoleViewController;
   [(_PXConsoleViewController *)&v6 viewWillDisappear:?];
-  v5 = [(_PXConsoleViewController *)self navigationController];
-  [v5 setToolbarHidden:-[_PXConsoleViewController toolBarWasHidden](self animated:{"toolBarWasHidden"), v3}];
+  navigationController = [(_PXConsoleViewController *)self navigationController];
+  [navigationController setToolbarHidden:-[_PXConsoleViewController toolBarWasHidden](self animated:{"toolBarWasHidden"), disappearCopy}];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = _PXConsoleViewController;
   [(_PXConsoleViewController *)&v7 viewWillAppear:?];
-  v5 = [(_PXConsoleViewController *)self navigationController];
-  -[_PXConsoleViewController setToolBarWasHidden:](self, "setToolBarWasHidden:", [v5 isToolbarHidden]);
+  navigationController = [(_PXConsoleViewController *)self navigationController];
+  -[_PXConsoleViewController setToolBarWasHidden:](self, "setToolBarWasHidden:", [navigationController isToolbarHidden]);
 
-  v6 = [(_PXConsoleViewController *)self navigationController];
-  [v6 setToolbarHidden:0 animated:v3];
+  navigationController2 = [(_PXConsoleViewController *)self navigationController];
+  [navigationController2 setToolbarHidden:0 animated:appearCopy];
 }
 
 - (void)loadView
@@ -112,15 +112,15 @@ LABEL_9:
   v7.receiver = self;
   v7.super_class = _PXConsoleViewController;
   [(_PXConsoleViewController *)&v7 loadView];
-  v3 = [(_PXConsoleViewController *)self view];
+  view = [(_PXConsoleViewController *)self view];
   v4 = objc_alloc(MEMORY[0x1E69DD168]);
-  [v3 bounds];
+  [view bounds];
   v5 = [v4 initWithFrame:?];
   textView = self->__textView;
   self->__textView = v5;
 
   [(UITextView *)self->__textView setAutoresizingMask:18];
-  [v3 addSubview:self->__textView];
+  [view addSubview:self->__textView];
 }
 
 - (_PXConsoleViewController)init

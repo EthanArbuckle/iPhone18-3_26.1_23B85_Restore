@@ -1,16 +1,16 @@
 @interface OrgApacheLuceneUtilPackedPackedInts_Writer
-- (OrgApacheLuceneUtilPackedPackedInts_Writer)initWithOrgApacheLuceneStoreDataOutput:(id)a3 withInt:(int)a4 withInt:(int)a5;
+- (OrgApacheLuceneUtilPackedPackedInts_Writer)initWithOrgApacheLuceneStoreDataOutput:(id)output withInt:(int)int withInt:(int)withInt;
 - (void)dealloc;
 - (void)writeHeader;
 @end
 
 @implementation OrgApacheLuceneUtilPackedPackedInts_Writer
 
-- (OrgApacheLuceneUtilPackedPackedInts_Writer)initWithOrgApacheLuceneStoreDataOutput:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (OrgApacheLuceneUtilPackedPackedInts_Writer)initWithOrgApacheLuceneStoreDataOutput:(id)output withInt:(int)int withInt:(int)withInt
 {
-  JreStrongAssign(&self->out_, a3);
-  self->valueCount_ = a4;
-  self->bitsPerValue_ = a5;
+  JreStrongAssign(&self->out_, output);
+  self->valueCount_ = int;
+  self->bitsPerValue_ = withInt;
   return self;
 }
 
@@ -23,9 +23,9 @@
     JreThrowNullPointerException();
   }
 
-  v6 = [v5 getId];
+  getId = [v5 getId];
 
-  [(OrgApacheLuceneStoreDataOutput *)v4 writeVIntWithInt:v6];
+  [(OrgApacheLuceneStoreDataOutput *)v4 writeVIntWithInt:getId];
 }
 
 - (void)dealloc

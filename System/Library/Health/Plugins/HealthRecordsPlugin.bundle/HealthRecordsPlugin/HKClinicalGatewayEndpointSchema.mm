@@ -1,19 +1,19 @@
 @interface HKClinicalGatewayEndpointSchema
-+ (id)endpointSchemaFromDefinition:(id)a3 error:(id *)a4;
-+ (id)endpointSchemasFromDefinitions:(id)a3 error:(id *)a4;
++ (id)endpointSchemaFromDefinition:(id)definition error:(id *)error;
++ (id)endpointSchemasFromDefinitions:(id)definitions error:(id *)error;
 @end
 
 @implementation HKClinicalGatewayEndpointSchema
 
-+ (id)endpointSchemasFromDefinitions:(id)a3 error:(id *)a4
++ (id)endpointSchemasFromDefinitions:(id)definitions error:(id *)error
 {
-  v5 = a3;
+  definitionsCopy = definitions;
   objc_opt_class();
   v6 = HKSafeObject();
 
   if (v6)
   {
-    v7 = [v6 hk_map:&stru_108228 error:a4];
+    v7 = [v6 hk_map:&stru_108228 error:error];
   }
 
   else
@@ -24,9 +24,9 @@
   return v7;
 }
 
-+ (id)endpointSchemaFromDefinition:(id)a3 error:(id *)a4
++ (id)endpointSchemaFromDefinition:(id)definition error:(id *)error
 {
-  v5 = a3;
+  definitionCopy = definition;
   objc_opt_class();
   v6 = HKSafeObject();
   if (!v6)
@@ -36,11 +36,11 @@
   }
 
   v7 = objc_opt_class();
-  v8 = sub_6DA38(v6, @"auth", v7, a4);
+  v8 = sub_6DA38(v6, @"auth", v7, error);
   if (v8)
   {
     v9 = objc_opt_class();
-    v10 = sub_6DA38(v6, @"enabled", v9, a4);
+    v10 = sub_6DA38(v6, @"enabled", v9, error);
     if (!v10)
     {
       v24 = 0;
@@ -50,7 +50,7 @@ LABEL_40:
     }
 
     v11 = objc_opt_class();
-    v12 = sub_6DA38(v6, @"method", v11, a4);
+    v12 = sub_6DA38(v6, @"method", v11, error);
     if (!v12)
     {
       v24 = 0;
@@ -60,7 +60,7 @@ LABEL_39:
     }
 
     v13 = objc_opt_class();
-    v14 = sub_6DA38(v6, @"minCompatibleApiVersion", v13, a4);
+    v14 = sub_6DA38(v6, @"minCompatibleApiVersion", v13, error);
     if (!v14)
     {
       v24 = 0;
@@ -70,7 +70,7 @@ LABEL_38:
     }
 
     v15 = objc_opt_class();
-    v16 = sub_6DA38(v6, @"name", v15, a4);
+    v16 = sub_6DA38(v6, @"name", v15, error);
     if (!v16)
     {
       v24 = 0;
@@ -80,7 +80,7 @@ LABEL_37:
     }
 
     v17 = objc_opt_class();
-    v18 = sub_6DA38(v6, @"url", v17, a4);
+    v18 = sub_6DA38(v6, @"url", v17, error);
     if (!v18)
     {
       v24 = 0;
@@ -97,12 +97,12 @@ LABEL_36:
     v44 = v16;
     if (!v19 && v20)
     {
-      if (a4)
+      if (error)
       {
         v22 = v20;
         v23 = v21;
         v24 = 0;
-        *a4 = v23;
+        *error = v23;
       }
 
       else
@@ -122,7 +122,7 @@ LABEL_36:
     if (v25)
     {
       v26 = [v6 objectForKeyedSubscript:@"form"];
-      v24 = [HKClinicalGatewayEndpointSchemaParameter parametersFromDefinitions:v26 error:a4];
+      v24 = [HKClinicalGatewayEndpointSchemaParameter parametersFromDefinitions:v26 error:error];
 
       v43 = v24;
       if (!v24)
@@ -148,7 +148,7 @@ LABEL_35:
     if (v27)
     {
       v28 = [v6 objectForKeyedSubscript:@"headers"];
-      v27 = [HKClinicalGatewayEndpointSchemaParameter parametersFromDefinitions:v28 error:a4];
+      v27 = [HKClinicalGatewayEndpointSchemaParameter parametersFromDefinitions:v28 error:error];
 
       if (!v27)
       {
@@ -164,7 +164,7 @@ LABEL_35:
     if (v29)
     {
       v30 = [v6 objectForKeyedSubscript:@"query"];
-      v31 = [HKClinicalGatewayEndpointSchemaParameter parametersFromDefinitions:v30 error:a4];
+      v31 = [HKClinicalGatewayEndpointSchemaParameter parametersFromDefinitions:v30 error:error];
 
       if (!v31)
       {
@@ -185,13 +185,13 @@ LABEL_33:
 
     v39 = v31;
     v33 = [HKClinicalGatewayEndpointSchema alloc];
-    v34 = [v10 BOOLValue];
+    bOOLValue = [v10 BOOLValue];
     v38 = v31;
-    v37 = [v14 integerValue];
+    integerValue = [v14 integerValue];
     v35 = v33;
     v19 = v42;
     v32 = v40;
-    v24 = [v35 initWithAuth:v8 body:v42 enabled:v34 form:v43 headers:v40 method:v12 minCompatibleAPIVersion:v37 name:v16 query:v38 URL:v45 definition:v5];
+    v24 = [v35 initWithAuth:v8 body:v42 enabled:bOOLValue form:v43 headers:v40 method:v12 minCompatibleAPIVersion:integerValue name:v16 query:v38 URL:v45 definition:definitionCopy];
 
     goto LABEL_31;
   }

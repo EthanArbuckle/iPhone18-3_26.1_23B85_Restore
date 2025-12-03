@@ -1,24 +1,24 @@
 @interface CNAvatarRecipeDataDescription
-- (BOOL)abPropertyID:(int *)a3;
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4;
-- (BOOL)setABValue:(void *)a3 onABPerson:(void *)a4 error:(__CFError *)a5;
-- (BOOL)setCNValue:(id)a3 onABPerson:(void *)a4 withDependentPropertiesContext:(id)a5 error:(id *)a6;
-- (id)posterDataChangeRequestsForValue:(id)a3 contactIdentifier:(id)a4;
-- (void)ABValueForABPerson:(void *)a3;
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4;
+- (BOOL)abPropertyID:(int *)d;
+- (BOOL)isEqualForContact:(id)contact other:(id)other;
+- (BOOL)setABValue:(void *)value onABPerson:(void *)person error:(__CFError *)error;
+- (BOOL)setCNValue:(id)value onABPerson:(void *)person withDependentPropertiesContext:(id)context error:(id *)error;
+- (id)posterDataChangeRequestsForValue:(id)value contactIdentifier:(id)identifier;
+- (void)ABValueForABPerson:(void *)person;
+- (void)decodeUsingCoder:(id)coder contact:(id)contact;
 @end
 
 @implementation CNAvatarRecipeDataDescription
 
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4
+- (BOOL)isEqualForContact:(id)contact other:(id)other
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 avatarRecipeData];
-  if (!v8)
+  contactCopy = contact;
+  otherCopy = other;
+  avatarRecipeData = [contactCopy avatarRecipeData];
+  if (!avatarRecipeData)
   {
-    v4 = [v7 avatarRecipeData];
-    if (!v4)
+    avatarRecipeData2 = [otherCopy avatarRecipeData];
+    if (!avatarRecipeData2)
     {
       v11 = 1;
 LABEL_6:
@@ -27,11 +27,11 @@ LABEL_6:
     }
   }
 
-  v9 = [v6 avatarRecipeData];
-  v10 = [v7 avatarRecipeData];
-  v11 = [v9 isEqual:v10];
+  avatarRecipeData3 = [contactCopy avatarRecipeData];
+  avatarRecipeData4 = [otherCopy avatarRecipeData];
+  v11 = [avatarRecipeData3 isEqual:avatarRecipeData4];
 
-  if (!v8)
+  if (!avatarRecipeData)
   {
     goto LABEL_6;
   }
@@ -41,24 +41,24 @@ LABEL_7:
   return v11;
 }
 
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4
+- (void)decodeUsingCoder:(id)coder contact:(id)contact
 {
-  v5 = a4;
-  v6 = a3;
-  v9 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"_avatarRecipeData"];
+  contactCopy = contact;
+  coderCopy = coder;
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_avatarRecipeData"];
 
   v7 = [v9 copy];
-  v8 = v5[85];
-  v5[85] = v7;
+  v8 = contactCopy[85];
+  contactCopy[85] = v7;
 }
 
-- (id)posterDataChangeRequestsForValue:(id)a3 contactIdentifier:(id)a4
+- (id)posterDataChangeRequestsForValue:(id)value contactIdentifier:(id)identifier
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  valueCopy = value;
+  identifierCopy = identifier;
   objc_opt_class();
-  v7 = v5;
+  v7 = valueCopy;
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
@@ -74,20 +74,20 @@ LABEL_7:
   if (v9)
   {
     v10 = [CNContactImage alloc];
-    v11 = [MEMORY[0x1E696AFB0] UUID];
-    v12 = [v11 UUIDString];
-    v13 = [MEMORY[0x1E695DF00] date];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    date = [MEMORY[0x1E695DF00] date];
     LOBYTE(v19) = 0;
-    v14 = [(CNContactImage *)v10 initWithIdentifier:v12 imageData:v9 lastUsedDate:v13 cropRect:0 source:0 sourceIdentifier:1 encodingType:*MEMORY[0x1E696AA80] variant:*(MEMORY[0x1E696AA80] + 8) poseConfigurationData:*(MEMORY[0x1E696AA80] + 16) displayString:*(MEMORY[0x1E696AA80] + 24) ignoredForRevert:0 itemDetails:0, 0, v19, 0];
+    v14 = [(CNContactImage *)v10 initWithIdentifier:uUIDString imageData:v9 lastUsedDate:date cropRect:0 source:0 sourceIdentifier:1 encodingType:*MEMORY[0x1E696AA80] variant:*(MEMORY[0x1E696AA80] + 8) poseConfigurationData:*(MEMORY[0x1E696AA80] + 16) displayString:*(MEMORY[0x1E696AA80] + 24) ignoredForRevert:0 itemDetails:0, 0, v19, 0];
 
-    v15 = [CNContactImageCreateRequest requestToCreateImage:v14 forContactIdentifier:v6];
+    v15 = [CNContactImageCreateRequest requestToCreateImage:v14 forContactIdentifier:identifierCopy];
     v20 = v15;
     v16 = &v20;
   }
 
   else
   {
-    v21 = v6;
+    v21 = identifierCopy;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1];
     v15 = [CNContactImageDeleteRequest requestToDeleteImagesForContactIdentifiers:v14];
     v22[0] = v15;
@@ -99,37 +99,37 @@ LABEL_7:
   return v17;
 }
 
-- (BOOL)setCNValue:(id)a3 onABPerson:(void *)a4 withDependentPropertiesContext:(id)a5 error:(id *)a6
+- (BOOL)setCNValue:(id)value onABPerson:(void *)person withDependentPropertiesContext:(id)context error:(id *)error
 {
-  v10 = a5;
-  v11 = a3;
-  [v10 setUpdatingAvatarRecipeData:1];
+  contextCopy = context;
+  valueCopy = value;
+  [contextCopy setUpdatingAvatarRecipeData:1];
   v13.receiver = self;
   v13.super_class = CNAvatarRecipeDataDescription;
-  LOBYTE(a6) = [(CNPropertyDescription *)&v13 setCNValue:v11 onABPerson:a4 withDependentPropertiesContext:v10 error:a6];
+  LOBYTE(error) = [(CNPropertyDescription *)&v13 setCNValue:valueCopy onABPerson:person withDependentPropertiesContext:contextCopy error:error];
 
-  return a6;
+  return error;
 }
 
-- (BOOL)abPropertyID:(int *)a3
+- (BOOL)abPropertyID:(int *)d
 {
-  if (a3)
+  if (d)
   {
-    *a3 = *MEMORY[0x1E698A150];
+    *d = *MEMORY[0x1E698A150];
   }
 
-  return a3 != 0;
+  return d != 0;
 }
 
-- (BOOL)setABValue:(void *)a3 onABPerson:(void *)a4 error:(__CFError *)a5
+- (BOOL)setABValue:(void *)value onABPerson:(void *)person error:(__CFError *)error
 {
-  if (a3)
+  if (value)
   {
-    v7 = CFGetTypeID(a3);
+    v7 = CFGetTypeID(value);
     if (v7 == CFDataGetTypeID())
     {
 
-      return MEMORY[0x1EEDEB2A8](a4, a3);
+      return MEMORY[0x1EEDEB2A8](person, value);
     }
 
     else
@@ -145,7 +145,7 @@ LABEL_7:
   }
 }
 
-- (void)ABValueForABPerson:(void *)a3
+- (void)ABValueForABPerson:(void *)person
 {
   result = ABPersonCopyAvatarRecipeData();
   if (result)

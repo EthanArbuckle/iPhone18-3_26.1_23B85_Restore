@@ -1,21 +1,21 @@
 @interface BRCPipelineJob
-- (BRCPipelineJob)initWithQualityOfService:(unsigned int)a3 completionHandler:(id)a4;
-- (id)descriptionWithContext:(id)a3;
+- (BRCPipelineJob)initWithQualityOfService:(unsigned int)service completionHandler:(id)handler;
+- (id)descriptionWithContext:(id)context;
 - (unint64_t)activeStageID;
 - (unint64_t)advanceJobToInitialStage;
 - (unint64_t)advanceJobToNextStage;
-- (void)advanceToRecoveryStage:(unint64_t)a3;
-- (void)completeWithError:(id)a3;
-- (void)dumpToContext:(id)a3;
-- (void)setJobPlan:(id)a3 additionalToRequestingStageMap:(id)a4;
-- (void)setStageStringifier:(id)a3;
+- (void)advanceToRecoveryStage:(unint64_t)stage;
+- (void)completeWithError:(id)error;
+- (void)dumpToContext:(id)context;
+- (void)setJobPlan:(id)plan additionalToRequestingStageMap:(id)map;
+- (void)setStageStringifier:(id)stringifier;
 @end
 
 @implementation BRCPipelineJob
 
-- (BRCPipelineJob)initWithQualityOfService:(unsigned int)a3 completionHandler:(id)a4
+- (BRCPipelineJob)initWithQualityOfService:(unsigned int)service completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v13.receiver = self;
   v13.super_class = BRCPipelineJob;
   v7 = [(BRCPipelineJob *)&v13 init];
@@ -23,11 +23,11 @@
   if (v7)
   {
     v7->_currentStageID = 0x7FFFFFFFFFFFFFFFLL;
-    v9 = MEMORY[0x22AA4A310](v6);
+    v9 = MEMORY[0x22AA4A310](handlerCopy);
     completionHandler = v8->_completionHandler;
     v8->_completionHandler = v9;
 
-    v8->_qualityOfService = a3;
+    v8->_qualityOfService = service;
     stageStringifier = v8->_stageStringifier;
     v8->_stageStringifier = &__block_literal_global_4;
   }
@@ -50,20 +50,20 @@ __CFString *__61__BRCPipelineJob_initWithQualityOfService_completionHandler___bl
   return v3;
 }
 
-- (void)setJobPlan:(id)a3 additionalToRequestingStageMap:(id)a4
+- (void)setJobPlan:(id)plan additionalToRequestingStageMap:(id)map
 {
-  v6 = a3;
-  v7 = a4;
+  planCopy = plan;
+  mapCopy = map;
   if (self->_jobPlan)
   {
     [BRCPipelineJob(InternalPipeline) setJobPlan:additionalToRequestingStageMap:];
   }
 
-  v8 = [v6 copy];
+  v8 = [planCopy copy];
   jobPlan = self->_jobPlan;
   self->_jobPlan = v8;
 
-  v10 = [v7 copy];
+  v10 = [mapCopy copy];
   additionalToRequestingStageMap = self->_additionalToRequestingStageMap;
   self->_additionalToRequestingStageMap = v10;
 }
@@ -129,7 +129,7 @@ __CFString *__61__BRCPipelineJob_initWithQualityOfService_completionHandler___bl
       currentStageID = self->_currentStageID;
       v9 = (*(self->_stageStringifier + 2))();
       v10 = 138412802;
-      v11 = self;
+      selfCopy = self;
       v12 = 2112;
       v13 = v9;
       v14 = 2112;
@@ -143,10 +143,10 @@ __CFString *__61__BRCPipelineJob_initWithQualityOfService_completionHandler___bl
   return result;
 }
 
-- (void)completeWithError:(id)a3
+- (void)completeWithError:(id)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   self->_currentStageID = 0x7FFFFFFFFFFFFFFFLL;
   if (self->_completionHandler)
   {
@@ -155,9 +155,9 @@ __CFString *__61__BRCPipelineJob_initWithQualityOfService_completionHandler___bl
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       v10 = 138412802;
-      v11 = self;
+      selfCopy = self;
       v12 = 2112;
-      v13 = v4;
+      v13 = errorCopy;
       v14 = 2112;
       v15 = v5;
       _os_log_debug_impl(&dword_223E7A000, v6, OS_LOG_TYPE_DEBUG, "[DEBUG] Completing Job %@ with error %@%@", &v10, 0x20u);
@@ -181,7 +181,7 @@ __CFString *__61__BRCPipelineJob_initWithQualityOfService_completionHandler___bl
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)advanceToRecoveryStage:(unint64_t)a3
+- (void)advanceToRecoveryStage:(unint64_t)stage
 {
   if (!self->_stageToRecoveryPlanMap)
   {
@@ -203,13 +203,13 @@ __CFString *__61__BRCPipelineJob_initWithQualityOfService_completionHandler___bl
     [(NSMutableDictionary *)self->_stageToRecoveryPlanMap setObject:v8 forKeyedSubscript:v7];
   }
 
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:stage];
   [v8 addObject:v9];
 }
 
-- (void)setStageStringifier:(id)a3
+- (void)setStageStringifier:(id)stringifier
 {
-  v4 = MEMORY[0x22AA4A310](a3, a2);
+  v4 = MEMORY[0x22AA4A310](stringifier, a2);
   stageStringifier = self->_stageStringifier;
   self->_stageStringifier = v4;
 
@@ -224,8 +224,8 @@ __CFString *__61__BRCPipelineJob_initWithQualityOfService_completionHandler___bl
 
   if (v5)
   {
-    v6 = [v5 lastObject];
-    currentStageID = [v6 unsignedIntegerValue];
+    lastObject = [v5 lastObject];
+    currentStageID = [lastObject unsignedIntegerValue];
   }
 
   else
@@ -236,16 +236,16 @@ __CFString *__61__BRCPipelineJob_initWithQualityOfService_completionHandler___bl
   return currentStageID;
 }
 
-- (id)descriptionWithContext:(id)a3
+- (id)descriptionWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v26 = BRCPrettyPrintEnumWithContext(self->_qualityOfService, &brc_qos_entries, 0);
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __59__BRCPipelineJob_InternalPipeline__descriptionWithContext___block_invoke;
   v33[3] = &unk_2784FF6A0;
   v33[4] = self;
-  v5 = v4;
+  v5 = contextCopy;
   v34 = v5;
   v6 = MEMORY[0x22AA4A310](v33);
   v32[0] = MEMORY[0x277D85DD0];
@@ -290,15 +290,15 @@ __CFString *__61__BRCPipelineJob_initWithQualityOfService_completionHandler___bl
     v20 = v11;
   }
 
-  v22 = [(BRCPipelineJob *)self subclassDescription];
-  if ([v22 length])
+  subclassDescription = [(BRCPipelineJob *)self subclassDescription];
+  if ([subclassDescription length])
   {
-    v23 = [@" " stringByAppendingString:v22];
+    v23 = [@" " stringByAppendingString:subclassDescription];
 
-    v22 = v23;
+    subclassDescription = v23;
   }
 
-  v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@:%p %@ 🏃‍♂️:%@ ☑️:[%@] ✅:[%@]%@>", objc_opt_class(), self, v26, v19, v14, v20, v22];
+  v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@:%p %@ 🏃‍♂️:%@ ☑️:[%@] ✅:[%@]%@>", objc_opt_class(), self, v26, v19, v14, v20, subclassDescription];
 
   return v24;
 }
@@ -410,11 +410,11 @@ void __59__BRCPipelineJob_InternalPipeline__descriptionWithContext___block_invok
   }
 }
 
-- (void)dumpToContext:(id)a3
+- (void)dumpToContext:(id)context
 {
-  v4 = a3;
-  v5 = [(BRCPipelineJob *)self descriptionWithContext:v4];
-  [v4 writeLineWithFormat:@"%@", v5];
+  contextCopy = context;
+  v5 = [(BRCPipelineJob *)self descriptionWithContext:contextCopy];
+  [contextCopy writeLineWithFormat:@"%@", v5];
 }
 
 @end

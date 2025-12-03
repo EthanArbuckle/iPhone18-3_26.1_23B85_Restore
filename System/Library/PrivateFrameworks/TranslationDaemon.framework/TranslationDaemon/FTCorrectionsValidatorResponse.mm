@@ -1,24 +1,24 @@
 @interface FTCorrectionsValidatorResponse
-- (FTCorrectionsValidatorResponse)initWithFlatbuffData:(id)a3 root:(const CorrectionsValidatorResponse *)a4 verify:(BOOL)a5;
+- (FTCorrectionsValidatorResponse)initWithFlatbuffData:(id)data root:(const CorrectionsValidatorResponse *)root verify:(BOOL)verify;
 - (NSArray)corrections;
 - (NSString)language;
 - (NSString)return_str;
 - (NSString)session_id;
 - (NSString)speech_id;
-- (Offset<siri::speech::schema_fb::CorrectionsValidatorResponse>)addObjectToBuffer:(void *)a3;
-- (id)corrections_objectAtIndex:(unint64_t)a3;
+- (Offset<siri::speech::schema_fb::CorrectionsValidatorResponse>)addObjectToBuffer:(void *)buffer;
+- (id)corrections_objectAtIndex:(unint64_t)index;
 - (id)flatbuffData;
 - (int)return_code;
 - (unint64_t)corrections_count;
-- (void)corrections_enumerateObjectsUsingBlock:(id)a3;
+- (void)corrections_enumerateObjectsUsingBlock:(id)block;
 @end
 
 @implementation FTCorrectionsValidatorResponse
 
-- (FTCorrectionsValidatorResponse)initWithFlatbuffData:(id)a3 root:(const CorrectionsValidatorResponse *)a4 verify:(BOOL)a5
+- (FTCorrectionsValidatorResponse)initWithFlatbuffData:(id)data root:(const CorrectionsValidatorResponse *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FTCorrectionsValidatorResponse;
   v10 = [(FTCorrectionsValidatorResponse *)&v25 init];
@@ -27,35 +27,35 @@
     goto LABEL_13;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_14;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_233005E20;
   v23 = 0;
@@ -193,12 +193,12 @@ LABEL_13:
   v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"corrections"];
   if (!v3)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __45__FTCorrectionsValidatorResponse_corrections__block_invoke;
     v6[3] = &unk_2789B8AD8;
-    v3 = v4;
+    v3 = array;
     v7 = v3;
     [(FTCorrectionsValidatorResponse *)self corrections_enumerateObjectsUsingBlock:v6];
     [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"corrections"];
@@ -207,13 +207,13 @@ LABEL_13:
   return v3;
 }
 
-- (id)corrections_objectAtIndex:(unint64_t)a3
+- (id)corrections_objectAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"corrections"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectAtIndexedSubscript:a3];
+    v7 = [v5 objectAtIndexedSubscript:index];
 LABEL_3:
     v8 = v7;
     goto LABEL_8;
@@ -226,7 +226,7 @@ LABEL_3:
     v11 = *v10[14].var0;
     if (v11)
     {
-      v12 = &root[4 * a3 + v11 + *root[v11].var0];
+      v12 = &root[4 * index + v11 + *root[v11].var0];
       v7 = [[FTCorrectionsAlignment alloc] initWithFlatbuffData:self->_data root:v12 + 4 + *(v12 + 4) verify:0];
       goto LABEL_3;
     }
@@ -265,14 +265,14 @@ LABEL_8:
   return v5;
 }
 
-- (void)corrections_enumerateObjectsUsingBlock:(id)a3
+- (void)corrections_enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"corrections"];
   v6 = v5;
   if (v5)
   {
-    [v5 enumerateObjectsUsingBlock:v4];
+    [v5 enumerateObjectsUsingBlock:blockCopy];
   }
 
   else
@@ -295,7 +295,7 @@ LABEL_8:
           do
           {
             v15 = [[FTCorrectionsAlignment alloc] initWithFlatbuffData:self->_data root:&v13[*v13->var0] verify:0];
-            v4[2](v4, v15, v12, &v18);
+            blockCopy[2](blockCopy, v15, v12, &v18);
             v16 = v18;
 
             if (v16)
@@ -316,65 +316,65 @@ LABEL_8:
   }
 }
 
-- (Offset<siri::speech::schema_fb::CorrectionsValidatorResponse>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::CorrectionsValidatorResponse>)addObjectToBuffer:(void *)buffer
 {
   v56 = *MEMORY[0x277D85DE8];
-  v5 = [(FTCorrectionsValidatorResponse *)self speech_id];
-  v6 = v5;
-  if (!v5)
+  speech_id = [(FTCorrectionsValidatorResponse *)self speech_id];
+  v6 = speech_id;
+  if (!speech_id)
   {
-    v5 = &stru_284834138;
+    speech_id = &stru_284834138;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)speech_id UTF8String];
+  v8 = strlen(uTF8String);
+  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v9 = [(FTCorrectionsValidatorResponse *)self session_id];
-  v10 = v9;
-  if (!v9)
+  session_id = [(FTCorrectionsValidatorResponse *)self session_id];
+  v10 = session_id;
+  if (!session_id)
   {
-    v9 = &stru_284834138;
+    session_id = &stru_284834138;
   }
 
-  v11 = [(__CFString *)v9 UTF8String];
-  v12 = strlen(v11);
-  v48 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v11, v12);
+  uTF8String2 = [(__CFString *)session_id UTF8String];
+  v12 = strlen(uTF8String2);
+  v48 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String2, v12);
 
-  v13 = [(FTCorrectionsValidatorResponse *)self language];
-  v14 = v13;
-  if (!v13)
+  language = [(FTCorrectionsValidatorResponse *)self language];
+  v14 = language;
+  if (!language)
   {
-    v13 = &stru_284834138;
+    language = &stru_284834138;
   }
 
-  v15 = [(__CFString *)v13 UTF8String];
-  v16 = strlen(v15);
-  v47 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v15, v16);
+  uTF8String3 = [(__CFString *)language UTF8String];
+  v16 = strlen(uTF8String3);
+  v47 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String3, v16);
 
-  v17 = [(FTCorrectionsValidatorResponse *)self return_code];
-  v18 = [(FTCorrectionsValidatorResponse *)self return_str];
-  v19 = v18;
-  if (!v18)
+  return_code = [(FTCorrectionsValidatorResponse *)self return_code];
+  return_str = [(FTCorrectionsValidatorResponse *)self return_str];
+  v19 = return_str;
+  if (!return_str)
   {
-    v18 = &stru_284834138;
+    return_str = &stru_284834138;
   }
 
-  v20 = [(__CFString *)v18 UTF8String];
-  v21 = strlen(v20);
-  v45 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v20, v21);
+  uTF8String4 = [(__CFString *)return_str UTF8String];
+  v21 = strlen(uTF8String4);
+  v45 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String4, v21);
 
   memset(&v54, 0, sizeof(v54));
-  v22 = [(FTCorrectionsValidatorResponse *)self corrections];
-  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v54, [v22 count]);
+  corrections = [(FTCorrectionsValidatorResponse *)self corrections];
+  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v54, [corrections count]);
 
   v52 = 0u;
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v23 = [(FTCorrectionsValidatorResponse *)self corrections];
-  v46 = v17;
-  v24 = [v23 countByEnumeratingWithState:&v50 objects:v55 count:16];
+  corrections2 = [(FTCorrectionsValidatorResponse *)self corrections];
+  v46 = return_code;
+  v24 = [corrections2 countByEnumeratingWithState:&v50 objects:v55 count:16];
   if (v24)
   {
     v25 = *v51;
@@ -384,10 +384,10 @@ LABEL_8:
       {
         if (*v51 != v25)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(corrections2);
         }
 
-        v27 = [*(*(&v50 + 1) + 8 * i) addObjectToBuffer:a3];
+        v27 = [*(*(&v50 + 1) + 8 * i) addObjectToBuffer:buffer];
         end = v54.__end_;
         if (v54.__end_ >= v54.__end_cap_.__value_)
         {
@@ -443,7 +443,7 @@ LABEL_8:
         v54.__end_ = v29;
       }
 
-      v24 = [v23 countByEnumeratingWithState:&v50 objects:v55 count:16];
+      v24 = [corrections2 countByEnumeratingWithState:&v50 objects:v55 count:16];
     }
 
     while (v24);
@@ -459,18 +459,18 @@ LABEL_8:
     v37 = v54.__begin_;
   }
 
-  v38 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(a3, v37, v54.__end_ - v54.__begin_);
-  *(a3 + 70) = 1;
-  v39 = *(a3 + 8);
-  v40 = *(a3 + 12);
-  v41 = *(a3 + 10);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 4, String);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v48);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 8, v47);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 10, v46, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 12, v45);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 14, v38);
-  v42.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v39 - v40 + v41);
+  v38 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(buffer, v37, v54.__end_ - v54.__begin_);
+  *(buffer + 70) = 1;
+  v39 = *(buffer + 8);
+  v40 = *(buffer + 12);
+  v41 = *(buffer + 10);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 4, String);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v48);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 8, v47);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 10, v46, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 12, v45);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 14, v38);
+  v42.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v39 - v40 + v41);
   if (v54.__begin_)
   {
     v54.__end_ = v54.__begin_;

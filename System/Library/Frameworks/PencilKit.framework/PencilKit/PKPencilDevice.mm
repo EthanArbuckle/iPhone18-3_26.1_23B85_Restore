@@ -7,10 +7,10 @@
 - (double)timeIntervalSinceUsed;
 - (int64_t)pencilVersionForAnalytics;
 - (void)appSceneDidEnterBackground;
-- (void)checkIfRollIsSupported:(id)a3;
+- (void)checkIfRollIsSupported:(id)supported;
 - (void)dealloc;
 - (void)resetRollSupportedState;
-- (void)setBaseRollAngle:(double)a3;
+- (void)setBaseRollAngle:(double)angle;
 - (void)tagAsUsed;
 @end
 
@@ -18,7 +18,7 @@
 
 - (void)resetRollSupportedState
 {
-  if (a1)
+  if (self)
   {
     v2 = os_log_create("com.apple.pencilkit", "PencilDevice");
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
@@ -27,7 +27,7 @@
       _os_log_impl(&dword_1C7CCA000, v2, OS_LOG_TYPE_DEFAULT, "Clearing roll support state.", v3, 2u);
     }
 
-    *(a1 + 36) = 0;
+    *(self + 36) = 0;
   }
 }
 
@@ -128,15 +128,15 @@ void __30__PKPencilDevice_activePencil__block_invoke()
 
 - (int64_t)pencilVersionForAnalytics
 {
-  v2 = [(PKPencilDevice *)self pencilVersion];
-  if ((v2 - 2) >= 3)
+  pencilVersion = [(PKPencilDevice *)self pencilVersion];
+  if ((pencilVersion - 2) >= 3)
   {
     return 3;
   }
 
   else
   {
-    return v2 - 2;
+    return pencilVersion - 2;
   }
 }
 
@@ -164,9 +164,9 @@ void __30__PKPencilDevice_activePencil__block_invoke()
   }
 }
 
-- (void)checkIfRollIsSupported:(id)a3
+- (void)checkIfRollIsSupported:(id)supported
 {
-  v4 = a3;
+  supportedCopy = supported;
   rollSupportState = self->_rollSupportState;
   if (!rollSupportState)
   {
@@ -183,7 +183,7 @@ void __30__PKPencilDevice_activePencil__block_invoke()
     block[2] = __41__PKPencilDevice_checkIfRollIsSupported___block_invoke;
     block[3] = &unk_1E82D7AE8;
     block[4] = self;
-    v13 = v4;
+    v13 = supportedCopy;
     dispatch_async(v7, block);
 
     v8 = v13;
@@ -196,7 +196,7 @@ void __30__PKPencilDevice_activePencil__block_invoke()
     v9[1] = 3221225472;
     v9[2] = __41__PKPencilDevice_checkIfRollIsSupported___block_invoke_2;
     v9[3] = &unk_1E82D7B10;
-    v10 = v4;
+    v10 = supportedCopy;
     v11 = rollSupportState == 1;
     dispatch_async(MEMORY[0x1E69E96A0], v9);
     v8 = v10;
@@ -205,7 +205,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  (*(v4 + 2))(v4, rollSupportState == 1);
+  (*(supportedCopy + 2))(supportedCopy, rollSupportState == 1);
 LABEL_9:
 }
 
@@ -279,10 +279,10 @@ uint64_t __41__PKPencilDevice_checkIfRollIsSupported___block_invoke_25(uint64_t 
   return baseRollAngle;
 }
 
-- (void)setBaseRollAngle:(double)a3
+- (void)setBaseRollAngle:(double)angle
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_baseRollAngle = a3;
+  self->_baseRollAngle = angle;
 
   os_unfair_lock_unlock(&self->_lock);
 }

@@ -1,30 +1,30 @@
 @interface APCEncoderProcessor
-- (APCEncoderProcessor)initWithAssetURL:(id)a3 codecConfig:(id)a4 payload:(id)a5 outputURL:(id)a6 error:(id *)a7;
-- (BOOL)getEmbeddingInfo:(id *)a3;
-- (float)evaluateAsset:(id)a3;
+- (APCEncoderProcessor)initWithAssetURL:(id)l codecConfig:(id)config payload:(id)payload outputURL:(id)rL error:(id *)error;
+- (BOOL)getEmbeddingInfo:(id *)info;
+- (float)evaluateAsset:(id)asset;
 @end
 
 @implementation APCEncoderProcessor
 
-- (APCEncoderProcessor)initWithAssetURL:(id)a3 codecConfig:(id)a4 payload:(id)a5 outputURL:(id)a6 error:(id *)a7
+- (APCEncoderProcessor)initWithAssetURL:(id)l codecConfig:(id)config payload:(id)payload outputURL:(id)rL error:(id *)error
 {
   v51[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  lCopy = l;
+  configCopy = config;
+  payloadCopy = payload;
+  rLCopy = rL;
   v41.receiver = self;
   v41.super_class = APCEncoderProcessor;
   v16 = [(APCEncoderProcessor *)&v41 init];
   if (v16)
   {
-    if (!v12 || !v13 || !v14 || !v15)
+    if (!lCopy || !configCopy || !payloadCopy || !rLCopy)
     {
       v30 = MEMORY[0x277CCA9B8];
       v50 = *MEMORY[0x277CCA450];
       v51[0] = @"Invalid input arguments";
       v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v51 forKeys:&v50 count:1];
-      *a7 = [v30 errorWithDomain:@"com.apple.audiopasscode" code:100 userInfo:v31];
+      *error = [v30 errorWithDomain:@"com.apple.audiopasscode" code:100 userInfo:v31];
 
 LABEL_22:
       v35 = 0;
@@ -34,7 +34,7 @@ LABEL_22:
     +[AUPasscodeEncoder registerAU];
     v17 = [AUPasscodeEncoder alloc];
     +[AUPasscodeEncoder getAUDesc];
-    v18 = [(AUPasscodeEncoder *)v17 initWithComponentDescription:buf options:0 error:a7];
+    v18 = [(AUPasscodeEncoder *)v17 initWithComponentDescription:buf options:0 error:error];
     encoderAU = v16->_encoderAU;
     v16->_encoderAU = v18;
 
@@ -50,26 +50,26 @@ LABEL_22:
       goto LABEL_22;
     }
 
-    [v13 setPayloadLengthBytes:{objc_msgSend(v14, "length")}];
-    v20 = [(AUPasscodeEncoder *)v16->_encoderAU inputBusses];
-    v21 = [v20 objectAtIndexedSubscript:0];
-    v22 = [v21 format];
-    [v22 sampleRate];
-    [v13 setSampleRate:v23];
+    [configCopy setPayloadLengthBytes:{objc_msgSend(payloadCopy, "length")}];
+    inputBusses = [(AUPasscodeEncoder *)v16->_encoderAU inputBusses];
+    v21 = [inputBusses objectAtIndexedSubscript:0];
+    format = [v21 format];
+    [format sampleRate];
+    [configCopy setSampleRate:v23];
 
-    [(AUPasscodeEncoder *)v16->_encoderAU setPayload:v14];
-    [(AUPasscodeEncoder *)v16->_encoderAU setCodecConfig:v13];
+    [(AUPasscodeEncoder *)v16->_encoderAU setPayload:payloadCopy];
+    [(AUPasscodeEncoder *)v16->_encoderAU setCodecConfig:configCopy];
     v24 = APCLogObject();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v47 = *&v12;
+      v47 = *&lCopy;
       v48 = 2112;
-      v49 = v15;
+      v49 = rLCopy;
       _os_log_impl(&dword_24158E000, v24, OS_LOG_TYPE_INFO, "Asset URL: '%@'\nOutput File URL: '%@'", buf, 0x16u);
     }
 
-    [(APCEncoderProcessor *)v16 evaluateAsset:v12];
+    [(APCEncoderProcessor *)v16 evaluateAsset:lCopy];
     v26 = v25;
     if (v25 < 0.1)
     {
@@ -85,12 +85,12 @@ LABEL_22:
       v44 = *MEMORY[0x277CCA450];
       v45 = @"The asset score is too low";
       v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
-      *a7 = [v28 errorWithDomain:@"com.apple.audiopasscode" code:102 userInfo:v29];
+      *error = [v28 errorWithDomain:@"com.apple.audiopasscode" code:102 userInfo:v29];
 
       goto LABEL_22;
     }
 
-    v33 = [[AUAudioUnitOfflineProcessor alloc] initWithAudioUnit:v16->_encoderAU inputFileURL:v12 outputFileURL:v15 ioSampleRate:-1];
+    v33 = [[AUAudioUnitOfflineProcessor alloc] initWithAudioUnit:v16->_encoderAU inputFileURL:lCopy outputFileURL:rLCopy ioSampleRate:-1];
     processor = v16->_processor;
     v16->_processor = v33;
 
@@ -108,7 +108,7 @@ LABEL_22:
       v42 = *MEMORY[0x277CCA450];
       v43 = @"Failed to create the offline encoder processor";
       v38 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
-      *a7 = [v37 errorWithDomain:@"com.apple.audiopasscode" code:101 userInfo:v38];
+      *error = [v37 errorWithDomain:@"com.apple.audiopasscode" code:101 userInfo:v38];
 
       goto LABEL_22;
     }
@@ -121,12 +121,12 @@ LABEL_23:
   return v35;
 }
 
-- (float)evaluateAsset:(id)a3
+- (float)evaluateAsset:(id)asset
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetCopy = asset;
   v30 = 0;
-  v5 = [objc_alloc(MEMORY[0x277CB8398]) initForReading:v4 error:&v30];
+  v5 = [objc_alloc(MEMORY[0x277CB8398]) initForReading:assetCopy error:&v30];
   v6 = v30;
   if (v6)
   {
@@ -144,8 +144,8 @@ LABEL_23:
   else
   {
     v10 = objc_alloc(MEMORY[0x277CB83C8]);
-    v11 = [v5 processingFormat];
-    v8 = [v10 initWithPCMFormat:v11 frameCapacity:objc_msgSend(v5, "length")];
+    processingFormat = [v5 processingFormat];
+    v8 = [v10 initWithPCMFormat:processingFormat frameCapacity:objc_msgSend(v5, "length")];
 
     v29 = 0;
     [v5 readIntoBuffer:v8 error:&v29];
@@ -164,11 +164,11 @@ LABEL_23:
 
     else
     {
-      v13 = [(AUPasscodeEncoder *)self->_encoderAU codecConfig];
-      v12 = [v13 copy];
+      codecConfig = [(AUPasscodeEncoder *)self->_encoderAU codecConfig];
+      v12 = [codecConfig copy];
 
-      v14 = [v5 processingFormat];
-      [v14 sampleRate];
+      processingFormat2 = [v5 processingFormat];
+      [processingFormat2 sampleRate];
       [v12 setSampleRate:(v15 + 0.5)];
 
       v28 = 0;
@@ -180,13 +180,13 @@ LABEL_23:
         [(AUPasscodeEncoder *)self->_encoderAU setPasscodeEmbedInfo:v17];
         v18 = [MEMORY[0x277CCABB0] numberWithInt:108];
         v19 = [v17 objectForKey:v18];
-        v27 = [v19 unsignedIntegerValue];
+        unsignedIntegerValue = [v19 unsignedIntegerValue];
 
         v20 = [MEMORY[0x277CCABB0] numberWithInt:1000];
         v21 = [v17 objectForKey:v20];
-        v22 = [v21 unsignedIntegerValue];
+        unsignedIntegerValue2 = [v21 unsignedIntegerValue];
 
-        v23 = [[APCPlayerEmbedInfo alloc] initWithPasscodeDurationNSec:((v22 + v27) / [v12 sampleRate]* 1000000000.0)];
+        v23 = [[APCPlayerEmbedInfo alloc] initWithPasscodeDurationNSec:((unsignedIntegerValue2 + unsignedIntegerValue) / [v12 sampleRate]* 1000000000.0)];
         passcodeEmbedInfo = self->_passcodeEmbedInfo;
         self->_passcodeEmbedInfo = v23;
       }
@@ -197,13 +197,13 @@ LABEL_23:
   return v9;
 }
 
-- (BOOL)getEmbeddingInfo:(id *)a3
+- (BOOL)getEmbeddingInfo:(id *)info
 {
   passcodeEmbedInfo = self->_passcodeEmbedInfo;
   if (passcodeEmbedInfo)
   {
     passcodeEmbedInfo = passcodeEmbedInfo;
-    *a3 = passcodeEmbedInfo;
+    *info = passcodeEmbedInfo;
   }
 
   return passcodeEmbedInfo != 0;

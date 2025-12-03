@@ -1,13 +1,13 @@
 @interface RoutingAdvisoryInfoFooterView
 + (NSString)reuseIdentifier;
-+ (double)getEstimatedFooterHeight:(id)a3 maxWidth:(double)a4;
++ (double)getEstimatedFooterHeight:(id)height maxWidth:(double)width;
 - (UIStackView)descriptionStackView;
 - (id)tapActionHandler;
 - (void)prepareForReuse;
 - (void)removeFooterLabels;
-- (void)setDescriptionStackView:(id)a3;
-- (void)setTapActionHandler:(id)a3;
-- (void)updateDescriptionInfo:(id)a3 tapHandler:(id)a4;
+- (void)setDescriptionStackView:(id)view;
+- (void)setTapActionHandler:(id)handler;
+- (void)updateDescriptionInfo:(id)info tapHandler:(id)handler;
 @end
 
 @implementation RoutingAdvisoryInfoFooterView
@@ -24,22 +24,22 @@
 
 - (UIStackView)descriptionStackView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100269564();
 
   return v3;
 }
 
-- (void)setDescriptionStackView:(id)a3
+- (void)setDescriptionStackView:(id)view
 {
   v4 = *(self + OBJC_IVAR____TtC4Maps29RoutingAdvisoryInfoFooterView____lazy_storage___descriptionStackView);
-  *(self + OBJC_IVAR____TtC4Maps29RoutingAdvisoryInfoFooterView____lazy_storage___descriptionStackView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC4Maps29RoutingAdvisoryInfoFooterView____lazy_storage___descriptionStackView) = view;
+  viewCopy = view;
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_100269B34();
 }
 
@@ -65,9 +65,9 @@
   return v3;
 }
 
-- (void)setTapActionHandler:(id)a3
+- (void)setTapActionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -86,13 +86,13 @@
   v9 = *(self + OBJC_IVAR____TtC4Maps29RoutingAdvisoryInfoFooterView_tapActionHandler + 8);
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_1000D3B90(v8, v9);
 }
 
-- (void)updateDescriptionInfo:(id)a3 tapHandler:(id)a4
+- (void)updateDescriptionInfo:(id)info tapHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   sub_100014C84(0, &qword_101916168);
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   if (v5)
@@ -108,22 +108,22 @@
     v7 = 0;
   }
 
-  v9 = self;
+  selfCopy = self;
   sub_100269E88(v6, v8, v7);
   sub_1000D3B90(v8, v7);
 }
 
 - (void)removeFooterLabels
 {
-  v2 = self;
+  selfCopy = self;
   sub_10026A564();
 }
 
-+ (double)getEstimatedFooterHeight:(id)a3 maxWidth:(double)a4
++ (double)getEstimatedFooterHeight:(id)height maxWidth:(double)width
 {
   sub_100014C84(0, &qword_101916168);
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  sub_10026ABDC(v5, a4);
+  sub_10026ABDC(v5, width);
   v7 = v6;
 
   return v7;

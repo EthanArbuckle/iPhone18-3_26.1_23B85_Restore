@@ -1,15 +1,15 @@
 @interface SBWindowingModifierBase
-- (id)handleEvent:(id)a3;
-- (id)topMostItemsByAddingAppLayoutAndAccessories:(id)a3 toTopMostItems:(id)a4 orderFront:(BOOL)a5;
+- (id)handleEvent:(id)event;
+- (id)topMostItemsByAddingAppLayoutAndAccessories:(id)accessories toTopMostItems:(id)items orderFront:(BOOL)front;
 - (void)willPerformAsTemporaryChildModifier;
 @end
 
 @implementation SBWindowingModifierBase
 
-- (id)handleEvent:(id)a3
+- (id)handleEvent:(id)event
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"SBWindowingModifier.m" lineNumber:729 description:@"event dispatch unsupported. are you calling super? use activities instead"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBWindowingModifier.m" lineNumber:729 description:@"event dispatch unsupported. are you calling super? use activities instead"];
 
   return 0;
 }
@@ -24,35 +24,35 @@
   }
 }
 
-- (id)topMostItemsByAddingAppLayoutAndAccessories:(id)a3 toTopMostItems:(id)a4 orderFront:(BOOL)a5
+- (id)topMostItemsByAddingAppLayoutAndAccessories:(id)accessories toTopMostItems:(id)items orderFront:(BOOL)front
 {
-  v5 = a5;
+  frontCopy = front;
   v31[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SBWindowingModifierBase *)self visibleSplitViewHandleNubViews];
-  if ([v10 count])
+  accessoriesCopy = accessories;
+  itemsCopy = items;
+  visibleSplitViewHandleNubViews = [(SBWindowingModifierBase *)self visibleSplitViewHandleNubViews];
+  if ([visibleSplitViewHandleNubViews count])
   {
     v11 = objc_opt_new();
-    v12 = [(SBWindowingModifierBase *)self zOrderedItemsInAppLayout:v8];
-    v13 = [v8 leafAppLayoutsFromDisplayItems:v12];
+    v12 = [(SBWindowingModifierBase *)self zOrderedItemsInAppLayout:accessoriesCopy];
+    v13 = [accessoriesCopy leafAppLayoutsFromDisplayItems:v12];
 
-    v14 = [(SBWindowingModifierBase *)self visibleSplitViewHandleDimmingViews];
+    visibleSplitViewHandleDimmingViews = [(SBWindowingModifierBase *)self visibleSplitViewHandleDimmingViews];
     [v11 addObjectsFromArray:v13];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __97__SBWindowingModifierBase_topMostItemsByAddingAppLayoutAndAccessories_toTopMostItems_orderFront___block_invoke;
     v27[3] = &unk_2783B76F0;
-    v15 = v8;
+    v15 = accessoriesCopy;
     v28 = v15;
-    v16 = v14;
+    v16 = visibleSplitViewHandleDimmingViews;
     v29 = v16;
     v17 = v11;
     v30 = v17;
-    [v10 enumerateObjectsUsingBlock:v27];
-    if (v5)
+    [visibleSplitViewHandleNubViews enumerateObjectsUsingBlock:v27];
+    if (frontCopy)
     {
-      v18 = [v17 arrayByAddingObjectsFromArray:v9];
+      v18 = [v17 arrayByAddingObjectsFromArray:itemsCopy];
     }
 
     else
@@ -62,24 +62,24 @@
       v24 = __97__SBWindowingModifierBase_topMostItemsByAddingAppLayoutAndAccessories_toTopMostItems_orderFront___block_invoke_4;
       v25 = &unk_2783AEA98;
       v26 = v15;
-      v19 = [v9 bs_filter:&v22];
+      v19 = [itemsCopy bs_filter:&v22];
 
       v18 = [v19 arrayByAddingObjectsFromArray:{v17, v22, v23, v24, v25}];
 
-      v9 = v19;
+      itemsCopy = v19;
     }
   }
 
-  else if (v5)
+  else if (frontCopy)
   {
-    v18 = [v9 sb_arrayByInsertingOrMovingObject:v8 toIndex:0];
+    v18 = [itemsCopy sb_arrayByInsertingOrMovingObject:accessoriesCopy toIndex:0];
   }
 
   else
   {
-    v31[0] = v8;
+    v31[0] = accessoriesCopy;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:1];
-    v18 = [v20 arrayByAddingObjectsFromArray:v9];
+    v18 = [v20 arrayByAddingObjectsFromArray:itemsCopy];
   }
 
   return v18;

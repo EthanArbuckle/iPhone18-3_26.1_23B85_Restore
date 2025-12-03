@@ -1,40 +1,40 @@
 @interface CHUISMutableWatchComplicationsWidgetSceneClientSettings
 - (double)curvedTextAngularWidth;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
-- (void)setCurvedTextAngularWidth:(double)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
+- (void)setCurvedTextAngularWidth:(double)width;
 @end
 
 @implementation CHUISMutableWatchComplicationsWidgetSceneClientSettings
 
 - (double)curvedTextAngularWidth
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:89888];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:89888];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setCurvedTextAngularWidth:(double)a3
+- (void)setCurvedTextAngularWidth:(double)width
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v5 setObject:v4 forSetting:89888];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:width];
+  [otherSettings setObject:v4 forSetting:89888];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CHUISWatchComplicationsWidgetSceneClientSettings alloc];
 
   return [(FBSSettings *)v4 initWithSettings:self];
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 == 89888)
+  if (setting == 89888)
   {
     v5 = @"curvedTextAngularWidth";
   }
@@ -51,20 +51,20 @@
   return v5;
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  v8 = a4;
-  v9 = v8;
-  if (a5 == 89888)
+  objectCopy = object;
+  v9 = objectCopy;
+  if (setting == 89888)
   {
-    v10 = v8;
+    v10 = objectCopy;
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = CHUISMutableWatchComplicationsWidgetSceneClientSettings;
-    v10 = [(FBSSettings *)&v13 valueDescriptionForFlag:a3 object:v8 ofSetting:a5];
+    v10 = [(FBSSettings *)&v13 valueDescriptionForFlag:flag object:objectCopy ofSetting:setting];
   }
 
   v11 = v10;

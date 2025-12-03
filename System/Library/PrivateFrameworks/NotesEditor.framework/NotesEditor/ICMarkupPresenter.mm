@@ -1,32 +1,32 @@
 @interface ICMarkupPresenter
-+ (void)markupAttachment:(id)a3 fromView:(id)a4 presentingViewController:(id)a5 inkStyle:(unint64_t)a6 frameBlock:(id)a7 startPresentBlock:(id)a8 completionBlock:(id)a9 dismissCompletionBlock:(id)a10;
++ (void)markupAttachment:(id)attachment fromView:(id)view presentingViewController:(id)controller inkStyle:(unint64_t)style frameBlock:(id)block startPresentBlock:(id)presentBlock completionBlock:(id)completionBlock dismissCompletionBlock:(id)self0;
 - (UIViewController)presentingViewController;
 - (void)dismissMarkupViewController;
-- (void)handleReturnedURL:(id)a3;
-- (void)markupCancelAction:(id)a3;
-- (void)markupDoneAction:(id)a3;
+- (void)handleReturnedURL:(id)l;
+- (void)markupCancelAction:(id)action;
+- (void)markupDoneAction:(id)action;
 - (void)markupViewWillDissappear;
-- (void)presentMarkupFromView:(id)a3;
-- (void)presentMarkupUsingExtensionFromView:(id)a3;
-- (void)presentMarkupViewControllerFromView:(id)a3;
+- (void)presentMarkupFromView:(id)view;
+- (void)presentMarkupUsingExtensionFromView:(id)view;
+- (void)presentMarkupViewControllerFromView:(id)view;
 - (void)saveChangesAndDismiss;
 @end
 
 @implementation ICMarkupPresenter
 
-+ (void)markupAttachment:(id)a3 fromView:(id)a4 presentingViewController:(id)a5 inkStyle:(unint64_t)a6 frameBlock:(id)a7 startPresentBlock:(id)a8 completionBlock:(id)a9 dismissCompletionBlock:(id)a10
++ (void)markupAttachment:(id)attachment fromView:(id)view presentingViewController:(id)controller inkStyle:(unint64_t)style frameBlock:(id)block startPresentBlock:(id)presentBlock completionBlock:(id)completionBlock dismissCompletionBlock:(id)self0
 {
-  v26 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
-  v21 = [v26 attachmentModel];
-  v22 = [v21 isReadyToPresent];
+  attachmentCopy = attachment;
+  viewCopy = view;
+  controllerCopy = controller;
+  blockCopy = block;
+  presentBlockCopy = presentBlock;
+  completionBlockCopy = completionBlock;
+  dismissCompletionBlockCopy = dismissCompletionBlock;
+  attachmentModel = [attachmentCopy attachmentModel];
+  isReadyToPresent = [attachmentModel isReadyToPresent];
 
-  if (v22)
+  if (isReadyToPresent)
   {
     v23 = currentMarkupPresenter;
     if (!currentMarkupPresenter)
@@ -38,42 +38,42 @@
       v23 = currentMarkupPresenter;
     }
 
-    [v23 setAttachment:v26];
-    [currentMarkupPresenter setPresentingViewController:v16];
-    [currentMarkupPresenter setInkStyle:a6];
-    [currentMarkupPresenter setFrameBlock:v17];
-    [currentMarkupPresenter setStartPresentBlock:v18];
-    [currentMarkupPresenter setCompletionBlock:v19];
-    [currentMarkupPresenter setDismissCompletionBlock:v20];
-    [currentMarkupPresenter presentMarkupFromView:v15];
+    [v23 setAttachment:attachmentCopy];
+    [currentMarkupPresenter setPresentingViewController:controllerCopy];
+    [currentMarkupPresenter setInkStyle:style];
+    [currentMarkupPresenter setFrameBlock:blockCopy];
+    [currentMarkupPresenter setStartPresentBlock:presentBlockCopy];
+    [currentMarkupPresenter setCompletionBlock:completionBlockCopy];
+    [currentMarkupPresenter setDismissCompletionBlock:dismissCompletionBlockCopy];
+    [currentMarkupPresenter presentMarkupFromView:viewCopy];
   }
 }
 
-- (void)presentMarkupFromView:(id)a3
+- (void)presentMarkupFromView:(id)view
 {
-  v6 = a3;
-  v4 = [(ICMarkupPresenter *)self attachment];
-  v5 = [v4 shouldEmbedMarkupDataInMedia];
+  viewCopy = view;
+  attachment = [(ICMarkupPresenter *)self attachment];
+  shouldEmbedMarkupDataInMedia = [attachment shouldEmbedMarkupDataInMedia];
 
-  if (v5)
+  if (shouldEmbedMarkupDataInMedia)
   {
-    [(ICMarkupPresenter *)self presentMarkupUsingExtensionFromView:v6];
+    [(ICMarkupPresenter *)self presentMarkupUsingExtensionFromView:viewCopy];
   }
 
   else
   {
-    [(ICMarkupPresenter *)self presentMarkupViewControllerFromView:v6];
+    [(ICMarkupPresenter *)self presentMarkupViewControllerFromView:viewCopy];
   }
 }
 
-- (void)markupCancelAction:(id)a3
+- (void)markupCancelAction:(id)action
 {
   [(ICMarkupPresenter *)self setMarkupWasDismissedByUserInteraction:1];
 
   [(ICMarkupPresenter *)self dismissMarkupViewController];
 }
 
-- (void)markupDoneAction:(id)a3
+- (void)markupDoneAction:(id)action
 {
   [(ICMarkupPresenter *)self setMarkupWasDismissedByUserInteraction:1];
 
@@ -91,16 +91,16 @@
 
 - (void)saveChangesAndDismiss
 {
-  v3 = [(ICMarkupPresenter *)self markupViewController];
-  v4 = [v3 createArchivedModelData];
+  markupViewController = [(ICMarkupPresenter *)self markupViewController];
+  createArchivedModelData = [markupViewController createArchivedModelData];
 
-  if (v4)
+  if (createArchivedModelData)
   {
-    v5 = [(ICMarkupPresenter *)self markupViewController];
-    v6 = [v5 dataRepresentationEmbeddingSourceImageAndEditModel:0 error:0];
+    markupViewController2 = [(ICMarkupPresenter *)self markupViewController];
+    v6 = [markupViewController2 dataRepresentationEmbeddingSourceImageAndEditModel:0 error:0];
 
     v7 = MEMORY[0x277D35F10];
-    v8 = [(ICMarkupPresenter *)self attachment];
+    attachment = [(ICMarkupPresenter *)self attachment];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __42__ICMarkupPresenter_saveChangesAndDismiss__block_invoke;
@@ -108,17 +108,17 @@
     v12[4] = self;
     v13 = v6;
     v9 = v6;
-    [v7 applyMarkupModelData:v4 attachment:v8 completionBlock:v12];
+    [v7 applyMarkupModelData:createArchivedModelData attachment:attachment completionBlock:v12];
   }
 
   else
   {
-    v10 = [(ICMarkupPresenter *)self completionBlock];
+    completionBlock = [(ICMarkupPresenter *)self completionBlock];
 
-    if (v10)
+    if (completionBlock)
     {
-      v11 = [(ICMarkupPresenter *)self completionBlock];
-      v11[2](v11, 0);
+      completionBlock2 = [(ICMarkupPresenter *)self completionBlock];
+      completionBlock2[2](completionBlock2, 0);
     }
 
     [(ICMarkupPresenter *)self dismissMarkupViewController];
@@ -142,21 +142,21 @@ uint64_t __42__ICMarkupPresenter_saveChangesAndDismiss__block_invoke(uint64_t a1
 
 - (void)dismissMarkupViewController
 {
-  v3 = [(ICMarkupPresenter *)self dismissCompletionBlock];
+  dismissCompletionBlock = [(ICMarkupPresenter *)self dismissCompletionBlock];
   [(ICMarkupPresenter *)self setDismissCompletionBlock:0];
   [(ICMarkupPresenter *)self setMarkupViewController:0];
   v4 = currentMarkupPresenter;
   currentMarkupPresenter = 0;
 
-  v5 = [(ICMarkupPresenter *)self presentingViewController];
-  v6 = [v5 presentedViewController];
+  presentingViewController = [(ICMarkupPresenter *)self presentingViewController];
+  presentedViewController = [presentingViewController presentedViewController];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __48__ICMarkupPresenter_dismissMarkupViewController__block_invoke;
   v8[3] = &unk_2781AC7D8;
-  v9 = v3;
-  v7 = v3;
-  [v6 dismissViewControllerAnimated:1 completion:v8];
+  v9 = dismissCompletionBlock;
+  v7 = dismissCompletionBlock;
+  [presentedViewController dismissViewControllerAnimated:1 completion:v8];
 }
 
 uint64_t __48__ICMarkupPresenter_dismissMarkupViewController__block_invoke(uint64_t a1)
@@ -170,37 +170,37 @@ uint64_t __48__ICMarkupPresenter_dismissMarkupViewController__block_invoke(uint6
   return result;
 }
 
-- (void)presentMarkupViewControllerFromView:(id)a3
+- (void)presentMarkupViewControllerFromView:(id)view
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D35F10] createMarkupViewController];
-  [v5 setInkStyle:{-[ICMarkupPresenter inkStyle](self, "inkStyle")}];
-  v6 = [(ICMarkupPresenter *)self attachment];
-  v7 = [v6 markupModelData];
-  v8 = [MEMORY[0x277D35F10] dataToEditForAttachment:v6 includeMarkupModelData:0];
-  v9 = [v6 image];
-  [v5 setData:v8 withArchivedModelData:v7 placeholderImage:v9];
+  viewCopy = view;
+  createMarkupViewController = [MEMORY[0x277D35F10] createMarkupViewController];
+  [createMarkupViewController setInkStyle:{-[ICMarkupPresenter inkStyle](self, "inkStyle")}];
+  attachment = [(ICMarkupPresenter *)self attachment];
+  markupModelData = [attachment markupModelData];
+  v8 = [MEMORY[0x277D35F10] dataToEditForAttachment:attachment includeMarkupModelData:0];
+  image = [attachment image];
+  [createMarkupViewController setData:v8 withArchivedModelData:markupModelData placeholderImage:image];
 
-  v10 = [[ICMarkupNavigationController alloc] initWithRootViewController:v5];
+  v10 = [[ICMarkupNavigationController alloc] initWithRootViewController:createMarkupViewController];
   [(ICMarkupPresenter *)self setMarkupWasDismissedByUserInteraction:0];
   [(ICMarkupNavigationController *)v10 setMarkupDelegate:self];
   v11 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_markupDoneAction_];
-  v12 = [v5 navigationItem];
-  [v12 setLeftBarButtonItem:v11];
+  navigationItem = [createMarkupViewController navigationItem];
+  [navigationItem setLeftBarButtonItem:v11];
 
   v13 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_markupCancelAction_];
-  v14 = [v5 navigationItem];
-  [v14 setRightBarButtonItem:v13];
+  navigationItem2 = [createMarkupViewController navigationItem];
+  [navigationItem2 setRightBarButtonItem:v13];
 
-  [(ICMarkupPresenter *)self setMarkupViewController:v5];
+  [(ICMarkupPresenter *)self setMarkupViewController:createMarkupViewController];
   [(ICMarkupNavigationController *)v10 setModalTransitionStyle:2];
   [(ICMarkupNavigationController *)v10 setModalPresentationStyle:0];
-  v15 = [MEMORY[0x277D75348] ICExtractedDocumentViewControllerBackgroundColor];
-  [v5 setBackgroundColor:v15];
+  iCExtractedDocumentViewControllerBackgroundColor = [MEMORY[0x277D75348] ICExtractedDocumentViewControllerBackgroundColor];
+  [createMarkupViewController setBackgroundColor:iCExtractedDocumentViewControllerBackgroundColor];
 
-  v16 = [(ICMarkupPresenter *)self startPresentBlock];
+  startPresentBlock = [(ICMarkupPresenter *)self startPresentBlock];
   [(ICMarkupPresenter *)self setStartPresentBlock:0];
-  if (v16)
+  if (startPresentBlock)
   {
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
@@ -208,19 +208,19 @@ uint64_t __48__ICMarkupPresenter_dismissMarkupViewController__block_invoke(uint6
     v21[3] = &unk_2781ABEB8;
     v21[4] = self;
     v22 = v10;
-    (v16)[2](v16, v21);
+    (startPresentBlock)[2](startPresentBlock, v21);
   }
 
   else
   {
     objc_initWeak(&location, self);
-    v17 = [(ICMarkupPresenter *)self presentingViewController];
+    presentingViewController = [(ICMarkupPresenter *)self presentingViewController];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __57__ICMarkupPresenter_presentMarkupViewControllerFromView___block_invoke_2;
     v18[3] = &unk_2781AC0B8;
     objc_copyWeak(&v19, &location);
-    [v17 presentViewController:v10 animated:1 completion:v18];
+    [presentingViewController presentViewController:v10 animated:1 completion:v18];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);
@@ -276,10 +276,10 @@ void __57__ICMarkupPresenter_presentMarkupViewControllerFromView___block_invoke_
   }
 }
 
-- (void)presentMarkupUsingExtensionFromView:(id)a3
+- (void)presentMarkupUsingExtensionFromView:(id)view
 {
   v71[5] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  viewCopy = view;
   v67 = 0;
   v6 = [MEMORY[0x277CCA9C8] extensionWithIdentifier:@"com.apple.MarkupUI.MarkupPrivateExtension" error:&v67];
   v52 = v67;
@@ -333,42 +333,42 @@ LABEL_9:
     v61 = &v60;
     v62 = 0x2020000000;
     v63 = 0;
-    v9 = [(ICMarkupPresenter *)self attachment];
-    v10 = [v9 managedObjectContext];
+    attachment = [(ICMarkupPresenter *)self attachment];
+    managedObjectContext = [attachment managedObjectContext];
     v59[0] = MEMORY[0x277D85DD0];
     v59[1] = 3221225472;
     v59[2] = __57__ICMarkupPresenter_presentMarkupUsingExtensionFromView___block_invoke_2_29;
     v59[3] = &unk_2781ACF80;
     v59[4] = self;
     v59[5] = &v60;
-    [v10 performBlockAndWait:v59];
+    [managedObjectContext performBlockAndWait:v59];
 
     v11 = *MEMORY[0x277CE1D48];
     if (*(v61 + 24) == 1)
     {
-      v12 = [v11 identifier];
+      identifier = [v11 identifier];
       v58[0] = MEMORY[0x277D85DD0];
       v58[1] = 3221225472;
       v58[2] = __57__ICMarkupPresenter_presentMarkupUsingExtensionFromView___block_invoke_3;
       v58[3] = &unk_2781AF508;
       v58[4] = self;
-      [v53 registerItemForTypeIdentifier:v12 loadHandler:v58];
+      [v53 registerItemForTypeIdentifier:identifier loadHandler:v58];
     }
 
     else
     {
-      v12 = [v11 identifier];
+      identifier = [v11 identifier];
       v57[0] = MEMORY[0x277D85DD0];
       v57[1] = 3221225472;
       v57[2] = __57__ICMarkupPresenter_presentMarkupUsingExtensionFromView___block_invoke_2_32;
       v57[3] = &unk_2781AF508;
       v57[4] = self;
-      [v53 registerItemForTypeIdentifier:v12 loadHandler:v57];
+      [v53 registerItemForTypeIdentifier:identifier loadHandler:v57];
     }
 
-    v13 = [(ICMarkupPresenter *)self frameBlock];
-    (v13)[2](v13, v5);
-    [v5 convertRect:0 toView:?];
+    frameBlock = [(ICMarkupPresenter *)self frameBlock];
+    (frameBlock)[2](frameBlock, viewCopy);
+    [viewCopy convertRect:0 toView:?];
     v15 = v14;
     v17 = v16;
     v19 = v18;
@@ -392,8 +392,8 @@ LABEL_9:
     v71[1] = v27;
     Helper_x8__MUAnimationIconImage = gotLoadHelper_x8__MUAnimationIconImage(v28);
     v70[2] = **(v30 + 1720);
-    v31 = [(ICMarkupPresenter *)self attachment];
-    v32 = [v31 image];
+    attachment2 = [(ICMarkupPresenter *)self attachment];
+    image = [attachment2 image];
     Helper_x8__MUDisplayAsFullScreen = gotLoadHelper_x8__MUDisplayAsFullScreen(v33);
     v71[2] = v35;
     v71[3] = MEMORY[0x277CBEC38];
@@ -405,16 +405,16 @@ LABEL_9:
     v40 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v71 forKeys:v70 count:{5, Helper_x9__MUEncryptPrivateMetadata}];
     v41 = [v40 mutableCopy];
 
-    v42 = [(ICMarkupPresenter *)self attachment];
-    v43 = [v42 previewItemTitle];
-    LOBYTE(v40) = [v43 length] == 0;
+    attachment3 = [(ICMarkupPresenter *)self attachment];
+    previewItemTitle = [attachment3 previewItemTitle];
+    LOBYTE(v40) = [previewItemTitle length] == 0;
 
     if ((v40 & 1) == 0)
     {
-      v44 = [(ICMarkupPresenter *)self attachment];
-      v45 = [v44 previewItemTitle];
+      attachment4 = [(ICMarkupPresenter *)self attachment];
+      previewItemTitle2 = [attachment4 previewItemTitle];
       Helper_x8__MUFileDisplayName = gotLoadHelper_x8__MUFileDisplayName(v46);
-      [v41 setObject:v45 forKeyedSubscript:{**(v48 + 1768), Helper_x8__MUFileDisplayName}];
+      [v41 setObject:previewItemTitle2 forKeyedSubscript:{**(v48 + 1768), Helper_x8__MUFileDisplayName}];
     }
 
     v49 = objc_alloc_init(MEMORY[0x277CCA9D8]);
@@ -431,7 +431,7 @@ LABEL_9:
     v54[3] = &unk_2781AF580;
     v54[4] = self;
     v56 = a2;
-    v55 = v5;
+    v55 = viewCopy;
     [v6 instantiateViewControllerWithInputItems:v51 connectionHandler:v54];
 
     _Block_object_dispose(&v60, 8);
@@ -762,23 +762,23 @@ void __57__ICMarkupPresenter_presentMarkupUsingExtensionFromView___block_invoke_
   [*(a1 + 40) beginDismissWithInfo:v19];
 }
 
-- (void)handleReturnedURL:(id)a3
+- (void)handleReturnedURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v8[0] = 0;
   v8[1] = v8;
   v8[2] = 0x3032000000;
   v8[3] = __Block_byref_object_copy__22;
   v8[4] = __Block_byref_object_dispose__22;
-  v9 = [(ICMarkupPresenter *)self markupRemoteViewController];
+  markupRemoteViewController = [(ICMarkupPresenter *)self markupRemoteViewController];
   v5 = MEMORY[0x277D35F10];
-  v6 = [(ICMarkupPresenter *)self attachment];
+  attachment = [(ICMarkupPresenter *)self attachment];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__ICMarkupPresenter_handleReturnedURL___block_invoke;
   v7[3] = &unk_2781ADBC8;
   v7[4] = v8;
-  [v5 applyReturnedMarkupURL:v4 attachment:v6 completionBlock:v7];
+  [v5 applyReturnedMarkupURL:lCopy attachment:attachment completionBlock:v7];
 
   _Block_object_dispose(v8, 8);
 }

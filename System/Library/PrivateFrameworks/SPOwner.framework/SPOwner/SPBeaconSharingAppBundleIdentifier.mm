@@ -1,45 +1,45 @@
 @interface SPBeaconSharingAppBundleIdentifier
-- (SPBeaconSharingAppBundleIdentifier)initWithCoder:(id)a3;
-- (SPBeaconSharingAppBundleIdentifier)initWithIdentifier:(id)a3 appName:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SPBeaconSharingAppBundleIdentifier)initWithCoder:(id)coder;
+- (SPBeaconSharingAppBundleIdentifier)initWithIdentifier:(id)identifier appName:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPBeaconSharingAppBundleIdentifier
 
-- (SPBeaconSharingAppBundleIdentifier)initWithIdentifier:(id)a3 appName:(id)a4
+- (SPBeaconSharingAppBundleIdentifier)initWithIdentifier:(id)identifier appName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = SPBeaconSharingAppBundleIdentifier;
   v9 = [(SPBeaconSharingAppBundleIdentifier *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_bundleIdentifier, a3);
-    objc_storeStrong(&v10->_appName, a4);
+    objc_storeStrong(&v9->_bundleIdentifier, identifier);
+    objc_storeStrong(&v10->_appName, name);
   }
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bundleIdentifier = self->_bundleIdentifier;
-  v5 = a3;
-  [v5 encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
-  [v5 encodeObject:self->_appName forKey:@"appName"];
+  coderCopy = coder;
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
+  [coderCopy encodeObject:self->_appName forKey:@"appName"];
 }
 
-- (SPBeaconSharingAppBundleIdentifier)initWithCoder:(id)a3
+- (SPBeaconSharingAppBundleIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
   bundleIdentifier = self->_bundleIdentifier;
   self->_bundleIdentifier = v5;
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appName"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appName"];
 
   appName = self->_appName;
   self->_appName = v7;
@@ -47,12 +47,12 @@
   return self;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SPBeaconSharingAppBundleIdentifier alloc];
-  v5 = [(SPBeaconSharingAppBundleIdentifier *)self bundleIdentifier];
-  v6 = [(SPBeaconSharingAppBundleIdentifier *)self appName];
-  v7 = [(SPBeaconSharingAppBundleIdentifier *)v4 initWithIdentifier:v5 appName:v6];
+  bundleIdentifier = [(SPBeaconSharingAppBundleIdentifier *)self bundleIdentifier];
+  appName = [(SPBeaconSharingAppBundleIdentifier *)self appName];
+  v7 = [(SPBeaconSharingAppBundleIdentifier *)v4 initWithIdentifier:bundleIdentifier appName:appName];
 
   return v7;
 }

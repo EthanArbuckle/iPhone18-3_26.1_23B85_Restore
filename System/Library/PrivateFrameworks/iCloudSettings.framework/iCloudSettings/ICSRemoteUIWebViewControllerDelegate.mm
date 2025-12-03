@@ -1,14 +1,14 @@
 @interface ICSRemoteUIWebViewControllerDelegate
-- (void)remoteUIWebViewController:(id)a3 dismissWithPayload:(id)a4;
+- (void)remoteUIWebViewController:(id)controller dismissWithPayload:(id)payload;
 @end
 
 @implementation ICSRemoteUIWebViewControllerDelegate
 
-- (void)remoteUIWebViewController:(id)a3 dismissWithPayload:(id)a4
+- (void)remoteUIWebViewController:(id)controller dismissWithPayload:(id)payload
 {
-  if (a4)
+  if (payload)
   {
-    v5 = a3;
+    controllerCopy = controller;
 
     swift_unknownObjectRetain();
     sub_2759BA818();
@@ -18,7 +18,7 @@
   else
   {
     memset(v7, 0, sizeof(v7));
-    v6 = a3;
+    controllerCopy2 = controller;
   }
 
   sub_2758C6BF4();

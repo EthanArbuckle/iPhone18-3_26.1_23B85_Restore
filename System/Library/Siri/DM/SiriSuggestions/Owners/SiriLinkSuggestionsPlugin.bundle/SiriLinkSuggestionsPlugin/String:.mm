@@ -8,12 +8,12 @@
 
 - (uint64_t)String
 {
-  result = *a1;
+  result = *self;
   if (!result)
   {
     __swift_instantiateConcreteTypeFromMangledNameAbstractV2(&_sSDyS2SGMd, &_sSDyS2SGMR);
     result = swift_getWitnessTable();
-    atomic_store(result, a1);
+    atomic_store(result, self);
   }
 
   return result;
@@ -21,7 +21,7 @@
 
 - (uint64_t)NSNumber
 {
-  v4 = *__swift_project_boxed_opaque_existential_1((a1 + 32), *(a1 + 56));
+  v4 = *__swift_project_boxed_opaque_existential_1((self + 32), *(self + 56));
   if (a3)
   {
     v5 = a3;

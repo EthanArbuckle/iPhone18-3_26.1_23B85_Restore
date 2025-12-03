@@ -1,22 +1,22 @@
 @interface MBFileHashDB
-- (BOOL)addFilePath:(id)a3 forHash:(id)a4 error:(id *)a5;
-- (BOOL)close:(id *)a3;
-- (MBFileHashDB)initWithPath:(id)a3;
-- (id)filePathForHash:(id)a3 error:(id *)a4;
+- (BOOL)addFilePath:(id)path forHash:(id)hash error:(id *)error;
+- (BOOL)close:(id *)close;
+- (MBFileHashDB)initWithPath:(id)path;
+- (id)filePathForHash:(id)hash error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation MBFileHashDB
 
-- (MBFileHashDB)initWithPath:(id)a3
+- (MBFileHashDB)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v15.receiver = self;
   v15.super_class = MBFileHashDB;
   v5 = [(MBFileHashDB *)&v15 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     path = v5->_path;
     v5->_path = v6;
 
@@ -29,7 +29,7 @@
     v16 = v10;
     v11 = [NSArray arrayWithObjects:&v16 count:1];
 
-    v12 = [(MBSQLiteDB *)v8 initWithPath:v4 readOnly:0 shouldDeleteOnFailureToOpen:1 usePQLBatching:1 schemaCurrentVersion:2 schemaMinDatabaseVersionForUpgrade:0 error:0 schemaUpgrades:v11];
+    v12 = [(MBSQLiteDB *)v8 initWithPath:pathCopy readOnly:0 shouldDeleteOnFailureToOpen:1 usePQLBatching:1 schemaCurrentVersion:2 schemaMinDatabaseVersionForUpgrade:0 error:0 schemaUpgrades:v11];
     database = v5->_database;
     v5->_database = v12;
   }
@@ -73,16 +73,16 @@
   [(MBFileHashDB *)&v8 dealloc];
 }
 
-- (BOOL)close:(id *)a3
+- (BOOL)close:(id *)close
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  database = v4->_database;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  database = selfCopy->_database;
   if (database)
   {
-    v6 = [(MBSQLiteDB *)database close:a3];
-    v7 = v4->_database;
-    v4->_database = 0;
+    v6 = [(MBSQLiteDB *)database close:close];
+    v7 = selfCopy->_database;
+    selfCopy->_database = 0;
   }
 
   else
@@ -90,31 +90,31 @@
     v6 = 1;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (id)filePathForHash:(id)a3 error:(id *)a4
+- (id)filePathForHash:(id)hash error:(id *)error
 {
   database = self->_database;
-  v6 = a3;
+  hashCopy = hash;
   v7 = objc_opt_class();
-  v8 = [v6 base64EncodedStringWithOptions:0];
+  v8 = [hashCopy base64EncodedStringWithOptions:0];
 
-  v9 = [(MBSQLiteDB *)database fetchObjectOfClass:v7 error:a4 sql:@"SELECT path FROM Files WHERE hash = %@", v8];
+  v9 = [(MBSQLiteDB *)database fetchObjectOfClass:v7 error:error sql:@"SELECT path FROM Files WHERE hash = %@", v8];
 
   return v9;
 }
 
-- (BOOL)addFilePath:(id)a3 forHash:(id)a4 error:(id *)a5
+- (BOOL)addFilePath:(id)path forHash:(id)hash error:(id *)error
 {
   database = self->_database;
-  v8 = a3;
-  v9 = [a4 base64EncodedStringWithOptions:0];
-  LOBYTE(a5) = [(MBSQLiteDB *)database executeWithError:a5 sql:@"INSERT OR REPLACE INTO Files (hash, path) VALUES (%@, %@)", v9, v8];
+  pathCopy = path;
+  v9 = [hash base64EncodedStringWithOptions:0];
+  LOBYTE(error) = [(MBSQLiteDB *)database executeWithError:error sql:@"INSERT OR REPLACE INTO Files (hash, path) VALUES (%@, %@)", v9, pathCopy];
 
-  return a5;
+  return error;
 }
 
 @end

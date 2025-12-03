@@ -1,8 +1,8 @@
 @interface OptInOutWithExt
-+ (id)parseFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)parseFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (OptInOutWithExt)init;
-- (OptInOutWithExt)initWithMutation:(id)a3;
+- (OptInOutWithExt)initWithMutation:(id)mutation;
 - (id)data;
 - (id)debugDescription;
 - (id)description;
@@ -10,18 +10,18 @@
 
 @implementation OptInOutWithExt
 
-- (OptInOutWithExt)initWithMutation:(id)a3
+- (OptInOutWithExt)initWithMutation:(id)mutation
 {
-  v4 = a3;
+  mutationCopy = mutation;
   v8.receiver = self;
   v8.super_class = OptInOutWithExt;
   v5 = [(OptInOut *)&v8 init];
   if (v5)
   {
-    -[OptInOut setOptIn:](v5, "setOptIn:", [v4 optIn]);
-    -[OptInOut setTimestampMs:](v5, "setTimestampMs:", [v4 timestampMs]);
-    v6 = [v4 extensions];
-    [(OptInOutWithExt *)v5 setExtensions:v6];
+    -[OptInOut setOptIn:](v5, "setOptIn:", [mutationCopy optIn]);
+    -[OptInOut setTimestampMs:](v5, "setTimestampMs:", [mutationCopy timestampMs]);
+    extensions = [mutationCopy extensions];
+    [(OptInOutWithExt *)v5 setExtensions:extensions];
   }
 
   return v5;
@@ -43,16 +43,16 @@
 
 - (id)data
 {
-  v2 = self;
+  selfCopy = self;
   v8.receiver = self;
   v8.super_class = OptInOutWithExt;
-  v3 = [(OptInOut *)&v8 data];
-  v4 = [v3 mutableCopy];
+  data = [(OptInOut *)&v8 data];
+  v4 = [data mutableCopy];
 
-  v5 = [(OptInOutWithExt *)v2 extensions];
-  LODWORD(v2) = [(TLSMessageClass *)v2 encodeExtensions:v5 buffer:v4];
+  extensions = [(OptInOutWithExt *)selfCopy extensions];
+  LODWORD(selfCopy) = [(TLSMessageClass *)selfCopy encodeExtensions:extensions buffer:v4];
 
-  if (v2)
+  if (selfCopy)
   {
     v6 = v4;
   }
@@ -65,39 +65,39 @@
   return v6;
 }
 
-+ (id)parseFromData:(id)a3 error:(id *)a4
++ (id)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v20.receiver = a1;
+  dataCopy = data;
+  v20.receiver = self;
   v20.super_class = &OBJC_METACLASS___OptInOutWithExt;
-  v7 = objc_msgSendSuper2(&v20, "parseFromData:error:", v6, a4);
+  v7 = objc_msgSendSuper2(&v20, "parseFromData:error:", dataCopy, error);
   if (v7)
   {
     v19 = 0;
-    v8 = [v7 parseExtensions:objc_msgSend(v7 end:"parsedLength") + objc_msgSend(v6 result:{"bytes"), objc_msgSend(v6, "length") + objc_msgSend(v6, "bytes"), &v19}];
+    v8 = [v7 parseExtensions:objc_msgSend(v7 end:"parsedLength") + objc_msgSend(dataCopy result:{"bytes"), objc_msgSend(dataCopy, "length") + objc_msgSend(dataCopy, "bytes"), &v19}];
     v9 = v19;
     if (v8)
     {
       v10 = [NSMutableArray arrayWithArray:v9];
       [v7 setExtensions:v10];
 
-      v11 = [v6 bytes];
-      [v7 setParsedLength:v8 - v11];
+      bytes = [dataCopy bytes];
+      [v7 setParsedLength:v8 - bytes];
       v12 = v7;
       goto LABEL_8;
     }
 
     v13 = kTransparencyErrorDecode;
     v21 = @"data";
-    v14 = [v6 kt_hexString];
-    v22 = v14;
+    kt_hexString = [dataCopy kt_hexString];
+    v22 = kt_hexString;
     v15 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
     v16 = [TransparencyError errorWithDomain:v13 code:-248 underlyingError:0 userinfo:v15 description:@"failed to parse extensions from OptInOut"];
 
-    if (a4)
+    if (error)
     {
       v17 = v16;
-      *a4 = v16;
+      *error = v16;
     }
   }
 
@@ -137,10 +137,10 @@ LABEL_8:
   return [NSString stringWithFormat:@"optIn:%@; timestampMs:%llu", v3, [(OptInOut *)self timestampMs]];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -150,11 +150,11 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(OptInOutWithExt *)self data];
-      v7 = [(OptInOutWithExt *)v5 data];
+      v5 = equalCopy;
+      data = [(OptInOutWithExt *)self data];
+      data2 = [(OptInOutWithExt *)v5 data];
 
-      v8 = [v6 isEqualToData:v7];
+      v8 = [data isEqualToData:data2];
     }
 
     else

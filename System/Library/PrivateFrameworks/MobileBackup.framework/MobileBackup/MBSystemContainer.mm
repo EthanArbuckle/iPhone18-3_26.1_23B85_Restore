@@ -1,27 +1,27 @@
 @interface MBSystemContainer
-+ (id)systemContainerWithDomainName:(id)a3 containerDir:(id)a4 isShared:(BOOL)a5;
++ (id)systemContainerWithDomainName:(id)name containerDir:(id)dir isShared:(BOOL)shared;
 - (id)domain;
 @end
 
 @implementation MBSystemContainer
 
-+ (id)systemContainerWithDomainName:(id)a3 containerDir:(id)a4 isShared:(BOOL)a5
++ (id)systemContainerWithDomainName:(id)name containerDir:(id)dir isShared:(BOOL)shared
 {
   v7 = @"System/Data";
-  if (a5)
+  if (shared)
   {
     v7 = @"System/Shared";
   }
 
   v15[0] = kCFBundleIdentifierKey;
   v8 = v7;
-  v9 = a4;
-  v10 = [MBDomain containerIDWithName:a3];
+  dirCopy = dir;
+  v10 = [MBDomain containerIDWithName:name];
   v16[0] = v10;
   v16[1] = v8;
   v15[1] = @"ContainerContentClass";
   v15[2] = @"Container";
-  v16[2] = v9;
+  v16[2] = dirCopy;
   v11 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:3];
 
   v12 = [MBSystemContainer alloc];
@@ -32,18 +32,18 @@
 
 - (id)domain
 {
-  v3 = [(MBContainer *)self containerType];
-  v4 = [(MBContainer *)self identifier];
-  v5 = [(MBContainer *)self volumeMountPoint];
-  v6 = [(MBContainer *)self containerDir];
-  if (v3 == 4)
+  containerType = [(MBContainer *)self containerType];
+  identifier = [(MBContainer *)self identifier];
+  volumeMountPoint = [(MBContainer *)self volumeMountPoint];
+  containerDir = [(MBContainer *)self containerDir];
+  if (containerType == 4)
   {
-    [MBDomain systemContainerDomainWithIdentifier:v4 volumeMountPoint:v5 rootPath:v6];
+    [MBDomain systemContainerDomainWithIdentifier:identifier volumeMountPoint:volumeMountPoint rootPath:containerDir];
   }
 
   else
   {
-    [MBDomain systemSharedContainerDomainWithIdentifier:v4 volumeMountPoint:v5 rootPath:v6];
+    [MBDomain systemSharedContainerDomainWithIdentifier:identifier volumeMountPoint:volumeMountPoint rootPath:containerDir];
   }
   v7 = ;
 

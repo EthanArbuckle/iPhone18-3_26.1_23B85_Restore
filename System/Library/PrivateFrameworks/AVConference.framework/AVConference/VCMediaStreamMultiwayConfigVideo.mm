@@ -1,7 +1,7 @@
 @interface VCMediaStreamMultiwayConfigVideo
 - (VCMediaStreamMultiwayConfigVideo)init;
 - (id)streamIds;
-- (void)addPayload:(int)a3;
+- (void)addPayload:(int)payload;
 - (void)dealloc;
 @end
 
@@ -31,10 +31,10 @@
   [(VCMediaStreamMultiwayConfig *)&v3 dealloc];
 }
 
-- (void)addPayload:(int)a3
+- (void)addPayload:(int)payload
 {
   payloads = self->_payloads;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&payload];
 
   [(NSMutableSet *)payloads addObject:v4];
 }
@@ -68,10 +68,10 @@
           objc_enumerationMutation(subStreamConfigs);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * v8) streamIds];
-        if (v9)
+        streamIds = [*(*(&v12 + 1) + 8 * v8) streamIds];
+        if (streamIds)
         {
-          [v3 addObjectsFromArray:v9];
+          [v3 addObjectsFromArray:streamIds];
         }
 
         ++v8;

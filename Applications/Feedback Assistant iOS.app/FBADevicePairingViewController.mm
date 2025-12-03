@@ -1,29 +1,29 @@
 @interface FBADevicePairingViewController
 - (BOOL)shouldShowDevUI;
 - (FBAPairingPresentationDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 loadingSpinnerViewForSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view loadingSpinnerViewForSection:(int64_t)section;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_showInternalUIIfNeeded;
 - (void)awakeFromNib;
 - (void)didCancel;
-- (void)didChangeDeviceParingWithDeviceAdded:(id)a3 removed:(id)a4;
+- (void)didChangeDeviceParingWithDeviceAdded:(id)added removed:(id)removed;
 - (void)didReceiveMemoryWarning;
-- (void)didTapForgetDevice:(id)a3;
+- (void)didTapForgetDevice:(id)device;
 - (void)dismissSelf;
-- (void)handleDeviceTapWithDevice:(id)a3 inSection:(unint64_t)a4;
+- (void)handleDeviceTapWithDevice:(id)device inSection:(unint64_t)section;
 - (void)reload;
 - (void)setupBarButtonItems;
 - (void)showDevUI;
 - (void)showFBAPairing;
-- (void)showPinPairingViewForDevice:(id)a3;
-- (void)showTextViewWithText:(id)a3 title:(id)a4;
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)showPinPairingViewForDevice:(id)device;
+- (void)showTextViewWithText:(id)text title:(id)title;
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)toggleDev;
 - (void)viewDidLoad;
 @end
@@ -47,17 +47,17 @@
   [(FBADevicePairingViewController *)&v9 viewDidLoad];
   +[FBADevicePairingCell estimatedRowHeight];
   v4 = v3;
-  v5 = [(FBADevicePairingViewController *)self tableView];
-  [v5 setEstimatedRowHeight:v4];
+  tableView = [(FBADevicePairingViewController *)self tableView];
+  [tableView setEstimatedRowHeight:v4];
 
-  v6 = [(FBADevicePairingViewController *)self tableView];
-  [v6 setRowHeight:UITableViewAutomaticDimension];
+  tableView2 = [(FBADevicePairingViewController *)self tableView];
+  [tableView2 setRowHeight:UITableViewAutomaticDimension];
 
-  v7 = [(FBADevicePairingViewController *)self tableView];
-  [v7 setEstimatedSectionHeaderHeight:40.0];
+  tableView3 = [(FBADevicePairingViewController *)self tableView];
+  [tableView3 setEstimatedSectionHeaderHeight:40.0];
 
-  v8 = [(FBADevicePairingViewController *)self tableView];
-  [v8 setSectionHeaderHeight:UITableViewAutomaticDimension];
+  tableView4 = [(FBADevicePairingViewController *)self tableView];
+  [tableView4 setSectionHeaderHeight:UITableViewAutomaticDimension];
 }
 
 - (void)didReceiveMemoryWarning
@@ -67,7 +67,7 @@
   [(FBADevicePairingViewController *)&v2 didReceiveMemoryWarning];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if (self->__internalMode)
   {
@@ -80,20 +80,20 @@
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(FBADevicePairingViewController *)self deviceGroups];
-  v6 = [v5 objectAtIndex:a4];
+  deviceGroups = [(FBADevicePairingViewController *)self deviceGroups];
+  v6 = [deviceGroups objectAtIndex:section];
   v7 = [v6 count];
 
   return v7;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  if (a4 == 1)
+  if (section == 1)
   {
-    v6 = [(FBADevicePairingViewController *)self tableView:a3 loadingSpinnerViewForSection:v4];
+    v6 = [(FBADevicePairingViewController *)self tableView:view loadingSpinnerViewForSection:v4];
   }
 
   else
@@ -104,9 +104,9 @@
   return v6;
 }
 
-- (id)tableView:(id)a3 loadingSpinnerViewForSection:(int64_t)a4
+- (id)tableView:(id)view loadingSpinnerViewForSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   v7 = [UIStackView alloc];
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
@@ -116,7 +116,7 @@
   [v11 setAlignment:3];
   [v11 setSpacing:1.17549435e-38];
   v12 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
-  v13 = [(FBADevicePairingViewController *)self tableView:v6 titleForHeaderInSection:a4];
+  v13 = [(FBADevicePairingViewController *)self tableView:viewCopy titleForHeaderInSection:section];
 
   [v12 setText:v13];
   v14 = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
@@ -139,10 +139,10 @@
   return v11;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  switch(a4)
+  viewCopy = view;
+  switch(section)
   {
     case 0:
       v7 = @"MY_DEVICES";
@@ -174,9 +174,9 @@ LABEL_9:
   return v8;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  if ([a3 numberOfSections] - 1 == a4)
+  if ([view numberOfSections] - 1 == section)
   {
     v4 = +[NSBundle mainBundle];
     v5 = [v4 localizedStringForKey:@"DEVICE_PAIRING_FOOTER_TEXT" value:&stru_1000E2210 table:0];
@@ -190,20 +190,20 @@ LABEL_9:
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if (qword_10010AFD0 != -1)
   {
     sub_100092FBC();
   }
 
-  v8 = [v6 dequeueReusableCellWithIdentifier:qword_10010AFD8 forIndexPath:v7];
-  if ([v7 section] == 1)
+  v8 = [viewCopy dequeueReusableCellWithIdentifier:qword_10010AFD8 forIndexPath:pathCopy];
+  if ([pathCopy section] == 1)
   {
-    v9 = [v8 accessibilityTraits];
-    v10 = UIAccessibilityTraitButton | v9;
+    accessibilityTraits = [v8 accessibilityTraits];
+    v10 = UIAccessibilityTraitButton | accessibilityTraits;
     v11 = @"DEVICE_CELL_HINT_TAP_TO_PAIR";
   }
 
@@ -219,27 +219,27 @@ LABEL_9:
   v14 = [v13 localizedStringForKey:v11 value:&stru_1000E2210 table:0];
   [v8 setAccessibilityHint:v14];
 
-  v15 = [(FBADevicePairingViewController *)self deviceGroups];
-  v16 = [v15 objectAtIndexedSubscript:{objc_msgSend(v7, "section")}];
-  v17 = [v16 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
-  [v8 updateWithDevice:v17 showsDetail:objc_msgSend(v7 showsTransport:{"section") == 0, self->__internalMode}];
+  deviceGroups = [(FBADevicePairingViewController *)self deviceGroups];
+  v16 = [deviceGroups objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
+  v17 = [v16 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+  [v8 updateWithDevice:v17 showsDetail:objc_msgSend(pathCopy showsTransport:{"section") == 0, self->__internalMode}];
 
   return v8;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(FBADevicePairingViewController *)self deviceGroups];
-  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
-  v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
+  pathCopy = path;
+  deviceGroups = [(FBADevicePairingViewController *)self deviceGroups];
+  v7 = [deviceGroups objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
+  v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
   v9 = +[FBALog ded];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v8 publicLogDescription];
+    publicLogDescription = [v8 publicLogDescription];
     v13 = 138543362;
-    v14 = v10;
+    v14 = publicLogDescription;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "selected [%{public}@] on pairing view", &v13, 0xCu);
   }
 
@@ -249,44 +249,44 @@ LABEL_9:
     sub_100092FD0();
   }
 
-  -[FBADevicePairingViewController handleDeviceTapWithDevice:inSection:](self, "handleDeviceTapWithDevice:inSection:", v8, [v5 section]);
-  v12 = [(FBADevicePairingViewController *)self tableView];
-  [v12 deselectRowAtIndexPath:v5 animated:1];
+  -[FBADevicePairingViewController handleDeviceTapWithDevice:inSection:](self, "handleDeviceTapWithDevice:inSection:", v8, [pathCopy section]);
+  tableView = [(FBADevicePairingViewController *)self tableView];
+  [tableView deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(FBADevicePairingViewController *)self deviceGroups];
-  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
-  v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
+  pathCopy = path;
+  deviceGroups = [(FBADevicePairingViewController *)self deviceGroups];
+  v7 = [deviceGroups objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
+  v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
   if (self->__internalMode)
   {
-    v9 = [v8 name];
-    if ([v9 isEqualToString:&stru_1000E2210])
+    name = [v8 name];
+    if ([name isEqualToString:&stru_1000E2210])
     {
-      v10 = @"Device Data";
+      name2 = @"Device Data";
     }
 
     else
     {
-      v10 = [v8 name];
+      name2 = [v8 name];
     }
 
-    v13 = [v8 debugDetails];
-    [(FBADevicePairingViewController *)self showTextViewWithText:v13 title:v10];
+    debugDetails = [v8 debugDetails];
+    [(FBADevicePairingViewController *)self showTextViewWithText:debugDetails title:name2];
 
 LABEL_10:
     goto LABEL_11;
   }
 
-  if (![v5 section])
+  if (![pathCopy section])
   {
-    v11 = [v8 isCurrentDevice];
+    isCurrentDevice = [v8 isCurrentDevice];
     v12 = +[FBALog ded];
-    v10 = v12;
-    if (v11)
+    name2 = v12;
+    if (isCurrentDevice)
     {
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
@@ -298,39 +298,39 @@ LABEL_10:
 
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v8 publicLogDescription];
+      publicLogDescription = [v8 publicLogDescription];
       v20 = 138543362;
-      v21 = v14;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "showing device detail on device [%{public}@]", &v20, 0xCu);
+      v21 = publicLogDescription;
+      _os_log_impl(&_mh_execute_header, name2, OS_LOG_TYPE_DEFAULT, "showing device detail on device [%{public}@]", &v20, 0xCu);
     }
 
-    v15 = [(FBADevicePairingViewController *)self storyboard];
+    storyboard = [(FBADevicePairingViewController *)self storyboard];
     v16 = objc_opt_class();
     v17 = NSStringFromClass(v16);
-    v18 = [v15 instantiateViewControllerWithIdentifier:v17];
+    v18 = [storyboard instantiateViewControllerWithIdentifier:v17];
 
     [v18 setDevice:v8];
     [v18 setDelegate:self];
-    v19 = [(FBADevicePairingViewController *)self navigationController];
-    [v19 pushViewController:v18 animated:1];
+    navigationController = [(FBADevicePairingViewController *)self navigationController];
+    [navigationController pushViewController:v18 animated:1];
   }
 
 LABEL_11:
 }
 
-- (void)didTapForgetDevice:(id)a3
+- (void)didTapForgetDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(FBADevicePairingViewController *)self pairedDevices];
-  if ([v5 containsObject:v4])
+  deviceCopy = device;
+  pairedDevices = [(FBADevicePairingViewController *)self pairedDevices];
+  if ([pairedDevices containsObject:deviceCopy])
   {
-    v6 = [v4 isCurrentDevice];
-    v7 = [v4 isFBKPaired];
+    isCurrentDevice = [deviceCopy isCurrentDevice];
+    isFBKPaired = [deviceCopy isFBKPaired];
 
-    if (v7 && !v6)
+    if (isFBKPaired && !isCurrentDevice)
     {
-      [v4 removeFBKPairing];
-      [(FBADevicePairingViewController *)self didChangeDeviceParingWithDeviceAdded:0 removed:v4];
+      [deviceCopy removeFBKPairing];
+      [(FBADevicePairingViewController *)self didChangeDeviceParingWithDeviceAdded:0 removed:deviceCopy];
       goto LABEL_9;
     }
   }
@@ -342,17 +342,17 @@ LABEL_11:
   v8 = +[FBALog ded];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    sub_100093080(v4, v8);
+    sub_100093080(deviceCopy, v8);
   }
 
 LABEL_9:
 }
 
-- (void)handleDeviceTapWithDevice:(id)a3 inSection:(unint64_t)a4
+- (void)handleDeviceTapWithDevice:(id)device inSection:(unint64_t)section
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 == 2)
+  deviceCopy = device;
+  v7 = deviceCopy;
+  if (section == 2)
   {
     if (self->__internalMode)
     {
@@ -375,9 +375,9 @@ LABEL_9:
     }
   }
 
-  else if (a4 == 1)
+  else if (section == 1)
   {
-    if ([v6 needsPairing] && (objc_msgSend(v7, "dedSharingDevice"), v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+    if ([deviceCopy needsPairing] && (objc_msgSend(v7, "dedSharingDevice"), v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
     {
       [(FBADevicePairingViewController *)self showPinPairingViewForDevice:v7];
     }
@@ -409,129 +409,129 @@ LABEL_9:
   }
 
   v4 = +[FBKDeviceManager sharedInstance];
-  v5 = [v4 configuredDevices];
-  [(FBADevicePairingViewController *)self setPairedDevices:v5];
+  configuredDevices = [v4 configuredDevices];
+  [(FBADevicePairingViewController *)self setPairedDevices:configuredDevices];
 
   if ([(FBADevicePairingViewController *)self context]== 4 && ([(FBADevicePairingViewController *)self filterPlatform], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
     v7 = DEDDevicePlatformiOS;
-    v8 = [(FBADevicePairingViewController *)self filterPlatform];
-    if ([v8 isEqualToString:DEDDevicePlatformUnspecified])
+    filterPlatform = [(FBADevicePairingViewController *)self filterPlatform];
+    if ([filterPlatform isEqualToString:DEDDevicePlatformUnspecified])
     {
-      v9 = v7;
+      filterPlatform2 = v7;
     }
 
     else
     {
-      v9 = [(FBADevicePairingViewController *)self filterPlatform];
+      filterPlatform2 = [(FBADevicePairingViewController *)self filterPlatform];
     }
 
-    v11 = v9;
+    v11 = filterPlatform2;
 
     v12 = +[FBKDeviceManager sharedInstance];
-    v13 = [v12 notConfiguredDevices];
+    notConfiguredDevices = [v12 notConfiguredDevices];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_1000197D0;
     v25[3] = &unk_1000DEE08;
     v26 = v11;
-    v10 = v11;
-    v14 = [v13 ded_selectItemsPassingTest:v25];
+    notConfiguredDevices2 = v11;
+    v14 = [notConfiguredDevices ded_selectItemsPassingTest:v25];
     [(FBADevicePairingViewController *)self setNotConfiguredDevice:v14];
   }
 
   else
   {
     v7 = +[FBKDeviceManager sharedInstance];
-    v10 = [v7 notConfiguredDevices];
-    [(FBADevicePairingViewController *)self setNotConfiguredDevice:v10];
+    notConfiguredDevices2 = [v7 notConfiguredDevices];
+    [(FBADevicePairingViewController *)self setNotConfiguredDevice:notConfiguredDevices2];
   }
 
   if (self->__internalMode)
   {
     v15 = +[FBKDeviceManager sharedInstance];
-    v16 = [v15 allDevices];
-    [(FBADevicePairingViewController *)self set_allDevices:v16];
+    allDevices = [v15 allDevices];
+    [(FBADevicePairingViewController *)self set_allDevices:allDevices];
   }
 
-  v17 = [(FBADevicePairingViewController *)self pairedDevices];
-  v29[0] = v17;
-  v18 = [(FBADevicePairingViewController *)self notConfiguredDevice];
-  v29[1] = v18;
+  pairedDevices = [(FBADevicePairingViewController *)self pairedDevices];
+  v29[0] = pairedDevices;
+  notConfiguredDevice = [(FBADevicePairingViewController *)self notConfiguredDevice];
+  v29[1] = notConfiguredDevice;
   v19 = [NSArray arrayWithObjects:v29 count:2];
   [(FBADevicePairingViewController *)self setDeviceGroups:v19];
 
   if (self->__internalMode)
   {
-    v20 = [(FBADevicePairingViewController *)self pairedDevices];
-    v28[0] = v20;
-    v21 = [(FBADevicePairingViewController *)self notConfiguredDevice];
-    v28[1] = v21;
-    v22 = [(FBADevicePairingViewController *)self _allDevices];
-    v28[2] = v22;
+    pairedDevices2 = [(FBADevicePairingViewController *)self pairedDevices];
+    v28[0] = pairedDevices2;
+    notConfiguredDevice2 = [(FBADevicePairingViewController *)self notConfiguredDevice];
+    v28[1] = notConfiguredDevice2;
+    _allDevices = [(FBADevicePairingViewController *)self _allDevices];
+    v28[2] = _allDevices;
     v23 = [NSArray arrayWithObjects:v28 count:3];
     [(FBADevicePairingViewController *)self setDeviceGroups:v23];
   }
 
-  v24 = [(FBADevicePairingViewController *)self tableView];
-  [v24 reloadData];
+  tableView = [(FBADevicePairingViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)showPinPairingViewForDevice:(id)a3
+- (void)showPinPairingViewForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(FBADevicePairingViewController *)self storyboard];
-  v6 = self;
+  deviceCopy = device;
+  storyboard = [(FBADevicePairingViewController *)self storyboard];
+  selfCopy = self;
   v7 = +[FBKDeviceManager sharedInstance];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100019998;
   v11[3] = &unk_1000DEAE0;
-  v11[4] = v6;
-  v12 = v6;
-  v13 = v5;
-  v14 = v4;
-  v8 = v4;
-  v9 = v5;
-  v10 = v6;
+  v11[4] = selfCopy;
+  v12 = selfCopy;
+  v13 = storyboard;
+  v14 = deviceCopy;
+  v8 = deviceCopy;
+  v9 = storyboard;
+  v10 = selfCopy;
   [v7 beginPairingDevice:v8 showUIBlock:v11];
 }
 
 - (void)setupBarButtonItems
 {
-  v3 = [(FBADevicePairingViewController *)self context];
-  if ((v3 - 2) < 2)
+  context = [(FBADevicePairingViewController *)self context];
+  if ((context - 2) < 2)
   {
-    v8 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"dismissSelf"];
-    v5 = [(FBADevicePairingViewController *)self navigationItem];
-    v6 = v5;
-    v7 = v8;
+    navigationItem2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"dismissSelf"];
+    navigationItem = [(FBADevicePairingViewController *)self navigationItem];
+    v6 = navigationItem;
+    v7 = navigationItem2;
   }
 
   else
   {
-    if (v3 == 1)
+    if (context == 1)
     {
-      v8 = [(FBADevicePairingViewController *)self navigationItem];
-      [v8 setRightBarButtonItem:0];
+      navigationItem2 = [(FBADevicePairingViewController *)self navigationItem];
+      [navigationItem2 setRightBarButtonItem:0];
       goto LABEL_8;
     }
 
-    if (v3 != 4)
+    if (context != 4)
     {
       return;
     }
 
-    v8 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"didCancel"];
-    v4 = [(FBADevicePairingViewController *)self navigationItem];
-    [v4 setLeftBarButtonItem:v8];
+    navigationItem2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"didCancel"];
+    navigationItem3 = [(FBADevicePairingViewController *)self navigationItem];
+    [navigationItem3 setLeftBarButtonItem:navigationItem2];
 
-    v5 = [(FBADevicePairingViewController *)self navigationItem];
-    v6 = v5;
+    navigationItem = [(FBADevicePairingViewController *)self navigationItem];
+    v6 = navigationItem;
     v7 = 0;
   }
 
-  [v5 setRightBarButtonItem:v7];
+  [navigationItem setRightBarButtonItem:v7];
 
 LABEL_8:
 }
@@ -545,17 +545,17 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "device pairing view did cancel", v9, 2u);
   }
 
-  v4 = [(FBADevicePairingViewController *)self delegate];
-  if (v4)
+  delegate = [(FBADevicePairingViewController *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
-    v6 = [(FBADevicePairingViewController *)self delegate];
+    v5 = delegate;
+    delegate2 = [(FBADevicePairingViewController *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(FBADevicePairingViewController *)self delegate];
-      [v8 pairingViewDidCancel];
+      delegate3 = [(FBADevicePairingViewController *)self delegate];
+      [delegate3 pairingViewDidCancel];
     }
   }
 }
@@ -569,46 +569,46 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "device pairing view did hit done", buf, 2u);
   }
 
-  v4 = [(FBADevicePairingViewController *)self delegate];
-  v5 = [(FBADevicePairingViewController *)self presentingViewController];
+  delegate = [(FBADevicePairingViewController *)self delegate];
+  presentingViewController = [(FBADevicePairingViewController *)self presentingViewController];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100019DB0;
   v7[3] = &unk_1000DE430;
-  v8 = v4;
-  v6 = v4;
-  [v5 dismissViewControllerAnimated:1 completion:v7];
+  v8 = delegate;
+  v6 = delegate;
+  [presentingViewController dismissViewControllerAnimated:1 completion:v7];
 }
 
-- (void)didChangeDeviceParingWithDeviceAdded:(id)a3 removed:(id)a4
+- (void)didChangeDeviceParingWithDeviceAdded:(id)added removed:(id)removed
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(FBADevicePairingViewController *)self delegate];
+  addedCopy = added;
+  removedCopy = removed;
+  delegate = [(FBADevicePairingViewController *)self delegate];
 
-  if (v7)
+  if (delegate)
   {
-    v8 = [(FBADevicePairingViewController *)self delegate];
-    [v8 pairedDevicesDidChangeWithAddedDevice:v9 removed:v6];
+    delegate2 = [(FBADevicePairingViewController *)self delegate];
+    [delegate2 pairedDevicesDidChangeWithAddedDevice:addedCopy removed:removedCopy];
   }
 
   [(FBADevicePairingViewController *)self reload];
 }
 
-- (void)showTextViewWithText:(id)a3 title:(id)a4
+- (void)showTextViewWithText:(id)text title:(id)title
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FBADevicePairingViewController *)self storyboard];
+  titleCopy = title;
+  textCopy = text;
+  storyboard = [(FBADevicePairingViewController *)self storyboard];
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  v12 = [v8 instantiateViewControllerWithIdentifier:v10];
+  v12 = [storyboard instantiateViewControllerWithIdentifier:v10];
 
-  [v12 setTitle:v6];
-  [v12 setText:v7];
+  [v12 setTitle:titleCopy];
+  [v12 setText:textCopy];
 
-  v11 = [(FBADevicePairingViewController *)self navigationController];
-  [v11 pushViewController:v12 animated:1];
+  navigationController = [(FBADevicePairingViewController *)self navigationController];
+  [navigationController pushViewController:v12 animated:1];
 }
 
 - (void)toggleDev
@@ -626,8 +626,8 @@ LABEL_8:
 
 - (void)showDevUI
 {
-  v3 = [(FBADevicePairingViewController *)self navigationController];
-  [v3 setToolbarHidden:0 animated:1];
+  navigationController = [(FBADevicePairingViewController *)self navigationController];
+  [navigationController setToolbarHidden:0 animated:1];
 
   v4 = [UIBarButtonItem alloc];
   v6 = v5 = @"Show FBA Pairing";
@@ -643,8 +643,8 @@ LABEL_8:
   v13 = [NSArray arrayWithObjects:v15 count:3];
   [(FBADevicePairingViewController *)self setToolbarItems:v13];
 
-  v14 = [(FBADevicePairingViewController *)self navigationController];
-  [v14 setToolbarHidden:0];
+  navigationController2 = [(FBADevicePairingViewController *)self navigationController];
+  [navigationController2 setToolbarHidden:0];
 
   [(FBADevicePairingViewController *)self reload];
 }
@@ -660,8 +660,8 @@ LABEL_8:
   else
   {
     [(FBADevicePairingViewController *)self set_internalMode:0];
-    v3 = [(FBADevicePairingViewController *)self navigationController];
-    [v3 setToolbarHidden:1];
+    navigationController = [(FBADevicePairingViewController *)self navigationController];
+    [navigationController setToolbarHidden:1];
 
     [(FBADevicePairingViewController *)self setToolbarItems:&__NSArray0__struct];
   }

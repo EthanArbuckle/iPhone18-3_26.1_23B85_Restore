@@ -1,47 +1,47 @@
 @interface AKSRPAuthorizationContextHelper
-- (AKSRPAuthorizationContextHelper)initWithContext:(id)a3;
-- (void)authenticationParametersWithCompletion:(id)a3;
+- (AKSRPAuthorizationContextHelper)initWithContext:(id)context;
+- (void)authenticationParametersWithCompletion:(id)completion;
 @end
 
 @implementation AKSRPAuthorizationContextHelper
 
-- (AKSRPAuthorizationContextHelper)initWithContext:(id)a3
+- (AKSRPAuthorizationContextHelper)initWithContext:(id)context
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v9;
-  v9 = 0;
+  objc_storeStrong(location, context);
+  v3 = selfCopy;
+  selfCopy = 0;
   v7.receiver = v3;
   v7.super_class = AKSRPAuthorizationContextHelper;
   v6 = [(AKSRPContextHelper *)&v7 initWithContext:location[0]];
-  v9 = v6;
-  objc_storeStrong(&v9, v6);
+  selfCopy = v6;
+  objc_storeStrong(&selfCopy, v6);
   if (v6)
   {
-    objc_storeStrong(&v9->_authContext, location[0]);
+    objc_storeStrong(&selfCopy->_authContext, location[0]);
   }
 
-  v5 = _objc_retain(v9);
+  v5 = _objc_retain(selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (void)authenticationParametersWithCompletion:(id)a3
+- (void)authenticationParametersWithCompletion:(id)completion
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v13;
+  objc_storeStrong(location, completion);
+  v3 = selfCopy;
   v5 = _NSConcreteStackBlock;
   v6 = -1073741824;
   v7 = 0;
   v8 = sub_10016113C;
   v9 = &unk_100320A58;
-  v10 = _objc_retain(v13);
+  v10 = _objc_retain(selfCopy);
   v11 = _objc_retain(location[0]);
   v4.receiver = v3;
   v4.super_class = AKSRPAuthorizationContextHelper;

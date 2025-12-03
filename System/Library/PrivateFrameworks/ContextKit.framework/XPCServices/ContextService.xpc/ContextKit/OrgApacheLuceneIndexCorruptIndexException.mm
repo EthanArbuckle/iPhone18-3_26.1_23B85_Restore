@@ -1,38 +1,38 @@
 @interface OrgApacheLuceneIndexCorruptIndexException
-- (OrgApacheLuceneIndexCorruptIndexException)initWithNSString:(id)a3 withOrgApacheLuceneStoreDataInput:(id)a4;
-- (OrgApacheLuceneIndexCorruptIndexException)initWithNSString:(id)a3 withOrgApacheLuceneStoreDataInput:(id)a4 withJavaLangThrowable:(id)a5;
-- (OrgApacheLuceneIndexCorruptIndexException)initWithNSString:(id)a3 withOrgApacheLuceneStoreDataOutput:(id)a4;
-- (OrgApacheLuceneIndexCorruptIndexException)initWithNSString:(id)a3 withOrgApacheLuceneStoreDataOutput:(id)a4 withJavaLangThrowable:(id)a5;
+- (OrgApacheLuceneIndexCorruptIndexException)initWithNSString:(id)string withOrgApacheLuceneStoreDataInput:(id)input;
+- (OrgApacheLuceneIndexCorruptIndexException)initWithNSString:(id)string withOrgApacheLuceneStoreDataInput:(id)input withJavaLangThrowable:(id)throwable;
+- (OrgApacheLuceneIndexCorruptIndexException)initWithNSString:(id)string withOrgApacheLuceneStoreDataOutput:(id)output;
+- (OrgApacheLuceneIndexCorruptIndexException)initWithNSString:(id)string withOrgApacheLuceneStoreDataOutput:(id)output withJavaLangThrowable:(id)throwable;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneIndexCorruptIndexException
 
-- (OrgApacheLuceneIndexCorruptIndexException)initWithNSString:(id)a3 withOrgApacheLuceneStoreDataInput:(id)a4
+- (OrgApacheLuceneIndexCorruptIndexException)initWithNSString:(id)string withOrgApacheLuceneStoreDataInput:(id)input
 {
-  v6 = OrgLukhnosPortmobileUtilObjects_toStringWithId_(a4);
-  OrgApacheLuceneIndexCorruptIndexException_initWithNSString_withNSString_withJavaLangThrowable_(self, a3, v6, 0);
+  v6 = OrgLukhnosPortmobileUtilObjects_toStringWithId_(input);
+  OrgApacheLuceneIndexCorruptIndexException_initWithNSString_withNSString_withJavaLangThrowable_(self, string, v6, 0);
   return self;
 }
 
-- (OrgApacheLuceneIndexCorruptIndexException)initWithNSString:(id)a3 withOrgApacheLuceneStoreDataOutput:(id)a4
+- (OrgApacheLuceneIndexCorruptIndexException)initWithNSString:(id)string withOrgApacheLuceneStoreDataOutput:(id)output
 {
-  v6 = OrgLukhnosPortmobileUtilObjects_toStringWithId_(a4);
-  OrgApacheLuceneIndexCorruptIndexException_initWithNSString_withNSString_withJavaLangThrowable_(self, a3, v6, 0);
+  v6 = OrgLukhnosPortmobileUtilObjects_toStringWithId_(output);
+  OrgApacheLuceneIndexCorruptIndexException_initWithNSString_withNSString_withJavaLangThrowable_(self, string, v6, 0);
   return self;
 }
 
-- (OrgApacheLuceneIndexCorruptIndexException)initWithNSString:(id)a3 withOrgApacheLuceneStoreDataInput:(id)a4 withJavaLangThrowable:(id)a5
+- (OrgApacheLuceneIndexCorruptIndexException)initWithNSString:(id)string withOrgApacheLuceneStoreDataInput:(id)input withJavaLangThrowable:(id)throwable
 {
-  v8 = OrgLukhnosPortmobileUtilObjects_toStringWithId_(a4);
-  OrgApacheLuceneIndexCorruptIndexException_initWithNSString_withNSString_withJavaLangThrowable_(self, a3, v8, a5);
+  v8 = OrgLukhnosPortmobileUtilObjects_toStringWithId_(input);
+  OrgApacheLuceneIndexCorruptIndexException_initWithNSString_withNSString_withJavaLangThrowable_(self, string, v8, throwable);
   return self;
 }
 
-- (OrgApacheLuceneIndexCorruptIndexException)initWithNSString:(id)a3 withOrgApacheLuceneStoreDataOutput:(id)a4 withJavaLangThrowable:(id)a5
+- (OrgApacheLuceneIndexCorruptIndexException)initWithNSString:(id)string withOrgApacheLuceneStoreDataOutput:(id)output withJavaLangThrowable:(id)throwable
 {
-  v8 = OrgLukhnosPortmobileUtilObjects_toStringWithId_(a4);
-  OrgApacheLuceneIndexCorruptIndexException_initWithNSString_withNSString_withJavaLangThrowable_(self, a3, v8, a5);
+  v8 = OrgLukhnosPortmobileUtilObjects_toStringWithId_(output);
+  OrgApacheLuceneIndexCorruptIndexException_initWithNSString_withNSString_withJavaLangThrowable_(self, string, v8, throwable);
   return self;
 }
 

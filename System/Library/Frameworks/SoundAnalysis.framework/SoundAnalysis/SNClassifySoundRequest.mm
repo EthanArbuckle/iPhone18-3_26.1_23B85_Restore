@@ -1,13 +1,13 @@
 @interface SNClassifySoundRequest
 + (SNClassifySoundRequest)new;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CMTime)windowDuration;
 - (SNClassifySoundRequest)init;
 - (SNClassifySoundRequest)initWithClassifierIdentifier:(SNClassifierIdentifier)classifierIdentifier error:(NSError *)error;
-- (SNClassifySoundRequest)initWithCoder:(id)a3;
-- (SNClassifySoundRequest)initWithImpl:(id)a3;
+- (SNClassifySoundRequest)initWithCoder:(id)coder;
+- (SNClassifySoundRequest)initWithImpl:(id)impl;
 - (SNClassifySoundRequest)initWithMLModel:(MLModel *)mlModel error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)setOverlapFactor:(double)overlapFactor;
 - (void)setWindowDuration:(CMTime *)windowDuration;
 @end
@@ -92,16 +92,16 @@
   return v7;
 }
 
-- (SNClassifySoundRequest)initWithImpl:(id)a3
+- (SNClassifySoundRequest)initWithImpl:(id)impl
 {
-  v5 = a3;
+  implCopy = impl;
   v9.receiver = self;
   v9.super_class = SNClassifySoundRequest;
   v6 = [(SNClassifySoundRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_impl, a3);
+    objc_storeStrong(&v6->_impl, impl);
   }
 
   return v7;
@@ -119,19 +119,19 @@
   objc_exception_throw(v2);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(_SNClassifySoundRequest *)self->_impl copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(_SNClassifySoundRequest *)self->_impl copyWithZone:zone];
   v7 = [v5 initWithImpl:v6];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -139,21 +139,21 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(_SNClassifySoundRequest *)self->_impl isEqual:v4->_impl];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(_SNClassifySoundRequest *)self->_impl isEqual:equalCopy->_impl];
   }
 
   return v5;
 }
 
-- (SNClassifySoundRequest)initWithCoder:(id)a3
+- (SNClassifySoundRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SNClassifySoundRequest;
   v5 = [(SNClassifySoundRequest *)&v9 init];
   if (v5)
   {
-    v6 = [[_SNClassifySoundRequest alloc] initWithCoder:v4];
+    v6 = [[_SNClassifySoundRequest alloc] initWithCoder:coderCopy];
     impl = v5->_impl;
     v5->_impl = v6;
 

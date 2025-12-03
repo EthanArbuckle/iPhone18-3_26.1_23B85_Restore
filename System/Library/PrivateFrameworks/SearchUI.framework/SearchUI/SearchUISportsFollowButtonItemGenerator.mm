@@ -1,22 +1,22 @@
 @interface SearchUISportsFollowButtonItemGenerator
 - (BOOL)isUserSignedIntoStore;
-- (void)generateSearchUIButtonItemsWithSFButtonItem:(id)a3 completion:(id)a4;
+- (void)generateSearchUIButtonItemsWithSFButtonItem:(id)item completion:(id)completion;
 @end
 
 @implementation SearchUISportsFollowButtonItemGenerator
 
-- (void)generateSearchUIButtonItemsWithSFButtonItem:(id)a3 completion:(id)a4
+- (void)generateSearchUIButtonItemsWithSFButtonItem:(id)item completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[SearchUISportsFollowButtonItem alloc] initWithSFButtonItem:v6];
-  v9 = [v6 sportsItem];
-  v10 = [v9 type];
-  if ((v10 - 1) > 1)
+  itemCopy = item;
+  completionCopy = completion;
+  v8 = [[SearchUISportsFollowButtonItem alloc] initWithSFButtonItem:itemCopy];
+  sportsItem = [itemCopy sportsItem];
+  type = [sportsItem type];
+  if ((type - 1) > 1)
   {
-    if (v10 != 3)
+    if (type != 3)
     {
-      v7[2](v7, 0, 1);
+      completionCopy[2](completionCopy, 0, 1);
       goto LABEL_9;
     }
 
@@ -26,15 +26,15 @@
     }
 
     v12 = generateSearchUIButtonItemsWithSFButtonItem_completion__liveActivitiesEnabledCache;
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __98__SearchUISportsFollowButtonItemGenerator_generateSearchUIButtonItemsWithSFButtonItem_completion___block_invoke_4;
     v14[3] = &unk_1E85B3050;
     v15 = v8;
-    v17 = v7;
-    v16 = v6;
-    [v12 getObjectForKey:v13 completionHandler:v14];
+    v17 = completionCopy;
+    v16 = itemCopy;
+    [v12 getObjectForKey:null completionHandler:v14];
 
     v11 = v15;
   }
@@ -46,9 +46,9 @@
     v18[2] = __98__SearchUISportsFollowButtonItemGenerator_generateSearchUIButtonItemsWithSFButtonItem_completion___block_invoke;
     v18[3] = &unk_1E85B3028;
     v19 = v8;
-    v22 = v7;
-    v20 = self;
-    v21 = v6;
+    v22 = completionCopy;
+    selfCopy = self;
+    v21 = itemCopy;
     [_TtC8SearchUI19SearchUITVUtilities fetchSportsFavoritesEnabledStatusWithCompletionHandler:v18];
 
     v11 = v19;
@@ -186,10 +186,10 @@ void __98__SearchUISportsFollowButtonItemGenerator_generateSearchUIButtonItemsWi
 - (BOOL)isUserSignedIntoStore
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E6959A48] defaultStore];
+  defaultStore = [MEMORY[0x1E6959A48] defaultStore];
   v23[0] = *MEMORY[0x1E6959930];
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
-  v4 = [v2 accountsWithAccountTypeIdentifiers:v3 error:0];
+  v4 = [defaultStore accountsWithAccountTypeIdentifiers:v3 error:0];
 
   v20 = 0u;
   v21 = 0u;
@@ -204,7 +204,7 @@ void __98__SearchUISportsFollowButtonItemGenerator_generateSearchUIButtonItemsWi
   }
 
   v7 = v6;
-  v8 = 0;
+  ams_localiTunesAccount = 0;
   v9 = *v19;
   do
   {
@@ -221,18 +221,18 @@ void __98__SearchUISportsFollowButtonItemGenerator_generateSearchUIButtonItemsWi
 LABEL_7:
         v12 = v11;
 
-        v8 = v12;
+        ams_localiTunesAccount = v12;
         continue;
       }
 
-      if (!v8)
+      if (!ams_localiTunesAccount)
       {
         if ([v11 ams_isLocalAccount])
         {
           goto LABEL_7;
         }
 
-        v8 = 0;
+        ams_localiTunesAccount = 0;
       }
     }
 
@@ -241,16 +241,16 @@ LABEL_7:
 
   while (v7);
 
-  if (!v8)
+  if (!ams_localiTunesAccount)
   {
 LABEL_16:
-    v13 = [MEMORY[0x1E6959A48] defaultStore];
-    v8 = [v13 ams_localiTunesAccount];
+    defaultStore2 = [MEMORY[0x1E6959A48] defaultStore];
+    ams_localiTunesAccount = [defaultStore2 ams_localiTunesAccount];
   }
 
-  v14 = [v8 ams_DSID];
-  v15 = [v14 stringValue];
-  v16 = v15 != 0;
+  ams_DSID = [ams_localiTunesAccount ams_DSID];
+  stringValue = [ams_DSID stringValue];
+  v16 = stringValue != 0;
 
   return v16;
 }

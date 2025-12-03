@@ -8,10 +8,10 @@
 {
   v3 = a3;
   v4 = MEMORY[0x1E6979400];
-  v5 = [v3 packageURL];
+  packageURL = [v3 packageURL];
   v6 = *MEMORY[0x1E6979EF8];
   v11 = 0;
-  v7 = [v4 packageWithContentsOfURL:v5 type:v6 options:0 error:&v11];
+  v7 = [v4 packageWithContentsOfURL:packageURL type:v6 options:0 error:&v11];
   v8 = v11;
 
   if (v8)

@@ -1,27 +1,27 @@
 @interface QLRemoteUIHostViewController
-+ (void)remotePreviewCollectionWithCompletionHandler:(id)a3;
++ (void)remotePreviewCollectionWithCompletionHandler:(id)handler;
 - (BOOL)isAvailable;
 - (NSUUID)uuid;
-- (_TtC9QuickLook28QLRemoteUIHostViewController)initWithCoder:(id)a3;
-- (_TtC9QuickLook28QLRemoteUIHostViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC9QuickLook28QLRemoteUIHostViewController)initWithCoder:(id)coder;
+- (_TtC9QuickLook28QLRemoteUIHostViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)accessoryView;
-- (void)configureWithNumberOfItems:(int64_t)a3 currentPreviewItemIndex:(unint64_t)a4 itemProvider:(id)a5 stateManager:(id)a6;
-- (void)configureWithNumberOfItems:(int64_t)a3 currentPreviewItemIndex:(unint64_t)a4 itemProvider:(id)a5 stateManager:(id)a6 fullScreen:(BOOL)a7;
-- (void)invalidateServiceWithCompletionHandler:(id)a3;
-- (void)keyCommandsWithCompletionHandler:(id)a3;
-- (void)notifyFirstTimeAppearanceWithActions:(unint64_t)a3;
-- (void)notifyStateRestorationUserInfo:(id)a3;
-- (void)prepareForActionSheetPresentationWithCompletionHandler:(id)a3;
-- (void)preparePreviewCollectionForInvalidationWithCompletionHandler:(id)a3;
-- (void)saveCurrentPreviewEditsSynchronously:(BOOL)a3 withCompletionHandler:(id)a4;
-- (void)saveIntoPhotoLibraryMediaWithURLWrapper:(id)a3 previewItemType:(unint64_t)a4 completionHandler:(id)a5;
-- (void)setAppearance:(id)a3 animated:(BOOL)a4;
-- (void)setUuid:(id)a3;
-- (void)shouldDisplayLockActivityWithCompletionHandler:(id)a3;
-- (void)startTransitionWithSourceViewProvider:(QLTransitionContext *)a3 transitionController:(QLTransitionControllerProtocol *)a4 presenting:(BOOL)a5 useInteractiveTransition:(BOOL)a6 completionHandler:(id)a7;
+- (void)configureWithNumberOfItems:(int64_t)items currentPreviewItemIndex:(unint64_t)index itemProvider:(id)provider stateManager:(id)manager;
+- (void)configureWithNumberOfItems:(int64_t)items currentPreviewItemIndex:(unint64_t)index itemProvider:(id)provider stateManager:(id)manager fullScreen:(BOOL)screen;
+- (void)invalidateServiceWithCompletionHandler:(id)handler;
+- (void)keyCommandsWithCompletionHandler:(id)handler;
+- (void)notifyFirstTimeAppearanceWithActions:(unint64_t)actions;
+- (void)notifyStateRestorationUserInfo:(id)info;
+- (void)prepareForActionSheetPresentationWithCompletionHandler:(id)handler;
+- (void)preparePreviewCollectionForInvalidationWithCompletionHandler:(id)handler;
+- (void)saveCurrentPreviewEditsSynchronously:(BOOL)synchronously withCompletionHandler:(id)handler;
+- (void)saveIntoPhotoLibraryMediaWithURLWrapper:(id)wrapper previewItemType:(unint64_t)type completionHandler:(id)handler;
+- (void)setAppearance:(id)appearance animated:(BOOL)animated;
+- (void)setUuid:(id)uuid;
+- (void)shouldDisplayLockActivityWithCompletionHandler:(id)handler;
+- (void)startTransitionWithSourceViewProvider:(QLTransitionContext *)provider transitionController:(QLTransitionControllerProtocol *)controller presenting:(BOOL)presenting useInteractiveTransition:(BOOL)transition completionHandler:(id)handler;
 - (void)toggleDebugView;
-- (void)toolbarButtonPressedWithIdentifier:(NSString *)a3 completionHandler:(id)a4;
-- (void)toolbarButtonsForTraitCollection:(UITraitCollection *)a3 withCompletionHandler:(id)a4;
+- (void)toolbarButtonPressedWithIdentifier:(NSString *)identifier completionHandler:(id)handler;
+- (void)toolbarButtonsForTraitCollection:(UITraitCollection *)collection withCompletionHandler:(id)handler;
 - (void)viewDidLoad;
 @end
 
@@ -32,7 +32,7 @@
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC9QuickLook28QLRemoteUIHostViewController_viewModel);
   swift_getKeyPath();
   sub_23A7E7880(&qword_27DFA9FF0, type metadata accessor for QLHostRemoteViewModel);
-  v4 = self;
+  selfCopy = self;
   sub_23A7EE014();
 
   v5 = *(v3 + 17);
@@ -47,7 +47,7 @@
   v5 = *(v4 + 64);
   MEMORY[0x28223BE20](v3);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = self;
+  selfCopy = self;
   sub_23A7D1C98(v7);
 
   v9 = sub_23A7EDFB4();
@@ -56,7 +56,7 @@
   return v9;
 }
 
-- (void)setUuid:(id)a3
+- (void)setUuid:(id)uuid
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DFA9FF8, &qword_23A7FEA58);
   v5 = *(*(v4 - 8) + 64);
@@ -72,14 +72,14 @@
   (*(v9 + 56))(v7, 0, 1, v8);
   v13 = OBJC_IVAR____TtC9QuickLook28QLRemoteUIHostViewController____lazy_storage___uuid;
   swift_beginAccess();
-  v14 = self;
+  selfCopy = self;
   sub_23A7D1E84(v7, self + v13);
   swift_endAccess();
 }
 
-- (_TtC9QuickLook28QLRemoteUIHostViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9QuickLook28QLRemoteUIHostViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_23A7EE844();
     v7 = v6;
@@ -91,11 +91,11 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_23A7D25D0(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_23A7D25D0(v5, v7, bundle);
 }
 
-- (_TtC9QuickLook28QLRemoteUIHostViewController)initWithCoder:(id)a3
+- (_TtC9QuickLook28QLRemoteUIHostViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9QuickLook28QLRemoteUIHostViewController_viewModel;
   v5 = type metadata accessor for QLHostRemoteViewModel();
@@ -121,16 +121,16 @@
   sub_23A7EDFF4();
 }
 
-+ (void)remotePreviewCollectionWithCompletionHandler:(id)a3
++ (void)remotePreviewCollectionWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DFA8FD0, &qword_23A7FDBC0);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
-  *(v10 + 24) = a1;
+  *(v10 + 24) = self;
   v11 = sub_23A7EEA64();
   (*(*(v11 - 8) + 56))(v8, 1, 1, v11);
   v12 = swift_allocObject();
@@ -148,20 +148,20 @@
 
 - (void)toggleDebugView
 {
-  v2 = self;
+  selfCopy = self;
   QLRemoteUIHostViewController.toggleDebugView()();
 }
 
 - (id)accessoryView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_23A7D1800();
-  v4 = [v3 view];
+  view = [v3 view];
 
-  if (v4)
+  if (view)
   {
 
-    return v4;
+    return view;
   }
 
   else
@@ -172,35 +172,35 @@
   return result;
 }
 
-- (void)configureWithNumberOfItems:(int64_t)a3 currentPreviewItemIndex:(unint64_t)a4 itemProvider:(id)a5 stateManager:(id)a6 fullScreen:(BOOL)a7
+- (void)configureWithNumberOfItems:(int64_t)items currentPreviewItemIndex:(unint64_t)index itemProvider:(id)provider stateManager:(id)manager fullScreen:(BOOL)screen
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v13 = self;
-  QLRemoteUIHostViewController.configure(withNumberOfItems:currentPreviewItemIndex:itemProvider:stateManager:fullScreen:)(a3, a4, a5, a6, a7);
+  selfCopy = self;
+  QLRemoteUIHostViewController.configure(withNumberOfItems:currentPreviewItemIndex:itemProvider:stateManager:fullScreen:)(items, index, provider, manager, screen);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }
 
-- (void)configureWithNumberOfItems:(int64_t)a3 currentPreviewItemIndex:(unint64_t)a4 itemProvider:(id)a5 stateManager:(id)a6
+- (void)configureWithNumberOfItems:(int64_t)items currentPreviewItemIndex:(unint64_t)index itemProvider:(id)provider stateManager:(id)manager
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v11 = self;
-  QLRemoteUIHostViewController.configure(withNumberOfItems:currentPreviewItemIndex:itemProvider:stateManager:)(a3, a4, a5, a6);
+  selfCopy = self;
+  QLRemoteUIHostViewController.configure(withNumberOfItems:currentPreviewItemIndex:itemProvider:stateManager:)(items, index, provider, manager);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }
 
-- (void)toolbarButtonsForTraitCollection:(UITraitCollection *)a3 withCompletionHandler:(id)a4
+- (void)toolbarButtonsForTraitCollection:(UITraitCollection *)collection withCompletionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DFA8FD0, &qword_23A7FDBC0);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = collection;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_23A7EEA64();
@@ -215,20 +215,20 @@
   v15[3] = 0;
   v15[4] = &unk_23A7FEEE0;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  collectionCopy = collection;
+  selfCopy = self;
   sub_23A7E3DC0(0, 0, v10, &unk_23A7FEEE8, v15);
 }
 
-- (void)toolbarButtonPressedWithIdentifier:(NSString *)a3 completionHandler:(id)a4
+- (void)toolbarButtonPressedWithIdentifier:(NSString *)identifier completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DFA8FD0, &qword_23A7FDBC0);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = identifier;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_23A7EEA64();
@@ -243,18 +243,18 @@
   v15[3] = 0;
   v15[4] = &unk_23A7FEEC0;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  identifierCopy = identifier;
+  selfCopy = self;
   sub_23A7E3DC0(0, 0, v10, &unk_23A7FEEC8, v15);
 }
 
-- (void)shouldDisplayLockActivityWithCompletionHandler:(id)a3
+- (void)shouldDisplayLockActivityWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DFA8FD0, &qword_23A7FDBC0);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -270,17 +270,17 @@
   v13[3] = 0;
   v13[4] = &unk_23A7FEEA0;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_23A7E3DC0(0, 0, v8, &unk_23A7FEEA8, v13);
 }
 
-- (void)keyCommandsWithCompletionHandler:(id)a3
+- (void)keyCommandsWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DFA8FD0, &qword_23A7FDBC0);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -296,24 +296,24 @@
   v13[3] = 0;
   v13[4] = &unk_23A7FEE78;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_23A7E3DC0(0, 0, v8, &unk_23A7FEE80, v13);
 }
 
-- (void)setAppearance:(id)a3 animated:(BOOL)a4
+- (void)setAppearance:(id)appearance animated:(BOOL)animated
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DFA8FD0, &qword_23A7FDBC0);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v19 - v9;
-  v11 = a3;
-  v12 = self;
+  appearanceCopy = appearance;
+  selfCopy = self;
   sub_23A7EEA44();
   v13 = sub_23A7EEA64();
   (*(*(v13 - 8) + 56))(v10, 0, 1, v13);
   sub_23A7EEA34();
-  v14 = v11;
-  v15 = v12;
+  v14 = appearanceCopy;
+  v15 = selfCopy;
   v16 = sub_23A7EEA24();
   v17 = swift_allocObject();
   v18 = MEMORY[0x277D85700];
@@ -321,71 +321,71 @@
   *(v17 + 24) = v18;
   *(v17 + 32) = v15;
   *(v17 + 40) = v14;
-  *(v17 + 48) = a4;
+  *(v17 + 48) = animated;
   sub_23A7B9D94(0, 0, v10, &unk_23A7FEE58, v17);
 }
 
-- (void)notifyFirstTimeAppearanceWithActions:(unint64_t)a3
+- (void)notifyFirstTimeAppearanceWithActions:(unint64_t)actions
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DFA8FD0, &qword_23A7FDBC0);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = self;
+  selfCopy = self;
   sub_23A7EEA44();
   v10 = sub_23A7EEA64();
   (*(*(v10 - 8) + 56))(v8, 0, 1, v10);
   sub_23A7EEA34();
-  v11 = v9;
+  v11 = selfCopy;
   v12 = sub_23A7EEA24();
   v13 = swift_allocObject();
   v14 = MEMORY[0x277D85700];
   v13[2] = v12;
   v13[3] = v14;
   v13[4] = v11;
-  v13[5] = a3;
+  v13[5] = actions;
   sub_23A7B9D94(0, 0, v8, &unk_23A7FEE50, v13);
 }
 
-- (void)notifyStateRestorationUserInfo:(id)a3
+- (void)notifyStateRestorationUserInfo:(id)info
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DFA8FD0, &qword_23A7FDBC0);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  if (a3)
+  if (info)
   {
-    a3 = sub_23A7EE7D4();
+    info = sub_23A7EE7D4();
   }
 
-  v9 = self;
+  selfCopy = self;
   sub_23A7EEA44();
   v10 = sub_23A7EEA64();
   (*(*(v10 - 8) + 56))(v8, 0, 1, v10);
   sub_23A7EEA34();
-  v11 = v9;
+  v11 = selfCopy;
   v12 = sub_23A7EEA24();
   v13 = swift_allocObject();
   v14 = MEMORY[0x277D85700];
   v13[2] = v12;
   v13[3] = v14;
   v13[4] = v11;
-  v13[5] = a3;
+  v13[5] = info;
   sub_23A7B9D94(0, 0, v8, &unk_23A7FEE48, v13);
 }
 
-- (void)startTransitionWithSourceViewProvider:(QLTransitionContext *)a3 transitionController:(QLTransitionControllerProtocol *)a4 presenting:(BOOL)a5 useInteractiveTransition:(BOOL)a6 completionHandler:(id)a7
+- (void)startTransitionWithSourceViewProvider:(QLTransitionContext *)provider transitionController:(QLTransitionControllerProtocol *)controller presenting:(BOOL)presenting useInteractiveTransition:(BOOL)transition completionHandler:(id)handler
 {
   v13 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DFA8FD0, &qword_23A7FDBC0);
   v14 = *(*(v13 - 8) + 64);
   MEMORY[0x28223BE20](v13 - 8);
   v16 = &v24 - v15;
-  v17 = _Block_copy(a7);
+  v17 = _Block_copy(handler);
   v18 = swift_allocObject();
-  *(v18 + 16) = a3;
-  *(v18 + 24) = a4;
-  *(v18 + 32) = a5;
-  *(v18 + 33) = a6;
+  *(v18 + 16) = provider;
+  *(v18 + 24) = controller;
+  *(v18 + 32) = presenting;
+  *(v18 + 33) = transition;
   *(v18 + 40) = v17;
   *(v18 + 48) = self;
   v19 = sub_23A7EEA64();
@@ -400,19 +400,19 @@
   v21[3] = 0;
   v21[4] = &unk_23A7FEE30;
   v21[5] = v20;
-  v22 = a3;
+  providerCopy = provider;
   swift_unknownObjectRetain();
-  v23 = self;
+  selfCopy = self;
   sub_23A7E3DC0(0, 0, v16, &unk_23A7FEE38, v21);
 }
 
-- (void)preparePreviewCollectionForInvalidationWithCompletionHandler:(id)a3
+- (void)preparePreviewCollectionForInvalidationWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DFA8FD0, &qword_23A7FDBC0);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -428,17 +428,17 @@
   v13[3] = 0;
   v13[4] = &unk_23A7FEDF0;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_23A7E3DC0(0, 0, v8, &unk_23A7FEDF8, v13);
 }
 
-- (void)invalidateServiceWithCompletionHandler:(id)a3
+- (void)invalidateServiceWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DFA8FD0, &qword_23A7FDBC0);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -454,17 +454,17 @@
   v13[3] = 0;
   v13[4] = &unk_23A7FEDD0;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_23A7E3DC0(0, 0, v8, &unk_23A7FEDD8, v13);
 }
 
-- (void)prepareForActionSheetPresentationWithCompletionHandler:(id)a3
+- (void)prepareForActionSheetPresentationWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DFA8FD0, &qword_23A7FDBC0);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -480,13 +480,13 @@
   v13[3] = 0;
   v13[4] = &unk_23A7FEDA0;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_23A7E3DC0(0, 0, v8, &unk_23A7FCF60, v13);
 }
 
-- (void)saveIntoPhotoLibraryMediaWithURLWrapper:(id)a3 previewItemType:(unint64_t)a4 completionHandler:(id)a5
+- (void)saveIntoPhotoLibraryMediaWithURLWrapper:(id)wrapper previewItemType:(unint64_t)type completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   if (v8)
   {
     v9 = swift_allocObject();
@@ -499,21 +499,21 @@
     v9 = 0;
   }
 
-  v10 = a3;
-  v11 = self;
-  QLRemoteUIHostViewController.saveIntoPhotoLibraryMedia(with:previewItemType:completionHandler:)(v10, a4, v8, v9);
+  wrapperCopy = wrapper;
+  selfCopy = self;
+  QLRemoteUIHostViewController.saveIntoPhotoLibraryMedia(with:previewItemType:completionHandler:)(wrapperCopy, type, v8, v9);
   sub_23A7A2DD4(v8);
 }
 
-- (void)saveCurrentPreviewEditsSynchronously:(BOOL)a3 withCompletionHandler:(id)a4
+- (void)saveCurrentPreviewEditsSynchronously:(BOOL)synchronously withCompletionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DFA8FD0, &qword_23A7FDBC0);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  *(v12 + 16) = a3;
+  *(v12 + 16) = synchronously;
   *(v12 + 24) = v11;
   *(v12 + 32) = self;
   v13 = sub_23A7EEA64();
@@ -528,7 +528,7 @@
   v15[3] = 0;
   v15[4] = &unk_23A7FCE70;
   v15[5] = v14;
-  v16 = self;
+  selfCopy = self;
   sub_23A7E3DC0(0, 0, v10, &unk_23A7FED50, v15);
 }
 

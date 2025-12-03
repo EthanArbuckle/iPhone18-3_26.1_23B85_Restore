@@ -1,19 +1,19 @@
 @interface HUAddGuestViewController
-- (HUAddGuestViewController)initWithPinCodeManager:(id)a3 home:(id)a4;
+- (HUAddGuestViewController)initWithPinCodeManager:(id)manager home:(id)home;
 - (HUPresentationDelegate)presentationDelegate;
 - (UIBarButtonItem)addButtonItem;
-- (void)saveButtonPressed:(id)a3;
-- (void)setAddButtonItem:(id)a3;
+- (void)saveButtonPressed:(id)pressed;
+- (void)setAddButtonItem:(id)item;
 - (void)viewDidLoad;
 @end
 
 @implementation HUAddGuestViewController
 
-- (HUAddGuestViewController)initWithPinCodeManager:(id)a3 home:(id)a4
+- (HUAddGuestViewController)initWithPinCodeManager:(id)manager home:(id)home
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[HUPinCodeDetailsViewController alloc] initWithItem:0 pinCodeManager:v7 home:v6];
+  homeCopy = home;
+  managerCopy = manager;
+  v8 = [[HUPinCodeDetailsViewController alloc] initWithItem:0 pinCodeManager:managerCopy home:homeCopy];
 
   v9 = _HULocalizedStringWithDefaultValue(@"HUAddGuestPinCodeTitle", @"HUAddGuestPinCodeTitle", 1);
   v12.receiver = self;
@@ -39,51 +39,51 @@
   v5 = [v3 initWithTitle:v4 style:2 target:self action:sel_saveButtonPressed_];
   [(HUAddGuestViewController *)self setSaveButtonItem:v5];
 
-  v6 = [(HUAddGuestViewController *)self saveButtonItem];
-  [v6 setEnabled:0];
+  saveButtonItem = [(HUAddGuestViewController *)self saveButtonItem];
+  [saveButtonItem setEnabled:0];
 
-  v7 = [(HUAddGuestViewController *)self saveButtonItem];
-  v8 = [(OBBaseWelcomeController *)self navigationItem];
-  [v8 setRightBarButtonItem:v7];
+  saveButtonItem2 = [(HUAddGuestViewController *)self saveButtonItem];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:saveButtonItem2];
 
-  v9 = [(OBBaseWelcomeController *)self navigationItem];
-  v10 = [v9 rightBarButtonItem];
-  [v10 setAccessibilityIdentifier:@"Home.Locks.Guest.Pincode.Add"];
+  navigationItem2 = [(OBBaseWelcomeController *)self navigationItem];
+  rightBarButtonItem = [navigationItem2 rightBarButtonItem];
+  [rightBarButtonItem setAccessibilityIdentifier:@"Home.Locks.Guest.Pincode.Add"];
 }
 
 - (UIBarButtonItem)addButtonItem
 {
-  v2 = [(OBBaseWelcomeController *)self navigationItem];
-  v3 = [v2 rightBarButtonItem];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
 
-  return v3;
+  return rightBarButtonItem;
 }
 
-- (void)setAddButtonItem:(id)a3
+- (void)setAddButtonItem:(id)item
 {
-  v4 = a3;
-  if (!v4)
+  itemCopy = item;
+  if (!itemCopy)
   {
-    v4 = [(HUAddGuestViewController *)self saveButtonItem];
+    itemCopy = [(HUAddGuestViewController *)self saveButtonItem];
   }
 
-  v6 = v4;
-  v5 = [(OBBaseWelcomeController *)self navigationItem];
-  [v5 setRightBarButtonItem:v6];
+  v6 = itemCopy;
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v6];
 }
 
-- (void)saveButtonPressed:(id)a3
+- (void)saveButtonPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   objc_initWeak(&location, self);
-  v5 = [(HUAddGuestViewController *)self pinCodeDetailsController];
-  v6 = [v5 commitNewPinCode];
+  pinCodeDetailsController = [(HUAddGuestViewController *)self pinCodeDetailsController];
+  commitNewPinCode = [pinCodeDetailsController commitNewPinCode];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __46__HUAddGuestViewController_saveButtonPressed___block_invoke;
   v8[3] = &unk_277DBC2C8;
   objc_copyWeak(&v9, &location);
-  v7 = [v6 addCompletionBlock:v8];
+  v7 = [commitNewPinCode addCompletionBlock:v8];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);

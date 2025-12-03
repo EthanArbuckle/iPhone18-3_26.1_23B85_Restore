@@ -1,7 +1,7 @@
 @interface DefaultAppsViewController
-- (_TtC19AppSystemSettingsUI25DefaultAppsViewController)initWithCoder:(id)a3;
-- (_TtC19AppSystemSettingsUI25DefaultAppsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)setSpecifier:(id)a3;
+- (_TtC19AppSystemSettingsUI25DefaultAppsViewController)initWithCoder:(id)coder;
+- (_TtC19AppSystemSettingsUI25DefaultAppsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)setSpecifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -17,11 +17,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_21BB09E64();
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   sub_21BB230CC();
   sub_21BB230BC();
@@ -31,12 +31,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  sub_21BB0A3AC(v5);
+  specifierCopy = specifier;
+  selfCopy = self;
+  sub_21BB0A3AC(specifierCopy);
 }
 
-- (_TtC19AppSystemSettingsUI25DefaultAppsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC19AppSystemSettingsUI25DefaultAppsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   ObjectType = swift_getObjectType();
   sub_21BB230CC();
@@ -47,26 +47,26 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (name)
   {
     sub_21BB22FCC();
-    v8 = a4;
-    a3 = sub_21BB22FAC();
+    bundleCopy = bundle;
+    name = sub_21BB22FAC();
   }
 
   else
   {
-    v9 = a4;
+    bundleCopy2 = bundle;
   }
 
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v10 = [(DefaultAppsViewController *)&v12 initWithNibName:a3 bundle:a4];
+  v10 = [(DefaultAppsViewController *)&v12 initWithNibName:name bundle:bundle];
 
   return v10;
 }
 
-- (_TtC19AppSystemSettingsUI25DefaultAppsViewController)initWithCoder:(id)a3
+- (_TtC19AppSystemSettingsUI25DefaultAppsViewController)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   sub_21BB230CC();
@@ -79,8 +79,8 @@
 
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v6 = a3;
-  v7 = [(DefaultAppsViewController *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(DefaultAppsViewController *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

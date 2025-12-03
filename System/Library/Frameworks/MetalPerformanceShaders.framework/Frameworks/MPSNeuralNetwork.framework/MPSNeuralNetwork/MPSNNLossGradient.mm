@@ -3,12 +3,12 @@
 - (MPSNNLossGradient)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSNNLossGradient)initWithDevice:(id)device;
 - (MPSNNLossGradient)initWithDevice:(id)device lossDescriptor:(MPSCNNLossDescriptor *)lossDescriptor;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4;
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states;
 - (void)dealloc;
 - (void)encodeBatchToCommandBuffer:(id)commandBuffer sourceGradients:(MPSImageBatch *)sourceGradients sourceImages:(MPSImageBatch *)sourceImages labels:(MPSImageBatch *)labels weights:(MPSImageBatch *)weights sourceStates:(MPSStateBatch *)sourceStates destinationGradients:(MPSImageBatch *)destinationGradients;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSNNLossGradient
@@ -164,43 +164,43 @@ LABEL_9:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v83.receiver = self;
   v83.super_class = MPSNNLossGradient;
   [(MPSCNNBinaryKernel *)&v83 encodeWithCoder:?];
-  objc_msgSend_encodeInt32_forKey_(a3, v5, self->_lossType, @"MPSCNNLossLossType", v6, v7, v8, v9);
-  objc_msgSend_encodeInt32_forKey_(a3, v10, self->_reductionType, @"MPSCNNLossReductionType", v11, v12, v13, v14);
-  objc_msgSend_encodeBool_forKey_(a3, v15, self->_reduceAcrossBatch, @"MPSCNNLossReduceAcrossBatches", v16, v17, v18, v19);
+  objc_msgSend_encodeInt32_forKey_(coder, v5, self->_lossType, @"MPSCNNLossLossType", v6, v7, v8, v9);
+  objc_msgSend_encodeInt32_forKey_(coder, v10, self->_reductionType, @"MPSCNNLossReductionType", v11, v12, v13, v14);
+  objc_msgSend_encodeBool_forKey_(coder, v15, self->_reduceAcrossBatch, @"MPSCNNLossReduceAcrossBatches", v16, v17, v18, v19);
   *&v20 = self->_weight;
-  objc_msgSend_encodeFloat_forKey_(a3, v21, @"MPSCNNLossWeight", v22, v23, v24, v25, v26, v20);
+  objc_msgSend_encodeFloat_forKey_(coder, v21, @"MPSCNNLossWeight", v22, v23, v24, v25, v26, v20);
   *&v27 = self->_labelSmoothing;
-  objc_msgSend_encodeFloat_forKey_(a3, v28, @"MPSCNNLossLabelSmoothing", v29, v30, v31, v32, v33, v27);
-  objc_msgSend_encodeInt64_forKey_(a3, v34, self->_numberOfClasses, @"MPSCNNLossNumberOfClasses", v35, v36, v37, v38);
+  objc_msgSend_encodeFloat_forKey_(coder, v28, @"MPSCNNLossLabelSmoothing", v29, v30, v31, v32, v33, v27);
+  objc_msgSend_encodeInt64_forKey_(coder, v34, self->_numberOfClasses, @"MPSCNNLossNumberOfClasses", v35, v36, v37, v38);
   *&v39 = self->_epsilon;
-  objc_msgSend_encodeFloat_forKey_(a3, v40, @"MPSCNNLossEpsilon", v41, v42, v43, v44, v45, v39);
+  objc_msgSend_encodeFloat_forKey_(coder, v40, @"MPSCNNLossEpsilon", v41, v42, v43, v44, v45, v39);
   *&v46 = self->_delta;
-  objc_msgSend_encodeFloat_forKey_(a3, v47, @"MPSCNNLossDelta", v48, v49, v50, v51, v52, v46);
-  objc_msgSend_encodeInt32_forKey_(a3, v53, self->_computeLabelGradients, @"MPSNNLossGradientComputeLabelGradients", v54, v55, v56, v57);
+  objc_msgSend_encodeFloat_forKey_(coder, v47, @"MPSCNNLossDelta", v48, v49, v50, v51, v52, v46);
+  objc_msgSend_encodeInt32_forKey_(coder, v53, self->_computeLabelGradients, @"MPSNNLossGradientComputeLabelGradients", v54, v55, v56, v57);
   if (self->_propertyCallback && (objc_msgSend_conformsToProtocol_(self->_propertyCallback, v58, &unk_284D09FA0, v59, v60, v61, v62, v63) & 1) != 0)
   {
     v64 = objc_opt_class();
     v72 = objc_msgSend_supportsSecureCoding(v64, v65, v66, v67, v68, v69, v70, v71);
-    objc_msgSend_encodeBool_forKey_(a3, v73, v72, @"MPSCNNGram_hasPropertyCallback", v74, v75, v76, v77);
+    objc_msgSend_encodeBool_forKey_(coder, v73, v72, @"MPSCNNGram_hasPropertyCallback", v74, v75, v76, v77);
     if (v72)
     {
-      objc_msgSend_encodeObject_forKey_(a3, v78, self->_propertyCallback, @"MPSCNNGram_propertyCallback", v79, v80, v81, v82);
+      objc_msgSend_encodeObject_forKey_(coder, v78, self->_propertyCallback, @"MPSCNNGram_propertyCallback", v79, v80, v81, v82);
     }
   }
 
   else
   {
-    objc_msgSend_encodeBool_forKey_(a3, v58, 0, @"MPSCNNGram_hasPropertyCallback", v60, v61, v62, v63);
+    objc_msgSend_encodeBool_forKey_(coder, v58, 0, @"MPSCNNGram_hasPropertyCallback", v60, v61, v62, v63);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v29.receiver = self;
   v29.super_class = MPSNNLossGradient;
@@ -221,18 +221,18 @@ LABEL_9:
     propertyCallback = self->_propertyCallback;
     if (propertyCallback && objc_msgSend_conformsToProtocol_(propertyCallback, v8, &unk_284D09E18, v9, v10, v11, v12, v13))
     {
-      v14[53] = objc_msgSend_copyWithZone_(self->_propertyCallback, v8, a3, v16, v10, v11, v12, v13);
+      v14[53] = objc_msgSend_copyWithZone_(self->_propertyCallback, v8, zone, v16, v10, v11, v12, v13);
     }
 
     v17 = objc_msgSend_rowBytesForColumns_dataType_(MEMORY[0x277CD7258], v8, 16, 268435488, v10, v11, v12, v13);
     v21 = objc_msgSend_matrixDescriptorWithRows_columns_rowBytes_dataType_(MEMORY[0x277CD7258], v18, 2, 16, v17, 268435488, v19, v20);
-    if (!a4)
+    if (!device)
     {
-      a4 = (*(&self->super.super.super.isa + *MEMORY[0x277CD7350]))[2];
+      device = (*(&self->super.super.super.isa + *MEMORY[0x277CD7350]))[2];
     }
 
     v22 = objc_alloc(MEMORY[0x277CD7250]);
-    v14[54] = objc_msgSend_initWithDevice_descriptor_(v22, v23, a4, v21, v24, v25, v26, v27);
+    v14[54] = objc_msgSend_initWithDevice_descriptor_(v22, v23, device, v21, v24, v25, v26, v27);
   }
 
   return v14;
@@ -260,18 +260,18 @@ LABEL_9:
   return objc_msgSend_stringWithFormat_(v3, v5, @"%@\n\tlossType: %d\treductionType: %d, across batch: %s\tweight: %f\tlabelSmoothing: %f\tnumberOfClasses: %lu\tepsilon: %f\tdelta: %f", v6, v7, v8, v9, v10, v4, self->_lossType, self->_reductionType, v11, self->_weight, self->_labelSmoothing, self->_numberOfClasses, self->_epsilon, self->_delta);
 }
 
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states
 {
   v70.receiver = self;
   v70.super_class = MPSNNLossGradient;
-  v5 = [(MPSCNNBinaryKernel *)&v70 destinationImageDescriptorForSourceImages:a3 sourceStates:a4];
-  v12 = objc_msgSend_objectAtIndexedSubscript_(a3, v6, 1, v7, v8, v9, v10, v11);
+  v5 = [(MPSCNNBinaryKernel *)&v70 destinationImageDescriptorForSourceImages:images sourceStates:states];
+  v12 = objc_msgSend_objectAtIndexedSubscript_(images, v6, 1, v7, v8, v9, v10, v11);
   v20 = objc_msgSend_width(v12, v13, v14, v15, v16, v17, v18, v19);
   objc_msgSend_setWidth_(v5, v21, v20, v22, v23, v24, v25, v26);
-  v33 = objc_msgSend_objectAtIndexedSubscript_(a3, v27, 1, v28, v29, v30, v31, v32);
+  v33 = objc_msgSend_objectAtIndexedSubscript_(images, v27, 1, v28, v29, v30, v31, v32);
   v41 = objc_msgSend_height(v33, v34, v35, v36, v37, v38, v39, v40);
   objc_msgSend_setHeight_(v5, v42, v41, v43, v44, v45, v46, v47);
-  v54 = objc_msgSend_objectAtIndexedSubscript_(a3, v48, 1, v49, v50, v51, v52, v53);
+  v54 = objc_msgSend_objectAtIndexedSubscript_(images, v48, 1, v49, v50, v51, v52, v53);
   v62 = objc_msgSend_featureChannels(v54, v55, v56, v57, v58, v59, v60, v61);
   objc_msgSend_setFeatureChannels_(v5, v63, v62, v64, v65, v66, v67, v68);
   return v5;
@@ -330,7 +330,7 @@ LABEL_9:
       v63 = &OBJC_IVAR___MPSNNScale__destSize;
       v228 = labels;
       batch = v53;
-      v225 = self;
+      selfCopy2 = self;
       if (sourceStates)
       {
 LABEL_17:
@@ -394,7 +394,7 @@ LABEL_17:
       v63 = &OBJC_IVAR___MPSNNScale__destSize;
       v228 = labels;
       batch = v53;
-      v225 = self;
+      selfCopy2 = self;
       if (sourceStates)
       {
         goto LABEL_17;
@@ -441,7 +441,7 @@ LABEL_32:
 
     while (v223 != v156);
     v194 = batch;
-    if (v225->_reduceAcrossBatch && v224 && v225->_reductionType == 3)
+    if (selfCopy2->_reduceAcrossBatch && v224 && selfCopy2->_reductionType == 3)
     {
       v236 = 0u;
       v237 = 0u;
@@ -473,7 +473,7 @@ LABEL_32:
       v194 = batch;
       MPSImageBatchIncrementReadCount(batch, 1);
       MPSImageBatchIncrementReadCount(v226, 1);
-      objc_msgSend_encodeBatchToCommandBuffer_primaryImages_secondaryImages_inStates_destinationImages_(v225, v203, v229, batch, v226, v222, destinationGradients, v204);
+      objc_msgSend_encodeBatchToCommandBuffer_primaryImages_secondaryImages_inStates_destinationImages_(selfCopy2, v203, v229, batch, v226, v222, destinationGradients, v204);
       v232 = 0u;
       v233 = 0u;
       v230 = 0u;
@@ -502,16 +502,16 @@ LABEL_32:
       }
     }
 
-    objc_msgSend_encodeBatchToCommandBuffer_primaryImages_secondaryImages_inStates_destinationImages_(v225, v190, v229, v194, v226, v222, destinationGradients, v193);
+    objc_msgSend_encodeBatchToCommandBuffer_primaryImages_secondaryImages_inStates_destinationImages_(selfCopy2, v190, v229, v194, v226, v222, destinationGradients, v193);
     if (sourceStates)
     {
       objc_msgSend_objectAtIndexedSubscript_(sourceStates, v215, 0, v216, v217, v218, v219, v220);
-      v225->_delta = delta;
-      v225->_epsilon = epsilon;
-      v225->_labelSmoothing = labelSmoothing;
+      selfCopy2->_delta = delta;
+      selfCopy2->_epsilon = epsilon;
+      selfCopy2->_labelSmoothing = labelSmoothing;
     }
 
-    else if (!v225->_propertyCallback)
+    else if (!selfCopy2->_propertyCallback)
     {
 LABEL_55:
       if (v224)
@@ -525,7 +525,7 @@ LABEL_55:
       return;
     }
 
-    v225->_weight = weight;
+    selfCopy2->_weight = weight;
     goto LABEL_55;
   }
 }
@@ -583,7 +583,7 @@ LABEL_29:
     v90 = 1;
     v132 = &OBJC_IVAR___MPSNNScale__destSize;
     v230 = labels;
-    v224 = self;
+    selfCopy2 = self;
     v225 = sourceStates;
     if (!sourceStates)
     {
@@ -655,7 +655,7 @@ LABEL_30:
 
   v132 = &OBJC_IVAR___MPSNNScale__destSize;
   v230 = labels;
-  v224 = self;
+  selfCopy2 = self;
   v225 = sourceStates;
   if (sourceStates)
   {
@@ -704,7 +704,7 @@ LABEL_34:
   }
 
 LABEL_36:
-  if ((*(&v224->super.super.super.isa + v223) & 1) != 0 && v51 && v224->_reductionType == 3)
+  if ((*(&selfCopy2->super.super.super.isa + v223) & 1) != 0 && v51 && selfCopy2->_reductionType == 3)
   {
     v237 = 0u;
     v238 = 0u;
@@ -735,7 +735,7 @@ LABEL_36:
 
     MPSImageBatchIncrementReadCount(batch, 1);
     MPSImageBatchIncrementReadCount(v226, 1);
-    v205 = objc_msgSend_encodeBatchToCommandBuffer_primaryImages_secondaryImages_inStates_(v224, v207, commandBuffer, batch, v226, v59, v208, v209);
+    v205 = objc_msgSend_encodeBatchToCommandBuffer_primaryImages_secondaryImages_inStates_(selfCopy2, v207, commandBuffer, batch, v226, v59, v208, v209);
     v231 = 0u;
     v232 = 0u;
     v233 = 0u;
@@ -763,12 +763,12 @@ LABEL_36:
       while (v219);
     }
 
-    objc_msgSend_encodeBatchToCommandBuffer_primaryImages_secondaryImages_inStates_destinationImages_(v224, v215, commandBuffer, batch, v226, v59, v205, v218, v223);
+    objc_msgSend_encodeBatchToCommandBuffer_primaryImages_secondaryImages_inStates_destinationImages_(selfCopy2, v215, commandBuffer, batch, v226, v59, v205, v218, v223);
     v206 = v225;
     if (!v225)
     {
 LABEL_56:
-      if (!v224->_propertyCallback)
+      if (!selfCopy2->_propertyCallback)
       {
         goto LABEL_58;
       }
@@ -779,7 +779,7 @@ LABEL_56:
 
   else
   {
-    v205 = objc_msgSend_encodeBatchToCommandBuffer_primaryImages_secondaryImages_inStates_(v224, v36, commandBuffer, batch, v226, v59, v41, v42, v223);
+    v205 = objc_msgSend_encodeBatchToCommandBuffer_primaryImages_secondaryImages_inStates_(selfCopy2, v36, commandBuffer, batch, v226, v59, v41, v42, v223);
     v206 = v225;
     if (!v225)
     {
@@ -788,11 +788,11 @@ LABEL_56:
   }
 
   objc_msgSend_objectAtIndexedSubscript_(v206, v199, 0, v200, v201, v202, v203, v204);
-  v224->_delta = delta;
-  v224->_epsilon = epsilon;
-  v224->_labelSmoothing = labelSmoothing;
+  selfCopy2->_delta = delta;
+  selfCopy2->_epsilon = epsilon;
+  selfCopy2->_labelSmoothing = labelSmoothing;
 LABEL_57:
-  v224->_weight = weight;
+  selfCopy2->_weight = weight;
 LABEL_58:
   if (v51)
   {

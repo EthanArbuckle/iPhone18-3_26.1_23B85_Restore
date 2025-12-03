@@ -1,38 +1,38 @@
 @interface ATXFileIdentityWithMetadata
-- (ATXFileIdentityWithMetadata)initWithCoder:(id)a3;
-- (ATXFileIdentityWithMetadata)initWithItemURL:(id)a3 bookmarkData:(id)a4 dateLastOpened:(id)a5 dateModified:(id)a6 dateCreated:(id)a7 bundleIdentifier:(id)a8;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXFileIdentityWithMetadata:(id)a3;
-- (id)resolveItemURLWithError:(id *)a3;
+- (ATXFileIdentityWithMetadata)initWithCoder:(id)coder;
+- (ATXFileIdentityWithMetadata)initWithItemURL:(id)l bookmarkData:(id)data dateLastOpened:(id)opened dateModified:(id)modified dateCreated:(id)created bundleIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXFileIdentityWithMetadata:(id)metadata;
+- (id)resolveItemURLWithError:(id *)error;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXFileIdentityWithMetadata
 
-- (ATXFileIdentityWithMetadata)initWithItemURL:(id)a3 bookmarkData:(id)a4 dateLastOpened:(id)a5 dateModified:(id)a6 dateCreated:(id)a7 bundleIdentifier:(id)a8
+- (ATXFileIdentityWithMetadata)initWithItemURL:(id)l bookmarkData:(id)data dateLastOpened:(id)opened dateModified:(id)modified dateCreated:(id)created bundleIdentifier:(id)identifier
 {
-  v27 = a3;
-  v15 = a4;
-  v26 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  lCopy = l;
+  dataCopy = data;
+  openedCopy = opened;
+  modifiedCopy = modified;
+  createdCopy = created;
+  identifierCopy = identifier;
   v28.receiver = self;
   v28.super_class = ATXFileIdentityWithMetadata;
   v19 = [(ATXFileIdentityWithMetadata *)&v28 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_itemURL, a3);
-    v21 = [v15 copy];
+    objc_storeStrong(&v19->_itemURL, l);
+    v21 = [dataCopy copy];
     bookmarkData = v20->_bookmarkData;
     v20->_bookmarkData = v21;
 
-    objc_storeStrong(&v20->_dateLastOpened, a5);
-    objc_storeStrong(&v20->_dateModified, a6);
-    objc_storeStrong(&v20->_dateCreated, a7);
-    v23 = [v18 copy];
+    objc_storeStrong(&v20->_dateLastOpened, opened);
+    objc_storeStrong(&v20->_dateModified, modified);
+    objc_storeStrong(&v20->_dateCreated, created);
+    v23 = [identifierCopy copy];
     bundleIdentifier = v20->_bundleIdentifier;
     v20->_bundleIdentifier = v23;
   }
@@ -40,7 +40,7 @@
   return v20;
 }
 
-- (id)resolveItemURLWithError:(id *)a3
+- (id)resolveItemURLWithError:(id *)error
 {
   bookmarkData = self->_bookmarkData;
   if (bookmarkData)
@@ -66,11 +66,11 @@ LABEL_6:
   }
 
 LABEL_3:
-  if (a3)
+  if (error)
   {
     v7 = v6;
     v8 = 0;
-    *a3 = v6;
+    *error = v6;
   }
 
   else
@@ -93,29 +93,29 @@ LABEL_8:
   return [(NSString *)self->_bundleIdentifier hash]- v7 + 32 * v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXFileIdentityWithMetadata *)self isEqualToATXFileIdentityWithMetadata:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXFileIdentityWithMetadata *)self isEqualToATXFileIdentityWithMetadata:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXFileIdentityWithMetadata:(id)a3
+- (BOOL)isEqualToATXFileIdentityWithMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = self->_itemURL;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == metadataCopy[1])
   {
   }
 
@@ -131,7 +131,7 @@ LABEL_8:
 
   v8 = self->_bookmarkData;
   v9 = v8;
-  if (v8 == v4[2])
+  if (v8 == metadataCopy[2])
   {
   }
 
@@ -147,7 +147,7 @@ LABEL_8:
 
   v11 = self->_dateLastOpened;
   v12 = v11;
-  if (v11 == v4[3])
+  if (v11 == metadataCopy[3])
   {
   }
 
@@ -163,7 +163,7 @@ LABEL_8:
 
   v14 = self->_dateModified;
   v15 = v14;
-  if (v14 == v4[4])
+  if (v14 == metadataCopy[4])
   {
   }
 
@@ -179,7 +179,7 @@ LABEL_8:
 
   v17 = self->_dateCreated;
   v18 = v17;
-  if (v17 == v4[5])
+  if (v17 == metadataCopy[5])
   {
   }
 
@@ -197,7 +197,7 @@ LABEL_19:
 
   v22 = self->_bundleIdentifier;
   v23 = v22;
-  if (v22 == v4[6])
+  if (v22 == metadataCopy[6])
   {
     v20 = 1;
   }
@@ -211,27 +211,27 @@ LABEL_20:
   return v20;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   itemURL = self->_itemURL;
-  v5 = a3;
-  [v5 encodeObject:itemURL forKey:@"itemURL"];
-  [v5 encodeObject:self->_bookmarkData forKey:@"bookmarkData"];
-  [v5 encodeObject:self->_dateLastOpened forKey:@"dateLastOpened"];
-  [v5 encodeObject:self->_dateModified forKey:@"dateModified"];
-  [v5 encodeObject:self->_dateCreated forKey:@"dateCreated"];
-  [v5 encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:itemURL forKey:@"itemURL"];
+  [coderCopy encodeObject:self->_bookmarkData forKey:@"bookmarkData"];
+  [coderCopy encodeObject:self->_dateLastOpened forKey:@"dateLastOpened"];
+  [coderCopy encodeObject:self->_dateModified forKey:@"dateModified"];
+  [coderCopy encodeObject:self->_dateCreated forKey:@"dateCreated"];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
 }
 
-- (ATXFileIdentityWithMetadata)initWithCoder:(id)a3
+- (ATXFileIdentityWithMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"itemURL"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bookmarkData"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateLastOpened"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateModified"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateCreated"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"itemURL"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bookmarkData"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateLastOpened"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateModified"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateCreated"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
 
   v11 = [(ATXFileIdentityWithMetadata *)self initWithItemURL:v5 bookmarkData:v6 dateLastOpened:v7 dateModified:v8 dateCreated:v9 bundleIdentifier:v10];
   return v11;

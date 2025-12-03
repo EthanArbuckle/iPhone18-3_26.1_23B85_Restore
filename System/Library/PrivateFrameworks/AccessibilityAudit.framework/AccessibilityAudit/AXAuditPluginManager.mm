@@ -1,6 +1,6 @@
 @interface AXAuditPluginManager
 + (id)sharedManager;
-- (void)_loadAuditBundle:(id)a3;
+- (void)_loadAuditBundle:(id)bundle;
 - (void)loadAuditBundles;
 @end
 
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __37__AXAuditPluginManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken_2 != -1)
   {
     dispatch_once(&sharedManager_onceToken_2, block);
@@ -31,13 +31,13 @@ uint64_t __37__AXAuditPluginManager_sharedManager__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_loadAuditBundle:(id)a3
+- (void)_loadAuditBundle:(id)bundle
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v5 = [v4 bundleIdentifier];
-  v6 = [v5 isEqualToString:@"com.apple.accessibility.AccessibilityAuditUI"];
+  bundleCopy = bundle;
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v6 = [bundleIdentifier isEqualToString:@"com.apple.accessibility.AccessibilityAuditUI"];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -52,13 +52,13 @@ uint64_t __37__AXAuditPluginManager_sharedManager__block_invoke(uint64_t a1)
 
     v22 = v7;
     v23 = 2112;
-    v24 = v3;
+    v24 = bundleCopy;
     _os_log_impl(&dword_23D6FE000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%s: shouldLoad: %@, %@ ", buf, 0x20u);
   }
 
   if ((v6 & 1) == 0)
   {
-    v8 = [MEMORY[0x277CCA8D8] bundleWithPath:v3];
+    v8 = [MEMORY[0x277CCA8D8] bundleWithPath:bundleCopy];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       *buf = 136315394;
@@ -70,17 +70,17 @@ uint64_t __37__AXAuditPluginManager_sharedManager__block_invoke(uint64_t a1)
 
     if (v8)
     {
-      v9 = [(__CFString *)v8 principalClass];
+      principalClass = [(__CFString *)v8 principalClass];
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         *buf = 136315394;
         v20 = "[AXAuditPluginManager _loadAuditBundle:]";
         v21 = 2112;
-        v22 = v9;
+        v22 = principalClass;
         _os_log_impl(&dword_23D6FE000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%s: principalClass: %@ ", buf, 0x16u);
       }
 
-      if ([(__CFString *)v9 isSubclassOfClass:objc_opt_class()])
+      if ([(__CFString *)principalClass isSubclassOfClass:objc_opt_class()])
       {
         v18 = 0;
         v10 = [(__CFString *)v8 loadAndReturnError:&v18];
@@ -97,10 +97,10 @@ uint64_t __37__AXAuditPluginManager_sharedManager__block_invoke(uint64_t a1)
             v12 = @"NO";
           }
 
-          v13 = [(__CFString *)v8 isLoaded];
+          isLoaded = [(__CFString *)v8 isLoaded];
           *buf = 136315906;
           v20 = "[AXAuditPluginManager _loadAuditBundle:]";
-          if (v13)
+          if (isLoaded)
           {
             v14 = @"YES";
           }
@@ -160,8 +160,8 @@ uint64_t __37__AXAuditPluginManager_sharedManager__block_invoke(uint64_t a1)
           }
 
           v9 = *(*(&v13 + 1) + 8 * i);
-          v10 = [v9 lastPathComponent];
-          v11 = [v10 hasPrefix:@"AccessibilityAudit"];
+          lastPathComponent = [v9 lastPathComponent];
+          v11 = [lastPathComponent hasPrefix:@"AccessibilityAudit"];
 
           if (v11)
           {

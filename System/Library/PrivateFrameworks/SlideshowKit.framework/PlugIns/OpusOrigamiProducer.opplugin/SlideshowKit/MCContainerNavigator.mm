@@ -1,17 +1,17 @@
 @interface MCContainerNavigator
 - (MCContainerNavigator)init;
-- (MCContainerNavigator)initWithImprint:(id)a3 andMontage:(id)a4;
+- (MCContainerNavigator)initWithImprint:(id)imprint andMontage:(id)montage;
 - (NSSet)plugs;
 - (id)imprint;
-- (id)plugForID:(id)a3;
-- (id)setPlugForContainer:(id)a3 forID:(id)a4;
+- (id)plugForID:(id)d;
+- (id)setPlugForContainer:(id)container forID:(id)d;
 - (unint64_t)countOfPlugs;
-- (void)changeIDOfPlug:(id)a3 toID:(id)a4;
+- (void)changeIDOfPlug:(id)plug toID:(id)d;
 - (void)demolish;
 - (void)removeAllPlugs;
-- (void)removePlug:(id)a3;
-- (void)removePlugForID:(id)a3;
-- (void)setStartPlugID:(id)a3;
+- (void)removePlug:(id)plug;
+- (void)removePlugForID:(id)d;
+- (void)setStartPlugID:(id)d;
 @end
 
 @implementation MCContainerNavigator
@@ -29,15 +29,15 @@
   return v2;
 }
 
-- (MCContainerNavigator)initWithImprint:(id)a3 andMontage:(id)a4
+- (MCContainerNavigator)initWithImprint:(id)imprint andMontage:(id)montage
 {
   v20.receiver = self;
   v20.super_class = MCContainerNavigator;
   v6 = [MCContainer initWithImprint:"initWithImprint:andMontage:" andMontage:?];
   if (v6)
   {
-    v15 = a3;
-    v7 = [a3 objectForKey:@"plugs"];
+    imprintCopy = imprint;
+    v7 = [imprint objectForKey:@"plugs"];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -57,7 +57,7 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [MCObject objectWithImprint:*(*(&v16 + 1) + 8 * v11) andMontage:a4];
+          v12 = [MCObject objectWithImprint:*(*(&v16 + 1) + 8 * v11) andMontage:montage];
           [(NSMutableDictionary *)v6->mPlugs setObject:v12 forKey:[(MCObject *)v12 idInSupercontainer]];
           [(MCObject *)v12 setSupercontainer:v6];
           v11 = v11 + 1;
@@ -70,7 +70,7 @@
       while (v9);
     }
 
-    v13 = [v15 objectForKey:@"startPlugID"];
+    v13 = [imprintCopy objectForKey:@"startPlugID"];
     v6->mStartPlugID = v13;
     v6->mStartPlug = [(NSMutableDictionary *)v6->mPlugs objectForKey:v13];
   }
@@ -89,8 +89,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(NSMutableDictionary *)self->mPlugs objectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->mPlugs objectEnumerator];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = *v10;
@@ -100,13 +100,13 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v9 + 1) + 8 * i) demolish];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -123,15 +123,15 @@
 {
   v17.receiver = self;
   v17.super_class = MCContainerNavigator;
-  v3 = [(MCContainer *)&v17 imprint];
+  imprint = [(MCContainer *)&v17 imprint];
   v4 = objc_autoreleasePoolPush();
   v5 = +[NSMutableArray array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(MCContainerNavigator *)self plugs];
-  v7 = [(NSSet *)v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
+  plugs = [(MCContainerNavigator *)self plugs];
+  v7 = [(NSSet *)plugs countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -142,27 +142,27 @@
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(plugs);
         }
 
         [v5 addObject:{objc_msgSend(*(*(&v13 + 1) + 8 * i), "imprint")}];
       }
 
-      v8 = [(NSSet *)v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
+      v8 = [(NSSet *)plugs countByEnumeratingWithState:&v13 objects:v18 count:16];
     }
 
     while (v8);
   }
 
-  [v3 setObject:v5 forKey:@"plugs"];
+  [imprint setObject:v5 forKey:@"plugs"];
   mStartPlugID = self->mStartPlugID;
   if (mStartPlugID)
   {
-    [v3 setObject:mStartPlugID forKey:@"startPlugID"];
+    [imprint setObject:mStartPlugID forKey:@"startPlugID"];
   }
 
   objc_autoreleasePoolPop(v4);
-  return v3;
+  return imprint;
 }
 
 - (NSSet)plugs
@@ -192,33 +192,33 @@
   return v4;
 }
 
-- (id)plugForID:(id)a3
+- (id)plugForID:(id)d
 {
   mPlugs = self->mPlugs;
   objc_sync_enter(mPlugs);
-  v6 = [(NSMutableDictionary *)self->mPlugs objectForKey:a3];
+  v6 = [(NSMutableDictionary *)self->mPlugs objectForKey:d];
   objc_sync_exit(mPlugs);
 
   return v6;
 }
 
-- (id)setPlugForContainer:(id)a3 forID:(id)a4
+- (id)setPlugForContainer:(id)container forID:(id)d
 {
-  [(MCContainerNavigator *)self removePlugForID:a4];
+  [(MCContainerNavigator *)self removePlugForID:d];
   v7 = [(MCObject *)[MCPlugHaven alloc] initFromScratchWithMontage:self->super.super.mMontage];
   [v7 setSupercontainer:self];
-  [v7 setContainer:a3];
-  [v7 setIDInSupercontainer:a4];
+  [v7 setContainer:container];
+  [v7 setIDInSupercontainer:d];
   v8 = [[NSSet alloc] initWithObjects:{v7, 0}];
   [(MCContainerNavigator *)self willChangeValueForKey:@"plugs" withSetMutation:1 usingObjects:v8];
   mPlugs = self->mPlugs;
   objc_sync_enter(mPlugs);
-  [(NSMutableDictionary *)self->mPlugs setObject:v7 forKey:a4];
+  [(NSMutableDictionary *)self->mPlugs setObject:v7 forKey:d];
   if (!self->mStartPlugID)
   {
-    v10 = a4;
-    self->mStartPlugID = v10;
-    self->mStartPlug = [(NSMutableDictionary *)self->mPlugs objectForKey:v10];
+    dCopy = d;
+    self->mStartPlugID = dCopy;
+    self->mStartPlug = [(NSMutableDictionary *)self->mPlugs objectForKey:dCopy];
   }
 
   objc_sync_exit(mPlugs);
@@ -227,46 +227,46 @@
   return v7;
 }
 
-- (void)changeIDOfPlug:(id)a3 toID:(id)a4
+- (void)changeIDOfPlug:(id)plug toID:(id)d
 {
-  v7 = [a3 idInSupercontainer];
-  if (([a4 isEqualToString:v7] & 1) == 0)
+  idInSupercontainer = [plug idInSupercontainer];
+  if (([d isEqualToString:idInSupercontainer] & 1) == 0)
   {
     mPlugs = self->mPlugs;
     objc_sync_enter(mPlugs);
-    v9 = v7;
-    [(NSMutableDictionary *)self->mPlugs setObject:a3 forKey:a4];
-    [(NSMutableDictionary *)self->mPlugs removeObjectForKey:v7];
+    v9 = idInSupercontainer;
+    [(NSMutableDictionary *)self->mPlugs setObject:plug forKey:d];
+    [(NSMutableDictionary *)self->mPlugs removeObjectForKey:idInSupercontainer];
 
-    [a3 setIDInSupercontainer:a4];
+    [plug setIDInSupercontainer:d];
 
     objc_sync_exit(mPlugs);
   }
 }
 
-- (void)removePlug:(id)a3
+- (void)removePlug:(id)plug
 {
-  v6 = [[NSSet alloc] initWithObjects:{a3, 0}];
+  v6 = [[NSSet alloc] initWithObjects:{plug, 0}];
   [(MCContainerNavigator *)self willChangeValueForKey:@"plugs" withSetMutation:2 usingObjects:?];
   mPlugs = self->mPlugs;
   objc_sync_enter(mPlugs);
-  if ([objc_msgSend(a3 "idInSupercontainer")])
+  if ([objc_msgSend(plug "idInSupercontainer")])
   {
 
     self->mStartPlugID = 0;
     self->mStartPlug = 0;
   }
 
-  -[NSMutableDictionary removeObjectForKey:](self->mPlugs, "removeObjectForKey:", [a3 idInSupercontainer]);
+  -[NSMutableDictionary removeObjectForKey:](self->mPlugs, "removeObjectForKey:", [plug idInSupercontainer]);
   objc_sync_exit(mPlugs);
   [(MCContainerNavigator *)self didChangeValueForKey:@"plugs" withSetMutation:2 usingObjects:v6];
-  [a3 setContainer:0];
-  [a3 setSupercontainer:0];
+  [plug setContainer:0];
+  [plug setSupercontainer:0];
 }
 
-- (void)removePlugForID:(id)a3
+- (void)removePlugForID:(id)d
 {
-  v4 = [(MCContainerNavigator *)self plugForID:a3];
+  v4 = [(MCContainerNavigator *)self plugForID:d];
   if (v4)
   {
 
@@ -276,8 +276,8 @@
 
 - (void)removeAllPlugs
 {
-  v3 = [(MCContainerNavigator *)self plugs];
-  [(MCContainerNavigator *)self willChangeValueForKey:@"plugs" withSetMutation:2 usingObjects:v3];
+  plugs = [(MCContainerNavigator *)self plugs];
+  [(MCContainerNavigator *)self willChangeValueForKey:@"plugs" withSetMutation:2 usingObjects:plugs];
   mPlugs = self->mPlugs;
   objc_sync_enter(mPlugs);
 
@@ -285,12 +285,12 @@
   self->mStartPlug = 0;
   [(NSMutableDictionary *)self->mPlugs removeAllObjects];
   objc_sync_exit(mPlugs);
-  [(MCContainerNavigator *)self didChangeValueForKey:@"plugs" withSetMutation:2 usingObjects:v3];
+  [(MCContainerNavigator *)self didChangeValueForKey:@"plugs" withSetMutation:2 usingObjects:plugs];
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v5 = [(NSSet *)v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [(NSSet *)plugs countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = *v10;
@@ -300,7 +300,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(plugs);
         }
 
         v8 = *(*(&v9 + 1) + 8 * i);
@@ -308,27 +308,27 @@
         [v8 setSupercontainer:0];
       }
 
-      v5 = [(NSSet *)v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [(NSSet *)plugs countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)setStartPlugID:(id)a3
+- (void)setStartPlugID:(id)d
 {
   mPlugs = self->mPlugs;
   objc_sync_enter(mPlugs);
   mStartPlugID = self->mStartPlugID;
-  if (a3)
+  if (d)
   {
     if (mStartPlugID)
     {
     }
 
-    v7 = a3;
-    self->mStartPlugID = v7;
-    v8 = [(NSMutableDictionary *)self->mPlugs objectForKey:v7];
+    dCopy = d;
+    self->mStartPlugID = dCopy;
+    v8 = [(NSMutableDictionary *)self->mPlugs objectForKey:dCopy];
   }
 
   else if (mStartPlugID)

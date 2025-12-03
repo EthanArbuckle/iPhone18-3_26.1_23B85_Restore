@@ -1,24 +1,24 @@
 @interface ATXUpcomingCommuteToWorkAnchor
 + (BOOL)isActive;
-+ (id)anchorOccurenceDateFromDuetEvent:(id)a3;
-+ (id)fetchAnchorOccurrencesBetweenStartDate:(id)a3 endDate:(id)a4;
++ (id)anchorOccurenceDateFromDuetEvent:(id)event;
++ (id)fetchAnchorOccurrencesBetweenStartDate:(id)date endDate:(id)endDate;
 + (id)predicateForContextStoreRegistration;
 + (id)sampleEvent;
 @end
 
 @implementation ATXUpcomingCommuteToWorkAnchor
 
-+ (id)fetchAnchorOccurrencesBetweenStartDate:(id)a3 endDate:(id)a4
++ (id)fetchAnchorOccurrencesBetweenStartDate:(id)date endDate:(id)endDate
 {
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___ATXUpcomingCommuteToWorkAnchor;
-  v5 = objc_msgSendSuper2(&v10, sel_fetchAnchorOccurrencesBetweenStartDate_endDate_, a3, a4);
+  v5 = objc_msgSendSuper2(&v10, sel_fetchAnchorOccurrencesBetweenStartDate_endDate_, date, endDate);
   v6 = [v5 _pas_filteredArrayWithTest:&__block_literal_global_249];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __81__ATXUpcomingCommuteToWorkAnchor_fetchAnchorOccurrencesBetweenStartDate_endDate___block_invoke_2;
   v9[3] = &__block_descriptor_40_e44___ATXTripDuetEvent_16__0__ATXTripDuetEvent_8l;
-  v9[4] = a1;
+  v9[4] = self;
   v7 = [v6 _pas_mappedArrayWithTransform:v9];
 
   return v7;
@@ -42,28 +42,28 @@ id __81__ATXUpcomingCommuteToWorkAnchor_fetchAnchorOccurrencesBetweenStartDate_e
   return v4;
 }
 
-+ (id)anchorOccurenceDateFromDuetEvent:(id)a3
++ (id)anchorOccurenceDateFromDuetEvent:(id)event
 {
   v3 = MEMORY[0x277CBEAA8];
-  v4 = a3;
+  eventCopy = event;
   v5 = [v3 alloc];
   [objc_opt_class() secondsOfInfluence];
   v7 = -v6;
-  v8 = [v4 endDate];
+  endDate = [eventCopy endDate];
 
-  v9 = [v5 initWithTimeInterval:v8 sinceDate:v7];
+  v9 = [v5 initWithTimeInterval:endDate sinceDate:v7];
 
   return v9;
 }
 
 + (id)predicateForContextStoreRegistration
 {
-  v2 = [objc_opt_class() keyPathForContextStore];
+  keyPathForContextStore = [objc_opt_class() keyPathForContextStore];
   v3 = MEMORY[0x277CFE360];
-  v4 = [MEMORY[0x277CFE338] locationOfInterestTypeKey];
-  v5 = [MEMORY[0x277CFE338] transitionWithinTimeIntervalKey];
-  v6 = [MEMORY[0x277CFE338] transitionWithinTimeIntervalKey];
-  v7 = [v3 predicateForKeyPath:v2 withFormat:@"SUBQUERY(SELF.%@.value, $prediction, $prediction.%K = %@ AND $prediction.%K <= %@ AND $prediction.%K > %@).@count > 0", v2, v4, &unk_283A57C38, v5, &unk_283A57C50, v6, &unk_283A57C68];
+  locationOfInterestTypeKey = [MEMORY[0x277CFE338] locationOfInterestTypeKey];
+  transitionWithinTimeIntervalKey = [MEMORY[0x277CFE338] transitionWithinTimeIntervalKey];
+  transitionWithinTimeIntervalKey2 = [MEMORY[0x277CFE338] transitionWithinTimeIntervalKey];
+  v7 = [v3 predicateForKeyPath:keyPathForContextStore withFormat:@"SUBQUERY(SELF.%@.value, $prediction, $prediction.%K = %@ AND $prediction.%K <= %@ AND $prediction.%K > %@).@count > 0", keyPathForContextStore, locationOfInterestTypeKey, &unk_283A57C38, transitionWithinTimeIntervalKey, &unk_283A57C50, transitionWithinTimeIntervalKey2, &unk_283A57C68];
 
   return v7;
 }

@@ -1,60 +1,60 @@
 @interface DEDRequestRecord
-- (DEDRequestRecord)initWithRequest:(id)a3 response:(id)a4 session:(id)a5 cookies:(id)a6 body:(id)a7 error:(id)a8;
-- (DEDRequestRecord)initWithURL:(id)a3 httpMethod:(id)a4 responseData:(id)a5;
-- (id)formattedBody:(id)a3 error:(id)a4;
-- (id)formattedRequestHeader:(id)a3 session:(id)a4 cookies:(id)a5;
-- (id)formattedResponseHeader:(id)a3;
+- (DEDRequestRecord)initWithRequest:(id)request response:(id)response session:(id)session cookies:(id)cookies body:(id)body error:(id)error;
+- (DEDRequestRecord)initWithURL:(id)l httpMethod:(id)method responseData:(id)data;
+- (id)formattedBody:(id)body error:(id)error;
+- (id)formattedRequestHeader:(id)header session:(id)session cookies:(id)cookies;
+- (id)formattedResponseHeader:(id)header;
 @end
 
 @implementation DEDRequestRecord
 
-- (DEDRequestRecord)initWithURL:(id)a3 httpMethod:(id)a4 responseData:(id)a5
+- (DEDRequestRecord)initWithURL:(id)l httpMethod:(id)method responseData:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  methodCopy = method;
+  dataCopy = data;
   v16.receiver = self;
   v16.super_class = DEDRequestRecord;
   v11 = [(DEDRequestRecord *)&v16 init];
   if (v11)
   {
-    v12 = [v8 path];
-    [(DEDRequestRecord *)v11 setURL:v12];
+    path = [lCopy path];
+    [(DEDRequestRecord *)v11 setURL:path];
 
-    v13 = [MEMORY[0x277CBEAA8] date];
-    [(DEDRequestRecord *)v11 setDate:v13];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(DEDRequestRecord *)v11 setDate:date];
 
-    [(DEDRequestRecord *)v11 setMethod:v9];
+    [(DEDRequestRecord *)v11 setMethod:methodCopy];
     [(DEDRequestRecord *)v11 setIsFailure:0];
-    v14 = [(DEDRequestRecord *)v11 formattedBody:v10 error:0];
+    v14 = [(DEDRequestRecord *)v11 formattedBody:dataCopy error:0];
     [(DEDRequestRecord *)v11 setResponseBody:v14];
   }
 
   return v11;
 }
 
-- (DEDRequestRecord)initWithRequest:(id)a3 response:(id)a4 session:(id)a5 cookies:(id)a6 body:(id)a7 error:(id)a8
+- (DEDRequestRecord)initWithRequest:(id)request response:(id)response session:(id)session cookies:(id)cookies body:(id)body error:(id)error
 {
-  v14 = a3;
-  v15 = a8;
+  requestCopy = request;
+  errorCopy = error;
   v46.receiver = self;
   v46.super_class = DEDRequestRecord;
-  v45 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
+  bodyCopy = body;
+  cookiesCopy = cookies;
+  sessionCopy = session;
+  responseCopy = response;
   v19 = [(DEDRequestRecord *)&v46 init];
-  v20 = [v14 URL];
-  v21 = [v20 query];
+  v20 = [requestCopy URL];
+  query = [v20 query];
 
-  v22 = [v14 URL];
-  v23 = [v22 path];
-  v24 = v23;
-  if (v21)
+  v22 = [requestCopy URL];
+  path = [v22 path];
+  v24 = path;
+  if (query)
   {
-    v25 = [v14 URL];
-    v26 = [v25 query];
-    v27 = [v24 stringByAppendingFormat:@"%@%@", @"?", v26];
+    v25 = [requestCopy URL];
+    query2 = [v25 query];
+    v27 = [v24 stringByAppendingFormat:@"%@%@", @"?", query2];
     URL = v19->_URL;
     v19->_URL = v27;
   }
@@ -62,46 +62,46 @@
   else
   {
     v29 = v19->_URL;
-    v19->_URL = v23;
+    v19->_URL = path;
     v24 = v29;
   }
 
-  v30 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   date = v19->_date;
-  v19->_date = v30;
+  v19->_date = date;
 
-  v32 = [v14 HTTPMethod];
+  hTTPMethod = [requestCopy HTTPMethod];
   method = v19->_method;
-  v19->_method = v32;
+  v19->_method = hTTPMethod;
 
-  v19->_isFailure = v15 != 0;
-  v34 = [(DEDRequestRecord *)v19 formattedRequestHeader:v14 session:v17 cookies:v16];
+  v19->_isFailure = errorCopy != 0;
+  v34 = [(DEDRequestRecord *)v19 formattedRequestHeader:requestCopy session:sessionCopy cookies:cookiesCopy];
 
   requestHeader = v19->_requestHeader;
   v19->_requestHeader = v34;
 
-  v36 = [v14 HTTPBody];
+  hTTPBody = [requestCopy HTTPBody];
 
-  if (v36)
+  if (hTTPBody)
   {
-    v37 = [v14 HTTPBody];
-    v38 = [(DEDRequestRecord *)v19 formattedBody:v37 error:v15];
+    hTTPBody2 = [requestCopy HTTPBody];
+    v38 = [(DEDRequestRecord *)v19 formattedBody:hTTPBody2 error:errorCopy];
     requestBody = v19->_requestBody;
     v19->_requestBody = v38;
   }
 
   else
   {
-    v37 = v19->_requestBody;
+    hTTPBody2 = v19->_requestBody;
     v19->_requestBody = &stru_285B72378;
   }
 
-  v40 = [(DEDRequestRecord *)v19 formattedResponseHeader:v18];
+  v40 = [(DEDRequestRecord *)v19 formattedResponseHeader:responseCopy];
 
   responseHeader = v19->_responseHeader;
   v19->_responseHeader = v40;
 
-  v42 = [(DEDRequestRecord *)v19 formattedBody:v45 error:v15];
+  v42 = [(DEDRequestRecord *)v19 formattedBody:bodyCopy error:errorCopy];
 
   responseBody = v19->_responseBody;
   v19->_responseBody = v42;
@@ -109,21 +109,21 @@
   return v19;
 }
 
-- (id)formattedResponseHeader:(id)a3
+- (id)formattedResponseHeader:(id)header
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  headerCopy = header;
   v4 = MEMORY[0x277CCAB68];
-  v5 = [v3 statusCode];
-  v6 = [MEMORY[0x277CCAA40] localizedStringForStatusCode:{objc_msgSend(v3, "statusCode")}];
-  v7 = [v4 stringWithFormat:@"%ld %@\n", v5, v6];
+  statusCode = [headerCopy statusCode];
+  v6 = [MEMORY[0x277CCAA40] localizedStringForStatusCode:{objc_msgSend(headerCopy, "statusCode")}];
+  v7 = [v4 stringWithFormat:@"%ld %@\n", statusCode, v6];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [v3 allHeaderFields];
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  allHeaderFields = [headerCopy allHeaderFields];
+  v9 = [allHeaderFields countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
     v10 = v9;
@@ -134,16 +134,16 @@
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allHeaderFields);
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
-        v14 = [v3 allHeaderFields];
-        v15 = [v14 objectForKeyedSubscript:v13];
+        allHeaderFields2 = [headerCopy allHeaderFields];
+        v15 = [allHeaderFields2 objectForKeyedSubscript:v13];
         [v7 appendFormat:@"%@: %@\n", v13, v15];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v10 = [allHeaderFields countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v10);
@@ -156,32 +156,32 @@
   return v16;
 }
 
-- (id)formattedRequestHeader:(id)a3 session:(id)a4 cookies:(id)a5
+- (id)formattedRequestHeader:(id)header session:(id)session cookies:(id)cookies
 {
   v62 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v44 = a5;
+  headerCopy = header;
+  sessionCopy = session;
+  cookiesCopy = cookies;
   v9 = MEMORY[0x277CCAB68];
-  v10 = [v7 HTTPMethod];
-  v11 = [v7 URL];
+  hTTPMethod = [headerCopy HTTPMethod];
+  v11 = [headerCopy URL];
   v12 = [v11 debugDescription];
-  v13 = [v9 stringWithFormat:@"%@ %@\n", v10, v12];
+  v13 = [v9 stringWithFormat:@"%@ %@\n", hTTPMethod, v12];
 
-  v45 = v7;
-  v14 = [v7 URL];
-  v15 = [v14 host];
-  [v13 appendFormat:@"Host: %@\n", v15];
+  v45 = headerCopy;
+  v14 = [headerCopy URL];
+  host = [v14 host];
+  [v13 appendFormat:@"Host: %@\n", host];
 
   v57 = 0u;
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v46 = v8;
-  v16 = [v8 configuration];
-  v17 = [v16 HTTPAdditionalHeaders];
+  v46 = sessionCopy;
+  configuration = [sessionCopy configuration];
+  hTTPAdditionalHeaders = [configuration HTTPAdditionalHeaders];
 
-  v18 = [v17 countByEnumeratingWithState:&v55 objects:v61 count:16];
+  v18 = [hTTPAdditionalHeaders countByEnumeratingWithState:&v55 objects:v61 count:16];
   if (v18)
   {
     v19 = v18;
@@ -192,17 +192,17 @@
       {
         if (*v56 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(hTTPAdditionalHeaders);
         }
 
         v22 = *(*(&v55 + 1) + 8 * i);
-        v23 = [v46 configuration];
-        v24 = [v23 HTTPAdditionalHeaders];
-        v25 = [v24 objectForKeyedSubscript:v22];
+        configuration2 = [v46 configuration];
+        hTTPAdditionalHeaders2 = [configuration2 HTTPAdditionalHeaders];
+        v25 = [hTTPAdditionalHeaders2 objectForKeyedSubscript:v22];
         [v13 appendFormat:@"%@: %@\n", v22, v25];
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v55 objects:v61 count:16];
+      v19 = [hTTPAdditionalHeaders countByEnumeratingWithState:&v55 objects:v61 count:16];
     }
 
     while (v19);
@@ -212,7 +212,7 @@
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v26 = v44;
+  v26 = cookiesCopy;
   v27 = [v26 countByEnumeratingWithState:&v51 objects:v60 count:16];
   if (v27)
   {
@@ -228,9 +228,9 @@
         }
 
         v31 = *(*(&v51 + 1) + 8 * j);
-        v32 = [v31 name];
-        v33 = [v31 value];
-        [v13 appendFormat:@"%@: %@\n", v32, v33];
+        name = [v31 name];
+        value = [v31 value];
+        [v13 appendFormat:@"%@: %@\n", name, value];
       }
 
       v28 = [v26 countByEnumeratingWithState:&v51 objects:v60 count:16];
@@ -243,8 +243,8 @@
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v34 = [v45 allHTTPHeaderFields];
-  v35 = [v34 countByEnumeratingWithState:&v47 objects:v59 count:16];
+  allHTTPHeaderFields = [v45 allHTTPHeaderFields];
+  v35 = [allHTTPHeaderFields countByEnumeratingWithState:&v47 objects:v59 count:16];
   if (v35)
   {
     v36 = v35;
@@ -255,7 +255,7 @@
       {
         if (*v48 != v37)
         {
-          objc_enumerationMutation(v34);
+          objc_enumerationMutation(allHTTPHeaderFields);
         }
 
         v39 = *(*(&v47 + 1) + 8 * k);
@@ -263,7 +263,7 @@
         [v13 appendFormat:@"%@: %@\n", v39, v40];
       }
 
-      v36 = [v34 countByEnumeratingWithState:&v47 objects:v59 count:16];
+      v36 = [allHTTPHeaderFields countByEnumeratingWithState:&v47 objects:v59 count:16];
     }
 
     while (v36);
@@ -276,23 +276,23 @@
   return v41;
 }
 
-- (id)formattedBody:(id)a3 error:(id)a4
+- (id)formattedBody:(id)body error:(id)error
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  bodyCopy = body;
+  errorCopy = error;
+  if (errorCopy)
   {
-    v7 = v6;
-    v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v5 encoding:4];
+    v7 = errorCopy;
+    v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:bodyCopy encoding:4];
     goto LABEL_9;
   }
 
   v15 = 0;
-  v9 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v5 options:0 error:&v15];
+  v9 = [MEMORY[0x277CCAAA0] JSONObjectWithData:bodyCopy options:0 error:&v15];
   v7 = v15;
   if (!v9)
   {
-    v10 = v5;
+    v10 = bodyCopy;
     goto LABEL_7;
   }
 
@@ -307,7 +307,7 @@ LABEL_7:
   }
 
   v12 = v11;
-  v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v5 encoding:4];
+  v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:bodyCopy encoding:4];
 
 LABEL_8:
 LABEL_9:

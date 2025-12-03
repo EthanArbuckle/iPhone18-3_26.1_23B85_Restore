@@ -1,26 +1,26 @@
 @interface PKPassDetailsImageSet
-- (BOOL)isEqual:(id)a3;
-- (PKPassDetailsImageSet)initWithCoder:(id)a3;
-- (PKPassDetailsImageSet)initWithDisplayProfile:(id)a3 fileURL:(id)a4 screenScale:(double)a5 suffix:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (PKPassDetailsImageSet)initWithCoder:(id)coder;
+- (PKPassDetailsImageSet)initWithDisplayProfile:(id)profile fileURL:(id)l screenScale:(double)scale suffix:(id)suffix;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassDetailsImageSet
 
-- (PKPassDetailsImageSet)initWithDisplayProfile:(id)a3 fileURL:(id)a4 screenScale:(double)a5 suffix:(id)a6
+- (PKPassDetailsImageSet)initWithDisplayProfile:(id)profile fileURL:(id)l screenScale:(double)scale suffix:(id)suffix
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  profileCopy = profile;
+  lCopy = l;
+  suffixCopy = suffix;
   v19.receiver = self;
   v19.super_class = PKPassDetailsImageSet;
-  v13 = [(PKImageSet *)&v19 initWithDisplayProfile:v10 fileURL:v11 screenScale:v12 suffix:a5];
+  v13 = [(PKImageSet *)&v19 initWithDisplayProfile:profileCopy fileURL:lCopy screenScale:suffixCopy suffix:scale];
   if (v13)
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = [MEMORY[0x1E696AAE8] bundleWithURL:v11];
-    v16 = [PKImage imageNamed:@"cardHolderPicture" inBundle:v15 screenScale:v12 suffix:a5];
+    v15 = [MEMORY[0x1E696AAE8] bundleWithURL:lCopy];
+    v16 = [PKImage imageNamed:@"cardHolderPicture" inBundle:v15 screenScale:suffixCopy suffix:scale];
     cardHolderPicture = v13->_cardHolderPicture;
     v13->_cardHolderPicture = v16;
 
@@ -30,16 +30,16 @@
   return v13;
 }
 
-- (PKPassDetailsImageSet)initWithCoder:(id)a3
+- (PKPassDetailsImageSet)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = PKPassDetailsImageSet;
-  v5 = [(PKImageSet *)&v10 initWithCoder:v4];
+  v5 = [(PKImageSet *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cardHolderPicture"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cardHolderPicture"];
     cardHolderPicture = v5->_cardHolderPicture;
     v5->_cardHolderPicture = v7;
 
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = PKPassDetailsImageSet;
-  [(PKImageSet *)&v6 encodeWithCoder:v4];
+  [(PKImageSet *)&v6 encodeWithCoder:coderCopy];
   v5 = objc_autoreleasePoolPush();
-  [v4 encodeObject:self->_cardHolderPicture forKey:@"cardHolderPicture"];
+  [coderCopy encodeObject:self->_cardHolderPicture forKey:@"cardHolderPicture"];
   objc_autoreleasePoolPop(v5);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PKImageSet *)self _isSetImage:self->_cardHolderPicture equalToImage:v4[3]];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PKImageSet *)self _isSetImage:self->_cardHolderPicture equalToImage:equalCopy[3]];
 
   return v5;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(PKImage *)self->_cardHolderPicture imageHash];
-  v3 = [v2 hash];
+  imageHash = [(PKImage *)self->_cardHolderPicture imageHash];
+  v3 = [imageHash hash];
 
   return v3;
 }

@@ -1,13 +1,13 @@
 @interface UIAccessibilityHUDWindow
-+ (void)createSharedWindowWithScene:(id)a3;
++ (void)createSharedWindowWithScene:(id)scene;
 + (void)removeSharedWindow;
 @end
 
 @implementation UIAccessibilityHUDWindow
 
-+ (void)createSharedWindowWithScene:(id)a3
++ (void)createSharedWindowWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v5 = _SharedWindow;
   if (_SharedWindow)
   {
@@ -21,7 +21,7 @@
     [v5 setHidden:1];
   }
 
-  v6 = [[a1 alloc] initWithWindowScene:v4];
+  v6 = [[self alloc] initWithWindowScene:sceneCopy];
   v7 = _SharedWindow;
   _SharedWindow = v6;
 

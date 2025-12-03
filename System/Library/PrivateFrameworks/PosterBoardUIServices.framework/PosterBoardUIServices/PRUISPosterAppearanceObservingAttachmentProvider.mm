@@ -1,7 +1,7 @@
 @interface PRUISPosterAppearanceObservingAttachmentProvider
 - (CGRect)primaryContentTightFrame;
-- (PRUISPosterAppearanceObservingAttachmentProvider)initWithPRSConfiguration:(id)a3;
-- (PRUISPosterAppearanceObservingAttachmentProvider)initWithPoster:(id)a3;
+- (PRUISPosterAppearanceObservingAttachmentProvider)initWithPRSConfiguration:(id)configuration;
+- (PRUISPosterAppearanceObservingAttachmentProvider)initWithPoster:(id)poster;
 - (PRUISPosterAttachment)obscurableContentAttachment;
 - (PRUISPosterAttachment)overlayContentAttachment;
 - (UIView)obscurableContentView;
@@ -9,33 +9,33 @@
 - (UIView)overlayContentView;
 - (UIView)vibrantObscurableContentView;
 - (id)_currentAppearance;
-- (id)_updateContentStyleWithTitleStyleConfiguration:(id)a3 initialAppearance:(id)a4;
+- (id)_updateContentStyleWithTitleStyleConfiguration:(id)configuration initialAppearance:(id)appearance;
 - (void)_loadTitleStyleConfigurationIfNeeded;
-- (void)applyPosterAppearanceToObserver:(id)a3;
-- (void)setPrimaryContentTightFrame:(CGRect)a3;
+- (void)applyPosterAppearanceToObserver:(id)observer;
+- (void)setPrimaryContentTightFrame:(CGRect)frame;
 - (void)updateLayoutForChangedObscuredSubviewBounds;
 @end
 
 @implementation PRUISPosterAppearanceObservingAttachmentProvider
 
-- (PRUISPosterAppearanceObservingAttachmentProvider)initWithPRSConfiguration:(id)a3
+- (PRUISPosterAppearanceObservingAttachmentProvider)initWithPRSConfiguration:(id)configuration
 {
   v4 = MEMORY[0x1E69C52E8];
-  v5 = a3;
+  configurationCopy = configuration;
   v6 = [v4 alloc];
-  v7 = [v5 _path];
+  _path = [configurationCopy _path];
 
-  v8 = [v6 _initWithPath:v7];
+  v8 = [v6 _initWithPath:_path];
   v9 = [(PRUISPosterAppearanceObservingAttachmentProvider *)self initWithPoster:v8];
 
   return v9;
 }
 
-- (PRUISPosterAppearanceObservingAttachmentProvider)initWithPoster:(id)a3
+- (PRUISPosterAppearanceObservingAttachmentProvider)initWithPoster:(id)poster
 {
-  v5 = a3;
-  v6 = [v5 _path];
-  if (([v6 isServerPosterPath] & 1) == 0)
+  posterCopy = poster;
+  _path = [posterCopy _path];
+  if (([_path isServerPosterPath] & 1) == 0)
   {
     [(PRUISPosterAppearanceObservingAttachmentProvider *)a2 initWithPoster:?];
   }
@@ -46,7 +46,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_path, v6);
+    objc_storeStrong(&v7->_path, _path);
   }
 
   return v8;
@@ -58,8 +58,8 @@
   if (!obscurableContentContainerView)
   {
     v4 = objc_alloc(MEMORY[0x1E69DD250]);
-    v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v5 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen bounds];
     v6 = [v4 initWithFrame:?];
     v7 = self->_obscurableContentContainerView;
     self->_obscurableContentContainerView = v6;
@@ -91,22 +91,22 @@
   if (!self->_obscurableContentVibrancyView)
   {
     v3 = objc_alloc(MEMORY[0x1E698E818]);
-    v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v4 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen bounds];
     v5 = [v3 initWithFrame:?];
     obscurableContentVibrancyView = self->_obscurableContentVibrancyView;
     self->_obscurableContentVibrancyView = v5;
 
-    v7 = [(PRUISPosterAppearanceObservingAttachmentProvider *)self obscurableContentView];
-    [v7 addSubview:self->_obscurableContentVibrancyView];
+    obscurableContentView = [(PRUISPosterAppearanceObservingAttachmentProvider *)self obscurableContentView];
+    [obscurableContentView addSubview:self->_obscurableContentVibrancyView];
 
     [(BSUIVibrancyEffectView *)self->_obscurableContentVibrancyView setAutoresizingMask:18];
   }
 
   [(PRUISPosterAppearanceObservingAttachmentProvider *)self _loadTitleStyleConfigurationIfNeeded];
   titleStyleConfiguration = self->_titleStyleConfiguration;
-  v9 = [(PRUISPosterAppearanceObservingAttachmentProvider *)self _currentAppearance];
-  v10 = [(PRUISPosterAppearanceObservingAttachmentProvider *)self _updateContentStyleWithTitleStyleConfiguration:titleStyleConfiguration initialAppearance:v9];
+  _currentAppearance = [(PRUISPosterAppearanceObservingAttachmentProvider *)self _currentAppearance];
+  v10 = [(PRUISPosterAppearanceObservingAttachmentProvider *)self _updateContentStyleWithTitleStyleConfiguration:titleStyleConfiguration initialAppearance:_currentAppearance];
 
   v11 = self->_obscurableContentVibrancyView;
 
@@ -119,8 +119,8 @@
   if (!overlayContentView)
   {
     v4 = objc_alloc(MEMORY[0x1E69DD250]);
-    v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v5 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen bounds];
     v6 = [v4 initWithFrame:?];
     v7 = self->_overlayContentView;
     self->_overlayContentView = v6;
@@ -142,25 +142,25 @@
     v6 = self->_obscurableOverlayView;
     self->_obscurableOverlayView = v5;
 
-    v7 = [(PRUISPosterAppearanceObservingAttachmentProvider *)self obscurableContentView];
-    [v7 addSubview:self->_obscurableOverlayView];
+    obscurableContentView = [(PRUISPosterAppearanceObservingAttachmentProvider *)self obscurableContentView];
+    [obscurableContentView addSubview:self->_obscurableOverlayView];
 
     v18 = MEMORY[0x1E696ACD8];
-    v22 = [(UIView *)self->_obscurableOverlayView widthAnchor];
-    v21 = [(BSUIVibrancyEffectView *)self->_obscurableContentVibrancyView widthAnchor];
-    v20 = [v22 constraintEqualToAnchor:v21];
+    widthAnchor = [(UIView *)self->_obscurableOverlayView widthAnchor];
+    widthAnchor2 = [(BSUIVibrancyEffectView *)self->_obscurableContentVibrancyView widthAnchor];
+    v20 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v23[0] = v20;
-    v19 = [(UIView *)self->_obscurableOverlayView heightAnchor];
-    v8 = [(BSUIVibrancyEffectView *)self->_obscurableContentVibrancyView heightAnchor];
-    v9 = [v19 constraintEqualToAnchor:v8];
+    heightAnchor = [(UIView *)self->_obscurableOverlayView heightAnchor];
+    heightAnchor2 = [(BSUIVibrancyEffectView *)self->_obscurableContentVibrancyView heightAnchor];
+    v9 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     v23[1] = v9;
-    v10 = [(UIView *)self->_obscurableOverlayView centerXAnchor];
-    v11 = [(BSUIVibrancyEffectView *)self->_obscurableContentVibrancyView centerXAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    centerXAnchor = [(UIView *)self->_obscurableOverlayView centerXAnchor];
+    centerXAnchor2 = [(BSUIVibrancyEffectView *)self->_obscurableContentVibrancyView centerXAnchor];
+    v12 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v23[2] = v12;
-    v13 = [(UIView *)self->_obscurableOverlayView centerYAnchor];
-    v14 = [(BSUIVibrancyEffectView *)self->_obscurableContentVibrancyView centerYAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    centerYAnchor = [(UIView *)self->_obscurableOverlayView centerYAnchor];
+    centerYAnchor2 = [(BSUIVibrancyEffectView *)self->_obscurableContentVibrancyView centerYAnchor];
+    v15 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v23[3] = v15;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:4];
     [v18 activateConstraints:v16];
@@ -190,8 +190,8 @@
 - (void)updateLayoutForChangedObscuredSubviewBounds
 {
   titleStyleConfiguration = self->_titleStyleConfiguration;
-  v5 = [(PRUISPosterAppearanceObservingAttachmentProvider *)self _currentAppearance];
-  v4 = [(PRUISPosterAppearanceObservingAttachmentProvider *)self _updateContentStyleWithTitleStyleConfiguration:titleStyleConfiguration initialAppearance:v5];
+  _currentAppearance = [(PRUISPosterAppearanceObservingAttachmentProvider *)self _currentAppearance];
+  v4 = [(PRUISPosterAppearanceObservingAttachmentProvider *)self _updateContentStyleWithTitleStyleConfiguration:titleStyleConfiguration initialAppearance:_currentAppearance];
 }
 
 - (id)_currentAppearance
@@ -204,18 +204,18 @@
   }
 
   [(PRUISPosterAppearanceObservingAttachmentProvider *)self _loadTitleStyleConfigurationIfNeeded];
-  v5 = [(PFServerPosterPath *)self->_path serverIdentity];
-  v6 = [v5 role];
+  serverIdentity = [(PFServerPosterPath *)self->_path serverIdentity];
+  role = [serverIdentity role];
 
   if (!self->_titleStyleConfiguration)
   {
     goto LABEL_14;
   }
 
-  v7 = [(PFServerPosterPath *)self->_path serverIdentity];
-  v8 = [v7 provider];
+  serverIdentity2 = [(PFServerPosterPath *)self->_path serverIdentity];
+  provider = [serverIdentity2 provider];
 
-  if (!v8)
+  if (!provider)
   {
     v12 = PRUISLogRendering();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -226,7 +226,7 @@
     goto LABEL_11;
   }
 
-  v9 = [objc_alloc(MEMORY[0x1E69635D0]) initWithBundleIdentifier:v8 error:0];
+  v9 = [objc_alloc(MEMORY[0x1E69635D0]) initWithBundleIdentifier:provider error:0];
   v10 = [v9 URL];
 
   if (!v10)
@@ -241,7 +241,7 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v11 = [(PRPosterTitleStyleConfiguration *)self->_titleStyleConfiguration effectiveTimeFontWithExtensionBundleURL:v10 forRole:v6];
+  v11 = [(PRPosterTitleStyleConfiguration *)self->_titleStyleConfiguration effectiveTimeFontWithExtensionBundleURL:v10 forRole:role];
 
   if (!v11)
   {
@@ -252,15 +252,15 @@ LABEL_14:
       [PRUISPosterAppearanceObservingAttachmentProvider _currentAppearance];
     }
 
-    v11 = [MEMORY[0x1E69C5340] defaultTitleFontForRole:v6];
+    v11 = [MEMORY[0x1E69C5340] defaultTitleFontForRole:role];
   }
 
   v15 = [v11 fontWithSize:84.0];
 
   v16 = objc_alloc(MEMORY[0x1E69C52D0]);
   v17 = objc_alloc(MEMORY[0x1E69C52D8]);
-  v18 = [MEMORY[0x1E69DC888] whiteColor];
-  v19 = [v17 initWithColor:v18];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v19 = [v17 initWithColor:whiteColor];
   v20 = [v16 initWithFont:v15 labelColor:v19 preferredTitleAlignment:-[PRPosterTitleStyleConfiguration preferredTitleAlignment](self->_titleStyleConfiguration preferredTitleLayout:{"preferredTitleAlignment"), -[PRPosterTitleStyleConfiguration preferredTitleLayout](self->_titleStyleConfiguration, "preferredTitleLayout")}];
 
   v21 = self->_currentAppearance;
@@ -273,12 +273,12 @@ LABEL_18:
   return v3;
 }
 
-- (void)applyPosterAppearanceToObserver:(id)a3
+- (void)applyPosterAppearanceToObserver:(id)observer
 {
-  v4 = a3;
-  v7 = [(PRUISPosterAppearanceObservingAttachmentProvider *)self _currentAppearance];
-  v5 = [(PRUISPosterAppearanceObservingAttachmentProvider *)self _updateContentStyleWithTitleStyleConfiguration:self->_titleStyleConfiguration initialAppearance:v7];
-  [v4 posterAppearanceDidChange:v5];
+  observerCopy = observer;
+  _currentAppearance = [(PRUISPosterAppearanceObservingAttachmentProvider *)self _currentAppearance];
+  v5 = [(PRUISPosterAppearanceObservingAttachmentProvider *)self _updateContentStyleWithTitleStyleConfiguration:self->_titleStyleConfiguration initialAppearance:_currentAppearance];
+  [observerCopy posterAppearanceDidChange:v5];
 
   currentAppearance = self->_currentAppearance;
   self->_currentAppearance = v5;
@@ -290,10 +290,10 @@ LABEL_18:
   if (!self->_titleStyleConfiguration)
   {
     v4 = [MEMORY[0x1E69C5320] modelObjectCacheForPath:self->_path];
-    v5 = [v4 titleStyleConfiguration];
-    if (v5)
+    titleStyleConfiguration = [v4 titleStyleConfiguration];
+    if (titleStyleConfiguration)
     {
-      objc_storeStrong(p_titleStyleConfiguration, v5);
+      objc_storeStrong(p_titleStyleConfiguration, titleStyleConfiguration);
       v6 = 0;
     }
 
@@ -328,23 +328,23 @@ LABEL_18:
   }
 }
 
-- (id)_updateContentStyleWithTitleStyleConfiguration:(id)a3 initialAppearance:(id)a4
+- (id)_updateContentStyleWithTitleStyleConfiguration:(id)configuration initialAppearance:(id)appearance
 {
   v51 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  appearanceCopy = appearance;
   obscurableContentVibrancyView = self->_obscurableContentVibrancyView;
   if (obscurableContentVibrancyView)
   {
-    v9 = [(BSUIVibrancyEffectView *)obscurableContentVibrancyView contentView];
-    [v9 setNeedsLayout];
+    contentView = [(BSUIVibrancyEffectView *)obscurableContentVibrancyView contentView];
+    [contentView setNeedsLayout];
 
-    v10 = [(BSUIVibrancyEffectView *)self->_obscurableContentVibrancyView contentView];
-    [v10 layoutIfNeeded];
+    contentView2 = [(BSUIVibrancyEffectView *)self->_obscurableContentVibrancyView contentView];
+    [contentView2 layoutIfNeeded];
 
     [(PRPosterContentStyleVibrantContentRenderer *)self->_vibrantContentRenderer clearAllStyles];
-    v11 = [(BSUIVibrancyEffectView *)self->_obscurableContentVibrancyView contentView];
-    v12 = [v11 subviews];
+    contentView3 = [(BSUIVibrancyEffectView *)self->_obscurableContentVibrancyView contentView];
+    subviews = [contentView3 subviews];
 
     v13 = *MEMORY[0x1E695F058];
     v14 = *(MEMORY[0x1E695F058] + 8);
@@ -354,7 +354,7 @@ LABEL_18:
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v17 = v12;
+    v17 = subviews;
     v18 = [v17 countByEnumeratingWithState:&v46 objects:v50 count:16];
     if (v18)
     {
@@ -436,34 +436,34 @@ LABEL_18:
     {
       v38 = objc_alloc(MEMORY[0x1E69C5300]);
       v39 = self->_obscurableContentVibrancyView;
-      v40 = [(BSUIVibrancyEffectView *)v39 contentView];
-      v41 = [v38 initWithVibrancyView:v39 contentView:v40 contentBoundingRect:v7 styleBoundingRect:v24 initialAppearance:{v23, v22, v21, self->_primaryContentTightFrame.origin.x, self->_primaryContentTightFrame.origin.y, self->_primaryContentTightFrame.size.width, self->_primaryContentTightFrame.size.height}];
+      contentView4 = [(BSUIVibrancyEffectView *)v39 contentView];
+      v41 = [v38 initWithVibrancyView:v39 contentView:contentView4 contentBoundingRect:appearanceCopy styleBoundingRect:v24 initialAppearance:{v23, v22, v21, self->_primaryContentTightFrame.origin.x, self->_primaryContentTightFrame.origin.y, self->_primaryContentTightFrame.size.width, self->_primaryContentTightFrame.size.height}];
       v42 = self->_vibrantContentRenderer;
       self->_vibrantContentRenderer = v41;
     }
 
-    v43 = [(PFServerPosterPath *)self->_path role];
-    v44 = [v6 effectiveTitleContentStyleForRole:v43];
+    role = [(PFServerPosterPath *)self->_path role];
+    v44 = [configurationCopy effectiveTitleContentStyleForRole:role];
     [v44 applyStyleWithRenderer:self->_vibrantContentRenderer];
 
-    v36 = [(PRPosterContentStyleVibrantContentRenderer *)self->_vibrantContentRenderer currentAppearance];
+    currentAppearance = [(PRPosterContentStyleVibrantContentRenderer *)self->_vibrantContentRenderer currentAppearance];
   }
 
   else
   {
-    v36 = v7;
+    currentAppearance = appearanceCopy;
   }
 
-  return v36;
+  return currentAppearance;
 }
 
-- (void)setPrimaryContentTightFrame:(CGRect)a3
+- (void)setPrimaryContentTightFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(self->_primaryContentTightFrame, a3))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if (!CGRectEqualToRect(self->_primaryContentTightFrame, frame))
   {
     self->_primaryContentTightFrame.origin.x = x;
     self->_primaryContentTightFrame.origin.y = y;
@@ -475,8 +475,8 @@ LABEL_18:
       vibrantContentRenderer = self->_vibrantContentRenderer;
       if (vibrantContentRenderer)
       {
-        v11 = [(PRPosterContentStyleVibrantContentRenderer *)vibrantContentRenderer currentAppearance];
-        v10 = [(PRUISPosterAppearanceObservingAttachmentProvider *)self _updateContentStyleWithTitleStyleConfiguration:titleStyleConfiguration initialAppearance:v11];
+        currentAppearance = [(PRPosterContentStyleVibrantContentRenderer *)vibrantContentRenderer currentAppearance];
+        v10 = [(PRUISPosterAppearanceObservingAttachmentProvider *)self _updateContentStyleWithTitleStyleConfiguration:titleStyleConfiguration initialAppearance:currentAppearance];
       }
     }
   }

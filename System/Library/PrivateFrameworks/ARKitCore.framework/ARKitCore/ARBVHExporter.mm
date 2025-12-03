@@ -1,19 +1,19 @@
 @interface ARBVHExporter
-+ (id)headerByApplyingScale:(id)a1;
-+ (id)liftedSkeletonHeaderByApplyingScale:(id)a1;
-+ (id)stickFigureHeaderByApplyingScale:(id)a1;
-- (ARBVHExporter)initWithFilePath:(id)a3 type:(int64_t)a4 scale:;
-- (void)appendBodyAnchor:(id)a3;
++ (id)headerByApplyingScale:(id)scale;
++ (id)liftedSkeletonHeaderByApplyingScale:(id)scale;
++ (id)stickFigureHeaderByApplyingScale:(id)scale;
+- (ARBVHExporter)initWithFilePath:(id)path type:(int64_t)type scale:;
+- (void)appendBodyAnchor:(id)anchor;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation ARBVHExporter
 
-- (ARBVHExporter)initWithFilePath:(id)a3 type:(int64_t)a4 scale:
+- (ARBVHExporter)initWithFilePath:(id)path type:(int64_t)type scale:
 {
   v16 = v4;
-  v8 = a3;
+  pathCopy = path;
   v17.receiver = self;
   v17.super_class = ARBVHExporter;
   v9 = [(ARBVHExporter *)&v17 init];
@@ -21,8 +21,8 @@
   if (v9)
   {
     *&v9->_scale[4] = v16;
-    v9->_exportType = a4;
-    objc_storeStrong(&v9->_filePath, a3);
+    v9->_exportType = type;
+    objc_storeStrong(&v9->_filePath, path);
     v11 = NSTemporaryDirectory();
     v12 = objc_opt_new();
     v13 = [v11 stringByAppendingFormat:@"%@_tmp.bvh", v12];
@@ -98,10 +98,10 @@
 
   [v8 close];
   [v3 close];
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   tmpFilePath = self->_tmpFilePath;
   v21 = 0;
-  [v10 removeItemAtPath:tmpFilePath error:&v21];
+  [defaultManager removeItemAtPath:tmpFilePath error:&v21];
   v12 = v21;
 
   if (v12)
@@ -123,7 +123,7 @@
         *buf = 138543874;
         v23 = v17;
         v24 = 2048;
-        v25 = self;
+        selfCopy2 = self;
         v26 = 2112;
         v27 = v12;
         _os_log_impl(&dword_1C241C000, v15, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Could not delete temporary file: %@", buf, 0x20u);
@@ -137,7 +137,7 @@
       *buf = 138543874;
       v23 = v19;
       v24 = 2048;
-      v25 = self;
+      selfCopy2 = self;
       v26 = 2112;
       v27 = v12;
       _os_log_impl(&dword_1C241C000, v15, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Could not delete temporary file: %@", buf, 0x20u);
@@ -145,16 +145,16 @@
   }
 }
 
-- (void)appendBodyAnchor:(id)a3
+- (void)appendBodyAnchor:(id)anchor
 {
   v92 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  anchorCopy = anchor;
   if (!self->_running)
   {
     goto LABEL_47;
   }
 
-  v74 = v4;
+  v74 = anchorCopy;
   v75 = objc_opt_new();
   exportType = self->_exportType;
   if ((exportType - 1) < 2)
@@ -180,13 +180,13 @@ LABEL_6:
 
   if (!exportType)
   {
-    v17 = [v74 referenceBody];
-    v18 = [v17 skeleton];
-    v72 = COERCE_FLOAT(*([v18 jointLandmarks] + 128));
+    referenceBody = [v74 referenceBody];
+    skeleton = [referenceBody skeleton];
+    v72 = COERCE_FLOAT(*([skeleton jointLandmarks] + 128));
     v19 = *&self->_scale[4];
-    v20 = [v74 referenceBody];
-    v21 = [v20 skeleton];
-    [v75 appendFormat:@"%f %f %f ", (v19 * v72), (*(objc_msgSend(v21, "jointLandmarks") + 132) * *&self->_scale[8]), 0];
+    referenceBody2 = [v74 referenceBody];
+    skeleton2 = [referenceBody2 skeleton];
+    [v75 appendFormat:@"%f %f %f ", (v19 * v72), (*(objc_msgSend(skeleton2, "jointLandmarks") + 132) * *&self->_scale[8]), 0];
 
     [v75 appendFormat:@"%f %f %f ", 0, 0, 0];
     goto LABEL_6;
@@ -197,14 +197,14 @@ LABEL_7:
   {
     if (exportType == 1)
     {
-      v32 = [v74 skeleton];
-      v33 = [v32 coreRESkeleton];
-      v34 = [v33 liftedSkeletonData];
+      skeleton3 = [v74 skeleton];
+      coreRESkeleton = [skeleton3 coreRESkeleton];
+      liftedSkeletonData = [coreRESkeleton liftedSkeletonData];
 
-      for (i = 1; [v34 jointCount] > i; ++i)
+      for (i = 1; [liftedSkeletonData jointCount] > i; ++i)
       {
-        v36 = [v34 jointsLocalSpace];
-        [v75 appendFormat:@"%f %f %f ", vmuls_n_f32(COERCE_FLOAT(*(v36 + 16 * i)), COERCE_FLOAT(*&self->_scale[4])), vmuls_lane_f32(COERCE_FLOAT(HIDWORD(*(v36 + 16 * i))), *&self->_scale[4], 1), vmuls_lane_f32(COERCE_FLOAT(*(v36 + 16 * i + 8)), *&self->_scale[4], 2)];
+        jointsLocalSpace = [liftedSkeletonData jointsLocalSpace];
+        [v75 appendFormat:@"%f %f %f ", vmuls_n_f32(COERCE_FLOAT(*(jointsLocalSpace + 16 * i)), COERCE_FLOAT(*&self->_scale[4])), vmuls_lane_f32(COERCE_FLOAT(HIDWORD(*(jointsLocalSpace + 16 * i))), *&self->_scale[4], 1), vmuls_lane_f32(COERCE_FLOAT(*(jointsLocalSpace + 16 * i + 8)), *&self->_scale[4], 2)];
       }
 
       [v75 appendString:@"\n"];
@@ -215,17 +215,17 @@ LABEL_7:
       v22 = 0;
       for (j = 1; ; ++j)
       {
-        v24 = [v74 skeleton];
-        v25 = [v24 jointCount];
+        skeleton4 = [v74 skeleton];
+        jointCount = [skeleton4 jointCount];
 
-        if (v25 <= j)
+        if (jointCount <= j)
         {
           break;
         }
 
-        v26 = [v74 skeleton];
-        v27 = [v26 jointLocalTransforms];
-        *&v28 = AREulerAnglesFromMatrix(*(v27 + v22 + 64), *(v27 + v22 + 80), *(v27 + v22 + 96));
+        skeleton5 = [v74 skeleton];
+        jointLocalTransforms = [skeleton5 jointLocalTransforms];
+        *&v28 = AREulerAnglesFromMatrix(*(jointLocalTransforms + v22 + 64), *(jointLocalTransforms + v22 + 80), *(jointLocalTransforms + v22 + 96));
         v73 = v28;
 
         v29 = *&v73 * 0.318309886 * 180.0;
@@ -241,19 +241,19 @@ LABEL_7:
 
   else
   {
-    v37 = [v74 skeleton];
-    v38 = [v37 coreRESkeleton];
-    v39 = [v38 liftedSkeletonData];
-    v40 = [v39 skeletonDetectionResult2D];
+    skeleton6 = [v74 skeleton];
+    coreRESkeleton2 = [skeleton6 coreRESkeleton];
+    liftedSkeletonData2 = [coreRESkeleton2 liftedSkeletonData];
+    skeletonDetectionResult2D = [liftedSkeletonData2 skeletonDetectionResult2D];
 
-    v41 = v40;
+    v41 = skeletonDetectionResult2D;
     _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEEC2B8ne200100Em(__p, [v41 jointCount]);
-    v42 = [v41 joints];
-    v43 = [v41 joints];
-    v44 = [v41 jointCount];
+    joints = [v41 joints];
+    joints2 = [v41 joints];
+    jointCount2 = [v41 jointCount];
     v90 = 0uLL;
     v91 = 0;
-    _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPKS1_S7_EEvT_T0_m(&v90, v42, v43 + 8 * v44, (v43 + 8 * v44 - v42) >> 3);
+    _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPKS1_S7_EEvT_T0_m(&v90, joints, joints2 + 8 * jointCount2, (joints2 + 8 * jointCount2 - joints) >> 3);
     if (__p[0])
     {
       __p[1] = __p[0];
@@ -307,8 +307,8 @@ LABEL_7:
       }
 
       v53 = *([v41 joints] + 8 * v52);
-      v54 = [v41 joints];
-      *(__p[0] + v52) = vsub_f32(v53, *(v54 + 8 * v51));
+      joints3 = [v41 joints];
+      *(__p[0] + v52) = vsub_f32(v53, *(joints3 + 8 * v51));
       v81 = 0u;
       v82 = 0u;
       v79 = 0u;
@@ -345,11 +345,11 @@ LABEL_7:
     {
       v61 = [ARBVHExporter appendBodyAnchor:]::indexSequence[ii];
       v62 = +[ARSkeletonDefinition defaultBody2DSkeletonDefinition];
-      v63 = [v62 parentIndices];
-      v64 = [v63 objectAtIndexedSubscript:v61];
-      v65 = [v64 intValue];
+      parentIndices = [v62 parentIndices];
+      v64 = [parentIndices objectAtIndexedSubscript:v61];
+      intValue = [v64 intValue];
 
-      if (v65 >= 0)
+      if (intValue >= 0)
       {
         [v75 appendFormat:@"%f %f %f ", vmuls_n_f32(COERCE_FLOAT(*(__p[0] + v61)), COERCE_FLOAT(*&self->_scale[4])), vmuls_lane_f32(COERCE_FLOAT(HIDWORD(*(__p[0] + v61))), *&self->_scale[4], 1), 0];
       }
@@ -369,31 +369,31 @@ LABEL_7:
   -[NSOutputStream write:maxLength:](framesStreamToFile, "write:maxLength:", [v66 bytes], objc_msgSend(v66, "length"));
   ++self->_numberFrames;
 
-  v4 = v74;
+  anchorCopy = v74;
 LABEL_47:
 }
 
-+ (id)headerByApplyingScale:(id)a1
++ (id)headerByApplyingScale:(id)scale
 {
   v14 = v2;
   v3 = +[ARSkeletonDefinition defaultBody3DSkeletonDefinition];
-  v4 = [v3 parentIndices];
+  parentIndices = [v3 parentIndices];
 
   v5 = +[ARSkeletonDefinition defaultBody3DSkeletonDefinition];
-  v6 = [v5 jointNames];
+  jointNames = [v5 jointNames];
 
   v7 = +[ARSkeletonDefinition defaultBody3DSkeletonDefinition];
-  v8 = [v7 neutralBodySkeleton3D];
+  neutralBodySkeleton3D = [v7 neutralBodySkeleton3D];
 
-  v9 = [v4 indexOfObjectPassingTest:&__block_literal_global_103];
+  v9 = [parentIndices indexOfObjectPassingTest:&__block_literal_global_103];
   v10 = objc_opt_new();
   [v10 appendString:@"HIERARCHY\n"];
-  v11 = [v6 objectAtIndexedSubscript:v9];
+  v11 = [jointNames objectAtIndexedSubscript:v9];
   [v10 appendFormat:@"ROOT %@\n{\n", v11];
 
-  [v10 appendFormat:@"\tOFFSET %f %f %f\n", (*(objc_msgSend(v8, "jointLocalTransforms") + (v9 << 6) + 48) * v14.n128_f32[0]), vmuls_lane_f32(COERCE_FLOAT(HIDWORD(*(objc_msgSend(v8, "jointLocalTransforms") + (v9 << 6) + 48))), v14.n128_u64[0], 1), vmuls_lane_f32(*(objc_msgSend(v8, "jointLocalTransforms") + (v9 << 6) + 56), v14, 2)];
+  [v10 appendFormat:@"\tOFFSET %f %f %f\n", (*(objc_msgSend(neutralBodySkeleton3D, "jointLocalTransforms") + (v9 << 6) + 48) * v14.n128_f32[0]), vmuls_lane_f32(COERCE_FLOAT(HIDWORD(*(objc_msgSend(neutralBodySkeleton3D, "jointLocalTransforms") + (v9 << 6) + 48))), v14.n128_u64[0], 1), vmuls_lane_f32(*(objc_msgSend(neutralBodySkeleton3D, "jointLocalTransforms") + (v9 << 6) + 56), v14, 2)];
   [v10 appendString:@"\tCHANNELS 6 Xposition Yposition Zposition Xrotation Yrotation Zrotation\n"];
-  v12 = visitChildren(1, v9, v6, v4, [v8 jointLocalTransforms], 0, v14);
+  v12 = visitChildren(1, v9, jointNames, parentIndices, [neutralBodySkeleton3D jointLocalTransforms], 0, v14);
   [v10 appendString:v12];
 
   [v10 appendString:@"}\n"];
@@ -401,7 +401,7 @@ LABEL_47:
   return v10;
 }
 
-+ (id)liftedSkeletonHeaderByApplyingScale:(id)a1
++ (id)liftedSkeletonHeaderByApplyingScale:(id)scale
 {
   v17 = v2;
   v20 = *MEMORY[0x1E69E9840];
@@ -455,17 +455,17 @@ LABEL_47:
   return v12;
 }
 
-+ (id)stickFigureHeaderByApplyingScale:(id)a1
++ (id)stickFigureHeaderByApplyingScale:(id)scale
 {
   v19 = v2;
   v22 = *MEMORY[0x1E69E9840];
   v3 = +[ARSkeletonDefinition defaultBody2DSkeletonDefinition];
-  v4 = [v3 jointNames];
+  jointNames = [v3 jointNames];
 
   v5 = +[ARSkeletonDefinition defaultBody2DSkeletonDefinition];
-  v6 = [v5 parentIndices];
+  parentIndices = [v5 parentIndices];
 
-  v7 = [v6 indexOfObjectPassingTest:&__block_literal_global_45_0];
+  v7 = [parentIndices indexOfObjectPassingTest:&__block_literal_global_45_0];
   v8 = 0;
   v21[66] = xmmword_1C25F0830;
   v21[67] = xmmword_1C25F0840;
@@ -499,13 +499,13 @@ LABEL_47:
   while (v8 != 272);
   v14 = objc_opt_new();
   [v14 appendString:@"HIERARCHY\n"];
-  v15 = [v4 objectAtIndexedSubscript:v7];
+  v15 = [jointNames objectAtIndexedSubscript:v7];
   [v14 appendFormat:@"ROOT %@\n{\n", v15];
 
   v16 = vmulq_f32(v21[4 * v7 + 1], v19);
   [v14 appendFormat:@"\tOFFSET %f %f %f\n", v16.f32[0], v16.f32[1], v16.f32[2]];
   [v14 appendString:@"\tCHANNELS 6 Xposition Yposition Zposition Xrotation Yrotation Zrotation\n"];
-  v17 = visitChildren(1, v7, v4, v6, v20, 1, v19);
+  v17 = visitChildren(1, v7, jointNames, parentIndices, v20, 1, v19);
   [v14 appendString:v17];
 
   [v14 appendString:@"}\n"];

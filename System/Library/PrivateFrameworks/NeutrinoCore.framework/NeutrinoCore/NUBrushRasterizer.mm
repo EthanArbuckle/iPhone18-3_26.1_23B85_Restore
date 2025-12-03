@@ -1,56 +1,56 @@
 @interface NUBrushRasterizer
-+ (int64_t)_rasterizeBrushStroke:(id)a3 toROI:(id *)a4 maskPtr:(char *)a5 maskPtrRowBytes:(int64_t)a6 close:(BOOL)a7 startIndex:(int64_t)a8 pressureMode:(int64_t)a9;
-+ (int64_t)rasterizeBrushStroke:(id)a3 atPoint:(id)a4 toBuffer:(id)a5 close:(BOOL)a6 startIndex:(int64_t)a7;
++ (int64_t)_rasterizeBrushStroke:(id)stroke toROI:(id *)i maskPtr:(char *)ptr maskPtrRowBytes:(int64_t)bytes close:(BOOL)close startIndex:(int64_t)index pressureMode:(int64_t)mode;
++ (int64_t)rasterizeBrushStroke:(id)stroke atPoint:(id)point toBuffer:(id)buffer close:(BOOL)close startIndex:(int64_t)index;
 @end
 
 @implementation NUBrushRasterizer
 
-+ (int64_t)rasterizeBrushStroke:(id)a3 atPoint:(id)a4 toBuffer:(id)a5 close:(BOOL)a6 startIndex:(int64_t)a7
++ (int64_t)rasterizeBrushStroke:(id)stroke atPoint:(id)point toBuffer:(id)buffer close:(BOOL)close startIndex:(int64_t)index
 {
-  v8 = a6;
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v13 = a3;
-  v14 = a5;
-  v15 = [v14 size];
-  [v14 size];
+  closeCopy = close;
+  var1 = point.var1;
+  var0 = point.var0;
+  strokeCopy = stroke;
+  bufferCopy = buffer;
+  v15 = [bufferCopy size];
+  [bufferCopy size];
   v19[0] = var0;
   v19[1] = var1;
   v19[2] = v15;
   v19[3] = v16;
-  v17 = [a1 _rasterizeBrushStroke:v13 toROI:v19 maskPtr:objc_msgSend(v14 maskPtrRowBytes:"mutableBytes") close:objc_msgSend(v14 startIndex:"rowBytes") pressureMode:{v8, a7, objc_msgSend(v13, "pressureMode")}];
+  v17 = [self _rasterizeBrushStroke:strokeCopy toROI:v19 maskPtr:objc_msgSend(bufferCopy maskPtrRowBytes:"mutableBytes") close:objc_msgSend(bufferCopy startIndex:"rowBytes") pressureMode:{closeCopy, index, objc_msgSend(strokeCopy, "pressureMode")}];
 
   return v17;
 }
 
-+ (int64_t)_rasterizeBrushStroke:(id)a3 toROI:(id *)a4 maskPtr:(char *)a5 maskPtrRowBytes:(int64_t)a6 close:(BOOL)a7 startIndex:(int64_t)a8 pressureMode:(int64_t)a9
++ (int64_t)_rasterizeBrushStroke:(id)stroke toROI:(id *)i maskPtr:(char *)ptr maskPtrRowBytes:(int64_t)bytes close:(BOOL)close startIndex:(int64_t)index pressureMode:(int64_t)mode
 {
-  v10 = a7;
-  v14 = a3;
-  v15 = [v14 pointCount];
-  if (!v15)
+  closeCopy = close;
+  strokeCopy = stroke;
+  pointCount = [strokeCopy pointCount];
+  if (!pointCount)
   {
     v56 = 0;
     goto LABEL_44;
   }
 
-  v16 = [v14 points];
-  v17 = [v16 bytes];
-  [v14 radius];
+  points = [strokeCopy points];
+  bytes = [points bytes];
+  [strokeCopy radius];
   v63 = v18;
-  v58 = v16;
-  [v14 softness];
+  v58 = points;
+  [strokeCopy softness];
   v20 = v19;
-  v21 = v17 + 12 * v15;
+  v21 = bytes + 12 * pointCount;
   v22 = floorf(v63 + 0.5);
   v64[0] = MEMORY[0x1E69E9820];
   v64[1] = 3221225472;
   v65 = __103__NUBrushRasterizer__rasterizeBrushStroke_toROI_maskPtr_maskPtrRowBytes_close_startIndex_pressureMode___block_invoke;
   v66 = &__block_descriptor_84_e27_v16__0r__BrushStamp_fffff_8l;
-  var1 = a4->var1;
-  if (a8 >= 0)
+  var1 = i->var1;
+  if (index >= 0)
   {
-    v24 = a8 + 1;
+    v24 = index + 1;
   }
 
   else
@@ -58,10 +58,10 @@
     v24 = 0;
   }
 
-  var0 = a4->var0;
+  var0 = i->var0;
   v68 = var1;
-  v69 = a6;
-  v70 = a5;
+  bytesCopy = bytes;
+  ptrCopy = ptr;
   v71 = v22;
   v25 = v64;
   v28 = 0.5;
@@ -69,16 +69,16 @@
   v29 = 0;
   v59 = v21;
   v30 = (v21 - 12);
-  v31 = *(v17 + 8);
-  v32 = *v17;
-  v33 = !v10;
+  v31 = *(bytes + 8);
+  v32 = *bytes;
+  v33 = !closeCopy;
   v34 = 1.0;
-  v35 = v17;
+  v35 = bytes;
   do
   {
     v36 = *v35;
     v37 = v35[1].f32[0];
-    if (v35 == v17)
+    if (v35 == bytes)
     {
       v41 = 1;
     }
@@ -123,19 +123,19 @@
 
     v45 = 0;
     v46 = v41;
-    v47 = vcltz_s32(vshl_n_s32(vdup_n_s32(v35 == v17), 0x1FuLL));
+    v47 = vcltz_s32(vshl_n_s32(vdup_n_s32(v35 == bytes), 0x1FuLL));
     v61 = *v35;
     do
     {
       v26.f32[0] = (v45 + v34) / v46;
       v48 = v31 + (-(v31 - v37) * v26.f32[0]);
-      if (v35 == v17)
+      if (v35 == bytes)
       {
         v48 = v37;
       }
 
       v49 = floorf(v28 + (v63 * v48));
-      if (a9 == 1)
+      if (mode == 1)
       {
         *v27.i32 = v49;
       }
@@ -147,10 +147,10 @@
 
       v26 = vadd_f32(vbsl_s8(v47, v36, vmls_lane_f32(v32, vsub_f32(v32, v36), v26, 0)), 0x3F0000003F000000);
       v44 = vrndm_f32(v26);
-      if (v35 == v17 || (v41 != 1 ? (v50 = 1) : (v50 = v33), v35 == v30 && !v50 || (v51 = fmaxf(((v20 * 0.8) + 0.2) * (*v27.i32 * 0.25), v34), v52 = vsub_f32(v44, v32), (COERCE_FLOAT(vmul_f32(v52, v52).i32[1]) + (v52.f32[0] * v52.f32[0])) >= (v51 * v51))))
+      if (v35 == bytes || (v41 != 1 ? (v50 = 1) : (v50 = v33), v35 == v30 && !v50 || (v51 = fmaxf(((v20 * 0.8) + 0.2) * (*v27.i32 * 0.25), v34), v52 = vsub_f32(v44, v32), (COERCE_FLOAT(vmul_f32(v52, v52).i32[1]) + (v52.f32[0] * v52.f32[0])) >= (v51 * v51))))
       {
         v43 = v29 + 1;
-        if (a9 == 2)
+        if (mode == 2)
         {
           v53 = v48;
         }
@@ -163,8 +163,8 @@
         if (v29 >= v24)
         {
           v62 = v27.i32[0];
-          v54 = a4->var0;
-          v55 = a4->var1;
+          v54 = i->var0;
+          v55 = i->var1;
           v76 = vcvtq_s64_f64(vcvtq_f64_f32(vsub_f32(v44, vdup_lane_s32(v27, 0))));
           v77 = vdupq_n_s64(((*v27.i32 + *v27.i32) + v34));
           v75[0] = v54;

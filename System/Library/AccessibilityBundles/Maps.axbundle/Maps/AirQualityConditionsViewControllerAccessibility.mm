@@ -1,18 +1,18 @@
 @interface AirQualityConditionsViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation AirQualityConditionsViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AirQualityConditions" hasInstanceMethod:@"airQualityIndex" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"AirQualityConditions" hasInstanceMethod:@"hasNumericalAirQualityIndex" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"AirQualityConditionsViewController" hasInstanceMethod:@"isVisible" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"AirQualityConditionsViewController" hasInstanceMethod:@"airQualityConditions" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AirQualityConditions" hasInstanceMethod:@"airQualityDescription" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AirQualityConditions" hasInstanceMethod:@"airQualityIndex" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"AirQualityConditions" hasInstanceMethod:@"hasNumericalAirQualityIndex" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"AirQualityConditionsViewController" hasInstanceMethod:@"isVisible" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"AirQualityConditionsViewController" hasInstanceMethod:@"airQualityConditions" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AirQualityConditions" hasInstanceMethod:@"airQualityDescription" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -34,8 +34,8 @@
       v9 = MEMORY[0x29EDBA0F8];
       v10 = AXMapsLocString(@"AQI_STRING");
       v11 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:v8];
-      v12 = [v11 stringValue];
-      v7 = [v9 localizedStringWithFormat:v10, v12];
+      stringValue = [v11 stringValue];
+      v7 = [v9 localizedStringWithFormat:v10, stringValue];
     }
 
     else

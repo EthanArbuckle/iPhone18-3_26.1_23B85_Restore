@@ -1,30 +1,30 @@
 @interface LibraryMenuProvider
-+ (id)closeCommandTitleForSelectedItemCount:(unint64_t)a3;
-+ (id)contextMenuConfigurationForLibraryItems:(id)a3 dataSource:(id)a4;
-+ (id)copyCommandTitleForSelectedItemCount:(unint64_t)a3;
-+ (void)closeLibraryItems:(id)a3 dataSource:(id)a4;
-+ (void)copyLibraryItems:(id)a3;
++ (id)closeCommandTitleForSelectedItemCount:(unint64_t)count;
++ (id)contextMenuConfigurationForLibraryItems:(id)items dataSource:(id)source;
++ (id)copyCommandTitleForSelectedItemCount:(unint64_t)count;
++ (void)closeLibraryItems:(id)items dataSource:(id)source;
++ (void)copyLibraryItems:(id)items;
 @end
 
 @implementation LibraryMenuProvider
 
-+ (id)contextMenuConfigurationForLibraryItems:(id)a3 dataSource:(id)a4
++ (id)contextMenuConfigurationForLibraryItems:(id)items dataSource:(id)source
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count] == 1)
+  itemsCopy = items;
+  sourceCopy = source;
+  if ([itemsCopy count] == 1)
   {
-    v7 = [v5 firstObject];
+    firstObject = [itemsCopy firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v9 = [v5 firstObject];
-    v10 = v9;
+    firstObject2 = [itemsCopy firstObject];
+    firstObject3 = firstObject2;
     if (isKindOfClass)
     {
-      v11 = [v9 tab];
-      v12 = [v10 tabGroup];
-      v13 = [v6 contextMenuConfigurationForTab:v11 inTabGroup:v12];
+      tabGroup2 = [firstObject2 tab];
+      tabGroup = [firstObject3 tabGroup];
+      v13 = [sourceCopy contextMenuConfigurationForTab:tabGroup2 inTabGroup:tabGroup];
 
 LABEL_9:
       goto LABEL_10;
@@ -35,17 +35,17 @@ LABEL_9:
 
     if (v14)
     {
-      v10 = [v5 firstObject];
-      v11 = [v10 tabGroup];
-      v13 = [v6 contextMenuConfigurationForTabGroup:v11 variant:0];
+      firstObject3 = [itemsCopy firstObject];
+      tabGroup2 = [firstObject3 tabGroup];
+      v13 = [sourceCopy contextMenuConfigurationForTabGroup:tabGroup2 variant:0];
       goto LABEL_9;
     }
   }
 
-  else if ([v5 count] >= 2 && objc_msgSend(v5, "indexOfObjectPassingTest:", &__block_literal_global_34) == 0x7FFFFFFFFFFFFFFFLL)
+  else if ([itemsCopy count] >= 2 && objc_msgSend(itemsCopy, "indexOfObjectPassingTest:", &__block_literal_global_34) == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = [v5 safari_mapObjectsUsingBlock:&__block_literal_global_12];
-    v13 = [v6 contextMenuConfigurationForMultipleTabSelection:v10];
+    firstObject3 = [itemsCopy safari_mapObjectsUsingBlock:&__block_literal_global_12];
+    v13 = [sourceCopy contextMenuConfigurationForMultipleTabSelection:firstObject3];
 LABEL_10:
 
     goto LABEL_12;
@@ -57,31 +57,31 @@ LABEL_12:
   return v13;
 }
 
-+ (void)closeLibraryItems:(id)a3 dataSource:(id)a4
++ (void)closeLibraryItems:(id)items dataSource:(id)source
 {
-  v7 = a3;
-  v5 = a4;
-  if ([v7 indexOfObjectPassingTest:&__block_literal_global_34] == 0x7FFFFFFFFFFFFFFFLL)
+  itemsCopy = items;
+  sourceCopy = source;
+  if ([itemsCopy indexOfObjectPassingTest:&__block_literal_global_34] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [v7 safari_mapObjectsUsingBlock:&__block_literal_global_3];
-    [v5 closeSelectedTabs:v6];
+    v6 = [itemsCopy safari_mapObjectsUsingBlock:&__block_literal_global_3];
+    [sourceCopy closeSelectedTabs:v6];
   }
 }
 
-+ (void)copyLibraryItems:(id)a3
++ (void)copyLibraryItems:(id)items
 {
-  v5 = a3;
-  if ([v5 indexOfObjectPassingTest:&__block_literal_global_34] == 0x7FFFFFFFFFFFFFFFLL)
+  itemsCopy = items;
+  if ([itemsCopy indexOfObjectPassingTest:&__block_literal_global_34] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v3 = [v5 safari_mapObjectsUsingBlock:&__block_literal_global_5];
-    v4 = [MEMORY[0x277D75810] generalPasteboard];
-    [v4 safari_copyLinksForTabs:v3];
+    v3 = [itemsCopy safari_mapObjectsUsingBlock:&__block_literal_global_5];
+    generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
+    [generalPasteboard safari_copyLinksForTabs:v3];
   }
 }
 
-+ (id)closeCommandTitleForSelectedItemCount:(unint64_t)a3
++ (id)closeCommandTitleForSelectedItemCount:(unint64_t)count
 {
-  if (a3 == 1)
+  if (count == 1)
   {
     v3 = _WBSLocalizedString();
   }
@@ -90,15 +90,15 @@ LABEL_12:
   {
     v5 = MEMORY[0x277CCACA8];
     v6 = _WBSLocalizedString();
-    v3 = [v5 localizedStringWithFormat:v6, a3];
+    v3 = [v5 localizedStringWithFormat:v6, count];
   }
 
   return v3;
 }
 
-+ (id)copyCommandTitleForSelectedItemCount:(unint64_t)a3
++ (id)copyCommandTitleForSelectedItemCount:(unint64_t)count
 {
-  if (a3 == 1)
+  if (count == 1)
   {
     _WBSLocalizedString();
     return objc_claimAutoreleasedReturnValue();
@@ -108,7 +108,7 @@ LABEL_12:
   {
     v5 = MEMORY[0x277CCACA8];
     v6 = _WBSLocalizedString();
-    v3 = [v5 localizedStringWithFormat:v6, a3];
+    v3 = [v5 localizedStringWithFormat:v6, count];
   }
 
   return v3;

@@ -1,5 +1,5 @@
 @interface TSPUnarchiver
-+ (id)stringForSelector:(SEL)a3 objectClass:(Class)a4;
++ (id)stringForSelector:(SEL)selector objectClass:(Class)class;
 - (BOOL)hasDocumentVersionUUID;
 - (BOOL)isCrossAppPaste;
 - (BOOL)isCrossDocumentPaste;
@@ -7,60 +7,60 @@
 - (NSUUID)objectUUID;
 - (TSPObjectContext)context;
 - (TSPObjectDelegate)objectDelegate;
-- (TSPUnarchiver)initWithMessageType:(unsigned int)a3 unarchiveClass:(Class)a4 message:()unique_ptr<google:(std:(int64_t)a6 :()unique_ptr<TSP:(std:(unint64_t)a8 :(id)a9 default_delete<TSP:(BOOL)a10 :(id)a11 IdentifierMap<BOOL>>>)a7 :(id)a12 IdentifierMap<BOOL> default_delete<google:(id)a13 :protobuf::Message>>)a5 :protobuf::Message identifier:strongReferences:messageVersion:unknownContent:hasAlternateMessages:objectDelegate:lazyReferenceDelegate:delegate:;
+- (TSPUnarchiver)initWithMessageType:(unsigned int)type unarchiveClass:(Class)class message:()unique_ptr<google:(std:(int64_t)google :()unique_ptr<TSP:(std:(unint64_t)p :(id)a9 default_delete<TSP:(BOOL)self0 :(id)self1 IdentifierMap<BOOL>>>)a7 :(id)self2 IdentifierMap<BOOL> default_delete<google:(id)self3 :protobuf::Message>>)a5 :protobuf::Message identifier:strongReferences:messageVersion:unknownContent:hasAlternateMessages:objectDelegate:lazyReferenceDelegate:delegate:;
 - (TSPUnarchiverDelegate)delegate;
-- (const)p_messageWithDescriptor:(const void *)a3;
+- (const)p_messageWithDescriptor:(const void *)descriptor;
 - (id).cxx_construct;
-- (id)readDataReferenceMessage:(const void *)a3;
-- (id)readRepeatedWeakObjectUUIDPathReferenceMessage:(const void *)a3 class:(Class)a4 protocol:(id)a5 completion:(id)a6;
-- (id)readRepeatedWeakObjectUUIDPathReferenceMessage:(const void *)a3 referenceMessage:(void *)a4 delegate:(id)a5;
-- (id)readRepeatedWeakObjectUUIDReferenceMessage:(const void *)a3 class:(Class)a4 protocol:(id)a5 completion:(id)a6;
-- (id)readRepeatedWeakObjectUUIDReferenceMessage:(const void *)a3 referenceMessage:(void *)a4 delegate:(id)a5;
-- (id)readSparseWeakObjectUUIDPathReferenceArrayMessage:(const void *)a3;
-- (id)readSparseWeakObjectUUIDReferenceArrayMessage:(const void *)a3;
-- (id)readWeakObjectUUIDPathReferenceMessage:(const void *)a3;
-- (id)readWeakObjectUUIDPathReferenceMessage:(const void *)a3 class:(Class)a4 protocol:(id)a5 completion:(id)a6;
-- (id)readWeakObjectUUIDReferenceMessage:(const void *)a3;
-- (id)readWeakObjectUUIDReferenceMessage:(const void *)a3 class:(Class)a4 protocol:(id)a5 completion:(id)a6;
+- (id)readDataReferenceMessage:(const void *)message;
+- (id)readRepeatedWeakObjectUUIDPathReferenceMessage:(const void *)message class:(Class)class protocol:(id)protocol completion:(id)completion;
+- (id)readRepeatedWeakObjectUUIDPathReferenceMessage:(const void *)message referenceMessage:(void *)referenceMessage delegate:(id)delegate;
+- (id)readRepeatedWeakObjectUUIDReferenceMessage:(const void *)message class:(Class)class protocol:(id)protocol completion:(id)completion;
+- (id)readRepeatedWeakObjectUUIDReferenceMessage:(const void *)message referenceMessage:(void *)referenceMessage delegate:(id)delegate;
+- (id)readSparseWeakObjectUUIDPathReferenceArrayMessage:(const void *)message;
+- (id)readSparseWeakObjectUUIDReferenceArrayMessage:(const void *)message;
+- (id)readWeakObjectUUIDPathReferenceMessage:(const void *)message;
+- (id)readWeakObjectUUIDPathReferenceMessage:(const void *)message class:(Class)class protocol:(id)protocol completion:(id)completion;
+- (id)readWeakObjectUUIDReferenceMessage:(const void *)message;
+- (id)readWeakObjectUUIDReferenceMessage:(const void *)message class:(Class)class protocol:(id)protocol completion:(id)completion;
 - (unint64_t)fileFormatVersion;
 - (unint64_t)readVersion;
 - (unsigned)sourceType;
-- (void)addFinalizeHandler:(id)a3;
+- (void)addFinalizeHandler:(id)handler;
 - (void)dealloc;
-- (void)filterIdentifiers:(const void *)a3;
-- (void)readLazyReferenceMessage:(const void *)a3 class:(Class)a4 protocol:(id)a5 completion:(id)a6;
-- (void)readLazyReferenceMessage:(const void *)a3 completion:(id)a4;
-- (void)readLazyReferenceMessage:(const void *)a3 ownershipMode:(int64_t)a4 validateStrongReferences:(BOOL)a5 allowUnknownObject:(BOOL)a6 class:(Class)a7 protocol:(id)a8 validateClass:(BOOL)a9 selector:(SEL)a10 delegate:(id)a11 completion:(id)a12;
-- (void)readReferenceMessage1:(const void *)a3 class:(Class)a4 protocol:(id)a5 message2:(const void *)a6 class:(Class)a7 protocol:(id)a8 completion:(id)a9;
-- (void)readReferenceMessage:(const void *)a3 class:(Class)a4 protocol:(id)a5 completion:(id)a6;
-- (void)readReferenceMessage:(const void *)a3 class:(Class)a4 protocol:(id)a5 repeatedMessage:(const void *)a6 class:(Class)a7 protocol:(id)a8 completion:(id)a9;
-- (void)readReferenceMessage:(const void *)a3 completion:(id)a4;
-- (void)readRepeatedLazyReferenceMessage:(const void *)a3 class:(Class)a4 protocol:(id)a5 completion:(id)a6;
-- (void)readRepeatedLazyReferenceMessage:(const void *)a3 completion:(id)a4;
-- (void)readRepeatedLazyReferenceMessage:(const void *)a3 ownershipMode:(int64_t)a4 validateStrongReferences:(BOOL)a5 allowUnknownObject:(BOOL)a6 class:(Class)a7 protocol:(id)a8 validateClass:(BOOL)a9 selector:(SEL)a10 delegate:(id)a11 completion:(id)a12;
-- (void)readRepeatedReferenceMessage:(const void *)a3 class:(Class)a4 protocol:(id)a5 completion:(id)a6;
-- (void)readRepeatedReferenceMessage:(const void *)a3 completion:(id)a4;
-- (void)readRepeatedUnknownLazyReferenceMessage:(const void *)a3 ownershipMode:(int64_t)a4 completion:(id)a5;
-- (void)readRepeatedUnownedReferenceMessage:(const void *)a3 class:(Class)a4 protocol:(id)a5 completion:(id)a6;
-- (void)readRepeatedUnownedReferenceMessage:(const void *)a3 completion:(id)a4;
-- (void)readRepeatedWeakLazyReferenceMessage:(const void *)a3 class:(Class)a4 protocol:(id)a5 completion:(id)a6;
-- (void)readRepeatedWeakLazyReferenceMessage:(const void *)a3 completion:(id)a4;
-- (void)readRepeatedWeakReferenceMessage:(const void *)a3 class:(Class)a4 protocol:(id)a5 completion:(id)a6;
-- (void)readRepeatedWeakReferenceMessage:(const void *)a3 completion:(id)a4;
-- (void)readSparseReferenceArrayMessage:(const void *)a3 completion:(id)a4;
-- (void)readSparseReferenceArrayMessage:(const void *)a3 isWeak:(BOOL)a4 class:(Class)a5 protocol:(id)a6 validateClass:(BOOL)a7 selector:(SEL)a8 completion:(id)a9;
-- (void)readSparseWeakReferenceArrayMessage:(const void *)a3 completion:(id)a4;
-- (void)readUnknownLazyReferenceMessage:(const void *)a3 ownershipMode:(int64_t)a4 completion:(id)a5;
-- (void)readUnownedReferenceMessage:(const void *)a3 class:(Class)a4 protocol:(id)a5 completion:(id)a6;
-- (void)readUnownedReferenceMessage:(const void *)a3 completion:(id)a4;
-- (void)readWeakLazyReferenceMessage:(const void *)a3 class:(Class)a4 protocol:(id)a5 completion:(id)a6;
-- (void)readWeakLazyReferenceMessage:(const void *)a3 completion:(id)a4;
-- (void)readWeakReferenceMessage1:(const void *)a3 class:(Class)a4 protocol:(id)a5 message2:(const void *)a6 class:(Class)a7 protocol:(id)a8 completion:(id)a9;
-- (void)readWeakReferenceMessage:(const void *)a3 class:(Class)a4 protocol:(id)a5 completion:(id)a6;
-- (void)readWeakReferenceMessage:(const void *)a3 class:(Class)a4 protocol:(id)a5 repeatedMessage:(const void *)a6 class:(Class)a7 protocol:(id)a8 completion:(id)a9;
-- (void)readWeakReferenceMessage:(const void *)a3 completion:(id)a4;
-- (void)readWeakReferenceToObjectUUID:(id)a3 delegate:(id)a4 class:(Class)a5 protocol:(id)a6 selector:(SEL)a7 completion:(id)a8;
-- (void)validateReferenceToObjectIdentifier:(int64_t)a3 objectClass:(Class)a4 isWeak:(BOOL *)a5 validateStrongReferences:(BOOL)a6 selector:(SEL)a7 weakSelector:(SEL)a8;
+- (void)filterIdentifiers:(const void *)identifiers;
+- (void)readLazyReferenceMessage:(const void *)message class:(Class)class protocol:(id)protocol completion:(id)completion;
+- (void)readLazyReferenceMessage:(const void *)message completion:(id)completion;
+- (void)readLazyReferenceMessage:(const void *)message ownershipMode:(int64_t)mode validateStrongReferences:(BOOL)references allowUnknownObject:(BOOL)object class:(Class)class protocol:(id)protocol validateClass:(BOOL)validateClass selector:(SEL)self0 delegate:(id)self1 completion:(id)self2;
+- (void)readReferenceMessage1:(const void *)message1 class:(Class)class protocol:(id)protocol message2:(const void *)message2 class:(Class)a7 protocol:(id)a8 completion:(id)completion;
+- (void)readReferenceMessage:(const void *)message class:(Class)class protocol:(id)protocol completion:(id)completion;
+- (void)readReferenceMessage:(const void *)message class:(Class)class protocol:(id)protocol repeatedMessage:(const void *)repeatedMessage class:(Class)a7 protocol:(id)a8 completion:(id)completion;
+- (void)readReferenceMessage:(const void *)message completion:(id)completion;
+- (void)readRepeatedLazyReferenceMessage:(const void *)message class:(Class)class protocol:(id)protocol completion:(id)completion;
+- (void)readRepeatedLazyReferenceMessage:(const void *)message completion:(id)completion;
+- (void)readRepeatedLazyReferenceMessage:(const void *)message ownershipMode:(int64_t)mode validateStrongReferences:(BOOL)references allowUnknownObject:(BOOL)object class:(Class)class protocol:(id)protocol validateClass:(BOOL)validateClass selector:(SEL)self0 delegate:(id)self1 completion:(id)self2;
+- (void)readRepeatedReferenceMessage:(const void *)message class:(Class)class protocol:(id)protocol completion:(id)completion;
+- (void)readRepeatedReferenceMessage:(const void *)message completion:(id)completion;
+- (void)readRepeatedUnknownLazyReferenceMessage:(const void *)message ownershipMode:(int64_t)mode completion:(id)completion;
+- (void)readRepeatedUnownedReferenceMessage:(const void *)message class:(Class)class protocol:(id)protocol completion:(id)completion;
+- (void)readRepeatedUnownedReferenceMessage:(const void *)message completion:(id)completion;
+- (void)readRepeatedWeakLazyReferenceMessage:(const void *)message class:(Class)class protocol:(id)protocol completion:(id)completion;
+- (void)readRepeatedWeakLazyReferenceMessage:(const void *)message completion:(id)completion;
+- (void)readRepeatedWeakReferenceMessage:(const void *)message class:(Class)class protocol:(id)protocol completion:(id)completion;
+- (void)readRepeatedWeakReferenceMessage:(const void *)message completion:(id)completion;
+- (void)readSparseReferenceArrayMessage:(const void *)message completion:(id)completion;
+- (void)readSparseReferenceArrayMessage:(const void *)message isWeak:(BOOL)weak class:(Class)class protocol:(id)protocol validateClass:(BOOL)validateClass selector:(SEL)selector completion:(id)completion;
+- (void)readSparseWeakReferenceArrayMessage:(const void *)message completion:(id)completion;
+- (void)readUnknownLazyReferenceMessage:(const void *)message ownershipMode:(int64_t)mode completion:(id)completion;
+- (void)readUnownedReferenceMessage:(const void *)message class:(Class)class protocol:(id)protocol completion:(id)completion;
+- (void)readUnownedReferenceMessage:(const void *)message completion:(id)completion;
+- (void)readWeakLazyReferenceMessage:(const void *)message class:(Class)class protocol:(id)protocol completion:(id)completion;
+- (void)readWeakLazyReferenceMessage:(const void *)message completion:(id)completion;
+- (void)readWeakReferenceMessage1:(const void *)message1 class:(Class)class protocol:(id)protocol message2:(const void *)message2 class:(Class)a7 protocol:(id)a8 completion:(id)completion;
+- (void)readWeakReferenceMessage:(const void *)message class:(Class)class protocol:(id)protocol completion:(id)completion;
+- (void)readWeakReferenceMessage:(const void *)message class:(Class)class protocol:(id)protocol repeatedMessage:(const void *)repeatedMessage class:(Class)a7 protocol:(id)a8 completion:(id)completion;
+- (void)readWeakReferenceMessage:(const void *)message completion:(id)completion;
+- (void)readWeakReferenceToObjectUUID:(id)d delegate:(id)delegate class:(Class)class protocol:(id)protocol selector:(SEL)selector completion:(id)completion;
+- (void)validateReferenceToObjectIdentifier:(int64_t)identifier objectClass:(Class)class isWeak:(BOOL *)weak validateStrongReferences:(BOOL)references selector:(SEL)selector weakSelector:(SEL)weakSelector;
 @end
 
 @implementation TSPUnarchiver
@@ -110,7 +110,7 @@
   return v4;
 }
 
-- (const)p_messageWithDescriptor:(const void *)a3
+- (const)p_messageWithDescriptor:(const void *)descriptor
 {
   Message = *(self + 2);
   v6 = *(self + 19);
@@ -142,9 +142,9 @@ LABEL_12:
 
 LABEL_17:
     v19 = objc_alloc(MEMORY[0x277CCACA8]);
-    if (a3)
+    if (descriptor)
     {
-      v20 = *(a3 + 1);
+      v20 = *(descriptor + 1);
       if (v20[23] < 0)
       {
         v20 = *v20;
@@ -204,10 +204,10 @@ LABEL_17:
   while (v11 != v10);
   v8 = 1;
 LABEL_13:
-  if (a3 && (*(*Message + 152))(Message) != a3)
+  if (descriptor && (*(*Message + 152))(Message) != descriptor)
   {
     v28 = objc_alloc(MEMORY[0x277CCACA8]);
-    v29 = *(a3 + 1);
+    v29 = *(descriptor + 1);
     if (*(v29 + 23) < 0)
     {
       v29 = *v29;
@@ -244,10 +244,10 @@ LABEL_13:
   return Message;
 }
 
-- (void)readReferenceMessage:(const void *)a3 class:(Class)a4 protocol:(id)a5 completion:(id)a6
+- (void)readReferenceMessage:(const void *)message class:(Class)class protocol:(id)protocol completion:(id)completion
 {
-  v29 = a5;
-  v10 = a6;
+  protocolCopy = protocol;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(self + 9);
   v14 = WeakRetained;
   if (!WeakRetained || objc_msgSend_didFinishResolvingReferences(WeakRetained, v12, v13))
@@ -282,12 +282,12 @@ LABEL_8:
 
 LABEL_9:
   LOBYTE(v27) = 1;
-  objc_msgSend_readReferenceMessage_isWeak_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_weakSelector_completion_(self, v12, a3, 0, 1, 0, a4, v29, v27, a2, sel_readWeakReferenceMessage_class_protocol_completion_, v10);
+  objc_msgSend_readReferenceMessage_isWeak_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_weakSelector_completion_(self, v12, message, 0, 1, 0, class, protocolCopy, v27, a2, sel_readWeakReferenceMessage_class_protocol_completion_, completionCopy);
 }
 
-- (void)readReferenceMessage:(const void *)a3 completion:(id)a4
+- (void)readReferenceMessage:(const void *)message completion:(id)completion
 {
-  v26 = a4;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(self + 9);
   v10 = WeakRetained;
   if (!WeakRetained || objc_msgSend_didFinishResolvingReferences(WeakRetained, v8, v9))
@@ -323,13 +323,13 @@ LABEL_8:
 LABEL_9:
   v23 = objc_opt_class();
   LOBYTE(v25) = 0;
-  objc_msgSend_readReferenceMessage_isWeak_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_weakSelector_completion_(self, v24, a3, 0, 1, 0, v23, 0, v25, a2, sel_readWeakReferenceMessage_class_protocol_completion_, v26);
+  objc_msgSend_readReferenceMessage_isWeak_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_weakSelector_completion_(self, v24, message, 0, 1, 0, v23, 0, v25, a2, sel_readWeakReferenceMessage_class_protocol_completion_, completionCopy);
 }
 
-- (void)readWeakReferenceMessage:(const void *)a3 class:(Class)a4 protocol:(id)a5 completion:(id)a6
+- (void)readWeakReferenceMessage:(const void *)message class:(Class)class protocol:(id)protocol completion:(id)completion
 {
-  v29 = a5;
-  v10 = a6;
+  protocolCopy = protocol;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(self + 9);
   v14 = WeakRetained;
   if (!WeakRetained || objc_msgSend_didFinishResolvingReferences(WeakRetained, v12, v13))
@@ -364,12 +364,12 @@ LABEL_8:
 
 LABEL_9:
   LOBYTE(v27) = 1;
-  objc_msgSend_readReferenceMessage_isWeak_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_weakSelector_completion_(self, v12, a3, 1, 1, 0, a4, v29, v27, a2, sel_readWeakReferenceMessage_class_protocol_completion_, v10);
+  objc_msgSend_readReferenceMessage_isWeak_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_weakSelector_completion_(self, v12, message, 1, 1, 0, class, protocolCopy, v27, a2, sel_readWeakReferenceMessage_class_protocol_completion_, completionCopy);
 }
 
-- (void)readWeakReferenceMessage:(const void *)a3 completion:(id)a4
+- (void)readWeakReferenceMessage:(const void *)message completion:(id)completion
 {
-  v26 = a4;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(self + 9);
   v10 = WeakRetained;
   if (!WeakRetained || objc_msgSend_didFinishResolvingReferences(WeakRetained, v8, v9))
@@ -405,13 +405,13 @@ LABEL_8:
 LABEL_9:
   v23 = objc_opt_class();
   LOBYTE(v25) = 0;
-  objc_msgSend_readReferenceMessage_isWeak_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_weakSelector_completion_(self, v24, a3, 1, 1, 0, v23, 0, v25, a2, sel_readWeakReferenceMessage_class_protocol_completion_, v26);
+  objc_msgSend_readReferenceMessage_isWeak_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_weakSelector_completion_(self, v24, message, 1, 1, 0, v23, 0, v25, a2, sel_readWeakReferenceMessage_class_protocol_completion_, completionCopy);
 }
 
-- (void)readUnownedReferenceMessage:(const void *)a3 class:(Class)a4 protocol:(id)a5 completion:(id)a6
+- (void)readUnownedReferenceMessage:(const void *)message class:(Class)class protocol:(id)protocol completion:(id)completion
 {
-  v29 = a5;
-  v10 = a6;
+  protocolCopy = protocol;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(self + 9);
   v14 = WeakRetained;
   if (!WeakRetained || objc_msgSend_didFinishResolvingReferences(WeakRetained, v12, v13))
@@ -446,12 +446,12 @@ LABEL_8:
 
 LABEL_9:
   LOBYTE(v27) = 1;
-  objc_msgSend_readReferenceMessage_isWeak_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_weakSelector_completion_(self, v12, a3, 0, 0, 0, a4, v29, v27, a2, sel_readWeakReferenceMessage_class_protocol_completion_, v10);
+  objc_msgSend_readReferenceMessage_isWeak_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_weakSelector_completion_(self, v12, message, 0, 0, 0, class, protocolCopy, v27, a2, sel_readWeakReferenceMessage_class_protocol_completion_, completionCopy);
 }
 
-- (void)readUnownedReferenceMessage:(const void *)a3 completion:(id)a4
+- (void)readUnownedReferenceMessage:(const void *)message completion:(id)completion
 {
-  v26 = a4;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(self + 9);
   v10 = WeakRetained;
   if (!WeakRetained || objc_msgSend_didFinishResolvingReferences(WeakRetained, v8, v9))
@@ -487,13 +487,13 @@ LABEL_8:
 LABEL_9:
   v23 = objc_opt_class();
   LOBYTE(v25) = 0;
-  objc_msgSend_readReferenceMessage_isWeak_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_weakSelector_completion_(self, v24, a3, 0, 0, 0, v23, 0, v25, a2, sel_readWeakReferenceMessage_class_protocol_completion_, v26);
+  objc_msgSend_readReferenceMessage_isWeak_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_weakSelector_completion_(self, v24, message, 0, 0, 0, v23, 0, v25, a2, sel_readWeakReferenceMessage_class_protocol_completion_, completionCopy);
 }
 
-- (void)readRepeatedReferenceMessage:(const void *)a3 class:(Class)a4 protocol:(id)a5 completion:(id)a6
+- (void)readRepeatedReferenceMessage:(const void *)message class:(Class)class protocol:(id)protocol completion:(id)completion
 {
-  v29 = a5;
-  v10 = a6;
+  protocolCopy = protocol;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(self + 9);
   v14 = WeakRetained;
   if (!WeakRetained || objc_msgSend_didFinishResolvingReferences(WeakRetained, v12, v13))
@@ -528,12 +528,12 @@ LABEL_8:
 
 LABEL_9:
   LOBYTE(v27) = 1;
-  objc_msgSend_readRepeatedReferenceMessage_isWeak_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_completion_(self, v12, a3, 0, 1, 0, a4, v29, v27, a2, v10);
+  objc_msgSend_readRepeatedReferenceMessage_isWeak_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_completion_(self, v12, message, 0, 1, 0, class, protocolCopy, v27, a2, completionCopy);
 }
 
-- (void)readRepeatedReferenceMessage:(const void *)a3 completion:(id)a4
+- (void)readRepeatedReferenceMessage:(const void *)message completion:(id)completion
 {
-  v26 = a4;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(self + 9);
   v10 = WeakRetained;
   if (!WeakRetained || objc_msgSend_didFinishResolvingReferences(WeakRetained, v8, v9))
@@ -569,13 +569,13 @@ LABEL_8:
 LABEL_9:
   v23 = objc_opt_class();
   LOBYTE(v25) = 0;
-  objc_msgSend_readRepeatedReferenceMessage_isWeak_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_completion_(self, v24, a3, 0, 1, 0, v23, 0, v25, a2, v26);
+  objc_msgSend_readRepeatedReferenceMessage_isWeak_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_completion_(self, v24, message, 0, 1, 0, v23, 0, v25, a2, completionCopy);
 }
 
-- (void)readRepeatedWeakReferenceMessage:(const void *)a3 class:(Class)a4 protocol:(id)a5 completion:(id)a6
+- (void)readRepeatedWeakReferenceMessage:(const void *)message class:(Class)class protocol:(id)protocol completion:(id)completion
 {
-  v29 = a5;
-  v10 = a6;
+  protocolCopy = protocol;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(self + 9);
   v14 = WeakRetained;
   if (!WeakRetained || objc_msgSend_didFinishResolvingReferences(WeakRetained, v12, v13))
@@ -610,12 +610,12 @@ LABEL_8:
 
 LABEL_9:
   LOBYTE(v27) = 1;
-  objc_msgSend_readRepeatedReferenceMessage_isWeak_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_completion_(self, v12, a3, 1, 1, 0, a4, v29, v27, a2, v10);
+  objc_msgSend_readRepeatedReferenceMessage_isWeak_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_completion_(self, v12, message, 1, 1, 0, class, protocolCopy, v27, a2, completionCopy);
 }
 
-- (void)readRepeatedWeakReferenceMessage:(const void *)a3 completion:(id)a4
+- (void)readRepeatedWeakReferenceMessage:(const void *)message completion:(id)completion
 {
-  v26 = a4;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(self + 9);
   v10 = WeakRetained;
   if (!WeakRetained || objc_msgSend_didFinishResolvingReferences(WeakRetained, v8, v9))
@@ -651,13 +651,13 @@ LABEL_8:
 LABEL_9:
   v23 = objc_opt_class();
   LOBYTE(v25) = 0;
-  objc_msgSend_readRepeatedReferenceMessage_isWeak_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_completion_(self, v24, a3, 1, 1, 0, v23, 0, v25, a2, v26);
+  objc_msgSend_readRepeatedReferenceMessage_isWeak_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_completion_(self, v24, message, 1, 1, 0, v23, 0, v25, a2, completionCopy);
 }
 
-- (void)readRepeatedUnownedReferenceMessage:(const void *)a3 class:(Class)a4 protocol:(id)a5 completion:(id)a6
+- (void)readRepeatedUnownedReferenceMessage:(const void *)message class:(Class)class protocol:(id)protocol completion:(id)completion
 {
-  v29 = a5;
-  v10 = a6;
+  protocolCopy = protocol;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(self + 9);
   v14 = WeakRetained;
   if (!WeakRetained || objc_msgSend_didFinishResolvingReferences(WeakRetained, v12, v13))
@@ -692,12 +692,12 @@ LABEL_8:
 
 LABEL_9:
   LOBYTE(v27) = 1;
-  objc_msgSend_readRepeatedReferenceMessage_isWeak_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_completion_(self, v12, a3, 0, 0, 0, a4, v29, v27, a2, v10);
+  objc_msgSend_readRepeatedReferenceMessage_isWeak_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_completion_(self, v12, message, 0, 0, 0, class, protocolCopy, v27, a2, completionCopy);
 }
 
-- (void)readRepeatedUnownedReferenceMessage:(const void *)a3 completion:(id)a4
+- (void)readRepeatedUnownedReferenceMessage:(const void *)message completion:(id)completion
 {
-  v26 = a4;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(self + 9);
   v10 = WeakRetained;
   if (!WeakRetained || objc_msgSend_didFinishResolvingReferences(WeakRetained, v8, v9))
@@ -733,13 +733,13 @@ LABEL_8:
 LABEL_9:
   v23 = objc_opt_class();
   LOBYTE(v25) = 0;
-  objc_msgSend_readRepeatedReferenceMessage_isWeak_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_completion_(self, v24, a3, 0, 0, 0, v23, 0, v25, a2, v26);
+  objc_msgSend_readRepeatedReferenceMessage_isWeak_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_completion_(self, v24, message, 0, 0, 0, v23, 0, v25, a2, completionCopy);
 }
 
-- (void)readLazyReferenceMessage:(const void *)a3 class:(Class)a4 protocol:(id)a5 completion:(id)a6
+- (void)readLazyReferenceMessage:(const void *)message class:(Class)class protocol:(id)protocol completion:(id)completion
 {
-  v29 = a5;
-  v10 = a6;
+  protocolCopy = protocol;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(self + 9);
   v14 = WeakRetained;
   if (!WeakRetained || objc_msgSend_didFinishResolvingReferences(WeakRetained, v12, v13))
@@ -774,12 +774,12 @@ LABEL_8:
 
 LABEL_9:
   LOBYTE(v27) = 1;
-  objc_msgSend_readLazyReferenceMessage_ownershipMode_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_delegate_completion_(self, v12, a3, 0, 1, 0, a4, v29, v27, a2, v14, v10);
+  objc_msgSend_readLazyReferenceMessage_ownershipMode_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_delegate_completion_(self, v12, message, 0, 1, 0, class, protocolCopy, v27, a2, v14, completionCopy);
 }
 
-- (void)readLazyReferenceMessage:(const void *)a3 completion:(id)a4
+- (void)readLazyReferenceMessage:(const void *)message completion:(id)completion
 {
-  v26 = a4;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(self + 9);
   v10 = WeakRetained;
   if (!WeakRetained || objc_msgSend_didFinishResolvingReferences(WeakRetained, v8, v9))
@@ -815,13 +815,13 @@ LABEL_8:
 LABEL_9:
   v23 = objc_opt_class();
   LOBYTE(v25) = 0;
-  objc_msgSend_readLazyReferenceMessage_ownershipMode_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_delegate_completion_(self, v24, a3, 0, 1, 0, v23, 0, v25, a2, v10, v26);
+  objc_msgSend_readLazyReferenceMessage_ownershipMode_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_delegate_completion_(self, v24, message, 0, 1, 0, v23, 0, v25, a2, v10, completionCopy);
 }
 
-- (void)readWeakLazyReferenceMessage:(const void *)a3 class:(Class)a4 protocol:(id)a5 completion:(id)a6
+- (void)readWeakLazyReferenceMessage:(const void *)message class:(Class)class protocol:(id)protocol completion:(id)completion
 {
-  v29 = a5;
-  v10 = a6;
+  protocolCopy = protocol;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(self + 9);
   v14 = WeakRetained;
   if (!WeakRetained || objc_msgSend_didFinishResolvingReferences(WeakRetained, v12, v13))
@@ -856,12 +856,12 @@ LABEL_8:
 
 LABEL_9:
   LOBYTE(v27) = 1;
-  objc_msgSend_readLazyReferenceMessage_ownershipMode_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_delegate_completion_(self, v12, a3, 1, 1, 0, a4, v29, v27, a2, v14, v10);
+  objc_msgSend_readLazyReferenceMessage_ownershipMode_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_delegate_completion_(self, v12, message, 1, 1, 0, class, protocolCopy, v27, a2, v14, completionCopy);
 }
 
-- (void)readWeakLazyReferenceMessage:(const void *)a3 completion:(id)a4
+- (void)readWeakLazyReferenceMessage:(const void *)message completion:(id)completion
 {
-  v26 = a4;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(self + 9);
   v10 = WeakRetained;
   if (!WeakRetained || objc_msgSend_didFinishResolvingReferences(WeakRetained, v8, v9))
@@ -897,38 +897,38 @@ LABEL_8:
 LABEL_9:
   v23 = objc_opt_class();
   LOBYTE(v25) = 0;
-  objc_msgSend_readLazyReferenceMessage_ownershipMode_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_delegate_completion_(self, v24, a3, 1, 1, 0, v23, 0, v25, a2, v10, v26);
+  objc_msgSend_readLazyReferenceMessage_ownershipMode_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_delegate_completion_(self, v24, message, 1, 1, 0, v23, 0, v25, a2, v10, completionCopy);
 }
 
-- (void)readLazyReferenceMessage:(const void *)a3 ownershipMode:(int64_t)a4 validateStrongReferences:(BOOL)a5 allowUnknownObject:(BOOL)a6 class:(Class)a7 protocol:(id)a8 validateClass:(BOOL)a9 selector:(SEL)a10 delegate:(id)a11 completion:(id)a12
+- (void)readLazyReferenceMessage:(const void *)message ownershipMode:(int64_t)mode validateStrongReferences:(BOOL)references allowUnknownObject:(BOOL)object class:(Class)class protocol:(id)protocol validateClass:(BOOL)validateClass selector:(SEL)self0 delegate:(id)self1 completion:(id)self2
 {
-  v101 = a6;
-  v104 = a5;
-  v15 = a8;
-  v16 = a11;
-  v19 = a12;
-  v102 = v16;
-  v103 = v15;
-  if (!a9)
+  objectCopy = object;
+  referencesCopy = references;
+  protocolCopy = protocol;
+  delegateCopy = delegate;
+  completionCopy = completion;
+  v102 = delegateCopy;
+  v103 = protocolCopy;
+  if (!validateClass)
   {
     goto LABEL_19;
   }
 
-  if (objc_opt_class() != a7)
+  if (objc_opt_class() != class)
   {
     v20 = objc_opt_class();
-    if (objc_msgSend_isSubclassOfClass_(a7, v21, v20))
+    if (objc_msgSend_isSubclassOfClass_(class, v21, v20))
     {
       goto LABEL_19;
     }
 
-    if (objc_opt_class() == a7)
+    if (objc_opt_class() == class)
     {
       v55 = MEMORY[0x277D81150];
       v36 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v22, "[TSPUnarchiver readLazyReferenceMessage:ownershipMode:validateStrongReferences:allowUnknownObject:class:protocol:validateClass:selector:delegate:completion:]");
       v57 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v56, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnarchiver.mm");
       v58 = objc_opt_class();
-      v29 = objc_msgSend_stringForSelector_objectClass_(v58, v59, a10, a7);
+      v29 = objc_msgSend_stringForSelector_objectClass_(v58, v59, selector, class);
       v60 = v55;
       v34 = v57;
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v60, v61, v36, v57, 330, 0, "You should provide a more specific object reference wrapper class for the %{public}@ function.", v29);
@@ -937,9 +937,9 @@ LABEL_9:
     else
     {
       v23 = objc_opt_class();
-      if (objc_msgSend_isSubclassOfClass_(a7, v24, v23))
+      if (objc_msgSend_isSubclassOfClass_(class, v24, v23))
       {
-        if (!v15)
+        if (!protocolCopy)
         {
           goto LABEL_19;
         }
@@ -948,9 +948,9 @@ LABEL_9:
         v26 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v17, "[TSPUnarchiver readLazyReferenceMessage:ownershipMode:validateStrongReferences:allowUnknownObject:class:protocol:validateClass:selector:delegate:completion:]");
         v100 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v27, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnarchiver.mm");
         v28 = v26;
-        v29 = NSStringFromProtocol(v15);
+        v29 = NSStringFromProtocol(protocolCopy);
         v30 = objc_opt_class();
-        v32 = objc_msgSend_stringForSelector_objectClass_(v30, v31, a10, a7);
+        v32 = objc_msgSend_stringForSelector_objectClass_(v30, v31, selector, class);
         v33 = v25;
         v34 = v100;
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v33, v35, v28, v100, 330, 0, "You should not define any protocol (including %{public}@) when using object reference wrapper for the %{public}@ function.", v29, v32);
@@ -964,7 +964,7 @@ LABEL_9:
         v36 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v17, "[TSPUnarchiver readLazyReferenceMessage:ownershipMode:validateStrongReferences:allowUnknownObject:class:protocol:validateClass:selector:delegate:completion:]");
         v64 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v63, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnarchiver.mm");
         v65 = objc_opt_class();
-        v29 = objc_msgSend_stringForSelector_objectClass_(v65, v66, a10, a7);
+        v29 = objc_msgSend_stringForSelector_objectClass_(v65, v66, selector, class);
         v67 = v62;
         v34 = v64;
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v67, v68, v36, v64, 330, 0, "You should provide a TSPObject or TSPObjectReferenceWrapper subclass for the %{public}@ function.", v29);
@@ -974,9 +974,9 @@ LABEL_9:
     goto LABEL_18;
   }
 
-  if (v15)
+  if (protocolCopy)
   {
-    if (&unk_2885E6538 != v15)
+    if (&unk_2885E6538 != protocolCopy)
     {
       goto LABEL_19;
     }
@@ -985,7 +985,7 @@ LABEL_9:
     v36 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v17, "[TSPUnarchiver readLazyReferenceMessage:ownershipMode:validateStrongReferences:allowUnknownObject:class:protocol:validateClass:selector:delegate:completion:]");
     v39 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v38, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnarchiver.mm");
     v40 = objc_opt_class();
-    v29 = objc_msgSend_stringForSelector_objectClass_(v40, v41, a10, a7);
+    v29 = objc_msgSend_stringForSelector_objectClass_(v40, v41, selector, class);
     v42 = v37;
     v34 = v39;
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v42, v43, v36, v39, 330, 0, "You should provide a more specific protocol for the %{public}@ function.", v29);
@@ -1032,7 +1032,7 @@ LABEL_15:
       v36 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v17, "[TSPUnarchiver readLazyReferenceMessage:ownershipMode:validateStrongReferences:allowUnknownObject:class:protocol:validateClass:selector:delegate:completion:]");
       v50 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v49, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnarchiver.mm");
       v51 = objc_opt_class();
-      v29 = objc_msgSend_stringForSelector_objectClass_(v51, v52, a10, a7);
+      v29 = objc_msgSend_stringForSelector_objectClass_(v51, v52, selector, class);
       v53 = v48;
       v34 = v50;
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v53, v54, v36, v50, 330, 0, "You should provide a more specific object class for the %{public}@ function.", v29);
@@ -1043,18 +1043,18 @@ LABEL_18:
   }
 
 LABEL_19:
-  v71 = *(a3 + 3);
+  v71 = *(message + 3);
   v72 = v71 == 71 || v71 == 72;
-  if (v72 && objc_msgSend_componentIdentifier(v16, v17, v18) != v71 && objc_msgSend_fileFormatVersion(self, v17, v73) >= 0x2000000000000)
+  if (v72 && objc_msgSend_componentIdentifier(delegateCopy, v17, v18) != v71 && objc_msgSend_fileFormatVersion(self, v17, v73) >= 0x2000000000000)
   {
     v71 = 0;
   }
 
-  v109[0] = a4 != 0;
-  objc_msgSend_validateReferenceToObjectIdentifier_objectClass_isWeak_validateStrongReferences_selector_weakSelector_(self, v17, v71, a7, v109, v104, a10, sel_readWeakLazyReferenceMessage_class_protocol_completion_);
-  if (a4 || !v109[0])
+  v109[0] = mode != 0;
+  objc_msgSend_validateReferenceToObjectIdentifier_objectClass_isWeak_validateStrongReferences_selector_weakSelector_(self, v17, v71, class, v109, referencesCopy, selector, sel_readWeakLazyReferenceMessage_class_protocol_completion_);
+  if (mode || !v109[0])
   {
-    if (v109[0] != (a4 != 0))
+    if (v109[0] != (mode != 0))
     {
       v75 = MEMORY[0x277D81150];
       v76 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v74, "[TSPUnarchiver readLazyReferenceMessage:ownershipMode:validateStrongReferences:allowUnknownObject:class:protocol:validateClass:selector:delegate:completion:]");
@@ -1067,12 +1067,12 @@ LABEL_19:
 
   else
   {
-    a4 = 1;
+    mode = 1;
   }
 
   v82 = [TSPLazyReference alloc];
   WeakRetained = objc_loadWeakRetained(self + 8);
-  v85 = objc_msgSend_initWithDelegate_identifier_ownershipMode_allowUnknownObject_objectClass_objectProtocol_(v82, v84, WeakRetained, v71, a4, v101, a7, v103);
+  v85 = objc_msgSend_initWithDelegate_identifier_ownershipMode_allowUnknownObject_objectClass_objectProtocol_(v82, v84, WeakRetained, v71, mode, objectCopy, class, v103);
 
   v108 = 1;
   objc_msgSend_unarchiver_didReadLazyReference_isExternal_(v102, v86, self, v85, &v108);
@@ -1086,19 +1086,19 @@ LABEL_19:
     v106[3] = &unk_27A6E30E8;
     v107 = v85;
     LOBYTE(v99) = 0;
-    objc_msgSend_readReferenceMessage_isWeak_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_weakSelector_completion_(self, v89, a3, v88, v104, 1, a7, v103, v99, a10, sel_readWeakLazyReferenceMessage_class_protocol_completion_, v106);
+    objc_msgSend_readReferenceMessage_isWeak_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_weakSelector_completion_(self, v89, message, v88, referencesCopy, 1, class, v103, v99, selector, sel_readWeakLazyReferenceMessage_class_protocol_completion_, v106);
   }
 
-  if (v19)
+  if (completionCopy)
   {
-    v19[2](v19, v85);
+    completionCopy[2](completionCopy, v85);
   }
 }
 
-- (void)readRepeatedLazyReferenceMessage:(const void *)a3 class:(Class)a4 protocol:(id)a5 completion:(id)a6
+- (void)readRepeatedLazyReferenceMessage:(const void *)message class:(Class)class protocol:(id)protocol completion:(id)completion
 {
-  v29 = a5;
-  v10 = a6;
+  protocolCopy = protocol;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(self + 9);
   v14 = WeakRetained;
   if (!WeakRetained || objc_msgSend_didFinishResolvingReferences(WeakRetained, v12, v13))
@@ -1133,12 +1133,12 @@ LABEL_8:
 
 LABEL_9:
   LOBYTE(v27) = 1;
-  objc_msgSend_readRepeatedLazyReferenceMessage_ownershipMode_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_delegate_completion_(self, v12, a3, 0, 1, 0, a4, v29, v27, a2, v14, v10);
+  objc_msgSend_readRepeatedLazyReferenceMessage_ownershipMode_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_delegate_completion_(self, v12, message, 0, 1, 0, class, protocolCopy, v27, a2, v14, completionCopy);
 }
 
-- (void)readRepeatedLazyReferenceMessage:(const void *)a3 completion:(id)a4
+- (void)readRepeatedLazyReferenceMessage:(const void *)message completion:(id)completion
 {
-  v26 = a4;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(self + 9);
   v10 = WeakRetained;
   if (!WeakRetained || objc_msgSend_didFinishResolvingReferences(WeakRetained, v8, v9))
@@ -1174,13 +1174,13 @@ LABEL_8:
 LABEL_9:
   v23 = objc_opt_class();
   LOBYTE(v25) = 0;
-  objc_msgSend_readRepeatedLazyReferenceMessage_ownershipMode_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_delegate_completion_(self, v24, a3, 0, 1, 0, v23, 0, v25, a2, v10, v26);
+  objc_msgSend_readRepeatedLazyReferenceMessage_ownershipMode_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_delegate_completion_(self, v24, message, 0, 1, 0, v23, 0, v25, a2, v10, completionCopy);
 }
 
-- (void)readRepeatedWeakLazyReferenceMessage:(const void *)a3 class:(Class)a4 protocol:(id)a5 completion:(id)a6
+- (void)readRepeatedWeakLazyReferenceMessage:(const void *)message class:(Class)class protocol:(id)protocol completion:(id)completion
 {
-  v29 = a5;
-  v10 = a6;
+  protocolCopy = protocol;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(self + 9);
   v14 = WeakRetained;
   if (!WeakRetained || objc_msgSend_didFinishResolvingReferences(WeakRetained, v12, v13))
@@ -1215,12 +1215,12 @@ LABEL_8:
 
 LABEL_9:
   LOBYTE(v27) = 1;
-  objc_msgSend_readRepeatedLazyReferenceMessage_ownershipMode_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_delegate_completion_(self, v12, a3, 1, 1, 0, a4, v29, v27, a2, v14, v10);
+  objc_msgSend_readRepeatedLazyReferenceMessage_ownershipMode_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_delegate_completion_(self, v12, message, 1, 1, 0, class, protocolCopy, v27, a2, v14, completionCopy);
 }
 
-- (void)readRepeatedWeakLazyReferenceMessage:(const void *)a3 completion:(id)a4
+- (void)readRepeatedWeakLazyReferenceMessage:(const void *)message completion:(id)completion
 {
-  v26 = a4;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(self + 9);
   v10 = WeakRetained;
   if (!WeakRetained || objc_msgSend_didFinishResolvingReferences(WeakRetained, v8, v9))
@@ -1256,46 +1256,46 @@ LABEL_8:
 LABEL_9:
   v23 = objc_opt_class();
   LOBYTE(v25) = 0;
-  objc_msgSend_readRepeatedLazyReferenceMessage_ownershipMode_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_delegate_completion_(self, v24, a3, 1, 1, 0, v23, 0, v25, a2, v10, v26);
+  objc_msgSend_readRepeatedLazyReferenceMessage_ownershipMode_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_delegate_completion_(self, v24, message, 1, 1, 0, v23, 0, v25, a2, v10, completionCopy);
 }
 
-- (void)readRepeatedLazyReferenceMessage:(const void *)a3 ownershipMode:(int64_t)a4 validateStrongReferences:(BOOL)a5 allowUnknownObject:(BOOL)a6 class:(Class)a7 protocol:(id)a8 validateClass:(BOOL)a9 selector:(SEL)a10 delegate:(id)a11 completion:(id)a12
+- (void)readRepeatedLazyReferenceMessage:(const void *)message ownershipMode:(int64_t)mode validateStrongReferences:(BOOL)references allowUnknownObject:(BOOL)object class:(Class)class protocol:(id)protocol validateClass:(BOOL)validateClass selector:(SEL)self0 delegate:(id)self1 completion:(id)self2
 {
-  v94 = a6;
-  v98 = a5;
-  v13 = a8;
-  v96 = a11;
-  v15 = a12;
-  v95 = v13;
-  if (!a9)
+  objectCopy = object;
+  referencesCopy = references;
+  protocolCopy = protocol;
+  delegateCopy = delegate;
+  completionCopy = completion;
+  v95 = protocolCopy;
+  if (!validateClass)
   {
     goto LABEL_19;
   }
 
-  if (objc_opt_class() != a7)
+  if (objc_opt_class() != class)
   {
     v17 = objc_opt_class();
-    if (objc_msgSend_isSubclassOfClass_(a7, v18, v17))
+    if (objc_msgSend_isSubclassOfClass_(class, v18, v17))
     {
       goto LABEL_19;
     }
 
-    if (objc_opt_class() == a7)
+    if (objc_opt_class() == class)
     {
       v46 = MEMORY[0x277D81150];
       v23 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v19, "[TSPUnarchiver readRepeatedLazyReferenceMessage:ownershipMode:validateStrongReferences:allowUnknownObject:class:protocol:validateClass:selector:delegate:completion:]");
       v25 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v47, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnarchiver.mm");
       v48 = objc_opt_class();
-      v26 = objc_msgSend_stringForSelector_objectClass_(v48, v49, a10, a7);
+      v26 = objc_msgSend_stringForSelector_objectClass_(v48, v49, selector, class);
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v46, v50, v23, v25, 407, 0, "You should provide a more specific object reference wrapper class for the %{public}@ function.", v26);
     }
 
     else
     {
       v20 = objc_opt_class();
-      if (objc_msgSend_isSubclassOfClass_(a7, v21, v20))
+      if (objc_msgSend_isSubclassOfClass_(class, v21, v20))
       {
-        if (!v13)
+        if (!protocolCopy)
         {
           goto LABEL_19;
         }
@@ -1303,9 +1303,9 @@ LABEL_9:
         v22 = MEMORY[0x277D81150];
         v23 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, "[TSPUnarchiver readRepeatedLazyReferenceMessage:ownershipMode:validateStrongReferences:allowUnknownObject:class:protocol:validateClass:selector:delegate:completion:]");
         v25 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v24, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnarchiver.mm");
-        v26 = NSStringFromProtocol(v13);
+        v26 = NSStringFromProtocol(protocolCopy);
         v27 = objc_opt_class();
-        v29 = objc_msgSend_stringForSelector_objectClass_(v27, v28, a10, a7);
+        v29 = objc_msgSend_stringForSelector_objectClass_(v27, v28, selector, class);
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v22, v30, v23, v25, 407, 0, "You should not define any protocol (including %{public}@) when using object reference wrapper for the %{public}@ function.", v26, v29);
       }
 
@@ -1315,7 +1315,7 @@ LABEL_9:
         v23 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, "[TSPUnarchiver readRepeatedLazyReferenceMessage:ownershipMode:validateStrongReferences:allowUnknownObject:class:protocol:validateClass:selector:delegate:completion:]");
         v25 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v52, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnarchiver.mm");
         v53 = objc_opt_class();
-        v26 = objc_msgSend_stringForSelector_objectClass_(v53, v54, a10, a7);
+        v26 = objc_msgSend_stringForSelector_objectClass_(v53, v54, selector, class);
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v51, v55, v23, v25, 407, 0, "You should provide a TSPObject or TSPObjectReferenceWrapper subclass for the %{public}@ function.", v26);
       }
     }
@@ -1323,9 +1323,9 @@ LABEL_9:
     goto LABEL_18;
   }
 
-  if (v13)
+  if (protocolCopy)
   {
-    if (&unk_2885E6538 != v13)
+    if (&unk_2885E6538 != protocolCopy)
     {
       goto LABEL_19;
     }
@@ -1334,7 +1334,7 @@ LABEL_9:
     v23 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, "[TSPUnarchiver readRepeatedLazyReferenceMessage:ownershipMode:validateStrongReferences:allowUnknownObject:class:protocol:validateClass:selector:delegate:completion:]");
     v25 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v32, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnarchiver.mm");
     v33 = objc_opt_class();
-    v26 = objc_msgSend_stringForSelector_objectClass_(v33, v34, a10, a7);
+    v26 = objc_msgSend_stringForSelector_objectClass_(v33, v34, selector, class);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v31, v35, v23, v25, 407, 0, "You should provide a more specific protocol for the %{public}@ function.", v26);
     goto LABEL_18;
   }
@@ -1379,7 +1379,7 @@ LABEL_15:
       v23 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, "[TSPUnarchiver readRepeatedLazyReferenceMessage:ownershipMode:validateStrongReferences:allowUnknownObject:class:protocol:validateClass:selector:delegate:completion:]");
       v25 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v42, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnarchiver.mm");
       v43 = objc_opt_class();
-      v26 = objc_msgSend_stringForSelector_objectClass_(v43, v44, a10, a7);
+      v26 = objc_msgSend_stringForSelector_objectClass_(v43, v44, selector, class);
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v41, v45, v23, v25, 407, 0, "You should provide a more specific object class for the %{public}@ function.", v26);
 LABEL_18:
 
@@ -1388,9 +1388,9 @@ LABEL_18:
   }
 
 LABEL_19:
-  v58 = *(a3 + 2);
-  v93 = v15;
-  if (v15)
+  v58 = *(message + 2);
+  v93 = completionCopy;
+  if (completionCopy)
   {
     v59 = [TSPLazyReferenceArray alloc];
     v61 = objc_msgSend_initWithCapacity_(v59, v60, v58);
@@ -1406,13 +1406,13 @@ LABEL_19:
     v62 = 8;
     do
     {
-      v63 = *(*(*(a3 + 2) + v62) + 24);
-      v107[0] = a4 != 0;
-      objc_msgSend_validateReferenceToObjectIdentifier_objectClass_isWeak_validateStrongReferences_selector_weakSelector_(self, v14, v63, a7, v107, v98, a10, sel_readRepeatedWeakLazyReferenceMessage_class_protocol_completion_);
-      if (a4 || !v107[0])
+      v63 = *(*(*(message + 2) + v62) + 24);
+      v107[0] = mode != 0;
+      objc_msgSend_validateReferenceToObjectIdentifier_objectClass_isWeak_validateStrongReferences_selector_weakSelector_(self, v14, v63, class, v107, referencesCopy, selector, sel_readRepeatedWeakLazyReferenceMessage_class_protocol_completion_);
+      if (mode || !v107[0])
       {
-        v65 = a4;
-        if (v107[0] != (a4 != 0))
+        modeCopy2 = mode;
+        if (v107[0] != (mode != 0))
         {
           v66 = MEMORY[0x277D81150];
           v67 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v64, "[TSPUnarchiver readRepeatedLazyReferenceMessage:ownershipMode:validateStrongReferences:allowUnknownObject:class:protocol:validateClass:selector:delegate:completion:]");
@@ -1420,23 +1420,23 @@ LABEL_19:
           objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v66, v70, v67, v69, 425, 0, "Unexpected adjusted isWeak value.");
 
           objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v71, v72);
-          v65 = a4;
+          modeCopy2 = mode;
         }
       }
 
       else
       {
-        v65 = 1;
+        modeCopy2 = 1;
       }
 
       v73 = [TSPLazyReference alloc];
       WeakRetained = objc_loadWeakRetained(self + 8);
       v75 = v73;
-      v13 = v95;
-      v77 = objc_msgSend_initWithDelegate_identifier_ownershipMode_allowUnknownObject_objectClass_objectProtocol_(v75, v76, WeakRetained, v63, v65, v94, a7, v95);
+      protocolCopy = v95;
+      v77 = objc_msgSend_initWithDelegate_identifier_ownershipMode_allowUnknownObject_objectClass_objectProtocol_(v75, v76, WeakRetained, v63, modeCopy2, objectCopy, class, v95);
 
       v106 = 1;
-      objc_msgSend_unarchiver_didReadLazyReference_isExternal_(v96, v78, self, v77, &v106);
+      objc_msgSend_unarchiver_didReadLazyReference_isExternal_(delegateCopy, v78, self, v77, &v106);
       objc_msgSend_setIsExternal_(v77, v79, v106);
       if ((v106 & 1) == 0)
       {
@@ -1450,7 +1450,7 @@ LABEL_19:
         v101[3] = &unk_27A6E30E8;
         v102 = v77;
         LOBYTE(v92) = 0;
-        objc_msgSend_readReferenceMessage_isWeak_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_weakSelector_completion_(self, v82, v103, v81, v98, 1, a7, v95, v92, a10, sel_readRepeatedWeakLazyReferenceMessage_class_protocol_completion_, v101);
+        objc_msgSend_readReferenceMessage_isWeak_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_weakSelector_completion_(self, v82, v103, v81, referencesCopy, 1, class, v95, v92, selector, sel_readRepeatedWeakLazyReferenceMessage_class_protocol_completion_, v101);
 
         TSP::Reference::~Reference(v103);
       }
@@ -1470,7 +1470,7 @@ LABEL_19:
   }
 }
 
-- (id)readDataReferenceMessage:(const void *)a3
+- (id)readDataReferenceMessage:(const void *)message
 {
   WeakRetained = objc_loadWeakRetained(self + 9);
   v9 = WeakRetained;
@@ -1505,7 +1505,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  v23 = *(a3 + 3);
+  v23 = *(message + 3);
   if (v23)
   {
     v24 = *(self + 22);
@@ -1609,9 +1609,9 @@ LABEL_9:
   return Version;
 }
 
-- (void)addFinalizeHandler:(id)a3
+- (void)addFinalizeHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(self + 9);
   v9 = WeakRetained;
   if (!WeakRetained || objc_msgSend_didFinishResolvingReferences(WeakRetained, v7, v8))
@@ -1645,9 +1645,9 @@ LABEL_8:
   }
 
 LABEL_9:
-  if (v5)
+  if (handlerCopy)
   {
-    v23 = objc_msgSend_copy(v5, v7, v10);
+    v23 = objc_msgSend_copy(handlerCopy, v7, v10);
     v25 = *(self + 17);
     v24 = *(self + 18);
     if (v25 >= v24)
@@ -1783,18 +1783,18 @@ LABEL_9:
   return v21;
 }
 
-- (id)readWeakObjectUUIDReferenceMessage:(const void *)a3
+- (id)readWeakObjectUUIDReferenceMessage:(const void *)message
 {
   v4 = objc_alloc(MEMORY[0x277CCAD78]);
-  v6 = objc_msgSend_tsp_initWithMessage_(v4, v5, a3);
+  v6 = objc_msgSend_tsp_initWithMessage_(v4, v5, message);
 
   return v6;
 }
 
-- (id)readWeakObjectUUIDReferenceMessage:(const void *)a3 class:(Class)a4 protocol:(id)a5 completion:(id)a6
+- (id)readWeakObjectUUIDReferenceMessage:(const void *)message class:(Class)class protocol:(id)protocol completion:(id)completion
 {
-  v10 = a5;
-  v11 = a6;
+  protocolCopy = protocol;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(self + 9);
   v15 = WeakRetained;
   if (!WeakRetained || objc_msgSend_didFinishResolvingReferences(WeakRetained, v13, v14))
@@ -1802,7 +1802,7 @@ LABEL_9:
     v16 = *(self + 2);
     v17 = MEMORY[0x277D81150];
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "[TSPUnarchiver readWeakObjectUUIDReferenceMessage:class:protocol:completion:]");
-    v31 = a4;
+    classCopy = class;
     v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v19, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnarchiver.mm");
     v21 = objc_opt_class();
     v24 = objc_msgSend_stringForSelector_objectClass_(v21, v22, a2, 0);
@@ -1815,7 +1815,7 @@ LABEL_9:
 LABEL_8:
 
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v26, v27);
-        a4 = v31;
+        class = classCopy;
         goto LABEL_9;
       }
     }
@@ -1830,31 +1830,31 @@ LABEL_8:
   }
 
 LABEL_9:
-  v28 = objc_msgSend_readWeakObjectUUIDReferenceMessage_(self, v13, a3);
-  objc_msgSend_readWeakReferenceToObjectUUID_delegate_class_protocol_selector_completion_(self, v29, v28, v15, a4, v10, a2, v11);
+  v28 = objc_msgSend_readWeakObjectUUIDReferenceMessage_(self, v13, message);
+  objc_msgSend_readWeakReferenceToObjectUUID_delegate_class_protocol_selector_completion_(self, v29, v28, v15, class, protocolCopy, a2, completionCopy);
 
   return v28;
 }
 
-- (id)readWeakObjectUUIDPathReferenceMessage:(const void *)a3
+- (id)readWeakObjectUUIDPathReferenceMessage:(const void *)message
 {
   v4 = objc_alloc(MEMORY[0x277D81360]);
-  v6 = objc_msgSend_initWithMessage_(v4, v5, a3);
+  v6 = objc_msgSend_initWithMessage_(v4, v5, message);
 
   return v6;
 }
 
-- (id)readWeakObjectUUIDPathReferenceMessage:(const void *)a3 class:(Class)a4 protocol:(id)a5 completion:(id)a6
+- (id)readWeakObjectUUIDPathReferenceMessage:(const void *)message class:(Class)class protocol:(id)protocol completion:(id)completion
 {
-  v10 = a5;
-  v11 = a6;
+  protocolCopy = protocol;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(self + 9);
   v15 = WeakRetained;
   if (!WeakRetained || objc_msgSend_didFinishResolvingReferences(WeakRetained, v13, v14))
   {
     v16 = *(self + 2);
     v17 = MEMORY[0x277D81150];
-    v34 = v10;
+    v34 = protocolCopy;
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "[TSPUnarchiver readWeakObjectUUIDPathReferenceMessage:class:protocol:completion:]");
     v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v19, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnarchiver.mm");
     v21 = objc_opt_class();
@@ -1867,7 +1867,7 @@ LABEL_9:
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v17, v23, v18, v20, 535, 0, "%{public}@ should not be nested inside the completion handler of another reference resolution function or inside finalize handlers for message [%{public}s-%llu] message type %u.", v24, *v25, *(self + 3), *(self + 41));
 LABEL_8:
 
-        v10 = v34;
+        protocolCopy = v34;
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v26, v27);
         goto LABEL_9;
       }
@@ -1883,31 +1883,31 @@ LABEL_8:
   }
 
 LABEL_9:
-  v28 = objc_msgSend_readWeakObjectUUIDPathReferenceMessage_(self, v13, a3);
+  v28 = objc_msgSend_readWeakObjectUUIDPathReferenceMessage_(self, v13, message);
   v31 = objc_msgSend_lastUUID(v28, v29, v30);
-  objc_msgSend_readWeakReferenceToObjectUUID_delegate_class_protocol_selector_completion_(self, v32, v31, v15, a4, v10, a2, v11);
+  objc_msgSend_readWeakReferenceToObjectUUID_delegate_class_protocol_selector_completion_(self, v32, v31, v15, class, protocolCopy, a2, completionCopy);
 
   return v28;
 }
 
-- (void)readWeakReferenceToObjectUUID:(id)a3 delegate:(id)a4 class:(Class)a5 protocol:(id)a6 selector:(SEL)a7 completion:(id)a8
+- (void)readWeakReferenceToObjectUUID:(id)d delegate:(id)delegate class:(Class)class protocol:(id)protocol selector:(SEL)selector completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a8;
-  if (objc_opt_class() != a5)
+  dCopy = d;
+  delegateCopy = delegate;
+  protocolCopy = protocol;
+  completionCopy = completion;
+  if (objc_opt_class() != class)
   {
     v20 = objc_opt_class();
-    if ((objc_msgSend_isSubclassOfClass_(a5, v21, v20) & 1) == 0)
+    if ((objc_msgSend_isSubclassOfClass_(class, v21, v20) & 1) == 0)
     {
-      if (objc_opt_class() == a5)
+      if (objc_opt_class() == class)
       {
         v49 = MEMORY[0x277D81150];
         v82 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v22, "[TSPUnarchiver readWeakReferenceToObjectUUID:delegate:class:protocol:selector:completion:]");
         v26 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v50, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnarchiver.mm");
         v51 = objc_opt_class();
-        v27 = objc_msgSend_stringForSelector_objectClass_(v51, v52, a7, a5);
+        v27 = objc_msgSend_stringForSelector_objectClass_(v51, v52, selector, class);
         v53 = v49;
         v32 = v82;
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v53, v54, v82, v26, 543, 0, "You should provide a more specific object reference wrapper class for the %{public}@ function.", v27);
@@ -1915,27 +1915,27 @@ LABEL_9:
       }
 
       v23 = objc_opt_class();
-      if ((objc_msgSend_isSubclassOfClass_(a5, v24, v23) & 1) == 0)
+      if ((objc_msgSend_isSubclassOfClass_(class, v24, v23) & 1) == 0)
       {
         v55 = MEMORY[0x277D81150];
         v83 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v18, "[TSPUnarchiver readWeakReferenceToObjectUUID:delegate:class:protocol:selector:completion:]");
         v26 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v56, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnarchiver.mm");
         v57 = objc_opt_class();
-        v27 = objc_msgSend_stringForSelector_objectClass_(v57, v58, a7, a5);
+        v27 = objc_msgSend_stringForSelector_objectClass_(v57, v58, selector, class);
         v59 = v55;
         v32 = v83;
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v59, v60, v83, v26, 543, 0, "You should provide a TSPObject or TSPObjectReferenceWrapper subclass for the %{public}@ function.", v27);
         goto LABEL_17;
       }
 
-      if (v16)
+      if (protocolCopy)
       {
         v77 = MEMORY[0x277D81150];
         v79 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v18, "[TSPUnarchiver readWeakReferenceToObjectUUID:delegate:class:protocol:selector:completion:]");
         v26 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v25, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnarchiver.mm");
-        v27 = NSStringFromProtocol(v16);
+        v27 = NSStringFromProtocol(protocolCopy);
         v28 = objc_opt_class();
-        v30 = objc_msgSend_stringForSelector_objectClass_(v28, v29, a7, a5);
+        v30 = objc_msgSend_stringForSelector_objectClass_(v28, v29, selector, class);
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v77, v31, v79, v26, 543, 0, "You should not define any protocol (including %{public}@) when using object reference wrapper for the %{public}@ function.", v27, v30);
 
         v32 = v79;
@@ -1949,7 +1949,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (!v16)
+  if (!protocolCopy)
   {
     v39 = objc_msgSend_sourceType(self, v18, v19);
     if ((v39 - 4) >= 2)
@@ -1993,18 +1993,18 @@ LABEL_14:
     v26 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v45, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnarchiver.mm");
     v32 = v81;
     v46 = objc_opt_class();
-    v27 = objc_msgSend_stringForSelector_objectClass_(v46, v47, a7, a5);
+    v27 = objc_msgSend_stringForSelector_objectClass_(v46, v47, selector, class);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v78, v48, v81, v26, 543, 0, "You should provide a more specific object class for the %{public}@ function.", v27);
     goto LABEL_17;
   }
 
-  if (&unk_2885E6538 == v16)
+  if (&unk_2885E6538 == protocolCopy)
   {
     v33 = MEMORY[0x277D81150];
     v80 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v18, "[TSPUnarchiver readWeakReferenceToObjectUUID:delegate:class:protocol:selector:completion:]");
     v26 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v34, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnarchiver.mm");
     v35 = objc_opt_class();
-    v27 = objc_msgSend_stringForSelector_objectClass_(v35, v36, a7, a5);
+    v27 = objc_msgSend_stringForSelector_objectClass_(v35, v36, selector, class);
     v37 = v33;
     v32 = v80;
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v37, v38, v80, v26, 543, 0, "You should provide a more specific protocol for the %{public}@ function.", v27);
@@ -2012,24 +2012,24 @@ LABEL_14:
   }
 
 LABEL_18:
-  v63 = objc_msgSend_objectIdentifierForUUID_(v15, v18, v14);
-  v66 = objc_msgSend_copy(v17, v64, v65);
-  v67 = v16;
+  v63 = objc_msgSend_objectIdentifierForUUID_(delegateCopy, v18, dCopy);
+  v66 = objc_msgSend_copy(completionCopy, v64, v65);
+  v67 = protocolCopy;
   v84 = v63;
   v85 = _Block_copy(v66);
   v86 = 1;
-  v87 = a5;
+  classCopy = class;
   v88 = v67;
   sub_2769B3C78(self + 10, &v84);
 }
 
-- (id)readRepeatedWeakObjectUUIDReferenceMessage:(const void *)a3 class:(Class)a4 protocol:(id)a5 completion:(id)a6
+- (id)readRepeatedWeakObjectUUIDReferenceMessage:(const void *)message class:(Class)class protocol:(id)protocol completion:(id)completion
 {
-  v10 = a5;
-  v85 = a6;
+  protocolCopy = protocol;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(self + 9);
   v14 = WeakRetained;
-  proto = v10;
+  proto = protocolCopy;
   if (!WeakRetained || objc_msgSend_didFinishResolvingReferences(WeakRetained, v12, v13))
   {
     v15 = *(self + 2);
@@ -2046,7 +2046,7 @@ LABEL_18:
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v16, v22, v17, v19, 554, 0, "%{public}@ should not be nested inside the completion handler of another reference resolution function or inside finalize handlers for message [%{public}s-%llu] message type %u.", v23, *v24, *(self + 3), *(self + 41));
 LABEL_8:
 
-        v10 = proto;
+        protocolCopy = proto;
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26);
         goto LABEL_9;
       }
@@ -2062,30 +2062,30 @@ LABEL_8:
   }
 
 LABEL_9:
-  if (objc_opt_class() != a4)
+  if (objc_opt_class() != class)
   {
     v29 = objc_opt_class();
-    if (objc_msgSend_isSubclassOfClass_(a4, v30, v29))
+    if (objc_msgSend_isSubclassOfClass_(class, v30, v29))
     {
       goto LABEL_28;
     }
 
-    if (objc_opt_class() == a4)
+    if (objc_opt_class() == class)
     {
       v54 = MEMORY[0x277D81150];
       v35 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v31, "[TSPUnarchiver readRepeatedWeakObjectUUIDReferenceMessage:class:protocol:completion:]");
       v37 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v55, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnarchiver.mm");
       v56 = objc_opt_class();
-      v38 = objc_msgSend_stringForSelector_objectClass_(v56, v57, a2, a4);
+      v38 = objc_msgSend_stringForSelector_objectClass_(v56, v57, a2, class);
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v54, v58, v35, v37, 556, 0, "You should provide a more specific object reference wrapper class for the %{public}@ function.", v38);
     }
 
     else
     {
       v32 = objc_opt_class();
-      if (objc_msgSend_isSubclassOfClass_(a4, v33, v32))
+      if (objc_msgSend_isSubclassOfClass_(class, v33, v32))
       {
-        if (!v10)
+        if (!protocolCopy)
         {
           goto LABEL_28;
         }
@@ -2095,7 +2095,7 @@ LABEL_9:
         v37 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v36, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnarchiver.mm");
         v38 = NSStringFromProtocol(proto);
         v39 = objc_opt_class();
-        v41 = objc_msgSend_stringForSelector_objectClass_(v39, v40, a2, a4);
+        v41 = objc_msgSend_stringForSelector_objectClass_(v39, v40, a2, class);
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v34, v42, v35, v37, 556, 0, "You should not define any protocol (including %{public}@) when using object reference wrapper for the %{public}@ function.", v38, v41);
       }
 
@@ -2105,7 +2105,7 @@ LABEL_9:
         v35 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v27, "[TSPUnarchiver readRepeatedWeakObjectUUIDReferenceMessage:class:protocol:completion:]");
         v37 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v60, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnarchiver.mm");
         v61 = objc_opt_class();
-        v38 = objc_msgSend_stringForSelector_objectClass_(v61, v62, a2, a4);
+        v38 = objc_msgSend_stringForSelector_objectClass_(v61, v62, a2, class);
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v59, v63, v35, v37, 556, 0, "You should provide a TSPObject or TSPObjectReferenceWrapper subclass for the %{public}@ function.", v38);
       }
     }
@@ -2113,9 +2113,9 @@ LABEL_9:
     goto LABEL_27;
   }
 
-  if (v10)
+  if (protocolCopy)
   {
-    if (&unk_2885E6538 != v10)
+    if (&unk_2885E6538 != protocolCopy)
     {
       goto LABEL_28;
     }
@@ -2124,7 +2124,7 @@ LABEL_9:
     v35 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v27, "[TSPUnarchiver readRepeatedWeakObjectUUIDReferenceMessage:class:protocol:completion:]");
     v37 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v44, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnarchiver.mm");
     v45 = objc_opt_class();
-    v38 = objc_msgSend_stringForSelector_objectClass_(v45, v46, a2, a4);
+    v38 = objc_msgSend_stringForSelector_objectClass_(v45, v46, a2, class);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v43, v47, v35, v37, 556, 0, "You should provide a more specific protocol for the %{public}@ function.", v38);
     goto LABEL_27;
   }
@@ -2163,23 +2163,23 @@ LABEL_26:
     v35 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v27, "[TSPUnarchiver readRepeatedWeakObjectUUIDReferenceMessage:class:protocol:completion:]");
     v37 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v68, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnarchiver.mm");
     v69 = objc_opt_class();
-    v38 = objc_msgSend_stringForSelector_objectClass_(v69, v70, a2, a4);
+    v38 = objc_msgSend_stringForSelector_objectClass_(v69, v70, a2, class);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v67, v71, v35, v37, 556, 0, "You should provide a more specific object class for the %{public}@ function.", v38);
 LABEL_27:
 
-    v10 = proto;
+    protocolCopy = proto;
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v72, v73);
   }
 
 LABEL_28:
-  v74 = objc_msgSend_copy(v85, v27, v28);
-  v75 = v10;
+  v74 = objc_msgSend_copy(completionCopy, v27, v28);
+  v75 = protocolCopy;
   v88 = 0;
   v89 = 0;
   __p = 0;
   v90 = _Block_copy(v74);
   v91 = 1;
-  v92 = a4;
+  classCopy = class;
   v93 = v75;
   sub_2769B4EE4(self + 13, &__p);
 
@@ -2190,16 +2190,16 @@ LABEL_28:
   }
 
   v76 = (*(self + 14) - 56);
-  sub_2769B4FA0(v76, *(a3 + 2));
-  v78 = objc_msgSend_readRepeatedWeakObjectUUIDReferenceMessage_referenceMessage_delegate_(self, v77, a3, v76, v14);
+  sub_2769B4FA0(v76, *(message + 2));
+  v78 = objc_msgSend_readRepeatedWeakObjectUUIDReferenceMessage_referenceMessage_delegate_(self, v77, message, v76, v14);
 
   return v78;
 }
 
-- (id)readRepeatedWeakObjectUUIDReferenceMessage:(const void *)a3 referenceMessage:(void *)a4 delegate:(id)a5
+- (id)readRepeatedWeakObjectUUIDReferenceMessage:(const void *)message referenceMessage:(void *)referenceMessage delegate:(id)delegate
 {
-  v7 = a5;
-  v8 = *(a3 + 2);
+  delegateCopy = delegate;
+  v8 = *(message + 2);
   v9 = objc_alloc(MEMORY[0x277CBEB18]);
   v11 = objc_msgSend_initWithCapacity_(v9, v10, v8);
   if (v8 >= 1)
@@ -2208,14 +2208,14 @@ LABEL_28:
     do
     {
       v13 = objc_alloc(MEMORY[0x277CCAD78]);
-      v15 = objc_msgSend_tsp_initWithMessage_(v13, v14, *(*(a3 + 2) + v12));
+      v15 = objc_msgSend_tsp_initWithMessage_(v13, v14, *(*(message + 2) + v12));
       objc_msgSend_addObject_(v11, v16, v15);
-      if (a4)
+      if (referenceMessage)
       {
-        v19 = objc_msgSend_objectIdentifierForUUID_(v7, v17, v15);
+        v19 = objc_msgSend_objectIdentifierForUUID_(delegateCopy, v17, v15);
         if (v19)
         {
-          sub_2769B5040(a4, &v19);
+          sub_2769B5040(referenceMessage, &v19);
         }
       }
 
@@ -2229,13 +2229,13 @@ LABEL_28:
   return v11;
 }
 
-- (id)readRepeatedWeakObjectUUIDPathReferenceMessage:(const void *)a3 class:(Class)a4 protocol:(id)a5 completion:(id)a6
+- (id)readRepeatedWeakObjectUUIDPathReferenceMessage:(const void *)message class:(Class)class protocol:(id)protocol completion:(id)completion
 {
-  v10 = a5;
-  v85 = a6;
+  protocolCopy = protocol;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(self + 9);
   v14 = WeakRetained;
-  proto = v10;
+  proto = protocolCopy;
   if (!WeakRetained || objc_msgSend_didFinishResolvingReferences(WeakRetained, v12, v13))
   {
     v15 = *(self + 2);
@@ -2252,7 +2252,7 @@ LABEL_28:
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v16, v22, v17, v19, 592, 0, "%{public}@ should not be nested inside the completion handler of another reference resolution function or inside finalize handlers for message [%{public}s-%llu] message type %u.", v23, *v24, *(self + 3), *(self + 41));
 LABEL_8:
 
-        v10 = proto;
+        protocolCopy = proto;
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26);
         goto LABEL_9;
       }
@@ -2268,30 +2268,30 @@ LABEL_8:
   }
 
 LABEL_9:
-  if (objc_opt_class() != a4)
+  if (objc_opt_class() != class)
   {
     v29 = objc_opt_class();
-    if (objc_msgSend_isSubclassOfClass_(a4, v30, v29))
+    if (objc_msgSend_isSubclassOfClass_(class, v30, v29))
     {
       goto LABEL_28;
     }
 
-    if (objc_opt_class() == a4)
+    if (objc_opt_class() == class)
     {
       v54 = MEMORY[0x277D81150];
       v35 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v31, "[TSPUnarchiver readRepeatedWeakObjectUUIDPathReferenceMessage:class:protocol:completion:]");
       v37 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v55, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnarchiver.mm");
       v56 = objc_opt_class();
-      v38 = objc_msgSend_stringForSelector_objectClass_(v56, v57, a2, a4);
+      v38 = objc_msgSend_stringForSelector_objectClass_(v56, v57, a2, class);
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v54, v58, v35, v37, 594, 0, "You should provide a more specific object reference wrapper class for the %{public}@ function.", v38);
     }
 
     else
     {
       v32 = objc_opt_class();
-      if (objc_msgSend_isSubclassOfClass_(a4, v33, v32))
+      if (objc_msgSend_isSubclassOfClass_(class, v33, v32))
       {
-        if (!v10)
+        if (!protocolCopy)
         {
           goto LABEL_28;
         }
@@ -2301,7 +2301,7 @@ LABEL_9:
         v37 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v36, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnarchiver.mm");
         v38 = NSStringFromProtocol(proto);
         v39 = objc_opt_class();
-        v41 = objc_msgSend_stringForSelector_objectClass_(v39, v40, a2, a4);
+        v41 = objc_msgSend_stringForSelector_objectClass_(v39, v40, a2, class);
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v34, v42, v35, v37, 594, 0, "You should not define any protocol (including %{public}@) when using object reference wrapper for the %{public}@ function.", v38, v41);
       }
 
@@ -2311,7 +2311,7 @@ LABEL_9:
         v35 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v27, "[TSPUnarchiver readRepeatedWeakObjectUUIDPathReferenceMessage:class:protocol:completion:]");
         v37 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v60, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnarchiver.mm");
         v61 = objc_opt_class();
-        v38 = objc_msgSend_stringForSelector_objectClass_(v61, v62, a2, a4);
+        v38 = objc_msgSend_stringForSelector_objectClass_(v61, v62, a2, class);
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v59, v63, v35, v37, 594, 0, "You should provide a TSPObject or TSPObjectReferenceWrapper subclass for the %{public}@ function.", v38);
       }
     }
@@ -2319,9 +2319,9 @@ LABEL_9:
     goto LABEL_27;
   }
 
-  if (v10)
+  if (protocolCopy)
   {
-    if (&unk_2885E6538 != v10)
+    if (&unk_2885E6538 != protocolCopy)
     {
       goto LABEL_28;
     }
@@ -2330,7 +2330,7 @@ LABEL_9:
     v35 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v27, "[TSPUnarchiver readRepeatedWeakObjectUUIDPathReferenceMessage:class:protocol:completion:]");
     v37 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v44, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnarchiver.mm");
     v45 = objc_opt_class();
-    v38 = objc_msgSend_stringForSelector_objectClass_(v45, v46, a2, a4);
+    v38 = objc_msgSend_stringForSelector_objectClass_(v45, v46, a2, class);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v43, v47, v35, v37, 594, 0, "You should provide a more specific protocol for the %{public}@ function.", v38);
     goto LABEL_27;
   }
@@ -2369,23 +2369,23 @@ LABEL_26:
     v35 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v27, "[TSPUnarchiver readRepeatedWeakObjectUUIDPathReferenceMessage:class:protocol:completion:]");
     v37 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v68, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnarchiver.mm");
     v69 = objc_opt_class();
-    v38 = objc_msgSend_stringForSelector_objectClass_(v69, v70, a2, a4);
+    v38 = objc_msgSend_stringForSelector_objectClass_(v69, v70, a2, class);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v67, v71, v35, v37, 594, 0, "You should provide a more specific object class for the %{public}@ function.", v38);
 LABEL_27:
 
-    v10 = proto;
+    protocolCopy = proto;
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v72, v73);
   }
 
 LABEL_28:
-  v74 = objc_msgSend_copy(v85, v27, v28);
-  v75 = v10;
+  v74 = objc_msgSend_copy(completionCopy, v27, v28);
+  v75 = protocolCopy;
   v88 = 0;
   v89 = 0;
   __p = 0;
   v90 = _Block_copy(v74);
   v91 = 1;
-  v92 = a4;
+  classCopy = class;
   v93 = v75;
   sub_2769B4EE4(self + 13, &__p);
 
@@ -2396,16 +2396,16 @@ LABEL_28:
   }
 
   v76 = (*(self + 14) - 56);
-  sub_2769B4FA0(v76, *(a3 + 2));
-  v78 = objc_msgSend_readRepeatedWeakObjectUUIDPathReferenceMessage_referenceMessage_delegate_(self, v77, a3, v76, v14);
+  sub_2769B4FA0(v76, *(message + 2));
+  v78 = objc_msgSend_readRepeatedWeakObjectUUIDPathReferenceMessage_referenceMessage_delegate_(self, v77, message, v76, v14);
 
   return v78;
 }
 
-- (id)readRepeatedWeakObjectUUIDPathReferenceMessage:(const void *)a3 referenceMessage:(void *)a4 delegate:(id)a5
+- (id)readRepeatedWeakObjectUUIDPathReferenceMessage:(const void *)message referenceMessage:(void *)referenceMessage delegate:(id)delegate
 {
-  v7 = a5;
-  v8 = *(a3 + 2);
+  delegateCopy = delegate;
+  v8 = *(message + 2);
   v9 = objc_alloc(MEMORY[0x277CBEB18]);
   v11 = objc_msgSend_initWithCapacity_(v9, v10, v8);
   if (v8 >= 1)
@@ -2414,17 +2414,17 @@ LABEL_28:
     do
     {
       v13 = objc_alloc(MEMORY[0x277D81360]);
-      v15 = objc_msgSend_initWithMessage_(v13, v14, *(*(a3 + 2) + v12));
+      v15 = objc_msgSend_initWithMessage_(v13, v14, *(*(message + 2) + v12));
       objc_msgSend_addObject_(v11, v16, v15);
-      if (a4)
+      if (referenceMessage)
       {
         v19 = objc_msgSend_lastUUID(v15, v17, v18);
-        v21 = objc_msgSend_objectIdentifierForUUID_(v7, v20, v19);
+        v21 = objc_msgSend_objectIdentifierForUUID_(delegateCopy, v20, v19);
 
         v23 = v21;
         if (v21)
         {
-          sub_2769B5040(a4, &v23);
+          sub_2769B5040(referenceMessage, &v23);
         }
       }
 
@@ -2438,7 +2438,7 @@ LABEL_28:
   return v11;
 }
 
-- (TSPUnarchiver)initWithMessageType:(unsigned int)a3 unarchiveClass:(Class)a4 message:()unique_ptr<google:(std:(int64_t)a6 :()unique_ptr<TSP:(std:(unint64_t)a8 :(id)a9 default_delete<TSP:(BOOL)a10 :(id)a11 IdentifierMap<BOOL>>>)a7 :(id)a12 IdentifierMap<BOOL> default_delete<google:(id)a13 :protobuf::Message>>)a5 :protobuf::Message identifier:strongReferences:messageVersion:unknownContent:hasAlternateMessages:objectDelegate:lazyReferenceDelegate:delegate:
+- (TSPUnarchiver)initWithMessageType:(unsigned int)type unarchiveClass:(Class)class message:()unique_ptr<google:(std:(int64_t)google :()unique_ptr<TSP:(std:(unint64_t)p :(id)a9 default_delete<TSP:(BOOL)self0 :(id)self1 IdentifierMap<BOOL>>>)a7 :(id)self2 IdentifierMap<BOOL> default_delete<google:(id)self3 :protobuf::Message>>)a5 :protobuf::Message identifier:strongReferences:messageVersion:unknownContent:hasAlternateMessages:objectDelegate:lazyReferenceDelegate:delegate:
 {
   v18 = a9;
   v19 = a11;
@@ -2450,8 +2450,8 @@ LABEL_28:
   v23 = v22;
   if (v22)
   {
-    *(v22 + 41) = a3;
-    objc_storeStrong(v22 + 21, a4);
+    *(v22 + 41) = type;
+    objc_storeStrong(v22 + 21, class);
     var0 = a5.__ptr_->var0;
     a5.__ptr_->var0 = 0;
     v25 = *(v23 + 2);
@@ -2461,13 +2461,13 @@ LABEL_28:
       (*(*v25 + 8))(v25);
     }
 
-    *(v23 + 3) = a6;
+    *(v23 + 3) = google;
     v26 = *a7.__ptr_;
     *a7.__ptr_ = 0;
     sub_2769BB138(v23 + 4, v26);
-    *(v23 + 5) = a8;
+    *(v23 + 5) = p;
     objc_storeStrong(v23 + 6, a9);
-    *(v23 + 160) = a10;
+    *(v23 + 160) = sP;
     objc_storeWeak(v23 + 7, v19);
     objc_storeWeak(v23 + 8, v20);
     objc_storeWeak(v23 + 9, v21);
@@ -2516,34 +2516,34 @@ LABEL_9:
   return v20;
 }
 
-- (void)validateReferenceToObjectIdentifier:(int64_t)a3 objectClass:(Class)a4 isWeak:(BOOL *)a5 validateStrongReferences:(BOOL)a6 selector:(SEL)a7 weakSelector:(SEL)a8
+- (void)validateReferenceToObjectIdentifier:(int64_t)identifier objectClass:(Class)class isWeak:(BOOL *)weak validateStrongReferences:(BOOL)references selector:(SEL)selector weakSelector:(SEL)weakSelector
 {
-  v34 = a3;
-  if (!*a5)
+  identifierCopy = identifier;
+  if (!*weak)
   {
-    v9 = a6;
-    if (objc_msgSend_canValidateReferences(self, a2, a3))
+    referencesCopy = references;
+    if (objc_msgSend_canValidateReferences(self, a2, identifier))
     {
-      if (a3)
+      if (identifier)
       {
-        if (v9)
+        if (referencesCopy)
         {
           v15 = *(self + 4);
-          if (!v15 || !sub_2769ABC64(v15, &v34))
+          if (!v15 || !sub_2769ABC64(v15, &identifierCopy))
           {
             v16 = *(self + 2);
             v17 = MEMORY[0x277D81150];
             v33 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, "[TSPUnarchiver validateReferenceToObjectIdentifier:objectClass:isWeak:validateStrongReferences:selector:weakSelector:]");
             v19 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v18, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnarchiver.mm");
-            v20 = a4;
+            classCopy = class;
             v32 = v19;
-            if (!a4)
+            if (!class)
             {
-              v20 = objc_opt_class();
+              classCopy = objc_opt_class();
             }
 
-            v21 = NSStringFromClass(v20);
-            v22 = v34;
+            v21 = NSStringFromClass(classCopy);
+            v22 = identifierCopy;
             if (v16)
             {
               v23 = *((*(*v16 + 152))(v16) + 8);
@@ -2561,11 +2561,11 @@ LABEL_9:
             v24 = *(self + 3);
             v25 = *(self + 41);
             v26 = objc_opt_class();
-            v28 = objc_msgSend_stringForSelector_objectClass_(v26, v27, a8, a4);
+            v28 = objc_msgSend_stringForSelector_objectClass_(v26, v27, weakSelector, class);
             objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v17, v29, v33, v32, 704, 0, "Object [%{public}@-%llu] is not strongly referenced from message [%{public}s-%llu] message type %u. Use %{public}@ instead.", v21, v22, v23, v24, v25, v28);
 
             objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v30, v31);
-            *a5 = 1;
+            *weak = 1;
           }
         }
       }
@@ -2573,9 +2573,9 @@ LABEL_9:
   }
 }
 
-- (void)readUnknownLazyReferenceMessage:(const void *)a3 ownershipMode:(int64_t)a4 completion:(id)a5
+- (void)readUnknownLazyReferenceMessage:(const void *)message ownershipMode:(int64_t)mode completion:(id)completion
 {
-  v28 = a5;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(self + 9);
   v12 = WeakRetained;
   if (!WeakRetained || objc_msgSend_didFinishResolvingReferences(WeakRetained, v10, v11))
@@ -2611,12 +2611,12 @@ LABEL_8:
 LABEL_9:
   v25 = objc_opt_class();
   LOBYTE(v27) = 0;
-  objc_msgSend_readLazyReferenceMessage_ownershipMode_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_delegate_completion_(self, v26, a3, a4, 0, 1, v25, 0, v27, a2, v12, v28);
+  objc_msgSend_readLazyReferenceMessage_ownershipMode_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_delegate_completion_(self, v26, message, mode, 0, 1, v25, 0, v27, a2, v12, completionCopy);
 }
 
-- (void)readRepeatedUnknownLazyReferenceMessage:(const void *)a3 ownershipMode:(int64_t)a4 completion:(id)a5
+- (void)readRepeatedUnknownLazyReferenceMessage:(const void *)message ownershipMode:(int64_t)mode completion:(id)completion
 {
-  v28 = a5;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(self + 9);
   v12 = WeakRetained;
   if (!WeakRetained || objc_msgSend_didFinishResolvingReferences(WeakRetained, v10, v11))
@@ -2652,17 +2652,17 @@ LABEL_8:
 LABEL_9:
   v25 = objc_opt_class();
   LOBYTE(v27) = 0;
-  objc_msgSend_readRepeatedLazyReferenceMessage_ownershipMode_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_delegate_completion_(self, v26, a3, a4, 0, 1, v25, 0, v27, a2, v12, v28);
+  objc_msgSend_readRepeatedLazyReferenceMessage_ownershipMode_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_delegate_completion_(self, v26, message, mode, 0, 1, v25, 0, v27, a2, v12, completionCopy);
 }
 
-+ (id)stringForSelector:(SEL)a3 objectClass:(Class)a4
++ (id)stringForSelector:(SEL)selector objectClass:(Class)class
 {
-  if (sel_readReferenceMessage_completion_ == a3 || sel_readReferenceMessage_class_protocol_completion_ == a3)
+  if (sel_readReferenceMessage_completion_ == selector || sel_readReferenceMessage_class_protocol_completion_ == selector)
   {
     v6 = MEMORY[0x277CCACA8];
-    if (a4)
+    if (class)
     {
-      v7 = NSStringFromClass(a4);
+      v7 = NSStringFromClass(class);
       objc_msgSend_stringWithFormat_(v6, v8, @"TSPReadReferenceMessage<%@>(unarchiver, message, completion)", v7);
     }
 
@@ -2673,12 +2673,12 @@ LABEL_9:
     }
   }
 
-  else if (sel_readRepeatedReferenceMessage_completion_ == a3 || sel_readRepeatedReferenceMessage_class_protocol_completion_ == a3)
+  else if (sel_readRepeatedReferenceMessage_completion_ == selector || sel_readRepeatedReferenceMessage_class_protocol_completion_ == selector)
   {
     v10 = MEMORY[0x277CCACA8];
-    if (a4)
+    if (class)
     {
-      v7 = NSStringFromClass(a4);
+      v7 = NSStringFromClass(class);
       objc_msgSend_stringWithFormat_(v10, v11, @"TSPReadRepeatedReferenceMessage<%@>(unarchiver, message, completion)", v7);
     }
 
@@ -2689,12 +2689,12 @@ LABEL_9:
     }
   }
 
-  else if (sel_readWeakReferenceMessage_completion_ == a3 || sel_readWeakReferenceMessage_class_protocol_completion_ == a3)
+  else if (sel_readWeakReferenceMessage_completion_ == selector || sel_readWeakReferenceMessage_class_protocol_completion_ == selector)
   {
     v13 = MEMORY[0x277CCACA8];
-    if (a4)
+    if (class)
     {
-      v7 = NSStringFromClass(a4);
+      v7 = NSStringFromClass(class);
       objc_msgSend_stringWithFormat_(v13, v14, @"TSPReadWeakReferenceMessage<%@>(unarchiver, message, completion)", v7);
     }
 
@@ -2705,12 +2705,12 @@ LABEL_9:
     }
   }
 
-  else if (sel_readRepeatedWeakReferenceMessage_completion_ == a3 || sel_readRepeatedWeakReferenceMessage_class_protocol_completion_ == a3)
+  else if (sel_readRepeatedWeakReferenceMessage_completion_ == selector || sel_readRepeatedWeakReferenceMessage_class_protocol_completion_ == selector)
   {
     v16 = MEMORY[0x277CCACA8];
-    if (a4)
+    if (class)
     {
-      v7 = NSStringFromClass(a4);
+      v7 = NSStringFromClass(class);
       objc_msgSend_stringWithFormat_(v16, v17, @"TSPReadRepeatedWeakReferenceMessage<%@>(unarchiver, message, completion)", v7);
     }
 
@@ -2721,12 +2721,12 @@ LABEL_9:
     }
   }
 
-  else if (sel_readUnownedReferenceMessage_completion_ == a3 || sel_readUnownedReferenceMessage_class_protocol_completion_ == a3)
+  else if (sel_readUnownedReferenceMessage_completion_ == selector || sel_readUnownedReferenceMessage_class_protocol_completion_ == selector)
   {
     v18 = MEMORY[0x277CCACA8];
-    if (a4)
+    if (class)
     {
-      v7 = NSStringFromClass(a4);
+      v7 = NSStringFromClass(class);
       objc_msgSend_stringWithFormat_(v18, v19, @"TSPReadUnownedReferenceMessage<%@>(unarchiver, message, completion)", v7);
     }
 
@@ -2737,12 +2737,12 @@ LABEL_9:
     }
   }
 
-  else if (sel_readRepeatedUnownedReferenceMessage_completion_ == a3 || sel_readRepeatedUnownedReferenceMessage_class_protocol_completion_ == a3)
+  else if (sel_readRepeatedUnownedReferenceMessage_completion_ == selector || sel_readRepeatedUnownedReferenceMessage_class_protocol_completion_ == selector)
   {
     v20 = MEMORY[0x277CCACA8];
-    if (a4)
+    if (class)
     {
-      v7 = NSStringFromClass(a4);
+      v7 = NSStringFromClass(class);
       objc_msgSend_stringWithFormat_(v20, v21, @"TSPReadRepeatedUnownedReferenceMessage<%@>(unarchiver, message, completion)", v7);
     }
 
@@ -2753,12 +2753,12 @@ LABEL_9:
     }
   }
 
-  else if (sel_readLazyReferenceMessage_completion_ == a3 || sel_readLazyReferenceMessage_class_protocol_completion_ == a3)
+  else if (sel_readLazyReferenceMessage_completion_ == selector || sel_readLazyReferenceMessage_class_protocol_completion_ == selector)
   {
     v22 = MEMORY[0x277CCACA8];
-    if (a4)
+    if (class)
     {
-      v7 = NSStringFromClass(a4);
+      v7 = NSStringFromClass(class);
       objc_msgSend_stringWithFormat_(v22, v23, @"TSPReadLazyReferenceMessage<%@>(unarchiver, message, completion)", v7);
     }
 
@@ -2769,12 +2769,12 @@ LABEL_9:
     }
   }
 
-  else if (sel_readRepeatedLazyReferenceMessage_completion_ == a3 || sel_readRepeatedLazyReferenceMessage_class_protocol_completion_ == a3)
+  else if (sel_readRepeatedLazyReferenceMessage_completion_ == selector || sel_readRepeatedLazyReferenceMessage_class_protocol_completion_ == selector)
   {
     v24 = MEMORY[0x277CCACA8];
-    if (a4)
+    if (class)
     {
-      v7 = NSStringFromClass(a4);
+      v7 = NSStringFromClass(class);
       objc_msgSend_stringWithFormat_(v24, v25, @"TSPReadRepeatedLazyReferenceMessage<%@>(unarchiver, message, completion)", v7);
     }
 
@@ -2785,12 +2785,12 @@ LABEL_9:
     }
   }
 
-  else if (sel_readWeakLazyReferenceMessage_completion_ == a3 || sel_readWeakLazyReferenceMessage_class_protocol_completion_ == a3)
+  else if (sel_readWeakLazyReferenceMessage_completion_ == selector || sel_readWeakLazyReferenceMessage_class_protocol_completion_ == selector)
   {
     v26 = MEMORY[0x277CCACA8];
-    if (a4)
+    if (class)
     {
-      v7 = NSStringFromClass(a4);
+      v7 = NSStringFromClass(class);
       objc_msgSend_stringWithFormat_(v26, v27, @"TSPReadWeakLazyReferenceMessage<%@>(unarchiver, message, completion)", v7);
     }
 
@@ -2803,16 +2803,16 @@ LABEL_9:
 
   else
   {
-    if (sel_readRepeatedWeakLazyReferenceMessage_completion_ != a3 && sel_readRepeatedWeakLazyReferenceMessage_class_protocol_completion_ != a3)
+    if (sel_readRepeatedWeakLazyReferenceMessage_completion_ != selector && sel_readRepeatedWeakLazyReferenceMessage_class_protocol_completion_ != selector)
     {
-      v15 = NSStringFromSelector(a3);
+      v15 = NSStringFromSelector(selector);
       goto LABEL_63;
     }
 
     v28 = MEMORY[0x277CCACA8];
-    if (a4)
+    if (class)
     {
-      v7 = NSStringFromClass(a4);
+      v7 = NSStringFromClass(class);
       objc_msgSend_stringWithFormat_(v28, v29, @"TSPReadRepeatedWeakLazyReferenceMessage<%@>(unarchiver, message, completion)", v7);
     }
 
@@ -2823,7 +2823,7 @@ LABEL_9:
     }
   }
   v15 = ;
-  if (a4)
+  if (class)
   {
   }
 
@@ -2858,10 +2858,10 @@ LABEL_63:
   return self;
 }
 
-- (void)readReferenceMessage1:(const void *)a3 class:(Class)a4 protocol:(id)a5 message2:(const void *)a6 class:(Class)a7 protocol:(id)a8 completion:(id)a9
+- (void)readReferenceMessage1:(const void *)message1 class:(Class)class protocol:(id)protocol message2:(const void *)message2 class:(Class)a7 protocol:(id)a8 completion:(id)completion
 {
   v14 = a8;
-  v15 = a9;
+  completionCopy = completion;
   v31[0] = 0;
   v31[1] = v31;
   v31[2] = 0x3032000000;
@@ -2877,10 +2877,10 @@ LABEL_63:
   v25[2] = sub_2769C58A8;
   v25[3] = &unk_27A6E32F8;
   v27 = v29;
-  v16 = v15;
+  v16 = completionCopy;
   v26 = v16;
   v28 = v31;
-  objc_msgSend_readReferenceMessage_class_protocol_completion_(self, v17, a3, a4, a5, v25);
+  objc_msgSend_readReferenceMessage_class_protocol_completion_(self, v17, message1, class, protocol, v25);
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = sub_2769C5964;
@@ -2889,16 +2889,16 @@ LABEL_63:
   v18 = v16;
   v22 = v18;
   v24 = v31;
-  objc_msgSend_readReferenceMessage_class_protocol_completion_(self, v19, a6, a7, v14, v21);
+  objc_msgSend_readReferenceMessage_class_protocol_completion_(self, v19, message2, a7, v14, v21);
 
   _Block_object_dispose(v29, 8);
   _Block_object_dispose(v31, 8);
 }
 
-- (void)readWeakReferenceMessage1:(const void *)a3 class:(Class)a4 protocol:(id)a5 message2:(const void *)a6 class:(Class)a7 protocol:(id)a8 completion:(id)a9
+- (void)readWeakReferenceMessage1:(const void *)message1 class:(Class)class protocol:(id)protocol message2:(const void *)message2 class:(Class)a7 protocol:(id)a8 completion:(id)completion
 {
   v14 = a8;
-  v15 = a9;
+  completionCopy = completion;
   v31[0] = 0;
   v31[1] = v31;
   v31[2] = 0x3032000000;
@@ -2914,10 +2914,10 @@ LABEL_63:
   v25[2] = sub_2769C5C44;
   v25[3] = &unk_27A6E32F8;
   v27 = v29;
-  v16 = v15;
+  v16 = completionCopy;
   v26 = v16;
   v28 = v31;
-  objc_msgSend_readWeakReferenceMessage_class_protocol_completion_(self, v17, a3, a4, a5, v25);
+  objc_msgSend_readWeakReferenceMessage_class_protocol_completion_(self, v17, message1, class, protocol, v25);
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = sub_2769C5D00;
@@ -2926,16 +2926,16 @@ LABEL_63:
   v18 = v16;
   v22 = v18;
   v24 = v31;
-  objc_msgSend_readWeakReferenceMessage_class_protocol_completion_(self, v19, a6, a7, v14, v21);
+  objc_msgSend_readWeakReferenceMessage_class_protocol_completion_(self, v19, message2, a7, v14, v21);
 
   _Block_object_dispose(v29, 8);
   _Block_object_dispose(v31, 8);
 }
 
-- (void)readReferenceMessage:(const void *)a3 class:(Class)a4 protocol:(id)a5 repeatedMessage:(const void *)a6 class:(Class)a7 protocol:(id)a8 completion:(id)a9
+- (void)readReferenceMessage:(const void *)message class:(Class)class protocol:(id)protocol repeatedMessage:(const void *)repeatedMessage class:(Class)a7 protocol:(id)a8 completion:(id)completion
 {
   v15 = a8;
-  v16 = a9;
+  completionCopy = completion;
   v31[0] = 0;
   v31[1] = v31;
   v31[2] = 0x3032000000;
@@ -2951,10 +2951,10 @@ LABEL_63:
   v25[2] = sub_2769C5FE0;
   v25[3] = &unk_27A6E32F8;
   v27 = v29;
-  v17 = v16;
+  v17 = completionCopy;
   v26 = v17;
   v28 = v31;
-  objc_msgSend_readReferenceMessage_class_protocol_completion_(self, v18, a3, a4, a5, v25);
+  objc_msgSend_readReferenceMessage_class_protocol_completion_(self, v18, message, class, protocol, v25);
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = sub_2769C609C;
@@ -2963,16 +2963,16 @@ LABEL_63:
   v19 = v17;
   v22 = v19;
   v24 = v31;
-  objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(self, v20, a6, a7, v15, v21);
+  objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(self, v20, repeatedMessage, a7, v15, v21);
 
   _Block_object_dispose(v29, 8);
   _Block_object_dispose(v31, 8);
 }
 
-- (void)readWeakReferenceMessage:(const void *)a3 class:(Class)a4 protocol:(id)a5 repeatedMessage:(const void *)a6 class:(Class)a7 protocol:(id)a8 completion:(id)a9
+- (void)readWeakReferenceMessage:(const void *)message class:(Class)class protocol:(id)protocol repeatedMessage:(const void *)repeatedMessage class:(Class)a7 protocol:(id)a8 completion:(id)completion
 {
   v15 = a8;
-  v16 = a9;
+  completionCopy = completion;
   v31[0] = 0;
   v31[1] = v31;
   v31[2] = 0x3032000000;
@@ -2988,10 +2988,10 @@ LABEL_63:
   v25[2] = sub_2769C637C;
   v25[3] = &unk_27A6E32F8;
   v27 = v29;
-  v17 = v16;
+  v17 = completionCopy;
   v26 = v17;
   v28 = v31;
-  objc_msgSend_readWeakReferenceMessage_class_protocol_completion_(self, v18, a3, a4, a5, v25);
+  objc_msgSend_readWeakReferenceMessage_class_protocol_completion_(self, v18, message, class, protocol, v25);
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = sub_2769C6438;
@@ -3000,13 +3000,13 @@ LABEL_63:
   v19 = v17;
   v22 = v19;
   v24 = v31;
-  objc_msgSend_readRepeatedWeakReferenceMessage_class_protocol_completion_(self, v20, a6, a7, v15, v21);
+  objc_msgSend_readRepeatedWeakReferenceMessage_class_protocol_completion_(self, v20, repeatedMessage, a7, v15, v21);
 
   _Block_object_dispose(v29, 8);
   _Block_object_dispose(v31, 8);
 }
 
-- (void)filterIdentifiers:(const void *)a3
+- (void)filterIdentifiers:(const void *)identifiers
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSPUnarchiver(PreUFFUpgrade) filterIdentifiers:]");
@@ -3017,67 +3017,67 @@ LABEL_63:
   return 0;
 }
 
-- (void)readSparseReferenceArrayMessage:(const void *)a3 completion:(id)a4
+- (void)readSparseReferenceArrayMessage:(const void *)message completion:(id)completion
 {
-  v9 = a4;
+  completionCopy = completion;
   v7 = objc_opt_class();
-  objc_msgSend_readSparseReferenceArrayMessage_isWeak_class_protocol_validateClass_selector_completion_(self, v8, a3, 0, v7, 0, 0, a2, v9);
+  objc_msgSend_readSparseReferenceArrayMessage_isWeak_class_protocol_validateClass_selector_completion_(self, v8, message, 0, v7, 0, 0, a2, completionCopy);
 }
 
-- (void)readSparseWeakReferenceArrayMessage:(const void *)a3 completion:(id)a4
+- (void)readSparseWeakReferenceArrayMessage:(const void *)message completion:(id)completion
 {
-  v9 = a4;
+  completionCopy = completion;
   v7 = objc_opt_class();
-  objc_msgSend_readSparseReferenceArrayMessage_isWeak_class_protocol_validateClass_selector_completion_(self, v8, a3, 1, v7, 0, 0, a2, v9);
+  objc_msgSend_readSparseReferenceArrayMessage_isWeak_class_protocol_validateClass_selector_completion_(self, v8, message, 1, v7, 0, 0, a2, completionCopy);
 }
 
-- (void)readSparseReferenceArrayMessage:(const void *)a3 isWeak:(BOOL)a4 class:(Class)a5 protocol:(id)a6 validateClass:(BOOL)a7 selector:(SEL)a8 completion:(id)a9
+- (void)readSparseReferenceArrayMessage:(const void *)message isWeak:(BOOL)weak class:(Class)class protocol:(id)protocol validateClass:(BOOL)validateClass selector:(SEL)selector completion:(id)completion
 {
-  v9 = a7;
-  v91 = a4;
-  v10 = a6;
-  v94 = a9;
-  if (!v9)
+  validateClassCopy = validateClass;
+  weakCopy = weak;
+  protocolCopy = protocol;
+  completionCopy = completion;
+  if (!validateClassCopy)
   {
     goto LABEL_19;
   }
 
-  if (objc_opt_class() != a5)
+  if (objc_opt_class() != class)
   {
     v13 = objc_opt_class();
-    if ((objc_msgSend_isSubclassOfClass_(a5, v14, v13) & 1) == 0)
+    if ((objc_msgSend_isSubclassOfClass_(class, v14, v13) & 1) == 0)
     {
-      if (objc_opt_class() == a5)
+      if (objc_opt_class() == class)
       {
         v45 = MEMORY[0x277D81150];
         v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "[TSPUnarchiver(SparseArray) readSparseReferenceArrayMessage:isWeak:class:protocol:validateClass:selector:completion:]");
         v22 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v46, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnarchiver_SparseArray.mm");
         v47 = objc_opt_class();
-        v23 = objc_msgSend_stringForSelector_objectClass_(v47, v48, a8, a5);
+        v23 = objc_msgSend_stringForSelector_objectClass_(v47, v48, selector, class);
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v45, v49, v20, v22, 35, 0, "You should provide a more specific object reference wrapper class for the %{public}@ function.", v23);
         goto LABEL_18;
       }
 
       v16 = objc_opt_class();
-      if ((objc_msgSend_isSubclassOfClass_(a5, v17, v16) & 1) == 0)
+      if ((objc_msgSend_isSubclassOfClass_(class, v17, v16) & 1) == 0)
       {
         v50 = MEMORY[0x277D81150];
         v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v18, "[TSPUnarchiver(SparseArray) readSparseReferenceArrayMessage:isWeak:class:protocol:validateClass:selector:completion:]");
         v22 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v51, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnarchiver_SparseArray.mm");
         v52 = objc_opt_class();
-        v23 = objc_msgSend_stringForSelector_objectClass_(v52, v53, a8, a5);
+        v23 = objc_msgSend_stringForSelector_objectClass_(v52, v53, selector, class);
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v50, v54, v20, v22, 35, 0, "You should provide a TSPObject or TSPObjectReferenceWrapper subclass for the %{public}@ function.", v23);
         goto LABEL_18;
       }
 
-      if (v10)
+      if (protocolCopy)
       {
         v19 = MEMORY[0x277D81150];
         v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v18, "[TSPUnarchiver(SparseArray) readSparseReferenceArrayMessage:isWeak:class:protocol:validateClass:selector:completion:]");
         v22 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v21, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnarchiver_SparseArray.mm");
-        v23 = NSStringFromProtocol(v10);
+        v23 = NSStringFromProtocol(protocolCopy);
         v24 = objc_opt_class();
-        v26 = objc_msgSend_stringForSelector_objectClass_(v24, v25, a8, a5);
+        v26 = objc_msgSend_stringForSelector_objectClass_(v24, v25, selector, class);
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v19, v27, v20, v22, 35, 0, "You should not define any protocol (including %{public}@) when using object reference wrapper for the %{public}@ function.", v23, v26);
 
 LABEL_18:
@@ -3089,7 +3089,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (!v10)
+  if (!protocolCopy)
   {
     v33 = objc_msgSend_sourceType(self, v11, v12);
     if ((v33 - 4) >= 2)
@@ -3131,27 +3131,27 @@ LABEL_15:
     v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v39, "[TSPUnarchiver(SparseArray) readSparseReferenceArrayMessage:isWeak:class:protocol:validateClass:selector:completion:]");
     v22 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v41, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnarchiver_SparseArray.mm");
     v42 = objc_opt_class();
-    v23 = objc_msgSend_stringForSelector_objectClass_(v42, v43, a8, a5);
+    v23 = objc_msgSend_stringForSelector_objectClass_(v42, v43, selector, class);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v40, v44, v20, v22, 35, 0, "You should provide a more specific object class for the %{public}@ function.", v23);
     goto LABEL_18;
   }
 
-  if (&unk_2885E6538 == v10)
+  if (&unk_2885E6538 == protocolCopy)
   {
     v28 = MEMORY[0x277D81150];
     v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "[TSPUnarchiver(SparseArray) readSparseReferenceArrayMessage:isWeak:class:protocol:validateClass:selector:completion:]");
     v22 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v29, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnarchiver_SparseArray.mm");
     v30 = objc_opt_class();
-    v23 = objc_msgSend_stringForSelector_objectClass_(v30, v31, a8, a5);
+    v23 = objc_msgSend_stringForSelector_objectClass_(v30, v31, selector, class);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v28, v32, v20, v22, 35, 0, "You should provide a more specific protocol for the %{public}@ function.", v23);
     goto LABEL_18;
   }
 
 LABEL_19:
-  v57 = *(a3 + 12);
+  v57 = *(message + 12);
   v58 = objc_alloc(MEMORY[0x277CBEB18]);
   v62 = objc_msgSend_initWithCapacity_(v58, v59, v57);
-  v63 = *(a3 + 8);
+  v63 = *(message + 8);
   v102[0] = 0;
   v102[1] = v102;
   v102[2] = 0x2020000000;
@@ -3176,8 +3176,8 @@ LABEL_19:
 
       if (v63 >= 1 && v71 < v63)
       {
-        v74 = *(*(a3 + 5) + 8 * v71 + 8);
-        v75 = v10;
+        v74 = *(*(message + 5) + 8 * v71 + 8);
+        v75 = protocolCopy;
         v76 = *(v74 + 32);
         v77 = *(v74 + 24);
         if (v77)
@@ -3196,12 +3196,12 @@ LABEL_19:
         v97[3] = &unk_27A6E6D88;
         v79 = v62;
         v101 = v76;
-        v10 = v75;
+        protocolCopy = v75;
         v98 = v79;
         v100 = v102;
-        v99 = v94;
+        v99 = completionCopy;
         LOBYTE(v90) = 0;
-        objc_msgSend_readReferenceMessage_isWeak_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_weakSelector_completion_(self, v80, v78, v91, 1, 0, a5, v75, v90, a8, sel_readSparseWeakReferenceArrayMessage_class_protocol_completion_, v97);
+        objc_msgSend_readReferenceMessage_isWeak_validateStrongReferences_allowUnknownObject_class_protocol_validateClass_selector_weakSelector_completion_(self, v80, v78, weakCopy, 1, 0, class, v75, v90, selector, sel_readSparseWeakReferenceArrayMessage_class_protocol_completion_, v97);
       }
 
       ++v71;
@@ -3213,9 +3213,9 @@ LABEL_19:
   _Block_object_dispose(v102, 8);
 }
 
-- (id)readSparseWeakObjectUUIDReferenceArrayMessage:(const void *)a3
+- (id)readSparseWeakObjectUUIDReferenceArrayMessage:(const void *)message
 {
-  v4 = *(a3 + 12);
+  v4 = *(message + 12);
   v5 = objc_alloc(MEMORY[0x277CBEB18]);
   v9 = objc_msgSend_initWithCapacity_(v5, v6, v4);
   if (v4)
@@ -3232,7 +3232,7 @@ LABEL_19:
     while (v10);
   }
 
-  v13 = *(a3 + 8);
+  v13 = *(message + 8);
   if ((v13 & 0x80000000) != 0 || v13 > v4)
   {
     v14 = MEMORY[0x277D81150];
@@ -3248,7 +3248,7 @@ LABEL_19:
     v21 = 8;
     do
     {
-      v22 = *(*(a3 + 5) + v21);
+      v22 = *(*(message + 5) + v21);
       v23 = objc_alloc(MEMORY[0x277CCAD78]);
       if (*(v22 + 24))
       {
@@ -3273,9 +3273,9 @@ LABEL_19:
   return v9;
 }
 
-- (id)readSparseWeakObjectUUIDPathReferenceArrayMessage:(const void *)a3
+- (id)readSparseWeakObjectUUIDPathReferenceArrayMessage:(const void *)message
 {
-  v4 = *(a3 + 12);
+  v4 = *(message + 12);
   v5 = objc_alloc(MEMORY[0x277CBEB18]);
   v9 = objc_msgSend_initWithCapacity_(v5, v6, v4);
   if (v4)
@@ -3292,7 +3292,7 @@ LABEL_19:
     while (v10);
   }
 
-  v13 = *(a3 + 8);
+  v13 = *(message + 8);
   if ((v13 & 0x80000000) != 0 || v13 > v4)
   {
     v14 = MEMORY[0x277D81150];
@@ -3308,7 +3308,7 @@ LABEL_19:
     v21 = 8;
     do
     {
-      v22 = *(*(a3 + 5) + v21);
+      v22 = *(*(message + 5) + v21);
       v23 = objc_alloc(MEMORY[0x277D81360]);
       if (*(v22 + 24))
       {

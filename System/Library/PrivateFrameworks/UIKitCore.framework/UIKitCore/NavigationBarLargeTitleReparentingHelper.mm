@@ -1,16 +1,16 @@
 @interface NavigationBarLargeTitleReparentingHelper
 - (CGRect)frameInGlobalCoordinateSpace;
 - (_TtC5UIKit40NavigationBarLargeTitleReparentingHelper)init;
-- (void)_geometryChanged:(id *)a3 forAncestor:(id)a4;
+- (void)_geometryChanged:(id *)changed forAncestor:(id)ancestor;
 - (void)scrollViewWasRemovedFromWindow;
-- (void)setContributesToPocketContentRect:(BOOL)a3;
+- (void)setContributesToPocketContentRect:(BOOL)rect;
 @end
 
 @implementation NavigationBarLargeTitleReparentingHelper
 
-- (void)_geometryChanged:(id *)a3 forAncestor:(id)a4
+- (void)_geometryChanged:(id *)changed forAncestor:(id)ancestor
 {
-  v4 = self;
+  selfCopy = self;
   sub_188B4ABEC();
 }
 
@@ -27,11 +27,11 @@
   return result;
 }
 
-- (void)setContributesToPocketContentRect:(BOOL)a3
+- (void)setContributesToPocketContentRect:(BOOL)rect
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC5UIKit40NavigationBarLargeTitleReparentingHelper_contributesToPocketContentRect);
-  *(&self->super.isa + OBJC_IVAR____TtC5UIKit40NavigationBarLargeTitleReparentingHelper_contributesToPocketContentRect) = a3;
-  if (v3 != a3)
+  *(&self->super.isa + OBJC_IVAR____TtC5UIKit40NavigationBarLargeTitleReparentingHelper_contributesToPocketContentRect) = rect;
+  if (v3 != rect)
   {
     Strong = swift_unknownObjectWeakLoadStrong();
     if (Strong)
@@ -44,7 +44,7 @@
 
 - (void)scrollViewWasRemovedFromWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_1891732C4();
 }
 

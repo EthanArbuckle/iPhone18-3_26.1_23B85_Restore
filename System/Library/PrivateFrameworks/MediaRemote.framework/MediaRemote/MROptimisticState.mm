@@ -1,28 +1,28 @@
 @interface MROptimisticState
-- (MROptimisticState)initWithInitialState:(id)a3 expectedState:(id)a4 timeout:(double)a5 queue:(id)a6 timeoutHandler:(id)a7;
+- (MROptimisticState)initWithInitialState:(id)state expectedState:(id)expectedState timeout:(double)timeout queue:(id)queue timeoutHandler:(id)handler;
 - (void)dealloc;
 @end
 
 @implementation MROptimisticState
 
-- (MROptimisticState)initWithInitialState:(id)a3 expectedState:(id)a4 timeout:(double)a5 queue:(id)a6 timeoutHandler:(id)a7
+- (MROptimisticState)initWithInitialState:(id)state expectedState:(id)expectedState timeout:(double)timeout queue:(id)queue timeoutHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
+  stateCopy = state;
+  expectedStateCopy = expectedState;
+  queueCopy = queue;
+  handlerCopy = handler;
   v27.receiver = self;
   v27.super_class = MROptimisticState;
   v18 = [(MROptimisticState *)&v27 init];
   if (v18)
   {
-    if (!v17)
+    if (!handlerCopy)
     {
       [MROptimisticState initWithInitialState:a2 expectedState:v18 timeout:? queue:? timeoutHandler:?];
     }
 
-    objc_storeStrong(&v18->_initialState, a3);
-    objc_storeStrong(&v18->_expectedState, a4);
+    objc_storeStrong(&v18->_initialState, state);
+    objc_storeStrong(&v18->_expectedState, expectedState);
     objc_initWeak(&location, v18);
     v19 = MEMORY[0x1E69B14D8];
     v23[0] = MEMORY[0x1E69E9820];
@@ -30,8 +30,8 @@
     v23[2] = __85__MROptimisticState_initWithInitialState_expectedState_timeout_queue_timeoutHandler___block_invoke;
     v23[3] = &unk_1E769C898;
     objc_copyWeak(&v25, &location);
-    v24 = v17;
-    v20 = [v19 timerWithInterval:0 repeats:v16 queue:v23 block:a5];
+    v24 = handlerCopy;
+    v20 = [v19 timerWithInterval:0 repeats:queueCopy queue:v23 block:timeout];
     timer = v18->_timer;
     v18->_timer = v20;
 
@@ -56,14 +56,14 @@ void __85__MROptimisticState_initWithInitialState_expectedState_timeout_queue_ti
 - (void)dealloc
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = [(MROptimisticState *)self timer];
-  [v3 invalidate];
+  timer = [(MROptimisticState *)self timer];
+  [timer invalidate];
 
   v4 = _MRLogForCategory(0);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A2860000, v4, OS_LOG_TYPE_DEFAULT, "[MROptimisticState]<%p> dealloc", buf, 0xCu);
   }
 

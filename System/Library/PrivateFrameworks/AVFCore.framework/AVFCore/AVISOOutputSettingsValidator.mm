@@ -1,24 +1,24 @@
 @interface AVISOOutputSettingsValidator
-- (BOOL)validateAudioOutputSettings:(id)a3 reason:(id *)a4;
-- (BOOL)validateVideoOutputSettings:(id)a3 reason:(id *)a4;
+- (BOOL)validateAudioOutputSettings:(id)settings reason:(id *)reason;
+- (BOOL)validateVideoOutputSettings:(id)settings reason:(id *)reason;
 @end
 
 @implementation AVISOOutputSettingsValidator
 
-- (BOOL)validateAudioOutputSettings:(id)a3 reason:(id *)a4
+- (BOOL)validateAudioOutputSettings:(id)settings reason:(id *)reason
 {
   v7.receiver = self;
   v7.super_class = AVISOOutputSettingsValidator;
-  v5 = [(AVMediaFileOutputSettingsValidator *)&v7 validateAudioOutputSettings:a3 reason:?];
-  if (a4 && v5)
+  v5 = [(AVMediaFileOutputSettingsValidator *)&v7 validateAudioOutputSettings:settings reason:?];
+  if (reason && v5)
   {
-    *a4 = 0;
+    *reason = 0;
   }
 
   return v5;
 }
 
-- (BOOL)validateVideoOutputSettings:(id)a3 reason:(id *)a4
+- (BOOL)validateVideoOutputSettings:(id)settings reason:(id *)reason
 {
   v12.receiver = self;
   v12.super_class = AVISOOutputSettingsValidator;
@@ -27,14 +27,14 @@
     return 0;
   }
 
-  if ([a3 willYieldCompressedSamples])
+  if ([settings willYieldCompressedSamples])
   {
-    v7 = [objc_msgSend(a3 "videoSettingsDictionary")];
+    v7 = [objc_msgSend(settings "videoSettingsDictionary")];
     if ([v7 isEqualToString:@"avc1"] & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"jpeg") & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"hvc1"))
     {
       v8 = 0;
       v9 = 1;
-      if (!a4)
+      if (!reason)
       {
         return v9;
       }
@@ -51,10 +51,10 @@
   }
 
   v9 = 0;
-  if (a4)
+  if (reason)
   {
 LABEL_11:
-    *a4 = v8;
+    *reason = v8;
   }
 
   return v9;

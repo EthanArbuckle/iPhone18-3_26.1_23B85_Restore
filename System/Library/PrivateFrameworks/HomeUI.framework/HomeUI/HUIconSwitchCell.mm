@@ -1,34 +1,34 @@
 @interface HUIconSwitchCell
 - (BOOL)isOn;
-- (HUIconSwitchCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HUIconSwitchCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (HUIconSwitchCellDelegate)delegate;
 - (id)verticalContentBottomAnchor;
 - (id)verticalContentTopAnchor;
-- (void)_toggleOn:(id)a3;
+- (void)_toggleOn:(id)on;
 - (void)prepareForReuse;
-- (void)setOn:(BOOL)a3;
-- (void)setOn:(BOOL)a3 animated:(BOOL)a4;
-- (void)updateUIWithAnimation:(BOOL)a3;
+- (void)setOn:(BOOL)on;
+- (void)setOn:(BOOL)on animated:(BOOL)animated;
+- (void)updateUIWithAnimation:(BOOL)animation;
 @end
 
 @implementation HUIconSwitchCell
 
-- (HUIconSwitchCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HUIconSwitchCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v10.receiver = self;
   v10.super_class = HUIconSwitchCell;
-  v4 = [(HUTitleDescriptionCell *)&v10 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HUTitleDescriptionCell *)&v10 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277D75AE8]);
     switchView = v4->_switchView;
     v4->_switchView = v5;
 
-    v7 = [(HUIconSwitchCell *)v4 switchView];
-    [(HUIconSwitchCell *)v4 setAccessoryView:v7];
+    switchView = [(HUIconSwitchCell *)v4 switchView];
+    [(HUIconSwitchCell *)v4 setAccessoryView:switchView];
 
-    v8 = [(HUIconSwitchCell *)v4 switchView];
-    [v8 addTarget:v4 action:sel__toggleOn_ forControlEvents:4096];
+    switchView2 = [(HUIconSwitchCell *)v4 switchView];
+    [switchView2 addTarget:v4 action:sel__toggleOn_ forControlEvents:4096];
   }
 
   return v4;
@@ -40,83 +40,83 @@
   v4.super_class = HUIconSwitchCell;
   [(HUTitleDescriptionCell *)&v4 prepareForReuse];
   [(HUTitleDescriptionCell *)self setDisabled:0];
-  v3 = [(HUIconSwitchCell *)self switchView];
-  [(HUIconSwitchCell *)self setAccessoryView:v3];
+  switchView = [(HUIconSwitchCell *)self switchView];
+  [(HUIconSwitchCell *)self setAccessoryView:switchView];
 
   [(HUIconSwitchCell *)self setNeedsLayout];
 }
 
 - (BOOL)isOn
 {
-  v2 = [(HUIconSwitchCell *)self switchView];
-  v3 = [v2 isOn];
+  switchView = [(HUIconSwitchCell *)self switchView];
+  isOn = [switchView isOn];
 
-  return v3;
+  return isOn;
 }
 
-- (void)setOn:(BOOL)a3
+- (void)setOn:(BOOL)on
 {
-  v3 = a3;
-  if ([(HUIconSwitchCell *)self isOn]!= a3)
+  onCopy = on;
+  if ([(HUIconSwitchCell *)self isOn]!= on)
   {
-    v5 = [(HUIconSwitchCell *)self switchView];
-    [v5 setOn:v3];
+    switchView = [(HUIconSwitchCell *)self switchView];
+    [switchView setOn:onCopy];
   }
 }
 
-- (void)setOn:(BOOL)a3 animated:(BOOL)a4
+- (void)setOn:(BOOL)on animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if ([(HUIconSwitchCell *)self isOn]!= a3)
+  animatedCopy = animated;
+  onCopy = on;
+  if ([(HUIconSwitchCell *)self isOn]!= on)
   {
-    v7 = [(HUIconSwitchCell *)self switchView];
-    [v7 setOn:v5 animated:v4];
+    switchView = [(HUIconSwitchCell *)self switchView];
+    [switchView setOn:onCopy animated:animatedCopy];
   }
 }
 
 - (id)verticalContentTopAnchor
 {
-  v2 = [(HUIconSwitchCell *)self contentView];
-  v3 = [v2 layoutMarginsGuide];
-  v4 = [v3 topAnchor];
+  contentView = [(HUIconSwitchCell *)self contentView];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
+  topAnchor = [layoutMarginsGuide topAnchor];
 
-  return v4;
+  return topAnchor;
 }
 
 - (id)verticalContentBottomAnchor
 {
-  v2 = [(HUIconSwitchCell *)self contentView];
-  v3 = [v2 layoutMarginsGuide];
-  v4 = [v3 bottomAnchor];
+  contentView = [(HUIconSwitchCell *)self contentView];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
+  bottomAnchor = [layoutMarginsGuide bottomAnchor];
 
-  return v4;
+  return bottomAnchor;
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   v16.receiver = self;
   v16.super_class = HUIconSwitchCell;
   [(HUTitleDescriptionCell *)&v16 updateUIWithAnimation:?];
-  v5 = [(HUIconCell *)self item];
-  v6 = [v5 latestResults];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D14068]];
+  item = [(HUIconCell *)self item];
+  latestResults = [item latestResults];
+  v7 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D14068]];
 
   if (!v7)
   {
     goto LABEL_7;
   }
 
-  v8 = [v7 integerValue];
-  if (v8 == 2)
+  integerValue = [v7 integerValue];
+  if (integerValue == 2)
   {
     v9 = 1;
   }
 
   else
   {
-    if (v8 != 1)
+    if (integerValue != 1)
     {
       goto LABEL_7;
     }
@@ -124,7 +124,7 @@
     v9 = 0;
   }
 
-  [(HUIconSwitchCell *)self setOn:v9 animated:v3];
+  [(HUIconSwitchCell *)self setOn:v9 animated:animationCopy];
 LABEL_7:
   if ([(HUIconCell *)self isDisabled])
   {
@@ -133,41 +133,41 @@ LABEL_7:
 
   else
   {
-    v11 = [(HUIconCell *)self item];
-    v12 = [v11 latestResults];
-    v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
+    item2 = [(HUIconCell *)self item];
+    latestResults2 = [item2 latestResults];
+    v13 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
     v10 = [v13 BOOLValue] ^ 1;
   }
 
-  v14 = [(HUIconSwitchCell *)self switchView];
-  [v14 setUserInteractionEnabled:v10];
+  switchView = [(HUIconSwitchCell *)self switchView];
+  [switchView setUserInteractionEnabled:v10];
 
-  v15 = [(HUIconSwitchCell *)self switchView];
-  [v15 setEnabled:v10];
+  switchView2 = [(HUIconSwitchCell *)self switchView];
+  [switchView2 setEnabled:v10];
 }
 
-- (void)_toggleOn:(id)a3
+- (void)_toggleOn:(id)on
 {
   v12 = *MEMORY[0x277D85DE8];
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(HUIconSwitchCell *)self isOn];
+    isOn = [(HUIconSwitchCell *)self isOn];
     v6 = @"off";
-    if (v5)
+    if (isOn)
     {
       v6 = @"on";
     }
 
     v8 = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
     v11 = v6;
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "User tapped switch cell: %@ to turn %@", &v8, 0x16u);
   }
 
-  v7 = [(HUIconSwitchCell *)self delegate];
-  [v7 switchCell:self didTurnOn:{-[HUIconSwitchCell isOn](self, "isOn")}];
+  delegate = [(HUIconSwitchCell *)self delegate];
+  [delegate switchCell:self didTurnOn:{-[HUIconSwitchCell isOn](self, "isOn")}];
 }
 
 - (HUIconSwitchCellDelegate)delegate

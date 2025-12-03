@@ -1,46 +1,46 @@
 @interface PSUIAppsAndCategoriesDataUsageSubgroup
 - (PSAppCellularUsageSpecifierDelegate)specifierDelegate;
-- (PSUIAppsAndCategoriesDataUsageSubgroup)initWithPolicySpecifierDelegate:(id)a3 statisticsCache:(id)a4 policyCache:(id)a5 usageType:(unint64_t)a6;
+- (PSUIAppsAndCategoriesDataUsageSubgroup)initWithPolicySpecifierDelegate:(id)delegate statisticsCache:(id)cache policyCache:(id)policyCache usageType:(unint64_t)type;
 - (id)fetchPersonalHotspotDataUsageSpecifier;
-- (id)specifiersWithSortComparator:(id)a3;
-- (id)usageSpecifiersForAppType:(unint64_t)a3 bundleIDs:(id)a4;
-- (void)addDataUsageCategorySpecifierToSpecifiers:(id)a3 appType:(unint64_t)a4;
+- (id)specifiersWithSortComparator:(id)comparator;
+- (id)usageSpecifiersForAppType:(unint64_t)type bundleIDs:(id)ds;
+- (void)addDataUsageCategorySpecifierToSpecifiers:(id)specifiers appType:(unint64_t)type;
 @end
 
 @implementation PSUIAppsAndCategoriesDataUsageSubgroup
 
-- (PSUIAppsAndCategoriesDataUsageSubgroup)initWithPolicySpecifierDelegate:(id)a3 statisticsCache:(id)a4 policyCache:(id)a5 usageType:(unint64_t)a6
+- (PSUIAppsAndCategoriesDataUsageSubgroup)initWithPolicySpecifierDelegate:(id)delegate statisticsCache:(id)cache policyCache:(id)policyCache usageType:(unint64_t)type
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  delegateCopy = delegate;
+  cacheCopy = cache;
+  policyCacheCopy = policyCache;
   v16.receiver = self;
   v16.super_class = PSUIAppsAndCategoriesDataUsageSubgroup;
   v13 = [(PSUIAppsAndCategoriesDataUsageSubgroup *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeWeak(&v13->_specifierDelegate, v10);
-    objc_storeStrong(&v14->_statisticsCache, a4);
-    objc_storeStrong(&v14->_policyCache, a5);
-    v14->_usageType = a6;
+    objc_storeWeak(&v13->_specifierDelegate, delegateCopy);
+    objc_storeStrong(&v14->_statisticsCache, cache);
+    objc_storeStrong(&v14->_policyCache, policyCache);
+    v14->_usageType = type;
   }
 
   return v14;
 }
 
-- (id)specifiersWithSortComparator:(id)a3
+- (id)specifiersWithSortComparator:(id)comparator
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  comparatorCopy = comparator;
   v5 = [(PSDataUsageStatisticsCache *)self->_statisticsCache bundleIDsForAppType:0];
   v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v5, "count") + 5}];
-  v7 = [(PSUIAppsAndCategoriesDataUsageSubgroup *)self getLogger];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUIAppsAndCategoriesDataUsageSubgroup *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 134217984;
     v12 = [v5 count];
-    _os_log_impl(&dword_2658DE000, v7, OS_LOG_TYPE_DEFAULT, "Creating app specifiers for %lu installed bundle IDs", &v11, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Creating app specifiers for %lu installed bundle IDs", &v11, 0xCu);
   }
 
   v8 = [(PSUIAppsAndCategoriesDataUsageSubgroup *)self usageSpecifiersForAppType:0 bundleIDs:v5];
@@ -55,9 +55,9 @@
   }
 
   [(PSUIAppsAndCategoriesDataUsageSubgroup *)self addDataUsageCategorySpecifierToSpecifiers:v6 appType:5];
-  if (v4)
+  if (comparatorCopy)
   {
-    [v6 sortUsingComparator:v4];
+    [v6 sortUsingComparator:comparatorCopy];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -65,18 +65,18 @@
   return v6;
 }
 
-- (void)addDataUsageCategorySpecifierToSpecifiers:(id)a3 appType:(unint64_t)a4
+- (void)addDataUsageCategorySpecifierToSpecifiers:(id)specifiers appType:(unint64_t)type
 {
-  v10 = a3;
-  v6 = [(PSDataUsageStatisticsCache *)self->_statisticsCache bundleIDsForAppType:a4];
-  v7 = [(PSUIAppsAndCategoriesDataUsageSubgroup *)self usageSpecifiersForAppType:a4 bundleIDs:v6];
+  specifiersCopy = specifiers;
+  v6 = [(PSDataUsageStatisticsCache *)self->_statisticsCache bundleIDsForAppType:type];
+  v7 = [(PSUIAppsAndCategoriesDataUsageSubgroup *)self usageSpecifiersForAppType:type bundleIDs:v6];
   v8 = _os_feature_enabled_impl();
-  if (a4 == 4 && v8)
+  if (type == 4 && v8)
   {
-    v9 = [(PSUIAppsAndCategoriesDataUsageSubgroup *)self fetchPersonalHotspotDataUsageSpecifier];
-    if ([(PSUIDataUsageCategorySpecifier *)v9 count])
+    fetchPersonalHotspotDataUsageSpecifier = [(PSUIAppsAndCategoriesDataUsageSubgroup *)self fetchPersonalHotspotDataUsageSpecifier];
+    if ([(PSUIDataUsageCategorySpecifier *)fetchPersonalHotspotDataUsageSpecifier count])
     {
-      [v10 addObjectsFromArray:v9];
+      [specifiersCopy addObjectsFromArray:fetchPersonalHotspotDataUsageSpecifier];
     }
   }
 
@@ -87,27 +87,27 @@
       goto LABEL_8;
     }
 
-    v9 = [[PSUIDataUsageCategorySpecifier alloc] initWithAppType:a4 usageType:self->_usageType subSpecifiers:v7];
-    [v10 addObject:v9];
+    fetchPersonalHotspotDataUsageSpecifier = [[PSUIDataUsageCategorySpecifier alloc] initWithAppType:type usageType:self->_usageType subSpecifiers:v7];
+    [specifiersCopy addObject:fetchPersonalHotspotDataUsageSpecifier];
   }
 
 LABEL_8:
 }
 
-- (id)usageSpecifiersForAppType:(unint64_t)a3 bundleIDs:(id)a4
+- (id)usageSpecifiersForAppType:(unint64_t)type bundleIDs:(id)ds
 {
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if ([v6 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
-    v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v6, "count")}];
-    v8 = [(PSDataUsageStatisticsCache *)self->_statisticsCache displayNamesForBundleIDs:v6 appType:a3];
+    v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(dsCopy, "count")}];
+    v8 = [(PSDataUsageStatisticsCache *)self->_statisticsCache displayNamesForBundleIDs:dsCopy appType:type];
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v41 = v6;
-    v9 = v6;
+    v41 = dsCopy;
+    v9 = dsCopy;
     v49 = [v9 countByEnumeratingWithState:&v50 objects:v58 count:16];
     if (!v49)
     {
@@ -141,13 +141,13 @@ LABEL_8:
 
           v17 = v16;
 
-          if (a3 <= 2)
+          if (type <= 2)
           {
-            if (a3)
+            if (type)
             {
-              if (a3 != 1)
+              if (type != 1)
               {
-                if (a3 == 2)
+                if (type == 2)
                 {
                   v18 = MEMORY[0x277D4D870];
                   goto LABEL_20;
@@ -162,17 +162,17 @@ LABEL_8:
               if (v25)
               {
                 v26 = v25;
-                v46 = [v25 native];
-                v27 = [v46 cellularHome];
-                v28 = [v26 native];
-                v45 = [v28 cellularRoaming] + v27;
-                v29 = [v26 proxied];
-                v30 = [v29 cellularHome];
-                v31 = [v26 proxied];
-                v32 = v45 + v30 + [v31 cellularRoaming];
+                native = [v25 native];
+                cellularHome = [native cellularHome];
+                native2 = [v26 native];
+                v45 = [native2 cellularRoaming] + cellularHome;
+                proxied = [v26 proxied];
+                cellularHome2 = [proxied cellularHome];
+                proxied2 = [v26 proxied];
+                v32 = v45 + cellularHome2 + [proxied2 cellularRoaming];
 
-                v33 = [(PSUIAppsAndCategoriesDataUsageSubgroup *)self getLogger];
-                v34 = os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT);
+                getLogger = [(PSUIAppsAndCategoriesDataUsageSubgroup *)self getLogger];
+                v34 = os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT);
                 if (v32)
                 {
                   if (v34)
@@ -181,7 +181,7 @@ LABEL_8:
                     v55 = v11;
                     v56 = 2048;
                     v57 = v32;
-                    v35 = v33;
+                    v35 = getLogger;
                     v36 = "%{private}@ is an uninstalled app using %zu bytes";
                     v37 = 22;
                     goto LABEL_37;
@@ -192,7 +192,7 @@ LABEL_8:
                 {
                   *buf = 138477827;
                   v55 = v11;
-                  v35 = v33;
+                  v35 = getLogger;
                   v36 = "%{private}@ is an uninstalled app using zero bytes";
                   v37 = 12;
 LABEL_37:
@@ -206,12 +206,12 @@ LABEL_37:
 
               else
               {
-                v33 = [(PSUIAppsAndCategoriesDataUsageSubgroup *)self getLogger];
-                if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
+                getLogger = [(PSUIAppsAndCategoriesDataUsageSubgroup *)self getLogger];
+                if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 138477827;
                   v55 = v11;
-                  _os_log_error_impl(&dword_2658DE000, v33, OS_LOG_TYPE_ERROR, "%{private}@ is an uninstalled app without usage?", buf, 0xCu);
+                  _os_log_error_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_ERROR, "%{private}@ is an uninstalled app without usage?", buf, 0xCu);
                 }
               }
 
@@ -230,8 +230,8 @@ LABEL_19:
             v18 = MEMORY[0x277D4D838];
 LABEL_20:
             v19 = [v18 appSpecifierWithBundleID:v11 name:v17 statisticsCache:self->_statisticsCache usageType:self->_usageType];
-            v20 = [(PSUIAppsAndCategoriesDataUsageSubgroup *)self specifierDelegate];
-            [v19 setDelegate:v20];
+            specifierDelegate = [(PSUIAppsAndCategoriesDataUsageSubgroup *)self specifierDelegate];
+            [v19 setDelegate:specifierDelegate];
 
             if (!v19)
             {
@@ -243,7 +243,7 @@ LABEL_30:
             goto LABEL_29;
           }
 
-          switch(a3)
+          switch(type)
           {
             case 3uLL:
               v21 = objc_alloc(MEMORY[0x277D4D858]);
@@ -283,7 +283,7 @@ LABEL_31:
       {
 LABEL_42:
 
-        v6 = v41;
+        dsCopy = v41;
         goto LABEL_44;
       }
     }
@@ -305,51 +305,51 @@ LABEL_44:
   v7 = [v4 bundleWithPath:v6];
 
   [v7 load];
-  v8 = [v7 principalClass];
-  v9 = [(PSUIAppsAndCategoriesDataUsageSubgroup *)self specifierDelegate];
+  principalClass = [v7 principalClass];
+  specifierDelegate = [(PSUIAppsAndCategoriesDataUsageSubgroup *)self specifierDelegate];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v11 = [(PSUIAppsAndCategoriesDataUsageSubgroup *)self specifierDelegate];
+  specifierDelegate2 = [(PSUIAppsAndCategoriesDataUsageSubgroup *)self specifierDelegate];
   if ((isKindOfClass & 1) == 0)
   {
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
     {
-      v13 = [(PSUIAppsAndCategoriesDataUsageSubgroup *)self specifierDelegate];
-      v11 = [v13 hostController];
+      specifierDelegate3 = [(PSUIAppsAndCategoriesDataUsageSubgroup *)self specifierDelegate];
+      specifierDelegate2 = [specifierDelegate3 hostController];
     }
 
     else
     {
-      v11 = 0;
+      specifierDelegate2 = 0;
     }
   }
 
-  v14 = [(PSUIAppsAndCategoriesDataUsageSubgroup *)self personalHotspotDataUsageBundleController];
+  personalHotspotDataUsageBundleController = [(PSUIAppsAndCategoriesDataUsageSubgroup *)self personalHotspotDataUsageBundleController];
 
-  if (!v14)
+  if (!personalHotspotDataUsageBundleController)
   {
-    v15 = [[v8 alloc] initWithParentListController:v11];
+    v15 = [[principalClass alloc] initWithParentListController:specifierDelegate2];
     [(PSUIAppsAndCategoriesDataUsageSubgroup *)self setPersonalHotspotDataUsageBundleController:v15];
   }
 
-  v16 = [(PSUIAppsAndCategoriesDataUsageSubgroup *)self personalHotspotDataUsageBundleController];
+  personalHotspotDataUsageBundleController2 = [(PSUIAppsAndCategoriesDataUsageSubgroup *)self personalHotspotDataUsageBundleController];
 
-  if (v16)
+  if (personalHotspotDataUsageBundleController2)
   {
-    v17 = [(PSUIAppsAndCategoriesDataUsageSubgroup *)self personalHotspotDataUsageBundleController];
-    v18 = [v17 specifiersWithSpecifier:0];
+    personalHotspotDataUsageBundleController3 = [(PSUIAppsAndCategoriesDataUsageSubgroup *)self personalHotspotDataUsageBundleController];
+    v18 = [personalHotspotDataUsageBundleController3 specifiersWithSpecifier:0];
   }
 
   else
   {
-    v19 = [(PSUIAppsAndCategoriesDataUsageSubgroup *)self getLogger];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    getLogger = [(PSUIAppsAndCategoriesDataUsageSubgroup *)self getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
     {
       *v21 = 0;
-      _os_log_error_impl(&dword_2658DE000, v19, OS_LOG_TYPE_ERROR, "Failed to load Wireless Modem Settings aka Personal Hotspot bundle controller", v21, 2u);
+      _os_log_error_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_ERROR, "Failed to load Wireless Modem Settings aka Personal Hotspot bundle controller", v21, 2u);
     }
 
     v18 = 0;

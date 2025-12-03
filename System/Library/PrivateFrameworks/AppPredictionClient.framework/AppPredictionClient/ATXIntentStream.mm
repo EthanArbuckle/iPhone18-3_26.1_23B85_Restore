@@ -1,45 +1,45 @@
 @interface ATXIntentStream
-+ (id)generateParameterCombitionsForKeys:(id)a3;
-- (id)_getIntentEventFromBMAppIntent:(id)a3 source:(int64_t)a4 bundleIdFilter:(id)a5 allowMissingTitles:(BOOL)a6 intentsToKeep:(id)a7;
-- (id)_getIntentEventFromLinkActionRecord:(id)a3 source:(int64_t)a4 bundleIdFilter:(id)a5 allowMissingTitles:(BOOL)a6;
-- (id)_unarchiveInteractionFromBMAppIntent:(id)a3;
-- (id)_uuidForBMAppIntent:(id)a3 interaction:(id)a4;
-- (id)getIntentEventForSourceItemID:(id)a3 forSource:(int64_t)a4;
-- (id)getIntentEventsBetweenStartDate:(id)a3 endDate:(id)a4 forSource:(int64_t)a5 bundleIdFilter:(id)a6 allowMissingTitles:(BOOL)a7 limit:(unint64_t)a8 INIntentFilter:(id)a9 linkActionFilter:(id)a10;
-- (unint64_t)numberOfIntentEventsBetweenStartDate:(id)a3 endDate:(id)a4;
-- (void)_enumerateIntentEventsBetweenStartDate:(id)a3 endDate:(id)a4 forSource:(int64_t)a5 bundleIdFilter:(id)a6 allowMissingTitles:(BOOL)a7 reversed:(BOOL)a8 INIntentFilter:(id)a9 linkActionFilter:(id)a10 block:(id)a11;
++ (id)generateParameterCombitionsForKeys:(id)keys;
+- (id)_getIntentEventFromBMAppIntent:(id)intent source:(int64_t)source bundleIdFilter:(id)filter allowMissingTitles:(BOOL)titles intentsToKeep:(id)keep;
+- (id)_getIntentEventFromLinkActionRecord:(id)record source:(int64_t)source bundleIdFilter:(id)filter allowMissingTitles:(BOOL)titles;
+- (id)_unarchiveInteractionFromBMAppIntent:(id)intent;
+- (id)_uuidForBMAppIntent:(id)intent interaction:(id)interaction;
+- (id)getIntentEventForSourceItemID:(id)d forSource:(int64_t)source;
+- (id)getIntentEventsBetweenStartDate:(id)date endDate:(id)endDate forSource:(int64_t)source bundleIdFilter:(id)filter allowMissingTitles:(BOOL)titles limit:(unint64_t)limit INIntentFilter:(id)intentFilter linkActionFilter:(id)self0;
+- (unint64_t)numberOfIntentEventsBetweenStartDate:(id)date endDate:(id)endDate;
+- (void)_enumerateIntentEventsBetweenStartDate:(id)date endDate:(id)endDate forSource:(int64_t)source bundleIdFilter:(id)filter allowMissingTitles:(BOOL)titles reversed:(BOOL)reversed INIntentFilter:(id)intentFilter linkActionFilter:(id)self0 block:(id)self1;
 @end
 
 @implementation ATXIntentStream
 
-- (id)getIntentEventsBetweenStartDate:(id)a3 endDate:(id)a4 forSource:(int64_t)a5 bundleIdFilter:(id)a6 allowMissingTitles:(BOOL)a7 limit:(unint64_t)a8 INIntentFilter:(id)a9 linkActionFilter:(id)a10
+- (id)getIntentEventsBetweenStartDate:(id)date endDate:(id)endDate forSource:(int64_t)source bundleIdFilter:(id)filter allowMissingTitles:(BOOL)titles limit:(unint64_t)limit INIntentFilter:(id)intentFilter linkActionFilter:(id)self0
 {
-  v11 = a7;
-  v17 = a10;
-  v18 = a9;
-  v19 = a6;
-  v20 = a4;
-  v21 = a3;
+  titlesCopy = titles;
+  actionFilterCopy = actionFilter;
+  intentFilterCopy = intentFilter;
+  filterCopy = filter;
+  endDateCopy = endDate;
+  dateCopy = date;
   v22 = objc_opt_new();
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __141__ATXIntentStream_getIntentEventsBetweenStartDate_endDate_forSource_bundleIdFilter_allowMissingTitles_limit_INIntentFilter_linkActionFilter___block_invoke;
   v27[3] = &unk_1E80C1A58;
   v28 = v22;
-  v29 = a8;
+  limitCopy = limit;
   v23 = v22;
-  [(ATXIntentStream *)self _enumerateIntentEventsBetweenStartDate:v21 endDate:v20 forSource:a5 bundleIdFilter:v19 allowMissingTitles:v11 reversed:1 INIntentFilter:v18 linkActionFilter:v17 block:v27];
+  [(ATXIntentStream *)self _enumerateIntentEventsBetweenStartDate:dateCopy endDate:endDateCopy forSource:source bundleIdFilter:filterCopy allowMissingTitles:titlesCopy reversed:1 INIntentFilter:intentFilterCopy linkActionFilter:actionFilterCopy block:v27];
 
-  v24 = [v23 reverseObjectEnumerator];
-  v25 = [v24 allObjects];
+  reverseObjectEnumerator = [v23 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  return v25;
+  return allObjects;
 }
 
-- (unint64_t)numberOfIntentEventsBetweenStartDate:(id)a3 endDate:(id)a4
+- (unint64_t)numberOfIntentEventsBetweenStartDate:(id)date endDate:(id)endDate
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -49,54 +49,54 @@
   v10[2] = __64__ATXIntentStream_numberOfIntentEventsBetweenStartDate_endDate___block_invoke;
   v10[3] = &unk_1E80C1A80;
   v10[4] = &v11;
-  [(ATXIntentStream *)self _enumerateIntentEventsBetweenStartDate:v6 endDate:v7 forSource:4 bundleIdFilter:0 allowMissingTitles:0 reversed:0 INIntentFilter:0 linkActionFilter:0 block:v10];
+  [(ATXIntentStream *)self _enumerateIntentEventsBetweenStartDate:dateCopy endDate:endDateCopy forSource:4 bundleIdFilter:0 allowMissingTitles:0 reversed:0 INIntentFilter:0 linkActionFilter:0 block:v10];
   v8 = v12[3];
   _Block_object_dispose(&v11, 8);
 
   return v8;
 }
 
-- (void)_enumerateIntentEventsBetweenStartDate:(id)a3 endDate:(id)a4 forSource:(int64_t)a5 bundleIdFilter:(id)a6 allowMissingTitles:(BOOL)a7 reversed:(BOOL)a8 INIntentFilter:(id)a9 linkActionFilter:(id)a10 block:(id)a11
+- (void)_enumerateIntentEventsBetweenStartDate:(id)date endDate:(id)endDate forSource:(int64_t)source bundleIdFilter:(id)filter allowMissingTitles:(BOOL)titles reversed:(BOOL)reversed INIntentFilter:(id)intentFilter linkActionFilter:(id)self0 block:(id)self1
 {
-  v11 = a8;
-  v14 = a3;
-  v15 = a4;
-  v43 = a6;
-  v40 = a9;
-  v16 = a10;
-  v42 = a11;
+  reversedCopy = reversed;
+  dateCopy = date;
+  endDateCopy = endDate;
+  filterCopy = filter;
+  intentFilterCopy = intentFilter;
+  actionFilterCopy = actionFilter;
+  blockCopy = block;
   context = objc_autoreleasePoolPush();
   v17 = objc_alloc_init(MEMORY[0x1E69AD068]);
-  if (v11)
+  if (reversedCopy)
   {
-    v18 = v15;
+    v18 = endDateCopy;
   }
 
   else
   {
-    v18 = v14;
+    v18 = dateCopy;
   }
 
-  v49 = v15;
-  v50 = v14;
-  if (v11)
+  v49 = endDateCopy;
+  v50 = dateCopy;
+  if (reversedCopy)
   {
-    v19 = v14;
+    v19 = dateCopy;
   }
 
   else
   {
-    v19 = v15;
+    v19 = endDateCopy;
   }
 
   v60[0] = 0;
   v47 = v17;
-  v20 = [v17 transcriptPublisherWithStreamName:0 fromDate:v18 toDate:v19 maxEvents:0 reversed:v11 error:{v60, v40}];
+  v20 = [v17 transcriptPublisherWithStreamName:0 fromDate:v18 toDate:v19 maxEvents:0 reversed:reversedCopy error:{v60, intentFilterCopy}];
   v21 = v60[0];
   v22 = BiomeLibrary();
   v23 = [v22 App];
-  v24 = [v23 Intent];
-  v25 = [v24 atx_publisherWithStartDate:v18 endDate:v19 maxEvents:0 lastN:0 reversed:v11];
+  intent = [v23 Intent];
+  v25 = [intent atx_publisherWithStartDate:v18 endDate:v19 maxEvents:0 lastN:0 reversed:reversedCopy];
 
   if (v21 || !v20)
   {
@@ -117,8 +117,8 @@
   v28 = v26;
   v29 = MEMORY[0x1E695DFD8];
   v30 = +[ATXIntentGlobals sharedInstance];
-  v31 = [v30 approvedSiriKitIntents];
-  v32 = [v29 setWithArray:v31];
+  approvedSiriKitIntents = [v30 approvedSiriKitIntents];
+  v32 = [v29 setWithArray:approvedSiriKitIntents];
 
   v57[0] = MEMORY[0x1E69E9820];
   v57[1] = 3221225472;
@@ -126,7 +126,7 @@
   v57[3] = &unk_1E80C3318;
   v33 = v41;
   v58 = v33;
-  v34 = v16;
+  v34 = actionFilterCopy;
   v59 = v34;
   v35 = [v28 filterWithIsIncluded:v57];
   v51[0] = MEMORY[0x1E69E9820];
@@ -134,12 +134,12 @@
   v51[2] = __157__ATXIntentStream__enumerateIntentEventsBetweenStartDate_endDate_forSource_bundleIdFilter_allowMissingTitles_reversed_INIntentFilter_linkActionFilter_block___block_invoke_25;
   v51[3] = &unk_1E80C3340;
   v51[4] = self;
-  v55 = a5;
-  v36 = v43;
-  v56 = a7;
+  sourceCopy = source;
+  v36 = filterCopy;
+  titlesCopy = titles;
   v52 = v36;
   v53 = v32;
-  v37 = v42;
+  v37 = blockCopy;
   v54 = v37;
   v38 = v32;
   v39 = [v35 sinkWithCompletion:&__block_literal_global_24_0 shouldContinue:v51];
@@ -286,23 +286,23 @@ LABEL_12:
   return v8;
 }
 
-- (id)getIntentEventForSourceItemID:(id)a3 forSource:(int64_t)a4
+- (id)getIntentEventForSourceItemID:(id)d forSource:(int64_t)source
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DF00] distantPast];
+  dCopy = d;
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
   v8 = objc_opt_new();
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __59__ATXIntentStream_getIntentEventForSourceItemID_forSource___block_invoke;
   v16[3] = &unk_1E80C3368;
-  v17 = v6;
+  v17 = dCopy;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __59__ATXIntentStream_getIntentEventForSourceItemID_forSource___block_invoke_2;
   v14[3] = &unk_1E80C3390;
   v9 = v17;
   v15 = v9;
-  v10 = [(ATXIntentStream *)self getIntentEventsBetweenStartDate:v7 endDate:v8 forSource:a4 bundleIdFilter:0 allowMissingTitles:0 limit:2 INIntentFilter:v16 linkActionFilter:v14];
+  v10 = [(ATXIntentStream *)self getIntentEventsBetweenStartDate:distantPast endDate:v8 forSource:source bundleIdFilter:0 allowMissingTitles:0 limit:2 INIntentFilter:v16 linkActionFilter:v14];
 
   if ([v10 count] >= 2)
   {
@@ -313,9 +313,9 @@ LABEL_12:
     }
   }
 
-  v12 = [v10 firstObject];
+  firstObject = [v10 firstObject];
 
-  return v12;
+  return firstObject;
 }
 
 uint64_t __59__ATXIntentStream_getIntentEventForSourceItemID_forSource___block_invoke(uint64_t a1, void *a2)
@@ -335,13 +335,13 @@ uint64_t __59__ATXIntentStream_getIntentEventForSourceItemID_forSource___block_i
   return v5;
 }
 
-+ (id)generateParameterCombitionsForKeys:(id)a3
++ (id)generateParameterCombitionsForKeys:(id)keys
 {
-  v3 = a3;
-  if ([v3 count])
+  keysCopy = keys;
+  if ([keysCopy count])
   {
     v4 = objc_opt_new();
-    v5 = [v3 count];
+    v5 = [keysCopy count];
     if (v5)
     {
       v6 = 1;
@@ -361,7 +361,7 @@ uint64_t __59__ATXIntentStream_getIntentEventForSourceItemID_forSource___block_i
         {
           if (v11)
           {
-            v12 = [v3 objectAtIndexedSubscript:v10];
+            v12 = [keysCopy objectAtIndexedSubscript:v10];
             [v9 addObject:v12];
           }
 
@@ -394,19 +394,19 @@ uint64_t __59__ATXIntentStream_getIntentEventForSourceItemID_forSource___block_i
   return v16;
 }
 
-- (id)_getIntentEventFromLinkActionRecord:(id)a3 source:(int64_t)a4 bundleIdFilter:(id)a5 allowMissingTitles:(BOOL)a6
+- (id)_getIntentEventFromLinkActionRecord:(id)record source:(int64_t)source bundleIdFilter:(id)filter allowMissingTitles:(BOOL)titles
 {
   v72 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = [v10 executionUUID];
-  if (v12)
+  recordCopy = record;
+  filterCopy = filter;
+  executionUUID = [recordCopy executionUUID];
+  if (executionUUID)
   {
-    v13 = [v10 resolvedAction];
-    if (!v13)
+    resolvedAction = [recordCopy resolvedAction];
+    if (!resolvedAction)
     {
-      v14 = __atxlog_handle_action_prediction();
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
+      bundleIdentifier = __atxlog_handle_action_prediction();
+      if (os_log_type_enabled(bundleIdentifier, OS_LOG_TYPE_FAULT))
       {
         [ATXIntentStream _getIntentEventFromLinkActionRecord:source:bundleIdFilter:allowMissingTitles:];
       }
@@ -415,74 +415,74 @@ uint64_t __59__ATXIntentStream_getIntentEventForSourceItemID_forSource___block_i
       goto LABEL_81;
     }
 
-    v14 = [v10 bundleIdentifier];
-    if (![v14 length])
+    bundleIdentifier = [recordCopy bundleIdentifier];
+    if (![bundleIdentifier length])
     {
-      v16 = __atxlog_handle_action_prediction();
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      firstObject = __atxlog_handle_action_prediction();
+      if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
       {
-        [ATXIntentStream _getIntentEventFromLinkActionRecord:v13 source:? bundleIdFilter:? allowMissingTitles:?];
+        [ATXIntentStream _getIntentEventFromLinkActionRecord:resolvedAction source:? bundleIdFilter:? allowMissingTitles:?];
       }
 
       v24 = 0;
       goto LABEL_80;
     }
 
-    v15 = [v10 predictions];
-    v16 = [v15 firstObject];
+    predictions = [recordCopy predictions];
+    firstObject = [predictions firstObject];
 
-    if (!v16)
+    if (!firstObject)
     {
       v25 = __atxlog_handle_default();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
       {
-        [ATXIntentStream _getIntentEventFromLinkActionRecord:v13 source:v25 bundleIdFilter:? allowMissingTitles:?];
+        [ATXIntentStream _getIntentEventFromLinkActionRecord:resolvedAction source:v25 bundleIdFilter:? allowMissingTitles:?];
       }
 
       v24 = 0;
       goto LABEL_79;
     }
 
-    v58 = v11;
-    v17 = [v16 displayRepresentation];
-    [v17 title];
-    v19 = v18 = v16;
-    v61 = [v19 atx_efficientLocalizedString];
+    v58 = filterCopy;
+    displayRepresentation = [firstObject displayRepresentation];
+    [displayRepresentation title];
+    v19 = v18 = firstObject;
+    atx_efficientLocalizedString = [v19 atx_efficientLocalizedString];
 
     v60 = v18;
-    v20 = [v18 displayRepresentation];
-    v21 = [v20 subtitle];
-    v56 = [v21 atx_efficientLocalizedString];
+    displayRepresentation2 = [v18 displayRepresentation];
+    subtitle = [displayRepresentation2 subtitle];
+    atx_efficientLocalizedString2 = [subtitle atx_efficientLocalizedString];
 
-    if (!a6 && ![v61 length])
+    if (!titles && ![atx_efficientLocalizedString length])
     {
       v26 = __atxlog_handle_action_prediction();
-      v11 = v58;
+      filterCopy = v58;
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
         [ATXIntentStream _getIntentEventFromLinkActionRecord:source:bundleIdFilter:allowMissingTitles:];
       }
 
       v24 = 0;
-      v16 = v60;
+      firstObject = v60;
       goto LABEL_64;
     }
 
-    v57 = v14;
-    v22 = [v10 source];
-    v11 = v58;
-    v23 = v22 == 3 || [v10 source] == 7;
-    v16 = v60;
+    v57 = bundleIdentifier;
+    source = [recordCopy source];
+    filterCopy = v58;
+    v23 = source == 3 || [recordCopy source] == 7;
+    firstObject = v60;
     if (v58 && ![v58 isEqualToString:v57])
     {
       v26 = __atxlog_handle_action_prediction();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
       {
-        v14 = v57;
+        bundleIdentifier = v57;
         [ATXIntentStream _getIntentEventFromLinkActionRecord:source:bundleIdFilter:allowMissingTitles:];
         v24 = 0;
 LABEL_64:
-        v25 = v61;
+        v25 = atx_efficientLocalizedString;
 LABEL_78:
 
 LABEL_79:
@@ -494,13 +494,13 @@ LABEL_81:
 
 LABEL_63:
       v24 = 0;
-      v14 = v57;
+      bundleIdentifier = v57;
       goto LABEL_64;
     }
 
-    if (a4 > 1)
+    if (source > 1)
     {
-      switch(a4)
+      switch(source)
       {
         case 2:
           if (!v23)
@@ -524,16 +524,16 @@ LABEL_63:
 
 LABEL_39:
       v26 = objc_opt_new();
-      v27 = [v10 predictions];
+      predictions2 = [recordCopy predictions];
 
-      if (v27)
+      if (predictions2)
       {
         v65 = 0u;
         v66 = 0u;
         v63 = 0u;
         v64 = 0u;
-        v28 = [v10 predictions];
-        v29 = [v28 countByEnumeratingWithState:&v63 objects:v71 count:16];
+        predictions3 = [recordCopy predictions];
+        v29 = [predictions3 countByEnumeratingWithState:&v63 objects:v71 count:16];
         if (v29)
         {
           v30 = v29;
@@ -544,20 +544,20 @@ LABEL_39:
             {
               if (*v64 != v31)
               {
-                objc_enumerationMutation(v28);
+                objc_enumerationMutation(predictions3);
               }
 
-              v33 = [*(*(&v63 + 1) + 8 * i) parameterIdentifiers];
-              [v26 addObjectsFromArray:v33];
+              parameterIdentifiers = [*(*(&v63 + 1) + 8 * i) parameterIdentifiers];
+              [v26 addObjectsFromArray:parameterIdentifiers];
             }
 
-            v30 = [v28 countByEnumeratingWithState:&v63 objects:v71 count:16];
+            v30 = [predictions3 countByEnumeratingWithState:&v63 objects:v71 count:16];
           }
 
           while (v30);
         }
 
-        v11 = v58;
+        filterCopy = v58;
       }
 
       metadataProvider = self->_metadataProvider;
@@ -570,29 +570,29 @@ LABEL_39:
         metadataProvider = self->_metadataProvider;
       }
 
-      v37 = [v13 identifier];
+      identifier = [resolvedAction identifier];
       v62 = 0;
-      v14 = v57;
-      v38 = [(LNMetadataProvider *)metadataProvider actionForBundleIdentifier:v57 andActionIdentifier:v37 error:&v62];
+      bundleIdentifier = v57;
+      v38 = [(LNMetadataProvider *)metadataProvider actionForBundleIdentifier:v57 andActionIdentifier:identifier error:&v62];
       v39 = v62;
 
       v59 = v38;
       v55 = v39;
       if (v38)
       {
-        v40 = [objc_alloc(MEMORY[0x1E696E730]) initWithAppBundleIdentifier:v57 linkAction:v13 linkActionMetadata:v38];
+        v40 = [objc_alloc(MEMORY[0x1E696E730]) initWithAppBundleIdentifier:v57 linkAction:resolvedAction linkActionMetadata:v38];
         v41 = __atxlog_handle_action_prediction();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
         {
-          v42 = [v13 identifier];
+          identifier2 = [resolvedAction identifier];
           *buf = 138412546;
-          v68 = v42;
+          v68 = identifier2;
           v69 = 2112;
           v70 = v26;
           _os_log_impl(&dword_1BF549000, v41, OS_LOG_TYPE_INFO, "Predictable parameters for %@ from link: %@", buf, 0x16u);
         }
 
-        v16 = v60;
+        firstObject = v60;
         if (v40)
         {
           [v40 _className];
@@ -600,16 +600,16 @@ LABEL_39:
           if (v54)
           {
             v43 = objc_alloc(MEMORY[0x1E696AB80]);
-            v44 = [v10 executionDate];
-            v45 = [v10 executionDate];
-            v52 = [v43 initWithStartDate:v44 endDate:v45];
+            executionDate = [recordCopy executionDate];
+            executionDate2 = [recordCopy executionDate];
+            v52 = [v43 initWithStartDate:executionDate endDate:executionDate2];
 
             LOBYTE(v51) = 0;
-            v46 = [[ATXAction alloc] initWithIntent:v40 actionUUID:v12 bundleId:v57 heuristic:0 heuristicMetadata:0 criteria:0 isFutureMedia:v51 title:v61 subtitle:v56];
+            v46 = [[ATXAction alloc] initWithIntent:v40 actionUUID:executionUUID bundleId:v57 heuristic:0 heuristicMetadata:0 criteria:0 isFutureMedia:v51 title:atx_efficientLocalizedString subtitle:atx_efficientLocalizedString2];
             if ([v26 count])
             {
-              v47 = [v10 predictions];
-              v48 = [v47 _pas_mappedArrayWithTransform:&__block_literal_global_36];
+              predictions4 = [recordCopy predictions];
+              v48 = [predictions4 _pas_mappedArrayWithTransform:&__block_literal_global_36];
               [(ATXAction *)v46 setPredictableParameterCombinations:v48];
             }
 
@@ -618,7 +618,7 @@ LABEL_39:
               [(ATXAction *)v46 setPredictableParameterCombinations:MEMORY[0x1E695E0F0]];
             }
 
-            v16 = v60;
+            firstObject = v60;
             v49 = v52;
             v24 = [[ATXIntentEvent alloc] initWithBundleId:v57 intentType:v54 dateInterval:v52 action:v46];
           }
@@ -628,13 +628,13 @@ LABEL_39:
             v49 = __atxlog_handle_action_prediction();
             if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
             {
-              [ATXIntentStream _getIntentEventFromLinkActionRecord:v57 source:v13 bundleIdFilter:? allowMissingTitles:?];
+              [ATXIntentStream _getIntentEventFromLinkActionRecord:v57 source:resolvedAction bundleIdFilter:? allowMissingTitles:?];
             }
 
             v24 = 0;
           }
 
-          v25 = v61;
+          v25 = atx_efficientLocalizedString;
 
           v40 = v53;
         }
@@ -644,39 +644,39 @@ LABEL_39:
           v54 = __atxlog_handle_action_prediction();
           if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
           {
-            [ATXIntentStream _getIntentEventFromLinkActionRecord:v57 source:v13 bundleIdFilter:? allowMissingTitles:?];
+            [ATXIntentStream _getIntentEventFromLinkActionRecord:v57 source:resolvedAction bundleIdFilter:? allowMissingTitles:?];
           }
 
           v24 = 0;
-          v25 = v61;
+          v25 = atx_efficientLocalizedString;
         }
       }
 
       else
       {
         v40 = __atxlog_handle_action_prediction();
-        v16 = v60;
+        firstObject = v60;
         if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
         {
           [ATXIntentStream _getIntentEventFromLinkActionRecord:source:bundleIdFilter:allowMissingTitles:];
         }
 
         v24 = 0;
-        v25 = v61;
+        v25 = atx_efficientLocalizedString;
       }
 
       goto LABEL_78;
     }
 
-    if (a4)
+    if (source)
     {
-      if (a4 == 1 && v22 != 3)
+      if (source == 1 && source != 3)
       {
         goto LABEL_39;
       }
     }
 
-    else if (v22 == 3)
+    else if (source == 3)
     {
       goto LABEL_39;
     }
@@ -691,8 +691,8 @@ LABEL_61:
     goto LABEL_63;
   }
 
-  v13 = __atxlog_handle_action_prediction();
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
+  resolvedAction = __atxlog_handle_action_prediction();
+  if (os_log_type_enabled(resolvedAction, OS_LOG_TYPE_FAULT))
   {
     [ATXIntentStream _getIntentEventFromLinkActionRecord:source:bundleIdFilter:allowMissingTitles:];
   }
@@ -720,15 +720,15 @@ ATXActionPredictableParameters *__96__ATXIntentStream__getIntentEventFromLinkAct
   return v3;
 }
 
-- (id)_unarchiveInteractionFromBMAppIntent:(id)a3
+- (id)_unarchiveInteractionFromBMAppIntent:(id)intent
 {
-  v3 = a3;
+  intentCopy = intent;
   v4 = objc_autoreleasePoolPush();
-  v5 = [v3 interaction];
-  if (v5)
+  interaction = [intentCopy interaction];
+  if (interaction)
   {
     v11 = 0;
-    v6 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v5 error:&v11];
+    v6 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:interaction error:&v11];
     v7 = v11;
     if (v6)
     {
@@ -761,46 +761,46 @@ ATXActionPredictableParameters *__96__ATXIntentStream__getIntentEventFromLinkAct
   return v6;
 }
 
-- (id)_uuidForBMAppIntent:(id)a3 interaction:(id)a4
+- (id)_uuidForBMAppIntent:(id)intent interaction:(id)interaction
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 itemID];
+  intentCopy = intent;
+  interactionCopy = interaction;
+  itemID = [intentCopy itemID];
 
-  if (!v8 || (v9 = objc_alloc(MEMORY[0x1E696AFB0]), [v6 itemID], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v9, "initWithUUIDString:", v10), v10, !v11))
+  if (!itemID || (v9 = objc_alloc(MEMORY[0x1E696AFB0]), [intentCopy itemID], v10 = objc_claimAutoreleasedReturnValue(), identifier2 = objc_msgSend(v9, "initWithUUIDString:", v10), v10, !identifier2))
   {
-    if (!v7)
+    if (!interactionCopy)
     {
-      v7 = [(ATXIntentStream *)self _unarchiveInteractionFromBMAppIntent:v6];
+      interactionCopy = [(ATXIntentStream *)self _unarchiveInteractionFromBMAppIntent:intentCopy];
     }
 
-    v12 = [v7 identifier];
+    identifier = [interactionCopy identifier];
 
-    if (!v12 || (v13 = objc_alloc(MEMORY[0x1E696AFB0]), [v7 identifier], v14 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v13, "initWithUUIDString:", v14), v14, !v11))
+    if (!identifier || (v13 = objc_alloc(MEMORY[0x1E696AFB0]), [interactionCopy identifier], v14 = objc_claimAutoreleasedReturnValue(), identifier2 = objc_msgSend(v13, "initWithUUIDString:", v14), v14, !identifier2))
     {
-      v15 = [v7 intent];
-      v11 = [v15 identifier];
+      intent = [interactionCopy intent];
+      identifier2 = [intent identifier];
 
-      if (v11)
+      if (identifier2)
       {
         v16 = objc_alloc(MEMORY[0x1E696AFB0]);
-        v17 = [v7 intent];
-        v18 = [v17 identifier];
-        v11 = [v16 initWithUUIDString:v18];
+        intent2 = [interactionCopy intent];
+        identifier3 = [intent2 identifier];
+        identifier2 = [v16 initWithUUIDString:identifier3];
       }
     }
   }
 
-  return v11;
+  return identifier2;
 }
 
-- (id)_getIntentEventFromBMAppIntent:(id)a3 source:(int64_t)a4 bundleIdFilter:(id)a5 allowMissingTitles:(BOOL)a6 intentsToKeep:(id)a7
+- (id)_getIntentEventFromBMAppIntent:(id)intent source:(int64_t)source bundleIdFilter:(id)filter allowMissingTitles:(BOOL)titles intentsToKeep:(id)keep
 {
   v60 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
-  if (![v12 intentType])
+  intentCopy = intent;
+  filterCopy = filter;
+  keepCopy = keep;
+  if (![intentCopy intentType])
   {
     v15 = __atxlog_handle_action_prediction();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -811,7 +811,7 @@ ATXActionPredictableParameters *__96__ATXIntentStream__getIntentEventFromLinkAct
     goto LABEL_7;
   }
 
-  if ([v12 handlingStatus] == 5)
+  if ([intentCopy handlingStatus] == 5)
   {
     v15 = __atxlog_handle_action_prediction();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -824,7 +824,7 @@ LABEL_7:
     goto LABEL_74;
   }
 
-  v15 = [(ATXIntentStream *)self _unarchiveInteractionFromBMAppIntent:v12];
+  v15 = [(ATXIntentStream *)self _unarchiveInteractionFromBMAppIntent:intentCopy];
   if (!v15)
   {
     v17 = __atxlog_handle_action_prediction();
@@ -837,11 +837,11 @@ LABEL_7:
     goto LABEL_73;
   }
 
-  v17 = [(ATXIntentStream *)self _uuidForBMAppIntent:v12 interaction:v15];
+  v17 = [(ATXIntentStream *)self _uuidForBMAppIntent:intentCopy interaction:v15];
   if (!v17)
   {
-    v18 = __atxlog_handle_action_prediction();
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
+    intentClass = __atxlog_handle_action_prediction();
+    if (os_log_type_enabled(intentClass, OS_LOG_TYPE_FAULT))
     {
       [ATXIntentStream _getIntentEventFromBMAppIntent:source:bundleIdFilter:allowMissingTitles:intentsToKeep:];
     }
@@ -851,15 +851,15 @@ LABEL_7:
 
   if ([v15 direction]!= 2)
   {
-    if (!a6)
+    if (!titles)
     {
-      v19 = [v15 intent];
-      v20 = [v19 atx_titleLengthWithoutLocalizing];
+      intent = [v15 intent];
+      atx_titleLengthWithoutLocalizing = [intent atx_titleLengthWithoutLocalizing];
 
-      if (!v20)
+      if (!atx_titleLengthWithoutLocalizing)
       {
-        v18 = __atxlog_handle_action_prediction();
-        if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+        intentClass = __atxlog_handle_action_prediction();
+        if (os_log_type_enabled(intentClass, OS_LOG_TYPE_ERROR))
         {
           [ATXIntentStream _getIntentEventFromBMAppIntent:source:bundleIdFilter:allowMissingTitles:intentsToKeep:];
         }
@@ -868,22 +868,22 @@ LABEL_7:
       }
     }
 
-    v18 = [v12 intentClass];
-    if (v14)
+    intentClass = [intentCopy intentClass];
+    if (keepCopy)
     {
-      v21 = [v15 intent];
-      if ([v21 _type] == 2)
+      intent2 = [v15 intent];
+      if ([intent2 _type] == 2)
       {
       }
 
       else
       {
-        v22 = [v14 containsObject:v18];
+        v22 = [keepCopy containsObject:intentClass];
 
         if ((v22 & 1) == 0)
         {
-          v24 = __atxlog_handle_action_prediction();
-          if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
+          _className = __atxlog_handle_action_prediction();
+          if (os_log_type_enabled(_className, OS_LOG_TYPE_DEBUG))
           {
             [ATXIntentStream _getIntentEventFromBMAppIntent:source:bundleIdFilter:allowMissingTitles:intentsToKeep:];
           }
@@ -894,13 +894,13 @@ LABEL_7:
       }
     }
 
-    v23 = [v15 intent];
-    v24 = [v23 _className];
+    intent3 = [v15 intent];
+    _className = [intent3 _className];
 
-    if ([v24 isEqualToString:@"INIntent"])
+    if ([_className isEqualToString:@"INIntent"])
     {
-      v25 = __atxlog_handle_action_prediction();
-      if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+      bundleID = __atxlog_handle_action_prediction();
+      if (os_log_type_enabled(bundleID, OS_LOG_TYPE_DEBUG))
       {
         [ATXIntentStream _getIntentEventFromBMAppIntent:source:bundleIdFilter:allowMissingTitles:intentsToKeep:];
       }
@@ -909,21 +909,21 @@ LABEL_7:
       goto LABEL_70;
     }
 
-    v25 = [v12 bundleID];
-    if ([v25 length])
+    bundleID = [intentCopy bundleID];
+    if ([bundleID length])
     {
-      if ([MEMORY[0x1E69C5CF8] isInternalBuild] && -[NSObject hasPrefix:](v25, "hasPrefix:", @"appshack."))
+      if ([MEMORY[0x1E69C5CF8] isInternalBuild] && -[NSObject hasPrefix:](bundleID, "hasPrefix:", @"appshack."))
       {
-        v26 = -[NSObject substringFromIndex:](v25, "substringFromIndex:", [@"appshack." length]);
+        v26 = -[NSObject substringFromIndex:](bundleID, "substringFromIndex:", [@"appshack." length]);
 
-        v25 = v26;
+        bundleID = v26;
       }
 
-      if (!v13 || ([v13 isEqualToString:v25] & 1) != 0)
+      if (!filterCopy || ([filterCopy isEqualToString:bundleID] & 1) != 0)
       {
-        log = v25;
-        v27 = [v15 _donatedBySiri];
-        if (v27 != [v12 donatedBySiri])
+        log = bundleID;
+        _donatedBySiri = [v15 _donatedBySiri];
+        if (_donatedBySiri != [intentCopy donatedBySiri])
         {
           v28 = __atxlog_handle_action_prediction();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_FAULT))
@@ -932,11 +932,11 @@ LABEL_7:
           }
         }
 
-        if (a4 <= 1)
+        if (source <= 1)
         {
-          if (a4)
+          if (source)
           {
-            if (a4 != 1)
+            if (source != 1)
             {
               goto LABEL_66;
             }
@@ -945,23 +945,23 @@ LABEL_7:
           }
         }
 
-        else if (a4 != 2)
+        else if (source != 2)
         {
-          if (a4 != 3)
+          if (source != 3)
           {
-            if (a4 != 4)
+            if (source != 4)
             {
               goto LABEL_66;
             }
 
 LABEL_57:
-            v50 = v24;
-            v31 = [v15 intent];
-            v32 = [v31 _intents_bundleIdForDisplay];
-            v33 = v32;
-            if (v32)
+            v50 = _className;
+            intent4 = [v15 intent];
+            _intents_bundleIdForDisplay = [intent4 _intents_bundleIdForDisplay];
+            v33 = _intents_bundleIdForDisplay;
+            if (_intents_bundleIdForDisplay)
             {
-              v34 = v32;
+              v34 = _intents_bundleIdForDisplay;
             }
 
             else
@@ -969,16 +969,16 @@ LABEL_57:
               v34 = log;
             }
 
-            v25 = v34;
+            bundleID = v34;
 
             v35 = [ATXAction alloc];
-            v36 = [v15 intent];
+            intent5 = [v15 intent];
             LOBYTE(v48) = 0;
-            v37 = [(ATXAction *)v35 initWithIntent:v36 actionUUID:v17 bundleId:v25 heuristic:0 heuristicMetadata:0 criteria:0 isFutureMedia:v48 title:0 subtitle:0];
+            v37 = [(ATXAction *)v35 initWithIntent:intent5 actionUUID:v17 bundleId:bundleID heuristic:0 heuristicMetadata:0 criteria:0 isFutureMedia:v48 title:0 subtitle:0];
 
-            v38 = [v15 dateInterval];
+            dateInterval = [v15 dateInterval];
             loga = v37;
-            if (!v38)
+            if (!dateInterval)
             {
               v39 = __atxlog_handle_default();
               if (os_log_type_enabled(v39, OS_LOG_TYPE_FAULT))
@@ -987,27 +987,27 @@ LABEL_57:
               }
 
               v40 = objc_alloc(MEMORY[0x1E696AB80]);
-              v41 = [v12 absoluteTimestamp];
-              v42 = [v12 absoluteTimestamp];
-              v38 = [v40 initWithStartDate:v41 endDate:v42];
+              absoluteTimestamp = [intentCopy absoluteTimestamp];
+              absoluteTimestamp2 = [intentCopy absoluteTimestamp];
+              dateInterval = [v40 initWithStartDate:absoluteTimestamp endDate:absoluteTimestamp2];
 
               v37 = loga;
             }
 
             v43 = [ATXIntentEvent alloc];
-            v49 = [v15 intent];
-            v44 = [v49 _className];
+            intent6 = [v15 intent];
+            _className2 = [intent6 _className];
             v45 = v37;
-            v46 = v44;
-            v16 = [(ATXIntentEvent *)v43 initWithBundleId:v25 intentType:v44 dateInterval:v38 action:v45];
+            v46 = _className2;
+            v16 = [(ATXIntentEvent *)v43 initWithBundleId:bundleID intentType:_className2 dateInterval:dateInterval action:v45];
 
-            v24 = v50;
+            _className = v50;
             v29 = loga;
             goto LABEL_69;
           }
 
 LABEL_56:
-          if ((v27 & 1) == 0)
+          if ((_donatedBySiri & 1) == 0)
           {
             goto LABEL_57;
           }
@@ -1020,11 +1020,11 @@ LABEL_66:
           }
 
           v16 = 0;
-          v25 = log;
+          bundleID = log;
           goto LABEL_69;
         }
 
-        if (v27)
+        if (_donatedBySiri)
         {
           goto LABEL_57;
         }
@@ -1049,9 +1049,9 @@ LABEL_66:
         *buf = 138412802;
         v55 = v30;
         v56 = 2112;
-        v57 = v24;
+        v57 = _className;
         v58 = 2048;
-        v59 = a4;
+        sourceCopy = source;
         _os_log_error_impl(&dword_1BF549000, logb, OS_LOG_TYPE_ERROR, "Donation Processing (INIntent) - Rejected: filtered out because there was no bundleId for intent: %@, intentType: %@, intentSource: %lld", buf, 0x20u);
 
         v29 = logb;
@@ -1067,8 +1067,8 @@ LABEL_71:
     goto LABEL_72;
   }
 
-  v18 = __atxlog_handle_action_prediction();
-  if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
+  intentClass = __atxlog_handle_action_prediction();
+  if (os_log_type_enabled(intentClass, OS_LOG_TYPE_DEBUG))
   {
     [ATXIntentStream _getIntentEventFromBMAppIntent:source:bundleIdFilter:allowMissingTitles:intentsToKeep:];
   }

@@ -1,20 +1,20 @@
 @interface UIKBInputDelegateManagerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)callShouldReplaceExtendedRange:(int64_t)a3 withText:(id)a4 includeMarkedText:(BOOL)a5;
-- (void)_deleteBackwardAndNotify:(BOOL)a3 reinsertText:(BOOL)a4;
-- (void)insertText:(id)a3 updateInputSource:(BOOL)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)callShouldReplaceExtendedRange:(int64_t)range withText:(id)text includeMarkedText:(BOOL)markedText;
+- (void)_deleteBackwardAndNotify:(BOOL)notify reinsertText:(BOOL)text;
+- (void)insertText:(id)text updateInputSource:(BOOL)source;
 @end
 
 @implementation UIKBInputDelegateManagerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v9 = location;
   v8 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v7 = "@";
   v3 = "B";
   v4 = @"UIKBInputDelegateManager";
@@ -32,17 +32,17 @@
   objc_storeStrong(v9, v8);
 }
 
-- (BOOL)callShouldReplaceExtendedRange:(int64_t)a3 withText:(id)a4 includeMarkedText:(BOOL)a5
+- (BOOL)callShouldReplaceExtendedRange:(int64_t)range withText:(id)text includeMarkedText:(BOOL)markedText
 {
-  v26 = self;
+  selfCopy = self;
   v25 = a2;
-  v24 = a3;
+  rangeCopy = range;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v22 = a5;
-  v20.receiver = v26;
+  objc_storeStrong(&location, text);
+  markedTextCopy = markedText;
+  v20.receiver = selfCopy;
   v20.super_class = UIKBInputDelegateManagerAccessibility;
-  v21 = [(UIKBInputDelegateManagerAccessibility *)&v20 callShouldReplaceExtendedRange:v24 withText:location includeMarkedText:a5];
+  v21 = [(UIKBInputDelegateManagerAccessibility *)&v20 callShouldReplaceExtendedRange:rangeCopy withText:location includeMarkedText:markedText];
   if (v21)
   {
     v14[1] = MEMORY[0x29EDCA5F8];
@@ -50,7 +50,7 @@
     v16 = 0;
     v17 = __99__UIKBInputDelegateManagerAccessibility_callShouldReplaceExtendedRange_withText_includeMarkedText___block_invoke;
     v18 = &unk_29F30C7C8;
-    v19 = MEMORY[0x29EDC9748](v26);
+    v19 = MEMORY[0x29EDC9748](selfCopy);
     AXPerformSafeBlock();
     v14[0] = [MEMORY[0x29EDC7B08] activeInstance];
     v13 = [v14[0] safeValueForKeyPath:@"inlineTextCompletionController.lastAcceptedTextCompletion"];
@@ -62,7 +62,7 @@
       v12 = [v13 safeStringForKey:@"input"];
       v11 = 1;
       v5 = [v12 length];
-      v9 = v5 == v24;
+      v9 = v5 == rangeCopy;
     }
 
     if (v11)
@@ -102,17 +102,17 @@ double __99__UIKBInputDelegateManagerAccessibility_callShouldReplaceExtendedRang
   return result;
 }
 
-- (void)insertText:(id)a3 updateInputSource:(BOOL)a4
+- (void)insertText:(id)text updateInputSource:(BOOL)source
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = a4;
-  v6.receiver = v9;
+  objc_storeStrong(location, text);
+  sourceCopy = source;
+  v6.receiver = selfCopy;
   v6.super_class = UIKBInputDelegateManagerAccessibility;
-  [(UIKBInputDelegateManagerAccessibility *)&v6 insertText:location[0] updateInputSource:a4];
-  v5 = [(UIKBInputDelegateManagerAccessibility *)v9 safeValueForKey:@"keyInputDelegate"];
+  [(UIKBInputDelegateManagerAccessibility *)&v6 insertText:location[0] updateInputSource:source];
+  v5 = [(UIKBInputDelegateManagerAccessibility *)selfCopy safeValueForKey:@"keyInputDelegate"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -122,7 +122,7 @@ double __99__UIKBInputDelegateManagerAccessibility_callShouldReplaceExtendedRang
       NSClassFromString(&cfstr_Wkcontentview.isa);
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        [(UIKBInputDelegateManagerAccessibility *)v9 _accessibilityPostValueChangedNotificationWithChangeType:*MEMORY[0x29EDBDCD8]];
+        [(UIKBInputDelegateManagerAccessibility *)selfCopy _accessibilityPostValueChangedNotificationWithChangeType:*MEMORY[0x29EDBDCD8]];
       }
     }
   }
@@ -131,16 +131,16 @@ double __99__UIKBInputDelegateManagerAccessibility_callShouldReplaceExtendedRang
   objc_storeStrong(location, 0);
 }
 
-- (void)_deleteBackwardAndNotify:(BOOL)a3 reinsertText:(BOOL)a4
+- (void)_deleteBackwardAndNotify:(BOOL)notify reinsertText:(BOOL)text
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
-  v6 = a4;
+  notifyCopy = notify;
+  textCopy = text;
   v5.receiver = self;
   v5.super_class = UIKBInputDelegateManagerAccessibility;
-  [(UIKBInputDelegateManagerAccessibility *)&v5 _deleteBackwardAndNotify:a3 reinsertText:a4];
-  location = [(UIKBInputDelegateManagerAccessibility *)v9 safeValueForKey:@"keyInputDelegate"];
+  [(UIKBInputDelegateManagerAccessibility *)&v5 _deleteBackwardAndNotify:notify reinsertText:text];
+  location = [(UIKBInputDelegateManagerAccessibility *)selfCopy safeValueForKey:@"keyInputDelegate"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -150,7 +150,7 @@ double __99__UIKBInputDelegateManagerAccessibility_callShouldReplaceExtendedRang
       NSClassFromString(&cfstr_Wkcontentview.isa);
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        [(UIKBInputDelegateManagerAccessibility *)v9 _accessibilityPostValueChangedNotificationWithChangeType:*MEMORY[0x29EDBDCC8]];
+        [(UIKBInputDelegateManagerAccessibility *)selfCopy _accessibilityPostValueChangedNotificationWithChangeType:*MEMORY[0x29EDBDCC8]];
       }
     }
   }

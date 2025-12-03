@@ -1,7 +1,7 @@
 @interface HMDHH2AutoMigrationEligibilityLogEventSubmitter
-- (HMDHH2AutoMigrationEligibilityLogEventSubmitter)initWithEligibilityStatusDataSource:(id)a3 analyzerDataSource:(id)a4;
+- (HMDHH2AutoMigrationEligibilityLogEventSubmitter)initWithEligibilityStatusDataSource:(id)source analyzerDataSource:(id)dataSource;
 - (HMDHH2AutoMigrationEligibilityLogEventSubmitterDataSource)eligibilityStatusDataSource;
-- (void)observeEvent:(id)a3;
+- (void)observeEvent:(id)event;
 - (void)runDailyTask;
 - (void)submitHH2AutoMigrationEligibilityStatus;
 @end
@@ -17,24 +17,24 @@
 
 - (void)runDailyTask
 {
-  v3 = [(HMDHH2AutoMigrationEligibilityLogEventSubmitter *)self workQueue];
+  workQueue = [(HMDHH2AutoMigrationEligibilityLogEventSubmitter *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__HMDHH2AutoMigrationEligibilityLogEventSubmitter_runDailyTask__block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 - (void)submitHH2AutoMigrationEligibilityStatus
 {
-  v3 = [(HMDHH2AutoMigrationEligibilityLogEventSubmitter *)self workQueue];
+  workQueue = [(HMDHH2AutoMigrationEligibilityLogEventSubmitter *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __90__HMDHH2AutoMigrationEligibilityLogEventSubmitter_submitHH2AutoMigrationEligibilityStatus__block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __90__HMDHH2AutoMigrationEligibilityLogEventSubmitter_submitHH2AutoMigrationEligibilityStatus__block_invoke(uint64_t a1)
@@ -123,13 +123,13 @@ void __90__HMDHH2AutoMigrationEligibilityLogEventSubmitter_submitHH2AutoMigratio
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)observeEvent:(id)a3
+- (void)observeEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(HMDHH2AutoMigrationEligibilityLogEventSubmitter *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  eventCopy = event;
+  workQueue = [(HMDHH2AutoMigrationEligibilityLogEventSubmitter *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v11 = v4;
+  v11 = eventCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -145,61 +145,61 @@ void __90__HMDHH2AutoMigrationEligibilityLogEventSubmitter_submitHH2AutoMigratio
 
   if (v7)
   {
-    v8 = [v7 activityName];
-    v9 = [v8 isEqualToString:@"com.apple.homed.hh2.auto.migration"];
+    activityName = [v7 activityName];
+    v9 = [activityName isEqualToString:@"com.apple.homed.hh2.auto.migration"];
 
     if (v9)
     {
-      v10 = [(HMDHH2AutoMigrationEligibilityLogEventSubmitter *)self userDefaults];
-      [v10 setBool:1 forKey:@"HMDHH2AutoMigrationRunOnCurrentBuildFlagKey"];
+      userDefaults = [(HMDHH2AutoMigrationEligibilityLogEventSubmitter *)self userDefaults];
+      [userDefaults setBool:1 forKey:@"HMDHH2AutoMigrationRunOnCurrentBuildFlagKey"];
     }
   }
 }
 
-- (HMDHH2AutoMigrationEligibilityLogEventSubmitter)initWithEligibilityStatusDataSource:(id)a3 analyzerDataSource:(id)a4
+- (HMDHH2AutoMigrationEligibilityLogEventSubmitter)initWithEligibilityStatusDataSource:(id)source analyzerDataSource:(id)dataSource
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  dataSourceCopy = dataSource;
   v27.receiver = self;
   v27.super_class = HMDHH2AutoMigrationEligibilityLogEventSubmitter;
   v8 = [(HMDHH2AutoMigrationEligibilityLogEventSubmitter *)&v27 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_eligibilityStatusDataSource, v6);
-    v10 = [v7 logEventSubmitter];
+    objc_storeWeak(&v8->_eligibilityStatusDataSource, sourceCopy);
+    logEventSubmitter = [dataSourceCopy logEventSubmitter];
     logEventSubmitter = v9->_logEventSubmitter;
-    v9->_logEventSubmitter = v10;
+    v9->_logEventSubmitter = logEventSubmitter;
 
-    v12 = [v7 userDefaults];
+    userDefaults = [dataSourceCopy userDefaults];
     userDefaults = v9->_userDefaults;
-    v9->_userDefaults = v12;
+    v9->_userDefaults = userDefaults;
 
-    v14 = [v7 dateProvider];
+    dateProvider = [dataSourceCopy dateProvider];
     dateProvider = v9->_dateProvider;
-    v9->_dateProvider = v14;
+    v9->_dateProvider = dateProvider;
 
-    v16 = [v7 logEventDispatcher];
-    v17 = [v16 clientQueue];
+    logEventDispatcher = [dataSourceCopy logEventDispatcher];
+    clientQueue = [logEventDispatcher clientQueue];
     workQueue = v9->_workQueue;
-    v9->_workQueue = v17;
+    v9->_workQueue = clientQueue;
 
     v19 = [(NSUserDefaults *)v9->_userDefaults stringForKey:@"HMDHH2AutoMigrationRunOnCurrentBuildSoftwareVersionKey"];
-    if (!v19 || ([v7 currentSoftwareVersion], v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v19, "isEqualToString:", v20), v20, (v21 & 1) == 0))
+    if (!v19 || ([dataSourceCopy currentSoftwareVersion], v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v19, "isEqualToString:", v20), v20, (v21 & 1) == 0))
     {
       v22 = v9->_userDefaults;
-      v23 = [v7 currentSoftwareVersion];
-      [(NSUserDefaults *)v22 setObject:v23 forKey:@"HMDHH2AutoMigrationRunOnCurrentBuildSoftwareVersionKey"];
+      currentSoftwareVersion = [dataSourceCopy currentSoftwareVersion];
+      [(NSUserDefaults *)v22 setObject:currentSoftwareVersion forKey:@"HMDHH2AutoMigrationRunOnCurrentBuildSoftwareVersionKey"];
 
       [(NSUserDefaults *)v9->_userDefaults setBool:0 forKey:@"HMDHH2AutoMigrationRunOnCurrentBuildFlagKey"];
       [(NSUserDefaults *)v9->_userDefaults setBool:1 forKey:@"HMDHH2AutoMigrationRunOnCurrentBuildStartedOnHH1Key"];
     }
 
-    v24 = [v7 logEventDispatcher];
-    [v24 addObserver:v9 forEventClass:objc_opt_class()];
+    logEventDispatcher2 = [dataSourceCopy logEventDispatcher];
+    [logEventDispatcher2 addObserver:v9 forEventClass:objc_opt_class()];
 
-    v25 = [v7 dailyScheduler];
-    [v25 registerDailyTaskRunner:v9];
+    dailyScheduler = [dataSourceCopy dailyScheduler];
+    [dailyScheduler registerDailyTaskRunner:v9];
   }
 
   return v9;

@@ -6,14 +6,14 @@
 
 - (CGSize)itemSize
 {
-  v2 = [(MSStickerBrowserViewLayoutSpec *)self stickerSize];
+  stickerSize = [(MSStickerBrowserViewLayoutSpec *)self stickerSize];
   v3 = 85.0;
-  if (!v2)
+  if (!stickerSize)
   {
     v3 = 60.0;
   }
 
-  if (v2 == 2)
+  if (stickerSize == 2)
   {
     v3 = 136.0;
   }

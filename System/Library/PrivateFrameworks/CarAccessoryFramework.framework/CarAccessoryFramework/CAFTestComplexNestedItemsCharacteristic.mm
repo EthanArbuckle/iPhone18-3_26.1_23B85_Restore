@@ -3,38 +3,38 @@
 + (void)load;
 - (CAFTestComplexNestedItems)testComplexNestedItemsValue;
 - (id)formattedValue;
-- (void)setTestComplexNestedItemsValue:(id)a3;
+- (void)setTestComplexNestedItemsValue:(id)value;
 @end
 
 @implementation CAFTestComplexNestedItemsCharacteristic
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFTestComplexNestedItemsCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (CAFTestComplexNestedItems)testComplexNestedItemsValue
 {
-  v2 = [(CAFArrayCharacteristic *)self arrayValue];
-  v3 = [CAFTestComplexNestedItems testComplexNestedItemsWithArray:v2];
+  arrayValue = [(CAFArrayCharacteristic *)self arrayValue];
+  v3 = [CAFTestComplexNestedItems testComplexNestedItemsWithArray:arrayValue];
 
   return v3;
 }
 
-- (void)setTestComplexNestedItemsValue:(id)a3
+- (void)setTestComplexNestedItemsValue:(id)value
 {
-  v4 = [a3 arrayRepresentation];
-  [(CAFArrayCharacteristic *)self setArrayValue:v4];
+  arrayRepresentation = [value arrayRepresentation];
+  [(CAFArrayCharacteristic *)self setArrayValue:arrayRepresentation];
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFTestComplexNestedItemsCharacteristic *)self testComplexNestedItemsValue];
-  v3 = [v2 formattedValue];
+  testComplexNestedItemsValue = [(CAFTestComplexNestedItemsCharacteristic *)self testComplexNestedItemsValue];
+  formattedValue = [testComplexNestedItemsValue formattedValue];
 
-  return v3;
+  return formattedValue;
 }
 
 + (id)secondaryCharacteristicFormats

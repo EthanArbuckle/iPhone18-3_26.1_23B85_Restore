@@ -1,7 +1,7 @@
 @interface SBEChamoisContentViewController
 - (id)_tutorialVideoURL;
-- (void)dismissEducationViewController:(id)a3;
-- (void)enableExternalDisplaySupport:(id)a3;
+- (void)dismissEducationViewController:(id)controller;
+- (void)enableExternalDisplaySupport:(id)support;
 - (void)viewDidLoad;
 @end
 
@@ -14,57 +14,57 @@
   [(SBEChamoisContentViewController *)&v144 viewDidLoad];
   [(SBEChamoisContentViewController *)self setModalInPresentation:1];
   [(SBEChamoisContentViewController *)self setModalPresentationStyle:2];
-  v3 = [(SBEChamoisContentViewController *)self view];
+  view = [(SBEChamoisContentViewController *)self view];
   v4 = +[UIColor systemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
   v5 = objc_alloc_init(UIView);
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [(SBEChamoisContentViewController *)self view];
-  [v6 addSubview:v5];
+  view2 = [(SBEChamoisContentViewController *)self view];
+  [view2 addSubview:v5];
 
-  v7 = [v5 leadingAnchor];
-  v8 = [(SBEChamoisContentViewController *)self view];
-  v9 = [v8 leadingAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9 constant:88.0];
+  leadingAnchor = [v5 leadingAnchor];
+  view3 = [(SBEChamoisContentViewController *)self view];
+  leadingAnchor2 = [view3 leadingAnchor];
+  v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:88.0];
   [v10 setActive:1];
 
-  v11 = [v5 trailingAnchor];
-  v12 = [(SBEChamoisContentViewController *)self view];
-  v13 = [v12 trailingAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13 constant:-88.0];
+  trailingAnchor = [v5 trailingAnchor];
+  view4 = [(SBEChamoisContentViewController *)self view];
+  trailingAnchor2 = [view4 trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-88.0];
   [v14 setActive:1];
 
-  v15 = [v5 topAnchor];
-  v16 = [(SBEChamoisContentViewController *)self view];
-  v17 = [v16 topAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17 constant:56.0];
+  topAnchor = [v5 topAnchor];
+  view5 = [(SBEChamoisContentViewController *)self view];
+  topAnchor2 = [view5 topAnchor];
+  v18 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:56.0];
   [v18 setActive:1];
 
-  v19 = [v5 bottomAnchor];
-  v20 = [(SBEChamoisContentViewController *)self view];
-  v21 = [v20 bottomAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21 constant:-5.0];
+  bottomAnchor = [v5 bottomAnchor];
+  view6 = [(SBEChamoisContentViewController *)self view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-5.0];
   [v22 setActive:1];
 
   v23 = objc_alloc_init(UIScrollView);
   [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v24 = [(SBEChamoisContentViewController *)self view];
-  [v24 addSubview:v23];
+  view7 = [(SBEChamoisContentViewController *)self view];
+  [view7 addSubview:v23];
 
-  v25 = [v23 leadingAnchor];
-  v26 = [v5 leadingAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26];
+  leadingAnchor3 = [v23 leadingAnchor];
+  leadingAnchor4 = [v5 leadingAnchor];
+  v27 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v27 setActive:1];
 
-  v28 = [v23 trailingAnchor];
-  v29 = [v5 trailingAnchor];
-  v30 = [v28 constraintEqualToAnchor:v29];
+  trailingAnchor3 = [v23 trailingAnchor];
+  trailingAnchor4 = [v5 trailingAnchor];
+  v30 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v30 setActive:1];
 
-  v31 = [v23 topAnchor];
-  v32 = [v5 topAnchor];
-  v33 = [v31 constraintEqualToAnchor:v32];
+  topAnchor3 = [v23 topAnchor];
+  topAnchor4 = [v5 topAnchor];
+  v33 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   [v33 setActive:1];
 
   v34 = [UIButton buttonWithType:1];
@@ -75,32 +75,32 @@
   v37 = [v36 localizedStringForKey:@"STAGE_MANAGER_OPT_OUT_BUTTON" value:&stru_10000C2E0 table:0];
   [v34 setTitle:v37 forState:0];
 
-  v38 = [v34 titleLabel];
+  titleLabel = [v34 titleLabel];
   +[UIFont buttonFontSize];
   v39 = [UIFont systemFontOfSize:"systemFontOfSize:weight:" weight:?];
-  [v38 setFont:v39];
+  [titleLabel setFont:v39];
 
   [v34 addTarget:self action:"dismissEducationViewController:" forControlEvents:64];
-  v40 = [v34 titleLabel];
-  [v40 setTextAlignment:1];
+  titleLabel2 = [v34 titleLabel];
+  [titleLabel2 setTextAlignment:1];
 
   [v34 setTranslatesAutoresizingMaskIntoConstraints:0];
   LODWORD(v41) = 1148846080;
   [v34 setContentCompressionResistancePriority:1 forAxis:v41];
   [v5 addSubview:v34];
-  v42 = [v34 bottomAnchor];
-  v43 = [v5 bottomAnchor];
-  v44 = [v42 constraintEqualToAnchor:v43 constant:-10.0];
+  bottomAnchor3 = [v34 bottomAnchor];
+  bottomAnchor4 = [v5 bottomAnchor];
+  v44 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-10.0];
   [v44 setActive:1];
 
-  v45 = [v34 leadingAnchor];
-  v46 = [v5 leadingAnchor];
-  v47 = [v45 constraintEqualToAnchor:v46];
+  leadingAnchor5 = [v34 leadingAnchor];
+  leadingAnchor6 = [v5 leadingAnchor];
+  v47 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   [v47 setActive:1];
 
-  v48 = [v34 trailingAnchor];
-  v49 = [v5 trailingAnchor];
-  v50 = [v48 constraintEqualToAnchor:v49];
+  trailingAnchor5 = [v34 trailingAnchor];
+  trailingAnchor6 = [v5 trailingAnchor];
+  v50 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   [v50 setActive:1];
 
   v51 = +[UIButtonConfiguration filledButtonConfiguration];
@@ -120,91 +120,91 @@
   v142 = v51;
   v58 = [UIButton buttonWithConfiguration:v51 primaryAction:0];
   [v58 addTarget:self action:"enableExternalDisplaySupport:" forControlEvents:64];
-  v59 = [v58 titleLabel];
-  [v59 setTextAlignment:1];
+  titleLabel3 = [v58 titleLabel];
+  [titleLabel3 setTextAlignment:1];
 
   [v58 setTranslatesAutoresizingMaskIntoConstraints:0];
   LODWORD(v60) = 1148846080;
   [v58 setContentCompressionResistancePriority:1 forAxis:v60];
   [v5 addSubview:v58];
-  v61 = [v58 bottomAnchor];
-  v62 = [v34 topAnchor];
-  v63 = [v61 constraintEqualToAnchor:v62 constant:-15.0];
+  bottomAnchor5 = [v58 bottomAnchor];
+  topAnchor5 = [v34 topAnchor];
+  v63 = [bottomAnchor5 constraintEqualToAnchor:topAnchor5 constant:-15.0];
   [v63 setActive:1];
 
-  v64 = [v58 leadingAnchor];
-  v65 = [v5 leadingAnchor];
-  v66 = [v64 constraintEqualToAnchor:v65 constant:80.0];
+  leadingAnchor7 = [v58 leadingAnchor];
+  leadingAnchor8 = [v5 leadingAnchor];
+  v66 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:80.0];
   [v66 setActive:1];
 
-  v67 = [v58 trailingAnchor];
-  v68 = [v5 trailingAnchor];
-  v69 = [v67 constraintEqualToAnchor:v68 constant:-80.0];
+  trailingAnchor7 = [v58 trailingAnchor];
+  trailingAnchor8 = [v5 trailingAnchor];
+  v69 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:-80.0];
   [v69 setActive:1];
 
-  v70 = [v58 topAnchor];
-  v71 = [v23 bottomAnchor];
-  v72 = [v70 constraintEqualToAnchor:v71 constant:30.0];
+  topAnchor6 = [v58 topAnchor];
+  bottomAnchor6 = [v23 bottomAnchor];
+  v72 = [topAnchor6 constraintEqualToAnchor:bottomAnchor6 constant:30.0];
   [v72 setActive:1];
 
   v73 = [SBCAAutoPlayingPackageView alloc];
-  v74 = [(SBEChamoisContentViewController *)self _tutorialVideoURL];
-  v75 = [v73 initWithURL:v74 startingState:@"start" endingState:@"return"];
+  _tutorialVideoURL = [(SBEChamoisContentViewController *)self _tutorialVideoURL];
+  v75 = [v73 initWithURL:_tutorialVideoURL startingState:@"start" endingState:@"return"];
   videoView = self->_videoView;
   self->_videoView = v75;
 
-  v77 = [(SBCAAutoPlayingPackageView *)self->_videoView layer];
-  [v77 setCornerRadius:13.0];
+  layer = [(SBCAAutoPlayingPackageView *)self->_videoView layer];
+  [layer setCornerRadius:13.0];
 
-  v78 = [(SBCAAutoPlayingPackageView *)self->_videoView layer];
-  [v78 setGeometryFlipped:1];
+  layer2 = [(SBCAAutoPlayingPackageView *)self->_videoView layer];
+  [layer2 setGeometryFlipped:1];
 
-  v79 = [(SBCAAutoPlayingPackageView *)self->_videoView layer];
-  [v79 setMasksToBounds:1];
+  layer3 = [(SBCAAutoPlayingPackageView *)self->_videoView layer];
+  [layer3 setMasksToBounds:1];
 
   [(SBCAAutoPlayingPackageView *)self->_videoView setTranslatesAutoresizingMaskIntoConstraints:0];
   [v23 addSubview:self->_videoView];
-  v80 = [(SBEChamoisContentViewController *)self presentingViewController];
-  v81 = [v80 view];
-  v82 = [v81 effectiveUserInterfaceLayoutDirection];
+  presentingViewController = [(SBEChamoisContentViewController *)self presentingViewController];
+  view8 = [presentingViewController view];
+  effectiveUserInterfaceLayoutDirection = [view8 effectiveUserInterfaceLayoutDirection];
 
-  if (v82 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
-    v83 = [(SBCAAutoPlayingPackageView *)self->_videoView layer];
+    layer4 = [(SBCAAutoPlayingPackageView *)self->_videoView layer];
     CATransform3DMakeRotation(&v143, 3.14159265, 0.0, 1.0, 0.0);
-    [v83 setTransform:&v143];
+    [layer4 setTransform:&v143];
   }
 
-  v84 = [(SBCAAutoPlayingPackageView *)self->_videoView topAnchor];
-  v85 = [v23 contentLayoutGuide];
-  v86 = [v85 topAnchor];
-  v87 = [v84 constraintEqualToAnchor:v86];
+  topAnchor7 = [(SBCAAutoPlayingPackageView *)self->_videoView topAnchor];
+  contentLayoutGuide = [v23 contentLayoutGuide];
+  topAnchor8 = [contentLayoutGuide topAnchor];
+  v87 = [topAnchor7 constraintEqualToAnchor:topAnchor8];
   [v87 setActive:1];
 
-  v88 = [(SBCAAutoPlayingPackageView *)self->_videoView leftAnchor];
-  v89 = [v23 frameLayoutGuide];
-  v90 = [v89 leftAnchor];
-  v91 = [v88 constraintGreaterThanOrEqualToAnchor:v90 constant:60.0];
+  leftAnchor = [(SBCAAutoPlayingPackageView *)self->_videoView leftAnchor];
+  frameLayoutGuide = [v23 frameLayoutGuide];
+  leftAnchor2 = [frameLayoutGuide leftAnchor];
+  v91 = [leftAnchor constraintGreaterThanOrEqualToAnchor:leftAnchor2 constant:60.0];
   [v91 setActive:1];
 
-  v92 = [(SBCAAutoPlayingPackageView *)self->_videoView rightAnchor];
-  v93 = [v23 frameLayoutGuide];
-  v94 = [v93 rightAnchor];
-  v95 = [v92 constraintLessThanOrEqualToAnchor:v94 constant:-60.0];
+  rightAnchor = [(SBCAAutoPlayingPackageView *)self->_videoView rightAnchor];
+  frameLayoutGuide2 = [v23 frameLayoutGuide];
+  rightAnchor2 = [frameLayoutGuide2 rightAnchor];
+  v95 = [rightAnchor constraintLessThanOrEqualToAnchor:rightAnchor2 constant:-60.0];
   [v95 setActive:1];
 
-  v96 = [(SBCAAutoPlayingPackageView *)self->_videoView centerXAnchor];
-  v97 = [v5 centerXAnchor];
-  v98 = [v96 constraintEqualToAnchor:v97];
+  centerXAnchor = [(SBCAAutoPlayingPackageView *)self->_videoView centerXAnchor];
+  centerXAnchor2 = [v5 centerXAnchor];
+  v98 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v98 setActive:1];
 
-  v99 = [(SBCAAutoPlayingPackageView *)self->_videoView heightAnchor];
-  v100 = [(SBCAAutoPlayingPackageView *)self->_videoView widthAnchor];
-  v101 = [v99 constraintEqualToAnchor:v100 multiplier:0.75];
+  heightAnchor = [(SBCAAutoPlayingPackageView *)self->_videoView heightAnchor];
+  widthAnchor = [(SBCAAutoPlayingPackageView *)self->_videoView widthAnchor];
+  v101 = [heightAnchor constraintEqualToAnchor:widthAnchor multiplier:0.75];
   [v101 setActive:1];
 
-  v102 = [(SBCAAutoPlayingPackageView *)self->_videoView heightAnchor];
-  v103 = [v102 constraintLessThanOrEqualToConstant:400.0];
+  heightAnchor2 = [(SBCAAutoPlayingPackageView *)self->_videoView heightAnchor];
+  v103 = [heightAnchor2 constraintLessThanOrEqualToConstant:400.0];
   [v103 setActive:1];
 
   LODWORD(v104) = 1148846080;
@@ -225,21 +225,21 @@
 
   [v106 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v23 addSubview:v106];
-  v111 = [v106 leadingAnchor];
-  v112 = [v23 frameLayoutGuide];
-  v113 = [v112 leadingAnchor];
-  v114 = [v111 constraintEqualToAnchor:v113 constant:60.0];
+  leadingAnchor9 = [v106 leadingAnchor];
+  frameLayoutGuide3 = [v23 frameLayoutGuide];
+  leadingAnchor10 = [frameLayoutGuide3 leadingAnchor];
+  v114 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10 constant:60.0];
   [v114 setActive:1];
 
-  v115 = [v106 trailingAnchor];
-  v116 = [v23 frameLayoutGuide];
-  v117 = [v116 trailingAnchor];
-  v118 = [v115 constraintEqualToAnchor:v117 constant:-60.0];
+  trailingAnchor9 = [v106 trailingAnchor];
+  frameLayoutGuide4 = [v23 frameLayoutGuide];
+  trailingAnchor10 = [frameLayoutGuide4 trailingAnchor];
+  v118 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10 constant:-60.0];
   [v118 setActive:1];
 
-  v119 = [v106 topAnchor];
-  v120 = [(SBCAAutoPlayingPackageView *)self->_videoView bottomAnchor];
-  v121 = [v119 constraintEqualToAnchor:v120 constant:56.0];
+  topAnchor9 = [v106 topAnchor];
+  bottomAnchor7 = [(SBCAAutoPlayingPackageView *)self->_videoView bottomAnchor];
+  v121 = [topAnchor9 constraintEqualToAnchor:bottomAnchor7 constant:56.0];
   [v121 setActive:1];
 
   v122 = objc_alloc_init(UILabel);
@@ -256,38 +256,38 @@
 
   [v122 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v23 addSubview:v122];
-  v127 = [v122 leadingAnchor];
-  v128 = [v23 frameLayoutGuide];
-  v129 = [v128 leadingAnchor];
-  v130 = [v127 constraintEqualToAnchor:v129 constant:60.0];
+  leadingAnchor11 = [v122 leadingAnchor];
+  frameLayoutGuide5 = [v23 frameLayoutGuide];
+  leadingAnchor12 = [frameLayoutGuide5 leadingAnchor];
+  v130 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12 constant:60.0];
   [v130 setActive:1];
 
-  v131 = [v122 trailingAnchor];
-  v132 = [v23 frameLayoutGuide];
-  v133 = [v132 trailingAnchor];
-  v134 = [v131 constraintEqualToAnchor:v133 constant:-60.0];
+  trailingAnchor11 = [v122 trailingAnchor];
+  frameLayoutGuide6 = [v23 frameLayoutGuide];
+  trailingAnchor12 = [frameLayoutGuide6 trailingAnchor];
+  v134 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor12 constant:-60.0];
   [v134 setActive:1];
 
-  v135 = [v122 topAnchor];
-  v136 = [v106 bottomAnchor];
-  v137 = [v135 constraintEqualToAnchor:v136 constant:15.0];
+  topAnchor10 = [v122 topAnchor];
+  bottomAnchor8 = [v106 bottomAnchor];
+  v137 = [topAnchor10 constraintEqualToAnchor:bottomAnchor8 constant:15.0];
   [v137 setActive:1];
 
-  v138 = [v122 bottomAnchor];
-  v139 = [v23 contentLayoutGuide];
-  v140 = [v139 bottomAnchor];
-  v141 = [v138 constraintLessThanOrEqualToAnchor:v140 constant:-30.0];
+  bottomAnchor9 = [v122 bottomAnchor];
+  contentLayoutGuide2 = [v23 contentLayoutGuide];
+  bottomAnchor10 = [contentLayoutGuide2 bottomAnchor];
+  v141 = [bottomAnchor9 constraintLessThanOrEqualToAnchor:bottomAnchor10 constant:-30.0];
   [v141 setActive:1];
 }
 
 - (id)_tutorialVideoURL
 {
-  v2 = [(SBEChamoisContentViewController *)self traitCollection];
-  v3 = [v2 userInterfaceStyle];
+  traitCollection = [(SBEChamoisContentViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
   v4 = +[NSBundle mainBundle];
   v5 = v4;
-  if (v3 == 2)
+  if (userInterfaceStyle == 2)
   {
     v6 = @"ChamoisTutorial_DK";
   }
@@ -302,7 +302,7 @@
   return v7;
 }
 
-- (void)enableExternalDisplaySupport:(id)a3
+- (void)enableExternalDisplaySupport:(id)support
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
@@ -312,7 +312,7 @@
   [(SBEChamoisContentViewController *)self dismissViewControllerAnimated:1 completion:v3];
 }
 
-- (void)dismissEducationViewController:(id)a3
+- (void)dismissEducationViewController:(id)controller
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;

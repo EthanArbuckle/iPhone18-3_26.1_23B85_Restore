@@ -1,20 +1,20 @@
 @interface NFCTagReaderSession
-- (NFCTagReaderSession)initWithPollingOption:(int64_t)a3 delegate:(id)a4 delegateType:(int64_t)a5 sessionType:(unint64_t)a6 queue:(id)a7;
-- (NFCTagReaderSession)initWithPollingOption:(int64_t)a3 swiftDelegate:(id)a4 sessionType:(unint64_t)a5 queue:(id)a6;
+- (NFCTagReaderSession)initWithPollingOption:(int64_t)option delegate:(id)delegate delegateType:(int64_t)type sessionType:(unint64_t)sessionType queue:(id)queue;
+- (NFCTagReaderSession)initWithPollingOption:(int64_t)option swiftDelegate:(id)delegate sessionType:(unint64_t)type queue:(id)queue;
 - (void)_callbackDidBecomeActive;
 - (void)connectToTag:(id)tag completionHandler:(void *)completionHandler;
-- (void)didDetectTags:(id)a3 connectedTagIndex:(unint64_t)a4;
+- (void)didDetectTags:(id)tags connectedTagIndex:(unint64_t)index;
 - (void)restartPolling;
 @end
 
 @implementation NFCTagReaderSession
 
-- (NFCTagReaderSession)initWithPollingOption:(int64_t)a3 delegate:(id)a4 delegateType:(int64_t)a5 sessionType:(unint64_t)a6 queue:(id)a7
+- (NFCTagReaderSession)initWithPollingOption:(int64_t)option delegate:(id)delegate delegateType:(int64_t)type sessionType:(unint64_t)sessionType queue:(id)queue
 {
   v52 = *MEMORY[0x277D85DE8];
-  v13 = a4;
-  v14 = a7;
-  if ((a3 - 1) >= 0xF)
+  delegateCopy = delegate;
+  queueCopy = queue;
+  if ((option - 1) >= 0xF)
   {
     Logger = NFLogGetLogger();
     if (Logger)
@@ -30,7 +30,7 @@
         v21 = 43;
       }
 
-      v18(3, "%c[%{public}s %{public}s]:%i Invalid NFCPollingOption parameter: 0x%lx", v21, ClassName, Name, 31, a3);
+      v18(3, "%c[%{public}s %{public}s]:%i Invalid NFCPollingOption parameter: 0x%lx", v21, ClassName, Name, 31, option);
     }
 
     v22 = NFSharedLogGetLogger();
@@ -56,16 +56,16 @@
       v48 = 1024;
       v49 = 31;
       v50 = 2048;
-      v51 = a3;
+      optionCopy = option;
       _os_log_impl(&dword_23728C000, v22, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Invalid NFCPollingOption parameter: 0x%lx", buf, 0x2Cu);
     }
 
-    v25 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    if (a3 >= 8)
+    if (option >= 8)
     {
       v26 = NFLogGetLogger();
       if (v26)
@@ -115,11 +115,11 @@
 
     else
     {
-      v15 = (__rbit32(a3 & 3) >> 28) & 0xFFFFFFFFFFFFFFEFLL | (16 * ((a3 >> 2) & 1));
+      v15 = (__rbit32(option & 3) >> 28) & 0xFFFFFFFFFFFFFFEFLL | (16 * ((option >> 2) & 1));
       v16 = 6;
     }
 
-    if (a6 == 5)
+    if (sessionType == 5)
     {
       v35 = v15 | 0x20;
     }
@@ -131,20 +131,20 @@
 
     v41.receiver = self;
     v41.super_class = NFCTagReaderSession;
-    self = [(NFCReaderSession *)&v41 initWithDelegate:v13 sessionDelegateType:a5 queue:v14 pollMethod:v35 sessionType:a6 sessionConfig:v16];
-    v25 = self;
+    self = [(NFCReaderSession *)&v41 initWithDelegate:delegateCopy sessionDelegateType:type queue:queueCopy pollMethod:v35 sessionType:sessionType sessionConfig:v16];
+    selfCopy = self;
   }
 
   v36 = *MEMORY[0x277D85DE8];
-  return v25;
+  return selfCopy;
 }
 
-- (NFCTagReaderSession)initWithPollingOption:(int64_t)a3 swiftDelegate:(id)a4 sessionType:(unint64_t)a5 queue:(id)a6
+- (NFCTagReaderSession)initWithPollingOption:(int64_t)option swiftDelegate:(id)delegate sessionType:(unint64_t)type queue:(id)queue
 {
-  objc_storeStrong(&self->_swiftDelegateWrapper, a4);
-  v11 = a4;
-  v12 = a6;
-  v13 = [(NFCTagReaderSession *)self initWithPollingOption:a3 delegate:v11 delegateType:3 sessionType:a5 queue:v12];
+  objc_storeStrong(&self->_swiftDelegateWrapper, delegate);
+  delegateCopy = delegate;
+  queueCopy = queue;
+  v13 = [(NFCTagReaderSession *)self initWithPollingOption:option delegate:delegateCopy delegateType:3 sessionType:type queue:queueCopy];
 
   return v13;
 }
@@ -157,13 +157,13 @@
   os_activity_scope_enter(v3, &state);
   os_activity_scope_leave(&state);
 
-  v4 = self;
-  objc_sync_enter(v4);
-  connectedTag = v4->_connectedTag;
-  v4->_connectedTag = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  connectedTag = selfCopy->_connectedTag;
+  selfCopy->_connectedTag = 0;
 
-  objc_sync_exit(v4);
-  v6.receiver = v4;
+  objc_sync_exit(selfCopy);
+  v6.receiver = selfCopy;
   v6.super_class = NFCTagReaderSession;
   [(NFCReaderSession *)&v6 restartPolling];
 }
@@ -188,20 +188,20 @@
     v13 = v47;
     if (v12)
     {
-      v14 = self;
-      objc_sync_enter(v14);
-      objc_storeStrong(&v14->_connectedTag, tag);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      objc_storeStrong(&selfCopy->_connectedTag, tag);
       v41[0] = MEMORY[0x277D85DD0];
       v41[1] = 3221225472;
       v41[2] = sub_2372C2EDC;
       v41[3] = &unk_278A2A090;
-      v41[4] = v14;
+      v41[4] = selfCopy;
       v43 = v9;
       v42 = v13;
       v15 = v11;
       [v15 _connectWithCompletionHandler:v41];
 
-      objc_sync_exit(v14);
+      objc_sync_exit(selfCopy);
     }
 
     else
@@ -257,7 +257,7 @@
         _os_log_impl(&dword_23728C000, v33, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Only tag from the current session is allowed", state, 0x22u);
       }
 
-      v14 = v46;
+      selfCopy = v46;
     }
   }
 
@@ -332,14 +332,14 @@
       isMetaClass = class_isMetaClass(Class);
       ClassName = object_getClassName(self);
       Name = sel_getName(a2);
-      v29 = [(NFCReaderSession *)self delegateType];
+      delegateType = [(NFCReaderSession *)self delegateType];
       v24 = 45;
       if (isMetaClass)
       {
         v24 = 43;
       }
 
-      v19(4, "%c[%{public}s %{public}s]:%i Unknown delegate type: %ld", v24, ClassName, Name, 152, v29);
+      v19(4, "%c[%{public}s %{public}s]:%i Unknown delegate type: %ld", v24, ClassName, Name, 152, delegateType);
     }
 
     v12 = NFSharedLogGetLogger();
@@ -368,14 +368,14 @@
     v37 = 1024;
     v38 = 152;
     v39 = 2048;
-    v40 = [(NFCReaderSession *)self delegateType];
+    delegateType2 = [(NFCReaderSession *)self delegateType];
     v15 = "%c[%{public}s %{public}s]:%i Unknown delegate type: %ld";
     v16 = v12;
     v17 = 44;
     goto LABEL_23;
   }
 
-  v4 = [(NFCReaderSession *)self delegate];
+  delegate = [(NFCReaderSession *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if ((v5 & 1) == 0)
@@ -442,14 +442,14 @@ LABEL_25:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didDetectTags:(id)a3 connectedTagIndex:(unint64_t)a4
+- (void)didDetectTags:(id)tags connectedTagIndex:(unint64_t)index
 {
   v62 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  tagsCopy = tags;
   v53.receiver = self;
   v53.super_class = NFCTagReaderSession;
-  [(NFCReaderSession *)&v53 didDetectTags:v7 connectedTagIndex:a4];
-  v8 = [(NFCReaderSession *)self delegate];
+  [(NFCReaderSession *)&v53 didDetectTags:tagsCopy connectedTagIndex:index];
+  delegate = [(NFCReaderSession *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
@@ -457,22 +457,22 @@ LABEL_25:
     v49 = a2;
     v52 = 0;
     v10 = objc_opt_new();
-    if ([v7 count])
+    if ([tagsCopy count])
     {
       v11 = 0;
       while (1)
       {
-        v12 = [v7 objectAtIndexedSubscript:v11];
-        v13 = [v12 type];
+        v12 = [tagsCopy objectAtIndexedSubscript:v11];
+        type = [v12 type];
         v14 = off_278A29970;
-        if (v13 == 8)
+        if (type == 8)
         {
           goto LABEL_11;
         }
 
-        v15 = [v12 type];
+        type2 = [v12 type];
         v14 = off_278A29968;
-        if (v15 == 7)
+        if (type2 == 7)
         {
           goto LABEL_11;
         }
@@ -494,10 +494,10 @@ LABEL_25:
 
         if ([v12 type] == 5)
         {
-          v47 = [v12 tagB];
-          v48 = [v47 pupi];
+          tagB = [v12 tagB];
+          pupi = [tagB pupi];
           v18 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:&v52 length:4];
-          v46 = [v48 isEqualToData:v18];
+          v46 = [pupi isEqualToData:v18];
 
           if (v46)
           {
@@ -513,7 +513,7 @@ LABEL_11:
           }
         }
 
-        if (++v11 >= [v7 count])
+        if (++v11 >= [tagsCopy count])
         {
           goto LABEL_30;
         }
@@ -526,15 +526,15 @@ LABEL_11:
 LABEL_30:
     if ([v10 count])
     {
-      if (a4 != 0x7FFFFFFFFFFFFFFFLL)
+      if (index != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v29 = self;
-        objc_sync_enter(v29);
-        v30 = [v10 objectAtIndex:a4];
-        connectedTag = v29->_connectedTag;
-        v29->_connectedTag = v30;
+        selfCopy = self;
+        objc_sync_enter(selfCopy);
+        v30 = [v10 objectAtIndex:index];
+        connectedTag = selfCopy->_connectedTag;
+        selfCopy->_connectedTag = v30;
 
-        objc_sync_exit(v29);
+        objc_sync_exit(selfCopy);
       }
 
       v50[0] = MEMORY[0x277D85DD0];

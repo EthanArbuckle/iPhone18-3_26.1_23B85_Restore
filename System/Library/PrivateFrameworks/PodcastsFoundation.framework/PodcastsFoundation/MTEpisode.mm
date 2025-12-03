@@ -1,113 +1,113 @@
 @interface MTEpisode
-+ (BOOL)exists:(id)a3;
-+ (BOOL)isExternalMedia:(id)a3;
-+ (BOOL)isPlayhead:(double)a3 resumableForDuration:(double)a4;
-+ (double)endOfTrackForDuration:(double)a3;
-+ (id)_dateWithOffset:(id)a3 fromDate:(id)a4;
-+ (id)_predicateForNotEntitlementState:(int64_t)a3;
-+ (id)_predicateForPriceType:(int64_t)a3 forPriceTypeKey:(id)a4 excluding:(BOOL)a5;
-+ (id)episodicSortDescriptors:(int64_t)a3;
-+ (id)friendlyPubDateStringForEpisode:(id)a3 abbreviated:(BOOL)a4;
-+ (id)insertNewEpisodeInManagedObjectContext:(id)a3 canSendNotifications:(BOOL)a4;
-+ (id)insertNewEpisodeInManagedObjectContext:(id)a3 title:(id)a4 podcast:(id)a5 pubDate:(id)a6 byteSize:(int64_t)a7 guid:(id)a8 uti:(id)a9 contentId:(int64_t)a10 enclosureUrl:(id)a11 playStateSource:(int)a12 importSource:(int)a13 canSendNotifications:(BOOL)a14;
++ (BOOL)exists:(id)exists;
++ (BOOL)isExternalMedia:(id)media;
++ (BOOL)isPlayhead:(double)playhead resumableForDuration:(double)duration;
++ (double)endOfTrackForDuration:(double)duration;
++ (id)_dateWithOffset:(id)offset fromDate:(id)date;
++ (id)_predicateForNotEntitlementState:(int64_t)state;
++ (id)_predicateForPriceType:(int64_t)type forPriceTypeKey:(id)key excluding:(BOOL)excluding;
++ (id)episodicSortDescriptors:(int64_t)descriptors;
++ (id)friendlyPubDateStringForEpisode:(id)episode abbreviated:(BOOL)abbreviated;
++ (id)insertNewEpisodeInManagedObjectContext:(id)context canSendNotifications:(BOOL)notifications;
++ (id)insertNewEpisodeInManagedObjectContext:(id)context title:(id)title podcast:(id)podcast pubDate:(id)date byteSize:(int64_t)size guid:(id)guid uti:(id)uti contentId:(int64_t)self0 enclosureUrl:(id)self1 playStateSource:(int)self2 importSource:(int)self3 canSendNotifications:(BOOL)self4;
 + (id)isHLSEpisode;
-+ (id)optimizedPredicateForPlayedEpisodePreservation:(BOOL)a3;
-+ (id)optimizedPredicatePlaystateForPreservation:(BOOL)a3;
-+ (id)optimizedRemovalPredicateForRecentlyPlayed:(BOOL)a3;
++ (id)optimizedPredicateForPlayedEpisodePreservation:(BOOL)preservation;
++ (id)optimizedPredicatePlaystateForPreservation:(BOOL)preservation;
++ (id)optimizedRemovalPredicateForRecentlyPlayed:(BOOL)played;
 + (id)predicateForAllBookmarkedEpisodes;
 + (id)predicateForAllBookmarksMigrationRecoveredEpisodes;
-+ (id)predicateForAllEpisodesOnPodcast:(id)a3 includeNonAudioEpisodes:(BOOL)a4;
-+ (id)predicateForAllEpisodesOnPodcastUuid:(id)a3 includeNonAudioEpisodes:(BOOL)a4;
-+ (id)predicateForAllEpisodesOnPodcastUuids:(id)a3 includeNonAudioEpisodes:(BOOL)a4;
++ (id)predicateForAllEpisodesOnPodcast:(id)podcast includeNonAudioEpisodes:(BOOL)episodes;
++ (id)predicateForAllEpisodesOnPodcastUuid:(id)uuid includeNonAudioEpisodes:(BOOL)episodes;
++ (id)predicateForAllEpisodesOnPodcastUuids:(id)uuids includeNonAudioEpisodes:(BOOL)episodes;
 + (id)predicateForAllUnbookmarkedEpisodes;
-+ (id)predicateForAtLeastPartiallyPlayedInInterval:(double)a3;
-+ (id)predicateForAutomaticDownloadsOnShow:(id)a3 deletePlayedEpisodes:(BOOL)a4 episodeLimit:(int64_t)a5 serialNextEpisodesSort:(BOOL)a6 includePlayableWithoutAccount:(BOOL)a7;
++ (id)predicateForAtLeastPartiallyPlayedInInterval:(double)interval;
++ (id)predicateForAutomaticDownloadsOnShow:(id)show deletePlayedEpisodes:(BOOL)episodes episodeLimit:(int64_t)limit serialNextEpisodesSort:(BOOL)sort includePlayableWithoutAccount:(BOOL)account;
 + (id)predicateForAutomaticallyDownloadedEpisodes;
 + (id)predicateForBookmarkedEpisodes;
-+ (id)predicateForBookmarkedEpisodesExcludingUUIDs:(id)a3;
-+ (id)predicateForBookmarkedEpisodesOnPodcastUuid:(id)a3;
-+ (id)predicateForBookmarksMigrationRecoveredEpisodesOnPodcastUuid:(id)a3;
-+ (id)predicateForCategoryPageFromYourShows:(id)a3 ctx:(id)a4;
++ (id)predicateForBookmarkedEpisodesExcludingUUIDs:(id)ds;
++ (id)predicateForBookmarkedEpisodesOnPodcastUuid:(id)uuid;
++ (id)predicateForBookmarksMigrationRecoveredEpisodesOnPodcastUuid:(id)uuid;
++ (id)predicateForCategoryPageFromYourShows:(id)shows ctx:(id)ctx;
 + (id)predicateForDRMKeyRequired;
 + (id)predicateForDerivedEntitlementStateEntitled;
 + (id)predicateForDerivedEntitlementStateUnentitled;
-+ (id)predicateForDownloadBehavior:(int64_t)a3;
-+ (id)predicateForDownloadLimitForEpisodeLimit:(int64_t)a3;
-+ (id)predicateForDownloaded:(BOOL)a3;
-+ (id)predicateForDownloadedEpisodesOnPodcastUuid:(id)a3;
++ (id)predicateForDownloadBehavior:(int64_t)behavior;
++ (id)predicateForDownloadLimitForEpisodeLimit:(int64_t)limit;
++ (id)predicateForDownloaded:(BOOL)downloaded;
++ (id)predicateForDownloadedEpisodesOnPodcastUuid:(id)uuid;
 + (id)predicateForDownloadedFairPlayEpisodes;
-+ (id)predicateForEpisodeGuids:(id)a3;
-+ (id)predicateForEpisodeStoreTrackId:(int64_t)a3;
-+ (id)predicateForEpisodeStoreTrackIds:(id)a3;
-+ (id)predicateForEpisodeType:(int64_t)a3;
-+ (id)predicateForEpisodeTypeFilter:(int64_t)a3;
-+ (id)predicateForEpisodeUuids:(id)a3;
-+ (id)predicateForEpisodesDeterminedByLimitSettings:(int64_t)a3;
++ (id)predicateForEpisodeGuids:(id)guids;
++ (id)predicateForEpisodeStoreTrackId:(int64_t)id;
++ (id)predicateForEpisodeStoreTrackIds:(id)ids;
++ (id)predicateForEpisodeType:(int64_t)type;
++ (id)predicateForEpisodeTypeFilter:(int64_t)filter;
++ (id)predicateForEpisodeUuids:(id)uuids;
++ (id)predicateForEpisodesDeterminedByLimitSettings:(int64_t)settings;
 + (id)predicateForEpisodesFirstAvailableThisWeek;
-+ (id)predicateForEpisodesFromiTunesSyncOnPodcastUuid:(id)a3;
-+ (id)predicateForEpisodesImportedAfterDate:(id)a3;
-+ (id)predicateForEpisodesInFeedForPodcastUuid:(id)a3;
++ (id)predicateForEpisodesFromiTunesSyncOnPodcastUuid:(id)uuid;
++ (id)predicateForEpisodesImportedAfterDate:(id)date;
++ (id)predicateForEpisodesInFeedForPodcastUuid:(id)uuid;
 + (id)predicateForEpisodesInSearchResults;
-+ (id)predicateForEpisodesInStationShow:(id)a3;
-+ (id)predicateForEpisodesIsFromiTunesSyncOnPodcastUuid:(id)a3;
++ (id)predicateForEpisodesInStationShow:(id)show;
++ (id)predicateForEpisodesIsFromiTunesSyncOnPodcastUuid:(id)uuid;
 + (id)predicateForEpisodesOnUnplayedTab;
-+ (id)predicateForEpisodesOnUnplayedTabOnPodcastUuid:(id)a3 ctx:(id)a4;
++ (id)predicateForEpisodesOnUnplayedTabOnPodcastUuid:(id)uuid ctx:(id)ctx;
 + (id)predicateForEpisodesPlayableWithoutAccount;
-+ (id)predicateForEpisodesPriceChangedAfterOffset:(id)a3 fromDate:(id)a4;
++ (id)predicateForEpisodesPriceChangedAfterOffset:(id)offset fromDate:(id)date;
 + (id)predicateForEpisodesPriceTypeChangedThisWeek;
-+ (id)predicateForEpisodesPublishedAfterOffset:(id)a3 fromDate:(id)a4;
++ (id)predicateForEpisodesPublishedAfterOffset:(id)offset fromDate:(id)date;
 + (id)predicateForEpisodesPublishedLastTwoWeeks;
-+ (id)predicateForEpisodesPublishedLastTwoWeeksWithTodayDate:(id)a3;
++ (id)predicateForEpisodesPublishedLastTwoWeeksWithTodayDate:(id)date;
 + (id)predicateForEpisodesPublishedThisMonth;
-+ (id)predicateForEpisodesPublishedThisMonthWithTodayDate:(id)a3;
++ (id)predicateForEpisodesPublishedThisMonthWithTodayDate:(id)date;
 + (id)predicateForEpisodesPublishedThisWeek;
-+ (id)predicateForEpisodesPublishedThisWeekWithTodayDate:(id)a3;
++ (id)predicateForEpisodesPublishedThisWeekWithTodayDate:(id)date;
 + (id)predicateForEpisodesPublishedToday;
 + (id)predicateForEpisodesRequiringAccount;
 + (id)predicateForEpisodesWhichNeedEntitlementStateUpdate;
-+ (id)predicateForEpisodesWhichNeedEntitlementStateUpdateForShowUUID:(id)a3 subscriptionState:(BOOL)a4;
-+ (id)predicateForEpisodesWithEpisodeNumbersGreaterThan:(int64_t)a3;
-+ (id)predicateForEpisodesWithSeasonAndEpisodeNumbersGreaterThanOrEqualTo:(int64_t)a3 seasonNumber:(int64_t)a4;
-+ (id)predicateForEpisodesWithSeasonNumbersOnPodcastUuid:(id)a3;
++ (id)predicateForEpisodesWhichNeedEntitlementStateUpdateForShowUUID:(id)d subscriptionState:(BOOL)state;
++ (id)predicateForEpisodesWithEpisodeNumbersGreaterThan:(int64_t)than;
++ (id)predicateForEpisodesWithSeasonAndEpisodeNumbersGreaterThanOrEqualTo:(int64_t)to seasonNumber:(int64_t)number;
++ (id)predicateForEpisodesWithSeasonNumbersOnPodcastUuid:(id)uuid;
 + (id)predicateForEpisodesWithUnsatisfiedAvailabilityDate;
-+ (id)predicateForEpisodesWithinLevel:(unint64_t)a3;
-+ (id)predicateForFeedURLs:(id)a3;
++ (id)predicateForEpisodesWithinLevel:(unint64_t)level;
++ (id)predicateForFeedURLs:(id)ls;
 + (id)predicateForHasAnyVisualPlayState;
 + (id)predicateForHasBeenPlayed;
-+ (id)predicateForHasValidPersistentId:(BOOL)a3;
-+ (id)predicateForHiddenPodcastForEpisodeUuids:(id)a3;
++ (id)predicateForHasValidPersistentId:(BOOL)id;
++ (id)predicateForHiddenPodcastForEpisodeUuids:(id)uuids;
 + (id)predicateForHidingFuturePlayedTimestamps;
 + (id)predicateForIsBackCatalogItem;
-+ (id)predicateForLibraryEpisodesOnPodcastUuid:(id)a3;
-+ (id)predicateForLimittedEpisodesOnPodcastUuid:(id)a3 determinedByLimit:(int64_t)a4 deletePlayedEpisodes:(BOOL)a5;
++ (id)predicateForLibraryEpisodesOnPodcastUuid:(id)uuid;
++ (id)predicateForLimittedEpisodesOnPodcastUuid:(id)uuid determinedByLimit:(int64_t)limit deletePlayedEpisodes:(BOOL)episodes;
 + (id)predicateForListenNow;
-+ (id)predicateForListenNowForPodcastUuid:(id)a3;
++ (id)predicateForListenNowForPodcastUuid:(id)uuid;
 + (id)predicateForListenNowLatestEpisodes;
-+ (id)predicateForNewsFromYourShows:(id)a3 ctx:(id)a4;
++ (id)predicateForNewsFromYourShows:(id)shows ctx:(id)ctx;
 + (id)predicateForNonHLS;
-+ (id)predicateForOtherEpisodesOnPodcastUuid:(id)a3 baseEpisodesPredicate:(id)a4 deletePlayedEpisodes:(BOOL)a5;
-+ (id)predicateForPlayableEpisode:(BOOL)a3;
-+ (id)predicateForPlayed:(BOOL)a3;
++ (id)predicateForOtherEpisodesOnPodcastUuid:(id)uuid baseEpisodesPredicate:(id)predicate deletePlayedEpisodes:(BOOL)episodes;
++ (id)predicateForPlayableEpisode:(BOOL)episode;
++ (id)predicateForPlayed:(BOOL)played;
 + (id)predicateForPlayedDateSetByListening;
-+ (id)predicateForPlayedInInterval:(double)a3;
-+ (id)predicateForPodcastIsSerial:(BOOL)a3;
-+ (id)predicateForPodcastPaidSubscriptionActive:(BOOL)a3;
++ (id)predicateForPlayedInInterval:(double)interval;
++ (id)predicateForPodcastIsSerial:(BOOL)serial;
++ (id)predicateForPodcastPaidSubscriptionActive:(BOOL)active;
 + (id)predicateForPreviouslyPlayed;
 + (id)predicateForPreviouslyPlayedHidingFutureTimestamps;
-+ (id)predicateForPubDateLimit:(int64_t)a3;
++ (id)predicateForPubDateLimit:(int64_t)limit;
 + (id)predicateForRSSEpisodes;
-+ (id)predicateForRecentlyPlayedEpisodesToBeDeletedOnPodcastUuid:(id)a3 deletePlayedEpisodes:(BOOL)a4;
-+ (id)predicateForSeasonNumber:(int64_t)a3;
-+ (id)predicateForSeasonNumberWithNoEpisodeNumber:(int64_t)a3;
++ (id)predicateForRecentlyPlayedEpisodesToBeDeletedOnPodcastUuid:(id)uuid deletePlayedEpisodes:(BOOL)episodes;
++ (id)predicateForSeasonNumber:(int64_t)number;
++ (id)predicateForSeasonNumberWithNoEpisodeNumber:(int64_t)number;
 + (id)predicateForStationEligibleEpisodes;
-+ (id)predicateForStoreIdentifier:(id)a3;
++ (id)predicateForStoreIdentifier:(id)identifier;
 + (id)predicateForSubscriptionOnly;
 + (id)predicateForUnbookmarkedEpisodes;
 + (id)predicateForUserEpisodes;
-+ (id)predicateForUserEpisodesOnPodcastUuid:(id)a3 ctx:(id)a4;
++ (id)predicateForUserEpisodesOnPodcastUuid:(id)uuid ctx:(id)ctx;
 + (id)predicateForUserSetTopLevelEpisodes;
-+ (id)predicateForVisuallyPlayed:(BOOL)a3;
-+ (id)predicateForWatchBaseEpisodesIncludingOnlyAudio:(BOOL)a3;
++ (id)predicateForVisuallyPlayed:(BOOL)played;
++ (id)predicateForWatchBaseEpisodesIncludingOnlyAudio:(BOOL)audio;
 + (id)predicateForWatchRecentlyPlayed;
 + (id)propertiesToFetchAssetURL;
 + (id)propertiesToFetchBestTitle;
@@ -121,17 +121,17 @@
 + (id)propertiesToFetchPlaybackProgress;
 + (id)propertiesToFetchTimeRemaining;
 + (id)propertiesToObserveForDownloadableEpisodes;
-+ (id)propertyPathForPodcastProperty:(id)a3;
++ (id)propertyPathForPodcastProperty:(id)property;
 + (id)relationshipKeyPathsForPrefetchingIsExplicit;
-+ (id)seasonSortDescriptors:(int64_t)a3;
++ (id)seasonSortDescriptors:(int64_t)descriptors;
 + (id)sortDescriptorsForCalculatingEpisodeLevel;
 + (id)sortDescriptorsForListenNow;
 + (id)sortDescriptorsForModifiedDateUpNextScore;
 + (id)sortDescriptorsForTitle;
 + (id)sortDescriptorsForUpNextScore;
 + (id)userDefaultPropertiesAffectingPredicates;
-+ (void)episodeUuidForGUID:(id)a3 feedURL:(id)a4 completion:(id)a5;
-- (BOOL)allowsDurationUpdateFromSource:(int)a3;
++ (void)episodeUuidForGUID:(id)d feedURL:(id)l completion:(id)completion;
+- (BOOL)allowsDurationUpdateFromSource:(int)source;
 - (BOOL)hasFreeVersion;
 - (BOOL)isBackCatalogItem;
 - (BOOL)isDownloaded;
@@ -165,39 +165,39 @@
 - (int64_t)downloadError;
 - (int64_t)episodeTypeResolvedValue;
 - (int64_t)parsePriceType;
-- (void)_setAssetUrl:(id)a3;
+- (void)_setAssetUrl:(id)url;
 - (void)incremementPlayCount;
 - (void)markAsBookmarked;
-- (void)markAsBookmarkedOnTimestamp:(double)a3;
+- (void)markAsBookmarkedOnTimestamp:(double)timestamp;
 - (void)markAsUnbookmarked;
 - (void)resolveAvailabilityDate;
-- (void)setAssetURL:(id)a3;
-- (void)setAttributedDescriptionFromHTML:(id)a3;
-- (void)setByteSize:(int64_t)a3;
-- (void)setCleanedTitle:(id)a3;
-- (void)setDownloadError:(int64_t)a3;
-- (void)setDuration:(double)a3;
-- (void)setEnclosureURL:(id)a3;
-- (void)setEntitledDuration:(double)a3;
-- (void)setEpisodeLevel:(int64_t)a3;
-- (void)setEpisodeNumber:(int64_t)a3;
-- (void)setEpisodeType:(id)a3;
-- (void)setFreeDuration:(double)a3;
-- (void)setImportDate:(double)a3;
-- (void)setIsTopLevel:(BOOL)a3;
-- (void)setItemDescription:(id)a3;
-- (void)setItunesSubtitle:(id)a3;
-- (void)setItunesTitle:(id)a3;
-- (void)setLastDatePlayed:(double)a3;
-- (void)setMetadataIdentifier:(id)a3;
-- (void)setPersistentID:(int64_t)a3;
-- (void)setPodcast:(id)a3;
-- (void)setPodcastUuid:(id)a3;
-- (void)setPubDate:(double)a3;
-- (void)setSeasonNumber:(int64_t)a3;
-- (void)setTrackNum:(int64_t)a3;
-- (void)setUti:(id)a3;
-- (void)setWebpageURL:(id)a3;
+- (void)setAssetURL:(id)l;
+- (void)setAttributedDescriptionFromHTML:(id)l;
+- (void)setByteSize:(int64_t)size;
+- (void)setCleanedTitle:(id)title;
+- (void)setDownloadError:(int64_t)error;
+- (void)setDuration:(double)duration;
+- (void)setEnclosureURL:(id)l;
+- (void)setEntitledDuration:(double)duration;
+- (void)setEpisodeLevel:(int64_t)level;
+- (void)setEpisodeNumber:(int64_t)number;
+- (void)setEpisodeType:(id)type;
+- (void)setFreeDuration:(double)duration;
+- (void)setImportDate:(double)date;
+- (void)setIsTopLevel:(BOOL)level;
+- (void)setItemDescription:(id)description;
+- (void)setItunesSubtitle:(id)subtitle;
+- (void)setItunesTitle:(id)title;
+- (void)setLastDatePlayed:(double)played;
+- (void)setMetadataIdentifier:(id)identifier;
+- (void)setPersistentID:(int64_t)d;
+- (void)setPodcast:(id)podcast;
+- (void)setPodcastUuid:(id)uuid;
+- (void)setPubDate:(double)date;
+- (void)setSeasonNumber:(int64_t)number;
+- (void)setTrackNum:(int64_t)num;
+- (void)setUti:(id)uti;
+- (void)setWebpageURL:(id)l;
 - (void)suppressAutomaticDownloadsIfNeeded;
 - (void)unsuppressAutomaticDownloadsIfNeeded;
 - (void)updateEntitlementState;
@@ -211,10 +211,10 @@
 {
   v11[3] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AB28];
-  v4 = [a1 predicateForBacklog:1];
-  v5 = [a1 predicateForPlayed:{1, v4}];
+  v4 = [self predicateForBacklog:1];
+  v5 = [self predicateForPlayed:{1, v4}];
   v11[1] = v5;
-  v6 = [a1 predicateForPlayStateManuallySet:1];
+  v6 = [self predicateForPlayStateManuallySet:1];
   v11[2] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:3];
   v8 = [v3 andPredicateWithSubpredicates:v7];
@@ -227,8 +227,8 @@
 + (id)predicateForListenNow
 {
   v3 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", @"listenNowEpisode", MEMORY[0x1E695E118]];
-  v4 = [a1 predicateForPodcastIsNotHidden];
-  v5 = [v3 AND:v4];
+  predicateForPodcastIsNotHidden = [self predicateForPodcastIsNotHidden];
+  v5 = [v3 AND:predicateForPodcastIsNotHidden];
 
   return v5;
 }
@@ -251,25 +251,25 @@
 - (id)bestTitle
 {
   v3 = os_feature_enabled_remove_clean_episode_title();
-  v4 = [(MTEpisode *)self itunesTitle];
-  v5 = v4;
+  itunesTitle = [(MTEpisode *)self itunesTitle];
+  v5 = itunesTitle;
   if (!v3)
   {
-    if (!v4)
+    if (!itunesTitle)
     {
-      v9 = [(MTEpisode *)self cleanedTitle];
-      v10 = v9;
-      if (v9)
+      cleanedTitle = [(MTEpisode *)self cleanedTitle];
+      v10 = cleanedTitle;
+      if (cleanedTitle)
       {
-        v11 = v9;
+        title = cleanedTitle;
       }
 
       else
       {
-        v11 = [(MTEpisode *)self title];
+        title = [(MTEpisode *)self title];
       }
 
-      v7 = v11;
+      v7 = title;
 
       goto LABEL_7;
     }
@@ -277,16 +277,16 @@
     goto LABEL_5;
   }
 
-  if (v4)
+  if (itunesTitle)
   {
 LABEL_5:
-    v6 = v4;
+    title2 = itunesTitle;
     goto LABEL_6;
   }
 
-  v6 = [(MTEpisode *)self title];
+  title2 = [(MTEpisode *)self title];
 LABEL_6:
-  v7 = v6;
+  v7 = title2;
 LABEL_7:
 
   return v7;
@@ -294,32 +294,32 @@ LABEL_7:
 
 - (id)numberedTitle
 {
-  v3 = [(MTEpisode *)self itunesTitle];
-  if (v3 && (v4 = v3, v5 = [(MTEpisode *)self episodeNumber], v4, v5 >= 1))
+  itunesTitle = [(MTEpisode *)self itunesTitle];
+  if (itunesTitle && (v4 = itunesTitle, v5 = [(MTEpisode *)self episodeNumber], v4, v5 >= 1))
   {
-    v6 = [MEMORY[0x1E696AAE8] podcastsFoundationBundle];
-    v7 = [v6 localizedStringForKey:@"EPISODE_NUMBER_AND_TITLE_FORMAT" value:&stru_1F548B930 table:0];
+    podcastsFoundationBundle = [MEMORY[0x1E696AAE8] podcastsFoundationBundle];
+    v7 = [podcastsFoundationBundle localizedStringForKey:@"EPISODE_NUMBER_AND_TITLE_FORMAT" value:&stru_1F548B930 table:0];
 
     v8 = MEMORY[0x1E696AEC0];
-    v9 = [(MTEpisode *)self episodeNumber];
-    v10 = [(MTEpisode *)self itunesTitle];
-    v11 = [v8 localizedStringWithValidatedFormat:v7 validFormatSpecifiers:@"%1$lld %2$@" error:0, v9, v10];
+    episodeNumber = [(MTEpisode *)self episodeNumber];
+    itunesTitle2 = [(MTEpisode *)self itunesTitle];
+    bestTitle = [v8 localizedStringWithValidatedFormat:v7 validFormatSpecifiers:@"%1$lld %2$@" error:0, episodeNumber, itunesTitle2];
   }
 
   else
   {
-    v11 = [(MTEpisode *)self bestTitle];
+    bestTitle = [(MTEpisode *)self bestTitle];
   }
 
-  return v11;
+  return bestTitle;
 }
 
 - (id)bestSummary
 {
   if (os_feature_enabled_use_episode_description_for_summary())
   {
-    v3 = [(MTEpisode *)self itemDescription];
-    if ([v3 hasHTML])
+    itemDescription = [(MTEpisode *)self itemDescription];
+    if ([itemDescription hasHTML])
     {
       [(MTEpisode *)self itemDescriptionWithoutHTML];
     }
@@ -328,26 +328,26 @@ LABEL_7:
     {
       [(MTEpisode *)self itemDescription];
     }
-    v4 = ;
+    itunesSubtitle = ;
   }
 
   else
   {
-    v4 = [(MTEpisode *)self itunesSubtitle];
+    itunesSubtitle = [(MTEpisode *)self itunesSubtitle];
   }
 
-  return v4;
+  return itunesSubtitle;
 }
 
 - (NSString)assetURL
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(MTEpisode *)self securityScopedAssetData];
-  if (v3)
+  securityScopedAssetData = [(MTEpisode *)self securityScopedAssetData];
+  if (securityScopedAssetData)
   {
     v11 = 0;
     v10 = 0;
-    v4 = [MEMORY[0x1E695DFF8] URLByResolvingBookmarkData:v3 options:0 relativeToURL:0 bookmarkDataIsStale:&v11 error:&v10];
+    v4 = [MEMORY[0x1E695DFF8] URLByResolvingBookmarkData:securityScopedAssetData options:0 relativeToURL:0 bookmarkDataIsStale:&v11 error:&v10];
     v5 = v10;
     if (v5 || v11 == 1)
     {
@@ -364,18 +364,18 @@ LABEL_7:
 
     if (v4)
     {
-      v7 = [v4 absoluteString];
+      absoluteString = [v4 absoluteString];
 
       goto LABEL_11;
     }
   }
 
-  v7 = [(MTEpisode *)self primitiveValueForKey:@"assetURL"];
+  absoluteString = [(MTEpisode *)self primitiveValueForKey:@"assetURL"];
 LABEL_11:
 
   v8 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return absoluteString;
 }
 
 - (BOOL)isExplicit
@@ -385,69 +385,69 @@ LABEL_11:
     return 1;
   }
 
-  v4 = [(MTEpisode *)self podcast];
-  v5 = [v4 isExplicit];
+  podcast = [(MTEpisode *)self podcast];
+  isExplicit = [podcast isExplicit];
 
-  return v5;
+  return isExplicit;
 }
 
 - (int64_t)episodeTypeResolvedValue
 {
-  v3 = [(MTEpisode *)self episodeType];
-  v4 = [v3 length];
+  episodeType = [(MTEpisode *)self episodeType];
+  v4 = [episodeType length];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [(MTEpisode *)self episodeType];
-  v6 = [v5 caseInsensitiveCompare:@"trailer"];
+  episodeType2 = [(MTEpisode *)self episodeType];
+  v6 = [episodeType2 caseInsensitiveCompare:@"trailer"];
 
   if (!v6)
   {
     return 1;
   }
 
-  v7 = [(MTEpisode *)self episodeType];
-  v8 = [v7 caseInsensitiveCompare:@"bonus"] == 0;
+  episodeType3 = [(MTEpisode *)self episodeType];
+  v8 = [episodeType3 caseInsensitiveCompare:@"bonus"] == 0;
 
   return 2 * v8;
 }
 
 - (BOOL)hasFreeVersion
 {
-  v2 = [(MTEpisode *)self freePriceType];
-  v3 = MTEpisodePriceTypeFromPersistentString(v2);
+  freePriceType = [(MTEpisode *)self freePriceType];
+  v3 = MTEpisodePriceTypeFromPersistentString(freePriceType);
 
   return (v3 & 0xFFFFFFFFFFFFFFFDLL) == 1;
 }
 
 + (id)predicateForPreviouslyPlayedHidingFutureTimestamps
 {
-  v3 = [a1 predicateForPreviouslyPlayed];
-  v4 = [a1 predicateForHidingFuturePlayedTimestamps];
-  v5 = [v3 AND:v4];
+  predicateForPreviouslyPlayed = [self predicateForPreviouslyPlayed];
+  predicateForHidingFuturePlayedTimestamps = [self predicateForHidingFuturePlayedTimestamps];
+  v5 = [predicateForPreviouslyPlayed AND:predicateForHidingFuturePlayedTimestamps];
 
   return v5;
 }
 
 + (id)predicateForPreviouslyPlayed
 {
-  v3 = [a1 predicateForHasBeenPlayed];
-  v4 = [a1 predicateForPodcastIsNotHidden];
-  v5 = [v3 AND:v4];
-  v6 = [a1 predicateForPlayedDateSetByListening];
-  v7 = [v5 AND:v6];
+  predicateForHasBeenPlayed = [self predicateForHasBeenPlayed];
+  predicateForPodcastIsNotHidden = [self predicateForPodcastIsNotHidden];
+  v5 = [predicateForHasBeenPlayed AND:predicateForPodcastIsNotHidden];
+  predicateForPlayedDateSetByListening = [self predicateForPlayedDateSetByListening];
+  v7 = [v5 AND:predicateForPlayedDateSetByListening];
 
   return v7;
 }
 
 + (id)predicateForPlayedDateSetByListening
 {
-  v3 = [a1 predicateForNotManuallyMarkedAsPlayed];
-  v4 = [a1 predicateForListenedAfterMarkedAsPlayed];
-  v5 = [v3 OR:v4];
+  predicateForNotManuallyMarkedAsPlayed = [self predicateForNotManuallyMarkedAsPlayed];
+  predicateForListenedAfterMarkedAsPlayed = [self predicateForListenedAfterMarkedAsPlayed];
+  v5 = [predicateForNotManuallyMarkedAsPlayed OR:predicateForListenedAfterMarkedAsPlayed];
 
   return v5;
 }
@@ -455,8 +455,8 @@ LABEL_11:
 + (id)predicateForHasBeenPlayed
 {
   v2 = MEMORY[0x1E696AE18];
-  v3 = [MEMORY[0x1E695DF00] distantPast];
-  v4 = [v2 predicateWithFormat:@"%K != NULL AND %K > %@", @"lastDatePlayed", @"lastDatePlayed", v3];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  v4 = [v2 predicateWithFormat:@"%K != NULL AND %K > %@", @"lastDatePlayed", @"lastDatePlayed", distantPast];
 
   return v4;
 }
@@ -493,15 +493,15 @@ LABEL_11:
 
 + (id)predicateForStationEligibleEpisodes
 {
-  v3 = [a1 predicateForEntitledEpisodes];
-  v4 = [a1 predicateForSaved:1];
-  v5 = [a1 predicateForDownloaded:1 excludeHidden:1];
+  predicateForEntitledEpisodes = [self predicateForEntitledEpisodes];
+  v4 = [self predicateForSaved:1];
+  v5 = [self predicateForDownloaded:1 excludeHidden:1];
   v6 = [v4 OR:v5];
 
-  v7 = [a1 predicateForPodcastIsSubscribed:1];
+  v7 = [self predicateForPodcastIsSubscribed:1];
   v8 = [v7 OR:v6];
 
-  v9 = [v3 AND:v8];
+  v9 = [predicateForEntitledEpisodes AND:v8];
 
   return v9;
 }
@@ -517,11 +517,11 @@ LABEL_11:
 
 - (id)transcriptProvider
 {
-  v3 = [(MTEpisode *)self podcast];
-  v4 = [v3 channel];
-  v5 = [v4 subscriptionActive];
+  podcast = [(MTEpisode *)self podcast];
+  channel = [podcast channel];
+  subscriptionActive = [channel subscriptionActive];
 
-  if (v5)
+  if (subscriptionActive)
   {
     [(MTEpisode *)self entitledTranscriptProvider];
   }
@@ -535,13 +535,13 @@ LABEL_11:
   return v6;
 }
 
-+ (id)propertyPathForPodcastProperty:(id)a3
++ (id)propertyPathForPodcastProperty:(id)property
 {
   v9[2] = *MEMORY[0x1E69E9840];
   v9[0] = @"podcast";
-  v9[1] = a3;
+  v9[1] = property;
   v3 = MEMORY[0x1E695DEC8];
-  v4 = a3;
+  propertyCopy = property;
   v5 = [v3 arrayWithObjects:v9 count:2];
 
   v6 = [v5 componentsJoinedByString:@"."];
@@ -551,12 +551,12 @@ LABEL_11:
   return v6;
 }
 
-- (void)setPersistentID:(int64_t)a3
+- (void)setPersistentID:(int64_t)d
 {
-  if ([(MTEpisode *)self persistentID]!= a3)
+  if ([(MTEpisode *)self persistentID]!= d)
   {
     [(MTEpisode *)self willChangeValueForKey:@"persistentID"];
-    v5 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+    v5 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
     [(MTEpisode *)self setPrimitiveValue:v5 forKey:@"persistentID"];
 
     [(MTEpisode *)self didChangeValueForKey:@"persistentID"];
@@ -568,30 +568,30 @@ LABEL_11:
   }
 }
 
-- (void)setPodcast:(id)a3
+- (void)setPodcast:(id)podcast
 {
-  v5 = a3;
+  podcastCopy = podcast;
   [(MTEpisode *)self willChangeValueForKey:@"podcast"];
-  [(MTEpisode *)self setPrimitiveValue:v5 forKey:@"podcast"];
+  [(MTEpisode *)self setPrimitiveValue:podcastCopy forKey:@"podcast"];
   [(MTEpisode *)self didChangeValueForKey:@"podcast"];
-  v4 = [v5 uuid];
-  [(MTEpisode *)self setPodcastUuid:v4];
+  uuid = [podcastCopy uuid];
+  [(MTEpisode *)self setPodcastUuid:uuid];
 
-  if (([v5 currentEpisodeLimitAllowsAutomaticDownloads] & 1) == 0)
+  if (([podcastCopy currentEpisodeLimitAllowsAutomaticDownloads] & 1) == 0)
   {
     [(MTEpisode *)self suppressAutomaticDownloadsIfNeeded];
   }
 
-  if (([v5 notifications] & 1) == 0)
+  if (([podcastCopy notifications] & 1) == 0)
   {
     [(MTEpisode *)self setSentNotification:1];
   }
 }
 
-- (void)setImportDate:(double)a3
+- (void)setImportDate:(double)date
 {
   v5 = +[_TtC18PodcastsFoundation17FutureDateChecker lenientSharedInstance];
-  [v5 timestampBoundByNow:a3];
+  [v5 timestampBoundByNow:date];
   v7 = v6;
 
   [(MTEpisode *)self importDate];
@@ -605,62 +605,62 @@ LABEL_11:
   }
 }
 
-- (void)setCleanedTitle:(id)a3
+- (void)setCleanedTitle:(id)title
 {
-  v8 = a3;
-  v4 = [(MTEpisode *)self cleanedTitle];
-  v5 = v8 | v4;
+  titleCopy = title;
+  cleanedTitle = [(MTEpisode *)self cleanedTitle];
+  v5 = titleCopy | cleanedTitle;
 
   if (v5)
   {
-    v6 = [(MTEpisode *)self cleanedTitle];
-    v7 = [v6 isEqualToString:v8];
+    cleanedTitle2 = [(MTEpisode *)self cleanedTitle];
+    v7 = [cleanedTitle2 isEqualToString:titleCopy];
 
     if ((v7 & 1) == 0)
     {
       [(MTEpisode *)self willChangeValueForKey:@"cleanedTitle"];
-      [(MTEpisode *)self setPrimitiveValue:v8 forKey:@"cleanedTitle"];
+      [(MTEpisode *)self setPrimitiveValue:titleCopy forKey:@"cleanedTitle"];
       [(MTEpisode *)self didChangeValueForKey:@"cleanedTitle"];
     }
   }
 }
 
-- (void)setByteSize:(int64_t)a3
+- (void)setByteSize:(int64_t)size
 {
-  if ([(MTEpisode *)self byteSize]!= a3)
+  if ([(MTEpisode *)self byteSize]!= size)
   {
     [(MTEpisode *)self willChangeValueForKey:@"byteSize"];
-    v5 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+    v5 = [MEMORY[0x1E696AD98] numberWithLongLong:size];
     [(MTEpisode *)self setPrimitiveValue:v5 forKey:@"byteSize"];
 
     [(MTEpisode *)self didChangeValueForKey:@"byteSize"];
   }
 }
 
-- (void)setEnclosureURL:(id)a3
+- (void)setEnclosureURL:(id)l
 {
-  v8 = a3;
-  v4 = [(MTEpisode *)self enclosureURL];
-  v5 = v8 | v4;
+  lCopy = l;
+  enclosureURL = [(MTEpisode *)self enclosureURL];
+  v5 = lCopy | enclosureURL;
 
   if (v5)
   {
-    v6 = [(MTEpisode *)self enclosureURL];
-    v7 = [v6 isEqualToString:v8];
+    enclosureURL2 = [(MTEpisode *)self enclosureURL];
+    v7 = [enclosureURL2 isEqualToString:lCopy];
 
     if ((v7 & 1) == 0)
     {
       [(MTEpisode *)self willChangeValueForKey:@"enclosureURL"];
-      [(MTEpisode *)self setPrimitiveValue:v8 forKey:@"enclosureURL"];
+      [(MTEpisode *)self setPrimitiveValue:lCopy forKey:@"enclosureURL"];
       [(MTEpisode *)self didChangeValueForKey:@"enclosureURL"];
     }
   }
 }
 
-- (void)setPodcastUuid:(id)a3
+- (void)setPodcastUuid:(id)uuid
 {
-  v4 = a3;
-  if (!v4 && ([(MTEpisode *)self isDeleted]& 1) == 0)
+  uuidCopy = uuid;
+  if (!uuidCopy && ([(MTEpisode *)self isDeleted]& 1) == 0)
   {
     v5 = _MTLogCategoryDatabase();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
@@ -670,86 +670,86 @@ LABEL_11:
   }
 
   [(MTEpisode *)self willChangeValueForKey:@"podcastUuid"];
-  [(MTEpisode *)self setPrimitiveValue:v4 forKey:@"podcastUuid"];
+  [(MTEpisode *)self setPrimitiveValue:uuidCopy forKey:@"podcastUuid"];
   [(MTEpisode *)self didChangeValueForKey:@"podcastUuid"];
 }
 
-- (void)setEpisodeLevel:(int64_t)a3
+- (void)setEpisodeLevel:(int64_t)level
 {
-  if ([(MTEpisode *)self episodeLevel]!= a3)
+  if ([(MTEpisode *)self episodeLevel]!= level)
   {
     [(MTEpisode *)self willChangeValueForKey:@"episodeLevel"];
-    v5 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+    v5 = [MEMORY[0x1E696AD98] numberWithLongLong:level];
     [(MTEpisode *)self setPrimitiveValue:v5 forKey:@"episodeLevel"];
 
     [(MTEpisode *)self didChangeValueForKey:@"episodeLevel"];
   }
 }
 
-- (void)setItunesTitle:(id)a3
+- (void)setItunesTitle:(id)title
 {
-  v8 = a3;
-  v4 = [(MTEpisode *)self itunesTitle];
-  v5 = v8 | v4;
+  titleCopy = title;
+  itunesTitle = [(MTEpisode *)self itunesTitle];
+  v5 = titleCopy | itunesTitle;
 
   if (v5)
   {
-    v6 = [(MTEpisode *)self itunesTitle];
-    v7 = [v6 isEqualToString:v8];
+    itunesTitle2 = [(MTEpisode *)self itunesTitle];
+    v7 = [itunesTitle2 isEqualToString:titleCopy];
 
     if ((v7 & 1) == 0)
     {
       [(MTEpisode *)self willChangeValueForKey:@"itunesTitle"];
-      [(MTEpisode *)self setPrimitiveValue:v8 forKey:@"itunesTitle"];
+      [(MTEpisode *)self setPrimitiveValue:titleCopy forKey:@"itunesTitle"];
       [(MTEpisode *)self didChangeValueForKey:@"itunesTitle"];
     }
   }
 }
 
-- (void)setEpisodeType:(id)a3
+- (void)setEpisodeType:(id)type
 {
-  v8 = a3;
-  v4 = [(MTEpisode *)self episodeType];
-  v5 = v8 | v4;
+  typeCopy = type;
+  episodeType = [(MTEpisode *)self episodeType];
+  v5 = typeCopy | episodeType;
 
   if (v5)
   {
-    v6 = [(MTEpisode *)self episodeType];
-    v7 = [v6 isEqualToString:v8];
+    episodeType2 = [(MTEpisode *)self episodeType];
+    v7 = [episodeType2 isEqualToString:typeCopy];
 
     if ((v7 & 1) == 0)
     {
       [(MTEpisode *)self willChangeValueForKey:@"episodeType"];
-      [(MTEpisode *)self setPrimitiveValue:v8 forKey:@"episodeType"];
+      [(MTEpisode *)self setPrimitiveValue:typeCopy forKey:@"episodeType"];
       [(MTEpisode *)self didChangeValueForKey:@"episodeType"];
     }
   }
 }
 
-- (void)setWebpageURL:(id)a3
+- (void)setWebpageURL:(id)l
 {
-  v8 = a3;
-  v4 = [(MTEpisode *)self webpageURL];
-  v5 = v8 | v4;
+  lCopy = l;
+  webpageURL = [(MTEpisode *)self webpageURL];
+  v5 = lCopy | webpageURL;
 
   if (v5)
   {
-    v6 = [(MTEpisode *)self webpageURL];
-    v7 = [v6 isEqualToString:v8];
+    webpageURL2 = [(MTEpisode *)self webpageURL];
+    v7 = [webpageURL2 isEqualToString:lCopy];
 
     if ((v7 & 1) == 0)
     {
       [(MTEpisode *)self willChangeValueForKey:@"webpageURL"];
-      [(MTEpisode *)self setPrimitiveValue:v8 forKey:@"webpageURL"];
+      [(MTEpisode *)self setPrimitiveValue:lCopy forKey:@"webpageURL"];
       [(MTEpisode *)self didChangeValueForKey:@"webpageURL"];
     }
   }
 }
 
-- (void)setEpisodeNumber:(int64_t)a3
+- (void)setEpisodeNumber:(int64_t)number
 {
   v5 = [MEMORY[0x1E696AD98] numberWithLongLong:?];
-  if (a3)
+  if (number)
   {
     v7 = v5;
   }
@@ -769,13 +769,13 @@ LABEL_11:
   }
 }
 
-- (void)setSeasonNumber:(int64_t)a3
+- (void)setSeasonNumber:(int64_t)number
 {
-  if ([(MTEpisode *)self seasonNumber]!= a3)
+  if ([(MTEpisode *)self seasonNumber]!= number)
   {
-    if (a3)
+    if (number)
     {
-      v5 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+      v5 = [MEMORY[0x1E696AD98] numberWithLongLong:number];
     }
 
     else
@@ -789,64 +789,64 @@ LABEL_11:
   }
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
   [(MTEpisode *)self duration];
-  if (vabdd_f64(v5, a3) > 2.22044605e-16)
+  if (vabdd_f64(v5, duration) > 2.22044605e-16)
   {
     [(MTEpisode *)self willChangeValueForKey:@"duration"];
-    v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+    v6 = [MEMORY[0x1E696AD98] numberWithDouble:duration];
     [(MTEpisode *)self setPrimitiveValue:v6 forKey:@"duration"];
 
     [(MTEpisode *)self didChangeValueForKey:@"duration"];
   }
 }
 
-- (void)setEntitledDuration:(double)a3
+- (void)setEntitledDuration:(double)duration
 {
   [(MTEpisode *)self entitledDuration];
-  if (vabdd_f64(v5, a3) > 2.22044605e-16)
+  if (vabdd_f64(v5, duration) > 2.22044605e-16)
   {
     [(MTEpisode *)self willChangeValueForKey:@"entitledDuration"];
-    v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+    v6 = [MEMORY[0x1E696AD98] numberWithDouble:duration];
     [(MTEpisode *)self setPrimitiveValue:v6 forKey:@"entitledDuration"];
 
     [(MTEpisode *)self didChangeValueForKey:@"entitledDuration"];
   }
 }
 
-- (void)setFreeDuration:(double)a3
+- (void)setFreeDuration:(double)duration
 {
   [(MTEpisode *)self freeDuration];
-  if (vabdd_f64(v5, a3) > 2.22044605e-16)
+  if (vabdd_f64(v5, duration) > 2.22044605e-16)
   {
     [(MTEpisode *)self willChangeValueForKey:@"freeDuration"];
-    v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+    v6 = [MEMORY[0x1E696AD98] numberWithDouble:duration];
     [(MTEpisode *)self setPrimitiveValue:v6 forKey:@"freeDuration"];
 
     [(MTEpisode *)self didChangeValueForKey:@"freeDuration"];
   }
 }
 
-- (void)setTrackNum:(int64_t)a3
+- (void)setTrackNum:(int64_t)num
 {
-  if ([(MTEpisode *)self trackNum]!= a3)
+  if ([(MTEpisode *)self trackNum]!= num)
   {
     [(MTEpisode *)self willChangeValueForKey:@"trackNum"];
-    v5 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+    v5 = [MEMORY[0x1E696AD98] numberWithLongLong:num];
     [(MTEpisode *)self setPrimitiveValue:v5 forKey:@"trackNum"];
 
     [(MTEpisode *)self didChangeValueForKey:@"trackNum"];
   }
 }
 
-- (void)setPubDate:(double)a3
+- (void)setPubDate:(double)date
 {
   [(MTEpisode *)self pubDate];
-  if (vabdd_f64(v5, a3) > 2.22044605e-16)
+  if (vabdd_f64(v5, date) > 2.22044605e-16)
   {
     [(MTEpisode *)self willChangeValueForKey:@"pubDate"];
-    v6 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:a3];
+    v6 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:date];
     [(MTEpisode *)self setPrimitiveValue:v6 forKey:@"pubDate"];
 
     [(MTEpisode *)self didChangeValueForKey:@"pubDate"];
@@ -887,14 +887,14 @@ LABEL_11:
 
 + (id)propertiesToFetchIsVisuallyPlayed
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [a1 propertiesToFetchIsBackCatalogItem];
-  [v3 addObjectsFromArray:v4];
+  array = [MEMORY[0x1E695DF70] array];
+  propertiesToFetchIsBackCatalogItem = [self propertiesToFetchIsBackCatalogItem];
+  [array addObjectsFromArray:propertiesToFetchIsBackCatalogItem];
 
-  v5 = [a1 propertiesToFetchIsPlayed];
-  [v3 addObjectsFromArray:v5];
+  propertiesToFetchIsPlayed = [self propertiesToFetchIsPlayed];
+  [array addObjectsFromArray:propertiesToFetchIsPlayed];
 
-  v6 = [v3 copy];
+  v6 = [array copy];
 
   return v6;
 }
@@ -913,14 +913,14 @@ LABEL_11:
 
 + (id)propertiesToFetchIsPartiallyPlayedBackCatalogItem
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [a1 propertiesToFetchIsBackCatalogItem];
-  [v3 addObjectsFromArray:v4];
+  array = [MEMORY[0x1E695DF70] array];
+  propertiesToFetchIsBackCatalogItem = [self propertiesToFetchIsBackCatalogItem];
+  [array addObjectsFromArray:propertiesToFetchIsBackCatalogItem];
 
-  v5 = [a1 propertiesToFetchIsPlayheadPartiallyPlayed];
-  [v3 addObjectsFromArray:v5];
+  propertiesToFetchIsPlayheadPartiallyPlayed = [self propertiesToFetchIsPlayheadPartiallyPlayed];
+  [array addObjectsFromArray:propertiesToFetchIsPlayheadPartiallyPlayed];
 
-  v6 = [v3 copy];
+  v6 = [array copy];
 
   return v6;
 }
@@ -954,18 +954,18 @@ LABEL_11:
 
 - (double)playbackProgressSanitized
 {
-  v3 = [(MTEpisode *)self playState];
-  if (!v3)
+  playState = [(MTEpisode *)self playState];
+  if (!playState)
   {
     return 1.0;
   }
 
-  if (v3 == 2)
+  if (playState == 2)
   {
     return 0.0;
   }
 
-  if (v3 != 1)
+  if (playState != 1)
   {
     return -1.0;
   }
@@ -1040,8 +1040,8 @@ LABEL_11:
 
 - (BOOL)isDownloaded
 {
-  v2 = [(MTEpisode *)self assetURL];
-  v3 = v2 != 0;
+  assetURL = [(MTEpisode *)self assetURL];
+  v3 = assetURL != 0;
 
   return v3;
 }
@@ -1057,51 +1057,51 @@ LABEL_11:
   return v2;
 }
 
-- (void)_setAssetUrl:(id)a3
+- (void)_setAssetUrl:(id)url
 {
-  v4 = a3;
+  urlCopy = url;
   [(MTEpisode *)self willChangeValueForKey:@"assetURL"];
-  [(MTEpisode *)self setPrimitiveValue:v4 forKey:@"assetURL"];
+  [(MTEpisode *)self setPrimitiveValue:urlCopy forKey:@"assetURL"];
 
   [(MTEpisode *)self didChangeValueForKey:@"assetURL"];
 }
 
 - (id)bestUrl
 {
-  v3 = [(MTEpisode *)self assetURL];
+  assetURL = [(MTEpisode *)self assetURL];
 
-  if (!v3 || ([(MTEpisode *)self assetURL], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!assetURL || ([(MTEpisode *)self assetURL], (enclosureURL = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v4 = [(MTEpisode *)self enclosureURL];
+    enclosureURL = [(MTEpisode *)self enclosureURL];
   }
 
-  v5 = [MEMORY[0x1E695DFF8] URLWithString:v4];
+  v5 = [MEMORY[0x1E695DFF8] URLWithString:enclosureURL];
 
   return v5;
 }
 
-+ (double)endOfTrackForDuration:(double)a3
++ (double)endOfTrackForDuration:(double)duration
 {
-  if (a3 <= 360.0)
+  if (duration <= 360.0)
   {
-    return a3 * 0.9;
+    return duration * 0.9;
   }
 
   else
   {
-    return a3 + -240.0;
+    return duration + -240.0;
   }
 }
 
-+ (BOOL)isPlayhead:(double)a3 resumableForDuration:(double)a4
++ (BOOL)isPlayhead:(double)playhead resumableForDuration:(double)duration
 {
-  if (a3 < 0.100000001)
+  if (playhead < 0.100000001)
   {
     return 0;
   }
 
-  [MTEpisode endOfTrackForDuration:a4];
-  return v6 > a3;
+  [MTEpisode endOfTrackForDuration:duration];
+  return v6 > playhead;
 }
 
 + (id)propertiesToFetchIsExplicit
@@ -1136,10 +1136,10 @@ LABEL_11:
     return 0;
   }
 
-  v4 = [(MTEpisode *)self podcast];
-  v5 = [v4 isShareable];
+  podcast = [(MTEpisode *)self podcast];
+  isShareable = [podcast isShareable];
 
-  return v5;
+  return isShareable;
 }
 
 - (void)suppressAutomaticDownloadsIfNeeded
@@ -1162,11 +1162,11 @@ LABEL_11:
 
 - (id)transcriptSnippet
 {
-  v3 = [(MTEpisode *)self podcast];
-  v4 = [v3 channel];
-  v5 = [v4 subscriptionActive];
+  podcast = [(MTEpisode *)self podcast];
+  channel = [podcast channel];
+  subscriptionActive = [channel subscriptionActive];
 
-  if (v5)
+  if (subscriptionActive)
   {
     [(MTEpisode *)self entitledTranscriptSnippet];
   }
@@ -1182,8 +1182,8 @@ LABEL_11:
 
 - (int64_t)parsePriceType
 {
-  v2 = [(MTEpisode *)self priceType];
-  v3 = MTEpisodePriceTypeFromPersistentString(v2);
+  priceType = [(MTEpisode *)self priceType];
+  v3 = MTEpisodePriceTypeFromPersistentString(priceType);
 
   return v3;
 }
@@ -1222,19 +1222,19 @@ LABEL_11:
 
 - (void)updateEntitlementState
 {
-  v3 = [(MTEpisode *)self _resolvedEntitlementState];
+  _resolvedEntitlementState = [(MTEpisode *)self _resolvedEntitlementState];
 
-  [(MTEpisode *)self setEntitlementState:v3];
+  [(MTEpisode *)self setEntitlementState:_resolvedEntitlementState];
 }
 
 - (id)playURL
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MTEpisode *)self podcastUuid];
-  v5 = v4;
-  if (v4)
+  podcastUuid = [(MTEpisode *)self podcastUuid];
+  v5 = podcastUuid;
+  if (podcastUuid)
   {
-    v6 = v4;
+    v6 = podcastUuid;
   }
 
   else
@@ -1242,11 +1242,11 @@ LABEL_11:
     v6 = @"null";
   }
 
-  v7 = [(MTEpisode *)self uuid];
-  v8 = v7;
-  if (v7)
+  uuid = [(MTEpisode *)self uuid];
+  v8 = uuid;
+  if (uuid)
   {
-    v9 = v7;
+    v9 = uuid;
   }
 
   else
@@ -1264,11 +1264,11 @@ LABEL_11:
 - (id)displayURL
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MTEpisode *)self podcastUuid];
-  v5 = v4;
-  if (v4)
+  podcastUuid = [(MTEpisode *)self podcastUuid];
+  v5 = podcastUuid;
+  if (podcastUuid)
   {
-    v6 = v4;
+    v6 = podcastUuid;
   }
 
   else
@@ -1276,11 +1276,11 @@ LABEL_11:
     v6 = @"null";
   }
 
-  v7 = [(MTEpisode *)self uuid];
-  v8 = v7;
-  if (v7)
+  uuid = [(MTEpisode *)self uuid];
+  v8 = uuid;
+  if (uuid)
   {
-    v9 = v7;
+    v9 = uuid;
   }
 
   else
@@ -1305,22 +1305,22 @@ LABEL_11:
   return [(MTEpisode *)self isVideo];
 }
 
-- (void)setIsTopLevel:(BOOL)a3
+- (void)setIsTopLevel:(BOOL)level
 {
-  v3 = a3;
-  v5 = [(MTEpisode *)self flags];
-  if ((v5 & 1) != v3)
+  levelCopy = level;
+  flags = [(MTEpisode *)self flags];
+  if ((flags & 1) != levelCopy)
   {
 
-    [(MTEpisode *)self setFlags:v5 & 0xFFFFFFFFFFFFFFFELL | v3];
+    [(MTEpisode *)self setFlags:flags & 0xFFFFFFFFFFFFFFFELL | levelCopy];
   }
 }
 
 - (int64_t)downloadError
 {
-  v2 = [(MTEpisode *)self flags];
+  flags = [(MTEpisode *)self flags];
   result = 1;
-  while ((v2 & (1 << result)) == 0)
+  while ((flags & (1 << result)) == 0)
   {
     if (++result == 12)
     {
@@ -1331,11 +1331,11 @@ LABEL_11:
   return result;
 }
 
-- (void)setDownloadError:(int64_t)a3
+- (void)setDownloadError:(int64_t)error
 {
   v5 = vand_s8(vand_s8([(MTEpisode *)self flags], -2731), -1365);
-  v6 = 1 << a3;
-  if (!a3)
+  v6 = 1 << error;
+  if (!error)
   {
     v6 = 0;
   }
@@ -1376,19 +1376,19 @@ LABEL_11:
 
 - (BOOL)isInUserEpisodes
 {
-  v2 = self;
-  v3 = [(MTEpisode *)self podcastUuid];
-  v4 = [(MTEpisode *)v2 podcast];
-  v5 = +[MTEpisode predicateForUserEpisodesOnPodcastUuid:episodeLimit:deletePlayedEpisodes:limitToDownloadBehaviorAutomatic:](MTEpisode, "predicateForUserEpisodesOnPodcastUuid:episodeLimit:deletePlayedEpisodes:limitToDownloadBehaviorAutomatic:", v3, 0, [v4 deletePlayedEpisodesResolvedValue], 0);
-  LOBYTE(v2) = [v5 evaluateWithObject:v2];
+  selfCopy = self;
+  podcastUuid = [(MTEpisode *)self podcastUuid];
+  podcast = [(MTEpisode *)selfCopy podcast];
+  v5 = +[MTEpisode predicateForUserEpisodesOnPodcastUuid:episodeLimit:deletePlayedEpisodes:limitToDownloadBehaviorAutomatic:](MTEpisode, "predicateForUserEpisodesOnPodcastUuid:episodeLimit:deletePlayedEpisodes:limitToDownloadBehaviorAutomatic:", podcastUuid, 0, [podcast deletePlayedEpisodesResolvedValue], 0);
+  LOBYTE(selfCopy) = [v5 evaluateWithObject:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
-+ (id)friendlyPubDateStringForEpisode:(id)a3 abbreviated:(BOOL)a4
++ (id)friendlyPubDateStringForEpisode:(id)episode abbreviated:(BOOL)abbreviated
 {
-  v4 = a4;
-  v5 = [a3 valueForKey:@"pubDate"];
+  abbreviatedCopy = abbreviated;
+  v5 = [episode valueForKey:@"pubDate"];
   [v5 timeIntervalSinceReferenceDate];
   if (v6 == 0.0)
   {
@@ -1398,7 +1398,7 @@ LABEL_11:
 
   else if (v5)
   {
-    if (v4)
+    if (abbreviatedCopy)
     {
       [v5 abbreviatedFriendlyDisplayString];
     }
@@ -1424,23 +1424,23 @@ uint64_t __64__MTEpisode_Library__timeRemainingStringForEpisode_abbreviated___bl
   return result;
 }
 
-+ (BOOL)exists:(id)a3
++ (BOOL)exists:(id)exists
 {
-  v3 = a3;
+  existsCopy = exists;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
   v4 = +[MTDB sharedInstance];
-  v5 = [v4 mainOrPrivateContext];
+  mainOrPrivateContext = [v4 mainOrPrivateContext];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __29__MTEpisode_Library__exists___block_invoke;
   v9[3] = &unk_1E856A118;
-  v6 = v5;
+  v6 = mainOrPrivateContext;
   v10 = v6;
-  v7 = v3;
+  v7 = existsCopy;
   v11 = v7;
   v12 = &v13;
   [v6 performBlockAndWait:v9];
@@ -1460,23 +1460,23 @@ void __29__MTEpisode_Library__exists___block_invoke(uint64_t a1)
   }
 }
 
-+ (BOOL)isExternalMedia:(id)a3
++ (BOOL)isExternalMedia:(id)media
 {
-  v3 = a3;
+  mediaCopy = media;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
   v4 = +[MTDB sharedInstance];
-  v5 = [v4 mainOrPrivateContext];
+  mainOrPrivateContext = [v4 mainOrPrivateContext];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __38__MTEpisode_Library__isExternalMedia___block_invoke;
   v9[3] = &unk_1E856A118;
-  v6 = v5;
+  v6 = mainOrPrivateContext;
   v10 = v6;
-  v7 = v3;
+  v7 = mediaCopy;
   v11 = v7;
   v12 = &v13;
   [v6 performBlockAndWait:v9];
@@ -1492,34 +1492,34 @@ void __38__MTEpisode_Library__isExternalMedia___block_invoke(uint64_t a1)
   *(*(*(a1 + 48) + 8) + 24) = [v2 isExternalType];
 }
 
-- (void)setMetadataIdentifier:(id)a3
+- (void)setMetadataIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = _MTLogCategoryDefault();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(MTEpisode *)self metadataIdentifier];
-    v7 = [(MTEpisode *)self podcast];
-    v8 = [v7 feedURL];
-    v9 = [(MTEpisode *)self podcast];
-    v10 = [v9 updatedFeedURL];
-    v11 = [(MTEpisode *)self guid];
+    metadataIdentifier = [(MTEpisode *)self metadataIdentifier];
+    podcast = [(MTEpisode *)self podcast];
+    feedURL = [podcast feedURL];
+    podcast2 = [(MTEpisode *)self podcast];
+    updatedFeedURL = [podcast2 updatedFeedURL];
+    guid = [(MTEpisode *)self guid];
     v13 = 138544386;
-    v14 = v6;
+    v14 = metadataIdentifier;
     v15 = 2114;
-    v16 = v4;
+    v16 = identifierCopy;
     v17 = 2114;
-    v18 = v8;
+    v18 = feedURL;
     v19 = 2114;
-    v20 = v10;
+    v20 = updatedFeedURL;
     v21 = 2114;
-    v22 = v11;
+    v22 = guid;
     _os_log_impl(&dword_1D8CEC000, v5, OS_LOG_TYPE_DEFAULT, "Setting metadataIdentifier from %{public}@ to %{public}@, for feedUrl: %{public}@ updatedFeedUrl %{public}@, guid: %{public}@", &v13, 0x34u);
   }
 
   [(MTEpisode *)self willChangeValueForKey:@"metadataIdentifier"];
-  [(MTEpisode *)self setPrimitiveValue:v4 forKey:@"metadataIdentifier"];
+  [(MTEpisode *)self setPrimitiveValue:identifierCopy forKey:@"metadataIdentifier"];
   [(MTEpisode *)self didChangeValueForKey:@"metadataIdentifier"];
 
   v12 = *MEMORY[0x1E69E9840];
@@ -1537,30 +1537,30 @@ void __38__MTEpisode_Library__isExternalMedia___block_invoke(uint64_t a1)
 
 - (BOOL)isInPodcastDetailsUnplayedTab
 {
-  v2 = self;
-  v3 = [(MTEpisode *)self podcastUuid];
-  v4 = [(MTEpisode *)v2 podcast];
-  v5 = +[MTEpisode predicateForEpisodesOnUnplayedTabOnPodcastUuid:deletePlayedEpisodes:](MTEpisode, "predicateForEpisodesOnUnplayedTabOnPodcastUuid:deletePlayedEpisodes:", v3, [v4 deletePlayedEpisodesResolvedValue]);
-  LOBYTE(v2) = [v5 evaluateWithObject:v2];
+  selfCopy = self;
+  podcastUuid = [(MTEpisode *)self podcastUuid];
+  podcast = [(MTEpisode *)selfCopy podcast];
+  v5 = +[MTEpisode predicateForEpisodesOnUnplayedTabOnPodcastUuid:deletePlayedEpisodes:](MTEpisode, "predicateForEpisodesOnUnplayedTabOnPodcastUuid:deletePlayedEpisodes:", podcastUuid, [podcast deletePlayedEpisodesResolvedValue]);
+  LOBYTE(selfCopy) = [v5 evaluateWithObject:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)setItunesSubtitle:(id)a3
+- (void)setItunesSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v10 = v4;
-  if (v4 || ([(MTEpisode *)self itunesSubtitle], v5 = objc_claimAutoreleasedReturnValue(), v5, v4 = 0, v5))
+  subtitleCopy = subtitle;
+  v10 = subtitleCopy;
+  if (subtitleCopy || ([(MTEpisode *)self itunesSubtitle], v5 = objc_claimAutoreleasedReturnValue(), v5, subtitleCopy = 0, v5))
   {
-    if ([v4 hasHTML])
+    if ([subtitleCopy hasHTML])
     {
-      v6 = [v10 stringBySmartlyStrippingHTML];
+      stringBySmartlyStrippingHTML = [v10 stringBySmartlyStrippingHTML];
 
-      v10 = v6;
+      v10 = stringBySmartlyStrippingHTML;
     }
 
-    v7 = [(MTEpisode *)self itunesSubtitle];
-    v8 = [v10 isEqualToString:v7];
+    itunesSubtitle = [(MTEpisode *)self itunesSubtitle];
+    v8 = [v10 isEqualToString:itunesSubtitle];
 
     if ((v8 & 1) == 0)
     {
@@ -1578,15 +1578,15 @@ void __38__MTEpisode_Library__isExternalMedia___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setItemDescription:(id)a3
+- (void)setItemDescription:(id)description
 {
-  v12 = a3;
-  if (v12 || ([(MTEpisode *)self itemDescription], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  descriptionCopy = description;
+  if (descriptionCopy || ([(MTEpisode *)self itemDescription], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v5 = [(MTEpisode *)self itemDescription];
-    v6 = [v12 isEqualToString:v5];
+    itemDescription = [(MTEpisode *)self itemDescription];
+    v6 = [descriptionCopy isEqualToString:itemDescription];
 
-    if (v12)
+    if (descriptionCopy)
     {
       if (v6)
       {
@@ -1604,29 +1604,29 @@ void __38__MTEpisode_Library__isExternalMedia___block_invoke(uint64_t a1)
     }
 
     [(MTEpisode *)self willChangeValueForKey:@"itemDescription"];
-    [(MTEpisode *)self setPrimitiveValue:v12 forKey:@"itemDescription"];
+    [(MTEpisode *)self setPrimitiveValue:descriptionCopy forKey:@"itemDescription"];
     [(MTEpisode *)self didChangeValueForKey:@"itemDescription"];
     v7 = objc_autoreleasePoolPush();
-    v8 = [v12 hasHTML];
+    hasHTML = [descriptionCopy hasHTML];
     objc_autoreleasePoolPop(v7);
     [(MTEpisode *)self willChangeValueForKey:@"itemDescriptionHasHTML"];
-    v9 = [MEMORY[0x1E696AD98] numberWithBool:v8];
+    v9 = [MEMORY[0x1E696AD98] numberWithBool:hasHTML];
     [(MTEpisode *)self setPrimitiveValue:v9 forKey:@"itemDescriptionHasHTML"];
 
     [(MTEpisode *)self didChangeValueForKey:@"itemDescriptionHasHTML"];
     v10 = objc_autoreleasePoolPush();
-    if (v8)
+    if (hasHTML)
     {
-      v11 = [v12 stringBySmartlyStrippingHTML];
+      stringBySmartlyStrippingHTML = [descriptionCopy stringBySmartlyStrippingHTML];
     }
 
     else
     {
-      v11 = 0;
+      stringBySmartlyStrippingHTML = 0;
     }
 
     [(MTEpisode *)self willChangeValueForKey:@"itemDescriptionWithoutHTML"];
-    [(MTEpisode *)self setPrimitiveValue:v11 forKey:@"itemDescriptionWithoutHTML"];
+    [(MTEpisode *)self setPrimitiveValue:stringBySmartlyStrippingHTML forKey:@"itemDescriptionWithoutHTML"];
     [(MTEpisode *)self didChangeValueForKey:@"itemDescriptionWithoutHTML"];
 
     objc_autoreleasePoolPop(v10);
@@ -1644,17 +1644,17 @@ LABEL_11:
     v4 = v3;
     if (v3)
     {
-      v5 = [v3 verboseDisplayStringWithoutTime];
-      v6 = [MEMORY[0x1E696AAE8] podcastsFoundationBundle];
-      v7 = [v6 localizedStringForKey:@"EPISODE_LAST_PLAYED_ON_DATE_FORMAT" value:&stru_1F548B930 table:0];
+      verboseDisplayStringWithoutTime = [v3 verboseDisplayStringWithoutTime];
+      podcastsFoundationBundle = [MEMORY[0x1E696AAE8] podcastsFoundationBundle];
+      v7 = [podcastsFoundationBundle localizedStringForKey:@"EPISODE_LAST_PLAYED_ON_DATE_FORMAT" value:&stru_1F548B930 table:0];
 
-      v8 = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v7 validFormatSpecifiers:@"%@" error:0, v5];
+      v8 = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v7 validFormatSpecifiers:@"%@" error:0, verboseDisplayStringWithoutTime];
     }
 
     else
     {
-      v5 = [MEMORY[0x1E696AAE8] podcastsFoundationBundle];
-      v8 = [v5 localizedStringForKey:@"EPISODE_PLAYED_TITLE" value:&stru_1F548B930 table:0];
+      verboseDisplayStringWithoutTime = [MEMORY[0x1E696AAE8] podcastsFoundationBundle];
+      v8 = [verboseDisplayStringWithoutTime localizedStringForKey:@"EPISODE_PLAYED_TITLE" value:&stru_1F548B930 table:0];
     }
   }
 
@@ -1675,18 +1675,18 @@ LABEL_11:
   }
 
   v3 = [(MTEpisode *)self valueForKey:@"lastDatePlayed"];
-  v4 = [v3 friendlyDisplayString];
-  if ([v4 length])
+  friendlyDisplayString = [v3 friendlyDisplayString];
+  if ([friendlyDisplayString length])
   {
-    v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v6 = [v5 isDateInToday:v3];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    v6 = [currentCalendar isDateInToday:v3];
 
     if (!v6)
     {
-      v12 = [v3 isLessThanWeekOld];
-      v13 = [MEMORY[0x1E696AAE8] podcastsFoundationBundle];
-      v14 = v13;
-      if (v12)
+      isLessThanWeekOld = [v3 isLessThanWeekOld];
+      podcastsFoundationBundle = [MEMORY[0x1E696AAE8] podcastsFoundationBundle];
+      v14 = podcastsFoundationBundle;
+      if (isLessThanWeekOld)
       {
         v15 = @"EPISODE_PLAYED_ON_DAY_FORMAT";
       }
@@ -1696,25 +1696,25 @@ LABEL_11:
         v15 = @"EPISODE_PLAYED_ON_DATE_FORMAT";
       }
 
-      v8 = [v13 localizedStringForKey:v15 value:&stru_1F548B930 table:0];
+      v8 = [podcastsFoundationBundle localizedStringForKey:v15 value:&stru_1F548B930 table:0];
 
-      v11 = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v8 validFormatSpecifiers:@"%@" error:0, v4];
+      v11 = [MEMORY[0x1E696AEC0] stringWithValidatedFormat:v8 validFormatSpecifiers:@"%@" error:0, friendlyDisplayString];
       goto LABEL_12;
     }
 
-    v7 = [MEMORY[0x1E696AAE8] podcastsFoundationBundle];
-    v8 = v7;
+    podcastsFoundationBundle2 = [MEMORY[0x1E696AAE8] podcastsFoundationBundle];
+    v8 = podcastsFoundationBundle2;
     v9 = @"EPISODE_PLAYED_TODAY";
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AAE8] podcastsFoundationBundle];
-    v8 = v7;
+    podcastsFoundationBundle2 = [MEMORY[0x1E696AAE8] podcastsFoundationBundle];
+    v8 = podcastsFoundationBundle2;
     v9 = @"EPISODE_PLAYED_TITLE";
   }
 
-  v11 = [v7 localizedStringForKey:v9 value:&stru_1F548B930 table:0];
+  v11 = [podcastsFoundationBundle2 localizedStringForKey:v9 value:&stru_1F548B930 table:0];
 LABEL_12:
   v10 = v11;
 
@@ -1723,9 +1723,9 @@ LABEL_13:
   return v10;
 }
 
-- (void)setUti:(id)a3
+- (void)setUti:(id)uti
 {
-  v11 = [MTUTIUtil convertUti:a3];
+  v11 = [MTUTIUtil convertUti:uti];
   v4 = [(MTEpisode *)self uti];
   if (v4 | v11)
   {
@@ -1760,24 +1760,24 @@ LABEL_13:
   }
 }
 
-- (void)setAssetURL:(id)a3
+- (void)setAssetURL:(id)l
 {
-  v8 = a3;
-  v4 = [(MTEpisode *)self assetURL];
-  v5 = v8 | v4;
+  lCopy = l;
+  assetURL = [(MTEpisode *)self assetURL];
+  v5 = lCopy | assetURL;
 
   if (v5)
   {
-    v6 = [(MTEpisode *)self assetURL];
-    v7 = [v6 isEqualToString:v8];
+    assetURL2 = [(MTEpisode *)self assetURL];
+    v7 = [assetURL2 isEqualToString:lCopy];
 
     if ((v7 & 1) == 0)
     {
       [(MTEpisode *)self willChangeValueForKey:@"assetURL"];
-      [(MTEpisode *)self setPrimitiveValue:v8 forKey:@"assetURL"];
+      [(MTEpisode *)self setPrimitiveValue:lCopy forKey:@"assetURL"];
       [(MTEpisode *)self didChangeValueForKey:@"assetURL"];
       [(MTEpisode *)self suppressAutomaticDownloadsIfNeeded];
-      if (!v8)
+      if (!lCopy)
       {
         [(MTEpisode *)self setDownloadDate:0.0];
         [(MTEpisode *)self setIsFromITunesSync:0];
@@ -1797,14 +1797,14 @@ LABEL_13:
 {
   if ([(MTEpisode *)self listenNowEpisode])
   {
-    v3 = [(MTEpisode *)self podcast];
-    [v3 lastDatePlayed];
+    podcast = [(MTEpisode *)self podcast];
+    [podcast lastDatePlayed];
     v5 = v4;
 
     [(MTEpisode *)self lastDatePlayed];
     v7 = v6;
-    v20 = [(MTEpisode *)self podcast];
-    [v20 addedDate];
+    podcast2 = [(MTEpisode *)self podcast];
+    [podcast2 addedDate];
     v9 = v8;
     if (v5 > 0.0 || v7 > 0.0)
     {
@@ -1861,30 +1861,30 @@ LABEL_13:
         v19 = v18;
       }
 
-      v20 = [(MTEpisode *)self podcast];
-      [v20 setModifiedDate:v19];
+      podcast2 = [(MTEpisode *)self podcast];
+      [podcast2 setModifiedDate:v19];
     }
 
     else
     {
-      v10 = [(MTEpisode *)self podcast];
-      [v10 setModifiedDate:v9];
+      podcast3 = [(MTEpisode *)self podcast];
+      [podcast3 setModifiedDate:v9];
     }
   }
 }
 
-- (void)setLastDatePlayed:(double)a3
+- (void)setLastDatePlayed:(double)played
 {
   [(MTEpisode *)self lastDatePlayed];
-  if (v5 < a3)
+  if (v5 < played)
   {
     [(MTEpisode *)self willChangeValueForKey:@"lastDatePlayed"];
-    v6 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:a3];
+    v6 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:played];
     [(MTEpisode *)self setPrimitiveValue:v6 forKey:@"lastDatePlayed"];
 
     [(MTEpisode *)self didChangeValueForKey:@"lastDatePlayed"];
-    v7 = [(MTEpisode *)self podcast];
-    [v7 setLastDatePlayed:a3];
+    podcast = [(MTEpisode *)self podcast];
+    [podcast setLastDatePlayed:played];
 
     [(MTEpisode *)self updateListenNowSortingDate];
   }
@@ -1894,97 +1894,97 @@ LABEL_13:
 {
   if (+[PFClientUtil isPodcastsApp])
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     if ([(MTEpisode *)self storeTrackId])
     {
       v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lld", -[MTEpisode storeTrackId](self, "storeTrackId")];
-      [v3 setObject:v4 forKeyedSubscript:@"adamId"];
+      [dictionary setObject:v4 forKeyedSubscript:@"adamId"];
     }
 
-    v5 = [(MTEpisode *)self guid];
+    guid = [(MTEpisode *)self guid];
 
-    if (v5)
+    if (guid)
     {
-      v6 = [(MTEpisode *)self guid];
-      [v3 setObject:v6 forKeyedSubscript:@"guid"];
+      guid2 = [(MTEpisode *)self guid];
+      [dictionary setObject:guid2 forKeyedSubscript:@"guid"];
     }
 
-    v7 = [(MTEpisode *)self title];
+    title = [(MTEpisode *)self title];
 
-    if (v7)
+    if (title)
     {
-      v8 = [(MTEpisode *)self title];
-      [v3 setObject:v8 forKeyedSubscript:@"title"];
+      title2 = [(MTEpisode *)self title];
+      [dictionary setObject:title2 forKeyedSubscript:@"title"];
     }
 
-    v9 = [(MTEpisode *)self podcast];
-    v10 = [v9 title];
+    podcast = [(MTEpisode *)self podcast];
+    title3 = [podcast title];
 
-    if (v10)
+    if (title3)
     {
-      v11 = [(MTEpisode *)self podcast];
-      v12 = [v11 title];
-      [v3 setObject:v12 forKeyedSubscript:@"podcast"];
+      podcast2 = [(MTEpisode *)self podcast];
+      title4 = [podcast2 title];
+      [dictionary setObject:title4 forKeyedSubscript:@"podcast"];
     }
   }
 
   else
   {
     v13 = objc_opt_class();
-    v3 = NSStringFromClass(v13);
+    dictionary = NSStringFromClass(v13);
   }
 
-  return v3;
+  return dictionary;
 }
 
-+ (id)insertNewEpisodeInManagedObjectContext:(id)a3 title:(id)a4 podcast:(id)a5 pubDate:(id)a6 byteSize:(int64_t)a7 guid:(id)a8 uti:(id)a9 contentId:(int64_t)a10 enclosureUrl:(id)a11 playStateSource:(int)a12 importSource:(int)a13 canSendNotifications:(BOOL)a14
++ (id)insertNewEpisodeInManagedObjectContext:(id)context title:(id)title podcast:(id)podcast pubDate:(id)date byteSize:(int64_t)size guid:(id)guid uti:(id)uti contentId:(int64_t)self0 enclosureUrl:(id)self1 playStateSource:(int)self2 importSource:(int)self3 canSendNotifications:(BOOL)self4
 {
-  v27 = a4;
-  v18 = a6;
-  v19 = a8;
-  v25 = a9;
-  v20 = a11;
-  v21 = a5;
-  v22 = [MTEpisode insertNewEpisodeInManagedObjectContext:a3 canSendNotifications:a14];
-  [v22 setPodcast:v21];
+  titleCopy = title;
+  dateCopy = date;
+  guidCopy = guid;
+  utiCopy = uti;
+  urlCopy = url;
+  podcastCopy = podcast;
+  v22 = [MTEpisode insertNewEpisodeInManagedObjectContext:context canSendNotifications:notifications];
+  [v22 setPodcast:podcastCopy];
 
-  [v22 setStoreTrackId:a10];
-  [v22 setImportSource:a13];
-  [v22 setByteSize:a7];
+  [v22 setStoreTrackId:id];
+  [v22 setImportSource:importSource];
+  [v22 setByteSize:size];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v18 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     [v22 setPubDate:?];
   }
 
-  [v22 setUti:{v25, a7}];
-  if (v19)
+  [v22 setUti:{utiCopy, size}];
+  if (guidCopy)
   {
-    [v22 setGuid:v19];
+    [v22 setGuid:guidCopy];
   }
 
-  if (v27)
+  if (titleCopy)
   {
-    [v22 setTitle:v27];
+    [v22 setTitle:titleCopy];
   }
 
-  if (v20)
+  if (urlCopy)
   {
-    [v22 setEnclosureURL:v20];
+    [v22 setEnclosureURL:urlCopy];
   }
 
-  [a1 prepareForPlatform:v22];
+  [self prepareForPlatform:v22];
 
   return v22;
 }
 
-+ (id)insertNewEpisodeInManagedObjectContext:(id)a3 canSendNotifications:(BOOL)a4
++ (id)insertNewEpisodeInManagedObjectContext:(id)context canSendNotifications:(BOOL)notifications
 {
-  v4 = a4;
-  v6 = [MEMORY[0x1E695D5B8] insertNewObjectForEntityForName:@"MTEpisode" inManagedObjectContext:a3];
-  v7 = [MEMORY[0x1E696AEC0] UUID];
-  [v6 setUuid:v7];
+  notificationsCopy = notifications;
+  v6 = [MEMORY[0x1E695D5B8] insertNewObjectForEntityForName:@"MTEpisode" inManagedObjectContext:context];
+  uUID = [MEMORY[0x1E696AEC0] UUID];
+  [v6 setUuid:uUID];
 
   [v6 setPlayState:2 manually:0 source:2];
   [v6 setVideo:0];
@@ -1996,47 +1996,47 @@ LABEL_13:
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   [v6 setImportDate:?];
   [v6 setIsNew:1];
-  [v6 setSentNotification:!v4];
-  [a1 prepareForPlatform:v6];
+  [v6 setSentNotification:!notificationsCopy];
+  [self prepareForPlatform:v6];
 
   return v6;
 }
 
-+ (void)episodeUuidForGUID:(id)a3 feedURL:(id)a4 completion:(id)a5
++ (void)episodeUuidForGUID:(id)d feedURL:(id)l completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 length])
+  dCopy = d;
+  lCopy = l;
+  completionCopy = completion;
+  if ([dCopy length])
   {
-    if ([v8 length])
+    if ([lCopy length])
     {
-      [MTEpisode predicateForEpisodeGuid:v7 onFeedURL:v8];
+      [MTEpisode predicateForEpisodeGuid:dCopy onFeedURL:lCopy];
     }
 
     else
     {
-      [MTEpisode predicateForEpisodeGuid:v7];
+      [MTEpisode predicateForEpisodeGuid:dCopy];
     }
     v10 = ;
     v11 = +[MTDB sharedInstance];
-    v12 = [v11 playbackContext];
+    playbackContext = [v11 playbackContext];
 
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __60__MTEpisode_Library__episodeUuidForGUID_feedURL_completion___block_invoke;
     v15[3] = &unk_1E85690E8;
-    v16 = v12;
+    v16 = playbackContext;
     v17 = v10;
-    v18 = v9;
+    v18 = completionCopy;
     v13 = v10;
-    v14 = v12;
+    v14 = playbackContext;
     [v14 performBlock:v15];
   }
 
   else
   {
-    (*(v9 + 2))(v9, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -2063,20 +2063,20 @@ void __60__MTEpisode_Library__episodeUuidForGUID_feedURL_completion___block_invo
   [(MTEpisode *)self setMetadataTimestamp:?];
 }
 
-- (BOOL)allowsDurationUpdateFromSource:(int)a3
+- (BOOL)allowsDurationUpdateFromSource:(int)source
 {
   if (!os_feature_enabled_preserve_player_set_duration())
   {
     return 1;
   }
 
-  if (a3 == 6)
+  if (source == 6)
   {
     [(MTEpisode *)self playhead];
     if (v7 != 0.0)
     {
-      v8 = [(MTEpisode *)self assetURL];
-      v6 = v8 == 0;
+      assetURL = [(MTEpisode *)self assetURL];
+      v6 = assetURL == 0;
 
       return v6;
     }
@@ -2084,7 +2084,7 @@ void __60__MTEpisode_Library__episodeUuidForGUID_feedURL_completion___block_invo
     return 1;
   }
 
-  if (a3 != 7)
+  if (source != 7)
   {
     return 1;
   }
@@ -2106,52 +2106,52 @@ void __60__MTEpisode_Library__episodeUuidForGUID_feedURL_completion___block_invo
   return v4;
 }
 
-+ (id)predicateForDownloadLimitForEpisodeLimit:(int64_t)a3
++ (id)predicateForDownloadLimitForEpisodeLimit:(int64_t)limit
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (limit)
   {
-    v3 = [MEMORY[0x1E696AE18] truePredicate];
+    truePredicate = [MEMORY[0x1E696AE18] truePredicate];
   }
 
   else
   {
     v5 = MEMORY[0x1E696AB28];
-    v6 = [a1 predicateForPodcastIsSerial:1];
+    v6 = [self predicateForPodcastIsSerial:1];
     v11[0] = v6;
-    v7 = [a1 predicateForEpisodesDeterminedByLimitSettings:7];
+    v7 = [self predicateForEpisodesDeterminedByLimitSettings:7];
     v11[1] = v7;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];
-    v3 = [v5 orPredicateWithSubpredicates:v8];
+    truePredicate = [v5 orPredicateWithSubpredicates:v8];
   }
 
   v9 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return truePredicate;
 }
 
-+ (id)predicateForEpisodesDeterminedByLimitSettings:(int64_t)a3
++ (id)predicateForEpisodesDeterminedByLimitSettings:(int64_t)settings
 {
-  v3 = a3;
+  settingsCopy = settings;
   v4 = 0x8000000000000001;
-  if (a3 <= 5)
+  if (settings <= 5)
   {
-    if (a3 > 3)
+    if (settings > 3)
     {
-      if (a3 == 4)
+      if (settings == 4)
       {
-        v3 = 5;
+        settingsCopy = 5;
       }
 
       else
       {
-        v3 = 10;
+        settingsCopy = 10;
       }
     }
 
-    else if ((a3 - 1) >= 3)
+    else if ((settings - 1) >= 3)
     {
-      if (a3)
+      if (settings)
       {
         goto LABEL_22;
       }
@@ -2169,25 +2169,25 @@ void __60__MTEpisode_Library__episodeUuidForGUID_feedURL_completion___block_invo
       v16 = kEpisodeLevel;
     }
 
-    v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K < %ld", *v16, v3];
+    settingsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K < %ld", *v16, settingsCopy];
     goto LABEL_28;
   }
 
-  if (a3 <= 8)
+  if (settings <= 8)
   {
     v5 = -7;
     v6 = -14;
-    if (a3 != 8)
+    if (settings != 8)
     {
       v6 = 0x8000000000000001;
     }
 
-    if (a3 != 7)
+    if (settings != 7)
     {
       v5 = v6;
     }
 
-    if (a3 == 6)
+    if (settings == 6)
     {
       v4 = -1;
     }
@@ -2200,50 +2200,50 @@ void __60__MTEpisode_Library__episodeUuidForGUID_feedURL_completion___block_invo
     goto LABEL_22;
   }
 
-  if (a3 == 9)
+  if (settings == 9)
   {
     v4 = -30;
     goto LABEL_22;
   }
 
-  if (a3 == 0x100000000)
+  if (settings == 0x100000000)
   {
 LABEL_20:
-    v10 = [MEMORY[0x1E696AE18] truePredicate];
+    settingsCopy = [MEMORY[0x1E696AE18] truePredicate];
     goto LABEL_28;
   }
 
-  if (a3 != 0x100000001)
+  if (settings != 0x100000001)
   {
 LABEL_22:
-    v11 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v12 = [MEMORY[0x1E695DF00] date];
-    v13 = [v11 components:28 fromDate:v12];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    date = [MEMORY[0x1E695DF00] date];
+    v13 = [currentCalendar components:28 fromDate:date];
 
     [v13 setDay:{objc_msgSend(v13, "day") + v4}];
-    v14 = [v11 dateFromComponents:v13];
+    v14 = [currentCalendar dateFromComponents:v13];
     v15 = [MEMORY[0x1E696AE18] predicateForDateKey:@"pubDate" isGreaterThanOrEqualToDate:v14];
 
     goto LABEL_29;
   }
 
-  v8 = [MEMORY[0x1E695E000] _applePodcastsFoundationSettingsUserDefaults];
-  v9 = [v8 episodeLimitForKey:@"MTPodcastEpisodeLimitDefaultKey"];
+  _applePodcastsFoundationSettingsUserDefaults = [MEMORY[0x1E695E000] _applePodcastsFoundationSettingsUserDefaults];
+  v9 = [_applePodcastsFoundationSettingsUserDefaults episodeLimitForKey:@"MTPodcastEpisodeLimitDefaultKey"];
 
-  v10 = [a1 predicateForEpisodesDeterminedByLimitSettings:v9];
+  settingsCopy = [self predicateForEpisodesDeterminedByLimitSettings:v9];
 LABEL_28:
-  v15 = v10;
+  v15 = settingsCopy;
 LABEL_29:
 
   return v15;
 }
 
-+ (id)predicateForLimittedEpisodesOnPodcastUuid:(id)a3 determinedByLimit:(int64_t)a4 deletePlayedEpisodes:(BOOL)a5
++ (id)predicateForLimittedEpisodesOnPodcastUuid:(id)uuid determinedByLimit:(int64_t)limit deletePlayedEpisodes:(BOOL)episodes
 {
-  v8 = a3;
-  v9 = [a1 predicateForEpisodesDeterminedByLimitSettings:a4];
+  uuidCopy = uuid;
+  v9 = [self predicateForEpisodesDeterminedByLimitSettings:limit];
   v10 = [MTEpisode predicateForVisuallyPlayed:0];
-  if (!a5)
+  if (!episodes)
   {
     v11 = [MTEpisode predicateForVisuallyPlayed:1];
     v12 = [MTEpisode predicateForPlayStateManuallySet:0];
@@ -2254,26 +2254,26 @@ LABEL_29:
   }
 
   v15 = [v9 AND:v10];
-  v16 = [a1 predicateForAllEpisodesOnPodcastUuid:v8];
+  v16 = [self predicateForAllEpisodesOnPodcastUuid:uuidCopy];
 
   v17 = [v15 AND:v16];
 
   return v17;
 }
 
-+ (id)predicateForHiddenPodcastForEpisodeUuids:(id)a3
++ (id)predicateForHiddenPodcastForEpisodeUuids:(id)uuids
 {
-  v4 = [a1 predicateForEpisodeUuids:a3];
-  v5 = [a1 predicateForPodcastIsNotHidden];
-  v6 = [v5 NOT];
+  v4 = [self predicateForEpisodeUuids:uuids];
+  predicateForPodcastIsNotHidden = [self predicateForPodcastIsNotHidden];
+  v6 = [predicateForPodcastIsNotHidden NOT];
   v7 = [v4 AND:v6];
 
   return v7;
 }
 
-+ (id)predicateForBookmarkedEpisodesOnPodcastUuid:(id)a3
++ (id)predicateForBookmarkedEpisodesOnPodcastUuid:(id)uuid
 {
-  v3 = [a1 predicateForAllEpisodesOnPodcastUuid:a3];
+  v3 = [self predicateForAllEpisodesOnPodcastUuid:uuid];
   v4 = MEMORY[0x1E696AE18];
   v5 = [MEMORY[0x1E696AD98] numberWithBool:1];
   v6 = [v4 predicateWithFormat:@"%K = %@", @"isBookmarked", v5];
@@ -2282,36 +2282,36 @@ LABEL_29:
   return v7;
 }
 
-+ (id)predicateForDownloadedEpisodesOnPodcastUuid:(id)a3
++ (id)predicateForDownloadedEpisodesOnPodcastUuid:(id)uuid
 {
-  v4 = [a1 predicateForAllEpisodesOnPodcastUuid:a3];
-  v5 = [a1 predicateForDownloaded:1 excludeHidden:1];
+  v4 = [self predicateForAllEpisodesOnPodcastUuid:uuid];
+  v5 = [self predicateForDownloaded:1 excludeHidden:1];
   v6 = [v4 AND:v5];
 
   return v6;
 }
 
-+ (id)predicateForAllEpisodesOnPodcastUuid:(id)a3 includeNonAudioEpisodes:(BOOL)a4
++ (id)predicateForAllEpisodesOnPodcastUuid:(id)uuid includeNonAudioEpisodes:(BOOL)episodes
 {
-  v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(%K = %@)", @"podcastUuid", a3];
-  if (!a4)
+  uuid = [MEMORY[0x1E696AE18] predicateWithFormat:@"(%K = %@)", @"podcastUuid", uuid];
+  if (!episodes)
   {
     v6 = [MTEpisode predicateForAudio:1];
-    v7 = [v5 AND:v6];
+    v7 = [uuid AND:v6];
 
-    v5 = v7;
+    uuid = v7;
   }
 
-  return v5;
+  return uuid;
 }
 
-+ (id)predicateForAllEpisodesOnPodcastUuids:(id)a3 includeNonAudioEpisodes:(BOOL)a4
++ (id)predicateForAllEpisodesOnPodcastUuids:(id)uuids includeNonAudioEpisodes:(BOOL)episodes
 {
   v5 = MEMORY[0x1E696AE18];
-  v6 = [a3 array];
-  v7 = [v5 predicateWithFormat:@"%K in %@", @"podcastUuid", v6];
+  array = [uuids array];
+  v7 = [v5 predicateWithFormat:@"%K in %@", @"podcastUuid", array];
 
-  if (!a4)
+  if (!episodes)
   {
     v8 = [MTEpisode predicateForAudio:1];
     v9 = [v7 AND:v8];
@@ -2325,46 +2325,46 @@ LABEL_29:
   return v11;
 }
 
-+ (id)predicateForAllEpisodesOnPodcast:(id)a3 includeNonAudioEpisodes:(BOOL)a4
++ (id)predicateForAllEpisodesOnPodcast:(id)podcast includeNonAudioEpisodes:(BOOL)episodes
 {
-  v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(%K = %@)", @"podcast", a3];
-  if (!a4)
+  podcast = [MEMORY[0x1E696AE18] predicateWithFormat:@"(%K = %@)", @"podcast", podcast];
+  if (!episodes)
   {
     v6 = [MTEpisode predicateForAudio:1];
-    v7 = [v5 AND:v6];
+    v7 = [podcast AND:v6];
 
-    v5 = v7;
+    podcast = v7;
   }
 
-  return v5;
+  return podcast;
 }
 
-+ (id)predicateForLibraryEpisodesOnPodcastUuid:(id)a3
++ (id)predicateForLibraryEpisodesOnPodcastUuid:(id)uuid
 {
-  v4 = a3;
-  v5 = [a1 predicateForAllBookmarkedEpisodes];
-  v6 = [a1 predicateForDownloaded:1 excludeHidden:0];
-  v7 = [a1 predicateForAllBookmarksMigrationRecoveredEpisodes];
-  v8 = [v5 OR:v6];
-  v9 = [v8 OR:v7];
+  uuidCopy = uuid;
+  predicateForAllBookmarkedEpisodes = [self predicateForAllBookmarkedEpisodes];
+  v6 = [self predicateForDownloaded:1 excludeHidden:0];
+  predicateForAllBookmarksMigrationRecoveredEpisodes = [self predicateForAllBookmarksMigrationRecoveredEpisodes];
+  v8 = [predicateForAllBookmarkedEpisodes OR:v6];
+  v9 = [v8 OR:predicateForAllBookmarksMigrationRecoveredEpisodes];
 
-  v10 = [a1 predicateForAllEpisodesOnPodcastUuid:v4];
+  v10 = [self predicateForAllEpisodesOnPodcastUuid:uuidCopy];
 
   v11 = [v9 AND:v10];
 
   return v11;
 }
 
-+ (id)predicateForEpisodesWhichNeedEntitlementStateUpdateForShowUUID:(id)a3 subscriptionState:(BOOL)a4
++ (id)predicateForEpisodesWhichNeedEntitlementStateUpdateForShowUUID:(id)d subscriptionState:(BOOL)state
 {
-  v4 = a4;
-  v6 = [a1 predicateForAllEpisodesOnPodcastUuid:a3 includeNonAudioEpisodes:1];
-  v7 = [a1 predicateForDerivedEntitlementStateFree];
-  v8 = [a1 _predicateForNotEntitlementState:0];
-  v9 = [v7 AND:v8];
+  stateCopy = state;
+  v6 = [self predicateForAllEpisodesOnPodcastUuid:d includeNonAudioEpisodes:1];
+  predicateForDerivedEntitlementStateFree = [self predicateForDerivedEntitlementStateFree];
+  v8 = [self _predicateForNotEntitlementState:0];
+  v9 = [predicateForDerivedEntitlementStateFree AND:v8];
 
-  v10 = [a1 predicateForPriceType:2];
-  if (v4)
+  v10 = [self predicateForPriceType:2];
+  if (stateCopy)
   {
     v11 = 1;
   }
@@ -2374,7 +2374,7 @@ LABEL_29:
     v11 = 2;
   }
 
-  v12 = [a1 _predicateForNotEntitlementState:v11];
+  v12 = [self _predicateForNotEntitlementState:v11];
   v13 = [v10 AND:v12];
 
   v14 = [v9 OR:v13];
@@ -2385,17 +2385,17 @@ LABEL_29:
 
 + (id)predicateForEpisodesWhichNeedEntitlementStateUpdate
 {
-  v3 = [a1 predicateForDerivedEntitlementStateFree];
-  v4 = [a1 _predicateForNotEntitlementState:0];
-  v5 = [v3 AND:v4];
+  predicateForDerivedEntitlementStateFree = [self predicateForDerivedEntitlementStateFree];
+  v4 = [self _predicateForNotEntitlementState:0];
+  v5 = [predicateForDerivedEntitlementStateFree AND:v4];
 
-  v6 = [a1 predicateForDerivedEntitlementStateEntitled];
-  v7 = [a1 _predicateForNotEntitlementState:1];
-  v8 = [v6 AND:v7];
+  predicateForDerivedEntitlementStateEntitled = [self predicateForDerivedEntitlementStateEntitled];
+  v7 = [self _predicateForNotEntitlementState:1];
+  v8 = [predicateForDerivedEntitlementStateEntitled AND:v7];
 
-  v9 = [a1 predicateForDerivedEntitlementStateUnentitled];
-  v10 = [a1 _predicateForNotEntitlementState:2];
-  v11 = [v9 AND:v10];
+  predicateForDerivedEntitlementStateUnentitled = [self predicateForDerivedEntitlementStateUnentitled];
+  v10 = [self _predicateForNotEntitlementState:2];
+  v11 = [predicateForDerivedEntitlementStateUnentitled AND:v10];
 
   v12 = [v5 OR:v8];
   v13 = [v12 OR:v11];
@@ -2405,8 +2405,8 @@ LABEL_29:
 
 + (id)predicateForDerivedEntitlementStateEntitled
 {
-  v3 = [a1 predicateForPodcastPaidSubscriptionActive:1];
-  v4 = [a1 predicateForPriceType:2];
+  v3 = [self predicateForPodcastPaidSubscriptionActive:1];
+  v4 = [self predicateForPriceType:2];
   v5 = [v3 AND:v4];
 
   return v5;
@@ -2414,17 +2414,17 @@ LABEL_29:
 
 + (id)predicateForDerivedEntitlementStateUnentitled
 {
-  v3 = [a1 predicateForPodcastPaidSubscriptionActive:0];
-  v4 = [a1 predicateForPriceType:2];
+  v3 = [self predicateForPodcastPaidSubscriptionActive:0];
+  v4 = [self predicateForPriceType:2];
   v5 = [v3 AND:v4];
 
   return v5;
 }
 
-+ (id)_predicateForNotEntitlementState:(int64_t)a3
++ (id)_predicateForNotEntitlementState:(int64_t)state
 {
   v3 = MEMORY[0x1E696AE18];
-  v4 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithLongLong:state];
   v5 = [v3 predicateWithFormat:@"(%K != %@)", @"entitlementState", v4];
 
   return v5;
@@ -2433,24 +2433,24 @@ LABEL_29:
 + (id)predicateForEpisodesPlayableWithoutAccount
 {
   v2 = MEMORY[0x1E696AB28];
-  v3 = [a1 predicateForEpisodesRequiringAccount];
-  v4 = [v2 notPredicateWithSubpredicate:v3];
+  predicateForEpisodesRequiringAccount = [self predicateForEpisodesRequiringAccount];
+  v4 = [v2 notPredicateWithSubpredicate:predicateForEpisodesRequiringAccount];
 
   return v4;
 }
 
 + (id)predicateForEpisodesRequiringAccount
 {
-  v3 = [a1 predicateForPriceType:3];
-  v4 = [a1 predicateForPriceType:2];
+  v3 = [self predicateForPriceType:3];
+  v4 = [self predicateForPriceType:2];
   v5 = [v3 OR:v4];
 
   return v5;
 }
 
-+ (id)predicateForPodcastPaidSubscriptionActive:(BOOL)a3
++ (id)predicateForPodcastPaidSubscriptionActive:(BOOL)active
 {
-  if (a3)
+  if (active)
   {
     [MEMORY[0x1E696AE18] predicateWithFormat:@"%K.%K != NULL && %K.%K.%K = %@", @"podcast", @"channel", @"podcast", @"channel", @"subscriptionActive", &unk_1F54BDC70];
   }
@@ -2481,22 +2481,22 @@ LABEL_29:
   return v5;
 }
 
-+ (id)predicateForDownloadBehavior:(int64_t)a3
++ (id)predicateForDownloadBehavior:(int64_t)behavior
 {
   v4 = MEMORY[0x1E696AB18];
   v5 = [MEMORY[0x1E696ABC8] expressionForKeyPath:@"downloadBehavior"];
   v6 = MEMORY[0x1E696ABC8];
-  v7 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithLongLong:behavior];
   v8 = [v6 expressionForConstantValue:v7];
   v9 = [v4 predicateWithLeftExpression:v5 rightExpression:v8 modifier:0 type:4 options:0];
 
   return v9;
 }
 
-+ (id)predicateForPodcastIsSerial:(BOOL)a3
++ (id)predicateForPodcastIsSerial:(BOOL)serial
 {
   v3 = @"episodic";
-  if (a3)
+  if (serial)
   {
     v3 = @"serial";
   }
@@ -2506,9 +2506,9 @@ LABEL_29:
   return v4;
 }
 
-+ (id)predicateForPlayed:(BOOL)a3
++ (id)predicateForPlayed:(BOOL)played
 {
-  if (a3)
+  if (played)
   {
     v3 = 4;
   }
@@ -2544,21 +2544,21 @@ LABEL_29:
   return v4;
 }
 
-+ (id)predicateForVisuallyPlayed:(BOOL)a3
++ (id)predicateForVisuallyPlayed:(BOOL)played
 {
-  if (a3)
+  if (played)
   {
-    v4 = [a1 predicateForPlayed:1];
-    v5 = [a1 predicateForIsBackCatalogItem];
-    v6 = [v5 NOT];
+    v4 = [self predicateForPlayed:1];
+    predicateForIsBackCatalogItem = [self predicateForIsBackCatalogItem];
+    v6 = [predicateForIsBackCatalogItem NOT];
     v7 = [v4 AND:v6];
   }
 
   else
   {
-    v4 = [a1 predicateForPlayed:?];
-    v5 = [a1 predicateForIsBackCatalogItem];
-    v7 = [v4 OR:v5];
+    v4 = [self predicateForPlayed:?];
+    predicateForIsBackCatalogItem = [self predicateForIsBackCatalogItem];
+    v7 = [v4 OR:predicateForIsBackCatalogItem];
   }
 
   return v7;
@@ -2566,38 +2566,38 @@ LABEL_29:
 
 + (id)predicateForHasAnyVisualPlayState
 {
-  v3 = [a1 predicateForNotUnplayed];
-  v4 = [a1 predicateForIsBackCatalogItem];
-  v5 = [v4 NOT];
-  v6 = [v3 AND:v5];
+  predicateForNotUnplayed = [self predicateForNotUnplayed];
+  predicateForIsBackCatalogItem = [self predicateForIsBackCatalogItem];
+  v5 = [predicateForIsBackCatalogItem NOT];
+  v6 = [predicateForNotUnplayed AND:v5];
 
   return v6;
 }
 
 + (id)predicateForEpisodesOnUnplayedTab
 {
-  v3 = [a1 predicateForUnplayedTabFlag:1];
-  v4 = [a1 predicateForPodcastIsNotHiddenNotImplicitlyFollowed];
-  v5 = [v3 AND:v4];
+  v3 = [self predicateForUnplayedTabFlag:1];
+  predicateForPodcastIsNotHiddenNotImplicitlyFollowed = [self predicateForPodcastIsNotHiddenNotImplicitlyFollowed];
+  v5 = [v3 AND:predicateForPodcastIsNotHiddenNotImplicitlyFollowed];
 
   return v5;
 }
 
 + (id)predicateForUserEpisodes
 {
-  v3 = [a1 predicateForUserEpisode:1];
-  v4 = [a1 predicateForPodcastIsNotHiddenNotImplicitlyFollowed];
-  v5 = [v3 AND:v4];
+  v3 = [self predicateForUserEpisode:1];
+  predicateForPodcastIsNotHiddenNotImplicitlyFollowed = [self predicateForPodcastIsNotHiddenNotImplicitlyFollowed];
+  v5 = [v3 AND:predicateForPodcastIsNotHiddenNotImplicitlyFollowed];
 
   return v5;
 }
 
 + (id)predicateForEpisodesInSearchResults
 {
-  v3 = [a1 predicateForBookmarkedEpisodes];
-  v4 = [a1 predicateForDownloaded:1 excludeHidden:1];
-  v5 = [v3 OR:v4];
-  v6 = [a1 predicateForPodcastIsSubscribed:1];
+  predicateForBookmarkedEpisodes = [self predicateForBookmarkedEpisodes];
+  v4 = [self predicateForDownloaded:1 excludeHidden:1];
+  v5 = [predicateForBookmarkedEpisodes OR:v4];
+  v6 = [self predicateForPodcastIsSubscribed:1];
   v7 = [v5 OR:v6];
 
   return v7;
@@ -2605,29 +2605,29 @@ LABEL_29:
 
 + (id)predicateForBookmarkedEpisodes
 {
-  v3 = [a1 predicateForAllBookmarkedEpisodes];
-  v4 = [a1 predicateForPodcastIsNotHiddenNotImplicitlyFollowed];
-  v5 = [v3 AND:v4];
+  predicateForAllBookmarkedEpisodes = [self predicateForAllBookmarkedEpisodes];
+  predicateForPodcastIsNotHiddenNotImplicitlyFollowed = [self predicateForPodcastIsNotHiddenNotImplicitlyFollowed];
+  v5 = [predicateForAllBookmarkedEpisodes AND:predicateForPodcastIsNotHiddenNotImplicitlyFollowed];
 
   return v5;
 }
 
 + (id)predicateForUnbookmarkedEpisodes
 {
-  v3 = [a1 predicateForAllUnbookmarkedEpisodes];
-  v4 = [a1 predicateForPodcastIsNotHiddenNotImplicitlyFollowed];
-  v5 = [v3 AND:v4];
+  predicateForAllUnbookmarkedEpisodes = [self predicateForAllUnbookmarkedEpisodes];
+  predicateForPodcastIsNotHiddenNotImplicitlyFollowed = [self predicateForPodcastIsNotHiddenNotImplicitlyFollowed];
+  v5 = [predicateForAllUnbookmarkedEpisodes AND:predicateForPodcastIsNotHiddenNotImplicitlyFollowed];
 
   return v5;
 }
 
-+ (id)predicateForBookmarksMigrationRecoveredEpisodesOnPodcastUuid:(id)a3
++ (id)predicateForBookmarksMigrationRecoveredEpisodesOnPodcastUuid:(id)uuid
 {
-  v4 = a3;
-  v5 = [a1 predicateForAllBookmarksMigrationRecoveredEpisodes];
-  v6 = [a1 predicateForAllEpisodesOnPodcastUuid:v4];
+  uuidCopy = uuid;
+  predicateForAllBookmarksMigrationRecoveredEpisodes = [self predicateForAllBookmarksMigrationRecoveredEpisodes];
+  v6 = [self predicateForAllEpisodesOnPodcastUuid:uuidCopy];
 
-  v7 = [v5 AND:v6];
+  v7 = [predicateForAllBookmarksMigrationRecoveredEpisodes AND:v6];
 
   return v7;
 }
@@ -2641,14 +2641,14 @@ LABEL_29:
   return v4;
 }
 
-+ (id)predicateForListenNowForPodcastUuid:(id)a3
++ (id)predicateForListenNowForPodcastUuid:(id)uuid
 {
   v4 = MEMORY[0x1E696AE18];
-  v5 = a3;
+  uuidCopy = uuid;
   v6 = [v4 predicateWithFormat:@"%K = %@", @"listenNowEpisode", MEMORY[0x1E695E118]];
-  v7 = [a1 predicateForPodcastIsNotHidden];
-  v8 = [v6 AND:v7];
-  v9 = [a1 predicateForAllEpisodesOnPodcastUuid:v5];
+  predicateForPodcastIsNotHidden = [self predicateForPodcastIsNotHidden];
+  v8 = [v6 AND:predicateForPodcastIsNotHidden];
+  v9 = [self predicateForAllEpisodesOnPodcastUuid:uuidCopy];
 
   v10 = [v8 AND:v9];
 
@@ -2657,46 +2657,46 @@ LABEL_29:
 
 + (id)predicateForListenNowLatestEpisodes
 {
-  v3 = [a1 predicateForFeedDeleted:0];
-  v4 = [a1 predicateForPodcastIsNotHiddenNotImplicitlyFollowed];
-  v5 = [v3 AND:v4];
-  v6 = [a1 predicateForPodcastIsSubscribed:1];
+  v3 = [self predicateForFeedDeleted:0];
+  predicateForPodcastIsNotHiddenNotImplicitlyFollowed = [self predicateForPodcastIsNotHiddenNotImplicitlyFollowed];
+  v5 = [v3 AND:predicateForPodcastIsNotHiddenNotImplicitlyFollowed];
+  v6 = [self predicateForPodcastIsSubscribed:1];
   v7 = [v5 AND:v6];
-  v8 = [a1 predicateForEntitledEpisodes];
-  v9 = [v7 AND:v8];
+  predicateForEntitledEpisodes = [self predicateForEntitledEpisodes];
+  v9 = [v7 AND:predicateForEntitledEpisodes];
 
   return v9;
 }
 
-+ (id)predicateForCategoryPageFromYourShows:(id)a3 ctx:(id)a4
++ (id)predicateForCategoryPageFromYourShows:(id)shows ctx:(id)ctx
 {
   v27[4] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  ctxCopy = ctx;
+  showsCopy = shows;
   v8 = objc_opt_new();
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __68__MTEpisode_NSPredicate__predicateForCategoryPageFromYourShows_ctx___block_invoke;
   v24[3] = &unk_1E856A518;
-  v25 = v6;
+  v25 = ctxCopy;
   v26 = v8;
   v9 = v8;
-  v10 = v6;
-  [v7 enumerateObjectsUsingBlock:v24];
+  v10 = ctxCopy;
+  [showsCopy enumerateObjectsUsingBlock:v24];
 
   v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"podcast", v9];
-  v12 = [a1 predicateForEntitledEpisodes];
-  v13 = [a1 predicateForVisuallyPlayed:0];
+  predicateForEntitledEpisodes = [self predicateForEntitledEpisodes];
+  v13 = [self predicateForVisuallyPlayed:0];
   v14 = +[MTEpisode predicateForAllBookmarkedEpisodes];
-  v15 = [a1 predicateForDownloaded:1 excludeHidden:1];
+  v15 = [self predicateForDownloaded:1 excludeHidden:1];
   v16 = [v14 OR:v15];
 
-  v17 = [a1 predicateForPodcastIsSubscribed:1];
+  v17 = [self predicateForPodcastIsSubscribed:1];
   v18 = [v17 OR:v16];
 
   v19 = MEMORY[0x1E696AB28];
   v27[0] = v11;
-  v27[1] = v12;
+  v27[1] = predicateForEntitledEpisodes;
   v27[2] = v13;
   v27[3] = v18;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:4];
@@ -2716,43 +2716,43 @@ void __68__MTEpisode_NSPredicate__predicateForCategoryPageFromYourShows_ctx___bl
   [*(a1 + 40) addObject:v4];
 }
 
-+ (id)predicateForNewsFromYourShows:(id)a3 ctx:(id)a4
++ (id)predicateForNewsFromYourShows:(id)shows ctx:(id)ctx
 {
   v31[6] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  ctxCopy = ctx;
+  showsCopy = shows;
   v8 = objc_opt_new();
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __60__MTEpisode_NSPredicate__predicateForNewsFromYourShows_ctx___block_invoke;
   v28[3] = &unk_1E856A518;
-  v29 = v6;
+  v29 = ctxCopy;
   v30 = v8;
   v26 = v8;
-  v27 = v6;
-  [v7 enumerateObjectsUsingBlock:v28];
+  v27 = ctxCopy;
+  [showsCopy enumerateObjectsUsingBlock:v28];
 
   v25 = objc_alloc_init(MEMORY[0x1E695DF10]);
   [v25 setDay:-30];
   v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"podcast", v26];
-  v10 = [a1 predicateForEpisodeType:0];
-  v11 = [a1 predicateForPodcastIsSerial:0];
-  v12 = [a1 predicateForEntitledEpisodes];
-  v13 = [MEMORY[0x1E695DF00] date];
-  v14 = [a1 predicateForEpisodesPublishedAfterOffset:v25 fromDate:v13];
+  v10 = [self predicateForEpisodeType:0];
+  v11 = [self predicateForPodcastIsSerial:0];
+  predicateForEntitledEpisodes = [self predicateForEntitledEpisodes];
+  date = [MEMORY[0x1E695DF00] date];
+  v14 = [self predicateForEpisodesPublishedAfterOffset:v25 fromDate:date];
 
   v15 = +[MTEpisode predicateForAllBookmarkedEpisodes];
-  v16 = [a1 predicateForDownloaded:1 excludeHidden:1];
+  v16 = [self predicateForDownloaded:1 excludeHidden:1];
   v17 = [v15 OR:v16];
 
-  v18 = [a1 predicateForPodcastIsSubscribed:1];
+  v18 = [self predicateForPodcastIsSubscribed:1];
   v19 = [v18 OR:v17];
 
   v20 = MEMORY[0x1E696AB28];
   v31[0] = v9;
   v31[1] = v10;
   v31[2] = v11;
-  v31[3] = v12;
+  v31[3] = predicateForEntitledEpisodes;
   v31[4] = v14;
   v31[5] = v19;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:6];
@@ -2772,40 +2772,40 @@ void __60__MTEpisode_NSPredicate__predicateForNewsFromYourShows_ctx___block_invo
   [*(a1 + 40) addObject:v4];
 }
 
-+ (id)predicateForPubDateLimit:(int64_t)a3
++ (id)predicateForPubDateLimit:(int64_t)limit
 {
-  if (a3 > 1)
+  if (limit > 1)
   {
-    if (a3 == 2)
+    if (limit == 2)
     {
-      a1 = [a1 predicateForEpisodesPublishedThisMonth];
+      self = [self predicateForEpisodesPublishedThisMonth];
     }
 
-    else if (a3 == 3)
+    else if (limit == 3)
     {
-      a1 = [MEMORY[0x1E696AE18] truePredicate];
+      self = [MEMORY[0x1E696AE18] truePredicate];
     }
   }
 
-  else if (a3)
+  else if (limit)
   {
-    if (a3 == 1)
+    if (limit == 1)
     {
-      a1 = [a1 predicateForEpisodesPublishedLastTwoWeeks];
+      self = [self predicateForEpisodesPublishedLastTwoWeeks];
     }
   }
 
   else
   {
-    a1 = [a1 predicateForEpisodesPublishedThisWeek];
+    self = [self predicateForEpisodesPublishedThisWeek];
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)predicateForDownloaded:(BOOL)a3
++ (id)predicateForDownloaded:(BOOL)downloaded
 {
-  if (a3)
+  if (downloaded)
   {
     [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != NULL AND %K > %@", @"assetURL", @"assetURL", &stru_1F548B930];
   }
@@ -2821,63 +2821,63 @@ void __60__MTEpisode_NSPredicate__predicateForNewsFromYourShows_ctx___block_invo
 
 + (id)predicateForNonHLS
 {
-  v2 = [a1 predicateForHLS];
-  v3 = [v2 NOT];
+  predicateForHLS = [self predicateForHLS];
+  v3 = [predicateForHLS NOT];
 
   return v3;
 }
 
-+ (id)predicateForAtLeastPartiallyPlayedInInterval:(double)a3
++ (id)predicateForAtLeastPartiallyPlayedInInterval:(double)interval
 {
-  v3 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-a3];
-  v4 = [v3 dateForBeginningOfHour];
+  v3 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-interval];
+  dateForBeginningOfHour = [v3 dateForBeginningOfHour];
 
-  v5 = [MEMORY[0x1E696AE18] predicateForDateKey:@"lastDatePlayed" isGreaterThanOrEqualToDate:v4];
-  v6 = [MEMORY[0x1E696AE18] predicateForDateKey:@"lastUserMarkedAsPlayedDate" isGreaterThanOrEqualToDate:v4];
+  v5 = [MEMORY[0x1E696AE18] predicateForDateKey:@"lastDatePlayed" isGreaterThanOrEqualToDate:dateForBeginningOfHour];
+  v6 = [MEMORY[0x1E696AE18] predicateForDateKey:@"lastUserMarkedAsPlayedDate" isGreaterThanOrEqualToDate:dateForBeginningOfHour];
   v7 = [v5 OR:v6];
 
   return v7;
 }
 
-+ (id)predicateForPlayedInInterval:(double)a3
++ (id)predicateForPlayedInInterval:(double)interval
 {
-  v4 = [a1 predicateForAtLeastPartiallyPlayedInInterval:a3];
-  v5 = [a1 predicateForPlayed:1];
+  v4 = [self predicateForAtLeastPartiallyPlayedInInterval:interval];
+  v5 = [self predicateForPlayed:1];
   v6 = [v4 AND:v5];
 
   return v6;
 }
 
-+ (id)predicateForEpisodeUuids:(id)a3
++ (id)predicateForEpisodeUuids:(id)uuids
 {
   v3 = MEMORY[0x1E696AE18];
-  v4 = [a3 allObjects];
-  v5 = [v3 predicateWithFormat:@"%K in %@", @"uuid", v4];
+  allObjects = [uuids allObjects];
+  v5 = [v3 predicateWithFormat:@"%K in %@", @"uuid", allObjects];
 
   return v5;
 }
 
-+ (id)predicateForEpisodeGuids:(id)a3
++ (id)predicateForEpisodeGuids:(id)guids
 {
   v3 = MEMORY[0x1E696AE18];
-  v4 = [a3 allObjects];
-  v5 = [v3 predicateWithFormat:@"%K in %@", @"guid", v4];
+  allObjects = [guids allObjects];
+  v5 = [v3 predicateWithFormat:@"%K in %@", @"guid", allObjects];
 
   return v5;
 }
 
-+ (id)predicateForFeedURLs:(id)a3
++ (id)predicateForFeedURLs:(id)ls
 {
   v3 = MEMORY[0x1E696AE18];
-  v4 = [a3 allObjects];
-  v5 = [v3 predicateWithFormat:@"%K.%K in %@", @"podcast", @"feedURL", v4];
+  allObjects = [ls allObjects];
+  v5 = [v3 predicateWithFormat:@"%K.%K in %@", @"podcast", @"feedURL", allObjects];
 
   return v5;
 }
 
-+ (id)predicateForHasValidPersistentId:(BOOL)a3
++ (id)predicateForHasValidPersistentId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != NULL AND (%K > %@ OR %K < %@)", @"persistentID", @"persistentID", &unk_1F54BDC88, @"persistentID", &unk_1F54BDC88];
   }
@@ -2891,11 +2891,11 @@ void __60__MTEpisode_NSPredicate__predicateForNewsFromYourShows_ctx___block_invo
   return v3;
 }
 
-+ (id)predicateForEpisodesImportedAfterDate:(id)a3
++ (id)predicateForEpisodesImportedAfterDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    [MEMORY[0x1E696AE18] predicateForDateKey:@"importDate" isGreaterThanDate:a3];
+    [MEMORY[0x1E696AE18] predicateForDateKey:@"importDate" isGreaterThanDate:date];
   }
 
   else
@@ -2907,16 +2907,16 @@ void __60__MTEpisode_NSPredicate__predicateForNewsFromYourShows_ctx___block_invo
   return v3;
 }
 
-+ (id)predicateForEpisodeType:(int64_t)a3
++ (id)predicateForEpisodeType:(int64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     v3 = MEMORY[0x1E696AE18];
     v4 = kEpisodeTypeBonus;
     goto LABEL_7;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = MEMORY[0x1E696AE18];
     v4 = kEpisodeTypeTrailer;
@@ -2925,28 +2925,28 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (a3)
+  if (type)
   {
     goto LABEL_9;
   }
 
   [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == NULL OR (%K !=[c] %@ AND %K !=[c] %@)", @"episodeType", @"episodeType", @"trailer", @"episodeType", @"bonus"];
-  a1 = LABEL_8:;
+  self = LABEL_8:;
 LABEL_9:
 
-  return a1;
+  return self;
 }
 
-+ (id)predicateForEpisodeTypeFilter:(int64_t)a3
++ (id)predicateForEpisodeTypeFilter:(int64_t)filter
 {
-  if (a3 <= 2)
+  if (filter <= 2)
   {
-    switch(a3)
+    switch(filter)
     {
       case 0:
-        v10 = [MEMORY[0x1E696AE18] truePredicate];
+        truePredicate = [MEMORY[0x1E696AE18] truePredicate];
 LABEL_18:
-        v3 = v10;
+        v3 = truePredicate;
         goto LABEL_19;
       case 1:
         v7 = 0;
@@ -2959,16 +2959,16 @@ LABEL_18:
     }
 
 LABEL_17:
-    v10 = [a1 predicateForEpisodeType:v7];
+    truePredicate = [self predicateForEpisodeType:v7];
     goto LABEL_18;
   }
 
-  if (a3 <= 4)
+  if (filter <= 4)
   {
-    if (a3 != 3)
+    if (filter != 3)
     {
-      v5 = [a1 predicateForEpisodeType:1];
-      v6 = [a1 predicateForEpisodeType:2];
+      v5 = [self predicateForEpisodeType:1];
+      v6 = [self predicateForEpisodeType:2];
       v3 = [v5 OR:v6];
 
 LABEL_12:
@@ -2979,22 +2979,22 @@ LABEL_12:
     goto LABEL_17;
   }
 
-  if (a3 != 5)
+  if (filter != 5)
   {
-    if (a3 != 6)
+    if (filter != 6)
     {
       goto LABEL_19;
     }
 
-    v8 = [a1 predicateForEpisodeType:1];
-    v9 = [a1 predicateForHasSomeSeasonNumberWithNoEpisodeNumber];
-    v5 = [v8 AND:v9];
+    v8 = [self predicateForEpisodeType:1];
+    predicateForHasSomeSeasonNumberWithNoEpisodeNumber = [self predicateForHasSomeSeasonNumberWithNoEpisodeNumber];
+    v5 = [v8 AND:predicateForHasSomeSeasonNumberWithNoEpisodeNumber];
 
     v3 = [v5 NOT];
     goto LABEL_12;
   }
 
-  v11 = [a1 predicateForEpisodeType:1];
+  v11 = [self predicateForEpisodeType:1];
   v3 = [v11 NOT];
 
 LABEL_19:
@@ -3002,23 +3002,23 @@ LABEL_19:
   return v3;
 }
 
-+ (id)predicateForOtherEpisodesOnPodcastUuid:(id)a3 baseEpisodesPredicate:(id)a4 deletePlayedEpisodes:(BOOL)a5
++ (id)predicateForOtherEpisodesOnPodcastUuid:(id)uuid baseEpisodesPredicate:(id)predicate deletePlayedEpisodes:(BOOL)episodes
 {
   v8 = MEMORY[0x1E696AB28];
-  v9 = a3;
-  v10 = [v8 notPredicateWithSubpredicate:a4];
-  v11 = [a1 predicateForAllEpisodesOnPodcastUuid:v9];
+  uuidCopy = uuid;
+  v10 = [v8 notPredicateWithSubpredicate:predicate];
+  v11 = [self predicateForAllEpisodesOnPodcastUuid:uuidCopy];
 
   v12 = [v11 AND:v10];
 
-  v13 = [a1 predicateForPlayStateManuallySet:1];
-  v14 = [a1 predicateForIsFromiTunesSync:1];
+  v13 = [self predicateForPlayStateManuallySet:1];
+  v14 = [self predicateForIsFromiTunesSync:1];
   v15 = [v13 OR:v14];
 
   v16 = [MTEpisode predicateForPlayed:0];
   v17 = [v16 AND:v15];
 
-  if (!a5)
+  if (!episodes)
   {
     v18 = [MTEpisode predicateForPlayed:1];
     v19 = [MTEpisode predicateForPlayStateManuallySet:0];
@@ -3033,16 +3033,16 @@ LABEL_19:
   return v22;
 }
 
-+ (id)predicateForRecentlyPlayedEpisodesToBeDeletedOnPodcastUuid:(id)a3 deletePlayedEpisodes:(BOOL)a4
++ (id)predicateForRecentlyPlayedEpisodesToBeDeletedOnPodcastUuid:(id)uuid deletePlayedEpisodes:(BOOL)episodes
 {
-  if (a4)
+  if (episodes)
   {
-    v5 = [a1 predicateForAllEpisodesOnPodcastUuid:a3];
-    v6 = [a1 predicateForRecentlyPlayed];
-    v7 = [v5 AND:v6];
-    v8 = [a1 predicateForPlayStateManuallySet:0];
+    v5 = [self predicateForAllEpisodesOnPodcastUuid:uuid];
+    predicateForRecentlyPlayed = [self predicateForRecentlyPlayed];
+    v7 = [v5 AND:predicateForRecentlyPlayed];
+    v8 = [self predicateForPlayStateManuallySet:0];
     v9 = [v7 AND:v8];
-    v10 = [a1 predicateForIsFromiTunesSync:0];
+    v10 = [self predicateForIsFromiTunesSync:0];
     v11 = [v9 AND:v10];
   }
 
@@ -3054,63 +3054,63 @@ LABEL_19:
   return v11;
 }
 
-+ (id)predicateForEpisodesIsFromiTunesSyncOnPodcastUuid:(id)a3
++ (id)predicateForEpisodesIsFromiTunesSyncOnPodcastUuid:(id)uuid
 {
-  v4 = [a1 predicateForAllEpisodesOnPodcastUuid:a3];
-  v5 = [a1 predicateForIsFromiTunesSync:1];
+  v4 = [self predicateForAllEpisodesOnPodcastUuid:uuid];
+  v5 = [self predicateForIsFromiTunesSync:1];
   v6 = [v4 AND:v5];
 
   return v6;
 }
 
-+ (id)predicateForEpisodesInFeedForPodcastUuid:(id)a3
++ (id)predicateForEpisodesInFeedForPodcastUuid:(id)uuid
 {
-  v4 = [a1 predicateForAllEpisodesOnPodcastUuid:a3];
-  v5 = [a1 predicateForFeedDeleted:0];
+  v4 = [self predicateForAllEpisodesOnPodcastUuid:uuid];
+  v5 = [self predicateForFeedDeleted:0];
   v6 = [v4 AND:v5];
 
   return v6;
 }
 
-+ (id)predicateForEpisodesFromiTunesSyncOnPodcastUuid:(id)a3
++ (id)predicateForEpisodesFromiTunesSyncOnPodcastUuid:(id)uuid
 {
-  v4 = [a1 predicateForAllEpisodesOnPodcastUuid:a3];
-  v5 = [a1 predicateForIsFromiTunesSync:1];
+  v4 = [self predicateForAllEpisodesOnPodcastUuid:uuid];
+  v5 = [self predicateForIsFromiTunesSync:1];
   v6 = [v4 AND:v5];
 
   return v6;
 }
 
-+ (id)_dateWithOffset:(id)a3 fromDate:(id)a4
++ (id)_dateWithOffset:(id)offset fromDate:(id)date
 {
-  v5 = a3;
+  offsetCopy = offset;
   v6 = MEMORY[0x1E695DEE8];
-  v7 = a4;
+  dateCopy = date;
   v8 = [v6 alloc];
   v9 = [v8 initWithCalendarIdentifier:*MEMORY[0x1E695D850]];
-  v10 = [v9 components:28 fromDate:v7];
+  v10 = [v9 components:28 fromDate:dateCopy];
 
   v11 = [v10 day];
-  v12 = [v10 month];
-  v13 = [v10 year];
+  month = [v10 month];
+  year = [v10 year];
   v14 = objc_alloc_init(MEMORY[0x1E695DF10]);
   [v14 setDay:v11];
-  [v14 setMonth:v12];
-  [v14 setYear:v13];
+  [v14 setMonth:month];
+  [v14 setYear:year];
   v15 = [v9 dateFromComponents:v14];
-  if (!v5)
+  if (!offsetCopy)
   {
-    v5 = objc_opt_new();
+    offsetCopy = objc_opt_new();
   }
 
-  v16 = [v9 dateByAddingComponents:v5 toDate:v15 options:0];
+  v16 = [v9 dateByAddingComponents:offsetCopy toDate:v15 options:0];
 
   return v16;
 }
 
 + (id)predicateForEpisodesWithUnsatisfiedAvailabilityDate
 {
-  v2 = [a1 predicateForEpisodesPublishedThisWeek];
+  predicateForEpisodesPublishedThisWeek = [self predicateForEpisodesPublishedThisWeek];
   v3 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != NULL", @"firstTimeAvailableAsPaid"];
   v4 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K > %K", @"pubDate", @"firstTimeAvailableAsPaid"];
   v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != %K", @"firstTimeAvailable", @"pubDate"];
@@ -3122,22 +3122,22 @@ LABEL_19:
   v10 = [v9 AND:v3];
 
   v11 = [v8 OR:v10];
-  v12 = [v2 AND:v11];
+  v12 = [predicateForEpisodesPublishedThisWeek AND:v11];
 
   return v12;
 }
 
-+ (id)predicateForEpisodesPriceChangedAfterOffset:(id)a3 fromDate:(id)a4
++ (id)predicateForEpisodesPriceChangedAfterOffset:(id)offset fromDate:(id)date
 {
-  v4 = [MTEpisode _dateWithOffset:a3 fromDate:a4];
+  v4 = [MTEpisode _dateWithOffset:offset fromDate:date];
   v5 = [MEMORY[0x1E696AE18] predicateForDateKey:@"priceTypeChangedDate" isGreaterThanOrEqualToDate:v4];
 
   return v5;
 }
 
-+ (id)predicateForEpisodesPublishedAfterOffset:(id)a3 fromDate:(id)a4
++ (id)predicateForEpisodesPublishedAfterOffset:(id)offset fromDate:(id)date
 {
-  v4 = [MTEpisode _dateWithOffset:a3 fromDate:a4];
+  v4 = [MTEpisode _dateWithOffset:offset fromDate:date];
   v5 = [MEMORY[0x1E696AE18] predicateForDateKey:@"pubDate" isGreaterThanOrEqualToDate:v4];
 
   return v5;
@@ -3145,8 +3145,8 @@ LABEL_19:
 
 + (id)predicateForEpisodesPublishedToday
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [a1 predicateForEpisodesPublishedOnDate:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  v4 = [self predicateForEpisodesPublishedOnDate:date];
 
   return v4;
 }
@@ -3155,59 +3155,59 @@ LABEL_19:
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF10]);
   [v3 setWeekOfYear:-1];
-  v4 = [MEMORY[0x1E695DF00] date];
-  v5 = [a1 predicateForEpisodesPriceChangedAfterOffset:v3 fromDate:v4];
+  date = [MEMORY[0x1E695DF00] date];
+  v5 = [self predicateForEpisodesPriceChangedAfterOffset:v3 fromDate:date];
 
   return v5;
 }
 
 + (id)predicateForEpisodesPublishedThisWeek
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [a1 predicateForEpisodesPublishedThisWeekWithTodayDate:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  v4 = [self predicateForEpisodesPublishedThisWeekWithTodayDate:date];
 
   return v4;
 }
 
-+ (id)predicateForEpisodesPublishedThisWeekWithTodayDate:(id)a3
++ (id)predicateForEpisodesPublishedThisWeekWithTodayDate:(id)date
 {
   v4 = MEMORY[0x1E695DF10];
-  v5 = a3;
+  dateCopy = date;
   v6 = objc_alloc_init(v4);
   [v6 setWeekOfYear:-1];
-  v7 = [a1 predicateForEpisodesPublishedAfterOffset:v6 fromDate:v5];
+  v7 = [self predicateForEpisodesPublishedAfterOffset:v6 fromDate:dateCopy];
 
   return v7;
 }
 
 + (id)predicateForEpisodesPublishedLastTwoWeeks
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [a1 predicateForEpisodesPublishedLastTwoWeeksWithTodayDate:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  v4 = [self predicateForEpisodesPublishedLastTwoWeeksWithTodayDate:date];
 
   return v4;
 }
 
-+ (id)predicateForEpisodesPublishedLastTwoWeeksWithTodayDate:(id)a3
++ (id)predicateForEpisodesPublishedLastTwoWeeksWithTodayDate:(id)date
 {
   v4 = MEMORY[0x1E695DF10];
-  v5 = a3;
+  dateCopy = date;
   v6 = objc_alloc_init(v4);
   [v6 setWeekOfYear:-2];
-  v7 = [a1 predicateForEpisodesPublishedAfterOffset:v6 fromDate:v5];
+  v7 = [self predicateForEpisodesPublishedAfterOffset:v6 fromDate:dateCopy];
 
   return v7;
 }
 
 + (id)predicateForEpisodesPublishedThisMonth
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [a1 predicateForEpisodesPublishedThisMonthWithTodayDate:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  v4 = [self predicateForEpisodesPublishedThisMonthWithTodayDate:date];
 
   return v4;
 }
 
-+ (id)predicateForEpisodesWithinLevel:(unint64_t)a3
++ (id)predicateForEpisodesWithinLevel:(unint64_t)level
 {
   v4 = os_feature_enabled_serial_sort_auto_downloads();
   v5 = kEpisodeShowTypeSpecificLevel;
@@ -3216,18 +3216,18 @@ LABEL_19:
     v5 = kEpisodeLevel;
   }
 
-  v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K < %ld", *v5, a3];
+  level = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K < %ld", *v5, level];
 
-  return v6;
+  return level;
 }
 
-+ (id)predicateForEpisodesPublishedThisMonthWithTodayDate:(id)a3
++ (id)predicateForEpisodesPublishedThisMonthWithTodayDate:(id)date
 {
   v4 = MEMORY[0x1E695DF10];
-  v5 = a3;
+  dateCopy = date;
   v6 = objc_alloc_init(v4);
   [v6 setMonth:-1];
-  v7 = [a1 predicateForEpisodesPublishedAfterOffset:v6 fromDate:v5];
+  v7 = [self predicateForEpisodesPublishedAfterOffset:v6 fromDate:dateCopy];
 
   return v7;
 }
@@ -3244,21 +3244,21 @@ LABEL_19:
   return v5;
 }
 
-+ (id)predicateForEpisodesInStationShow:(id)a3
++ (id)predicateForEpisodesInStationShow:(id)show
 {
-  v4 = a3;
-  v5 = [a1 predicateForStationEligibleEpisodes];
-  v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY %K.%K = %@", @"settings", @"uuid", v4];
+  showCopy = show;
+  predicateForStationEligibleEpisodes = [self predicateForStationEligibleEpisodes];
+  showCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY %K.%K = %@", @"settings", @"uuid", showCopy];
 
-  v7 = [v6 AND:v5];
+  v7 = [showCopy AND:predicateForStationEligibleEpisodes];
 
   return v7;
 }
 
-+ (id)predicateForUserEpisodesOnPodcastUuid:(id)a3 ctx:(id)a4
++ (id)predicateForUserEpisodesOnPodcastUuid:(id)uuid ctx:(id)ctx
 {
-  v6 = a3;
-  v7 = a4;
+  uuidCopy = uuid;
+  ctxCopy = ctx;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -3267,13 +3267,13 @@ LABEL_19:
   v12[1] = 3221225472;
   v12[2] = __68__MTEpisode_NSPredicate__predicateForUserEpisodesOnPodcastUuid_ctx___block_invoke;
   v12[3] = &unk_1E856A118;
-  v8 = v7;
+  v8 = ctxCopy;
   v13 = v8;
-  v9 = v6;
+  v9 = uuidCopy;
   v14 = v9;
   v15 = &v16;
   [v8 performBlockAndWait:v12];
-  v10 = [a1 predicateForUserEpisodesOnPodcastUuid:v9 episodeLimit:0 deletePlayedEpisodes:*(v17 + 24) limitToDownloadBehaviorAutomatic:0];
+  v10 = [self predicateForUserEpisodesOnPodcastUuid:v9 episodeLimit:0 deletePlayedEpisodes:*(v17 + 24) limitToDownloadBehaviorAutomatic:0];
 
   _Block_object_dispose(&v16, 8);
 
@@ -3286,10 +3286,10 @@ void __68__MTEpisode_NSPredicate__predicateForUserEpisodesOnPodcastUuid_ctx___bl
   *(*(*(a1 + 48) + 8) + 24) = [v2 deletePlayedEpisodesResolvedValue];
 }
 
-+ (id)predicateForEpisodesOnUnplayedTabOnPodcastUuid:(id)a3 ctx:(id)a4
++ (id)predicateForEpisodesOnUnplayedTabOnPodcastUuid:(id)uuid ctx:(id)ctx
 {
-  v6 = a3;
-  v7 = a4;
+  uuidCopy = uuid;
+  ctxCopy = ctx;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -3298,13 +3298,13 @@ void __68__MTEpisode_NSPredicate__predicateForUserEpisodesOnPodcastUuid_ctx___bl
   v12[1] = 3221225472;
   v12[2] = __77__MTEpisode_NSPredicate__predicateForEpisodesOnUnplayedTabOnPodcastUuid_ctx___block_invoke;
   v12[3] = &unk_1E856A118;
-  v8 = v7;
+  v8 = ctxCopy;
   v13 = v8;
-  v9 = v6;
+  v9 = uuidCopy;
   v14 = v9;
   v15 = &v16;
   [v8 performBlockAndWait:v12];
-  v10 = [a1 predicateForEpisodesOnUnplayedTabOnPodcastUuid:v9 deletePlayedEpisodes:*(v17 + 24)];
+  v10 = [self predicateForEpisodesOnUnplayedTabOnPodcastUuid:v9 deletePlayedEpisodes:*(v17 + 24)];
 
   _Block_object_dispose(&v16, 8);
 
@@ -3317,46 +3317,46 @@ void __77__MTEpisode_NSPredicate__predicateForEpisodesOnUnplayedTabOnPodcastUuid
   *(*(*(a1 + 48) + 8) + 24) = [v2 deletePlayedEpisodesResolvedValue];
 }
 
-+ (id)predicateForStoreIdentifier:(id)a3
++ (id)predicateForStoreIdentifier:(id)identifier
 {
-  v3 = [a3 storeIdentifier];
-  if ([MTStoreIdentifier isEmptyNumber:v3])
+  storeIdentifier = [identifier storeIdentifier];
+  if ([MTStoreIdentifier isEmptyNumber:storeIdentifier])
   {
     [MEMORY[0x1E696AE18] falsePredicate];
   }
 
   else
   {
-    +[MTEpisode predicateForEpisodeStoreTrackId:](MTEpisode, "predicateForEpisodeStoreTrackId:", [v3 longLongValue]);
+    +[MTEpisode predicateForEpisodeStoreTrackId:](MTEpisode, "predicateForEpisodeStoreTrackId:", [storeIdentifier longLongValue]);
   }
   v4 = ;
 
   return v4;
 }
 
-+ (id)predicateForEpisodeStoreTrackId:(int64_t)a3
++ (id)predicateForEpisodeStoreTrackId:(int64_t)id
 {
   v3 = MEMORY[0x1E696AE18];
-  v4 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithLongLong:id];
   v5 = [v3 predicateWithFormat:@"%K = %@", @"storeTrackId", v4];
 
   return v5;
 }
 
-+ (id)predicateForEpisodeStoreTrackIds:(id)a3
++ (id)predicateForEpisodeStoreTrackIds:(id)ids
 {
-  v3 = [a3 allObjects];
-  v4 = [v3 mt_filter:&__block_literal_global_12];
+  allObjects = [ids allObjects];
+  v4 = [allObjects mt_filter:&__block_literal_global_12];
 
   v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"storeTrackId", v4];
 
   return v5;
 }
 
-+ (id)predicateForSeasonNumber:(int64_t)a3
++ (id)predicateForSeasonNumber:(int64_t)number
 {
   v3 = MEMORY[0x1E696AE18];
-  if (a3 <= 0)
+  if (number <= 0)
   {
     v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(%K = NULL OR %K = 0)", @"seasonNumber", @"seasonNumber"];
   }
@@ -3370,38 +3370,38 @@ void __77__MTEpisode_NSPredicate__predicateForEpisodesOnUnplayedTabOnPodcastUuid
   return v5;
 }
 
-+ (id)predicateForEpisodesWithSeasonNumbersOnPodcastUuid:(id)a3
++ (id)predicateForEpisodesWithSeasonNumbersOnPodcastUuid:(id)uuid
 {
-  v3 = a3;
+  uuidCopy = uuid;
   v4 = +[MTEpisode predicateForHasSeasonNumber];
-  v5 = [MTEpisode predicateForAllEpisodesOnPodcastUuid:v3];
+  v5 = [MTEpisode predicateForAllEpisodesOnPodcastUuid:uuidCopy];
 
   v6 = [v5 AND:v4];
 
   return v6;
 }
 
-+ (id)predicateForEpisodesWithEpisodeNumbersGreaterThan:(int64_t)a3
++ (id)predicateForEpisodesWithEpisodeNumbersGreaterThan:(int64_t)than
 {
   v3 = MEMORY[0x1E696AE18];
-  v4 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithLongLong:than];
   v5 = [v3 predicateWithFormat:@"%K > %@", @"episodeNumber", v4];
 
   return v5;
 }
 
-+ (id)predicateForEpisodesWithSeasonAndEpisodeNumbersGreaterThanOrEqualTo:(int64_t)a3 seasonNumber:(int64_t)a4
++ (id)predicateForEpisodesWithSeasonAndEpisodeNumbersGreaterThanOrEqualTo:(int64_t)to seasonNumber:(int64_t)number
 {
   v6 = MEMORY[0x1E696AE18];
-  v7 = [MEMORY[0x1E696AD98] numberWithLongLong:a4];
+  v7 = [MEMORY[0x1E696AD98] numberWithLongLong:number];
   v8 = [v6 predicateWithFormat:@"%K == %@", @"seasonNumber", v7];
   v9 = MEMORY[0x1E696AE18];
-  v10 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v10 = [MEMORY[0x1E696AD98] numberWithLongLong:to];
   v11 = [v9 predicateWithFormat:@"%K >= %@", @"episodeNumber", v10];
   v12 = [v8 AND:v11];
 
   v13 = MEMORY[0x1E696AE18];
-  v14 = [MEMORY[0x1E696AD98] numberWithLongLong:a4];
+  v14 = [MEMORY[0x1E696AD98] numberWithLongLong:number];
   v15 = [v13 predicateWithFormat:@"%K > %@", @"seasonNumber", v14];
 
   v16 = [v12 OR:v15];
@@ -3409,40 +3409,40 @@ void __77__MTEpisode_NSPredicate__predicateForEpisodesOnUnplayedTabOnPodcastUuid
   return v16;
 }
 
-+ (id)predicateForSeasonNumberWithNoEpisodeNumber:(int64_t)a3
++ (id)predicateForSeasonNumberWithNoEpisodeNumber:(int64_t)number
 {
   v3 = MEMORY[0x1E696AE18];
-  v4 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithLongLong:number];
   v5 = [v3 predicateWithFormat:@"%K == %@ && (%K == 0 || %K == NULL)", @"seasonNumber", v4, @"episodeNumber", @"episodeNumber"];
 
   return v5;
 }
 
-+ (id)predicateForBookmarkedEpisodesExcludingUUIDs:(id)a3
++ (id)predicateForBookmarkedEpisodesExcludingUUIDs:(id)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v4 = +[MTEpisode predicateForAllBookmarkedEpisodes];
-  v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"!(%K IN %@)", @"uuid", v3];
+  dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"!(%K IN %@)", @"uuid", dsCopy];
 
-  v6 = [v4 AND:v5];
+  v6 = [v4 AND:dsCopy];
 
   return v6;
 }
 
 + (id)predicateForUserSetTopLevelEpisodes
 {
-  v3 = [a1 predicateForIsTopLevel];
-  v4 = [a1 predicateForPodcastIsNotHiddenNotImplicitlyFollowed];
-  v5 = [v3 AND:v4];
+  predicateForIsTopLevel = [self predicateForIsTopLevel];
+  predicateForPodcastIsNotHiddenNotImplicitlyFollowed = [self predicateForPodcastIsNotHiddenNotImplicitlyFollowed];
+  v5 = [predicateForIsTopLevel AND:predicateForPodcastIsNotHiddenNotImplicitlyFollowed];
 
   return v5;
 }
 
-+ (id)predicateForWatchBaseEpisodesIncludingOnlyAudio:(BOOL)a3
++ (id)predicateForWatchBaseEpisodesIncludingOnlyAudio:(BOOL)audio
 {
-  v3 = a3;
+  audioCopy = audio;
   v4 = +[MTEpisode predicateForPodcastIsNotHiddenNotImplicitlyFollowed];
-  if (v3)
+  if (audioCopy)
   {
     v5 = [MTEpisode predicateForAudio:1];
     v6 = [v4 AND:v5];
@@ -3467,9 +3467,9 @@ void __77__MTEpisode_NSPredicate__predicateForEpisodesOnUnplayedTabOnPodcastUuid
 
 + (id)predicateForDRMKeyRequired
 {
-  v3 = [a1 isHLSEpisode];
-  v4 = [a1 predicateForDownloaded:1 excludeHidden:1];
-  v5 = [v3 AND:v4];
+  isHLSEpisode = [self isHLSEpisode];
+  v4 = [self predicateForDownloaded:1 excludeHidden:1];
+  v5 = [isHLSEpisode AND:v4];
 
   return v5;
 }
@@ -3478,11 +3478,11 @@ void __77__MTEpisode_NSPredicate__predicateForEpisodesOnUnplayedTabOnPodcastUuid
 {
   v11[3] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AB28];
-  v4 = [a1 predicateForPriceType:3];
-  v5 = [a1 predicateForPriceType:{2, v4}];
+  v4 = [self predicateForPriceType:3];
+  v5 = [self predicateForPriceType:{2, v4}];
   v11[1] = v5;
-  v6 = [a1 assetURLIsPackagedMedia];
-  v11[2] = v6;
+  assetURLIsPackagedMedia = [self assetURLIsPackagedMedia];
+  v11[2] = assetURLIsPackagedMedia;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:3];
   v8 = [v3 orPredicateWithSubpredicates:v7];
 
@@ -3491,15 +3491,15 @@ void __77__MTEpisode_NSPredicate__predicateForEpisodesOnUnplayedTabOnPodcastUuid
   return v8;
 }
 
-+ (id)_predicateForPriceType:(int64_t)a3 forPriceTypeKey:(id)a4 excluding:(BOOL)a5
++ (id)_predicateForPriceType:(int64_t)type forPriceTypeKey:(id)key excluding:(BOOL)excluding
 {
-  v5 = a5;
+  excludingCopy = excluding;
   v7 = MEMORY[0x1E696AE18];
-  v8 = a4;
-  v9 = NSPersistentStringForMTEpisodePriceType(a3);
-  v10 = [v7 predicateWithFormat:@"(%K != NULL) && (%K = %@)", v8, v8, v9];
+  keyCopy = key;
+  v9 = NSPersistentStringForMTEpisodePriceType(type);
+  v10 = [v7 predicateWithFormat:@"(%K != NULL) && (%K = %@)", keyCopy, keyCopy, v9];
 
-  if (v5)
+  if (excludingCopy)
   {
     v11 = [v10 NOT];
 
@@ -3509,14 +3509,14 @@ void __77__MTEpisode_NSPredicate__predicateForEpisodesOnUnplayedTabOnPodcastUuid
   return v10;
 }
 
-+ (id)predicateForAutomaticDownloadsOnShow:(id)a3 deletePlayedEpisodes:(BOOL)a4 episodeLimit:(int64_t)a5 serialNextEpisodesSort:(BOOL)a6 includePlayableWithoutAccount:(BOOL)a7
++ (id)predicateForAutomaticDownloadsOnShow:(id)show deletePlayedEpisodes:(BOOL)episodes episodeLimit:(int64_t)limit serialNextEpisodesSort:(BOOL)sort includePlayableWithoutAccount:(BOOL)account
 {
-  v53 = a7;
+  accountCopy = account;
   v62[2] = *MEMORY[0x1E69E9840];
-  v54 = a3;
+  showCopy = show;
   v9 = [MTEpisode predicateForVisuallyPlayed:0];
   v10 = v9;
-  if (!a4)
+  if (!episodes)
   {
     v11 = MEMORY[0x1E696AB28];
     v62[0] = v9;
@@ -3530,9 +3530,9 @@ void __77__MTEpisode_NSPredicate__predicateForEpisodesOnUnplayedTabOnPodcastUuid
 
   v52 = v10;
   v15 = MEMORY[0x1E696AB28];
-  v16 = [MTEpisode predicateForEpisodesDeterminedByLimitSettings:a5];
+  v16 = [MTEpisode predicateForEpisodesDeterminedByLimitSettings:limit];
   v61[0] = v16;
-  v17 = [MTEpisode predicateForDownloadLimitForEpisodeLimit:a5];
+  v17 = [MTEpisode predicateForDownloadLimitForEpisodeLimit:limit];
   v61[1] = v17;
   v18 = MEMORY[0x1E696AB28];
   v60[0] = v10;
@@ -3572,7 +3572,7 @@ void __77__MTEpisode_NSPredicate__predicateForEpisodesOnUnplayedTabOnPodcastUuid
   v56[0] = v36;
   v37 = [MTEpisode predicateForPlayed:0];
   v56[1] = v37;
-  v38 = [MTEpisode predicateForPlayableEpisode:v53];
+  v38 = [MTEpisode predicateForPlayableEpisode:accountCopy];
   v56[2] = v38;
   v39 = [MTEpisode predicateForFeedDeleted:0];
   v56[3] = v39;
@@ -3584,7 +3584,7 @@ void __77__MTEpisode_NSPredicate__predicateForEpisodesOnUnplayedTabOnPodcastUuid
   v43 = [v35 andPredicateWithSubpredicates:v42];
 
   v44 = MEMORY[0x1E696AB28];
-  v45 = [MTEpisode predicateForAllEpisodesOnPodcastUuid:v54];
+  v45 = [MTEpisode predicateForAllEpisodesOnPodcastUuid:showCopy];
 
   v55[0] = v45;
   v55[1] = v43;
@@ -3597,11 +3597,11 @@ void __77__MTEpisode_NSPredicate__predicateForEpisodesOnUnplayedTabOnPodcastUuid
   return v47;
 }
 
-+ (id)predicateForPlayableEpisode:(BOOL)a3
++ (id)predicateForPlayableEpisode:(BOOL)episode
 {
-  v3 = a3;
+  episodeCopy = episode;
   v4 = +[MTEpisode predicateForEntitledEpisodes];
-  if (v3)
+  if (episodeCopy)
   {
     v5 = +[MTEpisode predicateForEpisodesPlayableWithoutAccount];
     v6 = [v4 AND:v5];
@@ -3612,25 +3612,25 @@ void __77__MTEpisode_NSPredicate__predicateForEpisodesOnUnplayedTabOnPodcastUuid
   return v4;
 }
 
-+ (id)optimizedPredicateForPlayedEpisodePreservation:(BOOL)a3
++ (id)optimizedPredicateForPlayedEpisodePreservation:(BOOL)preservation
 {
-  v3 = a3;
+  preservationCopy = preservation;
   v21[2] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696AB28];
-  v6 = [a1 predicateForPlayed:0];
+  v6 = [self predicateForPlayed:0];
   v21[0] = v6;
-  v7 = [a1 predicateForIsBackCatalogItem];
-  v21[1] = v7;
+  predicateForIsBackCatalogItem = [self predicateForIsBackCatalogItem];
+  v21[1] = predicateForIsBackCatalogItem;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
   v9 = [v5 orPredicateWithSubpredicates:v8];
 
-  if (v3)
+  if (preservationCopy)
   {
     v10 = MEMORY[0x1E696AB28];
     v20[0] = v9;
-    v11 = [a1 predicateForPlayed:1];
+    v11 = [self predicateForPlayed:1];
     v19[0] = v11;
-    v12 = [a1 predicateForPlayStateManuallySet:0];
+    v12 = [self predicateForPlayStateManuallySet:0];
     v19[1] = v12;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
     v14 = [v10 orPredicateWithSubpredicates:v13];
@@ -3646,36 +3646,36 @@ void __77__MTEpisode_NSPredicate__predicateForEpisodesOnUnplayedTabOnPodcastUuid
   return v9;
 }
 
-+ (id)optimizedPredicatePlaystateForPreservation:(BOOL)a3
++ (id)optimizedPredicatePlaystateForPreservation:(BOOL)preservation
 {
-  if (a3)
+  if (preservation)
   {
-    v4 = [a1 predicateForPlayed:0];
-    v5 = [a1 predicateForIsBackCatalogItem];
-    v6 = [v4 OR:v5];
+    v4 = [self predicateForPlayed:0];
+    predicateForIsBackCatalogItem = [self predicateForIsBackCatalogItem];
+    truePredicate = [v4 OR:predicateForIsBackCatalogItem];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E696AE18] truePredicate];
+    truePredicate = [MEMORY[0x1E696AE18] truePredicate];
   }
 
-  return v6;
+  return truePredicate;
 }
 
-+ (id)optimizedRemovalPredicateForRecentlyPlayed:(BOOL)a3
++ (id)optimizedRemovalPredicateForRecentlyPlayed:(BOOL)played
 {
   v18[4] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AB28];
-  if (a3)
+  if (played)
   {
-    v5 = [a1 predicateForPlayed:1];
+    v5 = [self predicateForPlayed:1];
     v18[0] = v5;
-    v6 = [a1 predicateForRecentlyPlayed];
-    v18[1] = v6;
-    v7 = [a1 predicateForPlayStateManuallySet:0];
-    v18[2] = v7;
-    v8 = [a1 predicateForIsFromiTunesSync:0];
+    predicateForRecentlyPlayed = [self predicateForRecentlyPlayed];
+    v18[1] = predicateForRecentlyPlayed;
+    predicateForIsBackCatalogItem = [self predicateForPlayStateManuallySet:0];
+    v18[2] = predicateForIsBackCatalogItem;
+    v8 = [self predicateForIsFromiTunesSync:0];
     v18[3] = v8;
     v9 = MEMORY[0x1E695DEC8];
     v10 = v18;
@@ -3684,11 +3684,11 @@ void __77__MTEpisode_NSPredicate__predicateForEpisodesOnUnplayedTabOnPodcastUuid
 
   else
   {
-    v5 = [a1 predicateForDownloadBehavior:4];
-    v6 = [a1 predicateForPlayed:{1, v5}];
-    v17[1] = v6;
-    v7 = [a1 predicateForIsBackCatalogItem];
-    v8 = [v7 NOT];
+    v5 = [self predicateForDownloadBehavior:4];
+    predicateForRecentlyPlayed = [self predicateForPlayed:{1, v5}];
+    v17[1] = predicateForRecentlyPlayed;
+    predicateForIsBackCatalogItem = [self predicateForIsBackCatalogItem];
+    v8 = [predicateForIsBackCatalogItem NOT];
     v17[2] = v8;
     v9 = MEMORY[0x1E695DEC8];
     v10 = v17;
@@ -3705,11 +3705,11 @@ void __77__MTEpisode_NSPredicate__predicateForEpisodesOnUnplayedTabOnPodcastUuid
   return v14;
 }
 
-+ (id)episodicSortDescriptors:(int64_t)a3
++ (id)episodicSortDescriptors:(int64_t)descriptors
 {
-  v4 = [MTPodcast sortOrderAscForShowType:a3];
+  v4 = [MTPodcast sortOrderAscForShowType:descriptors];
 
-  return [a1 sortDescriptorsForPubDateAscending:v4];
+  return [self sortDescriptorsForPubDateAscending:v4];
 }
 
 + (id)sortDescriptorsForTitle
@@ -3753,10 +3753,10 @@ void __77__MTEpisode_NSPredicate__predicateForEpisodesOnUnplayedTabOnPodcastUuid
   return v3;
 }
 
-+ (id)seasonSortDescriptors:(int64_t)a3
++ (id)seasonSortDescriptors:(int64_t)descriptors
 {
   v5 = [MTPodcast sortOrderAscForShowType:?];
-  if (a3 == 4)
+  if (descriptors == 4)
   {
     [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"seasonNumber" ascending:1 reverseNullOrder:1];
   }
@@ -3767,7 +3767,7 @@ void __77__MTEpisode_NSPredicate__predicateForEpisodesOnUnplayedTabOnPodcastUuid
   }
   v6 = ;
   v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v6, 0}];
-  v8 = [a1 sortDescriptorsForEpisodeNumberAscending:v5];
+  v8 = [self sortDescriptorsForEpisodeNumberAscending:v5];
   [v7 addObjectsFromArray:v8];
 
   return v7;
@@ -3790,62 +3790,62 @@ void __77__MTEpisode_NSPredicate__predicateForEpisodesOnUnplayedTabOnPodcastUuid
 
 - (void)resolveAvailabilityDate
 {
-  v2 = self;
+  selfCopy = self;
   MTEpisode.resolveAvailabilityDate()();
 }
 
 - (void)markAsBookmarked
 {
-  v2 = self;
-  if (([(MTEpisode *)v2 isBookmarked]& 1) == 0)
+  selfCopy = self;
+  if (([(MTEpisode *)selfCopy isBookmarked]& 1) == 0)
   {
     sub_1D9176CDC();
-    [(MTEpisode *)v2 markAsBookmarkedOnTimestamp:?];
+    [(MTEpisode *)selfCopy markAsBookmarkedOnTimestamp:?];
   }
 }
 
-- (void)markAsBookmarkedOnTimestamp:(double)a3
+- (void)markAsBookmarkedOnTimestamp:(double)timestamp
 {
-  v5 = self;
-  [(MTEpisode *)v5 setIsBookmarked:1];
-  [(MTEpisode *)v5 lastBookmarkedDate];
-  if (v4 < a3)
+  selfCopy = self;
+  [(MTEpisode *)selfCopy setIsBookmarked:1];
+  [(MTEpisode *)selfCopy lastBookmarkedDate];
+  if (v4 < timestamp)
   {
-    [(MTEpisode *)v5 setLastBookmarkedDate:a3];
+    [(MTEpisode *)selfCopy setLastBookmarkedDate:timestamp];
   }
 }
 
 - (void)markAsUnbookmarked
 {
-  v2 = self;
-  if ([(MTEpisode *)v2 isBookmarked])
+  selfCopy = self;
+  if ([(MTEpisode *)selfCopy isBookmarked])
   {
-    [(MTEpisode *)v2 setIsBookmarked:0];
+    [(MTEpisode *)selfCopy setIsBookmarked:0];
   }
 }
 
 - (NSAttributedString)attributedDescriptionFromHTML
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MTEpisode.attributedDescriptionFromHTML.getter();
 
   return v3;
 }
 
-- (void)setAttributedDescriptionFromHTML:(id)a3
+- (void)setAttributedDescriptionFromHTML:(id)l
 {
-  v5 = a3;
-  v6 = self;
-  MTEpisode.attributedDescriptionFromHTML.setter(a3);
+  lCopy = l;
+  selfCopy = self;
+  MTEpisode.attributedDescriptionFromHTML.setter(l);
 }
 
 - (int64_t)bookmarksSyncType
 {
-  v2 = self;
-  v3 = [(MTEpisode *)v2 priceType];
-  if (v3)
+  selfCopy = self;
+  priceType = [(MTEpisode *)selfCopy priceType];
+  if (priceType)
   {
-    v4 = v3;
+    v4 = priceType;
     sub_1D917820C();
   }
 

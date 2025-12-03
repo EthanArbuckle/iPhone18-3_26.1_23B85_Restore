@@ -1,5 +1,5 @@
 @interface _MKFPresenceBulletinCondition
-+ (id)modelIDForParentRelationshipTo:(id)a3;
++ (id)modelIDForParentRelationshipTo:(id)to;
 - (MKFHome)home;
 - (MKFPresenceBulletinConditionDatabaseID)databaseID;
 - (NSArray)guests;
@@ -8,9 +8,9 @@
 
 @implementation _MKFPresenceBulletinCondition
 
-+ (id)modelIDForParentRelationshipTo:(id)a3
++ (id)modelIDForParentRelationshipTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -25,25 +25,25 @@
 - (NSArray)guests
 {
   v2 = [(_MKFPresenceBulletinCondition *)self valueForKey:@"guests_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)users
 {
   v2 = [(_MKFPresenceBulletinCondition *)self valueForKey:@"users_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (MKFHome)home
 {
-  v2 = [(_MKFPresenceBulletinCondition *)self bulletinRegistration];
-  v3 = [v2 home];
+  bulletinRegistration = [(_MKFPresenceBulletinCondition *)self bulletinRegistration];
+  home = [bulletinRegistration home];
 
-  return v3;
+  return home;
 }
 
 - (MKFPresenceBulletinConditionDatabaseID)databaseID

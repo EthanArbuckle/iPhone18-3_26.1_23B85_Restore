@@ -1,57 +1,57 @@
 @interface WFSystemActionConfigurationServiceViewController
 + (id)_exportedInterface;
 + (id)_remoteViewControllerInterface;
-- (WFSystemActionConfigurationServiceViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)beginRequestWithExtensionContext:(id)a3;
-- (void)setSelectedSystemAction:(id)a3;
+- (WFSystemActionConfigurationServiceViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)beginRequestWithExtensionContext:(id)context;
+- (void)setSelectedSystemAction:(id)action;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation WFSystemActionConfigurationServiceViewController
 
-- (WFSystemActionConfigurationServiceViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (WFSystemActionConfigurationServiceViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1000135EC();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_100006EE0();
   return result;
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100007320();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100007784(a3);
+  selfCopy = self;
+  sub_100007784(appear);
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000781C();
 }
 
-- (void)setSelectedSystemAction:(id)a3
+- (void)setSelectedSystemAction:(id)action
 {
-  v4 = a3;
-  v5 = self;
+  actionCopy = action;
+  selfCopy = self;
   sub_100007A60();
 }
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
+  contextCopy = context;
+  selfCopy = self;
   sub_100007C68();
 }
 

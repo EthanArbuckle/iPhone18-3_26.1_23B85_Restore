@@ -1,42 +1,42 @@
 @interface PXMemoriesFeedWidgetTransitionAnimationCoordinator
-- (BOOL)useDoubleSidedAnimationForUpdatedTileWithIdentifier:(PXTileIdentifier *)a3 fromGeometry:(PXTileGeometry *)a4 fromUserData:(id)a5 toGeometry:(PXTileGeometry *)a6 toUserData:(id)a7;
+- (BOOL)useDoubleSidedAnimationForUpdatedTileWithIdentifier:(PXTileIdentifier *)identifier fromGeometry:(PXTileGeometry *)geometry fromUserData:(id)data toGeometry:(PXTileGeometry *)toGeometry toUserData:(id)userData;
 @end
 
 @implementation PXMemoriesFeedWidgetTransitionAnimationCoordinator
 
-- (BOOL)useDoubleSidedAnimationForUpdatedTileWithIdentifier:(PXTileIdentifier *)a3 fromGeometry:(PXTileGeometry *)a4 fromUserData:(id)a5 toGeometry:(PXTileGeometry *)a6 toUserData:(id)a7
+- (BOOL)useDoubleSidedAnimationForUpdatedTileWithIdentifier:(PXTileIdentifier *)identifier fromGeometry:(PXTileGeometry *)geometry fromUserData:(id)data toGeometry:(PXTileGeometry *)toGeometry toUserData:(id)userData
 {
-  x = a4->center.x;
-  y = a4->center.y;
-  width = a4->size.width;
-  height = a4->size.height;
-  transform = a4->transform;
-  alpha = a4->alpha;
-  zPosition = a4->zPosition;
-  hidden = a4->hidden;
-  v33 = a4->contentSize.width;
-  v31 = a4->contentSize.height;
-  v28 = a4->contentsRect.origin.y;
-  v29 = a4->contentsRect.origin.x;
-  v26 = a4->contentsRect.size.height;
-  v27 = a4->contentsRect.size.width;
-  coordinateSpaceIdentifier = a4->coordinateSpaceIdentifier;
-  v14 = a6->center.x;
-  v13 = a6->center.y;
-  v16 = a6->size.width;
-  v15 = a6->size.height;
-  v38 = a6->transform;
-  v34 = a6->alpha;
-  v36 = a6->zPosition;
-  v17 = a6->hidden;
-  v32 = a6->contentSize.width;
-  v30 = a6->contentSize.height;
-  v24 = a6->contentsRect.origin.y;
-  v25 = a6->contentsRect.origin.x;
-  v22 = a6->contentsRect.size.height;
-  v23 = a6->contentsRect.size.width;
-  v18 = a6->coordinateSpaceIdentifier;
-  if (!CGRectEqualToRect(a4->frame, a6->frame))
+  x = geometry->center.x;
+  y = geometry->center.y;
+  width = geometry->size.width;
+  height = geometry->size.height;
+  transform = geometry->transform;
+  alpha = geometry->alpha;
+  zPosition = geometry->zPosition;
+  hidden = geometry->hidden;
+  v33 = geometry->contentSize.width;
+  v31 = geometry->contentSize.height;
+  v28 = geometry->contentsRect.origin.y;
+  v29 = geometry->contentsRect.origin.x;
+  v26 = geometry->contentsRect.size.height;
+  v27 = geometry->contentsRect.size.width;
+  coordinateSpaceIdentifier = geometry->coordinateSpaceIdentifier;
+  v14 = toGeometry->center.x;
+  v13 = toGeometry->center.y;
+  v16 = toGeometry->size.width;
+  v15 = toGeometry->size.height;
+  v38 = toGeometry->transform;
+  v34 = toGeometry->alpha;
+  v36 = toGeometry->zPosition;
+  v17 = toGeometry->hidden;
+  v32 = toGeometry->contentSize.width;
+  v30 = toGeometry->contentSize.height;
+  v24 = toGeometry->contentsRect.origin.y;
+  v25 = toGeometry->contentsRect.origin.x;
+  v22 = toGeometry->contentsRect.size.height;
+  v23 = toGeometry->contentsRect.size.width;
+  v18 = toGeometry->coordinateSpaceIdentifier;
+  if (!CGRectEqualToRect(geometry->frame, toGeometry->frame))
   {
     return 1;
   }

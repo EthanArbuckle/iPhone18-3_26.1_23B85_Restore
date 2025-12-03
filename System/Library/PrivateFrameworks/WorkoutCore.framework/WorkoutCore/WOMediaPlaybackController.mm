@@ -1,21 +1,21 @@
 @interface WOMediaPlaybackController
-- (void)ppt_setupMediaConfigurationFor:(FIUIWorkoutActivityType *)a3 completionHandler:(id)a4;
-- (void)prepareMediaPlaybackWithCompletionHandler:(id)a3;
-- (void)resetPlaybackControllerWithCompletionHandler:(id)a3;
-- (void)shouldStartMediaPlaybackWhenEligibleForPrewarm:(id)a3 completionHandler:;
-- (void)startMediaPlaybackWithCompletionHandler:(id)a3;
-- (void)stopMediaPlaybackWithCompletionHandler:(id)a3;
+- (void)ppt_setupMediaConfigurationFor:(FIUIWorkoutActivityType *)for completionHandler:(id)handler;
+- (void)prepareMediaPlaybackWithCompletionHandler:(id)handler;
+- (void)resetPlaybackControllerWithCompletionHandler:(id)handler;
+- (void)shouldStartMediaPlaybackWhenEligibleForPrewarm:(id)prewarm completionHandler:;
+- (void)startMediaPlaybackWithCompletionHandler:(id)handler;
+- (void)stopMediaPlaybackWithCompletionHandler:(id)handler;
 @end
 
 @implementation WOMediaPlaybackController
 
-- (void)stopMediaPlaybackWithCompletionHandler:(id)a3
+- (void)stopMediaPlaybackWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -35,13 +35,13 @@
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v8, &_sIeAgH_ytIeAgHr_TRTA_227Tu, v13);
 }
 
-- (void)resetPlaybackControllerWithCompletionHandler:(id)a3
+- (void)resetPlaybackControllerWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -61,14 +61,14 @@
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v8, &_sIeAgH_ytIeAgHr_TRTA_207Tu, v13);
 }
 
-- (void)shouldStartMediaPlaybackWhenEligibleForPrewarm:(id)a3 completionHandler:
+- (void)shouldStartMediaPlaybackWhenEligibleForPrewarm:(id)prewarm completionHandler:
 {
   v4 = v3;
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a3);
+  v11 = _Block_copy(prewarm);
   v12 = _Block_copy(v4);
   v13 = swift_allocObject();
   v13[2] = v11;
@@ -90,13 +90,13 @@
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v10, &_sIeAgH_ytIeAgHr_TRTA_189Tu, v16);
 }
 
-- (void)prepareMediaPlaybackWithCompletionHandler:(id)a3
+- (void)prepareMediaPlaybackWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -116,13 +116,13 @@
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v8, &_sIeAgH_ytIeAgHr_TRTA_174Tu, v13);
 }
 
-- (void)startMediaPlaybackWithCompletionHandler:(id)a3
+- (void)startMediaPlaybackWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -142,15 +142,15 @@
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v8, &_sIeAgH_ytIeAgHr_TRTA_159Tu, v13);
 }
 
-- (void)ppt_setupMediaConfigurationFor:(FIUIWorkoutActivityType *)a3 completionHandler:(id)a4
+- (void)ppt_setupMediaConfigurationFor:(FIUIWorkoutActivityType *)for completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = for;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -165,7 +165,7 @@
   v15[3] = 0;
   v15[4] = &_sIeghH_IeAgH_TRTATu;
   v15[5] = v14;
-  v16 = a3;
+  forCopy = for;
 
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v10, &_sIeAgH_ytIeAgHr_TRTATu, v15);
 }

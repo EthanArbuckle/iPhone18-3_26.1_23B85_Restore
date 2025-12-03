@@ -1,5 +1,5 @@
 @interface VUISidebandMediaEntityImageLoadOperation
-- (void)_finishWithImage:(id)a3;
+- (void)_finishWithImage:(id)image;
 - (void)executionDidBegin;
 @end
 
@@ -7,25 +7,25 @@
 
 - (void)executionDidBegin
 {
-  v3 = [(VUIImageLoadParamsOperation *)self params];
+  params = [(VUIImageLoadParamsOperation *)self params];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(VUIImageLoadParamsOperation *)self params];
-    v6 = [v5 imageInfo];
-    if (v6)
+    params2 = [(VUIImageLoadParamsOperation *)self params];
+    imageInfo = [params2 imageInfo];
+    if (imageInfo)
     {
       objc_initWeak(&location, self);
-      v7 = [v6 managedObjectContext];
+      managedObjectContext = [imageInfo managedObjectContext];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __61__VUISidebandMediaEntityImageLoadOperation_executionDidBegin__block_invoke;
       v8[3] = &unk_1E872F038;
       objc_copyWeak(&v10, &location);
-      v9 = v6;
-      [v7 performBlock:v8];
+      v9 = imageInfo;
+      [managedObjectContext performBlock:v8];
 
       objc_destroyWeak(&v10);
       objc_destroyWeak(&location);
@@ -96,11 +96,11 @@ void __61__VUISidebandMediaEntityImageLoadOperation_executionDidBegin__block_inv
   [v2 refreshObject:*(a1 + 32) mergeChanges:0];
 }
 
-- (void)_finishWithImage:(id)a3
+- (void)_finishWithImage:(id)image
 {
-  if (a3)
+  if (image)
   {
-    v4 = [MEMORY[0x1E69D5940] imageWithCGImageRef:objc_msgSend(a3 preserveAlpha:{"CGImage"), 1}];
+    v4 = [MEMORY[0x1E69D5940] imageWithCGImageRef:objc_msgSend(image preserveAlpha:{"CGImage"), 1}];
     [(VUIImageLoadParamsOperation *)self setImage:v4];
   }
 

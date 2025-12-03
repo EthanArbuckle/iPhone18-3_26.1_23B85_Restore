@@ -1,9 +1,9 @@
 @interface IMManualUpdater
-- (IMManualUpdater)initWithTarget:(id)a3 action:(SEL)a4;
+- (IMManualUpdater)initWithTarget:(id)target action:(SEL)action;
 - (SEL)action;
 - (id)description;
 - (id)target;
-- (void)setAction:(SEL)a3;
+- (void)setAction:(SEL)action;
 - (void)setNeedsUpdate;
 - (void)updateIfNeeded;
 @end
@@ -53,17 +53,17 @@
   return v9;
 }
 
-- (IMManualUpdater)initWithTarget:(id)a3 action:(SEL)a4
+- (IMManualUpdater)initWithTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
+  targetCopy = target;
   v12.receiver = self;
   v12.super_class = IMManualUpdater;
   v7 = [(IMManualUpdater *)&v12 init];
   v9 = v7;
   if (v7)
   {
-    objc_msgSend_setTarget_(v7, v8, v6);
-    objc_msgSend_setAction_(v9, v10, a4);
+    objc_msgSend_setTarget_(v7, v8, targetCopy);
+    objc_msgSend_setAction_(v9, v10, action);
   }
 
   return v9;
@@ -78,19 +78,19 @@
   }
 }
 
-- (void)setAction:(SEL)a3
+- (void)setAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->_action = v3;
+  self->_action = actionCopy;
 }
 
 @end

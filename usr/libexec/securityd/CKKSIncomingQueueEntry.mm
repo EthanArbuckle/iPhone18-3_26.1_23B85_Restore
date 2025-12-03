@@ -1,35 +1,35 @@
 @interface CKKSIncomingQueueEntry
-+ (BOOL)allIQEsHaveValidUnwrappingKeysInContextID:(id)a3 zoneID:(id)a4 error:(id *)a5;
-+ (id)countNewEntriesByKeyWithContextID:(id)a3 zoneID:(id)a4 error:(id *)a5;
-+ (id)countsByStateWithContextID:(id)a3 zoneID:(id)a4 error:(id *)a5;
-+ (id)fetch:(int64_t)a3 startingAtUUID:(id)a4 state:(id)a5 action:(id)a6 contextID:(id)a7 zoneID:(id)a8 error:(id *)a9;
-+ (id)fromDatabase:(id)a3 contextID:(id)a4 zoneID:(id)a5 error:(id *)a6;
-+ (id)fromDatabaseRow:(id)a3;
++ (BOOL)allIQEsHaveValidUnwrappingKeysInContextID:(id)d zoneID:(id)iD error:(id *)error;
++ (id)countNewEntriesByKeyWithContextID:(id)d zoneID:(id)iD error:(id *)error;
++ (id)countsByStateWithContextID:(id)d zoneID:(id)iD error:(id *)error;
++ (id)fetch:(int64_t)fetch startingAtUUID:(id)d state:(id)state action:(id)action contextID:(id)iD zoneID:(id)zoneID error:(id *)error;
++ (id)fromDatabase:(id)database contextID:(id)d zoneID:(id)iD error:(id *)error;
++ (id)fromDatabaseRow:(id)row;
 + (id)sqlColumns;
-+ (id)tryFromDatabase:(id)a3 contextID:(id)a4 zoneID:(id)a5 error:(id *)a6;
-+ (int64_t)countByState:(id)a3 contextID:(id)a4 zone:(id)a5 error:(id *)a6;
-- (CKKSIncomingQueueEntry)initWithCKKSItem:(id)a3 action:(id)a4 state:(id)a5;
++ (id)tryFromDatabase:(id)database contextID:(id)d zoneID:(id)iD error:(id *)error;
++ (int64_t)countByState:(id)state contextID:(id)d zone:(id)zone error:(id *)error;
+- (CKKSIncomingQueueEntry)initWithCKKSItem:(id)item action:(id)action state:(id)state;
 - (NSString)contextID;
 - (NSString)uuid;
 - (id)description;
 - (id)sqlValues;
 - (id)whereClauseToFindSelf;
-- (void)setUuid:(id)a3;
+- (void)setUuid:(id)uuid;
 @end
 
 @implementation CKKSIncomingQueueEntry
 
 - (id)sqlValues
 {
-  v3 = [(CKKSIncomingQueueEntry *)self item];
-  v4 = [v3 sqlValues];
-  v5 = [v4 mutableCopy];
+  item = [(CKKSIncomingQueueEntry *)self item];
+  sqlValues = [item sqlValues];
+  v5 = [sqlValues mutableCopy];
 
-  v6 = [(CKKSIncomingQueueEntry *)self action];
-  [v5 setObject:v6 forKeyedSubscript:@"action"];
+  action = [(CKKSIncomingQueueEntry *)self action];
+  [v5 setObject:action forKeyedSubscript:@"action"];
 
-  v7 = [(CKKSIncomingQueueEntry *)self state];
-  [v5 setObject:v7 forKeyedSubscript:@"state"];
+  state = [(CKKSIncomingQueueEntry *)self state];
+  [v5 setObject:state forKeyedSubscript:@"state"];
 
   return v5;
 }
@@ -37,61 +37,61 @@
 - (id)whereClauseToFindSelf
 {
   v11[0] = @"contextID";
-  v3 = [(CKKSIncomingQueueEntry *)self contextID];
-  v12[0] = v3;
+  contextID = [(CKKSIncomingQueueEntry *)self contextID];
+  v12[0] = contextID;
   v11[1] = @"UUID";
-  v4 = [(CKKSIncomingQueueEntry *)self uuid];
-  v12[1] = v4;
+  uuid = [(CKKSIncomingQueueEntry *)self uuid];
+  v12[1] = uuid;
   v11[2] = @"state";
-  v5 = [(CKKSIncomingQueueEntry *)self state];
-  v12[2] = v5;
+  state = [(CKKSIncomingQueueEntry *)self state];
+  v12[2] = state;
   v11[3] = @"ckzone";
-  v6 = [(CKKSIncomingQueueEntry *)self item];
-  v7 = [v6 zoneID];
-  v8 = [v7 zoneName];
-  v12[3] = v8;
+  item = [(CKKSIncomingQueueEntry *)self item];
+  zoneID = [item zoneID];
+  zoneName = [zoneID zoneName];
+  v12[3] = zoneName;
   v9 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:4];
 
   return v9;
 }
 
-- (void)setUuid:(id)a3
+- (void)setUuid:(id)uuid
 {
-  v4 = a3;
-  v5 = [(CKKSIncomingQueueEntry *)self item];
-  [v5 setUuid:v4];
+  uuidCopy = uuid;
+  item = [(CKKSIncomingQueueEntry *)self item];
+  [item setUuid:uuidCopy];
 }
 
 - (NSString)uuid
 {
-  v2 = [(CKKSIncomingQueueEntry *)self item];
-  v3 = [v2 uuid];
+  item = [(CKKSIncomingQueueEntry *)self item];
+  uuid = [item uuid];
 
-  return v3;
+  return uuid;
 }
 
 - (NSString)contextID
 {
-  v2 = [(CKKSIncomingQueueEntry *)self item];
-  v3 = [v2 contextID];
+  item = [(CKKSIncomingQueueEntry *)self item];
+  contextID = [item contextID];
 
-  return v3;
+  return contextID;
 }
 
-- (CKKSIncomingQueueEntry)initWithCKKSItem:(id)a3 action:(id)a4 state:(id)a5
+- (CKKSIncomingQueueEntry)initWithCKKSItem:(id)item action:(id)action state:(id)state
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  itemCopy = item;
+  actionCopy = action;
+  stateCopy = state;
   v15.receiver = self;
   v15.super_class = CKKSIncomingQueueEntry;
   v12 = [(CKKSIncomingQueueEntry *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_item, a3);
-    objc_storeStrong(&v13->_action, a4);
-    objc_storeStrong(&v13->_state, a5);
+    objc_storeStrong(&v12->_item, item);
+    objc_storeStrong(&v13->_action, action);
+    objc_storeStrong(&v13->_state, state);
   }
 
   return v13;
@@ -101,31 +101,31 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v15 = [(CKKSIncomingQueueEntry *)self item];
-  v5 = [v15 contextID];
-  v6 = [(CKKSIncomingQueueEntry *)self item];
-  v7 = [v6 zoneID];
-  v8 = [v7 zoneName];
-  v9 = [(CKKSIncomingQueueEntry *)self action];
-  v10 = [(CKKSIncomingQueueEntry *)self item];
-  v11 = [v10 uuid];
-  v12 = [(CKKSIncomingQueueEntry *)self state];
-  v13 = [NSString stringWithFormat:@"<%@[%@](%@): %@ %@ (%@)>", v4, v5, v8, v9, v11, v12];
+  item = [(CKKSIncomingQueueEntry *)self item];
+  contextID = [item contextID];
+  item2 = [(CKKSIncomingQueueEntry *)self item];
+  zoneID = [item2 zoneID];
+  zoneName = [zoneID zoneName];
+  action = [(CKKSIncomingQueueEntry *)self action];
+  item3 = [(CKKSIncomingQueueEntry *)self item];
+  uuid = [item3 uuid];
+  state = [(CKKSIncomingQueueEntry *)self state];
+  v13 = [NSString stringWithFormat:@"<%@[%@](%@): %@ %@ (%@)>", v4, contextID, zoneName, action, uuid, state];
 
   return v13;
 }
 
-+ (BOOL)allIQEsHaveValidUnwrappingKeysInContextID:(id)a3 zoneID:(id)a4 error:(id *)a5
++ (BOOL)allIQEsHaveValidUnwrappingKeysInContextID:(id)d zoneID:(id)iD error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v37 = 0;
-  v9 = [(CKKSSQLDatabaseObject *)CKKSIncomingQueueEntry allParentKeyUUIDsInContextID:v7 zoneID:v8 error:&v37];
+  v9 = [(CKKSSQLDatabaseObject *)CKKSIncomingQueueEntry allParentKeyUUIDsInContextID:dCopy zoneID:iDCopy error:&v37];
   v10 = v37;
   if (v10)
   {
-    v11 = [v8 zoneName];
-    v12 = sub_100019104(@"ckkskey", v11);
+    zoneName = [iDCopy zoneName];
+    v12 = sub_100019104(@"ckkskey", zoneName);
 
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -134,11 +134,11 @@
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Unable to find IQE parent keys: %@", buf, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       v13 = v10;
       v14 = 0;
-      *a5 = v10;
+      *error = v10;
     }
 
     else
@@ -162,7 +162,7 @@
   }
 
   v17 = v16;
-  v30 = a5;
+  errorCopy = error;
   v18 = *v34;
   v31 = v9;
   while (2)
@@ -176,13 +176,13 @@
 
       v20 = *(*(&v33 + 1) + 8 * i);
       v32 = 0;
-      v21 = [CKKSKey tryFromDatabase:v20 contextID:v7 zoneID:v8 error:&v32, v30];
+      errorCopy = [CKKSKey tryFromDatabase:v20 contextID:dCopy zoneID:iDCopy error:&v32, errorCopy];
       v22 = v32;
       if (v22)
       {
         v23 = v22;
-        v24 = [v8 zoneName];
-        v25 = sub_100019104(@"ckksheal", v24);
+        zoneName2 = [iDCopy zoneName];
+        v25 = sub_100019104(@"ckksheal", zoneName2);
 
         v9 = v31;
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -194,19 +194,19 @@
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "Unable to find key %@: %@", buf, 0x16u);
         }
 
-        if (v30)
+        if (errorCopy)
         {
           v26 = v23;
-          *v30 = v23;
+          *errorCopy = v23;
         }
 
         goto LABEL_25;
       }
 
-      if (!v21)
+      if (!errorCopy)
       {
-        v27 = [v8 zoneName];
-        v28 = sub_100019104(@"ckkskey", v27);
+        zoneName3 = [iDCopy zoneName];
+        v28 = sub_100019104(@"ckkskey", zoneName3);
 
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
         {
@@ -216,7 +216,7 @@
         }
 
         v23 = 0;
-        v21 = 0;
+        errorCopy = 0;
         v9 = v31;
 LABEL_25:
 
@@ -244,14 +244,14 @@ LABEL_27:
   return v14;
 }
 
-+ (id)countNewEntriesByKeyWithContextID:(id)a3 zoneID:(id)a4 error:(id *)a5
++ (id)countNewEntriesByKeyWithContextID:(id)d zoneID:(id)iD error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v9 = objc_alloc_init(NSMutableDictionary);
-  v10 = [objc_opt_class() sqlTable];
+  sqlTable = [objc_opt_class() sqlTable];
   v23[0] = @"contextID";
-  v11 = v7;
+  v11 = dCopy;
   v12 = v11;
   if (v11)
   {
@@ -267,11 +267,11 @@ LABEL_27:
 
   v24[0] = v14;
   v23[1] = @"ckzone";
-  v15 = [v8 zoneName];
+  zoneName = [iDCopy zoneName];
 
-  if (v15)
+  if (zoneName)
   {
-    v16 = v15;
+    v16 = zoneName;
   }
 
   else
@@ -291,23 +291,23 @@ LABEL_27:
   v21[3] = &unk_1003385E8;
   v19 = v9;
   v22 = v19;
-  [CKKSSQLDatabaseObject queryDatabaseTable:v10 where:v18 columns:&off_1003657F0 groupBy:&off_100365808 orderBy:0 limit:-1 processRow:v21 error:a5];
+  [CKKSSQLDatabaseObject queryDatabaseTable:sqlTable where:v18 columns:&off_1003657F0 groupBy:&off_100365808 orderBy:0 limit:-1 processRow:v21 error:error];
 
   return v19;
 }
 
-+ (int64_t)countByState:(id)a3 contextID:(id)a4 zone:(id)a5 error:(id *)a6
++ (int64_t)countByState:(id)state contextID:(id)d zone:(id)zone error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  stateCopy = state;
+  dCopy = d;
+  zoneCopy = zone;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
   v28 = -1;
-  v12 = [objc_opt_class() sqlTable];
+  sqlTable = [objc_opt_class() sqlTable];
   v29[0] = @"contextID";
-  v13 = v10;
+  v13 = dCopy;
   v14 = v13;
   if (v13)
   {
@@ -323,11 +323,11 @@ LABEL_27:
 
   v30[0] = v16;
   v29[1] = @"ckzone";
-  v17 = [v11 zoneName];
-  v18 = v17;
-  if (v17)
+  zoneName = [zoneCopy zoneName];
+  v18 = zoneName;
+  if (zoneName)
   {
-    v19 = v17;
+    v19 = zoneName;
   }
 
   else
@@ -339,14 +339,14 @@ LABEL_27:
 
   v29[2] = @"state";
   v30[1] = v20;
-  v30[2] = v9;
+  v30[2] = stateCopy;
   v21 = [NSDictionary dictionaryWithObjects:v30 forKeys:v29 count:3];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_1000D23EC;
   v24[3] = &unk_100344498;
   v24[4] = &v25;
-  [CKKSSQLDatabaseObject queryDatabaseTable:v12 where:v21 columns:&off_1003657D8 groupBy:0 orderBy:0 limit:-1 processRow:v24 error:a6];
+  [CKKSSQLDatabaseObject queryDatabaseTable:sqlTable where:v21 columns:&off_1003657D8 groupBy:0 orderBy:0 limit:-1 processRow:v24 error:error];
 
   v22 = v26[3];
   _Block_object_dispose(&v25, 8);
@@ -354,14 +354,14 @@ LABEL_27:
   return v22;
 }
 
-+ (id)countsByStateWithContextID:(id)a3 zoneID:(id)a4 error:(id *)a5
++ (id)countsByStateWithContextID:(id)d zoneID:(id)iD error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v9 = objc_alloc_init(NSMutableDictionary);
-  v10 = [objc_opt_class() sqlTable];
+  sqlTable = [objc_opt_class() sqlTable];
   v23[0] = @"contextID";
-  v11 = v7;
+  v11 = dCopy;
   v12 = v11;
   if (v11)
   {
@@ -377,11 +377,11 @@ LABEL_27:
 
   v23[1] = @"ckzone";
   v24[0] = v14;
-  v15 = [v8 zoneName];
+  zoneName = [iDCopy zoneName];
 
-  if (v15)
+  if (zoneName)
   {
-    v16 = v15;
+    v16 = zoneName;
   }
 
   else
@@ -399,22 +399,22 @@ LABEL_27:
   v21[3] = &unk_1003385E8;
   v19 = v9;
   v22 = v19;
-  [CKKSSQLDatabaseObject queryDatabaseTable:v10 where:v18 columns:&off_1003657A8 groupBy:&off_1003657C0 orderBy:0 limit:-1 processRow:v21 error:a5];
+  [CKKSSQLDatabaseObject queryDatabaseTable:sqlTable where:v18 columns:&off_1003657A8 groupBy:&off_1003657C0 orderBy:0 limit:-1 processRow:v21 error:error];
 
   return v19;
 }
 
-+ (id)fromDatabaseRow:(id)a3
++ (id)fromDatabaseRow:(id)row
 {
-  v3 = a3;
+  rowCopy = row;
   v4 = [CKKSIncomingQueueEntry alloc];
-  v5 = [CKKSItem fromDatabaseRow:v3];
-  v6 = [v3 objectForKeyedSubscript:@"action"];
-  v7 = [v6 asString];
-  v8 = [v3 objectForKeyedSubscript:@"state"];
+  v5 = [CKKSItem fromDatabaseRow:rowCopy];
+  v6 = [rowCopy objectForKeyedSubscript:@"action"];
+  asString = [v6 asString];
+  v8 = [rowCopy objectForKeyedSubscript:@"state"];
 
-  v9 = [v8 asString];
-  v10 = [(CKKSIncomingQueueEntry *)v4 initWithCKKSItem:v5 action:v7 state:v9];
+  asString2 = [v8 asString];
+  v10 = [(CKKSIncomingQueueEntry *)v4 initWithCKKSItem:v5 action:asString state:asString2];
 
   return v10;
 }
@@ -427,15 +427,15 @@ LABEL_27:
   return v3;
 }
 
-+ (id)fetch:(int64_t)a3 startingAtUUID:(id)a4 state:(id)a5 action:(id)a6 contextID:(id)a7 zoneID:(id)a8 error:(id *)a9
++ (id)fetch:(int64_t)fetch startingAtUUID:(id)d state:(id)state action:(id)action contextID:(id)iD zoneID:(id)zoneID error:(id *)error
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  dCopy = d;
+  stateCopy = state;
+  actionCopy = action;
+  iDCopy = iD;
+  zoneIDCopy = zoneID;
   v37 = @"contextID";
-  v18 = v16;
+  v18 = iDCopy;
   v19 = v18;
   if (v18)
   {
@@ -451,7 +451,7 @@ LABEL_27:
 
   v40[0] = v21;
   v38 = @"state";
-  v22 = v14;
+  v22 = stateCopy;
   v23 = v22;
   if (v22)
   {
@@ -467,11 +467,11 @@ LABEL_27:
 
   v40[1] = v25;
   v39 = @"ckzone";
-  v26 = [v17 zoneName];
-  v27 = v26;
-  if (v26)
+  zoneName = [zoneIDCopy zoneName];
+  v27 = zoneName;
+  if (zoneName)
   {
-    v28 = v26;
+    v28 = zoneName;
   }
 
   else
@@ -485,25 +485,25 @@ LABEL_27:
   v30 = [NSDictionary dictionaryWithObjects:v40 forKeys:&v37 count:3];
   v31 = [v30 mutableCopy];
 
-  [v31 setObject:v15 forKeyedSubscript:@"action"];
-  if (v13)
+  [v31 setObject:actionCopy forKeyedSubscript:@"action"];
+  if (dCopy)
   {
-    v32 = [CKKSSQLWhereValue op:3 value:v13];
+    v32 = [CKKSSQLWhereValue op:3 value:dCopy];
     [v31 setObject:v32 forKeyedSubscript:@"UUID"];
   }
 
-  v33 = [a1 fetch:a3 where:v31 orderBy:&off_100365778 error:{a9, a1, a3, a9, v37, v38}];
+  v33 = [self fetch:fetch where:v31 orderBy:&off_100365778 error:{error, self, fetch, error, v37, v38}];
 
   return v33;
 }
 
-+ (id)tryFromDatabase:(id)a3 contextID:(id)a4 zoneID:(id)a5 error:(id *)a6
++ (id)tryFromDatabase:(id)database contextID:(id)d zoneID:(id)iD error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  databaseCopy = database;
+  dCopy = d;
+  iDCopy = iD;
   v28[0] = @"contextID";
-  v13 = v11;
+  v13 = dCopy;
   v14 = v13;
   if (v13)
   {
@@ -519,7 +519,7 @@ LABEL_27:
 
   v29[0] = v16;
   v28[1] = @"UUID";
-  v17 = v10;
+  v17 = databaseCopy;
   v18 = v17;
   if (v17)
   {
@@ -535,11 +535,11 @@ LABEL_27:
 
   v29[1] = v20;
   v28[2] = @"ckzone";
-  v21 = [v12 zoneName];
-  v22 = v21;
-  if (v21)
+  zoneName = [iDCopy zoneName];
+  v22 = zoneName;
+  if (zoneName)
   {
-    v23 = v21;
+    v23 = zoneName;
   }
 
   else
@@ -551,18 +551,18 @@ LABEL_27:
 
   v29[2] = v24;
   v25 = [NSDictionary dictionaryWithObjects:v29 forKeys:v28 count:3];
-  v26 = [a1 tryFromDatabaseWhere:v25 error:a6];
+  v26 = [self tryFromDatabaseWhere:v25 error:error];
 
   return v26;
 }
 
-+ (id)fromDatabase:(id)a3 contextID:(id)a4 zoneID:(id)a5 error:(id *)a6
++ (id)fromDatabase:(id)database contextID:(id)d zoneID:(id)iD error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  databaseCopy = database;
+  dCopy = d;
+  iDCopy = iD;
   v28[0] = @"contextID";
-  v13 = v11;
+  v13 = dCopy;
   v14 = v13;
   if (v13)
   {
@@ -578,7 +578,7 @@ LABEL_27:
 
   v29[0] = v16;
   v28[1] = @"UUID";
-  v17 = v10;
+  v17 = databaseCopy;
   v18 = v17;
   if (v17)
   {
@@ -594,11 +594,11 @@ LABEL_27:
 
   v29[1] = v20;
   v28[2] = @"ckzone";
-  v21 = [v12 zoneName];
-  v22 = v21;
-  if (v21)
+  zoneName = [iDCopy zoneName];
+  v22 = zoneName;
+  if (zoneName)
   {
-    v23 = v21;
+    v23 = zoneName;
   }
 
   else
@@ -610,7 +610,7 @@ LABEL_27:
 
   v29[2] = v24;
   v25 = [NSDictionary dictionaryWithObjects:v29 forKeys:v28 count:3];
-  v26 = [a1 fromDatabaseWhere:v25 error:a6];
+  v26 = [self fromDatabaseWhere:v25 error:error];
 
   return v26;
 }

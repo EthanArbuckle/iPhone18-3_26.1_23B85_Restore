@@ -1,19 +1,19 @@
 @interface BlastDoorHWHandwritingItem
-+ (id)createHandwritingItem:(id)a3 uuid:(id)a4 date:(id)a5;
++ (id)createHandwritingItem:(id)item uuid:(id)uuid date:(id)date;
 @end
 
 @implementation BlastDoorHWHandwritingItem
 
-+ (id)createHandwritingItem:(id)a3 uuid:(id)a4 date:(id)a5
++ (id)createHandwritingItem:(id)item uuid:(id)uuid date:(id)date
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  itemCopy = item;
+  uuidCopy = uuid;
+  dateCopy = date;
   if (getHWHandwritingItemClass())
   {
-    v10 = [objc_alloc(getHWHandwritingItemClass()) initWithDrawing:v7];
-    [v10 setUuid:v8];
-    [v10 setCreationDate:v9];
+    v10 = [objc_alloc(getHWHandwritingItemClass()) initWithDrawing:itemCopy];
+    [v10 setUuid:uuidCopy];
+    [v10 setCreationDate:dateCopy];
   }
 
   else

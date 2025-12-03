@@ -1,55 +1,55 @@
 @interface RadioCategoryFilterCell
-- (_TtC5Media23RadioCategoryFilterCell)initWithCoder:(id)a3;
-- (_TtC5Media23RadioCategoryFilterCell)initWithFrame:(CGRect)a3;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
-- (void)controlChangedWithSender:(id)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (_TtC5Media23RadioCategoryFilterCell)initWithCoder:(id)coder;
+- (_TtC5Media23RadioCategoryFilterCell)initWithFrame:(CGRect)frame;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
+- (void)controlChangedWithSender:(id)sender;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 @end
 
 @implementation RadioCategoryFilterCell
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
   v8.receiver = self;
   v8.super_class = type metadata accessor for RadioCategoryFilterCell();
-  v4 = a3;
+  attributesCopy = attributes;
   v5 = v8.receiver;
-  v6 = [(RadioCategoryFilterCell *)&v8 preferredLayoutAttributesFittingAttributes:v4];
+  v6 = [(RadioCategoryFilterCell *)&v8 preferredLayoutAttributesFittingAttributes:attributesCopy];
   [v6 size];
   [v6 setSize:?];
 
   return v6;
 }
 
-- (void)controlChangedWithSender:(id)a3
+- (void)controlChangedWithSender:(id)sender
 {
   v3 = *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC5Media23RadioCategoryFilterCell_handler);
   if (v3)
   {
     v5 = *&self->segmentedControl[OBJC_IVAR____TtC5Media23RadioCategoryFilterCell_handler];
-    v6 = a3;
-    v7 = self;
+    senderCopy = sender;
+    selfCopy = self;
     sub_10005BF90(v3);
-    v3([v6 selectedSegmentIndex]);
+    v3([senderCopy selectedSegmentIndex]);
 
     sub_10003DEF8(v3);
   }
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100051C4C(v6, v7);
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  sub_100051C4C(contextCopy, coordinatorCopy);
 }
 
-- (_TtC5Media23RadioCategoryFilterCell)initWithFrame:(CGRect)a3
+- (_TtC5Media23RadioCategoryFilterCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC5Media23RadioCategoryFilterCell_segmentedControl) = 0;
   v8 = (&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC5Media23RadioCategoryFilterCell_handler);
   v9 = type metadata accessor for RadioCategoryFilterCell();
@@ -60,7 +60,7 @@
   return [(RadioCategoryFilterCell *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtC5Media23RadioCategoryFilterCell)initWithCoder:(id)a3
+- (_TtC5Media23RadioCategoryFilterCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC5Media23RadioCategoryFilterCell_segmentedControl) = 0;
   v4 = (&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC5Media23RadioCategoryFilterCell_handler);
@@ -68,8 +68,8 @@
   v4[1] = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for RadioCategoryFilterCell();
-  v5 = a3;
-  v6 = [(RadioCategoryFilterCell *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(RadioCategoryFilterCell *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

@@ -1,65 +1,65 @@
 @interface KTOptInStateRequest
-- (KTOptInStateRequest)initWithApplication:(id)a3;
-- (KTOptInStateRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (KTOptInStateRequest)initWithApplication:(id)application;
+- (KTOptInStateRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation KTOptInStateRequest
 
-- (KTOptInStateRequest)initWithApplication:(id)a3
+- (KTOptInStateRequest)initWithApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   v9.receiver = self;
   v9.super_class = KTOptInStateRequest;
   v5 = [(KTOptInStateRequest *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(KTOptInStateRequest *)v5 setApplication:v4];
+    [(KTOptInStateRequest *)v5 setApplication:applicationCopy];
     v7 = v6;
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(KTOptInStateRequest *)self application];
-  [v7 encodeObject:v4 forKey:@"application"];
+  coderCopy = coder;
+  application = [(KTOptInStateRequest *)self application];
+  [coderCopy encodeObject:application forKey:@"application"];
 
-  [v7 encodeBool:-[KTOptInStateRequest fetchCloudKit](self forKey:{"fetchCloudKit"), @"fetchCloudKit"}];
-  [v7 encodeBool:-[KTOptInStateRequest sync](self forKey:{"sync"), @"synchronous"}];
+  [coderCopy encodeBool:-[KTOptInStateRequest fetchCloudKit](self forKey:{"fetchCloudKit"), @"fetchCloudKit"}];
+  [coderCopy encodeBool:-[KTOptInStateRequest sync](self forKey:{"sync"), @"synchronous"}];
   v5 = [(KTOptInStateRequest *)self uri];
 
   if (v5)
   {
     v6 = [(KTOptInStateRequest *)self uri];
-    [v7 encodeObject:v6 forKey:@"uri"];
+    [coderCopy encodeObject:v6 forKey:@"uri"];
   }
 }
 
-- (KTOptInStateRequest)initWithCoder:(id)a3
+- (KTOptInStateRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uri"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"application"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uri"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"application"];
   if (v6 && (v10.receiver = self, v10.super_class = KTOptInStateRequest, v7 = [(KTOptInStateRequest *)&v10 init], (self = v7) != 0))
   {
     [(KTOptInStateRequest *)v7 setApplication:v6];
     [(KTOptInStateRequest *)self setUri:v5];
-    -[KTOptInStateRequest setFetchCloudKit:](self, "setFetchCloudKit:", [v4 decodeBoolForKey:@"fetchCloudKit"]);
-    -[KTOptInStateRequest setSync:](self, "setSync:", [v4 decodeBoolForKey:@"synchronous"]);
+    -[KTOptInStateRequest setFetchCloudKit:](self, "setFetchCloudKit:", [coderCopy decodeBoolForKey:@"fetchCloudKit"]);
+    -[KTOptInStateRequest setSync:](self, "setSync:", [coderCopy decodeBoolForKey:@"synchronous"]);
     self = self;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

@@ -1,15 +1,15 @@
 @interface UserLegalAgreementConsent
 + (id)_allProperties;
 + (id)_propertySettersForObject;
-+ (id)_propertyValuesFor:(id)a3;
-+ (id)_userLegalAgreementConsentsForQuery:(id)a3 inDatabase:(id)a4;
-+ (id)userLegalAgreementConsentsForPassUniqueID:(id)a3 inDatabase:(id)a4;
-+ (id)userLegalAgreementConsentsInDatabase:(id)a3;
-+ (void)deleteForPassUniqueID:(id)a3 inDatabase:(id)a4;
-+ (void)insertOrUpdate:(id)a3 inDatabase:(id)a4;
-- (UserLegalAgreementConsent)initWithObject:(id)a3 inDatabase:(id)a4;
++ (id)_propertyValuesFor:(id)for;
++ (id)_userLegalAgreementConsentsForQuery:(id)query inDatabase:(id)database;
++ (id)userLegalAgreementConsentsForPassUniqueID:(id)d inDatabase:(id)database;
++ (id)userLegalAgreementConsentsInDatabase:(id)database;
++ (void)deleteForPassUniqueID:(id)d inDatabase:(id)database;
++ (void)insertOrUpdate:(id)update inDatabase:(id)database;
+- (UserLegalAgreementConsent)initWithObject:(id)object inDatabase:(id)database;
 - (id)agreement;
-- (void)updateWithObject:(id)a3;
+- (void)updateWithObject:(id)object;
 @end
 
 @implementation UserLegalAgreementConsent
@@ -49,59 +49,59 @@
   return v2;
 }
 
-- (UserLegalAgreementConsent)initWithObject:(id)a3 inDatabase:(id)a4
+- (UserLegalAgreementConsent)initWithObject:(id)object inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() _propertyValuesFor:v7];
+  databaseCopy = database;
+  objectCopy = object;
+  v8 = [objc_opt_class() _propertyValuesFor:objectCopy];
 
-  v9 = [(SQLiteEntity *)self initWithPropertyValues:v8 inDatabase:v6];
+  v9 = [(SQLiteEntity *)self initWithPropertyValues:v8 inDatabase:databaseCopy];
   return v9;
 }
 
-- (void)updateWithObject:(id)a3
+- (void)updateWithObject:(id)object
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _propertyValuesFor:v4];
+  objectCopy = object;
+  v5 = [objc_opt_class() _propertyValuesFor:objectCopy];
 
   [(SQLiteEntity *)self setValuesWithDictionary:v5];
 }
 
-+ (id)userLegalAgreementConsentsInDatabase:(id)a3
++ (id)userLegalAgreementConsentsInDatabase:(id)database
 {
-  v4 = a3;
-  v5 = [a1 queryWithDatabase:v4 predicate:0];
-  v6 = [a1 _userLegalAgreementConsentsForQuery:v5 inDatabase:v4];
+  databaseCopy = database;
+  v5 = [self queryWithDatabase:databaseCopy predicate:0];
+  v6 = [self _userLegalAgreementConsentsForQuery:v5 inDatabase:databaseCopy];
 
   return v6;
 }
 
-+ (id)userLegalAgreementConsentsForPassUniqueID:(id)a3 inDatabase:(id)a4
++ (id)userLegalAgreementConsentsForPassUniqueID:(id)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForPassUniqueIdentifier:a3];
-  v8 = [a1 queryWithDatabase:v6 predicate:v7];
-  v9 = [a1 _userLegalAgreementConsentsForQuery:v8 inDatabase:v6];
+  databaseCopy = database;
+  v7 = [self _predicateForPassUniqueIdentifier:d];
+  v8 = [self queryWithDatabase:databaseCopy predicate:v7];
+  v9 = [self _userLegalAgreementConsentsForQuery:v8 inDatabase:databaseCopy];
 
   return v9;
 }
 
-+ (id)_userLegalAgreementConsentsForQuery:(id)a3 inDatabase:(id)a4
++ (id)_userLegalAgreementConsentsForQuery:(id)query inDatabase:(id)database
 {
-  v5 = a3;
-  v6 = [a1 _propertySettersForObject];
+  queryCopy = query;
+  _propertySettersForObject = [self _propertySettersForObject];
   v7 = objc_alloc_init(NSMutableArray);
-  v8 = [objc_opt_class() _allProperties];
+  _allProperties = [objc_opt_class() _allProperties];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000993D8;
   v14[3] = &unk_100841618;
-  v17 = a1;
-  v15 = v6;
+  selfCopy = self;
+  v15 = _propertySettersForObject;
   v9 = v7;
   v16 = v9;
-  v10 = v6;
-  [v5 enumerateProperties:v8 usingBlock:v14];
+  v10 = _propertySettersForObject;
+  [queryCopy enumerateProperties:_allProperties usingBlock:v14];
 
   v11 = v16;
   v12 = v9;
@@ -109,50 +109,50 @@
   return v9;
 }
 
-+ (void)insertOrUpdate:(id)a3 inDatabase:(id)a4
++ (void)insertOrUpdate:(id)update inDatabase:(id)database
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [v11 identifier];
-  v8 = [a1 _predicateForIdentifier:v7];
+  updateCopy = update;
+  databaseCopy = database;
+  identifier = [updateCopy identifier];
+  v8 = [self _predicateForIdentifier:identifier];
 
-  v9 = [a1 anyInDatabase:v6 predicate:v8];
+  v9 = [self anyInDatabase:databaseCopy predicate:v8];
   if (v9)
   {
     v10 = v9;
-    [(UserLegalAgreementConsent *)v9 updateWithObject:v11];
+    [(UserLegalAgreementConsent *)v9 updateWithObject:updateCopy];
   }
 
   else
   {
-    v10 = [[UserLegalAgreementConsent alloc] initWithObject:v11 inDatabase:v6];
+    v10 = [[UserLegalAgreementConsent alloc] initWithObject:updateCopy inDatabase:databaseCopy];
   }
 }
 
-+ (void)deleteForPassUniqueID:(id)a3 inDatabase:(id)a4
++ (void)deleteForPassUniqueID:(id)d inDatabase:(id)database
 {
-  v6 = a4;
-  v8 = [a1 _predicateForPassUniqueIdentifier:a3];
-  v7 = [a1 queryWithDatabase:v6 predicate:v8];
+  databaseCopy = database;
+  v8 = [self _predicateForPassUniqueIdentifier:d];
+  v7 = [self queryWithDatabase:databaseCopy predicate:v8];
 
   [v7 deleteAllEntities];
 }
 
 - (id)agreement
 {
-  v3 = [[PKUserLegalAgreementConsent alloc] _initForDatabase];
-  v4 = [objc_opt_class() _propertySettersForObject];
-  v5 = [objc_opt_class() _allProperties];
+  _initForDatabase = [[PKUserLegalAgreementConsent alloc] _initForDatabase];
+  _propertySettersForObject = [objc_opt_class() _propertySettersForObject];
+  _allProperties = [objc_opt_class() _allProperties];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000996C4;
   v11[3] = &unk_10083BEE0;
   v11[4] = self;
-  v12 = v4;
-  v6 = v3;
+  v12 = _propertySettersForObject;
+  v6 = _initForDatabase;
   v13 = v6;
-  v7 = v4;
-  [(SQLiteEntity *)self getValuesForProperties:v5 withApplier:v11];
+  v7 = _propertySettersForObject;
+  [(SQLiteEntity *)self getValuesForProperties:_allProperties withApplier:v11];
 
   v8 = v13;
   v9 = v6;
@@ -160,32 +160,32 @@
   return v6;
 }
 
-+ (id)_propertyValuesFor:(id)a3
++ (id)_propertyValuesFor:(id)for
 {
-  v3 = a3;
+  forCopy = for;
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [v3 identifier];
-  [v4 setObjectOrNull:v5 forKey:@"identifier"];
+  identifier = [forCopy identifier];
+  [v4 setObjectOrNull:identifier forKey:@"identifier"];
 
-  v6 = [v3 passUniqueID];
-  [v4 setObjectOrNull:v6 forKey:@"pass_unique_identifier"];
+  passUniqueID = [forCopy passUniqueID];
+  [v4 setObjectOrNull:passUniqueID forKey:@"pass_unique_identifier"];
 
-  [v3 type];
+  [forCopy type];
   v7 = PKUserLegalAgreementTypeToString();
   [v4 setObjectOrNull:v7 forKey:@"type"];
 
-  v8 = [v3 name];
-  [v4 setObjectOrNull:v8 forKey:@"name"];
+  name = [forCopy name];
+  [v4 setObjectOrNull:name forKey:@"name"];
 
-  v9 = [v3 version];
-  [v4 setObjectOrNull:v9 forKey:@"version"];
+  version = [forCopy version];
+  [v4 setObjectOrNull:version forKey:@"version"];
 
-  v10 = [v3 agreementUrl];
-  v11 = [v10 absoluteString];
-  [v4 setObjectOrNull:v11 forKey:@"agreement_url"];
+  agreementUrl = [forCopy agreementUrl];
+  absoluteString = [agreementUrl absoluteString];
+  [v4 setObjectOrNull:absoluteString forKey:@"agreement_url"];
 
-  v12 = [v3 userConsented];
-  v13 = [NSNumber numberWithBool:v12];
+  userConsented = [forCopy userConsented];
+  v13 = [NSNumber numberWithBool:userConsented];
   [v4 setObjectOrNull:v13 forKey:@"user_consented"];
 
   return v4;

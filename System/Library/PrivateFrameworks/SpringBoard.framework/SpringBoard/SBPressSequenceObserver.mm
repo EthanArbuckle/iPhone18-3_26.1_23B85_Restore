@@ -1,27 +1,27 @@
 @interface SBPressSequenceObserver
-- (SBPressSequenceObserver)initWithPressName:(id)a3;
+- (SBPressSequenceObserver)initWithPressName:(id)name;
 - (void)dealloc;
-- (void)pressCollector:(id)a3 didCollectSequence:(id)a4;
+- (void)pressCollector:(id)collector didCollectSequence:(id)sequence;
 @end
 
 @implementation SBPressSequenceObserver
 
-- (SBPressSequenceObserver)initWithPressName:(id)a3
+- (SBPressSequenceObserver)initWithPressName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = SBPressSequenceObserver;
   v5 = [(SBPressSequenceObserver *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    v5->_pressName = v4;
+    v5->_pressName = nameCopy;
     v7 = objc_alloc_init(SBPressCollector);
     pressCollector = v6->_pressCollector;
     v6->_pressCollector = v7;
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v6 selector:sel__notePowerDownImminent name:@"SBRestartManagerWillRebootNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__notePowerDownImminent name:@"SBRestartManagerWillRebootNotification" object:0];
   }
 
   return v6;
@@ -29,17 +29,17 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"SBRestartManagerWillRebootNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"SBRestartManagerWillRebootNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = SBPressSequenceObserver;
   [(SBPressSequenceObserver *)&v4 dealloc];
 }
 
-- (void)pressCollector:(id)a3 didCollectSequence:(id)a4
+- (void)pressCollector:(id)collector didCollectSequence:(id)sequence
 {
-  if ([a4 count])
+  if ([sequence count])
   {
     v5 = SBLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))

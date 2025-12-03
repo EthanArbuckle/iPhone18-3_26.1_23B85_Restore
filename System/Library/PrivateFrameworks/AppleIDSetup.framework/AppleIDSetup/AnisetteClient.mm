@@ -1,22 +1,22 @@
 @interface AnisetteClient
 - (_TtC12AppleIDSetup14AnisetteClient)init;
-- (void)eraseAnisetteWithCompletion:(id)a3;
-- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)a3 withCompletion:(id)a4;
-- (void)fetchPeerAttestationDataForRequest:(NSURLRequest *)a3 completion:(id)a4;
-- (void)legacyAnisetteDataForDSID:(NSString *)a3 withCompletion:(id)a4;
-- (void)provisionAnisetteWithCompletion:(id)a3;
-- (void)syncAnisetteWithSIMData:(NSData *)a3 completion:(id)a4;
+- (void)eraseAnisetteWithCompletion:(id)completion;
+- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)necessary withCompletion:(id)completion;
+- (void)fetchPeerAttestationDataForRequest:(NSURLRequest *)request completion:(id)completion;
+- (void)legacyAnisetteDataForDSID:(NSString *)d withCompletion:(id)completion;
+- (void)provisionAnisetteWithCompletion:(id)completion;
+- (void)syncAnisetteWithSIMData:(NSData *)data completion:(id)completion;
 @end
 
 @implementation AnisetteClient
 
-- (void)provisionAnisetteWithCompletion:(id)a3
+- (void)provisionAnisetteWithCompletion:(id)completion
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27E4B9BF0, &qword_240762710);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(completion);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -32,19 +32,19 @@
   v13[3] = 0;
   v13[4] = &unk_24076CEB0;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_2406FC468(0, 0, v8, &unk_24076CEB8, v13);
 }
 
-- (void)syncAnisetteWithSIMData:(NSData *)a3 completion:(id)a4
+- (void)syncAnisetteWithSIMData:(NSData *)data completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27E4B9BF0, &qword_240762710);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = data;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_24075A3D4();
@@ -59,18 +59,18 @@
   v15[3] = 0;
   v15[4] = &unk_24076CE90;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  dataCopy = data;
+  selfCopy = self;
   sub_2406FC468(0, 0, v10, &unk_24076CE98, v15);
 }
 
-- (void)eraseAnisetteWithCompletion:(id)a3
+- (void)eraseAnisetteWithCompletion:(id)completion
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27E4B9BF0, &qword_240762710);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(completion);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -86,19 +86,19 @@
   v13[3] = 0;
   v13[4] = &unk_24076CE70;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_2406FC468(0, 0, v8, &unk_24076CE78, v13);
 }
 
-- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)a3 withCompletion:(id)a4
+- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)necessary withCompletion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27E4B9BF0, &qword_240762710);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  *(v12 + 16) = a3;
+  *(v12 + 16) = necessary;
   *(v12 + 24) = v11;
   *(v12 + 32) = self;
   v13 = sub_24075A3D4();
@@ -113,19 +113,19 @@
   v15[3] = 0;
   v15[4] = &unk_24076CE50;
   v15[5] = v14;
-  v16 = self;
+  selfCopy = self;
   sub_2406FC468(0, 0, v10, &unk_24076CE58, v15);
 }
 
-- (void)legacyAnisetteDataForDSID:(NSString *)a3 withCompletion:(id)a4
+- (void)legacyAnisetteDataForDSID:(NSString *)d withCompletion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27E4B9BF0, &qword_240762710);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = d;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_24075A3D4();
@@ -140,20 +140,20 @@
   v15[3] = 0;
   v15[4] = &unk_24076CE30;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  dCopy = d;
+  selfCopy = self;
   sub_2406FC468(0, 0, v10, &unk_24076CE38, v15);
 }
 
-- (void)fetchPeerAttestationDataForRequest:(NSURLRequest *)a3 completion:(id)a4
+- (void)fetchPeerAttestationDataForRequest:(NSURLRequest *)request completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27E4B9BF0, &qword_240762710);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = request;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_24075A3D4();
@@ -168,8 +168,8 @@
   v15[3] = 0;
   v15[4] = &unk_240767F10;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  requestCopy = request;
+  selfCopy = self;
   sub_2406FC468(0, 0, v10, &unk_24076FBC0, v15);
 }
 

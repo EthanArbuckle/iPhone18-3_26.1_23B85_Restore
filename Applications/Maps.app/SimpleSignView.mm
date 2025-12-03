@@ -1,12 +1,12 @@
 @interface SimpleSignView
 - (GuidanceManeuverView)maneuverView;
-- (SimpleSignView)initWithFrame:(CGRect)a3;
+- (SimpleSignView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)maneuverViewEdgeInsets;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setManeuverViewEdgeInsets:(UIEdgeInsets)a3;
-- (void)setShieldImage:(id)a3;
-- (void)setStyle:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setManeuverViewEdgeInsets:(UIEdgeInsets)insets;
+- (void)setShieldImage:(id)image;
+- (void)setStyle:(id)style;
 - (void)updateStyleForTheme;
 @end
 
@@ -25,13 +25,13 @@
   return result;
 }
 
-- (void)setShieldImage:(id)a3
+- (void)setShieldImage:(id)image
 {
-  v11 = a3;
-  v4 = [(UIImageView *)self->_shieldView image];
+  imageCopy = image;
+  image = [(UIImageView *)self->_shieldView image];
 
-  v5 = v11;
-  if (v4 != v11)
+  v5 = imageCopy;
+  if (image != imageCopy)
   {
     shieldView = self->_shieldView;
     if (!shieldView)
@@ -46,22 +46,22 @@
       shieldView = self->_shieldView;
     }
 
-    [(UIImageView *)shieldView setImage:v11];
-    v10 = [(SimpleSignView *)self maneuverView];
-    [v10 setHidden:v11 != 0];
+    [(UIImageView *)shieldView setImage:imageCopy];
+    maneuverView = [(SimpleSignView *)self maneuverView];
+    [maneuverView setHidden:imageCopy != 0];
 
     [(UIImageView *)self->_shieldView sizeToFit];
     [(SimpleSignView *)self setNeedsLayout];
-    v5 = v11;
+    v5 = imageCopy;
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  if (sub_10000FA08(self) == 5 && self->_highlighted != v3)
+  highlightedCopy = highlighted;
+  if (sub_10000FA08(self) == 5 && self->_highlighted != highlightedCopy)
   {
-    self->_highlighted = v3;
+    self->_highlighted = highlightedCopy;
 
     [(SimpleSignView *)self updateStyleForTheme];
   }
@@ -85,20 +85,20 @@
   [(UIImageView *)self->_shieldView setFrame:v8, v9, v4, v6];
 }
 
-- (void)setManeuverViewEdgeInsets:(UIEdgeInsets)a3
+- (void)setManeuverViewEdgeInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  self->_maneuverViewEdgeInsets = a3;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  self->_maneuverViewEdgeInsets = insets;
   [(SimpleSignView *)self bounds];
   v9 = v8 + left;
   v11 = v10 + top;
   v13 = v12 - (left + right);
   v15 = v14 - (top + bottom);
-  v16 = [(SimpleSignView *)self maneuverView];
-  [v16 setFrame:{v9, v11, v13, v15}];
+  maneuverView = [(SimpleSignView *)self maneuverView];
+  [maneuverView setFrame:{v9, v11, v13, v15}];
 }
 
 - (GuidanceManeuverView)maneuverView
@@ -118,11 +118,11 @@
     self->_maneuverView = v17;
 
     [(GuidanceManeuverView *)self->_maneuverView setAutoresizingMask:18];
-    v19 = [(SimpleSignView *)self style];
+    style = [(SimpleSignView *)self style];
 
-    if (v19)
+    if (style)
     {
-      v20 = [(SimpleSignView *)self style];
+      style2 = [(SimpleSignView *)self style];
       v21 = objc_opt_class();
       if (v21)
       {
@@ -138,7 +138,7 @@
       memcpy(__dst, __src, sizeof(__dst));
       [(GuidanceManeuverView *)v22 setArrowMetrics:__dst];
 
-      v23 = [(SimpleSignView *)self style];
+      style3 = [(SimpleSignView *)self style];
       v24 = objc_opt_class();
       if (v24)
       {
@@ -166,38 +166,38 @@
 {
   if ([(SimpleSignView *)self isHighlighted])
   {
-    v3 = +[UIColor systemWhiteColor];
+    style = +[UIColor systemWhiteColor];
     p_maneuverView = &self->_maneuverView;
-    [(GuidanceManeuverView *)self->_maneuverView setArrowColor:v3];
+    [(GuidanceManeuverView *)self->_maneuverView setArrowColor:style];
   }
 
   else
   {
-    v3 = [(SimpleSignView *)self style];
-    v5 = [v3 foregroundColor];
+    style = [(SimpleSignView *)self style];
+    foregroundColor = [style foregroundColor];
     p_maneuverView = &self->_maneuverView;
-    [(GuidanceManeuverView *)self->_maneuverView setArrowColor:v5];
+    [(GuidanceManeuverView *)self->_maneuverView setArrowColor:foregroundColor];
   }
 
   if ([(SimpleSignView *)self isHighlighted])
   {
-    v6 = +[UIColor systemWhiteColor];
-    [v6 colorWithAlphaComponent:0.800000012];
+    style2 = +[UIColor systemWhiteColor];
+    [style2 colorWithAlphaComponent:0.800000012];
   }
 
   else
   {
-    v6 = [(SimpleSignView *)self style];
-    [v6 accentColor];
+    style2 = [(SimpleSignView *)self style];
+    [style2 accentColor];
   }
   v7 = ;
   [(GuidanceManeuverView *)*p_maneuverView setAccentColor:v7];
 
-  v8 = [(SimpleSignView *)self style];
+  style3 = [(SimpleSignView *)self style];
 
-  if (v8)
+  if (style3)
   {
-    v9 = [(SimpleSignView *)self style];
+    style4 = [(SimpleSignView *)self style];
     v10 = objc_opt_class();
     if (v10)
     {
@@ -213,7 +213,7 @@
     memcpy(__dst, v21, sizeof(__dst));
     [(GuidanceManeuverView *)v13 setArrowMetrics:__dst];
 
-    v14 = [(SimpleSignView *)self style];
+    style5 = [(SimpleSignView *)self style];
     v15 = objc_opt_class();
     if (v15)
     {
@@ -243,26 +243,26 @@
   }
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
-  v5 = a3;
-  if (self->_style != v5)
+  styleCopy = style;
+  if (self->_style != styleCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_style, a3);
-    v6 = [(SignStyle *)v7 squareSignImage];
-    [(UIImageView *)self->_backgroundView setImage:v6];
+    v7 = styleCopy;
+    objc_storeStrong(&self->_style, style);
+    squareSignImage = [(SignStyle *)v7 squareSignImage];
+    [(UIImageView *)self->_backgroundView setImage:squareSignImage];
 
     [(SimpleSignView *)self updateStyleForTheme];
-    v5 = v7;
+    styleCopy = v7;
   }
 }
 
-- (SimpleSignView)initWithFrame:(CGRect)a3
+- (SimpleSignView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = SimpleSignView;
-  v3 = [(SimpleSignView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SimpleSignView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_class();

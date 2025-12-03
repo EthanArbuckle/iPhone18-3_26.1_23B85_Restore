@@ -1,5 +1,5 @@
 @interface RCActivityWaveformProcessor
-- (BOOL)getAmplitudes:(float *)a3 count:(int)a4 startTime:(double)a5 endTime:(double)a6;
+- (BOOL)getAmplitudes:(float *)amplitudes count:(int)count startTime:(double)time endTime:(double)endTime;
 - (RCActivityWaveformProcessor)init;
 - (RCActivityWaveformProcessorDelegate)delegate;
 - (VMFrameRange)_bufferRange;
@@ -11,8 +11,8 @@
 - (void)_tearDown;
 - (void)consumeRingBufferIfNecessary;
 - (void)dealloc;
-- (void)prepareToProcessWithFormat:(id)a3 audioTime:(id)a4 punchInTime:(double)a5;
-- (void)processAudioBuffer:(id)a3;
+- (void)prepareToProcessWithFormat:(id)format audioTime:(id)time punchInTime:(double)inTime;
+- (void)processAudioBuffer:(id)buffer;
 @end
 
 @implementation RCActivityWaveformProcessor
@@ -65,33 +65,33 @@
   result = 0.0;
   if (self->_isPrepared)
   {
-    v4 = [(RCActivityWaveformProcessor *)self _bufferRange];
-    return self->_referenceMediaTime + (v4 + v5) / self->_sampleRate;
+    _bufferRange = [(RCActivityWaveformProcessor *)self _bufferRange];
+    return self->_referenceMediaTime + (_bufferRange + v5) / self->_sampleRate;
   }
 
   return result;
 }
 
-- (void)prepareToProcessWithFormat:(id)a3 audioTime:(id)a4 punchInTime:(double)a5
+- (void)prepareToProcessWithFormat:(id)format audioTime:(id)time punchInTime:(double)inTime
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 isStandard])
+  formatCopy = format;
+  timeCopy = time;
+  if ([formatCopy isStandard])
   {
     if (self->_isPrepared)
     {
       [(RCActivityWaveformProcessor *)self _tearDown];
     }
 
-    [v8 sampleRate];
+    [formatCopy sampleRate];
     self->_sampleRate = v10;
-    self->_punchInTime = a5;
+    self->_punchInTime = inTime;
     v11 = +[RCRecorderStyleProvider sharedStyleProvider];
     [v11 activityWaveformTimeWindowDuration];
     v13 = v12;
 
     sampleRate = self->_sampleRate;
-    +[AVAudioTime secondsForHostTime:](AVAudioTime, "secondsForHostTime:", [v9 hostTime]);
+    +[AVAudioTime secondsForHostTime:](AVAudioTime, "secondsForHostTime:", [timeCopy hostTime]);
     v15 = v13 + 0.2 + 0.5;
     self->_referenceMediaTime = v16;
     self->_emptyFramesToLeaveInInputBuffer = (self->_sampleRate * 0.5);
@@ -136,13 +136,13 @@
   self->_isPrepared = 0;
 }
 
-- (void)processAudioBuffer:(id)a3
+- (void)processAudioBuffer:(id)buffer
 {
-  v5 = a3;
-  v6 = [v5 format];
-  v7 = [v6 isStandard];
+  bufferCopy = buffer;
+  format = [bufferCopy format];
+  isStandard = [format isStandard];
 
-  if (v7)
+  if (isStandard)
   {
     if (!self->_isPrepared)
     {
@@ -150,14 +150,14 @@
       [v32 handleFailureInMethod:a2 object:self file:@"RCActivityWaveformProcessor.mm" lineNumber:131 description:@"You must call prepareToProcessWithFormat:audioTime:punchInTime: prior to processing."];
     }
 
-    v8 = [v5 floatChannelData];
-    v9 = [v5 frameLength];
-    v10 = v9;
-    if (v9)
+    floatChannelData = [bufferCopy floatChannelData];
+    frameLength = [bufferCopy frameLength];
+    v10 = frameLength;
+    if (frameLength)
     {
       mCapacity = self->_ringBuffer.mCapacity;
       v12 = atomic_load(&self->_ringBuffer.mFill);
-      if (mCapacity - v12 < v9)
+      if (mCapacity - v12 < frameLength)
       {
         [(RCActivityWaveformProcessor *)self consumeRingBufferIfNecessary];
       }
@@ -166,9 +166,9 @@
       v14 = atomic_load(&self->_ringBuffer.mFill);
       if (v13 - v14 >= v10)
       {
-        memcpy(*self->_ringBuffer.mWritePointers, *v8, 4 * v10);
+        memcpy(*self->_ringBuffer.mWritePointers, *floatChannelData, 4 * v10);
         sub_10003FE04(&self->_ringBuffer, v10);
-        [(RCAmplitudeAnalyzer *)self->_audioQueueAmplitudeAnalyzer calculateAmplitude:v8 sampleCount:v10 channelCount:1];
+        [(RCAmplitudeAnalyzer *)self->_audioQueueAmplitudeAnalyzer calculateAmplitude:floatChannelData sampleCount:v10 channelCount:1];
       }
 
       else
@@ -202,7 +202,7 @@
   }
 }
 
-- (BOOL)getAmplitudes:(float *)a3 count:(int)a4 startTime:(double)a5 endTime:(double)a6
+- (BOOL)getAmplitudes:(float *)amplitudes count:(int)count startTime:(double)time endTime:(double)endTime
 {
   if (!self->_isPrepared)
   {
@@ -212,20 +212,20 @@
   os_unfair_lock_lock(&self->_readerLock);
   referenceMediaTime = self->_referenceMediaTime;
   sampleRate = self->_sampleRate;
-  v13 = [(RCActivityWaveformProcessor *)self _bufferRange];
-  if (a4 < 1)
+  _bufferRange = [(RCActivityWaveformProcessor *)self _bufferRange];
+  if (count < 1)
   {
     v21 = 1;
   }
 
   else
   {
-    v15 = v13;
+    v15 = _bufferRange;
     v16 = 0;
-    v17 = ((a5 - referenceMediaTime) * sampleRate);
-    v18 = (a6 - a5) / a4;
-    v19 = &v13[v14];
-    v20 = a4;
+    v17 = ((time - referenceMediaTime) * sampleRate);
+    v18 = (endTime - time) / count;
+    v19 = &_bufferRange[v14];
+    countCopy = count;
     v21 = 1;
     do
     {
@@ -264,10 +264,10 @@
       }
 
       v21 &= v28;
-      a3[v16++] = v30;
+      amplitudes[v16++] = v30;
     }
 
-    while (v20 != v16);
+    while (countCopy != v16);
   }
 
   os_unfair_lock_unlock(&self->_readerLock);
@@ -299,11 +299,11 @@
   if ([(RCActivityWaveformProcessor *)self _excessFrames]>= 1)
   {
     os_unfair_lock_lock(&self->_readerLock);
-    v3 = [(RCActivityWaveformProcessor *)self _excessFrames];
-    if (v3 >= 1)
+    _excessFrames = [(RCActivityWaveformProcessor *)self _excessFrames];
+    if (_excessFrames >= 1)
     {
-      v4 = v3;
-      sub_100040168(&self->_ringBuffer, v3);
+      v4 = _excessFrames;
+      sub_100040168(&self->_ringBuffer, _excessFrames);
       self->_inputBufferReadPosition += v4;
     }
 

@@ -1,6 +1,6 @@
 @interface MTRRefrigeratorAndTemperatureControlledCabinetModeClusterModeTagStruct
 - (MTRRefrigeratorAndTemperatureControlledCabinetModeClusterModeTagStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRRefrigeratorAndTemperatureControlledCabinetModeClusterModeTagStruct);
-  v5 = [(MTRRefrigeratorAndTemperatureControlledCabinetModeClusterModeTagStruct *)self mfgCode];
-  [(MTRRefrigeratorAndTemperatureControlledCabinetModeClusterModeTagStruct *)v4 setMfgCode:v5];
+  mfgCode = [(MTRRefrigeratorAndTemperatureControlledCabinetModeClusterModeTagStruct *)self mfgCode];
+  [(MTRRefrigeratorAndTemperatureControlledCabinetModeClusterModeTagStruct *)v4 setMfgCode:mfgCode];
 
-  v6 = [(MTRRefrigeratorAndTemperatureControlledCabinetModeClusterModeTagStruct *)self value];
-  [(MTRRefrigeratorAndTemperatureControlledCabinetModeClusterModeTagStruct *)v4 setValue:v6];
+  value = [(MTRRefrigeratorAndTemperatureControlledCabinetModeClusterModeTagStruct *)self value];
+  [(MTRRefrigeratorAndTemperatureControlledCabinetModeClusterModeTagStruct *)v4 setValue:value];
 
   return v4;
 }

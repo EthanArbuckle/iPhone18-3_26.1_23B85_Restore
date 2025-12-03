@@ -1,6 +1,6 @@
 @interface PARBag
 - (BOOL)allowSafariRankingDataCollection;
-- (BOOL)bag_BOOLForKey:(id)a3;
+- (BOOL)bag_BOOLForKey:(id)key;
 - (BOOL)disableAsTypedSuggestion;
 - (BOOL)disableSafariNavIntent;
 - (BOOL)experimentsCustomFeedbackEnabled;
@@ -25,9 +25,9 @@
 - (NSURL)flightURL;
 - (NSURL)searchURL;
 - (NSURL)uncommittedSearchURL;
-- (PARBag)initWithCoder:(id)a3;
-- (PARBag)initWithData:(id)a3 userAgent:(id)a4 userDefaults:(id)a5;
-- (PARBag)initWithURL:(id)a3 userAgent:(id)a4 userDefaults:(id)a5;
+- (PARBag)initWithCoder:(id)coder;
+- (PARBag)initWithData:(id)data userAgent:(id)agent userDefaults:(id)defaults;
+- (PARBag)initWithURL:(id)l userAgent:(id)agent userDefaults:(id)defaults;
 - (double)expirationDate;
 - (double)minThresholdToSend;
 - (double)minimumIntervalBetweenQueriesFromBag;
@@ -42,19 +42,19 @@
 - (double)safariMostRecent;
 - (double)subscriptionTTL;
 - (double)timeoutIntervalForRequest;
-- (id)bag_URLForKey:(id)a3;
-- (id)bag_arrayForKey:(id)a3;
-- (id)bag_dictionaryForKey:(id)a3;
-- (id)bag_numberForKey:(id)a3;
-- (id)bag_stringForKey:(id)a3;
+- (id)bag_URLForKey:(id)key;
+- (id)bag_arrayForKey:(id)key;
+- (id)bag_dictionaryForKey:(id)key;
+- (id)bag_numberForKey:(id)key;
+- (id)bag_stringForKey:(id)key;
 - (id)description;
-- (id)urlForIdentifier:(id)a3;
-- (id)valueForKey:(id)a3 override:(BOOL)a4;
+- (id)urlForIdentifier:(id)identifier;
+- (id)valueForKey:(id)key override:(BOOL)override;
 - (int64_t)abTest2WeekZoneSize;
 - (int64_t)protocolVersion;
 - (unint64_t)maximumCachedQueriesToSend;
 - (unint64_t)maximumCachedResultsToSend;
-- (unint64_t)maximumSizeForFeedbackType:(id)a3;
+- (unint64_t)maximumSizeForFeedbackType:(id)type;
 - (unint64_t)minimumQueryLength;
 - (unint64_t)safariAssistantForceEnabledState;
 - (unint64_t)safariAssistantHashPrefixLength;
@@ -62,30 +62,30 @@
 - (unint64_t)smartHistoryMinimumQueryLength;
 - (unint64_t)smartHistorySampleThreshold;
 - (unint64_t)smartHistoryTimeout;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PARBag
 
 - (BOOL)feedbackEnabled
 {
-  v2 = 1;
+  bOOLValue = 1;
   v3 = [(PARBag *)self _bag_objectOfClass:objc_opt_class() forKey:@"feedback_enabled" override:1];
   v4 = v3;
   if (v3)
   {
-    v2 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
-  return v2;
+  return bOOLValue;
 }
 
 - (BOOL)isRefreshDisabled
 {
   v2 = [(PARBag *)self valueForKey:@"__refresh_disabled"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSArray)sampleClientTimingEventWhitelist
@@ -107,31 +107,31 @@
   return v4;
 }
 
-- (PARBag)initWithCoder:(id)a3
+- (PARBag)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_bagData"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_userAgent"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_bagData"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_userAgent"];
 
   v7 = [(PARBag *)self initWithData:v5 userAgent:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bagData = self->_bagData;
-  v5 = a3;
-  [v5 encodeObject:bagData forKey:@"_bagData"];
-  [v5 encodeObject:self->_userAgent forKey:@"_userAgent"];
+  coderCopy = coder;
+  [coderCopy encodeObject:bagData forKey:@"_bagData"];
+  [coderCopy encodeObject:self->_userAgent forKey:@"_userAgent"];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
   userAgent = self->_userAgent;
-  v5 = [(PARBag *)self isEnabled];
-  v6 = [(PARBag *)self searchURL];
-  v7 = [v3 stringWithFormat:@"PARBag: userAgent = %@, enabled = %d, search url = %@", userAgent, v5, v6];
+  isEnabled = [(PARBag *)self isEnabled];
+  searchURL = [(PARBag *)self searchURL];
+  v7 = [v3 stringWithFormat:@"PARBag: userAgent = %@, enabled = %d, search url = %@", userAgent, isEnabled, searchURL];
 
   return v7;
 }
@@ -212,11 +212,11 @@ LABEL_18:
   return v8;
 }
 
-- (id)urlForIdentifier:(id)a3
+- (id)urlForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PARBag *)self resources];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  resources = [(PARBag *)self resources];
+  v6 = [resources objectForKeyedSubscript:identifierCopy];
 
   if (v6)
   {
@@ -225,17 +225,17 @@ LABEL_18:
 
   else
   {
-    [(PARBag *)self bag_URLForKey:v4];
+    [(PARBag *)self bag_URLForKey:identifierCopy];
   }
   v7 = ;
 
   return v7;
 }
 
-- (id)bag_URLForKey:(id)a3
+- (id)bag_URLForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PARBag *)self _bag_objectOfClass:objc_opt_class() forKey:v4 override:1];
+  keyCopy = key;
+  v5 = [(PARBag *)self _bag_objectOfClass:objc_opt_class() forKey:keyCopy override:1];
   v6 = v5;
   if (v5 && [v5 length] && (objc_msgSend(MEMORY[0x1E695DFF8], "URLWithString:", v6), (v7 = objc_claimAutoreleasedReturnValue()) != 0))
   {
@@ -245,7 +245,7 @@ LABEL_18:
 
   else
   {
-    v9 = [(PARBag *)self _bag_objectOfClass:objc_opt_class() forKey:v4 override:0];
+    v9 = [(PARBag *)self _bag_objectOfClass:objc_opt_class() forKey:keyCopy override:0];
 
     if (v9 && [v9 length])
     {
@@ -261,44 +261,44 @@ LABEL_18:
   return v8;
 }
 
-- (id)bag_dictionaryForKey:(id)a3
+- (id)bag_dictionaryForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PARBag *)self _bag_objectOfClass:objc_opt_class() forKey:v4];
+  keyCopy = key;
+  v5 = [(PARBag *)self _bag_objectOfClass:objc_opt_class() forKey:keyCopy];
 
   return v5;
 }
 
-- (id)bag_arrayForKey:(id)a3
+- (id)bag_arrayForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PARBag *)self _bag_objectOfClass:objc_opt_class() forKey:v4];
+  keyCopy = key;
+  v5 = [(PARBag *)self _bag_objectOfClass:objc_opt_class() forKey:keyCopy];
 
   return v5;
 }
 
-- (id)bag_numberForKey:(id)a3
+- (id)bag_numberForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PARBag *)self _bag_objectOfClass:objc_opt_class() forKey:v4];
+  keyCopy = key;
+  v5 = [(PARBag *)self _bag_objectOfClass:objc_opt_class() forKey:keyCopy];
 
   return v5;
 }
 
-- (id)bag_stringForKey:(id)a3
+- (id)bag_stringForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PARBag *)self _bag_objectOfClass:objc_opt_class() forKey:v4];
+  keyCopy = key;
+  v5 = [(PARBag *)self _bag_objectOfClass:objc_opt_class() forKey:keyCopy];
 
   return v5;
 }
 
-- (BOOL)bag_BOOLForKey:(id)a3
+- (BOOL)bag_BOOLForKey:(id)key
 {
-  v3 = [(PARBag *)self bag_numberForKey:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(PARBag *)self bag_numberForKey:key];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (int64_t)protocolVersion
@@ -307,23 +307,23 @@ LABEL_18:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (BOOL)disableAsTypedSuggestion
 {
   v2 = [(PARBag *)self bag_numberForKey:@"spotlight_feature_flags"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)experimentsCustomFeedbackEnabled
@@ -332,15 +332,15 @@ LABEL_18:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)sessionExperimentMetadataEnabled
@@ -349,15 +349,15 @@ LABEL_18:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)disableSafariNavIntent
@@ -366,15 +366,15 @@ LABEL_18:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (unint64_t)safariAssistantForceEnabledState
@@ -383,15 +383,15 @@ LABEL_18:
   v3 = v2;
   if (v2 && [v2 unsignedIntegerValue] <= 2)
   {
-    v4 = [v3 unsignedIntegerValue];
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (NSArray)safariAssistantSupportedPageLanguages
@@ -480,15 +480,15 @@ LABEL_18:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 21;
+    unsignedIntegerValue = 21;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (BOOL)allowSafariRankingDataCollection
@@ -497,15 +497,15 @@ LABEL_18:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (double)safariDwellTimeThresholdHigh
@@ -547,11 +547,11 @@ LABEL_18:
 - (unint64_t)smartHistoryMinimumQueryLength
 {
   v3 = [(PARBag *)self bag_numberForKey:@"smart_history_min_lc_length"];
-  v4 = [v3 unsignedIntegerValue];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  if (v4)
+  if (unsignedIntegerValue)
   {
-    return v4;
+    return unsignedIntegerValue;
   }
 
   if (![(PARBag *)self minimumQueryLength])
@@ -565,33 +565,33 @@ LABEL_18:
 - (BOOL)smartHistoryFeatureFeedbackEnabled
 {
   v2 = [(PARBag *)self bag_numberForKey:@"smart_history_feature_feedback_enabled"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (unint64_t)smartHistorySampleThreshold
 {
   v2 = [(PARBag *)self bag_numberForKey:@"smart_history_sample_threshold"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)smartHistoryMaxRows
 {
   v2 = [(PARBag *)self bag_numberForKey:@"smart_history_max_rows"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)smartHistoryTimeout
 {
   v2 = [(PARBag *)self bag_numberForKey:@"safari_smart_history_local_timeout"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (double)minThresholdToSend
@@ -681,14 +681,14 @@ LABEL_18:
   return result;
 }
 
-- (unint64_t)maximumSizeForFeedbackType:(id)a3
+- (unint64_t)maximumSizeForFeedbackType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = [(PARBag *)self bag_dictionaryForKey:@"max_custom_feedback_sizes"];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v6 = [v5 objectForKeyedSubscript:typeCopy];
 
-  v7 = [v6 unsignedIntegerValue];
-  return v7;
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 - (NSString)firstUseContinueText
@@ -808,15 +808,15 @@ LABEL_18:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
-    if ((v4 & ~(v4 >> 63)) >= 100)
+    integerValue = [v2 integerValue];
+    if ((integerValue & ~(integerValue >> 63)) >= 100)
     {
       v5 = 100;
     }
 
     else
     {
-      v5 = v4 & ~(v4 >> 63);
+      v5 = integerValue & ~(integerValue >> 63);
     }
   }
 
@@ -831,25 +831,25 @@ LABEL_18:
 - (unint64_t)maximumCachedQueriesToSend
 {
   v2 = [(PARBag *)self bag_numberForKey:@"max_cached_queries_len"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)maximumCachedResultsToSend
 {
   v2 = [(PARBag *)self bag_numberForKey:@"max_cached_results_len"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)minimumQueryLength
 {
   v2 = [(PARBag *)self bag_numberForKey:@"min_query_len"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (NSURL)flightURL
@@ -876,13 +876,13 @@ LABEL_18:
 
 - (NSURL)uncommittedSearchURL
 {
-  v3 = [(PARBag *)self bag_URLForKey:@"uncommitted_search_url"];
-  if (!v3)
+  searchURL = [(PARBag *)self bag_URLForKey:@"uncommitted_search_url"];
+  if (!searchURL)
   {
-    v3 = [(PARBag *)self searchURL];
+    searchURL = [(PARBag *)self searchURL];
   }
 
-  return v3;
+  return searchURL;
 }
 
 - (NSURL)searchURL
@@ -949,13 +949,13 @@ LABEL_18:
   return v5;
 }
 
-- (id)valueForKey:(id)a3 override:(BOOL)a4
+- (id)valueForKey:(id)key override:(BOOL)override
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 length])
+  keyCopy = key;
+  if ([keyCopy length])
   {
-    v6 = [@"bag." stringByAppendingString:v5];
+    v6 = [@"bag." stringByAppendingString:keyCopy];
     v7 = [(NSUserDefaults *)self->_userDefaults objectForKey:v6];
     if (v7)
     {
@@ -984,7 +984,7 @@ LABEL_18:
 
     else
     {
-      v12 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v5, @"overrides", 0}];
+      v12 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{keyCopy, @"overrides", 0}];
       bagData = self->_bagData;
       _CFPropertyListCreateFiltered();
       if (PARLogHandleForCategory_onceToken_105 != -1)
@@ -1014,35 +1014,35 @@ LABEL_18:
   return v11;
 }
 
-- (PARBag)initWithData:(id)a3 userAgent:(id)a4 userDefaults:(id)a5
+- (PARBag)initWithData:(id)data userAgent:(id)agent userDefaults:(id)defaults
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dataCopy = data;
+  agentCopy = agent;
+  defaultsCopy = defaults;
   v26.receiver = self;
   v26.super_class = PARBag;
   v12 = [(PARBag *)&v26 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_bagData, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_bagData, data);
+    v14 = [agentCopy copy];
     userAgent = v13->_userAgent;
     v13->_userAgent = v14;
 
     clientName = v13->_clientName;
     v13->_clientName = &stru_1F277AB70;
 
-    if (v10)
+    if (agentCopy)
     {
-      v17 = [_TtC10CoreParsec10ClientName extractClientNameFromUserAgent:v10 allowAbbreviation:1];
+      v17 = [_TtC10CoreParsec10ClientName extractClientNameFromUserAgent:agentCopy allowAbbreviation:1];
       v18 = v13->_clientName;
       v13->_clientName = v17;
     }
 
-    if (v11)
+    if (defaultsCopy)
     {
-      objc_storeStrong(&v13->_userDefaults, a5);
+      objc_storeStrong(&v13->_userDefaults, defaults);
     }
 
     else
@@ -1053,9 +1053,9 @@ LABEL_18:
 
       if (!v13->_userDefaults)
       {
-        v21 = [MEMORY[0x1E695E000] standardUserDefaults];
+        standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
         v22 = v13->_userDefaults;
-        v13->_userDefaults = v21;
+        v13->_userDefaults = standardUserDefaults;
 
         if (PARLogHandleForCategory_onceToken_105 != -1)
         {
@@ -1075,14 +1075,14 @@ LABEL_18:
   return v13;
 }
 
-- (PARBag)initWithURL:(id)a3 userAgent:(id)a4 userDefaults:(id)a5
+- (PARBag)initWithURL:(id)l userAgent:(id)agent userDefaults:(id)defaults
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  agentCopy = agent;
+  defaultsCopy = defaults;
   v17 = 0;
-  v11 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v8 options:8 error:&v17];
+  v11 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:lCopy options:8 error:&v17];
   v12 = v17;
   if (v12)
   {
@@ -1095,23 +1095,23 @@ LABEL_18:
     if (os_log_type_enabled(PARLogHandleForCategory_logHandles_3_107, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v19 = v8;
+      v19 = lCopy;
       v20 = 2112;
       v21 = v12;
       _os_log_error_impl(&dword_1B1064000, v13, OS_LOG_TYPE_ERROR, "Could not read bag plist from %@: %@", buf, 0x16u);
     }
 
-    v14 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    self = [(PARBag *)self initWithData:v11 userAgent:v9 userDefaults:v10];
-    v14 = self;
+    self = [(PARBag *)self initWithData:v11 userAgent:agentCopy userDefaults:defaultsCopy];
+    selfCopy = self;
   }
 
   v15 = *MEMORY[0x1E69E9840];
-  return v14;
+  return selfCopy;
 }
 
 @end

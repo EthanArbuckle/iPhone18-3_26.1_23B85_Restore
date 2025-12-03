@@ -1,24 +1,24 @@
 @interface TVRUIVolumeController
-- (id)initForWindow:(id)a3 eventHandler:(id)a4;
-- (void)consumeSinglePressDownForButtonKind:(int64_t)a3;
+- (id)initForWindow:(id)window eventHandler:(id)handler;
+- (void)consumeSinglePressDownForButtonKind:(int64_t)kind;
 - (void)disableVolumeControl;
 - (void)enableVolumeControl;
 @end
 
 @implementation TVRUIVolumeController
 
-- (id)initForWindow:(id)a3 eventHandler:(id)a4
+- (id)initForWindow:(id)window eventHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  windowCopy = window;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = TVRUIVolumeController;
   v9 = [(TVRUIVolumeController *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_window, a3);
-    v11 = _Block_copy(v8);
+    objc_storeStrong(&v9->_window, window);
+    v11 = _Block_copy(handlerCopy);
     eventHandler = v10->_eventHandler;
     v10->_eventHandler = v11;
   }
@@ -28,36 +28,36 @@
 
 - (void)enableVolumeControl
 {
-  v3 = [(TVRUIVolumeController *)self supportsVolumeControl];
-  v4 = _TVRUIVolumeControllerLog();
-  v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  supportsVolumeControl = [(TVRUIVolumeController *)self supportsVolumeControl];
+  mEMORY[0x277D66AA0]2 = _TVRUIVolumeControllerLog();
+  v5 = os_log_type_enabled(mEMORY[0x277D66AA0]2, OS_LOG_TYPE_DEFAULT);
+  if (supportsVolumeControl)
   {
     if (v5)
     {
       *buf = 0;
-      _os_log_impl(&dword_26CFEB000, v4, OS_LOG_TYPE_DEFAULT, "Registering for volume button events", buf, 2u);
+      _os_log_impl(&dword_26CFEB000, mEMORY[0x277D66AA0]2, OS_LOG_TYPE_DEFAULT, "Registering for volume button events", buf, 2u);
     }
 
-    v6 = [(TVRUIVolumeController *)self window];
+    window = [(TVRUIVolumeController *)self window];
 
-    if (v6)
+    if (window)
     {
-      v7 = [(TVRUIVolumeController *)self window];
-      v8 = [v7 windowScene];
-      [v8 _setSystemVolumeHUDEnabled:0];
+      window2 = [(TVRUIVolumeController *)self window];
+      windowScene = [window2 windowScene];
+      [windowScene _setSystemVolumeHUDEnabled:0];
     }
 
-    v9 = [(TVRUIVolumeController *)self volumeIncreaseSBSInvalidator];
-    if (v9)
+    volumeIncreaseSBSInvalidator = [(TVRUIVolumeController *)self volumeIncreaseSBSInvalidator];
+    if (volumeIncreaseSBSInvalidator)
     {
     }
 
     else
     {
-      v12 = [(TVRUIVolumeController *)self volumeDecreaseSBSInvalidator];
+      volumeDecreaseSBSInvalidator = [(TVRUIVolumeController *)self volumeDecreaseSBSInvalidator];
 
-      if (!v12)
+      if (!volumeDecreaseSBSInvalidator)
       {
         v13 = _TVRUIVolumeControllerLog();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -66,20 +66,20 @@
           _os_log_impl(&dword_26CFEB000, v13, OS_LOG_TYPE_DEFAULT, "Begin consuming volume button presses", v17, 2u);
         }
 
-        v14 = [MEMORY[0x277D66AA0] sharedInstance];
-        v15 = [v14 beginConsumingPressesForButtonKind:4 eventConsumer:self priority:0];
+        mEMORY[0x277D66AA0] = [MEMORY[0x277D66AA0] sharedInstance];
+        v15 = [mEMORY[0x277D66AA0] beginConsumingPressesForButtonKind:4 eventConsumer:self priority:0];
         [(TVRUIVolumeController *)self setVolumeDecreaseSBSInvalidator:v15];
 
-        v4 = [MEMORY[0x277D66AA0] sharedInstance];
-        v16 = [v4 beginConsumingPressesForButtonKind:3 eventConsumer:self priority:0];
+        mEMORY[0x277D66AA0]2 = [MEMORY[0x277D66AA0] sharedInstance];
+        v16 = [mEMORY[0x277D66AA0]2 beginConsumingPressesForButtonKind:3 eventConsumer:self priority:0];
         [(TVRUIVolumeController *)self setVolumeIncreaseSBSInvalidator:v16];
 
         goto LABEL_14;
       }
     }
 
-    v4 = _TVRUIVolumeControllerLog();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    mEMORY[0x277D66AA0]2 = _TVRUIVolumeControllerLog();
+    if (os_log_type_enabled(mEMORY[0x277D66AA0]2, OS_LOG_TYPE_DEFAULT))
     {
       *v18 = 0;
       v10 = "Already listening for volume button presses";
@@ -94,7 +94,7 @@
     v10 = "Volume control is NOT supported. Skipping listening for volume button events";
     v11 = &v20;
 LABEL_13:
-    _os_log_impl(&dword_26CFEB000, v4, OS_LOG_TYPE_DEFAULT, v10, v11, 2u);
+    _os_log_impl(&dword_26CFEB000, mEMORY[0x277D66AA0]2, OS_LOG_TYPE_DEFAULT, v10, v11, 2u);
   }
 
 LABEL_14:
@@ -111,26 +111,26 @@ LABEL_14:
     _os_log_impl(&dword_26CFEB000, v3, OS_LOG_TYPE_DEFAULT, "Unregistering from volume button events. supportsVolumeControl:%{BOOL}d", v9, 8u);
   }
 
-  v4 = [(TVRUIVolumeController *)self window];
+  window = [(TVRUIVolumeController *)self window];
 
-  if (v4)
+  if (window)
   {
-    v5 = [(TVRUIVolumeController *)self window];
-    v6 = [v5 windowScene];
-    [v6 _setSystemVolumeHUDEnabled:1];
+    window2 = [(TVRUIVolumeController *)self window];
+    windowScene = [window2 windowScene];
+    [windowScene _setSystemVolumeHUDEnabled:1];
   }
 
-  v7 = [(TVRUIVolumeController *)self volumeDecreaseSBSInvalidator];
-  [v7 invalidate];
+  volumeDecreaseSBSInvalidator = [(TVRUIVolumeController *)self volumeDecreaseSBSInvalidator];
+  [volumeDecreaseSBSInvalidator invalidate];
 
-  v8 = [(TVRUIVolumeController *)self volumeIncreaseSBSInvalidator];
-  [v8 invalidate];
+  volumeIncreaseSBSInvalidator = [(TVRUIVolumeController *)self volumeIncreaseSBSInvalidator];
+  [volumeIncreaseSBSInvalidator invalidate];
 
   [(TVRUIVolumeController *)self setVolumeDecreaseSBSInvalidator:0];
   [(TVRUIVolumeController *)self setVolumeIncreaseSBSInvalidator:0];
 }
 
-- (void)consumeSinglePressDownForButtonKind:(int64_t)a3
+- (void)consumeSinglePressDownForButtonKind:(int64_t)kind
 {
   v12 = *MEMORY[0x277D85DE8];
   v5 = _TVRUIVolumeControllerLog();
@@ -144,18 +144,18 @@ LABEL_14:
     _os_log_impl(&dword_26CFEB000, v5, OS_LOG_TYPE_DEFAULT, "%s, buttonKind: %@", &v8, 0x16u);
   }
 
-  if (a3 == 4 || a3 == 3)
+  if (kind == 4 || kind == 3)
   {
-    v7 = [(TVRUIVolumeController *)self eventHandler];
-    (*(v7 + 16))();
+    eventHandler = [(TVRUIVolumeController *)self eventHandler];
+    (*(eventHandler + 16))();
   }
 
   else
   {
-    v7 = _TVRUIVolumeControllerLog();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    eventHandler = _TVRUIVolumeControllerLog();
+    if (os_log_type_enabled(eventHandler, OS_LOG_TYPE_ERROR))
     {
-      [(TVRUIVolumeController *)a3 consumeSinglePressDownForButtonKind:v7];
+      [(TVRUIVolumeController *)kind consumeSinglePressDownForButtonKind:eventHandler];
     }
   }
 }

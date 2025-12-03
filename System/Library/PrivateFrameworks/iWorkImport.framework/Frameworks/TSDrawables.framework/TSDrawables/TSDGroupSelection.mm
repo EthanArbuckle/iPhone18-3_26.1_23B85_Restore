@@ -1,32 +1,32 @@
 @interface TSDGroupSelection
 - (BOOL)isCrossContainerSelection;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSSet)containerGroups;
-- (TSDGroupSelection)initWithContainerGroups:(id)a3 hasSelectedInfosInNonGroupContainer:(BOOL)a4;
-- (TSDGroupSelection)initWithGroupInfo:(id)a3;
+- (TSDGroupSelection)initWithContainerGroups:(id)groups hasSelectedInfosInNonGroupContainer:(BOOL)container;
+- (TSDGroupSelection)initWithGroupInfo:(id)info;
 - (id)subclassDescription;
 - (unint64_t)hash;
 @end
 
 @implementation TSDGroupSelection
 
-- (TSDGroupSelection)initWithContainerGroups:(id)a3 hasSelectedInfosInNonGroupContainer:(BOOL)a4
+- (TSDGroupSelection)initWithContainerGroups:(id)groups hasSelectedInfosInNonGroupContainer:(BOOL)container
 {
   v6.receiver = self;
   v6.super_class = TSDGroupSelection;
-  result = [(TSDDrawableSelection *)&v6 initWithInfos:a3];
+  result = [(TSDDrawableSelection *)&v6 initWithInfos:groups];
   if (result)
   {
-    result->_hasSelectedInfosInNonGroupContainer = a4;
+    result->_hasSelectedInfosInNonGroupContainer = container;
   }
 
   return result;
 }
 
-- (TSDGroupSelection)initWithGroupInfo:(id)a3
+- (TSDGroupSelection)initWithGroupInfo:(id)info
 {
-  v5 = a3;
-  if (!v5)
+  infoCopy = info;
+  if (!infoCopy)
   {
     v6 = MEMORY[0x277D81150];
     v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, "[TSDGroupSelection initWithGroupInfo:]");
@@ -36,7 +36,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v11, v12);
   }
 
-  v13 = objc_msgSend_setWithObject_(MEMORY[0x277CBEB98], v4, v5);
+  v13 = objc_msgSend_setWithObject_(MEMORY[0x277CBEB98], v4, infoCopy);
   hasSelectedInfosInNonGroupContainer = objc_msgSend_initWithContainerGroups_hasSelectedInfosInNonGroupContainer_(self, v14, v13, 0);
 
   return hasSelectedInfosInNonGroupContainer;
@@ -73,10 +73,10 @@
   return TSUHashWithSeed();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -85,7 +85,7 @@
   {
     v8.receiver = self;
     v8.super_class = TSDGroupSelection;
-    if ([(TSDDrawableSelection *)&v8 isEqual:v4])
+    if ([(TSDDrawableSelection *)&v8 isEqual:equalCopy])
     {
       objc_opt_class();
       v5 = TSUDynamicCast();

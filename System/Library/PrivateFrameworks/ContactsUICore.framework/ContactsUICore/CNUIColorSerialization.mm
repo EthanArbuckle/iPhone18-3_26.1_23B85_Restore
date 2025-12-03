@@ -1,88 +1,88 @@
 @interface CNUIColorSerialization
-+ (id)colorFromData:(id)a3;
-+ (id)colorFromDictionary:(id)a3;
-+ (id)colorFromString:(id)a3;
-+ (id)colorsFromDictionaries:(id)a3;
-+ (id)colorsFromString:(id)a3;
-+ (id)dataForColor:(id)a3;
-+ (id)dictionariesForColors:(id)a3;
-+ (id)stringForColor:(id)a3;
-+ (id)stringForColors:(id)a3;
++ (id)colorFromData:(id)data;
++ (id)colorFromDictionary:(id)dictionary;
++ (id)colorFromString:(id)string;
++ (id)colorsFromDictionaries:(id)dictionaries;
++ (id)colorsFromString:(id)string;
++ (id)dataForColor:(id)color;
++ (id)dictionariesForColors:(id)colors;
++ (id)stringForColor:(id)color;
++ (id)stringForColors:(id)colors;
 @end
 
 @implementation CNUIColorSerialization
 
-+ (id)stringForColors:(id)a3
++ (id)stringForColors:(id)colors
 {
   v3 = *MEMORY[0x1E6996578];
-  v4 = [a1 dictionariesForColors:a3];
+  v4 = [self dictionariesForColors:colors];
   v5 = (*(v3 + 16))(v3, v4);
 
   return v5;
 }
 
-+ (id)colorsFromString:(id)a3
++ (id)colorsFromString:(id)string
 {
   v4 = (*(*MEMORY[0x1E6996598] + 16))();
-  v5 = [a1 colorsFromDictionaries:v4];
+  v5 = [self colorsFromDictionaries:v4];
 
   return v5;
 }
 
-+ (id)dictionariesForColors:(id)a3
++ (id)dictionariesForColors:(id)colors
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __48__CNUIColorSerialization_dictionariesForColors___block_invoke;
   v5[3] = &__block_descriptor_40_e31___NSDictionary_16__0__UIColor_8l;
-  v5[4] = a1;
-  v3 = [a3 _cn_map:v5];
+  v5[4] = self;
+  v3 = [colors _cn_map:v5];
 
   return v3;
 }
 
-+ (id)colorsFromDictionaries:(id)a3
++ (id)colorsFromDictionaries:(id)dictionaries
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __49__CNUIColorSerialization_colorsFromDictionaries___block_invoke;
   v5[3] = &__block_descriptor_40_e31___UIColor_16__0__NSDictionary_8l;
-  v5[4] = a1;
-  v3 = [a3 _cn_compactMap:v5];
+  v5[4] = self;
+  v3 = [dictionaries _cn_compactMap:v5];
 
   return v3;
 }
 
-+ (id)stringForColor:(id)a3
++ (id)stringForColor:(id)color
 {
-  v3 = [a1 dictionaryForColor:a3];
+  v3 = [self dictionaryForColor:color];
   v4 = (*(*MEMORY[0x1E6996578] + 16))();
 
   return v4;
 }
 
-+ (id)colorFromString:(id)a3
++ (id)colorFromString:(id)string
 {
   v4 = (*(*MEMORY[0x1E6996598] + 16))();
-  v5 = [a1 colorFromDictionary:v4];
+  v5 = [self colorFromDictionary:v4];
 
   return v5;
 }
 
-+ (id)dataForColor:(id)a3
++ (id)dataForColor:(id)color
 {
-  v3 = [a1 dictionaryForColor:a3];
+  v3 = [self dictionaryForColor:color];
   v4 = [MEMORY[0x1E69967D8] dataWithObject:v3 error:0];
 
   return v4;
 }
 
-+ (id)colorFromData:(id)a3
++ (id)colorFromData:(id)data
 {
-  v4 = [MEMORY[0x1E69967D8] objectWithData:a3 error:0];
+  v4 = [MEMORY[0x1E69967D8] objectWithData:data error:0];
   if (v4)
   {
-    v5 = [a1 colorFromDictionary:v4];
+    v5 = [self colorFromDictionary:v4];
   }
 
   else
@@ -93,10 +93,10 @@
   return v5;
 }
 
-+ (id)colorFromDictionary:(id)a3
++ (id)colorFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"type"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"type"];
   v5 = v4;
   if (v4)
   {
@@ -106,7 +106,7 @@
       objc_exception_throw(v8);
     }
 
-    v6 = [_CNUIComponentBasedColorSerialization colorFromDictionary:v3];
+    v6 = [_CNUIComponentBasedColorSerialization colorFromDictionary:dictionaryCopy];
   }
 
   else

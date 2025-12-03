@@ -1,7 +1,7 @@
 @interface MTRBasicClusterMfgSpecificPingParams
 - (MTRBasicClusterMfgSpecificPingParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -25,14 +25,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRBasicClusterMfgSpecificPingParams);
-  v5 = [(MTRBasicClusterMfgSpecificPingParams *)self timedInvokeTimeoutMs];
-  [(MTRBasicClusterMfgSpecificPingParams *)v4 setTimedInvokeTimeoutMs:v5];
+  timedInvokeTimeoutMs = [(MTRBasicClusterMfgSpecificPingParams *)self timedInvokeTimeoutMs];
+  [(MTRBasicClusterMfgSpecificPingParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v6 = [(MTRBasicClusterMfgSpecificPingParams *)self serverSideProcessingTimeout];
-  [(MTRBasicClusterMfgSpecificPingParams *)v4 setServerSideProcessingTimeout:v6];
+  serverSideProcessingTimeout = [(MTRBasicClusterMfgSpecificPingParams *)self serverSideProcessingTimeout];
+  [(MTRBasicClusterMfgSpecificPingParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -47,11 +47,11 @@
   return v5;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
-  if (a3)
+  if (value)
   {
-    *a3 = sub_23921C1E4(MTRError, 0xC1A900000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
+    *value = sub_23921C1E4(MTRError, 0xC1A900000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
   }
 
   return 0;

@@ -1,50 +1,50 @@
 @interface VideosExtrasTableViewCell
-- (VideosExtrasTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)configureForListItemLockupElement:(id)a3 wide:(BOOL)a4;
+- (VideosExtrasTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)configureForListItemLockupElement:(id)element wide:(BOOL)wide;
 - (void)prepareForReuse;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
 @end
 
 @implementation VideosExtrasTableViewCell
 
-- (VideosExtrasTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (VideosExtrasTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v79[5] = *MEMORY[0x1E69E9840];
   v75.receiver = self;
   v75.super_class = VideosExtrasTableViewCell;
-  v4 = [(VideosExtrasTableViewCell *)&v75 initWithStyle:3 reuseIdentifier:a4];
+  v4 = [(VideosExtrasTableViewCell *)&v75 initWithStyle:3 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     [(VideosExtrasTableViewCell *)v4 setSelectionStyle:0];
-    v6 = [[VideosExtrasConstrainedArtworkContainerView alloc] initForAutolayout];
+    initForAutolayout = [[VideosExtrasConstrainedArtworkContainerView alloc] initForAutolayout];
     artworkContainer = v5->_artworkContainer;
-    v5->_artworkContainer = v6;
+    v5->_artworkContainer = initForAutolayout;
 
-    v8 = [(VideosExtrasTableViewCell *)v5 contentView];
-    [v8 addSubview:v5->_artworkContainer];
+    contentView = [(VideosExtrasTableViewCell *)v5 contentView];
+    [contentView addSubview:v5->_artworkContainer];
 
-    v9 = [objc_alloc(MEMORY[0x1E69DD250]) initForAutolayout];
+    initForAutolayout2 = [objc_alloc(MEMORY[0x1E69DD250]) initForAutolayout];
     textContainerView = v5->_textContainerView;
-    v5->_textContainerView = v9;
+    v5->_textContainerView = initForAutolayout2;
 
     LODWORD(v11) = 1144750080;
     [(UIView *)v5->_textContainerView setContentHuggingPriority:1 forAxis:v11];
-    v12 = [(VideosExtrasTableViewCell *)v5 contentView];
-    [v12 addSubview:v5->_textContainerView];
+    contentView2 = [(VideosExtrasTableViewCell *)v5 contentView];
+    [contentView2 addSubview:v5->_textContainerView];
 
-    v13 = [objc_alloc(MEMORY[0x1E69DCC10]) initForAutolayout];
+    initForAutolayout3 = [objc_alloc(MEMORY[0x1E69DCC10]) initForAutolayout];
     titleLabel = v5->_titleLabel;
-    v5->_titleLabel = v13;
+    v5->_titleLabel = initForAutolayout3;
 
     LODWORD(v15) = 1144750080;
     [(UILabel *)v5->_titleLabel setContentCompressionResistancePriority:1 forAxis:v15];
     [(UILabel *)v5->_titleLabel MPU_setAutomaticallyUpdatesTextStyleFontsToPreferredTextStyleFonts:1];
     [(UIView *)v5->_textContainerView addSubview:v5->_titleLabel];
-    v16 = [objc_alloc(MEMORY[0x1E69DCC10]) initForAutolayout];
+    initForAutolayout4 = [objc_alloc(MEMORY[0x1E69DCC10]) initForAutolayout];
     subtitleLabel = v5->_subtitleLabel;
-    v5->_subtitleLabel = v16;
+    v5->_subtitleLabel = initForAutolayout4;
 
     LODWORD(v18) = 1144750080;
     [(UILabel *)v5->_subtitleLabel setContentCompressionResistancePriority:1 forAxis:v18];
@@ -52,8 +52,8 @@
     [(UIView *)v5->_textContainerView addSubview:v5->_subtitleLabel];
     v19 = MEMORY[0x1E696ACD8];
     v20 = v5->_artworkContainer;
-    v21 = [(VideosExtrasTableViewCell *)v5 contentView];
-    v74 = [v19 constraintWithItem:v20 attribute:10 relatedBy:0 toItem:v21 attribute:10 multiplier:1.0 constant:0.0];
+    contentView3 = [(VideosExtrasTableViewCell *)v5 contentView];
+    v74 = [v19 constraintWithItem:v20 attribute:10 relatedBy:0 toItem:contentView3 attribute:10 multiplier:1.0 constant:0.0];
 
     v22 = [MEMORY[0x1E696ACD8] constraintWithItem:v5->_artworkContainer attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:0.0];
     artworkWidthConstraint = v5->_artworkWidthConstraint;
@@ -69,44 +69,44 @@
     [(NSLayoutConstraint *)v5->_artworkHeightConstraint setPriority:v27];
     v28 = MEMORY[0x1E696ACD8];
     v29 = v5->_textContainerView;
-    v30 = [(VideosExtrasTableViewCell *)v5 contentView];
-    v73 = [v28 constraintWithItem:v29 attribute:10 relatedBy:0 toItem:v30 attribute:10 multiplier:1.0 constant:0.0];
+    contentView4 = [(VideosExtrasTableViewCell *)v5 contentView];
+    v73 = [v28 constraintWithItem:v29 attribute:10 relatedBy:0 toItem:contentView4 attribute:10 multiplier:1.0 constant:0.0];
 
     v31 = MEMORY[0x1E696ACD8];
     v32 = v5->_textContainerView;
-    v33 = [(VideosExtrasTableViewCell *)v5 contentView];
-    v34 = [v31 constraintWithItem:v32 attribute:6 relatedBy:0 toItem:v33 attribute:6 multiplier:1.0 constant:-15.0];
+    contentView5 = [(VideosExtrasTableViewCell *)v5 contentView];
+    v34 = [v31 constraintWithItem:v32 attribute:6 relatedBy:0 toItem:contentView5 attribute:6 multiplier:1.0 constant:-15.0];
     textTrailingConstraint = v5->_textTrailingConstraint;
     v5->_textTrailingConstraint = v34;
 
-    v36 = [(VideosExtrasTableViewCell *)v5 contentView];
+    contentView6 = [(VideosExtrasTableViewCell *)v5 contentView];
     v79[0] = v74;
     v79[1] = v5->_artworkWidthConstraint;
     v79[2] = v5->_artworkHeightConstraint;
     v79[3] = v73;
     v79[4] = v5->_textTrailingConstraint;
     v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v79 count:5];
-    [v36 addConstraints:v37];
+    [contentView6 addConstraints:v37];
 
     v38 = MEMORY[0x1E696ACD8];
     v39 = v5->_artworkContainer;
-    v40 = [(VideosExtrasTableViewCell *)v5 contentView];
-    v41 = [v38 constraintWithItem:v39 attribute:3 relatedBy:1 toItem:v40 attribute:3 multiplier:1.0 constant:15.0];
+    contentView7 = [(VideosExtrasTableViewCell *)v5 contentView];
+    v41 = [v38 constraintWithItem:v39 attribute:3 relatedBy:1 toItem:contentView7 attribute:3 multiplier:1.0 constant:15.0];
 
     v42 = MEMORY[0x1E696ACD8];
     v43 = v5->_artworkContainer;
-    v44 = [(VideosExtrasTableViewCell *)v5 contentView];
-    v45 = [v42 constraintWithItem:v43 attribute:4 relatedBy:-1 toItem:v44 attribute:4 multiplier:1.0 constant:-15.0];
+    contentView8 = [(VideosExtrasTableViewCell *)v5 contentView];
+    v45 = [v42 constraintWithItem:v43 attribute:4 relatedBy:-1 toItem:contentView8 attribute:4 multiplier:1.0 constant:-15.0];
 
     v46 = MEMORY[0x1E696ACD8];
     v47 = v5->_textContainerView;
-    v48 = [(VideosExtrasTableViewCell *)v5 contentView];
-    v49 = [v46 constraintWithItem:v47 attribute:3 relatedBy:1 toItem:v48 attribute:3 multiplier:1.0 constant:0.0];
+    contentView9 = [(VideosExtrasTableViewCell *)v5 contentView];
+    v49 = [v46 constraintWithItem:v47 attribute:3 relatedBy:1 toItem:contentView9 attribute:3 multiplier:1.0 constant:0.0];
 
     v50 = MEMORY[0x1E696ACD8];
     v51 = v5->_textContainerView;
-    v52 = [(VideosExtrasTableViewCell *)v5 contentView];
-    v53 = [v50 constraintWithItem:v51 attribute:4 relatedBy:-1 toItem:v52 attribute:4 multiplier:1.0 constant:0.0];
+    contentView10 = [(VideosExtrasTableViewCell *)v5 contentView];
+    v53 = [v50 constraintWithItem:v51 attribute:4 relatedBy:-1 toItem:contentView10 attribute:4 multiplier:1.0 constant:0.0];
 
     v78 = v41;
     v54 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v78 count:1];
@@ -135,31 +135,31 @@
     [(UIView *)v5->_textContainerView addConstraints:v64];
     [(UIView *)v5->_textContainerView addConstraints:v65];
     v66 = MEMORY[0x1E696ACD8];
-    v67 = [(VideosExtrasTableViewCell *)v5 contentView];
-    v68 = [v66 constraintWithItem:v67 attribute:8 relatedBy:1 toItem:0 attribute:0 multiplier:1.0 constant:60.0];
+    contentView11 = [(VideosExtrasTableViewCell *)v5 contentView];
+    v68 = [v66 constraintWithItem:contentView11 attribute:8 relatedBy:1 toItem:0 attribute:0 multiplier:1.0 constant:60.0];
     minimumHeightConstraint = v5->_minimumHeightConstraint;
     v5->_minimumHeightConstraint = v68;
 
     LODWORD(v70) = 1148829696;
     [(NSLayoutConstraint *)v5->_minimumHeightConstraint setPriority:v70];
-    v71 = [(VideosExtrasTableViewCell *)v5 contentView];
-    [v71 addConstraint:v5->_minimumHeightConstraint];
+    contentView12 = [(VideosExtrasTableViewCell *)v5 contentView];
+    [contentView12 addConstraint:v5->_minimumHeightConstraint];
   }
 
   return v5;
 }
 
-- (void)configureForListItemLockupElement:(id)a3 wide:(BOOL)a4
+- (void)configureForListItemLockupElement:(id)element wide:(BOOL)wide
 {
-  v4 = a4;
+  wideCopy = wide;
   v138 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  self->_element = v6;
+  elementCopy = element;
+  self->_element = elementCopy;
   v7 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.0];
   [(VideosExtrasTableViewCell *)self setBackgroundColor:v7];
 
   v8 = 60.0;
-  if (v4)
+  if (wideCopy)
   {
     v8 = 78.0;
     v9 = 15.0;
@@ -228,17 +228,17 @@
     while (v17);
   }
 
-  v20 = [(IKListItemLockupElement *)v6 images];
-  v21 = [v20 firstObject];
+  images = [(IKListItemLockupElement *)elementCopy images];
+  firstObject = [images firstObject];
 
   v22 = &OBJC_IVAR___VUINowPlayingObserver__delegate;
-  v123 = v21;
-  if (v21)
+  v123 = firstObject;
+  if (firstObject)
   {
     v23 = self->_artworkContainer;
-    v24 = [(IKListItemLockupElement *)v6 decorationLabel];
+    decorationLabel = [(IKListItemLockupElement *)elementCopy decorationLabel];
 
-    if (v4)
+    if (wideCopy)
     {
       v25 = 48.0;
     }
@@ -249,12 +249,12 @@
     }
 
     v26 = 71.0;
-    if (v4)
+    if (wideCopy)
     {
       v26 = 86.0;
     }
 
-    if (v24)
+    if (decorationLabel)
     {
       v27 = v26;
     }
@@ -266,37 +266,37 @@
 
     [(NSLayoutConstraint *)self->_artworkWidthConstraint setConstant:v27];
     [(NSLayoutConstraint *)self->_artworkHeightConstraint setConstant:v25];
-    v28 = [v21 placeholderURL];
-    v29 = [MEMORY[0x1E69DCAB8] imageForPlaceholderURL:v28];
-    v30 = [(VideosExtrasConstrainedArtworkContainerView *)self->_artworkContainer artworkView];
-    [v30 setPlaceholderImage:v29];
-    v31 = [v21 artworkCatalog];
-    [v31 setFittingSize:{v27, v25}];
+    placeholderURL = [firstObject placeholderURL];
+    v29 = [MEMORY[0x1E69DCAB8] imageForPlaceholderURL:placeholderURL];
+    artworkView = [(VideosExtrasConstrainedArtworkContainerView *)self->_artworkContainer artworkView];
+    [artworkView setPlaceholderImage:v29];
+    artworkCatalog = [firstObject artworkCatalog];
+    [artworkCatalog setFittingSize:{v27, v25}];
     v126[0] = MEMORY[0x1E69E9820];
     v126[1] = 3221225472;
     v126[2] = __68__VideosExtrasTableViewCell_configureForListItemLockupElement_wide___block_invoke;
     v126[3] = &unk_1E8736B58;
-    v127 = v6;
-    [v31 setDestination:self configurationBlock:v126];
-    v32 = [v30 layer];
+    v127 = elementCopy;
+    [artworkCatalog setDestination:self configurationBlock:v126];
+    layer = [artworkView layer];
     v33 = [MEMORY[0x1E69DC888] colorWithWhite:0.2 alpha:1.0];
-    [v32 setBorderColor:{objc_msgSend(v33, "CGColor")}];
+    [layer setBorderColor:{objc_msgSend(v33, "CGColor")}];
 
-    v34 = [v30 layer];
-    v35 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v35 scale];
-    [v34 setBorderWidth:1.0 / v36];
+    layer2 = [artworkView layer];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
+    [layer2 setBorderWidth:1.0 / v36];
 
-    v37 = [v30 layer];
-    v38 = [MEMORY[0x1E69DC888] blackColor];
-    [v37 setShadowColor:{objc_msgSend(v38, "CGColor")}];
+    layer3 = [artworkView layer];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [layer3 setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
 
-    v39 = [v30 layer];
-    [v39 setShadowRadius:2.0];
+    layer4 = [artworkView layer];
+    [layer4 setShadowRadius:2.0];
 
-    v40 = [v30 layer];
+    layer5 = [artworkView layer];
     LODWORD(v41) = 0.5;
-    [v40 setShadowOpacity:v41];
+    [layer5 setShadowOpacity:v41];
 
     v42 = v23;
     v22 = &OBJC_IVAR___VUINowPlayingObserver__delegate;
@@ -315,12 +315,12 @@
     goto LABEL_33;
   }
 
-  v44 = [(NSLayoutConstraint *)leadingViewConstraint firstItem];
+  firstItem = [(NSLayoutConstraint *)leadingViewConstraint firstItem];
 
-  if (v44 != v42)
+  if (firstItem != v42)
   {
-    v45 = [(VideosExtrasTableViewCell *)self contentView];
-    [v45 removeConstraint:self->_leadingViewConstraint];
+    contentView = [(VideosExtrasTableViewCell *)self contentView];
+    [contentView removeConstraint:self->_leadingViewConstraint];
 
     v46 = self->_leadingViewConstraint;
     self->_leadingViewConstraint = 0;
@@ -330,21 +330,21 @@
   {
 LABEL_33:
     v47 = MEMORY[0x1E696ACD8];
-    v48 = [(VideosExtrasTableViewCell *)self contentView];
-    v49 = [v47 constraintWithItem:v42 attribute:5 relatedBy:0 toItem:v48 attribute:5 multiplier:1.0 constant:15.0];
+    contentView2 = [(VideosExtrasTableViewCell *)self contentView];
+    v49 = [v47 constraintWithItem:v42 attribute:5 relatedBy:0 toItem:contentView2 attribute:5 multiplier:1.0 constant:15.0];
     v50 = self->_leadingViewConstraint;
     self->_leadingViewConstraint = v49;
 
-    v51 = [(VideosExtrasTableViewCell *)self contentView];
-    [v51 addConstraint:self->_leadingViewConstraint];
+    contentView3 = [(VideosExtrasTableViewCell *)self contentView];
+    [contentView3 addConstraint:self->_leadingViewConstraint];
   }
 
   v52 = v22[445];
   v53 = *(&self->super.super.super.super.isa + v52);
   if (v42 == v53 && v53)
   {
-    v54 = [(VideosExtrasTableViewCell *)self contentView];
-    [v54 removeConstraint:self->_textLeadingConstraint];
+    contentView4 = [(VideosExtrasTableViewCell *)self contentView];
+    [contentView4 removeConstraint:self->_textLeadingConstraint];
 
     textLeadingConstraint = self->_textLeadingConstraint;
     self->_textLeadingConstraint = 0;
@@ -357,54 +357,54 @@ LABEL_33:
     v58 = self->_textLeadingConstraint;
     self->_textLeadingConstraint = v57;
 
-    v59 = [(VideosExtrasTableViewCell *)self contentView];
-    [v59 addConstraint:self->_textLeadingConstraint];
+    contentView5 = [(VideosExtrasTableViewCell *)self contentView];
+    [contentView5 addConstraint:self->_textLeadingConstraint];
   }
 
   [(NSLayoutConstraint *)self->_textLeadingConstraint setConstant:v9, v52];
   v60 = *p_titleLabel;
-  v61 = [MEMORY[0x1E69DC888] clearColor];
-  [(UILabel *)v60 setBackgroundColor:v61];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UILabel *)v60 setBackgroundColor:clearColor];
 
-  v62 = [MEMORY[0x1E69DC888] whiteColor];
-  [(UILabel *)v60 setTextColor:v62];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [(UILabel *)v60 setTextColor:whiteColor];
 
-  v63 = [(IKListItemLockupElement *)v6 title];
+  title = [(IKListItemLockupElement *)elementCopy title];
   v64 = *MEMORY[0x1E69DDCF8];
   v65 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDCF8]];
-  if (v63)
+  if (title)
   {
-    [(UILabel *)v60 configureForIKTextElement:v63 fontDescriptor:v65 textStyle:v64];
+    [(UILabel *)v60 configureForIKTextElement:title fontDescriptor:v65 textStyle:v64];
   }
 
-  v124 = v63;
+  v124 = title;
   v121 = v60;
   v122 = v42;
   p_subtitleLabel = &self->_subtitleLabel;
   v67 = self->_subtitleLabel;
-  v68 = [MEMORY[0x1E69DC888] clearColor];
-  [(UILabel *)v67 setBackgroundColor:v68];
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  [(UILabel *)v67 setBackgroundColor:clearColor2];
 
   v69 = [MEMORY[0x1E69DC888] colorWithWhite:0.4 alpha:1.0];
   [(UILabel *)v67 setTextColor:v69];
 
-  v125 = v6;
-  v70 = [(IKListItemLockupElement *)v6 subtitle];
+  v125 = elementCopy;
+  subtitle = [(IKListItemLockupElement *)elementCopy subtitle];
   v71 = *MEMORY[0x1E69DDD10];
   v72 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDD10]];
 
-  if (v70)
+  if (subtitle)
   {
-    [(UILabel *)v67 configureForIKTextElement:v70 fontDescriptor:v72 textStyle:v71];
+    [(UILabel *)v67 configureForIKTextElement:subtitle fontDescriptor:v72 textStyle:v71];
   }
 
   v119 = v72;
   v120 = v67;
-  v73 = [v124 text];
-  v74 = [v73 length];
+  text = [v124 text];
+  v74 = [text length];
 
-  v75 = [v70 text];
-  v76 = [v75 length];
+  text2 = [subtitle text];
+  v76 = [text2 length];
 
   if (v74 && (v77 = &self->_titleLabel, v78 = &self->_subtitleLabel, v76) || v74 && (v77 = &self->_titleLabel, v78 = &self->_titleLabel, !v76) || (v77 = &self->_titleLabel, v78 = &self->_titleLabel, v74 == 0 && v76 == 0) || (!v76 ? (v79 = 1) : (v79 = v74 != 0), v77 = &self->_subtitleLabel, v78 = &self->_subtitleLabel, !v79))
   {
@@ -415,20 +415,20 @@ LABEL_33:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0 || ([(NSLayoutConstraint *)self->_topLabelConstraint firstItem], v82 = objc_claimAutoreleasedReturnValue(), v82, v82 != v81))
       {
-        v83 = [(VideosExtrasTableViewCell *)self contentView];
-        [v83 removeConstraint:self->_topLabelConstraint];
+        contentView6 = [(VideosExtrasTableViewCell *)self contentView];
+        [contentView6 removeConstraint:self->_topLabelConstraint];
 
         topLabelConstraint = self->_topLabelConstraint;
         self->_topLabelConstraint = 0;
       }
 
-      v85 = self->_topLabelConstraint;
-      if (!v85)
+      contentView15 = self->_topLabelConstraint;
+      if (!contentView15)
       {
-        v85 = [MEMORY[0x1E69AD980] constraintWithAutoupdatingBaselineOfView:*p_titleLabel relation:0 toView:*(&self->super.super.super.super.isa + v117) attribute:3 withTextStyle:v64 multiplier:1.0 nonStandardLeading:28.0];
-        objc_storeStrong(&self->_topLabelConstraint, v85);
-        v86 = [(VideosExtrasTableViewCell *)self contentView];
-        [v86 addConstraint:v85];
+        contentView15 = [MEMORY[0x1E69AD980] constraintWithAutoupdatingBaselineOfView:*p_titleLabel relation:0 toView:*(&self->super.super.super.super.isa + v117) attribute:3 withTextStyle:v64 multiplier:1.0 nonStandardLeading:28.0];
+        objc_storeStrong(&self->_topLabelConstraint, contentView15);
+        contentView7 = [(VideosExtrasTableViewCell *)self contentView];
+        [contentView7 addConstraint:contentView15];
       }
 
       if (!self->_subtitleBaselineConstraint)
@@ -437,15 +437,15 @@ LABEL_33:
         subtitleBaselineConstraint = self->_subtitleBaselineConstraint;
         self->_subtitleBaselineConstraint = v87;
 
-        v89 = [(VideosExtrasTableViewCell *)self contentView];
-        [v89 addConstraint:self->_subtitleBaselineConstraint];
+        contentView8 = [(VideosExtrasTableViewCell *)self contentView];
+        [contentView8 addConstraint:self->_subtitleBaselineConstraint];
       }
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v90 = [(VideosExtrasTableViewCell *)self contentView];
-        [v90 removeConstraint:self->_bottomLabelConstraint];
+        contentView9 = [(VideosExtrasTableViewCell *)self contentView];
+        [contentView9 removeConstraint:self->_bottomLabelConstraint];
 
         bottomLabelConstraint = self->_bottomLabelConstraint;
         self->_bottomLabelConstraint = 0;
@@ -457,8 +457,8 @@ LABEL_33:
       {
         v92 = [MEMORY[0x1E69AD980] contentSizeAutoupdatingConstraintWithItem:*(&self->super.super.super.super.isa + v117) attribute:4 relatedBy:0 toItem:*p_subtitleLabel attribute:11 multiplier:v71 textStyle:1.0 defaultSizeConstant:14.0];
         objc_storeStrong(&self->_bottomLabelConstraint, v92);
-        v94 = [(VideosExtrasTableViewCell *)self contentView];
-        [v94 addConstraint:v92];
+        contentView10 = [(VideosExtrasTableViewCell *)self contentView];
+        [contentView10 addConstraint:v92];
       }
 
       v95 = v123;
@@ -466,12 +466,12 @@ LABEL_33:
       goto LABEL_83;
     }
 
-    v80 = v70;
+    v80 = subtitle;
   }
 
   else
   {
-    v80 = v70;
+    v80 = subtitle;
     v118 = 0;
     v81 = 0;
   }
@@ -480,8 +480,8 @@ LABEL_33:
   v96 = v124;
   if (self->_subtitleBaselineConstraint)
   {
-    v97 = [(VideosExtrasTableViewCell *)self contentView];
-    [v97 removeConstraint:self->_subtitleBaselineConstraint];
+    contentView11 = [(VideosExtrasTableViewCell *)self contentView];
+    [contentView11 removeConstraint:self->_subtitleBaselineConstraint];
 
     v98 = self->_subtitleBaselineConstraint;
     self->_subtitleBaselineConstraint = 0;
@@ -490,9 +490,9 @@ LABEL_33:
   v99 = self->_topLabelConstraint;
   if (v99)
   {
-    v100 = [(NSLayoutConstraint *)v99 firstItem];
-    v101 = v100;
-    if (v100 == v81)
+    firstItem2 = [(NSLayoutConstraint *)v99 firstItem];
+    v101 = firstItem2;
+    if (firstItem2 == v81)
     {
       v102 = [(NSLayoutConstraint *)self->_topLabelConstraint isMemberOfClass:objc_opt_class()];
 
@@ -506,8 +506,8 @@ LABEL_33:
     {
     }
 
-    v103 = [(VideosExtrasTableViewCell *)self contentView];
-    [v103 removeConstraint:self->_topLabelConstraint];
+    contentView12 = [(VideosExtrasTableViewCell *)self contentView];
+    [contentView12 removeConstraint:self->_topLabelConstraint];
 
     v104 = self->_topLabelConstraint;
     self->_topLabelConstraint = 0;
@@ -523,20 +523,20 @@ LABEL_75:
   v106 = self->_topLabelConstraint;
   self->_topLabelConstraint = v105;
 
-  v107 = [(VideosExtrasTableViewCell *)self contentView];
-  [v107 addConstraint:self->_topLabelConstraint];
+  contentView13 = [(VideosExtrasTableViewCell *)self contentView];
+  [contentView13 addConstraint:self->_topLabelConstraint];
 
 LABEL_77:
   v108 = self->_bottomLabelConstraint;
   v93 = v118;
   if (v108)
   {
-    v109 = [(NSLayoutConstraint *)v108 secondItem];
+    secondItem = [(NSLayoutConstraint *)v108 secondItem];
 
-    if (v109 != v118)
+    if (secondItem != v118)
     {
-      v110 = [(VideosExtrasTableViewCell *)self contentView];
-      [v110 removeConstraint:self->_bottomLabelConstraint];
+      contentView14 = [(VideosExtrasTableViewCell *)self contentView];
+      [contentView14 removeConstraint:self->_bottomLabelConstraint];
 
       v111 = self->_bottomLabelConstraint;
       self->_bottomLabelConstraint = 0;
@@ -544,7 +544,7 @@ LABEL_77:
 
     if (self->_bottomLabelConstraint)
     {
-      v70 = v80;
+      subtitle = v80;
       goto LABEL_84;
     }
   }
@@ -553,25 +553,25 @@ LABEL_77:
   v113 = self->_bottomLabelConstraint;
   self->_bottomLabelConstraint = v112;
 
-  v85 = [(VideosExtrasTableViewCell *)self contentView];
-  [(NSLayoutConstraint *)v85 addConstraint:self->_bottomLabelConstraint];
-  v70 = v80;
+  contentView15 = [(VideosExtrasTableViewCell *)self contentView];
+  [(NSLayoutConstraint *)contentView15 addConstraint:self->_bottomLabelConstraint];
+  subtitle = v80;
 LABEL_83:
 
 LABEL_84:
   [(VideosExtrasTableViewCell *)self setNeedsUpdateConstraints];
-  v114 = [(IKListItemLockupElement *)v125 decorationImages];
-  v115 = [v114 firstObject];
+  decorationImages = [(IKListItemLockupElement *)v125 decorationImages];
+  firstObject2 = [decorationImages firstObject];
 
-  if (v115)
+  if (firstObject2)
   {
-    -[VideosExtrasTableViewCell setAccessoryType:](self, "setAccessoryType:", [v115 accessoryType]);
+    -[VideosExtrasTableViewCell setAccessoryType:](self, "setAccessoryType:", [firstObject2 accessoryType]);
   }
 
   else
   {
-    v116 = [(IKListItemLockupElement *)v125 checkMark];
-    if (v116)
+    checkMark = [(IKListItemLockupElement *)v125 checkMark];
+    if (checkMark)
     {
       [(VideosExtrasTableViewCell *)self setAccessoryType:3];
     }
@@ -592,14 +592,14 @@ void __68__VideosExtrasTableViewCell_configureForListItemLockupElement_wide___bl
   }
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
   v9.receiver = self;
   v9.super_class = VideosExtrasTableViewCell;
-  [(VideosExtrasTableViewCell *)&v9 setHighlighted:a3 animated:a4];
+  [(VideosExtrasTableViewCell *)&v9 setHighlighted:highlighted animated:animated];
   if (([(VideosExtrasTableViewCell *)self isSelected]& 1) == 0)
   {
-    if (a3)
+    if (highlighted)
     {
       v6 = 0.15;
       v7 = 1.0;
@@ -616,12 +616,12 @@ void __68__VideosExtrasTableViewCell_configureForListItemLockupElement_wide___bl
   }
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
   v9.receiver = self;
   v9.super_class = VideosExtrasTableViewCell;
-  [(VideosExtrasTableViewCell *)&v9 setSelected:a3 animated:a4];
-  if (a3)
+  [(VideosExtrasTableViewCell *)&v9 setSelected:selected animated:animated];
+  if (selected)
   {
     v6 = 0.15;
     v7 = 1.0;
@@ -645,17 +645,17 @@ void __68__VideosExtrasTableViewCell_configureForListItemLockupElement_wide___bl
   v7.super_class = VideosExtrasTableViewCell;
   [(VideosExtrasTableViewCell *)&v7 prepareForReuse];
   [(VideosExtrasTableViewCell *)self setElement:0];
-  v3 = [(VideosExtrasConstrainedArtworkContainerView *)self->_artworkContainer artworkView];
-  [v3 setPlaceholderImage:0];
-  [v3 setImage:0];
-  v4 = [v3 layer];
-  [v4 setBorderWidth:0.0];
+  artworkView = [(VideosExtrasConstrainedArtworkContainerView *)self->_artworkContainer artworkView];
+  [artworkView setPlaceholderImage:0];
+  [artworkView setImage:0];
+  layer = [artworkView layer];
+  [layer setBorderWidth:0.0];
 
-  v5 = [v3 layer];
-  [v5 setShadowRadius:0.0];
+  layer2 = [artworkView layer];
+  [layer2 setShadowRadius:0.0];
 
-  v6 = [v3 layer];
-  [v6 setShadowOpacity:0.0];
+  layer3 = [artworkView layer];
+  [layer3 setShadowOpacity:0.0];
 
   [(VideosExtrasTableViewCell *)self setAccessoryType:0];
 }

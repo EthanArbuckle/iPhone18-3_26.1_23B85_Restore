@@ -1,8 +1,8 @@
 @interface TIUserWordsManager
 - (NSArray)entries;
 - (TIUserWordsManager)init;
-- (id)addObserver:(id)a3;
-- (void)addEntries:(id)a3 removeEntries:(id)a4 withCompletionHandler:(id)a5;
+- (id)addObserver:(id)observer;
+- (void)addEntries:(id)entries removeEntries:(id)removeEntries withCompletionHandler:(id)handler;
 - (void)dealloc;
 - (void)notifyObserversOfChange;
 @end
@@ -47,7 +47,7 @@
   return result;
 }
 
-- (void)addEntries:(id)a3 removeEntries:(id)a4 withCompletionHandler:(id)a5
+- (void)addEntries:(id)entries removeEntries:(id)removeEntries withCompletionHandler:(id)handler
 {
   textReplacementStore = self->_textReplacementStore;
   v6[0] = _NSConcreteStackBlock;
@@ -55,8 +55,8 @@
   v6[2] = sub_26D64;
   v6[3] = &unk_498A0;
   v6[4] = self;
-  v6[5] = a5;
-  [(_KSTextReplacementClientStore *)textReplacementStore addEntries:a3 removeEntries:a4 withCompletionHandler:v6];
+  v6[5] = handler;
+  [(_KSTextReplacementClientStore *)textReplacementStore addEntries:entries removeEntries:removeEntries withCompletionHandler:v6];
 }
 
 - (void)notifyObserversOfChange
@@ -94,9 +94,9 @@
   }
 }
 
-- (id)addObserver:(id)a3
+- (id)addObserver:(id)observer
 {
-  v4 = [a3 copy];
+  v4 = [observer copy];
   [(NSMutableArray *)self->_observers addObject:v4];
 
   return v4;

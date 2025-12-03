@@ -1,29 +1,29 @@
 @interface InfoCardButtonConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_TtC4Maps27InfoCardButtonConfiguration)init;
-- (_TtC4Maps27InfoCardButtonConfiguration)initWithType:(unint64_t)a3 shouldBlur:(BOOL)a4 tintColor:(id)a5 visibility:(int64_t)a6;
+- (_TtC4Maps27InfoCardButtonConfiguration)initWithType:(unint64_t)type shouldBlur:(BOOL)blur tintColor:(id)color visibility:(int64_t)visibility;
 @end
 
 @implementation InfoCardButtonConfiguration
 
-- (_TtC4Maps27InfoCardButtonConfiguration)initWithType:(unint64_t)a3 shouldBlur:(BOOL)a4 tintColor:(id)a5 visibility:(int64_t)a6
+- (_TtC4Maps27InfoCardButtonConfiguration)initWithType:(unint64_t)type shouldBlur:(BOOL)blur tintColor:(id)color visibility:(int64_t)visibility
 {
   ObjectType = swift_getObjectType();
-  *(&self->super.isa + OBJC_IVAR____TtC4Maps27InfoCardButtonConfiguration_type) = a3;
-  *(&self->super.isa + OBJC_IVAR____TtC4Maps27InfoCardButtonConfiguration_shouldBlur) = a4;
-  *(&self->super.isa + OBJC_IVAR____TtC4Maps27InfoCardButtonConfiguration_tintColor) = a5;
-  *(&self->super.isa + OBJC_IVAR____TtC4Maps27InfoCardButtonConfiguration_visibility) = a6;
+  *(&self->super.isa + OBJC_IVAR____TtC4Maps27InfoCardButtonConfiguration_type) = type;
+  *(&self->super.isa + OBJC_IVAR____TtC4Maps27InfoCardButtonConfiguration_shouldBlur) = blur;
+  *(&self->super.isa + OBJC_IVAR____TtC4Maps27InfoCardButtonConfiguration_tintColor) = color;
+  *(&self->super.isa + OBJC_IVAR____TtC4Maps27InfoCardButtonConfiguration_visibility) = visibility;
   v14.receiver = self;
   v14.super_class = ObjectType;
-  v12 = a5;
+  colorCopy = color;
   return [(InfoCardButtonConfiguration *)&v14 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -32,7 +32,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = InfoCardButtonConfiguration.isEqual(_:)(v8);

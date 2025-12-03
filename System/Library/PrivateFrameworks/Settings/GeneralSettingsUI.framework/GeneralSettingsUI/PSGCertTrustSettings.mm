@@ -1,10 +1,10 @@
 @interface PSGCertTrustSettings
-- (id)isFullTrustEnabled:(id)a3;
-- (id)specifierForTrustSettings:(__SecCertificate *)a3 isRestricted:(BOOL)a4;
+- (id)isFullTrustEnabled:(id)enabled;
+- (id)specifierForTrustSettings:(__SecCertificate *)settings isRestricted:(BOOL)restricted;
 - (id)specifiers;
-- (id)trustAssetVersionString:(id)a3;
-- (id)trustVersionString:(id)a3;
-- (void)setFullTrustEnabled:(id)a3 forSpecifier:(id)a4;
+- (id)trustAssetVersionString:(id)string;
+- (id)trustVersionString:(id)string;
+- (void)setFullTrustEnabled:(id)enabled forSpecifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -32,16 +32,16 @@ void __39__PSGCertTrustSettings_viewWillAppear___block_invoke(uint64_t a1)
   if (!v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v6 = [MEMORY[0x277D262A0] sharedConnection];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
     v34 = 0;
-    v7 = [v6 lockedDownRootCertificatesWithOutLocalizedSourceDescription:&v34];
+    v7 = [mEMORY[0x277D262A0] lockedDownRootCertificatesWithOutLocalizedSourceDescription:&v34];
     v8 = v34;
 
-    v9 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
     v33 = v8;
-    [v9 setProperty:v8 forKey:*MEMORY[0x277D3FF88]];
-    [v5 addObject:v9];
-    v10 = v9;
+    [emptyGroupSpecifier setProperty:v8 forKey:*MEMORY[0x277D3FF88]];
+    [v5 addObject:emptyGroupSpecifier];
+    v10 = emptyGroupSpecifier;
     v11 = PSG_BundleForGeneralSettingsUIFramework();
     v12 = [v11 localizedStringForKey:&stru_282E88A90 value:&stru_282E88A90 table:0];
 
@@ -89,9 +89,9 @@ void __39__PSGCertTrustSettings_viewWillAppear___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)isFullTrustEnabled:(id)a3
+- (id)isFullTrustEnabled:(id)enabled
 {
-  [a3 propertyForKey:@"certName"];
+  [enabled propertyForKey:@"certName"];
   SecTrustStoreForDomain();
   SecTrustStoreCopyUsageConstraints();
   v3 = [MEMORY[0x277CCABB0] numberWithBool:0];
@@ -99,15 +99,15 @@ void __39__PSGCertTrustSettings_viewWillAppear___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setFullTrustEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setFullTrustEnabled:(id)enabled forSpecifier:(id)specifier
 {
   v36[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 propertyForKey:@"certName"];
-  v9 = [v7 intValue];
+  specifierCopy = specifier;
+  enabledCopy = enabled;
+  v8 = [specifierCopy propertyForKey:@"certName"];
+  intValue = [enabledCopy intValue];
 
-  if (v9)
+  if (intValue)
   {
     v10 = MEMORY[0x277D75110];
     v11 = PSG_LocalizedStringForGeneral(@"ROOT_CERTIFICATE");
@@ -130,10 +130,10 @@ void __39__PSGCertTrustSettings_viewWillAppear___block_invoke(uint64_t a1)
     v26 = 3221225472;
     v27 = __57__PSGCertTrustSettings_setFullTrustEnabled_forSpecifier___block_invoke_2;
     v28 = &unk_2783250E0;
-    v29 = self;
-    v30 = v6;
+    selfCopy = self;
+    v30 = specifierCopy;
     v19 = [v17 actionWithTitle:v18 style:1 handler:&v25];
-    [v13 addAction:{v19, v25, v26, v27, v28, v29}];
+    [v13 addAction:{v19, v25, v26, v27, v28, selfCopy}];
 
     [(PSGCertTrustSettings *)self presentViewController:v13 animated:1 completion:0];
 LABEL_5:
@@ -176,16 +176,16 @@ uint64_t __57__PSGCertTrustSettings_setFullTrustEnabled_forSpecifier___block_inv
   return SecTrustStoreSetTrustSettings();
 }
 
-- (id)specifierForTrustSettings:(__SecCertificate *)a3 isRestricted:(BOOL)a4
+- (id)specifierForTrustSettings:(__SecCertificate *)settings isRestricted:(BOOL)restricted
 {
-  v4 = a4;
+  restrictedCopy = restricted;
   v7 = SecCertificateCopyCommonNames();
   if ([v7 count] && (objc_msgSend(v7, "firstObject"), (v8 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v9 = v8;
     v10 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v8 target:self set:sel_setFullTrustEnabled_forSpecifier_ get:sel_isFullTrustEnabled_ detail:0 cell:6 edit:0];
-    [v10 setProperty:a3 forKey:@"certName"];
-    v11 = [MEMORY[0x277CCABB0] numberWithInt:!v4];
+    [v10 setProperty:settings forKey:@"certName"];
+    v11 = [MEMORY[0x277CCABB0] numberWithInt:!restrictedCopy];
     [v10 setProperty:v11 forKey:*MEMORY[0x277D3FF38]];
   }
 
@@ -197,7 +197,7 @@ uint64_t __57__PSGCertTrustSettings_setFullTrustEnabled_forSpecifier___block_inv
   return v10;
 }
 
-- (id)trustVersionString:(id)a3
+- (id)trustVersionString:(id)string
 {
   if (SecTrustStoreGetSettingsVersionNumber())
   {
@@ -212,7 +212,7 @@ uint64_t __57__PSGCertTrustSettings_setFullTrustEnabled_forSpecifier___block_inv
   return v3;
 }
 
-- (id)trustAssetVersionString:(id)a3
+- (id)trustAssetVersionString:(id)string
 {
   if (SecTrustStoreGetSettingsAssetVersionNumber())
   {

@@ -1,9 +1,9 @@
 @interface CCIDDescriptorView
-- (CCIDDescriptorView)initWithBytes:(const void *)a3 length:(unint64_t)a4;
+- (CCIDDescriptorView)initWithBytes:(const void *)bytes length:(unint64_t)length;
 - (id)description;
-- (id)levelExchangeToString:(int64_t)a3;
+- (id)levelExchangeToString:(int64_t)string;
 - (id)supportedProtocols;
-- (id)trueOrFalse:(BOOL)a3;
+- (id)trueOrFalse:(BOOL)false;
 - (id)voltageSupport;
 - (int64_t)levelOfExchange;
 - (unsigned)bClassEnvelope;
@@ -32,14 +32,14 @@
 
 @implementation CCIDDescriptorView
 
-- (CCIDDescriptorView)initWithBytes:(const void *)a3 length:(unint64_t)a4
+- (CCIDDescriptorView)initWithBytes:(const void *)bytes length:(unint64_t)length
 {
-  if (+[CCIDDescriptorView length]!= a4)
+  if (+[CCIDDescriptorView length]!= length)
   {
-    [NSException raise:NSInvalidArgumentException format:@"Invalid length: %lu", a4];
+    [NSException raise:NSInvalidArgumentException format:@"Invalid length: %lu", length];
   }
 
-  v7 = [NSData dataWithBytes:a3 length:a4];
+  v7 = [NSData dataWithBytes:bytes length:length];
   v10.receiver = self;
   v10.super_class = CCIDDescriptorView;
   v8 = [(TKDataView *)&v10 initWithData:v7];
@@ -47,22 +47,22 @@
   return v8;
 }
 
-- (id)levelExchangeToString:(int64_t)a3
+- (id)levelExchangeToString:(int64_t)string
 {
-  if (a3 > 3)
+  if (string > 3)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_100024B08 + a3);
+    return *(&off_100024B08 + string);
   }
 }
 
-- (id)trueOrFalse:(BOOL)a3
+- (id)trueOrFalse:(BOOL)false
 {
-  if (a3)
+  if (false)
   {
     return @"true";
   }
@@ -124,11 +124,11 @@
   [v3 appendFormat:@"    bDescriptorType: 0x%.2x\n", -[CCIDDescriptorView bDescriptorType](self, "bDescriptorType")];
   [v3 appendFormat:@"    bcdCCID: 0x%.4x\n", -[CCIDDescriptorView bcdCCID](self, "bcdCCID")];
   [v3 appendFormat:@"    bMaxSlotIndex: %d\n", -[CCIDDescriptorView bMaxSlotIndex](self, "bMaxSlotIndex")];
-  v4 = [(CCIDDescriptorView *)self voltageSupport];
-  [v3 appendFormat:@"    bVoltageSupport: %@\n", v4];
+  voltageSupport = [(CCIDDescriptorView *)self voltageSupport];
+  [v3 appendFormat:@"    bVoltageSupport: %@\n", voltageSupport];
 
-  v5 = [(CCIDDescriptorView *)self supportedProtocols];
-  [v3 appendFormat:@"    dwProtocols: %@\n", v5];
+  supportedProtocols = [(CCIDDescriptorView *)self supportedProtocols];
+  [v3 appendFormat:@"    dwProtocols: %@\n", supportedProtocols];
 
   [v3 appendFormat:@"    bNumClockSupported: %d\n", -[CCIDDescriptorView bNumClockSupported](self, "bNumClockSupported")];
   [v3 appendFormat:@"    defaultClock: %.1f MHz\n", -[CCIDDescriptorView dwDefaultClock](self, "dwDefaultClock") * 0.001];
@@ -187,8 +187,8 @@
 - (unsigned)bLength
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{0, 1}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{0, 1}];
 
   return v4;
 }
@@ -196,8 +196,8 @@
 - (unsigned)bDescriptorType
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{1, 1}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{1, 1}];
 
   return v4;
 }
@@ -205,8 +205,8 @@
 - (unsigned)bcdCCID
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{2, 2}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{2, 2}];
 
   return v4;
 }
@@ -214,8 +214,8 @@
 - (unsigned)bMaxSlotIndex
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{4, 1}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{4, 1}];
 
   return v4;
 }
@@ -223,8 +223,8 @@
 - (unsigned)bVoltageSupport
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{5, 1}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{5, 1}];
 
   return v4;
 }
@@ -232,8 +232,8 @@
 - (unsigned)dwProtocols
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{6, 4}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{6, 4}];
 
   return v4;
 }
@@ -241,8 +241,8 @@
 - (unsigned)dwDefaultClock
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{10, 4}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{10, 4}];
 
   return v4;
 }
@@ -250,8 +250,8 @@
 - (unsigned)dwMaximumClock
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{14, 4}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{14, 4}];
 
   return v4;
 }
@@ -259,8 +259,8 @@
 - (unsigned)bNumClockSupported
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{18, 1}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{18, 1}];
 
   return v4;
 }
@@ -268,8 +268,8 @@
 - (unsigned)dwDataRate
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{19, 4}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{19, 4}];
 
   return v4;
 }
@@ -277,8 +277,8 @@
 - (unsigned)dwMaxDataRate
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{23, 4}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{23, 4}];
 
   return v4;
 }
@@ -286,8 +286,8 @@
 - (unsigned)bNumDataRatesSupported
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{27, 1}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{27, 1}];
 
   return v4;
 }
@@ -295,8 +295,8 @@
 - (unsigned)dwMaxIFSD
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{28, 4}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{28, 4}];
 
   return v4;
 }
@@ -304,8 +304,8 @@
 - (unsigned)dwSynchProtocols
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{32, 4}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{32, 4}];
 
   return v4;
 }
@@ -313,8 +313,8 @@
 - (unsigned)dwMechanical
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{36, 4}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{36, 4}];
 
   return v4;
 }
@@ -322,8 +322,8 @@
 - (unsigned)dwFeatures
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{40, 4}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{40, 4}];
 
   return v4;
 }
@@ -331,8 +331,8 @@
 - (unsigned)dwMaxCCIDMessageLength
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{44, 4}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{44, 4}];
 
   return v4;
 }
@@ -340,8 +340,8 @@
 - (unsigned)bClassGetResponse
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{48, 1}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{48, 1}];
 
   return v4;
 }
@@ -349,8 +349,8 @@
 - (unsigned)bClassEnvelope
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{49, 1}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{49, 1}];
 
   return v4;
 }
@@ -358,8 +358,8 @@
 - (unsigned)wLcdLayout
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{50, 2}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{50, 2}];
 
   return v4;
 }
@@ -367,8 +367,8 @@
 - (unsigned)bPINSupport
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{52, 1}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{52, 1}];
 
   return v4;
 }
@@ -376,8 +376,8 @@
 - (unsigned)bMaxCCIDBusySlots
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{53, 1}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{53, 1}];
 
   return v4;
 }

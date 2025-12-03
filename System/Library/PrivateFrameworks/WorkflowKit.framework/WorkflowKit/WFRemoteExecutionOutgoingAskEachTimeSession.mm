@@ -1,24 +1,24 @@
 @interface WFRemoteExecutionOutgoingAskEachTimeSession
-- (WFRemoteExecutionOutgoingAskEachTimeSession)initWithService:(id)a3 request:(id)a4 completion:(id)a5;
+- (WFRemoteExecutionOutgoingAskEachTimeSession)initWithService:(id)service request:(id)request completion:(id)completion;
 - (void)finish;
-- (void)finishWithError:(id)a3;
+- (void)finishWithError:(id)error;
 - (void)finishWithoutCallingCompletion;
-- (void)handleIncomingProtobuf:(id)a3;
+- (void)handleIncomingProtobuf:(id)protobuf;
 - (void)handleTimeout;
-- (void)sendToDestinations:(id)a3 options:(id)a4;
+- (void)sendToDestinations:(id)destinations options:(id)options;
 @end
 
 @implementation WFRemoteExecutionOutgoingAskEachTimeSession
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(WFRemoteExecutionOutgoingAskEachTimeSession *)self completion];
+  errorCopy = error;
+  completion = [(WFRemoteExecutionOutgoingAskEachTimeSession *)self completion];
 
-  if (v5)
+  if (completion)
   {
-    v6 = [(WFRemoteExecutionOutgoingAskEachTimeSession *)self completion];
-    (v6)[2](v6, 1, 0, v4);
+    completion2 = [(WFRemoteExecutionOutgoingAskEachTimeSession *)self completion];
+    (completion2)[2](completion2, 1, 0, errorCopy);
 
     [(WFRemoteExecutionOutgoingAskEachTimeSession *)self setCompletion:0];
   }
@@ -30,12 +30,12 @@
 
 - (void)finish
 {
-  v3 = [(WFRemoteExecutionOutgoingAskEachTimeSession *)self completion];
+  completion = [(WFRemoteExecutionOutgoingAskEachTimeSession *)self completion];
 
-  if (v3)
+  if (completion)
   {
-    v4 = [(WFRemoteExecutionOutgoingAskEachTimeSession *)self completion];
-    v4[2](v4, 1, 0, 0);
+    completion2 = [(WFRemoteExecutionOutgoingAskEachTimeSession *)self completion];
+    completion2[2](completion2, 1, 0, 0);
 
     [(WFRemoteExecutionOutgoingAskEachTimeSession *)self setCompletion:0];
   }
@@ -59,40 +59,40 @@
   [(WFRemoteExecutionOutgoingAskEachTimeSession *)self finish];
 }
 
-- (void)handleIncomingProtobuf:(id)a3
+- (void)handleIncomingProtobuf:(id)protobuf
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   [(WFRemoteExecutionSession *)self setState:102];
   v5 = [WFRemoteExecutionAskEachTimeRequestResponse alloc];
-  v6 = [v4 data];
+  data = [protobufCopy data];
 
   v29 = 0;
-  v7 = [(WFRemoteExecutionAskEachTimeRequestResponse *)v5 initWithData:v6 error:&v29];
+  v7 = [(WFRemoteExecutionAskEachTimeRequestResponse *)v5 initWithData:data error:&v29];
   v8 = v29;
 
   if (v7)
   {
-    v9 = [(WFRemoteExecutionAskEachTimeRequestResponse *)v7 originatingRequestIdentifier];
-    v10 = [(WFRemoteExecutionSession *)self request];
-    v11 = [v10 identifier];
-    v12 = [v9 isEqualToString:v11];
+    originatingRequestIdentifier = [(WFRemoteExecutionAskEachTimeRequestResponse *)v7 originatingRequestIdentifier];
+    request = [(WFRemoteExecutionSession *)self request];
+    identifier = [request identifier];
+    v12 = [originatingRequestIdentifier isEqualToString:identifier];
 
     if (v12)
     {
       [(WFRemoteExecutionSession *)self setState:103];
       v13 = +[WFActionRegistry sharedRegistry];
-      v14 = [(WFRemoteExecutionSession *)self request];
-      v15 = [v14 actionIdentifier];
-      v16 = [(WFRemoteExecutionSession *)self request];
-      v17 = [v16 actionSerializedParameters];
-      v18 = [v13 createActionWithIdentifier:v15 serializedParameters:v17];
+      request2 = [(WFRemoteExecutionSession *)self request];
+      actionIdentifier = [request2 actionIdentifier];
+      request3 = [(WFRemoteExecutionSession *)self request];
+      actionSerializedParameters = [request3 actionSerializedParameters];
+      v18 = [v13 createActionWithIdentifier:actionIdentifier serializedParameters:actionSerializedParameters];
 
       [(WFRemoteExecutionAskEachTimeRequestResponse *)v7 inflateInputtedStatesWithAction:v18];
-      v19 = [(WFRemoteExecutionOutgoingAskEachTimeSession *)self completion];
-      v20 = [(WFRemoteExecutionAskEachTimeRequestResponse *)v7 inputtedStates];
-      v21 = [(WFRemoteExecutionAskEachTimeRequestResponse *)v7 error];
-      (v19)[2](v19, 0, v20, v21);
+      completion = [(WFRemoteExecutionOutgoingAskEachTimeSession *)self completion];
+      inputtedStates = [(WFRemoteExecutionAskEachTimeRequestResponse *)v7 inputtedStates];
+      error = [(WFRemoteExecutionAskEachTimeRequestResponse *)v7 error];
+      (completion)[2](completion, 0, inputtedStates, error);
 
       [(WFRemoteExecutionOutgoingAskEachTimeSession *)self setCompletion:0];
       [(WFRemoteExecutionOutgoingAskEachTimeSession *)self finishWithoutCallingCompletion];
@@ -136,8 +136,8 @@
     }
 
     [(WFRemoteExecutionSession *)self setState:v25];
-    v26 = [(WFRemoteExecutionOutgoingAskEachTimeSession *)self completion];
-    (v26)[2](v26, 0, 0, v8);
+    completion2 = [(WFRemoteExecutionOutgoingAskEachTimeSession *)self completion];
+    (completion2)[2](completion2, 0, 0, v8);
 
     [(WFRemoteExecutionOutgoingAskEachTimeSession *)self setCompletion:0];
     v28.receiver = self;
@@ -148,44 +148,44 @@
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendToDestinations:(id)a3 options:(id)a4
+- (void)sendToDestinations:(id)destinations options:(id)options
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  destinationsCopy = destinations;
+  optionsCopy = options;
   v30.receiver = self;
   v30.super_class = WFRemoteExecutionOutgoingAskEachTimeSession;
-  [(WFRemoteExecutionSession *)&v30 sendToDestinations:v6 options:v7];
+  [(WFRemoteExecutionSession *)&v30 sendToDestinations:destinationsCopy options:optionsCopy];
   [(WFRemoteExecutionSession *)self setState:100];
   v8 = objc_alloc_init(MEMORY[0x1E69C65C0]);
-  v9 = [(WFRemoteExecutionSession *)self request];
+  request = [(WFRemoteExecutionSession *)self request];
   v29 = 0;
-  v10 = [v9 writeTo:v8 error:&v29];
+  v10 = [request writeTo:v8 error:&v29];
   v11 = v29;
 
   if (v10)
   {
     v12 = objc_alloc(MEMORY[0x1E69A5388]);
-    v13 = [v8 immutableData];
-    v14 = [v12 initWithProtobufData:v13 type:5 isResponse:0];
+    immutableData = [v8 immutableData];
+    v14 = [v12 initWithProtobufData:immutableData type:5 isResponse:0];
 
     v15 = getWFRemoteExecutionLogObject();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      v16 = [(WFRemoteExecutionSession *)self request];
-      v17 = [v16 identifier];
+      request2 = [(WFRemoteExecutionSession *)self request];
+      identifier = [request2 identifier];
       *buf = 136315394;
       v32 = "[WFRemoteExecutionOutgoingAskEachTimeSession sendToDestinations:options:]";
       v33 = 2114;
-      v34 = v17;
+      selfCopy = identifier;
       _os_log_impl(&dword_1CA256000, v15, OS_LOG_TYPE_INFO, "%s <%{public}@> sending ask each time request", buf, 0x16u);
     }
 
     [(WFRemoteExecutionSession *)self restartTimeout];
-    v18 = [(WFRemoteExecutionSession *)self service];
+    service = [(WFRemoteExecutionSession *)self service];
     v27 = 0;
     v28 = 0;
-    v19 = [v18 sendProtobuf:v14 toDestinations:v6 priority:300 options:v7 identifier:&v28 error:&v27];
+    v19 = [service sendProtobuf:v14 toDestinations:destinationsCopy priority:300 options:optionsCopy identifier:&v28 error:&v27];
     v20 = v28;
     v21 = v27;
 
@@ -204,7 +204,7 @@
         *buf = 136315650;
         v32 = "[WFRemoteExecutionOutgoingAskEachTimeSession sendToDestinations:options:]";
         v33 = 2114;
-        v34 = self;
+        selfCopy = self;
         v35 = 2114;
         v36 = v21;
         _os_log_impl(&dword_1CA256000, v25, OS_LOG_TYPE_ERROR, "%s %{public}@ failed to send with error: %{public}@", buf, 0x20u);
@@ -219,12 +219,12 @@
     v22 = getWFRemoteExecutionLogObject();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
     {
-      v23 = [(WFRemoteExecutionSession *)self request];
-      v24 = [v23 identifier];
+      request3 = [(WFRemoteExecutionSession *)self request];
+      identifier2 = [request3 identifier];
       *buf = 136315650;
       v32 = "[WFRemoteExecutionOutgoingAskEachTimeSession sendToDestinations:options:]";
       v33 = 2114;
-      v34 = v24;
+      selfCopy = identifier2;
       v35 = 2114;
       v36 = v11;
       _os_log_impl(&dword_1CA256000, v22, OS_LOG_TYPE_FAULT, "%s <%{public}@> failed to write protobuf with error: %{public}@", buf, 0x20u);
@@ -237,23 +237,23 @@
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (WFRemoteExecutionOutgoingAskEachTimeSession)initWithService:(id)a3 request:(id)a4 completion:(id)a5
+- (WFRemoteExecutionOutgoingAskEachTimeSession)initWithService:(id)service request:(id)request completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  serviceCopy = service;
+  requestCopy = request;
+  completionCopy = completion;
+  if (serviceCopy)
   {
-    if (v10)
+    if (requestCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionOutgoingAskEachTimeSession.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"request"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionOutgoingAskEachTimeSession.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"request"}];
 
-    if (v11)
+    if (completionCopy)
     {
       goto LABEL_4;
     }
@@ -261,33 +261,33 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionOutgoingAskEachTimeSession.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"service"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionOutgoingAskEachTimeSession.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"service"}];
 
-  if (!v10)
+  if (!requestCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v11)
+  if (completionCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v20 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionOutgoingAskEachTimeSession.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionOutgoingAskEachTimeSession.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
 
 LABEL_4:
   v21.receiver = self;
   v21.super_class = WFRemoteExecutionOutgoingAskEachTimeSession;
-  v12 = [(WFRemoteExecutionSession *)&v21 initWithService:v9];
+  v12 = [(WFRemoteExecutionSession *)&v21 initWithService:serviceCopy];
   v13 = v12;
   if (v12)
   {
-    [(WFRemoteExecutionSession *)v12 setRequest:v10];
-    v14 = _Block_copy(v11);
+    [(WFRemoteExecutionSession *)v12 setRequest:requestCopy];
+    v14 = _Block_copy(completionCopy);
     completion = v13->_completion;
     v13->_completion = v14;
 

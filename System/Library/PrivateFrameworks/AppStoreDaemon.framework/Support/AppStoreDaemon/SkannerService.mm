@@ -2,7 +2,7 @@
 + (NSString)entitlement;
 + (_TtC9appstored14SkannerService)defaultService;
 - (_TtC9appstored14SkannerService)init;
-- (void)fetchStoriesWithCompletionHandler:(id)a3;
+- (void)fetchStoriesWithCompletionHandler:(id)handler;
 @end
 
 @implementation SkannerService
@@ -26,12 +26,12 @@
   return v2;
 }
 
-- (void)fetchStoriesWithCompletionHandler:(id)a3
+- (void)fetchStoriesWithCompletionHandler:(id)handler
 {
   v5 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -47,7 +47,7 @@
   v12[3] = 0;
   v12[4] = &unk_1004366D0;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_1001BD9B4(0, 0, v7, &unk_1004344E0, v12);
 }
 

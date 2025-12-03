@@ -1,23 +1,23 @@
 @interface CNMeCardSharingRowItem
-- (CNMeCardSharingRowItem)initWithLabel:(id)a3 accessoryView:(id)a4 confirmationHandler:(id)a5;
+- (CNMeCardSharingRowItem)initWithLabel:(id)label accessoryView:(id)view confirmationHandler:(id)handler;
 @end
 
 @implementation CNMeCardSharingRowItem
 
-- (CNMeCardSharingRowItem)initWithLabel:(id)a3 accessoryView:(id)a4 confirmationHandler:(id)a5
+- (CNMeCardSharingRowItem)initWithLabel:(id)label accessoryView:(id)view confirmationHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  labelCopy = label;
+  viewCopy = view;
+  handlerCopy = handler;
   v18.receiver = self;
   v18.super_class = CNMeCardSharingRowItem;
   v12 = [(CNMeCardSharingRowItem *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_label, a3);
-    objc_storeStrong(&v13->_accessoryView, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_label, label);
+    objc_storeStrong(&v13->_accessoryView, view);
+    v14 = [handlerCopy copy];
     confirmationHandler = v13->_confirmationHandler;
     v13->_confirmationHandler = v14;
 

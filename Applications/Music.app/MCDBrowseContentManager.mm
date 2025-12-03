@@ -1,29 +1,29 @@
 @interface MCDBrowseContentManager
-- (id)allSectionsOfType:(int64_t)a3;
-- (unint64_t)cellTypeAtIndexPath:(id)a3;
+- (id)allSectionsOfType:(int64_t)type;
+- (unint64_t)cellTypeAtIndexPath:(id)path;
 @end
 
 @implementation MCDBrowseContentManager
 
-- (id)allSectionsOfType:(int64_t)a3
+- (id)allSectionsOfType:(int64_t)type
 {
-  v5 = [(MCDFuseContentManager *)self contentResults];
+  contentResults = [(MCDFuseContentManager *)self contentResults];
 
-  if (v5)
+  if (contentResults)
   {
     [(MCDFuseContentManager *)self contentResults];
   }
 
-  v6 = [(MCDFuseContentManager *)self lastReceivedResponse];
-  v7 = [v6 results];
+  lastReceivedResponse = [(MCDFuseContentManager *)self lastReceivedResponse];
+  results = [lastReceivedResponse results];
 
   v8 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = [v7 allSections];
-  v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  allSections = [results allSections];
+  v10 = [allSections countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -34,17 +34,17 @@
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allSections);
         }
 
         v14 = *(*(&v17 + 1) + 8 * i);
-        if ([v14 sectionType] == a3)
+        if ([v14 sectionType] == type)
         {
           [v8 addObject:v14];
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v11 = [allSections countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v11);
@@ -55,16 +55,16 @@
   return v15;
 }
 
-- (unint64_t)cellTypeAtIndexPath:(id)a3
+- (unint64_t)cellTypeAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MCDGroupingsContentManager *)self itemAtIndexPath:v4];
+  pathCopy = path;
+  v5 = [(MCDGroupingsContentManager *)self itemAtIndexPath:pathCopy];
   if ([v5 sectionType] == 15)
   {
     v6 = [(MCDBrowseContentManager *)self allSectionsOfType:15];
-    v7 = [v6 firstObject];
+    firstObject = [v6 firstObject];
 
-    if (v5 == v7)
+    if (v5 == firstObject)
     {
       v8 = 4;
     }
@@ -79,7 +79,7 @@
   {
     v10.receiver = self;
     v10.super_class = MCDBrowseContentManager;
-    v8 = [(MCDGroupingsContentManager *)&v10 cellTypeAtIndexPath:v4];
+    v8 = [(MCDGroupingsContentManager *)&v10 cellTypeAtIndexPath:pathCopy];
   }
 
   return v8;

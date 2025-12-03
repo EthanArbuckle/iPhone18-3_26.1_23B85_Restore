@@ -1,11 +1,11 @@
 @interface HMFNotificationCenter
 + (id)defaultCenter;
-- (void)addObserver:(id)a3 selector:(SEL)a4 name:(id)a5 object:(id)a6;
-- (void)postNotification:(id)a3;
-- (void)postNotificationName:(id)a3 object:(id)a4;
-- (void)postNotificationName:(id)a3 object:(id)a4 userInfo:(id)a5;
-- (void)removeObserver:(id)a3;
-- (void)removeObserver:(id)a3 name:(id)a4 object:(id)a5;
+- (void)addObserver:(id)observer selector:(SEL)selector name:(id)name object:(id)object;
+- (void)postNotification:(id)notification;
+- (void)postNotificationName:(id)name object:(id)object;
+- (void)postNotificationName:(id)name object:(id)object userInfo:(id)info;
+- (void)removeObserver:(id)observer;
+- (void)removeObserver:(id)observer name:(id)name object:(id)object;
 @end
 
 @implementation HMFNotificationCenter
@@ -31,59 +31,59 @@ uint64_t __38__HMFNotificationCenter_defaultCenter__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (void)addObserver:(id)a3 selector:(SEL)a4 name:(id)a5 object:(id)a6
+- (void)addObserver:(id)observer selector:(SEL)selector name:(id)name object:(id)object
 {
   v9 = MEMORY[0x277CCAB98];
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [v9 defaultCenter];
-  [v13 addObserver:v12 selector:a4 name:v11 object:v10];
+  objectCopy = object;
+  nameCopy = name;
+  observerCopy = observer;
+  defaultCenter = [v9 defaultCenter];
+  [defaultCenter addObserver:observerCopy selector:selector name:nameCopy object:objectCopy];
 }
 
-- (void)removeObserver:(id)a3 name:(id)a4 object:(id)a5
+- (void)removeObserver:(id)observer name:(id)name object:(id)object
 {
   v7 = MEMORY[0x277CCAB98];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v7 defaultCenter];
-  [v11 removeObserver:v10 name:v9 object:v8];
+  objectCopy = object;
+  nameCopy = name;
+  observerCopy = observer;
+  defaultCenter = [v7 defaultCenter];
+  [defaultCenter removeObserver:observerCopy name:nameCopy object:objectCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v3 = MEMORY[0x277CCAB98];
-  v4 = a3;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver:observerCopy];
 }
 
-- (void)postNotification:(id)a3
+- (void)postNotification:(id)notification
 {
   v3 = MEMORY[0x277CCAB98];
-  v4 = a3;
-  v5 = [v3 defaultCenter];
-  [v5 postNotification:v4];
+  notificationCopy = notification;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter postNotification:notificationCopy];
 }
 
-- (void)postNotificationName:(id)a3 object:(id)a4 userInfo:(id)a5
+- (void)postNotificationName:(id)name object:(id)object userInfo:(id)info
 {
   v7 = MEMORY[0x277CCAB98];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v7 defaultCenter];
-  [v11 postNotificationName:v10 object:v9 userInfo:v8];
+  infoCopy = info;
+  objectCopy = object;
+  nameCopy = name;
+  defaultCenter = [v7 defaultCenter];
+  [defaultCenter postNotificationName:nameCopy object:objectCopy userInfo:infoCopy];
 }
 
-- (void)postNotificationName:(id)a3 object:(id)a4
+- (void)postNotificationName:(id)name object:(id)object
 {
   v5 = MEMORY[0x277CCAB98];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 defaultCenter];
-  [v8 postNotificationName:v7 object:v6];
+  objectCopy = object;
+  nameCopy = name;
+  defaultCenter = [v5 defaultCenter];
+  [defaultCenter postNotificationName:nameCopy object:objectCopy];
 }
 
 @end

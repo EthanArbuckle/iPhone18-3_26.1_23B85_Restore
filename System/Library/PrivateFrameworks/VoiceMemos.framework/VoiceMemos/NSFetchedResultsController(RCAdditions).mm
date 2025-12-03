@@ -12,8 +12,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [a1 sections];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  sections = [self sections];
+  v4 = [sections countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -24,15 +24,15 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(sections);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
-        v9 = [v8 name];
-        [v2 setObject:v8 forKeyedSubscript:v9];
+        name = [v8 name];
+        [v2 setObject:v8 forKeyedSubscript:name];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [sections countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);

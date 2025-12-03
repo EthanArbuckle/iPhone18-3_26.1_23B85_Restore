@@ -1,19 +1,19 @@
 @interface SKKeyframeSequence
-- (BOOL)isEqualToSequence:(id)a3;
+- (BOOL)isEqualToSequence:(id)sequence;
 - (CGFloat)getKeyframeTimeForIndex:(NSUInteger)index;
 - (Class)_valueClass;
 - (SKCKeyframeSequence)_createSKCKeyframeSequence;
 - (SKKeyframeSequence)initWithCapacity:(NSUInteger)numItems;
 - (SKKeyframeSequence)initWithCoder:(NSCoder *)aDecoder;
-- (SKKeyframeSequence)initWithCount:(unint64_t)a3;
+- (SKKeyframeSequence)initWithCount:(unint64_t)count;
 - (SKKeyframeSequence)initWithKeyframeValues:(NSArray *)values times:(NSArray *)times;
 - (id)copy;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)getKeyframeValueForIndex:(NSUInteger)index;
 - (id)sampleAtTime:(CGFloat)time;
 - (void)_dirtySKCKeyframeSequence;
 - (void)addKeyframeValue:(id)value time:(CGFloat)time;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)removeAllKeyframes;
 - (void)removeKeyframeAtIndex:(NSUInteger)index;
 - (void)removeLastKeyframe;
@@ -31,7 +31,7 @@
   return [(SKKeyframeSequence *)self copyWithZone:v3];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SKKeyframeSequence alloc];
   values = self->_values;
@@ -59,8 +59,8 @@
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:4];
     [v6 addObjectsFromArray:v7];
 
-    v8 = [(NSCoder *)v4 allowedClasses];
-    [v6 unionSet:v8];
+    allowedClasses = [(NSCoder *)v4 allowedClasses];
+    [v6 unionSet:allowedClasses];
 
     v9 = [(NSCoder *)v4 decodeObjectOfClasses:v6 forKey:@"_values"];
     values = v5->_values;
@@ -89,13 +89,13 @@ LABEL_6:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[SKKeyframeSequence interpolationMode](self forKey:{"interpolationMode"), @"_interpolationMode"}];
-  [v4 encodeInteger:-[SKKeyframeSequence repeatMode](self forKey:{"repeatMode"), @"_repeatMode"}];
-  [v4 encodeObject:self->_values forKey:@"_values"];
-  [v4 encodeObject:self->_times forKey:@"_times"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[SKKeyframeSequence interpolationMode](self forKey:{"interpolationMode"), @"_interpolationMode"}];
+  [coderCopy encodeInteger:-[SKKeyframeSequence repeatMode](self forKey:{"repeatMode"), @"_repeatMode"}];
+  [coderCopy encodeObject:self->_values forKey:@"_values"];
+  [coderCopy encodeObject:self->_times forKey:@"_times"];
 }
 
 - (SKKeyframeSequence)initWithCapacity:(NSUInteger)numItems
@@ -145,14 +145,14 @@ LABEL_6:
 
 - (void)addKeyframeValue:(id)value time:(CGFloat)time
 {
-  v6 = value;
-  if (!v6)
+  null = value;
+  if (!null)
   {
-    v6 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v9 = v6;
-  [(NSMutableArray *)self->_values addObject:v6];
+  v9 = null;
+  [(NSMutableArray *)self->_values addObject:null];
   times = self->_times;
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:time];
   [(NSMutableArray *)times addObject:v8];
@@ -183,14 +183,14 @@ LABEL_6:
 
 - (void)setKeyframeValue:(id)value forIndex:(NSUInteger)index
 {
-  v6 = value;
-  if (!v6)
+  null = value;
+  if (!null)
   {
-    v6 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v7 = v6;
-  [(NSMutableArray *)self->_values replaceObjectAtIndex:index withObject:v6];
+  v7 = null;
+  [(NSMutableArray *)self->_values replaceObjectAtIndex:index withObject:null];
   [(SKKeyframeSequence *)self _dirtySKCKeyframeSequence];
 }
 
@@ -390,31 +390,31 @@ LABEL_16:
     self->_cKeyframeSequence = [(SKKeyframeSequence *)self _createSKCKeyframeSequence];
   }
 
-  v5 = [(SKKeyframeSequence *)self _valueClass];
-  if (v5)
+  _valueClass = [(SKKeyframeSequence *)self _valueClass];
+  if (_valueClass)
   {
-    v6 = v5;
-    if (v5 == objc_opt_class())
+    v6 = _valueClass;
+    if (_valueClass == objc_opt_class())
     {
       v7 = time;
       SKCKeyframeSequence::sample(self->_cKeyframeSequence, v7, v10);
-      v5 = [MEMORY[0x277CCABB0] numberWithDouble:v10[0]];
+      _valueClass = [MEMORY[0x277CCABB0] numberWithDouble:v10[0]];
     }
 
     else if (v6 == objc_opt_class())
     {
       v8 = time;
       SKCKeyframeSequence::sample(self->_cKeyframeSequence, v8, v10);
-      v5 = [MEMORY[0x277D75348] colorWithRed:v10[0] green:v10[1] blue:v10[2] alpha:v10[3]];
+      _valueClass = [MEMORY[0x277D75348] colorWithRed:v10[0] green:v10[1] blue:v10[2] alpha:v10[3]];
     }
 
     else
     {
-      v5 = 0;
+      _valueClass = 0;
     }
   }
 
-  return v5;
+  return _valueClass;
 }
 
 - (CGFloat)getKeyframeTimeForIndex:(NSUInteger)index
@@ -426,13 +426,13 @@ LABEL_16:
   return v5;
 }
 
-- (SKKeyframeSequence)initWithCount:(unint64_t)a3
+- (SKKeyframeSequence)initWithCount:(unint64_t)count
 {
   v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:?];
-  for (i = [MEMORY[0x277CBEB18] arrayWithCapacity:a3];
+  for (i = [MEMORY[0x277CBEB18] arrayWithCapacity:count];
   {
-    v7 = [MEMORY[0x277CBEB68] null];
-    [v5 addObject:v7];
+    null = [MEMORY[0x277CBEB68] null];
+    [v5 addObject:null];
 
     v8 = [MEMORY[0x277CCABB0] numberWithDouble:0.0];
     [i addObject:v8];
@@ -443,26 +443,26 @@ LABEL_16:
   return v9;
 }
 
-- (BOOL)isEqualToSequence:(id)a3
+- (BOOL)isEqualToSequence:(id)sequence
 {
-  v4 = a3;
-  if (self == v4)
+  sequenceCopy = sequence;
+  if (self == sequenceCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    v5 = [(SKKeyframeSequence *)self interpolationMode];
-    if (v5 == [(SKKeyframeSequence *)v4 interpolationMode]&& (v6 = [(SKKeyframeSequence *)self repeatMode], v6 == [(SKKeyframeSequence *)v4 repeatMode]))
+    interpolationMode = [(SKKeyframeSequence *)self interpolationMode];
+    if (interpolationMode == [(SKKeyframeSequence *)sequenceCopy interpolationMode]&& (v6 = [(SKKeyframeSequence *)self repeatMode], v6 == [(SKKeyframeSequence *)sequenceCopy repeatMode]))
     {
       v7 = 0;
       while ([(NSMutableArray *)self->_values count]> v7)
       {
-        if ([(NSMutableArray *)v4->_values count]> v7)
+        if ([(NSMutableArray *)sequenceCopy->_values count]> v7)
         {
           v8 = [(NSMutableArray *)self->_values objectAtIndexedSubscript:v7];
-          v9 = [(NSMutableArray *)v4->_values objectAtIndexedSubscript:v7];
+          v9 = [(NSMutableArray *)sequenceCopy->_values objectAtIndexedSubscript:v7];
           v10 = [v8 isEqual:v9];
 
           ++v7;
@@ -485,13 +485,13 @@ LABEL_16:
           break;
         }
 
-        if ([(NSMutableArray *)v4->_times count]<= v13)
+        if ([(NSMutableArray *)sequenceCopy->_times count]<= v13)
         {
           break;
         }
 
         v15 = [(NSMutableArray *)self->_times objectAtIndexedSubscript:v13];
-        v16 = [(NSMutableArray *)v4->_times objectAtIndexedSubscript:v13];
+        v16 = [(NSMutableArray *)sequenceCopy->_times objectAtIndexedSubscript:v13];
         v17 = [v15 isEqualToNumber:v16];
 
         ++v13;

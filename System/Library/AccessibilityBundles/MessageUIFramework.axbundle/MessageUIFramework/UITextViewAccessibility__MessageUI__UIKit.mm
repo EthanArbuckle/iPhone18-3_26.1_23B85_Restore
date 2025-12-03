@@ -7,19 +7,19 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(UITextViewAccessibility__MessageUI__UIKit *)self accessibilityIdentifier];
-  if ([v3 isEqualToString:@"subjectField"])
+  accessibilityIdentifier = [(UITextViewAccessibility__MessageUI__UIKit *)self accessibilityIdentifier];
+  if ([accessibilityIdentifier isEqualToString:@"subjectField"])
   {
-    v4 = [MEMORY[0x29EDBA050] string];
+    string = [MEMORY[0x29EDBA050] string];
     v5 = accessibilityLocalizedString(@"subject.text");
-    [v4 appendString:v5];
+    [string appendString:v5];
 
     v9.receiver = self;
     v9.super_class = UITextViewAccessibility__MessageUI__UIKit;
-    v6 = [(UITextViewAccessibility__MessageUI__UIKit *)&v9 accessibilityLabel];
-    if (v6)
+    accessibilityLabel = [(UITextViewAccessibility__MessageUI__UIKit *)&v9 accessibilityLabel];
+    if (accessibilityLabel)
     {
-      [v4 appendString:v6];
+      [string appendString:accessibilityLabel];
     }
   }
 
@@ -27,21 +27,21 @@
   {
     v8.receiver = self;
     v8.super_class = UITextViewAccessibility__MessageUI__UIKit;
-    v4 = [(UITextViewAccessibility__MessageUI__UIKit *)&v8 accessibilityLabel];
+    string = [(UITextViewAccessibility__MessageUI__UIKit *)&v8 accessibilityLabel];
   }
 
-  return v4;
+  return string;
 }
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(UITextViewAccessibility__MessageUI__UIKit *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"subjectField"];
+  accessibilityIdentifier = [(UITextViewAccessibility__MessageUI__UIKit *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"subjectField"];
 
   if (v4)
   {
     objc_opt_class();
-    v5 = [(UITextViewAccessibility__MessageUI__UIKit *)self superview];
+    superview = [(UITextViewAccessibility__MessageUI__UIKit *)self superview];
     v6 = __UIAccessibilityCastAsClass();
 
     [(UITextViewAccessibility__MessageUI__UIKit *)self frame];

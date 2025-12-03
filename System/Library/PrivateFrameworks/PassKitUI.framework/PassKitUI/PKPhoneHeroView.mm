@@ -1,40 +1,40 @@
 @interface PKPhoneHeroView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKPhoneHeroView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKPhoneHeroView)initWithFrame:(CGRect)frame;
 - (double)deviceCornerRadius;
 - (void)_updateCornerRadius;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PKPhoneHeroView
 
-- (PKPhoneHeroView)initWithFrame:(CGRect)a3
+- (PKPhoneHeroView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = PKPhoneHeroView;
-  v3 = [(PKPhoneHeroView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKPhoneHeroView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKPhoneHeroView *)v3 layer];
-    [v5 setCornerCurve:*MEMORY[0x1E69796E8]];
-    [v5 setShadowRadius:25.0];
+    layer = [(PKPhoneHeroView *)v3 layer];
+    [layer setCornerCurve:*MEMORY[0x1E69796E8]];
+    [layer setShadowRadius:25.0];
     LODWORD(v6) = 1042536202;
-    [v5 setShadowOpacity:v6];
+    [layer setShadowOpacity:v6];
     v7 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:1.0];
-    [v5 setShadowColor:{objc_msgSend(v7, "CGColor")}];
+    [layer setShadowColor:{objc_msgSend(v7, "CGColor")}];
 
-    [v5 setMasksToBounds:0];
-    [v5 setShadowOffset:{0.0, 4.0}];
-    v8 = [MEMORY[0x1E69DC888] tertiarySystemBackgroundColor];
-    [(PKPhoneHeroView *)v4 setBackgroundColor:v8];
+    [layer setMasksToBounds:0];
+    [layer setShadowOffset:{0.0, 4.0}];
+    tertiarySystemBackgroundColor = [MEMORY[0x1E69DC888] tertiarySystemBackgroundColor];
+    [(PKPhoneHeroView *)v4 setBackgroundColor:tertiarySystemBackgroundColor];
   }
 
   return v4;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   PKUIGetMinScreenType();
 
@@ -52,11 +52,11 @@
   [(PKPhoneHeroView *)self _updateCornerRadius];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = PKPhoneHeroView;
-  [(PKPhoneHeroView *)&v4 traitCollectionDidChange:a3];
+  [(PKPhoneHeroView *)&v4 traitCollectionDidChange:change];
   [(PKPhoneHeroView *)self _updateCornerRadius];
 }
 
@@ -72,8 +72,8 @@
   v5 = *v4;
   [(PKPhoneHeroView *)self bounds];
   v7 = v6;
-  v8 = [(PKPhoneHeroView *)self traitCollection];
-  [v8 displayCornerRadius];
+  traitCollection = [(PKPhoneHeroView *)self traitCollection];
+  [traitCollection displayCornerRadius];
   v10 = v9;
 
   if (v10 == 0.0)
@@ -87,9 +87,9 @@
 
 - (void)_updateCornerRadius
 {
-  v3 = [(PKPhoneHeroView *)self layer];
+  layer = [(PKPhoneHeroView *)self layer];
   [(PKPhoneHeroView *)self deviceCornerRadius];
-  [v3 setCornerRadius:?];
+  [layer setCornerRadius:?];
 }
 
 @end

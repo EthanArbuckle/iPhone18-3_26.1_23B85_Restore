@@ -1,49 +1,49 @@
 @interface MUWebViewFactory
 + (id)sharedWebViewFactory;
 - (MUWebViewFactory)init;
-- (id)dequeueItemWithBridgeConfiguration:(id)a3;
-- (void)requeueItem:(id)a3;
+- (id)dequeueItemWithBridgeConfiguration:(id)configuration;
+- (void)requeueItem:(id)item;
 @end
 
 @implementation MUWebViewFactory
 
-- (void)requeueItem:(id)a3
+- (void)requeueItem:(id)item
 {
-  v13 = a3;
-  v4 = [v13 messageHandlerProxy];
-  [v4 setTarget:0];
+  itemCopy = item;
+  messageHandlerProxy = [itemCopy messageHandlerProxy];
+  [messageHandlerProxy setTarget:0];
 
-  v5 = [v13 webView];
-  [v5 setNavigationDelegate:0];
+  webView = [itemCopy webView];
+  [webView setNavigationDelegate:0];
 
-  v6 = [v13 webView];
-  [v6 setUIDelegate:0];
+  webView2 = [itemCopy webView];
+  [webView2 setUIDelegate:0];
 
-  v7 = [v13 webView];
-  [v7 stopLoading];
+  webView3 = [itemCopy webView];
+  [webView3 stopLoading];
 
   webViewCache = self->_webViewCache;
-  v9 = [v13 bridgeConfiguration];
-  v10 = [(NSCache *)webViewCache objectForKey:v9];
+  bridgeConfiguration = [itemCopy bridgeConfiguration];
+  array = [(NSCache *)webViewCache objectForKey:bridgeConfiguration];
 
-  if (!v10)
+  if (!array)
   {
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v11 = self->_webViewCache;
-    v12 = [v13 bridgeConfiguration];
-    [(NSCache *)v11 setObject:v10 forKey:v12];
+    bridgeConfiguration2 = [itemCopy bridgeConfiguration];
+    [(NSCache *)v11 setObject:array forKey:bridgeConfiguration2];
   }
 
-  [v10 addObject:v13];
+  [array addObject:itemCopy];
 }
 
-- (id)dequeueItemWithBridgeConfiguration:(id)a3
+- (id)dequeueItemWithBridgeConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(NSCache *)self->_webViewCache objectForKey:v4];
+  configurationCopy = configuration;
+  v5 = [(NSCache *)self->_webViewCache objectForKey:configurationCopy];
   if ([v5 count])
   {
-    v6 = [v5 lastObject];
+    lastObject = [v5 lastObject];
     [v5 removeLastObject];
   }
 
@@ -51,8 +51,8 @@
   {
     v7 = objc_alloc_init(MUWebViewMessageHandlerProxy);
     v8 = objc_alloc_init(MEMORY[0x1E6985350]);
-    v9 = [v4 nativeControllerName];
-    [v8 addScriptMessageHandler:v7 name:v9];
+    nativeControllerName = [configurationCopy nativeControllerName];
+    [v8 addScriptMessageHandler:v7 name:nativeControllerName];
 
     v10 = objc_alloc_init(MEMORY[0x1E69853A8]);
     [v10 _setClientNavigationsRunAtForegroundPriority:1];
@@ -63,30 +63,30 @@
     v11 = objc_alloc(MEMORY[0x1E69853A0]);
     v12 = [v11 initWithFrame:v10 configuration:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v13 = [v12 scrollView];
-    [v13 setScrollsToTop:0];
+    scrollView = [v12 scrollView];
+    [scrollView setScrollsToTop:0];
 
-    v14 = [v12 scrollView];
-    [v14 setBounces:0];
+    scrollView2 = [v12 scrollView];
+    [scrollView2 setBounces:0];
 
-    v15 = [v12 scrollView];
-    [v15 setScrollEnabled:0];
+    scrollView3 = [v12 scrollView];
+    [scrollView3 setScrollEnabled:0];
 
-    v16 = [v12 scrollView];
-    [v16 setMaximumZoomScale:1.0];
+    scrollView4 = [v12 scrollView];
+    [scrollView4 setMaximumZoomScale:1.0];
 
-    v17 = [v12 scrollView];
-    [v17 setMinimumZoomScale:1.0];
+    scrollView5 = [v12 scrollView];
+    [scrollView5 setMinimumZoomScale:1.0];
 
     [v12 setOpaque:0];
-    v18 = [MEMORY[0x1E69DC888] clearColor];
-    [v12 setBackgroundColor:v18];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [v12 setBackgroundColor:clearColor];
 
     [v12 _setUseSystemAppearance:1];
-    v6 = [[MUWebViewFactoryItem alloc] initWithBridgeConfiguration:v4 webView:v12 messageHandlerProxy:v7];
+    lastObject = [[MUWebViewFactoryItem alloc] initWithBridgeConfiguration:configurationCopy webView:v12 messageHandlerProxy:v7];
   }
 
-  return v6;
+  return lastObject;
 }
 
 - (MUWebViewFactory)init

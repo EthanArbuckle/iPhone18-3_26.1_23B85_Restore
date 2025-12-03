@@ -5,7 +5,7 @@
 - (int64_t)muteMode;
 - (void)_registerForRingerMuteStateNotifications;
 - (void)_unregisterForRingerMuteStateNotifications;
-- (void)_updateRingerMuteState:(int)a3;
+- (void)_updateRingerMuteState:(int)state;
 - (void)dealloc;
 @end
 
@@ -100,14 +100,14 @@
   return result;
 }
 
-- (void)_updateRingerMuteState:(int)a3
+- (void)_updateRingerMuteState:(int)state
 {
-  if (a3 != -1)
+  if (state != -1)
   {
     state64[3] = v3;
     state64[4] = v4;
     state64[0] = 0;
-    if (!notify_get_state(a3, state64))
+    if (!notify_get_state(state, state64))
     {
       muteMode = self->_muteMode;
       v7 = 1;

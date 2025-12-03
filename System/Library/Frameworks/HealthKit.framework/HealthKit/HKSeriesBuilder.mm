@@ -1,16 +1,16 @@
 @interface HKSeriesBuilder
 + (id)clientInterface;
 + (id)serverInterface;
-+ (void)configureServerInterface:(id)a3;
++ (void)configureServerInterface:(id)interface;
 - (HKSeriesBuilder)init;
 - (NSString)description;
-- (id)_initWithHealthStore:(id)a3 identifier:(id)a4 configuration:(id)a5;
-- (void)_resourceQueue_addMetadata:(id)a3 completion:(id)a4;
-- (void)_resourceQueue_discardWithHandler:(id)a3;
-- (void)clientRemote_didChangeToState:(int64_t)a3 completion:(id)a4;
+- (id)_initWithHealthStore:(id)store identifier:(id)identifier configuration:(id)configuration;
+- (void)_resourceQueue_addMetadata:(id)metadata completion:(id)completion;
+- (void)_resourceQueue_discardWithHandler:(id)handler;
+- (void)clientRemote_didChangeToState:(int64_t)state completion:(id)completion;
 - (void)discard;
-- (void)freezeBuilderWithCompletion:(id)a3;
-- (void)recoverWithCompletion:(id)a3;
+- (void)freezeBuilderWithCompletion:(id)completion;
+- (void)recoverWithCompletion:(id)completion;
 @end
 
 @implementation HKSeriesBuilder
@@ -25,11 +25,11 @@
   return 0;
 }
 
-- (id)_initWithHealthStore:(id)a3 identifier:(id)a4 configuration:(id)a5
+- (id)_initWithHealthStore:(id)store identifier:(id)identifier configuration:(id)configuration
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  identifierCopy = identifier;
+  configurationCopy = configuration;
   v31.receiver = self;
   v31.super_class = HKSeriesBuilder;
   v12 = [(HKSeriesBuilder *)&v31 init];
@@ -41,11 +41,11 @@
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"A valid %@ object is required.", objc_opt_class()}];
     }
 
-    v13 = [v11 device];
-    if (v13)
+    device = [configurationCopy device];
+    if (device)
     {
-      v14 = v13;
-      v15 = [v11 device];
+      v14 = device;
+      device2 = [configurationCopy device];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -55,18 +55,18 @@
       }
     }
 
-    if (v10)
+    if (identifierCopy)
     {
-      v17 = [v10 copy];
+      uUID = [identifierCopy copy];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E696AFB0] UUID];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
     }
 
     identifier = v12->_identifier;
-    v12->_identifier = v17;
+    v12->_identifier = uUID;
 
     v19 = HKCreateSerialDispatchQueue(v12, @"completionQueue");
     completionQueue = v12->_completionQueue;
@@ -76,24 +76,24 @@
     resourceQueue = v12->_resourceQueue;
     v12->_resourceQueue = v21;
 
-    v23 = [v11 copy];
+    v23 = [configurationCopy copy];
     configuration = v12->_configuration;
     v12->_configuration = v23;
 
-    objc_storeStrong(&v12->_store, a3);
+    objc_storeStrong(&v12->_store, store);
     atomic_store(0, &v12->_state);
     v25 = [[HKRetryableOperation alloc] initWithQueue:v12->_resourceQueue retryCount:5];
     retryableOperation = v12->_retryableOperation;
     v12->_retryableOperation = v25;
 
-    v27 = [objc_opt_class() taskServerIdentifier];
-    if (v27)
+    taskServerIdentifier = [objc_opt_class() taskServerIdentifier];
+    if (taskServerIdentifier)
     {
-      v28 = [[HKTaskServerProxyProvider alloc] initWithHealthStore:v9 taskIdentifier:v27 exportedObject:v12 taskUUID:v12->_identifier];
+      v28 = [[HKTaskServerProxyProvider alloc] initWithHealthStore:storeCopy taskIdentifier:taskServerIdentifier exportedObject:v12 taskUUID:v12->_identifier];
       proxyProvider = v12->_proxyProvider;
       v12->_proxyProvider = v28;
 
-      [(HKTaskServerProxyProvider *)v12->_proxyProvider setTaskConfiguration:v11];
+      [(HKTaskServerProxyProvider *)v12->_proxyProvider setTaskConfiguration:configurationCopy];
     }
   }
 
@@ -104,9 +104,9 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(NSUUID *)self->_identifier UUIDString];
+  uUIDString = [(NSUUID *)self->_identifier UUIDString];
   v6 = HKSeriesBuilderStateToString([(HKSeriesBuilder *)self state]);
-  v7 = [v3 stringWithFormat:@"<%@:%p %@ %@>", v4, self, v5, v6];
+  v7 = [v3 stringWithFormat:@"<%@:%p %@ %@>", v4, self, uUIDString, v6];
 
   return v7;
 }
@@ -119,14 +119,14 @@
   v8 = __Block_byref_object_copy__30;
   v9 = __Block_byref_object_dispose__30;
   v10 = 0;
-  v3 = [(HKSeriesBuilder *)self resourceQueue];
+  resourceQueue = [(HKSeriesBuilder *)self resourceQueue];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __26__HKSeriesBuilder_discard__block_invoke;
   v4[3] = &unk_1E737F988;
   v4[4] = self;
   v4[5] = &v5;
-  dispatch_sync(v3, v4);
+  dispatch_sync(resourceQueue, v4);
 
   [v6[5] raise];
   _Block_object_dispose(&v5, 8);
@@ -153,17 +153,17 @@ void __26__HKSeriesBuilder_discard__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)freezeBuilderWithCompletion:(id)a3
+- (void)freezeBuilderWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __47__HKSeriesBuilder_freezeBuilderWithCompletion___block_invoke;
     aBlock[3] = &unk_1E73766A0;
     aBlock[4] = self;
-    v11 = v4;
+    v11 = completionCopy;
     v5 = _Block_copy(aBlock);
   }
 
@@ -172,7 +172,7 @@ void __26__HKSeriesBuilder_discard__block_invoke_2(uint64_t a1)
     v5 = 0;
   }
 
-  v6 = [(HKSeriesBuilder *)self resourceQueue];
+  resourceQueue = [(HKSeriesBuilder *)self resourceQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __47__HKSeriesBuilder_freezeBuilderWithCompletion___block_invoke_3;
@@ -180,7 +180,7 @@ void __26__HKSeriesBuilder_discard__block_invoke_2(uint64_t a1)
   v8[4] = self;
   v9 = v5;
   v7 = v5;
-  dispatch_async(v6, v8);
+  dispatch_async(resourceQueue, v8);
 }
 
 void __47__HKSeriesBuilder_freezeBuilderWithCompletion___block_invoke(uint64_t a1, char a2, void *a3)
@@ -240,17 +240,17 @@ void __47__HKSeriesBuilder_freezeBuilderWithCompletion___block_invoke_5(uint64_t
   [a2 remote_freezeWithCompletion:v3];
 }
 
-- (void)recoverWithCompletion:(id)a3
+- (void)recoverWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __41__HKSeriesBuilder_recoverWithCompletion___block_invoke;
     aBlock[3] = &unk_1E73766A0;
     aBlock[4] = self;
-    v11 = v4;
+    v11 = completionCopy;
     v5 = _Block_copy(aBlock);
   }
 
@@ -259,7 +259,7 @@ void __47__HKSeriesBuilder_freezeBuilderWithCompletion___block_invoke_5(uint64_t
     v5 = 0;
   }
 
-  v6 = [(HKSeriesBuilder *)self resourceQueue];
+  resourceQueue = [(HKSeriesBuilder *)self resourceQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __41__HKSeriesBuilder_recoverWithCompletion___block_invoke_3;
@@ -267,7 +267,7 @@ void __47__HKSeriesBuilder_freezeBuilderWithCompletion___block_invoke_5(uint64_t
   v8[4] = self;
   v9 = v5;
   v7 = v5;
-  dispatch_async(v6, v8);
+  dispatch_async(resourceQueue, v8);
 }
 
 void __41__HKSeriesBuilder_recoverWithCompletion___block_invoke(uint64_t a1, char a2, void *a3)
@@ -327,14 +327,14 @@ void __41__HKSeriesBuilder_recoverWithCompletion___block_invoke_5(uint64_t a1, v
   [a2 remote_recoverWithCompletion:v3];
 }
 
-- (void)_resourceQueue_addMetadata:(id)a3 completion:(id)a4
+- (void)_resourceQueue_addMetadata:(id)metadata completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HKSeriesBuilder *)self resourceQueue];
-  dispatch_assert_queue_V2(v8);
+  metadataCopy = metadata;
+  completionCopy = completion;
+  resourceQueue = [(HKSeriesBuilder *)self resourceQueue];
+  dispatch_assert_queue_V2(resourceQueue);
 
-  if (v6 && [v6 count])
+  if (metadataCopy && [metadataCopy count])
   {
     retryableOperation = self->_retryableOperation;
     v10[0] = MEMORY[0x1E69E9820];
@@ -342,13 +342,13 @@ void __41__HKSeriesBuilder_recoverWithCompletion___block_invoke_5(uint64_t a1, v
     v10[2] = __57__HKSeriesBuilder__resourceQueue_addMetadata_completion___block_invoke;
     v10[3] = &unk_1E7376988;
     v10[4] = self;
-    v11 = v6;
-    [(HKRetryableOperation *)retryableOperation _queue_performRetryableOperation:v10 completion:v7];
+    v11 = metadataCopy;
+    [(HKRetryableOperation *)retryableOperation _queue_performRetryableOperation:v10 completion:completionCopy];
   }
 
   else
   {
-    v7[2](v7, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 }
 
@@ -382,16 +382,16 @@ void __57__HKSeriesBuilder__resourceQueue_addMetadata_completion___block_invoke_
   [a2 remote_addMetadata:v3 completion:v4];
 }
 
-- (void)_resourceQueue_discardWithHandler:(id)a3
+- (void)_resourceQueue_discardWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(HKSeriesBuilder *)self resourceQueue];
-  dispatch_assert_queue_V2(v5);
+  handlerCopy = handler;
+  resourceQueue = [(HKSeriesBuilder *)self resourceQueue];
+  dispatch_assert_queue_V2(resourceQueue);
 
-  v6 = [(HKSeriesBuilder *)self state];
-  if ((v6 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  state = [(HKSeriesBuilder *)self state];
+  if ((state & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    v7 = v6;
+    v7 = state;
     v8 = MEMORY[0x1E695DF30];
     v9 = *MEMORY[0x1E695D920];
     v10 = objc_opt_class();
@@ -404,9 +404,9 @@ void __57__HKSeriesBuilder__resourceQueue_addMetadata_completion___block_invoke_
     [v8 raise:v9 format:{@"%@ series has been %s.", v10, v11}];
   }
 
-  if (!v4)
+  if (!handlerCopy)
   {
-    v4 = &__block_literal_global_74;
+    handlerCopy = &__block_literal_global_74;
   }
 
   retryableOperation = self->_retryableOperation;
@@ -415,7 +415,7 @@ void __57__HKSeriesBuilder__resourceQueue_addMetadata_completion___block_invoke_
   v13[2] = __53__HKSeriesBuilder__resourceQueue_discardWithHandler___block_invoke_2;
   v13[3] = &unk_1E737FFC8;
   v13[4] = self;
-  [(HKRetryableOperation *)retryableOperation _queue_performRetryableOperation:v13 completion:v4];
+  [(HKRetryableOperation *)retryableOperation _queue_performRetryableOperation:v13 completion:handlerCopy];
 }
 
 void __53__HKSeriesBuilder__resourceQueue_discardWithHandler___block_invoke_2(uint64_t a1, void *a2)
@@ -446,17 +446,17 @@ void __53__HKSeriesBuilder__resourceQueue_discardWithHandler___block_invoke_3(ui
   [a2 remote_discardWithCompletion:v3];
 }
 
-- (void)clientRemote_didChangeToState:(int64_t)a3 completion:(id)a4
+- (void)clientRemote_didChangeToState:(int64_t)state completion:(id)completion
 {
-  v6 = a4;
-  [(HKSeriesBuilder *)self setState:a3];
-  v6[2](v6, 1, 0);
+  completionCopy = completion;
+  [(HKSeriesBuilder *)self setState:state];
+  completionCopy[2](completionCopy, 1, 0);
 }
 
 + (id)clientInterface
 {
   v3 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F069ABA8];
-  [a1 configureClientInterface:v3];
+  [self configureClientInterface:v3];
 
   return v3;
 }
@@ -464,17 +464,17 @@ void __53__HKSeriesBuilder__resourceQueue_discardWithHandler___block_invoke_3(ui
 + (id)serverInterface
 {
   v3 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F06F04E0];
-  [a1 configureServerInterface:v3];
+  [self configureServerInterface:v3];
 
   return v3;
 }
 
-+ (void)configureServerInterface:(id)a3
++ (void)configureServerInterface:(id)interface
 {
   v3 = MEMORY[0x1E695DF20];
-  v4 = a3;
-  v5 = [v3 hk_secureCodingClasses];
-  [v4 setClasses:v5 forSelector:sel_remote_addMetadata_completion_ argumentIndex:0 ofReply:0];
+  interfaceCopy = interface;
+  hk_secureCodingClasses = [v3 hk_secureCodingClasses];
+  [interfaceCopy setClasses:hk_secureCodingClasses forSelector:sel_remote_addMetadata_completion_ argumentIndex:0 ofReply:0];
 }
 
 void __26__HKSeriesBuilder_discard__block_invoke_cold_1(void *a1, uint64_t a2, uint64_t a3)

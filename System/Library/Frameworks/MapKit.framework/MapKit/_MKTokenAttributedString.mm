@@ -1,26 +1,26 @@
 @interface _MKTokenAttributedString
-- (void)setAttributedString:(id)a3;
-- (void)setString:(id)a3;
+- (void)setAttributedString:(id)string;
+- (void)setString:(id)string;
 @end
 
 @implementation _MKTokenAttributedString
 
-- (void)setString:(id)a3
+- (void)setString:(id)string
 {
-  objc_storeStrong(&self->_string, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_string, string);
+  stringCopy = string;
   attributedString = self->_attributedString;
   self->_attributedString = 0;
 }
 
-- (void)setAttributedString:(id)a3
+- (void)setAttributedString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   string = self->_string;
   self->_string = 0;
 
   attributedString = self->_attributedString;
-  self->_attributedString = v4;
+  self->_attributedString = stringCopy;
 }
 
 @end

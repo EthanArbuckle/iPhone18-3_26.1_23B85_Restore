@@ -21,8 +21,8 @@
 
   else
   {
-    v7 = [MEMORY[0x277D759A0] mainScreen];
-    [v7 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
     v4 = v8;
     v6 = v9;
   }
@@ -31,13 +31,13 @@
   [(MTLumaDodgePillSettings *)self setMaxWidth:round(v6 * 0.2571)];
   [(MTLumaDodgePillSettings *)self setHeight:5.0];
   [(MTLumaDodgePillSettings *)self setEdgeSpacing:8.0];
-  v10 = [MEMORY[0x277D75418] currentDevice];
-  v11 = [v10 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v11 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    v12 = [MEMORY[0x277D75418] currentDevice];
-    if ([v12 userInterfaceIdiom] == 1)
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice2 userInterfaceIdiom] == 1)
     {
       if (_RunningInSpringBoard___once != -1)
       {
@@ -52,8 +52,8 @@
 
       else
       {
-        v11 = [MEMORY[0x277D759A0] mainScreen];
-        [v11 _referenceBounds];
+        userInterfaceIdiom = [MEMORY[0x277D759A0] mainScreen];
+        [userInterfaceIdiom _referenceBounds];
       }
 
       Height = CGRectGetHeight(*&v14);
@@ -73,8 +73,8 @@
     {
     }
 
-    v20 = [MEMORY[0x277D75418] currentDevice];
-    if ([v20 userInterfaceIdiom] != 1)
+    currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice3 userInterfaceIdiom] != 1)
     {
 
 LABEL_30:
@@ -96,8 +96,8 @@ LABEL_30:
 
     else
     {
-      v11 = [MEMORY[0x277D759A0] mainScreen];
-      [v11 _referenceBounds];
+      userInterfaceIdiom = [MEMORY[0x277D759A0] mainScreen];
+      [userInterfaceIdiom _referenceBounds];
     }
 
     v26 = CGRectGetHeight(*&v22);
@@ -124,31 +124,31 @@ LABEL_31:
   [(MTLumaDodgePillSettings *)self setInitialLumaThreshold:0.5];
   [(MTLumaDodgePillSettings *)self setCornerRadius:4.0];
   [(MTLumaDodgePillSettings *)self setCornerMask:0];
-  v27 = [(PTSettings *)[MTLumaDodgePillStyleSettings alloc] initWithDefaultValues];
-  [(MTLumaDodgePillSettings *)self setNoneSettings:v27];
+  initWithDefaultValues = [(PTSettings *)[MTLumaDodgePillStyleSettings alloc] initWithDefaultValues];
+  [(MTLumaDodgePillSettings *)self setNoneSettings:initWithDefaultValues];
 
-  v31 = [(PTSettings *)[MTLumaDodgePillStyleSettings alloc] initWithDefaultValues];
-  [(MTLumaDodgePillStyleSettings *)v31 setColorAddOpacity:0.525];
-  [(MTLumaDodgePillStyleSettings *)v31 setLumaMapPlusColorOpacity:0.31];
-  [(MTLumaDodgePillStyleSettings *)v31 setOverlayBlendOpacity:0.4];
-  [(MTLumaDodgePillStyleSettings *)v31 setBlur:10.0];
-  [(MTLumaDodgePillStyleSettings *)v31 setBrightness:0.06];
-  [(MTLumaDodgePillStyleSettings *)v31 setSaturation:1.15];
-  [(MTLumaDodgePillSettings *)self setThinSettings:v31];
-  v28 = [(PTSettings *)[MTLumaDodgePillStyleSettings alloc] initWithDefaultValues];
-  [(MTLumaDodgePillStyleSettings *)v28 setColorAddOpacity:0.5];
-  [(MTLumaDodgePillStyleSettings *)v28 setLumaMapPlusColorOpacity:1.0];
-  [(MTLumaDodgePillStyleSettings *)v28 setBlur:10.0];
-  [(MTLumaDodgePillSettings *)self setGraySettings:v28];
-  v29 = [(PTSettings *)[MTLumaDodgePillStyleSettings alloc] initWithDefaultValues];
-  [(MTLumaDodgePillStyleSettings *)v29 setLumaMapPlusColorOpacity:1.0];
-  [(MTLumaDodgePillStyleSettings *)v29 setBlur:10.0];
-  [(MTLumaDodgePillSettings *)self setBlackSettings:v29];
-  v30 = [(PTSettings *)[MTLumaDodgePillStyleSettings alloc] initWithDefaultValues];
-  [(MTLumaDodgePillStyleSettings *)v30 setColorAddOpacity:1.0];
-  [(MTLumaDodgePillStyleSettings *)v30 setLumaMapPlusColorOpacity:1.0];
-  [(MTLumaDodgePillStyleSettings *)v30 setBlur:10.0];
-  [(MTLumaDodgePillSettings *)self setWhiteSettings:v30];
+  initWithDefaultValues2 = [(PTSettings *)[MTLumaDodgePillStyleSettings alloc] initWithDefaultValues];
+  [(MTLumaDodgePillStyleSettings *)initWithDefaultValues2 setColorAddOpacity:0.525];
+  [(MTLumaDodgePillStyleSettings *)initWithDefaultValues2 setLumaMapPlusColorOpacity:0.31];
+  [(MTLumaDodgePillStyleSettings *)initWithDefaultValues2 setOverlayBlendOpacity:0.4];
+  [(MTLumaDodgePillStyleSettings *)initWithDefaultValues2 setBlur:10.0];
+  [(MTLumaDodgePillStyleSettings *)initWithDefaultValues2 setBrightness:0.06];
+  [(MTLumaDodgePillStyleSettings *)initWithDefaultValues2 setSaturation:1.15];
+  [(MTLumaDodgePillSettings *)self setThinSettings:initWithDefaultValues2];
+  initWithDefaultValues3 = [(PTSettings *)[MTLumaDodgePillStyleSettings alloc] initWithDefaultValues];
+  [(MTLumaDodgePillStyleSettings *)initWithDefaultValues3 setColorAddOpacity:0.5];
+  [(MTLumaDodgePillStyleSettings *)initWithDefaultValues3 setLumaMapPlusColorOpacity:1.0];
+  [(MTLumaDodgePillStyleSettings *)initWithDefaultValues3 setBlur:10.0];
+  [(MTLumaDodgePillSettings *)self setGraySettings:initWithDefaultValues3];
+  initWithDefaultValues4 = [(PTSettings *)[MTLumaDodgePillStyleSettings alloc] initWithDefaultValues];
+  [(MTLumaDodgePillStyleSettings *)initWithDefaultValues4 setLumaMapPlusColorOpacity:1.0];
+  [(MTLumaDodgePillStyleSettings *)initWithDefaultValues4 setBlur:10.0];
+  [(MTLumaDodgePillSettings *)self setBlackSettings:initWithDefaultValues4];
+  initWithDefaultValues5 = [(PTSettings *)[MTLumaDodgePillStyleSettings alloc] initWithDefaultValues];
+  [(MTLumaDodgePillStyleSettings *)initWithDefaultValues5 setColorAddOpacity:1.0];
+  [(MTLumaDodgePillStyleSettings *)initWithDefaultValues5 setLumaMapPlusColorOpacity:1.0];
+  [(MTLumaDodgePillStyleSettings *)initWithDefaultValues5 setBlur:10.0];
+  [(MTLumaDodgePillSettings *)self setWhiteSettings:initWithDefaultValues5];
   [(MTLumaDodgePillSettings *)self setDisableLumaTracking:0];
   [(MTLumaDodgePillSettings *)self setOverrideDodgeMode:0];
 }

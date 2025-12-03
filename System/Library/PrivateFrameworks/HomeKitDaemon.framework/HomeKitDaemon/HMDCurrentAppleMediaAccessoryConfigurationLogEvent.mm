@@ -1,5 +1,5 @@
 @interface HMDCurrentAppleMediaAccessoryConfigurationLogEvent
-- (HMDCurrentAppleMediaAccessoryConfigurationLogEvent)initWithNumPairedSensors:(id)a3 sensorStatus:(id)a4 numPairedSensorAutomations:(id)a5 numMediaAutomations:(id)a6;
+- (HMDCurrentAppleMediaAccessoryConfigurationLogEvent)initWithNumPairedSensors:(id)sensors sensorStatus:(id)status numPairedSensorAutomations:(id)automations numMediaAutomations:(id)mediaAutomations;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -7,48 +7,48 @@
 
 - (NSDictionary)coreAnalyticsEventDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(HMDCurrentAppleMediaAccessoryConfigurationLogEvent *)self numPairedSensors];
-  [v3 setObject:v4 forKeyedSubscript:@"numPairedHomePodSensors"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  numPairedSensors = [(HMDCurrentAppleMediaAccessoryConfigurationLogEvent *)self numPairedSensors];
+  [dictionary setObject:numPairedSensors forKeyedSubscript:@"numPairedHomePodSensors"];
 
-  v5 = [(HMDCurrentAppleMediaAccessoryConfigurationLogEvent *)self sensorStatus];
-  [v3 setObject:v5 forKeyedSubscript:@"homePodSensorStatus"];
+  sensorStatus = [(HMDCurrentAppleMediaAccessoryConfigurationLogEvent *)self sensorStatus];
+  [dictionary setObject:sensorStatus forKeyedSubscript:@"homePodSensorStatus"];
 
-  v6 = [(HMDCurrentAppleMediaAccessoryConfigurationLogEvent *)self numPairedSensorAutomations];
-  [v3 setObject:v6 forKeyedSubscript:@"numPairedHomePodSensorAutomations"];
+  numPairedSensorAutomations = [(HMDCurrentAppleMediaAccessoryConfigurationLogEvent *)self numPairedSensorAutomations];
+  [dictionary setObject:numPairedSensorAutomations forKeyedSubscript:@"numPairedHomePodSensorAutomations"];
 
-  v7 = [(HMDCurrentAppleMediaAccessoryConfigurationLogEvent *)self numMediaAutomations];
-  [v3 setObject:v7 forKeyedSubscript:@"numMediaAutomations"];
+  numMediaAutomations = [(HMDCurrentAppleMediaAccessoryConfigurationLogEvent *)self numMediaAutomations];
+  [dictionary setObject:numMediaAutomations forKeyedSubscript:@"numMediaAutomations"];
 
-  v8 = [v3 copy];
+  v8 = [dictionary copy];
 
   return v8;
 }
 
-- (HMDCurrentAppleMediaAccessoryConfigurationLogEvent)initWithNumPairedSensors:(id)a3 sensorStatus:(id)a4 numPairedSensorAutomations:(id)a5 numMediaAutomations:(id)a6
+- (HMDCurrentAppleMediaAccessoryConfigurationLogEvent)initWithNumPairedSensors:(id)sensors sensorStatus:(id)status numPairedSensorAutomations:(id)automations numMediaAutomations:(id)mediaAutomations
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  sensorsCopy = sensors;
+  statusCopy = status;
+  automationsCopy = automations;
+  mediaAutomationsCopy = mediaAutomations;
   v24.receiver = self;
   v24.super_class = HMDCurrentAppleMediaAccessoryConfigurationLogEvent;
   v14 = [(HMMLogEvent *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [sensorsCopy copy];
     numPairedSensors = v14->_numPairedSensors;
     v14->_numPairedSensors = v15;
 
-    v17 = [v11 copy];
+    v17 = [statusCopy copy];
     sensorStatus = v14->_sensorStatus;
     v14->_sensorStatus = v17;
 
-    v19 = [v12 copy];
+    v19 = [automationsCopy copy];
     numPairedSensorAutomations = v14->_numPairedSensorAutomations;
     v14->_numPairedSensorAutomations = v19;
 
-    v21 = [v13 copy];
+    v21 = [mediaAutomationsCopy copy];
     numMediaAutomations = v14->_numMediaAutomations;
     v14->_numMediaAutomations = v21;
   }

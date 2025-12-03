@@ -13,14 +13,14 @@
   {
     out_token = 0;
     objc_initWeak(&location, self);
-    v3 = [@"com.apple.corespeech.fakeasset.rolling" UTF8String];
+    uTF8String = [@"com.apple.corespeech.fakeasset.rolling" UTF8String];
     queue = self->_queue;
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_100001F84;
     handler[3] = &unk_10001C4E0;
     objc_copyWeak(&v8, &location);
-    v5 = notify_register_dispatch(v3, &out_token, queue, handler);
+    v5 = notify_register_dispatch(uTF8String, &out_token, queue, handler);
     if (v5)
     {
       v6 = CSLogContextFacilityCoreSpeech;

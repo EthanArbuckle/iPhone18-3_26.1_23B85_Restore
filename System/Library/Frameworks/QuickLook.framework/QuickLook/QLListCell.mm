@@ -4,11 +4,11 @@
 - (void)awakeFromNib;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setFileDepthLevel:(int64_t)a3;
-- (void)setFolderName:(id)a3;
-- (void)setItem:(id)a3;
-- (void)setSubtitleString:(id)a3;
-- (void)setThumbnail:(id)a3;
+- (void)setFileDepthLevel:(int64_t)level;
+- (void)setFolderName:(id)name;
+- (void)setItem:(id)item;
+- (void)setSubtitleString:(id)string;
+- (void)setThumbnail:(id)thumbnail;
 @end
 
 @implementation QLListCell
@@ -16,10 +16,10 @@
 + (id)listCell
 {
   v3 = QLFrameworkBundle();
-  v4 = [v3 loadNibNamed:@"QLListCell" owner:a1 options:0];
-  v5 = [v4 firstObject];
+  v4 = [v3 loadNibNamed:@"QLListCell" owner:self options:0];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
 - (void)awakeFromNib
@@ -30,13 +30,13 @@
   WeakRetained = objc_loadWeakRetained(&self->_thumbnailView);
   [WeakRetained setContentMode:4];
 
-  v4 = [MEMORY[0x277D75348] labelColor];
+  labelColor = [MEMORY[0x277D75348] labelColor];
   v5 = objc_loadWeakRetained(&self->_title);
-  [v5 setTextColor:v4];
+  [v5 setTextColor:labelColor];
 
-  v6 = [MEMORY[0x277D75348] secondaryLabelColor];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
   v7 = objc_loadWeakRetained(&self->_subtitle);
-  [v7 setTextColor:v6];
+  [v7 setTextColor:secondaryLabelColor];
 
   v8 = objc_loadWeakRetained(&self->_title);
   [v8 setAdjustsFontSizeToFitWidth:1];
@@ -55,8 +55,8 @@
 
   if (_UISolariumEnabled())
   {
-    v13 = [MEMORY[0x277D75348] clearColor];
-    [(QLListCell *)self setBackgroundColor:v13];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(QLListCell *)self setBackgroundColor:clearColor];
   }
 
   [(QLListCell *)self setIndentationWidth:15.0];
@@ -108,57 +108,57 @@ void __26__QLListCell__folderImage__block_invoke()
   _folderImage__folderImage = v1;
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  objc_storeStrong(&self->_item, a3);
-  v5 = a3;
-  v7 = [v5 previewItemTitle];
+  objc_storeStrong(&self->_item, item);
+  itemCopy = item;
+  previewItemTitle = [itemCopy previewItemTitle];
 
   WeakRetained = objc_loadWeakRetained(&self->_title);
-  [WeakRetained setText:v7];
+  [WeakRetained setText:previewItemTitle];
 }
 
-- (void)setSubtitleString:(id)a3
+- (void)setSubtitleString:(id)string
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  stringCopy = string;
+  v5 = [stringCopy copy];
   subtitleString = self->_subtitleString;
   self->_subtitleString = v5;
 
   WeakRetained = objc_loadWeakRetained(&self->_subtitle);
-  [WeakRetained setText:v4];
+  [WeakRetained setText:stringCopy];
 }
 
-- (void)setThumbnail:(id)a3
+- (void)setThumbnail:(id)thumbnail
 {
-  objc_storeStrong(&self->_thumbnail, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_thumbnail, thumbnail);
+  thumbnailCopy = thumbnail;
   WeakRetained = objc_loadWeakRetained(&self->_thumbnailView);
-  [WeakRetained setImage:v5];
+  [WeakRetained setImage:thumbnailCopy];
 }
 
-- (void)setFileDepthLevel:(int64_t)a3
+- (void)setFileDepthLevel:(int64_t)level
 {
-  self->_fileDepthLevel = a3;
-  v4 = a3;
+  self->_fileDepthLevel = level;
+  levelCopy = level;
   [(QLListCell *)self indentationWidth];
-  v6 = v4 * v5 + 15.0;
+  v6 = levelCopy * v5 + 15.0;
   WeakRetained = objc_loadWeakRetained(&self->_leftConstraint);
   [WeakRetained setConstant:v6];
 
   [(QLListCell *)self setNeedsLayout];
 }
 
-- (void)setFolderName:(id)a3
+- (void)setFolderName:(id)name
 {
-  objc_storeStrong(&self->_folderName, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_folderName, name);
+  nameCopy = name;
   WeakRetained = objc_loadWeakRetained(&self->_title);
-  [WeakRetained setText:v5];
+  [WeakRetained setText:nameCopy];
 
-  v7 = [(QLListCell *)self _folderImage];
+  _folderImage = [(QLListCell *)self _folderImage];
   v8 = objc_loadWeakRetained(&self->_thumbnailView);
-  [v8 setImage:v7];
+  [v8 setImage:_folderImage];
 
   v9 = objc_loadWeakRetained(&self->_subtitle);
   [v9 setHidden:1];

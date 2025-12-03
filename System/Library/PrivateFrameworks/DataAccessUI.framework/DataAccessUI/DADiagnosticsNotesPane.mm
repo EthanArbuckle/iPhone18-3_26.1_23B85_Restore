@@ -1,15 +1,15 @@
 @interface DADiagnosticsNotesPane
-- (DADiagnosticsNotesPane)initWithFrame:(CGRect)a3;
+- (DADiagnosticsNotesPane)initWithFrame:(CGRect)frame;
 @end
 
 @implementation DADiagnosticsNotesPane
 
-- (DADiagnosticsNotesPane)initWithFrame:(CGRect)a3
+- (DADiagnosticsNotesPane)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v13.receiver = self;
   v13.super_class = DADiagnosticsNotesPane;
   v7 = [(PSEditingPane *)&v13 initWithFrame:?];

@@ -1,14 +1,14 @@
 @interface AXMVisionResult
-+ (AXMVisionResult)resultWithImage:(id)a3 features:(id)a4 orientation:(id)a5 metricSession:(id)a6 userContext:(id)a7;
++ (AXMVisionResult)resultWithImage:(id)image features:(id)features orientation:(id)orientation metricSession:(id)session userContext:(id)context;
 - (AXMSemanticTextFactory)semanticTextFactory;
 - (AXMVisionFeature)assetMetadataFeature;
 - (AXMVisionFeature)colorInfoFeature;
-- (AXMVisionResult)initWithCoder:(id)a3;
+- (AXMVisionResult)initWithCoder:(id)coder;
 - (BOOL)captionMayContainSensitiveContent;
 - (BOOL)includesFeaturesForImageExploration;
 - (BOOL)includesNSFWFeatures;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAXMVisionResult:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAXMVisionResult:(id)result;
 - (NSArray)blurFeatures;
 - (NSArray)brightnessFeatures;
 - (NSArray)captionFeatures;
@@ -35,38 +35,38 @@
 - (NSString)localizedDetectedTextSummaryHint;
 - (NSString)localizedDetectedTextTypeHint;
 - (id)_init;
-- (id)_processFeatureChild:(id)a3;
-- (id)_processFeatureTree:(id)a3;
+- (id)_processFeatureChild:(id)child;
+- (id)_processFeatureTree:(id)tree;
 - (id)captionTranslationLocale;
 - (id)description;
-- (id)detectedCaptionFeatureDescriptionWithOptions:(id)a3;
-- (id)detectedFeatureDescriptionWithOptions:(id)a3;
-- (id)detectedSceneClassificationFeatureDescriptionWithOptions:(id)a3;
+- (id)detectedCaptionFeatureDescriptionWithOptions:(id)options;
+- (id)detectedFeatureDescriptionWithOptions:(id)options;
+- (id)detectedSceneClassificationFeatureDescriptionWithOptions:(id)options;
 - (id)sensitiveContentFeatures;
 - (id)sortedFeatures;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXMVisionResult
 
-+ (AXMVisionResult)resultWithImage:(id)a3 features:(id)a4 orientation:(id)a5 metricSession:(id)a6 userContext:(id)a7
++ (AXMVisionResult)resultWithImage:(id)image features:(id)features orientation:(id)orientation metricSession:(id)session userContext:(id)context
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [[AXMVisionResult alloc] _init];
-  [v16 setFeatures:v14];
+  contextCopy = context;
+  sessionCopy = session;
+  orientationCopy = orientation;
+  featuresCopy = features;
+  imageCopy = image;
+  _init = [[AXMVisionResult alloc] _init];
+  [_init setFeatures:featuresCopy];
 
-  [v16 setImage:v15];
-  [v16 setAppliedImageOrientation:v13];
+  [_init setImage:imageCopy];
+  [_init setAppliedImageOrientation:orientationCopy];
 
-  [v16 setMetricSession:v12];
-  [v16 setUserContext:v11];
+  [_init setMetricSession:sessionCopy];
+  [_init setUserContext:contextCopy];
 
-  return v16;
+  return _init;
 }
 
 - (id)_init
@@ -82,10 +82,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -93,27 +93,27 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AXMVisionResult *)self isEqualToAXMVisionResult:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AXMVisionResult *)self isEqualToAXMVisionResult:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToAXMVisionResult:(id)a3
+- (BOOL)isEqualToAXMVisionResult:(id)result
 {
-  v5 = a3;
-  v6 = [(AXMVisionResult *)self features];
-  v7 = [v5 features];
-  if ([v6 isEqual:v7])
+  resultCopy = result;
+  features = [(AXMVisionResult *)self features];
+  features2 = [resultCopy features];
+  if ([features isEqual:features2])
   {
-    v8 = [(AXMVisionResult *)self captionTranslationLocale];
-    if (v8 || ([v5 captionTranslationLocale], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    captionTranslationLocale = [(AXMVisionResult *)self captionTranslationLocale];
+    if (captionTranslationLocale || ([resultCopy captionTranslationLocale], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v9 = [(AXMVisionResult *)self captionTranslationLocale];
-      v10 = [v5 captionTranslationLocale];
-      v11 = [v9 isEqual:v10];
+      captionTranslationLocale2 = [(AXMVisionResult *)self captionTranslationLocale];
+      captionTranslationLocale3 = [resultCopy captionTranslationLocale];
+      v11 = [captionTranslationLocale2 isEqual:captionTranslationLocale3];
 
-      if (v8)
+      if (captionTranslationLocale)
       {
 LABEL_9:
 
@@ -137,16 +137,16 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v2 = [(AXMVisionResult *)self features];
-  v3 = [v2 hash];
+  features = [(AXMVisionResult *)self features];
+  v3 = [features hash];
 
   return v3;
 }
 
 - (id)sortedFeatures
 {
-  v2 = [(AXMVisionResult *)self features];
-  v3 = [v2 sortedArrayUsingComparator:&__block_literal_global_10];
+  features = [(AXMVisionResult *)self features];
+  v3 = [features sortedArrayUsingComparator:&__block_literal_global_10];
 
   return v3;
 }
@@ -217,8 +217,8 @@ LABEL_5:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(AXMVisionResult *)self features];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  features = [(AXMVisionResult *)self features];
+  v3 = [features countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -228,7 +228,7 @@ LABEL_5:
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(features);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -239,7 +239,7 @@ LABEL_5:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [features countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -261,8 +261,8 @@ LABEL_11:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(AXMVisionResult *)self features];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  features = [(AXMVisionResult *)self features];
+  v3 = [features countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -272,7 +272,7 @@ LABEL_11:
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(features);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -283,7 +283,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [features countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -318,13 +318,13 @@ LABEL_11:
   detectedTextType = self->_detectedTextType;
   if (!detectedTextType)
   {
-    v4 = [(AXMVisionResult *)self ocrFeatures];
-    v5 = [v4 ax_filteredArrayUsingBlock:&__block_literal_global_65];
-    v6 = [v5 firstObject];
+    ocrFeatures = [(AXMVisionResult *)self ocrFeatures];
+    v5 = [ocrFeatures ax_filteredArrayUsingBlock:&__block_literal_global_65];
+    firstObject = [v5 firstObject];
 
-    if ([v6 isValueSpeakable])
+    if ([firstObject isValueSpeakable])
     {
-      v7 = +[AXMVisionFeature nameForOCRType:](AXMVisionFeature, "nameForOCRType:", [v6 ocrFeatureType]);
+      v7 = +[AXMVisionFeature nameForOCRType:](AXMVisionFeature, "nameForOCRType:", [firstObject ocrFeatureType]);
       v8 = self->_detectedTextType;
       self->_detectedTextType = v7;
     }
@@ -332,8 +332,8 @@ LABEL_11:
     detectedTextType = self->_detectedTextType;
   }
 
-  v9 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v10 = [(NSString *)detectedTextType stringByTrimmingCharactersInSet:v9];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v10 = [(NSString *)detectedTextType stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   return v10;
 }
@@ -343,53 +343,53 @@ LABEL_11:
   detectedTextSummary = self->_detectedTextSummary;
   if (!detectedTextSummary)
   {
-    v4 = [(AXMVisionResult *)self ocrFeatures];
-    v5 = [v4 ax_filteredArrayUsingBlock:&__block_literal_global_69];
-    v6 = [v5 firstObject];
+    ocrFeatures = [(AXMVisionResult *)self ocrFeatures];
+    v5 = [ocrFeatures ax_filteredArrayUsingBlock:&__block_literal_global_69];
+    firstObject = [v5 firstObject];
 
-    if ([v6 isValueSpeakable])
+    if ([firstObject isValueSpeakable])
     {
-      v7 = [v6 value];
+      value = [firstObject value];
       v8 = self->_detectedTextSummary;
-      self->_detectedTextSummary = v7;
+      self->_detectedTextSummary = value;
     }
 
-    v9 = [(AXMVisionResult *)self ocrFeatures];
-    v10 = [v9 ax_filteredArrayUsingBlock:&__block_literal_global_71];
-    v11 = [v10 firstObject];
+    ocrFeatures2 = [(AXMVisionResult *)self ocrFeatures];
+    v10 = [ocrFeatures2 ax_filteredArrayUsingBlock:&__block_literal_global_71];
+    firstObject2 = [v10 firstObject];
 
-    if ([v11 isValueSpeakable])
+    if ([firstObject2 isValueSpeakable])
     {
-      v12 = [v11 values];
-      v13 = [v12 objectAtIndexedSubscript:0];
-      v14 = [MEMORY[0x1E695DFB0] null];
-      v15 = [v13 isEqual:v14];
+      values = [firstObject2 values];
+      v13 = [values objectAtIndexedSubscript:0];
+      null = [MEMORY[0x1E695DFB0] null];
+      v15 = [v13 isEqual:null];
 
       if ((v15 & 1) == 0)
       {
-        v16 = [v11 values];
-        v17 = [v16 objectAtIndexedSubscript:0];
+        values2 = [firstObject2 values];
+        v17 = [values2 objectAtIndexedSubscript:0];
         v18 = self->_detectedTextSummary;
         self->_detectedTextSummary = v17;
       }
     }
 
-    v19 = [(AXMVisionResult *)self ocrFeatures];
-    v20 = [v19 ax_filteredArrayUsingBlock:&__block_literal_global_74];
-    v21 = [v20 firstObject];
+    ocrFeatures3 = [(AXMVisionResult *)self ocrFeatures];
+    v20 = [ocrFeatures3 ax_filteredArrayUsingBlock:&__block_literal_global_74];
+    firstObject3 = [v20 firstObject];
 
-    if ([v21 isValueSpeakable])
+    if ([firstObject3 isValueSpeakable])
     {
-      v22 = [v21 value];
+      value2 = [firstObject3 value];
       v23 = self->_detectedTextSummary;
-      self->_detectedTextSummary = v22;
+      self->_detectedTextSummary = value2;
     }
 
     detectedTextSummary = self->_detectedTextSummary;
   }
 
-  v24 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v25 = [(NSString *)detectedTextSummary stringByTrimmingCharactersInSet:v24];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v25 = [(NSString *)detectedTextSummary stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   return v25;
 }
@@ -415,25 +415,25 @@ uint64_t __38__AXMVisionResult_detectedTextSummary__block_invoke(uint64_t a1, vo
   detectedTextDescription = self->_detectedTextDescription;
   if (!detectedTextDescription)
   {
-    v4 = [(AXMVisionResult *)self ocrFeatures];
-    v5 = [v4 ax_filteredArrayUsingBlock:&__block_literal_global_76];
-    v6 = [v5 firstObject];
+    ocrFeatures = [(AXMVisionResult *)self ocrFeatures];
+    v5 = [ocrFeatures ax_filteredArrayUsingBlock:&__block_literal_global_76];
+    firstObject = [v5 firstObject];
 
-    if ([v6 isValueSpeakable])
+    if ([firstObject isValueSpeakable])
     {
-      v7 = [v6 value];
+      value = [firstObject value];
       v8 = self->_detectedTextDescription;
-      self->_detectedTextDescription = v7;
+      self->_detectedTextDescription = value;
     }
 
-    v9 = [(AXMVisionResult *)self ocrFeatures];
-    v10 = [v9 ax_filteredArrayUsingBlock:&__block_literal_global_78];
-    v11 = [v10 firstObject];
+    ocrFeatures2 = [(AXMVisionResult *)self ocrFeatures];
+    v10 = [ocrFeatures2 ax_filteredArrayUsingBlock:&__block_literal_global_78];
+    firstObject2 = [v10 firstObject];
 
-    if ([v11 isValueSpeakable])
+    if ([firstObject2 isValueSpeakable])
     {
-      v12 = [v11 values];
-      v13 = [v12 objectAtIndexedSubscript:1];
+      values = [firstObject2 values];
+      v13 = [values objectAtIndexedSubscript:1];
       v14 = self->_detectedTextDescription;
       self->_detectedTextDescription = v13;
     }
@@ -468,37 +468,37 @@ uint64_t __38__AXMVisionResult_detectedTextSummary__block_invoke(uint64_t a1, vo
   return v3;
 }
 
-- (id)_processFeatureChild:(id)a3
+- (id)_processFeatureChild:(id)child
 {
   v80 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = [v4 ocrFeatureType];
-  v7 = [AXMVisionFeature nameForOCRType:v6];
-  v8 = [(AXMVisionResult *)self parentOCRFeatureTypes];
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:v6];
-  v10 = [v8 containsObject:v9];
+  childCopy = child;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  ocrFeatureType = [childCopy ocrFeatureType];
+  v7 = [AXMVisionFeature nameForOCRType:ocrFeatureType];
+  parentOCRFeatureTypes = [(AXMVisionResult *)self parentOCRFeatureTypes];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:ocrFeatureType];
+  v10 = [parentOCRFeatureTypes containsObject:v9];
 
   if (v10)
   {
-    [v5 setObject:v7 forKey:@"AXMType"];
-    v11 = [v4 value];
-    if (v11)
+    [dictionary setObject:v7 forKey:@"AXMType"];
+    value = [childCopy value];
+    if (value)
     {
-      [v5 setObject:v11 forKey:@"AXMContent"];
+      [dictionary setObject:value forKey:@"AXMContent"];
     }
 
-    v12 = [MEMORY[0x1E695DF70] array];
-    v62 = v11;
-    if (v6 == 2)
+    array = [MEMORY[0x1E695DF70] array];
+    v62 = value;
+    if (ocrFeatureType == 2)
     {
-      v42 = v5;
-      v43 = [(AXMVisionResult *)self semanticTextFactory];
-      v44 = [v4 value];
+      v42 = dictionary;
+      semanticTextFactory = [(AXMVisionResult *)self semanticTextFactory];
+      value2 = [childCopy value];
       [(AXMVisionResult *)self effectiveTextDetectionLocales];
-      v46 = v45 = v4;
-      v47 = [v46 firstObject];
-      v21 = [v43 semanticTextForText:v44 withLocale:v47];
+      v46 = v45 = childCopy;
+      firstObject = [v46 firstObject];
+      v21 = [semanticTextFactory semanticTextForText:value2 withLocale:firstObject];
 
       if ([v21 isSemanticallyComplete])
       {
@@ -507,9 +507,9 @@ uint64_t __38__AXMVisionResult_detectedTextSummary__block_invoke(uint64_t a1, vo
         v76 = 0u;
         v73 = 0u;
         v74 = 0u;
-        v48 = [v45 subfeatures];
-        v49 = [v48 countByEnumeratingWithState:&v73 objects:v79 count:16];
-        v4 = v45;
+        subfeatures = [v45 subfeatures];
+        v49 = [subfeatures countByEnumeratingWithState:&v73 objects:v79 count:16];
+        childCopy = v45;
         if (v49)
         {
           v50 = v49;
@@ -520,23 +520,23 @@ uint64_t __38__AXMVisionResult_detectedTextSummary__block_invoke(uint64_t a1, vo
             {
               if (*v74 != v51)
               {
-                objc_enumerationMutation(v48);
+                objc_enumerationMutation(subfeatures);
               }
 
               v53 = [(AXMVisionResult *)self _processFeatureChild:*(*(&v73 + 1) + 8 * i)];
-              [v12 addObject:v53];
+              [array addObject:v53];
             }
 
-            v50 = [v48 countByEnumeratingWithState:&v73 objects:v79 count:16];
+            v50 = [subfeatures countByEnumeratingWithState:&v73 objects:v79 count:16];
           }
 
           while (v50);
         }
 
-        v5 = v42;
-        [v42 setObject:v12 forKey:@"AXMChildren"];
+        dictionary = v42;
+        [v42 setObject:array forKey:@"AXMChildren"];
         v54 = MEMORY[0x1E696B098];
-        [v4 normalizedFrame];
+        [childCopy normalizedFrame];
         v55 = [v54 axmValueWithCGRect:?];
         [v42 setObject:v55 forKey:@"AXMBounds"];
 
@@ -545,25 +545,25 @@ uint64_t __38__AXMVisionResult_detectedTextSummary__block_invoke(uint64_t a1, vo
 
       else
       {
-        v5 = v42;
-        v4 = v45;
+        dictionary = v42;
+        childCopy = v45;
       }
     }
 
     else
     {
       v13 = v7;
-      if (v6 == 13 || v6 == 7)
+      if (ocrFeatureType == 13 || ocrFeatureType == 7)
       {
-        [v5 setObject:MEMORY[0x1E695E118] forKey:@"AXMRowType"];
+        [dictionary setObject:MEMORY[0x1E695E118] forKey:@"AXMRowType"];
       }
 
       v71 = 0u;
       v72 = 0u;
       v69 = 0u;
       v70 = 0u;
-      v14 = [v4 subfeatures];
-      v15 = [v14 countByEnumeratingWithState:&v69 objects:v78 count:16];
+      subfeatures2 = [childCopy subfeatures];
+      v15 = [subfeatures2 countByEnumeratingWithState:&v69 objects:v78 count:16];
       if (v15)
       {
         v16 = v15;
@@ -574,51 +574,51 @@ uint64_t __38__AXMVisionResult_detectedTextSummary__block_invoke(uint64_t a1, vo
           {
             if (*v70 != v17)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(subfeatures2);
             }
 
             v19 = [(AXMVisionResult *)self _processFeatureChild:*(*(&v69 + 1) + 8 * j)];
-            [v12 addObject:v19];
+            [array addObject:v19];
           }
 
-          v16 = [v14 countByEnumeratingWithState:&v69 objects:v78 count:16];
+          v16 = [subfeatures2 countByEnumeratingWithState:&v69 objects:v78 count:16];
         }
 
         while (v16);
       }
 
-      [v5 setObject:v12 forKey:@"AXMChildren"];
+      [dictionary setObject:array forKey:@"AXMChildren"];
       v20 = MEMORY[0x1E696B098];
-      [v4 normalizedFrame];
+      [childCopy normalizedFrame];
       v21 = [v20 axmValueWithCGRect:?];
-      [v5 setObject:v21 forKey:@"AXMBounds"];
+      [dictionary setObject:v21 forKey:@"AXMBounds"];
       v7 = v13;
     }
 
-    v22 = v62;
+    value3 = v62;
   }
 
   else
   {
-    v23 = [(AXMVisionResult *)self smallestChildOCRFeatureTypes];
-    v24 = [MEMORY[0x1E696AD98] numberWithInteger:v6];
-    v25 = [v23 containsObject:v24];
+    smallestChildOCRFeatureTypes = [(AXMVisionResult *)self smallestChildOCRFeatureTypes];
+    v24 = [MEMORY[0x1E696AD98] numberWithInteger:ocrFeatureType];
+    v25 = [smallestChildOCRFeatureTypes containsObject:v24];
 
     if (!v25)
     {
       goto LABEL_44;
     }
 
-    v22 = [v4 value];
-    [v5 setObject:v7 forKey:@"AXMType"];
-    if (v6 == 4)
+    value3 = [childCopy value];
+    [dictionary setObject:v7 forKey:@"AXMType"];
+    if (ocrFeatureType == 4)
     {
-      v59 = v5;
+      v59 = dictionary;
       v60 = v7;
-      v58 = v4;
-      v26 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-      v63 = v22;
-      v27 = [v22 componentsSeparatedByCharactersInSet:v26];
+      v58 = childCopy;
+      whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+      v63 = value3;
+      v27 = [value3 componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
       v28 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF != ''"];
       v29 = [v27 filteredArrayUsingPredicate:v28];
 
@@ -645,10 +645,10 @@ uint64_t __38__AXMVisionResult_detectedTextSummary__block_invoke(uint64_t a1, vo
             }
 
             v36 = *(*(&v65 + 1) + 8 * v34);
-            v37 = [(AXMVisionResult *)self semanticTextFactory];
-            v38 = [(AXMVisionResult *)self effectiveTextDetectionLocales];
-            v39 = [v38 firstObject];
-            v40 = [v37 _textExistsInLexicon:v36 withLocale:v39];
+            semanticTextFactory2 = [(AXMVisionResult *)self semanticTextFactory];
+            effectiveTextDetectionLocales = [(AXMVisionResult *)self effectiveTextDetectionLocales];
+            firstObject2 = [effectiveTextDetectionLocales firstObject];
+            v40 = [semanticTextFactory2 _textExistsInLexicon:v36 withLocale:firstObject2];
 
             if ((v40 & 1) == 0 && ![v36 intValue])
             {
@@ -680,130 +680,130 @@ LABEL_40:
         v33 = &stru_1F23EA908;
       }
 
-      v5 = v59;
+      dictionary = v59;
       [v59 setObject:v33 forKey:@"AXMContent"];
 
-      v4 = v58;
+      childCopy = v58;
       v7 = v60;
-      v22 = v63;
+      value3 = v63;
     }
 
     else
     {
-      [v5 setObject:v22 forKey:@"AXMContent"];
+      [dictionary setObject:value3 forKey:@"AXMContent"];
     }
 
     v56 = MEMORY[0x1E696B098];
-    [v4 normalizedFrame];
-    v12 = [v56 axmValueWithCGRect:?];
-    [v5 setObject:v12 forKey:@"AXMBounds"];
+    [childCopy normalizedFrame];
+    array = [v56 axmValueWithCGRect:?];
+    [dictionary setObject:array forKey:@"AXMBounds"];
   }
 
 LABEL_44:
 
-  return v5;
+  return dictionary;
 }
 
-- (id)_processFeatureTree:(id)a3
+- (id)_processFeatureTree:(id)tree
 {
-  v4 = a3;
-  v5 = [v4 featureType];
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  if (v5 <= 7)
+  treeCopy = tree;
+  featureType = [treeCopy featureType];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if (featureType <= 7)
   {
-    if (v5 == 5)
+    if (featureType == 5)
     {
       v16 = [AXMVisionFeature nameForFeatureType:5];
-      [v6 setObject:v16 forKey:@"AXMType"];
+      [dictionary setObject:v16 forKey:@"AXMType"];
 
-      v7 = [v4 faceDetectionResult];
-      v17 = [v7 likelyExpression];
+      faceDetectionResult = [treeCopy faceDetectionResult];
+      likelyExpression = [faceDetectionResult likelyExpression];
       v18 = MEMORY[0x1E696AEC0];
       v19 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.accessibility.AXMediaUtilities"];
       v20 = [v19 localizedStringForKey:@"description.face" value:&stru_1F23EA908 table:@"Accessibility"];
-      v21 = [AXMVisionFeatureFaceDetectionResult nameForFaceExpression:v17];
+      v21 = [AXMVisionFeatureFaceDetectionResult nameForFaceExpression:likelyExpression];
       v22 = [v18 stringWithFormat:v20, v21];
-      [v6 setObject:v22 forKey:@"AXMContent"];
+      [dictionary setObject:v22 forKey:@"AXMContent"];
 
       v23 = MEMORY[0x1E696B098];
-      [v4 normalizedFrame];
+      [treeCopy normalizedFrame];
       v24 = [v23 axmValueWithCGRect:?];
-      [v6 setObject:v24 forKey:@"AXMBounds"];
+      [dictionary setObject:v24 forKey:@"AXMBounds"];
 
       goto LABEL_14;
     }
 
-    if (v5 != 7)
+    if (featureType != 7)
     {
       goto LABEL_15;
     }
 
     v8 = [AXMVisionFeature nameForFeatureType:7];
-    [v6 setObject:v8 forKey:@"AXMType"];
+    [dictionary setObject:v8 forKey:@"AXMType"];
 
     v9 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.accessibility.AXMediaUtilities"];
-    v10 = v9;
+    classificationLabel = v9;
     v11 = @"description.person";
   }
 
   else
   {
-    if (v5 != 19)
+    if (featureType != 19)
     {
-      if (v5 != 10)
+      if (featureType != 10)
       {
-        if (v5 != 8)
+        if (featureType != 8)
         {
           goto LABEL_15;
         }
 
-        [(AXMVisionResult *)self _processFeatureChild:v4];
-        v6 = v7 = v6;
+        [(AXMVisionResult *)self _processFeatureChild:treeCopy];
+        dictionary = faceDetectionResult = dictionary;
         goto LABEL_14;
       }
 
       v14 = [AXMVisionFeature nameForFeatureType:10];
-      [v6 setObject:v14 forKey:@"AXMType"];
+      [dictionary setObject:v14 forKey:@"AXMType"];
 
-      v10 = [v4 classificationLabel];
-      [v6 setObject:v10 forKey:@"AXMContent"];
+      classificationLabel = [treeCopy classificationLabel];
+      [dictionary setObject:classificationLabel forKey:@"AXMContent"];
       goto LABEL_12;
     }
 
     v12 = [AXMVisionFeature nameForFeatureType:19];
-    [v6 setObject:v12 forKey:@"AXMType"];
+    [dictionary setObject:v12 forKey:@"AXMType"];
 
     v9 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.accessibility.AXMediaUtilities"];
-    v10 = v9;
+    classificationLabel = v9;
     v11 = @"description.prominent.object";
   }
 
   v13 = [v9 localizedStringForKey:v11 value:&stru_1F23EA908 table:@"Accessibility"];
-  [v6 setObject:v13 forKey:@"AXMContent"];
+  [dictionary setObject:v13 forKey:@"AXMContent"];
 
 LABEL_12:
   v15 = MEMORY[0x1E696B098];
-  [v4 normalizedFrame];
-  v7 = [v15 axmValueWithCGRect:?];
-  [v6 setObject:v7 forKey:@"AXMBounds"];
+  [treeCopy normalizedFrame];
+  faceDetectionResult = [v15 axmValueWithCGRect:?];
+  [dictionary setObject:faceDetectionResult forKey:@"AXMBounds"];
 LABEL_14:
 
 LABEL_15:
 
-  return v6;
+  return dictionary;
 }
 
 - (NSDictionary)detectedFeatureDictionary
 {
   v37 = *MEMORY[0x1E69E9840];
-  v20 = [MEMORY[0x1E695DF90] dictionary];
-  v3 = [(AXMVisionResult *)self evaluatedFeatureTypes];
-  v23 = [MEMORY[0x1E695DF70] array];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  evaluatedFeatureTypes = [(AXMVisionResult *)self evaluatedFeatureTypes];
+  array = [MEMORY[0x1E695DF70] array];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v3;
+  obj = evaluatedFeatureTypes;
   v24 = [obj countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v24)
   {
@@ -818,23 +818,23 @@ LABEL_15:
         }
 
         v5 = *(*(&v31 + 1) + 8 * i);
-        v6 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary2 = [MEMORY[0x1E695DF90] dictionary];
         v30[0] = MEMORY[0x1E69E9820];
         v30[1] = 3221225472;
         v30[2] = __44__AXMVisionResult_detectedFeatureDictionary__block_invoke;
         v30[3] = &unk_1E7A1D540;
         v30[4] = v5;
         v7 = [MEMORY[0x1E696AE18] predicateWithBlock:v30];
-        v8 = [(AXMVisionResult *)self features];
-        v9 = [v8 filteredArrayUsingPredicate:v7];
+        features = [(AXMVisionResult *)self features];
+        v9 = [features filteredArrayUsingPredicate:v7];
 
         v10 = +[AXMVisionFeature nameForFeatureType:](AXMVisionFeature, "nameForFeatureType:", [v5 integerValue]);
-        [v6 setObject:v10 forKey:@"AXMTypeContainer"];
+        [dictionary2 setObject:v10 forKey:@"AXMTypeContainer"];
 
         if ([v5 integerValue] == 8 || objc_msgSend(v5, "integerValue") == 5 || objc_msgSend(v5, "integerValue") == 10 || objc_msgSend(v5, "integerValue") == 19 || objc_msgSend(v5, "integerValue") == 7)
         {
           v25 = v7;
-          v11 = [MEMORY[0x1E695DF70] array];
+          array2 = [MEMORY[0x1E695DF70] array];
           v26 = 0u;
           v27 = 0u;
           v28 = 0u;
@@ -856,7 +856,7 @@ LABEL_15:
                 }
 
                 v18 = [(AXMVisionResult *)self _processFeatureTree:*(*(&v26 + 1) + 8 * j)];
-                [v11 addObject:v18];
+                [array2 addObject:v18];
               }
 
               v15 = [v13 countByEnumeratingWithState:&v26 objects:v35 count:16];
@@ -865,12 +865,12 @@ LABEL_15:
             while (v15);
           }
 
-          [v6 setObject:v11 forKey:@"AXMChildren"];
+          [dictionary2 setObject:array2 forKey:@"AXMChildren"];
           v7 = v25;
           v9 = v12;
         }
 
-        [v23 addObject:v6];
+        [array addObject:dictionary2];
       }
 
       v24 = [obj countByEnumeratingWithState:&v31 objects:v36 count:16];
@@ -879,9 +879,9 @@ LABEL_15:
     while (v24);
   }
 
-  [v20 setObject:v23 forKey:@"AXMChildren"];
+  [dictionary setObject:array forKey:@"AXMChildren"];
 
-  return v20;
+  return dictionary;
 }
 
 BOOL __44__AXMVisionResult_detectedFeatureDictionary__block_invoke(uint64_t a1, void *a2)
@@ -892,31 +892,31 @@ BOOL __44__AXMVisionResult_detectedFeatureDictionary__block_invoke(uint64_t a1, 
   return v4;
 }
 
-- (id)detectedFeatureDescriptionWithOptions:(id)a3
+- (id)detectedFeatureDescriptionWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = [AXMDescriptionBuilder builderWithOptions:7];
   if (AXRuntimeCheck_MediaAnalysisSupport())
   {
-    v6 = [(AXMVisionResult *)self mediaAnalysisFaceFeatures];
-    [v5 addMediaAnalysisDetectedFaces:v6];
+    mediaAnalysisFaceFeatures = [(AXMVisionResult *)self mediaAnalysisFaceFeatures];
+    [v5 addMediaAnalysisDetectedFaces:mediaAnalysisFaceFeatures];
   }
 
   else
   {
-    v6 = [(AXMVisionResult *)self faceFeatures];
-    [v5 addDetectedFaces:v6];
+    mediaAnalysisFaceFeatures = [(AXMVisionResult *)self faceFeatures];
+    [v5 addDetectedFaces:mediaAnalysisFaceFeatures];
   }
 
-  v7 = [(AXMVisionResult *)self captionFeatures];
+  captionFeatures = [(AXMVisionResult *)self captionFeatures];
   if (AXRuntimeCheck_MediaAnalysisSupport())
   {
-    v8 = [(AXMVisionResult *)self mediaAnalysisImageCaptionFeatures];
+    mediaAnalysisImageCaptionFeatures = [(AXMVisionResult *)self mediaAnalysisImageCaptionFeatures];
 
-    v7 = v8;
+    captionFeatures = mediaAnalysisImageCaptionFeatures;
   }
 
-  if (![v7 count] || -[AXMVisionResult includesNSFWFeatures](self, "includesNSFWFeatures") || objc_msgSend(v7, "count") && (objc_msgSend(v7, "firstObject"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isLowConfidence"), v9, v10))
+  if (![captionFeatures count] || -[AXMVisionResult includesNSFWFeatures](self, "includesNSFWFeatures") || objc_msgSend(captionFeatures, "count") && (objc_msgSend(captionFeatures, "firstObject"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isLowConfidence"), v9, v10))
   {
     if (AXRuntimeCheck_MediaAnalysisSupport())
     {
@@ -933,55 +933,55 @@ BOOL __44__AXMVisionResult_detectedFeatureDictionary__block_invoke(uint64_t a1, 
 
   if (AXRuntimeCheck_MediaAnalysisSupport())
   {
-    v12 = [(AXMVisionResult *)self mediaAnalysisImageCaptionFeatures];
-    v13 = [v12 firstObject];
-    [v5 setMediaAnalysisDetectedImageCaption:v13];
+    mediaAnalysisImageCaptionFeatures2 = [(AXMVisionResult *)self mediaAnalysisImageCaptionFeatures];
+    firstObject = [mediaAnalysisImageCaptionFeatures2 firstObject];
+    [v5 setMediaAnalysisDetectedImageCaption:firstObject];
   }
 
   else
   {
-    v12 = [(AXMVisionResult *)self captionFeatures];
-    v13 = [v12 firstObject];
-    [v5 setDetectedCaption:v13];
+    mediaAnalysisImageCaptionFeatures2 = [(AXMVisionResult *)self captionFeatures];
+    firstObject = [mediaAnalysisImageCaptionFeatures2 firstObject];
+    [v5 setDetectedCaption:firstObject];
   }
 
   [v5 setIsNSFW:{-[AXMVisionResult includesNSFWFeatures](self, "includesNSFWFeatures")}];
-  v14 = [v4 objectForKeyedSubscript:@"ModifyForSensitiveContent"];
+  v14 = [optionsCopy objectForKeyedSubscript:@"ModifyForSensitiveContent"];
 
   [v5 setShouldModifyCaptionForSensitiveContent:{objc_msgSend(v14, "BOOLValue")}];
-  v15 = [(AXMVisionResult *)self sensitiveContentForCaptionFeatures];
-  v16 = [v15 firstObject];
-  [v5 setPrimarySensitiveContentFeature:v16];
+  sensitiveContentForCaptionFeatures = [(AXMVisionResult *)self sensitiveContentForCaptionFeatures];
+  firstObject2 = [sensitiveContentForCaptionFeatures firstObject];
+  [v5 setPrimarySensitiveContentFeature:firstObject2];
 
-  v17 = [(AXMVisionResult *)self blurFeatures];
-  v18 = [v17 firstObject];
-  [v5 setBlurFeature:v18];
+  blurFeatures = [(AXMVisionResult *)self blurFeatures];
+  firstObject3 = [blurFeatures firstObject];
+  [v5 setBlurFeature:firstObject3];
 
-  v19 = [(AXMVisionResult *)self brightnessFeatures];
-  v20 = [v19 firstObject];
-  [v5 setBrightnessFeature:v20];
+  brightnessFeatures = [(AXMVisionResult *)self brightnessFeatures];
+  firstObject4 = [brightnessFeatures firstObject];
+  [v5 setBrightnessFeature:firstObject4];
 
-  v21 = [(AXMVisionResult *)self iconClassFeatures];
-  [v5 addDetectedIconClasses:v21];
+  iconClassFeatures = [(AXMVisionResult *)self iconClassFeatures];
+  [v5 addDetectedIconClasses:iconClassFeatures];
 
-  v22 = [v5 buildSpeakableDescription];
+  buildSpeakableDescription = [v5 buildSpeakableDescription];
 
-  return v22;
+  return buildSpeakableDescription;
 }
 
-- (id)detectedCaptionFeatureDescriptionWithOptions:(id)a3
+- (id)detectedCaptionFeatureDescriptionWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = [AXMDescriptionBuilder builderWithOptions:3];
-  v6 = [(AXMVisionResult *)self captionFeatures];
+  captionFeatures = [(AXMVisionResult *)self captionFeatures];
   if (AXRuntimeCheck_MediaAnalysisSupport())
   {
-    v7 = [(AXMVisionResult *)self mediaAnalysisImageCaptionFeatures];
+    mediaAnalysisImageCaptionFeatures = [(AXMVisionResult *)self mediaAnalysisImageCaptionFeatures];
 
-    v6 = v7;
+    captionFeatures = mediaAnalysisImageCaptionFeatures;
   }
 
-  if (![v6 count] || -[AXMVisionResult includesNSFWFeatures](self, "includesNSFWFeatures") || objc_msgSend(v6, "count") && (objc_msgSend(v6, "firstObject"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isLowConfidence"), v8, v9))
+  if (![captionFeatures count] || -[AXMVisionResult includesNSFWFeatures](self, "includesNSFWFeatures") || objc_msgSend(captionFeatures, "count") && (objc_msgSend(captionFeatures, "firstObject"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isLowConfidence"), v8, v9))
   {
     if (AXRuntimeCheck_MediaAnalysisSupport())
     {
@@ -998,32 +998,32 @@ BOOL __44__AXMVisionResult_detectedFeatureDictionary__block_invoke(uint64_t a1, 
 
   if (AXRuntimeCheck_MediaAnalysisSupport())
   {
-    v11 = [(AXMVisionResult *)self mediaAnalysisImageCaptionFeatures];
-    v12 = [v11 firstObject];
-    [v5 setMediaAnalysisDetectedImageCaption:v12];
+    mediaAnalysisImageCaptionFeatures2 = [(AXMVisionResult *)self mediaAnalysisImageCaptionFeatures];
+    firstObject = [mediaAnalysisImageCaptionFeatures2 firstObject];
+    [v5 setMediaAnalysisDetectedImageCaption:firstObject];
   }
 
   else
   {
-    v11 = [(AXMVisionResult *)self captionFeatures];
-    v12 = [v11 firstObject];
-    [v5 setDetectedCaption:v12];
+    mediaAnalysisImageCaptionFeatures2 = [(AXMVisionResult *)self captionFeatures];
+    firstObject = [mediaAnalysisImageCaptionFeatures2 firstObject];
+    [v5 setDetectedCaption:firstObject];
   }
 
   [v5 setIsNSFW:{-[AXMVisionResult includesNSFWFeatures](self, "includesNSFWFeatures")}];
-  v13 = [v4 objectForKeyedSubscript:@"ModifyForSensitiveContent"];
+  v13 = [optionsCopy objectForKeyedSubscript:@"ModifyForSensitiveContent"];
 
   [v5 setShouldModifyCaptionForSensitiveContent:{objc_msgSend(v13, "BOOLValue")}];
-  v14 = [(AXMVisionResult *)self sensitiveContentForCaptionFeatures];
-  v15 = [v14 firstObject];
-  [v5 setPrimarySensitiveContentFeature:v15];
+  sensitiveContentForCaptionFeatures = [(AXMVisionResult *)self sensitiveContentForCaptionFeatures];
+  firstObject2 = [sensitiveContentForCaptionFeatures firstObject];
+  [v5 setPrimarySensitiveContentFeature:firstObject2];
 
-  v16 = [v5 buildSpeakableDescription];
+  buildSpeakableDescription = [v5 buildSpeakableDescription];
 
-  return v16;
+  return buildSpeakableDescription;
 }
 
-- (id)detectedSceneClassificationFeatureDescriptionWithOptions:(id)a3
+- (id)detectedSceneClassificationFeatureDescriptionWithOptions:(id)options
 {
   v4 = [AXMDescriptionBuilder builderWithOptions:3];
   if (AXRuntimeCheck_MediaAnalysisSupport())
@@ -1038,30 +1038,30 @@ BOOL __44__AXMVisionResult_detectedFeatureDictionary__block_invoke(uint64_t a1, 
   v5 = ;
   [v4 addDetectedClassificationFeatures:v5];
 
-  v6 = [v4 buildSpeakableDescription];
+  buildSpeakableDescription = [v4 buildSpeakableDescription];
 
-  return v6;
+  return buildSpeakableDescription;
 }
 
 - (id)captionTranslationLocale
 {
   if (AXRuntimeCheck_MediaAnalysisSupport())
   {
-    v3 = [(AXMVisionResult *)self mediaAnalysisImageCaptionFeatures];
-    v4 = [v3 firstObject];
-    [v4 mediaAnalysisTranslatedImageCaption];
+    mediaAnalysisImageCaptionFeatures = [(AXMVisionResult *)self mediaAnalysisImageCaptionFeatures];
+    firstObject = [mediaAnalysisImageCaptionFeatures firstObject];
+    [firstObject mediaAnalysisTranslatedImageCaption];
   }
 
   else
   {
-    v3 = [(AXMVisionResult *)self captionFeatures];
-    v4 = [v3 firstObject];
-    [v4 translatedCaption];
+    mediaAnalysisImageCaptionFeatures = [(AXMVisionResult *)self captionFeatures];
+    firstObject = [mediaAnalysisImageCaptionFeatures firstObject];
+    [firstObject translatedCaption];
   }
   v5 = ;
-  v6 = [v5 targetLocale];
+  targetLocale = [v5 targetLocale];
 
-  return v6;
+  return targetLocale;
 }
 
 - (NSString)localizedDetectedIconHint
@@ -1072,105 +1072,105 @@ BOOL __44__AXMVisionResult_detectedFeatureDictionary__block_invoke(uint64_t a1, 
   return v3;
 }
 
-- (AXMVisionResult)initWithCoder:(id)a3
+- (AXMVisionResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AXMVisionResult *)self _init];
-  if (v5)
+  coderCopy = coder;
+  _init = [(AXMVisionResult *)self _init];
+  if (_init)
   {
     v6 = AXMSecureCodingClasses();
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:AXMVisionResultCodingKeyImage];
-    [(AXMVisionResult *)v5 setImage:v7];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:AXMVisionResultCodingKeyImage];
+    [(AXMVisionResult *)_init setImage:v7];
 
     v8 = AXMSecureCodingClasses();
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:AXMVisionResultCodingKeyFeatures];
-    [(AXMVisionResult *)v5 setFeatures:v9];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:AXMVisionResultCodingKeyFeatures];
+    [(AXMVisionResult *)_init setFeatures:v9];
 
     v10 = AXMSecureCodingClasses();
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"detectedTextDescription"];
-    [(AXMVisionResult *)v5 setDetectedTextDescription:v11];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"detectedTextDescription"];
+    [(AXMVisionResult *)_init setDetectedTextDescription:v11];
 
     v12 = AXMSecureCodingClasses();
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"detectedTextType"];
-    [(AXMVisionResult *)v5 setDetectedTextType:v13];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"detectedTextType"];
+    [(AXMVisionResult *)_init setDetectedTextType:v13];
 
     v14 = AXMSecureCodingClasses();
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"detectedTextSummary"];
-    [(AXMVisionResult *)v5 setDetectedTextSummary:v15];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"detectedTextSummary"];
+    [(AXMVisionResult *)_init setDetectedTextSummary:v15];
 
     v16 = AXMSecureCodingClasses();
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"appliedImageOrientation"];
-    [(AXMVisionResult *)v5 setAppliedImageOrientation:v17];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"appliedImageOrientation"];
+    [(AXMVisionResult *)_init setAppliedImageOrientation:v17];
 
-    -[AXMVisionResult setImageRegistrationState:](v5, "setImageRegistrationState:", [v4 decodeIntegerForKey:@"imageRegistrationState"]);
+    -[AXMVisionResult setImageRegistrationState:](_init, "setImageRegistrationState:", [coderCopy decodeIntegerForKey:@"imageRegistrationState"]);
     v18 = AXMSecureCodingClasses();
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"userContext"];
-    [(AXMVisionResult *)v5 setUserContext:v19];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"userContext"];
+    [(AXMVisionResult *)_init setUserContext:v19];
 
     v20 = AXMSecureCodingClasses();
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"equivalenceToken"];
-    [(AXMVisionResult *)v5 setEquivalenceToken:v21];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"equivalenceToken"];
+    [(AXMVisionResult *)_init setEquivalenceToken:v21];
 
     v22 = AXMSecureCodingClasses();
-    v23 = [v4 decodeObjectOfClasses:v22 forKey:@"brailleEdges"];
-    [(AXMVisionResult *)v5 setBrailleEdges:v23];
+    v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"brailleEdges"];
+    [(AXMVisionResult *)_init setBrailleEdges:v23];
 
     v24 = AXMSecureCodingClasses();
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"effectiveTextDetectionLocales"];
-    [(AXMVisionResult *)v5 setEffectiveTextDetectionLocales:v25];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"effectiveTextDetectionLocales"];
+    [(AXMVisionResult *)_init setEffectiveTextDetectionLocales:v25];
   }
 
-  return v5;
+  return _init;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AXMVisionResult *)self image];
-  [v4 encodeObject:v5 forKey:AXMVisionResultCodingKeyImage];
+  coderCopy = coder;
+  image = [(AXMVisionResult *)self image];
+  [coderCopy encodeObject:image forKey:AXMVisionResultCodingKeyImage];
 
-  v6 = [(AXMVisionResult *)self features];
-  [v4 encodeObject:v6 forKey:AXMVisionResultCodingKeyFeatures];
+  features = [(AXMVisionResult *)self features];
+  [coderCopy encodeObject:features forKey:AXMVisionResultCodingKeyFeatures];
 
-  v7 = [(AXMVisionResult *)self detectedTextDescription];
-  [v4 encodeObject:v7 forKey:@"detectedTextDescription"];
+  detectedTextDescription = [(AXMVisionResult *)self detectedTextDescription];
+  [coderCopy encodeObject:detectedTextDescription forKey:@"detectedTextDescription"];
 
-  v8 = [(AXMVisionResult *)self detectedTextType];
-  [v4 encodeObject:v8 forKey:@"detectedTextType"];
+  detectedTextType = [(AXMVisionResult *)self detectedTextType];
+  [coderCopy encodeObject:detectedTextType forKey:@"detectedTextType"];
 
-  v9 = [(AXMVisionResult *)self detectedTextSummary];
-  [v4 encodeObject:v9 forKey:@"detectedTextSummary"];
+  detectedTextSummary = [(AXMVisionResult *)self detectedTextSummary];
+  [coderCopy encodeObject:detectedTextSummary forKey:@"detectedTextSummary"];
 
-  v10 = [(AXMVisionResult *)self effectiveTextDetectionLocales];
-  [v4 encodeObject:v10 forKey:@"effectiveTextDetectionLocales"];
+  effectiveTextDetectionLocales = [(AXMVisionResult *)self effectiveTextDetectionLocales];
+  [coderCopy encodeObject:effectiveTextDetectionLocales forKey:@"effectiveTextDetectionLocales"];
 
-  v11 = [(AXMVisionResult *)self appliedImageOrientation];
-  [v4 encodeObject:v11 forKey:@"appliedImageOrientation"];
+  appliedImageOrientation = [(AXMVisionResult *)self appliedImageOrientation];
+  [coderCopy encodeObject:appliedImageOrientation forKey:@"appliedImageOrientation"];
 
-  [v4 encodeInteger:-[AXMVisionResult imageRegistrationState](self forKey:{"imageRegistrationState"), @"imageRegistrationState"}];
-  v12 = [(AXMVisionResult *)self userContext];
-  [v4 encodeObject:v12 forKey:@"userContext"];
+  [coderCopy encodeInteger:-[AXMVisionResult imageRegistrationState](self forKey:{"imageRegistrationState"), @"imageRegistrationState"}];
+  userContext = [(AXMVisionResult *)self userContext];
+  [coderCopy encodeObject:userContext forKey:@"userContext"];
 
-  v13 = [(AXMVisionResult *)self equivalenceToken];
-  [v4 encodeObject:v13 forKey:@"equivalenceToken"];
+  equivalenceToken = [(AXMVisionResult *)self equivalenceToken];
+  [coderCopy encodeObject:equivalenceToken forKey:@"equivalenceToken"];
 
-  v14 = [(AXMVisionResult *)self brailleEdges];
-  [v4 encodeObject:v14 forKey:@"brailleEdges"];
+  brailleEdges = [(AXMVisionResult *)self brailleEdges];
+  [coderCopy encodeObject:brailleEdges forKey:@"brailleEdges"];
 
-  v15 = [(AXMVisionResult *)self metricSession];
-  [v4 encodeObject:v15 forKey:@"metrics"];
+  metricSession = [(AXMVisionResult *)self metricSession];
+  [coderCopy encodeObject:metricSession forKey:@"metrics"];
 }
 
 - (NSDictionary)featureGates
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(AXMVisionResult *)self features];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  features = [(AXMVisionResult *)self features];
+  v5 = [features countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1181,25 +1181,25 @@ BOOL __44__AXMVisionResult_detectedFeatureDictionary__block_invoke(uint64_t a1, 
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(features);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 featureGates];
-        if (v10)
+        featureGates = [v9 featureGates];
+        if (featureGates)
         {
-          v11 = [v9 featureGates];
-          [v3 addEntriesFromDictionary:v11];
+          featureGates2 = [v9 featureGates];
+          [dictionary addEntriesFromDictionary:featureGates2];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [features countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -1214,98 +1214,98 @@ BOOL __44__AXMVisionResult_detectedFeatureDictionary__block_invoke(uint64_t a1, 
   v5 = [(AXMVisionResult *)self detectedFeatureDescriptionWithOptions:v4];
 
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [(AXMVisionResult *)self image];
-  v8 = [(AXMVisionResult *)self features];
-  v9 = [(AXMVisionResult *)self detectedTextDescription];
-  v10 = [v6 stringWithFormat:@"AXMVisionResult<%p>: Image:%@ Results:%@ Feature Description: '%@'. Text Description: '%@'.", self, v7, v8, v5, v9];
+  image = [(AXMVisionResult *)self image];
+  features = [(AXMVisionResult *)self features];
+  detectedTextDescription = [(AXMVisionResult *)self detectedTextDescription];
+  v10 = [v6 stringWithFormat:@"AXMVisionResult<%p>: Image:%@ Results:%@ Feature Description: '%@'. Text Description: '%@'.", self, image, features, v5, detectedTextDescription];
 
   return v10;
 }
 
 - (NSArray)faceFeatures
 {
-  v2 = [(AXMVisionResult *)self features];
-  v3 = [v2 ax_filteredArrayUsingBlock:&__block_literal_global_306];
+  features = [(AXMVisionResult *)self features];
+  v3 = [features ax_filteredArrayUsingBlock:&__block_literal_global_306];
 
   return v3;
 }
 
 - (NSArray)sceneClassificationFeatures
 {
-  v2 = [(AXMVisionResult *)self features];
-  v3 = [v2 ax_filteredArrayUsingBlock:&__block_literal_global_308];
+  features = [(AXMVisionResult *)self features];
+  v3 = [features ax_filteredArrayUsingBlock:&__block_literal_global_308];
 
   return v3;
 }
 
 - (NSArray)objectClassificationFeatures
 {
-  v2 = [(AXMVisionResult *)self features];
-  v3 = [v2 ax_filteredArrayUsingBlock:&__block_literal_global_310];
+  features = [(AXMVisionResult *)self features];
+  v3 = [features ax_filteredArrayUsingBlock:&__block_literal_global_310];
 
   return v3;
 }
 
 - (NSArray)captionFeatures
 {
-  v2 = [(AXMVisionResult *)self features];
-  v3 = [v2 ax_filteredArrayUsingBlock:&__block_literal_global_312];
+  features = [(AXMVisionResult *)self features];
+  v3 = [features ax_filteredArrayUsingBlock:&__block_literal_global_312];
 
   return v3;
 }
 
 - (NSArray)mediaAnalysisImageCaptionFeatures
 {
-  v2 = [(AXMVisionResult *)self features];
-  v3 = [v2 ax_filteredArrayUsingBlock:&__block_literal_global_314];
+  features = [(AXMVisionResult *)self features];
+  v3 = [features ax_filteredArrayUsingBlock:&__block_literal_global_314];
 
   return v3;
 }
 
 - (NSArray)mediaAnalysisSceneClassificationFeatures
 {
-  v2 = [(AXMVisionResult *)self features];
-  v3 = [v2 ax_filteredArrayUsingBlock:&__block_literal_global_316];
+  features = [(AXMVisionResult *)self features];
+  v3 = [features ax_filteredArrayUsingBlock:&__block_literal_global_316];
 
   return v3;
 }
 
 - (NSArray)mediaAnalysisObjectClassificationFeatures
 {
-  v2 = [(AXMVisionResult *)self features];
-  v3 = [v2 ax_filteredArrayUsingBlock:&__block_literal_global_318];
+  features = [(AXMVisionResult *)self features];
+  v3 = [features ax_filteredArrayUsingBlock:&__block_literal_global_318];
 
   return v3;
 }
 
 - (NSArray)mediaAnalysisNSFWClassificationFeatures
 {
-  v2 = [(AXMVisionResult *)self features];
-  v3 = [v2 ax_filteredArrayUsingBlock:&__block_literal_global_320];
+  features = [(AXMVisionResult *)self features];
+  v3 = [features ax_filteredArrayUsingBlock:&__block_literal_global_320];
 
   return v3;
 }
 
 - (NSArray)mediaAnalysisSignificantEventClassificationFeatures
 {
-  v2 = [(AXMVisionResult *)self features];
-  v3 = [v2 ax_filteredArrayUsingBlock:&__block_literal_global_322];
+  features = [(AXMVisionResult *)self features];
+  v3 = [features ax_filteredArrayUsingBlock:&__block_literal_global_322];
 
   return v3;
 }
 
 - (NSArray)mediaAnalysisFaceFeatures
 {
-  v2 = [(AXMVisionResult *)self features];
-  v3 = [v2 ax_filteredArrayUsingBlock:&__block_literal_global_324];
+  features = [(AXMVisionResult *)self features];
+  v3 = [features ax_filteredArrayUsingBlock:&__block_literal_global_324];
 
   return v3;
 }
 
 - (BOOL)includesNSFWFeatures
 {
-  v2 = [(AXMVisionResult *)self features];
-  v3 = [v2 ax_filteredArrayUsingBlock:&__block_literal_global_326];
+  features = [(AXMVisionResult *)self features];
+  v3 = [features ax_filteredArrayUsingBlock:&__block_literal_global_326];
   v4 = [v3 count] != 0;
 
   return v4;
@@ -1331,56 +1331,56 @@ uint64_t __73__AXMVisionResult_AXMVisionEngineLookupConvenience__includesNSFWFea
 
 - (NSArray)modelClassificationFeatures
 {
-  v2 = [(AXMVisionResult *)self features];
-  v3 = [v2 ax_filteredArrayUsingBlock:&__block_literal_global_328_0];
+  features = [(AXMVisionResult *)self features];
+  v3 = [features ax_filteredArrayUsingBlock:&__block_literal_global_328_0];
 
   return v3;
 }
 
 - (NSArray)ocrFeatures
 {
-  v2 = [(AXMVisionResult *)self features];
-  v3 = [v2 ax_filteredArrayUsingBlock:&__block_literal_global_330];
+  features = [(AXMVisionResult *)self features];
+  v3 = [features ax_filteredArrayUsingBlock:&__block_literal_global_330];
 
   return v3;
 }
 
 - (NSArray)blurFeatures
 {
-  v2 = [(AXMVisionResult *)self features];
-  v3 = [v2 ax_filteredArrayUsingBlock:&__block_literal_global_332];
+  features = [(AXMVisionResult *)self features];
+  v3 = [features ax_filteredArrayUsingBlock:&__block_literal_global_332];
 
   return v3;
 }
 
 - (NSArray)brightnessFeatures
 {
-  v2 = [(AXMVisionResult *)self features];
-  v3 = [v2 ax_filteredArrayUsingBlock:&__block_literal_global_334_0];
+  features = [(AXMVisionResult *)self features];
+  v3 = [features ax_filteredArrayUsingBlock:&__block_literal_global_334_0];
 
   return v3;
 }
 
 - (NSArray)iconClassFeatures
 {
-  v2 = [(AXMVisionResult *)self features];
-  v3 = [v2 ax_filteredArrayUsingBlock:&__block_literal_global_336];
+  features = [(AXMVisionResult *)self features];
+  v3 = [features ax_filteredArrayUsingBlock:&__block_literal_global_336];
 
   return v3;
 }
 
 - (id)sensitiveContentFeatures
 {
-  v2 = [(AXMVisionResult *)self features];
-  v3 = [v2 ax_filteredArrayUsingBlock:&__block_literal_global_338];
+  features = [(AXMVisionResult *)self features];
+  v3 = [features ax_filteredArrayUsingBlock:&__block_literal_global_338];
 
   return v3;
 }
 
 - (NSArray)sensitiveContentForCaptionFeatures
 {
-  v2 = [(AXMVisionResult *)self features];
-  v3 = [v2 ax_filteredArrayUsingBlock:&__block_literal_global_340];
+  features = [(AXMVisionResult *)self features];
+  v3 = [features ax_filteredArrayUsingBlock:&__block_literal_global_340];
 
   return v3;
 }
@@ -1408,8 +1408,8 @@ uint64_t __87__AXMVisionResult_AXMVisionEngineLookupConvenience__sensitiveConten
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(AXMVisionResult *)self captionFeatures];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  captionFeatures = [(AXMVisionResult *)self captionFeatures];
+  v3 = [captionFeatures countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -1419,7 +1419,7 @@ uint64_t __87__AXMVisionResult_AXMVisionEngineLookupConvenience__sensitiveConten
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(captionFeatures);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) captionMayContainSensitiveContent])
@@ -1429,7 +1429,7 @@ uint64_t __87__AXMVisionResult_AXMVisionEngineLookupConvenience__sensitiveConten
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [captionFeatures countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -1450,17 +1450,17 @@ LABEL_11:
   v6 = &v5;
   v7 = 0x2020000000;
   v8 = 0;
-  v2 = [(AXMVisionResult *)self features];
+  features = [(AXMVisionResult *)self features];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __88__AXMVisionResult_AXMVisionEngineLookupConvenience__includesFeaturesForImageExploration__block_invoke;
   v4[3] = &unk_1E7A1D578;
   v4[4] = &v5;
-  [v2 enumerateObjectsUsingBlock:v4];
+  [features enumerateObjectsUsingBlock:v4];
 
-  LOBYTE(v2) = *(v6 + 24);
+  LOBYTE(features) = *(v6 + 24);
   _Block_object_dispose(&v5, 8);
-  return v2;
+  return features;
 }
 
 void __88__AXMVisionResult_AXMVisionEngineLookupConvenience__includesFeaturesForImageExploration__block_invoke(uint64_t a1, void *a2)

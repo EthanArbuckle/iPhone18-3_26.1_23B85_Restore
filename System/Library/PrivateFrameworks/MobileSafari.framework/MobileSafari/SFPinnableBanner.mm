@@ -1,18 +1,18 @@
 @interface SFPinnableBanner
 - (BOOL)showsBottomSeparator;
 - (BOOL)showsTopSeparator;
-- (SFPinnableBanner)initWithFrame:(CGRect)a3;
+- (SFPinnableBanner)initWithFrame:(CGRect)frame;
 - (void)_setUpSeparators;
-- (void)setTheme:(id)a3 animated:(BOOL)a4;
+- (void)setTheme:(id)theme animated:(BOOL)animated;
 @end
 
 @implementation SFPinnableBanner
 
-- (SFPinnableBanner)initWithFrame:(CGRect)a3
+- (SFPinnableBanner)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SFPinnableBanner;
-  v3 = [(SFPinnableBanner *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFPinnableBanner *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -34,8 +34,8 @@
     self->_topSeparator = v3;
   }
 
-  v5 = [MEMORY[0x1E69DC888] separatorColor];
-  [(UIView *)self->_topSeparator setBackgroundColor:v5];
+  separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+  [(UIView *)self->_topSeparator setBackgroundColor:separatorColor];
 
   [(SFPinnableBanner *)self bounds];
   Width = CGRectGetWidth(v16);
@@ -44,15 +44,15 @@
   [(SFPinnableBanner *)self addSubview:self->_topSeparator];
   if (([objc_opt_class() omitsBottomSeparator] & 1) == 0)
   {
-    v7 = [MEMORY[0x1E69DC888] sf_barHairlineOutlineColor];
-    [(UIView *)self->_topSeparator setBackgroundColor:v7];
+    sf_barHairlineOutlineColor = [MEMORY[0x1E69DC888] sf_barHairlineOutlineColor];
+    [(UIView *)self->_topSeparator setBackgroundColor:sf_barHairlineOutlineColor];
 
     v8 = objc_alloc_init(MEMORY[0x1E69DD250]);
     bottomSeparator = self->_bottomSeparator;
     self->_bottomSeparator = v8;
 
-    v10 = [MEMORY[0x1E69DC888] separatorColor];
-    [(UIView *)self->_bottomSeparator setBackgroundColor:v10];
+    separatorColor2 = [MEMORY[0x1E69DC888] separatorColor];
+    [(UIView *)self->_bottomSeparator setBackgroundColor:separatorColor2];
 
     [(SFPinnableBanner *)self bounds];
     Height = CGRectGetHeight(v17);
@@ -89,13 +89,13 @@
   return bottomSeparator;
 }
 
-- (void)setTheme:(id)a3 animated:(BOOL)a4
+- (void)setTheme:(id)theme animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
+  animatedCopy = animated;
+  themeCopy = theme;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_theme, a3);
+    objc_storeStrong(&self->_theme, theme);
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __38__SFPinnableBanner_setTheme_animated___block_invoke;
@@ -103,7 +103,7 @@
     aBlock[4] = self;
     v8 = _Block_copy(aBlock);
     v9 = v8;
-    if (v4)
+    if (animatedCopy)
     {
       [MEMORY[0x1E69DD250] _animateUsingDefaultTimingWithOptions:50331650 animations:v8 completion:0];
     }

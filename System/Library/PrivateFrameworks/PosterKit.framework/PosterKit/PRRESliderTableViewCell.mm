@@ -1,17 +1,17 @@
 @interface PRRESliderTableViewCell
-- (PRRESliderTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PRRESliderTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)_currentValue;
 - (void)_configure;
-- (void)_setCurrentValue:(id)a3;
+- (void)_setCurrentValue:(id)value;
 @end
 
 @implementation PRRESliderTableViewCell
 
-- (PRRESliderTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PRRESliderTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = PRRESliderTableViewCell;
-  v4 = [(PRRESliderTableViewCell *)&v8 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PRRESliderTableViewCell *)&v8 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x1E69DCF60]);
@@ -43,11 +43,11 @@
   return [v2 numberWithFloat:?];
 }
 
-- (void)_setCurrentValue:(id)a3
+- (void)_setCurrentValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = objc_opt_class();
-  v12 = v4;
+  v12 = valueCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())

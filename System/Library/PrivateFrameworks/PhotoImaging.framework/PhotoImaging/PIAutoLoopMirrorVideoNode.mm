@@ -1,18 +1,18 @@
 @interface PIAutoLoopMirrorVideoNode
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_conformTime:(SEL)a3;
-- (id)_evaluateAudioMix:(id *)a3;
-- (id)_evaluateVideo:(id *)a3;
-- (id)_evaluateVideoComposition:(id *)a3;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_conformTime:(SEL)time;
+- (id)_evaluateAudioMix:(id *)mix;
+- (id)_evaluateVideo:(id *)video;
+- (id)_evaluateVideoComposition:(id *)composition;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error;
 @end
 
 @implementation PIAutoLoopMirrorVideoNode
 
-- (id)_evaluateAudioMix:(id *)a3
+- (id)_evaluateAudioMix:(id *)mix
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = MEMORY[0x1E69B3D78];
+  callStackSymbols = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
     goto LABEL_14;
@@ -31,7 +31,7 @@
       v22 = v8;
       _os_log_error_impl(&dword_1C7694000, v7, OS_LOG_TYPE_ERROR, "Fail: %{public}@", &v21, 0xCu);
 
-      v9 = *v3;
+      v9 = *callStackSymbols;
       if (dispatch_get_specific(*MEMORY[0x1E69B38E8]))
       {
         if (v9 != -1)
@@ -47,8 +47,8 @@ LABEL_11:
           v17 = MEMORY[0x1E696AF00];
           v18 = specific;
           v19 = v15;
-          v3 = [v17 callStackSymbols];
-          v20 = [v3 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v17 callStackSymbols];
+          v20 = [callStackSymbols componentsJoinedByString:@"\n"];
           v21 = 138543618;
           v22 = specific;
           v23 = 2114;
@@ -75,8 +75,8 @@ LABEL_11:
     {
       v11 = MEMORY[0x1E696AF00];
       v12 = v10;
-      v13 = [v11 callStackSymbols];
-      v14 = [v13 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v11 callStackSymbols];
+      v14 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       v21 = 138543362;
       v22 = v14;
       _os_log_error_impl(&dword_1C7694000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v21, 0xCu);
@@ -89,10 +89,10 @@ LABEL_14:
   }
 }
 
-- (id)_evaluateVideoComposition:(id *)a3
+- (id)_evaluateVideoComposition:(id *)composition
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v4 = [(NURenderNode *)self outputVideo:a3];
+  v4 = [(NURenderNode *)self outputVideo:composition];
   v5 = v4;
   if (v4)
   {
@@ -141,10 +141,10 @@ LABEL_14:
   return v9;
 }
 
-- (id)_evaluateVideo:(id *)a3
+- (id)_evaluateVideo:(id *)video
 {
   v48 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!video)
   {
     v22 = NUAssertLogger_29069();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -166,8 +166,8 @@ LABEL_14:
         v30 = dispatch_get_specific(*v24);
         v31 = MEMORY[0x1E696AF00];
         v32 = v30;
-        v33 = [v31 callStackSymbols];
-        v34 = [v33 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v31 callStackSymbols];
+        v34 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(v47.start.value) = 138543618;
         *(&v47.start.value + 4) = v30;
         LOWORD(v47.start.flags) = 2114;
@@ -178,8 +178,8 @@ LABEL_14:
 
     else if (v27)
     {
-      v28 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v29 = [v28 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v29 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(v47.start.value) = 138543362;
       *(&v47.start.value + 4) = v29;
       _os_log_error_impl(&dword_1C7694000, v26, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v47, 0xCu);
@@ -188,13 +188,13 @@ LABEL_14:
     _NUAssertFailHandler();
   }
 
-  v5 = [(NURenderNode *)self inputs];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
+  inputs = [(NURenderNode *)self inputs];
+  v6 = [inputs objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
 
-  v7 = [v6 outputVideo:a3];
+  v7 = [v6 outputVideo:video];
   if (v7)
   {
-    v8 = [MEMORY[0x1E69B3D40] firstEnabledVideoTrackInAsset:v7 error:a3];
+    v8 = [MEMORY[0x1E69B3D40] firstEnabledVideoTrackInAsset:v7 error:video];
     if (v8)
     {
       v9 = objc_alloc_init(MEMORY[0x1E6988048]);
@@ -216,8 +216,8 @@ LABEL_14:
           v35 = v7;
           v36 = v10;
           v37 = v6;
-          v14 = [(PIAutoLoopVideoNode *)self loopPeriod];
-          if (v14 < 3)
+          loopPeriod = [(PIAutoLoopVideoNode *)self loopPeriod];
+          if (loopPeriod < 3)
           {
 LABEL_10:
             v10 = v36;
@@ -227,8 +227,8 @@ LABEL_10:
 
           else
           {
-            v15 = v14;
-            v16 = v14 - 1;
+            v15 = loopPeriod;
+            v16 = loopPeriod - 1;
             while (1)
             {
               v17 = v13;
@@ -273,7 +273,7 @@ LABEL_10:
             }
 
             [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to update video track" object:self underlyingError:v13];
-            *a3 = v20 = 0;
+            *video = v20 = 0;
             v8 = v18;
             v10 = v36;
             v6 = v37;
@@ -285,14 +285,14 @@ LABEL_10:
         else
         {
           [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to update video track #1" object:self underlyingError:v13];
-          *a3 = v20 = 0;
+          *video = v20 = 0;
         }
       }
 
       else
       {
         [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"[[AVMutableComposition alloc] init] failed." object:self];
-        *a3 = v20 = 0;
+        *video = v20 = 0;
       }
     }
 
@@ -310,12 +310,12 @@ LABEL_10:
   return v20;
 }
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!a5)
+  cacheCopy = cache;
+  stateCopy = state;
+  if (!error)
   {
     v15 = NUAssertLogger_29069();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -337,8 +337,8 @@ LABEL_10:
         v23 = dispatch_get_specific(*v17);
         v24 = MEMORY[0x1E696AF00];
         v25 = v23;
-        v26 = [v24 callStackSymbols];
-        v27 = [v26 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v24 callStackSymbols];
+        v27 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v23;
         *&buf[12] = 2114;
@@ -349,8 +349,8 @@ LABEL_10:
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v22;
       _os_log_error_impl(&dword_1C7694000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -359,8 +359,8 @@ LABEL_10:
     _NUAssertFailHandler();
   }
 
-  v10 = v9;
-  if (([v9 evaluationMode] & 0xFFFFFFFFFFFFFFFDLL) == 1)
+  v10 = stateCopy;
+  if (([stateCopy evaluationMode] & 0xFFFFFFFFFFFFFFFDLL) == 1)
   {
     memset(buf, 0, sizeof(buf));
     if (v10)
@@ -379,21 +379,21 @@ LABEL_10:
     v28 = *buf;
     v29 = *&buf[16];
     [v12 setTime:&v28];
-    v13 = [(PIAutoLoopVideoNode *)self input];
-    v11 = [v13 nodeByReplayingAgainstCache:v8 pipelineState:v12 error:a5];
+    input = [(PIAutoLoopVideoNode *)self input];
+    v11 = [input nodeByReplayingAgainstCache:cacheCopy pipelineState:v12 error:error];
   }
 
   else
   {
     v30.receiver = self;
     v30.super_class = PIAutoLoopMirrorVideoNode;
-    v11 = [(PIAutoLoopVideoNode *)&v30 nodeByReplayingAgainstCache:v8 pipelineState:v10 error:a5];
+    v11 = [(PIAutoLoopVideoNode *)&v30 nodeByReplayingAgainstCache:cacheCopy pipelineState:v10 error:error];
   }
 
   return v11;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_conformTime:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_conformTime:(SEL)time
 {
   *retstr = *a4;
   [(PIAutoLoopVideoNode *)self frameDuration];
@@ -439,11 +439,11 @@ LABEL_10:
   return result;
 }
 
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error
 {
   v8.receiver = self;
   v8.super_class = PIAutoLoopMirrorVideoNode;
-  v6 = [(PIAutoLoopVideoNode *)&v8 resolvedNodeWithCachedInputs:a3 settings:a4 pipelineState:a5 error:a6];
+  v6 = [(PIAutoLoopVideoNode *)&v8 resolvedNodeWithCachedInputs:inputs settings:settings pipelineState:state error:error];
 
   return v6;
 }

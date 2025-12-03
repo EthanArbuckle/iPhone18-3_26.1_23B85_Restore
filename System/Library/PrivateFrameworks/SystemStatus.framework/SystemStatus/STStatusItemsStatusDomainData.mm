@@ -1,22 +1,22 @@
 @interface STStatusItemsStatusDomainData
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)attributions;
 - (NSSet)activeStatusItems;
 - (NSSet)statusItemsWithVisualDescriptors;
 - (STStatusItemsStatusDomainData)init;
-- (STStatusItemsStatusDomainData)initWithCoder:(id)a3;
-- (STStatusItemsStatusDomainData)initWithData:(id)a3;
-- (STStatusItemsStatusDomainData)initWithStatusItemsAttributionListData:(id)a3 visualDescriptorsByIdentifierDictionaryData:(id)a4;
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:;
-- (id)_initWithStatusItemsAttributionListData:(id)a3 visualDescriptorsByIdentifierDictionaryData:(id)a4;
-- (id)dataByApplyingDiff:(id)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)diffFromData:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (STStatusItemsStatusDomainData)initWithCoder:(id)coder;
+- (STStatusItemsStatusDomainData)initWithData:(id)data;
+- (STStatusItemsStatusDomainData)initWithStatusItemsAttributionListData:(id)data visualDescriptorsByIdentifierDictionaryData:(id)dictionaryData;
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:;
+- (id)_initWithStatusItemsAttributionListData:(id)data visualDescriptorsByIdentifierDictionaryData:(id)dictionaryData;
+- (id)dataByApplyingDiff:(id)diff;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)diffFromData:(id)data;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STStatusItemsStatusDomainData
@@ -30,38 +30,38 @@
   return v5;
 }
 
-- (STStatusItemsStatusDomainData)initWithData:(id)a3
+- (STStatusItemsStatusDomainData)initWithData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 statusItemsAttributionListData];
-  v6 = [v4 visualDescriptorsByIdentifierDictionaryData];
+  dataCopy = data;
+  statusItemsAttributionListData = [dataCopy statusItemsAttributionListData];
+  visualDescriptorsByIdentifierDictionaryData = [dataCopy visualDescriptorsByIdentifierDictionaryData];
 
-  v7 = [(STStatusItemsStatusDomainData *)self initWithStatusItemsAttributionListData:v5 visualDescriptorsByIdentifierDictionaryData:v6];
+  v7 = [(STStatusItemsStatusDomainData *)self initWithStatusItemsAttributionListData:statusItemsAttributionListData visualDescriptorsByIdentifierDictionaryData:visualDescriptorsByIdentifierDictionaryData];
   return v7;
 }
 
-- (STStatusItemsStatusDomainData)initWithStatusItemsAttributionListData:(id)a3 visualDescriptorsByIdentifierDictionaryData:(id)a4
+- (STStatusItemsStatusDomainData)initWithStatusItemsAttributionListData:(id)data visualDescriptorsByIdentifierDictionaryData:(id)dictionaryData
 {
-  v6 = a4;
-  v7 = [a3 copy];
-  v8 = [v6 copy];
+  dictionaryDataCopy = dictionaryData;
+  v7 = [data copy];
+  v8 = [dictionaryDataCopy copy];
 
   v9 = [(STStatusItemsStatusDomainData *)self _initWithStatusItemsAttributionListData:v7 visualDescriptorsByIdentifierDictionaryData:v8];
   return v9;
 }
 
-- (id)_initWithStatusItemsAttributionListData:(id)a3 visualDescriptorsByIdentifierDictionaryData:(id)a4
+- (id)_initWithStatusItemsAttributionListData:(id)data visualDescriptorsByIdentifierDictionaryData:(id)dictionaryData
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  dictionaryDataCopy = dictionaryData;
   v12.receiver = self;
   v12.super_class = STStatusItemsStatusDomainData;
   v9 = [(STStatusItemsStatusDomainData *)&v12 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_statusItemsAttributionListData, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v9->_statusItemsAttributionListData, data);
+    objc_storeStrong(p_isa + 2, dictionaryData);
   }
 
   return p_isa;
@@ -69,16 +69,16 @@
 
 - (NSArray)attributions
 {
-  v2 = [(STStatusItemsStatusDomainData *)self statusItemsAttributionListData];
-  v3 = [v2 objects];
+  statusItemsAttributionListData = [(STStatusItemsStatusDomainData *)self statusItemsAttributionListData];
+  objects = [statusItemsAttributionListData objects];
 
-  return v3;
+  return objects;
 }
 
 - (NSSet)activeStatusItems
 {
-  v2 = [(STStatusItemsStatusDomainData *)self attributions];
-  v3 = [v2 bs_map:&__block_literal_global_19];
+  attributions = [(STStatusItemsStatusDomainData *)self attributions];
+  v3 = [attributions bs_map:&__block_literal_global_19];
 
   v4 = [MEMORY[0x1E695DFD8] setWithArray:v3];
 
@@ -87,106 +87,106 @@
 
 - (NSSet)statusItemsWithVisualDescriptors
 {
-  v2 = [(STStatusItemsStatusDomainData *)self visualDescriptorsByIdentifierDictionaryData];
-  v3 = [v2 allKeys];
+  visualDescriptorsByIdentifierDictionaryData = [(STStatusItemsStatusDomainData *)self visualDescriptorsByIdentifierDictionaryData];
+  allKeys = [visualDescriptorsByIdentifierDictionaryData allKeys];
 
-  v4 = [MEMORY[0x1E695DFD8] setWithArray:v3];
+  v4 = [MEMORY[0x1E695DFD8] setWithArray:allKeys];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = v4;
-  v7 = [(STStatusItemsStatusDomainData *)self statusItemsAttributionListData];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  v6 = equalCopy;
+  statusItemsAttributionListData = [(STStatusItemsStatusDomainData *)self statusItemsAttributionListData];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __41__STStatusItemsStatusDomainData_isEqual___block_invoke;
   v19[3] = &unk_1E85DDCD8;
   v8 = v6;
   v20 = v8;
-  v9 = [v5 appendObject:v7 counterpart:v19];
+  v9 = [v5 appendObject:statusItemsAttributionListData counterpart:v19];
 
-  v10 = [(STStatusItemsStatusDomainData *)self visualDescriptorsByIdentifierDictionaryData];
+  visualDescriptorsByIdentifierDictionaryData = [(STStatusItemsStatusDomainData *)self visualDescriptorsByIdentifierDictionaryData];
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __41__STStatusItemsStatusDomainData_isEqual___block_invoke_2;
   v17 = &unk_1E85DDCD8;
   v18 = v8;
   v11 = v8;
-  v12 = [v5 appendObject:v10 counterpart:&v14];
+  v12 = [v5 appendObject:visualDescriptorsByIdentifierDictionaryData counterpart:&v14];
 
-  LOBYTE(v10) = [v5 isEqual];
-  return v10;
+  LOBYTE(visualDescriptorsByIdentifierDictionaryData) = [v5 isEqual];
+  return visualDescriptorsByIdentifierDictionaryData;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [(STStatusItemsStatusDomainData *)self statusItemsAttributionListData];
-  v5 = [v3 appendObject:v4];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  statusItemsAttributionListData = [(STStatusItemsStatusDomainData *)self statusItemsAttributionListData];
+  v5 = [builder appendObject:statusItemsAttributionListData];
 
-  v6 = [(STStatusItemsStatusDomainData *)self visualDescriptorsByIdentifierDictionaryData];
-  v7 = [v3 appendObject:v6];
+  visualDescriptorsByIdentifierDictionaryData = [(STStatusItemsStatusDomainData *)self visualDescriptorsByIdentifierDictionaryData];
+  v7 = [builder appendObject:visualDescriptorsByIdentifierDictionaryData];
 
-  v8 = [v3 hash];
+  v8 = [builder hash];
   return v8;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [STMutableStatusItemsStatusDomainData allocWithZone:a3];
+  v4 = [STMutableStatusItemsStatusDomainData allocWithZone:zone];
 
   return [(STStatusItemsStatusDomainData *)v4 initWithData:self];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STStatusItemsStatusDomainData *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STStatusItemsStatusDomainData *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STStatusItemsStatusDomainData *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STStatusItemsStatusDomainData *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STStatusItemsStatusDomainData *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STStatusItemsStatusDomainData *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:
 {
-  v3 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v5 = a2;
-    v6 = [v3 succinctDescriptionBuilder];
-    [v6 setUseDebugDescription:a3];
+    succinctDescriptionBuilder = [selfCopy succinctDescriptionBuilder];
+    [succinctDescriptionBuilder setUseDebugDescription:prefix];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __81__STStatusItemsStatusDomainData__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke;
     v9[3] = &unk_1E85DDD00;
-    v7 = v6;
+    v7 = succinctDescriptionBuilder;
     v10 = v7;
-    v11 = v3;
+    v11 = selfCopy;
     [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v9];
 
-    v3 = v7;
+    selfCopy = v7;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 void __81__STStatusItemsStatusDomainData__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke(uint64_t a1)
@@ -200,13 +200,13 @@ void __81__STStatusItemsStatusDomainData__descriptionBuilderWithMultilinePrefix_
   v6 = [v5 appendObject:v7 withName:@"visualDescriptors"];
 }
 
-- (id)diffFromData:(id)a3
+- (id)diffFromData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [STStatusItemsStatusDomainDataDiff diffFromData:v4 toData:self];
+    v5 = [STStatusItemsStatusDomainDataDiff diffFromData:dataCopy toData:self];
   }
 
   else
@@ -217,13 +217,13 @@ void __81__STStatusItemsStatusDomainData__descriptionBuilderWithMultilinePrefix_
   return v5;
 }
 
-- (id)dataByApplyingDiff:(id)a3
+- (id)dataByApplyingDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v4 isEmpty])
+    if ([diffCopy isEmpty])
     {
       v5 = [(STStatusItemsStatusDomainData *)self copy];
     }
@@ -231,7 +231,7 @@ void __81__STStatusItemsStatusDomainData__descriptionBuilderWithMultilinePrefix_
     else
     {
       v5 = [(STStatusItemsStatusDomainData *)self mutableCopy];
-      [v4 applyToMutableData:v5];
+      [diffCopy applyToMutableData:v5];
     }
   }
 
@@ -243,21 +243,21 @@ void __81__STStatusItemsStatusDomainData__descriptionBuilderWithMultilinePrefix_
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(STStatusItemsStatusDomainData *)self statusItemsAttributionListData];
-  [v4 encodeObject:v5 forKey:@"statusItemAttributions"];
+  coderCopy = coder;
+  statusItemsAttributionListData = [(STStatusItemsStatusDomainData *)self statusItemsAttributionListData];
+  [coderCopy encodeObject:statusItemsAttributionListData forKey:@"statusItemAttributions"];
 
-  v6 = [(STStatusItemsStatusDomainData *)self visualDescriptorsByIdentifierDictionaryData];
-  [v4 encodeObject:v6 forKey:@"visualDescriptorsByIdentifier"];
+  visualDescriptorsByIdentifierDictionaryData = [(STStatusItemsStatusDomainData *)self visualDescriptorsByIdentifierDictionaryData];
+  [coderCopy encodeObject:visualDescriptorsByIdentifierDictionaryData forKey:@"visualDescriptorsByIdentifier"];
 }
 
-- (STStatusItemsStatusDomainData)initWithCoder:(id)a3
+- (STStatusItemsStatusDomainData)initWithCoder:(id)coder
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"statusItemAttributions"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"statusItemAttributions"];
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -280,7 +280,7 @@ void __81__STStatusItemsStatusDomainData__descriptionBuilderWithMultilinePrefix_
 
   _Block_object_dispose(&v16, 8);
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"visualDescriptorsByIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"visualDescriptorsByIdentifier"];
 
   v21[0] = objc_opt_class();
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
@@ -291,7 +291,7 @@ void __81__STStatusItemsStatusDomainData__descriptionBuilderWithMultilinePrefix_
   if (((v6 != 0) & v10) == 1)
   {
     self = [(STStatusItemsStatusDomainData *)self initWithStatusItemsAttributionListData:v6 visualDescriptorsByIdentifierDictionaryData:v7];
-    v11 = self;
+    selfCopy = self;
   }
 
   else
@@ -303,11 +303,11 @@ void __81__STStatusItemsStatusDomainData__descriptionBuilderWithMultilinePrefix_
       _os_log_error_impl(&dword_1DA9C2000, v12, OS_LOG_TYPE_ERROR, "decoded invalid status items domain data", v15, 2u);
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
   v13 = *MEMORY[0x1E69E9840];
-  return v11;
+  return selfCopy;
 }
 
 void __47__STStatusItemsStatusDomainData_initWithCoder___block_invoke_2(uint64_t a1, void *a2, _BYTE *a3)

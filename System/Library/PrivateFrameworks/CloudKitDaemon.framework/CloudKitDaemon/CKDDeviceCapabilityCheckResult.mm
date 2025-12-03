@@ -1,16 +1,16 @@
 @interface CKDDeviceCapabilityCheckResult
-- (id)initNotSupportedWithUserID:(id)a3 publicKeys:(id)a4 canValidateWithKT:(BOOL)a5 shareID:(id)a6 usageIsManateeSigned:(BOOL)a7 capabilitiesIsManateeSigned:(BOOL)a8;
+- (id)initNotSupportedWithUserID:(id)d publicKeys:(id)keys canValidateWithKT:(BOOL)t shareID:(id)iD usageIsManateeSigned:(BOOL)signed capabilitiesIsManateeSigned:(BOOL)manateeSigned;
 - (id)initSupported;
 - (id)makeClientResult;
 @end
 
 @implementation CKDDeviceCapabilityCheckResult
 
-- (id)initNotSupportedWithUserID:(id)a3 publicKeys:(id)a4 canValidateWithKT:(BOOL)a5 shareID:(id)a6 usageIsManateeSigned:(BOOL)a7 capabilitiesIsManateeSigned:(BOOL)a8
+- (id)initNotSupportedWithUserID:(id)d publicKeys:(id)keys canValidateWithKT:(BOOL)t shareID:(id)iD usageIsManateeSigned:(BOOL)signed capabilitiesIsManateeSigned:(BOOL)manateeSigned
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
+  dCopy = d;
+  keysCopy = keys;
+  iDCopy = iD;
   v32.receiver = self;
   v32.super_class = CKDDeviceCapabilityCheckResult;
   v17 = [(CKDDeviceCapabilityCheckResult *)&v32 init];
@@ -18,21 +18,21 @@
   if (v17)
   {
     v17->_isSupported = 0;
-    v21 = objc_msgSend_copy(v14, v18, v19);
+    v21 = objc_msgSend_copy(dCopy, v18, v19);
     userID = v20->_userID;
     v20->_userID = v21;
 
-    v25 = objc_msgSend_copy(v15, v23, v24);
+    v25 = objc_msgSend_copy(keysCopy, v23, v24);
     publicKeys = v20->_publicKeys;
     v20->_publicKeys = v25;
 
-    v20->_canValidateWithKT = a5;
-    v29 = objc_msgSend_copy(v16, v27, v28);
+    v20->_canValidateWithKT = t;
+    v29 = objc_msgSend_copy(iDCopy, v27, v28);
     shareID = v20->_shareID;
     v20->_shareID = v29;
 
-    v20->_usageIsManateeSigned = a7;
-    v20->_capabilitiesIsManateeSigned = a8;
+    v20->_usageIsManateeSigned = signed;
+    v20->_capabilitiesIsManateeSigned = manateeSigned;
   }
 
   return v20;

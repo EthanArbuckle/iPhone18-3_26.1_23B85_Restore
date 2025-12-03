@@ -7,16 +7,16 @@
 + (GLKTextureInfo)textureWithContentsOfFile:(NSString *)path options:(NSDictionary *)options error:(NSError *)outError;
 + (GLKTextureInfo)textureWithContentsOfURL:(NSURL *)url options:(NSDictionary *)options error:(NSError *)outError;
 + (GLKTextureInfo)textureWithName:(NSString *)name scaleFactor:(CGFloat)scaleFactor bundle:(NSBundle *)bundle options:(NSDictionary *)options error:(NSError *)outError;
-+ (id)_textureWithTexture:(id)a3 error:(id *)a4;
-+ (id)_textureWithTextureTXR:(id)a3 error:(id *)a4;
-+ (id)commonCubeMapWithContentsOfFiles:(id)a3 options:(id)a4 error:(id *)a5 lock:(id)a6 glContext:(id)a7;
-+ (id)commonCubeMapWithContentsOfURL:(id)a3 options:(id)a4 error:(id *)a5 lock:(id)a6 glContext:(id)a7;
-+ (id)commonTextureWithCGImage:(CGImage *)a3 options:(id)a4 error:(id *)a5 lock:(id)a6 glContext:(id)a7;
-+ (id)commonTextureWithContentsOfData:(id)a3 options:(id)a4 error:(id *)a5 lock:(id)a6 glContext:(id)a7;
-+ (id)commonTextureWithContentsOfURL:(id)a3 options:(id)a4 error:(id *)a5 lock:(id)a6 glContext:(id)a7;
-+ (id)commonTextureWithName:(id)a3 scaleFactor:(double)a4 bundle:(id)a5 options:(id)a6 error:(id *)a7 lock:(id)a8 glContext:(id)a9;
-+ (id)lockAndSwitchContext:(id)a3 glContext:(id)a4;
-+ (void)unlockAndRestoreContext:(id)a3 glContext:(id)a4;
++ (id)_textureWithTexture:(id)texture error:(id *)error;
++ (id)_textureWithTextureTXR:(id)r error:(id *)error;
++ (id)commonCubeMapWithContentsOfFiles:(id)files options:(id)options error:(id *)error lock:(id)lock glContext:(id)context;
++ (id)commonCubeMapWithContentsOfURL:(id)l options:(id)options error:(id *)error lock:(id)lock glContext:(id)context;
++ (id)commonTextureWithCGImage:(CGImage *)image options:(id)options error:(id *)error lock:(id)lock glContext:(id)context;
++ (id)commonTextureWithContentsOfData:(id)data options:(id)options error:(id *)error lock:(id)lock glContext:(id)context;
++ (id)commonTextureWithContentsOfURL:(id)l options:(id)options error:(id *)error lock:(id)lock glContext:(id)context;
++ (id)commonTextureWithName:(id)name scaleFactor:(double)factor bundle:(id)bundle options:(id)options error:(id *)error lock:(id)lock glContext:(id)context;
++ (id)lockAndSwitchContext:(id)context glContext:(id)glContext;
++ (void)unlockAndRestoreContext:(id)context glContext:(id)glContext;
 - (GLKTextureLoader)initWithSharegroup:(EAGLSharegroup *)sharegroup;
 - (void)cubeMapWithContentsOfFile:(NSString *)path options:(NSDictionary *)options queue:(dispatch_queue_t)queue completionHandler:(GLKTextureLoaderCallback)block;
 - (void)cubeMapWithContentsOfFiles:(NSArray *)paths options:(NSDictionary *)options queue:(dispatch_queue_t)queue completionHandler:(GLKTextureLoaderCallback)block;
@@ -72,48 +72,48 @@
   [(GLKTextureLoader *)&v3 dealloc];
 }
 
-+ (id)lockAndSwitchContext:(id)a3 glContext:(id)a4
++ (id)lockAndSwitchContext:(id)context glContext:(id)glContext
 {
-  [a3 lock];
-  if (!a4)
+  [context lock];
+  if (!glContext)
   {
     return 0;
   }
 
-  v5 = [MEMORY[0x277CD9388] currentContext];
-  [MEMORY[0x277CD9388] setCurrentContext:a4];
-  return v5;
+  currentContext = [MEMORY[0x277CD9388] currentContext];
+  [MEMORY[0x277CD9388] setCurrentContext:glContext];
+  return currentContext;
 }
 
-+ (void)unlockAndRestoreContext:(id)a3 glContext:(id)a4
++ (void)unlockAndRestoreContext:(id)context glContext:(id)glContext
 {
-  if (a3)
+  if (context)
   {
     glFlush();
-    [MEMORY[0x277CD9388] setCurrentContext:a4];
+    [MEMORY[0x277CD9388] setCurrentContext:glContext];
   }
 
-  [a3 unlock];
+  [context unlock];
 }
 
-+ (id)_textureWithTexture:(id)a3 error:(id *)a4
++ (id)_textureWithTexture:(id)texture error:(id *)error
 {
-  if (!a3)
+  if (!texture)
   {
     return 0;
   }
 
   textures = 0;
   glGenTextures(1, &textures);
-  if ([a3 uploadToGLTexture:textures error:a4])
+  if ([texture uploadToGLTexture:textures error:error])
   {
-    if ([a3 dataCategory] != 5 && objc_msgSend(a3, "isMipmapped") && objc_msgSend(a3, "numMipMapLevels") == 1)
+    if ([texture dataCategory] != 5 && objc_msgSend(texture, "isMipmapped") && objc_msgSend(texture, "numMipMapLevels") == 1)
     {
-      glGenerateMipmap([a3 bindTarget]);
+      glGenerateMipmap([texture bindTarget]);
     }
 
     v6 = [GLKTextureInfo alloc];
-    return [(GLKTextureInfo *)v6 initWithTexture:a3 textureName:textures];
+    return [(GLKTextureInfo *)v6 initWithTexture:texture textureName:textures];
   }
 
   else
@@ -123,19 +123,19 @@
   }
 }
 
-+ (id)_textureWithTextureTXR:(id)a3 error:(id *)a4
++ (id)_textureWithTextureTXR:(id)r error:(id *)error
 {
-  if (!a3)
+  if (!r)
   {
     return 0;
   }
 
   textures = 0;
   glGenTextures(1, &textures);
-  if ([a3 uploadToGLTexture:textures error:a4])
+  if ([r uploadToGLTexture:textures error:error])
   {
     v6 = [GLKTextureInfo alloc];
-    return [(GLKTextureInfo *)v6 initWithTextureTXR:a3 textureName:textures];
+    return [(GLKTextureInfo *)v6 initWithTextureTXR:r textureName:textures];
   }
 
   else
@@ -145,37 +145,37 @@
   }
 }
 
-+ (id)commonTextureWithContentsOfData:(id)a3 options:(id)a4 error:(id *)a5 lock:(id)a6 glContext:(id)a7
++ (id)commonTextureWithContentsOfData:(id)data options:(id)options error:(id *)error lock:(id)lock glContext:(id)context
 {
-  if (a3)
+  if (data)
   {
-    v11 = [[GLKTexture alloc] initWithData:a3 forceCubeMap:0 wasCubeMap:0 cubeMapIndex:0 options:a4 error:a5];
+    v11 = [[GLKTexture alloc] initWithData:data forceCubeMap:0 wasCubeMap:0 cubeMapIndex:0 options:options error:error];
     if (v11)
     {
       v12 = v11;
-      v13 = [a1 lockAndSwitchContext:a6 glContext:a7];
-      v14 = [GLKTextureLoader _textureWithTexture:v12 error:a5];
-      [a1 unlockAndRestoreContext:a6 glContext:v13];
+      v13 = [self lockAndSwitchContext:lock glContext:context];
+      v14 = [GLKTextureLoader _textureWithTexture:v12 error:error];
+      [self unlockAndRestoreContext:lock glContext:v13];
 
       return v14;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
-    *a5 = _GLKTextureErrorWithCodeAndErrorString(1, @"Invalid NSData");
+    *error = _GLKTextureErrorWithCodeAndErrorString(1, @"Invalid NSData");
   }
 
   return 0;
 }
 
-+ (id)commonTextureWithContentsOfURL:(id)a3 options:(id)a4 error:(id *)a5 lock:(id)a6 glContext:(id)a7
++ (id)commonTextureWithContentsOfURL:(id)l options:(id)options error:(id *)error lock:(id)lock glContext:(id)context
 {
-  if ([a3 isFileURL] && (objc_msgSend(a3, "checkResourceIsReachableAndReturnError:", 0) & 1) == 0)
+  if ([l isFileURL] && (objc_msgSend(l, "checkResourceIsReachableAndReturnError:", 0) & 1) == 0)
   {
-    if (a5)
+    if (error)
     {
-      v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not find resource %@ at specified location.", objc_msgSend(a3, "lastPathComponent")];
+      v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not find resource %@ at specified location.", objc_msgSend(l, "lastPathComponent")];
       v15 = 0;
       goto LABEL_11;
     }
@@ -184,16 +184,16 @@
   }
 
   v20 = 0;
-  v13 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfURL:a3 options:1 error:&v20];
+  v13 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfURL:l options:1 error:&v20];
   if (v20)
   {
-    if (a5)
+    if (error)
     {
       v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid NSData, %@", objc_msgSend(v20, "localizedDescription")];
       v15 = 1;
 LABEL_11:
       v18 = 0;
-      *a5 = _GLKTextureErrorWithCodeAndErrorString(v15, v14);
+      *error = _GLKTextureErrorWithCodeAndErrorString(v15, v14);
       return v18;
     }
 
@@ -205,32 +205,32 @@ LABEL_11:
     return 0;
   }
 
-  v16 = [[GLKTexture alloc] initWithData:v13 forceCubeMap:0 wasCubeMap:0 cubeMapIndex:0 options:a4 error:a5];
+  v16 = [[GLKTexture alloc] initWithData:v13 forceCubeMap:0 wasCubeMap:0 cubeMapIndex:0 options:options error:error];
 
   if (!v16)
   {
     return 0;
   }
 
-  -[GLKTexture setLabel:](v16, "setLabel:", [a3 relativeString]);
-  v17 = [a1 lockAndSwitchContext:a6 glContext:a7];
-  v18 = [GLKTextureLoader _textureWithTexture:v16 error:a5];
-  [a1 unlockAndRestoreContext:a6 glContext:v17];
+  -[GLKTexture setLabel:](v16, "setLabel:", [l relativeString]);
+  v17 = [self lockAndSwitchContext:lock glContext:context];
+  v18 = [GLKTextureLoader _textureWithTexture:v16 error:error];
+  [self unlockAndRestoreContext:lock glContext:v17];
 
   return v18;
 }
 
-+ (id)commonTextureWithName:(id)a3 scaleFactor:(double)a4 bundle:(id)a5 options:(id)a6 error:(id *)a7 lock:(id)a8 glContext:(id)a9
++ (id)commonTextureWithName:(id)name scaleFactor:(double)factor bundle:(id)bundle options:(id)options error:(id *)error lock:(id)lock glContext:(id)context
 {
-  v16 = [MEMORY[0x277D02670] defaultUICatalogForBundle:a5];
+  v16 = [MEMORY[0x277D02670] defaultUICatalogForBundle:bundle];
   if (!v16)
   {
-    if (a7)
+    if (error)
     {
-      v27 = @"Could not get asset catalog from supplied bundle";
+      name = @"Could not get asset catalog from supplied bundle";
 LABEL_12:
       v28 = 0;
-      *a7 = _GLKTextureErrorWithCodeAndErrorString(0, v27);
+      *error = _GLKTextureErrorWithCodeAndErrorString(0, name);
       return v28;
     }
 
@@ -239,12 +239,12 @@ LABEL_12:
 
   v17 = v16;
   v18 = objc_alloc_init(MEMORY[0x277D71428]);
-  v19 = [v17 namedTextureWithName:a3 scaleFactor:a4];
+  v19 = [v17 namedTextureWithName:name scaleFactor:factor];
   if (!v19)
   {
-    if (a7)
+    if (error)
     {
-      v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not find texture named %@ in supplied bundle", a3];
+      name = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not find texture named %@ in supplied bundle", name];
       goto LABEL_12;
     }
 
@@ -256,12 +256,12 @@ LABEL_12:
   v22 = [v20 textureWithBufferAllocator:v18];
   v23 = v22;
   objc_autoreleasePoolPop(v21);
-  v24 = [v22 pixelFormat];
-  if (v24 > 151)
+  pixelFormat = [v22 pixelFormat];
+  if (pixelFormat > 151)
   {
-    if (v24 == 152)
+    if (pixelFormat == 152)
     {
-      if (a7)
+      if (error)
       {
         v25 = MEMORY[0x277CCACA8];
         v26 = "BC7_RGBAUnorm";
@@ -271,9 +271,9 @@ LABEL_12:
       goto LABEL_25;
     }
 
-    if (v24 == 153)
+    if (pixelFormat == 153)
     {
-      if (a7)
+      if (error)
       {
         v25 = MEMORY[0x277CCACA8];
         v26 = "BC7_RGBAUnorm_sRGB";
@@ -288,9 +288,9 @@ LABEL_25:
 
   else
   {
-    if (v24 == 150)
+    if (pixelFormat == 150)
     {
-      if (a7)
+      if (error)
       {
         v25 = MEMORY[0x277CCACA8];
         v26 = "BC6H_RGBFloat";
@@ -300,14 +300,14 @@ LABEL_25:
       goto LABEL_25;
     }
 
-    if (v24 == 151)
+    if (pixelFormat == 151)
     {
-      if (a7)
+      if (error)
       {
         v25 = MEMORY[0x277CCACA8];
         v26 = "BC6H_RGBUfloat";
 LABEL_24:
-        *a7 = _GLKTextureErrorWithCodeAndErrorString(7, [v25 stringWithFormat:@"Texture was created with unsupported pixel format: %s", v26]);
+        *error = _GLKTextureErrorWithCodeAndErrorString(7, [v25 stringWithFormat:@"Texture was created with unsupported pixel format: %s", v26]);
         goto LABEL_25;
       }
 
@@ -315,13 +315,13 @@ LABEL_24:
     }
   }
 
-  if (v22 && (!a9 ? (v29 = [MEMORY[0x277CD9388] currentContext]) : (v29 = a9), (v31 = -[GLKTextureTXR initWithTexture:API:options:error:]([GLKTextureTXR alloc], "initWithTexture:API:options:error:", v22, objc_msgSend(v29, "API"), a6, a7)) != 0))
+  if (v22 && (!context ? (v29 = [MEMORY[0x277CD9388] currentContext]) : (v29 = context), (v31 = -[GLKTextureTXR initWithTexture:API:options:error:]([GLKTextureTXR alloc], "initWithTexture:API:options:error:", v22, objc_msgSend(v29, "API"), options, error)) != 0))
   {
     v32 = v31;
-    [(GLKTextureTXR *)v31 setLabel:a3];
-    v33 = [a1 lockAndSwitchContext:a8 glContext:a9];
-    v28 = [GLKTextureLoader _textureWithTextureTXR:v32 error:a7];
-    [a1 unlockAndRestoreContext:a8 glContext:v33];
+    [(GLKTextureTXR *)v31 setLabel:name];
+    v33 = [self lockAndSwitchContext:lock glContext:context];
+    v28 = [GLKTextureLoader _textureWithTextureTXR:v32 error:error];
+    [self unlockAndRestoreContext:lock glContext:v33];
   }
 
   else
@@ -332,45 +332,45 @@ LABEL_24:
   return v28;
 }
 
-+ (id)commonTextureWithCGImage:(CGImage *)a3 options:(id)a4 error:(id *)a5 lock:(id)a6 glContext:(id)a7
++ (id)commonTextureWithCGImage:(CGImage *)image options:(id)options error:(id *)error lock:(id)lock glContext:(id)context
 {
-  if (a3)
+  if (image)
   {
-    v11 = [[GLKTexture alloc] initWithCGImage:a3 forceCubeMap:0 wasCubeMap:0 cubeMapIndex:0 options:a4 error:a5];
+    v11 = [[GLKTexture alloc] initWithCGImage:image forceCubeMap:0 wasCubeMap:0 cubeMapIndex:0 options:options error:error];
     if (v11)
     {
       v12 = v11;
-      v13 = [a1 lockAndSwitchContext:a6 glContext:a7];
-      v14 = [GLKTextureLoader _textureWithTexture:v12 error:a5];
-      [a1 unlockAndRestoreContext:a6 glContext:v13];
+      v13 = [self lockAndSwitchContext:lock glContext:context];
+      v14 = [GLKTextureLoader _textureWithTexture:v12 error:error];
+      [self unlockAndRestoreContext:lock glContext:v13];
 
       return v14;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
-    *a5 = _GLKTextureErrorWithCodeAndErrorString(2, @"Invalid CGImage");
+    *error = _GLKTextureErrorWithCodeAndErrorString(2, @"Invalid CGImage");
   }
 
   return 0;
 }
 
-+ (id)commonCubeMapWithContentsOfFiles:(id)a3 options:(id)a4 error:(id *)a5 lock:(id)a6 glContext:(id)a7
++ (id)commonCubeMapWithContentsOfFiles:(id)files options:(id)options error:(id *)error lock:(id)lock glContext:(id)context
 {
-  if ([a3 count] == 6)
+  if ([files count] == 6)
   {
     textures = 0;
-    v13 = [a1 lockAndSwitchContext:a6 glContext:a7];
+    v13 = [self lockAndSwitchContext:lock glContext:context];
     glGenTextures(1, &textures);
-    [a1 unlockAndRestoreContext:a6 glContext:v13];
-    if (![a3 count])
+    [self unlockAndRestoreContext:lock glContext:v13];
+    if (![files count])
     {
-      v23 = [a1 lockAndSwitchContext:a6 glContext:a7];
+      v23 = [self lockAndSwitchContext:lock glContext:context];
 LABEL_42:
       v24 = 0;
 LABEL_43:
-      [a1 unlockAndRestoreContext:a6 glContext:v23];
+      [self unlockAndRestoreContext:lock glContext:v23];
       return v24;
     }
 
@@ -380,15 +380,15 @@ LABEL_43:
     target = 3553;
     while (1)
     {
-      v15 = [a3 objectAtIndex:v14];
+      relativeString = [files objectAtIndex:v14];
       objc_opt_class();
-      v16 = v15;
+      v16 = relativeString;
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v16 = [MEMORY[0x277CBEBC0] fileURLWithPath:v15];
+          v16 = [MEMORY[0x277CBEBC0] fileURLWithPath:relativeString];
         }
 
         else
@@ -399,7 +399,7 @@ LABEL_43:
 
       if (([v16 checkResourceIsReachableAndReturnError:0] & 1) == 0)
       {
-        if (!a5)
+        if (!error)
         {
           return 0;
         }
@@ -409,7 +409,7 @@ LABEL_43:
 LABEL_27:
         v27 = _GLKTextureErrorWithCodeAndErrorString(v26, v25);
         result = 0;
-        *a5 = v27;
+        *error = v27;
         return result;
       }
 
@@ -418,20 +418,20 @@ LABEL_27:
       if (!v17)
       {
         v29 = v34;
-        if (a5)
+        if (error)
         {
           v30 = MEMORY[0x277CCACA8];
           if (v36)
           {
-            v31 = [v36 localizedDescription];
+            localizedDescription = [v36 localizedDescription];
           }
 
           else
           {
-            v31 = &stru_284B44600;
+            localizedDescription = &stru_284B44600;
           }
 
-          *a5 = _GLKTextureErrorWithCodeAndErrorString(1, [v30 stringWithFormat:@"Invalid NSData for face %d, %@", v14, v31, target]);
+          *error = _GLKTextureErrorWithCodeAndErrorString(1, [v30 stringWithFormat:@"Invalid NSData for face %d, %@", v14, localizedDescription, target]);
         }
 
         goto LABEL_41;
@@ -439,7 +439,7 @@ LABEL_27:
 
       v18 = v17;
       v35 = 0;
-      v19 = [[GLKTexture alloc] initWithData:v17 forceCubeMap:1 wasCubeMap:&v35 cubeMapIndex:v14 options:a4 error:a5];
+      v19 = [[GLKTexture alloc] initWithData:v17 forceCubeMap:1 wasCubeMap:&v35 cubeMapIndex:v14 options:options error:error];
 
       if (!v19)
       {
@@ -449,15 +449,15 @@ LABEL_27:
       if ([(GLKTexture *)v19 dataCategory]== 5 && v35 == 1)
       {
 
-        if (a5)
+        if (error)
         {
-          *a5 = _GLKTextureErrorWithCodeAndErrorString(5, @"PVR atlas unsupported");
+          *error = _GLKTextureErrorWithCodeAndErrorString(5, @"PVR atlas unsupported");
         }
 
 LABEL_38:
         v29 = v34;
 LABEL_41:
-        v23 = [a1 lockAndSwitchContext:a6 glContext:a7];
+        v23 = [self lockAndSwitchContext:lock glContext:context];
         glDeleteTextures(1, &textures);
 
         goto LABEL_42;
@@ -468,9 +468,9 @@ LABEL_41:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v15 = [v15 relativeString];
+          relativeString = [relativeString relativeString];
 LABEL_17:
-          [(GLKTexture *)v19 setLabel:v15];
+          [(GLKTexture *)v19 setLabel:relativeString];
           goto LABEL_18;
         }
 
@@ -482,9 +482,9 @@ LABEL_17:
       }
 
 LABEL_18:
-      v20 = [a1 lockAndSwitchContext:a6 glContext:a7];
-      v21 = [(GLKTexture *)v19 uploadToGLTexture:textures error:a5];
-      [a1 unlockAndRestoreContext:a6 glContext:v20];
+      v20 = [self lockAndSwitchContext:lock glContext:context];
+      v21 = [(GLKTexture *)v19 uploadToGLTexture:textures error:error];
+      [self unlockAndRestoreContext:lock glContext:v20];
       if (!v21)
       {
 
@@ -501,9 +501,9 @@ LABEL_18:
         HIDWORD(target) = [(GLKTexture *)v19 numMipMapLevels];
       }
 
-      if ([a3 count] <= ++v14)
+      if ([files count] <= ++v14)
       {
-        v23 = [a1 lockAndSwitchContext:a6 glContext:a7];
+        v23 = [self lockAndSwitchContext:lock glContext:context];
         if (((HIDWORD(v33) != 5) & v33) == 1)
         {
           v24 = v34;
@@ -523,7 +523,7 @@ LABEL_18:
     }
   }
 
-  if (a5)
+  if (error)
   {
     v25 = @"Invalid number of files";
     v26 = 6;
@@ -533,26 +533,26 @@ LABEL_18:
   return 0;
 }
 
-+ (id)commonCubeMapWithContentsOfURL:(id)a3 options:(id)a4 error:(id *)a5 lock:(id)a6 glContext:(id)a7
++ (id)commonCubeMapWithContentsOfURL:(id)l options:(id)options error:(id *)error lock:(id)lock glContext:(id)context
 {
-  if (![a3 isFileURL] || (objc_msgSend(a3, "checkResourceIsReachableAndReturnError:", 0) & 1) != 0)
+  if (![l isFileURL] || (objc_msgSend(l, "checkResourceIsReachableAndReturnError:", 0) & 1) != 0)
   {
     textures = 0;
-    v13 = [a1 lockAndSwitchContext:a6 glContext:a7];
+    v13 = [self lockAndSwitchContext:lock glContext:context];
     glGenTextures(1, &textures);
-    [a1 unlockAndRestoreContext:a6 glContext:v13];
+    [self unlockAndRestoreContext:lock glContext:v13];
     v63 = 0;
     v62 = 0;
-    v14 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfURL:a3 options:1 error:&v62];
+    v14 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfURL:l options:1 error:&v62];
     if (v14)
     {
       v15 = v14;
-      v16 = [[GLKTexture alloc] initWithData:v14 forceCubeMap:1 wasCubeMap:&v63 cubeMapIndex:0 options:0 error:a5];
+      v16 = [[GLKTexture alloc] initWithData:v14 forceCubeMap:1 wasCubeMap:&v63 cubeMapIndex:0 options:0 error:error];
 
       if (!v16)
       {
 LABEL_19:
-        v19 = [a1 lockAndSwitchContext:a6 glContext:a7];
+        v19 = [self lockAndSwitchContext:lock glContext:context];
         v18 = 0;
 LABEL_20:
         glDeleteTextures(1, &textures);
@@ -564,24 +564,24 @@ LABEL_20:
       {
         if (v63)
         {
-          v17 = [a1 lockAndSwitchContext:a6 glContext:a7];
-          v18 = [GLKTextureLoader _textureWithTexture:v16 error:a5];
-          [a1 unlockAndRestoreContext:a6 glContext:v17];
+          v17 = [self lockAndSwitchContext:lock glContext:context];
+          v18 = [GLKTextureLoader _textureWithTexture:v16 error:error];
+          [self unlockAndRestoreContext:lock glContext:v17];
 
-          v19 = [a1 lockAndSwitchContext:a6 glContext:a7];
+          v19 = [self lockAndSwitchContext:lock glContext:context];
           if (v18)
           {
 LABEL_22:
-            [a1 unlockAndRestoreContext:a6 glContext:v19];
+            [self unlockAndRestoreContext:lock glContext:v19];
             return v18;
           }
 
           goto LABEL_20;
         }
 
-        if (a5)
+        if (error)
         {
-          *a5 = _GLKTextureErrorWithCodeAndErrorString(11, @"PVR file does not contain cubemap data");
+          *error = _GLKTextureErrorWithCodeAndErrorString(11, @"PVR file does not contain cubemap data");
         }
 
         goto LABEL_19;
@@ -590,73 +590,73 @@ LABEL_22:
       if ([(GLKTexture *)v16 dataCategory]== 5)
       {
 
-        v19 = [a1 lockAndSwitchContext:a6 glContext:a7];
+        v19 = [self lockAndSwitchContext:lock glContext:context];
 LABEL_21:
         v18 = 0;
         goto LABEL_22;
       }
 
-      v25 = [(GLKTexture *)v16 width];
+      width = [(GLKTexture *)v16 width];
       v26 = 3 * [(GLKTexture *)v16 height];
-      v27 = [(GLKTexture *)v16 height];
+      height = [(GLKTexture *)v16 height];
       v56 = 6 * [(GLKTexture *)v16 width];
-      v59 = v25;
-      if (v25 != 2 * v26 && v27 != v56)
+      v59 = width;
+      if (width != 2 * v26 && height != v56)
       {
         goto LABEL_25;
       }
 
       v57 = 2 * v26;
-      if (v25 == 2 * v26)
+      if (width == 2 * v26)
       {
-        v61 = [(GLKTexture *)v16 height];
-        v30 = [(GLKTexture *)v16 rowBytes]/ 6uLL;
+        height2 = [(GLKTexture *)v16 height];
+        rowBytes = [(GLKTexture *)v16 rowBytes]/ 6uLL;
       }
 
       else
       {
-        if (v27 != v56)
+        if (height != v56)
         {
           goto LABEL_25;
         }
 
-        v61 = [(GLKTexture *)v16 width];
-        v30 = [(GLKTexture *)v16 rowBytes];
+        height2 = [(GLKTexture *)v16 width];
+        rowBytes = [(GLKTexture *)v16 rowBytes];
       }
 
-      if (v30 && v61)
+      if (rowBytes && height2)
       {
-        v50 = v27;
-        v53 = a4;
-        v54 = a5;
-        v55 = a7;
+        v50 = height;
+        optionsCopy = options;
+        errorCopy = error;
+        contextCopy = context;
         v60 = v16;
-        v33 = [(NSData *)[(GLKTexture *)v16 imageData] bytes];
+        bytes = [(NSData *)[(GLKTexture *)v16 imageData] bytes];
         v34 = 0;
         v49 = 0;
-        v47 = 0;
+        isMipmapped = 0;
         v46 = 0;
-        v35 = v30;
-        size = v30 * v61;
-        v52 = v30;
-        v36 = 6 * v30;
-        v48 = 3553;
+        v35 = rowBytes;
+        size = rowBytes * height2;
+        v52 = rowBytes;
+        v36 = 6 * rowBytes;
+        bindTarget = 3553;
         v51 = 1;
         while (1)
         {
           if (v59 == v57)
           {
-            v33 = ([(NSData *)[(GLKTexture *)v60 imageData] bytes]+ v34 * v35);
+            bytes = ([(NSData *)[(GLKTexture *)v60 imageData] bytes]+ v34 * v35);
             v37 = malloc_type_malloc(size, 0x100004077774924uLL);
             v38 = v37;
-            v39 = v61;
-            if (v61 >= 1)
+            v39 = height2;
+            if (height2 >= 1)
             {
               v40 = v37;
               do
               {
-                memcpy(v40, v33, v35);
-                v33 += v36;
+                memcpy(v40, bytes, v35);
+                bytes += v36;
                 v40 += v35;
                 --v39;
               }
@@ -669,8 +669,8 @@ LABEL_21:
 
           else if (v50 == v56)
           {
-            v41 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytesNoCopy:v33 length:size freeWhenDone:0];
-            v33 += size;
+            v41 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytesNoCopy:bytes length:size freeWhenDone:0];
+            bytes += size;
           }
 
           else
@@ -678,16 +678,16 @@ LABEL_21:
             v41 = 0;
           }
 
-          v42 = [[GLKTexture alloc] initWithDecodedData:v41 width:v61 height:v61 rowBytes:v52 texture:v60 cubeMapIndex:v34 options:v53 error:v54];
+          v42 = [[GLKTexture alloc] initWithDecodedData:v41 width:height2 height:height2 rowBytes:v52 texture:v60 cubeMapIndex:v34 options:optionsCopy error:errorCopy];
 
           if (!v34)
           {
-            -[GLKTexture setLabel:](v42, "setLabel:", [a3 relativeString]);
+            -[GLKTexture setLabel:](v42, "setLabel:", [l relativeString]);
           }
 
-          v43 = [a1 lockAndSwitchContext:a6 glContext:v55];
-          v44 = [(GLKTexture *)v42 uploadToGLTexture:textures error:v54];
-          [a1 unlockAndRestoreContext:a6 glContext:v43];
+          v43 = [self lockAndSwitchContext:lock glContext:contextCopy];
+          v44 = [(GLKTexture *)v42 uploadToGLTexture:textures error:errorCopy];
+          [self unlockAndRestoreContext:lock glContext:v43];
           if (!v44)
           {
             break;
@@ -697,8 +697,8 @@ LABEL_21:
           {
             v45 = [GLKTextureInfo alloc];
             v49 = [(GLKTextureInfo *)v45 initWithTexture:v42 textureName:textures];
-            v47 = [(GLKTexture *)v42 isMipmapped];
-            v48 = [(GLKTexture *)v42 bindTarget];
+            isMipmapped = [(GLKTexture *)v42 isMipmapped];
+            bindTarget = [(GLKTexture *)v42 bindTarget];
             HIDWORD(v46) = [(GLKTexture *)v42 dataCategory];
             LODWORD(v46) = [(GLKTexture *)v42 numMipMapLevels];
           }
@@ -713,14 +713,14 @@ LABEL_21:
 
         v28 = v51;
 LABEL_57:
-        v31 = v48;
-        v32 = HIDWORD(v46) == 5 || !v47 || v46 != 1;
-        a7 = v55;
+        v31 = bindTarget;
+        v32 = HIDWORD(v46) == 5 || !isMipmapped || v46 != 1;
+        context = contextCopy;
         v16 = v60;
         v18 = v49;
 LABEL_33:
 
-        v19 = [a1 lockAndSwitchContext:a6 glContext:a7];
+        v19 = [self lockAndSwitchContext:lock glContext:context];
         if (!v28)
         {
           if ((v32 & 1) == 0)
@@ -737,9 +737,9 @@ LABEL_33:
 LABEL_25:
       v18 = 0;
       v28 = 0;
-      if (a5)
+      if (error)
       {
-        *a5 = _GLKTextureErrorWithCodeAndErrorString(9, @"Invalid cube map dimensions");
+        *error = _GLKTextureErrorWithCodeAndErrorString(9, @"Invalid cube map dimensions");
       }
 
       v31 = 3553;
@@ -747,20 +747,20 @@ LABEL_25:
       goto LABEL_33;
     }
 
-    if (a5)
+    if (error)
     {
       v20 = MEMORY[0x277CCACA8];
       if (v62)
       {
-        v21 = [v62 localizedDescription];
+        localizedDescription = [v62 localizedDescription];
       }
 
       else
       {
-        v21 = &stru_284B44600;
+        localizedDescription = &stru_284B44600;
       }
 
-      v22 = [v20 stringWithFormat:@"Invalid NSData, %@", v21];
+      v22 = [v20 stringWithFormat:@"Invalid NSData, %@", localizedDescription];
       v23 = 1;
       goto LABEL_29;
     }
@@ -768,17 +768,17 @@ LABEL_25:
     return 0;
   }
 
-  if (!a5)
+  if (!error)
   {
     return 0;
   }
 
-  v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not find resource %@ at specified location.", objc_msgSend(a3, "lastPathComponent")];
+  v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not find resource %@ at specified location.", objc_msgSend(l, "lastPathComponent")];
   v23 = 0;
 LABEL_29:
   v29 = _GLKTextureErrorWithCodeAndErrorString(v23, v22);
   result = 0;
-  *a5 = v29;
+  *error = v29;
   return result;
 }
 
@@ -788,7 +788,7 @@ LABEL_29:
   {
     v9 = [MEMORY[0x277CBEBC0] fileURLWithPath:path];
 
-    return [a1 textureWithContentsOfURL:v9 options:options error:outError];
+    return [self textureWithContentsOfURL:v9 options:options error:outError];
   }
 
   else
@@ -807,7 +807,7 @@ LABEL_29:
   if ([MEMORY[0x277CD9388] currentContext])
   {
 
-    return [a1 commonTextureWithContentsOfURL:url options:options error:outError lock:0 glContext:0];
+    return [self commonTextureWithContentsOfURL:url options:options error:outError lock:0 glContext:0];
   }
 
   else
@@ -826,7 +826,7 @@ LABEL_29:
   if ([MEMORY[0x277CD9388] currentContext])
   {
 
-    return [a1 commonTextureWithName:name scaleFactor:bundle bundle:options options:outError error:0 lock:0 glContext:scaleFactor];
+    return [self commonTextureWithName:name scaleFactor:bundle bundle:options options:outError error:0 lock:0 glContext:scaleFactor];
   }
 
   else
@@ -845,7 +845,7 @@ LABEL_29:
   if ([MEMORY[0x277CD9388] currentContext])
   {
 
-    return [a1 commonTextureWithContentsOfData:data options:options error:outError lock:0 glContext:0];
+    return [self commonTextureWithContentsOfData:data options:options error:outError lock:0 glContext:0];
   }
 
   else
@@ -864,7 +864,7 @@ LABEL_29:
   if ([MEMORY[0x277CD9388] currentContext])
   {
 
-    return [a1 commonTextureWithCGImage:cgImage options:options error:outError lock:0 glContext:0];
+    return [self commonTextureWithCGImage:cgImage options:options error:outError lock:0 glContext:0];
   }
 
   else
@@ -883,7 +883,7 @@ LABEL_29:
   if ([MEMORY[0x277CD9388] currentContext])
   {
 
-    return [a1 commonCubeMapWithContentsOfFiles:paths options:options error:outError lock:0 glContext:0];
+    return [self commonCubeMapWithContentsOfFiles:paths options:options error:outError lock:0 glContext:0];
   }
 
   else

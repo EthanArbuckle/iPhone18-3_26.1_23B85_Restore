@@ -1,26 +1,26 @@
 @interface WK_RTCCVPixelBuffer
-- (BOOL)cropAndScaleTo:(__CVBuffer *)a3 withTempBuffer:(char *)a4;
-- (WK_RTCCVPixelBuffer)initWithPixelBuffer:(__CVBuffer *)a3;
-- (WK_RTCCVPixelBuffer)initWithPixelBuffer:(__CVBuffer *)a3 adaptedWidth:(int)a4 adaptedHeight:(int)a5 cropWidth:(int)a6 cropHeight:(int)a7 cropX:(int)a8 cropY:(int)a9;
+- (BOOL)cropAndScaleTo:(__CVBuffer *)to withTempBuffer:(char *)buffer;
+- (WK_RTCCVPixelBuffer)initWithPixelBuffer:(__CVBuffer *)buffer;
+- (WK_RTCCVPixelBuffer)initWithPixelBuffer:(__CVBuffer *)buffer adaptedWidth:(int)width adaptedHeight:(int)height cropWidth:(int)cropWidth cropHeight:(int)cropHeight cropX:(int)x cropY:(int)y;
 - (id)toI420;
-- (int)bufferSizeForCroppingAndScalingToWidth:(int)a3 height:(int)a4;
-- (void)cropAndScaleARGBTo:(__CVBuffer *)a3;
-- (void)cropAndScaleNV12To:(__CVBuffer *)a3 withTempBuffer:(char *)a4;
+- (int)bufferSizeForCroppingAndScalingToWidth:(int)width height:(int)height;
+- (void)cropAndScaleARGBTo:(__CVBuffer *)to;
+- (void)cropAndScaleNV12To:(__CVBuffer *)to withTempBuffer:(char *)buffer;
 - (void)dealloc;
 @end
 
 @implementation WK_RTCCVPixelBuffer
 
-- (WK_RTCCVPixelBuffer)initWithPixelBuffer:(__CVBuffer *)a3
+- (WK_RTCCVPixelBuffer)initWithPixelBuffer:(__CVBuffer *)buffer
 {
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  v7 = CVPixelBufferGetWidth(a3);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  v7 = CVPixelBufferGetWidth(buffer);
   LODWORD(v9) = 0;
-  return [(WK_RTCCVPixelBuffer *)self initWithPixelBuffer:a3 adaptedWidth:Width adaptedHeight:Height cropWidth:v7 cropHeight:CVPixelBufferGetHeight(a3) cropX:0 cropY:v9];
+  return [(WK_RTCCVPixelBuffer *)self initWithPixelBuffer:buffer adaptedWidth:Width adaptedHeight:Height cropWidth:v7 cropHeight:CVPixelBufferGetHeight(buffer) cropX:0 cropY:v9];
 }
 
-- (WK_RTCCVPixelBuffer)initWithPixelBuffer:(__CVBuffer *)a3 adaptedWidth:(int)a4 adaptedHeight:(int)a5 cropWidth:(int)a6 cropHeight:(int)a7 cropX:(int)a8 cropY:(int)a9
+- (WK_RTCCVPixelBuffer)initWithPixelBuffer:(__CVBuffer *)buffer adaptedWidth:(int)width adaptedHeight:(int)height cropWidth:(int)cropWidth cropHeight:(int)cropHeight cropX:(int)x cropY:(int)y
 {
   v18.receiver = self;
   v18.super_class = WK_RTCCVPixelBuffer;
@@ -28,15 +28,15 @@
   v16 = v15;
   if (v15)
   {
-    v15->_width = a4;
-    v15->_height = a5;
-    v15->_pixelBuffer = a3;
-    v15->_bufferWidth = CVPixelBufferGetWidth(a3);
+    v15->_width = width;
+    v15->_height = height;
+    v15->_pixelBuffer = buffer;
+    v15->_bufferWidth = CVPixelBufferGetWidth(buffer);
     v16->_bufferHeight = CVPixelBufferGetHeight(v16->_pixelBuffer);
-    v16->_cropWidth = a6;
-    v16->_cropHeight = a7;
-    v16->_cropX = a8 & 0xFFFFFFFE;
-    v16->_cropY = a9 & 0xFFFFFFFE;
+    v16->_cropWidth = cropWidth;
+    v16->_cropHeight = cropHeight;
+    v16->_cropX = x & 0xFFFFFFFE;
+    v16->_cropY = y & 0xFFFFFFFE;
     CVBufferRetain(v16->_pixelBuffer);
   }
 
@@ -51,11 +51,11 @@
   [(WK_RTCCVPixelBuffer *)&v3 dealloc];
 }
 
-- (int)bufferSizeForCroppingAndScalingToWidth:(int)a3 height:(int)a4
+- (int)bufferSizeForCroppingAndScalingToWidth:(int)width height:(int)height
 {
   if ((CVPixelBufferGetPixelFormatType(self->_pixelBuffer) | 0x10) == 0x34323076)
   {
-    return 2 * (((a4 + 1 + ((a4 + 1) >> 31)) >> 1) * ((a3 + 1 + ((a3 + 1) >> 31)) >> 1) + ((self->_cropHeight + 1 + ((self->_cropHeight + 1) >> 31)) >> 1) * ((self->_cropWidth + 1 + ((self->_cropWidth + 1) >> 31)) >> 1));
+    return 2 * (((height + 1 + ((height + 1) >> 31)) >> 1) * ((width + 1 + ((width + 1) >> 31)) >> 1) + ((self->_cropHeight + 1 + ((self->_cropHeight + 1) >> 31)) >> 1) * ((self->_cropWidth + 1 + ((self->_cropWidth + 1) >> 31)) >> 1));
   }
 
   else
@@ -64,10 +64,10 @@
   }
 }
 
-- (BOOL)cropAndScaleTo:(__CVBuffer *)a3 withTempBuffer:(char *)a4
+- (BOOL)cropAndScaleTo:(__CVBuffer *)to withTempBuffer:(char *)buffer
 {
   PixelFormatType = CVPixelBufferGetPixelFormatType(self->_pixelBuffer);
-  CVPixelBufferGetPixelFormatType(a3);
+  CVPixelBufferGetPixelFormatType(to);
   if (PixelFormatType <= 875704437)
   {
     if (PixelFormatType != 32)
@@ -81,7 +81,7 @@
     }
 
 LABEL_10:
-    [(WK_RTCCVPixelBuffer *)self cropAndScaleARGBTo:a3];
+    [(WK_RTCCVPixelBuffer *)self cropAndScaleARGBTo:to];
     return 1;
   }
 
@@ -96,15 +96,15 @@ LABEL_10:
   }
 
 LABEL_7:
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  Width = CVPixelBufferGetWidth(to);
+  Height = CVPixelBufferGetHeight(to);
   if (!Width || !Height)
   {
     return 1;
   }
 
   [(WK_RTCCVPixelBuffer *)self requiresScalingToWidth:Width height:Height];
-  [(WK_RTCCVPixelBuffer *)self cropAndScaleNV12To:a3 withTempBuffer:a4];
+  [(WK_RTCCVPixelBuffer *)self cropAndScaleNV12To:to withTempBuffer:buffer];
   return 1;
 }
 
@@ -187,11 +187,11 @@ LABEL_7:
   v42 = BytesPerRowOfPlane;
   WidthOfPlane = CVPixelBufferGetWidthOfPlane(*p_pixelBuffer, 1uLL);
   v13 = CVPixelBufferGetHeightOfPlane(*p_pixelBuffer, 1uLL);
-  v14 = [(WK_RTCI420Buffer *)v5 width];
-  v15 = [(WK_RTCI420Buffer *)v5 height];
-  v16 = [(WK_RTCI420Buffer *)v5 chromaWidth];
-  v17 = [(WK_RTCI420Buffer *)v5 chromaHeight];
-  if ([(WK_RTCCVPixelBuffer *)self requiresCropping]|| WidthOfPlane && WidthOfPlane == v16 && v13 && v13 == v17 && *v36 == v14 && HeightOfPlane == v15)
+  width = [(WK_RTCI420Buffer *)v5 width];
+  height = [(WK_RTCI420Buffer *)v5 height];
+  chromaWidth = [(WK_RTCI420Buffer *)v5 chromaWidth];
+  chromaHeight = [(WK_RTCI420Buffer *)v5 chromaHeight];
+  if ([(WK_RTCCVPixelBuffer *)self requiresCropping]|| WidthOfPlane && WidthOfPlane == chromaWidth && v13 && v13 == chromaHeight && *v36 == width && HeightOfPlane == height)
   {
     __p = 0;
     v45 = 0;
@@ -199,9 +199,9 @@ LABEL_7:
     cropWidth = self->_cropWidth;
     cropHeight = self->_cropHeight;
     v37 = cropWidth;
-    v20 = [(WK_RTCMutableI420Buffer *)v5 mutableDataY];
+    mutableDataY = [(WK_RTCMutableI420Buffer *)v5 mutableDataY];
     LODWORD(v35) = [(WK_RTCI420Buffer *)v5 strideY];
-    webrtc::NV12ToI420Scaler::NV12ToI420Scale(&__p, &v41[v38 + cropY * v42], v42, &v39[v38 + cropY / 2 * v40], v40, v37, cropHeight, v20, v35, [(WK_RTCMutableI420Buffer *)v5 mutableDataU], [(WK_RTCI420Buffer *)v5 strideU], [(WK_RTCMutableI420Buffer *)v5 mutableDataV], [(WK_RTCI420Buffer *)v5 strideV], [(WK_RTCI420Buffer *)v5 width], [(WK_RTCI420Buffer *)v5 height]);
+    webrtc::NV12ToI420Scaler::NV12ToI420Scale(&__p, &v41[v38 + cropY * v42], v42, &v39[v38 + cropY / 2 * v40], v40, v37, cropHeight, mutableDataY, v35, [(WK_RTCMutableI420Buffer *)v5 mutableDataU], [(WK_RTCI420Buffer *)v5 strideU], [(WK_RTCMutableI420Buffer *)v5 mutableDataV], [(WK_RTCI420Buffer *)v5 strideV], [(WK_RTCI420Buffer *)v5 width], [(WK_RTCI420Buffer *)v5 height]);
     if (__p)
     {
       v45 = __p;
@@ -224,9 +224,9 @@ LABEL_28:
   return v5;
 }
 
-- (void)cropAndScaleNV12To:(__CVBuffer *)a3 withTempBuffer:(char *)a4
+- (void)cropAndScaleNV12To:(__CVBuffer *)to withTempBuffer:(char *)buffer
 {
-  v6 = CVPixelBufferLockBaseAddress(a3, 0);
+  v6 = CVPixelBufferLockBaseAddress(to, 0);
   if (v6)
   {
     v7 = HIDWORD(v6);
@@ -237,35 +237,35 @@ LABEL_28:
     }
   }
 
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a3, 0);
-  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
-  v18 = CVPixelBufferGetBaseAddressOfPlane(a3, 1uLL);
-  v19 = CVPixelBufferGetBytesPerRowOfPlane(a3, 1uLL);
+  Width = CVPixelBufferGetWidth(to);
+  Height = CVPixelBufferGetHeight(to);
+  BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(to, 0);
+  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(to, 0);
+  v18 = CVPixelBufferGetBaseAddressOfPlane(to, 1uLL);
+  v19 = CVPixelBufferGetBytesPerRowOfPlane(to, 1uLL);
   CVPixelBufferLockBaseAddress(self->_pixelBuffer, 1uLL);
   v20 = CVPixelBufferGetBaseAddressOfPlane(self->_pixelBuffer, 0);
   v21 = CVPixelBufferGetBytesPerRowOfPlane(self->_pixelBuffer, 0);
   v22 = CVPixelBufferGetBaseAddressOfPlane(self->_pixelBuffer, 1uLL);
   v23 = CVPixelBufferGetBytesPerRowOfPlane(self->_pixelBuffer, 1uLL);
   LODWORD(v24) = BytesPerRowOfPlane;
-  webrtc::NV12Scale(a4, &v20[self->_cropX + self->_cropY * v21], v21, &v22[self->_cropX + self->_cropY / 2 * v23], v23, self->_cropWidth, self->_cropHeight, BaseAddressOfPlane, v24, v18, __PAIR64__(Width, v19), Height, v25, BaseAddressOfPlane);
+  webrtc::NV12Scale(buffer, &v20[self->_cropX + self->_cropY * v21], v21, &v22[self->_cropX + self->_cropY / 2 * v23], v23, self->_cropWidth, self->_cropHeight, BaseAddressOfPlane, v24, v18, __PAIR64__(Width, v19), Height, v25, BaseAddressOfPlane);
   CVPixelBufferUnlockBaseAddress(self->_pixelBuffer, 1uLL);
 
-  CVPixelBufferUnlockBaseAddress(a3, 0);
+  CVPixelBufferUnlockBaseAddress(to, 0);
 }
 
-- (void)cropAndScaleARGBTo:(__CVBuffer *)a3
+- (void)cropAndScaleARGBTo:(__CVBuffer *)to
 {
-  if (CVPixelBufferLockBaseAddress(a3, 0) && (webrtc::LogMessage::IsNoop<(webrtc::LoggingSeverity)3>() & 1) == 0)
+  if (CVPixelBufferLockBaseAddress(to, 0) && (webrtc::LogMessage::IsNoop<(webrtc::LoggingSeverity)3>() & 1) == 0)
   {
     webrtc::webrtc_logging_impl::Log(webrtc::webrtc_logging_impl::LogStreamer<>::Call<webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)13,webrtc::webrtc_logging_impl::LogMetadata>,webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)9,char const*>,webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)1,int>>(webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)13,webrtc::webrtc_logging_impl::LogMetadata>,webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)9,char const*>,webrtc::webrtc_logging_impl::Val<(webrtc::webrtc_logging_impl::LogArgType)1,int> const&)::t, v5, v6, v7, v8, v9, v10, v11, "/Library/Caches/com.apple.xbs/Sources/libwebrtc/Source/ThirdParty/libwebrtc/Source/webrtc/webkit_sdk/objc/components/video_frame_buffer/RTCCVPixelBuffer.mm");
   }
 
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  BaseAddress = CVPixelBufferGetBaseAddress(a3);
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
+  Width = CVPixelBufferGetWidth(to);
+  Height = CVPixelBufferGetHeight(to);
+  BaseAddress = CVPixelBufferGetBaseAddress(to);
+  BytesPerRow = CVPixelBufferGetBytesPerRow(to);
   CVPixelBufferLockBaseAddress(self->_pixelBuffer, 1uLL);
   v16 = CVPixelBufferGetBaseAddress(self->_pixelBuffer);
   v17 = CVPixelBufferGetBytesPerRow(self->_pixelBuffer);
@@ -281,7 +281,7 @@ LABEL_28:
 
   CVPixelBufferUnlockBaseAddress(self->_pixelBuffer, 1uLL);
 
-  CVPixelBufferUnlockBaseAddress(a3, 0);
+  CVPixelBufferUnlockBaseAddress(to, 0);
 }
 
 @end

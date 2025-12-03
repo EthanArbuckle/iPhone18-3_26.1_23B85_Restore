@@ -10,13 +10,13 @@
   v6 = a4;
   if ([v6 isSingleLineDocument] || !objc_msgSend(v6, "_isExplicitAutoFillInvocation"))
   {
-    [a1 setTextToAssert:v8];
+    [self setTextToAssert:v8];
   }
 
   else
   {
-    v7 = [a1 keyboardOutput];
-    [v7 insertText:v8];
+    keyboardOutput = [self keyboardOutput];
+    [keyboardOutput insertText:v8];
   }
 }
 

@@ -1,52 +1,52 @@
 @interface TrustedPeersHelperPeer
-- (TrustedPeersHelperPeer)initWithCoder:(id)a3;
-- (TrustedPeersHelperPeer)initWithPeerID:(id)a3 signingSPKI:(id)a4 encryptionSPKI:(id)a5 secureElementIdentity:(id)a6 viewList:(id)a7;
+- (TrustedPeersHelperPeer)initWithCoder:(id)coder;
+- (TrustedPeersHelperPeer)initWithPeerID:(id)d signingSPKI:(id)i encryptionSPKI:(id)kI secureElementIdentity:(id)identity viewList:(id)list;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TrustedPeersHelperPeer
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TrustedPeersHelperPeer *)self peerID];
-  [v4 encodeObject:v5 forKey:@"peerID"];
+  coderCopy = coder;
+  peerID = [(TrustedPeersHelperPeer *)self peerID];
+  [coderCopy encodeObject:peerID forKey:@"peerID"];
 
-  v6 = [(TrustedPeersHelperPeer *)self signingSPKI];
-  [v4 encodeObject:v6 forKey:@"signingSPKI"];
+  signingSPKI = [(TrustedPeersHelperPeer *)self signingSPKI];
+  [coderCopy encodeObject:signingSPKI forKey:@"signingSPKI"];
 
-  v7 = [(TrustedPeersHelperPeer *)self encryptionSPKI];
-  [v4 encodeObject:v7 forKey:@"encryptionSPKI"];
+  encryptionSPKI = [(TrustedPeersHelperPeer *)self encryptionSPKI];
+  [coderCopy encodeObject:encryptionSPKI forKey:@"encryptionSPKI"];
 
-  v8 = [(TrustedPeersHelperPeer *)self secureElementIdentity];
-  [v4 encodeObject:v8 forKey:@"seIdentity"];
+  secureElementIdentity = [(TrustedPeersHelperPeer *)self secureElementIdentity];
+  [coderCopy encodeObject:secureElementIdentity forKey:@"seIdentity"];
 
-  v9 = [(TrustedPeersHelperPeer *)self viewList];
-  [v4 encodeObject:v9 forKey:@"viewList"];
+  viewList = [(TrustedPeersHelperPeer *)self viewList];
+  [coderCopy encodeObject:viewList forKey:@"viewList"];
 }
 
-- (TrustedPeersHelperPeer)initWithCoder:(id)a3
+- (TrustedPeersHelperPeer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = TrustedPeersHelperPeer;
   v5 = [(TrustedPeersHelperPeer *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"peerID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"peerID"];
     peerID = v5->_peerID;
     v5->_peerID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signingSPKI"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signingSPKI"];
     signingSPKI = v5->_signingSPKI;
     v5->_signingSPKI = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"encryptionSPKI"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"encryptionSPKI"];
     encryptionSPKI = v5->_encryptionSPKI;
     v5->_encryptionSPKI = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"seIdentity"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"seIdentity"];
     secureElementIdentity = v5->_secureElementIdentity;
     v5->_secureElementIdentity = v12;
 
@@ -54,7 +54,7 @@
     v20[1] = objc_opt_class();
     v14 = [NSArray arrayWithObjects:v20 count:2];
     v15 = [NSSet setWithArray:v14];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"viewList"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"viewList"];
     viewList = v5->_viewList;
     v5->_viewList = v16;
   }
@@ -64,36 +64,36 @@
 
 - (id)description
 {
-  v3 = [(TrustedPeersHelperPeer *)self peerID];
-  v4 = [(TrustedPeersHelperPeer *)self signingSPKI];
-  v5 = [(TrustedPeersHelperPeer *)self encryptionSPKI];
-  v6 = [(TrustedPeersHelperPeer *)self secureElementIdentity];
-  v7 = [v6 peerIdentifier];
-  v8 = [v7 base64EncodedStringWithOptions:0];
-  v9 = [(TrustedPeersHelperPeer *)self viewList];
-  v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<TPHPeer: %@ %@ %@ se:%@ (%lu views)>", v3, v4, v5, v8, [v9 count]);
+  peerID = [(TrustedPeersHelperPeer *)self peerID];
+  signingSPKI = [(TrustedPeersHelperPeer *)self signingSPKI];
+  encryptionSPKI = [(TrustedPeersHelperPeer *)self encryptionSPKI];
+  secureElementIdentity = [(TrustedPeersHelperPeer *)self secureElementIdentity];
+  peerIdentifier = [secureElementIdentity peerIdentifier];
+  v8 = [peerIdentifier base64EncodedStringWithOptions:0];
+  viewList = [(TrustedPeersHelperPeer *)self viewList];
+  v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<TPHPeer: %@ %@ %@ se:%@ (%lu views)>", peerID, signingSPKI, encryptionSPKI, v8, [viewList count]);
 
   return v10;
 }
 
-- (TrustedPeersHelperPeer)initWithPeerID:(id)a3 signingSPKI:(id)a4 encryptionSPKI:(id)a5 secureElementIdentity:(id)a6 viewList:(id)a7
+- (TrustedPeersHelperPeer)initWithPeerID:(id)d signingSPKI:(id)i encryptionSPKI:(id)kI secureElementIdentity:(id)identity viewList:(id)list
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  iCopy = i;
+  kICopy = kI;
+  identityCopy = identity;
+  listCopy = list;
   v21.receiver = self;
   v21.super_class = TrustedPeersHelperPeer;
   v17 = [(TrustedPeersHelperPeer *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_peerID, a3);
-    objc_storeStrong(&v18->_signingSPKI, a4);
-    objc_storeStrong(&v18->_encryptionSPKI, a5);
-    objc_storeStrong(&v18->_secureElementIdentity, a6);
-    objc_storeStrong(&v18->_viewList, a7);
+    objc_storeStrong(&v17->_peerID, d);
+    objc_storeStrong(&v18->_signingSPKI, i);
+    objc_storeStrong(&v18->_encryptionSPKI, kI);
+    objc_storeStrong(&v18->_secureElementIdentity, identity);
+    objc_storeStrong(&v18->_viewList, list);
   }
 
   return v18;

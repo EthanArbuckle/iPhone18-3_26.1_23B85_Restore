@@ -1,18 +1,18 @@
 @interface INFriend
-- (INFriend)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5;
+- (INFriend)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint;
 @end
 
 @implementation INFriend
 
-- (INFriend)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5
+- (INFriend)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint
 {
-  if (a3)
+  if (identifier)
   {
     sub_266DAA70C();
   }
 
   sub_266DAA70C();
-  if (a5)
+  if (hint)
   {
     sub_266DAA70C();
   }

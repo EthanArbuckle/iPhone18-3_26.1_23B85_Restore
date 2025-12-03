@@ -1,42 +1,42 @@
 @interface RTSignalGenerator
-+ (CLLocationCoordinate2D)averageCoordinateOfCoordinate1:(CLLocationCoordinate2D)a3 coordinate2:(CLLocationCoordinate2D)a4;
-+ (CLLocationCoordinate2D)coordinateAtDisplacement:(double)a3 fromCenterCoordinate:(CLLocationCoordinate2D)a4 atAngle:(double)a5;
-+ (double)angleOfLineBetweenCoordinate1:(CLLocationCoordinate2D)a3 coordinate2:(CLLocationCoordinate2D)a4;
-+ (double)anglePerpendicularToLineBetweenLocation1:(id)a3 location2:(id)a4;
-+ (double)angleSweptFromStartAngle:(double)a3 ToEndAngle:(double)a4;
-+ (double)arcDistanceForStartLocation:(id)a3 endLocation:(id)a4 centerLocation:(id)a5;
++ (CLLocationCoordinate2D)averageCoordinateOfCoordinate1:(CLLocationCoordinate2D)coordinate1 coordinate2:(CLLocationCoordinate2D)coordinate2;
++ (CLLocationCoordinate2D)coordinateAtDisplacement:(double)displacement fromCenterCoordinate:(CLLocationCoordinate2D)coordinate atAngle:(double)angle;
++ (double)angleOfLineBetweenCoordinate1:(CLLocationCoordinate2D)coordinate1 coordinate2:(CLLocationCoordinate2D)coordinate2;
++ (double)anglePerpendicularToLineBetweenLocation1:(id)location1 location2:(id)location2;
++ (double)angleSweptFromStartAngle:(double)angle ToEndAngle:(double)endAngle;
++ (double)arcDistanceForStartLocation:(id)location endLocation:(id)endLocation centerLocation:(id)centerLocation;
 + (double)minSpeedToFilterHyperParameter;
-+ (double)perpendicularAngleForAngle:(double)a3;
-+ (id)centerProducingArcBetweenLowerDistanceBound:(double)a3 upperDistanceBound:(double)a4 FromStartLocation:(id)a5 endLocation:(id)a6;
-+ (id)centerProducingArcBetweenLowerDistanceBound:(double)a3 upperDistanceBound:(double)a4 fromStartLocation:(id)a5 endLocation:(id)a6 examiningLatLongDisplacement:(double)a7 fromIntersectingLocation:(id)a8 atAngle:(double)a9;
-+ (id)locationBetweenLowerDistanceBound:(double)a3 upperDistanceBound:(double)a4 fromStartLocation:(id)a5 endLocation:(id)a6 betweenTargetLowLocation:(id)a7 targetHighLocation:(id)a8;
-+ (id)necessaryCenterOfArcBetweenStartLocation:(id)a3 endLocation:(id)a4 minimumSpeed:(double)a5;
-+ (void)injectSignalForSignalGeneratorOptions:(id)a3 locationManager:(id)a4 handler:(id)a5;
-- (RTSignalGenerator)initWithSignalGeneratorOptions:(id)a3 locationManager:(id)a4 generatedLocations:(id)a5;
-- (id)addGeneratedLocation:(id)a3 forceInject:(BOOL)a4;
++ (double)perpendicularAngleForAngle:(double)angle;
++ (id)centerProducingArcBetweenLowerDistanceBound:(double)bound upperDistanceBound:(double)distanceBound FromStartLocation:(id)location endLocation:(id)endLocation;
++ (id)centerProducingArcBetweenLowerDistanceBound:(double)bound upperDistanceBound:(double)distanceBound fromStartLocation:(id)location endLocation:(id)endLocation examiningLatLongDisplacement:(double)displacement fromIntersectingLocation:(id)intersectingLocation atAngle:(double)angle;
++ (id)locationBetweenLowerDistanceBound:(double)bound upperDistanceBound:(double)distanceBound fromStartLocation:(id)location endLocation:(id)endLocation betweenTargetLowLocation:(id)lowLocation targetHighLocation:(id)highLocation;
++ (id)necessaryCenterOfArcBetweenStartLocation:(id)location endLocation:(id)endLocation minimumSpeed:(double)speed;
++ (void)injectSignalForSignalGeneratorOptions:(id)options locationManager:(id)manager handler:(id)handler;
+- (RTSignalGenerator)initWithSignalGeneratorOptions:(id)options locationManager:(id)manager generatedLocations:(id)locations;
+- (id)addGeneratedLocation:(id)location forceInject:(BOOL)inject;
 - (id)generateLocations;
-- (id)locationsForVisit:(id)a3;
-- (id)transitionLocationsAlongArcBetweenStartLocation:(id)a3 endLocation:(id)a4 forCenterLocation:(id)a5;
-- (id)transitionLocationsBetweenStartLocation:(id)a3 endLocation:(id)a4;
-- (id)transitionLocationsBetweenStartLocation:(id)a3 endLocation:(id)a4 coordinateCalculationBlock:(id)a5;
-- (unint64_t)locationCountInStoreWithError:(id *)a3;
+- (id)locationsForVisit:(id)visit;
+- (id)transitionLocationsAlongArcBetweenStartLocation:(id)location endLocation:(id)endLocation forCenterLocation:(id)centerLocation;
+- (id)transitionLocationsBetweenStartLocation:(id)location endLocation:(id)endLocation;
+- (id)transitionLocationsBetweenStartLocation:(id)location endLocation:(id)endLocation coordinateCalculationBlock:(id)block;
+- (unint64_t)locationCountInStoreWithError:(id *)error;
 @end
 
 @implementation RTSignalGenerator
 
-- (RTSignalGenerator)initWithSignalGeneratorOptions:(id)a3 locationManager:(id)a4 generatedLocations:(id)a5
+- (RTSignalGenerator)initWithSignalGeneratorOptions:(id)options locationManager:(id)manager generatedLocations:(id)locations
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  optionsCopy = options;
+  managerCopy = manager;
+  locationsCopy = locations;
+  if (!optionsCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
 LABEL_9:
 
-      v16 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
 
@@ -47,7 +47,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (!v10)
+  if (!managerCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -66,9 +66,9 @@ LABEL_12:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_signalGeneratorOptions, a3);
-    objc_storeStrong(&v13->_locationManager, a4);
-    v14 = [MEMORY[0x277CBEB18] arrayWithArray:v11];
+    objc_storeStrong(&v12->_signalGeneratorOptions, options);
+    objc_storeStrong(&v13->_locationManager, manager);
+    v14 = [MEMORY[0x277CBEB18] arrayWithArray:locationsCopy];
     generatedLocations = v13->_generatedLocations;
     v13->_generatedLocations = v14;
 
@@ -77,16 +77,16 @@ LABEL_12:
   }
 
   self = v13;
-  v16 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v16;
+  return selfCopy;
 }
 
-- (unint64_t)locationCountInStoreWithError:(id *)a3
+- (unint64_t)locationCountInStoreWithError:(id *)error
 {
   v45 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!error)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -111,8 +111,8 @@ LABEL_10:
   v42 = 0;
   v6 = dispatch_semaphore_create(0);
   locationManager = self->_locationManager;
-  v8 = [MEMORY[0x277CBEAA8] distantPast];
-  v9 = [MEMORY[0x277CBEAA8] distantFuture];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __51__RTSignalGenerator_locationCountInStoreWithError___block_invoke;
@@ -121,7 +121,7 @@ LABEL_10:
   v34 = v39;
   v10 = v6;
   v32 = v10;
-  [(RTLocationManager *)locationManager fetchStoredLocationsCountFromDate:v8 toDate:v9 uncertainty:-1 limit:v31 handler:1.79769313e308];
+  [(RTLocationManager *)locationManager fetchStoredLocationsCountFromDate:distantPast toDate:distantFuture uncertainty:-1 limit:v31 handler:1.79769313e308];
 
   v11 = v10;
   v12 = [MEMORY[0x277CBEAA8] now];
@@ -133,11 +133,11 @@ LABEL_10:
     v16 = v15;
     v17 = objc_opt_new();
     v18 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_123];
-    v19 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v20 = [v19 filteredArrayUsingPredicate:v18];
-    v21 = [v20 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v20 = [callStackSymbols filteredArrayUsingPredicate:v18];
+    firstObject = [v20 firstObject];
 
-    [v17 submitToCoreAnalytics:v21 type:1 duration:v16];
+    [v17 submitToCoreAnalytics:firstObject type:1 duration:v16];
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
     {
@@ -174,9 +174,9 @@ LABEL_12:
     objc_storeStrong((*&v39[8] + 40), v25);
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = *(*&v39[8] + 40);
+    *error = *(*&v39[8] + 40);
   }
 
   v29 = v36[3];
@@ -210,9 +210,9 @@ void __51__RTSignalGenerator_locationCountInStoreWithError___block_invoke(uint64
   return result;
 }
 
-+ (double)perpendicularAngleForAngle:(double)a3
++ (double)perpendicularAngleForAngle:(double)angle
 {
-  result = a3 + 1.57079633;
+  result = angle + 1.57079633;
   if (result > 6.28318531)
   {
     return result + -6.28318531;
@@ -221,16 +221,16 @@ void __51__RTSignalGenerator_locationCountInStoreWithError___block_invoke(uint64
   return result;
 }
 
-+ (double)anglePerpendicularToLineBetweenLocation1:(id)a3 location2:(id)a4
++ (double)anglePerpendicularToLineBetweenLocation1:(id)location1 location2:(id)location2
 {
-  v5 = a4;
-  v6 = a3;
+  location2Copy = location2;
+  location1Copy = location1;
   v7 = objc_opt_class();
-  [v6 coordinate];
+  [location1Copy coordinate];
   v9 = v8;
   v11 = v10;
 
-  [v5 coordinate];
+  [location2Copy coordinate];
   v13 = v12;
   v15 = v14;
 
@@ -242,11 +242,11 @@ void __51__RTSignalGenerator_locationCountInStoreWithError___block_invoke(uint64
   return result;
 }
 
-+ (double)angleOfLineBetweenCoordinate1:(CLLocationCoordinate2D)a3 coordinate2:(CLLocationCoordinate2D)a4
++ (double)angleOfLineBetweenCoordinate1:(CLLocationCoordinate2D)coordinate1 coordinate2:(CLLocationCoordinate2D)coordinate2
 {
-  v4 = a4.latitude - a3.latitude;
-  v5 = a4.longitude - a3.longitude;
-  if (a4.longitude - a3.longitude == 0.0)
+  v4 = coordinate2.latitude - coordinate1.latitude;
+  v5 = coordinate2.longitude - coordinate1.longitude;
+  if (coordinate2.longitude - coordinate1.longitude == 0.0)
   {
     if (v4 <= 0.0)
     {
@@ -296,49 +296,49 @@ void __51__RTSignalGenerator_locationCountInStoreWithError___block_invoke(uint64
   return result;
 }
 
-+ (double)angleSweptFromStartAngle:(double)a3 ToEndAngle:(double)a4
++ (double)angleSweptFromStartAngle:(double)angle ToEndAngle:(double)endAngle
 {
-  if (a4 <= a3)
+  if (endAngle <= angle)
   {
-    a4 = a4 + 6.28318531;
+    endAngle = endAngle + 6.28318531;
   }
 
-  return a4 - a3;
+  return endAngle - angle;
 }
 
-+ (double)arcDistanceForStartLocation:(id)a3 endLocation:(id)a4 centerLocation:(id)a5
++ (double)arcDistanceForStartLocation:(id)location endLocation:(id)endLocation centerLocation:(id)centerLocation
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  centerLocationCopy = centerLocation;
+  endLocationCopy = endLocation;
+  locationCopy = location;
   v10 = objc_opt_class();
   v11 = objc_opt_class();
-  [v7 coordinate];
+  [centerLocationCopy coordinate];
   v13 = v12;
   v15 = v14;
-  [v9 coordinate];
+  [locationCopy coordinate];
   [v11 angleOfLineBetweenCoordinate1:v13 coordinate2:{v15, v16, v17}];
   v19 = v18;
   v20 = objc_opt_class();
-  [v7 coordinate];
+  [centerLocationCopy coordinate];
   v22 = v21;
   v24 = v23;
-  [v8 coordinate];
+  [endLocationCopy coordinate];
   v26 = v25;
   v28 = v27;
 
   [v20 angleOfLineBetweenCoordinate1:v22 coordinate2:{v24, v26, v28}];
   [v10 angleSweptFromStartAngle:v19 ToEndAngle:v29];
   v31 = v30;
-  [v9 distanceFromLocation:v7];
+  [locationCopy distanceFromLocation:centerLocationCopy];
   v33 = v32;
 
   return fabs(v31 * v33);
 }
 
-+ (CLLocationCoordinate2D)averageCoordinateOfCoordinate1:(CLLocationCoordinate2D)a3 coordinate2:(CLLocationCoordinate2D)a4
++ (CLLocationCoordinate2D)averageCoordinateOfCoordinate1:(CLLocationCoordinate2D)coordinate1 coordinate2:(CLLocationCoordinate2D)coordinate2
 {
-  v6 = CLLocationCoordinate2DMake((a3.latitude + a4.latitude) * 0.5, (a3.longitude + a4.longitude) * 0.5);
+  v6 = CLLocationCoordinate2DMake((coordinate1.latitude + coordinate2.latitude) * 0.5, (coordinate1.longitude + coordinate2.longitude) * 0.5);
   longitude = v6.longitude;
   latitude = v6.latitude;
   result.longitude = longitude;
@@ -346,13 +346,13 @@ void __51__RTSignalGenerator_locationCountInStoreWithError___block_invoke(uint64
   return result;
 }
 
-+ (CLLocationCoordinate2D)coordinateAtDisplacement:(double)a3 fromCenterCoordinate:(CLLocationCoordinate2D)a4 atAngle:(double)a5
++ (CLLocationCoordinate2D)coordinateAtDisplacement:(double)displacement fromCenterCoordinate:(CLLocationCoordinate2D)coordinate atAngle:(double)angle
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v8 = __sincos_stret(a5);
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  v8 = __sincos_stret(angle);
 
-  v11 = CLLocationCoordinate2DMake(latitude + a3 * v8.__sinval, longitude + a3 * v8.__cosval);
+  v11 = CLLocationCoordinate2DMake(latitude + displacement * v8.__sinval, longitude + displacement * v8.__cosval);
   v10 = v11.longitude;
   v9 = v11.latitude;
   result.longitude = v10;
@@ -360,15 +360,15 @@ void __51__RTSignalGenerator_locationCountInStoreWithError___block_invoke(uint64
   return result;
 }
 
-+ (id)locationBetweenLowerDistanceBound:(double)a3 upperDistanceBound:(double)a4 fromStartLocation:(id)a5 endLocation:(id)a6 betweenTargetLowLocation:(id)a7 targetHighLocation:(id)a8
++ (id)locationBetweenLowerDistanceBound:(double)bound upperDistanceBound:(double)distanceBound fromStartLocation:(id)location endLocation:(id)endLocation betweenTargetLowLocation:(id)lowLocation targetHighLocation:(id)highLocation
 {
   v66 = *MEMORY[0x277D85DE8];
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
-  v17 = v16;
-  if (a3 <= 0.0)
+  locationCopy = location;
+  endLocationCopy = endLocation;
+  lowLocationCopy = lowLocation;
+  highLocationCopy = highLocation;
+  v17 = highLocationCopy;
+  if (bound <= 0.0)
   {
     v36 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -383,7 +383,7 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (a4 <= 0.0)
+  if (distanceBound <= 0.0)
   {
     v36 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -396,7 +396,7 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (!v13)
+  if (!locationCopy)
   {
     v36 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -409,7 +409,7 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (!v14)
+  if (!endLocationCopy)
   {
     v36 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -422,7 +422,7 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (!v15)
+  if (!lowLocationCopy)
   {
     v36 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -435,7 +435,7 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (!v16)
+  if (!highLocationCopy)
   {
     v36 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -454,7 +454,7 @@ LABEL_29:
   [v17 coordinate];
   v20 = v19;
   v22 = v21;
-  [v15 coordinate];
+  [lowLocationCopy coordinate];
   [v18 averageCoordinateOfCoordinate1:v20 coordinate2:{v22, v23, v24}];
   v26 = v25;
   v28 = v27;
@@ -462,19 +462,19 @@ LABEL_29:
   [objc_opt_class() minSpeedToFilterHyperParameter];
   v31 = v30 * 1.5;
   v32 = MEMORY[0x277CBEAA8];
-  v33 = [v13 timestamp];
-  v34 = [v14 timestamp];
-  v35 = [v32 dateBisectingDate1:v33 date2:v34];
+  timestamp = [locationCopy timestamp];
+  timestamp2 = [endLocationCopy timestamp];
+  v35 = [v32 dateBisectingDate1:timestamp date2:timestamp2];
   v36 = [v29 initWithCoordinate:v35 altitude:v26 horizontalAccuracy:v28 verticalAccuracy:0.0 course:10.0 speed:10.0 timestamp:{0.0, v31}];
 
-  [objc_opt_class() arcDistanceForStartLocation:v13 endLocation:v14 centerLocation:v36];
-  if (v37 <= a3)
+  [objc_opt_class() arcDistanceForStartLocation:locationCopy endLocation:endLocationCopy centerLocation:v36];
+  if (v37 <= bound)
   {
     v53 = objc_opt_class();
-    v54 = a3;
-    v55 = a4;
-    v56 = v13;
-    v57 = v14;
+    boundCopy2 = bound;
+    distanceBoundCopy2 = distanceBound;
+    v56 = locationCopy;
+    v57 = endLocationCopy;
     v58 = v36;
     v59 = v17;
   }
@@ -482,7 +482,7 @@ LABEL_29:
   else
   {
     v38 = v37;
-    if (v37 < a4)
+    if (v37 < distanceBound)
     {
       RTCommonIsCoordinateValid();
       if (v39 == 0.0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -502,14 +502,14 @@ LABEL_29:
       if (v41 != 0.0)
       {
         v42 = objc_alloc(MEMORY[0x277CE41F8]);
-        v61 = [v14 timestamp];
-        v43 = [v13 timestamp];
-        [v61 timeIntervalSinceDate:v43];
+        timestamp3 = [endLocationCopy timestamp];
+        timestamp4 = [locationCopy timestamp];
+        [timestamp3 timeIntervalSinceDate:timestamp4];
         v44 = MEMORY[0x277CBEAA8];
         v46 = v38 / v45;
-        v47 = [v13 timestamp];
-        v48 = [v14 timestamp];
-        v49 = [v44 dateBisectingDate1:v47 date2:v48];
+        timestamp5 = [locationCopy timestamp];
+        timestamp6 = [endLocationCopy timestamp];
+        v49 = [v44 dateBisectingDate1:timestamp5 date2:timestamp6];
         v50 = [v42 initWithCoordinate:v49 altitude:v26 horizontalAccuracy:v28 verticalAccuracy:0.0 course:10.0 speed:10.0 timestamp:{0.0, v46}];
 
         goto LABEL_30;
@@ -526,28 +526,28 @@ LABEL_29:
     }
 
     v53 = objc_opt_class();
-    v54 = a3;
-    v55 = a4;
-    v56 = v13;
-    v57 = v14;
-    v58 = v15;
+    boundCopy2 = bound;
+    distanceBoundCopy2 = distanceBound;
+    v56 = locationCopy;
+    v57 = endLocationCopy;
+    v58 = lowLocationCopy;
     v59 = v36;
   }
 
-  v50 = [v53 locationBetweenLowerDistanceBound:v56 upperDistanceBound:v57 fromStartLocation:v58 endLocation:v59 betweenTargetLowLocation:v54 targetHighLocation:v55];
+  v50 = [v53 locationBetweenLowerDistanceBound:v56 upperDistanceBound:v57 fromStartLocation:v58 endLocation:v59 betweenTargetLowLocation:boundCopy2 targetHighLocation:distanceBoundCopy2];
 LABEL_30:
 
   return v50;
 }
 
-+ (id)centerProducingArcBetweenLowerDistanceBound:(double)a3 upperDistanceBound:(double)a4 fromStartLocation:(id)a5 endLocation:(id)a6 examiningLatLongDisplacement:(double)a7 fromIntersectingLocation:(id)a8 atAngle:(double)a9
++ (id)centerProducingArcBetweenLowerDistanceBound:(double)bound upperDistanceBound:(double)distanceBound fromStartLocation:(id)location endLocation:(id)endLocation examiningLatLongDisplacement:(double)displacement fromIntersectingLocation:(id)intersectingLocation atAngle:(double)angle
 {
   v65 = *MEMORY[0x277D85DE8];
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
-  v18 = v17;
-  if (a3 <= 0.0)
+  locationCopy = location;
+  endLocationCopy = endLocation;
+  intersectingLocationCopy = intersectingLocation;
+  v18 = intersectingLocationCopy;
+  if (bound <= 0.0)
   {
     v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -562,7 +562,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (a4 <= 0.0)
+  if (distanceBound <= 0.0)
   {
     v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -575,7 +575,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (!v15)
+  if (!locationCopy)
   {
     v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -588,7 +588,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (!v16)
+  if (!endLocationCopy)
   {
     v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -601,7 +601,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (!v17)
+  if (!intersectingLocationCopy)
   {
     v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -616,40 +616,40 @@ LABEL_20:
 
   v19 = objc_opt_class();
   [v18 coordinate];
-  [v19 coordinateAtDisplacement:a7 fromCenterCoordinate:v20 atAngle:{v21, a9}];
+  [v19 coordinateAtDisplacement:displacement fromCenterCoordinate:v20 atAngle:{v21, angle}];
   v23 = v22;
   v25 = v24;
   v26 = objc_alloc(MEMORY[0x277CE41F8]);
   [objc_opt_class() minSpeedToFilterHyperParameter];
   v28 = v27 * 1.5;
   v29 = MEMORY[0x277CBEAA8];
-  v30 = [v15 timestamp];
-  v31 = [v16 timestamp];
-  v32 = [v29 dateBisectingDate1:v30 date2:v31];
+  timestamp = [locationCopy timestamp];
+  timestamp2 = [endLocationCopy timestamp];
+  v32 = [v29 dateBisectingDate1:timestamp date2:timestamp2];
   v33 = [v26 initWithCoordinate:v32 altitude:v23 horizontalAccuracy:v25 verticalAccuracy:0.0 course:10.0 speed:10.0 timestamp:{0.0, v28}];
 
-  [objc_opt_class() arcDistanceForStartLocation:v15 endLocation:v16 centerLocation:v33];
-  if (v34 > a3)
+  [objc_opt_class() arcDistanceForStartLocation:locationCopy endLocation:endLocationCopy centerLocation:v33];
+  if (v34 > bound)
   {
     v35 = v34;
-    if (v34 > a4)
+    if (v34 > distanceBound)
     {
-      if (a7 < 0.0)
+      if (displacement < 0.0)
       {
         v36 = objc_opt_class();
-        v37 = a3;
-        v38 = a4;
-        v39 = v15;
-        v40 = v16;
+        boundCopy2 = bound;
+        distanceBoundCopy2 = distanceBound;
+        v39 = locationCopy;
+        v40 = endLocationCopy;
         v41 = v18;
         v42 = v33;
 LABEL_44:
-        v59 = [v36 locationBetweenLowerDistanceBound:v39 upperDistanceBound:v40 fromStartLocation:v41 endLocation:v42 betweenTargetLowLocation:v37 targetHighLocation:v38];
+        v59 = [v36 locationBetweenLowerDistanceBound:v39 upperDistanceBound:v40 fromStartLocation:v41 endLocation:v42 betweenTargetLowLocation:boundCopy2 targetHighLocation:distanceBoundCopy2];
         goto LABEL_45;
       }
 
       v36 = objc_opt_class();
-      if (a7 == 0.0)
+      if (displacement == 0.0)
       {
         v46 = 0.1;
         goto LABEL_39;
@@ -676,14 +676,14 @@ LABEL_44:
     if (v49 != 0.0)
     {
       v50 = objc_alloc(MEMORY[0x277CE41F8]);
-      v51 = [v16 timestamp];
-      v52 = [v15 timestamp];
-      [v51 timeIntervalSinceDate:v52];
+      timestamp3 = [endLocationCopy timestamp];
+      timestamp4 = [locationCopy timestamp];
+      [timestamp3 timeIntervalSinceDate:timestamp4];
       v53 = MEMORY[0x277CBEAA8];
       v55 = v35 / v54;
-      v56 = [v15 timestamp];
-      v57 = [v16 timestamp];
-      v58 = [v53 dateBisectingDate1:v56 date2:v57];
+      timestamp5 = [locationCopy timestamp];
+      timestamp6 = [endLocationCopy timestamp];
+      v58 = [v53 dateBisectingDate1:timestamp5 date2:timestamp6];
       v44 = [v50 initWithCoordinate:v58 altitude:v23 horizontalAccuracy:v25 verticalAccuracy:0.0 course:10.0 speed:10.0 timestamp:{0.0, v55}];
 
       goto LABEL_22;
@@ -701,21 +701,21 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (a7 < 0.0)
+  if (displacement < 0.0)
   {
     v36 = objc_opt_class();
 LABEL_27:
-    v46 = a7 + a7;
+    v46 = displacement + displacement;
     goto LABEL_39;
   }
 
   v36 = objc_opt_class();
-  if (a7 != 0.0)
+  if (displacement != 0.0)
   {
-    v37 = a3;
-    v38 = a4;
-    v39 = v15;
-    v40 = v16;
+    boundCopy2 = bound;
+    distanceBoundCopy2 = distanceBound;
+    v39 = locationCopy;
+    v40 = endLocationCopy;
     v41 = v33;
     v42 = v18;
     goto LABEL_44;
@@ -723,7 +723,7 @@ LABEL_27:
 
   v46 = -0.1;
 LABEL_39:
-  v59 = [v36 centerProducingArcBetweenLowerDistanceBound:v15 upperDistanceBound:v16 fromStartLocation:v18 endLocation:a3 examiningLatLongDisplacement:a4 fromIntersectingLocation:v46 atAngle:a9];
+  v59 = [v36 centerProducingArcBetweenLowerDistanceBound:locationCopy upperDistanceBound:endLocationCopy fromStartLocation:v18 endLocation:bound examiningLatLongDisplacement:distanceBound fromIntersectingLocation:v46 atAngle:angle];
 LABEL_45:
   v44 = v59;
 LABEL_22:
@@ -731,12 +731,12 @@ LABEL_22:
   return v44;
 }
 
-+ (id)centerProducingArcBetweenLowerDistanceBound:(double)a3 upperDistanceBound:(double)a4 FromStartLocation:(id)a5 endLocation:(id)a6
++ (id)centerProducingArcBetweenLowerDistanceBound:(double)bound upperDistanceBound:(double)distanceBound FromStartLocation:(id)location endLocation:(id)endLocation
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = v10;
-  if (a3 <= 0.0)
+  locationCopy = location;
+  endLocationCopy = endLocation;
+  v11 = endLocationCopy;
+  if (bound <= 0.0)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -752,7 +752,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (a4 <= a3)
+  if (distanceBound <= bound)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -766,7 +766,7 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if (!v9)
+  if (!locationCopy)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -780,7 +780,7 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if (!v10)
+  if (!endLocationCopy)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -794,18 +794,18 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  [v9 distanceFromLocation:v10];
-  if (v12 < a3)
+  [locationCopy distanceFromLocation:endLocationCopy];
+  if (v12 < bound)
   {
     v13 = objc_opt_class();
-    [v9 coordinate];
+    [locationCopy coordinate];
     v15 = v14;
     v17 = v16;
     [v11 coordinate];
     [v13 averageCoordinateOfCoordinate1:v15 coordinate2:{v17, v18, v19}];
     v22 = [objc_alloc(MEMORY[0x277CE41F8]) initWithLatitude:v20 longitude:v21];
-    [objc_opt_class() anglePerpendicularToLineBetweenLocation1:v9 location2:v11];
-    v24 = [objc_opt_class() centerProducingArcBetweenLowerDistanceBound:v9 upperDistanceBound:v11 fromStartLocation:v22 endLocation:a3 examiningLatLongDisplacement:a4 fromIntersectingLocation:0.0 atAngle:v23];
+    [objc_opt_class() anglePerpendicularToLineBetweenLocation1:locationCopy location2:v11];
+    v24 = [objc_opt_class() centerProducingArcBetweenLowerDistanceBound:locationCopy upperDistanceBound:v11 fromStartLocation:v22 endLocation:bound examiningLatLongDisplacement:distanceBound fromIntersectingLocation:0.0 atAngle:v23];
 
     goto LABEL_19;
   }
@@ -827,13 +827,13 @@ LABEL_19:
   return v24;
 }
 
-+ (id)necessaryCenterOfArcBetweenStartLocation:(id)a3 endLocation:(id)a4 minimumSpeed:(double)a5
++ (id)necessaryCenterOfArcBetweenStartLocation:(id)location endLocation:(id)endLocation minimumSpeed:(double)speed
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  locationCopy = location;
+  endLocationCopy = endLocation;
+  v9 = endLocationCopy;
+  if (!locationCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -848,7 +848,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (!v8)
+  if (!endLocationCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -861,7 +861,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (a5 <= 0.0)
+  if (speed <= 0.0)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -876,11 +876,11 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  [v8 distanceFromLocation:v7];
+  [endLocationCopy distanceFromLocation:locationCopy];
   v11 = v10;
-  v12 = [v9 timestamp];
-  v13 = [v7 timestamp];
-  [v12 timeIntervalSinceDate:v13];
+  timestamp = [v9 timestamp];
+  timestamp2 = [locationCopy timestamp];
+  [timestamp timeIntervalSinceDate:timestamp2];
   v15 = v14;
 
   if (v15 <= 0.0)
@@ -896,9 +896,9 @@ LABEL_17:
     }
   }
 
-  if (v11 / v15 < a5)
+  if (v11 / v15 < speed)
   {
-    v17 = [objc_opt_class() centerProducingArcBetweenLowerDistanceBound:v7 upperDistanceBound:v9 FromStartLocation:v15 * a5 endLocation:a5 * 1.3 * v15];
+    v17 = [objc_opt_class() centerProducingArcBetweenLowerDistanceBound:locationCopy upperDistanceBound:v9 FromStartLocation:v15 * speed endLocation:speed * 1.3 * v15];
     goto LABEL_19;
   }
 
@@ -909,12 +909,12 @@ LABEL_19:
   return v17;
 }
 
-- (id)addGeneratedLocation:(id)a3 forceInject:(BOOL)a4
+- (id)addGeneratedLocation:(id)location forceInject:(BOOL)inject
 {
   v52 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  [v6 coordinate];
-  [v6 coordinate];
+  locationCopy = location;
+  [locationCopy coordinate];
+  [locationCopy coordinate];
   RTCommonIsCoordinateValid();
   if (v7 != 0.0)
   {
@@ -924,12 +924,12 @@ LABEL_19:
     v47 = __Block_byref_object_copy__150;
     v48 = __Block_byref_object_dispose__150;
     v49 = 0;
-    if (v6)
+    if (locationCopy)
     {
-      [(NSMutableArray *)self->_generatedLocations addObject:v6];
+      [(NSMutableArray *)self->_generatedLocations addObject:locationCopy];
     }
 
-    if (!a4 && [(NSMutableArray *)self->_generatedLocations count]!= 625)
+    if (!inject && [(NSMutableArray *)self->_generatedLocations count]!= 625)
     {
       goto LABEL_22;
     }
@@ -959,11 +959,11 @@ LABEL_19:
       v18 = v17;
       v19 = objc_opt_new();
       v20 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_123];
-      v21 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v22 = [v21 filteredArrayUsingPredicate:v20];
-      v23 = [v22 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v22 = [callStackSymbols filteredArrayUsingPredicate:v20];
+      firstObject = [v22 firstObject];
 
-      [v19 submitToCoreAnalytics:v23 type:1 duration:v18];
+      [v19 submitToCoreAnalytics:firstObject type:1 duration:v18];
       v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
       {
@@ -1041,12 +1041,12 @@ void __54__RTSignalGenerator_addGeneratedLocation_forceInject___block_invoke(uin
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)transitionLocationsBetweenStartLocation:(id)a3 endLocation:(id)a4
+- (id)transitionLocationsBetweenStartLocation:(id)location endLocation:(id)endLocation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  locationCopy = location;
+  endLocationCopy = endLocation;
+  v8 = endLocationCopy;
+  if (!locationCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1063,7 +1063,7 @@ LABEL_14:
     goto LABEL_8;
   }
 
-  if (!v7)
+  if (!endLocationCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1077,29 +1077,29 @@ LABEL_14:
   }
 
   [objc_opt_class() minSpeedToFilterHyperParameter];
-  v10 = [objc_opt_class() necessaryCenterOfArcBetweenStartLocation:v6 endLocation:v8 minimumSpeed:v9 * 1.5];
+  v10 = [objc_opt_class() necessaryCenterOfArcBetweenStartLocation:locationCopy endLocation:v8 minimumSpeed:v9 * 1.5];
   if (v10)
   {
     v11 = v10;
-    v12 = [(RTSignalGenerator *)self transitionLocationsAlongArcBetweenStartLocation:v6 endLocation:v8 forCenterLocation:v10];
+    v12 = [(RTSignalGenerator *)self transitionLocationsAlongArcBetweenStartLocation:locationCopy endLocation:v8 forCenterLocation:v10];
   }
 
   else
   {
-    v15 = [v8 timestamp];
-    v16 = [v6 timestamp];
-    [v15 timeIntervalSinceDate:v16];
+    timestamp = [v8 timestamp];
+    timestamp2 = [locationCopy timestamp];
+    [timestamp timeIntervalSinceDate:timestamp2];
     v18 = v17;
 
     v19 = v18 / 60.0;
     [v8 coordinate];
     v21 = v20;
-    [v6 coordinate];
+    [locationCopy coordinate];
     v23 = v19;
     v24 = (v21 - v22) / v23;
     [v8 coordinate];
     v26 = v25;
-    [v6 coordinate];
+    [locationCopy coordinate];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __73__RTSignalGenerator_transitionLocationsBetweenStartLocation_endLocation___block_invoke;
@@ -1107,7 +1107,7 @@ LABEL_14:
     *&v29[4] = v24;
     *&v29[5] = (v26 - v27) / v23;
     v28 = _Block_copy(v29);
-    v12 = [(RTSignalGenerator *)self transitionLocationsBetweenStartLocation:v6 endLocation:v8 coordinateCalculationBlock:v28];
+    v12 = [(RTSignalGenerator *)self transitionLocationsBetweenStartLocation:locationCopy endLocation:v8 coordinateCalculationBlock:v28];
 
     v11 = 0;
   }
@@ -1117,50 +1117,50 @@ LABEL_9:
   return v12;
 }
 
-- (id)transitionLocationsAlongArcBetweenStartLocation:(id)a3 endLocation:(id)a4 forCenterLocation:(id)a5
+- (id)transitionLocationsAlongArcBetweenStartLocation:(id)location endLocation:(id)endLocation forCenterLocation:(id)centerLocation
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v9 timestamp];
-  v12 = [v10 timestamp];
-  [v11 timeIntervalSinceDate:v12];
+  centerLocationCopy = centerLocation;
+  endLocationCopy = endLocation;
+  locationCopy = location;
+  timestamp = [endLocationCopy timestamp];
+  timestamp2 = [locationCopy timestamp];
+  [timestamp timeIntervalSinceDate:timestamp2];
   v14 = v13;
 
   v15 = v14 / 60.0;
   v16 = objc_opt_class();
-  [v8 coordinate];
+  [centerLocationCopy coordinate];
   v18 = v17;
   v20 = v19;
-  [v10 coordinate];
+  [locationCopy coordinate];
   [v16 angleOfLineBetweenCoordinate1:v18 coordinate2:{v20, v21, v22}];
   v24 = v23;
   v25 = objc_opt_class();
-  [v8 coordinate];
+  [centerLocationCopy coordinate];
   v27 = v26;
   v29 = v28;
-  [v9 coordinate];
+  [endLocationCopy coordinate];
   [v25 angleOfLineBetweenCoordinate1:v27 coordinate2:{v29, v30, v31}];
   [objc_opt_class() angleSweptFromStartAngle:v24 ToEndAngle:v32];
   v34 = v33 / v15;
   v35 = objc_opt_class();
-  [v10 coordinate];
+  [locationCopy coordinate];
   v37 = v36;
   v39 = v38;
-  [v8 coordinate];
+  [centerLocationCopy coordinate];
   [v35 latLongDisplacementBetweenCoordinate1:v37 coordinate2:{v39, v40, v41}];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __99__RTSignalGenerator_transitionLocationsAlongArcBetweenStartLocation_endLocation_forCenterLocation___block_invoke;
   aBlock[3] = &unk_2788D0148;
   aBlock[4] = self;
-  v48 = v8;
+  v48 = centerLocationCopy;
   v49 = v42;
   v50 = v24;
   v51 = v34;
-  v43 = v8;
+  v43 = centerLocationCopy;
   v44 = _Block_copy(aBlock);
-  v45 = [(RTSignalGenerator *)self transitionLocationsBetweenStartLocation:v10 endLocation:v9 coordinateCalculationBlock:v44];
+  v45 = [(RTSignalGenerator *)self transitionLocationsBetweenStartLocation:locationCopy endLocation:endLocationCopy coordinateCalculationBlock:v44];
 
   return v45;
 }
@@ -1175,12 +1175,12 @@ uint64_t __99__RTSignalGenerator_transitionLocationsAlongArcBetweenStartLocation
   return [v4 coordinateAtDisplacement:v5 fromCenterCoordinate:v6 atAngle:{v7, v8}];
 }
 
-- (id)transitionLocationsBetweenStartLocation:(id)a3 endLocation:(id)a4 coordinateCalculationBlock:(id)a5
+- (id)transitionLocationsBetweenStartLocation:(id)location endLocation:(id)endLocation coordinateCalculationBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  locationCopy = location;
+  endLocationCopy = endLocation;
+  blockCopy = block;
+  if (!locationCopy)
   {
     v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -1199,7 +1199,7 @@ LABEL_17:
     goto LABEL_10;
   }
 
-  if (!v9)
+  if (!endLocationCopy)
   {
     v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -1213,19 +1213,19 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  [v8 coordinate];
+  [locationCopy coordinate];
   v12 = v11;
-  [v8 coordinate];
+  [locationCopy coordinate];
   v14 = CLLocationCoordinate2DMake(v12, v13);
-  v15 = [v8 timestamp];
-  v16 = [v15 dateByAddingTimeInterval:60.0];
+  timestamp = [locationCopy timestamp];
+  v16 = [timestamp dateByAddingTimeInterval:60.0];
 
-  v34 = v8;
-  v17 = v8;
+  v34 = locationCopy;
+  v17 = locationCopy;
   v18 = 1;
   while (1)
   {
-    v19 = v10[2](v10, v18, v14.latitude, v14.longitude);
+    v19 = blockCopy[2](blockCopy, v18, v14.latitude, v14.longitude);
     v21 = v20;
     v22 = [objc_alloc(MEMORY[0x277CE41F8]) initWithCoordinate:v16 altitude:v19 horizontalAccuracy:v20 verticalAccuracy:0.0 course:10.0 speed:10.0 timestamp:{0.0, 0.0}];
     [v22 distanceFromLocation:v17];
@@ -1241,8 +1241,8 @@ LABEL_17:
     ++v18;
     v26 = [v16 dateByAddingTimeInterval:60.0];
 
-    v27 = [v9 timestamp];
-    v28 = [v26 isBeforeDate:v27];
+    timestamp2 = [endLocationCopy timestamp];
+    v28 = [v26 isBeforeDate:timestamp2];
 
     v16 = v26;
     v17 = v22;
@@ -1258,21 +1258,21 @@ LABEL_17:
   v26 = v16;
 LABEL_12:
 
-  v8 = v34;
+  locationCopy = v34;
 LABEL_13:
 
   return v25;
 }
 
-- (id)locationsForVisit:(id)a3
+- (id)locationsForVisit:(id)visit
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  visitCopy = visit;
+  v4 = visitCopy;
+  if (visitCopy)
   {
-    v5 = [v3 exit];
-    v6 = [v4 entry];
-    [v5 timeIntervalSinceDate:v6];
+    exit = [visitCopy exit];
+    entry = [v4 entry];
+    [exit timeIntervalSinceDate:entry];
     v8 = v7 / 100.0;
 
     if (v8 < 30.0)
@@ -1280,11 +1280,11 @@ LABEL_13:
       v8 = 30.0;
     }
 
-    v47 = [v4 entry];
+    entry2 = [v4 entry];
     while (1)
     {
-      v9 = [v4 location];
-      [v9 horizontalUncertainty];
+      location = [v4 location];
+      [location horizontalUncertainty];
       v11 = arc4random_uniform((v10 * 0.5));
       v12 = v11 * 0.000009;
 
@@ -1294,31 +1294,31 @@ LABEL_13:
       }
 
       v13 = objc_alloc(MEMORY[0x277D01160]);
-      v46 = [v4 location];
-      [v46 latitude];
+      location2 = [v4 location];
+      [location2 latitude];
       v15 = v12 + v14;
-      v16 = [v4 location];
-      [v16 longitude];
+      location3 = [v4 location];
+      [location3 longitude];
       v18 = v12 + v17;
-      v19 = [v4 location];
-      [v19 horizontalUncertainty];
+      location4 = [v4 location];
+      [location4 horizontalUncertainty];
       v21 = v20;
-      v22 = [v4 location];
-      [v22 altitude];
+      location5 = [v4 location];
+      [location5 altitude];
       v24 = v23;
-      v25 = [v4 location];
-      [v25 verticalUncertainty];
+      location6 = [v4 location];
+      [location6 verticalUncertainty];
       v27 = v26;
-      v28 = [v4 location];
-      v29 = [v28 referenceFrame];
-      v30 = [v4 location];
-      [v30 speed];
+      location7 = [v4 location];
+      referenceFrame = [location7 referenceFrame];
+      location8 = [v4 location];
+      [location8 speed];
       v32 = v31;
-      v33 = [v4 location];
-      v34 = [v13 initWithLatitude:v47 longitude:v29 horizontalUncertainty:objc_msgSend(v33 altitude:"sourceAccuracy") verticalUncertainty:v15 date:v18 referenceFrame:v21 speed:v24 sourceAccuracy:{v27, v32}];
+      location9 = [v4 location];
+      v34 = [v13 initWithLatitude:entry2 longitude:referenceFrame horizontalUncertainty:objc_msgSend(location9 altitude:"sourceAccuracy") verticalUncertainty:v15 date:v18 referenceFrame:v21 speed:v24 sourceAccuracy:{v27, v32}];
 
-      v35 = [v4 location];
-      v36 = [v35 sourceAccuracy] == 2;
+      location10 = [v4 location];
+      v36 = [location10 sourceAccuracy] == 2;
 
       v37 = [objc_alloc(MEMORY[0x277CE41F8]) initWithRTLocation:v34 speed:v36 type:0.0];
       v38 = [(RTSignalGenerator *)self addGeneratedLocation:v37 forceInject:0];
@@ -1329,12 +1329,12 @@ LABEL_13:
         break;
       }
 
-      v39 = [v47 dateByAddingTimeInterval:v8];
+      v39 = [entry2 dateByAddingTimeInterval:v8];
 
-      v40 = [v4 exit];
-      v41 = [v39 isOnOrBefore:v40];
+      exit2 = [v4 exit];
+      v41 = [v39 isOnOrBefore:exit2];
 
-      v47 = v39;
+      entry2 = v39;
       if ((v41 & 1) == 0)
       {
         goto LABEL_14;
@@ -1343,7 +1343,7 @@ LABEL_13:
 
     v43 = v38;
 
-    v39 = v47;
+    v39 = entry2;
 LABEL_14:
   }
 
@@ -1362,16 +1362,16 @@ LABEL_14:
   return v38;
 }
 
-+ (void)injectSignalForSignalGeneratorOptions:(id)a3 locationManager:(id)a4 handler:(id)a5
++ (void)injectSignalForSignalGeneratorOptions:(id)options locationManager:(id)manager handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  optionsCopy = options;
+  managerCopy = manager;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v10 = [[RTSignalGenerator alloc] initWithSignalGeneratorOptions:v7 locationManager:v8];
-    v11 = [(RTSignalGenerator *)v10 generateLocations];
-    v9[2](v9, v11);
+    v10 = [[RTSignalGenerator alloc] initWithSignalGeneratorOptions:optionsCopy locationManager:managerCopy];
+    generateLocations = [(RTSignalGenerator *)v10 generateLocations];
+    handlerCopy[2](handlerCopy, generateLocations);
   }
 
   else
@@ -1389,17 +1389,17 @@ LABEL_14:
 {
   v90 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277CE41F8]);
-  v4 = [(RTSignalGeneratorOptions *)self->_signalGeneratorOptions startLocation];
+  startLocation = [(RTSignalGeneratorOptions *)self->_signalGeneratorOptions startLocation];
   [objc_opt_class() minSpeedToFilterHyperParameter];
-  v6 = [v3 initWithRTLocation:v4 speed:v5 * 1.5];
+  v6 = [v3 initWithRTLocation:startLocation speed:v5 * 1.5];
 
   v7 = objc_alloc(MEMORY[0x277CE41F8]);
-  v8 = [(RTSignalGeneratorOptions *)self->_signalGeneratorOptions endLocation];
+  endLocation = [(RTSignalGeneratorOptions *)self->_signalGeneratorOptions endLocation];
   [objc_opt_class() minSpeedToFilterHyperParameter];
-  v10 = [v7 initWithRTLocation:v8 speed:v9 * 1.5];
+  v10 = [v7 initWithRTLocation:endLocation speed:v9 * 1.5];
 
-  v11 = [(RTSignalGeneratorOptions *)self->_signalGeneratorOptions expectedVisits];
-  v12 = [v11 count];
+  expectedVisits = [(RTSignalGeneratorOptions *)self->_signalGeneratorOptions expectedVisits];
+  v12 = [expectedVisits count];
 
   if (!v12)
   {
@@ -1429,18 +1429,18 @@ LABEL_14:
     v84 = 0u;
     v81 = 0u;
     v82 = 0u;
-    v18 = [(RTSignalGeneratorOptions *)self->_signalGeneratorOptions expectedVisits];
+    expectedVisits2 = [(RTSignalGeneratorOptions *)self->_signalGeneratorOptions expectedVisits];
     v19 = v14;
-    v77 = [v18 countByEnumeratingWithState:&v81 objects:v89 count:16];
+    v77 = [expectedVisits2 countByEnumeratingWithState:&v81 objects:v89 count:16];
     if (v77)
     {
       v72 = v14;
       v73 = v10;
       v20 = 0;
       v75 = *v82;
-      v76 = self;
+      selfCopy = self;
       v19 = v14;
-      v74 = v18;
+      v74 = expectedVisits2;
       while (2)
       {
         v21 = 0;
@@ -1450,34 +1450,34 @@ LABEL_14:
         {
           if (*v82 != v75)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(expectedVisits2);
           }
 
           v23 = *(*(&v81 + 1) + 8 * v21);
           v24 = objc_alloc(MEMORY[0x277CE41F8]);
-          v78 = [v23 location];
-          [v78 latitude];
+          location = [v23 location];
+          [location latitude];
           v26 = v25;
-          v27 = [v23 location];
-          [v27 longitude];
+          location2 = [v23 location];
+          [location2 longitude];
           v29 = CLLocationCoordinate2DMake(v26, v28);
-          v30 = [v23 location];
-          [v30 altitude];
+          location3 = [v23 location];
+          [location3 altitude];
           v32 = v31;
-          v33 = [v23 location];
-          [v33 horizontalUncertainty];
+          location4 = [v23 location];
+          [location4 horizontalUncertainty];
           v35 = v34;
-          v36 = [v23 location];
-          [v36 verticalUncertainty];
+          location5 = [v23 location];
+          [location5 verticalUncertainty];
           v38 = v37;
           [objc_opt_class() minSpeedToFilterHyperParameter];
           v40 = v39 * 1.5;
-          v41 = [v23 entry];
-          v42 = [v24 initWithCoordinate:v41 altitude:v29.latitude horizontalAccuracy:v29.longitude verticalAccuracy:v32 course:v35 speed:v38 timestamp:{0.0, v40}];
+          entry = [v23 entry];
+          v42 = [v24 initWithCoordinate:entry altitude:v29.latitude horizontalAccuracy:v29.longitude verticalAccuracy:v32 course:v35 speed:v38 timestamp:{0.0, v40}];
 
           v79 = v42;
-          v43 = [(RTSignalGenerator *)v76 transitionLocationsBetweenStartLocation:v80 endLocation:v42];
-          if (v43 || ([(RTSignalGenerator *)v76 locationsForVisit:v23], (v43 = objc_claimAutoreleasedReturnValue()) != 0))
+          v43 = [(RTSignalGenerator *)selfCopy transitionLocationsBetweenStartLocation:v80 endLocation:v42];
+          if (v43 || ([(RTSignalGenerator *)selfCopy locationsForVisit:v23], (v43 = objc_claimAutoreleasedReturnValue()) != 0))
           {
             v16 = v43;
 
@@ -1488,31 +1488,31 @@ LABEL_14:
           }
 
           v44 = objc_alloc(MEMORY[0x277CE41F8]);
-          v45 = [v23 location];
-          [v45 latitude];
+          location6 = [v23 location];
+          [location6 latitude];
           v47 = v46;
-          v48 = [v23 location];
-          [v48 longitude];
+          location7 = [v23 location];
+          [location7 longitude];
           v50 = CLLocationCoordinate2DMake(v47, v49);
-          v51 = [v23 location];
-          [v51 altitude];
+          location8 = [v23 location];
+          [location8 altitude];
           v53 = v52;
-          v54 = [v23 location];
-          [v54 horizontalUncertainty];
+          location9 = [v23 location];
+          [location9 horizontalUncertainty];
           v56 = v55;
-          v57 = [v23 location];
-          [v57 verticalUncertainty];
+          location10 = [v23 location];
+          [location10 verticalUncertainty];
           v59 = v58;
           [objc_opt_class() minSpeedToFilterHyperParameter];
           v61 = v60 * 1.5;
-          v62 = [v23 exit];
-          v19 = [v44 initWithCoordinate:v62 altitude:v50.latitude horizontalAccuracy:v50.longitude verticalAccuracy:v53 course:v56 speed:v59 timestamp:{0.0, v61}];
+          exit = [v23 exit];
+          v19 = [v44 initWithCoordinate:exit altitude:v50.latitude horizontalAccuracy:v50.longitude verticalAccuracy:v53 course:v56 speed:v59 timestamp:{0.0, v61}];
 
           ++v21;
           v20 = v79;
           v22 = v79;
           v80 = v19;
-          v18 = v74;
+          expectedVisits2 = v74;
         }
 
         while (v77 != v21);
@@ -1527,7 +1527,7 @@ LABEL_14:
 
       v14 = v72;
       v10 = v73;
-      self = v76;
+      self = selfCopy;
     }
 
     v63 = v10;

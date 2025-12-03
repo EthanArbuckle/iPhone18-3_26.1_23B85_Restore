@@ -10,23 +10,23 @@
   v2 = [MEMORY[0x1E695DFF8] fileURLWithPath:?];
   if (v2)
   {
-    v3 = [a1 ic_temporaryDirectoryAppropriateForDestination:v2];
-    v4 = [v3 path];
+    v3 = [self ic_temporaryDirectoryAppropriateForDestination:v2];
+    path = [v3 path];
   }
 
   else
   {
-    v4 = 0;
+    path = 0;
   }
 
-  return v4;
+  return path;
 }
 
 - (id)ic_temporaryDirectoryAppropriateForDestination:()IC
 {
   v4 = a3;
   v9 = 0;
-  v5 = [a1 URLForDirectory:99 inDomain:1 appropriateForURL:v4 create:1 error:&v9];
+  v5 = [self URLForDirectory:99 inDomain:1 appropriateForURL:v4 create:1 error:&v9];
   v6 = v9;
   if (v6)
   {

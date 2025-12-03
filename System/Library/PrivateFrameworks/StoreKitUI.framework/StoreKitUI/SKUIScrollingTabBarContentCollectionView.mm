@@ -1,5 +1,5 @@
 @interface SKUIScrollingTabBarContentCollectionView
-- (void)_reuseCell:(id)a3;
+- (void)_reuseCell:(id)cell;
 - (void)layoutSubviews;
 @end
 
@@ -12,15 +12,15 @@
   v1 = "[SKUIScrollingTabBarContentCollectionView layoutSubviews]";
 }
 
-- (void)_reuseCell:(id)a3
+- (void)_reuseCell:(id)cell
 {
-  v6 = a3;
-  [v6 removeFromSuperview];
-  v4 = [(SKUIScrollingTabBarContentCollectionView *)self delegate];
+  cellCopy = cell;
+  [cellCopy removeFromSuperview];
+  delegate = [(SKUIScrollingTabBarContentCollectionView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v6 indexPath];
-    [v4 collectionView:self didEndDisplayingCell:v6 forItemAtIndexPath:v5];
+    indexPath = [cellCopy indexPath];
+    [delegate collectionView:self didEndDisplayingCell:cellCopy forItemAtIndexPath:indexPath];
   }
 }
 

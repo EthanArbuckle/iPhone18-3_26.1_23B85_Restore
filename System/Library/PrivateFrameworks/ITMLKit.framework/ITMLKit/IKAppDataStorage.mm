@@ -1,35 +1,35 @@
 @interface IKAppDataStorage
-- (IKAppDataStorage)initWithFilePath:(id)a3 identifier:(id)a4;
+- (IKAppDataStorage)initWithFilePath:(id)path identifier:(id)identifier;
 - (id)dictionaryRepresentation;
-- (id)getDataForKey:(id)a3;
-- (id)keyAtIndex:(unint64_t)a3;
+- (id)getDataForKey:(id)key;
+- (id)keyAtIndex:(unint64_t)index;
 - (unint64_t)count;
-- (unint64_t)setData:(id)a3 forKey:(id)a4;
-- (void)_saveDict:(id)a3;
+- (unint64_t)setData:(id)data forKey:(id)key;
+- (void)_saveDict:(id)dict;
 - (void)clear;
-- (void)removeDataForKey:(id)a3;
+- (void)removeDataForKey:(id)key;
 @end
 
 @implementation IKAppDataStorage
 
-- (IKAppDataStorage)initWithFilePath:(id)a3 identifier:(id)a4
+- (IKAppDataStorage)initWithFilePath:(id)path identifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  identifierCopy = identifier;
   if (initWithFilePath_identifier__onceToken != -1)
   {
     [IKAppDataStorage initWithFilePath:identifier:];
-    if (v7)
+    if (pathCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_14:
-    v20 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
-  if (!v7)
+  if (!pathCopy)
   {
     goto LABEL_14;
   }
@@ -41,15 +41,15 @@ LABEL_3:
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a4);
-    objc_storeStrong(&v10->_filePath, a3);
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeStrong(&v10->_filePath, path);
     v10->_format = 200;
     v11 = objc_opt_new();
     storageDict = v10->_storageDict;
     v10->_storageDict = v11;
 
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_Storage_Queue", v8];
-    v14 = dispatch_queue_create([v13 UTF8String], 0);
+    identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_Storage_Queue", identifierCopy];
+    v14 = dispatch_queue_create([identifierCopy UTF8String], 0);
     storageQueue = v10->_storageQueue;
     v10->_storageQueue = v14;
 
@@ -76,10 +76,10 @@ LABEL_3:
   }
 
   self = v10;
-  v20 = self;
+  selfCopy = self;
 LABEL_15:
 
-  return v20;
+  return selfCopy;
 }
 
 uint64_t __48__IKAppDataStorage_initWithFilePath_identifier___block_invoke()
@@ -95,14 +95,14 @@ uint64_t __48__IKAppDataStorage_initWithFilePath_identifier___block_invoke()
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(IKAppDataStorage *)self storageQueue];
+  storageQueue = [(IKAppDataStorage *)self storageQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __25__IKAppDataStorage_count__block_invoke;
   v6[3] = &unk_2797997E0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(storageQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -115,7 +115,7 @@ void __25__IKAppDataStorage_count__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v2 count];
 }
 
-- (id)keyAtIndex:(unint64_t)a3
+- (id)keyAtIndex:(unint64_t)index
 {
   v9 = 0;
   v10 = &v9;
@@ -123,15 +123,15 @@ void __25__IKAppDataStorage_count__block_invoke(uint64_t a1)
   v12 = __Block_byref_object_copy__3;
   v13 = __Block_byref_object_dispose__3;
   v14 = 0;
-  v5 = [(IKAppDataStorage *)self storageQueue];
+  storageQueue = [(IKAppDataStorage *)self storageQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __31__IKAppDataStorage_keyAtIndex___block_invoke;
   block[3] = &unk_279799808;
   block[5] = &v9;
-  block[6] = a3;
+  block[6] = index;
   block[4] = self;
-  dispatch_sync(v5, block);
+  dispatch_sync(storageQueue, block);
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -156,26 +156,26 @@ void __31__IKAppDataStorage_keyAtIndex___block_invoke(uint64_t a1)
   }
 }
 
-- (id)getDataForKey:(id)a3
+- (id)getDataForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__3;
   v15 = __Block_byref_object_dispose__3;
   v16 = 0;
-  if ([v4 length])
+  if ([keyCopy length])
   {
-    v5 = [(IKAppDataStorage *)self storageQueue];
+    storageQueue = [(IKAppDataStorage *)self storageQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __34__IKAppDataStorage_getDataForKey___block_invoke;
     block[3] = &unk_279799830;
     v10 = &v11;
     block[4] = self;
-    v9 = v4;
-    dispatch_sync(v5, block);
+    v9 = keyCopy;
+    dispatch_sync(storageQueue, block);
   }
 
   v6 = v12[5];
@@ -193,21 +193,21 @@ void __34__IKAppDataStorage_getDataForKey___block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (unint64_t)setData:(id)a3 forKey:(id)a4
+- (unint64_t)setData:(id)data forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 length] && objc_msgSend(v6, "length"))
+  dataCopy = data;
+  keyCopy = key;
+  if ([keyCopy length] && objc_msgSend(dataCopy, "length"))
   {
-    v8 = [(IKAppDataStorage *)self storageQueue];
+    storageQueue = [(IKAppDataStorage *)self storageQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __35__IKAppDataStorage_setData_forKey___block_invoke;
     block[3] = &unk_279799858;
     block[4] = self;
-    v11 = v6;
-    v12 = v7;
-    dispatch_async(v8, block);
+    v11 = dataCopy;
+    v12 = keyCopy;
+    dispatch_async(storageQueue, block);
   }
 
   return 0;
@@ -224,19 +224,19 @@ void __35__IKAppDataStorage_setData_forKey___block_invoke(uint64_t a1)
   [v3 _saveDict:v4];
 }
 
-- (void)removeDataForKey:(id)a3
+- (void)removeDataForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 length])
+  keyCopy = key;
+  if ([keyCopy length])
   {
-    v5 = [(IKAppDataStorage *)self storageQueue];
+    storageQueue = [(IKAppDataStorage *)self storageQueue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __37__IKAppDataStorage_removeDataForKey___block_invoke;
     v6[3] = &unk_279799880;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = keyCopy;
+    dispatch_async(storageQueue, v6);
   }
 }
 
@@ -259,13 +259,13 @@ void __37__IKAppDataStorage_removeDataForKey___block_invoke(uint64_t a1)
 
 - (void)clear
 {
-  v3 = [(IKAppDataStorage *)self storageQueue];
+  storageQueue = [(IKAppDataStorage *)self storageQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __25__IKAppDataStorage_clear__block_invoke;
   block[3] = &unk_279799488;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(storageQueue, block);
 }
 
 void __25__IKAppDataStorage_clear__block_invoke(uint64_t a1)
@@ -287,14 +287,14 @@ void __25__IKAppDataStorage_clear__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__3;
   v11 = __Block_byref_object_dispose__3;
   v12 = 0;
-  v3 = [(IKAppDataStorage *)self storageQueue];
+  storageQueue = [(IKAppDataStorage *)self storageQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __44__IKAppDataStorage_dictionaryRepresentation__block_invoke;
   v6[3] = &unk_2797997E0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(storageQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -311,9 +311,9 @@ void __44__IKAppDataStorage_dictionaryRepresentation__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)_saveDict:(id)a3
+- (void)_saveDict:(id)dict
 {
-  v4 = a3;
+  dictCopy = dict;
   objc_initWeak(&location, self);
   v5 = sStorageWriteQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -321,8 +321,8 @@ void __44__IKAppDataStorage_dictionaryRepresentation__block_invoke(uint64_t a1)
   block[2] = __30__IKAppDataStorage__saveDict___block_invoke;
   block[3] = &unk_2797998A8;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = dictCopy;
+  v6 = dictCopy;
   dispatch_async(v5, block);
 
   objc_destroyWeak(&v9);

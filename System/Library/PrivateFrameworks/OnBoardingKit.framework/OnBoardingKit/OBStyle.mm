@@ -1,13 +1,13 @@
 @interface OBStyle
-+ (CGSize)sheetSizeForParentWindowSize:(CGSize)a3;
++ (CGSize)sheetSizeForParentWindowSize:(CGSize)size;
 @end
 
 @implementation OBStyle
 
-+ (CGSize)sheetSizeForParentWindowSize:(CGSize)a3
++ (CGSize)sheetSizeForParentWindowSize:(CGSize)size
 {
-  v3 = a3.height == *(MEMORY[0x1E695F060] + 8) && a3.width == *MEMORY[0x1E695F060];
-  v4 = fmax(a3.height * 0.88, 546.0);
+  v3 = size.height == *(MEMORY[0x1E695F060] + 8) && size.width == *MEMORY[0x1E695F060];
+  v4 = fmax(size.height * 0.88, 546.0);
   if (v3)
   {
     v4 = 546.0;

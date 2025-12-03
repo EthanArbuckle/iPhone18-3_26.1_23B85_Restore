@@ -1,21 +1,21 @@
 @interface LCFProactivePredictionRankerHolder
-- (id)init:(id)a3 prediction:(id)a4;
+- (id)init:(id)init prediction:(id)prediction;
 @end
 
 @implementation LCFProactivePredictionRankerHolder
 
-- (id)init:(id)a3 prediction:(id)a4
+- (id)init:(id)init prediction:(id)prediction
 {
-  v7 = a3;
-  v8 = a4;
+  initCopy = init;
+  predictionCopy = prediction;
   v12.receiver = self;
   v12.super_class = LCFProactivePredictionRankerHolder;
   v9 = [(LCFProactivePredictionRankerHolder *)&v12 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_featureSet, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v9->_featureSet, init);
+    objc_storeStrong(p_isa + 2, prediction);
   }
 
   return p_isa;

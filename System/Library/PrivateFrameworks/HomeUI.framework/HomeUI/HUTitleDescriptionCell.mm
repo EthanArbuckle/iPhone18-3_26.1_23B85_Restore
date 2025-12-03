@@ -1,46 +1,46 @@
 @interface HUTitleDescriptionCell
-- (HUTitleDescriptionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HUTitleDescriptionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UILabel)descriptionLabel;
 - (UILabel)titleLabel;
-- (id)_verticalConstraintsForContentSubview:(id)a3;
+- (id)_verticalConstraintsForContentSubview:(id)subview;
 - (id)verticalContentBottomAnchor;
 - (id)verticalContentTopAnchor;
 - (void)_addDescriptionIconView;
 - (void)_addDescriptionLabel;
 - (void)_addTitleLabel;
 - (void)prepareForReuse;
-- (void)setDescriptionFont:(id)a3;
-- (void)setDescriptionIcon:(id)a3;
-- (void)setDescriptionText:(id)a3;
-- (void)setDisabled:(BOOL)a3;
-- (void)setHideDescription:(BOOL)a3;
-- (void)setHideDescriptionIcon:(BOOL)a3;
-- (void)setHideTitle:(BOOL)a3;
-- (void)setTitleFont:(id)a3;
-- (void)setTitleText:(id)a3;
+- (void)setDescriptionFont:(id)font;
+- (void)setDescriptionIcon:(id)icon;
+- (void)setDescriptionText:(id)text;
+- (void)setDisabled:(BOOL)disabled;
+- (void)setHideDescription:(BOOL)description;
+- (void)setHideDescriptionIcon:(BOOL)icon;
+- (void)setHideTitle:(BOOL)title;
+- (void)setTitleFont:(id)font;
+- (void)setTitleText:(id)text;
 - (void)updateConstraints;
 - (void)updateHorizontalLabelConstraints;
 - (void)updateTitle;
-- (void)updateUIWithAnimation:(BOOL)a3;
+- (void)updateUIWithAnimation:(BOOL)animation;
 - (void)updateVerticalLabelConstraints;
 @end
 
 @implementation HUTitleDescriptionCell
 
-- (HUTitleDescriptionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HUTitleDescriptionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v10.receiver = self;
   v10.super_class = HUTitleDescriptionCell;
-  v4 = [(HUIconCell *)&v10 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HUIconCell *)&v10 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
-    v5 = [objc_opt_class() defaultTitleFont];
+    defaultTitleFont = [objc_opt_class() defaultTitleFont];
     titleFont = v4->_titleFont;
-    v4->_titleFont = v5;
+    v4->_titleFont = defaultTitleFont;
 
-    v7 = [objc_opt_class() defaultDescriptionFont];
+    defaultDescriptionFont = [objc_opt_class() defaultDescriptionFont];
     descriptionFont = v4->_descriptionFont;
-    v4->_descriptionFont = v7;
+    v4->_descriptionFont = defaultDescriptionFont;
 
     v4->_textAlpha = 1.0;
     v4->_titleLabelBottomPadding = 0.0;
@@ -63,14 +63,14 @@
   [(HUIconCell *)&v5 prepareForReuse];
   [(HUTitleDescriptionCell *)self setHideTitle:0];
   [(HUTitleDescriptionCell *)self setTitleText:0];
-  v3 = [objc_opt_class() defaultTitleFont];
-  [(HUTitleDescriptionCell *)self setTitleFont:v3];
+  defaultTitleFont = [objc_opt_class() defaultTitleFont];
+  [(HUTitleDescriptionCell *)self setTitleFont:defaultTitleFont];
 
   [(HUTitleDescriptionCell *)self updateTitle];
   [(HUTitleDescriptionCell *)self setHideDescription:0];
   [(HUTitleDescriptionCell *)self setDescriptionText:0];
-  v4 = [objc_opt_class() defaultDescriptionFont];
-  [(HUTitleDescriptionCell *)self setDescriptionFont:v4];
+  defaultDescriptionFont = [objc_opt_class() defaultDescriptionFont];
+  [(HUTitleDescriptionCell *)self setDescriptionFont:defaultDescriptionFont];
 
   [(HUTitleDescriptionCell *)self setHideDescriptionIcon:1];
   [(HUTitleDescriptionCell *)self setDescriptionIcon:0];
@@ -89,28 +89,28 @@
   return titleLabel;
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  objc_storeStrong(&self->_titleText, a3);
-  v5 = a3;
-  v6 = [(HUTitleDescriptionCell *)self titleLabel];
-  [v6 setText:v5];
+  objc_storeStrong(&self->_titleText, text);
+  textCopy = text;
+  titleLabel = [(HUTitleDescriptionCell *)self titleLabel];
+  [titleLabel setText:textCopy];
 }
 
-- (void)setTitleFont:(id)a3
+- (void)setTitleFont:(id)font
 {
-  objc_storeStrong(&self->_titleFont, a3);
-  v5 = a3;
-  v6 = [(HUTitleDescriptionCell *)self titleLabel];
-  [v6 setFont:v5];
+  objc_storeStrong(&self->_titleFont, font);
+  fontCopy = font;
+  titleLabel = [(HUTitleDescriptionCell *)self titleLabel];
+  [titleLabel setFont:fontCopy];
 }
 
-- (void)setHideTitle:(BOOL)a3
+- (void)setHideTitle:(BOOL)title
 {
-  if (self->_hideTitle != a3)
+  if (self->_hideTitle != title)
   {
-    self->_hideTitle = a3;
-    if (a3)
+    self->_hideTitle = title;
+    if (title)
     {
       [(UILabel *)self->_titleLabel removeFromSuperview];
     }
@@ -136,28 +136,28 @@
   return descriptionLabel;
 }
 
-- (void)setDescriptionText:(id)a3
+- (void)setDescriptionText:(id)text
 {
-  objc_storeStrong(&self->_descriptionText, a3);
-  v5 = a3;
-  v6 = [(HUTitleDescriptionCell *)self descriptionLabel];
-  [v6 setText:v5];
+  objc_storeStrong(&self->_descriptionText, text);
+  textCopy = text;
+  descriptionLabel = [(HUTitleDescriptionCell *)self descriptionLabel];
+  [descriptionLabel setText:textCopy];
 }
 
-- (void)setDescriptionFont:(id)a3
+- (void)setDescriptionFont:(id)font
 {
-  objc_storeStrong(&self->_descriptionFont, a3);
-  v5 = a3;
-  v6 = [(HUTitleDescriptionCell *)self descriptionLabel];
-  [v6 setFont:v5];
+  objc_storeStrong(&self->_descriptionFont, font);
+  fontCopy = font;
+  descriptionLabel = [(HUTitleDescriptionCell *)self descriptionLabel];
+  [descriptionLabel setFont:fontCopy];
 }
 
-- (void)setHideDescription:(BOOL)a3
+- (void)setHideDescription:(BOOL)description
 {
-  if (self->_hideDescription != a3)
+  if (self->_hideDescription != description)
   {
-    self->_hideDescription = a3;
-    if (a3)
+    self->_hideDescription = description;
+    if (description)
     {
       [(UILabel *)self->_descriptionLabel removeFromSuperview];
       [(HUTitleDescriptionCell *)self setHideDescriptionIcon:1];
@@ -172,16 +172,16 @@
   }
 }
 
-- (void)setDescriptionIcon:(id)a3
+- (void)setDescriptionIcon:(id)icon
 {
-  v8 = a3;
-  objc_storeStrong(&self->_descriptionIcon, a3);
-  v5 = v8;
+  iconCopy = icon;
+  objc_storeStrong(&self->_descriptionIcon, icon);
+  v5 = iconCopy;
   if (!self->_hideDescriptionIcon)
   {
-    if (v8)
+    if (iconCopy)
     {
-      v6 = [v8 imageWithRenderingMode:2];
+      v6 = [iconCopy imageWithRenderingMode:2];
     }
 
     else
@@ -189,19 +189,19 @@
       v6 = 0;
     }
 
-    v7 = [(HUTitleDescriptionCell *)self descriptionIconView];
-    [v7 setImage:v6];
+    descriptionIconView = [(HUTitleDescriptionCell *)self descriptionIconView];
+    [descriptionIconView setImage:v6];
 
-    v5 = v8;
+    v5 = iconCopy;
   }
 }
 
-- (void)setHideDescriptionIcon:(BOOL)a3
+- (void)setHideDescriptionIcon:(BOOL)icon
 {
-  if (self->_hideDescriptionIcon != a3)
+  if (self->_hideDescriptionIcon != icon)
   {
-    self->_hideDescriptionIcon = a3;
-    if (a3)
+    self->_hideDescriptionIcon = icon;
+    if (icon)
     {
       [(UIImageView *)self->_descriptionIconView removeFromSuperview];
     }
@@ -215,22 +215,22 @@
   }
 }
 
-- (void)setDisabled:(BOOL)a3
+- (void)setDisabled:(BOOL)disabled
 {
-  v3 = a3;
+  disabledCopy = disabled;
   v5.receiver = self;
   v5.super_class = HUTitleDescriptionCell;
   [(HUIconCell *)&v5 setDisabled:?];
   [(HUTitleDescriptionCell *)self updateTitle];
   [(HUTitleDescriptionCell *)self setAdjustsTextColorWhenDisabled:1];
-  [(HUTitleDescriptionCell *)self setUserInteractionEnabled:!v3];
+  [(HUTitleDescriptionCell *)self setUserInteractionEnabled:!disabledCopy];
 }
 
 - (void)updateConstraints
 {
-  v3 = [(UILabel *)self->_titleLabel traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v4))
+  traitCollection = [(UILabel *)self->_titleLabel traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     v5 = 0;
   }
@@ -240,12 +240,12 @@
     v5 = 2;
   }
 
-  v6 = [(HUTitleDescriptionCell *)self titleLabel];
-  [v6 setNumberOfLines:v5];
+  titleLabel = [(HUTitleDescriptionCell *)self titleLabel];
+  [titleLabel setNumberOfLines:v5];
 
-  v7 = [(UILabel *)self->_descriptionLabel traitCollection];
-  v8 = [v7 preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v8))
+  traitCollection2 = [(UILabel *)self->_descriptionLabel traitCollection];
+  preferredContentSizeCategory2 = [traitCollection2 preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory2))
   {
     v9 = 0;
   }
@@ -255,14 +255,14 @@
     v9 = 2;
   }
 
-  v10 = [(HUTitleDescriptionCell *)self descriptionLabel];
-  [v10 setNumberOfLines:v9];
+  descriptionLabel = [(HUTitleDescriptionCell *)self descriptionLabel];
+  [descriptionLabel setNumberOfLines:v9];
 
   [(HUTitleDescriptionCell *)self updateVerticalLabelConstraints];
   [(HUTitleDescriptionCell *)self updateHorizontalLabelConstraints];
-  v11 = [(HUTitleDescriptionCell *)self traitCollection];
-  v12 = [v11 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v12);
+  traitCollection3 = [(HUTitleDescriptionCell *)self traitCollection];
+  preferredContentSizeCategory3 = [traitCollection3 preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory3);
 
   if (IsAccessibilityCategory)
   {
@@ -293,53 +293,53 @@
 
 - (id)verticalContentTopAnchor
 {
-  v2 = [(HUIconCell *)self containerView];
-  v3 = [v2 topAnchor];
+  containerView = [(HUIconCell *)self containerView];
+  topAnchor = [containerView topAnchor];
 
-  return v3;
+  return topAnchor;
 }
 
 - (id)verticalContentBottomAnchor
 {
-  v2 = [(HUIconCell *)self containerView];
-  v3 = [v2 bottomAnchor];
+  containerView = [(HUIconCell *)self containerView];
+  bottomAnchor = [containerView bottomAnchor];
 
-  return v3;
+  return bottomAnchor;
 }
 
-- (id)_verticalConstraintsForContentSubview:(id)a3
+- (id)_verticalConstraintsForContentSubview:(id)subview
 {
   v26[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(UILabel *)self->_descriptionLabel text];
+  subviewCopy = subview;
+  text = [(UILabel *)self->_descriptionLabel text];
 
-  if (v5)
+  if (text)
   {
-    v6 = [v4 superview];
-    v7 = [(HUTitleDescriptionCell *)self contentView];
-    v8 = [v6 isEqual:v7];
+    superview = [subviewCopy superview];
+    contentView = [(HUTitleDescriptionCell *)self contentView];
+    v8 = [superview isEqual:contentView];
 
     if ((v8 & 1) == 0)
     {
       NSLog(&cfstr_NotAContentvie.isa);
     }
 
-    v23 = [v4 topAnchor];
-    v24 = [(HUTitleDescriptionCell *)self contentView];
-    v22 = [v24 layoutMarginsGuide];
-    v21 = [v22 topAnchor];
-    v20 = [v23 constraintGreaterThanOrEqualToAnchor:v21];
+    topAnchor = [subviewCopy topAnchor];
+    contentView2 = [(HUTitleDescriptionCell *)self contentView];
+    layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide topAnchor];
+    v20 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
     v26[0] = v20;
-    v19 = [v4 bottomAnchor];
-    v9 = [(HUTitleDescriptionCell *)self contentView];
-    v10 = [v9 layoutMarginsGuide];
-    v11 = [v10 bottomAnchor];
-    v12 = [v19 constraintLessThanOrEqualToAnchor:v11];
+    bottomAnchor = [subviewCopy bottomAnchor];
+    contentView3 = [(HUTitleDescriptionCell *)self contentView];
+    layoutMarginsGuide2 = [contentView3 layoutMarginsGuide];
+    bottomAnchor2 = [layoutMarginsGuide2 bottomAnchor];
+    v12 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
     v26[1] = v12;
-    v13 = [v4 centerYAnchor];
-    v14 = [(HUTitleDescriptionCell *)self contentView];
-    v15 = [v14 centerYAnchor];
-    v16 = [v13 constraintEqualToAnchor:v15];
+    centerYAnchor = [subviewCopy centerYAnchor];
+    contentView4 = [(HUTitleDescriptionCell *)self contentView];
+    centerYAnchor2 = [contentView4 centerYAnchor];
+    v16 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v26[2] = v16;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:3];
   }
@@ -348,7 +348,7 @@
   {
     v25.receiver = self;
     v25.super_class = HUTitleDescriptionCell;
-    v17 = [(HUIconCell *)&v25 _verticalConstraintsForContentSubview:v4];
+    v17 = [(HUIconCell *)&v25 _verticalConstraintsForContentSubview:subviewCopy];
   }
 
   return v17;
@@ -357,225 +357,225 @@
 - (void)updateVerticalLabelConstraints
 {
   v3 = MEMORY[0x277CCAAD0];
-  v4 = [(HUTitleDescriptionCell *)self verticalLabelConstraints];
-  [v3 deactivateConstraints:v4];
+  verticalLabelConstraints = [(HUTitleDescriptionCell *)self verticalLabelConstraints];
+  [v3 deactivateConstraints:verticalLabelConstraints];
 
-  v39 = [MEMORY[0x277CBEB18] array];
-  v5 = [(UILabel *)self->_titleLabel superview];
+  array = [MEMORY[0x277CBEB18] array];
+  superview = [(UILabel *)self->_titleLabel superview];
 
-  if (v5)
+  if (superview)
   {
-    v6 = [(HUTitleDescriptionCell *)self titleLabel];
-    v7 = [v6 topAnchor];
-    v8 = [(HUTitleDescriptionCell *)self verticalContentTopAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
-    [v39 addObject:v9];
+    titleLabel = [(HUTitleDescriptionCell *)self titleLabel];
+    topAnchor = [titleLabel topAnchor];
+    verticalContentTopAnchor = [(HUTitleDescriptionCell *)self verticalContentTopAnchor];
+    v9 = [topAnchor constraintEqualToAnchor:verticalContentTopAnchor];
+    [array addObject:v9];
 
-    v10 = [(UILabel *)self->_descriptionLabel superview];
+    superview2 = [(UILabel *)self->_descriptionLabel superview];
 
-    if (!v10)
+    if (!superview2)
     {
-      v11 = [(HUTitleDescriptionCell *)self titleLabel];
-      v12 = [v11 bottomAnchor];
-      v13 = [(HUTitleDescriptionCell *)self verticalContentBottomAnchor];
-      v14 = [v12 constraintEqualToAnchor:v13];
-      [v39 addObject:v14];
+      titleLabel2 = [(HUTitleDescriptionCell *)self titleLabel];
+      bottomAnchor = [titleLabel2 bottomAnchor];
+      verticalContentBottomAnchor = [(HUTitleDescriptionCell *)self verticalContentBottomAnchor];
+      v14 = [bottomAnchor constraintEqualToAnchor:verticalContentBottomAnchor];
+      [array addObject:v14];
     }
   }
 
-  v15 = [(UILabel *)self->_descriptionLabel superview];
+  superview3 = [(UILabel *)self->_descriptionLabel superview];
 
-  if (v15)
+  if (superview3)
   {
-    v16 = [(UILabel *)self->_titleLabel superview];
+    superview4 = [(UILabel *)self->_titleLabel superview];
 
-    v17 = [(HUTitleDescriptionCell *)self descriptionLabel];
-    v18 = [v17 topAnchor];
-    if (v16)
+    descriptionLabel = [(HUTitleDescriptionCell *)self descriptionLabel];
+    topAnchor2 = [descriptionLabel topAnchor];
+    if (superview4)
     {
-      v19 = [(UILabel *)self->_titleLabel bottomAnchor];
+      bottomAnchor2 = [(UILabel *)self->_titleLabel bottomAnchor];
       [(HUTitleDescriptionCell *)self titleLabelBottomPadding];
-      [v18 constraintEqualToAnchor:v19 constant:?];
+      [topAnchor2 constraintEqualToAnchor:bottomAnchor2 constant:?];
     }
 
     else
     {
-      v19 = [(HUTitleDescriptionCell *)self verticalContentTopAnchor];
-      [v18 constraintEqualToAnchor:v19];
+      bottomAnchor2 = [(HUTitleDescriptionCell *)self verticalContentTopAnchor];
+      [topAnchor2 constraintEqualToAnchor:bottomAnchor2];
     }
     v20 = ;
-    [v39 addObject:v20];
+    [array addObject:v20];
 
-    v21 = [(HUTitleDescriptionCell *)self descriptionLabel];
-    v22 = [v21 bottomAnchor];
-    v23 = [(HUTitleDescriptionCell *)self verticalContentBottomAnchor];
+    descriptionLabel2 = [(HUTitleDescriptionCell *)self descriptionLabel];
+    bottomAnchor3 = [descriptionLabel2 bottomAnchor];
+    verticalContentBottomAnchor2 = [(HUTitleDescriptionCell *)self verticalContentBottomAnchor];
     [(HUTitleDescriptionCell *)self containerViewBottomPadding];
-    v25 = [v22 constraintEqualToAnchor:v23 constant:-v24];
-    [v39 addObject:v25];
+    v25 = [bottomAnchor3 constraintEqualToAnchor:verticalContentBottomAnchor2 constant:-v24];
+    [array addObject:v25];
 
-    v26 = [(UIImageView *)self->_descriptionIconView superview];
+    superview5 = [(UIImageView *)self->_descriptionIconView superview];
 
-    if (v26)
+    if (superview5)
     {
-      v27 = [(HUTitleDescriptionCell *)self descriptionIconView];
-      v28 = [v27 topAnchor];
-      v29 = [(HUTitleDescriptionCell *)self descriptionLabel];
-      v30 = [v29 topAnchor];
-      v31 = [v28 constraintEqualToAnchor:v30];
-      [v39 addObject:v31];
+      descriptionIconView = [(HUTitleDescriptionCell *)self descriptionIconView];
+      topAnchor3 = [descriptionIconView topAnchor];
+      descriptionLabel3 = [(HUTitleDescriptionCell *)self descriptionLabel];
+      topAnchor4 = [descriptionLabel3 topAnchor];
+      v31 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
+      [array addObject:v31];
 
-      v32 = [(HUTitleDescriptionCell *)self descriptionIconView];
-      v33 = [v32 bottomAnchor];
-      v34 = [(HUTitleDescriptionCell *)self descriptionLabel];
-      v35 = [v34 bottomAnchor];
-      v36 = [v33 constraintEqualToAnchor:v35];
-      [v39 addObject:v36];
+      descriptionIconView2 = [(HUTitleDescriptionCell *)self descriptionIconView];
+      bottomAnchor4 = [descriptionIconView2 bottomAnchor];
+      descriptionLabel4 = [(HUTitleDescriptionCell *)self descriptionLabel];
+      bottomAnchor5 = [descriptionLabel4 bottomAnchor];
+      v36 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
+      [array addObject:v36];
     }
   }
 
-  [(HUTitleDescriptionCell *)self setVerticalLabelConstraints:v39];
+  [(HUTitleDescriptionCell *)self setVerticalLabelConstraints:array];
   v37 = MEMORY[0x277CCAAD0];
-  v38 = [(HUTitleDescriptionCell *)self verticalLabelConstraints];
-  [v37 activateConstraints:v38];
+  verticalLabelConstraints2 = [(HUTitleDescriptionCell *)self verticalLabelConstraints];
+  [v37 activateConstraints:verticalLabelConstraints2];
 }
 
 - (void)updateHorizontalLabelConstraints
 {
   v3 = MEMORY[0x277CCAAD0];
-  v4 = [(HUTitleDescriptionCell *)self horizontalLabelConstraints];
-  [v3 deactivateConstraints:v4];
+  horizontalLabelConstraints = [(HUTitleDescriptionCell *)self horizontalLabelConstraints];
+  [v3 deactivateConstraints:horizontalLabelConstraints];
 
-  v42 = [MEMORY[0x277CBEB18] array];
-  v5 = [(UILabel *)self->_titleLabel superview];
+  array = [MEMORY[0x277CBEB18] array];
+  superview = [(UILabel *)self->_titleLabel superview];
 
-  if (v5)
+  if (superview)
   {
-    v6 = [(HUTitleDescriptionCell *)self titleLabel];
-    v7 = [v6 leadingAnchor];
-    v8 = [(HUIconCell *)self containerView];
-    v9 = [v8 leadingAnchor];
-    v10 = [v7 constraintEqualToAnchor:v9];
-    [v42 addObject:v10];
+    titleLabel = [(HUTitleDescriptionCell *)self titleLabel];
+    leadingAnchor = [titleLabel leadingAnchor];
+    containerView = [(HUIconCell *)self containerView];
+    leadingAnchor2 = [containerView leadingAnchor];
+    v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+    [array addObject:v10];
 
-    v11 = [(HUTitleDescriptionCell *)self titleLabel];
-    v12 = [v11 trailingAnchor];
-    v13 = [(HUIconCell *)self containerView];
-    v14 = [v13 trailingAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14];
+    titleLabel2 = [(HUTitleDescriptionCell *)self titleLabel];
+    trailingAnchor = [titleLabel2 trailingAnchor];
+    containerView2 = [(HUIconCell *)self containerView];
+    trailingAnchor2 = [containerView2 trailingAnchor];
+    v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     titleTrailingConstraint = self->_titleTrailingConstraint;
     self->_titleTrailingConstraint = v15;
 
-    [v42 addObject:self->_titleTrailingConstraint];
+    [array addObject:self->_titleTrailingConstraint];
   }
 
-  v17 = [(UILabel *)self->_descriptionLabel superview];
+  superview2 = [(UILabel *)self->_descriptionLabel superview];
 
-  if (v17)
+  if (superview2)
   {
-    v18 = [(UIImageView *)self->_descriptionIconView superview];
+    superview3 = [(UIImageView *)self->_descriptionIconView superview];
 
-    if (v18)
+    if (superview3)
     {
-      v19 = [(HUTitleDescriptionCell *)self descriptionIconView];
-      v20 = [v19 leadingAnchor];
-      v21 = [(HUIconCell *)self containerView];
-      v22 = [v21 leadingAnchor];
-      v23 = [v20 constraintEqualToAnchor:v22];
-      [v42 addObject:v23];
+      descriptionIconView = [(HUTitleDescriptionCell *)self descriptionIconView];
+      leadingAnchor3 = [descriptionIconView leadingAnchor];
+      containerView3 = [(HUIconCell *)self containerView];
+      leadingAnchor4 = [containerView3 leadingAnchor];
+      v23 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
+      [array addObject:v23];
 
-      v24 = [(HUTitleDescriptionCell *)self descriptionIconView];
-      v25 = [v24 widthAnchor];
-      v26 = [(HUTitleDescriptionCell *)self descriptionIconView];
-      v27 = [v26 heightAnchor];
-      v28 = [v25 constraintEqualToAnchor:v27];
-      [v42 addObject:v28];
+      descriptionIconView2 = [(HUTitleDescriptionCell *)self descriptionIconView];
+      widthAnchor = [descriptionIconView2 widthAnchor];
+      descriptionIconView3 = [(HUTitleDescriptionCell *)self descriptionIconView];
+      heightAnchor = [descriptionIconView3 heightAnchor];
+      v28 = [widthAnchor constraintEqualToAnchor:heightAnchor];
+      [array addObject:v28];
 
-      v29 = [(HUTitleDescriptionCell *)self descriptionIconView];
-      v30 = [v29 trailingAnchor];
-      v31 = [(HUTitleDescriptionCell *)self descriptionLabel];
-      v32 = [v31 leadingAnchor];
-      [v30 constraintEqualToAnchor:v32 constant:-5.0];
+      descriptionIconView4 = [(HUTitleDescriptionCell *)self descriptionIconView];
+      trailingAnchor3 = [descriptionIconView4 trailingAnchor];
+      descriptionLabel = [(HUTitleDescriptionCell *)self descriptionLabel];
+      leadingAnchor5 = [descriptionLabel leadingAnchor];
+      [trailingAnchor3 constraintEqualToAnchor:leadingAnchor5 constant:-5.0];
     }
 
     else
     {
-      v29 = [(HUTitleDescriptionCell *)self descriptionLabel];
-      v30 = [v29 leadingAnchor];
-      v31 = [(HUIconCell *)self containerView];
-      v32 = [v31 leadingAnchor];
-      [v30 constraintEqualToAnchor:v32];
+      descriptionIconView4 = [(HUTitleDescriptionCell *)self descriptionLabel];
+      trailingAnchor3 = [descriptionIconView4 leadingAnchor];
+      descriptionLabel = [(HUIconCell *)self containerView];
+      leadingAnchor5 = [descriptionLabel leadingAnchor];
+      [trailingAnchor3 constraintEqualToAnchor:leadingAnchor5];
     }
     v33 = ;
-    [v42 addObject:v33];
+    [array addObject:v33];
 
-    v34 = [(HUTitleDescriptionCell *)self descriptionLabel];
-    v35 = [v34 trailingAnchor];
-    v36 = [(HUIconCell *)self containerView];
-    v37 = [v36 trailingAnchor];
-    v38 = [v35 constraintEqualToAnchor:v37];
+    descriptionLabel2 = [(HUTitleDescriptionCell *)self descriptionLabel];
+    trailingAnchor4 = [descriptionLabel2 trailingAnchor];
+    containerView4 = [(HUIconCell *)self containerView];
+    trailingAnchor5 = [containerView4 trailingAnchor];
+    v38 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
     descriptionTrailingConstraint = self->_descriptionTrailingConstraint;
     self->_descriptionTrailingConstraint = v38;
 
-    [v42 addObject:self->_descriptionTrailingConstraint];
+    [array addObject:self->_descriptionTrailingConstraint];
   }
 
-  [(HUTitleDescriptionCell *)self setHorizontalLabelConstraints:v42];
+  [(HUTitleDescriptionCell *)self setHorizontalLabelConstraints:array];
   v40 = MEMORY[0x277CCAAD0];
-  v41 = [(HUTitleDescriptionCell *)self horizontalLabelConstraints];
-  [v40 activateConstraints:v41];
+  horizontalLabelConstraints2 = [(HUTitleDescriptionCell *)self horizontalLabelConstraints];
+  [v40 activateConstraints:horizontalLabelConstraints2];
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   v23[2] = *MEMORY[0x277D85DE8];
-  v5 = [(HUIconCell *)self item];
-  v6 = [v5 latestResults];
+  item = [(HUIconCell *)self item];
+  latestResults = [item latestResults];
 
   v21.receiver = self;
   v21.super_class = HUTitleDescriptionCell;
-  [(HUIconCell *)&v21 updateUIWithAnimation:v3];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  [(HUIconCell *)&v21 updateUIWithAnimation:animationCopy];
+  v7 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
   [(HUTitleDescriptionCell *)self setTitleText:v7];
 
   [(HUTitleDescriptionCell *)self updateTitle];
   v8 = *MEMORY[0x277D13E20];
-  v9 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
+  v9 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13E20]];
 
   if (v9)
   {
     v22[0] = *MEMORY[0x277D740A8];
-    v10 = [(HUTitleDescriptionCell *)self descriptionLabel];
-    v11 = [v10 font];
-    v23[0] = v11;
+    descriptionLabel = [(HUTitleDescriptionCell *)self descriptionLabel];
+    font = [descriptionLabel font];
+    v23[0] = font;
     v22[1] = *MEMORY[0x277D740C0];
-    v12 = [(HUTitleDescriptionCell *)self descriptionLabel];
-    v13 = [v12 textColor];
-    v23[1] = v13;
-    v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:2];
+    descriptionLabel2 = [(HUTitleDescriptionCell *)self descriptionLabel];
+    textColor = [descriptionLabel2 textColor];
+    v23[1] = textColor;
+    descriptionLabel6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:2];
 
-    v15 = [v6 objectForKeyedSubscript:v8];
+    v15 = [latestResults objectForKeyedSubscript:v8];
     if ([v15 prefersDynamicString])
     {
-      v16 = [(HUTitleDescriptionCell *)self descriptionLabel];
-      [v16 bounds];
-      v19 = [v15 dynamicStringForSize:v14 attributes:{v17, v18}];
-      v20 = [(HUTitleDescriptionCell *)self descriptionLabel];
-      [v20 setAttributedText:v19];
+      descriptionLabel3 = [(HUTitleDescriptionCell *)self descriptionLabel];
+      [descriptionLabel3 bounds];
+      descriptionLabel5 = [v15 dynamicStringForSize:descriptionLabel6 attributes:{v17, v18}];
+      descriptionLabel4 = [(HUTitleDescriptionCell *)self descriptionLabel];
+      [descriptionLabel4 setAttributedText:descriptionLabel5];
     }
 
     else
     {
-      v16 = [v15 stringWithAttributes:v14];
-      v19 = [(HUTitleDescriptionCell *)self descriptionLabel];
-      [v19 setAttributedText:v16];
+      descriptionLabel3 = [v15 stringWithAttributes:descriptionLabel6];
+      descriptionLabel5 = [(HUTitleDescriptionCell *)self descriptionLabel];
+      [descriptionLabel5 setAttributedText:descriptionLabel3];
     }
   }
 
   else
   {
-    v14 = [(HUTitleDescriptionCell *)self descriptionLabel];
-    [v14 setAttributedText:0];
+    descriptionLabel6 = [(HUTitleDescriptionCell *)self descriptionLabel];
+    [descriptionLabel6 setAttributedText:0];
   }
 
   [(HUTitleDescriptionCell *)self setNeedsUpdateConstraints];
@@ -583,9 +583,9 @@
 
 - (void)_addTitleLabel
 {
-  v3 = [(UILabel *)self->_titleLabel superview];
+  superview = [(UILabel *)self->_titleLabel superview];
 
-  if (v3)
+  if (superview)
   {
     NSLog(&cfstr_TitleLabelAlre.isa, self);
   }
@@ -593,9 +593,9 @@
   if (!self->_titleLabel)
   {
     v4 = MEMORY[0x277D756B8];
-    v5 = [(HUTitleDescriptionCell *)self titleText];
-    v6 = [(HUTitleDescriptionCell *)self titleFont];
-    v7 = [v4 labelWithText:v5 font:v6];
+    titleText = [(HUTitleDescriptionCell *)self titleText];
+    titleFont = [(HUTitleDescriptionCell *)self titleFont];
+    v7 = [v4 labelWithText:titleText font:titleFont];
     titleLabel = self->_titleLabel;
     self->_titleLabel = v7;
 
@@ -605,17 +605,17 @@
     [(UILabel *)self->_titleLabel setContentHuggingPriority:1 forAxis:v10];
   }
 
-  v11 = [(HUIconCell *)self containerView];
-  [v11 addSubview:self->_titleLabel];
+  containerView = [(HUIconCell *)self containerView];
+  [containerView addSubview:self->_titleLabel];
 
   [(HUTitleDescriptionCell *)self updateTitle];
 }
 
 - (void)_addDescriptionLabel
 {
-  v3 = [(UILabel *)self->_descriptionLabel superview];
+  superview = [(UILabel *)self->_descriptionLabel superview];
 
-  if (v3)
+  if (superview)
   {
     NSLog(&cfstr_DescriptionLab.isa, self);
   }
@@ -624,29 +624,29 @@
   if (!descriptionLabel)
   {
     v6 = MEMORY[0x277D756B8];
-    v7 = [(HUTitleDescriptionCell *)self descriptionText];
-    v8 = [(HUTitleDescriptionCell *)self descriptionFont];
-    v9 = [v6 labelWithText:v7 font:v8];
+    descriptionText = [(HUTitleDescriptionCell *)self descriptionText];
+    descriptionFont = [(HUTitleDescriptionCell *)self descriptionFont];
+    v9 = [v6 labelWithText:descriptionText font:descriptionFont];
     v10 = self->_descriptionLabel;
     self->_descriptionLabel = v9;
 
-    v11 = [MEMORY[0x277D75348] systemGrayColor];
-    [(UILabel *)self->_descriptionLabel setTextColor:v11];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [(UILabel *)self->_descriptionLabel setTextColor:systemGrayColor];
 
     descriptionLabel = self->_descriptionLabel;
   }
 
   LODWORD(v4) = 1144766464;
   [(UILabel *)descriptionLabel setContentHuggingPriority:1 forAxis:v4];
-  v12 = [(HUIconCell *)self containerView];
-  [v12 addSubview:self->_descriptionLabel];
+  containerView = [(HUIconCell *)self containerView];
+  [containerView addSubview:self->_descriptionLabel];
 }
 
 - (void)_addDescriptionIconView
 {
-  v3 = [(UIImageView *)self->_descriptionIconView superview];
+  superview = [(UIImageView *)self->_descriptionIconView superview];
 
-  if (v3)
+  if (superview)
   {
     NSLog(&cfstr_DescriptionIco.isa, self);
   }
@@ -659,16 +659,16 @@
     self->_descriptionIconView = v5;
 
     [(UIImageView *)self->_descriptionIconView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [MEMORY[0x277D75348] systemGrayColor];
-    [(UIImageView *)self->_descriptionIconView setTintColor:v7];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [(UIImageView *)self->_descriptionIconView setTintColor:systemGrayColor];
 
     [(UIImageView *)self->_descriptionIconView setContentMode:1];
-    v8 = [(HUTitleDescriptionCell *)self descriptionIcon];
+    descriptionIcon = [(HUTitleDescriptionCell *)self descriptionIcon];
 
-    if (v8)
+    if (descriptionIcon)
     {
-      v10 = [(HUTitleDescriptionCell *)self descriptionIcon];
-      v11 = [v10 imageWithRenderingMode:2];
+      descriptionIcon2 = [(HUTitleDescriptionCell *)self descriptionIcon];
+      v11 = [descriptionIcon2 imageWithRenderingMode:2];
       [(UIImageView *)self->_descriptionIconView setImage:v11];
     }
 
@@ -676,24 +676,24 @@
     [(UIImageView *)self->_descriptionIconView setContentCompressionResistancePriority:1 forAxis:v9];
   }
 
-  v12 = [(HUIconCell *)self containerView];
-  [v12 addSubview:self->_descriptionIconView];
+  containerView = [(HUIconCell *)self containerView];
+  [containerView addSubview:self->_descriptionIconView];
 }
 
 - (void)updateTitle
 {
   if ([(HUIconCell *)self isDisabled]&& [(HUTitleDescriptionCell *)self adjustsTextColorWhenDisabled])
   {
-    v3 = [MEMORY[0x277D75348] systemGrayColor];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
   }
 
   else
   {
-    v3 = [MEMORY[0x277D75348] labelColor];
+    systemGrayColor = [MEMORY[0x277D75348] labelColor];
   }
 
-  v5 = v3;
-  [(UILabel *)self->_titleLabel setTextColor:v3];
+  v5 = systemGrayColor;
+  [(UILabel *)self->_titleLabel setTextColor:systemGrayColor];
   [(HUTitleDescriptionCell *)self setTextColor:v5];
   [(HUTitleDescriptionCell *)self textAlpha];
   if (v4 != 0.0)

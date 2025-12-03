@@ -1,18 +1,18 @@
 @interface CRLineOutputRegion
-+ (CRLineOutputRegion)_lineWithChildren:(void *)a3 confidence:(uint64_t)a4 quad:(void *)a5 baselineAngle:;
-+ (CRLineOutputRegion)lineWithTextFeature:(uint64_t)a3 candidateIdx:(void *)a4 subfeatureType:(uint64_t)a5 imageSize:(uint64_t)a6 confidenceThresholdProvider:(void *)a7 injectSpaceCharacter:(int)a8;
-+ (CRNormalizedQuad)_spaceCharacterQuadBetweenQuad1:(void *)a3 quad2:;
-+ (id)lineWithDetectedRegion:(id)a3;
-+ (id)lineWithText:(id)a3 confidence:(unint64_t)a4 quad:(id)a5 baselineAngle:(double)a6;
-+ (id)lineWithTextFeature:(id)a3 subfeatureType:(unint64_t)a4 imageSize:(CGSize)a5 confidenceThresholdProvider:(id)a6 injectSpaceCharacter:(BOOL)a7;
-+ (id)lineWithTextRegion:(id)a3 confidenceThresholdProvider:(id)a4 injectSpaceCharacter:(BOOL)a5;
-- (BOOL)isEqual:(id)a3;
-- (CGRect)boundingBoxEstimateAfterTrimmingCharacters:(id)a3;
-- (CRLineOutputRegion)initWithCRCodableDataRepresentation:(id)a3 version:(int64_t)a4 offset:(unint64_t *)a5;
-- (CRLineOutputRegion)initWithConfidence:(unint64_t)a3 baselineAngle:(double)a4;
++ (CRLineOutputRegion)_lineWithChildren:(void *)children confidence:(uint64_t)confidence quad:(void *)quad baselineAngle:;
++ (CRLineOutputRegion)lineWithTextFeature:(uint64_t)feature candidateIdx:(void *)idx subfeatureType:(uint64_t)type imageSize:(uint64_t)size confidenceThresholdProvider:(void *)provider injectSpaceCharacter:(int)character;
++ (CRNormalizedQuad)_spaceCharacterQuadBetweenQuad1:(void *)quad1 quad2:;
++ (id)lineWithDetectedRegion:(id)region;
++ (id)lineWithText:(id)text confidence:(unint64_t)confidence quad:(id)quad baselineAngle:(double)angle;
++ (id)lineWithTextFeature:(id)feature subfeatureType:(unint64_t)type imageSize:(CGSize)size confidenceThresholdProvider:(id)provider injectSpaceCharacter:(BOOL)character;
++ (id)lineWithTextRegion:(id)region confidenceThresholdProvider:(id)provider injectSpaceCharacter:(BOOL)character;
+- (BOOL)isEqual:(id)equal;
+- (CGRect)boundingBoxEstimateAfterTrimmingCharacters:(id)characters;
+- (CRLineOutputRegion)initWithCRCodableDataRepresentation:(id)representation version:(int64_t)version offset:(unint64_t *)offset;
+- (CRLineOutputRegion)initWithConfidence:(unint64_t)confidence baselineAngle:(double)angle;
 - (NSLocale)locale;
 - (id)contentBaselines;
-- (id)copyWithZone:(_NSZone *)a3 copyChildren:(BOOL)a4 copyCandidates:(BOOL)a5 deepCopy:(BOOL)a6;
+- (id)copyWithZone:(_NSZone *)zone copyChildren:(BOOL)children copyCandidates:(BOOL)candidates deepCopy:(BOOL)copy;
 - (id)crCodableDataRepresentation;
 - (id)joiningDelimiter;
 - (id)scriptCategoryResults;
@@ -20,16 +20,16 @@
 - (int64_t)wordCount;
 - (unint64_t)nmsOutputScale;
 - (unint64_t)textType;
-- (void)mergeWithLine:(id)a3;
+- (void)mergeWithLine:(id)line;
 @end
 
 @implementation CRLineOutputRegion
 
-- (CRLineOutputRegion)initWithConfidence:(unint64_t)a3 baselineAngle:(double)a4
+- (CRLineOutputRegion)initWithConfidence:(unint64_t)confidence baselineAngle:(double)angle
 {
   v7.receiver = self;
   v7.super_class = CRLineOutputRegion;
-  v4 = [(CROutputRegion *)&v7 initWithConfidence:a3 baselineAngle:a4];
+  v4 = [(CROutputRegion *)&v7 initWithConfidence:confidence baselineAngle:angle];
   v5 = v4;
   if (v4)
   {
@@ -39,27 +39,27 @@
   return v5;
 }
 
-- (CRLineOutputRegion)initWithCRCodableDataRepresentation:(id)a3 version:(int64_t)a4 offset:(unint64_t *)a5
+- (CRLineOutputRegion)initWithCRCodableDataRepresentation:(id)representation version:(int64_t)version offset:(unint64_t *)offset
 {
-  v8 = a3;
+  representationCopy = representation;
   v12.receiver = self;
   v12.super_class = CRLineOutputRegion;
-  v9 = [(CROutputRegion *)&v12 initWithCRCodableDataRepresentation:v8 version:a4 offset:a5];
+  v9 = [(CROutputRegion *)&v12 initWithCRCodableDataRepresentation:representationCopy version:version offset:offset];
   if (v9)
   {
-    if (a4 >= 11)
+    if (version >= 11)
     {
-      v10 = [CRCodingUtilities unsignedIntegerFromEncodingData:v8 offset:a5];
+      v10 = [CRCodingUtilities unsignedIntegerFromEncodingData:representationCopy offset:offset];
     }
 
-    else if (a4 >= 5)
+    else if (version >= 5)
     {
-      v10 = [CRCodingUtilities unsignedIntegerFromEncodingData:v8 offset:a5]+ 1;
+      v10 = [CRCodingUtilities unsignedIntegerFromEncodingData:representationCopy offset:offset]+ 1;
     }
 
-    else if (a4 == 4)
+    else if (version == 4)
     {
-      if ([CRCodingUtilities BOOLFromEncodingData:v8 offset:a5])
+      if ([CRCodingUtilities BOOLFromEncodingData:representationCopy offset:offset])
       {
         v10 = 2;
       }
@@ -86,40 +86,40 @@
   v3 = MEMORY[0x1E695DF88];
   v7.receiver = self;
   v7.super_class = CRLineOutputRegion;
-  v4 = [(CROutputRegion *)&v7 crCodableDataRepresentation];
-  v5 = [v3 dataWithData:v4];
+  crCodableDataRepresentation = [(CROutputRegion *)&v7 crCodableDataRepresentation];
+  v5 = [v3 dataWithData:crCodableDataRepresentation];
 
   [CRCodingUtilities appendUInteger:[(CRLineOutputRegion *)self lineWrappingType] toData:v5];
 
   return v5;
 }
 
-+ (id)lineWithTextFeature:(id)a3 subfeatureType:(unint64_t)a4 imageSize:(CGSize)a5 confidenceThresholdProvider:(id)a6 injectSpaceCharacter:(BOOL)a7
++ (id)lineWithTextFeature:(id)feature subfeatureType:(unint64_t)type imageSize:(CGSize)size confidenceThresholdProvider:(id)provider injectSpaceCharacter:(BOOL)character
 {
-  v7 = a7;
-  height = a5.height;
-  width = a5.width;
-  v13 = a3;
-  v14 = a6;
-  v15 = [(CRLineOutputRegion *)width lineWithTextFeature:a1 candidateIdx:v13 subfeatureType:0 imageSize:a4 confidenceThresholdProvider:v14 injectSpaceCharacter:v7];
+  characterCopy = character;
+  height = size.height;
+  width = size.width;
+  featureCopy = feature;
+  providerCopy = provider;
+  v15 = [(CRLineOutputRegion *)width lineWithTextFeature:self candidateIdx:featureCopy subfeatureType:0 imageSize:type confidenceThresholdProvider:providerCopy injectSpaceCharacter:characterCopy];
   v16 = MEMORY[0x1E695DF70];
-  v17 = [v13 stringValueCandidates];
-  v18 = [v16 arrayWithCapacity:{objc_msgSend(v17, "count")}];
+  stringValueCandidates = [featureCopy stringValueCandidates];
+  v18 = [v16 arrayWithCapacity:{objc_msgSend(stringValueCandidates, "count")}];
 
-  v19 = [v13 stringValueCandidates];
-  v20 = [v19 count];
+  stringValueCandidates2 = [featureCopy stringValueCandidates];
+  v20 = [stringValueCandidates2 count];
 
   if (v20)
   {
     v21 = 0;
     do
     {
-      v22 = [(CRLineOutputRegion *)width lineWithTextFeature:a1 candidateIdx:v13 subfeatureType:v21 imageSize:a4 confidenceThresholdProvider:v14 injectSpaceCharacter:v7];
+      v22 = [(CRLineOutputRegion *)width lineWithTextFeature:self candidateIdx:featureCopy subfeatureType:v21 imageSize:type confidenceThresholdProvider:providerCopy injectSpaceCharacter:characterCopy];
       [v18 addObject:v22];
 
       ++v21;
-      v23 = [v13 stringValueCandidates];
-      v24 = [v23 count];
+      stringValueCandidates3 = [featureCopy stringValueCandidates];
+      v24 = [stringValueCandidates3 count];
     }
 
     while (v21 < v24);
@@ -131,64 +131,64 @@
   return v15;
 }
 
-+ (CRLineOutputRegion)lineWithTextFeature:(uint64_t)a3 candidateIdx:(void *)a4 subfeatureType:(uint64_t)a5 imageSize:(uint64_t)a6 confidenceThresholdProvider:(void *)a7 injectSpaceCharacter:(int)a8
++ (CRLineOutputRegion)lineWithTextFeature:(uint64_t)feature candidateIdx:(void *)idx subfeatureType:(uint64_t)type imageSize:(uint64_t)size confidenceThresholdProvider:(void *)provider injectSpaceCharacter:(int)character
 {
   v96 = *MEMORY[0x1E69E9840];
-  v14 = a4;
-  v15 = a7;
+  idxCopy = idx;
+  providerCopy = provider;
   objc_opt_self();
-  v70 = v14;
-  v16 = [v14 selectedLocale];
-  v67 = [v15 thresholdsForTextRegion:v14 withLocale:v16];
+  v70 = idxCopy;
+  selectedLocale = [idxCopy selectedLocale];
+  v67 = [providerCopy thresholdsForTextRegion:idxCopy withLocale:selectedLocale];
 
-  v17 = [v14 candidateProbs];
-  v18 = [v17 objectAtIndexedSubscript:a5];
+  candidateProbs = [idxCopy candidateProbs];
+  v18 = [candidateProbs objectAtIndexedSubscript:type];
   [v18 doubleValue];
   v19 = [CRImageReaderOutput confidenceLevelForConfidenceScore:v67 confidenceThresholds:?];
 
   v20 = [CRLineOutputRegion alloc];
-  [v14 baselineAngle];
+  [idxCopy baselineAngle];
   v69 = [(CRLineOutputRegion *)v20 initWithConfidence:v19 baselineAngle:v21];
-  v22 = [v14 subFeatureCandidates];
-  v23 = [v22 firstObject];
-  v24 = [v23 count];
+  subFeatureCandidates = [idxCopy subFeatureCandidates];
+  firstObject = [subFeatureCandidates firstObject];
+  v24 = [firstObject count];
 
-  v25 = [v14 stringValueCandidates];
-  v66 = [v25 objectAtIndexedSubscript:a5];
+  stringValueCandidates = [idxCopy stringValueCandidates];
+  v66 = [stringValueCandidates objectAtIndexedSubscript:type];
 
-  v68 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v26 = [v66 stringByTrimmingCharactersInSet:v68];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v26 = [v66 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
   [(CROutputRegion *)v69 setText:v26];
 
   v27 = [CRNormalizedQuad alloc];
-  [v14 topLeft];
+  [idxCopy topLeft];
   v29 = v28;
   v31 = v30;
-  [v14 topRight];
+  [idxCopy topRight];
   v33 = v32;
   v35 = v34;
-  [v14 bottomRight];
+  [idxCopy bottomRight];
   v37 = v36;
   v39 = v38;
-  [v14 bottomLeft];
-  v42 = [(CRNormalizedQuad *)v27 initWithNormalizedTopLeft:v29 topRight:v31 bottomRight:v33 bottomLeft:v35 size:v37, v39, v40, v41, *&a1, *&a2];
+  [idxCopy bottomLeft];
+  v42 = [(CRNormalizedQuad *)v27 initWithNormalizedTopLeft:v29 topRight:v31 bottomRight:v33 bottomLeft:v35 size:v37, v39, v40, v41, *&self, *&a2];
   [(CROutputRegion *)v69 setBoundingQuad:v42];
 
-  v43 = [v14 polygon];
-  [(CROutputRegion *)v69 setPolygon:v43];
+  polygon = [idxCopy polygon];
+  [(CROutputRegion *)v69 setPolygon:polygon];
 
   [(CRCompositeOutputRegion *)v69 setShouldComputeBoundsFromChildren:0];
   if (v24)
   {
-    if (a6 == 16)
+    if (size == 16)
     {
       v44 = 1;
       goto LABEL_7;
     }
 
-    v45 = [v14 whitespaceInjected];
+    whitespaceInjected = [idxCopy whitespaceInjected];
     v44 = 1;
-    if (v45 & 1) != 0 || (a8)
+    if (whitespaceInjected & 1) != 0 || (character)
     {
       goto LABEL_7;
     }
@@ -198,23 +198,23 @@
 LABEL_7:
   v46 = v24 == 0;
   [(CROutputRegion *)v69 setShouldComputeTranscriptFromChildren:v44];
-  v47 = [v14 candidateProbs];
-  v48 = [v47 objectAtIndexedSubscript:a5];
+  candidateProbs2 = [idxCopy candidateProbs];
+  v48 = [candidateProbs2 objectAtIndexedSubscript:type];
   [v48 floatValue];
   [(CROutputRegion *)v69 setRawConfidence:?];
 
-  v49 = [v14 candidateActivationProbs];
-  v50 = [v49 objectAtIndexedSubscript:a5];
+  candidateActivationProbs = [idxCopy candidateActivationProbs];
+  v50 = [candidateActivationProbs objectAtIndexedSubscript:type];
   [v50 doubleValue];
   [(CROutputRegion *)v69 setActivationProbability:?];
 
-  v51 = [v14 selectedLocale];
-  [(CROutputRegion *)v69 setRecognizedLocale:v51];
+  selectedLocale2 = [idxCopy selectedLocale];
+  [(CROutputRegion *)v69 setRecognizedLocale:selectedLocale2];
 
-  v52 = [v14 uuid];
-  [(CROutputRegion *)v69 setUuid:v52];
+  uuid = [idxCopy uuid];
+  [(CROutputRegion *)v69 setUuid:uuid];
 
-  -[CRLineOutputRegion setLineWrappingType:](v69, "setLineWrappingType:", [v14 lineWrappingType]);
+  -[CRLineOutputRegion setLineWrappingType:](v69, "setLineWrappingType:", [idxCopy lineWrappingType]);
   if (v46)
   {
     v53 = 0;
@@ -225,7 +225,7 @@ LABEL_7:
     v53 = objc_opt_new();
   }
 
-  if (a6 == 32 && a8)
+  if (size == 32 && character)
   {
     v89[0] = 0;
     v89[1] = v89;
@@ -243,25 +243,25 @@ LABEL_7:
     v87[3] = __Block_byref_object_copy__1;
     v87[4] = __Block_byref_object_dispose__1;
     v88 = 0;
-    v54 = [(CROutputRegion *)v69 text];
-    v55 = [(CROutputRegion *)v69 text];
-    v56 = [v55 length];
+    text = [(CROutputRegion *)v69 text];
+    text2 = [(CROutputRegion *)v69 text];
+    v56 = [text2 length];
     v75[0] = MEMORY[0x1E69E9820];
     v75[1] = 3221225472;
     v75[2] = __129__CRLineOutputRegion_lineWithTextFeature_candidateIdx_subfeatureType_imageSize_confidenceThresholdProvider_injectSpaceCharacter___block_invoke;
     v75[3] = &unk_1E7BC2288;
-    v84 = a5;
-    v76 = v14;
+    typeCopy = type;
+    v76 = idxCopy;
     v81 = v89;
-    v77 = v68;
+    v77 = whitespaceCharacterSet;
     v78 = @" ";
     v82 = v87;
     p_buf = &buf;
-    v85 = a1;
+    selfCopy = self;
     v86 = a2;
     v79 = v53;
-    v80 = v15;
-    [v54 enumerateSubstringsInRange:0 options:v56 usingBlock:{2, v75}];
+    v80 = providerCopy;
+    [text enumerateSubstringsInRange:0 options:v56 usingBlock:{2, v75}];
 
     _Block_object_dispose(v87, 8);
     _Block_object_dispose(&buf, 8);
@@ -269,14 +269,14 @@ LABEL_7:
     _Block_object_dispose(v89, 8);
   }
 
-  else if (a6 == 32 || a6 == 16)
+  else if (size == 32 || size == 16)
   {
     v73 = 0u;
     v74 = 0u;
     v71 = 0u;
     v72 = 0u;
-    v57 = [v14 subFeatureCandidates];
-    v58 = [v57 objectAtIndexedSubscript:a5];
+    subFeatureCandidates2 = [idxCopy subFeatureCandidates];
+    v58 = [subFeatureCandidates2 objectAtIndexedSubscript:type];
 
     v59 = [v58 countByEnumeratingWithState:&v71 objects:v90 count:16];
     if (v59)
@@ -292,14 +292,14 @@ LABEL_7:
           }
 
           v62 = *(*(&v71 + 1) + 8 * i);
-          if (a6 == 32)
+          if (size == 32)
           {
-            [CRCharacterOutputRegion characterWithTextFeature:v62 imageSize:v15 confidenceThresholdProvider:a1, a2];
+            [CRCharacterOutputRegion characterWithTextFeature:v62 imageSize:providerCopy confidenceThresholdProvider:self, a2];
           }
 
           else
           {
-            [CRWordOutputRegion wordWithTextFeature:v62 imageSize:v15 confidenceThresholdProvider:a1, a2];
+            [CRWordOutputRegion wordWithTextFeature:v62 imageSize:providerCopy confidenceThresholdProvider:self, a2];
           }
           v63 = ;
           [v53 addObject:v63];
@@ -318,7 +318,7 @@ LABEL_7:
     if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
     {
       LODWORD(buf) = 134217984;
-      *(&buf + 4) = a6;
+      *(&buf + 4) = size;
       _os_log_impl(&dword_1B40D2000, v64, OS_LOG_TYPE_ERROR, "Unsupported subfeature type %ld", &buf, 0xCu);
     }
   }
@@ -328,70 +328,70 @@ LABEL_7:
   return v69;
 }
 
-+ (id)lineWithDetectedRegion:(id)a3
++ (id)lineWithDetectedRegion:(id)region
 {
-  v3 = a3;
+  regionCopy = region;
   v4 = [CRLineOutputRegion alloc];
-  v5 = [v3 boundingQuad];
-  [v5 baselineAngle];
+  boundingQuad = [regionCopy boundingQuad];
+  [boundingQuad baselineAngle];
   v6 = [(CRLineOutputRegion *)v4 initWithConfidence:1 baselineAngle:?];
 
-  v7 = [v3 boundingQuad];
-  [(CROutputRegion *)v6 setBoundingQuad:v7];
+  boundingQuad2 = [regionCopy boundingQuad];
+  [(CROutputRegion *)v6 setBoundingQuad:boundingQuad2];
 
-  -[CROutputRegion setLayoutDirection:](v6, "setLayoutDirection:", [v3 layoutDirection]);
-  v8 = [v3 polygon];
-  [(CROutputRegion *)v6 setPolygon:v8];
+  -[CROutputRegion setLayoutDirection:](v6, "setLayoutDirection:", [regionCopy layoutDirection]);
+  polygon = [regionCopy polygon];
+  [(CROutputRegion *)v6 setPolygon:polygon];
 
-  [(CRLineOutputRegion *)v6 setDetectedLineRegion:v3];
+  [(CRLineOutputRegion *)v6 setDetectedLineRegion:regionCopy];
   [(CRCompositeOutputRegion *)v6 setShouldComputeBoundsFromChildren:0];
   [(CROutputRegion *)v6 setShouldComputeTranscriptFromChildren:0];
 
   return v6;
 }
 
-+ (id)lineWithTextRegion:(id)a3 confidenceThresholdProvider:(id)a4 injectSpaceCharacter:(BOOL)a5
++ (id)lineWithTextRegion:(id)region confidenceThresholdProvider:(id)provider injectSpaceCharacter:(BOOL)character
 {
-  v5 = a5;
-  v46 = a1;
+  characterCopy = character;
+  selfCopy = self;
   v83 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v51 = v7;
-  v9 = [v7 locale];
-  v48 = [v8 thresholdsForTextRegion:v7 withLocale:v9];
+  regionCopy = region;
+  providerCopy = provider;
+  v51 = regionCopy;
+  locale = [regionCopy locale];
+  v48 = [providerCopy thresholdsForTextRegion:regionCopy withLocale:locale];
 
-  [v7 confidence];
+  [regionCopy confidence];
   v10 = [CRImageReaderOutput confidenceLevelForConfidenceScore:v48 confidenceThresholds:?];
-  v49 = [v7 subregions];
+  subregions = [regionCopy subregions];
   v11 = [CRLineOutputRegion alloc];
-  v12 = [v7 boundingQuad];
-  [v12 baselineAngle];
+  boundingQuad = [regionCopy boundingQuad];
+  [boundingQuad baselineAngle];
   v50 = [(CRLineOutputRegion *)v11 initWithConfidence:v10 baselineAngle:?];
 
-  v13 = [v49 count];
+  v13 = [subregions count];
   if (v13)
   {
-    v14 = [v7 subregions];
-    v15 = [v14 firstObject];
-    v47 = [v15 textRegionType];
+    subregions2 = [regionCopy subregions];
+    firstObject = [subregions2 firstObject];
+    textRegionType = [firstObject textRegionType];
   }
 
   else
   {
-    v47 = 0;
+    textRegionType = 0;
   }
 
-  v16 = [v7 text];
-  v17 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v18 = [v16 stringByTrimmingCharactersInSet:v17];
+  text = [regionCopy text];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v18 = [text stringByTrimmingCharactersInSet:whitespaceCharacterSet];
   [(CROutputRegion *)v50 setText:v18];
 
-  v19 = [v7 boundingQuad];
-  [(CROutputRegion *)v50 setBoundingQuad:v19];
+  boundingQuad2 = [regionCopy boundingQuad];
+  [(CROutputRegion *)v50 setBoundingQuad:boundingQuad2];
 
-  v20 = [v7 polygon];
-  [(CROutputRegion *)v50 setPolygon:v20];
+  polygon = [regionCopy polygon];
+  [(CROutputRegion *)v50 setPolygon:polygon];
 
   [(CRCompositeOutputRegion *)v50 setShouldComputeBoundsFromChildren:0];
   if (!v13)
@@ -399,15 +399,15 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  if (v47 == 1)
+  if (textRegionType == 1)
   {
     v21 = 1;
     goto LABEL_10;
   }
 
-  v22 = [v7 whitespaceInjected];
+  whitespaceInjected = [regionCopy whitespaceInjected];
   v21 = 1;
-  if ((v22 & 1) == 0 && !v5)
+  if ((whitespaceInjected & 1) == 0 && !characterCopy)
   {
 LABEL_9:
     v21 = 0;
@@ -415,30 +415,30 @@ LABEL_9:
 
 LABEL_10:
   [(CROutputRegion *)v50 setShouldComputeTranscriptFromChildren:v21];
-  [v7 confidence];
+  [regionCopy confidence];
   *&v23 = v23;
   [(CROutputRegion *)v50 setRawConfidence:v23];
-  [v7 activationProbability];
+  [regionCopy activationProbability];
   [(CROutputRegion *)v50 setActivationProbability:?];
-  v24 = [v7 locale];
-  [(CROutputRegion *)v50 setRecognizedLocale:v24];
+  locale2 = [regionCopy locale];
+  [(CROutputRegion *)v50 setRecognizedLocale:locale2];
 
-  -[CROutputRegion setLayoutDirection:](v50, "setLayoutDirection:", [v7 layoutDirection]);
-  v25 = [v7 detectedLineRegion];
-  [(CRLineOutputRegion *)v50 setDetectedLineRegion:v25];
+  -[CROutputRegion setLayoutDirection:](v50, "setLayoutDirection:", [regionCopy layoutDirection]);
+  detectedLineRegion = [regionCopy detectedLineRegion];
+  [(CRLineOutputRegion *)v50 setDetectedLineRegion:detectedLineRegion];
 
   if (v13)
   {
     v26 = objc_opt_new();
-    if (v47 || !v5)
+    if (textRegionType || !characterCopy)
     {
-      if (v47 > 1)
+      if (textRegionType > 1)
       {
         v37 = CROSLogForCategory(0);
         if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
         {
           LODWORD(buf) = 134217984;
-          *(&buf + 4) = v47;
+          *(&buf + 4) = textRegionType;
           _os_log_impl(&dword_1B40D2000, v37, OS_LOG_TYPE_ERROR, "Unsupported subfeature type %ld", &buf, 0xCu);
         }
       }
@@ -449,7 +449,7 @@ LABEL_10:
         v59 = 0u;
         v56 = 0u;
         v57 = 0u;
-        v32 = v49;
+        v32 = subregions;
         v33 = [v32 countByEnumeratingWithState:&v56 objects:v77 count:16];
         if (v33)
         {
@@ -463,8 +463,8 @@ LABEL_10:
                 objc_enumerationMutation(v32);
               }
 
-              v36 = [CROutputRegion outputRegionFromTextRegion:*(*(&v56 + 1) + 8 * i) confidenceThresholdProvider:v8 injectSpaceCharacter:v5, v46];
-              [v26 addObject:v36];
+              selfCopy = [CROutputRegion outputRegionFromTextRegion:*(*(&v56 + 1) + 8 * i) confidenceThresholdProvider:providerCopy injectSpaceCharacter:characterCopy, selfCopy];
+              [v26 addObject:selfCopy];
             }
 
             v33 = [v32 countByEnumeratingWithState:&v56 objects:v77 count:16];
@@ -499,28 +499,28 @@ LABEL_10:
       v72[4] = 0;
       v72[5] = 0;
       v72[3] = &unk_1B4305E9E;
-      v27 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-      v28 = [(CROutputRegion *)v50 text];
-      v29 = [(CROutputRegion *)v50 text];
-      v30 = [v29 length];
+      whitespaceCharacterSet2 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+      text2 = [(CROutputRegion *)v50 text];
+      text3 = [(CROutputRegion *)v50 text];
+      v30 = [text3 length];
       v60[0] = MEMORY[0x1E69E9820];
       v60[1] = 3221225472;
       v60[2] = __90__CRLineOutputRegion_lineWithTextRegion_confidenceThresholdProvider_injectSpaceCharacter___block_invoke;
       v60[3] = &unk_1E7BC2260;
       v66 = v72;
-      v61 = v49;
+      v61 = subregions;
       v67 = v75;
-      v31 = v27;
+      v31 = whitespaceCharacterSet2;
       v62 = v31;
       v63 = @" ";
       v68 = v73;
       p_buf = &buf;
-      v70 = v46;
+      v70 = selfCopy;
       v26 = v26;
       v64 = v26;
-      v65 = v8;
-      v71 = v5;
-      [v28 enumerateSubstringsInRange:0 options:v30 usingBlock:{2, v60}];
+      v65 = providerCopy;
+      v71 = characterCopy;
+      [text2 enumerateSubstringsInRange:0 options:v30 usingBlock:{2, v60}];
 
       _Block_object_dispose(v72, 8);
       _Block_object_dispose(v73, 8);
@@ -535,9 +535,9 @@ LABEL_10:
     v26 = 0;
   }
 
-  [(CROutputRegion *)v50 setChildren:v26, v46];
-  v38 = [v51 candidates];
-  if (v38)
+  [(CROutputRegion *)v50 setChildren:v26, selfCopy];
+  candidates = [v51 candidates];
+  if (candidates)
   {
     v39 = objc_opt_new();
   }
@@ -551,8 +551,8 @@ LABEL_10:
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v40 = [v51 candidates];
-  v41 = [v40 countByEnumeratingWithState:&v52 objects:v76 count:16];
+  candidates2 = [v51 candidates];
+  v41 = [candidates2 countByEnumeratingWithState:&v52 objects:v76 count:16];
   if (v41)
   {
     v42 = *v53;
@@ -562,14 +562,14 @@ LABEL_10:
       {
         if (*v53 != v42)
         {
-          objc_enumerationMutation(v40);
+          objc_enumerationMutation(candidates2);
         }
 
-        v44 = [CRLineOutputRegion lineWithTextRegion:*(*(&v52 + 1) + 8 * j) confidenceThresholdProvider:v8 injectSpaceCharacter:v5];
+        v44 = [CRLineOutputRegion lineWithTextRegion:*(*(&v52 + 1) + 8 * j) confidenceThresholdProvider:providerCopy injectSpaceCharacter:characterCopy];
         [v39 addObject:v44];
       }
 
-      v41 = [v40 countByEnumeratingWithState:&v52 objects:v76 count:16];
+      v41 = [candidates2 countByEnumeratingWithState:&v52 objects:v76 count:16];
     }
 
     while (v41);
@@ -633,19 +633,19 @@ void __90__CRLineOutputRegion_lineWithTextRegion_confidenceThresholdProvider_inj
   }
 }
 
-+ (CRNormalizedQuad)_spaceCharacterQuadBetweenQuad1:(void *)a3 quad2:
++ (CRNormalizedQuad)_spaceCharacterQuadBetweenQuad1:(void *)quad1 quad2:
 {
-  v4 = a3;
+  quad1Copy = quad1;
   v5 = a2;
   objc_opt_self();
   v6 = [CRNormalizedQuad alloc];
   [v5 topRight];
   v27 = v8;
   v28 = v7;
-  [v4 topLeft];
+  [quad1Copy topLeft];
   v10 = v9;
   v12 = v11;
-  [v4 bottomLeft];
+  [quad1Copy bottomLeft];
   v14 = v13;
   v16 = v15;
 
@@ -713,14 +713,14 @@ void __129__CRLineOutputRegion_lineWithTextFeature_candidateIdx_subfeatureType_i
   }
 }
 
-+ (id)lineWithText:(id)a3 confidence:(unint64_t)a4 quad:(id)a5 baselineAngle:(double)a6
++ (id)lineWithText:(id)text confidence:(unint64_t)confidence quad:(id)quad baselineAngle:(double)angle
 {
-  v9 = a5;
-  v10 = a3;
-  v11 = [[CRLineOutputRegion alloc] initWithConfidence:a4 baselineAngle:a6];
-  [(CROutputRegion *)v11 setText:v10];
+  quadCopy = quad;
+  textCopy = text;
+  v11 = [[CRLineOutputRegion alloc] initWithConfidence:confidence baselineAngle:angle];
+  [(CROutputRegion *)v11 setText:textCopy];
 
-  [(CROutputRegion *)v11 setBoundingQuad:v9];
+  [(CROutputRegion *)v11 setBoundingQuad:quadCopy];
   [(CRCompositeOutputRegion *)v11 setShouldComputeBoundsFromChildren:0];
   [(CROutputRegion *)v11 setShouldComputeTranscriptFromChildren:0];
   [(CROutputRegion *)v11 setChildren:0];
@@ -728,17 +728,17 @@ void __129__CRLineOutputRegion_lineWithTextFeature_candidateIdx_subfeatureType_i
   return v11;
 }
 
-+ (CRLineOutputRegion)_lineWithChildren:(void *)a3 confidence:(uint64_t)a4 quad:(void *)a5 baselineAngle:
++ (CRLineOutputRegion)_lineWithChildren:(void *)children confidence:(uint64_t)confidence quad:(void *)quad baselineAngle:
 {
-  v8 = a5;
-  v9 = a3;
+  quadCopy = quad;
+  childrenCopy = children;
   objc_opt_self();
-  v10 = [[CRLineOutputRegion alloc] initWithConfidence:a4 baselineAngle:a1];
+  v10 = [[CRLineOutputRegion alloc] initWithConfidence:confidence baselineAngle:self];
   [(CROutputRegion *)v10 setShouldComputeTranscriptFromChildren:1];
-  if (v8)
+  if (quadCopy)
   {
     [(CRCompositeOutputRegion *)v10 setShouldComputeBoundsFromChildren:0];
-    [(CROutputRegion *)v10 setBoundingQuad:v8];
+    [(CROutputRegion *)v10 setBoundingQuad:quadCopy];
   }
 
   else
@@ -746,41 +746,41 @@ void __129__CRLineOutputRegion_lineWithTextFeature_candidateIdx_subfeatureType_i
     [(CRCompositeOutputRegion *)v10 setShouldComputeBoundsFromChildren:1];
   }
 
-  [(CROutputRegion *)v10 setChildren:v9];
+  [(CROutputRegion *)v10 setChildren:childrenCopy];
 
   return v10;
 }
 
 - (id)scriptCategoryResults
 {
-  v2 = [(CRLineOutputRegion *)self detectedLineRegion];
-  v3 = [v2 scriptCategoryResults];
+  detectedLineRegion = [(CRLineOutputRegion *)self detectedLineRegion];
+  scriptCategoryResults = [detectedLineRegion scriptCategoryResults];
 
-  return v3;
+  return scriptCategoryResults;
 }
 
 - (id)sequenceScriptOutputResult
 {
-  v2 = [(CRLineOutputRegion *)self detectedLineRegion];
-  v3 = [v2 sequenceScriptOutputResult];
+  detectedLineRegion = [(CRLineOutputRegion *)self detectedLineRegion];
+  sequenceScriptOutputResult = [detectedLineRegion sequenceScriptOutputResult];
 
-  return v3;
+  return sequenceScriptOutputResult;
 }
 
 - (unint64_t)nmsOutputScale
 {
-  v2 = [(CRLineOutputRegion *)self detectedLineRegion];
-  v3 = [v2 nmsOutputScale];
+  detectedLineRegion = [(CRLineOutputRegion *)self detectedLineRegion];
+  nmsOutputScale = [detectedLineRegion nmsOutputScale];
 
-  return v3;
+  return nmsOutputScale;
 }
 
 - (unint64_t)textType
 {
-  v2 = [(CRLineOutputRegion *)self detectedLineRegion];
-  v3 = [v2 textType];
+  detectedLineRegion = [(CRLineOutputRegion *)self detectedLineRegion];
+  textType = [detectedLineRegion textType];
 
-  return v3;
+  return textType;
 }
 
 - (id)contentBaselines
@@ -790,8 +790,8 @@ void __129__CRLineOutputRegion_lineWithTextFeature_candidateIdx_subfeatureType_i
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v2 = [(CROutputRegion *)self children];
-  v3 = [v2 countByEnumeratingWithState:&v15 objects:v20 count:16];
+  children = [(CROutputRegion *)self children];
+  v3 = [children countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (!v3)
   {
     v13 = MEMORY[0x1E695E0F0];
@@ -807,37 +807,37 @@ void __129__CRLineOutputRegion_lineWithTextFeature_candidateIdx_subfeatureType_i
     {
       if (*v16 != v6)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(children);
       }
 
-      v8 = [*(*(&v15 + 1) + 8 * i) contentBaselines];
-      v9 = [v8 firstObject];
-      v10 = v9;
+      contentBaselines = [*(*(&v15 + 1) + 8 * i) contentBaselines];
+      firstObject = [contentBaselines firstObject];
+      v10 = firstObject;
       if (v5)
       {
-        v11 = [v5 polylineByAppendingPolyline:v9];
+        v11 = [v5 polylineByAppendingPolyline:firstObject];
 
         v5 = v11;
       }
 
       else
       {
-        v5 = v9;
+        v5 = firstObject;
       }
     }
 
-    v4 = [v2 countByEnumeratingWithState:&v15 objects:v20 count:16];
+    v4 = [children countByEnumeratingWithState:&v15 objects:v20 count:16];
   }
 
   while (v4);
 
   if (v5)
   {
-    v12 = [v5 simplified];
-    v19 = v12;
+    simplified = [v5 simplified];
+    v19 = simplified;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v19 count:1];
 
-    v2 = v5;
+    children = v5;
 LABEL_14:
 
     goto LABEL_16;
@@ -855,17 +855,17 @@ LABEL_16:
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v3 = [(CROutputRegion *)self recognizedLocale];
-  v4 = [CRImageReader languageIsChinese:v3];
+  recognizedLocale = [(CROutputRegion *)self recognizedLocale];
+  v4 = [CRImageReader languageIsChinese:recognizedLocale];
 
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __31__CRLineOutputRegion_wordCount__block_invoke;
     v10[3] = &unk_1E7BC22B0;
-    v6 = v5;
+    v6 = whitespaceCharacterSet;
     v11 = v6;
     v12 = &v13;
     [(CROutputRegion *)self enumerateContentsWithTypes:32 usingBlock:v10];
@@ -895,22 +895,22 @@ void __31__CRLineOutputRegion_wordCount__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (CGRect)boundingBoxEstimateAfterTrimmingCharacters:(id)a3
+- (CGRect)boundingBoxEstimateAfterTrimmingCharacters:(id)characters
 {
-  v4 = a3;
-  v5 = [(CROutputRegion *)self boundingQuad];
-  v6 = [v5 denormalizedQuad];
-  [v6 boundingBox];
+  charactersCopy = characters;
+  boundingQuad = [(CROutputRegion *)self boundingQuad];
+  denormalizedQuad = [boundingQuad denormalizedQuad];
+  [denormalizedQuad boundingBox];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [(CROutputRegion *)self text];
-  v16 = [v15 length];
-  v17 = [v15 stringByTrimmingCharactersInSet:v4];
+  text = [(CROutputRegion *)self text];
+  v16 = [text length];
+  v17 = [text stringByTrimmingCharactersInSet:charactersCopy];
 
-  v18 = [v15 rangeOfString:v17];
+  v18 = [text rangeOfString:v17];
   v20 = v19 / v16;
   if (v20 == 0.0)
   {
@@ -939,15 +939,15 @@ void __31__CRLineOutputRegion_wordCount__block_invoke(uint64_t a1, void *a2)
 
 - (id)joiningDelimiter
 {
-  v3 = [(CRLineOutputRegion *)self useLineSeparatorAsLineBreak];
+  useLineSeparatorAsLineBreak = [(CRLineOutputRegion *)self useLineSeparatorAsLineBreak];
 
-  return [CRLineWrapper joiningDelimiterForLine:self useLineSeparatorAsLineBreak:v3];
+  return [CRLineWrapper joiningDelimiterForLine:self useLineSeparatorAsLineBreak:useLineSeparatorAsLineBreak];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -957,13 +957,13 @@ void __31__CRLineOutputRegion_wordCount__block_invoke(uint64_t a1, void *a2)
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v9.receiver = self;
       v9.super_class = CRLineOutputRegion;
       if ([(CROutputRegion *)&v9 isEqual:v5])
       {
-        v6 = [(CRLineOutputRegion *)self lineWrappingType];
-        v7 = v6 == [(CRLineOutputRegion *)v5 lineWrappingType];
+        lineWrappingType = [(CRLineOutputRegion *)self lineWrappingType];
+        v7 = lineWrappingType == [(CRLineOutputRegion *)v5 lineWrappingType];
       }
 
       else
@@ -981,15 +981,15 @@ void __31__CRLineOutputRegion_wordCount__block_invoke(uint64_t a1, void *a2)
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 copyChildren:(BOOL)a4 copyCandidates:(BOOL)a5 deepCopy:(BOOL)a6
+- (id)copyWithZone:(_NSZone *)zone copyChildren:(BOOL)children copyCandidates:(BOOL)candidates deepCopy:(BOOL)copy
 {
   v10.receiver = self;
   v10.super_class = CRLineOutputRegion;
-  v7 = [(CROutputRegion *)&v10 copyWithZone:a3 copyChildren:a4 copyCandidates:a5 deepCopy:a6];
+  v7 = [(CROutputRegion *)&v10 copyWithZone:zone copyChildren:children copyCandidates:candidates deepCopy:copy];
   [v7 setLineWrappingType:{-[CRLineOutputRegion lineWrappingType](self, "lineWrappingType")}];
   [v7 setUseLineSeparatorAsLineBreak:{-[CRLineOutputRegion useLineSeparatorAsLineBreak](self, "useLineSeparatorAsLineBreak")}];
-  v8 = [(CRLineOutputRegion *)self detectedLineRegion];
-  [v7 setDetectedLineRegion:v8];
+  detectedLineRegion = [(CRLineOutputRegion *)self detectedLineRegion];
+  [v7 setDetectedLineRegion:detectedLineRegion];
 
   return v7;
 }
@@ -997,26 +997,26 @@ void __31__CRLineOutputRegion_wordCount__block_invoke(uint64_t a1, void *a2)
 - (NSLocale)locale
 {
   v2 = MEMORY[0x1E695DF58];
-  v3 = [(CROutputRegion *)self recognizedLocale];
-  v4 = [v2 localeWithLocaleIdentifier:v3];
+  recognizedLocale = [(CROutputRegion *)self recognizedLocale];
+  v4 = [v2 localeWithLocaleIdentifier:recognizedLocale];
 
   return v4;
 }
 
-- (void)mergeWithLine:(id)a3
+- (void)mergeWithLine:(id)line
 {
   v76 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lineCopy = line;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(CROutputRegion *)self text];
-    v7 = [v6 length];
-    v8 = [(CROutputRegion *)self text];
-    v9 = [v8 length];
-    v10 = [v5 text];
-    v11 = v7 / ([v10 length] + v9);
+    v5 = lineCopy;
+    text = [(CROutputRegion *)self text];
+    v7 = [text length];
+    text2 = [(CROutputRegion *)self text];
+    v9 = [text2 length];
+    text3 = [v5 text];
+    v11 = v7 / ([text3 length] + v9);
 
     [(CROutputRegion *)self rawConfidence];
     v13 = v12;
@@ -1027,11 +1027,11 @@ void __31__CRLineOutputRegion_wordCount__block_invoke(uint64_t a1, void *a2)
     v17 = v16;
     [v5 activationProbability];
     [(CROutputRegion *)self setActivationProbability:v18 * (1.0 - v11) + v17 * v11];
-    v19 = [(CROutputRegion *)self text];
-    v20 = [(CROutputRegion *)self text];
-    v21 = [v5 text];
-    v22 = [(CROutputRegion *)self recognizedLocale];
-    v23 = [v20 _crStringByAppendingString:v21 locale:v22];
+    text4 = [(CROutputRegion *)self text];
+    text5 = [(CROutputRegion *)self text];
+    text6 = [v5 text];
+    recognizedLocale = [(CROutputRegion *)self recognizedLocale];
+    v23 = [text5 _crStringByAppendingString:text6 locale:recognizedLocale];
     [(CROutputRegion *)self setText:v23];
 
     if (![(CROutputRegion *)self shouldComputeTranscriptFromChildren])
@@ -1039,37 +1039,37 @@ void __31__CRLineOutputRegion_wordCount__block_invoke(uint64_t a1, void *a2)
       goto LABEL_8;
     }
 
-    v24 = [(CROutputRegion *)self children];
-    v25 = [v24 firstObject];
-    v26 = [v25 type];
+    children = [(CROutputRegion *)self children];
+    firstObject = [children firstObject];
+    type = [firstObject type];
 
-    if (v26 != 32)
+    if (type != 32)
     {
       goto LABEL_8;
     }
 
-    v27 = [(CROutputRegion *)self text];
-    v28 = [v27 length];
-    if (v28 > [v19 length])
+    text7 = [(CROutputRegion *)self text];
+    v28 = [text7 length];
+    if (v28 > [text4 length])
     {
-      v29 = [(CROutputRegion *)self text];
-      v30 = [v29 characterAtIndex:{objc_msgSend(v19, "length")}];
+      text8 = [(CROutputRegion *)self text];
+      v30 = [text8 characterAtIndex:{objc_msgSend(text4, "length")}];
 
       if (v30 != 32)
       {
 LABEL_8:
-        v40 = [(CROutputRegion *)self children];
-        v41 = [v5 children];
-        v42 = [v40 arrayByAddingObjectsFromArray:v41];
+        children2 = [(CROutputRegion *)self children];
+        children3 = [v5 children];
+        v42 = [children2 arrayByAddingObjectsFromArray:children3];
         [(CROutputRegion *)self setChildren:v42];
 
         for (i = 0; ; ++i)
         {
-          v44 = [(CROutputRegion *)self candidates];
-          v45 = [v44 count];
+          candidates = [(CROutputRegion *)self candidates];
+          v45 = [candidates count];
 
-          v46 = [v5 candidates];
-          v47 = [v46 count];
+          candidates2 = [v5 candidates];
+          v47 = [candidates2 count];
 
           v48 = v45 >= v47 ? v47 : v45;
           if (v48 <= i)
@@ -1077,19 +1077,19 @@ LABEL_8:
             break;
           }
 
-          v49 = [(CROutputRegion *)self candidates];
-          v50 = [v49 objectAtIndexedSubscript:i];
-          v51 = [v5 candidates];
-          v52 = [v51 objectAtIndexedSubscript:i];
+          candidates3 = [(CROutputRegion *)self candidates];
+          v50 = [candidates3 objectAtIndexedSubscript:i];
+          candidates4 = [v5 candidates];
+          v52 = [candidates4 objectAtIndexedSubscript:i];
           [v50 mergeWithLine:v52];
         }
 
-        v53 = [(CROutputRegion *)self boundingQuad];
-        [v53 size];
+        boundingQuad = [(CROutputRegion *)self boundingQuad];
+        [boundingQuad size];
         v55 = v54;
 
-        v56 = [v5 boundingQuad];
-        [v56 size];
+        boundingQuad2 = [v5 boundingQuad];
+        [boundingQuad2 size];
         v58 = v57;
 
         v59 = v55 / (v55 + v58);
@@ -1121,11 +1121,11 @@ LABEL_22:
           {
 LABEL_27:
             [(CROutputRegion *)self setBaselineAngle:v67];
-            v69 = [(CROutputRegion *)self boundingQuad];
-            v70 = [v5 boundingQuad];
+            boundingQuad3 = [(CROutputRegion *)self boundingQuad];
+            boundingQuad4 = [v5 boundingQuad];
             [(CROutputRegion *)self baselineAngle];
             *&v71 = v71;
-            v72 = [v69 unionWithNormalizedQuad:v70 baselineAngle:v71];
+            v72 = [boundingQuad3 unionWithNormalizedQuad:boundingQuad4 baselineAngle:v71];
             [(CROutputRegion *)self setBoundingQuad:v72];
             if ([(CROutputRegion *)self shouldComputeTranscriptFromChildren])
             {
@@ -1147,19 +1147,19 @@ LABEL_27:
         goto LABEL_27;
       }
 
-      v73 = [(CROutputRegion *)self children];
-      v31 = [v73 lastObject];
-      v32 = [v31 boundingQuad];
-      v33 = [v5 children];
-      v34 = [v33 firstObject];
-      v35 = [v34 boundingQuad];
-      v27 = [CRLineOutputRegion _spaceCharacterQuadBetweenQuad1:v32 quad2:v35];
+      children4 = [(CROutputRegion *)self children];
+      lastObject = [children4 lastObject];
+      boundingQuad5 = [lastObject boundingQuad];
+      children5 = [v5 children];
+      firstObject2 = [children5 firstObject];
+      boundingQuad6 = [firstObject2 boundingQuad];
+      text7 = [CRLineOutputRegion _spaceCharacterQuadBetweenQuad1:boundingQuad5 quad2:boundingQuad6];
 
-      v36 = [(CROutputRegion *)self children];
-      v37 = [v5 confidence];
+      children6 = [(CROutputRegion *)self children];
+      confidence = [v5 confidence];
       [v5 baselineAngle];
-      v38 = [CRCharacterOutputRegion characterWithText:@" " confidence:v37 quad:v27 baselineAngle:?];
-      v39 = [v36 arrayByAddingObject:v38];
+      v38 = [CRCharacterOutputRegion characterWithText:@" " confidence:confidence quad:text7 baselineAngle:?];
+      v39 = [children6 arrayByAddingObject:v38];
       [(CROutputRegion *)self setChildren:v39];
     }
 

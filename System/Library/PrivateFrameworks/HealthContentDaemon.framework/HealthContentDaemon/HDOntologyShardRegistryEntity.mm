@@ -1,7 +1,7 @@
 @interface HDOntologyShardRegistryEntity
-+ (BOOL)enumerateEntriesWithPredicate:(id)a3 orderingTerms:(id)a4 database:(id)a5 error:(id *)a6 enumerationHandler:(id)a7;
-+ (BOOL)insertEntry:(id)a3 database:(id)a4 error:(id *)a5;
-+ (id)nextAvailableSlotInAllowedRange:(_NSRange)a3 predicate:(id)a4 database:(id)a5 error:(id *)a6;
++ (BOOL)enumerateEntriesWithPredicate:(id)predicate orderingTerms:(id)terms database:(id)database error:(id *)error enumerationHandler:(id)handler;
++ (BOOL)insertEntry:(id)entry database:(id)database error:(id *)error;
++ (id)nextAvailableSlotInAllowedRange:(_NSRange)range predicate:(id)predicate database:(id)database error:(id *)error;
 + (id)uniquedColumns;
 - (HDOntologyShardRegistryEntity)init;
 @end
@@ -18,13 +18,13 @@
   return 0;
 }
 
-+ (BOOL)insertEntry:(id)a3 database:(id)a4 error:(id *)a5
++ (BOOL)insertEntry:(id)entry database:(id)database error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  if (([v10 isWriter] & 1) == 0)
+  entryCopy = entry;
+  databaseCopy = database;
+  if (([databaseCopy isWriter] & 1) == 0)
   {
-    [HDOntologyShardRegistryEntity insertEntry:a2 database:a1 error:?];
+    [HDOntologyShardRegistryEntity insertEntry:a2 database:self error:?];
   }
 
   objc_opt_self();
@@ -32,9 +32,9 @@
   v14[1] = 3221225472;
   v14[2] = __60__HDOntologyShardRegistryEntity_insertEntry_database_error___block_invoke;
   v14[3] = &unk_2796B9DF8;
-  v15 = v9;
-  v11 = v9;
-  v12 = [a1 insertOrReplaceEntity:1 database:v10 properties:&unk_286374910 error:a5 bindingHandler:v14];
+  v15 = entryCopy;
+  v11 = entryCopy;
+  v12 = [self insertOrReplaceEntity:1 database:databaseCopy properties:&unk_286374910 error:error bindingHandler:v14];
 
   return v12 != 0;
 }
@@ -108,20 +108,20 @@ void __60__HDOntologyShardRegistryEntity_insertEntry_database_error___block_invo
   MEMORY[0x253077AA0](a2, @"available_state_date", v23);
 }
 
-+ (BOOL)enumerateEntriesWithPredicate:(id)a3 orderingTerms:(id)a4 database:(id)a5 error:(id *)a6 enumerationHandler:(id)a7
++ (BOOL)enumerateEntriesWithPredicate:(id)predicate orderingTerms:(id)terms database:(id)database error:(id *)error enumerationHandler:(id)handler
 {
-  v11 = a7;
-  v12 = [(HDSQLiteEntity *)HDOntologyShardRegistryEntity queryWithDatabase:a5 predicate:a3 limit:0 orderingTerms:a4 groupBy:0];
+  handlerCopy = handler;
+  v12 = [(HDSQLiteEntity *)HDOntologyShardRegistryEntity queryWithDatabase:database predicate:predicate limit:0 orderingTerms:terms groupBy:0];
   objc_opt_self();
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __111__HDOntologyShardRegistryEntity_enumerateEntriesWithPredicate_orderingTerms_database_error_enumerationHandler___block_invoke;
   v15[3] = &unk_2796B9E20;
-  v16 = v11;
-  v13 = v11;
-  LOBYTE(a6) = [v12 enumeratePersistentIDsAndProperties:&unk_286374910 error:a6 enumerationHandler:v15];
+  v16 = handlerCopy;
+  v13 = handlerCopy;
+  LOBYTE(error) = [v12 enumeratePersistentIDsAndProperties:&unk_286374910 error:error enumerationHandler:v15];
 
-  return a6;
+  return error;
 }
 
 uint64_t __111__HDOntologyShardRegistryEntity_enumerateEntriesWithPredicate_orderingTerms_database_error_enumerationHandler___block_invoke(uint64_t a1)
@@ -171,16 +171,16 @@ uint64_t __111__HDOntologyShardRegistryEntity_enumerateEntriesWithPredicate_orde
   return v9;
 }
 
-+ (id)nextAvailableSlotInAllowedRange:(_NSRange)a3 predicate:(id)a4 database:(id)a5 error:(id *)a6
++ (id)nextAvailableSlotInAllowedRange:(_NSRange)range predicate:(id)predicate database:(id)database error:(id *)error
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v34[1] = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a5;
+  predicateCopy = predicate;
+  databaseCopy = database;
   v13 = objc_alloc_init(MEMORY[0x277D10B80]);
-  [v13 setEntityClass:a1];
-  [v13 setPredicate:v11];
+  [v13 setEntityClass:self];
+  [v13 setPredicate:predicateCopy];
   v34[0] = @"slot";
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:1];
   v15 = [v13 selectSQLForProperties:v14];
@@ -206,7 +206,7 @@ uint64_t __111__HDOntologyShardRegistryEntity_enumerateEntriesWithPredicate_orde
   v23[2] = __90__HDOntologyShardRegistryEntity_nextAvailableSlotInAllowedRange_predicate_database_error___block_invoke_2;
   v23[3] = &unk_2796B90A8;
   v23[4] = &v28;
-  if ([v12 executeSQL:v16 error:a6 bindingHandler:v24 enumerationHandler:v23])
+  if ([databaseCopy executeSQL:v16 error:error bindingHandler:v24 enumerationHandler:v23])
   {
     v19 = v29[5];
     if (v19)
@@ -215,7 +215,7 @@ uint64_t __111__HDOntologyShardRegistryEntity_enumerateEntriesWithPredicate_orde
       goto LABEL_6;
     }
 
-    [MEMORY[0x277CCA9B8] hk_assignError:a6 code:118 format:{@"No slot is available in range (%ld, %ld) matching predicate %@", location, v17, v11}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:118 format:{@"No slot is available in range (%ld, %ld) matching predicate %@", location, v17, predicateCopy}];
   }
 
   v20 = 0;

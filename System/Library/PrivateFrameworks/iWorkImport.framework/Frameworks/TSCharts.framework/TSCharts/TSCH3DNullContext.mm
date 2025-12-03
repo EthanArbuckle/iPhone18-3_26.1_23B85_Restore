@@ -1,19 +1,19 @@
 @interface TSCH3DNullContext
 - (box<glm::detail::tvec2<int>>)viewport;
-- (id)framebufferWithSize:(void *)a3 attributes:(const FramebufferAttributes *)a4 textureAttributes:(const FramebufferAttributes *)a5 resource:(id)a6;
-- (id)renderProcessorWithSession:(id)a3;
+- (id)framebufferWithSize:(void *)size attributes:(const FramebufferAttributes *)attributes textureAttributes:(const FramebufferAttributes *)textureAttributes resource:(id)resource;
+- (id)renderProcessorWithSession:(id)session;
 @end
 
 @implementation TSCH3DNullContext
 
-- (id)framebufferWithSize:(void *)a3 attributes:(const FramebufferAttributes *)a4 textureAttributes:(const FramebufferAttributes *)a5 resource:(id)a6
+- (id)framebufferWithSize:(void *)size attributes:(const FramebufferAttributes *)attributes textureAttributes:(const FramebufferAttributes *)textureAttributes resource:(id)resource
 {
   v6 = objc_alloc_init(TSCH3DNullFramebuffer);
 
   return v6;
 }
 
-- (id)renderProcessorWithSession:(id)a3
+- (id)renderProcessorWithSession:(id)session
 {
   v3 = objc_alloc_init(TSCH3DCombinationRenderProcessor);
 

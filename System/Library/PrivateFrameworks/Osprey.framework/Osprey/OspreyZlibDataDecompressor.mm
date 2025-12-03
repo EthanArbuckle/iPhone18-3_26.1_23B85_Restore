@@ -1,19 +1,19 @@
 @interface OspreyZlibDataDecompressor
-- (OspreyZlibDataDecompressor)initWithOptions:(int64_t)a3;
-- (id)decompressedDataForData:(id)a3 error:(id *)a4;
+- (OspreyZlibDataDecompressor)initWithOptions:(int64_t)options;
+- (id)decompressedDataForData:(id)data error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation OspreyZlibDataDecompressor
 
-- (OspreyZlibDataDecompressor)initWithOptions:(int64_t)a3
+- (OspreyZlibDataDecompressor)initWithOptions:(int64_t)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v9.receiver = self;
   v9.super_class = OspreyZlibDataDecompressor;
   v4 = [(OspreyZlibDataDecompressor *)&v9 init];
   v5 = v4;
-  if (!v4 || (v4->_inflateStream.zalloc = 0, v4->_inflateStream.zfree = 0, v4->_inflateStream.opaque = 0, v6 = inflateInit2_(&v4->_inflateStream, v3, "1.2.12", 112), v7 = 0, !v6))
+  if (!v4 || (v4->_inflateStream.zalloc = 0, v4->_inflateStream.zfree = 0, v4->_inflateStream.opaque = 0, v6 = inflateInit2_(&v4->_inflateStream, optionsCopy, "1.2.12", 112), v7 = 0, !v6))
   {
     v7 = v5;
   }
@@ -29,11 +29,11 @@
   [(OspreyZlibDataDecompressor *)&v3 dealloc];
 }
 
-- (id)decompressedDataForData:(id)a3 error:(id *)a4
+- (id)decompressedDataForData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6 && dispatch_data_get_size(v6))
+  dataCopy = data;
+  v7 = dataCopy;
+  if (dataCopy && dispatch_data_get_size(dataCopy))
   {
     v19 = 0;
     v20 = &v19;
@@ -55,12 +55,12 @@
     applier[5] = &v15;
     applier[6] = &v19;
     dispatch_data_apply(v7, applier);
-    if (a4)
+    if (error)
     {
       v10 = *(v16 + 6);
       if (v10 >= 2)
       {
-        *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"OspreyCompressionErrorDomain" code:v10 userInfo:0];
+        *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"OspreyCompressionErrorDomain" code:v10 userInfo:0];
       }
     }
 

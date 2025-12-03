@@ -19,8 +19,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -31,7 +31,7 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = v4[2](v4, *(*(&v15 + 1) + 8 * i));
@@ -41,7 +41,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -62,8 +62,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -74,7 +74,7 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
@@ -84,7 +84,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -106,8 +106,8 @@
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = a1;
-  v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  selfCopy = self;
+  v10 = [selfCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
     v11 = v10;
@@ -118,7 +118,7 @@
       {
         if (*v20 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(selfCopy);
         }
 
         v14 = *(*(&v19 + 1) + 8 * i);
@@ -132,7 +132,7 @@
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v11 = [selfCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v11);
@@ -147,7 +147,7 @@
 - (id)arrayByRemovingObject:()MTAdditions
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   [v5 removeObject:v4];
 
   v6 = [v5 copy];
@@ -170,7 +170,7 @@
   v13 = &unk_1E8569340;
   v14 = v5;
   v6 = v5;
-  v7 = [a1 indexOfObjectPassingTest:&v10];
+  v7 = [self indexOfObjectPassingTest:&v10];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = 0;
@@ -178,7 +178,7 @@
 
   else
   {
-    v8 = [a1 objectAtIndexedSubscript:{v7, v10, v11, v12, v13, v14}];
+    v8 = [self objectAtIndexedSubscript:{v7, v10, v11, v12, v13, v14}];
   }
 
   return v8;
@@ -187,13 +187,13 @@
 - (id)mt_allObjectsExcludingIndexes:()MTAdditions
 {
   v4 = a3;
-  if ([a1 count])
+  if ([self count])
   {
-    v5 = [MEMORY[0x1E696AD50] indexSetWithIndexesInRange:{0, objc_msgSend(a1, "count")}];
+    v5 = [MEMORY[0x1E696AD50] indexSetWithIndexesInRange:{0, objc_msgSend(self, "count")}];
     [v5 removeIndexes:v4];
     if ([v5 count])
     {
-      v6 = [a1 objectsAtIndexes:v5];
+      v6 = [self objectsAtIndexes:v5];
     }
 
     else
@@ -212,37 +212,37 @@
 
 - (id)mt_uniqueOrdered
 {
-  if ([a1 count])
+  if ([self count])
   {
-    v2 = [MEMORY[0x1E695DFD8] setWithArray:a1];
+    v2 = [MEMORY[0x1E695DFD8] setWithArray:self];
     v3 = [v2 count];
-    if (v3 == [a1 count])
+    if (v3 == [self count])
     {
-      v4 = a1;
+      selfCopy2 = self;
     }
 
     else
     {
-      v5 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __40__NSArray_MTAdditions__mt_uniqueOrdered__block_invoke;
       v9[3] = &unk_1E8569368;
       v10 = v2;
-      v6 = v5;
+      v6 = array;
       v11 = v6;
-      [a1 enumerateObjectsUsingBlock:v9];
+      [self enumerateObjectsUsingBlock:v9];
       v7 = v11;
-      v4 = v6;
+      selfCopy2 = v6;
     }
   }
 
   else
   {
-    v4 = a1;
+    selfCopy2 = self;
   }
 
-  return v4;
+  return selfCopy2;
 }
 
 @end

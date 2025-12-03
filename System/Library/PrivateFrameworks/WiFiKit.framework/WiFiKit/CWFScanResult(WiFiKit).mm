@@ -20,23 +20,23 @@
 
 - (uint64_t)carPlayNetworkType
 {
-  if (![a1 isCarPlay])
+  if (![self isCarPlay])
   {
     return 0;
   }
 
-  v2 = [a1 matchingKnownNetworkProfile];
-  v3 = [v2 lastJoinedByUserAt];
-  if (v3)
+  matchingKnownNetworkProfile = [self matchingKnownNetworkProfile];
+  lastJoinedByUserAt = [matchingKnownNetworkProfile lastJoinedByUserAt];
+  if (lastJoinedByUserAt)
   {
 
     return 2;
   }
 
-  v5 = [a1 matchingKnownNetworkProfile];
-  v6 = [v5 payloadUUID];
+  matchingKnownNetworkProfile2 = [self matchingKnownNetworkProfile];
+  payloadUUID = [matchingKnownNetworkProfile2 payloadUUID];
 
-  if (v6)
+  if (payloadUUID)
   {
     return 2;
   }
@@ -46,39 +46,39 @@
 
 - (id)ieDictionary
 {
-  v1 = [a1 scanRecord];
-  v2 = [v1 objectForKey:@"APPLE_DEVICE_IE"];
+  scanRecord = [self scanRecord];
+  v2 = [scanRecord objectForKey:@"APPLE_DEVICE_IE"];
 
   return v2;
 }
 
 - (uint64_t)isHidden
 {
-  v2 = [a1 scanRecord];
-  v3 = [v2 objectForKey:@"UserDirected"];
-  v4 = [v3 BOOLValue];
+  scanRecord = [self scanRecord];
+  v3 = [scanRecord objectForKey:@"UserDirected"];
+  bOOLValue = [v3 BOOLValue];
 
-  v5 = [a1 scanRecord];
-  v6 = [v5 objectForKey:@"HIDDEN_NETWORK"];
-  v7 = [v6 BOOLValue];
+  scanRecord2 = [self scanRecord];
+  v6 = [scanRecord2 objectForKey:@"HIDDEN_NETWORK"];
+  bOOLValue2 = [v6 BOOLValue];
 
-  v8 = [a1 scanRecord];
-  v9 = [v8 objectForKey:@"scanWasDirected"];
-  v10 = [v9 BOOLValue];
+  scanRecord3 = [self scanRecord];
+  v9 = [scanRecord3 objectForKey:@"scanWasDirected"];
+  bOOLValue3 = [v9 BOOLValue];
 
-  v11 = [a1 networkName];
-  if (v11)
+  networkName = [self networkName];
+  if (networkName)
   {
-    v12 = [a1 networkName];
-    if ([v12 isEqualToString:&stru_2882E4AD8])
+    networkName2 = [self networkName];
+    if ([networkName2 isEqualToString:&stru_2882E4AD8])
     {
       v13 = 1;
     }
 
     else
     {
-      v14 = [a1 networkName];
-      v13 = [v14 isEqualToString:@" "];
+      networkName3 = [self networkName];
+      v13 = [networkName3 isEqualToString:@" "];
     }
   }
 
@@ -87,30 +87,30 @@
     v13 = 1;
   }
 
-  return (v4 | v7 | v10 | v13) & 1;
+  return (bOOLValue | bOOLValue2 | bOOLValue3 | v13) & 1;
 }
 
 - (uint64_t)isSSIDAmbiguous
 {
-  v1 = [a1 scanRecord];
-  v2 = [v1 objectForKey:@"AmbiguousSSIDs"];
-  v3 = [v2 BOOLValue];
+  scanRecord = [self scanRecord];
+  v2 = [scanRecord objectForKey:@"AmbiguousSSIDs"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)supportedEAPTypes
 {
-  v1 = [a1 scanRecord];
-  v2 = [v1 objectForKey:@"AcceptEAPTypes"];
+  scanRecord = [self scanRecord];
+  v2 = [scanRecord objectForKey:@"AcceptEAPTypes"];
 
   return v2;
 }
 
 - (uint64_t)isSAE
 {
-  v1 = [a1 scanRecord];
-  v2 = [v1 objectForKey:@"RSN_IE"];
+  scanRecord = [self scanRecord];
+  v2 = [scanRecord objectForKey:@"RSN_IE"];
 
   if (v2 && (([v2 objectForKey:@"IE_KEY_RSN_AUTHSELS"], (v3 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v2, "objectForKey:", @"IE_KEY_WPA_AUTHSELS"), (v3 = objc_claimAutoreleasedReturnValue()) != 0)))
   {
@@ -136,46 +136,46 @@
 
 - (uint64_t)requiresPassword
 {
-  if ([a1 isEAP])
+  if ([self isEAP])
   {
-    v2 = [a1 supportedEAPTypes];
-    v3 = [v2 containsObject:&unk_288304C90];
+    supportedEAPTypes = [self supportedEAPTypes];
+    v3 = [supportedEAPTypes containsObject:&unk_288304C90];
 
-    v4 = [a1 supportedEAPTypes];
-    if ([v4 containsObject:&unk_288304CA8])
+    supportedEAPTypes2 = [self supportedEAPTypes];
+    if ([supportedEAPTypes2 containsObject:&unk_288304CA8])
     {
       v5 = 1;
     }
 
     else
     {
-      v7 = [a1 supportedEAPTypes];
-      v5 = [v7 containsObject:&unk_288304CC0];
+      supportedEAPTypes3 = [self supportedEAPTypes];
+      v5 = [supportedEAPTypes3 containsObject:&unk_288304CC0];
     }
 
     v6 = (v3 | v5) ^ 1;
     return v6 & 1;
   }
 
-  if ([a1 isPSK])
+  if ([self isPSK])
   {
     v6 = 1;
     return v6 & 1;
   }
 
-  return [a1 isSAE];
+  return [self isSAE];
 }
 
 - (uint64_t)requiresUsername
 {
-  if (![a1 isEAP])
+  if (![self isEAP])
   {
     return 0;
   }
 
-  v2 = [a1 supportedEAPTypes];
+  supportedEAPTypes = [self supportedEAPTypes];
   v3 = [MEMORY[0x277CCABB0] numberWithInteger:13];
-  if ([v2 containsObject:v3])
+  if ([supportedEAPTypes containsObject:v3])
   {
     v4 = 0;
   }
@@ -183,7 +183,7 @@
   else
   {
     v5 = [MEMORY[0x277CCABB0] numberWithInteger:18];
-    v6 = [v2 containsObject:v5];
+    v6 = [supportedEAPTypes containsObject:v5];
 
     v4 = v6 ^ 1u;
   }
@@ -193,62 +193,62 @@
 
 - (uint64_t)isCarPlay
 {
-  v2 = [a1 scanRecord];
-  v3 = [v2 objectForKey:@"APPLE_DEVICE_IE"];
+  scanRecord = [self scanRecord];
+  v3 = [scanRecord objectForKey:@"APPLE_DEVICE_IE"];
 
   if (v3)
   {
-    [a1 supportsCarPlay];
+    [self supportsCarPlay];
   }
 
-  v4 = [a1 scanRecord];
-  v5 = [v4 objectForKey:@"CARPLAY_NETWORK"];
-  v6 = [v5 BOOLValue];
+  scanRecord2 = [self scanRecord];
+  v5 = [scanRecord2 objectForKey:@"CARPLAY_NETWORK"];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
 - (uint64_t)phyMode
 {
-  v1 = [a1 scanRecord];
-  v2 = [v1 objectForKey:@"PHY_MODE"];
-  v3 = [v2 intValue];
+  scanRecord = [self scanRecord];
+  v2 = [scanRecord objectForKey:@"PHY_MODE"];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (id)privateAddressConfigDictionary
 {
-  v1 = [a1 scanRecord];
-  v2 = [v1 objectForKey:@"PRIVATE_MAC_ADDRESS"];
+  scanRecord = [self scanRecord];
+  v2 = [scanRecord objectForKey:@"PRIVATE_MAC_ADDRESS"];
 
   return v2;
 }
 
 - (id)privateAddressInfoDictionary
 {
-  v1 = [a1 scanRecord];
-  v2 = [v1 objectForKey:@"PrivateMacInfoDictionary"];
+  scanRecord = [self scanRecord];
+  v2 = [scanRecord objectForKey:@"PrivateMacInfoDictionary"];
 
   return v2;
 }
 
 - (uint64_t)supportsJoinFailureDiagnostics
 {
-  if ([a1 isEAP] & 1) != 0 || (objc_msgSend(a1, "isPasspoint"))
+  if ([self isEAP] & 1) != 0 || (objc_msgSend(self, "isPasspoint"))
   {
     return 0;
   }
 
   else
   {
-    return [a1 isCarPlay] ^ 1;
+    return [self isCarPlay] ^ 1;
   }
 }
 
 - (id)securityIssue
 {
-  if ([a1 isOpen] & 1) != 0 || (objc_msgSend(a1, "isOWE"))
+  if ([self isOpen] & 1) != 0 || (objc_msgSend(self, "isOWE"))
   {
     v2 = 8;
 LABEL_4:
@@ -256,16 +256,16 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  if (([a1 isWEP] & 1) != 0 || objc_msgSend(a1, "WPAMulticastCipher") == 1 || objc_msgSend(a1, "WPAMulticastCipher") == 5)
+  if (([self isWEP] & 1) != 0 || objc_msgSend(self, "WPAMulticastCipher") == 1 || objc_msgSend(self, "WPAMulticastCipher") == 5)
   {
-    if (([a1 isEAP] & 1) == 0)
+    if (([self isEAP] & 1) == 0)
     {
       v2 = 2;
       goto LABEL_4;
     }
   }
 
-  else if ((([a1 isWPA] & 1) != 0 || objc_msgSend(a1, "isWPA2")) && objc_msgSend(a1, "hasTKIPCipher"))
+  else if ((([self isWPA] & 1) != 0 || objc_msgSend(self, "isWPA2")) && objc_msgSend(self, "hasTKIPCipher"))
   {
     v2 = 2048;
     goto LABEL_4;
@@ -280,21 +280,21 @@ LABEL_5:
 - (id)configurationIssues
 {
   v2 = [MEMORY[0x277CBEB58] set];
-  v3 = [a1 securityIssue];
+  securityIssue = [self securityIssue];
 
-  if (v3)
+  if (securityIssue)
   {
-    v4 = [a1 securityIssue];
-    [v2 addObject:v4];
+    securityIssue2 = [self securityIssue];
+    [v2 addObject:securityIssue2];
   }
 
-  if ([a1 isSSIDAmbiguous])
+  if ([self isSSIDAmbiguous])
   {
     v5 = [MEMORY[0x277D7B9C0] issueWithType:32];
     [v2 addObject:v5];
   }
 
-  if ([a1 phyMode] == 4)
+  if ([self phyMode] == 4)
   {
     v6 = [MEMORY[0x277D7B9C0] issueWithType:16];
     [v2 addObject:v6];

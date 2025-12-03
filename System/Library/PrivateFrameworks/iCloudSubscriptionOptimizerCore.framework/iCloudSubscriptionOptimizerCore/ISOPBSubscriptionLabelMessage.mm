@@ -1,15 +1,15 @@
 @interface ISOPBSubscriptionLabelMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsLabel:(id)a3;
+- (int)StringAsLabel:(id)label;
 - (int)label;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasLabel:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasLabel:(BOOL)label;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ISOPBSubscriptionLabelMessage
@@ -27,9 +27,9 @@
   }
 }
 
-- (void)setHasLabel:(BOOL)a3
+- (void)setHasLabel:(BOOL)label
 {
-  if (a3)
+  if (label)
   {
     v3 = 2;
   }
@@ -42,20 +42,20 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsLabel:(id)a3
+- (int)StringAsLabel:(id)label
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LABEL_UNKNOWN"])
+  labelCopy = label;
+  if ([labelCopy isEqualToString:@"LABEL_UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"CLICK"])
+  else if ([labelCopy isEqualToString:@"CLICK"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CLEAR"])
+  else if ([labelCopy isEqualToString:@"CLEAR"])
   {
     v4 = 2;
   }
@@ -74,20 +74,20 @@
   v8.receiver = self;
   v8.super_class = ISOPBSubscriptionLabelMessage;
   v4 = [(ISOPBSubscriptionLabelMessage *)&v8 description];
-  v5 = [(ISOPBSubscriptionLabelMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ISOPBSubscriptionLabelMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_minsUntilICloudNotificationOpened];
-    [v3 setObject:v5 forKey:@"minsUntilICloudNotificationOpened"];
+    [dictionary setObject:v5 forKey:@"minsUntilICloudNotificationOpened"];
 
     has = self->_has;
   }
@@ -105,22 +105,22 @@
       v7 = off_27A66B1E0[label];
     }
 
-    [v3 setObject:v7 forKey:@"label"];
+    [dictionary setObject:v7 forKey:@"label"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if (has)
   {
     minsUntilICloudNotificationOpened = self->_minsUntilICloudNotificationOpened;
     PBDataWriterWriteInt64Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -128,31 +128,31 @@
   {
     label = self->_label;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_minsUntilICloudNotificationOpened;
-    *(v4 + 20) |= 1u;
+    toCopy[1] = self->_minsUntilICloudNotificationOpened;
+    *(toCopy + 20) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 4) = self->_label;
-    *(v4 + 20) |= 2u;
+    *(toCopy + 4) = self->_label;
+    *(toCopy + 20) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -170,33 +170,33 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_minsUntilICloudNotificationOpened != *(v4 + 1))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_minsUntilICloudNotificationOpened != *(equalCopy + 1))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
 LABEL_11:
     v5 = 0;
     goto LABEL_12;
   }
 
-  v5 = (*(v4 + 20) & 2) == 0;
+  v5 = (*(equalCopy + 20) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 20) & 2) == 0 || self->_label != *(v4 + 4))
+    if ((*(equalCopy + 20) & 2) == 0 || self->_label != *(equalCopy + 4))
     {
       goto LABEL_11;
     }
@@ -235,20 +235,20 @@ LABEL_3:
   return v3 ^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 20);
+  fromCopy = from;
+  v5 = *(fromCopy + 20);
   if (v5)
   {
-    self->_minsUntilICloudNotificationOpened = *(v4 + 1);
+    self->_minsUntilICloudNotificationOpened = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 20);
+    v5 = *(fromCopy + 20);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_label = *(v4 + 4);
+    self->_label = *(fromCopy + 4);
     *&self->_has |= 2u;
   }
 }

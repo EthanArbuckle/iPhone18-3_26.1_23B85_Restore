@@ -1,137 +1,137 @@
 @interface CWFDevice
 - (BOOL)hasFetchedDeviceInfo;
-- (BOOL)isEqual:(id)a3;
-- (CWFDevice)initWithRapportDevice:(id)a3;
-- (CWFDevice)initWithUserInfo:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CWFDevice)initWithRapportDevice:(id)device;
+- (CWFDevice)initWithUserInfo:(id)info;
 - (id)userInfo;
 @end
 
 @implementation CWFDevice
 
-- (CWFDevice)initWithRapportDevice:(id)a3
+- (CWFDevice)initWithRapportDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v21.receiver = self;
   v21.super_class = CWFDevice;
   v5 = [(CWFDevice *)&v21 init];
   if (v5)
   {
-    v6 = [v4 idsDeviceIdentifier];
+    idsDeviceIdentifier = [deviceCopy idsDeviceIdentifier];
     deviceRapportEffectiveIdentifier = v5->_deviceRapportEffectiveIdentifier;
-    v5->_deviceRapportEffectiveIdentifier = v6;
+    v5->_deviceRapportEffectiveIdentifier = idsDeviceIdentifier;
 
-    v8 = [v4 ipAddress];
+    ipAddress = [deviceCopy ipAddress];
     ipAddress = v5->_ipAddress;
-    v5->_ipAddress = v8;
+    v5->_ipAddress = ipAddress;
 
-    v10 = [v4 name];
+    name = [deviceCopy name];
     deviceName = v5->_deviceName;
-    v5->_deviceName = v10;
+    v5->_deviceName = name;
 
-    v12 = [v4 model];
+    model = [deviceCopy model];
     model = v5->_model;
-    v5->_model = v12;
+    v5->_model = model;
 
-    v14 = [v4 name];
+    name2 = [deviceCopy name];
     productMarketingName = v5->_productMarketingName;
-    v5->_productMarketingName = v14;
+    v5->_productMarketingName = name2;
 
-    v16 = [v4 model];
+    model2 = [deviceCopy model];
     productType = v5->_productType;
-    v5->_productType = v16;
+    v5->_productType = model2;
 
-    v18 = [v4 deviceColor];
+    deviceColor = [deviceCopy deviceColor];
     productColor = v5->_productColor;
-    v5->_productColor = v18;
+    v5->_productColor = deviceColor;
   }
 
   return v5;
 }
 
-- (CWFDevice)initWithUserInfo:(id)a3
+- (CWFDevice)initWithUserInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v22.receiver = self;
   v22.super_class = CWFDevice;
   v5 = [(CWFDevice *)&v22 init];
-  v6 = [v4 allValues];
+  allValues = [infoCopy allValues];
 
-  if (v6)
+  if (allValues)
   {
     if (v5)
     {
-      v7 = [v4 objectForKeyedSubscript:@"deviceRapportEffectiveIdentifier"];
+      v7 = [infoCopy objectForKeyedSubscript:@"deviceRapportEffectiveIdentifier"];
       deviceRapportEffectiveIdentifier = v5->_deviceRapportEffectiveIdentifier;
       v5->_deviceRapportEffectiveIdentifier = v7;
 
-      v9 = [v4 objectForKeyedSubscript:@"deviceMACAddress"];
+      v9 = [infoCopy objectForKeyedSubscript:@"deviceMACAddress"];
       macAddress = v5->_macAddress;
       v5->_macAddress = v9;
 
-      v11 = [v4 objectForKeyedSubscript:@"deviceName"];
+      v11 = [infoCopy objectForKeyedSubscript:@"deviceName"];
       deviceName = v5->_deviceName;
       v5->_deviceName = v11;
 
-      v13 = [v4 objectForKeyedSubscript:@"deviceMarketingName"];
+      v13 = [infoCopy objectForKeyedSubscript:@"deviceMarketingName"];
       productMarketingName = v5->_productMarketingName;
       v5->_productMarketingName = v13;
 
-      v15 = [v4 objectForKeyedSubscript:@"deviceModel"];
+      v15 = [infoCopy objectForKeyedSubscript:@"deviceModel"];
       model = v5->_model;
       v5->_model = v15;
 
-      v17 = [v4 objectForKeyedSubscript:@"deviceProductType"];
+      v17 = [infoCopy objectForKeyedSubscript:@"deviceProductType"];
       productType = v5->_productType;
       v5->_productType = v17;
 
-      v19 = [v4 objectForKeyedSubscript:@"deviceProductColor"];
+      v19 = [infoCopy objectForKeyedSubscript:@"deviceProductColor"];
       productColor = v5->_productColor;
       v5->_productColor = v19;
     }
 
-    v6 = v5;
+    allValues = v5;
   }
 
-  return v6;
+  return allValues;
 }
 
 - (id)userInfo
 {
   v3 = objc_opt_new();
-  v4 = [(CWFDevice *)self deviceRapportEffectiveIdentifier];
-  [v3 setObject:v4 forKeyedSubscript:@"deviceRapportEffectiveIdentifier"];
+  deviceRapportEffectiveIdentifier = [(CWFDevice *)self deviceRapportEffectiveIdentifier];
+  [v3 setObject:deviceRapportEffectiveIdentifier forKeyedSubscript:@"deviceRapportEffectiveIdentifier"];
 
-  v5 = [(CWFDevice *)self macAddress];
-  [v3 setObject:v5 forKeyedSubscript:@"deviceMACAddress"];
+  macAddress = [(CWFDevice *)self macAddress];
+  [v3 setObject:macAddress forKeyedSubscript:@"deviceMACAddress"];
 
-  v6 = [(CWFDevice *)self deviceName];
-  [v3 setObject:v6 forKeyedSubscript:@"deviceName"];
+  deviceName = [(CWFDevice *)self deviceName];
+  [v3 setObject:deviceName forKeyedSubscript:@"deviceName"];
 
-  v7 = [(CWFDevice *)self productMarketingName];
-  [v3 setObject:v7 forKeyedSubscript:@"deviceMarketingName"];
+  productMarketingName = [(CWFDevice *)self productMarketingName];
+  [v3 setObject:productMarketingName forKeyedSubscript:@"deviceMarketingName"];
 
-  v8 = [(CWFDevice *)self model];
-  [v3 setObject:v8 forKeyedSubscript:@"deviceModel"];
+  model = [(CWFDevice *)self model];
+  [v3 setObject:model forKeyedSubscript:@"deviceModel"];
 
-  v9 = [(CWFDevice *)self productType];
-  [v3 setObject:v9 forKeyedSubscript:@"deviceProductType"];
+  productType = [(CWFDevice *)self productType];
+  [v3 setObject:productType forKeyedSubscript:@"deviceProductType"];
 
-  v10 = [(CWFDevice *)self productColor];
-  [v3 setObject:v10 forKeyedSubscript:@"deviceProductColor"];
+  productColor = [(CWFDevice *)self productColor];
+  [v3 setObject:productColor forKeyedSubscript:@"deviceProductColor"];
 
   return v3;
 }
 
 - (BOOL)hasFetchedDeviceInfo
 {
-  v3 = [(CWFDevice *)self deviceName];
-  if (v3)
+  deviceName = [(CWFDevice *)self deviceName];
+  if (deviceName)
   {
-    v4 = [(CWFDevice *)self productMarketingName];
-    if (v4)
+    productMarketingName = [(CWFDevice *)self productMarketingName];
+    if (productMarketingName)
     {
-      v5 = [(CWFDevice *)self model];
-      v6 = v5 != 0;
+      model = [(CWFDevice *)self model];
+      v6 = model != 0;
     }
 
     else
@@ -148,14 +148,14 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 deviceRapportEffectiveIdentifier];
-    v6 = [v5 isEqual:self->_deviceRapportEffectiveIdentifier];
+    deviceRapportEffectiveIdentifier = [equalCopy deviceRapportEffectiveIdentifier];
+    v6 = [deviceRapportEffectiveIdentifier isEqual:self->_deviceRapportEffectiveIdentifier];
   }
 
   else

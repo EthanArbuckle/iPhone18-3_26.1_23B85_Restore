@@ -1,28 +1,28 @@
 @interface SBSAnalyticsState
-+ (id)withTimestamp:(double)a3 payload:(id)a4;
-- (SBSAnalyticsState)initWithTimestamp:(double)a3 payload:(id)a4;
++ (id)withTimestamp:(double)timestamp payload:(id)payload;
+- (SBSAnalyticsState)initWithTimestamp:(double)timestamp payload:(id)payload;
 - (id)coreAnalyticsRepresentation;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation SBSAnalyticsState
 
-+ (id)withTimestamp:(double)a3 payload:(id)a4
++ (id)withTimestamp:(double)timestamp payload:(id)payload
 {
-  v6 = a4;
-  v7 = [[a1 alloc] initWithTimestamp:v6 payload:a3];
+  payloadCopy = payload;
+  v7 = [[self alloc] initWithTimestamp:payloadCopy payload:timestamp];
 
   return v7;
 }
 
-- (SBSAnalyticsState)initWithTimestamp:(double)a3 payload:(id)a4
+- (SBSAnalyticsState)initWithTimestamp:(double)timestamp payload:(id)payload
 {
-  v7 = a4;
-  v8 = v7;
-  if (v7 && (_SBSupportedType(v7) & 1) == 0)
+  payloadCopy = payload;
+  v8 = payloadCopy;
+  if (payloadCopy && (_SBSupportedType(payloadCopy) & 1) == 0)
   {
     v12 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"payload must contain only NSDictionary userInfo:{NSArray, NSNumber, NSData, NString, NSNull objects", 0}];
     objc_exception_throw(v12);
@@ -34,8 +34,8 @@
   v10 = v9;
   if (v9)
   {
-    v9->_timestamp = a3;
-    objc_storeStrong(&v9->_payload, a4);
+    v9->_timestamp = timestamp;
+    objc_storeStrong(&v9->_payload, payload);
   }
 
   return v10;
@@ -50,18 +50,18 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBSAnalyticsState *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBSAnalyticsState *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = MEMORY[0x1E698E680];
-  v5 = a3;
+  prefixCopy = prefix;
   v6 = [v4 builderWithObject:self];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -69,8 +69,8 @@
   v10[3] = &unk_1E735F7F0;
   v7 = v6;
   v11 = v7;
-  v12 = self;
-  [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v10];
+  selfCopy = self;
+  [v7 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
 
   v8 = v7;
   return v7;
@@ -87,10 +87,10 @@ uint64_t __59__SBSAnalyticsState_descriptionBuilderWithMultilinePrefix___block_i
 
 - (id)succinctDescription
 {
-  v2 = [(SBSAnalyticsState *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBSAnalyticsState *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder

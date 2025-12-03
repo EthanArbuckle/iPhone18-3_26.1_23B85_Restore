@@ -1,18 +1,18 @@
 @interface HURoomListItemCell
-- (HURoomListItemCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HURoomListItemCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (NSString)roomName;
 - (void)prepareForReuse;
-- (void)setRoomName:(id)a3;
+- (void)setRoomName:(id)name;
 @end
 
 @implementation HURoomListItemCell
 
-- (HURoomListItemCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HURoomListItemCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v40[5] = *MEMORY[0x277D85DE8];
   v39.receiver = self;
   v39.super_class = HURoomListItemCell;
-  v4 = [(HURoomListItemCell *)&v39 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HURoomListItemCell *)&v39 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -23,41 +23,41 @@
     v7 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
     [(UILabel *)v4->_nameLabel setFont:v7];
 
-    v8 = [(HURoomListItemCell *)v4 contentView];
-    [v8 addSubview:v4->_nameLabel];
+    contentView = [(HURoomListItemCell *)v4 contentView];
+    [contentView addSubview:v4->_nameLabel];
 
     v27 = MEMORY[0x277CCAAD0];
-    v38 = [(HURoomListItemCell *)v4 contentView];
-    v37 = [v38 heightAnchor];
-    v36 = [v37 constraintGreaterThanOrEqualToConstant:44.0];
+    contentView2 = [(HURoomListItemCell *)v4 contentView];
+    heightAnchor = [contentView2 heightAnchor];
+    v36 = [heightAnchor constraintGreaterThanOrEqualToConstant:44.0];
     v40[0] = v36;
-    v35 = [(HURoomListItemCell *)v4 nameLabel];
-    v33 = [v35 leadingAnchor];
-    v34 = [(HURoomListItemCell *)v4 contentView];
-    v32 = [v34 layoutMarginsGuide];
-    v31 = [v32 leadingAnchor];
-    v30 = [v33 constraintEqualToAnchor:v31];
+    nameLabel = [(HURoomListItemCell *)v4 nameLabel];
+    leadingAnchor = [nameLabel leadingAnchor];
+    contentView3 = [(HURoomListItemCell *)v4 contentView];
+    layoutMarginsGuide = [contentView3 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v30 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v40[1] = v30;
-    v29 = [(HURoomListItemCell *)v4 nameLabel];
-    v26 = [v29 trailingAnchor];
-    v28 = [(HURoomListItemCell *)v4 contentView];
-    v25 = [v28 layoutMarginsGuide];
-    v24 = [v25 trailingAnchor];
-    v23 = [v26 constraintEqualToAnchor:v24];
+    nameLabel2 = [(HURoomListItemCell *)v4 nameLabel];
+    trailingAnchor = [nameLabel2 trailingAnchor];
+    contentView4 = [(HURoomListItemCell *)v4 contentView];
+    layoutMarginsGuide2 = [contentView4 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v23 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v40[2] = v23;
-    v22 = [(HURoomListItemCell *)v4 nameLabel];
-    v20 = [v22 centerYAnchor];
-    v21 = [(HURoomListItemCell *)v4 contentView];
-    v19 = [v21 layoutMarginsGuide];
-    v9 = [v19 centerYAnchor];
-    v10 = [v20 constraintEqualToAnchor:v9];
+    nameLabel3 = [(HURoomListItemCell *)v4 nameLabel];
+    centerYAnchor = [nameLabel3 centerYAnchor];
+    contentView5 = [(HURoomListItemCell *)v4 contentView];
+    layoutMarginsGuide3 = [contentView5 layoutMarginsGuide];
+    centerYAnchor2 = [layoutMarginsGuide3 centerYAnchor];
+    v10 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v40[3] = v10;
-    v11 = [(HURoomListItemCell *)v4 nameLabel];
-    v12 = [v11 heightAnchor];
-    v13 = [(HURoomListItemCell *)v4 contentView];
-    v14 = [v13 layoutMarginsGuide];
-    v15 = [v14 heightAnchor];
-    v16 = [v12 constraintEqualToAnchor:v15];
+    nameLabel4 = [(HURoomListItemCell *)v4 nameLabel];
+    heightAnchor2 = [nameLabel4 heightAnchor];
+    contentView6 = [(HURoomListItemCell *)v4 contentView];
+    layoutMarginsGuide4 = [contentView6 layoutMarginsGuide];
+    heightAnchor3 = [layoutMarginsGuide4 heightAnchor];
+    v16 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
     v40[4] = v16;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:5];
     [v27 activateConstraints:v17];
@@ -76,17 +76,17 @@
 
 - (NSString)roomName
 {
-  v2 = [(HURoomListItemCell *)self nameLabel];
-  v3 = [v2 text];
+  nameLabel = [(HURoomListItemCell *)self nameLabel];
+  text = [nameLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setRoomName:(id)a3
+- (void)setRoomName:(id)name
 {
-  v4 = a3;
-  v5 = [(HURoomListItemCell *)self nameLabel];
-  [v5 setText:v4];
+  nameCopy = name;
+  nameLabel = [(HURoomListItemCell *)self nameLabel];
+  [nameLabel setText:nameCopy];
 }
 
 @end

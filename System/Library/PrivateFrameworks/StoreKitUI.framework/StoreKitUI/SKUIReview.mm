@@ -1,15 +1,15 @@
 @interface SKUIReview
 - (NSMutableDictionary)cacheRepresentation;
-- (SKUIReview)initWithCacheRepresentation:(id)a3;
-- (SKUIReview)initWithReviewDictionary:(id)a3;
-- (id)formattedBylineWithClientContext:(id)a3;
+- (SKUIReview)initWithCacheRepresentation:(id)representation;
+- (SKUIReview)initWithReviewDictionary:(id)dictionary;
+- (id)formattedBylineWithClientContext:(id)context;
 @end
 
 @implementation SKUIReview
 
-- (SKUIReview)initWithReviewDictionary:(id)a3
+- (SKUIReview)initWithReviewDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIReview initWithReviewDictionary:];
@@ -20,7 +20,7 @@
   v5 = [(SKUIReview *)&v21 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"review_body"];
+    v6 = [dictionaryCopy objectForKey:@"review_body"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,7 +29,7 @@
       v5->_body = v7;
     }
 
-    v9 = [v4 objectForKey:@"review_date"];
+    v9 = [dictionaryCopy objectForKey:@"review_date"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -39,7 +39,7 @@
       v5->_dateString = v10;
     }
 
-    v12 = [v4 objectForKey:@"review_star_count"];
+    v12 = [dictionaryCopy objectForKey:@"review_star_count"];
 
     if (objc_opt_respondsToSelector())
     {
@@ -47,7 +47,7 @@
       v5->_rating = v13;
     }
 
-    v14 = [v4 objectForKey:@"review_name"];
+    v14 = [dictionaryCopy objectForKey:@"review_name"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -57,7 +57,7 @@
       v5->_reviewer = v15;
     }
 
-    v17 = [v4 objectForKey:@"review_title"];
+    v17 = [dictionaryCopy objectForKey:@"review_title"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -71,10 +71,10 @@
   return v5;
 }
 
-- (id)formattedBylineWithClientContext:(id)a3
+- (id)formattedBylineWithClientContext:(id)context
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   if (!self->_dateString)
   {
     goto LABEL_28;
@@ -125,9 +125,9 @@
   {
     if (self->_reviewer)
     {
-      if (v4)
+      if (contextCopy)
       {
-        [v4 localizedStringForKey:@"REVIEW_BYLINE_WITH_DATE" inTable:@"ProductPage"];
+        [contextCopy localizedStringForKey:@"REVIEW_BYLINE_WITH_DATE" inTable:@"ProductPage"];
       }
 
       else
@@ -150,9 +150,9 @@
 LABEL_28:
     if (self->_reviewer)
     {
-      if (v4)
+      if (contextCopy)
       {
-        [v4 localizedStringForKey:@"REVIEW_BYLINE_NO_DATE" inTable:@"ProductPage"];
+        [contextCopy localizedStringForKey:@"REVIEW_BYLINE_NO_DATE" inTable:@"ProductPage"];
       }
 
       else
@@ -175,9 +175,9 @@ LABEL_28:
   return v15;
 }
 
-- (SKUIReview)initWithCacheRepresentation:(id)a3
+- (SKUIReview)initWithCacheRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -186,7 +186,7 @@ LABEL_28:
     v5 = [(SKUIReview *)&v21 init];
     if (v5)
     {
-      v6 = [v4 objectForKey:@"review_body"];
+      v6 = [representationCopy objectForKey:@"review_body"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -195,7 +195,7 @@ LABEL_28:
         v5->_body = v7;
       }
 
-      v9 = [v4 objectForKey:@"review_date"];
+      v9 = [representationCopy objectForKey:@"review_date"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -205,7 +205,7 @@ LABEL_28:
         v5->_dateString = v10;
       }
 
-      v12 = [v4 objectForKey:@"review_star_count"];
+      v12 = [representationCopy objectForKey:@"review_star_count"];
 
       if (objc_opt_respondsToSelector())
       {
@@ -213,7 +213,7 @@ LABEL_28:
         v5->_rating = v13;
       }
 
-      v14 = [v4 objectForKey:@"review_name"];
+      v14 = [representationCopy objectForKey:@"review_name"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -223,7 +223,7 @@ LABEL_28:
         v5->_reviewer = v15;
       }
 
-      v17 = [v4 objectForKey:@"review_title"];
+      v17 = [representationCopy objectForKey:@"review_title"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -246,36 +246,36 @@ LABEL_28:
 
 - (NSMutableDictionary)cacheRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   *&v4 = self->_rating;
   v5 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v5 forKey:@"review_star_count"];
+  [dictionary setObject:v5 forKey:@"review_star_count"];
 
   body = self->_body;
   if (body)
   {
-    [v3 setObject:body forKey:@"review_body"];
+    [dictionary setObject:body forKey:@"review_body"];
   }
 
   dateString = self->_dateString;
   if (dateString)
   {
-    [v3 setObject:dateString forKey:@"review_date"];
+    [dictionary setObject:dateString forKey:@"review_date"];
   }
 
   reviewer = self->_reviewer;
   if (reviewer)
   {
-    [v3 setObject:reviewer forKey:@"review_name"];
+    [dictionary setObject:reviewer forKey:@"review_name"];
   }
 
   title = self->_title;
   if (title)
   {
-    [v3 setObject:title forKey:@"review_title"];
+    [dictionary setObject:title forKey:@"review_title"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (void)initWithReviewDictionary:.cold.1()

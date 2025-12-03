@@ -1,16 +1,16 @@
 @interface PHFeatureAvailabilityConfig
 - (PHFeatureAvailabilityConfig)init;
-- (PHFeatureAvailabilityConfig)initWithFeature:(unint64_t)a3;
+- (PHFeatureAvailabilityConfig)initWithFeature:(unint64_t)feature;
 @end
 
 @implementation PHFeatureAvailabilityConfig
 
-- (PHFeatureAvailabilityConfig)initWithFeature:(unint64_t)a3
+- (PHFeatureAvailabilityConfig)initWithFeature:(unint64_t)feature
 {
   v4 = [(PHFeatureAvailabilityConfig *)self init];
   if (v4)
   {
-    v5 = [objc_alloc(MEMORY[0x1E69BE420]) initWithFeature:a3];
+    v5 = [objc_alloc(MEMORY[0x1E69BE420]) initWithFeature:feature];
     [v5 fractionOfAllAssetsWithMediaAnalysisInSearchIndexThreshold];
     v4->_fractionOfAllAssetsWithMediaAnalysisInSearchIndexThreshold = v6;
     [v5 fractionOfCuratedAssetsWithSceneAnalysisInSearchIndexThreshold];

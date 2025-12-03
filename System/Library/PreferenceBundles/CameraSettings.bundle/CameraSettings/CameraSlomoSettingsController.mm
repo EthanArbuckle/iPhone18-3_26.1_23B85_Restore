@@ -10,8 +10,8 @@
 {
   v5.receiver = self;
   v5.super_class = CameraSlomoSettingsController;
-  v2 = [(CameraSlomoSettingsController *)&v5 itemsFromParent];
-  v3 = [NSMutableArray arrayWithArray:v2];
+  itemsFromParent = [(CameraSlomoSettingsController *)&v5 itemsFromParent];
+  v3 = [NSMutableArray arrayWithArray:itemsFromParent];
 
   [v3 enumerateObjectsUsingBlock:&stru_2CE30];
 
@@ -52,14 +52,14 @@
   v4 = [_NSLocalizedStringResource alloc];
   v5 = +[NSLocale currentLocale];
   v6 = [NSBundle bundleForClass:objc_opt_class()];
-  v7 = [v6 bundleURL];
-  v8 = [v4 initWithKey:@"CAM_RECORD_SLOMO_TITLE" table:@"CameraSettings" locale:v5 bundleURL:v7];
+  bundleURL = [v6 bundleURL];
+  v8 = [v4 initWithKey:@"CAM_RECORD_SLOMO_TITLE" table:@"CameraSettings" locale:v5 bundleURL:bundleURL];
 
   v9 = [_NSLocalizedStringResource alloc];
   v10 = +[NSLocale currentLocale];
   v11 = [NSBundle bundleForClass:objc_opt_class()];
-  v12 = [v11 bundleURL];
-  v13 = [v9 initWithKey:@"CAMERA_SETTINGS_TITLE" table:@"CameraSettings" locale:v10 bundleURL:v12];
+  bundleURL2 = [v11 bundleURL];
+  v13 = [v9 initWithKey:@"CAMERA_SETTINGS_TITLE" table:@"CameraSettings" locale:v10 bundleURL:bundleURL2];
 
   v15 = v13;
   v14 = [NSArray arrayWithObjects:&v15 count:1];

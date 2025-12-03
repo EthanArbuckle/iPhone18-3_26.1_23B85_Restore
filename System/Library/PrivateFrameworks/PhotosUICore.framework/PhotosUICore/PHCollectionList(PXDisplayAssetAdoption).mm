@@ -9,25 +9,25 @@
 
 - (uint64_t)px_isTransientPlacesCollection
 {
-  v1 = [a1 transientIdentifier];
-  v2 = [v1 isEqualToString:@"PXPlacesGridVirtualCollection"];
+  transientIdentifier = [self transientIdentifier];
+  v2 = [transientIdentifier isEqualToString:@"PXPlacesGridVirtualCollection"];
 
   return v2;
 }
 
 - (uint64_t)px_isBookmarksFolder
 {
-  v1 = [a1 transientIdentifier];
-  v2 = [v1 isEqualToString:@"PXBookmarksVirtualCollectionList"];
+  transientIdentifier = [self transientIdentifier];
+  v2 = [transientIdentifier isEqualToString:@"PXBookmarksVirtualCollectionList"];
 
   return v2;
 }
 
 - (uint64_t)px_isRegularFolder
 {
-  if ([a1 collectionListType] == 2 && objc_msgSend(a1, "collectionListSubtype") == 100)
+  if ([self collectionListType] == 2 && objc_msgSend(self, "collectionListSubtype") == 100)
   {
-    return [a1 isTransient] ^ 1;
+    return [self isTransient] ^ 1;
   }
 
   else
@@ -38,15 +38,15 @@
 
 - (id)px_symbolImageName
 {
-  if ([a1 isTransient])
+  if ([self isTransient])
   {
-    v2 = [a1 transientIdentifier];
-    v3 = PXSymbolNameForTransientCollectionIdentifier(v2);
+    transientIdentifier = [self transientIdentifier];
+    v3 = PXSymbolNameForTransientCollectionIdentifier(transientIdentifier);
   }
 
   else
   {
-    v5.receiver = a1;
+    v5.receiver = self;
     v5.super_class = &off_1F1B0D238;
     v3 = objc_msgSendSuper2(&v5, sel_px_symbolImageName);
   }

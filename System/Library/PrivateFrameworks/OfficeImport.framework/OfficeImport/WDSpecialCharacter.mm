@@ -1,21 +1,21 @@
 @interface WDSpecialCharacter
-- (WDSpecialCharacter)initWithParagraph:(id)a3;
+- (WDSpecialCharacter)initWithParagraph:(id)paragraph;
 - (id)description;
 @end
 
 @implementation WDSpecialCharacter
 
-- (WDSpecialCharacter)initWithParagraph:(id)a3
+- (WDSpecialCharacter)initWithParagraph:(id)paragraph
 {
-  v4 = a3;
+  paragraphCopy = paragraph;
   v11.receiver = self;
   v11.super_class = WDSpecialCharacter;
-  v5 = [(WDRunWithCharacterProperties *)&v11 initWithParagraph:v4];
+  v5 = [(WDRunWithCharacterProperties *)&v11 initWithParagraph:paragraphCopy];
   if (v5)
   {
     v6 = [WDCharacterProperties alloc];
-    v7 = [v4 document];
-    v8 = [(WDCharacterProperties *)v6 initWithDocument:v7];
+    document = [paragraphCopy document];
+    v8 = [(WDCharacterProperties *)v6 initWithDocument:document];
     mProperties = v5->super.mProperties;
     v5->super.mProperties = v8;
 

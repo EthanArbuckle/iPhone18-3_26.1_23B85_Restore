@@ -1,36 +1,36 @@
 @interface WFShortcutsV12CustomModificationStep
-- (BOOL)gatherStateFromPreviousContext:(id)a3 error:(id *)a4;
-- (BOOL)performModificationsWithContext:(id)a3 error:(id *)a4;
-- (BOOL)shouldAddWorkflowToLibrary:(id)a3;
-- (id)createLibraryFromCurrentDatabaseSnapshot:(id)a3;
+- (BOOL)gatherStateFromPreviousContext:(id)context error:(id *)error;
+- (BOOL)performModificationsWithContext:(id)context error:(id *)error;
+- (BOOL)shouldAddWorkflowToLibrary:(id)library;
+- (id)createLibraryFromCurrentDatabaseSnapshot:(id)snapshot;
 @end
 
 @implementation WFShortcutsV12CustomModificationStep
 
-- (BOOL)shouldAddWorkflowToLibrary:(id)a3
+- (BOOL)shouldAddWorkflowToLibrary:(id)library
 {
-  v3 = a3;
-  if ([v3 hiddenFromLibraryAndSync])
+  libraryCopy = library;
+  if ([libraryCopy hiddenFromLibraryAndSync])
   {
     goto LABEL_6;
   }
 
-  if ([v3 tombstoned])
+  if ([libraryCopy tombstoned])
   {
     goto LABEL_6;
   }
 
-  v4 = [v3 conflictOf];
-  if (!v4)
+  conflictOf = [libraryCopy conflictOf];
+  if (!conflictOf)
   {
     goto LABEL_5;
   }
 
-  v5 = v4;
-  v6 = [v3 conflictOf];
-  v7 = [v6 tombstoned];
+  v5 = conflictOf;
+  conflictOf2 = [libraryCopy conflictOf];
+  tombstoned = [conflictOf2 tombstoned];
 
-  if (!v7)
+  if (!tombstoned)
   {
 LABEL_6:
     v9 = 0;
@@ -39,17 +39,17 @@ LABEL_6:
   else
   {
 LABEL_5:
-    v8 = [v3 name];
-    v9 = v8 != 0;
+    name = [libraryCopy name];
+    v9 = name != 0;
   }
 
   return v9;
 }
 
-- (id)createLibraryFromCurrentDatabaseSnapshot:(id)a3
+- (id)createLibraryFromCurrentDatabaseSnapshot:(id)snapshot
 {
   v42 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  snapshotCopy = snapshot;
   v4 = getWFCoherenceLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -64,30 +64,30 @@ LABEL_5:
   [v6 setPredicate:v7];
 
   [v6 setFetchLimit:1];
-  v8 = [v3 executeFetchRequest:v6 error:0];
-  v9 = [v8 firstObject];
+  v8 = [snapshotCopy executeFetchRequest:v6 error:0];
+  firstObject = [v8 firstObject];
 
-  if (v9)
+  if (firstObject)
   {
     v28 = v5;
-    v10 = [MEMORY[0x1E695DF70] array];
-    v11 = [MEMORY[0x1E695DF70] array];
-    v12 = [v9 valueForKey:@"shortcuts"];
-    v13 = [v9 valueForKey:@"collections"];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
+    v12 = [firstObject valueForKey:@"shortcuts"];
+    v13 = [firstObject valueForKey:@"collections"];
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __81__WFShortcutsV12CustomModificationStep_createLibraryFromCurrentDatabaseSnapshot___block_invoke;
     v34[3] = &unk_1E8375CF8;
     v34[4] = self;
-    v35 = v10;
-    v14 = v10;
+    v35 = array;
+    v14 = array;
     [v12 enumerateObjectsUsingBlock:v34];
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __81__WFShortcutsV12CustomModificationStep_createLibraryFromCurrentDatabaseSnapshot___block_invoke_2;
     v32[3] = &unk_1E8375D20;
     v32[4] = self;
-    v15 = v11;
+    v15 = array2;
     v33 = v15;
     [v13 enumerateObjectsUsingBlock:v32];
     v16 = getWFCoherenceLogObject();
@@ -113,7 +113,7 @@ LABEL_5:
   v21 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY parents = nil && (%K in %@)", @"identifier", v20];
   [v19 setPredicate:v21];
 
-  v22 = [v3 executeFetchRequest:v19 error:0];
+  v22 = [snapshotCopy executeFetchRequest:v19 error:0];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __81__WFShortcutsV12CustomModificationStep_createLibraryFromCurrentDatabaseSnapshot___block_invoke_209;
@@ -235,19 +235,19 @@ void __81__WFShortcutsV12CustomModificationStep_createLibraryFromCurrentDatabase
   }
 }
 
-- (BOOL)performModificationsWithContext:(id)a3 error:(id *)a4
+- (BOOL)performModificationsWithContext:(id)context error:(id *)error
 {
-  v6 = a3;
-  v7 = [(WFShortcutsV12CustomModificationStep *)self libraryToWrite];
+  contextCopy = context;
+  libraryToWrite = [(WFShortcutsV12CustomModificationStep *)self libraryToWrite];
 
-  if (!v7)
+  if (!libraryToWrite)
   {
     goto LABEL_4;
   }
 
   v8 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"Library"];
   v9 = [objc_alloc(MEMORY[0x1E695D538]) initWithFetchRequest:v8];
-  v10 = [v6 executeRequest:v9 error:a4];
+  v10 = [contextCopy executeRequest:v9 error:error];
 
   if (!v10)
   {
@@ -256,15 +256,15 @@ void __81__WFShortcutsV12CustomModificationStep_createLibraryFromCurrentDatabase
     goto LABEL_6;
   }
 
-  v11 = [(WFShortcutsV12CustomModificationStep *)self libraryToWrite];
-  v12 = [v11 capsuleDataWithPersistenceMode:0 error:0];
+  libraryToWrite2 = [(WFShortcutsV12CustomModificationStep *)self libraryToWrite];
+  v12 = [libraryToWrite2 capsuleDataWithPersistenceMode:0 error:0];
 
-  v13 = [[WFCoreDataLibrary alloc] initWithContext:v6];
+  v13 = [[WFCoreDataLibrary alloc] initWithContext:contextCopy];
   [(WFCoreDataLibrary *)v13 setIdentifier:@"Library-2"];
   [(WFCoreDataLibrary *)v13 setData:v12];
   [(WFCoreDataLibrary *)v13 setSyncHash:[WFLibraryRecord syncHashFromData:v12]];
   [(WFCoreDataLibrary *)v13 setResetVersion:1];
-  v14 = [v6 save:a4];
+  v14 = [contextCopy save:error];
 
   if (v14)
   {
@@ -277,47 +277,47 @@ LABEL_6:
   return v14;
 }
 
-- (BOOL)gatherStateFromPreviousContext:(id)a3 error:(id *)a4
+- (BOOL)gatherStateFromPreviousContext:(id)context error:(id *)error
 {
-  v5 = a3;
+  contextCopy = context;
   v6 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"Library"];
   [v6 setFetchLimit:1];
-  v7 = [v5 executeFetchRequest:v6 error:0];
-  v8 = [v7 firstObject];
-  v9 = [v8 identifier];
-  if (v9 == @"Library-2")
+  v7 = [contextCopy executeFetchRequest:v6 error:0];
+  firstObject = [v7 firstObject];
+  identifier = [firstObject identifier];
+  if (identifier == @"Library-2")
   {
     v12 = @"Library-2";
 
     goto LABEL_13;
   }
 
-  v10 = v9;
-  if (!v9 || (v11 = [(__CFString *)v9 isEqualToString:@"Library-2"], v10, v10, (v11 & 1) == 0))
+  v10 = identifier;
+  if (!identifier || (v11 = [(__CFString *)identifier isEqualToString:@"Library-2"], v10, v10, (v11 & 1) == 0))
   {
-    v13 = [v8 identifier];
-    if (v13 == @"Library")
+    identifier2 = [firstObject identifier];
+    if (identifier2 == @"Library")
     {
     }
 
     else
     {
-      v14 = v13;
-      if (!v13 || (v15 = [(__CFString *)v13 isEqualToString:@"Library"], v14, v14, !v15))
+      v14 = identifier2;
+      if (!identifier2 || (v15 = [(__CFString *)identifier2 isEqualToString:@"Library"], v14, v14, !v15))
       {
-        v12 = [(WFShortcutsV12CustomModificationStep *)self createLibraryFromCurrentDatabaseSnapshot:v5];
+        v12 = [(WFShortcutsV12CustomModificationStep *)self createLibraryFromCurrentDatabaseSnapshot:contextCopy];
         [(WFShortcutsV12CustomModificationStep *)self setLibraryToWrite:v12];
         goto LABEL_13;
       }
     }
 
     v16 = [WFLibrary alloc];
-    v17 = [v8 identifier];
-    v18 = [v8 data];
-    v12 = [(WFLibrary *)v16 initWithIdentifier:v17 data:v18];
+    identifier3 = [firstObject identifier];
+    data = [firstObject data];
+    v12 = [(WFLibrary *)v16 initWithIdentifier:identifier3 data:data];
 
-    v19 = [(__CFString *)v12 libraryByErasingChangeHistory];
-    [(WFShortcutsV12CustomModificationStep *)self setLibraryToWrite:v19];
+    libraryByErasingChangeHistory = [(__CFString *)v12 libraryByErasingChangeHistory];
+    [(WFShortcutsV12CustomModificationStep *)self setLibraryToWrite:libraryByErasingChangeHistory];
 
 LABEL_13:
   }

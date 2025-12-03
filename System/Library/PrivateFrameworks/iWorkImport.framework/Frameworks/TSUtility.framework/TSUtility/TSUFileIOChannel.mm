@@ -1,34 +1,34 @@
 @interface TSUFileIOChannel
 - (BOOL)isValid;
-- (TSUFileIOChannel)initWithType:(unint64_t)a3 URL:(id)a4 oflag:(int)a5 mode:(unsigned __int16)a6 error:(id *)a7 cleanupHandler:(id)a8;
-- (TSUFileIOChannel)initWithType:(unint64_t)a3 descriptor:(int)a4 cleanupHandler:(id)a5;
-- (void)addBarrier:(id)a3;
+- (TSUFileIOChannel)initWithType:(unint64_t)type URL:(id)l oflag:(int)oflag mode:(unsigned __int16)mode error:(id *)error cleanupHandler:(id)handler;
+- (TSUFileIOChannel)initWithType:(unint64_t)type descriptor:(int)descriptor cleanupHandler:(id)handler;
+- (void)addBarrier:(id)barrier;
 - (void)close;
 - (void)dealloc;
-- (void)flushWithCompletion:(id)a3;
-- (void)readFromOffset:(int64_t)a3 length:(unint64_t)a4 handler:(id)a5;
-- (void)setLowWater:(unint64_t)a3;
-- (void)truncateToLength:(int64_t)a3 completion:(id)a4;
-- (void)writeData:(id)a3 offset:(int64_t)a4 handler:(id)a5;
+- (void)flushWithCompletion:(id)completion;
+- (void)readFromOffset:(int64_t)offset length:(unint64_t)length handler:(id)handler;
+- (void)setLowWater:(unint64_t)water;
+- (void)truncateToLength:(int64_t)length completion:(id)completion;
+- (void)writeData:(id)data offset:(int64_t)offset handler:(id)handler;
 @end
 
 @implementation TSUFileIOChannel
 
-- (TSUFileIOChannel)initWithType:(unint64_t)a3 URL:(id)a4 oflag:(int)a5 mode:(unsigned __int16)a6 error:(id *)a7 cleanupHandler:(id)a8
+- (TSUFileIOChannel)initWithType:(unint64_t)type URL:(id)l oflag:(int)oflag mode:(unsigned __int16)mode error:(id *)error cleanupHandler:(id)handler
 {
-  v10 = a6;
-  v14 = a4;
-  v15 = a8;
-  if (!v14 || ([v14 isFileURL] & 1) == 0)
+  modeCopy = mode;
+  lCopy = l;
+  handlerCopy = handler;
+  if (!lCopy || ([lCopy isFileURL] & 1) == 0)
   {
-    if (a7)
+    if (error)
     {
-      *a7 = [MEMORY[0x277CCA9B8] tsu_fileReadPOSIXErrorWithNumber:2 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] tsu_fileReadPOSIXErrorWithNumber:2 userInfo:0];
     }
 
-    if (v15)
+    if (handlerCopy)
     {
-      v15[2](v15, 2);
+      handlerCopy[2](handlerCopy, 2);
     }
 
     goto LABEL_19;
@@ -39,19 +39,19 @@
   v16 = [(TSUFileIOChannel *)&v43 init];
   if (!v16)
   {
-    if (a7)
+    if (error)
     {
-      *a7 = [MEMORY[0x277CCA9B8] tsu_fileReadPOSIXErrorWithNumber:12 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] tsu_fileReadPOSIXErrorWithNumber:12 userInfo:0];
     }
 
-    if (v15)
+    if (handlerCopy)
     {
-      v15[2](v15, 12);
+      handlerCopy[2](handlerCopy, 12);
     }
 
     self = 0;
 LABEL_19:
-    v29 = 0;
+    selfCopy = 0;
     goto LABEL_20;
   }
 
@@ -65,21 +65,21 @@ LABEL_19:
   aBlock[2] = sub_2770D59EC;
   aBlock[3] = &unk_27A703070;
   v40 = v41;
-  v18 = v15;
+  v18 = handlerCopy;
   v39 = v18;
   v34 = _Block_copy(aBlock);
-  v17->_oflag = a5;
-  v19 = [v14 path];
-  v20 = [v19 fileSystemRepresentation];
+  v17->_oflag = oflag;
+  path = [lCopy path];
+  fileSystemRepresentation = [path fileSystemRepresentation];
 
-  if (v20)
+  if (fileSystemRepresentation)
   {
-    if ((a5 & 0x400) != 0)
+    if ((oflag & 0x400) != 0)
     {
-      unlink(v20);
+      unlink(fileSystemRepresentation);
     }
 
-    v21 = open(v20, a5, v10);
+    v21 = open(fileSystemRepresentation, oflag, modeCopy);
     if (v21 < 0)
     {
       v28 = [MEMORY[0x277CCA9B8] tsu_fileReadPOSIXErrorWithNumber:*__error() userInfo:0];
@@ -105,7 +105,7 @@ LABEL_19:
     cleanup_handler[3] = &unk_27A703098;
     v37 = v21;
     v36 = v18;
-    v26 = dispatch_io_create(a3, v21, v25, cleanup_handler);
+    v26 = dispatch_io_create(type, v21, v25, cleanup_handler);
     channel = v17->_channel;
     v17->_channel = v26;
   }
@@ -114,18 +114,18 @@ LABEL_19:
 LABEL_24:
   if (!v17->_channel)
   {
-    if (a7)
+    if (error)
     {
       if (v28)
       {
         v32 = v28;
-        *a7 = v28;
+        *error = v28;
       }
 
       else
       {
         v33 = [MEMORY[0x277CCA9B8] tsu_fileReadPOSIXErrorWithNumber:2 userInfo:0];
-        *a7 = v33;
+        *error = v33;
       }
     }
 
@@ -137,15 +137,15 @@ LABEL_24:
   self = v17;
 
   _Block_object_dispose(v41, 8);
-  v29 = self;
+  selfCopy = self;
 LABEL_20:
 
-  return v29;
+  return selfCopy;
 }
 
-- (TSUFileIOChannel)initWithType:(unint64_t)a3 descriptor:(int)a4 cleanupHandler:(id)a5
+- (TSUFileIOChannel)initWithType:(unint64_t)type descriptor:(int)descriptor cleanupHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v21.receiver = self;
   v21.super_class = TSUFileIOChannel;
   v9 = [(TSUFileIOChannel *)&v21 init];
@@ -162,8 +162,8 @@ LABEL_20:
     cleanup_handler[1] = 3221225472;
     cleanup_handler[2] = sub_2770D5D44;
     cleanup_handler[3] = &unk_27A7030C0;
-    v20 = v8;
-    v15 = dispatch_io_create(a3, a4, v14, cleanup_handler);
+    v20 = handlerCopy;
+    v15 = dispatch_io_create(type, descriptor, v14, cleanup_handler);
     channel = v10->_channel;
     v10->_channel = v15;
 
@@ -178,9 +178,9 @@ LABEL_20:
 
   else
   {
-    if (v8)
+    if (handlerCopy)
     {
-      (*(v8 + 2))(v8, 12);
+      (*(handlerCopy + 2))(handlerCopy, 12);
     }
 
     v17 = 0;
@@ -206,9 +206,9 @@ LABEL_20:
   [(TSUFileIOChannel *)&v5 dealloc];
 }
 
-- (void)readFromOffset:(int64_t)a3 length:(unint64_t)a4 handler:(id)a5
+- (void)readFromOffset:(int64_t)offset length:(unint64_t)length handler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v9 = atomic_load(&self->_isClosed);
   if (v9)
   {
@@ -226,15 +226,15 @@ LABEL_20:
   io_handler[1] = 3221225472;
   io_handler[2] = sub_2770D5FC0;
   io_handler[3] = &unk_27A7030E8;
-  v17 = v8;
-  v15 = v8;
-  dispatch_io_read(v13, a3, a4, ioQueue, io_handler);
+  v17 = handlerCopy;
+  v15 = handlerCopy;
+  dispatch_io_read(v13, offset, length, ioQueue, io_handler);
 }
 
-- (void)writeData:(id)a3 offset:(int64_t)a4 handler:(id)a5
+- (void)writeData:(id)data offset:(int64_t)offset handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  dataCopy = data;
+  handlerCopy = handler;
   v10 = atomic_load(&self->_isClosed);
   if (v10)
   {
@@ -245,13 +245,13 @@ LABEL_20:
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  if (!v8)
+  if (!dataCopy)
   {
-    v8 = MEMORY[0x277D85CC8];
+    dataCopy = MEMORY[0x277D85CC8];
     v13 = MEMORY[0x277D85CC8];
   }
 
-  size = dispatch_data_get_size(v8);
+  size = dispatch_data_get_size(dataCopy);
   v23[0] = 0;
   v23[1] = v23;
   v23[2] = 0x2020000000;
@@ -265,9 +265,9 @@ LABEL_20:
   io_handler[3] = &unk_27A703110;
   v21 = v23;
   v22 = size;
-  v20 = v9;
-  v18 = v9;
-  dispatch_io_write(v16, a4, v8, ioQueue, io_handler);
+  v20 = handlerCopy;
+  v18 = handlerCopy;
+  dispatch_io_write(v16, offset, dataCopy, ioQueue, io_handler);
 
   _Block_object_dispose(v23, 8);
 }
@@ -301,7 +301,7 @@ LABEL_20:
   }
 }
 
-- (void)setLowWater:(unint64_t)a3
+- (void)setLowWater:(unint64_t)water
 {
   v5 = atomic_load(&self->_isClosed);
   if (v5)
@@ -315,12 +315,12 @@ LABEL_20:
 
   channel = self->_channel;
 
-  dispatch_io_set_low_water(channel, a3);
+  dispatch_io_set_low_water(channel, water);
 }
 
-- (void)addBarrier:(id)a3
+- (void)addBarrier:(id)barrier
 {
-  barrier = a3;
+  barrier = barrier;
   v4 = atomic_load(&self->_isClosed);
   if (v4)
   {
@@ -334,9 +334,9 @@ LABEL_20:
   dispatch_io_barrier(self->_channel, barrier);
 }
 
-- (void)flushWithCompletion:(id)a3
+- (void)flushWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = atomic_load(&self->_isClosed);
   if (v5)
   {
@@ -353,14 +353,14 @@ LABEL_20:
   v10[2] = sub_2770D68C4;
   v10[3] = &unk_27A702858;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = completionCopy;
+  v9 = completionCopy;
   dispatch_io_barrier(channel, v10);
 }
 
-- (void)truncateToLength:(int64_t)a3 completion:(id)a4
+- (void)truncateToLength:(int64_t)length completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = atomic_load(&self->_isClosed);
   if (v7)
   {
@@ -376,10 +376,10 @@ LABEL_20:
   barrier[1] = 3221225472;
   barrier[2] = sub_2770D6B14;
   barrier[3] = &unk_27A703138;
-  v13 = v6;
-  v14 = a3;
+  v13 = completionCopy;
+  lengthCopy = length;
   barrier[4] = self;
-  v11 = v6;
+  v11 = completionCopy;
   dispatch_io_barrier(channel, barrier);
 }
 

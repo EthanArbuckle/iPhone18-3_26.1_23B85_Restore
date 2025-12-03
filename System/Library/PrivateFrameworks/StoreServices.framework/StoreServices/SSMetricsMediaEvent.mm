@@ -1,6 +1,6 @@
 @interface SSMetricsMediaEvent
 - (SSMetricsMediaEvent)init;
-- (void)setLocationWithEventLocations:(id)a3;
+- (void)setLocationWithEventLocations:(id)locations;
 @end
 
 @implementation SSMetricsMediaEvent
@@ -19,16 +19,16 @@
   return v3;
 }
 
-- (void)setLocationWithEventLocations:(id)a3
+- (void)setLocationWithEventLocations:(id)locations
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  locationsCopy = locations;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v4;
+  v6 = locationsCopy;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -44,10 +44,10 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v12 + 1) + 8 * v10) reportingDictionary];
-        if (v11)
+        reportingDictionary = [*(*(&v12 + 1) + 8 * v10) reportingDictionary];
+        if (reportingDictionary)
         {
-          [v5 addObject:v11];
+          [v5 addObject:reportingDictionary];
         }
 
         ++v10;

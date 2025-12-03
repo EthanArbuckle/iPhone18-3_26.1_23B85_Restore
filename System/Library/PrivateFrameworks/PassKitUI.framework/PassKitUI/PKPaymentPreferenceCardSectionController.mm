@@ -1,16 +1,16 @@
 @interface PKPaymentPreferenceCardSectionController
-- (id)newOptionItemForSubPreference:(id)a3 hasErrorHandler:(id)a4;
+- (id)newOptionItemForSubPreference:(id)preference hasErrorHandler:(id)handler;
 @end
 
 @implementation PKPaymentPreferenceCardSectionController
 
-- (id)newOptionItemForSubPreference:(id)a3 hasErrorHandler:(id)a4
+- (id)newOptionItemForSubPreference:(id)preference hasErrorHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  preferenceCopy = preference;
   v8 = [PKPaymentPreferenceCardOptionListItem alloc];
-  v9 = [(PKPaymentPreferenceSectionController *)self preference];
-  v10 = [(PKPaymentPreferenceOptionListItem *)v8 initWithPreference:v7 inSectionPreference:v9 hasErrorHandler:v6];
+  preference = [(PKPaymentPreferenceSectionController *)self preference];
+  v10 = [(PKPaymentPreferenceOptionListItem *)v8 initWithPreference:preferenceCopy inSectionPreference:preference hasErrorHandler:handlerCopy];
 
   return v10;
 }

@@ -2,29 +2,29 @@
 - (SharedItem_Outbox)init;
 - (id)itemID;
 - (id)itemURLString;
-- (void)configureOutlineCell:(id)a3;
-- (void)wasSelected:(id)a3 indexPath:(id)a4 accessoryTapped:(BOOL)a5 animated:(BOOL)a6;
+- (void)configureOutlineCell:(id)cell;
+- (void)wasSelected:(id)selected indexPath:(id)path accessoryTapped:(BOOL)tapped animated:(BOOL)animated;
 @end
 
 @implementation SharedItem_Outbox
 
-- (void)configureOutlineCell:(id)a3
+- (void)configureOutlineCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v7.receiver = self;
   v7.super_class = SharedItem_Outbox;
-  [(FavoriteItem *)&v7 configureOutlineCell:v4];
+  [(FavoriteItem *)&v7 configureOutlineCell:cellCopy];
   v5 = +[MailAccount outboxMailboxUid];
   v6 = [NSSet setWithObject:v5];
-  [v4 setLegacyMailboxes:v6 showUnreadCount:-[FavoriteItem showUnreadCount](self unreadCountIncludesRead:{"showUnreadCount"), 1}];
+  [cellCopy setLegacyMailboxes:v6 showUnreadCount:-[FavoriteItem showUnreadCount](self unreadCountIncludesRead:{"showUnreadCount"), 1}];
 }
 
-- (void)wasSelected:(id)a3 indexPath:(id)a4 accessoryTapped:(BOOL)a5 animated:(BOOL)a6
+- (void)wasSelected:(id)selected indexPath:(id)path accessoryTapped:(BOOL)tapped animated:(BOOL)animated
 {
-  v6 = a6;
-  v9 = a3;
+  animatedCopy = animated;
+  selectedCopy = selected;
   v8 = +[MailAccount outboxMailboxUid];
-  [v9 selectMailbox:v8 item:self animated:v6];
+  [selectedCopy selectMailbox:v8 item:self animated:animatedCopy];
 }
 
 - (SharedItem_Outbox)init
@@ -61,8 +61,8 @@
 
 - (id)itemURLString
 {
-  v2 = [(SharedItem_Outbox *)self itemID];
-  v3 = [NSString stringWithFormat:@"favoriteitem://outbox/%@", v2];
+  itemID = [(SharedItem_Outbox *)self itemID];
+  v3 = [NSString stringWithFormat:@"favoriteitem://outbox/%@", itemID];
 
   return v3;
 }

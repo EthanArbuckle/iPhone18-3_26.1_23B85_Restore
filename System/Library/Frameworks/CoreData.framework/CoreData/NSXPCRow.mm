@@ -1,5 +1,5 @@
 @interface NSXPCRow
-- (NSXPCRow)initWithNode:(id)a3;
+- (NSXPCRow)initWithNode:(id)node;
 - (void)dealloc;
 @end
 
@@ -13,14 +13,14 @@
   [(NSPersistentCacheRow *)&v3 dealloc];
 }
 
-- (NSXPCRow)initWithNode:(id)a3
+- (NSXPCRow)initWithNode:(id)node
 {
   v6.receiver = self;
   v6.super_class = NSXPCRow;
   v4 = [(NSPersistentCacheRow *)&v6 initWithOptions:0 andTimestamp:0.0];
   if (v4)
   {
-    v4->_node = a3;
+    v4->_node = node;
   }
 
   return v4;

@@ -1,14 +1,14 @@
 @interface EKUIPendingVideoConferenceCell
-- (EKUIPendingVideoConferenceCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (EKUIPendingVideoConferenceCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation EKUIPendingVideoConferenceCell
 
-- (EKUIPendingVideoConferenceCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (EKUIPendingVideoConferenceCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = EKUIPendingVideoConferenceCell;
-  v4 = [(EKUILocationEditItemCell *)&v8 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(EKUILocationEditItemCell *)&v8 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = EventKitUIBundle();

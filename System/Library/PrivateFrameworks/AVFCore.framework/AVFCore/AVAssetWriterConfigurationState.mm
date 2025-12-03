@@ -1,12 +1,12 @@
 @interface AVAssetWriterConfigurationState
 - (CGAffineTransform)preferredTransform;
 - (void)dealloc;
-- (void)setInitialMovieFragmentInterval:(id *)a3;
-- (void)setInitialSegmentStartTime:(id *)a3;
-- (void)setMovieFragmentInterval:(id *)a3;
-- (void)setOverallDurationHint:(id *)a3;
-- (void)setPreferredOutputSegmentInterval:(id *)a3;
-- (void)setPreferredTransform:(CGAffineTransform *)a3;
+- (void)setInitialMovieFragmentInterval:(id *)interval;
+- (void)setInitialSegmentStartTime:(id *)time;
+- (void)setMovieFragmentInterval:(id *)interval;
+- (void)setOverallDurationHint:(id *)hint;
+- (void)setPreferredOutputSegmentInterval:(id *)interval;
+- (void)setPreferredTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation AVAssetWriterConfigurationState
@@ -18,24 +18,24 @@
   [(AVAssetWriterConfigurationState *)&v3 dealloc];
 }
 
-- (void)setMovieFragmentInterval:(id *)a3
+- (void)setMovieFragmentInterval:(id *)interval
 {
-  v3 = *&a3->var0;
-  self->_movieFragmentInterval.epoch = a3->var3;
+  v3 = *&interval->var0;
+  self->_movieFragmentInterval.epoch = interval->var3;
   *&self->_movieFragmentInterval.value = v3;
 }
 
-- (void)setInitialMovieFragmentInterval:(id *)a3
+- (void)setInitialMovieFragmentInterval:(id *)interval
 {
-  v3 = *&a3->var0;
-  self->_initialMovieFragmentInterval.epoch = a3->var3;
+  v3 = *&interval->var0;
+  self->_initialMovieFragmentInterval.epoch = interval->var3;
   *&self->_initialMovieFragmentInterval.value = v3;
 }
 
-- (void)setOverallDurationHint:(id *)a3
+- (void)setOverallDurationHint:(id *)hint
 {
-  v3 = *&a3->var0;
-  self->_overallDurationHint.epoch = a3->var3;
+  v3 = *&hint->var0;
+  self->_overallDurationHint.epoch = hint->var3;
   *&self->_overallDurationHint.value = v3;
 }
 
@@ -48,26 +48,26 @@
   return self;
 }
 
-- (void)setPreferredTransform:(CGAffineTransform *)a3
+- (void)setPreferredTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_preferredTransform.tx = *&a3->tx;
+  v3 = *&transform->a;
+  v4 = *&transform->c;
+  *&self->_preferredTransform.tx = *&transform->tx;
   *&self->_preferredTransform.c = v4;
   *&self->_preferredTransform.a = v3;
 }
 
-- (void)setPreferredOutputSegmentInterval:(id *)a3
+- (void)setPreferredOutputSegmentInterval:(id *)interval
 {
-  v3 = *&a3->var0;
-  self->_preferredOutputSegmentInterval.epoch = a3->var3;
+  v3 = *&interval->var0;
+  self->_preferredOutputSegmentInterval.epoch = interval->var3;
   *&self->_preferredOutputSegmentInterval.value = v3;
 }
 
-- (void)setInitialSegmentStartTime:(id *)a3
+- (void)setInitialSegmentStartTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_initialSegmentStartTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_initialSegmentStartTime.epoch = time->var3;
   *&self->_initialSegmentStartTime.value = v3;
 }
 

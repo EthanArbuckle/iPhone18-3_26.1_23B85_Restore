@@ -1,17 +1,17 @@
 @interface GKCollectionReusableBackgroundView
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 @end
 
 @implementation GKCollectionReusableBackgroundView
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v6.receiver = self;
   v6.super_class = GKCollectionReusableBackgroundView;
-  [(GKCollectionReusableBackgroundView *)&v6 applyLayoutAttributes:v4];
-  v5 = [v4 color];
-  [(GKCollectionReusableBackgroundView *)self setBackgroundColor:v5];
+  [(GKCollectionReusableBackgroundView *)&v6 applyLayoutAttributes:attributesCopy];
+  color = [attributesCopy color];
+  [(GKCollectionReusableBackgroundView *)self setBackgroundColor:color];
 }
 
 @end

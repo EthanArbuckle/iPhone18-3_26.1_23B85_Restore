@@ -1,10 +1,10 @@
 @interface HealthENBuddyContainer
-- (_TtC13HealthENBuddy22HealthENBuddyContainer)initWithCoder:(id)a3;
-- (_TtC13HealthENBuddy22HealthENBuddyContainer)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)handleButtonActions:(id)a3;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC13HealthENBuddy22HealthENBuddyContainer)initWithCoder:(id)coder;
+- (_TtC13HealthENBuddy22HealthENBuddyContainer)initWithNibName:(id)name bundle:(id)bundle;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)handleButtonActions:(id)actions;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -16,12 +16,12 @@
   v6.super_class = type metadata accessor for HealthENBuddyContainer();
   v2 = v6.receiver;
   [(HealthENBuddyContainer *)&v6 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    v5 = [objc_opt_self() clearColor];
-    [v4 setBackgroundColor:v5];
+    v4 = view;
+    clearColor = [objc_opt_self() clearColor];
+    [v4 setBackgroundColor:clearColor];
   }
 
   else
@@ -30,15 +30,15 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100001A6C(a3);
+  selfCopy = self;
+  sub_100001A6C(appear);
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -51,15 +51,15 @@
     v7 = 0;
   }
 
-  v8 = a3;
-  v9 = self;
-  sub_1000037EC(a3, v6, v7);
+  contextCopy = context;
+  selfCopy = self;
+  sub_1000037EC(context, v6, v7);
   sub_100005220(v6);
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -72,34 +72,34 @@
     v7 = 0;
   }
 
-  v8 = a3;
-  v9 = self;
+  contextCopy = context;
+  selfCopy = self;
   sub_100004D68(v6, v7);
   sub_100005220(v6);
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
-  v3 = a3;
-  if (a3)
+  actionsCopy = actions;
+  if (actions)
   {
     sub_100005534(0, &qword_100011888, SBUIRemoteAlertButtonAction_ptr);
     sub_1000051B0();
-    v3 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
+    actionsCopy = static Set._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = self;
-  sub_100004FB8(v3);
+  selfCopy = self;
+  sub_100004FB8(actionsCopy);
 }
 
-- (_TtC13HealthENBuddy22HealthENBuddyContainer)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC13HealthENBuddy22HealthENBuddyContainer)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     *&self->SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR____TtC13HealthENBuddy22HealthENBuddyContainer_region] = 0;
     self->SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR____TtC13HealthENBuddy22HealthENBuddyContainer_didPresent] = 0;
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = String._bridgeToObjectiveC()();
   }
 
@@ -107,25 +107,25 @@
   {
     *&self->SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR____TtC13HealthENBuddy22HealthENBuddyContainer_region] = 0;
     self->SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR____TtC13HealthENBuddy22HealthENBuddyContainer_didPresent] = 0;
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for HealthENBuddyContainer();
-  v9 = [(HealthENBuddyContainer *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(HealthENBuddyContainer *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC13HealthENBuddy22HealthENBuddyContainer)initWithCoder:(id)a3
+- (_TtC13HealthENBuddy22HealthENBuddyContainer)initWithCoder:(id)coder
 {
   *&self->SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR____TtC13HealthENBuddy22HealthENBuddyContainer_region] = 0;
   self->SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR____TtC13HealthENBuddy22HealthENBuddyContainer_didPresent] = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for HealthENBuddyContainer();
-  v4 = a3;
-  v5 = [(HealthENBuddyContainer *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(HealthENBuddyContainer *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

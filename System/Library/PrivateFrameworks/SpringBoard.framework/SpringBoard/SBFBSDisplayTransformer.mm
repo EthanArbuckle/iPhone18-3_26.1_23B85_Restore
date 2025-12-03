@@ -1,6 +1,6 @@
 @interface SBFBSDisplayTransformer
 - (SBFBSDisplayTransformer)init;
-- (id)transformDisplayConfiguration:(id)a3;
+- (id)transformDisplayConfiguration:(id)configuration;
 @end
 
 @implementation SBFBSDisplayTransformer
@@ -20,21 +20,21 @@
   return v2;
 }
 
-- (id)transformDisplayConfiguration:(id)a3
+- (id)transformDisplayConfiguration:(id)configuration
 {
   v5 = MEMORY[0x277CBEB58];
-  v6 = a3;
+  configurationCopy = configuration;
   v7 = [v5 set];
-  v8 = [(SBMainDisplayConfigurationTransformer *)self->_emulatedMainDisplayTransformer transformDisplayConfiguration:v6];
+  v8 = [(SBMainDisplayConfigurationTransformer *)self->_emulatedMainDisplayTransformer transformDisplayConfiguration:configurationCopy];
 
   if ([v8 count] != 1)
   {
     [(SBFBSDisplayTransformer *)&self->_emulatedMainDisplayTransformer transformDisplayConfiguration:a2, self, v8];
   }
 
-  v9 = [v8 anyObject];
+  anyObject = [v8 anyObject];
   v10 = +[SBDisplayTransformerRegistry sharedInstance];
-  v11 = [v10 transformDisplayConfiguration:v9];
+  v11 = [v10 transformDisplayConfiguration:anyObject];
   [v7 unionSet:v11];
 
   return v7;

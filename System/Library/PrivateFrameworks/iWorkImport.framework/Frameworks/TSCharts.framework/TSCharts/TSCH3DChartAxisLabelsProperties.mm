@@ -1,34 +1,34 @@
 @interface TSCH3DChartAxisLabelsProperties
-+ (id)propertiesWithInfo:(id)a3 labels:(id)a4 styleIndex:(unint64_t)a5;
-- (TSCH3DChartAxisLabelsProperties)initWithInfo:(id)a3 labels:(id)a4 styleIndex:(unint64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)propertiesWithInfo:(id)info labels:(id)labels styleIndex:(unint64_t)index;
+- (TSCH3DChartAxisLabelsProperties)initWithInfo:(id)info labels:(id)labels styleIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TSCH3DChartAxisLabelsProperties
 
-+ (id)propertiesWithInfo:(id)a3 labels:(id)a4 styleIndex:(unint64_t)a5
++ (id)propertiesWithInfo:(id)info labels:(id)labels styleIndex:(unint64_t)index
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [a1 alloc];
-  v15 = objc_msgSend_initWithInfo_labels_styleIndex_(v10, v11, v12, v13, v14, v8, v9, a5);
+  infoCopy = info;
+  labelsCopy = labels;
+  v10 = [self alloc];
+  v15 = objc_msgSend_initWithInfo_labels_styleIndex_(v10, v11, v12, v13, v14, infoCopy, labelsCopy, index);
 
   return v15;
 }
 
-- (TSCH3DChartAxisLabelsProperties)initWithInfo:(id)a3 labels:(id)a4 styleIndex:(unint64_t)a5
+- (TSCH3DChartAxisLabelsProperties)initWithInfo:(id)info labels:(id)labels styleIndex:(unint64_t)index
 {
-  v9 = a3;
-  v10 = a4;
+  infoCopy = info;
+  labelsCopy = labels;
   v21.receiver = self;
   v21.super_class = TSCH3DChartAxisLabelsProperties;
   v11 = [(TSCH3DChartAxisLabelsProperties *)&v21 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_info, a3);
-    objc_storeStrong(&v12->_labels, a4);
-    v12->_styleIndex = a5;
+    objc_storeStrong(&v11->_info, info);
+    objc_storeStrong(&v12->_labels, labels);
+    v12->_styleIndex = index;
     v13 = objc_alloc(MEMORY[0x277D81218]);
     v18 = objc_msgSend_initWithMaxSize_(v13, v14, v15, v16, v17, 8);
     categoryStridingCache = v12->_categoryStridingCache;
@@ -40,10 +40,10 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v10 = objc_msgSend_allocWithZone_(v5, v6, v7, v8, v9, a3);
+  v10 = objc_msgSend_allocWithZone_(v5, v6, v7, v8, v9, zone);
   v15 = objc_msgSend_init(v10, v11, v12, v13, v14);
   v16 = v15;
   if (v15)

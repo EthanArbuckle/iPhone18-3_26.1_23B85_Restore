@@ -1,16 +1,16 @@
 @interface HDSortedSampleIterator
-- (BOOL)advanceWithError:(id *)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)advanceWithError:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (HDSortedSampleIterator)init;
-- (HDSortedSampleIterator)initWithQueryDescriptor:(id)a3 includeDeletedObjects:(BOOL)a4 sortDescriptors:(id)a5 anchor:(id)a6 bufferSize:(int64_t)a7 profile:(id)a8;
+- (HDSortedSampleIterator)initWithQueryDescriptor:(id)descriptor includeDeletedObjects:(BOOL)objects sortDescriptors:(id)descriptors anchor:(id)anchor bufferSize:(int64_t)size profile:(id)profile;
 - (HKDeletedObject)deletedObject;
 - (HKSample)sample;
 - (HKSortedQueryAnchor)nextAnchor;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)objectID;
 - (unint64_t)hash;
-- (void)setHead:(uint64_t)a1;
+- (void)setHead:(uint64_t)head;
 @end
 
 @implementation HDSortedSampleIterator
@@ -24,39 +24,39 @@
   return 0;
 }
 
-- (HDSortedSampleIterator)initWithQueryDescriptor:(id)a3 includeDeletedObjects:(BOOL)a4 sortDescriptors:(id)a5 anchor:(id)a6 bufferSize:(int64_t)a7 profile:(id)a8
+- (HDSortedSampleIterator)initWithQueryDescriptor:(id)descriptor includeDeletedObjects:(BOOL)objects sortDescriptors:(id)descriptors anchor:(id)anchor bufferSize:(int64_t)size profile:(id)profile
 {
-  v12 = a4;
-  v33 = a3;
-  v15 = a5;
-  v32 = a6;
-  v16 = a8;
+  objectsCopy = objects;
+  descriptorCopy = descriptor;
+  descriptorsCopy = descriptors;
+  anchorCopy = anchor;
+  profileCopy = profile;
   v34.receiver = self;
   v34.super_class = HDSortedSampleIterator;
   v17 = [(HDSortedSampleIterator *)&v34 init];
   if (v17)
   {
-    v18 = [v33 copy];
+    v18 = [descriptorCopy copy];
     queryDescriptor = v17->_queryDescriptor;
     v17->_queryDescriptor = v18;
 
-    if (v12 && [v15 count])
+    if (objectsCopy && [descriptorsCopy count])
     {
-      v31 = [MEMORY[0x277CCA890] currentHandler];
-      [v31 handleFailureInMethod:a2 object:v17 file:@"HDSortedSampleIterator.mm" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"includeDeletedObjects == NO || (includeDeletedObjects && sortDescriptors.count == 0)"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v17 file:@"HDSortedSampleIterator.mm" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"includeDeletedObjects == NO || (includeDeletedObjects && sortDescriptors.count == 0)"}];
     }
 
-    v17->_includeDeletedObjects = v12;
-    v20 = [v15 copy];
+    v17->_includeDeletedObjects = objectsCopy;
+    v20 = [descriptorsCopy copy];
     sortDescriptors = v17->_sortDescriptors;
     v17->_sortDescriptors = v20;
 
-    v22 = [v32 copy];
+    v22 = [anchorCopy copy];
     anchor = v17->_anchor;
     v17->_anchor = v22;
 
-    v17->_bufferSize = a7;
-    objc_storeWeak(&v17->_profile, v16);
+    v17->_bufferSize = size;
+    objc_storeWeak(&v17->_profile, profileCopy);
     value__2 = v17->_currentSample.__base_.__value__2;
     v17->_currentSample.__base_.__value_ = 0;
     v17->_currentSample.__base_.__value__2 = 0;
@@ -70,26 +70,26 @@
 
     begin = v17->_sampleBuffer.__begin_;
     v17->_isComplete = 0;
-    v17->_includeDeletedObjects = v12;
-    if (a7 > ((v17->_sampleBuffer.__cap_ - begin) >> 4))
+    v17->_includeDeletedObjects = objectsCopy;
+    if (size > ((v17->_sampleBuffer.__cap_ - begin) >> 4))
     {
-      if (!(a7 >> 60))
+      if (!(size >> 60))
       {
         end = v17->_sampleBuffer.__end_;
         p_sampleBuffer = &v17->_sampleBuffer;
-        std::__allocate_at_least[abi:ne200100]<std::allocator<std::tuple<long long,HKSample * {__strong}>>>(&v17->_sampleBuffer, a7);
+        std::__allocate_at_least[abi:ne200100]<std::allocator<std::tuple<long long,HKSample * {__strong}>>>(&v17->_sampleBuffer, size);
       }
 
       std::vector<std::unique_ptr<statistics::Interval>>::__throw_length_error[abi:ne200100]();
     }
 
-    if (v12 && a7 > ((v17->_deletedObjectsBuffer.__cap_ - v17->_deletedObjectsBuffer.__begin_) >> 4))
+    if (objectsCopy && size > ((v17->_deletedObjectsBuffer.__cap_ - v17->_deletedObjectsBuffer.__begin_) >> 4))
     {
-      if (!(a7 >> 60))
+      if (!(size >> 60))
       {
         v29 = v17->_deletedObjectsBuffer.__end_;
         p_sampleBuffer = &v17->_deletedObjectsBuffer;
-        std::__allocate_at_least[abi:ne200100]<std::allocator<std::tuple<long long,HKSample * {__strong}>>>(&v17->_deletedObjectsBuffer, a7);
+        std::__allocate_at_least[abi:ne200100]<std::allocator<std::tuple<long long,HKSample * {__strong}>>>(&v17->_deletedObjectsBuffer, size);
       }
 
       std::vector<std::unique_ptr<statistics::Interval>>::__throw_length_error[abi:ne200100]();
@@ -99,7 +99,7 @@
   return v17;
 }
 
-- (BOOL)advanceWithError:(id *)a3
+- (BOOL)advanceWithError:(id *)error
 {
   if (!self)
   {
@@ -166,10 +166,10 @@
         v23 = v22;
         if (v22)
         {
-          if (a3)
+          if (error)
           {
             v24 = v22;
-            *a3 = v23;
+            *error = v23;
           }
 
           else
@@ -183,7 +183,7 @@
 
       if (self->_sampleBuffer.__begin_ == self->_sampleBuffer.__end_ && (!self->_includeDeletedObjects || self->_deletedObjectsBuffer.__begin_ == self->_deletedObjectsBuffer.__end_) && self->_isComplete)
       {
-        [MEMORY[0x277CCA9B8] hk_assignError:a3 code:900 format:@"Sorted sample iterator is exhausted"];
+        [MEMORY[0x277CCA9B8] hk_assignError:error code:900 format:@"Sorted sample iterator is exhausted"];
 LABEL_34:
         _Block_object_dispose(&v29, 8);
 
@@ -245,19 +245,19 @@ LABEL_19:
   if (!self->_isComplete)
   {
     v25 = a2;
-    v26 = [MEMORY[0x277CCA890] currentHandler];
-    [v26 handleFailureInMethod:v25 object:self file:@"HDSortedSampleIterator.mm" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"_isComplete"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:v25 object:self file:@"HDSortedSampleIterator.mm" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"_isComplete"}];
   }
 
 LABEL_23:
-  [MEMORY[0x277CCA9B8] hk_assignError:a3 code:900 format:@"Sorted sample iterator is exhausted"];
+  [MEMORY[0x277CCA9B8] hk_assignError:error code:900 format:@"Sorted sample iterator is exhausted"];
   return 0;
 }
 
-- (void)setHead:(uint64_t)a1
+- (void)setHead:(uint64_t)head
 {
   v4 = a2;
-  objc_storeStrong((a1 + 160), a2);
+  objc_storeStrong((head + 160), a2);
 }
 
 void __64__HDSortedSampleIterator__queryForNextPageIfNecessaryWithError___block_invoke(void *a1, char a2, void *a3, void *a4, void *a5, char a6, void *a7)
@@ -341,7 +341,7 @@ void __64__HDSortedSampleIterator__queryForNextPageIfNecessaryWithError___block_
 
 - (int64_t)objectID
 {
-  v3 = [(HDSortedSampleIterator *)self object];
+  object = [(HDSortedSampleIterator *)self object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -360,8 +360,8 @@ void __64__HDSortedSampleIterator__queryForNextPageIfNecessaryWithError___block_
   {
     v3 = MEMORY[0x277CCD9F0];
     sortDescriptors = self->_sortDescriptors;
-    v5 = [(HDSortedSampleIterator *)self sample];
-    v6 = [v3 sortedQueryAnchorWithSortDescriptors:sortDescriptors followingSample:v5 objectID:{-[HDSortedSampleIterator objectID](self, "objectID")}];
+    sample = [(HDSortedSampleIterator *)self sample];
+    v6 = [v3 sortedQueryAnchorWithSortDescriptors:sortDescriptors followingSample:sample objectID:{-[HDSortedSampleIterator objectID](self, "objectID")}];
   }
 
   else
@@ -376,21 +376,21 @@ void __64__HDSortedSampleIterator__queryForNextPageIfNecessaryWithError___block_
 {
   v3 = [(HDQueryDescriptor *)self->_queryDescriptor hash];
   v4 = [(NSArray *)self->_sortDescriptors hash];
-  v5 = [(HDSortedSampleIterator *)self sample];
-  v6 = [v5 hash];
-  v7 = [(HDSortedSampleIterator *)self objectID];
+  sample = [(HDSortedSampleIterator *)self sample];
+  v6 = [sample hash];
+  objectID = [(HDSortedSampleIterator *)self objectID];
   isComplete = self->_isComplete;
   includeDeletedObjects = self->_includeDeletedObjects;
-  v10 = [(HDSortedSampleIterator *)self nextAnchor];
-  v11 = [v10 hash];
+  nextAnchor = [(HDSortedSampleIterator *)self nextAnchor];
+  v11 = [nextAnchor hash];
 
-  return v4 ^ v3 ^ v6 ^ v7 ^ isComplete ^ includeDeletedObjects ^ v11;
+  return v4 ^ v3 ^ v6 ^ objectID ^ isComplete ^ includeDeletedObjects ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v17 = 1;
   }
@@ -400,7 +400,7 @@ void __64__HDSortedSampleIterator__queryForNextPageIfNecessaryWithError___block_
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       queryDescriptor = self->_queryDescriptor;
       v7 = v5->_queryDescriptor;
       if (queryDescriptor != v7 && (!v7 || ![(HDQueryDescriptor *)queryDescriptor isEqual:?]))
@@ -415,25 +415,25 @@ void __64__HDSortedSampleIterator__queryForNextPageIfNecessaryWithError___block_
         goto LABEL_22;
       }
 
-      v10 = [(HDSortedSampleIterator *)self sample];
-      v11 = [(HDSortedSampleIterator *)v5 sample];
-      v12 = v11;
-      if (v10 == v11)
+      sample = [(HDSortedSampleIterator *)self sample];
+      sample2 = [(HDSortedSampleIterator *)v5 sample];
+      nextAnchor = sample2;
+      if (sample == sample2)
       {
       }
 
       else
       {
-        v13 = [(HDSortedSampleIterator *)v5 sample];
-        if (!v13)
+        sample3 = [(HDSortedSampleIterator *)v5 sample];
+        if (!sample3)
         {
           v17 = 0;
           goto LABEL_26;
         }
 
-        v14 = [(HDSortedSampleIterator *)self sample];
-        v15 = [(HDSortedSampleIterator *)v5 sample];
-        v16 = [v14 isEqual:v15];
+        sample4 = [(HDSortedSampleIterator *)self sample];
+        sample5 = [(HDSortedSampleIterator *)v5 sample];
+        v16 = [sample4 isEqual:sample5];
 
         if ((v16 & 1) == 0)
         {
@@ -445,27 +445,27 @@ LABEL_23:
         }
       }
 
-      v18 = [(HDSortedSampleIterator *)self objectID];
-      if (v18 != [(HDSortedSampleIterator *)v5 objectID]|| self->_isComplete != v5->_isComplete || self->_includeDeletedObjects != v5->_includeDeletedObjects)
+      objectID = [(HDSortedSampleIterator *)self objectID];
+      if (objectID != [(HDSortedSampleIterator *)v5 objectID]|| self->_isComplete != v5->_isComplete || self->_includeDeletedObjects != v5->_includeDeletedObjects)
       {
         goto LABEL_22;
       }
 
-      v10 = [(HDSortedSampleIterator *)self nextAnchor];
-      v12 = [(HDSortedSampleIterator *)v5 nextAnchor];
-      if (v10 == v12)
+      sample = [(HDSortedSampleIterator *)self nextAnchor];
+      nextAnchor = [(HDSortedSampleIterator *)v5 nextAnchor];
+      if (sample == nextAnchor)
       {
         v17 = 1;
       }
 
       else
       {
-        v19 = [(HDSortedSampleIterator *)v5 nextAnchor];
-        if (v19)
+        nextAnchor2 = [(HDSortedSampleIterator *)v5 nextAnchor];
+        if (nextAnchor2)
         {
-          v20 = [(HDSortedSampleIterator *)self nextAnchor];
-          v21 = [(HDSortedSampleIterator *)v5 nextAnchor];
-          v17 = [v20 isEqual:v21];
+          nextAnchor3 = [(HDSortedSampleIterator *)self nextAnchor];
+          nextAnchor4 = [(HDSortedSampleIterator *)v5 nextAnchor];
+          v17 = [nextAnchor3 isEqual:nextAnchor4];
         }
 
         else
@@ -487,7 +487,7 @@ LABEL_24:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   queryDescriptor = self->_queryDescriptor;

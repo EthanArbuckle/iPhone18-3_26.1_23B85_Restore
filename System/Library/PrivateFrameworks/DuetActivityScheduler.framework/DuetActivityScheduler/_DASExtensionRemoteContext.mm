@@ -3,9 +3,9 @@
 + (id)_extensionAuxiliaryVendorProtocol;
 - (_DASExtension)extension;
 - (_DASExtensionRemoteContext)init;
-- (id)createExtensionRunnerWithClassName:(id)a3;
-- (id)hostContextWithError:(id *)a3;
-- (void)performActivity:(id)a3;
+- (id)createExtensionRunnerWithClassName:(id)name;
+- (id)hostContextWithError:(id *)error;
+- (void)performActivity:(id)activity;
 - (void)suspend;
 @end
 
@@ -50,7 +50,7 @@
   return v3;
 }
 
-- (id)hostContextWithError:(id *)a3
+- (id)hostContextWithError:(id *)error
 {
   v9 = 0;
   v10 = &v9;
@@ -58,18 +58,18 @@
   v12 = __Block_byref_object_copy__3;
   v13 = __Block_byref_object_dispose__3;
   v14 = 0;
-  v5 = [(_DASExtensionRemoteContext *)self _auxiliaryConnection];
+  _auxiliaryConnection = [(_DASExtensionRemoteContext *)self _auxiliaryConnection];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __51___DASExtensionRemoteContext_hostContextWithError___block_invoke;
   v8[3] = &unk_1E7C8FCE0;
   v8[4] = self;
   v8[5] = &v9;
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v8];
+  v6 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:v8];
 
-  if (a3)
+  if (error)
   {
-    *a3 = v10[5];
+    *error = v10[5];
   }
 
   _Block_object_dispose(&v9, 8);
@@ -92,22 +92,22 @@
   return extension_extension;
 }
 
-- (id)createExtensionRunnerWithClassName:(id)a3
+- (id)createExtensionRunnerWithClassName:(id)name
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  nameCopy = name;
+  if (!nameCopy)
   {
     v9 = 0;
     goto LABEL_16;
   }
 
-  v5 = [objc_opt_class() extensionRunnerClassAllowList];
-  v6 = [v5 containsObject:v4];
+  extensionRunnerClassAllowList = [objc_opt_class() extensionRunnerClassAllowList];
+  v6 = [extensionRunnerClassAllowList containsObject:nameCopy];
 
   if (v6)
   {
-    v7 = NSClassFromString(v4);
+    v7 = NSClassFromString(nameCopy);
     if (v7)
     {
       v8 = v7;
@@ -160,21 +160,21 @@ LABEL_16:
   return v9;
 }
 
-- (void)performActivity:(id)a3
+- (void)performActivity:(id)activity
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AAE8] mainBundle];
-  v6 = [v5 infoDictionary];
-  v7 = [v6 objectForKeyedSubscript:@"ExtensionRunnerClass"];
+  activityCopy = activity;
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  infoDictionary = [mainBundle infoDictionary];
+  v7 = [infoDictionary objectForKeyedSubscript:@"ExtensionRunnerClass"];
 
   v8 = [(_DASExtensionRemoteContext *)self createExtensionRunnerWithClassName:v7];
   v9 = [(_DASExtensionRemoteContext *)self log];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v4 name];
+    name = [activityCopy name];
     *buf = 138412546;
-    v20 = v10;
+    v20 = name;
     v21 = 2112;
     v22 = v8;
     _os_log_impl(&dword_1B6E2F000, v9, OS_LOG_TYPE_DEFAULT, "Remote extension performing activity %@ with runner %@.", buf, 0x16u);
@@ -189,8 +189,8 @@ LABEL_16:
   block[3] = &unk_1E7C8F9E8;
   block[4] = self;
   v17 = v8;
-  v18 = v4;
-  v13 = v4;
+  v18 = activityCopy;
+  v13 = activityCopy;
   v14 = v8;
   dispatch_async(v12, block);
 
@@ -206,8 +206,8 @@ LABEL_16:
     _os_log_impl(&dword_1B6E2F000, v3, OS_LOG_TYPE_DEFAULT, "Request for extension to stop activity", v5, 2u);
   }
 
-  v4 = [(_DASExtensionRemoteContext *)self extension];
-  [v4 suspend];
+  extension = [(_DASExtensionRemoteContext *)self extension];
+  [extension suspend];
 }
 
 - (void)createExtensionRunnerWithClassName:.cold.1()

@@ -1,18 +1,18 @@
 @interface ATXCategoricalFeatureSpecificGeohash
-- (id)categoricalFeatureValueForContext:(id)a3 candidate:(id)a4;
+- (id)categoricalFeatureValueForContext:(id)context candidate:(id)candidate;
 @end
 
 @implementation ATXCategoricalFeatureSpecificGeohash
 
-- (id)categoricalFeatureValueForContext:(id)a3 candidate:(id)a4
+- (id)categoricalFeatureValueForContext:(id)context candidate:(id)candidate
 {
-  v4 = [a3 locationMotionContext];
-  v5 = [v4 geohash];
+  locationMotionContext = [context locationMotionContext];
+  geohash = [locationMotionContext geohash];
 
-  v6 = [MEMORY[0x277CCABB0] numberWithLongLong:v5];
-  v7 = [v6 stringValue];
+  v6 = [MEMORY[0x277CCABB0] numberWithLongLong:geohash];
+  stringValue = [v6 stringValue];
 
-  return v7;
+  return stringValue;
 }
 
 @end

@@ -1,81 +1,81 @@
 @interface ACUISSystemApertureSceneHandle
-- (ACUISSystemApertureSceneHandle)initWithActivitySystemApertureSceneHandle:(id)a3;
-- (ACUISSystemApertureSceneHandle)initWithDescriptor:(id)a3 metricsRequest:(id)a4;
-- (ACUISSystemApertureSceneHandle)initWithDescriptor:(id)a3 metricsRequest:(id)a4 targetBundleIdentifier:(id)a5;
+- (ACUISSystemApertureSceneHandle)initWithActivitySystemApertureSceneHandle:(id)handle;
+- (ACUISSystemApertureSceneHandle)initWithDescriptor:(id)descriptor metricsRequest:(id)request;
+- (ACUISSystemApertureSceneHandle)initWithDescriptor:(id)descriptor metricsRequest:(id)request targetBundleIdentifier:(id)identifier;
 - (ACUISSystemApertureSceneHandleDelegate)delegate;
-- (void)activitySystemApertureWithSceneHandle:(id)a3 requestsLaunchWithAction:(id)a4;
-- (void)activitySystemApertureWithSceneHandle:(id)a3 updatedContentPayloadID:(id)a4;
+- (void)activitySystemApertureWithSceneHandle:(id)handle requestsLaunchWithAction:(id)action;
+- (void)activitySystemApertureWithSceneHandle:(id)handle updatedContentPayloadID:(id)d;
 @end
 
 @implementation ACUISSystemApertureSceneHandle
 
-- (ACUISSystemApertureSceneHandle)initWithDescriptor:(id)a3 metricsRequest:(id)a4
+- (ACUISSystemApertureSceneHandle)initWithDescriptor:(id)descriptor metricsRequest:(id)request
 {
-  v6 = a4;
-  v7 = a3;
+  requestCopy = request;
+  descriptorCopy = descriptor;
   v8 = [_TtC18ActivityUIServices33ActivitySystemApertureSceneHandle alloc];
-  v9 = [v6 _activityMetricsRequest];
+  _activityMetricsRequest = [requestCopy _activityMetricsRequest];
 
-  v10 = [(ActivitySystemApertureSceneHandle *)v8 initWithAcActivityDescritor:v7 systemMetricsRequest:v9];
+  v10 = [(ActivitySystemApertureSceneHandle *)v8 initWithAcActivityDescritor:descriptorCopy systemMetricsRequest:_activityMetricsRequest];
   v11 = [(ACUISSystemApertureSceneHandle *)self initWithActivitySystemApertureSceneHandle:v10];
 
   return v11;
 }
 
-- (ACUISSystemApertureSceneHandle)initWithDescriptor:(id)a3 metricsRequest:(id)a4 targetBundleIdentifier:(id)a5
+- (ACUISSystemApertureSceneHandle)initWithDescriptor:(id)descriptor metricsRequest:(id)request targetBundleIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  identifierCopy = identifier;
+  requestCopy = request;
+  descriptorCopy = descriptor;
   v11 = [_TtC18ActivityUIServices33ActivitySystemApertureSceneHandle alloc];
-  v12 = [v9 _activityMetricsRequest];
+  _activityMetricsRequest = [requestCopy _activityMetricsRequest];
 
-  v13 = [(ActivitySystemApertureSceneHandle *)v11 initWithAcActivityDescriptor:v10 systemMetricsRequest:v12 targetBundleIdentifier:v8];
+  v13 = [(ActivitySystemApertureSceneHandle *)v11 initWithAcActivityDescriptor:descriptorCopy systemMetricsRequest:_activityMetricsRequest targetBundleIdentifier:identifierCopy];
   v14 = [(ACUISSystemApertureSceneHandle *)self initWithActivitySystemApertureSceneHandle:v13];
 
   return v14;
 }
 
-- (ACUISSystemApertureSceneHandle)initWithActivitySystemApertureSceneHandle:(id)a3
+- (ACUISSystemApertureSceneHandle)initWithActivitySystemApertureSceneHandle:(id)handle
 {
-  v5 = a3;
+  handleCopy = handle;
   v13.receiver = self;
   v13.super_class = ACUISSystemApertureSceneHandle;
   v6 = [(ACUISSystemApertureSceneHandle *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_handle, a3);
+    objc_storeStrong(&v6->_handle, handle);
     [(ActivitySystemApertureSceneHandle *)v7->_handle setDelegate:v7];
-    v8 = [v5 scene];
+    scene = [handleCopy scene];
     scene = v7->_scene;
-    v7->_scene = v8;
+    v7->_scene = scene;
 
-    v10 = [v5 descriptor];
+    descriptor = [handleCopy descriptor];
     descriptor = v7->_descriptor;
-    v7->_descriptor = v10;
+    v7->_descriptor = descriptor;
   }
 
   return v7;
 }
 
-- (void)activitySystemApertureWithSceneHandle:(id)a3 requestsLaunchWithAction:(id)a4
+- (void)activitySystemApertureWithSceneHandle:(id)handle requestsLaunchWithAction:(id)action
 {
-  v6 = a4;
-  v5 = [(ACUISSystemApertureSceneHandle *)self delegate];
+  actionCopy = action;
+  delegate = [(ACUISSystemApertureSceneHandle *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 activitySystemApertureSceneHandle:self requestsLaunchWithAction:v6];
+    [delegate activitySystemApertureSceneHandle:self requestsLaunchWithAction:actionCopy];
   }
 }
 
-- (void)activitySystemApertureWithSceneHandle:(id)a3 updatedContentPayloadID:(id)a4
+- (void)activitySystemApertureWithSceneHandle:(id)handle updatedContentPayloadID:(id)d
 {
-  v6 = a4;
-  v5 = [(ACUISSystemApertureSceneHandle *)self delegate];
+  dCopy = d;
+  delegate = [(ACUISSystemApertureSceneHandle *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 activitySystemApertureSceneHandle:self updatedContentPayloadID:v6];
+    [delegate activitySystemApertureSceneHandle:self updatedContentPayloadID:dCopy];
   }
 }
 

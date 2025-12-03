@@ -8,10 +8,10 @@
 - (id)_tagColorWithFallback:()Color
 {
   v4 = a3;
-  v5 = [a1 labelIndex];
-  if (v5)
+  labelIndex = [self labelIndex];
+  if (labelIndex)
   {
-    [MEMORY[0x277D75348] doc_colorForTagColor:v5];
+    [MEMORY[0x277D75348] doc_colorForTagColor:labelIndex];
   }
 
   else
@@ -26,9 +26,9 @@
 - (uint64_t)tagBackgroundColor
 {
   v1 = MEMORY[0x277D75348];
-  v2 = [a1 labelIndex];
+  labelIndex = [self labelIndex];
 
-  return [v1 doc_secondaryColorForTagColor:v2];
+  return [v1 doc_secondaryColorForTagColor:labelIndex];
 }
 
 @end

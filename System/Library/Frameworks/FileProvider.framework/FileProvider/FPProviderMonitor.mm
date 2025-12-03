@@ -1,11 +1,11 @@
 @interface FPProviderMonitor
-+ (BOOL)isProviderIDForeground:(id)a3;
-+ (id)providerIDForApplication:(id)a3 sharedContainerIdentifier:(id)a4;
-- (BOOL)wakeProviderID:(id)a3 forSessionIdentifier:(id)a4;
++ (BOOL)isProviderIDForeground:(id)foreground;
++ (id)providerIDForApplication:(id)application sharedContainerIdentifier:(id)identifier;
+- (BOOL)wakeProviderID:(id)d forSessionIdentifier:(id)identifier;
 - (FPProviderMonitor)init;
-- (void)addObserver:(id)a3 forProviderID:(id)a4;
+- (void)addObserver:(id)observer forProviderID:(id)d;
 - (void)dealloc;
-- (void)removeObserver:(id)a3 forProviderID:(id)a4;
+- (void)removeObserver:(id)observer forProviderID:(id)d;
 @end
 
 @implementation FPProviderMonitor
@@ -36,21 +36,21 @@
 
 - (void)dealloc
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"FPProviderMonitor.m" lineNumber:103 description:@"There were observers remaining at dealloc time. Call -removeObserver:forContainerID: first."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"FPProviderMonitor.m" lineNumber:103 description:@"There were observers remaining at dealloc time. Call -removeObserver:forContainerID: first."];
 }
 
-+ (id)providerIDForApplication:(id)a3 sharedContainerIdentifier:(id)a4
++ (id)providerIDForApplication:(id)application sharedContainerIdentifier:(id)identifier
 {
   v24 = *MEMORY[0x1E69E9840];
-  v17 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:{a3, a4}];
+  v17 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:{application, identifier}];
   v18 = objc_opt_new();
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [v17 plugInKitPlugins];
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  plugInKitPlugins = [v17 plugInKitPlugins];
+  v5 = [plugInKitPlugins countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -61,12 +61,12 @@
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(plugInKitPlugins);
         }
 
         v9 = *(*(&v19 + 1) + 8 * i);
-        v10 = [v9 protocol];
-        v11 = [v10 isEqualToString:@"com.apple.fileprovider-nonui"];
+        protocol = [v9 protocol];
+        v11 = [protocol isEqualToString:@"com.apple.fileprovider-nonui"];
 
         if (v11)
         {
@@ -78,19 +78,19 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v6 = [plugInKitPlugins countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v6);
   }
 
   [v18 sortUsingComparator:&__block_literal_global_34];
-  v13 = [v18 firstObject];
-  v14 = [v13 bundleIdentifier];
+  firstObject = [v18 firstObject];
+  bundleIdentifier = [firstObject bundleIdentifier];
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v14;
+  return bundleIdentifier;
 }
 
 uint64_t __72__FPProviderMonitor_providerIDForApplication_sharedContainerIdentifier___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -103,43 +103,43 @@ uint64_t __72__FPProviderMonitor_providerIDForApplication_sharedContainerIdentif
   return v7;
 }
 
-- (void)addObserver:(id)a3 forProviderID:(id)a4
+- (void)addObserver:(id)observer forProviderID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  dCopy = d;
   section = __fp_create_section();
   v24 = section;
   v9 = fp_current_or_default_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [(FPProviderMonitor *)v7 addObserver:v9 forProviderID:?];
+    [(FPProviderMonitor *)dCopy addObserver:v9 forProviderID:?];
   }
 
-  v10 = self;
-  objc_sync_enter(v10);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   out_token = 0;
-  v11 = [(NSMutableDictionary *)v10->_observersByContainerID objectForKeyedSubscript:v7];
+  v11 = [(NSMutableDictionary *)selfCopy->_observersByContainerID objectForKeyedSubscript:dCopy];
   if (!v11)
   {
     v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
-    [(NSMutableDictionary *)v10->_observersByContainerID setObject:v11 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)selfCopy->_observersByContainerID setObject:v11 forKeyedSubscript:dCopy];
   }
 
-  [v11 addObject:v6];
-  v12 = FPNotifyNameForForegroundChangeWithProviderID(v7);
+  [v11 addObject:observerCopy];
+  v12 = FPNotifyNameForForegroundChangeWithProviderID(dCopy);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __47__FPProviderMonitor_addObserver_forProviderID___block_invoke;
   aBlock[3] = &unk_1E793CDA8;
-  aBlock[4] = v10;
-  v13 = v7;
+  aBlock[4] = selfCopy;
+  v13 = dCopy;
   v22 = v13;
   v14 = _Block_copy(aBlock);
-  notify_register_dispatch([v12 UTF8String], &out_token, v10->_queue, v14);
+  notify_register_dispatch([v12 UTF8String], &out_token, selfCopy->_queue, v14);
   v15 = [MEMORY[0x1E696AD98] numberWithInt:out_token];
-  [(NSMutableDictionary *)v10->_notifyTokenByContainerID setObject:v15 forKeyedSubscript:v13];
+  [(NSMutableDictionary *)selfCopy->_notifyTokenByContainerID setObject:v15 forKeyedSubscript:v13];
 
-  queue = v10->_queue;
+  queue = selfCopy->_queue;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __47__FPProviderMonitor_addObserver_forProviderID___block_invoke_79;
@@ -149,7 +149,7 @@ uint64_t __72__FPProviderMonitor_providerIDForApplication_sharedContainerIdentif
   v17 = v14;
   dispatch_async(queue, v18);
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
   __fp_leave_section_Debug(&v24);
 }
 
@@ -218,58 +218,58 @@ void __47__FPProviderMonitor_addObserver_forProviderID___block_invoke(uint64_t a
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeObserver:(id)a3 forProviderID:(id)a4
+- (void)removeObserver:(id)observer forProviderID:(id)d
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(NSMutableDictionary *)v8->_observersByContainerID objectForKeyedSubscript:v7];
-  if (([v9 containsObject:v6] & 1) == 0)
+  observerCopy = observer;
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [(NSMutableDictionary *)selfCopy->_observersByContainerID objectForKeyedSubscript:dCopy];
+  if (([v9 containsObject:observerCopy] & 1) == 0)
   {
-    observersByContainerID = v8->_observersByContainerID;
-    fp_simulate_crash(@"removed non existing observer %@ for %@, existing observers were %@", v10, v11, v12, v13, v14, v15, v16, v6);
+    observersByContainerID = selfCopy->_observersByContainerID;
+    fp_simulate_crash(@"removed non existing observer %@ for %@, existing observers were %@", v10, v11, v12, v13, v14, v15, v16, observerCopy);
     v17 = fp_current_or_default_log();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
     {
-      v21 = v8->_observersByContainerID;
+      v21 = selfCopy->_observersByContainerID;
       *buf = 138412802;
-      v24 = v6;
+      v24 = observerCopy;
       v25 = 2112;
-      v26 = v7;
+      v26 = dCopy;
       v27 = 2112;
       v28 = v21;
       _os_log_fault_impl(&dword_1AAAE1000, v17, OS_LOG_TYPE_FAULT, "[SIMCRASH] removed non existing observer %@ for %@, existing observers were %@", buf, 0x20u);
     }
   }
 
-  [v9 removeObject:v6];
+  [v9 removeObject:observerCopy];
   if (![v9 count])
   {
-    [(NSMutableDictionary *)v8->_observersByContainerID removeObjectForKey:v7];
-    v18 = [(NSMutableDictionary *)v8->_notifyTokenByContainerID objectForKeyedSubscript:v7];
-    v19 = [v18 intValue];
+    [(NSMutableDictionary *)selfCopy->_observersByContainerID removeObjectForKey:dCopy];
+    v18 = [(NSMutableDictionary *)selfCopy->_notifyTokenByContainerID objectForKeyedSubscript:dCopy];
+    intValue = [v18 intValue];
 
-    notify_cancel(v19);
-    [(NSMutableDictionary *)v8->_notifyTokenByContainerID removeObjectForKey:v7];
+    notify_cancel(intValue);
+    [(NSMutableDictionary *)selfCopy->_notifyTokenByContainerID removeObjectForKey:dCopy];
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   v20 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)isProviderIDForeground:(id)a3
++ (BOOL)isProviderIDForeground:(id)foreground
 {
-  v3 = a3;
+  foregroundCopy = foreground;
   if (isProviderIDForeground__onceToken != -1)
   {
     +[FPProviderMonitor isProviderIDForeground:];
   }
 
   out_token = -1;
-  v4 = FPNotifyNameForForegroundChangeWithProviderID(v3);
-  v5 = [isProviderIDForeground__tokensCache objectForKey:v3];
+  v4 = FPNotifyNameForForegroundChangeWithProviderID(foregroundCopy);
+  v5 = [isProviderIDForeground__tokensCache objectForKey:foregroundCopy];
   v6 = v5;
   if (!v5 || (v7 = [v5 intValue], out_token = v7, v7 == -1))
   {
@@ -282,7 +282,7 @@ void __47__FPProviderMonitor_addObserver_forProviderID___block_invoke(uint64_t a
 
     v8 = isProviderIDForeground__tokensCache;
     v9 = [MEMORY[0x1E696AD98] numberWithInt:out_token];
-    [v8 setObject:v9 forKey:v3];
+    [v8 setObject:v9 forKey:foregroundCopy];
 
     v7 = out_token;
   }
@@ -311,12 +311,12 @@ uint64_t __44__FPProviderMonitor_isProviderIDForeground___block_invoke()
   return [v5 setDelegate:v4];
 }
 
-- (BOOL)wakeProviderID:(id)a3 forSessionIdentifier:(id)a4
+- (BOOL)wakeProviderID:(id)d forSessionIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  identifierCopy = identifier;
   v7 = +[FPItemManager defaultManager];
-  v8 = [[FPWakeForURLSessionOperation alloc] initForProvider:v5 sessionIdentifier:v6];
+  v8 = [[FPWakeForURLSessionOperation alloc] initForProvider:dCopy sessionIdentifier:identifierCopy];
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;

@@ -1,33 +1,33 @@
 @interface PEPasteablePreset
-+ (BOOL)hasValidAdjustmentsInCompositionController:(id)a3;
-+ (void)sanitizeCompositionController:(id)a3;
++ (BOOL)hasValidAdjustmentsInCompositionController:(id)controller;
++ (void)sanitizeCompositionController:(id)controller;
 - (BOOL)_isSmart;
-- (BOOL)isEligibleForAsyncProcessingOnAsset:(id)a3;
-- (BOOL)isEligibleForSmartPasteWithPhotoLibrary:(id)a3 fallbackPayload:(id *)a4;
+- (BOOL)isEligibleForAsyncProcessingOnAsset:(id)asset;
+- (BOOL)isEligibleForSmartPasteWithPhotoLibrary:(id)library fallbackPayload:(id *)payload;
 - (PEAdjustmentPresetAutoDelegate)autoDelegate;
-- (PEPasteablePreset)initWithCompositionController:(id)a3 asset:(id)a4 isSmart:(BOOL)a5;
+- (PEPasteablePreset)initWithCompositionController:(id)controller asset:(id)asset isSmart:(BOOL)smart;
 - (id)expAndWBAdjustmentsDebugDescription;
 - (id)resourceManager;
 - (id)sourceAssetUUID;
-- (void)_runAutoCalculatorForCompositionController:(id)a3;
-- (void)applyToCompositionController:(id)a3 asset:(id)a4 editSource:(id)a5 invalidAdjustmentKeys:(id)a6 completion:(id)a7;
+- (void)_runAutoCalculatorForCompositionController:(id)controller;
+- (void)applyToCompositionController:(id)controller asset:(id)asset editSource:(id)source invalidAdjustmentKeys:(id)keys completion:(id)completion;
 @end
 
 @implementation PEPasteablePreset
 
-+ (void)sanitizeCompositionController:(id)a3
++ (void)sanitizeCompositionController:(id)controller
 {
   v64 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v61.receiver = a1;
+  controllerCopy = controller;
+  v61.receiver = self;
   v61.super_class = &OBJC_METACLASS___PEPasteablePreset;
-  objc_msgSendSuper2(&v61, sel_sanitizeCompositionController_, v4);
+  objc_msgSendSuper2(&v61, sel_sanitizeCompositionController_, controllerCopy);
   v59 = 0u;
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v5 = [v4 adjustmentKeys];
-  v6 = [v5 countByEnumeratingWithState:&v57 objects:v63 count:16];
+  adjustmentKeys = [controllerCopy adjustmentKeys];
+  v6 = [adjustmentKeys countByEnumeratingWithState:&v57 objects:v63 count:16];
   if (v6)
   {
     v7 = v6;
@@ -38,54 +38,54 @@
       {
         if (*v58 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(adjustmentKeys);
         }
 
         v10 = *(*(&v57 + 1) + 8 * i);
-        v11 = [v4 adjustmentControllerForKey:v10];
+        v11 = [controllerCopy adjustmentControllerForKey:v10];
         if ([v11 canBeEnabled] && (objc_msgSend(v11, "enabled") & 1) == 0)
         {
-          [v4 removeAdjustmentWithKey:v10];
+          [controllerCopy removeAdjustmentWithKey:v10];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v57 objects:v63 count:16];
+      v7 = [adjustmentKeys countByEnumeratingWithState:&v57 objects:v63 count:16];
     }
 
     while (v7);
   }
 
-  v12 = [v4 cinematicAudioAdjustmentController];
-  v13 = v12;
-  if (v12)
+  cinematicAudioAdjustmentController = [controllerCopy cinematicAudioAdjustmentController];
+  v13 = cinematicAudioAdjustmentController;
+  if (cinematicAudioAdjustmentController)
   {
-    v14 = [v12 renderingStyle];
+    renderingStyle = [cinematicAudioAdjustmentController renderingStyle];
     v15 = *MEMORY[0x277D3A9F0];
 
-    if (v14 == v15)
+    if (renderingStyle == v15)
     {
-      [v4 removeAdjustmentWithKey:*MEMORY[0x277D3A9E0]];
+      [controllerCopy removeAdjustmentWithKey:*MEMORY[0x277D3A9E0]];
     }
   }
 
   v50 = v13;
-  v16 = [v4 cropAdjustmentController];
+  cropAdjustmentController = [controllerCopy cropAdjustmentController];
   v17 = MEMORY[0x277D3AA08];
-  if (v16)
+  if (cropAdjustmentController)
   {
-    v18 = [v4 orientationAdjustmentController];
-    [v18 orientation];
+    orientationAdjustmentController = [controllerCopy orientationAdjustmentController];
+    [orientationAdjustmentController orientation];
 
-    [v16 cropRect];
+    [cropAdjustmentController cropRect];
     NUOrientationTransformSize();
     v20 = v19;
     v22 = v21;
-    v23 = [v16 constraintWidth];
-    if (([v16 constraintHeight] | v23) < 0)
+    constraintWidth = [cropAdjustmentController constraintWidth];
+    if (([cropAdjustmentController constraintHeight] | constraintWidth) < 0)
     {
-      v48 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v49 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"NUPixelSize NUPixelSizeMake(NSInteger, NSInteger)"}];
-      [v48 handleFailureInFunction:v49 file:@"NUGeometryPrimitives.h" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"(width >= 0) && (height >= 0)"}];
+      [currentHandler handleFailureInFunction:v49 file:@"NUGeometryPrimitives.h" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"(width >= 0) && (height >= 0)"}];
     }
 
     v24 = NUOrientationTransformImageSize();
@@ -100,14 +100,14 @@
     v56[7] = v22;
     v56[8] = v24;
     v56[9] = v26;
-    [v4 modifyAdjustmentWithKey:v25 modificationBlock:v56];
+    [controllerCopy modifyAdjustmentWithKey:v25 modificationBlock:v56];
   }
 
-  v27 = [v4 userOrientation];
-  if (v27 == 1 || (v28 = v27, !NUOrientationIsValid()))
+  userOrientation = [controllerCopy userOrientation];
+  if (userOrientation == 1 || (v28 = userOrientation, !NUOrientationIsValid()))
   {
     v29 = *MEMORY[0x277D3AA88];
-    [v4 removeAdjustmentWithKey:*MEMORY[0x277D3AA88]];
+    [controllerCopy removeAdjustmentWithKey:*MEMORY[0x277D3AA88]];
   }
 
   else
@@ -118,16 +118,16 @@
     v55[2] = __51__PEPasteablePreset_sanitizeCompositionController___block_invoke_2;
     v55[3] = &__block_descriptor_40_e43_v16__0__PIOrientationAdjustmentController_8l;
     v55[4] = v28;
-    [v4 modifyAdjustmentWithKey:v29 modificationBlock:v55];
+    [controllerCopy modifyAdjustmentWithKey:v29 modificationBlock:v55];
   }
 
-  v30 = [MEMORY[0x277D3A938] adjustmentConstants];
+  adjustmentConstants = [MEMORY[0x277D3A938] adjustmentConstants];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v31 = [MEMORY[0x277D3A938] geometryBasedAdjustmentIdentifiers];
-  v32 = [v31 countByEnumeratingWithState:&v51 objects:v62 count:16];
+  geometryBasedAdjustmentIdentifiers = [MEMORY[0x277D3A938] geometryBasedAdjustmentIdentifiers];
+  v32 = [geometryBasedAdjustmentIdentifiers countByEnumeratingWithState:&v51 objects:v62 count:16];
   if (v32)
   {
     v33 = v32;
@@ -139,51 +139,51 @@
       {
         if (*v52 != v34)
         {
-          objc_enumerationMutation(v31);
+          objc_enumerationMutation(geometryBasedAdjustmentIdentifiers);
         }
 
         v37 = *(*(&v51 + 1) + 8 * j);
         if (([v37 isEqualToString:v35] & 1) == 0 && (objc_msgSend(v37, "isEqualToString:", v29) & 1) == 0)
         {
-          [v4 removeAdjustmentWithKey:v37];
+          [controllerCopy removeAdjustmentWithKey:v37];
         }
       }
 
-      v33 = [v31 countByEnumeratingWithState:&v51 objects:v62 count:16];
+      v33 = [geometryBasedAdjustmentIdentifiers countByEnumeratingWithState:&v51 objects:v62 count:16];
     }
 
     while (v33);
   }
 
-  v38 = [v30 PILivePhotoKeyFrameAdjustmentKey];
-  [v4 removeAdjustmentWithKey:v38];
+  pILivePhotoKeyFrameAdjustmentKey = [adjustmentConstants PILivePhotoKeyFrameAdjustmentKey];
+  [controllerCopy removeAdjustmentWithKey:pILivePhotoKeyFrameAdjustmentKey];
 
-  v39 = [v30 PIAutoLoopAdjustmentKey];
-  [v4 removeAdjustmentWithKey:v39];
+  pIAutoLoopAdjustmentKey = [adjustmentConstants PIAutoLoopAdjustmentKey];
+  [controllerCopy removeAdjustmentWithKey:pIAutoLoopAdjustmentKey];
 
-  v40 = [v30 PIVideoCrossfadeLoopAdjustmentKey];
-  [v4 removeAdjustmentWithKey:v40];
+  pIVideoCrossfadeLoopAdjustmentKey = [adjustmentConstants PIVideoCrossfadeLoopAdjustmentKey];
+  [controllerCopy removeAdjustmentWithKey:pIVideoCrossfadeLoopAdjustmentKey];
 
-  v41 = [v30 PIVideoPosterFrameAdjustmentKey];
-  [v4 removeAdjustmentWithKey:v41];
+  pIVideoPosterFrameAdjustmentKey = [adjustmentConstants PIVideoPosterFrameAdjustmentKey];
+  [controllerCopy removeAdjustmentWithKey:pIVideoPosterFrameAdjustmentKey];
 
-  v42 = [v30 PIMuteAdjustmentKey];
-  [v4 removeAdjustmentWithKey:v42];
+  pIMuteAdjustmentKey = [adjustmentConstants PIMuteAdjustmentKey];
+  [controllerCopy removeAdjustmentWithKey:pIMuteAdjustmentKey];
 
-  v43 = [v30 PITrimAdjustmentKey];
-  [v4 removeAdjustmentWithKey:v43];
+  pITrimAdjustmentKey = [adjustmentConstants PITrimAdjustmentKey];
+  [controllerCopy removeAdjustmentWithKey:pITrimAdjustmentKey];
 
-  v44 = [v30 PIVideoStabilizeAdjustmentKey];
-  [v4 removeAdjustmentWithKey:v44];
+  pIVideoStabilizeAdjustmentKey = [adjustmentConstants PIVideoStabilizeAdjustmentKey];
+  [controllerCopy removeAdjustmentWithKey:pIVideoStabilizeAdjustmentKey];
 
-  v45 = [v30 PINoiseReductionAdjustmentKey];
-  [v4 removeAdjustmentWithKey:v45];
+  pINoiseReductionAdjustmentKey = [adjustmentConstants PINoiseReductionAdjustmentKey];
+  [controllerCopy removeAdjustmentWithKey:pINoiseReductionAdjustmentKey];
 
-  v46 = [v30 PIRawAdjustmentKey];
-  [v4 removeAdjustmentWithKey:v46];
+  pIRawAdjustmentKey = [adjustmentConstants PIRawAdjustmentKey];
+  [controllerCopy removeAdjustmentWithKey:pIRawAdjustmentKey];
 
-  v47 = [v30 PIRawNoiseReductionAdjustmentKey];
-  [v4 removeAdjustmentWithKey:v47];
+  pIRawNoiseReductionAdjustmentKey = [adjustmentConstants PIRawNoiseReductionAdjustmentKey];
+  [controllerCopy removeAdjustmentWithKey:pIRawNoiseReductionAdjustmentKey];
 }
 
 void __51__PEPasteablePreset_sanitizeCompositionController___block_invoke(double *a1, void *a2)
@@ -198,14 +198,14 @@ void __51__PEPasteablePreset_sanitizeCompositionController___block_invoke(double
   [v7 setConstraintHeight:*(a1 + 9)];
 }
 
-+ (BOOL)hasValidAdjustmentsInCompositionController:(id)a3
++ (BOOL)hasValidAdjustmentsInCompositionController:(id)controller
 {
-  v3 = [a3 copy];
+  v3 = [controller copy];
   [objc_opt_class() sanitizeCompositionController:v3];
   if (_os_feature_enabled_impl())
   {
-    v4 = [v3 slomoAdjustmentController];
-    v5 = v4 != 0;
+    slomoAdjustmentController = [v3 slomoAdjustmentController];
+    v5 = slomoAdjustmentController != 0;
   }
 
   else
@@ -213,10 +213,10 @@ void __51__PEPasteablePreset_sanitizeCompositionController___block_invoke(double
     v5 = 0;
   }
 
-  v6 = [v3 semanticStyleAdjustmentController];
+  semanticStyleAdjustmentController = [v3 semanticStyleAdjustmentController];
 
   v7 = [MEMORY[0x277D3AC20] isIdentityCompositionController:v3];
-  if (v6)
+  if (semanticStyleAdjustmentController)
   {
     v8 = 1;
   }
@@ -248,18 +248,18 @@ void __51__PEPasteablePreset_sanitizeCompositionController___block_invoke(double
 
 - (id)expAndWBAdjustmentsDebugDescription
 {
-  v2 = [(PEAdjustmentPreset *)self composition];
-  v3 = [objc_alloc(MEMORY[0x277D3A870]) initWithComposition:v2];
-  v4 = [v3 smartToneAdjustmentController];
-  [v4 offsetExposure];
+  composition = [(PEAdjustmentPreset *)self composition];
+  v3 = [objc_alloc(MEMORY[0x277D3A870]) initWithComposition:composition];
+  smartToneAdjustmentController = [v3 smartToneAdjustmentController];
+  [smartToneAdjustmentController offsetExposure];
   v6 = v5;
 
-  v7 = [v3 whiteBalanceAdjustmentController];
-  [v7 warmTemp];
+  whiteBalanceAdjustmentController = [v3 whiteBalanceAdjustmentController];
+  [whiteBalanceAdjustmentController warmTemp];
   v9 = v8;
 
-  v10 = [v3 whiteBalanceAdjustmentController];
-  [v10 warmTint];
+  whiteBalanceAdjustmentController2 = [v3 whiteBalanceAdjustmentController];
+  [whiteBalanceAdjustmentController2 warmTint];
   v12 = v11;
 
   v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Exp(%.2f), Warmth(%.2f), Tint(%.2f)", v6, v9, v12];
@@ -269,38 +269,38 @@ void __51__PEPasteablePreset_sanitizeCompositionController___block_invoke(double
 
 - (BOOL)_isSmart
 {
-  v2 = [(PEAdjustmentPreset *)self serializedDictionary];
-  v3 = [v2 objectForKey:@"PEAdjustmentPresetSmartKey"];
+  serializedDictionary = [(PEAdjustmentPreset *)self serializedDictionary];
+  v3 = [serializedDictionary objectForKey:@"PEAdjustmentPresetSmartKey"];
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)_runAutoCalculatorForCompositionController:(id)a3
+- (void)_runAutoCalculatorForCompositionController:(id)controller
 {
   v84 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v51 = [v3 adjustmentConstants];
-  v4 = [v3 smartToneAdjustmentController];
-  if (v4)
+  controllerCopy = controller;
+  adjustmentConstants = [controllerCopy adjustmentConstants];
+  smartToneAdjustmentController = [controllerCopy smartToneAdjustmentController];
+  if (smartToneAdjustmentController)
   {
-    v5 = [v3 smartToneAdjustmentController];
-    v6 = [v5 statistics];
+    smartToneAdjustmentController2 = [controllerCopy smartToneAdjustmentController];
+    statistics = [smartToneAdjustmentController2 statistics];
 
-    if (!v6)
+    if (!statistics)
     {
       v7 = objc_alloc(MEMORY[0x277D3A9A8]);
-      v8 = [v3 composition];
-      v9 = [v7 initWithComposition:v8];
+      composition = [controllerCopy composition];
+      v9 = [v7 initWithComposition:composition];
 
       [v9 setName:@"PEAdjustmentPresetManager-PISmartToneAutoCalculator"];
       v76 = 0;
@@ -308,13 +308,13 @@ void __51__PEPasteablePreset_sanitizeCompositionController___block_invoke(double
       v11 = v76;
       if (v10)
       {
-        v12 = [v51 PISmartToneAdjustmentKey];
+        pISmartToneAdjustmentKey = [adjustmentConstants PISmartToneAdjustmentKey];
         v74[0] = MEMORY[0x277D85DD0];
         v74[1] = 3221225472;
         v74[2] = __64__PEPasteablePreset__runAutoCalculatorForCompositionController___block_invoke;
         v74[3] = &unk_279A302D0;
         v75 = v10;
-        [v3 modifyAdjustmentWithKey:v12 modificationBlock:v74];
+        [controllerCopy modifyAdjustmentWithKey:pISmartToneAdjustmentKey modificationBlock:v74];
 
         v13 = v75;
       }
@@ -332,18 +332,18 @@ void __51__PEPasteablePreset_sanitizeCompositionController___block_invoke(double
     }
   }
 
-  v14 = [v3 smartColorAdjustmentController];
-  if (v14)
+  smartColorAdjustmentController = [controllerCopy smartColorAdjustmentController];
+  if (smartColorAdjustmentController)
   {
-    v15 = [v3 smartColorAdjustmentController];
-    v16 = [v15 statistics];
-    v17 = v16 == 0;
+    smartColorAdjustmentController2 = [controllerCopy smartColorAdjustmentController];
+    statistics2 = [smartColorAdjustmentController2 statistics];
+    v17 = statistics2 == 0;
 
     if (v17)
     {
       v18 = objc_alloc(MEMORY[0x277D3A990]);
-      v19 = [v3 composition];
-      v20 = [v18 initWithComposition:v19];
+      composition2 = [controllerCopy composition];
+      v20 = [v18 initWithComposition:composition2];
 
       [v20 setName:@"PEAdjustmentPresetManager-PISmartColorAutoCalculator"];
       v73 = 0;
@@ -351,13 +351,13 @@ void __51__PEPasteablePreset_sanitizeCompositionController___block_invoke(double
       v22 = v73;
       if (v21)
       {
-        v23 = [v51 PISmartColorAdjustmentKey];
+        pISmartColorAdjustmentKey = [adjustmentConstants PISmartColorAdjustmentKey];
         v71[0] = MEMORY[0x277D85DD0];
         v71[1] = 3221225472;
         v71[2] = __64__PEPasteablePreset__runAutoCalculatorForCompositionController___block_invoke_328;
         v71[3] = &unk_279A30BB8;
         v72 = v21;
-        [v3 modifyAdjustmentWithKey:v23 modificationBlock:v71];
+        [controllerCopy modifyAdjustmentWithKey:pISmartColorAdjustmentKey modificationBlock:v71];
 
         v24 = v72;
       }
@@ -375,15 +375,15 @@ void __51__PEPasteablePreset_sanitizeCompositionController___block_invoke(double
     }
   }
 
-  v25 = [v3 portraitAdjustmentController];
-  if (v25)
+  portraitAdjustmentController = [controllerCopy portraitAdjustmentController];
+  if (portraitAdjustmentController)
   {
   }
 
   else
   {
-    v26 = [v3 depthAdjustmentController];
-    v27 = v26 == 0;
+    depthAdjustmentController = [controllerCopy depthAdjustmentController];
+    v27 = depthAdjustmentController == 0;
 
     if (v27)
     {
@@ -391,17 +391,17 @@ void __51__PEPasteablePreset_sanitizeCompositionController___block_invoke(double
     }
   }
 
-  v50 = [v3 portraitAdjustmentController];
-  v28 = [v51 PIPortraitAdjustmentKey];
-  [v3 removeAdjustmentWithKey:v28];
+  portraitAdjustmentController2 = [controllerCopy portraitAdjustmentController];
+  pIPortraitAdjustmentKey = [adjustmentConstants PIPortraitAdjustmentKey];
+  [controllerCopy removeAdjustmentWithKey:pIPortraitAdjustmentKey];
 
-  v49 = [v3 depthAdjustmentController];
-  v29 = [v51 PIDepthAdjustmentKey];
-  [v3 removeAdjustmentWithKey:v29];
+  depthAdjustmentController2 = [controllerCopy depthAdjustmentController];
+  pIDepthAdjustmentKey = [adjustmentConstants PIDepthAdjustmentKey];
+  [controllerCopy removeAdjustmentWithKey:pIDepthAdjustmentKey];
 
   v30 = objc_alloc(MEMORY[0x277D3A940]);
-  v31 = [v3 composition];
-  v32 = [v30 initWithComposition:v31];
+  composition3 = [controllerCopy composition];
+  v32 = [v30 initWithComposition:composition3];
 
   [v32 setName:@"PEPasteablePreset-PIPortraitAutoCalculator"];
   *&buf = 0;
@@ -430,36 +430,36 @@ void __51__PEPasteablePreset_sanitizeCompositionController___block_invoke(double
   dispatch_group_wait(v34, 0xFFFFFFFFFFFFFFFFLL);
   if (*(*(&buf + 1) + 40))
   {
-    v35 = [v50 kind];
+    kind = [portraitAdjustmentController2 kind];
     v36 = [*(*(&buf + 1) + 40) objectForKeyedSubscript:*MEMORY[0x277D3AAA0]];
     LOBYTE(v37) = [v36 count] != 0;
     v38 = [*(*(&buf + 1) + 40) objectForKeyedSubscript:*MEMORY[0x277D3AA98]];
     v39 = v38;
     if (v38 && [v38 BOOLValue])
     {
-      v37 = [MEMORY[0x277D3A938] isPortraitStageEffect:v35] ^ 1;
+      v37 = [MEMORY[0x277D3A938] isPortraitStageEffect:kind] ^ 1;
     }
 
     v40 = [*(*(&buf + 1) + 40) objectForKeyedSubscript:*MEMORY[0x277D3A9D8]];
-    v41 = [v40 intValue];
-    v42 = v41 > 1;
-    if (v35)
+    intValue = [v40 intValue];
+    v42 = intValue > 1;
+    if (kind)
     {
-      v43 = [MEMORY[0x277D3AD30] equivalentEffectForIdentifier:v35 version:v41];
-      if (((v43 != 0) & v37) == 1 && v50)
+      v43 = [MEMORY[0x277D3AD30] equivalentEffectForIdentifier:kind version:intValue];
+      if (((v43 != 0) & v37) == 1 && portraitAdjustmentController2)
       {
-        v44 = [v51 PIPortraitAdjustmentKey];
+        pIPortraitAdjustmentKey2 = [adjustmentConstants PIPortraitAdjustmentKey];
         v55[0] = MEMORY[0x277D85DD0];
         v55[1] = 3221225472;
         v55[2] = __64__PEPasteablePreset__runAutoCalculatorForCompositionController___block_invoke_2;
         v55[3] = &unk_279A30340;
-        v56 = v50;
+        v56 = portraitAdjustmentController2;
         v43 = v43;
         v57 = v43;
         v58 = v36;
         v59 = &buf;
         v60 = v42;
-        [v3 modifyAdjustmentWithKey:v44 modificationBlock:v55];
+        [controllerCopy modifyAdjustmentWithKey:pIPortraitAdjustmentKey2 modificationBlock:v55];
       }
     }
 
@@ -468,8 +468,8 @@ void __51__PEPasteablePreset_sanitizeCompositionController___block_invoke(double
       v43 = 0;
     }
 
-    v46 = [v3 depthAdjustmentController];
-    v47 = v46 == 0;
+    depthAdjustmentController3 = [controllerCopy depthAdjustmentController];
+    v47 = depthAdjustmentController3 == 0;
 
     if (v47)
     {
@@ -479,20 +479,20 @@ void __51__PEPasteablePreset_sanitizeCompositionController___block_invoke(double
       v52[2] = __64__PEPasteablePreset__runAutoCalculatorForCompositionController___block_invoke_3;
       v52[3] = &unk_279A30368;
       v54 = &buf;
-      v53 = v49;
-      [v3 modifyAdjustmentWithKey:v48 modificationBlock:v52];
+      v53 = depthAdjustmentController2;
+      [controllerCopy modifyAdjustmentWithKey:v48 modificationBlock:v52];
     }
   }
 
   else
   {
-    v35 = PLPhotoEditGetLog();
-    if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
+    kind = PLPhotoEditGetLog();
+    if (os_log_type_enabled(kind, OS_LOG_TYPE_DEFAULT))
     {
       v45 = v66[5];
       *v77 = 138412290;
       v78 = v45;
-      _os_log_impl(&dword_25E6E9000, v35, OS_LOG_TYPE_DEFAULT, "PEPasteablePreset portrait calculator failed: %@", v77, 0xCu);
+      _os_log_impl(&dword_25E6E9000, kind, OS_LOG_TYPE_DEFAULT, "PEPasteablePreset portrait calculator failed: %@", v77, 0xCu);
     }
   }
 
@@ -572,28 +572,28 @@ void __64__PEPasteablePreset__runAutoCalculatorForCompositionController___block_
   [v12 setGlassesMatteAllowed:v11];
 }
 
-- (void)applyToCompositionController:(id)a3 asset:(id)a4 editSource:(id)a5 invalidAdjustmentKeys:(id)a6 completion:(id)a7
+- (void)applyToCompositionController:(id)controller asset:(id)asset editSource:(id)source invalidAdjustmentKeys:(id)keys completion:(id)completion
 {
   v216 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v157 = a5;
-  v14 = a6;
-  v153 = a7;
-  v15 = [(PEAdjustmentPreset *)self composition];
-  v16 = [objc_alloc(MEMORY[0x277D3A870]) initWithComposition:v15];
-  v155 = v15;
-  v17 = [v15 contents];
-  v18 = [v17 allKeys];
-  v19 = [v18 mutableCopy];
+  controllerCopy = controller;
+  assetCopy = asset;
+  sourceCopy = source;
+  keysCopy = keys;
+  completionCopy = completion;
+  composition = [(PEAdjustmentPreset *)self composition];
+  v16 = [objc_alloc(MEMORY[0x277D3A870]) initWithComposition:composition];
+  v155 = composition;
+  contents = [composition contents];
+  allKeys = [contents allKeys];
+  v19 = [allKeys mutableCopy];
 
-  v163 = v12;
-  v20 = [v12 copy];
+  v163 = controllerCopy;
+  v20 = [controllerCopy copy];
   v202 = 0u;
   v203 = 0u;
   v204 = 0u;
   v205 = 0u;
-  v21 = v14;
+  v21 = keysCopy;
   v22 = [v21 countByEnumeratingWithState:&v202 objects:v209 count:16];
   if (v22)
   {
@@ -669,7 +669,7 @@ LABEL_14:
   v34 = v19;
   v201 = v34;
   v160 = PFFind();
-  v156 = v13;
+  v156 = assetCopy;
   v152 = v33;
   if (v160)
   {
@@ -687,8 +687,8 @@ LABEL_14:
     v162 = 0;
   }
 
-  v35 = [v163 composition];
-  v36 = [v35 mediaType];
+  composition2 = [v163 composition];
+  mediaType = [composition2 mediaType];
 
   v190 = 0u;
   v191 = 0u;
@@ -716,7 +716,7 @@ LABEL_14:
         v187[8] = &unk_279A30280;
         v187[9] = self;
         v187[10] = v42;
-        v187[11] = v36;
+        v187[11] = mediaType;
         [v20 modifyAdjustmentWithKey:? modificationBlock:?];
       }
 
@@ -727,10 +727,10 @@ LABEL_14:
   }
 
   v43 = v161;
-  v44 = [v161 orientationAdjustmentController];
-  v45 = [v44 orientation];
+  orientationAdjustmentController = [v161 orientationAdjustmentController];
+  orientation = [orientationAdjustmentController orientation];
 
-  if (v45 != 1 && NUOrientationIsValid())
+  if (orientation != 1 && NUOrientationIsValid())
   {
     [v20 imageOrientation];
     v46 = NUOrientationConcat();
@@ -742,21 +742,21 @@ LABEL_14:
     [v20 modifyAdjustmentWithKey:v158 modificationBlock:v187];
   }
 
-  v159 = [v161 cropAdjustmentController];
-  if (v159)
+  cropAdjustmentController = [v161 cropAdjustmentController];
+  if (cropAdjustmentController)
   {
     v47 = objc_alloc(MEMORY[0x277D2CFB0]);
-    v48 = [v20 composition];
-    v49 = [v47 initWithComposition:v48];
+    composition3 = [v20 composition];
+    v49 = [v47 initWithComposition:composition3];
 
     v186 = 0;
     v50 = [v49 submitSynchronous:&v186];
     v51 = v186;
-    v52 = [v50 geometry];
+    geometry = [v50 geometry];
 
-    if (v52)
+    if (geometry)
     {
-      [v52 extent];
+      [geometry extent];
       NUPixelRectToCGRect();
       v148 = v55;
       v57 = v56;
@@ -782,7 +782,7 @@ LABEL_14:
         v60 = fabs(v53 / v54);
       }
 
-      [v159 cropRect];
+      [cropAdjustmentController cropRect];
       v64 = v62;
       v65 = v63;
       if (v62 == 0.0 || v63 == 0.0 || v62 == *MEMORY[0x277D3A858] && v63 == *(MEMORY[0x277D3A858] + 8))
@@ -813,7 +813,7 @@ LABEL_14:
         v71 = v70;
         v72 = v148 + v58 * 0.5 + v68 * -0.5;
         v73 = v67 + v70 * -0.5;
-        [v52 orientation];
+        [geometry orientation];
         NUOrientationInverse();
         if (NUOrientationIsValid())
         {
@@ -825,8 +825,8 @@ LABEL_14:
           v71 = v77;
         }
 
-        v78 = [v20 cropAdjustmentController];
-        [v78 cropRect];
+        cropAdjustmentController2 = [v20 cropAdjustmentController];
+        [cropAdjustmentController2 cropRect];
         v80 = v79;
         v82 = v81;
 
@@ -839,12 +839,12 @@ LABEL_14:
         y = v218.origin.y;
         width = v218.size.width;
         height = v218.size.height;
-        v87 = [v159 constraintWidth];
-        if (([v159 constraintHeight] | v87) < 0)
+        constraintWidth = [cropAdjustmentController constraintWidth];
+        if (([cropAdjustmentController constraintHeight] | constraintWidth) < 0)
         {
-          v149 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
           v147 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"NUPixelSize NUPixelSizeMake(NSInteger, NSInteger)"}];
-          [v149 handleFailureInFunction:@"(width >= 0) && (height >= 0)" file:? lineNumber:? description:?];
+          [currentHandler handleFailureInFunction:@"(width >= 0) && (height >= 0)" file:? lineNumber:? description:?];
         }
 
         v88 = NUOrientationTransformImageSize();
@@ -877,15 +877,15 @@ LABEL_14:
 
   if (_os_feature_enabled_impl())
   {
-    v90 = [v43 slomoAdjustmentController];
-    [v90 rate];
+    slomoAdjustmentController = [v43 slomoAdjustmentController];
+    [slomoAdjustmentController rate];
     v92 = v91;
 
     if (v92 > 0.0)
     {
-      v93 = [PEPlaybackRateOption playbackRateOptionsForEditSource:v157];
-      v94 = [v93 firstObject];
-      [v94 playbackRate];
+      v93 = [PEPlaybackRateOption playbackRateOptionsForEditSource:sourceCopy];
+      firstObject = [v93 firstObject];
+      [firstObject playbackRate];
       v96 = v95;
       v181 = 0u;
       v182 = 0u;
@@ -914,7 +914,7 @@ LABEL_14:
             {
               v106 = v103;
 
-              v94 = v106;
+              firstObject = v106;
               v100 = v105;
             }
           }
@@ -926,18 +926,18 @@ LABEL_14:
       }
 
       v43 = v161;
-      if (v94)
+      if (firstObject)
       {
-        v107 = [v156 mediaSubtypes];
-        [v94 playbackRate];
-        if (v108 != 1.0 || (v107 & 0x20000) != 0)
+        mediaSubtypes = [v156 mediaSubtypes];
+        [firstObject playbackRate];
+        if (v108 != 1.0 || (mediaSubtypes & 0x20000) != 0)
         {
           v178[0] = MEMORY[0x277D85DD0];
           v178[1] = 3221225472;
           v178[2] = __100__PEPasteablePreset_applyToCompositionController_asset_editSource_invalidAdjustmentKeys_completion___block_invoke_306;
           v178[3] = &unk_279A302A8;
-          v179 = v94;
-          v180 = v157;
+          v179 = firstObject;
+          v180 = sourceCopy;
           [v20 modifyAdjustmentWithKey:v150 modificationBlock:v178];
         }
 
@@ -949,23 +949,23 @@ LABEL_14:
     }
   }
 
-  v109 = [v20 smartToneAdjustmentController];
-  if (v109)
+  smartToneAdjustmentController = [v20 smartToneAdjustmentController];
+  if (smartToneAdjustmentController)
   {
     v110 = objc_alloc(MEMORY[0x277D3A870]);
-    v111 = [MEMORY[0x277D3A938] newComposition];
-    v112 = [v110 initWithComposition:v111];
+    newComposition = [MEMORY[0x277D3A938] newComposition];
+    v112 = [v110 initWithComposition:newComposition];
 
     v113 = *MEMORY[0x277D3ABC0];
     v176[0] = MEMORY[0x277D85DD0];
     v176[1] = 3221225472;
     v176[2] = __100__PEPasteablePreset_applyToCompositionController_asset_editSource_invalidAdjustmentKeys_completion___block_invoke_2_309;
     v176[3] = &unk_279A302D0;
-    v114 = v109;
+    v114 = smartToneAdjustmentController;
     v177 = v114;
     [v112 modifyAdjustmentWithKey:v113 modificationBlock:v176];
-    v115 = [v112 smartToneAdjustmentController];
-    LODWORD(v114) = [v115 isEqualToAdjustmentController:v114];
+    smartToneAdjustmentController2 = [v112 smartToneAdjustmentController];
+    LODWORD(v114) = [smartToneAdjustmentController2 isEqualToAdjustmentController:v114];
 
     if (v114)
     {
@@ -973,23 +973,23 @@ LABEL_14:
     }
   }
 
-  v116 = [v20 smartColorAdjustmentController];
-  if (v116)
+  smartColorAdjustmentController = [v20 smartColorAdjustmentController];
+  if (smartColorAdjustmentController)
   {
     v117 = objc_alloc(MEMORY[0x277D3A870]);
-    v118 = [MEMORY[0x277D3A938] newComposition];
-    v119 = [v117 initWithComposition:v118];
+    newComposition2 = [MEMORY[0x277D3A938] newComposition];
+    v119 = [v117 initWithComposition:newComposition2];
 
     v120 = *MEMORY[0x277D3ABB8];
     v174[0] = MEMORY[0x277D85DD0];
     v174[1] = 3221225472;
     v174[2] = __100__PEPasteablePreset_applyToCompositionController_asset_editSource_invalidAdjustmentKeys_completion___block_invoke_3_311;
     v174[3] = &unk_279A30BB8;
-    v121 = v116;
+    v121 = smartColorAdjustmentController;
     v175 = v121;
     [v119 modifyAdjustmentWithKey:v120 modificationBlock:v174];
-    v122 = [v119 smartColorAdjustmentController];
-    LODWORD(v121) = [v122 isEqualToAdjustmentController:v121];
+    smartColorAdjustmentController2 = [v119 smartColorAdjustmentController];
+    LODWORD(v121) = [smartColorAdjustmentController2 isEqualToAdjustmentController:v121];
 
     if (v121)
     {
@@ -1004,22 +1004,22 @@ LABEL_14:
 
     if (!v123)
     {
-      v124 = [v163 composition];
-      v125 = [v124 objectForKeyedSubscript:v162];
+      composition4 = [v163 composition];
+      v125 = [composition4 objectForKeyedSubscript:v162];
       [v20 replaceAdjustment:v125 withKey:v162];
     }
   }
 
-  v126 = [v20 depthAdjustmentController];
-  if (v126)
+  depthAdjustmentController = [v20 depthAdjustmentController];
+  if (depthAdjustmentController)
   {
-    v127 = [v163 depthAdjustmentController];
-    [v127 aperture];
+    depthAdjustmentController2 = [v163 depthAdjustmentController];
+    [depthAdjustmentController2 aperture];
     v129 = v128;
 
-    [v126 aperture];
+    [depthAdjustmentController aperture];
     v131 = v130;
-    if (![v126 canAdjustApertureValue])
+    if (![depthAdjustmentController canAdjustApertureValue])
     {
       if (v131 == v129)
       {
@@ -1036,11 +1036,11 @@ LABEL_14:
       goto LABEL_91;
     }
 
-    [v126 minimumAperture];
+    [depthAdjustmentController minimumAperture];
     v133 = v132;
-    [v126 maximumAperture];
+    [depthAdjustmentController maximumAperture];
     v135 = v134;
-    [v126 aperture];
+    [depthAdjustmentController aperture];
     if (v133 >= v136)
     {
       v136 = v133;
@@ -1074,22 +1074,22 @@ LABEL_92:
   v169 = v139;
   v140 = v20;
   v170 = v140;
-  v141 = v153;
+  v141 = completionCopy;
   v171 = v141;
   v142 = _Block_copy(aBlock);
   if ([(PEAdjustmentPreset *)self isAutoEnhanceEnabled])
   {
-    v143 = [(PEPasteablePreset *)self autoDelegate];
+    autoDelegate = [(PEPasteablePreset *)self autoDelegate];
 
-    if (v143)
+    if (autoDelegate)
     {
-      v144 = [(PEPasteablePreset *)self autoDelegate];
+      autoDelegate2 = [(PEPasteablePreset *)self autoDelegate];
       v166[0] = MEMORY[0x277D85DD0];
       v166[1] = 3221225472;
       v166[2] = __100__PEPasteablePreset_applyToCompositionController_asset_editSource_invalidAdjustmentKeys_completion___block_invoke_317;
       v166[3] = &unk_279A31028;
       v167 = v142;
-      [v144 applyAutoEnhance:v140 completion:v166];
+      [autoDelegate2 applyAutoEnhance:v140 completion:v166];
 
       v145 = v167;
     }
@@ -1243,10 +1243,10 @@ uint64_t __100__PEPasteablePreset_applyToCompositionController_asset_editSource_
   return (*(*(a1 + 48) + 16))();
 }
 
-- (BOOL)isEligibleForSmartPasteWithPhotoLibrary:(id)a3 fallbackPayload:(id *)a4
+- (BOOL)isEligibleForSmartPasteWithPhotoLibrary:(id)library fallbackPayload:(id *)payload
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  libraryCopy = library;
   if (![(PEPasteablePreset *)self _isSmart])
   {
     v9 = PLPhotoEditGetLog();
@@ -1261,10 +1261,10 @@ uint64_t __100__PEPasteablePreset_applyToCompositionController_asset_editSource_
 
   if (![(PEAdjustmentPreset *)self isAutoEnhanceEnabled])
   {
-    v10 = [(PEPasteablePreset *)self sourceAssetUUID];
-    v11 = [v6 librarySpecificFetchOptions];
-    [v11 setFetchLimit:1];
-    if (!v10 || [v10 isEqualToString:&stru_2870659C0])
+    sourceAssetUUID = [(PEPasteablePreset *)self sourceAssetUUID];
+    librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+    [librarySpecificFetchOptions setFetchLimit:1];
+    if (!sourceAssetUUID || [sourceAssetUUID isEqualToString:&stru_2870659C0])
     {
       v12 = PLPhotoEditGetLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -1273,10 +1273,10 @@ uint64_t __100__PEPasteablePreset_applyToCompositionController_asset_editSource_
         _os_log_impl(&dword_25E6E9000, v12, OS_LOG_TYPE_ERROR, "PEPasteablePreset isEligibleForSmartPaste=NO: sourceAssetUUID is invalid.", v21, 2u);
       }
 
-      if (a4)
+      if (payload)
       {
         [PESCAPReviewPayload legacyPayloadWithReason:3];
-        *a4 = v8 = 0;
+        *payload = v8 = 0;
       }
 
       else
@@ -1288,14 +1288,14 @@ uint64_t __100__PEPasteablePreset_applyToCompositionController_asset_editSource_
     }
 
     v13 = MEMORY[0x277CD97A8];
-    v22[0] = v10;
+    v22[0] = sourceAssetUUID;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
-    v15 = [v13 fetchAssetsWithLocalIdentifiers:v14 options:v11];
+    v15 = [v13 fetchAssetsWithLocalIdentifiers:v14 options:librarySpecificFetchOptions];
 
-    v16 = [v15 firstObject];
-    if (v16)
+    firstObject = [v15 firstObject];
+    if (firstObject)
     {
-      if ([PESmartPasteablePreset isAssetTypeEligibleForSmartPaste:v16])
+      if ([PESmartPasteablePreset isAssetTypeEligibleForSmartPaste:firstObject])
       {
         v8 = 1;
 LABEL_31:
@@ -1311,7 +1311,7 @@ LABEL_32:
         _os_log_impl(&dword_25E6E9000, v19, OS_LOG_TYPE_DEFAULT, "PEPasteablePreset isEligibleForSmartPaste=NO: Source asset is a video.", v21, 2u);
       }
 
-      if (a4)
+      if (payload)
       {
         v18 = 4;
         goto LABEL_29;
@@ -1327,12 +1327,12 @@ LABEL_32:
         _os_log_impl(&dword_25E6E9000, v17, OS_LOG_TYPE_DEFAULT, "PEPasteablePreset isEligibleForSmartPaste=NO: Couldn't fetch the source asset.", v21, 2u);
       }
 
-      if (a4)
+      if (payload)
       {
         v18 = 3;
 LABEL_29:
         [PESCAPReviewPayload legacyPayloadWithReason:v18];
-        *a4 = v8 = 0;
+        *payload = v8 = 0;
         goto LABEL_31;
       }
     }
@@ -1348,7 +1348,7 @@ LABEL_29:
     _os_log_impl(&dword_25E6E9000, v7, OS_LOG_TYPE_DEFAULT, "PEPasteablePreset isEligibleForSmartPaste=NO: AutoEnhance is applied to the source asset.", v21, 2u);
   }
 
-  if (!a4)
+  if (!payload)
   {
 LABEL_10:
     v8 = 0;
@@ -1356,28 +1356,28 @@ LABEL_10:
   }
 
   [PESCAPReviewPayload legacyPayloadWithReason:2];
-  *a4 = v8 = 0;
+  *payload = v8 = 0;
 LABEL_33:
 
   return v8;
 }
 
-- (BOOL)isEligibleForAsyncProcessingOnAsset:(id)a3
+- (BOOL)isEligibleForAsyncProcessingOnAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [(PEPasteablePreset *)self resourceManager];
-  v6 = [v5 compositionControllerWithoutSource:v4 originalComposition:0 editorBundleID:0];
+  assetCopy = asset;
+  resourceManager = [(PEPasteablePreset *)self resourceManager];
+  v6 = [resourceManager compositionControllerWithoutSource:assetCopy originalComposition:0 editorBundleID:0];
 
-  v7 = [(PEAdjustmentPreset *)self composition];
-  v8 = [v6 composition];
-  v9 = [v4 pixelWidth];
-  if (([v4 pixelHeight] * v9) / 1000000.0 > 20.0)
+  composition = [(PEAdjustmentPreset *)self composition];
+  composition2 = [v6 composition];
+  pixelWidth = [assetCopy pixelWidth];
+  if (([assetCopy pixelHeight] * pixelWidth) / 1000000.0 > 20.0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v4;
-      if (-[NSObject isPhoto](v10, "isPhoto") && (-[NSObject mediaSubtypes](v10, "mediaSubtypes") & 0x10) != 0 && (v7 && ([MEMORY[0x277D3A938] compositionHasAnyStageEffect:v7] & 1) != 0 || v8 && objc_msgSend(MEMORY[0x277D3A938], "compositionHasAnyStageEffect:", v8)))
+      v10 = assetCopy;
+      if (-[NSObject isPhoto](v10, "isPhoto") && (-[NSObject mediaSubtypes](v10, "mediaSubtypes") & 0x10) != 0 && (composition && ([MEMORY[0x277D3A938] compositionHasAnyStageEffect:composition] & 1) != 0 || composition2 && objc_msgSend(MEMORY[0x277D3A938], "compositionHasAnyStageEffect:", composition2)))
       {
         v11 = PLPhotoEditGetLog();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1397,9 +1397,9 @@ LABEL_27:
 
   if (v6)
   {
-    v14 = [v6 inpaintAdjustmentController];
+    inpaintAdjustmentController = [v6 inpaintAdjustmentController];
 
-    if (v14)
+    if (inpaintAdjustmentController)
     {
       v10 = PLPhotoEditGetLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1418,30 +1418,30 @@ LABEL_21:
     }
   }
 
-  if (v7)
+  if (composition)
   {
-    v10 = [objc_alloc(MEMORY[0x277D3A870]) initWithComposition:v7];
-    v19 = [v10 semanticStyleAdjustmentController];
-    if (v19)
+    v10 = [objc_alloc(MEMORY[0x277D3A870]) initWithComposition:composition];
+    semanticStyleAdjustmentController = [v10 semanticStyleAdjustmentController];
+    if (semanticStyleAdjustmentController)
     {
     }
 
     else
     {
-      v20 = [v6 semanticStyleAdjustmentController];
+      semanticStyleAdjustmentController2 = [v6 semanticStyleAdjustmentController];
 
-      if (!v20)
+      if (!semanticStyleAdjustmentController2)
       {
         goto LABEL_35;
       }
     }
 
-    if ([PESupport assetCanRenderStyles:v4])
+    if ([PESupport assetCanRenderStyles:assetCopy])
     {
       v21 = +[PEGlobalSettings sharedSettings];
-      v22 = [v21 synchronousStylesCopyPaste];
+      synchronousStylesCopyPaste = [v21 synchronousStylesCopyPaste];
 
-      if (v22)
+      if (synchronousStylesCopyPaste)
       {
         v11 = PLPhotoEditGetLog();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1460,9 +1460,9 @@ LABEL_28:
       v24 = +[PEGlobalSettings sharedSettings];
       if ([v24 synchronousLivePhotoStylesCopyPaste])
       {
-        v25 = [v4 isLivePhoto];
+        isLivePhoto = [assetCopy isLivePhoto];
 
-        if (v25)
+        if (isLivePhoto)
         {
           v11 = PLPhotoEditGetLog();
           if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1507,8 +1507,8 @@ LABEL_36:
 
 - (id)sourceAssetUUID
 {
-  v2 = [(PEAdjustmentPreset *)self serializedDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"PEAdjustmentPresetSourceAssetUUIDKey"];
+  serializedDictionary = [(PEAdjustmentPreset *)self serializedDictionary];
+  v3 = [serializedDictionary objectForKeyedSubscript:@"PEAdjustmentPresetSourceAssetUUIDKey"];
 
   return v3;
 }
@@ -1528,18 +1528,18 @@ LABEL_36:
   return resourceManager;
 }
 
-- (PEPasteablePreset)initWithCompositionController:(id)a3 asset:(id)a4 isSmart:(BOOL)a5
+- (PEPasteablePreset)initWithCompositionController:(id)controller asset:(id)asset isSmart:(BOOL)smart
 {
-  v5 = a5;
+  smartCopy = smart;
   v16[1] = *MEMORY[0x277D85DE8];
   v15 = @"PEAdjustmentPresetSmartKey";
   v8 = MEMORY[0x277CCABB0];
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 numberWithBool:v5];
+  assetCopy = asset;
+  controllerCopy = controller;
+  v11 = [v8 numberWithBool:smartCopy];
   v16[0] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-  v13 = [(PEAdjustmentPreset *)self initWithCompositionController:v10 asset:v9 additionalSerializationEntries:v12 includeSidecar:0];
+  v13 = [(PEAdjustmentPreset *)self initWithCompositionController:controllerCopy asset:assetCopy additionalSerializationEntries:v12 includeSidecar:0];
 
   return v13;
 }

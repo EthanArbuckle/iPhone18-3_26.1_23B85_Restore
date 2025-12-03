@@ -1,39 +1,39 @@
 @interface CKTranscriptCollectionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityElementsHidden;
-- (BOOL)accessibilityScroll:(int64_t)a3;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (BOOL)accessibilityViewIsModal;
 - (BOOL)isAccessibilityOpaqueElementProvider;
 - (id)_accessibilityElementToFocusForAppearanceScreenChange;
 - (id)accessibilityLabel;
 - (void)_accessibilityEnsureViewsAroundAreLoaded;
-- (void)_accessibilityScrollOpaqueElementIntoView:(int64_t)a3 previousScroller:(id)a4;
+- (void)_accessibilityScrollOpaqueElementIntoView:(int64_t)view previousScroller:(id)scroller;
 @end
 
 @implementation CKTranscriptCollectionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKTranscriptCollectionView" isKindOfClass:@"UICollectionView"];
-  [v3 validateClass:@"UICollectionView" hasProperty:@"delegate" withType:"@"];
-  [v3 validateClass:@"CKTranscriptCollectionViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKCoreChatController" hasInstanceMethod:@"fullScreenBalloonViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKFullScreenBalloonViewController" hasInstanceMethod:@"displayConfiguration" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKFullScreenBalloonViewDisplayConfiguration" hasInstanceMethod:@"type" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CKChatController" isKindOfClass:@"CKCoreChatController"];
-  [v3 validateClass:@"CKChatController" hasInstanceMethod:@"entryView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKSocialLayerChatController"];
-  [v3 validateClass:@"CKFullScreenBalloonViewControllerPhone" isKindOfClass:@"CKFullScreenBalloonViewController"];
-  [v3 validateClass:@"CKTranscriptMessageCell"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKTranscriptCollectionView" isKindOfClass:@"UICollectionView"];
+  [validationsCopy validateClass:@"UICollectionView" hasProperty:@"delegate" withType:"@"];
+  [validationsCopy validateClass:@"CKTranscriptCollectionViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKCoreChatController" hasInstanceMethod:@"fullScreenBalloonViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKFullScreenBalloonViewController" hasInstanceMethod:@"displayConfiguration" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKFullScreenBalloonViewDisplayConfiguration" hasInstanceMethod:@"type" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CKChatController" isKindOfClass:@"CKCoreChatController"];
+  [validationsCopy validateClass:@"CKChatController" hasInstanceMethod:@"entryView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKSocialLayerChatController"];
+  [validationsCopy validateClass:@"CKFullScreenBalloonViewControllerPhone" isKindOfClass:@"CKFullScreenBalloonViewController"];
+  [validationsCopy validateClass:@"CKTranscriptMessageCell"];
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(CKTranscriptCollectionViewAccessibility *)self accessibilityUserDefinedLabel];
-  if ([v2 length])
+  accessibilityUserDefinedLabel = [(CKTranscriptCollectionViewAccessibility *)self accessibilityUserDefinedLabel];
+  if ([accessibilityUserDefinedLabel length])
   {
-    v3 = v2;
+    v3 = accessibilityUserDefinedLabel;
   }
 
   else
@@ -56,15 +56,15 @@
 
 - (BOOL)accessibilityElementsHidden
 {
-  v3 = [(CKTranscriptCollectionViewAccessibility *)self storedAccessibilityElementsHidden];
+  storedAccessibilityElementsHidden = [(CKTranscriptCollectionViewAccessibility *)self storedAccessibilityElementsHidden];
 
-  if (v3)
+  if (storedAccessibilityElementsHidden)
   {
-    v4 = [(CKTranscriptCollectionViewAccessibility *)self storedAccessibilityElementsHidden];
-    v5 = [v4 BOOLValue];
+    storedAccessibilityElementsHidden2 = [(CKTranscriptCollectionViewAccessibility *)self storedAccessibilityElementsHidden];
+    bOOLValue = [storedAccessibilityElementsHidden2 BOOLValue];
 LABEL_6:
 
-    return v5;
+    return bOOLValue;
   }
 
   v6 = [(CKTranscriptCollectionViewAccessibility *)self safeValueForKey:@"delegate"];
@@ -74,10 +74,10 @@ LABEL_6:
 
   if ((isKindOfClass & 1) == 0)
   {
-    v4 = [(CKTranscriptCollectionViewAccessibility *)self safeValueForKey:@"delegate"];
-    v9 = [v4 safeValueForKey:@"delegate"];
+    storedAccessibilityElementsHidden2 = [(CKTranscriptCollectionViewAccessibility *)self safeValueForKey:@"delegate"];
+    v9 = [storedAccessibilityElementsHidden2 safeValueForKey:@"delegate"];
     v10 = [v9 safeValueForKey:@"entryView"];
-    v5 = [v10 accessibilityViewIsModal];
+    bOOLValue = [v10 accessibilityViewIsModal];
 
     goto LABEL_6;
   }
@@ -97,13 +97,13 @@ LABEL_6:
   return [(CKTranscriptCollectionViewAccessibility *)&v4 isAccessibilityOpaqueElementProvider];
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
   v8.receiver = self;
   v8.super_class = CKTranscriptCollectionViewAccessibility;
   v5 = [(CKTranscriptCollectionViewAccessibility *)&v8 accessibilityScroll:?];
-  v6 = [(CKTranscriptCollectionViewAccessibility *)self _accessibilityPageIndex];
-  if (a3 == 3 && v6 <= 1)
+  _accessibilityPageIndex = [(CKTranscriptCollectionViewAccessibility *)self _accessibilityPageIndex];
+  if (scroll == 3 && _accessibilityPageIndex <= 1)
   {
     [(CKTranscriptCollectionViewAccessibility *)self _accessibilityEnsureViewsAroundAreLoaded];
   }
@@ -115,7 +115,7 @@ LABEL_6:
 {
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 delegate];
+  delegate = [v3 delegate];
   v7 = 0;
   objc_opt_class();
   v5 = __UIAccessibilityCastAsSafeCategory();
@@ -126,15 +126,15 @@ LABEL_6:
   [(CKTranscriptCollectionViewAccessibility *)&v6 _accessibilityEnsureViewsAroundAreLoaded];
 }
 
-- (void)_accessibilityScrollOpaqueElementIntoView:(int64_t)a3 previousScroller:(id)a4
+- (void)_accessibilityScrollOpaqueElementIntoView:(int64_t)view previousScroller:(id)scroller
 {
-  if (a3 != 1)
+  if (view != 1)
   {
     v7 = v4;
     v8 = v5;
     v6.receiver = self;
     v6.super_class = CKTranscriptCollectionViewAccessibility;
-    [(CKTranscriptCollectionViewAccessibility *)&v6 _accessibilityScrollOpaqueElementIntoView:a3 previousScroller:a4];
+    [(CKTranscriptCollectionViewAccessibility *)&v6 _accessibilityScrollOpaqueElementIntoView:view previousScroller:scroller];
   }
 }
 
@@ -167,7 +167,7 @@ LABEL_6:
   if (v7 < 2)
   {
 LABEL_5:
-    v11 = 0;
+    _accessibilityElementToFocusForAppearanceScreenChange = 0;
   }
 
   else
@@ -188,13 +188,13 @@ LABEL_5:
       }
     }
 
-    v11 = [v10 _accessibilityElementToFocusForAppearanceScreenChange];
+    _accessibilityElementToFocusForAppearanceScreenChange = [v10 _accessibilityElementToFocusForAppearanceScreenChange];
   }
 
   _Block_object_dispose(&v21, 8);
   _Block_object_dispose(v25, 8);
 
-  return v11;
+  return _accessibilityElementToFocusForAppearanceScreenChange;
 }
 
 uint64_t __96__CKTranscriptCollectionViewAccessibility__accessibilityElementToFocusForAppearanceScreenChange__block_invoke(uint64_t a1)

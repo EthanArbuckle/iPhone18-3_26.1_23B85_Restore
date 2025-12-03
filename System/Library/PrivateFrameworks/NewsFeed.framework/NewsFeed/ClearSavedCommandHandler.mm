@@ -1,7 +1,7 @@
 @interface ClearSavedCommandHandler
 - (_TtC8NewsFeed24ClearSavedCommandHandler)init;
 - (void)dealloc;
-- (void)readingList:(id)a3 didAddArticles:(id)a4 removeArticles:(id)a5 eventInitiationLevel:(int64_t)a6;
+- (void)readingList:(id)list didAddArticles:(id)articles removeArticles:(id)removeArticles eventInitiationLevel:(int64_t)level;
 @end
 
 @implementation ClearSavedCommandHandler
@@ -10,9 +10,9 @@
 {
   ObjectType = swift_getObjectType();
   v4 = *(&self->super.isa + OBJC_IVAR____TtC8NewsFeed24ClearSavedCommandHandler_readingList);
-  v5 = self;
+  selfCopy = self;
   [v4 removeObserver_];
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = ObjectType;
   [(ClearSavedCommandHandler *)&v6 dealloc];
 }
@@ -24,13 +24,13 @@
   return result;
 }
 
-- (void)readingList:(id)a3 didAddArticles:(id)a4 removeArticles:(id)a5 eventInitiationLevel:(int64_t)a6
+- (void)readingList:(id)list didAddArticles:(id)articles removeArticles:(id)removeArticles eventInitiationLevel:(int64_t)level
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
     swift_getObjectType();
     v7 = qword_1EDF3AE18;
-    v8 = self;
+    selfCopy = self;
     if (v7 != -1)
     {
       swift_once();

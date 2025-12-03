@@ -1,34 +1,34 @@
 @interface SLDServiceProxy
-+ (id)proxyForServiceClass:(Class)a3 targetSerialQueue:(id)a4 delegate:(id)a5;
++ (id)proxyForServiceClass:(Class)class targetSerialQueue:(id)queue delegate:(id)delegate;
 - (BOOL)connectionActive;
 - (BOOL)shouldAutoReconnect;
 - (BOOL)waitingForConnection;
 - (NSXPCConnection)conn;
 - (SLDActiveCallService)activeCallService;
 - (SLDCollaborationAttributionViewService)collaborationAttributionViewService;
-- (SLDServiceProxy)initWithServiceClass:(Class)a3 targetSerialQueue:(id)a4 delegate:(id)a5;
+- (SLDServiceProxy)initWithServiceClass:(Class)class targetSerialQueue:(id)queue delegate:(id)delegate;
 - (SLDServiceProxyDelegate)delegate;
 - (id)remoteService;
 - (id)synchronousRemoteService;
-- (id)synchronousRemoteServiceWithErrorHandler:(id)a3;
+- (id)synchronousRemoteServiceWithErrorHandler:(id)handler;
 - (int)remoteProcessID;
 - (unint64_t)connectionRetryCount;
-- (void)_atomicConfigureWithNewConnection:(id)a3;
+- (void)_atomicConfigureWithNewConnection:(id)connection;
 - (void)_connectionInvalidated;
 - (void)_establishNewConnection;
 - (void)_invalidateAndDestroyConnection;
 - (void)_notifyDelegateProxyDidConnect;
 - (void)_notifyDelegateProxyDidDisconnect;
-- (void)_receivedServiceConnection:(id)a3;
+- (void)_receivedServiceConnection:(id)connection;
 - (void)connect;
 - (void)dealloc;
 - (void)disconnect;
-- (void)setConn:(id)a3;
-- (void)setConnectionActive:(BOOL)a3;
-- (void)setConnectionRetryCount:(unint64_t)a3;
-- (void)setDelegate:(id)a3;
-- (void)setShouldAutoReconnect:(BOOL)a3;
-- (void)setWaitingForConnection:(BOOL)a3;
+- (void)setConn:(id)conn;
+- (void)setConnectionActive:(BOOL)active;
+- (void)setConnectionRetryCount:(unint64_t)count;
+- (void)setDelegate:(id)delegate;
+- (void)setShouldAutoReconnect:(BOOL)reconnect;
+- (void)setWaitingForConnection:(BOOL)connection;
 @end
 
 @implementation SLDServiceProxy
@@ -43,34 +43,34 @@
 
 - (BOOL)connectionActive
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(SLDServiceProxy *)self propertyConcurrentQueue];
+  propertyConcurrentQueue = [(SLDServiceProxy *)self propertyConcurrentQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __35__SLDServiceProxy_connectionActive__block_invoke;
   v5[3] = &unk_278925D18;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(propertyConcurrentQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (void)_establishNewConnection
 {
-  v3 = [(SLDServiceProxy *)self clientQueue];
+  clientQueue = [(SLDServiceProxy *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__SLDServiceProxy__establishNewConnection__block_invoke;
   block[3] = &unk_278925D90;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(clientQueue, block);
 }
 
 void __42__SLDServiceProxy__establishNewConnection__block_invoke(uint64_t a1)
@@ -157,38 +157,38 @@ LABEL_6:
 
 - (BOOL)waitingForConnection
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(SLDServiceProxy *)self propertyConcurrentQueue];
+  propertyConcurrentQueue = [(SLDServiceProxy *)self propertyConcurrentQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __39__SLDServiceProxy_waitingForConnection__block_invoke;
   v5[3] = &unk_278925D18;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(propertyConcurrentQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (id)synchronousRemoteService
 {
-  v3 = [(SLDServiceProxy *)self conn];
+  conn = [(SLDServiceProxy *)self conn];
 
-  if (v3)
+  if (conn)
   {
-    v4 = [(SLDServiceProxy *)self conn];
+    conn2 = [(SLDServiceProxy *)self conn];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __43__SLDServiceProxy_synchronousRemoteService__block_invoke;
     v8[3] = &unk_278925CC8;
     v8[4] = self;
-    v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v8];
+    v5 = [conn2 synchronousRemoteObjectProxyWithErrorHandler:v8];
   }
 
   else
@@ -213,14 +213,14 @@ LABEL_6:
   v10 = __Block_byref_object_copy__0;
   v11 = __Block_byref_object_dispose__0;
   v12 = 0;
-  v3 = [(SLDServiceProxy *)self propertyConcurrentQueue];
+  propertyConcurrentQueue = [(SLDServiceProxy *)self propertyConcurrentQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __23__SLDServiceProxy_conn__block_invoke;
   v6[3] = &unk_278925D18;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(propertyConcurrentQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -230,13 +230,13 @@ LABEL_6:
 
 - (void)_notifyDelegateProxyDidConnect
 {
-  v3 = [(SLDServiceProxy *)self clientQueue];
+  clientQueue = [(SLDServiceProxy *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__SLDServiceProxy__notifyDelegateProxyDidConnect__block_invoke;
   block[3] = &unk_278925D90;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(clientQueue, block);
 }
 
 void __49__SLDServiceProxy__notifyDelegateProxyDidConnect__block_invoke(uint64_t a1)
@@ -253,14 +253,14 @@ void __49__SLDServiceProxy__notifyDelegateProxyDidConnect__block_invoke(uint64_t
   v10 = __Block_byref_object_copy__0;
   v11 = __Block_byref_object_dispose__0;
   v12 = 0;
-  v3 = [(SLDServiceProxy *)self propertyConcurrentQueue];
+  propertyConcurrentQueue = [(SLDServiceProxy *)self propertyConcurrentQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __27__SLDServiceProxy_delegate__block_invoke;
   v6[3] = &unk_278925D18;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(propertyConcurrentQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -278,30 +278,30 @@ uint64_t __27__SLDServiceProxy_delegate__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)proxyForServiceClass:(Class)a3 targetSerialQueue:(id)a4 delegate:(id)a5
++ (id)proxyForServiceClass:(Class)class targetSerialQueue:(id)queue delegate:(id)delegate
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [[SLDServiceProxy alloc] initWithServiceClass:a3 targetSerialQueue:v8 delegate:v7];
+  delegateCopy = delegate;
+  queueCopy = queue;
+  v9 = [[SLDServiceProxy alloc] initWithServiceClass:class targetSerialQueue:queueCopy delegate:delegateCopy];
 
   return v9;
 }
 
-- (SLDServiceProxy)initWithServiceClass:(Class)a3 targetSerialQueue:(id)a4 delegate:(id)a5
+- (SLDServiceProxy)initWithServiceClass:(Class)class targetSerialQueue:(id)queue delegate:(id)delegate
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = SLDServiceProxy;
   v10 = [(SLDServiceProxy *)&v22 init];
   v11 = v10;
   if (v10)
   {
-    v10->_serviceClass = a3;
-    if (v8)
+    v10->_serviceClass = class;
+    if (queueCopy)
     {
-      v12 = v8;
+      v12 = queueCopy;
       clientQueue = v11->_clientQueue;
       v11->_clientQueue = v12;
     }
@@ -314,7 +314,7 @@ uint64_t __27__SLDServiceProxy_delegate__block_invoke(uint64_t a1)
       v11->_clientQueue = v14;
     }
 
-    objc_storeWeak(&v11->_delegate, v9);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
     v16 = dispatch_queue_attr_make_with_autorelease_frequency(MEMORY[0x277D85CD8], DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v17 = dispatch_queue_create("com.apple.SocialLayer.SLDServiceCenter.Properties", v16);
     propertyConcurrentQueue = v11->_propertyConcurrentQueue;
@@ -327,9 +327,9 @@ uint64_t __27__SLDServiceProxy_delegate__block_invoke(uint64_t a1)
       *buf = 138412802;
       v24 = v11;
       v25 = 2112;
-      v26 = a3;
+      classCopy = class;
       v27 = 2112;
-      v28 = v9;
+      v28 = delegateCopy;
       _os_log_debug_impl(&dword_231772000, v19, OS_LOG_TYPE_DEBUG, "[%@] Initialized SLDServiceProxy with serviceClass: %@, delegate:%@", buf, 0x20u);
     }
   }
@@ -346,15 +346,15 @@ uint64_t __27__SLDServiceProxy_delegate__block_invoke(uint64_t a1)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)synchronousRemoteServiceWithErrorHandler:(id)a3
+- (id)synchronousRemoteServiceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SLDServiceProxy *)self conn];
+  handlerCopy = handler;
+  conn = [(SLDServiceProxy *)self conn];
 
-  if (v5)
+  if (conn)
   {
-    v6 = [(SLDServiceProxy *)self conn];
-    v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v4];
+    conn2 = [(SLDServiceProxy *)self conn];
+    v7 = [conn2 synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   else
@@ -383,17 +383,17 @@ void __43__SLDServiceProxy_synchronousRemoteService__block_invoke(uint64_t a1, v
 
 - (id)remoteService
 {
-  v3 = [(SLDServiceProxy *)self conn];
+  conn = [(SLDServiceProxy *)self conn];
 
-  if (v3)
+  if (conn)
   {
-    v4 = [(SLDServiceProxy *)self conn];
+    conn2 = [(SLDServiceProxy *)self conn];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __32__SLDServiceProxy_remoteService__block_invoke;
     v8[3] = &unk_278925CC8;
     v8[4] = self;
-    v5 = [v4 remoteObjectProxyWithErrorHandler:v8];
+    v5 = [conn2 remoteObjectProxyWithErrorHandler:v8];
   }
 
   else
@@ -427,31 +427,31 @@ void __32__SLDServiceProxy_remoteService__block_invoke(uint64_t a1, void *a2)
     return 0;
   }
 
-  v3 = [(SLDServiceProxy *)self conn];
+  conn = [(SLDServiceProxy *)self conn];
 
-  if (!v3)
+  if (!conn)
   {
     return 0;
   }
 
-  v4 = [(SLDServiceProxy *)self conn];
-  v5 = [v4 processIdentifier];
+  conn2 = [(SLDServiceProxy *)self conn];
+  processIdentifier = [conn2 processIdentifier];
 
-  return v5;
+  return processIdentifier;
 }
 
-- (void)_atomicConfigureWithNewConnection:(id)a3
+- (void)_atomicConfigureWithNewConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(SLDServiceProxy *)self propertyConcurrentQueue];
+  connectionCopy = connection;
+  propertyConcurrentQueue = [(SLDServiceProxy *)self propertyConcurrentQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__SLDServiceProxy__atomicConfigureWithNewConnection___block_invoke;
   v7[3] = &unk_278925CF0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_barrier_async(v5, v7);
+  v8 = connectionCopy;
+  v6 = connectionCopy;
+  dispatch_barrier_async(propertyConcurrentQueue, v7);
 }
 
 void __53__SLDServiceProxy__atomicConfigureWithNewConnection___block_invoke(uint64_t a1)
@@ -462,30 +462,30 @@ void __53__SLDServiceProxy__atomicConfigureWithNewConnection___block_invoke(uint
   *(*(a1 + 32) + 9) = 0;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(SLDServiceProxy *)self propertyConcurrentQueue];
+  delegateCopy = delegate;
+  propertyConcurrentQueue = [(SLDServiceProxy *)self propertyConcurrentQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __31__SLDServiceProxy_setDelegate___block_invoke;
   v7[3] = &unk_278925CF0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_barrier_async(v5, v7);
+  v8 = delegateCopy;
+  v6 = delegateCopy;
+  dispatch_barrier_async(propertyConcurrentQueue, v7);
 }
 
-- (void)setConnectionActive:(BOOL)a3
+- (void)setConnectionActive:(BOOL)active
 {
-  v5 = [(SLDServiceProxy *)self propertyConcurrentQueue];
+  propertyConcurrentQueue = [(SLDServiceProxy *)self propertyConcurrentQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __39__SLDServiceProxy_setConnectionActive___block_invoke;
   v6[3] = &unk_278925D40;
   v6[4] = self;
-  v7 = a3;
-  dispatch_barrier_async(v5, v6);
+  activeCopy = active;
+  dispatch_barrier_async(propertyConcurrentQueue, v6);
 }
 
 - (unint64_t)connectionRetryCount
@@ -494,30 +494,30 @@ void __53__SLDServiceProxy__atomicConfigureWithNewConnection___block_invoke(uint
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(SLDServiceProxy *)self propertyConcurrentQueue];
+  propertyConcurrentQueue = [(SLDServiceProxy *)self propertyConcurrentQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __39__SLDServiceProxy_connectionRetryCount__block_invoke;
   v6[3] = &unk_278925D18;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(propertyConcurrentQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
   return v4;
 }
 
-- (void)setConnectionRetryCount:(unint64_t)a3
+- (void)setConnectionRetryCount:(unint64_t)count
 {
-  v5 = [(SLDServiceProxy *)self propertyConcurrentQueue];
+  propertyConcurrentQueue = [(SLDServiceProxy *)self propertyConcurrentQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __43__SLDServiceProxy_setConnectionRetryCount___block_invoke;
   v6[3] = &unk_278925D68;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_barrier_async(v5, v6);
+  v6[5] = count;
+  dispatch_barrier_async(propertyConcurrentQueue, v6);
 }
 
 void __43__SLDServiceProxy_setConnectionRetryCount___block_invoke(uint64_t a1)
@@ -542,74 +542,74 @@ void __43__SLDServiceProxy_setConnectionRetryCount___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setConn:(id)a3
+- (void)setConn:(id)conn
 {
-  v4 = a3;
-  v5 = [(SLDServiceProxy *)self propertyConcurrentQueue];
+  connCopy = conn;
+  propertyConcurrentQueue = [(SLDServiceProxy *)self propertyConcurrentQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __27__SLDServiceProxy_setConn___block_invoke;
   v7[3] = &unk_278925CF0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_barrier_async(v5, v7);
+  v8 = connCopy;
+  v6 = connCopy;
+  dispatch_barrier_async(propertyConcurrentQueue, v7);
 }
 
-- (void)setWaitingForConnection:(BOOL)a3
+- (void)setWaitingForConnection:(BOOL)connection
 {
-  v5 = [(SLDServiceProxy *)self propertyConcurrentQueue];
+  propertyConcurrentQueue = [(SLDServiceProxy *)self propertyConcurrentQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __43__SLDServiceProxy_setWaitingForConnection___block_invoke;
   v6[3] = &unk_278925D40;
   v6[4] = self;
-  v7 = a3;
-  dispatch_barrier_async(v5, v6);
+  connectionCopy = connection;
+  dispatch_barrier_async(propertyConcurrentQueue, v6);
 }
 
 - (BOOL)shouldAutoReconnect
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(SLDServiceProxy *)self propertyConcurrentQueue];
+  propertyConcurrentQueue = [(SLDServiceProxy *)self propertyConcurrentQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __38__SLDServiceProxy_shouldAutoReconnect__block_invoke;
   v5[3] = &unk_278925D18;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(propertyConcurrentQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)setShouldAutoReconnect:(BOOL)a3
+- (void)setShouldAutoReconnect:(BOOL)reconnect
 {
-  v5 = [(SLDServiceProxy *)self propertyConcurrentQueue];
+  propertyConcurrentQueue = [(SLDServiceProxy *)self propertyConcurrentQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__SLDServiceProxy_setShouldAutoReconnect___block_invoke;
   v6[3] = &unk_278925D40;
   v6[4] = self;
-  v7 = a3;
-  dispatch_barrier_async(v5, v6);
+  reconnectCopy = reconnect;
+  dispatch_barrier_async(propertyConcurrentQueue, v6);
 }
 
 - (void)_notifyDelegateProxyDidDisconnect
 {
-  v3 = [(SLDServiceProxy *)self clientQueue];
+  clientQueue = [(SLDServiceProxy *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__SLDServiceProxy__notifyDelegateProxyDidDisconnect__block_invoke;
   block[3] = &unk_278925D90;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(clientQueue, block);
 }
 
 void __52__SLDServiceProxy__notifyDelegateProxyDidDisconnect__block_invoke(uint64_t a1)
@@ -618,11 +618,11 @@ void __52__SLDServiceProxy__notifyDelegateProxyDidDisconnect__block_invoke(uint6
   [v2 serviceProxyDidDisconnect:*(a1 + 32)];
 }
 
-- (void)_receivedServiceConnection:(id)a3
+- (void)_receivedServiceConnection:(id)connection
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  connectionCopy = connection;
+  if (connectionCopy)
   {
     v5 = SLDaemonLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -630,18 +630,18 @@ void __52__SLDServiceProxy__notifyDelegateProxyDidDisconnect__block_invoke(uint6
       [SLDServiceProxy _receivedServiceConnection:?];
     }
 
-    [(SLDServiceProxy *)self _atomicConfigureWithNewConnection:v4];
+    [(SLDServiceProxy *)self _atomicConfigureWithNewConnection:connectionCopy];
     objc_initWeak(&location, self);
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __46__SLDServiceProxy__receivedServiceConnection___block_invoke;
     v15 = &unk_278925C50;
     objc_copyWeak(&v16, &location);
-    [v4 setInvalidationHandler:&v12];
-    [v4 resume];
-    v6 = [(SLDServiceProxy *)self synchronousRemoteService];
-    v7 = [(objc_class *)[(SLDServiceProxy *)self serviceClass] remoteObjectProtocol];
-    v8 = [v6 conformsToProtocol:v7];
+    [connectionCopy setInvalidationHandler:&v12];
+    [connectionCopy resume];
+    synchronousRemoteService = [(SLDServiceProxy *)self synchronousRemoteService];
+    remoteObjectProtocol = [(objc_class *)[(SLDServiceProxy *)self serviceClass] remoteObjectProtocol];
+    v8 = [synchronousRemoteService conformsToProtocol:remoteObjectProtocol];
 
     if (v8)
     {
@@ -653,13 +653,13 @@ void __52__SLDServiceProxy__notifyDelegateProxyDidDisconnect__block_invoke(uint6
       v9 = SLDaemonLogHandle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v11 = [(objc_class *)[(SLDServiceProxy *)self serviceClass] remoteObjectProtocol];
+        remoteObjectProtocol2 = [(objc_class *)[(SLDServiceProxy *)self serviceClass] remoteObjectProtocol];
         *buf = 138412802;
-        v19 = self;
+        selfCopy = self;
         v20 = 2112;
-        v21 = v4;
+        v21 = connectionCopy;
         v22 = 2112;
-        v23 = v11;
+        v23 = remoteObjectProtocol2;
         _os_log_error_impl(&dword_231772000, v9, OS_LOG_TYPE_ERROR, "[%@] The new connection (%@) either didn't yield a remote service, or it didn't conform to the expected remote object protocol:%@. Closing connection.", buf, 0x20u);
       }
 
@@ -690,7 +690,7 @@ void __46__SLDServiceProxy__receivedServiceConnection___block_invoke(uint64_t a1
 - (void)_invalidateAndDestroyConnection
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = [a1 conn];
+  conn = [self conn];
   OUTLINED_FUNCTION_0_2();
   OUTLINED_FUNCTION_1_1();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0x16u);
@@ -701,7 +701,7 @@ void __46__SLDServiceProxy__receivedServiceConnection___block_invoke(uint64_t a1
 - (void)dealloc
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = [a1 conn];
+  conn = [self conn];
   OUTLINED_FUNCTION_0_2();
   OUTLINED_FUNCTION_1_1();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0x16u);
@@ -726,10 +726,10 @@ void __26__SLDServiceProxy_dealloc__block_invoke(uint64_t a1)
 
 - (SLDActiveCallService)activeCallService
 {
-  v2 = [(SLDServiceProxy *)self synchronousRemoteService];
-  if ([v2 conformsToProtocol:&unk_2846C00E0])
+  synchronousRemoteService = [(SLDServiceProxy *)self synchronousRemoteService];
+  if ([synchronousRemoteService conformsToProtocol:&unk_2846C00E0])
   {
-    v3 = v2;
+    v3 = synchronousRemoteService;
   }
 
   else
@@ -742,10 +742,10 @@ void __26__SLDServiceProxy_dealloc__block_invoke(uint64_t a1)
 
 - (SLDCollaborationAttributionViewService)collaborationAttributionViewService
 {
-  v2 = [(SLDServiceProxy *)self synchronousRemoteService];
-  if ([v2 conformsToProtocol:&unk_2846C2F20])
+  synchronousRemoteService = [(SLDServiceProxy *)self synchronousRemoteService];
+  if ([synchronousRemoteService conformsToProtocol:&unk_2846C2F20])
   {
-    v3 = v2;
+    v3 = synchronousRemoteService;
   }
 
   else

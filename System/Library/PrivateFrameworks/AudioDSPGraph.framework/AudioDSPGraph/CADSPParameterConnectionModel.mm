@@ -1,9 +1,9 @@
 @interface CADSPParameterConnectionModel
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CADSPParameterAddress)boxParameterAddress;
 - (NSString)boxName;
 - (id).cxx_construct;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CADSPParameterConnectionModel
@@ -15,18 +15,18 @@
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && (self == v4 || AudioDSPGraph::IR::ParameterConnectionModel::operator==(&self->_this, &v4->_this));
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && (self == equalCopy || AudioDSPGraph::IR::ParameterConnectionModel::operator==(&self->_this, &equalCopy->_this));
 
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [CADSPMutableParameterConnectionModel allocWithZone:a3];
+  v4 = [CADSPMutableParameterConnectionModel allocWithZone:zone];
   v4->super._this.graphParameterID = self->_this.graphParameterID;
   std::string::operator=(&v4->super._this.boxName, &self->_this.boxName);
   v5 = *&self->_this.var0;

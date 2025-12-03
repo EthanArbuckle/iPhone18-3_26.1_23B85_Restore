@@ -1,28 +1,28 @@
 @interface SecureBackupEscrowOperation
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isStaleWithcontext:(id)a3;
-- (SecureBackupEscrowOperation)initWithCoder:(id)a3;
-- (SecureBackupEscrowOperation)initWithEvent:(id)a3 parentActivity:(id)a4 context:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isStaleWithcontext:(id)withcontext;
+- (SecureBackupEscrowOperation)initWithCoder:(id)coder;
+- (SecureBackupEscrowOperation)initWithEvent:(id)event parentActivity:(id)activity context:(id)context;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)updatedOperationWithAdditionalEvent:(id)a3 parentActivity:(id)a4 context:(id)a5;
-- (id)updatedOperationWithParentActivity:(id)a3 context:(id)a4;
-- (unint64_t)newStateWithContext:(id)a3 parentActivity:(id)a4;
-- (void)_updateWithEvent:(id)a3 parentActivity:(id)a4 context:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (id)updatedOperationWithAdditionalEvent:(id)event parentActivity:(id)activity context:(id)context;
+- (id)updatedOperationWithParentActivity:(id)activity context:(id)context;
+- (unint64_t)newStateWithContext:(id)context parentActivity:(id)activity;
+- (void)_updateWithEvent:(id)event parentActivity:(id)activity context:(id)context;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SecureBackupEscrowOperation
 
-- (SecureBackupEscrowOperation)initWithCoder:(id)a3
+- (SecureBackupEscrowOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v31.receiver = self;
   v31.super_class = SecureBackupEscrowOperation;
   v5 = [(SecureBackupEscrowOperation *)&v31 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"id"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"id"];
     if (v6)
     {
       v7 = objc_opt_self();
@@ -30,7 +30,7 @@
       id = v5->_id;
       v5->_id = v7;
 
-      v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activityLabel"];
+      v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activityLabel"];
       if (v6)
       {
         v9 = objc_opt_self();
@@ -38,45 +38,45 @@
         activityLabel = v5->_activityLabel;
         v5->_activityLabel = v9;
 
-        v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+        v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
         v6 = v11;
         if (v11)
         {
-          v12 = [(SecureBackupEscrowOperation *)v11 intValue];
+          intValue = [(SecureBackupEscrowOperation *)v11 intValue];
 
-          v5->_type = v12;
-          v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"state"];
+          v5->_type = intValue;
+          v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"state"];
           v6 = v13;
           if (v13)
           {
-            v14 = [(SecureBackupEscrowOperation *)v13 intValue];
+            intValue2 = [(SecureBackupEscrowOperation *)v13 intValue];
 
-            v5->_state = v14;
-            v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"error"];
+            v5->_state = intValue2;
+            v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error"];
             v16 = objc_opt_self();
 
             error = v5->_error;
             v5->_error = v16;
 
-            v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startTimestamp"];
+            v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startTimestamp"];
             v19 = objc_opt_self();
 
             startTimestamp = v5->_startTimestamp;
             v5->_startTimestamp = v19;
 
-            v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endTimestamp"];
+            v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endTimestamp"];
             v22 = objc_opt_self();
 
             endTimestamp = v5->_endTimestamp;
             v5->_endTimestamp = v22;
 
-            v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"finalCheckTimestamp"];
+            v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"finalCheckTimestamp"];
             v25 = objc_opt_self();
 
             finalCheckTimestamp = v5->_finalCheckTimestamp;
             v5->_finalCheckTimestamp = v25;
 
-            v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recordId"];
+            v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recordId"];
             v28 = objc_opt_self();
 
             recordId = v5->_recordId;
@@ -97,67 +97,67 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   id = self->_id;
-  v7 = a3;
-  [v7 encodeObject:id forKey:@"id"];
-  [v7 encodeObject:self->_activityLabel forKey:@"activityLabel"];
+  coderCopy = coder;
+  [coderCopy encodeObject:id forKey:@"id"];
+  [coderCopy encodeObject:self->_activityLabel forKey:@"activityLabel"];
   v5 = [NSNumber numberWithUnsignedInteger:self->_type];
-  [v7 encodeObject:v5 forKey:@"type"];
+  [coderCopy encodeObject:v5 forKey:@"type"];
 
   v6 = [NSNumber numberWithUnsignedInteger:self->_state];
-  [v7 encodeObject:v6 forKey:@"state"];
+  [coderCopy encodeObject:v6 forKey:@"state"];
 
-  [v7 encodeObject:self->_error forKey:@"error"];
-  [v7 encodeObject:self->_startTimestamp forKey:@"startTimestamp"];
-  [v7 encodeObject:self->_endTimestamp forKey:@"endTimestamp"];
-  [v7 encodeObject:self->_finalCheckTimestamp forKey:@"finalCheckTimestamp"];
-  [v7 encodeObject:self->_recordId forKey:@"recordId"];
+  [coderCopy encodeObject:self->_error forKey:@"error"];
+  [coderCopy encodeObject:self->_startTimestamp forKey:@"startTimestamp"];
+  [coderCopy encodeObject:self->_endTimestamp forKey:@"endTimestamp"];
+  [coderCopy encodeObject:self->_finalCheckTimestamp forKey:@"finalCheckTimestamp"];
+  [coderCopy encodeObject:self->_recordId forKey:@"recordId"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = [(SecureBackupEscrowOperation *)self id];
-  v7 = [v6 copyWithZone:a3];
+  v7 = [v6 copyWithZone:zone];
   [v5 setId:v7];
 
-  v8 = [(SecureBackupEscrowOperation *)self activityLabel];
-  v9 = [v8 copyWithZone:a3];
+  activityLabel = [(SecureBackupEscrowOperation *)self activityLabel];
+  v9 = [activityLabel copyWithZone:zone];
   [v5 setActivityLabel:v9];
 
   [v5 setType:{-[SecureBackupEscrowOperation type](self, "type")}];
   [v5 setState:{-[SecureBackupEscrowOperation state](self, "state")}];
-  v10 = [(SecureBackupEscrowOperation *)self error];
-  v11 = [v10 copyWithZone:a3];
+  error = [(SecureBackupEscrowOperation *)self error];
+  v11 = [error copyWithZone:zone];
   [v5 setError:v11];
 
-  v12 = [(SecureBackupEscrowOperation *)self startTimestamp];
-  v13 = [v12 copyWithZone:a3];
+  startTimestamp = [(SecureBackupEscrowOperation *)self startTimestamp];
+  v13 = [startTimestamp copyWithZone:zone];
   [v5 setStartTimestamp:v13];
 
-  v14 = [(SecureBackupEscrowOperation *)self endTimestamp];
-  v15 = [v14 copyWithZone:a3];
+  endTimestamp = [(SecureBackupEscrowOperation *)self endTimestamp];
+  v15 = [endTimestamp copyWithZone:zone];
   [v5 setEndTimestamp:v15];
 
-  v16 = [(SecureBackupEscrowOperation *)self finalCheckTimestamp];
-  v17 = [v16 copyWithZone:a3];
+  finalCheckTimestamp = [(SecureBackupEscrowOperation *)self finalCheckTimestamp];
+  v17 = [finalCheckTimestamp copyWithZone:zone];
   [v5 setFinalCheckTimestamp:v17];
 
-  v18 = [(SecureBackupEscrowOperation *)self recordId];
-  [v5 setRecordId:v18];
+  recordId = [(SecureBackupEscrowOperation *)self recordId];
+  [v5 setRecordId:recordId];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [(SecureBackupEscrowOperation *)self id];
     v7 = [v5 id];
     if ([v6 isEqual:v7])
@@ -175,103 +175,103 @@
       }
     }
 
-    v11 = [(SecureBackupEscrowOperation *)self activityLabel];
-    v12 = [v5 activityLabel];
-    if ([v11 isEqual:v12])
+    activityLabel = [(SecureBackupEscrowOperation *)self activityLabel];
+    activityLabel2 = [v5 activityLabel];
+    if ([activityLabel isEqual:activityLabel2])
     {
     }
 
     else
     {
-      v13 = [(SecureBackupEscrowOperation *)self activityLabel];
-      v14 = [v5 activityLabel];
+      activityLabel3 = [(SecureBackupEscrowOperation *)self activityLabel];
+      activityLabel4 = [v5 activityLabel];
 
-      if (v13 != v14)
+      if (activityLabel3 != activityLabel4)
       {
         goto LABEL_23;
       }
     }
 
-    v15 = [(SecureBackupEscrowOperation *)self type];
-    if (v15 != [v5 type])
+    type = [(SecureBackupEscrowOperation *)self type];
+    if (type != [v5 type])
     {
       goto LABEL_23;
     }
 
-    v16 = [(SecureBackupEscrowOperation *)self state];
-    if (v16 != [v5 state])
+    state = [(SecureBackupEscrowOperation *)self state];
+    if (state != [v5 state])
     {
       goto LABEL_23;
     }
 
-    v17 = [(SecureBackupEscrowOperation *)self error];
-    v18 = [v5 error];
-    if ([v17 isEqual:v18])
+    error = [(SecureBackupEscrowOperation *)self error];
+    error2 = [v5 error];
+    if ([error isEqual:error2])
     {
     }
 
     else
     {
-      v19 = [(SecureBackupEscrowOperation *)self error];
-      v20 = [v5 error];
+      error3 = [(SecureBackupEscrowOperation *)self error];
+      error4 = [v5 error];
 
-      if (v19 != v20)
+      if (error3 != error4)
       {
         goto LABEL_23;
       }
     }
 
-    v21 = [(SecureBackupEscrowOperation *)self startTimestamp];
-    v22 = [v5 startTimestamp];
-    if ([v21 isEqual:v22])
+    startTimestamp = [(SecureBackupEscrowOperation *)self startTimestamp];
+    startTimestamp2 = [v5 startTimestamp];
+    if ([startTimestamp isEqual:startTimestamp2])
     {
     }
 
     else
     {
-      v23 = [(SecureBackupEscrowOperation *)self startTimestamp];
-      v24 = [v5 startTimestamp];
+      startTimestamp3 = [(SecureBackupEscrowOperation *)self startTimestamp];
+      startTimestamp4 = [v5 startTimestamp];
 
-      if (v23 != v24)
+      if (startTimestamp3 != startTimestamp4)
       {
         goto LABEL_23;
       }
     }
 
-    v25 = [(SecureBackupEscrowOperation *)self endTimestamp];
-    v26 = [v5 endTimestamp];
-    if ([v25 isEqual:v26])
+    endTimestamp = [(SecureBackupEscrowOperation *)self endTimestamp];
+    endTimestamp2 = [v5 endTimestamp];
+    if ([endTimestamp isEqual:endTimestamp2])
     {
     }
 
     else
     {
-      v27 = [(SecureBackupEscrowOperation *)self endTimestamp];
-      v28 = [v5 endTimestamp];
+      endTimestamp3 = [(SecureBackupEscrowOperation *)self endTimestamp];
+      endTimestamp4 = [v5 endTimestamp];
 
-      if (v27 != v28)
+      if (endTimestamp3 != endTimestamp4)
       {
         goto LABEL_23;
       }
     }
 
-    v29 = [(SecureBackupEscrowOperation *)self finalCheckTimestamp];
-    v30 = [v5 finalCheckTimestamp];
-    if ([v29 isEqual:v30])
+    finalCheckTimestamp = [(SecureBackupEscrowOperation *)self finalCheckTimestamp];
+    finalCheckTimestamp2 = [v5 finalCheckTimestamp];
+    if ([finalCheckTimestamp isEqual:finalCheckTimestamp2])
     {
 
       goto LABEL_26;
     }
 
-    v31 = [(SecureBackupEscrowOperation *)self finalCheckTimestamp];
-    v32 = [v5 finalCheckTimestamp];
+    finalCheckTimestamp3 = [(SecureBackupEscrowOperation *)self finalCheckTimestamp];
+    finalCheckTimestamp4 = [v5 finalCheckTimestamp];
 
-    if (v31 == v32)
+    if (finalCheckTimestamp3 == finalCheckTimestamp4)
     {
 LABEL_26:
-      v34 = [(SecureBackupEscrowOperation *)self recordId];
-      v35 = [v5 recordId];
-      if ([v34 isEqual:v35])
+      recordId = [(SecureBackupEscrowOperation *)self recordId];
+      recordId2 = [v5 recordId];
+      if ([recordId isEqual:recordId2])
       {
 
         v8 = 1;
@@ -279,9 +279,9 @@ LABEL_26:
 
       else
       {
-        v36 = [(SecureBackupEscrowOperation *)self recordId];
-        v37 = [v5 recordId];
-        v8 = v36 == v37;
+        recordId3 = [(SecureBackupEscrowOperation *)self recordId];
+        recordId4 = [v5 recordId];
+        v8 = recordId3 == recordId4;
       }
 
       goto LABEL_24;
@@ -303,50 +303,50 @@ LABEL_25:
 - (id)description
 {
   v2 = [(SecureBackupEscrowOperation *)self id];
-  v3 = [v2 UUIDString];
+  uUIDString = [v2 UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (SecureBackupEscrowOperation)initWithEvent:(id)a3 parentActivity:(id)a4 context:(id)a5
+- (SecureBackupEscrowOperation)initWithEvent:(id)event parentActivity:(id)activity context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  eventCopy = event;
+  activityCopy = activity;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = SecureBackupEscrowOperation;
   v11 = [(SecureBackupEscrowOperation *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    [(SecureBackupEscrowOperation *)v11 _updateWithEvent:v8 parentActivity:v9 context:v10];
+    [(SecureBackupEscrowOperation *)v11 _updateWithEvent:eventCopy parentActivity:activityCopy context:contextCopy];
     v13 = v12;
   }
 
   return v12;
 }
 
-- (void)_updateWithEvent:(id)a3 parentActivity:(id)a4 context:(id)a5
+- (void)_updateWithEvent:(id)event parentActivity:(id)activity context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  eventCopy = event;
+  activityCopy = activity;
+  contextCopy = context;
+  if (eventCopy)
   {
     v11 = [(SecureBackupEscrowOperation *)self id];
     if (v11)
     {
       v12 = v11;
       v13 = [(SecureBackupEscrowOperation *)self id];
-      v14 = [v8 operationId];
-      v15 = [v13 isEqual:v14];
+      operationId = [eventCopy operationId];
+      v15 = [v13 isEqual:operationId];
 
       if ((v15 & 1) == 0)
       {
-        v20 = CloudServicesLog();
-        if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+        currentTime = CloudServicesLog();
+        if (os_log_type_enabled(currentTime, OS_LOG_TYPE_ERROR))
         {
-          sub_10004D60C(self, v8, v20);
+          sub_10004D60C(self, eventCopy, currentTime);
         }
 
 LABEL_25:
@@ -355,30 +355,30 @@ LABEL_25:
       }
     }
 
-    v16 = [v8 operationId];
-    [(SecureBackupEscrowOperation *)self setId:v16];
+    operationId2 = [eventCopy operationId];
+    [(SecureBackupEscrowOperation *)self setId:operationId2];
 
-    v17 = [v8 activityLabel];
-    [(SecureBackupEscrowOperation *)self setActivityLabel:v17];
+    activityLabel = [eventCopy activityLabel];
+    [(SecureBackupEscrowOperation *)self setActivityLabel:activityLabel];
 
-    -[SecureBackupEscrowOperation setType:](self, "setType:", [v8 type]);
-    v18 = [(SecureBackupEscrowOperation *)self recordId];
-    if (v18)
+    -[SecureBackupEscrowOperation setType:](self, "setType:", [eventCopy type]);
+    recordId = [(SecureBackupEscrowOperation *)self recordId];
+    if (recordId)
     {
-      [(SecureBackupEscrowOperation *)self setRecordId:v18];
+      [(SecureBackupEscrowOperation *)self setRecordId:recordId];
     }
 
     else
     {
-      v21 = [v8 recordId];
-      [(SecureBackupEscrowOperation *)self setRecordId:v21];
+      recordId2 = [eventCopy recordId];
+      [(SecureBackupEscrowOperation *)self setRecordId:recordId2];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v22 = [v8 timestamp];
-      [(SecureBackupEscrowOperation *)self setStartTimestamp:v22];
+      timestamp = [eventCopy timestamp];
+      [(SecureBackupEscrowOperation *)self setStartTimestamp:timestamp];
     }
 
     else
@@ -387,17 +387,17 @@ LABEL_25:
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
 LABEL_20:
-        v26 = [(SecureBackupEscrowOperation *)self endTimestamp];
+        endTimestamp = [(SecureBackupEscrowOperation *)self endTimestamp];
 
-        if (!v26)
+        if (!endTimestamp)
         {
           [(SecureBackupEscrowOperation *)self setState:1];
           goto LABEL_27;
         }
 
-        v27 = [(SecureBackupEscrowOperation *)self error];
+        error = [(SecureBackupEscrowOperation *)self error];
 
-        if (v27)
+        if (error)
         {
           v28 = 3;
         }
@@ -408,28 +408,28 @@ LABEL_20:
         }
 
         [(SecureBackupEscrowOperation *)self setState:v28];
-        v20 = [v10 currentTime];
-        [(SecureBackupEscrowOperation *)self setFinalCheckTimestamp:v20];
+        currentTime = [contextCopy currentTime];
+        [(SecureBackupEscrowOperation *)self setFinalCheckTimestamp:currentTime];
         goto LABEL_25;
       }
 
-      v23 = [(SecureBackupEscrowOperation *)self startTimestamp];
-      if (v23)
+      startTimestamp = [(SecureBackupEscrowOperation *)self startTimestamp];
+      if (startTimestamp)
       {
-        [(SecureBackupEscrowOperation *)self setStartTimestamp:v23];
+        [(SecureBackupEscrowOperation *)self setStartTimestamp:startTimestamp];
       }
 
       else
       {
-        v24 = [v8 timestamp];
-        [(SecureBackupEscrowOperation *)self setStartTimestamp:v24];
+        timestamp2 = [eventCopy timestamp];
+        [(SecureBackupEscrowOperation *)self setStartTimestamp:timestamp2];
       }
 
-      v25 = [v8 timestamp];
-      [(SecureBackupEscrowOperation *)self setEndTimestamp:v25];
+      timestamp3 = [eventCopy timestamp];
+      [(SecureBackupEscrowOperation *)self setEndTimestamp:timestamp3];
 
-      v22 = [v8 error];
-      [(SecureBackupEscrowOperation *)self setError:v22];
+      timestamp = [eventCopy error];
+      [(SecureBackupEscrowOperation *)self setError:timestamp];
     }
 
     goto LABEL_20;
@@ -444,30 +444,30 @@ LABEL_20:
 LABEL_27:
 }
 
-- (id)updatedOperationWithAdditionalEvent:(id)a3 parentActivity:(id)a4 context:(id)a5
+- (id)updatedOperationWithAdditionalEvent:(id)event parentActivity:(id)activity context:(id)context
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  contextCopy = context;
+  activityCopy = activity;
+  eventCopy = event;
   v11 = [(SecureBackupEscrowOperation *)self copy];
-  [v11 _updateWithEvent:v10 parentActivity:v9 context:v8];
+  [v11 _updateWithEvent:eventCopy parentActivity:activityCopy context:contextCopy];
 
   return v11;
 }
 
-- (id)updatedOperationWithParentActivity:(id)a3 context:(id)a4
+- (id)updatedOperationWithParentActivity:(id)activity context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SecureBackupEscrowOperation *)self isComplete];
+  activityCopy = activity;
+  contextCopy = context;
+  isComplete = [(SecureBackupEscrowOperation *)self isComplete];
   v9 = [(SecureBackupEscrowOperation *)self copy];
-  if ((v8 & 1) == 0)
+  if ((isComplete & 1) == 0)
   {
-    v10 = [(SecureBackupEscrowOperation *)self newStateWithContext:v7 parentActivity:v6];
+    v10 = [(SecureBackupEscrowOperation *)self newStateWithContext:contextCopy parentActivity:activityCopy];
     if (sub_100003E20(v10))
     {
-      v11 = [v7 currentTime];
-      [(SecureBackupEscrowOperation *)self setFinalCheckTimestamp:v11];
+      currentTime = [contextCopy currentTime];
+      [(SecureBackupEscrowOperation *)self setFinalCheckTimestamp:currentTime];
     }
 
     [v9 setState:v10];
@@ -476,17 +476,17 @@ LABEL_27:
   return v9;
 }
 
-- (BOOL)isStaleWithcontext:(id)a3
+- (BOOL)isStaleWithcontext:(id)withcontext
 {
-  v4 = a3;
-  v5 = [(SecureBackupEscrowOperation *)self finalCheckTimestamp];
-  if (v5)
+  withcontextCopy = withcontext;
+  finalCheckTimestamp = [(SecureBackupEscrowOperation *)self finalCheckTimestamp];
+  if (finalCheckTimestamp)
   {
-    v6 = [v4 currentTime];
-    [v6 timeIntervalSinceDate:v5];
+    currentTime = [withcontextCopy currentTime];
+    [currentTime timeIntervalSinceDate:finalCheckTimestamp];
     v8 = v7;
 
-    [v4 activityRecordRetentionInterval];
+    [withcontextCopy activityRecordRetentionInterval];
     v10 = v8 > v9;
   }
 
@@ -498,72 +498,72 @@ LABEL_27:
   return v10;
 }
 
-- (unint64_t)newStateWithContext:(id)a3 parentActivity:(id)a4
+- (unint64_t)newStateWithContext:(id)context parentActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SecureBackupEscrowOperation *)self isComplete];
-  v9 = [(SecureBackupEscrowOperation *)self state];
-  v10 = v9;
-  if ((v8 & 1) == 0)
+  contextCopy = context;
+  activityCopy = activity;
+  isComplete = [(SecureBackupEscrowOperation *)self isComplete];
+  state = [(SecureBackupEscrowOperation *)self state];
+  state2 = state;
+  if ((isComplete & 1) == 0)
   {
-    if (v9)
+    if (state)
     {
-      v11 = [v6 currentBootId];
-      v12 = [v7 bootId];
-      v13 = [v11 isEqual:v12];
+      currentBootId = [contextCopy currentBootId];
+      bootId = [activityCopy bootId];
+      v13 = [currentBootId isEqual:bootId];
 
       if (v13)
       {
-        v14 = [v6 currentPID];
-        if (v14 == [v7 pid])
+        currentPID = [contextCopy currentPID];
+        if (currentPID == [activityCopy pid])
         {
-          v15 = [v6 currentTime];
-          v16 = [(SecureBackupEscrowOperation *)self startTimestamp];
-          if (v16)
+          currentTime = [contextCopy currentTime];
+          startTimestamp = [(SecureBackupEscrowOperation *)self startTimestamp];
+          if (startTimestamp)
           {
-            [v15 timeIntervalSinceDate:v16];
+            [currentTime timeIntervalSinceDate:startTimestamp];
             v18 = v17;
           }
 
           else
           {
-            v19 = [v6 currentTime];
-            [v15 timeIntervalSinceDate:v19];
+            currentTime2 = [contextCopy currentTime];
+            [currentTime timeIntervalSinceDate:currentTime2];
             v18 = v20;
           }
 
-          [v6 operationTimeoutInterval];
+          [contextCopy operationTimeoutInterval];
           if (v18 <= v21)
           {
-            v10 = [(SecureBackupEscrowOperation *)self state];
+            state2 = [(SecureBackupEscrowOperation *)self state];
           }
 
           else
           {
-            v10 = 6;
+            state2 = 6;
           }
         }
 
         else
         {
-          v10 = 4;
+          state2 = 4;
         }
       }
 
       else
       {
-        v10 = 5;
+        state2 = 5;
       }
     }
 
     else
     {
-      v10 = 7;
+      state2 = 7;
     }
   }
 
-  return v10;
+  return state2;
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface _PSFamilyMLModel
-- (BOOL)isFamilyContact:(id)a3;
+- (BOOL)isFamilyContact:(id)contact;
 - (_PSFamilyMLModel)init;
-- (_PSFamilyMLModel)initWithActivity:(id)a3;
-- (_PSFamilyMLModel)initWithModels:(id)a3;
-- (id)defaultPredictionForInputFeatures:(id)a3;
-- (id)ensemblePredictionForInputFeatures:(id)a3;
-- (id)familiesPredictionForContacts:(id)a3 withMaxSuggestion:(int64_t)a4;
-- (id)familyProbability:(id)a3;
-- (id)getFeatureDictForContact:(id)a3;
-- (id)getModelWithModelName:(id)a3;
-- (id)getPredictionFromModel:(id)a3 withInputFeatures:(id)a4;
-- (id)loadModelFromUrlResource:(id)a3;
-- (id)predictionForContact:(id)a3;
-- (id)predictionForContact:(id)a3 featureDict:(id)a4;
+- (_PSFamilyMLModel)initWithActivity:(id)activity;
+- (_PSFamilyMLModel)initWithModels:(id)models;
+- (id)defaultPredictionForInputFeatures:(id)features;
+- (id)ensemblePredictionForInputFeatures:(id)features;
+- (id)familiesPredictionForContacts:(id)contacts withMaxSuggestion:(int64_t)suggestion;
+- (id)familyProbability:(id)probability;
+- (id)getFeatureDictForContact:(id)contact;
+- (id)getModelWithModelName:(id)name;
+- (id)getPredictionFromModel:(id)model withInputFeatures:(id)features;
+- (id)loadModelFromUrlResource:(id)resource;
+- (id)predictionForContact:(id)contact;
+- (id)predictionForContact:(id)contact featureDict:(id)dict;
 - (void)commonInit;
 - (void)initializeModels;
 @end
@@ -33,32 +33,32 @@
   return v3;
 }
 
-- (_PSFamilyMLModel)initWithActivity:(id)a3
+- (_PSFamilyMLModel)initWithActivity:(id)activity
 {
-  v5 = a3;
+  activityCopy = activity;
   v9.receiver = self;
   v9.super_class = _PSFamilyMLModel;
   v6 = [(_PSFamilyMLModel *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_activity, a3);
+    objc_storeStrong(&v6->_activity, activity);
     [(_PSFamilyMLModel *)v7 initializeModels];
   }
 
   return v7;
 }
 
-- (_PSFamilyMLModel)initWithModels:(id)a3
+- (_PSFamilyMLModel)initWithModels:(id)models
 {
-  v5 = a3;
+  modelsCopy = models;
   v9.receiver = self;
   v9.super_class = _PSFamilyMLModel;
   v6 = [(_PSFamilyMLModel *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_models, a3);
+    objc_storeStrong(&v6->_models, models);
   }
 
   return v7;
@@ -67,14 +67,14 @@
 - (void)initializeModels
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = [a1 count];
-  v5 = [a1 allKeys];
+  v4 = [self count];
+  allKeys = [self allKeys];
   v7 = 134218498;
   v8 = 4;
   v9 = 2048;
   v10 = v4;
   v11 = 2114;
-  v12 = v5;
+  v12 = allKeys;
   _os_log_error_impl(&dword_1B5ED1000, a2, OS_LOG_TYPE_ERROR, "Failed to load all %tu models (successfully loaded %tu models: %{public}@)", &v7, 0x20u);
 
   v6 = *MEMORY[0x1E69E9840];
@@ -95,34 +95,34 @@
   self->_extractor = v6;
 }
 
-- (BOOL)isFamilyContact:(id)a3
+- (BOOL)isFamilyContact:(id)contact
 {
-  v3 = [(_PSFamilyMLModel *)self predictionForContact:a3];
+  v3 = [(_PSFamilyMLModel *)self predictionForContact:contact];
   v4 = [v3 featureValueForName:@"labelFinal"];
-  v5 = [v4 int64Value];
+  int64Value = [v4 int64Value];
 
-  return v5 != 0;
+  return int64Value != 0;
 }
 
-- (id)familyProbability:(id)a3
+- (id)familyProbability:(id)probability
 {
-  v3 = [(_PSFamilyMLModel *)self predictionForContact:a3];
+  v3 = [(_PSFamilyMLModel *)self predictionForContact:probability];
   v4 = [v3 featureValueForName:@"classProbability"];
-  v5 = [v4 dictionaryValue];
+  dictionaryValue = [v4 dictionaryValue];
 
-  return v5;
+  return dictionaryValue;
 }
 
-- (id)familiesPredictionForContacts:(id)a3 withMaxSuggestion:(int64_t)a4
+- (id)familiesPredictionForContacts:(id)contacts withMaxSuggestion:(int64_t)suggestion
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  contactsCopy = contacts;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v5;
+  obj = contactsCopy;
   v7 = [obj countByEnumeratingWithState:&v31 objects:v37 count:16];
   if (v7)
   {
@@ -147,7 +147,7 @@
         if (v6)
         {
           [v6 insertObject:v14 atIndex:{objc_msgSend(v6, "indexOfObject:inSortedRange:options:usingComparator:", v14, 0, objc_msgSend(v6, "count"), 1024, &__block_literal_global_13)}];
-          if ([v6 count] > a4)
+          if ([v6 count] > suggestion)
           {
             [v6 removeLastObject];
           }
@@ -165,7 +165,7 @@
     while (v8);
   }
 
-  v15 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a4];
+  v15 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:suggestion];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -185,8 +185,8 @@
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v27 + 1) + 8 * j) firstObject];
-        [v15 addObject:v21];
+        firstObject = [*(*(&v27 + 1) + 8 * j) firstObject];
+        [v15 addObject:firstObject];
       }
 
       v18 = [v16 countByEnumeratingWithState:&v27 objects:v35 count:16];
@@ -201,13 +201,13 @@
   return v22;
 }
 
-- (id)predictionForContact:(id)a3 featureDict:(id)a4
+- (id)predictionForContact:(id)contact featureDict:(id)dict
 {
-  v5 = a4;
-  if ([_PSFamilyUtilities featureDictionaryPassesHeuristic:v5])
+  dictCopy = dict;
+  if ([_PSFamilyUtilities featureDictionaryPassesHeuristic:dictCopy])
   {
     v9 = 0;
-    v6 = [objc_alloc(getMLDictionaryFeatureProviderClass_0()) initWithDictionary:v5 error:&v9];
+    v6 = [objc_alloc(getMLDictionaryFeatureProviderClass_0()) initWithDictionary:dictCopy error:&v9];
     v7 = [(_PSFamilyMLModel *)self ensemblePredictionForInputFeatures:v6];
   }
 
@@ -219,21 +219,21 @@
   return v7;
 }
 
-- (id)predictionForContact:(id)a3
+- (id)predictionForContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(_PSFamilyMLModel *)self getFeatureDictForContact:v4];
-  v6 = [(_PSFamilyMLModel *)self predictionForContact:v4 featureDict:v5];
+  contactCopy = contact;
+  v5 = [(_PSFamilyMLModel *)self getFeatureDictForContact:contactCopy];
+  v6 = [(_PSFamilyMLModel *)self predictionForContact:contactCopy featureDict:v5];
 
   return v6;
 }
 
-- (id)getFeatureDictForContact:(id)a3
+- (id)getFeatureDictForContact:(id)contact
 {
   extractor = self->_extractor;
-  v4 = a3;
-  v5 = [(_PASLazyResult *)extractor result];
-  v6 = [v5 featureInputForContact:v4];
+  contactCopy = contact;
+  result = [(_PASLazyResult *)extractor result];
+  v6 = [result featureInputForContact:contactCopy];
 
   if (v6)
   {
@@ -250,20 +250,20 @@
   return v7;
 }
 
-- (id)getModelWithModelName:(id)a3
+- (id)getModelWithModelName:(id)name
 {
-  v4 = a3;
-  v5 = [(_PSFamilyMLModel *)self models];
-  v6 = [v5 objectForKey:v4];
+  nameCopy = name;
+  models = [(_PSFamilyMLModel *)self models];
+  v6 = [models objectForKey:nameCopy];
 
   return v6;
 }
 
-- (id)loadModelFromUrlResource:(id)a3
+- (id)loadModelFromUrlResource:(id)resource
 {
-  v3 = a3;
+  resourceCopy = resource;
   v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v5 = [v4 URLForResource:v3 withExtension:@"mlmodelc"];
+  v5 = [v4 URLForResource:resourceCopy withExtension:@"mlmodelc"];
 
   v15 = 0;
   v16 = &v15;
@@ -307,12 +307,12 @@
   return v11;
 }
 
-- (id)defaultPredictionForInputFeatures:(id)a3
+- (id)defaultPredictionForInputFeatures:(id)features
 {
-  v4 = a3;
-  v5 = [(_PSFamilyMLModel *)self defaultModelForPrediction];
+  featuresCopy = features;
+  defaultModelForPrediction = [(_PSFamilyMLModel *)self defaultModelForPrediction];
   v11 = 0;
-  v6 = [v5 predictionFromFeatures:v4 error:&v11];
+  v6 = [defaultModelForPrediction predictionFromFeatures:featuresCopy error:&v11];
 
   v7 = v11;
   if (v7)
@@ -334,51 +334,51 @@
   return v9;
 }
 
-- (id)ensemblePredictionForInputFeatures:(id)a3
+- (id)ensemblePredictionForInputFeatures:(id)features
 {
   v67 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  featuresCopy = features;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [(_PSFamilyMLModel *)self getPredictionFromModel:@"model_dt" withInputFeatures:v4];
+  v6 = [(_PSFamilyMLModel *)self getPredictionFromModel:@"model_dt" withInputFeatures:featuresCopy];
   v7 = [v6 featureValueForName:@"labelFinal"];
-  v8 = [v7 int64Value];
+  int64Value = [v7 int64Value];
 
   v9 = [v6 featureValueForName:@"classProbability"];
-  v10 = [v9 dictionaryValue];
+  dictionaryValue = [v9 dictionaryValue];
 
-  v60 = v10;
-  [v5 addObject:v10];
-  v11 = [(_PSFamilyMLModel *)self getPredictionFromModel:@"model_rf" withInputFeatures:v4];
+  v60 = dictionaryValue;
+  [v5 addObject:dictionaryValue];
+  v11 = [(_PSFamilyMLModel *)self getPredictionFromModel:@"model_rf" withInputFeatures:featuresCopy];
   v12 = [v11 featureValueForName:@"labelFinal"];
-  v13 = [v12 int64Value];
+  int64Value2 = [v12 int64Value];
 
-  v14 = v13 + v8;
+  v14 = int64Value2 + int64Value;
   v59 = v11;
   v15 = [v11 featureValueForName:@"classProbability"];
-  v16 = [v15 dictionaryValue];
+  dictionaryValue2 = [v15 dictionaryValue];
 
-  [v5 addObject:v16];
-  v17 = [(_PSFamilyMLModel *)self getPredictionFromModel:@"model_gbdt" withInputFeatures:v4];
+  [v5 addObject:dictionaryValue2];
+  v17 = [(_PSFamilyMLModel *)self getPredictionFromModel:@"model_gbdt" withInputFeatures:featuresCopy];
   v18 = [v17 featureValueForName:@"labelFinal"];
-  v19 = [v18 int64Value];
+  int64Value3 = [v18 int64Value];
 
-  v20 = v14 + v19;
+  v20 = v14 + int64Value3;
   v21 = [v17 featureValueForName:@"classProbability"];
-  v22 = [v21 dictionaryValue];
+  dictionaryValue3 = [v21 dictionaryValue];
 
-  v58 = v22;
-  [v5 addObject:v22];
-  v23 = [(_PSFamilyMLModel *)self getPredictionFromModel:@"IP_model_gbdt" withInputFeatures:v4];
+  v58 = dictionaryValue3;
+  [v5 addObject:dictionaryValue3];
+  v23 = [(_PSFamilyMLModel *)self getPredictionFromModel:@"IP_model_gbdt" withInputFeatures:featuresCopy];
   v24 = [v23 featureValueForName:@"target"];
-  v25 = [v24 int64Value];
+  int64Value4 = [v24 int64Value];
 
-  v26 = v20 + 3 * v25;
+  v26 = v20 + 3 * int64Value4;
   v57 = v23;
   v27 = [v23 featureValueForName:@"classProbability"];
-  v28 = [v27 dictionaryValue];
+  dictionaryValue4 = [v27 dictionaryValue];
 
-  v56 = v28;
-  [v5 addObject:v28];
+  v56 = dictionaryValue4;
+  [v5 addObject:dictionaryValue4];
   v29 = v26 > 1;
   v30 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v62 = 0u;
@@ -391,9 +391,9 @@
   {
     v33 = v32;
     v54 = v29;
-    v55 = v4;
+    v55 = featuresCopy;
     v34 = v17;
-    v35 = v16;
+    v35 = dictionaryValue2;
     v36 = v6;
     v37 = *v63;
     v38 = 0.0;
@@ -419,10 +419,10 @@
     while (v33);
     v43 = v38 * 0.25;
     v6 = v36;
-    v16 = v35;
+    dictionaryValue2 = v35;
     v17 = v34;
     v29 = v54;
-    v4 = v55;
+    featuresCopy = v55;
   }
 
   else
@@ -465,13 +465,13 @@
   return v51;
 }
 
-- (id)getPredictionFromModel:(id)a3 withInputFeatures:(id)a4
+- (id)getPredictionFromModel:(id)model withInputFeatures:(id)features
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_PSFamilyMLModel *)self getModelWithModelName:v6];
+  modelCopy = model;
+  featuresCopy = features;
+  v8 = [(_PSFamilyMLModel *)self getModelWithModelName:modelCopy];
   v14 = 0;
-  v9 = [v8 predictionFromFeatures:v7 error:&v14];
+  v9 = [v8 predictionFromFeatures:featuresCopy error:&v14];
 
   v10 = v14;
   if (v10)

@@ -1,6 +1,6 @@
 @interface CSPageContentComponent
 - (CSPageContentComponent)init;
-- (void)setSuppressHorizontalBounce:(int64_t)a3;
+- (void)setSuppressHorizontalBounce:(int64_t)bounce;
 @end
 
 @implementation CSPageContentComponent
@@ -20,12 +20,12 @@
   return v3;
 }
 
-- (void)setSuppressHorizontalBounce:(int64_t)a3
+- (void)setSuppressHorizontalBounce:(int64_t)bounce
 {
-  if ([(CSComponent *)self flag]!= a3)
+  if ([(CSComponent *)self flag]!= bounce)
   {
 
-    [(CSComponent *)self setFlag:a3];
+    [(CSComponent *)self setFlag:bounce];
   }
 }
 

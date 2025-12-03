@@ -1,17 +1,17 @@
 @interface BCLibraryButton
-- (void)setHighlightBackgroundColor:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setNormalBackgroundColor:(id)a3;
+- (void)setHighlightBackgroundColor:(id)color;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setNormalBackgroundColor:(id)color;
 @end
 
 @implementation BCLibraryButton
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v6.receiver = self;
   v6.super_class = BCLibraryButton;
   [(BCLibraryButton *)&v6 setHighlighted:?];
-  if (a3)
+  if (highlighted)
   {
     [(BCLibraryButton *)self highlightBackgroundColor];
   }
@@ -24,13 +24,13 @@
   [(BCLibraryButton *)self setBackgroundColor:v5];
 }
 
-- (void)setNormalBackgroundColor:(id)a3
+- (void)setNormalBackgroundColor:(id)color
 {
-  v5 = a3;
-  if (self->_normalBackgroundColor != v5)
+  colorCopy = color;
+  if (self->_normalBackgroundColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_normalBackgroundColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_normalBackgroundColor, color);
     if (([(BCLibraryButton *)self isHighlighted]& 1) == 0)
     {
       [(BCLibraryButton *)self setBackgroundColor:v6];
@@ -40,21 +40,21 @@
   _objc_release_x2();
 }
 
-- (void)setHighlightBackgroundColor:(id)a3
+- (void)setHighlightBackgroundColor:(id)color
 {
-  v5 = a3;
-  if (self->_highlightBackgroundColor != v5)
+  colorCopy = color;
+  if (self->_highlightBackgroundColor != colorCopy)
   {
-    objc_storeStrong(&self->_highlightBackgroundColor, a3);
-    v5 = [(BCLibraryButton *)self isHighlighted];
-    if (v5)
+    objc_storeStrong(&self->_highlightBackgroundColor, color);
+    colorCopy = [(BCLibraryButton *)self isHighlighted];
+    if (colorCopy)
     {
-      v6 = [(BCLibraryButton *)self highlightBackgroundColor];
-      [(BCLibraryButton *)self setBackgroundColor:v6];
+      highlightBackgroundColor = [(BCLibraryButton *)self highlightBackgroundColor];
+      [(BCLibraryButton *)self setBackgroundColor:highlightBackgroundColor];
     }
   }
 
-  _objc_release_x1(v5);
+  _objc_release_x1(colorCopy);
 }
 
 @end

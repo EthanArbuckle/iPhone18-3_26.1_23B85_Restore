@@ -18,11 +18,11 @@
     [v3 setValue:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CDA4C8]];
     v10[0] = v3;
     v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
-    v5 = [(SPUIKeyboardGaussianBlurView *)v2 layer];
-    [v5 setFilters:v4];
+    layer = [(SPUIKeyboardGaussianBlurView *)v2 layer];
+    [layer setFilters:v4];
 
-    v6 = [(SPUIKeyboardGaussianBlurView *)v2 layer];
-    [v6 setScale:0.125];
+    layer2 = [(SPUIKeyboardGaussianBlurView *)v2 layer];
+    [layer2 setScale:0.125];
   }
 
   v7 = *MEMORY[0x277D85DE8];

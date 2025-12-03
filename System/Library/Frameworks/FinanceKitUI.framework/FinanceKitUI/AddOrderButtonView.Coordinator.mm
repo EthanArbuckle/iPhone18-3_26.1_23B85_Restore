@@ -17,7 +17,7 @@
 
   v4 = *(&self->super.isa + OBJC_IVAR____TtCV12FinanceKitUI18AddOrderButtonView11Coordinator_action);
   v3 = *&self->action[OBJC_IVAR____TtCV12FinanceKitUI18AddOrderButtonView11Coordinator_action];
-  v6 = self;
+  selfCopy = self;
 
   v4(v5);
 }

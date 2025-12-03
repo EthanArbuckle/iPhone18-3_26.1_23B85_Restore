@@ -1,20 +1,20 @@
 @interface ReservationErrorAlertController
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ReservationErrorAlertController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = ReservationErrorAlertController;
-  [(ReservationErrorAlertController *)&v7 viewWillAppear:a3];
-  v4 = [(ReservationErrorAlertController *)self displayView];
-  v5 = [(ReservationErrorAlertController *)self bookingSession];
-  [v5 setCurrentView:v4];
+  [(ReservationErrorAlertController *)&v7 viewWillAppear:appear];
+  displayView = [(ReservationErrorAlertController *)self displayView];
+  bookingSession = [(ReservationErrorAlertController *)self bookingSession];
+  [bookingSession setCurrentView:displayView];
 
-  v6 = [(ReservationErrorAlertController *)self bookingSession];
-  [v6 beginSessionIfNeeded];
+  bookingSession2 = [(ReservationErrorAlertController *)self bookingSession];
+  [bookingSession2 beginSessionIfNeeded];
 }
 
 @end

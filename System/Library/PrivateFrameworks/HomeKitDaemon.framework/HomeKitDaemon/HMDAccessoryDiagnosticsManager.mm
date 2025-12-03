@@ -1,83 +1,83 @@
 @interface HMDAccessoryDiagnosticsManager
-- (BOOL)_isRequestSupported:(id)a3;
-- (HMDAccessoryDiagnosticsManager)initWithAccessory:(id)a3 service:(id)a4;
+- (BOOL)_isRequestSupported:(id)supported;
+- (HMDAccessoryDiagnosticsManager)initWithAccessory:(id)accessory service:(id)service;
 - (id)attributeDescriptions;
-- (id)watchedAccessoryIdentifiersForFirewallRuleManager:(id)a3;
-- (void)__fetchCloudDiagnosticsMetadataForAccessory:(id)a3 completion:(id)a4;
-- (void)_callCompletionHandler:(id)a3 diagnostics:(id)a4 error:(id)a5;
-- (void)_clearCurrentDiagnosticsSession:(id)a3;
+- (id)watchedAccessoryIdentifiersForFirewallRuleManager:(id)manager;
+- (void)__fetchCloudDiagnosticsMetadataForAccessory:(id)accessory completion:(id)completion;
+- (void)_callCompletionHandler:(id)handler diagnostics:(id)diagnostics error:(id)error;
+- (void)_clearCurrentDiagnosticsSession:(id)session;
 - (void)_fetchCloudDiagnosticsMetadata;
-- (void)_fetchModelDiagnosticsMetadataForAccessory:(id)a3 withCompletion:(id)a4;
-- (void)_handleDiagnosticsTransferRequestWithOptions:(id)a3 completion:(id)a4;
-- (void)_handleDiagnosticsTransferWithOptions:(id)a3 completion:(id)a4;
+- (void)_fetchModelDiagnosticsMetadataForAccessory:(id)accessory withCompletion:(id)completion;
+- (void)_handleDiagnosticsTransferRequestWithOptions:(id)options completion:(id)completion;
+- (void)_handleDiagnosticsTransferWithOptions:(id)options completion:(id)completion;
 - (void)_invalidateCloudDiagnosticsMetadata;
 - (void)_notifyClientsOfDiagnosticsTransferSupportUpdated;
-- (void)_readDiagnosticsDataWithCloudKitMetadataRequirement:(BOOL)a3 completion:(id)a4;
-- (void)_readRequiredDiagnosticCharacteristicsIfNeededWithCompletion:(id)a3;
+- (void)_readDiagnosticsDataWithCloudKitMetadataRequirement:(BOOL)requirement completion:(id)completion;
+- (void)_readRequiredDiagnosticCharacteristicsIfNeededWithCompletion:(id)completion;
 - (void)_registerForMessagesAndNotifications;
 - (void)_shutDown;
 - (void)_start;
 - (void)_updateDiagnosticSettings;
 - (void)dealloc;
-- (void)handleAccessoryConfiguredNotification:(id)a3;
-- (void)handleCharacteristicValueUpdatedNotification:(id)a3;
-- (void)handleCharacteristicsUpdatedNotification:(id)a3;
-- (void)handleDiagnosticsTransferWithOptions:(id)a3 message:(id)a4;
+- (void)handleAccessoryConfiguredNotification:(id)notification;
+- (void)handleCharacteristicValueUpdatedNotification:(id)notification;
+- (void)handleCharacteristicsUpdatedNotification:(id)notification;
+- (void)handleDiagnosticsTransferWithOptions:(id)options message:(id)message;
 - (void)shutDown;
 - (void)start;
 @end
 
 @implementation HMDAccessoryDiagnosticsManager
 
-- (void)_clearCurrentDiagnosticsSession:(id)a3
+- (void)_clearCurrentDiagnosticsSession:(id)session
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  sessionCopy = session;
+  workQueue = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDAccessoryDiagnosticsManagerInternal *)self currentDiagnosticsSession];
+  currentDiagnosticsSession = [(HMDAccessoryDiagnosticsManagerInternal *)self currentDiagnosticsSession];
 
-  if (v6)
+  if (currentDiagnosticsSession)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = HMFGetLogIdentifier();
-      v11 = [(HMDAccessoryDiagnosticsManagerInternal *)v8 currentDiagnosticsSession];
+      currentDiagnosticsSession2 = [(HMDAccessoryDiagnosticsManagerInternal *)selfCopy currentDiagnosticsSession];
       v14 = 138543874;
       v15 = v10;
       v16 = 2112;
-      v17 = v11;
+      v17 = currentDiagnosticsSession2;
       v18 = 2112;
-      v19 = v4;
+      v19 = sessionCopy;
       _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_INFO, "%{public}@Clear current session: %@ with error: %@", &v14, 0x20u);
     }
 
     objc_autoreleasePoolPop(v7);
-    v12 = [(HMDAccessoryDiagnosticsManagerInternal *)v8 currentDiagnosticsSession];
-    [v12 shutDown];
+    currentDiagnosticsSession3 = [(HMDAccessoryDiagnosticsManagerInternal *)selfCopy currentDiagnosticsSession];
+    [currentDiagnosticsSession3 shutDown];
 
-    [(HMDAccessoryDiagnosticsManagerInternal *)v8 setCurrentDiagnosticsSession:0];
+    [(HMDAccessoryDiagnosticsManagerInternal *)selfCopy setCurrentDiagnosticsSession:0];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_readDiagnosticsDataWithCloudKitMetadataRequirement:(BOOL)a3 completion:(id)a4
+- (void)_readDiagnosticsDataWithCloudKitMetadataRequirement:(BOOL)requirement completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
-  dispatch_assert_queue_V2(v7);
+  completionCopy = completion;
+  workQueue = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v8 = [(HMDAccessoryDiagnosticsManagerInternal *)self currentDiagnosticsSession];
+  currentDiagnosticsSession = [(HMDAccessoryDiagnosticsManagerInternal *)self currentDiagnosticsSession];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = currentDiagnosticsSession;
   }
 
   else
@@ -88,7 +88,7 @@
   v10 = v9;
 
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -101,15 +101,15 @@
   }
 
   objc_autoreleasePoolPop(v11);
-  objc_initWeak(buf, v12);
+  objc_initWeak(buf, selfCopy);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __97__HMDAccessoryDiagnosticsManager__readDiagnosticsDataWithCloudKitMetadataRequirement_completion___block_invoke;
   v17[3] = &unk_27867F800;
   objc_copyWeak(&v19, buf);
-  v15 = v6;
+  v15 = completionCopy;
   v18 = v15;
-  v20 = a3;
+  requirementCopy = requirement;
   [v10 readDataWithCompletion:v17];
 
   objc_destroyWeak(&v19);
@@ -260,16 +260,16 @@ void __97__HMDAccessoryDiagnosticsManager__readDiagnosticsDataWithCloudKitMetada
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleDiagnosticsTransferRequestWithOptions:(id)a3 completion:(id)a4
+- (void)_handleDiagnosticsTransferRequestWithOptions:(id)options completion:(id)completion
 {
   v57 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  optionsCopy = options;
+  completionCopy = completion;
+  workQueue = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -280,20 +280,20 @@ void __97__HMDAccessoryDiagnosticsManager__readDiagnosticsDataWithCloudKitMetada
   }
 
   objc_autoreleasePoolPop(v9);
-  if ([(HMDAccessoryDiagnosticsManager *)v10 _isRequestSupported:v6])
+  if ([(HMDAccessoryDiagnosticsManager *)selfCopy _isRequestSupported:optionsCopy])
   {
-    v13 = [(HMDAccessoryDiagnosticsManager *)v10 diagnosticsSettings];
-    v14 = [v13 transport];
-    v15 = v14 == @"DataStream";
+    diagnosticsSettings = [(HMDAccessoryDiagnosticsManager *)selfCopy diagnosticsSettings];
+    transport = [diagnosticsSettings transport];
+    v15 = transport == @"DataStream";
 
     if (v15)
     {
-      v28 = [(HMDAccessoryDiagnosticsManagerInternal *)v10 currentDiagnosticsSession];
+      currentDiagnosticsSession = [(HMDAccessoryDiagnosticsManagerInternal *)selfCopy currentDiagnosticsSession];
 
-      if (v28)
+      if (currentDiagnosticsSession)
       {
         v29 = objc_autoreleasePoolPush();
-        v30 = v10;
+        v30 = selfCopy;
         v31 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
         {
@@ -305,42 +305,42 @@ void __97__HMDAccessoryDiagnosticsManager__readDiagnosticsDataWithCloudKitMetada
 
         objc_autoreleasePoolPop(v29);
         v33 = [MEMORY[0x277CCA9B8] hmErrorWithCode:15];
-        v7[2](v7, v33, 0);
+        completionCopy[2](completionCopy, v33, 0);
       }
 
-      else if ([(HMDAccessoryDiagnosticsManager *)v10 cloudFetchCompleted])
+      else if ([(HMDAccessoryDiagnosticsManager *)selfCopy cloudFetchCompleted])
       {
         v34 = [HMDAccessoryDiagnosticsSession alloc];
-        v35 = [(HMDAccessoryDiagnosticsManagerInternal *)v10 accessory];
-        v36 = [(HMDAccessoryDiagnosticsManager *)v10 diagnosticsSettings];
-        v37 = [(HMDAccessoryDiagnosticsSession *)v34 initWithAccessory:v35 settings:v36];
-        [(HMDAccessoryDiagnosticsManagerInternal *)v10 setCurrentDiagnosticsSession:v37];
+        accessory = [(HMDAccessoryDiagnosticsManagerInternal *)selfCopy accessory];
+        diagnosticsSettings2 = [(HMDAccessoryDiagnosticsManager *)selfCopy diagnosticsSettings];
+        v37 = [(HMDAccessoryDiagnosticsSession *)v34 initWithAccessory:accessory settings:diagnosticsSettings2];
+        [(HMDAccessoryDiagnosticsManagerInternal *)selfCopy setCurrentDiagnosticsSession:v37];
 
         v38 = objc_autoreleasePoolPush();
-        v39 = v10;
+        v39 = selfCopy;
         v40 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
         {
           v41 = HMFGetLogIdentifier();
-          v42 = [(HMDAccessoryDiagnosticsManagerInternal *)v39 currentDiagnosticsSession];
+          currentDiagnosticsSession2 = [(HMDAccessoryDiagnosticsManagerInternal *)v39 currentDiagnosticsSession];
           *buf = 138543618;
           v54 = v41;
           v55 = 2112;
-          v56 = v42;
+          v56 = currentDiagnosticsSession2;
           _os_log_impl(&dword_229538000, v40, OS_LOG_TYPE_INFO, "%{public}@Setting up a diagnostics transfer session: %@", buf, 0x16u);
         }
 
         objc_autoreleasePoolPop(v38);
         objc_initWeak(buf, v39);
-        v43 = [(HMDAccessoryDiagnosticsManagerInternal *)v39 currentDiagnosticsSession];
+        currentDiagnosticsSession3 = [(HMDAccessoryDiagnosticsManagerInternal *)v39 currentDiagnosticsSession];
         v49[0] = MEMORY[0x277D85DD0];
         v49[1] = 3221225472;
         v49[2] = __90__HMDAccessoryDiagnosticsManager__handleDiagnosticsTransferRequestWithOptions_completion___block_invoke;
         v49[3] = &unk_278685EC0;
         objc_copyWeak(&v52, buf);
-        v51 = v7;
-        v50 = v6;
-        [v43 setUpWithOptions:v50 completion:v49];
+        v51 = completionCopy;
+        v50 = optionsCopy;
+        [currentDiagnosticsSession3 setUpWithOptions:v50 completion:v49];
 
         objc_destroyWeak(&v52);
         objc_destroyWeak(buf);
@@ -349,7 +349,7 @@ void __97__HMDAccessoryDiagnosticsManager__readDiagnosticsDataWithCloudKitMetada
       else
       {
         v44 = objc_autoreleasePoolPush();
-        v45 = v10;
+        v45 = selfCopy;
         v46 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
         {
@@ -366,7 +366,7 @@ void __97__HMDAccessoryDiagnosticsManager__readDiagnosticsDataWithCloudKitMetada
         }
 
         v48 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
-        v7[2](v7, v48, 0);
+        completionCopy[2](completionCopy, v48, 0);
       }
     }
 
@@ -374,7 +374,7 @@ void __97__HMDAccessoryDiagnosticsManager__readDiagnosticsDataWithCloudKitMetada
     {
       v16 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
       v17 = objc_autoreleasePoolPush();
-      v18 = v10;
+      v18 = selfCopy;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
@@ -388,14 +388,14 @@ void __97__HMDAccessoryDiagnosticsManager__readDiagnosticsDataWithCloudKitMetada
 
       objc_autoreleasePoolPop(v17);
       v21 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
-      v7[2](v7, v21, 0);
+      completionCopy[2](completionCopy, v21, 0);
     }
   }
 
   else
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = v10;
+    v23 = selfCopy;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
@@ -407,7 +407,7 @@ void __97__HMDAccessoryDiagnosticsManager__readDiagnosticsDataWithCloudKitMetada
 
     objc_autoreleasePoolPop(v22);
     v26 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
-    v7[2](v7, v26, 0);
+    completionCopy[2](completionCopy, v26, 0);
   }
 
   v27 = *MEMORY[0x277D85DE8];
@@ -495,55 +495,55 @@ void __90__HMDAccessoryDiagnosticsManager__handleDiagnosticsTransferRequestWithO
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_readRequiredDiagnosticCharacteristicsIfNeededWithCompletion:(id)a3
+- (void)_readRequiredDiagnosticCharacteristicsIfNeededWithCompletion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  workQueue = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDAccessoryDiagnosticsManager *)self diagnosticsService];
-  v7 = [v6 findCharacteristicWithType:*MEMORY[0x277CCFAD8]];
+  diagnosticsService = [(HMDAccessoryDiagnosticsManager *)self diagnosticsService];
+  v7 = [diagnosticsService findCharacteristicWithType:*MEMORY[0x277CCFAD8]];
 
   if (v7)
   {
-    v8 = [(HMDAccessoryDiagnosticsManagerInternal *)self accessory];
-    v9 = [v7 value];
+    accessory = [(HMDAccessoryDiagnosticsManagerInternal *)self accessory];
+    value = [v7 value];
 
-    if (v9)
+    if (value)
     {
       [(HMDAccessoryDiagnosticsManager *)self _updateDiagnosticSettings];
     }
 
-    else if ([v8 isReachable])
+    else if ([accessory isReachable])
     {
       v11 = objc_autoreleasePoolPush();
-      v12 = self;
+      selfCopy = self;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         v14 = HMFGetLogIdentifier();
-        v15 = [v8 identifier];
+        identifier = [accessory identifier];
         *buf = 138543618;
         v25 = v14;
         v26 = 2112;
-        v27 = v15;
+        v27 = identifier;
         _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@Attempting to read and update the diagnostic settings for %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v11);
       v16 = [HMDCharacteristicRequest requestWithCharacteristic:v7];
-      objc_initWeak(buf, v12);
+      objc_initWeak(buf, selfCopy);
       v23 = v16;
       v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v23 count:1];
-      v18 = [(HMDAccessoryDiagnosticsManagerInternal *)v12 workQueue];
+      workQueue2 = [(HMDAccessoryDiagnosticsManagerInternal *)selfCopy workQueue];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __95__HMDAccessoryDiagnosticsManager__readRequiredDiagnosticCharacteristicsIfNeededWithCompletion___block_invoke;
       v20[3] = &unk_278689410;
       objc_copyWeak(&v22, buf);
-      v21 = v4;
-      [v8 readCharacteristicValues:v17 source:1020 queue:v18 completionHandler:v20];
+      v21 = completionCopy;
+      [accessory readCharacteristicValues:v17 source:1020 queue:workQueue2 completionHandler:v20];
 
       objc_destroyWeak(&v22);
       objc_destroyWeak(buf);
@@ -551,14 +551,14 @@ void __90__HMDAccessoryDiagnosticsManager__handleDiagnosticsTransferRequestWithO
       goto LABEL_10;
     }
 
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
 LABEL_10:
 
     goto LABEL_11;
   }
 
   v10 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
-  (*(v4 + 2))(v4, v10);
+  (*(completionCopy + 2))(completionCopy, v10);
 
 LABEL_11:
   v19 = *MEMORY[0x277D85DE8];
@@ -595,40 +595,40 @@ void __95__HMDAccessoryDiagnosticsManager__readRequiredDiagnosticCharacteristics
   }
 }
 
-- (BOOL)_isRequestSupported:(id)a3
+- (BOOL)_isRequestSupported:(id)supported
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessoryDiagnosticsManager *)self diagnosticsSettings];
-  v6 = [v5 currentSnapshot];
+  supportedCopy = supported;
+  diagnosticsSettings = [(HMDAccessoryDiagnosticsManager *)self diagnosticsSettings];
+  currentSnapshot = [diagnosticsSettings currentSnapshot];
 
-  if (v6)
+  if (currentSnapshot)
   {
-    if (v4)
+    if (supportedCopy)
     {
-      v7 = [(HMDAccessoryDiagnosticsManager *)self diagnosticsSettings];
-      v8 = [v7 currentSnapshot];
+      diagnosticsSettings2 = [(HMDAccessoryDiagnosticsManager *)self diagnosticsSettings];
+      currentSnapshot2 = [diagnosticsSettings2 currentSnapshot];
 
-      v9 = [v4 logSize];
-      if (!v9 || (v10 = v9, [v8 options], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "value"), v11, v10, (v12 & 2) != 0))
+      logSize = [supportedCopy logSize];
+      if (!logSize || (v10 = logSize, [currentSnapshot2 options], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "value"), v11, v10, (v12 & 2) != 0))
       {
-        v23 = [v4 delay];
-        if (!v23 || (v24 = v23, [v8 options], v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "value"), v25, v24, (v26 & 1) != 0))
+        delay = [supportedCopy delay];
+        if (!delay || (v24 = delay, [currentSnapshot2 options], v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "value"), v25, v24, (v26 & 1) != 0))
         {
-          if (![v4 recordAudio] || (objc_msgSend(v8, "audioDiagnostics"), v32 = objc_claimAutoreleasedReturnValue(), v33 = objc_msgSend(v32, "value"), v32, (v33 & 1) != 0))
+          if (![supportedCopy recordAudio] || (objc_msgSend(currentSnapshot2, "audioDiagnostics"), v32 = objc_claimAutoreleasedReturnValue(), v33 = objc_msgSend(v32, "value"), v32, (v33 & 1) != 0))
           {
-            if (![v4 enableAudioClips] || (objc_msgSend(v8, "audioDiagnostics"), v35 = objc_claimAutoreleasedReturnValue(), v36 = objc_msgSend(v35, "value"), v35, (v36 & 2) != 0))
+            if (![supportedCopy enableAudioClips] || (objc_msgSend(currentSnapshot2, "audioDiagnostics"), v35 = objc_claimAutoreleasedReturnValue(), v36 = objc_msgSend(v35, "value"), v35, (v36 & 2) != 0))
             {
-              if ([v4 snapshotType] != 1 || (objc_msgSend(v8, "type"), v38 = objc_claimAutoreleasedReturnValue(), v39 = objc_msgSend(v38, "value"), v38, (v39 & 1) != 0))
+              if ([supportedCopy snapshotType] != 1 || (objc_msgSend(currentSnapshot2, "type"), v38 = objc_claimAutoreleasedReturnValue(), v39 = objc_msgSend(v38, "value"), v38, (v39 & 1) != 0))
               {
-                if ([v4 snapshotType] != 2 || (objc_msgSend(v8, "type"), v41 = objc_claimAutoreleasedReturnValue(), v42 = objc_msgSend(v41, "value"), v41, (v42 & 2) != 0))
+                if ([supportedCopy snapshotType] != 2 || (objc_msgSend(currentSnapshot2, "type"), v41 = objc_claimAutoreleasedReturnValue(), v42 = objc_msgSend(v41, "value"), v41, (v42 & 2) != 0))
                 {
                   v22 = 1;
                   goto LABEL_35;
                 }
 
                 v13 = objc_autoreleasePoolPush();
-                v43 = self;
+                selfCopy = self;
                 v15 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
                 {
@@ -643,7 +643,7 @@ void __95__HMDAccessoryDiagnosticsManager__readRequiredDiagnosticCharacteristics
               else
               {
                 v13 = objc_autoreleasePoolPush();
-                v40 = self;
+                selfCopy2 = self;
                 v15 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
                 {
@@ -659,7 +659,7 @@ void __95__HMDAccessoryDiagnosticsManager__readRequiredDiagnosticCharacteristics
             else
             {
               v13 = objc_autoreleasePoolPush();
-              v37 = self;
+              selfCopy3 = self;
               v15 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
               {
@@ -675,7 +675,7 @@ void __95__HMDAccessoryDiagnosticsManager__readRequiredDiagnosticCharacteristics
           else
           {
             v13 = objc_autoreleasePoolPush();
-            v34 = self;
+            selfCopy4 = self;
             v15 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
             {
@@ -691,7 +691,7 @@ void __95__HMDAccessoryDiagnosticsManager__readRequiredDiagnosticCharacteristics
         else
         {
           v13 = objc_autoreleasePoolPush();
-          v27 = self;
+          selfCopy5 = self;
           v15 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
           {
@@ -707,7 +707,7 @@ void __95__HMDAccessoryDiagnosticsManager__readRequiredDiagnosticCharacteristics
       else
       {
         v13 = objc_autoreleasePoolPush();
-        v14 = self;
+        selfCopy6 = self;
         v15 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
@@ -728,7 +728,7 @@ LABEL_35:
     }
 
     v28 = objc_autoreleasePoolPush();
-    v29 = self;
+    selfCopy7 = self;
     v30 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
     {
@@ -745,7 +745,7 @@ LABEL_35:
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy8 = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
@@ -767,63 +767,63 @@ LABEL_36:
 
 - (void)_notifyClientsOfDiagnosticsTransferSupportUpdated
 {
-  v3 = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v5 = [(HMDAccessoryDiagnosticsManagerInternal *)self accessory];
-  v4 = [v5 supportedDiagnostics];
-  [(HMDAccessoryDiagnosticsManagerInternal *)self notifyClientsOfSupportedDiagnostics:v4];
+  accessory = [(HMDAccessoryDiagnosticsManagerInternal *)self accessory];
+  supportedDiagnostics = [accessory supportedDiagnostics];
+  [(HMDAccessoryDiagnosticsManagerInternal *)self notifyClientsOfSupportedDiagnostics:supportedDiagnostics];
 }
 
 - (void)_updateDiagnosticSettings
 {
   v64 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDAccessoryDiagnosticsManager *)self diagnosticsService];
-  v5 = [v4 findCharacteristicWithType:*MEMORY[0x277CCFAD8]];
+  diagnosticsService = [(HMDAccessoryDiagnosticsManager *)self diagnosticsService];
+  v5 = [diagnosticsService findCharacteristicWithType:*MEMORY[0x277CCFAD8]];
 
-  v6 = [v5 value];
+  value = [v5 value];
 
-  if (v6)
+  if (value)
   {
     v7 = MEMORY[0x277CFEC68];
-    v8 = [v5 value];
+    value2 = [v5 value];
     v53 = 0;
-    v9 = [v7 parsedFromData:v8 error:&v53];
+    v9 = [v7 parsedFromData:value2 error:&v53];
     v10 = v53;
 
-    v11 = [v9 format];
-    if (v11 || ([v9 type], (v11 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v9, "options"), (v11 = objc_claimAutoreleasedReturnValue()) != 0))
+    format = [v9 format];
+    if (format || ([v9 type], (format = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v9, "options"), (format = objc_claimAutoreleasedReturnValue()) != 0))
     {
     }
 
     else
     {
-      v36 = [v9 audioDiagnostics];
+      audioDiagnostics = [v9 audioDiagnostics];
 
-      if (!v36)
+      if (!audioDiagnostics)
       {
         v37 = objc_autoreleasePoolPush();
-        v38 = self;
+        selfCopy = self;
         v39 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
         {
           HMFGetLogIdentifier();
           v40 = v52 = v10;
-          [(HMDAccessoryDiagnosticsManagerInternal *)v38 accessory];
+          [(HMDAccessoryDiagnosticsManagerInternal *)selfCopy accessory];
           v41 = v50 = v37;
-          v42 = [v41 name];
-          v43 = [(HMDAccessoryDiagnosticsManagerInternal *)v38 accessory];
-          v44 = [v43 uuid];
-          v45 = [v44 UUIDString];
+          name = [v41 name];
+          accessory = [(HMDAccessoryDiagnosticsManagerInternal *)selfCopy accessory];
+          uuid = [accessory uuid];
+          uUIDString = [uuid UUIDString];
           *buf = 138544130;
           v55 = v40;
           v56 = 2112;
-          v57 = v42;
+          v57 = name;
           v58 = 2112;
-          v59 = v45;
+          v59 = uUIDString;
           v60 = 2112;
           v61 = v52;
           _os_log_impl(&dword_229538000, v39, OS_LOG_TYPE_ERROR, "%{public}@Failed to parse accessory supported diagnostics snapshot (%@/%@) with error: %@", buf, 0x2Au);
@@ -837,36 +837,36 @@ LABEL_36:
       }
     }
 
-    v12 = [(HMDAccessoryDiagnosticsManager *)self diagnosticsSettings];
-    v13 = [v12 currentSnapshot];
-    v14 = [v13 isEqual:v9];
+    diagnosticsSettings = [(HMDAccessoryDiagnosticsManager *)self diagnosticsSettings];
+    currentSnapshot = [diagnosticsSettings currentSnapshot];
+    v14 = [currentSnapshot isEqual:v9];
 
     if ((v14 & 1) == 0)
     {
       v15 = objc_autoreleasePoolPush();
-      v16 = self;
+      selfCopy2 = self;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
         v46 = HMFGetLogIdentifier();
-        v48 = [(HMDAccessoryDiagnosticsManagerInternal *)v16 accessory];
-        v18 = [v48 name];
-        [(HMDAccessoryDiagnosticsManagerInternal *)v16 accessory];
+        accessory2 = [(HMDAccessoryDiagnosticsManagerInternal *)selfCopy2 accessory];
+        name2 = [accessory2 name];
+        [(HMDAccessoryDiagnosticsManagerInternal *)selfCopy2 accessory];
         v47 = v49 = v15;
         [v47 uuid];
         v19 = v51 = v10;
-        v20 = [v19 UUIDString];
-        v21 = [(HMDAccessoryDiagnosticsManager *)v16 diagnosticsSettings];
-        v22 = [v21 currentSnapshot];
+        uUIDString2 = [v19 UUIDString];
+        diagnosticsSettings2 = [(HMDAccessoryDiagnosticsManager *)selfCopy2 diagnosticsSettings];
+        currentSnapshot2 = [diagnosticsSettings2 currentSnapshot];
         *buf = 138544386;
         v55 = v46;
         v56 = 2112;
-        v57 = v18;
+        v57 = name2;
         v58 = 2112;
-        v59 = v20;
-        v23 = v20;
+        v59 = uUIDString2;
+        v23 = uUIDString2;
         v60 = 2112;
-        v61 = v22;
+        v61 = currentSnapshot2;
         v62 = 2112;
         v63 = v9;
         _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_INFO, "%{public}@Updating accessory diagnostics snapshot for %@/%@: %@ -> %@", buf, 0x34u);
@@ -877,12 +877,12 @@ LABEL_36:
 
       objc_autoreleasePoolPop(v15);
       v24 = [MEMORY[0x277CCA9B8] hmErrorWithCode:23];
-      [(HMDAccessoryDiagnosticsManager *)v16 _clearCurrentDiagnosticsSession:v24];
+      [(HMDAccessoryDiagnosticsManager *)selfCopy2 _clearCurrentDiagnosticsSession:v24];
 
-      v25 = [(HMDAccessoryDiagnosticsManager *)v16 diagnosticsSettings];
-      [v25 setCurrentSnapshot:v9];
+      diagnosticsSettings3 = [(HMDAccessoryDiagnosticsManager *)selfCopy2 diagnosticsSettings];
+      [diagnosticsSettings3 setCurrentSnapshot:v9];
 
-      [(HMDAccessoryDiagnosticsManager *)v16 _notifyClientsOfDiagnosticsTransferSupportUpdated];
+      [(HMDAccessoryDiagnosticsManager *)selfCopy2 _notifyClientsOfDiagnosticsTransferSupportUpdated];
     }
 
 LABEL_10:
@@ -891,22 +891,22 @@ LABEL_10:
   }
 
   v26 = objc_autoreleasePoolPush();
-  v27 = self;
+  selfCopy3 = self;
   v28 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
   {
     v29 = HMFGetLogIdentifier();
-    v30 = [(HMDAccessoryDiagnosticsManagerInternal *)v27 accessory];
-    v31 = [v30 name];
-    v32 = [(HMDAccessoryDiagnosticsManagerInternal *)v27 accessory];
-    v33 = [v32 uuid];
-    v34 = [v33 UUIDString];
+    accessory3 = [(HMDAccessoryDiagnosticsManagerInternal *)selfCopy3 accessory];
+    name3 = [accessory3 name];
+    accessory4 = [(HMDAccessoryDiagnosticsManagerInternal *)selfCopy3 accessory];
+    uuid2 = [accessory4 uuid];
+    uUIDString3 = [uuid2 UUIDString];
     *buf = 138543874;
     v55 = v29;
     v56 = 2112;
-    v57 = v31;
+    v57 = name3;
     v58 = 2112;
-    v59 = v34;
+    v59 = uUIDString3;
     _os_log_impl(&dword_229538000, v28, OS_LOG_TYPE_INFO, "%{public}@No diagnostics supported configuration (%@/%@)", buf, 0x20u);
   }
 
@@ -919,43 +919,43 @@ LABEL_14:
 - (void)_registerForMessagesAndNotifications
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAccessoryDiagnosticsManagerInternal *)self accessory];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel_handleCharacteristicsUpdatedNotification_ name:@"kHMDNotificationCharacteristicsUpdated" object:v3];
+  accessory = [(HMDAccessoryDiagnosticsManagerInternal *)self accessory];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_handleCharacteristicsUpdatedNotification_ name:@"kHMDNotificationCharacteristicsUpdated" object:accessory];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel_handleCharacteristicValueUpdatedNotification_ name:@"HMDNotificationCharacteristicValueUpdated" object:v3];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_handleCharacteristicValueUpdatedNotification_ name:@"HMDNotificationCharacteristicValueUpdated" object:accessory];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 addObserver:self selector:sel_handleAccessoryConfiguredNotification_ name:@"HMDAccessoryConnectedNotification" object:v3];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel_handleAccessoryConfiguredNotification_ name:@"HMDAccessoryConnectedNotification" object:accessory];
 
-  v7 = [v3 findCharacteristicType:*MEMORY[0x277CCFAD8] forServiceType:*MEMORY[0x277CD0E28]];
+  v7 = [accessory findCharacteristicType:*MEMORY[0x277CCFAD8] forServiceType:*MEMORY[0x277CD0E28]];
   v8 = v7;
   if (v7)
   {
     v25[0] = v7;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:1];
-    v10 = [(HMDAccessoryDiagnosticsManagerInternal *)self clientIdentifier];
-    [v3 setNotificationsEnabled:1 forCharacteristics:v9 clientIdentifier:v10];
+    clientIdentifier = [(HMDAccessoryDiagnosticsManagerInternal *)self clientIdentifier];
+    [accessory setNotificationsEnabled:1 forCharacteristics:v9 clientIdentifier:clientIdentifier];
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v14 = HMFGetLogIdentifier();
-      v15 = [v3 name];
-      v16 = [v3 uuid];
-      v17 = [v16 UUIDString];
+      name = [accessory name];
+      uuid = [accessory uuid];
+      uUIDString = [uuid UUIDString];
       v19 = 138543874;
       v20 = v14;
       v21 = 2112;
-      v22 = v15;
+      v22 = name;
       v23 = 2112;
-      v24 = v17;
+      v24 = uUIDString;
       _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_ERROR, "%{public}@Expected diagnostics characteristic not present for accessory(%@/%@)", &v19, 0x20u);
     }
 
@@ -968,8 +968,8 @@ LABEL_14:
 - (void)_shutDown
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if ([(HMDAccessoryDiagnosticsManager *)self didShutDown])
   {
@@ -977,7 +977,7 @@ LABEL_14:
   }
 
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -988,19 +988,19 @@ LABEL_14:
   }
 
   objc_autoreleasePoolPop(v4);
-  [(HMDAccessoryDiagnosticsManager *)v5 _clearCurrentDiagnosticsSession:0];
-  [(HMDAccessoryDiagnosticsManager *)v5 setDiagnosticsSettings:0];
-  [(HMDAccessoryDiagnosticsManager *)v5 setDidShutDown:1];
-  [(HMDAccessoryDiagnosticsManager *)v5 _notifyClientsOfDiagnosticsTransferSupportUpdated];
-  [(HMDAccessoryDiagnosticsManager *)v5 _invalidateCloudDiagnosticsMetadata];
+  [(HMDAccessoryDiagnosticsManager *)selfCopy _clearCurrentDiagnosticsSession:0];
+  [(HMDAccessoryDiagnosticsManager *)selfCopy setDiagnosticsSettings:0];
+  [(HMDAccessoryDiagnosticsManager *)selfCopy setDidShutDown:1];
+  [(HMDAccessoryDiagnosticsManager *)selfCopy _notifyClientsOfDiagnosticsTransferSupportUpdated];
+  [(HMDAccessoryDiagnosticsManager *)selfCopy _invalidateCloudDiagnosticsMetadata];
   v8 = *MEMORY[0x277D85DE8];
 }
 
 - (void)_start
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if ([(HMDAccessoryDiagnosticsManager *)self didShutDown])
   {
@@ -1008,7 +1008,7 @@ LABEL_14:
   }
 
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -1019,23 +1019,23 @@ LABEL_14:
   }
 
   objc_autoreleasePoolPop(v4);
-  [(HMDAccessoryDiagnosticsManager *)v5 _registerForMessagesAndNotifications];
+  [(HMDAccessoryDiagnosticsManager *)selfCopy _registerForMessagesAndNotifications];
   v8 = [HMDAccessoryDiagnosticsSettings alloc];
-  v9 = [(HMDAccessoryDiagnosticsManager *)v5 diagnosticsService];
-  v10 = [(HMDAccessoryDiagnosticsSettings *)v8 initWithService:v9];
-  [(HMDAccessoryDiagnosticsManager *)v5 setDiagnosticsSettings:v10];
+  diagnosticsService = [(HMDAccessoryDiagnosticsManager *)selfCopy diagnosticsService];
+  v10 = [(HMDAccessoryDiagnosticsSettings *)v8 initWithService:diagnosticsService];
+  [(HMDAccessoryDiagnosticsManager *)selfCopy setDiagnosticsSettings:v10];
 
-  [(HMDAccessoryDiagnosticsManager *)v5 _updateDiagnosticSettings];
-  [(HMDAccessoryDiagnosticsManager *)v5 _fetchCloudDiagnosticsMetadata];
+  [(HMDAccessoryDiagnosticsManager *)selfCopy _updateDiagnosticSettings];
+  [(HMDAccessoryDiagnosticsManager *)selfCopy _fetchCloudDiagnosticsMetadata];
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleDiagnosticsTransferWithOptions:(id)a3 completion:(id)a4
+- (void)_handleDiagnosticsTransferWithOptions:(id)options completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  optionsCopy = options;
+  completionCopy = completion;
+  workQueue = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x277D85DD0];
@@ -1043,9 +1043,9 @@ LABEL_14:
   v11[2] = __83__HMDAccessoryDiagnosticsManager__handleDiagnosticsTransferWithOptions_completion___block_invoke;
   v11[3] = &unk_2786889F0;
   objc_copyWeak(&v14, &location);
-  v9 = v7;
+  v9 = completionCopy;
   v13 = v9;
-  v10 = v6;
+  v10 = optionsCopy;
   v12 = v10;
   [(HMDAccessoryDiagnosticsManager *)self _readRequiredDiagnosticCharacteristicsIfNeededWithCompletion:v11];
 
@@ -1086,21 +1086,21 @@ void __83__HMDAccessoryDiagnosticsManager__handleDiagnosticsTransferWithOptions_
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleDiagnosticsTransferWithOptions:(id)a3 message:(id)a4
+- (void)handleDiagnosticsTransferWithOptions:(id)options message:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
+  optionsCopy = options;
+  messageCopy = message;
+  workQueue = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __79__HMDAccessoryDiagnosticsManager_handleDiagnosticsTransferWithOptions_message___block_invoke;
   block[3] = &unk_27868A010;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = optionsCopy;
+  v13 = messageCopy;
+  v9 = messageCopy;
+  v10 = optionsCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __79__HMDAccessoryDiagnosticsManager_handleDiagnosticsTransferWithOptions_message___block_invoke(uint64_t a1)
@@ -1160,18 +1160,18 @@ void __79__HMDAccessoryDiagnosticsManager_handleDiagnosticsTransferWithOptions_m
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAccessoryConfiguredNotification:(id)a3
+- (void)handleAccessoryConfiguredNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
+  notificationCopy = notification;
+  workQueue = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__HMDAccessoryDiagnosticsManager_handleAccessoryConfiguredNotification___block_invoke;
   v7[3] = &unk_27868A750;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __72__HMDAccessoryDiagnosticsManager_handleAccessoryConfiguredNotification___block_invoke(uint64_t a1)
@@ -1237,68 +1237,68 @@ void __72__HMDAccessoryDiagnosticsManager_handleAccessoryConfiguredNotification_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleCharacteristicValueUpdatedNotification:(id)a3
+- (void)handleCharacteristicValueUpdatedNotification:(id)notification
 {
-  v4 = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
+  workQueue = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __79__HMDAccessoryDiagnosticsManager_handleCharacteristicValueUpdatedNotification___block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
-- (void)handleCharacteristicsUpdatedNotification:(id)a3
+- (void)handleCharacteristicsUpdatedNotification:(id)notification
 {
-  v4 = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
+  workQueue = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __75__HMDAccessoryDiagnosticsManager_handleCharacteristicsUpdatedNotification___block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 - (void)shutDown
 {
-  v3 = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
+  workQueue = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__HMDAccessoryDiagnosticsManager_shutDown__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 - (void)start
 {
-  v3 = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
+  workQueue = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39__HMDAccessoryDiagnosticsManager_start__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 - (void)dealloc
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAccessoryDiagnosticsManagerInternal *)self accessory];
-  v4 = [v3 findCharacteristicType:*MEMORY[0x277CCFAD8] forServiceType:*MEMORY[0x277CD0E28]];
+  accessory = [(HMDAccessoryDiagnosticsManagerInternal *)self accessory];
+  v4 = [accessory findCharacteristicType:*MEMORY[0x277CCFAD8] forServiceType:*MEMORY[0x277CD0E28]];
   v5 = v4;
   if (v4)
   {
     v22[0] = v4;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
-    v7 = [(HMDAccessoryDiagnosticsManagerInternal *)self clientIdentifier];
-    [v3 setNotificationsEnabled:0 forCharacteristics:v6 clientIdentifier:v7];
+    clientIdentifier = [(HMDAccessoryDiagnosticsManagerInternal *)self clientIdentifier];
+    [accessory setNotificationsEnabled:0 forCharacteristics:v6 clientIdentifier:clientIdentifier];
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -1312,7 +1312,7 @@ void __72__HMDAccessoryDiagnosticsManager_handleAccessoryConfiguredNotification_
   }
 
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy2 = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
@@ -1320,12 +1320,12 @@ void __72__HMDAccessoryDiagnosticsManager_handleAccessoryConfiguredNotification_
     *buf = 138543618;
     v19 = v15;
     v20 = 2048;
-    v21 = v13;
+    v21 = selfCopy2;
     _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_INFO, "%{public}@Accessory diagnostics manager: %p destroyed", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v12);
-  v17.receiver = v13;
+  v17.receiver = selfCopy2;
   v17.super_class = HMDAccessoryDiagnosticsManager;
   [(HMDAccessoryDiagnosticsManager *)&v17 dealloc];
   v16 = *MEMORY[0x277D85DE8];
@@ -1336,14 +1336,14 @@ void __72__HMDAccessoryDiagnosticsManager_handleAccessoryConfiguredNotification_
   v18[3] = *MEMORY[0x277D85DE8];
   v17.receiver = self;
   v17.super_class = HMDAccessoryDiagnosticsManager;
-  v3 = [(HMDAccessoryDiagnosticsManagerInternal *)&v17 attributeDescriptions];
+  attributeDescriptions = [(HMDAccessoryDiagnosticsManagerInternal *)&v17 attributeDescriptions];
   v4 = objc_alloc(MEMORY[0x277D0F778]);
-  v5 = [(HMDAccessoryDiagnosticsManager *)self diagnosticsSettings];
-  v6 = [v4 initWithName:@"Diagnostics Settings" value:v5];
+  diagnosticsSettings = [(HMDAccessoryDiagnosticsManager *)self diagnosticsSettings];
+  v6 = [v4 initWithName:@"Diagnostics Settings" value:diagnosticsSettings];
   v18[0] = v6;
   v7 = objc_alloc(MEMORY[0x277D0F778]);
-  v8 = [(HMDAccessoryDiagnosticsManagerInternal *)self currentDiagnosticsSession];
-  v9 = [v7 initWithName:@"Diagnostics Session" value:v8];
+  currentDiagnosticsSession = [(HMDAccessoryDiagnosticsManagerInternal *)self currentDiagnosticsSession];
+  v9 = [v7 initWithName:@"Diagnostics Session" value:currentDiagnosticsSession];
   v18[1] = v9;
   v10 = objc_alloc(MEMORY[0x277D0F778]);
   [(HMDAccessoryDiagnosticsManager *)self didShutDown];
@@ -1351,18 +1351,18 @@ void __72__HMDAccessoryDiagnosticsManager_handleAccessoryConfiguredNotification_
   v12 = [v10 initWithName:@"didShutDown" value:v11];
   v18[2] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:3];
-  v14 = [v3 arrayByAddingObjectsFromArray:v13];
+  v14 = [attributeDescriptions arrayByAddingObjectsFromArray:v13];
 
   v15 = *MEMORY[0x277D85DE8];
 
   return v14;
 }
 
-- (HMDAccessoryDiagnosticsManager)initWithAccessory:(id)a3 service:(id)a4
+- (HMDAccessoryDiagnosticsManager)initWithAccessory:(id)accessory service:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  accessoryCopy = accessory;
+  serviceCopy = service;
+  v8 = accessoryCopy;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1374,7 +1374,7 @@ void __72__HMDAccessoryDiagnosticsManager_handleAccessoryConfiguredNotification_
     v11 = v10;
     if (v10)
     {
-      objc_storeStrong(&v10->_diagnosticsService, a4);
+      objc_storeStrong(&v10->_diagnosticsService, service);
     }
 
     return v11;
@@ -1395,40 +1395,40 @@ void __72__HMDAccessoryDiagnosticsManager_handleAccessoryConfiguredNotification_
   [v3 shutdownForClient:self];
 }
 
-- (void)_callCompletionHandler:(id)a3 diagnostics:(id)a4 error:(id)a5
+- (void)_callCompletionHandler:(id)handler diagnostics:(id)diagnostics error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
+  handlerCopy = handler;
+  diagnosticsCopy = diagnostics;
+  errorCopy = error;
+  workQueue = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__HMDAccessoryDiagnosticsManager_Cloud___callCompletionHandler_diagnostics_error___block_invoke;
   block[3] = &unk_278689F98;
-  v17 = v10;
-  v18 = v8;
-  v16 = v9;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, block);
+  v17 = errorCopy;
+  v18 = handlerCopy;
+  v16 = diagnosticsCopy;
+  v12 = errorCopy;
+  v13 = diagnosticsCopy;
+  v14 = handlerCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)_fetchModelDiagnosticsMetadataForAccessory:(id)a3 withCompletion:(id)a4
+- (void)_fetchModelDiagnosticsMetadataForAccessory:(id)accessory withCompletion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  accessoryCopy = accessory;
+  completionCopy = completion;
+  workQueue = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v9 = +[HMDNetworkRouterFirewallRuleManager sharedInstance];
-  v10 = [v6 metadataIdentifier];
+  metadataIdentifier = [accessoryCopy metadataIdentifier];
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   v14 = v13;
-  if (v10)
+  if (metadataIdentifier)
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -1436,20 +1436,20 @@ void __72__HMDAccessoryDiagnosticsManager_handleAccessoryConfiguredNotification_
       *buf = 138543618;
       v25 = v15;
       v26 = 2112;
-      v27 = v10;
+      v27 = metadataIdentifier;
       _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_INFO, "%{public}@Fetching diagnostics parameters locally for accessory with identifier %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v11);
-    objc_initWeak(buf, v12);
-    v16 = [MEMORY[0x277CBEB98] setWithObject:v10];
+    objc_initWeak(buf, selfCopy);
+    v16 = [MEMORY[0x277CBEB98] setWithObject:metadataIdentifier];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __99__HMDAccessoryDiagnosticsManager_Cloud___fetchModelDiagnosticsMetadataForAccessory_withCompletion___block_invoke;
     v20[3] = &unk_2786805A8;
     objc_copyWeak(&v23, buf);
-    v21 = v10;
-    v22 = v7;
+    v21 = metadataIdentifier;
+    v22 = completionCopy;
     [v9 fetchPairedMetadataVersionConfigurationsForAccessories:v16 completion:v20];
 
     objc_destroyWeak(&v23);
@@ -1468,7 +1468,7 @@ void __72__HMDAccessoryDiagnosticsManager_handleAccessoryConfiguredNotification_
 
     objc_autoreleasePoolPop(v11);
     v18 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-    (*(v7 + 2))(v7, 0, v18);
+    (*(completionCopy + 2))(completionCopy, 0, v18);
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -1588,19 +1588,19 @@ void __99__HMDAccessoryDiagnosticsManager_Cloud___fetchModelDiagnosticsMetadataF
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)__fetchCloudDiagnosticsMetadataForAccessory:(id)a3 completion:(id)a4
+- (void)__fetchCloudDiagnosticsMetadataForAccessory:(id)accessory completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = +[HMDNetworkRouterFirewallRuleManager sharedInstance];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __96__HMDAccessoryDiagnosticsManager_Cloud____fetchCloudDiagnosticsMetadataForAccessory_completion___block_invoke;
   v9[3] = &unk_278689358;
   v10 = v6;
-  v11 = v5;
+  v11 = completionCopy;
   v9[4] = self;
   v7 = v6;
-  v8 = v5;
+  v8 = completionCopy;
   [v7 startupForClient:self completion:v9];
 }
 
@@ -1680,13 +1680,13 @@ void __96__HMDAccessoryDiagnosticsManager_Cloud____fetchCloudDiagnosticsMetadata
 {
   [(HMDAccessoryDiagnosticsManager *)self setCloudFetchInProgress:1];
   objc_initWeak(&location, self);
-  v3 = [(HMDAccessoryDiagnosticsManagerInternal *)self accessory];
+  accessory = [(HMDAccessoryDiagnosticsManagerInternal *)self accessory];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __71__HMDAccessoryDiagnosticsManager_Cloud___fetchCloudDiagnosticsMetadata__block_invoke;
   v4[3] = &unk_278688A18;
   objc_copyWeak(&v5, &location);
-  [(HMDAccessoryDiagnosticsManager *)self __fetchCloudDiagnosticsMetadataForAccessory:v3 completion:v4];
+  [(HMDAccessoryDiagnosticsManager *)self __fetchCloudDiagnosticsMetadataForAccessory:accessory completion:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1762,14 +1762,14 @@ uint64_t __71__HMDAccessoryDiagnosticsManager_Cloud___fetchCloudDiagnosticsMetad
   return result;
 }
 
-- (id)watchedAccessoryIdentifiersForFirewallRuleManager:(id)a3
+- (id)watchedAccessoryIdentifiersForFirewallRuleManager:(id)manager
 {
-  v3 = [(HMDAccessoryDiagnosticsManagerInternal *)self accessory];
-  v4 = [v3 metadataIdentifier];
+  accessory = [(HMDAccessoryDiagnosticsManagerInternal *)self accessory];
+  metadataIdentifier = [accessory metadataIdentifier];
 
-  if (v4)
+  if (metadataIdentifier)
   {
-    [MEMORY[0x277CBEB98] setWithObject:v4];
+    [MEMORY[0x277CBEB98] setWithObject:metadataIdentifier];
   }
 
   else

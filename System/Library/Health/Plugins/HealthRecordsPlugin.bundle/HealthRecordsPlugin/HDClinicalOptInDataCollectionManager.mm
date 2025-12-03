@@ -1,38 +1,38 @@
 @interface HDClinicalOptInDataCollectionManager
-+ (id)_optInJSONForBuild:(id)a3 extractionRulesVersion:(id)a4 FHIRVersion:(id)a5 resource:(id)a6;
-- (BOOL)_queue_updateSubmittedAnchors:(id)a3 accounts:(id)a4 error:(id *)a5;
-- (HDClinicalOptInDataCollectionManager)initWithProfileExtension:(id)a3;
++ (id)_optInJSONForBuild:(id)build extractionRulesVersion:(id)version FHIRVersion:(id)rVersion resource:(id)resource;
+- (BOOL)_queue_updateSubmittedAnchors:(id)anchors accounts:(id)accounts error:(id *)error;
+- (HDClinicalOptInDataCollectionManager)initWithProfileExtension:(id)extension;
 - (HDHealthRecordsProfileExtension)profileExtension;
 - (HDProfile)profile;
-- (void)_queue_submitAnalyticsForResult:(id)a3 completion:(id)a4;
-- (void)_queue_submitFetchedResources:(id)a3 completion:(id)a4;
-- (void)_queue_submitOptInResourcesForAccounts:(id)a3 batchCountLimit:(int64_t)a4 batchSizeLimit:(int64_t)a5 completion:(id)a6;
-- (void)_queue_triggerClinicalOptInDataCollectionWithCompletion:(id)a3;
-- (void)performPeriodicActivity:(id)a3 completion:(id)a4;
-- (void)periodicActivity:(id)a3 configureXPCActivityCriteria:(id)a4;
-- (void)resetClinicalOptInDataCollectionAnchorsWithCompletion:(id)a3;
-- (void)triggerClinicalOptInDataCollectionForReason:(int64_t)a3 completion:(id)a4;
+- (void)_queue_submitAnalyticsForResult:(id)result completion:(id)completion;
+- (void)_queue_submitFetchedResources:(id)resources completion:(id)completion;
+- (void)_queue_submitOptInResourcesForAccounts:(id)accounts batchCountLimit:(int64_t)limit batchSizeLimit:(int64_t)sizeLimit completion:(id)completion;
+- (void)_queue_triggerClinicalOptInDataCollectionWithCompletion:(id)completion;
+- (void)performPeriodicActivity:(id)activity completion:(id)completion;
+- (void)periodicActivity:(id)activity configureXPCActivityCriteria:(id)criteria;
+- (void)resetClinicalOptInDataCollectionAnchorsWithCompletion:(id)completion;
+- (void)triggerClinicalOptInDataCollectionForReason:(int64_t)reason completion:(id)completion;
 @end
 
 @implementation HDClinicalOptInDataCollectionManager
 
-- (HDClinicalOptInDataCollectionManager)initWithProfileExtension:(id)a3
+- (HDClinicalOptInDataCollectionManager)initWithProfileExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v18.receiver = self;
   v18.super_class = HDClinicalOptInDataCollectionManager;
   v5 = [(HDClinicalOptInDataCollectionManager *)&v18 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profileExtension, v4);
-    v7 = [v4 profile];
-    objc_storeWeak(&v6->_profile, v7);
+    objc_storeWeak(&v5->_profileExtension, extensionCopy);
+    profile = [extensionCopy profile];
+    objc_storeWeak(&v6->_profile, profile);
 
     WeakRetained = objc_loadWeakRetained(&v6->_profileExtension);
-    v9 = [WeakRetained optInStudy];
+    optInStudy = [WeakRetained optInStudy];
     study = v6->_study;
-    v6->_study = v9;
+    v6->_study = optInStudy;
 
     v11 = HKCreateSerialDispatchQueue();
     queue = v6->_queue;
@@ -48,54 +48,54 @@
   return v6;
 }
 
-- (void)triggerClinicalOptInDataCollectionForReason:(int64_t)a3 completion:(id)a4
+- (void)triggerClinicalOptInDataCollectionForReason:(int64_t)reason completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_5F9A0;
   block[3] = &unk_107CC8;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  reasonCopy = reason;
   block[4] = self;
-  v8 = v6;
+  v8 = completionCopy;
   dispatch_async(queue, block);
 }
 
-- (void)resetClinicalOptInDataCollectionAnchorsWithCompletion:(id)a3
+- (void)resetClinicalOptInDataCollectionAnchorsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_5FCE8;
   v7[3] = &unk_105E90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_queue_triggerClinicalOptInDataCollectionWithCompletion:(id)a3
+- (void)_queue_triggerClinicalOptInDataCollectionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(HDClinicalOptInDataCollectionManager *)self profileExtension];
-  v6 = [v5 isImproveHealthRecordsDataSubmissionAllowed];
+  profileExtension = [(HDClinicalOptInDataCollectionManager *)self profileExtension];
+  isImproveHealthRecordsDataSubmissionAllowed = [profileExtension isImproveHealthRecordsDataSubmissionAllowed];
 
-  if (v6)
+  if (isImproveHealthRecordsDataSubmissionAllowed)
   {
-    v7 = [(HDClinicalOptInDataCollectionManager *)self profile];
-    v8 = [v7 database];
-    v9 = [v8 isProtectedDataAvailable];
+    profile = [(HDClinicalOptInDataCollectionManager *)self profile];
+    database = [profile database];
+    isProtectedDataAvailable = [database isProtectedDataAvailable];
 
-    if (v9)
+    if (isProtectedDataAvailable)
     {
       WeakRetained = objc_loadWeakRetained(&self->_profile);
-      v11 = [WeakRetained database];
+      database2 = [WeakRetained database];
       v21 = 0;
-      v12 = [HDClinicalAccountEntity allAccountsInHealthDatabase:v11 error:&v21];
+      v12 = [HDClinicalAccountEntity allAccountsInHealthDatabase:database2 error:&v21];
       v13 = v21;
 
       if (v12)
@@ -105,13 +105,13 @@
         v19[2] = sub_60340;
         v19[3] = &unk_107CF0;
         v19[4] = self;
-        v20 = v4;
+        v20 = completionCopy;
         [(HDClinicalOptInDataCollectionManager *)self _queue_submitOptInResourcesForAccounts:v12 batchCountLimit:50 batchSizeLimit:102400 completion:v19];
       }
 
       else
       {
-        (*(v4 + 2))(v4, 0, v13);
+        (*(completionCopy + 2))(completionCopy, 0, v13);
       }
     }
 
@@ -125,7 +125,7 @@
       }
 
       v18 = +[NSError hk_protectedDataInaccessibilityError];
-      (*(v4 + 2))(v4, 0, v18);
+      (*(completionCopy + 2))(completionCopy, 0, v18);
     }
   }
 
@@ -142,25 +142,25 @@
       _os_log_impl(&dword_0, v15, OS_LOG_TYPE_INFO, "%{public}@ opt-in data collection is not enabled by the user", buf, 0xCu);
     }
 
-    (*(v4 + 2))(v4, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 }
 
-- (void)_queue_submitOptInResourcesForAccounts:(id)a3 batchCountLimit:(int64_t)a4 batchSizeLimit:(int64_t)a5 completion:(id)a6
+- (void)_queue_submitOptInResourcesForAccounts:(id)accounts batchCountLimit:(int64_t)limit batchSizeLimit:(int64_t)sizeLimit completion:(id)completion
 {
-  v8 = a3;
-  v42 = a6;
+  accountsCopy = accounts;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
-  v39 = v8;
-  if ([v8 count])
+  v39 = accountsCopy;
+  if ([accountsCopy count])
   {
-    v9 = [(HDClinicalOptInDataCollectionManager *)self profile];
-    v10 = [v9 daemon];
-    v38 = [v10 ontologyConfigurationProvider];
+    profile = [(HDClinicalOptInDataCollectionManager *)self profile];
+    daemon = [profile daemon];
+    ontologyConfigurationProvider = [daemon ontologyConfigurationProvider];
 
-    if (v38)
+    if (ontologyConfigurationProvider)
     {
-      v48 = [v38 optInDataCollectionEnabledCountryCodes];
+      optInDataCollectionEnabledCountryCodes = [ontologyConfigurationProvider optInDataCollectionEnabledCountryCodes];
       v11 = [v39 hk_map:&stru_107D30];
       v40 = [NSMutableSet setWithArray:v11];
 
@@ -197,7 +197,7 @@ LABEL_5:
 
           v16 = *(*(&v67 + 1) + 8 * v15);
           WeakRetained = objc_loadWeakRetained(&self->_profile);
-          v18 = [WeakRetained database];
+          database = [WeakRetained database];
           v66 = 0;
           v57[0] = _NSConcreteStackBlock;
           v57[1] = 3221225472;
@@ -205,21 +205,21 @@ LABEL_5:
           v57[3] = &unk_107D80;
           v57[4] = v16;
           v57[5] = self;
-          v58 = v48;
+          v58 = optInDataCollectionEnabledCountryCodes;
           v59 = v44;
           v60 = v43;
           v62 = &v78;
           v19 = v47;
-          v64 = a4;
-          v65 = a5;
+          limitCopy = limit;
+          sizeLimitCopy = sizeLimit;
           v61 = v19;
           v63 = &v71;
-          v20 = [HDOriginalFHIRResourceEntity performReadTransactionWithHealthDatabase:v18 error:&v66 block:v57];
+          v20 = [HDOriginalFHIRResourceEntity performReadTransactionWithHealthDatabase:database error:&v66 block:v57];
           v21 = v66;
 
           if ((v20 & 1) == 0)
           {
-            v42[2](v42, 0, v21);
+            completionCopy[2](completionCopy, 0, v21);
             v27 = 0;
             v26 = 1;
             goto LABEL_18;
@@ -235,13 +235,13 @@ LABEL_5:
           v23 = HKLogHealthRecords;
           if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_INFO))
           {
-            v24 = v23;
-            if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
+            identifier = v23;
+            if (os_log_type_enabled(identifier, OS_LOG_TYPE_INFO))
             {
               v25 = [(HDClinicalOptInDataCollectionManager *)self debugDescription];
               *buf = v37;
               v76 = v25;
-              _os_log_impl(&dword_0, v24, OS_LOG_TYPE_INFO, "%{public}@: Hit a batch limit, so we'll process this batch before continuing", buf, 0xCu);
+              _os_log_impl(&dword_0, identifier, OS_LOG_TYPE_INFO, "%{public}@: Hit a batch limit, so we'll process this batch before continuing", buf, 0xCu);
             }
 
             v26 = 6;
@@ -275,8 +275,8 @@ LABEL_18:
           }
         }
 
-        v24 = [v16 identifier];
-        [v40 removeObject:v24];
+        identifier = [v16 identifier];
+        [v40 removeObject:identifier];
         v26 = 0;
 LABEL_16:
 
@@ -300,14 +300,14 @@ LABEL_27:
         v49[1] = 3221225472;
         v49[2] = sub_610C8;
         v49[3] = &unk_107DA8;
-        v53 = v42;
+        v53 = completionCopy;
         v49[4] = self;
         v50 = v44;
         v51 = v43;
         v54 = &v71;
         v52 = v40;
-        v55 = a4;
-        v56 = a5;
+        limitCopy2 = limit;
+        sizeLimitCopy2 = sizeLimit;
         [(HDClinicalOptInDataCollectionManager *)self _queue_submitFetchedResources:v47 completion:v49];
       }
 
@@ -327,7 +327,7 @@ LABEL_27:
           }
         }
 
-        v42[2](v42, 1, 0);
+        completionCopy[2](completionCopy, 1, 0);
       }
 
 LABEL_39:
@@ -344,8 +344,8 @@ LABEL_39:
         sub_A5220(v33, self);
       }
 
-      v48 = [NSError hk_error:100 description:@"unable to find ontology configuration provider needed for Opt-In eligibility determination"];
-      v42[2](v42, 0, v48);
+      optInDataCollectionEnabledCountryCodes = [NSError hk_error:100 description:@"unable to find ontology configuration provider needed for Opt-In eligibility determination"];
+      completionCopy[2](completionCopy, 0, optInDataCollectionEnabledCountryCodes);
     }
   }
 
@@ -362,14 +362,14 @@ LABEL_39:
       _os_log_impl(&dword_0, v29, OS_LOG_TYPE_INFO, "%{public}@: no accounts for which to submit resources", &v78, 0xCu);
     }
 
-    v42[2](v42, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 }
 
-- (void)_queue_submitFetchedResources:(id)a3 completion:(id)a4
+- (void)_queue_submitFetchedResources:(id)resources completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  resourcesCopy = resources;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v17 = 0;
@@ -378,17 +378,17 @@ LABEL_39:
 
   if (v9)
   {
-    v11 = [[HDExtractionRequest alloc] initWithResources:v6];
+    v11 = [[HDExtractionRequest alloc] initWithResources:resourcesCopy];
     v12 = objc_loadWeakRetained(&self->_profileExtension);
-    v13 = [v12 createHealthRecordsXPCServiceClient];
+    createHealthRecordsXPCServiceClient = [v12 createHealthRecordsXPCServiceClient];
 
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_613EC;
     v15[3] = &unk_107DD0;
     v15[4] = self;
-    v16 = v7;
-    [v13 optInDataForFHIRDocumentWithRequest:v11 redactor:v9 completion:v15];
+    v16 = completionCopy;
+    [createHealthRecordsXPCServiceClient optInDataForFHIRDocumentWithRequest:v11 redactor:v9 completion:v15];
   }
 
   else
@@ -400,21 +400,21 @@ LABEL_39:
       sub_A53C4(v14, self);
     }
 
-    (*(v7 + 2))(v7, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, v10);
   }
 }
 
-- (void)_queue_submitAnalyticsForResult:(id)a3 completion:(id)a4
+- (void)_queue_submitAnalyticsForResult:(id)result completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   queue = self->_queue;
-  v8 = a3;
+  resultCopy = result;
   dispatch_assert_queue_V2(queue);
   v9 = +[_HKBehavior currentOSBuild];
-  v10 = [v8 rulesVersion];
-  v11 = [v10 stringValue];
+  rulesVersion = [resultCopy rulesVersion];
+  stringValue = [rulesVersion stringValue];
 
-  v12 = [v8 redactedResources];
+  redactedResources = [resultCopy redactedResources];
 
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
@@ -423,19 +423,19 @@ LABEL_39:
   v23[4] = self;
   v13 = v9;
   v24 = v13;
-  v14 = v11;
+  v14 = stringValue;
   v25 = v14;
-  v15 = [v12 hk_map:v23];
+  v15 = [redactedResources hk_map:v23];
 
   if ([v15 count])
   {
-    v16 = [(HDClinicalOptInDataCollectionManager *)self study];
+    study = [(HDClinicalOptInDataCollectionManager *)self study];
 
-    if (v16)
+    if (study)
     {
-      v17 = [(HDClinicalOptInDataCollectionManager *)self study];
+      study2 = [(HDClinicalOptInDataCollectionManager *)self study];
       v22 = 0;
-      v18 = [v17 submitJSONAnalyticsData:v15 error:&v22];
+      v18 = [study2 submitJSONAnalyticsData:v15 error:&v22];
       v19 = v22;
 
       if ((v18 & 1) == 0)
@@ -448,33 +448,33 @@ LABEL_39:
         }
       }
 
-      v6[2](v6, v18, v19);
+      completionCopy[2](completionCopy, v18, v19);
     }
 
     else
     {
       v21 = [NSError hk_error:3 description:@"Study object not available when collecting opt-in data"];
-      v6[2](v6, 0, v21);
+      completionCopy[2](completionCopy, 0, v21);
     }
   }
 
   else
   {
-    v6[2](v6, &dword_0 + 1, 0);
+    completionCopy[2](completionCopy, &dword_0 + 1, 0);
   }
 }
 
-- (BOOL)_queue_updateSubmittedAnchors:(id)a3 accounts:(id)a4 error:(id *)a5
+- (BOOL)_queue_updateSubmittedAnchors:(id)anchors accounts:(id)accounts error:(id *)error
 {
-  v8 = a3;
-  v29 = a4;
-  v30 = self;
+  anchorsCopy = anchors;
+  accountsCopy = accounts;
+  selfCopy = self;
   dispatch_assert_queue_V2(self->_queue);
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v9 = v8;
+  v9 = anchorsCopy;
   v31 = [v9 countByEnumeratingWithState:&v33 objects:v43 count:16];
   if (!v31)
   {
@@ -485,7 +485,7 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v25 = a5;
+  errorCopy = error;
   v27 = 0;
   v28 = *v34;
   v26 = 1;
@@ -500,12 +500,12 @@ LABEL_21:
 
       v11 = *(*(&v33 + 1) + 8 * i);
       v12 = [v9 objectForKeyedSubscript:v11];
-      v13 = [v29 objectForKeyedSubscript:v11];
-      v14 = [v13 lastExtractedRulesVersion];
-      WeakRetained = objc_loadWeakRetained(&v30->_profile);
-      v16 = [WeakRetained database];
+      v13 = [accountsCopy objectForKeyedSubscript:v11];
+      lastExtractedRulesVersion = [v13 lastExtractedRulesVersion];
+      WeakRetained = objc_loadWeakRetained(&selfCopy->_profile);
+      database = [WeakRetained database];
       v32 = 0;
-      v17 = [HDClinicalAccountEntity updateAccountLastSubmittedRowID:v12 expectedRulesVersion:v14 identifier:v11 healthDatabase:v16 error:&v32];
+      v17 = [HDClinicalAccountEntity updateAccountLastSubmittedRowID:v12 expectedRulesVersion:lastExtractedRulesVersion identifier:v11 healthDatabase:database error:&v32];
       v18 = v32;
 
       if ((v17 & 1) == 0)
@@ -515,7 +515,7 @@ LABEL_21:
         if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543874;
-          v38 = v30;
+          v38 = selfCopy;
           v39 = 2114;
           v40 = v11;
           v41 = 2114;
@@ -541,10 +541,10 @@ LABEL_21:
   if (v20)
   {
     v21 = v20;
-    if (v25)
+    if (errorCopy)
     {
       v22 = v20;
-      *v25 = v21;
+      *errorCopy = v21;
     }
 
     else
@@ -563,40 +563,40 @@ LABEL_22:
   return v23 & 1;
 }
 
-+ (id)_optInJSONForBuild:(id)a3 extractionRulesVersion:(id)a4 FHIRVersion:(id)a5 resource:(id)a6
++ (id)_optInJSONForBuild:(id)build extractionRulesVersion:(id)version FHIRVersion:(id)rVersion resource:(id)resource
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  resourceCopy = resource;
+  rVersionCopy = rVersion;
+  versionCopy = version;
+  buildCopy = build;
   v13 = objc_alloc_init(NSMutableDictionary);
   [v13 setObject:&off_1102D0 forKeyedSubscript:@"schemaVersion"];
-  [v13 setObject:v12 forKeyedSubscript:@"os"];
+  [v13 setObject:buildCopy forKeyedSubscript:@"os"];
 
-  [v13 setObject:v11 forKeyedSubscript:@"extractionRulesVersion"];
-  [v13 setObject:v10 forKeyedSubscript:@"FHIRVersion"];
+  [v13 setObject:versionCopy forKeyedSubscript:@"extractionRulesVersion"];
+  [v13 setObject:rVersionCopy forKeyedSubscript:@"FHIRVersion"];
 
-  [v13 setObject:v9 forKeyedSubscript:@"resource"];
+  [v13 setObject:resourceCopy forKeyedSubscript:@"resource"];
 
   return v13;
 }
 
-- (void)periodicActivity:(id)a3 configureXPCActivityCriteria:(id)a4
+- (void)periodicActivity:(id)activity configureXPCActivityCriteria:(id)criteria
 {
-  xdict = a4;
+  xdict = criteria;
   xpc_dictionary_set_BOOL(xdict, XPC_ACTIVITY_ALLOW_BATTERY, 1);
   xpc_dictionary_set_string(xdict, XPC_ACTIVITY_PRIORITY, XPC_ACTIVITY_PRIORITY_UTILITY);
   xpc_dictionary_set_BOOL(xdict, XPC_ACTIVITY_REQUIRES_CLASS_A, 1);
 }
 
-- (void)performPeriodicActivity:(id)a3 completion:(id)a4
+- (void)performPeriodicActivity:(id)activity completion:(id)completion
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_61CEC;
   v6[3] = &unk_107E20;
-  v7 = a4;
-  v5 = v7;
+  completionCopy = completion;
+  v5 = completionCopy;
   [(HDClinicalOptInDataCollectionManager *)self triggerClinicalOptInDataCollectionForReason:0 completion:v6];
 }
 

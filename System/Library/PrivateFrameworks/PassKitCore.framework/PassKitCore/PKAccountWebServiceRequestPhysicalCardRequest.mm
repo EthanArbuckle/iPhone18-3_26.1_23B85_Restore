@@ -1,19 +1,19 @@
 @interface PKAccountWebServiceRequestPhysicalCardRequest
-- (PKAccountWebServiceRequestPhysicalCardRequest)initWithCoder:(id)a3;
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
+- (PKAccountWebServiceRequestPhysicalCardRequest)initWithCoder:(id)coder;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
 - (id)endpointComponents;
-- (id)manifestHashWithReferenceIdentifier:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)manifestHashWithReferenceIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAccountWebServiceRequestPhysicalCardRequest
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKAccountWebServiceRequestPhysicalCardRequest *)self baseURL];
-  if (!v5)
+  informationCopy = information;
+  baseURL = [(PKAccountWebServiceRequestPhysicalCardRequest *)self baseURL];
+  if (!baseURL)
   {
     v18 = PKLogFacilityTypeGetObject(0xFuLL);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -70,42 +70,42 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v6 = [(PKAccountWebServiceRequestPhysicalCardRequest *)self endpointComponents];
-  v7 = [(PKAccountWebServiceRequest *)self _murlRequestWithServiceURL:v5 endpointComponents:v6 queryParameters:0 appleAccountInformation:v4];
+  endpointComponents = [(PKAccountWebServiceRequestPhysicalCardRequest *)self endpointComponents];
+  v7 = [(PKAccountWebServiceRequest *)self _murlRequestWithServiceURL:baseURL endpointComponents:endpointComponents queryParameters:0 appleAccountInformation:informationCopy];
 
   [v7 setHTTPMethod:@"POST"];
   [v7 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-  v8 = [MEMORY[0x1E695DF90] dictionary];
-  v9 = [(PKPhysicalCardOrder *)self->_order artworkIdentifier];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  artworkIdentifier = [(PKPhysicalCardOrder *)self->_order artworkIdentifier];
 
-  if (v9)
+  if (artworkIdentifier)
   {
-    v10 = [(PKPhysicalCardOrder *)self->_order artworkIdentifier];
-    [v8 setObject:v10 forKeyedSubscript:@"artworkIdentifier"];
+    artworkIdentifier2 = [(PKPhysicalCardOrder *)self->_order artworkIdentifier];
+    [dictionary setObject:artworkIdentifier2 forKeyedSubscript:@"artworkIdentifier"];
   }
 
-  v11 = [(PKPhysicalCardOrder *)self->_order nameOnCard];
+  nameOnCard = [(PKPhysicalCardOrder *)self->_order nameOnCard];
 
-  if (v11)
+  if (nameOnCard)
   {
-    v12 = [(PKPhysicalCardOrder *)self->_order nameOnCard];
-    [v8 setObject:v12 forKeyedSubscript:@"name"];
+    nameOnCard2 = [(PKPhysicalCardOrder *)self->_order nameOnCard];
+    [dictionary setObject:nameOnCard2 forKeyedSubscript:@"name"];
   }
 
   v13 = PKStringFromPhysicalCardOrderReason([(PKPhysicalCardOrder *)self->_order reason]);
-  [v8 setObject:v13 forKeyedSubscript:@"reason"];
+  [dictionary setObject:v13 forKeyedSubscript:@"reason"];
 
-  [v8 setObject:self->_accountUserAltDSID forKeyedSubscript:@"accountUserAltDSID"];
-  v14 = [(PKPaymentDeviceMetadata *)self->_deviceMetadata dictionaryRepresentation];
-  if (v14)
+  [dictionary setObject:self->_accountUserAltDSID forKeyedSubscript:@"accountUserAltDSID"];
+  dictionaryRepresentation = [(PKPaymentDeviceMetadata *)self->_deviceMetadata dictionaryRepresentation];
+  if (dictionaryRepresentation)
   {
-    [v8 setObject:v14 forKey:@"deviceMetadata"];
+    [dictionary setObject:dictionaryRepresentation forKey:@"deviceMetadata"];
   }
 
-  v15 = [(NSData *)self->_publicKeyHash hexEncoding];
-  [v8 setObject:v15 forKeyedSubscript:@"publicKeyHash"];
+  hexEncoding = [(NSData *)self->_publicKeyHash hexEncoding];
+  [dictionary setObject:hexEncoding forKeyedSubscript:@"publicKeyHash"];
 
-  v16 = [objc_opt_class() _HTTPBodyWithDictionary:v8];
+  v16 = [objc_opt_class() _HTTPBodyWithDictionary:dictionary];
   [v7 setHTTPBody:v16];
 
   v17 = [v7 copy];
@@ -131,61 +131,61 @@ LABEL_19:
   return v3;
 }
 
-- (id)manifestHashWithReferenceIdentifier:(id)a3
+- (id)manifestHashWithReferenceIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AD60] string];
+  identifierCopy = identifier;
+  string = [MEMORY[0x1E696AD60] string];
   if ([(NSString *)self->_accountIdentifier length])
   {
-    [v5 appendString:self->_accountIdentifier];
+    [string appendString:self->_accountIdentifier];
   }
 
-  v6 = [(PKPhysicalCardOrder *)self->_order artworkIdentifier];
-  if ([v6 length])
+  artworkIdentifier = [(PKPhysicalCardOrder *)self->_order artworkIdentifier];
+  if ([artworkIdentifier length])
   {
-    [v5 appendString:v6];
+    [string appendString:artworkIdentifier];
   }
 
   v7 = PKStringFromPhysicalCardOrderReason([(PKPhysicalCardOrder *)self->_order reason]);
   if ([v7 length])
   {
-    [v5 appendString:v7];
+    [string appendString:v7];
   }
 
-  if (v4)
+  if (identifierCopy)
   {
-    [v5 appendString:v4];
+    [string appendString:identifierCopy];
   }
 
-  v8 = [v5 dataUsingEncoding:4];
-  v9 = [v8 SHA256Hash];
+  v8 = [string dataUsingEncoding:4];
+  sHA256Hash = [v8 SHA256Hash];
 
-  return v9;
+  return sHA256Hash;
 }
 
-- (PKAccountWebServiceRequestPhysicalCardRequest)initWithCoder:(id)a3
+- (PKAccountWebServiceRequestPhysicalCardRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PKAccountWebServiceRequestPhysicalCardRequest;
-  v5 = [(PKOverlayableWebServiceRequest *)&v15 initWithCoder:v4];
+  v5 = [(PKOverlayableWebServiceRequest *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"baseURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"baseURL"];
     [(PKAccountWebServiceRequestPhysicalCardRequest *)v5 setBaseURL:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hashResponse"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hashResponse"];
     [(PKAccountWebServiceRequestPhysicalCardRequest *)v5 setHashResponse:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
     accountIdentifier = v5->_accountIdentifier;
     v5->_accountIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountUserAltDSID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountUserAltDSID"];
     accountUserAltDSID = v5->_accountUserAltDSID;
     v5->_accountUserAltDSID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"order"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"order"];
     order = v5->_order;
     v5->_order = v12;
   }
@@ -193,21 +193,21 @@ LABEL_19:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = PKAccountWebServiceRequestPhysicalCardRequest;
-  v4 = a3;
-  [(PKOverlayableWebServiceRequest *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(PKOverlayableWebServiceRequest *)&v7 encodeWithCoder:coderCopy];
   v5 = [(PKAccountWebServiceRequestPhysicalCardRequest *)self baseURL:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"baseURL"];
+  [coderCopy encodeObject:v5 forKey:@"baseURL"];
 
-  v6 = [(PKAccountWebServiceRequestPhysicalCardRequest *)self hashResponse];
-  [v4 encodeObject:v6 forKey:@"hashResponse"];
+  hashResponse = [(PKAccountWebServiceRequestPhysicalCardRequest *)self hashResponse];
+  [coderCopy encodeObject:hashResponse forKey:@"hashResponse"];
 
-  [v4 encodeObject:self->_accountIdentifier forKey:@"accountIdentifier"];
-  [v4 encodeObject:self->_accountUserAltDSID forKey:@"accountUserAltDSID"];
-  [v4 encodeObject:self->_order forKey:@"order"];
+  [coderCopy encodeObject:self->_accountIdentifier forKey:@"accountIdentifier"];
+  [coderCopy encodeObject:self->_accountUserAltDSID forKey:@"accountUserAltDSID"];
+  [coderCopy encodeObject:self->_order forKey:@"order"];
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface IMAVInterface
 + (id)sharedInstance;
-- (BOOL)startPreviewWithError:(id *)a3;
+- (BOOL)startPreviewWithError:(id *)error;
 - (BOOL)systemSupportsBackFacingCamera;
 - (BOOL)systemSupportsFrontFacingCamera;
 - (id)delegate;
 - (unsigned)overallChatState;
 - (void)chatStateUpdated;
 - (void)dealloc;
-- (void)unsetDelegate:(id)a3;
+- (void)unsetDelegate:(id)delegate;
 @end
 
 @implementation IMAVInterface
@@ -46,21 +46,21 @@
   objc_msgSend__updateOverallChatState(v9, v5, v6, v7, v8);
 }
 
-- (void)unsetDelegate:(id)a3
+- (void)unsetDelegate:(id)delegate
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v9 = objc_msgSend_delegate(self, v5, v6, v7, v8);
 
-  if (v9 == v4)
+  if (v9 == delegateCopy)
   {
     v10 = sub_254761764();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 134218242;
-      v16 = v4;
+      v16 = delegateCopy;
       v17 = 2112;
-      v18 = self;
+      selfCopy = self;
       _os_log_impl(&dword_254743000, v10, OS_LOG_TYPE_DEFAULT, "Unsetting %p as the delegate on %@", &v15, 0x16u);
     }
 
@@ -86,11 +86,11 @@
   return v10;
 }
 
-- (BOOL)startPreviewWithError:(id *)a3
+- (BOOL)startPreviewWithError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   return 1;

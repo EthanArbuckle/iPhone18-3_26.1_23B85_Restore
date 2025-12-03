@@ -10,21 +10,21 @@
 - (id)expirationDate
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(HKSPStateMachineState *)self stateMachine];
-  v4 = [v3 infoProvider];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  infoProvider = [stateMachine infoProvider];
 
-  v5 = [v4 currentDate];
-  v6 = [v4 sleepScheduleModel];
-  v7 = [v6 nextEventWithIdentifier:*MEMORY[0x277D621B8] dueAfterDate:v5];
+  currentDate = [infoProvider currentDate];
+  sleepScheduleModel = [infoProvider sleepScheduleModel];
+  v7 = [sleepScheduleModel nextEventWithIdentifier:*MEMORY[0x277D621B8] dueAfterDate:currentDate];
 
-  v8 = [(HKSPPersistentStateMachineState *)self lifetimeInterval];
-  v9 = [v8 endDate];
+  lifetimeInterval = [(HKSPPersistentStateMachineState *)self lifetimeInterval];
+  endDate = [lifetimeInterval endDate];
 
   v10 = v7;
-  if (v9)
+  if (endDate)
   {
     v10 = v7;
-    if ([v7 hksp_isAfterDate:v9])
+    if ([v7 hksp_isAfterDate:endDate])
     {
       v11 = HKSPLogForCategory();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -35,7 +35,7 @@
         _os_log_impl(&dword_269B11000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] bedtime has changed to be later, treating state as expired", &v16, 0xCu);
       }
 
-      v10 = v5;
+      v10 = currentDate;
     }
   }
 
@@ -48,11 +48,11 @@
 - (void)didEnter
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(HKSPStateMachineState *)self stateMachine];
-  v4 = [v3 currentContext];
-  v5 = [v4 hasStateTransitionAndNotInitializing];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  currentContext = [stateMachine currentContext];
+  hasStateTransitionAndNotInitializing = [currentContext hasStateTransitionAndNotInitializing];
 
-  if (v5)
+  if (hasStateTransitionAndNotInitializing)
   {
     v6 = HKSPLogForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -63,8 +63,8 @@
       _os_log_impl(&dword_269B11000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Sending notification", &v10, 0xCu);
     }
 
-    v8 = [(HKSPStateMachineState *)self stateMachine];
-    [v8 postChargingReminderNotification];
+    stateMachine2 = [(HKSPStateMachineState *)self stateMachine];
+    [stateMachine2 postChargingReminderNotification];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -84,10 +84,10 @@
       _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] charging reminders disabled after notifying", &v9, 0xCu);
     }
 
-    v5 = [(HKSPStateMachineState *)self stateMachine];
-    v6 = [(HKSPStateMachineState *)self stateMachine];
-    v7 = [v6 disabledState];
-    [v5 enterState:v7];
+    stateMachine = [(HKSPStateMachineState *)self stateMachine];
+    stateMachine2 = [(HKSPStateMachineState *)self stateMachine];
+    disabledState = [stateMachine2 disabledState];
+    [stateMachine enterState:disabledState];
   }
 
   v8 = *MEMORY[0x277D85DE8];

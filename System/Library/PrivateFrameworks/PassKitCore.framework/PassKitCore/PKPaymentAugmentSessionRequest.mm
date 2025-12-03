@@ -1,34 +1,34 @@
 @interface PKPaymentAugmentSessionRequest
-+ (id)augmentSessionRequestWithBaseRequest:(id)a3;
++ (id)augmentSessionRequestWithBaseRequest:(id)request;
 - (id)bodyDictionary;
 - (id)endpointComponents;
 @end
 
 @implementation PKPaymentAugmentSessionRequest
 
-+ (id)augmentSessionRequestWithBaseRequest:(id)a3
++ (id)augmentSessionRequestWithBaseRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = objc_alloc_init(PKPaymentAugmentSessionRequest);
-  -[PKPaymentAugmentBaseRequest setType:](v4, "setType:", [v3 type]);
-  v5 = [v3 pass];
-  [(PKPaymentAugmentBaseRequest *)v4 setPass:v5];
+  -[PKPaymentAugmentBaseRequest setType:](v4, "setType:", [requestCopy type]);
+  pass = [requestCopy pass];
+  [(PKPaymentAugmentBaseRequest *)v4 setPass:pass];
 
-  v6 = [v3 paymentApplication];
-  [(PKPaymentAugmentBaseRequest *)v4 setPaymentApplication:v6];
+  paymentApplication = [requestCopy paymentApplication];
+  [(PKPaymentAugmentBaseRequest *)v4 setPaymentApplication:paymentApplication];
 
-  v7 = [v3 applet];
-  [(PKPaymentAugmentBaseRequest *)v4 setApplet:v7];
+  applet = [requestCopy applet];
+  [(PKPaymentAugmentBaseRequest *)v4 setApplet:applet];
 
-  v8 = [v3 merchantCountryCode];
-  [(PKPaymentAugmentBaseRequest *)v4 setMerchantCountryCode:v8];
+  merchantCountryCode = [requestCopy merchantCountryCode];
+  [(PKPaymentAugmentBaseRequest *)v4 setMerchantCountryCode:merchantCountryCode];
 
-  v9 = [v3 currencyCode];
-  [(PKPaymentAugmentBaseRequest *)v4 setCurrencyCode:v9];
+  currencyCode = [requestCopy currencyCode];
+  [(PKPaymentAugmentBaseRequest *)v4 setCurrencyCode:currencyCode];
 
-  v10 = [v3 boundInterfaceIdentifier];
+  boundInterfaceIdentifier = [requestCopy boundInterfaceIdentifier];
 
-  [(PKWebServiceRequest *)v4 setBoundInterfaceIdentifier:v10];
+  [(PKWebServiceRequest *)v4 setBoundInterfaceIdentifier:boundInterfaceIdentifier];
 
   return v4;
 }
@@ -45,19 +45,19 @@
 
 - (id)bodyDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(PKPaymentMerchantSession *)self->_merchantSession merchantIdentifier];
-  [v3 setObject:v4 forKey:@"merchantId"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  merchantIdentifier = [(PKPaymentMerchantSession *)self->_merchantSession merchantIdentifier];
+  [dictionary setObject:merchantIdentifier forKey:@"merchantId"];
 
-  v5 = [(PKPaymentMerchantSession *)self->_merchantSession merchantSessionIdentifier];
-  [v3 setObject:v5 forKey:@"merchantSessionId"];
+  merchantSessionIdentifier = [(PKPaymentMerchantSession *)self->_merchantSession merchantSessionIdentifier];
+  [dictionary setObject:merchantSessionIdentifier forKey:@"merchantSessionId"];
 
   v9.receiver = self;
   v9.super_class = PKPaymentAugmentSessionRequest;
-  v6 = [(PKPaymentAugmentBaseRequest *)&v9 bodyDictionary];
-  [v3 addEntriesFromDictionary:v6];
+  bodyDictionary = [(PKPaymentAugmentBaseRequest *)&v9 bodyDictionary];
+  [dictionary addEntriesFromDictionary:bodyDictionary];
 
-  v7 = [v3 copy];
+  v7 = [dictionary copy];
 
   return v7;
 }

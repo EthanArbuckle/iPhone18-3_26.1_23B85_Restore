@@ -1,14 +1,14 @@
 @interface DESAdaptiveClipping
-+ (BOOL)computeClippingIndicator:(id)a3 clippingBound:(float)a4 scale:(float)a5 clippingIndicator:(float *)a6;
++ (BOOL)computeClippingIndicator:(id)indicator clippingBound:(float)bound scale:(float)scale clippingIndicator:(float *)clippingIndicator;
 @end
 
 @implementation DESAdaptiveClipping
 
-+ (BOOL)computeClippingIndicator:(id)a3 clippingBound:(float)a4 scale:(float)a5 clippingIndicator:(float *)a6
++ (BOOL)computeClippingIndicator:(id)indicator clippingBound:(float)bound scale:(float)scale clippingIndicator:(float *)clippingIndicator
 {
-  v9 = a3;
-  v10 = v9;
-  if (!a6)
+  indicatorCopy = indicator;
+  v10 = indicatorCopy;
+  if (!clippingIndicator)
   {
     v14 = +[DESLogging coreChannel];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -19,20 +19,20 @@
     goto LABEL_29;
   }
 
-  v11 = (LODWORD(a5) & 0x7FFFFFFFu) - 1 < 0x7FFFFF;
-  v12 = ((LODWORD(a5) & 0x7FFFFFFFu) - 0x800000) >> 24 < 0x7F;
-  if (a5 >= 0.0)
+  v11 = (LODWORD(scale) & 0x7FFFFFFFu) - 1 < 0x7FFFFF;
+  v12 = ((LODWORD(scale) & 0x7FFFFFFFu) - 0x800000) >> 24 < 0x7F;
+  if (scale >= 0.0)
   {
     v12 = 0;
     v11 = 0;
   }
 
-  if ((LODWORD(a5) & 0x7FFFFFFF) == 0)
+  if ((LODWORD(scale) & 0x7FFFFFFF) == 0)
   {
     v11 = 1;
   }
 
-  v13 = (LODWORD(a5) & 0x7FFFFFFF) == 0x7F800000 || v11;
+  v13 = (LODWORD(scale) & 0x7FFFFFFF) == 0x7F800000 || v11;
   if ((v13 | v12) == 1)
   {
     v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Malformed scale for clipping indicator, should be a positive floating point number"];
@@ -45,7 +45,7 @@
     goto LABEL_28;
   }
 
-  v22 = sqrt(a4 * a4 - a5 * a5);
+  v22 = sqrt(bound * bound - scale * scale);
   if (v22 == INFINITY || *&v22 == 0)
   {
     v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Malformed deltaClippingBound for clipping indicator, should be a positive floating point number"];
@@ -58,7 +58,7 @@
     goto LABEL_28;
   }
 
-  v24 = [v9 bytes];
+  bytes = [indicatorCopy bytes];
   v25 = [v10 length];
   v26 = 0.0;
   if (v25 >= 4)
@@ -67,7 +67,7 @@
     v28 = 0.0;
     do
     {
-      v28 = v28 + (*(v24 + 4 * v27) * *(v24 + 4 * v27));
+      v28 = v28 + (*(bytes + 4 * v27) * *(bytes + 4 * v27));
       ++v27;
     }
 
@@ -98,15 +98,15 @@ LABEL_29:
 
   if (v22 < v29)
   {
-    v34 = -a5;
+    scaleCopy = -scale;
   }
 
   else
   {
-    v34 = a5;
+    scaleCopy = scale;
   }
 
-  *a6 = v34;
+  *clippingIndicator = scaleCopy;
   v32 = 1;
 LABEL_30:
 

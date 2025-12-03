@@ -1,29 +1,29 @@
 @interface THWSceneInfo
-- (THWSceneInfo)initWithContext:(id)a3 geometry:(id)a4 sourceURL:(id)a5 drmContext:(id)a6 stageColor:(id)a7;
-- (id)p_validateFileURL:(id)a3;
+- (THWSceneInfo)initWithContext:(id)context geometry:(id)geometry sourceURL:(id)l drmContext:(id)drmContext stageColor:(id)color;
+- (id)p_validateFileURL:(id)l;
 - (void)dealloc;
 @end
 
 @implementation THWSceneInfo
 
-- (THWSceneInfo)initWithContext:(id)a3 geometry:(id)a4 sourceURL:(id)a5 drmContext:(id)a6 stageColor:(id)a7
+- (THWSceneInfo)initWithContext:(id)context geometry:(id)geometry sourceURL:(id)l drmContext:(id)drmContext stageColor:(id)color
 {
   v13.receiver = self;
   v13.super_class = THWSceneInfo;
-  v10 = [(THWSceneInfo *)&v13 initWithContext:a3 geometry:a4];
+  v10 = [(THWSceneInfo *)&v13 initWithContext:context geometry:geometry];
   v11 = v10;
   if (v10)
   {
     [(THWSceneInfo *)v10 setIdleAnimationBehavior:0];
     [(THWSceneInfo *)v11 setRotationConstraints:0];
-    [(THWSceneInfo *)v11 setSourceURL:[(THWSceneInfo *)v11 p_validateFileURL:a5]];
-    [(THWSceneInfo *)v11 setDrmContext:a6];
-    if (!a7)
+    [(THWSceneInfo *)v11 setSourceURL:[(THWSceneInfo *)v11 p_validateFileURL:l]];
+    [(THWSceneInfo *)v11 setDrmContext:drmContext];
+    if (!color)
     {
-      a7 = +[TSUColor clearColor];
+      color = +[TSUColor clearColor];
     }
 
-    [(THWSceneInfo *)v11 setStageColor:a7];
+    [(THWSceneInfo *)v11 setStageColor:color];
   }
 
   return v11;
@@ -43,22 +43,22 @@
   [(THWSceneInfo *)&v3 dealloc];
 }
 
-- (id)p_validateFileURL:(id)a3
+- (id)p_validateFileURL:(id)l
 {
-  v3 = a3;
-  if (a3)
+  lCopy = l;
+  if (l)
   {
     v6 = 0;
     v7 = 0;
-    [a3 getResourceValue:&v7 forKey:NSURLIsDirectoryKey error:&v6];
-    if (![v3 isFileURL] || v6 || objc_msgSend(v7, "BOOLValue") || !-[NSFileManager fileExistsAtPath:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:", objc_msgSend(v3, "path")))
+    [l getResourceValue:&v7 forKey:NSURLIsDirectoryKey error:&v6];
+    if (![lCopy isFileURL] || v6 || objc_msgSend(v7, "BOOLValue") || !-[NSFileManager fileExistsAtPath:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:", objc_msgSend(lCopy, "path")))
     {
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
       return 0;
     }
   }
 
-  return v3;
+  return lCopy;
 }
 
 @end

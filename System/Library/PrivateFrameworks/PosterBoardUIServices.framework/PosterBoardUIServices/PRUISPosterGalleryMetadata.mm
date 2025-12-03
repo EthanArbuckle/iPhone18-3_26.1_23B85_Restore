@@ -2,10 +2,10 @@
 - (NSDate)creationDate;
 - (NSString)description;
 - (_TtC21PosterBoardUIServices26PRUISPosterGalleryMetadata)init;
-- (_TtC21PosterBoardUIServices26PRUISPosterGalleryMetadata)initWithCoder:(id)a3;
-- (_TtC21PosterBoardUIServices26PRUISPosterGalleryMetadata)initWithCreationDate:(id)a3;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC21PosterBoardUIServices26PRUISPosterGalleryMetadata)initWithCoder:(id)coder;
+- (_TtC21PosterBoardUIServices26PRUISPosterGalleryMetadata)initWithCreationDate:(id)date;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRUISPosterGalleryMetadata
@@ -23,7 +23,7 @@
   return v7;
 }
 
-- (_TtC21PosterBoardUIServices26PRUISPosterGalleryMetadata)initWithCreationDate:(id)a3
+- (_TtC21PosterBoardUIServices26PRUISPosterGalleryMetadata)initWithCreationDate:(id)date
 {
   ObjectType = swift_getObjectType();
   v5 = sub_1CAEF9DBC();
@@ -40,18 +40,18 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v7 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v5 = sub_1CAEF9D5C();
   v6 = sub_1CAEFA4BC();
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:v5 forKey:v6];
 }
 
-- (_TtC21PosterBoardUIServices26PRUISPosterGalleryMetadata)initWithCoder:(id)a3
+- (_TtC21PosterBoardUIServices26PRUISPosterGalleryMetadata)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = sub_1CAEB6EE0();
 
   return v4;
@@ -59,7 +59,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   PRUISPosterGalleryMetadata.description.getter();
 
   v3 = sub_1CAEFA4BC();
@@ -67,7 +67,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   ObjectType = swift_getObjectType();
   v5 = sub_1CAEF9DBC();
@@ -77,7 +77,7 @@
   v9 = *(v6 + 16);
   v9(v8, self + OBJC_IVAR____TtC21PosterBoardUIServices26PRUISPosterGalleryMetadata_creationDate, v5);
   v10 = objc_allocWithZone(ObjectType);
-  v11 = self;
+  selfCopy = self;
   sub_1CAEF9E6C();
   v9(&v10[OBJC_IVAR____TtC21PosterBoardUIServices26PRUISPosterGalleryMetadata_creationDate], v8, v5);
   v14.receiver = v10;

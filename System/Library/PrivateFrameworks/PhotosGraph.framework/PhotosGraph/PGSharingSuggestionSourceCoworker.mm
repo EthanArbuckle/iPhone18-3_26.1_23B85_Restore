@@ -1,26 +1,26 @@
 @interface PGSharingSuggestionSourceCoworker
-- (id)suggestedResultsForInput:(id)a3 withOptions:(id)a4;
+- (id)suggestedResultsForInput:(id)input withOptions:(id)options;
 @end
 
 @implementation PGSharingSuggestionSourceCoworker
 
-- (id)suggestedResultsForInput:(id)a3 withOptions:(id)a4
+- (id)suggestedResultsForInput:(id)input withOptions:(id)options
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v18 = a4;
-  v19 = [v5 momentNodes];
-  v20 = [v5 graph];
-  v6 = [v20 coworkers];
-  if ([v6 count])
+  inputCopy = input;
+  optionsCopy = options;
+  momentNodes = [inputCopy momentNodes];
+  graph = [inputCopy graph];
+  coworkers = [graph coworkers];
+  if ([coworkers count])
   {
-    v23 = [v20 meNodeCollection];
+    meNodeCollection = [graph meNodeCollection];
     v21 = objc_opt_new();
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
-    obj = v19;
+    obj = momentNodes;
     v7 = [obj countByEnumeratingWithState:&v36 objects:v40 count:16];
     if (v7)
     {
@@ -47,13 +47,13 @@
           v24[1] = 3221225472;
           v24[2] = __74__PGSharingSuggestionSourceCoworker_suggestedResultsForInput_withOptions___block_invoke;
           v24[3] = &unk_2788850E0;
-          v25 = v6;
+          v25 = coworkers;
           v26 = &v32;
           v27 = &v28;
           [v10 enumeratePersonNodesUsingBlock:v24];
           if (v33[3])
           {
-            if ([v10 happensPartiallyAtWorkOfPersonNodes:v23] || (v11 = v33[3], v11 >= 3) && v11 / (v29[3] + v11) >= 0.75)
+            if ([v10 happensPartiallyAtWorkOfPersonNodes:meNodeCollection] || (v11 = v33[3], v11 >= 3) && v11 / (v29[3] + v11) >= 0.75)
             {
               [v21 addObject:v10];
             }
@@ -72,7 +72,7 @@
     if ([v21 count])
     {
       v12 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_48268];
-      v13 = [v6 filteredSetUsingPredicate:v12];
+      v13 = [coworkers filteredSetUsingPredicate:v12];
 
       v14 = [(PGSharingSuggestionSource *)self suggestionResultsWithPersons:v13];
     }

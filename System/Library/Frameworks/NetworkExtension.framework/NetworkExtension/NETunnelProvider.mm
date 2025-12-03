@@ -8,13 +8,13 @@
 
 - (NETunnelProviderRoutingMethod)routingMethod
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NEProvider *)v2 context];
-  v5 = v3;
-  if (v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  context = [(NEProvider *)selfCopy context];
+  v5 = context;
+  if (context)
   {
-    Property = objc_getProperty(v3, v4, 48, 1);
+    Property = objc_getProperty(context, v4, 48, 1);
   }
 
   else
@@ -23,20 +23,20 @@
   }
 
   v7 = Property;
-  v8 = [v7 appVPN];
+  appVPN = [v7 appVPN];
 
-  if (v8)
+  if (appVPN)
   {
     v9 = NETunnelProviderRoutingMethodSourceApplication;
   }
 
   else
   {
-    v10 = [(NEProvider *)v2 context];
-    v12 = v10;
-    if (v10)
+    context2 = [(NEProvider *)selfCopy context];
+    v12 = context2;
+    if (context2)
     {
-      v13 = objc_getProperty(v10, v11, 48, 1);
+      v13 = objc_getProperty(context2, v11, 48, 1);
     }
 
     else
@@ -46,9 +46,9 @@
 
     v14 = v13;
     v15 = [v14 VPN];
-    v16 = [v15 tunnelType];
+    tunnelType = [v15 tunnelType];
 
-    if (v16 == 2)
+    if (tunnelType == 2)
     {
       v9 = NETunnelProviderRoutingMethodNetworkRule;
     }
@@ -59,7 +59,7 @@
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
@@ -73,7 +73,7 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v10 = 138412546;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v6;
     _os_log_impl(&dword_1BA83C000, v8, OS_LOG_TYPE_INFO, "%@: Handle App Message with %@", &v10, 0x16u);
@@ -124,9 +124,9 @@
       v12 = &v23;
 LABEL_14:
       v16 = [v10 dictionaryWithObjects:v11 forKeys:v12 count:1];
-      v13 = [v9 errorWithDomain:@"NETunnelProviderErrorDomain" code:1 userInfo:v16];
+      context = [v9 errorWithDomain:@"NETunnelProviderErrorDomain" code:1 userInfo:v16];
 
-      v7[2](v7, v13);
+      v7[2](v7, context);
       goto LABEL_17;
     }
   }
@@ -137,7 +137,7 @@ LABEL_14:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v22 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1BA83C000, v14, OS_LOG_TYPE_INFO, "%@: setTunnelConfiguration validation failed", buf, 0xCu);
     }
 
@@ -145,23 +145,23 @@ LABEL_14:
     {
       v15 = [v8 componentsJoinedByString:{@"\n", *MEMORY[0x1E696A578]}];
       v20 = v15;
-      v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
+      context = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
     }
 
     else
     {
-      v13 = 0;
+      context = 0;
     }
 
-    v17 = [MEMORY[0x1E696ABC0] errorWithDomain:@"NETunnelProviderErrorDomain" code:1 userInfo:v13];
+    v17 = [MEMORY[0x1E696ABC0] errorWithDomain:@"NETunnelProviderErrorDomain" code:1 userInfo:context];
     v7[2](v7, v17);
   }
 
   else
   {
 LABEL_8:
-    v13 = [(NEProvider *)self context];
-    [v13 setTunnelConfiguration:v6 completionHandler:v7];
+    context = [(NEProvider *)self context];
+    [context setTunnelConfiguration:v6 completionHandler:v7];
   }
 
 LABEL_17:

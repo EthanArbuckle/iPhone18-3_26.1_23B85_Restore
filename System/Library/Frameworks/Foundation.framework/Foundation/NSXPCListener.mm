@@ -4,22 +4,22 @@
 + (id)_UUID;
 + (void)enableTransactions;
 - (NSXPCListener)initWithMachServiceName:(NSString *)name;
-- (NSXPCListener)initWithServiceName:(id)a3;
+- (NSXPCListener)initWithServiceName:(id)name;
 - (NSXPCListenerEndpoint)endpoint;
 - (id)__initWithoutRemoteConnection;
 - (id)_initShared;
-- (id)_initWithRemoteName:(id)a3;
+- (id)_initWithRemoteName:(id)name;
 - (id)_xpcConnection;
 - (id)description;
 - (id)serviceName;
-- (void)__receiveRemoteConnection:(id)a3;
-- (void)_setQueue:(id)a3;
+- (void)__receiveRemoteConnection:(id)connection;
+- (void)_setQueue:(id)queue;
 - (void)activate;
 - (void)dealloc;
 - (void)invalidate;
 - (void)resume;
 - (void)setDelegate:(id)delegate;
-- (void)setOptions:(unint64_t)a3;
+- (void)setOptions:(unint64_t)options;
 - (void)suspend;
 @end
 
@@ -52,9 +52,9 @@
 
   if ((atomic_fetch_and(&self->_state, 0xF7u) & 8) != 0)
   {
-    v4 = [(NSString *)self->_serviceName UTF8String];
+    uTF8String = [(NSString *)self->_serviceName UTF8String];
 
-    MEMORY[0x1EEE74DD0](v4, additional_service_handler, 0);
+    MEMORY[0x1EEE74DD0](uTF8String, additional_service_handler, 0);
   }
 
   else
@@ -75,7 +75,7 @@
   v3[1] = 3221225472;
   v3[2] = __32__NSXPCListener_serviceListener__block_invoke;
   v3[3] = &unk_1E69F2C00;
-  v3[4] = a1;
+  v3[4] = self;
   if (_MergedGlobals_154 != -1)
   {
     dispatch_once(&_MergedGlobals_154, v3);
@@ -218,9 +218,9 @@ uint64_t __32__NSXPCListener_serviceListener__block_invoke(uint64_t a1)
 
   if ((atomic_fetch_and(&self->_state, 0xF7u) & 8) != 0)
   {
-    v5 = [(NSString *)self->_serviceName UTF8String];
+    uTF8String = [(NSString *)self->_serviceName UTF8String];
 
-    MEMORY[0x1EEE74DD0](v5, additional_service_handler, 0);
+    MEMORY[0x1EEE74DD0](uTF8String, additional_service_handler, 0);
   }
 
   else
@@ -244,7 +244,7 @@ uint64_t __32__NSXPCListener_serviceListener__block_invoke(uint64_t a1)
   }
 }
 
-- (NSXPCListener)initWithServiceName:(id)a3
+- (NSXPCListener)initWithServiceName:(id)name
 {
   handler[5] = *MEMORY[0x1E69E9840];
   v15.receiver = self;
@@ -253,16 +253,16 @@ uint64_t __32__NSXPCListener_serviceListener__block_invoke(uint64_t a1)
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (name)
     {
       v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v8 = qos_class_main();
       v9 = dispatch_queue_attr_make_with_qos_class(v7, v8, 0);
       v6->_userQueue = dispatch_queue_create("com.apple.NSXPCListener.main", v9);
-      if (![a3 isEqualToString:&stru_1EEEFDF90])
+      if (![name isEqualToString:&stru_1EEEFDF90])
       {
         atomic_fetch_or_explicit(&v6->_state, 8u, memory_order_relaxed);
-        v6->_serviceName = [a3 copy];
+        v6->_serviceName = [name copy];
         atomic_store(v6, &_additionalListener);
         return v6;
       }
@@ -282,15 +282,15 @@ uint64_t __32__NSXPCListener_serviceListener__block_invoke(uint64_t a1)
         return v6;
       }
 
-      v13 = [NSString stringWithFormat:@"%@: Unable to create anonymous listener connection with name %@", _NSMethodExceptionProem(v6, a2), a3];
+      name = [NSString stringWithFormat:@"%@: Unable to create anonymous listener connection with name %@", _NSMethodExceptionProem(v6, a2), name];
     }
 
     else
     {
-      v13 = [NSString stringWithFormat:@"%@: The name argument is required. To create an anonymous connection, use a zero-length string.", _NSMethodExceptionProem(v5, a2), v14];
+      name = [NSString stringWithFormat:@"%@: The name argument is required. To create an anonymous connection, use a zero-length string.", _NSMethodExceptionProem(v5, a2), v14];
     }
 
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v13 userInfo:0]);
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:name userInfo:0]);
   }
 
   return v6;
@@ -327,21 +327,21 @@ uint64_t __32__NSXPCListener_serviceListener__block_invoke(uint64_t a1)
         return v6;
       }
 
-      v13 = [NSString stringWithFormat:@"%@: Unable to create connection with name %@", _NSMethodExceptionProem(v6, a2), name];
+      name = [NSString stringWithFormat:@"%@: Unable to create connection with name %@", _NSMethodExceptionProem(v6, a2), name];
     }
 
     else
     {
-      v13 = [NSString stringWithFormat:@"%@: The name argument is required.", _NSMethodExceptionProem(v5, a2), v14];
+      name = [NSString stringWithFormat:@"%@: The name argument is required.", _NSMethodExceptionProem(v5, a2), v14];
     }
 
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v13 userInfo:0]);
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:name userInfo:0]);
   }
 
   return v6;
 }
 
-- (id)_initWithRemoteName:(id)a3
+- (id)_initWithRemoteName:(id)name
 {
   v20[5] = *MEMORY[0x1E69E9840];
   _NSXPCConnectionInitRemoteXPC();
@@ -351,15 +351,15 @@ uint64_t __32__NSXPCListener_serviceListener__block_invoke(uint64_t a1)
   v7 = v6;
   if (v6)
   {
-    if (a3)
+    if (name)
     {
       v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v9 = qos_class_main();
       v10 = dispatch_queue_attr_make_with_qos_class(v8, v9, 0);
-      v7->_userQueue = dispatch_queue_create([objc_msgSend(@"com.apple.NSXPCListener.remote." stringByAppendingString:{a3), "UTF8String"}], v10);
-      v7->_serviceName = [a3 copy];
+      v7->_userQueue = dispatch_queue_create([objc_msgSend(@"com.apple.NSXPCListener.remote." stringByAppendingString:{name), "UTF8String"}], v10);
+      v7->_serviceName = [name copy];
       v7->_remote = 1;
-      v11 = (_xpc_remote_connection_create_remote_service_listener)([a3 UTF8String], v7->_userQueue, 0);
+      v11 = (_xpc_remote_connection_create_remote_service_listener)([name UTF8String], v7->_userQueue, 0);
       v7->_connection.xpc = v11;
       if (v11)
       {
@@ -374,15 +374,15 @@ uint64_t __32__NSXPCListener_serviceListener__block_invoke(uint64_t a1)
         return v7;
       }
 
-      v17 = [NSString stringWithFormat:@"%@: Unable to create remote connection with name %@", _NSMethodExceptionProem(v7, a2), a3];
+      name = [NSString stringWithFormat:@"%@: Unable to create remote connection with name %@", _NSMethodExceptionProem(v7, a2), name];
     }
 
     else
     {
-      v17 = [NSString stringWithFormat:@"%@: The name argument is required.", _NSMethodExceptionProem(v6, a2), v18];
+      name = [NSString stringWithFormat:@"%@: The name argument is required.", _NSMethodExceptionProem(v6, a2), v18];
     }
 
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v17 userInfo:0]);
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:name userInfo:0]);
   }
 
   return v7;
@@ -417,11 +417,11 @@ uint64_t __32__NSXPCListener_serviceListener__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)__receiveRemoteConnection:(id)a3
+- (void)__receiveRemoteConnection:(id)connection
 {
   if (self->_remote)
   {
-    service_connection_handler_make_remote_connection(self, a3);
+    service_connection_handler_make_remote_connection(self, connection);
   }
 }
 
@@ -459,10 +459,10 @@ uint64_t __32__NSXPCListener_serviceListener__block_invoke(uint64_t a1)
   atomic_store(v7, p_delegate);
 }
 
-- (void)setOptions:(unint64_t)a3
+- (void)setOptions:(unint64_t)options
 {
-  v3 = a3;
-  if ((a3 & 0x100) != 0)
+  optionsCopy = options;
+  if ((options & 0x100) != 0)
   {
     if (self->_remote)
     {
@@ -472,7 +472,7 @@ uint64_t __32__NSXPCListener_serviceListener__block_invoke(uint64_t a1)
     xpc_connection_set_legacy();
   }
 
-  if ((v3 & 0x1000) == 0)
+  if ((optionsCopy & 0x1000) == 0)
   {
     return;
   }
@@ -489,9 +489,9 @@ LABEL_9:
   MEMORY[0x1EEE74B08](xpc);
 }
 
-- (void)_setQueue:(id)a3
+- (void)_setQueue:(id)queue
 {
-  if (!a3)
+  if (!queue)
   {
     v9 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: The queue parameter is NULL, which is invalid", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v9);
@@ -500,7 +500,7 @@ LABEL_9:
   userQueue = self->_userQueue;
   if (userQueue)
   {
-    v6 = userQueue == a3;
+    v6 = userQueue == queue;
   }
 
   else
@@ -510,21 +510,21 @@ LABEL_9:
 
   if (!v6)
   {
-    dispatch_retain(a3);
+    dispatch_retain(queue);
     xpc = self->_connection.xpc;
     v8 = self->_userQueue;
-    self->_userQueue = a3;
+    self->_userQueue = queue;
     if (self->_remote)
     {
       if (xpc)
       {
-        _xpc_remote_connection_set_target_queue(xpc, a3);
+        _xpc_remote_connection_set_target_queue(xpc, queue);
       }
     }
 
     else if (xpc)
     {
-      xpc_connection_set_target_queue(xpc, a3);
+      xpc_connection_set_target_queue(xpc, queue);
     }
 
     dispatch_release(v8);

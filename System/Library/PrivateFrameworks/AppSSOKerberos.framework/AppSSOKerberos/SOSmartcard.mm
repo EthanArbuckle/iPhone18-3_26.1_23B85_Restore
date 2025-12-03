@@ -1,20 +1,20 @@
 @interface SOSmartcard
-+ (BOOL)pollSmartcardForIdentityWithPersistentRef:(id)a3 tokenID:(id)a4;
-+ (__SecIdentity)getLocalAuthIdentityForCert:(id)a3 withLAContext:(id)a4;
++ (BOOL)pollSmartcardForIdentityWithPersistentRef:(id)ref tokenID:(id)d;
++ (__SecIdentity)getLocalAuthIdentityForCert:(id)cert withLAContext:(id)context;
 + (id)availableSmartCards;
-+ (id)searchForCachedIdentityPersistentRef:(id)a3 tokenID:(id)a4;
-+ (id)searchForCachedIdentityWithSerial:(__CFData *)a3 withIssuer:(__CFData *)a4 withTokenID:(id)a5;
-+ (int)getIdentityForPersistentRef:(__CFData *)a3 identityToReturn:(__SecIdentity *)a4;
++ (id)searchForCachedIdentityPersistentRef:(id)ref tokenID:(id)d;
++ (id)searchForCachedIdentityWithSerial:(__CFData *)serial withIssuer:(__CFData *)issuer withTokenID:(id)d;
++ (int)getIdentityForPersistentRef:(__CFData *)ref identityToReturn:(__SecIdentity *)return;
 + (void)availableSmartCards;
 @end
 
 @implementation SOSmartcard
 
-+ (__SecIdentity)getLocalAuthIdentityForCert:(id)a3 withLAContext:(id)a4
++ (__SecIdentity)getLocalAuthIdentityForCert:(id)cert withLAContext:(id)context
 {
   v47[1] = *MEMORY[0x277D85DE8];
-  v37 = a3;
-  v36 = a4;
+  certCopy = cert;
+  contextCopy = context;
   result = 0;
   v6 = SO_LOG_SOSmartcard();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -22,7 +22,7 @@
     *buf = 136315394;
     v41 = "+[SOSmartcard getLocalAuthIdentityForCert:withLAContext:]";
     v42 = 2112;
-    *v43 = a1;
+    *v43 = self;
     _os_log_impl(&dword_24006C000, v6, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
@@ -42,29 +42,29 @@
     v47[0] = v13;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v47 forKeys:&v46 count:1];
 
-    v15 = [v37 objectForKeyedSubscript:v9];
+    v15 = [certCopy objectForKeyedSubscript:v9];
     v38 = v10;
-    v16 = [v36 evaluateAccessControl:v15 operation:3 options:v14 error:&v38];
+    v16 = [contextCopy evaluateAccessControl:v15 operation:3 options:v14 error:&v38];
     v7 = v38;
 
     v17 = SO_LOG_SOSmartcard();
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
     if (!v7)
     {
-      v19 = a1;
+      selfCopy2 = self;
       if (v18)
       {
         *buf = 136315394;
         v41 = "+[SOSmartcard getLocalAuthIdentityForCert:withLAContext:]";
         v42 = 2112;
-        *v43 = a1;
+        *v43 = self;
         _os_log_impl(&dword_24006C000, v17, OS_LOG_TYPE_DEFAULT, "%s evaluateAccessControl was successful on %@", buf, 0x16u);
       }
 
       v44[0] = v33;
-      v25 = [v37 objectForKeyedSubscript:?];
+      v25 = [certCopy objectForKeyedSubscript:?];
       v45[0] = v25;
-      v45[1] = v36;
+      v45[1] = contextCopy;
       v44[1] = v35;
       v44[2] = v34;
       v45[2] = MEMORY[0x277CBEC38];
@@ -82,7 +82,7 @@
           v42 = 1024;
           *v43 = v27;
           *&v43[4] = 2112;
-          *&v43[6] = a1;
+          *&v43[6] = self;
           _os_log_impl(&dword_24006C000, v28, OS_LOG_TYPE_DEFAULT, "%s retrieving identity failed with error %d on %@", buf, 0x1Cu);
         }
       }
@@ -90,21 +90,21 @@
       goto LABEL_28;
     }
 
-    v19 = a1;
+    selfCopy2 = self;
     if (v18)
     {
-      v20 = [v7 code];
+      code = [v7 code];
       *buf = 136315650;
       v41 = "+[SOSmartcard getLocalAuthIdentityForCert:withLAContext:]";
       v42 = 2048;
-      *v43 = v20;
+      *v43 = code;
       *&v43[8] = 2112;
-      *&v43[10] = a1;
+      *&v43[10] = self;
       _os_log_impl(&dword_24006C000, v17, OS_LOG_TYPE_DEFAULT, "%s evaluateAccessControl failed with error %ld on %@", buf, 0x20u);
     }
 
-    v21 = [v7 code];
-    if (v21 != -1004)
+    code2 = [v7 code];
+    if (code2 != -1004)
     {
       break;
     }
@@ -117,7 +117,7 @@
       v42 = 1026;
       *v43 = v8 + 1;
       *&v43[4] = 2112;
-      *&v43[6] = a1;
+      *&v43[6] = self;
       _os_log_impl(&dword_24006C000, v22, OS_LOG_TYPE_DEFAULT, "%s Screen may be locked, retry %{public}d on %@", buf, 0x1Cu);
     }
 
@@ -131,7 +131,7 @@
     ++v8;
   }
 
-  if (v21 == -7 || v21 == -3)
+  if (code2 == -7 || code2 == -3)
   {
     v23 = SO_LOG_SOSmartcard();
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -142,11 +142,11 @@
     *buf = 136315394;
     v41 = "+[SOSmartcard getLocalAuthIdentityForCert:withLAContext:]";
     v42 = 2112;
-    *v43 = a1;
+    *v43 = self;
     v24 = "%s Problem reading the SmartCard on %@";
   }
 
-  else if (v21 == -4)
+  else if (code2 == -4)
   {
     v23 = SO_LOG_SOSmartcard();
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -157,7 +157,7 @@
     *buf = 136315394;
     v41 = "+[SOSmartcard getLocalAuthIdentityForCert:withLAContext:]";
     v42 = 2112;
-    *v43 = a1;
+    *v43 = self;
     v24 = "%s User cancelled PIN prompt on %@";
   }
 
@@ -172,7 +172,7 @@
     *buf = 136315394;
     v41 = "+[SOSmartcard getLocalAuthIdentityForCert:withLAContext:]";
     v42 = 2112;
-    *v43 = a1;
+    *v43 = self;
     v24 = "%s Some other problem occurred on %@";
   }
 
@@ -186,7 +186,7 @@ LABEL_29:
     *buf = 136315394;
     v41 = "+[SOSmartcard getLocalAuthIdentityForCert:withLAContext:]";
     v42 = 2112;
-    *v43 = v19;
+    *v43 = selfCopy2;
     _os_log_impl(&dword_24006C000, v29, OS_LOG_TYPE_DEFAULT, "%s finished on %@", buf, 0x16u);
   }
 
@@ -195,41 +195,41 @@ LABEL_29:
   return v30;
 }
 
-+ (int)getIdentityForPersistentRef:(__CFData *)a3 identityToReturn:(__SecIdentity *)a4
++ (int)getIdentityForPersistentRef:(__CFData *)ref identityToReturn:(__SecIdentity *)return
 {
   v10[3] = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CDC5F0];
   v9[0] = *MEMORY[0x277CDC228];
   v9[1] = v5;
   v10[0] = *MEMORY[0x277CDC240];
-  v10[1] = a3;
+  v10[1] = ref;
   v9[2] = *MEMORY[0x277CDC568];
   v10[2] = *MEMORY[0x277CBED28];
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:3];
-  LODWORD(a4) = SecItemCopyMatching(v6, a4);
+  LODWORD(return) = SecItemCopyMatching(v6, return);
 
   v7 = *MEMORY[0x277D85DE8];
-  return a4;
+  return return;
 }
 
-+ (BOOL)pollSmartcardForIdentityWithPersistentRef:(id)a3 tokenID:(id)a4
++ (BOOL)pollSmartcardForIdentityWithPersistentRef:(id)ref tokenID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  refCopy = ref;
+  dCopy = d;
   v8 = SO_LOG_SOSmartcard();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 136315394;
     v16 = "+[SOSmartcard pollSmartcardForIdentityWithPersistentRef:tokenID:]";
     v17 = 2112;
-    v18 = a1;
+    selfCopy2 = self;
     _os_log_impl(&dword_24006C000, v8, OS_LOG_TYPE_DEFAULT, "%s  on %@", &v15, 0x16u);
   }
 
-  if (v6)
+  if (refCopy)
   {
-    v9 = [a1 searchForCachedIdentityPersistentRef:v6 tokenID:v7];
+    v9 = [self searchForCachedIdentityPersistentRef:refCopy tokenID:dCopy];
     v10 = [v9 objectForKey:@"labl"];
     v11 = [v10 length] != 0;
   }
@@ -245,7 +245,7 @@ LABEL_29:
     v15 = 136315394;
     v16 = "+[SOSmartcard pollSmartcardForIdentityWithPersistentRef:tokenID:]";
     v17 = 2112;
-    v18 = a1;
+    selfCopy2 = self;
     _os_log_impl(&dword_24006C000, v12, OS_LOG_TYPE_DEFAULT, "%s finished on %@", &v15, 0x16u);
   }
 
@@ -253,22 +253,22 @@ LABEL_29:
   return v11;
 }
 
-+ (id)searchForCachedIdentityWithSerial:(__CFData *)a3 withIssuer:(__CFData *)a4 withTokenID:(id)a5
++ (id)searchForCachedIdentityWithSerial:(__CFData *)serial withIssuer:(__CFData *)issuer withTokenID:(id)d
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  dCopy = d;
   v9 = SO_LOG_SOSmartcard();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v34 = "+[SOSmartcard searchForCachedIdentityWithSerial:withIssuer:withTokenID:]";
     v35 = 2112;
-    v36 = a1;
+    selfCopy2 = self;
     _os_log_impl(&dword_24006C000, v9, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
   result = 0;
-  v10 = [v8 length];
+  v10 = [dCopy length];
 
   v11 = *MEMORY[0x277CDC228];
   v12 = *MEMORY[0x277CDC240];
@@ -283,8 +283,8 @@ LABEL_29:
     v15 = *MEMORY[0x277CDBFD8];
     v29[2] = *MEMORY[0x277CDC110];
     v29[3] = v15;
-    v30[2] = a3;
-    v30[3] = a4;
+    v30[2] = serial;
+    v30[3] = issuer;
     v16 = *MEMORY[0x277CDC560];
     v29[4] = *MEMORY[0x277CDC550];
     v29[5] = v16;
@@ -304,8 +304,8 @@ LABEL_29:
     v20 = *MEMORY[0x277CDBFD8];
     v31[2] = *MEMORY[0x277CDC110];
     v31[3] = v20;
-    v32[2] = a3;
-    v32[3] = a4;
+    v32[2] = serial;
+    v32[3] = issuer;
     v21 = *MEMORY[0x277CDC560];
     v31[4] = *MEMORY[0x277CDC550];
     v31[5] = v21;
@@ -319,7 +319,7 @@ LABEL_29:
   v22 = [v17 dictionaryWithObjects:v18 forKeys:v19 count:6];
   if (SecItemCopyMatching(v22, &result))
   {
-    v23 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
   }
 
   else
@@ -330,37 +330,37 @@ LABEL_29:
       *buf = 136315394;
       v34 = "+[SOSmartcard searchForCachedIdentityWithSerial:withIssuer:withTokenID:]";
       v35 = 2112;
-      v36 = a1;
+      selfCopy2 = self;
       _os_log_impl(&dword_24006C000, v24, OS_LOG_TYPE_DEFAULT, "%s finished on %@", buf, 0x16u);
     }
 
-    v23 = result;
+    dictionary = result;
   }
 
-  v25 = v23;
+  v25 = dictionary;
 
   v26 = *MEMORY[0x277D85DE8];
 
   return v25;
 }
 
-+ (id)searchForCachedIdentityPersistentRef:(id)a3 tokenID:(id)a4
++ (id)searchForCachedIdentityPersistentRef:(id)ref tokenID:(id)d
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  refCopy = ref;
+  dCopy = d;
   v8 = SO_LOG_SOSmartcard();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v33 = "+[SOSmartcard searchForCachedIdentityPersistentRef:tokenID:]";
     v34 = 2112;
-    v35 = a1;
+    selfCopy2 = self;
     _os_log_impl(&dword_24006C000, v8, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
   result = 0;
-  v9 = [v7 length];
+  v9 = [dCopy length];
   v10 = *MEMORY[0x277CDC228];
   v11 = *MEMORY[0x277CDC240];
   if (v9)
@@ -374,7 +374,7 @@ LABEL_29:
     v14 = *MEMORY[0x277CDC550];
     v28[2] = *MEMORY[0x277CDC158];
     v28[3] = v14;
-    v29[2] = v7;
+    v29[2] = dCopy;
     v29[3] = MEMORY[0x277CBEC38];
     v28[4] = *MEMORY[0x277CDC560];
     v29[4] = MEMORY[0x277CBEC38];
@@ -390,7 +390,7 @@ LABEL_29:
     v30[0] = *MEMORY[0x277CDC228];
     v30[1] = v19;
     v31[0] = v11;
-    v31[1] = v6;
+    v31[1] = refCopy;
     v20 = *MEMORY[0x277CDC560];
     v30[2] = *MEMORY[0x277CDC550];
     v30[3] = v20;
@@ -405,7 +405,7 @@ LABEL_29:
   v21 = [v15 dictionaryWithObjects:v16 forKeys:v17 count:v18];
   if (SecItemCopyMatching(v21, &result))
   {
-    v22 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
   }
 
   else
@@ -416,14 +416,14 @@ LABEL_29:
       *buf = 136315394;
       v33 = "+[SOSmartcard searchForCachedIdentityPersistentRef:tokenID:]";
       v34 = 2112;
-      v35 = a1;
+      selfCopy2 = self;
       _os_log_impl(&dword_24006C000, v23, OS_LOG_TYPE_DEFAULT, "%s finished on %@", buf, 0x16u);
     }
 
-    v22 = result;
+    dictionary = result;
   }
 
-  v24 = v22;
+  v24 = dictionary;
 
   v25 = *MEMORY[0x277D85DE8];
 
@@ -439,8 +439,8 @@ LABEL_29:
   v52 = 0u;
   v53 = 0u;
   v32 = objc_alloc_init(MEMORY[0x277CC5638]);
-  v2 = [v32 tokenIDs];
-  v3 = [v2 countByEnumeratingWithState:&v50 objects:v59 count:16];
+  tokenIDs = [v32 tokenIDs];
+  v3 = [tokenIDs countByEnumeratingWithState:&v50 objects:v59 count:16];
   if (v3)
   {
     v4 = v3;
@@ -456,7 +456,7 @@ LABEL_29:
     v45 = *MEMORY[0x277CDC158];
     v38 = *MEMORY[0x277CDC5F0];
     v33 = *MEMORY[0x277CDC080];
-    v37 = v2;
+    v37 = tokenIDs;
     v39 = *MEMORY[0x277CDBEC8];
     do
     {
@@ -465,7 +465,7 @@ LABEL_29:
       {
         if (*v51 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(tokenIDs);
         }
 
         v10 = *(*(&v50 + 1) + 8 * v9);
@@ -517,7 +517,7 @@ LABEL_29:
                 _os_log_error_impl(&dword_24006C000, v19, OS_LOG_TYPE_ERROR, "Error getting persistentref %d", buf, 8u);
               }
 
-              v2 = v37;
+              tokenIDs = v37;
             }
 
             else
@@ -534,7 +534,7 @@ LABEL_29:
                   _os_log_error_impl(&dword_24006C000, v22, OS_LOG_TYPE_ERROR, "Error retrieving certificate %d", buf, 8u);
                 }
 
-                v2 = v37;
+                tokenIDs = v37;
                 if (identityRef)
                 {
                   CFRelease(identityRef);
@@ -581,7 +581,7 @@ LABEL_29:
                   certificateRef[0] = 0;
                 }
 
-                v2 = v37;
+                tokenIDs = v37;
                 if (identityRef)
                 {
                   CFRelease(identityRef);
@@ -607,7 +607,7 @@ LABEL_29:
       }
 
       while (v4 != v9);
-      v29 = [v2 countByEnumeratingWithState:&v50 objects:v59 count:16];
+      v29 = [tokenIDs countByEnumeratingWithState:&v50 objects:v59 count:16];
       v4 = v29;
     }
 

@@ -17,28 +17,28 @@
 - (uint64_t)hd_equivalentRecord:()HealthDaemon
 {
   v4 = a3;
-  v5 = [a1 recordID];
-  v6 = [v4 recordID];
-  v7 = [v5 isEqual:v6];
+  recordID = [self recordID];
+  recordID2 = [v4 recordID];
+  v7 = [recordID isEqual:recordID2];
 
   if (!v7)
   {
     goto LABEL_4;
   }
 
-  v8 = [a1 valueStore];
-  v9 = [v8 values];
-  v10 = [v4 valueStore];
-  v11 = [v10 values];
-  v12 = [v9 isEqual:v11];
+  valueStore = [self valueStore];
+  values = [valueStore values];
+  valueStore2 = [v4 valueStore];
+  values2 = [valueStore2 values];
+  v12 = [values isEqual:values2];
 
   if (v12)
   {
-    v13 = [a1 encryptedValueStore];
-    v14 = [v13 values];
-    v15 = [v4 encryptedValueStore];
-    v16 = [v15 values];
-    v17 = [v14 isEqual:v16];
+    encryptedValueStore = [self encryptedValueStore];
+    values3 = [encryptedValueStore values];
+    encryptedValueStore2 = [v4 encryptedValueStore];
+    values4 = [encryptedValueStore2 values];
+    v17 = [values3 isEqual:values4];
   }
 
   else
@@ -54,7 +54,7 @@ LABEL_4:
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 objectForKeyedSubscript:v7];
+  v8 = [self objectForKeyedSubscript:v7];
   v9 = v8;
   if (v8 == v6)
   {
@@ -66,12 +66,12 @@ LABEL_4:
     {
 
 LABEL_8:
-      [a1 setObject:v6 forKeyedSubscript:v7];
+      [self setObject:v6 forKeyedSubscript:v7];
       v12 = 1;
       goto LABEL_9;
     }
 
-    v10 = [a1 objectForKeyedSubscript:v7];
+    v10 = [self objectForKeyedSubscript:v7];
     v11 = [v10 isEqual:v6];
 
     if ((v11 & 1) == 0)
@@ -97,7 +97,7 @@ LABEL_9:
   v7[1] = 3221225472;
   v7[2] = __48__CKRecord_HealthDaemon__hd_setValuesIfChanged___block_invoke;
   v7[3] = &unk_278626FB0;
-  v7[4] = a1;
+  v7[4] = self;
   v7[5] = &v8;
   [v4 enumerateKeysAndObjectsUsingBlock:v7];
   v5 = *(v9 + 24);
@@ -110,8 +110,8 @@ LABEL_9:
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 encryptedValues];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  encryptedValues = [self encryptedValues];
+  v9 = [encryptedValues objectForKeyedSubscript:v7];
   v10 = v9;
   v11 = v9 != v6;
   if (v9 == v6)
@@ -127,15 +127,15 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  v12 = [a1 encryptedValues];
-  v13 = [v12 objectForKeyedSubscript:v7];
+  encryptedValues2 = [self encryptedValues];
+  v13 = [encryptedValues2 objectForKeyedSubscript:v7];
   v14 = [v13 isEqual:v6];
 
   if ((v14 & 1) == 0)
   {
 LABEL_7:
-    v8 = [a1 encryptedValues];
-    [v8 setObject:v6 forKeyedSubscript:v7];
+    encryptedValues = [self encryptedValues];
+    [encryptedValues setObject:v6 forKeyedSubscript:v7];
     goto LABEL_8;
   }
 
@@ -156,7 +156,7 @@ LABEL_9:
   v7[1] = 3221225472;
   v7[2] = __57__CKRecord_HealthDaemon__hd_setEncryptedValuesIfChanged___block_invoke;
   v7[3] = &unk_278626FB0;
-  v7[4] = a1;
+  v7[4] = self;
   v7[5] = &v8;
   [v4 enumerateKeysAndObjectsUsingBlock:v7];
   v5 = *(v9 + 24);
@@ -168,7 +168,7 @@ LABEL_9:
 - (id)hd_requiredValueForKey:()HealthDaemon type:error:
 {
   v7 = a3;
-  v8 = [a1 objectForKeyedSubscript:v7];
+  v8 = [self objectForKeyedSubscript:v7];
   if (v8)
   {
     v9 = HKSafeObject();
@@ -177,9 +177,9 @@ LABEL_9:
   else
   {
     v10 = MEMORY[0x277CCA9B8];
-    v11 = [a1 recordID];
-    v12 = [v11 recordName];
-    [v10 hk_assignError:a5 code:3 format:{@"record %@ does not have value for key (%@)", v12, v7}];
+    recordID = [self recordID];
+    recordName = [recordID recordName];
+    [v10 hk_assignError:a5 code:3 format:{@"record %@ does not have value for key (%@)", recordName, v7}];
 
     v9 = 0;
   }
@@ -190,8 +190,8 @@ LABEL_9:
 - (id)hd_requiredEncryptedValueForKey:()HealthDaemon type:error:
 {
   v7 = a3;
-  v8 = [a1 encryptedValues];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  encryptedValues = [self encryptedValues];
+  v9 = [encryptedValues objectForKeyedSubscript:v7];
 
   if (v9)
   {
@@ -201,9 +201,9 @@ LABEL_9:
   else
   {
     v11 = MEMORY[0x277CCA9B8];
-    v12 = [a1 recordID];
-    v13 = [v12 recordName];
-    [v11 hk_assignError:a5 code:3 format:{@"record %@ does not have encrypted value for key (%@)", v13, v7}];
+    recordID = [self recordID];
+    recordName = [recordID recordName];
+    [v11 hk_assignError:a5 code:3 format:{@"record %@ does not have encrypted value for key (%@)", recordName, v7}];
 
     v10 = 0;
   }
@@ -214,7 +214,7 @@ LABEL_9:
 - (id)hd_optionalValueForKey:()HealthDaemon type:error:
 {
   v4 = a3;
-  v5 = [a1 objectForKeyedSubscript:v4];
+  v5 = [self objectForKeyedSubscript:v4];
   if (v5)
   {
     v6 = HKSafeObject();
@@ -231,8 +231,8 @@ LABEL_9:
 - (id)hd_optionalEncryptedValueForKey:()HealthDaemon type:error:
 {
   v4 = a3;
-  v5 = [a1 encryptedValues];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  encryptedValues = [self encryptedValues];
+  v6 = [encryptedValues objectForKeyedSubscript:v4];
 
   if (v6)
   {
@@ -348,11 +348,11 @@ LABEL_18:
 - (id)hd_systemData
 {
   v2 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
-  [a1 encodeSystemFieldsWithCoder:v2];
+  [self encodeSystemFieldsWithCoder:v2];
   [v2 finishEncoding];
-  v3 = [v2 encodedData];
+  encodedData = [v2 encodedData];
 
-  return v3;
+  return encodedData;
 }
 
 @end

@@ -1,15 +1,15 @@
 @interface NRDLDKeychainItemSecKey
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
 @implementation NRDLDKeychainItemSecKey
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = NRDLDKeychainItemSecKey;
-  v4 = [(NRDLDKeychainItem *)&v9 copyWithZone:a3];
+  v4 = [(NRDLDKeychainItem *)&v9 copyWithZone:zone];
   v6 = v4;
   if (!self)
   {

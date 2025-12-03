@@ -1,16 +1,16 @@
 @interface _UILabelVerticalTextLayoutManager
-- (CGRect)_boundingRectWithString:(id)a3 size:(CGSize)a4 options:(int64_t)a5 context:(id)a6;
-- (CGRect)boundingRectWithString:(id)a3 size:(CGSize)a4 options:(int64_t)a5 attributes:(id)a6 context:(id)a7;
-- (_UILabelVerticalTextLayoutManager)initWithConfiguration:(id)a3;
-- (void)_drawWithAttributedString:(id)a3 rect:(CGRect)a4 options:(int64_t)a5 context:(id)a6;
-- (void)drawWithString:(id)a3 rect:(CGRect)a4 options:(int64_t)a5 attributes:(id)a6 context:(id)a7;
+- (CGRect)_boundingRectWithString:(id)string size:(CGSize)size options:(int64_t)options context:(id)context;
+- (CGRect)boundingRectWithString:(id)string size:(CGSize)size options:(int64_t)options attributes:(id)attributes context:(id)context;
+- (_UILabelVerticalTextLayoutManager)initWithConfiguration:(id)configuration;
+- (void)_drawWithAttributedString:(id)string rect:(CGRect)rect options:(int64_t)options context:(id)context;
+- (void)drawWithString:(id)string rect:(CGRect)rect options:(int64_t)options attributes:(id)attributes context:(id)context;
 @end
 
 @implementation _UILabelVerticalTextLayoutManager
 
-- (_UILabelVerticalTextLayoutManager)initWithConfiguration:(id)a3
+- (_UILabelVerticalTextLayoutManager)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v14.receiver = self;
   v14.super_class = _UILabelVerticalTextLayoutManager;
   v5 = [(_UILabelVerticalTextLayoutManager *)&v14 init];
@@ -25,12 +25,12 @@
     v5->_textContainer = &v8->super;
 
     [(NSTextContainer *)v5->_textContainer setLineBreakMode:4];
-    -[NSTextContainer setMaximumNumberOfLines:](v5->_textContainer, "setMaximumNumberOfLines:", [v4 numberOfLines]);
+    -[NSTextContainer setMaximumNumberOfLines:](v5->_textContainer, "setMaximumNumberOfLines:", [configurationCopy numberOfLines]);
     v10 = 0.0;
     [(NSTextContainer *)v5->_textContainer setLineFragmentPadding:0.0];
-    if (v4)
+    if (configurationCopy)
     {
-      v10 = v4[19];
+      v10 = configurationCopy[19];
     }
 
     v5->_scale = v10;
@@ -45,23 +45,23 @@
   return v5;
 }
 
-- (CGRect)_boundingRectWithString:(id)a3 size:(CGSize)a4 options:(int64_t)a5 context:(id)a6
+- (CGRect)_boundingRectWithString:(id)string size:(CGSize)size options:(int64_t)options context:(id)context
 {
-  height = a4.height;
-  width = a4.width;
-  [(NSTextContentStorage *)self->_contentStorage setAttributedString:a3, a5, a6];
+  height = size.height;
+  width = size.width;
+  [(NSTextContentStorage *)self->_contentStorage setAttributedString:string, options, context];
   [(NSTextContainer *)self->_textContainer size];
   if (v10 != width || v9 != height)
   {
     [(NSTextContainer *)self->_textContainer setSize:width, height];
     layoutManager = self->_layoutManager;
-    v13 = [(NSTextLayoutManager *)layoutManager documentRange];
-    [(NSTextLayoutManager *)layoutManager invalidateLayoutForRange:v13];
+    documentRange = [(NSTextLayoutManager *)layoutManager documentRange];
+    [(NSTextLayoutManager *)layoutManager invalidateLayoutForRange:documentRange];
   }
 
   v14 = self->_layoutManager;
-  v15 = [(NSTextLayoutManager *)v14 documentRange];
-  [(NSTextLayoutManager *)v14 ensureLayoutForRange:v15];
+  documentRange2 = [(NSTextLayoutManager *)v14 documentRange];
+  [(NSTextLayoutManager *)v14 ensureLayoutForRange:documentRange2];
 
   [(NSTextLayoutManager *)self->_layoutManager usageBoundsForTextContainer];
   v17 = v16;
@@ -82,17 +82,17 @@
   return result;
 }
 
-- (CGRect)boundingRectWithString:(id)a3 size:(CGSize)a4 options:(int64_t)a5 attributes:(id)a6 context:(id)a7
+- (CGRect)boundingRectWithString:(id)string size:(CGSize)size options:(int64_t)options attributes:(id)attributes context:(id)context
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v13 = MEMORY[0x1E696AAB0];
-  v14 = a7;
-  v15 = a6;
-  v16 = a3;
-  v17 = [[v13 alloc] initWithString:v16 attributes:v15];
+  contextCopy = context;
+  attributesCopy = attributes;
+  stringCopy = string;
+  v17 = [[v13 alloc] initWithString:stringCopy attributes:attributesCopy];
 
-  [(_UILabelVerticalTextLayoutManager *)self _boundingRectWithString:v17 size:a5 options:v14 context:width, height];
+  [(_UILabelVerticalTextLayoutManager *)self _boundingRectWithString:v17 size:options options:contextCopy context:width, height];
   v19 = v18;
   v21 = v20;
   v23 = v22;
@@ -109,9 +109,9 @@
   return result;
 }
 
-- (void)_drawWithAttributedString:(id)a3 rect:(CGRect)a4 options:(int64_t)a5 context:(id)a6
+- (void)_drawWithAttributedString:(id)string rect:(CGRect)rect options:(int64_t)options context:(id)context
 {
-  width = a4.size.width;
+  width = rect.size.width;
   ContextStack = GetContextStack(0);
   if (*ContextStack < 1)
   {
@@ -134,19 +134,19 @@
   v11 = [(NSTextLayoutManager *)layoutManager enumerateTextLayoutFragmentsFromLocation:0 options:0 usingBlock:v12];
 }
 
-- (void)drawWithString:(id)a3 rect:(CGRect)a4 options:(int64_t)a5 attributes:(id)a6 context:(id)a7
+- (void)drawWithString:(id)string rect:(CGRect)rect options:(int64_t)options attributes:(id)attributes context:(id)context
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v15 = MEMORY[0x1E696AAB0];
-  v16 = a7;
-  v17 = a6;
-  v18 = a3;
-  v19 = [[v15 alloc] initWithString:v18 attributes:v17];
+  contextCopy = context;
+  attributesCopy = attributes;
+  stringCopy = string;
+  v19 = [[v15 alloc] initWithString:stringCopy attributes:attributesCopy];
 
-  [(_UILabelVerticalTextLayoutManager *)self _drawWithAttributedString:v19 rect:a5 options:v16 context:x, y, width, height];
+  [(_UILabelVerticalTextLayoutManager *)self _drawWithAttributedString:v19 rect:options options:contextCopy context:x, y, width, height];
 }
 
 @end

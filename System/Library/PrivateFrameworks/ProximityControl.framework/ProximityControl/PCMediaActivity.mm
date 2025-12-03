@@ -1,10 +1,10 @@
 @interface PCMediaActivity
-+ (id)titleForContentItem:(id)a3;
-+ (id)userActivityInfoFor:(id)a3 inContext:(id)a4;
++ (id)titleForContentItem:(id)item;
++ (id)userActivityInfoFor:(id)for inContext:(id)context;
 - (BOOL)destinationOriginExists;
-- (BOOL)isEqual:(id)a3;
-- (PCMediaActivity)initWithActivity:(id)a3;
-- (PCMediaActivity)initWithDisplayContext:(id)a3 response:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (PCMediaActivity)initWithActivity:(id)activity;
+- (PCMediaActivity)initWithDisplayContext:(id)context response:(id)response;
 - (id)activityString;
 - (id)artWork;
 - (id)bundleIdentifier;
@@ -18,10 +18,10 @@
 
 @implementation PCMediaActivity
 
-- (PCMediaActivity)initWithDisplayContext:(id)a3 response:(id)a4
+- (PCMediaActivity)initWithDisplayContext:(id)context response:(id)response
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  responseCopy = response;
   v16.receiver = self;
   v16.super_class = PCMediaActivity;
   v8 = [(PCMediaActivity *)&v16 initWithActivityType:@"com.apple.ProximityControl.activity.media"];
@@ -29,12 +29,12 @@
   if (v8)
   {
     makeIneligibleForProcessing(v8);
-    v10 = [v7 playbackQueue];
-    v11 = [v10 contentItemWithOffset:0];
+    playbackQueue = [responseCopy playbackQueue];
+    v11 = [playbackQueue contentItemWithOffset:0];
     v12 = [PCMediaActivity titleForContentItem:v11];
     [(PCMediaActivity *)v9 setTitle:v12];
 
-    v13 = [PCMediaActivity userActivityInfoFor:v7 inContext:v6];
+    v13 = [PCMediaActivity userActivityInfoFor:responseCopy inContext:contextCopy];
     v14 = [v13 copy];
     [(PCMediaActivity *)v9 setUserInfo:v14];
   }
@@ -42,82 +42,82 @@
   return v9;
 }
 
-+ (id)userActivityInfoFor:(id)a3 inContext:(id)a4
++ (id)userActivityInfoFor:(id)for inContext:(id)context
 {
-  v5 = a3;
+  forCopy = for;
   v6 = MEMORY[0x277CBEB38];
-  v7 = a4;
+  contextCopy = context;
   v8 = objc_alloc_init(v6);
-  v9 = [v5 playbackState];
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v9];
+  playbackState = [forCopy playbackState];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:playbackState];
   [v8 setObject:v10 forKey:@"playbackState"];
 
-  v11 = [v5 destination];
-  v12 = [v11 origin];
-  v13 = v12 != 0;
+  destination = [forCopy destination];
+  origin = [destination origin];
+  v13 = origin != 0;
 
   v14 = [MEMORY[0x277CCABB0] numberWithBool:v13];
   [v8 setObject:v14 forKey:@"destinationOriginExists"];
 
-  v15 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v7, "interactionDirection")}];
+  v15 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(contextCopy, "interactionDirection")}];
   [v8 setObject:v15 forKey:@"mediaDirection"];
 
   v16 = MEMORY[0x277CCABB0];
-  v17 = [v7 interactionBehavior];
+  interactionBehavior = [contextCopy interactionBehavior];
 
-  v18 = [v16 numberWithInteger:v17];
+  v18 = [v16 numberWithInteger:interactionBehavior];
   [v8 setObject:v18 forKey:@"mediaBehavior"];
 
-  v19 = [v5 playbackQueue];
-  v20 = v19;
-  if (v19)
+  playbackQueue = [forCopy playbackQueue];
+  v20 = playbackQueue;
+  if (playbackQueue)
   {
-    v21 = [v19 contentItemWithOffset:0];
+    v21 = [playbackQueue contentItemWithOffset:0];
     v22 = v21;
     if (v21)
     {
-      v23 = [v21 artwork];
-      v24 = [v23 imageData];
+      artwork = [v21 artwork];
+      imageData = [artwork imageData];
 
-      if (v24)
+      if (imageData)
       {
-        [v8 setObject:v24 forKey:@"artworkKey"];
+        [v8 setObject:imageData forKey:@"artworkKey"];
       }
 
-      v25 = [v22 metadata];
-      v26 = [v25 userInfo];
+      metadata = [v22 metadata];
+      userInfo = [metadata userInfo];
 
-      if (v26)
+      if (userInfo)
       {
-        [v8 setObject:v26 forKey:@"metadataKey"];
+        [v8 setObject:userInfo forKey:@"metadataKey"];
       }
 
-      v27 = [v22 metadata];
-      v28 = [v27 title];
+      metadata2 = [v22 metadata];
+      title = [metadata2 title];
 
-      if (v28)
+      if (title)
       {
-        [v8 setObject:v28 forKey:@"mediaTitle"];
+        [v8 setObject:title forKey:@"mediaTitle"];
       }
 
-      v29 = [v22 metadata];
-      v30 = [v29 mediaType];
+      metadata3 = [v22 metadata];
+      mediaType = [metadata3 mediaType];
 
-      if (v30)
+      if (mediaType)
       {
-        v31 = [MEMORY[0x277CCABB0] numberWithInteger:v30];
+        v31 = [MEMORY[0x277CCABB0] numberWithInteger:mediaType];
         [v8 setObject:v31 forKey:@"mediaType"];
       }
     }
   }
 
-  v32 = [v5 playerPath];
-  v33 = [v32 client];
-  v34 = [v33 representedBundleID];
+  playerPath = [forCopy playerPath];
+  client = [playerPath client];
+  representedBundleID = [client representedBundleID];
 
-  if (v34)
+  if (representedBundleID)
   {
-    [v8 setObject:v34 forKey:@"bundleIdentifierKey"];
+    [v8 setObject:representedBundleID forKey:@"bundleIdentifierKey"];
   }
 
   v35 = [v8 copy];
@@ -125,113 +125,113 @@
   return v35;
 }
 
-+ (id)titleForContentItem:(id)a3
++ (id)titleForContentItem:(id)item
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  itemCopy = item;
+  v4 = itemCopy;
+  if (!itemCopy)
   {
-    v10 = [PCLocalizedString localizedStringForKey:6];
+    localizedTitle = [PCLocalizedString localizedStringForKey:6];
     goto LABEL_13;
   }
 
-  v5 = [v3 metadata];
-  v6 = [v5 trackArtistName];
+  metadata = [itemCopy metadata];
+  trackArtistName = [metadata trackArtistName];
 
-  v7 = [v4 metadata];
-  v8 = v7;
-  if (v6)
+  metadata2 = [v4 metadata];
+  metadata5 = metadata2;
+  if (trackArtistName)
   {
-    v9 = [v7 trackArtistName];
+    trackArtistName2 = [metadata2 trackArtistName];
   }
 
   else
   {
-    v11 = [v7 albumArtistName];
+    albumArtistName = [metadata2 albumArtistName];
 
-    v12 = [v4 metadata];
-    v8 = v12;
-    if (v11)
+    metadata3 = [v4 metadata];
+    metadata5 = metadata3;
+    if (albumArtistName)
     {
-      v9 = [v12 albumArtistName];
+      trackArtistName2 = [metadata3 albumArtistName];
     }
 
     else
     {
-      v13 = [v12 radioStationName];
+      radioStationName = [metadata3 radioStationName];
 
-      if (!v13)
+      if (!radioStationName)
       {
 LABEL_11:
-        v14 = [v4 metadata];
-        v10 = [v14 localizedTitle];
+        metadata4 = [v4 metadata];
+        localizedTitle = [metadata4 localizedTitle];
         goto LABEL_12;
       }
 
-      v8 = [v4 metadata];
-      v9 = [v8 radioStationName];
+      metadata5 = [v4 metadata];
+      trackArtistName2 = [metadata5 radioStationName];
     }
   }
 
-  v14 = v9;
+  metadata4 = trackArtistName2;
 
-  if (!v14)
+  if (!metadata4)
   {
     goto LABEL_11;
   }
 
   v15 = [PCLocalizedString localizedStringForKey:7];
   v16 = MEMORY[0x277CCACA8];
-  v17 = [v4 metadata];
-  v18 = [v17 localizedTitle];
-  v10 = [v16 stringWithFormat:@"%@%@%@", v18, v15, v14];
+  metadata6 = [v4 metadata];
+  localizedTitle2 = [metadata6 localizedTitle];
+  localizedTitle = [v16 stringWithFormat:@"%@%@%@", localizedTitle2, v15, metadata4];
 
 LABEL_12:
 LABEL_13:
 
-  return v10;
+  return localizedTitle;
 }
 
-- (PCMediaActivity)initWithActivity:(id)a3
+- (PCMediaActivity)initWithActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 activityType];
-  v6 = [@"com.apple.ProximityControl.activity.media" isEqualToString:v5];
+  activityCopy = activity;
+  activityType = [activityCopy activityType];
+  v6 = [@"com.apple.ProximityControl.activity.media" isEqualToString:activityType];
 
   if (v6)
   {
-    v7 = [v4 activityType];
+    activityType2 = [activityCopy activityType];
     v13.receiver = self;
     v13.super_class = PCMediaActivity;
-    v8 = [(PCMediaActivity *)&v13 initWithActivityType:v7];
+    v8 = [(PCMediaActivity *)&v13 initWithActivityType:activityType2];
 
     if (v8)
     {
       makeIneligibleForProcessing(v8);
-      v9 = [v4 userInfo];
-      [(PCMediaActivity *)v8 setUserInfo:v9];
+      userInfo = [activityCopy userInfo];
+      [(PCMediaActivity *)v8 setUserInfo:userInfo];
 
-      v10 = [v4 title];
-      [(PCMediaActivity *)v8 setTitle:v10];
+      title = [activityCopy title];
+      [(PCMediaActivity *)v8 setTitle:title];
     }
 
     self = v8;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (id)description
 {
-  v3 = [(PCMediaActivity *)self title];
+  title = [(PCMediaActivity *)self title];
 
-  if (v3)
+  if (title)
   {
     [(PCMediaActivity *)self title];
   }
@@ -264,8 +264,8 @@ LABEL_13:
 
 - (id)bundleIdentifier
 {
-  v2 = [(PCMediaActivity *)self userInfo];
-  v3 = [v2 objectForKey:@"bundleIdentifierKey"];
+  userInfo = [(PCMediaActivity *)self userInfo];
+  v3 = [userInfo objectForKey:@"bundleIdentifierKey"];
 
   if (v3)
   {
@@ -282,8 +282,8 @@ LABEL_13:
 
 - (id)artWork
 {
-  v2 = [(PCMediaActivity *)self userInfo];
-  v3 = [v2 objectForKey:@"artworkKey"];
+  userInfo = [(PCMediaActivity *)self userInfo];
+  v3 = [userInfo objectForKey:@"artworkKey"];
 
   if (v3)
   {
@@ -300,120 +300,120 @@ LABEL_13:
 
 - (int64_t)direction
 {
-  v2 = [(PCMediaActivity *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"mediaDirection"];
+  userInfo = [(PCMediaActivity *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"mediaDirection"];
 
   if (v3)
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)behavior
 {
-  v2 = [(PCMediaActivity *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"mediaBehavior"];
+  userInfo = [(PCMediaActivity *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"mediaBehavior"];
 
   if (v3)
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (unsigned)playbackState
 {
-  v2 = [(PCMediaActivity *)self userInfo];
-  v3 = [v2 objectForKey:@"playbackState"];
+  userInfo = [(PCMediaActivity *)self userInfo];
+  v3 = [userInfo objectForKey:@"playbackState"];
 
   if (v3)
   {
-    v4 = [v3 unsignedIntValue];
+    unsignedIntValue = [v3 unsignedIntValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v4;
+  return unsignedIntValue;
 }
 
 - (BOOL)destinationOriginExists
 {
-  v2 = [(PCMediaActivity *)self userInfo];
-  v3 = [v2 objectForKey:@"destinationOriginExists"];
+  userInfo = [(PCMediaActivity *)self userInfo];
+  v3 = [userInfo objectForKey:@"destinationOriginExists"];
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (int64_t)mediaType
 {
-  v2 = [(PCMediaActivity *)self userInfo];
-  v3 = [v2 objectForKey:@"mediaType"];
+  userInfo = [(PCMediaActivity *)self userInfo];
+  v3 = [userInfo objectForKey:@"mediaType"];
 
   if (v3)
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (id)shortDescription
 {
-  v2 = [(PCMediaActivity *)self userInfo];
-  v3 = [v2 objectForKey:@"mediaTitle"];
+  userInfo = [(PCMediaActivity *)self userInfo];
+  v3 = [userInfo objectForKey:@"mediaTitle"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 pcactivityType];
-  if (v5 == [(PCMediaActivity *)self pcactivityType])
+  equalCopy = equal;
+  pcactivityType = [equalCopy pcactivityType];
+  if (pcactivityType == [(PCMediaActivity *)self pcactivityType])
   {
-    v6 = v4;
+    v6 = equalCopy;
     v7 = [(PCMediaActivity *)self description];
     v8 = [v6 description];
     v9 = [v7 isEqualToString:v8];
 
     if (v9 && (v10 = -[PCMediaActivity direction](self, "direction"), v10 == [v6 direction]) && (v11 = -[PCMediaActivity playbackState](self, "playbackState"), v11 == objc_msgSend(v6, "playbackState")))
     {
-      v12 = [(PCMediaActivity *)self userInfo];
-      v13 = [v12 objectForKey:@"artworkKey"];
+      userInfo = [(PCMediaActivity *)self userInfo];
+      v13 = [userInfo objectForKey:@"artworkKey"];
 
-      v14 = [v6 userInfo];
-      v15 = [v14 objectForKey:@"artworkKey"];
+      userInfo2 = [v6 userInfo];
+      v15 = [userInfo2 objectForKey:@"artworkKey"];
 
       v16 = v13;
       v17 = v15;

@@ -1,71 +1,71 @@
 @interface MRAVOutputDeviceTransport
-+ (id)_createConnectionWith:(id)a3 groupID:(id)a4 connectionType:(int64_t)a5 shouldUseSystemAuthenticationPrompt:(BOOL)a6 userInfo:(id)a7;
++ (id)_createConnectionWith:(id)with groupID:(id)d connectionType:(int64_t)type shouldUseSystemAuthenticationPrompt:(BOOL)prompt userInfo:(id)info;
 - (BOOL)shouldUseSystemAuthenticationPrompt;
-- (MRAVOutputDeviceTransport)initWithOutputDevice:(id)a3 groupID:(id)a4 connectionType:(int64_t)a5;
-- (MRAVOutputDeviceTransport)initWithOutputDeviceUID:(id)a3;
-- (id)createConnectionWithUserInfo:(id)a3;
+- (MRAVOutputDeviceTransport)initWithOutputDevice:(id)device groupID:(id)d connectionType:(int64_t)type;
+- (MRAVOutputDeviceTransport)initWithOutputDeviceUID:(id)d;
+- (id)createConnectionWithUserInfo:(id)info;
 - (id)debugDescription;
 - (id)description;
 - (id)error;
-- (void)resetWithError:(id)a3;
-- (void)setError:(id)a3;
-- (void)setShouldUseSystemAuthenticationPrompt:(BOOL)a3;
+- (void)resetWithError:(id)error;
+- (void)setError:(id)error;
+- (void)setShouldUseSystemAuthenticationPrompt:(BOOL)prompt;
 @end
 
 @implementation MRAVOutputDeviceTransport
 
 - (id)description
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  outputDeviceUID = v2->_outputDeviceUID;
-  groupID = v2->_groupID;
-  connection = v2->_connection;
-  v8 = NSStringFromMRAVEndpointConnectionType(v2->super._connectionType);
-  v9 = [v3 stringWithFormat:@"<%@: %p OutputDeviceUID=%@ groupID=%@ connection:%@ connectionType=%@>", v4, v2, outputDeviceUID, groupID, connection, v8];
+  outputDeviceUID = selfCopy->_outputDeviceUID;
+  groupID = selfCopy->_groupID;
+  connection = selfCopy->_connection;
+  v8 = NSStringFromMRAVEndpointConnectionType(selfCopy->super._connectionType);
+  v9 = [v3 stringWithFormat:@"<%@: %p OutputDeviceUID=%@ groupID=%@ connection:%@ connectionType=%@>", v4, selfCopy, outputDeviceUID, groupID, connection, v8];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
-- (MRAVOutputDeviceTransport)initWithOutputDevice:(id)a3 groupID:(id)a4 connectionType:(int64_t)a5
+- (MRAVOutputDeviceTransport)initWithOutputDevice:(id)device groupID:(id)d connectionType:(int64_t)type
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  deviceCopy = device;
+  dCopy = d;
+  if (!deviceCopy)
   {
     [MRAVOutputDeviceTransport initWithOutputDevice:a2 groupID:self connectionType:?];
   }
 
-  v11 = [v9 primaryID];
-  v12 = [(MRAVOutputDeviceTransport *)self initWithOutputDeviceUID:v11];
+  primaryID = [deviceCopy primaryID];
+  v12 = [(MRAVOutputDeviceTransport *)self initWithOutputDeviceUID:primaryID];
 
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [dCopy copy];
     groupID = v12->_groupID;
     v12->_groupID = v13;
 
-    v12->super._connectionType = a5;
+    v12->super._connectionType = type;
     v12->_useSystemAuthenticationPrompt = 1;
   }
 
   return v12;
 }
 
-- (MRAVOutputDeviceTransport)initWithOutputDeviceUID:(id)a3
+- (MRAVOutputDeviceTransport)initWithOutputDeviceUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = MRAVOutputDeviceTransport;
   v6 = [(MRAVOutputDeviceTransport *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_outputDeviceUID, a3);
+    objc_storeStrong(&v6->_outputDeviceUID, d);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("com.apple.mediaremote.externalDeviceTransport/workerQueue", v8);
     workerQueue = v7->_workerQueue;
@@ -79,98 +79,98 @@
 
 - (id)debugDescription
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  outputDeviceUID = v2->_outputDeviceUID;
-  groupID = v2->_groupID;
-  avOutputDevice = v2->_avOutputDevice;
-  v8 = NSStringFromMRAVEndpointConnectionType(v2->super._connectionType);
-  v9 = MRCreateIndentedDebugDescriptionFromObject(v2->_connection);
-  v10 = [v3 stringWithFormat:@"<%@: %p {\n   OutputDeviceUID=%@\n   groupID=%@\n   AVOutputDevice=%@\n   connectionType=%@\n   connection=%@\n}>", v4, v2, outputDeviceUID, groupID, avOutputDevice, v8, v9];
+  outputDeviceUID = selfCopy->_outputDeviceUID;
+  groupID = selfCopy->_groupID;
+  avOutputDevice = selfCopy->_avOutputDevice;
+  v8 = NSStringFromMRAVEndpointConnectionType(selfCopy->super._connectionType);
+  v9 = MRCreateIndentedDebugDescriptionFromObject(selfCopy->_connection);
+  v10 = [v3 stringWithFormat:@"<%@: %p {\n   OutputDeviceUID=%@\n   groupID=%@\n   AVOutputDevice=%@\n   connectionType=%@\n   connection=%@\n}>", v4, selfCopy, outputDeviceUID, groupID, avOutputDevice, v8, v9];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v10;
 }
 
 - (BOOL)shouldUseSystemAuthenticationPrompt
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  useSystemAuthenticationPrompt = v2->_useSystemAuthenticationPrompt;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  useSystemAuthenticationPrompt = selfCopy->_useSystemAuthenticationPrompt;
+  objc_sync_exit(selfCopy);
 
   return useSystemAuthenticationPrompt;
 }
 
-- (void)setShouldUseSystemAuthenticationPrompt:(BOOL)a3
+- (void)setShouldUseSystemAuthenticationPrompt:(BOOL)prompt
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_useSystemAuthenticationPrompt = a3;
+  obj->_useSystemAuthenticationPrompt = prompt;
   objc_sync_exit(obj);
 }
 
 - (id)error
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSError *)v2->_error copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSError *)selfCopy->_error copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   obj = self;
   objc_sync_enter(obj);
   error = obj->_error;
-  obj->_error = v4;
+  obj->_error = errorCopy;
 
   objc_sync_exit(obj);
 }
 
-- (id)createConnectionWithUserInfo:(id)a3
+- (id)createConnectionWithUserInfo:(id)info
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = v5->_connection;
-  useSystemAuthenticationPrompt = v5->_useSystemAuthenticationPrompt;
-  objc_sync_exit(v5);
+  infoCopy = info;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  first2 = selfCopy->_connection;
+  useSystemAuthenticationPrompt = selfCopy->_useSystemAuthenticationPrompt;
+  objc_sync_exit(selfCopy);
 
-  if (!v6)
+  if (!first2)
   {
-    v8 = [objc_opt_class() _createConnectionWith:v5->_outputDeviceUID groupID:v5->_groupID connectionType:v5->super._connectionType shouldUseSystemAuthenticationPrompt:useSystemAuthenticationPrompt userInfo:v4];
-    v9 = v5;
+    v8 = [objc_opt_class() _createConnectionWith:selfCopy->_outputDeviceUID groupID:selfCopy->_groupID connectionType:selfCopy->super._connectionType shouldUseSystemAuthenticationPrompt:useSystemAuthenticationPrompt userInfo:infoCopy];
+    v9 = selfCopy;
     objc_sync_enter(v9);
-    v10 = [v8 first];
-    connection = v5->_connection;
-    v5->_connection = v10;
+    first = [v8 first];
+    connection = selfCopy->_connection;
+    selfCopy->_connection = first;
 
-    v12 = [v8 second];
+    second = [v8 second];
     error = v9->_error;
-    v9->_error = v12;
+    v9->_error = second;
 
     objc_sync_exit(v9);
-    v6 = [v8 first];
+    first2 = [v8 first];
   }
 
-  return v6;
+  return first2;
 }
 
-+ (id)_createConnectionWith:(id)a3 groupID:(id)a4 connectionType:(int64_t)a5 shouldUseSystemAuthenticationPrompt:(BOOL)a6 userInfo:(id)a7
++ (id)_createConnectionWith:(id)with groupID:(id)d connectionType:(int64_t)type shouldUseSystemAuthenticationPrompt:(BOOL)prompt userInfo:(id)info
 {
-  v8 = a6;
+  promptCopy = prompt;
   v87[5] = *MEMORY[0x1E69E9840];
-  v53 = a3;
-  v52 = a4;
-  v11 = a7;
-  v12 = [v11 objectForKeyedSubscript:@"MRExternalDeviceConnectionReasonUserInfoKey"];
+  withCopy = with;
+  dCopy = d;
+  infoCopy = info;
+  v12 = [infoCopy objectForKeyedSubscript:@"MRExternalDeviceConnectionReasonUserInfoKey"];
   v13 = v12;
   v14 = @"unknown";
   if (v12)
@@ -180,17 +180,17 @@
 
   v15 = v14;
 
-  v16 = [v11 objectForKeyedSubscript:@"MRExternalDeviceConnectionCorrelationIDUserInfoKey"];
+  v16 = [infoCopy objectForKeyedSubscript:@"MRExternalDeviceConnectionCorrelationIDUserInfoKey"];
   v17 = v16;
   if (v16)
   {
-    v18 = v16;
+    uUIDString = v16;
   }
 
   else
   {
-    v19 = [MEMORY[0x1E696AFB0] UUID];
-    v18 = [v19 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
   }
 
   v20 = dispatch_group_create();
@@ -219,14 +219,14 @@
   v21 = MEMORY[0x1E6958760];
   v66 = __Block_byref_object_dispose__2;
   v67 = 0;
-  if (a5 != 3)
+  if (type != 3)
   {
     v21 = MEMORY[0x1E6958758];
   }
 
   v22 = *v21;
   v86[0] = *MEMORY[0x1E6958778];
-  v23 = [MEMORY[0x1E696AD98] numberWithInt:!v8];
+  v23 = [MEMORY[0x1E696AD98] numberWithInt:!promptCopy];
   v24 = *MEMORY[0x1E6958780];
   v87[0] = v23;
   v87[1] = v22;
@@ -234,7 +234,7 @@
   v86[1] = v24;
   v86[2] = v25;
   v26 = *MEMORY[0x1E6958790];
-  v87[2] = v18;
+  v87[2] = uUIDString;
   v87[3] = v15;
   v27 = *MEMORY[0x1E6958798];
   v86[3] = v26;
@@ -254,12 +254,12 @@
   v59 = &v80;
   v31 = v28;
   v56 = v31;
-  v32 = v18;
+  v32 = uUIDString;
   v57 = v32;
   v60 = &v74;
   v61 = &v62;
-  [(MRAVDiscoverySessionHelper *)v29 searchAVOutputDeviceForUID:v53 timeout:v32 identifier:v15 reason:v54 completion:5.0];
-  if (v8)
+  [(MRAVDiscoverySessionHelper *)v29 searchAVOutputDeviceForUID:withCopy timeout:v32 identifier:v15 reason:v54 completion:5.0];
+  if (promptCopy)
   {
     v33 = 60.0;
   }
@@ -311,14 +311,14 @@ LABEL_24:
   v39 = [(MRAirPlayTransportConnection *)v38 initWithOutputDeviceCommunicationChannel:v75[5]];
   v40 = v39;
   v41 = 0;
-  if (v52 && v39)
+  if (dCopy && v39)
   {
-    v51 = [[MRConfigureConnectionMessage alloc] initWithGroupID:v52];
-    v42 = [(MRProtocolMessage *)v51 protobufData];
-    [v40 sendTransportData:v42 options:0];
+    v51 = [[MRConfigureConnectionMessage alloc] initWithGroupID:dCopy];
+    protobufData = [(MRProtocolMessage *)v51 protobufData];
+    [v40 sendTransportData:protobufData options:0];
 
     v43 = objc_alloc_init(MRDeviceInfo);
-    [(MRDeviceInfo *)v43 setDeviceUID:v53];
+    [(MRDeviceInfo *)v43 setDeviceUID:withCopy];
     [(MRDeviceInfo *)v43 setName:v81[5]];
     v44 = +[MRProtocolMessageLogger sharedLogger];
     [v44 logMessage:@"Message Sent:" label:@"RemoteControl" deviceInfo:v43 protocolMessage:v51];
@@ -423,17 +423,17 @@ void __119__MRAVOutputDeviceTransport__createConnectionWith_groupID_connectionTy
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resetWithError:(id)a3
+- (void)resetWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   workerQueue = self->_workerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__MRAVOutputDeviceTransport_resetWithError___block_invoke;
   v7[3] = &unk_1E769A4A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_sync(workerQueue, v7);
 }
 

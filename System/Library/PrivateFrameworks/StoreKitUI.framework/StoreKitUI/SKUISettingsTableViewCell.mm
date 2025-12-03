@@ -1,16 +1,16 @@
 @interface SKUISettingsTableViewCell
-- (SKUISettingsTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)displaySettingDescriptionView:(id)a3;
+- (SKUISettingsTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)displaySettingDescriptionView:(id)view;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation SKUISettingsTableViewCell
 
-- (SKUISettingsTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SKUISettingsTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUISettingsTableViewCell initWithStyle:reuseIdentifier:];
@@ -18,7 +18,7 @@
 
   v10.receiver = self;
   v10.super_class = SKUISettingsTableViewCell;
-  v7 = [(SKUISettingsTableViewCell *)&v10 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(SKUISettingsTableViewCell *)&v10 initWithStyle:style reuseIdentifier:identifierCopy];
   v8 = v7;
   if (v7)
   {
@@ -28,16 +28,16 @@
   return v8;
 }
 
-- (void)displaySettingDescriptionView:(id)a3
+- (void)displaySettingDescriptionView:(id)view
 {
-  v4 = a3;
-  self->_hasDisclosureChevron = [(SKUISettingDescriptionView *)v4 hasDisclosureChevron];
+  viewCopy = view;
+  self->_hasDisclosureChevron = [(SKUISettingDescriptionView *)viewCopy hasDisclosureChevron];
   settingDescriptionView = self->_settingDescriptionView;
-  self->_settingDescriptionView = v4;
-  v6 = v4;
+  self->_settingDescriptionView = viewCopy;
+  v6 = viewCopy;
 
-  v7 = [(SKUISettingsTableViewCell *)self contentView];
-  [v7 addSubview:self->_settingDescriptionView];
+  contentView = [(SKUISettingsTableViewCell *)self contentView];
+  [contentView addSubview:self->_settingDescriptionView];
 
   [(SKUISettingsTableViewCell *)self setNeedsLayout];
 }
@@ -56,11 +56,11 @@
   v37.receiver = self;
   v37.super_class = SKUISettingsTableViewCell;
   [(SKUISettingsTableViewCell *)&v37 layoutSubviews];
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 userInterfaceLayoutDirection];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x277D75128] userInterfaceLayoutDirection];
 
-  v5 = [(SKUISettingsTableViewCell *)self contentView];
-  [v5 bounds];
+  contentView = [(SKUISettingsTableViewCell *)self contentView];
+  [contentView bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -76,11 +76,11 @@
     v35 = v15;
     v36 = v14;
     v22 = SKUIImageWithResourceName(@"chevronRight");
-    v23 = [v22 imageFlippedForRightToLeftLayoutDirection];
+    imageFlippedForRightToLeftLayoutDirection = [v22 imageFlippedForRightToLeftLayoutDirection];
 
     if (!self->_disclosureChevron)
     {
-      v24 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v23];
+      v24 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:imageFlippedForRightToLeftLayoutDirection];
       disclosureChevron = self->_disclosureChevron;
       self->_disclosureChevron = v24;
 
@@ -88,15 +88,15 @@
       v27 = [MEMORY[0x277D75348] colorWithWhite:0.674509804 alpha:1.0];
       [(UIImageView *)v26 setTintColor:v27];
 
-      v28 = [(SKUISettingsTableViewCell *)self contentView];
-      [v28 addSubview:self->_disclosureChevron];
+      contentView2 = [(SKUISettingsTableViewCell *)self contentView];
+      [contentView2 addSubview:self->_disclosureChevron];
     }
 
-    [v23 size];
+    [imageFlippedForRightToLeftLayoutDirection size];
     v30 = v29;
     v32 = v31;
     v34 = v21;
-    if (v4)
+    if (userInterfaceLayoutDirection)
     {
       v33 = v18;
     }
@@ -131,11 +131,11 @@
   [(SKUISettingDescriptionView *)self->_settingDescriptionView setFrame:v7, v9, v11, v13];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v3.receiver = self;
   v3.super_class = SKUISettingsTableViewCell;
-  [(SKUISettingsTableViewCell *)&v3 setBackgroundColor:a3];
+  [(SKUISettingsTableViewCell *)&v3 setBackgroundColor:color];
 }
 
 - (void)initWithStyle:reuseIdentifier:.cold.1()

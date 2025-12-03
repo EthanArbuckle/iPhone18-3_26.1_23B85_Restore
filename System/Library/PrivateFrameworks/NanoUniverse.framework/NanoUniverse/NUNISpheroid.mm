@@ -2,32 +2,32 @@
 - (CLLocationCoordinate2D)centerCoordinate;
 - (CLLocationCoordinate2D)homeCoordinate;
 - (NUNIScene)scene;
-- (NUNISpheroid)initWithScene:(id)a3 parent:(id)a4 type:(unint64_t)a5;
-- (double)animatedFloatForKey:(uint64_t)a3;
+- (NUNISpheroid)initWithScene:(id)scene parent:(id)parent type:(unint64_t)type;
+- (double)animatedFloatForKey:(uint64_t)key;
 - (void)_updateCamera;
 - (void)_updatePositionFromAngle;
-- (void)date:(NUNISpheroid *)self toCameraPosition:(SEL)a2 toCameraTarget:(id)a3;
-- (void)setAnimatedFloat:(unint64_t)a3 forKey:;
-- (void)setCenterCoordinate:(CLLocationCoordinate2D)a3 animated:(BOOL)a4;
-- (void)setHomeCoordinate:(CLLocationCoordinate2D)a3;
-- (void)updateSunLocationForDate:(id)a3 lightingPreference:(unint64_t)a4 adjustEarthRotation:(BOOL)a5;
+- (void)date:(NUNISpheroid *)self toCameraPosition:(SEL)position toCameraTarget:(id)target;
+- (void)setAnimatedFloat:(unint64_t)float forKey:;
+- (void)setCenterCoordinate:(CLLocationCoordinate2D)coordinate animated:(BOOL)animated;
+- (void)setHomeCoordinate:(CLLocationCoordinate2D)coordinate;
+- (void)updateSunLocationForDate:(id)date lightingPreference:(unint64_t)preference adjustEarthRotation:(BOOL)rotation;
 @end
 
 @implementation NUNISpheroid
 
-- (NUNISpheroid)initWithScene:(id)a3 parent:(id)a4 type:(unint64_t)a5
+- (NUNISpheroid)initWithScene:(id)scene parent:(id)parent type:(unint64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  sceneCopy = scene;
+  parentCopy = parent;
   v27.receiver = self;
   v27.super_class = NUNISpheroid;
   v10 = [(NUNISpheroid *)&v27 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_parent, a4);
-    v12 = objc_storeWeak(&v11->_scene, v8);
-    v11->_structure.type = a5;
+    objc_storeStrong(&v10->_parent, parent);
+    v12 = objc_storeWeak(&v11->_scene, sceneCopy);
+    v11->_structure.type = type;
     *&v11->_anon_30[88] = 1;
     *&v11->_anon_30[56] = 1065353216;
     *&v11->_anon_30[32] = 0;
@@ -39,31 +39,31 @@
     v11->_anon_30[120] = 1;
     *v11->_anon_30 = xmmword_25B719D40;
     v18 = v12;
-    v19 = [v8 collectionType];
+    collectionType = [sceneCopy collectionType];
 
-    *&v11->_anon_30[52] = _NUNISphereoidComputeRadius(a5, v19);
-    if (((1 << a5) & 0xFBF3FE) != 0)
+    *&v11->_anon_30[52] = _NUNISphereoidComputeRadius(type, collectionType);
+    if (((1 << type) & 0xFBF3FE) != 0)
     {
-      v20 = a5;
-      if (((1 << a5) & 0xFFC000) != 0)
+      typeCopy = type;
+      if (((1 << type) & 0xFFC000) != 0)
       {
-        v20 = a5 - 14;
+        typeCopy = type - 14;
         *&v11->_anon_30[88] = 1;
-        *&v11->_anon_30[96] = a5 - 13;
+        *&v11->_anon_30[96] = type - 13;
         v11->_anon_30[121] = 1;
         *&v11->_anon_30[16] = 0;
       }
 
       v21 = 7;
-      if (((1 << a5) & 0x3000) == 0)
+      if (((1 << type) & 0x3000) == 0)
       {
-        v21 = v20;
+        v21 = typeCopy;
       }
 
       if ((v21 & 0xFFFFFFFFFFFFFFFBLL) != 0)
       {
         v22 = s_distance[v21];
-        if (v19)
+        if (collectionType)
         {
           v23 = (v22 * 10.0) + 3.0;
           v24 = 48.0;
@@ -84,23 +84,23 @@
       }
 
       v11->_structure.distance = v25;
-      if (a5 > 11)
+      if (type > 11)
       {
-        if (a5 - 12 < 2)
+        if (type - 12 < 2)
         {
           *&v11->_anon_30[88] = 1;
-          *&v11->_anon_30[96] = a5 - 1;
+          *&v11->_anon_30[96] = type - 1;
         }
       }
 
-      else if (a5)
+      else if (type)
       {
-        if (a5 == 3)
+        if (type == 3)
         {
           *&v11->_anon_30[88] = 0;
         }
 
-        else if (a5 == 4)
+        else if (type == 4)
         {
           *&v11->_anon_30[88] = 2;
         }
@@ -116,7 +116,7 @@
 
     else
     {
-      if (a5 != 11 && a5 != 10)
+      if (type != 11 && type != 10)
       {
         [NUNISpheroid initWithScene:parent:type:];
       }
@@ -151,16 +151,16 @@
   [(NUNISpheroid *)self _updateCamera];
 }
 
-- (void)date:(NUNISpheroid *)self toCameraPosition:(SEL)a2 toCameraTarget:(id)a3
+- (void)date:(NUNISpheroid *)self toCameraPosition:(SEL)position toCameraTarget:(id)target
 {
   v5 = v4;
   v6 = v3;
   v20 = 0.0;
   v19 = 0.0;
   v18 = 0;
-  v8 = a3;
-  NUNIComputeSpheroidTransformParameters(self, v8, &v20, &v19, &v17, &v18 + 1, &v18, 1);
-  *v9.i64 = NUNIComputeSpheroidParentPosition(self->_parent, v8);
+  targetCopy = target;
+  NUNIComputeSpheroidTransformParameters(self, targetCopy, &v20, &v19, &v17, &v18 + 1, &v18, 1);
+  *v9.i64 = NUNIComputeSpheroidParentPosition(self->_parent, targetCopy);
   v15 = v9;
 
   v10 = vmul_n_f32(__sincosf_stret(v19), *(&v18 + 1) * self->_structure.distanceScale);
@@ -168,24 +168,24 @@
   *(&v11 + 1) = -v10.f32[0];
   v16 = vaddq_f32(v15, v11);
   WeakRetained = objc_loadWeakRetained(&self->_scene);
-  v13 = [WeakRetained structure];
+  structure = [WeakRetained structure];
 
-  v14 = NUNIComputeCameraView(self->_structure.type, *&vadd_f32(*&self->_anon_30[112], v13[13]), v20);
-  *v6 = vmlaq_n_f32(v16, vmulq_n_f32(vnegq_f32(v14), *&v18), v13[6].f32[0]);
+  v14 = NUNIComputeCameraView(self->_structure.type, *&vadd_f32(*&self->_anon_30[112], structure[13]), v20);
+  *v6 = vmlaq_n_f32(v16, vmulq_n_f32(vnegq_f32(v14), *&v18), structure[6].f32[0]);
   *v5 = v16;
 }
 
-- (void)updateSunLocationForDate:(id)a3 lightingPreference:(unint64_t)a4 adjustEarthRotation:(BOOL)a5
+- (void)updateSunLocationForDate:(id)date lightingPreference:(unint64_t)preference adjustEarthRotation:(BOOL)rotation
 {
   v5 = 1 << LODWORD(self->_structure.type);
   if ((v5 & 0xFBF3FE) != 0)
   {
-    NUNIComputeSpheroidTransformParameters(self, a3, &self->_structure.equatorRotation, &self->_structure.angle, &self->_anon_30[80], &self->_structure.distance, &self->_anon_30[52], a5);
+    NUNIComputeSpheroidTransformParameters(self, date, &self->_structure.equatorRotation, &self->_structure.angle, &self->_anon_30[80], &self->_structure.distance, &self->_anon_30[52], rotation);
     if ((v5 & 0x3E6) != 0)
     {
       v8 = *&self->_anon_30[80];
       v9 = *&v8 + self->_structure.equatorRotation;
-      if (a4 != 1 && (a4 || fabsf(*&v8) <= 1.5708))
+      if (preference != 1 && (preference || fabsf(*&v8) <= 1.5708))
       {
         v10 = 144.0;
       }
@@ -204,48 +204,48 @@
   }
 }
 
-- (double)animatedFloatForKey:(uint64_t)a3
+- (double)animatedFloatForKey:(uint64_t)key
 {
-  switch(a3)
+  switch(key)
   {
     case 0:
-      v3 = *(a1 + 112);
+      v3 = *(self + 112);
       return *&v3;
     case 1:
-      v4 = (a1 + 36);
+      v4 = (self + 36);
       goto LABEL_16;
     case 2:
-      v3 = *(a1 + 48);
+      v3 = *(self + 48);
       return *&v3;
     case 3:
-      *&v3 = *(a1 + 128);
+      *&v3 = *(self + 128);
       return *&v3;
     case 4:
-      v4 = (a1 + 24);
+      v4 = (self + 24);
       goto LABEL_16;
     case 5:
-      v4 = (a1 + 28);
+      v4 = (self + 28);
       goto LABEL_16;
     case 6:
-      v4 = (a1 + 100);
+      v4 = (self + 100);
       goto LABEL_16;
     case 7:
-      v4 = (a1 + 104);
+      v4 = (self + 104);
       goto LABEL_16;
     case 8:
-      v4 = (a1 + 32);
+      v4 = (self + 32);
       goto LABEL_16;
     case 9:
-      v4 = (a1 + 64);
+      v4 = (self + 64);
       goto LABEL_16;
     case 10:
-      *&v3 = *(a1 + 160);
+      *&v3 = *(self + 160);
       return *&v3;
     case 11:
-      v4 = (a1 + 96);
+      v4 = (self + 96);
       goto LABEL_16;
     case 12:
-      v4 = (a1 + 68);
+      v4 = (self + 68);
 LABEL_16:
       *&v3 = vld1q_dup_f32(v4).u64[0];
       break;
@@ -257,9 +257,9 @@ LABEL_16:
   return *&v3;
 }
 
-- (void)setAnimatedFloat:(unint64_t)a3 forKey:
+- (void)setAnimatedFloat:(unint64_t)float forKey:
 {
-  switch(a3)
+  switch(float)
   {
     case 0uLL:
       *&self->_anon_30[64] = v3;
@@ -308,14 +308,14 @@ LABEL_5:
   }
 }
 
-- (void)setCenterCoordinate:(CLLocationCoordinate2D)a3 animated:(BOOL)a4
+- (void)setCenterCoordinate:(CLLocationCoordinate2D)coordinate animated:(BOOL)animated
 {
-  v4 = a4;
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  animatedCopy = animated;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   WeakRetained = objc_loadWeakRetained(&self->_scene);
   v15 = WeakRetained;
-  if (v4)
+  if (animatedCopy)
   {
     v9 = [NUNIAnimation alloc];
     *&v10 = longitude;
@@ -340,8 +340,8 @@ LABEL_5:
 - (void)_updateCamera
 {
   WeakRetained = objc_loadWeakRetained(&self->_scene);
-  v3 = [WeakRetained snap];
-  if (v3 == [(NUNISpheroid *)self type])
+  snap = [WeakRetained snap];
+  if (snap == [(NUNISpheroid *)self type])
   {
     v4 = objc_loadWeakRetained(&self->_scene);
     v5 = [v4 isAnimating:v4 forKeys:15];
@@ -352,9 +352,9 @@ LABEL_5:
     }
 
     v6 = objc_loadWeakRetained(&self->_scene);
-    v7 = [v6 structure];
+    structure = [v6 structure];
 
-    v17 = NUNIComputeCameraView(self->_structure.type, *&vadd_f32(*&self->_anon_30[112], v7[13]), self->_structure.equatorRotation);
+    v17 = NUNIComputeCameraView(self->_structure.type, *&vadd_f32(*&self->_anon_30[112], structure[13]), self->_structure.equatorRotation);
     v14 = *&self->_anon_30[52];
     v15 = *&self->_anon_30[64];
     v8 = objc_loadWeakRetained(&self->_scene);
@@ -389,10 +389,10 @@ LABEL_5:
   return result;
 }
 
-- (void)setHomeCoordinate:(CLLocationCoordinate2D)a3
+- (void)setHomeCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   *&self->_anon_30[104] = longitude;
   *&self->_anon_30[108] = latitude;
 }

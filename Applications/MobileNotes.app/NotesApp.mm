@@ -1,20 +1,20 @@
 @interface NotesApp
 + (id)sharedNotesApp;
-- (BOOL)_refreshIsPendingForCollectionWithId:(id)a3;
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
+- (BOOL)_refreshIsPendingForCollectionWithId:(id)id;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
 - (NoteContext)noteContext;
 - (void)_cancelAllPendingRefreshes;
-- (void)_markRefreshAsPendingForCollectionWithId:(id)a3;
-- (void)_performRefreshIfNeededForCollectionWithId:(id)a3;
+- (void)_markRefreshAsPendingForCollectionWithId:(id)id;
+- (void)_performRefreshIfNeededForCollectionWithId:(id)id;
 - (void)_performRefreshIfNeededForOrphanedAccounts;
 - (void)_performRefreshIfNeededForStoresList;
-- (void)_unmarkRefreshAsPendingForCollectionWithId:(id)a3;
-- (void)applicationWillEnterForeground:(id)a3;
-- (void)applicationWillTerminate:(id)a3;
-- (void)controller:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7;
-- (void)controllerDidChangeContent:(id)a3;
+- (void)_unmarkRefreshAsPendingForCollectionWithId:(id)id;
+- (void)applicationWillEnterForeground:(id)foreground;
+- (void)applicationWillTerminate:(id)terminate;
+- (void)controller:(id)controller didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath;
+- (void)controllerDidChangeContent:(id)content;
 - (void)dealloc;
-- (void)refreshNotesIfNeededForCollection:(id)a3;
+- (void)refreshNotesIfNeededForCollection:(id)collection;
 - (void)refreshOrphanedAccountsIfNeeded;
 - (void)refreshStoresListIfNeeded;
 - (void)setupApplication;
@@ -67,30 +67,30 @@
     +[UIApplication shouldMakeUIForDefaultPNG];
     v13 = +[NoteContext sharedContext];
     [(NotesApp *)self setNoteContext:?];
-    v3 = [(NotesApp *)self noteContext];
-    [v3 enableChangeLogging:1];
+    noteContext = [(NotesApp *)self noteContext];
+    [noteContext enableChangeLogging:1];
 
-    v4 = [(NotesApp *)self noteContext];
-    [v4 setHasPriorityInSaveConflicts:1];
+    noteContext2 = [(NotesApp *)self noteContext];
+    [noteContext2 setHasPriorityInSaveConflicts:1];
 
-    v5 = [[NoteContext alloc] initWithPrivateQueue];
-    [(NotesApp *)self setBackgroundNoteContext:v5];
+    initWithPrivateQueue = [[NoteContext alloc] initWithPrivateQueue];
+    [(NotesApp *)self setBackgroundNoteContext:initWithPrivateQueue];
 
-    v6 = [(NotesApp *)self backgroundNoteContext];
-    v7 = [v6 newFRCForAccountsWithDelegate:self];
+    backgroundNoteContext = [(NotesApp *)self backgroundNoteContext];
+    v7 = [backgroundNoteContext newFRCForAccountsWithDelegate:self];
     [(NotesApp *)self setAccountsFetchedResultsController:v7];
 
-    v8 = [(NotesApp *)self backgroundNoteContext];
-    v9 = [v8 newFRCForStoresWithDelegate:self];
+    backgroundNoteContext2 = [(NotesApp *)self backgroundNoteContext];
+    v9 = [backgroundNoteContext2 newFRCForStoresWithDelegate:self];
     [(NotesApp *)self setStoresFetchedResultsController:v9];
 
     v10 = +[AccountUtilities sharedAccountUtilities];
     [v10 startKeepingAccountInfosUpToDate];
 
     v11 = +[UIApplication sharedApplication];
-    v12 = [v11 applicationState];
+    applicationState = [v11 applicationState];
 
-    if (v12 != 2)
+    if (applicationState != 2)
     {
       [(NotesApp *)self refreshOrphanedAccountsIfNeeded];
       [(NotesApp *)self refreshStoresListIfNeeded];
@@ -106,7 +106,7 @@
   [(NotesApp *)&v3 dealloc];
 }
 
-- (void)applicationWillEnterForeground:(id)a3
+- (void)applicationWillEnterForeground:(id)foreground
 {
   *(self + 8) &= ~1u;
   if ([(NotesApp *)self shouldSetupApplicationWhenEnteringForeground])
@@ -119,22 +119,22 @@
   {
     [(NotesApp *)self refreshOrphanedAccountsIfNeeded];
     [(NotesApp *)self refreshStoresListIfNeeded];
-    v4 = [(NotesApp *)self noteContext];
-    [v4 resetNotificationCount];
+    noteContext = [(NotesApp *)self noteContext];
+    [noteContext resetNotificationCount];
 
     [(NotesApp *)self updateAccountMigrationStates];
   }
 }
 
-- (void)applicationWillTerminate:(id)a3
+- (void)applicationWillTerminate:(id)terminate
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self];
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  if (([ICNoteContext legacyNotesDisabled:a3]& 1) == 0)
+  if (([ICNoteContext legacyNotesDisabled:application]& 1) == 0)
   {
     [(NotesApp *)self setupApplication];
   }
@@ -143,23 +143,23 @@
   return 1;
 }
 
-- (void)controller:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7
+- (void)controller:(id)controller didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath
 {
-  v8 = a3;
-  v7 = v8;
+  controllerCopy = controller;
+  v7 = controllerCopy;
   performBlockOnMainThread();
 }
 
-- (void)controllerDidChangeContent:(id)a3
+- (void)controllerDidChangeContent:(id)content
 {
-  v4 = a3;
-  v3 = v4;
+  contentCopy = content;
+  v3 = contentCopy;
   performBlockOnMainThread();
 }
 
-- (void)_unmarkRefreshAsPendingForCollectionWithId:(id)a3
+- (void)_unmarkRefreshAsPendingForCollectionWithId:(id)id
 {
-  if (a3)
+  if (id)
   {
     [(NSMutableSet *)self->_collectionIDsPendingRefresh removeObject:?];
   }
@@ -170,17 +170,17 @@
   }
 }
 
-- (void)_performRefreshIfNeededForCollectionWithId:(id)a3
+- (void)_performRefreshIfNeededForCollectionWithId:(id)id
 {
-  v6 = a3;
-  [(NotesApp *)self _unmarkRefreshAsPendingForCollectionWithId:v6];
+  idCopy = id;
+  [(NotesApp *)self _unmarkRefreshAsPendingForCollectionWithId:idCopy];
   v4 = +[NotesRefreshController sharedInstance];
   v5 = v4;
-  if (v6)
+  if (idCopy)
   {
-    if ([v4 notesNeedRefreshForCollectionWithID:v6])
+    if ([v4 notesNeedRefreshForCollectionWithID:idCopy])
     {
-      [v5 refreshNotesForCollectionWithID:v6];
+      [v5 refreshNotesForCollectionWithID:idCopy];
     }
   }
 
@@ -190,9 +190,9 @@
   }
 }
 
-- (BOOL)_refreshIsPendingForCollectionWithId:(id)a3
+- (BOOL)_refreshIsPendingForCollectionWithId:(id)id
 {
-  if (a3)
+  if (id)
   {
     LOBYTE(v3) = [(NSMutableSet *)self->_collectionIDsPendingRefresh containsObject:?];
   }
@@ -205,13 +205,13 @@
   return v3;
 }
 
-- (void)_markRefreshAsPendingForCollectionWithId:(id)a3
+- (void)_markRefreshAsPendingForCollectionWithId:(id)id
 {
-  v4 = a3;
-  if (v4)
+  idCopy = id;
+  if (idCopy)
   {
     collectionIDsPendingRefresh = self->_collectionIDsPendingRefresh;
-    v8 = v4;
+    v8 = idCopy;
     if (!collectionIDsPendingRefresh)
     {
       v6 = objc_alloc_init(NSMutableSet);
@@ -222,7 +222,7 @@
     }
 
     [(NSMutableSet *)collectionIDsPendingRefresh addObject:v8];
-    v4 = v8;
+    idCopy = v8;
   }
 
   else
@@ -231,13 +231,13 @@
   }
 }
 
-- (void)refreshNotesIfNeededForCollection:(id)a3
+- (void)refreshNotesIfNeededForCollection:(id)collection
 {
-  v4 = [a3 objectID];
+  objectID = [collection objectID];
   if (![(NotesApp *)self _refreshIsPendingForCollectionWithId:?])
   {
-    [(NotesApp *)self _markRefreshAsPendingForCollectionWithId:v4];
-    [(NotesApp *)self performSelector:"_performRefreshIfNeededForCollectionWithId:" withObject:v4 afterDelay:3.0];
+    [(NotesApp *)self _markRefreshAsPendingForCollectionWithId:objectID];
+    [(NotesApp *)self performSelector:"_performRefreshIfNeededForCollectionWithId:" withObject:objectID afterDelay:3.0];
   }
 }
 

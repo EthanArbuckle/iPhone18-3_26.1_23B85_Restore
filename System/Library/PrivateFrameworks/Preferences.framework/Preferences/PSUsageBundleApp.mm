@@ -1,42 +1,42 @@
 @interface PSUsageBundleApp
-+ (id)usageBundleAppForBundleWithIdentifier:(id)a3 withTotalSize:(float)a4 andCategories:(id)a5;
++ (id)usageBundleAppForBundleWithIdentifier:(id)identifier withTotalSize:(float)size andCategories:(id)categories;
 - (id)description;
-- (void)setUsageBundleStorageReporter:(id)a3;
+- (void)setUsageBundleStorageReporter:(id)reporter;
 @end
 
 @implementation PSUsageBundleApp
 
-+ (id)usageBundleAppForBundleWithIdentifier:(id)a3 withTotalSize:(float)a4 andCategories:(id)a5
++ (id)usageBundleAppForBundleWithIdentifier:(id)identifier withTotalSize:(float)size andCategories:(id)categories
 {
-  v7 = a3;
-  v8 = a5;
+  identifierCopy = identifier;
+  categoriesCopy = categories;
   v9 = objc_alloc_init(PSUsageBundleApp);
-  [(PSUsageBundleApp *)v9 setBundleIdentifier:v7];
-  *&v10 = a4;
+  [(PSUsageBundleApp *)v9 setBundleIdentifier:identifierCopy];
+  *&v10 = size;
   [(PSUsageBundleApp *)v9 setTotalSize:v10];
-  [(PSUsageBundleApp *)v9 setCategories:v8];
+  [(PSUsageBundleApp *)v9 setCategories:categoriesCopy];
 
   v11 = MEMORY[0x1E69635E0];
-  v12 = [(PSUsageBundleApp *)v9 bundleIdentifier];
-  v13 = [v11 applicationProxyForIdentifier:v12];
-  v14 = [v13 localizedName];
+  bundleIdentifier = [(PSUsageBundleApp *)v9 bundleIdentifier];
+  v13 = [v11 applicationProxyForIdentifier:bundleIdentifier];
+  localizedName = [v13 localizedName];
 
-  if (!v14)
+  if (!localizedName)
   {
-    if ([v7 isEqualToString:@"com.apple.MobileAddressBook"])
+    if ([identifierCopy isEqualToString:@"com.apple.MobileAddressBook"])
     {
       v15 = PS_LocalizedString(@"CONTACTS");
     }
 
     else
     {
-      v15 = v7;
+      v15 = identifierCopy;
     }
 
-    v14 = v15;
+    localizedName = v15;
   }
 
-  [(PSUsageBundleApp *)v9 setName:v14];
+  [(PSUsageBundleApp *)v9 setName:localizedName];
 
   return v9;
 }
@@ -45,27 +45,27 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PSUsageBundleApp *)self name];
-  v6 = [(PSUsageBundleApp *)self bundleIdentifier];
-  v7 = [(PSUsageBundleApp *)self categories];
-  v8 = [v3 stringWithFormat:@"<%@: %p %@ (%@): %@>", v4, self, v5, v6, v7];
+  name = [(PSUsageBundleApp *)self name];
+  bundleIdentifier = [(PSUsageBundleApp *)self bundleIdentifier];
+  categories = [(PSUsageBundleApp *)self categories];
+  v8 = [v3 stringWithFormat:@"<%@: %p %@ (%@): %@>", v4, self, name, bundleIdentifier, categories];
 
   return v8;
 }
 
-- (void)setUsageBundleStorageReporter:(id)a3
+- (void)setUsageBundleStorageReporter:(id)reporter
 {
-  v8 = a3;
-  v4 = [(PSUsageBundleApp *)self usageBundleStorageReporter];
+  reporterCopy = reporter;
+  usageBundleStorageReporter = [(PSUsageBundleApp *)self usageBundleStorageReporter];
 
-  v5 = v8;
-  if (v4 != v8)
+  v5 = reporterCopy;
+  if (usageBundleStorageReporter != reporterCopy)
   {
-    v6 = [PSWeakReference weakReferenceWithObject:v8];
+    v6 = [PSWeakReference weakReferenceWithObject:reporterCopy];
     storageReporterReference = self->_storageReporterReference;
     self->_storageReporterReference = v6;
 
-    v5 = v8;
+    v5 = reporterCopy;
   }
 }
 

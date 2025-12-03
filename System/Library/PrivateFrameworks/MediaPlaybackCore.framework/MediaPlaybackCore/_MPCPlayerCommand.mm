@@ -1,19 +1,19 @@
 @interface _MPCPlayerCommand
-- (_MPCPlayerCommand)initWithPlayerPath:(id)a3;
-- (_MPCPlayerCommand)initWithResponse:(id)a3;
+- (_MPCPlayerCommand)initWithPlayerPath:(id)path;
+- (_MPCPlayerCommand)initWithResponse:(id)response;
 @end
 
 @implementation _MPCPlayerCommand
 
-- (_MPCPlayerCommand)initWithPlayerPath:(id)a3
+- (_MPCPlayerCommand)initWithPlayerPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = _MPCPlayerCommand;
   v5 = [(_MPCPlayerCommand *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     playerPath = v5->_playerPath;
     v5->_playerPath = v6;
   }
@@ -21,15 +21,15 @@
   return v5;
 }
 
-- (_MPCPlayerCommand)initWithResponse:(id)a3
+- (_MPCPlayerCommand)initWithResponse:(id)response
 {
-  v5 = a3;
-  v6 = [v5 playerPath];
-  v7 = [(_MPCPlayerCommand *)self initWithPlayerPath:v6];
+  responseCopy = response;
+  playerPath = [responseCopy playerPath];
+  v7 = [(_MPCPlayerCommand *)self initWithPlayerPath:playerPath];
 
   if (v7)
   {
-    objc_storeStrong(&v7->_response, a3);
+    objc_storeStrong(&v7->_response, response);
   }
 
   return v7;

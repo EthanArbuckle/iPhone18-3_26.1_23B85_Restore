@@ -1,19 +1,19 @@
 @interface BLSHNullInactiveBudgetPolicy
-- (int64_t)allowedFidelityAtDate:(id)a3 forEnvironment:(id)a4 expectedFidelity:(int64_t)a5;
+- (int64_t)allowedFidelityAtDate:(id)date forEnvironment:(id)environment expectedFidelity:(int64_t)fidelity;
 @end
 
 @implementation BLSHNullInactiveBudgetPolicy
 
-- (int64_t)allowedFidelityAtDate:(id)a3 forEnvironment:(id)a4 expectedFidelity:(int64_t)a5
+- (int64_t)allowedFidelityAtDate:(id)date forEnvironment:(id)environment expectedFidelity:(int64_t)fidelity
 {
-  if (a5 == 1)
+  if (fidelity == 1)
   {
     return 2;
   }
 
   else
   {
-    return a5;
+    return fidelity;
   }
 }
 

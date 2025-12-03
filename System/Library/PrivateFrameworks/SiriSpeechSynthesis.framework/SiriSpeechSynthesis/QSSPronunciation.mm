@@ -1,7 +1,7 @@
 @interface QSSPronunciation
 - (NSString)phonemes;
-- (Offset<siri::speech::schema_fb::Pronunciation>)addObjectToBuffer:(void *)a3;
-- (QSSPronunciation)initWithFlatbuffData:(id)a3 root:(const Pronunciation *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::Pronunciation>)addObjectToBuffer:(void *)buffer;
+- (QSSPronunciation)initWithFlatbuffData:(id)data root:(const Pronunciation *)root verify:(BOOL)verify;
 - (id)flatbuffData;
 @end
 
@@ -36,26 +36,26 @@ flatbuffers::DetachedBuffer *__32__QSSPronunciation_flatbuffData__block_invoke(u
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::Pronunciation>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::Pronunciation>)addObjectToBuffer:(void *)buffer
 {
-  v4 = [(QSSPronunciation *)self phonemes];
-  v5 = v4;
-  if (!v4)
+  phonemes = [(QSSPronunciation *)self phonemes];
+  v5 = phonemes;
+  if (!phonemes)
   {
-    v4 = &stru_2879AE8E0;
+    phonemes = &stru_2879AE8E0;
   }
 
-  v6 = [(__CFString *)v4 UTF8String];
-  v7 = strlen(v6);
-  LODWORD(v6) = flatbuffers::FlatBufferBuilder::CreateString(a3, v6, v7);
+  uTF8String = [(__CFString *)phonemes UTF8String];
+  v7 = strlen(uTF8String);
+  LODWORD(uTF8String) = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v7);
 
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v8 = *(a3 + 10);
-  v9 = *(a3 + 8) - *(a3 + 12);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 4, v6);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v8 = *(buffer + 10);
+  v9 = *(buffer + 8) - *(buffer + 12);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 4, uTF8String);
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v9 + v8);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v9 + v8);
 }
 
 - (NSString)phonemes
@@ -81,42 +81,42 @@ flatbuffers::DetachedBuffer *__32__QSSPronunciation_flatbuffData__block_invoke(u
   return v6;
 }
 
-- (QSSPronunciation)initWithFlatbuffData:(id)a3 root:(const Pronunciation *)a4 verify:(BOOL)a5
+- (QSSPronunciation)initWithFlatbuffData:(id)data root:(const Pronunciation *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSPronunciation;
   v10 = [(QSSPronunciation *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -138,9 +138,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

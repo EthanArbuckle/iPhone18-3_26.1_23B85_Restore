@@ -1,20 +1,20 @@
 @interface HMDRemoteEventRouterAccessControl
 + (id)allowAllUsersAndDevicesAccessControl;
 + (id)allowSharedAdminsAndAllDevicesAccessControl;
-- (HMDRemoteEventRouterAccessControl)initWithAllowedUserTypes:(unint64_t)a3 deviceCategories:(unint64_t)a4;
+- (HMDRemoteEventRouterAccessControl)initWithAllowedUserTypes:(unint64_t)types deviceCategories:(unint64_t)categories;
 @end
 
 @implementation HMDRemoteEventRouterAccessControl
 
-- (HMDRemoteEventRouterAccessControl)initWithAllowedUserTypes:(unint64_t)a3 deviceCategories:(unint64_t)a4
+- (HMDRemoteEventRouterAccessControl)initWithAllowedUserTypes:(unint64_t)types deviceCategories:(unint64_t)categories
 {
   v7.receiver = self;
   v7.super_class = HMDRemoteEventRouterAccessControl;
   result = [(HMDRemoteEventRouterAccessControl *)&v7 init];
   if (result)
   {
-    result->_allowedUserTypes = a3;
-    result->_allowedDeviceTypes = a4;
+    result->_allowedUserTypes = types;
+    result->_allowedDeviceTypes = categories;
   }
 
   return result;

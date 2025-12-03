@@ -1,12 +1,12 @@
 @interface IMDCoreSpotlightRecipientIndexer
-+ (id)_contactForURI:(id)a3;
-+ (id)_createCSPersonForParticipantID:(id)a3 messageService:(id)a4 timingProfiler:(id)a5 timingIteration:(int64_t)a6;
-+ (id)_handleIDForHandleID:(id)a3;
-+ (id)_selfCSPersonFromHandleID:(id)a3 messageService:(id)a4;
++ (id)_contactForURI:(id)i;
++ (id)_createCSPersonForParticipantID:(id)d messageService:(id)service timingProfiler:(id)profiler timingIteration:(int64_t)iteration;
++ (id)_handleIDForHandleID:(id)d;
++ (id)_selfCSPersonFromHandleID:(id)d messageService:(id)service;
 + (id)groupPhotoPathCustomKey;
 + (id)suggestedContactNameCustomKey;
 + (id)suggestedContactPhotoCustomKey;
-+ (void)indexItem:(id)a3 withChat:(id)a4 context:(id)a5 metadataToUpdate:(id)a6 timingProfiler:(id)a7;
++ (void)indexItem:(id)item withChat:(id)chat context:(id)context metadataToUpdate:(id)update timingProfiler:(id)profiler;
 @end
 
 @implementation IMDCoreSpotlightRecipientIndexer
@@ -47,68 +47,68 @@
   return v3;
 }
 
-+ (id)_createCSPersonForParticipantID:(id)a3 messageService:(id)a4 timingProfiler:(id)a5 timingIteration:(int64_t)a6
++ (id)_createCSPersonForParticipantID:(id)d messageService:(id)service timingProfiler:(id)profiler timingIteration:(int64_t)iteration
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v14 = objc_msgSend__contactForURI_(a1, v13, v12);
-  objc_msgSend_startTimingForKey_iteration_(v10, v15, @"IMDCoreSpotlightFullNameForContactProfilingKey", a6);
+  profilerCopy = profiler;
+  serviceCopy = service;
+  dCopy = d;
+  v14 = objc_msgSend__contactForURI_(self, v13, dCopy);
+  objc_msgSend_startTimingForKey_iteration_(profilerCopy, v15, @"IMDCoreSpotlightFullNameForContactProfilingKey", iteration);
   v18 = objc_msgSend_sharedInstance(IMDContactCache, v16, v17);
   v20 = objc_msgSend_fullNameForContact_(v18, v19, v14);
 
-  objc_msgSend_stopTimingForKey_iteration_(v10, v21, @"IMDCoreSpotlightFullNameForContactProfilingKey", a6);
-  objc_msgSend_startTimingForKey_iteration_(v10, v22, @"IMDCoreSpotlightContactsHandleIDForHandler", a6);
-  v24 = objc_msgSend__handleIDForHandleID_(a1, v23, v12);
+  objc_msgSend_stopTimingForKey_iteration_(profilerCopy, v21, @"IMDCoreSpotlightFullNameForContactProfilingKey", iteration);
+  objc_msgSend_startTimingForKey_iteration_(profilerCopy, v22, @"IMDCoreSpotlightContactsHandleIDForHandler", iteration);
+  v24 = objc_msgSend__handleIDForHandleID_(self, v23, dCopy);
 
-  objc_msgSend_stopTimingForKey_iteration_(v10, v25, @"IMDCoreSpotlightContactsHandleIDForHandler", a6);
+  objc_msgSend_stopTimingForKey_iteration_(profilerCopy, v25, @"IMDCoreSpotlightContactsHandleIDForHandler", iteration);
   if (!v20)
   {
     v20 = objc_msgSend_im_stripCategoryLabel(v24, v26, v27);
   }
 
-  objc_msgSend_startTimingForKey_iteration_(v10, v26, @"IMDCoreSpotlightCreateCoreSpotlightPerson", a6);
-  v28 = _IMDCoreSpotlightPerson(v20, v24, v14, v11);
+  objc_msgSend_startTimingForKey_iteration_(profilerCopy, v26, @"IMDCoreSpotlightCreateCoreSpotlightPerson", iteration);
+  v28 = _IMDCoreSpotlightPerson(v20, v24, v14, serviceCopy);
 
-  objc_msgSend_stopTimingForKey_iteration_(v10, v29, @"IMDCoreSpotlightCreateCoreSpotlightPerson", a6);
+  objc_msgSend_stopTimingForKey_iteration_(profilerCopy, v29, @"IMDCoreSpotlightCreateCoreSpotlightPerson", iteration);
 
   return v28;
 }
 
-+ (void)indexItem:(id)a3 withChat:(id)a4 context:(id)a5 metadataToUpdate:(id)a6 timingProfiler:(id)a7
++ (void)indexItem:(id)item withChat:(id)chat context:(id)context metadataToUpdate:(id)update timingProfiler:(id)profiler
 {
   v276 = *MEMORY[0x1E69E9840];
-  v232 = a3;
-  v11 = a4;
-  v244 = a5;
-  v235 = a6;
-  v12 = a7;
-  started = objc_msgSend_startTimingForKey_(v12, v13, @"IMDCoreRecentsApiInitProfilingKey");
+  itemCopy = item;
+  chatCopy = chat;
+  contextCopy = context;
+  updateCopy = update;
+  profilerCopy = profiler;
+  started = objc_msgSend_startTimingForKey_(profilerCopy, v13, @"IMDCoreRecentsApiInitProfilingKey");
   _IMDCoreRecentsApiInit(started, v15, v16);
-  v245 = v12;
-  objc_msgSend_stopTimingForKey_(v12, v17, @"IMDCoreRecentsApiInitProfilingKey");
+  v245 = profilerCopy;
+  objc_msgSend_stopTimingForKey_(profilerCopy, v17, @"IMDCoreRecentsApiInitProfilingKey");
   v239 = __PAIR128__(IMDCoreSpotlightRecipientIndexer_TestHandleID, IMDCoreSpotlightRecipientIndexer_TestContact) == 0;
-  v234 = v11;
-  v19 = objc_msgSend_objectForKey_(v11, v18, @"participants");
+  v234 = chatCopy;
+  v19 = objc_msgSend_objectForKey_(chatCopy, v18, @"participants");
   v242 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v238 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v237 = objc_msgSend_objectForKey_(v232, v20, @"time");
-  v246 = objc_msgSend_objectForKey_(v232, v21, @"service");
-  v23 = objc_msgSend_objectForKey_(v11, v22, @"lalh");
+  v237 = objc_msgSend_objectForKey_(itemCopy, v20, @"time");
+  v246 = objc_msgSend_objectForKey_(itemCopy, v21, @"service");
+  v23 = objc_msgSend_objectForKey_(chatCopy, v22, @"lalh");
   v231 = objc_msgSend__stripFZIDPrefix(v23, v24, v25);
 
-  v27 = objc_msgSend_objectForKey_(v232, v26, @"flags");
-  LOBYTE(a5) = objc_msgSend_unsignedLongLongValue(v27, v28, v29);
+  v27 = objc_msgSend_objectForKey_(itemCopy, v26, @"flags");
+  LOBYTE(context) = objc_msgSend_unsignedLongLongValue(v27, v28, v29);
 
-  v228 = a5;
-  if ((a5 & 4) != 0)
+  contextCopy2 = context;
+  if ((context & 4) != 0)
   {
     v37 = v231;
   }
 
   else
   {
-    v31 = objc_msgSend_objectForKey_(v232, v30, @"handle");
+    v31 = objc_msgSend_objectForKey_(itemCopy, v30, @"handle");
     v34 = objc_msgSend__stripFZIDPrefix(v31, v32, v33);
     v37 = objc_msgSend_im_stripCategoryLabel(v34, v35, v36);
   }
@@ -125,7 +125,7 @@
       *buf = 134219522;
       v263 = v44;
       v264 = 2112;
-      if ((v228 & 4) == 0)
+      if ((contextCopy2 & 4) == 0)
       {
         v45 = @"NO";
       }
@@ -164,12 +164,12 @@
           objc_enumerationMutation(obj);
         }
 
-        v52 = objc_msgSend__createCSPersonForParticipantID_messageService_timingProfiler_timingIteration_(a1, v47, *(*(&v251 + 1) + 8 * i), v246, v245, v49);
+        v52 = objc_msgSend__createCSPersonForParticipantID_messageService_timingProfiler_timingIteration_(self, v47, *(*(&v251 + 1) + 8 * i), v246, v245, v49);
         v55 = objc_msgSend_handles(v52, v53, v54);
         v58 = objc_msgSend_firstObject(v55, v56, v57);
 
         v59 = _IMDCoreRecentsKindForHandleID(v58, v246);
-        if ((objc_msgSend_isReindexing(v244, v60, v61) & 1) == 0)
+        if ((objc_msgSend_isReindexing(contextCopy, v60, v61) & 1) == 0)
         {
           v64 = v58 && v239;
           if (v64 && v59 != 0)
@@ -218,8 +218,8 @@
   v79 = _IMDCoreSpotlightChatUIDForChatDictionary(v234);
   if (v79)
   {
-    v80 = objc_msgSend_chatUniqueIdentifierKey(a1, v77, v78);
-    objc_msgSend_setValue_forCustomKey_(v235, v81, v79, v80);
+    v80 = objc_msgSend_chatUniqueIdentifierKey(self, v77, v78);
+    objc_msgSend_setValue_forCustomKey_(updateCopy, v81, v79, v80);
   }
 
   v236 = objc_msgSend_objectForKeyedSubscript_(v234, v77, @"groupPhotoPath");
@@ -241,7 +241,7 @@
   v227 = v89;
   if (objc_msgSend_length(v89, v87, v88))
   {
-    objc_msgSend_setDisplayName_(v235, v90, v227);
+    objc_msgSend_setDisplayName_(updateCopy, v90, v227);
   }
 
   v92 = objc_msgSend_sharedFeatureFlags(MEMORY[0x1E69A8070], v90, v91);
@@ -250,8 +250,8 @@
   if ((isSpotlightRefactorEnabled & 1) == 0)
   {
     v98 = [IMDINInteractionMessageDonationJob alloc];
-    v100 = objc_msgSend_initWithContext_(v98, v99, v244);
-    objc_msgSend_processMessageDictionary_chatDictionary_(v100, v101, v232, v234);
+    v100 = objc_msgSend_initWithContext_(v98, v99, contextCopy);
+    objc_msgSend_processMessageDictionary_chatDictionary_(v100, v101, itemCopy, v234);
     objc_msgSend_finishWithCompletion_(v100, v102, &unk_1F2FA1190);
   }
 
@@ -266,7 +266,7 @@
     }
   }
 
-  if (!(objc_msgSend_isReindexing(v244, v103, v104) & 1 | !v239) && objc_msgSend_count(v238, v106, v107) && objc_msgSend_count(obj, v106, v107) == 1)
+  if (!(objc_msgSend_isReindexing(contextCopy, v103, v104) & 1 | !v239) && objc_msgSend_count(v238, v106, v107) && objc_msgSend_count(obj, v106, v107) == 1)
   {
     v108 = objc_msgSend_sharedInstance(IMDCoreSpotlightDispatchObject, v106, v107);
     v111 = objc_msgSend_recentsInstance(v108, v109, v110);
@@ -276,7 +276,7 @@
   if (v231 != 0 && v239)
   {
     objc_msgSend_startTimingForKey_(v245, v106, @"IMDCoreSpotlightCreateCoreSpotlightPersonForHandleID");
-    v240 = objc_msgSend__selfCSPersonFromHandleID_messageService_(a1, v113, v231, v246);
+    v240 = objc_msgSend__selfCSPersonFromHandleID_messageService_(self, v113, v231, v246);
     objc_msgSend_stopTimingForKey_(v245, v114, @"IMDCoreSpotlightCreateCoreSpotlightPersonForHandleID");
   }
 
@@ -296,14 +296,14 @@
     }
   }
 
-  v117 = (v228 & 4) == 0;
-  v229 = objc_msgSend_objectForKey_(v232, v115, @"handle");
+  v117 = (contextCopy2 & 4) == 0;
+  v229 = objc_msgSend_objectForKey_(itemCopy, v115, @"handle");
   v119 = MEMORY[0x1E696AD98];
   if (v117)
   {
     IsKnownContact = _IMDCoreSpotlightIsKnownContact(v229);
     v122 = objc_msgSend_numberWithInt_(v119, v121, IsKnownContact);
-    objc_msgSend_setIsMessageFromKnownSender_(v235, v123, v122);
+    objc_msgSend_setIsMessageFromKnownSender_(updateCopy, v123, v122);
 
     objc_msgSend_startTimingForKey_(v245, v124, @"IMDCoreSpotlightAddAuthorDataTimingKey");
     if (objc_msgSend_containsObject_(obj, v125, v233))
@@ -354,7 +354,7 @@ LABEL_83:
 
     else
     {
-      v140 = objc_msgSend__createCSPersonForParticipantID_messageService_timingProfiler_timingIteration_(a1, v126, v233, v246, v245, v76);
+      v140 = objc_msgSend__createCSPersonForParticipantID_messageService_timingProfiler_timingIteration_(self, v126, v233, v246, v245, v76);
     }
 
     if (v140)
@@ -363,14 +363,14 @@ LABEL_83:
       {
         v259 = v227;
         v152 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v151, &v259, 1);
-        objc_msgSend_setAuthorNames_(v235, v153, v152);
+        objc_msgSend_setAuthorNames_(updateCopy, v153, v152);
       }
 
       else
       {
         v258 = v140;
         v152 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v151, &v258, 1);
-        objc_msgSend_setAuthors_(v235, v155, v152);
+        objc_msgSend_setAuthors_(updateCopy, v155, v152);
       }
 
       v157 = v233;
@@ -378,7 +378,7 @@ LABEL_83:
       {
         v257 = v233;
         v158 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v156, &v257, 1);
-        objc_msgSend_setAuthorAddresses_(v235, v159, v158);
+        objc_msgSend_setAuthorAddresses_(updateCopy, v159, v158);
 
         v157 = v233;
       }
@@ -406,8 +406,8 @@ LABEL_83:
           }
         }
 
-        v183 = objc_msgSend_suggestedContactNameCustomKey(a1, v174, v175);
-        objc_msgSend_setValue_forCustomKey_(v235, v184, v163, v183);
+        v183 = objc_msgSend_suggestedContactNameCustomKey(self, v174, v175);
+        objc_msgSend_setValue_forCustomKey_(updateCopy, v184, v163, v183);
       }
 
       if (objc_msgSend_length(v169, v172, v173))
@@ -422,8 +422,8 @@ LABEL_83:
           }
         }
 
-        v189 = objc_msgSend_suggestedContactPhotoCustomKey(a1, v186, v187);
-        objc_msgSend_setValue_forCustomKey_(v235, v190, v169, v189);
+        v189 = objc_msgSend_suggestedContactPhotoCustomKey(self, v186, v187);
+        objc_msgSend_setValue_forCustomKey_(updateCopy, v190, v169, v189);
       }
 
       objc_msgSend_removeObject_(v242, v185, v140);
@@ -461,19 +461,19 @@ LABEL_83:
   else
   {
     v141 = objc_msgSend_numberWithInt_(MEMORY[0x1E696AD98], v118, 1);
-    objc_msgSend_setIsMessageFromKnownSender_(v235, v142, v141);
+    objc_msgSend_setIsMessageFromKnownSender_(updateCopy, v142, v141);
 
     if (v240)
     {
       v256 = v240;
       v144 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v143, &v256, 1);
-      objc_msgSend_setAuthors_(v235, v145, v144);
+      objc_msgSend_setAuthors_(updateCopy, v145, v144);
 
       if (v231)
       {
         v255 = v231;
         v148 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v146, &v255, 1);
-        objc_msgSend_setAuthorAddresses_(v235, v149, v148);
+        objc_msgSend_setAuthorAddresses_(updateCopy, v149, v148);
       }
 
       if (objc_msgSend_verboseLoggingEnabled(MEMORY[0x1E69A7FF8], v146, v147) && IMOSLoggingEnabled())
@@ -491,18 +491,18 @@ LABEL_83:
     }
   }
 
-  objc_msgSend_setPrimaryRecipients_(v235, v143, v242);
+  objc_msgSend_setPrimaryRecipients_(updateCopy, v143, v242);
   v196 = objc_msgSend___imArrayByApplyingBlock_(v242, v195, &unk_1F2FA11B0);
-  objc_msgSend_setRecipientAddresses_(v235, v197, v196);
+  objc_msgSend_setRecipientAddresses_(updateCopy, v197, v196);
   v199 = objc_msgSend_objectForKey_(v234, v198, @"guid");
   v202 = objc_msgSend_im_lastPathComponent(v236, v200, v201);
   v205 = IMSharedHelperExternalLocationForFile();
   if (shouldDisplayGroupNameAndPhotoWith_handles)
   {
-    v206 = objc_msgSend_groupPhotoPathCustomKey(a1, v203, v204);
-    objc_msgSend_setValue_forCustomKey_(v235, v207, v205, v206);
+    v206 = objc_msgSend_groupPhotoPathCustomKey(self, v203, v204);
+    objc_msgSend_setValue_forCustomKey_(updateCopy, v207, v205, v206);
 
-    objc_msgSend_setGroupPhotoPath_(v235, v208, v205);
+    objc_msgSend_setGroupPhotoPath_(updateCopy, v208, v205);
   }
 
   if (objc_msgSend_verboseLoggingEnabled(MEMORY[0x1E69A7FF8], v203, v204))
@@ -512,7 +512,7 @@ LABEL_83:
       v209 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v209, OS_LOG_TYPE_INFO))
       {
-        v212 = objc_msgSend_primaryRecipients(v235, v210, v211);
+        v212 = objc_msgSend_primaryRecipients(updateCopy, v210, v211);
         *buf = 138412290;
         v263 = v212;
         _os_log_impl(&dword_1B7AD5000, v209, OS_LOG_TYPE_INFO, "Setting primary recipients %@", buf, 0xCu);
@@ -524,7 +524,7 @@ LABEL_83:
       v213 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v213, OS_LOG_TYPE_INFO))
       {
-        v216 = objc_msgSend_recipientAddresses(v235, v214, v215);
+        v216 = objc_msgSend_recipientAddresses(updateCopy, v214, v215);
         *buf = 138412290;
         v263 = v216;
         _os_log_impl(&dword_1B7AD5000, v213, OS_LOG_TYPE_INFO, "Setting primary recipient IDs %@", buf, 0xCu);
@@ -536,7 +536,7 @@ LABEL_83:
       v217 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v217, OS_LOG_TYPE_INFO))
       {
-        v220 = objc_msgSend_authors(v235, v218, v219);
+        v220 = objc_msgSend_authors(updateCopy, v218, v219);
         *buf = 138412290;
         v263 = v220;
         _os_log_impl(&dword_1B7AD5000, v217, OS_LOG_TYPE_INFO, "Setting author %@", buf, 0xCu);
@@ -548,7 +548,7 @@ LABEL_83:
       v221 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v221, OS_LOG_TYPE_INFO))
       {
-        v224 = objc_msgSend_authorAddresses(v235, v222, v223);
+        v224 = objc_msgSend_authorAddresses(updateCopy, v222, v223);
         *buf = 138412290;
         v263 = v224;
         _os_log_impl(&dword_1B7AD5000, v221, OS_LOG_TYPE_INFO, "Setting author IDs %@", buf, 0xCu);
@@ -559,7 +559,7 @@ LABEL_83:
   v225 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_contactForURI:(id)a3
++ (id)_contactForURI:(id)i
 {
   if (IMDCoreSpotlightRecipientIndexer_TestContact)
   {
@@ -568,20 +568,20 @@ LABEL_83:
 
   else
   {
-    v3 = _IMDCoreSpotlightCNContactForAddress(a3);
+    v3 = _IMDCoreSpotlightCNContactForAddress(i);
   }
 
   return v3;
 }
 
-+ (id)_handleIDForHandleID:(id)a3
++ (id)_handleIDForHandleID:(id)d
 {
-  v3 = a3;
-  v4 = v3;
+  dCopy = d;
+  v4 = dCopy;
   v5 = IMDCoreSpotlightRecipientIndexer_TestHandleID;
   if (!IMDCoreSpotlightRecipientIndexer_TestHandleID)
   {
-    v5 = v3;
+    v5 = dCopy;
   }
 
   v6 = v5;
@@ -589,20 +589,20 @@ LABEL_83:
   return v6;
 }
 
-+ (id)_selfCSPersonFromHandleID:(id)a3 messageService:(id)a4
++ (id)_selfCSPersonFromHandleID:(id)d messageService:(id)service
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = _IMDCoreSpotlightCNContactForAddress(v5);
+  dCopy = d;
+  serviceCopy = service;
+  v7 = _IMDCoreSpotlightCNContactForAddress(dCopy);
   v10 = objc_msgSend_sharedInstance(IMDContactCache, v8, v9);
   v12 = objc_msgSend_fullNameForContact_(v10, v11, v7);
 
   if (!v12)
   {
-    v12 = v5;
+    v12 = dCopy;
   }
 
-  v13 = _IMDCoreSpotlightPerson(v12, v5, v7, v6);
+  v13 = _IMDCoreSpotlightPerson(v12, dCopy, v7, serviceCopy);
 
   return v13;
 }

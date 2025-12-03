@@ -1,10 +1,10 @@
 @interface CDPUICustodianAskHelpViewModel
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CDPUICustodianAskHelpViewModel
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CDPUICustodianAskHelpViewModel allocWithZone:?]];
   v5 = [(NSString *)self->_iconName copy];

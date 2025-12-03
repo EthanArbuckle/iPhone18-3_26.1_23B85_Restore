@@ -1,29 +1,29 @@
 @interface PKPassShare
 + (id)createTaggedShare;
-- (BOOL)appendCredentialShareDictionary:(id)a3 entitlements:(id)a4;
+- (BOOL)appendCredentialShareDictionary:(id)dictionary entitlements:(id)entitlements;
 - (BOOL)createdByActiveUser;
 - (BOOL)isEditable;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isParentOfShare:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isParentOfShare:(id)share;
 - (BOOL)isRevokable;
-- (BOOL)isSameUnderlyingShareAs:(id)a3;
+- (BOOL)isSameUnderlyingShareAs:(id)as;
 - (BOOL)mostRestrictiveIntraAccountSharingEnabled;
 - (NSUUID)uuidIdentifier;
 - (PKPassShare)init;
-- (PKPassShare)initWithCoder:(id)a3;
-- (PKPassShare)initWithDictionary:(id)a3;
-- (PKPassShare)initWithSubcredentialDictionary:(id)a3 isForCurrentUser:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descendantsInShares:(id)a3;
+- (PKPassShare)initWithCoder:(id)coder;
+- (PKPassShare)initWithDictionary:(id)dictionary;
+- (PKPassShare)initWithSubcredentialDictionary:(id)dictionary isForCurrentUser:(BOOL)user;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descendantsInShares:(id)shares;
 - (id)description;
 - (unint64_t)hash;
 - (unint64_t)status;
-- (void)addCredentialShare:(id)a3;
-- (void)addCredentialShares:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setStatus:(unint64_t)a3;
-- (void)updateDisplayableSharedEntitlementsFromDisplayableEntitlements:(id)a3;
+- (void)addCredentialShare:(id)share;
+- (void)addCredentialShares:(id)shares;
+- (void)encodeWithCoder:(id)coder;
+- (void)setIdentifier:(id)identifier;
+- (void)setStatus:(unint64_t)status;
+- (void)updateDisplayableSharedEntitlementsFromDisplayableEntitlements:(id)entitlements;
 @end
 
 @implementation PKPassShare
@@ -32,8 +32,8 @@
 {
   v2 = objc_alloc_init(PKPassShare);
   v3 = objc_alloc_init(MEMORY[0x1E696AFB0]);
-  v4 = [v3 UUIDString];
-  [(PKPassShare *)v2 setIdentifier:v4];
+  uUIDString = [v3 UUIDString];
+  [(PKPassShare *)v2 setIdentifier:uUIDString];
 
   [(PKPassShare *)v2 setStatus:3];
   return v2;
@@ -46,11 +46,11 @@
   return [(PKPassShare *)&v3 init];
 }
 
-- (PKPassShare)initWithDictionary:(id)a3
+- (PKPassShare)initWithDictionary:(id)dictionary
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     goto LABEL_20;
   }
@@ -60,28 +60,28 @@
   self = [(PKPassShare *)&v35 init];
   if (self)
   {
-    v5 = [v4 PKStringForKey:@"shareIdentifier"];
+    v5 = [dictionaryCopy PKStringForKey:@"shareIdentifier"];
     identifier = self->_identifier;
     self->_identifier = v5;
 
     if (self->_identifier)
     {
-      v7 = [v4 PKStringForKey:@"recipient"];
+      v7 = [dictionaryCopy PKStringForKey:@"recipient"];
       recipientNickname = self->_recipientNickname;
       self->_recipientNickname = v7;
 
-      v9 = [v4 PKStringForKey:@"sender"];
+      v9 = [dictionaryCopy PKStringForKey:@"sender"];
       senderShareIdentifier = self->_senderShareIdentifier;
       self->_senderShareIdentifier = v9;
 
-      v11 = [v4 PKStringForKey:@"status"];
+      v11 = [dictionaryCopy PKStringForKey:@"status"];
       self->_status = PKShareStatusFromString(v11);
 
-      v12 = [v4 PKDateForKey:@"creationDate"];
+      v12 = [dictionaryCopy PKDateForKey:@"creationDate"];
       creationDate = self->_creationDate;
       self->_creationDate = v12;
 
-      v14 = [v4 PKBoolForKey:@"managementEnabled"];
+      v14 = [dictionaryCopy PKBoolForKey:@"managementEnabled"];
       v15 = 2;
       if (!v14)
       {
@@ -90,8 +90,8 @@
 
       self->_manageability = v15;
       v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v30 = v4;
-      v17 = [v4 PKArrayContaining:objc_opt_class() forKey:@"sharedEntitlements"];
+      v30 = dictionaryCopy;
+      v17 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"sharedEntitlements"];
       v31 = 0u;
       v32 = 0u;
       v33 = 0u;
@@ -140,28 +140,28 @@
       sharedEntitlements = v29->_sharedEntitlements;
       v29->_sharedEntitlements = v25;
 
-      v4 = v30;
+      dictionaryCopy = v30;
       goto LABEL_19;
     }
 
 LABEL_20:
-    v27 = 0;
+    selfCopy = 0;
     goto LABEL_21;
   }
 
 LABEL_19:
   self = self;
-  v27 = self;
+  selfCopy = self;
 LABEL_21:
 
-  return v27;
+  return selfCopy;
 }
 
-- (PKPassShare)initWithSubcredentialDictionary:(id)a3 isForCurrentUser:(BOOL)a4
+- (PKPassShare)initWithSubcredentialDictionary:(id)dictionary isForCurrentUser:(BOOL)user
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v34.receiver = self;
     v34.super_class = PKPassShare;
@@ -170,18 +170,18 @@ LABEL_21:
     {
 LABEL_32:
       self = self;
-      v16 = self;
+      selfCopy = self;
       goto LABEL_33;
     }
 
-    v7 = [v6 PKStringForKey:@"groupIdentifier"];
+    v7 = [dictionaryCopy PKStringForKey:@"groupIdentifier"];
     groupIdentifier = self->_groupIdentifier;
     self->_groupIdentifier = v7;
 
     objc_storeStrong(&self->_identifier, self->_groupIdentifier);
     if (self->_identifier)
     {
-      v9 = [v6 PKStringForKey:@"sharerGroupIdentifier"];
+      v9 = [dictionaryCopy PKStringForKey:@"sharerGroupIdentifier"];
       senderGroupIdentifier = self->_senderGroupIdentifier;
       self->_senderGroupIdentifier = v9;
 
@@ -217,8 +217,8 @@ LABEL_15:
         if (!v17)
         {
 LABEL_16:
-          self->_isForCurrentUser = a4;
-          v18 = [v6 PKDateForKey:@"validFrom"];
+          self->_isForCurrentUser = user;
+          v18 = [dictionaryCopy PKDateForKey:@"validFrom"];
           creationDate = self->_creationDate;
           self->_creationDate = v18;
 
@@ -229,7 +229,7 @@ LABEL_16:
 
           else
           {
-            [v6 PKStringForKey:@"friendlyName"];
+            [dictionaryCopy PKStringForKey:@"friendlyName"];
           }
           v20 = ;
           recipientNickname = self->_recipientNickname;
@@ -242,11 +242,11 @@ LABEL_16:
 
           else
           {
-            v22 = [v6 PKBoolForKey:@"managementEnabled"];
+            v22 = [dictionaryCopy PKBoolForKey:@"managementEnabled"];
           }
 
           self->_manageability = v22;
-          v23 = [v6 PKDictionaryForKey:@"entitlement"];
+          v23 = [dictionaryCopy PKDictionaryForKey:@"entitlement"];
           v24 = [[PKPassSharedEntitlement alloc] initWithSubcredentialDictionary:v23];
           v25 = v24;
           if (v24)
@@ -268,7 +268,7 @@ LABEL_16:
             }
           }
 
-          v28 = [v6 PKArrayContaining:objc_opt_class() forKey:@"sharedKeysData"];
+          v28 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"sharedKeysData"];
           v29 = [v28 pk_arrayBySafelyApplyingBlock:&__block_literal_global_212];
           credentialShares = self->_credentialShares;
           self->_credentialShares = v29;
@@ -298,10 +298,10 @@ LABEL_16:
     }
   }
 
-  v16 = 0;
+  selfCopy = 0;
 LABEL_33:
 
-  return v16;
+  return selfCopy;
 }
 
 PKPassCredentialShare *__64__PKPassShare_initWithSubcredentialDictionary_isForCurrentUser___block_invoke(uint64_t a1, void *a2)
@@ -312,20 +312,20 @@ PKPassCredentialShare *__64__PKPassShare_initWithSubcredentialDictionary_isForCu
   return v3;
 }
 
-- (BOOL)appendCredentialShareDictionary:(id)a3 entitlements:(id)a4
+- (BOOL)appendCredentialShareDictionary:(id)dictionary entitlements:(id)entitlements
 {
   v61 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  dictionaryCopy = dictionary;
+  entitlementsCopy = entitlements;
+  v8 = entitlementsCopy;
   v9 = 0;
-  if (!v6 || !v7)
+  if (!dictionaryCopy || !entitlementsCopy)
   {
     goto LABEL_32;
   }
 
   v58 = 0;
-  v10 = PKShareStatusFromCarKeyIntStatus([v6 PKIntegerForKey:@"status"], &v58);
+  v10 = PKShareStatusFromCarKeyIntStatus([dictionaryCopy PKIntegerForKey:@"status"], &v58);
   v11 = v58;
   if (v58)
   {
@@ -334,7 +334,7 @@ PKPassCredentialShare *__64__PKPassShare_initWithSubcredentialDictionary_isForCu
 
   v49 = v10;
   v50 = v58;
-  v12 = [v6 PKDictionaryForKey:@"keyConfiguration"];
+  v12 = [dictionaryCopy PKDictionaryForKey:@"keyConfiguration"];
   v13 = [v12 PKStringForKey:@"friendlyName"];
   [(PKPassShare *)self setRecipientNickname:v13];
 
@@ -353,7 +353,7 @@ PKPassCredentialShare *__64__PKPassShare_initWithSubcredentialDictionary_isForCu
 
   v17 = v16;
   v18 = *v55;
-  v48 = self;
+  selfCopy = self;
   while (2)
   {
     for (i = 0; i != v17; ++i)
@@ -364,14 +364,14 @@ PKPassCredentialShare *__64__PKPassShare_initWithSubcredentialDictionary_isForCu
       }
 
       v20 = *(*(&v54 + 1) + 8 * i);
-      v21 = [v20 value];
-      v22 = [v21 integerValue];
+      value = [v20 value];
+      integerValue = [value integerValue];
 
-      if (v22 == v14)
+      if (integerValue == v14)
       {
         v23 = objc_alloc_init(PKPassSharedEntitlement);
-        v24 = [v20 identifier];
-        [(PKPassSharedEntitlement *)v23 setEntitlementIdentifier:v24];
+        identifier = [v20 identifier];
+        [(PKPassSharedEntitlement *)v23 setEntitlementIdentifier:identifier];
 
         v25 = [v51 PKDateForKey:@"keyValidFrom"];
         v26 = [v51 PKDateForKey:@"keyValidTo"];
@@ -384,8 +384,8 @@ PKPassCredentialShare *__64__PKPassShare_initWithSubcredentialDictionary_isForCu
           if (v27)
           {
 LABEL_15:
-            v30 = [MEMORY[0x1E695DF00] distantFuture];
-            v31 = [v27 compare:v30] == -1;
+            distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+            v31 = [v27 compare:distantFuture] == -1;
 
 LABEL_18:
             if (v29 || v31)
@@ -407,9 +407,9 @@ LABEL_18:
 
             v59 = v23;
             v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v59 count:1];
-            self = v48;
-            sharedEntitlements = v48->_sharedEntitlements;
-            v48->_sharedEntitlements = v34;
+            self = selfCopy;
+            sharedEntitlements = selfCopy->_sharedEntitlements;
+            selfCopy->_sharedEntitlements = v34;
 
             goto LABEL_25;
           }
@@ -430,7 +430,7 @@ LABEL_18:
     }
 
     v17 = [v15 countByEnumeratingWithState:&v54 objects:v60 count:16];
-    self = v48;
+    self = selfCopy;
     if (v17)
     {
       continue;
@@ -441,7 +441,7 @@ LABEL_18:
 
 LABEL_25:
 
-  v36 = [v6 PKStringForKey:@"keyID"];
+  v36 = [dictionaryCopy PKStringForKey:@"keyID"];
   credentialShares = self->_credentialShares;
   v52[0] = MEMORY[0x1E69E9820];
   v52[1] = 3221225472;
@@ -474,7 +474,7 @@ LABEL_25:
     self->_credentialShares = v44;
   }
 
-  v46 = [v6 PKStringForKey:@"deviceType"];
+  v46 = [dictionaryCopy PKStringForKey:@"deviceType"];
   [(PKPassCredentialShare *)v39 setTargetDevice:PKPassCredentialShareTargetDeviceFromString(v46)];
 
   [(PKPassCredentialShare *)v39 setStatus:v49];
@@ -544,10 +544,10 @@ uint64_t __51__PKPassShare__effectiveStatusFromCredentialShares__block_invoke(un
   return v2;
 }
 
-- (void)addCredentialShare:(id)a3
+- (void)addCredentialShare:(id)share
 {
   credentialShares = self->_credentialShares;
-  v5 = a3;
+  shareCopy = share;
   v6 = [(NSArray *)credentialShares mutableCopy];
   v7 = v6;
   if (v6)
@@ -562,16 +562,16 @@ uint64_t __51__PKPassShare__effectiveStatusFromCredentialShares__block_invoke(un
 
   v11 = v8;
 
-  [v11 addObject:v5];
+  [v11 addObject:shareCopy];
   v9 = [v11 copy];
   v10 = self->_credentialShares;
   self->_credentialShares = v9;
 }
 
-- (void)addCredentialShares:(id)a3
+- (void)addCredentialShares:(id)shares
 {
   credentialShares = self->_credentialShares;
-  v5 = a3;
+  sharesCopy = shares;
   v6 = [(NSArray *)credentialShares mutableCopy];
   v7 = v6;
   if (v6)
@@ -586,18 +586,18 @@ uint64_t __51__PKPassShare__effectiveStatusFromCredentialShares__block_invoke(un
 
   v11 = v8;
 
-  [v11 addObjectsFromArray:v5];
+  [v11 addObjectsFromArray:sharesCopy];
   v9 = [v11 copy];
   v10 = self->_credentialShares;
   self->_credentialShares = v9;
 }
 
-- (void)setStatus:(unint64_t)a3
+- (void)setStatus:(unint64_t)status
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (status)
   {
-    self->_status = a3;
+    self->_status = status;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
@@ -618,7 +618,7 @@ uint64_t __51__PKPassShare__effectiveStatusFromCredentialShares__block_invoke(un
             objc_enumerationMutation(v4);
           }
 
-          [*(*(&v9 + 1) + 8 * v8++) setStatus:{a3, v9}];
+          [*(*(&v9 + 1) + 8 * v8++) setStatus:{status, v9}];
         }
 
         while (v6 != v8);
@@ -638,8 +638,8 @@ uint64_t __51__PKPassShare__effectiveStatusFromCredentialShares__block_invoke(un
     return self->_status;
   }
 
-  v3 = [(NSArray *)self->_credentialShares firstObject];
-  v4 = [v3 status];
+  firstObject = [(NSArray *)self->_credentialShares firstObject];
+  status = [firstObject status];
 
   v17 = 0u;
   v18 = 0u;
@@ -650,7 +650,7 @@ uint64_t __51__PKPassShare__effectiveStatusFromCredentialShares__block_invoke(un
   if (v6)
   {
     v7 = v6;
-    v8 = __51__PKPassShare__effectiveStatusFromCredentialShares__block_invoke(v4);
+    v8 = __51__PKPassShare__effectiveStatusFromCredentialShares__block_invoke(status);
     v9 = *v16;
     do
     {
@@ -661,15 +661,15 @@ uint64_t __51__PKPassShare__effectiveStatusFromCredentialShares__block_invoke(un
           objc_enumerationMutation(v5);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) status];
-        if (v11 != v4)
+        status2 = [*(*(&v15 + 1) + 8 * i) status];
+        if (status2 != status)
         {
-          v12 = v11;
-          v13 = __51__PKPassShare__effectiveStatusFromCredentialShares__block_invoke(v11);
+          v12 = status2;
+          v13 = __51__PKPassShare__effectiveStatusFromCredentialShares__block_invoke(status2);
           if (v13 < v8)
           {
             v8 = v13;
-            v4 = v12;
+            status = v12;
           }
         }
       }
@@ -680,18 +680,18 @@ uint64_t __51__PKPassShare__effectiveStatusFromCredentialShares__block_invoke(un
     while (v7);
   }
 
-  return v4;
+  return status;
 }
 
-- (BOOL)isSameUnderlyingShareAs:(id)a3
+- (BOOL)isSameUnderlyingShareAs:(id)as
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  asCopy = as;
+  v5 = asCopy;
+  if (asCopy)
   {
     identifier = self->_identifier;
-    if (identifier && ([v4 identifier], (v7 = objc_claimAutoreleasedReturnValue()) != 0) && (v8 = v7, v9 = -[NSString isEqual:](identifier, "isEqual:", v7), v8, (v9 & 1) != 0) || (recipientHandle = self->_recipientHandle) != 0 && v5[8] && (-[NSString isEqual:](recipientHandle, "isEqual:") & 1) != 0 || (groupIdentifier = self->_groupIdentifier) != 0 && (objc_msgSend(v5, "groupIdentifier"), (v13 = objc_claimAutoreleasedReturnValue()) != 0) && (v14 = v13, v15 = -[NSString isEqual:](groupIdentifier, "isEqual:", v13), v14, (v15 & 1) != 0))
+    if (identifier && ([asCopy identifier], (v7 = objc_claimAutoreleasedReturnValue()) != 0) && (v8 = v7, v9 = -[NSString isEqual:](identifier, "isEqual:", v7), v8, (v9 & 1) != 0) || (recipientHandle = self->_recipientHandle) != 0 && v5[8] && (-[NSString isEqual:](recipientHandle, "isEqual:") & 1) != 0 || (groupIdentifier = self->_groupIdentifier) != 0 && (objc_msgSend(v5, "groupIdentifier"), (v13 = objc_claimAutoreleasedReturnValue()) != 0) && (v14 = v13, v15 = -[NSString isEqual:](groupIdentifier, "isEqual:", v13), v14, (v15 & 1) != 0))
     {
       v10 = 1;
     }
@@ -723,8 +723,8 @@ uint64_t __51__PKPassShare__effectiveStatusFromCredentialShares__block_invoke(un
             v36 = 0u;
             v37 = 0u;
             v38 = 0u;
-            v20 = [v5 credentialShares];
-            v21 = [v20 countByEnumeratingWithState:&v35 objects:v43 count:16];
+            credentialShares = [v5 credentialShares];
+            v21 = [credentialShares countByEnumeratingWithState:&v35 objects:v43 count:16];
             if (v21)
             {
               v22 = v21;
@@ -735,19 +735,19 @@ uint64_t __51__PKPassShare__effectiveStatusFromCredentialShares__block_invoke(un
                 {
                   if (*v36 != v23)
                   {
-                    objc_enumerationMutation(v20);
+                    objc_enumerationMutation(credentialShares);
                   }
 
                   v25 = *(*(&v35 + 1) + 8 * j);
-                  v26 = [v19 identifier];
-                  if (v26)
+                  identifier = [v19 identifier];
+                  if (identifier)
                   {
-                    v27 = v26;
-                    v28 = [v25 identifier];
-                    if (v28)
+                    v27 = identifier;
+                    identifier2 = [v25 identifier];
+                    if (identifier2)
                     {
-                      v29 = v28;
-                      v30 = [v27 isEqual:v28];
+                      v29 = identifier2;
+                      v30 = [v27 isEqual:identifier2];
 
                       if (v30)
                       {
@@ -764,7 +764,7 @@ uint64_t __51__PKPassShare__effectiveStatusFromCredentialShares__block_invoke(un
                   }
                 }
 
-                v22 = [v20 countByEnumeratingWithState:&v35 objects:v43 count:16];
+                v22 = [credentialShares countByEnumeratingWithState:&v35 objects:v43 count:16];
               }
 
               while (v22);
@@ -798,19 +798,19 @@ LABEL_35:
   return v10;
 }
 
-- (BOOL)isParentOfShare:(id)a3
+- (BOOL)isParentOfShare:(id)share
 {
   v72 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 groupIdentifier];
-  v6 = [v4 senderGroupIdentifier];
-  if (!v5)
+  shareCopy = share;
+  groupIdentifier = [shareCopy groupIdentifier];
+  senderGroupIdentifier = [shareCopy senderGroupIdentifier];
+  if (!groupIdentifier)
   {
     goto LABEL_13;
   }
 
   groupIdentifier = self->_groupIdentifier;
-  v8 = v5;
+  v8 = groupIdentifier;
   v9 = groupIdentifier;
   v10 = v9;
   if (v8 == v9)
@@ -836,7 +836,7 @@ LABEL_55:
   }
 
   v12 = v8;
-  v13 = v6;
+  v13 = senderGroupIdentifier;
   v14 = v13;
   if (v12 == v13)
   {
@@ -873,10 +873,10 @@ LABEL_18:
   }
 
 LABEL_13:
-  if (v6)
+  if (senderGroupIdentifier)
   {
     v19 = self->_groupIdentifier;
-    v12 = v6;
+    v12 = senderGroupIdentifier;
     v20 = v19;
     v21 = v20;
     if (v12 == v20)
@@ -907,20 +907,20 @@ LABEL_19:
   v69 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v23 = [v4 credentialShares];
-  v56 = [v23 countByEnumeratingWithState:&v66 objects:v71 count:16];
+  credentialShares = [shareCopy credentialShares];
+  v56 = [credentialShares countByEnumeratingWithState:&v66 objects:v71 count:16];
   if (!v56)
   {
     goto LABEL_47;
   }
 
   v24 = *v67;
-  v60 = v5;
-  v61 = v4;
-  v58 = v23;
-  v59 = v6;
+  v60 = groupIdentifier;
+  v61 = shareCopy;
+  v58 = credentialShares;
+  v59 = senderGroupIdentifier;
   v54 = *v67;
-  v55 = self;
+  selfCopy = self;
   do
   {
     v25 = 0;
@@ -928,7 +928,7 @@ LABEL_19:
     {
       if (*v67 != v24)
       {
-        objc_enumerationMutation(v23);
+        objc_enumerationMutation(credentialShares);
       }
 
       v57 = v25;
@@ -956,10 +956,10 @@ LABEL_19:
           }
 
           v32 = *(*(&v62 + 1) + 8 * i);
-          v33 = [v26 identifier];
-          v34 = [v32 identifier];
-          v35 = v33;
-          v36 = v34;
+          identifier = [v26 identifier];
+          identifier2 = [v32 identifier];
+          v35 = identifier;
+          v36 = identifier2;
           v37 = v36;
           v38 = v36;
           v39 = v35;
@@ -982,19 +982,19 @@ LABEL_19:
           {
           }
 
-          v41 = [v26 senderKeyIdentifier];
-          v42 = [v32 identifier];
-          v39 = v41;
-          v43 = v42;
+          senderKeyIdentifier = [v26 senderKeyIdentifier];
+          identifier3 = [v32 identifier];
+          v39 = senderKeyIdentifier;
+          v43 = identifier3;
           v38 = v43;
           if (v39 == v43)
           {
 
 LABEL_53:
             v52 = 1;
-            v5 = v60;
-            v4 = v61;
-            v6 = v59;
+            groupIdentifier = v60;
+            shareCopy = v61;
+            senderGroupIdentifier = v59;
             goto LABEL_63;
           }
 
@@ -1027,12 +1027,12 @@ LABEL_42:
 LABEL_45:
 
       v25 = v57 + 1;
-      v5 = v60;
-      v4 = v61;
-      v23 = v58;
-      v6 = v59;
+      groupIdentifier = v60;
+      shareCopy = v61;
+      credentialShares = v58;
+      senderGroupIdentifier = v59;
       v24 = v54;
-      self = v55;
+      self = selfCopy;
     }
 
     while (v57 + 1 != v56);
@@ -1042,15 +1042,15 @@ LABEL_45:
   while (v56);
 LABEL_47:
 
-  v45 = [v4 senderShareIdentifier];
-  v46 = v45;
-  if (!v45)
+  senderShareIdentifier = [shareCopy senderShareIdentifier];
+  v46 = senderShareIdentifier;
+  if (!senderShareIdentifier)
   {
     goto LABEL_61;
   }
 
   identifier = self->_identifier;
-  v48 = v45;
+  v48 = senderShareIdentifier;
   v49 = identifier;
   v50 = v49;
   if (v48 == v49)
@@ -1104,17 +1104,17 @@ LABEL_63:
   return v4;
 }
 
-- (id)descendantsInShares:(id)a3
+- (id)descendantsInShares:(id)shares
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sharesCopy = shares;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __35__PKPassShare_descendantsInShares___block_invoke;
   v20[3] = &unk_1E79E1EA0;
   v20[4] = self;
-  v6 = [v4 pk_objectsPassingTest:v20];
+  v6 = [sharesCopy pk_objectsPassingTest:v20];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -1231,30 +1231,30 @@ LABEL_11:
   return (v3 || v4 == 0) && self->_manageability > 1;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"Cannot set nil identifier on share"];
   }
 
   identifier = self->_identifier;
-  self->_identifier = v4;
+  self->_identifier = identifierCopy;
 }
 
-- (void)updateDisplayableSharedEntitlementsFromDisplayableEntitlements:(id)a3
+- (void)updateDisplayableSharedEntitlementsFromDisplayableEntitlements:(id)entitlements
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (entitlements)
   {
-    v4 = [a3 pk_indexDictionaryByApplyingBlock:&__block_literal_global_101];
+    v4 = [entitlements pk_indexDictionaryByApplyingBlock:&__block_literal_global_101];
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v18 = self;
+    selfCopy = self;
     v6 = self->_sharedEntitlements;
     v7 = [(NSArray *)v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v7)
@@ -1271,8 +1271,8 @@ LABEL_11:
           }
 
           v11 = *(*(&v19 + 1) + 8 * i);
-          v12 = [v11 entitlementIdentifier];
-          v13 = [v4 objectForKeyedSubscript:v12];
+          entitlementIdentifier = [v11 entitlementIdentifier];
+          v13 = [v4 objectForKeyedSubscript:entitlementIdentifier];
           v14 = [v13 copy];
 
           [v14 replaceEntitlementWithSharedEntitlement:v11];
@@ -1286,8 +1286,8 @@ LABEL_11:
     }
 
     v15 = [v5 copy];
-    displayableSharedEntitlements = v18->_displayableSharedEntitlements;
-    v18->_displayableSharedEntitlements = v15;
+    displayableSharedEntitlements = selfCopy->_displayableSharedEntitlements;
+    selfCopy->_displayableSharedEntitlements = v15;
   }
 
   else
@@ -1297,75 +1297,75 @@ LABEL_11:
   }
 }
 
-- (PKPassShare)initWithCoder:(id)a3
+- (PKPassShare)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v42.receiver = self;
   v42.super_class = PKPassShare;
   v5 = [(PKPassShare *)&v42 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"status"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"status"];
     v5->_status = [v8 unsignedIntegerValue];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recipientNickname"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recipientNickname"];
     recipientNickname = v5->_recipientNickname;
     v5->_recipientNickname = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"senderShareIdentifier"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"senderShareIdentifier"];
     senderShareIdentifier = v5->_senderShareIdentifier;
     v5->_senderShareIdentifier = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"senderGroupIdentifier"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"senderGroupIdentifier"];
     senderGroupIdentifier = v5->_senderGroupIdentifier;
     v5->_senderGroupIdentifier = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
     creationDate = v5->_creationDate;
     v5->_creationDate = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"manageability"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"manageability"];
     v5->_manageability = [v17 unsignedIntegerValue];
 
-    v5->_isForCurrentUser = [v4 decodeBoolForKey:@"isForCurrentUser"];
+    v5->_isForCurrentUser = [coderCopy decodeBoolForKey:@"isForCurrentUser"];
     v18 = MEMORY[0x1E695DFD8];
     v19 = objc_opt_class();
     v20 = [v18 setWithObjects:{v19, objc_opt_class(), 0}];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"sharedEntitlement"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"sharedEntitlement"];
     sharedEntitlements = v5->_sharedEntitlements;
     v5->_sharedEntitlements = v21;
 
     v23 = MEMORY[0x1E695DFD8];
     v24 = objc_opt_class();
     v25 = [v23 setWithObjects:{v24, objc_opt_class(), 0}];
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"displayableSharedEntitlements"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"displayableSharedEntitlements"];
     displayableSharedEntitlements = v5->_displayableSharedEntitlements;
     v5->_displayableSharedEntitlements = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupIdentifier"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupIdentifier"];
     groupIdentifier = v5->_groupIdentifier;
     v5->_groupIdentifier = v28;
 
     v30 = MEMORY[0x1E695DFD8];
     v31 = objc_opt_class();
     v32 = [v30 setWithObjects:{v31, objc_opt_class(), 0}];
-    v33 = [v4 decodeObjectOfClasses:v32 forKey:@"credentialShares"];
+    v33 = [coderCopy decodeObjectOfClasses:v32 forKey:@"credentialShares"];
     credentialShares = v5->_credentialShares;
     v5->_credentialShares = v33;
 
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subcredentialIdentifier"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subcredentialIdentifier"];
     subcredentialIdentifier = v5->_subcredentialIdentifier;
     v5->_subcredentialIdentifier = v35;
 
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recipientHandle"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recipientHandle"];
     recipientHandle = v5->_recipientHandle;
     v5->_recipientHandle = v37;
 
-    v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activationOptions"];
+    v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activationOptions"];
     activationOptions = v5->_activationOptions;
     v5->_activationOptions = v39;
   }
@@ -1373,29 +1373,29 @@ LABEL_11:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v7 = a3;
-  [v7 encodeObject:identifier forKey:@"identifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_status];
-  [v7 encodeObject:v5 forKey:@"status"];
+  [coderCopy encodeObject:v5 forKey:@"status"];
 
-  [v7 encodeObject:self->_recipientNickname forKey:@"recipientNickname"];
-  [v7 encodeObject:self->_senderShareIdentifier forKey:@"senderShareIdentifier"];
-  [v7 encodeObject:self->_senderGroupIdentifier forKey:@"senderGroupIdentifier"];
-  [v7 encodeObject:self->_creationDate forKey:@"creationDate"];
+  [coderCopy encodeObject:self->_recipientNickname forKey:@"recipientNickname"];
+  [coderCopy encodeObject:self->_senderShareIdentifier forKey:@"senderShareIdentifier"];
+  [coderCopy encodeObject:self->_senderGroupIdentifier forKey:@"senderGroupIdentifier"];
+  [coderCopy encodeObject:self->_creationDate forKey:@"creationDate"];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_manageability];
-  [v7 encodeObject:v6 forKey:@"manageability"];
+  [coderCopy encodeObject:v6 forKey:@"manageability"];
 
-  [v7 encodeBool:self->_isForCurrentUser forKey:@"isForCurrentUser"];
-  [v7 encodeObject:self->_sharedEntitlements forKey:@"sharedEntitlement"];
-  [v7 encodeObject:self->_groupIdentifier forKey:@"groupIdentifier"];
-  [v7 encodeObject:self->_displayableSharedEntitlements forKey:@"displayableSharedEntitlements"];
-  [v7 encodeObject:self->_credentialShares forKey:@"credentialShares"];
-  [v7 encodeObject:self->_subcredentialIdentifier forKey:@"subcredentialIdentifier"];
-  [v7 encodeObject:self->_recipientHandle forKey:@"recipientHandle"];
-  [v7 encodeObject:self->_activationOptions forKey:@"activationOptions"];
+  [coderCopy encodeBool:self->_isForCurrentUser forKey:@"isForCurrentUser"];
+  [coderCopy encodeObject:self->_sharedEntitlements forKey:@"sharedEntitlement"];
+  [coderCopy encodeObject:self->_groupIdentifier forKey:@"groupIdentifier"];
+  [coderCopy encodeObject:self->_displayableSharedEntitlements forKey:@"displayableSharedEntitlements"];
+  [coderCopy encodeObject:self->_credentialShares forKey:@"credentialShares"];
+  [coderCopy encodeObject:self->_subcredentialIdentifier forKey:@"subcredentialIdentifier"];
+  [coderCopy encodeObject:self->_recipientHandle forKey:@"recipientHandle"];
+  [coderCopy encodeObject:self->_activationOptions forKey:@"activationOptions"];
 }
 
 - (id)description
@@ -1441,11 +1441,11 @@ LABEL_11:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if (self->_identifier)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_recipientNickname)
@@ -1506,18 +1506,18 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(self) = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -1545,8 +1545,8 @@ LABEL_63:
           goto LABEL_62;
         }
 
-        v9 = [(PKPassShare *)self status];
-        if (v9 == [(PKPassShare *)v6 status])
+        status = [(PKPassShare *)self status];
+        if (status == [(PKPassShare *)v6 status])
         {
           recipientNickname = self->_recipientNickname;
           v11 = v6->_recipientNickname;
@@ -1716,7 +1716,7 @@ LABEL_64:
   return self;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[PKPassShare allocWithZone:?]];
   v5 = [(NSString *)self->_identifier copy];

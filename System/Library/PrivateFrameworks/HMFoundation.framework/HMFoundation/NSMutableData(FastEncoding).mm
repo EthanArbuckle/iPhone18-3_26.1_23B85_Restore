@@ -22,8 +22,8 @@
     {
       if (v5 == 66)
       {
-        LOBYTE(v18) = [v4 BOOLValue];
-        v13 = a1;
+        LOBYTE(unsignedLongLongValue) = [v4 BOOLValue];
+        selfCopy11 = self;
         v14 = 66;
       }
 
@@ -34,8 +34,8 @@
           goto LABEL_31;
         }
 
-        LOBYTE(v18) = [v4 unsignedCharValue];
-        v13 = a1;
+        LOBYTE(unsignedLongLongValue) = [v4 unsignedCharValue];
+        selfCopy11 = self;
         v14 = 67;
       }
 
@@ -44,20 +44,20 @@
 
     if (v5 == 73)
     {
-      LODWORD(v18) = [v4 unsignedIntValue];
-      v7 = a1;
+      LODWORD(unsignedLongLongValue) = [v4 unsignedIntValue];
+      selfCopy14 = self;
       v8 = 73;
       goto LABEL_29;
     }
 
     if (v5 == 81)
     {
-      v18 = [v4 unsignedLongLongValue];
-      v15 = a1;
+      unsignedLongLongValue = [v4 unsignedLongLongValue];
+      selfCopy13 = self;
       v16 = 81;
 LABEL_24:
-      [v15 hmf_appendUInt8:v16];
-      v11 = a1;
+      [selfCopy13 hmf_appendUInt8:v16];
+      selfCopy15 = self;
       v12 = 8;
       goto LABEL_30;
     }
@@ -67,15 +67,15 @@ LABEL_24:
       goto LABEL_31;
     }
 
-    LOWORD(v18) = [v4 unsignedShortValue];
-    v9 = a1;
+    LOWORD(unsignedLongLongValue) = [v4 unsignedShortValue];
+    selfCopy10 = self;
     v10 = 83;
 LABEL_16:
-    [v9 hmf_appendUInt8:v10];
-    v11 = a1;
+    [selfCopy10 hmf_appendUInt8:v10];
+    selfCopy15 = self;
     v12 = 2;
 LABEL_30:
-    [v11 appendBytes:&v18 length:v12];
+    [selfCopy15 appendBytes:&unsignedLongLongValue length:v12];
     goto LABEL_31;
   }
 
@@ -83,16 +83,16 @@ LABEL_30:
   {
     if (v5 == 105)
     {
-      LODWORD(v18) = [v4 intValue];
-      v7 = a1;
+      LODWORD(unsignedLongLongValue) = [v4 intValue];
+      selfCopy14 = self;
       v8 = 105;
       goto LABEL_29;
     }
 
     if (v5 == 113)
     {
-      v18 = [v4 longLongValue];
-      v15 = a1;
+      unsignedLongLongValue = [v4 longLongValue];
+      selfCopy13 = self;
       v16 = 113;
       goto LABEL_24;
     }
@@ -102,8 +102,8 @@ LABEL_30:
       goto LABEL_31;
     }
 
-    LOWORD(v18) = [v4 shortValue];
-    v9 = a1;
+    LOWORD(unsignedLongLongValue) = [v4 shortValue];
+    selfCopy10 = self;
     v10 = 115;
     goto LABEL_16;
   }
@@ -111,28 +111,28 @@ LABEL_30:
   switch(v5)
   {
     case 'c':
-      LOBYTE(v18) = [v4 charValue];
-      v13 = a1;
+      LOBYTE(unsignedLongLongValue) = [v4 charValue];
+      selfCopy11 = self;
       v14 = 99;
 LABEL_27:
-      [v13 hmf_appendUInt8:v14];
-      v11 = a1;
+      [selfCopy11 hmf_appendUInt8:v14];
+      selfCopy15 = self;
       v12 = 1;
       goto LABEL_30;
     case 'd':
       [v4 doubleValue];
-      v18 = v17;
-      v15 = a1;
+      unsignedLongLongValue = v17;
+      selfCopy13 = self;
       v16 = 100;
       goto LABEL_24;
     case 'f':
       [v4 floatValue];
-      LODWORD(v18) = v6;
-      v7 = a1;
+      LODWORD(unsignedLongLongValue) = v6;
+      selfCopy14 = self;
       v8 = 102;
 LABEL_29:
-      [v7 hmf_appendUInt8:v8];
-      v11 = a1;
+      [selfCopy14 hmf_appendUInt8:v8];
+      selfCopy15 = self;
       v12 = 4;
       goto LABEL_30;
   }
@@ -143,9 +143,9 @@ LABEL_31:
 - (void)hmf_appendData:()FastEncoding
 {
   v4 = a3;
-  [a1 hmf_appendUInt8:68];
-  [a1 hmf_appendUInt32:{objc_msgSend(v4, "length")}];
-  [a1 appendData:v4];
+  [self hmf_appendUInt8:68];
+  [self hmf_appendUInt32:{objc_msgSend(v4, "length")}];
+  [self appendData:v4];
 }
 
 - (void)hmf_appendUTF8String:()FastEncoding
@@ -153,32 +153,32 @@ LABEL_31:
   v4 = [a3 dataUsingEncoding:4];
   if ([v4 length] > 0xFF)
   {
-    [a1 hmf_appendUInt8:64];
-    [a1 hmf_appendUInt32:{objc_msgSend(v4, "length")}];
+    [self hmf_appendUInt8:64];
+    [self hmf_appendUInt32:{objc_msgSend(v4, "length")}];
   }
 
   else
   {
-    [a1 hmf_appendUInt8:38];
-    [a1 hmf_appendUInt8:{objc_msgSend(v4, "length")}];
+    [self hmf_appendUInt8:38];
+    [self hmf_appendUInt8:{objc_msgSend(v4, "length")}];
   }
 
-  [a1 appendData:v4];
+  [self appendData:v4];
 }
 
 - (void)hmf_appendOffsetTable:()FastEncoding block:
 {
   v9 = a4;
-  [a1 hmf_appendUInt32:a3];
-  v6 = [a1 length];
-  [a1 increaseLengthBy:4 * a3];
+  [self hmf_appendUInt32:a3];
+  v6 = [self length];
+  [self increaseLengthBy:4 * a3];
   if (a3)
   {
     v7 = 0;
     do
     {
-      v8 = [a1 length];
-      *([a1 mutableBytes] + v6 + 4 * v7) = v8;
+      v8 = [self length];
+      *([self mutableBytes] + v6 + 4 * v7) = v8;
       v9[2](v9, v7++);
     }
 
@@ -189,62 +189,62 @@ LABEL_31:
 - (void)hmf_appendArray:()FastEncoding
 {
   v4 = a3;
-  [a1 hmf_appendUInt8:91];
+  [self hmf_appendUInt8:91];
   v5 = [v4 count];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__NSMutableData_FastEncoding__hmf_appendArray___block_invoke;
   v7[3] = &unk_2786E6EA8;
-  v7[4] = a1;
+  v7[4] = self;
   v8 = v4;
   v6 = v4;
-  [a1 hmf_appendOffsetTable:v5 block:v7];
+  [self hmf_appendOffsetTable:v5 block:v7];
 }
 
 - (void)hmf_appendSet:()FastEncoding
 {
   v4 = a3;
-  [a1 hmf_appendUInt8:123];
-  v5 = [v4 allObjects];
+  [self hmf_appendUInt8:123];
+  allObjects = [v4 allObjects];
 
-  v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_142];
+  v6 = [allObjects sortedArrayUsingComparator:&__block_literal_global_142];
 
   v7 = [v6 count];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __45__NSMutableData_FastEncoding__hmf_appendSet___block_invoke_2;
   v9[3] = &unk_2786E6EA8;
-  v9[4] = a1;
+  v9[4] = self;
   v10 = v6;
   v8 = v6;
-  [a1 hmf_appendOffsetTable:v7 block:v9];
+  [self hmf_appendOffsetTable:v7 block:v9];
 }
 
 - (void)hmf_appendFastEncodableObject:()FastEncoding
 {
   v7 = a3;
-  v4 = [v7 hmf_encodeForFastEncoder];
-  if (v4)
+  hmf_encodeForFastEncoder = [v7 hmf_encodeForFastEncoder];
+  if (hmf_encodeForFastEncoder)
   {
-    [a1 hmf_appendUInt8:88];
+    [self hmf_appendUInt8:88];
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
-    [a1 hmf_appendUTF8String:v6];
-    [a1 hmf_appendData:v4];
+    [self hmf_appendUTF8String:v6];
+    [self hmf_appendData:hmf_encodeForFastEncoder];
   }
 
   else
   {
-    [a1 hmf_appendNil];
+    [self hmf_appendNil];
   }
 }
 
 - (void)hmf_appendDictionary:()FastEncoding
 {
   v4 = a3;
-  [a1 hmf_appendUInt8:60];
-  v5 = [v4 allKeys];
-  v6 = [v5 sortedArrayUsingSelector:sel_compare_];
+  [self hmf_appendUInt8:60];
+  allKeys = [v4 allKeys];
+  v6 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v7 = [v6 count];
   v10[0] = MEMORY[0x277D85DD0];
@@ -252,11 +252,11 @@ LABEL_31:
   v10[2] = __52__NSMutableData_FastEncoding__hmf_appendDictionary___block_invoke;
   v10[3] = &unk_2786E6EF0;
   v11 = v6;
-  v12 = a1;
+  selfCopy = self;
   v13 = v4;
   v8 = v4;
   v9 = v6;
-  [a1 hmf_appendOffsetTable:v7 block:v10];
+  [self hmf_appendOffsetTable:v7 block:v10];
 }
 
 - (void)hmf_appendObject:()FastEncoding
@@ -267,7 +267,7 @@ LABEL_31:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [a1 hmf_appendNumber:v12];
+      [self hmf_appendNumber:v12];
     }
 
     else
@@ -275,7 +275,7 @@ LABEL_31:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [a1 hmf_appendData:v12];
+        [self hmf_appendData:v12];
       }
 
       else
@@ -283,7 +283,7 @@ LABEL_31:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [a1 hmf_appendUTF8String:v12];
+          [self hmf_appendUTF8String:v12];
         }
 
         else
@@ -291,7 +291,7 @@ LABEL_31:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [a1 hmf_appendArray:v12];
+            [self hmf_appendArray:v12];
           }
 
           else
@@ -299,7 +299,7 @@ LABEL_31:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              [a1 hmf_appendSet:v12];
+              [self hmf_appendSet:v12];
             }
 
             else
@@ -307,7 +307,7 @@ LABEL_31:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                [a1 hmf_appendDictionary:v12];
+                [self hmf_appendDictionary:v12];
               }
 
               else
@@ -320,7 +320,7 @@ LABEL_31:
                   _HMFPreconditionFailureWithFormat(@"Unexpected object type %@ (%@) in hmf_appendObject", v5, v6, v7, v8, v9, v10, v11, v12);
                 }
 
-                [a1 hmf_appendFastEncodableObject:v12];
+                [self hmf_appendFastEncodableObject:v12];
               }
             }
           }
@@ -331,7 +331,7 @@ LABEL_31:
 
   else
   {
-    [a1 hmf_appendNil];
+    [self hmf_appendNil];
   }
 }
 

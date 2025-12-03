@@ -7,17 +7,17 @@
 
 - (void)computedUniqueIdentifier
 {
-  v4 = [a1 network];
-  v5 = [v4 networkName];
-  v6 = [a1 network];
-  v7 = [v6 extendedPANID];
-  v8 = [a1 keychainAccessGroup];
+  network = [self network];
+  networkName = [network networkName];
+  network2 = [self network];
+  extendedPANID = [network2 extendedPANID];
+  keychainAccessGroup = [self keychainAccessGroup];
   v9 = 138412802;
-  v10 = v5;
+  v10 = networkName;
   v11 = 2112;
-  v12 = v7;
+  v12 = extendedPANID;
   v13 = 2112;
-  v14 = v8;
+  v14 = keychainAccessGroup;
   _os_log_error_impl(&_mh_execute_header, a2, OS_LOG_TYPE_ERROR, "Failed to calculate UUID (name=%@; xpanid=%@; keychainAccessGroup=%@)!", &v9, 0x20u);
 }
 
@@ -47,14 +47,14 @@
 
 - (void)keyChainQueryForUpdateOperation
 {
-  v6 = [a1 network];
-  v7 = [v6 networkName];
-  v8 = [a1 network];
-  v9 = [v8 extendedPANID];
+  network = [self network];
+  networkName = [network networkName];
+  network2 = [self network];
+  extendedPANID = [network2 extendedPANID];
   v10 = 138412802;
-  v11 = v7;
+  v11 = networkName;
   v12 = 2112;
-  v13 = v9;
+  v13 = extendedPANID;
   v14 = 2112;
   v15 = a2;
   _os_log_error_impl(&_mh_execute_header, a3, OS_LOG_TYPE_ERROR, "Illegal attempt to form keychain item with insufficient information (name=%@; xpanid=%@; uuid=%@)!", &v10, 0x20u);

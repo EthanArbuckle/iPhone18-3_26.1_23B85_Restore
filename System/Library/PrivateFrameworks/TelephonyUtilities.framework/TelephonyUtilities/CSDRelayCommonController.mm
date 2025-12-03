@@ -1,76 +1,76 @@
 @interface CSDRelayCommonController
-- (CSDRelayCommonController)initWithQueue:(id)a3;
-- (id)callWithUniqueProxyIdentifier:(id)a3;
-- (void)handlePlayDTMFToneForKeyMessage:(id)a3;
-- (void)handleRequestActionMessage:(id)a3;
-- (void)handleRequestedAnswerMessage:(id)a3 withBehavior:(int64_t)a4;
-- (void)handleSetTTYTypeMessage:(id)a3;
-- (void)handleSetUplinkMutedMessage:(id)a3;
-- (void)handleSuppressRingtoneMessage:(id)a3;
-- (void)handleUpdateSystemVolumeMessageFromHost:(id)a3;
+- (CSDRelayCommonController)initWithQueue:(id)queue;
+- (id)callWithUniqueProxyIdentifier:(id)identifier;
+- (void)handlePlayDTMFToneForKeyMessage:(id)message;
+- (void)handleRequestActionMessage:(id)message;
+- (void)handleRequestedAnswerMessage:(id)message withBehavior:(int64_t)behavior;
+- (void)handleSetTTYTypeMessage:(id)message;
+- (void)handleSetUplinkMutedMessage:(id)message;
+- (void)handleSuppressRingtoneMessage:(id)message;
+- (void)handleUpdateSystemVolumeMessageFromHost:(id)host;
 @end
 
 @implementation CSDRelayCommonController
 
-- (CSDRelayCommonController)initWithQueue:(id)a3
+- (CSDRelayCommonController)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = CSDRelayCommonController;
   v6 = [(CSDRelayCommonController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;
 }
 
-- (id)callWithUniqueProxyIdentifier:(id)a3
+- (id)callWithUniqueProxyIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[TUCallCenter sharedInstance];
-  v5 = [v4 callWithUniqueProxyIdentifier:v3];
+  v5 = [v4 callWithUniqueProxyIdentifier:identifierCopy];
 
   return v5;
 }
 
-- (void)handleRequestedAnswerMessage:(id)a3 withBehavior:(int64_t)a4
+- (void)handleRequestedAnswerMessage:(id)message withBehavior:(int64_t)behavior
 {
-  v5 = a3;
+  messageCopy = message;
   v6 = [TUAnswerRequest alloc];
-  v7 = [v5 uniqueProxyIdentifier];
-  v11 = [v6 initWithUniqueProxyIdentifier:v7];
+  uniqueProxyIdentifier = [messageCopy uniqueProxyIdentifier];
+  v11 = [v6 initWithUniqueProxyIdentifier:uniqueProxyIdentifier];
 
-  [v11 setBehavior:a4];
-  v8 = [v5 sourceIdentifier];
-  [v11 setSourceIdentifier:v8];
+  [v11 setBehavior:behavior];
+  sourceIdentifier = [messageCopy sourceIdentifier];
+  [v11 setSourceIdentifier:sourceIdentifier];
 
-  v9 = [v5 endpointIDSDestination];
+  endpointIDSDestination = [messageCopy endpointIDSDestination];
 
-  [v11 setEndpointIDSDestination:v9];
+  [v11 setEndpointIDSDestination:endpointIDSDestination];
   v10 = +[TUCallCenter sharedInstance];
   [v10 answerWithRequest:v11];
 }
 
-- (void)handlePlayDTMFToneForKeyMessage:(id)a3
+- (void)handlePlayDTMFToneForKeyMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 uniqueProxyIdentifier];
-  v6 = [(CSDRelayCommonController *)self callWithUniqueProxyIdentifier:v5];
+  messageCopy = message;
+  uniqueProxyIdentifier = [messageCopy uniqueProxyIdentifier];
+  v6 = [(CSDRelayCommonController *)self callWithUniqueProxyIdentifier:uniqueProxyIdentifier];
 
   if (v6)
   {
-    v7 = [v4 DTMFKey];
+    dTMFKey = [messageCopy DTMFKey];
     if ([v6 isHostedOnCurrentDevice])
     {
-      [v6 playRemoteDTMFToneForKey:v7];
+      [v6 playRemoteDTMFToneForKey:dTMFKey];
     }
 
     else
     {
-      [v6 playLocalDTMFToneForKey:v7];
+      [v6 playLocalDTMFToneForKey:dTMFKey];
     }
   }
 
@@ -79,27 +79,27 @@
     v8 = sub_100004778();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v4 uniqueProxyIdentifier];
-      v10 = [(CSDRelayController *)self allCalls];
+      uniqueProxyIdentifier2 = [messageCopy uniqueProxyIdentifier];
+      allCalls = [(CSDRelayController *)self allCalls];
       v11 = 138412546;
-      v12 = v9;
+      v12 = uniqueProxyIdentifier2;
       v13 = 2112;
-      v14 = v10;
+      v14 = allCalls;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[WARN] Could not find call with uniqueProxyIdentifier %@. All current calls: %@", &v11, 0x16u);
     }
   }
 }
 
-- (void)handleSetTTYTypeMessage:(id)a3
+- (void)handleSetTTYTypeMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = +[TUCallCenter sharedInstance];
-  v6 = [v4 uniqueProxyIdentifier];
-  v7 = [v5 callWithUniqueProxyIdentifier:v6];
+  uniqueProxyIdentifier = [messageCopy uniqueProxyIdentifier];
+  v7 = [v5 callWithUniqueProxyIdentifier:uniqueProxyIdentifier];
 
   if (v7)
   {
-    [v7 setTtyType:{objc_msgSend(v4, "ttyType")}];
+    [v7 setTtyType:{objc_msgSend(messageCopy, "ttyType")}];
   }
 
   else
@@ -107,32 +107,32 @@
     v8 = sub_100004778();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v4 uniqueProxyIdentifier];
-      v10 = [(CSDRelayController *)self allCalls];
+      uniqueProxyIdentifier2 = [messageCopy uniqueProxyIdentifier];
+      allCalls = [(CSDRelayController *)self allCalls];
       v11 = 138412546;
-      v12 = v9;
+      v12 = uniqueProxyIdentifier2;
       v13 = 2112;
-      v14 = v10;
+      v14 = allCalls;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[WARN] Could not find call with uniqueProxyIdentifier %@. All current calls: %@", &v11, 0x16u);
     }
   }
 }
 
-- (void)handleSetUplinkMutedMessage:(id)a3
+- (void)handleSetUplinkMutedMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = +[TUCallCenter sharedInstance];
-  v6 = [v4 uniqueProxyIdentifier];
-  v7 = [v5 callWithUniqueProxyIdentifier:v6];
+  uniqueProxyIdentifier = [messageCopy uniqueProxyIdentifier];
+  v7 = [v5 callWithUniqueProxyIdentifier:uniqueProxyIdentifier];
 
   if (v7)
   {
-    v8 = [v7 provider];
-    v9 = [v8 isTinCanProvider];
+    provider = [v7 provider];
+    isTinCanProvider = [provider isTinCanProvider];
 
-    if (v9)
+    if (isTinCanProvider)
     {
-      [v4 messageSendTime];
+      [messageCopy messageSendTime];
       v11 = v10;
       [v7 uplinkMutedSetTime];
       if (v11 <= v12)
@@ -140,11 +140,11 @@
         v16 = sub_100004778();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
-          [v4 messageSendTime];
+          [messageCopy messageSendTime];
           v18 = v17;
           [v7 uplinkMutedSetTime];
           v20 = 138412802;
-          v21 = v4;
+          v21 = messageCopy;
           v22 = 2048;
           v23 = v18;
           v24 = 2048;
@@ -155,15 +155,15 @@
 
       else
       {
-        [v7 setUplinkMuted:{objc_msgSend(v4, "isUplinkMuted")}];
-        [v4 messageSendTime];
+        [v7 setUplinkMuted:{objc_msgSend(messageCopy, "isUplinkMuted")}];
+        [messageCopy messageSendTime];
         [v7 setUplinkMutedSetTime:?];
       }
     }
 
     else
     {
-      [v7 setUplinkMuted:{objc_msgSend(v4, "isUplinkMuted")}];
+      [v7 setUplinkMuted:{objc_msgSend(messageCopy, "isUplinkMuted")}];
     }
   }
 
@@ -172,22 +172,22 @@
     v13 = sub_100004778();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v4 uniqueProxyIdentifier];
-      v15 = [(CSDRelayController *)self allCalls];
+      uniqueProxyIdentifier2 = [messageCopy uniqueProxyIdentifier];
+      allCalls = [(CSDRelayController *)self allCalls];
       v20 = 138412546;
-      v21 = v14;
+      v21 = uniqueProxyIdentifier2;
       v22 = 2112;
-      v23 = v15;
+      v23 = allCalls;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[WARN] Could not find call with uniqueProxyIdentifier %@. All current calls: %@", &v20, 0x16u);
     }
   }
 }
 
-- (void)handleSuppressRingtoneMessage:(id)a3
+- (void)handleSuppressRingtoneMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 uniqueProxyIdentifier];
-  v6 = [(CSDRelayCommonController *)self callWithUniqueProxyIdentifier:v5];
+  messageCopy = message;
+  uniqueProxyIdentifier = [messageCopy uniqueProxyIdentifier];
+  v6 = [(CSDRelayCommonController *)self callWithUniqueProxyIdentifier:uniqueProxyIdentifier];
 
   if (v6)
   {
@@ -199,23 +199,23 @@
     v7 = sub_100004778();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 uniqueProxyIdentifier];
-      v9 = [(CSDRelayController *)self allCalls];
+      uniqueProxyIdentifier2 = [messageCopy uniqueProxyIdentifier];
+      allCalls = [(CSDRelayController *)self allCalls];
       v10 = 138412546;
-      v11 = v8;
+      v11 = uniqueProxyIdentifier2;
       v12 = 2112;
-      v13 = v9;
+      v13 = allCalls;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[WARN] Could not find call with uniqueProxyIdentifier %@. All current calls: %@", &v10, 0x16u);
     }
   }
 }
 
-- (void)handleUpdateSystemVolumeMessageFromHost:(id)a3
+- (void)handleUpdateSystemVolumeMessageFromHost:(id)host
 {
-  v7 = a3;
-  if ([v7 hasSystemVolume])
+  hostCopy = host;
+  if ([hostCopy hasSystemVolume])
   {
-    [v7 systemVolume];
+    [hostCopy systemVolume];
     v4 = v3;
     v5 = +[TUAudioSystemController sharedAudioSystemController];
     LODWORD(v6) = v4;
@@ -223,24 +223,24 @@
   }
 }
 
-- (void)handleRequestActionMessage:(id)a3
+- (void)handleRequestActionMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 requestActionType];
-  if (v5 > 35)
+  messageCopy = message;
+  requestActionType = [messageCopy requestActionType];
+  if (requestActionType > 35)
   {
-    if (v5 == 36)
+    if (requestActionType == 36)
     {
-      v6 = self;
-      v7 = v4;
+      selfCopy4 = self;
+      v7 = messageCopy;
       v8 = 2;
       goto LABEL_13;
     }
 
-    if (v5 == 46)
+    if (requestActionType == 46)
     {
-      v6 = self;
-      v7 = v4;
+      selfCopy4 = self;
+      v7 = messageCopy;
       v8 = 4;
       goto LABEL_13;
     }
@@ -248,21 +248,21 @@
 
   else
   {
-    if (v5 == 19)
+    if (requestActionType == 19)
     {
-      v6 = self;
-      v7 = v4;
+      selfCopy4 = self;
+      v7 = messageCopy;
       v8 = 0;
       goto LABEL_13;
     }
 
-    if (v5 == 20)
+    if (requestActionType == 20)
     {
-      v6 = self;
-      v7 = v4;
+      selfCopy4 = self;
+      v7 = messageCopy;
       v8 = 1;
 LABEL_13:
-      [(CSDRelayCommonController *)v6 handleRequestedAnswerMessage:v7 withBehavior:v8];
+      [(CSDRelayCommonController *)selfCopy4 handleRequestedAnswerMessage:v7 withBehavior:v8];
       goto LABEL_14;
     }
   }
@@ -271,7 +271,7 @@ LABEL_13:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = messageCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[WARN] Ignoring received request action message because it has a request action type we don't know how to handle: %@", &v10, 0xCu);
   }
 

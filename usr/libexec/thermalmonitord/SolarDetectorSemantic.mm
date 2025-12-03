@@ -1,12 +1,12 @@
 @interface SolarDetectorSemantic
 - (BOOL)synchContext;
 - (SolarDetectorSemantic)init;
-- (__CFString)copyFieldCurrentValueForIndex:(int)a3;
-- (__CFString)copyHeaderForIndex:(int)a3;
+- (__CFString)copyFieldCurrentValueForIndex:(int)index;
+- (__CFString)copyHeaderForIndex:(int)index;
 - (int)getContextState;
-- (void)handleBrightnessClientNotification:(id)a3 value:(id)a4;
+- (void)handleBrightnessClientNotification:(id)notification value:(id)value;
 - (void)initializeSemanticBrightnessHandling;
-- (void)updateCurrentSemanticAmbientLightLevel:(int)a3;
+- (void)updateCurrentSemanticAmbientLightLevel:(int)level;
 @end
 
 @implementation SolarDetectorSemantic
@@ -135,15 +135,15 @@
   [(BrightnessSystemClient *)brightnessSystemClient registerNotificationBlock:v7 forProperties:v5];
 }
 
-- (void)handleBrightnessClientNotification:(id)a3 value:(id)a4
+- (void)handleBrightnessClientNotification:(id)notification value:(id)value
 {
-  if (a3 && a4 && !strncmp([a3 UTF8String], "SemanticAmbientLightLevel", 0x19uLL))
+  if (notification && value && !strncmp([notification UTF8String], "SemanticAmbientLightLevel", 0x19uLL))
   {
     if (objc_opt_respondsToSelector())
     {
-      v6 = [a4 intValue];
+      intValue = [value intValue];
 
-      [(SolarDetectorSemantic *)self updateCurrentSemanticAmbientLightLevel:v6];
+      [(SolarDetectorSemantic *)self updateCurrentSemanticAmbientLightLevel:intValue];
     }
 
     else
@@ -155,7 +155,7 @@
         if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
         {
           v8 = 138412290;
-          v9 = a4;
+          valueCopy = value;
           _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "<Notice> brightness callback %@", &v8, 0xCu);
         }
       }
@@ -163,7 +163,7 @@
   }
 }
 
-- (void)updateCurrentSemanticAmbientLightLevel:(int)a3
+- (void)updateCurrentSemanticAmbientLightLevel:(int)level
 {
   update_queue = self->_update_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -171,44 +171,44 @@
   v4[2] = sub_100025D70;
   v4[3] = &unk_100085BE8;
   v4[4] = self;
-  v5 = a3;
+  levelCopy = level;
   dispatch_async(update_queue, v4);
 }
 
-- (__CFString)copyHeaderForIndex:(int)a3
+- (__CFString)copyHeaderForIndex:(int)index
 {
-  if (a3 > 2)
+  if (index > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_100085C08[a3];
+    return off_100085C08[index];
   }
 }
 
-- (__CFString)copyFieldCurrentValueForIndex:(int)a3
+- (__CFString)copyFieldCurrentValueForIndex:(int)index
 {
-  switch(a3)
+  switch(index)
   {
     case 2:
       return CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"%d", self->_currentSemanticLux);
     case 1:
       v3 = kCFAllocatorDefault;
-      v4 = [(SolarDetectorSemantic *)self isContextTriggered];
+      isContextTriggered = [(SolarDetectorSemantic *)self isContextTriggered];
       v5 = 100;
-      if (!v4)
+      if (!isContextTriggered)
       {
         v5 = 0;
       }
 
-      v7 = v5;
-      return CFStringCreateWithFormat(v3, 0, @"%d", v7);
+      getContextState = v5;
+      return CFStringCreateWithFormat(v3, 0, @"%d", getContextState);
     case 0:
       v3 = kCFAllocatorDefault;
-      v7 = [(SolarDetectorSemantic *)self getContextState];
-      return CFStringCreateWithFormat(v3, 0, @"%d", v7);
+      getContextState = [(SolarDetectorSemantic *)self getContextState];
+      return CFStringCreateWithFormat(v3, 0, @"%d", getContextState);
   }
 
   return 0;

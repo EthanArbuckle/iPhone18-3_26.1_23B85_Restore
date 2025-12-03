@@ -1,11 +1,11 @@
 @interface SBCloseBoxView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (BOOL)shouldTrack;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (SBCloseBoxViewDelegate)delegate;
 - (UIEdgeInsets)backgroundInsets;
 - (UIEdgeInsets)hitTestPadding;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 @end
 
 @implementation SBCloseBoxView
@@ -19,11 +19,11 @@
     return 0;
   }
 
-  v3 = [(SBCloseBoxView *)self delegate];
-  v4 = v3;
-  if (v3)
+  delegate = [(SBCloseBoxView *)self delegate];
+  v4 = delegate;
+  if (delegate)
   {
-    v5 = [v3 closeBoxShouldTrack:self];
+    v5 = [delegate closeBoxShouldTrack:self];
   }
 
   else
@@ -47,15 +47,15 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = [(SBCloseBoxView *)self listLayout:a3.width];
+  v3 = [(SBCloseBoxView *)self listLayout:fits.width];
   v4 = 26.0;
   v5 = 26.0;
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v3 iconAccessoryVisualConfiguration];
-    [v6 size];
+    iconAccessoryVisualConfiguration = [v3 iconAccessoryVisualConfiguration];
+    [iconAccessoryVisualConfiguration size];
     v5 = v7;
     v4 = v8;
   }
@@ -80,10 +80,10 @@
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(SBCloseBoxView *)self bounds];
   v8 = v7;
   v10 = v9;
@@ -102,7 +102,7 @@
   return CGRectContainsPoint(*&v22, *&v25);
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v5 = objc_alloc_init(MEMORY[0x1E69DCE28]);
   v6 = MEMORY[0x1E69DC728];

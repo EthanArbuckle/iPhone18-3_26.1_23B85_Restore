@@ -1,30 +1,30 @@
 @interface PGCommonTitleUtility
-+ (BOOL)containsCelebrationForDateNodes:(id)a3 holidayName:(id *)a4 titleGenerationContext:(id)a5 graph:(id)a6;
-+ (BOOL)isLargeCountryForAddressNode:(id)a3 locationHelper:(id)a4;
-+ (_NSRange)_closestSpaceMatchFromMatches:(id)a3 withUsedNameRange:(_NSRange)a4 searchForward:(BOOL)a5;
-+ (id)addressNodesFromMomentNodes:(id)a3;
-+ (id)bestAddressNodeForMomentNodes:(id)a3;
-+ (id)dateNodesFromMomentNodes:(id)a3;
-+ (id)holidayNameForDateNodes:(id)a3;
-+ (id)locationLabelForDimension:(unint64_t)a3;
-+ (id)titleWithLineBreakForTitle:(id)a3;
-+ (id)titleWithLineBreakForTitle:(id)a3 andUsedNames:(id)a4;
-+ (id)titleWithNoLineBreakSpaceForTitle:(id)a3 andUsedNames:(id)a4;
-+ (unint64_t)dimensionForLabel:(id)a3;
-+ (void)startAndEndDateNodeFromDateNodes:(id)a3 startDateNode:(id *)a4 endDateNode:(id *)a5;
++ (BOOL)containsCelebrationForDateNodes:(id)nodes holidayName:(id *)name titleGenerationContext:(id)context graph:(id)graph;
++ (BOOL)isLargeCountryForAddressNode:(id)node locationHelper:(id)helper;
++ (_NSRange)_closestSpaceMatchFromMatches:(id)matches withUsedNameRange:(_NSRange)range searchForward:(BOOL)forward;
++ (id)addressNodesFromMomentNodes:(id)nodes;
++ (id)bestAddressNodeForMomentNodes:(id)nodes;
++ (id)dateNodesFromMomentNodes:(id)nodes;
++ (id)holidayNameForDateNodes:(id)nodes;
++ (id)locationLabelForDimension:(unint64_t)dimension;
++ (id)titleWithLineBreakForTitle:(id)title;
++ (id)titleWithLineBreakForTitle:(id)title andUsedNames:(id)names;
++ (id)titleWithNoLineBreakSpaceForTitle:(id)title andUsedNames:(id)names;
++ (unint64_t)dimensionForLabel:(id)label;
++ (void)startAndEndDateNodeFromDateNodes:(id)nodes startDateNode:(id *)node endDateNode:(id *)dateNode;
 @end
 
 @implementation PGCommonTitleUtility
 
-+ (unint64_t)dimensionForLabel:(id)a3
++ (unint64_t)dimensionForLabel:(id)label
 {
-  v3 = a3;
+  labelCopy = label;
   if (dimensionForLabel__onceToken != -1)
   {
     dispatch_once(&dimensionForLabel__onceToken, &__block_literal_global_286);
   }
 
-  v4 = [dimensionForLabel__dimensionLabelMapping indexOfObject:v3];
+  v4 = [dimensionForLabel__dimensionLabelMapping indexOfObject:labelCopy];
   if (v4)
   {
     v5 = v4 == 0x7FFFFFFFFFFFFFFFLL;
@@ -68,14 +68,14 @@ void __42__PGCommonTitleUtility_dimensionForLabel___block_invoke()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)locationLabelForDimension:(unint64_t)a3
++ (id)locationLabelForDimension:(unint64_t)dimension
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (a3 <= 4)
+  if (dimension <= 4)
   {
-    if (a3 > 2)
+    if (dimension > 2)
     {
-      if (a3 == 3)
+      if (dimension == 3)
       {
         v4 = @"Number";
       }
@@ -88,13 +88,13 @@ void __42__PGCommonTitleUtility_dimensionForLabel___block_invoke()
       goto LABEL_20;
     }
 
-    if (a3 == 1)
+    if (dimension == 1)
     {
       v4 = @"Area";
       goto LABEL_20;
     }
 
-    if (a3 == 2)
+    if (dimension == 2)
     {
       v4 = @"Address";
       goto LABEL_20;
@@ -103,9 +103,9 @@ void __42__PGCommonTitleUtility_dimensionForLabel___block_invoke()
 
   else
   {
-    if (a3 <= 6)
+    if (dimension <= 6)
     {
-      if (a3 == 5)
+      if (dimension == 5)
       {
         v4 = @"District";
       }
@@ -118,7 +118,7 @@ void __42__PGCommonTitleUtility_dimensionForLabel___block_invoke()
       goto LABEL_20;
     }
 
-    switch(a3)
+    switch(dimension)
     {
       case 7uLL:
         v4 = @"County";
@@ -135,13 +135,13 @@ LABEL_20:
   }
 
   v8 = +[PGLogging sharedLogging];
-  v9 = [v8 loggingConnection];
+  loggingConnection = [v8 loggingConnection];
 
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
   {
     v10 = 134217984;
-    v11 = a3;
-    _os_log_error_impl(&dword_22F0FC000, v9, OS_LOG_TYPE_ERROR, "Couldn't match dimension %lu to label", &v10, 0xCu);
+    dimensionCopy = dimension;
+    _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Couldn't match dimension %lu to label", &v10, 0xCu);
   }
 
   v4 = 0;
@@ -151,11 +151,11 @@ LABEL_21:
   return v4;
 }
 
-+ (id)titleWithLineBreakForTitle:(id)a3
++ (id)titleWithLineBreakForTitle:(id)title
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v5 = [v3 stringByTrimmingCharactersInSet:v4];
+  titleCopy = title;
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v5 = [titleCopy stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   if ([v5 length] >= 0xC)
   {
@@ -229,15 +229,15 @@ uint64_t __51__PGCommonTitleUtility_titleWithLineBreakForTitle___block_invoke(ui
   return result;
 }
 
-+ (id)titleWithLineBreakForTitle:(id)a3 andUsedNames:(id)a4
++ (id)titleWithLineBreakForTitle:(id)title andUsedNames:(id)names
 {
   v105 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v88 = [v5 length];
+  titleCopy = title;
+  namesCopy = names;
+  v88 = [titleCopy length];
   if (v88 <= 0xB)
   {
-    v7 = v5;
+    v7 = titleCopy;
     goto LABEL_113;
   }
 
@@ -245,14 +245,14 @@ uint64_t __51__PGCommonTitleUtility_titleWithLineBreakForTitle___block_invoke(ui
   v8 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"[\\r\\n\\t\\f\\v ]+" options:64 error:&v102];
   v83 = v102;
   v84 = v8;
-  v90 = [v8 matchesInString:v5 options:0 range:{0, objc_msgSend(v5, "length")}];
-  v92 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  v90 = [v8 matchesInString:titleCopy options:0 range:{0, objc_msgSend(titleCopy, "length")}];
+  v92 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(namesCopy, "count")}];
   v98 = 0u;
   v99 = 0u;
   v100 = 0u;
   v101 = 0u;
-  v85 = v6;
-  obj = v6;
+  v85 = namesCopy;
+  obj = namesCopy;
   v9 = [obj countByEnumeratingWithState:&v98 objects:v104 count:16];
   if (!v9)
   {
@@ -275,7 +275,7 @@ uint64_t __51__PGCommonTitleUtility_titleWithLineBreakForTitle___block_invoke(ui
       }
 
       v14 = *(*(&v98 + 1) + 8 * v13);
-      v15 = [v5 rangeOfString:v14];
+      v15 = [titleCopy rangeOfString:v14];
       v17 = v15;
       v18 = v16;
       if (v15)
@@ -295,7 +295,7 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v28 = [a1 _closestSpaceMatchFromMatches:v90 withUsedNameRange:v15 searchForward:{v16, 0}];
+      v28 = [self _closestSpaceMatchFromMatches:v90 withUsedNameRange:v15 searchForward:{v16, 0}];
       if (v28 == 0x7FFFFFFFFFFFFFFFLL)
       {
         if (v87 != v13)
@@ -312,22 +312,22 @@ LABEL_13:
         v30 = v28 + v29;
         v31 = v17 - (v28 + v29);
         v32 = v17 <= v28 + v29 || v30 == 0x7FFFFFFFFFFFFFFFLL;
-        if (v32 || v17 >= [v5 length])
+        if (v32 || v17 >= [titleCopy length])
         {
           goto LABEL_13;
         }
       }
 
-      v20 = [v5 substringWithRange:{v30, v31}];
+      v20 = [titleCopy substringWithRange:{v30, v31}];
 LABEL_14:
-      if (v17 == 0x7FFFFFFFFFFFFFFFLL || (v21 = v17 + v18, v17 + v18 >= [v5 length]) || ((v22 = objc_msgSend(a1, "_closestSpaceMatchFromMatches:withUsedNameRange:searchForward:", v90, v17, v18, 1), v22 != 0x7FFFFFFFFFFFFFFFLL) ? (v23 = v22 > v21) : (v23 = 0), !v23 || v21 == 0x7FFFFFFFFFFFFFFFLL || (v24 = v22, v22 >= objc_msgSend(v5, "length"))))
+      if (v17 == 0x7FFFFFFFFFFFFFFFLL || (v21 = v17 + v18, v17 + v18 >= [titleCopy length]) || ((v22 = objc_msgSend(self, "_closestSpaceMatchFromMatches:withUsedNameRange:searchForward:", v90, v17, v18, 1), v22 != 0x7FFFFFFFFFFFFFFFLL) ? (v23 = v22 > v21) : (v23 = 0), !v23 || v21 == 0x7FFFFFFFFFFFFFFFLL || (v24 = v22, v22 >= objc_msgSend(titleCopy, "length"))))
       {
         v25 = 0;
       }
 
       else
       {
-        v25 = [v5 substringWithRange:{v21, v24 - v21}];
+        v25 = [titleCopy substringWithRange:{v21, v24 - v21}];
       }
 
       if (v25 | v20)
@@ -379,7 +379,7 @@ LABEL_45:
   {
 
 LABEL_111:
-    v7 = [a1 titleWithLineBreakForTitle:v5];
+    v7 = [self titleWithLineBreakForTitle:titleCopy];
     goto LABEL_112;
   }
 
@@ -400,7 +400,7 @@ LABEL_111:
         objc_enumerationMutation(v93);
       }
 
-      v44 = [v5 rangeOfString:*(*(&v94 + 1) + 8 * i)];
+      v44 = [titleCopy rangeOfString:*(*(&v94 + 1) + 8 * i)];
       if (v44 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v46 = v44 + v45;
@@ -531,8 +531,8 @@ LABEL_87:
     v55 = v42;
   }
 
-  v56 = [v5 substringToIndex:v55];
-  v57 = [v5 substringFromIndex:v55];
+  v56 = [titleCopy substringToIndex:v55];
+  v57 = [titleCopy substringFromIndex:v55];
   v58 = [v56 length];
   if ([v57 length] * 1.5 < v58)
   {
@@ -543,10 +543,10 @@ LABEL_87:
   if (!v56)
   {
 LABEL_88:
-    v59 = [v5 substringToIndex:v42];
-    v60 = [v5 substringFromIndex:v42];
-    v61 = [v5 substringToIndex:v53];
-    v62 = [v5 substringFromIndex:v53];
+    v59 = [titleCopy substringToIndex:v42];
+    v60 = [titleCopy substringFromIndex:v42];
+    v61 = [titleCopy substringToIndex:v53];
+    v62 = [titleCopy substringFromIndex:v53];
     v63 = [v59 length];
     if ((v63 - v37) >= 0)
     {
@@ -569,9 +569,9 @@ LABEL_88:
       v66 = v37 - v65;
     }
 
-    v67 = [MEMORY[0x277CCA900] punctuationCharacterSet];
-    v68 = [v60 rangeOfCharacterFromSet:v67 options:0];
-    v69 = [v62 rangeOfCharacterFromSet:v67 options:0];
+    punctuationCharacterSet = [MEMORY[0x277CCA900] punctuationCharacterSet];
+    v68 = [v60 rangeOfCharacterFromSet:punctuationCharacterSet options:0];
+    v69 = [v62 rangeOfCharacterFromSet:punctuationCharacterSet options:0];
     if (v68)
     {
       v70 = v64 >= v66;
@@ -612,8 +612,8 @@ LABEL_88:
     v57 = v75;
   }
 
-  v76 = [*(v54 + 2304) whitespaceCharacterSet];
-  v77 = [v57 pg_stringByTrailingCharactersInSet:v76 options:1];
+  whitespaceCharacterSet = [*(v54 + 2304) whitespaceCharacterSet];
+  v77 = [v57 pg_stringByTrailingCharactersInSet:whitespaceCharacterSet options:1];
 
   if (([v77 isEqualToString:v57] & 1) == 0)
   {
@@ -629,7 +629,7 @@ LABEL_88:
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@%@", v56, @"\n", v57];
 
 LABEL_112:
-  v6 = v85;
+  namesCopy = v85;
 
 LABEL_113:
   v81 = *MEMORY[0x277D85DE8];
@@ -637,16 +637,16 @@ LABEL_113:
   return v7;
 }
 
-+ (id)titleWithNoLineBreakSpaceForTitle:(id)a3 andUsedNames:(id)a4
++ (id)titleWithNoLineBreakSpaceForTitle:(id)title andUsedNames:(id)names
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  titleCopy = title;
+  namesCopy = names;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v7 = [namesCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -654,24 +654,24 @@ LABEL_113:
     do
     {
       v10 = 0;
-      v11 = v5;
+      v11 = titleCopy;
       do
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(namesCopy);
         }
 
         v12 = *(*(&v16 + 1) + 8 * v10);
         v13 = [v12 stringByReplacingOccurrencesOfString:@" " withString:@" "];
-        v5 = [v11 stringByReplacingOccurrencesOfString:v12 withString:v13];
+        titleCopy = [v11 stringByReplacingOccurrencesOfString:v12 withString:v13];
 
         ++v10;
-        v11 = v5;
+        v11 = titleCopy;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [namesCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -679,20 +679,20 @@ LABEL_113:
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return titleCopy;
 }
 
-+ (_NSRange)_closestSpaceMatchFromMatches:(id)a3 withUsedNameRange:(_NSRange)a4 searchForward:(BOOL)a5
++ (_NSRange)_closestSpaceMatchFromMatches:(id)matches withUsedNameRange:(_NSRange)range searchForward:(BOOL)forward
 {
-  v32 = a5;
-  length = a4.length;
-  location = a4.location;
+  forwardCopy = forward;
+  length = range.length;
+  location = range.location;
   v41 = *MEMORY[0x277D85DE8];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = a3;
+  obj = matches;
   v7 = [obj countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v7)
   {
@@ -767,7 +767,7 @@ LABEL_113:
             v23 = v14;
           }
 
-          if (v32)
+          if (forwardCopy)
           {
             if (v23 < v10)
             {
@@ -840,15 +840,15 @@ LABEL_43:
   return result;
 }
 
-+ (void)startAndEndDateNodeFromDateNodes:(id)a3 startDateNode:(id *)a4 endDateNode:(id *)a5
++ (void)startAndEndDateNodeFromDateNodes:(id)nodes startDateNode:(id *)node endDateNode:(id *)dateNode
 {
-  v21 = a4;
+  nodeCopy = node;
   v30 = *MEMORY[0x277D85DE8];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = a3;
+  obj = nodes;
   v5 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v5)
   {
@@ -868,19 +868,19 @@ LABEL_43:
         }
 
         v12 = *(*(&v25 + 1) + 8 * i);
-        v13 = [v12 localDate];
-        if (!v7 || [v7 compare:v13] == 1)
+        localDate = [v12 localDate];
+        if (!v7 || [v7 compare:localDate] == 1)
         {
-          v14 = v13;
+          v14 = localDate;
 
           v15 = v12;
           v7 = v14;
           v10 = v15;
         }
 
-        if (!v8 || [v8 compare:v13] == -1)
+        if (!v8 || [v8 compare:localDate] == -1)
         {
-          v16 = v13;
+          v16 = localDate;
 
           v17 = v12;
           v8 = v16;
@@ -902,30 +902,30 @@ LABEL_43:
     v10 = 0;
   }
 
-  if (v21)
+  if (nodeCopy)
   {
     v18 = v10;
-    *v21 = v10;
+    *nodeCopy = v10;
   }
 
-  if (a5)
+  if (dateNode)
   {
     v19 = v9;
-    *a5 = v9;
+    *dateNode = v9;
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)bestAddressNodeForMomentNodes:(id)a3
++ (id)bestAddressNodeForMomentNodes:(id)nodes
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nodesCopy = nodes;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v4 = [nodesCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v4)
   {
     v5 = v4;
@@ -938,23 +938,23 @@ LABEL_43:
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(nodesCopy);
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
-        v11 = [v10 bestAddressNode];
-        v12 = [v11 anyEdgeFromNode:v10];
+        bestAddressNode = [v10 bestAddressNode];
+        v12 = [bestAddressNode anyEdgeFromNode:v10];
         if (!v6 || ([v6 relevance], v14 = v13, objc_msgSend(v12, "relevance"), v14 < v15))
         {
           v16 = v12;
 
-          v17 = v11;
+          v17 = bestAddressNode;
           v6 = v16;
           v7 = v17;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v5 = [nodesCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v5);
@@ -971,16 +971,16 @@ LABEL_43:
   return v7;
 }
 
-+ (id)dateNodesFromMomentNodes:(id)a3
++ (id)dateNodesFromMomentNodes:(id)nodes
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nodesCopy = nodes;
   v4 = [MEMORY[0x277CBEB58] set];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = nodesCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -995,8 +995,8 @@ LABEL_43:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) dateNodes];
-        [v4 unionSet:v10];
+        dateNodes = [*(*(&v13 + 1) + 8 * i) dateNodes];
+        [v4 unionSet:dateNodes];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -1010,15 +1010,15 @@ LABEL_43:
   return v4;
 }
 
-+ (id)holidayNameForDateNodes:(id)a3
++ (id)holidayNameForDateNodes:(id)nodes
 {
   v24 = *MEMORY[0x277D85DE8];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  nodesCopy = nodes;
+  v4 = [nodesCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1029,22 +1029,22 @@ LABEL_43:
       {
         if (*v20 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(nodesCopy);
         }
 
-        v8 = [*(*(&v19 + 1) + 8 * i) collection];
-        v9 = [v8 holidayNodes];
+        collection = [*(*(&v19 + 1) + 8 * i) collection];
+        holidayNodes = [collection holidayNodes];
 
-        v10 = [v9 array];
-        v11 = [v10 sortedArrayUsingComparator:&__block_literal_global_5777];
+        array = [holidayNodes array];
+        v11 = [array sortedArrayUsingComparator:&__block_literal_global_5777];
 
-        v12 = [v11 firstObject];
-        v13 = v12;
-        if (v12)
+        firstObject = [v11 firstObject];
+        v13 = firstObject;
+        if (firstObject)
         {
-          v14 = [v12 name];
-          v15 = v14;
-          if (v14 && [v14 length])
+          name = [firstObject name];
+          v15 = name;
+          if (name && [name length])
           {
             v16 = [MEMORY[0x277D276C8] localizedNameForName:v15];
 
@@ -1053,7 +1053,7 @@ LABEL_43:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v5 = [nodesCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v5)
       {
         continue;
@@ -1118,12 +1118,12 @@ uint64_t __48__PGCommonTitleUtility_holidayNameForDateNodes___block_invoke(uint6
   return v9;
 }
 
-+ (BOOL)containsCelebrationForDateNodes:(id)a3 holidayName:(id *)a4 titleGenerationContext:(id)a5 graph:(id)a6
++ (BOOL)containsCelebrationForDateNodes:(id)nodes holidayName:(id *)name titleGenerationContext:(id)context graph:(id)graph
 {
   v55 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v36 = a5;
-  v35 = a6;
+  nodesCopy = nodes;
+  contextCopy = context;
+  graphCopy = graph;
   v50 = 0;
   v51 = &v50;
   v52 = 0x2020000000;
@@ -1132,7 +1132,7 @@ uint64_t __48__PGCommonTitleUtility_holidayNameForDateNodes___block_invoke(uint6
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obj = v8;
+  obj = nodesCopy;
   v9 = [obj countByEnumeratingWithState:&v46 objects:v54 count:16];
   v10 = 0;
   if (v9)
@@ -1152,37 +1152,37 @@ LABEL_3:
 
       v12 = *(*(&v46 + 1) + 8 * v40);
       context = objc_autoreleasePoolPush();
-      v13 = [v12 collection];
-      v14 = [v13 holidayNodes];
+      collection = [v12 collection];
+      holidayNodes = [collection holidayNodes];
 
-      v37 = [(PGGraphEdgeCollection *)PGGraphCelebratingEdgeCollection edgesToNodes:v14];
-      v15 = [v37 holidayNodes];
-      v41 = [v15 holidayNames];
+      v37 = [(PGGraphEdgeCollection *)PGGraphCelebratingEdgeCollection edgesToNodes:holidayNodes];
+      holidayNodes2 = [v37 holidayNodes];
+      holidayNames = [holidayNodes2 holidayNames];
       v16 = v10;
       v17 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v18 = [v12 localDate];
-      v19 = [v36 holidayService];
-      v20 = [v35 infoNode];
-      v21 = [v20 locale];
-      v22 = [v21 countryCode];
+      localDate = [v12 localDate];
+      holidayService = [contextCopy holidayService];
+      infoNode = [graphCopy infoNode];
+      locale = [infoNode locale];
+      countryCode = [locale countryCode];
       v42[0] = MEMORY[0x277D85DD0];
       v42[1] = 3221225472;
       v42[2] = __97__PGCommonTitleUtility_containsCelebrationForDateNodes_holidayName_titleGenerationContext_graph___block_invoke;
       v42[3] = &unk_27887F838;
       v44 = &v50;
-      v45 = a4;
+      nameCopy = name;
       v23 = v17;
       v43 = v23;
-      [v19 enumerateEventRulesWithNames:v41 betweenLocalDate:v18 andLocalDate:v18 supportedCountryCode:v22 usingBlock:v42];
+      [holidayService enumerateEventRulesWithNames:holidayNames betweenLocalDate:localDate andLocalDate:localDate supportedCountryCode:countryCode usingBlock:v42];
 
       v10 = v16;
       v24 = *(v51 + 24);
-      if (((a4 != 0) & v24) == 1)
+      if (((name != 0) & v24) == 1)
       {
         v25 = [v23 sortedArrayUsingSelector:v31];
-        v26 = [v25 firstObject];
+        firstObject = [v25 firstObject];
 
-        v10 = v26;
+        v10 = firstObject;
       }
 
       objc_autoreleasePoolPop(context);
@@ -1205,10 +1205,10 @@ LABEL_3:
     }
   }
 
-  if (a4)
+  if (name)
   {
     v27 = v10;
-    *a4 = v10;
+    *name = v10;
   }
 
   v28 = *(v51 + 24);
@@ -1230,28 +1230,28 @@ void __97__PGCommonTitleUtility_containsCelebrationForDateNodes_holidayName_titl
   }
 }
 
-+ (BOOL)isLargeCountryForAddressNode:(id)a3 locationHelper:(id)a4
++ (BOOL)isLargeCountryForAddressNode:(id)node locationHelper:(id)helper
 {
-  v4 = [a4 countryNodeFromAddressNode:a3];
-  v5 = [v4 anyNode];
+  v4 = [helper countryNodeFromAddressNode:node];
+  anyNode = [v4 anyNode];
 
-  v6 = [v5 name];
-  LOBYTE(v4) = [PGCountrySize isLargeCountry:v6];
+  name = [anyNode name];
+  LOBYTE(v4) = [PGCountrySize isLargeCountry:name];
 
   return v4;
 }
 
-+ (id)addressNodesFromMomentNodes:(id)a3
++ (id)addressNodesFromMomentNodes:(id)nodes
 {
-  v3 = a3;
-  v4 = [v3 anyObject];
-  v5 = [v4 graph];
+  nodesCopy = nodes;
+  anyObject = [nodesCopy anyObject];
+  graph = [anyObject graph];
 
-  if (v5)
+  if (graph)
   {
-    v6 = [(MAElementCollection *)[PGGraphMomentNodeCollection alloc] initWithSet:v3 graph:v5];
-    v7 = [(PGGraphMomentNodeCollection *)v6 addressNodes];
-    v8 = [v7 set];
+    v6 = [(MAElementCollection *)[PGGraphMomentNodeCollection alloc] initWithSet:nodesCopy graph:graph];
+    addressNodes = [(PGGraphMomentNodeCollection *)v6 addressNodes];
+    v8 = [addressNodes set];
   }
 
   else

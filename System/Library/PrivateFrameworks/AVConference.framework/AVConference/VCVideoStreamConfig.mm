@@ -1,29 +1,29 @@
 @interface VCVideoStreamConfig
-+ (BOOL)validateClientDictionary:(id)a3;
-+ (id)profileLevelStringForId:(unsigned int)a3;
-+ (unsigned)profileLevelIdForString:(id)a3;
-- (BOOL)applyVideoStreamClientDictionary:(id)a3;
-- (BOOL)applyVideoStreamXPCDictionary:(id)a3;
-- (VCVideoStreamConfig)initWithClientDictionary:(id)a3 xpcDictionary:(id)a4;
-- (id)newTagCollectionArrayFromDescriptionArray:(id)a3 count:(unint64_t)a4;
++ (BOOL)validateClientDictionary:(id)dictionary;
++ (id)profileLevelStringForId:(unsigned int)id;
++ (unsigned)profileLevelIdForString:(id)string;
+- (BOOL)applyVideoStreamClientDictionary:(id)dictionary;
+- (BOOL)applyVideoStreamXPCDictionary:(id)dictionary;
+- (VCVideoStreamConfig)initWithClientDictionary:(id)dictionary xpcDictionary:(id)xpcDictionary;
+- (id)newTagCollectionArrayFromDescriptionArray:(id)array count:(unint64_t)count;
 - (int)deserializePDDecryptionContext;
-- (void)addRxCodecFeatureListString:(id)a3 codecType:(int64_t)a4;
-- (void)addTxBitrateTier:(id)a3;
-- (void)addTxCodecFeatureListString:(id)a3 codecType:(int64_t)a4;
+- (void)addRxCodecFeatureListString:(id)string codecType:(int64_t)type;
+- (void)addTxBitrateTier:(id)tier;
+- (void)addTxCodecFeatureListString:(id)string codecType:(int64_t)type;
 - (void)dealloc;
 - (void)deserializePDDecryptionContext;
 @end
 
 @implementation VCVideoStreamConfig
 
-- (VCVideoStreamConfig)initWithClientDictionary:(id)a3 xpcDictionary:(id)a4
+- (VCVideoStreamConfig)initWithClientDictionary:(id)dictionary xpcDictionary:(id)xpcDictionary
 {
   v33 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
     __str = 0;
     v7 = objc_opt_class() ? [objc_msgSend(objc_opt_class() "description")] : "<nil>";
-    asprintf(&__str, "%s[%p] %s", v7, self, [objc_msgSend(a3 "description")]);
+    asprintf(&__str, "%s[%p] %s", v7, self, [objc_msgSend(dictionary "description")]);
     if (__str)
     {
       __lasts = 0;
@@ -61,7 +61,7 @@
 
   v20.receiver = self;
   v20.super_class = VCVideoStreamConfig;
-  v12 = [(VCMediaStreamConfig *)&v20 initWithClientDictionary:a3 xpcDictionary:a4];
+  v12 = [(VCMediaStreamConfig *)&v20 initWithClientDictionary:dictionary xpcDictionary:xpcDictionary];
   v13 = v12;
   if (v12)
   {
@@ -72,13 +72,13 @@
     v13->_txCodecFeatureListStrings = objc_alloc_init(MEMORY[0x1E695DF90]);
     v13->_mediaStallTimeout = NAN;
     v13->_mediaStallReportRepeatInterval = NAN;
-    if (a3)
+    if (dictionary)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 6)
       {
         __str = 0;
         v14 = objc_opt_class() ? [objc_msgSend(objc_opt_class() "description")] : "<nil>";
-        asprintf(&__str, "%s[%p] %s", v14, v13, [objc_msgSend(a3 "description")]);
+        asprintf(&__str, "%s[%p] %s", v14, v13, [objc_msgSend(dictionary "description")]);
         if (__str)
         {
           __lasts = 0;
@@ -114,13 +114,13 @@
         }
       }
 
-      if (![(VCVideoStreamConfig *)v13 applyVideoStreamClientDictionary:a3])
+      if (![(VCVideoStreamConfig *)v13 applyVideoStreamClientDictionary:dictionary])
       {
         goto LABEL_30;
       }
     }
 
-    if (a4 && ![(VCVideoStreamConfig *)v13 applyVideoStreamXPCDictionary:a4])
+    if (xpcDictionary && ![(VCVideoStreamConfig *)v13 applyVideoStreamXPCDictionary:xpcDictionary])
     {
 LABEL_30:
 
@@ -146,9 +146,9 @@ LABEL_30:
   [(VCMediaStreamConfig *)&v3 dealloc];
 }
 
-+ (unsigned)profileLevelIdForString:(id)a3
++ (unsigned)profileLevelIdForString:(id)string
 {
-  if ([a3 isEqualToString:*MEMORY[0x1E6983EB8]])
+  if ([string isEqualToString:*MEMORY[0x1E6983EB8]])
   {
     return 4374559;
   }
@@ -168,9 +168,9 @@ LABEL_30:
   return 0;
 }
 
-+ (id)profileLevelStringForId:(unsigned int)a3
++ (id)profileLevelStringForId:(unsigned int)id
 {
-  if (a3 == 4374559)
+  if (id == 4374559)
   {
     return *MEMORY[0x1E6983EB8];
   }
@@ -187,10 +187,10 @@ LABEL_30:
   return 0;
 }
 
-- (id)newTagCollectionArrayFromDescriptionArray:(id)a3 count:(unint64_t)a4
+- (id)newTagCollectionArrayFromDescriptionArray:(id)array count:(unint64_t)count
 {
   cf[1] = *MEMORY[0x1E69E9840];
-  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a4];
+  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:count];
   if (!v6)
   {
     [VCVideoStreamConfig newTagCollectionArrayFromDescriptionArray:count:];
@@ -199,13 +199,13 @@ LABEL_18:
     return 0;
   }
 
-  if (a4)
+  if (count)
   {
     v7 = 0;
     v8 = *MEMORY[0x1E695E480];
     while (1)
     {
-      if (!xpc_array_get_value(a3, v7))
+      if (!xpc_array_get_value(array, v7))
       {
         [VCVideoStreamConfig newTagCollectionArrayFromDescriptionArray:count:];
         goto LABEL_18;
@@ -240,7 +240,7 @@ LABEL_18:
         CFRelease(v9);
       }
 
-      if (a4 == ++v7)
+      if (count == ++v7)
       {
         return v6;
       }
@@ -259,51 +259,51 @@ LABEL_17:
   return v6;
 }
 
-- (BOOL)applyVideoStreamClientDictionary:(id)a3
+- (BOOL)applyVideoStreamClientDictionary:(id)dictionary
 {
   v5 = [VCVideoStreamConfig validateClientDictionary:?];
   if (v5)
   {
     [(NSMutableDictionary *)self->super._rxPayloadMap removeAllObjects];
     [(NSMutableDictionary *)self->super._txPayloadMap removeAllObjects];
-    if ([a3 objectForKeyedSubscript:@"vcMediaStreamRxPayloadType"])
+    if ([dictionary objectForKeyedSubscript:@"vcMediaStreamRxPayloadType"])
     {
-      -[VCMediaStreamConfig addRxPayloadType:networkPayload:](self, "addRxPayloadType:networkPayload:", +[VCPayloadUtils payloadForCodecType:](VCPayloadUtils, "payloadForCodecType:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamRXCodecType", "integerValue"}]), objc_msgSend(objc_msgSend(a3, "objectForKeyedSubscript:", @"vcMediaStreamRxPayloadType"), "integerValue"));
+      -[VCMediaStreamConfig addRxPayloadType:networkPayload:](self, "addRxPayloadType:networkPayload:", +[VCPayloadUtils payloadForCodecType:](VCPayloadUtils, "payloadForCodecType:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamRXCodecType", "integerValue"}]), objc_msgSend(objc_msgSend(dictionary, "objectForKeyedSubscript:", @"vcMediaStreamRxPayloadType"), "integerValue"));
     }
 
-    if ([a3 objectForKeyedSubscript:@"vcMediaStreamTxPayloadType"])
+    if ([dictionary objectForKeyedSubscript:@"vcMediaStreamTxPayloadType"])
     {
-      -[VCMediaStreamConfig addTxPayloadType:networkPayload:](self, "addTxPayloadType:networkPayload:", +[VCPayloadUtils payloadForCodecType:](VCPayloadUtils, "payloadForCodecType:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamTXCodecType", "integerValue"}]), objc_msgSend(objc_msgSend(a3, "objectForKeyedSubscript:", @"vcMediaStreamTxPayloadType"), "integerValue"));
+      -[VCMediaStreamConfig addTxPayloadType:networkPayload:](self, "addTxPayloadType:networkPayload:", +[VCPayloadUtils payloadForCodecType:](VCPayloadUtils, "payloadForCodecType:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamTXCodecType", "integerValue"}]), objc_msgSend(objc_msgSend(dictionary, "objectForKeyedSubscript:", @"vcMediaStreamTxPayloadType"), "integerValue"));
     }
 
-    self->_framerate = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamFramerate", "integerValue"}];
-    self->_txMinBitrate = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamTXMinBitrate", "integerValue"}];
-    self->_txMaxBitrate = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamTXMaxBitrate", "integerValue"}];
-    self->_rxMinBitrate = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamRXMinBitrate", "integerValue"}];
-    self->_rxMaxBitrate = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamRXMaxBitrate", "integerValue"}];
-    self->_keyFrameInterval = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamKeyFrameInterval", "integerValue"}];
-    self->_remoteVideoInitialOrientation = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamRemoteVideoInitialOrientation", "integerValue"}];
-    self->_enableCVO = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamEnableCVO", "BOOLValue"}];
-    self->_cvoExtensionID = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamCVOExtensionID", "unsignedIntegerValue"}];
-    self->_isVideoProtected = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamIsVideoProtected", "BOOLValue"}];
-    self->_videoResolution = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamVideoResolution", "integerValue"}];
-    self->_type = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamVideoStreamMode", "integerValue"}];
-    self->_captureSourceID = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamCaptureSourceID", "integerValue"}];
-    self->_shouldSendBlackFramesOnClearScreen = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamShouldSendBlackFramesOnClearScreen", "BOOLValue"}];
-    self->_foveationEnabled = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamFoveationEnabled", "BOOLValue"}];
-    self->_screenDisplayID = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamDisplayID", "unsignedIntegerValue"}];
-    self->_tilesPerFrame = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamTilesPerFrame", "unsignedIntegerValue"}];
-    self->_enableInterleavedEncoding = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamEnableInterleavedEncoding", "BOOLValue"}];
-    self->_pixelFormat = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamPixelFormat", "unsignedIntegerValue"}];
-    self->_ltrpEnabled = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamIsltrpEnabled", "BOOLValue"}];
+    self->_framerate = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamFramerate", "integerValue"}];
+    self->_txMinBitrate = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamTXMinBitrate", "integerValue"}];
+    self->_txMaxBitrate = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamTXMaxBitrate", "integerValue"}];
+    self->_rxMinBitrate = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamRXMinBitrate", "integerValue"}];
+    self->_rxMaxBitrate = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamRXMaxBitrate", "integerValue"}];
+    self->_keyFrameInterval = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamKeyFrameInterval", "integerValue"}];
+    self->_remoteVideoInitialOrientation = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamRemoteVideoInitialOrientation", "integerValue"}];
+    self->_enableCVO = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamEnableCVO", "BOOLValue"}];
+    self->_cvoExtensionID = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamCVOExtensionID", "unsignedIntegerValue"}];
+    self->_isVideoProtected = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamIsVideoProtected", "BOOLValue"}];
+    self->_videoResolution = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamVideoResolution", "integerValue"}];
+    self->_type = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamVideoStreamMode", "integerValue"}];
+    self->_captureSourceID = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamCaptureSourceID", "integerValue"}];
+    self->_shouldSendBlackFramesOnClearScreen = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamShouldSendBlackFramesOnClearScreen", "BOOLValue"}];
+    self->_foveationEnabled = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamFoveationEnabled", "BOOLValue"}];
+    self->_screenDisplayID = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamDisplayID", "unsignedIntegerValue"}];
+    self->_tilesPerFrame = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamTilesPerFrame", "unsignedIntegerValue"}];
+    self->_enableInterleavedEncoding = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamEnableInterleavedEncoding", "BOOLValue"}];
+    self->_pixelFormat = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamPixelFormat", "unsignedIntegerValue"}];
+    self->_ltrpEnabled = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamIsltrpEnabled", "BOOLValue"}];
     if (self->_videoResolution == 27)
     {
-      self->_customWidth = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamCustomWidth", "unsignedIntegerValue"}];
-      self->_customHeight = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamCustomHeight", "unsignedIntegerValue"}];
+      self->_customWidth = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamCustomWidth", "unsignedIntegerValue"}];
+      self->_customHeight = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamCustomHeight", "unsignedIntegerValue"}];
     }
 
-    self->_hdrMode = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamHDRMode", "integerValue"}];
-    v6 = [a3 objectForKeyedSubscript:@"vcRemoteDeviceName"];
+    self->_hdrMode = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamHDRMode", "integerValue"}];
+    v6 = [dictionary objectForKeyedSubscript:@"vcRemoteDeviceName"];
     if ([v6 isEqual:{objc_msgSend(MEMORY[0x1E695DFB0], "null")}])
     {
       v7 = 0;
@@ -311,25 +311,25 @@ LABEL_17:
 
     else
     {
-      v7 = [a3 objectForKeyedSubscript:@"vcRemoteDeviceName"];
+      v7 = [dictionary objectForKeyedSubscript:@"vcRemoteDeviceName"];
     }
 
     self->_remoteDeviceName = v7;
-    if ([a3 objectForKeyedSubscript:@"vcMediaStreamRxCodecFeatureListString"])
+    if ([dictionary objectForKeyedSubscript:@"vcMediaStreamRxCodecFeatureListString"])
     {
-      v8 = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamRXCodecType", "integerValue"}];
-      v9 = [a3 objectForKeyedSubscript:@"vcMediaStreamRxCodecFeatureListString"];
+      v8 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamRXCodecType", "integerValue"}];
+      v9 = [dictionary objectForKeyedSubscript:@"vcMediaStreamRxCodecFeatureListString"];
       -[NSMutableDictionary setObject:forKeyedSubscript:](self->_rxCodecFeatureListStrings, "setObject:forKeyedSubscript:", v9, [MEMORY[0x1E696AD98] numberWithInteger:v8]);
     }
 
-    if ([a3 objectForKeyedSubscript:@"vcMediaStreamTxCodecFeatureListString"])
+    if ([dictionary objectForKeyedSubscript:@"vcMediaStreamTxCodecFeatureListString"])
     {
-      v10 = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamTXCodecType", "integerValue"}];
-      v11 = [a3 objectForKeyedSubscript:@"vcMediaStreamTxCodecFeatureListString"];
+      v10 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamTXCodecType", "integerValue"}];
+      v11 = [dictionary objectForKeyedSubscript:@"vcMediaStreamTxCodecFeatureListString"];
       -[NSMutableDictionary setObject:forKeyedSubscript:](self->_txCodecFeatureListStrings, "setObject:forKeyedSubscript:", v11, [MEMORY[0x1E696AD98] numberWithInteger:v10]);
     }
 
-    v12 = [a3 objectForKeyedSubscript:@"vcMediaStreamProfileLevel"];
+    v12 = [dictionary objectForKeyedSubscript:@"vcMediaStreamProfileLevel"];
     if ([v12 isEqual:{objc_msgSend(MEMORY[0x1E695DFB0], "null")}])
     {
       v13 = 0;
@@ -337,14 +337,14 @@ LABEL_17:
 
     else
     {
-      v13 = [a3 objectForKeyedSubscript:@"vcMediaStreamProfileLevel"];
+      v13 = [dictionary objectForKeyedSubscript:@"vcMediaStreamProfileLevel"];
     }
 
     self->_profileLevel = v13;
-    self->_fecEnabled = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamIsFECEnabled", "BOOLValue"}];
-    self->_rtxEnabled = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamIsRTXEnabled", "BOOLValue"}];
-    self->_transportProtocolType = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamTransportProtocolType", "integerValue"}];
-    v14 = [a3 objectForKeyedSubscript:@"vcMediaStreamPDEncryptionContext"];
+    self->_fecEnabled = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamIsFECEnabled", "BOOLValue"}];
+    self->_rtxEnabled = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamIsRTXEnabled", "BOOLValue"}];
+    self->_transportProtocolType = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamTransportProtocolType", "integerValue"}];
+    v14 = [dictionary objectForKeyedSubscript:@"vcMediaStreamPDEncryptionContext"];
     if ([v14 isEqual:{objc_msgSend(MEMORY[0x1E695DFB0], "null")}])
     {
       v15 = 0;
@@ -352,11 +352,11 @@ LABEL_17:
 
     else
     {
-      v15 = [a3 objectForKeyedSubscript:@"vcMediaStreamPDEncryptionContext"];
+      v15 = [dictionary objectForKeyedSubscript:@"vcMediaStreamPDEncryptionContext"];
     }
 
     self->_pdEncryptionContext = v15;
-    v16 = [a3 objectForKeyedSubscript:@"vcMediaStreamPDDecryptionContext"];
+    v16 = [dictionary objectForKeyedSubscript:@"vcMediaStreamPDDecryptionContext"];
     if ([v16 isEqual:{objc_msgSend(MEMORY[0x1E695DFB0], "null")}])
     {
       self->_pdDecryptionContext = 0;
@@ -364,7 +364,7 @@ LABEL_17:
 
     else
     {
-      v17 = [a3 objectForKeyedSubscript:@"vcMediaStreamPDDecryptionContext"];
+      v17 = [dictionary objectForKeyedSubscript:@"vcMediaStreamPDDecryptionContext"];
       self->_pdDecryptionContext = v17;
       if (v17 && [(VCVideoStreamConfig *)self deserializePDDecryptionContext])
       {
@@ -380,11 +380,11 @@ LABEL_17:
       self->_videoBufferDescription = 0;
     }
 
-    [a3 objectForKeyedSubscript:@"vcMediaStreamVideoBufferDescription"];
+    [dictionary objectForKeyedSubscript:@"vcMediaStreamVideoBufferDescription"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v19 = [a3 objectForKeyedSubscript:@"vcMediaStreamVideoBufferDescription"];
+      v19 = [dictionary objectForKeyedSubscript:@"vcMediaStreamVideoBufferDescription"];
     }
 
     else
@@ -400,27 +400,27 @@ LABEL_17:
   return v5;
 }
 
-- (void)addRxCodecFeatureListString:(id)a3 codecType:(int64_t)a4
+- (void)addRxCodecFeatureListString:(id)string codecType:(int64_t)type
 {
   rxCodecFeatureListStrings = self->_rxCodecFeatureListStrings;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:type];
 
-  [(NSMutableDictionary *)rxCodecFeatureListStrings setObject:a3 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)rxCodecFeatureListStrings setObject:string forKeyedSubscript:v6];
 }
 
-- (void)addTxCodecFeatureListString:(id)a3 codecType:(int64_t)a4
+- (void)addTxCodecFeatureListString:(id)string codecType:(int64_t)type
 {
   txCodecFeatureListStrings = self->_txCodecFeatureListStrings;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:type];
 
-  [(NSMutableDictionary *)txCodecFeatureListStrings setObject:a3 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)txCodecFeatureListStrings setObject:string forKeyedSubscript:v6];
 }
 
-- (void)addTxBitrateTier:(id)a3
+- (void)addTxBitrateTier:(id)tier
 {
-  if ([a3 unsignedIntegerValue] >= self->_txMinBitrate && objc_msgSend(a3, "unsignedIntegerValue") <= self->_txMaxBitrate)
+  if ([tier unsignedIntegerValue] >= self->_txMinBitrate && objc_msgSend(tier, "unsignedIntegerValue") <= self->_txMaxBitrate)
   {
-    [(NSMutableOrderedSet *)self->_txBitrateTiers addObject:a3];
+    [(NSMutableOrderedSet *)self->_txBitrateTiers addObject:tier];
     txBitrateTiers = self->_txBitrateTiers;
 
     [(NSMutableOrderedSet *)txBitrateTiers sortUsingComparator:&__block_literal_global_76];
@@ -445,28 +445,28 @@ LABEL_17:
   return CryptorFromSerializedRecipe;
 }
 
-+ (BOOL)validateClientDictionary:(id)a3
++ (BOOL)validateClientDictionary:(id)dictionary
 {
-  v4 = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamRXCodecType", "integerValue"}];
-  v5 = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamTXCodecType", "integerValue"}];
+  v4 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamRXCodecType", "integerValue"}];
+  v5 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamTXCodecType", "integerValue"}];
   LOBYTE(v6) = 0;
   if ((v4 & 0xFFFFFFFFFFFFFFFDLL) != 0x64 || (v5 & 0xFFFFFFFFFFFFFFFDLL) != 0x64)
   {
     return v6;
   }
 
-  if ([objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamFramerate", "integerValue"}] < 1 || objc_msgSend(objc_msgSend(a3, "objectForKeyedSubscript:", @"vcMediaStreamTilesPerFrame"), "integerValue") < 1 || objc_msgSend(objc_msgSend(a3, "objectForKeyedSubscript:", @"vcMediaStreamEnableCVO"), "BOOLValue") && (objc_msgSend(objc_msgSend(a3, "objectForKeyedSubscript:", @"vcMediaStreamCVOExtensionID"), "unsignedIntegerValue") - 1) > 0xD)
+  if ([objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamFramerate", "integerValue"}] < 1 || objc_msgSend(objc_msgSend(dictionary, "objectForKeyedSubscript:", @"vcMediaStreamTilesPerFrame"), "integerValue") < 1 || objc_msgSend(objc_msgSend(dictionary, "objectForKeyedSubscript:", @"vcMediaStreamEnableCVO"), "BOOLValue") && (objc_msgSend(objc_msgSend(dictionary, "objectForKeyedSubscript:", @"vcMediaStreamCVOExtensionID"), "unsignedIntegerValue") - 1) > 0xD)
   {
     goto LABEL_34;
   }
 
-  if ([objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamDirection", "integerValue"}] == 2)
+  if ([objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamDirection", "integerValue"}] == 2)
   {
     goto LABEL_23;
   }
 
-  v7 = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamPixelFormat", "unsignedIntegerValue"}];
-  v8 = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamHDRMode", "integerValue"}];
+  v7 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamPixelFormat", "unsignedIntegerValue"}];
+  v8 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamHDRMode", "integerValue"}];
   switch(v7)
   {
     case 875704422:
@@ -548,10 +548,10 @@ LABEL_34:
   return v6;
 }
 
-- (BOOL)applyVideoStreamXPCDictionary:(id)a3
+- (BOOL)applyVideoStreamXPCDictionary:(id)dictionary
 {
   v30 = *MEMORY[0x1E69E9840];
-  value = xpc_dictionary_get_value(a3, "vcMediaStreamVideoBufferDescriptionXPCArgs");
+  value = xpc_dictionary_get_value(dictionary, "vcMediaStreamVideoBufferDescriptionXPCArgs");
   if (!value)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -737,7 +737,7 @@ LABEL_10:
 - (void)deserializePDDecryptionContext
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {
@@ -764,7 +764,7 @@ LABEL_12:
 
   if (objc_opt_respondsToSelector())
   {
-    v4 = [a1 performSelector:sel_logPrefix];
+    v4 = [self performSelector:sel_logPrefix];
   }
 
   else
@@ -784,7 +784,7 @@ LABEL_12:
       v16 = 2112;
       v17 = v4;
       v18 = 2048;
-      v19 = a1;
+      selfCopy = self;
       v20 = v13;
       v21 = a2;
       v6 = &dword_1DB56E000;

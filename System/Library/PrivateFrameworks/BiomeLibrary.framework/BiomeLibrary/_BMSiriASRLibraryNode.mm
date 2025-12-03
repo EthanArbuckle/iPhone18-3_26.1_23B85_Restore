@@ -5,7 +5,7 @@
 + (id)configurationForRequestMetricsRecord;
 + (id)storeConfigurationForContextualReplayRecord;
 + (id)storeConfigurationForRequestMetricsRecord;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -32,7 +32,7 @@
 + (id)RequestMetricsRecord
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForRequestMetricsRecord];
+  configurationForRequestMetricsRecord = [self configurationForRequestMetricsRecord];
   v3 = +[BMASRRequestMetricsRecord columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -44,7 +44,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Siri.ASR.RequestMetricsRecord" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.ASR.RequestMetricsRecord" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.ASR.RequestMetricsRecord" schema:v9 configuration:configurationForRequestMetricsRecord];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -53,13 +53,13 @@
 
 + (id)configurationForRequestMetricsRecord
 {
-  v3 = [a1 storeConfigurationForRequestMetricsRecord];
-  v4 = [a1 syncPolicyForRequestMetricsRecord];
+  storeConfigurationForRequestMetricsRecord = [self storeConfigurationForRequestMetricsRecord];
+  syncPolicyForRequestMetricsRecord = [self syncPolicyForRequestMetricsRecord];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"72ABA4E9-B73E-4B29-AAC9-8B78805054ED"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Siri.ASR.RequestMetricsRecord" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.speech.localspeechrecognition" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Siri.ASR.RequestMetricsRecord" eventClass:objc_opt_class() storeConfig:storeConfigurationForRequestMetricsRecord syncPolicy:syncPolicyForRequestMetricsRecord legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.speech.localspeechrecognition" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -67,7 +67,7 @@
 + (id)ContextualReplayRecord
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForContextualReplayRecord];
+  configurationForContextualReplayRecord = [self configurationForContextualReplayRecord];
   v3 = +[BMASRContextualReplayRecord columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -79,7 +79,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Siri.ASR.ContextualReplayRecord" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.ASR.ContextualReplayRecord" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.ASR.ContextualReplayRecord" schema:v9 configuration:configurationForContextualReplayRecord];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -89,8 +89,8 @@
 + (id)configurationForContextualReplayRecord
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v3 = [a1 storeConfigurationForContextualReplayRecord];
-  v4 = [a1 syncPolicyForContextualReplayRecord];
+  storeConfigurationForContextualReplayRecord = [self storeConfigurationForContextualReplayRecord];
+  syncPolicyForContextualReplayRecord = [self syncPolicyForContextualReplayRecord];
   v5 = objc_alloc(MEMORY[0x1E698F330]);
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"donatedBySiri == YES" argumentArray:0];
   v7 = [v5 initWithIdentifier:@"delete-siri-dictation-history" predicate:v6];
@@ -105,27 +105,27 @@
   v13 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"FDD87131-94FB-4643-AAB8-9264039F5F56"];
   BYTE2(v17) = 0;
   LOWORD(v17) = 0;
-  v14 = [v12 _libraryStreamConfigurationWithUUID:v13 streamIdentifier:@"Siri.ASR.ContextualReplayRecord" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v17 enableSubscriptionSubstream:0 enableTombstoneSubstream:v11 allowedClients:0 pruningTriggers:v18[0] spaceAttributionOwner:?];
+  v14 = [v12 _libraryStreamConfigurationWithUUID:v13 streamIdentifier:@"Siri.ASR.ContextualReplayRecord" eventClass:objc_opt_class() storeConfig:storeConfigurationForContextualReplayRecord syncPolicy:syncPolicyForContextualReplayRecord legacyNames:0 internalMetadata:0 enableSubscriptions:v17 enableSubscriptionSubstream:0 enableTombstoneSubstream:v11 allowedClients:0 pruningTriggers:v18[0] spaceAttributionOwner:?];
 
   v15 = *MEMORY[0x1E69E9840];
 
   return v14;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"ContextualReplayRecord"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"ContextualReplayRecord"])
   {
-    v5 = [a1 ContextualReplayRecord];
+    contextualReplayRecord = [self ContextualReplayRecord];
 LABEL_5:
-    v6 = v5;
+    v6 = contextualReplayRecord;
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"RequestMetricsRecord"])
+  if ([nameCopy isEqualToString:@"RequestMetricsRecord"])
   {
-    v5 = [a1 RequestMetricsRecord];
+    contextualReplayRecord = [self RequestMetricsRecord];
     goto LABEL_5;
   }
 

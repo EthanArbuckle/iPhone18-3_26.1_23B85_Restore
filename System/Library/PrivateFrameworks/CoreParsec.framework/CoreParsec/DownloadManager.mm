@@ -1,48 +1,48 @@
 @interface DownloadManager
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 willBeginDelayedRequest:(id)a5 completionHandler:(id)a6;
-- (void)bagChangeNotificationWithNotification:(id)a3;
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task willBeginDelayedRequest:(id)request completionHandler:(id)handler;
+- (void)bagChangeNotificationWithNotification:(id)notification;
 @end
 
 @implementation DownloadManager
 
-- (void)bagChangeNotificationWithNotification:(id)a3
+- (void)bagChangeNotificationWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
+  notificationCopy = notification;
+  selfCopy = self;
   sub_1000A88F8();
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willBeginDelayedRequest:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task willBeginDelayedRequest:(id)request completionHandler:(id)handler
 {
   v10 = type metadata accessor for URLRequest();
   v11 = *(v10 - 8);
   v12 = *(v11 + 64);
   __chkstk_darwin(v10);
   v14 = &v19 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(handler);
   static URLRequest._unconditionallyBridgeFromObjectiveC(_:)();
   _Block_copy(v15);
-  v16 = a3;
-  v17 = a4;
-  v18 = self;
-  sub_1000AD8C8(v16, v17, v14, v18, v15);
+  sessionCopy = session;
+  taskCopy = task;
+  selfCopy = self;
+  sub_1000AD8C8(sessionCopy, taskCopy, v14, selfCopy, v15);
   _Block_release(v15);
 
   (*(v11 + 8))(v14, v10);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  selfCopy = self;
+  errorCopy = error;
   sub_1000AEA78();
 }
 
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l
 {
   v8 = type metadata accessor for URL();
   v9 = *(v8 - 8);
@@ -50,9 +50,9 @@
   __chkstk_darwin(v8);
   v12 = &v16 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  v13 = a3;
-  v14 = a4;
-  v15 = self;
+  sessionCopy = session;
+  taskCopy = task;
+  selfCopy = self;
   sub_1000B03E0();
 
   (*(v9 + 8))(v12, v8);

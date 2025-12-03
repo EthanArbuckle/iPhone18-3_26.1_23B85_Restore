@@ -1,12 +1,12 @@
 @interface TVSettingsDownloadQualityListItemCell
-- (id)_subtitleForSpecifier:(id)a3;
+- (id)_subtitleForSpecifier:(id)specifier;
 @end
 
 @implementation TVSettingsDownloadQualityListItemCell
 
-- (id)_subtitleForSpecifier:(id)a3
+- (id)_subtitleForSpecifier:(id)specifier
 {
-  v3 = [a3 name];
+  name = [specifier name];
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"DOWNLOAD_QUALITY_HIGH_TITLE" value:&stru_21328 table:@"TVSettings"];
   v6 = v5;
@@ -20,7 +20,7 @@
     v7 = &stru_21328;
   }
 
-  v8 = [v3 isEqualToString:v7];
+  v8 = [name isEqualToString:v7];
 
   v9 = [NSBundle bundleForClass:objc_opt_class()];
   v10 = v9;

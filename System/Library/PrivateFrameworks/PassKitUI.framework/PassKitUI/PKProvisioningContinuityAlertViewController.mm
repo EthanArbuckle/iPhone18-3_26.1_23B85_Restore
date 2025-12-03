@@ -1,84 +1,84 @@
 @interface PKProvisioningContinuityAlertViewController
 - (void)_configureViewController;
-- (void)_dismissForSource:(unint64_t)a3;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)_dismissForSource:(unint64_t)source;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PKProvisioningContinuityAlertViewController
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
-  v6 = a3;
+  disappearCopy = disappear;
+  windowCopy = window;
   v8.receiver = self;
   v8.super_class = PKProvisioningContinuityAlertViewController;
-  [(PKProvisioningContinuityAlertViewController *)&v8 viewDidMoveToWindow:v6 shouldAppearOrDisappear:v4];
-  if (v6)
+  [(PKProvisioningContinuityAlertViewController *)&v8 viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:disappearCopy];
+  if (windowCopy)
   {
-    [v6 bounds];
-    v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v7 scale];
+    [windowCopy bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     PKSetDisplayProperties();
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKProvisioningContinuityAlertViewController;
-  [(PKProvisioningContinuityAlertViewController *)&v4 viewWillAppear:a3];
+  [(PKProvisioningContinuityAlertViewController *)&v4 viewWillAppear:appear];
   [(PKProvisioningContinuityAlertViewController *)self _configureViewController];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKProvisioningContinuityAlertViewController;
-  [(PKProvisioningContinuityAlertViewController *)&v4 viewWillDisappear:a3];
+  [(PKProvisioningContinuityAlertViewController *)&v4 viewWillDisappear:disappear];
   [(PKProvisioningContinuityAlertViewController *)self _dismissForSource:1];
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKProvisioningContinuityAlertViewController *)self _remoteViewControllerProxy];
-  [v8 setAllowsAlertItems:1];
-  [v8 setAllowsSiri:0];
-  [v8 setAllowsBanners:1];
-  [v8 setDesiredHardwareButtonEvents:16];
-  [v8 setSwipeDismissalStyle:0];
-  [v8 setDismissalAnimationStyle:0];
-  [v8 setWallpaperStyle:0 withDuration:0.0];
-  [v8 setLaunchingInterfaceOrientation:1];
+  completionCopy = completion;
+  contextCopy = context;
+  _remoteViewControllerProxy = [(PKProvisioningContinuityAlertViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setAllowsAlertItems:1];
+  [_remoteViewControllerProxy setAllowsSiri:0];
+  [_remoteViewControllerProxy setAllowsBanners:1];
+  [_remoteViewControllerProxy setDesiredHardwareButtonEvents:16];
+  [_remoteViewControllerProxy setSwipeDismissalStyle:0];
+  [_remoteViewControllerProxy setDismissalAnimationStyle:0];
+  [_remoteViewControllerProxy setWallpaperStyle:0 withDuration:0.0];
+  [_remoteViewControllerProxy setLaunchingInterfaceOrientation:1];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __79__PKProvisioningContinuityAlertViewController_configureWithContext_completion___block_invoke;
   aBlock[3] = &unk_1E8018300;
-  v9 = v6;
+  v9 = completionCopy;
   v33 = v9;
-  v10 = v8;
+  v10 = _remoteViewControllerProxy;
   v31 = v10;
-  v32 = self;
+  selfCopy = self;
   v11 = _Block_copy(aBlock);
-  v12 = [v7 userInfo];
+  userInfo = [contextCopy userInfo];
 
   v13 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v35 = v12;
+    v35 = userInfo;
     _os_log_impl(&dword_1BD026000, v13, OS_LOG_TYPE_DEFAULT, "PKProvisioningContinuityAlertViewController: presenting for info: %@", buf, 0xCu);
   }
 
-  v14 = [v12 objectForKeyedSubscript:*MEMORY[0x1E69BC018]];
+  v14 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69BC018]];
   if (v14)
   {
-    v15 = [v12 objectForKeyedSubscript:*MEMORY[0x1E69BC008]];
+    v15 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69BC008]];
     if (!v15)
     {
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -151,7 +151,7 @@ LABEL_24:
       }
     }
 
-    v24 = [[PKProvisioningContinuityCarKeyHostViewController alloc] initWithHandle:self->_handle userInfo:v12 parent:self];
+    v24 = [[PKProvisioningContinuityCarKeyHostViewController alloc] initWithHandle:self->_handle userInfo:userInfo parent:self];
     contentProvider = self->_contentProvider;
     self->_contentProvider = v24;
 
@@ -214,22 +214,22 @@ uint64_t __79__PKProvisioningContinuityAlertViewController_configureWithContext_
   if (contentProvider)
   {
     v4 = contentProvider;
-    v6 = [(PKProvisioningContinuityAlertViewController *)self view];
-    v5 = [(PKProvisioningContinuityAlertHostContentProviding *)v4 view];
+    view = [(PKProvisioningContinuityAlertViewController *)self view];
+    view2 = [(PKProvisioningContinuityAlertHostContentProviding *)v4 view];
     [(PKProvisioningContinuityAlertViewController *)self addChildViewController:v4];
-    [v6 addSubview:v5];
+    [view addSubview:view2];
     [(PKProvisioningContinuityAlertHostContentProviding *)v4 didMoveToParentViewController:self];
 
     [(PKProvisioningContinuityAlertViewController *)self setNeedsStatusBarAppearanceUpdate];
     [(PKProvisioningContinuityAlertViewController *)self setNeedsUpdateOfSupportedInterfaceOrientations];
-    [v6 setNeedsLayout];
-    [v6 layoutIfNeeded];
+    [view setNeedsLayout];
+    [view layoutIfNeeded];
   }
 }
 
-- (void)_dismissForSource:(unint64_t)a3
+- (void)_dismissForSource:(unint64_t)source
 {
-  if (a3)
+  if (source)
   {
     [(PKSharingChannelHandle *)self->_handle closeWithCompletion:0];
     [(PKSharingChannelHandle *)self->_handle invalidate];
@@ -243,8 +243,8 @@ uint64_t __79__PKProvisioningContinuityAlertViewController_configureWithContext_
   aBlock[3] = &unk_1E8010970;
   aBlock[4] = self;
   v5 = _Block_copy(aBlock);
-  v6 = [(PKProvisioningContinuityAlertViewController *)self presentedViewController];
-  if (v6)
+  presentedViewController = [(PKProvisioningContinuityAlertViewController *)self presentedViewController];
+  if (presentedViewController)
   {
     [(PKProvisioningContinuityAlertViewController *)self dismissViewControllerAnimated:1 completion:v5];
   }

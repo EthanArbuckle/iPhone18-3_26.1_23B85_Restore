@@ -2,7 +2,7 @@
 - (BOOL)isHidden;
 - (NSString)description;
 - (_TtC13AppProtection23APHiddenAppsMetaSubject)init;
-- (_TtC13AppProtection23APHiddenAppsMetaSubject)initWithArena:(id)a3;
+- (_TtC13AppProtection23APHiddenAppsMetaSubject)initWithArena:(id)arena;
 - (id)effectiveBundleIdentifier;
 @end
 
@@ -10,7 +10,7 @@
 
 - (BOOL)isHidden
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_185AC302C();
 
   return v3;
@@ -37,7 +37,7 @@
   return v2;
 }
 
-- (_TtC13AppProtection23APHiddenAppsMetaSubject)initWithArena:(id)a3
+- (_TtC13AppProtection23APHiddenAppsMetaSubject)initWithArena:(id)arena
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

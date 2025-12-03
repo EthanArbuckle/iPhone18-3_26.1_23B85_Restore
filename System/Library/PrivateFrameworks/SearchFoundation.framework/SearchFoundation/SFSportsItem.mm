@@ -1,54 +1,54 @@
 @interface SFSportsItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFSportsItem)initWithCoder:(id)a3;
-- (SFSportsItem)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFSportsItem)initWithCoder:(id)coder;
+- (SFSportsItem)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFSportsItem
 
 - (unint64_t)hash
 {
-  v3 = [(SFSportsItem *)self type];
-  v4 = [(SFSportsItem *)self identifier];
-  v5 = [v4 hash];
+  type = [(SFSportsItem *)self type];
+  identifier = [(SFSportsItem *)self identifier];
+  v5 = [identifier hash];
 
-  return v5 ^ v3;
+  return v5 ^ type;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
-  else if ([(SFSportsItem *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(SFSportsItem *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(SFSportsItem *)self type];
-    if (v6 == [(SFSportsItem *)v5 type])
+    v5 = equalCopy;
+    type = [(SFSportsItem *)self type];
+    if (type == [(SFSportsItem *)v5 type])
     {
-      v7 = [(SFSportsItem *)self identifier];
-      v8 = [(SFSportsItem *)v5 identifier];
-      if ((v7 != 0) == (v8 == 0))
+      identifier = [(SFSportsItem *)self identifier];
+      identifier2 = [(SFSportsItem *)v5 identifier];
+      if ((identifier != 0) == (identifier2 == 0))
       {
         v12 = 0;
       }
 
       else
       {
-        v9 = [(SFSportsItem *)self identifier];
-        if (v9)
+        identifier3 = [(SFSportsItem *)self identifier];
+        if (identifier3)
         {
-          v10 = [(SFSportsItem *)self identifier];
-          v11 = [(SFSportsItem *)v5 identifier];
-          v12 = [v10 isEqual:v11];
+          identifier4 = [(SFSportsItem *)self identifier];
+          identifier5 = [(SFSportsItem *)v5 identifier];
+          v12 = [identifier4 isEqual:identifier5];
         }
 
         else
@@ -72,12 +72,12 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setType:{-[SFSportsItem type](self, "type")}];
-  v5 = [(SFSportsItem *)self identifier];
-  v6 = [v5 copy];
+  identifier = [(SFSportsItem *)self identifier];
+  v6 = [identifier copy];
   [v4 setIdentifier:v6];
 
   return v4;
@@ -86,31 +86,31 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBSportsItem alloc] initWithFacade:self];
-  v3 = [(_SFPBSportsItem *)v2 jsonData];
+  jsonData = [(_SFPBSportsItem *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBSportsItem alloc] initWithFacade:self];
-  v3 = [(_SFPBSportsItem *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBSportsItem *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBSportsItem alloc] initWithFacade:self];
-  v5 = [(_SFPBSportsItem *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBSportsItem *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFSportsItem)initWithCoder:(id)a3
+- (SFSportsItem)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBSportsItem alloc] initWithData:v5];
   v7 = [(SFSportsItem *)self initWithProtobuf:v6];
@@ -118,25 +118,25 @@
   return v7;
 }
 
-- (SFSportsItem)initWithProtobuf:(id)a3
+- (SFSportsItem)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v10.receiver = self;
   v10.super_class = SFSportsItem;
   v5 = [(SFSportsItem *)&v10 init];
   if (v5)
   {
-    if ([v4 type])
+    if ([protobufCopy type])
     {
-      -[SFSportsItem setType:](v5, "setType:", [v4 type]);
+      -[SFSportsItem setType:](v5, "setType:", [protobufCopy type]);
     }
 
-    v6 = [v4 identifier];
+    identifier = [protobufCopy identifier];
 
-    if (v6)
+    if (identifier)
     {
-      v7 = [v4 identifier];
-      [(SFSportsItem *)v5 setIdentifier:v7];
+      identifier2 = [protobufCopy identifier];
+      [(SFSportsItem *)v5 setIdentifier:identifier2];
     }
 
     v8 = v5;

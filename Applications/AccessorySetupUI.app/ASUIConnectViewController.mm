@@ -1,7 +1,7 @@
 @interface ASUIConnectViewController
-- (_TtC16AccessorySetupUI25ASUIConnectViewController)initWithContentView:(id)a3;
-- (void)motionEnded:(int64_t)a3 withEvent:(id)a4;
-- (void)presentationControllerWillDismiss:(id)a3;
+- (_TtC16AccessorySetupUI25ASUIConnectViewController)initWithContentView:(id)view;
+- (void)motionEnded:(int64_t)ended withEvent:(id)event;
+- (void)presentationControllerWillDismiss:(id)dismiss;
 - (void)viewDidLoad;
 @end
 
@@ -16,25 +16,25 @@
   [v2 setDismissalType:{1, v3.receiver, v3.super_class}];
 }
 
-- (void)motionEnded:(int64_t)a3 withEvent:(id)a4
+- (void)motionEnded:(int64_t)ended withEvent:(id)event
 {
-  v6 = a4;
-  v7 = self;
-  sub_100042E60(a3);
+  eventCopy = event;
+  selfCopy = self;
+  sub_100042E60(ended);
 }
 
-- (_TtC16AccessorySetupUI25ASUIConnectViewController)initWithContentView:(id)a3
+- (_TtC16AccessorySetupUI25ASUIConnectViewController)initWithContentView:(id)view
 {
-  v4 = a3;
-  v5 = sub_100042FF4(a3);
+  viewCopy = view;
+  v5 = sub_100042FF4(view);
 
   return v5;
 }
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   sub_100043114();
 }
 

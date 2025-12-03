@@ -6,11 +6,11 @@
 
 - (BOOL)performMigration
 {
-  v2 = self;
-  v3 = [(KeychainMigrator *)self userDataDisposition];
-  LODWORD(v2) = [(KeychainMigrator *)v2 userDataDisposition]& 2 | v3 & 1;
+  selfCopy = self;
+  userDataDisposition = [(KeychainMigrator *)self userDataDisposition];
+  LODWORD(selfCopy) = [(KeychainMigrator *)selfCopy userDataDisposition]& 2 | userDataDisposition & 1;
   v4 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-  if (!v2)
+  if (!selfCopy)
   {
     if (v4)
     {

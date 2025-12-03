@@ -1,22 +1,22 @@
 @interface SRCardStackNavigationTransitionContext
 - (CGRect)backgroundPlatteredCardViewOriginalFrame;
 - (CGRect)fromPlatteredCardViewOriginalFrame;
-- (SRCardStackNavigationTransitionContext)initWithCompletion:(id)a3;
+- (SRCardStackNavigationTransitionContext)initWithCompletion:(id)completion;
 - (int64_t)semanticContentAttribute;
-- (void)completeTransition:(BOOL)a3;
+- (void)completeTransition:(BOOL)transition;
 @end
 
 @implementation SRCardStackNavigationTransitionContext
 
-- (SRCardStackNavigationTransitionContext)initWithCompletion:(id)a3
+- (SRCardStackNavigationTransitionContext)initWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9.receiver = self;
   v9.super_class = SRCardStackNavigationTransitionContext;
   v5 = [(SRCardStackNavigationTransitionContext *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [completionCopy copy];
     completion = v5->_completion;
     v5->_completion = v6;
   }
@@ -26,24 +26,24 @@
 
 - (int64_t)semanticContentAttribute
 {
-  v3 = [(SRCardStackNavigationTransitionContext *)self toPlatteredCardView];
-  if (v3)
+  toPlatteredCardView = [(SRCardStackNavigationTransitionContext *)self toPlatteredCardView];
+  if (toPlatteredCardView)
   {
-    v4 = [(SRCardStackNavigationTransitionContext *)self toPlatteredCardView];
-    v5 = [v4 semanticContentAttribute];
+    toPlatteredCardView2 = [(SRCardStackNavigationTransitionContext *)self toPlatteredCardView];
+    semanticContentAttribute = [toPlatteredCardView2 semanticContentAttribute];
   }
 
   else
   {
-    v5 = 0;
+    semanticContentAttribute = 0;
   }
 
-  return v5;
+  return semanticContentAttribute;
 }
 
-- (void)completeTransition:(BOOL)a3
+- (void)completeTransition:(BOOL)transition
 {
-  v3 = a3;
+  transitionCopy = transition;
   if ([(SRCardStackNavigationTransitionContext *)self _isCompleted])
   {
     v5 = AFSiriLogContextConnection;
@@ -55,11 +55,11 @@
 
   else
   {
-    v6 = [(SRCardStackNavigationTransitionContext *)self _completion];
-    v7 = v6;
-    if (v6)
+    _completion = [(SRCardStackNavigationTransitionContext *)self _completion];
+    v7 = _completion;
+    if (_completion)
     {
-      (*(v6 + 16))(v6, v3);
+      (*(_completion + 16))(_completion, transitionCopy);
     }
 
     else

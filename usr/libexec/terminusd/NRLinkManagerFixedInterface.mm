@@ -3,24 +3,24 @@
 - (void)cancel;
 - (void)dealloc;
 - (void)invalidateManager;
-- (void)linkDidReceiveData:(id)a3 data:(id)a4;
-- (void)linkIsAvailable:(id)a3;
-- (void)linkIsReady:(id)a3;
-- (void)linkIsSuspended:(id)a3;
-- (void)linkIsUnavailable:(id)a3;
+- (void)linkDidReceiveData:(id)data data:(id)a4;
+- (void)linkIsAvailable:(id)available;
+- (void)linkIsReady:(id)ready;
+- (void)linkIsSuspended:(id)suspended;
+- (void)linkIsUnavailable:(id)unavailable;
 @end
 
 @implementation NRLinkManagerFixedInterface
 
-- (void)linkDidReceiveData:(id)a3 data:(id)a4
+- (void)linkDidReceiveData:(id)data data:(id)a4
 {
-  v6 = a3;
+  dataCopy = data;
   v7 = a4;
   if (!self)
   {
     dispatch_assert_queue_V2(0);
     [0 reportEvent:2008];
-    v13 = v6;
+    v13 = dataCopy;
     queue = 0;
     goto LABEL_10;
   }
@@ -31,7 +31,7 @@
   [(NRLinkManager *)self reportEvent:2008];
   if (self->super._state != 1004)
   {
-    v9 = v6;
+    v9 = dataCopy;
     queue = self->super._queue;
 LABEL_10:
     v11 = queue;
@@ -40,9 +40,9 @@ LABEL_10:
     block[2] = sub_10011F7D4;
     block[3] = &unk_1001FD088;
     block[4] = self;
-    v15 = v6;
+    v15 = dataCopy;
     v16 = v7;
-    v12 = v6;
+    v12 = dataCopy;
     dispatch_async(v11, block);
 
     goto LABEL_11;
@@ -66,9 +66,9 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)linkIsUnavailable:(id)a3
+- (void)linkIsUnavailable:(id)unavailable
 {
-  v4 = a3;
+  unavailableCopy = unavailable;
   if (self)
   {
     queue = self->super._queue;
@@ -82,7 +82,7 @@ LABEL_11:
   v6 = queue;
   dispatch_assert_queue_V2(v6);
 
-  if (!v4)
+  if (!unavailableCopy)
   {
     v10 = sub_10011FA74();
     IsLevelEnabled = _NRLogIsLevelEnabled();
@@ -100,14 +100,14 @@ LABEL_11:
   [(NRLinkManager *)self reportEvent:2007];
   if (!self)
   {
-    [0 removeObject:v4];
+    [0 removeObject:unavailableCopy];
     v7 = 0;
     goto LABEL_13;
   }
 
   if (self->super._state != 1004)
   {
-    [(NSMutableSet *)self->_links removeObject:v4];
+    [(NSMutableSet *)self->_links removeObject:unavailableCopy];
     v7 = self->super._queue;
 LABEL_13:
     v8 = v7;
@@ -115,9 +115,9 @@ LABEL_13:
     block[1] = 3221225472;
     block[2] = sub_10011FAC8;
     block[3] = &unk_1001FD060;
-    v13 = v4;
-    v14 = self;
-    v9 = v4;
+    v13 = unavailableCopy;
+    selfCopy = self;
+    v9 = unavailableCopy;
     dispatch_async(v8, block);
 
 LABEL_14:
@@ -142,9 +142,9 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)linkIsSuspended:(id)a3
+- (void)linkIsSuspended:(id)suspended
 {
-  v4 = a3;
+  suspendedCopy = suspended;
   if (self)
   {
     queue = self->super._queue;
@@ -158,7 +158,7 @@ LABEL_15:
   v6 = queue;
   dispatch_assert_queue_V2(v6);
 
-  if (!v4)
+  if (!suspendedCopy)
   {
     v11 = sub_10011FA74();
     IsLevelEnabled = _NRLogIsLevelEnabled();
@@ -176,14 +176,14 @@ LABEL_15:
   [(NRLinkManager *)self reportEvent:2006];
   if (!self)
   {
-    v13 = v4;
+    v13 = suspendedCopy;
     v8 = 0;
     goto LABEL_13;
   }
 
   if (self->super._state != 1004)
   {
-    v7 = v4;
+    v7 = suspendedCopy;
     v8 = self->super._queue;
 LABEL_13:
     v9 = v8;
@@ -191,9 +191,9 @@ LABEL_13:
     block[1] = 3221225472;
     block[2] = sub_100120214;
     block[3] = &unk_1001FD060;
-    v15 = v4;
-    v16 = self;
-    v10 = v4;
+    v15 = suspendedCopy;
+    selfCopy = self;
+    v10 = suspendedCopy;
     dispatch_async(v9, block);
 
 LABEL_14:
@@ -218,9 +218,9 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)linkIsReady:(id)a3
+- (void)linkIsReady:(id)ready
 {
-  v4 = a3;
+  readyCopy = ready;
   if (self)
   {
     queue = self->super._queue;
@@ -234,7 +234,7 @@ LABEL_15:
   v6 = queue;
   dispatch_assert_queue_V2(v6);
 
-  if (!v4)
+  if (!readyCopy)
   {
     v11 = sub_10011FA74();
     IsLevelEnabled = _NRLogIsLevelEnabled();
@@ -252,14 +252,14 @@ LABEL_15:
   [(NRLinkManager *)self reportEvent:2005];
   if (!self)
   {
-    v13 = v4;
+    v13 = readyCopy;
     v8 = 0;
     goto LABEL_13;
   }
 
   if (self->super._state != 1004)
   {
-    v7 = v4;
+    v7 = readyCopy;
     v8 = self->super._queue;
 LABEL_13:
     v9 = v8;
@@ -267,9 +267,9 @@ LABEL_13:
     block[1] = 3221225472;
     block[2] = sub_100120514;
     block[3] = &unk_1001FD060;
-    v15 = v4;
-    v16 = self;
-    v10 = v4;
+    v15 = readyCopy;
+    selfCopy = self;
+    v10 = readyCopy;
     dispatch_async(v9, block);
 
 LABEL_14:
@@ -294,9 +294,9 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)linkIsAvailable:(id)a3
+- (void)linkIsAvailable:(id)available
 {
-  v4 = a3;
+  availableCopy = available;
   if (self)
   {
     queue = self->super._queue;
@@ -310,7 +310,7 @@ LABEL_15:
   v6 = queue;
   dispatch_assert_queue_V2(v6);
 
-  if (!v4)
+  if (!availableCopy)
   {
     v10 = sub_10011FA74();
     IsLevelEnabled = _NRLogIsLevelEnabled();
@@ -328,14 +328,14 @@ LABEL_15:
   [(NRLinkManager *)self reportEvent:2004];
   if (!self)
   {
-    [0 addObject:v4];
+    [0 addObject:availableCopy];
     v7 = 0;
     goto LABEL_13;
   }
 
   if (self->super._state != 1004)
   {
-    [(NSMutableSet *)self->_links addObject:v4];
+    [(NSMutableSet *)self->_links addObject:availableCopy];
     v7 = self->super._queue;
 LABEL_13:
     v8 = v7;
@@ -343,9 +343,9 @@ LABEL_13:
     block[1] = 3221225472;
     block[2] = sub_100120834;
     block[3] = &unk_1001FD060;
-    v13 = v4;
-    v14 = self;
-    v9 = v4;
+    v13 = availableCopy;
+    selfCopy = self;
+    v9 = availableCopy;
     dispatch_async(v8, block);
 
 LABEL_14:
@@ -386,8 +386,8 @@ LABEL_15:
   dispatch_assert_queue_V2(v4);
 
   v5 = objc_alloc_init(NSMutableString);
-  v6 = [(NRLinkManagerFixedInterface *)self copyName];
-  [v5 appendFormat:@"\nName: %@", v6];
+  copyName = [(NRLinkManagerFixedInterface *)self copyName];
+  [v5 appendFormat:@"\nName: %@", copyName];
 
   if (self)
   {
@@ -402,16 +402,16 @@ LABEL_15:
       switch(state)
       {
         case 0x3EA:
-          v11 = [v10 initWithUTF8String:"Start"];
+          state = [v10 initWithUTF8String:"Start"];
           goto LABEL_15;
         case 0x3EB:
-          v11 = [v10 initWithUTF8String:"Ready"];
+          state = [v10 initWithUTF8String:"Ready"];
           goto LABEL_15;
         case 0x3EC:
-          v11 = [v10 initWithUTF8String:"Cancelled"];
+          state = [v10 initWithUTF8String:"Cancelled"];
 LABEL_15:
-          v12 = v11;
-          [v5 appendFormat:@"\nState: %@", v11];
+          v12 = state;
+          [v5 appendFormat:@"\nState: %@", state];
 
           goto LABEL_16;
       }
@@ -423,12 +423,12 @@ LABEL_15:
     {
       if (state == 1001)
       {
-        v11 = [v10 initWithUTF8String:"Initial"];
+        state = [v10 initWithUTF8String:"Initial"];
         goto LABEL_15;
       }
 
 LABEL_14:
-      v11 = [v10 initWithFormat:@"Unknown(%u)", state];
+      state = [v10 initWithFormat:@"Unknown(%u)", state];
       goto LABEL_15;
     }
   }
@@ -479,7 +479,7 @@ LABEL_17:
 
     v3 = qword_1002291B8;
     v6 = 97;
-    v7 = [(NRLinkManagerFixedInterface *)self copyName];
+    copyName = [(NRLinkManagerFixedInterface *)self copyName];
     v4 = "";
     v5 = "[NRLinkManagerFixedInterface dealloc]";
     _NRLogWithArgs();

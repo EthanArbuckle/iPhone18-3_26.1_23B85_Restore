@@ -1,6 +1,6 @@
 @interface NESMURLFilterSessionStateUpdating
 - (NESMURLFilterSessionStateUpdating)init;
-- (void)enterWithSession:(id)a3;
+- (void)enterWithSession:(id)session;
 - (void)handleStop;
 @end
 
@@ -31,19 +31,19 @@
   }
 }
 
-- (void)enterWithSession:(id)a3
+- (void)enterWithSession:(id)session
 {
   v8.receiver = self;
   v8.super_class = NESMURLFilterSessionStateUpdating;
-  [(NESMURLFilterSessionState *)&v8 enterWithSession:a3];
+  [(NESMURLFilterSessionState *)&v8 enterWithSession:session];
   if (self)
   {
     Property = objc_getProperty(self, v4, 16, 1);
     if (Property)
     {
       v6 = Property;
-      v7 = [Property server];
-      [v7 requestUninstallForSession:v6];
+      server = [Property server];
+      [server requestUninstallForSession:v6];
     }
   }
 }

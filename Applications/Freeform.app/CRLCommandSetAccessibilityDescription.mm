@@ -2,8 +2,8 @@
 - (NSString)accessibilityDescription;
 - (NSUUID)id;
 - (_TtC8Freeform37CRLCommandSetAccessibilityDescription)init;
-- (_TtC8Freeform37CRLCommandSetAccessibilityDescription)initWithBoardItem:(id)a3 accessibilityDescription:(id)a4;
-- (_TtC8Freeform37CRLCommandSetAccessibilityDescription)initWithId:(id)a3 accessibilityDescription:(id)a4;
+- (_TtC8Freeform37CRLCommandSetAccessibilityDescription)initWithBoardItem:(id)item accessibilityDescription:(id)description;
+- (_TtC8Freeform37CRLCommandSetAccessibilityDescription)initWithId:(id)id accessibilityDescription:(id)description;
 @end
 
 @implementation CRLCommandSetAccessibilityDescription
@@ -29,7 +29,7 @@
   return v2;
 }
 
-- (_TtC8Freeform37CRLCommandSetAccessibilityDescription)initWithId:(id)a3 accessibilityDescription:(id)a4
+- (_TtC8Freeform37CRLCommandSetAccessibilityDescription)initWithId:(id)id accessibilityDescription:(id)description
 {
   v5 = type metadata accessor for UUID();
   v6 = *(v5 - 8);
@@ -50,18 +50,18 @@
   return v14;
 }
 
-- (_TtC8Freeform37CRLCommandSetAccessibilityDescription)initWithBoardItem:(id)a3 accessibilityDescription:(id)a4
+- (_TtC8Freeform37CRLCommandSetAccessibilityDescription)initWithBoardItem:(id)item accessibilityDescription:(id)description
 {
   v7 = type metadata accessor for UUID();
   v8 = *(v7 - 8);
   v9 = __chkstk_darwin(v7);
   v11 = &v17 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
-  (*((swift_isaMask & *a3) + 0x88))(v9);
-  v12 = a3;
-  v13 = a4;
+  (*((swift_isaMask & *item) + 0x88))(v9);
+  itemCopy = item;
+  descriptionCopy = description;
   isa = UUID._bridgeToObjectiveC()().super.isa;
   (*(v8 + 8))(v11, v7);
-  v15 = [(CRLCommandSetAccessibilityDescription *)self initWithId:isa accessibilityDescription:v13];
+  v15 = [(CRLCommandSetAccessibilityDescription *)self initWithId:isa accessibilityDescription:descriptionCopy];
 
   return v15;
 }

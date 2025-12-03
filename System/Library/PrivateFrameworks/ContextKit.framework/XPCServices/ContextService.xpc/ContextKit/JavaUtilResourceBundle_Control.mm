@@ -1,26 +1,26 @@
 @interface JavaUtilResourceBundle_Control
 + (void)initialize;
-- (BOOL)needsReloadWithNSString:(id)a3 withJavaUtilLocale:(id)a4 withNSString:(id)a5 withJavaLangClassLoader:(id)a6 withJavaUtilResourceBundle:(id)a7 withLong:(int64_t)a8;
-- (id)getCandidateLocalesWithNSString:(id)a3 withJavaUtilLocale:(id)a4;
-- (id)getFallbackLocaleWithNSString:(id)a3 withJavaUtilLocale:(id)a4;
-- (id)getFormatsWithNSString:(id)a3;
-- (id)newBundleWithNSString:(id)a3 withJavaUtilLocale:(id)a4 withNSString:(id)a5 withJavaLangClassLoader:(id)a6 withBoolean:(BOOL)a7;
-- (id)toBundleNameWithNSString:(id)a3 withJavaUtilLocale:(id)a4;
-- (int64_t)getTimeToLiveWithNSString:(id)a3 withJavaUtilLocale:(id)a4;
+- (BOOL)needsReloadWithNSString:(id)string withJavaUtilLocale:(id)locale withNSString:(id)sString withJavaLangClassLoader:(id)loader withJavaUtilResourceBundle:(id)bundle withLong:(int64_t)long;
+- (id)getCandidateLocalesWithNSString:(id)string withJavaUtilLocale:(id)locale;
+- (id)getFallbackLocaleWithNSString:(id)string withJavaUtilLocale:(id)locale;
+- (id)getFormatsWithNSString:(id)string;
+- (id)newBundleWithNSString:(id)string withJavaUtilLocale:(id)locale withNSString:(id)sString withJavaLangClassLoader:(id)loader withBoolean:(BOOL)boolean;
+- (id)toBundleNameWithNSString:(id)string withJavaUtilLocale:(id)locale;
+- (int64_t)getTimeToLiveWithNSString:(id)string withJavaUtilLocale:(id)locale;
 - (void)dealloc;
 @end
 
 @implementation JavaUtilResourceBundle_Control
 
-- (id)getCandidateLocalesWithNSString:(id)a3 withJavaUtilLocale:(id)a4
+- (id)getCandidateLocalesWithNSString:(id)string withJavaUtilLocale:(id)locale
 {
-  if (!a3)
+  if (!string)
   {
     v10 = @"baseName == null";
     goto LABEL_16;
   }
 
-  if (!a4)
+  if (!locale)
   {
     v10 = @"locale == null";
 LABEL_16:
@@ -29,27 +29,27 @@ LABEL_16:
   }
 
   v5 = new_JavaUtilArrayList_init();
-  v6 = [a4 getLanguage];
-  v7 = [a4 getCountry];
-  v8 = [a4 getVariant];
+  getLanguage = [locale getLanguage];
+  getCountry = [locale getCountry];
+  getVariant = [locale getVariant];
   if (!off_100552248)
   {
     JreThrowNullPointerException();
   }
 
-  if (([off_100552248 isEqual:v8] & 1) == 0)
+  if (([off_100552248 isEqual:getVariant] & 1) == 0)
   {
-    [(JavaUtilArrayList *)v5 addWithId:new_JavaUtilLocale_initWithNSString_withNSString_withNSString_(v6, v7, v8)];
+    [(JavaUtilArrayList *)v5 addWithId:new_JavaUtilLocale_initWithNSString_withNSString_withNSString_(getLanguage, getCountry, getVariant)];
   }
 
-  if (([off_100552248 isEqual:v7] & 1) == 0)
+  if (([off_100552248 isEqual:getCountry] & 1) == 0)
   {
-    [(JavaUtilArrayList *)v5 addWithId:new_JavaUtilLocale_initWithNSString_withNSString_(v6, v7)];
+    [(JavaUtilArrayList *)v5 addWithId:new_JavaUtilLocale_initWithNSString_withNSString_(getLanguage, getCountry)];
   }
 
-  if (([off_100552248 isEqual:v6] & 1) == 0)
+  if (([off_100552248 isEqual:getLanguage] & 1) == 0)
   {
-    [(JavaUtilArrayList *)v5 addWithId:new_JavaUtilLocale_initWithNSString_(v6)];
+    [(JavaUtilArrayList *)v5 addWithId:new_JavaUtilLocale_initWithNSString_(getLanguage)];
   }
 
   if ((atomic_load_explicit(JavaUtilLocale__initialized, memory_order_acquire) & 1) == 0)
@@ -61,9 +61,9 @@ LABEL_16:
   return v5;
 }
 
-- (id)getFormatsWithNSString:(id)a3
+- (id)getFormatsWithNSString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     v4 = new_JavaLangNullPointerException_initWithNSString_(@"baseName == null");
     objc_exception_throw(v4);
@@ -72,15 +72,15 @@ LABEL_16:
   return self->format_;
 }
 
-- (id)getFallbackLocaleWithNSString:(id)a3 withJavaUtilLocale:(id)a4
+- (id)getFallbackLocaleWithNSString:(id)string withJavaUtilLocale:(id)locale
 {
-  if (!a3)
+  if (!string)
   {
     v5 = @"baseName == null";
     goto LABEL_10;
   }
 
-  if (!a4)
+  if (!locale)
   {
     v5 = @"locale == null";
 LABEL_10:
@@ -88,7 +88,7 @@ LABEL_10:
     objc_exception_throw(v6);
   }
 
-  if (JavaUtilLocale_getDefault() == a4)
+  if (JavaUtilLocale_getDefault() == locale)
   {
     return 0;
   }
@@ -96,9 +96,9 @@ LABEL_10:
   return JavaUtilLocale_getDefault();
 }
 
-- (id)newBundleWithNSString:(id)a3 withJavaUtilLocale:(id)a4 withNSString:(id)a5 withJavaLangClassLoader:(id)a6 withBoolean:(BOOL)a7
+- (id)newBundleWithNSString:(id)string withJavaUtilLocale:(id)locale withNSString:(id)sString withJavaLangClassLoader:(id)loader withBoolean:(BOOL)boolean
 {
-  if (!a5)
+  if (!sString)
   {
     v19 = @"format == null";
 LABEL_18:
@@ -106,22 +106,22 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (!a6)
+  if (!loader)
   {
     v19 = @"loader == null";
     goto LABEL_18;
   }
 
-  v8 = a7;
-  v11 = [(JavaUtilResourceBundle_Control *)self toBundleNameWithNSString:a3 withJavaUtilLocale:?];
-  if (![a5 isEqual:JavaUtilResourceBundle_Control_JAVACLASS_])
+  booleanCopy = boolean;
+  v11 = [(JavaUtilResourceBundle_Control *)self toBundleNameWithNSString:string withJavaUtilLocale:?];
+  if (![sString isEqual:JavaUtilResourceBundle_Control_JAVACLASS_])
   {
-    if ([a5 isEqual:JavaUtilResourceBundle_Control_JAVAPROPERTIES_])
+    if ([sString isEqual:JavaUtilResourceBundle_Control_JAVAPROPERTIES_])
     {
       v14 = sub_10024684C(v11, @"properties");
-      if (v8)
+      if (booleanCopy)
       {
-        v15 = [a6 getResourceWithNSString:v14];
+        v15 = [loader getResourceWithNSString:v14];
         if (!v15)
         {
           return 0;
@@ -132,17 +132,17 @@ LABEL_18:
 
       else
       {
-        v16 = [a6 getResourceAsStreamWithNSString:v14];
+        v16 = [loader getResourceAsStreamWithNSString:v14];
       }
 
       v17 = v16;
       if (v16)
       {
         v18 = new_JavaIoInputStreamReader_initWithJavaIoInputStream_(v16);
-        v13 = new_JavaUtilPropertyResourceBundle_initWithJavaIoReader_(v18);
-        JreStrongAssign(&v13->super.locale_, a4);
+        newInstance = new_JavaUtilPropertyResourceBundle_initWithJavaIoReader_(v18);
+        JreStrongAssign(&newInstance->super.locale_, locale);
         [(JavaIoFileInputStream *)v17 close];
-        return v13;
+        return newInstance;
       }
 
       return 0;
@@ -153,15 +153,15 @@ LABEL_19:
     objc_exception_throw(v20);
   }
 
-  v12 = [a6 loadClassWithNSString:v11];
+  v12 = [loader loadClassWithNSString:v11];
   if (!v12)
   {
     return 0;
   }
 
-  v13 = [v12 newInstance];
+  newInstance = [v12 newInstance];
   objc_opt_class();
-  if (!v13)
+  if (!newInstance)
   {
     JreThrowNullPointerException();
   }
@@ -171,19 +171,19 @@ LABEL_19:
     JreThrowClassCastException();
   }
 
-  JreStrongAssign(&v13->super.locale_, a4);
-  return v13;
+  JreStrongAssign(&newInstance->super.locale_, locale);
+  return newInstance;
 }
 
-- (int64_t)getTimeToLiveWithNSString:(id)a3 withJavaUtilLocale:(id)a4
+- (int64_t)getTimeToLiveWithNSString:(id)string withJavaUtilLocale:(id)locale
 {
-  if (!a3)
+  if (!string)
   {
     v5 = @"baseName == null";
     goto LABEL_6;
   }
 
-  if (!a4)
+  if (!locale)
   {
     v5 = @"locale == null";
 LABEL_6:
@@ -194,27 +194,27 @@ LABEL_6:
   return -2;
 }
 
-- (BOOL)needsReloadWithNSString:(id)a3 withJavaUtilLocale:(id)a4 withNSString:(id)a5 withJavaLangClassLoader:(id)a6 withJavaUtilResourceBundle:(id)a7 withLong:(int64_t)a8
+- (BOOL)needsReloadWithNSString:(id)string withJavaUtilLocale:(id)locale withNSString:(id)sString withJavaLangClassLoader:(id)loader withJavaUtilResourceBundle:(id)bundle withLong:(int64_t)long
 {
-  if (!a7)
+  if (!bundle)
   {
     v18 = new_JavaLangNullPointerException_initWithNSString_(@"bundle == null");
     objc_exception_throw(v18);
   }
 
-  v11 = [(JavaUtilResourceBundle_Control *)self toBundleNameWithNSString:a3 withJavaUtilLocale:a4];
-  if (!a5 || ((v12 = v11, ![a5 isEqual:JavaUtilResourceBundle_Control_JAVACLASS_]) ? (v13 = a5) : (v13 = @"class"), !objc_msgSend(a5, "isEqual:", JavaUtilResourceBundle_Control_JAVAPROPERTIES_) ? (v14 = v13) : (v14 = @"properties"), v15 = sub_10024684C(v12, v14), !a6))
+  v11 = [(JavaUtilResourceBundle_Control *)self toBundleNameWithNSString:string withJavaUtilLocale:locale];
+  if (!sString || ((v12 = v11, ![sString isEqual:JavaUtilResourceBundle_Control_JAVACLASS_]) ? (v13 = sString) : (v13 = @"class"), !objc_msgSend(sString, "isEqual:", JavaUtilResourceBundle_Control_JAVAPROPERTIES_) ? (v14 = v13) : (v14 = @"properties"), v15 = sub_10024684C(v12, v14), !loader))
   {
     JreThrowNullPointerException();
   }
 
-  v16 = [a6 getResourceWithNSString:v15];
-  return v16 && -[JavaIoFile lastModified](new_JavaIoFile_initWithNSString_([v16 getFile]), "lastModified") > a8;
+  v16 = [loader getResourceWithNSString:v15];
+  return v16 && -[JavaIoFile lastModified](new_JavaIoFile_initWithNSString_([v16 getFile]), "lastModified") > long;
 }
 
-- (id)toBundleNameWithNSString:(id)a3 withJavaUtilLocale:(id)a4
+- (id)toBundleNameWithNSString:(id)string withJavaUtilLocale:(id)locale
 {
-  if (!a3)
+  if (!string)
   {
     v16 = new_JavaLangNullPointerException_initWithNSString_(@"baseName == null");
     objc_exception_throw(v16);
@@ -224,39 +224,39 @@ LABEL_6:
   v7 = off_100552240;
   v8 = new_JavaLangStringBuilder_init();
   v9 = new_JavaLangStringBuilder_init();
-  [(JavaLangStringBuilder *)v8 appendWithNSString:a3];
-  if (!a4)
+  [(JavaLangStringBuilder *)v8 appendWithNSString:string];
+  if (!locale)
   {
     goto LABEL_17;
   }
 
-  v10 = [a4 getLanguage];
-  if (!v10)
+  getLanguage = [locale getLanguage];
+  if (!getLanguage)
   {
     goto LABEL_17;
   }
 
-  if ([v10 isEqual:v6])
+  if ([getLanguage isEqual:v6])
   {
     v11 = v9;
-    v12 = v7;
+    getLanguage2 = v7;
   }
 
   else
   {
     [(JavaLangStringBuilder *)v8 appendWithNSString:v7];
-    v12 = [a4 getLanguage];
+    getLanguage2 = [locale getLanguage];
     v11 = v8;
   }
 
-  [(JavaLangStringBuilder *)v11 appendWithNSString:v12];
-  v13 = [a4 getCountry];
-  if (!v13)
+  [(JavaLangStringBuilder *)v11 appendWithNSString:getLanguage2];
+  getCountry = [locale getCountry];
+  if (!getCountry)
   {
     goto LABEL_17;
   }
 
-  if ([v13 isEqual:v6])
+  if ([getCountry isEqual:v6])
   {
     [(JavaLangStringBuilder *)v9 appendWithNSString:v7];
   }
@@ -265,22 +265,22 @@ LABEL_6:
   {
     [(JavaLangStringBuilder *)v8 appendWithJavaLangCharSequence:v9];
     [(JavaLangStringBuilder *)v8 appendWithNSString:v7];
-    -[JavaLangStringBuilder appendWithNSString:](v8, "appendWithNSString:", [a4 getCountry]);
+    -[JavaLangStringBuilder appendWithNSString:](v8, "appendWithNSString:", [locale getCountry]);
     v9 = new_JavaLangStringBuilder_init();
   }
 
-  v14 = [a4 getVariant];
-  if (!v14)
+  getVariant = [locale getVariant];
+  if (!getVariant)
   {
 LABEL_17:
     JreThrowNullPointerException();
   }
 
-  if (([v14 isEqual:v6] & 1) == 0)
+  if (([getVariant isEqual:v6] & 1) == 0)
   {
     [(JavaLangStringBuilder *)v8 appendWithJavaLangCharSequence:v9];
     [(JavaLangStringBuilder *)v8 appendWithNSString:v7];
-    -[JavaLangStringBuilder appendWithNSString:](v8, "appendWithNSString:", [a4 getVariant]);
+    -[JavaLangStringBuilder appendWithNSString:](v8, "appendWithNSString:", [locale getVariant]);
   }
 
   return [(JavaLangStringBuilder *)v8 description];
@@ -295,7 +295,7 @@ LABEL_17:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = new_JavaUtilArrayList_init();
     JreStrongAssignAndConsume(&JavaUtilResourceBundle_Control_listDefault_, v2);

@@ -1,6 +1,6 @@
 @interface HMDPrimaryElectionFindPrimaryMeshOperation
 + (id)logCategory;
-- (HMDPrimaryElectionFindPrimaryMeshOperation)initWithContext:(id)a3 otherResidents:(id)a4;
+- (HMDPrimaryElectionFindPrimaryMeshOperation)initWithContext:(id)context otherResidents:(id)residents;
 - (id)context;
 - (id)logIdentifier;
 - (void)main;
@@ -10,14 +10,14 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDPrimaryElectionFindPrimaryMeshOperation *)&self->super.super.super.isa context];
-  v3 = [v2 home];
-  v4 = [v3 uuid];
-  v5 = [v4 UUIDString];
-  v6 = v5;
-  if (v5)
+  context = [(HMDPrimaryElectionFindPrimaryMeshOperation *)&self->super.super.super.isa context];
+  home = [context home];
+  uuid = [home uuid];
+  uUIDString = [uuid UUIDString];
+  v6 = uUIDString;
+  if (uUIDString)
   {
-    v7 = v5;
+    v7 = uUIDString;
   }
 
   else
@@ -44,15 +44,15 @@
 - (void)main
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDPrimaryElectionFindPrimaryMeshOperation *)&self->super.super.super.isa context];
-  if (([(HMDPrimaryElectionFindPrimaryMeshOperation *)self isCancelled]& 1) == 0 && v3)
+  context = [(HMDPrimaryElectionFindPrimaryMeshOperation *)&self->super.super.super.isa context];
+  if (([(HMDPrimaryElectionFindPrimaryMeshOperation *)self isCancelled]& 1) == 0 && context)
   {
     v4 = objc_alloc(MEMORY[0x277D0F7A8]);
-    v5 = [(HMFOperation *)self underlyingQueue];
-    v6 = [v4 initWithQueue:v5];
+    underlyingQueue = [(HMFOperation *)self underlyingQueue];
+    v6 = [v4 initWithQueue:underlyingQueue];
 
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -63,9 +63,9 @@
     }
 
     objc_autoreleasePoolPop(v7);
-    if (v8)
+    if (selfCopy)
     {
-      otherResidents = v8->_otherResidents;
+      otherResidents = selfCopy->_otherResidents;
     }
 
     else
@@ -77,9 +77,9 @@
     v13 = otherResidents;
     v14 = [v12 arrayWithCapacity:{-[NSSet count](v13, "count")}];
 
-    if (v8)
+    if (selfCopy)
     {
-      v15 = v8->_otherResidents;
+      v15 = selfCopy->_otherResidents;
     }
 
     else
@@ -91,11 +91,11 @@
     v31[1] = 3221225472;
     v31[2] = __50__HMDPrimaryElectionFindPrimaryMeshOperation_main__block_invoke;
     v31[3] = &unk_27867CC78;
-    v16 = v3;
+    v16 = context;
     v32 = v16;
     v17 = v6;
     v33 = v17;
-    v34 = v8;
+    v34 = selfCopy;
     v18 = v14;
     v35 = v18;
     [(NSSet *)v15 hmf_enumerateWithAutoreleasePoolUsingBlock:v31];
@@ -103,13 +103,13 @@
     v20 = [v18 copy];
     v21 = [v19 allSettled:v20];
     v22 = v21;
-    if (v8)
+    if (selfCopy)
     {
-      objc_storeStrong(&v8->_messagesFuture, v21);
+      objc_storeStrong(&selfCopy->_messagesFuture, v21);
 
-      objc_initWeak(buf, v8);
+      objc_initWeak(buf, selfCopy);
       objc_initWeak(&location, v16);
-      messagesFuture = v8->_messagesFuture;
+      messagesFuture = selfCopy->_messagesFuture;
     }
 
     else
@@ -354,17 +354,17 @@ uint64_t __50__HMDPrimaryElectionFindPrimaryMeshOperation_main__block_invoke_52(
   return 1;
 }
 
-- (HMDPrimaryElectionFindPrimaryMeshOperation)initWithContext:(id)a3 otherResidents:(id)a4
+- (HMDPrimaryElectionFindPrimaryMeshOperation)initWithContext:(id)context otherResidents:(id)residents
 {
-  v6 = a4;
+  residentsCopy = residents;
   v11.receiver = self;
   v11.super_class = HMDPrimaryElectionFindPrimaryMeshOperation;
-  v7 = a3;
+  contextCopy = context;
   v8 = [(HMFOperation *)&v11 initWithTimeout:0.0];
-  objc_storeWeak(&v8->_context, v7);
+  objc_storeWeak(&v8->_context, contextCopy);
 
   otherResidents = v8->_otherResidents;
-  v8->_otherResidents = v6;
+  v8->_otherResidents = residentsCopy;
 
   return v8;
 }

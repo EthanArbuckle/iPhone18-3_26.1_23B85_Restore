@@ -1,24 +1,24 @@
 @interface PDControllerType3
-- (PDControllerType3)initWithAddress:(unsigned __int8)a3 userClient:(id)a4;
-- (int)executeIECSCommand:(unsigned int)a3;
-- (int)getVDM:(unsigned int *)a3 ofLength:(unint64_t *)a4;
-- (int)isPDControllerType3HPM:(BOOL *)a3;
-- (int)readIECSRegister:(void *)a3 ofLength:(unint64_t)a4 atRegister:(unsigned int)a5 andOutReadLength:(unint64_t *)a6;
-- (int)sendVDM:(unsigned int *)a3 ofLength:(unint64_t)a4;
-- (int)writeIECSRegister:(void *)a3 ofLength:(unint64_t)a4 atRegister:(unsigned int)a5;
+- (PDControllerType3)initWithAddress:(unsigned __int8)address userClient:(id)client;
+- (int)executeIECSCommand:(unsigned int)command;
+- (int)getVDM:(unsigned int *)m ofLength:(unint64_t *)length;
+- (int)isPDControllerType3HPM:(BOOL *)m;
+- (int)readIECSRegister:(void *)register ofLength:(unint64_t)length atRegister:(unsigned int)atRegister andOutReadLength:(unint64_t *)readLength;
+- (int)sendVDM:(unsigned int *)m ofLength:(unint64_t)length;
+- (int)writeIECSRegister:(void *)register ofLength:(unint64_t)length atRegister:(unsigned int)atRegister;
 - (void)dealloc;
 @end
 
 @implementation PDControllerType3
 
-- (PDControllerType3)initWithAddress:(unsigned __int8)a3 userClient:(id)a4
+- (PDControllerType3)initWithAddress:(unsigned __int8)address userClient:(id)client
 {
-  v5 = a4;
+  clientCopy = client;
   v10.receiver = self;
   v10.super_class = PDControllerType3;
   v6 = [(PDControllerType3 *)&v10 init];
   v7 = v6;
-  if (!v6 || ([(PDControllerType3 *)v6 setUserClient:v5], [(PDControllerType3 *)v7 userClient], v8 = objc_claimAutoreleasedReturnValue(), v8, !v8))
+  if (!v6 || ([(PDControllerType3 *)v6 setUserClient:clientCopy], [(PDControllerType3 *)v7 userClient], v8 = objc_claimAutoreleasedReturnValue(), v8, !v8))
   {
 
     v7 = 0;
@@ -34,85 +34,85 @@
   [(PDControllerType3 *)&v2 dealloc];
 }
 
-- (int)sendVDM:(unsigned int *)a3 ofLength:(unint64_t)a4
+- (int)sendVDM:(unsigned int *)m ofLength:(unint64_t)length
 {
   v12 = 0;
   v11 = 0;
   v14 = 0;
   v13 = 0;
-  if (a4 >= 7)
+  if (length >= 7)
   {
-    v5 = 7;
+    lengthCopy = 7;
   }
 
   else
   {
-    v5 = a4;
+    lengthCopy = length;
   }
 
-  v10 = v5;
+  v10 = lengthCopy;
   __memcpy_chk();
-  v6 = [(PDControllerType3 *)self userClient];
-  v7 = [v6 iecsWriteCommandForDevice:-[PDControllerType3 address](self withAddress:"address") buffer:9 length:&v10 flags:{(4 * (v5 & 0x1FFFFFFFFFFFFFFFLL)) | 1, 0}];
+  userClient = [(PDControllerType3 *)self userClient];
+  v7 = [userClient iecsWriteCommandForDevice:-[PDControllerType3 address](self withAddress:"address") buffer:9 length:&v10 flags:{(4 * (lengthCopy & 0x1FFFFFFFFFFFFFFFLL)) | 1, 0}];
 
   if (!v7)
   {
-    v8 = [(PDControllerType3 *)self userClient];
-    v7 = [v8 iecsCommand:1447316851 forDevice:-[PDControllerType3 address](self flags:{"address"), 0}];
+    userClient2 = [(PDControllerType3 *)self userClient];
+    v7 = [userClient2 iecsCommand:1447316851 forDevice:-[PDControllerType3 address](self flags:{"address"), 0}];
   }
 
   return v7;
 }
 
-- (int)getVDM:(unsigned int *)a3 ofLength:(unint64_t *)a4
+- (int)getVDM:(unsigned int *)m ofLength:(unint64_t *)length
 {
   v12 = 65;
-  if (*a4 >= 8)
+  if (*length >= 8)
   {
-    *a4 = 7;
+    *length = 7;
   }
 
-  v7 = [(PDControllerType3 *)self userClient];
-  v8 = [v7 iecsReadCommandForDevice:-[PDControllerType3 address](self withAddress:"address") buffer:79 length:&v13 flags:4 * *a4 andOutReadLength:{0, &v12}];
+  userClient = [(PDControllerType3 *)self userClient];
+  v8 = [userClient iecsReadCommandForDevice:-[PDControllerType3 address](self withAddress:"address") buffer:79 length:&v13 flags:4 * *length andOutReadLength:{0, &v12}];
 
   if (!v8)
   {
     v9 = v13 >> 5;
     if (v9 == [(PDControllerType3 *)self cached_sequence_num])
     {
-      bzero(a3, 4 * *a4);
-      *a4 = 0;
+      bzero(m, 4 * *length);
+      *length = 0;
     }
 
     else
     {
       [(PDControllerType3 *)self setCached_sequence_num:v9];
       v10 = v13 & 7;
-      *a4 = v10;
-      memcpy(a3, &v14, 4 * v10);
+      *length = v10;
+      memcpy(m, &v14, 4 * v10);
     }
   }
 
   return v8;
 }
 
-- (int)readIECSRegister:(void *)a3 ofLength:(unint64_t)a4 atRegister:(unsigned int)a5 andOutReadLength:(unint64_t *)a6
+- (int)readIECSRegister:(void *)register ofLength:(unint64_t)length atRegister:(unsigned int)atRegister andOutReadLength:(unint64_t *)readLength
 {
   v28 = 0;
-  if (a4 >= 0x40)
+  if (length >= 0x40)
   {
-    v11 = 64;
+    lengthCopy = 64;
   }
 
   else
   {
-    v11 = a4;
+    lengthCopy = length;
   }
 
 LABEL_4:
   v29 = 95158787;
-  v30[0] = v11 | (([(PDControllerType3 *)self burstLimit]& 0xF) << 16) | 0x1000000;
-  v30[1] = a5;
+  v30[0] = lengthCopy | (([(PDControllerType3 *)self burstLimit]& 0xF) << 16) | 0x1000000;
+  v30[1] = atRegister;
   v12 = [(PDControllerType3 *)self sendVDM:&v29 ofLength:3];
   if (v12)
   {
@@ -159,16 +159,16 @@ LABEL_4:
     }
   }
 
-  v16 = a4 != 0;
-  if (!v14 && a4)
+  v16 = length != 0;
+  if (!v14 && length)
   {
-    v27 = a6;
+    readLengthCopy = readLength;
     v17 = 0;
     while (2)
     {
-      if ((v11 - v17) <= 0x18uLL)
+      if ((lengthCopy - v17) <= 0x18uLL)
       {
-        v18 = (((v11 - v17) & 0x1F) << 6) | 0x5AC0001;
+        v18 = (((lengthCopy - v17) & 0x1F) << 6) | 0x5AC0001;
       }
 
       else
@@ -211,23 +211,23 @@ LABEL_4:
         else if (v20)
         {
           v21 = (v29 >> 6) & 0x1F;
-          memcpy(a3 + v17, v30, v21);
+          memcpy(register + v17, v30, v21);
           v17 += v21;
-          *v27 = v17;
+          *readLengthCopy = v17;
           break;
         }
 
-        v16 = v11 > v17;
-        if (v11 <= v17)
+        v16 = lengthCopy > v17;
+        if (lengthCopy <= v17)
         {
           v14 = 0;
-          v16 = v11 > v17;
+          v16 = lengthCopy > v17;
           goto LABEL_33;
         }
       }
 
-      v16 = v17 < v11;
-      if (!v14 && v17 < v11)
+      v16 = v17 < lengthCopy;
+      if (!v14 && v17 < lengthCopy)
       {
         continue;
       }
@@ -300,23 +300,23 @@ LABEL_35:
   return v14;
 }
 
-- (int)writeIECSRegister:(void *)a3 ofLength:(unint64_t)a4 atRegister:(unsigned int)a5
+- (int)writeIECSRegister:(void *)register ofLength:(unint64_t)length atRegister:(unsigned int)atRegister
 {
   v23 = 0;
-  if (a4 >= 0x40)
+  if (length >= 0x40)
   {
-    v8 = 64;
+    lengthCopy = 64;
   }
 
   else
   {
-    v8 = a4;
+    lengthCopy = length;
   }
 
 LABEL_4:
   v24[0] = 95158787;
-  v24[1] = v8 | (([(PDControllerType3 *)self burstLimit:a3]& 0xF) << 16) | 0x1800000;
-  v24[2] = a5;
+  v24[1] = lengthCopy | (([(PDControllerType3 *)self burstLimit:register]& 0xF) << 16) | 0x1800000;
+  v24[2] = atRegister;
   v9 = [(PDControllerType3 *)self sendVDM:v24 ofLength:3];
   if (!v9)
   {
@@ -358,14 +358,14 @@ LABEL_4:
     }
   }
 
-  v12 = a4 != 0;
-  if (!v9 && a4)
+  v12 = length != 0;
+  if (!v9 && length)
   {
     v13 = 0;
     while (2)
     {
-      v14 = v8 - v13;
-      if ((v8 - v13) > 0x18uLL)
+      v14 = lengthCopy - v13;
+      if ((lengthCopy - v13) > 0x18uLL)
       {
         v14 = 24;
       }
@@ -411,17 +411,17 @@ LABEL_4:
           break;
         }
 
-        v12 = v8 > v13;
-        if (v8 <= v13)
+        v12 = lengthCopy > v13;
+        if (lengthCopy <= v13)
         {
           v9 = 0;
-          v12 = v8 > v13;
+          v12 = lengthCopy > v13;
           goto LABEL_33;
         }
       }
 
-      v12 = v13 < v8;
-      if (!v9 && v13 < v8)
+      v12 = v13 < lengthCopy;
+      if (!v9 && v13 < lengthCopy)
       {
         continue;
       }
@@ -493,7 +493,7 @@ LABEL_35:
   }
 }
 
-- (int)executeIECSCommand:(unsigned int)a3
+- (int)executeIECSCommand:(unsigned int)command
 {
   v10 = 0;
   v9 = 4;
@@ -506,7 +506,7 @@ LABEL_35:
 
   if (!result)
   {
-    LODWORD(v9) = bswap32(a3);
+    LODWORD(v9) = bswap32(command);
     result = [(PDControllerType3 *)self writeIECSRegister:&v9 ofLength:4 atRegister:8];
     if (!result)
     {
@@ -544,9 +544,9 @@ LABEL_35:
   return result;
 }
 
-- (int)isPDControllerType3HPM:(BOOL *)a3
+- (int)isPDControllerType3HPM:(BOOL *)m
 {
-  *a3 = 0;
+  *m = 0;
   v7 = 0;
   result = [(PDControllerType3 *)self registerRead32:&v7 + 4 atAddress:0];
   if (!result)
@@ -557,7 +557,7 @@ LABEL_35:
       result = 0;
       if (HIDWORD(v7) == 2599 && v7 == 25)
       {
-        *a3 = 1;
+        *m = 1;
       }
     }
   }

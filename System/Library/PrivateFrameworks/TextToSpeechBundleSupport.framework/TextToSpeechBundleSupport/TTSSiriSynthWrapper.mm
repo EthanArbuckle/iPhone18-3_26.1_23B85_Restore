@@ -1,29 +1,29 @@
 @interface TTSSiriSynthWrapper
-- (BOOL)loadVoiceResource:(id)a3;
-- (BOOL)unloadVoiceResource:(id)a3;
-- (TTSSiriSynthWrapper)initWithVoicePath:(id)a3 language:(id)a4 dynamicStylePrompt:(id)a5 censorPlainText:(BOOL)a6 delegate:(id)a7 feResourcePath:(id)a8;
+- (BOOL)loadVoiceResource:(id)resource;
+- (BOOL)unloadVoiceResource:(id)resource;
+- (TTSSiriSynthWrapper)initWithVoicePath:(id)path language:(id)language dynamicStylePrompt:(id)prompt censorPlainText:(BOOL)text delegate:(id)delegate feResourcePath:(id)resourcePath;
 - (TTSSiriSynthWrapperDelegate)delegate;
-- (id)_applyPostRuleRewrites:(id)a3;
+- (id)_applyPostRuleRewrites:(id)rewrites;
 - (id)_neuralStyles;
 - (id)_rawLiteralCharacterRegexForCurrentLanguage;
 - (void)_setProsodyParameters;
 - (void)dealloc;
-- (void)loadRuleset:(id)a3;
+- (void)loadRuleset:(id)ruleset;
 - (void)stopSynthesis;
-- (void)synthesizeString:(id)a3;
+- (void)synthesizeString:(id)string;
 - (void)unloadAllVoiceResources;
 @end
 
 @implementation TTSSiriSynthWrapper
 
-- (TTSSiriSynthWrapper)initWithVoicePath:(id)a3 language:(id)a4 dynamicStylePrompt:(id)a5 censorPlainText:(BOOL)a6 delegate:(id)a7 feResourcePath:(id)a8
+- (TTSSiriSynthWrapper)initWithVoicePath:(id)path language:(id)language dynamicStylePrompt:(id)prompt censorPlainText:(BOOL)text delegate:(id)delegate feResourcePath:(id)resourcePath
 {
   v20 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
+  pathCopy = path;
+  languageCopy = language;
+  promptCopy = prompt;
+  delegateCopy = delegate;
+  resourcePathCopy = resourcePath;
   v19.receiver = self;
   v19.super_class = TTSSiriSynthWrapper;
   [(TTSSiriSynthWrapper *)&v19 init];
@@ -34,10 +34,10 @@
 {
   if ([(TTSSiriSynthWrapper *)self synthesizer])
   {
-    v3 = [(TTSSiriSynthWrapper *)self synthesizer];
-    if (v3)
+    synthesizer = [(TTSSiriSynthWrapper *)self synthesizer];
+    if (synthesizer)
     {
-      TTSSynthesizer::~TTSSynthesizer(v3);
+      TTSSynthesizer::~TTSSynthesizer(synthesizer);
       MEMORY[0x26D6C1B10]();
     }
   }
@@ -49,16 +49,16 @@
 
 - (void)_setProsodyParameters
 {
-  v3 = [(TTSSiriSynthWrapper *)self currentNeuralStyle];
+  currentNeuralStyle = [(TTSSiriSynthWrapper *)self currentNeuralStyle];
 
-  if (v3)
+  if (currentNeuralStyle)
   {
     [(TTSSiriSynthWrapper *)self synthesizer];
-    v4 = [(TTSSiriSynthWrapper *)self currentNeuralStyle];
-    v5 = v4;
-    if (v4)
+    currentNeuralStyle2 = [(TTSSiriSynthWrapper *)self currentNeuralStyle];
+    v5 = currentNeuralStyle2;
+    if (currentNeuralStyle2)
     {
-      [v4 getStyleVector];
+      [currentNeuralStyle2 getStyleVector];
     }
 
     else
@@ -76,13 +76,13 @@
 
 - (id)_rawLiteralCharacterRegexForCurrentLanguage
 {
-  v2 = [(TTSSiriSynthWrapper *)self language];
-  v3 = [v2 hasPrefix:@"da"];
+  language = [(TTSSiriSynthWrapper *)self language];
+  v3 = [language hasPrefix:@"da"];
 
   if (v3)
   {
-    v4 = [MEMORY[0x277D70400] sharedInstance];
-    v5 = [v4 regexForString:@"[æøå]" atStart:0];
+    mEMORY[0x277D70400] = [MEMORY[0x277D70400] sharedInstance];
+    v5 = [mEMORY[0x277D70400] regexForString:@"[æøå]" atStart:0];
   }
 
   else
@@ -98,7 +98,7 @@
   v24 = *MEMORY[0x277D85DE8];
   TTSSynthesizer::available_neural_styles(&v21, [(TTSSiriSynthWrapper *)self synthesizer]);
   memset(v20, 0, sizeof(v20));
-  v2 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = v21;
   v5 = v22;
   if (v21 != v22)
@@ -160,7 +160,7 @@ LABEL_12:
         goto LABEL_12;
       }
 
-      [v2 addObject:{v8, v15}];
+      [array addObject:{v8, v15}];
 LABEL_14:
 
       v4 += 72;
@@ -169,12 +169,12 @@ LABEL_14:
     while (v4 != v5);
   }
 
-  v11 = [v2 indexOfObjectPassingTest:{&__block_literal_global, v15}];
+  v11 = [array indexOfObjectPassingTest:{&__block_literal_global, v15}];
   if (v11 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v12 = [v2 objectAtIndexedSubscript:v11];
-    [v2 removeObjectAtIndex:v11];
-    [v2 insertObject:v12 atIndex:0];
+    v12 = [array objectAtIndexedSubscript:v11];
+    [array removeObjectAtIndex:v11];
+    [array insertObject:v12 atIndex:0];
   }
 
   *buf = v20;
@@ -183,7 +183,7 @@ LABEL_14:
   std::vector<TTSSynthesizer::SpeakingStyle>::__destroy_vector::operator()[abi:ne200100](v20);
   v13 = *MEMORY[0x277D85DE8];
 
-  return v2;
+  return array;
 }
 
 uint64_t __36__TTSSiriSynthWrapper__neuralStyles__block_invoke(uint64_t a1, void *a2)
@@ -194,30 +194,30 @@ uint64_t __36__TTSSiriSynthWrapper__neuralStyles__block_invoke(uint64_t a1, void
   return v3;
 }
 
-- (id)_applyPostRuleRewrites:(id)a3
+- (id)_applyPostRuleRewrites:(id)rewrites
 {
-  v4 = a3;
-  v5 = [(TTSSiriSynthWrapper *)self _rawLiteralCharacterRegexForCurrentLanguage];
-  if (v5)
+  rewritesCopy = rewrites;
+  _rawLiteralCharacterRegexForCurrentLanguage = [(TTSSiriSynthWrapper *)self _rawLiteralCharacterRegexForCurrentLanguage];
+  if (_rawLiteralCharacterRegexForCurrentLanguage)
   {
-    v6 = [v4 originalString];
-    v7 = [MEMORY[0x277D70400] sharedInstance];
-    v8 = [v7 regexForString:@"((?<=(\\\\!|\\x1B)\\\\tn=spell\\\\)[\\s\\S]*?(?=((\\\\!|\\x1B)\\\\tn=)|$))" atStart:0];
+    originalString = [rewritesCopy originalString];
+    mEMORY[0x277D70400] = [MEMORY[0x277D70400] sharedInstance];
+    v8 = [mEMORY[0x277D70400] regexForString:@"((?<=(\\\\!|\\x1B)\\\\tn=spell\\\\)[\\s\\S]*?(?=((\\\\!|\\x1B)\\\\tn=)|$))" atStart:0];
 
-    v9 = [v4 originalString];
-    v10 = [v9 length];
+    originalString2 = [rewritesCopy originalString];
+    v10 = [originalString2 length];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __46__TTSSiriSynthWrapper__applyPostRuleRewrites___block_invoke;
     v13[3] = &unk_279DA54A0;
-    v14 = v5;
-    v11 = v6;
+    v14 = _rawLiteralCharacterRegexForCurrentLanguage;
+    v11 = originalString;
     v15 = v11;
-    v16 = v4;
+    v16 = rewritesCopy;
     [v8 enumerateMatchesInString:v11 options:2 range:0 usingBlock:{v10, v13}];
   }
 
-  return v4;
+  return rewritesCopy;
 }
 
 void __46__TTSSiriSynthWrapper__applyPostRuleRewrites___block_invoke(uint64_t a1, void *a2)
@@ -258,18 +258,18 @@ void __46__TTSSiriSynthWrapper__applyPostRuleRewrites___block_invoke_2(uint64_t 
   }
 }
 
-- (void)synthesizeString:(id)a3
+- (void)synthesizeString:(id)string
 {
-  v4 = a3;
-  v5 = [(TTSSiriSynthWrapper *)self synthesisQueue];
+  stringCopy = string;
+  synthesisQueue = [(TTSSiriSynthWrapper *)self synthesisQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__TTSSiriSynthWrapper_synthesizeString___block_invoke;
   v7[3] = &unk_279DA54C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = stringCopy;
+  v6 = stringCopy;
+  dispatch_async(synthesisQueue, v7);
 }
 
 void __40__TTSSiriSynthWrapper_synthesizeString___block_invoke(uint64_t a1)
@@ -306,58 +306,58 @@ void __40__TTSSiriSynthWrapper_synthesizeString___block_invoke(uint64_t a1)
 
 - (void)stopSynthesis
 {
-  v3 = [(TTSSiriSynthWrapper *)self ruleSetRunner];
-  [v3 cancelProcessing];
+  ruleSetRunner = [(TTSSiriSynthWrapper *)self ruleSetRunner];
+  [ruleSetRunner cancelProcessing];
 
   TTSSynthesizer::stop_synthesis([(TTSSiriSynthWrapper *)self synthesizer]);
-  v4 = [(TTSSiriSynthWrapper *)self synthesisQueue];
-  dispatch_sync(v4, &__block_literal_global_106);
+  synthesisQueue = [(TTSSiriSynthWrapper *)self synthesisQueue];
+  dispatch_sync(synthesisQueue, &__block_literal_global_106);
 }
 
-- (void)loadRuleset:(id)a3
+- (void)loadRuleset:(id)ruleset
 {
-  v7 = a3;
+  rulesetCopy = ruleset;
   v4 = [[TTSSiriVoiceResource alloc] init];
   [(TTSSiriVoiceResource *)v4 setType:0];
-  [(TTSSiriVoiceResource *)v4 setRuleSet:v7];
-  v5 = [(TTSSiriSynthWrapper *)self ruleSetRunner];
-  [v5 loadRuleSet:v7];
+  [(TTSSiriVoiceResource *)v4 setRuleSet:rulesetCopy];
+  ruleSetRunner = [(TTSSiriSynthWrapper *)self ruleSetRunner];
+  [ruleSetRunner loadRuleSet:rulesetCopy];
 
-  v6 = [(TTSSiriSynthWrapper *)self voiceResources];
-  [v6 addObject:v4];
+  voiceResources = [(TTSSiriSynthWrapper *)self voiceResources];
+  [voiceResources addObject:v4];
 }
 
-- (BOOL)loadVoiceResource:(id)a3
+- (BOOL)loadVoiceResource:(id)resource
 {
-  v4 = a3;
-  if ([v4 type])
+  resourceCopy = resource;
+  if ([resourceCopy type])
   {
     memset(&v30, 0, sizeof(v30));
-    v5 = [v4 type];
-    if (v5 < 3)
+    type = [resourceCopy type];
+    if (type < 3)
     {
-      std::string::__assign_external(&v30, off_279DA5550[v5], *&asc_26D52C898[8 * v5]);
+      std::string::__assign_external(&v30, off_279DA5550[type], *&asc_26D52C898[8 * type]);
     }
 
     v29 = 0;
-    v6 = [v4 resourceData];
+    resourceData = [resourceCopy resourceData];
 
-    if (v6)
+    if (resourceData)
     {
-      v7 = [v4 resourceData];
-      [v7 bytes];
+      resourceData2 = [resourceCopy resourceData];
+      [resourceData2 bytes];
 
-      v8 = [v4 resourceData];
-      v9 = [v8 length];
+      resourceData3 = [resourceCopy resourceData];
+      v9 = [resourceData3 length];
     }
 
     else
     {
-      v12 = [v4 resourceString];
-      [v12 cStringUsingEncoding:4];
+      resourceString = [resourceCopy resourceString];
+      [resourceString cStringUsingEncoding:4];
 
-      v8 = [v4 resourceString];
-      v9 = [v8 lengthOfBytesUsingEncoding:4];
+      resourceData3 = [resourceCopy resourceString];
+      v9 = [resourceData3 lengthOfBytesUsingEncoding:4];
     }
 
     v29 = v9;
@@ -384,14 +384,14 @@ void __40__TTSSiriSynthWrapper_synthesizeString___block_invoke(uint64_t a1)
         atomic_fetch_add_explicit(&v27->__shared_owners_, 1uLL, memory_order_relaxed);
       }
 
-      [v4 setSiriVoiceResource:&v24];
+      [resourceCopy setSiriVoiceResource:&v24];
       if (v25)
       {
         std::__shared_weak_count::__release_shared[abi:ne200100](v25);
       }
 
-      v14 = [(TTSSiriSynthWrapper *)self voiceResources];
-      [v14 addObject:v4];
+      voiceResources = [(TTSSiriSynthWrapper *)self voiceResources];
+      [voiceResources addObject:resourceCopy];
     }
 
     if (v27)
@@ -412,30 +412,30 @@ void __40__TTSSiriSynthWrapper_synthesizeString___block_invoke(uint64_t a1)
 
   else
   {
-    v10 = [v4 resourceData];
-    if (v10)
+    resourceData4 = [resourceCopy resourceData];
+    if (resourceData4)
     {
-      v11 = [v4 resourceData];
+      resourceData5 = [resourceCopy resourceData];
     }
 
     else
     {
-      v15 = [v4 resourceString];
-      v11 = [v15 dataUsingEncoding:4];
+      resourceString2 = [resourceCopy resourceString];
+      resourceData5 = [resourceString2 dataUsingEncoding:4];
     }
 
     v16 = MEMORY[0x277D70408];
-    v17 = [v4 resourceName];
-    v18 = [(TTSSiriSynthWrapper *)self voiceResources];
-    v19 = [v16 rulesetWithData:v11 identifier:v17 priority:{objc_msgSend(v18, "count")}];
-    [v4 setRuleSet:v19];
+    resourceName = [resourceCopy resourceName];
+    voiceResources2 = [(TTSSiriSynthWrapper *)self voiceResources];
+    v19 = [v16 rulesetWithData:resourceData5 identifier:resourceName priority:{objc_msgSend(voiceResources2, "count")}];
+    [resourceCopy setRuleSet:v19];
 
-    v20 = [(TTSSiriSynthWrapper *)self ruleSetRunner];
-    v21 = [v4 ruleSet];
-    [v20 loadRuleSet:v21];
+    ruleSetRunner = [(TTSSiriSynthWrapper *)self ruleSetRunner];
+    ruleSet = [resourceCopy ruleSet];
+    [ruleSetRunner loadRuleSet:ruleSet];
 
-    v22 = [(TTSSiriSynthWrapper *)self voiceResources];
-    [v22 addObject:v4];
+    voiceResources3 = [(TTSSiriSynthWrapper *)self voiceResources];
+    [voiceResources3 addObject:resourceCopy];
 
     v13 = 1;
   }
@@ -443,30 +443,30 @@ void __40__TTSSiriSynthWrapper_synthesizeString___block_invoke(uint64_t a1)
   return v13;
 }
 
-- (BOOL)unloadVoiceResource:(id)a3
+- (BOOL)unloadVoiceResource:(id)resource
 {
-  v4 = a3;
-  v5 = [(TTSSiriSynthWrapper *)self voiceResources];
-  [v5 removeObject:v4];
+  resourceCopy = resource;
+  voiceResources = [(TTSSiriSynthWrapper *)self voiceResources];
+  [voiceResources removeObject:resourceCopy];
 
-  v6 = [v4 ruleSet];
+  ruleSet = [resourceCopy ruleSet];
 
-  if (v6)
+  if (ruleSet)
   {
-    v7 = [(TTSSiriSynthWrapper *)self ruleSetRunner];
-    v8 = [v4 ruleSet];
-    [v7 unloadRuleset:v8];
+    ruleSetRunner = [(TTSSiriSynthWrapper *)self ruleSetRunner];
+    ruleSet2 = [resourceCopy ruleSet];
+    [ruleSetRunner unloadRuleset:ruleSet2];
 
-    [v4 setRuleSet:0];
+    [resourceCopy setRuleSet:0];
     v9 = 1;
   }
 
   else
   {
     [(TTSSiriSynthWrapper *)self synthesizer];
-    if (v4)
+    if (resourceCopy)
     {
-      [v4 siriVoiceResource];
+      [resourceCopy siriVoiceResource];
     }
 
     else
@@ -483,7 +483,7 @@ void __40__TTSSiriSynthWrapper_synthesizeString___block_invoke(uint64_t a1)
 
     v12 = 0;
     v13 = 0;
-    [v4 setSiriVoiceResource:&v12];
+    [resourceCopy setSiriVoiceResource:&v12];
     if (v13)
     {
       std::__shared_weak_count::__release_shared[abi:ne200100](v13);
@@ -502,8 +502,8 @@ void __40__TTSSiriSynthWrapper_synthesizeString___block_invoke(uint64_t a1)
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(TTSSiriSynthWrapper *)self voiceResources];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  voiceResources = [(TTSSiriSynthWrapper *)self voiceResources];
+  v4 = [voiceResources countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -514,14 +514,14 @@ void __40__TTSSiriSynthWrapper_synthesizeString___block_invoke(uint64_t a1)
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(voiceResources);
         }
 
         [(TTSSiriSynthWrapper *)self unloadVoiceResource:*(*(&v8 + 1) + 8 * v6++)];
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [voiceResources countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);

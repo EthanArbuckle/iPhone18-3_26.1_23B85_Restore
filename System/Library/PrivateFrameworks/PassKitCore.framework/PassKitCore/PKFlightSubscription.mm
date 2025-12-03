@@ -1,28 +1,28 @@
 @interface PKFlightSubscription
-- (BOOL)isEqual:(id)a3;
-- (PKFlightSubscription)initWithCoder:(id)a3;
-- (PKFlightSubscription)initWithFlightIdentifier:(id)a3 channelIdentifier:(id)a4 isActive:(BOOL)a5;
+- (BOOL)isEqual:(id)equal;
+- (PKFlightSubscription)initWithCoder:(id)coder;
+- (PKFlightSubscription)initWithFlightIdentifier:(id)identifier channelIdentifier:(id)channelIdentifier isActive:(BOOL)active;
 - (id)asDictionary;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKFlightSubscription
 
-- (PKFlightSubscription)initWithFlightIdentifier:(id)a3 channelIdentifier:(id)a4 isActive:(BOOL)a5
+- (PKFlightSubscription)initWithFlightIdentifier:(id)identifier channelIdentifier:(id)channelIdentifier isActive:(BOOL)active
 {
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  channelIdentifierCopy = channelIdentifier;
   v14.receiver = self;
   v14.super_class = PKFlightSubscription;
   v11 = [(PKFlightSubscription *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_flightIdentifier, a3);
-    objc_storeStrong(&v12->_channelIdentifier, a4);
-    v12->_isActive = a5;
+    objc_storeStrong(&v11->_flightIdentifier, identifier);
+    objc_storeStrong(&v12->_channelIdentifier, channelIdentifier);
+    v12->_isActive = active;
   }
 
   return v12;
@@ -41,20 +41,20 @@
   return v5;
 }
 
-- (PKFlightSubscription)initWithCoder:(id)a3
+- (PKFlightSubscription)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKFlightSubscription;
   v5 = [(PKFlightSubscription *)&v11 init];
   if (v5)
   {
-    v5->_isActive = [v4 decodeBoolForKey:@"isActive"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"flightIdentifier"];
+    v5->_isActive = [coderCopy decodeBoolForKey:@"isActive"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"flightIdentifier"];
     flightIdentifier = v5->_flightIdentifier;
     v5->_flightIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"channelIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"channelIdentifier"];
     channelIdentifier = v5->_channelIdentifier;
     v5->_channelIdentifier = v8;
   }
@@ -62,16 +62,16 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   isActive = self->_isActive;
-  v7 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithBool:isActive];
-  [v7 encodeObject:v6 forKey:@"isActive"];
+  [coderCopy encodeObject:v6 forKey:@"isActive"];
 
-  [v7 encodeObject:self->_flightIdentifier forKey:@"flightIdentifier"];
-  [v7 encodeObject:self->_channelIdentifier forKey:@"channelIdentifier"];
+  [coderCopy encodeObject:self->_flightIdentifier forKey:@"flightIdentifier"];
+  [coderCopy encodeObject:self->_channelIdentifier forKey:@"channelIdentifier"];
 }
 
 - (id)description
@@ -96,18 +96,18 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     LOBYTE(v12) = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())

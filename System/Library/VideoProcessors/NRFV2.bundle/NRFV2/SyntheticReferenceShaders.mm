@@ -1,24 +1,24 @@
 @interface SyntheticReferenceShaders
-- (SyntheticReferenceShaders)initWithMetal:(id)a3;
-- (id)getKernel:(int)a3 configFlags:(unsigned int)a4;
+- (SyntheticReferenceShaders)initWithMetal:(id)metal;
+- (id)getKernel:(int)kernel configFlags:(unsigned int)flags;
 @end
 
 @implementation SyntheticReferenceShaders
 
-- (id)getKernel:(int)a3 configFlags:(unsigned int)a4
+- (id)getKernel:(int)kernel configFlags:(unsigned int)flags
 {
   v6 = 0;
-  if (a3 <= 4 && a4 <= 0xF)
+  if (kernel <= 4 && flags <= 0xF)
   {
-    v6 = self->_kernelWithFunctionConstant[a3][a4];
+    v6 = self->_kernelWithFunctionConstant[kernel][flags];
   }
 
   return v6;
 }
 
-- (SyntheticReferenceShaders)initWithMetal:(id)a3
+- (SyntheticReferenceShaders)initWithMetal:(id)metal
 {
-  v4 = a3;
+  metalCopy = metal;
   v23.receiver = self;
   v23.super_class = SyntheticReferenceShaders;
   v5 = [(SyntheticReferenceShaders *)&v23 init];
@@ -55,7 +55,7 @@ LABEL_10:
       while (1)
       {
         v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x29EDBA0F8], v6, off_29EDDC038[v13], v7);
-        v17 = objc_msgSend_computePipelineStateFor_constants_(v4, v16, v15, v8);
+        v17 = objc_msgSend_computePipelineStateFor_constants_(metalCopy, v16, v15, v8);
         v18 = *v14;
         *v14 = v17;
 

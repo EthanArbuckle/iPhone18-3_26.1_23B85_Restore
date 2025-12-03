@@ -3,38 +3,38 @@
 - (BOOL)isUsingMultilingual;
 - (BOOL)usesComposingInput;
 - (Hangul2SetAutomata)batchConverter;
-- (TIKeyboardInputManager_ko)initWithConfig:(id)a3 keyboardState:(id)a4;
+- (TIKeyboardInputManager_ko)initWithConfig:(id)config keyboardState:(id)state;
 - (USet)validUSetForAutocorrection;
-- (id)composeJamo:(id)a3;
-- (id)deleteFromInput:(unint64_t *)a3;
+- (id)composeJamo:(id)jamo;
+- (id)deleteFromInput:(unint64_t *)input;
 - (id)geometryModelData;
-- (id)internalStringToExternal:(id)a3 ignoreCompositionDisabled:(BOOL)a4;
+- (id)internalStringToExternal:(id)external ignoreCompositionDisabled:(BOOL)disabled;
 - (id)rawInputString;
 - (unint64_t)additionalAnalysisOptions;
-- (void)addInput:(id)a3 withContext:(id)a4;
+- (void)addInput:(id)input withContext:(id)context;
 - (void)clearInput;
 - (void)dealloc;
 - (void)initImplementation;
-- (void)insertSpaceBeforeInputWithContext:(id)a3;
-- (void)setInput:(id)a3;
-- (void)syncToLayoutState:(id)a3;
+- (void)insertSpaceBeforeInputWithContext:(id)context;
+- (void)setInput:(id)input;
+- (void)syncToLayoutState:(id)state;
 @end
 
 @implementation TIKeyboardInputManager_ko
 
-- (TIKeyboardInputManager_ko)initWithConfig:(id)a3 keyboardState:(id)a4
+- (TIKeyboardInputManager_ko)initWithConfig:(id)config keyboardState:(id)state
 {
-  v6 = a3;
+  configCopy = config;
   v14.receiver = self;
   v14.super_class = TIKeyboardInputManager_ko;
-  v7 = [(TIKeyboardInputManagerMecabra *)&v14 initWithConfig:v6 keyboardState:a4];
+  v7 = [(TIKeyboardInputManagerMecabra *)&v14 initWithConfig:configCopy keyboardState:state];
   v8 = v7;
   if (v7)
   {
     v7->_deleteSyllable = 1;
-    v9 = [MEMORY[0x29EDC7280] sharedWordSearchController];
-    v10 = [v6 inputMode];
-    v11 = [v9 wordSearchForInputMode:v10];
+    mEMORY[0x29EDC7280] = [MEMORY[0x29EDC7280] sharedWordSearchController];
+    inputMode = [configCopy inputMode];
+    v11 = [mEMORY[0x29EDC7280] wordSearchForInputMode:inputMode];
     wordSearch = v8->_wordSearch;
     v8->_wordSearch = v11;
   }
@@ -63,33 +63,33 @@
   return result;
 }
 
-- (void)syncToLayoutState:(id)a3
+- (void)syncToLayoutState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v10.receiver = self;
   v10.super_class = TIKeyboardInputManager_ko;
-  [(TIKeyboardInputManager_ko *)&v10 syncToLayoutState:v4];
-  v5 = [v4 softwareLayout];
-  v6 = [v5 isEqualToString:@"Korean10Key"];
+  [(TIKeyboardInputManager_ko *)&v10 syncToLayoutState:stateCopy];
+  softwareLayout = [stateCopy softwareLayout];
+  v6 = [softwareLayout isEqualToString:@"Korean10Key"];
 
   if (v6)
   {
     *([(TIKeyboardInputManager_ko *)self batchConverter]+ 36) = 1;
     TIInputManager_ko::set_is_10key(*(&self->super.super.super.super.super.isa + *MEMORY[0x29EDC7290]), 1);
-    v7 = [(TIKeyboardInputManager_ko *)self wordSearch];
-    [v7 setTenKeyEnabled:1];
+    wordSearch = [(TIKeyboardInputManager_ko *)self wordSearch];
+    [wordSearch setTenKeyEnabled:1];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v8 = [v4 softwareLayout];
-  v9 = [v8 isEqualToString:@"Korean-With-QWERTY"];
+  softwareLayout2 = [stateCopy softwareLayout];
+  v9 = [softwareLayout2 isEqualToString:@"Korean-With-QWERTY"];
 
   if (v9)
   {
-    v7 = [(TIKeyboardInputManager_ko *)self wordSearch];
-    [v7 setBilingualEnabled:1];
+    wordSearch = [(TIKeyboardInputManager_ko *)self wordSearch];
+    [wordSearch setBilingualEnabled:1];
     goto LABEL_5;
   }
 
@@ -111,10 +111,10 @@ LABEL_6:
   [(TIKeyboardInputManagerMecabra *)&v4 dealloc];
 }
 
-- (id)composeJamo:(id)a3
+- (id)composeJamo:(id)jamo
 {
-  v4 = a3;
-  v5 = __composeJamo(v4, [(TIKeyboardInputManager_ko *)self batchConverter]);
+  jamoCopy = jamo;
+  v5 = __composeJamo(jamoCopy, [(TIKeyboardInputManager_ko *)self batchConverter]);
 
   return v5;
 }
@@ -123,18 +123,18 @@ LABEL_6:
 {
   v5.receiver = self;
   v5.super_class = TIKeyboardInputManager_ko;
-  v3 = [(TIKeyboardInputManager_ko *)&v5 canHandleKeyHitTest];
-  if (v3)
+  canHandleKeyHitTest = [(TIKeyboardInputManager_ko *)&v5 canHandleKeyHitTest];
+  if (canHandleKeyHitTest)
   {
-    LOBYTE(v3) = TIInputManager_ko::is_10key(*(&self->super.super.super.super.super.isa + *MEMORY[0x29EDC7290])) ^ 1;
+    LOBYTE(canHandleKeyHitTest) = TIInputManager_ko::is_10key(*(&self->super.super.super.super.super.isa + *MEMORY[0x29EDC7290])) ^ 1;
   }
 
-  return v3;
+  return canHandleKeyHitTest;
 }
 
 - (BOOL)usesComposingInput
 {
-  v3 = [(TIKeyboardInputManagerBase *)self currentInputModeIdentifier];
+  currentInputModeIdentifier = [(TIKeyboardInputManagerBase *)self currentInputModeIdentifier];
   v4 = TIInputModeGetComponentsFromIdentifier();
   v5 = [v4 objectForKey:@"sw"];
 
@@ -142,19 +142,19 @@ LABEL_6:
   return v6;
 }
 
-- (id)internalStringToExternal:(id)a3 ignoreCompositionDisabled:(BOOL)a4
+- (id)internalStringToExternal:(id)external ignoreCompositionDisabled:(BOOL)disabled
 {
-  v6 = a3;
-  if ([(TIKeyboardInputManager_ko *)self isUsingMultilingual]&& !a4 && [(TIKeyboardInputManager_mul *)self choseSecondary])
+  externalCopy = external;
+  if ([(TIKeyboardInputManager_ko *)self isUsingMultilingual]&& !disabled && [(TIKeyboardInputManager_mul *)self choseSecondary])
   {
     v10.receiver = self;
     v10.super_class = TIKeyboardInputManager_ko;
-    v7 = [(TIKeyboardInputManager_mul *)&v10 internalStringToExternal:v6 ignoreCompositionDisabled:0];
+    v7 = [(TIKeyboardInputManager_mul *)&v10 internalStringToExternal:externalCopy ignoreCompositionDisabled:0];
   }
 
   else
   {
-    v7 = [(TIKeyboardInputManager_ko *)self composeJamo:v6];
+    v7 = [(TIKeyboardInputManager_ko *)self composeJamo:externalCopy];
   }
 
   v8 = v7;
@@ -170,38 +170,38 @@ LABEL_6:
   [(TIKeyboardInputManagerMecabra *)&v2 clearInput];
 }
 
-- (void)setInput:(id)a3
+- (void)setInput:(id)input
 {
   v24 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  inputCopy = input;
   [(TIKeyboardInputManager_ko *)self clearInput];
   v22.receiver = self;
   v22.super_class = TIKeyboardInputManager_ko;
-  [(TIKeyboardInputManager_mul *)&v22 setInput:v4];
+  [(TIKeyboardInputManager_mul *)&v22 setInput:inputCopy];
   if ([(TIKeyboardInputManager_ko *)self usesComposingInput])
   {
-    v5 = [(TIKeyboardInputManagerMecabra *)self composingInput];
-    [v5 removeAllInputs];
+    composingInput = [(TIKeyboardInputManagerMecabra *)self composingInput];
+    [composingInput removeAllInputs];
 
-    v6 = [(TIKeyboardInputManager_mul *)self externalStringToInternal:v4];
+    v6 = [(TIKeyboardInputManager_mul *)self externalStringToInternal:inputCopy];
     if ([(TIKeyboardInputManager_ko *)self isUsingMultilingual])
     {
-      v7 = [(TIKeyboardInputManager_mul *)self keyLayoutMapAsNearbyKeys];
+      keyLayoutMapAsNearbyKeys = [(TIKeyboardInputManager_mul *)self keyLayoutMapAsNearbyKeys];
     }
 
     else
     {
-      v7 = 0;
+      keyLayoutMapAsNearbyKeys = 0;
     }
 
     v17 = v6;
-    v8 = [v6 _asTypeInputsWithNearbyKeyMap:v7];
+    v8 = [v6 _asTypeInputsWithNearbyKeyMap:keyLayoutMapAsNearbyKeys];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v9 = [v8 inputs];
-    v10 = [v9 countByEnumeratingWithState:&v18 objects:v23 count:16];
+    inputs = [v8 inputs];
+    v10 = [inputs countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v10)
     {
       v11 = v10;
@@ -213,18 +213,18 @@ LABEL_6:
         {
           if (*v19 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(inputs);
           }
 
           v14 = *(*(&v18 + 1) + 8 * v13);
-          v15 = [(TIKeyboardInputManagerMecabra *)self composingInput];
-          [v15 composeNew:v14];
+          composingInput2 = [(TIKeyboardInputManagerMecabra *)self composingInput];
+          [composingInput2 composeNew:v14];
 
           ++v13;
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v18 objects:v23 count:16];
+        v11 = [inputs countByEnumeratingWithState:&v18 objects:v23 count:16];
       }
 
       while (v11);
@@ -260,16 +260,16 @@ LABEL_6:
   v48 = *MEMORY[0x29EDCA608];
   if ([(TIKeyboardInputManager_ko *)self usesComposingInput])
   {
-    v31 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v3 = [(TIKeyboardInputManagerMecabra *)self composingInput];
-    v4 = [v3 inputs];
+    composingInput = [(TIKeyboardInputManagerMecabra *)self composingInput];
+    inputs = [composingInput inputs];
 
-    v33 = v4;
-    v5 = [v4 countByEnumeratingWithState:&v42 objects:v47 count:16];
+    v33 = inputs;
+    v5 = [inputs countByEnumeratingWithState:&v42 objects:v47 count:16];
     if (v5)
     {
       v6 = v5;
@@ -293,8 +293,8 @@ LABEL_6:
           if (objc_opt_isKindOfClass())
           {
             v12 = v10;
-            v35 = [v12 nearbyKeys];
-            v13 = [v35 count];
+            nearbyKeys = [v12 nearbyKeys];
+            v13 = [nearbyKeys count];
             v34 = &v29;
             v14 = &v29 - ((8 * v13 + 23) & 0xFFFFFFFFFFFFFFF0);
             v40 = 0u;
@@ -302,8 +302,8 @@ LABEL_6:
             v38 = 0u;
             v39 = 0u;
             v36 = v12;
-            v15 = [v12 nearbyKeys];
-            v16 = [v15 countByEnumeratingWithState:&v38 objects:v46 count:16];
+            nearbyKeys2 = [v12 nearbyKeys];
+            v16 = [nearbyKeys2 countByEnumeratingWithState:&v38 objects:v46 count:16];
             if (v16)
             {
               v17 = v16;
@@ -315,7 +315,7 @@ LABEL_6:
                 {
                   if (*v39 != v19)
                   {
-                    objc_enumerationMutation(v15);
+                    objc_enumerationMutation(nearbyKeys2);
                   }
 
                   v21 = *(*(&v38 + 1) + 8 * i);
@@ -329,7 +329,7 @@ LABEL_6:
                   }
                 }
 
-                v17 = [v15 countByEnumeratingWithState:&v38 objects:v46 count:16];
+                v17 = [nearbyKeys2 countByEnumeratingWithState:&v38 objects:v46 count:16];
               }
 
               while (v17);
@@ -344,7 +344,7 @@ LABEL_6:
             *v24 = 0;
             *(v24 + 1) = 0;
             v25 = [MEMORY[0x29EDB8DA0] dataWithBytes:v14 length:8 * v18 + 8];
-            [v31 addObject:v25];
+            [array addObject:v25];
 
             v7 = v30;
             v8 = 0x29EDC7000;
@@ -366,34 +366,34 @@ LABEL_6:
   {
     v37.receiver = self;
     v37.super_class = TIKeyboardInputManager_ko;
-    v31 = [(TIKeyboardInputManagerMecabra *)&v37 geometryModelData];
+    array = [(TIKeyboardInputManagerMecabra *)&v37 geometryModelData];
   }
 
   v26 = *MEMORY[0x29EDCA608];
-  v27 = v31;
+  v27 = array;
 
   return v27;
 }
 
-- (void)addInput:(id)a3 withContext:(id)a4
+- (void)addInput:(id)input withContext:(id)context
 {
   v20[4] = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 string];
+  inputCopy = input;
+  contextCopy = context;
+  string = [inputCopy string];
   self->_deleteSyllable = 0;
   if (![(TIKeyboardInputManager_ko *)self isUsingMultilingual])
   {
-    [v6 setAutoshifted:0];
-    [v6 setUppercase:0];
+    [inputCopy setAutoshifted:0];
+    [inputCopy setUppercase:0];
   }
 
-  v9 = [v6 isMultitap];
-  v10 = [v8 isEqualToString:@"ㆍ"];
+  isMultitap = [inputCopy isMultitap];
+  v10 = [string isEqualToString:@"ㆍ"];
   v11 = MEMORY[0x29EDC7290];
   if (!v10)
   {
-    if (!v9)
+    if (!isMultitap)
     {
       goto LABEL_12;
     }
@@ -407,7 +407,7 @@ LABEL_6:
   KB::String::~String(v20);
   v14 = [v13 hasSuffix:@"ㆍㆍ"];
 
-  v15 = v14 | v9;
+  v15 = v14 | isMultitap;
   if (v14)
   {
     v16 = 2;
@@ -423,7 +423,7 @@ LABEL_6:
     do
     {
 LABEL_11:
-      [(TIKeyboardInputManagerMecabra *)self deleteFromInputWithContext:v7];
+      [(TIKeyboardInputManagerMecabra *)self deleteFromInputWithContext:contextCopy];
       --v16;
     }
 
@@ -433,14 +433,14 @@ LABEL_11:
 LABEL_12:
   v19.receiver = self;
   v19.super_class = TIKeyboardInputManager_ko;
-  [(TIKeyboardInputManager_ko *)&v19 addInput:v6 withContext:v7];
+  [(TIKeyboardInputManager_ko *)&v19 addInput:inputCopy withContext:contextCopy];
   v17 = *(&self->super.super.super.super.super.isa + *v11);
   if (v17 && -858993459 * ((*(v17 + 16) - *(v17 + 8)) >> 3))
   {
-    [(TIKeyboardInputManagerMecabra *)self saveGeometryForInput:v6 atIndex:*(v17 + 96)];
+    [(TIKeyboardInputManagerMecabra *)self saveGeometryForInput:inputCopy atIndex:*(v17 + 96)];
   }
 
-  if ([(TIKeyboardInputManager_ko *)self usesComposingInput]&& v8 && [(TIKeyboardInputManagerMecabra *)self stringEndsWord:v8])
+  if ([(TIKeyboardInputManager_ko *)self usesComposingInput]&& string && [(TIKeyboardInputManagerMecabra *)self stringEndsWord:string])
   {
     [(TIKeyboardInputManager_ko *)self clearInput];
   }
@@ -448,21 +448,21 @@ LABEL_12:
   v18 = *MEMORY[0x29EDCA608];
 }
 
-- (void)insertSpaceBeforeInputWithContext:(id)a3
+- (void)insertSpaceBeforeInputWithContext:(id)context
 {
   v4.receiver = self;
   v4.super_class = TIKeyboardInputManager_ko;
-  [(TIKeyboardInputManager_ko *)&v4 insertSpaceBeforeInputWithContext:a3];
+  [(TIKeyboardInputManager_ko *)&v4 insertSpaceBeforeInputWithContext:context];
   if ([(TIKeyboardInputManager_ko *)self usesComposingInput])
   {
     [(TIKeyboardInputManager_ko *)self clearInput];
   }
 }
 
-- (id)deleteFromInput:(unint64_t *)a3
+- (id)deleteFromInput:(unint64_t *)input
 {
   v45[4] = *MEMORY[0x29EDCA608];
-  if (!a3)
+  if (!input)
   {
     if (!self->_deleteSyllable)
     {
@@ -472,38 +472,38 @@ LABEL_12:
 LABEL_5:
     v43.receiver = self;
     v43.super_class = TIKeyboardInputManager_ko;
-    v5 = [(TIKeyboardInputManager_ko *)&v43 deleteFromInput:a3];
+    v5 = [(TIKeyboardInputManager_ko *)&v43 deleteFromInput:input];
     if (![(TIKeyboardInputManager_ko *)self usesComposingInput])
     {
       goto LABEL_33;
     }
 
-    v6 = [(TIKeyboardInputManager_ko *)self wordSearch];
-    [v6 cancel];
+    wordSearch = [(TIKeyboardInputManager_ko *)self wordSearch];
+    [wordSearch cancel];
 
-    v7 = [(TIKeyboardInputManagerMecabra *)self composingInput];
-    [v7 removeAllInputs];
+    composingInput = [(TIKeyboardInputManagerMecabra *)self composingInput];
+    [composingInput removeAllInputs];
 
     TIInputManager::input_stem(v45, *(&self->super.super.super.super.super.isa + *MEMORY[0x29EDC7290]));
     v9 = KB::ns_string(v45, v8);
     KB::String::~String(v45);
     if ([(TIKeyboardInputManager_ko *)self isUsingMultilingual])
     {
-      v10 = [(TIKeyboardInputManager_mul *)self keyLayoutMapAsNearbyKeys];
+      keyLayoutMapAsNearbyKeys = [(TIKeyboardInputManager_mul *)self keyLayoutMapAsNearbyKeys];
     }
 
     else
     {
-      v10 = 0;
+      keyLayoutMapAsNearbyKeys = 0;
     }
 
-    [v9 _asTypeInputsWithNearbyKeyMap:v10];
+    [v9 _asTypeInputsWithNearbyKeyMap:keyLayoutMapAsNearbyKeys];
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
     v38 = v42 = 0u;
-    v27 = [v38 inputs];
-    v28 = [v27 countByEnumeratingWithState:&v39 objects:v44 count:16];
+    inputs = [v38 inputs];
+    v28 = [inputs countByEnumeratingWithState:&v39 objects:v44 count:16];
     if (v28)
     {
       v29 = v28;
@@ -514,24 +514,24 @@ LABEL_5:
         {
           if (*v40 != v30)
           {
-            objc_enumerationMutation(v27);
+            objc_enumerationMutation(inputs);
           }
 
           v32 = *(*(&v39 + 1) + 8 * i);
-          v33 = [(TIKeyboardInputManagerMecabra *)self composingInput];
-          [v33 composeNew:v32];
+          composingInput2 = [(TIKeyboardInputManagerMecabra *)self composingInput];
+          [composingInput2 composeNew:v32];
         }
 
-        v29 = [v27 countByEnumeratingWithState:&v39 objects:v44 count:16];
+        v29 = [inputs countByEnumeratingWithState:&v39 objects:v44 count:16];
       }
 
       while (v29);
     }
 
-    v34 = [(TIKeyboardInputManagerMecabra *)self composingInput];
-    v35 = [v34 composingInput];
+    composingInput3 = [(TIKeyboardInputManagerMecabra *)self composingInput];
+    v34ComposingInput = [composingInput3 composingInput];
 
-    if (!v35)
+    if (!v34ComposingInput)
     {
       [(TIKeyboardInputManagerMecabra *)self setWordSearchCandidateResultSet:0];
     }
@@ -539,13 +539,13 @@ LABEL_5:
     goto LABEL_32;
   }
 
-  *a3 = 0;
+  *input = 0;
   if (self->_deleteSyllable)
   {
     goto LABEL_5;
   }
 
-  *a3 = 1;
+  *input = 1;
 LABEL_8:
   v11 = *MEMORY[0x29EDC7290];
   if (!*(&self->super.super.super.super.super.isa + v11))
@@ -554,49 +554,49 @@ LABEL_8:
     goto LABEL_33;
   }
 
-  v12 = [(TIKeyboardInputManager_ko *)self inputIndex];
+  inputIndex = [(TIKeyboardInputManager_ko *)self inputIndex];
   TIInputManager::delete_from_input(*(&self->super.super.super.super.super.isa + v11));
   TIInputManager::input_string(v45, *(&self->super.super.super.super.super.isa + v11));
-  v10 = KB::ns_string(v45, v13);
+  keyLayoutMapAsNearbyKeys = KB::ns_string(v45, v13);
   KB::String::~String(v45);
   v14 = (*(&self->super.super.super.super.super.isa + v11))[24];
   if ([(TIKeyboardInputManager_ko *)self usesComposingInput])
   {
-    v15 = [(TIKeyboardInputManager_ko *)self wordSearch];
-    [v15 cancel];
+    wordSearch2 = [(TIKeyboardInputManager_ko *)self wordSearch];
+    [wordSearch2 cancel];
 
-    v16 = [(TIKeyboardInputManagerMecabra *)self composingInput];
-    [v16 removeComposingInput];
+    composingInput4 = [(TIKeyboardInputManagerMecabra *)self composingInput];
+    [composingInput4 removeComposingInput];
 
-    v17 = [(TIKeyboardInputManagerMecabra *)self composingInput];
-    v18 = [v17 composingInput];
+    composingInput5 = [(TIKeyboardInputManagerMecabra *)self composingInput];
+    v17ComposingInput = [composingInput5 composingInput];
 
-    if (!v18)
+    if (!v17ComposingInput)
     {
       [(TIKeyboardInputManagerMecabra *)self setWordSearchCandidateResultSet:0];
     }
 
     if (![(TIKeyboardInputManager_ko *)self isUsingMultilingual])
     {
-      v19 = [(TIKeyboardInputManagerMecabra *)self composingInput];
-      v20 = [v19 asInlineText];
+      composingInput6 = [(TIKeyboardInputManagerMecabra *)self composingInput];
+      asInlineText = [composingInput6 asInlineText];
 
-      v21 = [(TIKeyboardInputManagerMecabra *)self composingInput];
-      LODWORD(v19) = [v21 asInlineTextCursorIndex];
+      composingInput7 = [(TIKeyboardInputManagerMecabra *)self composingInput];
+      LODWORD(composingInput6) = [composingInput7 asInlineTextCursorIndex];
 
-      v14 = v19;
-      v10 = v20;
+      v14 = composingInput6;
+      keyLayoutMapAsNearbyKeys = asInlineText;
     }
   }
 
   v22 = *MEMORY[0x29EDC7288];
   if (*(&self->super.super.super.super.super.isa + v22))
   {
-    v23 = [(TIKeyboardInputManager_mul *)self internalStringToExternal:v10];
-    v24 = [v10 substringToIndex:{objc_msgSend(v10, "_indexFromStartingIndex:byIncrementingComposedCharacterSequenceCount:", 0, v14)}];
+    v23 = [(TIKeyboardInputManager_mul *)self internalStringToExternal:keyLayoutMapAsNearbyKeys];
+    v24 = [keyLayoutMapAsNearbyKeys substringToIndex:{objc_msgSend(keyLayoutMapAsNearbyKeys, "_indexFromStartingIndex:byIncrementingComposedCharacterSequenceCount:", 0, v14)}];
     v25 = [(TIKeyboardInputManager_mul *)self internalStringToExternal:v24];
 
-    v26 = [(TIKeyboardInputManager_ko *)self suffixOfDesiredString:v25 toAppendToInputString:*(&self->super.super.super.super.super.isa + v22) withInputIndex:v12 afterDeletionCount:a3];
+    v26 = [(TIKeyboardInputManager_ko *)self suffixOfDesiredString:v25 toAppendToInputString:*(&self->super.super.super.super.super.isa + v22) withInputIndex:inputIndex afterDeletionCount:input];
     [*(&self->super.super.super.super.super.isa + v22) setString:v23];
     if (![v26 length])
     {
@@ -622,8 +622,8 @@ LABEL_33:
 
 - (unint64_t)additionalAnalysisOptions
 {
-  v2 = [(TIKeyboardInputManager_ko *)self wordSearch];
-  if ([v2 tenKeyEnabled])
+  wordSearch = [(TIKeyboardInputManager_ko *)self wordSearch];
+  if ([wordSearch tenKeyEnabled])
   {
     v3 = 2105344;
   }
@@ -633,7 +633,7 @@ LABEL_33:
     v3 = 0x200000;
   }
 
-  if ([v2 bilingualEnabled])
+  if ([wordSearch bilingualEnabled])
   {
     v3 &= 0x2000u;
   }
@@ -648,7 +648,7 @@ LABEL_33:
     return 0;
   }
 
-  v3 = [(TIKeyboardInputManagerBase *)self currentInputModeIdentifier];
+  currentInputModeIdentifier = [(TIKeyboardInputManagerBase *)self currentInputModeIdentifier];
   v4 = TIInputModeGetComponentsFromIdentifier();
   v5 = [v4 objectForKey:@"sw"];
 
@@ -656,15 +656,15 @@ LABEL_33:
   {
     v8.receiver = self;
     v8.super_class = TIKeyboardInputManager_ko;
-    v6 = [(TIKeyboardInputManager_mul *)&v8 isUsingMultilingual];
+    isUsingMultilingual = [(TIKeyboardInputManager_mul *)&v8 isUsingMultilingual];
   }
 
   else
   {
-    v6 = 0;
+    isUsingMultilingual = 0;
   }
 
-  return v6;
+  return isUsingMultilingual;
 }
 
 @end

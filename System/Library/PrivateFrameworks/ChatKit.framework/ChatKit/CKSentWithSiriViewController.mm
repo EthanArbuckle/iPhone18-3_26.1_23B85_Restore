@@ -1,24 +1,24 @@
 @interface CKSentWithSiriViewController
-- (CKSentWithSiriViewController)initWithConversation:(id)a3;
+- (CKSentWithSiriViewController)initWithConversation:(id)conversation;
 - (id)_titleLabelText;
-- (id)localizedStringWithLanguageCode:(id)a3 format:(id)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (id)localizedStringWithLanguageCode:(id)code format:(id)format;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation CKSentWithSiriViewController
 
-- (CKSentWithSiriViewController)initWithConversation:(id)a3
+- (CKSentWithSiriViewController)initWithConversation:(id)conversation
 {
-  v5 = a3;
+  conversationCopy = conversation;
   v9.receiver = self;
   v9.super_class = CKSentWithSiriViewController;
   v6 = [(CKSentWithSiriViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_conversation, a3);
+    objc_storeStrong(&v6->_conversation, conversation);
   }
 
   return v7;
@@ -29,9 +29,9 @@
   v141.receiver = self;
   v141.super_class = CKSentWithSiriViewController;
   [(CKSentWithSiriViewController *)&v141 viewDidLoad];
-  v3 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v4 = [(CKSentWithSiriViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  view = [(CKSentWithSiriViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
   v5 = objc_alloc_init(MEMORY[0x1E69DCEF8]);
   scrollView = self->_scrollView;
@@ -39,12 +39,12 @@
 
   [(UIScrollView *)self->_scrollView setContentInsetAdjustmentBehavior:3];
   [(UIScrollView *)self->_scrollView setDelegate:self];
-  [(UIScrollView *)self->_scrollView setBackgroundColor:v3];
+  [(UIScrollView *)self->_scrollView setBackgroundColor:systemBackgroundColor];
   v7 = objc_alloc_init(MEMORY[0x1E69DD250]);
   contentView = self->_contentView;
   self->_contentView = v7;
 
-  [(UIView *)self->_contentView setBackgroundColor:v3];
+  [(UIView *)self->_contentView setBackgroundColor:systemBackgroundColor];
   v9 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   contextDescriptionLabel = self->_contextDescriptionLabel;
   self->_contextDescriptionLabel = v9;
@@ -57,41 +57,41 @@
   v14 = [MEMORY[0x1E69DB878] __ck_preferredFontForStyle:*MEMORY[0x1E69DDCF8]];
   [(UILabel *)self->_contextDescriptionLabel setFont:v14];
 
-  v15 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(UILabel *)self->_contextDescriptionLabel setTextColor:v15];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(UILabel *)self->_contextDescriptionLabel setTextColor:secondaryLabelColor];
 
-  v16 = [MEMORY[0x1E69DC888] clearColor];
-  [(UILabel *)self->_contextDescriptionLabel setBackgroundColor:v16];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UILabel *)self->_contextDescriptionLabel setBackgroundColor:clearColor];
 
   [(UILabel *)self->_contextDescriptionLabel setNumberOfLines:0];
   [(UILabel *)self->_contextDescriptionLabel setTextAlignment:1];
   v17 = +[CKUIBehavior sharedBehaviors];
-  v140 = [v17 siriLogoImage];
+  siriLogoImage = [v17 siriLogoImage];
 
-  v18 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v140];
+  v18 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:siriLogoImage];
   heroImageView = self->_heroImageView;
   self->_heroImageView = v18;
 
   [(UIImageView *)self->_heroImageView setOpaque:0];
-  v20 = [MEMORY[0x1E69DC888] clearColor];
-  [(UIImageView *)self->_heroImageView setBackgroundColor:v20];
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  [(UIImageView *)self->_heroImageView setBackgroundColor:clearColor2];
 
   v21 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   titleLabel = self->_titleLabel;
   self->_titleLabel = v21;
 
-  v23 = [(CKSentWithSiriViewController *)self _titleLabelText];
-  [(UILabel *)self->_titleLabel setText:v23];
+  _titleLabelText = [(CKSentWithSiriViewController *)self _titleLabelText];
+  [(UILabel *)self->_titleLabel setText:_titleLabelText];
 
   v139 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDD58] addingSymbolicTraits:2 options:0];
   v24 = [MEMORY[0x1E69DB878] fontWithDescriptor:v139 size:0.0];
   [(UILabel *)self->_titleLabel setFont:v24];
 
-  v25 = [MEMORY[0x1E69DC888] labelColor];
-  [(UILabel *)self->_titleLabel setTextColor:v25];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [(UILabel *)self->_titleLabel setTextColor:labelColor];
 
-  v26 = [MEMORY[0x1E69DC888] clearColor];
-  [(UILabel *)self->_titleLabel setBackgroundColor:v26];
+  clearColor3 = [MEMORY[0x1E69DC888] clearColor];
+  [(UILabel *)self->_titleLabel setBackgroundColor:clearColor3];
 
   [(UILabel *)self->_titleLabel setNumberOfLines:0];
   [(UILabel *)self->_titleLabel setTextAlignment:1];
@@ -106,11 +106,11 @@
   v31 = [MEMORY[0x1E69DB878] __ck_preferredFontForStyle:v13];
   [(UILabel *)self->_subtitleLabel setFont:v31];
 
-  v32 = [MEMORY[0x1E69DC888] labelColor];
-  [(UILabel *)self->_subtitleLabel setTextColor:v32];
+  labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+  [(UILabel *)self->_subtitleLabel setTextColor:labelColor2];
 
-  v33 = [MEMORY[0x1E69DC888] clearColor];
-  [(UILabel *)self->_subtitleLabel setBackgroundColor:v33];
+  clearColor4 = [MEMORY[0x1E69DC888] clearColor];
+  [(UILabel *)self->_subtitleLabel setBackgroundColor:clearColor4];
 
   [(UILabel *)self->_subtitleLabel setNumberOfLines:0];
   [(UILabel *)self->_subtitleLabel setTextAlignment:1];
@@ -125,16 +125,16 @@
   v38 = [MEMORY[0x1E69DB878] __ck_preferredFontForStyle:v13];
   [(UILabel *)self->_detailLabel setFont:v38];
 
-  v39 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(UILabel *)self->_detailLabel setTextColor:v39];
+  secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(UILabel *)self->_detailLabel setTextColor:secondaryLabelColor2];
 
-  v40 = [MEMORY[0x1E69DC888] clearColor];
-  [(UILabel *)self->_detailLabel setBackgroundColor:v40];
+  clearColor5 = [MEMORY[0x1E69DC888] clearColor];
+  [(UILabel *)self->_detailLabel setBackgroundColor:clearColor5];
 
   [(UILabel *)self->_detailLabel setNumberOfLines:0];
   [(UILabel *)self->_detailLabel setTextAlignment:1];
-  v41 = [(CKSentWithSiriViewController *)self view];
-  [v41 addSubview:self->_scrollView];
+  view2 = [(CKSentWithSiriViewController *)self view];
+  [view2 addSubview:self->_scrollView];
 
   [(UIScrollView *)self->_scrollView addSubview:self->_contentView];
   [(UIView *)self->_contentView addSubview:self->_contextDescriptionLabel];
@@ -149,163 +149,163 @@
   [(UILabel *)self->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UILabel *)self->_subtitleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UILabel *)self->_detailLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v42 = [(UIScrollView *)self->_scrollView leadingAnchor];
-  v43 = [(CKSentWithSiriViewController *)self view];
-  v44 = [v43 leadingAnchor];
-  v45 = [v42 constraintEqualToAnchor:v44];
+  leadingAnchor = [(UIScrollView *)self->_scrollView leadingAnchor];
+  view3 = [(CKSentWithSiriViewController *)self view];
+  leadingAnchor2 = [view3 leadingAnchor];
+  v45 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v45 setActive:1];
 
-  v46 = [(UIScrollView *)self->_scrollView trailingAnchor];
-  v47 = [(CKSentWithSiriViewController *)self view];
-  v48 = [v47 trailingAnchor];
-  v49 = [v46 constraintEqualToAnchor:v48];
+  trailingAnchor = [(UIScrollView *)self->_scrollView trailingAnchor];
+  view4 = [(CKSentWithSiriViewController *)self view];
+  trailingAnchor2 = [view4 trailingAnchor];
+  v49 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v49 setActive:1];
 
-  v50 = [(UIScrollView *)self->_scrollView topAnchor];
-  v51 = [(CKSentWithSiriViewController *)self view];
-  v52 = [v51 topAnchor];
-  v53 = [v50 constraintEqualToAnchor:v52];
+  topAnchor = [(UIScrollView *)self->_scrollView topAnchor];
+  view5 = [(CKSentWithSiriViewController *)self view];
+  topAnchor2 = [view5 topAnchor];
+  v53 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v53 setActive:1];
 
-  v54 = [(UIScrollView *)self->_scrollView bottomAnchor];
-  v55 = [(CKSentWithSiriViewController *)self view];
-  v56 = [v55 bottomAnchor];
-  v57 = [v54 constraintEqualToAnchor:v56];
+  bottomAnchor = [(UIScrollView *)self->_scrollView bottomAnchor];
+  view6 = [(CKSentWithSiriViewController *)self view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v57 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v57 setActive:1];
 
-  v58 = [(UIView *)self->_contentView leadingAnchor];
-  v59 = [(UIScrollView *)self->_scrollView frameLayoutGuide];
-  v60 = [v59 leadingAnchor];
-  v61 = [v58 constraintEqualToAnchor:v60];
+  leadingAnchor3 = [(UIView *)self->_contentView leadingAnchor];
+  frameLayoutGuide = [(UIScrollView *)self->_scrollView frameLayoutGuide];
+  leadingAnchor4 = [frameLayoutGuide leadingAnchor];
+  v61 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v61 setActive:1];
 
-  v62 = [(UIView *)self->_contentView trailingAnchor];
-  v63 = [(UIScrollView *)self->_scrollView frameLayoutGuide];
-  v64 = [v63 trailingAnchor];
-  v65 = [v62 constraintEqualToAnchor:v64];
+  trailingAnchor3 = [(UIView *)self->_contentView trailingAnchor];
+  frameLayoutGuide2 = [(UIScrollView *)self->_scrollView frameLayoutGuide];
+  trailingAnchor4 = [frameLayoutGuide2 trailingAnchor];
+  v65 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v65 setActive:1];
 
-  v66 = [(UIView *)self->_contentView topAnchor];
-  v67 = [(UIScrollView *)self->_scrollView contentLayoutGuide];
-  v68 = [v67 topAnchor];
-  v69 = [v66 constraintEqualToAnchor:v68];
+  topAnchor3 = [(UIView *)self->_contentView topAnchor];
+  contentLayoutGuide = [(UIScrollView *)self->_scrollView contentLayoutGuide];
+  topAnchor4 = [contentLayoutGuide topAnchor];
+  v69 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   [v69 setActive:1];
 
-  v70 = [(UIView *)self->_contentView bottomAnchor];
-  v71 = [(UIScrollView *)self->_scrollView contentLayoutGuide];
-  v72 = [v71 bottomAnchor];
-  v73 = [v70 constraintEqualToAnchor:v72];
+  bottomAnchor3 = [(UIView *)self->_contentView bottomAnchor];
+  contentLayoutGuide2 = [(UIScrollView *)self->_scrollView contentLayoutGuide];
+  bottomAnchor4 = [contentLayoutGuide2 bottomAnchor];
+  v73 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   [v73 setActive:1];
 
-  v74 = [(UILabel *)self->_contextDescriptionLabel topAnchor];
-  v75 = [(UIView *)self->_contentView safeAreaLayoutGuide];
-  v76 = [v75 topAnchor];
-  v77 = [v74 constraintEqualToAnchor:v76 constant:60.0];
+  topAnchor5 = [(UILabel *)self->_contextDescriptionLabel topAnchor];
+  safeAreaLayoutGuide = [(UIView *)self->_contentView safeAreaLayoutGuide];
+  topAnchor6 = [safeAreaLayoutGuide topAnchor];
+  v77 = [topAnchor5 constraintEqualToAnchor:topAnchor6 constant:60.0];
   [v77 setActive:1];
 
-  v78 = [(UIImageView *)self->_heroImageView topAnchor];
-  v79 = [(UILabel *)self->_contextDescriptionLabel bottomAnchor];
-  v80 = [v78 constraintEqualToAnchor:v79 constant:40.0];
+  topAnchor7 = [(UIImageView *)self->_heroImageView topAnchor];
+  bottomAnchor5 = [(UILabel *)self->_contextDescriptionLabel bottomAnchor];
+  v80 = [topAnchor7 constraintEqualToAnchor:bottomAnchor5 constant:40.0];
   [v80 setActive:1];
 
-  v81 = [(UIImageView *)self->_heroImageView heightAnchor];
-  v82 = [v81 constraintEqualToConstant:120.0];
+  heightAnchor = [(UIImageView *)self->_heroImageView heightAnchor];
+  v82 = [heightAnchor constraintEqualToConstant:120.0];
   [v82 setActive:1];
 
-  v83 = [(UILabel *)self->_titleLabel topAnchor];
-  v84 = [(UIImageView *)self->_heroImageView bottomAnchor];
-  v85 = [v83 constraintEqualToAnchor:v84 constant:16.0];
+  topAnchor8 = [(UILabel *)self->_titleLabel topAnchor];
+  bottomAnchor6 = [(UIImageView *)self->_heroImageView bottomAnchor];
+  v85 = [topAnchor8 constraintEqualToAnchor:bottomAnchor6 constant:16.0];
   [v85 setActive:1];
 
-  v86 = [(UILabel *)self->_subtitleLabel topAnchor];
-  v87 = [(UILabel *)self->_titleLabel bottomAnchor];
-  v88 = [v86 constraintEqualToAnchor:v87 constant:4.0];
+  topAnchor9 = [(UILabel *)self->_subtitleLabel topAnchor];
+  bottomAnchor7 = [(UILabel *)self->_titleLabel bottomAnchor];
+  v88 = [topAnchor9 constraintEqualToAnchor:bottomAnchor7 constant:4.0];
   [v88 setActive:1];
 
-  v89 = [(UILabel *)self->_detailLabel topAnchor];
-  v90 = [(UILabel *)self->_subtitleLabel bottomAnchor];
-  v91 = [v89 constraintEqualToAnchor:v90 constant:48.0];
+  topAnchor10 = [(UILabel *)self->_detailLabel topAnchor];
+  bottomAnchor8 = [(UILabel *)self->_subtitleLabel bottomAnchor];
+  v91 = [topAnchor10 constraintEqualToAnchor:bottomAnchor8 constant:48.0];
   [v91 setActive:1];
 
-  v92 = [(UIView *)self->_contentView safeAreaLayoutGuide];
-  v93 = [v92 bottomAnchor];
-  v94 = [(UILabel *)self->_detailLabel bottomAnchor];
-  v95 = [v93 constraintEqualToAnchor:v94 constant:16.0];
+  safeAreaLayoutGuide2 = [(UIView *)self->_contentView safeAreaLayoutGuide];
+  bottomAnchor9 = [safeAreaLayoutGuide2 bottomAnchor];
+  bottomAnchor10 = [(UILabel *)self->_detailLabel bottomAnchor];
+  v95 = [bottomAnchor9 constraintEqualToAnchor:bottomAnchor10 constant:16.0];
   [v95 setActive:1];
 
-  v96 = [(UILabel *)self->_contextDescriptionLabel leadingAnchor];
-  v97 = [(UIView *)self->_contentView readableContentGuide];
-  v98 = [v97 leadingAnchor];
-  v99 = [v96 constraintEqualToAnchor:v98];
+  leadingAnchor5 = [(UILabel *)self->_contextDescriptionLabel leadingAnchor];
+  readableContentGuide = [(UIView *)self->_contentView readableContentGuide];
+  leadingAnchor6 = [readableContentGuide leadingAnchor];
+  v99 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   [v99 setActive:1];
 
-  v100 = [(UILabel *)self->_contextDescriptionLabel trailingAnchor];
-  v101 = [(UIView *)self->_contentView readableContentGuide];
-  v102 = [v101 trailingAnchor];
-  v103 = [v100 constraintEqualToAnchor:v102];
+  trailingAnchor5 = [(UILabel *)self->_contextDescriptionLabel trailingAnchor];
+  readableContentGuide2 = [(UIView *)self->_contentView readableContentGuide];
+  trailingAnchor6 = [readableContentGuide2 trailingAnchor];
+  v103 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   [v103 setActive:1];
 
-  v104 = [(UIImageView *)self->_heroImageView widthAnchor];
-  v105 = [v104 constraintEqualToConstant:120.0];
+  widthAnchor = [(UIImageView *)self->_heroImageView widthAnchor];
+  v105 = [widthAnchor constraintEqualToConstant:120.0];
   [v105 setActive:1];
 
-  v106 = [(UIImageView *)self->_heroImageView centerXAnchor];
-  v107 = [(UIView *)self->_contentView readableContentGuide];
-  v108 = [v107 centerXAnchor];
-  v109 = [v106 constraintEqualToAnchor:v108];
+  centerXAnchor = [(UIImageView *)self->_heroImageView centerXAnchor];
+  readableContentGuide3 = [(UIView *)self->_contentView readableContentGuide];
+  centerXAnchor2 = [readableContentGuide3 centerXAnchor];
+  v109 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v109 setActive:1];
 
-  v110 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v111 = [(UIView *)self->_contentView readableContentGuide];
-  v112 = [v111 leadingAnchor];
-  v113 = [v110 constraintEqualToAnchor:v112];
+  leadingAnchor7 = [(UILabel *)self->_titleLabel leadingAnchor];
+  readableContentGuide4 = [(UIView *)self->_contentView readableContentGuide];
+  leadingAnchor8 = [readableContentGuide4 leadingAnchor];
+  v113 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
   [v113 setActive:1];
 
-  v114 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v115 = [(UIView *)self->_contentView readableContentGuide];
-  v116 = [v115 trailingAnchor];
-  v117 = [v114 constraintEqualToAnchor:v116];
+  trailingAnchor7 = [(UILabel *)self->_titleLabel trailingAnchor];
+  readableContentGuide5 = [(UIView *)self->_contentView readableContentGuide];
+  trailingAnchor8 = [readableContentGuide5 trailingAnchor];
+  v117 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
   [v117 setActive:1];
 
-  v118 = [(UILabel *)self->_subtitleLabel leadingAnchor];
-  v119 = [(UIView *)self->_contentView readableContentGuide];
-  v120 = [v119 leadingAnchor];
-  v121 = [v118 constraintEqualToAnchor:v120];
+  leadingAnchor9 = [(UILabel *)self->_subtitleLabel leadingAnchor];
+  readableContentGuide6 = [(UIView *)self->_contentView readableContentGuide];
+  leadingAnchor10 = [readableContentGuide6 leadingAnchor];
+  v121 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
   [v121 setActive:1];
 
-  v122 = [(UILabel *)self->_subtitleLabel trailingAnchor];
-  v123 = [(UIView *)self->_contentView readableContentGuide];
-  v124 = [v123 trailingAnchor];
-  v125 = [v122 constraintEqualToAnchor:v124];
+  trailingAnchor9 = [(UILabel *)self->_subtitleLabel trailingAnchor];
+  readableContentGuide7 = [(UIView *)self->_contentView readableContentGuide];
+  trailingAnchor10 = [readableContentGuide7 trailingAnchor];
+  v125 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
   [v125 setActive:1];
 
-  v126 = [(UILabel *)self->_detailLabel leadingAnchor];
-  v127 = [(UIView *)self->_contentView readableContentGuide];
-  v128 = [v127 leadingAnchor];
-  v129 = [v126 constraintEqualToAnchor:v128];
+  leadingAnchor11 = [(UILabel *)self->_detailLabel leadingAnchor];
+  readableContentGuide8 = [(UIView *)self->_contentView readableContentGuide];
+  leadingAnchor12 = [readableContentGuide8 leadingAnchor];
+  v129 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12];
   [v129 setActive:1];
 
-  v130 = [(UILabel *)self->_detailLabel trailingAnchor];
-  v131 = [(UIView *)self->_contentView readableContentGuide];
-  v132 = [v131 trailingAnchor];
-  v133 = [v130 constraintEqualToAnchor:v132];
+  trailingAnchor11 = [(UILabel *)self->_detailLabel trailingAnchor];
+  readableContentGuide9 = [(UIView *)self->_contentView readableContentGuide];
+  trailingAnchor12 = [readableContentGuide9 trailingAnchor];
+  v133 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor12];
   [v133 setActive:1];
 
   LODWORD(v134) = 1148846080;
   [(UIScrollView *)self->_scrollView setContentCompressionResistancePriority:0 forAxis:v134];
   LODWORD(v135) = 1144750080;
   [(UIScrollView *)self->_scrollView setContentCompressionResistancePriority:1 forAxis:v135];
-  v136 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v137 = [v136 integerForKey:@"SentWithSiriLearningUIShownNumberOfTimes"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v137 = [standardUserDefaults integerForKey:@"SentWithSiriLearningUIShownNumberOfTimes"];
 
-  v138 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v138 setInteger:v137 + 1 forKey:@"SentWithSiriLearningUIShownNumberOfTimes"];
+  standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults2 setInteger:v137 + 1 forKey:@"SentWithSiriLearningUIShownNumberOfTimes"];
 }
 
 - (id)_titleLabelText
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696E958] siriLanguageCode];
+  siriLanguageCode = [MEMORY[0x1E696E958] siriLanguageCode];
   v23 = 0;
   v24 = &v23;
   v25 = 0x2050000000;
@@ -324,22 +324,22 @@
 
   v5 = v4;
   _Block_object_dispose(&v23, 8);
-  v6 = [v4 sharedPreferences];
-  v7 = [v6 voiceTriggerEnabled];
-  v8 = [v6 localizedTriggerPhraseForLanguageCode:v3];
+  sharedPreferences = [v4 sharedPreferences];
+  voiceTriggerEnabled = [sharedPreferences voiceTriggerEnabled];
+  v8 = [sharedPreferences localizedTriggerPhraseForLanguageCode:siriLanguageCode];
   if ([(CKConversation *)self->_conversation hasDisplayName])
   {
-    v9 = [(CKConversation *)self->_conversation displayName];
-    if ([v9 ck_isSiriRecognizableWithLanguageCode:v3])
+    displayName = [(CKConversation *)self->_conversation displayName];
+    if ([displayName ck_isSiriRecognizableWithLanguageCode:siriLanguageCode])
     {
-      if (v7)
+      if (voiceTriggerEnabled)
       {
-        [(CKSentWithSiriViewController *)self localizedStringWithLanguageCode:v3 format:@"SENT_WITH_SIRI_DETAIL_CONTROLLER_FORMAT_FOR_VOICE_TRIGGER_WITH_GROUP_NAME", v8, v9];
+        [(CKSentWithSiriViewController *)self localizedStringWithLanguageCode:siriLanguageCode format:@"SENT_WITH_SIRI_DETAIL_CONTROLLER_FORMAT_FOR_VOICE_TRIGGER_WITH_GROUP_NAME", v8, displayName];
       }
 
       else
       {
-        [(CKSentWithSiriViewController *)self localizedStringWithLanguageCode:v3 format:@"SENT_WITH_SIRI_DETAIL_CONTROLLER_FORMAT_FOR_MANUAL_ACTIVATION_WITH_GROUP_NAME", v9];
+        [(CKSentWithSiriViewController *)self localizedStringWithLanguageCode:siriLanguageCode format:@"SENT_WITH_SIRI_DETAIL_CONTROLLER_FORMAT_FOR_MANUAL_ACTIVATION_WITH_GROUP_NAME", displayName];
       }
       v10 = ;
     }
@@ -357,31 +357,31 @@
 
   if (![v10 length])
   {
-    v11 = [(CKConversation *)self->_conversation recipients];
-    v12 = [v11 count] == 1;
+    recipients = [(CKConversation *)self->_conversation recipients];
+    v12 = [recipients count] == 1;
 
     if (v12)
     {
-      v13 = [(CKConversation *)self->_conversation recipient];
+      recipient = [(CKConversation *)self->_conversation recipient];
       v27[0] = *MEMORY[0x1E695C240];
       v14 = [MEMORY[0x1E695CD80] descriptorForRequiredKeysForStyle:0];
       v27[1] = v14;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:2];
-      v16 = [v13 cnContactWithKeys:v15];
+      v16 = [recipient cnContactWithKeys:v15];
 
       if (v16)
       {
-        v17 = [v16 givenName];
-        if ([v17 length] && objc_msgSend(v17, "ck_isSiriRecognizableWithLanguageCode:", v3))
+        givenName = [v16 givenName];
+        if ([givenName length] && objc_msgSend(givenName, "ck_isSiriRecognizableWithLanguageCode:", siriLanguageCode))
         {
-          if (v7)
+          if (voiceTriggerEnabled)
           {
-            [(CKSentWithSiriViewController *)self localizedStringWithLanguageCode:v3 format:@"SENT_WITH_SIRI_DETAIL_CONTROLLER_FORMAT_FOR_VOICE_TRIGGER_WITH_RECIPIENT_GIVEN_NAME", v8, v17];
+            [(CKSentWithSiriViewController *)self localizedStringWithLanguageCode:siriLanguageCode format:@"SENT_WITH_SIRI_DETAIL_CONTROLLER_FORMAT_FOR_VOICE_TRIGGER_WITH_RECIPIENT_GIVEN_NAME", v8, givenName];
           }
 
           else
           {
-            [(CKSentWithSiriViewController *)self localizedStringWithLanguageCode:v3 format:@"SENT_WITH_SIRI_DETAIL_CONTROLLER_FORMAT_FOR_MANUAL_ACTIVATION_WITH_RECIPIENT_GIVEN_NAME", v17];
+            [(CKSentWithSiriViewController *)self localizedStringWithLanguageCode:siriLanguageCode format:@"SENT_WITH_SIRI_DETAIL_CONTROLLER_FORMAT_FOR_MANUAL_ACTIVATION_WITH_RECIPIENT_GIVEN_NAME", givenName];
           }
           v18 = ;
         }
@@ -399,16 +399,16 @@
         else
         {
           v19 = [MEMORY[0x1E695CD80] stringFromContact:v16 style:0];
-          if ([v19 length] && objc_msgSend(v19, "ck_isSiriRecognizableWithLanguageCode:", v3))
+          if ([v19 length] && objc_msgSend(v19, "ck_isSiriRecognizableWithLanguageCode:", siriLanguageCode))
           {
-            if (v7)
+            if (voiceTriggerEnabled)
             {
-              [(CKSentWithSiriViewController *)self localizedStringWithLanguageCode:v3 format:@"SENT_WITH_SIRI_DETAIL_CONTROLLER_FORMAT_FOR_VOICE_TRIGGER_WITH_RECIPIENT_FULL_NAME", v8, v19];
+              [(CKSentWithSiriViewController *)self localizedStringWithLanguageCode:siriLanguageCode format:@"SENT_WITH_SIRI_DETAIL_CONTROLLER_FORMAT_FOR_VOICE_TRIGGER_WITH_RECIPIENT_FULL_NAME", v8, v19];
             }
 
             else
             {
-              [(CKSentWithSiriViewController *)self localizedStringWithLanguageCode:v3 format:@"SENT_WITH_SIRI_DETAIL_CONTROLLER_FORMAT_FOR_MANUAL_ACTIVATION_WITH_RECIPIENT_FULL_NAME", v19];
+              [(CKSentWithSiriViewController *)self localizedStringWithLanguageCode:siriLanguageCode format:@"SENT_WITH_SIRI_DETAIL_CONTROLLER_FORMAT_FOR_MANUAL_ACTIVATION_WITH_RECIPIENT_FULL_NAME", v19];
             }
             v10 = ;
           }
@@ -429,14 +429,14 @@
 
   else
   {
-    if (v7)
+    if (voiceTriggerEnabled)
     {
-      [(CKSentWithSiriViewController *)self localizedStringWithLanguageCode:v3 format:@"SENT_WITH_SIRI_DETAIL_CONTROLLER_TITLE_FOR_VOICE_TRIGGER", v8];
+      [(CKSentWithSiriViewController *)self localizedStringWithLanguageCode:siriLanguageCode format:@"SENT_WITH_SIRI_DETAIL_CONTROLLER_TITLE_FOR_VOICE_TRIGGER", v8];
     }
 
     else
     {
-      [(CKSentWithSiriViewController *)self localizedStringWithLanguageCode:v3 format:@"SENT_WITH_SIRI_DETAIL_CONTROLLER_TITLE_FOR_MANUAL_ACTIVATION"];
+      [(CKSentWithSiriViewController *)self localizedStringWithLanguageCode:siriLanguageCode format:@"SENT_WITH_SIRI_DETAIL_CONTROLLER_TITLE_FOR_MANUAL_ACTIVATION"];
     }
     v20 = ;
   }
@@ -444,42 +444,42 @@
   return v20;
 }
 
-- (id)localizedStringWithLanguageCode:(id)a3 format:(id)a4
+- (id)localizedStringWithLanguageCode:(id)code format:(id)format
 {
   v5 = MEMORY[0x1E696E818];
-  v6 = a4;
-  v7 = a3;
+  formatCopy = format;
+  codeCopy = code;
   v8 = [v5 alloc];
   v9 = CKFrameworkBundle();
-  v10 = [v8 initWithDeferredFormat:v6 fromTable:@"ChatKit" bundle:v9 arguments:&v14];
+  v10 = [v8 initWithDeferredFormat:formatCopy fromTable:@"ChatKit" bundle:v9 arguments:&v14];
 
-  v11 = [v10 localizeForLanguage:v7];
+  v11 = [v10 localizeForLanguage:codeCopy];
 
   return v11;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = CKSentWithSiriViewController;
-  [(CKSentWithSiriViewController *)&v5 viewDidAppear:a3];
+  [(CKSentWithSiriViewController *)&v5 viewDidAppear:appear];
   [(CKSentWithSiriViewController *)self becomeFirstResponder];
-  v4 = [(CKSentWithSiriViewController *)self scrollView];
-  [v4 flashScrollIndicators];
+  scrollView = [(CKSentWithSiriViewController *)self scrollView];
+  [scrollView flashScrollIndicators];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  [v4 safeAreaInsets];
+  scrollCopy = scroll;
+  [scrollCopy safeAreaInsets];
   v6 = v5;
   v7 = -v5;
-  [v4 contentOffset];
+  [scrollCopy contentOffset];
   v9 = v8;
 
-  v11 = [(CKSentWithSiriViewController *)self navigationController];
-  v10 = [v11 navigationBar];
-  [v10 _setShadowAlpha:{(v6 + fmax(fmin(v9, 40.0 - v6), v7)) / 40.0}];
+  navigationController = [(CKSentWithSiriViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar _setShadowAlpha:{(v6 + fmax(fmin(v9, 40.0 - v6), v7)) / 40.0}];
 }
 
 @end

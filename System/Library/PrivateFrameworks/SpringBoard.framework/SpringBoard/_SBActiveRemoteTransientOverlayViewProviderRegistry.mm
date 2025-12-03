@@ -1,8 +1,8 @@
 @interface _SBActiveRemoteTransientOverlayViewProviderRegistry
 + (id)sharedInstance;
 - (_SBActiveRemoteTransientOverlayViewProviderRegistry)init;
-- (void)registerViewProvider:(id)a3;
-- (void)unregisterViewProvider:(id)a3;
+- (void)registerViewProvider:(id)provider;
+- (void)unregisterViewProvider:(id)provider;
 @end
 
 @implementation _SBActiveRemoteTransientOverlayViewProviderRegistry
@@ -26,65 +26,65 @@
   v2 = [(_SBActiveRemoteTransientOverlayViewProviderRegistry *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     viewProviderAdapterForSceneIdentifier = v2->_viewProviderAdapterForSceneIdentifier;
-    v2->_viewProviderAdapterForSceneIdentifier = v3;
+    v2->_viewProviderAdapterForSceneIdentifier = strongToStrongObjectsMapTable;
   }
 
   return v2;
 }
 
-- (void)registerViewProvider:(id)a3
+- (void)registerViewProvider:(id)provider
 {
-  v7 = a3;
-  v4 = [v7 sceneHandle];
-  v5 = [v4 sceneIdentifier];
+  providerCopy = provider;
+  sceneHandle = [providerCopy sceneHandle];
+  sceneIdentifier = [sceneHandle sceneIdentifier];
 
-  v6 = [(NSMapTable *)self->_viewProviderAdapterForSceneIdentifier objectForKey:v5];
+  v6 = [(NSMapTable *)self->_viewProviderAdapterForSceneIdentifier objectForKey:sceneIdentifier];
   if (!v6)
   {
     v6 = objc_alloc_init(_SBActiveRemoteTransientOverlayViewProviderAdapter);
-    [(NSMapTable *)self->_viewProviderAdapterForSceneIdentifier setObject:v6 forKey:v5];
+    [(NSMapTable *)self->_viewProviderAdapterForSceneIdentifier setObject:v6 forKey:sceneIdentifier];
     [SBApp registerRemoteAlertSceneViewProvider:v6];
   }
 
-  if ([v7 handlesSceneBackedRemoteTransientOverlaysOnly])
+  if ([providerCopy handlesSceneBackedRemoteTransientOverlaysOnly])
   {
-    [(_SBActiveRemoteTransientOverlayViewProviderAdapter *)v6 setSceneBackedProvider:v7];
+    [(_SBActiveRemoteTransientOverlayViewProviderAdapter *)v6 setSceneBackedProvider:providerCopy];
   }
 
   else
   {
-    [(_SBActiveRemoteTransientOverlayViewProviderAdapter *)v6 setViewServiceProvider:v7];
+    [(_SBActiveRemoteTransientOverlayViewProviderAdapter *)v6 setViewServiceProvider:providerCopy];
   }
 }
 
-- (void)unregisterViewProvider:(id)a3
+- (void)unregisterViewProvider:(id)provider
 {
-  v10 = a3;
-  v4 = [v10 sceneHandle];
-  v5 = [v4 sceneIdentifier];
+  providerCopy = provider;
+  sceneHandle = [providerCopy sceneHandle];
+  sceneIdentifier = [sceneHandle sceneIdentifier];
 
-  v6 = [(NSMapTable *)self->_viewProviderAdapterForSceneIdentifier objectForKey:v5];
+  v6 = [(NSMapTable *)self->_viewProviderAdapterForSceneIdentifier objectForKey:sceneIdentifier];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 sceneBackedProvider];
-    v9 = [v7 viewServiceProvider];
-    if (v8 == v10)
+    sceneBackedProvider = [v6 sceneBackedProvider];
+    viewServiceProvider = [v7 viewServiceProvider];
+    if (sceneBackedProvider == providerCopy)
     {
       [v7 setSceneBackedProvider:0];
     }
 
-    else if (v9 == v10)
+    else if (viewServiceProvider == providerCopy)
     {
       [v7 setViewServiceProvider:0];
     }
 
-    if (!(v8 | v9))
+    if (!(sceneBackedProvider | viewServiceProvider))
     {
       [SBApp unregisterRemoteAlertSceneViewProvider:v7];
-      [(NSMapTable *)self->_viewProviderAdapterForSceneIdentifier removeObjectForKey:v5];
+      [(NSMapTable *)self->_viewProviderAdapterForSceneIdentifier removeObjectForKey:sceneIdentifier];
     }
   }
 }

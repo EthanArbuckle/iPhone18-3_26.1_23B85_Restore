@@ -1,11 +1,11 @@
 @interface HMDSoftwareUpdate
 + (id)logCategory;
 - (BOOL)hasRegisteredDocumentationMetadata;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HMDAccessory)accessory;
-- (HMDSoftwareUpdate)initWithCoder:(id)a3;
-- (HMDSoftwareUpdate)initWithModel:(id)a3;
-- (HMDSoftwareUpdate)initWithVersion:(id)a3 displayableVersion:(id)a4 downloadSize:(unint64_t)a5 state:(int64_t)a6 installDuration:(double)a7 documentationMetadata:(id)a8 releaseDate:(id)a9;
+- (HMDSoftwareUpdate)initWithCoder:(id)coder;
+- (HMDSoftwareUpdate)initWithModel:(id)model;
+- (HMDSoftwareUpdate)initWithVersion:(id)version displayableVersion:(id)displayableVersion downloadSize:(unint64_t)size state:(int64_t)state installDuration:(double)duration documentationMetadata:(id)metadata releaseDate:(id)date;
 - (HMDSoftwareUpdateDataSource)dataSource;
 - (HMDSoftwareUpdateModel)model;
 - (HMSoftwareUpdateDocumentationMetadata)documentationMetadata;
@@ -13,32 +13,32 @@
 - (NSString)propertyDescription;
 - (id)logIdentifier;
 - (id)messageDestination;
-- (id)transactionWithObjectChangeType:(unint64_t)a3;
-- (id)transactionWithObjectChangeType:(unint64_t)a3 forAccessoryUUID:(id)a4;
+- (id)transactionWithObjectChangeType:(unint64_t)type;
+- (id)transactionWithObjectChangeType:(unint64_t)type forAccessoryUUID:(id)d;
 - (int64_t)state;
 - (unint64_t)hash;
 - (unint64_t)needsAttentionReasons;
 - (unint64_t)updateType;
-- (void)_handleDocumentationRequest:(id)a3;
-- (void)_handleDocumentationStateNotification:(id)a3;
-- (void)_handleNeedsAttentionReasonsRequest:(id)a3;
-- (void)_handleUpdateDocumentationMetadata:(id)a3;
-- (void)_handleUpdateState:(id)a3;
-- (void)_processFirmwareUpdateUINotification:(id)a3;
-- (void)_updateState:(int64_t)a3 message:(id)a4 options:(id)a5;
-- (void)configureWithAccessory:(id)a3 dataSource:(id)a4 messageDispatcher:(id)a5;
+- (void)_handleDocumentationRequest:(id)request;
+- (void)_handleDocumentationStateNotification:(id)notification;
+- (void)_handleNeedsAttentionReasonsRequest:(id)request;
+- (void)_handleUpdateDocumentationMetadata:(id)metadata;
+- (void)_handleUpdateState:(id)state;
+- (void)_processFirmwareUpdateUINotification:(id)notification;
+- (void)_updateState:(int64_t)state message:(id)message options:(id)options;
+- (void)configureWithAccessory:(id)accessory dataSource:(id)source messageDispatcher:(id)dispatcher;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
 - (void)registerForMessages;
-- (void)setDocumentationMetadata:(id)a3;
-- (void)setHasRegisteredDocumentationMetadata:(BOOL)a3;
-- (void)setNeedsAttentionReasons:(unint64_t)a3;
-- (void)setReleaseDate:(id)a3;
-- (void)setState:(int64_t)a3;
-- (void)setUpdateType:(unint64_t)a3;
-- (void)transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5;
-- (void)updateLocalState:(int64_t)a3;
+- (void)setDocumentationMetadata:(id)metadata;
+- (void)setHasRegisteredDocumentationMetadata:(BOOL)metadata;
+- (void)setNeedsAttentionReasons:(unint64_t)reasons;
+- (void)setReleaseDate:(id)date;
+- (void)setState:(int64_t)state;
+- (void)setUpdateType:(unint64_t)type;
+- (void)transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message;
+- (void)updateLocalState:(int64_t)state;
 @end
 
 @implementation HMDSoftwareUpdate
@@ -57,63 +57,63 @@
   return WeakRetained;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v17 = a3;
-  v4 = [(HMDSoftwareUpdate *)self identifier];
-  [v17 encodeObject:v4 forKey:*MEMORY[0x277CD10E8]];
+  coderCopy = coder;
+  identifier = [(HMDSoftwareUpdate *)self identifier];
+  [coderCopy encodeObject:identifier forKey:*MEMORY[0x277CD10E8]];
 
-  v5 = [(HMDSoftwareUpdate *)self version];
-  [v17 encodeObject:v5 forKey:*MEMORY[0x277CD1190]];
+  version = [(HMDSoftwareUpdate *)self version];
+  [coderCopy encodeObject:version forKey:*MEMORY[0x277CD1190]];
 
-  v6 = [(HMDSoftwareUpdate *)self displayableVersion];
-  [v17 encodeObject:v6 forKey:*MEMORY[0x277CD10B0]];
+  displayableVersion = [(HMDSoftwareUpdate *)self displayableVersion];
+  [coderCopy encodeObject:displayableVersion forKey:*MEMORY[0x277CD10B0]];
 
-  v7 = [(HMDSoftwareUpdate *)self state];
-  [v17 encodeInteger:v7 forKey:*MEMORY[0x277CD1168]];
-  v8 = [(HMDSoftwareUpdate *)self downloadSize];
-  [v17 encodeInt64:v8 forKey:*MEMORY[0x277CD10E0]];
+  state = [(HMDSoftwareUpdate *)self state];
+  [coderCopy encodeInteger:state forKey:*MEMORY[0x277CD1168]];
+  downloadSize = [(HMDSoftwareUpdate *)self downloadSize];
+  [coderCopy encodeInt64:downloadSize forKey:*MEMORY[0x277CD10E0]];
   [(HMDSoftwareUpdate *)self installDuration];
-  [v17 encodeInteger:v9 forKey:*MEMORY[0x277CD10F0]];
-  v10 = [(HMDSoftwareUpdate *)self documentationMetadata];
-  [v17 encodeObject:v10 forKey:*MEMORY[0x277CD10C8]];
+  [coderCopy encodeInteger:v9 forKey:*MEMORY[0x277CD10F0]];
+  documentationMetadata = [(HMDSoftwareUpdate *)self documentationMetadata];
+  [coderCopy encodeObject:documentationMetadata forKey:*MEMORY[0x277CD10C8]];
 
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDSoftwareUpdate updateType](self, "updateType")}];
-  [v17 encodeObject:v11 forKey:*MEMORY[0x277CD1188]];
+  [coderCopy encodeObject:v11 forKey:*MEMORY[0x277CD1188]];
 
-  v12 = [(HMDSoftwareUpdate *)self releaseDate];
-  [v17 encodeObject:v12 forKey:*MEMORY[0x277CD1150]];
+  releaseDate = [(HMDSoftwareUpdate *)self releaseDate];
+  [coderCopy encodeObject:releaseDate forKey:*MEMORY[0x277CD1150]];
 
-  if ([v17 hmd_isForXPCTransportEntitledForSPIAccess])
+  if ([coderCopy hmd_isForXPCTransportEntitledForSPIAccess])
   {
     v13 = +[HMDSoftwareUpdateDocumentationManager sharedManager];
-    v14 = [(HMDSoftwareUpdate *)self documentationMetadata];
-    v15 = [v13 assetForDocumentationMetadata:v14];
+    documentationMetadata2 = [(HMDSoftwareUpdate *)self documentationMetadata];
+    v15 = [v13 assetForDocumentationMetadata:documentationMetadata2];
 
-    v16 = [v15 documentation];
-    [v17 encodeObject:v16 forKey:*MEMORY[0x277CD10B8]];
+    documentation = [v15 documentation];
+    [coderCopy encodeObject:documentation forKey:*MEMORY[0x277CD10B8]];
   }
 }
 
-- (HMDSoftwareUpdate)initWithCoder:(id)a3
+- (HMDSoftwareUpdate)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CD1190]];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CD10B0]];
-  if (!v6)
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CD1190]];
+  shortVersionString = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CD10B0]];
+  if (!shortVersionString)
   {
-    v6 = [v5 shortVersionString];
+    shortVersionString = [v5 shortVersionString];
   }
 
-  v7 = [v4 decodeInt64ForKey:*MEMORY[0x277CD10E0]];
-  v8 = [v4 decodeIntegerForKey:*MEMORY[0x277CD1168]];
-  v9 = [v4 decodeIntegerForKey:*MEMORY[0x277CD10F0]];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CD10C8]];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CD1150]];
-  v12 = [(HMDSoftwareUpdate *)self initWithVersion:v5 displayableVersion:v6 downloadSize:v7 state:v8 installDuration:v10 documentationMetadata:v11 releaseDate:v9];
+  v7 = [coderCopy decodeInt64ForKey:*MEMORY[0x277CD10E0]];
+  v8 = [coderCopy decodeIntegerForKey:*MEMORY[0x277CD1168]];
+  v9 = [coderCopy decodeIntegerForKey:*MEMORY[0x277CD10F0]];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CD10C8]];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CD1150]];
+  v12 = [(HMDSoftwareUpdate *)self initWithVersion:v5 displayableVersion:shortVersionString downloadSize:v7 state:v8 installDuration:v10 documentationMetadata:v11 releaseDate:v9];
   if (v12)
   {
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CD10E8]];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CD10E8]];
     identifier = v12->_identifier;
     v12->_identifier = v13;
   }
@@ -124,42 +124,42 @@
 - (id)messageDestination
 {
   v3 = objc_alloc(MEMORY[0x277D0F820]);
-  v4 = [(HMDSoftwareUpdate *)self messageTargetUUID];
-  v5 = [v3 initWithTarget:v4];
+  messageTargetUUID = [(HMDSoftwareUpdate *)self messageTargetUUID];
+  v5 = [v3 initWithTarget:messageTargetUUID];
 
   return v5;
 }
 
 - (id)logIdentifier
 {
-  v2 = [(HMDSoftwareUpdate *)self identifier];
-  v3 = [v2 UUIDString];
+  identifier = [(HMDSoftwareUpdate *)self identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)_processFirmwareUpdateUINotification:(id)a3
+- (void)_processFirmwareUpdateUINotification:(id)notification
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 accessory];
-  v5 = v4;
-  if (v4)
+  notificationCopy = notification;
+  accessory = [notificationCopy accessory];
+  v5 = accessory;
+  if (accessory)
   {
-    v6 = [v4 home];
-    if (!v6)
+    home = [accessory home];
+    if (!home)
     {
       v23 = objc_autoreleasePoolPush();
-      v24 = v3;
+      v24 = notificationCopy;
       v25 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
       {
         v26 = HMFGetLogIdentifier();
-        v27 = [v5 name];
+        name = [v5 name];
         *buf = 138543618;
         v34 = v26;
         v35 = 2112;
-        v36 = v27;
+        v36 = name;
         _os_log_impl(&dword_229538000, v25, OS_LOG_TYPE_INFO, "%{public}@Failed to send firmware update notification: Unable to retrieve home from accessory %@", buf, 0x16u);
       }
 
@@ -184,43 +184,43 @@
 
     if (v8)
     {
-      v11 = [v7 supportsCHIP];
+      supportsCHIP = [v7 supportsCHIP];
       v12 = objc_autoreleasePoolPush();
-      v13 = v3;
+      v13 = notificationCopy;
       v14 = HMFGetOSLogHandle();
       v15 = os_log_type_enabled(v14, OS_LOG_TYPE_INFO);
-      if (v11)
+      if (supportsCHIP)
       {
         if (v15)
         {
           HMFGetLogIdentifier();
           v16 = v32 = v12;
-          v17 = [v7 name];
-          v18 = [v7 displayableFirmwareVersion];
+          name2 = [v7 name];
+          displayableFirmwareVersion = [v7 displayableFirmwareVersion];
           *buf = 138543874;
           v34 = v16;
           v35 = 2112;
-          v36 = v17;
+          v36 = name2;
           v37 = 2112;
-          v38 = v18;
+          v38 = displayableFirmwareVersion;
           _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_INFO, "%{public}@Issuing firmware update UI notification for Matter accessory %@ (displayable firmware version: %@) using primary residence as controller", buf, 0x20u);
 
           v12 = v32;
         }
 
         objc_autoreleasePoolPop(v12);
-        [v6 sendFirmwareUpdateUINotification:v7];
+        [home sendFirmwareUpdateUINotification:v7];
         goto LABEL_23;
       }
 
       if (v15)
       {
         v28 = HMFGetLogIdentifier();
-        v29 = [v7 name];
+        name3 = [v7 name];
         *buf = 138543618;
         v34 = v28;
         v35 = 2112;
-        v36 = v29;
+        v36 = name3;
         v30 = "%{public}@Skipping firmware update notification: Accessory %@ does not support Matter/CHIP";
         goto LABEL_21;
       }
@@ -229,16 +229,16 @@
     else
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = v3;
+      v13 = notificationCopy;
       v14 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         v28 = HMFGetLogIdentifier();
-        v29 = [v7 name];
+        name3 = [v7 name];
         *buf = 138543618;
         v34 = v28;
         v35 = 2112;
-        v36 = v29;
+        v36 = name3;
         v30 = "%{public}@Skipping firmware update notification: Accessory %@ is not a HAP accessory";
 LABEL_21:
         _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_INFO, v30, buf, 0x16u);
@@ -253,7 +253,7 @@ LABEL_24:
   }
 
   v19 = objc_autoreleasePoolPush();
-  v20 = v3;
+  v20 = notificationCopy;
   v21 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
@@ -269,13 +269,13 @@ LABEL_25:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5
+- (void)transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message
 {
   v88[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v9;
+  updatedCopy = updated;
+  valuesCopy = values;
+  messageCopy = message;
+  v11 = valuesCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -291,23 +291,23 @@ LABEL_25:
 
   if (v13)
   {
-    v14 = self;
+    selfCopy = self;
     v15 = v13;
-    v16 = v10;
-    v82 = [v16 transactionResult];
-    v17 = [v15 state];
+    v16 = messageCopy;
+    transactionResult = [v16 transactionResult];
+    state = [v15 state];
 
-    if (v17)
+    if (state)
     {
-      v18 = [v15 state];
-      v19 = [v18 unsignedIntegerValue];
+      state2 = [v15 state];
+      unsignedIntegerValue = [state2 unsignedIntegerValue];
 
-      if (v19 != [(HMDSoftwareUpdate *)v14 state])
+      if (unsignedIntegerValue != [(HMDSoftwareUpdate *)selfCopy state])
       {
-        v76 = v8;
+        v76 = updatedCopy;
         v20 = objc_autoreleasePoolPush();
-        v79 = v14;
-        v21 = v14;
+        v79 = selfCopy;
+        v21 = selfCopy;
         v22 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
@@ -323,51 +323,51 @@ LABEL_25:
           v20 = v71;
         }
 
-        v73 = v10;
+        v73 = messageCopy;
 
         objc_autoreleasePoolPop(v20);
-        if ([(HMDSoftwareUpdate *)v21 state]== 3 && v19 == 4)
+        if ([(HMDSoftwareUpdate *)v21 state]== 3 && unsignedIntegerValue == 4)
         {
           [(HMDSoftwareUpdate *)v21 _processFirmwareUpdateUINotification:v21];
         }
 
-        [(HMDSoftwareUpdate *)v21 setState:v19];
+        [(HMDSoftwareUpdate *)v21 setState:unsignedIntegerValue];
         v25 = MEMORY[0x277D0F848];
         v26 = *MEMORY[0x277CD1180];
         v27 = v21;
-        v28 = [v16 identifier];
+        identifier = [v16 identifier];
         v88[0] = *MEMORY[0x277CD1170];
         v29 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMDSoftwareUpdate state](v27, "state")}];
         *buf = v29;
         v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:buf forKeys:v88 count:1];
-        v31 = [v25 entitledMessageWithName:v26 identifier:v28 messagePayload:v30];
+        v31 = [v25 entitledMessageWithName:v26 identifier:identifier messagePayload:v30];
 
-        v32 = [(HMDSoftwareUpdate *)v27 messageDestination];
+        messageDestination = [(HMDSoftwareUpdate *)v27 messageDestination];
 
-        [v31 setDestination:v32];
+        [v31 setDestination:messageDestination];
         v33 = [v31 copy];
 
-        v34 = [(HMDSoftwareUpdate *)v27 messageDispatcher];
-        [v34 sendMessage:v33 completionHandler:0];
+        messageDispatcher = [(HMDSoftwareUpdate *)v27 messageDispatcher];
+        [messageDispatcher sendMessage:v33 completionHandler:0];
 
-        [v82 markChanged];
-        v10 = v73;
-        v8 = v76;
-        v14 = v79;
+        [transactionResult markChanged];
+        messageCopy = v73;
+        updatedCopy = v76;
+        selfCopy = v79;
       }
     }
 
     if ([v15 propertyWasSet:@"documentationMetadata"])
     {
-      v35 = [v15 documentationMetadata];
-      v36 = [(HMDSoftwareUpdate *)v14 documentationMetadata];
+      documentationMetadata = [v15 documentationMetadata];
+      documentationMetadata2 = [(HMDSoftwareUpdate *)selfCopy documentationMetadata];
       v37 = HMFEqualObjects();
 
       if ((v37 & 1) == 0)
       {
-        v77 = v8;
+        v77 = updatedCopy;
         v38 = objc_autoreleasePoolPush();
-        v39 = v14;
+        v39 = selfCopy;
         v40 = v38;
         v80 = v39;
         v41 = v39;
@@ -375,26 +375,26 @@ LABEL_25:
         if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
         {
           HMFGetLogIdentifier();
-          v44 = v43 = v10;
+          v44 = v43 = messageCopy;
           *buf = 138543618;
           *&buf[4] = v44;
           v84 = 2112;
-          v85 = v35;
+          v85 = documentationMetadata;
           _os_log_impl(&dword_229538000, v42, OS_LOG_TYPE_INFO, "%{public}@Updating documentation metadata: %@", buf, 0x16u);
 
-          v10 = v43;
+          messageCopy = v43;
         }
 
         objc_autoreleasePoolPop(v40);
-        [(HMDSoftwareUpdate *)v41 setDocumentationMetadata:v35];
-        v45 = v35;
+        [(HMDSoftwareUpdate *)v41 setDocumentationMetadata:documentationMetadata];
+        v45 = documentationMetadata;
         v46 = MEMORY[0x277D0F848];
         v69 = *MEMORY[0x277CD1178];
         v47 = v41;
-        v48 = [v16 identifier];
+        identifier2 = [v16 identifier];
         v88[0] = *MEMORY[0x277CD10D0];
         v72 = v45;
-        v74 = v10;
+        v74 = messageCopy;
         if (v45)
         {
           encodeRootObjectForIncomingXPCMessage(v45, 0);
@@ -407,97 +407,97 @@ LABEL_25:
         v51 = ;
         *buf = v51;
         v52 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:buf forKeys:v88 count:{1, v69}];
-        v53 = [v46 entitledMessageWithName:v70 identifier:v48 messagePayload:v52];
+        v53 = [v46 entitledMessageWithName:v70 identifier:identifier2 messagePayload:v52];
 
-        v54 = [(HMDSoftwareUpdate *)v47 messageDestination];
+        messageDestination2 = [(HMDSoftwareUpdate *)v47 messageDestination];
 
-        [v53 setDestination:v54];
+        [v53 setDestination:messageDestination2];
         v55 = [v53 copy];
 
-        v56 = [(HMDSoftwareUpdate *)v47 messageDispatcher];
-        [v56 sendMessage:v55 completionHandler:0];
+        messageDispatcher2 = [(HMDSoftwareUpdate *)v47 messageDispatcher];
+        [messageDispatcher2 sendMessage:v55 completionHandler:0];
 
-        [v82 markChanged];
-        v10 = v74;
-        v8 = v77;
-        v14 = v80;
+        [transactionResult markChanged];
+        messageCopy = v74;
+        updatedCopy = v77;
+        selfCopy = v80;
       }
     }
 
-    v57 = [v15 releaseDate];
+    releaseDate = [v15 releaseDate];
 
-    if (v57)
+    if (releaseDate)
     {
-      v58 = [v15 releaseDate];
-      v59 = [(HMDSoftwareUpdate *)v14 releaseDate];
-      v60 = [v58 isEqualToDate:v59];
+      releaseDate2 = [v15 releaseDate];
+      releaseDate3 = [(HMDSoftwareUpdate *)selfCopy releaseDate];
+      v60 = [releaseDate2 isEqualToDate:releaseDate3];
 
       if ((v60 & 1) == 0)
       {
         v61 = objc_autoreleasePoolPush();
-        v81 = v14;
-        v62 = v14;
+        v81 = selfCopy;
+        v62 = selfCopy;
         v63 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v63, OS_LOG_TYPE_INFO))
         {
           HMFGetLogIdentifier();
-          v64 = v75 = v10;
+          v64 = v75 = messageCopy;
           [(HMDSoftwareUpdate *)v62 releaseDate];
-          v65 = v78 = v8;
+          v65 = v78 = updatedCopy;
           *buf = 138543874;
           *&buf[4] = v64;
           v84 = 2112;
           v85 = v65;
           v86 = 2112;
-          v87 = v58;
+          v87 = releaseDate2;
           _os_log_impl(&dword_229538000, v63, OS_LOG_TYPE_INFO, "%{public}@Updating releaseDate from %@ to %@", buf, 0x20u);
 
-          v8 = v78;
-          v10 = v75;
+          updatedCopy = v78;
+          messageCopy = v75;
         }
 
         objc_autoreleasePoolPop(v61);
-        [(HMDSoftwareUpdate *)v62 setReleaseDate:v58];
-        [v82 markChanged];
-        v14 = v81;
+        [(HMDSoftwareUpdate *)v62 setReleaseDate:releaseDate2];
+        [transactionResult markChanged];
+        selfCopy = v81;
       }
     }
 
-    v66 = [v16 responseHandler];
+    responseHandler = [v16 responseHandler];
 
-    if (v66)
+    if (responseHandler)
     {
-      v67 = [v16 responseHandler];
-      v67[2](v67, 0, 0);
+      responseHandler2 = [v16 responseHandler];
+      responseHandler2[2](responseHandler2, 0, 0);
     }
   }
 
   else
   {
-    v49 = [v10 responseHandler];
+    responseHandler3 = [messageCopy responseHandler];
     v50 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-    (v49)[2](v49, v50, 0);
+    (responseHandler3)[2](responseHandler3, v50, 0);
   }
 
   v68 = *MEMORY[0x277D85DE8];
 }
 
-- (id)transactionWithObjectChangeType:(unint64_t)a3 forAccessoryUUID:(id)a4
+- (id)transactionWithObjectChangeType:(unint64_t)type forAccessoryUUID:(id)d
 {
   v6 = [HMDSoftwareUpdateModel alloc];
-  v7 = [MEMORY[0x277CCAD78] UUID];
-  v8 = [(HMDSoftwareUpdate *)self accessory];
-  v9 = [v8 uuid];
-  v10 = [(HMDBackingStoreModelObject *)v6 initWithObjectChangeType:a3 uuid:v7 parentUUID:v9];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  accessory = [(HMDSoftwareUpdate *)self accessory];
+  uuid = [accessory uuid];
+  v10 = [(HMDBackingStoreModelObject *)v6 initWithObjectChangeType:type uuid:uUID parentUUID:uuid];
 
   return v10;
 }
 
-- (id)transactionWithObjectChangeType:(unint64_t)a3
+- (id)transactionWithObjectChangeType:(unint64_t)type
 {
-  v5 = [(HMDSoftwareUpdate *)self accessory];
-  v6 = [v5 uuid];
-  v7 = [(HMDSoftwareUpdate *)self transactionWithObjectChangeType:a3 forAccessoryUUID:v6];
+  accessory = [(HMDSoftwareUpdate *)self accessory];
+  uuid = [accessory uuid];
+  v7 = [(HMDSoftwareUpdate *)self transactionWithObjectChangeType:type forAccessoryUUID:uuid];
 
   return v7;
 }
@@ -505,11 +505,11 @@ LABEL_25:
 - (HMDSoftwareUpdateModel)model
 {
   v3 = [(HMDSoftwareUpdate *)self transactionWithObjectChangeType:0];
-  v4 = [(HMDSoftwareUpdate *)self version];
-  [v3 setSoftwareVersion:v4];
+  version = [(HMDSoftwareUpdate *)self version];
+  [v3 setSoftwareVersion:version];
 
-  v5 = [(HMDSoftwareUpdate *)self displayableVersion];
-  [v3 setDisplayableSoftwareVersion:v5];
+  displayableVersion = [(HMDSoftwareUpdate *)self displayableVersion];
+  [v3 setDisplayableSoftwareVersion:displayableVersion];
 
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMDSoftwareUpdate state](self, "state")}];
   [v3 setState:v6];
@@ -522,28 +522,28 @@ LABEL_25:
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[HMDSoftwareUpdate downloadSize](self, "downloadSize")}];
   [v3 setDownloadSize:v9];
 
-  v10 = [(HMDSoftwareUpdate *)self releaseDate];
-  [v3 setReleaseDate:v10];
+  releaseDate = [(HMDSoftwareUpdate *)self releaseDate];
+  [v3 setReleaseDate:releaseDate];
 
-  v11 = [(HMDSoftwareUpdate *)self documentationMetadata];
+  documentationMetadata = [(HMDSoftwareUpdate *)self documentationMetadata];
 
-  if (v11)
+  if (documentationMetadata)
   {
-    v12 = [(HMDSoftwareUpdate *)self documentationMetadata];
-    v13 = [v12 copy];
+    documentationMetadata2 = [(HMDSoftwareUpdate *)self documentationMetadata];
+    v13 = [documentationMetadata2 copy];
     [v3 setDocumentationMetadata:v13];
   }
 
   return v3;
 }
 
-- (void)setReleaseDate:(id)a3
+- (void)setReleaseDate:(id)date
 {
-  v6 = a3;
+  dateCopy = date;
   os_unfair_lock_lock_with_options();
-  if (![(NSDate *)self->_releaseDate isEqualToDate:v6])
+  if (![(NSDate *)self->_releaseDate isEqualToDate:dateCopy])
   {
-    v4 = [v6 copy];
+    v4 = [dateCopy copy];
     releaseDate = self->_releaseDate;
     self->_releaseDate = v4;
   }
@@ -560,13 +560,13 @@ LABEL_25:
   return v3;
 }
 
-- (void)_handleNeedsAttentionReasonsRequest:(id)a3
+- (void)_handleNeedsAttentionReasonsRequest:(id)request
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 responseHandler];
+  requestCopy = request;
+  responseHandler = [requestCopy responseHandler];
 
-  if (v5)
+  if (responseHandler)
   {
     v22 = *MEMORY[0x277CD1140];
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDSoftwareUpdate needsAttentionReasons](self, "needsAttentionReasons")}];
@@ -574,7 +574,7 @@ LABEL_25:
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
 
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -590,19 +590,19 @@ LABEL_25:
     }
 
     objc_autoreleasePoolPop(v8);
-    v13 = [v4 responseHandler];
+    responseHandler2 = [requestCopy responseHandler];
     v14 = [v7 copy];
-    (v13)[2](v13, 0, v14);
+    (responseHandler2)[2](responseHandler2, 0, v14);
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setNeedsAttentionReasons:(unint64_t)a3
+- (void)setNeedsAttentionReasons:(unint64_t)reasons
 {
   v31[1] = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock_with_options();
-  if (self->_needsAttentionReasons == a3)
+  if (self->_needsAttentionReasons == reasons)
   {
     v5 = *MEMORY[0x277D85DE8];
 
@@ -611,10 +611,10 @@ LABEL_25:
 
   else
   {
-    self->_needsAttentionReasons = a3;
+    self->_needsAttentionReasons = reasons;
     os_unfair_lock_unlock(&self->_lock);
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -629,18 +629,18 @@ LABEL_25:
 
     objc_autoreleasePoolPop(v6);
     v30 = *MEMORY[0x277CD1140];
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:reasons];
     v31[0] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:&v30 count:1];
 
     v13 = objc_alloc(MEMORY[0x277D0F820]);
-    v14 = [(HMDSoftwareUpdate *)v7 identifier];
-    v15 = [v13 initWithTarget:v14];
+    identifier = [(HMDSoftwareUpdate *)selfCopy identifier];
+    v15 = [v13 initWithTarget:identifier];
 
     v16 = *MEMORY[0x277CD1138];
     v17 = [MEMORY[0x277D0F848] messageWithName:*MEMORY[0x277CD1138] destination:v15 payload:v12];
     v18 = objc_autoreleasePoolPush();
-    v19 = v7;
+    v19 = selfCopy;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
@@ -655,8 +655,8 @@ LABEL_25:
     }
 
     objc_autoreleasePoolPop(v18);
-    v22 = [(HMDSoftwareUpdate *)v19 messageDispatcher];
-    [v22 sendMessage:v17 completionHandler:0];
+    messageDispatcher = [(HMDSoftwareUpdate *)v19 messageDispatcher];
+    [messageDispatcher sendMessage:v17 completionHandler:0];
 
     v23 = *MEMORY[0x277D85DE8];
   }
@@ -670,12 +670,12 @@ LABEL_25:
   return needsAttentionReasons;
 }
 
-- (void)setUpdateType:(unint64_t)a3
+- (void)setUpdateType:(unint64_t)type
 {
   os_unfair_lock_lock_with_options();
-  if (self->_updateType != a3)
+  if (self->_updateType != type)
   {
-    self->_updateType = a3;
+    self->_updateType = type;
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -689,17 +689,17 @@ LABEL_25:
   return updateType;
 }
 
-- (void)_handleDocumentationStateNotification:(id)a3
+- (void)_handleDocumentationStateNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__HMDSoftwareUpdate__handleDocumentationStateNotification___block_invoke;
   v7[3] = &unk_27868A750;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(queue, v7);
 }
 
@@ -770,20 +770,20 @@ void __59__HMDSoftwareUpdate__handleDocumentationStateNotification___block_invok
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleDocumentationRequest:(id)a3
+- (void)_handleDocumentationRequest:(id)request
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDSoftwareUpdate *)self documentationMetadata];
-  if (v5)
+  requestCopy = request;
+  documentationMetadata = [(HMDSoftwareUpdate *)self documentationMetadata];
+  if (documentationMetadata)
   {
     v6 = +[HMDSoftwareUpdateDocumentationManager sharedManager];
-    v7 = [v6 assetForDocumentationMetadata:v5];
+    responseHandler = [v6 assetForDocumentationMetadata:documentationMetadata];
 
-    if (!v7)
+    if (!responseHandler)
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = self;
+      selfCopy = self;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
@@ -794,43 +794,43 @@ void __59__HMDSoftwareUpdate__handleDocumentationStateNotification___block_invok
       }
 
       objc_autoreleasePoolPop(v16);
-      v7 = [v4 responseHandler];
+      responseHandler = [requestCopy responseHandler];
 
-      if (v7)
+      if (responseHandler)
       {
         v20 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-        v21 = [v4 responseHandler];
-        (v21)[2](v21, v20, 0);
+        responseHandler2 = [requestCopy responseHandler];
+        (responseHandler2)[2](responseHandler2, v20, 0);
 
-        v7 = 0;
+        responseHandler = 0;
       }
 
       goto LABEL_17;
     }
 
-    if ([v7 state] <= 1 && (objc_msgSend(v7, "isDownloadPermitted") & 1) == 0)
+    if ([responseHandler state] <= 1 && (objc_msgSend(responseHandler, "isDownloadPermitted") & 1) == 0)
     {
-      v9 = [v7 nextPermittedDownloadDate];
-      v26 = v9;
+      nextPermittedDownloadDate = [responseHandler nextPermittedDownloadDate];
+      v26 = nextPermittedDownloadDate;
       v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
       v24 = [MEMORY[0x277CCA9B8] hmInternalErrorWithCode:3201];
-      [v4 respondWithPayload:v23 error:v24];
+      [requestCopy respondWithPayload:v23 error:v24];
 
       goto LABEL_12;
     }
 
-    [v7 startCaching];
-    v8 = [v4 responseHandler];
+    [responseHandler startCaching];
+    responseHandler3 = [requestCopy responseHandler];
 
-    if (!v8)
+    if (!responseHandler3)
     {
 LABEL_17:
 
       goto LABEL_18;
     }
 
-    v9 = [v4 responseHandler];
-    v10 = v9[2];
+    nextPermittedDownloadDate = [requestCopy responseHandler];
+    v10 = nextPermittedDownloadDate[2];
 LABEL_11:
     v10();
 LABEL_12:
@@ -839,7 +839,7 @@ LABEL_12:
   }
 
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy2 = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -850,13 +850,13 @@ LABEL_12:
   }
 
   objc_autoreleasePoolPop(v11);
-  v15 = [v4 responseHandler];
+  responseHandler4 = [requestCopy responseHandler];
 
-  if (v15)
+  if (responseHandler4)
   {
-    v7 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-    v9 = [v4 responseHandler];
-    v10 = v9[2];
+    responseHandler = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
+    nextPermittedDownloadDate = [requestCopy responseHandler];
+    v10 = nextPermittedDownloadDate[2];
     goto LABEL_11;
   }
 
@@ -865,14 +865,14 @@ LABEL_18:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleUpdateDocumentationMetadata:(id)a3
+- (void)_handleUpdateDocumentationMetadata:(id)metadata
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (__shouldAcceptMessage(self, v4))
+  metadataCopy = metadata;
+  if (__shouldAcceptMessage(self, metadataCopy))
   {
     v5 = *MEMORY[0x277CD10D0];
-    v6 = [v4 nullForKey:*MEMORY[0x277CD10D0]];
+    v6 = [metadataCopy nullForKey:*MEMORY[0x277CD10D0]];
 
     if (v6)
     {
@@ -880,10 +880,10 @@ LABEL_18:
       goto LABEL_4;
     }
 
-    v22 = [v4 dataForKey:v5];
+    v22 = [metadataCopy dataForKey:v5];
     if (v22)
     {
-      v15 = v22;
+      responseHandler2 = v22;
       v40 = 0;
       v7 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v22 error:&v40];
       v23 = v40;
@@ -893,7 +893,7 @@ LABEL_18:
 
 LABEL_4:
         v8 = objc_autoreleasePoolPush();
-        v9 = self;
+        selfCopy = self;
         v10 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
@@ -906,36 +906,36 @@ LABEL_4:
         }
 
         objc_autoreleasePoolPop(v8);
-        v12 = [(HMDSoftwareUpdate *)v9 documentationMetadata];
+        documentationMetadata = [(HMDSoftwareUpdate *)selfCopy documentationMetadata];
         v13 = HMFEqualObjects();
 
         if (v13)
         {
-          v14 = [v4 responseHandler];
+          responseHandler = [metadataCopy responseHandler];
 
-          if (!v14)
+          if (!responseHandler)
           {
 LABEL_24:
 
             goto LABEL_25;
           }
 
-          v15 = [v4 responseHandler];
-          v15[2](v15, 0, 0);
+          responseHandler2 = [metadataCopy responseHandler];
+          responseHandler2[2](responseHandler2, 0, 0);
         }
 
         else
         {
-          v15 = [(HMDSoftwareUpdate *)v9 transactionWithObjectChangeType:2];
-          [v15 setDocumentationMetadata:v7];
-          v16 = [(HMDSoftwareUpdate *)v9 accessory];
-          v17 = [v16 home];
-          v18 = [v17 backingStore];
-          v19 = [v4 name];
+          responseHandler2 = [(HMDSoftwareUpdate *)selfCopy transactionWithObjectChangeType:2];
+          [responseHandler2 setDocumentationMetadata:v7];
+          accessory = [(HMDSoftwareUpdate *)selfCopy accessory];
+          home = [accessory home];
+          backingStore = [home backingStore];
+          name = [metadataCopy name];
           v20 = +[HMDBackingStoreTransactionOptions defaultPreferencesOptions];
-          v21 = [v18 transaction:v19 options:v20];
+          v21 = [backingStore transaction:name options:v20];
 
-          [v21 add:v15 withMessage:v4];
+          [v21 add:responseHandler2 withMessage:metadataCopy];
           [v21 run];
         }
 
@@ -945,7 +945,7 @@ LABEL_23:
       }
 
       v32 = objc_autoreleasePoolPush();
-      v33 = self;
+      selfCopy2 = self;
       v34 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
       {
@@ -958,44 +958,44 @@ LABEL_23:
       }
 
       objc_autoreleasePoolPop(v32);
-      v36 = [v4 responseHandler];
+      responseHandler3 = [metadataCopy responseHandler];
 
-      if (v36)
+      if (responseHandler3)
       {
         v37 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-        v38 = [v4 responseHandler];
-        (v38)[2](v38, v37, 0);
+        responseHandler4 = [metadataCopy responseHandler];
+        (responseHandler4)[2](responseHandler4, v37, 0);
       }
     }
 
     else
     {
       v25 = objc_autoreleasePoolPush();
-      v26 = self;
+      selfCopy3 = self;
       v27 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
         v28 = HMFGetLogIdentifier();
-        v29 = [v4 messagePayload];
+        messagePayload = [metadataCopy messagePayload];
         *buf = 138543618;
         v42 = v28;
         v43 = 2112;
-        v44 = v29;
+        v44 = messagePayload;
         _os_log_impl(&dword_229538000, v27, OS_LOG_TYPE_ERROR, "%{public}@Missing documentation metadata from message payload: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v25);
-      v30 = [v4 responseHandler];
+      responseHandler5 = [metadataCopy responseHandler];
 
-      if (!v30)
+      if (!responseHandler5)
       {
         v7 = 0;
         goto LABEL_24;
       }
 
-      v15 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-      v31 = [v4 responseHandler];
-      v31[2](v31, v15, 0);
+      responseHandler2 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
+      responseHandler6 = [metadataCopy responseHandler];
+      responseHandler6[2](responseHandler6, responseHandler2, 0);
     }
 
     v7 = 0;
@@ -1007,10 +1007,10 @@ LABEL_25:
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setHasRegisteredDocumentationMetadata:(BOOL)a3
+- (void)setHasRegisteredDocumentationMetadata:(BOOL)metadata
 {
   os_unfair_lock_lock_with_options();
-  self->_hasRegisteredDocumentationMetadata = a3;
+  self->_hasRegisteredDocumentationMetadata = metadata;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1023,9 +1023,9 @@ LABEL_25:
   return hasRegisteredDocumentationMetadata;
 }
 
-- (void)setDocumentationMetadata:(id)a3
+- (void)setDocumentationMetadata:(id)metadata
 {
-  v5 = a3;
+  metadataCopy = metadata;
   os_unfair_lock_lock_with_options();
   v6 = self->_documentationMetadata;
   if (HMFEqualObjects())
@@ -1035,7 +1035,7 @@ LABEL_25:
 
   else
   {
-    objc_storeStrong(&self->_documentationMetadata, a3);
+    objc_storeStrong(&self->_documentationMetadata, metadata);
     os_unfair_lock_unlock(&self->_lock);
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -1043,7 +1043,7 @@ LABEL_25:
     block[2] = __46__HMDSoftwareUpdate_setDocumentationMetadata___block_invoke;
     block[3] = &unk_27868A010;
     block[4] = self;
-    v9 = v5;
+    v9 = metadataCopy;
     v10 = v6;
     dispatch_async(queue, block);
   }
@@ -1092,21 +1092,21 @@ void __46__HMDSoftwareUpdate_setDocumentationMetadata___block_invoke(id *a1)
   return v3;
 }
 
-- (void)_handleUpdateState:(id)a3
+- (void)_handleUpdateState:(id)state
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (__shouldAcceptMessage(self, v4))
+  stateCopy = state;
+  if (__shouldAcceptMessage(self, stateCopy))
   {
-    v5 = [v4 numberForKey:*MEMORY[0x277CD1170]];
+    v5 = [stateCopy numberForKey:*MEMORY[0x277CD1170]];
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 integerValue];
-      if (v7 < 6)
+      integerValue = [v5 integerValue];
+      if (integerValue < 6)
       {
         v8 = +[HMDBackingStoreTransactionOptions defaultPreferencesOptions];
-        [(HMDSoftwareUpdate *)self _updateState:v7 message:v4 options:v8];
+        [(HMDSoftwareUpdate *)self _updateState:integerValue message:stateCopy options:v8];
 LABEL_14:
 
 LABEL_15:
@@ -1114,7 +1114,7 @@ LABEL_15:
       }
 
       v17 = objc_autoreleasePoolPush();
-      v18 = self;
+      selfCopy = self;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
@@ -1122,14 +1122,14 @@ LABEL_15:
         v24 = 138543618;
         v25 = v20;
         v26 = 2048;
-        v27 = v7;
+        v27 = integerValue;
         _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@Invalid state: %ld", &v24, 0x16u);
       }
 
       objc_autoreleasePoolPop(v17);
-      v21 = [v4 responseHandler];
+      responseHandler = [stateCopy responseHandler];
 
-      if (!v21)
+      if (!responseHandler)
       {
         goto LABEL_15;
       }
@@ -1141,23 +1141,23 @@ LABEL_15:
     else
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = self;
+      selfCopy2 = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         v12 = HMFGetLogIdentifier();
-        v13 = [v4 messagePayload];
+        messagePayload = [stateCopy messagePayload];
         v24 = 138543618;
         v25 = v12;
         v26 = 2112;
-        v27 = v13;
+        v27 = messagePayload;
         _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_ERROR, "%{public}@Missing state from message payload: %@", &v24, 0x16u);
       }
 
       objc_autoreleasePoolPop(v9);
-      v14 = [v4 responseHandler];
+      responseHandler2 = [stateCopy responseHandler];
 
-      if (!v14)
+      if (!responseHandler2)
       {
         goto LABEL_15;
       }
@@ -1167,8 +1167,8 @@ LABEL_15:
     }
 
     v8 = [v15 hmErrorWithCode:v16];
-    v22 = [v4 responseHandler];
-    (v22)[2](v22, v8, 0);
+    responseHandler3 = [stateCopy responseHandler];
+    (responseHandler3)[2](responseHandler3, v8, 0);
 
     goto LABEL_14;
   }
@@ -1178,19 +1178,19 @@ LABEL_16:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateState:(int64_t)a3 message:(id)a4 options:(id)a5
+- (void)_updateState:(int64_t)state message:(id)message options:(id)options
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  messageCopy = message;
+  optionsCopy = options;
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = HMFGetLogIdentifier();
     v14 = HMSoftwareUpdateStateToString();
-    [(HMDSoftwareUpdate *)v11 state];
+    [(HMDSoftwareUpdate *)selfCopy state];
     v15 = HMSoftwareUpdateStateToString();
     v29 = 138543874;
     v30 = v13;
@@ -1202,35 +1202,35 @@ LABEL_16:
   }
 
   objc_autoreleasePoolPop(v10);
-  if (a3 == 3 && ![(HMDSoftwareUpdate *)v11 allowExtraUpdate])
+  if (state == 3 && ![(HMDSoftwareUpdate *)selfCopy allowExtraUpdate])
   {
-    [(HMDSoftwareUpdate *)v11 setAllowExtraUpdate:1];
+    [(HMDSoftwareUpdate *)selfCopy setAllowExtraUpdate:1];
   }
 
-  if ([(HMDSoftwareUpdate *)v11 state]== a3 && ![(HMDSoftwareUpdate *)v11 allowExtraUpdate])
+  if ([(HMDSoftwareUpdate *)selfCopy state]== state && ![(HMDSoftwareUpdate *)selfCopy allowExtraUpdate])
   {
-    v28 = [v8 responseHandler];
+    responseHandler = [messageCopy responseHandler];
 
-    if (!v28)
+    if (!responseHandler)
     {
       goto LABEL_20;
     }
 
-    v16 = [v8 responseHandler];
-    v16[2](v16, 0, 0);
+    responseHandler2 = [messageCopy responseHandler];
+    responseHandler2[2](responseHandler2, 0, 0);
   }
 
   else
   {
-    v16 = [(HMDSoftwareUpdate *)v11 transactionWithObjectChangeType:2];
-    v17 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-    [v16 setState:v17];
+    responseHandler2 = [(HMDSoftwareUpdate *)selfCopy transactionWithObjectChangeType:2];
+    v17 = [MEMORY[0x277CCABB0] numberWithInteger:state];
+    [responseHandler2 setState:v17];
 
-    v18 = [(HMDSoftwareUpdate *)v11 accessory];
+    accessory = [(HMDSoftwareUpdate *)selfCopy accessory];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v19 = v18;
+      v19 = accessory;
     }
 
     else
@@ -1239,7 +1239,7 @@ LABEL_16:
     }
 
     v20 = v19;
-    if (v20 && ([v18 isCurrentAccessory] & 1) != 0)
+    if (v20 && ([accessory isCurrentAccessory] & 1) != 0)
     {
       v21 = &HMDAppleMediaAccessorySoftwareUpdateLabel;
     }
@@ -1251,16 +1251,16 @@ LABEL_16:
 
     v22 = *v21;
 
-    v23 = [v18 home];
-    v24 = [v23 backingStore];
-    v25 = [v24 transaction:v22 options:v9];
+    home = [accessory home];
+    backingStore = [home backingStore];
+    v25 = [backingStore transaction:v22 options:optionsCopy];
 
-    [v25 add:v16 withMessage:v8];
+    [v25 add:responseHandler2 withMessage:messageCopy];
     [v25 run];
-    v26 = [(HMDSoftwareUpdate *)v11 allowExtraUpdate];
-    if (a3 != 3 && v26)
+    allowExtraUpdate = [(HMDSoftwareUpdate *)selfCopy allowExtraUpdate];
+    if (state != 3 && allowExtraUpdate)
     {
-      [(HMDSoftwareUpdate *)v11 setAllowExtraUpdate:0];
+      [(HMDSoftwareUpdate *)selfCopy setAllowExtraUpdate:0];
     }
   }
 
@@ -1268,16 +1268,16 @@ LABEL_20:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateLocalState:(int64_t)a3
+- (void)updateLocalState:(int64_t)state
 {
   v5 = +[HMDBackingStoreTransactionOptions defaultLocalOptions];
-  [(HMDSoftwareUpdate *)self _updateState:a3 message:0 options:v5];
+  [(HMDSoftwareUpdate *)self _updateState:state message:0 options:v5];
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   os_unfair_lock_lock_with_options();
-  if (self->_state == a3)
+  if (self->_state == state)
   {
 
     os_unfair_lock_unlock(&self->_lock);
@@ -1285,11 +1285,11 @@ LABEL_20:
 
   else
   {
-    self->_state = a3;
+    self->_state = state;
     os_unfair_lock_unlock(&self->_lock);
-    v6 = [(HMDSoftwareUpdate *)self accessory];
-    v5 = [v6 home];
-    [v5 reevaluateAccessoryInfo];
+    accessory = [(HMDSoftwareUpdate *)self accessory];
+    home = [accessory home];
+    [home reevaluateAccessoryInfo];
   }
 }
 
@@ -1304,49 +1304,49 @@ LABEL_20:
 - (void)registerForMessages
 {
   v14[3] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDSoftwareUpdate *)self accessory];
-  v4 = [v3 home];
-  v5 = [(HMDSoftwareUpdate *)self messageDispatcher];
+  accessory = [(HMDSoftwareUpdate *)self accessory];
+  home = [accessory home];
+  messageDispatcher = [(HMDSoftwareUpdate *)self messageDispatcher];
   v6 = [HMDXPCMessagePolicy policyWithEntitlements:5];
-  if (([v3 isCurrentAccessory] & 1) != 0 || objc_msgSend(v3, "supportsFirmwareUpdate"))
+  if (([accessory isCurrentAccessory] & 1) != 0 || objc_msgSend(accessory, "supportsFirmwareUpdate"))
   {
     v14[0] = v6;
     v7 = [HMDConfigurationMessagePolicy policyWithOperationTypes:2];
     v14[1] = v7;
-    v8 = [HMDUserMessagePolicy userMessagePolicyWithHome:v4 userPrivilege:3 remoteAccessRequired:0];
+    v8 = [HMDUserMessagePolicy userMessagePolicyWithHome:home userPrivilege:3 remoteAccessRequired:0];
     v14[2] = v8;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:3];
 
-    [v5 registerForMessage:*MEMORY[0x277CD1180] receiver:self policies:v9 selector:sel__handleUpdateState_];
-    [v5 registerForMessage:*MEMORY[0x277CD1178] receiver:self policies:v9 selector:sel__handleUpdateDocumentationMetadata_];
+    [messageDispatcher registerForMessage:*MEMORY[0x277CD1180] receiver:self policies:v9 selector:sel__handleUpdateState_];
+    [messageDispatcher registerForMessage:*MEMORY[0x277CD1178] receiver:self policies:v9 selector:sel__handleUpdateDocumentationMetadata_];
   }
 
-  v10 = [HMDUserMessagePolicy userMessagePolicyWithHome:v4 userPrivilege:4 remoteAccessRequired:0, v6];
+  v10 = [HMDUserMessagePolicy userMessagePolicyWithHome:home userPrivilege:4 remoteAccessRequired:0, v6];
   v13[1] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
 
-  [v5 registerForMessage:*MEMORY[0x277CD1158] receiver:self policies:v11 selector:sel__handleDocumentationRequest_];
-  [v5 registerForMessage:*MEMORY[0x277CD1160] receiver:self policies:v11 selector:sel__handleNeedsAttentionReasonsRequest_];
+  [messageDispatcher registerForMessage:*MEMORY[0x277CD1158] receiver:self policies:v11 selector:sel__handleDocumentationRequest_];
+  [messageDispatcher registerForMessage:*MEMORY[0x277CD1160] receiver:self policies:v11 selector:sel__handleNeedsAttentionReasonsRequest_];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
 - (void)invalidate
 {
-  v3 = [(HMDSoftwareUpdate *)self documentationMetadata];
-  __unregisterDocumentationMetadata(self, v3);
+  documentationMetadata = [(HMDSoftwareUpdate *)self documentationMetadata];
+  __unregisterDocumentationMetadata(self, documentationMetadata);
 }
 
-- (void)configureWithAccessory:(id)a3 dataSource:(id)a4 messageDispatcher:(id)a5
+- (void)configureWithAccessory:(id)accessory dataSource:(id)source messageDispatcher:(id)dispatcher
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  accessoryCopy = accessory;
+  sourceCopy = source;
+  dispatcherCopy = dispatcher;
+  if (!sourceCopy)
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy2 = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -1364,10 +1364,10 @@ LABEL_16:
     goto LABEL_28;
   }
 
-  if (!v8)
+  if (!accessoryCopy)
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy2 = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -1381,9 +1381,9 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  [(HMDSoftwareUpdate *)self setDataSource:v9];
-  [(HMDSoftwareUpdate *)self setAccessory:v8];
-  v11 = v8;
+  [(HMDSoftwareUpdate *)self setDataSource:sourceCopy];
+  [(HMDSoftwareUpdate *)self setAccessory:accessoryCopy];
+  v11 = accessoryCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1434,33 +1434,33 @@ LABEL_16:
   }
 
   [(HMDSoftwareUpdate *)self setUpdateType:v17];
-  v23 = [(HMDSoftwareUpdate *)self identifier];
+  identifier = [(HMDSoftwareUpdate *)self identifier];
 
-  if (!v23)
+  if (!identifier)
   {
     v24 = objc_alloc(MEMORY[0x277CCAD78]);
-    v25 = [v14 uuid];
-    v26 = [(HMDSoftwareUpdate *)self version];
-    v27 = [v26 versionString];
-    v28 = [v27 dataUsingEncoding:4];
-    v29 = [v24 initWithNamespace:v25 data:v28];
+    uuid = [v14 uuid];
+    version = [(HMDSoftwareUpdate *)self version];
+    versionString = [version versionString];
+    v28 = [versionString dataUsingEncoding:4];
+    v29 = [v24 initWithNamespace:uuid data:v28];
     [(HMDSoftwareUpdate *)self setIdentifier:v29];
   }
 
-  if (v10)
+  if (dispatcherCopy)
   {
-    [(HMDSoftwareUpdate *)self setMessageDispatcher:v10];
-    v30 = [(HMDSoftwareUpdate *)self identifier];
+    [(HMDSoftwareUpdate *)self setMessageDispatcher:dispatcherCopy];
+    identifier2 = [(HMDSoftwareUpdate *)self identifier];
 
-    if (v30)
+    if (identifier2)
     {
       [(HMDSoftwareUpdate *)self registerForMessages];
     }
   }
 
   [(HMDSoftwareUpdate *)self setHasRegisteredDocumentationMetadata:1];
-  v31 = [(HMDSoftwareUpdate *)self documentationMetadata];
-  __registerDocumentationMetadata(self, v31);
+  documentationMetadata = [(HMDSoftwareUpdate *)self documentationMetadata];
+  __registerDocumentationMetadata(self, documentationMetadata);
 
 LABEL_28:
   v32 = *MEMORY[0x277D85DE8];
@@ -1468,26 +1468,26 @@ LABEL_28:
 
 - (NSString)propertyDescription
 {
-  v3 = [(HMDSoftwareUpdate *)self releaseDate];
+  releaseDate = [(HMDSoftwareUpdate *)self releaseDate];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(HMDSoftwareUpdate *)self version];
-  v6 = [v5 versionString];
-  v7 = [(HMDSoftwareUpdate *)self displayableVersion];
+  version = [(HMDSoftwareUpdate *)self version];
+  versionString = [version versionString];
+  displayableVersion = [(HMDSoftwareUpdate *)self displayableVersion];
   [(HMDSoftwareUpdate *)self state];
   v8 = HMSoftwareUpdateStateToString();
   [(HMDSoftwareUpdate *)self downloadSize];
   v9 = NSLocalizedFileSizeDescription();
   [(HMDSoftwareUpdate *)self updateType];
   v10 = HMSoftwareUpdateUpdateTypeToString();
-  v11 = [v4 stringWithFormat:@", Version = %@, Displayable Version = %@, State = %@, Download Size = %@, Release Date = %@, Update Type = %@", v6, v7, v8, v9, v3, v10];
+  v11 = [v4 stringWithFormat:@", Version = %@, Displayable Version = %@, State = %@, Download Size = %@, Release Date = %@, Update Type = %@", versionString, displayableVersion, v8, v9, releaseDate, v10];
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -1497,7 +1497,7 @@ LABEL_28:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -1508,9 +1508,9 @@ LABEL_28:
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMDSoftwareUpdate *)self version];
-      v8 = [(HMDSoftwareUpdate *)v6 version];
-      v9 = [v7 isEqual:v8];
+      version = [(HMDSoftwareUpdate *)self version];
+      version2 = [(HMDSoftwareUpdate *)v6 version];
+      v9 = [version isEqual:version2];
     }
 
     else
@@ -1524,19 +1524,19 @@ LABEL_28:
 
 - (unint64_t)hash
 {
-  v2 = [(HMDSoftwareUpdate *)self version];
-  v3 = [v2 hash];
+  version = [(HMDSoftwareUpdate *)self version];
+  v3 = [version hash];
 
   return v3;
 }
 
 - (void)dealloc
 {
-  v3 = [(HMDSoftwareUpdate *)self documentationMetadata];
-  if (v3 && [(HMDSoftwareUpdate *)self hasRegisteredDocumentationMetadata])
+  documentationMetadata = [(HMDSoftwareUpdate *)self documentationMetadata];
+  if (documentationMetadata && [(HMDSoftwareUpdate *)self hasRegisteredDocumentationMetadata])
   {
     v4 = +[HMDSoftwareUpdateDocumentationManager sharedManager];
-    [v4 unregisterDocumentationMetadata:v3];
+    [v4 unregisterDocumentationMetadata:documentationMetadata];
   }
 
   v5.receiver = self;
@@ -1544,101 +1544,101 @@ LABEL_28:
   [(HMDSoftwareUpdate *)&v5 dealloc];
 }
 
-- (HMDSoftwareUpdate)initWithVersion:(id)a3 displayableVersion:(id)a4 downloadSize:(unint64_t)a5 state:(int64_t)a6 installDuration:(double)a7 documentationMetadata:(id)a8 releaseDate:(id)a9
+- (HMDSoftwareUpdate)initWithVersion:(id)version displayableVersion:(id)displayableVersion downloadSize:(unint64_t)size state:(int64_t)state installDuration:(double)duration documentationMetadata:(id)metadata releaseDate:(id)date
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a8;
-  v20 = a9;
+  versionCopy = version;
+  displayableVersionCopy = displayableVersion;
+  metadataCopy = metadata;
+  dateCopy = date;
   v35.receiver = self;
   v35.super_class = HMDSoftwareUpdate;
   v21 = [(HMDSoftwareUpdate *)&v35 init];
   if (v21)
   {
-    v32 = a6;
-    v33 = v20;
-    v22 = a5;
-    v34 = v19;
-    v23 = v17;
+    stateCopy = state;
+    v33 = dateCopy;
+    sizeCopy = size;
+    v34 = metadataCopy;
+    v23 = versionCopy;
     v24 = HMDispatchQueueNameString();
-    v25 = [v24 UTF8String];
+    uTF8String = [v24 UTF8String];
     v26 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v27 = dispatch_queue_create(v25, v26);
+    v27 = dispatch_queue_create(uTF8String, v26);
     queue = v21->_queue;
     v21->_queue = v27;
 
-    objc_storeStrong(&v21->_version, a3);
-    if (v18)
+    objc_storeStrong(&v21->_version, version);
+    if (displayableVersionCopy)
     {
-      v29 = [v18 hm_truncatedDisplayableVersionString];
-      v17 = v23;
+      hm_truncatedDisplayableVersionString = [displayableVersionCopy hm_truncatedDisplayableVersionString];
+      versionCopy = v23;
     }
 
     else
     {
-      v17 = v23;
-      v29 = [v23 shortVersionString];
+      versionCopy = v23;
+      hm_truncatedDisplayableVersionString = [v23 shortVersionString];
     }
 
     displayableVersion = v21->_displayableVersion;
-    v21->_displayableVersion = v29;
+    v21->_displayableVersion = hm_truncatedDisplayableVersionString;
 
-    v21->_state = v32;
-    v21->_downloadSize = v22;
-    v21->_installDuration = a7;
-    objc_storeStrong(&v21->_documentationMetadata, a8);
+    v21->_state = stateCopy;
+    v21->_downloadSize = sizeCopy;
+    v21->_installDuration = duration;
+    objc_storeStrong(&v21->_documentationMetadata, metadata);
     v21->_updateType = 0;
-    objc_storeStrong(&v21->_releaseDate, a9);
-    v20 = v33;
-    v19 = v34;
+    objc_storeStrong(&v21->_releaseDate, date);
+    dateCopy = v33;
+    metadataCopy = v34;
   }
 
   return v21;
 }
 
-- (HMDSoftwareUpdate)initWithModel:(id)a3
+- (HMDSoftwareUpdate)initWithModel:(id)model
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 softwareVersion];
+  modelCopy = model;
+  softwareVersion = [modelCopy softwareVersion];
 
-  if (v5)
+  if (softwareVersion)
   {
-    v6 = [v4 displayableSoftwareVersion];
-    if (!v6)
+    displayableSoftwareVersion = [modelCopy displayableSoftwareVersion];
+    if (!displayableSoftwareVersion)
     {
-      v7 = [v4 softwareVersion];
-      v6 = [v7 shortVersionString];
+      softwareVersion2 = [modelCopy softwareVersion];
+      displayableSoftwareVersion = [softwareVersion2 shortVersionString];
     }
 
-    v8 = [v4 softwareVersion];
-    v9 = [v4 downloadSize];
-    [v9 unsignedLongLongValue];
-    v10 = [v4 state];
-    [v10 integerValue];
-    v11 = [v4 installDuration];
-    v12 = [v11 integerValue];
-    v13 = [v4 documentationMetadata];
-    v14 = [v4 releaseDate];
-    v15 = v6;
-    v16 = v14;
+    softwareVersion3 = [modelCopy softwareVersion];
+    downloadSize = [modelCopy downloadSize];
+    [downloadSize unsignedLongLongValue];
+    state = [modelCopy state];
+    [state integerValue];
+    installDuration = [modelCopy installDuration];
+    integerValue = [installDuration integerValue];
+    documentationMetadata = [modelCopy documentationMetadata];
+    releaseDate = [modelCopy releaseDate];
+    v15 = displayableSoftwareVersion;
+    v16 = releaseDate;
     v30 = v15;
-    v17 = [HMDSoftwareUpdate initWithVersion:"initWithVersion:displayableVersion:downloadSize:state:installDuration:documentationMetadata:releaseDate:" displayableVersion:v8 downloadSize:v12 state:? installDuration:? documentationMetadata:? releaseDate:?];
+    v17 = [HMDSoftwareUpdate initWithVersion:"initWithVersion:displayableVersion:downloadSize:state:installDuration:documentationMetadata:releaseDate:" displayableVersion:softwareVersion3 downloadSize:integerValue state:? installDuration:? documentationMetadata:? releaseDate:?];
 
     if (v17)
     {
       v18 = objc_alloc(MEMORY[0x277CCAD78]);
-      v19 = [v4 parentUUID];
-      v20 = [(HMFSoftwareVersion *)v17->_version versionString];
-      v21 = [v20 dataUsingEncoding:4];
-      v22 = [v18 initWithNamespace:v19 data:v21];
+      parentUUID = [modelCopy parentUUID];
+      versionString = [(HMFSoftwareVersion *)v17->_version versionString];
+      v21 = [versionString dataUsingEncoding:4];
+      v22 = [v18 initWithNamespace:parentUUID data:v21];
       identifier = v17->_identifier;
       v17->_identifier = v22;
     }
 
     self = v17;
 
-    v24 = self;
+    selfCopy = self;
   }
 
   else
@@ -1654,11 +1654,11 @@ LABEL_28:
     }
 
     objc_autoreleasePoolPop(v25);
-    v24 = 0;
+    selfCopy = 0;
   }
 
   v28 = *MEMORY[0x277D85DE8];
-  return v24;
+  return selfCopy;
 }
 
 + (id)logCategory

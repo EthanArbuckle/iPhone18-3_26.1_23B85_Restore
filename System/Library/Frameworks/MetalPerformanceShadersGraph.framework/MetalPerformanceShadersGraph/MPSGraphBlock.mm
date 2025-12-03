@@ -13,9 +13,9 @@
   terminator = v2->_terminator;
   v2->_terminator = 0;
 
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   blockOperations = v2->_blockOperations;
-  v2->_blockOperations = v4;
+  v2->_blockOperations = array;
 
   return v2;
 }

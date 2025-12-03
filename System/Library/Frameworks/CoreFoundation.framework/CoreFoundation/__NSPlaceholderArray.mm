@@ -1,16 +1,16 @@
 @interface __NSPlaceholderArray
 - (__NSPlaceholderArray)init;
-- (__NSPlaceholderArray)initWithArray:(id)a3;
-- (__NSPlaceholderArray)initWithCapacity:(unint64_t)a3;
-- (__NSPlaceholderArray)initWithContentsOfFile:(id)a3;
-- (__NSPlaceholderArray)initWithContentsOfURL:(id)a3;
-- (__NSPlaceholderArray)initWithObjects:(const void *)a3 count:(unint64_t)a4;
-- (id)_initByAdoptingBuffer:(id *)a3 count:(unint64_t)a4 size:(unint64_t)a5;
-- (id)objectAtIndex:(unint64_t)a3;
+- (__NSPlaceholderArray)initWithArray:(id)array;
+- (__NSPlaceholderArray)initWithCapacity:(unint64_t)capacity;
+- (__NSPlaceholderArray)initWithContentsOfFile:(id)file;
+- (__NSPlaceholderArray)initWithContentsOfURL:(id)l;
+- (__NSPlaceholderArray)initWithObjects:(const void *)objects count:(unint64_t)count;
+- (id)_initByAdoptingBuffer:(id *)buffer count:(unint64_t)count size:(unint64_t)size;
+- (id)objectAtIndex:(unint64_t)index;
 - (unint64_t)count;
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4;
-- (void)removeObjectAtIndex:(unint64_t)a3;
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4;
+- (void)insertObject:(id)object atIndex:(unint64_t)index;
+- (void)removeObjectAtIndex:(unint64_t)index;
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object;
 @end
 
 @implementation __NSPlaceholderArray
@@ -68,7 +68,7 @@
   objc_exception_throw(v11);
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
   v5 = "mutable";
   v6 = "NSMutableArray";
@@ -105,7 +105,7 @@
   objc_exception_throw(v12);
 }
 
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4
+- (void)insertObject:(id)object atIndex:(unint64_t)index
 {
   v6 = "mutable";
   v7 = "NSMutableArray";
@@ -142,7 +142,7 @@
   objc_exception_throw(v13);
 }
 
-- (void)removeObjectAtIndex:(unint64_t)a3
+- (void)removeObjectAtIndex:(unint64_t)index
 {
   v5 = "mutable";
   v6 = "NSMutableArray";
@@ -179,7 +179,7 @@
   objc_exception_throw(v12);
 }
 
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object
 {
   v6 = "mutable";
   v7 = "NSMutableArray";
@@ -216,25 +216,25 @@
   objc_exception_throw(v13);
 }
 
-- (__NSPlaceholderArray)initWithArray:(id)a3
+- (__NSPlaceholderArray)initWithArray:(id)array
 {
   v8 = *MEMORY[0x1E69E9840];
-  result = __initWithArrayDontCopyItems(self, a3);
+  result = __initWithArrayDontCopyItems(self, array);
   if (!result)
   {
     v7.receiver = self;
     v7.super_class = __NSPlaceholderArray;
-    result = [(NSArray *)&v7 initWithArray:a3 copyItems:0];
+    result = [(NSArray *)&v7 initWithArray:array copyItems:0];
   }
 
   v6 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (__NSPlaceholderArray)initWithObjects:(const void *)a3 count:(unint64_t)a4
+- (__NSPlaceholderArray)initWithObjects:(const void *)objects count:(unint64_t)count
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  if (!a3 && a4)
+  if (!objects && count)
   {
     v11 = _os_log_pack_size();
     v12 = v20 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -242,12 +242,12 @@
     *v17 = 136315394;
     *(v17 + 4) = "[__NSPlaceholderArray initWithObjects:count:]";
     *(v17 + 12) = 2048;
-    *(v17 + 14) = a4;
-    v14 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[__NSPlaceholderArray initWithObjects:count:]", a4);
+    *(v17 + 14) = count;
+    v14 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[__NSPlaceholderArray initWithObjects:count:]", count);
     goto LABEL_25;
   }
 
-  if (a4 >> 61)
+  if (count >> 61)
   {
     v11 = _os_log_pack_size();
     v12 = v20 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -255,17 +255,17 @@
     *v19 = 136315394;
     *(v19 + 4) = "[__NSPlaceholderArray initWithObjects:count:]";
     *(v19 + 12) = 2048;
-    *(v19 + 14) = a4;
-    v14 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[__NSPlaceholderArray initWithObjects:count:]", a4);
+    *(v19 + 14) = count;
+    v14 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[__NSPlaceholderArray initWithObjects:count:]", count);
     goto LABEL_25;
   }
 
-  if (a4)
+  if (count)
   {
     v4 = 0;
-    while (a3[v4])
+    while (objects[v4])
     {
-      if (a4 == ++v4)
+      if (count == ++v4)
       {
         goto LABEL_8;
       }
@@ -288,19 +288,19 @@ LABEL_25:
 LABEL_8:
   if (self == &___immutablePlaceholderArray)
   {
-    if (a4 == 1)
+    if (count == 1)
     {
-      v7 = *a3;
+      v7 = *objects;
       v8 = *MEMORY[0x1E69E9840];
 
       return __NSSingleObjectArrayI_new(v7, 0);
     }
 
-    else if (a4)
+    else if (count)
     {
       v9 = *MEMORY[0x1E69E9840];
 
-      return __NSArrayI_new(a3, 0, a4, 0);
+      return __NSArrayI_new(objects, 0, count, 0);
     }
 
     else
@@ -315,7 +315,7 @@ LABEL_8:
   {
     v5 = *MEMORY[0x1E69E9840];
 
-    return __NSArrayM_new(a3, a4, 0);
+    return __NSArrayM_new(objects, count, 0);
   }
 
   else
@@ -326,33 +326,33 @@ LABEL_8:
   return self;
 }
 
-- (id)_initByAdoptingBuffer:(id *)a3 count:(unint64_t)a4 size:(unint64_t)a5
+- (id)_initByAdoptingBuffer:(id *)buffer count:(unint64_t)count size:(unint64_t)size
 {
   if (self == &___immutablePlaceholderArray)
   {
-    return __NSArrayI_transferNew(a3, a4);
+    return __NSArrayI_transferNew(buffer, count);
   }
 
   if (self == &___mutablePlaceholderArray)
   {
-    return __NSArrayM_transferNew(a3, a4, a5);
+    return __NSArrayM_transferNew(buffer, count, size);
   }
 
   return 0;
 }
 
-- (__NSPlaceholderArray)initWithCapacity:(unint64_t)a3
+- (__NSPlaceholderArray)initWithCapacity:(unint64_t)capacity
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  if (a3 >> 61)
+  if (capacity >> 61)
   {
     v6 = _os_log_pack_size();
     v7 = _os_log_pack_fill();
     *v7 = 136315394;
     *(v7 + 4) = "[__NSPlaceholderArray initWithCapacity:]";
     *(v7 + 12) = 2048;
-    *(v7 + 14) = a3;
-    v8 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: capacity (%lu) is ridiculous", "[__NSPlaceholderArray initWithCapacity:]", a3);
+    *(v7 + 14) = capacity;
+    v8 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: capacity (%lu) is ridiculous", "[__NSPlaceholderArray initWithCapacity:]", capacity);
     v9 = [NSException exceptionWithName:@"NSInvalidArgumentException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v8) osLogPack:0 size:v10 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0), v6];
     objc_exception_throw(v9);
   }
@@ -371,13 +371,13 @@ LABEL_9:
 
   v3 = *MEMORY[0x1E69E9840];
 
-  return __NSArrayM_new(0, a3, 0);
+  return __NSArrayM_new(0, capacity, 0);
 }
 
-- (__NSPlaceholderArray)initWithContentsOfFile:(id)a3
+- (__NSPlaceholderArray)initWithContentsOfFile:(id)file
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  if (a3 && (_NSIsNSString(a3) & 1) == 0)
+  if (file && (_NSIsNSString(file) & 1) == 0)
   {
     v7 = _os_log_pack_size();
     v8 = _os_log_pack_fill();
@@ -390,15 +390,15 @@ LABEL_9:
 
   v5 = *MEMORY[0x1E69E9840];
 
-  return [NSArray newWithContentsOf:a3 immutable:self == &___immutablePlaceholderArray];
+  return [NSArray newWithContentsOf:file immutable:self == &___immutablePlaceholderArray];
 }
 
-- (__NSPlaceholderArray)initWithContentsOfURL:(id)a3
+- (__NSPlaceholderArray)initWithContentsOfURL:(id)l
 {
   v12[1] = *MEMORY[0x1E69E9840];
   if (atomic_load(&initWithContentsOfURL____cls_NSURL))
   {
-    if (!a3)
+    if (!l)
     {
       goto LABEL_6;
     }
@@ -407,7 +407,7 @@ LABEL_9:
   else
   {
     atomic_store(objc_lookUpClass("NSURL"), &initWithContentsOfURL____cls_NSURL);
-    if (!a3)
+    if (!l)
     {
       goto LABEL_6;
     }
@@ -428,7 +428,7 @@ LABEL_9:
 LABEL_6:
   v6 = *MEMORY[0x1E69E9840];
 
-  return [NSArray newWithContentsOf:a3 immutable:self == &___immutablePlaceholderArray];
+  return [NSArray newWithContentsOf:l immutable:self == &___immutablePlaceholderArray];
 }
 
 @end

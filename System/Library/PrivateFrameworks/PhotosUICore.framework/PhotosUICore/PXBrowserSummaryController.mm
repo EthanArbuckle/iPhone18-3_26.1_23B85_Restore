@@ -2,15 +2,15 @@
 - (BOOL)shouldUpdateImmediately;
 - (PXBrowserSummaryController)init;
 - (PXBrowserSummaryControllerDataSource)dataSource;
-- (id)_performRequestBlock:(id)a3;
-- (id)_requestTitlesInfoWithResultHandler:(id)a3;
-- (id)requestInfoOfKind:(id)a3 withResultHandler:(id)a4;
-- (int64_t)priorityForInfoRequestOfKind:(id)a3;
+- (id)_performRequestBlock:(id)block;
+- (id)_requestTitlesInfoWithResultHandler:(id)handler;
+- (id)requestInfoOfKind:(id)kind withResultHandler:(id)handler;
+- (int64_t)priorityForInfoRequestOfKind:(id)kind;
 - (void)_invalidateTitles;
-- (void)_setAttributedPrimaryFallbackTitle:(id)a3 accessibilityIdentifier:(id)a4;
-- (void)_setAttributedPrimaryTitle:(id)a3 accessibilityIdentifier:(id)a4;
-- (void)_setSecondaryTitle:(id)a3 accessibilityIdentifier:(id)a4;
-- (void)_setTertiaryTitle:(id)a3 accessibilityIdentifier:(id)a4;
+- (void)_setAttributedPrimaryFallbackTitle:(id)title accessibilityIdentifier:(id)identifier;
+- (void)_setAttributedPrimaryTitle:(id)title accessibilityIdentifier:(id)identifier;
+- (void)_setSecondaryTitle:(id)title accessibilityIdentifier:(id)identifier;
+- (void)_setTertiaryTitle:(id)title accessibilityIdentifier:(id)identifier;
 - (void)_updateAttributedSelectionTitleIfNeeded;
 - (void)_updateContainerDateIntervalIfNeeded;
 - (void)_updateContainerFallbackTitleIfNeeded;
@@ -21,7 +21,7 @@
 - (void)_updateSelectionSnapshotIfNeeded;
 - (void)_updateStackedAssetsIfNeeded;
 - (void)didPerformChanges;
-- (void)infoUpdaterDidUpdate:(id)a3;
+- (void)infoUpdaterDidUpdate:(id)update;
 - (void)invalidateContainerDateInterval;
 - (void)invalidateContainerFallbackTitle;
 - (void)invalidateContainerTitle;
@@ -29,27 +29,27 @@
 - (void)invalidateLocalizedContainerItemsCount;
 - (void)invalidateSelection;
 - (void)invalidateVisibleContent;
-- (void)performBlockWhenDoneUpdating:(id)a3;
-- (void)performChanges:(id)a3;
-- (void)setAttributedSelectionTitle:(id)a3;
-- (void)setContainerDateFormatGranularity:(unint64_t)a3;
-- (void)setContainerDateInterval:(id)a3;
-- (void)setContainerFallbackTitle:(id)a3;
-- (void)setContainerTitle:(id)a3;
-- (void)setDataSource:(id)a3;
-- (void)setDefaultAttributes:(id)a3;
-- (void)setEmphasizedAttributes:(id)a3;
-- (void)setFilteringContainerContent:(BOOL)a3;
-- (void)setLocalizedContainerItemsCount:(id)a3;
-- (void)setNavigationTitle:(id)a3;
-- (void)setReady:(BOOL)a3;
-- (void)setSelectionAttributes:(id)a3;
-- (void)setSelectionSnapshot:(id)a3;
-- (void)setShouldShowLocationNames:(BOOL)a3;
-- (void)setShouldUseAbbreviatedDates:(BOOL)a3;
-- (void)setShouldUseNavigationTitle:(BOOL)a3;
-- (void)setShouldUseSubtitles:(BOOL)a3;
-- (void)setStackedAssets:(id)a3;
+- (void)performBlockWhenDoneUpdating:(id)updating;
+- (void)performChanges:(id)changes;
+- (void)setAttributedSelectionTitle:(id)title;
+- (void)setContainerDateFormatGranularity:(unint64_t)granularity;
+- (void)setContainerDateInterval:(id)interval;
+- (void)setContainerFallbackTitle:(id)title;
+- (void)setContainerTitle:(id)title;
+- (void)setDataSource:(id)source;
+- (void)setDefaultAttributes:(id)attributes;
+- (void)setEmphasizedAttributes:(id)attributes;
+- (void)setFilteringContainerContent:(BOOL)content;
+- (void)setLocalizedContainerItemsCount:(id)count;
+- (void)setNavigationTitle:(id)title;
+- (void)setReady:(BOOL)ready;
+- (void)setSelectionAttributes:(id)attributes;
+- (void)setSelectionSnapshot:(id)snapshot;
+- (void)setShouldShowLocationNames:(BOOL)names;
+- (void)setShouldUseAbbreviatedDates:(BOOL)dates;
+- (void)setShouldUseNavigationTitle:(BOOL)title;
+- (void)setShouldUseSubtitles:(BOOL)subtitles;
+- (void)setStackedAssets:(id)assets;
 @end
 
 @implementation PXBrowserSummaryController
@@ -119,11 +119,11 @@
     return 0;
   }
 
-  v2 = self;
-  v3 = [(PXBrowserSummaryController *)self dataSource];
-  LOBYTE(v2) = [v3 browserSummaryControllerShouldUpdateImmediately:v2];
+  selfCopy = self;
+  dataSource = [(PXBrowserSummaryController *)self dataSource];
+  LOBYTE(selfCopy) = [dataSource browserSummaryControllerShouldUpdateImmediately:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)invalidateContainerTitle
@@ -168,8 +168,8 @@
 
 - (void)invalidateVisibleContent
 {
-  v2 = [(PXBrowserSummaryController *)self visibleMetadataInfoUpdater];
-  [v2 invalidateInfo];
+  visibleMetadataInfoUpdater = [(PXBrowserSummaryController *)self visibleMetadataInfoUpdater];
+  [visibleMetadataInfoUpdater invalidateInfo];
 }
 
 - (PXBrowserSummaryControllerDataSource)dataSource
@@ -230,8 +230,8 @@
     self->_needsUpdateFlags.containerTitle = 0;
     if (self->_dataSourceRespondsTo.containerTitle)
     {
-      v4 = [(PXBrowserSummaryController *)self dataSource];
-      v5 = [v4 containerTitleForBrowserSummaryController:self];
+      dataSource = [(PXBrowserSummaryController *)self dataSource];
+      v5 = [dataSource containerTitleForBrowserSummaryController:self];
     }
 
     else
@@ -250,8 +250,8 @@
     self->_needsUpdateFlags.containerFallbackTitle = 0;
     if (self->_dataSourceRespondsTo.containerFallbackTitle)
     {
-      v4 = [(PXBrowserSummaryController *)self dataSource];
-      v5 = [v4 containerFallbackTitleForBrowserSummaryController:self];
+      dataSource = [(PXBrowserSummaryController *)self dataSource];
+      v5 = [dataSource containerFallbackTitleForBrowserSummaryController:self];
     }
 
     else
@@ -270,8 +270,8 @@
     self->_needsUpdateFlags.localizedContainerItemsCount = 0;
     if (self->_dataSourceRespondsTo.localizedContainerItemsCount)
     {
-      v4 = [(PXBrowserSummaryController *)self dataSource];
-      v5 = [v4 localizedContainerItemsCountForBrowserSummaryController:self];
+      dataSource = [(PXBrowserSummaryController *)self dataSource];
+      v5 = [dataSource localizedContainerItemsCountForBrowserSummaryController:self];
     }
 
     else
@@ -290,8 +290,8 @@
     self->_needsUpdateFlags.containerDateInterval = 0;
     if (self->_dataSourceRespondsTo.containerDateInterval)
     {
-      v4 = [(PXBrowserSummaryController *)self dataSource];
-      v5 = [v4 containerDateIntervalForBrowserSummaryController:self];
+      dataSource = [(PXBrowserSummaryController *)self dataSource];
+      v5 = [dataSource containerDateIntervalForBrowserSummaryController:self];
     }
 
     else
@@ -310,8 +310,8 @@
     self->_needsUpdateFlags.selectionSnapshot = 0;
     if (self->_dataSourceRespondsTo.selectionSnapshot)
     {
-      v4 = [(PXBrowserSummaryController *)self dataSource];
-      v3 = [v4 selectionSnapshotForBrowserSummaryController:self];
+      dataSource = [(PXBrowserSummaryController *)self dataSource];
+      v3 = [dataSource selectionSnapshotForBrowserSummaryController:self];
       [(PXBrowserSummaryController *)self setSelectionSnapshot:v3];
     }
 
@@ -330,8 +330,8 @@
     self->_needsUpdateFlags.filteringContainerContent = 0;
     if (self->_dataSourceRespondsTo.filteringContainerContent)
     {
-      v3 = [(PXBrowserSummaryController *)self dataSource];
-      -[PXBrowserSummaryController setFilteringContainerContent:](self, "setFilteringContainerContent:", [v3 isFilteringContainerContentForBrowserSummaryController:self]);
+      dataSource = [(PXBrowserSummaryController *)self dataSource];
+      -[PXBrowserSummaryController setFilteringContainerContent:](self, "setFilteringContainerContent:", [dataSource isFilteringContainerContentForBrowserSummaryController:self]);
     }
 
     else
@@ -347,18 +347,18 @@
   if (self->_needsUpdateFlags.attributedSelectionTitle)
   {
     self->_needsUpdateFlags.attributedSelectionTitle = 0;
-    v4 = [(PXBrowserSummaryController *)self selectionInfoUpdater];
-    v9 = [v4 info];
+    selectionInfoUpdater = [(PXBrowserSummaryController *)self selectionInfoUpdater];
+    info = [selectionInfoUpdater info];
 
-    v5 = [v9 objectForKeyedSubscript:@"count"];
-    v6 = [v5 integerValue];
+    v5 = [info objectForKeyedSubscript:@"count"];
+    integerValue = [v5 integerValue];
 
-    if (v6 >= 2)
+    if (integerValue >= 2)
     {
-      v7 = [v9 objectForKeyedSubscript:@"mediaType"];
-      v8 = [v7 integerValue];
+      v7 = [info objectForKeyedSubscript:@"mediaType"];
+      integerValue2 = [v7 integerValue];
 
-      PXLocalizedAssetCountForUsage(v6, v8, 0, 1);
+      PXLocalizedAssetCountForUsage(integerValue, integerValue2, 0, 1);
     }
 
     [(PXBrowserSummaryController *)self setAttributedSelectionTitle:0];
@@ -370,20 +370,20 @@
   if (self->_needsUpdateFlags.stackedAssets)
   {
     self->_needsUpdateFlags.stackedAssets = 0;
-    v4 = [(PXBrowserSummaryController *)self selectionInfoUpdater];
-    v9 = [v4 info];
+    selectionInfoUpdater = [(PXBrowserSummaryController *)self selectionInfoUpdater];
+    info = [selectionInfoUpdater info];
 
-    v5 = [v9 objectForKeyedSubscript:@"count"];
-    v6 = [v5 integerValue];
+    v5 = [info objectForKeyedSubscript:@"count"];
+    integerValue = [v5 integerValue];
 
-    if (v6 < 2)
+    if (integerValue < 2)
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = [v9 objectForKeyedSubscript:@"stackedAssets"];
+      v7 = [info objectForKeyedSubscript:@"stackedAssets"];
     }
 
     v8 = PFFilter();
@@ -393,24 +393,24 @@
 
 - (void)_invalidateTitles
 {
-  v2 = [(PXBrowserSummaryController *)self titlesInfoUpdater];
-  [v2 invalidateInfo];
+  titlesInfoUpdater = [(PXBrowserSummaryController *)self titlesInfoUpdater];
+  [titlesInfoUpdater invalidateInfo];
 }
 
-- (int64_t)priorityForInfoRequestOfKind:(id)a3
+- (int64_t)priorityForInfoRequestOfKind:(id)kind
 {
-  if ([a3 isEqualToString:@"PXSelectedItemsInfoKind"])
+  if ([kind isEqualToString:@"PXSelectedItemsInfoKind"])
   {
-    v4 = [(PXBrowserSummaryController *)self selectionSnapshot];
-    v5 = [v4 estimatedAssetCount];
+    selectionSnapshot = [(PXBrowserSummaryController *)self selectionSnapshot];
+    estimatedAssetCount = [selectionSnapshot estimatedAssetCount];
 
     v6 = 10;
-    if (v5 != 1)
+    if (estimatedAssetCount != 1)
     {
       v6 = 0;
     }
 
-    if (v5)
+    if (estimatedAssetCount)
     {
       v7 = v6;
     }
@@ -437,47 +437,47 @@
   }
 }
 
-- (id)requestInfoOfKind:(id)a3 withResultHandler:(id)a4
+- (id)requestInfoOfKind:(id)kind withResultHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (![v7 isEqualToString:@"PXVisibleDateIntervalInfoKind"])
+  kindCopy = kind;
+  handlerCopy = handler;
+  if (![kindCopy isEqualToString:@"PXVisibleDateIntervalInfoKind"])
   {
-    if ([v7 isEqualToString:@"PXSelectedItemsInfoKind"])
+    if ([kindCopy isEqualToString:@"PXSelectedItemsInfoKind"])
     {
-      v12 = [(PXBrowserSummaryController *)self selectionSnapshot];
-      if ([v12 estimatedAssetCount] < 1)
+      selectionSnapshot = [(PXBrowserSummaryController *)self selectionSnapshot];
+      if ([selectionSnapshot estimatedAssetCount] < 1)
       {
-        v8[2](v8, 0);
+        handlerCopy[2](handlerCopy, 0);
         v13 = 0;
       }
 
       else
       {
-        v14 = [(PXBrowserSummaryController *)self selectedAssetsStack];
+        selectedAssetsStack = [(PXBrowserSummaryController *)self selectedAssetsStack];
         v19[0] = MEMORY[0x1E69E9820];
         v19[1] = 3221225472;
         v19[2] = __66__PXBrowserSummaryController_requestInfoOfKind_withResultHandler___block_invoke_2;
         v19[3] = &unk_1E774A0E0;
-        v20 = v12;
-        v21 = v14;
-        v22 = v8;
-        v15 = v14;
+        v20 = selectionSnapshot;
+        v21 = selectedAssetsStack;
+        v22 = handlerCopy;
+        v15 = selectedAssetsStack;
         v13 = [(PXBrowserSummaryController *)self _performRequestBlock:v19];
       }
 
       goto LABEL_14;
     }
 
-    if (![v7 isEqualToString:@"PXOutputTitleInfoKind"])
+    if (![kindCopy isEqualToString:@"PXOutputTitleInfoKind"])
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v18 handleFailureInMethod:a2 object:self file:@"PXBrowserSummaryController.m" lineNumber:919 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXBrowserSummaryController.m" lineNumber:919 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    v16 = [(PXBrowserSummaryController *)self _requestTitlesInfoWithResultHandler:v8];
+    v16 = [(PXBrowserSummaryController *)self _requestTitlesInfoWithResultHandler:handlerCopy];
 LABEL_12:
     v13 = 0;
     goto LABEL_15;
@@ -489,14 +489,14 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  v9 = [(PXBrowserSummaryController *)self dataSource];
-  v10 = [v9 visibleContentSnapshotForBrowserSummaryController:self];
+  dataSource = [(PXBrowserSummaryController *)self dataSource];
+  v10 = [dataSource visibleContentSnapshotForBrowserSummaryController:self];
 
-  v11 = [(PXBrowserSummaryController *)self shouldShowLocationNames];
+  shouldShowLocationNames = [(PXBrowserSummaryController *)self shouldShowLocationNames];
   if (!v10)
   {
 LABEL_9:
-    v8[2](v8, 0);
+    handlerCopy[2](handlerCopy, 0);
     goto LABEL_12;
   }
 
@@ -505,9 +505,9 @@ LABEL_9:
   v23[2] = __66__PXBrowserSummaryController_requestInfoOfKind_withResultHandler___block_invoke;
   v23[3] = &unk_1E774A940;
   v24 = v10;
-  v26 = v11;
-  v25 = v8;
-  v12 = v10;
+  v26 = shouldShowLocationNames;
+  v25 = handlerCopy;
+  selectionSnapshot = v10;
   v13 = [(PXBrowserSummaryController *)self _performRequestBlock:v23];
 
 LABEL_14:
@@ -569,17 +569,17 @@ void __66__PXBrowserSummaryController_requestInfoOfKind_withResultHandler___bloc
   [v3 updateWithSelectedItemsSnapshot:v4];
 }
 
-- (void)infoUpdaterDidUpdate:(id)a3
+- (void)infoUpdaterDidUpdate:(id)update
 {
-  v5 = a3;
+  updateCopy = update;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__PXBrowserSummaryController_infoUpdaterDidUpdate___block_invoke;
   v7[3] = &unk_1E77499B0;
-  v8 = v5;
-  v9 = self;
+  v8 = updateCopy;
+  selfCopy = self;
   v10 = a2;
-  v6 = v5;
+  v6 = updateCopy;
   [(PXBrowserSummaryController *)self performChanges:v7];
 }
 
@@ -647,40 +647,40 @@ void __51__PXBrowserSummaryController_infoUpdaterDidUpdate___block_invoke(uint64
   }
 }
 
-- (id)_requestTitlesInfoWithResultHandler:(id)a3
+- (id)_requestTitlesInfoWithResultHandler:(id)handler
 {
-  v47 = a3;
-  v49 = [(PXBrowserSummaryController *)self defaultAttributes];
-  v4 = [(PXBrowserSummaryController *)self emphasizedAttributes];
-  v5 = [(PXBrowserSummaryController *)self visibleMetadataInfoUpdater];
-  v50 = [v5 info];
+  handlerCopy = handler;
+  defaultAttributes = [(PXBrowserSummaryController *)self defaultAttributes];
+  emphasizedAttributes = [(PXBrowserSummaryController *)self emphasizedAttributes];
+  visibleMetadataInfoUpdater = [(PXBrowserSummaryController *)self visibleMetadataInfoUpdater];
+  info = [visibleMetadataInfoUpdater info];
 
-  v6 = [(PXBrowserSummaryController *)self containerTitle];
-  v7 = [(PXBrowserSummaryController *)self containerFallbackTitle];
-  v31 = [(PXBrowserSummaryController *)self isFilteringContainerContent];
-  v8 = [(PXBrowserSummaryController *)self containerDateInterval];
-  v46 = [(PXBrowserSummaryController *)self dateIntervalFormatter];
-  v44 = [(PXBrowserSummaryController *)self noFilteringResultsPlaceholderText];
-  v42 = [(PXBrowserSummaryController *)self localizedContainerItemsCount];
-  v38 = [(PXBrowserSummaryController *)self localizedComponentsSeparator];
-  v9 = [(PXBrowserSummaryController *)self shouldUseSubtitles];
-  v10 = [(PXBrowserSummaryController *)self shouldUseNavigationTitle];
-  v36 = [(PXBrowserSummaryController *)self shouldShowLocationNames];
+  containerTitle = [(PXBrowserSummaryController *)self containerTitle];
+  containerFallbackTitle = [(PXBrowserSummaryController *)self containerFallbackTitle];
+  isFilteringContainerContent = [(PXBrowserSummaryController *)self isFilteringContainerContent];
+  containerDateInterval = [(PXBrowserSummaryController *)self containerDateInterval];
+  dateIntervalFormatter = [(PXBrowserSummaryController *)self dateIntervalFormatter];
+  noFilteringResultsPlaceholderText = [(PXBrowserSummaryController *)self noFilteringResultsPlaceholderText];
+  localizedContainerItemsCount = [(PXBrowserSummaryController *)self localizedContainerItemsCount];
+  localizedComponentsSeparator = [(PXBrowserSummaryController *)self localizedComponentsSeparator];
+  shouldUseSubtitles = [(PXBrowserSummaryController *)self shouldUseSubtitles];
+  shouldUseNavigationTitle = [(PXBrowserSummaryController *)self shouldUseNavigationTitle];
+  shouldShowLocationNames = [(PXBrowserSummaryController *)self shouldShowLocationNames];
   if (self->_dataSourceRespondsTo.useAssetImportDate)
   {
-    v11 = [(PXBrowserSummaryController *)self dataSource];
-    v34 = [v11 shouldShowImportDates];
+    dataSource = [(PXBrowserSummaryController *)self dataSource];
+    shouldShowImportDates = [dataSource shouldShowImportDates];
   }
 
   else
   {
-    v34 = 0;
+    shouldShowImportDates = 0;
   }
 
-  v33 = v10;
-  if (![v6 length])
+  v33 = shouldUseNavigationTitle;
+  if (![containerTitle length])
   {
-    if ([v7 length] != 0 && v9)
+    if ([containerFallbackTitle length] != 0 && shouldUseSubtitles)
     {
       goto LABEL_6;
     }
@@ -691,15 +691,15 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!v9)
+  if (!shouldUseSubtitles)
   {
     goto LABEL_11;
   }
 
 LABEL_6:
-  if (v8)
+  if (containerDateInterval)
   {
-    v12 = v10;
+    v12 = shouldUseNavigationTitle;
   }
 
   else
@@ -710,11 +710,11 @@ LABEL_6:
   v28 = v12;
   v32 = v12 ^ 1;
 LABEL_12:
-  v29 = [(PXBrowserSummaryController *)self shouldUseAbbreviatedDates];
-  v30 = [(PXBrowserSummaryController *)self containerDateFormatGranularity];
-  if ([v6 length])
+  shouldUseAbbreviatedDates = [(PXBrowserSummaryController *)self shouldUseAbbreviatedDates];
+  containerDateFormatGranularity = [(PXBrowserSummaryController *)self containerDateFormatGranularity];
+  if ([containerTitle length])
   {
-    v13 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v6 attributes:v4];
+    v13 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:containerTitle attributes:emphasizedAttributes];
     v79[0] = MEMORY[0x1E69E9820];
     v79[1] = 3221225472;
     v79[2] = __66__PXBrowserSummaryController__requestTitlesInfoWithResultHandler___block_invoke;
@@ -733,12 +733,12 @@ LABEL_12:
     v14 = 0;
   }
 
-  v40 = v6;
-  v35 = v7;
-  v16 = v8;
-  if ([v7 length])
+  v40 = containerTitle;
+  v35 = containerFallbackTitle;
+  v16 = containerDateInterval;
+  if ([containerFallbackTitle length])
   {
-    v17 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v7 attributes:v4];
+    v17 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:containerFallbackTitle attributes:emphasizedAttributes];
     v76[0] = MEMORY[0x1E69E9820];
     v76[1] = 3221225472;
     v76[2] = __66__PXBrowserSummaryController__requestTitlesInfoWithResultHandler___block_invoke_2;
@@ -761,42 +761,42 @@ LABEL_12:
   v51[1] = 3221225472;
   v51[2] = __66__PXBrowserSummaryController__requestTitlesInfoWithResultHandler___block_invoke_3;
   v51[3] = &unk_1E772F5C8;
-  v52 = v50;
+  v52 = info;
   v53 = v15;
-  v68 = v31;
+  v68 = isFilteringContainerContent;
   v54 = v14;
-  v55 = v8;
-  v69 = v29;
-  v56 = v46;
-  v57 = v49;
-  v58 = v4;
+  v55 = containerDateInterval;
+  v69 = shouldUseAbbreviatedDates;
+  v56 = dateIntervalFormatter;
+  v57 = defaultAttributes;
+  v58 = emphasizedAttributes;
   v59 = v18;
-  v70 = v36;
-  v71 = v34;
+  v70 = shouldShowLocationNames;
+  v71 = shouldShowImportDates;
   v60 = v19;
-  v61 = self;
+  selfCopy = self;
   v72 = v32;
   v73 = v28;
-  v74 = v9;
+  v74 = shouldUseSubtitles;
   v75 = v33;
-  v62 = v44;
-  v63 = v42;
+  v62 = noFilteringResultsPlaceholderText;
+  v63 = localizedContainerItemsCount;
   v64 = v40;
-  v65 = v38;
-  v66 = v47;
-  v67 = v30;
-  v48 = v47;
-  v39 = v38;
+  v65 = localizedComponentsSeparator;
+  v66 = handlerCopy;
+  v67 = containerDateFormatGranularity;
+  v48 = handlerCopy;
+  v39 = localizedComponentsSeparator;
   v41 = v40;
-  v43 = v42;
-  v45 = v44;
+  v43 = localizedContainerItemsCount;
+  v45 = noFilteringResultsPlaceholderText;
   v37 = v18;
-  v20 = v4;
-  v21 = v49;
-  v22 = v46;
+  v20 = emphasizedAttributes;
+  v21 = defaultAttributes;
+  v22 = dateIntervalFormatter;
   v23 = v16;
   v24 = v15;
-  v25 = v50;
+  v25 = info;
   v26 = [(PXBrowserSummaryController *)self _performRequestBlock:v51];
 
   return v26;
@@ -1068,59 +1068,59 @@ LABEL_71:
   (*(*(a1 + 144) + 16))();
 }
 
-- (void)setContainerDateFormatGranularity:(unint64_t)a3
+- (void)setContainerDateFormatGranularity:(unint64_t)granularity
 {
-  if (self->_containerDateFormatGranularity != a3)
+  if (self->_containerDateFormatGranularity != granularity)
   {
-    self->_containerDateFormatGranularity = a3;
+    self->_containerDateFormatGranularity = granularity;
     [(PXBrowserSummaryController *)self _invalidateTitles];
   }
 }
 
-- (void)setShouldShowLocationNames:(BOOL)a3
+- (void)setShouldShowLocationNames:(BOOL)names
 {
-  if (self->_shouldShowLocationNames != a3)
+  if (self->_shouldShowLocationNames != names)
   {
-    self->_shouldShowLocationNames = a3;
+    self->_shouldShowLocationNames = names;
     [(PXBrowserSummaryController *)self _invalidateTitles];
   }
 }
 
-- (void)setShouldUseAbbreviatedDates:(BOOL)a3
+- (void)setShouldUseAbbreviatedDates:(BOOL)dates
 {
-  if (self->_shouldUseAbbreviatedDates != a3)
+  if (self->_shouldUseAbbreviatedDates != dates)
   {
-    self->_shouldUseAbbreviatedDates = a3;
+    self->_shouldUseAbbreviatedDates = dates;
     [(PXBrowserSummaryController *)self _invalidateTitles];
   }
 }
 
-- (void)setShouldUseNavigationTitle:(BOOL)a3
+- (void)setShouldUseNavigationTitle:(BOOL)title
 {
-  if (self->_shouldUseNavigationTitle != a3)
+  if (self->_shouldUseNavigationTitle != title)
   {
-    self->_shouldUseNavigationTitle = a3;
+    self->_shouldUseNavigationTitle = title;
     [(PXBrowserSummaryController *)self _invalidateTitles];
   }
 }
 
-- (void)setShouldUseSubtitles:(BOOL)a3
+- (void)setShouldUseSubtitles:(BOOL)subtitles
 {
-  if (self->_shouldUseSubtitles != a3)
+  if (self->_shouldUseSubtitles != subtitles)
   {
-    self->_shouldUseSubtitles = a3;
+    self->_shouldUseSubtitles = subtitles;
     [(PXBrowserSummaryController *)self _invalidateTitles];
   }
 }
 
-- (void)setSelectionAttributes:(id)a3
+- (void)setSelectionAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_selectionAttributes != v4)
+  attributesCopy = attributes;
+  v5 = attributesCopy;
+  if (self->_selectionAttributes != attributesCopy)
   {
-    v9 = v4;
-    v6 = [(NSDictionary *)v4 isEqual:?];
+    v9 = attributesCopy;
+    v6 = [(NSDictionary *)attributesCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -1135,14 +1135,14 @@ LABEL_71:
   }
 }
 
-- (void)setEmphasizedAttributes:(id)a3
+- (void)setEmphasizedAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_emphasizedAttributes != v4)
+  attributesCopy = attributes;
+  v5 = attributesCopy;
+  if (self->_emphasizedAttributes != attributesCopy)
   {
-    v9 = v4;
-    v6 = [(NSDictionary *)v4 isEqual:?];
+    v9 = attributesCopy;
+    v6 = [(NSDictionary *)attributesCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -1156,14 +1156,14 @@ LABEL_71:
   }
 }
 
-- (void)setDefaultAttributes:(id)a3
+- (void)setDefaultAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_defaultAttributes != v4)
+  attributesCopy = attributes;
+  v5 = attributesCopy;
+  if (self->_defaultAttributes != attributesCopy)
   {
-    v9 = v4;
-    v6 = [(NSDictionary *)v4 isEqual:?];
+    v9 = attributesCopy;
+    v6 = [(NSDictionary *)attributesCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -1177,34 +1177,34 @@ LABEL_71:
   }
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXBrowserSummaryController;
-  [(PXBrowserSummaryController *)&v3 performChanges:a3];
+  [(PXBrowserSummaryController *)&v3 performChanges:changes];
 }
 
-- (id)_performRequestBlock:(id)a3
+- (id)_performRequestBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(PXBrowserSummaryController *)self shouldUpdateImmediately])
   {
-    v4[2](v4);
+    blockCopy[2](blockCopy);
     v5 = 0;
   }
 
   else
   {
     v6 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
-    v7 = [(PXBrowserSummaryController *)self queue];
+    queue = [(PXBrowserSummaryController *)self queue];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __51__PXBrowserSummaryController__performRequestBlock___block_invoke;
     v9[3] = &unk_1E774C2F0;
     v5 = v6;
     v10 = v5;
-    v11 = v4;
-    dispatch_async(v7, v9);
+    v11 = blockCopy;
+    dispatch_async(queue, v9);
   }
 
   return v5;
@@ -1223,27 +1223,27 @@ uint64_t __51__PXBrowserSummaryController__performRequestBlock___block_invoke(ui
   return result;
 }
 
-- (void)performBlockWhenDoneUpdating:(id)a3
+- (void)performBlockWhenDoneUpdating:(id)updating
 {
-  v4 = a3;
-  v5 = [(PXBrowserSummaryController *)self wantsVerboseLogging];
-  v6 = v5;
-  if (v5)
+  updatingCopy = updating;
+  wantsVerboseLogging = [(PXBrowserSummaryController *)self wantsVerboseLogging];
+  v6 = wantsVerboseLogging;
+  if (wantsVerboseLogging)
   {
     NSLog(&cfstr_WillPerformblo.isa, self);
   }
 
   objc_initWeak(&location, self);
-  v7 = [(PXBrowserSummaryController *)self visibleMetadataInfoUpdater];
+  visibleMetadataInfoUpdater = [(PXBrowserSummaryController *)self visibleMetadataInfoUpdater];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __59__PXBrowserSummaryController_performBlockWhenDoneUpdating___block_invoke;
   v9[3] = &unk_1E7730330;
   v12 = v6;
   objc_copyWeak(&v11, &location);
-  v8 = v4;
+  v8 = updatingCopy;
   v10 = v8;
-  [v7 performBlockWhenDoneUpdating:v9];
+  [visibleMetadataInfoUpdater performBlockWhenDoneUpdating:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -1306,23 +1306,23 @@ uint64_t __59__PXBrowserSummaryController_performBlockWhenDoneUpdating___block_i
   return v3();
 }
 
-- (void)setReady:(BOOL)a3
+- (void)setReady:(BOOL)ready
 {
-  if (self->_ready != a3)
+  if (self->_ready != ready)
   {
-    self->_ready = a3;
+    self->_ready = ready;
     [(PXBrowserSummaryController *)self signalChange:64];
   }
 }
 
-- (void)setStackedAssets:(id)a3
+- (void)setStackedAssets:(id)assets
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_stackedAssets != v4)
+  assetsCopy = assets;
+  v5 = assetsCopy;
+  if (self->_stackedAssets != assetsCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)v4 isEqual:?];
+    v9 = assetsCopy;
+    v6 = [(NSArray *)assetsCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -1336,14 +1336,14 @@ uint64_t __59__PXBrowserSummaryController_performBlockWhenDoneUpdating___block_i
   }
 }
 
-- (void)setAttributedSelectionTitle:(id)a3
+- (void)setAttributedSelectionTitle:(id)title
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_attributedSelectionTitle != v4)
+  titleCopy = title;
+  v5 = titleCopy;
+  if (self->_attributedSelectionTitle != titleCopy)
   {
-    v9 = v4;
-    v6 = [(NSAttributedString *)v4 isEqual:?];
+    v9 = titleCopy;
+    v6 = [(NSAttributedString *)titleCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -1357,14 +1357,14 @@ uint64_t __59__PXBrowserSummaryController_performBlockWhenDoneUpdating___block_i
   }
 }
 
-- (void)setNavigationTitle:(id)a3
+- (void)setNavigationTitle:(id)title
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_navigationTitle != v4)
+  titleCopy = title;
+  v5 = titleCopy;
+  if (self->_navigationTitle != titleCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)v4 isEqualToString:?];
+    v9 = titleCopy;
+    v6 = [(NSString *)titleCopy isEqualToString:?];
     v5 = v9;
     if (!v6)
     {
@@ -1378,17 +1378,17 @@ uint64_t __59__PXBrowserSummaryController_performBlockWhenDoneUpdating___block_i
   }
 }
 
-- (void)_setTertiaryTitle:(id)a3 accessibilityIdentifier:(id)a4
+- (void)_setTertiaryTitle:(id)title accessibilityIdentifier:(id)identifier
 {
-  v11 = a3;
-  v6 = a4;
-  if (self->_tertiaryTitle != v11 && ![(NSString *)v11 isEqualToString:?]|| self->_tertiaryTitleAccessibilityIdentifier != v6 && ![(NSString *)v6 isEqualToString:?])
+  titleCopy = title;
+  identifierCopy = identifier;
+  if (self->_tertiaryTitle != titleCopy && ![(NSString *)titleCopy isEqualToString:?]|| self->_tertiaryTitleAccessibilityIdentifier != identifierCopy && ![(NSString *)identifierCopy isEqualToString:?])
   {
-    v7 = [(NSString *)v11 copy];
+    v7 = [(NSString *)titleCopy copy];
     tertiaryTitle = self->_tertiaryTitle;
     self->_tertiaryTitle = v7;
 
-    v9 = [(NSString *)v6 copy];
+    v9 = [(NSString *)identifierCopy copy];
     tertiaryTitleAccessibilityIdentifier = self->_tertiaryTitleAccessibilityIdentifier;
     self->_tertiaryTitleAccessibilityIdentifier = v9;
 
@@ -1396,17 +1396,17 @@ uint64_t __59__PXBrowserSummaryController_performBlockWhenDoneUpdating___block_i
   }
 }
 
-- (void)_setSecondaryTitle:(id)a3 accessibilityIdentifier:(id)a4
+- (void)_setSecondaryTitle:(id)title accessibilityIdentifier:(id)identifier
 {
-  v11 = a3;
-  v6 = a4;
-  if (self->_secondaryTitle != v11 && ![(NSString *)v11 isEqualToString:?]|| self->_secondaryTitleAccessibilityIdentifier != v6 && ![(NSString *)v6 isEqualToString:?])
+  titleCopy = title;
+  identifierCopy = identifier;
+  if (self->_secondaryTitle != titleCopy && ![(NSString *)titleCopy isEqualToString:?]|| self->_secondaryTitleAccessibilityIdentifier != identifierCopy && ![(NSString *)identifierCopy isEqualToString:?])
   {
-    v7 = [(NSString *)v11 copy];
+    v7 = [(NSString *)titleCopy copy];
     secondaryTitle = self->_secondaryTitle;
     self->_secondaryTitle = v7;
 
-    v9 = [(NSString *)v6 copy];
+    v9 = [(NSString *)identifierCopy copy];
     secondaryTitleAccessibilityIdentifier = self->_secondaryTitleAccessibilityIdentifier;
     self->_secondaryTitleAccessibilityIdentifier = v9;
 
@@ -1414,17 +1414,17 @@ uint64_t __59__PXBrowserSummaryController_performBlockWhenDoneUpdating___block_i
   }
 }
 
-- (void)_setAttributedPrimaryFallbackTitle:(id)a3 accessibilityIdentifier:(id)a4
+- (void)_setAttributedPrimaryFallbackTitle:(id)title accessibilityIdentifier:(id)identifier
 {
-  v11 = a3;
-  v6 = a4;
-  if (self->_attributedPrimaryFallbackTitle != v11 && ![(NSAttributedString *)v11 isEqual:?]|| self->_primaryFallbackTitleAccessibilityIdentifier != v6 && ![(NSString *)v6 isEqualToString:?])
+  titleCopy = title;
+  identifierCopy = identifier;
+  if (self->_attributedPrimaryFallbackTitle != titleCopy && ![(NSAttributedString *)titleCopy isEqual:?]|| self->_primaryFallbackTitleAccessibilityIdentifier != identifierCopy && ![(NSString *)identifierCopy isEqualToString:?])
   {
-    v7 = [(NSAttributedString *)v11 copy];
+    v7 = [(NSAttributedString *)titleCopy copy];
     attributedPrimaryFallbackTitle = self->_attributedPrimaryFallbackTitle;
     self->_attributedPrimaryFallbackTitle = v7;
 
-    v9 = [(NSString *)v6 copy];
+    v9 = [(NSString *)identifierCopy copy];
     primaryFallbackTitleAccessibilityIdentifier = self->_primaryFallbackTitleAccessibilityIdentifier;
     self->_primaryFallbackTitleAccessibilityIdentifier = v9;
 
@@ -1432,17 +1432,17 @@ uint64_t __59__PXBrowserSummaryController_performBlockWhenDoneUpdating___block_i
   }
 }
 
-- (void)_setAttributedPrimaryTitle:(id)a3 accessibilityIdentifier:(id)a4
+- (void)_setAttributedPrimaryTitle:(id)title accessibilityIdentifier:(id)identifier
 {
-  v11 = a3;
-  v6 = a4;
-  if (self->_attributedPrimaryTitle != v11 && ![(NSAttributedString *)v11 isEqual:?]|| self->_primaryTitleAccessibilityIdentifier != v6 && ![(NSString *)v6 isEqualToString:?])
+  titleCopy = title;
+  identifierCopy = identifier;
+  if (self->_attributedPrimaryTitle != titleCopy && ![(NSAttributedString *)titleCopy isEqual:?]|| self->_primaryTitleAccessibilityIdentifier != identifierCopy && ![(NSString *)identifierCopy isEqualToString:?])
   {
-    v7 = [(NSAttributedString *)v11 copy];
+    v7 = [(NSAttributedString *)titleCopy copy];
     attributedPrimaryTitle = self->_attributedPrimaryTitle;
     self->_attributedPrimaryTitle = v7;
 
-    v9 = [(NSString *)v6 copy];
+    v9 = [(NSString *)identifierCopy copy];
     primaryTitleAccessibilityIdentifier = self->_primaryTitleAccessibilityIdentifier;
     self->_primaryTitleAccessibilityIdentifier = v9;
 
@@ -1450,43 +1450,43 @@ uint64_t __59__PXBrowserSummaryController_performBlockWhenDoneUpdating___block_i
   }
 }
 
-- (void)setFilteringContainerContent:(BOOL)a3
+- (void)setFilteringContainerContent:(BOOL)content
 {
-  if (self->_filteringContainerContent != a3)
+  if (self->_filteringContainerContent != content)
   {
-    self->_filteringContainerContent = a3;
+    self->_filteringContainerContent = content;
     [(PXBrowserSummaryController *)self _invalidateTitles];
   }
 }
 
-- (void)setSelectionSnapshot:(id)a3
+- (void)setSelectionSnapshot:(id)snapshot
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_selectionSnapshot != v5)
+  snapshotCopy = snapshot;
+  v6 = snapshotCopy;
+  if (self->_selectionSnapshot != snapshotCopy)
   {
-    v9 = v5;
-    v7 = [(PXBrowserSelectionSnapshot *)v5 isEqual:?];
+    v9 = snapshotCopy;
+    v7 = [(PXBrowserSelectionSnapshot *)snapshotCopy isEqual:?];
     v6 = v9;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_selectionSnapshot, a3);
-      v8 = [(PXBrowserSummaryController *)self selectionInfoUpdater];
-      [v8 invalidateInfo];
+      objc_storeStrong(&self->_selectionSnapshot, snapshot);
+      selectionInfoUpdater = [(PXBrowserSummaryController *)self selectionInfoUpdater];
+      [selectionInfoUpdater invalidateInfo];
 
       v6 = v9;
     }
   }
 }
 
-- (void)setContainerDateInterval:(id)a3
+- (void)setContainerDateInterval:(id)interval
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_containerDateInterval != v4)
+  intervalCopy = interval;
+  v5 = intervalCopy;
+  if (self->_containerDateInterval != intervalCopy)
   {
-    v9 = v4;
-    v6 = [(NSDateInterval *)v4 isEqual:?];
+    v9 = intervalCopy;
+    v6 = [(NSDateInterval *)intervalCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -1500,14 +1500,14 @@ uint64_t __59__PXBrowserSummaryController_performBlockWhenDoneUpdating___block_i
   }
 }
 
-- (void)setLocalizedContainerItemsCount:(id)a3
+- (void)setLocalizedContainerItemsCount:(id)count
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_localizedContainerItemsCount != v4)
+  countCopy = count;
+  v5 = countCopy;
+  if (self->_localizedContainerItemsCount != countCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)v4 isEqualToString:?];
+    v9 = countCopy;
+    v6 = [(NSString *)countCopy isEqualToString:?];
     v5 = v9;
     if (!v6)
     {
@@ -1521,14 +1521,14 @@ uint64_t __59__PXBrowserSummaryController_performBlockWhenDoneUpdating___block_i
   }
 }
 
-- (void)setContainerFallbackTitle:(id)a3
+- (void)setContainerFallbackTitle:(id)title
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_containerFallbackTitle != v4)
+  titleCopy = title;
+  v5 = titleCopy;
+  if (self->_containerFallbackTitle != titleCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)v4 isEqualToString:?];
+    v9 = titleCopy;
+    v6 = [(NSString *)titleCopy isEqualToString:?];
     v5 = v9;
     if (!v6)
     {
@@ -1542,14 +1542,14 @@ uint64_t __59__PXBrowserSummaryController_performBlockWhenDoneUpdating___block_i
   }
 }
 
-- (void)setContainerTitle:(id)a3
+- (void)setContainerTitle:(id)title
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_containerTitle != v4)
+  titleCopy = title;
+  v5 = titleCopy;
+  if (self->_containerTitle != titleCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)v4 isEqualToString:?];
+    v9 = titleCopy;
+    v6 = [(NSString *)titleCopy isEqualToString:?];
     v5 = v9;
     if (!v6)
     {
@@ -1563,14 +1563,14 @@ uint64_t __59__PXBrowserSummaryController_performBlockWhenDoneUpdating___block_i
   }
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != sourceCopy)
   {
-    objc_storeWeak(&self->_dataSource, v4);
+    objc_storeWeak(&self->_dataSource, sourceCopy);
     self->_dataSourceRespondsTo.containerTitle = objc_opt_respondsToSelector() & 1;
     self->_dataSourceRespondsTo.containerFallbackTitle = objc_opt_respondsToSelector() & 1;
     self->_dataSourceRespondsTo.localizedContainerItemsCount = objc_opt_respondsToSelector() & 1;

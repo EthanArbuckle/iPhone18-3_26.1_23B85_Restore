@@ -1,38 +1,38 @@
 @interface PXPlacesImageCache
 - (PXPlacesImageCache)init;
-- (id)cachedRenderedImageForGeotaggble:(id)a3 andKey:(id)a4;
-- (void)cacheRenderedImage:(id)a3 forGeotaggble:(id)a4 andKey:(id)a5;
-- (void)removeCachedRenderedImageForGeotaggble:(id)a3 andKey:(id)a4;
+- (id)cachedRenderedImageForGeotaggble:(id)geotaggble andKey:(id)key;
+- (void)cacheRenderedImage:(id)image forGeotaggble:(id)geotaggble andKey:(id)key;
+- (void)removeCachedRenderedImageForGeotaggble:(id)geotaggble andKey:(id)key;
 @end
 
 @implementation PXPlacesImageCache
 
-- (void)cacheRenderedImage:(id)a3 forGeotaggble:(id)a4 andKey:(id)a5
+- (void)cacheRenderedImage:(id)image forGeotaggble:(id)geotaggble andKey:(id)key
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[_PXPlacesImageCacheKey alloc] initWithGeotaggable:v9 andKey:v8];
+  keyCopy = key;
+  geotaggbleCopy = geotaggble;
+  imageCopy = image;
+  v11 = [[_PXPlacesImageCacheKey alloc] initWithGeotaggable:geotaggbleCopy andKey:keyCopy];
 
-  [(NSCache *)self->_cache setObject:v10 forKey:v11];
+  [(NSCache *)self->_cache setObject:imageCopy forKey:v11];
 }
 
-- (id)cachedRenderedImageForGeotaggble:(id)a3 andKey:(id)a4
+- (id)cachedRenderedImageForGeotaggble:(id)geotaggble andKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[_PXPlacesImageCacheKey alloc] initWithGeotaggable:v7 andKey:v6];
+  keyCopy = key;
+  geotaggbleCopy = geotaggble;
+  v8 = [[_PXPlacesImageCacheKey alloc] initWithGeotaggable:geotaggbleCopy andKey:keyCopy];
 
   v9 = [(NSCache *)self->_cache objectForKey:v8];
 
   return v9;
 }
 
-- (void)removeCachedRenderedImageForGeotaggble:(id)a3 andKey:(id)a4
+- (void)removeCachedRenderedImageForGeotaggble:(id)geotaggble andKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[_PXPlacesImageCacheKey alloc] initWithGeotaggable:v7 andKey:v6];
+  keyCopy = key;
+  geotaggbleCopy = geotaggble;
+  v8 = [[_PXPlacesImageCacheKey alloc] initWithGeotaggable:geotaggbleCopy andKey:keyCopy];
 
   [(NSCache *)self->_cache removeObjectForKey:v8];
 }

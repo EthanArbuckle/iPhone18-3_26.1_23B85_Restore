@@ -1,7 +1,7 @@
 @interface ANSTExclaveAlgorithmConfiguration
 + (ANSTExclaveAlgorithmConfiguration)new;
 - (ANSTExclaveAlgorithmConfiguration)init;
-- (ANSTExclaveAlgorithmConfiguration)initWithVersion:(unint64_t)a3;
+- (ANSTExclaveAlgorithmConfiguration)initWithVersion:(unint64_t)version;
 - (id)description;
 @end
 
@@ -16,16 +16,16 @@
 
 + (ANSTExclaveAlgorithmConfiguration)new
 {
-  result = objc_msgSend_doesNotRecognizeSelector_(a1, a2, a2);
+  result = objc_msgSend_doesNotRecognizeSelector_(self, a2, a2);
   __break(1u);
   return result;
 }
 
-- (ANSTExclaveAlgorithmConfiguration)initWithVersion:(unint64_t)a3
+- (ANSTExclaveAlgorithmConfiguration)initWithVersion:(unint64_t)version
 {
   v4.receiver = self;
   v4.super_class = ANSTExclaveAlgorithmConfiguration;
-  result = [(ANSTConfiguration *)&v4 initWithVersion:a3];
+  result = [(ANSTConfiguration *)&v4 initWithVersion:version];
   if (result)
   {
     result->_networkResolution = 0;

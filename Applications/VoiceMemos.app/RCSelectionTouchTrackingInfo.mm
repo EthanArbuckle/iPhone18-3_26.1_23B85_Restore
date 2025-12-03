@@ -1,15 +1,15 @@
 @interface RCSelectionTouchTrackingInfo
 - (UITouch)touch;
 - (id)description;
-- (void)setTouch:(id)a3;
+- (void)setTouch:(id)touch;
 - (void)updateTrackingInfo;
 @end
 
 @implementation RCSelectionTouchTrackingInfo
 
-- (void)setTouch:(id)a3
+- (void)setTouch:(id)touch
 {
-  obj = a3;
+  obj = touch;
   [obj locationInView:0];
   self->_lastLocation = v4;
   objc_storeWeak(&self->_touch, obj);

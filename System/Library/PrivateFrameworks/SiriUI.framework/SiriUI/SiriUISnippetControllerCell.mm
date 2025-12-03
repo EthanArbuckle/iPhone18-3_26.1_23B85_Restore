@@ -1,7 +1,7 @@
 @interface SiriUISnippetControllerCell
-+ (CGRect)contentBoundsForCollectionViewCellBounds:(CGRect)a3 snippetViewController:(id)a4;
++ (CGRect)contentBoundsForCollectionViewCellBounds:(CGRect)bounds snippetViewController:(id)controller;
 + (id)reuseIdentifier;
-- (SiriUISnippetControllerCell)initWithFrame:(CGRect)a3;
+- (SiriUISnippetControllerCell)initWithFrame:(CGRect)frame;
 - (SiriUISnippetViewController)snippetViewController;
 - (UIEdgeInsets)_snippetEdgeInsets;
 - (double)_heightForFooterView;
@@ -9,30 +9,30 @@
 - (double)_heightForTransparentFooterView;
 - (double)_heightForTransparentHeaderView;
 - (void)_configureSubviewsForCurrentInset;
-- (void)_setFooterView:(id)a3;
-- (void)_setHeaderView:(id)a3;
-- (void)_setTransparentFooterView:(id)a3;
-- (void)_setTransparentHeaderView:(id)a3;
-- (void)_snippetPunchOutButtonTapped:(id)a3;
-- (void)animateSnippetCancellationWithCompletion:(id)a3;
-- (void)animateSnippetConfirmationWithCompletion:(id)a3;
-- (void)animateSnippetResizeToSize:(CGSize)a3 completion:(id)a4;
+- (void)_setFooterView:(id)view;
+- (void)_setHeaderView:(id)view;
+- (void)_setTransparentFooterView:(id)view;
+- (void)_setTransparentHeaderView:(id)view;
+- (void)_snippetPunchOutButtonTapped:(id)tapped;
+- (void)animateSnippetCancellationWithCompletion:(id)completion;
+- (void)animateSnippetConfirmationWithCompletion:(id)completion;
+- (void)animateSnippetResizeToSize:(CGSize)size completion:(id)completion;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setShowBackgroundView:(BOOL)a3;
-- (void)setSnippetViewController:(id)a3;
+- (void)setShowBackgroundView:(BOOL)view;
+- (void)setSnippetViewController:(id)controller;
 @end
 
 @implementation SiriUISnippetControllerCell
 
-+ (CGRect)contentBoundsForCollectionViewCellBounds:(CGRect)a3 snippetViewController:(id)a4
++ (CGRect)contentBoundsForCollectionViewCellBounds:(CGRect)bounds snippetViewController:(id)controller
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
-  if (([v8 usePlatterStyle] & 1) != 0 || objc_msgSend(v8, "_hasConfirmationOrCancelledInsets"))
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  controllerCopy = controller;
+  if (([controllerCopy usePlatterStyle] & 1) != 0 || objc_msgSend(controllerCopy, "_hasConfirmationOrCancelledInsets"))
   {
     UIRectInset();
     x = v9;
@@ -52,12 +52,12 @@
   return result;
 }
 
-- (SiriUISnippetControllerCell)initWithFrame:(CGRect)a3
+- (SiriUISnippetControllerCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v29.receiver = self;
   v29.super_class = SiriUISnippetControllerCell;
   v7 = [(SiriUISnippetControllerCell *)&v29 initWithFrame:?];
@@ -75,16 +75,16 @@
     *(v7 + 760) = SiriUIDefaultSnippetViewInsets;
     *(v7 + 776) = *&qword_2694DDF00;
     [v7 setPreservesSuperviewLayoutMargins:1];
-    v12 = [v7 contentView];
-    [v12 setPreservesSuperviewLayoutMargins:1];
+    contentView = [v7 contentView];
+    [contentView setPreservesSuperviewLayoutMargins:1];
 
-    v13 = [MEMORY[0x277D60108] labelWithHeaderFont];
+    labelWithHeaderFont = [MEMORY[0x277D60108] labelWithHeaderFont];
     v14 = *(v7 + 87);
-    *(v7 + 87) = v13;
+    *(v7 + 87) = labelWithHeaderFont;
 
     v15 = *(v7 + 87);
-    v16 = [MEMORY[0x277D75348] siriui_textColor];
-    [v15 setTextColor:v16];
+    siriui_textColor = [MEMORY[0x277D75348] siriui_textColor];
+    [v15 setTextColor:siriui_textColor];
 
     v17 = *(v7 + 87);
     v18 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.SiriUI"];
@@ -110,8 +110,8 @@
     v26 = *(v7 + 85);
     *(v7 + 85) = v25;
 
-    v27 = [v7 contentView];
-    [v27 addSubview:*(v7 + 85)];
+    contentView2 = [v7 contentView];
+    [contentView2 addSubview:*(v7 + 85)];
   }
 
   return v7;
@@ -122,8 +122,8 @@
   v4.receiver = self;
   v4.super_class = SiriUISnippetControllerCell;
   [(SiriUISnippetControllerCell *)&v4 prepareForReuse];
-  v3 = [(SiriUISnippetControllerCell *)self snippetViewController];
-  [v3 setContainingView:0];
+  snippetViewController = [(SiriUISnippetControllerCell *)self snippetViewController];
+  [snippetViewController setContainingView:0];
   [(UILabel *)self->_cancelledLabel removeFromSuperview];
   [(SiriUIContentButton *)self->_snippetPunchOutButton removeFromSuperview];
   [(SiriUIKeyline *)self->_bottomKeyline removeFromSuperview];
@@ -139,15 +139,15 @@
   v6.receiver = self;
   v6.super_class = SiriUISnippetControllerCell;
   [(SiriUISnippetControllerCell *)&v6 layoutSubviews];
-  v3 = [(SiriUISnippetControllerCell *)self snippetViewController];
-  [v3 siriWillLayoutSnippetView];
+  snippetViewController = [(SiriUISnippetControllerCell *)self snippetViewController];
+  [snippetViewController siriWillLayoutSnippetView];
 
   [(SiriUISnippetControllerCell *)self _configureSubviewsForCurrentInset];
-  v4 = [(SiriUISnippetControllerCell *)self snippetViewController];
-  [v4 _cellDidLayoutSubviews];
+  snippetViewController2 = [(SiriUISnippetControllerCell *)self snippetViewController];
+  [snippetViewController2 _cellDidLayoutSubviews];
 
-  v5 = [(SiriUISnippetControllerCell *)self snippetViewController];
-  [v5 siriDidLayoutSnippetView];
+  snippetViewController3 = [(SiriUISnippetControllerCell *)self snippetViewController];
+  [snippetViewController3 siriDidLayoutSnippetView];
 }
 
 - (void)_configureSubviewsForCurrentInset
@@ -158,20 +158,20 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SiriUISnippetControllerCell *)self snippetViewController];
-  if (([v11 _hasConfirmationButtons] & 1) == 0)
+  snippetViewController = [(SiriUISnippetControllerCell *)self snippetViewController];
+  if (([snippetViewController _hasConfirmationButtons] & 1) == 0)
   {
 
     goto LABEL_5;
   }
 
-  v12 = [(SiriUISnippetControllerCell *)self snippetViewController];
-  if (![v12 _willAnimateConfirmation])
+  snippetViewController2 = [(SiriUISnippetControllerCell *)self snippetViewController];
+  if (![snippetViewController2 _willAnimateConfirmation])
   {
-    v14 = [(SiriUISnippetControllerCell *)self snippetViewController];
-    v15 = [v14 _willAnimateCancellation];
+    snippetViewController3 = [(SiriUISnippetControllerCell *)self snippetViewController];
+    _willAnimateCancellation = [snippetViewController3 _willAnimateCancellation];
 
-    if (v15)
+    if (_willAnimateCancellation)
     {
       goto LABEL_7;
     }
@@ -183,16 +183,16 @@ LABEL_5:
   }
 
 LABEL_7:
-  v16 = [(SiriUISnippetControllerCell *)self snippetViewController];
-  [objc_msgSend(v16 "footerViewClass")];
+  snippetViewController4 = [(SiriUISnippetControllerCell *)self snippetViewController];
+  [objc_msgSend(snippetViewController4 "footerViewClass")];
   v18 = v17;
 
   v79 = v18;
   v10 = v10 + v18;
 LABEL_8:
   v19 = objc_opt_class();
-  v20 = [(SiriUISnippetControllerCell *)self snippetViewController];
-  [v19 contentBoundsForCollectionViewCellBounds:v20 snippetViewController:{v4, v6, v8, v10}];
+  snippetViewController5 = [(SiriUISnippetControllerCell *)self snippetViewController];
+  [v19 contentBoundsForCollectionViewCellBounds:snippetViewController5 snippetViewController:{v4, v6, v8, v10}];
   v22 = v21;
   v24 = v23;
   v26 = v25;
@@ -299,9 +299,9 @@ LABEL_8:
   v61 = v74 + v60;
   v63 = v40 - (v58 + v62);
   v65 = v57 - (v60 + v64);
-  v66 = [(SiriUISnippetControllerCell *)self snippetViewController];
-  v67 = [v66 view];
-  [v67 setFrame:{v59, v61, v63, v65}];
+  snippetViewController6 = [(SiriUISnippetControllerCell *)self snippetViewController];
+  view = [snippetViewController6 view];
+  [view setFrame:{v59, v61, v63, v65}];
 
   [(SiriUIKeyline *)self->_bottomKeyline sizeThatFits:v40, v57];
   v69 = v68;
@@ -326,13 +326,13 @@ LABEL_8:
 
 - (double)_heightForHeaderView
 {
-  v3 = [(SiriUISnippetControllerCell *)self snippetViewController];
+  snippetViewController = [(SiriUISnippetControllerCell *)self snippetViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(SiriUISnippetControllerCell *)self snippetViewController];
-    [v5 desiredHeightForHeaderView];
+    snippetViewController2 = [(SiriUISnippetControllerCell *)self snippetViewController];
+    [snippetViewController2 desiredHeightForHeaderView];
     v7 = v6;
 
     return v7;
@@ -350,13 +350,13 @@ LABEL_8:
 
 - (double)_heightForFooterView
 {
-  v3 = [(SiriUISnippetControllerCell *)self snippetViewController];
+  snippetViewController = [(SiriUISnippetControllerCell *)self snippetViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(SiriUISnippetControllerCell *)self snippetViewController];
-    [v5 desiredHeightForFooterView];
+    snippetViewController2 = [(SiriUISnippetControllerCell *)self snippetViewController];
+    [snippetViewController2 desiredHeightForFooterView];
     v7 = v6;
 
     return v7;
@@ -374,13 +374,13 @@ LABEL_8:
 
 - (double)_heightForTransparentHeaderView
 {
-  v3 = [(SiriUISnippetControllerCell *)self snippetViewController];
+  snippetViewController = [(SiriUISnippetControllerCell *)self snippetViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(SiriUISnippetControllerCell *)self snippetViewController];
-    [v5 desiredHeightForTransparentHeaderView];
+    snippetViewController2 = [(SiriUISnippetControllerCell *)self snippetViewController];
+    [snippetViewController2 desiredHeightForTransparentHeaderView];
     v7 = v6;
 
     return v7;
@@ -398,13 +398,13 @@ LABEL_8:
 
 - (double)_heightForTransparentFooterView
 {
-  v3 = [(SiriUISnippetControllerCell *)self snippetViewController];
+  snippetViewController = [(SiriUISnippetControllerCell *)self snippetViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(SiriUISnippetControllerCell *)self snippetViewController];
-    [v5 desiredHeightForTransparentFooterView];
+    snippetViewController2 = [(SiriUISnippetControllerCell *)self snippetViewController];
+    [snippetViewController2 desiredHeightForTransparentFooterView];
     v7 = v6;
 
     return v7;
@@ -420,39 +420,39 @@ LABEL_8:
   return result;
 }
 
-- (void)setSnippetViewController:(id)a3
+- (void)setSnippetViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(SiriUISnippetControllerCell *)self contentView];
+  controllerCopy = controller;
+  contentView = [(SiriUISnippetControllerCell *)self contentView];
   WeakRetained = objc_loadWeakRetained(&self->_snippetViewController);
-  v7 = [WeakRetained view];
+  view = [WeakRetained view];
 
-  if ([v7 isDescendantOfView:v5])
+  if ([view isDescendantOfView:contentView])
   {
     v8 = objc_loadWeakRetained(&self->_snippetViewController);
-    v9 = [v8 view];
-    [v9 removeFromSuperview];
+    view2 = [v8 view];
+    [view2 removeFromSuperview];
   }
 
-  v10 = objc_storeWeak(&self->_snippetViewController, v4);
+  v10 = objc_storeWeak(&self->_snippetViewController, controllerCopy);
 
-  if (v4)
+  if (controllerCopy)
   {
     v11 = objc_loadWeakRetained(&self->_snippetViewController);
     [v11 setContainingView:self];
 
     v12 = objc_loadWeakRetained(&self->_snippetViewController);
-    v13 = [v12 usePlatterStyle];
+    usePlatterStyle = [v12 usePlatterStyle];
 
-    if (v13)
+    if (usePlatterStyle)
     {
       bottomKeyline = self->_bottomKeyline;
-      v15 = [MEMORY[0x277D75348] siriui_platterKeylineColor];
-      [(SiriUIKeyline *)bottomKeyline setCustomBackgroundColor:v15];
+      siriui_platterKeylineColor = [MEMORY[0x277D75348] siriui_platterKeylineColor];
+      [(SiriUIKeyline *)bottomKeyline setCustomBackgroundColor:siriui_platterKeylineColor];
     }
 
     snippetBackgroundView = self->_snippetBackgroundView;
-    if (!snippetBackgroundView || self->_cellIsUsingPlatterStyle != v13)
+    if (!snippetBackgroundView || self->_cellIsUsingPlatterStyle != usePlatterStyle)
     {
       [(UIView *)snippetBackgroundView removeFromSuperview];
       v17 = objc_alloc(MEMORY[0x277D75D18]);
@@ -460,7 +460,7 @@ LABEL_8:
       v19 = self->_snippetBackgroundView;
       self->_snippetBackgroundView = v18;
 
-      if (v13)
+      if (usePlatterStyle)
       {
         v20 = 1;
         v21 = [MEMORY[0x277D26718] materialViewWithRecipe:9 configuration:1];
@@ -475,18 +475,18 @@ LABEL_8:
       else
       {
         v24 = self->_snippetBackgroundView;
-        v25 = [MEMORY[0x277D75348] siriui_snippetBackgroundColor];
-        [(UIView *)v24 setBackgroundColor:v25];
+        siriui_snippetBackgroundColor = [MEMORY[0x277D75348] siriui_snippetBackgroundColor];
+        [(UIView *)v24 setBackgroundColor:siriui_snippetBackgroundColor];
 
         v20 = 0;
         v23 = 0.0;
       }
 
-      v26 = [(UIView *)self->_clippingContainerView layer];
-      [v26 setCornerRadius:v23];
+      layer = [(UIView *)self->_clippingContainerView layer];
+      [layer setCornerRadius:v23];
 
-      v27 = [(UIView *)self->_clippingContainerView layer];
-      [v27 setMasksToBounds:v13];
+      layer2 = [(UIView *)self->_clippingContainerView layer];
+      [layer2 setMasksToBounds:usePlatterStyle];
 
       self->_cellIsUsingPlatterStyle = v20;
       [(UIView *)self->_clippingContainerView addSubview:self->_snippetBackgroundView];
@@ -495,33 +495,33 @@ LABEL_8:
 
     clippingContainerView = self->_clippingContainerView;
     v29 = objc_loadWeakRetained(&self->_snippetViewController);
-    v30 = [v29 view];
-    [(UIView *)clippingContainerView addSubview:v30];
+    view3 = [v29 view];
+    [(UIView *)clippingContainerView addSubview:view3];
 
     v31 = objc_loadWeakRetained(&self->_snippetViewController);
-    v32 = [v31 _headerView];
-    [(SiriUISnippetControllerCell *)self _setHeaderView:v32];
+    _headerView = [v31 _headerView];
+    [(SiriUISnippetControllerCell *)self _setHeaderView:_headerView];
 
     v33 = objc_loadWeakRetained(&self->_snippetViewController);
-    v34 = [v33 _footerView];
-    [(SiriUISnippetControllerCell *)self _setFooterView:v34];
+    _footerView = [v33 _footerView];
+    [(SiriUISnippetControllerCell *)self _setFooterView:_footerView];
 
     v35 = objc_loadWeakRetained(&self->_snippetViewController);
-    v36 = [v35 _transparentHeaderView];
-    [(SiriUISnippetControllerCell *)self _setTransparentHeaderView:v36];
+    _transparentHeaderView = [v35 _transparentHeaderView];
+    [(SiriUISnippetControllerCell *)self _setTransparentHeaderView:_transparentHeaderView];
 
     v37 = objc_loadWeakRetained(&self->_snippetViewController);
-    v38 = [v37 _transparentFooterView];
-    [(SiriUISnippetControllerCell *)self _setTransparentFooterView:v38];
+    _transparentFooterView = [v37 _transparentFooterView];
+    [(SiriUISnippetControllerCell *)self _setTransparentFooterView:_transparentFooterView];
 
     v39 = objc_loadWeakRetained(&self->_snippetViewController);
     [v39 defaultViewInsets];
     [(SiriUISnippetControllerCell *)self _setSnippetEdgeInsets:?];
 
     v40 = objc_loadWeakRetained(&self->_snippetViewController);
-    LODWORD(v38) = [v40 isTransparent];
+    LODWORD(_transparentFooterView) = [v40 isTransparent];
 
-    if (v38)
+    if (_transparentFooterView)
     {
       [(UIView *)self->_snippetBackgroundView removeFromSuperview];
     }
@@ -533,9 +533,9 @@ LABEL_8:
     }
 
     v41 = objc_loadWeakRetained(&self->_snippetViewController);
-    v42 = [v41 snippetPunchOut];
+    snippetPunchOut = [v41 snippetPunchOut];
 
-    if (v42)
+    if (snippetPunchOut)
     {
       [(UIView *)self->_clippingContainerView addSubview:self->_snippetPunchOutButton];
       [(UIView *)self->_clippingContainerView bringSubviewToFront:self->_snippetPunchOutButton];
@@ -545,16 +545,16 @@ LABEL_8:
     if ([v43 isCancelled])
     {
       v44 = objc_loadWeakRetained(&self->_snippetViewController);
-      v45 = [v44 _willAnimateCancellation];
+      _willAnimateCancellation = [v44 _willAnimateCancellation];
 
-      if ((v45 & 1) == 0)
+      if ((_willAnimateCancellation & 1) == 0)
       {
         v46 = MEMORY[0x277D75D18];
         v58 = MEMORY[0x277D85DD0];
         v59 = 3221225472;
         v60 = __56__SiriUISnippetControllerCell_setSnippetViewController___block_invoke;
         v61 = &unk_279C59D78;
-        v62 = self;
+        selfCopy = self;
         v47 = &v58;
         goto LABEL_24;
       }
@@ -572,15 +572,15 @@ LABEL_8:
     }
 
     v49 = objc_loadWeakRetained(&self->_snippetViewController);
-    v50 = [v49 _willAnimateConfirmation];
+    _willAnimateConfirmation = [v49 _willAnimateConfirmation];
 
-    if (v50)
+    if (_willAnimateConfirmation)
     {
 LABEL_26:
       v51 = objc_loadWeakRetained(&self->_snippetViewController);
-      v52 = [v51 _hasConfirmationButtons];
+      _hasConfirmationButtons = [v51 _hasConfirmationButtons];
 
-      if (v52)
+      if (_hasConfirmationButtons)
       {
         [(UIView *)self->_clippingContainerView addSubview:self->_bottomKeyline];
       }
@@ -594,67 +594,67 @@ LABEL_26:
     v54 = 3221225472;
     v55 = __56__SiriUISnippetControllerCell_setSnippetViewController___block_invoke_2;
     v56 = &unk_279C59D78;
-    v57 = self;
+    selfCopy2 = self;
     v47 = &v53;
 LABEL_24:
-    [v46 performWithoutAnimation:{v47, v53, v54, v55, v56, v57, v58, v59, v60, v61, v62}];
+    [v46 performWithoutAnimation:{v47, v53, v54, v55, v56, selfCopy2, v58, v59, v60, v61, selfCopy}];
     goto LABEL_26;
   }
 
 LABEL_29:
 }
 
-- (void)_setHeaderView:(id)a3
+- (void)_setHeaderView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   [(SiriUIReusableView *)self->_headerView removeFromSuperview];
-  objc_storeStrong(&self->_headerView, a3);
+  objc_storeStrong(&self->_headerView, view);
   if (self->_headerView)
   {
     [(UIView *)self->_clippingContainerView addSubview:?];
   }
 }
 
-- (void)_setFooterView:(id)a3
+- (void)_setFooterView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   [(SiriUIReusableView *)self->_footerView removeFromSuperview];
-  objc_storeStrong(&self->_footerView, a3);
+  objc_storeStrong(&self->_footerView, view);
   if (self->_footerView)
   {
     [(UIView *)self->_clippingContainerView addSubview:?];
   }
 }
 
-- (void)_setTransparentHeaderView:(id)a3
+- (void)_setTransparentHeaderView:(id)view
 {
-  v6 = a3;
+  viewCopy = view;
   [(SiriUIReusableView *)self->_transparentHeaderView removeFromSuperview];
-  objc_storeStrong(&self->_transparentHeaderView, a3);
+  objc_storeStrong(&self->_transparentHeaderView, view);
   if (self->_transparentHeaderView)
   {
-    v5 = [(SiriUISnippetControllerCell *)self contentView];
-    [v5 addSubview:self->_transparentHeaderView];
+    contentView = [(SiriUISnippetControllerCell *)self contentView];
+    [contentView addSubview:self->_transparentHeaderView];
   }
 }
 
-- (void)_setTransparentFooterView:(id)a3
+- (void)_setTransparentFooterView:(id)view
 {
-  v6 = a3;
+  viewCopy = view;
   [(SiriUIReusableView *)self->_transparentFooterView removeFromSuperview];
-  objc_storeStrong(&self->_transparentFooterView, a3);
+  objc_storeStrong(&self->_transparentFooterView, view);
   if (self->_transparentFooterView)
   {
-    v5 = [(SiriUISnippetControllerCell *)self contentView];
-    [v5 addSubview:self->_transparentFooterView];
+    contentView = [(SiriUISnippetControllerCell *)self contentView];
+    [contentView addSubview:self->_transparentFooterView];
   }
 }
 
-- (void)animateSnippetCancellationWithCompletion:(id)a3
+- (void)animateSnippetCancellationWithCompletion:(id)completion
 {
   clippingContainerView = self->_clippingContainerView;
   cancelledTouchPreventionView = self->_cancelledTouchPreventionView;
-  v6 = a3;
+  completionCopy = completion;
   [(UIView *)clippingContainerView addSubview:cancelledTouchPreventionView];
   [(UIView *)self->_clippingContainerView bringSubviewToFront:self->_cancelledTouchPreventionView];
   [(UIView *)self->_clippingContainerView addSubview:self->_cancelledLabel];
@@ -691,7 +691,7 @@ LABEL_29:
   v25 = *MEMORY[0x277CBF348];
   v26 = v20;
   v27 = v22 - Height;
-  [MEMORY[0x277D75D18] animateWithDuration:v24 animations:v6 completion:0.3];
+  [MEMORY[0x277D75D18] animateWithDuration:v24 animations:completionCopy completion:0.3];
 }
 
 uint64_t __72__SiriUISnippetControllerCell_animateSnippetCancellationWithCompletion___block_invoke(uint64_t a1)
@@ -711,9 +711,9 @@ uint64_t __72__SiriUISnippetControllerCell_animateSnippetCancellationWithComplet
   return [v4 setAlpha:1.0];
 }
 
-- (void)animateSnippetConfirmationWithCompletion:(id)a3
+- (void)animateSnippetConfirmationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(SiriUISnippetControllerCell *)self _heightForFooterView];
   v6 = v5;
   [(UIView *)self->_clippingContainerView frame];
@@ -759,7 +759,7 @@ uint64_t __72__SiriUISnippetControllerCell_animateSnippetCancellationWithComplet
   *&v28[14] = v24;
   *&v28[15] = v22;
   *&v28[16] = v17 - v6;
-  [MEMORY[0x277D75D18] animateWithDuration:v28 animations:v4 completion:0.3];
+  [MEMORY[0x277D75D18] animateWithDuration:v28 animations:completionCopy completion:0.3];
 }
 
 uint64_t __72__SiriUISnippetControllerCell_animateSnippetConfirmationWithCompletion___block_invoke(uint64_t a1)
@@ -772,10 +772,10 @@ uint64_t __72__SiriUISnippetControllerCell_animateSnippetConfirmationWithComplet
   return [v2 setAlpha:0.0];
 }
 
-- (void)animateSnippetResizeToSize:(CGSize)a3 completion:(id)a4
+- (void)animateSnippetResizeToSize:(CGSize)size completion:(id)completion
 {
-  height = a3.height;
-  v6 = a4;
+  height = size.height;
+  completionCopy = completion;
   [(SiriUISnippetControllerCell *)self _heightForFooterView];
   v8 = v7;
   [(UIView *)self->_clippingContainerView frame];
@@ -793,8 +793,8 @@ uint64_t __72__SiriUISnippetControllerCell_animateSnippetConfirmationWithComplet
   v27.size.height = height;
   v17 = CGRectGetMaxY(v27) - v8;
   WeakRetained = objc_loadWeakRetained(&self->_snippetViewController);
-  v19 = [WeakRetained view];
-  [v19 frame];
+  view = [WeakRetained view];
+  [view frame];
   v20 = CGRectGetHeight(v28);
 
   v29.origin.x = v13;
@@ -828,7 +828,7 @@ uint64_t __72__SiriUISnippetControllerCell_animateSnippetConfirmationWithComplet
   *&v26[18] = v14;
   *&v26[19] = v12;
   *&v26[20] = height - v8;
-  [MEMORY[0x277D75D18] animateWithDuration:0 delay:v26 usingSpringWithDamping:v6 initialSpringVelocity:fmin(v21 * 0.00005 + 0.2 options:0.4) animations:0.0 completion:{1.0, 0.5}];
+  [MEMORY[0x277D75D18] animateWithDuration:0 delay:v26 usingSpringWithDamping:completionCopy initialSpringVelocity:fmin(v21 * 0.00005 + 0.2 options:0.4) animations:0.0 completion:{1.0, 0.5}];
 }
 
 void __69__SiriUISnippetControllerCell_animateSnippetResizeToSize_completion___block_invoke(uint64_t a1)
@@ -841,10 +841,10 @@ void __69__SiriUISnippetControllerCell_animateSnippetResizeToSize_completion___b
   [v2 setFrame:{*(a1 + 136), *(a1 + 144), *(a1 + 152), *(a1 + 160)}];
 }
 
-- (void)_snippetPunchOutButtonTapped:(id)a3
+- (void)_snippetPunchOutButtonTapped:(id)tapped
 {
-  v3 = [(SiriUISnippetControllerCell *)self snippetViewController];
-  [v3 _snippetPunchOutButtonTapped];
+  snippetViewController = [(SiriUISnippetControllerCell *)self snippetViewController];
+  [snippetViewController _snippetPunchOutButtonTapped];
 }
 
 + (id)reuseIdentifier
@@ -856,9 +856,9 @@ void __69__SiriUISnippetControllerCell_animateSnippetResizeToSize_completion___b
   return v4;
 }
 
-- (void)setShowBackgroundView:(BOOL)a3
+- (void)setShowBackgroundView:(BOOL)view
 {
-  if (a3)
+  if (view)
   {
     [(UIView *)self->_clippingContainerView addSubview:self->_snippetBackgroundView];
     clippingContainerView = self->_clippingContainerView;

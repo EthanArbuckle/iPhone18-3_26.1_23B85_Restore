@@ -1,16 +1,16 @@
 @interface MapsRoutePlanningCell.MapsRoutePlanningCellAccessoryViewKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_TtCC4Maps21MapsRoutePlanningCellP33_17835BB28473411CAA6967B2802CDA9237MapsRoutePlanningCellAccessoryViewKey)init;
 - (int64_t)hash;
 @end
 
 @implementation MapsRoutePlanningCell.MapsRoutePlanningCellAccessoryViewKey
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -19,7 +19,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_10035BE10(v8);
@@ -30,9 +30,9 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = UUID.hashValue.getter();
-  if (v2->width[OBJC_IVAR____TtCC4Maps21MapsRoutePlanningCellP33_17835BB28473411CAA6967B2802CDA9237MapsRoutePlanningCellAccessoryViewKey_width])
+  if (selfCopy->width[OBJC_IVAR____TtCC4Maps21MapsRoutePlanningCellP33_17835BB28473411CAA6967B2802CDA9237MapsRoutePlanningCellAccessoryViewKey_width])
   {
     v4 = 0;
   }

@@ -1,8 +1,8 @@
 @interface FRArticleNotificationServiceArticleSource
 - (FRArticleNotificationServiceArticleSource)init;
-- (void)_cleanupFilesInDirectory:(id)a3;
-- (void)_downloadFileURL:(id)a3 toDirectory:(id)a4 withCompletion:(id)a5;
-- (void)fetchAssetsWithCachesDirectory:(id)a3 thumbnailURLString:(id)a4 publisherLogoURLString:(id)a5 publisherLogoMaskURLString:(id)a6 publisherLogoCompactURLString:(id)a7 flintDocumentURLString:(id)a8 completion:(id)a9;
+- (void)_cleanupFilesInDirectory:(id)directory;
+- (void)_downloadFileURL:(id)l toDirectory:(id)directory withCompletion:(id)completion;
+- (void)fetchAssetsWithCachesDirectory:(id)directory thumbnailURLString:(id)string publisherLogoURLString:(id)lString publisherLogoMaskURLString:(id)rLString publisherLogoCompactURLString:(id)uRLString flintDocumentURLString:(id)documentURLString completion:(id)completion;
 @end
 
 @implementation FRArticleNotificationServiceArticleSource
@@ -14,29 +14,29 @@
   return [(FRArticleNotificationServiceArticleSource *)&v3 init];
 }
 
-- (void)fetchAssetsWithCachesDirectory:(id)a3 thumbnailURLString:(id)a4 publisherLogoURLString:(id)a5 publisherLogoMaskURLString:(id)a6 publisherLogoCompactURLString:(id)a7 flintDocumentURLString:(id)a8 completion:(id)a9
+- (void)fetchAssetsWithCachesDirectory:(id)directory thumbnailURLString:(id)string publisherLogoURLString:(id)lString publisherLogoMaskURLString:(id)rLString publisherLogoCompactURLString:(id)uRLString flintDocumentURLString:(id)documentURLString completion:(id)completion
 {
-  v15 = a3;
-  v16 = a4;
-  v36 = a5;
-  v34 = a6;
-  v17 = a7;
-  v35 = a8;
-  v18 = a9;
+  directoryCopy = directory;
+  stringCopy = string;
+  lStringCopy = lString;
+  rLStringCopy = rLString;
+  uRLStringCopy = uRLString;
+  documentURLStringCopy = documentURLString;
+  completionCopy = completion;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    *&buf[4] = v16;
+    *&buf[4] = stringCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v36;
+    *&buf[14] = lStringCopy;
     *&buf[22] = 2112;
-    v73 = v17;
+    v73 = uRLStringCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "ArticleSource: Source URLs to download - %@, %@, %@", buf, 0x20u);
   }
 
-  if (v15)
+  if (directoryCopy)
   {
-    if (v18)
+    if (completionCopy)
     {
 LABEL_13:
       v19 = dispatch_group_create();
@@ -53,8 +53,8 @@ LABEL_13:
       v70[3] = sub_1000060B0;
       v70[4] = sub_1000060C0;
       v71 = 0;
-      v33 = v16;
-      if (v16)
+      v33 = stringCopy;
+      if (stringCopy)
       {
         v20 = [NSURL URLWithString:?];
       }
@@ -74,7 +74,7 @@ LABEL_13:
       v21 = v19;
       v67 = v21;
       v32 = v20;
-      [(FRArticleNotificationServiceArticleSource *)self _downloadFileURL:v20 toDirectory:v15 withCompletion:v66];
+      [(FRArticleNotificationServiceArticleSource *)self _downloadFileURL:v20 toDirectory:directoryCopy withCompletion:v66];
       v64[0] = 0;
       v64[1] = v64;
       v64[2] = 0x3032000000;
@@ -88,12 +88,12 @@ LABEL_13:
       v62[4] = sub_1000060C0;
       v63 = 0;
       v22 = +[UIScreen mainScreen];
-      v23 = [v22 traitCollection];
-      v24 = [v23 userInterfaceStyle];
+      traitCollection = [v22 traitCollection];
+      userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-      if (v24 == 2)
+      if (userInterfaceStyle == 2)
       {
-        if (v34)
+        if (rLStringCopy)
         {
           v25 = [NSURL URLWithString:?];
         }
@@ -112,12 +112,12 @@ LABEL_13:
         v61[5] = v62;
         v61[6] = buf;
         v61[4] = v21;
-        [(FRArticleNotificationServiceArticleSource *)self _downloadFileURL:v25 toDirectory:v15 withCompletion:v61];
+        [(FRArticleNotificationServiceArticleSource *)self _downloadFileURL:v25 toDirectory:directoryCopy withCompletion:v61];
       }
 
       else
       {
-        if (v36)
+        if (lStringCopy)
         {
           v25 = [NSURL URLWithString:?];
         }
@@ -136,7 +136,7 @@ LABEL_13:
         v60[5] = v64;
         v60[6] = buf;
         v60[4] = v21;
-        [(FRArticleNotificationServiceArticleSource *)self _downloadFileURL:v25 toDirectory:v15 withCompletion:v60];
+        [(FRArticleNotificationServiceArticleSource *)self _downloadFileURL:v25 toDirectory:directoryCopy withCompletion:v60];
       }
 
       v58[0] = 0;
@@ -145,9 +145,9 @@ LABEL_13:
       v58[3] = sub_1000060B0;
       v58[4] = sub_1000060C0;
       v59 = 0;
-      if (v17)
+      if (uRLStringCopy)
       {
-        v27 = [NSURL URLWithString:v17];
+        v27 = [NSURL URLWithString:uRLStringCopy];
       }
 
       else
@@ -164,14 +164,14 @@ LABEL_13:
       v57 = buf;
       v28 = v21;
       v55 = v28;
-      [(FRArticleNotificationServiceArticleSource *)self _downloadFileURL:v27 toDirectory:v15 withCompletion:v54];
+      [(FRArticleNotificationServiceArticleSource *)self _downloadFileURL:v27 toDirectory:directoryCopy withCompletion:v54];
       v52[0] = 0;
       v52[1] = v52;
       v52[2] = 0x3032000000;
       v52[3] = sub_1000060B0;
       v52[4] = sub_1000060C0;
       v53 = 0;
-      if (v35)
+      if (documentURLStringCopy)
       {
         v29 = [NSURL URLWithString:?];
       }
@@ -190,14 +190,14 @@ LABEL_13:
       v51 = buf;
       v30 = v28;
       v49 = v30;
-      [(FRArticleNotificationServiceArticleSource *)self _downloadFileURL:v29 toDirectory:v15 withCompletion:v48];
+      [(FRArticleNotificationServiceArticleSource *)self _downloadFileURL:v29 toDirectory:directoryCopy withCompletion:v48];
       dispatch_group_enter(v30);
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100006604;
       block[3] = &unk_100024E10;
       block[4] = self;
-      v46 = v15;
+      v46 = directoryCopy;
       v47 = v30;
       v31 = v30;
       dispatch_async(&_dispatch_main_q, block);
@@ -211,10 +211,10 @@ LABEL_13:
       v42 = v58;
       v43 = v52;
       v44 = buf;
-      v38 = v18;
+      v38 = completionCopy;
       dispatch_group_notify(v31, &_dispatch_main_q, v37);
 
-      v16 = v33;
+      stringCopy = v33;
       dispatch_group_leave(v31);
 
       _Block_object_dispose(v52, 8);
@@ -237,9 +237,9 @@ LABEL_13:
       sub_10001A7DC();
     }
 
-    if (v18)
+    if (completionCopy)
     {
-      (*(v18 + 2))(v18, 0, 0, 0, 0, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0, 0, 0, 0, 0);
       goto LABEL_32;
     }
   }
@@ -249,7 +249,7 @@ LABEL_13:
     sub_10001A8C0();
   }
 
-  if (v15)
+  if (directoryCopy)
   {
     goto LABEL_13;
   }
@@ -257,18 +257,18 @@ LABEL_13:
 LABEL_32:
 }
 
-- (void)_cleanupFilesInDirectory:(id)a3
+- (void)_cleanupFilesInDirectory:(id)directory
 {
-  v3 = [a3 path];
+  path = [directory path];
   v4 = +[NSFileManager defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  v5 = [v4 fileExistsAtPath:path];
 
   if (v5)
   {
     v33 = [NSDate dateWithTimeIntervalSinceNow:-86400.0];
     v6 = +[NSFileManager defaultManager];
-    v32 = v3;
-    v7 = [v6 enumeratorAtPath:v3];
+    v32 = path;
+    v7 = [v6 enumeratorAtPath:path];
 
     v8 = +[NSMutableArray array];
     v40 = 0u;
@@ -291,8 +291,8 @@ LABEL_32:
           }
 
           v13 = *(*(&v40 + 1) + 8 * i);
-          v14 = [obj fileAttributes];
-          v15 = [v14 objectForKey:NSFileCreationDate];
+          fileAttributes = [obj fileAttributes];
+          v15 = [fileAttributes objectForKey:NSFileCreationDate];
           v16 = [v33 earlierDate:v15];
 
           if (v16 == v15)
@@ -397,25 +397,25 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "Removed %lu files", buf, 0xCu);
     }
 
-    v3 = v32;
+    path = v32;
   }
 }
 
-- (void)_downloadFileURL:(id)a3 toDirectory:(id)a4 withCompletion:(id)a5
+- (void)_downloadFileURL:(id)l toDirectory:(id)directory withCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v7)
+  lCopy = l;
+  directoryCopy = directory;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (lCopy)
   {
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_100006DDC;
     v16[3] = &unk_100024E88;
-    v11 = v7;
+    v11 = lCopy;
     v17 = v11;
-    v12 = v8;
+    v12 = directoryCopy;
     v18 = v12;
     v19 = v10;
     v13 = objc_retainBlock(v16);
@@ -433,9 +433,9 @@ LABEL_13:
     [v15 resume];
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
-    (*(v9 + 2))(v9, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 

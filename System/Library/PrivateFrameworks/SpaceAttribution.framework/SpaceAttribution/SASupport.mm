@@ -1,47 +1,47 @@
 @interface SASupport
-+ (BOOL)isFileCloned:(const char *)a3;
-+ (BOOL)isFilePurgeable:(const char *)a3;
-+ (BOOL)isItemMountedOnSystemVolume:(id)a3;
-+ (BOOL)shouldExcludeCacheSizeForBundle:(id)a3;
++ (BOOL)isFileCloned:(const char *)cloned;
++ (BOOL)isFilePurgeable:(const char *)purgeable;
++ (BOOL)isItemMountedOnSystemVolume:(id)volume;
++ (BOOL)shouldExcludeCacheSizeForBundle:(id)bundle;
 + (BOOL)targetDeviceIsHomePod;
 + (BOOL)targetDeviceIsIpad;
 + (BOOL)targetDeviceIsWatch;
-+ (BOOL)volumeSupportsAttributionTags:(id)a3;
-+ (BOOL)volumeSupportsCloneGroups:(id)a3;
-+ (BOOL)volumeSupportsCloneMapping:(id)a3;
++ (BOOL)volumeSupportsAttributionTags:(id)tags;
++ (BOOL)volumeSupportsCloneGroups:(id)groups;
++ (BOOL)volumeSupportsCloneMapping:(id)mapping;
 + (id)buildVersion;
-+ (id)getAllAppsUsageTime:(id)a3;
++ (id)getAllAppsUsageTime:(id)time;
 + (id)getEnterpriseVolumesPaths;
-+ (id)getFSPurgeableDataOnVolumes:(id)a3;
-+ (id)getPathForDirStatKey:(unint64_t)a3 volumePath:(id)a4;
-+ (id)getPathOfNodeID:(unint64_t)a3 FSid:(fsid *)a4;
-+ (id)getPathOfiNode:(unint64_t)a3 inVolume:(id)a4;
++ (id)getFSPurgeableDataOnVolumes:(id)volumes;
++ (id)getPathForDirStatKey:(unint64_t)key volumePath:(id)path;
++ (id)getPathOfNodeID:(unint64_t)d FSid:(fsid *)sid;
++ (id)getPathOfiNode:(unint64_t)node inVolume:(id)volume;
 + (id)getRelevantVolumes;
-+ (id)getResolvedPath:(id)a3;
-+ (id)getResolvedPathForFD:(int)a3;
-+ (id)getResolvedURL:(id)a3;
-+ (id)getURLMountPoint:(id)a3;
++ (id)getResolvedPath:(id)path;
++ (id)getResolvedPathForFD:(int)d;
++ (id)getResolvedURL:(id)l;
++ (id)getURLMountPoint:(id)point;
 + (id)getVolumesPaths;
 + (id)getiCloudPlanSizeGB;
-+ (unint64_t)calculateMovingSumFor:(unint64_t)a3 with:(unint64_t)a4 numOfSamples:(unint64_t)a5 windowLength:(unint64_t)a6;
-+ (unint64_t)getCloneDstreamIDForPath:(id)a3;
-+ (unint64_t)getDirStatKeyForOriginID:(unint64_t)a3 ofMount:(char *)a4;
++ (unint64_t)calculateMovingSumFor:(unint64_t)for with:(unint64_t)with numOfSamples:(unint64_t)samples windowLength:(unint64_t)length;
++ (unint64_t)getCloneDstreamIDForPath:(id)path;
++ (unint64_t)getDirStatKeyForOriginID:(unint64_t)d ofMount:(char *)mount;
 + (unint64_t)getDiskCapacity;
 + (unint64_t)getDiskUsed;
-+ (unint64_t)getFSPurgeableOnVolume:(id)a3 purgeableUrgency:(unint64_t)a4 respectZeroSizeFiles:(BOOL)a5;
-+ (unint64_t)getInodeForDirStatKey:(unint64_t)a3 volumePath:(const char *)a4;
-+ (unint64_t)getInodeIDForPath:(id)a3;
-+ (void)getLSAppRecordForBundle:(id)a3 reply:(id)a4;
-+ (void)getVolSizeFromAttrList:(const char *)a3 completionHandler:(id)a4;
++ (unint64_t)getFSPurgeableOnVolume:(id)volume purgeableUrgency:(unint64_t)urgency respectZeroSizeFiles:(BOOL)files;
++ (unint64_t)getInodeForDirStatKey:(unint64_t)key volumePath:(const char *)path;
++ (unint64_t)getInodeIDForPath:(id)path;
++ (void)getLSAppRecordForBundle:(id)bundle reply:(id)reply;
++ (void)getVolSizeFromAttrList:(const char *)list completionHandler:(id)handler;
 @end
 
 @implementation SASupport
 
-+ (BOOL)isItemMountedOnSystemVolume:(id)a3
++ (BOOL)isItemMountedOnSystemVolume:(id)volume
 {
-  v3 = a3;
+  volumeCopy = volume;
   memset(&v6, 0, 512);
-  if (statfs([v3 fileSystemRepresentation], &v6))
+  if (statfs([volumeCopy fileSystemRepresentation], &v6))
   {
     v4 = SALog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -60,13 +60,13 @@
   return v4;
 }
 
-+ (id)getPathOfiNode:(unint64_t)a3 inVolume:(id)a4
++ (id)getPathOfiNode:(unint64_t)node inVolume:(id)volume
 {
-  v5 = a4;
+  volumeCopy = volume;
   bzero(&v8, 0x878uLL);
-  if (a3)
+  if (node)
   {
-    if (statfs([v5 fileSystemRepresentation], &v8))
+    if (statfs([volumeCopy fileSystemRepresentation], &v8))
     {
       v6 = SALog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -77,22 +77,22 @@
       goto LABEL_6;
     }
 
-    if (fsgetpath(v9, 0x400uLL, &v8.f_fsid, a3) < 1)
+    if (fsgetpath(v9, 0x400uLL, &v8.f_fsid, node) < 1)
     {
 LABEL_6:
-      a3 = 0;
+      node = 0;
       goto LABEL_9;
     }
 
-    a3 = [NSString stringWithCString:v9 encoding:4];
+    node = [NSString stringWithCString:v9 encoding:4];
   }
 
 LABEL_9:
 
-  return a3;
+  return node;
 }
 
-+ (unint64_t)getDirStatKeyForOriginID:(unint64_t)a3 ofMount:(char *)a4
++ (unint64_t)getDirStatKeyForOriginID:(unint64_t)d ofMount:(char *)mount
 {
   v21 = 0u;
   v20 = 0u;
@@ -112,8 +112,8 @@ LABEL_9:
   v7 = 0u;
   v6[0] = 1;
   v6[1] = 3;
-  v6[3] = a3;
-  if (!fsctl(a4, 0xC1104A71uLL, v6, 1u))
+  v6[3] = d;
+  if (!fsctl(mount, 0xC1104A71uLL, v6, 1u))
   {
     return v7;
   }
@@ -127,7 +127,7 @@ LABEL_9:
   return 0;
 }
 
-+ (unint64_t)getInodeForDirStatKey:(unint64_t)a3 volumePath:(const char *)a4
++ (unint64_t)getInodeForDirStatKey:(unint64_t)key volumePath:(const char *)path
 {
   v22 = 0u;
   v21 = 0u;
@@ -146,8 +146,8 @@ LABEL_9:
   v7 = 0u;
   v6[0] = 1;
   v6[1] = 33;
-  v8 = a3;
-  if (!fsctl(a4, 0xC1104A71uLL, v6, 0))
+  keyCopy = key;
+  if (!fsctl(path, 0xC1104A71uLL, v6, 0))
   {
     return *(&v7 + 1);
   }
@@ -161,13 +161,13 @@ LABEL_9:
   return 0;
 }
 
-+ (id)getPathForDirStatKey:(unint64_t)a3 volumePath:(id)a4
++ (id)getPathForDirStatKey:(unint64_t)key volumePath:(id)path
 {
-  v5 = a4;
-  v6 = +[SASupport getInodeForDirStatKey:volumePath:](SASupport, "getInodeForDirStatKey:volumePath:", a3, [v5 fileSystemRepresentation]);
+  pathCopy = path;
+  v6 = +[SASupport getInodeForDirStatKey:volumePath:](SASupport, "getInodeForDirStatKey:volumePath:", key, [pathCopy fileSystemRepresentation]);
   if (v6)
   {
-    v7 = [SASupport getPathOfiNode:v6 inVolume:v5];
+    v7 = [SASupport getPathOfiNode:v6 inVolume:pathCopy];
   }
 
   else
@@ -198,15 +198,15 @@ LABEL_9:
   return byte_100073648;
 }
 
-+ (BOOL)volumeSupportsAttributionTags:(id)a3
++ (BOOL)volumeSupportsAttributionTags:(id)tags
 {
-  v3 = a3;
+  tagsCopy = tags;
   v9 = xmmword_10004CC70;
   v10 = 0;
   LODWORD(v8) = 0;
   v6 = 0u;
   v7 = 0u;
-  if (getattrlist([v3 UTF8String], &v9, &v6, 0x24uLL, 0))
+  if (getattrlist([tagsCopy UTF8String], &v9, &v6, 0x24uLL, 0))
   {
     v4 = SALog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -236,15 +236,15 @@ LABEL_8:
   return v4;
 }
 
-+ (BOOL)volumeSupportsCloneMapping:(id)a3
++ (BOOL)volumeSupportsCloneMapping:(id)mapping
 {
-  v3 = a3;
+  mappingCopy = mapping;
   v9 = xmmword_10004CC70;
   v10 = 0;
   LODWORD(v8) = 0;
   v6 = 0u;
   v7 = 0u;
-  if (getattrlist([v3 UTF8String], &v9, &v6, 0x24uLL, 0))
+  if (getattrlist([mappingCopy UTF8String], &v9, &v6, 0x24uLL, 0))
   {
     v4 = SALog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -274,7 +274,7 @@ LABEL_8:
   return v4;
 }
 
-+ (BOOL)volumeSupportsCloneGroups:(id)a3
++ (BOOL)volumeSupportsCloneGroups:(id)groups
 {
   v10 = 0;
   memset(v6, 0, sizeof(v6));
@@ -282,7 +282,7 @@ LABEL_8:
   v8 = xmmword_10004CC60;
   v3 = 1;
   v9 = 1;
-  if (fsctl([a3 fileSystemRepresentation], 0xC0684A87uLL, v6, 0))
+  if (fsctl([groups fileSystemRepresentation], 0xC0684A87uLL, v6, 0))
   {
     if (*__error() == 45)
     {
@@ -304,14 +304,14 @@ LABEL_8:
   return v3;
 }
 
-+ (id)getResolvedPathForFD:(int)a3
++ (id)getResolvedPathForFD:(int)d
 {
-  if (a3)
+  if (d)
   {
     v9 = 0;
     v8 = xmmword_10004CC88;
     bzero(v10, 0x420uLL);
-    if (fgetattrlist(a3, &v8, v10, 0x420uLL, 0) < 0)
+    if (fgetattrlist(d, &v8, v10, 0x420uLL, 0) < 0)
     {
       v5 = SALog();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -347,21 +347,21 @@ LABEL_8:
   return v6;
 }
 
-+ (id)getResolvedURL:(id)a3
++ (id)getResolvedURL:(id)l
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3 || ([v3 path], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
+  lCopy = l;
+  v4 = lCopy;
+  if (!lCopy || ([lCopy path], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
   {
     v9 = v4;
     goto LABEL_12;
   }
 
   bzero(v12, 0x420uLL);
-  v6 = [v4 path];
-  v7 = [v6 fileSystemRepresentation];
+  path = [v4 path];
+  fileSystemRepresentation = [path fileSystemRepresentation];
 
-  if (getattrlist(v7, &v11, v12, 0x420uLL, 0) < 0)
+  if (getattrlist(fileSystemRepresentation, &v11, v12, 0x420uLL, 0) < 0)
   {
     v8 = SALog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -388,30 +388,30 @@ LABEL_12:
   return v9;
 }
 
-+ (id)getResolvedPath:(id)a3
++ (id)getResolvedPath:(id)path
 {
-  if (a3)
+  if (path)
   {
-    v3 = [NSURL fileURLWithPath:a3 isDirectory:1];
+    v3 = [NSURL fileURLWithPath:path isDirectory:1];
     v4 = [SASupport getResolvedURL:v3];
-    v5 = [v4 path];
+    path = [v4 path];
   }
 
   else
   {
-    v5 = 0;
+    path = 0;
   }
 
-  return v5;
+  return path;
 }
 
-+ (id)getURLMountPoint:(id)a3
++ (id)getURLMountPoint:(id)point
 {
   bzero(v10, 0x40CuLL);
-  v4 = [a3 path];
-  v5 = [v4 fileSystemRepresentation];
+  path = [point path];
+  fileSystemRepresentation = [path fileSystemRepresentation];
 
-  if (getattrlist(v5, &v9, v10, 0x40CuLL, 1u) < 0)
+  if (getattrlist(fileSystemRepresentation, &v9, v10, 0x40CuLL, 1u) < 0)
   {
     v7 = SALog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -442,22 +442,22 @@ LABEL_8:
   return byte_100073658;
 }
 
-+ (void)getLSAppRecordForBundle:(id)a3 reply:(id)a4
++ (void)getLSAppRecordForBundle:(id)bundle reply:(id)reply
 {
-  v5 = a4;
-  v6 = a3;
+  replyCopy = reply;
+  bundleCopy = bundle;
   v9 = 0;
-  v7 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v6 allowPlaceholder:1 error:&v9];
+  v7 = [[LSApplicationRecord alloc] initWithBundleIdentifier:bundleCopy allowPlaceholder:1 error:&v9];
 
   v8 = v9;
-  v5[2](v5, v8, v7);
+  replyCopy[2](replyCopy, v8, v7);
 }
 
-+ (id)getPathOfNodeID:(unint64_t)a3 FSid:(fsid *)a4
++ (id)getPathOfNodeID:(unint64_t)d FSid:(fsid *)sid
 {
-  if (a3)
+  if (d)
   {
-    if ((fsgetpath(v8, 0x400uLL, a4, a3) & 0x8000000000000000) == 0)
+    if ((fsgetpath(v8, 0x400uLL, sid, d) & 0x8000000000000000) == 0)
     {
       v4 = [NSString stringWithUTF8String:v8];
       goto LABEL_8;
@@ -477,16 +477,16 @@ LABEL_8:
   return v4;
 }
 
-+ (id)getFSPurgeableDataOnVolumes:(id)a3
++ (id)getFSPurgeableDataOnVolumes:(id)volumes
 {
-  v3 = a3;
+  volumesCopy = volumes;
   v30 = objc_opt_new();
   v29 = objc_opt_new();
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v3;
+  obj = volumesCopy;
   v25 = [obj countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v25)
   {
@@ -507,8 +507,8 @@ LABEL_8:
         v33 = 0u;
         v34 = 0u;
         v35 = 0u;
-        v27 = [&off_100069030 allKeys];
-        v28 = [v27 countByEnumeratingWithState:&v32 objects:v40 count:16];
+        allKeys = [&off_100069030 allKeys];
+        v28 = [allKeys countByEnumeratingWithState:&v32 objects:v40 count:16];
         if (v28)
         {
           v6 = *v33;
@@ -518,16 +518,16 @@ LABEL_8:
             {
               if (*v33 != v6)
               {
-                objc_enumerationMutation(v27);
+                objc_enumerationMutation(allKeys);
               }
 
               v8 = *(*(&v32 + 1) + 8 * i);
               context = objc_autoreleasePoolPush();
               v9 = [&off_100069030 objectForKeyedSubscript:v8];
-              v10 = [v9 longLongValue];
+              longLongValue = [v9 longLongValue];
 
-              v11 = [SASupport getFSPurgeableOnVolume:v5 purgeableUrgency:v10 respectZeroSizeFiles:1];
-              v12 = [SASupport getFSPurgeableOnVolume:v5 purgeableUrgency:v10 respectZeroSizeFiles:0];
+              v11 = [SASupport getFSPurgeableOnVolume:v5 purgeableUrgency:longLongValue respectZeroSizeFiles:1];
+              v12 = [SASupport getFSPurgeableOnVolume:v5 purgeableUrgency:longLongValue respectZeroSizeFiles:0];
               v13 = [v30 valueForKey:v5];
               v14 = [v29 valueForKey:v5];
               if (v14)
@@ -556,7 +556,7 @@ LABEL_8:
               objc_autoreleasePoolPop(context);
             }
 
-            v28 = [v27 countByEnumeratingWithState:&v32 objects:v40 count:16];
+            v28 = [allKeys countByEnumeratingWithState:&v32 objects:v40 count:16];
           }
 
           while (v28);
@@ -577,11 +577,11 @@ LABEL_8:
   return v21;
 }
 
-+ (unint64_t)getFSPurgeableOnVolume:(id)a3 purgeableUrgency:(unint64_t)a4 respectZeroSizeFiles:(BOOL)a5
++ (unint64_t)getFSPurgeableOnVolume:(id)volume purgeableUrgency:(unint64_t)urgency respectZeroSizeFiles:(BOOL)files
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = v7;
+  filesCopy = files;
+  volumeCopy = volume;
+  v8 = volumeCopy;
   v28 = 0;
   v26 = 0u;
   v27 = 0u;
@@ -597,13 +597,13 @@ LABEL_8:
   v17 = 0u;
   *&v14 = 0;
   v15 = 0u;
-  *(&v14 + 1) = a4;
-  if (v5)
+  *(&v14 + 1) = urgency;
+  if (filesCopy)
   {
     *&v14 = 8;
   }
 
-  if (fsctl([v7 fileSystemRepresentation], 0xC0E84A70uLL, &v14, 1u) < 0)
+  if (fsctl([volumeCopy fileSystemRepresentation], 0xC0E84A70uLL, &v14, 1u) < 0)
   {
     v10 = SALog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -613,7 +613,7 @@ LABEL_8:
       *buf = 138412802;
       v30 = v8;
       v31 = 2048;
-      v32 = a4;
+      urgencyCopy = urgency;
       v33 = 2080;
       v34 = v12;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%@: Failed to get FSPurgeable data of urgency (%llu) with error: %s", buf, 0x20u);
@@ -630,10 +630,10 @@ LABEL_8:
   return v9;
 }
 
-+ (BOOL)isFilePurgeable:(const char *)a3
++ (BOOL)isFilePurgeable:(const char *)purgeable
 {
   v5 = 0;
-  if (!fsctl(a3, 0x40084A47uLL, &v5, 1u))
+  if (!fsctl(purgeable, 0x40084A47uLL, &v5, 1u))
   {
     return (v5 & 0xE00) != 0;
   }
@@ -647,11 +647,11 @@ LABEL_8:
   return 0;
 }
 
-+ (BOOL)isFileCloned:(const char *)a3
++ (BOOL)isFileCloned:(const char *)cloned
 {
   v6[0] = 0;
   v6[1] = 0;
-  if (fsctl(a3, 0x40104A0EuLL, v6, 1u))
+  if (fsctl(cloned, 0x40104A0EuLL, v6, 1u))
   {
     v3 = SALog();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -670,11 +670,11 @@ LABEL_8:
   return v4;
 }
 
-+ (unint64_t)getInodeIDForPath:(id)a3
++ (unint64_t)getInodeIDForPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   memset(&v7, 0, sizeof(v7));
-  if (stat([v3 fileSystemRepresentation], &v7))
+  if (stat([pathCopy fileSystemRepresentation], &v7))
   {
     v4 = SALog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -693,11 +693,11 @@ LABEL_8:
   return st_ino;
 }
 
-+ (unint64_t)getCloneDstreamIDForPath:(id)a3
++ (unint64_t)getCloneDstreamIDForPath:(id)path
 {
   v5 = 0;
   v6 = 0;
-  if (!fsctl([a3 fileSystemRepresentation], 0x40104A0EuLL, &v5, 1u))
+  if (!fsctl([path fileSystemRepresentation], 0x40104A0EuLL, &v5, 1u))
   {
     return v6;
   }
@@ -711,14 +711,14 @@ LABEL_8:
   return 0;
 }
 
-+ (void)getVolSizeFromAttrList:(const char *)a3 completionHandler:(id)a4
++ (void)getVolSizeFromAttrList:(const char *)list completionHandler:(id)handler
 {
   memset(v11, 0, 28);
   v12[2] = 0;
   v12[0] = 5;
   v12[1] = 2692743172;
-  v5 = a4;
-  v6 = getattrlist(a3, v12, v11, 0x1CuLL, 1u);
+  handlerCopy = handler;
+  v6 = getattrlist(list, v12, v11, 0x1CuLL, 1u);
   v7 = SALog();
   v8 = v7;
   if (v6)
@@ -728,7 +728,7 @@ LABEL_8:
       *buf = 136315650;
       v14 = "+[SASupport getVolSizeFromAttrList:completionHandler:]";
       v15 = 2080;
-      v16 = a3;
+      listCopy = list;
       v17 = 2048;
       v18 = v6;
       _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "%s: Can't get volume size for %s (err %li)", buf, 0x20u);
@@ -741,7 +741,7 @@ LABEL_8:
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      sub_10003AB60(a3, v11, v8);
+      sub_10003AB60(list, v11, v8);
     }
 
     v9 = 0;
@@ -757,7 +757,7 @@ LABEL_8:
     v10 = *(&v11[1] + 4);
   }
 
-  v5[2](v5, v10, *(v11 + 4), v9);
+  handlerCopy[2](handlerCopy, v10, *(v11 + 4), v9);
 }
 
 + (id)getVolumesPaths
@@ -772,19 +772,19 @@ LABEL_8:
   return v3;
 }
 
-+ (unint64_t)calculateMovingSumFor:(unint64_t)a3 with:(unint64_t)a4 numOfSamples:(unint64_t)a5 windowLength:(unint64_t)a6
++ (unint64_t)calculateMovingSumFor:(unint64_t)for with:(unint64_t)with numOfSamples:(unint64_t)samples windowLength:(unint64_t)length
 {
-  if (a5 >= a6)
+  if (samples >= length)
   {
-    v6 = a6;
+    samplesCopy = length;
   }
 
   else
   {
-    v6 = a5;
+    samplesCopy = samples;
   }
 
-  return (v6 * a4 + (a6 >> 1) + (a6 - v6) * a3) / a6;
+  return (samplesCopy * with + (length >> 1) + (length - samplesCopy) * for) / length;
 }
 
 + (id)getEnterpriseVolumesPaths
@@ -846,9 +846,9 @@ LABEL_8:
   return v12;
 }
 
-+ (BOOL)shouldExcludeCacheSizeForBundle:(id)a3
++ (BOOL)shouldExcludeCacheSizeForBundle:(id)bundle
 {
-  v3 = a3;
+  bundleCopy = bundle;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -867,7 +867,7 @@ LABEL_8:
           objc_enumerationMutation(&off_100069080);
         }
 
-        if ([v3 hasPrefix:*(*(&v11 + 1) + 8 * i)])
+        if ([bundleCopy hasPrefix:*(*(&v11 + 1) + 8 * i)])
         {
           v9 = SALog();
           if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -920,14 +920,14 @@ LABEL_13:
   return v3;
 }
 
-+ (id)getAllAppsUsageTime:(id)a3
++ (id)getAllAppsUsageTime:(id)time
 {
-  v3 = a3;
+  timeCopy = time;
   if (objc_opt_class())
   {
     v4 = BiomeLibrary();
     v5 = [v4 App];
-    v6 = [v5 InFocus];
+    inFocus = [v5 InFocus];
 
     v7 = objc_opt_new();
     v8 = objc_autoreleasePoolPush();
@@ -942,13 +942,13 @@ LABEL_13:
     v21[2] = 0x3032000000;
     v21[3] = sub_1000017E4;
     v21[4] = sub_1000017F4;
-    v9 = v3;
+    v9 = timeCopy;
     v22 = v9;
     v10 = [BMPublisherOptions alloc];
     v11 = +[NSDate date];
     v12 = [v10 initWithStartDate:v9 endDate:v11 maxEvents:0 lastN:0 reversed:0];
 
-    v13 = [v6 publisherWithOptions:v12];
+    v13 = [inFocus publisherWithOptions:v12];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_100004908;
@@ -978,10 +978,10 @@ LABEL_13:
   if (objc_opt_class() && objc_opt_class())
   {
     v2 = +[ACAccountStore defaultStore];
-    v3 = [v2 aa_primaryAppleAccount];
+    aa_primaryAppleAccount = [v2 aa_primaryAppleAccount];
 
-    v4 = [v3 aa_lastKnownQuota];
-    v5 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v4 unsignedLongLongValue] >> 30);
+    aa_lastKnownQuota = [aa_primaryAppleAccount aa_lastKnownQuota];
+    v5 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [aa_lastKnownQuota unsignedLongLongValue] >> 30);
   }
 
   else
@@ -1009,7 +1009,7 @@ LABEL_13:
     }
 
 LABEL_4:
-    v3 = 0;
+    unsignedLongLongValue = 0;
     goto LABEL_13;
   }
 
@@ -1100,7 +1100,7 @@ LABEL_4:
           if (CFProperty && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
             v7 = CFProperty;
-            v3 = [v7 unsignedLongLongValue];
+            unsignedLongLongValue = [v7 unsignedLongLongValue];
           }
 
           else
@@ -1112,7 +1112,7 @@ LABEL_4:
             }
 
             v7 = 0;
-            v3 = 0;
+            unsignedLongLongValue = 0;
           }
 
           goto LABEL_12;
@@ -1149,11 +1149,11 @@ LABEL_4:
 
   sub_10003AE6C();
 LABEL_11:
-  v3 = 0;
+  unsignedLongLongValue = 0;
 LABEL_12:
 
 LABEL_13:
-  return v3;
+  return unsignedLongLongValue;
 }
 
 + (unint64_t)getDiskUsed

@@ -1,11 +1,11 @@
 @interface CKPhotosQueryController
-- (id)chatGUIDForSearchableItem:(id)a3;
-- (id)detailsFilterQueriesForChatGUIDs:(id)a3;
+- (id)chatGUIDForSearchableItem:(id)item;
+- (id)detailsFilterQueriesForChatGUIDs:(id)ds;
 - (id)fetchAttributes;
 - (id)filterQueriesBase;
-- (id)queryAttributesForText:(id)a3;
-- (id)queryResultsForItems:(id)a3;
-- (unint64_t)maxResultsForMode:(unint64_t)a3;
+- (id)queryAttributesForText:(id)text;
+- (id)queryResultsForItems:(id)items;
+- (unint64_t)maxResultsForMode:(unint64_t)mode;
 @end
 
 @implementation CKPhotosQueryController
@@ -34,10 +34,10 @@
   return v7;
 }
 
-- (id)queryAttributesForText:(id)a3
+- (id)queryAttributesForText:(id)text
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  if ([a3 length])
+  if ([text length])
   {
     v3 = [MEMORY[0x1E695DF70] arrayWithObjects:{*MEMORY[0x1E69649F8], *MEMORY[0x1E69649E0], *MEMORY[0x1E6964BB0], *MEMORY[0x1E6964848], *MEMORY[0x1E6964858], *MEMORY[0x1E6964800], 0}];
     v4 = [v3 copy];
@@ -94,16 +94,16 @@ LABEL_8:
   return v6;
 }
 
-- (id)detailsFilterQueriesForChatGUIDs:(id)a3
+- (id)detailsFilterQueriesForChatGUIDs:(id)ds
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  dsCopy = ds;
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = v3;
+  v5 = dsCopy;
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
@@ -133,7 +133,7 @@ LABEL_8:
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__68;
   v18 = __Block_byref_object_dispose__68;
-  v19 = [MEMORY[0x1E696AEC0] string];
+  string = [MEMORY[0x1E696AEC0] string];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __60__CKPhotosQueryController_detailsFilterQueriesForChatGUIDs___block_invoke;
@@ -171,16 +171,16 @@ void __60__CKPhotosQueryController_detailsFilterQueriesForChatGUIDs___block_invo
   }
 }
 
-- (id)queryResultsForItems:(id)a3
+- (id)queryResultsForItems:(id)items
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   if ([(CKQueryController *)self mode]== 1)
   {
-    v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(itemsCopy, "count")}];
     v31 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    v6 = [(CKQueryController *)self delegate];
-    v7 = [v6 searchTokenFiltersForQueryController:self];
+    delegate = [(CKQueryController *)self delegate];
+    v7 = [delegate searchTokenFiltersForQueryController:self];
     v30 = [v7 count];
 
     v8 = [(CKPhotosQueryController *)self maxResultsForMode:[(CKQueryController *)self mode]];
@@ -188,8 +188,8 @@ void __60__CKPhotosQueryController_detailsFilterQueriesForChatGUIDs___block_invo
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v27 = v4;
-    v9 = v4;
+    v27 = itemsCopy;
+    v9 = itemsCopy;
     v10 = [v9 countByEnumeratingWithState:&v34 objects:v38 count:16];
     if (v10)
     {
@@ -208,26 +208,26 @@ LABEL_4:
 
         v13 = *(*(&v34 + 1) + 8 * v12);
         v14 = [(CKPhotosQueryController *)self chatGUIDForSearchableItem:v13, v27];
-        v15 = [(CKQueryController *)self delegate];
-        v16 = [v15 queryController:self conversationForChatGUID:v14];
+        delegate2 = [(CKQueryController *)self delegate];
+        v16 = [delegate2 queryController:self conversationForChatGUID:v14];
 
         if (v16 && ([v16 isBlockedByCommunicationLimits] & 1) == 0)
         {
           v17 = v5;
-          v18 = [v13 attributeSet];
-          v19 = [v18 authorAddresses];
-          v20 = [v19 firstObject];
+          attributeSet = [v13 attributeSet];
+          authorAddresses = [attributeSet authorAddresses];
+          firstObject = [authorAddresses firstObject];
 
-          if (v30 || ([v31 containsObject:v20] & 1) == 0)
+          if (v30 || ([v31 containsObject:firstObject] & 1) == 0)
           {
-            if (v20)
+            if (firstObject)
             {
-              [v31 addObject:v20];
+              [v31 addObject:firstObject];
             }
 
             v21 = [CKSpotlightQueryResult alloc];
-            v22 = [(CKPhotosQueryController *)self queryTypeIdentifier];
-            v23 = [(CKSpotlightQueryResult *)v21 initWithSearchableItem:v13 queryType:v22 withConversation:v16];
+            queryTypeIdentifier = [(CKPhotosQueryController *)self queryTypeIdentifier];
+            v23 = [(CKSpotlightQueryResult *)v21 initWithSearchableItem:v13 queryType:queryTypeIdentifier withConversation:v16];
 
             [v17 addObject:v23];
           }
@@ -258,26 +258,26 @@ LABEL_4:
     }
 
     v25 = [v5 copy];
-    v4 = v27;
+    itemsCopy = v27;
   }
 
   else
   {
     v33.receiver = self;
     v33.super_class = CKPhotosQueryController;
-    v25 = [(CKMessageTypeQueryController *)&v33 queryResultsForItems:v4];
+    v25 = [(CKMessageTypeQueryController *)&v33 queryResultsForItems:itemsCopy];
   }
 
   return v25;
 }
 
-- (unint64_t)maxResultsForMode:(unint64_t)a3
+- (unint64_t)maxResultsForMode:(unint64_t)mode
 {
-  v5 = [(CKQueryController *)self mode];
+  mode = [(CKQueryController *)self mode];
   result = 0;
-  if (v5 <= 2)
+  if (mode <= 2)
   {
-    if (v5 < 2)
+    if (mode < 2)
     {
       if (CKIsRunningInMacCatalyst())
       {
@@ -286,24 +286,24 @@ LABEL_4:
 
       else
       {
-        return [(CKMessageTypeQueryController *)&v8 maxResultsForMode:a3, v7.receiver, v7.super_class, self, CKPhotosQueryController];
+        return [(CKMessageTypeQueryController *)&v8 maxResultsForMode:mode, v7.receiver, v7.super_class, self, CKPhotosQueryController];
       }
     }
 
-    if (v5 != 2)
+    if (mode != 2)
     {
       return result;
     }
 
-    return [(CKMessageTypeQueryController *)&v7 maxResultsForMode:a3, self, CKPhotosQueryController, v8.receiver, v8.super_class];
+    return [(CKMessageTypeQueryController *)&v7 maxResultsForMode:mode, self, CKPhotosQueryController, v8.receiver, v8.super_class];
   }
 
-  if (v5 == 4)
+  if (mode == 4)
   {
-    return [(CKMessageTypeQueryController *)&v7 maxResultsForMode:a3, self, CKPhotosQueryController, v8.receiver, v8.super_class];
+    return [(CKMessageTypeQueryController *)&v7 maxResultsForMode:mode, self, CKPhotosQueryController, v8.receiver, v8.super_class];
   }
 
-  if (v5 == 3)
+  if (mode == 3)
   {
     if (CKIsRunningInMacCatalyst())
     {
@@ -319,12 +319,12 @@ LABEL_4:
   return result;
 }
 
-- (id)chatGUIDForSearchableItem:(id)a3
+- (id)chatGUIDForSearchableItem:(id)item
 {
-  v3 = [a3 attributeSet];
-  v4 = [v3 accountIdentifier];
+  attributeSet = [item attributeSet];
+  accountIdentifier = [attributeSet accountIdentifier];
 
-  return v4;
+  return accountIdentifier;
 }
 
 @end

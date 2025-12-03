@@ -1,6 +1,6 @@
 @interface BannerAgent
 - (_TtC8SOSBuddy11BannerAgent)init;
-- (void)bannerSourceDidInvalidate:(id)a3;
+- (void)bannerSourceDidInvalidate:(id)invalidate;
 @end
 
 @implementation BannerAgent
@@ -12,10 +12,10 @@
   return result;
 }
 
-- (void)bannerSourceDidInvalidate:(id)a3
+- (void)bannerSourceDidInvalidate:(id)invalidate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1001CF5A4();
   swift_unknownObjectRelease();
 }

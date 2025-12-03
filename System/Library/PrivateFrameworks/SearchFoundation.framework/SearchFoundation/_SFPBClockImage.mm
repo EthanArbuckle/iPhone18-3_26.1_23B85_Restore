@@ -1,43 +1,43 @@
 @interface _SFPBClockImage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBClockImage)initWithDictionary:(id)a3;
-- (_SFPBClockImage)initWithFacade:(id)a3;
-- (_SFPBClockImage)initWithJSON:(id)a3;
+- (_SFPBClockImage)initWithDictionary:(id)dictionary;
+- (_SFPBClockImage)initWithFacade:(id)facade;
+- (_SFPBClockImage)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBClockImage
 
-- (_SFPBClockImage)initWithFacade:(id)a3
+- (_SFPBClockImage)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBClockImage *)self init];
   if (v5)
   {
-    v6 = [v4 hour];
+    hour = [facadeCopy hour];
 
-    if (v6)
+    if (hour)
     {
-      v7 = [v4 hour];
-      -[_SFPBClockImage setHour:](v5, "setHour:", [v7 intValue]);
+      hour2 = [facadeCopy hour];
+      -[_SFPBClockImage setHour:](v5, "setHour:", [hour2 intValue]);
     }
 
-    v8 = [v4 minute];
+    minute = [facadeCopy minute];
 
-    if (v8)
+    if (minute)
     {
-      v9 = [v4 minute];
-      -[_SFPBClockImage setMinute:](v5, "setMinute:", [v9 intValue]);
+      minute2 = [facadeCopy minute];
+      -[_SFPBClockImage setMinute:](v5, "setMinute:", [minute2 intValue]);
     }
 
-    v10 = [v4 second];
+    second = [facadeCopy second];
 
-    if (v10)
+    if (second)
     {
-      v11 = [v4 second];
-      -[_SFPBClockImage setSecond:](v5, "setSecond:", [v11 intValue]);
+      second2 = [facadeCopy second];
+      -[_SFPBClockImage setSecond:](v5, "setSecond:", [second2 intValue]);
     }
 
     v12 = v5;
@@ -46,29 +46,29 @@
   return v5;
 }
 
-- (_SFPBClockImage)initWithDictionary:(id)a3
+- (_SFPBClockImage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = _SFPBClockImage;
   v5 = [(_SFPBClockImage *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"hour"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"hour"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBClockImage setHour:](v5, "setHour:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"minute"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"minute"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBClockImage setMinute:](v5, "setMinute:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"second"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"second"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,30 +81,30 @@
   return v5;
 }
 
-- (_SFPBClockImage)initWithJSON:(id)a3
+- (_SFPBClockImage)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBClockImage *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBClockImage *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBClockImage *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -117,35 +117,35 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_hour)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[_SFPBClockImage hour](self, "hour")}];
-    [v3 setObject:v4 forKeyedSubscript:@"hour"];
+    [dictionary setObject:v4 forKeyedSubscript:@"hour"];
   }
 
   if (self->_minute)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[_SFPBClockImage minute](self, "minute")}];
-    [v3 setObject:v5 forKeyedSubscript:@"minute"];
+    [dictionary setObject:v5 forKeyedSubscript:@"minute"];
   }
 
   if (self->_second)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithInt:{-[_SFPBClockImage second](self, "second")}];
-    [v3 setObject:v6 forKeyedSubscript:@"second"];
+    [dictionary setObject:v6 forKeyedSubscript:@"second"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (hour = self->_hour, hour == objc_msgSend(v4, "hour")) && (minute = self->_minute, minute == objc_msgSend(v4, "minute")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (hour = self->_hour, hour == objc_msgSend(equalCopy, "hour")) && (minute = self->_minute, minute == objc_msgSend(equalCopy, "minute")))
   {
     second = self->_second;
-    v8 = second == [v4 second];
+    v8 = second == [equalCopy second];
   }
 
   else
@@ -156,9 +156,9 @@
   return v8;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if ([(_SFPBClockImage *)self hour])
   {
     PBDataWriterWriteInt32Field();
@@ -169,12 +169,12 @@
     PBDataWriterWriteInt32Field();
   }
 
-  v4 = [(_SFPBClockImage *)self second];
-  v5 = v6;
-  if (v4)
+  second = [(_SFPBClockImage *)self second];
+  v5 = toCopy;
+  if (second)
   {
     PBDataWriterWriteInt32Field();
-    v5 = v6;
+    v5 = toCopy;
   }
 }
 

@@ -3,21 +3,21 @@
 - (NSString)diagnosticDescription;
 - (PXArrayChangeDetails)arrayChangeDetails;
 - (PXGChangeDetails)inverse;
-- (_PXGSpriteIndexRange)replaceRemovalsWithMovesToEndForIndexes:(id)a3;
-- (_PXGSpriteIndexRange)splitIndexesIntoMovesToEndAndReinsertions:(id)a3;
+- (_PXGSpriteIndexRange)replaceRemovalsWithMovesToEndForIndexes:(id)indexes;
+- (_PXGSpriteIndexRange)splitIndexesIntoMovesToEndAndReinsertions:(id)reinsertions;
 - (const)spriteIndexAfterChangeBySpriteIndexBeforeChange;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)indexSetAfterApplyingChangeDetails:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)indexSetAfterApplyingChangeDetails:(id)details;
 - (void)_invalidateCachedArrayChangeDetails;
 - (void)_resizeStorageIfNeeded;
-- (void)applySpriteTransferMap:(const unsigned int *)a3;
-- (void)applyToArray:(void *)a3 elementSize:(unint64_t)a4 countAfterChanges:(unint64_t)a5 insertionHandler:(id)a6 modifiedHandler:(id)a7;
-- (void)applyToDictionary:(id)a3 removalHandler:(id)a4;
-- (void)applyToSpriteIndexes:(unsigned int *)a3 atIndexes:(id)a4;
-- (void)configureWithNumberOfSpritesAfterChange:(unsigned int)a3 changeDetails:(id)a4;
+- (void)applySpriteTransferMap:(const unsigned int *)map;
+- (void)applyToArray:(void *)array elementSize:(unint64_t)size countAfterChanges:(unint64_t)changes insertionHandler:(id)handler modifiedHandler:(id)modifiedHandler;
+- (void)applyToDictionary:(id)dictionary removalHandler:(id)handler;
+- (void)applyToSpriteIndexes:(unsigned int *)indexes atIndexes:(id)atIndexes;
+- (void)configureWithNumberOfSpritesAfterChange:(unsigned int)change changeDetails:(id)details;
 - (void)dealloc;
-- (void)increaseNumberOfSpritesBy:(unsigned int)a3;
-- (void)removeSpritesAtIndexes:(id)a3;
+- (void)increaseNumberOfSpritesBy:(unsigned int)by;
+- (void)removeSpritesAtIndexes:(id)indexes;
 @end
 
 @implementation PXGChangeDetails
@@ -70,10 +70,10 @@
     {
       nextSpriteIndexByPreviousSpriteIndex = self->_nextSpriteIndexByPreviousSpriteIndex;
       v7 = malloc_type_malloc(4 * self->_numberOfSpritesBeforeChange, 0x100004052888210uLL);
-      v8 = [(NSIndexSet *)self->_spriteIndexesThatWereInserted firstIndex];
+      firstIndex = [(NSIndexSet *)self->_spriteIndexesThatWereInserted firstIndex];
       if (self->_numberOfSpritesBeforeChange)
       {
-        v9 = v8;
+        v9 = firstIndex;
         v10 = 0;
         LODWORD(v11) = 0;
         do
@@ -102,7 +102,7 @@
         while (v10 < self->_numberOfSpritesBeforeChange);
       }
 
-      v13 = [MEMORY[0x277CCAB58] indexSet];
+      indexSet = [MEMORY[0x277CCAB58] indexSet];
       Mutable = CFDictionaryCreateMutable(0, 0, 0, 0);
       numberOfSpritesBeforeChange = self->_numberOfSpritesBeforeChange;
       if (numberOfSpritesBeforeChange)
@@ -116,7 +116,7 @@
           v19 = v20;
           if (v17 != v20)
           {
-            [v13 addIndex:v17];
+            [indexSet addIndex:v17];
             CFDictionarySetValue(Mutable, v17, v19);
           }
 
@@ -126,7 +126,7 @@
         while (numberOfSpritesBeforeChange);
       }
 
-      [v13 count];
+      [indexSet count];
       v21 = PXCreateMutableIntegerArrayRef();
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
@@ -134,7 +134,7 @@
       v23[3] = &__block_descriptor_48_e12_v24__0Q8_B16l;
       v23[4] = Mutable;
       v23[5] = v21;
-      [v13 enumerateIndexesUsingBlock:v23];
+      [indexSet enumerateIndexesUsingBlock:v23];
       CFRelease(Mutable);
       free(v7);
     }
@@ -142,10 +142,10 @@
     else
     {
       v21 = 0;
-      v13 = 0;
+      indexSet = 0;
     }
 
-    v4 = [objc_alloc(MEMORY[0x277D3CCC8]) initWithIncrementalChangeDetailsRemovedIndexes:self->_spriteIndexesThatWereRemoved insertedIndexes:self->_spriteIndexesThatWereInserted movesToIndexes:v13 movesFromIndexes:v21 changedIndexes:self->_spriteIndexesThatWereModified];
+    v4 = [objc_alloc(MEMORY[0x277D3CCC8]) initWithIncrementalChangeDetailsRemovedIndexes:self->_spriteIndexesThatWereRemoved insertedIndexes:self->_spriteIndexesThatWereInserted movesToIndexes:indexSet movesFromIndexes:v21 changedIndexes:self->_spriteIndexesThatWereModified];
     if (v21)
     {
       CFRelease(v21);
@@ -178,14 +178,14 @@
   v6 = [v3 stringWithFormat:@"<%@: %p\n", v5, self];
 
   [v6 appendFormat:@"\tnumberOfSprites beforeChange:%li afterChange:%li\n", self->_numberOfSpritesBeforeChange, self->_numberOfSpritesAfterChange];
-  v7 = [(NSIndexSet *)self->_spriteIndexesThatWereRemoved px_shortDescription];
-  [v6 appendFormat:@"\tremovedSpriteIndexes: %@\n", v7];
+  px_shortDescription = [(NSIndexSet *)self->_spriteIndexesThatWereRemoved px_shortDescription];
+  [v6 appendFormat:@"\tremovedSpriteIndexes: %@\n", px_shortDescription];
 
-  v8 = [(NSIndexSet *)self->_spriteIndexesThatWereInserted px_shortDescription];
-  [v6 appendFormat:@"\tinsertedSpriteIndexes: %@\n", v8];
+  px_shortDescription2 = [(NSIndexSet *)self->_spriteIndexesThatWereInserted px_shortDescription];
+  [v6 appendFormat:@"\tinsertedSpriteIndexes: %@\n", px_shortDescription2];
 
-  v9 = [(NSIndexSet *)self->_spriteIndexesThatWereModified px_shortDescription];
-  [v6 appendFormat:@"\tmodifiedSpriteIndexes: %@\n", v9];
+  px_shortDescription3 = [(NSIndexSet *)self->_spriteIndexesThatWereModified px_shortDescription];
+  [v6 appendFormat:@"\tmodifiedSpriteIndexes: %@\n", px_shortDescription3];
 
   [v6 appendFormat:@"\thasMoves: %i\n", self->_hasMoves];
   if ([(PXGChangeDetails *)self hasAnyInsertionsRemovalsOrMoves])
@@ -227,7 +227,7 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   *(v4 + 21) = self->_numberOfSpritesBeforeChange;
@@ -264,22 +264,22 @@ void __38__PXGChangeDetails_arrayChangeDetails__block_invoke(uint64_t a1, const 
   CFArrayAppendValue(v4, Value);
 }
 
-- (void)applyToDictionary:(id)a3 removalHandler:(id)a4
+- (void)applyToDictionary:(id)dictionary removalHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  handlerCopy = handler;
   if ([(PXGChangeDetails *)self hasAnyInsertionsRemovalsOrMoves])
   {
-    v8 = [v6 copy];
-    [v6 removeAllObjects];
+    v8 = [dictionaryCopy copy];
+    [dictionaryCopy removeAllObjects];
     nextSpriteIndexByPreviousSpriteIndex = self->_nextSpriteIndexByPreviousSpriteIndex;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __53__PXGChangeDetails_applyToDictionary_removalHandler___block_invoke;
     v10[3] = &unk_2782A9078;
     v13 = nextSpriteIndexByPreviousSpriteIndex;
-    v12 = v7;
-    v11 = v6;
+    v12 = handlerCopy;
+    v11 = dictionaryCopy;
     [v8 enumerateKeysAndObjectsUsingBlock:v10];
   }
 }
@@ -300,22 +300,22 @@ void __53__PXGChangeDetails_applyToDictionary_removalHandler___block_invoke(void
   }
 }
 
-- (void)applyToArray:(void *)a3 elementSize:(unint64_t)a4 countAfterChanges:(unint64_t)a5 insertionHandler:(id)a6 modifiedHandler:(id)a7
+- (void)applyToArray:(void *)array elementSize:(unint64_t)size countAfterChanges:(unint64_t)changes insertionHandler:(id)handler modifiedHandler:(id)modifiedHandler
 {
-  v13 = a6;
-  v14 = a7;
-  if (self->_numberOfSpritesAfterChange != a5)
+  handlerCopy = handler;
+  modifiedHandlerCopy = modifiedHandler;
+  if (self->_numberOfSpritesAfterChange != changes)
   {
-    v25 = [MEMORY[0x277CCA890] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"PXGChangeDetails.m" lineNumber:425 description:{@"Invalid parameter not satisfying: %@", @"countAfterChanges == _numberOfSpritesAfterChange"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGChangeDetails.m" lineNumber:425 description:{@"Invalid parameter not satisfying: %@", @"countAfterChanges == _numberOfSpritesAfterChange"}];
   }
 
   numberOfSpritesBeforeChange = self->_numberOfSpritesBeforeChange;
   if ([(PXGChangeDetails *)self hasAnyInsertionsRemovalsOrMoves])
   {
-    v16 = numberOfSpritesBeforeChange * a4;
+    v16 = numberOfSpritesBeforeChange * size;
     tempBufferCapacity = self->_tempBufferCapacity;
-    if (tempBufferCapacity >= (numberOfSpritesBeforeChange * a4))
+    if (tempBufferCapacity >= (numberOfSpritesBeforeChange * size))
     {
       tempBuffer = self->_tempBuffer;
     }
@@ -343,7 +343,7 @@ void __53__PXGChangeDetails_applyToDictionary_removalHandler___block_invoke(void
       self->_tempBuffer = tempBuffer;
     }
 
-    memcpy(tempBuffer, a3, numberOfSpritesBeforeChange * a4);
+    memcpy(tempBuffer, array, numberOfSpritesBeforeChange * size);
     if (numberOfSpritesBeforeChange)
     {
       nextSpriteIndexByPreviousSpriteIndex = self->_nextSpriteIndexByPreviousSpriteIndex;
@@ -354,43 +354,43 @@ void __53__PXGChangeDetails_applyToDictionary_removalHandler___block_invoke(void
         v21 = v22;
         if (v22 != -1)
         {
-          memcpy(a3 + v21 * a4, v20, a4);
+          memcpy(array + v21 * size, v20, size);
         }
 
-        v20 += a4;
+        v20 += size;
         --numberOfSpritesBeforeChange;
       }
 
       while (numberOfSpritesBeforeChange);
     }
 
-    if (v13)
+    if (handlerCopy)
     {
       spriteIndexesThatWereInserted = self->_spriteIndexesThatWereInserted;
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __96__PXGChangeDetails_applyToArray_elementSize_countAfterChanges_insertionHandler_modifiedHandler___block_invoke;
       v28[3] = &unk_2782A9050;
-      v29 = v13;
+      v29 = handlerCopy;
       [(NSIndexSet *)spriteIndexesThatWereInserted enumerateRangesUsingBlock:v28];
     }
   }
 
-  if (v14)
+  if (modifiedHandlerCopy)
   {
     spriteIndexesThatWereModified = self->_spriteIndexesThatWereModified;
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __96__PXGChangeDetails_applyToArray_elementSize_countAfterChanges_insertionHandler_modifiedHandler___block_invoke_2;
     v26[3] = &unk_2782A9050;
-    v27 = v14;
+    v27 = modifiedHandlerCopy;
     [(NSIndexSet *)spriteIndexesThatWereModified enumerateRangesUsingBlock:v26];
   }
 }
 
-- (void)applyToSpriteIndexes:(unsigned int *)a3 atIndexes:(id)a4
+- (void)applyToSpriteIndexes:(unsigned int *)indexes atIndexes:(id)atIndexes
 {
-  v6 = a4;
+  atIndexesCopy = atIndexes;
   if ([(PXGChangeDetails *)self hasAnyInsertionsRemovalsOrMoves])
   {
     nextSpriteIndexByPreviousSpriteIndex = self->_nextSpriteIndexByPreviousSpriteIndex;
@@ -398,9 +398,9 @@ void __53__PXGChangeDetails_applyToDictionary_removalHandler___block_invoke(void
     v8[1] = 3221225472;
     v8[2] = __51__PXGChangeDetails_applyToSpriteIndexes_atIndexes___block_invoke;
     v8[3] = &__block_descriptor_48_e24_v32__0__NSRange_QQ_8_B24l;
-    v8[4] = a3;
+    v8[4] = indexes;
     v8[5] = nextSpriteIndexByPreviousSpriteIndex;
-    [v6 enumerateRangesUsingBlock:v8];
+    [atIndexesCopy enumerateRangesUsingBlock:v8];
   }
 }
 
@@ -423,36 +423,36 @@ uint64_t __51__PXGChangeDetails_applyToSpriteIndexes_atIndexes___block_invoke(ui
   return result;
 }
 
-- (id)indexSetAfterApplyingChangeDetails:(id)a3
+- (id)indexSetAfterApplyingChangeDetails:(id)details
 {
-  v4 = a3;
+  detailsCopy = details;
   if ([(PXGChangeDetails *)self hasAnyInsertionsRemovalsOrMoves])
   {
     if (self->_hasMoves)
     {
       nextSpriteIndexByPreviousSpriteIndex = self->_nextSpriteIndexByPreviousSpriteIndex;
-      v6 = [MEMORY[0x277CCAB58] indexSet];
+      indexSet = [MEMORY[0x277CCAB58] indexSet];
       v10 = MEMORY[0x277D85DD0];
       v11 = 3221225472;
       v12 = __55__PXGChangeDetails_indexSetAfterApplyingChangeDetails___block_invoke;
       v13 = &unk_2782ABFE0;
-      v14 = v6;
+      v14 = indexSet;
       v15 = nextSpriteIndexByPreviousSpriteIndex;
-      v7 = v6;
-      [v4 enumerateRangesUsingBlock:&v10];
-      v8 = [v7 copy];
+      arrayChangeDetails = indexSet;
+      [detailsCopy enumerateRangesUsingBlock:&v10];
+      v8 = [arrayChangeDetails copy];
     }
 
     else
     {
-      v7 = [(PXGChangeDetails *)self arrayChangeDetails];
-      v8 = [v7 indexSetAfterApplyingChangesToIndexSet:v4];
+      arrayChangeDetails = [(PXGChangeDetails *)self arrayChangeDetails];
+      v8 = [arrayChangeDetails indexSetAfterApplyingChangesToIndexSet:detailsCopy];
     }
   }
 
   else
   {
-    v8 = v4;
+    v8 = detailsCopy;
   }
 
   return v8;
@@ -568,7 +568,7 @@ uint64_t __55__PXGChangeDetails_indexSetAfterApplyingChangeDetails___block_invok
   return v3;
 }
 
-- (void)applySpriteTransferMap:(const unsigned int *)a3
+- (void)applySpriteTransferMap:(const unsigned int *)map
 {
   v6 = [(NSIndexSet *)self->_spriteIndexesThatWereRemoved mutableCopy];
   v7 = [(NSIndexSet *)self->_spriteIndexesThatWereInserted mutableCopy];
@@ -587,9 +587,9 @@ uint64_t __55__PXGChangeDetails_indexSetAfterApplyingChangeDetails___block_invok
   v21 = __43__PXGChangeDetails_applySpriteTransferMap___block_invoke;
   v22 = &unk_2782A8FE0;
   v28 = v32;
-  v29 = a3;
+  mapCopy = map;
   v27 = v31;
-  v23 = self;
+  selfCopy = self;
   v10 = v6;
   v24 = v10;
   v11 = v7;
@@ -654,16 +654,16 @@ uint64_t __43__PXGChangeDetails_applySpriteTransferMap___block_invoke(uint64_t r
   return result;
 }
 
-- (_PXGSpriteIndexRange)splitIndexesIntoMovesToEndAndReinsertions:(id)a3
+- (_PXGSpriteIndexRange)splitIndexesIntoMovesToEndAndReinsertions:(id)reinsertions
 {
-  v4 = a3;
-  if ([v4 count])
+  reinsertionsCopy = reinsertions;
+  if ([reinsertionsCopy count])
   {
     [(PXGChangeDetails *)self _invalidateLayoutVersions];
     [(PXGChangeDetails *)self _invalidateCachedArrayChangeDetails];
-    v5 = [(PXGChangeDetails *)self hasAnyInsertionsRemovalsOrMoves];
+    hasAnyInsertionsRemovalsOrMoves = [(PXGChangeDetails *)self hasAnyInsertionsRemovalsOrMoves];
     numberOfSpritesAfterChange = self->_numberOfSpritesAfterChange;
-    self->_numberOfSpritesAfterChange += [v4 count];
+    self->_numberOfSpritesAfterChange += [reinsertionsCopy count];
     v7 = [(NSIndexSet *)self->_spriteIndexesThatWereInserted mutableCopy];
     v8 = v7;
     if (v7)
@@ -678,13 +678,13 @@ uint64_t __43__PXGChangeDetails_applySpriteTransferMap___block_invoke(uint64_t r
 
     v11 = v9;
 
-    [v11 addIndexes:v4];
+    [v11 addIndexes:reinsertionsCopy];
     v12 = [v11 copy];
     spriteIndexesThatWereInserted = self->_spriteIndexesThatWereInserted;
     self->_spriteIndexesThatWereInserted = v12;
 
     v14 = [(NSIndexSet *)self->_spriteIndexesThatWereModified mutableCopy];
-    [v14 removeIndexes:v4];
+    [v14 removeIndexes:reinsertionsCopy];
     v15 = [v14 copy];
     spriteIndexesThatWereModified = self->_spriteIndexesThatWereModified;
     self->_spriteIndexesThatWereModified = v15;
@@ -697,7 +697,7 @@ uint64_t __43__PXGChangeDetails_applySpriteTransferMap___block_invoke(uint64_t r
       LODWORD(v18) = 0;
       do
       {
-        if (v5)
+        if (hasAnyInsertionsRemovalsOrMoves)
         {
           v19 = self->_nextSpriteIndexByPreviousSpriteIndex[v17];
         }
@@ -707,7 +707,7 @@ uint64_t __43__PXGChangeDetails_applySpriteTransferMap___block_invoke(uint64_t r
           v19 = v17;
         }
 
-        v20 = [v4 containsIndex:v19];
+        v20 = [reinsertionsCopy containsIndex:v19];
         v21 = v18 + numberOfSpritesAfterChange;
         v18 = (v18 + v20);
         if (!v20)
@@ -737,13 +737,13 @@ uint64_t __43__PXGChangeDetails_applySpriteTransferMap___block_invoke(uint64_t r
   return (v10 | numberOfSpritesAfterChange);
 }
 
-- (void)increaseNumberOfSpritesBy:(unsigned int)a3
+- (void)increaseNumberOfSpritesBy:(unsigned int)by
 {
   [(PXGChangeDetails *)self _invalidateLayoutVersions];
   [(PXGChangeDetails *)self _invalidateCachedArrayChangeDetails];
   numberOfSpritesBeforeChange = self->_numberOfSpritesBeforeChange;
-  self->_numberOfSpritesAfterChange += a3;
-  self->_numberOfSpritesBeforeChange = numberOfSpritesBeforeChange + a3;
+  self->_numberOfSpritesAfterChange += by;
+  self->_numberOfSpritesBeforeChange = numberOfSpritesBeforeChange + by;
   if ([(PXGChangeDetails *)self hasAnyInsertionsRemovalsOrMoves])
   {
     [(PXGChangeDetails *)self _resizeStorageIfNeeded];
@@ -763,10 +763,10 @@ uint64_t __43__PXGChangeDetails_applySpriteTransferMap___block_invoke(uint64_t r
   }
 }
 
-- (void)removeSpritesAtIndexes:(id)a3
+- (void)removeSpritesAtIndexes:(id)indexes
 {
-  v5 = a3;
-  if ([v5 count])
+  indexesCopy = indexes;
+  if ([indexesCopy count])
   {
     [(PXGChangeDetails *)self _invalidateLayoutVersions];
     [(PXGChangeDetails *)self _invalidateCachedArrayChangeDetails];
@@ -777,7 +777,7 @@ uint64_t __43__PXGChangeDetails_applySpriteTransferMap___block_invoke(uint64_t r
       if (spriteIndexesThatWereRemoved)
       {
         v8 = [(NSIndexSet *)spriteIndexesThatWereRemoved mutableCopy];
-        [(NSIndexSet *)v8 addIndexes:v5];
+        [(NSIndexSet *)v8 addIndexes:indexesCopy];
         v9 = [(NSIndexSet *)v8 copy];
         v10 = self->_spriteIndexesThatWereRemoved;
         self->_spriteIndexesThatWereRemoved = v9;
@@ -785,7 +785,7 @@ uint64_t __43__PXGChangeDetails_applySpriteTransferMap___block_invoke(uint64_t r
 
       else
       {
-        v20 = [v5 copy];
+        v20 = [indexesCopy copy];
         v8 = self->_spriteIndexesThatWereRemoved;
         self->_spriteIndexesThatWereRemoved = v20;
       }
@@ -797,8 +797,8 @@ uint64_t __43__PXGChangeDetails_applySpriteTransferMap___block_invoke(uint64_t r
       v39 = &unk_2782AAF40;
       v22 = v21;
       v40 = v22;
-      v41 = self;
-      [v5 enumerateIndexesUsingBlock:&v36];
+      selfCopy = self;
+      [indexesCopy enumerateIndexesUsingBlock:&v36];
       [v22 removeIndex:{0xFFFFFFFFLL, v36, v37, v38, v39}];
       v23 = [(NSIndexSet *)self->_spriteIndexesThatWereModified px_indexSetAdjustedForDeletions:v22];
       spriteIndexesThatWereModified = self->_spriteIndexesThatWereModified;
@@ -855,7 +855,7 @@ uint64_t __43__PXGChangeDetails_applySpriteTransferMap___block_invoke(uint64_t r
         v12 = 0;
         do
         {
-          v13 = [v5 containsIndex:v11];
+          v13 = [indexesCopy containsIndex:v11];
           if (v13)
           {
             v14 = -1;
@@ -873,22 +873,22 @@ uint64_t __43__PXGChangeDetails_applySpriteTransferMap___block_invoke(uint64_t r
         while (v11 < self->_numberOfSpritesBeforeChange);
       }
 
-      v15 = [v5 copy];
+      v15 = [indexesCopy copy];
       v16 = self->_spriteIndexesThatWereRemoved;
       self->_spriteIndexesThatWereRemoved = v15;
 
-      v17 = [(NSIndexSet *)self->_spriteIndexesThatWereModified px_indexSetAdjustedForDeletions:v5];
+      v17 = [(NSIndexSet *)self->_spriteIndexesThatWereModified px_indexSetAdjustedForDeletions:indexesCopy];
       v18 = self->_spriteIndexesThatWereModified;
       self->_spriteIndexesThatWereModified = v17;
 
-      v19 = [v5 count];
+      v19 = [indexesCopy count];
     }
 
     v34 = numberOfSpritesAfterChange - v19;
     if (v34 < 0)
     {
-      v35 = [MEMORY[0x277CCA890] currentHandler];
-      [v35 handleFailureInMethod:a2 object:self file:@"PXGChangeDetails.m" lineNumber:219 description:{@"Invalid removed indexes, numberOfSpritesAfterChange would be < 0"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXGChangeDetails.m" lineNumber:219 description:{@"Invalid removed indexes, numberOfSpritesAfterChange would be < 0"}];
     }
 
     self->_numberOfSpritesAfterChange = v34;
@@ -902,9 +902,9 @@ uint64_t __43__PXGChangeDetails_removeSpritesAtIndexes___block_invoke(uint64_t a
   return result;
 }
 
-- (_PXGSpriteIndexRange)replaceRemovalsWithMovesToEndForIndexes:(id)a3
+- (_PXGSpriteIndexRange)replaceRemovalsWithMovesToEndForIndexes:(id)indexes
 {
-  v4 = a3;
+  indexesCopy = indexes;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2810000000;
@@ -916,11 +916,11 @@ uint64_t __43__PXGChangeDetails_removeSpritesAtIndexes___block_invoke(uint64_t a
   v13 = 3221225472;
   v14 = __60__PXGChangeDetails_replaceRemovalsWithMovesToEndForIndexes___block_invoke;
   v15 = &unk_2782A8FB8;
-  v16 = self;
+  selfCopy = self;
   v18 = &v19;
   v6 = v5;
   v17 = v6;
-  [v4 enumerateIndexesUsingBlock:&v12];
+  [indexesCopy enumerateIndexesUsingBlock:&v12];
   v7 = v20;
   if (v20[4].length)
   {
@@ -964,26 +964,26 @@ uint64_t __60__PXGChangeDetails_replaceRemovalsWithMovesToEndForIndexes___block_
   return result;
 }
 
-- (void)configureWithNumberOfSpritesAfterChange:(unsigned int)a3 changeDetails:(id)a4
+- (void)configureWithNumberOfSpritesAfterChange:(unsigned int)change changeDetails:(id)details
 {
   v79 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  detailsCopy = details;
   [(PXGChangeDetails *)self _invalidateLayoutVersions];
   [(PXGChangeDetails *)self _invalidateCachedArrayChangeDetails];
-  v55 = self;
-  v62 = a3;
-  self->_numberOfSpritesAfterChange = a3;
+  selfCopy = self;
+  changeCopy = change;
+  self->_numberOfSpritesAfterChange = change;
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v7 = v6;
+  v7 = detailsCopy;
   v8 = [v7 countByEnumeratingWithState:&v72 objects:v78 count:16];
   if (v8)
   {
     v9 = v8;
     v10 = 0;
-    LOBYTE(v11) = 0;
+    LOBYTE(hasAnyInsertionsRemovalsOrMoves) = 0;
     v12 = *v73;
     do
     {
@@ -995,20 +995,20 @@ uint64_t __60__PXGChangeDetails_replaceRemovalsWithMovesToEndForIndexes___block_
         }
 
         v14 = *(*(&v72 + 1) + 8 * i);
-        v15 = [v14 insertedIndexes];
-        v16 = [v15 count];
+        insertedIndexes = [v14 insertedIndexes];
+        v16 = [insertedIndexes count];
 
-        v17 = [v14 removedIndexes];
-        v18 = [v17 count];
+        removedIndexes = [v14 removedIndexes];
+        v18 = [removedIndexes count];
 
-        if (v11)
+        if (hasAnyInsertionsRemovalsOrMoves)
         {
-          v11 = 1;
+          hasAnyInsertionsRemovalsOrMoves = 1;
         }
 
         else
         {
-          v11 = [v14 hasAnyInsertionsRemovalsOrMoves];
+          hasAnyInsertionsRemovalsOrMoves = [v14 hasAnyInsertionsRemovalsOrMoves];
         }
 
         v10 = v16 + v10 - v18;
@@ -1023,21 +1023,21 @@ uint64_t __60__PXGChangeDetails_replaceRemovalsWithMovesToEndForIndexes___block_
   else
   {
     v10 = 0;
-    v11 = 0;
+    hasAnyInsertionsRemovalsOrMoves = 0;
   }
 
-  v19 = v62 - v10;
+  v19 = changeCopy - v10;
   if (v19 < 0)
   {
-    v54 = [MEMORY[0x277CCA890] currentHandler];
-    [v54 handleFailureInMethod:a2 object:v55 file:@"PXGChangeDetails.m" lineNumber:66 description:{@"Invalid change details provided, numberOfSpritesBeforeChange would be < 0"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"PXGChangeDetails.m" lineNumber:66 description:{@"Invalid change details provided, numberOfSpritesBeforeChange would be < 0"}];
   }
 
-  v20 = v55;
-  v55->_numberOfSpritesBeforeChange = v19;
-  v58 = [MEMORY[0x277CCAB58] indexSet];
-  v21 = [MEMORY[0x277CCAB58] indexSet];
-  v59 = [MEMORY[0x277CCAB58] indexSet];
+  v20 = selfCopy;
+  selfCopy->_numberOfSpritesBeforeChange = v19;
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
+  indexSet2 = [MEMORY[0x277CCAB58] indexSet];
+  indexSet3 = [MEMORY[0x277CCAB58] indexSet];
   if (![v7 count])
   {
     goto LABEL_57;
@@ -1046,7 +1046,7 @@ uint64_t __60__PXGChangeDetails_replaceRemovalsWithMovesToEndForIndexes___block_
   [(PXGChangeDetails *)v20 _resizeStorageIfNeeded];
   numberOfSpritesBeforeChange = v20->_numberOfSpritesBeforeChange;
   nextSpriteIndexByPreviousSpriteIndex = v20->_nextSpriteIndexByPreviousSpriteIndex;
-  if (!v11)
+  if (!hasAnyInsertionsRemovalsOrMoves)
   {
     v66 = 0u;
     v67 = 0u;
@@ -1067,8 +1067,8 @@ uint64_t __60__PXGChangeDetails_replaceRemovalsWithMovesToEndForIndexes___block_
             objc_enumerationMutation(v35);
           }
 
-          v40 = [*(*(&v64 + 1) + 8 * j) changedIndexes];
-          [v21 addIndexes:v40];
+          changedIndexes = [*(*(&v64 + 1) + 8 * j) changedIndexes];
+          [indexSet2 addIndexes:changedIndexes];
         }
 
         v37 = [v35 countByEnumeratingWithState:&v64 objects:v76 count:16];
@@ -1116,7 +1116,7 @@ uint64_t __60__PXGChangeDetails_replaceRemovalsWithMovesToEndForIndexes___block_
     goto LABEL_57;
   }
 
-  [v58 addIndexesInRange:{0, v20->_numberOfSpritesAfterChange}];
+  [indexSet addIndexesInRange:{0, v20->_numberOfSpritesAfterChange}];
   if (!numberOfSpritesBeforeChange)
   {
 LABEL_57:
@@ -1167,7 +1167,7 @@ LABEL_57:
           {
 
             v23 = v63;
-            [v59 addIndex:v63];
+            [indexSet3 addIndex:v63];
             LODWORD(v30) = -1;
             numberOfSpritesBeforeChange = v57;
             goto LABEL_39;
@@ -1181,8 +1181,8 @@ LABEL_57:
 
           else
           {
-            v34 = [v32 changedIndexes];
-            v28 = [v34 containsIndex:v30];
+            changedIndexes2 = [v32 changedIndexes];
+            v28 = [changedIndexes2 containsIndex:v30];
           }
         }
 
@@ -1195,10 +1195,10 @@ LABEL_57:
         break;
       }
 
-      [v58 removeIndex:v30];
+      [indexSet removeIndex:v30];
       if (v28)
       {
-        [v21 addIndex:v30];
+        [indexSet2 addIndex:v30];
       }
 
       numberOfSpritesBeforeChange = v57;
@@ -1208,7 +1208,7 @@ LABEL_57:
     else
     {
 
-      [v58 removeIndex:v23];
+      [indexSet removeIndex:v23];
       LODWORD(v30) = v23;
     }
 
@@ -1218,15 +1218,15 @@ LABEL_39:
 
   while (v23 != numberOfSpritesBeforeChange);
 LABEL_58:
-  v48 = [v58 copy];
+  v48 = [indexSet copy];
   v49 = *(v56 + 32);
   *(v56 + 32) = v48;
 
-  v50 = [v21 copy];
+  v50 = [indexSet2 copy];
   v51 = *(v56 + 40);
   *(v56 + 40) = v50;
 
-  v52 = [v59 copy];
+  v52 = [indexSet3 copy];
   v53 = *(v56 + 24);
   *(v56 + 24) = v52;
 
@@ -1238,12 +1238,12 @@ LABEL_58:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PXGChangeDetails *)self insertedSpriteIndexes];
-  v7 = [v6 count];
-  v8 = [(PXGChangeDetails *)self removedSpriteIndexes];
-  v9 = [v8 count];
-  v10 = [(PXGChangeDetails *)self modifiedSpriteIndexes];
-  v11 = [v10 count];
+  insertedSpriteIndexes = [(PXGChangeDetails *)self insertedSpriteIndexes];
+  v7 = [insertedSpriteIndexes count];
+  removedSpriteIndexes = [(PXGChangeDetails *)self removedSpriteIndexes];
+  v9 = [removedSpriteIndexes count];
+  modifiedSpriteIndexes = [(PXGChangeDetails *)self modifiedSpriteIndexes];
+  v11 = [modifiedSpriteIndexes count];
   if (self->_hasMoves)
   {
     v12 = @"YES";

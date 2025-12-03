@@ -1,20 +1,20 @@
 @interface VKKeyboardCameraGuidanceView
-- (VKKeyboardCameraGuidanceView)initWithFrame:(CGRect)a3;
+- (VKKeyboardCameraGuidanceView)initWithFrame:(CGRect)frame;
 - (void)_reallyHideGuidance;
 - (void)_reallyShowGuidance;
 - (void)didMoveToSuperview;
 - (void)hideGuidance;
-- (void)setBounds:(CGRect)a3;
-- (void)showGuidanceWithText:(id)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)showGuidanceWithText:(id)text;
 @end
 
 @implementation VKKeyboardCameraGuidanceView
 
-- (VKKeyboardCameraGuidanceView)initWithFrame:(CGRect)a3
+- (VKKeyboardCameraGuidanceView)initWithFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = VKKeyboardCameraGuidanceView;
-  v3 = [(VKKeyboardCameraGuidanceView *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VKKeyboardCameraGuidanceView *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -26,20 +26,20 @@
     v4->_blurView = v7;
 
     [(UIVisualEffectView *)v4->_blurView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v9 = [(UIVisualEffectView *)v4->_blurView layer];
-    [v9 setMasksToBounds:1];
+    layer = [(UIVisualEffectView *)v4->_blurView layer];
+    [layer setMasksToBounds:1];
 
     [(UIVisualEffectView *)v4->_blurView setUserInteractionEnabled:0];
-    v10 = [(UIVisualEffectView *)v4->_blurView layer];
-    [v10 setCornerRadius:2.5];
+    layer2 = [(UIVisualEffectView *)v4->_blurView layer];
+    [layer2 setCornerRadius:2.5];
 
     v11 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     label = v4->_label;
     v4->_label = v11;
 
     [(UILabel *)v4->_label setTranslatesAutoresizingMaskIntoConstraints:0];
-    v13 = [(UILabel *)v4->_label layer];
-    [v13 setMasksToBounds:1];
+    layer3 = [(UILabel *)v4->_label layer];
+    [layer3 setMasksToBounds:1];
 
     v14 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD80]];
     [(UILabel *)v4->_label setFont:v14];
@@ -48,8 +48,8 @@
     [(UILabel *)v4->_label setUserInteractionEnabled:0];
     [(UILabel *)v4->_label setNumberOfLines:0];
     [(UILabel *)v4->_label setTextAlignment:1];
-    v15 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)v4->_label setTextColor:v15];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)v4->_label setTextColor:whiteColor];
 
     [(VKKeyboardCameraGuidanceView *)v4 addSubview:v4->_blurView];
     v16 = [(VKKeyboardCameraGuidanceView *)v4 addSubview:v4->_label];
@@ -72,12 +72,12 @@
   return v4;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
+  height = bounds.size.height;
   v7.receiver = self;
   v7.super_class = VKKeyboardCameraGuidanceView;
-  v5 = [(VKKeyboardCameraGuidanceView *)&v7 setBounds:a3.origin.x, a3.origin.y, a3.size.width];
+  v5 = [(VKKeyboardCameraGuidanceView *)&v7 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width];
   if (vk_solariumEnabled(v5, v6))
   {
     [(VKKeyboardCameraGuidanceView *)self _setContinuousCornerRadius:height * 0.5];
@@ -94,37 +94,37 @@
   {
     [(VKKeyboardCameraGuidanceView *)self insertSubview:self->_blurView atIndex:0];
     v19 = MEMORY[0x1E696ACD8];
-    v28 = [(UIVisualEffectView *)self->_blurView leftAnchor];
-    v27 = [(VKKeyboardCameraGuidanceView *)self leftAnchor];
-    v26 = [v28 constraintEqualToAnchor:v27];
+    leftAnchor = [(UIVisualEffectView *)self->_blurView leftAnchor];
+    leftAnchor2 = [(VKKeyboardCameraGuidanceView *)self leftAnchor];
+    v26 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v30[0] = v26;
-    v25 = [(UIVisualEffectView *)self->_blurView rightAnchor];
-    v24 = [(VKKeyboardCameraGuidanceView *)self rightAnchor];
-    v23 = [v25 constraintEqualToAnchor:v24];
+    rightAnchor = [(UIVisualEffectView *)self->_blurView rightAnchor];
+    rightAnchor2 = [(VKKeyboardCameraGuidanceView *)self rightAnchor];
+    v23 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v30[1] = v23;
-    v22 = [(UIVisualEffectView *)self->_blurView topAnchor];
-    v21 = [(VKKeyboardCameraGuidanceView *)self topAnchor];
-    v20 = [v22 constraintEqualToAnchor:v21];
+    topAnchor = [(UIVisualEffectView *)self->_blurView topAnchor];
+    topAnchor2 = [(VKKeyboardCameraGuidanceView *)self topAnchor];
+    v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v30[2] = v20;
-    v18 = [(UIVisualEffectView *)self->_blurView bottomAnchor];
-    v17 = [(VKKeyboardCameraGuidanceView *)self bottomAnchor];
-    v16 = [v18 constraintEqualToAnchor:v17];
+    bottomAnchor = [(UIVisualEffectView *)self->_blurView bottomAnchor];
+    bottomAnchor2 = [(VKKeyboardCameraGuidanceView *)self bottomAnchor];
+    v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v30[3] = v16;
-    v15 = [(UILabel *)self->_label topAnchor];
-    v14 = [(VKKeyboardCameraGuidanceView *)self topAnchor];
-    v13 = [v15 constraintEqualToAnchor:v14 constant:self->_contentEdgeInsets.top];
+    topAnchor3 = [(UILabel *)self->_label topAnchor];
+    topAnchor4 = [(VKKeyboardCameraGuidanceView *)self topAnchor];
+    v13 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:self->_contentEdgeInsets.top];
     v30[4] = v13;
-    v12 = [(UILabel *)self->_label leftAnchor];
-    v3 = [(VKKeyboardCameraGuidanceView *)self leftAnchor];
-    v4 = [v12 constraintEqualToAnchor:v3 constant:self->_contentEdgeInsets.left];
+    leftAnchor3 = [(UILabel *)self->_label leftAnchor];
+    leftAnchor4 = [(VKKeyboardCameraGuidanceView *)self leftAnchor];
+    v4 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4 constant:self->_contentEdgeInsets.left];
     v30[5] = v4;
-    v5 = [(VKKeyboardCameraGuidanceView *)self bottomAnchor];
-    v6 = [(UILabel *)self->_label bottomAnchor];
-    v7 = [v5 constraintEqualToAnchor:v6 constant:self->_contentEdgeInsets.bottom];
+    bottomAnchor3 = [(VKKeyboardCameraGuidanceView *)self bottomAnchor];
+    bottomAnchor4 = [(UILabel *)self->_label bottomAnchor];
+    v7 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:self->_contentEdgeInsets.bottom];
     v30[6] = v7;
-    v8 = [(VKKeyboardCameraGuidanceView *)self rightAnchor];
-    v9 = [(UILabel *)self->_label rightAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9 constant:self->_contentEdgeInsets.right];
+    rightAnchor3 = [(VKKeyboardCameraGuidanceView *)self rightAnchor];
+    rightAnchor4 = [(UILabel *)self->_label rightAnchor];
+    v10 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4 constant:self->_contentEdgeInsets.right];
     v30[7] = v10;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:8];
     [v19 activateConstraints:v11];
@@ -133,9 +133,9 @@
   }
 }
 
-- (void)showGuidanceWithText:(id)a3
+- (void)showGuidanceWithText:(id)text
 {
-  v10 = a3;
+  textCopy = text;
   state = self->_state;
   if (state > 1)
   {
@@ -143,8 +143,8 @@
     {
       if (state == 3)
       {
-        objc_storeStrong(&self->_text, a3);
-        [(UILabel *)self->_label setText:v10];
+        objc_storeStrong(&self->_text, text);
+        [(UILabel *)self->_label setText:textCopy];
       }
 
       else if (state == 4)
@@ -157,13 +157,13 @@
     }
 
 LABEL_8:
-    objc_storeStrong(&self->_text, a3);
+    objc_storeStrong(&self->_text, text);
     goto LABEL_16;
   }
 
   if (!state)
   {
-    objc_storeStrong(&self->_text, a3);
+    objc_storeStrong(&self->_text, text);
     Current = CFAbsoluteTimeGetCurrent();
     lastVisibleTime = self->_lastVisibleTime;
     v8 = Current - lastVisibleTime;

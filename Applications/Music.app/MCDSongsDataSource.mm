@@ -37,23 +37,23 @@
 
   v16.receiver = self;
   v16.super_class = MCDSongsDataSource;
-  v13 = [(MCDPlayableItemsDataSource *)&v16 requestItemProperties];
-  v14 = [v13 propertySetByCombiningWithPropertySet:v12];
+  requestItemProperties = [(MCDPlayableItemsDataSource *)&v16 requestItemProperties];
+  v14 = [requestItemProperties propertySetByCombiningWithPropertySet:v12];
 
   return v14;
 }
 
 - (id)itemSortDescriptors
 {
-  v3 = [(_MCDLibraryDataSource *)self sortingPreference];
+  sortingPreference = [(_MCDLibraryDataSource *)self sortingPreference];
   if ([(_MCDLibraryDataSource *)self limitedUI])
   {
     v4 = MCDSortByRecentlyPlayed;
 
-    v3 = v4;
+    sortingPreference = v4;
   }
 
-  if ([v3 isEqualToString:MCDSortByRecentlyAdded])
+  if ([sortingPreference isEqualToString:MCDSortByRecentlyAdded])
   {
     v5 = [NSSortDescriptor sortDescriptorWithKey:MPModelPropertySongLibraryAddedDate ascending:0];
     v20 = v5;
@@ -65,7 +65,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:MCDSortByRecentlyPlayed])
+  if ([sortingPreference isEqualToString:MCDSortByRecentlyPlayed])
   {
     v5 = [NSSortDescriptor sortDescriptorWithKey:MPModelPropertySongLastDevicePlaybackDate ascending:0];
     v19 = v5;
@@ -73,7 +73,7 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  if (!v3 || [v3 isEqualToString:MCDSortByArtist])
+  if (!sortingPreference || [sortingPreference isEqualToString:MCDSortByArtist])
   {
     v9 = MPModelRelationshipSongAlbum;
     v17[0] = MPModelRelationshipSongAlbum;

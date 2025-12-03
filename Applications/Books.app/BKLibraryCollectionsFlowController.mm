@@ -1,28 +1,28 @@
 @interface BKLibraryCollectionsFlowController
-- (BKLibraryCollectionsFlowController)initWithLibraryAssetProvider:(id)a3;
-- (BOOL)collectionListView:(id)a3 collectionDeleted:(id)a4;
-- (id)collectionListView:(id)a3 alertControllerForDeletingCollection:(id)a4 completionHandler:(id)a5;
-- (id)libraryCollectionListViewControllerWithAssetIDs:(id)a3 knownAssetTypes:(id)a4 knownStoreAssetIDs:(id)a5 containsSeriesContainer:(BOOL)a6;
-- (void)collectionListView:(id)a3 addSelectedAssetIDs:(id)a4 toCollection:(id)a5 knownAssetTypes:(id)a6 animationDestination:(CGRect)a7;
-- (void)collectionListView:(id)a3 cancelSelected:(BOOL)a4;
-- (void)collectionListView:(id)a3 collectionSelected:(id)a4;
-- (void)showLibraryCollectionInPlaceWithTransaction:(id)a3 collectionID:(id)a4 replaceExistingPresentedCollection:(BOOL)a5;
-- (void)showLibraryWithTransaction:(id)a3 animated:(BOOL)a4 assetID:(id)a5 completion:(id)a6;
-- (void)showLibraryWithTransaction:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (BKLibraryCollectionsFlowController)initWithLibraryAssetProvider:(id)provider;
+- (BOOL)collectionListView:(id)view collectionDeleted:(id)deleted;
+- (id)collectionListView:(id)view alertControllerForDeletingCollection:(id)collection completionHandler:(id)handler;
+- (id)libraryCollectionListViewControllerWithAssetIDs:(id)ds knownAssetTypes:(id)types knownStoreAssetIDs:(id)iDs containsSeriesContainer:(BOOL)container;
+- (void)collectionListView:(id)view addSelectedAssetIDs:(id)ds toCollection:(id)collection knownAssetTypes:(id)types animationDestination:(CGRect)destination;
+- (void)collectionListView:(id)view cancelSelected:(BOOL)selected;
+- (void)collectionListView:(id)view collectionSelected:(id)selected;
+- (void)showLibraryCollectionInPlaceWithTransaction:(id)transaction collectionID:(id)d replaceExistingPresentedCollection:(BOOL)collection;
+- (void)showLibraryWithTransaction:(id)transaction animated:(BOOL)animated assetID:(id)d completion:(id)completion;
+- (void)showLibraryWithTransaction:(id)transaction animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation BKLibraryCollectionsFlowController
 
-- (BKLibraryCollectionsFlowController)initWithLibraryAssetProvider:(id)a3
+- (BKLibraryCollectionsFlowController)initWithLibraryAssetProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = BKLibraryCollectionsFlowController;
   v6 = [(BKLibraryCollectionsFlowController *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_libraryAssetProvider, a3);
+    objc_storeStrong(&v6->_libraryAssetProvider, provider);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(&_dispatch_queue_attr_concurrent, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("BKLibraryCollectionsFlowController.queue", v8);
     queue = v7->_queue;
@@ -32,110 +32,110 @@
   return v7;
 }
 
-- (id)libraryCollectionListViewControllerWithAssetIDs:(id)a3 knownAssetTypes:(id)a4 knownStoreAssetIDs:(id)a5 containsSeriesContainer:(BOOL)a6
+- (id)libraryCollectionListViewControllerWithAssetIDs:(id)ds knownAssetTypes:(id)types knownStoreAssetIDs:(id)iDs containsSeriesContainer:(BOOL)container
 {
-  v6 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[BKLibraryCollectionsListViewController alloc] initWithSelectedBookIDs:v12 knownAssetTypes:v11 knownStoreAssetIDs:v10 containsSeriesContainer:v6];
+  containerCopy = container;
+  iDsCopy = iDs;
+  typesCopy = types;
+  dsCopy = ds;
+  v13 = [[BKLibraryCollectionsListViewController alloc] initWithSelectedBookIDs:dsCopy knownAssetTypes:typesCopy knownStoreAssetIDs:iDsCopy containsSeriesContainer:containerCopy];
 
   [(BKLibraryCollectionsListViewController *)v13 setDelegate:self];
   v14 = +[BKLibraryManager defaultManager];
-  v15 = [v14 uiChildContext];
-  [(BKLibraryCollectionsListViewController *)v13 setManagedObjectContext:v15];
+  uiChildContext = [v14 uiChildContext];
+  [(BKLibraryCollectionsListViewController *)v13 setManagedObjectContext:uiChildContext];
 
   return v13;
 }
 
-- (void)collectionListView:(id)a3 cancelSelected:(BOOL)a4
+- (void)collectionListView:(id)view cancelSelected:(BOOL)selected
 {
-  v4 = [a3 bc_windowForViewController];
-  v5 = [v4 rootViewController];
+  bc_windowForViewController = [view bc_windowForViewController];
+  rootViewController = [bc_windowForViewController rootViewController];
 
-  v6 = v5;
-  v7 = [v6 presentedViewController];
+  v6 = rootViewController;
+  presentedViewController = [v6 presentedViewController];
 
-  if (v7)
+  if (presentedViewController)
   {
-    v12 = v6;
+    presentedViewController2 = v6;
     do
     {
-      v8 = v12;
+      v8 = presentedViewController2;
 
-      v12 = [v8 presentedViewController];
+      presentedViewController2 = [v8 presentedViewController];
 
-      v9 = [v12 presentedViewController];
+      v12PresentedViewController = [presentedViewController2 presentedViewController];
 
       v6 = v8;
     }
 
-    while (v9);
+    while (v12PresentedViewController);
   }
 
   else
   {
-    v12 = v6;
+    presentedViewController2 = v6;
     v8 = v6;
   }
 
-  v10 = [v8 navigationController];
-  v11 = [v10 popToViewController:v8 animated:1];
+  navigationController = [v8 navigationController];
+  v11 = [navigationController popToViewController:v8 animated:1];
 }
 
-- (void)collectionListView:(id)a3 collectionSelected:(id)a4
+- (void)collectionListView:(id)view collectionSelected:(id)selected
 {
-  v5 = a3;
-  v6 = [a4 collectionID];
-  [v5 bk_presentCollectionWithID:v6];
+  viewCopy = view;
+  collectionID = [selected collectionID];
+  [viewCopy bk_presentCollectionWithID:collectionID];
 }
 
-- (void)collectionListView:(id)a3 addSelectedAssetIDs:(id)a4 toCollection:(id)a5 knownAssetTypes:(id)a6 animationDestination:(CGRect)a7
+- (void)collectionListView:(id)view addSelectedAssetIDs:(id)ds toCollection:(id)collection knownAssetTypes:(id)types animationDestination:(CGRect)destination
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a5;
-  v15 = [v14 collectionID];
-  v16 = [v14 title];
+  viewCopy = view;
+  dsCopy = ds;
+  typesCopy = types;
+  collectionCopy = collection;
+  collectionID = [collectionCopy collectionID];
+  title = [collectionCopy title];
 
   queue = self->_queue;
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_1000BC17C;
   v23[3] = &unk_100A05908;
-  v24 = v12;
-  v25 = v15;
-  v26 = v13;
-  v27 = v11;
-  v28 = v16;
-  v29 = self;
-  v18 = v16;
-  v19 = v11;
-  v20 = v13;
-  v21 = v15;
-  v22 = v12;
+  v24 = dsCopy;
+  v25 = collectionID;
+  v26 = typesCopy;
+  v27 = viewCopy;
+  v28 = title;
+  selfCopy = self;
+  v18 = title;
+  v19 = viewCopy;
+  v20 = typesCopy;
+  v21 = collectionID;
+  v22 = dsCopy;
   dispatch_async(queue, v23);
 }
 
-- (BOOL)collectionListView:(id)a3 collectionDeleted:(id)a4
+- (BOOL)collectionListView:(id)view collectionDeleted:(id)deleted
 {
-  v4 = a4;
+  deletedCopy = deleted;
   v5 = +[BKLibraryManager defaultManager];
-  v6 = [v5 collectionController];
-  v7 = [v6 deleteCollectionOnMainQueue:v4];
+  collectionController = [v5 collectionController];
+  v7 = [collectionController deleteCollectionOnMainQueue:deletedCopy];
 
   return v7;
 }
 
-- (id)collectionListView:(id)a3 alertControllerForDeletingCollection:(id)a4 completionHandler:(id)a5
+- (id)collectionListView:(id)view alertControllerForDeletingCollection:(id)collection completionHandler:(id)handler
 {
-  v6 = a5;
-  v7 = [a4 title];
-  v8 = v7;
-  if (v7)
+  handlerCopy = handler;
+  title = [collection title];
+  v8 = title;
+  if (title)
   {
-    v9 = v7;
+    v9 = title;
   }
 
   else
@@ -168,7 +168,7 @@
   v31[1] = 3221225472;
   v31[2] = sub_1000BCF84;
   v31[3] = &unk_100A051C8;
-  v23 = v6;
+  v23 = handlerCopy;
   v32 = v23;
   v24 = [UIAlertAction actionWithTitle:v19 style:2 handler:v31];
   [v22 addAction:v24];
@@ -185,45 +185,45 @@
   return v22;
 }
 
-- (void)showLibraryWithTransaction:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)showLibraryWithTransaction:(id)transaction animated:(BOOL)animated completion:(id)completion
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000BD0E4;
   v7[3] = &unk_100A03490;
-  v9 = a4;
+  animatedCopy = animated;
   v7[4] = self;
-  v8 = a5;
-  v6 = v8;
-  [a3 commit:v7];
+  completionCopy = completion;
+  v6 = completionCopy;
+  [transaction commit:v7];
 }
 
-- (void)showLibraryWithTransaction:(id)a3 animated:(BOOL)a4 assetID:(id)a5 completion:(id)a6
+- (void)showLibraryWithTransaction:(id)transaction animated:(BOOL)animated assetID:(id)d completion:(id)completion
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000BD2C8;
   v10[3] = &unk_100A057C8;
-  v13 = a4;
+  animatedCopy = animated;
   v10[4] = self;
-  v11 = a5;
-  v12 = a6;
-  v8 = v12;
-  v9 = v11;
-  [a3 commit:v10];
+  dCopy = d;
+  completionCopy = completion;
+  v8 = completionCopy;
+  v9 = dCopy;
+  [transaction commit:v10];
 }
 
-- (void)showLibraryCollectionInPlaceWithTransaction:(id)a3 collectionID:(id)a4 replaceExistingPresentedCollection:(BOOL)a5
+- (void)showLibraryCollectionInPlaceWithTransaction:(id)transaction collectionID:(id)d replaceExistingPresentedCollection:(BOOL)collection
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000BD4A0;
   v8[3] = &unk_100A03E80;
   v8[4] = self;
-  v9 = a4;
-  v10 = a5;
-  v7 = v9;
-  [a3 commit:v8];
+  dCopy = d;
+  collectionCopy = collection;
+  v7 = dCopy;
+  [transaction commit:v8];
 }
 
 @end

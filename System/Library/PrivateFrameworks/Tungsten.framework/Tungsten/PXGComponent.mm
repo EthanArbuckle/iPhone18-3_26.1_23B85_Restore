@@ -1,22 +1,22 @@
 @interface PXGComponent
 + (id)createWithDefaultDataStore;
-- (PXGComponent)initWithDataStore:(id)a3;
+- (PXGComponent)initWithDataStore:(id)store;
 - (PXGComponentObserver)observer;
-- (void)performChanges:(id)a3;
+- (void)performChanges:(id)changes;
 @end
 
 @implementation PXGComponent
 
 + (id)createWithDefaultDataStore
 {
-  if (![a1 elementSize])
+  if (![self elementSize])
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"PXGComponent.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"self.elementSize != 0"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGComponent.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"self.elementSize != 0"}];
   }
 
-  v4 = -[PXGComponentDataStore initWithElementSize:]([PXGMutableComponentDataStore alloc], "initWithElementSize:", [a1 elementSize]);
-  v5 = [[a1 alloc] initWithDataStore:v4];
+  v4 = -[PXGComponentDataStore initWithElementSize:]([PXGMutableComponentDataStore alloc], "initWithElementSize:", [self elementSize]);
+  v5 = [[self alloc] initWithDataStore:v4];
 
   return v5;
 }
@@ -28,50 +28,50 @@
   return WeakRetained;
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   nestedChanges = self->_nestedChanges;
-  v9 = v4;
+  v9 = changesCopy;
   if (!nestedChanges)
   {
-    v6 = [(PXGComponent *)self observer];
-    [v6 componentWillPerformChanges:self];
+    observer = [(PXGComponent *)self observer];
+    [observer componentWillPerformChanges:self];
 
-    v4 = v9;
+    changesCopy = v9;
     nestedChanges = self->_nestedChanges;
   }
 
   self->_nestedChanges = nestedChanges + 1;
-  (*(v4 + 2))(v4, self);
+  (*(changesCopy + 2))(changesCopy, self);
   v7 = self->_nestedChanges - 1;
   self->_nestedChanges = v7;
   if (!v7)
   {
-    v8 = [(PXGComponent *)self observer];
-    [v8 componentDidPerformChanges:self];
+    observer2 = [(PXGComponent *)self observer];
+    [observer2 componentDidPerformChanges:self];
   }
 }
 
-- (PXGComponent)initWithDataStore:(id)a3
+- (PXGComponent)initWithDataStore:(id)store
 {
-  v6 = a3;
+  storeCopy = store;
   v13.receiver = self;
   v13.super_class = PXGComponent;
   v7 = [(PXGComponent *)&v13 init];
   if (v7)
   {
-    v8 = [v6 elementSize];
-    if (v8 != [objc_opt_class() elementSize])
+    elementSize = [storeCopy elementSize];
+    if (elementSize != [objc_opt_class() elementSize])
     {
-      v12 = [MEMORY[0x277CCA890] currentHandler];
-      [v12 handleFailureInMethod:a2 object:v7 file:@"PXGComponent.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"dataStore.elementSize == self.class.elementSize"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v7 file:@"PXGComponent.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"dataStore.elementSize == self.class.elementSize"}];
     }
 
-    objc_storeStrong(&v7->_mutableDataStore, a3);
+    objc_storeStrong(&v7->_mutableDataStore, store);
     if ([objc_opt_class() shouldDiffForChanges])
     {
-      v9 = [v6 mutableCopy];
+      v9 = [storeCopy mutableCopy];
       previousDataStore = v7->_previousDataStore;
       v7->_previousDataStore = v9;
     }

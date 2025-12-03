@@ -1,20 +1,20 @@
 @interface MCDRankedContentCell
-- (MCDRankedContentCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (MCDRankedContentCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)accessibilityUserInputLabels;
 - (void)_updateNowPlayingView;
-- (void)configureWithAlbum:(id)a3 currentlyPlaying:(BOOL)a4 artworkScale:(double)a5 ranking:(int64_t)a6;
-- (void)configureWithSong:(id)a3 currentlyPlaying:(BOOL)a4 artworkScale:(double)a5 ranking:(int64_t)a6;
+- (void)configureWithAlbum:(id)album currentlyPlaying:(BOOL)playing artworkScale:(double)scale ranking:(int64_t)ranking;
+- (void)configureWithSong:(id)song currentlyPlaying:(BOOL)playing artworkScale:(double)scale ranking:(int64_t)ranking;
 - (void)dealloc;
 - (void)layoutSubviews;
 @end
 
 @implementation MCDRankedContentCell
 
-- (MCDRankedContentCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MCDRankedContentCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = MCDRankedContentCell;
-  v4 = [(_MCDReusableCell *)&v7 initWithStyle:3 reuseIdentifier:a4];
+  v4 = [(_MCDReusableCell *)&v7 initWithStyle:3 reuseIdentifier:identifier];
   if (v4)
   {
     v5 = +[NSNotificationCenter defaultCenter];
@@ -40,12 +40,12 @@
   {
     v5 = [(MCDRankedContentCell *)self viewWithTag:1002];
     v3 = +[_TtC5Music15CarPlayObserver shared];
-    v4 = [v3 playerState];
+    playerState = [v3 playerState];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v5 setIsPlaying:v4 == 2];
+      [v5 setIsPlaying:playerState == 2];
     }
   }
 }
@@ -56,9 +56,9 @@
   v65.super_class = MCDRankedContentCell;
   [(MCDRankedContentCell *)&v65 layoutSubviews];
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(MCDRankedContentCell *)self isExplicitContent];
+  isExplicitContent = [(MCDRankedContentCell *)self isExplicitContent];
   explicitLabel = self->_explicitLabel;
-  if (v4)
+  if (isExplicitContent)
   {
     if (!explicitLabel)
     {
@@ -66,8 +66,8 @@
       v7 = self->_explicitLabel;
       self->_explicitLabel = v6;
 
-      v8 = [(MCDRankedContentCell *)self contentView];
-      [v8 addSubview:self->_explicitLabel];
+      contentView = [(MCDRankedContentCell *)self contentView];
+      [contentView addSubview:self->_explicitLabel];
 
       explicitLabel = self->_explicitLabel;
     }
@@ -81,9 +81,9 @@
     [(UILabel *)explicitLabel setHidden:1];
   }
 
-  v9 = [(MCDRankedContentCell *)self isFavorite];
+  isFavorite = [(MCDRankedContentCell *)self isFavorite];
   favoriteIcon = self->_favoriteIcon;
-  if (v9)
+  if (isFavorite)
   {
     if (!favoriteIcon)
     {
@@ -91,8 +91,8 @@
       v12 = self->_favoriteIcon;
       self->_favoriteIcon = v11;
 
-      v13 = [(MCDRankedContentCell *)self contentView];
-      [v13 addSubview:self->_favoriteIcon];
+      contentView2 = [(MCDRankedContentCell *)self contentView];
+      [contentView2 addSubview:self->_favoriteIcon];
 
       favoriteIcon = self->_favoriteIcon;
     }
@@ -113,10 +113,10 @@
   v61 = 0x3032000000;
   v62 = sub_100100040;
   v63 = sub_100100050;
-  v64 = [(_MCDReusableCell *)self artworkImageView];
+  artworkImageView = [(_MCDReusableCell *)self artworkImageView];
   v15 = [(MCDRankedContentCell *)self viewWithTag:1002];
-  v16 = [(MCDRankedContentCell *)self contentView];
-  [v16 bounds];
+  contentView3 = [(MCDRankedContentCell *)self contentView];
+  [contentView3 bounds];
   v18 = v17;
   v20 = v19;
   v22 = v21;
@@ -138,8 +138,8 @@
     v28 = v27;
     v30 = v29;
     v32 = v31;
-    v33 = [(MCDRankedContentCell *)self contentView];
-    [(CarPlayNowPlayingIndicatorView *)v15 setFrame:sub_1000FCFE0(v33, v26, v28, v30, v32)];
+    contentView4 = [(MCDRankedContentCell *)self contentView];
+    [(CarPlayNowPlayingIndicatorView *)v15 setFrame:sub_1000FCFE0(contentView4, v26, v28, v30, v32)];
 
     [(MCDRankedContentCell *)self addSubview:v15];
     [(MCDRankedContentCell *)self _updateNowPlayingView];
@@ -175,8 +175,8 @@
     v43 = v42;
     v45 = v44;
     v47 = v46;
-    v48 = [(MCDRankedContentCell *)self contentView];
-    [v14 setFrame:{sub_1000FCFE0(v48, v41, v43, v45, v47)}];
+    contentView5 = [(MCDRankedContentCell *)self contentView];
+    [v14 setFrame:{sub_1000FCFE0(contentView5, v41, v43, v45, v47)}];
 
     [(MCDRankedContentCell *)self addSubview:v14];
   }
@@ -184,17 +184,17 @@
   if ([(MCDRankedContentCell *)self isCurrentlyPlaying]|| ([(MCDRankedContentCell *)self artworkCatalog], v49 = objc_claimAutoreleasedReturnValue(), v49, v49))
   {
     [(MCDRankedContentCell *)self setSeparatorInset:0.0, 87.0, 0.0, 0.0];
-    v50 = [(MCDRankedContentCell *)self artworkCatalog];
+    artworkCatalog = [(MCDRankedContentCell *)self artworkCatalog];
 
-    if (v50)
+    if (artworkCatalog)
     {
-      v51 = [(MCDRankedContentCell *)self artworkCatalog];
+      artworkCatalog2 = [(MCDRankedContentCell *)self artworkCatalog];
       v52 = objc_opt_class();
       v53 = NSStringFromClass(v52);
-      [v51 setCacheIdentifier:v53 forRequestingContext:self];
+      [artworkCatalog2 setCacheIdentifier:v53 forRequestingContext:self];
 
       objc_initWeak(&location, self);
-      v54 = [(MCDRankedContentCell *)self artworkCatalog];
+      artworkCatalog3 = [(MCDRankedContentCell *)self artworkCatalog];
       v55 = objc_loadWeakRetained(&location);
       v56[0] = _NSConcreteStackBlock;
       v56[1] = 3221225472;
@@ -207,7 +207,7 @@
       v57[4] = v24;
       v56[4] = self;
       v56[5] = &v59;
-      [v54 setDestination:v55 configurationBlock:v56];
+      [artworkCatalog3 setDestination:v55 configurationBlock:v56];
 
       objc_destroyWeak(v57);
       objc_destroyWeak(&location);
@@ -223,15 +223,15 @@
   _Block_object_dispose(&v59, 8);
 }
 
-- (void)configureWithSong:(id)a3 currentlyPlaying:(BOOL)a4 artworkScale:(double)a5 ranking:(int64_t)a6
+- (void)configureWithSong:(id)song currentlyPlaying:(BOOL)playing artworkScale:(double)scale ranking:(int64_t)ranking
 {
-  v8 = a4;
-  v22 = a3;
-  v10 = [v22 title];
-  v11 = [v10 length];
+  playingCopy = playing;
+  songCopy = song;
+  title = [songCopy title];
+  v11 = [title length];
   if (v11)
   {
-    [v22 title];
+    [songCopy title];
   }
 
   else
@@ -240,8 +240,8 @@
     [v6 localizedStringForKey:@"Unknown Title" value:&stru_101107168 table:@"MusicCarDisplayUI"];
   }
   v12 = ;
-  v13 = [(MCDRankedContentCell *)self textLabel];
-  [v13 setText:v12];
+  textLabel = [(MCDRankedContentCell *)self textLabel];
+  [textLabel setText:v12];
 
   if (!v11)
   {
@@ -249,45 +249,45 @@
     v12 = v6;
   }
 
-  v14 = [v22 artist];
-  v15 = [v14 name];
+  artist = [songCopy artist];
+  name = [artist name];
 
-  if ([v22 shouldShowComposer])
+  if ([songCopy shouldShowComposer])
   {
-    v16 = [v22 composer];
-    v17 = [v16 name];
+    composer = [songCopy composer];
+    name2 = [composer name];
 
-    if (v17)
+    if (name2)
     {
-      v18 = [v22 composer];
-      v19 = [v18 name];
+      composer2 = [songCopy composer];
+      name3 = [composer2 name];
 
-      v15 = v19;
+      name = name3;
     }
   }
 
-  v20 = [(MCDRankedContentCell *)self detailTextLabel];
-  [v20 setText:v15];
+  detailTextLabel = [(MCDRankedContentCell *)self detailTextLabel];
+  [detailTextLabel setText:name];
 
-  -[MCDRankedContentCell setExplicitContent:](self, "setExplicitContent:", [v22 isExplicitSong]);
-  -[MCDRankedContentCell setFavorite:](self, "setFavorite:", [v22 isFavorite]);
-  [(MCDRankedContentCell *)self setCurrentlyPlaying:v8];
-  [(MCDRankedContentCell *)self setRanking:a6];
-  v21 = [v22 artworkCatalog];
-  [(MCDRankedContentCell *)self setArtworkCatalog:v21];
+  -[MCDRankedContentCell setExplicitContent:](self, "setExplicitContent:", [songCopy isExplicitSong]);
+  -[MCDRankedContentCell setFavorite:](self, "setFavorite:", [songCopy isFavorite]);
+  [(MCDRankedContentCell *)self setCurrentlyPlaying:playingCopy];
+  [(MCDRankedContentCell *)self setRanking:ranking];
+  artworkCatalog = [songCopy artworkCatalog];
+  [(MCDRankedContentCell *)self setArtworkCatalog:artworkCatalog];
 
   [(_MCDReusableCell *)self setArtworkRadiusKind:0];
 }
 
-- (void)configureWithAlbum:(id)a3 currentlyPlaying:(BOOL)a4 artworkScale:(double)a5 ranking:(int64_t)a6
+- (void)configureWithAlbum:(id)album currentlyPlaying:(BOOL)playing artworkScale:(double)scale ranking:(int64_t)ranking
 {
-  v8 = a4;
-  v18 = a3;
-  v10 = [v18 title];
-  v11 = [v10 length];
+  playingCopy = playing;
+  albumCopy = album;
+  title = [albumCopy title];
+  v11 = [title length];
   if (v11)
   {
-    [v18 title];
+    [albumCopy title];
   }
 
   else
@@ -296,8 +296,8 @@
     [v6 localizedStringForKey:@"Unknown Album" value:&stru_101107168 table:@"MusicCarDisplayUI"];
   }
   v12 = ;
-  v13 = [(MCDRankedContentCell *)self textLabel];
-  [v13 setText:v12];
+  textLabel = [(MCDRankedContentCell *)self textLabel];
+  [textLabel setText:v12];
 
   if (!v11)
   {
@@ -305,16 +305,16 @@
     v12 = v6;
   }
 
-  v14 = [v18 artist];
-  v15 = [v14 name];
-  v16 = [(MCDRankedContentCell *)self detailTextLabel];
-  [v16 setText:v15];
+  artist = [albumCopy artist];
+  name = [artist name];
+  detailTextLabel = [(MCDRankedContentCell *)self detailTextLabel];
+  [detailTextLabel setText:name];
 
-  -[MCDRankedContentCell setFavorite:](self, "setFavorite:", [v18 isFavorite]);
-  [(MCDRankedContentCell *)self setCurrentlyPlaying:v8];
-  [(MCDRankedContentCell *)self setRanking:a6];
-  v17 = [v18 artworkCatalog];
-  [(MCDRankedContentCell *)self setArtworkCatalog:v17];
+  -[MCDRankedContentCell setFavorite:](self, "setFavorite:", [albumCopy isFavorite]);
+  [(MCDRankedContentCell *)self setCurrentlyPlaying:playingCopy];
+  [(MCDRankedContentCell *)self setRanking:ranking];
+  artworkCatalog = [albumCopy artworkCatalog];
+  [(MCDRankedContentCell *)self setArtworkCatalog:artworkCatalog];
 
   [(_MCDReusableCell *)self setArtworkRadiusKind:0];
 }
@@ -322,24 +322,24 @@
 - (id)accessibilityUserInputLabels
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(MCDRankedContentCell *)self textLabel];
-  v5 = [v4 text];
+  textLabel = [(MCDRankedContentCell *)self textLabel];
+  text = [textLabel text];
 
-  if (v5)
+  if (text)
   {
-    v6 = [(MCDRankedContentCell *)self textLabel];
-    v7 = [v6 text];
-    [v3 addObject:v7];
+    textLabel2 = [(MCDRankedContentCell *)self textLabel];
+    text2 = [textLabel2 text];
+    [v3 addObject:text2];
   }
 
-  v8 = [(MCDRankedContentCell *)self detailTextLabel];
-  v9 = [v8 text];
+  detailTextLabel = [(MCDRankedContentCell *)self detailTextLabel];
+  text3 = [detailTextLabel text];
 
-  if (v9)
+  if (text3)
   {
-    v10 = [(MCDRankedContentCell *)self detailTextLabel];
-    v11 = [v10 text];
-    [v3 addObject:v11];
+    detailTextLabel2 = [(MCDRankedContentCell *)self detailTextLabel];
+    text4 = [detailTextLabel2 text];
+    [v3 addObject:text4];
   }
 
   v12 = [v3 copy];

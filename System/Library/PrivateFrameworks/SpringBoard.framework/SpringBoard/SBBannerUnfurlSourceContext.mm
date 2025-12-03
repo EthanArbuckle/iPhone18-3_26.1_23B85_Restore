@@ -2,22 +2,22 @@
 - (CGPoint)referenceVelocity;
 - (CGRect)referenceCoordinateSpaceBounds;
 - (CGRect)referenceFrame;
-- (id)_copyWithClass:(Class)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_copyWithClass:(Class)class;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SBBannerUnfurlSourceContext
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
 
   return [(SBBannerUnfurlSourceContext *)self _copyWithClass:v4];
 }
 
-- (id)_copyWithClass:(Class)a3
+- (id)_copyWithClass:(Class)class
 {
-  result = objc_alloc_init(a3);
+  result = objc_alloc_init(class);
   if (result)
   {
     *(result + 1) = *&self->_cornerRadius;

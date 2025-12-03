@@ -1,41 +1,41 @@
 @interface SISchemaVoiceSettings
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaVoiceSettings)initWithDictionary:(id)a3;
-- (SISchemaVoiceSettings)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaVoiceSettings)initWithDictionary:(id)dictionary;
+- (SISchemaVoiceSettings)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasVoiceAccent:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasVoiceAccent:(BOOL)accent;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaVoiceSettings
 
-- (SISchemaVoiceSettings)initWithDictionary:(id)a3
+- (SISchemaVoiceSettings)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = SISchemaVoiceSettings;
   v5 = [(SISchemaVoiceSettings *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"voiceGender"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"voiceGender"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaVoiceSettings setVoiceGender:](v5, "setVoiceGender:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"voiceAccent"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"voiceAccent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaVoiceSettings setVoiceAccent:](v5, "setVoiceAccent:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"voiceName"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"voiceName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,7 +43,7 @@
       [(SISchemaVoiceSettings *)v5 setVoiceName:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"voiceAccentV2"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"voiceAccentV2"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,30 +57,30 @@
   return v5;
 }
 
-- (SISchemaVoiceSettings)initWithJSON:(id)a3
+- (SISchemaVoiceSettings)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaVoiceSettings *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaVoiceSettings *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaVoiceSettings *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -93,7 +93,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = [(SISchemaVoiceSettings *)self voiceAccent]- 1;
@@ -107,22 +107,22 @@
       v5 = off_1E78E6F48[v4];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"voiceAccent"];
+    [dictionary setObject:v5 forKeyedSubscript:@"voiceAccent"];
   }
 
   if (self->_voiceAccentV2)
   {
-    v6 = [(SISchemaVoiceSettings *)self voiceAccentV2];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    voiceAccentV2 = [(SISchemaVoiceSettings *)self voiceAccentV2];
+    dictionaryRepresentation = [voiceAccentV2 dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"voiceAccentV2"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"voiceAccentV2"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"voiceAccentV2"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"voiceAccentV2"];
     }
   }
 
@@ -139,19 +139,19 @@
       v10 = off_1E78E7138[v9];
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"voiceGender"];
+    [dictionary setObject:v10 forKeyedSubscript:@"voiceGender"];
   }
 
   if (self->_voiceName)
   {
-    v11 = [(SISchemaVoiceSettings *)self voiceName];
-    v12 = [v11 copy];
-    [v3 setObject:v12 forKeyedSubscript:@"voiceName"];
+    voiceName = [(SISchemaVoiceSettings *)self voiceName];
+    v12 = [voiceName copy];
+    [dictionary setObject:v12 forKeyedSubscript:@"voiceName"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -182,16 +182,16 @@ LABEL_6:
   return v5 ^ [(SISchemaISOLocale *)self->_voiceAccentV2 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   has = self->_has;
-  v6 = v4[32];
+  v6 = equalCopy[32];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_19;
@@ -200,13 +200,13 @@ LABEL_6:
   if (*&has)
   {
     voiceGender = self->_voiceGender;
-    if (voiceGender != [v4 voiceGender])
+    if (voiceGender != [equalCopy voiceGender])
     {
       goto LABEL_19;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -218,26 +218,26 @@ LABEL_6:
   if (v8)
   {
     voiceAccent = self->_voiceAccent;
-    if (voiceAccent != [v4 voiceAccent])
+    if (voiceAccent != [equalCopy voiceAccent])
     {
       goto LABEL_19;
     }
   }
 
-  v10 = [(SISchemaVoiceSettings *)self voiceName];
-  v11 = [v4 voiceName];
-  if ((v10 != 0) == (v11 == 0))
+  voiceName = [(SISchemaVoiceSettings *)self voiceName];
+  voiceName2 = [equalCopy voiceName];
+  if ((voiceName != 0) == (voiceName2 == 0))
   {
     goto LABEL_18;
   }
 
-  v12 = [(SISchemaVoiceSettings *)self voiceName];
-  if (v12)
+  voiceName3 = [(SISchemaVoiceSettings *)self voiceName];
+  if (voiceName3)
   {
-    v13 = v12;
-    v14 = [(SISchemaVoiceSettings *)self voiceName];
-    v15 = [v4 voiceName];
-    v16 = [v14 isEqual:v15];
+    v13 = voiceName3;
+    voiceName4 = [(SISchemaVoiceSettings *)self voiceName];
+    voiceName5 = [equalCopy voiceName];
+    v16 = [voiceName4 isEqual:voiceName5];
 
     if (!v16)
     {
@@ -249,12 +249,12 @@ LABEL_6:
   {
   }
 
-  v10 = [(SISchemaVoiceSettings *)self voiceAccentV2];
-  v11 = [v4 voiceAccentV2];
-  if ((v10 != 0) != (v11 == 0))
+  voiceName = [(SISchemaVoiceSettings *)self voiceAccentV2];
+  voiceName2 = [equalCopy voiceAccentV2];
+  if ((voiceName != 0) != (voiceName2 == 0))
   {
-    v17 = [(SISchemaVoiceSettings *)self voiceAccentV2];
-    if (!v17)
+    voiceAccentV2 = [(SISchemaVoiceSettings *)self voiceAccentV2];
+    if (!voiceAccentV2)
     {
 
 LABEL_22:
@@ -262,10 +262,10 @@ LABEL_22:
       goto LABEL_20;
     }
 
-    v18 = v17;
-    v19 = [(SISchemaVoiceSettings *)self voiceAccentV2];
-    v20 = [v4 voiceAccentV2];
-    v21 = [v19 isEqual:v20];
+    v18 = voiceAccentV2;
+    voiceAccentV22 = [(SISchemaVoiceSettings *)self voiceAccentV2];
+    voiceAccentV23 = [equalCopy voiceAccentV2];
+    v21 = [voiceAccentV22 isEqual:voiceAccentV23];
 
     if (v21)
     {
@@ -285,9 +285,9 @@ LABEL_20:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -300,28 +300,28 @@ LABEL_20:
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(SISchemaVoiceSettings *)self voiceName];
+  voiceName = [(SISchemaVoiceSettings *)self voiceName];
 
-  if (v5)
+  if (voiceName)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(SISchemaVoiceSettings *)self voiceAccentV2];
+  voiceAccentV2 = [(SISchemaVoiceSettings *)self voiceAccentV2];
 
-  v7 = v9;
-  if (v6)
+  v7 = toCopy;
+  if (voiceAccentV2)
   {
-    v8 = [(SISchemaVoiceSettings *)self voiceAccentV2];
+    voiceAccentV22 = [(SISchemaVoiceSettings *)self voiceAccentV2];
     PBDataWriterWriteSubmessage();
 
-    v7 = v9;
+    v7 = toCopy;
   }
 }
 
-- (void)setHasVoiceAccent:(BOOL)a3
+- (void)setHasVoiceAccent:(BOOL)accent
 {
-  if (a3)
+  if (accent)
   {
     v3 = 2;
   }
@@ -334,17 +334,17 @@ LABEL_20:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = SISchemaVoiceSettings;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(SISchemaVoiceSettings *)self voiceAccentV2:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(SISchemaVoiceSettings *)self deleteVoiceAccentV2];
   }

@@ -1,23 +1,23 @@
 @interface IMDSoundUtilities
-+ (BOOL)_isSMSMessage:(id)a3;
-+ (BOOL)_isSuppressedForGUID:(id)a3;
-+ (int64_t)_soundTypeForMessage:(id)a3;
-+ (unsigned)_installSystemSound:(id)a3;
++ (BOOL)_isSMSMessage:(id)message;
++ (BOOL)_isSuppressedForGUID:(id)d;
++ (int64_t)_soundTypeForMessage:(id)message;
++ (unsigned)_installSystemSound:(id)sound;
 + (void)_playSentScheduledMessageSound;
-+ (void)_playSoundType:(int64_t)a3;
-+ (void)playMessageSentSoundIfNeeded:(id)a3;
++ (void)_playSoundType:(int64_t)type;
++ (void)playMessageSentSoundIfNeeded:(id)needed;
 @end
 
 @implementation IMDSoundUtilities
 
-+ (void)playMessageSentSoundIfNeeded:(id)a3
++ (void)playMessageSentSoundIfNeeded:(id)needed
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = [objc_opt_class() _soundTypeForMessage:a3];
+  v4 = [objc_opt_class() _soundTypeForMessage:needed];
   if (v4)
   {
     v5 = v4;
-    v6 = [a3 guid];
+    guid = [needed guid];
     if (IMOSLoggingEnabled())
     {
       v7 = OSLogHandleForIMFoundationCategory();
@@ -32,7 +32,7 @@
         v10 = 138412546;
         v11 = v8;
         v12 = 2112;
-        v13 = v6;
+        v13 = guid;
         _os_log_impl(&dword_22B4CC000, v7, OS_LOG_TYPE_INFO, "Play message sent sound type: %@, for message: %@", &v10, 0x16u);
       }
     }
@@ -43,19 +43,19 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (int64_t)_soundTypeForMessage:(id)a3
++ (int64_t)_soundTypeForMessage:(id)message
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [a3 guid];
+  guid = [message guid];
   result = [objc_opt_class() _smsSoundsToPlay];
   if (result)
   {
     v6 = result;
-    if ([objc_opt_class() _isUserScheduledMessage:a3])
+    if ([objc_opt_class() _isUserScheduledMessage:message])
     {
-      v7 = [a3 dateEdited];
+      dateEdited = [message dateEdited];
       v8 = IMOSLoggingEnabled();
-      if (v7)
+      if (dateEdited)
       {
         if (!v8)
         {
@@ -69,7 +69,7 @@
         }
 
         v14 = 138412290;
-        v15 = v4;
+        v15 = guid;
         v10 = "Suppressing play sound for edited scheduled message[%@]";
         goto LABEL_28;
       }
@@ -80,7 +80,7 @@
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
           v14 = 138412290;
-          v15 = v4;
+          v15 = guid;
           _os_log_impl(&dword_22B4CC000, v11, OS_LOG_TYPE_INFO, "Using IMDSoundTypeSentScheduledMessage for message[%@]", &v14, 0xCu);
         }
       }
@@ -88,7 +88,7 @@
       v6 = 3;
     }
 
-    if ([objc_opt_class() _isSMSMessage:a3] && objc_msgSend(objc_opt_class(), "_wasDowngraded:", a3))
+    if ([objc_opt_class() _isSMSMessage:message] && objc_msgSend(objc_opt_class(), "_wasDowngraded:", message))
     {
       if (!IMOSLoggingEnabled())
       {
@@ -102,12 +102,12 @@
       }
 
       v14 = 138412290;
-      v15 = v4;
+      v15 = guid;
       v10 = "Suppressing play sound for downgraded message[%@]";
       goto LABEL_28;
     }
 
-    if ([objc_opt_class() _isSuppressedForGUID:v4])
+    if ([objc_opt_class() _isSuppressedForGUID:guid])
     {
       if (IMOSLoggingEnabled())
       {
@@ -115,18 +115,18 @@
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
           v14 = 138412290;
-          v15 = v4;
+          v15 = guid;
           _os_log_impl(&dword_22B4CC000, v12, OS_LOG_TYPE_INFO, "Suppressing play sound because it was already played [%@]", &v14, 0xCu);
         }
       }
 
-      [objc_opt_class() _stopSuppressingForGUID:v4];
+      [objc_opt_class() _stopSuppressingForGUID:guid];
       goto LABEL_29;
     }
 
-    if ([objc_opt_class() _isAssociatedMessage:a3])
+    if ([objc_opt_class() _isAssociatedMessage:message])
     {
-      if (![objc_opt_class() _isAcknowledgmentMessage:a3])
+      if (![objc_opt_class() _isAcknowledgmentMessage:message])
       {
 LABEL_29:
         result = 0;
@@ -136,7 +136,7 @@ LABEL_29:
       v6 = 2;
     }
 
-    if ([objc_opt_class() _isAutoPlay:a3])
+    if ([objc_opt_class() _isAutoPlay:message])
     {
       if (!IMOSLoggingEnabled())
       {
@@ -150,14 +150,14 @@ LABEL_29:
       }
 
       v14 = 138412290;
-      v15 = v4;
+      v15 = guid;
       v10 = "Suppressing play sound for auto-reply message [%@]";
 LABEL_28:
       _os_log_impl(&dword_22B4CC000, v9, OS_LOG_TYPE_INFO, v10, &v14, 0xCu);
       goto LABEL_29;
     }
 
-    if ([a3 isBeingRetried])
+    if ([message isBeingRetried])
     {
       result = 0;
     }
@@ -173,9 +173,9 @@ LABEL_30:
   return result;
 }
 
-+ (void)_playSoundType:(int64_t)a3
++ (void)_playSoundType:(int64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 3:
       v5 = objc_opt_class();
@@ -195,10 +195,10 @@ LABEL_30:
   }
 }
 
-+ (unsigned)_installSystemSound:(id)a3
++ (unsigned)_installSystemSound:(id)sound
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [objc_msgSend(MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class()), "URLForResource:withExtension:", a3, 0}];
+  v4 = [objc_msgSend(MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class()), "URLForResource:withExtension:", sound, 0}];
   outSystemSoundID = 0;
   v5 = AudioServicesCreateSystemSoundID(v4, &outSystemSoundID);
   if (v5)
@@ -211,7 +211,7 @@ LABEL_30:
       if (result)
       {
         *buf = 138412546;
-        v14 = a3;
+        soundCopy = sound;
         v15 = 1024;
         v16 = v5;
         _os_log_impl(&dword_22B4CC000, v7, OS_LOG_TYPE_INFO, "Unable to find a sound action ID for %@  errorResult: %d", buf, 0x12u);
@@ -237,7 +237,7 @@ LABEL_11:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         *buf = 67109120;
-        LODWORD(v14) = v8;
+        LODWORD(soundCopy) = v8;
         _os_log_impl(&dword_22B4CC000, v9, OS_LOG_TYPE_INFO, "Unable to set property on sound ID   errorResult: %d", buf, 8u);
       }
     }
@@ -270,17 +270,17 @@ LABEL_13:
   }
 }
 
-+ (BOOL)_isSMSMessage:(id)a3
++ (BOOL)_isSMSMessage:(id)message
 {
-  v3 = [a3 service];
+  service = [message service];
   v4 = *MEMORY[0x277D1A610];
 
-  return [v3 isEqualToString:v4];
+  return [service isEqualToString:v4];
 }
 
-+ (BOOL)_isSuppressedForGUID:(id)a3
++ (BOOL)_isSuppressedForGUID:(id)d
 {
-  if (!a3)
+  if (!d)
   {
     return 0;
   }
@@ -291,7 +291,7 @@ LABEL_13:
     return 0;
   }
 
-  return [v4 containsObject:a3];
+  return [v4 containsObject:d];
 }
 
 @end

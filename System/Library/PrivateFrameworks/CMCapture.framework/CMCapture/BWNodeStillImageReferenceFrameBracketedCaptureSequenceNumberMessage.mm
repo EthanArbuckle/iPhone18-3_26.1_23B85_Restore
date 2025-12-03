@@ -1,10 +1,10 @@
 @interface BWNodeStillImageReferenceFrameBracketedCaptureSequenceNumberMessage
-+ (id)newMessageWithStillImageReferenceFrameBracketedCaptureSequenceNumber:(int)a3;
++ (id)newMessageWithStillImageReferenceFrameBracketedCaptureSequenceNumber:(int)number;
 @end
 
 @implementation BWNodeStillImageReferenceFrameBracketedCaptureSequenceNumberMessage
 
-+ (id)newMessageWithStillImageReferenceFrameBracketedCaptureSequenceNumber:(int)a3
++ (id)newMessageWithStillImageReferenceFrameBracketedCaptureSequenceNumber:(int)number
 {
   result = [BWNodeStillImageReferenceFrameBracketedCaptureSequenceNumberMessage alloc];
   if (result)
@@ -15,7 +15,7 @@
     if (result)
     {
       *(result + 1) = 0x600000001;
-      *(result + 4) = a3;
+      *(result + 4) = number;
     }
   }
 

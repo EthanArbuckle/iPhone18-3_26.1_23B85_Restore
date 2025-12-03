@@ -1,10 +1,10 @@
 @interface GQDTNumberFormat
-- (__CFString)createStringFromDouble:(double)a3;
-- (id)baseStringFromDouble:(double)a3;
+- (__CFString)createStringFromDouble:(double)double;
+- (id)baseStringFromDouble:(double)double;
 - (id)customNumberFormatTokens;
-- (id)fractionStringFromDouble:(double)a3;
-- (id)stringFromDouble:(double)a3;
-- (int)readAttributesFromReader:(_xmlTextReader *)a3;
+- (id)fractionStringFromDouble:(double)double;
+- (id)stringFromDouble:(double)double;
+- (int)readAttributesFromReader:(_xmlTextReader *)reader;
 - (void)dealloc;
 @end
 
@@ -41,25 +41,25 @@
   [(GQDTNumberFormat *)&v7 dealloc];
 }
 
-- (id)stringFromDouble:(double)a3
+- (id)stringFromDouble:(double)double
 {
   mDecimalPlaces = self->mDecimalPlaces;
-  if (a3 == 0.0)
+  if (double == 0.0)
   {
-    v5 = 0.0;
+    doubleCopy = 0.0;
   }
 
   else
   {
-    v5 = a3;
+    doubleCopy = double;
   }
 
   if (![(GQDTNumberFormat *)self hasValidDecimalPlaces])
   {
-    mDecimalPlaces = sub_5209C(v5);
+    mDecimalPlaces = sub_5209C(doubleCopy);
   }
 
-  v6 = v5 * self->mScaleFactor;
+  v6 = doubleCopy * self->mScaleFactor;
   if (self->mIsTextFormat)
   {
     v7 = @"#,##0";
@@ -76,9 +76,9 @@
   mIsCustom = self->mIsCustom;
   if (mIsCustom && !self->mFormatContainsSpecialTokens)
   {
-    v32 = [(GQDTNumberFormat *)self formatString];
+    formatString = [(GQDTNumberFormat *)self formatString];
 
-    return sub_53354(v32);
+    return sub_53354(formatString);
   }
 
   else
@@ -95,9 +95,9 @@
         v35 = [(NSMutableString *)sub_53354([(GQDTNumberFormat *)self formatString]) mutableCopy];
         [(__CFString *)v35 replaceOccurrencesOfString:[NSString stringWithFormat:?], [GQNumberFormatter currencySymbolForCurrencyCode:self->mCurrencyCode], 0, 0, [(__CFString *)v35 length]];
         v57 = [(GQDTNumberFormat *)self fractionStringFromDouble:v6];
-        v58 = [NSString stringWithFormat:@"%C", word_9CC18];
+        word_9CC18 = [NSString stringWithFormat:@"%C", word_9CC18];
 LABEL_83:
-        [(__CFString *)v35 replaceOccurrencesOfString:v58 withString:v57 options:0 range:0, [(__CFString *)v35 length]];
+        [(__CFString *)v35 replaceOccurrencesOfString:word_9CC18 withString:v57 options:0 range:0, [(__CFString *)v35 length]];
         return v35;
       }
 
@@ -262,7 +262,7 @@ LABEL_57:
         v35 = +[NSMutableString string];
         v70 = +[NSCharacterSet decimalDigitCharacterSet];
         v46 = [(__CFString *)v45 length];
-        v47 = [(NSIndexSet *)self->mInterstitialStringInsertionIndexes firstIndex];
+        firstIndex = [(NSIndexSet *)self->mInterstitialStringInsertionIndexes firstIndex];
         if (v46 < 1)
         {
           v51 = 0;
@@ -270,7 +270,7 @@ LABEL_57:
 
         else
         {
-          v48 = v47;
+          v48 = firstIndex;
           v49 = 0;
           v50 = 0;
           v51 = 0;
@@ -324,7 +324,7 @@ LABEL_57:
       v35 = [(__CFString *)v55 mutableCopy];
       v56 = fabs(v6);
       v57 = [(GQDTNumberFormat *)self fractionStringFromDouble:v56 - floor(v56)];
-      v58 = [NSString stringWithFormat:@"%C", word_9CC18];
+      word_9CC18 = [NSString stringWithFormat:@"%C", word_9CC18];
       goto LABEL_83;
     }
 
@@ -352,33 +352,33 @@ LABEL_100:
       {
         if (self->mIgnoreDecimalPlacesForZeroValue && !self->mIsCustom && v6 == 0.0)
         {
-          v61 = [(GQDTNumberFormat *)self valueType];
-          v62 = [(GQDTNumberFormat *)self formatString];
-          v63 = [(GQDTNumberFormat *)self showThousandsSeparator];
-          v14 = [(GQDTNumberFormat *)self currencyCode];
+          valueType = [(GQDTNumberFormat *)self valueType];
+          formatString2 = [(GQDTNumberFormat *)self formatString];
+          showThousandsSeparator = [(GQDTNumberFormat *)self showThousandsSeparator];
+          currencyCode = [(GQDTNumberFormat *)self currencyCode];
           v8 = v6;
-          v9 = v61;
-          v7 = v62;
+          v9 = valueType;
+          v7 = formatString2;
           v10 = 1;
           v11 = 0;
           v12 = 0;
-          v13 = v63;
+          v13 = showThousandsSeparator;
         }
 
         else
         {
-          v64 = [(GQDTNumberFormat *)self valueType];
-          v65 = [(GQDTNumberFormat *)self formatString];
+          valueType2 = [(GQDTNumberFormat *)self valueType];
+          formatString3 = [(GQDTNumberFormat *)self formatString];
           v66 = self->mIsCustom;
-          v67 = [(GQDTNumberFormat *)self showThousandsSeparator];
-          v14 = [(GQDTNumberFormat *)self currencyCode];
+          showThousandsSeparator2 = [(GQDTNumberFormat *)self showThousandsSeparator];
+          currencyCode = [(GQDTNumberFormat *)self currencyCode];
           v10 = !v66;
           v11 = mDecimalPlaces;
           v12 = mDecimalPlaces;
           v8 = v6;
-          v9 = v64;
-          v7 = v65;
-          v13 = v67;
+          v9 = valueType2;
+          v7 = formatString3;
+          v13 = showThousandsSeparator2;
         }
 
         v15 = mFormatStringRequiresSuppressionOfMinusSign;
@@ -393,11 +393,11 @@ LABEL_100:
       v12 = 5;
       v13 = 0;
 LABEL_8:
-      v14 = 0;
+      currencyCode = 0;
       v15 = 0;
 LABEL_9:
 
-      return sub_52338(v9, v7, v10, v11, v12, v13, v14, v8, v15);
+      return sub_52338(v9, v7, v10, v11, v12, v13, currencyCode, v8, v15);
     }
 
     v35 = [(GQDTNumberFormat *)self baseStringFromDouble:v6];
@@ -415,10 +415,10 @@ LABEL_9:
   }
 }
 
-- (__CFString)createStringFromDouble:(double)a3
+- (__CFString)createStringFromDouble:(double)double
 {
   v5 = objc_opt_new();
-  v6 = [(GQDTNumberFormat *)self stringFromDouble:a3];
+  v6 = [(GQDTNumberFormat *)self stringFromDouble:double];
   if (self->mSuffixString && self->mValueType <= 1u)
   {
     Mutable = CFStringCreateMutable(0, 0);
@@ -432,12 +432,12 @@ LABEL_9:
   return v6;
 }
 
-- (int)readAttributesFromReader:(_xmlTextReader *)a3
+- (int)readAttributesFromReader:(_xmlTextReader *)reader
 {
-  self->mCurrencyCode = sub_4294C(a3, qword_A35E8, "format-currency-code");
-  v5 = sub_4294C(a3, qword_A35E8, "format-string");
+  self->mCurrencyCode = sub_4294C(reader, qword_A35E8, "format-currency-code");
+  v5 = sub_4294C(reader, qword_A35E8, "format-string");
   self->mFormatString = v5;
-  if (!v5 || !sub_42384(a3, qword_A35E8, "format-decimal-places", &self->mDecimalPlaces) || !sub_421B4(a3, qword_A35E8, "format-use-accounting-style", &self->mUseAccountingStyle))
+  if (!v5 || !sub_42384(reader, qword_A35E8, "format-decimal-places", &self->mDecimalPlaces) || !sub_421B4(reader, qword_A35E8, "format-use-accounting-style", &self->mUseAccountingStyle))
   {
     v13 = 0;
 LABEL_10:
@@ -446,24 +446,24 @@ LABEL_10:
   }
 
   v13 = 0;
-  if (!sub_421B4(a3, qword_A35E8, "format-show-thousands-separator", &self->mShowThousandsSeparator))
+  if (!sub_421B4(reader, qword_A35E8, "format-show-thousands-separator", &self->mShowThousandsSeparator))
   {
     goto LABEL_10;
   }
 
-  if (!sub_42384(a3, qword_A35E8, "format-type", &v13))
+  if (!sub_42384(reader, qword_A35E8, "format-type", &v13))
   {
     goto LABEL_10;
   }
 
   self->mValueType = v13;
-  if ((sub_42384(a3, qword_A35E8, "format-negative-style", &v13) & 1) == 0)
+  if ((sub_42384(reader, qword_A35E8, "format-negative-style", &v13) & 1) == 0)
   {
     goto LABEL_10;
   }
 
   self->mNegativeStyle = v13;
-  if (!sub_42384(a3, qword_A35E8, "format-fraction-accuracy", &v13))
+  if (!sub_42384(reader, qword_A35E8, "format-fraction-accuracy", &v13))
   {
     goto LABEL_10;
   }
@@ -471,12 +471,12 @@ LABEL_10:
   self->mFractionAccuracy = v13;
   v6 = 1;
 LABEL_11:
-  self->mIsCustom = sub_42340(a3, qword_A35E8, "custom", 0);
-  sub_4290C(a3, qword_A35E8, "scale");
+  self->mIsCustom = sub_42340(reader, qword_A35E8, "custom", 0);
+  sub_4290C(reader, qword_A35E8, "scale");
   self->mScaleFactor = v7;
-  self->mNumberOfNonSpaceIntegerPlaceholderDigits = sub_42468(a3, qword_A35E8, "non-space-integer-placeholders", 0);
-  self->mNumberOfNonSpaceDecimalPlaceholderDigits = sub_42468(a3, qword_A35E8, "non-space-decimal-placeholders", 0);
-  self->mIndexFromRightOfLastDigitPlaceholder = sub_42468(a3, qword_A35E8, "last-digit-index", 0);
+  self->mNumberOfNonSpaceIntegerPlaceholderDigits = sub_42468(reader, qword_A35E8, "non-space-integer-placeholders", 0);
+  self->mNumberOfNonSpaceDecimalPlaceholderDigits = sub_42468(reader, qword_A35E8, "non-space-decimal-placeholders", 0);
+  self->mIndexFromRightOfLastDigitPlaceholder = sub_42468(reader, qword_A35E8, "last-digit-index", 0);
   if (self->mIsCustom)
   {
     mFormatString = self->mFormatString;
@@ -501,27 +501,27 @@ LABEL_11:
   }
 
 LABEL_19:
-  self->mBase = sub_42468(a3, qword_A35E8, "format-base", 10);
-  self->mBasePlaces = sub_42468(a3, qword_A35E8, "format-base-places", 0);
-  self->mBaseUsesMinusSign = sub_42340(a3, qword_A35E8, "format-base-uses-minus-sign", 1);
-  self->mIsTextFormat = sub_42340(a3, qword_A35E8, "is-text", 0);
-  self->mMinimumIntegerWidth = sub_42468(a3, qword_A35E8, "min-integer-width", 0);
-  self->mDecimalWidth = sub_42468(a3, qword_A35E8, "decimal-width", 0);
-  self->mSuffixString = sub_4294C(a3, qword_A35E8, "format-suffix");
+  self->mBase = sub_42468(reader, qword_A35E8, "format-base", 10);
+  self->mBasePlaces = sub_42468(reader, qword_A35E8, "format-base-places", 0);
+  self->mBaseUsesMinusSign = sub_42340(reader, qword_A35E8, "format-base-uses-minus-sign", 1);
+  self->mIsTextFormat = sub_42340(reader, qword_A35E8, "is-text", 0);
+  self->mMinimumIntegerWidth = sub_42468(reader, qword_A35E8, "min-integer-width", 0);
+  self->mDecimalWidth = sub_42468(reader, qword_A35E8, "decimal-width", 0);
+  self->mSuffixString = sub_4294C(reader, qword_A35E8, "format-suffix");
   return v6;
 }
 
-- (id)fractionStringFromDouble:(double)a3
+- (id)fractionStringFromDouble:(double)double
 {
-  v4 = fabs(a3);
-  if (a3 >= 0.0)
+  v4 = fabs(double);
+  if (double >= 0.0)
   {
-    v5 = a3;
+    doubleCopy = double;
   }
 
   else
   {
-    v5 = v4;
+    doubleCopy = v4;
   }
 
   mFractionAccuracy = self->mFractionAccuracy;
@@ -535,8 +535,8 @@ LABEL_19:
 
   LODWORD(v9) = 0;
   LODWORD(v10) = 0;
-  v11 = floor(v5);
-  v12 = v5 - v11;
+  v11 = floor(doubleCopy);
+  v12 = doubleCopy - v11;
   v13 = v8 + 1;
   v14 = 1.79769313e308;
   do
@@ -606,7 +606,7 @@ LABEL_19:
 
   if (v11 == 0.0)
   {
-    if (a3 >= 0.0)
+    if (double >= 0.0)
     {
       v10 = v10;
     }
@@ -629,7 +629,7 @@ LABEL_19:
 
   else
   {
-    if (a3 >= 0.0)
+    if (double >= 0.0)
     {
       v22 = v11;
     }
@@ -653,34 +653,34 @@ LABEL_19:
   return v23;
 }
 
-- (id)baseStringFromDouble:(double)a3
+- (id)baseStringFromDouble:(double)double
 {
-  v4 = a3;
-  if (a3 >= 0)
+  doubleCopy = double;
+  if (double >= 0)
   {
-    v5 = a3;
+    doubleCopy2 = double;
   }
 
   else
   {
-    v5 = -v4;
+    doubleCopy2 = -doubleCopy;
   }
 
   mBasePlaces = self->mBasePlaces;
   if (self->mBaseUsesMinusSign)
   {
-    v7 = v4 >> 63;
+    v7 = doubleCopy >> 63;
   }
 
   else
   {
-    v8 = v5;
-    LOBYTE(a3) = self->mBase;
-    v9 = log2(*&a3);
+    v8 = doubleCopy2;
+    LOBYTE(double) = self->mBase;
+    v9 = log2(*&double);
     do
     {
       v10 = exp2(v9 * mBasePlaces + -1.0);
-      if (v4 >= 0)
+      if (doubleCopy >= 0)
       {
         v10 = v10 + -1.0;
       }
@@ -691,9 +691,9 @@ LABEL_19:
     while (v10 < v8);
     LODWORD(v7) = 0;
     v11 = -(v8 - v10 * 2.0);
-    if (v4 < 0)
+    if (doubleCopy < 0)
     {
-      v5 = v11;
+      doubleCopy2 = v11;
     }
 
     --mBasePlaces;
@@ -711,12 +711,12 @@ LABEL_19:
 
     else if (mBase == 26)
     {
-      LODWORD(v15) = (v5 / v13) % 26 + 65;
+      LODWORD(v15) = (doubleCopy2 / v13) % 26 + 65;
     }
 
     else
     {
-      v15 = v5 / v13 % mBase;
+      v15 = doubleCopy2 / v13 % mBase;
       if (v15 <= 9)
       {
         v16 = 48;
@@ -743,7 +743,7 @@ LABEL_19:
     }
   }
 
-  while (v13 && v5 / v13 > 0);
+  while (v13 && doubleCopy2 / v13 > 0);
   if (mBasePlaces)
   {
     v17 = (mBasePlaces - [v12 length]);
@@ -788,15 +788,15 @@ LABEL_19:
   {
     v3 = +[NSMutableArray array];
     v4 = +[NSMutableString string];
-    v5 = [(GQDTNumberFormat *)self formatString];
-    v6 = [v5 length];
+    formatString = [(GQDTNumberFormat *)self formatString];
+    v6 = [formatString length];
     if (v6 >= 1)
     {
       v7 = 0;
       v8 = v6 & 0x7FFFFFFF;
       do
       {
-        v9 = [v5 characterAtIndex:v7];
+        v9 = [formatString characterAtIndex:v7];
         if (v9 == word_9CC38)
         {
           if ([v4 length])
@@ -834,9 +834,9 @@ LABEL_181:
   v12 = [NSCharacterSet characterSetWithCharactersInString:@"+-, #@0123456789"];
   v13 = [NSCharacterSet characterSetWithCharactersInString:@"#@0123456789"];
   v3 = +[NSMutableArray array];
-  v94 = self;
-  v14 = [(GQDTNumberFormat *)self formatString];
-  v15 = [v14 length];
+  selfCopy = self;
+  formatString2 = [(GQDTNumberFormat *)self formatString];
+  v15 = [formatString2 length];
   v16 = v15;
   v17 = off_80000;
   if (v15 >= 1)
@@ -850,9 +850,9 @@ LABEL_181:
     while (1)
     {
       v19 = v18;
-      v20 = [v14 characterAtIndex:v18];
+      v20 = [formatString2 characterAtIndex:v18];
       v21 = (v18 + 1);
-      v22 = v21 < v16 && [v14 characterAtIndex:v21] == 39;
+      v22 = v21 < v16 && [formatString2 characterAtIndex:v21] == 39;
       if (v20 != 46)
       {
         break;
@@ -870,11 +870,11 @@ LABEL_51:
     if (v20 == 39)
     {
       v23 = v17;
-      v24 = [(__objc2_class *)v17[135] string];
-      v25 = v24;
+      string = [(__objc2_class *)v17[135] string];
+      v25 = string;
       if (v22)
       {
-        [v24 appendString:@"'"];
+        [string appendString:@"'"];
         v26 = (v18 + 2);
 LABEL_44:
         if ([v25 length])
@@ -895,7 +895,7 @@ LABEL_44:
 
       while (2)
       {
-        v34 = [v14 characterAtIndex:v21];
+        v34 = [formatString2 characterAtIndex:v21];
         v35 = v34;
         v26 = (v21 + 1);
         if (v26 >= v16)
@@ -908,7 +908,7 @@ LABEL_44:
 
         else
         {
-          v36 = [v14 characterAtIndex:v26];
+          v36 = [formatString2 characterAtIndex:v26];
           if (v35 == 39)
           {
             if (v36 != 39)
@@ -939,7 +939,7 @@ LABEL_43:
     if (v20 == word_9CC2A || v20 == word_9CC2C || v20 == word_9CC2E || v20 == word_9CC30)
     {
       v30 = v17[135];
-      v31 = [NSString stringWithFormat:@"%C", v20];
+      currencyCode = [NSString stringWithFormat:@"%C", v20];
       v32 = v30;
       v33 = 4;
     }
@@ -947,7 +947,7 @@ LABEL_43:
     else if (v20 == word_9CC18)
     {
       v37 = v17[135];
-      v31 = [NSString stringWithFormat:@"%d", [(GQDTNumberFormat *)v94 fractionAccuracy]];
+      currencyCode = [NSString stringWithFormat:@"%d", [(GQDTNumberFormat *)selfCopy fractionAccuracy]];
       v32 = v37;
       v33 = 6;
     }
@@ -971,7 +971,7 @@ LABEL_56:
           if (v21 < v16)
           {
             v40 = v21;
-            while (-[NSCharacterSet characterIsMember:](v87, "characterIsMember:", [v14 characterAtIndex:v40]))
+            while (-[NSCharacterSet characterIsMember:](v87, "characterIsMember:", [formatString2 characterAtIndex:v40]))
             {
               if (v86 == ++v40)
               {
@@ -1004,7 +1004,7 @@ LABEL_56:
               v42 = 0;
               while (1)
               {
-                v43 = [v14 characterAtIndex:v19];
+                v43 = [formatString2 characterAtIndex:v19];
                 if (![(NSCharacterSet *)v87 characterIsMember:v43])
                 {
                   break;
@@ -1022,9 +1022,9 @@ LABEL_56:
             }
 
 LABEL_82:
-            mNumberOfNonSpaceDecimalPlaceholderDigits = v94->mNumberOfNonSpaceDecimalPlaceholderDigits;
+            mNumberOfNonSpaceDecimalPlaceholderDigits = selfCopy->mNumberOfNonSpaceDecimalPlaceholderDigits;
             v49 = v42 - mNumberOfNonSpaceDecimalPlaceholderDigits;
-            if (v94->mDecimalWidth)
+            if (selfCopy->mDecimalWidth)
             {
               v50 = 0;
             }
@@ -1034,7 +1034,7 @@ LABEL_82:
               v50 = v49;
             }
 
-            if (v94->mDecimalWidth)
+            if (selfCopy->mDecimalWidth)
             {
               v51 = v49;
             }
@@ -1044,7 +1044,7 @@ LABEL_82:
               v51 = 0;
             }
 
-            if (v94->mNumberOfNonSpaceDecimalPlaceholderDigits)
+            if (selfCopy->mNumberOfNonSpaceDecimalPlaceholderDigits)
             {
               [v3 addObject:{+[NSString customNumberFormatDecimalTokenRepresentedStringWithDigits:digitString:](NSString, "customNumberFormatDecimalTokenRepresentedStringWithDigits:digitString:", mNumberOfNonSpaceDecimalPlaceholderDigits, @"0"}];
             }
@@ -1069,7 +1069,7 @@ LABEL_82:
             {
               v82 = 0;
               v21 = v18;
-              v47 = v94;
+              v47 = selfCopy;
               v45 = off_80000;
             }
 
@@ -1079,7 +1079,7 @@ LABEL_82:
               v45 = off_80000;
               while (1)
               {
-                v46 = [v14 characterAtIndex:v19];
+                v46 = [formatString2 characterAtIndex:v19];
                 if (![(NSCharacterSet *)v87 characterIsMember:v46])
                 {
                   break;
@@ -1097,10 +1097,10 @@ LABEL_82:
               v82 = v44;
               v21 = v19;
 LABEL_96:
-              v47 = v94;
+              v47 = selfCopy;
             }
 
-            v96 = [(__objc2_class *)v45[88] array];
+            array = [(__objc2_class *)v45[88] array];
             mNumberOfNonSpaceIntegerPlaceholderDigits = v47->mNumberOfNonSpaceIntegerPlaceholderDigits;
             mMinimumIntegerWidth = v47->mMinimumIntegerWidth;
             v83 = mMinimumIntegerWidth;
@@ -1111,14 +1111,14 @@ LABEL_96:
 
             v84 = mMinimumIntegerWidth;
             mInterstitialStringInsertionIndexes = v47->mInterstitialStringInsertionIndexes;
-            v54 = [(NSIndexSet *)mInterstitialStringInsertionIndexes firstIndex];
-            v55 = v54;
+            firstIndex = [(NSIndexSet *)mInterstitialStringInsertionIndexes firstIndex];
+            v55 = firstIndex;
             v81 = mNumberOfNonSpaceIntegerPlaceholderDigits;
             if (mNumberOfNonSpaceIntegerPlaceholderDigits)
             {
               v88 = 0;
               v56 = 0;
-              v57 = v54;
+              v57 = firstIndex;
               do
               {
                 if (mInterstitialStringInsertionIndexes)
@@ -1155,13 +1155,13 @@ LABEL_96:
                   v62 = mNumberOfNonSpaceIntegerPlaceholderDigits;
                 }
 
-                [v96 insertObject:+[NSString customNumberFormatIntegerTokenRepresentedStringWithDigits:separator:digitString:](NSString atIndex:{"customNumberFormatIntegerTokenRepresentedStringWithDigits:separator:digitString:", v62, -[GQDTNumberFormat showThousandsSeparator](v94, "showThousandsSeparator"), @"0", 0}];
+                [array insertObject:+[NSString customNumberFormatIntegerTokenRepresentedStringWithDigits:separator:digitString:](NSString atIndex:{"customNumberFormatIntegerTokenRepresentedStringWithDigits:separator:digitString:", v62, -[GQDTNumberFormat showThousandsSeparator](selfCopy, "showThousandsSeparator"), @"0", 0}];
                 if (v59)
                 {
                   if (v89)
                   {
-                    [v96 insertObject:-[NSArray objectAtIndex:](v94->mInterstitialStrings atIndex:{"objectAtIndex:", v88++), 0}];
-                    v55 = [(NSIndexSet *)v94->mInterstitialStringInsertionIndexes indexGreaterThanIndex:v57];
+                    [array insertObject:-[NSArray objectAtIndex:](selfCopy->mInterstitialStrings atIndex:{"objectAtIndex:", v88++), 0}];
+                    v55 = [(NSIndexSet *)selfCopy->mInterstitialStringInsertionIndexes indexGreaterThanIndex:v57];
                   }
 
                   else
@@ -1234,13 +1234,13 @@ LABEL_96:
                     v70 = v64;
                   }
 
-                  [v96 insertObject:+[NSString customNumberFormatIntegerTokenRepresentedStringWithDigits:separator:digitString:](NSString atIndex:{"customNumberFormatIntegerTokenRepresentedStringWithDigits:separator:digitString:", v70, -[GQDTNumberFormat showThousandsSeparator](v94, "showThousandsSeparator"), @"?", 0}];
+                  [array insertObject:+[NSString customNumberFormatIntegerTokenRepresentedStringWithDigits:separator:digitString:](NSString atIndex:{"customNumberFormatIntegerTokenRepresentedStringWithDigits:separator:digitString:", v70, -[GQDTNumberFormat showThousandsSeparator](selfCopy, "showThousandsSeparator"), @"?", 0}];
                   if (v67)
                   {
                     if (v90)
                     {
-                      [v96 insertObject:-[NSArray objectAtIndex:](v94->mInterstitialStrings atIndex:{"objectAtIndex:", v88++), 0}];
-                      v55 = [(NSIndexSet *)v94->mInterstitialStringInsertionIndexes indexGreaterThanIndex:v65];
+                      [array insertObject:-[NSArray objectAtIndex:](selfCopy->mInterstitialStrings atIndex:{"objectAtIndex:", v88++), 0}];
+                      v55 = [(NSIndexSet *)selfCopy->mInterstitialStringInsertionIndexes indexGreaterThanIndex:v65];
                     }
 
                     else
@@ -1304,13 +1304,13 @@ LABEL_96:
                   v76 = v71;
                 }
 
-                [v96 insertObject:+[NSString customNumberFormatIntegerTokenRepresentedStringWithDigits:separator:digitString:](NSString atIndex:{"customNumberFormatIntegerTokenRepresentedStringWithDigits:separator:digitString:", v76, -[GQDTNumberFormat showThousandsSeparator](v94, "showThousandsSeparator"), @"#", 0}];
+                [array insertObject:+[NSString customNumberFormatIntegerTokenRepresentedStringWithDigits:separator:digitString:](NSString atIndex:{"customNumberFormatIntegerTokenRepresentedStringWithDigits:separator:digitString:", v76, -[GQDTNumberFormat showThousandsSeparator](selfCopy, "showThousandsSeparator"), @"#", 0}];
                 if (v73)
                 {
                   if (v91)
                   {
-                    [v96 insertObject:-[NSArray objectAtIndex:](v94->mInterstitialStrings atIndex:{"objectAtIndex:", v88++), 0}];
-                    v77 = [(NSIndexSet *)v94->mInterstitialStringInsertionIndexes indexGreaterThanIndex:v55];
+                    [array insertObject:-[NSArray objectAtIndex:](selfCopy->mInterstitialStrings atIndex:{"objectAtIndex:", v88++), 0}];
+                    v77 = [(NSIndexSet *)selfCopy->mInterstitialStringInsertionIndexes indexGreaterThanIndex:v55];
                   }
 
                   else
@@ -1334,7 +1334,7 @@ LABEL_96:
               while (v71 > 0);
             }
 
-            [v3 addObjectsFromArray:v96];
+            [v3 addObjectsFromArray:array];
             v95 = 0;
             v17 = off_80000;
           }
@@ -1347,12 +1347,12 @@ LABEL_96:
       }
 
       v41 = v17[135];
-      v31 = [(GQDTNumberFormat *)v94 currencyCode];
+      currencyCode = [(GQDTNumberFormat *)selfCopy currencyCode];
       v32 = v41;
       v33 = 3;
     }
 
-    v38 = [(__objc2_class *)v32 customNumberFormatTokenStringOfType:v33 content:v31];
+    v38 = [(__objc2_class *)v32 customNumberFormatTokenStringOfType:v33 content:currencyCode];
 LABEL_50:
     [v3 addObject:v38];
     goto LABEL_51;
@@ -1360,7 +1360,7 @@ LABEL_50:
 
   v93 = 0;
 LABEL_165:
-  mScaleFactor = v94->mScaleFactor;
+  mScaleFactor = selfCopy->mScaleFactor;
   if (mScaleFactor != 1.0 && (v93 & 1) == 0)
   {
     if (mScaleFactor == 100.0)

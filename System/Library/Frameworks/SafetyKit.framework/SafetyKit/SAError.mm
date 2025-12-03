@@ -1,28 +1,28 @@
 @interface SAError
-+ (id)errorWithCode:(int64_t)a3;
-+ (id)errorWithCode:(int64_t)a3 description:(id)a4 recoverySuggestion:(id)a5 underlyingError:(id)a6;
++ (id)errorWithCode:(int64_t)code;
++ (id)errorWithCode:(int64_t)code description:(id)description recoverySuggestion:(id)suggestion underlyingError:(id)error;
 @end
 
 @implementation SAError
 
-+ (id)errorWithCode:(int64_t)a3
++ (id)errorWithCode:(int64_t)code
 {
-  if (a3 < 4096)
+  if (code < 4096)
   {
-    if ((a3 - 1) > 3)
+    if ((code - 1) > 3)
     {
       v5 = 0;
     }
 
     else
     {
-      v6 = off_278B67D40[a3 - 1];
+      v6 = off_278B67D40[code - 1];
       v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v5 = [v7 localizedStringForKey:v6 value:&stru_284DA6B88 table:0];
     }
   }
 
-  else if (((a3 == 4096) & os_variant_has_internal_content()) != 0)
+  else if (((code == 4096) & os_variant_has_internal_content()) != 0)
   {
     v5 = @"Place holder for future private errors";
   }
@@ -32,7 +32,7 @@
     v5 = 0;
   }
 
-  switch(a3)
+  switch(code)
   {
     case 1:
       v8 = @"SAErrorNotAuthorizedRecovery";
@@ -51,34 +51,34 @@ LABEL_14:
 
   v10 = 0;
 LABEL_16:
-  v11 = [a1 errorWithCode:a3 description:v5 recoverySuggestion:v10];
+  v11 = [self errorWithCode:code description:v5 recoverySuggestion:v10];
 
   return v11;
 }
 
-+ (id)errorWithCode:(int64_t)a3 description:(id)a4 recoverySuggestion:(id)a5 underlyingError:(id)a6
++ (id)errorWithCode:(int64_t)code description:(id)description recoverySuggestion:(id)suggestion underlyingError:(id)error
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  descriptionCopy = description;
+  suggestionCopy = suggestion;
+  errorCopy = error;
   v12 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:3];
   v13 = v12;
-  if (v9)
+  if (descriptionCopy)
   {
-    [v12 setObject:v9 forKeyedSubscript:*MEMORY[0x277CCA450]];
+    [v12 setObject:descriptionCopy forKeyedSubscript:*MEMORY[0x277CCA450]];
   }
 
-  if (v10)
+  if (suggestionCopy)
   {
-    [v13 setObject:v10 forKeyedSubscript:*MEMORY[0x277CCA498]];
+    [v13 setObject:suggestionCopy forKeyedSubscript:*MEMORY[0x277CCA498]];
   }
 
-  if (v11)
+  if (errorCopy)
   {
-    [v13 setObject:v11 forKeyedSubscript:*MEMORY[0x277CCA7E8]];
+    [v13 setObject:errorCopy forKeyedSubscript:*MEMORY[0x277CCA7E8]];
   }
 
-  v14 = [MEMORY[0x277CCA9B8] errorWithDomain:SAErrorDomain code:a3 userInfo:v13];
+  v14 = [MEMORY[0x277CCA9B8] errorWithDomain:SAErrorDomain code:code userInfo:v13];
 
   return v14;
 }

@@ -1,22 +1,22 @@
 @interface CESRSpeechProfileAdmin
 + (id)makeAdmin;
 - (CESRSpeechProfileAdmin)init;
-- (CESRSpeechProfileAdmin)initWithAdminService:(id)a3 timeout:(double)a4 queue:(id)a5;
-- (int64_t)_synchronouslyWrapRequest:(id)a3;
-- (int64_t)beginEvaluation:(id)a3;
-- (int64_t)beginEvaluationWithSetEnumerator:(id)a3;
+- (CESRSpeechProfileAdmin)initWithAdminService:(id)service timeout:(double)timeout queue:(id)queue;
+- (int64_t)_synchronouslyWrapRequest:(id)request;
+- (int64_t)beginEvaluation:(id)evaluation;
+- (int64_t)beginEvaluationWithSetEnumerator:(id)enumerator;
 - (int64_t)endEvaluation;
-- (void)beginEvaluation:(id)a3 completion:(id)a4;
-- (void)beginEvaluationWithSetEnumerator:(id)a3 completion:(id)a4;
-- (void)endEvaluation:(id)a3;
-- (void)rebuildSpeechProfileForUserId:(id)a3 completion:(id)a4;
+- (void)beginEvaluation:(id)evaluation completion:(id)completion;
+- (void)beginEvaluationWithSetEnumerator:(id)enumerator completion:(id)completion;
+- (void)endEvaluation:(id)evaluation;
+- (void)rebuildSpeechProfileForUserId:(id)id completion:(id)completion;
 @end
 
 @implementation CESRSpeechProfileAdmin
 
-- (int64_t)_synchronouslyWrapRequest:(id)a3
+- (int64_t)_synchronouslyWrapRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = dispatch_group_create();
   v20 = 0;
   v21 = &v20;
@@ -39,7 +39,7 @@
   v15[4] = self;
   v8 = v7;
   v16 = v8;
-  v4[2](v4, v15);
+  requestCopy[2](requestCopy, v15);
   v9 = dispatch_time(0, (self->_timeout * 1000000000.0));
   if (dispatch_group_wait(v6, v9))
   {
@@ -110,10 +110,10 @@ void __52__CESRSpeechProfileAdmin__synchronouslyWrapRequest___block_invoke_13(ui
   return [(CESRSpeechProfileAdmin *)self _synchronouslyWrapRequest:v3];
 }
 
-- (void)endEvaluation:(id)a3
+- (void)endEvaluation:(id)evaluation
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  evaluationCopy = evaluation;
   v5 = +[CESRUtilities isCustomerInstall];
   v6 = *MEMORY[0x277CEF0E8];
   v7 = os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_INFO);
@@ -126,9 +126,9 @@ void __52__CESRSpeechProfileAdmin__synchronouslyWrapRequest___block_invoke_13(ui
       _os_log_impl(&dword_225EEB000, v6, OS_LOG_TYPE_INFO, "%s Admin operations are not supported on customer installs.", buf, 0xCu);
     }
 
-    if (v4)
+    if (evaluationCopy)
     {
-      v4[2](v4, 3);
+      evaluationCopy[2](evaluationCopy, 3);
     }
   }
 
@@ -146,7 +146,7 @@ void __52__CESRSpeechProfileAdmin__synchronouslyWrapRequest___block_invoke_13(ui
     v10[1] = 3221225472;
     v10[2] = __40__CESRSpeechProfileAdmin_endEvaluation___block_invoke;
     v10[3] = &unk_27857FC10;
-    v11 = v4;
+    v11 = evaluationCopy;
     [(CESRSpeechProfileAdminService *)adminService endEvaluation:v10];
   }
 
@@ -192,26 +192,26 @@ uint64_t __40__CESRSpeechProfileAdmin_endEvaluation___block_invoke(uint64_t a1, 
   return result;
 }
 
-- (int64_t)beginEvaluationWithSetEnumerator:(id)a3
+- (int64_t)beginEvaluationWithSetEnumerator:(id)enumerator
 {
-  v4 = a3;
+  enumeratorCopy = enumerator;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __59__CESRSpeechProfileAdmin_beginEvaluationWithSetEnumerator___block_invoke;
   v8[3] = &unk_27857FC38;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = enumeratorCopy;
+  v5 = enumeratorCopy;
   v6 = [(CESRSpeechProfileAdmin *)self _synchronouslyWrapRequest:v8];
 
   return v6;
 }
 
-- (void)beginEvaluationWithSetEnumerator:(id)a3 completion:(id)a4
+- (void)beginEvaluationWithSetEnumerator:(id)enumerator completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  enumeratorCopy = enumerator;
+  completionCopy = completion;
   if (+[CESRUtilities isCustomerInstall])
   {
     v8 = *MEMORY[0x277CEF0E8];
@@ -220,7 +220,7 @@ uint64_t __40__CESRSpeechProfileAdmin_endEvaluation___block_invoke(uint64_t a1, 
       *buf = 136315138;
       v16 = "[CESRSpeechProfileAdmin beginEvaluationWithSetEnumerator:completion:]";
       _os_log_impl(&dword_225EEB000, v8, OS_LOG_TYPE_INFO, "%s Admin operations are not supported on customer installs.", buf, 0xCu);
-      if (!v7)
+      if (!completionCopy)
       {
         goto LABEL_12;
       }
@@ -233,7 +233,7 @@ uint64_t __40__CESRSpeechProfileAdmin_endEvaluation___block_invoke(uint64_t a1, 
   {
     v9 = *MEMORY[0x277CEF0E8];
     v10 = *MEMORY[0x277CEF0E8];
-    if (v6)
+    if (enumeratorCopy)
     {
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
@@ -247,8 +247,8 @@ uint64_t __40__CESRSpeechProfileAdmin_endEvaluation___block_invoke(uint64_t a1, 
       v13[1] = 3221225472;
       v13[2] = __70__CESRSpeechProfileAdmin_beginEvaluationWithSetEnumerator_completion___block_invoke;
       v13[3] = &unk_27857FC10;
-      v14 = v7;
-      [(CESRSpeechProfileAdminService *)adminService beginEvaluationWithSetEnumerator:v6 completion:v13];
+      v14 = completionCopy;
+      [(CESRSpeechProfileAdminService *)adminService beginEvaluationWithSetEnumerator:enumeratorCopy completion:v13];
 
       goto LABEL_12;
     }
@@ -258,7 +258,7 @@ uint64_t __40__CESRSpeechProfileAdmin_endEvaluation___block_invoke(uint64_t a1, 
       *buf = 136315138;
       v16 = "[CESRSpeechProfileAdmin beginEvaluationWithSetEnumerator:completion:]";
       _os_log_error_impl(&dword_225EEB000, v9, OS_LOG_TYPE_ERROR, "%s setEnumerator cannot be nil.", buf, 0xCu);
-      if (!v7)
+      if (!completionCopy)
       {
         goto LABEL_12;
       }
@@ -267,10 +267,10 @@ uint64_t __40__CESRSpeechProfileAdmin_endEvaluation___block_invoke(uint64_t a1, 
     }
   }
 
-  if (v7)
+  if (completionCopy)
   {
 LABEL_11:
-    (*(v7 + 2))(v7, 3);
+    (*(completionCopy + 2))(completionCopy, 3);
   }
 
 LABEL_12:
@@ -317,26 +317,26 @@ uint64_t __70__CESRSpeechProfileAdmin_beginEvaluationWithSetEnumerator_completio
   return result;
 }
 
-- (int64_t)beginEvaluation:(id)a3
+- (int64_t)beginEvaluation:(id)evaluation
 {
-  v4 = a3;
+  evaluationCopy = evaluation;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __42__CESRSpeechProfileAdmin_beginEvaluation___block_invoke;
   v8[3] = &unk_27857FC38;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = evaluationCopy;
+  v5 = evaluationCopy;
   v6 = [(CESRSpeechProfileAdmin *)self _synchronouslyWrapRequest:v8];
 
   return v6;
 }
 
-- (void)beginEvaluation:(id)a3 completion:(id)a4
+- (void)beginEvaluation:(id)evaluation completion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  evaluationCopy = evaluation;
+  completionCopy = completion;
   if (+[CESRUtilities isCustomerInstall])
   {
     v8 = *MEMORY[0x277CEF0E8];
@@ -345,7 +345,7 @@ uint64_t __70__CESRSpeechProfileAdmin_beginEvaluationWithSetEnumerator_completio
       *buf = 136315138;
       v21 = "[CESRSpeechProfileAdmin beginEvaluation:completion:]";
       _os_log_impl(&dword_225EEB000, v8, OS_LOG_TYPE_INFO, "%s Admin operations are not supported on customer installs.", buf, 0xCu);
-      if (!v7)
+      if (!completionCopy)
       {
         goto LABEL_18;
       }
@@ -356,17 +356,17 @@ uint64_t __70__CESRSpeechProfileAdmin_beginEvaluationWithSetEnumerator_completio
     goto LABEL_10;
   }
 
-  if (v6)
+  if (evaluationCopy)
   {
     v19 = 0;
-    v9 = [v6 toSerializedSets:&v19];
+    v9 = [evaluationCopy toSerializedSets:&v19];
     v10 = v19;
     if (v9)
     {
       if ([v9 count])
       {
         v11 = [MEMORY[0x277CF94E0] enumeratorForSerializedSets:v9];
-        [(CESRSpeechProfileAdmin *)self beginEvaluationWithSetEnumerator:v11 completion:v7];
+        [(CESRSpeechProfileAdmin *)self beginEvaluationWithSetEnumerator:v11 completion:completionCopy];
 
 LABEL_17:
         goto LABEL_18;
@@ -391,13 +391,13 @@ LABEL_17:
       if (!os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_ERROR))
       {
 LABEL_15:
-        if (!v7)
+        if (!completionCopy)
         {
           goto LABEL_17;
         }
 
 LABEL_16:
-        v7[2](v7, 2);
+        completionCopy[2](completionCopy, 2);
         goto LABEL_17;
       }
 
@@ -411,7 +411,7 @@ LABEL_16:
     }
 
     _os_log_error_impl(&dword_225EEB000, v15, OS_LOG_TYPE_ERROR, v14, buf, v16);
-    if (!v7)
+    if (!completionCopy)
     {
       goto LABEL_17;
     }
@@ -425,7 +425,7 @@ LABEL_16:
     *buf = 136315138;
     v21 = "[CESRSpeechProfileAdmin beginEvaluation:completion:]";
     _os_log_error_impl(&dword_225EEB000, v12, OS_LOG_TYPE_ERROR, "%s profile cannot be nil.", buf, 0xCu);
-    if (!v7)
+    if (!completionCopy)
     {
       goto LABEL_18;
     }
@@ -434,10 +434,10 @@ LABEL_16:
   }
 
 LABEL_10:
-  if (v7)
+  if (completionCopy)
   {
 LABEL_11:
-    v7[2](v7, 3);
+    completionCopy[2](completionCopy, 3);
   }
 
 LABEL_18:
@@ -445,17 +445,17 @@ LABEL_18:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)rebuildSpeechProfileForUserId:(id)a3 completion:(id)a4
+- (void)rebuildSpeechProfileForUserId:(id)id completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   adminService = self->_adminService;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __67__CESRSpeechProfileAdmin_rebuildSpeechProfileForUserId_completion___block_invoke;
   v9[3] = &unk_27857FC10;
-  v10 = v6;
-  v8 = v6;
-  [(CESRSpeechProfileAdminService *)adminService rebuildSpeechProfileForUserId:a3 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [(CESRSpeechProfileAdminService *)adminService rebuildSpeechProfileForUserId:id completion:v9];
 }
 
 uint64_t __67__CESRSpeechProfileAdmin_rebuildSpeechProfileForUserId_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -506,19 +506,19 @@ uint64_t __56__CESRSpeechProfileAdmin_triggerMaintenance_completion___block_invo
   objc_exception_throw(v2);
 }
 
-- (CESRSpeechProfileAdmin)initWithAdminService:(id)a3 timeout:(double)a4 queue:(id)a5
+- (CESRSpeechProfileAdmin)initWithAdminService:(id)service timeout:(double)timeout queue:(id)queue
 {
-  v9 = a3;
-  v10 = a5;
+  serviceCopy = service;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = CESRSpeechProfileAdmin;
   v11 = [(CESRSpeechProfileAdmin *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_adminService, a3);
-    v12->_timeout = a4;
-    objc_storeStrong(&v12->_queue, a5);
+    objc_storeStrong(&v11->_adminService, service);
+    v12->_timeout = timeout;
+    objc_storeStrong(&v12->_queue, queue);
   }
 
   return v12;
@@ -527,9 +527,9 @@ uint64_t __56__CESRSpeechProfileAdmin_triggerMaintenance_completion___block_invo
 + (id)makeAdmin
 {
   v2 = +[CESRSpeechProfileAdminFactory sharedAdminFactory];
-  v3 = [v2 admin];
+  admin = [v2 admin];
 
-  return v3;
+  return admin;
 }
 
 @end

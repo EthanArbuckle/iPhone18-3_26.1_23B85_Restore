@@ -1,41 +1,41 @@
 @interface NTKParameciumSprite
-+ (id)spriteWithBlitBlock:(id)a3;
-+ (id)spriteWithImage:(id)a3;
-+ (id)spriteWithImage:(id)a3 format:(unint64_t)a4;
-- (NTKParameciumSprite)initWithBlitBlock:(id)a3;
-- (NTKParameciumSprite)initWithImage:(id)a3 format:(unint64_t)a4;
-- (void)blitIfNecessaryWithCommandBuffer:(id)a3;
++ (id)spriteWithBlitBlock:(id)block;
++ (id)spriteWithImage:(id)image;
++ (id)spriteWithImage:(id)image format:(unint64_t)format;
+- (NTKParameciumSprite)initWithBlitBlock:(id)block;
+- (NTKParameciumSprite)initWithImage:(id)image format:(unint64_t)format;
+- (void)blitIfNecessaryWithCommandBuffer:(id)buffer;
 @end
 
 @implementation NTKParameciumSprite
 
-+ (id)spriteWithImage:(id)a3
++ (id)spriteWithImage:(id)image
 {
-  v3 = a3;
-  v4 = [[NTKParameciumSprite alloc] initWithImage:v3];
+  imageCopy = image;
+  v4 = [[NTKParameciumSprite alloc] initWithImage:imageCopy];
 
   return v4;
 }
 
-+ (id)spriteWithImage:(id)a3 format:(unint64_t)a4
++ (id)spriteWithImage:(id)image format:(unint64_t)format
 {
-  v5 = a3;
-  v6 = [[NTKParameciumSprite alloc] initWithImage:v5 format:a4];
+  imageCopy = image;
+  v6 = [[NTKParameciumSprite alloc] initWithImage:imageCopy format:format];
 
   return v6;
 }
 
-+ (id)spriteWithBlitBlock:(id)a3
++ (id)spriteWithBlitBlock:(id)block
 {
-  v3 = a3;
-  v4 = [[NTKParameciumSprite alloc] initWithBlitBlock:v3];
+  blockCopy = block;
+  v4 = [[NTKParameciumSprite alloc] initWithBlitBlock:blockCopy];
 
   return v4;
 }
 
-- (NTKParameciumSprite)initWithImage:(id)a3 format:(unint64_t)a4
+- (NTKParameciumSprite)initWithImage:(id)image format:(unint64_t)format
 {
-  v5 = a3;
+  imageCopy = image;
   v11.receiver = self;
   v11.super_class = NTKParameciumSprite;
   v6 = [(NTKParameciumSprite *)&v11 init];
@@ -52,15 +52,15 @@
   return v6;
 }
 
-- (NTKParameciumSprite)initWithBlitBlock:(id)a3
+- (NTKParameciumSprite)initWithBlitBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10.receiver = self;
   v10.super_class = NTKParameciumSprite;
   v5 = [(NTKParameciumSprite *)&v10 init];
   if (v5)
   {
-    v6 = objc_retainBlock(v4);
+    v6 = objc_retainBlock(blockCopy);
     blitTexture = v5->_blitTexture;
     v5->_blitTexture = v6;
 
@@ -71,9 +71,9 @@
   return v5;
 }
 
-- (void)blitIfNecessaryWithCommandBuffer:(id)a3
+- (void)blitIfNecessaryWithCommandBuffer:(id)buffer
 {
-  blitTexture = a3;
+  blitTexture = buffer;
   v5 = blitTexture;
   if (!self->_texture)
   {

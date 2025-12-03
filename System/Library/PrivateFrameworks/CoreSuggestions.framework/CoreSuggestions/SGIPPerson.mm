@@ -1,44 +1,44 @@
 @interface SGIPPerson
-+ (id)personWithIPPerson:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPerson:(id)a3;
-- (SGIPPerson)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)personWithIPPerson:(id)person;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPerson:(id)person;
+- (SGIPPerson)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SGIPPerson
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGIPPerson *)self isEqualToPerson:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGIPPerson *)self isEqualToPerson:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPerson:(id)a3
+- (BOOL)isEqualToPerson:(id)person
 {
-  v4 = a3;
-  if (!v4)
+  personCopy = person;
+  if (!personCopy)
   {
     goto LABEL_8;
   }
 
   v5 = self->_name;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == personCopy[1])
   {
   }
 
@@ -54,7 +54,7 @@
 
   v8 = self->_handle;
   v9 = v8;
-  if (v8 == v4[2])
+  if (v8 == personCopy[2])
   {
   }
 
@@ -72,7 +72,7 @@ LABEL_8:
 
   v12 = self->_handleType;
   v13 = v12;
-  if (v12 == v4[3])
+  if (v12 == personCopy[3])
   {
     v11 = 1;
   }
@@ -86,21 +86,21 @@ LABEL_14:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v5 = objc_opt_new();
   if (v5)
   {
-    v6 = [(NSString *)self->_name copyWithZone:a3];
+    v6 = [(NSString *)self->_name copyWithZone:zone];
     v7 = v5[1];
     v5[1] = v6;
 
-    v8 = [(NSString *)self->_handle copyWithZone:a3];
+    v8 = [(NSString *)self->_handle copyWithZone:zone];
     v9 = v5[2];
     v5[2] = v8;
 
-    v10 = [(NSString *)self->_handleType copyWithZone:a3];
+    v10 = [(NSString *)self->_handleType copyWithZone:zone];
     v11 = v5[3];
     v5[3] = v10;
   }
@@ -108,27 +108,27 @@ LABEL_14:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"nam"];
-  [v5 encodeObject:self->_handle forKey:@"han"];
-  [v5 encodeObject:self->_handleType forKey:@"hty"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"nam"];
+  [coderCopy encodeObject:self->_handle forKey:@"han"];
+  [coderCopy encodeObject:self->_handleType forKey:@"hty"];
 }
 
-- (SGIPPerson)initWithCoder:(id)a3
+- (SGIPPerson)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = objc_opt_new();
-  v7 = [v4 decodeObjectOfClass:v5 forKey:@"nam"];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:@"nam"];
   [(SGIPPerson *)v6 setName:v7];
 
-  v8 = [v4 decodeObjectOfClass:v5 forKey:@"han"];
+  v8 = [coderCopy decodeObjectOfClass:v5 forKey:@"han"];
   [(SGIPPerson *)v6 setHandle:v8];
 
-  v9 = [v4 decodeObjectOfClass:v5 forKey:@"hty"];
+  v9 = [coderCopy decodeObjectOfClass:v5 forKey:@"hty"];
 
   [(SGIPPerson *)v6 setHandleType:v9];
   return v6;
@@ -148,21 +148,21 @@ LABEL_14:
   return v2;
 }
 
-+ (id)personWithIPPerson:(id)a3
++ (id)personWithIPPerson:(id)person
 {
-  v3 = a3;
+  personCopy = person;
   v4 = objc_opt_new();
-  v5 = [v3 fullName];
-  v6 = [v5 copy];
+  fullName = [personCopy fullName];
+  v6 = [fullName copy];
   [v4 setName:v6];
 
-  v7 = [v3 handle];
-  v8 = [v7 copy];
+  handle = [personCopy handle];
+  v8 = [handle copy];
   [v4 setHandle:v8];
 
-  v9 = [v3 handleType];
+  handleType = [personCopy handleType];
 
-  v10 = [v9 copy];
+  v10 = [handleType copy];
   [v4 setHandleType:v10];
 
   return v4;

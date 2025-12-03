@@ -1,29 +1,29 @@
 @interface VTEventTrackerManager
 - (VTEventTrackerManager)init;
-- (id)_contentsOfDirectoryAtURL:(id)a3 matchingPattern:(id)a4 includingPropertiesForKeys:(id)a5 error:(id *)a6;
-- (id)_contentsOfDirectoryAtURL:(id)a3 matchingPattern:(id)a4 sortedByDateWithResourceKey:(id)a5 error:(id *)a6;
-- (id)_dictionaryToJson:(id)a3;
-- (id)_sortedURLsInDirectory:(id)a3 matchingPattern:(id)a4;
-- (void)voiceTriggerEvent:(id)a3;
+- (id)_contentsOfDirectoryAtURL:(id)l matchingPattern:(id)pattern includingPropertiesForKeys:(id)keys error:(id *)error;
+- (id)_contentsOfDirectoryAtURL:(id)l matchingPattern:(id)pattern sortedByDateWithResourceKey:(id)key error:(id *)error;
+- (id)_dictionaryToJson:(id)json;
+- (id)_sortedURLsInDirectory:(id)directory matchingPattern:(id)pattern;
+- (void)voiceTriggerEvent:(id)event;
 @end
 
 @implementation VTEventTrackerManager
 
-- (id)_contentsOfDirectoryAtURL:(id)a3 matchingPattern:(id)a4 sortedByDateWithResourceKey:(id)a5 error:(id *)a6
+- (id)_contentsOfDirectoryAtURL:(id)l matchingPattern:(id)pattern sortedByDateWithResourceKey:(id)key error:(id *)error
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  lCopy = l;
+  patternCopy = pattern;
+  keyCopy = key;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
   v23 = __Block_byref_object_copy__190;
   v24 = __Block_byref_object_dispose__191;
   v25 = 0;
-  v26[0] = v12;
+  v26[0] = keyCopy;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
-  v14 = [(VTEventTrackerManager *)self _contentsOfDirectoryAtURL:v10 matchingPattern:v11 includingPropertiesForKeys:v13 error:a6];
+  v14 = [(VTEventTrackerManager *)self _contentsOfDirectoryAtURL:lCopy matchingPattern:patternCopy includingPropertiesForKeys:v13 error:error];
 
   if (v14)
   {
@@ -31,7 +31,7 @@
     v17[1] = 3221225472;
     v17[2] = __101__VTEventTrackerManager__contentsOfDirectoryAtURL_matchingPattern_sortedByDateWithResourceKey_error___block_invoke;
     v17[3] = &unk_2784EC410;
-    v18 = v12;
+    v18 = keyCopy;
     v19 = &v20;
     v15 = [v14 sortedArrayUsingComparator:v17];
   }
@@ -45,9 +45,9 @@
   {
 
     v15 = 0;
-    if (a6)
+    if (error)
     {
-      *a6 = v21[5];
+      *error = v21[5];
     }
   }
 
@@ -102,15 +102,15 @@ uint64_t __101__VTEventTrackerManager__contentsOfDirectoryAtURL_matchingPattern_
   return v13;
 }
 
-- (id)_contentsOfDirectoryAtURL:(id)a3 matchingPattern:(id)a4 includingPropertiesForKeys:(id)a5 error:(id *)a6
+- (id)_contentsOfDirectoryAtURL:(id)l matchingPattern:(id)pattern includingPropertiesForKeys:(id)keys error:(id *)error
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:a4 options:17 error:a6];
+  lCopy = l;
+  keysCopy = keys;
+  v11 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:pattern options:17 error:error];
   if (v11)
   {
     v12 = objc_opt_new();
-    v13 = [v12 contentsOfDirectoryAtURL:v9 includingPropertiesForKeys:v10 options:0 error:a6];
+    v13 = [v12 contentsOfDirectoryAtURL:lCopy includingPropertiesForKeys:keysCopy options:0 error:error];
     if (v13)
     {
       v14 = MEMORY[0x277CCAC30];
@@ -145,18 +145,18 @@ BOOL __100__VTEventTrackerManager__contentsOfDirectoryAtURL_matchingPattern_incl
   return v4;
 }
 
-- (id)_sortedURLsInDirectory:(id)a3 matchingPattern:(id)a4
+- (id)_sortedURLsInDirectory:(id)directory matchingPattern:(id)pattern
 {
   v4 = *MEMORY[0x277CBE7C0];
   v7 = 0;
-  v5 = [(VTEventTrackerManager *)self _contentsOfDirectoryAtURL:a3 matchingPattern:a4 sortedByDateWithResourceKey:v4 error:&v7];
+  v5 = [(VTEventTrackerManager *)self _contentsOfDirectoryAtURL:directory matchingPattern:pattern sortedByDateWithResourceKey:v4 error:&v7];
 
   return v5;
 }
 
-- (id)_dictionaryToJson:(id)a3
+- (id)_dictionaryToJson:(id)json
 {
-  v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:a3 options:1 error:0];
+  v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:json options:1 error:0];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v3 encoding:4];
@@ -170,11 +170,11 @@ BOOL __100__VTEventTrackerManager__contentsOfDirectoryAtURL_matchingPattern_incl
   return v4;
 }
 
-- (void)voiceTriggerEvent:(id)a3
+- (void)voiceTriggerEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (eventCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -182,7 +182,7 @@ BOOL __100__VTEventTrackerManager__contentsOfDirectoryAtURL_matchingPattern_incl
     v7[2] = __43__VTEventTrackerManager_voiceTriggerEvent___block_invoke;
     v7[3] = &unk_2784ECD30;
     v7[4] = self;
-    v8 = v4;
+    v8 = eventCopy;
     dispatch_async(queue, v7);
   }
 }

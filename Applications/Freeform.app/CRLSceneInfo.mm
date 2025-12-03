@@ -1,5 +1,5 @@
 @interface CRLSceneInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSupported;
 - (CGRect)savedUnscaledRect;
 - (CRLCanvasElementInfo)parentInfo;
@@ -10,8 +10,8 @@
 - (NSString)debugDescription;
 - (_TtC8Freeform12CRLSceneInfo)init;
 - (int64_t)hash;
-- (void)setEditorClass:(Class)a3;
-- (void)setParentInfo:(id)a3;
+- (void)setEditorClass:(Class)class;
+- (void)setParentInfo:(id)info;
 @end
 
 @implementation CRLSceneInfo
@@ -29,11 +29,11 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -42,7 +42,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_100809D00(v8);
@@ -56,7 +56,7 @@
   Hasher.init()();
   type metadata accessor for UUID();
   sub_10006840C(&qword_1019FB870, &type metadata accessor for UUID);
-  v3 = self;
+  selfCopy = self;
   dispatch thunk of Hashable.hash(into:)();
   v4 = Hasher.finalize()();
 
@@ -98,21 +98,21 @@
 {
   swift_getKeyPath();
   sub_10006840C(&qword_101A02178, type metadata accessor for CRLSceneInfo);
-  v3 = self;
+  selfCopy = self;
   ObservationRegistrar.access<A, B>(_:keyPath:)();
 
-  v4 = *(&v3->super.isa + OBJC_IVAR____TtC8Freeform12CRLSceneInfo__parentInfo);
+  v4 = *(&selfCopy->super.isa + OBJC_IVAR____TtC8Freeform12CRLSceneInfo__parentInfo);
   swift_unknownObjectRetain();
 
   return v4;
 }
 
-- (void)setParentInfo:(id)a3
+- (void)setParentInfo:(id)info
 {
   swift_getKeyPath();
   sub_10006840C(&qword_101A02178, type metadata accessor for CRLSceneInfo);
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   ObservationRegistrar.withMutation<A, B, C>(of:keyPath:_:)();
 
   swift_unknownObjectRelease();
@@ -122,10 +122,10 @@
 {
   swift_getKeyPath();
   sub_10006840C(&qword_101A02178, type metadata accessor for CRLSceneInfo);
-  v3 = self;
+  selfCopy = self;
   ObservationRegistrar.access<A, B>(_:keyPath:)();
 
-  v4 = *(&v3->super.isa + OBJC_IVAR____TtC8Freeform12CRLSceneInfo__editorClass);
+  v4 = *(&selfCopy->super.isa + OBJC_IVAR____TtC8Freeform12CRLSceneInfo__editorClass);
 
   if (v4)
   {
@@ -138,9 +138,9 @@
   }
 }
 
-- (void)setEditorClass:(Class)a3
+- (void)setEditorClass:(Class)class
 {
-  if (a3)
+  if (class)
   {
     swift_getObjCClassMetadata();
   }
@@ -148,13 +148,13 @@
   KeyPath = swift_getKeyPath();
   __chkstk_darwin(KeyPath);
   sub_10006840C(&qword_101A02178, type metadata accessor for CRLSceneInfo);
-  v5 = self;
+  selfCopy = self;
   ObservationRegistrar.withMutation<A, B, C>(of:keyPath:_:)();
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   sub_10080A790();
 
   v3 = String._bridgeToObjectiveC()();

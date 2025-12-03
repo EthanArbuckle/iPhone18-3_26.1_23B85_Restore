@@ -1,21 +1,21 @@
 @interface HMDWidgetTimelineRefresherLogEvent
-- (HMDWidgetTimelineRefresherLogEvent)initWithKind:(id)a3 reason:(id)a4;
+- (HMDWidgetTimelineRefresherLogEvent)initWithKind:(id)kind reason:(id)reason;
 @end
 
 @implementation HMDWidgetTimelineRefresherLogEvent
 
-- (HMDWidgetTimelineRefresherLogEvent)initWithKind:(id)a3 reason:(id)a4
+- (HMDWidgetTimelineRefresherLogEvent)initWithKind:(id)kind reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  kindCopy = kind;
+  reasonCopy = reason;
+  if (!kindCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = reasonCopy;
+  if (!reasonCopy)
   {
 LABEL_7:
     v15 = _HMFPreconditionFailure();
@@ -28,7 +28,7 @@ LABEL_7:
   v9 = [(HMMLogEvent *)&v17 init];
   if (v9)
   {
-    v10 = [v6 copy];
+    v10 = [kindCopy copy];
     kind = v9->_kind;
     v9->_kind = v10;
 

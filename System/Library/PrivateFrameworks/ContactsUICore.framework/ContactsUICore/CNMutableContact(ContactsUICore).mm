@@ -8,8 +8,8 @@
 
 - (void)setBackgroundColors:()ContactsUICore
 {
-  v4 = [a3 data];
-  [a1 setImageBackgroundColorsData:v4];
+  data = [a3 data];
+  [self setImageBackgroundColorsData:data];
 }
 
 - (uint64_t)saveContactInStore:()ContactsUICore group:container:request:authorizationContext:
@@ -27,7 +27,7 @@
     a4 = [v16 arrayWithObjects:&v20 count:1];
   }
 
-  v18 = [a1 saveContactInStore:v12 groups:a4 container:v13 request:v14 authorizationContext:{v15, v20, v21}];
+  v18 = [self saveContactInStore:v12 groups:a4 container:v13 request:v14 authorizationContext:{v15, v20, v21}];
 
   return v18;
 }
@@ -44,7 +44,7 @@
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134349312;
-    v39 = a1;
+    selfCopy3 = self;
     v40 = 1024;
     LODWORD(v41) = v15 != 0;
     _os_log_impl(&dword_1A31E6000, v17, OS_LOG_TYPE_DEFAULT, "[CNContact+ContactsUICore] Saving contact %{public}p with request? %d", buf, 0x12u);
@@ -55,24 +55,24 @@
     v15 = objc_alloc_init(MEMORY[0x1E695CF88]);
   }
 
-  if (![a1 hasBeenPersisted] || (objc_msgSend(a1, "isSuggestedMe") & 1) != 0)
+  if (![self hasBeenPersisted] || (objc_msgSend(self, "isSuggestedMe") & 1) != 0)
   {
     v18 = +[CNUICoreLogProvider contact_card_os_log];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v14 identifier];
-      v20 = [v14 type];
+      identifier = [v14 identifier];
+      type = [v14 type];
       *buf = 134349570;
-      v39 = a1;
+      selfCopy3 = self;
       v40 = 2114;
-      v41 = v19;
+      v41 = identifier;
       v42 = 2048;
-      v43 = v20;
+      v43 = type;
       _os_log_impl(&dword_1A31E6000, v18, OS_LOG_TYPE_DEFAULT, "[CNContact+ContactsUICore] Saving contact %{public}p by adding, to container with identifier %{public}@ type %ld", buf, 0x20u);
     }
 
-    v21 = [v14 identifier];
-    [v15 addContact:a1 toContainerWithIdentifier:v21];
+    identifier2 = [v14 identifier];
+    [v15 addContact:self toContainerWithIdentifier:identifier2];
 
     if (!v13)
     {
@@ -100,7 +100,7 @@ LABEL_14:
             objc_enumerationMutation(v23);
           }
 
-          [v15 addMember:a1 toGroup:*(*(&v34 + 1) + 8 * v27++)];
+          [v15 addMember:self toGroup:*(*(&v34 + 1) + 8 * v27++)];
         }
 
         while (v25 != v27);
@@ -117,11 +117,11 @@ LABEL_14:
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134349056;
-    v39 = a1;
+    selfCopy3 = self;
     _os_log_impl(&dword_1A31E6000, v22, OS_LOG_TYPE_DEFAULT, "[CNContact+ContactsUICore] Saving contact %{public}p by updating", buf, 0xCu);
   }
 
-  [v15 updateContact:a1];
+  [v15 updateContact:self];
   if (v13)
   {
     goto LABEL_14;
@@ -136,15 +136,15 @@ LABEL_22:
     v30 = +[CNUICoreLogProvider contact_card_os_log];
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
-      v32 = [a1 identifier];
+      identifier3 = [self identifier];
       *buf = 138544130;
-      v39 = v32;
+      selfCopy3 = identifier3;
       v40 = 2114;
       v41 = v29;
       v42 = 2114;
       v43 = v12;
       v44 = 2112;
-      v45 = a1;
+      selfCopy4 = self;
       _os_log_error_impl(&dword_1A31E6000, v30, OS_LOG_TYPE_ERROR, "[CNContact+ContactsUICore] Could not save contact with identifer %{public}@, error %{public}@, store %{public}@, full contact %@", buf, 0x2Au);
     }
   }

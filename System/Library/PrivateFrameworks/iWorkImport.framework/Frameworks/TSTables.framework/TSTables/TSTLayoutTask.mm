@@ -1,24 +1,24 @@
 @interface TSTLayoutTask
 - (TSTLayoutEngine)layoutEngine;
-- (TSTLayoutTask)initWithLayoutEngine:(id)a3;
-- (TSTLayoutTask)initWithLayoutTask:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)enumerateCellStatesUsingBlock:(id)a3;
-- (void)writeToLayoutEngineCaches:(id)a3;
+- (TSTLayoutTask)initWithLayoutEngine:(id)engine;
+- (TSTLayoutTask)initWithLayoutTask:(id)task;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)enumerateCellStatesUsingBlock:(id)block;
+- (void)writeToLayoutEngineCaches:(id)caches;
 @end
 
 @implementation TSTLayoutTask
 
-- (TSTLayoutTask)initWithLayoutEngine:(id)a3
+- (TSTLayoutTask)initWithLayoutEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v10.receiver = self;
   v10.super_class = TSTLayoutTask;
   v5 = [(TSTLayoutTask *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_layoutEngine, v4);
+    objc_storeWeak(&v5->_layoutEngine, engineCopy);
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
     cellStatesToLayout = v6->_cellStatesToLayout;
     v6->_cellStatesToLayout = v7;
@@ -27,18 +27,18 @@
   return v6;
 }
 
-- (TSTLayoutTask)initWithLayoutTask:(id)a3
+- (TSTLayoutTask)initWithLayoutTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v23.receiver = self;
   v23.super_class = TSTLayoutTask;
   v9 = [(TSTLayoutTask *)&v23 init];
   if (v9)
   {
-    v10 = objc_msgSend_layoutEngine(v4, v5, v6, v7, v8);
+    v10 = objc_msgSend_layoutEngine(taskCopy, v5, v6, v7, v8);
     objc_storeWeak(&v9->_layoutEngine, v10);
 
-    v15 = objc_msgSend_cellStatesToLayout(v4, v11, v12, v13, v14);
+    v15 = objc_msgSend_cellStatesToLayout(taskCopy, v11, v12, v13, v14);
     v20 = objc_msgSend_copy(v15, v16, v17, v18, v19);
     cellStatesToLayout = v9->_cellStatesToLayout;
     v9->_cellStatesToLayout = v20;
@@ -47,10 +47,10 @@
   return v9;
 }
 
-- (void)enumerateCellStatesUsingBlock:(id)a3
+- (void)enumerateCellStatesUsingBlock:(id)block
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v15 = 0;
   v11 = 0u;
   v12 = 0u;
@@ -70,7 +70,7 @@ LABEL_3:
         objc_enumerationMutation(v5);
       }
 
-      v4[2](v4, *(*(&v11 + 1) + 8 * v9), &v15);
+      blockCopy[2](blockCopy, *(*(&v11 + 1) + 8 * v9), &v15);
       if (v15)
       {
         break;
@@ -90,12 +90,12 @@ LABEL_3:
   }
 }
 
-- (void)writeToLayoutEngineCaches:(id)a3
+- (void)writeToLayoutEngineCaches:(id)caches
 {
-  v4 = a3;
+  cachesCopy = caches;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v11 = objc_msgSend_generateWidthHeightCollection(v4, v7, v8, v9, v10);
+  v11 = objc_msgSend_generateWidthHeightCollection(cachesCopy, v7, v8, v9, v10);
   cellStatesToLayout = self->_cellStatesToLayout;
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
@@ -103,7 +103,7 @@ LABEL_3:
   v36[3] = &unk_278464908;
   v13 = v6;
   v37 = v13;
-  v38 = self;
+  selfCopy = self;
   v14 = v11;
   v39 = v14;
   objc_msgSend_enumerateObjectsUsingBlock_(cellStatesToLayout, v15, v36, v16, v17);
@@ -116,10 +116,10 @@ LABEL_3:
   objc_msgSend_addEntriesFromDictionary_(v32, v33, v13, v34, v35);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v9 = objc_msgSend_allocWithZone_(v5, v6, a3, v7, v8);
+  v9 = objc_msgSend_allocWithZone_(v5, v6, zone, v7, v8);
 
   return MEMORY[0x2821F9670](v9, sel_initWithLayoutTask_, self, v10, v11);
 }

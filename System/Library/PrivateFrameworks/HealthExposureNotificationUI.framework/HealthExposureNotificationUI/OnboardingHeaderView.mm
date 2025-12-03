@@ -1,11 +1,11 @@
 @interface OnboardingHeaderView
-- (_TtC28HealthExposureNotificationUI20OnboardingHeaderView)initWithCoder:(id)a3;
-- (_TtC28HealthExposureNotificationUI20OnboardingHeaderView)initWithFrame:(CGRect)a3;
+- (_TtC28HealthExposureNotificationUI20OnboardingHeaderView)initWithCoder:(id)coder;
+- (_TtC28HealthExposureNotificationUI20OnboardingHeaderView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation OnboardingHeaderView
 
-- (_TtC28HealthExposureNotificationUI20OnboardingHeaderView)initWithCoder:(id)a3
+- (_TtC28HealthExposureNotificationUI20OnboardingHeaderView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC28HealthExposureNotificationUI20OnboardingHeaderView_imageView;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x277D755E8]) init];
@@ -18,7 +18,7 @@
   return result;
 }
 
-- (_TtC28HealthExposureNotificationUI20OnboardingHeaderView)initWithFrame:(CGRect)a3
+- (_TtC28HealthExposureNotificationUI20OnboardingHeaderView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

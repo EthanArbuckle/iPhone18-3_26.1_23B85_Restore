@@ -1,51 +1,51 @@
 @interface SGCuratedChangeNotifications
-+ (id)_getListener:(Class)a3;
++ (id)_getListener:(Class)listener;
 + (id)_getListenerByClassMap;
-+ (void)_addObserver:(id)a3 forObjectLifetime:(id)a4 listenerClass:(Class)a5;
-+ (void)addAddressBookObserver:(id)a3 forObjectLifetime:(id)a4;
-+ (void)addCalendarObserver:(id)a3 forObjectLifetime:(id)a4;
++ (void)_addObserver:(id)observer forObjectLifetime:(id)lifetime listenerClass:(Class)class;
++ (void)addAddressBookObserver:(id)observer forObjectLifetime:(id)lifetime;
++ (void)addCalendarObserver:(id)observer forObjectLifetime:(id)lifetime;
 + (void)simulateAddressBookChange;
 + (void)simulateCalendarChange;
 @end
 
 @implementation SGCuratedChangeNotifications
 
-+ (void)addCalendarObserver:(id)a3 forObjectLifetime:(id)a4
++ (void)addCalendarObserver:(id)observer forObjectLifetime:(id)lifetime
 {
-  v6 = a4;
-  v7 = a3;
-  [a1 _addObserver:v7 forObjectLifetime:v6 listenerClass:objc_opt_class()];
+  lifetimeCopy = lifetime;
+  observerCopy = observer;
+  [self _addObserver:observerCopy forObjectLifetime:lifetimeCopy listenerClass:objc_opt_class()];
 }
 
-+ (void)addAddressBookObserver:(id)a3 forObjectLifetime:(id)a4
++ (void)addAddressBookObserver:(id)observer forObjectLifetime:(id)lifetime
 {
-  v6 = a4;
-  v7 = a3;
-  [a1 _addObserver:v7 forObjectLifetime:v6 listenerClass:objc_opt_class()];
+  lifetimeCopy = lifetime;
+  observerCopy = observer;
+  [self _addObserver:observerCopy forObjectLifetime:lifetimeCopy listenerClass:objc_opt_class()];
 }
 
-+ (void)_addObserver:(id)a3 forObjectLifetime:(id)a4 listenerClass:(Class)a5
++ (void)_addObserver:(id)observer forObjectLifetime:(id)lifetime listenerClass:(Class)class
 {
-  v8 = a4;
-  v9 = a3;
-  value = [a1 _getListener:a5];
-  [value addObserver:v9 forObjectLifetime:v8];
+  lifetimeCopy = lifetime;
+  observerCopy = observer;
+  value = [self _getListener:class];
+  [value addObserver:observerCopy forObjectLifetime:lifetimeCopy];
 
-  objc_setAssociatedObject(v8, a5, value, 0x301);
+  objc_setAssociatedObject(lifetimeCopy, class, value, 0x301);
 }
 
-+ (id)_getListener:(Class)a3
++ (id)_getListener:(Class)listener
 {
-  v4 = [a1 _getListenerByClassMap];
-  objc_sync_enter(v4);
-  v5 = [v4 objectForKey:a3];
+  _getListenerByClassMap = [self _getListenerByClassMap];
+  objc_sync_enter(_getListenerByClassMap);
+  v5 = [_getListenerByClassMap objectForKey:listener];
   if (!v5)
   {
     v5 = objc_opt_new();
-    [v4 setObject:v5 forKey:a3];
+    [_getListenerByClassMap setObject:v5 forKey:listener];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(_getListenerByClassMap);
 
   return v5;
 }
@@ -74,13 +74,13 @@ void __54__SGCuratedChangeNotifications__getListenerByClassMap__block_invoke()
 
 + (void)simulateCalendarChange
 {
-  v2 = [a1 _getListener:objc_opt_class()];
+  v2 = [self _getListener:objc_opt_class()];
   [v2 fire];
 }
 
 + (void)simulateAddressBookChange
 {
-  v2 = [a1 _getListener:objc_opt_class()];
+  v2 = [self _getListener:objc_opt_class()];
   [v2 fire];
 }
 

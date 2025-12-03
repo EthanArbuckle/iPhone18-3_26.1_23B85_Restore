@@ -1,19 +1,19 @@
 @interface DEDExtensionIdentifierManager
 + (id)archivedClasses;
 + (id)log;
-- (BOOL)isKnownIdentifier:(id)a3;
+- (BOOL)isKnownIdentifier:(id)identifier;
 - (DEDExtensionIdentifierManager)init;
-- (DEDExtensionIdentifierManager)initWithCoder:(id)a3;
-- (DEDExtensionIdentifierManager)initWithExtensionIdentifiers:(id)a3;
-- (DEDExtensionIdentifierManager)initWithJSONString:(id)a3;
+- (DEDExtensionIdentifierManager)initWithCoder:(id)coder;
+- (DEDExtensionIdentifierManager)initWithExtensionIdentifiers:(id)identifiers;
+- (DEDExtensionIdentifierManager)initWithJSONString:(id)string;
 - (id)JSONRepresentation;
 - (id)allIdentifiers;
-- (id)identifierForExtensionIdentifier:(id)a3;
-- (id)knownIdentifiersForExtensionIdentifier:(id)a3;
+- (id)identifierForExtensionIdentifier:(id)identifier;
+- (id)knownIdentifiersForExtensionIdentifier:(id)identifier;
 - (void)JSONRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)reset;
-- (void)revokeIdentifier:(id)a3;
+- (void)revokeIdentifier:(id)identifier;
 @end
 
 @implementation DEDExtensionIdentifierManager
@@ -22,19 +22,19 @@
 {
   v44 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277CBEB38]);
-  v4 = [(DEDExtensionIdentifierManager *)self identifierTable];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  identifierTable = [(DEDExtensionIdentifierManager *)self identifierTable];
+  v5 = [v3 initWithCapacity:{objc_msgSend(identifierTable, "count")}];
 
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v29 = self;
-  v6 = [(DEDExtensionIdentifierManager *)self identifierTable];
-  v7 = [v6 allKeys];
+  selfCopy = self;
+  identifierTable2 = [(DEDExtensionIdentifierManager *)self identifierTable];
+  allKeys = [identifierTable2 allKeys];
 
-  obj = v7;
-  v30 = [v7 countByEnumeratingWithState:&v36 objects:v43 count:16];
+  obj = allKeys;
+  v30 = [allKeys countByEnumeratingWithState:&v36 objects:v43 count:16];
   if (v30)
   {
     v28 = *v37;
@@ -52,8 +52,8 @@
         v33 = 0u;
         v34 = 0u;
         v35 = 0u;
-        v10 = [(DEDExtensionIdentifierManager *)v29 identifierTable];
-        v11 = [v10 objectForKeyedSubscript:v9];
+        identifierTable3 = [(DEDExtensionIdentifierManager *)selfCopy identifierTable];
+        v11 = [identifierTable3 objectForKeyedSubscript:v9];
 
         v12 = [v11 countByEnumeratingWithState:&v32 objects:v42 count:16];
         if (v12)
@@ -76,8 +76,8 @@
                 v17 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:1];
               }
 
-              v18 = [v16 stringValue];
-              [v17 addObject:v18];
+              stringValue = [v16 stringValue];
+              [v17 addObject:stringValue];
 
               [v5 setObject:v17 forKeyedSubscript:v9];
             }
@@ -123,10 +123,10 @@
   return v23;
 }
 
-- (DEDExtensionIdentifierManager)initWithJSONString:(id)a3
+- (DEDExtensionIdentifierManager)initWithJSONString:(id)string
 {
   v55 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringCopy = string;
   v47.receiver = self;
   v47.super_class = DEDExtensionIdentifierManager;
   v5 = [(DEDExtensionIdentifierManager *)&v47 init];
@@ -134,8 +134,8 @@
   [(DEDExtensionIdentifierManager *)v5 setIdentifierTable:v6];
 
   v7 = MEMORY[0x277CCAAA0];
-  v30 = v4;
-  v8 = [v4 dataUsingEncoding:4];
+  v30 = stringCopy;
+  v8 = [stringCopy dataUsingEncoding:4];
   v46 = 0;
   v9 = [v7 JSONObjectWithData:v8 options:0 error:&v46];
   v10 = v46;
@@ -205,8 +205,8 @@
                     }
 
                     v23 = [[DEDExtensionIdentifier alloc] initWithString:*(*(&v38 + 1) + 8 * i)];
-                    v24 = [(DEDExtensionIdentifierManager *)v5 identifierTable];
-                    v25 = [v24 objectForKeyedSubscript:v16];
+                    identifierTable = [(DEDExtensionIdentifierManager *)v5 identifierTable];
+                    v25 = [identifierTable objectForKeyedSubscript:v16];
 
                     if (v25)
                     {
@@ -219,8 +219,8 @@
                       [MEMORY[0x277CBEA60] arrayWithObjects:&v48 count:1];
                     }
                     v26 = ;
-                    v27 = [(DEDExtensionIdentifierManager *)v5 identifierTable];
-                    [v27 setObject:v26 forKeyedSubscript:v16];
+                    identifierTable2 = [(DEDExtensionIdentifierManager *)v5 identifierTable];
+                    [identifierTable2 setObject:v26 forKeyedSubscript:v16];
                   }
 
                   v20 = [v18 countByEnumeratingWithState:&v38 objects:v49 count:16];
@@ -302,16 +302,16 @@
   [(DEDExtensionIdentifierManager *)self setIdentifierTable:v4];
 }
 
-- (DEDExtensionIdentifierManager)initWithExtensionIdentifiers:(id)a3
+- (DEDExtensionIdentifierManager)initWithExtensionIdentifiers:(id)identifiers
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v27.receiver = self;
   v27.super_class = DEDExtensionIdentifierManager;
   v5 = [(DEDExtensionIdentifierManager *)&v27 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+    v6 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
     identifierTable = v5->_identifierTable;
     v5->_identifierTable = v6;
 
@@ -319,8 +319,8 @@
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v22 = v4;
-    v8 = v4;
+    v22 = identifiersCopy;
+    v8 = identifiersCopy;
     v9 = [v8 countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v9)
     {
@@ -337,9 +337,9 @@
           }
 
           v13 = *(*(&v23 + 1) + 8 * v12);
-          v14 = [(DEDExtensionIdentifierManager *)v5 identifierTable];
-          v15 = [v13 extensionIdentifier];
-          v16 = [v14 objectForKey:v15];
+          identifierTable = [(DEDExtensionIdentifierManager *)v5 identifierTable];
+          extensionIdentifier = [v13 extensionIdentifier];
+          v16 = [identifierTable objectForKey:extensionIdentifier];
           v17 = [v16 mutableCopy];
 
           if (!v17)
@@ -348,9 +348,9 @@
           }
 
           [v17 addObject:v13];
-          v18 = [(DEDExtensionIdentifierManager *)v5 identifierTable];
-          v19 = [v13 extensionIdentifier];
-          [v18 setObject:v17 forKey:v19];
+          identifierTable2 = [(DEDExtensionIdentifierManager *)v5 identifierTable];
+          extensionIdentifier2 = [v13 extensionIdentifier];
+          [identifierTable2 setObject:v17 forKey:extensionIdentifier2];
 
           ++v12;
         }
@@ -362,20 +362,20 @@
       while (v10);
     }
 
-    v4 = v22;
+    identifiersCopy = v22;
   }
 
   v20 = *MEMORY[0x277D85DE8];
   return v5;
 }
 
-- (id)identifierForExtensionIdentifier:(id)a3
+- (id)identifierForExtensionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DEDExtensionIdentifierManager *)self identifierTable];
-  objc_sync_enter(v5);
-  v6 = [(DEDExtensionIdentifierManager *)self identifierTable];
-  v7 = [v6 objectForKey:v4];
+  identifierCopy = identifier;
+  identifierTable = [(DEDExtensionIdentifierManager *)self identifierTable];
+  objc_sync_enter(identifierTable);
+  identifierTable2 = [(DEDExtensionIdentifierManager *)self identifierTable];
+  v7 = [identifierTable2 objectForKey:identifierCopy];
   v8 = [v7 mutableCopy];
 
   if (!v8)
@@ -383,11 +383,11 @@
     v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:1];
   }
 
-  v9 = [v8 lastObject];
-  v10 = v9;
-  if (v9)
+  lastObject = [v8 lastObject];
+  v10 = lastObject;
+  if (lastObject)
   {
-    v11 = [v9 invocationNumber] + 1;
+    v11 = [lastObject invocationNumber] + 1;
   }
 
   else
@@ -395,23 +395,23 @@
     v11 = 0;
   }
 
-  v12 = [[DEDExtensionIdentifier alloc] initWithExtensionIdentifier:v4 invocationNumber:v11];
+  v12 = [[DEDExtensionIdentifier alloc] initWithExtensionIdentifier:identifierCopy invocationNumber:v11];
   [v8 addObject:v12];
-  v13 = [(DEDExtensionIdentifierManager *)self identifierTable];
-  [v13 setObject:v8 forKey:v4];
+  identifierTable3 = [(DEDExtensionIdentifierManager *)self identifierTable];
+  [identifierTable3 setObject:v8 forKey:identifierCopy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(identifierTable);
 
   return v12;
 }
 
-- (id)knownIdentifiersForExtensionIdentifier:(id)a3
+- (id)knownIdentifiersForExtensionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DEDExtensionIdentifierManager *)self identifierTable];
-  objc_sync_enter(v5);
-  v6 = [(DEDExtensionIdentifierManager *)self identifierTable];
-  v7 = [v6 objectForKey:v4];
+  identifierCopy = identifier;
+  identifierTable = [(DEDExtensionIdentifierManager *)self identifierTable];
+  objc_sync_enter(identifierTable);
+  identifierTable2 = [(DEDExtensionIdentifierManager *)self identifierTable];
+  v7 = [identifierTable2 objectForKey:identifierCopy];
 
   if (v7)
   {
@@ -423,28 +423,28 @@
     v8 = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(identifierTable);
 
   return v8;
 }
 
-- (void)revokeIdentifier:(id)a3
+- (void)revokeIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DEDExtensionIdentifierManager *)self identifierTable];
-  objc_sync_enter(v5);
-  v6 = [(DEDExtensionIdentifierManager *)self identifierTable];
-  v7 = [v4 extensionIdentifier];
-  v8 = [v6 objectForKey:v7];
+  identifierCopy = identifier;
+  identifierTable = [(DEDExtensionIdentifierManager *)self identifierTable];
+  objc_sync_enter(identifierTable);
+  identifierTable2 = [(DEDExtensionIdentifierManager *)self identifierTable];
+  extensionIdentifier = [identifierCopy extensionIdentifier];
+  v8 = [identifierTable2 objectForKey:extensionIdentifier];
   v9 = [v8 mutableCopy];
 
-  [v9 removeObject:v4];
+  [v9 removeObject:identifierCopy];
   if (v9)
   {
-    v10 = [(DEDExtensionIdentifierManager *)self identifierTable];
-    v11 = [v4 extensionIdentifier];
-    [v10 setObject:v9 forKey:v11];
+    identifierTable3 = [(DEDExtensionIdentifierManager *)self identifierTable];
+    extensionIdentifier2 = [identifierCopy extensionIdentifier];
+    [identifierTable3 setObject:v9 forKey:extensionIdentifier2];
   }
 
   else
@@ -452,14 +452,14 @@
     v12 = +[DEDExtensionIdentifierManager log];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = [v4 extensionIdentifier];
+      extensionIdentifier3 = [identifierCopy extensionIdentifier];
       v15 = 138543362;
-      v16 = v13;
+      v16 = extensionIdentifier3;
       _os_log_impl(&dword_248AD7000, v12, OS_LOG_TYPE_INFO, "no identifier table found for DE identifier [%{public}@]", &v15, 0xCu);
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(identifierTable);
   v14 = *MEMORY[0x277D85DE8];
 }
 
@@ -467,16 +467,16 @@
 {
   v17 = *MEMORY[0x277D85DE8];
   v3 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:5];
-  v4 = [(DEDExtensionIdentifierManager *)self identifierTable];
-  objc_sync_enter(v4);
+  identifierTable = [(DEDExtensionIdentifierManager *)self identifierTable];
+  objc_sync_enter(identifierTable);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(DEDExtensionIdentifierManager *)self identifierTable];
-  v6 = [v5 allValues];
+  identifierTable2 = [(DEDExtensionIdentifierManager *)self identifierTable];
+  allValues = [identifierTable2 allValues];
 
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v7 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = *v13;
@@ -486,59 +486,59 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         [v3 addObjectsFromArray:*(*(&v12 + 1) + 8 * i)];
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(identifierTable);
   v10 = *MEMORY[0x277D85DE8];
 
   return v3;
 }
 
-- (BOOL)isKnownIdentifier:(id)a3
+- (BOOL)isKnownIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DEDExtensionIdentifierManager *)self identifierTable];
-  objc_sync_enter(v5);
-  v6 = [(DEDExtensionIdentifierManager *)self identifierTable];
-  v7 = [v4 extensionIdentifier];
-  v8 = [v6 objectForKey:v7];
+  identifierCopy = identifier;
+  identifierTable = [(DEDExtensionIdentifierManager *)self identifierTable];
+  objc_sync_enter(identifierTable);
+  identifierTable2 = [(DEDExtensionIdentifierManager *)self identifierTable];
+  extensionIdentifier = [identifierCopy extensionIdentifier];
+  v8 = [identifierTable2 objectForKey:extensionIdentifier];
 
   if (v8)
   {
-    LOBYTE(v6) = [v8 containsObject:v4];
+    LOBYTE(identifierTable2) = [v8 containsObject:identifierCopy];
   }
 
-  objc_sync_exit(v5);
-  return (v8 != 0) & v6;
+  objc_sync_exit(identifierTable);
+  return (v8 != 0) & identifierTable2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DEDExtensionIdentifierManager *)self identifierTable];
-  [v4 encodeObject:v5 forKey:@"identifierTable"];
+  coderCopy = coder;
+  identifierTable = [(DEDExtensionIdentifierManager *)self identifierTable];
+  [coderCopy encodeObject:identifierTable forKey:@"identifierTable"];
 }
 
-- (DEDExtensionIdentifierManager)initWithCoder:(id)a3
+- (DEDExtensionIdentifierManager)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = DEDExtensionIdentifierManager;
   v5 = [(DEDExtensionIdentifierManager *)&v13 init];
   if (v5)
   {
-    v6 = [objc_opt_class() archivedClasses];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"identifierTable"];
+    archivedClasses = [objc_opt_class() archivedClasses];
+    v7 = [coderCopy decodeObjectOfClasses:archivedClasses forKey:@"identifierTable"];
     identifierTable = v5->_identifierTable;
     v5->_identifierTable = v7;
 
@@ -595,7 +595,7 @@ void __36__DEDExtensionIdentifierManager_log__block_invoke()
 - (void)JSONRepresentation
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = [a1 debugDescription];
+  v3 = [self debugDescription];
   v6[0] = 136446466;
   OUTLINED_FUNCTION_0_5();
   v7 = v4;

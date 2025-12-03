@@ -1,110 +1,110 @@
 @interface SACloneGroupsAnalyzer
-+ (BOOL)isNodeID:(unint64_t)a3 oldestForDStreamID:(unint64_t)a4 path:(id)a5 error:(id *)a6;
-- (void)addPathOfClone:(id)a3 cloneData:(id)a4;
-- (void)attributeCloneSizeForClone:(id)a3 volumesInfo:(id)a4 clonesData:(id)a5 appSizeBreakdownList:(id)a6 collectClonesPaths:(BOOL)a7;
-- (void)fixUpCloneSizeForClone:(id)a3 volumesInfo:(id)a4 clonesData:(id)a5 appSizeBreakdownList:(id)a6 revert:(BOOL)a7;
-- (void)iterateCloneGroupsOnVolume:(id)a3 volumesInfo:(id)a4 appSizeBreakdownList:(id)a5 collectClonesPaths:(BOOL)a6 reply:(id)a7;
-- (void)updateAppSizeBreakdownForClone:(id)a3 appSizeBreakdownList:(id)a4 dataSize:(unint64_t)a5;
++ (BOOL)isNodeID:(unint64_t)d oldestForDStreamID:(unint64_t)iD path:(id)path error:(id *)error;
+- (void)addPathOfClone:(id)clone cloneData:(id)data;
+- (void)attributeCloneSizeForClone:(id)clone volumesInfo:(id)info clonesData:(id)data appSizeBreakdownList:(id)list collectClonesPaths:(BOOL)paths;
+- (void)fixUpCloneSizeForClone:(id)clone volumesInfo:(id)info clonesData:(id)data appSizeBreakdownList:(id)list revert:(BOOL)revert;
+- (void)iterateCloneGroupsOnVolume:(id)volume volumesInfo:(id)info appSizeBreakdownList:(id)list collectClonesPaths:(BOOL)paths reply:(id)reply;
+- (void)updateAppSizeBreakdownForClone:(id)clone appSizeBreakdownList:(id)list dataSize:(unint64_t)size;
 @end
 
 @implementation SACloneGroupsAnalyzer
 
-- (void)addPathOfClone:(id)a3 cloneData:(id)a4
+- (void)addPathOfClone:(id)clone cloneData:(id)data
 {
-  v15 = a3;
-  v5 = a4;
-  v6 = [v15 bundleID];
-  v7 = [v15 clonePath];
-  if (v7 && v6)
+  cloneCopy = clone;
+  dataCopy = data;
+  bundleID = [cloneCopy bundleID];
+  clonePath = [cloneCopy clonePath];
+  if (clonePath && bundleID)
   {
-    v8 = [v5 objectForKeyedSubscript:v6];
-    v9 = [v8 dataSize];
-    v10 = [v5 objectForKeyedSubscript:v6];
-    v11 = [v10 dataSize];
-    v12 = [v5 objectForKeyedSubscript:v6];
-    v13 = +[SACloneInfo newWithDataSize:cloneSize:purgeableSize:dirStatKey:attributionTag:clonePath:](SACloneInfo, "newWithDataSize:cloneSize:purgeableSize:dirStatKey:attributionTag:clonePath:", v9, v11, [v12 purgeableSize], objc_msgSend(v15, "dirStatID"), objc_msgSend(v15, "attributionHash"), v7);
+    v8 = [dataCopy objectForKeyedSubscript:bundleID];
+    dataSize = [v8 dataSize];
+    v10 = [dataCopy objectForKeyedSubscript:bundleID];
+    dataSize2 = [v10 dataSize];
+    v12 = [dataCopy objectForKeyedSubscript:bundleID];
+    v13 = +[SACloneInfo newWithDataSize:cloneSize:purgeableSize:dirStatKey:attributionTag:clonePath:](SACloneInfo, "newWithDataSize:cloneSize:purgeableSize:dirStatKey:attributionTag:clonePath:", dataSize, dataSize2, [v12 purgeableSize], objc_msgSend(cloneCopy, "dirStatID"), objc_msgSend(cloneCopy, "attributionHash"), clonePath);
 
-    v14 = [v5 objectForKeyedSubscript:v6];
+    v14 = [dataCopy objectForKeyedSubscript:bundleID];
     [v14 addCloneInfo:v13];
   }
 }
 
-- (void)updateAppSizeBreakdownForClone:(id)a3 appSizeBreakdownList:(id)a4 dataSize:(unint64_t)a5
+- (void)updateAppSizeBreakdownForClone:(id)clone appSizeBreakdownList:(id)list dataSize:(unint64_t)size
 {
-  v12 = a3;
-  v7 = a4;
-  v8 = [v12 bundleID];
-  if (v8)
+  cloneCopy = clone;
+  listCopy = list;
+  bundleID = [cloneCopy bundleID];
+  if (bundleID)
   {
-    if ([v12 attributionHash])
+    if ([cloneCopy attributionHash])
     {
-      [v7 updateTagsWithCloneSize:a5 bundleIDs:v8];
+      [listCopy updateTagsWithCloneSize:size bundleIDs:bundleID];
     }
 
-    else if ([v12 dirStatID])
+    else if ([cloneCopy dirStatID])
     {
-      v9 = [v12 dirStatID];
-      v10 = [v12 volPath];
-      v11 = [SASupport getPathForDirStatKey:v9 volumePath:v10];
+      dirStatID = [cloneCopy dirStatID];
+      volPath = [cloneCopy volPath];
+      v11 = [SASupport getPathForDirStatKey:dirStatID volumePath:volPath];
 
       if (v11)
       {
-        [v7 updatePath:v11 cloneSize:a5 bundleIDs:v8];
+        [listCopy updatePath:v11 cloneSize:size bundleIDs:bundleID];
       }
     }
   }
 }
 
-- (void)fixUpCloneSizeForClone:(id)a3 volumesInfo:(id)a4 clonesData:(id)a5 appSizeBreakdownList:(id)a6 revert:(BOOL)a7
+- (void)fixUpCloneSizeForClone:(id)clone volumesInfo:(id)info clonesData:(id)data appSizeBreakdownList:(id)list revert:(BOOL)revert
 {
-  v12 = a3;
+  cloneCopy = clone;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100013B3C;
   v16[3] = &unk_100064E58;
-  v21 = a7;
-  v17 = a5;
-  v18 = a6;
-  v19 = self;
-  v20 = v12;
-  v13 = v12;
-  v14 = v18;
-  v15 = v17;
-  [v13 getFixUpSizeAndOwnerWithVolumesInfo:a4 reply:v16];
+  revertCopy = revert;
+  dataCopy = data;
+  listCopy = list;
+  selfCopy = self;
+  v20 = cloneCopy;
+  v13 = cloneCopy;
+  v14 = listCopy;
+  v15 = dataCopy;
+  [v13 getFixUpSizeAndOwnerWithVolumesInfo:info reply:v16];
 }
 
-- (void)attributeCloneSizeForClone:(id)a3 volumesInfo:(id)a4 clonesData:(id)a5 appSizeBreakdownList:(id)a6 collectClonesPaths:(BOOL)a7
+- (void)attributeCloneSizeForClone:(id)clone volumesInfo:(id)info clonesData:(id)data appSizeBreakdownList:(id)list collectClonesPaths:(BOOL)paths
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  if (v12)
+  cloneCopy = clone;
+  dataCopy = data;
+  listCopy = list;
+  if (cloneCopy)
   {
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100013D2C;
     v15[3] = &unk_100064E80;
-    v20 = a7;
-    v16 = v13;
-    v17 = self;
-    v18 = v12;
-    v19 = v14;
-    [v18 getAttributionSizeWithVolumesInfo:a4 reply:v15];
+    pathsCopy = paths;
+    v16 = dataCopy;
+    selfCopy = self;
+    v18 = cloneCopy;
+    v19 = listCopy;
+    [v18 getAttributionSizeWithVolumesInfo:info reply:v15];
   }
 }
 
-+ (BOOL)isNodeID:(unint64_t)a3 oldestForDStreamID:(unint64_t)a4 path:(id)a5 error:(id *)a6
++ (BOOL)isNodeID:(unint64_t)d oldestForDStreamID:(unint64_t)iD path:(id)path error:(id *)error
 {
-  v8 = a5;
+  pathCopy = path;
   v9 = malloc_type_malloc(0x40000uLL, 0xA4C5DB79uLL);
   if (v9)
   {
     v10 = v9;
-    v26 = a6;
-    v27 = a3;
+    errorCopy = error;
+    dCopy = d;
     v11 = 0;
     v12 = 0;
-    v13 = 0;
+    inum = 0;
     v14 = 0;
     memset(v28, 0, sizeof(v28));
     v29 = v9;
@@ -114,7 +114,7 @@
     while (1)
     {
       *(&v29 + 1) = 0x40000;
-      if (fsctl([v8 fileSystemRepresentation], 0xC0684A87uLL, v28, 0))
+      if (fsctl([pathCopy fileSystemRepresentation], 0xC0684A87uLL, v28, 0))
       {
         break;
       }
@@ -128,11 +128,11 @@
           v17 = v15 + 1;
           if (v16 == 255)
           {
-            v18 = [SAClone newWithInum:v11 volumePath:v8 flags:v12 dirStatID:0 attributionTag:0 physicalSize:0];
+            v18 = [SAClone newWithInum:v11 volumePath:pathCopy flags:v12 dirStatID:0 attributionTag:0 physicalSize:0];
 
-            if (([v18 isRegularPurgeable] & 1) == 0 && (!v13 || objc_msgSend(v18, "inum") < v13))
+            if (([v18 isRegularPurgeable] & 1) == 0 && (!inum || objc_msgSend(v18, "inum") < inum))
             {
-              v13 = [v18 inum];
+              inum = [v18 inum];
             }
           }
 
@@ -190,16 +190,16 @@
     }
 
     free(v10);
-    if (v26)
+    if (errorCopy)
     {
       v24 = __error();
-      *v26 = sub_100001EA0(*v24);
+      *errorCopy = sub_100001EA0(*v24);
     }
 
     v18 = v14;
 LABEL_33:
     free(v10);
-    v22 = v13 == v27;
+    v22 = inum == dCopy;
   }
 
   else
@@ -210,11 +210,11 @@ LABEL_33:
       sub_10003D848();
     }
 
-    if (a6)
+    if (error)
     {
       v21 = __error();
       sub_100001EA0(*v21);
-      *a6 = v22 = 0;
+      *error = v22 = 0;
     }
 
     else
@@ -226,13 +226,13 @@ LABEL_33:
   return v22;
 }
 
-- (void)iterateCloneGroupsOnVolume:(id)a3 volumesInfo:(id)a4 appSizeBreakdownList:(id)a5 collectClonesPaths:(BOOL)a6 reply:(id)a7
+- (void)iterateCloneGroupsOnVolume:(id)volume volumesInfo:(id)info appSizeBreakdownList:(id)list collectClonesPaths:(BOOL)paths reply:(id)reply
 {
-  v51 = a6;
-  v59 = a3;
-  v58 = a4;
-  v57 = a5;
-  v10 = a7;
+  pathsCopy = paths;
+  volumeCopy = volume;
+  infoCopy = info;
+  listCopy = list;
+  replyCopy = reply;
   v11 = objc_opt_new();
   v12 = malloc_type_malloc(0x40000uLL, 0x6400384DuLL);
   if (v12)
@@ -240,7 +240,7 @@ LABEL_33:
     v13 = v12;
     v52 = 0;
     v53 = v11;
-    v50 = v10;
+    v50 = replyCopy;
     v14 = 0;
     v60 = 0;
     v61 = 0;
@@ -261,7 +261,7 @@ LABEL_33:
     while (1)
     {
       *(&v64 + 1) = 0x40000;
-      if (fsctl([v59 fileSystemRepresentation], 0xC0684A87uLL, v63, 0))
+      if (fsctl([volumeCopy fileSystemRepresentation], 0xC0684A87uLL, v63, 0))
       {
         break;
       }
@@ -282,7 +282,7 @@ LABEL_33:
             }
 
             v19 = v21;
-            v10 = v50;
+            replyCopy = v50;
             goto LABEL_58;
           }
 
@@ -354,7 +354,7 @@ LABEL_31:
               goto LABEL_31;
             }
 
-            v19 = [SAClone newWithInum:v14 volumePath:v59 flags:v15 dirStatID:v61 attributionTag:v16 physicalSize:v17];
+            v19 = [SAClone newWithInum:v14 volumePath:volumeCopy flags:v15 dirStatID:v61 attributionTag:v16 physicalSize:v17];
 
             if ((v18 & 0x1B) != 0x1B)
             {
@@ -375,7 +375,7 @@ LABEL_31:
               }
             }
 
-            [(SACloneGroupsAnalyzer *)self fixUpCloneSizeForClone:v19 volumesInfo:v58 clonesData:v53 appSizeBreakdownList:v57 revert:0, v49];
+            [(SACloneGroupsAnalyzer *)self fixUpCloneSizeForClone:v19 volumesInfo:infoCopy clonesData:v53 appSizeBreakdownList:listCopy revert:0, v49];
             if (v56 && v60 == v56)
             {
               if (!v19)
@@ -399,14 +399,14 @@ LABEL_31:
                 }
 
                 v31 = v52;
-                [(SACloneGroupsAnalyzer *)self fixUpCloneSizeForClone:v52 volumesInfo:v58 clonesData:v53 appSizeBreakdownList:v57 revert:1];
+                [(SACloneGroupsAnalyzer *)self fixUpCloneSizeForClone:v52 volumesInfo:infoCopy clonesData:v53 appSizeBreakdownList:listCopy revert:1];
                 v30 = v54;
               }
 
               else
               {
                 v30 = v54;
-                [(SACloneGroupsAnalyzer *)self attributeCloneSizeForClone:v54 volumesInfo:v58 clonesData:v53 appSizeBreakdownList:v57 collectClonesPaths:v51];
+                [(SACloneGroupsAnalyzer *)self attributeCloneSizeForClone:v54 volumesInfo:infoCopy clonesData:v53 appSizeBreakdownList:listCopy collectClonesPaths:pathsCopy];
                 v31 = v52;
               }
 
@@ -436,19 +436,19 @@ LABEL_31:
               goto LABEL_51;
             }
 
-            v34 = [v19 bundleID];
-            if (!v34)
+            bundleID = [v19 bundleID];
+            if (!bundleID)
             {
               goto LABEL_51;
             }
 
-            v35 = v34;
+            v35 = bundleID;
             if (v54)
             {
-              v36 = [v54 inum];
-              v37 = [v19 inum];
+              inum = [v54 inum];
+              inum2 = [v19 inum];
 
-              if (v36 <= v37)
+              if (inum <= inum2)
               {
                 goto LABEL_51;
               }
@@ -495,7 +495,7 @@ LABEL_52:
         if (v62 < 2)
         {
           v48 = SALog();
-          v10 = v50;
+          replyCopy = v50;
           v40 = v52;
           v11 = v53;
           v39 = v54;
@@ -504,20 +504,20 @@ LABEL_52:
             sub_10003D950(v60, v62, v48);
           }
 
-          [(SACloneGroupsAnalyzer *)self fixUpCloneSizeForClone:v52 volumesInfo:v58 clonesData:v53 appSizeBreakdownList:v57 revert:1];
+          [(SACloneGroupsAnalyzer *)self fixUpCloneSizeForClone:v52 volumesInfo:infoCopy clonesData:v53 appSizeBreakdownList:listCopy revert:1];
         }
 
         else
         {
           v39 = v54;
           v11 = v53;
-          [(SACloneGroupsAnalyzer *)self attributeCloneSizeForClone:v54 volumesInfo:v58 clonesData:v53 appSizeBreakdownList:v57 collectClonesPaths:v51];
-          v10 = v50;
+          [(SACloneGroupsAnalyzer *)self attributeCloneSizeForClone:v54 volumesInfo:infoCopy clonesData:v53 appSizeBreakdownList:listCopy collectClonesPaths:pathsCopy];
+          replyCopy = v50;
           v40 = v52;
         }
 
         free(v13);
-        v10[2](v10, v11, 0);
+        replyCopy[2](replyCopy, v11, 0);
         goto LABEL_62;
       }
     }
@@ -531,7 +531,7 @@ LABEL_52:
     free(v13);
     v46 = __error();
     v47 = sub_100001EA0(*v46);
-    v10 = v50;
+    replyCopy = v50;
     (v50)[2](v50, 0, v47);
 
 LABEL_58:
@@ -550,7 +550,7 @@ LABEL_58:
 
     v43 = __error();
     v44 = sub_100001EA0(*v43);
-    (v10)[2](v10, 0, v44);
+    (replyCopy)[2](replyCopy, 0, v44);
 
     v39 = 0;
     v19 = 0;

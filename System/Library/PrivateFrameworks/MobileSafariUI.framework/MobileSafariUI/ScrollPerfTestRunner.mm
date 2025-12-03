@@ -1,40 +1,40 @@
 @interface ScrollPerfTestRunner
 - (BOOL)isPageTooShortToScroll;
-- (BOOL)performActionForPage:(id)a3;
-- (BOOL)startPageAction:(id)a3;
-- (CGPoint)touchPointForMoveIndex:(unint64_t)a3;
-- (ScrollPerfTestRunner)initWithTestName:(id)a3 browserController:(id)a4;
-- (id)finalStatusForPage:(id)a3;
+- (BOOL)performActionForPage:(id)page;
+- (BOOL)startPageAction:(id)action;
+- (CGPoint)touchPointForMoveIndex:(unint64_t)index;
+- (ScrollPerfTestRunner)initWithTestName:(id)name browserController:(id)controller;
+- (id)finalStatusForPage:(id)page;
 - (id)machineConfigInfo;
-- (id)outputDataForPage:(id)a3;
+- (id)outputDataForPage:(id)page;
 - (id)pageScrollView;
 - (id)pageWebView;
 - (void)advanceGesture;
 - (void)appendToFramerateHistory;
 - (void)determineScrollDirection;
-- (void)finishPage:(id)a3 stats:(id)a4 error:(id)a5;
-- (void)finishedTestPage:(id)a3;
+- (void)finishPage:(id)page stats:(id)stats error:(id)error;
+- (void)finishedTestPage:(id)page;
 - (void)finishedTestRunner;
-- (void)startingTestPage:(id)a3;
+- (void)startingTestPage:(id)page;
 - (void)writeOutputData;
 @end
 
 @implementation ScrollPerfTestRunner
 
-- (ScrollPerfTestRunner)initWithTestName:(id)a3 browserController:(id)a4
+- (ScrollPerfTestRunner)initWithTestName:(id)name browserController:(id)controller
 {
   v11.receiver = self;
   v11.super_class = ScrollPerfTestRunner;
-  v4 = [(PurplePageLoadTestRunner *)&v11 initWithTestName:a3 browserController:a4];
+  v4 = [(PurplePageLoadTestRunner *)&v11 initWithTestName:name browserController:controller];
   if (v4)
   {
     v5 = dispatch_queue_create("com.apple.mobilesafari.EventGenerator", 0);
     eventGeneratorQueue = v4->_eventGeneratorQueue;
     v4->_eventGeneratorQueue = v5;
 
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     outputData = v4->_outputData;
-    v4->_outputData = v7;
+    v4->_outputData = dictionary;
 
     [(PageLoadTestRunner *)v4 setFailFast:0];
     [(PageLoadTestRunner *)v4 setResetsZoomBetweenPages:0];
@@ -46,70 +46,70 @@
 
 - (id)pageWebView
 {
-  v2 = [(PageLoadTestRunner *)self browserController];
-  v3 = [v2 tabController];
-  v4 = [v3 activeTabDocument];
-  v5 = [v4 webView];
+  browserController = [(PageLoadTestRunner *)self browserController];
+  tabController = [browserController tabController];
+  activeTabDocument = [tabController activeTabDocument];
+  webView = [activeTabDocument webView];
 
-  return v5;
+  return webView;
 }
 
 - (id)pageScrollView
 {
-  v2 = [(ScrollPerfTestRunner *)self pageWebView];
-  v3 = [v2 scrollView];
+  pageWebView = [(ScrollPerfTestRunner *)self pageWebView];
+  scrollView = [pageWebView scrollView];
 
-  return v3;
+  return scrollView;
 }
 
 - (void)writeOutputData
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v3 = [(ScrollPerfTestRunner *)self pageScrollView];
+  pageScrollView = [(ScrollPerfTestRunner *)self pageScrollView];
   v26[0] = self->_outputData;
   v25[0] = @"runs";
   v25[1] = @"suiteName";
-  v4 = [(PageLoadTestRunner *)self suiteName];
-  if (v4)
+  suiteName = [(PageLoadTestRunner *)self suiteName];
+  if (suiteName)
   {
-    v5 = [(PageLoadTestRunner *)self suiteName];
+    suiteName2 = [(PageLoadTestRunner *)self suiteName];
   }
 
   else
   {
-    v5 = @"<no suite name>";
+    suiteName2 = @"<no suite name>";
   }
 
-  v26[1] = v5;
+  v26[1] = suiteName2;
   v25[2] = @"frameWidth";
   v6 = MEMORY[0x277CCABB0];
-  [v3 bounds];
+  [pageScrollView bounds];
   v8 = [v6 numberWithDouble:v7];
   v26[2] = v8;
   v25[3] = @"frameHeight";
   v9 = MEMORY[0x277CCABB0];
-  [v3 bounds];
+  [pageScrollView bounds];
   v11 = [v9 numberWithDouble:v10];
   v26[3] = v11;
   v25[4] = @"scrollViewDecelerationRate";
   v12 = MEMORY[0x277CCABB0];
-  [v3 decelerationRate];
+  [pageScrollView decelerationRate];
   v13 = [v12 numberWithDouble:?];
   v26[4] = v13;
   v25[5] = @"machineConfiguration";
-  v14 = [(ScrollPerfTestRunner *)self machineConfigInfo];
-  v26[5] = v14;
+  machineConfigInfo = [(ScrollPerfTestRunner *)self machineConfigInfo];
+  v26[5] = machineConfigInfo;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:6];
   v27[0] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
 
-  if (v4)
+  if (suiteName)
   {
   }
 
-  v17 = [(PageLoadTestRunner *)self outputFilename];
+  outputFilename = [(PageLoadTestRunner *)self outputFilename];
 
-  if (v17)
+  if (outputFilename)
   {
     v24 = 0;
     v18 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v16 options:0 error:&v24];
@@ -122,9 +122,9 @@
 
     else
     {
-      v21 = [(PageLoadTestRunner *)self outputFilename];
+      outputFilename2 = [(PageLoadTestRunner *)self outputFilename];
       v23 = 0;
-      [v18 writeToFile:v21 options:0 error:&v23];
+      [v18 writeToFile:outputFilename2 options:0 error:&v23];
       v20 = v23;
 
       if (!v20)
@@ -133,8 +133,8 @@
         goto LABEL_13;
       }
 
-      v22 = [(PageLoadTestRunner *)self outputFilename];
-      NSLog(@"Error writing output to file %@: %@", v22, v20);
+      outputFilename3 = [(PageLoadTestRunner *)self outputFilename];
+      NSLog(@"Error writing output to file %@: %@", outputFilename3, v20);
     }
   }
 
@@ -151,27 +151,27 @@ LABEL_13:
   v4.receiver = self;
   v4.super_class = ScrollPerfTestRunner;
   [(PurplePageLoadTestRunner *)&v4 finishedTestRunner];
-  v3 = [(PageLoadTestRunner *)self outputFilename];
-  [(PageLoadTestRunner *)self log:@"ScrollPerf Complete. Wrote data to %@", v3];
+  outputFilename = [(PageLoadTestRunner *)self outputFilename];
+  [(PageLoadTestRunner *)self log:@"ScrollPerf Complete. Wrote data to %@", outputFilename];
 }
 
-- (void)startingTestPage:(id)a3
+- (void)startingTestPage:(id)page
 {
-  v4 = a3;
-  v5 = [(ScrollPerfTestRunner *)self pageWebView];
-  [v5 _setScrollPerformanceDataCollectionEnabled:1];
+  pageCopy = page;
+  pageWebView = [(ScrollPerfTestRunner *)self pageWebView];
+  [pageWebView _setScrollPerformanceDataCollectionEnabled:1];
 
   v6.receiver = self;
   v6.super_class = ScrollPerfTestRunner;
-  [(PageLoadTestRunner *)&v6 startingTestPage:v4];
+  [(PageLoadTestRunner *)&v6 startingTestPage:pageCopy];
 
   ++self->_pageIndex;
   self->_startLoadTime = CFAbsoluteTimeGetCurrent();
 }
 
-- (BOOL)performActionForPage:(id)a3
+- (BOOL)performActionForPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   scrollGestureCount = self->_scrollGestureCount;
   if (!scrollGestureCount)
   {
@@ -227,9 +227,9 @@ LABEL_8:
   }
 }
 
-- (CGPoint)touchPointForMoveIndex:(unint64_t)a3
+- (CGPoint)touchPointForMoveIndex:(unint64_t)index
 {
-  v3 = gestureOffsets[a3];
+  v3 = gestureOffsets[index];
   scrollDirection = self->_scrollDirection;
   if (scrollDirection == 1)
   {
@@ -264,8 +264,8 @@ LABEL_8:
       }
 
       [(ScrollPerfTestRunner *)self determineScrollDirection];
-      v4 = [(ScrollPerfTestRunner *)self pageScrollView];
-      [v4 contentOffset];
+      pageScrollView = [(ScrollPerfTestRunner *)self pageScrollView];
+      [pageScrollView contentOffset];
       self->_scrollOffsetAtGestureStart.x = v5;
       self->_scrollOffsetAtGestureStart.y = v6;
 
@@ -315,10 +315,10 @@ LABEL_10:
 
   else if (gestureState == 4)
   {
-    v9 = [(ScrollPerfTestRunner *)self pageScrollView];
-    v10 = [v9 isDecelerating];
+    pageScrollView2 = [(ScrollPerfTestRunner *)self pageScrollView];
+    isDecelerating = [pageScrollView2 isDecelerating];
 
-    if ((v10 & 1) == 0)
+    if ((isDecelerating & 1) == 0)
     {
       self->_gestureState = 0;
     }
@@ -371,14 +371,14 @@ void __38__ScrollPerfTestRunner_advanceGesture__block_invoke(uint64_t a1)
 
 - (void)determineScrollDirection
 {
-  v11 = [(ScrollPerfTestRunner *)self pageScrollView];
-  [v11 contentOffset];
+  pageScrollView = [(ScrollPerfTestRunner *)self pageScrollView];
+  [pageScrollView contentOffset];
   v4 = v3;
-  [v11 bounds];
+  [pageScrollView bounds];
   v6 = v5;
-  [v11 contentInset];
+  [pageScrollView contentInset];
   v8 = v6 - v7;
-  [v11 contentSize];
+  [pageScrollView contentSize];
   if (v4 >= v8)
   {
     if (v4 <= v9 + v6 * -2.0)
@@ -400,21 +400,21 @@ LABEL_6:
 
 - (BOOL)isPageTooShortToScroll
 {
-  v2 = [(ScrollPerfTestRunner *)self pageScrollView];
-  [v2 bounds];
+  pageScrollView = [(ScrollPerfTestRunner *)self pageScrollView];
+  [pageScrollView bounds];
   v4 = v3;
-  [v2 contentSize];
+  [pageScrollView contentSize];
   v6 = v5 / v4 < 2.5;
 
   return v6;
 }
 
-- (BOOL)startPageAction:(id)a3
+- (BOOL)startPageAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ScrollPerfTestRunner *)self pageScrollView];
-  [v5 contentSize];
-  [v4 setContentSizeAtPageLoad:?];
+  actionCopy = action;
+  pageScrollView = [(ScrollPerfTestRunner *)self pageScrollView];
+  [pageScrollView contentSize];
+  [actionCopy setContentSizeAtPageLoad:?];
 
   v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:142];
   framerateHistory = self->_framerateHistory;
@@ -423,12 +423,12 @@ LABEL_6:
   self->_lastFramerateTime = 0.0;
   if ([(ScrollPerfTestRunner *)self isPageTooShortToScroll])
   {
-    [v4 setTooShortToScroll:1];
-    v8 = [(ScrollPerfTestRunner *)self outputDataForPage:v4];
+    [actionCopy setTooShortToScroll:1];
+    v8 = [(ScrollPerfTestRunner *)self outputDataForPage:actionCopy];
     outputData = self->_outputData;
-    v10 = [v4 URL];
-    v11 = [v10 absoluteString];
-    [(NSMutableDictionary *)outputData setObject:v8 forKeyedSubscript:v11];
+    v10 = [actionCopy URL];
+    absoluteString = [v10 absoluteString];
+    [(NSMutableDictionary *)outputData setObject:v8 forKeyedSubscript:absoluteString];
 
     v12 = 0;
   }
@@ -438,64 +438,64 @@ LABEL_6:
     self->_scrollGestureCount = 0;
     v14.receiver = self;
     v14.super_class = ScrollPerfTestRunner;
-    v12 = [(PageLoadTestRunner *)&v14 startPageAction:v4];
+    v12 = [(PageLoadTestRunner *)&v14 startPageAction:actionCopy];
   }
 
   return v12;
 }
 
-- (void)finishPage:(id)a3 stats:(id)a4 error:(id)a5
+- (void)finishPage:(id)page stats:(id)stats error:(id)error
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  errorCopy = error;
+  statsCopy = stats;
+  pageCopy = page;
   self->_endLoadTime = CFAbsoluteTimeGetCurrent();
   v11.receiver = self;
   v11.super_class = ScrollPerfTestRunner;
-  [(PageLoadTestRunner *)&v11 finishPage:v10 stats:v9 error:v8];
+  [(PageLoadTestRunner *)&v11 finishPage:pageCopy stats:statsCopy error:errorCopy];
 }
 
-- (void)finishedTestPage:(id)a3
+- (void)finishedTestPage:(id)page
 {
-  v4 = a3;
-  v5 = [(ScrollPerfTestRunner *)self outputDataForPage:v4];
+  pageCopy = page;
+  v5 = [(ScrollPerfTestRunner *)self outputDataForPage:pageCopy];
   outputData = self->_outputData;
-  v7 = [v4 URL];
-  v8 = [v7 absoluteString];
-  [(NSMutableDictionary *)outputData setObject:v5 forKeyedSubscript:v8];
+  v7 = [pageCopy URL];
+  absoluteString = [v7 absoluteString];
+  [(NSMutableDictionary *)outputData setObject:v5 forKeyedSubscript:absoluteString];
 
   [(ScrollPerfTestRunner *)self writeOutputData];
-  v9 = [(ScrollPerfTestRunner *)self pageWebView];
-  [v9 _setScrollPerformanceDataCollectionEnabled:0];
+  pageWebView = [(ScrollPerfTestRunner *)self pageWebView];
+  [pageWebView _setScrollPerformanceDataCollectionEnabled:0];
 
   v10.receiver = self;
   v10.super_class = ScrollPerfTestRunner;
-  [(PageLoadTestRunner *)&v10 finishedTestPage:v4];
+  [(PageLoadTestRunner *)&v10 finishedTestPage:pageCopy];
 }
 
-- (id)finalStatusForPage:(id)a3
+- (id)finalStatusForPage:(id)page
 {
-  v4 = a3;
-  if ([v4 isTooShortToScroll])
+  pageCopy = page;
+  if ([pageCopy isTooShortToScroll])
   {
     v5 = @"PageTooShortToScroll";
   }
 
   else
   {
-    v6 = [v4 status];
-    if (v6 < 7 && ((0x4Fu >> v6) & 1) != 0)
+    status = [pageCopy status];
+    if (status < 7 && ((0x4Fu >> status) & 1) != 0)
     {
-      v5 = off_2781D89A8[v6];
+      v5 = off_2781D89A8[status];
     }
 
     else
     {
-      [v4 contentSizeAtPageLoad];
+      [pageCopy contentSizeAtPageLoad];
       v8 = v7;
       v10 = v9;
-      v11 = [(ScrollPerfTestRunner *)self pageScrollView];
-      [v11 contentSize];
+      pageScrollView = [(ScrollPerfTestRunner *)self pageScrollView];
+      [pageScrollView contentSize];
       v13 = v12;
       v15 = v14;
 
@@ -531,33 +531,33 @@ LABEL_6:
   return v5;
 }
 
-- (id)outputDataForPage:(id)a3
+- (id)outputDataForPage:(id)page
 {
   v31[13] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v26 = [(ScrollPerfTestRunner *)self pageScrollView];
-  v5 = [(ScrollPerfTestRunner *)self pageWebView];
-  v6 = [v5 _scrollPerformanceData];
+  pageCopy = page;
+  pageScrollView = [(ScrollPerfTestRunner *)self pageScrollView];
+  pageWebView = [(ScrollPerfTestRunner *)self pageWebView];
+  _scrollPerformanceData = [pageWebView _scrollPerformanceData];
 
   v30[0] = @"url";
-  v29 = [v4 URL];
-  v28 = [v29 absoluteString];
-  v31[0] = v28;
+  v29 = [pageCopy URL];
+  absoluteString = [v29 absoluteString];
+  v31[0] = absoluteString;
   v30[1] = @"order";
   v27 = [MEMORY[0x277CCABB0] numberWithInt:self->_pageIndex];
   v31[1] = v27;
   v30[2] = @"contentHeight";
   v7 = MEMORY[0x277CCABB0];
-  [v26 contentSize];
+  [pageScrollView contentSize];
   v25 = [v7 numberWithDouble:v8];
   v31[2] = v25;
   v30[3] = @"visibleContentHeight";
   v9 = MEMORY[0x277CCABB0];
-  [v26 bounds];
+  [pageScrollView bounds];
   v11 = [v9 numberWithDouble:v10];
   v31[3] = v11;
   v30[4] = @"state";
-  v12 = [(ScrollPerfTestRunner *)self finalStatusForPage:v4];
+  v12 = [(ScrollPerfTestRunner *)self finalStatusForPage:pageCopy];
   v31[4] = v12;
   v30[5] = @"startLoadTime";
   v13 = [MEMORY[0x277CCABB0] numberWithDouble:self->_startLoadTime];
@@ -573,7 +573,7 @@ LABEL_6:
   v31[8] = v16;
   v30[9] = @"framerate";
   v17 = MEMORY[0x277CCABB0];
-  [v4 framesPerSecond];
+  [pageCopy framesPerSecond];
   v19 = v18;
 
   v20 = [v17 numberWithDouble:v19];
@@ -583,9 +583,9 @@ LABEL_6:
   v30[11] = @"scrollingEvents";
   framerateHistory = MEMORY[0x277CBEBF8];
   v30[12] = @"framerateHistory";
-  if (v6)
+  if (_scrollPerformanceData)
   {
-    v22 = v6;
+    v22 = _scrollPerformanceData;
   }
 
   else

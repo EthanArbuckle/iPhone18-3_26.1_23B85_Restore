@@ -1,6 +1,6 @@
 @interface CACCachedIdentifierLanguageModelDescriptor
 - (void)dealloc;
-- (void)setRxLanguageObject:(__RXLanguageObject *)a3;
+- (void)setRxLanguageObject:(__RXLanguageObject *)object;
 @end
 
 @implementation CACCachedIdentifierLanguageModelDescriptor
@@ -13,15 +13,15 @@
   [(CACCachedIdentifierLanguageModelDescriptor *)&v3 dealloc];
 }
 
-- (void)setRxLanguageObject:(__RXLanguageObject *)a3
+- (void)setRxLanguageObject:(__RXLanguageObject *)object
 {
   rxLanguageObject = self->_rxLanguageObject;
-  if (a3)
+  if (object)
   {
-    CFRetain(a3);
+    CFRetain(object);
   }
 
-  self->_rxLanguageObject = a3;
+  self->_rxLanguageObject = object;
 
   RXRelease(rxLanguageObject);
 }

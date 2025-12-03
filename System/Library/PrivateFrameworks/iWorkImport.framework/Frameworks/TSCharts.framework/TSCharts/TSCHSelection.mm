@@ -1,54 +1,54 @@
 @interface TSCHSelection
-+ (id)emptySelectionWithChartInfo:(id)a3;
-+ (id)selectionWithChartInfo:(id)a3 paths:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)emptySelectionWithChartInfo:(id)info;
++ (id)selectionWithChartInfo:(id)info paths:(id)paths;
+- (BOOL)isEqual:(id)equal;
 - (NSSet)pathTypes;
-- (TSCHSelection)initWithChartInfo:(id)a3 path:(id)a4;
-- (TSCHSelection)initWithChartInfo:(id)a3 paths:(id)a4;
-- (TSCHSelection)initWithPaths:(id)a3;
+- (TSCHSelection)initWithChartInfo:(id)info path:(id)path;
+- (TSCHSelection)initWithChartInfo:(id)info paths:(id)paths;
+- (TSCHSelection)initWithPaths:(id)paths;
 - (TSCHSelectionPath)firstPath;
 - (TSCHSelectionPathType)pathType;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (id)selectionByAddingPathsFromArray:(id)a3;
-- (id)selectionByRemovingPathsFromArray:(id)a3;
+- (id)initFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (id)selectionByAddingPathsFromArray:(id)array;
+- (id)selectionByRemovingPathsFromArray:(id)array;
 - (unint64_t)pathCount;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TSCHSelection
 
-+ (id)emptySelectionWithChartInfo:(id)a3
++ (id)emptySelectionWithChartInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v9 = objc_msgSend_array(MEMORY[0x277CBEA60], v5, v6, v7, v8);
-  v14 = objc_msgSend_selectionWithChartInfo_paths_(a1, v10, v11, v12, v13, v4, v9);
+  v14 = objc_msgSend_selectionWithChartInfo_paths_(self, v10, v11, v12, v13, infoCopy, v9);
 
   return v14;
 }
 
-+ (id)selectionWithChartInfo:(id)a3 paths:(id)a4
++ (id)selectionWithChartInfo:(id)info paths:(id)paths
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 alloc];
-  v13 = objc_msgSend_initWithChartInfo_paths_(v8, v9, v10, v11, v12, v6, v7);
+  infoCopy = info;
+  pathsCopy = paths;
+  v8 = [self alloc];
+  v13 = objc_msgSend_initWithChartInfo_paths_(v8, v9, v10, v11, v12, infoCopy, pathsCopy);
 
   return v13;
 }
 
-- (TSCHSelection)initWithChartInfo:(id)a3 paths:(id)a4
+- (TSCHSelection)initWithChartInfo:(id)info paths:(id)paths
 {
-  v7 = a3;
-  v8 = a4;
+  infoCopy = info;
+  pathsCopy = paths;
   v59.receiver = self;
   v59.super_class = TSCHSelection;
   v9 = [(TSCHSelection *)&v59 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_info, a3);
+    objc_storeStrong(&v9->_info, info);
     v57[0] = 0;
     v57[1] = v57;
     v57[2] = 0x3032000000;
@@ -60,7 +60,7 @@
     v56[2] = sub_2762EF7F4;
     v56[3] = &unk_27A6B95D8;
     v56[4] = v57;
-    v14 = objc_msgSend_tsu_arrayByTransformingWithBlock_(v8, v11, COERCE_DOUBLE(3221225472), v12, v13, v56);
+    v14 = objc_msgSend_tsu_arrayByTransformingWithBlock_(pathsCopy, v11, COERCE_DOUBLE(3221225472), v12, v13, v56);
     v19 = objc_msgSend_copy(v14, v15, v16, v17, v18);
     paths = v10->_paths;
     v10->_paths = v19;
@@ -85,27 +85,27 @@
   return v10;
 }
 
-- (TSCHSelection)initWithChartInfo:(id)a3 path:(id)a4
+- (TSCHSelection)initWithChartInfo:(id)info path:(id)path
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v19[0] = v7;
+  infoCopy = info;
+  pathCopy = path;
+  v19[0] = pathCopy;
   v12 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v8, v9, v10, v11, v19, 1);
-  v17 = objc_msgSend_initWithChartInfo_paths_(self, v13, v14, v15, v16, v6, v12);
+  v17 = objc_msgSend_initWithChartInfo_paths_(self, v13, v14, v15, v16, infoCopy, v12);
 
   return v17;
 }
 
-- (TSCHSelection)initWithPaths:(id)a3
+- (TSCHSelection)initWithPaths:(id)paths
 {
-  v4 = a3;
+  pathsCopy = paths;
   v52.receiver = self;
   v52.super_class = TSCHSelection;
   v6 = [(TSCHSelection *)&v52 init];
   if (v6)
   {
-    v10 = objc_msgSend_tsu_arrayByTransformingWithBlock_(v4, v5, v7, v8, v9, &unk_28851ED80);
+    v10 = objc_msgSend_tsu_arrayByTransformingWithBlock_(pathsCopy, v5, v7, v8, v9, &unk_28851ED80);
     v15 = objc_msgSend_copy(v10, v11, v12, v13, v14);
     paths = v6->_paths;
     v6->_paths = v15;
@@ -128,9 +128,9 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v7 = objc_msgSend_paths(self, a2, v3, v4, v5, a3);
+  v7 = objc_msgSend_paths(self, a2, v3, v4, v5, zone);
   v12 = objc_msgSend_tsu_arrayByTransformingWithBlock_(v7, v8, v9, v10, v11, &unk_28851EDA0);
 
   v13 = objc_alloc(objc_opt_class());
@@ -151,10 +151,10 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqual = 1;
   }
@@ -190,18 +190,18 @@
   return isEqual;
 }
 
-- (id)initFromArchive:(const void *)a3 unarchiver:(id)a4
+- (id)initFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v12 = objc_msgSend_array(MEMORY[0x277CBEB18], v7, v8, v9, v10);
-  v16 = *(a3 + 8);
+  v16 = *(archive + 8);
   if (v16)
   {
     v17 = 0;
     do
     {
       v18 = [TSCHSelectionPath alloc];
-      v23 = objc_msgSend_initWithArchive_(v18, v19, v20, v21, v22, *(*(a3 + 5) + (v17 >> 29) + 8));
+      v23 = objc_msgSend_initWithArchive_(v18, v19, v20, v21, v22, *(*(archive + 5) + (v17 >> 29) + 8));
       objc_msgSend_tsu_addNonNilObject_(v12, v24, v25, v26, v27, v23);
 
       v17 += 0x100000000;
@@ -215,13 +215,13 @@
   v29 = v28;
   if (v28)
   {
-    v30 = *(a3 + 6);
+    v30 = *(archive + 6);
     v38[0] = MEMORY[0x277D85DD0];
     v38[1] = 3221225472;
     v38[2] = sub_2762F0158;
     v38[3] = &unk_27A6B9620;
     v39 = v28;
-    v31 = v6;
+    v31 = unarchiverCopy;
     v33 = objc_opt_class();
     if (v30)
     {
@@ -237,30 +237,30 @@
   return v29;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  archiverCopy = archiver;
   v11 = objc_msgSend_chartInfo(self, v7, v8, v9, v10);
 
   if (v11)
   {
     v17 = objc_msgSend_chartInfo(self, v12, v13, v14, v15);
-    *(a3 + 4) |= 1u;
-    v21 = *(a3 + 6);
+    *(archive + 4) |= 1u;
+    v21 = *(archive + 6);
     if (!v21)
     {
-      v22 = *(a3 + 1);
+      v22 = *(archive + 1);
       if (v22)
       {
         v22 = *(v22 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v21 = MEMORY[0x277C97B90](v22);
-      *(a3 + 6) = v21;
+      *(archive + 6) = v21;
     }
 
-    objc_msgSend_setWeakReference_message_(v6, v16, v18, v19, v20, v17, v21);
+    objc_msgSend_setWeakReference_message_(archiverCopy, v16, v18, v19, v20, v17, v21);
   }
 
   v48 = 0u;
@@ -282,34 +282,34 @@
         }
 
         v35 = *(*(&v46 + 1) + 8 * i);
-        v36 = *(a3 + 5);
+        v36 = *(archive + 5);
         if (!v36)
         {
           goto LABEL_17;
         }
 
-        v37 = *(a3 + 8);
+        v37 = *(archive + 8);
         v38 = *v36;
         if (v37 < *v36)
         {
-          *(a3 + 8) = v37 + 1;
+          *(archive + 8) = v37 + 1;
           objc_msgSend_saveToArchive_(v35, v28, v30, v31, v32, *&v36[2 * v37 + 2]);
           continue;
         }
 
-        if (v38 == *(a3 + 9))
+        if (v38 == *(archive + 9))
         {
 LABEL_17:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 24));
-          v36 = *(a3 + 5);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 24));
+          v36 = *(archive + 5);
           v38 = *v36;
         }
 
         *v36 = v38 + 1;
-        v39 = google::protobuf::Arena::CreateMaybeMessage<TSCH::ChartSelectionPathArchive>(*(a3 + 3));
-        v40 = *(a3 + 8);
-        v41 = *(a3 + 5) + 8 * v40;
-        *(a3 + 8) = v40 + 1;
+        v39 = google::protobuf::Arena::CreateMaybeMessage<TSCH::ChartSelectionPathArchive>(*(archive + 3));
+        v40 = *(archive + 8);
+        v41 = *(archive + 5) + 8 * v40;
+        *(archive + 8) = v40 + 1;
         *(v41 + 8) = v39;
         objc_msgSend_saveToArchive_(v35, v42, v43, v44, v45, v39);
       }
@@ -329,11 +329,11 @@ LABEL_17:
   return v10;
 }
 
-- (id)selectionByAddingPathsFromArray:(id)a3
+- (id)selectionByAddingPathsFromArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v9 = objc_msgSend_setWithArray_(MEMORY[0x277CBEB98], v5, v6, v7, v8, self->_paths);
-  v14 = objc_msgSend_setByAddingObjectsFromArray_(v9, v10, v11, v12, v13, v4);
+  v14 = objc_msgSend_setByAddingObjectsFromArray_(v9, v10, v11, v12, v13, arrayCopy);
 
   v15 = objc_opt_class();
   info = self->_info;
@@ -343,11 +343,11 @@ LABEL_17:
   return v26;
 }
 
-- (id)selectionByRemovingPathsFromArray:(id)a3
+- (id)selectionByRemovingPathsFromArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v9 = objc_msgSend_setWithArray_(MEMORY[0x277CBEB58], v5, v6, v7, v8, self->_paths);
-  v14 = objc_msgSend_setWithArray_(MEMORY[0x277CBEB98], v10, v11, v12, v13, v4);
+  v14 = objc_msgSend_setWithArray_(MEMORY[0x277CBEB98], v10, v11, v12, v13, arrayCopy);
   objc_msgSend_minusSet_(v9, v15, v16, v17, v18, v14);
 
   v19 = objc_opt_class();

@@ -1,18 +1,18 @@
 @interface STUIStatusBarSensorActivityViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation STUIStatusBarSensorActivityViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
+  validationsCopy = validations;
   if (AXProcessIsSpringBoard())
   {
-    [v3 validateClass:@"SpringBoard" hasInstanceMethod:@"sensorActivityDataProvider" withFullSignature:{"@", 0}];
-    [v3 validateClass:@"SBSensorActivityDataProvider" hasInstanceMethod:@"activeSensorActivityAttributions" withFullSignature:{"@", 0}];
-    [v3 validateClass:@"SBSensorActivityAttribution" hasInstanceMethod:@"sensor" withFullSignature:{"q", 0}];
+    [validationsCopy validateClass:@"SpringBoard" hasInstanceMethod:@"sensorActivityDataProvider" withFullSignature:{"@", 0}];
+    [validationsCopy validateClass:@"SBSensorActivityDataProvider" hasInstanceMethod:@"activeSensorActivityAttributions" withFullSignature:{"@", 0}];
+    [validationsCopy validateClass:@"SBSensorActivityAttribution" hasInstanceMethod:@"sensor" withFullSignature:{"q", 0}];
   }
 }
 
@@ -34,7 +34,7 @@
 LABEL_16:
     v18.receiver = self;
     v18.super_class = STUIStatusBarSensorActivityViewAccessibility;
-    v14 = [(STUIStatusBarSensorActivityViewAccessibility *)&v18 accessibilityLabel];
+    accessibilityLabel = [(STUIStatusBarSensorActivityViewAccessibility *)&v18 accessibilityLabel];
     goto LABEL_22;
   }
 
@@ -99,9 +99,9 @@ LABEL_8:
 
   v13 = @"mic.in.use";
 LABEL_21:
-  v14 = accessibilityLocalizedString(v13);
+  accessibilityLabel = accessibilityLocalizedString(v13);
 LABEL_22:
-  v15 = v14;
+  v15 = accessibilityLabel;
 
   v16 = *MEMORY[0x29EDCA608];
 

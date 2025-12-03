@@ -1,16 +1,16 @@
 @interface AssistantVoiceDownloadingCell
-- (AssistantVoiceDownloadingCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)setDownloading:(BOOL)a3;
+- (AssistantVoiceDownloadingCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)setDownloading:(BOOL)downloading;
 @end
 
 @implementation AssistantVoiceDownloadingCell
 
-- (AssistantVoiceDownloadingCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (AssistantVoiceDownloadingCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = AssistantVoiceDownloadingCell;
-  v4 = [(PSTableCell *)&v8 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PSTableCell *)&v8 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [[AssistantVoiceDownloadingView alloc] initWithActivityIndicatorStyle:100];
@@ -23,23 +23,23 @@
   return v4;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = AssistantVoiceDownloadingCell;
-  v4 = a3;
-  [(PSTableCell *)&v7 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 propertyForKey:{@"IS_VOICE_DOWNLOADING", v7.receiver, v7.super_class}];
+  specifierCopy = specifier;
+  [(PSTableCell *)&v7 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:{@"IS_VOICE_DOWNLOADING", v7.receiver, v7.super_class}];
 
-  v6 = [v5 BOOLValue];
-  [(AssistantVoiceDownloadingCell *)self setDownloading:v6];
+  bOOLValue = [v5 BOOLValue];
+  [(AssistantVoiceDownloadingCell *)self setDownloading:bOOLValue];
 }
 
-- (void)setDownloading:(BOOL)a3
+- (void)setDownloading:(BOOL)downloading
 {
-  if (self->_downloading != a3)
+  if (self->_downloading != downloading)
   {
-    if (a3)
+    if (downloading)
     {
       v5 = [[AssistantVoiceDownloadingView alloc] initWithActivityIndicatorStyle:100];
       downloadingView = self->_downloadingView;
@@ -57,7 +57,7 @@
       self->_downloadingView = 0;
     }
 
-    self->_downloading = a3;
+    self->_downloading = downloading;
   }
 }
 

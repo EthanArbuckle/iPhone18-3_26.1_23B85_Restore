@@ -1,60 +1,60 @@
 @interface SKUIReportAConcernConfiguration
-+ (SKUIReportAConcernConfiguration)configurationWithTemplateElement:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (SKUIReportAConcernConfiguration)configurationWithTemplateElement:(id)element;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SKUIReportAConcernConfiguration
 
-+ (SKUIReportAConcernConfiguration)configurationWithTemplateElement:(id)a3
++ (SKUIReportAConcernConfiguration)configurationWithTemplateElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     +[SKUIReportAConcernConfiguration configurationWithTemplateElement:];
-    if (v4)
+    if (elementCopy)
     {
       goto LABEL_5;
     }
   }
 
-  else if (v4)
+  else if (elementCopy)
   {
 LABEL_5:
-    v5 = objc_alloc_init(a1);
-    v6 = [v4 reportConcernURL];
-    [v5 setReportConcernURL:v6];
+    v5 = objc_alloc_init(self);
+    reportConcernURL = [elementCopy reportConcernURL];
+    [v5 setReportConcernURL:reportConcernURL];
 
-    [v5 setItemIdentifier:{objc_msgSend(v4, "itemIdentifier")}];
-    v7 = [v4 reportConcernExplanation];
-    [v5 setReportConcernExplanation:v7];
+    [v5 setItemIdentifier:{objc_msgSend(elementCopy, "itemIdentifier")}];
+    reportConcernExplanation = [elementCopy reportConcernExplanation];
+    [v5 setReportConcernExplanation:reportConcernExplanation];
 
-    v8 = [v4 firstChildForElementName:@"title"];
-    v9 = [v8 text];
-    v10 = [v9 attributedString];
-    v11 = [v10 string];
-    [v5 setSelectReasonTitle:v11];
+    v8 = [elementCopy firstChildForElementName:@"title"];
+    text = [v8 text];
+    attributedString = [text attributedString];
+    string = [attributedString string];
+    [v5 setSelectReasonTitle:string];
 
-    v12 = [v4 firstChildForElementName:@"subtitle"];
-    v13 = [v12 text];
-    v14 = [v13 attributedString];
-    v15 = [v14 string];
-    [v5 setSelectReasonSubtitle:v15];
+    v12 = [elementCopy firstChildForElementName:@"subtitle"];
+    text2 = [v12 text];
+    attributedString2 = [text2 attributedString];
+    string2 = [attributedString2 string];
+    [v5 setSelectReasonSubtitle:string2];
 
-    v16 = [v4 firstChildForElementName:@"text"];
-    v17 = [v16 text];
-    v18 = [v17 attributedString];
-    v19 = [v18 string];
-    [v5 setPrivacyNote:v19];
+    v16 = [elementCopy firstChildForElementName:@"text"];
+    text3 = [v16 text];
+    attributedString3 = [text3 attributedString];
+    string3 = [attributedString3 string];
+    [v5 setPrivacyNote:string3];
 
-    v20 = [MEMORY[0x277CBEB18] array];
-    v21 = [v4 reasonElements];
+    array = [MEMORY[0x277CBEB18] array];
+    reasonElements = [elementCopy reasonElements];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __68__SKUIReportAConcernConfiguration_configurationWithTemplateElement___block_invoke;
     v24[3] = &unk_2781FFA00;
-    v25 = v20;
-    v22 = v20;
-    [v21 enumerateObjectsUsingBlock:v24];
+    v25 = array;
+    v22 = array;
+    [reasonElements enumerateObjectsUsingBlock:v24];
 
     [v5 setReasons:v22];
     goto LABEL_8;
@@ -92,7 +92,7 @@ void __68__SKUIReportAConcernConfiguration_configurationWithTemplateElement___bl
   [*(a1 + 32) addObject:v3];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
@@ -100,24 +100,24 @@ void __68__SKUIReportAConcernConfiguration_configurationWithTemplateElement___bl
   }
 
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(SKUIReportAConcernConfiguration *)self reportConcernURL];
-  [v4 setReportConcernURL:v5];
+  reportConcernURL = [(SKUIReportAConcernConfiguration *)self reportConcernURL];
+  [v4 setReportConcernURL:reportConcernURL];
 
   [v4 setItemIdentifier:{-[SKUIReportAConcernConfiguration itemIdentifier](self, "itemIdentifier")}];
-  v6 = [(SKUIReportAConcernConfiguration *)self reportConcernExplanation];
-  [v4 setReportConcernExplanation:v6];
+  reportConcernExplanation = [(SKUIReportAConcernConfiguration *)self reportConcernExplanation];
+  [v4 setReportConcernExplanation:reportConcernExplanation];
 
-  v7 = [(SKUIReportAConcernConfiguration *)self selectReasonTitle];
-  [v4 setSelectReasonTitle:v7];
+  selectReasonTitle = [(SKUIReportAConcernConfiguration *)self selectReasonTitle];
+  [v4 setSelectReasonTitle:selectReasonTitle];
 
-  v8 = [(SKUIReportAConcernConfiguration *)self selectReasonSubtitle];
-  [v4 setSelectReasonSubtitle:v8];
+  selectReasonSubtitle = [(SKUIReportAConcernConfiguration *)self selectReasonSubtitle];
+  [v4 setSelectReasonSubtitle:selectReasonSubtitle];
 
-  v9 = [(SKUIReportAConcernConfiguration *)self privacyNote];
-  [v4 setPrivacyNote:v9];
+  privacyNote = [(SKUIReportAConcernConfiguration *)self privacyNote];
+  [v4 setPrivacyNote:privacyNote];
 
-  v10 = [(SKUIReportAConcernConfiguration *)self reasons];
-  [v4 setReasons:v10];
+  reasons = [(SKUIReportAConcernConfiguration *)self reasons];
+  [v4 setReasons:reasons];
 
   return v4;
 }

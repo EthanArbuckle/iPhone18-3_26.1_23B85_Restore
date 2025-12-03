@@ -1,15 +1,15 @@
 @interface SBContinuityDisplayAuthenticationCoordinator
 + (SBContinuityDisplayAuthenticationCoordinator)sharedInstance;
 - (SBContinuityDisplayAuthenticationCoordinator)init;
-- (SBContinuityDisplayAuthenticationCoordinator)initWithLockScreenManager:(id)a3 mobileKeyBag:(id)a4;
+- (SBContinuityDisplayAuthenticationCoordinator)initWithLockScreenManager:(id)manager mobileKeyBag:(id)bag;
 - (unint64_t)lockState;
 - (void)_handleKeyBagStateChange;
-- (void)_setSessionActive:(BOOL)a3;
+- (void)_setSessionActive:(BOOL)active;
 - (void)_updateSessionState;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
 - (void)invalidate;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation SBContinuityDisplayAuthenticationCoordinator
@@ -36,30 +36,30 @@ void __62__SBContinuityDisplayAuthenticationCoordinator_sharedInstance__block_in
 - (SBContinuityDisplayAuthenticationCoordinator)init
 {
   v3 = +[SBLockScreenManager sharedInstance];
-  v4 = [MEMORY[0x277D65ED8] sharedInstance];
-  v5 = [(SBContinuityDisplayAuthenticationCoordinator *)self initWithLockScreenManager:v3 mobileKeyBag:v4];
+  mEMORY[0x277D65ED8] = [MEMORY[0x277D65ED8] sharedInstance];
+  v5 = [(SBContinuityDisplayAuthenticationCoordinator *)self initWithLockScreenManager:v3 mobileKeyBag:mEMORY[0x277D65ED8]];
 
   return v5;
 }
 
-- (SBContinuityDisplayAuthenticationCoordinator)initWithLockScreenManager:(id)a3 mobileKeyBag:(id)a4
+- (SBContinuityDisplayAuthenticationCoordinator)initWithLockScreenManager:(id)manager mobileKeyBag:(id)bag
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  bagCopy = bag;
   v26.receiver = self;
   v26.super_class = SBContinuityDisplayAuthenticationCoordinator;
   v9 = [(SBContinuityDisplayAuthenticationCoordinator *)&v26 init];
   if (v9)
   {
     objc_initWeak(&location, v9);
-    objc_storeStrong(&v9->_mobileKeyBag, a4);
+    objc_storeStrong(&v9->_mobileKeyBag, bag);
     [(SBFMobileKeyBag *)v9->_mobileKeyBag addObserver:v9];
-    objc_storeStrong(&v9->_lockScreenManager, a3);
+    objc_storeStrong(&v9->_lockScreenManager, manager);
     v9->_invalidated = 0;
     v9->_sessionActive = 0;
-    v10 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v9->_observers;
-    v9->_observers = v10;
+    v9->_observers = weakObjectsHashTable;
 
     v9->_previousLockState = [(SBContinuityDisplayAuthenticationCoordinator *)v9 lockState];
     v12 = MEMORY[0x277CF0BD0];
@@ -94,23 +94,23 @@ void __87__SBContinuityDisplayAuthenticationCoordinator_initWithLockScreenManage
 
 - (void)dealloc
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBContinuityDisplayAuthenticationCoordinator.m" lineNumber:72 description:@"Must be invalidated before -dealloc"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBContinuityDisplayAuthenticationCoordinator.m" lineNumber:72 description:@"Must be invalidated before -dealloc"];
 }
 
 - (unint64_t)lockState
 {
-  v3 = [(SBFMobileKeyBag *)self->_mobileKeyBag isContinuityUnlocked];
-  v4 = [(SBFMobileKeyBag *)self->_mobileKeyBag extendedState];
-  v5 = [v4 isEffectivelyLocked];
+  isContinuityUnlocked = [(SBFMobileKeyBag *)self->_mobileKeyBag isContinuityUnlocked];
+  extendedState = [(SBFMobileKeyBag *)self->_mobileKeyBag extendedState];
+  isEffectivelyLocked = [extendedState isEffectivelyLocked];
 
   v6 = 2;
-  if (v5)
+  if (isEffectivelyLocked)
   {
     v6 = 0;
   }
 
-  if (v3)
+  if (isContinuityUnlocked)
   {
     return 1;
   }
@@ -121,41 +121,41 @@ void __87__SBContinuityDisplayAuthenticationCoordinator_initWithLockScreenManage
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
-  v9 = v5;
-  if (!v5)
+  observerCopy = observer;
+  v9 = observerCopy;
+  if (!observerCopy)
   {
     [(SBContinuityDisplayAuthenticationCoordinator *)a2 addObserver:?];
-    v5 = 0;
+    observerCopy = 0;
   }
 
   observers = self->_observers;
   if (!observers)
   {
-    v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v8 = self->_observers;
-    self->_observers = v7;
+    self->_observers = weakObjectsHashTable;
 
-    v5 = v9;
+    observerCopy = v9;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v5];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  observerCopy = observer;
+  v6 = observerCopy;
+  if (!observerCopy)
   {
     [(SBContinuityDisplayAuthenticationCoordinator *)a2 removeObserver:?];
-    v5 = 0;
+    observerCopy = 0;
   }
 
-  [(NSHashTable *)self->_observers removeObject:v5];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 }
 
 - (void)invalidate
@@ -183,12 +183,12 @@ void __87__SBContinuityDisplayAuthenticationCoordinator_initWithLockScreenManage
   [(SBContinuityDisplayAuthenticationCoordinator *)self _setSessionActive:v3];
 }
 
-- (void)_setSessionActive:(BOOL)a3
+- (void)_setSessionActive:(BOOL)active
 {
-  if (self->_sessionActive != a3)
+  if (self->_sessionActive != active)
   {
-    self->_sessionActive = a3;
-    if (a3)
+    self->_sessionActive = active;
+    if (active)
     {
       objc_initWeak(location, self);
       [(SBContinuityDisplayAuthenticationCoordinator *)self heartbeatInterval];
@@ -212,10 +212,10 @@ void __87__SBContinuityDisplayAuthenticationCoordinator_initWithLockScreenManage
       [(BSContinuousMachTimer *)v11 scheduleRepeatingWithFireInterval:v12 repeatInterval:v20 leewayInterval:v5 queue:v5 handler:v5 * 0.25];
 
       [(SBLockScreenManager *)self->_lockScreenManager setBiometricAutoUnlockingDisabled:1 forReason:@"SBContinuityDisplayAuthenticationCoordinator"];
-      v14 = [(SBFMobileKeyBag *)self->_mobileKeyBag extendedState];
-      v15 = [v14 lockState];
+      extendedState = [(SBFMobileKeyBag *)self->_mobileKeyBag extendedState];
+      lockState = [extendedState lockState];
 
-      if (v15 != 2)
+      if (lockState != 2)
       {
         v16 = SBLogContinuityDisplay();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -262,21 +262,21 @@ void __66__SBContinuityDisplayAuthenticationCoordinator__setSessionActive___bloc
 - (void)_handleKeyBagStateChange
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(SBContinuityDisplayAuthenticationCoordinator *)self lockState];
+  lockState = [(SBContinuityDisplayAuthenticationCoordinator *)self lockState];
   v4 = SBLogContinuityDisplay();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     previousLockState = self->_previousLockState;
     *buf = 134218240;
-    v18 = v3;
+    v18 = lockState;
     v19 = 2048;
     v20 = previousLockState;
     _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "Key bag state changed with current lock state: %lu, previous lock state: %lu", buf, 0x16u);
   }
 
-  if (self->_previousLockState != v3)
+  if (self->_previousLockState != lockState)
   {
-    if (v3 == 1 && !self->_sessionActive)
+    if (lockState == 1 && !self->_sessionActive)
     {
       v6 = SBLogContinuityDisplay();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -318,7 +318,7 @@ void __66__SBContinuityDisplayAuthenticationCoordinator__setSessionActive___bloc
     }
   }
 
-  self->_previousLockState = v3;
+  self->_previousLockState = lockState;
 }
 
 - (void)addObserver:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

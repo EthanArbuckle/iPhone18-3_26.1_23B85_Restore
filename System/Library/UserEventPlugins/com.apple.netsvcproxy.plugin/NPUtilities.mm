@@ -1,43 +1,43 @@
 @interface NPUtilities
-+ (BOOL)compareAddressEndpoints:(id)a3 endpoint2:(id)a4 addressOnly:(BOOL)a5;
-+ (BOOL)hasPacketDrop:(id)a3;
-+ (BOOL)printDictionaryAsJson:(id)a3 debugName:(id)a4;
-+ (BOOL)rollDiceWithSuccessRatio:(id)a3;
-+ (__SecKey)copyKeyFromKeychainWithIdentifier:(id)a3;
-+ (id)connectionInfoToDict:(id)a3 dictionary:(id)a4;
-+ (id)copyBase64HeaderValueFromData:(id)a3;
-+ (id)copyCurrentNetworkCharacteristicsForPath:(id)a3;
-+ (id)copyDataFromKeychainWithIdentifier:(id)a3 accountName:(id)a4;
-+ (id)copyDataHexString:(id)a3;
-+ (id)copyItemIdentifiersFromKeychainWithAccountName:(id)a3;
-+ (id)copyNetworkDescription:(id)a3;
++ (BOOL)compareAddressEndpoints:(id)endpoints endpoint2:(id)endpoint2 addressOnly:(BOOL)only;
++ (BOOL)hasPacketDrop:(id)drop;
++ (BOOL)printDictionaryAsJson:(id)json debugName:(id)name;
++ (BOOL)rollDiceWithSuccessRatio:(id)ratio;
++ (__SecKey)copyKeyFromKeychainWithIdentifier:(id)identifier;
++ (id)connectionInfoToDict:(id)dict dictionary:(id)dictionary;
++ (id)copyBase64HeaderValueFromData:(id)data;
++ (id)copyCurrentNetworkCharacteristicsForPath:(id)path;
++ (id)copyDataFromKeychainWithIdentifier:(id)identifier accountName:(id)name;
++ (id)copyDataHexString:(id)string;
++ (id)copyItemIdentifiersFromKeychainWithAccountName:(id)name;
++ (id)copyNetworkDescription:(id)description;
 + (id)copyTrueClientIPAddressFromPreferences;
-+ (id)copyUUIDsForSigningIdentifier:(id)a3 executablePath:(id)a4;
-+ (id)createMaskedIPv4Address:(id)a3 prefix:(unint64_t)a4;
-+ (id)createMaskedIPv6Address:(id)a3 prefix:(unint64_t)a4;
-+ (id)endpointFromString:(id)a3 defaultPortString:(id)a4;
-+ (id)getInterfaceName:(int64_t)a3;
-+ (id)getInterfaceTypeString:(int64_t)a3;
-+ (id)hexDumpBytes:(const void *)a3 length:(unint64_t)a4;
-+ (id)machoUUIDFromPID:(int)a3;
-+ (id)mergeHTTPHeaders:(id)a3 headerOverrides:(id)a4;
-+ (id)parseXHost:(id)a3;
++ (id)copyUUIDsForSigningIdentifier:(id)identifier executablePath:(id)path;
++ (id)createMaskedIPv4Address:(id)address prefix:(unint64_t)prefix;
++ (id)createMaskedIPv6Address:(id)address prefix:(unint64_t)prefix;
++ (id)endpointFromString:(id)string defaultPortString:(id)portString;
++ (id)getInterfaceName:(int64_t)name;
++ (id)getInterfaceTypeString:(int64_t)string;
++ (id)hexDumpBytes:(const void *)bytes length:(unint64_t)length;
++ (id)machoUUIDFromPID:(int)d;
++ (id)mergeHTTPHeaders:(id)headers headerOverrides:(id)overrides;
++ (id)parseXHost:(id)host;
 + (id)sharedEmphemeralSession;
-+ (id)stripWhitespace:(id)a3;
-+ (id)timestampIdentifierToName:(unint64_t)a3;
-+ (int64_t)certificateDateIsValid:(__SecCertificate *)a3;
-+ (int64_t)interfaceTypeOfInterface:(id)a3;
-+ (int64_t)interfaceTypeOfNWInterface:(id)a3;
-+ (int64_t)protocolTypeFromPath:(id)a3 endpoint:(id)a4;
-+ (unint64_t)parseXRTT:(id)a3;
-+ (unint64_t)totalDataInKeychainWithIdentifier:(id)a3;
-+ (void)parseXTimeout:(id)a3 hardTTLInSeconds:(double *)a4;
-+ (void)postNotification:(id)a3 value:(unint64_t)a4;
-+ (void)removeDataFromKeychainWithIdentifier:(id)a3;
-+ (void)removeDataFromKeychainWithIdentifier:(id)a3 accountName:(id)a4;
-+ (void)removeKeyFromKeychainWithIdentifier:(id)a3;
-+ (void)saveDataToKeychain:(id)a3 withIdentifier:(id)a4 accountName:(id)a5;
-+ (void)saveKeyToKeychain:(__SecKey *)a3 withIdentifier:(id)a4;
++ (id)stripWhitespace:(id)whitespace;
++ (id)timestampIdentifierToName:(unint64_t)name;
++ (int64_t)certificateDateIsValid:(__SecCertificate *)valid;
++ (int64_t)interfaceTypeOfInterface:(id)interface;
++ (int64_t)interfaceTypeOfNWInterface:(id)interface;
++ (int64_t)protocolTypeFromPath:(id)path endpoint:(id)endpoint;
++ (unint64_t)parseXRTT:(id)t;
++ (unint64_t)totalDataInKeychainWithIdentifier:(id)identifier;
++ (void)parseXTimeout:(id)timeout hardTTLInSeconds:(double *)seconds;
++ (void)postNotification:(id)notification value:(unint64_t)value;
++ (void)removeDataFromKeychainWithIdentifier:(id)identifier;
++ (void)removeDataFromKeychainWithIdentifier:(id)identifier accountName:(id)name;
++ (void)removeKeyFromKeychainWithIdentifier:(id)identifier;
++ (void)saveDataToKeychain:(id)keychain withIdentifier:(id)identifier accountName:(id)name;
++ (void)saveKeyToKeychain:(__SecKey *)keychain withIdentifier:(id)identifier;
 @end
 
 @implementation NPUtilities
@@ -54,17 +54,17 @@
   return v3;
 }
 
-+ (id)copyDataFromKeychainWithIdentifier:(id)a3 accountName:(id)a4
++ (id)copyDataFromKeychainWithIdentifier:(id)identifier accountName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
   v12[0] = kSecClass;
   v12[1] = kSecAttrService;
   v13[0] = kSecClassGenericPassword;
-  v13[1] = v5;
+  v13[1] = identifierCopy;
   v12[2] = kSecAttrAccount;
   v12[3] = kSecMatchLimit;
-  v13[2] = v6;
+  v13[2] = nameCopy;
   v13[3] = kSecMatchLimitOne;
   v12[4] = kSecReturnData;
   v13[4] = &__kCFBooleanTrue;
@@ -89,25 +89,25 @@
   return v8;
 }
 
-+ (void)saveDataToKeychain:(id)a3 withIdentifier:(id)a4 accountName:(id)a5
++ (void)saveDataToKeychain:(id)keychain withIdentifier:(id)identifier accountName:(id)name
 {
-  v7 = a4;
-  v8 = a5;
+  identifierCopy = identifier;
+  nameCopy = name;
   v18[0] = kSecClass;
   v18[1] = kSecAttrService;
   v19[0] = kSecClassGenericPassword;
-  v19[1] = v7;
+  v19[1] = identifierCopy;
   v18[2] = kSecAttrAccount;
-  v19[2] = v8;
-  v9 = a3;
+  v19[2] = nameCopy;
+  keychainCopy = keychain;
   v10 = [NSDictionary dictionaryWithObjects:v19 forKeys:v18 count:3];
   v16[0] = kSecAttrService;
   v16[1] = kSecAttrAccount;
-  v17[0] = v7;
-  v17[1] = v8;
+  v17[0] = identifierCopy;
+  v17[1] = nameCopy;
   v16[2] = kSecValueData;
   v16[3] = kSecAttrAccessible;
-  v17[2] = v9;
+  v17[2] = keychainCopy;
   v17[3] = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly;
   v11 = [NSDictionary dictionaryWithObjects:v17 forKeys:v16 count:4];
 
@@ -127,17 +127,17 @@
       sub_A91C();
     }
 
-    [a1 removeDataFromKeychainWithIdentifier:v7 accountName:v8];
+    [self removeDataFromKeychainWithIdentifier:identifierCopy accountName:nameCopy];
   }
 }
 
-+ (unint64_t)totalDataInKeychainWithIdentifier:(id)a3
++ (unint64_t)totalDataInKeychainWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v21[0] = kSecClass;
   v21[1] = kSecAttrService;
   v22[0] = kSecClassGenericPassword;
-  v22[1] = v3;
+  v22[1] = identifierCopy;
   v21[2] = kSecMatchLimit;
   v21[3] = kSecReturnData;
   v22[2] = kSecMatchLimitAll;
@@ -212,13 +212,13 @@ LABEL_18:
   return v7;
 }
 
-+ (void)removeDataFromKeychainWithIdentifier:(id)a3
++ (void)removeDataFromKeychainWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v13[0] = kSecClass;
   v13[1] = kSecAttrService;
   v14[0] = kSecClassGenericPassword;
-  v14[1] = v3;
+  v14[1] = identifierCopy;
   v4 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:2];
   v5 = SecItemDelete(v4);
   if (v5 != -25300 && v5 != 0)
@@ -228,7 +228,7 @@ LABEL_18:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412546;
-      v10 = v3;
+      v10 = identifierCopy;
       v11 = 1024;
       v12 = v7;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Failed to delete %@ from the keychain: %d", &v9, 0x12u);
@@ -236,16 +236,16 @@ LABEL_18:
   }
 }
 
-+ (void)removeDataFromKeychainWithIdentifier:(id)a3 accountName:(id)a4
++ (void)removeDataFromKeychainWithIdentifier:(id)identifier accountName:(id)name
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v16[0] = kSecClass;
   v16[1] = kSecAttrService;
   v17[0] = kSecClassGenericPassword;
-  v17[1] = v5;
+  v17[1] = identifierCopy;
   v16[2] = kSecAttrAccount;
-  v17[2] = a4;
-  v6 = a4;
+  v17[2] = name;
+  nameCopy = name;
   v7 = [NSDictionary dictionaryWithObjects:v17 forKeys:v16 count:3];
 
   v8 = SecItemDelete(v7);
@@ -256,7 +256,7 @@ LABEL_18:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412546;
-      v13 = v5;
+      v13 = identifierCopy;
       v14 = 1024;
       v15 = v10;
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "Failed to delete %@ from the keychain: %d", &v12, 0x12u);
@@ -264,13 +264,13 @@ LABEL_18:
   }
 }
 
-+ (__SecKey)copyKeyFromKeychainWithIdentifier:(id)a3
++ (__SecKey)copyKeyFromKeychainWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v10[0] = kSecClass;
   v10[1] = kSecAttrApplicationLabel;
   v11[0] = kSecClassKey;
-  v11[1] = v3;
+  v11[1] = identifierCopy;
   v10[2] = kSecMatchLimit;
   v10[3] = kSecReturnRef;
   v11[2] = kSecMatchLimitOne;
@@ -301,16 +301,16 @@ LABEL_18:
   return v6;
 }
 
-+ (void)saveKeyToKeychain:(__SecKey *)a3 withIdentifier:(id)a4
++ (void)saveKeyToKeychain:(__SecKey *)keychain withIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   v8[0] = kSecClass;
   v8[1] = kSecAttrApplicationLabel;
   v8[2] = kSecValueRef;
   v8[3] = kSecAttrAccessible;
   v9[0] = kSecClassKey;
-  v9[1] = v5;
-  v9[2] = a3;
+  v9[1] = identifierCopy;
+  v9[2] = keychain;
   v9[3] = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly;
   v6 = [NSDictionary dictionaryWithObjects:v9 forKeys:v8 count:4];
   if (SecItemAdd(v6, 0))
@@ -323,13 +323,13 @@ LABEL_18:
   }
 }
 
-+ (void)removeKeyFromKeychainWithIdentifier:(id)a3
++ (void)removeKeyFromKeychainWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v13[0] = kSecClass;
   v13[1] = kSecAttrApplicationLabel;
   v14[0] = kSecClassKey;
-  v14[1] = v3;
+  v14[1] = identifierCopy;
   v4 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:2];
   v5 = SecItemDelete(v4);
   if (v5 != -25300 && v5 != 0)
@@ -339,7 +339,7 @@ LABEL_18:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412546;
-      v10 = v3;
+      v10 = identifierCopy;
       v11 = 1024;
       v12 = v7;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Failed to delete key %@ from the keychain: %d", &v9, 0x12u);
@@ -347,13 +347,13 @@ LABEL_18:
   }
 }
 
-+ (id)copyItemIdentifiersFromKeychainWithAccountName:(id)a3
++ (id)copyItemIdentifiersFromKeychainWithAccountName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v22[0] = kSecClass;
   v22[1] = kSecAttrAccount;
   v23[0] = kSecClassGenericPassword;
-  v23[1] = v3;
+  v23[1] = nameCopy;
   v22[2] = kSecMatchLimit;
   v22[3] = kSecReturnAttributes;
   v23[2] = kSecMatchLimitAll;
@@ -386,7 +386,7 @@ LABEL_19:
 
   v7 = v6;
   v14 = v4;
-  v15 = v3;
+  v15 = nameCopy;
   v8 = 0;
   v9 = *v17;
   do
@@ -421,7 +421,7 @@ LABEL_19:
 
   while (v7);
   v4 = v14;
-  v3 = v15;
+  nameCopy = v15;
 LABEL_20:
 
   if (result)
@@ -432,9 +432,9 @@ LABEL_20:
   return v8;
 }
 
-+ (int64_t)interfaceTypeOfInterface:(id)a3
++ (int64_t)interfaceTypeOfInterface:(id)interface
 {
-  v3 = nw_interface_get_type(a3) - 1;
+  v3 = nw_interface_get_type(interface) - 1;
   if (v3 < 3)
   {
     return v3 + 1;
@@ -446,9 +446,9 @@ LABEL_20:
   }
 }
 
-+ (int64_t)interfaceTypeOfNWInterface:(id)a3
++ (int64_t)interfaceTypeOfNWInterface:(id)interface
 {
-  result = [a3 type];
+  result = [interface type];
   if ((result - 1) >= 3)
   {
     return 0;
@@ -457,27 +457,27 @@ LABEL_20:
   return result;
 }
 
-+ (id)getInterfaceName:(int64_t)a3
++ (id)getInterfaceName:(int64_t)name
 {
-  if ((a3 - 1) > 3)
+  if ((name - 1) > 3)
   {
     return @"UNKNOWN";
   }
 
   else
   {
-    return off_147E8[a3 - 1];
+    return off_147E8[name - 1];
   }
 }
 
-+ (int64_t)protocolTypeFromPath:(id)a3 endpoint:(id)a4
++ (int64_t)protocolTypeFromPath:(id)path endpoint:(id)endpoint
 {
-  v5 = a3;
-  v6 = a4;
-  if (nw_path_has_ipv6(v5))
+  pathCopy = path;
+  endpointCopy = endpoint;
+  if (nw_path_has_ipv6(pathCopy))
   {
-    v7 = !nw_path_has_ipv4(v5);
-    if (!v6)
+    v7 = !nw_path_has_ipv4(pathCopy);
+    if (!endpointCopy)
     {
 LABEL_13:
       if (v7)
@@ -497,18 +497,18 @@ LABEL_13:
   else
   {
     v7 = 0;
-    if (!v6)
+    if (!endpointCopy)
     {
       goto LABEL_13;
     }
   }
 
-  if (nw_endpoint_get_type(v6) != nw_endpoint_type_address)
+  if (nw_endpoint_get_type(endpointCopy) != nw_endpoint_type_address)
   {
     goto LABEL_13;
   }
 
-  sa_family = nw_endpoint_get_address(v6)->sa_family;
+  sa_family = nw_endpoint_get_address(endpointCopy)->sa_family;
   v9 = 3;
   if (!v7)
   {
@@ -535,18 +535,18 @@ LABEL_16:
   return v10;
 }
 
-+ (BOOL)hasPacketDrop:(id)a3
++ (BOOL)hasPacketDrop:(id)drop
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 state] && objc_msgSend(v4, "state") != &dword_4 + 1)
+  dropCopy = drop;
+  v4 = dropCopy;
+  if (dropCopy && [dropCopy state] && objc_msgSend(v4, "state") != &dword_4 + 1)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v7 = [v4 TCPInfo];
-    v5 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    tCPInfo = [v4 TCPInfo];
+    v5 = [tCPInfo countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
       v8 = *v14;
@@ -556,12 +556,12 @@ LABEL_16:
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(tCPInfo);
           }
 
           v10 = *(*(&v13 + 1) + 8 * i);
-          v11 = [v4 TCPInfo];
-          v12 = [v11 objectForKeyedSubscript:v10];
+          tCPInfo2 = [v4 TCPInfo];
+          v12 = [tCPInfo2 objectForKeyedSubscript:v10];
 
           if ([v12 length] == &stru_1A8 && *(objc_msgSend(v12, "bytes") + 84))
           {
@@ -571,7 +571,7 @@ LABEL_16:
           }
         }
 
-        v5 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v5 = [tCPInfo countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v5)
         {
           continue;
@@ -592,13 +592,13 @@ LABEL_17:
   return v5;
 }
 
-+ (id)stripWhitespace:(id)a3
++ (id)stripWhitespace:(id)whitespace
 {
-  v3 = a3;
+  whitespaceCopy = whitespace;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v3 length])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [whitespaceCopy length])
   {
-    v4 = [v3 stringByReplacingOccurrencesOfString:@"\\s+" withString:&stru_15680 options:1024 range:{0, objc_msgSend(v3, "length")}];
+    v4 = [whitespaceCopy stringByReplacingOccurrencesOfString:@"\\s+" withString:&stru_15680 options:1024 range:{0, objc_msgSend(whitespaceCopy, "length")}];
   }
 
   else
@@ -609,12 +609,12 @@ LABEL_17:
   return v4;
 }
 
-+ (id)hexDumpBytes:(const void *)a3 length:(unint64_t)a4
++ (id)hexDumpBytes:(const void *)bytes length:(unint64_t)length
 {
   v4 = 0;
-  if (a3 && a4)
+  if (bytes && length)
   {
-    v7 = malloc_type_malloc((2 * a4) | 1, 0x100004077774924uLL);
+    v7 = malloc_type_malloc((2 * length) | 1, 0x100004077774924uLL);
     if (v7)
     {
       v8 = v7;
@@ -622,18 +622,18 @@ LABEL_17:
       v10 = 2;
       do
       {
-        sprintf(&v8[v10 - 2], "%x", *(a3 + v9++));
-        if (v9 >= a4)
+        sprintf(&v8[v10 - 2], "%x", *(bytes + v9++));
+        if (v9 >= length)
         {
           break;
         }
 
-        v11 = v10 >= 2 * a4 - 1;
+        v11 = v10 >= 2 * length - 1;
         v10 += 2;
       }
 
       while (!v11);
-      v8[2 * a4] = 0;
+      v8[2 * length] = 0;
       v4 = [[NSString alloc] initWithCString:v8 encoding:4];
       free(v8);
     }
@@ -647,13 +647,13 @@ LABEL_17:
   return v4;
 }
 
-+ (void)parseXTimeout:(id)a3 hardTTLInSeconds:(double *)a4
++ (void)parseXTimeout:(id)timeout hardTTLInSeconds:(double *)seconds
 {
-  v9 = a3;
+  timeoutCopy = timeout;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v9 doubleValue];
+    [timeoutCopy doubleValue];
     v6 = v5 * 60.0;
     v7 = v5 <= 0.0;
     v8 = 92160.0;
@@ -673,16 +673,16 @@ LABEL_17:
     v8 = 92160.0;
   }
 
-  *a4 = v8;
+  *seconds = v8;
 }
 
-+ (id)parseXHost:(id)a3
++ (id)parseXHost:(id)host
 {
-  v3 = a3;
+  hostCopy = host;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v3 length])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [hostCopy length])
   {
-    v4 = [v3 componentsSeparatedByString:{@", "}];
+    v4 = [hostCopy componentsSeparatedByString:{@", "}];
     v6 = 0;
     if ([v4 count])
     {
@@ -731,13 +731,13 @@ LABEL_17:
   return v6;
 }
 
-+ (unint64_t)parseXRTT:(id)a3
++ (unint64_t)parseXRTT:(id)t
 {
-  v3 = a3;
+  tCopy = t;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v3 length])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [tCopy length])
   {
-    v4 = [v3 componentsSeparatedByString:{@", "}];
+    v4 = [tCopy componentsSeparatedByString:{@", "}];
     if ([v4 count])
     {
       v5 = [v4 objectAtIndexedSubscript:0];
@@ -766,24 +766,24 @@ LABEL_17:
   return v6;
 }
 
-+ (id)copyBase64HeaderValueFromData:(id)a3
++ (id)copyBase64HeaderValueFromData:(id)data
 {
-  v3 = [a3 base64EncodedStringWithOptions:0];
+  v3 = [data base64EncodedStringWithOptions:0];
   v4 = [NSString stringWithFormat:@":%@:", v3];
 
   return v4;
 }
 
-+ (id)copyCurrentNetworkCharacteristicsForPath:(id)a3
++ (id)copyCurrentNetworkCharacteristicsForPath:(id)path
 {
-  v3 = a3;
-  if ([v3 status] == &dword_0 + 1)
+  pathCopy = path;
+  if ([pathCopy status] == &dword_0 + 1)
   {
-    v4 = [v3 interface];
-    v5 = [v4 interfaceName];
-    if (v5 && nwi_state_copy())
+    interface = [pathCopy interface];
+    interfaceName = [interface interfaceName];
+    if (interfaceName && nwi_state_copy())
     {
-      [v5 UTF8String];
+      [interfaceName UTF8String];
       ifstate = nwi_state_get_ifstate();
       if (ifstate)
       {
@@ -797,7 +797,7 @@ LABEL_17:
           v13[0] = v7;
           v12[0] = @"Signature";
           v12[1] = @"InterfaceType";
-          v9 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 type]);
+          v9 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [interface type]);
           v13[1] = v9;
           v12[2] = @"HasIPv6";
           v10 = [NSNumber numberWithBool:v8];
@@ -828,75 +828,75 @@ LABEL_17:
   return ifstate;
 }
 
-+ (id)connectionInfoToDict:(id)a3 dictionary:(id)a4
++ (id)connectionInfoToDict:(id)dict dictionary:(id)dictionary
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  dictCopy = dict;
+  dictionaryCopy = dictionary;
+  v7 = dictionaryCopy;
   *v74 = 0;
   v75 = 0;
   v76 = 0;
-  if (!v5)
+  if (!dictCopy)
   {
     v10 = 0;
     goto LABEL_57;
   }
 
-  if (!v6)
+  if (!dictionaryCopy)
   {
     v7 = objc_alloc_init(NSMutableDictionary);
   }
 
-  v8 = [v5 pathType];
-  if (v8 > 5)
+  pathType = [dictCopy pathType];
+  if (pathType > 5)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = off_14808[v8];
+    v9 = off_14808[pathType];
   }
 
   [v7 setObject:v9 forKeyedSubscript:@"PathType"];
-  if ([v5 pathType] == &dword_0 + 2)
+  if ([dictCopy pathType] == &dword_0 + 2)
   {
-    v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v5 fallbackReason]);
+    v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [dictCopy fallbackReason]);
     [v7 setObject:v11 forKeyedSubscript:@"FallbackReasonNumber"];
 
-    v12 = +[NSPConnectionInfo getFallbackReasonDescription:](NSPConnectionInfo, "getFallbackReasonDescription:", [v5 fallbackReason]);
+    v12 = +[NSPConnectionInfo getFallbackReasonDescription:](NSPConnectionInfo, "getFallbackReasonDescription:", [dictCopy fallbackReason]);
     [v7 setObject:v12 forKeyedSubscript:@"FallbackReason"];
 
-    v13 = [v5 fallbackReasonCategory];
-    if (v13 <= 4)
+    fallbackReasonCategory = [dictCopy fallbackReasonCategory];
+    if (fallbackReasonCategory <= 4)
     {
-      v9 = off_14838[v13];
+      v9 = off_14838[fallbackReasonCategory];
     }
 
     [v7 setObject:v9 forKeyedSubscript:@"FallbackCategory"];
     v14 = [NSNumber alloc];
-    [v5 fallbackDelay];
-    v15 = [v14 initWithDouble:?];
+    [dictCopy fallbackDelay];
+    firstTxByteTimeStamp = [v14 initWithDouble:?];
     v16 = @"FallbackDelay";
     v17 = v7;
-    v18 = v15;
+    v18 = firstTxByteTimeStamp;
     goto LABEL_12;
   }
 
-  if ([v5 pathType] == &dword_0 + 1)
+  if ([dictCopy pathType] == &dword_0 + 1)
   {
-    v19 = [v5 edgeType];
-    if (v19 <= 3)
+    edgeType = [dictCopy edgeType];
+    if (edgeType <= 3)
     {
-      v9 = off_14860[v19];
+      v9 = off_14860[edgeType];
     }
 
     [v7 setObject:v9 forKeyedSubscript:@"EdgeType"];
-    v20 = [v5 edgeAddress];
-    if (v20)
+    edgeAddress = [dictCopy edgeAddress];
+    if (edgeAddress)
     {
-      v21 = [v5 edgeAddress];
-      [v7 setObject:v21 forKeyedSubscript:@"EdgeAddress"];
+      edgeAddress2 = [dictCopy edgeAddress];
+      [v7 setObject:edgeAddress2 forKeyedSubscript:@"EdgeAddress"];
     }
 
     else
@@ -904,11 +904,11 @@ LABEL_17:
       [v7 setObject:@"unknown" forKeyedSubscript:@"EdgeAddress"];
     }
 
-    v15 = [v5 firstTxByteTimeStamp];
-    if (v15)
+    firstTxByteTimeStamp = [dictCopy firstTxByteTimeStamp];
+    if (firstTxByteTimeStamp)
     {
-      v22 = [v5 firstTxByteTimeStamp];
-      v23 = [v22 description];
+      firstTxByteTimeStamp2 = [dictCopy firstTxByteTimeStamp];
+      v23 = [firstTxByteTimeStamp2 description];
       [v7 setObject:v23 forKeyedSubscript:@"tunnelFirstTxByteTimestamp"];
 
       goto LABEL_21;
@@ -922,7 +922,7 @@ LABEL_12:
 LABEL_21:
   }
 
-  if ([v5 isMultipath])
+  if ([dictCopy isMultipath])
   {
     v24 = @"yes";
   }
@@ -933,13 +933,13 @@ LABEL_21:
   }
 
   [v7 setObject:v24 forKeyedSubscript:@"IsMultipath"];
-  v25 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v5 multipathSubflowCount]);
+  v25 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [dictCopy multipathSubflowCount]);
   [v7 setObject:v25 forKeyedSubscript:@"SubflowCount"];
 
-  v26 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v5 multipathConnectedSubflowCount]);
+  v26 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [dictCopy multipathConnectedSubflowCount]);
   [v7 setObject:v26 forKeyedSubscript:@"ConnectedSubflowCount"];
 
-  if ([v5 isTFOProbeSucceeded])
+  if ([dictCopy isTFOProbeSucceeded])
   {
     v27 = @"yes";
   }
@@ -950,62 +950,62 @@ LABEL_21:
   }
 
   [v7 setObject:v27 forKeyedSubscript:@"IsTFOProbeSucceeded"];
-  if (if_indextoname([v5 multipathPrimarySubflowInterfaceIndex], v74))
+  if (if_indextoname([dictCopy multipathPrimarySubflowInterfaceIndex], v74))
   {
     v28 = [NSString stringWithUTF8String:v74];
     [v7 setObject:v28 forKeyedSubscript:@"PrimarySubflowInterface"];
   }
 
-  v29 = [v5 multipathSubflowSwitchCounts];
-  if (v29)
+  multipathSubflowSwitchCounts = [dictCopy multipathSubflowSwitchCounts];
+  if (multipathSubflowSwitchCounts)
   {
-    v30 = v29;
-    v31 = [v5 multipathSubflowSwitchCounts];
-    v32 = [v31 count];
+    v30 = multipathSubflowSwitchCounts;
+    multipathSubflowSwitchCounts2 = [dictCopy multipathSubflowSwitchCounts];
+    v32 = [multipathSubflowSwitchCounts2 count];
 
     if (v32)
     {
-      v33 = [v5 multipathSubflowSwitchCounts];
-      [v7 setObject:v33 forKeyedSubscript:@"SwitchCounts"];
+      multipathSubflowSwitchCounts3 = [dictCopy multipathSubflowSwitchCounts];
+      [v7 setObject:multipathSubflowSwitchCounts3 forKeyedSubscript:@"SwitchCounts"];
     }
   }
 
-  [v5 connectionDelay];
+  [dictCopy connectionDelay];
   if (v34 > 0.0)
   {
-    [v5 connectionDelay];
+    [dictCopy connectionDelay];
     v35 = [NSNumber numberWithDouble:?];
     [v7 setObject:v35 forKeyedSubscript:@"ConnectionDelay"];
   }
 
-  [v5 firstTxByteDelay];
+  [dictCopy firstTxByteDelay];
   if (v36 > 0.0)
   {
-    [v5 firstTxByteDelay];
+    [dictCopy firstTxByteDelay];
     v37 = [NSNumber numberWithDouble:?];
     [v7 setObject:v37 forKeyedSubscript:@"FirstTxByteDelay"];
   }
 
-  [v5 timeToFirstByte];
+  [dictCopy timeToFirstByte];
   if (v38 > 0.0)
   {
-    [v5 timeToFirstByte];
+    [dictCopy timeToFirstByte];
     v39 = [NSNumber numberWithDouble:?];
     [v7 setObject:v39 forKeyedSubscript:@"TimeToFirstByte"];
   }
 
-  if ([v5 tunnelConnectionError])
+  if ([dictCopy tunnelConnectionError])
   {
-    v40 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v5 tunnelConnectionError]);
+    v40 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [dictCopy tunnelConnectionError]);
     [v7 setObject:v40 forKeyedSubscript:@"ConnectionError"];
   }
 
-  v41 = [v5 TCPInfo];
-  if (v41)
+  tCPInfo = [dictCopy TCPInfo];
+  if (tCPInfo)
   {
-    v42 = v41;
-    v43 = [v5 TCPInfo];
-    v44 = [v43 count];
+    v42 = tCPInfo;
+    tCPInfo2 = [dictCopy TCPInfo];
+    v44 = [tCPInfo2 count];
 
     if (v44)
     {
@@ -1015,7 +1015,7 @@ LABEL_21:
       v68 = 0u;
       v69 = 0u;
       v70 = 0u;
-      obj = [v5 TCPInfo];
+      obj = [dictCopy TCPInfo];
       v66 = [obj countByEnumeratingWithState:&v67 objects:v73 count:16];
       if (v66)
       {
@@ -1030,30 +1030,30 @@ LABEL_21:
             }
 
             v46 = *(*(&v67 + 1) + 8 * i);
-            v47 = [v5 TCPInfo];
-            [v47 objectForKeyedSubscript:v46];
-            v49 = v48 = v5;
+            tCPInfo3 = [dictCopy TCPInfo];
+            [tCPInfo3 objectForKeyedSubscript:v46];
+            v49 = v48 = dictCopy;
 
-            v50 = [v49 bytes];
+            bytes = [v49 bytes];
             v71[0] = @"TxBytes";
-            v51 = [NSNumber numberWithUnsignedLongLong:*(v50 + 76)];
+            v51 = [NSNumber numberWithUnsignedLongLong:*(bytes + 76)];
             v72[0] = v51;
             v71[1] = @"TxPackets";
-            v52 = [NSNumber numberWithUnsignedLongLong:*(v50 + 68)];
+            v52 = [NSNumber numberWithUnsignedLongLong:*(bytes + 68)];
             v72[1] = v52;
             v71[2] = @"RxBytes";
-            v53 = [NSNumber numberWithUnsignedLongLong:*(v50 + 108)];
+            v53 = [NSNumber numberWithUnsignedLongLong:*(bytes + 108)];
             v72[2] = v53;
             v71[3] = @"RxPackets";
-            v54 = [NSNumber numberWithUnsignedLongLong:*(v50 + 100)];
+            v54 = [NSNumber numberWithUnsignedLongLong:*(bytes + 100)];
             v72[3] = v54;
             v71[4] = @"Resend";
-            v55 = [NSNumber numberWithUnsignedLongLong:*(v50 + 284)];
+            v55 = [NSNumber numberWithUnsignedLongLong:*(bytes + 284)];
             v72[4] = v55;
             v56 = [NSDictionary dictionaryWithObjects:v72 forKeys:v71 count:5];
 
             [v65 setObject:v56 forKeyedSubscript:v46];
-            v5 = v48;
+            dictCopy = v48;
           }
 
           v66 = [obj countByEnumeratingWithState:&v67 objects:v73 count:16];
@@ -1067,15 +1067,15 @@ LABEL_21:
     }
   }
 
-  [v5 timeIntervalSinceLastUsage];
+  [dictCopy timeIntervalSinceLastUsage];
   if (v57 > 0.0)
   {
-    [v5 timeIntervalSinceLastUsage];
+    [dictCopy timeIntervalSinceLastUsage];
     v58 = [NSNumber numberWithDouble:?];
     [v7 setObject:v58 forKeyedSubscript:@"TimeSinceLastUsage"];
   }
 
-  if ([v5 TFOSucceeded])
+  if ([dictCopy TFOSucceeded])
   {
     v59 = @"yes";
   }
@@ -1086,8 +1086,8 @@ LABEL_21:
   }
 
   [v7 setObject:v59 forKeyedSubscript:@"TFOSucceeded"];
-  v60 = [v5 timingIntervals];
-  [v7 setObject:v60 forKeyedSubscript:@"TimingIntervals"];
+  timingIntervals = [dictCopy timingIntervals];
+  [v7 setObject:timingIntervals forKeyedSubscript:@"TimingIntervals"];
 
   v7 = v7;
   v10 = v7;
@@ -1096,26 +1096,26 @@ LABEL_57:
   return v10;
 }
 
-+ (BOOL)printDictionaryAsJson:(id)a3 debugName:(id)a4
++ (BOOL)printDictionaryAsJson:(id)json debugName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
-  if (![NSJSONSerialization isValidJSONObject:v5])
+  jsonCopy = json;
+  nameCopy = name;
+  if (![NSJSONSerialization isValidJSONObject:jsonCopy])
   {
-    printf("%s are not a valid JSON object\n", [v6 UTF8String]);
+    printf("%s are not a valid JSON object\n", [nameCopy UTF8String]);
 LABEL_6:
     v10 = 0;
     goto LABEL_7;
   }
 
   v14 = 0;
-  v7 = [NSJSONSerialization dataWithJSONObject:v5 options:1 error:&v14];
+  v7 = [NSJSONSerialization dataWithJSONObject:jsonCopy options:1 error:&v14];
   v8 = v14;
   if (!v7)
   {
-    v11 = [v6 UTF8String];
+    uTF8String = [nameCopy UTF8String];
     v12 = [v8 description];
-    printf("Failed to create JSON data from the %s: %s\n", v11, [v12 UTF8String]);
+    printf("Failed to create JSON data from the %s: %s\n", uTF8String, [v12 UTF8String]);
 
     goto LABEL_6;
   }
@@ -1129,10 +1129,10 @@ LABEL_7:
   return v10;
 }
 
-+ (id)endpointFromString:(id)a3 defaultPortString:(id)a4
++ (id)endpointFromString:(id)string defaultPortString:(id)portString
 {
-  v5 = a4;
-  v6 = [NPUtilities stripWhitespace:a3];
+  portStringCopy = portString;
+  v6 = [NPUtilities stripWhitespace:string];
   v7 = [v6 componentsSeparatedByString:@"@"];
   v8 = [v6 componentsSeparatedByString:@"."];
   if ([v8 count] >= 3)
@@ -1200,9 +1200,9 @@ LABEL_7:
 
   if ([v7 count] < 2)
   {
-    if (v5)
+    if (portStringCopy)
     {
-      v16 = [NWHostEndpoint endpointWithHostname:v6 port:v5];
+      v16 = [NWHostEndpoint endpointWithHostname:v6 port:portStringCopy];
     }
 
     else
@@ -1223,34 +1223,34 @@ LABEL_22:
   return v16;
 }
 
-+ (BOOL)compareAddressEndpoints:(id)a3 endpoint2:(id)a4 addressOnly:(BOOL)a5
++ (BOOL)compareAddressEndpoints:(id)endpoints endpoint2:(id)endpoint2 addressOnly:(BOOL)only
 {
-  v7 = a3;
-  v8 = a4;
+  endpointsCopy = endpoints;
+  endpoint2Copy = endpoint2;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
-      v10 = [v7 address];
-      v11 = [v9 address];
-      v12 = v10[1];
-      if (v12 == v11[1])
+      v9 = endpoint2Copy;
+      address = [endpointsCopy address];
+      address2 = [v9 address];
+      v12 = address[1];
+      if (v12 == address2[1])
       {
         if (v12 == 30)
         {
-          if (*v10 >= 0x1Cu && *v11 >= 0x1Cu && (a5 || *(v10 + 1) == *(v11 + 1)))
+          if (*address >= 0x1Cu && *address2 >= 0x1Cu && (only || *(address + 1) == *(address2 + 1)))
           {
-            v13 = *(v10 + 1) == *(v11 + 1) && *(v10 + 2) == *(v11 + 2);
+            v13 = *(address + 1) == *(address2 + 1) && *(address + 2) == *(address2 + 2);
             goto LABEL_22;
           }
         }
 
-        else if (v12 == 2 && *v10 >= 0x10u && *v11 >= 0x10u && (a5 || *(v10 + 1) == *(v11 + 1)))
+        else if (v12 == 2 && *address >= 0x10u && *address2 >= 0x10u && (only || *(address + 1) == *(address2 + 1)))
         {
-          v13 = *(v10 + 1) == *(v11 + 1);
+          v13 = *(address + 1) == *(address2 + 1);
 LABEL_22:
           v14 = v13;
           goto LABEL_17;
@@ -1270,22 +1270,22 @@ LABEL_18:
   return v14;
 }
 
-+ (id)getInterfaceTypeString:(int64_t)a3
++ (id)getInterfaceTypeString:(int64_t)string
 {
-  if ((a3 - 1) > 2)
+  if ((string - 1) > 2)
   {
     return @"Other";
   }
 
   else
   {
-    return off_14880[a3 - 1];
+    return off_14880[string - 1];
   }
 }
 
-+ (BOOL)rollDiceWithSuccessRatio:(id)a3
++ (BOOL)rollDiceWithSuccessRatio:(id)ratio
 {
-  v3 = a3;
+  ratioCopy = ratio;
   bytes = 0;
   if (SecRandomCopyBytes(kSecRandomDefault, 4uLL, &bytes) < 0)
   {
@@ -1307,41 +1307,41 @@ LABEL_18:
       sub_A9EC(v5, v4);
     }
 
-    [v3 doubleValue];
+    [ratioCopy doubleValue];
     v7 = v4 < v6;
   }
 
   return v7;
 }
 
-+ (id)timestampIdentifierToName:(unint64_t)a3
++ (id)timestampIdentifierToName:(unint64_t)name
 {
-  if (a3 - 1 > 0xE)
+  if (name - 1 > 0xE)
   {
     return @"EnableNSP";
   }
 
   else
   {
-    return off_14898[a3 - 1];
+    return off_14898[name - 1];
   }
 }
 
-+ (id)copyDataHexString:(id)a3
++ (id)copyDataHexString:(id)string
 {
-  v3 = a3;
-  if ([v3 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     v4 = v12;
     memset(v12, 0, sizeof(v12));
-    v5 = [v3 bytes];
+    bytes = [stringCopy bytes];
     v11 = 60;
-    if ([v3 length])
+    if ([stringCopy length])
     {
       v6 = 0;
       do
       {
-        snprintf(v4, 3uLL, "%02x", v5[v6]);
+        snprintf(v4, 3uLL, "%02x", bytes[v6]);
         v7 = v4 + 2;
         v8 = v4 + 2 - &v11;
         if (v6 && (v6 & 3) == 0 && v8 <= 254)
@@ -1351,7 +1351,7 @@ LABEL_18:
           v8 = v4 + 3 - &v11;
         }
 
-        if (++v6 >= [v3 length])
+        if (++v6 >= [stringCopy length])
         {
           break;
         }
@@ -1384,11 +1384,11 @@ LABEL_16:
   return v9;
 }
 
-+ (id)copyNetworkDescription:(id)a3
++ (id)copyNetworkDescription:(id)description
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"InterfaceType"];
-  v5 = [v3 objectForKeyedSubscript:@"Signature"];
+  descriptionCopy = description;
+  v4 = [descriptionCopy objectForKeyedSubscript:@"InterfaceType"];
+  v5 = [descriptionCopy objectForKeyedSubscript:@"Signature"];
 
   v6 = [NSString alloc];
   v7 = +[NPUtilities getInterfaceTypeString:](NPUtilities, "getInterfaceTypeString:", [v4 intValue]);
@@ -1398,9 +1398,9 @@ LABEL_16:
   return v9;
 }
 
-+ (int64_t)certificateDateIsValid:(__SecCertificate *)a3
++ (int64_t)certificateDateIsValid:(__SecCertificate *)valid
 {
-  if (a3)
+  if (valid)
   {
     SecCertificateNotValidBefore();
     v4 = v3;
@@ -1531,22 +1531,22 @@ LABEL_29:
   return 4;
 }
 
-+ (void)postNotification:(id)a3 value:(unint64_t)a4
++ (void)postNotification:(id)notification value:(unint64_t)value
 {
-  v5 = a3;
+  notificationCopy = notification;
   v6 = NPGetInternalQueue();
   dispatch_assert_queue_V2(v6);
 
   out_token = -1;
-  if (!notify_register_check([v5 UTF8String], &out_token))
+  if (!notify_register_check([notificationCopy UTF8String], &out_token))
   {
-    v7 = 0;
-    if (notify_get_state(out_token, &v7) || v7 != a4)
+    valueCopy = 0;
+    if (notify_get_state(out_token, &valueCopy) || valueCopy != value)
     {
-      v7 = a4;
-      if (!notify_set_state(out_token, a4))
+      valueCopy = value;
+      if (!notify_set_state(out_token, value))
       {
-        notify_post([v5 UTF8String]);
+        notify_post([notificationCopy UTF8String]);
       }
     }
 
@@ -1583,12 +1583,12 @@ LABEL_29:
   return v4;
 }
 
-+ (id)machoUUIDFromPID:(int)a3
++ (id)machoUUIDFromPID:(int)d
 {
   v7 = 0;
   memset(v6, 0, sizeof(v6));
   v3 = 0;
-  if (proc_pidinfo(a3, 17, 1uLL, v6, 56) == 56)
+  if (proc_pidinfo(d, 17, 1uLL, v6, 56) == 56)
   {
     v3 = [[NSUUID alloc] initWithUUIDBytes:v6];
   }
@@ -1602,16 +1602,16 @@ LABEL_29:
   return v3;
 }
 
-+ (id)createMaskedIPv4Address:(id)a3 prefix:(unint64_t)a4
++ (id)createMaskedIPv4Address:(id)address prefix:(unint64_t)prefix
 {
-  if (a3)
+  if (address)
   {
-    v6 = a3;
-    v7 = sub_5808(NPUtilities, a4);
+    addressCopy = address;
+    v7 = sub_5808(NPUtilities, prefix);
     if (v7)
     {
       v11 = 0;
-      inet_pton(2, [v6 UTF8String], &v11 + 4);
+      inet_pton(2, [addressCopy UTF8String], &v11 + 4);
       inet_pton(2, [v7 UTF8String], &v11);
       HIDWORD(v11) &= v11;
       v8 = sub_5730(NPUtilities, &v11 + 4, 4uLL, 2);
@@ -1635,17 +1635,17 @@ LABEL_7:
   return v8;
 }
 
-+ (id)createMaskedIPv6Address:(id)a3 prefix:(unint64_t)a4
++ (id)createMaskedIPv6Address:(id)address prefix:(unint64_t)prefix
 {
-  v5 = a3;
-  if (v5)
+  addressCopy = address;
+  if (addressCopy)
   {
-    v6 = sub_58B0(NPUtilities, a4);
+    v6 = sub_58B0(NPUtilities, prefix);
     if (v6)
     {
       v10 = 0uLL;
       v9 = 0uLL;
-      inet_pton(30, [v5 UTF8String], &v10);
+      inet_pton(30, [addressCopy UTF8String], &v10);
       inet_pton(30, [v6 UTF8String], &v9);
       v10 = vandq_s8(v9, v10);
       v7 = sub_5730(NPUtilities, &v10, 0x10uLL, 30);
@@ -1668,18 +1668,18 @@ LABEL_7:
   return v7;
 }
 
-+ (id)copyUUIDsForSigningIdentifier:(id)a3 executablePath:(id)a4
++ (id)copyUUIDsForSigningIdentifier:(id)identifier executablePath:(id)path
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  pathCopy = path;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_5CBC;
   v16 = sub_5CCC;
   v17 = 0;
-  [v5 UTF8String];
-  [v6 UTF8String];
+  [identifierCopy UTF8String];
+  [pathCopy UTF8String];
   v7 = NEHelperCacheCopyAppUUIDMapping();
   v8 = v7;
   if (v7 && xpc_get_type(v7) == &_xpc_type_array)
@@ -1698,16 +1698,16 @@ LABEL_7:
   return v9;
 }
 
-+ (id)mergeHTTPHeaders:(id)a3 headerOverrides:(id)a4
++ (id)mergeHTTPHeaders:(id)headers headerOverrides:(id)overrides
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  headersCopy = headers;
+  overridesCopy = overrides;
+  if (overridesCopy)
   {
-    v23 = v5;
-    if (v5)
+    v23 = headersCopy;
+    if (headersCopy)
     {
-      v7 = [[NSMutableDictionary alloc] initWithDictionary:v5];
+      v7 = [[NSMutableDictionary alloc] initWithDictionary:headersCopy];
     }
 
     else
@@ -1716,7 +1716,7 @@ LABEL_7:
     }
 
     v8 = v7;
-    v9 = [v6 componentsSeparatedByString:{@";", v6}];;
+    v9 = [overridesCopy componentsSeparatedByString:{@";", overridesCopy}];;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -1738,42 +1738,42 @@ LABEL_7:
           v14 = [*(*(&v25 + 1) + 8 * i) componentsSeparatedByString:@"="];
           if ([v14 count]<= 2 && [v14 count])
           {
-            v15 = [v14 firstObject];
-            v16 = [v15 length];
+            firstObject = [v14 firstObject];
+            v16 = [firstObject length];
 
             if (!v16)
             {
               goto LABEL_26;
             }
 
-            v17 = [v14 firstObject];
-            v18 = [v14 lastObject];
-            if (-[NSObject count](v14, "count") == &dword_0 + 1 || ![v18 length])
+            firstObject2 = [v14 firstObject];
+            lastObject = [v14 lastObject];
+            if (-[NSObject count](v14, "count") == &dword_0 + 1 || ![lastObject length])
             {
               v20 = nplog_obj();
               if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
               {
-                v24 = [v8 objectForKey:v17];
+                v24 = [v8 objectForKey:firstObject2];
                 *buf = 138412546;
-                v30 = v17;
+                v30 = firstObject2;
                 v31 = 2112;
                 v32 = v24;
                 _os_log_debug_impl(&dword_0, v20, OS_LOG_TYPE_DEBUG, "Removing header %@ due to user-configured headers, current value is %@", buf, 0x16u);
               }
 
-              [v8 removeObjectForKey:v17];
+              [v8 removeObjectForKey:firstObject2];
             }
 
             else
             {
-              [v8 setValue:v18 forKey:v17];
+              [v8 setValue:lastObject forKey:firstObject2];
               v19 = nplog_obj();
               if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
               {
                 *buf = 138412546;
-                v30 = v17;
+                v30 = firstObject2;
                 v31 = 2112;
-                v32 = v18;
+                v32 = lastObject;
                 _os_log_debug_impl(&dword_0, v19, OS_LOG_TYPE_DEBUG, "Adding/replacing header %@ with value %@ due to user-configured headers", buf, 0x16u);
               }
             }
@@ -1781,12 +1781,12 @@ LABEL_7:
 
           else
           {
-            v17 = nplog_obj();
-            if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+            firstObject2 = nplog_obj();
+            if (os_log_type_enabled(firstObject2, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412290;
               v30 = v14;
-              _os_log_error_impl(&dword_0, v17, OS_LOG_TYPE_ERROR, "Skipping malformed header override: %@", buf, 0xCu);
+              _os_log_error_impl(&dword_0, firstObject2, OS_LOG_TYPE_ERROR, "Skipping malformed header override: %@", buf, 0xCu);
             }
           }
 
@@ -1799,13 +1799,13 @@ LABEL_26:
       while (v11);
     }
 
-    v6 = v22;
-    v5 = v23;
+    overridesCopy = v22;
+    headersCopy = v23;
   }
 
   else
   {
-    v8 = v5;
+    v8 = headersCopy;
   }
 
   return v8;

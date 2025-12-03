@@ -31,8 +31,8 @@
 
         v7 = *(*(&v24 + 1) + 8 * i);
         v8 = [v3 objectForKeyedSubscript:v7];
-        v9 = [v8 storageURLs];
-        v10 = [v9 count] == 0;
+        storageURLs = [v8 storageURLs];
+        v10 = [storageURLs count] == 0;
 
         if (v10)
         {
@@ -51,12 +51,12 @@
 
         else
         {
-          v11 = [v8 storageURLs];
-          v12 = [v11 objectAtIndexedSubscript:0];
+          storageURLs2 = [v8 storageURLs];
+          v12 = [storageURLs2 objectAtIndexedSubscript:0];
 
-          v13 = [v12 path];
-          v14 = [v13 stringByStandardizingPath];
-          v15 = [v14 stringByAppendingString:@"/"];
+          path = [v12 path];
+          stringByStandardizingPath = [path stringByStandardizingPath];
+          v15 = [stringByStandardizingPath stringByAppendingString:@"/"];
 
           [v23 setObject:v15 forKeyedSubscript:v7];
         }
@@ -68,22 +68,22 @@
     while (v4);
   }
 
-  v17 = a1;
-  objc_sync_enter(v17);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v18 = [v23 copy];
   v19 = _domainPathCache;
   _domainPathCache = v18;
 
-  objc_sync_exit(v17);
+  objc_sync_exit(selfCopy);
   v20 = *MEMORY[0x277D85DE8];
 }
 
 + (id)domainPathCache
 {
-  v1 = a1;
-  objc_sync_enter(v1);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v2 = _domainPathCache;
-  objc_sync_exit(v1);
+  objc_sync_exit(selfCopy);
 
   return v2;
 }

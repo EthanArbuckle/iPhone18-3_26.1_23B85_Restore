@@ -1,9 +1,9 @@
 @interface COSLegalMessagePane
-- (BOOL)webView:(id)a3 shouldStartLoadWithRequest:(id)a4 navigationType:(int64_t)a5;
+- (BOOL)webView:(id)view shouldStartLoadWithRequest:(id)request navigationType:(int64_t)type;
 - (COSLegalMessagePane)init;
 - (void)loadView;
-- (void)setTitle:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setTitle:(id)title;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -18,7 +18,7 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(COSLegalMessagePane *)v2 markupString];
+    markupString = [(COSLegalMessagePane *)v2 markupString];
     v5 = [[UIWebView alloc] _initWithFrame:0 enableReachability:{0.0, 0.0, 10.0, 10.0}];
     webView = v3->_webView;
     v3->_webView = v5;
@@ -32,43 +32,43 @@
     [(UIWebView *)v3->_webView setDelegate:v3];
     [(UIWebView *)v3->_webView setDataDetectorTypes:0];
     [(UIWebView *)v3->_webView _setDrawsCheckeredPattern:0];
-    v9 = [(UIWebView *)v3->_webView scrollView];
-    [v9 setIndicatorStyle:2];
-    [v9 setDecelerationRate:UIScrollViewDecelerationRateNormal];
-    v10 = [(UIWebView *)v3->_webView _browserView];
-    [v10 setDoubleTapEnabled:0];
-    [v10 setTilesOpaque:0];
-    [v10 setLoadsSynchronously:1];
-    [v10 setDetectsPhoneNumbers:0];
+    scrollView = [(UIWebView *)v3->_webView scrollView];
+    [scrollView setIndicatorStyle:2];
+    [scrollView setDecelerationRate:UIScrollViewDecelerationRateNormal];
+    _browserView = [(UIWebView *)v3->_webView _browserView];
+    [_browserView setDoubleTapEnabled:0];
+    [_browserView setTilesOpaque:0];
+    [_browserView setLoadsSynchronously:1];
+    [_browserView setDetectsPhoneNumbers:0];
     v11 = objc_opt_new();
     v12 = BPSBridgeTintColor();
-    v13 = [v12 styleString];
-    [v11 appendFormat:@"a:link {color: %@;}\n", v13];
+    styleString = [v12 styleString];
+    [v11 appendFormat:@"a:link {color: %@;}\n", styleString];
 
     [v11 appendString:{@"body {font: 12px HelveticaNeue, sans-serif;}\n"}];
     if ([(COSLegalMessagePane *)v3 adjustTextDirection])
     {
       v14 = +[UIApplication sharedApplication];
-      v15 = [v14 userInterfaceLayoutDirection];
+      userInterfaceLayoutDirection = [v14 userInterfaceLayoutDirection];
 
-      if (v15 == 1)
+      if (userInterfaceLayoutDirection == 1)
       {
         [v11 appendString:@"body {direction: rtl !important; }\n"];
       }
     }
 
-    [v10 setUserStyleSheet:v11];
-    [(UIWebView *)v3->_webView loadHTMLString:v4 baseURL:0];
+    [_browserView setUserStyleSheet:v11];
+    [(UIWebView *)v3->_webView loadHTMLString:markupString baseURL:0];
     v16 = v3->_webView;
     v17 = BPSBackgroundColor();
-    v18 = [v17 styleString];
-    v19 = [NSString stringWithFormat:@"document.body.style.backgroundColor='%@'", v18];;
+    styleString2 = [v17 styleString];
+    v19 = [NSString stringWithFormat:@"document.body.style.backgroundColor='%@'", styleString2];;
     v20 = [(UIWebView *)v16 stringByEvaluatingJavaScriptFromString:v19];
 
     v21 = v3->_webView;
     v22 = BPSTextColor();
-    v23 = [v22 styleString];
-    v24 = [NSString stringWithFormat:@"document.body.style.color='%@'", v23];;
+    styleString3 = [v22 styleString];
+    v24 = [NSString stringWithFormat:@"document.body.style.color='%@'", styleString3];;
     v25 = [(UIWebView *)v21 stringByEvaluatingJavaScriptFromString:v24];
 
     v26 = v3->_webView;
@@ -79,11 +79,11 @@
   return v3;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(COSLegalMessagePane *)self navigationItem];
-  [v5 setTitle:v4];
+  titleCopy = title;
+  navigationItem = [(COSLegalMessagePane *)self navigationItem];
+  [navigationItem setTitle:titleCopy];
 }
 
 - (void)loadView
@@ -91,8 +91,8 @@
   v4.receiver = self;
   v4.super_class = COSLegalMessagePane;
   [(COSLegalMessagePane *)&v4 loadView];
-  v3 = [(COSLegalMessagePane *)self view];
-  [v3 addSubview:self->_webView];
+  view = [(COSLegalMessagePane *)self view];
+  [view addSubview:self->_webView];
 }
 
 - (void)viewDidLoad
@@ -100,8 +100,8 @@
   v4.receiver = self;
   v4.super_class = COSLegalMessagePane;
   [(COSLegalMessagePane *)&v4 viewDidLoad];
-  v3 = [(COSLegalMessagePane *)self title];
-  [(COSLegalMessagePane *)self setTitle:v3];
+  title = [(COSLegalMessagePane *)self title];
+  [(COSLegalMessagePane *)self setTitle:title];
 }
 
 - (void)viewWillLayoutSubviews
@@ -110,30 +110,30 @@
   v5.super_class = COSLegalMessagePane;
   [(COSLegalMessagePane *)&v5 viewWillLayoutSubviews];
   webView = self->_webView;
-  v4 = [(COSLegalMessagePane *)self view];
-  [v4 bounds];
+  view = [(COSLegalMessagePane *)self view];
+  [view bounds];
   [(UIWebView *)webView setFrame:?];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = COSLegalMessagePane;
-  [(COSLegalMessagePane *)&v5 viewDidAppear:a3];
-  v4 = [(UIWebView *)self->_webView _scrollView];
-  [v4 flashScrollIndicators];
+  [(COSLegalMessagePane *)&v5 viewDidAppear:appear];
+  _scrollView = [(UIWebView *)self->_webView _scrollView];
+  [_scrollView flashScrollIndicators];
 }
 
-- (BOOL)webView:(id)a3 shouldStartLoadWithRequest:(id)a4 navigationType:(int64_t)a5
+- (BOOL)webView:(id)view shouldStartLoadWithRequest:(id)request navigationType:(int64_t)type
 {
-  if (!a5)
+  if (!type)
   {
     v6 = UIApp;
-    v7 = [a4 URL];
+    v7 = [request URL];
     [v6 openURL:v7 withCompletionHandler:0];
   }
 
-  return a5 != 0;
+  return type != 0;
 }
 
 @end

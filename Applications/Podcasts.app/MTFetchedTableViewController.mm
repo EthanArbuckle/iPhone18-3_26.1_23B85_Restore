@@ -1,48 +1,48 @@
 @interface MTFetchedTableViewController
 - (BOOL)hasSectionNameKeyPathChanged;
-- (MTFetchedTableViewController)initWithEntityName:(id)a3 predicate:(id)a4 sortDescriptors:(id)a5;
-- (id)fetchRequestInManagedObjectContext:(id)a3;
-- (id)newCellInstanceWithReuseIdentifier:(id)a3;
-- (id)reuseIdentifierForRow:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_updateTableAnimated:(BOOL)a3;
-- (void)controller:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7;
-- (void)controller:(id)a3 didChangeSection:(id)a4 atIndex:(unint64_t)a5 forChangeType:(unint64_t)a6;
-- (void)controllerDidChangeContent:(id)a3;
-- (void)controllerWillChangeContent:(id)a3;
+- (MTFetchedTableViewController)initWithEntityName:(id)name predicate:(id)predicate sortDescriptors:(id)descriptors;
+- (id)fetchRequestInManagedObjectContext:(id)context;
+- (id)newCellInstanceWithReuseIdentifier:(id)identifier;
+- (id)reuseIdentifierForRow:(id)row;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_updateTableAnimated:(BOOL)animated;
+- (void)controller:(id)controller didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath;
+- (void)controller:(id)controller didChangeSection:(id)section atIndex:(unint64_t)index forChangeType:(unint64_t)type;
+- (void)controllerDidChangeContent:(id)content;
+- (void)controllerWillChangeContent:(id)content;
 - (void)dealloc;
-- (void)decodeRestorableStateWithCoder:(id)a3;
+- (void)decodeRestorableStateWithCoder:(id)coder;
 - (void)didReceiveMemoryWarning;
-- (void)encodeRestorableStateWithCoder:(id)a3;
+- (void)encodeRestorableStateWithCoder:(id)coder;
 - (void)initializeFrc;
-- (void)refetchWithPredicate:(id)a3;
-- (void)refetchWithPredicate:(id)a3 sortDescriptors:(id)a4 animated:(BOOL)a5;
-- (void)refetchWithSortDescriptors:(id)a3 animated:(BOOL)a4;
-- (void)reloadVisibleCellsWithAnimation:(int64_t)a3;
-- (void)setChangeIsUserDriven:(BOOL)a3;
-- (void)setRefreshControl:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
+- (void)refetchWithPredicate:(id)predicate;
+- (void)refetchWithPredicate:(id)predicate sortDescriptors:(id)descriptors animated:(BOOL)animated;
+- (void)refetchWithSortDescriptors:(id)descriptors animated:(BOOL)animated;
+- (void)reloadVisibleCellsWithAnimation:(int64_t)animation;
+- (void)setChangeIsUserDriven:(BOOL)driven;
+- (void)setRefreshControl:(id)control;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation MTFetchedTableViewController
 
-- (MTFetchedTableViewController)initWithEntityName:(id)a3 predicate:(id)a4 sortDescriptors:(id)a5
+- (MTFetchedTableViewController)initWithEntityName:(id)name predicate:(id)predicate sortDescriptors:(id)descriptors
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
   v12 = [(MTFetchedTableViewController *)self init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_fetchPredicate, a4);
-    objc_storeStrong(&v13->_sortDescriptors, a5);
-    objc_storeStrong(&v13->_fetchEntityName, a3);
+    objc_storeStrong(&v12->_fetchPredicate, predicate);
+    objc_storeStrong(&v13->_sortDescriptors, descriptors);
+    objc_storeStrong(&v13->_fetchEntityName, name);
     v13->_rowAnimation = 0;
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
@@ -76,10 +76,10 @@
     v12[7] = v2;
     v12[8] = v3;
     v5 = +[MTDB sharedInstance];
-    v6 = [v5 mainQueueContext];
+    mainQueueContext = [v5 mainQueueContext];
 
-    v7 = [(MTFetchedTableViewController *)self fetchRequestInManagedObjectContext:v6];
-    v8 = [[NSFetchedResultsController alloc] initWithFetchRequest:v7 managedObjectContext:v6 sectionNameKeyPath:self->_sectionNameKeyPath cacheName:0];
+    v7 = [(MTFetchedTableViewController *)self fetchRequestInManagedObjectContext:mainQueueContext];
+    v8 = [[NSFetchedResultsController alloc] initWithFetchRequest:v7 managedObjectContext:mainQueueContext sectionNameKeyPath:self->_sectionNameKeyPath cacheName:0];
     [v8 setDelegate:self];
     v12[0] = 0;
     v9 = [v8 performFetch:v12];
@@ -97,10 +97,10 @@
   }
 }
 
-- (void)setChangeIsUserDriven:(BOOL)a3
+- (void)setChangeIsUserDriven:(BOOL)driven
 {
   userDrivenCounter = self->_userDrivenCounter;
-  if (a3)
+  if (driven)
   {
     v4 = userDrivenCounter + 1;
   }
@@ -113,124 +113,124 @@
   self->_userDrivenCounter = v4;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(MTFetchedTableViewController *)self initializeFrc];
   v5.receiver = self;
   v5.super_class = MTFetchedTableViewController;
-  [(MTFetchedTableViewController *)&v5 viewWillAppear:v3];
+  [(MTFetchedTableViewController *)&v5 viewWillAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = MTFetchedTableViewController;
-  [(MTFetchedTableViewController *)&v3 viewWillDisappear:a3];
+  [(MTFetchedTableViewController *)&v3 viewWillDisappear:disappear];
 }
 
 - (void)viewDidLoad
 {
-  v3 = [(MTFetchedTableViewController *)self tableView];
-  [v3 setRestorationIdentifier:@"FetchedResultsTableView"];
+  tableView = [(MTFetchedTableViewController *)self tableView];
+  [tableView setRestorationIdentifier:@"FetchedResultsTableView"];
 
   v6.receiver = self;
   v6.super_class = MTFetchedTableViewController;
   [(MTFetchedTableViewController *)&v6 viewDidLoad];
-  v4 = [(MTFetchedTableViewController *)self editButtonItem];
+  editButtonItem = [(MTFetchedTableViewController *)self editButtonItem];
   editButtonItem_localIvar = self->_editButtonItem_localIvar;
-  self->_editButtonItem_localIvar = v4;
+  self->_editButtonItem_localIvar = editButtonItem;
 }
 
-- (void)refetchWithSortDescriptors:(id)a3 animated:(BOOL)a4
+- (void)refetchWithSortDescriptors:(id)descriptors animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  descriptorsCopy = descriptors;
   v8 = [(MTFetchedTableViewController *)self frc];
-  v7 = [v8 fetchRequest];
-  [v7 setSortDescriptors:v6];
+  fetchRequest = [v8 fetchRequest];
+  [fetchRequest setSortDescriptors:descriptorsCopy];
 
-  [(MTFetchedTableViewController *)self setSortDescriptors:v6];
-  [(MTFetchedTableViewController *)self _updateTableAnimated:v4];
+  [(MTFetchedTableViewController *)self setSortDescriptors:descriptorsCopy];
+  [(MTFetchedTableViewController *)self _updateTableAnimated:animatedCopy];
 }
 
-- (void)refetchWithPredicate:(id)a3
+- (void)refetchWithPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v6 = [(MTFetchedTableViewController *)self frc];
-  v5 = [v6 fetchRequest];
-  [v5 setPredicate:v4];
+  fetchRequest = [v6 fetchRequest];
+  [fetchRequest setPredicate:predicateCopy];
 
-  [(MTFetchedTableViewController *)self setFetchPredicate:v4];
+  [(MTFetchedTableViewController *)self setFetchPredicate:predicateCopy];
   [(MTFetchedTableViewController *)self _updateTableAnimated:1];
 }
 
-- (void)refetchWithPredicate:(id)a3 sortDescriptors:(id)a4 animated:(BOOL)a5
+- (void)refetchWithPredicate:(id)predicate sortDescriptors:(id)descriptors animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
+  animatedCopy = animated;
+  descriptorsCopy = descriptors;
+  predicateCopy = predicate;
   v12 = [(MTFetchedTableViewController *)self frc];
-  v10 = [v12 fetchRequest];
-  [v10 setPredicate:v9];
+  fetchRequest = [v12 fetchRequest];
+  [fetchRequest setPredicate:predicateCopy];
 
-  [(MTFetchedTableViewController *)self setFetchPredicate:v9];
-  v11 = [v12 fetchRequest];
-  [v11 setSortDescriptors:v8];
+  [(MTFetchedTableViewController *)self setFetchPredicate:predicateCopy];
+  fetchRequest2 = [v12 fetchRequest];
+  [fetchRequest2 setSortDescriptors:descriptorsCopy];
 
-  [(MTFetchedTableViewController *)self setSortDescriptors:v8];
-  [(MTFetchedTableViewController *)self _updateTableAnimated:v5];
+  [(MTFetchedTableViewController *)self setSortDescriptors:descriptorsCopy];
+  [(MTFetchedTableViewController *)self _updateTableAnimated:animatedCopy];
 }
 
-- (id)reuseIdentifierForRow:(id)a3
+- (id)reuseIdentifierForRow:(id)row
 {
   v3 = objc_opt_class();
 
   return NSStringFromClass(v3);
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  if (a4 == 1)
+  if (style == 1)
   {
-    v7 = a5;
+    pathCopy = path;
     v10 = [(MTFetchedTableViewController *)self frc];
-    v8 = [v10 managedObjectContext];
-    v9 = [v10 objectAtIndexPath:v7];
+    managedObjectContext = [v10 managedObjectContext];
+    v9 = [v10 objectAtIndexPath:pathCopy];
 
     if (v9)
     {
-      [v8 deleteObject:v9];
-      [v8 saveInCurrentBlock];
+      [managedObjectContext deleteObject:v9];
+      [managedObjectContext saveInCurrentBlock];
     }
   }
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   v3 = [(MTFetchedTableViewController *)self frc];
-  v4 = [v3 sections];
-  v5 = [v4 count];
+  sections = [v3 sections];
+  v5 = [sections count];
 
   return v5;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   v5 = [(MTFetchedTableViewController *)self frc];
-  v6 = [v5 sections];
-  v7 = [v6 objectAtIndex:a4];
+  sections = [v5 sections];
+  v7 = [sections objectAtIndex:section];
 
-  v8 = [v7 numberOfObjects];
-  return v8;
+  numberOfObjects = [v7 numberOfObjects];
+  return numberOfObjects;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MTFetchedTableViewController *)self reuseIdentifierForRow:v6];
-  v9 = [v7 dequeueReusableCellWithIdentifier:v8];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(MTFetchedTableViewController *)self reuseIdentifierForRow:pathCopy];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:v8];
 
   if (!v9)
   {
@@ -238,132 +238,132 @@
   }
 
   v10 = [(MTFetchedTableViewController *)self frc];
-  v11 = [v10 objectAtIndexPath:v6];
+  v11 = [v10 objectAtIndexPath:pathCopy];
 
-  [(MTFetchedTableViewController *)self configureCell:v9 withObject:v11 atIndexPath:v6];
+  [(MTFetchedTableViewController *)self configureCell:v9 withObject:v11 atIndexPath:pathCopy];
 
   return v9;
 }
 
-- (id)newCellInstanceWithReuseIdentifier:(id)a3
+- (id)newCellInstanceWithReuseIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:identifierCopy];
 
   return v4;
 }
 
-- (void)controllerWillChangeContent:(id)a3
+- (void)controllerWillChangeContent:(id)content
 {
   if (![(MTFetchedTableViewController *)self changeIsUserDriven])
   {
-    v4 = [(MTFetchedTableViewController *)self tableView];
-    [v4 beginUpdates];
+    tableView = [(MTFetchedTableViewController *)self tableView];
+    [tableView beginUpdates];
   }
 }
 
-- (void)controllerDidChangeContent:(id)a3
+- (void)controllerDidChangeContent:(id)content
 {
   if (![(MTFetchedTableViewController *)self changeIsUserDriven])
   {
-    v4 = [(MTFetchedTableViewController *)self tableView];
-    [v4 endUpdates];
+    tableView = [(MTFetchedTableViewController *)self tableView];
+    [tableView endUpdates];
   }
 }
 
-- (void)setRefreshControl:(id)a3
+- (void)setRefreshControl:(id)control
 {
-  v4 = a3;
-  v5 = [(MTFetchedTableViewController *)self refreshControl];
-  if (v5 == v4)
+  controlCopy = control;
+  refreshControl = [(MTFetchedTableViewController *)self refreshControl];
+  if (refreshControl == controlCopy)
   {
     goto LABEL_4;
   }
 
-  v6 = [(MTFetchedTableViewController *)self refreshControl];
-  v7 = [v6 isRefreshing];
+  refreshControl2 = [(MTFetchedTableViewController *)self refreshControl];
+  isRefreshing = [refreshControl2 isRefreshing];
 
-  if (v7)
+  if (isRefreshing)
   {
-    v5 = [(MTFetchedTableViewController *)self refreshControl];
-    [v5 endRefreshing];
+    refreshControl = [(MTFetchedTableViewController *)self refreshControl];
+    [refreshControl endRefreshing];
 LABEL_4:
   }
 
   v8.receiver = self;
   v8.super_class = MTFetchedTableViewController;
-  [(MTFetchedTableViewController *)&v8 setRefreshControl:v4];
+  [(MTFetchedTableViewController *)&v8 setRefreshControl:controlCopy];
 }
 
-- (void)controller:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7
+- (void)controller:(id)controller didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath
 {
-  v16 = a4;
-  v11 = a5;
-  v12 = a7;
-  v13 = [(MTFetchedTableViewController *)self tableView];
+  objectCopy = object;
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  tableView = [(MTFetchedTableViewController *)self tableView];
   if (![(MTFetchedTableViewController *)self changeIsUserDriven])
   {
-    if (a6 > 2)
+    if (type > 2)
     {
-      if (a6 != 3)
+      if (type != 3)
       {
-        if (a6 != 4)
+        if (type != 4)
         {
           goto LABEL_14;
         }
 
-        v14 = [v13 cellForRowAtIndexPath:v11];
+        v14 = [tableView cellForRowAtIndexPath:pathCopy];
         if (v14)
         {
-          [(MTFetchedTableViewController *)self configureCell:v14 withObject:v16 atIndexPath:v11];
+          [(MTFetchedTableViewController *)self configureCell:v14 withObject:objectCopy atIndexPath:pathCopy];
         }
 
         goto LABEL_13;
       }
 
-      v15 = [NSArray arrayWithObject:v11];
-      [v13 deleteRowsAtIndexPaths:v15 withRowAnimation:5];
+      v15 = [NSArray arrayWithObject:pathCopy];
+      [tableView deleteRowsAtIndexPaths:v15 withRowAnimation:5];
     }
 
-    else if (a6 != 1)
+    else if (type != 1)
     {
-      if (a6 != 2)
+      if (type != 2)
       {
         goto LABEL_14;
       }
 
-      v14 = [NSArray arrayWithObject:v11];
-      [v13 deleteRowsAtIndexPaths:v14 withRowAnimation:5];
+      v14 = [NSArray arrayWithObject:pathCopy];
+      [tableView deleteRowsAtIndexPaths:v14 withRowAnimation:5];
       goto LABEL_13;
     }
 
-    v14 = [NSArray arrayWithObject:v12];
-    [v13 insertRowsAtIndexPaths:v14 withRowAnimation:5];
+    v14 = [NSArray arrayWithObject:indexPathCopy];
+    [tableView insertRowsAtIndexPaths:v14 withRowAnimation:5];
 LABEL_13:
   }
 
 LABEL_14:
 }
 
-- (void)controller:(id)a3 didChangeSection:(id)a4 atIndex:(unint64_t)a5 forChangeType:(unint64_t)a6
+- (void)controller:(id)controller didChangeSection:(id)section atIndex:(unint64_t)index forChangeType:(unint64_t)type
 {
-  v10 = [(MTFetchedTableViewController *)self tableView:a3];
+  v10 = [(MTFetchedTableViewController *)self tableView:controller];
   if (![(MTFetchedTableViewController *)self changeIsUserDriven])
   {
-    if (a6 == 2)
+    if (type == 2)
     {
-      v9 = [NSIndexSet indexSetWithIndex:a5];
+      v9 = [NSIndexSet indexSetWithIndex:index];
       [v10 deleteSections:v9 withRowAnimation:5];
     }
 
     else
     {
-      if (a6 != 1)
+      if (type != 1)
       {
         goto LABEL_7;
       }
 
-      v9 = [NSIndexSet indexSetWithIndex:a5];
+      v9 = [NSIndexSet indexSetWithIndex:index];
       [v10 insertSections:v9 withRowAnimation:5];
     }
   }
@@ -371,14 +371,14 @@ LABEL_14:
 LABEL_7:
 }
 
-- (id)fetchRequestInManagedObjectContext:(id)a3
+- (id)fetchRequestInManagedObjectContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_alloc_init(NSFetchRequest);
-  v6 = [(MTFetchedTableViewController *)self sortDescriptors];
-  if (v6)
+  sortDescriptors = [(MTFetchedTableViewController *)self sortDescriptors];
+  if (sortDescriptors)
   {
-    [v5 setSortDescriptors:v6];
+    [v5 setSortDescriptors:sortDescriptors];
   }
 
   else
@@ -387,16 +387,16 @@ LABEL_7:
     [v5 setSortDescriptors:v7];
   }
 
-  v8 = [(MTFetchedTableViewController *)self fetchEntityName];
-  v9 = [NSEntityDescription entityForName:v8 inManagedObjectContext:v4];
+  fetchEntityName = [(MTFetchedTableViewController *)self fetchEntityName];
+  v9 = [NSEntityDescription entityForName:fetchEntityName inManagedObjectContext:contextCopy];
 
   [v5 setEntity:v9];
-  v10 = [(MTFetchedTableViewController *)self fetchPredicate];
+  fetchPredicate = [(MTFetchedTableViewController *)self fetchPredicate];
 
-  if (v10)
+  if (fetchPredicate)
   {
-    v11 = [(MTFetchedTableViewController *)self fetchPredicate];
-    [v5 setPredicate:v11];
+    fetchPredicate2 = [(MTFetchedTableViewController *)self fetchPredicate];
+    [v5 setPredicate:fetchPredicate2];
   }
 
   return v5;
@@ -404,26 +404,26 @@ LABEL_7:
 
 - (BOOL)hasSectionNameKeyPathChanged
 {
-  v3 = [(NSFetchedResultsController *)self->_frc sectionNameKeyPath];
-  v4 = [(MTFetchedTableViewController *)self sectionNameKeyPath];
+  sectionNameKeyPath = [(NSFetchedResultsController *)self->_frc sectionNameKeyPath];
+  sectionNameKeyPath2 = [(MTFetchedTableViewController *)self sectionNameKeyPath];
 
-  if (v3 == v4)
+  if (sectionNameKeyPath == sectionNameKeyPath2)
   {
     return 0;
   }
 
-  v5 = [(NSFetchedResultsController *)self->_frc sectionNameKeyPath];
-  v6 = [(MTFetchedTableViewController *)self sectionNameKeyPath];
-  v7 = [v5 isEqualToString:v6];
+  sectionNameKeyPath3 = [(NSFetchedResultsController *)self->_frc sectionNameKeyPath];
+  sectionNameKeyPath4 = [(MTFetchedTableViewController *)self sectionNameKeyPath];
+  v7 = [sectionNameKeyPath3 isEqualToString:sectionNameKeyPath4];
 
   return v7 ^ 1;
 }
 
-- (void)_updateTableAnimated:(BOOL)a3
+- (void)_updateTableAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(MTFetchedTableViewController *)self hasSectionNameKeyPathChanged];
-  if (v5)
+  animatedCopy = animated;
+  hasSectionNameKeyPathChanged = [(MTFetchedTableViewController *)self hasSectionNameKeyPathChanged];
+  if (hasSectionNameKeyPathChanged)
   {
     [(NSFetchedResultsController *)self->_frc setDelegate:0];
     frc = self->_frc;
@@ -432,38 +432,38 @@ LABEL_7:
     [(MTFetchedTableViewController *)self initializeFrc];
   }
 
-  if (v3 && [(MTFetchedTableViewController *)self rowAnimation]!= 5)
+  if (animatedCopy && [(MTFetchedTableViewController *)self rowAnimation]!= 5)
   {
-    if (v5)
+    if (hasSectionNameKeyPathChanged)
     {
-      v11 = [(MTFetchedTableViewController *)self tableView];
-      [v11 beginUpdates];
+      tableView = [(MTFetchedTableViewController *)self tableView];
+      [tableView beginUpdates];
 
-      v12 = [(MTFetchedTableViewController *)self tableView];
-      v13 = [v12 numberOfSections];
+      tableView2 = [(MTFetchedTableViewController *)self tableView];
+      numberOfSections = [tableView2 numberOfSections];
 
-      v14 = [[NSIndexSet alloc] initWithIndexesInRange:{0, v13}];
-      v15 = [(MTFetchedTableViewController *)self tableView];
-      [v15 deleteSections:v14 withRowAnimation:0];
+      v14 = [[NSIndexSet alloc] initWithIndexesInRange:{0, numberOfSections}];
+      tableView3 = [(MTFetchedTableViewController *)self tableView];
+      [tableView3 deleteSections:v14 withRowAnimation:0];
 
       v16 = [(MTFetchedTableViewController *)self frc];
-      v17 = [v16 sections];
-      v18 = [v17 count];
+      sections = [v16 sections];
+      v18 = [sections count];
 
       v19 = [NSIndexSet indexSetWithIndexesInRange:0, v18];
 
-      v20 = [(MTFetchedTableViewController *)self tableView];
-      [v20 insertSections:v19 withRowAnimation:0];
+      tableView4 = [(MTFetchedTableViewController *)self tableView];
+      [tableView4 insertSections:v19 withRowAnimation:0];
 
-      v21 = [(MTFetchedTableViewController *)self tableView];
-      [v21 endUpdates];
+      tableView5 = [(MTFetchedTableViewController *)self tableView];
+      [tableView5 endUpdates];
 
       v9 = 0;
       goto LABEL_12;
     }
 
-    v22 = [(NSFetchedResultsController *)self->_frc fetchedObjects];
-    v23 = [v22 copy];
+    fetchedObjects = [(NSFetchedResultsController *)self->_frc fetchedObjects];
+    v23 = [fetchedObjects copy];
 
     v24 = [NSSet setWithArray:v23];
     v25 = [v24 mutableCopy];
@@ -474,7 +474,7 @@ LABEL_7:
     if (v27)
     {
       v50 = v27;
-      v48 = [(NSFetchedResultsController *)self->_frc fetchedObjects];
+      fetchedObjects2 = [(NSFetchedResultsController *)self->_frc fetchedObjects];
       v51 = [NSSet setWithArray:?];
       [v25 minusSet:?];
       v28 = objc_opt_new();
@@ -515,7 +515,7 @@ LABEL_7:
         v36 = v35;
         for (j = 0; j != v36; ++j)
         {
-          v38 = [v48 objectAtIndex:j];
+          v38 = [fetchedObjects2 objectAtIndex:j];
           v39 = [v23 containsObject:v38];
 
           if ((v39 & 1) == 0)
@@ -526,33 +526,33 @@ LABEL_7:
         }
       }
 
-      v41 = [(MTFetchedTableViewController *)self tableView];
-      [v41 beginUpdates];
+      tableView6 = [(MTFetchedTableViewController *)self tableView];
+      [tableView6 beginUpdates];
 
-      if ([v52 count] || objc_msgSend(v28, "count") || (objc_msgSend(v48, "isEqualToArray:", v23) & 1) != 0)
+      if ([v52 count] || objc_msgSend(v28, "count") || (objc_msgSend(fetchedObjects2, "isEqualToArray:", v23) & 1) != 0)
       {
-        v42 = [(MTFetchedTableViewController *)self tableView];
-        [v42 insertRowsAtIndexPaths:v52 withRowAnimation:{-[MTFetchedTableViewController rowAnimation](self, "rowAnimation")}];
+        tableView7 = [(MTFetchedTableViewController *)self tableView];
+        [tableView7 insertRowsAtIndexPaths:v52 withRowAnimation:{-[MTFetchedTableViewController rowAnimation](self, "rowAnimation")}];
 
-        v43 = [(MTFetchedTableViewController *)self tableView];
-        [v43 deleteRowsAtIndexPaths:v28 withRowAnimation:{-[MTFetchedTableViewController rowAnimation](self, "rowAnimation")}];
+        tableView8 = [(MTFetchedTableViewController *)self tableView];
+        [tableView8 deleteRowsAtIndexPaths:v28 withRowAnimation:{-[MTFetchedTableViewController rowAnimation](self, "rowAnimation")}];
       }
 
       else
       {
-        v45 = [(MTFetchedTableViewController *)self tableView];
-        v46 = [v45 numberOfSections];
+        tableView9 = [(MTFetchedTableViewController *)self tableView];
+        numberOfSections2 = [tableView9 numberOfSections];
 
-        v43 = [[NSIndexSet alloc] initWithIndexesInRange:{0, v46}];
-        v47 = [(MTFetchedTableViewController *)self tableView];
-        [v47 reloadSections:v43 withRowAnimation:0];
+        tableView8 = [[NSIndexSet alloc] initWithIndexesInRange:{0, numberOfSections2}];
+        tableView10 = [(MTFetchedTableViewController *)self tableView];
+        [tableView10 reloadSections:tableView8 withRowAnimation:0];
       }
 
       LOBYTE(v27) = v50;
       v25 = v49;
 
-      v44 = [(MTFetchedTableViewController *)self tableView];
-      [v44 endUpdates];
+      tableView11 = [(MTFetchedTableViewController *)self tableView];
+      [tableView11 endUpdates];
     }
 
     if ((v27 & 1) == 0)
@@ -570,8 +570,8 @@ LABEL_7:
     v9 = v58;
     if (v8)
     {
-      v10 = [(MTFetchedTableViewController *)self tableView];
-      [v10 reloadData];
+      tableView12 = [(MTFetchedTableViewController *)self tableView];
+      [tableView12 reloadData];
     }
 
     [(MTFetchedTableViewController *)self setChangeIsUserDriven:0];
@@ -588,26 +588,26 @@ LABEL_8:
 LABEL_12:
 }
 
-- (void)reloadVisibleCellsWithAnimation:(int64_t)a3
+- (void)reloadVisibleCellsWithAnimation:(int64_t)animation
 {
-  v7 = [(MTFetchedTableViewController *)self tableView];
-  v5 = [(MTFetchedTableViewController *)self tableView];
-  v6 = [v5 indexPathsForVisibleRows];
-  [v7 reloadRowsAtIndexPaths:v6 withRowAnimation:a3];
+  tableView = [(MTFetchedTableViewController *)self tableView];
+  tableView2 = [(MTFetchedTableViewController *)self tableView];
+  indexPathsForVisibleRows = [tableView2 indexPathsForVisibleRows];
+  [tableView reloadRowsAtIndexPaths:indexPathsForVisibleRows withRowAnimation:animation];
 }
 
-- (void)encodeRestorableStateWithCoder:(id)a3
+- (void)encodeRestorableStateWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = MTFetchedTableViewController;
-  [(MTFetchedTableViewController *)&v3 encodeRestorableStateWithCoder:a3];
+  [(MTFetchedTableViewController *)&v3 encodeRestorableStateWithCoder:coder];
 }
 
-- (void)decodeRestorableStateWithCoder:(id)a3
+- (void)decodeRestorableStateWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = MTFetchedTableViewController;
-  [(MTFetchedTableViewController *)&v4 decodeRestorableStateWithCoder:a3];
+  [(MTFetchedTableViewController *)&v4 decodeRestorableStateWithCoder:coder];
   [(MTFetchedTableViewController *)self initializeFrc];
 }
 

@@ -1,9 +1,9 @@
 @interface ATXHistogramBundleIdTable
 + (ATXHistogramBundleIdTable)sharedInstance;
 + (void)stopUsingTemporarySharedInstance;
-+ (void)useTemporarySharedInstance:(id)a3;
-- (id)permutationFrom:(id)a3;
-- (void)removeBundleIds:(id)a3;
++ (void)useTemporarySharedInstance:(id)instance;
+- (id)permutationFrom:(id)from;
+- (void)removeBundleIds:(id)ids;
 @end
 
 @implementation ATXHistogramBundleIdTable
@@ -25,12 +25,12 @@
   return v2;
 }
 
-+ (void)useTemporarySharedInstance:(id)a3
++ (void)useTemporarySharedInstance:(id)instance
 {
-  v4 = a3;
+  instanceCopy = instance;
   pthread_mutex_lock(&sharedInstanceLock);
   objc_storeStrong(&swappedOutSharedInstance, sharedInstance);
-  objc_storeStrong(&sharedInstance, a3);
+  objc_storeStrong(&sharedInstance, instance);
   pthread_mutex_unlock(&sharedInstanceLock);
 }
 
@@ -44,9 +44,9 @@
   pthread_mutex_unlock(&sharedInstanceLock);
 }
 
-- (id)permutationFrom:(id)a3
+- (id)permutationFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -56,19 +56,19 @@
   v10[2] = __45__ATXHistogramBundleIdTable_permutationFrom___block_invoke;
   v10[3] = &unk_27859DF60;
   v10[4] = &v11;
-  [v4 enumerateKeysAndObjectsUsingBlock:v10];
+  [fromCopy enumerateKeysAndObjectsUsingBlock:v10];
   ++*(v12 + 12);
   v5 = objc_alloc(MEMORY[0x277CBEB28]);
   v6 = [v5 initWithLength:2 * *(v12 + 12)];
-  v7 = [v6 mutableBytes];
+  mutableBytes = [v6 mutableBytes];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __45__ATXHistogramBundleIdTable_permutationFrom___block_invoke_2;
   v9[3] = &unk_27859DF88;
   v9[5] = &v11;
-  v9[6] = v7;
+  v9[6] = mutableBytes;
   v9[4] = self;
-  [v4 enumerateKeysAndObjectsUsingBlock:v9];
+  [fromCopy enumerateKeysAndObjectsUsingBlock:v9];
   _Block_object_dispose(&v11, 8);
 
   return v6;
@@ -106,15 +106,15 @@ void __45__ATXHistogramBundleIdTable_permutationFrom___block_invoke_2(uint64_t a
   }
 }
 
-- (void)removeBundleIds:(id)a3
+- (void)removeBundleIds:(id)ids
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  idsCopy = ids;
+  v5 = [idsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = *v10;
@@ -125,14 +125,14 @@ void __45__ATXHistogramBundleIdTable_permutationFrom___block_invoke_2(uint64_t a
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(idsCopy);
         }
 
         [(ATXHistogramTable *)self remove:*(*(&v9 + 1) + 8 * v7++), v9];
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [idsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);

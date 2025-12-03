@@ -1,24 +1,24 @@
 @interface PDDeletedObjectQuestionIDs
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
-- (PDDeletedObjectQuestionIDs)initWithDatabaseRow:(id)a3;
-- (void)bindTo:(id)a3;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
+- (PDDeletedObjectQuestionIDs)initWithDatabaseRow:(id)row;
+- (void)bindTo:(id)to;
 @end
 
 @implementation PDDeletedObjectQuestionIDs
 
-- (PDDeletedObjectQuestionIDs)initWithDatabaseRow:(id)a3
+- (PDDeletedObjectQuestionIDs)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   v14.receiver = self;
   v14.super_class = PDDeletedObjectQuestionIDs;
   v5 = [(PDDeletedObjectQuestionIDs *)&v14 init];
   if (v5)
   {
-    v6 = sub_10016D778(v4, @"objectID");
+    v6 = sub_10016D778(rowCopy, @"objectID");
     objectID = v5->_objectID;
     v5->_objectID = v6;
 
-    v8 = sub_10016D778(v4, @"questionIDs");
+    v8 = sub_10016D778(rowCopy, @"questionIDs");
     if (v8)
     {
       v9 = objc_opt_class();
@@ -32,10 +32,10 @@
   return v5;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
-  v4 = a3;
-  sub_1000982FC(v4, self->_objectID, @"objectID");
+  toCopy = to;
+  sub_1000982FC(toCopy, self->_objectID, @"objectID");
   questionIDs = self->_questionIDs;
   if (questionIDs)
   {
@@ -54,25 +54,25 @@
     v6 = 0;
   }
 
-  sub_1000982FC(v4, v6, @"questionIDs");
+  sub_1000982FC(toCopy, v6, @"questionIDs");
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = v7;
-  if (!a3)
+  databaseCopy = database;
+  v8 = databaseCopy;
+  if (!version)
   {
-    if (!sub_1000B9298(v7, @"create table PDDeletedObjectQuestionIDs (\n    objectID text not null,\n    questionIDs blob not null\n)\n", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index PDDeletedObjectQuestionIDs_objectID on PDDeletedObjectQuestionIDs (objectID)", 0, 0, 0))
+    if (!sub_1000B9298(databaseCopy, @"create table PDDeletedObjectQuestionIDs (\n    objectID text not null,\n    questionIDs blob not null\n)\n", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index PDDeletedObjectQuestionIDs_objectID on PDDeletedObjectQuestionIDs (objectID)", 0, 0, 0))
     {
       v9 = 0;
       goto LABEL_7;
     }
 
-    a3 = 1;
+    version = 1;
   }
 
-  *a4 = a3;
+  *finalVersion = version;
   v9 = 1;
 LABEL_7:
 

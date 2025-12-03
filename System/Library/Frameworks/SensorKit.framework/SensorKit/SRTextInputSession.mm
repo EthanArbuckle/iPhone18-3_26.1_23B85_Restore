@@ -1,52 +1,52 @@
 @interface SRTextInputSession
-+ (SRTextInputSession)textInputSessionWithDuration:(double)a3 sessionType:(int64_t)a4 sessionIdentifier:(id)a5;
-- (BOOL)isEqual:(id)a3;
++ (SRTextInputSession)textInputSessionWithDuration:(double)duration sessionType:(int64_t)type sessionIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (NSString)sessionIdentifier;
-- (SRTextInputSession)initWithCoder:(id)a3;
+- (SRTextInputSession)initWithCoder:(id)coder;
 - (id)sr_dictionaryRepresentation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SRTextInputSession
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   [(SRTextInputSession *)self duration];
-  [a3 encodeDouble:@"duration" forKey:?];
-  [a3 encodeInteger:-[SRTextInputSession sessionType](self forKey:{"sessionType"), @"textInputSessionType"}];
-  v6 = [(SRTextInputSession *)self sessionIdentifier];
+  [coder encodeDouble:@"duration" forKey:?];
+  [coder encodeInteger:-[SRTextInputSession sessionType](self forKey:{"sessionType"), @"textInputSessionType"}];
+  sessionIdentifier = [(SRTextInputSession *)self sessionIdentifier];
 
-  [a3 encodeObject:v6 forKey:@"sessionIdentifier"];
+  [coder encodeObject:sessionIdentifier forKey:@"sessionIdentifier"];
 }
 
-- (SRTextInputSession)initWithCoder:(id)a3
+- (SRTextInputSession)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v6 = objc_alloc_init(SRTextInputSession);
-  [a3 decodeDoubleForKey:@"duration"];
+  [coder decodeDoubleForKey:@"duration"];
   [(SRTextInputSession *)v6 setDuration:?];
-  -[SRTextInputSession setSessionType:](v6, "setSessionType:", [a3 decodeIntegerForKey:@"textInputSessionType"]);
-  -[SRTextInputSession setSessionIdentifier:](v6, "setSessionIdentifier:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"sessionIdentifier"]);
+  -[SRTextInputSession setSessionType:](v6, "setSessionType:", [coder decodeIntegerForKey:@"textInputSessionType"]);
+  -[SRTextInputSession setSessionIdentifier:](v6, "setSessionIdentifier:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"sessionIdentifier"]);
   return v6;
 }
 
-+ (SRTextInputSession)textInputSessionWithDuration:(double)a3 sessionType:(int64_t)a4 sessionIdentifier:(id)a5
++ (SRTextInputSession)textInputSessionWithDuration:(double)duration sessionType:(int64_t)type sessionIdentifier:(id)identifier
 {
   v8 = objc_alloc_init(SRTextInputSession);
-  [(SRTextInputSession *)v8 setDuration:a3];
-  [(SRTextInputSession *)v8 setSessionType:a4];
-  [(SRTextInputSession *)v8 setSessionIdentifier:a5];
+  [(SRTextInputSession *)v8 setDuration:duration];
+  [(SRTextInputSession *)v8 setSessionType:type];
+  [(SRTextInputSession *)v8 setSessionIdentifier:identifier];
 
   return v8;
 }
@@ -71,9 +71,9 @@
   [(SRTextInputSession *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -86,22 +86,22 @@
 
   [(SRTextInputSession *)self duration];
   v6 = v5;
-  [a3 duration];
+  [equal duration];
   if (v6 != v7)
   {
     return 0;
   }
 
-  v8 = [(SRTextInputSession *)self sessionType];
-  if (v8 != [a3 sessionType])
+  sessionType = [(SRTextInputSession *)self sessionType];
+  if (sessionType != [equal sessionType])
   {
     return 0;
   }
 
-  v9 = [(SRTextInputSession *)self sessionIdentifier];
-  v10 = [a3 sessionIdentifier];
+  sessionIdentifier = [(SRTextInputSession *)self sessionIdentifier];
+  sessionIdentifier2 = [equal sessionIdentifier];
 
-  return [(NSString *)v9 isEqual:v10];
+  return [(NSString *)sessionIdentifier isEqual:sessionIdentifier2];
 }
 
 - (NSString)description

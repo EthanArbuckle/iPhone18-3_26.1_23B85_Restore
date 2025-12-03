@@ -1,18 +1,18 @@
 @interface MOContextTimeMetaDataMO
-+ (id)managedObjectWithObject:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithObject:(id)object inManagedObjectContext:(id)context;
 @end
 
 @implementation MOContextTimeMetaDataMO
 
-+ (id)managedObjectWithObject:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithObject:(id)object inManagedObjectContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MOContextTimeMetaDataMO alloc] initWithContext:v5];
+  contextCopy = context;
+  objectCopy = object;
+  v7 = [[MOContextTimeMetaDataMO alloc] initWithContext:contextCopy];
 
-  v8 = [v6 timeReferenceString];
+  timeReferenceString = [objectCopy timeReferenceString];
 
-  [(MOContextTimeMetaDataMO *)v7 setTimeReferenceString:v8];
+  [(MOContextTimeMetaDataMO *)v7 setTimeReferenceString:timeReferenceString];
 
   return v7;
 }

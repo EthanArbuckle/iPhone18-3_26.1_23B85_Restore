@@ -1,38 +1,38 @@
 @interface CSVoiceIdXPCConnection
-- (CSVoiceIdXPCConnection)initWithConnection:(id)a3;
-- (void)_handleClientError:(id)a3 client:(id)a4;
-- (void)_handleClientEvent:(id)a3;
-- (void)_handleClientMessage:(id)a3 client:(id)a4;
-- (void)_handleImplicitUtteranceMessage:(id)a3 client:(id)a4;
-- (void)_sendReplyMessageWithResult:(BOOL)a3 error:(id)a4 event:(id)a5 client:(id)a6;
+- (CSVoiceIdXPCConnection)initWithConnection:(id)connection;
+- (void)_handleClientError:(id)error client:(id)client;
+- (void)_handleClientEvent:(id)event;
+- (void)_handleClientMessage:(id)message client:(id)client;
+- (void)_handleImplicitUtteranceMessage:(id)message client:(id)client;
+- (void)_sendReplyMessageWithResult:(BOOL)result error:(id)error event:(id)event client:(id)client;
 - (void)activateConnection;
 @end
 
 @implementation CSVoiceIdXPCConnection
 
-- (void)_sendReplyMessageWithResult:(BOOL)a3 error:(id)a4 event:(id)a5 client:(id)a6
+- (void)_sendReplyMessageWithResult:(BOOL)result error:(id)error event:(id)event client:(id)client
 {
-  v12 = a4;
-  v9 = a6;
-  reply = xpc_dictionary_create_reply(a5);
-  xpc_dictionary_set_BOOL(reply, "result", a3);
-  if (v12)
+  errorCopy = error;
+  clientCopy = client;
+  reply = xpc_dictionary_create_reply(event);
+  xpc_dictionary_set_BOOL(reply, "result", result);
+  if (errorCopy)
   {
-    v11 = [v12 domain];
-    xpc_dictionary_set_string(reply, "resultErrorDomain", [v11 UTF8String]);
+    domain = [errorCopy domain];
+    xpc_dictionary_set_string(reply, "resultErrorDomain", [domain UTF8String]);
 
-    xpc_dictionary_set_int64(reply, "resultErrorCode", [v12 code]);
+    xpc_dictionary_set_int64(reply, "resultErrorCode", [errorCopy code]);
   }
 
-  xpc_connection_send_message(v9, reply);
+  xpc_connection_send_message(clientCopy, reply);
 }
 
-- (void)_handleClientError:(id)a3 client:(id)a4
+- (void)_handleClientError:(id)error client:(id)client
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5 || !v6)
+  errorCopy = error;
+  clientCopy = client;
+  v7 = clientCopy;
+  if (!errorCopy || !clientCopy)
   {
     v10 = CSLogContextFacilityCoreSpeech;
     if (!os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -43,7 +43,7 @@
     v16 = 136315650;
     v17 = "[CSVoiceIdXPCConnection _handleClientError:client:]";
     v18 = 2114;
-    v19 = v5;
+    v19 = errorCopy;
     v20 = 2114;
     v21 = v7;
     v9 = "%s Received error %{public}@ from client %{public}@";
@@ -54,7 +54,7 @@ LABEL_16:
     goto LABEL_13;
   }
 
-  if (v5 == &_xpc_error_connection_invalid || v5 == &_xpc_error_connection_interrupted)
+  if (errorCopy == &_xpc_error_connection_invalid || errorCopy == &_xpc_error_connection_interrupted)
   {
     v14 = CSLogContextFacilityCoreSpeech;
     if (!os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -70,7 +70,7 @@ LABEL_16:
     goto LABEL_15;
   }
 
-  string = xpc_dictionary_get_string(v5, _xpc_error_key_description);
+  string = xpc_dictionary_get_string(errorCopy, _xpc_error_key_description);
   v14 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
   {
@@ -88,11 +88,11 @@ LABEL_15:
 LABEL_13:
 }
 
-- (void)_handleImplicitUtteranceMessage:(id)a3 client:(id)a4
+- (void)_handleImplicitUtteranceMessage:(id)message client:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = xpc_dictionary_get_dictionary(v6, "body");
+  messageCopy = message;
+  clientCopy = client;
+  v8 = xpc_dictionary_get_dictionary(messageCopy, "body");
   v9 = v8;
   if (v8)
   {
@@ -171,9 +171,9 @@ LABEL_13:
       v20 = +[NSFileManager defaultManager];
       v37 = v19;
       v21 = [v20 containerURLForSecurityApplicationGroupIdentifier:v19];
-      v22 = [v21 path];
+      path = [v21 path];
 
-      if (!v22)
+      if (!path)
       {
         v31 = CSLogContextFacilityCoreSpeech;
         v29 = v36;
@@ -189,7 +189,7 @@ LABEL_13:
         goto LABEL_28;
       }
 
-      v23 = [v22 stringByAppendingPathComponent:v39];
+      v23 = [path stringByAppendingPathComponent:v39];
 
       v37 = v23;
       v17 = v33;
@@ -227,9 +227,9 @@ LABEL_13:
       v43 = v34;
       v44 = v35;
       v45 = v16;
-      v46 = self;
-      v47 = v6;
-      v48 = v7;
+      selfCopy = self;
+      v47 = messageCopy;
+      v48 = clientCopy;
       [v32 getVoiceTriggerAssetWithEndpointId:0 completion:v40];
     }
 
@@ -255,14 +255,14 @@ LABEL_32:
 LABEL_33:
 }
 
-- (void)_handleClientMessage:(id)a3 client:(id)a4
+- (void)_handleClientMessage:(id)message client:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  messageCopy = message;
+  clientCopy = client;
+  v8 = clientCopy;
+  if (messageCopy && clientCopy)
   {
-    int64 = xpc_dictionary_get_int64(v6, "type");
+    int64 = xpc_dictionary_get_int64(messageCopy, "type");
     v10 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {
@@ -275,7 +275,7 @@ LABEL_33:
 
     if (int64 == 2)
     {
-      [(CSVoiceIdXPCConnection *)self _handleImplicitUtteranceMessage:v6 client:v8];
+      [(CSVoiceIdXPCConnection *)self _handleImplicitUtteranceMessage:messageCopy client:v8];
     }
   }
 
@@ -287,7 +287,7 @@ LABEL_33:
       v12 = 136315650;
       v13 = "[CSVoiceIdXPCConnection _handleClientMessage:client:]";
       v14 = 2050;
-      v15 = v6;
+      v15 = messageCopy;
       v16 = 2050;
       v17 = v8;
       _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "%s message = %{public}p, client = %{public}p, cannot handle message", &v12, 0x20u);
@@ -295,13 +295,13 @@ LABEL_33:
   }
 }
 
-- (void)_handleClientEvent:(id)a3
+- (void)_handleClientEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self->_connection)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (eventCopy && self->_connection)
   {
-    type = xpc_get_type(v4);
+    type = xpc_get_type(eventCopy);
     if (type == &_xpc_type_dictionary)
     {
       [(CSVoiceIdXPCConnection *)self _handleClientMessage:v5 client:self->_connection];
@@ -364,16 +364,16 @@ LABEL_12:
   objc_destroyWeak(&location);
 }
 
-- (CSVoiceIdXPCConnection)initWithConnection:(id)a3
+- (CSVoiceIdXPCConnection)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v14.receiver = self;
   v14.super_class = CSVoiceIdXPCConnection;
   v6 = [(CSVoiceIdXPCConnection *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     v8 = dispatch_queue_create("corespeechd speaker xpc connection client queue", 0);
     queue = v7->_queue;
     v7->_queue = v8;

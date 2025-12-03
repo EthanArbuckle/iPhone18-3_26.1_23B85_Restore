@@ -1,24 +1,24 @@
 @interface MSDKPeerDemoApp
-- (MSDKPeerDemoApp)initWithCoder:(id)a3;
-- (MSDKPeerDemoApp)initWithIdentifier:(id)a3 andLocalizedName:(id)a4;
+- (MSDKPeerDemoApp)initWithCoder:(id)coder;
+- (MSDKPeerDemoApp)initWithIdentifier:(id)identifier andLocalizedName:(id)name;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MSDKPeerDemoApp
 
-- (MSDKPeerDemoApp)initWithIdentifier:(id)a3 andLocalizedName:(id)a4
+- (MSDKPeerDemoApp)initWithIdentifier:(id)identifier andLocalizedName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = MSDKPeerDemoApp;
   v8 = [(MSDKPeerDemoApp *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(MSDKPeerDemoApp *)v8 setIdentifier:v6];
-    [(MSDKPeerDemoApp *)v9 setLocalizedName:v7];
+    [(MSDKPeerDemoApp *)v8 setIdentifier:identifierCopy];
+    [(MSDKPeerDemoApp *)v9 setLocalizedName:nameCopy];
   }
 
   return v9;
@@ -29,39 +29,39 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MSDKPeerDemoApp *)self identifier];
-  v7 = [(MSDKPeerDemoApp *)self localizedName];
-  v8 = [v3 stringWithFormat:@"<%@[%p]: ID=%@ Name=%@>", v5, self, v6, v7];
+  identifier = [(MSDKPeerDemoApp *)self identifier];
+  localizedName = [(MSDKPeerDemoApp *)self localizedName];
+  v8 = [v3 stringWithFormat:@"<%@[%p]: ID=%@ Name=%@>", v5, self, identifier, localizedName];
 
   return v8;
 }
 
-- (MSDKPeerDemoApp)initWithCoder:(id)a3
+- (MSDKPeerDemoApp)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = MSDKPeerDemoApp;
   v5 = [(MSDKPeerDemoApp *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     [(MSDKPeerDemoApp *)v5 setIdentifier:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedName"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedName"];
     [(MSDKPeerDemoApp *)v5 setLocalizedName:v7];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MSDKPeerDemoApp *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(MSDKPeerDemoApp *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(MSDKPeerDemoApp *)self localizedName];
-  [v4 encodeObject:v6 forKey:@"localizedName"];
+  localizedName = [(MSDKPeerDemoApp *)self localizedName];
+  [coderCopy encodeObject:localizedName forKey:@"localizedName"];
 }
 
 @end

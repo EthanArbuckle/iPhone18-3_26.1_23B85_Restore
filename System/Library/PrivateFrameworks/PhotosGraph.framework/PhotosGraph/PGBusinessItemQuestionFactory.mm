@@ -1,15 +1,15 @@
 @interface PGBusinessItemQuestionFactory
-- (BOOL)_shouldAddNewBusinessItemQuestionForAssetUUID:(id)a3;
-- (double)_localBusinessItemFactoryScoreForMomentNode:(id)a3;
-- (id)generateQuestionsWithLimit:(unint64_t)a3 progressBlock:(id)a4;
+- (BOOL)_shouldAddNewBusinessItemQuestionForAssetUUID:(id)d;
+- (double)_localBusinessItemFactoryScoreForMomentNode:(id)node;
+- (id)generateQuestionsWithLimit:(unint64_t)limit progressBlock:(id)block;
 @end
 
 @implementation PGBusinessItemQuestionFactory
 
-- (BOOL)_shouldAddNewBusinessItemQuestionForAssetUUID:(id)a3
+- (BOOL)_shouldAddNewBusinessItemQuestionForAssetUUID:(id)d
 {
   v16 = *MEMORY[0x277D85DE8];
-  [(PGSurveyQuestionFactory *)self existingQuestionsForEntityIdentifier:a3];
+  [(PGSurveyQuestionFactory *)self existingQuestionsForEntityIdentifier:d];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -52,12 +52,12 @@ LABEL_11:
   return v8;
 }
 
-- (double)_localBusinessItemFactoryScoreForMomentNode:(id)a3
+- (double)_localBusinessItemFactoryScoreForMomentNode:(id)node
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 businessNodes];
-  v5 = [v4 count];
+  nodeCopy = node;
+  businessNodes = [nodeCopy businessNodes];
+  v5 = [businessNodes count];
 
   if (v5)
   {
@@ -65,14 +65,14 @@ LABEL_11:
     if (v6 == 0.0)
     {
       v7 = +[PGLogging sharedLogging];
-      v8 = [v7 loggingConnection];
+      loggingConnection = [v7 loggingConnection];
 
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
-        v11 = [v3 localIdentifier];
+        localIdentifier = [nodeCopy localIdentifier];
         v12 = 138412290;
-        v13 = v11;
-        _os_log_error_impl(&dword_22F0FC000, v8, OS_LOG_TYPE_ERROR, "Moment node %@ found to have no business nodes which is unexpected.", &v12, 0xCu);
+        v13 = localIdentifier;
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Moment node %@ found to have no business nodes which is unexpected.", &v12, 0xCu);
       }
     }
   }
@@ -86,26 +86,26 @@ LABEL_11:
   return v6;
 }
 
-- (id)generateQuestionsWithLimit:(unint64_t)a3 progressBlock:(id)a4
+- (id)generateQuestionsWithLimit:(unint64_t)limit progressBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = [MEMORY[0x277CBEB58] set];
-  v8 = [(PGSurveyQuestionFactory *)self workingContext];
+  workingContext = [(PGSurveyQuestionFactory *)self workingContext];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __74__PGBusinessItemQuestionFactory_generateQuestionsWithLimit_progressBlock___block_invoke;
   v16 = &unk_27888A2F8;
-  v19 = v6;
-  v20 = a3;
-  v17 = self;
+  v19 = blockCopy;
+  limitCopy = limit;
+  selfCopy = self;
   v18 = v7;
   v9 = v7;
-  v10 = v6;
-  [v8 performSynchronousConcurrentGraphReadUsingBlock:&v13];
+  v10 = blockCopy;
+  [workingContext performSynchronousConcurrentGraphReadUsingBlock:&v13];
 
-  v11 = [v9 allObjects];
+  allObjects = [v9 allObjects];
 
-  return v11;
+  return allObjects;
 }
 
 void __74__PGBusinessItemQuestionFactory_generateQuestionsWithLimit_progressBlock___block_invoke(uint64_t a1, void *a2)

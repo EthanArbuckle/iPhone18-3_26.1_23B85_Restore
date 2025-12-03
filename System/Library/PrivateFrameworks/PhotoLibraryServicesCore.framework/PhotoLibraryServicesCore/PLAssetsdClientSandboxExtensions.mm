@@ -1,5 +1,5 @@
 @interface PLAssetsdClientSandboxExtensions
-- (BOOL)consumeSandboxExtensions:(id)a3;
+- (BOOL)consumeSandboxExtensions:(id)extensions;
 - (PLAssetsdClientSandboxExtensions)init;
 - (void)_stopUsingSecurityScopedURLs;
 - (void)dealloc;
@@ -73,9 +73,9 @@ uint64_t __64__PLAssetsdClientSandboxExtensions__stopUsingSecurityScopedURLs__bl
   return [*(*(a1 + 32) + 16) removeAllObjects];
 }
 
-- (BOOL)consumeSandboxExtensions:(id)a3
+- (BOOL)consumeSandboxExtensions:(id)extensions
 {
-  v4 = a3;
+  extensionsCopy = extensions;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -84,9 +84,9 @@ uint64_t __64__PLAssetsdClientSandboxExtensions__stopUsingSecurityScopedURLs__bl
   v7[1] = 3221225472;
   v7[2] = __61__PLAssetsdClientSandboxExtensions_consumeSandboxExtensions___block_invoke;
   v7[3] = &unk_1E7930738;
-  v5 = v4;
+  v5 = extensionsCopy;
   v8 = v5;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   PLRunWithUnfairLock(&self->_lock, v7);
   LOBYTE(self) = *(v12 + 24);

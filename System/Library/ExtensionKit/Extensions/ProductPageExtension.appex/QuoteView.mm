@@ -1,11 +1,11 @@
 @interface QuoteView
-- (_TtC20ProductPageExtension9QuoteView)initWithCoder:(id)a3;
+- (_TtC20ProductPageExtension9QuoteView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation QuoteView
 
-- (_TtC20ProductPageExtension9QuoteView)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension9QuoteView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension9QuoteView_trailingQuote) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension9QuoteView_creditLabel) = 0;
@@ -21,7 +21,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003B463C();
 }
 

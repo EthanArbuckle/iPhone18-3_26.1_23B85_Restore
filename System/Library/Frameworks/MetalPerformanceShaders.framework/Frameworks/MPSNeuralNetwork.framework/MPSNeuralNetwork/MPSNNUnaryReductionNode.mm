@@ -2,7 +2,7 @@
 + (MPSNNUnaryReductionNode)nodeWithSource:(MPSNNImageNode *)sourceNode;
 - (MPSNNUnaryReductionNode)initWithSource:(MPSNNImageNode *)sourceNode;
 - (MTLRegion)clipRectSource;
-- (id)gradientFilterWithSource:(id)a3;
+- (id)gradientFilterWithSource:(id)source;
 - (void)setClipRectSource:(MTLRegion *)clipRectSource;
 @end
 
@@ -10,7 +10,7 @@
 
 + (MPSNNUnaryReductionNode)nodeWithSource:(MPSNNImageNode *)sourceNode
 {
-  v4 = [a1 alloc];
+  v4 = [self alloc];
   v11 = objc_msgSend_initWithSource_(v4, v5, sourceNode, v6, v7, v8, v9, v10);
 
   return v11;
@@ -26,7 +26,7 @@
   return [(MPSNNFilterNode *)&v10 initWithSourceImages:v8 sourceStates:0 paddingPolicy:0];
 }
 
-- (id)gradientFilterWithSource:(id)a3
+- (id)gradientFilterWithSource:(id)source
 {
   if (MTLReportFailureTypeEnabled())
   {

@@ -1,7 +1,7 @@
 @interface HMDAccessoryReachabilityElectionParameter
-- (BOOL)isEqual:(id)a3;
-- (HMDAccessoryReachabilityElectionParameter)initWithDictionaryRepresentation:(id)a3;
-- (HMDAccessoryReachabilityElectionParameter)initWithIdentifier:(id)a3 isReachable:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMDAccessoryReachabilityElectionParameter)initWithDictionaryRepresentation:(id)representation;
+- (HMDAccessoryReachabilityElectionParameter)initWithIdentifier:(id)identifier isReachable:(BOOL)reachable;
 - (NSDictionary)dictionaryRepresentation;
 - (id)attributeDescriptions;
 - (unint64_t)hash;
@@ -13,8 +13,8 @@
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDAccessoryReachabilityElectionParameter *)self identifier];
-  v5 = [v3 initWithName:@"Identifier" value:v4];
+  identifier = [(HMDAccessoryReachabilityElectionParameter *)self identifier];
+  v5 = [v3 initWithName:@"Identifier" value:identifier];
   v12[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
   [(HMDAccessoryReachabilityElectionParameter *)self isReachable];
@@ -28,13 +28,13 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -45,12 +45,12 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMDAccessoryReachabilityElectionParameter *)self identifier];
-    v8 = [v6 identifier];
-    if ([v7 hmf_isEqualToUUID:v8])
+    identifier = [(HMDAccessoryReachabilityElectionParameter *)self identifier];
+    identifier2 = [v6 identifier];
+    if ([identifier hmf_isEqualToUUID:identifier2])
     {
-      v9 = [(HMDAccessoryReachabilityElectionParameter *)self isReachable];
-      v10 = v9 ^ [v6 isReachable] ^ 1;
+      isReachable = [(HMDAccessoryReachabilityElectionParameter *)self isReachable];
+      v10 = isReachable ^ [v6 isReachable] ^ 1;
     }
 
     else
@@ -69,8 +69,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMDAccessoryReachabilityElectionParameter *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(HMDAccessoryReachabilityElectionParameter *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
@@ -78,12 +78,12 @@
 - (NSDictionary)dictionaryRepresentation
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAccessoryReachabilityElectionParameter *)self identifier];
-  v4 = [v3 UUIDString];
-  v10 = v4;
-  v5 = [(HMDAccessoryReachabilityElectionParameter *)self isReachable];
+  identifier = [(HMDAccessoryReachabilityElectionParameter *)self identifier];
+  uUIDString = [identifier UUIDString];
+  v10 = uUIDString;
+  isReachable = [(HMDAccessoryReachabilityElectionParameter *)self isReachable];
   v6 = &unk_283E74F00;
-  if (v5)
+  if (isReachable)
   {
     v6 = &unk_283E74EE8;
   }
@@ -96,12 +96,12 @@
   return v7;
 }
 
-- (HMDAccessoryReachabilityElectionParameter)initWithIdentifier:(id)a3 isReachable:(BOOL)a4
+- (HMDAccessoryReachabilityElectionParameter)initWithIdentifier:(id)identifier isReachable:(BOOL)reachable
 {
-  v6 = a3;
-  if (v6)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v7 = v6;
+    v7 = identifierCopy;
     v15.receiver = self;
     v15.super_class = HMDAccessoryReachabilityElectionParameter;
     v8 = [(HMDAccessoryReachabilityElectionParameter *)&v15 init];
@@ -111,7 +111,7 @@
       identifier = v8->_identifier;
       v8->_identifier = v9;
 
-      v8->_reachable = a4;
+      v8->_reachable = reachable;
     }
 
     return v8;
@@ -124,15 +124,15 @@
   }
 }
 
-- (HMDAccessoryReachabilityElectionParameter)initWithDictionaryRepresentation:(id)a3
+- (HMDAccessoryReachabilityElectionParameter)initWithDictionaryRepresentation:(id)representation
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  representationCopy = representation;
+  v5 = representationCopy;
+  if (representationCopy)
   {
-    v6 = [v4 allKeys];
-    if ([v6 count] != 1)
+    allKeys = [representationCopy allKeys];
+    if ([allKeys count] != 1)
     {
       v17 = objc_autoreleasePoolPush();
       self = self;
@@ -151,11 +151,11 @@
       goto LABEL_23;
     }
 
-    v7 = [v6 firstObject];
+    firstObject = [allKeys firstObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
+      v8 = firstObject;
     }
 
     else
@@ -172,13 +172,13 @@
       {
         v11 = v10;
 
-        v12 = [v5 allValues];
-        v13 = [v12 firstObject];
+        allValues = [v5 allValues];
+        firstObject2 = [allValues firstObject];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v14 = v13;
+          v14 = firstObject2;
         }
 
         else
@@ -191,7 +191,7 @@
         if (v15)
         {
           self = -[HMDAccessoryReachabilityElectionParameter initWithIdentifier:isReachable:](self, "initWithIdentifier:isReachable:", v11, [v15 BOOLValue]);
-          v16 = self;
+          selfCopy = self;
         }
 
         else
@@ -202,25 +202,25 @@
           if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
           {
             v30 = HMFGetLogIdentifier();
-            v31 = [v5 allValues];
-            v32 = [v31 firstObject];
+            allValues2 = [v5 allValues];
+            firstObject3 = [allValues2 firstObject];
             v33 = 138543618;
             v34 = v30;
             v35 = 2112;
-            v36 = v32;
+            v36 = firstObject3;
             _os_log_impl(&dword_229538000, v29, OS_LOG_TYPE_ERROR, "%{public}@Invalid reachability: %@", &v33, 0x16u);
           }
 
           objc_autoreleasePoolPop(v28);
-          v16 = 0;
+          selfCopy = 0;
         }
 
-        v6 = v11;
+        allKeys = v11;
         goto LABEL_24;
       }
 
       v20 = objc_autoreleasePoolPush();
-      v25 = self;
+      selfCopy2 = self;
       v22 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
@@ -238,7 +238,7 @@
     else
     {
       v20 = objc_autoreleasePoolPush();
-      v21 = self;
+      selfCopy3 = self;
       v22 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
@@ -246,29 +246,29 @@ LABEL_22:
 
         objc_autoreleasePoolPop(v20);
 LABEL_23:
-        v16 = 0;
+        selfCopy = 0;
 LABEL_24:
 
         goto LABEL_25;
       }
 
       v23 = HMFGetLogIdentifier();
-      v24 = [v6 firstObject];
+      firstObject4 = [allKeys firstObject];
       v33 = 138543618;
       v34 = v23;
       v35 = 2112;
-      v36 = v24;
+      v36 = firstObject4;
       _os_log_impl(&dword_229538000, v22, OS_LOG_TYPE_ERROR, "%{public}@Invalid key type: %@", &v33, 0x16u);
     }
 
     goto LABEL_22;
   }
 
-  v16 = 0;
+  selfCopy = 0;
 LABEL_25:
 
   v26 = *MEMORY[0x277D85DE8];
-  return v16;
+  return selfCopy;
 }
 
 @end

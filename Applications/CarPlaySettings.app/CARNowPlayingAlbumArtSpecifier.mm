@@ -1,10 +1,10 @@
 @interface CARNowPlayingAlbumArtSpecifier
 + (BOOL)userSettingControlAvailable;
-- (CARNowPlayingAlbumArtSpecifier)initWithPanelController:(id)a3;
+- (CARNowPlayingAlbumArtSpecifier)initWithPanelController:(id)controller;
 - (CARSettingsPanelController)panelController;
-- (void)_performAction:(id)a3;
+- (void)_performAction:(id)action;
 - (void)_vehicleDidChange;
-- (void)setAlbumArtUserPreference:(BOOL)a3;
+- (void)setAlbumArtUserPreference:(BOOL)preference;
 @end
 
 @implementation CARNowPlayingAlbumArtSpecifier
@@ -18,9 +18,9 @@
   return v2;
 }
 
-- (CARNowPlayingAlbumArtSpecifier)initWithPanelController:(id)a3
+- (CARNowPlayingAlbumArtSpecifier)initWithPanelController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = sub_10001C80C(@"ALBUM_ART_TITLE");
   v15.receiver = self;
   v15.super_class = CARNowPlayingAlbumArtSpecifier;
@@ -28,7 +28,7 @@
 
   if (v6)
   {
-    objc_storeWeak(&v6->_panelController, v4);
+    objc_storeWeak(&v6->_panelController, controllerCopy);
     objc_initWeak(&location, v6);
     v9 = _NSConcreteStackBlock;
     v10 = 3221225472;
@@ -51,16 +51,16 @@
 
 - (void)_vehicleDidChange
 {
-  v3 = [(CARNowPlayingAlbumArtSpecifier *)self panelController];
+  panelController = [(CARNowPlayingAlbumArtSpecifier *)self panelController];
 
-  if (v3)
+  if (panelController)
   {
-    v4 = [(CARNowPlayingAlbumArtSpecifier *)self panelController];
-    v8 = [v4 vehicle];
+    panelController2 = [(CARNowPlayingAlbumArtSpecifier *)self panelController];
+    vehicle = [panelController2 vehicle];
 
-    if (v8)
+    if (vehicle)
     {
-      -[CARNowPlayingAlbumArtSpecifier setAlbumArtDisabled:](self, "setAlbumArtDisabled:", [v8 albumArtUserPreference] == 1);
+      -[CARNowPlayingAlbumArtSpecifier setAlbumArtDisabled:](self, "setAlbumArtDisabled:", [vehicle albumArtUserPreference] == 1);
     }
 
     else
@@ -76,19 +76,19 @@
   }
 }
 
-- (void)_performAction:(id)a3
+- (void)_performAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    v4 = [a3 BOOLValue];
+    bOOLValue = [action BOOLValue];
   }
 
   else
   {
-    v4 = [(CARNowPlayingAlbumArtSpecifier *)self albumArtDisabled];
+    bOOLValue = [(CARNowPlayingAlbumArtSpecifier *)self albumArtDisabled];
   }
 
-  [(CARNowPlayingAlbumArtSpecifier *)self setAlbumArtDisabled:v4 ^ 1];
+  [(CARNowPlayingAlbumArtSpecifier *)self setAlbumArtDisabled:bOOLValue ^ 1];
   v5 = [NSNumber numberWithInt:[(CARNowPlayingAlbumArtSpecifier *)self albumArtDisabled]^ 1];
   [(CARSettingsCellSpecifier *)self setCellValue:v5];
 
@@ -97,24 +97,24 @@
   [(CARNowPlayingAlbumArtSpecifier *)self setAlbumArtUserPreference:v6];
 }
 
-- (void)setAlbumArtUserPreference:(BOOL)a3
+- (void)setAlbumArtUserPreference:(BOOL)preference
 {
-  v3 = a3;
-  v5 = [(CARNowPlayingAlbumArtSpecifier *)self panelController];
+  preferenceCopy = preference;
+  panelController = [(CARNowPlayingAlbumArtSpecifier *)self panelController];
 
-  if (v5)
+  if (panelController)
   {
-    v6 = [(CARNowPlayingAlbumArtSpecifier *)self panelController];
-    v9 = [v6 vehicle];
+    panelController2 = [(CARNowPlayingAlbumArtSpecifier *)self panelController];
+    vehicle = [panelController2 vehicle];
 
-    if (v9)
+    if (vehicle)
     {
-      v7 = (v3 ? 2 : 1);
-      if ([v9 albumArtUserPreference] != v7)
+      v7 = (preferenceCopy ? 2 : 1);
+      if ([vehicle albumArtUserPreference] != v7)
       {
-        [v9 setAlbumArtUserPreference:v7];
-        v8 = [(CARNowPlayingAlbumArtSpecifier *)self panelController];
-        [v8 saveVehicle:v9];
+        [vehicle setAlbumArtUserPreference:v7];
+        panelController3 = [(CARNowPlayingAlbumArtSpecifier *)self panelController];
+        [panelController3 saveVehicle:vehicle];
       }
     }
   }

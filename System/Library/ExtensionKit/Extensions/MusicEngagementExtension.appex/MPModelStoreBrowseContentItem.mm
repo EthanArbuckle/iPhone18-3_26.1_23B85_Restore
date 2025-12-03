@@ -6,17 +6,17 @@
 
 - (MPModelObject)innermostModelObject
 {
-  v2 = self;
-  v3 = [(MPModelStoreBrowseContentItem *)v2 innerObject];
-  if (v3)
+  selfCopy = self;
+  innerObject = [(MPModelStoreBrowseContentItem *)selfCopy innerObject];
+  if (innerObject)
   {
-    v4 = v3;
-    v5 = [v3 innermostModelObject];
+    v4 = innerObject;
+    innermostModelObject = [innerObject innermostModelObject];
 
-    v2 = v5;
+    selfCopy = innermostModelObject;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 @end

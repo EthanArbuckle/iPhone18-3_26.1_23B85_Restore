@@ -1,7 +1,7 @@
 @interface CKMessageAcknowledgmentChatItem
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
 - (CKBalloonDescriptor_t)balloonDescriptor;
-- (CKMessageAcknowledgmentChatItem)initWithIMChatItem:(id)a3 maxWidth:(double)a4;
+- (CKMessageAcknowledgmentChatItem)initWithIMChatItem:(id)item maxWidth:(double)width;
 - (NSString)acknowledgmentImageName;
 - (UIColor)acknowledgmentImageColor;
 - (UIColor)selectedAcknowledgmentImageColor;
@@ -16,16 +16,16 @@
 
 @implementation CKMessageAcknowledgmentChatItem
 
-- (CKMessageAcknowledgmentChatItem)initWithIMChatItem:(id)a3 maxWidth:(double)a4
+- (CKMessageAcknowledgmentChatItem)initWithIMChatItem:(id)item maxWidth:(double)width
 {
   v8.receiver = self;
   v8.super_class = CKMessageAcknowledgmentChatItem;
-  v4 = [(CKChatItem *)&v8 initWithIMChatItem:a3 maxWidth:a4];
+  v4 = [(CKChatItem *)&v8 initWithIMChatItem:item maxWidth:width];
   v5 = v4;
   if (v4)
   {
-    v6 = [(CKMessageAcknowledgmentChatItem *)v4 messageAcknowledgmentChatItem];
-    v5->_messageAcknowledgmentType = CKMessageAcknowledgmentTypeFromIMAssociatedMessageType([v6 associatedMessageType]);
+    messageAcknowledgmentChatItem = [(CKMessageAcknowledgmentChatItem *)v4 messageAcknowledgmentChatItem];
+    v5->_messageAcknowledgmentType = CKMessageAcknowledgmentTypeFromIMAssociatedMessageType([messageAcknowledgmentChatItem associatedMessageType]);
   }
 
   return v5;
@@ -51,9 +51,9 @@
   return result;
 }
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  v4 = [CKUIBehavior sharedBehaviors:a4];
+  v4 = [CKUIBehavior sharedBehaviors:insets];
   [v4 messageAcknowledgmentTranscriptBalloonSize];
   v6 = v5;
   v8 = v7;
@@ -75,10 +75,10 @@
 
 - (id)sender
 {
-  v2 = [(CKAssociatedMessageChatItem *)self IMAssociatedMessageChatItem];
-  v3 = [v2 sender];
+  iMAssociatedMessageChatItem = [(CKAssociatedMessageChatItem *)self IMAssociatedMessageChatItem];
+  sender = [iMAssociatedMessageChatItem sender];
 
-  return v3;
+  return sender;
 }
 
 - (char)transcriptOrientation
@@ -97,8 +97,8 @@
 - (char)balloonColorType
 {
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 theme];
-  LOBYTE(self) = [v4 messageAcknowledgmentBalloonColorTypeForStyle:{-[CKMessageAcknowledgmentChatItem themeStyle](self, "themeStyle")}];
+  theme = [v3 theme];
+  LOBYTE(self) = [theme messageAcknowledgmentBalloonColorTypeForStyle:{-[CKMessageAcknowledgmentChatItem themeStyle](self, "themeStyle")}];
 
   return self;
 }
@@ -106,8 +106,8 @@
 - (UIColor)acknowledgmentImageColor
 {
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 theme];
-  v5 = [v4 messageAcknowledgment:-[CKMessageAcknowledgmentChatItem themeStyle](self acknowledgmentImageColor:{"themeStyle"), -[CKMessageAcknowledgmentChatItem themeColor](self, "themeColor")}];
+  theme = [v3 theme];
+  v5 = [theme messageAcknowledgment:-[CKMessageAcknowledgmentChatItem themeStyle](self acknowledgmentImageColor:{"themeStyle"), -[CKMessageAcknowledgmentChatItem themeColor](self, "themeColor")}];
 
   return v5;
 }
@@ -115,8 +115,8 @@
 - (UIColor)selectedAcknowledgmentImageColor
 {
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 theme];
-  v5 = [v4 messageAcknowledgment:-[CKMessageAcknowledgmentChatItem themeStyle](self selectedAcknowledgmentImageColor:{"themeStyle"), -[CKMessageAcknowledgmentChatItem themeColor](self, "themeColor")}];
+  theme = [v3 theme];
+  v5 = [theme messageAcknowledgment:-[CKMessageAcknowledgmentChatItem themeStyle](self selectedAcknowledgmentImageColor:{"themeStyle"), -[CKMessageAcknowledgmentChatItem themeColor](self, "themeColor")}];
 
   return v5;
 }
@@ -124,8 +124,8 @@
 - (UIColor)selectedBalloonColor
 {
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 theme];
-  v5 = [v4 messageAcknowledgmentSelectedBalloonColorForStyle:{-[CKMessageAcknowledgmentChatItem themeStyle](self, "themeStyle")}];
+  theme = [v3 theme];
+  v5 = [theme messageAcknowledgmentSelectedBalloonColorForStyle:{-[CKMessageAcknowledgmentChatItem themeStyle](self, "themeStyle")}];
 
   return v5;
 }
@@ -149,10 +149,10 @@
   *&retstr->var12 = 256;
   retstr->var6 = [(CKMessageAcknowledgmentChatItem *)self balloonColorType];
   retstr->var3 = [(CKMessageAcknowledgmentChatItem *)self balloonOrientation];
-  v5 = [(CKChatItem *)self transcriptTraitCollection];
-  retstr->var10 = [v5 userInterfaceStyle];
+  transcriptTraitCollection = [(CKChatItem *)self transcriptTraitCollection];
+  retstr->var10 = [transcriptTraitCollection userInterfaceStyle];
 
-  v6 = [(CKChatItem *)self transcriptTraitCollection];
+  transcriptTraitCollection2 = [(CKChatItem *)self transcriptTraitCollection];
   retstr->var11 = CKBackgroundLevelForTraitCollection();
 
   return result;
@@ -171,8 +171,8 @@
 - (id)attributionImageTintColor
 {
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 theme];
-  v5 = [v4 messageAcknowledgment:0 acknowledgmentImageColor:{-[CKMessageAcknowledgmentChatItem themeColor](self, "themeColor")}];
+  theme = [v3 theme];
+  v5 = [theme messageAcknowledgment:0 acknowledgmentImageColor:{-[CKMessageAcknowledgmentChatItem themeColor](self, "themeColor")}];
 
   return v5;
 }

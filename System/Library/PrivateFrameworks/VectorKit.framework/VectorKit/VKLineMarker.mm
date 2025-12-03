@@ -1,7 +1,7 @@
 @interface VKLineMarker
-+ (id)markerWithLabelFeatureMarker:(const void *)a3;
++ (id)markerWithLabelFeatureMarker:(const void *)marker;
 - (NSString)localizedName;
-- (VKLineMarker)initWithLabelFeatureMarkerPtr:(const void *)a3;
+- (VKLineMarker)initWithLabelFeatureMarkerPtr:(const void *)ptr;
 - (id).cxx_construct;
 - (id)featureHandles;
 @end
@@ -104,10 +104,10 @@
   return v5;
 }
 
-- (VKLineMarker)initWithLabelFeatureMarkerPtr:(const void *)a3
+- (VKLineMarker)initWithLabelFeatureMarkerPtr:(const void *)ptr
 {
-  v4 = *(a3 + 1);
-  v11 = *a3;
+  v4 = *(ptr + 1);
+  v11 = *ptr;
   v12 = v4;
   if (v4)
   {
@@ -124,8 +124,8 @@
 
   if (v5)
   {
-    v7 = *a3;
-    v6 = *(a3 + 1);
+    v7 = *ptr;
+    v6 = *(ptr + 1);
     if (v6)
     {
       atomic_fetch_add_explicit((v6 + 8), 1uLL, memory_order_relaxed);
@@ -143,11 +143,11 @@
   return v5;
 }
 
-+ (id)markerWithLabelFeatureMarker:(const void *)a3
++ (id)markerWithLabelFeatureMarker:(const void *)marker
 {
-  if (*a3)
+  if (*marker)
   {
-    v4 = *(*a3 + 24);
+    v4 = *(*marker + 24);
     v5 = v4;
     if (v4)
     {
@@ -156,7 +156,7 @@
 
     else
     {
-      v6 = [[VKLineMarker alloc] initWithLabelFeatureMarkerPtr:a3];
+      v6 = [[VKLineMarker alloc] initWithLabelFeatureMarkerPtr:marker];
     }
 
     v7 = v6;

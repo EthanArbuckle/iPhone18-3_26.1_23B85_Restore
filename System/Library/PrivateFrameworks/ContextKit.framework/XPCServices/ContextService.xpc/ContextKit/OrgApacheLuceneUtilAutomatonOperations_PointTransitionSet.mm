@@ -1,6 +1,6 @@
 @interface OrgApacheLuceneUtilAutomatonOperations_PointTransitionSet
 - (id)description;
-- (void)addWithOrgApacheLuceneUtilAutomatonTransition:(id)a3;
+- (void)addWithOrgApacheLuceneUtilAutomatonTransition:(id)transition;
 - (void)dealloc;
 - (void)reset;
 - (void)sort;
@@ -34,14 +34,14 @@
   }
 }
 
-- (void)addWithOrgApacheLuceneUtilAutomatonTransition:(id)a3
+- (void)addWithOrgApacheLuceneUtilAutomatonTransition:(id)transition
 {
-  if (!a3 || (v10 = sub_1000D0884(self, *(a3 + 4), a3, v3, v4, v5, v6, v7)) == 0 || (v11 = v10[3]) == 0 || ([v11 addWithOrgApacheLuceneUtilAutomatonTransition:a3], (v18 = sub_1000D0884(self, (*(a3 + 5) + 1), v12, v13, v14, v15, v16, v17)) == 0) || (v19 = v18[2]) == 0)
+  if (!transition || (v10 = sub_1000D0884(self, *(transition + 4), transition, v3, v4, v5, v6, v7)) == 0 || (v11 = v10[3]) == 0 || ([v11 addWithOrgApacheLuceneUtilAutomatonTransition:transition], (v18 = sub_1000D0884(self, (*(transition + 5) + 1), v12, v13, v14, v15, v16, v17)) == 0) || (v19 = v18[2]) == 0)
   {
     JreThrowNullPointerException();
   }
 
-  [v19 addWithOrgApacheLuceneUtilAutomatonTransition:a3];
+  [v19 addWithOrgApacheLuceneUtilAutomatonTransition:transition];
 }
 
 - (id)description

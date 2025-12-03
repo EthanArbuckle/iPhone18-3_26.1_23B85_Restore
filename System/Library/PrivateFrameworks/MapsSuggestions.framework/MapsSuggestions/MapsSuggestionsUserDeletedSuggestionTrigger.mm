@@ -1,11 +1,11 @@
 @interface MapsSuggestionsUserDeletedSuggestionTrigger
-- (MapsSuggestionsUserDeletedSuggestionTrigger)initWithName:(id)a3;
-- (MapsSuggestionsUserDeletedSuggestionTrigger)initWithNotificationName:(const char *)a3 triggerName:(id)a4;
+- (MapsSuggestionsUserDeletedSuggestionTrigger)initWithName:(id)name;
+- (MapsSuggestionsUserDeletedSuggestionTrigger)initWithNotificationName:(const char *)name triggerName:(id)triggerName;
 @end
 
 @implementation MapsSuggestionsUserDeletedSuggestionTrigger
 
-- (MapsSuggestionsUserDeletedSuggestionTrigger)initWithNotificationName:(const char *)a3 triggerName:(id)a4
+- (MapsSuggestionsUserDeletedSuggestionTrigger)initWithNotificationName:(const char *)name triggerName:(id)triggerName
 {
   v15 = *MEMORY[0x1E69E9840];
   v5 = GEOFindOrCreateLog();
@@ -25,11 +25,11 @@
   return [(MapsSuggestionsUserDeletedSuggestionTrigger *)self init];
 }
 
-- (MapsSuggestionsUserDeletedSuggestionTrigger)initWithName:(id)a3
+- (MapsSuggestionsUserDeletedSuggestionTrigger)initWithName:(id)name
 {
   v4.receiver = self;
   v4.super_class = MapsSuggestionsUserDeletedSuggestionTrigger;
-  return [(MapsSuggestionsDarwinNotificationTrigger *)&v4 initWithNotificationName:"com.apple.maps.userdeleted" triggerName:a3];
+  return [(MapsSuggestionsDarwinNotificationTrigger *)&v4 initWithNotificationName:"com.apple.maps.userdeleted" triggerName:name];
 }
 
 @end

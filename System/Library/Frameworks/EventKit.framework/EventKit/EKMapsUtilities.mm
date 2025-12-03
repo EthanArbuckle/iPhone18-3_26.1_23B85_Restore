@@ -1,43 +1,43 @@
 @interface EKMapsUtilities
-+ (id)_locationStringForStructuredLocation:(id)a3 withTitle:(id)a4;
-+ (void)geocodeEventIfNeeded:(id)a3;
++ (id)_locationStringForStructuredLocation:(id)location withTitle:(id)title;
++ (void)geocodeEventIfNeeded:(id)needed;
 @end
 
 @implementation EKMapsUtilities
 
-+ (id)_locationStringForStructuredLocation:(id)a3 withTitle:(id)a4
++ (id)_locationStringForStructuredLocation:(id)location withTitle:(id)title
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  locationCopy = location;
+  titleCopy = title;
+  if (!locationCopy)
   {
     v9 = 0;
     goto LABEL_11;
   }
 
-  v7 = [v5 address];
-  if (v6)
+  address = [locationCopy address];
+  if (titleCopy)
   {
-    v8 = v6;
+    title = titleCopy;
   }
 
   else
   {
-    v8 = [v5 title];
-    if (!v8)
+    title = [locationCopy title];
+    if (!title)
     {
       goto LABEL_8;
     }
   }
 
-  if (([v7 hasPrefix:v8] & 1) != 0 || !objc_msgSend(v7, "CalContainsSubstring:", v8))
+  if (([address hasPrefix:title] & 1) != 0 || !objc_msgSend(address, "CalContainsSubstring:", title))
   {
-    v10 = [MEMORY[0x1E6992FD8] fullDisplayStringWithTitle:v8 address:v7];
+    v10 = [MEMORY[0x1E6992FD8] fullDisplayStringWithTitle:title address:address];
     goto LABEL_10;
   }
 
 LABEL_8:
-  v10 = v7;
+  v10 = address;
 LABEL_10:
   v9 = v10;
 
@@ -46,31 +46,31 @@ LABEL_11:
   return v9;
 }
 
-+ (void)geocodeEventIfNeeded:(id)a3
++ (void)geocodeEventIfNeeded:(id)needed
 {
   v63 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  neededCopy = needed;
   if (+[EKFeatureSet isTravelAdvisorySupported])
   {
-    v4 = [v3 locationWithoutPrediction];
-    v5 = [v4 length];
+    locationWithoutPrediction = [neededCopy locationWithoutPrediction];
+    v5 = [locationWithoutPrediction length];
 
     if (v5)
     {
-      v6 = [v3 structuredLocationWithoutPrediction];
-      v7 = [v6 geoLocation];
-      if (v7)
+      structuredLocationWithoutPrediction = [neededCopy structuredLocationWithoutPrediction];
+      geoLocation = [structuredLocationWithoutPrediction geoLocation];
+      if (geoLocation)
       {
-        v8 = v7;
-        v9 = [v6 mapKitHandle];
+        v8 = geoLocation;
+        mapKitHandle = [structuredLocationWithoutPrediction mapKitHandle];
 
-        if (!v9)
+        if (!mapKitHandle)
         {
           v11 = EKLogHandle;
           if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v62 = v3;
+            v62 = neededCopy;
             v12 = "Event has geoLocation but no mapKitHandle.  Will not attempt geocode for event: [%@]";
             goto LABEL_18;
           }
@@ -79,15 +79,15 @@ LABEL_11:
         }
       }
 
-      v10 = [v3 suggestionInfo];
+      suggestionInfo = [neededCopy suggestionInfo];
 
-      if (v10)
+      if (suggestionInfo)
       {
         v11 = EKLogHandle;
         if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v62 = v3;
+          v62 = neededCopy;
           v12 = "Event is a suggested event.  Will not attempt geocode for event: [%@]";
 LABEL_18:
           _os_log_impl(&dword_1A805E000, v11, OS_LOG_TYPE_INFO, v12, buf, 0xCu);
@@ -97,13 +97,13 @@ LABEL_18:
         goto LABEL_36;
       }
 
-      if ([v3 _hasChangesForKey:*MEMORY[0x1E69926D8]])
+      if ([neededCopy _hasChangesForKey:*MEMORY[0x1E69926D8]])
       {
         v11 = EKLogHandle;
         if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v62 = v3;
+          v62 = neededCopy;
           v12 = "Event has unsaved location changes.  Will not attempt geocode for event: [%@]";
           goto LABEL_18;
         }
@@ -119,12 +119,12 @@ LABEL_36:
       }
 
       v15 = MEMORY[0x1E696AD98];
-      v16 = [v3 objectID];
-      v17 = [v15 numberWithInt:{objc_msgSend(v16, "rowID")}];
+      objectID = [neededCopy objectID];
+      v17 = [v15 numberWithInt:{objc_msgSend(objectID, "rowID")}];
 
       v18 = [geocodeEventIfNeeded__s_lastGeocodedStringForEvent objectForKeyedSubscript:v17];
-      v19 = [v3 locationWithoutPrediction];
-      v20 = [v19 isEqualToString:v18];
+      locationWithoutPrediction2 = [neededCopy locationWithoutPrediction];
+      v20 = [locationWithoutPrediction2 isEqualToString:v18];
 
       if (v20)
       {
@@ -141,7 +141,7 @@ LABEL_36:
             if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_INFO))
             {
               *buf = 138412290;
-              v62 = v3;
+              v62 = neededCopy;
               _os_log_impl(&dword_1A805E000, v25, OS_LOG_TYPE_INFO, "Event location hasn't changed since we geocoded 24 hours ago.  Will not attempt geocode for event: [%@]", buf, 0xCu);
             }
 
@@ -154,19 +154,19 @@ LABEL_36:
       v26 = objc_opt_new();
       [geocodeEventIfNeeded__s_lastGeocodeDateForEvent setObject:v26 forKeyedSubscript:v17];
 
-      v27 = [v3 locationWithoutPrediction];
+      locationWithoutPrediction3 = [neededCopy locationWithoutPrediction];
       v50 = v17;
-      [geocodeEventIfNeeded__s_lastGeocodedStringForEvent setObject:v27 forKeyedSubscript:v17];
+      [geocodeEventIfNeeded__s_lastGeocodedStringForEvent setObject:locationWithoutPrediction3 forKeyedSubscript:v17];
 
-      v28 = [geocodeEventIfNeeded__storeForSavingProvider eventStore];
-      v29 = [v3 objectID];
-      v30 = [v3 startDate];
-      v31 = [v28 eventForObjectID:v29 occurrenceDate:v30 checkValid:0];
+      eventStore = [geocodeEventIfNeeded__storeForSavingProvider eventStore];
+      objectID2 = [neededCopy objectID];
+      startDate = [neededCopy startDate];
+      v31 = [eventStore eventForObjectID:objectID2 occurrenceDate:startDate checkValid:0];
 
-      v32 = [v31 locationWithoutPrediction];
-      v33 = [v31 clientLocation];
-      v34 = [v33 mapKitHandle];
-      if (v34)
+      locationWithoutPrediction4 = [v31 locationWithoutPrediction];
+      clientLocation = [v31 clientLocation];
+      mapKitHandle2 = [clientLocation mapKitHandle];
+      if (mapKitHandle2)
       {
         [v31 clientLocation];
       }
@@ -176,7 +176,7 @@ LABEL_36:
         [v31 structuredLocationWithoutPrediction];
       }
       v35 = ;
-      v36 = [v35 mapKitHandle];
+      mapKitHandle3 = [v35 mapKitHandle];
 
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
@@ -184,12 +184,12 @@ LABEL_36:
       aBlock[3] = &unk_1E7800548;
       v37 = v31;
       v56 = v37;
-      v38 = v32;
+      v38 = locationWithoutPrediction4;
       v57 = v38;
-      v39 = v36;
+      v39 = mapKitHandle3;
       v58 = v39;
       v59 = v50;
-      v21 = v28;
+      v21 = eventStore;
       v60 = v21;
       v40 = _Block_copy(aBlock);
       if (v39)
@@ -200,7 +200,7 @@ LABEL_36:
         if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v62 = v3;
+          v62 = neededCopy;
           _os_log_impl(&dword_1A805E000, v43, OS_LOG_TYPE_DEFAULT, "Starting geocode of mapHandle for event: [%@]", buf, 0xCu);
         }
 
@@ -229,14 +229,14 @@ LABEL_47:
 
       else
       {
-        v47 = [v37 automaticLocationGeocodingAllowed];
+        automaticLocationGeocodingAllowed = [v37 automaticLocationGeocodingAllowed];
         v45 = EKLogHandle;
-        if (v47)
+        if (automaticLocationGeocodingAllowed)
         {
           if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v62 = v3;
+            v62 = neededCopy;
             _os_log_impl(&dword_1A805E000, v45, OS_LOG_TYPE_DEFAULT, "Starting geocode of location string for event: [%@]", buf, 0xCu);
           }
 
@@ -272,7 +272,7 @@ LABEL_35:
     if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v62 = v3;
+      v62 = neededCopy;
       v14 = "Event has no location.  Will not attempt geocode for event: [%@]";
       goto LABEL_12;
     }
@@ -284,7 +284,7 @@ LABEL_35:
     if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v62 = v3;
+      v62 = neededCopy;
       v14 = "Travel advisory not supported.  Will not attempt geocode for event: [%@]";
 LABEL_12:
       _os_log_impl(&dword_1A805E000, v13, OS_LOG_TYPE_INFO, v14, buf, 0xCu);

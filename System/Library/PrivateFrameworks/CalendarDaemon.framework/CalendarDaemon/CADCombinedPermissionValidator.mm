@@ -23,7 +23,7 @@
 - (BOOL)shouldTrustClientEnforcedManagedConfigurationAccess;
 - (BOOL)storageManagementAccessGranted;
 - (BOOL)testingAccessLevelGranted;
-- (CADCombinedPermissionValidator)initWithPermissionValidator:(id)a3 andValidator:(id)a4;
+- (CADCombinedPermissionValidator)initWithPermissionValidator:(id)validator andValidator:(id)andValidator;
 - (int)eventAccessLevel;
 - (int64_t)eventAuthorization;
 - (int64_t)remindersAuthorization;
@@ -31,18 +31,18 @@
 
 @implementation CADCombinedPermissionValidator
 
-- (CADCombinedPermissionValidator)initWithPermissionValidator:(id)a3 andValidator:(id)a4
+- (CADCombinedPermissionValidator)initWithPermissionValidator:(id)validator andValidator:(id)andValidator
 {
-  v7 = a3;
-  v8 = a4;
+  validatorCopy = validator;
+  andValidatorCopy = andValidator;
   v12.receiver = self;
   v12.super_class = CADCombinedPermissionValidator;
   v9 = [(CADCombinedPermissionValidator *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_validator1, a3);
-    objc_storeStrong(&v10->_validator2, a4);
+    objc_storeStrong(&v9->_validator1, validator);
+    objc_storeStrong(&v10->_validator2, andValidator);
   }
 
   return v10;
@@ -50,337 +50,337 @@
 
 - (int64_t)eventAuthorization
 {
-  v3 = [(CADPermissionValidator *)self->_validator1 eventAuthorization];
-  v4 = [(CADPermissionValidator *)self->_validator2 eventAuthorization];
+  eventAuthorization = [(CADPermissionValidator *)self->_validator1 eventAuthorization];
+  eventAuthorization2 = [(CADPermissionValidator *)self->_validator2 eventAuthorization];
 
-  return _minimumAuthStatus(v3, v4);
+  return _minimumAuthStatus(eventAuthorization, eventAuthorization2);
 }
 
 - (int64_t)remindersAuthorization
 {
-  v3 = [(CADPermissionValidator *)self->_validator1 remindersAuthorization];
-  v4 = [(CADPermissionValidator *)self->_validator2 remindersAuthorization];
+  remindersAuthorization = [(CADPermissionValidator *)self->_validator1 remindersAuthorization];
+  remindersAuthorization2 = [(CADPermissionValidator *)self->_validator2 remindersAuthorization];
 
-  return _minimumAuthStatus(v3, v4);
+  return _minimumAuthStatus(remindersAuthorization, remindersAuthorization2);
 }
 
 - (int)eventAccessLevel
 {
-  v2 = [(CADCombinedPermissionValidator *)self eventAuthorization];
+  eventAuthorization = [(CADCombinedPermissionValidator *)self eventAuthorization];
 
-  return CADEventAccessTypeFromAuthStatus(v2);
+  return CADEventAccessTypeFromAuthStatus(eventAuthorization);
 }
 
 - (BOOL)isFirstPartyCalendarApp
 {
-  v3 = [(CADPermissionValidator *)self->_validator1 isFirstPartyCalendarApp];
-  if (v3)
+  isFirstPartyCalendarApp = [(CADPermissionValidator *)self->_validator1 isFirstPartyCalendarApp];
+  if (isFirstPartyCalendarApp)
   {
     validator2 = self->_validator2;
 
-    LOBYTE(v3) = [(CADPermissionValidator *)validator2 isFirstPartyCalendarApp];
+    LOBYTE(isFirstPartyCalendarApp) = [(CADPermissionValidator *)validator2 isFirstPartyCalendarApp];
   }
 
-  return v3;
+  return isFirstPartyCalendarApp;
 }
 
 - (BOOL)isCalendarDaemon
 {
-  v3 = [(CADPermissionValidator *)self->_validator1 isCalendarDaemon];
-  if (v3)
+  isCalendarDaemon = [(CADPermissionValidator *)self->_validator1 isCalendarDaemon];
+  if (isCalendarDaemon)
   {
     validator2 = self->_validator2;
 
-    LOBYTE(v3) = [(CADPermissionValidator *)validator2 isCalendarDaemon];
+    LOBYTE(isCalendarDaemon) = [(CADPermissionValidator *)validator2 isCalendarDaemon];
   }
 
-  return v3;
+  return isCalendarDaemon;
 }
 
 - (BOOL)isRemoteUIExtension
 {
-  v3 = [(CADPermissionValidator *)self->_validator1 isRemoteUIExtension];
-  if (v3)
+  isRemoteUIExtension = [(CADPermissionValidator *)self->_validator1 isRemoteUIExtension];
+  if (isRemoteUIExtension)
   {
     validator2 = self->_validator2;
 
-    LOBYTE(v3) = [(CADPermissionValidator *)validator2 isRemoteUIExtension];
+    LOBYTE(isRemoteUIExtension) = [(CADPermissionValidator *)validator2 isRemoteUIExtension];
   }
 
-  return v3;
+  return isRemoteUIExtension;
 }
 
 - (BOOL)isCalendarWidgetExtension
 {
-  v3 = [(CADPermissionValidator *)self->_validator1 isCalendarWidgetExtension];
-  if (v3)
+  isCalendarWidgetExtension = [(CADPermissionValidator *)self->_validator1 isCalendarWidgetExtension];
+  if (isCalendarWidgetExtension)
   {
     validator2 = self->_validator2;
 
-    LOBYTE(v3) = [(CADPermissionValidator *)validator2 isCalendarWidgetExtension];
+    LOBYTE(isCalendarWidgetExtension) = [(CADPermissionValidator *)validator2 isCalendarWidgetExtension];
   }
 
-  return v3;
+  return isCalendarWidgetExtension;
 }
 
 - (BOOL)isAutomatorApp
 {
-  v3 = [(CADPermissionValidator *)self->_validator1 isAutomatorApp];
-  if (v3)
+  isAutomatorApp = [(CADPermissionValidator *)self->_validator1 isAutomatorApp];
+  if (isAutomatorApp)
   {
     validator2 = self->_validator2;
 
-    LOBYTE(v3) = [(CADPermissionValidator *)validator2 isAutomatorApp];
+    LOBYTE(isAutomatorApp) = [(CADPermissionValidator *)validator2 isAutomatorApp];
   }
 
-  return v3;
+  return isAutomatorApp;
 }
 
 - (BOOL)isShortcutsApp
 {
-  v3 = [(CADPermissionValidator *)self->_validator1 isShortcutsApp];
-  if (v3)
+  isShortcutsApp = [(CADPermissionValidator *)self->_validator1 isShortcutsApp];
+  if (isShortcutsApp)
   {
     validator2 = self->_validator2;
 
-    LOBYTE(v3) = [(CADPermissionValidator *)validator2 isShortcutsApp];
+    LOBYTE(isShortcutsApp) = [(CADPermissionValidator *)validator2 isShortcutsApp];
   }
 
-  return v3;
+  return isShortcutsApp;
 }
 
 - (BOOL)canAccessProcedureAlarms
 {
-  v3 = [(CADPermissionValidator *)self->_validator1 canAccessProcedureAlarms];
-  if (v3)
+  canAccessProcedureAlarms = [(CADPermissionValidator *)self->_validator1 canAccessProcedureAlarms];
+  if (canAccessProcedureAlarms)
   {
     validator2 = self->_validator2;
 
-    LOBYTE(v3) = [(CADPermissionValidator *)validator2 canAccessProcedureAlarms];
+    LOBYTE(canAccessProcedureAlarms) = [(CADPermissionValidator *)validator2 canAccessProcedureAlarms];
   }
 
-  return v3;
+  return canAccessProcedureAlarms;
 }
 
 - (BOOL)canModifySuggestedEventCalendar
 {
-  v3 = [(CADPermissionValidator *)self->_validator1 canModifySuggestedEventCalendar];
-  if (v3)
+  canModifySuggestedEventCalendar = [(CADPermissionValidator *)self->_validator1 canModifySuggestedEventCalendar];
+  if (canModifySuggestedEventCalendar)
   {
     validator2 = self->_validator2;
 
-    LOBYTE(v3) = [(CADPermissionValidator *)validator2 canModifySuggestedEventCalendar];
+    LOBYTE(canModifySuggestedEventCalendar) = [(CADPermissionValidator *)validator2 canModifySuggestedEventCalendar];
   }
 
-  return v3;
+  return canModifySuggestedEventCalendar;
 }
 
 - (BOOL)canMakeSpotlightChanges
 {
-  v3 = [(CADPermissionValidator *)self->_validator1 canMakeSpotlightChanges];
-  if (v3)
+  canMakeSpotlightChanges = [(CADPermissionValidator *)self->_validator1 canMakeSpotlightChanges];
+  if (canMakeSpotlightChanges)
   {
     validator2 = self->_validator2;
 
-    LOBYTE(v3) = [(CADPermissionValidator *)validator2 canMakeSpotlightChanges];
+    LOBYTE(canMakeSpotlightChanges) = [(CADPermissionValidator *)validator2 canMakeSpotlightChanges];
   }
 
-  return v3;
+  return canMakeSpotlightChanges;
 }
 
 - (BOOL)canModifyBirthdayCalendar
 {
-  v3 = [(CADPermissionValidator *)self->_validator1 canModifyBirthdayCalendar];
-  if (v3)
+  canModifyBirthdayCalendar = [(CADPermissionValidator *)self->_validator1 canModifyBirthdayCalendar];
+  if (canModifyBirthdayCalendar)
   {
     validator2 = self->_validator2;
 
-    LOBYTE(v3) = [(CADPermissionValidator *)validator2 canModifyBirthdayCalendar];
+    LOBYTE(canModifyBirthdayCalendar) = [(CADPermissionValidator *)validator2 canModifyBirthdayCalendar];
   }
 
-  return v3;
+  return canModifyBirthdayCalendar;
 }
 
 - (BOOL)canRequestDiagnostics
 {
-  v3 = [(CADPermissionValidator *)self->_validator1 canRequestDiagnostics];
-  if (v3)
+  canRequestDiagnostics = [(CADPermissionValidator *)self->_validator1 canRequestDiagnostics];
+  if (canRequestDiagnostics)
   {
     validator2 = self->_validator2;
 
-    LOBYTE(v3) = [(CADPermissionValidator *)validator2 canRequestDiagnostics];
+    LOBYTE(canRequestDiagnostics) = [(CADPermissionValidator *)validator2 canRequestDiagnostics];
   }
 
-  return v3;
+  return canRequestDiagnostics;
 }
 
 - (BOOL)canModifyCalendarDatabase
 {
-  v3 = [(CADPermissionValidator *)self->_validator1 canModifyCalendarDatabase];
-  if (v3)
+  canModifyCalendarDatabase = [(CADPermissionValidator *)self->_validator1 canModifyCalendarDatabase];
+  if (canModifyCalendarDatabase)
   {
     validator2 = self->_validator2;
 
-    LOBYTE(v3) = [(CADPermissionValidator *)validator2 canModifyCalendarDatabase];
+    LOBYTE(canModifyCalendarDatabase) = [(CADPermissionValidator *)validator2 canModifyCalendarDatabase];
   }
 
-  return v3;
+  return canModifyCalendarDatabase;
 }
 
 - (BOOL)testingAccessLevelGranted
 {
-  v3 = [(CADPermissionValidator *)self->_validator1 testingAccessLevelGranted];
-  if (v3)
+  testingAccessLevelGranted = [(CADPermissionValidator *)self->_validator1 testingAccessLevelGranted];
+  if (testingAccessLevelGranted)
   {
     validator2 = self->_validator2;
 
-    LOBYTE(v3) = [(CADPermissionValidator *)validator2 testingAccessLevelGranted];
+    LOBYTE(testingAccessLevelGranted) = [(CADPermissionValidator *)validator2 testingAccessLevelGranted];
   }
 
-  return v3;
+  return testingAccessLevelGranted;
 }
 
 - (BOOL)internalAccessLevelGranted
 {
-  v3 = [(CADPermissionValidator *)self->_validator1 internalAccessLevelGranted];
-  if (v3)
+  internalAccessLevelGranted = [(CADPermissionValidator *)self->_validator1 internalAccessLevelGranted];
+  if (internalAccessLevelGranted)
   {
     validator2 = self->_validator2;
 
-    LOBYTE(v3) = [(CADPermissionValidator *)validator2 internalAccessLevelGranted];
+    LOBYTE(internalAccessLevelGranted) = [(CADPermissionValidator *)validator2 internalAccessLevelGranted];
   }
 
-  return v3;
+  return internalAccessLevelGranted;
 }
 
 - (BOOL)storageManagementAccessGranted
 {
-  v3 = [(CADPermissionValidator *)self->_validator1 storageManagementAccessGranted];
-  if (v3)
+  storageManagementAccessGranted = [(CADPermissionValidator *)self->_validator1 storageManagementAccessGranted];
+  if (storageManagementAccessGranted)
   {
     validator2 = self->_validator2;
 
-    LOBYTE(v3) = [(CADPermissionValidator *)validator2 storageManagementAccessGranted];
+    LOBYTE(storageManagementAccessGranted) = [(CADPermissionValidator *)validator2 storageManagementAccessGranted];
   }
 
-  return v3;
+  return storageManagementAccessGranted;
 }
 
 - (BOOL)hasSyncClientEntitlement
 {
-  v3 = [(CADPermissionValidator *)self->_validator1 hasSyncClientEntitlement];
-  if (v3)
+  hasSyncClientEntitlement = [(CADPermissionValidator *)self->_validator1 hasSyncClientEntitlement];
+  if (hasSyncClientEntitlement)
   {
     validator2 = self->_validator2;
 
-    LOBYTE(v3) = [(CADPermissionValidator *)validator2 hasSyncClientEntitlement];
+    LOBYTE(hasSyncClientEntitlement) = [(CADPermissionValidator *)validator2 hasSyncClientEntitlement];
   }
 
-  return v3;
+  return hasSyncClientEntitlement;
 }
 
 - (BOOL)hasCalendarToolEntitlement
 {
-  v3 = [(CADPermissionValidator *)self->_validator1 hasCalendarToolEntitlement];
-  if (v3)
+  hasCalendarToolEntitlement = [(CADPermissionValidator *)self->_validator1 hasCalendarToolEntitlement];
+  if (hasCalendarToolEntitlement)
   {
     validator2 = self->_validator2;
 
-    LOBYTE(v3) = [(CADPermissionValidator *)validator2 hasCalendarToolEntitlement];
+    LOBYTE(hasCalendarToolEntitlement) = [(CADPermissionValidator *)validator2 hasCalendarToolEntitlement];
   }
 
-  return v3;
+  return hasCalendarToolEntitlement;
 }
 
 - (BOOL)hasChangeIdTrackingOverrideEntitlement
 {
-  v3 = [(CADPermissionValidator *)self->_validator1 hasChangeIdTrackingOverrideEntitlement];
-  if (v3)
+  hasChangeIdTrackingOverrideEntitlement = [(CADPermissionValidator *)self->_validator1 hasChangeIdTrackingOverrideEntitlement];
+  if (hasChangeIdTrackingOverrideEntitlement)
   {
     validator2 = self->_validator2;
 
-    LOBYTE(v3) = [(CADPermissionValidator *)validator2 hasChangeIdTrackingOverrideEntitlement];
+    LOBYTE(hasChangeIdTrackingOverrideEntitlement) = [(CADPermissionValidator *)validator2 hasChangeIdTrackingOverrideEntitlement];
   }
 
-  return v3;
+  return hasChangeIdTrackingOverrideEntitlement;
 }
 
 - (BOOL)hasNotificationCountEntitlement
 {
-  v3 = [(CADPermissionValidator *)self->_validator1 hasNotificationCountEntitlement];
-  if (v3)
+  hasNotificationCountEntitlement = [(CADPermissionValidator *)self->_validator1 hasNotificationCountEntitlement];
+  if (hasNotificationCountEntitlement)
   {
     validator2 = self->_validator2;
 
-    LOBYTE(v3) = [(CADPermissionValidator *)validator2 hasNotificationCountEntitlement];
+    LOBYTE(hasNotificationCountEntitlement) = [(CADPermissionValidator *)validator2 hasNotificationCountEntitlement];
   }
 
-  return v3;
+  return hasNotificationCountEntitlement;
 }
 
 - (BOOL)hasManagedConfigurationBundleIDOverrideEntitlement
 {
-  v3 = [(CADPermissionValidator *)self->_validator1 hasManagedConfigurationBundleIDOverrideEntitlement];
-  if (v3)
+  hasManagedConfigurationBundleIDOverrideEntitlement = [(CADPermissionValidator *)self->_validator1 hasManagedConfigurationBundleIDOverrideEntitlement];
+  if (hasManagedConfigurationBundleIDOverrideEntitlement)
   {
     validator2 = self->_validator2;
 
-    LOBYTE(v3) = [(CADPermissionValidator *)validator2 hasManagedConfigurationBundleIDOverrideEntitlement];
+    LOBYTE(hasManagedConfigurationBundleIDOverrideEntitlement) = [(CADPermissionValidator *)validator2 hasManagedConfigurationBundleIDOverrideEntitlement];
   }
 
-  return v3;
+  return hasManagedConfigurationBundleIDOverrideEntitlement;
 }
 
 - (BOOL)shouldTrustClientEnforcedManagedConfigurationAccess
 {
-  v3 = [(CADPermissionValidator *)self->_validator1 shouldTrustClientEnforcedManagedConfigurationAccess];
-  if (v3)
+  shouldTrustClientEnforcedManagedConfigurationAccess = [(CADPermissionValidator *)self->_validator1 shouldTrustClientEnforcedManagedConfigurationAccess];
+  if (shouldTrustClientEnforcedManagedConfigurationAccess)
   {
     validator2 = self->_validator2;
 
-    LOBYTE(v3) = [(CADPermissionValidator *)validator2 shouldTrustClientEnforcedManagedConfigurationAccess];
+    LOBYTE(shouldTrustClientEnforcedManagedConfigurationAccess) = [(CADPermissionValidator *)validator2 shouldTrustClientEnforcedManagedConfigurationAccess];
   }
 
-  return v3;
+  return shouldTrustClientEnforcedManagedConfigurationAccess;
 }
 
 - (BOOL)allowsCustomDatabasePath
 {
-  v3 = [(CADPermissionValidator *)self->_validator1 allowsCustomDatabasePath];
-  if (v3)
+  allowsCustomDatabasePath = [(CADPermissionValidator *)self->_validator1 allowsCustomDatabasePath];
+  if (allowsCustomDatabasePath)
   {
     validator2 = self->_validator2;
 
-    LOBYTE(v3) = [(CADPermissionValidator *)validator2 allowsCustomDatabasePath];
+    LOBYTE(allowsCustomDatabasePath) = [(CADPermissionValidator *)validator2 allowsCustomDatabasePath];
   }
 
-  return v3;
+  return allowsCustomDatabasePath;
 }
 
 - (BOOL)allowsIntegrations
 {
-  v3 = [(CADPermissionValidator *)self->_validator1 allowsIntegrations];
-  if (v3)
+  allowsIntegrations = [(CADPermissionValidator *)self->_validator1 allowsIntegrations];
+  if (allowsIntegrations)
   {
     validator2 = self->_validator2;
 
-    LOBYTE(v3) = [(CADPermissionValidator *)validator2 allowsIntegrations];
+    LOBYTE(allowsIntegrations) = [(CADPermissionValidator *)validator2 allowsIntegrations];
   }
 
-  return v3;
+  return allowsIntegrations;
 }
 
 - (BOOL)hasCalendarTCCBypassEntitlement
 {
-  v3 = [(CADPermissionValidator *)self->_validator1 hasCalendarTCCBypassEntitlement];
-  if (v3)
+  hasCalendarTCCBypassEntitlement = [(CADPermissionValidator *)self->_validator1 hasCalendarTCCBypassEntitlement];
+  if (hasCalendarTCCBypassEntitlement)
   {
     validator2 = self->_validator2;
 
-    LOBYTE(v3) = [(CADPermissionValidator *)validator2 hasCalendarTCCBypassEntitlement];
+    LOBYTE(hasCalendarTCCBypassEntitlement) = [(CADPermissionValidator *)validator2 hasCalendarTCCBypassEntitlement];
   }
 
-  return v3;
+  return hasCalendarTCCBypassEntitlement;
 }
 
 @end

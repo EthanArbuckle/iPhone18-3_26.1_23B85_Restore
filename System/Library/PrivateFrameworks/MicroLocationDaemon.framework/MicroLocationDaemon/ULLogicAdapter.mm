@@ -1,64 +1,64 @@
 @interface ULLogicAdapter
-+ (id)_newULServiceDescriptorFromInternalDescriptor:(const void *)a3;
++ (id)_newULServiceDescriptorFromInternalDescriptor:(const void *)descriptor;
 - (BOOL)isDataAvailable;
 - (BOOL)purgeMicroLocationData;
 - (ULLogicAdapter)init;
-- (id)createServiceWithServiceType:(unint64_t)a3 locationTypes:(id)a4 clientId:(id)a5;
-- (id)deleteServiceWithIdentifier:(id)a3 clientIdentifier:(id)a4;
+- (id)createServiceWithServiceType:(unint64_t)type locationTypes:(id)types clientId:(id)id;
+- (id)deleteServiceWithIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier;
 - (id)diagnosticInfo;
 - (id)exportDatabase;
 - (id)getMicroLocationInternalVersion;
-- (id)imageFeaturesDebugWithTask:(unint64_t)a3 additionalInformation:(id)a4;
-- (id)polarisDebugWithTask:(unint64_t)a3;
+- (id)imageFeaturesDebugWithTask:(unint64_t)task additionalInformation:(id)information;
+- (id)polarisDebugWithTask:(unint64_t)task;
 - (id)purgeDatabase;
-- (id)queryServicesForClient:(id)a3;
+- (id)queryServicesForClient:(id)client;
 - (uint64_t)_analyticsExecute:;
 - (uint64_t)_exportiCloudBackupExecute:;
 - (uint64_t)_maintenanceExecute:;
 - (uint64_t)_routineStateAnalyzerExecute:;
 - (uint64_t)_wifiAnalyticsExecute:;
-- (void)_analyticsExecute:(id)a3;
-- (void)_exportiCloudBackupExecute:(id)a3;
-- (void)_handleULAirplaneModeMonitorEventAirplaneMode:(id)a3;
-- (void)_handleULBatteryModeMonitorEventLowPowerMode:(id)a3;
-- (void)_handleULBatteryModeMonitorEventUnlimitedPower:(id)a3;
-- (void)_handleULBluetoothMonitorEventPowerOn:(id)a3;
-- (void)_handleULBuddyMonitorEventBuddyComplete:(id)a3;
-- (void)_handleULDataProtectionMonitorEventDataAvailable:(id)a3;
-- (void)_handleULDisplayMonitorEventDisplayState:(id)a3;
-- (void)_handleULDisplayMonitorEventDisplayState_OSX:(id)a3;
-- (void)_handleULInternalNotifyMonitorEventLocalize:(id)a3;
-- (void)_handleULInternalNotifyMonitorEventPurge:(id)a3;
-- (void)_handleULInternalNotifyMonitorEventRecord:(id)a3;
-- (void)_handleULInternalNotifyMonitorEventSettingsRefrsh:(id)a3;
-- (void)_handleULPrivacyMonitorEventLocationServices:(id)a3;
-- (void)_handleULRapportMonitorEventDeviceFound:(id)a3;
-- (void)_handleULSleepWakeMonitorEvent:(id)a3;
-- (void)_learnExecute:(id)a3;
-- (void)_maintenanceExecute:(id)a3;
+- (void)_analyticsExecute:(id)execute;
+- (void)_exportiCloudBackupExecute:(id)execute;
+- (void)_handleULAirplaneModeMonitorEventAirplaneMode:(id)mode;
+- (void)_handleULBatteryModeMonitorEventLowPowerMode:(id)mode;
+- (void)_handleULBatteryModeMonitorEventUnlimitedPower:(id)power;
+- (void)_handleULBluetoothMonitorEventPowerOn:(id)on;
+- (void)_handleULBuddyMonitorEventBuddyComplete:(id)complete;
+- (void)_handleULDataProtectionMonitorEventDataAvailable:(id)available;
+- (void)_handleULDisplayMonitorEventDisplayState:(id)state;
+- (void)_handleULDisplayMonitorEventDisplayState_OSX:(id)x;
+- (void)_handleULInternalNotifyMonitorEventLocalize:(id)localize;
+- (void)_handleULInternalNotifyMonitorEventPurge:(id)purge;
+- (void)_handleULInternalNotifyMonitorEventRecord:(id)record;
+- (void)_handleULInternalNotifyMonitorEventSettingsRefrsh:(id)refrsh;
+- (void)_handleULPrivacyMonitorEventLocationServices:(id)services;
+- (void)_handleULRapportMonitorEventDeviceFound:(id)found;
+- (void)_handleULSleepWakeMonitorEvent:(id)event;
+- (void)_learnExecute:(id)execute;
+- (void)_maintenanceExecute:(id)execute;
 - (void)_registerOnDatabaseValidNotification;
-- (void)_registerOrUnregisterForActivities:(BOOL)a3;
-- (void)_registerOrUnregisterForBackgroundTaskWithRequest:(id)a3 withSelector:(SEL)a4 isRegister:(BOOL)a5;
-- (void)_routineStateAnalyzerExecute:(id)a3;
+- (void)_registerOrUnregisterForActivities:(BOOL)activities;
+- (void)_registerOrUnregisterForBackgroundTaskWithRequest:(id)request withSelector:(SEL)selector isRegister:(BOOL)register;
+- (void)_routineStateAnalyzerExecute:(id)execute;
 - (void)_start;
 - (void)_startMonitoringEvents;
 - (void)_stop;
 - (void)_stopMonitoringEvents;
-- (void)_wifiAnalyticsExecute:(id)a3;
-- (void)addLabelForConnectionToken:(id)a3 label:(id)a4;
-- (void)addLabelForConnectionToken:(id)a3 label:(id)a4 betweenStartDate:(id)a5 andEndDate:(id)a6;
-- (void)createCustomLoiAtCurrentLocationForConnectionToken:(id)a3 withConfiguration:(id)a4;
+- (void)_wifiAnalyticsExecute:(id)execute;
+- (void)addLabelForConnectionToken:(id)token label:(id)label;
+- (void)addLabelForConnectionToken:(id)token label:(id)label betweenStartDate:(id)date andEndDate:(id)endDate;
+- (void)createCustomLoiAtCurrentLocationForConnectionToken:(id)token withConfiguration:(id)configuration;
 - (void)dealloc;
-- (void)disconnectWithConnectionToken:(id)a3 clientIdentifier:(id)a4 requestIdentifier:(id)a5;
-- (void)removeCustomLoiWithIdentifier:(id)a3 forConnectionToken:(id)a4;
-- (void)removePendingConnectionRequestsByConnectionToken:(id)a3;
-- (void)requestCurrentMicroLocationWithAdditionalInformation:(id)a3 clientId:(id)a4;
-- (void)requestMicroLocationRecordingScanWithAdditionalInformation:(id)a3 clientId:(id)a4;
-- (void)requestModelLearningForConnectionToken:(id)a3 requestIdentifier:(id)a4;
-- (void)requestObservationForConnectionToken:(id)a3 clientIdentifier:(id)a4 requestIdentifier:(id)a5;
-- (void)requestPredictionForConnectionToken:(id)a3 clientIdentifier:(id)a4 requestIdentifier:(id)a5;
-- (void)runWithConfiguration:(id)a3 serviceIdentifier:(id)a4 legacyServiceIdentifier:(id)a5 clientIdentifier:(id)a6 connectionToken:(id)a7 requestIdentifier:(id)a8;
-- (void)setDependencies:()unique_ptr<ULLogicAdapterImpl peripheralControl:(std:(id)a4 :(id)a5 default_delete<ULLogicAdapterImpl>>)a3 environment:;
+- (void)disconnectWithConnectionToken:(id)token clientIdentifier:(id)identifier requestIdentifier:(id)requestIdentifier;
+- (void)removeCustomLoiWithIdentifier:(id)identifier forConnectionToken:(id)token;
+- (void)removePendingConnectionRequestsByConnectionToken:(id)token;
+- (void)requestCurrentMicroLocationWithAdditionalInformation:(id)information clientId:(id)id;
+- (void)requestMicroLocationRecordingScanWithAdditionalInformation:(id)information clientId:(id)id;
+- (void)requestModelLearningForConnectionToken:(id)token requestIdentifier:(id)identifier;
+- (void)requestObservationForConnectionToken:(id)token clientIdentifier:(id)identifier requestIdentifier:(id)requestIdentifier;
+- (void)requestPredictionForConnectionToken:(id)token clientIdentifier:(id)identifier requestIdentifier:(id)requestIdentifier;
+- (void)runWithConfiguration:(id)configuration serviceIdentifier:(id)identifier legacyServiceIdentifier:(id)serviceIdentifier clientIdentifier:(id)clientIdentifier connectionToken:(id)token requestIdentifier:(id)requestIdentifier;
+- (void)setDependencies:()unique_ptr<ULLogicAdapterImpl peripheralControl:(std:(id)control :(id)a5 default_delete<ULLogicAdapterImpl>>)a3 environment:;
 - (void)start;
 - (void)startRapportSession;
 - (void)stopRapportSession;
@@ -90,11 +90,11 @@ void __40__ULLogicAdapter__startMonitoringEvents__block_invoke(uint64_t a1, void
 
 - (BOOL)isDataAvailable
 {
-  v2 = [(ULLogicAdapter *)self environment];
-  v3 = [v2 dataProtectionMonitor];
-  v4 = [v3 isDataAvailable];
+  environment = [(ULLogicAdapter *)self environment];
+  dataProtectionMonitor = [environment dataProtectionMonitor];
+  isDataAvailable = [dataProtectionMonitor isDataAvailable];
 
-  return v4;
+  return isDataAvailable;
 }
 
 - (ULLogicAdapter)init
@@ -104,12 +104,12 @@ void __40__ULLogicAdapter__startMonitoringEvents__block_invoke(uint64_t a1, void
   return [(ULLogicAdapter *)&v3 init];
 }
 
-- (void)setDependencies:()unique_ptr<ULLogicAdapterImpl peripheralControl:(std:(id)a4 :(id)a5 default_delete<ULLogicAdapterImpl>>)a3 environment:
+- (void)setDependencies:()unique_ptr<ULLogicAdapterImpl peripheralControl:(std:(id)control :(id)a5 default_delete<ULLogicAdapterImpl>>)a3 environment:
 {
-  v12 = a4;
+  controlCopy = control;
   v8 = a5;
-  v9 = [v8 queue];
-  dispatch_assert_queue_V2(v9);
+  queue = [v8 queue];
+  dispatch_assert_queue_V2(queue);
 
   if (self->logicAdapterImpl.__ptr_)
   {
@@ -130,7 +130,7 @@ void __40__ULLogicAdapter__startMonitoringEvents__block_invoke(uint64_t a1, void
       (*(*ptr + 8))(ptr);
     }
 
-    [(ULLogicAdapter *)self setPeripheralControl:v12];
+    [(ULLogicAdapter *)self setPeripheralControl:controlCopy];
     [(ULLogicAdapter *)self setEnvironment:v8];
   }
 }
@@ -191,9 +191,9 @@ void __23__ULLogicAdapter_start__block_invoke(uint64_t a1)
 
 - (BOOL)purgeMicroLocationData
 {
-  v3 = [(ULLogicAdapter *)self environment];
-  v4 = [v3 queue];
-  dispatch_assert_queue_V2(v4);
+  environment = [(ULLogicAdapter *)self environment];
+  queue = [environment queue];
+  dispatch_assert_queue_V2(queue);
 
   v5 = CLMicroLocationLogic::onResetLocationData(*(self->logicAdapterImpl.__ptr_ + 13));
   if (([MEMORY[0x277D28868] isMac] & 1) == 0)
@@ -204,22 +204,22 @@ void __23__ULLogicAdapter_start__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (id)createServiceWithServiceType:(unint64_t)a3 locationTypes:(id)a4 clientId:(id)a5
+- (id)createServiceWithServiceType:(unint64_t)type locationTypes:(id)types clientId:(id)id
 {
   v65 = *MEMORY[0x277D85DE8];
-  v42 = a4;
-  v43 = a5;
-  v41 = self;
-  v8 = [(ULLogicAdapter *)self environment];
-  v9 = [v8 queue];
-  dispatch_assert_queue_V2(v9);
+  typesCopy = types;
+  idCopy = id;
+  selfCopy = self;
+  environment = [(ULLogicAdapter *)self environment];
+  queue = [environment queue];
+  dispatch_assert_queue_V2(queue);
 
-  std::vector<ULLocationTypeEnum>::vector[abi:ne200100](&__src, [v42 count]);
+  std::vector<ULLocationTypeEnum>::vector[abi:ne200100](&__src, [typesCopy count]);
   v54 = 0u;
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v10 = v42;
+  v10 = typesCopy;
   v11 = [v10 countByEnumeratingWithState:&v52 objects:v64 count:16];
   if (v11)
   {
@@ -233,7 +233,7 @@ void __23__ULLogicAdapter_start__block_invoke(uint64_t a1)
           objc_enumerationMutation(v10);
         }
 
-        v14 = [*(*(&v52 + 1) + 8 * i) locationType];
+        locationType = [*(*(&v52 + 1) + 8 * i) locationType];
         v15 = v57;
         if (v57 >= v58)
         {
@@ -267,7 +267,7 @@ void __23__ULLogicAdapter_start__block_invoke(uint64_t a1)
             std::__allocate_at_least[abi:ne200100]<std::allocator<double>>(&__src, v22);
           }
 
-          *(8 * v19) = v14;
+          *(8 * v19) = locationType;
           v16 = (8 * v19 + 8);
           memcpy(0, v17, v18);
           v23 = __src;
@@ -282,7 +282,7 @@ void __23__ULLogicAdapter_start__block_invoke(uint64_t a1)
 
         else
         {
-          *v57 = v14;
+          *v57 = locationType;
           v16 = v15 + 1;
         }
 
@@ -299,13 +299,13 @@ void __23__ULLogicAdapter_start__block_invoke(uint64_t a1)
   v24 = +[ULEventLog shared];
   v25 = MEMORY[0x277CCACA8];
   v26 = ULServiceTypeToString();
-  v27 = v43;
-  v28 = [v25 stringWithFormat:@"Service Created Event type: %@, ClientId: %s", v26, objc_msgSend(v43, "UTF8String")];
+  v27 = idCopy;
+  v28 = [v25 stringWithFormat:@"Service Created Event type: %@, ClientId: %s", v26, objc_msgSend(idCopy, "UTF8String")];
   [v24 log:v28];
 
-  v29 = *(v41->logicAdapterImpl.__ptr_ + 15);
-  v30 = v43;
-  std::string::basic_string[abi:ne200100]<0>(v48, [v43 UTF8String]);
+  v29 = *(selfCopy->logicAdapterImpl.__ptr_ + 15);
+  v30 = idCopy;
+  std::string::basic_string[abi:ne200100]<0>(v48, [idCopy UTF8String]);
   v47 = 0;
   boost::uuids::detail::random_provider_base::random_provider_base(&v47);
   v31 = boost::uuids::random_generator_pure::operator()(&v47);
@@ -314,7 +314,7 @@ void __23__ULLogicAdapter_start__block_invoke(uint64_t a1)
   v45 = 0;
   v46 = 0;
   std::vector<ULLocationTypeEnum>::__init_with_size[abi:ne200100]<ULLocationTypeEnum*,ULLocationTypeEnum*>(&__p, __src, v57, (v57 - __src) >> 3);
-  (*(*v29 + 16))(v61, v29, v48, v31, v33, a3, &__p, v50);
+  (*(*v29 + 16))(v61, v29, v48, v31, v33, type, &__p, v50);
   if (__p)
   {
     v45 = __p;
@@ -360,17 +360,17 @@ void __23__ULLogicAdapter_start__block_invoke(uint64_t a1)
   return v34;
 }
 
-- (id)deleteServiceWithIdentifier:(id)a3 clientIdentifier:(id)a4
+- (id)deleteServiceWithIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ULLogicAdapter *)self environment];
-  v9 = [v8 queue];
-  dispatch_assert_queue_V2(v9);
+  identifierCopy = identifier;
+  clientIdentifierCopy = clientIdentifier;
+  environment = [(ULLogicAdapter *)self environment];
+  queue = [environment queue];
+  dispatch_assert_queue_V2(queue);
 
   std::string::basic_string[abi:ne200100]<0>(v29, "");
-  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(v6, v36);
+  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(identifierCopy, v36);
   if ((v37 & 1) == 0)
   {
     [ULLogicAdapter deleteServiceWithIdentifier:? clientIdentifier:?];
@@ -389,15 +389,15 @@ void __23__ULLogicAdapter_start__block_invoke(uint64_t a1)
   boost::lexical_cast<std::string,boost::uuids::uuid>(v36, &__p);
   v12 = SHIBYTE(__p.__r_.__value_.__r.__words[2]);
   v13 = __p.__r_.__value_.__r.__words[0];
-  v14 = v7;
-  v15 = [v7 UTF8String];
+  v14 = clientIdentifierCopy;
+  uTF8String = [clientIdentifierCopy UTF8String];
   p_p = &__p;
   if (v12 < 0)
   {
     p_p = v13;
   }
 
-  v17 = [v11 stringWithFormat:@"Service Deleted Event serviceId: %s, clientId: %s", p_p, v15];
+  v17 = [v11 stringWithFormat:@"Service Deleted Event serviceId: %s, clientId: %s", p_p, uTF8String];
   [v10 log:v17];
 
   if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
@@ -406,8 +406,8 @@ void __23__ULLogicAdapter_start__block_invoke(uint64_t a1)
   }
 
   v18 = *(self->logicAdapterImpl.__ptr_ + 15);
-  v19 = v7;
-  std::string::basic_string[abi:ne200100]<0>(v27, [v7 UTF8String]);
+  v19 = clientIdentifierCopy;
+  std::string::basic_string[abi:ne200100]<0>(v27, [clientIdentifierCopy UTF8String]);
   if ((v37 & 1) == 0)
   {
     std::__throw_bad_optional_access[abi:ne200100]();
@@ -446,16 +446,16 @@ void __23__ULLogicAdapter_start__block_invoke(uint64_t a1)
   return v20;
 }
 
-- (id)queryServicesForClient:(id)a3
+- (id)queryServicesForClient:(id)client
 {
-  v4 = a3;
-  v5 = [(ULLogicAdapter *)self environment];
-  v6 = [v5 queue];
-  dispatch_assert_queue_V2(v6);
+  clientCopy = client;
+  environment = [(ULLogicAdapter *)self environment];
+  queue = [environment queue];
+  dispatch_assert_queue_V2(queue);
 
   std::string::basic_string[abi:ne200100]<0>(v18, "");
   v7 = *(self->logicAdapterImpl.__ptr_ + 15);
-  std::string::basic_string[abi:ne200100]<0>(__p, [v4 UTF8String]);
+  std::string::basic_string[abi:ne200100]<0>(__p, [clientCopy UTF8String]);
   (*(*v7 + 32))(&v16, v7, __p, v18);
   if (v15 < 0)
   {
@@ -494,21 +494,21 @@ void __23__ULLogicAdapter_start__block_invoke(uint64_t a1)
   return v12;
 }
 
-- (void)runWithConfiguration:(id)a3 serviceIdentifier:(id)a4 legacyServiceIdentifier:(id)a5 clientIdentifier:(id)a6 connectionToken:(id)a7 requestIdentifier:(id)a8
+- (void)runWithConfiguration:(id)configuration serviceIdentifier:(id)identifier legacyServiceIdentifier:(id)serviceIdentifier clientIdentifier:(id)clientIdentifier connectionToken:(id)token requestIdentifier:(id)requestIdentifier
 {
   v64 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v44 = a4;
-  v43 = a5;
-  v15 = a6;
-  v16 = a7;
-  v42 = a8;
-  v17 = [(ULLogicAdapter *)self environment];
-  v18 = [v17 queue];
-  dispatch_assert_queue_V2(v18);
+  configurationCopy = configuration;
+  identifierCopy = identifier;
+  serviceIdentifierCopy = serviceIdentifier;
+  clientIdentifierCopy = clientIdentifier;
+  tokenCopy = token;
+  requestIdentifierCopy = requestIdentifier;
+  environment = [(ULLogicAdapter *)self environment];
+  queue = [environment queue];
+  dispatch_assert_queue_V2(queue);
 
-  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(v44, v62);
-  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(v16, v60);
+  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(identifierCopy, v62);
+  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(tokenCopy, v60);
   if ((v63 & 1) == 0)
   {
     v37 = _CLLogObjectForCategory_MicroLocation_Default();
@@ -610,16 +610,16 @@ LABEL_38:
   boost::lexical_cast<std::string,boost::uuids::uuid>(v62, &__p);
   v21 = SBYTE3(v57);
   v22 = __p;
-  v23 = v15;
-  v24 = [v15 UTF8String];
+  v23 = clientIdentifierCopy;
+  uTF8String = [clientIdentifierCopy UTF8String];
   p_p = &__p;
   if (v21 < 0)
   {
     p_p = v22;
   }
 
-  v26 = [v20 stringWithFormat:@"Service runWithConfiguration Event serviceId: %s, clientId: %s, configuration: %@", p_p, v24, v14];
-  [v19 log:v26];
+  configurationCopy = [v20 stringWithFormat:@"Service runWithConfiguration Event serviceId: %s, clientId: %s, configuration: %@", p_p, uTF8String, configurationCopy];
+  [v19 log:configurationCopy];
 
   if (SBYTE3(v57) < 0)
   {
@@ -633,9 +633,9 @@ LABEL_38:
 
   v27 = (*(**(self->logicAdapterImpl.__ptr_ + 15) + 104))(*(self->logicAdapterImpl.__ptr_ + 15), v60);
   std::string::basic_string[abi:ne200100]<0>(&__p, "");
-  if (v43)
+  if (serviceIdentifierCopy)
   {
-    CLMicroLocationProtobufHelper::boostUuidFromNSUUID(v43, &v51);
+    CLMicroLocationProtobufHelper::boostUuidFromNSUUID(serviceIdentifierCopy, &v51);
   }
 
   else
@@ -645,14 +645,14 @@ LABEL_38:
   }
 
   v28 = *(self->logicAdapterImpl.__ptr_ + 15);
-  v29 = v15;
-  std::string::basic_string[abi:ne200100]<0>(v45, [v15 UTF8String]);
+  v29 = clientIdentifierCopy;
+  std::string::basic_string[abi:ne200100]<0>(v45, [clientIdentifierCopy UTF8String]);
   if (v63 != 1 || (v49 = v51, v50 = v52, (v61 & 1) == 0))
   {
     std::__throw_bad_optional_access[abi:ne200100]();
   }
 
-  v30 = (*(*v28 + 40))(v28, v45, v62[0], v62[1], &v49, v60[0], v60[1], v14, &__p);
+  v30 = (*(*v28 + 40))(v28, v45, v62[0], v62[1], &v49, v60[0], v60[1], configurationCopy, &__p);
   v32 = v31;
   if (v46 < 0)
   {
@@ -674,14 +674,14 @@ LABEL_38:
 
     if ((v27 & 1) == 0)
     {
-      [*(self->logicAdapterImpl.__ptr_ + 8) didFailWithError:v35 toConnection:v16];
+      [*(self->logicAdapterImpl.__ptr_ + 8) didFailWithError:v35 toConnection:tokenCopy];
       goto LABEL_22;
     }
   }
 
   if ((v32 & 1) == 0)
   {
-    [*(self->logicAdapterImpl.__ptr_ + 8) didCompleteRequest:v42 withError:v35 toConnection:v16];
+    [*(self->logicAdapterImpl.__ptr_ + 8) didCompleteRequest:requestIdentifierCopy withError:v35 toConnection:tokenCopy];
   }
 
 LABEL_22:
@@ -694,17 +694,17 @@ LABEL_22:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)disconnectWithConnectionToken:(id)a3 clientIdentifier:(id)a4 requestIdentifier:(id)a5
+- (void)disconnectWithConnectionToken:(id)token clientIdentifier:(id)identifier requestIdentifier:(id)requestIdentifier
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ULLogicAdapter *)self environment];
-  v12 = [v11 queue];
-  dispatch_assert_queue_V2(v12);
+  tokenCopy = token;
+  identifierCopy = identifier;
+  requestIdentifierCopy = requestIdentifier;
+  environment = [(ULLogicAdapter *)self environment];
+  queue = [environment queue];
+  dispatch_assert_queue_V2(queue);
 
-  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(v8, v25);
+  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(tokenCopy, v25);
   if ((v26 & 1) == 0)
   {
     [ULLogicAdapter disconnectWithConnectionToken:v21 clientIdentifier:? requestIdentifier:?];
@@ -715,8 +715,8 @@ LABEL_22:
 
   std::string::basic_string[abi:ne200100]<0>(v21, "");
   v13 = *(self->logicAdapterImpl.__ptr_ + 15);
-  v14 = v9;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v9 UTF8String]);
+  v14 = identifierCopy;
+  std::string::basic_string[abi:ne200100]<0>(__p, [identifierCopy UTF8String]);
   if ((v26 & 1) == 0)
   {
     std::__throw_bad_optional_access[abi:ne200100]();
@@ -734,7 +734,7 @@ LABEL_22:
     v24 = @"disconnect service failed internally";
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
     v17 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"ULLogicDomain" code:v15 userInfo:v16];
-    [*(self->logicAdapterImpl.__ptr_ + 8) didCompleteRequest:v10 withError:v17 toConnection:v8];
+    [*(self->logicAdapterImpl.__ptr_ + 8) didCompleteRequest:requestIdentifierCopy withError:v17 toConnection:tokenCopy];
   }
 
   if (v22 < 0)
@@ -745,18 +745,18 @@ LABEL_22:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestObservationForConnectionToken:(id)a3 clientIdentifier:(id)a4 requestIdentifier:(id)a5
+- (void)requestObservationForConnectionToken:(id)token clientIdentifier:(id)identifier requestIdentifier:(id)requestIdentifier
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ULLogicAdapter *)self environment];
-  v12 = [v11 queue];
-  dispatch_assert_queue_V2(v12);
+  tokenCopy = token;
+  identifierCopy = identifier;
+  requestIdentifierCopy = requestIdentifier;
+  environment = [(ULLogicAdapter *)self environment];
+  queue = [environment queue];
+  dispatch_assert_queue_V2(queue);
 
-  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(v8, v35);
-  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(v10, v33);
+  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(tokenCopy, v35);
+  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(requestIdentifierCopy, v33);
   if ((v36 & 1) == 0)
   {
     v17 = _CLLogObjectForCategory_MicroLocation_Default();
@@ -869,24 +869,24 @@ LABEL_21:
     v24 = @"request observation failed internally";
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
     v15 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"ULLogicDomain" code:12 userInfo:v14];
-    [*(self->logicAdapterImpl.__ptr_ + 8) didCompleteRequest:v10 withError:v15 toConnection:v8];
+    [*(self->logicAdapterImpl.__ptr_ + 8) didCompleteRequest:requestIdentifierCopy withError:v15 toConnection:tokenCopy];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestPredictionForConnectionToken:(id)a3 clientIdentifier:(id)a4 requestIdentifier:(id)a5
+- (void)requestPredictionForConnectionToken:(id)token clientIdentifier:(id)identifier requestIdentifier:(id)requestIdentifier
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ULLogicAdapter *)self environment];
-  v12 = [v11 queue];
-  dispatch_assert_queue_V2(v12);
+  tokenCopy = token;
+  identifierCopy = identifier;
+  requestIdentifierCopy = requestIdentifier;
+  environment = [(ULLogicAdapter *)self environment];
+  queue = [environment queue];
+  dispatch_assert_queue_V2(queue);
 
-  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(v8, v32);
-  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(v10, v30);
+  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(tokenCopy, v32);
+  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(requestIdentifierCopy, v30);
   if ((v33 & 1) == 0)
   {
     v16 = _CLLogObjectForCategory_MicroLocation_Default();
@@ -996,22 +996,22 @@ LABEL_21:
     v22 = @"request prediction failed internally";
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
     v14 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"ULLogicDomain" code:29 userInfo:v13];
-    [*(self->logicAdapterImpl.__ptr_ + 8) didCompleteRequest:v10 withError:v14 toConnection:v8];
+    [*(self->logicAdapterImpl.__ptr_ + 8) didCompleteRequest:requestIdentifierCopy withError:v14 toConnection:tokenCopy];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addLabelForConnectionToken:(id)a3 label:(id)a4
+- (void)addLabelForConnectionToken:(id)token label:(id)label
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ULLogicAdapter *)self environment];
-  v9 = [v8 queue];
-  dispatch_assert_queue_V2(v9);
+  tokenCopy = token;
+  labelCopy = label;
+  environment = [(ULLogicAdapter *)self environment];
+  queue = [environment queue];
+  dispatch_assert_queue_V2(queue);
 
-  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(v6, v12);
+  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(tokenCopy, v12);
   if ((v12[16] & 1) == 0)
   {
     [ULLogicAdapter addLabelForConnectionToken:? label:?];
@@ -1020,23 +1020,23 @@ LABEL_21:
     __break(1u);
   }
 
-  (*(**(self->logicAdapterImpl.__ptr_ + 15) + 72))(*(self->logicAdapterImpl.__ptr_ + 15), v12, v7);
+  (*(**(self->logicAdapterImpl.__ptr_ + 15) + 72))(*(self->logicAdapterImpl.__ptr_ + 15), v12, labelCopy);
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addLabelForConnectionToken:(id)a3 label:(id)a4 betweenStartDate:(id)a5 andEndDate:(id)a6
+- (void)addLabelForConnectionToken:(id)token label:(id)label betweenStartDate:(id)date andEndDate:(id)endDate
 {
   v19 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(ULLogicAdapter *)self environment];
-  v15 = [v14 queue];
-  dispatch_assert_queue_V2(v15);
+  tokenCopy = token;
+  labelCopy = label;
+  dateCopy = date;
+  endDateCopy = endDate;
+  environment = [(ULLogicAdapter *)self environment];
+  queue = [environment queue];
+  dispatch_assert_queue_V2(queue);
 
-  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(v10, v18);
+  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(tokenCopy, v18);
   if ((v18[16] & 1) == 0)
   {
     [ULLogicAdapter addLabelForConnectionToken:? label:? betweenStartDate:? andEndDate:?];
@@ -1045,16 +1045,16 @@ LABEL_21:
     __break(1u);
   }
 
-  (*(**(self->logicAdapterImpl.__ptr_ + 15) + 80))(*(self->logicAdapterImpl.__ptr_ + 15), v18, v11, v12, v13);
+  (*(**(self->logicAdapterImpl.__ptr_ + 15) + 80))(*(self->logicAdapterImpl.__ptr_ + 15), v18, labelCopy, dateCopy, endDateCopy);
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createCustomLoiAtCurrentLocationForConnectionToken:(id)a3 withConfiguration:(id)a4
+- (void)createCustomLoiAtCurrentLocationForConnectionToken:(id)token withConfiguration:(id)configuration
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  configurationCopy = configuration;
   if (onceToken_MicroLocation_Default != -1)
   {
     _CLLogObjectForCategory_MicroLocation_Default();
@@ -1064,17 +1064,17 @@ LABEL_21:
   if (os_log_type_enabled(logObject_MicroLocation_Default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v18 = v6;
+    v18 = tokenCopy;
     v19 = 2112;
-    v20 = v7;
+    v20 = configurationCopy;
     _os_log_impl(&dword_258FE9000, v8, OS_LOG_TYPE_DEFAULT, "createCustomLoiAtCurrentLocationForConnectionToken: %@ withConfiguration: %@", buf, 0x16u);
   }
 
-  v9 = [(ULLogicAdapter *)self environment];
-  v10 = [v9 queue];
-  dispatch_assert_queue_V2(v10);
+  environment = [(ULLogicAdapter *)self environment];
+  queue = [environment queue];
+  dispatch_assert_queue_V2(queue);
 
-  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(v6, buf);
+  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(tokenCopy, buf);
   if ((BYTE2(v20) & 1) == 0)
   {
     [ULLogicAdapter createCustomLoiAtCurrentLocationForConnectionToken:? withConfiguration:?];
@@ -1083,23 +1083,23 @@ LABEL_21:
     __break(1u);
   }
 
-  if ((CLMicroLocationLogic::createCustomLoiAtCurrentLocation(*(self->logicAdapterImpl.__ptr_ + 13), buf, v7) & 1) == 0)
+  if ((CLMicroLocationLogic::createCustomLoiAtCurrentLocation(*(self->logicAdapterImpl.__ptr_ + 13), buf, configurationCopy) & 1) == 0)
   {
     v15 = *MEMORY[0x277CCA450];
     v16 = @"Enable MicroLocation at current location failed";
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
     v12 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"ULLogicDomain" code:34 userInfo:v11];
-    [*(self->logicAdapterImpl.__ptr_ + 8) didCreateCustomLoiAtCurrentLocationWithError:v12 forConnection:v6];
+    [*(self->logicAdapterImpl.__ptr_ + 8) didCreateCustomLoiAtCurrentLocationWithError:v12 forConnection:tokenCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeCustomLoiWithIdentifier:(id)a3 forConnectionToken:(id)a4
+- (void)removeCustomLoiWithIdentifier:(id)identifier forConnectionToken:(id)token
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  tokenCopy = token;
   if (onceToken_MicroLocation_Default != -1)
   {
     _CLLogObjectForCategory_MicroLocation_Default();
@@ -1109,17 +1109,17 @@ LABEL_21:
   if (os_log_type_enabled(logObject_MicroLocation_Default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    *&buf[4] = v6;
+    *&buf[4] = identifierCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v7;
+    *&buf[14] = tokenCopy;
     _os_log_impl(&dword_258FE9000, v8, OS_LOG_TYPE_DEFAULT, "removeCustomLoiWithIdentifier: %@, forConnectionToken: %@", buf, 0x16u);
   }
 
-  v9 = [(ULLogicAdapter *)self environment];
-  v10 = [v9 queue];
-  dispatch_assert_queue_V2(v10);
+  environment = [(ULLogicAdapter *)self environment];
+  queue = [environment queue];
+  dispatch_assert_queue_V2(queue);
 
-  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(v7, buf);
+  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(tokenCopy, buf);
   if ((buf[16] & 1) == 0)
   {
     [ULLogicAdapter removeCustomLoiWithIdentifier:? forConnectionToken:?];
@@ -1128,7 +1128,7 @@ LABEL_21:
     goto LABEL_17;
   }
 
-  if (!v6)
+  if (!identifierCopy)
   {
     *v17.data = 0;
     *&v17.data[8] = 0;
@@ -1136,7 +1136,7 @@ LABEL_21:
     goto LABEL_15;
   }
 
-  [v6 boostUUID];
+  [identifierCopy boostUUID];
   if ((v18 & 1) == 0)
   {
 LABEL_15:
@@ -1165,15 +1165,15 @@ LABEL_17:
     v11 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"ULLogicDomain" code:0 userInfo:v12];
   }
 
-  [*(self->logicAdapterImpl.__ptr_ + 8) didRemoveCustomLoiWithIdentifier:v6 forConnection:v7 withError:v11];
+  [*(self->logicAdapterImpl.__ptr_ + 8) didRemoveCustomLoiWithIdentifier:identifierCopy forConnection:tokenCopy withError:v11];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removePendingConnectionRequestsByConnectionToken:(id)a3
+- (void)removePendingConnectionRequestsByConnectionToken:(id)token
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tokenCopy = token;
   if (onceToken_MicroLocation_Default != -1)
   {
     _CLLogObjectForCategory_MicroLocation_Default();
@@ -1183,15 +1183,15 @@ LABEL_17:
   if (os_log_type_enabled(logObject_MicroLocation_Default, OS_LOG_TYPE_DEFAULT))
   {
     *buf.data = 138412290;
-    *&buf.data[4] = v4;
+    *&buf.data[4] = tokenCopy;
     _os_log_impl(&dword_258FE9000, v5, OS_LOG_TYPE_DEFAULT, "remove pending connection requests by ConnectionToken: %@", buf.data, 0xCu);
   }
 
-  v6 = [(ULLogicAdapter *)self environment];
-  v7 = [v6 queue];
-  dispatch_assert_queue_V2(v7);
+  environment = [(ULLogicAdapter *)self environment];
+  queue = [environment queue];
+  dispatch_assert_queue_V2(queue);
 
-  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(v4, &buf);
+  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(tokenCopy, &buf);
   if ((v11 & 1) == 0)
   {
     [ULLogicAdapter removePendingConnectionRequestsByConnectionToken:?];
@@ -1212,8 +1212,8 @@ LABEL_17:
   v4 = (*(**(self->logicAdapterImpl.__ptr_ + 12) + 80))(*(self->logicAdapterImpl.__ptr_ + 12));
   [v3 setExportedURLs:v4];
 
-  v5 = [v3 exportedURLs];
-  v6 = [v5 count];
+  exportedURLs = [v3 exportedURLs];
+  v6 = [exportedURLs count];
 
   if (!v6)
   {
@@ -1250,38 +1250,38 @@ LABEL_17:
   return v2;
 }
 
-- (id)imageFeaturesDebugWithTask:(unint64_t)a3 additionalInformation:(id)a4
+- (id)imageFeaturesDebugWithTask:(unint64_t)task additionalInformation:(id)information
 {
-  v6 = a4;
+  informationCopy = information;
   if ([MEMORY[0x277D28868] isInternalInstall])
   {
-    if (a3 > 1)
+    if (task > 1)
     {
-      if (a3 == 2)
+      if (task == 2)
       {
-        v7 = [(ULLogicAdapter *)self peripheralControl];
-        [v7 saveWithIdentifiers:v6];
+        peripheralControl = [(ULLogicAdapter *)self peripheralControl];
+        [peripheralControl saveWithIdentifiers:informationCopy];
         goto LABEL_16;
       }
 
-      if (a3 == 3)
+      if (task == 3)
       {
-        v7 = [(ULLogicAdapter *)self peripheralControl];
-        [v7 dropWithIdentifiers:v6];
+        peripheralControl = [(ULLogicAdapter *)self peripheralControl];
+        [peripheralControl dropWithIdentifiers:informationCopy];
         goto LABEL_16;
       }
     }
 
     else
     {
-      if (!a3)
+      if (!task)
       {
-        v10 = [(ULLogicAdapter *)self peripheralControl];
-        v11 = [v10 getPoseEstimation];
+        peripheralControl2 = [(ULLogicAdapter *)self peripheralControl];
+        getPoseEstimation = [peripheralControl2 getPoseEstimation];
 
-        if (v11)
+        if (getPoseEstimation)
         {
-          v9 = [v11 debugDescription];
+          v9 = [getPoseEstimation debugDescription];
 LABEL_18:
 
           goto LABEL_19;
@@ -1292,13 +1292,13 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      if (a3 == 1)
+      if (task == 1)
       {
-        v7 = [(ULLogicAdapter *)self peripheralControl];
-        [v7 load];
+        peripheralControl = [(ULLogicAdapter *)self peripheralControl];
+        [peripheralControl load];
 LABEL_16:
 
-        v11 = 0;
+        getPoseEstimation = 0;
         goto LABEL_17;
       }
     }
@@ -1329,7 +1329,7 @@ LABEL_19:
   return v9;
 }
 
-- (id)polarisDebugWithTask:(unint64_t)a3
+- (id)polarisDebugWithTask:(unint64_t)task
 {
   v21[2] = *MEMORY[0x277D85DE8];
   v13 = 0;
@@ -1338,18 +1338,18 @@ LABEL_19:
   v16 = __Block_byref_object_copy__0;
   v17 = __Block_byref_object_dispose__0;
   v18 = 0;
-  if (a3 == 2)
+  if (task == 2)
   {
-    v3 = [(ULLogicAdapter *)self peripheralControl];
+    peripheralControl = [(ULLogicAdapter *)self peripheralControl];
     v4 = (v14 + 5);
     obj = v14[5];
-    [v3 teardownPolarisGraphsAndReturnError:&obj];
+    [peripheralControl teardownPolarisGraphsAndReturnError:&obj];
     objc_storeStrong(v4, obj);
   }
 
   else
   {
-    if (a3 != 1)
+    if (task != 1)
     {
       [(ULLogicAdapter *)&v19 polarisDebugWithTask:a2];
 
@@ -1358,13 +1358,13 @@ LABEL_19:
       return result;
     }
 
-    v3 = [(ULLogicAdapter *)self peripheralControl];
+    peripheralControl = [(ULLogicAdapter *)self peripheralControl];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __39__ULLogicAdapter_polarisDebugWithTask___block_invoke;
     v12[3] = &unk_2798D4438;
     v12[4] = &v13;
-    [v3 setupPolarisGraphsWithCompletionHandler:v12];
+    [peripheralControl setupPolarisGraphsWithCompletionHandler:v12];
   }
 
   v5 = v14[5];
@@ -1417,12 +1417,12 @@ void __39__ULLogicAdapter_polarisDebugWithTask___block_invoke(uint64_t a1, void 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestModelLearningForConnectionToken:(id)a3 requestIdentifier:(id)a4
+- (void)requestModelLearningForConnectionToken:(id)token requestIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(v6, v13);
+  tokenCopy = token;
+  identifierCopy = identifier;
+  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(tokenCopy, v13);
   if ((v14 & 1) == 0)
   {
     [ULLogicAdapter requestModelLearningForConnectionToken:? requestIdentifier:?];
@@ -1431,7 +1431,7 @@ void __39__ULLogicAdapter_polarisDebugWithTask___block_invoke(uint64_t a1, void 
     goto LABEL_10;
   }
 
-  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(v7, v12);
+  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(identifierCopy, v12);
   if ((v12[16] & 1) == 0)
   {
     [ULLogicAdapter requestModelLearningForConnectionToken:? requestIdentifier:?];
@@ -1459,11 +1459,11 @@ LABEL_10:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestCurrentMicroLocationWithAdditionalInformation:(id)a3 clientId:(id)a4
+- (void)requestCurrentMicroLocationWithAdditionalInformation:(id)information clientId:(id)id
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  informationCopy = information;
+  idCopy = id;
   if (onceToken_MicroLocation_Default != -1)
   {
     _CLLogObjectForCategory_MicroLocation_Default();
@@ -1473,15 +1473,15 @@ LABEL_10:
   if (os_log_type_enabled(logObject_MicroLocation_Default, OS_LOG_TYPE_DEFAULT))
   {
     *__p = 138412290;
-    *&__p[4] = v7;
+    *&__p[4] = idCopy;
     _os_log_impl(&dword_258FE9000, v8, OS_LOG_TYPE_DEFAULT, "Client request Current microlocation, clientIdentifier: %@", __p, 0xCu);
   }
 
-  v9 = v7;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v7 UTF8String]);
-  if (CLMicroLocationLegacyClient::isHomeKitRequest(*(self->logicAdapterImpl.__ptr_ + 14), v6))
+  v9 = idCopy;
+  std::string::basic_string[abi:ne200100]<0>(__p, [idCopy UTF8String]);
+  if (CLMicroLocationLegacyClient::isHomeKitRequest(*(self->logicAdapterImpl.__ptr_ + 14), informationCopy))
   {
-    v10 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v6 copyItems:1];
+    v10 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:informationCopy copyItems:1];
     [(NSDictionary *)v10 setObject:&unk_286A71718 forKeyedSubscript:@"shouldTriggerLocalizationScan"];
     CLMicroLocationLegacyClient::onHomeKit(*(self->logicAdapterImpl.__ptr_ + 14), v10);
   }
@@ -1499,21 +1499,21 @@ LABEL_10:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestMicroLocationRecordingScanWithAdditionalInformation:(id)a3 clientId:(id)a4
+- (void)requestMicroLocationRecordingScanWithAdditionalInformation:(id)information clientId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
-  std::string::basic_string[abi:ne200100]<0>(&__p, [v7 UTF8String]);
-  if (CLMicroLocationLegacyClient::isHomeKitRequest(*(self->logicAdapterImpl.__ptr_ + 14), v6))
+  informationCopy = information;
+  idCopy = id;
+  std::string::basic_string[abi:ne200100]<0>(&__p, [idCopy UTF8String]);
+  if (CLMicroLocationLegacyClient::isHomeKitRequest(*(self->logicAdapterImpl.__ptr_ + 14), informationCopy))
   {
-    v8 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v6 copyItems:1];
+    v8 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:informationCopy copyItems:1];
     [(NSDictionary *)v8 setObject:&unk_286A71718 forKeyedSubscript:@"shouldTriggerRecordingScan"];
     CLMicroLocationLegacyClient::onHomeKit(*(self->logicAdapterImpl.__ptr_ + 14), v8);
   }
 
   else
   {
-    CLMicroLocationLegacyClient::onRecordingRequest(*(self->logicAdapterImpl.__ptr_ + 14), v6);
+    CLMicroLocationLegacyClient::onRecordingRequest(*(self->logicAdapterImpl.__ptr_ + 14), informationCopy);
   }
 
   if (v10 < 0)
@@ -1526,10 +1526,10 @@ LABEL_10:
 {
   v2 = MEMORY[0x277CCACA8];
   v3 = +[ULDefaultsSingleton shared];
-  v4 = [v3 defaultsDictionary];
+  defaultsDictionary = [v3 defaultsDictionary];
 
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULVersion"];
-  v6 = [v4 objectForKey:v5];
+  v6 = [defaultsDictionary objectForKey:v5];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     ULSettings::convert<NSString * {__strong},std::string>(v6, v13);
@@ -1571,15 +1571,15 @@ LABEL_10:
 - (void)startRapportSession
 {
   objc_initWeak(&location, self);
-  v3 = [(ULLogicAdapter *)self environment];
-  v4 = [v3 rapportMonitor];
+  environment = [(ULLogicAdapter *)self environment];
+  rapportMonitor = [environment rapportMonitor];
   v5 = +[(ULEvent *)ULRapportMonitorEventDeviceFound];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __37__ULLogicAdapter_startRapportSession__block_invoke;
   v6[3] = &unk_2798D4460;
   objc_copyWeak(&v7, &location);
-  [v4 addObserver:self eventName:v5 handler:v6];
+  [rapportMonitor addObserver:self eventName:v5 handler:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -1598,18 +1598,18 @@ void __37__ULLogicAdapter_startRapportSession__block_invoke(uint64_t a1, void *a
 
 - (void)stopRapportSession
 {
-  v4 = [(ULLogicAdapter *)self environment];
-  v3 = [v4 rapportMonitor];
-  [v3 removeObserver:self];
+  environment = [(ULLogicAdapter *)self environment];
+  rapportMonitor = [environment rapportMonitor];
+  [rapportMonitor removeObserver:self];
 }
 
 - (void)_start
 {
   [(ULLogicAdapter *)self _registerOnDatabaseValidNotification];
   [(ULLogicAdapter *)self _startMonitoringEvents];
-  v3 = [(ULLogicAdapter *)self environment];
-  v4 = [v3 diagnostics];
-  [v4 addProvider:self];
+  environment = [(ULLogicAdapter *)self environment];
+  diagnostics = [environment diagnostics];
+  [diagnostics addProvider:self];
 
   [(ULLogicAdapter *)self _registerOrUnregisterForActivities:1];
 }
@@ -1660,172 +1660,172 @@ uint64_t __54__ULLogicAdapter__registerOnDatabaseValidNotification__block_invoke
 {
   [(ULLogicAdapter *)self _stopMonitoringEvents];
   [(ULLogicAdapter *)self _registerOrUnregisterForActivities:0];
-  v4 = [(ULLogicAdapter *)self environment];
-  v3 = [v4 diagnostics];
-  [v3 removeProvider:self];
+  environment = [(ULLogicAdapter *)self environment];
+  diagnostics = [environment diagnostics];
+  [diagnostics removeProvider:self];
 }
 
 - (void)_startMonitoringEvents
 {
   objc_initWeak(location, self);
-  v3 = [(ULLogicAdapter *)self environment];
-  v4 = [v3 dataProtectionMonitor];
+  environment = [(ULLogicAdapter *)self environment];
+  dataProtectionMonitor = [environment dataProtectionMonitor];
   v5 = +[(ULEvent *)ULDataProtectionMonitorEventDataAvailable];
   v77[0] = MEMORY[0x277D85DD0];
   v77[1] = 3221225472;
   v77[2] = __40__ULLogicAdapter__startMonitoringEvents__block_invoke;
   v77[3] = &unk_2798D4460;
   objc_copyWeak(&v78, location);
-  [v4 addObserver:self eventName:v5 handler:v77];
+  [dataProtectionMonitor addObserver:self eventName:v5 handler:v77];
 
-  v6 = [(ULLogicAdapter *)self environment];
-  v7 = [v6 airplaneModeMonitor];
+  environment2 = [(ULLogicAdapter *)self environment];
+  airplaneModeMonitor = [environment2 airplaneModeMonitor];
   v8 = +[(ULEvent *)ULAirplaneModeMonitorEventAirplaneMode];
   v75[0] = MEMORY[0x277D85DD0];
   v75[1] = 3221225472;
   v75[2] = __40__ULLogicAdapter__startMonitoringEvents__block_invoke_2;
   v75[3] = &unk_2798D4460;
   objc_copyWeak(&v76, location);
-  [v7 addObserver:self eventName:v8 handler:v75];
+  [airplaneModeMonitor addObserver:self eventName:v8 handler:v75];
 
-  v9 = [(ULLogicAdapter *)self environment];
-  v10 = [v9 batteryModeMonitor];
+  environment3 = [(ULLogicAdapter *)self environment];
+  batteryModeMonitor = [environment3 batteryModeMonitor];
   v11 = +[(ULEvent *)ULBatteryModeMonitorEventUnlimitedPower];
   v73[0] = MEMORY[0x277D85DD0];
   v73[1] = 3221225472;
   v73[2] = __40__ULLogicAdapter__startMonitoringEvents__block_invoke_3;
   v73[3] = &unk_2798D4460;
   objc_copyWeak(&v74, location);
-  [v10 addObserver:self eventName:v11 handler:v73];
+  [batteryModeMonitor addObserver:self eventName:v11 handler:v73];
 
-  v12 = [(ULLogicAdapter *)self environment];
-  v13 = [v12 batteryModeMonitor];
+  environment4 = [(ULLogicAdapter *)self environment];
+  batteryModeMonitor2 = [environment4 batteryModeMonitor];
   v14 = +[(ULEvent *)ULBatteryModeMonitorEventLowPowerMode];
   v71[0] = MEMORY[0x277D85DD0];
   v71[1] = 3221225472;
   v71[2] = __40__ULLogicAdapter__startMonitoringEvents__block_invoke_4;
   v71[3] = &unk_2798D4460;
   objc_copyWeak(&v72, location);
-  [v13 addObserver:self eventName:v14 handler:v71];
+  [batteryModeMonitor2 addObserver:self eventName:v14 handler:v71];
 
-  v15 = [(ULLogicAdapter *)self environment];
-  v16 = [v15 bluetoothMonitor];
+  environment5 = [(ULLogicAdapter *)self environment];
+  bluetoothMonitor = [environment5 bluetoothMonitor];
   v17 = +[(ULEvent *)ULBluetoothMonitorEventPowerOn];
   v69[0] = MEMORY[0x277D85DD0];
   v69[1] = 3221225472;
   v69[2] = __40__ULLogicAdapter__startMonitoringEvents__block_invoke_5;
   v69[3] = &unk_2798D4460;
   objc_copyWeak(&v70, location);
-  [v16 addObserver:self eventName:v17 handler:v69];
+  [bluetoothMonitor addObserver:self eventName:v17 handler:v69];
 
-  v18 = [(ULLogicAdapter *)self environment];
-  v19 = [v18 displayMonitor];
+  environment6 = [(ULLogicAdapter *)self environment];
+  displayMonitor = [environment6 displayMonitor];
   v20 = +[(ULEvent *)ULDisplayMonitorEventDisplayState];
   v67[0] = MEMORY[0x277D85DD0];
   v67[1] = 3221225472;
   v67[2] = __40__ULLogicAdapter__startMonitoringEvents__block_invoke_6;
   v67[3] = &unk_2798D4460;
   objc_copyWeak(&v68, location);
-  [v19 addObserver:self eventName:v20 handler:v67];
+  [displayMonitor addObserver:self eventName:v20 handler:v67];
 
-  v21 = [(ULLogicAdapter *)self environment];
-  v22 = [v21 displayMonitor_OSX];
+  environment7 = [(ULLogicAdapter *)self environment];
+  displayMonitor_OSX = [environment7 displayMonitor_OSX];
   v23 = +[(ULEvent *)ULDisplayMonitorEventDisplayState_OSX];
   v65[0] = MEMORY[0x277D85DD0];
   v65[1] = 3221225472;
   v65[2] = __40__ULLogicAdapter__startMonitoringEvents__block_invoke_7;
   v65[3] = &unk_2798D4460;
   objc_copyWeak(&v66, location);
-  [v22 addObserver:self eventName:v23 handler:v65];
+  [displayMonitor_OSX addObserver:self eventName:v23 handler:v65];
 
-  v24 = [(ULLogicAdapter *)self environment];
-  v25 = [v24 internalNotifyMonitor];
+  environment8 = [(ULLogicAdapter *)self environment];
+  internalNotifyMonitor = [environment8 internalNotifyMonitor];
   v26 = +[(ULEvent *)ULInternalNotifyMonitorEventLocalize];
   v63[0] = MEMORY[0x277D85DD0];
   v63[1] = 3221225472;
   v63[2] = __40__ULLogicAdapter__startMonitoringEvents__block_invoke_8;
   v63[3] = &unk_2798D4460;
   objc_copyWeak(&v64, location);
-  [v25 addObserver:self eventName:v26 handler:v63];
+  [internalNotifyMonitor addObserver:self eventName:v26 handler:v63];
 
-  v27 = [(ULLogicAdapter *)self environment];
-  v28 = [v27 internalNotifyMonitor];
+  environment9 = [(ULLogicAdapter *)self environment];
+  internalNotifyMonitor2 = [environment9 internalNotifyMonitor];
   v29 = +[(ULEvent *)ULInternalNotifyMonitorEventRecord];
   v61[0] = MEMORY[0x277D85DD0];
   v61[1] = 3221225472;
   v61[2] = __40__ULLogicAdapter__startMonitoringEvents__block_invoke_9;
   v61[3] = &unk_2798D4460;
   objc_copyWeak(&v62, location);
-  [v28 addObserver:self eventName:v29 handler:v61];
+  [internalNotifyMonitor2 addObserver:self eventName:v29 handler:v61];
 
-  v30 = [(ULLogicAdapter *)self environment];
-  v31 = [v30 internalNotifyMonitor];
+  environment10 = [(ULLogicAdapter *)self environment];
+  internalNotifyMonitor3 = [environment10 internalNotifyMonitor];
   v32 = +[(ULEvent *)ULInternalNotifyMonitorEventPurge];
   v59[0] = MEMORY[0x277D85DD0];
   v59[1] = 3221225472;
   v59[2] = __40__ULLogicAdapter__startMonitoringEvents__block_invoke_10;
   v59[3] = &unk_2798D4460;
   objc_copyWeak(&v60, location);
-  [v31 addObserver:self eventName:v32 handler:v59];
+  [internalNotifyMonitor3 addObserver:self eventName:v32 handler:v59];
 
-  v33 = [(ULLogicAdapter *)self environment];
-  v34 = [v33 internalNotifyMonitor];
+  environment11 = [(ULLogicAdapter *)self environment];
+  internalNotifyMonitor4 = [environment11 internalNotifyMonitor];
   v35 = +[(ULEvent *)ULInternalNotifyMonitorEventSettingsRefresh];
   v57[0] = MEMORY[0x277D85DD0];
   v57[1] = 3221225472;
   v57[2] = __40__ULLogicAdapter__startMonitoringEvents__block_invoke_11;
   v57[3] = &unk_2798D4460;
   objc_copyWeak(&v58, location);
-  [v34 addObserver:self eventName:v35 handler:v57];
+  [internalNotifyMonitor4 addObserver:self eventName:v35 handler:v57];
 
-  v36 = [(ULLogicAdapter *)self environment];
-  v37 = [v36 privacyMonitor];
+  environment12 = [(ULLogicAdapter *)self environment];
+  privacyMonitor = [environment12 privacyMonitor];
   v38 = +[(ULEvent *)ULPrivacyMonitorEventLocationServices];
   v55[0] = MEMORY[0x277D85DD0];
   v55[1] = 3221225472;
   v55[2] = __40__ULLogicAdapter__startMonitoringEvents__block_invoke_12;
   v55[3] = &unk_2798D4460;
   objc_copyWeak(&v56, location);
-  [v37 addObserver:self eventName:v38 handler:v55];
+  [privacyMonitor addObserver:self eventName:v38 handler:v55];
 
-  v39 = [(ULLogicAdapter *)self environment];
-  v40 = [v39 buddyMonitor];
+  environment13 = [(ULLogicAdapter *)self environment];
+  buddyMonitor = [environment13 buddyMonitor];
   v41 = +[(ULEvent *)ULBuddyMonitorEventBuddyComplete];
   v53[0] = MEMORY[0x277D85DD0];
   v53[1] = 3221225472;
   v53[2] = __40__ULLogicAdapter__startMonitoringEvents__block_invoke_13;
   v53[3] = &unk_2798D4460;
   objc_copyWeak(&v54, location);
-  [v40 addObserver:self eventName:v41 handler:v53];
+  [buddyMonitor addObserver:self eventName:v41 handler:v53];
 
   v42 = +[ULDefaultsSingleton shared];
-  v43 = [v42 defaultsDictionary];
+  defaultsDictionary = [v42 defaultsDictionary];
 
   v44 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULOffScreenScanEnabled"];
-  v45 = [v43 objectForKey:v44];
+  v45 = [defaultsDictionary objectForKey:v44];
   if (v45 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v46 = [v45 BOOLValue];
+    bOOLValue = [v45 BOOLValue];
   }
 
   else
   {
-    v46 = [MEMORY[0x277CBEC28] BOOLValue];
+    bOOLValue = [MEMORY[0x277CBEC28] BOOLValue];
   }
 
-  v47 = v46;
+  v47 = bOOLValue;
 
   if (v47)
   {
-    v48 = [(ULLogicAdapter *)self environment];
-    v49 = [v48 sleepWakeMonitor];
+    environment14 = [(ULLogicAdapter *)self environment];
+    sleepWakeMonitor = [environment14 sleepWakeMonitor];
     v50 = +[(ULEvent *)ULSleepWakeEvent];
     v51[0] = MEMORY[0x277D85DD0];
     v51[1] = 3221225472;
     v51[2] = __40__ULLogicAdapter__startMonitoringEvents__block_invoke_14;
     v51[3] = &unk_2798D4460;
     objc_copyWeak(&v52, location);
-    [v49 addObserver:self eventName:v50 handler:v51];
+    [sleepWakeMonitor addObserver:self eventName:v50 handler:v51];
 
     objc_destroyWeak(&v52);
   }
@@ -1980,48 +1980,48 @@ void __40__ULLogicAdapter__startMonitoringEvents__block_invoke_14(uint64_t a1, v
 
 - (void)_stopMonitoringEvents
 {
-  v13 = [(ULLogicAdapter *)self environment];
-  v3 = [v13 dataProtectionMonitor];
-  [v3 removeObserver:self];
+  environment = [(ULLogicAdapter *)self environment];
+  dataProtectionMonitor = [environment dataProtectionMonitor];
+  [dataProtectionMonitor removeObserver:self];
 
-  v14 = [(ULLogicAdapter *)self environment];
-  v4 = [v14 airplaneModeMonitor];
-  [v4 removeObserver:self];
+  environment2 = [(ULLogicAdapter *)self environment];
+  airplaneModeMonitor = [environment2 airplaneModeMonitor];
+  [airplaneModeMonitor removeObserver:self];
 
-  v15 = [(ULLogicAdapter *)self environment];
-  v5 = [v15 batteryModeMonitor];
-  [v5 removeObserver:self];
+  environment3 = [(ULLogicAdapter *)self environment];
+  batteryModeMonitor = [environment3 batteryModeMonitor];
+  [batteryModeMonitor removeObserver:self];
 
-  v16 = [(ULLogicAdapter *)self environment];
-  v6 = [v16 bluetoothMonitor];
-  [v6 removeObserver:self];
+  environment4 = [(ULLogicAdapter *)self environment];
+  bluetoothMonitor = [environment4 bluetoothMonitor];
+  [bluetoothMonitor removeObserver:self];
 
-  v17 = [(ULLogicAdapter *)self environment];
-  v7 = [v17 displayMonitor];
-  [v7 removeObserver:self];
+  environment5 = [(ULLogicAdapter *)self environment];
+  displayMonitor = [environment5 displayMonitor];
+  [displayMonitor removeObserver:self];
 
-  v18 = [(ULLogicAdapter *)self environment];
-  v8 = [v18 displayMonitor_OSX];
-  [v8 removeObserver:self];
+  environment6 = [(ULLogicAdapter *)self environment];
+  displayMonitor_OSX = [environment6 displayMonitor_OSX];
+  [displayMonitor_OSX removeObserver:self];
 
-  v19 = [(ULLogicAdapter *)self environment];
-  v9 = [v19 internalNotifyMonitor];
-  [v9 removeObserver:self];
+  environment7 = [(ULLogicAdapter *)self environment];
+  internalNotifyMonitor = [environment7 internalNotifyMonitor];
+  [internalNotifyMonitor removeObserver:self];
 
-  v20 = [(ULLogicAdapter *)self environment];
-  v10 = [v20 privacyMonitor];
-  [v10 removeObserver:self];
+  environment8 = [(ULLogicAdapter *)self environment];
+  privacyMonitor = [environment8 privacyMonitor];
+  [privacyMonitor removeObserver:self];
 
-  v21 = [(ULLogicAdapter *)self environment];
-  v11 = [v21 buddyMonitor];
-  [v11 removeObserver:self];
+  environment9 = [(ULLogicAdapter *)self environment];
+  buddyMonitor = [environment9 buddyMonitor];
+  [buddyMonitor removeObserver:self];
 
-  v22 = [(ULLogicAdapter *)self environment];
-  v12 = [v22 sleepWakeMonitor];
-  [v12 removeObserver:self];
+  environment10 = [(ULLogicAdapter *)self environment];
+  sleepWakeMonitor = [environment10 sleepWakeMonitor];
+  [sleepWakeMonitor removeObserver:self];
 }
 
-- (void)_registerOrUnregisterForActivities:(BOOL)a3
+- (void)_registerOrUnregisterForActivities:(BOOL)activities
 {
   v4 = +[ULBGRepeatingSystemTaskRequest learningULBGRepeatingSystemTaskRequest];
   [ULLogicAdapter _registerOrUnregisterForBackgroundTaskWithRequest:"_registerOrUnregisterForBackgroundTaskWithRequest:withSelector:isRegister:" withSelector:? isRegister:?];
@@ -2042,22 +2042,22 @@ void __40__ULLogicAdapter__startMonitoringEvents__block_invoke_14(uint64_t a1, v
   [ULLogicAdapter _registerOrUnregisterForBackgroundTaskWithRequest:"_registerOrUnregisterForBackgroundTaskWithRequest:withSelector:isRegister:" withSelector:? isRegister:?];
 }
 
-- (void)_registerOrUnregisterForBackgroundTaskWithRequest:(id)a3 withSelector:(SEL)a4 isRegister:(BOOL)a5
+- (void)_registerOrUnregisterForBackgroundTaskWithRequest:(id)request withSelector:(SEL)selector isRegister:(BOOL)register
 {
-  v5 = a5;
+  registerCopy = register;
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  requestCopy = request;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     v17 = _CLLogObjectForCategory_MicroLocation_Default();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
     {
-      v18 = NSStringFromSelector(a4);
+      v18 = NSStringFromSelector(selector);
       location = 68289795;
       v29 = 2082;
       v30 = "";
       v31 = 2082;
-      v32 = [v18 UTF8String];
+      uTF8String = [v18 UTF8String];
       v33 = 2082;
       v34 = "assert";
       v35 = 2081;
@@ -2068,14 +2068,14 @@ void __40__ULLogicAdapter__startMonitoringEvents__block_invoke_14(uint64_t a1, v
     v19 = _CLLogObjectForCategory_MicroLocation_Default();
     if (os_signpost_enabled(v19))
     {
-      v20 = NSStringFromSelector(a4);
+      v20 = NSStringFromSelector(selector);
       v21 = v20;
-      v22 = [v20 UTF8String];
+      uTF8String2 = [v20 UTF8String];
       location = 68289795;
       v29 = 2082;
       v30 = "";
       v31 = 2082;
-      v32 = v22;
+      uTF8String = uTF8String2;
       v33 = 2082;
       v34 = "assert";
       v35 = 2081;
@@ -2086,7 +2086,7 @@ void __40__ULLogicAdapter__startMonitoringEvents__block_invoke_14(uint64_t a1, v
     v23 = _CLLogObjectForCategory_MicroLocation_Default();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
-      v24 = NSStringFromSelector(a4);
+      v24 = NSStringFromSelector(selector);
       v25 = v24;
       -[ULLogicAdapter _registerOrUnregisterForBackgroundTaskWithRequest:withSelector:isRegister:].cold.1([v24 UTF8String], &location, v23, v24);
     }
@@ -2095,20 +2095,20 @@ void __40__ULLogicAdapter__startMonitoringEvents__block_invoke_14(uint64_t a1, v
     __break(1u);
   }
 
-  if (v5)
+  if (registerCopy)
   {
     objc_initWeak(&location, self);
-    v9 = [(ULLogicAdapter *)self environment];
-    v10 = [v9 backgroundSystemTaskManager];
-    v11 = [(ULLogicAdapter *)self environment];
-    v12 = [v11 queue];
+    environment = [(ULLogicAdapter *)self environment];
+    backgroundSystemTaskManager = [environment backgroundSystemTaskManager];
+    environment2 = [(ULLogicAdapter *)self environment];
+    queue = [environment2 queue];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __92__ULLogicAdapter__registerOrUnregisterForBackgroundTaskWithRequest_withSelector_isRegister___block_invoke;
     v26[3] = &unk_2798D4488;
     objc_copyWeak(v27, &location);
-    v27[1] = a4;
-    [v10 registerAndSubmitTaskWithRequest:v8 usingQueue:v12 launchHandler:v26];
+    v27[1] = selector;
+    [backgroundSystemTaskManager registerAndSubmitTaskWithRequest:requestCopy usingQueue:queue launchHandler:v26];
 
     objc_destroyWeak(v27);
     objc_destroyWeak(&location);
@@ -2116,10 +2116,10 @@ void __40__ULLogicAdapter__startMonitoringEvents__block_invoke_14(uint64_t a1, v
 
   else
   {
-    v13 = [(ULLogicAdapter *)self environment];
-    v14 = [v13 backgroundSystemTaskManager];
-    v15 = [v8 identifier];
-    [v14 deregisterAndCancelTaskWithIdentifier:v15];
+    environment3 = [(ULLogicAdapter *)self environment];
+    backgroundSystemTaskManager2 = [environment3 backgroundSystemTaskManager];
+    identifier = [requestCopy identifier];
+    [backgroundSystemTaskManager2 deregisterAndCancelTaskWithIdentifier:identifier];
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -2149,16 +2149,16 @@ void __92__ULLogicAdapter__registerOrUnregisterForBackgroundTaskWithRequest_with
   }
 }
 
-- (void)_learnExecute:(id)a3
+- (void)_learnExecute:(id)execute
 {
-  v4 = a3;
+  executeCopy = execute;
   v5 = +[ULTransactionManager shared];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __32__ULLogicAdapter__learnExecute___block_invoke;
   v7[3] = &unk_2798D44B0;
   v7[4] = self;
-  v6 = v4;
+  v6 = executeCopy;
   v8 = v6;
   [v5 performUnderTransaction:@"com.apple.milod.learning" block:v7];
 }
@@ -2183,13 +2183,13 @@ void __32__ULLogicAdapter__learnExecute___block_invoke(uint64_t a1)
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_maintenanceExecute:(id)a3
+- (void)_maintenanceExecute:(id)execute
 {
   v9[4] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  executeCopy = execute;
   CLMicroLocationMaintenance::CLMicroLocationMaintenance(v5, *(self->logicAdapterImpl.__ptr_ + 11), *(self->logicAdapterImpl.__ptr_ + 12));
   v9[0] = &unk_286A55110;
-  v9[1] = &v7;
+  v9[1] = &executeCopy;
   v9[3] = v9;
   CLMicroLocationMaintenance::executeWorkItems(v5, v9);
   std::__function::__value_func<BOOL ()(void)>::~__value_func[abi:ne200100](v9);
@@ -2199,13 +2199,13 @@ void __32__ULLogicAdapter__learnExecute___block_invoke(uint64_t a1)
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_routineStateAnalyzerExecute:(id)a3
+- (void)_routineStateAnalyzerExecute:(id)execute
 {
   v9[4] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  executeCopy = execute;
   CLMicroLocationRoutineStateAnalyzer::CLMicroLocationRoutineStateAnalyzer(v5, self->logicAdapterImpl.__ptr_ + 16);
   v9[0] = &unk_286A55190;
-  v9[1] = &v7;
+  v9[1] = &executeCopy;
   v9[3] = v9;
   CLMicroLocationRoutineStateAnalyzer::executeWorkItems(v5, v9);
   std::__function::__value_func<BOOL ()(void)>::~__value_func[abi:ne200100](v9);
@@ -2215,13 +2215,13 @@ void __32__ULLogicAdapter__learnExecute___block_invoke(uint64_t a1)
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_analyticsExecute:(id)a3
+- (void)_analyticsExecute:(id)execute
 {
   v9[4] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  executeCopy = execute;
   CLMicroLocationAnalytics::CLMicroLocationAnalytics(v5, self->logicAdapterImpl.__ptr_ + 24, *(self->logicAdapterImpl.__ptr_ + 11));
   v9[0] = &unk_286A55210;
-  v9[1] = &v7;
+  v9[1] = &executeCopy;
   v9[3] = v9;
   CLMicroLocationAnalytics::executeWorkItems(v5, v9);
   std::__function::__value_func<BOOL ()(void)>::~__value_func[abi:ne200100](v9);
@@ -2231,13 +2231,13 @@ void __32__ULLogicAdapter__learnExecute___block_invoke(uint64_t a1)
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_wifiAnalyticsExecute:(id)a3
+- (void)_wifiAnalyticsExecute:(id)execute
 {
   v8[4] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  executeCopy = execute;
   ULWiFiHistogramAnalyzer::ULWiFiHistogramAnalyzer(v7, self->logicAdapterImpl.__ptr_ + 32, *(self->logicAdapterImpl.__ptr_ + 11));
   v6[0] = &unk_286A55290;
-  v6[1] = &v5;
+  v6[1] = &executeCopy;
   v6[3] = v6;
   ULWiFiHistogramAnalyzer::executeWiFiItem(v7, v6);
   std::__function::__value_func<BOOL ()(void)>::~__value_func[abi:ne200100](v6);
@@ -2246,13 +2246,13 @@ void __32__ULLogicAdapter__learnExecute___block_invoke(uint64_t a1)
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_exportiCloudBackupExecute:(id)a3
+- (void)_exportiCloudBackupExecute:(id)execute
 {
   v7[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  executeCopy = execute;
   v4 = [[ULBackupAndRestore alloc] initWithDbStore:*(self->logicAdapterImpl.__ptr_ + 11) andDbManagement:*(self->logicAdapterImpl.__ptr_ + 12)];
   v7[0] = &unk_286A55310;
-  v7[1] = &v6;
+  v7[1] = &executeCopy;
   v7[3] = v7;
   [(ULBackupAndRestore *)v4 exportiCloudBackupWithCancelFunc:v7];
   std::__function::__value_func<BOOL ()(void)>::~__value_func[abi:ne200100](v7);
@@ -2260,12 +2260,12 @@ void __32__ULLogicAdapter__learnExecute___block_invoke(uint64_t a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleULDataProtectionMonitorEventDataAvailable:(id)a3
+- (void)_handleULDataProtectionMonitorEventDataAvailable:(id)available
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  availableCopy = available;
   objc_opt_class();
-  v5 = v4;
+  v5 = availableCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -2286,9 +2286,9 @@ void __32__ULLogicAdapter__learnExecute___block_invoke(uint64_t a1)
   v8 = logObject_MicroLocation_Default;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 dataAvailable];
+    dataAvailable = [v7 dataAvailable];
     v10 = @"NO";
-    if (v9)
+    if (dataAvailable)
     {
       v10 = @"YES";
     }
@@ -2300,25 +2300,25 @@ void __32__ULLogicAdapter__learnExecute___block_invoke(uint64_t a1)
 
   if ([v7 dataAvailable])
   {
-    v11 = [(ULLogicAdapter *)self environment];
-    v12 = [v11 queue];
+    environment = [(ULLogicAdapter *)self environment];
+    queue = [environment queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __67__ULLogicAdapter__handleULDataProtectionMonitorEventDataAvailable___block_invoke;
     block[3] = &unk_2798D4160;
     block[4] = self;
-    dispatch_async(v12, block);
+    dispatch_async(queue, block);
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleULAirplaneModeMonitorEventAirplaneMode:(id)a3
+- (void)_handleULAirplaneModeMonitorEventAirplaneMode:(id)mode
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modeCopy = mode;
   objc_opt_class();
-  v5 = v4;
+  v5 = modeCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -2339,9 +2339,9 @@ void __32__ULLogicAdapter__learnExecute___block_invoke(uint64_t a1)
   v8 = logObject_MicroLocation_Default;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 airplaneMode];
+    airplaneMode = [v7 airplaneMode];
     v10 = @"NO";
-    if (v9)
+    if (airplaneMode)
     {
       v10 = @"YES";
     }
@@ -2351,8 +2351,8 @@ void __32__ULLogicAdapter__learnExecute___block_invoke(uint64_t a1)
     _os_log_impl(&dword_258FE9000, v8, OS_LOG_TYPE_DEFAULT, "_handleULAirplaneModeMonitorEventAirplaneMode: airplaneMode: %@", buf, 0xCu);
   }
 
-  v11 = [(ULLogicAdapter *)self environment];
-  v12 = [v11 queue];
+  environment = [(ULLogicAdapter *)self environment];
+  queue = [environment queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __64__ULLogicAdapter__handleULAirplaneModeMonitorEventAirplaneMode___block_invoke;
@@ -2360,7 +2360,7 @@ void __32__ULLogicAdapter__learnExecute___block_invoke(uint64_t a1)
   v15[4] = self;
   v16 = v7;
   v13 = v7;
-  dispatch_async(v12, v15);
+  dispatch_async(queue, v15);
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -2374,12 +2374,12 @@ uint64_t __64__ULLogicAdapter__handleULAirplaneModeMonitorEventAirplaneMode___bl
   return v3(v1, v2);
 }
 
-- (void)_handleULBatteryModeMonitorEventUnlimitedPower:(id)a3
+- (void)_handleULBatteryModeMonitorEventUnlimitedPower:(id)power
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  powerCopy = power;
   objc_opt_class();
-  v5 = v4;
+  v5 = powerCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -2400,9 +2400,9 @@ uint64_t __64__ULLogicAdapter__handleULAirplaneModeMonitorEventAirplaneMode___bl
   v8 = logObject_MicroLocation_Default;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 unlimitedPower];
+    unlimitedPower = [v7 unlimitedPower];
     v10 = @"NO";
-    if (v9)
+    if (unlimitedPower)
     {
       v10 = @"YES";
     }
@@ -2412,8 +2412,8 @@ uint64_t __64__ULLogicAdapter__handleULAirplaneModeMonitorEventAirplaneMode___bl
     _os_log_impl(&dword_258FE9000, v8, OS_LOG_TYPE_DEFAULT, "_handleULBatteryModeMonitorEventUnlimitedPower: unlimitedPower: %@", buf, 0xCu);
   }
 
-  v11 = [(ULLogicAdapter *)self environment];
-  v12 = [v11 queue];
+  environment = [(ULLogicAdapter *)self environment];
+  queue = [environment queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __65__ULLogicAdapter__handleULBatteryModeMonitorEventUnlimitedPower___block_invoke;
@@ -2421,7 +2421,7 @@ uint64_t __64__ULLogicAdapter__handleULAirplaneModeMonitorEventAirplaneMode___bl
   v15[4] = self;
   v16 = v7;
   v13 = v7;
-  dispatch_async(v12, v15);
+  dispatch_async(queue, v15);
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -2434,12 +2434,12 @@ CLMicroLocationLegacyClient *__65__ULLogicAdapter__handleULBatteryModeMonitorEve
   return CLMicroLocationLegacyClient::onBatteryState(v1, v2);
 }
 
-- (void)_handleULBatteryModeMonitorEventLowPowerMode:(id)a3
+- (void)_handleULBatteryModeMonitorEventLowPowerMode:(id)mode
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modeCopy = mode;
   objc_opt_class();
-  v5 = v4;
+  v5 = modeCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -2460,9 +2460,9 @@ CLMicroLocationLegacyClient *__65__ULLogicAdapter__handleULBatteryModeMonitorEve
   v8 = logObject_MicroLocation_Default;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 lowPowerMode];
+    lowPowerMode = [v7 lowPowerMode];
     v10 = @"NO";
-    if (v9)
+    if (lowPowerMode)
     {
       v10 = @"YES";
     }
@@ -2472,8 +2472,8 @@ CLMicroLocationLegacyClient *__65__ULLogicAdapter__handleULBatteryModeMonitorEve
     _os_log_impl(&dword_258FE9000, v8, OS_LOG_TYPE_DEFAULT, "_handleULBatteryModeMonitorEventLowPowerMode: lowPowerMode: %@", buf, 0xCu);
   }
 
-  v11 = [(ULLogicAdapter *)self environment];
-  v12 = [v11 queue];
+  environment = [(ULLogicAdapter *)self environment];
+  queue = [environment queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __63__ULLogicAdapter__handleULBatteryModeMonitorEventLowPowerMode___block_invoke;
@@ -2481,7 +2481,7 @@ CLMicroLocationLegacyClient *__65__ULLogicAdapter__handleULBatteryModeMonitorEve
   v15[4] = self;
   v16 = v7;
   v13 = v7;
-  dispatch_async(v12, v15);
+  dispatch_async(queue, v15);
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -2495,12 +2495,12 @@ uint64_t __63__ULLogicAdapter__handleULBatteryModeMonitorEventLowPowerMode___blo
   return v3(v1, v2);
 }
 
-- (void)_handleULBluetoothMonitorEventPowerOn:(id)a3
+- (void)_handleULBluetoothMonitorEventPowerOn:(id)on
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  onCopy = on;
   objc_opt_class();
-  v5 = v4;
+  v5 = onCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -2521,9 +2521,9 @@ uint64_t __63__ULLogicAdapter__handleULBatteryModeMonitorEventLowPowerMode___blo
   v8 = logObject_MicroLocation_Default;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 powerOn];
+    powerOn = [v7 powerOn];
     v10 = @"NO";
-    if (v9)
+    if (powerOn)
     {
       v10 = @"YES";
     }
@@ -2533,19 +2533,19 @@ uint64_t __63__ULLogicAdapter__handleULBatteryModeMonitorEventLowPowerMode___blo
     _os_log_impl(&dword_258FE9000, v8, OS_LOG_TYPE_DEFAULT, "_handleULBluetoothMonitorEventPowerOn: powerOn: %@", &v14, 0xCu);
   }
 
-  v11 = [(ULLogicAdapter *)self environment];
-  v12 = [v11 queue];
-  dispatch_async(v12, &__block_literal_global_30);
+  environment = [(ULLogicAdapter *)self environment];
+  queue = [environment queue];
+  dispatch_async(queue, &__block_literal_global_30);
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleULRapportMonitorEventDeviceFound:(id)a3
+- (void)_handleULRapportMonitorEventDeviceFound:(id)found
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  foundCopy = found;
   objc_opt_class();
-  v5 = v4;
+  v5 = foundCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -2566,22 +2566,22 @@ uint64_t __63__ULLogicAdapter__handleULBatteryModeMonitorEventLowPowerMode___blo
   v8 = logObject_MicroLocation_Default;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 device];
+    device = [v7 device];
     *buf = 138412290;
-    v18 = v9;
+    v18 = device;
     _os_log_impl(&dword_258FE9000, v8, OS_LOG_TYPE_DEFAULT, "_handleULRapportMonitorEventDeviceFound: new device: %@", buf, 0xCu);
   }
 
-  v10 = [(ULLogicAdapter *)self environment];
-  v11 = [v10 queue];
+  environment = [(ULLogicAdapter *)self environment];
+  queue = [environment queue];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __58__ULLogicAdapter__handleULRapportMonitorEventDeviceFound___block_invoke;
   v14[3] = &unk_2798D44B0;
   v15 = v7;
-  v16 = self;
+  selfCopy = self;
   v12 = v7;
-  dispatch_async(v11, v14);
+  dispatch_async(queue, v14);
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -2633,11 +2633,11 @@ void __58__ULLogicAdapter__handleULRapportMonitorEventDeviceFound___block_invoke
   }
 }
 
-- (void)_handleULDisplayMonitorEventDisplayState:(id)a3
+- (void)_handleULDisplayMonitorEventDisplayState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   objc_opt_class();
-  v5 = v4;
+  v5 = stateCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -2650,16 +2650,16 @@ void __58__ULLogicAdapter__handleULRapportMonitorEventDeviceFound___block_invoke
 
   v7 = v6;
 
-  v8 = [(ULLogicAdapter *)self environment];
-  v9 = [v8 queue];
+  environment = [(ULLogicAdapter *)self environment];
+  queue = [environment queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __59__ULLogicAdapter__handleULDisplayMonitorEventDisplayState___block_invoke;
   v11[3] = &unk_2798D44B0;
   v12 = v7;
-  v13 = self;
+  selfCopy = self;
   v10 = v7;
-  dispatch_async(v9, v11);
+  dispatch_async(queue, v11);
 }
 
 void __59__ULLogicAdapter__handleULDisplayMonitorEventDisplayState___block_invoke(uint64_t a1)
@@ -2758,11 +2758,11 @@ void __59__ULLogicAdapter__handleULDisplayMonitorEventDisplayState___block_invok
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleULDisplayMonitorEventDisplayState_OSX:(id)a3
+- (void)_handleULDisplayMonitorEventDisplayState_OSX:(id)x
 {
-  v4 = a3;
+  xCopy = x;
   objc_opt_class();
-  v5 = v4;
+  v5 = xCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -2775,16 +2775,16 @@ void __59__ULLogicAdapter__handleULDisplayMonitorEventDisplayState___block_invok
 
   v7 = v6;
 
-  v8 = [(ULLogicAdapter *)self environment];
-  v9 = [v8 queue];
+  environment = [(ULLogicAdapter *)self environment];
+  queue = [environment queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __63__ULLogicAdapter__handleULDisplayMonitorEventDisplayState_OSX___block_invoke;
   v11[3] = &unk_2798D44B0;
   v12 = v7;
-  v13 = self;
+  selfCopy = self;
   v10 = v7;
-  dispatch_async(v9, v11);
+  dispatch_async(queue, v11);
 }
 
 void __63__ULLogicAdapter__handleULDisplayMonitorEventDisplayState_OSX___block_invoke(uint64_t a1)
@@ -2848,11 +2848,11 @@ void __63__ULLogicAdapter__handleULDisplayMonitorEventDisplayState_OSX___block_i
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleULInternalNotifyMonitorEventLocalize:(id)a3
+- (void)_handleULInternalNotifyMonitorEventLocalize:(id)localize
 {
-  v4 = a3;
+  localizeCopy = localize;
   objc_opt_class();
-  v5 = v4;
+  v5 = localizeCopy;
   objc_opt_isKindOfClass();
 
   if (onceToken_MicroLocation_Default != -1)
@@ -2867,14 +2867,14 @@ void __63__ULLogicAdapter__handleULDisplayMonitorEventDisplayState_OSX___block_i
     _os_log_impl(&dword_258FE9000, v6, OS_LOG_TYPE_DEFAULT, "_handleULInternalNotifyMonitorEventLocalize: localize", buf, 2u);
   }
 
-  v7 = [(ULLogicAdapter *)self environment];
-  v8 = [v7 queue];
+  environment = [(ULLogicAdapter *)self environment];
+  queue = [environment queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__ULLogicAdapter__handleULInternalNotifyMonitorEventLocalize___block_invoke;
   block[3] = &unk_2798D4160;
   block[4] = self;
-  dispatch_async(v8, block);
+  dispatch_async(queue, block);
 }
 
 void __62__ULLogicAdapter__handleULInternalNotifyMonitorEventLocalize___block_invoke(uint64_t a1)
@@ -2888,11 +2888,11 @@ void __62__ULLogicAdapter__handleULInternalNotifyMonitorEventLocalize___block_in
   }
 }
 
-- (void)_handleULInternalNotifyMonitorEventRecord:(id)a3
+- (void)_handleULInternalNotifyMonitorEventRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   objc_opt_class();
-  v5 = v4;
+  v5 = recordCopy;
   objc_opt_isKindOfClass();
 
   if (onceToken_MicroLocation_Default != -1)
@@ -2907,21 +2907,21 @@ void __62__ULLogicAdapter__handleULInternalNotifyMonitorEventLocalize___block_in
     _os_log_impl(&dword_258FE9000, v6, OS_LOG_TYPE_DEFAULT, "_handleULInternalNotifyMonitorEventRecord: record", buf, 2u);
   }
 
-  v7 = [(ULLogicAdapter *)self environment];
-  v8 = [v7 queue];
+  environment = [(ULLogicAdapter *)self environment];
+  queue = [environment queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__ULLogicAdapter__handleULInternalNotifyMonitorEventRecord___block_invoke;
   block[3] = &unk_2798D4160;
   block[4] = self;
-  dispatch_async(v8, block);
+  dispatch_async(queue, block);
 }
 
-- (void)_handleULInternalNotifyMonitorEventPurge:(id)a3
+- (void)_handleULInternalNotifyMonitorEventPurge:(id)purge
 {
-  v4 = a3;
+  purgeCopy = purge;
   objc_opt_class();
-  v5 = v4;
+  v5 = purgeCopy;
   objc_opt_isKindOfClass();
 
   if (onceToken_MicroLocation_Default != -1)
@@ -2936,21 +2936,21 @@ void __62__ULLogicAdapter__handleULInternalNotifyMonitorEventLocalize___block_in
     _os_log_impl(&dword_258FE9000, v6, OS_LOG_TYPE_DEFAULT, "_handleULInternalNotifyMonitorEventPurge: purge", buf, 2u);
   }
 
-  v7 = [(ULLogicAdapter *)self environment];
-  v8 = [v7 queue];
+  environment = [(ULLogicAdapter *)self environment];
+  queue = [environment queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__ULLogicAdapter__handleULInternalNotifyMonitorEventPurge___block_invoke;
   block[3] = &unk_2798D4160;
   block[4] = self;
-  dispatch_async(v8, block);
+  dispatch_async(queue, block);
 }
 
-- (void)_handleULInternalNotifyMonitorEventSettingsRefrsh:(id)a3
+- (void)_handleULInternalNotifyMonitorEventSettingsRefrsh:(id)refrsh
 {
-  v4 = a3;
+  refrshCopy = refrsh;
   objc_opt_class();
-  v5 = v4;
+  v5 = refrshCopy;
   objc_opt_isKindOfClass();
 
   if (onceToken_MicroLocation_Default != -1)
@@ -2965,14 +2965,14 @@ void __62__ULLogicAdapter__handleULInternalNotifyMonitorEventLocalize___block_in
     _os_log_impl(&dword_258FE9000, v6, OS_LOG_TYPE_DEFAULT, "_handleULInternalNotifyMonitorEventSettingsRefrsh: refresh", buf, 2u);
   }
 
-  v7 = [(ULLogicAdapter *)self environment];
-  v8 = [v7 queue];
+  environment = [(ULLogicAdapter *)self environment];
+  queue = [environment queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__ULLogicAdapter__handleULInternalNotifyMonitorEventSettingsRefrsh___block_invoke;
   block[3] = &unk_2798D4160;
   block[4] = self;
-  dispatch_async(v8, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __68__ULLogicAdapter__handleULInternalNotifyMonitorEventSettingsRefrsh___block_invoke(ULSettings *a1)
@@ -2983,12 +2983,12 @@ uint64_t __68__ULLogicAdapter__handleULInternalNotifyMonitorEventSettingsRefrsh_
   return CLMicroLocationLogic::refreshSettings(v2);
 }
 
-- (void)_handleULPrivacyMonitorEventLocationServices:(id)a3
+- (void)_handleULPrivacyMonitorEventLocationServices:(id)services
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  servicesCopy = services;
   objc_opt_class();
-  v5 = v4;
+  v5 = servicesCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -3009,9 +3009,9 @@ uint64_t __68__ULLogicAdapter__handleULInternalNotifyMonitorEventSettingsRefrsh_
   v8 = logObject_MicroLocation_Default;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 locationServicesEnabled];
+    locationServicesEnabled = [v7 locationServicesEnabled];
     v10 = @"NO";
-    if (v9)
+    if (locationServicesEnabled)
     {
       v10 = @"YES";
     }
@@ -3021,8 +3021,8 @@ uint64_t __68__ULLogicAdapter__handleULInternalNotifyMonitorEventSettingsRefrsh_
     _os_log_impl(&dword_258FE9000, v8, OS_LOG_TYPE_DEFAULT, "_handleULPrivacyMonitorEventLocationServices: locationServicesEnabled: %@", buf, 0xCu);
   }
 
-  v11 = [(ULLogicAdapter *)self environment];
-  v12 = [v11 queue];
+  environment = [(ULLogicAdapter *)self environment];
+  queue = [environment queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __63__ULLogicAdapter__handleULPrivacyMonitorEventLocationServices___block_invoke;
@@ -3030,7 +3030,7 @@ uint64_t __68__ULLogicAdapter__handleULInternalNotifyMonitorEventSettingsRefrsh_
   v15[4] = self;
   v16 = v7;
   v13 = v7;
-  dispatch_async(v12, v15);
+  dispatch_async(queue, v15);
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -3047,12 +3047,12 @@ uint64_t __63__ULLogicAdapter__handleULPrivacyMonitorEventLocationServices___blo
   return v6(v4, v5);
 }
 
-- (void)_handleULBuddyMonitorEventBuddyComplete:(id)a3
+- (void)_handleULBuddyMonitorEventBuddyComplete:(id)complete
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completeCopy = complete;
   objc_opt_class();
-  v5 = v4;
+  v5 = completeCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -3073,9 +3073,9 @@ uint64_t __63__ULLogicAdapter__handleULPrivacyMonitorEventLocationServices___blo
   v8 = logObject_MicroLocation_Default;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 buddyComplete];
+    buddyComplete = [v7 buddyComplete];
     v10 = @"NO";
-    if (v9)
+    if (buddyComplete)
     {
       v10 = @"YES";
     }
@@ -3085,8 +3085,8 @@ uint64_t __63__ULLogicAdapter__handleULPrivacyMonitorEventLocationServices___blo
     _os_log_impl(&dword_258FE9000, v8, OS_LOG_TYPE_DEFAULT, "_handleULBuddyMonitorEventBuddyComplete: buddyComplete: %@", buf, 0xCu);
   }
 
-  v11 = [(ULLogicAdapter *)self environment];
-  v12 = [v11 queue];
+  environment = [(ULLogicAdapter *)self environment];
+  queue = [environment queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __58__ULLogicAdapter__handleULBuddyMonitorEventBuddyComplete___block_invoke;
@@ -3094,7 +3094,7 @@ uint64_t __63__ULLogicAdapter__handleULPrivacyMonitorEventLocationServices___blo
   v15[4] = self;
   v16 = v7;
   v13 = v7;
-  dispatch_async(v12, v15);
+  dispatch_async(queue, v15);
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -3110,19 +3110,19 @@ void __58__ULLogicAdapter__handleULBuddyMonitorEventBuddyComplete___block_invoke
   }
 }
 
-- (void)_handleULSleepWakeMonitorEvent:(id)a3
+- (void)_handleULSleepWakeMonitorEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (![MEMORY[0x277D28868] isInternalInstall])
   {
     goto LABEL_11;
   }
 
   v5 = +[ULDefaultsSingleton shared];
-  v6 = [v5 defaultsDictionary];
+  defaultsDictionary = [v5 defaultsDictionary];
 
   v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULLogAPSleepStateEnabled"];
-  v8 = [v6 objectForKey:v7];
+  v8 = [defaultsDictionary objectForKey:v7];
   if (!v8)
   {
     goto LABEL_5;
@@ -3131,21 +3131,21 @@ void __58__ULLogicAdapter__handleULBuddyMonitorEventBuddyComplete___block_invoke
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 BOOLValue];
+    bOOLValue = [v8 BOOLValue];
   }
 
   else
   {
 LABEL_5:
-    v9 = [MEMORY[0x277CBEC28] BOOLValue];
+    bOOLValue = [MEMORY[0x277CBEC28] BOOLValue];
   }
 
-  v10 = v9;
+  v10 = bOOLValue;
 
   if (v10)
   {
     objc_opt_class();
-    v11 = v4;
+    v11 = eventCopy;
     if (objc_opt_isKindOfClass())
     {
       v12 = v11;
@@ -3158,15 +3158,15 @@ LABEL_5:
 
     v13 = v12;
 
-    v14 = [(ULLogicAdapter *)self environment];
-    v15 = [v14 queue];
+    environment = [(ULLogicAdapter *)self environment];
+    queue = [environment queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __49__ULLogicAdapter__handleULSleepWakeMonitorEvent___block_invoke;
     block[3] = &unk_2798D4160;
     v19 = v13;
     v16 = v13;
-    dispatch_async(v15, block);
+    dispatch_async(queue, block);
   }
 
   else
@@ -3193,21 +3193,21 @@ void __49__ULLogicAdapter__handleULSleepWakeMonitorEvent___block_invoke(uint64_t
   [v2 handleSleepWakeMonitorEvent:v1];
 }
 
-+ (id)_newULServiceDescriptorFromInternalDescriptor:(const void *)a3
++ (id)_newULServiceDescriptorFromInternalDescriptor:(const void *)descriptor
 {
   v4 = objc_opt_new();
   for (i = 0; i != 32; ++i)
   {
-    if ((*(a3 + 3) >> i))
+    if ((*(descriptor + 3) >> i))
     {
       v6 = [objc_alloc(MEMORY[0x277D287B8]) initWithLocationTypeEnum:i];
       [v4 addObject:v6];
     }
   }
 
-  v7 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:a3];
+  v7 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:descriptor];
   v8 = objc_alloc(MEMORY[0x277D28800]);
-  v9 = *(a3 + 2);
+  v9 = *(descriptor + 2);
   v10 = [MEMORY[0x277CBEA60] arrayWithArray:v4];
   v11 = [v8 initWithServiceIdentifier:v7 serviceType:v9 locationTypes:v10];
 
@@ -3216,25 +3216,25 @@ void __49__ULLogicAdapter__handleULSleepWakeMonitorEvent___block_invoke(uint64_t
 
 - (id)diagnosticInfo
 {
-  v3 = [(ULLogicAdapter *)self environment];
-  v4 = [v3 queue];
-  dispatch_assert_queue_not_V2(v4);
+  environment = [(ULLogicAdapter *)self environment];
+  queue = [environment queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__0;
   v14 = __Block_byref_object_dispose__0;
-  v15 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = [(ULLogicAdapter *)self environment];
-  v6 = [v5 queue];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  environment2 = [(ULLogicAdapter *)self environment];
+  queue2 = [environment2 queue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __55__ULLogicAdapter_ULDiagnosticsProvider__diagnosticInfo__block_invoke;
   v9[3] = &unk_2798D44D8;
   v9[4] = self;
   v9[5] = &v10;
-  dispatch_sync(v6, v9);
+  dispatch_sync(queue2, v9);
 
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -3265,7 +3265,7 @@ uint64_t __55__ULLogicAdapter_ULDiagnosticsProvider__diagnosticInfo__block_invok
 - (uint64_t)_maintenanceExecute:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -3277,7 +3277,7 @@ uint64_t __55__ULLogicAdapter_ULDiagnosticsProvider__diagnosticInfo__block_invok
 - (uint64_t)_routineStateAnalyzerExecute:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -3289,7 +3289,7 @@ uint64_t __55__ULLogicAdapter_ULDiagnosticsProvider__diagnosticInfo__block_invok
 - (uint64_t)_analyticsExecute:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -3301,7 +3301,7 @@ uint64_t __55__ULLogicAdapter_ULDiagnosticsProvider__diagnosticInfo__block_invok
 - (uint64_t)_wifiAnalyticsExecute:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -3313,7 +3313,7 @@ uint64_t __55__ULLogicAdapter_ULDiagnosticsProvider__diagnosticInfo__block_invok
 - (uint64_t)_exportiCloudBackupExecute:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else

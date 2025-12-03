@@ -1,11 +1,11 @@
 @interface TVShowCell
 + (UIEdgeInsets)visualContentInsets;
-- (_TtC16MusicApplication10TVShowCell)initWithCoder:(id)a3;
+- (_TtC16MusicApplication10TVShowCell)initWithCoder:(id)coder;
 @end
 
 @implementation TVShowCell
 
-- (_TtC16MusicApplication10TVShowCell)initWithCoder:(id)a3
+- (_TtC16MusicApplication10TVShowCell)initWithCoder:(id)coder
 {
   v3 = (self + OBJC_IVAR____TtC16MusicApplication10TVShowCell_title);
   *v3 = 0;

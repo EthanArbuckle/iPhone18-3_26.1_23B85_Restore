@@ -4,8 +4,8 @@
 - (NSString)description;
 - (NSString)tipId;
 - (TPSLastDisplayedContent)init;
-- (TPSLastDisplayedContent)initWithCollectionId:(id)a3 tipId:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (TPSLastDisplayedContent)initWithCollectionId:(id)id tipId:(id)tipId;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TPSLastDisplayedContent
@@ -34,7 +34,7 @@
   return [(TPSLastDisplayedContent *)&v5 init];
 }
 
-- (TPSLastDisplayedContent)initWithCollectionId:(id)a3 tipId:(id)a4
+- (TPSLastDisplayedContent)initWithCollectionId:(id)id tipId:(id)tipId
 {
   ObjectType = swift_getObjectType();
   v8 = OBJC_IVAR___TPSLastDisplayedContent_tipId;
@@ -42,19 +42,19 @@
   v9 = OBJC_IVAR___TPSLastDisplayedContent_collectionId;
   *(&self->super.isa + OBJC_IVAR___TPSLastDisplayedContent_collectionId) = 0;
   swift_beginAccess();
-  *(&self->super.isa + v9) = a3;
+  *(&self->super.isa + v9) = id;
   swift_beginAccess();
-  *(&self->super.isa + v8) = a4;
+  *(&self->super.isa + v8) = tipId;
   v13.receiver = self;
   v13.super_class = ObjectType;
-  v10 = a3;
-  v11 = a4;
+  idCopy = id;
+  tipIdCopy = tipId;
   return [(TPSLastDisplayedContent *)&v13 init];
 }
 
 - (BOOL)hasContent
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TPSLastDisplayedContent.hasContent()();
 
   return v3;
@@ -62,7 +62,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   TPSLastDisplayedContent.description.getter();
 
   v3 = String._bridgeToObjectiveC()();
@@ -70,11 +70,11 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  TPSLastDisplayedContent.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  TPSLastDisplayedContent.encode(with:)(coderCopy);
 }
 
 @end

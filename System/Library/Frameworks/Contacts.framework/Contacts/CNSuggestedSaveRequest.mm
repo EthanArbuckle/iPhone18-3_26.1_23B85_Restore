@@ -1,16 +1,16 @@
 @interface CNSuggestedSaveRequest
 - (NSSet)confirmedSuggestions;
 - (NSSet)rejectedSuggestions;
-- (void)confirmSuggestion:(id)a3;
-- (void)rejectSuggestion:(id)a3;
+- (void)confirmSuggestion:(id)suggestion;
+- (void)rejectSuggestion:(id)suggestion;
 @end
 
 @implementation CNSuggestedSaveRequest
 
-- (void)confirmSuggestion:(id)a3
+- (void)confirmSuggestion:(id)suggestion
 {
-  v7 = a3;
-  if ([v7 isSuggested])
+  suggestionCopy = suggestion;
+  if ([suggestionCopy isSuggested])
   {
     mutableConfirmedSuggestions = self->_mutableConfirmedSuggestions;
     if (!mutableConfirmedSuggestions)
@@ -22,14 +22,14 @@
       mutableConfirmedSuggestions = self->_mutableConfirmedSuggestions;
     }
 
-    [(NSMutableSet *)mutableConfirmedSuggestions addObject:v7];
+    [(NSMutableSet *)mutableConfirmedSuggestions addObject:suggestionCopy];
   }
 }
 
-- (void)rejectSuggestion:(id)a3
+- (void)rejectSuggestion:(id)suggestion
 {
-  v7 = a3;
-  if ([v7 isSuggested])
+  suggestionCopy = suggestion;
+  if ([suggestionCopy isSuggested])
   {
     mutableRejectedSuggestions = self->_mutableRejectedSuggestions;
     if (!mutableRejectedSuggestions)
@@ -41,7 +41,7 @@
       mutableRejectedSuggestions = self->_mutableRejectedSuggestions;
     }
 
-    [(NSMutableSet *)mutableRejectedSuggestions addObject:v7];
+    [(NSMutableSet *)mutableRejectedSuggestions addObject:suggestionCopy];
   }
 }
 

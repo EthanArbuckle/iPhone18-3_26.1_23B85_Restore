@@ -1,11 +1,11 @@
 @interface _UIPathLazyImageAsset
-- (BOOL)_containsImagesInPath:(id)a3;
+- (BOOL)_containsImagesInPath:(id)path;
 - (_UIPathLazyImageAsset)init;
-- (_UIPathLazyImageAsset)initWithCoder:(id)a3;
-- (id)_initWithAssetName:(id)a3 forFilesInBundle:(id)a4;
-- (id)_initWithAssetName:(id)a3 forFilesInBundle:(id)a4 imagePaths:(id)a5 haveCGCacheImages:(BOOL)a6;
-- (id)_initWithAssetName:(id)a3 forManager:(id)a4;
-- (id)imageWithConfiguration:(id)a3;
+- (_UIPathLazyImageAsset)initWithCoder:(id)coder;
+- (id)_initWithAssetName:(id)name forFilesInBundle:(id)bundle;
+- (id)_initWithAssetName:(id)name forFilesInBundle:(id)bundle imagePaths:(id)paths haveCGCacheImages:(BOOL)images;
+- (id)_initWithAssetName:(id)name forManager:(id)manager;
+- (id)imageWithConfiguration:(id)configuration;
 - (void)_clearResolvedImageResources;
 @end
 
@@ -38,8 +38,8 @@
           }
 
           v8 = _UserInterfaceTraitFromPath(*(*(&v10 + 1) + 8 * v7));
-          v9 = [v8 _namedImageDescription];
-          [(UIImageAsset *)self _withLock_unregisterImageWithDescription:v9];
+          _namedImageDescription = [v8 _namedImageDescription];
+          [(UIImageAsset *)self _withLock_unregisterImageWithDescription:_namedImageDescription];
 
           ++v7;
         }
@@ -79,23 +79,23 @@
     }
   }
 
-  v4 = [MEMORY[0x1E696AFB0] UUID];
-  v5 = [v4 UUIDString];
-  v6 = [(_UIPathLazyImageAsset *)self _initWithAssetName:v5 forManager:0];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v6 = [(_UIPathLazyImageAsset *)self _initWithAssetName:uUIDString forManager:0];
 
   return v6;
 }
 
-- (_UIPathLazyImageAsset)initWithCoder:(id)a3
+- (_UIPathLazyImageAsset)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = _UIPathLazyImageAsset;
-  return [(UIImageAsset *)&v4 initWithCoder:a3];
+  return [(UIImageAsset *)&v4 initWithCoder:coder];
 }
 
-- (id)_initWithAssetName:(id)a3 forManager:(id)a4
+- (id)_initWithAssetName:(id)name forManager:(id)manager
 {
-  v5 = a3;
+  nameCopy = name;
   if (os_variant_has_internal_diagnostics())
   {
     v9 = __UIFaultDebugAssertLog();
@@ -116,15 +116,15 @@
     }
   }
 
-  v7 = [(_UIPathLazyImageAsset *)self _initWithAssetName:v5 forFilesInBundle:0 imagePaths:0 haveCGCacheImages:0];
+  v7 = [(_UIPathLazyImageAsset *)self _initWithAssetName:nameCopy forFilesInBundle:0 imagePaths:0 haveCGCacheImages:0];
 
   return v7;
 }
 
-- (id)_initWithAssetName:(id)a3 forFilesInBundle:(id)a4
+- (id)_initWithAssetName:(id)name forFilesInBundle:(id)bundle
 {
-  v6 = a4;
-  v7 = a3;
+  bundleCopy = bundle;
+  nameCopy = name;
   if (os_variant_has_internal_diagnostics())
   {
     v11 = __UIFaultDebugAssertLog();
@@ -145,39 +145,39 @@
     }
   }
 
-  v9 = [(_UIPathLazyImageAsset *)self _initWithAssetName:v7 forFilesInBundle:v6 imagePaths:0 haveCGCacheImages:0];
+  v9 = [(_UIPathLazyImageAsset *)self _initWithAssetName:nameCopy forFilesInBundle:bundleCopy imagePaths:0 haveCGCacheImages:0];
 
   return v9;
 }
 
-- (id)_initWithAssetName:(id)a3 forFilesInBundle:(id)a4 imagePaths:(id)a5 haveCGCacheImages:(BOOL)a6
+- (id)_initWithAssetName:(id)name forFilesInBundle:(id)bundle imagePaths:(id)paths haveCGCacheImages:(BOOL)images
 {
-  v10 = a5;
+  pathsCopy = paths;
   v16.receiver = self;
   v16.super_class = _UIPathLazyImageAsset;
-  v11 = [(UIImageAsset *)&v16 _initWithAssetName:a3 forFilesInBundle:a4];
+  v11 = [(UIImageAsset *)&v16 _initWithAssetName:name forFilesInBundle:bundle];
   v12 = v11;
   if (v11)
   {
     v11[96] &= ~2u;
-    v13 = [v10 copy];
+    v13 = [pathsCopy copy];
     v14 = *(v12 + 13);
     *(v12 + 13) = v13;
 
-    v12[96] = v12[96] & 0xFE | a6;
+    v12[96] = v12[96] & 0xFE | images;
   }
 
   return v12;
 }
 
-- (id)imageWithConfiguration:(id)a3
+- (id)imageWithConfiguration:(id)configuration
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   os_unfair_lock_lock(&self->super._lock);
   if ((*&self->_plaFlags & 2) == 0)
   {
-    v18 = v4;
+    v18 = configurationCopy;
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
@@ -205,15 +205,15 @@
           {
             if (v11)
             {
-              v13 = [v11 imageConfiguration];
+              imageConfiguration = [v11 imageConfiguration];
             }
 
             else
             {
-              v13 = 0;
+              imageConfiguration = 0;
             }
 
-            v14 = v13;
+            v14 = imageConfiguration;
             [(UIImageAsset *)self _withLock_registerImage:ImageAtPath withConfiguration:v14];
           }
 
@@ -229,20 +229,20 @@
     }
 
     *&self->_plaFlags |= 2u;
-    v4 = v18;
+    configurationCopy = v18;
   }
 
   os_unfair_lock_unlock(&self->super._lock);
   v19.receiver = self;
   v19.super_class = _UIPathLazyImageAsset;
-  v16 = [(UIImageAsset *)&v19 imageWithConfiguration:v4];
+  v16 = [(UIImageAsset *)&v19 imageWithConfiguration:configurationCopy];
 
   return v16;
 }
 
-- (BOOL)_containsImagesInPath:(id)a3
+- (BOOL)_containsImagesInPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -252,7 +252,7 @@
   v8[1] = 3221225472;
   v8[2] = __47___UIPathLazyImageAsset__containsImagesInPath___block_invoke;
   v8[3] = &unk_1E710C290;
-  v6 = v4;
+  v6 = pathCopy;
   v9 = v6;
   v10 = &v11;
   [(NSArray *)imagePaths enumerateObjectsUsingBlock:v8];

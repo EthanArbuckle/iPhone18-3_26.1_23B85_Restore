@@ -1,41 +1,41 @@
 @interface _RELogFeatureTransformer
-- (BOOL)_validateWithFeatures:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (_RELogFeatureTransformer)initWithBase:(id)a3;
-- (unint64_t)_createTransformFromValues:(unint64_t *)a3 count:(unint64_t)a4;
+- (BOOL)_validateWithFeatures:(id)features;
+- (BOOL)isEqual:(id)equal;
+- (_RELogFeatureTransformer)initWithBase:(id)base;
+- (unint64_t)_createTransformFromValues:(unint64_t *)values count:(unint64_t)count;
 - (unint64_t)hash;
 @end
 
 @implementation _RELogFeatureTransformer
 
-- (_RELogFeatureTransformer)initWithBase:(id)a3
+- (_RELogFeatureTransformer)initWithBase:(id)base
 {
-  v4 = a3;
+  baseCopy = base;
   v12.receiver = self;
   v12.super_class = _RELogFeatureTransformer;
   v5 = [(REFeatureTransformer *)&v12 init];
   if (v5)
   {
-    if ([v4 type] == 1)
+    if ([baseCopy type] == 1)
     {
-      v6 = [v4 int64Value];
+      int64Value = [baseCopy int64Value];
     }
 
     else
     {
-      [v4 doubleValue];
+      [baseCopy doubleValue];
     }
 
-    v5->_base = v6;
+    v5->_base = int64Value;
     v5->_type = 3;
-    v7 = v6;
+    v7 = int64Value;
     if (fabsf(v7 + -2.7183) >= 0.00000011921)
     {
       if (fabsf(v7 + -2.0) >= 0.00000011921)
       {
         if (fabsf(v7 + -10.0) >= 0.00000011921)
         {
-          v9 = log(v6);
+          v9 = log(int64Value);
           v5->_base = v9;
           v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%f", *&v9];
         }
@@ -67,10 +67,10 @@
   return v5;
 }
 
-- (unint64_t)_createTransformFromValues:(unint64_t *)a3 count:(unint64_t)a4
+- (unint64_t)_createTransformFromValues:(unint64_t *)values count:(unint64_t)count
 {
-  v5 = *a3;
-  if (REFeatureValueTypeForTaggedPointer(*a3) == 1)
+  v5 = *values;
+  if (REFeatureValueTypeForTaggedPointer(*values) == 1)
   {
     v7 = REIntegerValueForTaggedPointer(v5);
   }
@@ -110,10 +110,10 @@
   return RECreateDoubleFeatureValueTaggedPointer();
 }
 
-- (BOOL)_validateWithFeatures:(id)a3
+- (BOOL)_validateWithFeatures:(id)features
 {
-  v3 = [a3 firstObject];
-  v4 = [v3 featureType] == 2;
+  firstObject = [features firstObject];
+  v4 = [firstObject featureType] == 2;
 
   return v4;
 }
@@ -131,10 +131,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     goto LABEL_8;
   }
@@ -146,11 +146,11 @@
   }
 
   type = self->_type;
-  v6 = v4->_type;
+  v6 = equalCopy->_type;
   if (type == 3 && v6 == 3)
   {
     base = self->_base;
-    v10 = v4->_base;
+    v10 = equalCopy->_base;
     v8 = vabds_f32(base, v10) < 0.00000011921;
     goto LABEL_11;
   }

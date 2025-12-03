@@ -1,20 +1,20 @@
 @interface WLKBasicSeasonMetadata
-+ (id)seasonsWithDictionaries:(id)a3;
-- (WLKBasicSeasonMetadata)initWithDictionary:(id)a3;
++ (id)seasonsWithDictionaries:(id)dictionaries;
+- (WLKBasicSeasonMetadata)initWithDictionary:(id)dictionary;
 @end
 
 @implementation WLKBasicSeasonMetadata
 
-+ (id)seasonsWithDictionaries:(id)a3
++ (id)seasonsWithDictionaries:(id)dictionaries
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictionariesCopy = dictionaries;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = dictionariesCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -50,19 +50,19 @@
   return v4;
 }
 
-- (WLKBasicSeasonMetadata)initWithDictionary:(id)a3
+- (WLKBasicSeasonMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = WLKBasicSeasonMetadata;
-  v5 = [(WLKBasicContentMetadata *)&v12 initWithDictionary:v4];
+  v5 = [(WLKBasicContentMetadata *)&v12 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 wlk_numberForKey:@"seasonNumber"];
+    v6 = [dictionaryCopy wlk_numberForKey:@"seasonNumber"];
     seasonNumber = v5->_seasonNumber;
     v5->_seasonNumber = v6;
 
-    v8 = [v4 wlk_stringForKey:@"showId"];
+    v8 = [dictionaryCopy wlk_stringForKey:@"showId"];
     v9 = [v8 copy];
     canonicalShowID = v5->_canonicalShowID;
     v5->_canonicalShowID = v9;

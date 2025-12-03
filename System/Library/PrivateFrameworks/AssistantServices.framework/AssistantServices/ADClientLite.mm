@@ -1,15 +1,15 @@
 @interface ADClientLite
-- (ADClientLite)initWithListener:(id)a3 connection:(id)a4;
-- (void)adRequestDidReceiveCommand:(id)a3 reply:(id)a4;
-- (void)handleRemoteCommand:(id)a3 afterCurrentRequest:(BOOL)a4 isOneWay:(BOOL)a5 completion:(id)a6;
+- (ADClientLite)initWithListener:(id)listener connection:(id)connection;
+- (void)adRequestDidReceiveCommand:(id)command reply:(id)reply;
+- (void)handleRemoteCommand:(id)command afterCurrentRequest:(BOOL)request isOneWay:(BOOL)way completion:(id)completion;
 @end
 
 @implementation ADClientLite
 
-- (void)adRequestDidReceiveCommand:(id)a3 reply:(id)a4
+- (void)adRequestDidReceiveCommand:(id)command reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  replyCopy = reply;
   v8 = self->_outstandingCommandGroup;
   dispatch_group_enter(v8);
   v18[0] = _NSConcreteStackBlock;
@@ -17,8 +17,8 @@
   v18[2] = sub_10017828C;
   v18[3] = &unk_100513DA0;
   v19 = v8;
-  v20 = v7;
-  v9 = v7;
+  v20 = replyCopy;
+  v9 = replyCopy;
   v10 = v8;
   v11 = objc_retainBlock(v18);
   queue = self->_queue;
@@ -26,41 +26,41 @@
   block[1] = 3221225472;
   block[2] = sub_1001782F4;
   block[3] = &unk_10051E088;
-  v16 = v6;
+  v16 = commandCopy;
   v17 = v11;
   block[4] = self;
-  v13 = v6;
+  v13 = commandCopy;
   v14 = v11;
   dispatch_async(queue, block);
 }
 
-- (void)handleRemoteCommand:(id)a3 afterCurrentRequest:(BOOL)a4 isOneWay:(BOOL)a5 completion:(id)a6
+- (void)handleRemoteCommand:(id)command afterCurrentRequest:(BOOL)request isOneWay:(BOOL)way completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v10 = a3;
-  v11 = a6;
+  wayCopy = way;
+  requestCopy = request;
+  commandCopy = command;
+  completionCopy = completion;
   v12 = +[AFPreferences sharedPreferences];
-  v13 = [v12 assistantIsEnabled];
+  assistantIsEnabled = [v12 assistantIsEnabled];
 
   v14 = AFSiriLogContextDaemon;
-  if (v13)
+  if (assistantIsEnabled)
   {
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
     {
       *buf = 136315906;
       v52 = "[ADClientLite handleRemoteCommand:afterCurrentRequest:isOneWay:completion:]";
       v53 = 2112;
-      v54 = v10;
+      v54 = commandCopy;
       v55 = 1024;
-      v56 = v8;
+      v56 = requestCopy;
       v57 = 1024;
-      v58 = v7;
+      v58 = wayCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%s command = %@, afterCurrent = %d, isOneWay = %d", buf, 0x22u);
     }
 
     v15 = +[ADCommandCenter sharedCommandCenter];
-    v16 = [v15 acquireShutdownAssertion];
+    acquireShutdownAssertion = [v15 acquireShutdownAssertion];
 
     v17 = self->_queue;
     v47[0] = _NSConcreteStackBlock;
@@ -68,11 +68,11 @@
     v47[2] = sub_100178924;
     v47[3] = &unk_100513D00;
     v47[4] = self;
-    v18 = v10;
+    v18 = commandCopy;
     v19 = v17;
     v48 = v19;
-    v50 = v11;
-    v20 = v16;
+    v50 = completionCopy;
+    v20 = acquireShutdownAssertion;
     v49 = v20;
     v21 = objc_retainBlock(v47);
     v22 = [AFThreeArgumentSafetyBlock alloc];
@@ -88,11 +88,11 @@
     v40[3] = &unk_10051C958;
     v24 = [v22 initWithBlock:v45];
     v41 = v24;
-    v42 = self;
+    selfCopy = self;
     v32 = v18;
     v25 = v18;
     v43 = v25;
-    v44 = v8;
+    v44 = requestCopy;
     v26 = objc_retainBlock(v40);
     v33[0] = _NSConcreteStackBlock;
     v33[1] = 3221225472;
@@ -100,15 +100,15 @@
     v33[3] = &unk_100513D78;
     v27 = v19;
     v34 = v27;
-    v38 = v8;
-    v39 = v7;
+    v38 = requestCopy;
+    v39 = wayCopy;
     v35 = v25;
-    v36 = self;
+    selfCopy2 = self;
     v37 = v24;
     v28 = v24;
     v29 = objc_retainBlock(v33);
     v30 = v29;
-    if (v8)
+    if (requestCopy)
     {
       WeakRetained = objc_loadWeakRetained(&self->_listener);
       [WeakRetained doClientWork:v30 withTimeoutBlock:v26];
@@ -119,7 +119,7 @@
       (v29[2])(v29);
     }
 
-    v10 = v32;
+    commandCopy = v32;
   }
 
   else
@@ -132,14 +132,14 @@
     }
 
     v20 = [AFError errorWithCode:18];
-    (*(v11 + 2))(v11, 0, v20);
+    (*(completionCopy + 2))(completionCopy, 0, v20);
   }
 }
 
-- (ADClientLite)initWithListener:(id)a3 connection:(id)a4
+- (ADClientLite)initWithListener:(id)listener connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v15.receiver = self;
   v15.super_class = ADClientLite;
   v8 = [(ADClientLite *)&v15 init];
@@ -155,8 +155,8 @@
     outstandingCommandGroup = v8->_outstandingCommandGroup;
     v8->_outstandingCommandGroup = v12;
 
-    objc_storeWeak(&v8->_listener, v6);
-    objc_storeWeak(&v8->_connection, v7);
+    objc_storeWeak(&v8->_listener, listenerCopy);
+    objc_storeWeak(&v8->_connection, connectionCopy);
   }
 
   return v8;

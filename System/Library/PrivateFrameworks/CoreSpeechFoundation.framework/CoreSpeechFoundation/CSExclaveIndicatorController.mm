@@ -1,25 +1,25 @@
 @interface CSExclaveIndicatorController
 - (CSExclaveIndicatorController)init;
-- (unint64_t)_getCSFSensorStatusWithExclaveSensorStatus:(unsigned int)a3;
+- (unint64_t)_getCSFSensorStatusWithExclaveSensorStatus:(unsigned int)status;
 - (unint64_t)fetchCurrentSensorStatus;
 - (unint64_t)sensorStart;
 - (unint64_t)sensorStop;
-- (void)copyBufferWithSize:(unsigned int)a3;
+- (void)copyBufferWithSize:(unsigned int)size;
 - (void)dealloc;
 @end
 
 @implementation CSExclaveIndicatorController
 
-- (unint64_t)_getCSFSensorStatusWithExclaveSensorStatus:(unsigned int)a3
+- (unint64_t)_getCSFSensorStatusWithExclaveSensorStatus:(unsigned int)status
 {
-  if (a3 - 1 > 3)
+  if (status - 1 > 3)
   {
     return 0;
   }
 
   else
   {
-    return qword_1DDB1F8A0[a3 - 1];
+    return qword_1DDB1F8A0[status - 1];
   }
 }
 
@@ -120,7 +120,7 @@
   return result;
 }
 
-- (void)copyBufferWithSize:(unsigned int)a3
+- (void)copyBufferWithSize:(unsigned int)size
 {
   v15 = *MEMORY[0x1E69E9840];
   buffer_port = self->_buffer_port;

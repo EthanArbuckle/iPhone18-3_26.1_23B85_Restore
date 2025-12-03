@@ -1,25 +1,25 @@
 @interface TodayTransitionDismissAnimation
 - (_TtC22SubscribePageExtension31TodayTransitionDismissAnimation)init;
-- (double)transitionDuration:(id)a3;
-- (void)animateTransition:(id)a3;
+- (double)transitionDuration:(id)duration;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation TodayTransitionDismissAnimation
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
-  if (!a3)
+  if (!duration)
   {
     return 0.0;
   }
 
-  v3 = [swift_unknownObjectRetain_n() containerView];
-  v4 = [v3 traitCollection];
+  containerView = [swift_unknownObjectRetain_n() containerView];
+  traitCollection = [containerView traitCollection];
 
-  LOBYTE(v3) = sub_1007537D4();
+  LOBYTE(containerView) = sub_1007537D4();
   swift_unknownObjectRelease_n();
   result = 0.61;
-  if (v3)
+  if (containerView)
   {
     return 0.62;
   }
@@ -27,19 +27,19 @@
   return result;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   sub_100524128(0);
-  if (*(&v5->super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension31TodayTransitionDismissAnimation_shouldUseReducedMotionTransition) == 1)
+  if (*(&selfCopy->super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension31TodayTransitionDismissAnimation_shouldUseReducedMotionTransition) == 1)
   {
-    sub_10054D31C(a3);
+    sub_10054D31C(transition);
   }
 
   else
   {
-    sub_10054CDDC(a3);
+    sub_10054CDDC(transition);
   }
 
   swift_unknownObjectRelease();

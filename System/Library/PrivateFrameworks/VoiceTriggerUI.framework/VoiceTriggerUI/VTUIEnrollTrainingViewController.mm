@@ -1,67 +1,67 @@
 @interface VTUIEnrollTrainingViewController
 - (BOOL)_hasPHSCloudDataForSpokenLanguage;
 - (BOOL)_isGreyMatterAvailable;
-- (BOOL)_isLocaleSupported:(id)a3;
+- (BOOL)_isLocaleSupported:(id)supported;
 - (BOOL)_shouldShowSiriDataSharingOptInView;
 - (BOOL)_siriLanguageIsIncompatibleWithPairedWatch;
 - (BOOL)allLanguageOptionsSupportCompactTrigger;
 - (VTUIEnrollTrainingViewController)init;
 - (VTUIEnrollTrainingViewControllerDelegate)delegate;
 - (id)_getSetupModeString;
-- (id)_retryStringForStatus:(int64_t)a3;
-- (id)init:(int64_t)a3;
-- (id)init:(int64_t)a3 withAppDomain:(id)a4;
-- (id)interpretAudioSource:(unint64_t)a3;
-- (int64_t)interpretSessionManagerResult:(id)a3 forInstruction:(int64_t)a4;
+- (id)_retryStringForStatus:(int64_t)status;
+- (id)init:(int64_t)init;
+- (id)init:(int64_t)init withAppDomain:(id)domain;
+- (id)interpretAudioSource:(unint64_t)source;
+- (int64_t)interpretSessionManagerResult:(id)result forInstruction:(int64_t)instruction;
 - (void)_advanceState;
 - (void)_becomeActive;
-- (void)_checkForPHSCloudDataIfNecessary:(id)a3;
+- (void)_checkForPHSCloudDataIfNecessary:(id)necessary;
 - (void)_cleanupAllViews;
 - (void)_cleanupHelper;
 - (void)_cleanupMyriad;
-- (void)_cleanupTrainingManagerWithCompletion:(id)a3;
-- (void)_cleanupTrainingManagerWithCompletion:(id)a3 status:(int64_t)a4;
-- (void)_configureTrainingWith:(int64_t)a3 withAppDomain:(id)a4;
+- (void)_cleanupTrainingManagerWithCompletion:(id)completion;
+- (void)_cleanupTrainingManagerWithCompletion:(id)completion status:(int64_t)status;
+- (void)_configureTrainingWith:(int64_t)with withAppDomain:(id)domain;
 - (void)_continueToCameraButtonBuddy;
 - (void)_continueToNextFromGM;
 - (void)_continueToNextFromSummarization;
 - (void)_continueToSummarizationFromGM;
-- (void)_continueToTrainingFromIntro:(id)a3;
+- (void)_continueToTrainingFromIntro:(id)intro;
 - (void)_continueToTrainingFromLanguageOptions;
-- (void)_continueToTrainingFromVoiceSelection:(id)a3;
+- (void)_continueToTrainingFromVoiceSelection:(id)selection;
 - (void)_continueToVoiceSelectionFromIntro;
 - (void)_createTrainingManagerIfNeeded;
 - (void)_didEnterBackground;
 - (void)_endSetup;
 - (void)_finishButtonTapped;
 - (void)_finishSiriSetup;
-- (void)_handleTrainingResultForNonRetryablePhraseWithResult:(id)a3;
-- (void)_handleTrainingResultForRetryablePhraseWithResult:(id)a3 shouldShowCheckMark:(BOOL)a4;
+- (void)_handleTrainingResultForNonRetryablePhraseWithResult:(id)result;
+- (void)_handleTrainingResultForRetryablePhraseWithResult:(id)result shouldShowCheckMark:(BOOL)mark;
 - (void)_hideInstruction;
 - (void)_hideIntroView;
 - (void)_initialSetup;
-- (void)_logVoiceSelection:(id)a3 randomlySelected:(BOOL)a4;
-- (void)_playSoundForStageAfterDelay:(double)a3;
+- (void)_logVoiceSelection:(id)selection randomlySelected:(BOOL)selected;
+- (void)_playSoundForStageAfterDelay:(double)delay;
 - (void)_prepareCameraButtonBuddy;
 - (void)_proceedAfterTrainingCompletionOrSkip;
 - (void)_proceedAfterVoiceSelectionOrSkip;
-- (void)_processDisambiguatedLanguageOption:(id)a3 commitLanguageCodeToPreferences:(BOOL)a4;
-- (void)_processIntroViewContinueAction:(id)a3 completion:(id)a4;
-- (void)_processLanguageSelectionAction:(id)a3;
-- (void)_processVTConfirmationLaterAction:(id)a3;
-- (void)_processVTConfirmationViewContinueAction:(id)a3;
+- (void)_processDisambiguatedLanguageOption:(id)option commitLanguageCodeToPreferences:(BOOL)preferences;
+- (void)_processIntroViewContinueAction:(id)action completion:(id)completion;
+- (void)_processLanguageSelectionAction:(id)action;
+- (void)_processVTConfirmationLaterAction:(id)action;
+- (void)_processVTConfirmationViewContinueAction:(id)action;
 - (void)_resetBackBarButtonItem;
 - (void)_resetEnrollment;
 - (void)_resetIdleTimer;
 - (void)_resetRightBarButtonItems;
 - (void)_resignActive;
 - (void)_retryAfterBadMicAlert;
-- (void)_retryInstruction:(BOOL)a3 withStatusMessage:(id)a4;
+- (void)_retryInstruction:(BOOL)instruction withStatusMessage:(id)message;
 - (void)_setInitialTriggerPhraseIfNotSet;
 - (void)_setInitialTriggerPhraseOnHome;
-- (void)_setIntroViewActionOnEnablementConfigurationDidLoad:(id)a3;
+- (void)_setIntroViewActionOnEnablementConfigurationDidLoad:(id)load;
 - (void)_setLanguageOptionsAndContinue;
-- (void)_setRightBarButtonItem:(id)a3;
+- (void)_setRightBarButtonItem:(id)item;
 - (void)_setupConstraintsAndAddGMIntroView;
 - (void)_setupEnrollTrainingView;
 - (void)_setupEnrollmentWithIntelligentLight;
@@ -69,8 +69,8 @@
 - (void)_setupMode;
 - (void)_setupMyriadCoordinator;
 - (void)_setupTrainingStates;
-- (void)_showBadMicAlertCompletion:(id)a3;
-- (void)_showBadMicAlertWithCompletion:(id)a3;
+- (void)_showBadMicAlertCompletion:(id)completion;
+- (void)_showBadMicAlertWithCompletion:(id)completion;
 - (void)_showCameraButtonBuddyControlOrSiriIntro;
 - (void)_showEducationView;
 - (void)_showEnrollmentSuccessView;
@@ -78,55 +78,55 @@
 - (void)_showRadarExitButton;
 - (void)_showSiriDataSharingOptIn;
 - (void)_showSiriIntroView;
-- (void)_showTrainingInstruction:(int64_t)a3 afterDelay:(double)a4 isRetry:(BOOL)a5 animate:(BOOL)a6;
+- (void)_showTrainingInstruction:(int64_t)instruction afterDelay:(double)delay isRetry:(BOOL)retry animate:(BOOL)animate;
 - (void)_showUnsupportedLocaleAlert;
-- (void)_showUnsupportedLocaleAlertCompletion:(id)a3;
+- (void)_showUnsupportedLocaleAlertCompletion:(id)completion;
 - (void)_showVTConfirmationView;
 - (void)_showVisualIntelligenceIntroIfNeeded;
-- (void)_showVoiceSelectionViewForRecognitionLanguage:(id)a3;
+- (void)_showVoiceSelectionViewForRecognitionLanguage:(id)language;
 - (void)_signalSingleEnrollmentSuccess;
 - (void)_startEnrollment;
 - (void)_startTraining;
-- (void)_startTrainingIfNecessaryWithViewCleanupBlock:(id)a3 cloudOperationCompletionBlock:(id)a4;
+- (void)_startTrainingIfNecessaryWithViewCleanupBlock:(id)block cloudOperationCompletionBlock:(id)completionBlock;
 - (void)_tearDownDataSharingViews;
-- (void)_updatePageNumberForInstruction:(int64_t)a3;
-- (void)_updateTrainingLabelsForInstruction:(int64_t)a3;
+- (void)_updatePageNumberForInstruction:(int64_t)instruction;
+- (void)_updateTrainingLabelsForInstruction:(int64_t)instruction;
 - (void)_updateViewBackground;
-- (void)_warnForLanguageCompatibilityIfNecessary:(id)a3;
-- (void)aboutTapped:(id)a3;
-- (void)cameraButtonBuddyViewControllerDidFinish:(id)a3;
+- (void)_warnForLanguageCompatibilityIfNecessary:(id)necessary;
+- (void)aboutTapped:(id)tapped;
+- (void)cameraButtonBuddyViewControllerDidFinish:(id)finish;
 - (void)cancelTraining;
 - (void)dealloc;
-- (void)enrollTrainingViewRadarButtonPressed:(id)a3;
-- (void)fetchaudioSessionID:(id)a3;
-- (void)finish:(id)a3;
-- (void)onboardingController:(id)a3 requestsPushingTo:(id)a4;
+- (void)enrollTrainingViewRadarButtonPressed:(id)pressed;
+- (void)fetchaudioSessionID:(id)d;
+- (void)finish:(id)finish;
+- (void)onboardingController:(id)controller requestsPushingTo:(id)to;
 - (void)prewarm;
 - (void)restartFromIntroView;
-- (void)returnFromVoiceSelectionToIntroView:(id)a3;
-- (void)scdaShouldAbortAnotherDeviceBetter:(id)a3;
-- (void)scdaShouldContinue:(id)a3;
-- (void)shouldAbortAnotherDeviceBetter:(id)a3;
-- (void)shouldContinue:(id)a3;
-- (void)siriDataSharingOptInRequestsDismissalFromPresenter:(id)a3;
-- (void)siriEducationViewControllerContinuePressed:(id)a3;
-- (void)siriGMIntroViewControllerContinuePressed:(id)a3;
+- (void)returnFromVoiceSelectionToIntroView:(id)view;
+- (void)scdaShouldAbortAnotherDeviceBetter:(id)better;
+- (void)scdaShouldContinue:(id)continue;
+- (void)shouldAbortAnotherDeviceBetter:(id)better;
+- (void)shouldContinue:(id)continue;
+- (void)siriDataSharingOptInRequestsDismissalFromPresenter:(id)presenter;
+- (void)siriEducationViewControllerContinuePressed:(id)pressed;
+- (void)siriGMIntroViewControllerContinuePressed:(id)pressed;
 - (void)siriIntroViewControllerPrivacyLinkTapped;
-- (void)siriLanguageSpokenLanguageCodeDidChange:(id)a3;
-- (void)skipAssistant:(id)a3;
-- (void)skipTraining:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)userDidTapContinue:(id)a3;
+- (void)siriLanguageSpokenLanguageCodeDidChange:(id)change;
+- (void)skipAssistant:(id)assistant;
+- (void)skipTraining:(id)training;
+- (void)traitCollectionDidChange:(id)change;
+- (void)userDidTapContinue:(id)continue;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation VTUIEnrollTrainingViewController
 
-- (id)init:(int64_t)a3 withAppDomain:(id)a4
+- (id)init:(int64_t)init withAppDomain:(id)domain
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  domainCopy = domain;
   v13.receiver = self;
   v13.super_class = VTUIEnrollTrainingViewController;
   v7 = [(VTUIEnrollTrainingViewController *)&v13 init];
@@ -138,14 +138,14 @@
       *buf = 136315394;
       v15 = "[VTUIEnrollTrainingViewController init:withAppDomain:]";
       v16 = 2048;
-      v17 = a3;
+      initCopy = init;
       _os_log_impl(&dword_2728BC000, v8, OS_LOG_TYPE_DEFAULT, "%s init with enrollmentMode: %ld", buf, 0x16u);
     }
 
     v9 = *MEMORY[0x277D65458];
-    if (v6)
+    if (domainCopy)
     {
-      v10 = v6;
+      v10 = domainCopy;
     }
 
     else
@@ -153,14 +153,14 @@
       v10 = *MEMORY[0x277D65458];
     }
 
-    [(VTUIEnrollTrainingViewController *)v7 _configureTrainingWith:a3 withAppDomain:v10];
+    [(VTUIEnrollTrainingViewController *)v7 _configureTrainingWith:init withAppDomain:v10];
   }
 
   v11 = *MEMORY[0x277D85DE8];
   return v7;
 }
 
-- (id)init:(int64_t)a3
+- (id)init:(int64_t)init
 {
   v13 = *MEMORY[0x277D85DE8];
   v8.receiver = self;
@@ -174,24 +174,24 @@
       *buf = 136315394;
       v10 = "[VTUIEnrollTrainingViewController init:]";
       v11 = 2048;
-      v12 = a3;
+      initCopy = init;
       _os_log_impl(&dword_2728BC000, v5, OS_LOG_TYPE_DEFAULT, "%s init with enrollmentMode: %ld", buf, 0x16u);
     }
 
-    [(VTUIEnrollTrainingViewController *)v4 _configureTrainingWith:a3 withAppDomain:*MEMORY[0x277D65458]];
+    [(VTUIEnrollTrainingViewController *)v4 _configureTrainingWith:init withAppDomain:*MEMORY[0x277D65458]];
   }
 
   v6 = *MEMORY[0x277D85DE8];
   return v4;
 }
 
-- (void)_configureTrainingWith:(int64_t)a3 withAppDomain:(id)a4
+- (void)_configureTrainingWith:(int64_t)with withAppDomain:(id)domain
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  domainCopy = domain;
   [(VTUIEnrollTrainingViewController *)self _initialSetup];
   v8 = 1;
-  if (a3 != 1 && a3 != 7)
+  if (with != 1 && with != 7)
   {
     v8 = PSIsRunningInAssistant();
   }
@@ -200,15 +200,15 @@
   [v9 setIsBuddyOrFollowUp:v8];
 
   v10 = +[VTUIStyle sharedStyle];
-  [v10 setEnrollmentMode:a3];
+  [v10 setEnrollmentMode:with];
 
   v11 = +[VTUIStyle sharedStyle];
-  v12 = [v11 shouldShowVoiceTriggerConfirmationInBuddy];
+  shouldShowVoiceTriggerConfirmationInBuddy = [v11 shouldShowVoiceTriggerConfirmationInBuddy];
 
-  v13 = a3;
-  if (v12)
+  withCopy2 = with;
+  if (shouldShowVoiceTriggerConfirmationInBuddy)
   {
-    v13 = a3;
+    withCopy2 = with;
     if (v8)
     {
       v14 = VTUILogContextFacility;
@@ -219,12 +219,12 @@
         _os_log_impl(&dword_2728BC000, v14, OS_LOG_TYPE_DEFAULT, "%s enrollment mode set for VT confirmation", &v19, 0xCu);
       }
 
-      v13 = 6;
+      withCopy2 = 6;
     }
   }
 
-  self->_enrollmentMode = v13;
-  objc_storeStrong(&self->_voiceProfileAppDomain, a4);
+  self->_enrollmentMode = withCopy2;
+  objc_storeStrong(&self->_voiceProfileAppDomain, domain);
   if (self->_enrollmentMode == 2)
   {
     if ([(VTUIEnrollTrainingViewController *)self _shouldPresentLanguageDisambiguation])
@@ -244,7 +244,7 @@
 
   [(VTUISiriDataSharingOptInPresenter *)self->_siriDataSharingOptInPresenter setPresentationDelegate:self];
   v17 = self->_siriDataSharingOptInPresenter;
-  if (a3 == 1)
+  if (with == 1)
   {
     [(VTUISiriDataSharingOptInPresenter *)v17 setSourceOfChange:7];
     [(VTUISiriDataSharingOptInPresenter *)self->_siriDataSharingOptInPresenter setReasonForChange:@"followup"];
@@ -297,9 +297,9 @@
     v2->_siriDataSharingOptInPresenter = v5;
 
     [(VTUISiriDataSharingOptInPresenter *)v2->_siriDataSharingOptInPresenter setPresentationDelegate:v2];
-    v7 = [v4 isBuddyOrFollowUp];
+    isBuddyOrFollowUp = [v4 isBuddyOrFollowUp];
     v8 = v2->_siriDataSharingOptInPresenter;
-    if (v7)
+    if (isBuddyOrFollowUp)
     {
       v9 = 1;
     }
@@ -332,14 +332,14 @@
   [(VTUIAnalytics *)self->_analyticsEvent logEvent];
   if ([(VTUIEnrollTrainingViewController *)self _isTrainingInProgress])
   {
-    v3 = [MEMORY[0x277D653F8] sharedInstance];
-    v4 = [(SSRVTUITrainingManager *)self->_trainingManager voiceProfile];
-    v5 = [v3 deleteUserVoiceProfile:v4];
+    mEMORY[0x277D653F8] = [MEMORY[0x277D653F8] sharedInstance];
+    voiceProfile = [(SSRVTUITrainingManager *)self->_trainingManager voiceProfile];
+    v5 = [mEMORY[0x277D653F8] deleteUserVoiceProfile:voiceProfile];
   }
 
   [(VTUIEnrollTrainingViewController *)self _cleanupTrainingManagerWithCompletion:0];
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v7.receiver = self;
   v7.super_class = VTUIEnrollTrainingViewController;
@@ -358,17 +358,17 @@
   siriLanguage = self->_siriLanguage;
   self->_siriLanguage = v5;
 
-  v7 = [(AFUISiriLanguage *)self->_siriLanguage spokenLanguageCode];
+  spokenLanguageCode = [(AFUISiriLanguage *)self->_siriLanguage spokenLanguageCode];
   spokenLanguageCode = self->_spokenLanguageCode;
-  self->_spokenLanguageCode = v7;
+  self->_spokenLanguageCode = spokenLanguageCode;
 
   v9 = objc_alloc_init(VTUIAnalytics);
   analyticsEvent = self->_analyticsEvent;
   self->_analyticsEvent = v9;
 
   v11 = self->_analyticsEvent;
-  v12 = [(VTUIEnrollTrainingViewController *)self _getSetupModeString];
-  [(VTUIAnalytics *)v11 setSetupMode:v12];
+  _getSetupModeString = [(VTUIEnrollTrainingViewController *)self _getSetupModeString];
+  [(VTUIAnalytics *)v11 setSetupMode:_getSetupModeString];
 
   v13 = objc_alloc_init(MEMORY[0x277CEF3A8]);
   settingsConnection = self->_settingsConnection;
@@ -380,8 +380,8 @@
 
   if (!self->_spokenLanguageCode)
   {
-    v17 = [MEMORY[0x277CEF368] sharedPreferences];
-    v18 = [v17 bestSupportedLanguageCodeForLanguageCode:0];
+    mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+    v18 = [mEMORY[0x277CEF368] bestSupportedLanguageCodeForLanguageCode:0];
     v19 = self->_spokenLanguageCode;
     self->_spokenLanguageCode = v18;
 
@@ -429,13 +429,13 @@
     v27 = self->_spokenLanguageCode;
     v28 = v26;
     v29 = +[VTUIStringsHelper sharedStringsHelper];
-    v30 = [v29 heySiriTriggerPhrase];
+    heySiriTriggerPhrase = [v29 heySiriTriggerPhrase];
     v42 = 136315650;
     v43 = "[VTUIEnrollTrainingViewController _initialSetup]";
     v44 = 2112;
     v45 = v27;
     v46 = 2112;
-    v47 = v30;
+    v47 = heySiriTriggerPhrase;
     _os_log_impl(&dword_2728BC000, v28, OS_LOG_TYPE_DEFAULT, "%s VoiceTriggerUI: Spoken Language Code: %@. (Trigger: '%@')", &v42, 0x20u);
   }
 
@@ -473,10 +473,10 @@
   audioHintPlayer = self->_audioHintPlayer;
   self->_audioHintPlayer = v37;
 
-  v39 = [MEMORY[0x277D75418] currentDevice];
-  v40 = [v39 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v40 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     [MEMORY[0x277D37610] preferredContentSize];
     [(VTUIEnrollTrainingViewController *)self setPreferredContentSize:?];
@@ -488,17 +488,17 @@
 - (void)_setupMode
 {
   v3 = +[VTUIStyle sharedStyle];
-  v4 = [v3 isBuddyOrFollowUp];
+  isBuddyOrFollowUp = [v3 isBuddyOrFollowUp];
 
   v5 = +[VTUIStyle sharedStyle];
   v6 = v5;
-  if (v4)
+  if (isBuddyOrFollowUp)
   {
-    v7 = [v5 isHeySiriAlwaysOn];
+    isHeySiriAlwaysOn = [v5 isHeySiriAlwaysOn];
 
     v8 = +[VTUIStyle sharedStyle];
     v9 = v8;
-    if (v7)
+    if (isHeySiriAlwaysOn)
     {
       v10 = 0;
     }
@@ -544,14 +544,14 @@
     _os_log_impl(&dword_2728BC000, v4, OS_LOG_TYPE_DEFAULT, "%s Main View Loaded", buf, 0xCu);
   }
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel__resignActive name:*MEMORY[0x277D76768] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__resignActive name:*MEMORY[0x277D76768] object:0];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 addObserver:self selector:sel__didEnterBackground name:*MEMORY[0x277D76660] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__didEnterBackground name:*MEMORY[0x277D76660] object:0];
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 addObserver:self selector:sel__becomeActive name:*MEMORY[0x277D76648] object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel__becomeActive name:*MEMORY[0x277D76648] object:0];
 
   if (self->_skipToEndForTesting)
   {
@@ -561,12 +561,12 @@
   }
 
   v8 = +[VTUIStyle sharedStyle];
-  v9 = [v8 shouldPresentDisclosureForCompactVoiceTrigger];
+  shouldPresentDisclosureForCompactVoiceTrigger = [v8 shouldPresentDisclosureForCompactVoiceTrigger];
 
-  v10 = [MEMORY[0x277CEF368] sharedPreferences];
-  if ([v10 assistantIsEnabled])
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  if ([mEMORY[0x277CEF368] assistantIsEnabled])
   {
-    v11 = (self->_enrollmentMode == 0) & (v9 ^ 1u);
+    v11 = (self->_enrollmentMode == 0) & (shouldPresentDisclosureForCompactVoiceTrigger ^ 1u);
 
     p_skipToSiriDataSharingOptInForTesting = &self->_skipToSiriDataSharingOptInForTesting;
     if (!self->_skipToSiriDataSharingOptInForTesting)
@@ -621,14 +621,14 @@ LABEL_15:
   trainingViewMediator = self->_trainingViewMediator;
   if (trainingViewMediator)
   {
-    v3 = [(VTUITrainingViewMediator *)trainingViewMediator isMemberOfClass:objc_opt_class()];
+    isOptedIn = [(VTUITrainingViewMediator *)trainingViewMediator isMemberOfClass:objc_opt_class()];
     v4 = VTUILogContextFacility;
     if (os_log_type_enabled(VTUILogContextFacility, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 136315394;
       v12 = "[VTUIEnrollTrainingViewController _isGreyMatterAvailable]";
       v13 = 1024;
-      v14 = v3;
+      v14 = isOptedIn;
       _os_log_impl(&dword_2728BC000, v4, OS_LOG_TYPE_DEFAULT, "%s #GMAvailability - from the current session: %d", &v11, 0x12u);
     }
   }
@@ -643,20 +643,20 @@ LABEL_15:
       _os_log_impl(&dword_2728BC000, v5, OS_LOG_TYPE_DEFAULT, "%s #GMAvailability - true:  _enrollmentMode == kVTUIEnrollmentModeGM", &v11, 0xCu);
     }
 
-    LOBYTE(v3) = 1;
+    LOBYTE(isOptedIn) = 1;
   }
 
   else if (+[_TtC14VoiceTriggerUI23GMAvailabilityViewModel isDeviceEligible])
   {
     v6 = objc_alloc_init(MEMORY[0x277CFB468]);
-    v3 = [v6 isOptedIn];
+    isOptedIn = [v6 isOptedIn];
     v7 = VTUILogContextFacility;
     if (os_log_type_enabled(VTUILogContextFacility, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 136315394;
       v12 = "[VTUIEnrollTrainingViewController _isGreyMatterAvailable]";
       v13 = 1024;
-      v14 = v3;
+      v14 = isOptedIn;
       _os_log_impl(&dword_2728BC000, v7, OS_LOG_TYPE_DEFAULT, "%s #GMAvailability - from CSFGMOptIn: %d", &v11, 0x12u);
     }
   }
@@ -664,18 +664,18 @@ LABEL_15:
   else
   {
     v8 = VTUILogContextFacility;
-    LOBYTE(v3) = 0;
+    LOBYTE(isOptedIn) = 0;
     if (os_log_type_enabled(VTUILogContextFacility, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 136315138;
       v12 = "[VTUIEnrollTrainingViewController _isGreyMatterAvailable]";
       _os_log_impl(&dword_2728BC000, v8, OS_LOG_TYPE_DEFAULT, "%s #GMAvailability - false: ![GMAvailabilityViewModel isDeviceEligible]", &v11, 0xCu);
-      LOBYTE(v3) = 0;
+      LOBYTE(isOptedIn) = 0;
     }
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return v3;
+  return isOptedIn;
 }
 
 - (void)_setupEnrollTrainingView
@@ -705,8 +705,8 @@ LABEL_15:
   }
 
   v4 = [VTUIEnrollTrainingView alloc];
-  v5 = [(VTUIEnrollTrainingViewController *)self view];
-  [v5 bounds];
+  view = [(VTUIEnrollTrainingViewController *)self view];
+  [view bounds];
   v6 = [(VTUIEnrollTrainingView *)v4 initWithFrame:?];
 
   [(VTUIEnrollTrainingView *)v6 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -720,17 +720,17 @@ LABEL_15:
     [(VTUITrainingViewMediator *)self->_trainingViewMediator hideSkipButton:1];
   }
 
-  v9 = [(VTUIEnrollTrainingViewController *)self view];
-  [v9 addSubview:v6];
+  view2 = [(VTUIEnrollTrainingViewController *)self view];
+  [view2 addSubview:v6];
   v10 = MEMORY[0x277CCAAD0];
   v11 = _NSDictionaryOfVariableBindings(&cfstr_Enrolltraining.isa, v6, 0);
   v12 = [v10 constraintsWithVisualFormat:@"H:|[enrollTrainingView]|" options:0 metrics:0 views:v11];
-  [v9 addConstraints:v12];
+  [view2 addConstraints:v12];
 
   v13 = MEMORY[0x277CCAAD0];
   v14 = _NSDictionaryOfVariableBindings(&cfstr_Enrolltraining.isa, v6, 0);
   v15 = [v13 constraintsWithVisualFormat:@"V:|[enrollTrainingView]|" options:0 metrics:0 views:v14];
-  [v9 addConstraints:v15];
+  [view2 addConstraints:v15];
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -747,8 +747,8 @@ LABEL_15:
   }
 
   v4 = [VTUIEnrollTrainingIntelligentLightView alloc];
-  v5 = [(VTUIEnrollTrainingViewController *)self view];
-  [v5 bounds];
+  view = [(VTUIEnrollTrainingViewController *)self view];
+  [view bounds];
   v6 = [(VTUIEnrollTrainingIntelligentLightView *)v4 initWithFrame:?];
 
   [(VTUIEnrollTrainingIntelligentLightView *)v6 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -762,26 +762,26 @@ LABEL_15:
     [(VTUITrainingViewMediator *)self->_trainingViewMediator hideSkipButton:1];
   }
 
-  v9 = [(VTUIEnrollTrainingViewController *)self view];
-  [v9 addSubview:v6];
+  view2 = [(VTUIEnrollTrainingViewController *)self view];
+  [view2 addSubview:v6];
   v10 = MEMORY[0x277CCAAD0];
   v11 = _NSDictionaryOfVariableBindings(&cfstr_Trainingview.isa, v6, 0);
   v12 = [v10 constraintsWithVisualFormat:@"H:|[trainingView]|" options:0 metrics:0 views:v11];
-  [v9 addConstraints:v12];
+  [view2 addConstraints:v12];
 
   v13 = MEMORY[0x277CCAAD0];
   v14 = _NSDictionaryOfVariableBindings(&cfstr_Trainingview.isa, v6, 0);
   v15 = [v13 constraintsWithVisualFormat:@"V:|[trainingView]|" options:0 metrics:0 views:v14];
-  [v9 addConstraints:v15];
+  [view2 addConstraints:v15];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   if (self->_enrollmentMode != 2)
   {
-    v5 = [(VTUIEnrollmentSetupIntroViewControlling *)self->_introViewController view:a4];
+    v5 = [(VTUIEnrollmentSetupIntroViewControlling *)self->_introViewController view:coordinator];
     [v5 setNeedsUpdateConstraints];
   }
 
@@ -790,21 +790,21 @@ LABEL_15:
   [(VTUITrainingViewMediator *)trainingViewMediator setNeedsUpdateConstraints];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = VTUIEnrollTrainingViewController;
-  [(VTUIEnrollTrainingViewController *)&v4 traitCollectionDidChange:a3];
+  [(VTUIEnrollTrainingViewController *)&v4 traitCollectionDidChange:change];
   [(VTUIEnrollTrainingViewController *)self _updateViewBackground];
 }
 
 - (void)_updateViewBackground
 {
-  v3 = [(VTUIEnrollTrainingViewController *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(VTUIEnrollTrainingViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  v6 = [(VTUIEnrollTrainingViewController *)self view];
-  if (v4 == 2)
+  view = [(VTUIEnrollTrainingViewController *)self view];
+  if (userInterfaceStyle == 2)
   {
     [MEMORY[0x277D75348] blackColor];
   }
@@ -814,7 +814,7 @@ LABEL_15:
     [MEMORY[0x277D75348] whiteColor];
   }
   v5 = ;
-  [v6 setBackgroundColor:v5];
+  [view setBackgroundColor:v5];
 }
 
 - (void)_becomeActive
@@ -897,8 +897,8 @@ LABEL_15:
   self->_isResignedActive = 1;
   [(VTUIEnrollTrainingViewController *)self _hideTrainingElements];
   [(VTUIEnrollTrainingViewController *)self _resetTrainingManager];
-  v4 = [(VTUIEnrollTrainingViewController *)self audioHintPlayer];
-  [v4 cleanup];
+  audioHintPlayer = [(VTUIEnrollTrainingViewController *)self audioHintPlayer];
+  [audioHintPlayer cleanup];
 
   if (self->_currentTrainingState <= 4)
   {
@@ -925,9 +925,9 @@ LABEL_15:
     [(VTUITrainingViewMediator *)self->_trainingViewMediator clearInstructionLabel];
     if (self->_cachedColorForNavigationUI)
     {
-      v4 = [(VTUIEnrollTrainingViewController *)self navigationController];
-      v5 = [v4 navigationBar];
-      [v5 setTintColor:self->_cachedColorForNavigationUI];
+      navigationController = [(VTUIEnrollTrainingViewController *)self navigationController];
+      navigationBar = [navigationController navigationBar];
+      [navigationBar setTintColor:self->_cachedColorForNavigationUI];
 
       cachedColorForNavigationUI = self->_cachedColorForNavigationUI;
       self->_cachedColorForNavigationUI = 0;
@@ -943,16 +943,16 @@ LABEL_15:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_showBadMicAlertWithCompletion:(id)a3
+- (void)_showBadMicAlertWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __67__VTUIEnrollTrainingViewController__showBadMicAlertWithCompletion___block_invoke;
   v6[3] = &unk_279E541D0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(VTUIEnrollTrainingViewController *)self _cleanupTrainingManagerWithCompletion:v6];
 }
 
@@ -987,11 +987,11 @@ uint64_t __67__VTUIEnrollTrainingViewController__showBadMicAlertWithCompletion__
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isLocaleSupported:(id)a3
+- (BOOL)_isLocaleSupported:(id)supported
 {
-  v3 = a3;
+  supportedCopy = supported;
   v4 = AFPreferencesSupportedLanguages();
-  v5 = [v4 containsObject:v3];
+  v5 = [v4 containsObject:supportedCopy];
 
   return v5;
 }
@@ -1040,14 +1040,14 @@ void __63__VTUIEnrollTrainingViewController__showUnsupportedLocaleAlert__block_i
 {
   v50[5] = *MEMORY[0x277D85DE8];
   v28 = +[VTUIStyle sharedStyle];
-  v3 = [v28 shouldSetupForMultipleTriggerPhrases];
-  [(VTUIAudioHintPlayer *)self->_audioHintPlayer updateIfNeededForUsesMultipleTriggers:v3];
-  v4 = [(VTUIAudioHintPlayer *)self->_audioHintPlayer outputVoice];
-  if (v3)
+  shouldSetupForMultipleTriggerPhrases = [v28 shouldSetupForMultipleTriggerPhrases];
+  [(VTUIAudioHintPlayer *)self->_audioHintPlayer updateIfNeededForUsesMultipleTriggers:shouldSetupForMultipleTriggerPhrases];
+  outputVoice = [(VTUIAudioHintPlayer *)self->_audioHintPlayer outputVoice];
+  if (shouldSetupForMultipleTriggerPhrases)
   {
     v48[0] = @"Instruction";
     v27 = +[VTUIStringsHelper sharedStringsHelper];
-    [v27 uiLocalizedStringForKey:@"TEXT_TITLE_UTT1" usesMultipleTriggers:1 siriVoice:v4];
+    [v27 uiLocalizedStringForKey:@"TEXT_TITLE_UTT1" usesMultipleTriggers:1 siriVoice:outputVoice];
     v26 = v48[1] = @"RetryOnFail";
     v49[0] = v26;
     v49[1] = MEMORY[0x277CBEC28];
@@ -1055,7 +1055,7 @@ void __63__VTUIEnrollTrainingViewController__showUnsupportedLocaleAlert__block_i
     v50[0] = v25;
     v46[0] = @"Instruction";
     v24 = +[VTUIStringsHelper sharedStringsHelper];
-    v5 = [v24 uiLocalizedStringForKey:@"TEXT_TITLE_UTT2" usesMultipleTriggers:0 siriVoice:v4];
+    v5 = [v24 uiLocalizedStringForKey:@"TEXT_TITLE_UTT2" usesMultipleTriggers:0 siriVoice:outputVoice];
     v46[1] = @"RetryOnFail";
     v6 = MEMORY[0x277CBEC38];
     v23 = v5;
@@ -1065,7 +1065,7 @@ void __63__VTUIEnrollTrainingViewController__showUnsupportedLocaleAlert__block_i
     v50[1] = v22;
     v44[0] = @"Instruction";
     v21 = +[VTUIStringsHelper sharedStringsHelper];
-    [v21 uiLocalizedStringForKey:@"TEXT_TITLE_UTT3" usesMultipleTriggers:1 siriVoice:v4];
+    [v21 uiLocalizedStringForKey:@"TEXT_TITLE_UTT3" usesMultipleTriggers:1 siriVoice:outputVoice];
     v45[0] = v44[1] = @"RetryOnFail";
     v20 = v45[0];
     v45[1] = v6;
@@ -1073,7 +1073,7 @@ void __63__VTUIEnrollTrainingViewController__showUnsupportedLocaleAlert__block_i
     v50[2] = v7;
     v42[0] = @"Instruction";
     v8 = +[VTUIStringsHelper sharedStringsHelper];
-    v9 = [v8 uiLocalizedStringForKey:@"TEXT_TITLE_UTT4" usesMultipleTriggers:0 siriVoice:v4];
+    v9 = [v8 uiLocalizedStringForKey:@"TEXT_TITLE_UTT4" usesMultipleTriggers:0 siriVoice:outputVoice];
     v42[1] = @"RetryOnFail";
     v43[0] = v9;
     v43[1] = v6;
@@ -1081,7 +1081,7 @@ void __63__VTUIEnrollTrainingViewController__showUnsupportedLocaleAlert__block_i
     v50[3] = v10;
     v40[0] = @"Instruction";
     v11 = +[VTUIStringsHelper sharedStringsHelper];
-    v12 = [v11 uiLocalizedStringForKey:@"TEXT_TITLE_UTT5" usesMultipleTriggers:1 siriVoice:v4];
+    v12 = [v11 uiLocalizedStringForKey:@"TEXT_TITLE_UTT5" usesMultipleTriggers:1 siriVoice:outputVoice];
     v40[1] = @"RetryOnFail";
     v41[0] = v12;
     v41[1] = v6;
@@ -1094,7 +1094,7 @@ void __63__VTUIEnrollTrainingViewController__showUnsupportedLocaleAlert__block_i
   {
     v37[0] = @"Instruction";
     v27 = +[VTUIStringsHelper sharedStringsHelper];
-    [v27 uiLocalizedStringForKey:@"TEXT_TITLE_UTT1" usesMultipleTriggers:0 siriVoice:v4];
+    [v27 uiLocalizedStringForKey:@"TEXT_TITLE_UTT1" usesMultipleTriggers:0 siriVoice:outputVoice];
     v26 = v37[1] = @"RetryOnFail";
     v38[0] = v26;
     v38[1] = MEMORY[0x277CBEC28];
@@ -1102,7 +1102,7 @@ void __63__VTUIEnrollTrainingViewController__showUnsupportedLocaleAlert__block_i
     v39[0] = v25;
     v35[0] = @"Instruction";
     v24 = +[VTUIStringsHelper sharedStringsHelper];
-    v15 = [v24 uiLocalizedStringForKey:@"TEXT_TITLE_UTT2" usesMultipleTriggers:0 siriVoice:v4];
+    v15 = [v24 uiLocalizedStringForKey:@"TEXT_TITLE_UTT2" usesMultipleTriggers:0 siriVoice:outputVoice];
     v35[1] = @"RetryOnFail";
     v16 = MEMORY[0x277CBEC38];
     v23 = v15;
@@ -1112,7 +1112,7 @@ void __63__VTUIEnrollTrainingViewController__showUnsupportedLocaleAlert__block_i
     v39[1] = v22;
     v33[0] = @"Instruction";
     v21 = +[VTUIStringsHelper sharedStringsHelper];
-    [v21 uiLocalizedStringForKey:@"TEXT_TITLE_UTT3" usesMultipleTriggers:0 siriVoice:v4];
+    [v21 uiLocalizedStringForKey:@"TEXT_TITLE_UTT3" usesMultipleTriggers:0 siriVoice:outputVoice];
     v34[0] = v33[1] = @"RetryOnFail";
     v20 = v34[0];
     v34[1] = v16;
@@ -1120,7 +1120,7 @@ void __63__VTUIEnrollTrainingViewController__showUnsupportedLocaleAlert__block_i
     v39[2] = v7;
     v31[0] = @"Instruction";
     v8 = +[VTUIStringsHelper sharedStringsHelper];
-    v9 = [v8 uiLocalizedStringForKey:@"TEXT_TITLE_UTT4" usesMultipleTriggers:0 siriVoice:v4];
+    v9 = [v8 uiLocalizedStringForKey:@"TEXT_TITLE_UTT4" usesMultipleTriggers:0 siriVoice:outputVoice];
     v31[1] = @"RetryOnFail";
     v32[0] = v9;
     v32[1] = v16;
@@ -1128,7 +1128,7 @@ void __63__VTUIEnrollTrainingViewController__showUnsupportedLocaleAlert__block_i
     v39[3] = v10;
     v29[0] = @"Instruction";
     v11 = +[VTUIStringsHelper sharedStringsHelper];
-    v12 = [v11 uiLocalizedStringForKey:@"TEXT_TITLE_UTT5" usesMultipleTriggers:0 siriVoice:v4];
+    v12 = [v11 uiLocalizedStringForKey:@"TEXT_TITLE_UTT5" usesMultipleTriggers:0 siriVoice:outputVoice];
     v29[1] = @"RetryOnFail";
     v30[0] = v12;
     v30[1] = v16;
@@ -1146,11 +1146,11 @@ void __63__VTUIEnrollTrainingViewController__showUnsupportedLocaleAlert__block_i
 
 - (void)_resetIdleTimer
 {
-  v2 = [MEMORY[0x277D75128] sharedApplication];
-  [v2 setIdleTimerDisabled:1];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] setIdleTimerDisabled:1];
 
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  [v3 setIdleTimerDisabled:0];
+  mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128]2 setIdleTimerDisabled:0];
 }
 
 - (void)_showGMIntroView
@@ -1166,11 +1166,11 @@ void __63__VTUIEnrollTrainingViewController__showUnsupportedLocaleAlert__block_i
 
   if (!self->_gmViewController)
   {
-    v4 = [(VTUIEnrollTrainingViewController *)self view];
-    v5 = [MEMORY[0x277D75418] currentDevice];
-    v6 = [v5 userInterfaceIdiom];
+    view = [(VTUIEnrollTrainingViewController *)self view];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v7 = 2;
     }
@@ -1178,9 +1178,9 @@ void __63__VTUIEnrollTrainingViewController__showUnsupportedLocaleAlert__block_i
     else
     {
       v8 = +[MGWrapper sharedMGWrapper];
-      v9 = [v8 isDeviceVision];
+      isDeviceVision = [v8 isDeviceVision];
 
-      if (v9)
+      if (isDeviceVision)
       {
         v7 = 2;
       }
@@ -1191,8 +1191,8 @@ void __63__VTUIEnrollTrainingViewController__showUnsupportedLocaleAlert__block_i
       }
     }
 
-    v10 = [(VTUIEnrollTrainingViewController *)self navigationController];
-    [v10 setModalPresentationStyle:v7];
+    navigationController = [(VTUIEnrollTrainingViewController *)self navigationController];
+    [navigationController setModalPresentationStyle:v7];
 
     v11 = [[VTUIGMEnrollmentViewController alloc] initWithDelegate:self];
     gmViewController = self->_gmViewController;
@@ -1201,22 +1201,22 @@ void __63__VTUIEnrollTrainingViewController__showUnsupportedLocaleAlert__block_i
     [(VTUIGMEnrollmentViewController *)self->_gmViewController willMoveToParentViewController:self];
     [(VTUIEnrollTrainingViewController *)self addChildViewController:self->_gmViewController];
     [(VTUIGMEnrollmentViewController *)self->_gmViewController didMoveToParentViewController:self];
-    v13 = [(VTUIGMEnrollmentViewController *)self->_gmViewController view];
-    [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v13 setAutoresizesSubviews:0];
-    v14 = [(VTUIEnrollTrainingViewController *)self view];
-    [v14 addSubview:v13];
+    view2 = [(VTUIGMEnrollmentViewController *)self->_gmViewController view];
+    [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [view2 setAutoresizesSubviews:0];
+    view3 = [(VTUIEnrollTrainingViewController *)self view];
+    [view3 addSubview:view2];
 
     if (+[VTUIFeatureFlags isNaturalUIEnabled])
     {
       v15 = +[VTUIStyle sharedStyle];
-      v16 = [v15 isIpad];
+      isIpad = [v15 isIpad];
 
-      if ((v16 & 1) == 0)
+      if ((isIpad & 1) == 0)
       {
-        v17 = [(VTUIEnrollTrainingViewController *)self navigationController];
-        v18 = [v17 navigationBar];
-        [v18 setOverrideUserInterfaceStyle:1];
+        navigationController2 = [(VTUIEnrollTrainingViewController *)self navigationController];
+        navigationBar = [navigationController2 navigationBar];
+        [navigationBar setOverrideUserInterfaceStyle:1];
 
         [(VTUIEnrollTrainingViewController *)self setOverrideUserInterfaceStyle:1];
         [(VTUIGMEnrollmentViewController *)self->_gmViewController setOverrideUserInterfaceStyle:1];
@@ -1224,14 +1224,14 @@ void __63__VTUIEnrollTrainingViewController__showUnsupportedLocaleAlert__block_i
     }
 
     v19 = MEMORY[0x277CCAAD0];
-    v20 = _NSDictionaryOfVariableBindings(&cfstr_Gmview.isa, v13, 0);
+    v20 = _NSDictionaryOfVariableBindings(&cfstr_Gmview.isa, view2, 0);
     v21 = [v19 constraintsWithVisualFormat:@"H:|[gmView]|" options:0 metrics:0 views:v20];
-    [v4 addConstraints:v21];
+    [view addConstraints:v21];
 
     v22 = MEMORY[0x277CCAAD0];
-    v23 = _NSDictionaryOfVariableBindings(&cfstr_Gmview.isa, v13, 0);
+    v23 = _NSDictionaryOfVariableBindings(&cfstr_Gmview.isa, view2, 0);
     v24 = [v22 constraintsWithVisualFormat:@"V:|[gmView]|" options:0 metrics:0 views:v23];
-    [v4 addConstraints:v24];
+    [view addConstraints:v24];
 
     [(VTUITrainingViewMediator *)self->_trainingViewMediator hideSkipButton:1];
     [(VTUIEnrollTrainingViewController *)self prewarm];
@@ -1286,10 +1286,10 @@ void __61__VTUIEnrollTrainingViewController__prepareCameraButtonBuddy__block_inv
   }
 }
 
-- (void)siriGMIntroViewControllerContinuePressed:(id)a3
+- (void)siriGMIntroViewControllerContinuePressed:(id)pressed
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pressedCopy = pressed;
   v5 = VTUILogContextFacility;
   if (os_log_type_enabled(VTUILogContextFacility, OS_LOG_TYPE_DEFAULT))
   {
@@ -1322,7 +1322,7 @@ void __61__VTUIEnrollTrainingViewController__prepareCameraButtonBuddy__block_inv
     _os_log_impl(&dword_2728BC000, v3, OS_LOG_TYPE_DEFAULT, "%s GM to Summarization", buf, 0xCu);
   }
 
-  v4 = [(VTUIEnrollTrainingViewController *)self view];
+  view = [(VTUIEnrollTrainingViewController *)self view];
   v5 = [MEMORY[0x277D77E80] onboardingControllerForExperience:0];
   summarizationOnboardingController = self->_summarizationOnboardingController;
   self->_summarizationOnboardingController = v5;
@@ -1331,20 +1331,20 @@ void __61__VTUIEnrollTrainingViewController__prepareCameraButtonBuddy__block_inv
   [(UNNotificationOnboardingController *)self->_summarizationOnboardingController willMoveToParentViewController:self];
   [(VTUIEnrollTrainingViewController *)self addChildViewController:self->_summarizationOnboardingController];
   [(UNNotificationOnboardingController *)self->_summarizationOnboardingController didMoveToParentViewController:self];
-  v7 = [(UNNotificationOnboardingController *)self->_summarizationOnboardingController view];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v7 setAutoresizesSubviews:0];
-  [v4 addSubview:v7];
-  [v7 setAlpha:0.0];
+  view2 = [(UNNotificationOnboardingController *)self->_summarizationOnboardingController view];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [view2 setAutoresizesSubviews:0];
+  [view addSubview:view2];
+  [view2 setAlpha:0.0];
   v8 = MEMORY[0x277CCAAD0];
-  v9 = _NSDictionaryOfVariableBindings(&cfstr_Summarizationv.isa, v7, 0);
+  v9 = _NSDictionaryOfVariableBindings(&cfstr_Summarizationv.isa, view2, 0);
   v10 = [v8 constraintsWithVisualFormat:@"H:|[summarizationView]|" options:0 metrics:0 views:v9];
-  [v4 addConstraints:v10];
+  [view addConstraints:v10];
 
   v11 = MEMORY[0x277CCAAD0];
-  v12 = _NSDictionaryOfVariableBindings(&cfstr_Summarizationv.isa, v7, 0);
+  v12 = _NSDictionaryOfVariableBindings(&cfstr_Summarizationv.isa, view2, 0);
   v13 = [v11 constraintsWithVisualFormat:@"V:|[summarizationView]|" options:0 metrics:0 views:v12];
-  [v4 addConstraints:v13];
+  [view addConstraints:v13];
 
   objc_initWeak(buf, self);
   v14 = MEMORY[0x277D75D18];
@@ -1352,7 +1352,7 @@ void __61__VTUIEnrollTrainingViewController__prepareCameraButtonBuddy__block_inv
   v19[1] = 3221225472;
   v19[2] = __66__VTUIEnrollTrainingViewController__continueToSummarizationFromGM__block_invoke;
   v19[3] = &unk_279E54220;
-  v15 = v7;
+  v15 = view2;
   v20 = v15;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -1464,17 +1464,17 @@ void __64__VTUIEnrollTrainingViewController__continueToCameraButtonBuddy__block_
   }
 }
 
-- (void)cameraButtonBuddyViewControllerDidFinish:(id)a3
+- (void)cameraButtonBuddyViewControllerDidFinish:(id)finish
 {
-  v4 = a3;
-  v5 = [(CAMCameraButtonBuddyViewController *)self->_cameraButtonBuddyViewController view];
+  finishCopy = finish;
+  view = [(CAMCameraButtonBuddyViewController *)self->_cameraButtonBuddyViewController view];
   objc_initWeak(&location, self);
   v6 = MEMORY[0x277D75D18];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __77__VTUIEnrollTrainingViewController_cameraButtonBuddyViewControllerDidFinish___block_invoke;
   v10[3] = &unk_279E54220;
-  v7 = v5;
+  v7 = view;
   v11 = v7;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -1633,32 +1633,32 @@ void __68__VTUIEnrollTrainingViewController__continueToNextFromSummarization__bl
     self->_visualIntelligenceViewController = v5;
 
     [(VTUIEnrollTrainingViewController *)self addChildViewController:self->_visualIntelligenceViewController];
-    v7 = [(VisualIntelligenceIntroViewController *)self->_visualIntelligenceViewController view];
-    [v7 setAlpha:0.0];
-    [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v7 setAutoresizesSubviews:0];
-    v8 = [(VTUIEnrollTrainingViewController *)self view];
-    [v8 addSubview:v7];
+    view = [(VisualIntelligenceIntroViewController *)self->_visualIntelligenceViewController view];
+    [view setAlpha:0.0];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
+    [view setAutoresizesSubviews:0];
+    view2 = [(VTUIEnrollTrainingViewController *)self view];
+    [view2 addSubview:view];
 
-    v9 = [(VTUIEnrollTrainingViewController *)self view];
+    view3 = [(VTUIEnrollTrainingViewController *)self view];
     v10 = MEMORY[0x277CCAAD0];
-    v11 = _NSDictionaryOfVariableBindings(&cfstr_Visualintellig.isa, v7, 0);
+    v11 = _NSDictionaryOfVariableBindings(&cfstr_Visualintellig.isa, view, 0);
     v12 = [v10 constraintsWithVisualFormat:@"H:|[visualIntelligenceView]|" options:0 metrics:0 views:v11];
-    [v9 addConstraints:v12];
+    [view3 addConstraints:v12];
 
-    v13 = [(VTUIEnrollTrainingViewController *)self view];
+    view4 = [(VTUIEnrollTrainingViewController *)self view];
     v14 = MEMORY[0x277CCAAD0];
-    v15 = _NSDictionaryOfVariableBindings(&cfstr_Visualintellig.isa, v7, 0);
+    v15 = _NSDictionaryOfVariableBindings(&cfstr_Visualintellig.isa, view, 0);
     v16 = [v14 constraintsWithVisualFormat:@"V:|[visualIntelligenceView]|" options:0 metrics:0 views:v15];
-    [v13 addConstraints:v16];
+    [view4 addConstraints:v16];
 
     v17 = MEMORY[0x277D75D18];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __72__VTUIEnrollTrainingViewController__showVisualIntelligenceIntroIfNeeded__block_invoke;
     v20[3] = &unk_279E54220;
-    v21 = v7;
-    v18 = v7;
+    v21 = view;
+    v18 = view;
     [v17 animateWithDuration:v20 animations:0 completion:0.3];
 
     v19 = *MEMORY[0x277D85DE8];
@@ -1698,10 +1698,10 @@ void __68__VTUIEnrollTrainingViewController__continueToNextFromSummarization__bl
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)userDidTapContinue:(id)a3
+- (void)userDidTapContinue:(id)continue
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  continueCopy = continue;
   v5 = VTUILogContextFacility;
   if (os_log_type_enabled(VTUILogContextFacility, OS_LOG_TYPE_DEFAULT))
   {
@@ -1752,30 +1752,30 @@ void __55__VTUIEnrollTrainingViewController_userDidTapContinue___block_invoke_2(
   }
 }
 
-- (void)onboardingController:(id)a3 requestsPushingTo:(id)a4
+- (void)onboardingController:(id)controller requestsPushingTo:(id)to
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VTUIEnrollTrainingViewController *)self view];
-  v9 = v7;
+  controllerCopy = controller;
+  toCopy = to;
+  view = [(VTUIEnrollTrainingViewController *)self view];
+  v9 = toCopy;
   [v9 setDelegate:self];
   [v9 willMoveToParentViewController:self];
   [(VTUIEnrollTrainingViewController *)self addChildViewController:v9];
   [v9 didMoveToParentViewController:self];
-  v10 = [v9 view];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v10 setAutoresizesSubviews:0];
-  [v8 addSubview:v10];
-  [v10 setAlpha:0.0];
+  view2 = [v9 view];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [view2 setAutoresizesSubviews:0];
+  [view addSubview:view2];
+  [view2 setAlpha:0.0];
   v11 = MEMORY[0x277CCAAD0];
-  v12 = _NSDictionaryOfVariableBindings(&cfstr_Nextsummarizat.isa, v10, 0);
+  v12 = _NSDictionaryOfVariableBindings(&cfstr_Nextsummarizat.isa, view2, 0);
   v13 = [v11 constraintsWithVisualFormat:@"H:|[nextSummarizationView]|" options:0 metrics:0 views:v12];
-  [v8 addConstraints:v13];
+  [view addConstraints:v13];
 
   v14 = MEMORY[0x277CCAAD0];
-  v15 = _NSDictionaryOfVariableBindings(&cfstr_Nextsummarizat.isa, v10, 0);
+  v15 = _NSDictionaryOfVariableBindings(&cfstr_Nextsummarizat.isa, view2, 0);
   v16 = [v14 constraintsWithVisualFormat:@"V:|[nextSummarizationView]|" options:0 metrics:0 views:v15];
-  [v8 addConstraints:v16];
+  [view addConstraints:v16];
 
   objc_initWeak(&location, self);
   v17 = MEMORY[0x277D75D18];
@@ -1783,7 +1783,7 @@ void __55__VTUIEnrollTrainingViewController_userDidTapContinue___block_invoke_2(
   v23[1] = 3221225472;
   v23[2] = __75__VTUIEnrollTrainingViewController_onboardingController_requestsPushingTo___block_invoke;
   v23[3] = &unk_279E54220;
-  v18 = v10;
+  v18 = view2;
   v24 = v18;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
@@ -1819,33 +1819,33 @@ void __75__VTUIEnrollTrainingViewController_onboardingController_requestsPushing
 {
   v24[4] = *MEMORY[0x277D85DE8];
   [(VTUIEnrollTrainingViewController *)self addChildViewController:self->_introViewController];
-  v3 = [(VTUIEnrollmentSetupIntroViewControlling *)self->_introViewController view];
-  [v3 setAlpha:0.0];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v3 setAutoresizesSubviews:0];
-  v4 = [(VTUIEnrollTrainingViewController *)self view];
-  [v4 addSubview:v3];
+  view = [(VTUIEnrollmentSetupIntroViewControlling *)self->_introViewController view];
+  [view setAlpha:0.0];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  [view setAutoresizesSubviews:0];
+  view2 = [(VTUIEnrollTrainingViewController *)self view];
+  [view2 addSubview:view];
 
   v17 = MEMORY[0x277CCAAD0];
-  v22 = [v3 topAnchor];
-  v23 = [(VTUIEnrollTrainingViewController *)self view];
-  v21 = [v23 topAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21 constant:0.0];
+  topAnchor = [view topAnchor];
+  view3 = [(VTUIEnrollTrainingViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v20 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
   v24[0] = v20;
-  v18 = [v3 leftAnchor];
-  v19 = [(VTUIEnrollTrainingViewController *)self view];
-  v16 = [v19 leftAnchor];
-  v15 = [v18 constraintEqualToAnchor:v16 constant:0.0];
+  leftAnchor = [view leftAnchor];
+  view4 = [(VTUIEnrollTrainingViewController *)self view];
+  leftAnchor2 = [view4 leftAnchor];
+  v15 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:0.0];
   v24[1] = v15;
-  v5 = [v3 rightAnchor];
-  v6 = [(VTUIEnrollTrainingViewController *)self view];
-  v7 = [v6 rightAnchor];
-  v8 = [v5 constraintEqualToAnchor:v7 constant:0.0];
+  rightAnchor = [view rightAnchor];
+  view5 = [(VTUIEnrollTrainingViewController *)self view];
+  rightAnchor2 = [view5 rightAnchor];
+  v8 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:0.0];
   v24[2] = v8;
-  v9 = [v3 bottomAnchor];
-  v10 = [(VTUIEnrollTrainingViewController *)self view];
-  v11 = [v10 bottomAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11 constant:0.0];
+  bottomAnchor = [view bottomAnchor];
+  view6 = [(VTUIEnrollTrainingViewController *)self view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
   v24[3] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:4];
   [v17 activateConstraints:v13];
@@ -1867,8 +1867,8 @@ void __75__VTUIEnrollTrainingViewController_onboardingController_requestsPushing
   educationViewController = self->_educationViewController;
   if (educationViewController)
   {
-    v5 = [(VTUISiriEducationViewController *)educationViewController view];
-    [v5 removeFromSuperview];
+    view = [(VTUISiriEducationViewController *)educationViewController view];
+    [view removeFromSuperview];
 
     v6 = self->_educationViewController;
     self->_educationViewController = 0;
@@ -1877,13 +1877,13 @@ void __75__VTUIEnrollTrainingViewController_onboardingController_requestsPushing
   [(VTUIEnrollTrainingViewController *)self setDidShowVoiceTriggerPrompt:1];
   if (!self->_introViewController)
   {
-    v7 = [(VTUIEnrollTrainingViewController *)self view];
-    v8 = [MEMORY[0x277D75418] currentDevice];
-    v9 = [v8 userInterfaceIdiom];
+    view2 = [(VTUIEnrollTrainingViewController *)self view];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    v10 = [(VTUIEnrollTrainingViewController *)self navigationController];
-    v11 = v10;
-    if ((v9 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    navigationController = [(VTUIEnrollTrainingViewController *)self navigationController];
+    v11 = navigationController;
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v12 = 2;
     }
@@ -1893,15 +1893,15 @@ void __75__VTUIEnrollTrainingViewController_onboardingController_requestsPushing
       v12 = 0;
     }
 
-    [v10 setModalPresentationStyle:v12];
+    [navigationController setModalPresentationStyle:v12];
 
     [(VTUIEnrollTrainingViewController *)self _setInitialTriggerPhraseIfNotSet];
     [(VTUIEnrollTrainingViewController *)self _setupTrainingStates];
     v58 = 0;
-    v13 = [MEMORY[0x277CEF368] sharedPreferences];
-    v14 = [MEMORY[0x277CBEAF8] currentLocale];
-    v15 = [v14 localeIdentifier];
-    v16 = [v13 allSiriLanguageCodesForSystemLanguageCode:v15 isGoodFit:&v58];
+    mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    localeIdentifier = [currentLocale localeIdentifier];
+    v16 = [mEMORY[0x277CEF368] allSiriLanguageCodesForSystemLanguageCode:localeIdentifier isGoodFit:&v58];
     siriLanguageOptions = self->_siriLanguageOptions;
     self->_siriLanguageOptions = v16;
 
@@ -1911,10 +1911,10 @@ void __75__VTUIEnrollTrainingViewController_onboardingController_requestsPushing
       self->_siriLanguageOptions = &unk_2881EEDB8;
     }
 
-    [v7 bounds];
+    [view2 bounds];
     Width = CGRectGetWidth(v65);
-    v20 = [MEMORY[0x277D759A0] mainScreen];
-    [v20 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v21 = vabdd_f64(Width, CGRectGetWidth(v66)) > 2.22044605e-16;
 
     v22 = +[VTUIStyle sharedStyle];
@@ -1931,27 +1931,27 @@ void __75__VTUIEnrollTrainingViewController_onboardingController_requestsPushing
       if (+[VTUIFeatureFlags isNaturalUIEnabled])
       {
         v25 = +[VTUIStyle sharedStyle];
-        v26 = [v25 isIpad];
+        isIpad = [v25 isIpad];
 
-        if ((v26 & 1) == 0)
+        if ((isIpad & 1) == 0)
         {
-          v27 = [(VTUIEnrollTrainingViewController *)self navigationController];
-          v28 = [v27 navigationBar];
-          [v28 setOverrideUserInterfaceStyle:2];
+          navigationController2 = [(VTUIEnrollTrainingViewController *)self navigationController];
+          navigationBar = [navigationController2 navigationBar];
+          [navigationBar setOverrideUserInterfaceStyle:2];
 
           [(VTUIEnrollTrainingViewController *)self setOverrideUserInterfaceStyle:2];
         }
       }
 
-      v29 = [(VTUIEnrollmentSetupIntroViewControlling *)self->_introViewController view];
+      view3 = [(VTUIEnrollmentSetupIntroViewControlling *)self->_introViewController view];
       objc_initWeak(buf, self);
       v30 = MEMORY[0x277D75D18];
       v56[0] = MEMORY[0x277D85DD0];
       v56[1] = 3221225472;
       v56[2] = __54__VTUIEnrollTrainingViewController__showSiriIntroView__block_invoke;
       v56[3] = &unk_279E54220;
-      v31 = v29;
-      v57 = v31;
+      view4 = view3;
+      v57 = view4;
       v54[0] = MEMORY[0x277D85DD0];
       v54[1] = 3221225472;
       v54[2] = __54__VTUIEnrollTrainingViewController__showSiriIntroView__block_invoke_2;
@@ -1972,27 +1972,27 @@ void __75__VTUIEnrollTrainingViewController_onboardingController_requestsPushing
       [(VTUIEnrollmentSetupIntroViewControlling *)self->_introViewController willMoveToParentViewController:self];
       [(VTUIEnrollTrainingViewController *)self addChildViewController:self->_introViewController];
       [(VTUIEnrollmentSetupIntroViewControlling *)self->_introViewController didMoveToParentViewController:self];
-      v31 = [(VTUIEnrollmentSetupIntroViewControlling *)self->_introViewController view];
-      [v31 setTranslatesAutoresizingMaskIntoConstraints:0];
-      [v31 setAutoresizesSubviews:0];
-      v34 = [(VTUIEnrollTrainingViewController *)self view];
-      [v34 addSubview:v31];
+      view4 = [(VTUIEnrollmentSetupIntroViewControlling *)self->_introViewController view];
+      [view4 setTranslatesAutoresizingMaskIntoConstraints:0];
+      [view4 setAutoresizesSubviews:0];
+      view5 = [(VTUIEnrollTrainingViewController *)self view];
+      [view5 addSubview:view4];
 
       v35 = MEMORY[0x277CCAAD0];
-      v36 = _NSDictionaryOfVariableBindings(&cfstr_Introview.isa, v31, 0);
+      v36 = _NSDictionaryOfVariableBindings(&cfstr_Introview.isa, view4, 0);
       v37 = [v35 constraintsWithVisualFormat:@"H:|[introView]|" options:0 metrics:0 views:v36];
-      [v7 addConstraints:v37];
+      [view2 addConstraints:v37];
 
       v38 = MEMORY[0x277CCAAD0];
-      v39 = _NSDictionaryOfVariableBindings(&cfstr_Introview.isa, v31, 0);
+      v39 = _NSDictionaryOfVariableBindings(&cfstr_Introview.isa, view4, 0);
       v40 = [v38 constraintsWithVisualFormat:@"V:|[introView]|" options:0 metrics:0 views:v39];
-      [v7 addConstraints:v40];
+      [view2 addConstraints:v40];
     }
 
     [(VTUITrainingViewMediator *)self->_trainingViewMediator hideSkipButton:1];
     [(VTUIAnalytics *)self->_analyticsEvent setIntroViewShown:[(VTUIAnalytics *)self->_analyticsEvent introViewShown]+ 1];
     v41 = +[VTUIStyle sharedStyle];
-    v42 = [v41 enrollmentMode];
+    enrollmentMode = [v41 enrollmentMode];
 
     v43 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -2000,11 +2000,11 @@ void __75__VTUIEnrollTrainingViewController_onboardingController_requestsPushing
       *buf = 136315394;
       v61 = "[VTUIEnrollTrainingViewController _showSiriIntroView]";
       v62 = 2048;
-      v63 = v42;
+      v63 = enrollmentMode;
       _os_log_impl(&dword_2728BC000, v43, OS_LOG_TYPE_DEFAULT, "%s Enrollment mode: %ld", buf, 0x16u);
     }
 
-    if (v42 != 2 && v42 != 4)
+    if (enrollmentMode != 2 && enrollmentMode != 4)
     {
       if (!self->_provider)
       {
@@ -2123,8 +2123,8 @@ void __54__VTUIEnrollTrainingViewController__showSiriIntroView__block_invoke_2_1
   educationViewController = self->_educationViewController;
   if (educationViewController)
   {
-    v5 = [(VTUISiriEducationViewController *)educationViewController view];
-    [v5 removeFromSuperview];
+    view = [(VTUISiriEducationViewController *)educationViewController view];
+    [view removeFromSuperview];
 
     v6 = self->_educationViewController;
     self->_educationViewController = 0;
@@ -2133,17 +2133,17 @@ void __54__VTUIEnrollTrainingViewController__showSiriIntroView__block_invoke_2_1
   [(VTUIEnrollTrainingViewController *)self setDidShowVoiceTriggerPrompt:1];
   if (!self->_vtConfirmationViewController)
   {
-    v7 = [(VTUIEnrollTrainingViewController *)self view];
-    v8 = [MEMORY[0x277D75418] currentDevice];
-    v9 = [v8 userInterfaceIdiom];
+    view2 = [(VTUIEnrollTrainingViewController *)self view];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    v10 = [(VTUIEnrollTrainingViewController *)self navigationController];
-    [v10 setModalPresentationStyle:2 * ((v9 & 0xFFFFFFFFFFFFFFFBLL) == 1)];
+    navigationController = [(VTUIEnrollTrainingViewController *)self navigationController];
+    [navigationController setModalPresentationStyle:2 * ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)];
 
-    [v7 bounds];
+    [view2 bounds];
     Width = CGRectGetWidth(v29);
-    v12 = [MEMORY[0x277D759A0] mainScreen];
-    [v12 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v13 = vabdd_f64(Width, CGRectGetWidth(v30)) > 2.22044605e-16;
 
     v14 = +[VTUIStyle sharedStyle];
@@ -2156,21 +2156,21 @@ void __54__VTUIEnrollTrainingViewController__showSiriIntroView__block_invoke_2_1
     [(VTUIVoiceTriggerConfirmationViewController *)self->_vtConfirmationViewController willMoveToParentViewController:self];
     [(VTUIEnrollTrainingViewController *)self addChildViewController:self->_vtConfirmationViewController];
     [(VTUIVoiceTriggerConfirmationViewController *)self->_vtConfirmationViewController didMoveToParentViewController:self];
-    v17 = [(VTUIVoiceTriggerConfirmationViewController *)self->_vtConfirmationViewController view];
-    [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v17 setAutoresizesSubviews:0];
-    v18 = [(VTUIEnrollTrainingViewController *)self view];
-    [v18 addSubview:v17];
+    view3 = [(VTUIVoiceTriggerConfirmationViewController *)self->_vtConfirmationViewController view];
+    [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [view3 setAutoresizesSubviews:0];
+    view4 = [(VTUIEnrollTrainingViewController *)self view];
+    [view4 addSubview:view3];
 
     v19 = MEMORY[0x277CCAAD0];
-    v20 = _NSDictionaryOfVariableBindings(&cfstr_Vtview.isa, v17, 0);
+    v20 = _NSDictionaryOfVariableBindings(&cfstr_Vtview.isa, view3, 0);
     v21 = [v19 constraintsWithVisualFormat:@"H:|[vtView]|" options:0 metrics:0 views:v20];
-    [v7 addConstraints:v21];
+    [view2 addConstraints:v21];
 
     v22 = MEMORY[0x277CCAAD0];
-    v23 = _NSDictionaryOfVariableBindings(&cfstr_Vtview.isa, v17, 0);
+    v23 = _NSDictionaryOfVariableBindings(&cfstr_Vtview.isa, view3, 0);
     v24 = [v22 constraintsWithVisualFormat:@"V:|[vtView]|" options:0 metrics:0 views:v23];
-    [v7 addConstraints:v24];
+    [view2 addConstraints:v24];
 
     [(VTUITrainingViewMediator *)self->_trainingViewMediator hideSkipButton:1];
   }
@@ -2178,7 +2178,7 @@ void __54__VTUIEnrollTrainingViewController__showSiriIntroView__block_invoke_2_1
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processVTConfirmationViewContinueAction:(id)a3
+- (void)_processVTConfirmationViewContinueAction:(id)action
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277CEF0E8];
@@ -2189,17 +2189,17 @@ void __54__VTUIEnrollTrainingViewController__showSiriIntroView__block_invoke_2_1
     _os_log_impl(&dword_2728BC000, v4, OS_LOG_TYPE_DEFAULT, "%s Enabling voice trigger - confirmation continued", &v9, 0xCu);
   }
 
-  v5 = [MEMORY[0x277D7A8D0] sharedPreferences];
-  [v5 setVoiceTriggerEnabled:1];
+  mEMORY[0x277D7A8D0] = [MEMORY[0x277D7A8D0] sharedPreferences];
+  [mEMORY[0x277D7A8D0] setVoiceTriggerEnabled:1];
 
-  v6 = [MEMORY[0x277D653F8] sharedInstance];
-  v7 = [v6 voiceTriggerRepromptFinished];
+  mEMORY[0x277D653F8] = [MEMORY[0x277D653F8] sharedInstance];
+  voiceTriggerRepromptFinished = [mEMORY[0x277D653F8] voiceTriggerRepromptFinished];
 
   [(VTUIEnrollTrainingViewController *)self _proceedAfterTrainingCompletionOrSkip];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processVTConfirmationLaterAction:(id)a3
+- (void)_processVTConfirmationLaterAction:(id)action
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277CEF0E8];
@@ -2210,11 +2210,11 @@ void __54__VTUIEnrollTrainingViewController__showSiriIntroView__block_invoke_2_1
     _os_log_impl(&dword_2728BC000, v4, OS_LOG_TYPE_DEFAULT, "%s Disabling voice trigger - confirmation skipped", &v9, 0xCu);
   }
 
-  v5 = [MEMORY[0x277D7A8D0] sharedPreferences];
-  [v5 setVoiceTriggerEnabled:0];
+  mEMORY[0x277D7A8D0] = [MEMORY[0x277D7A8D0] sharedPreferences];
+  [mEMORY[0x277D7A8D0] setVoiceTriggerEnabled:0];
 
-  v6 = [MEMORY[0x277D653F8] sharedInstance];
-  v7 = [v6 voiceTriggerRepromptFinished];
+  mEMORY[0x277D653F8] = [MEMORY[0x277D653F8] sharedInstance];
+  voiceTriggerRepromptFinished = [mEMORY[0x277D653F8] voiceTriggerRepromptFinished];
 
   [(VTUIEnrollTrainingViewController *)self _proceedAfterTrainingCompletionOrSkip];
   v8 = *MEMORY[0x277D85DE8];
@@ -2223,19 +2223,19 @@ void __54__VTUIEnrollTrainingViewController__showSiriIntroView__block_invoke_2_1
 - (BOOL)_siriLanguageIsIncompatibleWithPairedWatch
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v4 = [v3 isPaired];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  isPaired = [mEMORY[0x277D2BCF8] isPaired];
 
-  if (v4)
+  if (isPaired)
   {
-    v5 = [MEMORY[0x277D2BCF8] sharedInstance];
-    v6 = [v5 getActivePairedDevice];
-    v7 = [v6 valueForProperty:*MEMORY[0x277D2BC20]];
+    mEMORY[0x277D2BCF8]2 = [MEMORY[0x277D2BCF8] sharedInstance];
+    getActivePairedDevice = [mEMORY[0x277D2BCF8]2 getActivePairedDevice];
+    v7 = [getActivePairedDevice valueForProperty:*MEMORY[0x277D2BC20]];
 
-    v8 = [MEMORY[0x277D2BCF8] sharedInstance];
-    v9 = [v8 getActivePairedDevice];
+    mEMORY[0x277D2BCF8]3 = [MEMORY[0x277D2BCF8] sharedInstance];
+    getActivePairedDevice2 = [mEMORY[0x277D2BCF8]3 getActivePairedDevice];
 
-    v10 = [v9 valueForProperty:*MEMORY[0x277D2BC10]];
+    v10 = [getActivePairedDevice2 valueForProperty:*MEMORY[0x277D2BC10]];
     v11 = [MEMORY[0x277CEF218] siriIsSupportedForLanguageCode:self->_spokenLanguageCode productName:v10 productVersion:v7 error:0];
     v12 = *MEMORY[0x277CEF0E8];
     if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_DEFAULT))
@@ -2265,9 +2265,9 @@ void __54__VTUIEnrollTrainingViewController__showSiriIntroView__block_invoke_2_1
   return v14;
 }
 
-- (void)_warnForLanguageCompatibilityIfNecessary:(id)a3
+- (void)_warnForLanguageCompatibilityIfNecessary:(id)necessary
 {
-  v4 = a3;
+  necessaryCopy = necessary;
   if ([(VTUIEnrollTrainingViewController *)self _siriLanguageIsIncompatibleWithPairedWatch])
   {
     v5 = MEMORY[0x277D75110];
@@ -2284,16 +2284,16 @@ void __54__VTUIEnrollTrainingViewController__showSiriIntroView__block_invoke_2_1
     v15[1] = 3221225472;
     v15[2] = __77__VTUIEnrollTrainingViewController__warnForLanguageCompatibilityIfNecessary___block_invoke;
     v15[3] = &unk_279E542E8;
-    v16 = v4;
+    v16 = necessaryCopy;
     v14 = [v11 actionWithTitle:v13 style:0 handler:v15];
 
     [v10 addAction:v14];
     [(VTUIEnrollTrainingViewController *)self presentViewController:v10 animated:1 completion:0];
   }
 
-  else if (v4)
+  else if (necessaryCopy)
   {
-    v4[2](v4);
+    necessaryCopy[2](necessaryCopy);
   }
 }
 
@@ -2316,24 +2316,24 @@ uint64_t __77__VTUIEnrollTrainingViewController__warnForLanguageCompatibilityIfN
     goto LABEL_29;
   }
 
-  v3 = [MEMORY[0x277CEF368] sharedPreferences];
-  v4 = [v3 languageCode];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  languageCode = [mEMORY[0x277CEF368] languageCode];
 
-  if (!v4)
+  if (!languageCode)
   {
-    v5 = [MEMORY[0x277CEF368] sharedPreferences];
-    v4 = [v5 bestSupportedLanguageCodeForLanguageCode:0];
+    mEMORY[0x277CEF368]2 = [MEMORY[0x277CEF368] sharedPreferences];
+    languageCode = [mEMORY[0x277CEF368]2 bestSupportedLanguageCodeForLanguageCode:0];
   }
 
   disambiguatedLanguageOption = self->_disambiguatedLanguageOption;
   if (disambiguatedLanguageOption)
   {
-    v7 = [(NSString *)disambiguatedLanguageOption isEqualToString:v4];
+    v7 = [(NSString *)disambiguatedLanguageOption isEqualToString:languageCode];
     if (!v7)
     {
       v8 = self->_disambiguatedLanguageOption;
 
-      v4 = v8;
+      languageCode = v8;
     }
 
     v9 = !v7;
@@ -2348,12 +2348,12 @@ uint64_t __77__VTUIEnrollTrainingViewController__warnForLanguageCompatibilityIfN
     v9 = 0;
   }
 
-  if (![(NSString *)self->_spokenLanguageCode isEqualToString:v4])
+  if (![(NSString *)self->_spokenLanguageCode isEqualToString:languageCode])
   {
     v10 = self->_spokenLanguageCode;
 
     v9 = 1;
-    v4 = v10;
+    languageCode = v10;
   }
 
 LABEL_12:
@@ -2363,12 +2363,12 @@ LABEL_12:
     v23 = 136315394;
     v24 = "[VTUIEnrollTrainingViewController _setInitialTriggerPhraseIfNotSet]";
     v25 = 2112;
-    v26 = v4;
+    v26 = languageCode;
     _os_log_impl(&dword_2728BC000, v11, OS_LOG_TYPE_DEFAULT, "%s setting initial trigger phrase based on langauge code: %@", &v23, 0x16u);
   }
 
-  v12 = [MEMORY[0x277D7A8D0] sharedPreferences];
-  if ([v12 isCompactVoiceTriggerAvailableForLanguageCode:v4])
+  mEMORY[0x277D7A8D0] = [MEMORY[0x277D7A8D0] sharedPreferences];
+  if ([mEMORY[0x277D7A8D0] isCompactVoiceTriggerAvailableForLanguageCode:languageCode])
   {
     v13 = AFDeviceSupportsANE();
   }
@@ -2392,12 +2392,12 @@ LABEL_12:
   if ((v13 & 1) != 0 || v15)
   {
     v16 = +[VTUIStyle sharedStyle];
-    v17 = [v16 isBuddyOrFollowUp];
+    isBuddyOrFollowUp = [v16 isBuddyOrFollowUp];
 
-    if (v17)
+    if (isBuddyOrFollowUp)
     {
-      v18 = [MEMORY[0x277D7A8D0] sharedPreferences];
-      v19 = [v18 setUserPreferredVoiceTriggerPhraseType:v13 sender:self deviceType:0 endpointId:0];
+      mEMORY[0x277D7A8D0]2 = [MEMORY[0x277D7A8D0] sharedPreferences];
+      v19 = [mEMORY[0x277D7A8D0]2 setUserPreferredVoiceTriggerPhraseType:v13 sender:self deviceType:0 endpointId:0];
 
       v20 = VTUILogContextFacility;
       if (os_log_type_enabled(VTUILogContextFacility, OS_LOG_TYPE_DEFAULT))
@@ -2476,9 +2476,9 @@ void __66__VTUIEnrollTrainingViewController__setInitialTriggerPhraseOnHome__bloc
     _os_log_impl(&dword_2728BC000, v3, OS_LOG_TYPE_DEFAULT, "%s Enrollment completed", buf, 0xCu);
   }
 
-  v4 = [(VTUIEnrollTrainingViewController *)self view];
-  v5 = [(VTUIEnrollTrainingViewController *)self navigationItem];
-  [v5 setLeftBarButtonItem:0];
+  view = [(VTUIEnrollTrainingViewController *)self view];
+  navigationItem = [(VTUIEnrollTrainingViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:0];
 
   if ([(VTUIEnrollTrainingViewController *)self _isGreyMatterAvailable])
   {
@@ -2504,20 +2504,20 @@ void __66__VTUIEnrollTrainingViewController__setInitialTriggerPhraseOnHome__bloc
   {
     [(VTUIEnrollmentSuccessViewing *)self->_successView prepareReInit];
     v7 = [VTUIEnrollmentSuccessView alloc];
-    [v4 bounds];
+    [view bounds];
     v8 = [(VTUIEnrollmentSuccessView *)v7 initWithFrame:?];
     [(VTUIEnrollmentSuccessView *)v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v4 addSubview:v8];
+    [view addSubview:v8];
     [(VTUIEnrollmentSuccessView *)v8 addFinishButtonTarget:self selector:sel__finishButtonTapped];
     v9 = MEMORY[0x277CCAAD0];
     v10 = _NSDictionaryOfVariableBindings(&cfstr_Successview.isa, v8, 0);
     v11 = [v9 constraintsWithVisualFormat:@"H:|[successView]|" options:0 metrics:0 views:v10];
-    [v4 addConstraints:v11];
+    [view addConstraints:v11];
 
     v12 = MEMORY[0x277CCAAD0];
     v13 = _NSDictionaryOfVariableBindings(&cfstr_Successview.isa, v8, 0);
     v14 = [v12 constraintsWithVisualFormat:@"V:|[successView]|" options:0 metrics:0 views:v13];
-    [v4 addConstraints:v14];
+    [view addConstraints:v14];
 
     successView = self->_successView;
     self->_successView = v8;
@@ -2528,23 +2528,23 @@ void __66__VTUIEnrollTrainingViewController__setInitialTriggerPhraseOnHome__bloc
   [(VTUIEnrollmentSuccessViewing *)self->_successView fadeIn];
   if (self->_cachedColorForNavigationUI)
   {
-    v18 = [(VTUIEnrollTrainingViewController *)self navigationController];
-    v19 = [v18 navigationBar];
-    [v19 setTintColor:self->_cachedColorForNavigationUI];
+    navigationController = [(VTUIEnrollTrainingViewController *)self navigationController];
+    navigationBar = [navigationController navigationBar];
+    [navigationBar setTintColor:self->_cachedColorForNavigationUI];
 
     if (+[VTUIFeatureFlags isNaturalUIEnabled])
     {
-      v20 = [(VTUIEnrollTrainingViewController *)self navigationController];
-      v21 = [v20 navigationBar];
-      [v21 setOverrideUserInterfaceStyle:2];
+      navigationController2 = [(VTUIEnrollTrainingViewController *)self navigationController];
+      navigationBar2 = [navigationController2 navigationBar];
+      [navigationBar2 setOverrideUserInterfaceStyle:2];
 
       [(VTUIEnrollTrainingViewController *)self setOverrideUserInterfaceStyle:2];
     }
   }
 
   [(VTUIEnrollTrainingViewController *)self setDidShowVoiceTriggerPrompt:1];
-  v22 = [MEMORY[0x277CEF368] sharedPreferences];
-  [v22 setCompactVoiceTriggerDisclosurePresented:1];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  [mEMORY[0x277CEF368] setCompactVoiceTriggerDisclosurePresented:1];
 
   if ([(VTUIEnrollTrainingViewController *)self _shouldSpeakAudioHint])
   {
@@ -2579,9 +2579,9 @@ void __62__VTUIEnrollTrainingViewController__showEnrollmentSuccessView__block_in
 - (void)_finishButtonTapped
 {
   v3 = +[VTUIStyle sharedStyle];
-  v4 = [v3 isBuddyOrFollowUp];
+  isBuddyOrFollowUp = [v3 isBuddyOrFollowUp];
 
-  if (v4)
+  if (isBuddyOrFollowUp)
   {
 
     [(VTUIEnrollTrainingViewController *)self finish:0];
@@ -2627,8 +2627,8 @@ LABEL_18:
       introViewController = self->_introViewController;
       if (introViewController)
       {
-        v10 = [(VTUIEnrollmentSetupIntroViewControlling *)introViewController view];
-        [v10 removeFromSuperview];
+        view = [(VTUIEnrollmentSetupIntroViewControlling *)introViewController view];
+        [view removeFromSuperview];
 
         v11 = self->_introViewController;
         self->_introViewController = 0;
@@ -2649,8 +2649,8 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v7 = [(VTUIEnrollTrainingViewController *)self childViewControllers];
-  v8 = [v7 count];
+  childViewControllers = [(VTUIEnrollTrainingViewController *)self childViewControllers];
+  v8 = [childViewControllers count];
 
   if (!v8)
   {
@@ -2675,9 +2675,9 @@ LABEL_20:
   self->_currentTrainingState = -1;
   [(VTUIEnrollTrainingViewController *)self _setPHSEnrollmentPrefEnabled:0];
   [(VTUIEnrollTrainingViewController *)self _hideInstruction];
-  v4 = [MEMORY[0x277D653F8] sharedInstance];
-  v5 = [(SSRVTUITrainingManager *)self->_trainingManager voiceProfile];
-  v6 = [v4 deleteUserVoiceProfile:v5];
+  mEMORY[0x277D653F8] = [MEMORY[0x277D653F8] sharedInstance];
+  voiceProfile = [(SSRVTUITrainingManager *)self->_trainingManager voiceProfile];
+  v6 = [mEMORY[0x277D653F8] deleteUserVoiceProfile:voiceProfile];
 
   self->_badMicRetryCount = 0;
   [(VTUIEnrollTrainingViewController *)self _cleanupMyriad];
@@ -2687,46 +2687,46 @@ LABEL_20:
 - (void)_startTraining
 {
   v48 = *MEMORY[0x277D85DE8];
-  v3 = [(VTUIEnrollTrainingViewController *)self delegate];
+  delegate = [(VTUIEnrollTrainingViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(VTUIEnrollTrainingViewController *)self delegate];
-    [v5 willBeginVoiceTraining];
+    delegate2 = [(VTUIEnrollTrainingViewController *)self delegate];
+    [delegate2 willBeginVoiceTraining];
   }
 
   if (self->_currentTrainingState < 0)
   {
-    v8 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     trainingAttemptUUID = self->_trainingAttemptUUID;
-    self->_trainingAttemptUUID = v8;
+    self->_trainingAttemptUUID = uUID;
 
     v10 = VTUILogContextFacility;
     if (os_log_type_enabled(VTUILogContextFacility, OS_LOG_TYPE_DEFAULT))
     {
       v11 = self->_trainingAttemptUUID;
       v12 = v10;
-      v13 = [(NSUUID *)v11 UUIDString];
+      uUIDString = [(NSUUID *)v11 UUIDString];
       currentTrainingState = self->_currentTrainingState;
       *buf = 136315650;
       v43 = "[VTUIEnrollTrainingViewController _startTraining]";
       v44 = 2112;
-      v45 = v13;
+      v45 = uUIDString;
       v46 = 2048;
       v47 = currentTrainingState;
       _os_log_impl(&dword_2728BC000, v12, OS_LOG_TYPE_DEFAULT, "%s Starting training attempt %@ - Moving from state: %zd to state 0", buf, 0x20u);
     }
 
-    v15 = [MEMORY[0x277D653F8] sharedInstance];
-    v16 = [(SSRVTUITrainingManager *)self->_trainingManager voiceProfile];
-    v17 = [v15 deleteUserVoiceProfile:v16];
+    mEMORY[0x277D653F8] = [MEMORY[0x277D653F8] sharedInstance];
+    voiceProfile = [(SSRVTUITrainingManager *)self->_trainingManager voiceProfile];
+    v17 = [mEMORY[0x277D653F8] deleteUserVoiceProfile:voiceProfile];
 
-    v18 = [MEMORY[0x277CEF158] sharedAnalytics];
-    [v18 logEventWithType:3302 context:0];
+    mEMORY[0x277CEF158] = [MEMORY[0x277CEF158] sharedAnalytics];
+    [mEMORY[0x277CEF158] logEventWithType:3302 context:0];
 
-    v19 = [MEMORY[0x277D7A8D0] sharedPreferences];
-    v20 = [v19 getUserPreferredVoiceTriggerPhraseTypeForDeviceType:0 endpointId:0 error:0];
+    mEMORY[0x277D7A8D0] = [MEMORY[0x277D7A8D0] sharedPreferences];
+    v20 = [mEMORY[0x277D7A8D0] getUserPreferredVoiceTriggerPhraseTypeForDeviceType:0 endpointId:0 error:0];
 
     if (v20)
     {
@@ -2747,42 +2747,42 @@ LABEL_20:
     {
       if ([(VTUIEnrollTrainingViewController *)self _isGreyMatterAvailable])
       {
-        v22 = [(VTUIEnrollTrainingViewController *)self navigationController];
-        v23 = [v22 navigationBar];
-        v24 = [v23 tintColor];
+        navigationController = [(VTUIEnrollTrainingViewController *)self navigationController];
+        navigationBar = [navigationController navigationBar];
+        tintColor = [navigationBar tintColor];
         cachedColorForNavigationUI = self->_cachedColorForNavigationUI;
-        self->_cachedColorForNavigationUI = v24;
+        self->_cachedColorForNavigationUI = tintColor;
 
-        v26 = [(VTUIEnrollTrainingViewController *)self navigationController];
-        v27 = [v26 navigationBar];
-        v28 = [MEMORY[0x277D75348] whiteColor];
-        [v27 setTintColor:v28];
+        navigationController2 = [(VTUIEnrollTrainingViewController *)self navigationController];
+        navigationBar2 = [navigationController2 navigationBar];
+        whiteColor = [MEMORY[0x277D75348] whiteColor];
+        [navigationBar2 setTintColor:whiteColor];
 
         if (+[VTUIFeatureFlags isNaturalUIEnabled])
         {
           v29 = +[VTUIStyle sharedStyle];
-          v30 = [v29 isIpad];
+          isIpad = [v29 isIpad];
 
-          v31 = [(VTUIEnrollTrainingViewController *)self navigationController];
-          v32 = [v31 navigationBar];
-          v33 = v32;
-          if (v30)
+          navigationController3 = [(VTUIEnrollTrainingViewController *)self navigationController];
+          navigationBar3 = [navigationController3 navigationBar];
+          v33 = navigationBar3;
+          if (isIpad)
           {
-            [v32 setOverrideUserInterfaceStyle:1];
+            [navigationBar3 setOverrideUserInterfaceStyle:1];
 
             [(VTUIEnrollTrainingViewController *)self setOverrideUserInterfaceStyle:1];
-            v34 = [(VTUIEnrollTrainingViewController *)self navigationController];
-            v35 = [v34 navigationBar];
-            v36 = [v35 standardAppearance];
-            v37 = [MEMORY[0x277D75348] whiteColor];
-            v41 = v37;
+            navigationController4 = [(VTUIEnrollTrainingViewController *)self navigationController];
+            navigationBar4 = [navigationController4 navigationBar];
+            standardAppearance = [navigationBar4 standardAppearance];
+            whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+            v41 = whiteColor2;
             v38 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
-            [v36 setTitleTextAttributes:v38];
+            [standardAppearance setTitleTextAttributes:v38];
           }
 
           else
           {
-            [v32 setOverrideUserInterfaceStyle:2];
+            [navigationBar3 setOverrideUserInterfaceStyle:2];
 
             [(VTUIEnrollTrainingViewController *)self setOverrideUserInterfaceStyle:2];
           }
@@ -2821,11 +2821,11 @@ LABEL_20:
     {
       self->_currentTrainingState = 5;
       [(VTUIAnalytics *)self->_analyticsEvent setVoiceTrainingCompleted:[(VTUIAnalytics *)self->_analyticsEvent voiceTrainingCompleted]+ 1];
-      v8 = [MEMORY[0x277D4DA30] sharedInstance];
-      [v8 didCompleteFlow:*MEMORY[0x277D4D9C0]];
+      mEMORY[0x277D4DA30] = [MEMORY[0x277D4DA30] sharedInstance];
+      [mEMORY[0x277D4DA30] didCompleteFlow:*MEMORY[0x277D4D9C0]];
 
-      v9 = [(VTUIEnrollTrainingViewController *)self navigationItem];
-      [v9 setTitle:0];
+      navigationItem = [(VTUIEnrollTrainingViewController *)self navigationItem];
+      [navigationItem setTitle:0];
 
       [(VTUIEnrollTrainingViewController *)self _setPHSEnrollmentPrefEnabled:1];
       if (self->_enrollmentMode == 2)
@@ -2855,14 +2855,14 @@ LABEL_20:
         _os_log_impl(&dword_2728BC000, v11, OS_LOG_TYPE_DEFAULT, "%s Completed Last stage in Training", buf, 0xCu);
       }
 
-      v12 = [MEMORY[0x277CEF158] sharedAnalytics];
-      v13 = [v12 newTurnBasedInstrumentationContext];
+      mEMORY[0x277CEF158] = [MEMORY[0x277CEF158] sharedAnalytics];
+      newTurnBasedInstrumentationContext = [mEMORY[0x277CEF158] newTurnBasedInstrumentationContext];
 
       v14 = objc_alloc_init(MEMORY[0x277D5A928]);
       [v14 setInvocationSource:44];
-      [v13 emitInstrumentation:v14];
-      v15 = [MEMORY[0x277CEF158] sharedAnalytics];
-      [v15 logEventWithType:3303 context:0];
+      [newTurnBasedInstrumentationContext emitInstrumentation:v14];
+      mEMORY[0x277CEF158]2 = [MEMORY[0x277CEF158] sharedAnalytics];
+      [mEMORY[0x277CEF158]2 logEventWithType:3303 context:0];
 
       [VTUISELFLogger logSiriSetupPHSEnrollmentUICompleted:self->_trainingAttemptUUID enrollmentMode:self->_enrollmentMode locale:self->_spokenLanguageCode enrollmentSessionOutcome:1 pageNumber:LODWORD(self->_currentTrainingState)];
     }
@@ -2894,12 +2894,12 @@ void __49__VTUIEnrollTrainingViewController__advanceState__block_invoke(uint64_t
   [WeakRetained _showEnrollmentSuccessView];
 }
 
-- (id)_retryStringForStatus:(int64_t)a3
+- (id)_retryStringForStatus:(int64_t)status
 {
   v5 = +[VTUIStringsHelper sharedStringsHelper];
   v6 = [v5 uiLocalizedStringForKey:@"TRY_AGAIN_MESSAGE"];
 
-  if (a3 == 2)
+  if (status == 2)
   {
     if ([(VTUIEnrollTrainingViewController *)self cannotHearRetryCount]!= 1)
     {
@@ -2921,7 +2921,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (a3 != 9)
+  if (status != 9)
   {
     goto LABEL_11;
   }
@@ -2943,10 +2943,10 @@ LABEL_11:
   return v6;
 }
 
-- (void)_retryInstruction:(BOOL)a3 withStatusMessage:(id)a4
+- (void)_retryInstruction:(BOOL)instruction withStatusMessage:(id)message
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  messageCopy = message;
   v7 = *MEMORY[0x277CEF0E8];
   if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_DEFAULT))
   {
@@ -2962,8 +2962,8 @@ LABEL_11:
   v11 = __72__VTUIEnrollTrainingViewController__retryInstruction_withStatusMessage___block_invoke;
   v12 = &unk_279E54358;
   objc_copyWeak(&v13, buf);
-  v14 = a3;
-  [(VTUIEnrollTrainingViewController *)self _showStatusMessage:v6 afterDelay:&v9 completion:0.2];
+  instructionCopy = instruction;
+  [(VTUIEnrollTrainingViewController *)self _showStatusMessage:messageCopy afterDelay:&v9 completion:0.2];
   [(VTUIEnrollTrainingViewController *)self _hideInstruction:v9];
   objc_destroyWeak(&v13);
   objc_destroyWeak(buf);
@@ -3024,13 +3024,13 @@ uint64_t __72__VTUIEnrollTrainingViewController__retryInstruction_withStatusMess
   return result;
 }
 
-- (void)_updateTrainingLabelsForInstruction:(int64_t)a3
+- (void)_updateTrainingLabelsForInstruction:(int64_t)instruction
 {
   v12 = +[VTUIStyle sharedStyle];
-  if (a3)
+  if (instruction)
   {
     v5 = [(NSArray *)self->_trainingPageInstructions count];
-    if (v5 - 1 == a3)
+    if (v5 - 1 == instruction)
     {
       v6 = @"TEXT_LABEL_SAY_LAST";
     }
@@ -3040,7 +3040,7 @@ uint64_t __72__VTUIEnrollTrainingViewController__retryInstruction_withStatusMess
       v6 = @"TEXT_LABEL_SAY_MIDDLE";
     }
 
-    if (v5 - 1 == a3)
+    if (v5 - 1 == instruction)
     {
       v7 = @"TEXT_LABEL_TO_LAST";
     }
@@ -3066,10 +3066,10 @@ uint64_t __72__VTUIEnrollTrainingViewController__retryInstruction_withStatusMess
   [(VTUITrainingViewMediator *)v10 setInstructionContinuationLabel:v11];
 }
 
-- (void)_showTrainingInstruction:(int64_t)a3 afterDelay:(double)a4 isRetry:(BOOL)a5 animate:(BOOL)a6
+- (void)_showTrainingInstruction:(int64_t)instruction afterDelay:(double)delay isRetry:(BOOL)retry animate:(BOOL)animate
 {
-  v6 = a6;
-  v7 = a5;
+  animateCopy = animate;
+  retryCopy = retry;
   v55 = *MEMORY[0x277D85DE8];
   v11 = *MEMORY[0x277CEF0E8];
   if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_DEFAULT))
@@ -3077,36 +3077,36 @@ uint64_t __72__VTUIEnrollTrainingViewController__retryInstruction_withStatusMess
     *buf = 136315906;
     *&buf[4] = "[VTUIEnrollTrainingViewController _showTrainingInstruction:afterDelay:isRetry:animate:]";
     *&buf[12] = 2048;
-    *&buf[14] = a3;
+    *&buf[14] = instruction;
     *&buf[22] = 1024;
-    v52 = v7;
+    v52 = retryCopy;
     v53 = 1024;
-    v54 = v6;
+    v54 = animateCopy;
     _os_log_impl(&dword_2728BC000, v11, OS_LOG_TYPE_DEFAULT, "%s Instruction Number %ld, isRetry %d, animate %d", buf, 0x22u);
   }
 
   v12 = [(NSArray *)self->_trainingPageInstructions count];
-  if ((a3 & 0x8000000000000000) == 0 && v12 > a3)
+  if ((instruction & 0x8000000000000000) == 0 && v12 > instruction)
   {
-    v13 = [(NSArray *)self->_trainingPageInstructions objectAtIndexedSubscript:a3];
+    v13 = [(NSArray *)self->_trainingPageInstructions objectAtIndexedSubscript:instruction];
     v29 = [v13 objectForKeyedSubscript:@"Instruction"];
     v14 = [v13 objectForKeyedSubscript:@"RetryOnFail"];
-    v15 = [v14 BOOLValue];
+    bOOLValue = [v14 BOOLValue];
 
-    [(VTUIEnrollTrainingViewController *)self _updateTrainingLabelsForInstruction:a3];
+    [(VTUIEnrollTrainingViewController *)self _updateTrainingLabelsForInstruction:instruction];
     [(VTUITrainingViewMediator *)self->_trainingViewMediator animateToOff];
     [(VTUIEnrollTrainingViewController *)self _createTrainingManagerIfNeeded];
-    if (a3 <= 4)
+    if (instruction <= 4)
     {
-      v16 = [MEMORY[0x277CEF158] sharedAnalytics];
+      mEMORY[0x277CEF158] = [MEMORY[0x277CEF158] sharedAnalytics];
       v49 = @"instruction";
       v50 = v29;
       v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
-      [v16 logEventWithType:a3 + 3305 context:v17];
+      [mEMORY[0x277CEF158] logEventWithType:instruction + 3305 context:v17];
     }
 
-    v18 = [(VTUIAudioHintPlayer *)self->_audioHintPlayer synth];
-    [v18 stopSpeaking];
+    synth = [(VTUIAudioHintPlayer *)self->_audioHintPlayer synth];
+    [synth stopSpeaking];
 
     *buf = 0;
     *&buf[8] = buf;
@@ -3118,17 +3118,17 @@ uint64_t __72__VTUIEnrollTrainingViewController__retryInstruction_withStatusMess
     aBlock[2] = __88__VTUIEnrollTrainingViewController__showTrainingInstruction_afterDelay_isRetry_animate___block_invoke;
     aBlock[3] = &unk_279E54380;
     objc_copyWeak(v46, &location);
-    v47 = v7;
-    v46[1] = a3;
+    v47 = retryCopy;
+    v46[1] = instruction;
     v19 = _Block_copy(aBlock);
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __88__VTUIEnrollTrainingViewController__showTrainingInstruction_afterDelay_isRetry_animate___block_invoke_2;
     v41[3] = &unk_279E543D0;
     objc_copyWeak(v42, &location);
-    v42[1] = a3;
-    v43 = v15;
-    v44 = v7;
+    v42[1] = instruction;
+    v43 = bOOLValue;
+    v44 = retryCopy;
     v41[4] = self;
     v41[5] = buf;
     v20 = _Block_copy(v41);
@@ -3143,9 +3143,9 @@ uint64_t __72__VTUIEnrollTrainingViewController__retryInstruction_withStatusMess
     v23 = _Block_copy(v38);
     if (self->_shouldTurnOnMyriad)
     {
-      v24 = [MEMORY[0x277CEF2A8] isSCDAFrameworkEnabled];
+      isSCDAFrameworkEnabled = [MEMORY[0x277CEF2A8] isSCDAFrameworkEnabled];
       v26 = &OBJC_IVAR___VTUIEnrollTrainingViewController__myriadCoordinator;
-      if (v24)
+      if (isSCDAFrameworkEnabled)
       {
         v26 = &OBJC_IVAR___VTUIEnrollTrainingViewController__scdaCoordinator;
       }
@@ -3162,12 +3162,12 @@ uint64_t __72__VTUIEnrollTrainingViewController__retryInstruction_withStatusMess
       block[2] = __88__VTUIEnrollTrainingViewController__showTrainingInstruction_afterDelay_isRetry_animate___block_invoke_2_299;
       block[3] = &unk_279E54470;
       objc_copyWeak(v36, &location);
-      v37 = v6;
+      v37 = animateCopy;
       v31 = v29;
-      v36[1] = *&a4;
-      v32 = self;
+      v36[1] = *&delay;
+      selfCopy = self;
       v33 = v21;
-      v36[2] = a3;
+      v36[2] = instruction;
       v35 = buf;
       v34 = v22;
       dispatch_after(v27, MEMORY[0x277D85CD0], block);
@@ -3175,9 +3175,9 @@ uint64_t __72__VTUIEnrollTrainingViewController__retryInstruction_withStatusMess
       objc_destroyWeak(v36);
     }
 
-    else if (v6)
+    else if (animateCopy)
     {
-      [(VTUITrainingViewMediator *)self->_trainingViewMediator slideInText:v29 afterDelay:v23 completion:a4];
+      [(VTUITrainingViewMediator *)self->_trainingViewMediator slideInText:v29 afterDelay:v23 completion:delay];
     }
 
     else
@@ -3503,30 +3503,30 @@ void __88__VTUIEnrollTrainingViewController__showTrainingInstruction_afterDelay_
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleTrainingResultForNonRetryablePhraseWithResult:(id)a3
+- (void)_handleTrainingResultForNonRetryablePhraseWithResult:(id)result
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultCopy = result;
   v5 = MEMORY[0x277CEF0E8];
   v6 = *MEMORY[0x277CEF0E8];
   if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [v4 sessionStatus];
-    v9 = [v4 audioStatus];
+    sessionStatus = [resultCopy sessionStatus];
+    audioStatus = [resultCopy audioStatus];
     badMicRetryCount = self->_badMicRetryCount;
     *buf = 136315906;
     v38 = "[VTUIEnrollTrainingViewController _handleTrainingResultForNonRetryablePhraseWithResult:]";
     v39 = 1024;
-    *v40 = v8;
+    *v40 = sessionStatus;
     *&v40[4] = 1024;
-    *&v40[6] = v9;
+    *&v40[6] = audioStatus;
     v41 = 2048;
     v42 = badMicRetryCount;
     _os_log_impl(&dword_2728BC000, v7, OS_LOG_TYPE_DEFAULT, "%s session status: %d, audio status: %d, badMicRetryCount: %lu", buf, 0x22u);
   }
 
-  v11 = [(VTUIEnrollTrainingViewController *)self interpretSessionManagerResult:v4 forInstruction:self->_currentTrainingState];
+  v11 = [(VTUIEnrollTrainingViewController *)self interpretSessionManagerResult:resultCopy forInstruction:self->_currentTrainingState];
   v12 = *v5;
   if (os_log_type_enabled(*v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -3544,7 +3544,7 @@ void __88__VTUIEnrollTrainingViewController__showTrainingInstruction_afterDelay_
       if (v11 == 9)
       {
         ++self->_digitalZerosRetryCount;
-        v20 = self;
+        selfCopy4 = self;
         v21 = 9;
       }
 
@@ -3553,18 +3553,18 @@ void __88__VTUIEnrollTrainingViewController__showTrainingInstruction_afterDelay_
         if (v11 != 10)
         {
 LABEL_26:
-          v20 = self;
+          selfCopy4 = self;
           v21 = 0;
           goto LABEL_27;
         }
 
         ++self->_cannotHearRetryCount;
-        v20 = self;
+        selfCopy4 = self;
         v21 = 10;
       }
 
 LABEL_27:
-      v29 = [(VTUIEnrollTrainingViewController *)v20 _retryStringForStatus:v21];
+      v29 = [(VTUIEnrollTrainingViewController *)selfCopy4 _retryStringForStatus:v21];
       [(VTUIEnrollTrainingViewController *)self _retryInstruction:1 withStatusMessage:v29];
 
       goto LABEL_28;
@@ -3579,7 +3579,7 @@ LABEL_27:
         self->_shouldTurnOnMyriad = 0;
       }
 
-      v20 = self;
+      selfCopy4 = self;
       v21 = 8;
       goto LABEL_27;
     }
@@ -3604,9 +3604,9 @@ LABEL_27:
         }
 
         [(VTUIEnrollTrainingViewController *)self _setPHSEnrollmentPrefEnabled:0];
-        v26 = [MEMORY[0x277D653F8] sharedInstance];
-        v27 = [(SSRVTUITrainingManager *)self->_trainingManager voiceProfile];
-        v28 = [v26 deleteUserVoiceProfile:v27];
+        mEMORY[0x277D653F8] = [MEMORY[0x277D653F8] sharedInstance];
+        voiceProfile = [(SSRVTUITrainingManager *)self->_trainingManager voiceProfile];
+        v28 = [mEMORY[0x277D653F8] deleteUserVoiceProfile:voiceProfile];
 
         v33[0] = MEMORY[0x277D85DD0];
         v33[1] = 3221225472;
@@ -3614,7 +3614,7 @@ LABEL_27:
         v33[3] = &unk_279E54220;
         v33[4] = self;
         v16 = v33;
-        v17 = self;
+        selfCopy7 = self;
         v18 = 5;
       }
 
@@ -3635,9 +3635,9 @@ LABEL_27:
         }
 
         [(VTUIEnrollTrainingViewController *)self _setPHSEnrollmentPrefEnabled:0];
-        v23 = [MEMORY[0x277D653F8] sharedInstance];
-        v24 = [(SSRVTUITrainingManager *)self->_trainingManager voiceProfile];
-        v25 = [v23 deleteUserVoiceProfile:v24];
+        mEMORY[0x277D653F8]2 = [MEMORY[0x277D653F8] sharedInstance];
+        voiceProfile2 = [(SSRVTUITrainingManager *)self->_trainingManager voiceProfile];
+        v25 = [mEMORY[0x277D653F8]2 deleteUserVoiceProfile:voiceProfile2];
 
         v35[0] = MEMORY[0x277D85DD0];
         v35[1] = 3221225472;
@@ -3645,7 +3645,7 @@ LABEL_27:
         v35[3] = &unk_279E54220;
         v35[4] = self;
         v16 = v35;
-        v17 = self;
+        selfCopy7 = self;
         v18 = 6;
       }
 
@@ -3657,9 +3657,9 @@ LABEL_27:
       if (v11 == 4)
       {
         [(VTUIEnrollTrainingViewController *)self _setPHSEnrollmentPrefEnabled:0];
-        v13 = [MEMORY[0x277D653F8] sharedInstance];
-        v14 = [(SSRVTUITrainingManager *)self->_trainingManager voiceProfile];
-        v15 = [v13 deleteUserVoiceProfile:v14];
+        mEMORY[0x277D653F8]3 = [MEMORY[0x277D653F8] sharedInstance];
+        voiceProfile3 = [(SSRVTUITrainingManager *)self->_trainingManager voiceProfile];
+        v15 = [mEMORY[0x277D653F8]3 deleteUserVoiceProfile:voiceProfile3];
 
         v36[0] = MEMORY[0x277D85DD0];
         v36[1] = 3221225472;
@@ -3667,10 +3667,10 @@ LABEL_27:
         v36[3] = &unk_279E54220;
         v36[4] = self;
         v16 = v36;
-        v17 = self;
+        selfCopy7 = self;
         v18 = 4;
 LABEL_24:
-        [(VTUIEnrollTrainingViewController *)v17 _cleanupTrainingManagerWithCompletion:v16 status:v18];
+        [(VTUIEnrollTrainingViewController *)selfCopy7 _cleanupTrainingManagerWithCompletion:v16 status:v18];
         goto LABEL_28;
       }
 
@@ -3733,9 +3733,9 @@ void __66__VTUIEnrollTrainingViewController__signalSingleEnrollmentSuccess__bloc
   }
 }
 
-- (void)_playSoundForStageAfterDelay:(double)a3
+- (void)_playSoundForStageAfterDelay:(double)delay
 {
-  v4 = dispatch_time(0, (a3 * 1000000000.0));
+  v4 = dispatch_time(0, (delay * 1000000000.0));
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__VTUIEnrollTrainingViewController__playSoundForStageAfterDelay___block_invoke;
@@ -3761,37 +3761,37 @@ uint64_t __65__VTUIEnrollTrainingViewController__playSoundForStageAfterDelay___b
     [(VTUIEnrollTrainingViewController *)self _showSiriIntroView];
   }
 
-  v3 = [(VTUIEnrollTrainingViewController *)self navigationItem];
-  [v3 setTitle:0];
+  navigationItem = [(VTUIEnrollTrainingViewController *)self navigationItem];
+  [navigationItem setTitle:0];
 }
 
-- (void)_handleTrainingResultForRetryablePhraseWithResult:(id)a3 shouldShowCheckMark:(BOOL)a4
+- (void)_handleTrainingResultForRetryablePhraseWithResult:(id)result shouldShowCheckMark:(BOOL)mark
 {
-  v4 = a4;
+  markCopy = mark;
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  resultCopy = result;
   v7 = MEMORY[0x277CEF0E8];
   v8 = *MEMORY[0x277CEF0E8];
   if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [v6 sessionStatus];
-    v11 = [v6 audioStatus];
+    sessionStatus = [resultCopy sessionStatus];
+    audioStatus = [resultCopy audioStatus];
     badMicRetryCount = self->_badMicRetryCount;
     *buf = 136316162;
     v40 = "[VTUIEnrollTrainingViewController _handleTrainingResultForRetryablePhraseWithResult:shouldShowCheckMark:]";
     v41 = 1024;
-    *v42 = v10;
+    *v42 = sessionStatus;
     *&v42[4] = 1024;
-    *&v42[6] = v11;
+    *&v42[6] = audioStatus;
     v43 = 1024;
-    v44 = v4;
+    v44 = markCopy;
     v45 = 2048;
     v46 = badMicRetryCount;
     _os_log_impl(&dword_2728BC000, v9, OS_LOG_TYPE_DEFAULT, "%s session status: %d, audio status: %d, shouldShowCheckMark:%d, badMicRetryCount: %lu", buf, 0x28u);
   }
 
-  v13 = [(VTUIEnrollTrainingViewController *)self interpretSessionManagerResult:v6 forInstruction:self->_currentTrainingState];
+  v13 = [(VTUIEnrollTrainingViewController *)self interpretSessionManagerResult:resultCopy forInstruction:self->_currentTrainingState];
   v14 = *v7;
   if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -3817,20 +3817,20 @@ uint64_t __65__VTUIEnrollTrainingViewController__playSoundForStageAfterDelay___b
           }
 
           [(VTUIAnalytics *)self->_analyticsEvent setVtError:[(VTUIAnalytics *)self->_analyticsEvent vtError]+ 1];
-          v15 = self;
+          selfCopy4 = self;
           v16 = 8;
           goto LABEL_31;
         case 9:
           ++self->_digitalZerosRetryCount;
-          v15 = self;
+          selfCopy4 = self;
           v16 = 9;
           goto LABEL_31;
         case 10:
           ++self->_cannotHearRetryCount;
-          v15 = self;
+          selfCopy4 = self;
           v16 = 10;
 LABEL_31:
-          v31 = [(VTUIEnrollTrainingViewController *)v15 _retryStringForStatus:v16];
+          v31 = [(VTUIEnrollTrainingViewController *)selfCopy4 _retryStringForStatus:v16];
           [(VTUIEnrollTrainingViewController *)self _retryInstruction:1 withStatusMessage:v31];
 
           goto LABEL_32;
@@ -3838,7 +3838,7 @@ LABEL_31:
 
 LABEL_20:
       [(VTUIAnalytics *)self->_analyticsEvent setAsrError:[(VTUIAnalytics *)self->_analyticsEvent asrError]+ 1];
-      v15 = self;
+      selfCopy4 = self;
       v16 = 0;
       goto LABEL_31;
     }
@@ -3863,9 +3863,9 @@ LABEL_20:
     }
 
     [(VTUIEnrollTrainingViewController *)self _setPHSEnrollmentPrefEnabled:0];
-    v28 = [MEMORY[0x277D653F8] sharedInstance];
-    v29 = [(SSRVTUITrainingManager *)self->_trainingManager voiceProfile];
-    v30 = [v28 deleteUserVoiceProfile:v29];
+    mEMORY[0x277D653F8] = [MEMORY[0x277D653F8] sharedInstance];
+    voiceProfile = [(SSRVTUITrainingManager *)self->_trainingManager voiceProfile];
+    v30 = [mEMORY[0x277D653F8] deleteUserVoiceProfile:voiceProfile];
 
     v37[0] = MEMORY[0x277D85DD0];
     v37[1] = 3221225472;
@@ -3873,7 +3873,7 @@ LABEL_20:
     v37[3] = &unk_279E54220;
     v37[4] = self;
     v20 = v37;
-    v21 = self;
+    selfCopy7 = self;
     v22 = 6;
     goto LABEL_29;
   }
@@ -3883,9 +3883,9 @@ LABEL_20:
     if (v13 == 4)
     {
       [(VTUIEnrollTrainingViewController *)self _setPHSEnrollmentPrefEnabled:0];
-      v23 = [MEMORY[0x277D653F8] sharedInstance];
-      v24 = [(SSRVTUITrainingManager *)self->_trainingManager voiceProfile];
-      v25 = [v23 deleteUserVoiceProfile:v24];
+      mEMORY[0x277D653F8]2 = [MEMORY[0x277D653F8] sharedInstance];
+      voiceProfile2 = [(SSRVTUITrainingManager *)self->_trainingManager voiceProfile];
+      v25 = [mEMORY[0x277D653F8]2 deleteUserVoiceProfile:voiceProfile2];
 
       v38[0] = MEMORY[0x277D85DD0];
       v38[1] = 3221225472;
@@ -3893,7 +3893,7 @@ LABEL_20:
       v38[3] = &unk_279E54220;
       v38[4] = self;
       v20 = v38;
-      v21 = self;
+      selfCopy7 = self;
       v22 = 4;
     }
 
@@ -3912,9 +3912,9 @@ LABEL_20:
       }
 
       [(VTUIEnrollTrainingViewController *)self _setPHSEnrollmentPrefEnabled:0];
-      v17 = [MEMORY[0x277D653F8] sharedInstance];
-      v18 = [(SSRVTUITrainingManager *)self->_trainingManager voiceProfile];
-      v19 = [v17 deleteUserVoiceProfile:v18];
+      mEMORY[0x277D653F8]3 = [MEMORY[0x277D653F8] sharedInstance];
+      voiceProfile3 = [(SSRVTUITrainingManager *)self->_trainingManager voiceProfile];
+      v19 = [mEMORY[0x277D653F8]3 deleteUserVoiceProfile:voiceProfile3];
 
       v35[0] = MEMORY[0x277D85DD0];
       v35[1] = 3221225472;
@@ -3922,12 +3922,12 @@ LABEL_20:
       v35[3] = &unk_279E54220;
       v35[4] = self;
       v20 = v35;
-      v21 = self;
+      selfCopy7 = self;
       v22 = 5;
     }
 
 LABEL_29:
-    [(VTUIEnrollTrainingViewController *)v21 _cleanupTrainingManagerWithCompletion:v20 status:v22];
+    [(VTUIEnrollTrainingViewController *)selfCopy7 _cleanupTrainingManagerWithCompletion:v20 status:v22];
     goto LABEL_32;
   }
 
@@ -3982,9 +3982,9 @@ void __106__VTUIEnrollTrainingViewController__handleTrainingResultForRetryablePh
   [v1 skipSetup];
 }
 
-- (void)_showBadMicAlertCompletion:(id)a3
+- (void)_showBadMicAlertCompletion:(id)completion
 {
-  v19 = a3;
+  completionCopy = completion;
   v20 = [(VTUIEnrollTrainingViewController *)self interpretAudioSource:[(SSRVTUITrainingManager *)self->_trainingManager audioSource]];
   v4 = MEMORY[0x277D75110];
   v5 = MEMORY[0x277CCACA8];
@@ -4004,8 +4004,8 @@ void __106__VTUIEnrollTrainingViewController__handleTrainingResultForRetryablePh
   v21[1] = 3221225472;
   v21[2] = __63__VTUIEnrollTrainingViewController__showBadMicAlertCompletion___block_invoke;
   v21[3] = &unk_279E542E8;
-  v22 = v19;
-  v17 = v19;
+  v22 = completionCopy;
+  v17 = completionCopy;
   v18 = [v14 actionWithTitle:v16 style:0 handler:v21];
 
   [v13 addAction:v18];
@@ -4023,9 +4023,9 @@ uint64_t __63__VTUIEnrollTrainingViewController__showBadMicAlertCompletion___blo
   return result;
 }
 
-- (void)_showUnsupportedLocaleAlertCompletion:(id)a3
+- (void)_showUnsupportedLocaleAlertCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MEMORY[0x277D75110];
   v6 = +[VTUIStringsHelper sharedStringsHelper];
   v7 = [v6 uiLocalizedStringForKey:@"ALERT_TITLE_UNSUPPORTED_LOCALE"];
@@ -4040,8 +4040,8 @@ uint64_t __63__VTUIEnrollTrainingViewController__showBadMicAlertCompletion___blo
   v16[1] = 3221225472;
   v16[2] = __74__VTUIEnrollTrainingViewController__showUnsupportedLocaleAlertCompletion___block_invoke;
   v16[3] = &unk_279E542E8;
-  v17 = v4;
-  v14 = v4;
+  v17 = completionCopy;
+  v14 = completionCopy;
   v15 = [v11 actionWithTitle:v13 style:0 handler:v16];
 
   [v10 addAction:v15];
@@ -4059,28 +4059,28 @@ uint64_t __74__VTUIEnrollTrainingViewController__showUnsupportedLocaleAlertCompl
   return result;
 }
 
-- (void)_updatePageNumberForInstruction:(int64_t)a3
+- (void)_updatePageNumberForInstruction:(int64_t)instruction
 {
   v14 = objc_alloc_init(MEMORY[0x277CCABB8]);
   v5 = MEMORY[0x277CCACA8];
   v6 = +[VTUIStringsHelper sharedStringsHelper];
   v7 = [v6 uiLocalizedStringForKey:@"PAGE_PROGRESS_FORMAT"];
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3 + 1];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:instruction + 1];
   v9 = [v14 stringFromNumber:v8];
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[NSArray count](self->_trainingPageInstructions, "count")}];
   v11 = [v14 stringFromNumber:v10];
   v12 = [v5 stringWithFormat:v7, v9, v11];
 
-  v13 = [(VTUIEnrollTrainingViewController *)self navigationItem];
-  [v13 setTitle:v12];
+  navigationItem = [(VTUIEnrollTrainingViewController *)self navigationItem];
+  [navigationItem setTitle:v12];
 }
 
 - (void)_hideInstruction
 {
   [(VTUITrainingViewMediator *)self->_trainingViewMediator clearInstructionLabel];
   [(VTUITrainingViewMediator *)self->_trainingViewMediator hideContinuationAndPreludeLabel:1];
-  v3 = [(VTUIEnrollTrainingViewController *)self navigationItem];
-  [v3 setTitle:0];
+  navigationItem = [(VTUIEnrollTrainingViewController *)self navigationItem];
+  [navigationItem setTitle:0];
 }
 
 - (void)_createTrainingManagerIfNeeded
@@ -4097,16 +4097,16 @@ uint64_t __74__VTUIEnrollTrainingViewController__showUnsupportedLocaleAlertCompl
   }
 }
 
-- (void)_cleanupTrainingManagerWithCompletion:(id)a3 status:(int64_t)a4
+- (void)_cleanupTrainingManagerWithCompletion:(id)completion status:(int64_t)status
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  completionCopy = completion;
   v7 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v8 = MEMORY[0x277CCABB0];
     v9 = v7;
-    v10 = [v8 numberWithInteger:a4];
+    v10 = [v8 numberWithInteger:status];
     v12 = 136315394;
     v13 = "[VTUIEnrollTrainingViewController _cleanupTrainingManagerWithCompletion:status:]";
     v14 = 2112;
@@ -4114,26 +4114,26 @@ uint64_t __74__VTUIEnrollTrainingViewController__showUnsupportedLocaleAlertCompl
     _os_log_impl(&dword_2728BC000, v9, OS_LOG_TYPE_DEFAULT, "%s %@", &v12, 0x16u);
   }
 
-  [(VTUIEnrollTrainingViewController *)self _cleanupTrainingManagerWithCompletion:v6];
+  [(VTUIEnrollTrainingViewController *)self _cleanupTrainingManagerWithCompletion:completionCopy];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_cleanupTrainingManagerWithCompletion:(id)a3
+- (void)_cleanupTrainingManagerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   trainingManager = self->_trainingManager;
   if (trainingManager)
   {
-    v7 = v4;
+    v7 = completionCopy;
     [(SSRVTUITrainingManager *)trainingManager cancelTrainingForID:self->_sessionId];
     [(SSRVTUITrainingManager *)self->_trainingManager stopRMS];
     v6 = [(SSRVTUITrainingManager *)self->_trainingManager cleanupWithCompletion:v7];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
   MEMORY[0x2821F96F8]();
@@ -4150,8 +4150,8 @@ uint64_t __74__VTUIEnrollTrainingViewController__showUnsupportedLocaleAlertCompl
     _os_log_impl(&dword_2728BC000, v3, OS_LOG_TYPE_DEFAULT, "%s ", &v10, 0xCu);
   }
 
-  v4 = [(VTUISiriEducationViewController *)self->_educationViewController view];
-  [v4 removeFromSuperview];
+  view = [(VTUISiriEducationViewController *)self->_educationViewController view];
+  [view removeFromSuperview];
 
   educationViewController = self->_educationViewController;
   self->_educationViewController = 0;
@@ -4167,8 +4167,8 @@ uint64_t __74__VTUIEnrollTrainingViewController__showUnsupportedLocaleAlertCompl
   self->_languageOptionsView = 0;
 
   [(VTUIVoiceSelectionViewController *)self->_voiceSelectionViewController removeFromParentViewController];
-  v7 = [(VTUIVoiceSelectionViewController *)self->_voiceSelectionViewController view];
-  [v7 removeFromSuperview];
+  view2 = [(VTUIVoiceSelectionViewController *)self->_voiceSelectionViewController view];
+  [view2 removeFromSuperview];
 
   voiceSelectionViewController = self->_voiceSelectionViewController;
   self->_voiceSelectionViewController = 0;
@@ -4176,81 +4176,81 @@ uint64_t __74__VTUIEnrollTrainingViewController__showUnsupportedLocaleAlertCompl
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)interpretAudioSource:(unint64_t)a3
+- (id)interpretAudioSource:(unint64_t)source
 {
-  if (a3 - 2 > 3)
+  if (source - 2 > 3)
   {
     return @"ALERT_HEADPHONE_BAD_MIC";
   }
 
   else
   {
-    return off_279E54688[a3 - 2];
+    return off_279E54688[source - 2];
   }
 }
 
-- (int64_t)interpretSessionManagerResult:(id)a3 forInstruction:(int64_t)a4
+- (int64_t)interpretSessionManagerResult:(id)result forInstruction:(int64_t)instruction
 {
-  v6 = a3;
-  v7 = [v6 sessionStatus];
-  v8 = [v6 audioStatus];
+  resultCopy = result;
+  sessionStatus = [resultCopy sessionStatus];
+  audioStatus = [resultCopy audioStatus];
 
-  if (v7 - 4 < 3)
+  if (sessionStatus - 4 < 3)
   {
-    return v7 + 1;
+    return sessionStatus + 1;
   }
 
-  if (a4 < 0 || (-[VTUIEnrollTrainingViewController trainingPageInstructions](self, "trainingPageInstructions"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 count], v10, v11 <= a4))
+  if (instruction < 0 || (-[VTUIEnrollTrainingViewController trainingPageInstructions](self, "trainingPageInstructions"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 count], v10, v11 <= instruction))
   {
-    v15 = 0;
+    bOOLValue = 0;
   }
 
   else
   {
-    v12 = [(VTUIEnrollTrainingViewController *)self trainingPageInstructions];
-    v13 = [v12 objectAtIndexedSubscript:a4];
+    trainingPageInstructions = [(VTUIEnrollTrainingViewController *)self trainingPageInstructions];
+    v13 = [trainingPageInstructions objectAtIndexedSubscript:instruction];
 
     v14 = [v13 objectForKeyedSubscript:@"RetryOnFail"];
-    v15 = [v14 BOOLValue];
+    bOOLValue = [v14 BOOLValue];
   }
 
-  if (v7 == 3)
+  if (sessionStatus == 3)
   {
     return 4;
   }
 
-  if (v15)
+  if (bOOLValue)
   {
-    if (v8 == 1)
+    if (audioStatus == 1)
     {
       return 9;
     }
 
-    else if (v8 == 2)
+    else if (audioStatus == 2)
     {
       return 10;
     }
 
-    else if (v7 >= 8)
+    else if (sessionStatus >= 8)
     {
       return 0;
     }
 
     else
     {
-      return qword_272934068[v7];
+      return qword_272934068[sessionStatus];
     }
   }
 
   else
   {
     v16 = 8;
-    if (v7 != 7)
+    if (sessionStatus != 7)
     {
       v16 = 1;
     }
 
-    if (v7 == 2)
+    if (sessionStatus == 2)
     {
       return 0;
     }
@@ -4277,10 +4277,10 @@ uint64_t __74__VTUIEnrollTrainingViewController__showUnsupportedLocaleAlertCompl
   }
 
   [(VTUITrainingViewMediator *)self->_trainingViewMediator showRadarExitButton:v4];
-  v5 = [(VTUIEnrollmentSuccessViewing *)self->_successView isSuccessViewReady];
+  isSuccessViewReady = [(VTUIEnrollmentSuccessViewing *)self->_successView isSuccessViewReady];
   trainingViewMediator = self->_trainingViewMediator;
   v7 = &selRef_finish_;
-  if (!v5)
+  if (!isSuccessViewReady)
   {
     v7 = &selRef_skipTraining_;
   }
@@ -4291,9 +4291,9 @@ uint64_t __74__VTUIEnrollTrainingViewController__showUnsupportedLocaleAlertCompl
 - (id)_getSetupModeString
 {
   v2 = +[VTUIStyle sharedStyle];
-  v3 = [v2 isBuddyOrFollowUp];
+  isBuddyOrFollowUp = [v2 isBuddyOrFollowUp];
 
-  if (v3)
+  if (isBuddyOrFollowUp)
   {
     return @"buddy";
   }
@@ -4304,10 +4304,10 @@ uint64_t __74__VTUIEnrollTrainingViewController__showUnsupportedLocaleAlertCompl
   }
 }
 
-- (void)fetchaudioSessionID:(id)a3
+- (void)fetchaudioSessionID:(id)d
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   if (self->audioSessionID)
   {
     v5 = VTUILogContextFacility;
@@ -4321,7 +4321,7 @@ uint64_t __74__VTUIEnrollTrainingViewController__showUnsupportedLocaleAlertCompl
       _os_log_impl(&dword_2728BC000, v5, OS_LOG_TYPE_DEFAULT, "%s Early return %u", buf, 0x12u);
     }
 
-    v4[2](v4, self->audioSessionID);
+    dCopy[2](dCopy, self->audioSessionID);
   }
 
   else
@@ -4338,7 +4338,7 @@ uint64_t __74__VTUIEnrollTrainingViewController__showUnsupportedLocaleAlertCompl
     v9[2] = __56__VTUIEnrollTrainingViewController_fetchaudioSessionID___block_invoke;
     v9[3] = &unk_279E544C0;
     objc_copyWeak(&v11, buf);
-    v10 = v4;
+    v10 = dCopy;
     [(SSRVTUITrainingManager *)trainingManager getAudioSessionID:v9];
 
     objc_destroyWeak(&v11);
@@ -4385,24 +4385,24 @@ uint64_t __56__VTUIEnrollTrainingViewController_fetchaudioSessionID___block_invo
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)aboutTapped:(id)a3
+- (void)aboutTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   [(VTUIAnalytics *)self->_analyticsEvent setAboutViewShown:[(VTUIAnalytics *)self->_analyticsEvent aboutViewShown]+ 1];
   aboutTappedSender = self->_aboutTappedSender;
-  self->_aboutTappedSender = v4;
+  self->_aboutTappedSender = tappedCopy;
 
-  v6 = [(VTUIEnrollTrainingViewController *)self delegate];
-  [v6 showLearnMore];
+  delegate = [(VTUIEnrollTrainingViewController *)self delegate];
+  [delegate showLearnMore];
 }
 
-- (void)siriLanguageSpokenLanguageCodeDidChange:(id)a3
+- (void)siriLanguageSpokenLanguageCodeDidChange:(id)change
 {
   v24 = *MEMORY[0x277D85DE8];
   v5 = self->_spokenLanguageCode;
-  v6 = [a3 spokenLanguageCode];
+  spokenLanguageCode = [change spokenLanguageCode];
   spokenLanguageCode = self->_spokenLanguageCode;
-  self->_spokenLanguageCode = v6;
+  self->_spokenLanguageCode = spokenLanguageCode;
 
   if (v5 != self->_spokenLanguageCode)
   {
@@ -4413,13 +4413,13 @@ uint64_t __56__VTUIEnrollTrainingViewController_fetchaudioSessionID___block_invo
       v9 = self->_spokenLanguageCode;
       v10 = v8;
       v11 = +[VTUIStringsHelper sharedStringsHelper];
-      v12 = [v11 heySiriTriggerPhrase];
+      heySiriTriggerPhrase = [v11 heySiriTriggerPhrase];
       v18 = 136315650;
       v19 = "[VTUIEnrollTrainingViewController siriLanguageSpokenLanguageCodeDidChange:]";
       v20 = 2112;
       v21 = v9;
       v22 = 2112;
-      v23 = v12;
+      v23 = heySiriTriggerPhrase;
       _os_log_impl(&dword_2728BC000, v10, OS_LOG_TYPE_DEFAULT, "%s VoiceTriggerUI: Spoken Language Code changed: %@. (Trigger: '%@')", &v18, 0x20u);
     }
 
@@ -4447,10 +4447,10 @@ uint64_t __56__VTUIEnrollTrainingViewController_fetchaudioSessionID___block_invo
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)skipAssistant:(id)a3
+- (void)skipAssistant:(id)assistant
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assistantCopy = assistant;
   if (self->_isEnablementConfigurationLoading)
   {
     v5 = *MEMORY[0x277CEF098];
@@ -4467,7 +4467,7 @@ uint64_t __56__VTUIEnrollTrainingViewController_fetchaudioSessionID___block_invo
     v17[2] = __50__VTUIEnrollTrainingViewController_skipAssistant___block_invoke;
     v17[3] = &unk_279E544E8;
     objc_copyWeak(&v19, buf);
-    v18 = v4;
+    v18 = assistantCopy;
     [(VTUIEnrollTrainingViewController *)self _setIntroViewActionOnEnablementConfigurationDidLoad:v17];
 
     objc_destroyWeak(&v19);
@@ -4484,9 +4484,9 @@ uint64_t __56__VTUIEnrollTrainingViewController_fetchaudioSessionID___block_invo
   }
 
   v7 = +[VTUIStyle sharedStyle];
-  v8 = [v7 isBuddyOrFollowUp];
+  isBuddyOrFollowUp = [v7 isBuddyOrFollowUp];
 
-  if (v8)
+  if (isBuddyOrFollowUp)
   {
     v9 = +[VTUIStyle sharedStyle];
     if ([v9 enrollmentMode])
@@ -4560,14 +4560,14 @@ void __50__VTUIEnrollTrainingViewController_skipAssistant___block_invoke(uint64_
 
   [(VTUIAudioHintPlayer *)self->_audioHintPlayer cleanup];
   [(VTUIGMEnrollmentViewController *)self->_gmViewController userDidCancel];
-  v4 = [MEMORY[0x277CEF158] sharedAnalytics];
+  mEMORY[0x277CEF158] = [MEMORY[0x277CEF158] sharedAnalytics];
   v10 = @"currentTrainingState";
   v5 = MEMORY[0x277CCACA8];
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:self->_currentTrainingState];
   v7 = [v5 stringWithFormat:@"%@", v6];
   v11 = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
-  [v4 logEventWithType:3304 context:v8];
+  [mEMORY[0x277CEF158] logEventWithType:3304 context:v8];
 
   [(VTUIAnalytics *)self->_analyticsEvent setVoiceTrainingCancelled:[(VTUIAnalytics *)self->_analyticsEvent voiceTrainingCancelled]+ 1];
   [(VTUIAnalytics *)self->_analyticsEvent setVoiceTrainingCancelledStep:LODWORD(self->_currentTrainingState)];
@@ -4576,7 +4576,7 @@ void __50__VTUIEnrollTrainingViewController_skipAssistant___block_invoke(uint64_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)skipTraining:(id)a3
+- (void)skipTraining:(id)training
 {
   v20 = *MEMORY[0x277D85DE8];
   v4 = VTUILogContextFacility;
@@ -4588,14 +4588,14 @@ void __50__VTUIEnrollTrainingViewController_skipAssistant___block_invoke(uint64_
   }
 
   self->_hasSkippedTraining = 1;
-  v5 = [MEMORY[0x277CEF158] sharedAnalytics];
+  mEMORY[0x277CEF158] = [MEMORY[0x277CEF158] sharedAnalytics];
   v16 = @"currentTrainingState";
   v6 = MEMORY[0x277CCACA8];
   v7 = [MEMORY[0x277CCABB0] numberWithInteger:self->_currentTrainingState];
   v8 = [v6 stringWithFormat:@"%@", v7];
   v17 = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v17 forKeys:&v16 count:1];
-  [v5 logEventWithType:3310 context:v9];
+  [mEMORY[0x277CEF158] logEventWithType:3310 context:v9];
 
   trainingAttemptUUID = self->_trainingAttemptUUID;
   enrollmentMode = self->_enrollmentMode;
@@ -4617,9 +4617,9 @@ void __50__VTUIEnrollTrainingViewController_skipAssistant___block_invoke(uint64_
 
   else
   {
-    v3 = [(VTUIEnrollTrainingViewController *)self _isGreyMatterAvailable];
+    _isGreyMatterAvailable = [(VTUIEnrollTrainingViewController *)self _isGreyMatterAvailable];
 
-    if (v3 && prewarm_onceToken != -1)
+    if (_isGreyMatterAvailable && prewarm_onceToken != -1)
     {
       [VTUIEnrollTrainingViewController prewarm];
     }
@@ -4654,9 +4654,9 @@ void __43__VTUIEnrollTrainingViewController_prewarm__block_invoke_3(uint64_t a1,
 
 - (void)_cleanupHelper
 {
-  v3 = [MEMORY[0x277CEF2A8] isSCDAFrameworkEnabled];
+  isSCDAFrameworkEnabled = [MEMORY[0x277CEF2A8] isSCDAFrameworkEnabled];
   v4 = &OBJC_IVAR___VTUIEnrollTrainingViewController__myriadCoordinator;
-  if (v3)
+  if (isSCDAFrameworkEnabled)
   {
     v4 = &OBJC_IVAR___VTUIEnrollTrainingViewController__scdaCoordinator;
   }
@@ -4739,8 +4739,8 @@ LABEL_10:
       goto LABEL_18;
     }
 
-    v6 = [MEMORY[0x277D55AF8] currentCoordinator];
-    if (!v6)
+    currentCoordinator = [MEMORY[0x277D55AF8] currentCoordinator];
+    if (!currentCoordinator)
     {
       v7 = MEMORY[0x277D55AF8];
 LABEL_16:
@@ -4754,15 +4754,15 @@ LABEL_16:
   p_scdaCoordinator = &self->_myriadCoordinator;
   if (!self->_myriadCoordinator)
   {
-    v6 = [MEMORY[0x277CEF328] currentCoordinator];
-    if (!v6)
+    currentCoordinator = [MEMORY[0x277CEF328] currentCoordinator];
+    if (!currentCoordinator)
     {
       v7 = MEMORY[0x277CEF328];
       goto LABEL_16;
     }
 
 LABEL_14:
-    v8 = v6;
+    v8 = currentCoordinator;
 LABEL_17:
     v9 = *p_scdaCoordinator;
     *p_scdaCoordinator = v8;
@@ -4875,23 +4875,23 @@ void __66__VTUIEnrollTrainingViewController__setLanguageOptionsAndContinue__bloc
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_checkForPHSCloudDataIfNecessary:(id)a3
+- (void)_checkForPHSCloudDataIfNecessary:(id)necessary
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  necessaryCopy = necessary;
   v5 = +[VTUIStyle sharedStyle];
-  v6 = [v5 enrollmentMode];
+  enrollmentMode = [v5 enrollmentMode];
 
   v7 = *MEMORY[0x277CEF0E8];
   v8 = os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_DEFAULT);
-  if (v4 && v6 <= 1)
+  if (necessaryCopy && enrollmentMode <= 1)
   {
     if (v8)
     {
       *buf = 136315394;
       v21 = "[VTUIEnrollTrainingViewController _checkForPHSCloudDataIfNecessary:]";
       v22 = 2112;
-      v23 = v4;
+      v23 = necessaryCopy;
       _os_log_impl(&dword_2728BC000, v7, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
     }
 
@@ -4901,7 +4901,7 @@ void __66__VTUIEnrollTrainingViewController__setLanguageOptionsAndContinue__bloc
     v17[2] = __69__VTUIEnrollTrainingViewController__checkForPHSCloudDataIfNecessary___block_invoke;
     v17[3] = &unk_279E544E8;
     objc_copyWeak(&v19, buf);
-    v18 = v4;
+    v18 = necessaryCopy;
     v9 = dispatch_block_create(DISPATCH_BLOCK_ASSIGN_CURRENT, v17);
     hasPHSInCloudFetchBlock = self->_hasPHSInCloudFetchBlock;
     self->_hasPHSInCloudFetchBlock = v9;
@@ -5020,46 +5020,46 @@ void __69__VTUIEnrollTrainingViewController__hasPHSCloudDataForSpokenLanguage__b
   }
 
   v5 = +[VTUIStyle sharedStyle];
-  v33 = [v5 educationViewTitleText];
+  educationViewTitleText = [v5 educationViewTitleText];
 
   v6 = +[VTUIStyle sharedStyle];
-  v32 = [v6 educationViewDetailText];
+  educationViewDetailText = [v6 educationViewDetailText];
 
   v7 = [VTUISiriEducationViewController alloc];
   v8 = +[VTUIStyle sharedStyle];
-  v9 = [(VTUISiriEducationViewController *)v7 initWithTitle:v33 detailText:v32 style:v8 delegate:self];
+  v9 = [(VTUISiriEducationViewController *)v7 initWithTitle:educationViewTitleText detailText:educationViewDetailText style:v8 delegate:self];
   educationViewController = self->_educationViewController;
   self->_educationViewController = v9;
 
   [(VTUISiriEducationViewController *)self->_educationViewController willMoveToParentViewController:self];
   [(VTUIEnrollTrainingViewController *)self addChildViewController:self->_educationViewController];
   [(VTUISiriEducationViewController *)self->_educationViewController didMoveToParentViewController:self];
-  v11 = [(VTUISiriEducationViewController *)self->_educationViewController view];
-  [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v11 setAutoresizesSubviews:0];
-  v12 = [(VTUIEnrollTrainingViewController *)self view];
-  [v12 addSubview:v11];
+  view = [(VTUISiriEducationViewController *)self->_educationViewController view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  [view setAutoresizesSubviews:0];
+  view2 = [(VTUIEnrollTrainingViewController *)self view];
+  [view2 addSubview:view];
 
   v25 = MEMORY[0x277CCAAD0];
-  v30 = [v11 topAnchor];
-  v31 = [(VTUIEnrollTrainingViewController *)self view];
-  v29 = [v31 topAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29 constant:0.0];
+  topAnchor = [view topAnchor];
+  view3 = [(VTUIEnrollTrainingViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v28 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
   v34[0] = v28;
-  v26 = [v11 leftAnchor];
-  v27 = [(VTUIEnrollTrainingViewController *)self view];
-  v24 = [v27 leftAnchor];
-  v23 = [v26 constraintEqualToAnchor:v24 constant:0.0];
+  leftAnchor = [view leftAnchor];
+  view4 = [(VTUIEnrollTrainingViewController *)self view];
+  leftAnchor2 = [view4 leftAnchor];
+  v23 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:0.0];
   v34[1] = v23;
-  v22 = [v11 rightAnchor];
-  v13 = [(VTUIEnrollTrainingViewController *)self view];
-  v14 = [v13 rightAnchor];
-  v15 = [v22 constraintEqualToAnchor:v14 constant:0.0];
+  rightAnchor = [view rightAnchor];
+  view5 = [(VTUIEnrollTrainingViewController *)self view];
+  rightAnchor2 = [view5 rightAnchor];
+  v15 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:0.0];
   v34[2] = v15;
-  v16 = [v11 bottomAnchor];
-  v17 = [(VTUIEnrollTrainingViewController *)self view];
-  v18 = [v17 bottomAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18 constant:0.0];
+  bottomAnchor = [view bottomAnchor];
+  view6 = [(VTUIEnrollTrainingViewController *)self view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
   v34[3] = v19;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:4];
   [v25 activateConstraints:v20];
@@ -5107,7 +5107,7 @@ void __52__VTUIEnrollTrainingViewController__finishSiriSetup__block_invoke(uint6
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)finish:(id)a3
+- (void)finish:(id)finish
 {
   v8 = *MEMORY[0x277D85DE8];
   [(VTUIEnrollTrainingViewController *)self _cleanupTrainingManagerWithCompletion:0];
@@ -5123,10 +5123,10 @@ void __52__VTUIEnrollTrainingViewController__finishSiriSetup__block_invoke(uint6
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enrollTrainingViewRadarButtonPressed:(id)a3
+- (void)enrollTrainingViewRadarButtonPressed:(id)pressed
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pressedCopy = pressed;
   v5 = VTUILogContextFacility;
   if (os_log_type_enabled(VTUILogContextFacility, OS_LOG_TYPE_DEFAULT))
   {
@@ -5140,8 +5140,8 @@ void __52__VTUIEnrollTrainingViewController__finishSiriSetup__block_invoke(uint6
   introViewController = self->_introViewController;
   if (introViewController)
   {
-    v7 = [(VTUIEnrollmentSetupIntroViewControlling *)introViewController view];
-    [v7 setHidden:1];
+    view = [(VTUIEnrollmentSetupIntroViewControlling *)introViewController view];
+    [view setHidden:1];
   }
 
   [(VTUIEnrollmentLanguageOptionsView *)self->_languageOptionsView setHidden:1];
@@ -5166,7 +5166,7 @@ void __52__VTUIEnrollTrainingViewController__finishSiriSetup__block_invoke(uint6
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)shouldAbortAnotherDeviceBetter:(id)a3
+- (void)shouldAbortAnotherDeviceBetter:(id)better
 {
   v7 = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277CEF098];
@@ -5180,7 +5180,7 @@ void __52__VTUIEnrollTrainingViewController__finishSiriSetup__block_invoke(uint6
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)shouldContinue:(id)a3
+- (void)shouldContinue:(id)continue
 {
   v7 = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277CEF098];
@@ -5194,7 +5194,7 @@ void __52__VTUIEnrollTrainingViewController__finishSiriSetup__block_invoke(uint6
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scdaShouldAbortAnotherDeviceBetter:(id)a3
+- (void)scdaShouldAbortAnotherDeviceBetter:(id)better
 {
   v7 = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277CEF098];
@@ -5208,7 +5208,7 @@ void __52__VTUIEnrollTrainingViewController__finishSiriSetup__block_invoke(uint6
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scdaShouldContinue:(id)a3
+- (void)scdaShouldContinue:(id)continue
 {
   v7 = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277CEF098];
@@ -5244,32 +5244,32 @@ void __52__VTUIEnrollTrainingViewController__finishSiriSetup__block_invoke(uint6
     _os_log_impl(&dword_2728BC000, v3, OS_LOG_TYPE_DEFAULT, "%s #SiriDataSharingOptIn: Displaying SiriDataSharingOptIn", buf, 0xCu);
   }
 
-  v4 = [(VTUIEnrollTrainingViewController *)self view];
+  view = [(VTUIEnrollTrainingViewController *)self view];
   v5 = [(VTUISiriDataSharingOptInPresenter *)self->_siriDataSharingOptInPresenter dataSharingOptInTextWelcomeControllerForViewStyle:0];
   siriDataSharingViewController = self->_siriDataSharingViewController;
   self->_siriDataSharingViewController = v5;
 
-  v7 = [(UIViewController *)self->_siriDataSharingViewController view];
+  view2 = [(UIViewController *)self->_siriDataSharingViewController view];
   siriDataSharingOptInView = self->_siriDataSharingOptInView;
-  self->_siriDataSharingOptInView = v7;
-  v9 = v7;
+  self->_siriDataSharingOptInView = view2;
+  v9 = view2;
 
   [(UIViewController *)self->_siriDataSharingViewController willMoveToParentViewController:self];
   [(VTUIEnrollTrainingViewController *)self addChildViewController:self->_siriDataSharingViewController];
   [(UIViewController *)self->_siriDataSharingViewController didMoveToParentViewController:self];
   [(UIView *)v9 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)v9 setAutoresizesSubviews:0];
-  [v4 addSubview:v9];
-  v10 = [MEMORY[0x277CCAAD0] constraintWithItem:v9 attribute:3 relatedBy:0 toItem:v4 attribute:3 multiplier:1.0 constant:0.0];
-  v11 = [MEMORY[0x277CCAAD0] constraintWithItem:v9 attribute:4 relatedBy:0 toItem:v4 attribute:4 multiplier:1.0 constant:0.0];
-  v12 = [MEMORY[0x277CCAAD0] constraintWithItem:v9 attribute:1 relatedBy:0 toItem:v4 attribute:1 multiplier:1.0 constant:0.0];
-  v13 = [MEMORY[0x277CCAAD0] constraintWithItem:v9 attribute:2 relatedBy:0 toItem:v4 attribute:2 multiplier:1.0 constant:0.0];
+  [view addSubview:v9];
+  v10 = [MEMORY[0x277CCAAD0] constraintWithItem:v9 attribute:3 relatedBy:0 toItem:view attribute:3 multiplier:1.0 constant:0.0];
+  v11 = [MEMORY[0x277CCAAD0] constraintWithItem:v9 attribute:4 relatedBy:0 toItem:view attribute:4 multiplier:1.0 constant:0.0];
+  v12 = [MEMORY[0x277CCAAD0] constraintWithItem:v9 attribute:1 relatedBy:0 toItem:view attribute:1 multiplier:1.0 constant:0.0];
+  v13 = [MEMORY[0x277CCAAD0] constraintWithItem:v9 attribute:2 relatedBy:0 toItem:view attribute:2 multiplier:1.0 constant:0.0];
   v16[0] = v10;
   v16[1] = v11;
   v16[2] = v12;
   v16[3] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:4];
-  [v4 addConstraints:v14];
+  [view addConstraints:v14];
 
   [(VTUITrainingViewMediator *)self->_trainingViewMediator hideSkipButton:1];
   v15 = *MEMORY[0x277D85DE8];
@@ -5279,11 +5279,11 @@ void __52__VTUIEnrollTrainingViewController__finishSiriSetup__block_invoke(uint6
 {
   v24 = *MEMORY[0x277D85DE8];
   enrollmentMode = self->_enrollmentMode;
-  v4 = [MEMORY[0x277CEF368] sharedPreferences];
-  v5 = [v4 assistantIsEnabled];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  assistantIsEnabled = [mEMORY[0x277CEF368] assistantIsEnabled];
 
-  v6 = [MEMORY[0x277CF0130] sharedInstance];
-  v7 = [v6 shieldSignInOrCreateFlows];
+  mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+  shieldSignInOrCreateFlows = [mEMORY[0x277CF0130] shieldSignInOrCreateFlows];
 
   v8 = VTUILogContextFacility;
   if (os_log_type_enabled(VTUILogContextFacility, OS_LOG_TYPE_DEFAULT))
@@ -5291,8 +5291,8 @@ void __52__VTUIEnrollTrainingViewController__finishSiriSetup__block_invoke(uint6
     v9 = MEMORY[0x277CCABB0];
     v10 = v8;
     v11 = [v9 numberWithBool:enrollmentMode == 2];
-    v12 = [MEMORY[0x277CCABB0] numberWithBool:v5];
-    v13 = [MEMORY[0x277CCABB0] numberWithBool:v7];
+    v12 = [MEMORY[0x277CCABB0] numberWithBool:assistantIsEnabled];
+    v13 = [MEMORY[0x277CCABB0] numberWithBool:shieldSignInOrCreateFlows];
     v16 = 136315906;
     v17 = "[VTUIEnrollTrainingViewController _shouldShowSiriDataSharingOptInView]";
     v18 = 2112;
@@ -5311,7 +5311,7 @@ void __52__VTUIEnrollTrainingViewController__finishSiriSetup__block_invoke(uint6
 
   else if ([(VTUISiriDataSharingOptInPresenter *)self->_siriDataSharingOptInPresenter shouldShowSiriDataSharingOptInView])
   {
-    result = v5 & (v7 ^ 1);
+    result = assistantIsEnabled & (shieldSignInOrCreateFlows ^ 1);
   }
 
   else
@@ -5323,7 +5323,7 @@ void __52__VTUIEnrollTrainingViewController__finishSiriSetup__block_invoke(uint6
   return result;
 }
 
-- (void)siriDataSharingOptInRequestsDismissalFromPresenter:(id)a3
+- (void)siriDataSharingOptInRequestsDismissalFromPresenter:(id)presenter
 {
   v14 = *MEMORY[0x277D85DE8];
   v4 = VTUILogContextFacility;
@@ -5347,8 +5347,8 @@ void __52__VTUIEnrollTrainingViewController__finishSiriSetup__block_invoke(uint6
 - (void)_proceedAfterVoiceSelectionOrSkip
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CEF368] sharedPreferences];
-  v4 = [v3 assistantIsEnabled];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  assistantIsEnabled = [mEMORY[0x277CEF368] assistantIsEnabled];
 
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -5356,19 +5356,19 @@ void __52__VTUIEnrollTrainingViewController__finishSiriSetup__block_invoke(uint6
     v9 = 136315394;
     v10 = "[VTUIEnrollTrainingViewController _proceedAfterVoiceSelectionOrSkip]";
     v11 = 1024;
-    v12 = v4;
+    v12 = assistantIsEnabled;
     _os_log_impl(&dword_2728BC000, v5, OS_LOG_TYPE_DEFAULT, "%s Enabled: %d", &v9, 0x12u);
   }
 
-  if (!(v4 & 1 | !self->_hasSkippedTraining))
+  if (!(assistantIsEnabled & 1 | !self->_hasSkippedTraining))
   {
     goto LABEL_8;
   }
 
   v6 = +[VTUIStyle sharedStyle];
-  v7 = [v6 shouldPresentEducationView];
+  shouldPresentEducationView = [v6 shouldPresentEducationView];
 
-  if (!v7)
+  if (!shouldPresentEducationView)
   {
     if ([(VTUIEnrollTrainingViewController *)self _shouldShowSiriDataSharingOptInView])
     {
@@ -5393,8 +5393,8 @@ LABEL_9:
   v22 = *MEMORY[0x277D85DE8];
   if (self->_hasSkippedTraining)
   {
-    v3 = [MEMORY[0x277CEF368] sharedPreferences];
-    v4 = [v3 assistantIsEnabled];
+    mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+    assistantIsEnabled = [mEMORY[0x277CEF368] assistantIsEnabled];
 
     v5 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -5403,19 +5403,19 @@ LABEL_9:
       *buf = 136315650;
       v17 = "[VTUIEnrollTrainingViewController _endSetup]";
       v18 = 1024;
-      v19 = v4;
+      v19 = assistantIsEnabled;
       v20 = 2112;
       v21 = enablementConfiguration;
       _os_log_impl(&dword_2728BC000, v5, OS_LOG_TYPE_DEFAULT, "%s Ending setup, assistant enabled %d enablementConfiguration:%@", buf, 0x1Cu);
     }
 
-    if ((v4 & 1) == 0)
+    if ((assistantIsEnabled & 1) == 0)
     {
       v7 = self->_enablementConfiguration;
       if (v7)
       {
-        v8 = [(AFEnablementConfiguration *)v7 completionLoggingBlock];
-        v8[2](v8, 0);
+        completionLoggingBlock = [(AFEnablementConfiguration *)v7 completionLoggingBlock];
+        completionLoggingBlock[2](completionLoggingBlock, 0);
       }
     }
 
@@ -5427,29 +5427,29 @@ LABEL_9:
 
   else
   {
-    v11 = [(VTUIEnrollTrainingViewController *)self delegate];
+    delegate = [(VTUIEnrollTrainingViewController *)self delegate];
     v12 = objc_opt_respondsToSelector();
 
-    v15 = [(VTUIEnrollTrainingViewController *)self delegate];
+    delegate2 = [(VTUIEnrollTrainingViewController *)self delegate];
     if (v12)
     {
-      v13 = [(SSRVTUITrainingManager *)self->_trainingManager voiceProfile];
-      [v15 continueSetupWithVoiceProfile:v13];
+      voiceProfile = [(SSRVTUITrainingManager *)self->_trainingManager voiceProfile];
+      [delegate2 continueSetupWithVoiceProfile:voiceProfile];
     }
 
     else
     {
-      [v15 continueSetup];
+      [delegate2 continueSetup];
     }
 
     v14 = *MEMORY[0x277D85DE8];
   }
 }
 
-- (void)siriEducationViewControllerContinuePressed:(id)a3
+- (void)siriEducationViewControllerContinuePressed:(id)pressed
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pressedCopy = pressed;
   v5 = VTUILogContextFacility;
   if (os_log_type_enabled(VTUILogContextFacility, OS_LOG_TYPE_DEFAULT))
   {
@@ -5460,8 +5460,8 @@ LABEL_9:
 
   if ([(VTUIEnrollTrainingViewController *)self _shouldShowSiriDataSharingOptInView])
   {
-    v6 = [(VTUISiriEducationViewController *)self->_educationViewController view];
-    [v6 removeFromSuperview];
+    view = [(VTUISiriEducationViewController *)self->_educationViewController view];
+    [view removeFromSuperview];
 
     educationViewController = self->_educationViewController;
     self->_educationViewController = 0;
@@ -5483,23 +5483,23 @@ LABEL_9:
   {
     v10 = [MEMORY[0x277D37678] presenterForPrivacySplashWithIdentifier:@"com.apple.onboarding.siri"];
     [v10 setPresentingViewController:self];
-    v3 = [v10 splashController];
-    [v3 setAllowsOpeningSafari:1];
+    splashController = [v10 splashController];
+    [splashController setAllowsOpeningSafari:1];
 
-    v4 = [v10 splashController];
-    [v4 setUnderlineLinks:0];
+    splashController2 = [v10 splashController];
+    [splashController2 setUnderlineLinks:0];
 
-    v5 = [v10 splashController];
-    [v5 setDisplayDeviceType:1];
+    splashController3 = [v10 splashController];
+    [splashController3 setDisplayDeviceType:1];
 
-    v6 = [MEMORY[0x277CEF368] sharedPreferences];
-    v7 = [v6 languageCode];
-    v8 = [v10 splashController];
-    [v8 setDisplayLanguage:v7];
+    mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+    languageCode = [mEMORY[0x277CEF368] languageCode];
+    splashController4 = [v10 splashController];
+    [splashController4 setDisplayLanguage:languageCode];
 
     [v10 setModalPresentationStyle:{-[VTUIEnrollTrainingViewController modalPresentationStyle](self, "modalPresentationStyle")}];
-    v9 = [(VTUIEnrollTrainingViewController *)self presentingViewController];
-    [v10 setSupportedInterfaceOrientations:{objc_msgSend(v9, "supportedInterfaceOrientations")}];
+    presentingViewController = [(VTUIEnrollTrainingViewController *)self presentingViewController];
+    [v10 setSupportedInterfaceOrientations:{objc_msgSend(presentingViewController, "supportedInterfaceOrientations")}];
 
     [v10 present];
   }
@@ -5528,8 +5528,8 @@ LABEL_9:
         }
 
         v7 = *(*(&v12 + 1) + 8 * i);
-        v8 = [MEMORY[0x277D7A8D0] sharedPreferences];
-        LODWORD(v7) = [v8 isCompactVoiceTriggerAvailableForLanguageCode:v7];
+        mEMORY[0x277D7A8D0] = [MEMORY[0x277D7A8D0] sharedPreferences];
+        LODWORD(v7) = [mEMORY[0x277D7A8D0] isCompactVoiceTriggerAvailableForLanguageCode:v7];
 
         if (!v7)
         {
@@ -5555,27 +5555,27 @@ LABEL_11:
   return v9;
 }
 
-- (void)_processIntroViewContinueAction:(id)a3 completion:(id)a4
+- (void)_processIntroViewContinueAction:(id)action completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  completionCopy = completion;
   if (!self->_isEnablementConfigurationLoading)
   {
     v9 = +[VTUIStyle sharedStyle];
-    v10 = [v9 enrollmentMode];
+    enrollmentMode = [v9 enrollmentMode];
 
-    if (v10 == 4)
+    if (enrollmentMode == 4)
     {
 LABEL_6:
-      [(VTUIEnrollTrainingViewController *)self _continueToTrainingFromIntro:v7];
+      [(VTUIEnrollTrainingViewController *)self _continueToTrainingFromIntro:completionCopy];
       goto LABEL_10;
     }
 
     if ([(VTUIEnrollTrainingViewController *)self _shouldPresentLanguageDisambiguation])
     {
       [(VTUIEnrollTrainingViewController *)self _setLanguageOptionsAndContinue];
-      if (!v7)
+      if (!completionCopy)
       {
         goto LABEL_10;
       }
@@ -5583,9 +5583,9 @@ LABEL_6:
       goto LABEL_9;
     }
 
-    if (v10 != 3)
+    if (enrollmentMode != 3)
     {
-      if (v10 > 1 || (+[VTUIStyle sharedStyle](VTUIStyle, "sharedStyle"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 shouldPresentDisclosureForCompactVoiceTrigger], v12, !v13))
+      if (enrollmentMode > 1 || (+[VTUIStyle sharedStyle](VTUIStyle, "sharedStyle"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 shouldPresentDisclosureForCompactVoiceTrigger], v12, !v13))
       {
         if ([(VTUIEnrollTrainingViewController *)self _isGreyMatterAvailable])
         {
@@ -5593,22 +5593,22 @@ LABEL_6:
         }
 
         [(VTUIEnrollTrainingViewController *)self _continueToVoiceSelectionFromIntro];
-        if (!v7)
+        if (!completionCopy)
         {
           goto LABEL_10;
         }
 
 LABEL_9:
-        v7[2](v7);
+        completionCopy[2](completionCopy);
         goto LABEL_10;
       }
 
-      v14 = [MEMORY[0x277CEF368] sharedPreferences];
-      [v14 setCompactVoiceTriggerDisclosurePresented:1];
+      mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+      [mEMORY[0x277CEF368] setCompactVoiceTriggerDisclosurePresented:1];
     }
 
     [(VTUIEnrollTrainingViewController *)self _finishSiriSetup];
-    if (!v7)
+    if (!completionCopy)
     {
       goto LABEL_10;
     }
@@ -5630,8 +5630,8 @@ LABEL_9:
   v15[2] = __79__VTUIEnrollTrainingViewController__processIntroViewContinueAction_completion___block_invoke;
   v15[3] = &unk_279E54578;
   objc_copyWeak(&v18, buf);
-  v16 = v6;
-  v17 = v7;
+  v16 = actionCopy;
+  v17 = completionCopy;
   [(VTUIEnrollTrainingViewController *)self _setIntroViewActionOnEnablementConfigurationDidLoad:v15];
 
   objc_destroyWeak(&v18);
@@ -5661,13 +5661,13 @@ void __79__VTUIEnrollTrainingViewController__processIntroViewContinueAction_comp
 - (void)_proceedAfterTrainingCompletionOrSkip
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(VTUIEnrollTrainingViewController *)self delegate];
+  delegate = [(VTUIEnrollTrainingViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(VTUIEnrollTrainingViewController *)self delegate];
-    [v5 didCompleteOrSkipVoiceTraining];
+    delegate2 = [(VTUIEnrollTrainingViewController *)self delegate];
+    [delegate2 didCompleteOrSkipVoiceTraining];
   }
 
   v6 = *MEMORY[0x277CEF098];
@@ -5719,19 +5719,19 @@ void __73__VTUIEnrollTrainingViewController__proceedAfterTrainingCompletionOrSki
   }
 }
 
-- (void)_processLanguageSelectionAction:(id)a3
+- (void)_processLanguageSelectionAction:(id)action
 {
-  v14 = a3;
+  actionCopy = action;
   v4 = +[VTUIStyle sharedStyle];
-  v5 = [v4 enrollmentMode];
+  enrollmentMode = [v4 enrollmentMode];
 
   [(VTUITrainingViewMediator *)self->_trainingViewMediator hideContinuationAndPreludeLabel:0];
-  v6 = [(VTUIEnrollmentLanguageOptionsView *)self->_languageOptionsView continueButtons];
-  v7 = [v6 containsObject:v14];
+  continueButtons = [(VTUIEnrollmentLanguageOptionsView *)self->_languageOptionsView continueButtons];
+  v7 = [continueButtons containsObject:actionCopy];
 
   if (v7)
   {
-    v8 = [(VTUIEnrollmentLanguageOptionsView *)self->_languageOptionsView languageSelectionOfContinueButton:v14];
+    v8 = [(VTUIEnrollmentLanguageOptionsView *)self->_languageOptionsView languageSelectionOfContinueButton:actionCopy];
     spokenLanguageCode = self->_spokenLanguageCode;
     self->_spokenLanguageCode = v8;
     v10 = v8;
@@ -5757,7 +5757,7 @@ void __73__VTUIEnrollTrainingViewController__proceedAfterTrainingCompletionOrSki
       [(VTUIEnrollTrainingViewController *)self _processDisambiguatedLanguageOption:disambiguatedLanguageOption commitLanguageCodeToPreferences:1];
     }
 
-    if (v5 == 3)
+    if (enrollmentMode == 3)
     {
       [(VTUIEnrollmentLanguageOptionsView *)self->_languageOptionsView removeFromSuperview];
       v13 = self->_languageOptionsView;
@@ -5773,9 +5773,9 @@ void __73__VTUIEnrollTrainingViewController__proceedAfterTrainingCompletionOrSki
   }
 }
 
-- (void)_setIntroViewActionOnEnablementConfigurationDidLoad:(id)a3
+- (void)_setIntroViewActionOnEnablementConfigurationDidLoad:(id)load
 {
-  v4 = a3;
+  loadCopy = load;
   v5 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
   [v5 startAnimating];
   v6 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v5];
@@ -5788,8 +5788,8 @@ void __73__VTUIEnrollTrainingViewController__proceedAfterTrainingCompletionOrSki
   aBlock[2] = __88__VTUIEnrollTrainingViewController__setIntroViewActionOnEnablementConfigurationDidLoad___block_invoke;
   aBlock[3] = &unk_279E545A0;
   objc_copyWeak(&v12, &location);
-  v11 = v4;
-  v7 = v4;
+  v11 = loadCopy;
+  v7 = loadCopy;
   v8 = _Block_copy(aBlock);
   onEnablementConfigurationDidLoad = self->_onEnablementConfigurationDidLoad;
   self->_onEnablementConfigurationDidLoad = v8;
@@ -5817,11 +5817,11 @@ void __88__VTUIEnrollTrainingViewController__setIntroViewActionOnEnablementConfi
   }
 }
 
-- (void)_processDisambiguatedLanguageOption:(id)a3 commitLanguageCodeToPreferences:(BOOL)a4
+- (void)_processDisambiguatedLanguageOption:(id)option commitLanguageCodeToPreferences:(BOOL)preferences
 {
-  v4 = a4;
+  preferencesCopy = preferences;
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  optionCopy = option;
   v7 = MEMORY[0x277CEF098];
   v8 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -5832,18 +5832,18 @@ void __88__VTUIEnrollTrainingViewController__setIntroViewActionOnEnablementConfi
   }
 
   v9 = +[VTUIStyle sharedStyle];
-  v10 = [v9 enrollmentMode];
+  enrollmentMode = [v9 enrollmentMode];
 
-  if (v4)
+  if (preferencesCopy)
   {
-    v11 = [MEMORY[0x277CEF368] sharedPreferences];
-    [v11 setLanguageCode:self->_disambiguatedLanguageOption];
+    mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+    [mEMORY[0x277CEF368] setLanguageCode:self->_disambiguatedLanguageOption];
   }
 
   v12 = +[VTUIStringsHelper sharedStringsHelper];
   [v12 setSiriLanguage:self->_disambiguatedLanguageOption];
 
-  if (v4)
+  if (preferencesCopy)
   {
     v13 = *v7;
     if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
@@ -5857,7 +5857,7 @@ void __88__VTUIEnrollTrainingViewController__setIntroViewActionOnEnablementConfi
     [(VTUIEnrollTrainingViewController *)self _setupTrainingStates];
   }
 
-  if (v10 != 3)
+  if (enrollmentMode != 3)
   {
     v14 = *v7;
     if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
@@ -5884,10 +5884,10 @@ void __88__VTUIEnrollTrainingViewController__setIntroViewActionOnEnablementConfi
   [(VTUIEnrollTrainingViewController *)self _showVoiceSelectionViewForRecognitionLanguage:spokenLanguageCode];
 }
 
-- (void)_showVoiceSelectionViewForRecognitionLanguage:(id)a3
+- (void)_showVoiceSelectionViewForRecognitionLanguage:(id)language
 {
   v59 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  languageCopy = language;
   v5 = VTUILogContextFacility;
   if (os_log_type_enabled(VTUILogContextFacility, OS_LOG_TYPE_DEFAULT))
   {
@@ -5897,14 +5897,14 @@ void __88__VTUIEnrollTrainingViewController__setIntroViewActionOnEnablementConfi
     v55 = 2048;
     v56 = enrollmentMode;
     v57 = 2112;
-    v58 = v4;
+    v58 = languageCopy;
     _os_log_impl(&dword_2728BC000, v5, OS_LOG_TYPE_DEFAULT, "%s Showing voice selection view for enrollment mode %ld, recognitionLanguage %@", buf, 0x20u);
   }
 
-  if (!v4)
+  if (!languageCopy)
   {
-    v7 = [MEMORY[0x277CEF368] sharedPreferences];
-    v4 = [v7 bestSupportedLanguageCodeForLanguageCode:0];
+    mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+    languageCopy = [mEMORY[0x277CEF368] bestSupportedLanguageCodeForLanguageCode:0];
 
     v8 = VTUILogContextFacility;
     if (os_log_type_enabled(VTUILogContextFacility, OS_LOG_TYPE_DEFAULT))
@@ -5912,85 +5912,85 @@ void __88__VTUIEnrollTrainingViewController__setIntroViewActionOnEnablementConfi
       *buf = 136315394;
       v54 = "[VTUIEnrollTrainingViewController _showVoiceSelectionViewForRecognitionLanguage:]";
       v55 = 2112;
-      v56 = v4;
+      v56 = languageCopy;
       _os_log_impl(&dword_2728BC000, v8, OS_LOG_TYPE_DEFAULT, "%s No recognition language used, falling back to %@", buf, 0x16u);
     }
   }
 
-  v9 = [(AFEnablementConfiguration *)self->_enablementConfiguration voiceSelectionAllowsRandomSelection];
+  voiceSelectionAllowsRandomSelection = [(AFEnablementConfiguration *)self->_enablementConfiguration voiceSelectionAllowsRandomSelection];
   [(VTUIEnrollTrainingViewController *)self _setRightBarButtonItem:0];
   v10 = +[VTUIStyle sharedStyle];
-  v11 = [v10 enrollmentMode];
+  enrollmentMode = [v10 enrollmentMode];
 
-  if (v11 != 2 && v11 != 4)
+  if (enrollmentMode != 2 && enrollmentMode != 4)
   {
-    v13 = [(VTUIEnrollTrainingViewController *)self navigationItem];
-    self->didOverrideHiddenBackButtonVisibility = [v13 hidesBackButton];
+    navigationItem = [(VTUIEnrollTrainingViewController *)self navigationItem];
+    self->didOverrideHiddenBackButtonVisibility = [navigationItem hidesBackButton];
 
-    v14 = [(VTUIEnrollTrainingViewController *)self navigationItem];
-    [v14 setHidesBackButton:0];
+    navigationItem2 = [(VTUIEnrollTrainingViewController *)self navigationItem];
+    [navigationItem2 setHidesBackButton:0];
 
     [MEMORY[0x277D75780] _setUseCustomBackButtonAction:1];
-    v15 = [(VTUIEnrollTrainingViewController *)self navigationItem];
-    v16 = [v15 navigationBar];
-    v17 = [v16 backItem];
-    v18 = [v17 backBarButtonItem];
+    navigationItem3 = [(VTUIEnrollTrainingViewController *)self navigationItem];
+    navigationBar = [navigationItem3 navigationBar];
+    backItem = [navigationBar backItem];
+    backBarButtonItem = [backItem backBarButtonItem];
     overriddenBackItemBackBarButtonItem = self->overriddenBackItemBackBarButtonItem;
-    self->overriddenBackItemBackBarButtonItem = v18;
+    self->overriddenBackItemBackBarButtonItem = backBarButtonItem;
 
     v20 = +[VTUIStyle sharedStyle];
     v21 = [v20 VTUIDeviceSpecificString:@"BUTTON_NAV_BACK"];
 
     v22 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:v21 style:0 target:self action:sel_returnFromVoiceSelectionToIntroView_];
-    v23 = [(VTUIEnrollTrainingViewController *)self navigationItem];
-    v24 = [v23 navigationBar];
-    v25 = [v24 backItem];
-    [v25 setBackBarButtonItem:v22];
+    navigationItem4 = [(VTUIEnrollTrainingViewController *)self navigationItem];
+    navigationBar2 = [navigationItem4 navigationBar];
+    backItem2 = [navigationBar2 backItem];
+    [backItem2 setBackBarButtonItem:v22];
   }
 
-  v51 = v4;
-  v26 = [[VTUIVoiceSelectionViewController alloc] initWithRecognitionLanguage:v4 allowsRandomSelection:v9 barButtonItemForContinue:0 customVoicePreviewer:0 delegate:self];
+  v51 = languageCopy;
+  v26 = [[VTUIVoiceSelectionViewController alloc] initWithRecognitionLanguage:languageCopy allowsRandomSelection:voiceSelectionAllowsRandomSelection barButtonItemForContinue:0 customVoicePreviewer:0 delegate:self];
   voiceSelectionViewController = self->_voiceSelectionViewController;
   self->_voiceSelectionViewController = v26;
 
   [(VTUIVoiceSelectionViewController *)self->_voiceSelectionViewController willMoveToParentViewController:self];
   [(VTUIEnrollTrainingViewController *)self addChildViewController:self->_voiceSelectionViewController];
   [(VTUIVoiceSelectionViewController *)self->_voiceSelectionViewController didMoveToParentViewController:self];
-  v28 = [(VTUIVoiceSelectionViewController *)self->_voiceSelectionViewController view];
-  [v28 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v28 setAutoresizesSubviews:0];
-  v29 = [(VTUIEnrollTrainingViewController *)self view];
-  [v29 addSubview:v28];
+  view = [(VTUIVoiceSelectionViewController *)self->_voiceSelectionViewController view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  [view setAutoresizesSubviews:0];
+  view2 = [(VTUIEnrollTrainingViewController *)self view];
+  [view2 addSubview:view];
 
   v43 = MEMORY[0x277CCAAD0];
-  v49 = [v28 topAnchor];
-  v50 = [(VTUIEnrollTrainingViewController *)self view];
-  v48 = [v50 topAnchor];
-  v47 = [v49 constraintEqualToAnchor:v48];
+  topAnchor = [view topAnchor];
+  view3 = [(VTUIEnrollTrainingViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v47 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v52[0] = v47;
-  v45 = [v28 leftAnchor];
-  v46 = [(VTUIEnrollTrainingViewController *)self view];
-  v44 = [v46 leftAnchor];
-  v42 = [v45 constraintEqualToAnchor:v44];
+  leftAnchor = [view leftAnchor];
+  view4 = [(VTUIEnrollTrainingViewController *)self view];
+  leftAnchor2 = [view4 leftAnchor];
+  v42 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v52[1] = v42;
-  v41 = [v28 rightAnchor];
-  v30 = [(VTUIEnrollTrainingViewController *)self view];
-  v31 = [v30 rightAnchor];
-  v32 = [v41 constraintEqualToAnchor:v31];
+  rightAnchor = [view rightAnchor];
+  view5 = [(VTUIEnrollTrainingViewController *)self view];
+  rightAnchor2 = [view5 rightAnchor];
+  v32 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v52[2] = v32;
-  v33 = [v28 bottomAnchor];
-  v34 = [(VTUIEnrollTrainingViewController *)self view];
-  v35 = [v34 bottomAnchor];
-  v36 = [v33 constraintEqualToAnchor:v35];
+  bottomAnchor = [view bottomAnchor];
+  view6 = [(VTUIEnrollTrainingViewController *)self view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v36 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v52[3] = v36;
   v37 = [MEMORY[0x277CBEA60] arrayWithObjects:v52 count:4];
   [v43 activateConstraints:v37];
 
   if (+[VTUIFeatureFlags isNaturalUIEnabled])
   {
-    v38 = [(VTUIEnrollTrainingViewController *)self navigationController];
-    v39 = [v38 navigationBar];
-    [v39 setOverrideUserInterfaceStyle:0];
+    navigationController = [(VTUIEnrollTrainingViewController *)self navigationController];
+    navigationBar3 = [navigationController navigationBar];
+    [navigationBar3 setOverrideUserInterfaceStyle:0];
 
     [(VTUIEnrollTrainingViewController *)self setOverrideUserInterfaceStyle:0];
   }
@@ -5998,18 +5998,18 @@ void __88__VTUIEnrollTrainingViewController__setIntroViewActionOnEnablementConfi
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)returnFromVoiceSelectionToIntroView:(id)a3
+- (void)returnFromVoiceSelectionToIntroView:(id)view
 {
   [(VTUIEnrollTrainingViewController *)self _resetBackBarButtonItem];
   [(VTUIVoiceSelectionViewController *)self->_voiceSelectionViewController removeFromParentViewController];
-  v4 = [(VTUIVoiceSelectionViewController *)self->_voiceSelectionViewController view];
-  [v4 removeFromSuperview];
+  view = [(VTUIVoiceSelectionViewController *)self->_voiceSelectionViewController view];
+  [view removeFromSuperview];
 
   voiceSelectionViewController = self->_voiceSelectionViewController;
   self->_voiceSelectionViewController = 0;
 
-  v6 = [(VTUIEnrollTrainingViewController *)self navigationItem];
-  [v6 setRightBarButtonItems:self->_existingRightBarButtonItems];
+  navigationItem = [(VTUIEnrollTrainingViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItems:self->_existingRightBarButtonItems];
 
   existingRightBarButtonItems = self->_existingRightBarButtonItems;
   self->_existingRightBarButtonItems = 0;
@@ -6021,16 +6021,16 @@ void __88__VTUIEnrollTrainingViewController__setIntroViewActionOnEnablementConfi
 {
   if (self->didOverrideHiddenBackButtonVisibility)
   {
-    v3 = [(VTUIEnrollTrainingViewController *)self navigationItem];
-    [v3 setHidesBackButton:1];
+    navigationItem = [(VTUIEnrollTrainingViewController *)self navigationItem];
+    [navigationItem setHidesBackButton:1];
 
     self->didOverrideHiddenBackButtonVisibility = 0;
   }
 
-  v4 = [(VTUIEnrollTrainingViewController *)self navigationItem];
-  v5 = [v4 navigationBar];
-  v6 = [v5 backItem];
-  [v6 setBackBarButtonItem:self->overriddenBackItemBackBarButtonItem];
+  navigationItem2 = [(VTUIEnrollTrainingViewController *)self navigationItem];
+  navigationBar = [navigationItem2 navigationBar];
+  backItem = [navigationBar backItem];
+  [backItem setBackBarButtonItem:self->overriddenBackItemBackBarButtonItem];
 
   overriddenBackItemBackBarButtonItem = self->overriddenBackItemBackBarButtonItem;
   self->overriddenBackItemBackBarButtonItem = 0;
@@ -6040,10 +6040,10 @@ void __88__VTUIEnrollTrainingViewController__setIntroViewActionOnEnablementConfi
   [v8 _setUseCustomBackButtonAction:0];
 }
 
-- (void)_logVoiceSelection:(id)a3 randomlySelected:(BOOL)a4
+- (void)_logVoiceSelection:(id)selection randomlySelected:(BOOL)selected
 {
-  v5 = a3;
-  v4 = v5;
+  selectionCopy = selection;
+  v4 = selectionCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -6091,8 +6091,8 @@ id __72__VTUIEnrollTrainingViewController__logVoiceSelection_randomlySelected___
 
   else
   {
-    v3 = [(VTUIEnrollmentSetupIntroViewControlling *)self->_introViewController view];
-    [v3 removeFromSuperview];
+    view = [(VTUIEnrollmentSetupIntroViewControlling *)self->_introViewController view];
+    [view removeFromSuperview];
 
     introViewController = self->_introViewController;
     self->_introViewController = 0;
@@ -6114,10 +6114,10 @@ void __50__VTUIEnrollTrainingViewController__hideIntroView__block_invoke_2(uint6
   [v3 setAlpha:1.0];
 }
 
-- (void)_continueToTrainingFromIntro:(id)a3
+- (void)_continueToTrainingFromIntro:(id)intro
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  introCopy = intro;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
@@ -6132,7 +6132,7 @@ void __50__VTUIEnrollTrainingViewController__hideIntroView__block_invoke_2(uint6
   aBlock[2] = __65__VTUIEnrollTrainingViewController__continueToTrainingFromIntro___block_invoke;
   aBlock[3] = &unk_279E545A0;
   objc_copyWeak(&v21, buf);
-  v6 = v4;
+  v6 = introCopy;
   v20 = v6;
   v7 = _Block_copy(aBlock);
   v11 = MEMORY[0x277D85DD0];
@@ -6141,7 +6141,7 @@ void __50__VTUIEnrollTrainingViewController__hideIntroView__block_invoke_2(uint6
   v14 = &unk_279E54618;
   objc_copyWeak(&v18, buf);
   v8 = v6;
-  v15 = self;
+  selfCopy = self;
   v16 = v8;
   v9 = v7;
   v17 = v9;
@@ -6270,10 +6270,10 @@ void __74__VTUIEnrollTrainingViewController__continueToTrainingFromLanguageOptio
   }
 }
 
-- (void)_continueToTrainingFromVoiceSelection:(id)a3
+- (void)_continueToTrainingFromVoiceSelection:(id)selection
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  selectionCopy = selection;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
@@ -6297,7 +6297,7 @@ void __74__VTUIEnrollTrainingViewController__continueToTrainingFromLanguageOptio
   v13 = __74__VTUIEnrollTrainingViewController__continueToTrainingFromVoiceSelection___block_invoke;
   v14 = &unk_279E545A0;
   objc_copyWeak(&v16, buf);
-  v8 = v4;
+  v8 = selectionCopy;
   v15 = v8;
   v9 = _Block_copy(&v11);
   [(VTUIAnalytics *)self->_analyticsEvent setVoiceTrainingStarted:[(VTUIAnalytics *)self->_analyticsEvent voiceTrainingStarted:v11]+ 1];
@@ -6335,16 +6335,16 @@ uint64_t __74__VTUIEnrollTrainingViewController__continueToTrainingFromVoiceSele
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_startTrainingIfNecessaryWithViewCleanupBlock:(id)a3 cloudOperationCompletionBlock:(id)a4
+- (void)_startTrainingIfNecessaryWithViewCleanupBlock:(id)block cloudOperationCompletionBlock:(id)completionBlock
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   if (self->_enrollmentMode == 2)
   {
-    if (v6)
+    if (blockCopy)
     {
-      v6[2](v6);
+      blockCopy[2](blockCopy);
     }
 
     v8 = *MEMORY[0x277CEF0E8];
@@ -6356,19 +6356,19 @@ uint64_t __74__VTUIEnrollTrainingViewController__continueToTrainingFromVoiceSele
     }
 
     [(VTUIEnrollTrainingViewController *)self _startTraining];
-    if (v7)
+    if (completionBlockCopy)
     {
-      v7[2](v7);
+      completionBlockCopy[2](completionBlockCopy);
     }
   }
 
   else
   {
-    v9 = [MEMORY[0x277D653F8] sharedInstance];
-    v10 = [MEMORY[0x277CEF368] sharedPreferences];
-    v11 = [v10 languageCode];
+    mEMORY[0x277D653F8] = [MEMORY[0x277D653F8] sharedInstance];
+    mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+    languageCode = [mEMORY[0x277CEF368] languageCode];
 
-    if ([v9 isSATEnrolledForSiriProfileId:0 forLanguageCode:v11])
+    if ([mEMORY[0x277D653F8] isSATEnrolledForSiriProfileId:0 forLanguageCode:languageCode])
     {
       v12 = MEMORY[0x277CEF0E8];
       v13 = *MEMORY[0x277CEF0E8];
@@ -6379,8 +6379,8 @@ uint64_t __74__VTUIEnrollTrainingViewController__continueToTrainingFromVoiceSele
         _os_log_impl(&dword_2728BC000, v13, OS_LOG_TYPE_DEFAULT, "%s Skipping training due to preexistence of PHS data locally", buf, 0xCu);
       }
 
-      v14 = [MEMORY[0x277CEF158] sharedAnalytics];
-      [v14 logEventWithType:3301 context:&unk_2881EEEF0];
+      mEMORY[0x277CEF158] = [MEMORY[0x277CEF158] sharedAnalytics];
+      [mEMORY[0x277CEF158] logEventWithType:3301 context:&unk_2881EEEF0];
 
       v15 = *v12;
       if (os_log_type_enabled(*v12, OS_LOG_TYPE_DEFAULT))
@@ -6390,13 +6390,13 @@ uint64_t __74__VTUIEnrollTrainingViewController__continueToTrainingFromVoiceSele
         _os_log_impl(&dword_2728BC000, v15, OS_LOG_TYPE_DEFAULT, "%s Enabling voice trigger", buf, 0xCu);
       }
 
-      v16 = [MEMORY[0x277D7A8D0] sharedPreferences];
-      [v16 setVoiceTriggerEnabled:1];
+      mEMORY[0x277D7A8D0] = [MEMORY[0x277D7A8D0] sharedPreferences];
+      [mEMORY[0x277D7A8D0] setVoiceTriggerEnabled:1];
 
       [(VTUIEnrollTrainingViewController *)self _proceedAfterTrainingCompletionOrSkip];
-      if (v7)
+      if (completionBlockCopy)
       {
-        v7[2](v7);
+        completionBlockCopy[2](completionBlockCopy);
       }
     }
 
@@ -6417,9 +6417,9 @@ uint64_t __74__VTUIEnrollTrainingViewController__continueToTrainingFromVoiceSele
       v22[2] = __112__VTUIEnrollTrainingViewController__startTrainingIfNecessaryWithViewCleanupBlock_cloudOperationCompletionBlock___block_invoke;
       v22[3] = &unk_279E54668;
       objc_copyWeak(&v26, buf);
-      v23 = v9;
-      v24 = v6;
-      v25 = v7;
+      v23 = mEMORY[0x277D653F8];
+      v24 = blockCopy;
+      v25 = completionBlockCopy;
       dispatch_async(v20, v22);
 
       objc_destroyWeak(&v26);
@@ -6514,22 +6514,22 @@ void __112__VTUIEnrollTrainingViewController__startTrainingIfNecessaryWithViewCl
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setRightBarButtonItem:(id)a3
+- (void)_setRightBarButtonItem:(id)item
 {
-  v4 = a3;
-  v5 = [(VTUIEnrollTrainingViewController *)self navigationItem];
-  v6 = [v5 rightBarButtonItems];
+  itemCopy = item;
+  navigationItem = [(VTUIEnrollTrainingViewController *)self navigationItem];
+  rightBarButtonItems = [navigationItem rightBarButtonItems];
   existingRightBarButtonItems = self->_existingRightBarButtonItems;
-  self->_existingRightBarButtonItems = v6;
+  self->_existingRightBarButtonItems = rightBarButtonItems;
 
-  v8 = [(VTUIEnrollTrainingViewController *)self navigationItem];
-  [v8 setRightBarButtonItem:v4];
+  navigationItem2 = [(VTUIEnrollTrainingViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:itemCopy];
 }
 
 - (void)_resetRightBarButtonItems
 {
-  v3 = [(VTUIEnrollTrainingViewController *)self navigationItem];
-  [v3 setRightBarButtonItems:self->_existingRightBarButtonItems];
+  navigationItem = [(VTUIEnrollTrainingViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItems:self->_existingRightBarButtonItems];
 
   existingRightBarButtonItems = self->_existingRightBarButtonItems;
   self->_existingRightBarButtonItems = 0;

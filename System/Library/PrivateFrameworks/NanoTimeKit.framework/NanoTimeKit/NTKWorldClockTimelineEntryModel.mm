@@ -1,6 +1,6 @@
 @interface NTKWorldClockTimelineEntryModel
 + (id)_analogImageProvider;
-+ (id)_fullColorGlobeImageProviderWithTintColor:(id)a3;
++ (id)_fullColorGlobeImageProviderWithTintColor:(id)color;
 + (id)_genericPrivacyRedactionTextProvider;
 + (id)_globeImageProvider;
 + (id)_uppercaseAppNameTextProvider;
@@ -10,9 +10,9 @@
 - (id)_circularSmallTemplate;
 - (id)_cityNameTextProvider;
 - (id)_dayOffsetTextProvider;
-- (id)_differenceTextProviderWithSize:(int64_t)a3 andCaps:(BOOL)a4;
+- (id)_differenceTextProviderWithSize:(int64_t)size andCaps:(BOOL)caps;
 - (id)_extraLargeTemplate;
-- (id)_getSolarColorsForLocation:(id)a3 atDate:(id)a4;
+- (id)_getSolarColorsForLocation:(id)location atDate:(id)date;
 - (id)_graphicBezelTemplate;
 - (id)_graphicCircularMetadata;
 - (id)_graphicCircularTemplate;
@@ -31,45 +31,45 @@
 - (id)_timeCityNameTimeZoneOffsetTextProvider;
 - (id)_timeTextProvider;
 - (id)_timeZone;
-- (id)templateForComplicationFamily:(int64_t)a3;
+- (id)templateForComplicationFamily:(int64_t)family;
 - (void)_graphicRectangularTemplate;
 @end
 
 @implementation NTKWorldClockTimelineEntryModel
 
-- (id)templateForComplicationFamily:(int64_t)a3
+- (id)templateForComplicationFamily:(int64_t)family
 {
-  v5 = 0;
+  _graphicRectangularTemplate = 0;
   v6 = 1;
-  if (a3 > 6)
+  if (family > 6)
   {
-    if (a3 > 9)
+    if (family > 9)
     {
-      switch(a3)
+      switch(family)
       {
         case 10:
-          v7 = [(NTKWorldClockTimelineEntryModel *)self _graphicCircularTemplate];
+          _graphicCircularTemplate = [(NTKWorldClockTimelineEntryModel *)self _graphicCircularTemplate];
           break;
         case 11:
-          v5 = [(NTKWorldClockTimelineEntryModel *)self _graphicRectangularTemplate];
+          _graphicRectangularTemplate = [(NTKWorldClockTimelineEntryModel *)self _graphicRectangularTemplate];
           v6 = 0;
           goto LABEL_28;
         case 12:
-          v7 = [(NTKWorldClockTimelineEntryModel *)self _graphicExtraLargeCircularTemplate];
+          _graphicCircularTemplate = [(NTKWorldClockTimelineEntryModel *)self _graphicExtraLargeCircularTemplate];
           break;
         default:
           goto LABEL_28;
       }
     }
 
-    else if (a3 == 7)
+    else if (family == 7)
     {
-      v7 = [(NTKWorldClockTimelineEntryModel *)self _extraLargeTemplate];
+      _graphicCircularTemplate = [(NTKWorldClockTimelineEntryModel *)self _extraLargeTemplate];
     }
 
     else
     {
-      if (a3 == 8)
+      if (family == 8)
       {
         [(NTKWorldClockTimelineEntryModel *)self _graphicCornerTemplate];
       }
@@ -78,65 +78,65 @@
       {
         [(NTKWorldClockTimelineEntryModel *)self _graphicBezelTemplate];
       }
-      v7 = ;
+      _graphicCircularTemplate = ;
     }
 
 LABEL_27:
-    v5 = v7;
+    _graphicRectangularTemplate = _graphicCircularTemplate;
     goto LABEL_28;
   }
 
-  if (a3 > 2)
+  if (family > 2)
   {
-    if (a3 == 3)
+    if (family == 3)
     {
-      v7 = [(NTKWorldClockTimelineEntryModel *)self _largeInlineTemplate];
+      _graphicCircularTemplate = [(NTKWorldClockTimelineEntryModel *)self _largeInlineTemplate];
       goto LABEL_27;
     }
 
-    if (a3 == 4)
+    if (family == 4)
     {
-      v7 = [(NTKWorldClockTimelineEntryModel *)self _circularSmallTemplate];
+      _graphicCircularTemplate = [(NTKWorldClockTimelineEntryModel *)self _circularSmallTemplate];
       goto LABEL_27;
     }
 
-    if (a3 != 6)
+    if (family != 6)
     {
       goto LABEL_28;
     }
 
 LABEL_15:
-    v7 = [(NTKWorldClockTimelineEntryModel *)self _smallInlineTemplate];
+    _graphicCircularTemplate = [(NTKWorldClockTimelineEntryModel *)self _smallInlineTemplate];
     goto LABEL_27;
   }
 
-  switch(a3)
+  switch(family)
   {
     case 0:
-      v7 = [(NTKWorldClockTimelineEntryModel *)self _smallModularTemplate];
+      _graphicCircularTemplate = [(NTKWorldClockTimelineEntryModel *)self _smallModularTemplate];
       goto LABEL_27;
     case 1:
-      v7 = [(NTKWorldClockTimelineEntryModel *)self _largeModularTemplate];
+      _graphicCircularTemplate = [(NTKWorldClockTimelineEntryModel *)self _largeModularTemplate];
       goto LABEL_27;
     case 2:
       goto LABEL_15;
   }
 
 LABEL_28:
-  if (*MEMORY[0x277CBB668] == a3)
+  if (*MEMORY[0x277CBB668] == family)
   {
-    v8 = [(NTKWorldClockTimelineEntryModel *)self _circularMediumTemplate];
+    _circularMediumTemplate = [(NTKWorldClockTimelineEntryModel *)self _circularMediumTemplate];
 
-    v5 = v8;
+    _graphicRectangularTemplate = _circularMediumTemplate;
   }
 
   if (v6)
   {
     v9 = +[NTKWorldClockTimelineEntryModel _appPrimaryColor];
-    [v5 setTintColor:v9];
+    [_graphicRectangularTemplate setTintColor:v9];
   }
 
-  return v5;
+  return _graphicRectangularTemplate;
 }
 
 - (id)_graphicRectangularTemplate
@@ -151,23 +151,23 @@ LABEL_28:
   if (self->_isPrivacy)
   {
     v4 = +[NTKWorldClockTimelineEntryModel _uppercaseAppNameTextProvider];
-    v5 = +[NTKWorldClockTimelineEntryModel _appPrimaryColor];
-    [v4 setTintColor:v5];
+    _abbreviationTextProvider = +[NTKWorldClockTimelineEntryModel _appPrimaryColor];
+    [v4 setTintColor:_abbreviationTextProvider];
   }
 
   else
   {
-    v5 = [(NTKWorldClockTimelineEntryModel *)self _abbreviationTextProvider];
-    v6 = [MEMORY[0x277D75348] ntk_wc_sunYellowColor];
-    [v5 setTintColor:v6];
+    _abbreviationTextProvider = [(NTKWorldClockTimelineEntryModel *)self _abbreviationTextProvider];
+    ntk_wc_sunYellowColor = [MEMORY[0x277D75348] ntk_wc_sunYellowColor];
+    [_abbreviationTextProvider setTintColor:ntk_wc_sunYellowColor];
 
-    v7 = [(NTKWorldClockTimelineEntryModel *)self _timeAndDifferenceOffsetTextProvider];
-    v8 = [MEMORY[0x277D75348] whiteColor];
-    [v7 setTintColor:v8];
+    _timeAndDifferenceOffsetTextProvider = [(NTKWorldClockTimelineEntryModel *)self _timeAndDifferenceOffsetTextProvider];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [_timeAndDifferenceOffsetTextProvider setTintColor:whiteColor];
 
     v9 = MEMORY[0x277CBBBA0];
     v10 = NTKClockFaceLocalizedString(@"WORLD_CLOCK_ABBREVIATION_TIME_OFFSET_FORMAT", @"%1$@ %2$@");
-    v4 = [v9 textProviderWithFormat:v10, v5, v7];
+    v4 = [v9 textProviderWithFormat:v10, _abbreviationTextProvider, _timeAndDifferenceOffsetTextProvider];
   }
 
   v11 = [MEMORY[0x277CBBB10] fullColorImageProviderWithImageViewClass:objc_opt_class()];
@@ -175,24 +175,24 @@ LABEL_28:
   {
     v31 = @"IsPrivacy";
     v32[0] = MEMORY[0x277CBEC38];
-    v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:&v31 count:1];
-    [v11 setMetadata:v12];
+    city = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:&v31 count:1];
+    [v11 setMetadata:city];
   }
 
   else
   {
     v29[0] = @"Latitude";
     v13 = MEMORY[0x277CCABB0];
-    v12 = [(NTKWorldClockTimelineEntryModel *)self city];
-    v26 = [v12 alCity];
-    [v26 latitude];
+    city = [(NTKWorldClockTimelineEntryModel *)self city];
+    alCity = [city alCity];
+    [alCity latitude];
     v14 = [v13 numberWithFloat:?];
     v30[0] = v14;
     v29[1] = @"Longitude";
     v15 = MEMORY[0x277CCABB0];
-    v16 = [(NTKWorldClockTimelineEntryModel *)self city];
-    v17 = [v16 alCity];
-    [v17 longitude];
+    city2 = [(NTKWorldClockTimelineEntryModel *)self city];
+    alCity2 = [city2 alCity];
+    [alCity2 longitude];
     v18 = [v15 numberWithFloat:?];
     v30[1] = v18;
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:2];
@@ -201,7 +201,7 @@ LABEL_28:
 
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
-    v20 = [MEMORY[0x277D75348] ntk_wc_defaultSolarGradientColors];
+    ntk_wc_defaultSolarGradientColors = [MEMORY[0x277D75348] ntk_wc_defaultSolarGradientColors];
     v21 = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
@@ -211,10 +211,10 @@ LABEL_28:
 
   else
   {
-    v20 = [(NTKWorldClockTimelineEntryModel *)self _solarGradientColors];
+    ntk_wc_defaultSolarGradientColors = [(NTKWorldClockTimelineEntryModel *)self _solarGradientColors];
   }
 
-  v22 = [objc_alloc(MEMORY[0x277CBB710]) initWithGradientBackgroundColors:v20];
+  v22 = [objc_alloc(MEMORY[0x277CBB710]) initWithGradientBackgroundColors:ntk_wc_defaultSolarGradientColors];
   v23 = [MEMORY[0x277CBB9B0] templateWithTextProvider:v4 imageProvider:v11];
   v27 = *MEMORY[0x277CBB6D8];
   v28 = &unk_2841855D8;
@@ -231,7 +231,7 @@ LABEL_28:
 {
   if (self->_isPrivacy)
   {
-    v2 = +[NTKWorldClockTimelineEntryModel _uppercaseAppNameTextProvider];
+    _abbreviationTextProvider = +[NTKWorldClockTimelineEntryModel _uppercaseAppNameTextProvider];
     v3 = +[NTKWorldClockTimelineEntryModel _globeImageProvider];
 LABEL_5:
     v4 = v3;
@@ -240,15 +240,15 @@ LABEL_5:
 
   if (self->_showIdealizedTime)
   {
-    v2 = [(NTKWorldClockTimelineEntryModel *)self _abbreviationTextProvider];
+    _abbreviationTextProvider = [(NTKWorldClockTimelineEntryModel *)self _abbreviationTextProvider];
     v3 = +[NTKWorldClockTimelineEntryModel _analogImageProvider];
     goto LABEL_5;
   }
 
-  v2 = [(NTKWorldClockTimelineEntryModel *)self _timeAndAbbreviationTextProvider];
+  _abbreviationTextProvider = [(NTKWorldClockTimelineEntryModel *)self _timeAndAbbreviationTextProvider];
   v4 = 0;
 LABEL_7:
-  v5 = [MEMORY[0x277CBBA90] templateWithTextProvider:v2 imageProvider:v4];
+  v5 = [MEMORY[0x277CBBA90] templateWithTextProvider:_abbreviationTextProvider imageProvider:v4];
 
   return v5;
 }
@@ -256,9 +256,9 @@ LABEL_7:
 - (id)_smallModularTemplate
 {
   v3 = MEMORY[0x277CBBA70];
-  v4 = [(NTKWorldClockTimelineEntryModel *)self _abbreviationTextProvider];
-  v5 = [(NTKWorldClockTimelineEntryModel *)self _timeTextProvider];
-  v6 = [v3 templateWithLine1TextProvider:v4 line2TextProvider:v5];
+  _abbreviationTextProvider = [(NTKWorldClockTimelineEntryModel *)self _abbreviationTextProvider];
+  _timeTextProvider = [(NTKWorldClockTimelineEntryModel *)self _timeTextProvider];
+  v6 = [v3 templateWithLine1TextProvider:_abbreviationTextProvider line2TextProvider:_timeTextProvider];
 
   return v6;
 }
@@ -267,19 +267,19 @@ LABEL_7:
 {
   if (self->_isPrivacy)
   {
-    v2 = +[NTKWorldClockTimelineEntryModel _genericPrivacyRedactionTextProvider];
-    v3 = +[NTKWorldClockTimelineEntryModel _genericPrivacyRedactionTextProvider];
+    _cityNameTextProvider = +[NTKWorldClockTimelineEntryModel _genericPrivacyRedactionTextProvider];
+    _timeAndDayOffsetTextProvider = +[NTKWorldClockTimelineEntryModel _genericPrivacyRedactionTextProvider];
     +[NTKWorldClockTimelineEntryModel _genericPrivacyRedactionTextProvider];
   }
 
   else
   {
-    v2 = [(NTKWorldClockTimelineEntryModel *)self _cityNameTextProvider];
-    v3 = [(NTKWorldClockTimelineEntryModel *)self _timeAndDayOffsetTextProvider];
+    _cityNameTextProvider = [(NTKWorldClockTimelineEntryModel *)self _cityNameTextProvider];
+    _timeAndDayOffsetTextProvider = [(NTKWorldClockTimelineEntryModel *)self _timeAndDayOffsetTextProvider];
     [(NTKWorldClockTimelineEntryModel *)self _differenceTextProvider];
   }
   v5 = ;
-  v6 = [MEMORY[0x277CBBA08] templateWithHeaderTextProvider:v2 body1TextProvider:v3 body2TextProvider:v5];
+  v6 = [MEMORY[0x277CBBA08] templateWithHeaderTextProvider:_cityNameTextProvider body1TextProvider:_timeAndDayOffsetTextProvider body2TextProvider:v5];
 
   return v6;
 }
@@ -288,17 +288,17 @@ LABEL_7:
 {
   if (self->_isPrivacy)
   {
-    v2 = +[NTKWorldClockTimelineEntryModel _genericPrivacyRedactionTextProvider];
+    _abbreviationTextProvider = +[NTKWorldClockTimelineEntryModel _genericPrivacyRedactionTextProvider];
     +[NTKWorldClockTimelineEntryModel _genericPrivacyRedactionTextProvider];
   }
 
   else
   {
-    v2 = [(NTKWorldClockTimelineEntryModel *)self _abbreviationTextProvider];
+    _abbreviationTextProvider = [(NTKWorldClockTimelineEntryModel *)self _abbreviationTextProvider];
     [(NTKWorldClockTimelineEntryModel *)self _timeTextProvider];
   }
   v4 = ;
-  v5 = [MEMORY[0x277CBB7A8] templateWithLine1TextProvider:v2 line2TextProvider:v4];
+  v5 = [MEMORY[0x277CBB7A8] templateWithLine1TextProvider:_abbreviationTextProvider line2TextProvider:v4];
 
   return v5;
 }
@@ -307,17 +307,17 @@ LABEL_7:
 {
   if (self->_isPrivacy)
   {
-    v2 = +[NTKWorldClockTimelineEntryModel _genericPrivacyRedactionTextProvider];
+    _abbreviationTextProvider = +[NTKWorldClockTimelineEntryModel _genericPrivacyRedactionTextProvider];
     +[NTKWorldClockTimelineEntryModel _genericPrivacyRedactionTextProvider];
   }
 
   else
   {
-    v2 = [(NTKWorldClockTimelineEntryModel *)self _abbreviationTextProvider];
+    _abbreviationTextProvider = [(NTKWorldClockTimelineEntryModel *)self _abbreviationTextProvider];
     [(NTKWorldClockTimelineEntryModel *)self _timeTextProvider];
   }
   v4 = ;
-  v5 = [MEMORY[0x277CBB760] templateWithLine1TextProvider:v2 line2TextProvider:v4];
+  v5 = [MEMORY[0x277CBB760] templateWithLine1TextProvider:_abbreviationTextProvider line2TextProvider:v4];
 
   return v5;
 }
@@ -326,17 +326,17 @@ LABEL_7:
 {
   if (self->_isPrivacy)
   {
-    v2 = +[NTKWorldClockTimelineEntryModel _genericPrivacyRedactionTextProvider];
+    _abbreviationTextProvider = +[NTKWorldClockTimelineEntryModel _genericPrivacyRedactionTextProvider];
     +[NTKWorldClockTimelineEntryModel _genericPrivacyRedactionTextProvider];
   }
 
   else
   {
-    v2 = [(NTKWorldClockTimelineEntryModel *)self _abbreviationTextProvider];
+    _abbreviationTextProvider = [(NTKWorldClockTimelineEntryModel *)self _abbreviationTextProvider];
     [(NTKWorldClockTimelineEntryModel *)self _timeTextProvider];
   }
   v4 = ;
-  v5 = [MEMORY[0x277CBB808] templateWithLine1TextProvider:v2 line2TextProvider:v4];
+  v5 = [MEMORY[0x277CBB808] templateWithLine1TextProvider:_abbreviationTextProvider line2TextProvider:v4];
 
   return v5;
 }
@@ -345,17 +345,17 @@ LABEL_7:
 {
   if (self->_isPrivacy)
   {
-    v2 = +[NTKWorldClockTimelineEntryModel _uppercaseAppNameTextProvider];
+    _timeAndCityNameOffsetTextProvider = +[NTKWorldClockTimelineEntryModel _uppercaseAppNameTextProvider];
     v3 = +[NTKWorldClockTimelineEntryModel _globeImageProvider];
   }
 
   else
   {
-    v2 = [(NTKWorldClockTimelineEntryModel *)self _timeAndCityNameOffsetTextProvider];
+    _timeAndCityNameOffsetTextProvider = [(NTKWorldClockTimelineEntryModel *)self _timeAndCityNameOffsetTextProvider];
     v3 = 0;
   }
 
-  v4 = [MEMORY[0x277CBBA80] templateWithTextProvider:v2 imageProvider:v3];
+  v4 = [MEMORY[0x277CBBA80] templateWithTextProvider:_timeAndCityNameOffsetTextProvider imageProvider:v3];
 
   return v4;
 }
@@ -364,24 +364,24 @@ LABEL_7:
 {
   if (self->_isPrivacy)
   {
-    v2 = +[NTKWorldClockTimelineEntryModel _uppercaseAppNameTextProvider];
+    _timeAndDifferenceOffsetTextProvider = +[NTKWorldClockTimelineEntryModel _uppercaseAppNameTextProvider];
     v3 = +[NTKWorldClockTimelineEntryModel _appPrimaryColor];
-    [v2 setTintColor:v3];
+    [_timeAndDifferenceOffsetTextProvider setTintColor:v3];
 
-    v4 = [MEMORY[0x277D75348] whiteColor];
-    v5 = [NTKWorldClockTimelineEntryModel _fullColorGlobeImageProviderWithTintColor:v4];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    _abbreviationTextProvider = [NTKWorldClockTimelineEntryModel _fullColorGlobeImageProviderWithTintColor:whiteColor];
 
-    [MEMORY[0x277CBB908] templateWithTextProvider:v2 imageProvider:v5];
+    [MEMORY[0x277CBB908] templateWithTextProvider:_timeAndDifferenceOffsetTextProvider imageProvider:_abbreviationTextProvider];
   }
 
   else
   {
-    v2 = [(NTKWorldClockTimelineEntryModel *)self _timeAndDifferenceOffsetTextProvider];
+    _timeAndDifferenceOffsetTextProvider = [(NTKWorldClockTimelineEntryModel *)self _timeAndDifferenceOffsetTextProvider];
     v7 = +[NTKWorldClockTimelineEntryModel _appPrimaryColor];
-    [v2 setTintColor:v7];
+    [_timeAndDifferenceOffsetTextProvider setTintColor:v7];
 
-    v5 = [(NTKWorldClockTimelineEntryModel *)self _abbreviationTextProvider];
-    [MEMORY[0x277CBB900] templateWithInnerTextProvider:v2 outerTextProvider:v5];
+    _abbreviationTextProvider = [(NTKWorldClockTimelineEntryModel *)self _abbreviationTextProvider];
+    [MEMORY[0x277CBB900] templateWithInnerTextProvider:_timeAndDifferenceOffsetTextProvider outerTextProvider:_abbreviationTextProvider];
   }
   v8 = ;
 
@@ -390,25 +390,25 @@ LABEL_7:
 
 - (id)_graphicCircularMetadata
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [v3 setObject:self->_city forKeyedSubscript:@"NTKWorldClockComplicationCityKey"];
-  v4 = [(NTKWorldClockTimelineEntryModel *)self _timeZone];
-  [v3 setObject:v4 forKeyedSubscript:@"NTKWorldClockComplicationTimeZoneKey"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:self->_city forKeyedSubscript:@"NTKWorldClockComplicationCityKey"];
+  _timeZone = [(NTKWorldClockTimelineEntryModel *)self _timeZone];
+  [dictionary setObject:_timeZone forKeyedSubscript:@"NTKWorldClockComplicationTimeZoneKey"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithBool:{-[NTKWorldClockTimelineEntryModel showIdealizedTime](self, "showIdealizedTime")}];
-  [v3 setObject:v5 forKeyedSubscript:@"NTKWorldClockComplicationShowIdealizedTimeKey"];
+  [dictionary setObject:v5 forKeyedSubscript:@"NTKWorldClockComplicationShowIdealizedTimeKey"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithBool:{-[NTKWorldClockTimelineEntryModel isPrivacy](self, "isPrivacy")}];
-  [v3 setObject:v6 forKeyedSubscript:@"NTKWorldClockComplicationIsPrivacyKey"];
+  [dictionary setObject:v6 forKeyedSubscript:@"NTKWorldClockComplicationIsPrivacyKey"];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)_graphicCircularTemplate
 {
   v2 = MEMORY[0x277CBB858];
-  v3 = [(NTKWorldClockTimelineEntryModel *)self _graphicCircularMetadata];
-  v4 = [v2 templateWithMetadata:v3];
+  _graphicCircularMetadata = [(NTKWorldClockTimelineEntryModel *)self _graphicCircularMetadata];
+  v4 = [v2 templateWithMetadata:_graphicCircularMetadata];
 
   return v4;
 }
@@ -416,8 +416,8 @@ LABEL_7:
 - (id)_graphicExtraLargeCircularTemplate
 {
   v2 = MEMORY[0x277CBB940];
-  v3 = [(NTKWorldClockTimelineEntryModel *)self _graphicCircularMetadata];
-  v4 = [v2 templateWithMetadata:v3];
+  _graphicCircularMetadata = [(NTKWorldClockTimelineEntryModel *)self _graphicCircularMetadata];
+  v4 = [v2 templateWithMetadata:_graphicCircularMetadata];
 
   return v4;
 }
@@ -435,8 +435,8 @@ LABEL_7:
   }
   v3 = ;
   v4 = MEMORY[0x277CBB810];
-  v5 = [(NTKWorldClockTimelineEntryModel *)self _graphicCircularTemplate];
-  v6 = [v4 templateWithCircularTemplate:v5 textProvider:v3];
+  _graphicCircularTemplate = [(NTKWorldClockTimelineEntryModel *)self _graphicCircularTemplate];
+  v6 = [v4 templateWithCircularTemplate:_graphicCircularTemplate textProvider:v3];
 
   return v6;
 }
@@ -452,9 +452,9 @@ LABEL_7:
 + (id)_uppercaseAppNameTextProvider
 {
   v2 = NTKClockFaceLocalizedString(@"WORLDCLOCK_TITLE", @"World Clock");
-  v3 = [v2 localizedUppercaseString];
+  localizedUppercaseString = [v2 localizedUppercaseString];
 
-  v4 = [MEMORY[0x277CBBB88] textProviderWithText:v3];
+  v4 = [MEMORY[0x277CBBB88] textProviderWithText:localizedUppercaseString];
 
   return v4;
 }
@@ -462,8 +462,8 @@ LABEL_7:
 - (id)_timeTextProvider
 {
   v3 = MEMORY[0x277CBBAD0];
-  v4 = [(NTKWorldClockTimelineEntryModel *)self _timeZone];
-  v5 = [v3 textProviderWithTimeZone:v4];
+  _timeZone = [(NTKWorldClockTimelineEntryModel *)self _timeZone];
+  v5 = [v3 textProviderWithTimeZone:_timeZone];
 
   [v5 setDisallowBothMinutesAndDesignator:1];
   if (self->_showIdealizedTime)
@@ -490,15 +490,15 @@ LABEL_7:
   return v4;
 }
 
-- (id)_differenceTextProviderWithSize:(int64_t)a3 andCaps:(BOOL)a4
+- (id)_differenceTextProviderWithSize:(int64_t)size andCaps:(BOOL)caps
 {
-  v4 = a4;
+  capsCopy = caps;
   v6 = MEMORY[0x277CBBBD8];
   [(NTKWorldClockTimelineEntryModel *)self _timeZoneOffset];
-  v7 = [v6 differenceForOffset:v4 caps:0 suppressZero:a3 size:?];
-  v8 = [v7 string];
+  v7 = [v6 differenceForOffset:capsCopy caps:0 suppressZero:size size:?];
+  string = [v7 string];
 
-  v9 = [MEMORY[0x277CBBB88] textProviderWithText:v8];
+  v9 = [MEMORY[0x277CBBB88] textProviderWithText:string];
 
   return v9;
 }
@@ -515,68 +515,68 @@ LABEL_7:
 - (id)_cityNameTextProvider
 {
   v2 = MEMORY[0x277CBBB88];
-  v3 = [(WorldClockCity *)self->_city name];
-  v4 = [v2 textProviderWithText:v3];
+  name = [(WorldClockCity *)self->_city name];
+  v4 = [v2 textProviderWithText:name];
 
   return v4;
 }
 
 - (id)_timeAndDayOffsetTextProvider
 {
-  v3 = [(NTKWorldClockTimelineEntryModel *)self _timeTextProvider];
-  [v3 setDisallowBothMinutesAndDesignator:0];
-  v4 = [(NTKWorldClockTimelineEntryModel *)self _dayOffsetTextProvider];
-  v5 = [MEMORY[0x277CBBBA0] textProviderWithFormat:@"%@ %@", v3, v4];
+  _timeTextProvider = [(NTKWorldClockTimelineEntryModel *)self _timeTextProvider];
+  [_timeTextProvider setDisallowBothMinutesAndDesignator:0];
+  _dayOffsetTextProvider = [(NTKWorldClockTimelineEntryModel *)self _dayOffsetTextProvider];
+  v5 = [MEMORY[0x277CBBBA0] textProviderWithFormat:@"%@ %@", _timeTextProvider, _dayOffsetTextProvider];
 
   return v5;
 }
 
 - (id)_timeAndAbbreviationTextProvider
 {
-  v3 = [(NTKWorldClockTimelineEntryModel *)self _abbreviationTextProvider];
-  v4 = [(NTKWorldClockTimelineEntryModel *)self _timeTextProvider];
-  v5 = [MEMORY[0x277CBBBA0] textProviderWithFormat:@"%@ %@", v3, v4];
+  _abbreviationTextProvider = [(NTKWorldClockTimelineEntryModel *)self _abbreviationTextProvider];
+  _timeTextProvider = [(NTKWorldClockTimelineEntryModel *)self _timeTextProvider];
+  v5 = [MEMORY[0x277CBBBA0] textProviderWithFormat:@"%@ %@", _abbreviationTextProvider, _timeTextProvider];
 
   return v5;
 }
 
 - (id)_timeAndCityNameOffsetTextProvider
 {
-  v3 = [(NTKWorldClockTimelineEntryModel *)self _timeTextProvider];
-  [v3 setDisallowBothMinutesAndDesignator:0];
+  _timeTextProvider = [(NTKWorldClockTimelineEntryModel *)self _timeTextProvider];
+  [_timeTextProvider setDisallowBothMinutesAndDesignator:0];
   v4 = MEMORY[0x277CBBB88];
-  v5 = [(WorldClockCity *)self->_city name];
-  v6 = [v4 textProviderWithText:v5];
+  name = [(WorldClockCity *)self->_city name];
+  v6 = [v4 textProviderWithText:name];
 
-  v7 = [MEMORY[0x277CBBBA0] textProviderWithFormat:@"%@ %@", v3, v6];
+  v7 = [MEMORY[0x277CBBBA0] textProviderWithFormat:@"%@ %@", _timeTextProvider, v6];
 
   return v7;
 }
 
 - (id)_timeCityNameTimeZoneOffsetTextProvider
 {
-  v3 = [(NTKWorldClockTimelineEntryModel *)self _timeTextProvider];
-  [v3 setDisallowBothMinutesAndDesignator:0];
-  v4 = [(NTKWorldClockTimelineEntryModel *)self _dayOffsetTextProvider];
-  v5 = [(NTKWorldClockTimelineEntryModel *)self _differenceTextProvider];
+  _timeTextProvider = [(NTKWorldClockTimelineEntryModel *)self _timeTextProvider];
+  [_timeTextProvider setDisallowBothMinutesAndDesignator:0];
+  _dayOffsetTextProvider = [(NTKWorldClockTimelineEntryModel *)self _dayOffsetTextProvider];
+  _differenceTextProvider = [(NTKWorldClockTimelineEntryModel *)self _differenceTextProvider];
   v6 = NTKClockFaceLocalizedString(@"WORLD_CLOCK_BEZEL_TEXT_FORMAT", @"%1$@ %2$@ • %3$@");
-  v7 = [MEMORY[0x277CBBBA0] textProviderWithFormat:v6, v3, v4, v5];
+  v7 = [MEMORY[0x277CBBBA0] textProviderWithFormat:v6, _timeTextProvider, _dayOffsetTextProvider, _differenceTextProvider];
 
   return v7;
 }
 
 - (id)_timeAndDifferenceOffsetTextProvider
 {
-  v3 = [(NTKWorldClockTimelineEntryModel *)self _timeTextProvider];
-  [v3 setDisallowBothMinutesAndDesignator:0];
+  _timeTextProvider = [(NTKWorldClockTimelineEntryModel *)self _timeTextProvider];
+  [_timeTextProvider setDisallowBothMinutesAndDesignator:0];
   v4 = [(NTKWorldClockTimelineEntryModel *)self _differenceTextProviderWithSize:0 andCaps:1];
-  v5 = [v4 text];
-  v6 = [v5 lowercaseString];
+  text = [v4 text];
+  lowercaseString = [text lowercaseString];
 
-  v7 = [MEMORY[0x277CBBB88] textProviderWithText:v6];
+  v7 = [MEMORY[0x277CBBB88] textProviderWithText:lowercaseString];
   [v7 setUseLowercaseSmallCaps:1];
 
-  v8 = [MEMORY[0x277CBBBA0] textProviderWithFormat:@"%@, %@", v3, v7];
+  v8 = [MEMORY[0x277CBBBA0] textProviderWithFormat:@"%@, %@", _timeTextProvider, v7];
 
   return v8;
 }
@@ -584,27 +584,27 @@ LABEL_7:
 - (id)_timeZone
 {
   v2 = MEMORY[0x277CBEBB0];
-  v3 = [(WorldClockCity *)self->_city timeZone];
-  v4 = [v2 timeZoneWithName:v3];
+  timeZone = [(WorldClockCity *)self->_city timeZone];
+  v4 = [v2 timeZoneWithName:timeZone];
 
   return v4;
 }
 
 - (double)_timeZoneOffset
 {
-  v2 = [(NTKWorldClockTimelineEntryModel *)self _timeZone];
-  v3 = [v2 secondsFromGMT];
-  v4 = [MEMORY[0x277CBEBB0] systemTimeZone];
-  v5 = (v3 - [v4 secondsFromGMT]);
+  _timeZone = [(NTKWorldClockTimelineEntryModel *)self _timeZone];
+  secondsFromGMT = [_timeZone secondsFromGMT];
+  systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+  v5 = (secondsFromGMT - [systemTimeZone secondsFromGMT]);
 
   return v5;
 }
 
 + (id)_analogImageProvider
 {
-  v2 = [MEMORY[0x277CBBB68] sharedRenderingContext];
-  v3 = [v2 device];
-  __55__NTKWorldClockTimelineEntryModel__analogImageProvider__block_invoke(v3, v3);
+  mEMORY[0x277CBBB68] = [MEMORY[0x277CBBB68] sharedRenderingContext];
+  device = [mEMORY[0x277CBBB68] device];
+  __55__NTKWorldClockTimelineEntryModel__analogImageProvider__block_invoke(device, device);
 
   v4 = _analogImageProvider_imageProvider;
 
@@ -657,9 +657,9 @@ void __55__NTKWorldClockTimelineEntryModel__analogImageProvider__block_invoke_3(
 
 + (id)_globeImageProvider
 {
-  v2 = [MEMORY[0x277CBBB68] sharedRenderingContext];
-  v3 = [v2 device];
-  __54__NTKWorldClockTimelineEntryModel__globeImageProvider__block_invoke(v3, v3);
+  mEMORY[0x277CBBB68] = [MEMORY[0x277CBBB68] sharedRenderingContext];
+  device = [mEMORY[0x277CBBB68] device];
+  __54__NTKWorldClockTimelineEntryModel__globeImageProvider__block_invoke(device, device);
 
   v4 = _globeImageProvider_imageProvider;
 
@@ -710,42 +710,42 @@ void __54__NTKWorldClockTimelineEntryModel__globeImageProvider__block_invoke_3()
   [v2 setTintColor:v3];
 }
 
-+ (id)_fullColorGlobeImageProviderWithTintColor:(id)a3
++ (id)_fullColorGlobeImageProviderWithTintColor:(id)color
 {
   v3 = MEMORY[0x277D755B8];
-  v4 = a3;
+  colorCopy = color;
   v5 = [v3 systemImageNamed:@"globe"];
   v6 = [v5 imageWithRenderingMode:2];
 
   v7 = [MEMORY[0x277CBBB10] providerWithFullColorImage:v6 monochromeFilterType:1 applyScalingAndCircularMasking:0];
-  [v7 setTintColor:v4];
+  [v7 setTintColor:colorCopy];
 
   return v7;
 }
 
 - (id)_solarGradientColors
 {
-  v3 = [(NTKWorldClockTimelineEntryModel *)self city];
-  v4 = [v3 alCity];
-  if (v4)
+  city = [(NTKWorldClockTimelineEntryModel *)self city];
+  alCity = [city alCity];
+  if (alCity)
   {
-    v5 = v4;
-    v6 = [(NTKTimelineEntryModel *)self entryDate];
+    v5 = alCity;
+    entryDate = [(NTKTimelineEntryModel *)self entryDate];
 
-    if (v6)
+    if (entryDate)
     {
       v7 = objc_alloc(MEMORY[0x277CE41F8]);
-      v8 = [(NTKWorldClockTimelineEntryModel *)self city];
-      v9 = [v8 alCity];
-      [v9 latitude];
+      city2 = [(NTKWorldClockTimelineEntryModel *)self city];
+      alCity2 = [city2 alCity];
+      [alCity2 latitude];
       v11 = v10;
-      v12 = [(NTKWorldClockTimelineEntryModel *)self city];
-      v13 = [v12 alCity];
-      [v13 longitude];
+      city3 = [(NTKWorldClockTimelineEntryModel *)self city];
+      alCity3 = [city3 alCity];
+      [alCity3 longitude];
       v15 = [v7 initWithLatitude:v11 longitude:v14];
 
-      v16 = [(NTKTimelineEntryModel *)self entryDate];
-      v17 = [(NTKWorldClockTimelineEntryModel *)self _getSolarColorsForLocation:v15 atDate:v16];
+      entryDate2 = [(NTKTimelineEntryModel *)self entryDate];
+      ntk_wc_defaultSolarGradientColors = [(NTKWorldClockTimelineEntryModel *)self _getSolarColorsForLocation:v15 atDate:entryDate2];
 
       goto LABEL_6;
     }
@@ -755,19 +755,19 @@ void __54__NTKWorldClockTimelineEntryModel__globeImageProvider__block_invoke_3()
   {
   }
 
-  v17 = [MEMORY[0x277D75348] ntk_wc_defaultSolarGradientColors];
+  ntk_wc_defaultSolarGradientColors = [MEMORY[0x277D75348] ntk_wc_defaultSolarGradientColors];
 LABEL_6:
 
-  return v17;
+  return ntk_wc_defaultSolarGradientColors;
 }
 
-- (id)_getSolarColorsForLocation:(id)a3 atDate:(id)a4
+- (id)_getSolarColorsForLocation:(id)location atDate:(id)date
 {
-  v5 = a4;
-  v6 = a3;
-  [NTKSiderealDataSource reverseInterpolateBetweenCalendricalMidnights:v5];
+  dateCopy = date;
+  locationCopy = location;
+  [NTKSiderealDataSource reverseInterpolateBetweenCalendricalMidnights:dateCopy];
   v8 = v7;
-  v9 = [NTKSiderealDataSource siderealDataForLocation:v6 atDate:v5 useXR:1];
+  v9 = [NTKSiderealDataSource siderealDataForLocation:locationCopy atDate:dateCopy useXR:1];
 
   *&v10 = v8;
   v11 = [v9 gradientWithSunsetFilterForDayProgress:v10];
@@ -778,17 +778,17 @@ LABEL_6:
 - (void)_graphicRectangularTemplate
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = NTKWorldClockCityAbbreviation(*(a1 + 24));
-  v5 = [*(a1 + 24) unlocalizedCityName];
-  v6 = [*(a1 + 24) alCity];
-  [v6 latitude];
+  v4 = NTKWorldClockCityAbbreviation(*(self + 24));
+  unlocalizedCityName = [*(self + 24) unlocalizedCityName];
+  alCity = [*(self + 24) alCity];
+  [alCity latitude];
   v8 = v7;
-  v9 = [*(a1 + 24) alCity];
-  [v9 longitude];
+  alCity2 = [*(self + 24) alCity];
+  [alCity2 longitude];
   v11 = 138544130;
   v12 = v4;
   v13 = 2114;
-  v14 = v5;
+  v14 = unlocalizedCityName;
   v15 = 2048;
   v16 = v8;
   v17 = 2048;

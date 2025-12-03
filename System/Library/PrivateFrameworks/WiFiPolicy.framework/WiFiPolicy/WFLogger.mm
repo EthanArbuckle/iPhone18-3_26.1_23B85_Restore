@@ -6,12 +6,12 @@
 - (unint64_t)getLogLevelPersist;
 - (unint64_t)getLogPrivacy;
 - (unint64_t)getMaxFileSizeInMB;
-- (void)WFLog:(unint64_t)a3 message:(const char *)a4;
+- (void)WFLog:(unint64_t)log message:(const char *)message;
 - (void)dump;
 - (void)setDestinationCircularBuffer;
-- (void)setDestinationFile:(__CFString *)a3 runLoopRef:(__CFRunLoop *)a4 runLoopMode:(__CFString *)a5 classC:(unsigned __int8)a6 dateFormatter:(__CFDateFormatter *)a7 maxFileSizeInMB:(unint64_t)a8 logLifespanInDays:(unint64_t)a9;
-- (void)setDestinationFileLocation:(__CFString *)a3 fileNamePrefix:(__CFString *)a4 runLoopRef:(__CFRunLoop *)a5 runLoopMode:(__CFString *)a6 classC:(unsigned __int8)a7 dateFormatter:(__CFDateFormatter *)a8 maxFileSizeInMB:(unint64_t)a9 logLifespanInDays:(unint64_t)a10;
-- (void)setDestinationOsLog:(__CFString *)a3 category:(__CFString *)a4 logLifespanInDays:(unint64_t)a5 logLevel:(unint64_t)a6 logPrivacy:(unint64_t)a7;
+- (void)setDestinationFile:(__CFString *)file runLoopRef:(__CFRunLoop *)ref runLoopMode:(__CFString *)mode classC:(unsigned __int8)c dateFormatter:(__CFDateFormatter *)formatter maxFileSizeInMB:(unint64_t)b logLifespanInDays:(unint64_t)days;
+- (void)setDestinationFileLocation:(__CFString *)location fileNamePrefix:(__CFString *)prefix runLoopRef:(__CFRunLoop *)ref runLoopMode:(__CFString *)mode classC:(unsigned __int8)c dateFormatter:(__CFDateFormatter *)formatter maxFileSizeInMB:(unint64_t)b logLifespanInDays:(unint64_t)self0;
+- (void)setDestinationOsLog:(__CFString *)log category:(__CFString *)category logLifespanInDays:(unint64_t)days logLevel:(unint64_t)level logPrivacy:(unint64_t)privacy;
 @end
 
 @implementation WFLogger
@@ -23,7 +23,7 @@
   v4 = _sharedWFLoggerSingleton;
   if (!_sharedWFLoggerSingleton)
   {
-    v4 = objc_alloc_init(a1);
+    v4 = objc_alloc_init(self);
     _sharedWFLoggerSingleton = v4;
   }
 
@@ -76,10 +76,10 @@
   }
 }
 
-- (void)setDestinationFile:(__CFString *)a3 runLoopRef:(__CFRunLoop *)a4 runLoopMode:(__CFString *)a5 classC:(unsigned __int8)a6 dateFormatter:(__CFDateFormatter *)a7 maxFileSizeInMB:(unint64_t)a8 logLifespanInDays:(unint64_t)a9
+- (void)setDestinationFile:(__CFString *)file runLoopRef:(__CFRunLoop *)ref runLoopMode:(__CFString *)mode classC:(unsigned __int8)c dateFormatter:(__CFDateFormatter *)formatter maxFileSizeInMB:(unint64_t)b logLifespanInDays:(unint64_t)days
 {
   v28 = *MEMORY[0x277D85DE8];
-  if ([(__CFString *)a3 isEmpty])
+  if ([(__CFString *)file isEmpty])
   {
     v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s filePath is empty", "-[WFLogger setDestinationFile:runLoopRef:runLoopMode:classC:dateFormatter:maxFileSizeInMB:logLifespanInDays:]"];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -90,9 +90,9 @@
     }
   }
 
-  else if (self->_destination != 3 || (loggerBase = self->_loggerBase) == 0 || (v18 = [(WFLoggerBase *)loggerBase getLogFilePath]) == 0 || CFStringCompare(a3, v18, 4uLL))
+  else if (self->_destination != 3 || (loggerBase = self->_loggerBase) == 0 || (v18 = [(WFLoggerBase *)loggerBase getLogFilePath]) == 0 || CFStringCompare(file, v18, 4uLL))
   {
-    v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Logging destination will change to file: %s", "-[WFLogger setDestinationFile:runLoopRef:runLoopMode:classC:dateFormatter:maxFileSizeInMB:logLifespanInDays:]", -[__CFString UTF8String](a3, "UTF8String")];
+    v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Logging destination will change to file: %s", "-[WFLogger setDestinationFile:runLoopRef:runLoopMode:classC:dateFormatter:maxFileSizeInMB:logLifespanInDays:]", -[__CFString UTF8String](file, "UTF8String")];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136446210;
@@ -121,13 +121,13 @@
     block[2] = __109__WFLogger_setDestinationFile_runLoopRef_runLoopMode_classC_dateFormatter_maxFileSizeInMB_logLifespanInDays___block_invoke;
     block[3] = &unk_2789C74B0;
     block[4] = self;
-    block[5] = a3;
-    block[6] = a4;
-    block[7] = a5;
-    v25 = a6;
-    block[8] = a7;
-    block[9] = a8;
-    block[10] = a9;
+    block[5] = file;
+    block[6] = ref;
+    block[7] = mode;
+    cCopy = c;
+    block[8] = formatter;
+    block[9] = b;
+    block[10] = days;
     dispatch_sync(dispatchQueue, block);
   }
 
@@ -177,10 +177,10 @@ void __109__WFLogger_setDestinationFile_runLoopRef_runLoopMode_classC_dateFormat
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDestinationFileLocation:(__CFString *)a3 fileNamePrefix:(__CFString *)a4 runLoopRef:(__CFRunLoop *)a5 runLoopMode:(__CFString *)a6 classC:(unsigned __int8)a7 dateFormatter:(__CFDateFormatter *)a8 maxFileSizeInMB:(unint64_t)a9 logLifespanInDays:(unint64_t)a10
+- (void)setDestinationFileLocation:(__CFString *)location fileNamePrefix:(__CFString *)prefix runLoopRef:(__CFRunLoop *)ref runLoopMode:(__CFString *)mode classC:(unsigned __int8)c dateFormatter:(__CFDateFormatter *)formatter maxFileSizeInMB:(unint64_t)b logLifespanInDays:(unint64_t)self0
 {
   v31 = *MEMORY[0x277D85DE8];
-  if ([(__CFString *)a3 isEmpty])
+  if ([(__CFString *)location isEmpty])
   {
     v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s dirPath is empty", "-[WFLogger setDestinationFileLocation:fileNamePrefix:runLoopRef:runLoopMode:classC:dateFormatter:maxFileSizeInMB:logLifespanInDays:]"];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -189,7 +189,7 @@ void __109__WFLogger_setDestinationFile_runLoopRef_runLoopMode_classC_dateFormat
     }
   }
 
-  else if ([(__CFString *)a4 isEmpty])
+  else if ([(__CFString *)prefix isEmpty])
   {
     v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s fileNamePrefix is empty", "-[WFLogger setDestinationFileLocation:fileNamePrefix:runLoopRef:runLoopMode:classC:dateFormatter:maxFileSizeInMB:logLifespanInDays:]"];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -201,9 +201,9 @@ LABEL_6:
     }
   }
 
-  else if (self->_destination != 3 || (loggerBase = self->_loggerBase) == 0 || (v19 = [(WFLoggerBase *)loggerBase getLogDirPath], v20 = [(WFLoggerBase *)self->_loggerBase getLogFileNamePrefix], !v19) || (v21 = v20) == 0 || ([(__CFString *)v19 isEmpty]& 1) != 0 || ([(__CFString *)v21 isEmpty]& 1) != 0 || CFStringCompare(a3, v19, 4uLL) || CFStringCompare(a4, v21, 4uLL))
+  else if (self->_destination != 3 || (loggerBase = self->_loggerBase) == 0 || (v19 = [(WFLoggerBase *)loggerBase getLogDirPath], v20 = [(WFLoggerBase *)self->_loggerBase getLogFileNamePrefix], !v19) || (v21 = v20) == 0 || ([(__CFString *)v19 isEmpty]& 1) != 0 || ([(__CFString *)v21 isEmpty]& 1) != 0 || CFStringCompare(location, v19, 4uLL) || CFStringCompare(prefix, v21, 4uLL))
   {
-    v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Logging destination will change to directory: %s FileNamePrefix: %s", "-[WFLogger setDestinationFileLocation:fileNamePrefix:runLoopRef:runLoopMode:classC:dateFormatter:maxFileSizeInMB:logLifespanInDays:]", -[__CFString UTF8String](a3, "UTF8String"), -[__CFString UTF8String](a4, "UTF8String")];
+    v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Logging destination will change to directory: %s FileNamePrefix: %s", "-[WFLogger setDestinationFileLocation:fileNamePrefix:runLoopRef:runLoopMode:classC:dateFormatter:maxFileSizeInMB:logLifespanInDays:]", -[__CFString UTF8String](location, "UTF8String"), -[__CFString UTF8String](prefix, "UTF8String")];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136446210;
@@ -232,14 +232,14 @@ LABEL_6:
     block[2] = __132__WFLogger_setDestinationFileLocation_fileNamePrefix_runLoopRef_runLoopMode_classC_dateFormatter_maxFileSizeInMB_logLifespanInDays___block_invoke;
     block[3] = &unk_2789C74D8;
     block[4] = self;
-    block[5] = a3;
-    block[6] = a4;
-    block[7] = a5;
-    v28 = a7;
-    block[8] = a6;
-    block[9] = a8;
-    block[10] = a9;
-    block[11] = a10;
+    block[5] = location;
+    block[6] = prefix;
+    block[7] = ref;
+    cCopy = c;
+    block[8] = mode;
+    block[9] = formatter;
+    block[10] = b;
+    block[11] = days;
     dispatch_sync(dispatchQueue, block);
   }
 
@@ -289,10 +289,10 @@ void __132__WFLogger_setDestinationFileLocation_fileNamePrefix_runLoopRef_runLoo
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDestinationOsLog:(__CFString *)a3 category:(__CFString *)a4 logLifespanInDays:(unint64_t)a5 logLevel:(unint64_t)a6 logPrivacy:(unint64_t)a7
+- (void)setDestinationOsLog:(__CFString *)log category:(__CFString *)category logLifespanInDays:(unint64_t)days logLevel:(unint64_t)level logPrivacy:(unint64_t)privacy
 {
   v19 = *MEMORY[0x277D85DE8];
-  if ([(__CFString *)a3 isEmpty])
+  if ([(__CFString *)log isEmpty])
   {
     v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s subSystem is empty", "-[WFLogger setDestinationOsLog:category:logLifespanInDays:logLevel:logPrivacy:]"];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -311,11 +311,11 @@ void __132__WFLogger_setDestinationFileLocation_fileNamePrefix_runLoopRef_runLoo
     block[2] = __79__WFLogger_setDestinationOsLog_category_logLifespanInDays_logLevel_logPrivacy___block_invoke;
     block[3] = &unk_2789C7500;
     block[4] = self;
-    block[5] = a3;
-    block[6] = a4;
-    block[7] = a5;
-    block[8] = a6;
-    block[9] = a7;
+    block[5] = log;
+    block[6] = category;
+    block[7] = days;
+    block[8] = level;
+    block[9] = privacy;
     dispatch_sync(dispatchQueue, block);
   }
 
@@ -366,7 +366,7 @@ uint64_t __79__WFLogger_setDestinationOsLog_category_logLifespanInDays_logLevel_
   return result;
 }
 
-- (void)WFLog:(unint64_t)a3 message:(const char *)a4
+- (void)WFLog:(unint64_t)log message:(const char *)message
 {
   objc_sync_enter(self);
   if (self->_loggerBase && self->_destination != 1)
@@ -377,8 +377,8 @@ uint64_t __79__WFLogger_setDestinationOsLog_category_logLifespanInDays_logLevel_
     v19 = &v18;
     v20 = 0x2020000000;
     v7 = *MEMORY[0x277CBECE8];
-    v8 = CFStringCreateWithCString(*MEMORY[0x277CBECE8], a4, 0x8000100u);
-    if (v8 || (v8 = CFStringCreateWithCString(v7, a4, 0)) != 0)
+    v8 = CFStringCreateWithCString(*MEMORY[0x277CBECE8], message, 0x8000100u);
+    if (v8 || (v8 = CFStringCreateWithCString(v7, message, 0)) != 0)
     {
       if (self->_destination == 2)
       {
@@ -413,7 +413,7 @@ uint64_t __79__WFLogger_setDestinationOsLog_category_logLifespanInDays_logLevel_
         block[2] = __26__WFLogger_WFLog_message___block_invoke;
         block[3] = &unk_2789C7528;
         block[4] = &v17;
-        block[5] = a3;
+        block[5] = log;
         dispatch_async(dispatchQueue, block);
         _Block_object_dispose(&v17, 8);
       }
@@ -426,7 +426,7 @@ uint64_t __79__WFLogger_setDestinationOsLog_category_logLifespanInDays_logLevel_
       v14[3] = &unk_2789C7550;
       v14[4] = self;
       v14[5] = &v18;
-      v14[6] = a3;
+      v14[6] = log;
       dispatch_async(v13, v14);
     }
 

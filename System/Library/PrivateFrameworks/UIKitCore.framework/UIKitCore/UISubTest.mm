@@ -1,23 +1,23 @@
 @interface UISubTest
-- (UISubTest)initWithName:(id)a3 metrics:(id)a4;
+- (UISubTest)initWithName:(id)name metrics:(id)metrics;
 - (id)outputData;
-- (void)startWithFrameCount:(id)a3;
-- (void)stopWithFrameCount:(id)a3;
+- (void)startWithFrameCount:(id)count;
+- (void)stopWithFrameCount:(id)count;
 @end
 
 @implementation UISubTest
 
-- (UISubTest)initWithName:(id)a3 metrics:(id)a4
+- (UISubTest)initWithName:(id)name metrics:(id)metrics
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  metricsCopy = metrics;
   v18.receiver = self;
   v18.super_class = UISubTest;
   v9 = [(UISubTest *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_testName, a3);
+    objc_storeStrong(&v9->_testName, name);
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
     time = v10->_time;
     v10->_time = v11;
@@ -30,10 +30,10 @@
     data = v10->_data;
     v10->_data = v15;
 
-    if ([v8 count])
+    if ([metricsCopy count])
     {
-      v10->_showTime = [v8 containsObject:@"time"];
-      v10->_showFps = [v8 containsObject:@"fps"];
+      v10->_showTime = [metricsCopy containsObject:@"time"];
+      v10->_showFps = [metricsCopy containsObject:@"fps"];
     }
 
     else
@@ -45,25 +45,25 @@
   return v10;
 }
 
-- (void)startWithFrameCount:(id)a3
+- (void)startWithFrameCount:(id)count
 {
-  v7 = a3;
+  countCopy = count;
   v5 = [MEMORY[0x1E696AD98] numberWithDouble:CFAbsoluteTimeGetCurrent()];
   startTime = self->_startTime;
   self->_startTime = v5;
 
-  if (v7)
+  if (countCopy)
   {
-    objc_storeStrong(&self->_startFrame, a3);
+    objc_storeStrong(&self->_startFrame, count);
   }
 }
 
-- (void)stopWithFrameCount:(id)a3
+- (void)stopWithFrameCount:(id)count
 {
-  v4 = a3;
+  countCopy = count;
   if (self->_startTime)
   {
-    v15 = v4;
+    v15 = countCopy;
     Current = CFAbsoluteTimeGetCurrent();
     [(NSNumber *)self->_startTime doubleValue];
     v7 = Current - v6;
@@ -71,16 +71,16 @@
     v9 = [MEMORY[0x1E696AD98] numberWithDouble:v7];
     [(NSMutableArray *)time addObject:v9];
 
-    v4 = v15;
+    countCopy = v15;
     if (v7 != 0.0 && self->_startFrame != 0)
     {
-      v11 = [v15 unsignedIntValue];
-      v12 = [(NSNumber *)self->_startFrame unsignedIntValue];
+      unsignedIntValue = [v15 unsignedIntValue];
+      unsignedIntValue2 = [(NSNumber *)self->_startFrame unsignedIntValue];
       fps = self->_fps;
-      v14 = [MEMORY[0x1E696AD98] numberWithDouble:(v11 - v12) / v7];
+      v14 = [MEMORY[0x1E696AD98] numberWithDouble:(unsignedIntValue - unsignedIntValue2) / v7];
       [(NSMutableArray *)fps addObject:v14];
 
-      v4 = v15;
+      countCopy = v15;
     }
   }
 }

@@ -1,26 +1,26 @@
 @interface ATXToolKitActionStreamWrapper
-+ (BOOL)intentApprovedForSpotlightWithBundleID:(id)a3 intentClassName:(id)a4;
-+ (id)canonicalIdentifierForEncodedToolInvocationWithEncodedInvocation:(id)a3;
++ (BOOL)intentApprovedForSpotlightWithBundleID:(id)d intentClassName:(id)name;
++ (id)canonicalIdentifierForEncodedToolInvocationWithEncodedInvocation:(id)invocation;
 + (id)lastDateForToolKitActionEvent;
-+ (id)toolIDForSiriKitIntentWithBundleID:(id)a3 intentClassName:(id)a4;
-+ (id)toolKitEventsWithStartDate:(id)a3 endDate:(id)a4 limit:(unint64_t)a5 bundleIDFilter:(id)a6;
-+ (void)fetchTitlesFromToolInvocations:(NSArray *)a3 completionHandler:(id)a4;
++ (id)toolIDForSiriKitIntentWithBundleID:(id)d intentClassName:(id)name;
++ (id)toolKitEventsWithStartDate:(id)date endDate:(id)endDate limit:(unint64_t)limit bundleIDFilter:(id)filter;
++ (void)fetchTitlesFromToolInvocations:(NSArray *)invocations completionHandler:(id)handler;
 - (ATXToolKitActionStreamWrapper)init;
 @end
 
 @implementation ATXToolKitActionStreamWrapper
 
-+ (void)fetchTitlesFromToolInvocations:(NSArray *)a3 completionHandler:(id)a4
++ (void)fetchTitlesFromToolInvocations:(NSArray *)invocations completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27FE4FFF0, &qword_260DF8CD0);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = invocations;
   v12[3] = v11;
-  v12[4] = a1;
+  v12[4] = self;
   v13 = sub_260DF5B34();
   (*(*(v13 - 8) + 56))(v10, 1, 1, v13);
   v14 = swift_allocObject();
@@ -33,11 +33,11 @@
   v15[3] = 0;
   v15[4] = &unk_260DF8CF0;
   v15[5] = v14;
-  v16 = a3;
+  invocationsCopy = invocations;
   sub_260DED444(0, 0, v10, &unk_260DF8D00, v15);
 }
 
-+ (id)toolKitEventsWithStartDate:(id)a3 endDate:(id)a4 limit:(unint64_t)a5 bundleIDFilter:(id)a6
++ (id)toolKitEventsWithStartDate:(id)date endDate:(id)endDate limit:(unint64_t)limit bundleIDFilter:(id)filter
 {
   v8 = sub_260DF5444();
   v9 = *(v8 - 8);
@@ -48,10 +48,10 @@
   v15 = &v21 - v14;
   sub_260DF5424();
   sub_260DF5424();
-  if (a6)
+  if (filter)
   {
     v16 = sub_260DF59C4();
-    a6 = v17;
+    filter = v17;
   }
 
   else
@@ -59,7 +59,7 @@
     v16 = 0;
   }
 
-  _s25ProactivePredictionClient26ToolKitActionStreamWrapperC04toolE6Events9startDate03endL05limit14bundleIDFilterSayAA0defG5EventCG10Foundation0L0V_ANSuSSSgtFZ_0(v15, v13, a5, v16, a6);
+  _s25ProactivePredictionClient26ToolKitActionStreamWrapperC04toolE6Events9startDate03endL05limit14bundleIDFilterSayAA0defG5EventCG10Foundation0L0V_ANSuSSSgtFZ_0(v15, v13, limit, v16, filter);
 
   v18 = *(v9 + 8);
   v18(v13, v8);
@@ -84,7 +84,7 @@
   return v7;
 }
 
-+ (id)toolIDForSiriKitIntentWithBundleID:(id)a3 intentClassName:(id)a4
++ (id)toolIDForSiriKitIntentWithBundleID:(id)d intentClassName:(id)name
 {
   v4 = sub_260DF59C4();
   v6 = v5;
@@ -96,7 +96,7 @@
   return v9;
 }
 
-+ (BOOL)intentApprovedForSpotlightWithBundleID:(id)a3 intentClassName:(id)a4
++ (BOOL)intentApprovedForSpotlightWithBundleID:(id)d intentClassName:(id)name
 {
   v4 = sub_260DF59C4();
   v6 = v5;
@@ -106,9 +106,9 @@
   return v4 & 1;
 }
 
-+ (id)canonicalIdentifierForEncodedToolInvocationWithEncodedInvocation:(id)a3
++ (id)canonicalIdentifierForEncodedToolInvocationWithEncodedInvocation:(id)invocation
 {
-  v3 = a3;
+  invocationCopy = invocation;
   _s25ProactivePredictionClient26ToolKitActionStreamWrapperC029canonicalIdentifierForEncodedD10Invocation07encodedM0SSSo6NSDataC_tFZ_0();
 
   v4 = sub_260DF59B4();

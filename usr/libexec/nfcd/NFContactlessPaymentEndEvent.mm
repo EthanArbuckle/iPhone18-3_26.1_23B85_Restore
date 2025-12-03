@@ -1,10 +1,10 @@
 @interface NFContactlessPaymentEndEvent
 + (BOOL)logsTransactionDetails;
-- (NFContactlessPaymentEndEvent)initWithCoder:(id)a3;
-- (NFContactlessPaymentEndEvent)initWithDictionary:(id)a3;
+- (NFContactlessPaymentEndEvent)initWithCoder:(id)coder;
+- (NFContactlessPaymentEndEvent)initWithDictionary:(id)dictionary;
 - (id)asDictionary;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NFContactlessPaymentEndEvent
@@ -17,72 +17,72 @@
   return v3;
 }
 
-- (NFContactlessPaymentEndEvent)initWithDictionary:(id)a3
+- (NFContactlessPaymentEndEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v38.receiver = self;
   v38.super_class = NFContactlessPaymentEndEvent;
   v5 = [(NFContactlessPaymentEndEvent *)&v38 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"appletIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"appletIdentifier"];
     appletIdentifier = v5->_appletIdentifier;
     v5->_appletIdentifier = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"endPointIdentifier"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"endPointIdentifier"];
     keyIdentifier = v5->_keyIdentifier;
     v5->_keyIdentifier = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"readerIdentifier"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"readerIdentifier"];
     readerIdentifier = v5->_readerIdentifier;
     v5->_readerIdentifier = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"transactionIdentifier"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"transactionIdentifier"];
     transactionIdentifier = v5->_transactionIdentifier;
     v5->_transactionIdentifier = v12;
 
-    v14 = [v4 objectForKeyedSubscript:@"didError"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"didError"];
     v5->_didError = [v14 BOOLValue];
 
-    v15 = [v4 objectForKeyedSubscript:@"command"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"command"];
     v5->_command = [v15 unsignedIntValue];
 
-    v16 = [v4 objectForKeyedSubscript:@"status"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"status"];
     v5->_status = [v16 unsignedIntValue];
 
-    v17 = [v4 objectForKeyedSubscript:@"result"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"result"];
     v5->_result = [v17 unsignedIntValue];
 
-    v18 = [v4 objectForKeyedSubscript:@"informative"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"informative"];
     v5->_informative = [v18 unsignedIntValue];
 
-    v19 = [v4 objectForKeyedSubscript:@"amount"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"amount"];
     amount = v5->_amount;
     v5->_amount = v19;
 
-    v21 = [v4 objectForKeyedSubscript:@"currency"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"currency"];
     currency = v5->_currency;
     v5->_currency = v21;
 
-    v23 = [v4 objectForKeyedSubscript:@"tlv"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"tlv"];
     tlv = v5->_tlv;
     v5->_tlv = v23;
 
-    v25 = [v4 objectForKeyedSubscript:@"type"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     v5->_type = [v25 unsignedIntValue];
 
-    v26 = [v4 objectForKeyedSubscript:@"felicaInfo"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"felicaInfo"];
     felicaInfo = v5->_felicaInfo;
     v5->_felicaInfo = v26;
 
-    v28 = [v4 objectForKeyedSubscript:@"parsedInfo"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"parsedInfo"];
     parsedInfo = v5->_parsedInfo;
     v5->_parsedInfo = v28;
 
-    v30 = [v4 objectForKeyedSubscript:@"BackgroundTransaction"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"BackgroundTransaction"];
     v5->_background = [v30 BOOLValue];
 
-    v31 = [v4 objectForKeyedSubscript:@"PairingModeBrandCode"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"PairingModeBrandCode"];
     if (v31)
     {
       v32 = v5->_parsedInfo;
@@ -683,49 +683,49 @@ LABEL_54:
   return v28;
 }
 
-- (NFContactlessPaymentEndEvent)initWithCoder:(id)a3
+- (NFContactlessPaymentEndEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v33.receiver = self;
   v33.super_class = NFContactlessPaymentEndEvent;
   v5 = [(NFContactlessPaymentEndEvent *)&v33 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appletIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appletIdentifier"];
     appletIdentifier = v5->_appletIdentifier;
     v5->_appletIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endPointIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endPointIdentifier"];
     keyIdentifier = v5->_keyIdentifier;
     v5->_keyIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"readerIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"readerIdentifier"];
     readerIdentifier = v5->_readerIdentifier;
     v5->_readerIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionIdentifier"];
     transactionIdentifier = v5->_transactionIdentifier;
     v5->_transactionIdentifier = v12;
 
-    v5->_didError = [v4 decodeBoolForKey:@"didError"];
-    v5->_command = [v4 decodeInt32ForKey:@"command"];
-    v5->_status = [v4 decodeInt32ForKey:@"status"];
-    v5->_type = [v4 decodeInt32ForKey:@"type"];
-    v5->_result = [v4 decodeInt32ForKey:@"result"];
-    v5->_informative = [v4 decodeInt32ForKey:@"informative"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
+    v5->_didError = [coderCopy decodeBoolForKey:@"didError"];
+    v5->_command = [coderCopy decodeInt32ForKey:@"command"];
+    v5->_status = [coderCopy decodeInt32ForKey:@"status"];
+    v5->_type = [coderCopy decodeInt32ForKey:@"type"];
+    v5->_result = [coderCopy decodeInt32ForKey:@"result"];
+    v5->_informative = [coderCopy decodeInt32ForKey:@"informative"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
     amount = v5->_amount;
     v5->_amount = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currency"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currency"];
     currency = v5->_currency;
     v5->_currency = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tlv"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tlv"];
     tlv = v5->_tlv;
     v5->_tlv = v18;
 
-    v5->_background = [v4 decodeBoolForKey:@"BackgroundTransaction"];
+    v5->_background = [coderCopy decodeBoolForKey:@"BackgroundTransaction"];
     v20 = [NSSet alloc];
     v21 = objc_opt_class();
     v22 = objc_opt_class();
@@ -734,11 +734,11 @@ LABEL_54:
     v25 = objc_opt_class();
     v26 = objc_opt_class();
     v27 = [v20 initWithObjects:{v21, v22, v23, v24, v25, v26, objc_opt_class(), 0}];
-    v28 = [v4 decodeObjectOfClasses:v27 forKey:@"felicaInfo"];
+    v28 = [coderCopy decodeObjectOfClasses:v27 forKey:@"felicaInfo"];
     felicaInfo = v5->_felicaInfo;
     v5->_felicaInfo = v28;
 
-    v30 = [v4 decodeObjectOfClasses:v27 forKey:@"parsedInfo"];
+    v30 = [coderCopy decodeObjectOfClasses:v27 forKey:@"parsedInfo"];
     parsedInfo = v5->_parsedInfo;
     v5->_parsedInfo = v30;
   }
@@ -746,26 +746,26 @@ LABEL_54:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   appletIdentifier = self->_appletIdentifier;
-  v5 = a3;
-  [v5 encodeObject:appletIdentifier forKey:@"appletIdentifier"];
-  [v5 encodeObject:self->_keyIdentifier forKey:@"endPointIdentifier"];
-  [v5 encodeObject:self->_readerIdentifier forKey:@"readerIdentifier"];
-  [v5 encodeObject:self->_transactionIdentifier forKey:@"transactionIdentifier"];
-  [v5 encodeBool:self->_didError forKey:@"didError"];
-  [v5 encodeInt32:self->_command forKey:@"command"];
-  [v5 encodeInt32:self->_status forKey:@"status"];
-  [v5 encodeInt32:self->_type forKey:@"type"];
-  [v5 encodeInt32:self->_result forKey:@"result"];
-  [v5 encodeInt32:self->_informative forKey:@"informative"];
-  [v5 encodeObject:self->_amount forKey:@"amount"];
-  [v5 encodeObject:self->_currency forKey:@"currency"];
-  [v5 encodeObject:self->_tlv forKey:@"tlv"];
-  [v5 encodeObject:self->_felicaInfo forKey:@"felicaInfo"];
-  [v5 encodeObject:self->_parsedInfo forKey:@"parsedInfo"];
-  [v5 encodeBool:self->_background forKey:@"BackgroundTransaction"];
+  coderCopy = coder;
+  [coderCopy encodeObject:appletIdentifier forKey:@"appletIdentifier"];
+  [coderCopy encodeObject:self->_keyIdentifier forKey:@"endPointIdentifier"];
+  [coderCopy encodeObject:self->_readerIdentifier forKey:@"readerIdentifier"];
+  [coderCopy encodeObject:self->_transactionIdentifier forKey:@"transactionIdentifier"];
+  [coderCopy encodeBool:self->_didError forKey:@"didError"];
+  [coderCopy encodeInt32:self->_command forKey:@"command"];
+  [coderCopy encodeInt32:self->_status forKey:@"status"];
+  [coderCopy encodeInt32:self->_type forKey:@"type"];
+  [coderCopy encodeInt32:self->_result forKey:@"result"];
+  [coderCopy encodeInt32:self->_informative forKey:@"informative"];
+  [coderCopy encodeObject:self->_amount forKey:@"amount"];
+  [coderCopy encodeObject:self->_currency forKey:@"currency"];
+  [coderCopy encodeObject:self->_tlv forKey:@"tlv"];
+  [coderCopy encodeObject:self->_felicaInfo forKey:@"felicaInfo"];
+  [coderCopy encodeObject:self->_parsedInfo forKey:@"parsedInfo"];
+  [coderCopy encodeBool:self->_background forKey:@"BackgroundTransaction"];
 }
 
 @end

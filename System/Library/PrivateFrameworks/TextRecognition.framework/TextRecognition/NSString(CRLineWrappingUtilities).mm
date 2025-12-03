@@ -22,28 +22,28 @@
   }
 
   v2 = _MergedGlobals_24;
-  v3 = [a1 rangeOfCharacterFromSet:v2];
+  v3 = [self rangeOfCharacterFromSet:v2];
 
   return v3 == 0;
 }
 
 - (BOOL)_crStartsWithDigit
 {
-  v2 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
-  v3 = [a1 rangeOfCharacterFromSet:v2];
+  decimalDigitCharacterSet = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+  v3 = [self rangeOfCharacterFromSet:decimalDigitCharacterSet];
 
   return v3 == 0;
 }
 
 - (uint64_t)_crEndsWithDigit
 {
-  if (![a1 length])
+  if (![self length])
   {
     return 0;
   }
 
-  v2 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
-  v3 = [v2 characterIsMember:{objc_msgSend(a1, "characterAtIndex:", objc_msgSend(a1, "length") - 1)}];
+  decimalDigitCharacterSet = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+  v3 = [decimalDigitCharacterSet characterIsMember:{objc_msgSend(self, "characterAtIndex:", objc_msgSend(self, "length") - 1)}];
 
   return v3;
 }
@@ -57,8 +57,8 @@
   }
 
   v2 = qword_1ED960158;
-  v3 = [a1 stringByTrimmingCharactersInSet:v2];
-  v4 = [a1 hasSuffix:v3];
+  v3 = [self stringByTrimmingCharactersInSet:v2];
+  v4 = [self hasSuffix:v3];
 
   return v4 ^ 1u;
 }
@@ -72,8 +72,8 @@
   }
 
   v2 = qword_1ED960178;
-  v3 = [a1 stringByTrimmingCharactersInSet:v2];
-  v4 = [a1 hasSuffix:v3];
+  v3 = [self stringByTrimmingCharactersInSet:v2];
+  v4 = [self hasSuffix:v3];
 
   return v4 ^ 1u;
 }
@@ -87,31 +87,31 @@
   }
 
   v2 = qword_1ED960168;
-  v3 = [a1 stringByTrimmingCharactersInSet:v2];
-  v4 = [a1 hasSuffix:v3];
+  v3 = [self stringByTrimmingCharactersInSet:v2];
+  v4 = [self hasSuffix:v3];
 
   return v4 ^ 1u;
 }
 
 - (uint64_t)_crIsStartOfSentence
 {
-  if ([a1 _crStartsWithBOS])
+  if ([self _crStartsWithBOS])
   {
     return 1;
   }
 
-  return [a1 _crStartsWithListItemIndicator];
+  return [self _crStartsWithListItemIndicator];
 }
 
 - (BOOL)_crIsListItemMarker
 {
-  v2 = [CRListItemMarker listItemMarkerForText:a1 requiresAdjacentText:0];
+  v2 = [CRListItemMarker listItemMarkerForText:self requiresAdjacentText:0];
   v3 = v2;
   v5 = 0;
   if (v2)
   {
     [v2 range];
-    if (v4 == [a1 length])
+    if (v4 == [self length])
     {
       v5 = 1;
     }
@@ -122,21 +122,21 @@
 
 - (uint64_t)_crIsProgrammingStatement
 {
-  v2 = [a1 length];
+  v2 = [self length];
   result = 0;
-  if (a1)
+  if (self)
   {
     if (v2)
     {
-      result = [a1 length];
+      result = [self length];
       if (result)
       {
-        if ([a1 length])
+        if ([self length])
         {
           v4 = 0;
-          while ([a1 characterAtIndex:v4] - 32 < 0x60)
+          while ([self characterAtIndex:v4] - 32 < 0x60)
           {
-            if (++v4 >= [a1 length])
+            if (++v4 >= [self length])
             {
               goto LABEL_8;
             }
@@ -146,23 +146,23 @@
         else
         {
 LABEL_8:
-          if ([a1 containsString:@" = "] & 1) != 0 || (objc_msgSend(a1, "hasSuffix:", @"{") & 1) != 0 || (objc_msgSend(a1, "hasPrefix:", @"}") & 1) != 0 || (objc_msgSend(a1, "hasPrefix:", @"// ") & 1) != 0 || (objc_msgSend(a1, "hasPrefix:", @"# ") & 1) != 0 || objc_msgSend(a1, "hasPrefix:", @"[") && (objc_msgSend(a1, "hasSuffix:", @"];"))
+          if ([self containsString:@" = "] & 1) != 0 || (objc_msgSend(self, "hasSuffix:", @"{") & 1) != 0 || (objc_msgSend(self, "hasPrefix:", @"}") & 1) != 0 || (objc_msgSend(self, "hasPrefix:", @"// ") & 1) != 0 || (objc_msgSend(self, "hasPrefix:", @"# ") & 1) != 0 || objc_msgSend(self, "hasPrefix:", @"[") && (objc_msgSend(self, "hasSuffix:", @"];"))
           {
             return 1;
           }
 
-          if (([a1 hasSuffix:@""]) & 1) != 0 || objc_msgSend(a1, "hasSuffix:", @";")))
+          if (([self hasSuffix:@""]) & 1) != 0 || objc_msgSend(self, "hasSuffix:", @";")))
           {
-            v5 = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
-            v6 = [v5 characterIsMember:{objc_msgSend(a1, "characterAtIndex:", 0)}];
+            alphanumericCharacterSet = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
+            v6 = [alphanumericCharacterSet characterIsMember:{objc_msgSend(self, "characterAtIndex:", 0)}];
 
             if (v6)
             {
-              v7 = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
-              v8 = [a1 stringByTrimmingCharactersInSet:v7];
+              alphanumericCharacterSet2 = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
+              v8 = [self stringByTrimmingCharactersInSet:alphanumericCharacterSet2];
 
-              LOBYTE(v7) = objc_msgSend(v8, "hasPrefix:", @"(");
-              if (v7)
+              LOBYTE(alphanumericCharacterSet2) = objc_msgSend(v8, "hasPrefix:", @"(");
+              if (alphanumericCharacterSet2)
               {
                 return 1;
               }
@@ -181,7 +181,7 @@ LABEL_8:
 - (uint64_t)_crIsSentencePunctuatedIncludingWhitespace:()CRLineWrappingUtilities
 {
   v44 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
@@ -207,11 +207,11 @@ LABEL_3:
 
       else
       {
-        v10 = [v9 stringByTrimmingCharactersInSet:v5];
+        v10 = [v9 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
       }
 
       v11 = v10;
-      v12 = [a1 containsString:v10];
+      v12 = [self containsString:v10];
 
       if (v12)
       {
@@ -233,7 +233,7 @@ LABEL_3:
 
   if (a3)
   {
-    [a1 componentsSeparatedByCharactersInSet:v5];
+    [self componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
@@ -263,12 +263,12 @@ LABEL_15:
         {
           if ([v18 _crContainsText] && (!objc_msgSend(v18, "_crStartsWithUppercase") || objc_msgSend(v18, "_crIsAllCaps") && objc_msgSend(v18, "length") != 2 || objc_msgSend(v18, "length") >= 4))
           {
-            v20 = [MEMORY[0x1E696AB08] letterCharacterSet];
-            if ([v19 _crStartsWithCharacterInSet:v20])
+            letterCharacterSet = [MEMORY[0x1E696AB08] letterCharacterSet];
+            if ([v19 _crStartsWithCharacterInSet:letterCharacterSet])
             {
-              v21 = [v19 _crStartsWithLowercase];
+              _crStartsWithLowercase = [v19 _crStartsWithLowercase];
 
-              if ((v21 & 1) == 0)
+              if ((_crStartsWithLowercase & 1) == 0)
               {
                 goto LABEL_42;
               }
@@ -316,15 +316,15 @@ LABEL_42:
     v28[3] = __Block_byref_object_copy__10;
     v28[4] = __Block_byref_object_dispose__10;
     v29 = 0;
-    v23 = [a1 length];
+    v23 = [self length];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __80__NSString_CRLineWrappingUtilities___crIsSentencePunctuatedIncludingWhitespace___block_invoke;
     v27[3] = &unk_1E7BC2DB8;
-    v27[4] = a1;
+    v27[4] = self;
     v27[5] = v28;
     v27[6] = &v30;
-    [a1 enumerateSubstringsInRange:0 options:v23 usingBlock:{2, v27}];
+    [self enumerateSubstringsInRange:0 options:v23 usingBlock:{2, v27}];
     v24 = *(v31 + 24);
     _Block_object_dispose(v28, 8);
 

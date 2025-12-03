@@ -1,7 +1,7 @@
 @interface SagaSetItemPropertyOperation
-- (SagaSetItemPropertyOperation)initWithCoder:(id)a3;
-- (SagaSetItemPropertyOperation)initWithConfiguration:(id)a3 clientIdentity:(id)a4 sagaID:(unsigned int)a5 properties:(id)a6;
-- (void)encodeWithCoder:(id)a3;
+- (SagaSetItemPropertyOperation)initWithCoder:(id)coder;
+- (SagaSetItemPropertyOperation)initWithConfiguration:(id)configuration clientIdentity:(id)identity sagaID:(unsigned int)d properties:(id)properties;
+- (void)encodeWithCoder:(id)coder;
 - (void)main;
 @end
 
@@ -13,18 +13,18 @@
   v4 = [NSString stringWithFormat:@"SagaSetItemPropertyOperation - (saga_id = %u)", self->_sagaID];
   v5 = [[MSVXPCTransaction alloc] initWithName:v4];
   [v5 beginTransaction];
-  v6 = [(CloudLibraryOperation *)self musicLibrary];
-  v7 = [(CloudLibraryOperation *)self clientIdentity];
-  [v6 setClientIdentity:v7];
+  musicLibrary = [(CloudLibraryOperation *)self musicLibrary];
+  clientIdentity = [(CloudLibraryOperation *)self clientIdentity];
+  [musicLibrary setClientIdentity:clientIdentity];
 
-  v8 = [(CloudLibraryOperation *)self connection];
-  v9 = [v8 databaseID];
+  connection = [(CloudLibraryOperation *)self connection];
+  databaseID = [connection databaseID];
   v10 = [NSNumber numberWithUnsignedInt:self->_sagaID];
   v20 = v10;
   v11 = [NSArray arrayWithObjects:&v20 count:1];
   properties = self->_properties;
   v12 = [NSArray arrayWithObjects:&properties count:1];
-  v13 = [ICBulkSetItemPropertyRequest requestWithDatabaseID:v9 itemIDs:v11 properties:v12 useLongIDs:0];
+  v13 = [ICBulkSetItemPropertyRequest requestWithDatabaseID:databaseID itemIDs:v11 properties:v12 useLongIDs:0];
 
   [v13 setVerificationInteractionLevel:2];
   v17[0] = _NSConcreteStackBlock;
@@ -34,40 +34,40 @@
   v17[4] = self;
   v18 = dispatch_semaphore_create(0);
   v14 = v18;
-  [v8 sendRequest:v13 withResponseHandler:v17];
+  [connection sendRequest:v13 withResponseHandler:v17];
   dispatch_semaphore_wait(v14, 0xFFFFFFFFFFFFFFFFLL);
-  v15 = [(CloudLibraryOperation *)self musicLibrary];
+  musicLibrary2 = [(CloudLibraryOperation *)self musicLibrary];
   v16 = MSVTCCIdentityForCurrentProcess();
-  [v15 setClientIdentity:v16];
+  [musicLibrary2 setClientIdentity:v16];
 
   [v5 endTransaction];
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SagaSetItemPropertyOperation;
-  v4 = a3;
-  [(CloudLibraryOperation *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt32:self->_sagaID forKey:{@"SagaSetItemPropertyOperationSagaIDKey", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_properties forKey:@"SagaSetItemPropertyOperationPropertiesKey"];
+  coderCopy = coder;
+  [(CloudLibraryOperation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt32:self->_sagaID forKey:{@"SagaSetItemPropertyOperationSagaIDKey", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_properties forKey:@"SagaSetItemPropertyOperationPropertiesKey"];
 }
 
-- (SagaSetItemPropertyOperation)initWithCoder:(id)a3
+- (SagaSetItemPropertyOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = SagaSetItemPropertyOperation;
-  v5 = [(CloudLibraryOperation *)&v13 initWithCoder:v4];
+  v5 = [(CloudLibraryOperation *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_sagaID = [v4 decodeInt32ForKey:@"SagaSetItemPropertyOperationSagaIDKey"];
+    v5->_sagaID = [coderCopy decodeInt32ForKey:@"SagaSetItemPropertyOperationSagaIDKey"];
     v6 = objc_opt_class();
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [NSSet setWithObjects:v6, v7, v8, objc_opt_class(), 0];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"SagaSetItemPropertyOperationPropertiesKey"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"SagaSetItemPropertyOperationPropertiesKey"];
     properties = v5->_properties;
     v5->_properties = v10;
   }
@@ -75,17 +75,17 @@
   return v5;
 }
 
-- (SagaSetItemPropertyOperation)initWithConfiguration:(id)a3 clientIdentity:(id)a4 sagaID:(unsigned int)a5 properties:(id)a6
+- (SagaSetItemPropertyOperation)initWithConfiguration:(id)configuration clientIdentity:(id)identity sagaID:(unsigned int)d properties:(id)properties
 {
-  v10 = a6;
+  propertiesCopy = properties;
   v16.receiver = self;
   v16.super_class = SagaSetItemPropertyOperation;
-  v11 = [(CloudLibraryOperation *)&v16 initWithConfiguration:a3 clientIdentity:a4];
+  v11 = [(CloudLibraryOperation *)&v16 initWithConfiguration:configuration clientIdentity:identity];
   v12 = v11;
   if (v11)
   {
-    v11->_sagaID = a5;
-    v13 = [v10 copy];
+    v11->_sagaID = d;
+    v13 = [propertiesCopy copy];
     properties = v12->_properties;
     v12->_properties = v13;
   }

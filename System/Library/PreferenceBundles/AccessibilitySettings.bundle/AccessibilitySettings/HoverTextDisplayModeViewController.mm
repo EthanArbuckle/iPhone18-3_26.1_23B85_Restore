@@ -2,8 +2,8 @@
 - (BOOL)_axIsDisplayTypingMode;
 - (HoverTextDisplayModeViewController)init;
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation HoverTextDisplayModeViewController
@@ -94,65 +94,65 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [(HoverTextDisplayModeViewController *)self _axIsDisplayTypingMode];
+  cellCopy = cell;
+  _axIsDisplayTypingMode = [(HoverTextDisplayModeViewController *)self _axIsDisplayTypingMode];
   v8 = +[AXSettings sharedInstance];
   v9 = v8;
-  if (v7)
+  if (_axIsDisplayTypingMode)
   {
-    v10 = [v8 hoverTextTypingDisplayMode];
+    hoverTextTypingDisplayMode = [v8 hoverTextTypingDisplayMode];
   }
 
   else
   {
-    v10 = [v8 hoverTextDisplayMode];
+    hoverTextTypingDisplayMode = [v8 hoverTextDisplayMode];
   }
 
-  v11 = [NSNumber numberWithLong:v10];
+  v11 = [NSNumber numberWithLong:hoverTextTypingDisplayMode];
 
-  v15 = v6;
-  v12 = [v15 specifier];
-  v13 = [v12 propertyForKey:@"HTDisplayMode"];
+  v15 = cellCopy;
+  specifier = [v15 specifier];
+  v13 = [specifier propertyForKey:@"HTDisplayMode"];
   v14 = [v13 isEqual:v11];
 
   [v15 setChecked:v14];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v13.receiver = self;
   v13.super_class = HoverTextDisplayModeViewController;
-  [(HoverTextDisplayModeViewController *)&v13 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(HoverTextDisplayModeViewController *)self specifierAtIndex:[(HoverTextDisplayModeViewController *)self indexForIndexPath:v6]];
+  [(HoverTextDisplayModeViewController *)&v13 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(HoverTextDisplayModeViewController *)self specifierAtIndex:[(HoverTextDisplayModeViewController *)self indexForIndexPath:pathCopy]];
   v8 = [v7 propertyForKey:@"HTDisplayMode"];
-  v9 = [v8 integerValue];
+  integerValue = [v8 integerValue];
 
-  v10 = [(HoverTextDisplayModeViewController *)self _axIsDisplayTypingMode];
+  _axIsDisplayTypingMode = [(HoverTextDisplayModeViewController *)self _axIsDisplayTypingMode];
   v11 = +[AXSettings sharedInstance];
   v12 = v11;
-  if (v10)
+  if (_axIsDisplayTypingMode)
   {
-    [v11 setHoverTextTypingDisplayMode:v9];
+    [v11 setHoverTextTypingDisplayMode:integerValue];
   }
 
   else
   {
-    [v11 setHoverTextDisplayMode:v9];
+    [v11 setHoverTextDisplayMode:integerValue];
   }
 
-  [(HoverTextDisplayModeViewController *)self updateTableCheckedSelection:v6];
+  [(HoverTextDisplayModeViewController *)self updateTableCheckedSelection:pathCopy];
 }
 
 - (BOOL)_axIsDisplayTypingMode
 {
-  v2 = [(HoverTextDisplayModeViewController *)self specifier];
-  v3 = [v2 propertyForKey:PSIDKey];
+  specifier = [(HoverTextDisplayModeViewController *)self specifier];
+  v3 = [specifier propertyForKey:PSIDKey];
 
-  LOBYTE(v2) = [v3 isEqualToString:@"HoverTextTypingDisplayMode"];
-  return v2;
+  LOBYTE(specifier) = [v3 isEqualToString:@"HoverTextTypingDisplayMode"];
+  return specifier;
 }
 
 @end

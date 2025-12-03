@@ -1,8 +1,8 @@
 @interface CarMoreButton
-- (CarMoreButton)initWithFrame:(CGRect)a3;
+- (CarMoreButton)initWithFrame:(CGRect)frame;
 - (void)_updateImage;
 - (void)didMoveToWindow;
-- (void)setOptions:(unint64_t)a3;
+- (void)setOptions:(unint64_t)options;
 @end
 
 @implementation CarMoreButton
@@ -12,9 +12,9 @@
   v4.receiver = self;
   v4.super_class = CarMoreButton;
   [(CarFocusableButton *)&v4 didMoveToWindow];
-  v3 = [(CarMoreButton *)self window];
+  window = [(CarMoreButton *)self window];
 
-  if (v3)
+  if (window)
   {
     [(CarMoreButton *)self _updateImage];
   }
@@ -53,25 +53,25 @@ LABEL_9:
   [(CarMoreButton *)self setImageEdgeInsets:-2.0, 0.0, 0.0, 0.0];
 }
 
-- (void)setOptions:(unint64_t)a3
+- (void)setOptions:(unint64_t)options
 {
-  if (self->_options != a3)
+  if (self->_options != options)
   {
-    self->_options = a3;
+    self->_options = options;
     [(CarMoreButton *)self _updateImage];
   }
 }
 
-- (CarMoreButton)initWithFrame:(CGRect)a3
+- (CarMoreButton)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CarMoreButton;
-  v3 = [(CarCardRoundedButton *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CarCardRoundedButton *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(CarMoreButton *)v3 layer];
-    [v5 setCornerRadius:15.0];
+    layer = [(CarMoreButton *)v3 layer];
+    [layer setCornerRadius:15.0];
   }
 
   return v4;

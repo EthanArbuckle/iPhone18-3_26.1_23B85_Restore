@@ -1,28 +1,28 @@
 @interface NowPlayingTimeControlsView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)setNeedsLayout;
-- (void)sliderEditingChangedWithSender:(id)a3;
-- (void)sliderEditingDidEndWithSender:(id)a3;
-- (void)sliderValueChangedWithSender:(id)a3;
+- (void)sliderEditingChangedWithSender:(id)sender;
+- (void)sliderEditingDidEndWithSender:(id)sender;
+- (void)sliderValueChangedWithSender:(id)sender;
 - (void)updateContentSizeCategory;
-- (void)updateElapsedTimeWithDisplayLink:(id)a3;
+- (void)updateElapsedTimeWithDisplayLink:(id)link;
 - (void)updateVisualStyling;
 @end
 
 @implementation NowPlayingTimeControlsView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v4 = MEMORY[0x1E69E7D40];
   v5 = *((*MEMORY[0x1E69E7D40] & self->super.super.super.isa) + 0xE0);
-  v6 = self;
+  selfCopy = self;
   v5(v12);
   v7 = sub_1A2122A30(v12);
   v8 = *&v12[1];
-  v9 = (*((*v4 & v6->super.super.super.isa) + 0xF8))(v7);
+  v9 = (*((*v4 & selfCopy->super.super.super.isa) + 0xF8))(v7);
 
   v10 = v8 * v9;
   v11 = width;
@@ -34,11 +34,11 @@
 - (void)dealloc
 {
   v2 = *((*MEMORY[0x1E69E7D40] & self->super.super.super.isa) + 0x158);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
   [v4 invalidate];
 
-  v5.receiver = v3;
+  v5.receiver = selfCopy;
   v5.super_class = type metadata accessor for NowPlayingTimeControlsView(0);
   [(NowPlayingTimeControlsView *)&v5 dealloc];
 }
@@ -58,23 +58,23 @@
   [*&v2[OBJC_IVAR____TtC13MediaControls26NowPlayingTimeControlsView_liveView] setFrame_];
 }
 
-- (void)sliderEditingChangedWithSender:(id)a3
+- (void)sliderEditingChangedWithSender:(id)sender
 {
-  v3 = self;
+  selfCopy = self;
   sub_1A228E500();
 }
 
-- (void)sliderValueChangedWithSender:(id)a3
+- (void)sliderValueChangedWithSender:(id)sender
 {
-  v3 = self;
+  selfCopy = self;
   sub_1A228E8D8();
 }
 
-- (void)sliderEditingDidEndWithSender:(id)a3
+- (void)sliderEditingDidEndWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A228DC34(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_1A228DC34(senderCopy);
 }
 
 - (void)setNeedsLayout
@@ -87,22 +87,22 @@
   [*&v2[OBJC_IVAR____TtC13MediaControls26NowPlayingTimeControlsView_liveView] setNeedsLayout];
 }
 
-- (void)updateElapsedTimeWithDisplayLink:(id)a3
+- (void)updateElapsedTimeWithDisplayLink:(id)link
 {
-  v3 = self;
+  selfCopy = self;
   sub_1A228F148(0);
   sub_1A228E8D8();
 }
 
 - (void)updateContentSizeCategory
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A228F8C4();
 }
 
 - (void)updateVisualStyling
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A228FBA8();
 }
 

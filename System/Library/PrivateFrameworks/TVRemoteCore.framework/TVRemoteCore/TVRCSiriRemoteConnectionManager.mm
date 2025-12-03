@@ -1,20 +1,20 @@
 @interface TVRCSiriRemoteConnectionManager
 + (id)sharedInstance;
 - (TVRCSiriRemoteConnectionManager)init;
-- (void)_removePeripheral:(id)a3;
-- (void)_sendEnableMessage:(BOOL)a3 forRemote:(id)a4;
+- (void)_removePeripheral:(id)peripheral;
+- (void)_sendEnableMessage:(BOOL)message forRemote:(id)remote;
 - (void)_startCBScanIfNeeded;
-- (void)_startDiscoveryForRemoteWithInfo:(id)a3 didConnectHandler:(id)a4;
-- (void)_stopDiscoveryForRemoteWithInfo:(id)a3;
+- (void)_startDiscoveryForRemoteWithInfo:(id)info didConnectHandler:(id)handler;
+- (void)_stopDiscoveryForRemoteWithInfo:(id)info;
 - (void)_stopScanning;
-- (void)_updateFindingSessionState:(int64_t)a3;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6;
-- (void)centralManagerDidUpdateState:(id)a3;
-- (void)enableFastFindMy:(BOOL)a3 forRemoteWithInfo:(id)a4;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4;
+- (void)_updateFindingSessionState:(int64_t)state;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i;
+- (void)centralManagerDidUpdateState:(id)state;
+- (void)enableFastFindMy:(BOOL)my forRemoteWithInfo:(id)info;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services;
 - (void)teardown;
 @end
 
@@ -47,9 +47,9 @@ uint64_t __49__TVRCSiriRemoteConnectionManager_sharedInstance__block_invoke()
   v2 = [(TVRCSiriRemoteConnectionManager *)&v17 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     connectedSiriRemotes = v2->_connectedSiriRemotes;
-    v2->_connectedSiriRemotes = v3;
+    v2->_connectedSiriRemotes = dictionary;
 
     v5 = objc_alloc(MEMORY[0x277CBDFF8]);
     v18 = *MEMORY[0x277CBDF08];
@@ -63,9 +63,9 @@ uint64_t __49__TVRCSiriRemoteConnectionManager_sharedInstance__block_invoke()
     remoteInfoSet = v2->_remoteInfoSet;
     v2->_remoteInfoSet = v9;
 
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     didConnectHandlerBlockMap = v2->_didConnectHandlerBlockMap;
-    v2->_didConnectHandlerBlockMap = v11;
+    v2->_didConnectHandlerBlockMap = dictionary2;
 
     v13 = [MEMORY[0x277CBEB58] set];
     discoveredPeripherals = v2->_discoveredPeripherals;
@@ -76,16 +76,16 @@ uint64_t __49__TVRCSiriRemoteConnectionManager_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)enableFastFindMy:(BOOL)a3 forRemoteWithInfo:(id)a4
+- (void)enableFastFindMy:(BOOL)my forRemoteWithInfo:(id)info
 {
-  v4 = a3;
+  myCopy = my;
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  infoCopy = info;
   v7 = _TVRCBLEDiscoveryLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = @"Disable";
-    if (v4)
+    if (myCopy)
     {
       v8 = @"Enable";
     }
@@ -93,15 +93,15 @@ uint64_t __49__TVRCSiriRemoteConnectionManager_sharedInstance__block_invoke()
     *buf = 138412546;
     v16 = v8;
     v17 = 2112;
-    v18 = v6;
+    v18 = infoCopy;
     _os_log_impl(&dword_26CF7F000, v7, OS_LOG_TYPE_DEFAULT, "%@ fast finding for remote with info: %@", buf, 0x16u);
   }
 
-  if (v4)
+  if (myCopy)
   {
-    v9 = [(TVRCSiriRemoteConnectionManager *)self connectedSiriRemotes];
-    v10 = [v6 name];
-    v11 = [v9 objectForKeyedSubscript:v10];
+    connectedSiriRemotes = [(TVRCSiriRemoteConnectionManager *)self connectedSiriRemotes];
+    name = [infoCopy name];
+    v11 = [connectedSiriRemotes objectForKeyedSubscript:name];
 
     if (v11)
     {
@@ -122,13 +122,13 @@ uint64_t __49__TVRCSiriRemoteConnectionManager_sharedInstance__block_invoke()
       v14[2] = __70__TVRCSiriRemoteConnectionManager_enableFastFindMy_forRemoteWithInfo___block_invoke;
       v14[3] = &unk_279D82670;
       v14[4] = self;
-      [(TVRCSiriRemoteConnectionManager *)self _startDiscoveryForRemoteWithInfo:v6 didConnectHandler:v14];
+      [(TVRCSiriRemoteConnectionManager *)self _startDiscoveryForRemoteWithInfo:infoCopy didConnectHandler:v14];
     }
   }
 
   else
   {
-    [(TVRCSiriRemoteConnectionManager *)self _stopDiscoveryForRemoteWithInfo:v6];
+    [(TVRCSiriRemoteConnectionManager *)self _stopDiscoveryForRemoteWithInfo:infoCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -150,36 +150,36 @@ uint64_t __70__TVRCSiriRemoteConnectionManager_enableFastFindMy_forRemoteWithInf
   return [*(a1 + 32) _stopScanning];
 }
 
-- (void)_updateFindingSessionState:(int64_t)a3
+- (void)_updateFindingSessionState:(int64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
-    v5 = [(TVRCSiriRemoteConnectionManager *)self findingSessionStateChangedHandler];
+    self->_state = state;
+    findingSessionStateChangedHandler = [(TVRCSiriRemoteConnectionManager *)self findingSessionStateChangedHandler];
 
-    if (v5)
+    if (findingSessionStateChangedHandler)
     {
-      v6 = [(TVRCSiriRemoteConnectionManager *)self findingSessionStateChangedHandler];
-      v6[2](v6, a3);
+      findingSessionStateChangedHandler2 = [(TVRCSiriRemoteConnectionManager *)self findingSessionStateChangedHandler];
+      findingSessionStateChangedHandler2[2](findingSessionStateChangedHandler2, state);
     }
   }
 }
 
-- (void)_startDiscoveryForRemoteWithInfo:(id)a3 didConnectHandler:(id)a4
+- (void)_startDiscoveryForRemoteWithInfo:(id)info didConnectHandler:(id)handler
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  handlerCopy = handler;
   v8 = _TVRCBLEDiscoveryLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v33 = v6;
+    v33 = infoCopy;
     _os_log_impl(&dword_26CF7F000, v8, OS_LOG_TYPE_DEFAULT, "Start scanning for remote with info: %@", buf, 0xCu);
   }
 
-  v9 = [(TVRCSiriRemoteConnectionManager *)self remoteInfoSet];
-  [v9 addObject:v6];
+  remoteInfoSet = [(TVRCSiriRemoteConnectionManager *)self remoteInfoSet];
+  [remoteInfoSet addObject:infoCopy];
 
   [(TVRCSiriRemoteConnectionManager *)self _startCBScanIfNeeded];
   if (!self->_cbDiscovery)
@@ -197,7 +197,7 @@ uint64_t __70__TVRCSiriRemoteConnectionManager_enableFastFindMy_forRemoteWithInf
     v28[2] = __86__TVRCSiriRemoteConnectionManager__startDiscoveryForRemoteWithInfo_didConnectHandler___block_invoke;
     v28[3] = &unk_279D82698;
     objc_copyWeak(&v30, buf);
-    v29 = v7;
+    v29 = handlerCopy;
     [(CBDiscovery *)self->_cbDiscovery setDeviceFoundHandler:v28];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
@@ -220,13 +220,13 @@ uint64_t __70__TVRCSiriRemoteConnectionManager_enableFastFindMy_forRemoteWithInf
     objc_destroyWeak(buf);
   }
 
-  v12 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v13 = [(TVRCSiriRemoteConnectionManager *)self remoteInfoSet];
-  v14 = [v13 countByEnumeratingWithState:&v20 objects:v31 count:16];
+  remoteInfoSet2 = [(TVRCSiriRemoteConnectionManager *)self remoteInfoSet];
+  v14 = [remoteInfoSet2 countByEnumeratingWithState:&v20 objects:v31 count:16];
   if (v14)
   {
     v15 = *v21;
@@ -237,24 +237,24 @@ uint64_t __70__TVRCSiriRemoteConnectionManager_enableFastFindMy_forRemoteWithInf
       {
         if (*v21 != v15)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(remoteInfoSet2);
         }
 
-        v17 = [*(*(&v20 + 1) + 8 * v16) cbKeyInfo];
-        [v12 addObject:v17];
+        cbKeyInfo = [*(*(&v20 + 1) + 8 * v16) cbKeyInfo];
+        [array addObject:cbKeyInfo];
 
         ++v16;
       }
 
       while (v14 != v16);
-      v14 = [v13 countByEnumeratingWithState:&v20 objects:v31 count:16];
+      v14 = [remoteInfoSet2 countByEnumeratingWithState:&v20 objects:v31 count:16];
     }
 
     while (v14);
   }
 
-  v18 = [(TVRCSiriRemoteConnectionManager *)self cbDiscovery];
-  [v18 setOobKeys:v12];
+  cbDiscovery = [(TVRCSiriRemoteConnectionManager *)self cbDiscovery];
+  [cbDiscovery setOobKeys:array];
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -559,24 +559,24 @@ void __86__TVRCSiriRemoteConnectionManager__startDiscoveryForRemoteWithInfo_didC
   }
 }
 
-- (void)_stopDiscoveryForRemoteWithInfo:(id)a3
+- (void)_stopDiscoveryForRemoteWithInfo:(id)info
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v5 = _TVRCBLEDiscoveryLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v4;
+    v13 = infoCopy;
     _os_log_impl(&dword_26CF7F000, v5, OS_LOG_TYPE_DEFAULT, "Stop scanning for remote with info :%@", buf, 0xCu);
   }
 
-  v6 = [(TVRCSiriRemoteConnectionManager *)self remoteInfoSet];
-  [v6 removeObject:v4];
+  remoteInfoSet = [(TVRCSiriRemoteConnectionManager *)self remoteInfoSet];
+  [remoteInfoSet removeObject:infoCopy];
 
-  v7 = [(TVRCSiriRemoteConnectionManager *)self connectedSiriRemotes];
-  v8 = [v4 name];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  connectedSiriRemotes = [(TVRCSiriRemoteConnectionManager *)self connectedSiriRemotes];
+  name = [infoCopy name];
+  v9 = [connectedSiriRemotes objectForKeyedSubscript:name];
 
   if (v9)
   {
@@ -602,11 +602,11 @@ void __86__TVRCSiriRemoteConnectionManager__startDiscoveryForRemoteWithInfo_didC
     _os_log_impl(&dword_26CF7F000, v3, OS_LOG_TYPE_DEFAULT, "Stop Discovery", v6, 2u);
   }
 
-  v4 = [(TVRCSiriRemoteConnectionManager *)self centralManager];
-  [v4 stopScan];
+  centralManager = [(TVRCSiriRemoteConnectionManager *)self centralManager];
+  [centralManager stopScan];
 
-  v5 = [(TVRCSiriRemoteConnectionManager *)self cbDiscovery];
-  [v5 invalidate];
+  cbDiscovery = [(TVRCSiriRemoteConnectionManager *)self cbDiscovery];
+  [cbDiscovery invalidate];
 
   [(TVRCSiriRemoteConnectionManager *)self setCbDiscovery:0];
 }
@@ -622,17 +622,17 @@ void __86__TVRCSiriRemoteConnectionManager__startDiscoveryForRemoteWithInfo_didC
   }
 
   [(TVRCSiriRemoteConnectionManager *)self _updateFindingSessionState:2];
-  v4 = [(TVRCSiriRemoteConnectionManager *)self remoteInfoSet];
-  [v4 removeAllObjects];
+  remoteInfoSet = [(TVRCSiriRemoteConnectionManager *)self remoteInfoSet];
+  [remoteInfoSet removeAllObjects];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(TVRCSiriRemoteConnectionManager *)self connectedSiriRemotes];
-  v6 = [v5 allValues];
+  connectedSiriRemotes = [(TVRCSiriRemoteConnectionManager *)self connectedSiriRemotes];
+  allValues = [connectedSiriRemotes allValues];
 
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v23 count:16];
+  v7 = [allValues countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -644,45 +644,45 @@ void __86__TVRCSiriRemoteConnectionManager__startDiscoveryForRemoteWithInfo_didC
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v18 + 1) + 8 * v10);
-        v12 = [(TVRCSiriRemoteConnectionManager *)self centralManager];
-        v13 = [v11 peripheral];
-        [v12 cancelPeripheralConnection:v13];
+        centralManager = [(TVRCSiriRemoteConnectionManager *)self centralManager];
+        peripheral = [v11 peripheral];
+        [centralManager cancelPeripheralConnection:peripheral];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v23 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v18 objects:v23 count:16];
     }
 
     while (v8);
   }
 
-  v14 = [(TVRCSiriRemoteConnectionManager *)self connectedSiriRemotes];
-  [v14 removeAllObjects];
+  connectedSiriRemotes2 = [(TVRCSiriRemoteConnectionManager *)self connectedSiriRemotes];
+  [connectedSiriRemotes2 removeAllObjects];
 
-  v15 = [(TVRCSiriRemoteConnectionManager *)self discoveredPeripherals];
-  [v15 removeAllObjects];
+  discoveredPeripherals = [(TVRCSiriRemoteConnectionManager *)self discoveredPeripherals];
+  [discoveredPeripherals removeAllObjects];
 
-  v16 = [(TVRCSiriRemoteConnectionManager *)self didConnectHandlerBlockMap];
-  [v16 removeAllObjects];
+  didConnectHandlerBlockMap = [(TVRCSiriRemoteConnectionManager *)self didConnectHandlerBlockMap];
+  [didConnectHandlerBlockMap removeAllObjects];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendEnableMessage:(BOOL)a3 forRemote:(id)a4
+- (void)_sendEnableMessage:(BOOL)message forRemote:(id)remote
 {
-  v4 = a3;
+  messageCopy = message;
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(TVRCSiriRemoteConnectionManager *)self connectedSiriRemotes];
-  v8 = [v6 peripheral];
-  v9 = [v8 name];
-  v10 = [v7 objectForKeyedSubscript:v9];
+  remoteCopy = remote;
+  connectedSiriRemotes = [(TVRCSiriRemoteConnectionManager *)self connectedSiriRemotes];
+  peripheral = [remoteCopy peripheral];
+  name = [peripheral name];
+  v10 = [connectedSiriRemotes objectForKeyedSubscript:name];
 
   v11 = _TVRCBLEDiscoveryLog();
   v12 = v11;
@@ -690,7 +690,7 @@ void __86__TVRCSiriRemoteConnectionManager__startDiscoveryForRemoteWithInfo_didC
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      if (v4)
+      if (messageCopy)
       {
         v13 = @"enable";
       }
@@ -700,15 +700,15 @@ void __86__TVRCSiriRemoteConnectionManager__startDiscoveryForRemoteWithInfo_didC
         v13 = @"disable";
       }
 
-      v14 = [v6 peripheral];
+      peripheral2 = [remoteCopy peripheral];
       v23 = 138412546;
       v24 = v13;
       v25 = 2112;
-      v26 = v14;
+      v26 = peripheral2;
       _os_log_impl(&dword_26CF7F000, v12, OS_LOG_TYPE_DEFAULT, "Sending message to %@ fast finding for remote: %@", &v23, 0x16u);
     }
 
-    if (v4)
+    if (messageCopy)
     {
       v15 = &enableFastFindMy;
     }
@@ -736,11 +736,11 @@ void __86__TVRCSiriRemoteConnectionManager__startDiscoveryForRemoteWithInfo_didC
       v19 = [MEMORY[0x277CBEA90] dataWithBytes:v16 length:10];
       free(v16);
       [v12 appendData:v19];
-      v20 = [v6 peripheral];
-      v21 = [v6 findMyCharacteristic];
-      [v20 writeValue:v12 forCharacteristic:v21 type:1];
+      peripheral3 = [remoteCopy peripheral];
+      findMyCharacteristic = [remoteCopy findMyCharacteristic];
+      [peripheral3 writeValue:v12 forCharacteristic:findMyCharacteristic type:1];
 
-      if (v4)
+      if (messageCopy)
       {
         [(TVRCSiriRemoteConnectionManager *)self _updateFindingSessionState:1];
       }
@@ -749,26 +749,26 @@ void __86__TVRCSiriRemoteConnectionManager__startDiscoveryForRemoteWithInfo_didC
 
   else if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
-    [TVRCSiriRemoteConnectionManager _sendEnableMessage:v6 forRemote:v12];
+    [TVRCSiriRemoteConnectionManager _sendEnableMessage:remoteCopy forRemote:v12];
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removePeripheral:(id)a3
+- (void)_removePeripheral:(id)peripheral
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  peripheralCopy = peripheral;
   v5 = _TVRCBLEDiscoveryLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = peripheralCopy;
     _os_log_impl(&dword_26CF7F000, v5, OS_LOG_TYPE_DEFAULT, "Remove peripheral: %@", &v13, 0xCu);
   }
 
-  v6 = [(TVRCSiriRemoteConnectionManager *)self discoveredPeripherals];
-  v7 = [v6 containsObject:v4];
+  discoveredPeripherals = [(TVRCSiriRemoteConnectionManager *)self discoveredPeripherals];
+  v7 = [discoveredPeripherals containsObject:peripheralCopy];
 
   if (v7)
   {
@@ -776,45 +776,45 @@ void __86__TVRCSiriRemoteConnectionManager__startDiscoveryForRemoteWithInfo_didC
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v4;
+      v14 = peripheralCopy;
       _os_log_impl(&dword_26CF7F000, v8, OS_LOG_TYPE_DEFAULT, "Removing tracked peripheral: %@", &v13, 0xCu);
     }
 
-    v9 = [(TVRCSiriRemoteConnectionManager *)self discoveredPeripherals];
-    [v9 removeObject:v4];
+    discoveredPeripherals2 = [(TVRCSiriRemoteConnectionManager *)self discoveredPeripherals];
+    [discoveredPeripherals2 removeObject:peripheralCopy];
 
-    v10 = [(TVRCSiriRemoteConnectionManager *)self connectedSiriRemotes];
-    v11 = [v4 name];
-    [v10 removeObjectForKey:v11];
+    connectedSiriRemotes = [(TVRCSiriRemoteConnectionManager *)self connectedSiriRemotes];
+    name = [peripheralCopy name];
+    [connectedSiriRemotes removeObjectForKey:name];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  stateCopy = state;
   v4 = _TVRCBLEDiscoveryLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = [v3 state];
+    state = [stateCopy state];
     _os_log_impl(&dword_26CF7F000, v4, OS_LOG_TYPE_DEFAULT, "centralManagerDidUpdateState :%ld", &v6, 0xCu);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i
 {
   v11 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  peripheralCopy = peripheral;
   v7 = _TVRCBLEDiscoveryLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v6;
+    v10 = peripheralCopy;
     _os_log_impl(&dword_26CF7F000, v7, OS_LOG_TYPE_DEFAULT, "Did discover peripheral: %@", &v9, 0xCu);
   }
 
@@ -823,10 +823,10 @@ void __86__TVRCSiriRemoteConnectionManager__startDiscoveryForRemoteWithInfo_didC
 
 - (void)_startCBScanIfNeeded
 {
-  v3 = [(TVRCSiriRemoteConnectionManager *)self centralManager];
-  v4 = [v3 isScanning];
+  centralManager = [(TVRCSiriRemoteConnectionManager *)self centralManager];
+  isScanning = [centralManager isScanning];
 
-  if ((v4 & 1) == 0)
+  if ((isScanning & 1) == 0)
   {
     v5 = _TVRCBLEDiscoveryLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -835,63 +835,63 @@ void __86__TVRCSiriRemoteConnectionManager__startDiscoveryForRemoteWithInfo_didC
       _os_log_impl(&dword_26CF7F000, v5, OS_LOG_TYPE_DEFAULT, "Started Scanning for Siri Remotes...", v7, 2u);
     }
 
-    v6 = [(TVRCSiriRemoteConnectionManager *)self centralManager];
-    [v6 scanForPeripheralsWithServices:0 options:0];
+    centralManager2 = [(TVRCSiriRemoteConnectionManager *)self centralManager];
+    [centralManager2 scanForPeripheralsWithServices:0 options:0];
   }
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  peripheralCopy = peripheral;
   v5 = _TVRCBLEDiscoveryLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = peripheralCopy;
     _os_log_impl(&dword_26CF7F000, v5, OS_LOG_TYPE_DEFAULT, "Successfully connected to Remote: %@", buf, 0xCu);
   }
 
   v6 = [MEMORY[0x277CBE0A0] UUIDWithString:@"F5873412-D314-B885-A5AA-EFA546123981"];
   v10 = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v10 count:1];
-  [v4 discoverServices:v7];
+  [peripheralCopy discoverServices:v7];
 
   v8 = _TVRCBLEDiscoveryLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = peripheralCopy;
     _os_log_impl(&dword_26CF7F000, v8, OS_LOG_TYPE_DEFAULT, "Discovering find my service for peripheral: %@", buf, 0xCu);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v10)
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  errorCopy = error;
+  v11 = errorCopy;
+  if (!errorCopy)
   {
     v14 = _TVRCBLEDiscoveryLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138412290;
-      v18 = v9;
+      v18 = peripheralCopy;
       _os_log_impl(&dword_26CF7F000, v14, OS_LOG_TYPE_DEFAULT, "Disconnected peripheral: %@", &v17, 0xCu);
     }
 
     goto LABEL_10;
   }
 
-  v12 = [v10 code];
+  code = [errorCopy code];
   v13 = _TVRCBLEDiscoveryLog();
   v14 = v13;
-  if (v12 != 7)
+  if (code != 7)
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -906,7 +906,7 @@ LABEL_10:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412290;
-    v18 = v9;
+    v18 = peripheralCopy;
     _os_log_impl(&dword_26CF7F000, v14, OS_LOG_TYPE_DEFAULT, "Remote button was pressed: %@", &v17, 0xCu);
   }
 
@@ -914,26 +914,26 @@ LABEL_10:
 LABEL_11:
 
   [(TVRCSiriRemoteConnectionManager *)self _updateFindingSessionState:v15];
-  [(TVRCSiriRemoteConnectionManager *)self _removePeripheral:v9];
+  [(TVRCSiriRemoteConnectionManager *)self _removePeripheral:peripheralCopy];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  peripheralCopy = peripheral;
+  servicesCopy = services;
   v8 = _TVRCBLEDiscoveryLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 services];
+    services = [peripheralCopy services];
     *buf = 138412290;
-    v30 = v9;
+    v30 = services;
     _os_log_impl(&dword_26CF7F000, v8, OS_LOG_TYPE_DEFAULT, "Discovered services %@", buf, 0xCu);
   }
 
-  if (v7)
+  if (servicesCopy)
   {
     v10 = _TVRCBLEDiscoveryLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -947,8 +947,8 @@ LABEL_6:
     goto LABEL_16;
   }
 
-  v11 = [v6 services];
-  v12 = [v11 count];
+  services2 = [peripheralCopy services];
+  v12 = [services2 count];
 
   if (!v12)
   {
@@ -965,8 +965,8 @@ LABEL_6:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v13 = v6;
-  obj = [v6 services];
+  v13 = peripheralCopy;
+  obj = [peripheralCopy services];
   v14 = [obj countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v14)
   {
@@ -994,18 +994,18 @@ LABEL_6:
     while (v15);
   }
 
-  v6 = v13;
+  peripheralCopy = v13;
 LABEL_16:
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  peripheralCopy = peripheral;
+  errorCopy = error;
+  if (errorCopy)
   {
     v10 = _TVRCBLEDiscoveryLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -1022,7 +1022,7 @@ LABEL_16:
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    obj = [a4 characteristics];
+    obj = [service characteristics];
     v11 = [obj countByEnumeratingWithState:&v32 objects:v38 count:16];
     if (v11)
     {
@@ -1038,9 +1038,9 @@ LABEL_16:
           }
 
           v15 = *(*(&v32 + 1) + 8 * i);
-          v16 = [v15 UUID];
+          uUID = [v15 UUID];
           v17 = [MEMORY[0x277CBE0A0] UUIDWithString:@"F5873413-D314-B885-A5AA-EFA546123982"];
-          v18 = [v16 isEqual:v17];
+          v18 = [uUID isEqual:v17];
 
           if (v18)
           {
@@ -1048,13 +1048,13 @@ LABEL_16:
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v37 = v8;
+              v37 = peripheralCopy;
               _os_log_impl(&dword_26CF7F000, v19, OS_LOG_TYPE_DEFAULT, "Found Siri Remote with find my characteristic: %@", buf, 0xCu);
             }
 
-            v20 = [v8 name];
+            name = [peripheralCopy name];
 
-            if (!v20)
+            if (!name)
             {
               v29 = _TVRCBLEDiscoveryLog();
               if (os_log_type_enabled(v29, OS_LOG_TYPE_FAULT))
@@ -1067,22 +1067,22 @@ LABEL_16:
             }
 
             v21 = objc_alloc_init(TVRCSiriRemote);
-            [(TVRCSiriRemote *)v21 setPeripheral:v8];
+            [(TVRCSiriRemote *)v21 setPeripheral:peripheralCopy];
             [(TVRCSiriRemote *)v21 setFindMyCharacteristic:v15];
-            v22 = [(TVRCSiriRemoteConnectionManager *)self connectedSiriRemotes];
-            v23 = [v8 name];
-            [v22 setObject:v21 forKeyedSubscript:v23];
+            connectedSiriRemotes = [(TVRCSiriRemoteConnectionManager *)self connectedSiriRemotes];
+            name2 = [peripheralCopy name];
+            [connectedSiriRemotes setObject:v21 forKeyedSubscript:name2];
 
-            v24 = [(TVRCSiriRemoteConnectionManager *)self didConnectHandlerBlockMap];
-            v25 = [v8 identifier];
-            v26 = [v24 objectForKeyedSubscript:v25];
+            didConnectHandlerBlockMap = [(TVRCSiriRemoteConnectionManager *)self didConnectHandlerBlockMap];
+            identifier = [peripheralCopy identifier];
+            v26 = [didConnectHandlerBlockMap objectForKeyedSubscript:identifier];
 
             if (v26)
             {
               (v26)[2](v26, v21);
-              v27 = [(TVRCSiriRemoteConnectionManager *)self didConnectHandlerBlockMap];
-              v28 = [v8 identifier];
-              [v27 setObject:0 forKeyedSubscript:v28];
+              didConnectHandlerBlockMap2 = [(TVRCSiriRemoteConnectionManager *)self didConnectHandlerBlockMap];
+              identifier2 = [peripheralCopy identifier];
+              [didConnectHandlerBlockMap2 setObject:0 forKeyedSubscript:identifier2];
             }
           }
         }
@@ -1099,7 +1099,7 @@ LABEL_16:
 
 LABEL_23:
 
-    v9 = 0;
+    errorCopy = 0;
   }
 
   v30 = *MEMORY[0x277D85DE8];

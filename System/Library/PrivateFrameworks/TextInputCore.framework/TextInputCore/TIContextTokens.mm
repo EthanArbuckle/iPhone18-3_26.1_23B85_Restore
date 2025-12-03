@@ -1,6 +1,6 @@
 @interface TIContextTokens
-- (TIContextTokens)initWithContext:(const TITokenID *)a3 contextLength:(unint64_t)a4 contextStringTokens:(id)a5;
-- (void)appendToken:(TITokenID)a3 string:(id)a4;
+- (TIContextTokens)initWithContext:(const TITokenID *)context contextLength:(unint64_t)length contextStringTokens:(id)tokens;
+- (void)appendToken:(TITokenID)token string:(id)string;
 - (void)dealloc;
 @end
 
@@ -36,22 +36,22 @@
   [(TIContextTokens *)&v6 dealloc];
 }
 
-- (void)appendToken:(TITokenID)a3 string:(id)a4
+- (void)appendToken:(TITokenID)token string:(id)string
 {
-  v6 = a4;
+  stringCopy = string;
   context = self->_context;
-  v11 = v6;
-  if (v6)
+  v11 = stringCopy;
+  if (stringCopy)
   {
-    v8 = [v6 UTF8String];
+    uTF8String = [stringCopy UTF8String];
   }
 
   else
   {
-    v8 = "";
+    uTF8String = "";
   }
 
-  v9 = strlen(v8);
+  v9 = strlen(uTF8String);
   if (v9 >= 0x7FFFFFFFFFFFFFF8)
   {
     std::vector<unsigned long>::__throw_length_error[abi:nn200100]();
@@ -66,26 +66,26 @@
   v13 = v9;
   if (v9)
   {
-    memmove(&__dst, v8, v9);
+    memmove(&__dst, uTF8String, v9);
   }
 
   *(&__dst + v10) = 0;
-  KB::LanguageModelContext::append(context, *&a3, &__dst, 0);
+  KB::LanguageModelContext::append(context, *&token, &__dst, 0);
   if (v13 < 0)
   {
     operator delete(__dst);
   }
 }
 
-- (TIContextTokens)initWithContext:(const TITokenID *)a3 contextLength:(unint64_t)a4 contextStringTokens:(id)a5
+- (TIContextTokens)initWithContext:(const TITokenID *)context contextLength:(unint64_t)length contextStringTokens:(id)tokens
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a5;
+  tokensCopy = tokens;
   v26.receiver = self;
   v26.super_class = TIContextTokens;
   if ([(TIContextTokens *)&v26 init])
   {
-    v7 = [v6 count];
+    v7 = [tokensCopy count];
     v24 = 0;
     v25 = 0;
     v23 = 0;
@@ -103,7 +103,7 @@
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = v6;
+    v8 = tokensCopy;
     v9 = [v8 countByEnumeratingWithState:&v19 objects:v27 count:16];
     if (v9)
     {

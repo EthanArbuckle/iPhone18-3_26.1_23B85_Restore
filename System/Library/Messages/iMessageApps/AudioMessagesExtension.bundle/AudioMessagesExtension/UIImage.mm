@@ -1,46 +1,46 @@
 @interface UIImage
-+ (id)systemImageNamedNumberAware:(id)a3;
-+ (id)templateImageNamed:(id)a3;
++ (id)systemImageNamedNumberAware:(id)aware;
++ (id)templateImageNamed:(id)named;
 @end
 
 @implementation UIImage
 
-+ (id)templateImageNamed:(id)a3
++ (id)templateImageNamed:(id)named
 {
-  v3 = [UIImage imageNamed:a3];
+  v3 = [UIImage imageNamed:named];
   v4 = [v3 imageWithRenderingMode:2];
 
   return v4;
 }
 
-+ (id)systemImageNamedNumberAware:(id)a3
++ (id)systemImageNamedNumberAware:(id)aware
 {
-  v3 = a3;
+  awareCopy = aware;
   if (qword_82418 != -1)
   {
     sub_4258C();
   }
 
-  if (([qword_82410 containsObject:v3] & 1) == 0)
+  if (([qword_82410 containsObject:awareCopy] & 1) == 0)
   {
 
     v8 = 0;
 LABEL_14:
-    v9 = [UIImage systemImageNamed:v3];
+    v9 = [UIImage systemImageNamed:awareCopy];
     goto LABEL_15;
   }
 
   v4 = +[NSLocale currentLocale];
-  v5 = [v4 languageCode];
+  languageCode = [v4 languageCode];
 
-  if (([v5 isEqualToString:@"ar"] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"hi"))
+  if (([languageCode isEqualToString:@"ar"] & 1) != 0 || objc_msgSend(languageCode, "isEqualToString:", @"hi"))
   {
     v6 = +[NSLocale currentLocale];
-    v7 = [v6 numberingSystem];
+    numberingSystem = [v6 numberingSystem];
 
-    if ([v7 isEqualToString:@"latn"])
+    if ([numberingSystem isEqualToString:@"latn"])
     {
-      v8 = [v3 stringByAppendingFormat:@".westernarabic"];
+      v8 = [awareCopy stringByAppendingFormat:@".westernarabic"];
     }
 
     else

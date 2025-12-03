@@ -1,11 +1,11 @@
 @interface MGIOKitHelper
-- (BOOL)createServicesIteratorByNameMatch:(const char *)a3;
+- (BOOL)createServicesIteratorByNameMatch:(const char *)match;
 - (MGIOKitHelper)init;
 - (__CFArray)iteratorCopyBusyServiceNames;
-- (__CFDictionary)deviceTreeNodeIsPresent:(__CFString *)a3 withExactName:(BOOL)a4 withNodeClass:(__CFString *)a5;
-- (__CFNumber)copyNumberFromData:(__CFData *)a3;
-- (unsigned)copyDeviceTreeStructureNext:(id)a3 withFirstChar:(char)a4;
-- (void)copyServiceTreeProperty:(id)a3 withFirstChar:(char)a4 propertyName:(id)a5 withPropertyFirstChar:(char)a6;
+- (__CFDictionary)deviceTreeNodeIsPresent:(__CFString *)present withExactName:(BOOL)name withNodeClass:(__CFString *)class;
+- (__CFNumber)copyNumberFromData:(__CFData *)data;
+- (unsigned)copyDeviceTreeStructureNext:(id)next withFirstChar:(char)char;
+- (void)copyServiceTreeProperty:(id)property withFirstChar:(char)char propertyName:(id)name withPropertyFirstChar:(char)firstChar;
 - (void)dealloc;
 - (void)deleteIterator;
 @end
@@ -43,11 +43,11 @@
   }
 }
 
-- (BOOL)createServicesIteratorByNameMatch:(const char *)a3
+- (BOOL)createServicesIteratorByNameMatch:(const char *)match
 {
   v18 = *MEMORY[0x1E69E9840];
   [(MGIOKitHelper *)self deleteIterator];
-  v5 = IOServiceNameMatching(a3);
+  v5 = IOServiceNameMatching(match);
   if (v5)
   {
     result = IOServiceGetMatchingServices(*MEMORY[0x1E696CD60], v5, &self->devIterator) == 0;
@@ -66,13 +66,13 @@
       v13 = "/Library/Caches/com.apple.xbs/Sources/MobileGestalt/libMobileGestalt/IORegistryUtilities/MGIOKitHelper.m";
     }
 
-    _MGLog(v13, 70, @"Failed to create iterator: %s ", v8, v9, v10, v11, v12, a3);
+    _MGLog(v13, 70, @"Failed to create iterator: %s ", v8, v9, v10, v11, v12, match);
     v14 = os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT);
     result = 0;
     if (v14)
     {
       *buf = 136315138;
-      v17 = a3;
+      matchCopy = match;
       _os_log_impl(&dword_1B0190000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Failed to create iterator: %s ", buf, 0xCu);
       result = 0;
     }
@@ -82,11 +82,11 @@
   return result;
 }
 
-- (unsigned)copyDeviceTreeStructureNext:(id)a3 withFirstChar:(char)a4
+- (unsigned)copyDeviceTreeStructureNext:(id)next withFirstChar:(char)char
 {
-  v4 = a4;
+  charCopy = char;
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  nextCopy = next;
   for (i = IOIteratorNext(self->devIterator); i; i = IOIteratorNext(self->devIterator))
   {
     memset(v12, 0, sizeof(v12));
@@ -94,15 +94,15 @@
     {
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v12];
       v9 = v8;
-      if (v4)
+      if (charCopy)
       {
-        if (sub_1B0194DB0(v8, v6, v4))
+        if (sub_1B0194DB0(v8, nextCopy, charCopy))
         {
           goto LABEL_10;
         }
       }
 
-      else if (![(__CFString *)v8 compare:v6 options:1])
+      else if (![(__CFString *)v8 compare:nextCopy options:1])
       {
 LABEL_10:
 
@@ -117,14 +117,14 @@ LABEL_10:
   return i;
 }
 
-- (void)copyServiceTreeProperty:(id)a3 withFirstChar:(char)a4 propertyName:(id)a5 withPropertyFirstChar:(char)a6
+- (void)copyServiceTreeProperty:(id)property withFirstChar:(char)char propertyName:(id)name withPropertyFirstChar:(char)firstChar
 {
-  v6 = a6;
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
+  firstCharCopy = firstChar;
+  propertyCopy = property;
+  nameCopy = name;
+  v11 = nameCopy;
   v12 = 0;
-  if (v9 && v10)
+  if (propertyCopy && nameCopy)
   {
     while (1)
     {
@@ -139,12 +139,12 @@ LABEL_10:
       if (v15)
       {
         v16 = v15;
-        if (CFEqual(v15, v9) && (v17 = IORegistryEntryCreateCFProperty(v14, @"IORegistryEntryPropertyKeys", 0, 0)) != 0)
+        if (CFEqual(v15, propertyCopy) && (v17 = IORegistryEntryCreateCFProperty(v14, @"IORegistryEntryPropertyKeys", 0, 0)) != 0)
         {
           v18 = v17;
-          if (v6)
+          if (firstCharCopy)
           {
-            CFProperty = sub_1B0198148(v14, v17, v11, v6);
+            CFProperty = sub_1B0198148(v14, v17, v11, firstCharCopy);
           }
 
           else
@@ -184,13 +184,13 @@ LABEL_17:
   return v12;
 }
 
-- (__CFDictionary)deviceTreeNodeIsPresent:(__CFString *)a3 withExactName:(BOOL)a4 withNodeClass:(__CFString *)a5
+- (__CFDictionary)deviceTreeNodeIsPresent:(__CFString *)present withExactName:(BOOL)name withNodeClass:(__CFString *)class
 {
-  v6 = a4;
+  nameCopy = name;
   v41 = *MEMORY[0x1E69E9840];
   cf = 0;
-  v8 = a3;
-  v9 = a5;
+  presentCopy = present;
+  classCopy = class;
   v10 = IOIteratorNext(self->devIterator);
   if (!v10)
   {
@@ -200,14 +200,14 @@ LABEL_17:
   }
 
   v11 = v10;
-  v34 = v8;
+  v34 = presentCopy;
   v12 = 0;
   v13 = 0;
   v14 = 0uLL;
   while (1)
   {
     v15 = v13;
-    if (v9)
+    if (classCopy)
     {
       *&className[96] = v14;
       *&className[112] = v14;
@@ -220,7 +220,7 @@ LABEL_17:
       IOObjectGetClass(v11, className);
       v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:className];
 
-      v17 = [(__CFString *)v9 isEqualToString:v16];
+      v17 = [(__CFString *)classCopy isEqualToString:v16];
       v14 = 0uLL;
       v18 = v17;
       v12 = v16;
@@ -244,7 +244,7 @@ LABEL_17:
 
     if (v18)
     {
-      if (v6)
+      if (nameCopy)
       {
         if ([v13 isEqualToString:v34])
         {
@@ -268,7 +268,7 @@ LABEL_11:
     {
       Copy = 0;
 LABEL_13:
-      v8 = v34;
+      presentCopy = v34;
       goto LABEL_16;
     }
   }
@@ -289,16 +289,16 @@ LABEL_13:
     v24 = v25 + 1;
   }
 
-  v8 = v34;
-  v26 = [(__CFString *)v34 UTF8String];
+  presentCopy = v34;
+  uTF8String = [(__CFString *)v34 UTF8String];
   mach_error_string(v23);
-  _MGLog(v24, 216, @"IORegistryEntryCreateCFProperties failed for '%s': %s", v27, v28, v29, v30, v31, v26);
+  _MGLog(v24, 216, @"IORegistryEntryCreateCFProperties failed for '%s': %s", v27, v28, v29, v30, v31, uTF8String);
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
-    v32 = [(__CFString *)v34 UTF8String];
+    uTF8String2 = [(__CFString *)v34 UTF8String];
     v33 = mach_error_string(v23);
     *buf = 136315394;
-    v37 = v32;
+    v37 = uTF8String2;
     v38 = 2080;
     v39 = v33;
     _os_log_impl(&dword_1B0190000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "IORegistryEntryCreateCFProperties failed for '%s': %s", buf, 0x16u);
@@ -317,14 +317,14 @@ LABEL_16:
   return Copy;
 }
 
-- (__CFNumber)copyNumberFromData:(__CFData *)a3
+- (__CFNumber)copyNumberFromData:(__CFData *)data
 {
-  if (!a3)
+  if (!data)
   {
     return 0;
   }
 
-  v4 = CFGetTypeID(a3);
+  v4 = CFGetTypeID(data);
   if (v4 != CFDataGetTypeID())
   {
     v8 = rindex("/Library/Caches/com.apple.xbs/Sources/MobileGestalt/libMobileGestalt/IORegistryUtilities/MGIOKitHelper.m", 47);
@@ -351,12 +351,12 @@ LABEL_16:
     goto LABEL_10;
   }
 
-  Length = CFDataGetLength(a3);
+  Length = CFDataGetLength(data);
   if (Length < 8)
   {
     if (Length == 4)
     {
-      BytePtr = CFDataGetBytePtr(a3);
+      BytePtr = CFDataGetBytePtr(data);
       v7 = kCFNumberSInt32Type;
       goto LABEL_14;
     }
@@ -387,7 +387,7 @@ LABEL_10:
     return 0;
   }
 
-  BytePtr = CFDataGetBytePtr(a3);
+  BytePtr = CFDataGetBytePtr(data);
   v7 = kCFNumberSInt64Type;
 LABEL_14:
 

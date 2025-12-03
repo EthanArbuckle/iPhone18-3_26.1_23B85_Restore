@@ -1,30 +1,30 @@
 @interface HFEventTriggerBuilderInterface
-+ (id)interfaceWithBuilder:(id)a3;
++ (id)interfaceWithBuilder:(id)builder;
 - (HFEventTriggerBuilder)triggerBuilder;
-- (HFEventTriggerBuilderInterface)initWithTriggerBuilder:(id)a3;
+- (HFEventTriggerBuilderInterface)initWithTriggerBuilder:(id)builder;
 @end
 
 @implementation HFEventTriggerBuilderInterface
 
-- (HFEventTriggerBuilderInterface)initWithTriggerBuilder:(id)a3
+- (HFEventTriggerBuilderInterface)initWithTriggerBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v8.receiver = self;
   v8.super_class = HFEventTriggerBuilderInterface;
   v5 = [(HFEventTriggerBuilderInterface *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_triggerBuilder, v4);
+    objc_storeWeak(&v5->_triggerBuilder, builderCopy);
   }
 
   return v6;
 }
 
-+ (id)interfaceWithBuilder:(id)a3
++ (id)interfaceWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithTriggerBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithTriggerBuilder:builderCopy];
 
   return v4;
 }

@@ -3,18 +3,18 @@
 - (void)dealloc;
 - (void)invalidatePresenter;
 - (void)layoutSubviews;
-- (void)setScene:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setScene:(id)scene;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SBSystemApertureSceneElementScenePresenterView
 
-- (void)setScene:(id)a3
+- (void)setScene:(id)scene
 {
-  v14 = a3;
-  if (self->_scene != v14)
+  sceneCopy = scene;
+  if (self->_scene != sceneCopy)
   {
-    objc_storeStrong(&self->_scene, a3);
+    objc_storeStrong(&self->_scene, scene);
     [(UIScenePresenter *)self->_scenePresenter invalidate];
     [(UIView *)self->_sceneContentView removeFromSuperview];
     sceneContentView = self->_sceneContentView;
@@ -30,8 +30,8 @@
       v8 = self->_scenePresenter;
       if (!v8)
       {
-        v9 = [(FBScene *)self->_scene uiPresentationManager];
-        v10 = [v9 createPresenterWithIdentifier:@"default"];
+        uiPresentationManager = [(FBScene *)self->_scene uiPresentationManager];
+        v10 = [uiPresentationManager createPresenterWithIdentifier:@"default"];
         v11 = self->_scenePresenter;
         self->_scenePresenter = v10;
 
@@ -40,9 +40,9 @@
 
       [(UIScenePresenter *)v8 modifyPresentationContext:&__block_literal_global_0];
       [(UIScenePresenter *)self->_scenePresenter activate];
-      v12 = [(UIScenePresenter *)self->_scenePresenter presentationView];
+      presentationView = [(UIScenePresenter *)self->_scenePresenter presentationView];
       v13 = self->_sceneContentView;
-      self->_sceneContentView = v12;
+      self->_sceneContentView = presentationView;
 
       [(SBSystemApertureSceneElementScenePresenterView *)self insertSubview:self->_sceneContentView atIndex:0];
       [(SBSystemApertureSceneElementScenePresenterView *)self _updateTraits];
@@ -67,14 +67,14 @@ void __59__SBSystemApertureSceneElementScenePresenterView_setScene___block_invok
   [(UIView *)sceneContentView setFrame:?];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = SBSystemApertureSceneElementScenePresenterView;
-  v4 = a3;
-  [(SBSystemApertureSceneElementScenePresenterView *)&v7 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(SBSystemApertureSceneElementScenePresenterView *)&v7 traitCollectionDidChange:changeCopy];
   v5 = [(SBSystemApertureSceneElementScenePresenterView *)self traitCollection:v7.receiver];
-  v6 = [v5 hasDifferentColorAppearanceComparedToTraitCollection:v4];
+  v6 = [v5 hasDifferentColorAppearanceComparedToTraitCollection:changeCopy];
 
   if (v6)
   {

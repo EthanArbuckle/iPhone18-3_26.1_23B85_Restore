@@ -1,20 +1,20 @@
 @interface CAFButtonSettingObservable
 - (NSString)description;
-- (void)automakerSettingService:(id)a3 didUpdateCategory:(unsigned __int8)a4;
-- (void)automakerSettingService:(id)a3 didUpdateProminenceInfo:(id)a4;
-- (void)automakerSettingService:(id)a3 didUpdateSortOrder:(unsigned __int8)a4;
-- (void)buttonSettingService:(id)a3 didUpdateButtonAction:(unsigned __int8)a4;
-- (void)buttonSettingService:(id)a3 didUpdateNotificationInfo:(id)a4;
-- (void)serviceDidFinishGroupUpdate:(id)a3;
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5;
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4;
+- (void)automakerSettingService:(id)service didUpdateCategory:(unsigned __int8)category;
+- (void)automakerSettingService:(id)service didUpdateProminenceInfo:(id)info;
+- (void)automakerSettingService:(id)service didUpdateSortOrder:(unsigned __int8)order;
+- (void)buttonSettingService:(id)service didUpdateButtonAction:(unsigned __int8)action;
+- (void)buttonSettingService:(id)service didUpdateNotificationInfo:(id)info;
+- (void)serviceDidFinishGroupUpdate:(id)update;
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate;
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values;
 @end
 
 @implementation CAFButtonSettingObservable
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CAFButtonSettingObservable.description.getter();
   v5 = v4;
 
@@ -23,62 +23,62 @@
   return v6;
 }
 
-- (void)automakerSettingService:(id)a3 didUpdateSortOrder:(unsigned __int8)a4
+- (void)automakerSettingService:(id)service didUpdateSortOrder:(unsigned __int8)order
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFButtonSettingObservable.automakerSettingService(_:didUpdateSortOrder:)();
 }
 
-- (void)automakerSettingService:(id)a3 didUpdateCategory:(unsigned __int8)a4
+- (void)automakerSettingService:(id)service didUpdateCategory:(unsigned __int8)category
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFButtonSettingObservable.automakerSettingService(_:didUpdateCategory:)();
 }
 
-- (void)automakerSettingService:(id)a3 didUpdateProminenceInfo:(id)a4
+- (void)automakerSettingService:(id)service didUpdateProminenceInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  CAFButtonSettingObservable.automakerSettingService(_:didUpdateProminenceInfo:)(v8, a4);
+  serviceCopy = service;
+  infoCopy = info;
+  selfCopy = self;
+  CAFButtonSettingObservable.automakerSettingService(_:didUpdateProminenceInfo:)(selfCopy, info);
 }
 
-- (void)buttonSettingService:(id)a3 didUpdateButtonAction:(unsigned __int8)a4
+- (void)buttonSettingService:(id)service didUpdateButtonAction:(unsigned __int8)action
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFButtonSettingObservable.buttonSettingService(_:didUpdateButtonAction:)();
 }
 
-- (void)buttonSettingService:(id)a3 didUpdateNotificationInfo:(id)a4
+- (void)buttonSettingService:(id)service didUpdateNotificationInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  CAFButtonSettingObservable.buttonSettingService(_:didUpdateNotificationInfo:)(v8, a4);
+  serviceCopy = service;
+  infoCopy = info;
+  selfCopy = self;
+  CAFButtonSettingObservable.buttonSettingService(_:didUpdateNotificationInfo:)(selfCopy, info);
 }
 
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = self;
-  CAFButtonSettingObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(v11, v10, a5);
+  updateCopy = update;
+  characteristicCopy = characteristic;
+  selfCopy = self;
+  CAFButtonSettingObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(selfCopy, v10, groupUpdate);
 }
 
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values
 {
-  v6 = a3;
-  v7 = self;
-  CAFButtonSettingObservable.serviceDidUpdate(_:receivedAllValues:)(v7, a4);
+  updateCopy = update;
+  selfCopy = self;
+  CAFButtonSettingObservable.serviceDidUpdate(_:receivedAllValues:)(selfCopy, values);
 }
 
-- (void)serviceDidFinishGroupUpdate:(id)a3
+- (void)serviceDidFinishGroupUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
+  updateCopy = update;
+  selfCopy = self;
   CAFButtonSettingObservable.serviceDidFinishGroupUpdate(_:)();
 }
 

@@ -1,15 +1,15 @@
 @interface _DPReportAuth
-- (_DPReportAuth)initWithToken:(id)a3 withChallenge:(id)a4;
-- (id)encodeWithError:(id *)a3;
+- (_DPReportAuth)initWithToken:(id)token withChallenge:(id)challenge;
+- (id)encodeWithError:(id *)error;
 @end
 
 @implementation _DPReportAuth
 
-- (_DPReportAuth)initWithToken:(id)a3 withChallenge:(id)a4
+- (_DPReportAuth)initWithToken:(id)token withChallenge:(id)challenge
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v8 length] && objc_msgSend(v7, "length"))
+  tokenCopy = token;
+  challengeCopy = challenge;
+  if ([challengeCopy length] && objc_msgSend(tokenCopy, "length"))
   {
     v14.receiver = self;
     v14.super_class = _DPReportAuth;
@@ -17,12 +17,12 @@
     p_isa = &v9->super.isa;
     if (v9)
     {
-      objc_storeStrong(&v9->_token, a3);
-      objc_storeStrong(p_isa + 2, a4);
+      objc_storeStrong(&v9->_token, token);
+      objc_storeStrong(p_isa + 2, challenge);
     }
 
     self = p_isa;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
@@ -33,36 +33,36 @@
       sub_10004DFEC(v12);
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (id)encodeWithError:(id *)a3
+- (id)encodeWithError:(id *)error
 {
   v5 = objc_alloc_init(NSMutableData);
-  v6 = [(_DPReportAuth *)self token];
-  v7 = [v6 length];
-  v8 = [(_DPReportAuth *)self challenge];
-  v9 = &v7[[v8 length]];
+  token = [(_DPReportAuth *)self token];
+  v7 = [token length];
+  challenge = [(_DPReportAuth *)self challenge];
+  v9 = &v7[[challenge length]];
 
   if (v9 < 0x10000)
   {
-    v12 = [(_DPReportAuth *)self token];
-    [v5 appendData:v12];
+    token2 = [(_DPReportAuth *)self token];
+    [v5 appendData:token2];
 
-    v13 = [(_DPReportAuth *)self challenge];
-    [v5 appendData:v13];
+    challenge2 = [(_DPReportAuth *)self challenge];
+    [v5 appendData:challenge2];
 
     v11 = v5;
   }
 
   else
   {
-    if (a3)
+    if (error)
     {
-      *a3 = [_DPDediscoError errorWithCode:800 underlyingError:0 description:@"Cannot encode DAP extension - total length exceeds UINT16_MAX"];
+      *error = [_DPDediscoError errorWithCode:800 underlyingError:0 description:@"Cannot encode DAP extension - total length exceeds UINT16_MAX"];
     }
 
     v10 = +[_DPLog service];

@@ -1,19 +1,19 @@
 @interface BWInferenceRequirement
-- (BWInferenceRequirement)initWithProvider:(id)a3 configuration:(id)a4;
+- (BWInferenceRequirement)initWithProvider:(id)provider configuration:(id)configuration;
 - (void)dealloc;
 @end
 
 @implementation BWInferenceRequirement
 
-- (BWInferenceRequirement)initWithProvider:(id)a3 configuration:(id)a4
+- (BWInferenceRequirement)initWithProvider:(id)provider configuration:(id)configuration
 {
   v8.receiver = self;
   v8.super_class = BWInferenceRequirement;
   v6 = [(BWInferenceRequirement *)&v8 init];
   if (v6)
   {
-    v6->_provider = a3;
-    v6->_configuration = a4;
+    v6->_provider = provider;
+    v6->_configuration = configuration;
   }
 
   return v6;

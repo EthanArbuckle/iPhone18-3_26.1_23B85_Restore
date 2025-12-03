@@ -1,36 +1,36 @@
 @interface PKProofreadingView
 - (BOOL)allowsAutoHide;
-- (PKProofreadingView)initWithProofreadingItem:(id)a3 inDrawing:(id)a4;
+- (PKProofreadingView)initWithProofreadingItem:(id)item inDrawing:(id)drawing;
 - (PKProofreadingViewDelegate)delegate;
 - (id)_underlineColor;
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5;
-- (void)_setLineDashFor:(id)a3;
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions;
+- (void)_setLineDashFor:(id)for;
 - (void)didMoveToSuperview;
-- (void)editMenuInteraction:(id)a3 willDismissMenuForConfiguration:(id)a4 animator:(id)a5;
+- (void)editMenuInteraction:(id)interaction willDismissMenuForConfiguration:(id)configuration animator:(id)animator;
 - (void)ensureViewIsVisible;
 - (void)fadeOut;
 - (void)popAllAutoHideSuppressionTokensAndFadeOutImmediately;
-- (void)popAutoHideSuppressionToken:(id)a3;
-- (void)popAutoHideSuppressionTokens:(id)a3 fadeOutImmediately:(BOOL)a4;
-- (void)pushAutoHideSuppressionToken:(id)a3 forceShow:(BOOL)a4;
+- (void)popAutoHideSuppressionToken:(id)token;
+- (void)popAutoHideSuppressionTokens:(id)tokens fadeOutImmediately:(BOOL)immediately;
+- (void)pushAutoHideSuppressionToken:(id)token forceShow:(BOOL)show;
 - (void)startHideTimer;
-- (void)tapHandler:(id)a3;
+- (void)tapHandler:(id)handler;
 @end
 
 @implementation PKProofreadingView
 
-- (PKProofreadingView)initWithProofreadingItem:(id)a3 inDrawing:(id)a4
+- (PKProofreadingView)initWithProofreadingItem:(id)item inDrawing:(id)drawing
 {
-  v6 = a3;
+  itemCopy = item;
   v14.receiver = self;
   v14.super_class = PKProofreadingView;
-  v7 = a4;
+  drawingCopy = drawing;
   v8 = [(PKDetectionView *)&v14 init];
   proofreadingItem = v8->_proofreadingItem;
-  v8->_proofreadingItem = v6;
-  v10 = v6;
+  v8->_proofreadingItem = itemCopy;
+  v10 = itemCopy;
 
-  [(PKDetectionItem *)v8->_proofreadingItem setDrawing:v7, v14.receiver, v14.super_class];
+  [(PKDetectionItem *)v8->_proofreadingItem setDrawing:drawingCopy, v14.receiver, v14.super_class];
   v11 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   autoHideSuppressionTokens = v8->_autoHideSuppressionTokens;
   v8->_autoHideSuppressionTokens = v11;
@@ -40,9 +40,9 @@
 
 - (void)didMoveToSuperview
 {
-  v3 = [(PKProofreadingView *)self superview];
+  superview = [(PKProofreadingView *)self superview];
 
-  if (v3)
+  if (superview)
   {
 
     [(PKProofreadingView *)self ensureViewIsVisible];
@@ -51,23 +51,23 @@
 
 - (id)_underlineColor
 {
-  v2 = [(PKProofreadingView *)self item];
-  v3 = [v2 strokeColor];
+  item = [(PKProofreadingView *)self item];
+  strokeColor = [item strokeColor];
 
-  return v3;
+  return strokeColor;
 }
 
-- (void)_setLineDashFor:(id)a3
+- (void)_setLineDashFor:(id)for
 {
   v4 = *MEMORY[0x1E69E9840];
   v3 = xmmword_1C801F760;
-  [a3 setLineDash:&v3 count:2 phase:0.0];
+  [for setLineDash:&v3 count:2 phase:0.0];
 }
 
 - (void)ensureViewIsVisible
 {
-  v3 = [(PKProofreadingView *)self layer];
-  [v3 removeAllAnimations];
+  layer = [(PKProofreadingView *)self layer];
+  [layer removeAllAnimations];
 
   [(PKProofreadingView *)self setAlpha:1.0];
   [(PKProofreadingView *)self setHidden:0];
@@ -137,28 +137,28 @@ uint64_t __29__PKProofreadingView_fadeOut__block_invoke_2(uint64_t result, int a
 
 - (BOOL)allowsAutoHide
 {
-  v2 = [(PKProofreadingView *)self autoHideSuppressionTokens];
-  v3 = [v2 count] == 0;
+  autoHideSuppressionTokens = [(PKProofreadingView *)self autoHideSuppressionTokens];
+  v3 = [autoHideSuppressionTokens count] == 0;
 
   return v3;
 }
 
-- (void)pushAutoHideSuppressionToken:(id)a3 forceShow:(BOOL)a4
+- (void)pushAutoHideSuppressionToken:(id)token forceShow:(BOOL)show
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  showCopy = show;
+  tokenCopy = token;
+  if (tokenCopy)
   {
-    v8 = v6;
-    v7 = [(PKProofreadingView *)self autoHideSuppressionTokens];
-    [v7 addObject:v8];
+    v8 = tokenCopy;
+    autoHideSuppressionTokens = [(PKProofreadingView *)self autoHideSuppressionTokens];
+    [autoHideSuppressionTokens addObject:v8];
 
     [(PKProofreadingView *)self cancelHideTimer];
-    v6 = v8;
-    if (v4)
+    tokenCopy = v8;
+    if (showCopy)
     {
       [(PKProofreadingView *)self ensureViewIsVisible];
-      v6 = v8;
+      tokenCopy = v8;
     }
   }
 }
@@ -166,31 +166,31 @@ uint64_t __29__PKProofreadingView_fadeOut__block_invoke_2(uint64_t result, int a
 - (void)popAllAutoHideSuppressionTokensAndFadeOutImmediately
 {
   v3 = MEMORY[0x1E695DFD8];
-  v5 = [(PKProofreadingView *)self autoHideSuppressionTokens];
-  v4 = [v3 setWithSet:v5];
+  autoHideSuppressionTokens = [(PKProofreadingView *)self autoHideSuppressionTokens];
+  v4 = [v3 setWithSet:autoHideSuppressionTokens];
   [(PKProofreadingView *)self popAutoHideSuppressionTokens:v4 fadeOutImmediately:1];
 }
 
-- (void)popAutoHideSuppressionToken:(id)a3
+- (void)popAutoHideSuppressionToken:(id)token
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithObject:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithObject:token];
   [(PKProofreadingView *)self popAutoHideSuppressionTokens:v4 fadeOutImmediately:0];
 }
 
-- (void)popAutoHideSuppressionTokens:(id)a3 fadeOutImmediately:(BOOL)a4
+- (void)popAutoHideSuppressionTokens:(id)tokens fadeOutImmediately:(BOOL)immediately
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  immediatelyCopy = immediately;
+  tokensCopy = tokens;
+  v7 = tokensCopy;
+  if (tokensCopy)
   {
-    v16 = v6;
-    v8 = [v6 count];
+    v16 = tokensCopy;
+    v8 = [tokensCopy count];
     v7 = v16;
     if (v8)
     {
-      v9 = [(PKProofreadingView *)self autoHideSuppressionTokens];
-      [v9 minusSet:v16];
+      autoHideSuppressionTokens = [(PKProofreadingView *)self autoHideSuppressionTokens];
+      [autoHideSuppressionTokens minusSet:v16];
 
       if ([(PKProofreadingView *)self isHidden])
       {
@@ -202,9 +202,9 @@ LABEL_5:
 
       [(PKProofreadingView *)self alpha];
       v11 = v10;
-      v12 = [(PKProofreadingView *)self allowsAutoHide];
+      allowsAutoHide = [(PKProofreadingView *)self allowsAutoHide];
       v7 = v16;
-      if (v12 && v11 > 0.0)
+      if (allowsAutoHide && v11 > 0.0)
       {
         if (([(PKProofreadingView *)self isHidden]& 1) != 0 || ([(PKProofreadingView *)self alpha], v13 <= 0.0))
         {
@@ -217,7 +217,7 @@ LABEL_5:
           v15 = v14 < 1.0;
         }
 
-        if (!v4 || v15)
+        if (!immediatelyCopy || v15)
         {
           [(PKProofreadingView *)self startHideTimer];
         }
@@ -235,9 +235,9 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)tapHandler:(id)a3
+- (void)tapHandler:(id)handler
 {
-  [a3 locationInView:self];
+  [handler locationInView:self];
   if ([(PKDetectionView *)self hitTest:?])
   {
     if (!self->_editMenuInteraction)
@@ -264,21 +264,21 @@ LABEL_6:
   }
 }
 
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions
 {
   v29 = *MEMORY[0x1E69E9840];
-  [(PKProofreadingView *)self pushAutoHideSuppressionToken:@"ReplacementMenu" forceShow:1, a5];
-  v6 = [(PKProofreadingView *)self proofreadingItem];
-  v7 = [v6 replacementStrings];
-  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v7, "count")}];
-  v9 = [(PKProofreadingView *)self delegate];
-  [v9 proofreadingView:self willPresentStringsForProofreadingItem:v6];
+  [(PKProofreadingView *)self pushAutoHideSuppressionToken:@"ReplacementMenu" forceShow:1, actions];
+  proofreadingItem = [(PKProofreadingView *)self proofreadingItem];
+  replacementStrings = [proofreadingItem replacementStrings];
+  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(replacementStrings, "count")}];
+  delegate = [(PKProofreadingView *)self delegate];
+  [delegate proofreadingView:self willPresentStringsForProofreadingItem:proofreadingItem];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v7;
+  obj = replacementStrings;
   v10 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v10)
   {
@@ -299,9 +299,9 @@ LABEL_6:
         v20[1] = 3221225472;
         v20[2] = __80__PKProofreadingView_editMenuInteraction_menuForConfiguration_suggestedActions___block_invoke;
         v20[3] = &unk_1E82DCE40;
-        v21 = v6;
+        v21 = proofreadingItem;
         v22 = v14;
-        v23 = self;
+        selfCopy = self;
         v16 = [v15 actionWithTitle:v14 image:0 identifier:0 handler:v20];
         [v8 addObject:v16];
       }
@@ -338,12 +338,12 @@ uint64_t __80__PKProofreadingView_editMenuInteraction_menuForConfiguration_sugge
   return [*(a1 + 48) setNeedsDisplay];
 }
 
-- (void)editMenuInteraction:(id)a3 willDismissMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)editMenuInteraction:(id)interaction willDismissMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  [(PKProofreadingView *)self popAllAutoHideSuppressionTokensAndFadeOutImmediately:a3];
-  v7 = [(PKProofreadingView *)self delegate];
-  v6 = [(PKProofreadingView *)self proofreadingItem];
-  [v7 proofreadingView:self willDismissStringsForProofreadingItem:v6];
+  [(PKProofreadingView *)self popAllAutoHideSuppressionTokensAndFadeOutImmediately:interaction];
+  delegate = [(PKProofreadingView *)self delegate];
+  proofreadingItem = [(PKProofreadingView *)self proofreadingItem];
+  [delegate proofreadingView:self willDismissStringsForProofreadingItem:proofreadingItem];
 }
 
 - (PKProofreadingViewDelegate)delegate

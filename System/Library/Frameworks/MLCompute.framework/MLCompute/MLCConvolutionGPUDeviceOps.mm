@@ -1,31 +1,31 @@
 @interface MLCConvolutionGPUDeviceOps
-+ (id)deviceOpsWithForwardMPSGraph:(id)a3 gradientMPSGraph:(id)a4;
-- (MLCConvolutionGPUDeviceOps)initWithForwardMPSGraph:(id)a3 gradientMPSGraph:(id)a4;
++ (id)deviceOpsWithForwardMPSGraph:(id)graph gradientMPSGraph:(id)sGraph;
+- (MLCConvolutionGPUDeviceOps)initWithForwardMPSGraph:(id)graph gradientMPSGraph:(id)sGraph;
 @end
 
 @implementation MLCConvolutionGPUDeviceOps
 
-+ (id)deviceOpsWithForwardMPSGraph:(id)a3 gradientMPSGraph:(id)a4
++ (id)deviceOpsWithForwardMPSGraph:(id)graph gradientMPSGraph:(id)sGraph
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithForwardMPSGraph:v7 gradientMPSGraph:v6];
+  sGraphCopy = sGraph;
+  graphCopy = graph;
+  v8 = [[self alloc] initWithForwardMPSGraph:graphCopy gradientMPSGraph:sGraphCopy];
 
   return v8;
 }
 
-- (MLCConvolutionGPUDeviceOps)initWithForwardMPSGraph:(id)a3 gradientMPSGraph:(id)a4
+- (MLCConvolutionGPUDeviceOps)initWithForwardMPSGraph:(id)graph gradientMPSGraph:(id)sGraph
 {
-  v7 = a3;
-  v8 = a4;
+  graphCopy = graph;
+  sGraphCopy = sGraph;
   v20.receiver = self;
   v20.super_class = MLCConvolutionGPUDeviceOps;
   v9 = [(MLCGPUDeviceOps *)&v20 initWithForwardKernel:0 gradientKernel:0 secondaryGradientKernel:0 forwardStatistics:0 gradientStatistics:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_forwardMPSGraph, a3);
-    objc_storeStrong(&v10->_gradientMPSGraph, a4);
+    objc_storeStrong(&v9->_forwardMPSGraph, graph);
+    objc_storeStrong(&v10->_gradientMPSGraph, sGraph);
     v10->_depthWiseConvolution = 0;
     v10->_convolutionTranspose = 0;
     v10->_hasBias = 0;

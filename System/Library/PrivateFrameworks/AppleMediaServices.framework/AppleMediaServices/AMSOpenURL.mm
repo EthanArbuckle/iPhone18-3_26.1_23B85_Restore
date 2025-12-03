@@ -1,35 +1,35 @@
 @interface AMSOpenURL
-+ (BOOL)_openURL:(id)a3 inApp:(id)a4;
-+ (BOOL)_openURLWithLaunchServices:(id)a3;
-+ (BOOL)_shouldOpenStandardURL:(id)a3 inApp:(id)a4 withLinks:(id)a5;
-+ (BOOL)openStandardURL:(id)a3;
-+ (id)_modifiedURLFromURL:(id)a3 bundleInfo:(id)a4;
-+ (id)openURL:(id)a3 clientInfo:(id)a4 bag:(id)a5;
-+ (void)openURL:(id)a3 account:(id)a4 preferredClient:(id)a5;
-- (AMSOpenURL)initWithURL:(id)a3 clientInfo:(id)a4 bag:(id)a5;
-- (BOOL)_openURL:(id)a3 bundleInfo:(id)a4;
-- (BOOL)_shouldOpenURL:(id)a3;
++ (BOOL)_openURL:(id)l inApp:(id)app;
++ (BOOL)_openURLWithLaunchServices:(id)services;
++ (BOOL)_shouldOpenStandardURL:(id)l inApp:(id)app withLinks:(id)links;
++ (BOOL)openStandardURL:(id)l;
++ (id)_modifiedURLFromURL:(id)l bundleInfo:(id)info;
++ (id)openURL:(id)l clientInfo:(id)info bag:(id)bag;
++ (void)openURL:(id)l account:(id)account preferredClient:(id)client;
+- (AMSOpenURL)initWithURL:(id)l clientInfo:(id)info bag:(id)bag;
+- (BOOL)_openURL:(id)l bundleInfo:(id)info;
+- (BOOL)_shouldOpenURL:(id)l;
 - (id)_performOpen;
 @end
 
 @implementation AMSOpenURL
 
-- (AMSOpenURL)initWithURL:(id)a3 clientInfo:(id)a4 bag:(id)a5
+- (AMSOpenURL)initWithURL:(id)l clientInfo:(id)info bag:(id)bag
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  lCopy = l;
+  infoCopy = info;
+  bagCopy = bag;
   v17.receiver = self;
   v17.super_class = AMSOpenURL;
   v12 = [(AMSOpenURL *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_URL, a3);
-    objc_storeStrong(&v13->_bag, a5);
-    if (v10)
+    objc_storeStrong(&v12->_URL, l);
+    objc_storeStrong(&v13->_bag, bag);
+    if (infoCopy)
     {
-      v14 = v10;
+      v14 = infoCopy;
     }
 
     else
@@ -44,10 +44,10 @@
   return v13;
 }
 
-+ (BOOL)openStandardURL:(id)a3
++ (BOOL)openStandardURL:(id)l
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   v5 = AMSSetLogKeyIfNeeded();
   v6 = +[AMSLogConfig sharedConfig];
   if (!v6)
@@ -55,26 +55,26 @@
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = objc_opt_class();
     v9 = AMSLogKey();
-    v10 = AMSLogableURL(v4);
+    v10 = AMSLogableURL(lCopy);
     *buf = 138543874;
     v24 = v8;
     v25 = 2114;
     v26 = v9;
     v27 = 2114;
     v28 = v10;
-    _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Opening URL: %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Opening URL: %{public}@", buf, 0x20u);
   }
 
   v22 = 0;
-  v11 = [MEMORY[0x1E69635C0] appLinksWithURL:v4 limit:1 includeLinksForCurrentApplication:1 error:&v22];
+  v11 = [MEMORY[0x1E69635C0] appLinksWithURL:lCopy limit:1 includeLinksForCurrentApplication:1 error:&v22];
   v12 = v22;
   v13 = +[AMSProcessInfo currentProcess];
-  v14 = [v13 bundleIdentifier];
+  bundleIdentifier = [v13 bundleIdentifier];
 
   v15 = +[AMSLogConfig sharedConfig];
   if (!v15)
@@ -82,12 +82,12 @@
     v15 = +[AMSLogConfig sharedConfig];
   }
 
-  v16 = [v15 OSLogObject];
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [v15 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v17 = objc_opt_class();
     v18 = AMSLogKey();
-    v19 = AMSLogableURL(v4);
+    v19 = AMSLogableURL(lCopy);
     *buf = 138544642;
     v24 = v17;
     v25 = 2114;
@@ -95,47 +95,47 @@
     v27 = 2114;
     v28 = v19;
     v29 = 2114;
-    v30 = v14;
+    v30 = bundleIdentifier;
     v31 = 2114;
     v32 = v11;
     v33 = 2114;
     v34 = v12;
-    _os_log_impl(&dword_192869000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Asking for appLinks for URL: %{public}@ from app %{public}@ returned: %{public}@ with error: %{public}@", buf, 0x3Eu);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Asking for appLinks for URL: %{public}@ from app %{public}@ returned: %{public}@ with error: %{public}@", buf, 0x3Eu);
   }
 
-  if ([a1 _openModeForStandardURL:v4 inApp:v14 withLinks:v11] == 1 && (objc_msgSend(a1, "_openURL:inApp:", v4, v14) & 1) != 0)
+  if ([self _openModeForStandardURL:lCopy inApp:bundleIdentifier withLinks:v11] == 1 && (objc_msgSend(self, "_openURL:inApp:", lCopy, bundleIdentifier) & 1) != 0)
   {
     v20 = 1;
   }
 
   else
   {
-    v20 = [a1 _openURLWithLaunchServices:v4];
+    v20 = [self _openURLWithLaunchServices:lCopy];
   }
 
   return v20;
 }
 
-+ (void)openURL:(id)a3 account:(id)a4 preferredClient:(id)a5
++ (void)openURL:(id)l account:(id)account preferredClient:(id)client
 {
-  v10 = a3;
-  v7 = a5;
+  lCopy = l;
+  clientCopy = client;
   v8 = +[AMSProcessInfo currentProcess];
-  [v8 setProxyAppBundleID:v7];
+  [v8 setProxyAppBundleID:clientCopy];
 
-  v9 = [a1 openURL:v10 clientInfo:v8 bag:0];
+  v9 = [self openURL:lCopy clientInfo:v8 bag:0];
 }
 
-+ (id)openURL:(id)a3 clientInfo:(id)a4 bag:(id)a5
++ (id)openURL:(id)l clientInfo:(id)info bag:(id)bag
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[AMSOpenURL alloc] initWithURL:v9 clientInfo:v8 bag:v7];
+  bagCopy = bag;
+  infoCopy = info;
+  lCopy = l;
+  v10 = [[AMSOpenURL alloc] initWithURL:lCopy clientInfo:infoCopy bag:bagCopy];
 
-  v11 = [(AMSOpenURL *)v10 _performOpen];
+  _performOpen = [(AMSOpenURL *)v10 _performOpen];
 
-  return v11;
+  return _performOpen;
 }
 
 - (id)_performOpen
@@ -148,7 +148,7 @@
   block[2] = __26__AMSOpenURL__performOpen__block_invoke;
   block[3] = &unk_1E73B71B0;
   v12 = v4;
-  v13 = self;
+  selfCopy = self;
   v6 = v3;
   v14 = v6;
   v7 = v4;
@@ -228,43 +228,43 @@ void __26__AMSOpenURL__performOpen__block_invoke(void **a1)
   [a1[6] finishWithError:v12];
 }
 
-+ (id)_modifiedURLFromURL:(id)a3 bundleInfo:(id)a4
++ (id)_modifiedURLFromURL:(id)l bundleInfo:(id)info
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  lCopy = l;
+  infoCopy = info;
+  if (!infoCopy)
   {
     v9 = 0;
     goto LABEL_12;
   }
 
-  v7 = [v5 scheme];
-  if ([v7 isEqualToString:@"http"])
+  scheme = [lCopy scheme];
+  if ([scheme isEqualToString:@"http"])
   {
-    v8 = [v6 scheme];
+    scheme2 = [infoCopy scheme];
   }
 
   else
   {
-    if (![v7 isEqualToString:@"https"])
+    if (![scheme isEqualToString:@"https"])
     {
       v10 = 0;
       goto LABEL_10;
     }
 
-    v8 = [v6 secureScheme];
+    scheme2 = [infoCopy secureScheme];
   }
 
-  v10 = v8;
-  if (!v8)
+  v10 = scheme2;
+  if (!scheme2)
   {
 LABEL_10:
     v9 = 0;
     goto LABEL_11;
   }
 
-  v11 = [v5 absoluteString];
-  v12 = [v11 substringFromIndex:{objc_msgSend(v7, "length")}];
+  absoluteString = [lCopy absoluteString];
+  v12 = [absoluteString substringFromIndex:{objc_msgSend(scheme, "length")}];
   v13 = [v10 stringByAppendingString:v12];
 
   v9 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v13];
@@ -275,14 +275,14 @@ LABEL_12:
   return v9;
 }
 
-- (BOOL)_openURL:(id)a3 bundleInfo:(id)a4
+- (BOOL)_openURL:(id)l bundleInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  infoCopy = info;
   v8 = objc_autoreleasePoolPush();
-  v9 = [objc_opt_class() _modifiedURLFromURL:v6 bundleInfo:v7];
-  v10 = [MEMORY[0x1E6963608] defaultWorkspace];
-  v11 = [v10 applicationsAvailableForOpeningURL:v9];
+  v9 = [objc_opt_class() _modifiedURLFromURL:lCopy bundleInfo:infoCopy];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  v11 = [defaultWorkspace applicationsAvailableForOpeningURL:v9];
 
   if (v9 && [v11 count])
   {
@@ -296,9 +296,9 @@ LABEL_12:
 
   if ([(AMSOpenURL *)self _shouldOpenURL:v12])
   {
-    v13 = [(AMSOpenURL *)self attemptedTargets];
-    v14 = [v12 absoluteString];
-    [v13 addObject:v14];
+    attemptedTargets = [(AMSOpenURL *)self attemptedTargets];
+    absoluteString = [v12 absoluteString];
+    [attemptedTargets addObject:absoluteString];
 
     v15 = [objc_opt_class() openStandardURL:v12];
   }
@@ -312,15 +312,15 @@ LABEL_12:
   return v15;
 }
 
-- (BOOL)_shouldOpenURL:(id)a3
+- (BOOL)_shouldOpenURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 absoluteString];
-  if ([v5 length])
+  lCopy = l;
+  absoluteString = [lCopy absoluteString];
+  if ([absoluteString length])
   {
-    v6 = [(AMSOpenURL *)self attemptedTargets];
-    v7 = [v4 absoluteString];
-    v8 = [v6 containsObject:v7] ^ 1;
+    attemptedTargets = [(AMSOpenURL *)self attemptedTargets];
+    absoluteString2 = [lCopy absoluteString];
+    v8 = [attemptedTargets containsObject:absoluteString2] ^ 1;
   }
 
   else
@@ -331,15 +331,15 @@ LABEL_12:
   return v8;
 }
 
-+ (BOOL)_shouldOpenStandardURL:(id)a3 inApp:(id)a4 withLinks:(id)a5
++ (BOOL)_shouldOpenStandardURL:(id)l inApp:(id)app withLinks:(id)links
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [a5 firstObject];
-  v10 = v9;
+  lCopy = l;
+  appCopy = app;
+  firstObject = [links firstObject];
+  v10 = firstObject;
   v11 = 0;
-  if (!v8 || !v9)
+  if (!appCopy || !firstObject)
   {
     goto LABEL_14;
   }
@@ -351,7 +351,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v12 = [v10 targetApplicationRecord];
+  targetApplicationRecord = [v10 targetApplicationRecord];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 LABEL_12:
@@ -359,8 +359,8 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v13 = [v12 bundleIdentifier];
-  if (![v8 isEqualToString:v13])
+  bundleIdentifier = [targetApplicationRecord bundleIdentifier];
+  if (![appCopy isEqualToString:bundleIdentifier])
   {
 
     goto LABEL_12;
@@ -372,12 +372,12 @@ LABEL_12:
     v14 = +[AMSLogConfig sharedConfig];
   }
 
-  v15 = [v14 OSLogObject];
-  if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v14 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v16 = objc_opt_class();
     v17 = AMSLogKey();
-    v18 = AMSLogableURL(v7);
+    v18 = AMSLogableURL(lCopy);
     v20 = 138544130;
     v21 = v16;
     v22 = 2114;
@@ -385,8 +385,8 @@ LABEL_12:
     v24 = 2114;
     v25 = v18;
     v26 = 2114;
-    v27 = v8;
-    _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] URL (%{public}@) is a universal link for the currently open app (%{public}@).", &v20, 0x2Au);
+    v27 = appCopy;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] URL (%{public}@) is a universal link for the currently open app (%{public}@).", &v20, 0x2Au);
   }
 
   v11 = 1;
@@ -395,7 +395,7 @@ LABEL_14:
   return v11;
 }
 
-+ (BOOL)_openURLWithLaunchServices:(id)a3
++ (BOOL)_openURLWithLaunchServices:(id)services
 {
   v22[3] = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E699F990];
@@ -406,10 +406,10 @@ LABEL_14:
   v21[2] = *MEMORY[0x1E699F940];
   v22[2] = @"AMSOpenURL";
   v4 = MEMORY[0x1E695DF20];
-  v5 = a3;
+  servicesCopy = services;
   v6 = [v4 dictionaryWithObjects:v22 forKeys:v21 count:3];
-  v7 = [MEMORY[0x1E6963608] defaultWorkspace];
-  v8 = [v7 openSensitiveURL:v5 withOptions:v6];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  v8 = [defaultWorkspace openSensitiveURL:servicesCopy withOptions:v6];
 
   v9 = +[AMSLogConfig sharedConfig];
   v10 = v9;
@@ -420,8 +420,8 @@ LABEL_14:
       v10 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v10 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v12 = objc_opt_class();
       v13 = AMSLogKey();
@@ -431,7 +431,7 @@ LABEL_14:
       v20 = v13;
       v14 = "%{public}@: [%{public}@] URL opened successfully.";
 LABEL_10:
-      _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_DEFAULT, v14, &v17, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, v14, &v17, 0x16u);
     }
   }
 
@@ -442,8 +442,8 @@ LABEL_10:
       v10 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v10 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v15 = objc_opt_class();
       v13 = AMSLogKey();
@@ -459,18 +459,18 @@ LABEL_10:
   return v8;
 }
 
-+ (BOOL)_openURL:(id)a3 inApp:(id)a4
++ (BOOL)_openURL:(id)l inApp:(id)app
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[AMSProcessInfo alloc] initWithBundleIdentifier:v6];
+  appCopy = app;
+  lCopy = l;
+  v8 = [[AMSProcessInfo alloc] initWithBundleIdentifier:appCopy];
 
   v9 = [AMSMappedBundleInfo bundleInfoForProcessInfo:v8];
-  v10 = [a1 _modifiedURLFromURL:v7 bundleInfo:v9];
+  v10 = [self _modifiedURLFromURL:lCopy bundleInfo:v9];
 
   if (v10)
   {
-    v11 = [a1 _openURLWithLaunchServices:v10];
+    v11 = [self _openURLWithLaunchServices:v10];
   }
 
   else

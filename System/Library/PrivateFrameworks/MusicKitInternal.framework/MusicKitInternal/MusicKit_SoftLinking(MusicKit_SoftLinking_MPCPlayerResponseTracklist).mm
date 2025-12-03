@@ -8,9 +8,9 @@
 {
   v3 = a3;
   MPCPlayerResponseTracklistClass = getMPCPlayerResponseTracklistClass();
-  v5 = [v3 _musicKit_self_playerPath];
+  _musicKit_self_playerPath = [v3 _musicKit_self_playerPath];
 
-  v6 = [MPCPlayerResponseTracklistClass resetCommandForPlayerPath:v5 devices:MEMORY[0x1E695E0F0]];
+  v6 = [MPCPlayerResponseTracklistClass resetCommandForPlayerPath:_musicKit_self_playerPath devices:MEMORY[0x1E695E0F0]];
 
   return v6;
 }

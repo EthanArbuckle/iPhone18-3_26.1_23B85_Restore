@@ -1,33 +1,33 @@
 @interface _MKBalloonLabelMarkerView
-- (BOOL)_balloonCalloutShouldOriginateFromSmallSize:(double *)a3;
+- (BOOL)_balloonCalloutShouldOriginateFromSmallSize:(double *)size;
 - (BOOL)shouldShowCallout;
-- (BOOL)updateCalloutViewIfNeededAnimated:(BOOL)a3;
+- (BOOL)updateCalloutViewIfNeededAnimated:(BOOL)animated;
 - (UIColor)_balloonStrokeColor;
 - (UIColor)_balloonTintColor;
 - (UIImage)_balloonImage;
 - (UIView)_balloonContentView;
-- (_MKBalloonLabelMarkerView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4;
+- (_MKBalloonLabelMarkerView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier;
 - (void)_addAnchorDotViewIfNeeded;
-- (void)_configureBalloonForDataIconImageKeys:(id)a3 scale:(double)a4;
+- (void)_configureBalloonForDataIconImageKeys:(id)keys scale:(double)scale;
 - (void)_resolveBalloonAttributesIfNecessary;
 - (void)prepareForReuse;
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4;
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection;
 @end
 
 @implementation _MKBalloonLabelMarkerView
 
-- (void)_configureBalloonForDataIconImageKeys:(id)a3 scale:(double)a4
+- (void)_configureBalloonForDataIconImageKeys:(id)keys scale:(double)scale
 {
   v63 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [[MKVKImageSourceCalculationParameters alloc] initWithImageSourceKeys:v6 scale:a4];
+  keysCopy = keys;
+  v7 = [[MKVKImageSourceCalculationParameters alloc] initWithImageSourceKeys:keysCopy scale:scale];
   v8 = [MKVKImageSourceKeyImageBuilder calculateImagesForParameters:v7];
 
-  v9 = [v8 fullBleedColors];
+  fullBleedColors = [v8 fullBleedColors];
   if ([v8 hasSameFullBleedColors])
   {
-    v10 = [v9 firstObject];
-    objc_storeStrong(&self->_balloonFillColor, v10);
+    firstObject = [fullBleedColors firstObject];
+    objc_storeStrong(&self->_balloonFillColor, firstObject);
   }
 
   else
@@ -36,28 +36,28 @@
     balloonFillColor = self->_balloonFillColor;
     self->_balloonFillColor = v11;
 
-    v10 = [MEMORY[0x1E69DC888] colorWithRed:0.305999994 green:0.361000001 blue:0.455000013 alpha:1.0];
+    firstObject = [MEMORY[0x1E69DC888] colorWithRed:0.305999994 green:0.361000001 blue:0.455000013 alpha:1.0];
   }
 
   balloonStrokeColor = self->_balloonStrokeColor;
-  self->_balloonStrokeColor = v10;
+  self->_balloonStrokeColor = firstObject;
 
-  v14 = [v8 images];
-  if ([v14 count] == 1 || self->_balloonCalloutStyle != 1)
+  images = [v8 images];
+  if ([images count] == 1 || self->_balloonCalloutStyle != 1)
   {
-    v22 = [v14 firstObject];
+    firstObject2 = [images firstObject];
     balloonImage = self->_balloonImage;
-    self->_balloonImage = v22;
+    self->_balloonImage = firstObject2;
   }
 
-  else if ([v14 count] >= 2)
+  else if ([images count] >= 2)
   {
-    v51 = self;
-    v52 = v6;
-    v49 = v14;
-    v15 = v14;
-    v50 = v9;
-    v16 = v9;
+    selfCopy = self;
+    v52 = keysCopy;
+    v49 = images;
+    v15 = images;
+    v50 = fullBleedColors;
+    v16 = fullBleedColors;
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
@@ -91,10 +91,10 @@
       v19 = 0;
     }
 
-    v24 = a4 + a4;
+    v24 = scale + scale;
     v25 = v19 - (v24 + v24);
-    v26 = ceil(*&_MKBalloonCalloutInnerDiameter * a4);
-    v27 = vcvtpd_u64_f64(*&_MKBalloonCalloutInnerDiameter * a4);
+    v26 = ceil(*&_MKBalloonCalloutInnerDiameter * scale);
+    v27 = vcvtpd_u64_f64(*&_MKBalloonCalloutInnerDiameter * scale);
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
     AlignedBytesPerRow = CGBitmapGetAlignedBytesPerRow();
     space = DeviceRGB;
@@ -136,10 +136,10 @@
             [v16 objectAtIndexedSubscript:v34];
           }
           v39 = ;
-          v40 = [v38 CGImage];
-          Width = CGImageGetWidth(v40);
-          Height = CGImageGetHeight(v40);
-          v43 = -(Height - *&_MKBalloonCalloutInnerDiameter * a4) * 0.5;
+          cGImage = [v38 CGImage];
+          Width = CGImageGetWidth(cGImage);
+          Height = CGImageGetHeight(cGImage);
+          v43 = -(Height - *&_MKBalloonCalloutInnerDiameter * scale) * 0.5;
           CGContextSaveGState(v30);
           CGContextSetFillColorWithColor(v30, [v39 CGColor]);
           v65.origin.x = v35;
@@ -151,7 +151,7 @@
           v66.origin.y = v43;
           v66.size.width = Width;
           v66.size.height = Height;
-          CGContextDrawImage(v30, v66, v40);
+          CGContextDrawImage(v30, v66, cGImage);
           CGContextRestoreGState(v30);
           v35 = v35 + Width;
           ++v34;
@@ -164,32 +164,32 @@
     }
 
     Image = CGBitmapContextCreateImage(v30);
-    v45 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:Image scale:0 orientation:a4];
+    v45 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:Image scale:0 orientation:scale];
     CGContextRelease(v30);
     CGColorSpaceRelease(space);
     CGImageRelease(Image);
 
     v46 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v45];
-    balloonContentView = v51->_balloonContentView;
-    v51->_balloonContentView = v46;
+    balloonContentView = selfCopy->_balloonContentView;
+    selfCopy->_balloonContentView = v46;
 
-    v6 = v52;
-    v9 = v50;
-    v14 = v49;
+    keysCopy = v52;
+    fullBleedColors = v50;
+    images = v49;
   }
 }
 
-- (BOOL)updateCalloutViewIfNeededAnimated:(BOOL)a3
+- (BOOL)updateCalloutViewIfNeededAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v38[2] = *MEMORY[0x1E69E9840];
   [(_MKBalloonLabelMarkerView *)self _resolveBalloonAttributesIfNecessary];
   [(_MKLabelMarkerView *)self _updateAnchorOffset];
-  v5 = [(_MKBalloonLabelMarkerView *)self traitCollection];
-  v6 = [v5 userInterfaceIdiom];
+  traitCollection = [(_MKBalloonLabelMarkerView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   memset(&v36, 0, sizeof(v36));
-  if (v6 == 3)
+  if (userInterfaceIdiom == 3)
   {
     CATransform3DMakeScale(&v36, 0.666666687, 0.666666687, 1.0);
   }
@@ -213,7 +213,7 @@
   if ([(MKAnnotationView *)self isSelected]&& [(MKAnnotationView *)self _shouldShowCalloutIfSelected])
   {
     [(_MKBalloonLabelMarkerView *)self _addAnchorDotViewIfNeeded];
-    if (v6 == 3)
+    if (userInterfaceIdiom == 3)
     {
       CGAffineTransformMakeScale(&v35, 0.666666687, 0.666666687);
     }
@@ -231,7 +231,7 @@
     *&v34.m13 = *&v35.c;
     *&v34.m21 = *&v35.tx;
     [(UIView *)anchorDotView setTransform:&v34];
-    if (v3)
+    if (animatedCopy)
     {
       v13 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"transform"];
       [v13 setMass:3.0];
@@ -252,24 +252,24 @@
       [v16 setFromValue:&unk_1F1611638];
       [v16 setToValue:&unk_1F1611650];
       [v16 setDuration:0.239999995];
-      v17 = [MEMORY[0x1E6979308] animation];
-      [v17 setRemovedOnCompletion:1];
+      animation = [MEMORY[0x1E6979308] animation];
+      [animation setRemovedOnCompletion:1];
       [v13 settlingDuration];
-      [v17 setDuration:?];
+      [animation setDuration:?];
       v26 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979ED8]];
-      [v17 setTimingFunction:v26];
+      [animation setTimingFunction:v26];
 
       v38[0] = v13;
       v38[1] = v16;
       v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:2];
-      [v17 setAnimations:v27];
+      [animation setAnimations:v27];
 
-      v28 = [(UIView *)self->_anchorDotView layer];
+      layer = [(UIView *)self->_anchorDotView layer];
       LODWORD(v29) = 1.0;
-      [v28 setOpacity:v29];
+      [layer setOpacity:v29];
 
-      v21 = [(UIView *)self->_anchorDotView layer];
-      [v21 addAnimation:v17 forKey:@"show"];
+      layer2 = [(UIView *)self->_anchorDotView layer];
+      [layer2 addAnimation:animation forKey:@"show"];
       goto LABEL_15;
     }
   }
@@ -284,7 +284,7 @@
       *&v34.m13 = v12;
       *&v34.m21 = *(MEMORY[0x1E695EFD0] + 32);
       [(UIView *)v11 setTransform:&v34];
-      if (v3)
+      if (animatedCopy)
       {
         v13 = [MEMORY[0x1E6979318] animationWithKeyPath:@"transform"];
         memset(&v34, 0, sizeof(v34));
@@ -300,27 +300,27 @@
         v16 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
         [v16 setFromValue:&unk_1F1611650];
         [v16 setToValue:&unk_1F1611638];
-        v17 = [MEMORY[0x1E6979308] animation];
+        animation = [MEMORY[0x1E6979308] animation];
         v18 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979ED8]];
-        [v17 setTimingFunction:v18];
+        [animation setTimingFunction:v18];
 
-        [v17 setDuration:0.133330002];
+        [animation setDuration:0.133330002];
         v37[0] = v13;
         v37[1] = v16;
         v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:2];
-        [v17 setAnimations:v19];
+        [animation setAnimations:v19];
 
-        [v17 setRemovedOnCompletion:1];
-        v20 = [(UIView *)self->_anchorDotView layer];
-        [v20 setOpacity:0.0];
+        [animation setRemovedOnCompletion:1];
+        layer3 = [(UIView *)self->_anchorDotView layer];
+        [layer3 setOpacity:0.0];
 
-        v21 = [(UIView *)self->_anchorDotView layer];
+        layer2 = [(UIView *)self->_anchorDotView layer];
         v32[0] = MEMORY[0x1E69E9820];
         v32[1] = 3221225472;
         v32[2] = __63___MKBalloonLabelMarkerView_updateCalloutViewIfNeededAnimated___block_invoke;
         v32[3] = &unk_1E76CA670;
         v32[4] = self;
-        [v21 _mapkit_addAnimation:v17 forKey:@"hide" completion:v32];
+        [layer2 _mapkit_addAnimation:animation forKey:@"hide" completion:v32];
 LABEL_15:
 
         goto LABEL_16;
@@ -333,7 +333,7 @@ LABEL_15:
 LABEL_16:
   v31.receiver = self;
   v31.super_class = _MKBalloonLabelMarkerView;
-  return [(_MKLabelMarkerView *)&v31 updateCalloutViewIfNeededAnimated:v3];
+  return [(_MKLabelMarkerView *)&v31 updateCalloutViewIfNeededAnimated:animatedCopy];
 }
 
 - (void)_addAnchorDotViewIfNeeded
@@ -353,20 +353,20 @@ LABEL_16:
     if (balloonCalloutStyle <= 4)
     {
       v11 = dbl_1A30F7928[balloonCalloutStyle];
-      v12 = [(UIView *)self->_anchorDotView layer];
-      [v12 setCornerRadius:v11];
+      layer = [(UIView *)self->_anchorDotView layer];
+      [layer setCornerRadius:v11];
     }
 
-    v13 = [(UIColor *)self->_balloonStrokeColor CGColor];
-    v14 = [(UIView *)self->_anchorDotView layer];
-    [v14 setBackgroundColor:v13];
+    cGColor = [(UIColor *)self->_balloonStrokeColor CGColor];
+    layer2 = [(UIView *)self->_anchorDotView layer];
+    [layer2 setBackgroundColor:cGColor];
 
     anchorDotView = self->_anchorDotView;
   }
 
-  v15 = [(UIView *)anchorDotView superview];
+  superview = [(UIView *)anchorDotView superview];
 
-  if (!v15)
+  if (!superview)
   {
     v16 = self->_anchorDotView;
 
@@ -376,30 +376,30 @@ LABEL_16:
 
 - (BOOL)shouldShowCallout
 {
-  v2 = [(MKAnnotationView *)self annotation];
-  if (([v2 suppressCallout] & 1) == 0 && (objc_msgSend(v2, "isRouteEta") & 1) == 0)
+  annotation = [(MKAnnotationView *)self annotation];
+  if (([annotation suppressCallout] & 1) == 0 && (objc_msgSend(annotation, "isRouteEta") & 1) == 0)
   {
-    v4 = [v2 featureAnnotation];
-    if ([v4 conformsToProtocol:&unk_1F16600E8] && !objc_msgSend(v4, "showsBalloonCallout") || objc_msgSend(v2, "isTransit") && (objc_msgSend(v2, "isTransitLine") & 1) == 0 && (objc_msgSend(v2, "isOnRoute") & 1) != 0)
+    featureAnnotation = [annotation featureAnnotation];
+    if ([featureAnnotation conformsToProtocol:&unk_1F16600E8] && !objc_msgSend(featureAnnotation, "showsBalloonCallout") || objc_msgSend(annotation, "isTransit") && (objc_msgSend(annotation, "isTransitLine") & 1) == 0 && (objc_msgSend(annotation, "isOnRoute") & 1) != 0)
     {
       goto LABEL_15;
     }
 
-    v5 = [v2 featureType];
+    featureType = [annotation featureType];
     LOBYTE(v3) = 0;
-    if (v5 == 7 || v5 == 9)
+    if (featureType == 7 || featureType == 9)
     {
       goto LABEL_16;
     }
 
-    v6 = [v2 pickedLabelBalloonBehavior];
-    if (v6 == 2)
+    pickedLabelBalloonBehavior = [annotation pickedLabelBalloonBehavior];
+    if (pickedLabelBalloonBehavior == 2)
     {
       LOBYTE(v3) = 1;
       goto LABEL_16;
     }
 
-    if (v6 || (v7 = [v2 featureType], v7 >= 0x13))
+    if (pickedLabelBalloonBehavior || (v7 = [annotation featureType], v7 >= 0x13))
     {
 LABEL_15:
       LOBYTE(v3) = 0;
@@ -453,26 +453,26 @@ LABEL_17:
   return balloonFillColor;
 }
 
-- (BOOL)_balloonCalloutShouldOriginateFromSmallSize:(double *)a3
+- (BOOL)_balloonCalloutShouldOriginateFromSmallSize:(double *)size
 {
   [(_MKBalloonLabelMarkerView *)self _resolveBalloonAttributesIfNecessary];
   result = self->_balloonCalloutShouldOriginateFromSmallSize;
-  if (a3)
+  if (size)
   {
     if (self->_balloonCalloutShouldOriginateFromSmallSize)
     {
-      *a3 = self->_smallBalloonScaleFactor;
+      *size = self->_smallBalloonScaleFactor;
     }
   }
 
   return result;
 }
 
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection
 {
-  v5 = a4;
-  v6 = [(_MKBalloonLabelMarkerView *)self traitCollection];
-  v7 = [v6 hasDifferentColorAppearanceComparedToTraitCollection:v5];
+  collectionCopy = collection;
+  traitCollection = [(_MKBalloonLabelMarkerView *)self traitCollection];
+  v7 = [traitCollection hasDifferentColorAppearanceComparedToTraitCollection:collectionCopy];
 
   if (v7)
   {
@@ -480,9 +480,9 @@ LABEL_17:
     if (self->_anchorDotView)
     {
       [(_MKBalloonLabelMarkerView *)self _resolveBalloonAttributesIfNecessary];
-      v8 = [(UIColor *)self->_balloonStrokeColor CGColor];
-      v9 = [(UIView *)self->_anchorDotView layer];
-      [v9 setBackgroundColor:v8];
+      cGColor = [(UIColor *)self->_balloonStrokeColor CGColor];
+      layer = [(UIView *)self->_anchorDotView layer];
+      [layer setBackgroundColor:cGColor];
     }
   }
 }
@@ -495,40 +495,40 @@ LABEL_17:
   }
 
   self->_needsToResolveBalloonAttributes = 0;
-  v66 = [(MKAnnotationView *)self annotation];
+  annotation = [(MKAnnotationView *)self annotation];
   [(UIView *)self _mapkit_currentScreenScale];
   v4 = v3;
-  v5 = [v66 styleAttributes];
-  if (v5)
+  styleAttributes = [annotation styleAttributes];
+  if (styleAttributes)
   {
     goto LABEL_10;
   }
 
-  if ([v66 isTrafficIncident])
+  if ([annotation isTrafficIncident])
   {
-    v6 = [v66 incident];
-    v7 = [MEMORY[0x1E69A1DB0] styleAttributesForTrafficIncidentType:{objc_msgSend(v6, "type")}];
+    incident = [annotation incident];
+    styleAttributes2 = [MEMORY[0x1E69A1DB0] styleAttributesForTrafficIncidentType:{objc_msgSend(incident, "type")}];
   }
 
   else
   {
-    if (![v66 isRouteAnnotation])
+    if (![annotation isRouteAnnotation])
     {
       v12 = 0;
       v9 = 0;
-      v5 = 0;
+      styleAttributes = 0;
       goto LABEL_43;
     }
 
-    v8 = [v66 routeAnnotations];
-    v6 = [v8 firstObject];
+    routeAnnotations = [annotation routeAnnotations];
+    incident = [routeAnnotations firstObject];
 
-    v7 = [v6 styleAttributes];
+    styleAttributes2 = [incident styleAttributes];
   }
 
-  v5 = v7;
+  styleAttributes = styleAttributes2;
 
-  if (!v5)
+  if (!styleAttributes)
   {
     v12 = 0;
     v9 = 0;
@@ -538,12 +538,12 @@ LABEL_43:
   }
 
 LABEL_10:
-  v9 = [MEMORY[0x1E69A1DB0] styleAttributesForUnpickedFeatureWithAttributes:v5];
+  v9 = [MEMORY[0x1E69A1DB0] styleAttributesForUnpickedFeatureWithAttributes:styleAttributes];
   if (v9)
   {
-    v10 = [(_MKLabelMarkerView *)self mapView];
-    v11 = [v10 _mapLayer];
-    v12 = [v11 iconForStyleAttributes:v9 contentScale:8 size:1 transparent:v4];
+    mapView = [(_MKLabelMarkerView *)self mapView];
+    _mapLayer = [mapView _mapLayer];
+    v12 = [_mapLayer iconForStyleAttributes:v9 contentScale:8 size:1 transparent:v4];
   }
 
   else
@@ -564,13 +564,13 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v15 = [MEMORY[0x1E69A1DB0] styleAttributesForCalloutWithAttributes:{v5, v12}];
+  v15 = [MEMORY[0x1E69A1DB0] styleAttributesForCalloutWithAttributes:{styleAttributes, v12}];
 
   if (v15)
   {
-    v5 = [(_MKLabelMarkerView *)self mapView];
-    v16 = [v5 _mapLayer];
-    v14 = [v16 iconForStyleAttributes:v15 contentScale:8 size:1 transparent:v4];
+    styleAttributes = [(_MKLabelMarkerView *)self mapView];
+    _mapLayer2 = [styleAttributes _mapLayer];
+    v14 = [_mapLayer2 iconForStyleAttributes:v15 contentScale:8 size:1 transparent:v4];
 
     goto LABEL_18;
   }
@@ -579,14 +579,14 @@ LABEL_18:
   v13 = 1;
 LABEL_19:
   self->_balloonCalloutStyle = [v14 calloutShape] == 1;
-  v17 = [v66 dataIconImageKeys];
-  v18 = [v17 count];
+  dataIconImageKeys = [annotation dataIconImageKeys];
+  v18 = [dataIconImageKeys count];
 
-  v19 = [v14 calloutFillColor];
-  v20 = [v14 calloutHaloColor];
-  if (v19)
+  calloutFillColor = [v14 calloutFillColor];
+  calloutHaloColor = [v14 calloutHaloColor];
+  if (calloutFillColor)
   {
-    [MEMORY[0x1E69DC888] colorWithCGColor:v19];
+    [MEMORY[0x1E69DC888] colorWithCGColor:calloutFillColor];
   }
 
   else
@@ -597,9 +597,9 @@ LABEL_19:
   balloonFillColor = self->_balloonFillColor;
   self->_balloonFillColor = v21;
 
-  if (v20)
+  if (calloutHaloColor)
   {
-    v23 = [MEMORY[0x1E69DC888] colorWithCGColor:v20];
+    v23 = [MEMORY[0x1E69DC888] colorWithCGColor:calloutHaloColor];
   }
 
   else
@@ -611,47 +611,47 @@ LABEL_19:
   self->_balloonStrokeColor = v23;
 
   self->_smallBalloonScaleFactor = 26.0 / *&_MKBalloonCalloutInnerDiameter;
-  if (![v66 isCluster])
+  if (![annotation isCluster])
   {
-    if ([v66 isTrafficIncident])
+    if ([annotation isTrafficIncident])
     {
-      v25 = [v66 incident];
-      v33 = +[MKIconManager imageForTrafficIncidentType:size:forScale:](MKIconManager, "imageForTrafficIncidentType:size:forScale:", [v25 type], 4, v4);
+      incident2 = [annotation incident];
+      v33 = +[MKIconManager imageForTrafficIncidentType:size:forScale:](MKIconManager, "imageForTrafficIncidentType:size:forScale:", [incident2 type], 4, v4);
       balloonImage = self->_balloonImage;
       self->_balloonImage = v33;
     }
 
-    else if ([v66 isRouteAnnotation])
+    else if ([annotation isRouteAnnotation])
     {
       v35 = [MKIconManager imageForRouteAnnotationStyle:v15 size:4 forScale:v4];
-      v25 = self->_balloonImage;
+      incident2 = self->_balloonImage;
       self->_balloonImage = v35;
     }
 
     else if (v18)
     {
-      v25 = [v66 dataIconImageKeys];
-      [(_MKBalloonLabelMarkerView *)self _configureBalloonForDataIconImageKeys:v25 scale:v4];
+      incident2 = [annotation dataIconImageKeys];
+      [(_MKBalloonLabelMarkerView *)self _configureBalloonForDataIconImageKeys:incident2 scale:v4];
     }
 
     else
     {
-      v52 = v14;
-      v25 = v52;
-      if (v52)
+      image = v14;
+      incident2 = image;
+      if (image)
       {
-        v52 = [(UIImage *)v52 image];
-        if (v52)
+        image = [(UIImage *)image image];
+        if (image)
         {
           v53 = objc_alloc(MEMORY[0x1E69DCAB8]);
-          v54 = [v25 image];
-          [v25 contentScale];
-          v52 = [v53 initWithCGImage:v54 scale:0 orientation:v55];
+          image2 = [incident2 image];
+          [incident2 contentScale];
+          image = [v53 initWithCGImage:image2 scale:0 orientation:v55];
         }
       }
 
       v56 = self->_balloonImage;
-      self->_balloonImage = v52;
+      self->_balloonImage = image;
 
       if (self->_balloonCalloutShouldOriginateFromSmallSize)
       {
@@ -662,9 +662,9 @@ LABEL_19:
 
         else
         {
-          v58 = [(_MKLabelMarkerView *)self mapView];
-          v59 = [v58 _mapLayer];
-          v57 = [v59 iconForStyleAttributes:v15 contentScale:6 size:1 transparent:v4];
+          mapView2 = [(_MKLabelMarkerView *)self mapView];
+          _mapLayer3 = [mapView2 _mapLayer];
+          v57 = [_mapLayer3 iconForStyleAttributes:v15 contentScale:6 size:1 transparent:v4];
         }
 
         [v57 imageSize];
@@ -680,63 +680,63 @@ LABEL_19:
     goto LABEL_36;
   }
 
-  v25 = objc_alloc_init(MEMORY[0x1E696ADA0]);
-  v26 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-  [v25 setLocale:v26];
+  incident2 = objc_alloc_init(MEMORY[0x1E696ADA0]);
+  autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+  [incident2 setLocale:autoupdatingCurrentLocale];
 
-  [v25 setNumberStyle:1];
-  [v25 setRoundingMode:6];
+  [incident2 setNumberStyle:1];
+  [incident2 setRoundingMode:6];
   v27 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{0.0, 0.0, *&_MKBalloonCalloutInnerDiameter, *&_MKBalloonCalloutInnerDiameter}];
   v28 = objc_alloc_init(_MKUILabel);
-  v29 = [v14 calloutTextColor];
-  v30 = [v14 glyphColor];
-  if (v29)
+  calloutTextColor = [v14 calloutTextColor];
+  glyphColor = [v14 glyphColor];
+  if (calloutTextColor)
   {
     v31 = MEMORY[0x1E69DC888];
-    v32 = v29;
+    v32 = calloutTextColor;
   }
 
   else
   {
-    v32 = v30;
+    v32 = glyphColor;
     v31 = MEMORY[0x1E69DC888];
     if (!v32)
     {
-      v36 = [MEMORY[0x1E69DC888] whiteColor];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
       goto LABEL_35;
     }
   }
 
-  v36 = [v31 colorWithCGColor:v32];
+  whiteColor = [v31 colorWithCGColor:v32];
 LABEL_35:
-  v37 = v36;
-  [(_MKUILabel *)v28 setTextColor:v36];
+  v37 = whiteColor;
+  [(_MKUILabel *)v28 setTextColor:whiteColor];
 
   [(_MKUILabel *)v28 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v38 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v66, "clusterFeatureCount")}];
-  v39 = [v25 stringFromNumber:v38];
+  v38 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(annotation, "clusterFeatureCount")}];
+  v39 = [incident2 stringFromNumber:v38];
   [(_MKUILabel *)v28 setText:v39];
 
   v40 = [MEMORY[0x1E69DB878] systemFontOfSize:36.0];
   [(_MKUILabel *)v28 setFont:v40];
 
   [(UIView *)v27 addSubview:v28];
-  v41 = [(_MKUILabel *)v28 centerXAnchor];
-  v42 = [(UIView *)v27 centerXAnchor];
-  v43 = [v41 constraintEqualToAnchor:v42];
+  centerXAnchor = [(_MKUILabel *)v28 centerXAnchor];
+  centerXAnchor2 = [(UIView *)v27 centerXAnchor];
+  v43 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v43 setActive:1];
 
-  v44 = [(_MKUILabel *)v28 centerYAnchor];
-  v45 = [(UIView *)v27 centerYAnchor];
-  v46 = [v44 constraintEqualToAnchor:v45];
+  centerYAnchor = [(_MKUILabel *)v28 centerYAnchor];
+  centerYAnchor2 = [(UIView *)v27 centerYAnchor];
+  v46 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v46 setActive:1];
 
-  v47 = [(UIView *)v27 widthAnchor];
-  v48 = [v47 constraintEqualToConstant:*&_MKBalloonCalloutInnerDiameter];
+  widthAnchor = [(UIView *)v27 widthAnchor];
+  v48 = [widthAnchor constraintEqualToConstant:*&_MKBalloonCalloutInnerDiameter];
   [v48 setActive:1];
 
-  v49 = [(UIView *)v27 heightAnchor];
-  v50 = [v49 constraintEqualToConstant:*&_MKBalloonCalloutInnerDiameter];
+  heightAnchor = [(UIView *)v27 heightAnchor];
+  v50 = [heightAnchor constraintEqualToConstant:*&_MKBalloonCalloutInnerDiameter];
   [v50 setActive:1];
 
   balloonContentView = self->_balloonContentView;
@@ -768,18 +768,18 @@ LABEL_36:
   self->_smallBalloonScaleFactor = 1.0;
 }
 
-- (_MKBalloonLabelMarkerView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4
+- (_MKBalloonLabelMarkerView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = _MKBalloonLabelMarkerView;
-  v4 = [(_MKLabelMarkerView *)&v9 initWithAnnotation:a3 reuseIdentifier:a4];
+  v4 = [(_MKLabelMarkerView *)&v9 initWithAnnotation:annotation reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     v4->_needsToResolveBalloonAttributes = 1;
     [(MKAnnotationView *)v4 _setCalloutStyle:1];
-    v6 = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
-    v7 = [(_MKBalloonLabelMarkerView *)v5 registerForTraitChanges:v6 withAction:sel_traitEnvironment_didChangeTraitCollection_];
+    systemTraitsAffectingColorAppearance = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
+    v7 = [(_MKBalloonLabelMarkerView *)v5 registerForTraitChanges:systemTraitsAffectingColorAppearance withAction:sel_traitEnvironment_didChangeTraitCollection_];
   }
 
   return v5;

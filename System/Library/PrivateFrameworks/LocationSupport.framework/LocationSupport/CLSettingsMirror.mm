@@ -1,17 +1,17 @@
 @interface CLSettingsMirror
-- (id)initInUniverse:(id)a3;
+- (id)initInUniverse:(id)universe;
 - (void)dealloc;
-- (void)didUpdateSettings:(id)a3;
+- (void)didUpdateSettings:(id)settings;
 - (void)invalidate;
-- (void)setDouble:(double)a3 forKey:(id)a4;
-- (void)setFloat:(float)a3 forKey:(id)a4;
-- (void)setLong:(int64_t)a3 forKey:(id)a4;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (void)setDouble:(double)double forKey:(id)key;
+- (void)setFloat:(float)float forKey:(id)key;
+- (void)setLong:(int64_t)long forKey:(id)key;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation CLSettingsMirror
 
-- (id)initInUniverse:(id)a3
+- (id)initInUniverse:(id)universe
 {
   v7.receiver = self;
   v7.super_class = CLSettingsMirror;
@@ -20,7 +20,7 @@
   if (v4)
   {
     [(CLSettingsMirror *)v4 setValid:1];
-    [p_isa setUniverse:a3];
+    [p_isa setUniverse:universe];
     [p_isa setManager:{objc_msgSend(objc_msgSend(p_isa[5], "vendor"), "proxyForService:", @"CLSettingsManager"}];
     [p_isa[4] registerDelegate:p_isa inSilo:{objc_msgSend(p_isa[5], "silo")}];
     [p_isa setDictionary:{objc_msgSend(p_isa[4], "syncgetSettingsAndRegisterForUpdates:", p_isa)}];
@@ -47,9 +47,9 @@
   [(CLSettingsDictionary *)&v3 dealloc];
 }
 
-- (void)didUpdateSettings:(id)a3
+- (void)didUpdateSettings:(id)settings
 {
-  [(CLSettingsDictionary *)self setDictionary:a3];
+  [(CLSettingsDictionary *)self setDictionary:settings];
   settingsChangeHandler = self->_settingsChangeHandler;
   if (settingsChangeHandler)
   {
@@ -59,9 +59,9 @@
   }
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
-  v5 = [(CLSettingsManagerProtocol *)[(CLSettingsMirror *)self manager] syncgetSetValue:a3 forKey:a4 withoutNotifying:self];
+  v5 = [(CLSettingsManagerProtocol *)[(CLSettingsMirror *)self manager] syncgetSetValue:value forKey:key withoutNotifying:self];
   if (v5)
   {
 
@@ -69,25 +69,25 @@
   }
 }
 
-- (void)setLong:(int64_t)a3 forKey:(id)a4
+- (void)setLong:(int64_t)long forKey:(id)key
 {
-  v6 = [MEMORY[0x1E696AD98] numberWithLong:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithLong:long];
 
-  [(CLSettingsMirror *)self setValue:v6 forKey:a4];
+  [(CLSettingsMirror *)self setValue:v6 forKey:key];
 }
 
-- (void)setFloat:(float)a3 forKey:(id)a4
+- (void)setFloat:(float)float forKey:(id)key
 {
   v6 = [MEMORY[0x1E696AD98] numberWithFloat:?];
 
-  [(CLSettingsMirror *)self setValue:v6 forKey:a4];
+  [(CLSettingsMirror *)self setValue:v6 forKey:key];
 }
 
-- (void)setDouble:(double)a3 forKey:(id)a4
+- (void)setDouble:(double)double forKey:(id)key
 {
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:double];
 
-  [(CLSettingsMirror *)self setValue:v6 forKey:a4];
+  [(CLSettingsMirror *)self setValue:v6 forKey:key];
 }
 
 @end

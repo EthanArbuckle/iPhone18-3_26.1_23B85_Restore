@@ -1,21 +1,21 @@
 @interface UIAccessibilityCustomRotorAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (UIAccessibilityCustomRotorAccessibility)initWithAttributedName:(id)a3 itemSearchBlock:(id)a4;
-- (UIAccessibilityCustomRotorAccessibility)initWithName:(id)a3 itemSearchBlock:(id)a4;
-- (UIAccessibilityCustomRotorAccessibility)initWithSystemType:(int64_t)a3 itemSearchBlock:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (UIAccessibilityCustomRotorAccessibility)initWithAttributedName:(id)name itemSearchBlock:(id)block;
+- (UIAccessibilityCustomRotorAccessibility)initWithName:(id)name itemSearchBlock:(id)block;
+- (UIAccessibilityCustomRotorAccessibility)initWithSystemType:(int64_t)type itemSearchBlock:(id)block;
 - (void)_accessibilityApplyAttributes;
 @end
 
 @implementation UIAccessibilityCustomRotorAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v7 = location;
   v6 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = "@?";
   v4 = @"UIAccessibilityCustomRotor";
   v5 = "@";
@@ -34,70 +34,70 @@
   return result;
 }
 
-- (UIAccessibilityCustomRotorAccessibility)initWithSystemType:(int64_t)a3 itemSearchBlock:(id)a4
+- (UIAccessibilityCustomRotorAccessibility)initWithSystemType:(int64_t)type itemSearchBlock:(id)block
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  typeCopy = type;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v4 = v12;
-  v12 = 0;
+  objc_storeStrong(&location, block);
+  v4 = selfCopy;
+  selfCopy = 0;
   v7.receiver = v4;
   v7.super_class = UIAccessibilityCustomRotorAccessibility;
-  v12 = [(UIAccessibilityCustomRotorAccessibility *)&v7 initWithSystemType:v10 itemSearchBlock:location];
-  v8 = MEMORY[0x29EDC9748](v12);
-  [(UIAccessibilityCustomRotorAccessibility *)v12 _accessibilityApplyAttributes];
+  selfCopy = [(UIAccessibilityCustomRotorAccessibility *)&v7 initWithSystemType:typeCopy itemSearchBlock:location];
+  v8 = MEMORY[0x29EDC9748](selfCopy);
+  [(UIAccessibilityCustomRotorAccessibility *)selfCopy _accessibilityApplyAttributes];
   v6 = MEMORY[0x29EDC9748](v8);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
-- (UIAccessibilityCustomRotorAccessibility)initWithName:(id)a3 itemSearchBlock:(id)a4
+- (UIAccessibilityCustomRotorAccessibility)initWithName:(id)name itemSearchBlock:(id)block
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
-  v4 = v12;
-  v12 = 0;
+  objc_storeStrong(&v10, block);
+  v4 = selfCopy;
+  selfCopy = 0;
   v8.receiver = v4;
   v8.super_class = UIAccessibilityCustomRotorAccessibility;
-  v12 = [(UIAccessibilityCustomRotorAccessibility *)&v8 initWithName:location[0] itemSearchBlock:v10];
-  v9 = MEMORY[0x29EDC9748](v12);
-  [(UIAccessibilityCustomRotorAccessibility *)v12 _accessibilityApplyAttributes];
+  selfCopy = [(UIAccessibilityCustomRotorAccessibility *)&v8 initWithName:location[0] itemSearchBlock:v10];
+  v9 = MEMORY[0x29EDC9748](selfCopy);
+  [(UIAccessibilityCustomRotorAccessibility *)selfCopy _accessibilityApplyAttributes];
   v7 = MEMORY[0x29EDC9748](v9);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (UIAccessibilityCustomRotorAccessibility)initWithAttributedName:(id)a3 itemSearchBlock:(id)a4
+- (UIAccessibilityCustomRotorAccessibility)initWithAttributedName:(id)name itemSearchBlock:(id)block
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
-  v4 = v12;
-  v12 = 0;
+  objc_storeStrong(&v10, block);
+  v4 = selfCopy;
+  selfCopy = 0;
   v8.receiver = v4;
   v8.super_class = UIAccessibilityCustomRotorAccessibility;
-  v12 = [(UIAccessibilityCustomRotorAccessibility *)&v8 initWithAttributedName:location[0] itemSearchBlock:v10];
-  v9 = MEMORY[0x29EDC9748](v12);
-  [(UIAccessibilityCustomRotorAccessibility *)v12 _accessibilityApplyAttributes];
+  selfCopy = [(UIAccessibilityCustomRotorAccessibility *)&v8 initWithAttributedName:location[0] itemSearchBlock:v10];
+  v9 = MEMORY[0x29EDC9748](selfCopy);
+  [(UIAccessibilityCustomRotorAccessibility *)selfCopy _accessibilityApplyAttributes];
   v7 = MEMORY[0x29EDC9748](v9);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 

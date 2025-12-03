@@ -1,46 +1,46 @@
 @interface PXGCaptureSpriteTextureProvider
-- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)a3 geometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 inLayout:(id)a7;
-- (void)_requestWithBehavior:(unint64_t)a3 renderSnapshot:(id)a4 requestID:(int)a5;
+- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)range geometries:(id *)geometries styles:(id *)styles infos:(id *)infos inLayout:(id)layout;
+- (void)_requestWithBehavior:(unint64_t)behavior renderSnapshot:(id)snapshot requestID:(int)d;
 @end
 
 @implementation PXGCaptureSpriteTextureProvider
 
-- (void)_requestWithBehavior:(unint64_t)a3 renderSnapshot:(id)a4 requestID:(int)a5
+- (void)_requestWithBehavior:(unint64_t)behavior renderSnapshot:(id)snapshot requestID:(int)d
 {
-  v5 = *&a5;
-  v8 = a4;
-  v9 = [[PXGCaptureSpritePayload alloc] initWithBehavior:a3 renderSnapshot:v8];
+  v5 = *&d;
+  snapshotCopy = snapshot;
+  v9 = [[PXGCaptureSpritePayload alloc] initWithBehavior:behavior renderSnapshot:snapshotCopy];
 
   [(PXGTextureProvider *)self providePayload:v9 forRequestID:v5];
 }
 
-- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)a3 geometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 inLayout:(id)a7
+- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)range geometries:(id *)geometries styles:(id *)styles infos:(id *)infos inLayout:(id)layout
 {
-  v12 = a7;
+  layoutCopy = layout;
   v40.receiver = self;
   v40.super_class = PXGCaptureSpriteTextureProvider;
-  v30 = a4;
-  v31 = a6;
-  v13 = [(PXGTextureProvider *)&v40 requestTexturesForSpritesInRange:a3 geometries:a4 styles:a5 infos:a6 inLayout:v12];
+  geometriesCopy = geometries;
+  infosCopy = infos;
+  v13 = [(PXGTextureProvider *)&v40 requestTexturesForSpritesInRange:range geometries:geometries styles:styles infos:infos inLayout:layoutCopy];
   v28 = v14;
   v29 = v13;
-  v15 = [v12 contentSource];
-  v16 = HIDWORD(*&a3);
-  if (HIDWORD(*&a3))
+  contentSource = [layoutCopy contentSource];
+  v16 = HIDWORD(*&range);
+  if (HIDWORD(*&range))
   {
     v17 = v29;
     do
     {
-      v18 = [v15 behaviorForCaptureSpriteAtIndex:a3 inLayout:v12];
+      v18 = [contentSource behaviorForCaptureSpriteAtIndex:range inLayout:layoutCopy];
       if (v18 == 2)
       {
-        v19 = *(&v31->var0 + 40 * a3.location);
-        v20 = v30 + 32 * a3.location;
+        v19 = *(&infosCopy->var0 + 40 * range.location);
+        v20 = geometriesCopy + 32 * range.location;
         v21 = *(v20 + 24);
         v32 = *v20;
         if (objc_opt_respondsToSelector())
         {
-          v22 = [v15 offscreenEffectForCapturedSnapshotAtIndex:a3 inLayout:v12];
+          v22 = [contentSource offscreenEffectForCapturedSnapshotAtIndex:range inLayout:layoutCopy];
         }
 
         else
@@ -62,7 +62,7 @@
       }
 
       objc_initWeak(&location, self);
-      v24 = [(PXGTextureProvider *)self requestQueue];
+      requestQueue = [(PXGTextureProvider *)self requestQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __101__PXGCaptureSpriteTextureProvider_requestTexturesForSpritesInRange_geometries_styles_infos_inLayout___block_invoke;
@@ -72,12 +72,12 @@
       v34 = v23;
       v36 = v17;
       v25 = v23;
-      dispatch_async(v24, block);
+      dispatch_async(requestQueue, block);
 
       objc_destroyWeak(v35);
       objc_destroyWeak(&location);
       ++v17;
-      a3 = (a3.location + 1);
+      range = (range.location + 1);
       --v16;
     }
 

@@ -4,7 +4,7 @@
 + (BOOL)isIphone;
 + (BOOL)isIpod;
 + (BOOL)isRunningInXCTestEnvironment;
-+ (id)_mobileGestaltAnswerForQuestion:(__CFString *)a3;
++ (id)_mobileGestaltAnswerForQuestion:(__CFString *)question;
 + (id)buildVersion;
 + (id)deviceClass;
 + (id)platformInfo;
@@ -28,7 +28,7 @@
   block[1] = 3221225472;
   block[2] = __22__ULPlatform_isIphone__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (isIphone_onceToken != -1)
   {
     dispatch_once(&isIphone_onceToken, block);
@@ -50,7 +50,7 @@ uint64_t __22__ULPlatform_isIphone__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __20__ULPlatform_isIpad__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (isIpad_onceToken != -1)
   {
     dispatch_once(&isIpad_onceToken, block);
@@ -72,7 +72,7 @@ uint64_t __20__ULPlatform_isIpad__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __20__ULPlatform_isIpod__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (isIpod_onceToken != -1)
   {
     dispatch_once(&isIpod_onceToken, block);
@@ -111,7 +111,7 @@ uint64_t __31__ULPlatform_isInternalInstall__block_invoke()
   block[1] = 3221225472;
   block[2] = __26__ULPlatform_buildVersion__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (buildVersion_onceToken != -1)
   {
     dispatch_once(&buildVersion_onceToken, block);
@@ -136,26 +136,26 @@ uint64_t __26__ULPlatform_buildVersion__block_invoke(uint64_t a1)
   v5 = NSStringFromClass(v4);
   v6 = [v3 initWithFormat:@"<%@: ", v5];
 
-  v7 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(a1, "isMac")}];
+  v7 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(self, "isMac")}];
   [v6 appendFormat:@", isMac: %@", v7];
 
-  v8 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(a1, "isMacBook")}];
+  v8 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(self, "isMacBook")}];
   [v6 appendFormat:@", isMacBook: %@", v8];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(a1, "isIphone")}];
+  v9 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(self, "isIphone")}];
   [v6 appendFormat:@", isIphone: %@", v9];
 
-  v10 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(a1, "isIpad")}];
+  v10 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(self, "isIpad")}];
   [v6 appendFormat:@", isIpad: %@", v10];
 
-  v11 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(a1, "isIpod")}];
+  v11 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(self, "isIpod")}];
   [v6 appendFormat:@", isIpod: %@", v11];
 
-  v12 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(a1, "isInternalInstall")}];
+  v12 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(self, "isInternalInstall")}];
   [v6 appendFormat:@", isInternalInstall: %@", v12];
 
-  v13 = [a1 buildVersion];
-  [v6 appendFormat:@", buildVersion: %@", v13];
+  buildVersion = [self buildVersion];
+  [v6 appendFormat:@", buildVersion: %@", buildVersion];
 
   [v6 appendString:@">"];
   v14 = [v6 copy];
@@ -169,7 +169,7 @@ uint64_t __26__ULPlatform_buildVersion__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __25__ULPlatform_deviceClass__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (deviceClass_onceToken != -1)
   {
     dispatch_once(&deviceClass_onceToken, block);
@@ -187,7 +187,7 @@ uint64_t __25__ULPlatform_deviceClass__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)_mobileGestaltAnswerForQuestion:(__CFString *)a3
++ (id)_mobileGestaltAnswerForQuestion:(__CFString *)question
 {
   v3 = MGCopyAnswer();
   objc_opt_class();

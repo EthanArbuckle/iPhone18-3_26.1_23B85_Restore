@@ -1,10 +1,10 @@
 @interface FMDMessageMgr_iOS
 + (id)sharedInstance;
 - (FMDMessageMgr_iOS)init;
-- (id)_fillVibrationPattern:(id)a3 toDuration:(double)a4;
+- (id)_fillVibrationPattern:(id)pattern toDuration:(double)duration;
 - (id)initSingleton;
-- (void)_playSoundFor:(id)a3;
-- (void)activateMessage:(id)a3;
+- (void)_playSoundFor:(id)for;
+- (void)activateMessage:(id)message;
 - (void)dealloc;
 - (void)stopSound;
 @end
@@ -80,17 +80,17 @@
   [(FMDMessageMgr_iOS *)&v5 dealloc];
 }
 
-- (void)activateMessage:(id)a3
+- (void)activateMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = +[NSMutableDictionary dictionary];
-  v6 = [(FMDMessageMgr_iOS *)self cfNotification];
-  if (v6)
+  cfNotification = [(FMDMessageMgr_iOS *)self cfNotification];
+  if (cfNotification)
   {
-    v7 = v6;
-    v8 = [(FMDMessageMgr_iOS *)self activeMessage];
+    v7 = cfNotification;
+    activeMessage = [(FMDMessageMgr_iOS *)self activeMessage];
     v9 = +[FMXPCTransactionManager sharedInstance];
-    v10 = [(FMDMessageMgr_iOS *)self _xpcTransactionNameFor:v8];
+    v10 = [(FMDMessageMgr_iOS *)self _xpcTransactionNameFor:activeMessage];
     [v9 endTransaction:v10];
 
     CFUserNotificationCancel(v7);
@@ -99,27 +99,27 @@
   }
 
   v11 = [FMPreferencesUtil BOOLForKey:@"DisableSoundPlayback" inDomain:kFMDNotBackedUpPrefDomain];
-  if ([v4 showMessage])
+  if ([messageCopy showMessage])
   {
-    v12 = [v4 defaultButtonTitle];
-    [v5 fm_safelyMapKey:kCFUserNotificationDefaultButtonTitleKey toObject:v12];
+    defaultButtonTitle = [messageCopy defaultButtonTitle];
+    [v5 fm_safelyMapKey:kCFUserNotificationDefaultButtonTitleKey toObject:defaultButtonTitle];
 
-    v13 = [v4 alternateButtonTitle];
-    [v5 fm_safelyMapKey:kCFUserNotificationAlternateButtonTitleKey toObject:v13];
+    alternateButtonTitle = [messageCopy alternateButtonTitle];
+    [v5 fm_safelyMapKey:kCFUserNotificationAlternateButtonTitleKey toObject:alternateButtonTitle];
 
-    v14 = [v4 msgText];
-    [v5 fm_safelyMapKey:kCFUserNotificationAlertMessageKey toObject:v14];
+    msgText = [messageCopy msgText];
+    [v5 fm_safelyMapKey:kCFUserNotificationAlertMessageKey toObject:msgText];
 
-    v15 = [v4 msgTitle];
-    [v5 fm_safelyMapKey:kCFUserNotificationAlertHeaderKey toObject:v15];
+    msgTitle = [messageCopy msgTitle];
+    [v5 fm_safelyMapKey:kCFUserNotificationAlertHeaderKey toObject:msgTitle];
 
-    v16 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 showMsgInLockScreen]);
+    v16 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [messageCopy showMsgInLockScreen]);
     [v5 setObject:v16 forKeyedSubscript:kCFUserNotificationAlertTopMostKey];
 
-    v17 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 dismissMsgOnUnlock] ^ 1);
+    v17 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [messageCopy dismissMsgOnUnlock] ^ 1);
     [v5 setObject:v17 forKeyedSubscript:SBUserNotificationDontDismissOnUnlock];
 
-    v18 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 dismissMsgOnLock]);
+    v18 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [messageCopy dismissMsgOnLock]);
     [v5 setObject:v18 forKeyedSubscript:SBUserNotificationDismissOnLock];
 
     [v5 setObject:&__kCFBooleanTrue forKeyedSubscript:SBUserNotificationAllowMenuButtonDismissal];
@@ -133,11 +133,11 @@
     v50 = v21;
     v22 = [SBSUserNotificationCAPackageDefinition definitionWithCAPackagePath:v21];
     [v19 setLeadingAssetDefinition:v22];
-    v23 = [v4 msgText];
-    [v19 setAlertMessage:v23];
+    msgText2 = [messageCopy msgText];
+    [v19 setAlertMessage:msgText2];
 
-    v24 = [v4 msgTitle];
-    [v19 setAlertHeader:v24];
+    msgTitle2 = [messageCopy msgTitle];
+    [v19 setAlertHeader:msgTitle2];
 
     v25 = [BSColor colorWithRed:0.287 green:1.0 blue:0.719 alpha:1.0];
     v26 = [SBSUserNotificationColorDefinition definitionWithColor:v25];
@@ -147,10 +147,10 @@
       [v19 setPreventsAutomaticDismissal:1];
     }
 
-    v27 = [v19 build];
-    [v5 setObject:v27 forKeyedSubscript:SBUserNotificationSystemApertureContentDefinitionKey];
+    build = [v19 build];
+    [v5 setObject:build forKeyedSubscript:SBUserNotificationSystemApertureContentDefinitionKey];
 
-    if ([v4 playSound])
+    if ([messageCopy playSound])
     {
       if (v11)
       {
@@ -165,20 +165,20 @@
       else
       {
         v30 = [NSBundle bundleWithPath:@"/System/Library/PrivateFrameworks/FindMyDevice.framework"];
-        v31 = [v4 soundName];
-        v28 = [v30 pathForResource:v31 ofType:@"caf"];
+        soundName = [messageCopy soundName];
+        v28 = [v30 pathForResource:soundName ofType:@"caf"];
 
         v32 = [[NSURL alloc] initFileURLWithPath:v28 isDirectory:0];
         [v5 setObject:v32 forKeyedSubscript:kCFUserNotificationSoundURLKey];
         [v5 setObject:&off_1002E78E8 forKeyedSubscript:SBUserNotificationSoundAlertTypeKey];
         [v5 setObject:TLAlertTopicSystemNotificationFindMyDevice forKeyedSubscript:SBUserNotificationSoundAlertTopicKey];
-        v33 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 soundDuration]);
+        v33 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [messageCopy soundDuration]);
         [v5 setObject:v33 forKeyedSubscript:SBUserNotificationSoundRepeatDurationKey];
 
-        if ([v4 vibrate])
+        if ([messageCopy vibrate])
         {
-          v34 = [(FMDMessageMgr_iOS *)self _vibrationPattern];
-          -[FMDMessageMgr_iOS _fillVibrationPattern:toDuration:](self, "_fillVibrationPattern:toDuration:", v34, [v4 soundDuration]);
+          _vibrationPattern = [(FMDMessageMgr_iOS *)self _vibrationPattern];
+          -[FMDMessageMgr_iOS _fillVibrationPattern:toDuration:](self, "_fillVibrationPattern:toDuration:", _vibrationPattern, [messageCopy soundDuration]);
           v35 = v49 = v32;
 
           v53[0] = @"Intensity";
@@ -194,16 +194,16 @@
     }
 
     *buf = 0;
-    [v4 timeout];
+    [messageCopy timeout];
     v38 = CFUserNotificationCreate(kCFAllocatorDefault, v37, 3uLL, buf, v5);
     if (v38)
     {
       v39 = v38;
-      [(FMDMessageMgr_iOS *)self setActiveMessage:v4];
+      [(FMDMessageMgr_iOS *)self setActiveMessage:messageCopy];
       [(FMDMessageMgr_iOS *)self setCfNotification:v39];
       CFRelease(v39);
       v40 = +[FMXPCTransactionManager sharedInstance];
-      v41 = [(FMDMessageMgr_iOS *)self _xpcTransactionNameFor:v4];
+      v41 = [(FMDMessageMgr_iOS *)self _xpcTransactionNameFor:messageCopy];
       [v40 beginTransaction:v41];
 
       block[0] = _NSConcreteStackBlock;
@@ -224,7 +224,7 @@
     }
   }
 
-  else if ([v4 playSound])
+  else if ([messageCopy playSound])
   {
     if (v11)
     {
@@ -238,21 +238,21 @@
 
     else
     {
-      [(FMDMessageMgr_iOS *)self _playSoundFor:v4];
+      [(FMDMessageMgr_iOS *)self _playSoundFor:messageCopy];
     }
   }
 }
 
-- (void)_playSoundFor:(id)a3
+- (void)_playSoundFor:(id)for
 {
-  v3 = a3;
+  forCopy = for;
   v7 = objc_opt_new();
-  [v7 setSoundDuration:{objc_msgSend(v3, "soundDuration")}];
-  v4 = [v3 soundName];
-  [v7 setSoundName:v4];
+  [v7 setSoundDuration:{objc_msgSend(forCopy, "soundDuration")}];
+  soundName = [forCopy soundName];
+  [v7 setSoundName:soundName];
 
-  v5 = [v3 vibrate];
-  [v7 setVibrate:v5];
+  vibrate = [forCopy vibrate];
+  [v7 setVibrate:vibrate];
   v6 = +[FMDFMIPManager sharedInstance];
   [v6 playSoundWithMessage:v7 completion:&stru_1002CD308];
 }
@@ -263,30 +263,30 @@
   [v2 stopSoundMessageWithCompletion:&stru_1002CD328];
 }
 
-- (id)_fillVibrationPattern:(id)a3 toDuration:(double)a4
+- (id)_fillVibrationPattern:(id)pattern toDuration:(double)duration
 {
-  v5 = a3;
+  patternCopy = pattern;
   v6 = objc_alloc_init(NSMutableArray);
-  if (a4 >= 1)
+  if (duration >= 1)
   {
     v7 = 0;
     v8 = 0;
     do
     {
-      v9 = [v5 objectAtIndexedSubscript:v7];
+      v9 = [patternCopy objectAtIndexedSubscript:v7];
       [v6 addObject:v9];
 
-      v10 = [v5 objectAtIndexedSubscript:v7 + 1];
+      v10 = [patternCopy objectAtIndexedSubscript:v7 + 1];
       [v6 addObject:v10];
       v8 += [v10 integerValue];
       v7 += 2;
-      if (v7 >= [v5 count])
+      if (v7 >= [patternCopy count])
       {
         v7 = 0;
       }
     }
 
-    while (v8 < 1000 * a4);
+    while (v8 < 1000 * duration);
   }
 
   v11 = [v6 copy];

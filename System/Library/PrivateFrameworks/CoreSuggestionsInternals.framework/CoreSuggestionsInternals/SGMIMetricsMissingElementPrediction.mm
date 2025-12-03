@@ -1,31 +1,31 @@
 @interface SGMIMetricsMissingElementPrediction
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFoundMatchingElement:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFoundMatchingElement:(BOOL)element;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SGMIMetricsMissingElementPrediction
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 16);
+  fromCopy = from;
+  v5 = *(fromCopy + 16);
   if (v5)
   {
-    self->_predictedMissingElementScore = *(v4 + 2);
+    self->_predictedMissingElementScore = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v5 = *(v4 + 16);
+    v5 = *(fromCopy + 16);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_foundMatchingElement = *(v4 + 12);
+    self->_foundMatchingElement = *(fromCopy + 12);
     *&self->_has |= 2u;
   }
 }
@@ -78,31 +78,31 @@
   return v8 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 16) & 1) == 0 || self->_predictedMissingElementScore != *(v4 + 2))
+    if ((*(equalCopy + 16) & 1) == 0 || self->_predictedMissingElementScore != *(equalCopy + 2))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 16))
+  else if (*(equalCopy + 16))
   {
     goto LABEL_9;
   }
 
-  v5 = (*(v4 + 16) & 2) == 0;
+  v5 = (*(equalCopy + 16) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 16) & 2) == 0)
+    if ((*(equalCopy + 16) & 2) == 0)
     {
 LABEL_9:
       v5 = 0;
@@ -111,13 +111,13 @@ LABEL_9:
 
     if (self->_foundMatchingElement)
     {
-      if ((*(v4 + 12) & 1) == 0)
+      if ((*(equalCopy + 12) & 1) == 0)
       {
         goto LABEL_9;
       }
     }
 
-    else if (*(v4 + 12))
+    else if (*(equalCopy + 12))
     {
       goto LABEL_9;
     }
@@ -130,9 +130,9 @@ LABEL_10:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -150,34 +150,34 @@ LABEL_10:
   return result;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[2] = LODWORD(self->_predictedMissingElementScore);
-    *(v4 + 16) |= 1u;
+    toCopy[2] = LODWORD(self->_predictedMissingElementScore);
+    *(toCopy + 16) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 12) = self->_foundMatchingElement;
-    *(v4 + 16) |= 2u;
+    *(toCopy + 12) = self->_foundMatchingElement;
+    *(toCopy + 16) |= 2u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if (has)
   {
     predictedMissingElementScore = self->_predictedMissingElementScore;
     PBDataWriterWriteFloatField();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -185,19 +185,19 @@ LABEL_10:
   {
     foundMatchingElement = self->_foundMatchingElement;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     *&v4 = self->_predictedMissingElementScore;
     v6 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-    [v3 setObject:v6 forKey:@"predictedMissingElementScore"];
+    [dictionary setObject:v6 forKey:@"predictedMissingElementScore"];
 
     has = self->_has;
   }
@@ -205,10 +205,10 @@ LABEL_10:
   if ((has & 2) != 0)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithBool:self->_foundMatchingElement];
-    [v3 setObject:v7 forKey:@"foundMatchingElement"];
+    [dictionary setObject:v7 forKey:@"foundMatchingElement"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -217,15 +217,15 @@ LABEL_10:
   v8.receiver = self;
   v8.super_class = SGMIMetricsMissingElementPrediction;
   v4 = [(SGMIMetricsMissingElementPrediction *)&v8 description];
-  v5 = [(SGMIMetricsMissingElementPrediction *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SGMIMetricsMissingElementPrediction *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasFoundMatchingElement:(BOOL)a3
+- (void)setHasFoundMatchingElement:(BOOL)element
 {
-  if (a3)
+  if (element)
   {
     v3 = 2;
   }

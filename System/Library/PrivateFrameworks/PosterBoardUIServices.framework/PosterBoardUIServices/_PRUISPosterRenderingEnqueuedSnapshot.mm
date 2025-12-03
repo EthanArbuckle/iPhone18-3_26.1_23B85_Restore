@@ -1,21 +1,21 @@
 @interface _PRUISPosterRenderingEnqueuedSnapshot
-- (_PRUISPosterRenderingEnqueuedSnapshot)initWithSnapshotRequest:(id)a3 completionBlock:(id)a4;
+- (_PRUISPosterRenderingEnqueuedSnapshot)initWithSnapshotRequest:(id)request completionBlock:(id)block;
 @end
 
 @implementation _PRUISPosterRenderingEnqueuedSnapshot
 
-- (_PRUISPosterRenderingEnqueuedSnapshot)initWithSnapshotRequest:(id)a3 completionBlock:(id)a4
+- (_PRUISPosterRenderingEnqueuedSnapshot)initWithSnapshotRequest:(id)request completionBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = _PRUISPosterRenderingEnqueuedSnapshot;
   v9 = [(_PRUISPosterRenderingEnqueuedSnapshot *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_snapshotRequest, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_snapshotRequest, request);
+    v11 = [blockCopy copy];
     completionBlock = v10->_completionBlock;
     v10->_completionBlock = v11;
   }

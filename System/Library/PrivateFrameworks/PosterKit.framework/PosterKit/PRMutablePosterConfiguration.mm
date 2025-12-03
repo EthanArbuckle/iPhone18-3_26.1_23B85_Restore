@@ -1,21 +1,21 @@
 @interface PRMutablePosterConfiguration
 + (id)mutableConfiguration;
-+ (id)mutableConfigurationWithProvider:(id)a3 descriptorIdentifier:(id)a4 role:(id)a5;
-- (BOOL)copyContentsOfConfiguration:(id)a3 error:(id *)a4;
-- (BOOL)copyContentsOfPath:(id)a3 error:(id *)a4;
-- (BOOL)setObject:(id)a3 forUserInfoKey:(id)a4;
-- (BOOL)storeAmbientConfiguration:(id)a3 error:(id *)a4;
-- (BOOL)storeComplicationLayout:(id)a3 error:(id *)a4;
-- (BOOL)storeConfigurableOptions:(id)a3 error:(id *)a4;
-- (BOOL)storeConfiguredProperties:(id)a3 error:(id *)a4;
-- (BOOL)storeFocusConfiguration:(id)a3 error:(id *)a4;
-- (BOOL)storeHomeScreenConfiguration:(id)a3 error:(id *)a4;
-- (BOOL)storeOtherMetadata:(id)a3 error:(id *)a4;
-- (BOOL)storeQuickActionsConfiguration:(id)a3 error:(id *)a4;
-- (BOOL)storeSuggestionMetadata:(id)a3 error:(id *)a4;
-- (BOOL)storeTitleStyleConfiguration:(id)a3 error:(id *)a4;
-- (BOOL)storeUserInfo:(id)a3 error:(id *)a4;
-- (void)setDisplayNameLocalizationKey:(id)a3;
++ (id)mutableConfigurationWithProvider:(id)provider descriptorIdentifier:(id)identifier role:(id)role;
+- (BOOL)copyContentsOfConfiguration:(id)configuration error:(id *)error;
+- (BOOL)copyContentsOfPath:(id)path error:(id *)error;
+- (BOOL)setObject:(id)object forUserInfoKey:(id)key;
+- (BOOL)storeAmbientConfiguration:(id)configuration error:(id *)error;
+- (BOOL)storeComplicationLayout:(id)layout error:(id *)error;
+- (BOOL)storeConfigurableOptions:(id)options error:(id *)error;
+- (BOOL)storeConfiguredProperties:(id)properties error:(id *)error;
+- (BOOL)storeFocusConfiguration:(id)configuration error:(id *)error;
+- (BOOL)storeHomeScreenConfiguration:(id)configuration error:(id *)error;
+- (BOOL)storeOtherMetadata:(id)metadata error:(id *)error;
+- (BOOL)storeQuickActionsConfiguration:(id)configuration error:(id *)error;
+- (BOOL)storeSuggestionMetadata:(id)metadata error:(id *)error;
+- (BOOL)storeTitleStyleConfiguration:(id)configuration error:(id *)error;
+- (BOOL)storeUserInfo:(id)info error:(id *)error;
+- (void)setDisplayNameLocalizationKey:(id)key;
 @end
 
 @implementation PRMutablePosterConfiguration
@@ -23,29 +23,29 @@
 + (id)mutableConfiguration
 {
   v3 = PFPosterRoleDefaultRoleForCurrentExtensionProcess();
-  v4 = [a1 mutableConfigurationWithRole:v3];
+  v4 = [self mutableConfigurationWithRole:v3];
 
   return v4;
 }
 
-+ (id)mutableConfigurationWithProvider:(id)a3 descriptorIdentifier:(id)a4 role:(id)a5
++ (id)mutableConfigurationWithProvider:(id)provider descriptorIdentifier:(id)identifier role:(id)role
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  providerCopy = provider;
+  identifierCopy = identifier;
+  roleCopy = role;
   if ((PFPosterRoleIsValid() & 1) == 0)
   {
-    [PRMutablePosterConfiguration mutableConfigurationWithProvider:v10 descriptorIdentifier:a2 role:?];
+    [PRMutablePosterConfiguration mutableConfigurationWithProvider:roleCopy descriptorIdentifier:a2 role:?];
   }
 
-  if (v8)
+  if (providerCopy)
   {
-    [MEMORY[0x1E69C51E8] temporaryServerPathForProvider:v8 descriptorIdentifier:v9 role:v10];
+    [MEMORY[0x1E69C51E8] temporaryServerPathForProvider:providerCopy descriptorIdentifier:identifierCopy role:roleCopy];
   }
 
   else
   {
-    [MEMORY[0x1E69C5178] temporaryPathForRole:v10];
+    [MEMORY[0x1E69C5178] temporaryPathForRole:roleCopy];
   }
   v11 = ;
   v12 = [(PRPosterConfiguration *)[PRMutablePosterConfiguration alloc] _initWithPath:v11];
@@ -54,34 +54,34 @@
   return v12;
 }
 
-- (void)setDisplayNameLocalizationKey:(id)a3
+- (void)setDisplayNameLocalizationKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [(PRPosterConfiguration *)self loadOtherMetadataWithError:0];
   if (v5)
   {
     v6 = v5;
     v7 = [v5 mutableCopy];
-    [v7 setDisplayNameLocalizationKey:v4];
+    [v7 setDisplayNameLocalizationKey:keyCopy];
 
     v8 = [v7 copy];
-    v4 = v7;
+    keyCopy = v7;
   }
 
   else
   {
-    v8 = [[PRPosterMetadata alloc] initWithDisplayNameLocalizationKey:v4];
+    v8 = [[PRPosterMetadata alloc] initWithDisplayNameLocalizationKey:keyCopy];
   }
 
   [(PRMutablePosterConfiguration *)self storeOtherMetadata:v8 error:0];
 }
 
-- (BOOL)setObject:(id)a3 forUserInfoKey:(id)a4
+- (BOOL)setObject:(id)object forUserInfoKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  keyCopy = key;
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v8)
+  if (!keyCopy)
   {
     [PRMutablePosterConfiguration setObject:a2 forUserInfoKey:?];
   }
@@ -91,8 +91,8 @@
     [PRMutablePosterConfiguration setObject:a2 forUserInfoKey:?];
   }
 
-  v9 = [v7 conformsToProtocol:&unk_1F1C72D28];
-  if (v7 && (v9 & 1) == 0)
+  v9 = [objectCopy conformsToProtocol:&unk_1F1C72D28];
+  if (objectCopy && (v9 & 1) == 0)
   {
     [PRMutablePosterConfiguration setObject:a2 forUserInfoKey:?];
   }
@@ -112,14 +112,14 @@
 
   v14 = v13;
 
-  if (v7)
+  if (objectCopy)
   {
-    [v14 setObject:v7 forKey:v8];
+    [v14 setObject:objectCopy forKey:keyCopy];
   }
 
   else
   {
-    [v14 removeObjectForKey:v8];
+    [v14 removeObjectForKey:keyCopy];
   }
 
   v15 = [v14 copy];
@@ -128,45 +128,45 @@
   return v16;
 }
 
-- (BOOL)storeUserInfo:(id)a3 error:(id *)a4
+- (BOOL)storeUserInfo:(id)info error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PRPosterConfiguration *)self _path];
-  LOBYTE(a4) = [v7 storeUserInfo:v6 error:a4];
+  infoCopy = info;
+  _path = [(PRPosterConfiguration *)self _path];
+  LOBYTE(error) = [_path storeUserInfo:infoCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)storeConfiguredProperties:(id)a3 error:(id *)a4
+- (BOOL)storeConfiguredProperties:(id)properties error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PRPosterConfiguration *)self _path];
-  LOBYTE(a4) = [PRPosterPathUtilities storeConfiguredPropertiesForPath:v7 configuredProperties:v6 error:a4];
+  propertiesCopy = properties;
+  _path = [(PRPosterConfiguration *)self _path];
+  LOBYTE(error) = [PRPosterPathUtilities storeConfiguredPropertiesForPath:_path configuredProperties:propertiesCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)storeConfigurableOptions:(id)a3 error:(id *)a4
+- (BOOL)storeConfigurableOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PRPosterConfiguration *)self _path];
-  LOBYTE(a4) = [PRPosterPathUtilities storeConfigurableOptionsForPath:v7 configurableOptions:v6 error:a4];
+  optionsCopy = options;
+  _path = [(PRPosterConfiguration *)self _path];
+  LOBYTE(error) = [PRPosterPathUtilities storeConfigurableOptionsForPath:_path configurableOptions:optionsCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)storeFocusConfiguration:(id)a3 error:(id *)a4
+- (BOOL)storeFocusConfiguration:(id)configuration error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PRPosterConfiguration *)self _path];
-  if (v6)
+  configurationCopy = configuration;
+  _path = [(PRPosterConfiguration *)self _path];
+  if (configurationCopy)
   {
-    v8 = [PRPosterPathUtilities storeFocusConfigurationForPath:v7 focusConfiguration:v6 error:a4];
+    v8 = [PRPosterPathUtilities storeFocusConfigurationForPath:_path focusConfiguration:configurationCopy error:error];
   }
 
   else
   {
-    v8 = [PRPosterPathUtilities removeFocusConfigurationForPath:v7 error:a4];
+    v8 = [PRPosterPathUtilities removeFocusConfigurationForPath:_path error:error];
   }
 
   v9 = v8;
@@ -174,83 +174,83 @@
   return v9;
 }
 
-- (BOOL)storeHomeScreenConfiguration:(id)a3 error:(id *)a4
+- (BOOL)storeHomeScreenConfiguration:(id)configuration error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PRPosterConfiguration *)self _path];
-  LOBYTE(a4) = [PRPosterPathUtilities storeHomeScreenConfigurationForPath:v7 homeScreenConfiguration:v6 error:a4];
+  configurationCopy = configuration;
+  _path = [(PRPosterConfiguration *)self _path];
+  LOBYTE(error) = [PRPosterPathUtilities storeHomeScreenConfigurationForPath:_path homeScreenConfiguration:configurationCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)storeTitleStyleConfiguration:(id)a3 error:(id *)a4
+- (BOOL)storeTitleStyleConfiguration:(id)configuration error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PRPosterConfiguration *)self _path];
-  LOBYTE(a4) = [PRPosterPathUtilities storeTitleStyleConfigurationForPath:v7 titleStyleConfiguration:v6 error:a4];
+  configurationCopy = configuration;
+  _path = [(PRPosterConfiguration *)self _path];
+  LOBYTE(error) = [PRPosterPathUtilities storeTitleStyleConfigurationForPath:_path titleStyleConfiguration:configurationCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)storeComplicationLayout:(id)a3 error:(id *)a4
+- (BOOL)storeComplicationLayout:(id)layout error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PRPosterConfiguration *)self _path];
-  LOBYTE(a4) = [PRPosterPathUtilities storeComplicationLayoutForPath:v7 complicationLayout:v6 error:a4];
+  layoutCopy = layout;
+  _path = [(PRPosterConfiguration *)self _path];
+  LOBYTE(error) = [PRPosterPathUtilities storeComplicationLayoutForPath:_path complicationLayout:layoutCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)storeQuickActionsConfiguration:(id)a3 error:(id *)a4
+- (BOOL)storeQuickActionsConfiguration:(id)configuration error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PRPosterConfiguration *)self _path];
-  LOBYTE(a4) = [PRPosterPathUtilities storeQuickActionsConfigurationForPath:v7 quickActionsConfiguration:v6 error:a4];
+  configurationCopy = configuration;
+  _path = [(PRPosterConfiguration *)self _path];
+  LOBYTE(error) = [PRPosterPathUtilities storeQuickActionsConfigurationForPath:_path quickActionsConfiguration:configurationCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)storeSuggestionMetadata:(id)a3 error:(id *)a4
+- (BOOL)storeSuggestionMetadata:(id)metadata error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PRPosterConfiguration *)self _path];
-  LOBYTE(a4) = [PRPosterPathUtilities storeSuggestionMetadataForPath:v7 suggestionMetadata:v6 error:a4];
+  metadataCopy = metadata;
+  _path = [(PRPosterConfiguration *)self _path];
+  LOBYTE(error) = [PRPosterPathUtilities storeSuggestionMetadataForPath:_path suggestionMetadata:metadataCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)storeOtherMetadata:(id)a3 error:(id *)a4
+- (BOOL)storeOtherMetadata:(id)metadata error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PRPosterConfiguration *)self _path];
-  LOBYTE(a4) = [PRPosterPathUtilities storeOtherMetadataForPath:v7 otherMetadata:v6 error:a4];
+  metadataCopy = metadata;
+  _path = [(PRPosterConfiguration *)self _path];
+  LOBYTE(error) = [PRPosterPathUtilities storeOtherMetadataForPath:_path otherMetadata:metadataCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)storeAmbientConfiguration:(id)a3 error:(id *)a4
+- (BOOL)storeAmbientConfiguration:(id)configuration error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PRPosterConfiguration *)self _path];
-  LOBYTE(a4) = [PRPosterPathUtilities storeAmbientConfigurationForPath:v7 ambientConfiguration:v6 error:a4];
+  configurationCopy = configuration;
+  _path = [(PRPosterConfiguration *)self _path];
+  LOBYTE(error) = [PRPosterPathUtilities storeAmbientConfigurationForPath:_path ambientConfiguration:configurationCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)copyContentsOfPath:(id)a3 error:(id *)a4
+- (BOOL)copyContentsOfPath:(id)path error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PRPosterConfiguration *)self _path];
-  LOBYTE(a4) = [v7 copyContentsOfPath:v6 error:a4];
+  pathCopy = path;
+  _path = [(PRPosterConfiguration *)self _path];
+  LOBYTE(error) = [_path copyContentsOfPath:pathCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)copyContentsOfConfiguration:(id)a3 error:(id *)a4
+- (BOOL)copyContentsOfConfiguration:(id)configuration error:(id *)error
 {
-  v7 = a3;
+  configurationCopy = configuration;
   NSClassFromString(&cfstr_Prposterconfig.isa);
-  if (!v7)
+  if (!configurationCopy)
   {
     [PRMutablePosterConfiguration copyContentsOfConfiguration:a2 error:?];
   }
@@ -260,8 +260,8 @@
     [PRMutablePosterConfiguration copyContentsOfConfiguration:a2 error:?];
   }
 
-  v8 = [v7 _path];
-  v9 = [(PRMutablePosterConfiguration *)self copyContentsOfPath:v8 error:a4];
+  _path = [configurationCopy _path];
+  v9 = [(PRMutablePosterConfiguration *)self copyContentsOfPath:_path error:error];
 
   return v9;
 }

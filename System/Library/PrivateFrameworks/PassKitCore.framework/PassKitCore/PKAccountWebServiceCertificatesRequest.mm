@@ -1,20 +1,20 @@
 @interface PKAccountWebServiceCertificatesRequest
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
 @end
 
 @implementation PKAccountWebServiceCertificatesRequest
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  informationCopy = information;
+  v5 = informationCopy;
   if (self->_baseURL)
   {
-    if (v4)
+    if (informationCopy)
     {
-      v6 = [MEMORY[0x1E695DF90] dictionary];
-      v7 = v6;
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      v7 = dictionary;
       v8 = self->_destination - 1;
       if (v8 > 2)
       {
@@ -26,7 +26,7 @@
         v9 = off_1E79C9B18[v8];
       }
 
-      [v6 setObject:v9 forKeyedSubscript:@"destination"];
+      [dictionary setObject:v9 forKeyedSubscript:@"destination"];
       baseURL = self->_baseURL;
       v18 = @"certificates";
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1];

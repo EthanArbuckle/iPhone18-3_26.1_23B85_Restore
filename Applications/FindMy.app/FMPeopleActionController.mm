@@ -1,10 +1,10 @@
 @interface FMPeopleActionController
-- (void)dismissPresentedVCWithSender:(id)a3;
+- (void)dismissPresentedVCWithSender:(id)sender;
 @end
 
 @implementation FMPeopleActionController
 
-- (void)dismissPresentedVCWithSender:(id)a3
+- (void)dismissPresentedVCWithSender:(id)sender
 {
   swift_unknownObjectRetain();
 

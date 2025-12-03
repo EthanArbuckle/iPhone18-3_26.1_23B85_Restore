@@ -1,38 +1,38 @@
 @interface EKObjectValidationContext
-- (EKObjectValidationContext)initWithRootObject:(id)a3;
-- (void)faultIfNeededForObject:(id)a3;
+- (EKObjectValidationContext)initWithRootObject:(id)object;
+- (void)faultIfNeededForObject:(id)object;
 @end
 
 @implementation EKObjectValidationContext
 
-- (EKObjectValidationContext)initWithRootObject:(id)a3
+- (EKObjectValidationContext)initWithRootObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = EKObjectValidationContext;
   v6 = [(EKObjectValidationContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rootObject, a3);
+    objc_storeStrong(&v6->_rootObject, object);
   }
 
   return v7;
 }
 
-- (void)faultIfNeededForObject:(id)a3
+- (void)faultIfNeededForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   if ([(EKObjectValidationContext *)self reachedMaxDepth])
   {
-    v5 = [(EKObjectValidationContext *)self rootObject];
+    rootObject = [(EKObjectValidationContext *)self rootObject];
 
-    if (v5 == v4)
+    if (rootObject == objectCopy)
     {
       v6 = EKLogHandle;
       if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_FAULT))
       {
-        [(EKObjectValidationContext *)v6 faultIfNeededForObject:v4];
+        [(EKObjectValidationContext *)v6 faultIfNeededForObject:objectCopy];
       }
     }
   }

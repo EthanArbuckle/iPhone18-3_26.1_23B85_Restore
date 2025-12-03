@@ -1,9 +1,9 @@
 @interface MFAccountsController
 + (id)log;
-- (MFAccountsController)initWithFocusController:(id)a3;
-- (void)_gatherStatisticsWithAccounts:(id)a3;
+- (MFAccountsController)initWithFocusController:(id)controller;
+- (void)_gatherStatisticsWithAccounts:(id)accounts;
 - (void)_resetAccounts;
-- (void)currentFocusChanged:(id)a3;
+- (void)currentFocusChanged:(id)changed;
 - (void)resetAccounts;
 @end
 
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = sub_10004B6FC;
   block[3] = &unk_1001562E8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100185788 != -1)
   {
     dispatch_once(&qword_100185788, block);
@@ -26,9 +26,9 @@
   return v2;
 }
 
-- (MFAccountsController)initWithFocusController:(id)a3
+- (MFAccountsController)initWithFocusController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v17.receiver = self;
   v17.super_class = MFAccountsController;
   v5 = [(MFAccountsController *)&v17 init];
@@ -49,7 +49,7 @@
     scheduler = v5->_scheduler;
     v5->_scheduler = v12;
 
-    v14 = [v4 addObserver:v5 currentFocus:&v5->_currentFocus];
+    v14 = [controllerCopy addObserver:v5 currentFocus:&v5->_currentFocus];
     focusObservationToken = v5->_focusObservationToken;
     v5->_focusObservationToken = v14;
   }
@@ -70,17 +70,17 @@
 
 - (void)_resetAccounts
 {
-  v3 = self;
+  selfCopy2 = self;
   if (pthread_main_np() != 1)
   {
     v41 = +[NSAssertionHandler currentHandler];
     [v41 handleFailureInMethod:a2 object:self file:@"MFAccountsController.m" lineNumber:91 description:@"Current thread must be main"];
 
-    v3 = self;
+    selfCopy2 = self;
   }
 
-  v4 = [(MFAccountsController *)v3 mailboxProvider];
-  [v4 invalidateMailboxes];
+  mailboxProvider = [(MFAccountsController *)selfCopy2 mailboxProvider];
+  [mailboxProvider invalidateMailboxes];
 
   v5 = +[MFAccountsController log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -91,22 +91,22 @@
 
   +[MailAccount reloadAccounts];
   +[DeliveryAccount reloadDeliveryAccounts];
-  v46 = [(MFAccountsController *)self accountsProvider];
+  accountsProvider = [(MFAccountsController *)self accountsProvider];
   os_unfair_lock_lock(&self->_currentFocusLock);
   v6 = self->_currentFocus;
   os_unfair_lock_unlock(&self->_currentFocusLock);
   v44 = v6;
   v7 = +[MailAccount mailAccounts];
-  v47 = [v46 reloadWithMailAccounts:v7 currentFocus:v6];
+  v47 = [accountsProvider reloadWithMailAccounts:v7 currentFocus:v6];
 
-  v8 = [v47 first];
-  v45 = [v8 mailAccounts];
+  first = [v47 first];
+  mailAccounts = [first mailAccounts];
 
-  if (v45)
+  if (mailAccounts)
   {
-    v9 = [v46 mailAccounts];
-    v42 = v45;
-    v43 = v9;
+    mailAccounts2 = [accountsProvider mailAccounts];
+    v42 = mailAccounts;
+    v43 = mailAccounts2;
     v10 = [v42 ef_mapSelector:"uniqueID"];
     v51 = [NSSet setWithArray:v10];
 
@@ -130,8 +130,8 @@
           }
 
           v15 = *(*(&v60 + 1) + 8 * i);
-          v16 = [v15 uniqueID];
-          [v11 setObject:v15 forKey:v16];
+          uniqueID = [v15 uniqueID];
+          [v11 setObject:v15 forKey:uniqueID];
         }
 
         v12 = [obj countByEnumeratingWithState:&v60 objects:buf count:16];
@@ -159,8 +159,8 @@
           }
 
           v20 = *(*(&v56 + 1) + 8 * j);
-          v21 = [v20 uniqueID];
-          v22 = [v11 objectForKey:v21];
+          uniqueID2 = [v20 uniqueID];
+          v22 = [v11 objectForKey:uniqueID2];
 
           v23 = +[MFInvocationQueue sharedInvocationQueue];
           if (v22)
@@ -201,19 +201,19 @@
           }
 
           v29 = *(*(&v52 + 1) + 8 * k);
-          v30 = [v29 uniqueID];
-          if (([v51 containsObject:v30] & 1) == 0)
+          uniqueID3 = [v29 uniqueID];
+          if (([v51 containsObject:uniqueID3] & 1) == 0)
           {
-            v31 = [v29 canFetch];
+            canFetch = [v29 canFetch];
 
-            if (!v31)
+            if (!canFetch)
             {
               continue;
             }
 
-            v30 = +[MFInvocationQueue sharedInvocationQueue];
+            uniqueID3 = +[MFInvocationQueue sharedInvocationQueue];
             v32 = [MFMonitoredInvocation mf_invocationWithSelector:"startListeningForNotifications" target:v29];
-            [v30 addInvocation:v32];
+            [uniqueID3 addInvocation:v32];
           }
         }
 
@@ -224,17 +224,17 @@
     }
   }
 
-  v33 = [v46 mailAccounts];
-  [(MFAccountsController *)self _gatherStatisticsWithAccounts:v33];
+  mailAccounts3 = [accountsProvider mailAccounts];
+  [(MFAccountsController *)self _gatherStatisticsWithAccounts:mailAccounts3];
 
   v64[0] = ECMailAccountsDidChangeNotificationKeyPreviousAccountIdentifiers;
-  v34 = [v47 first];
-  v35 = [v34 displayedAccountsIdentifiers];
-  v65[0] = v35;
+  first2 = [v47 first];
+  displayedAccountsIdentifiers = [first2 displayedAccountsIdentifiers];
+  v65[0] = displayedAccountsIdentifiers;
   v64[1] = ECMailAccountsDidChangeNotificationKeyAccountIdentifiers;
-  v36 = [v47 second];
-  v37 = [v36 displayedAccountsIdentifiers];
-  v65[1] = v37;
+  second = [v47 second];
+  displayedAccountsIdentifiers2 = [second displayedAccountsIdentifiers];
+  v65[1] = displayedAccountsIdentifiers2;
   v38 = [NSDictionary dictionaryWithObjects:v65 forKeys:v64 count:2];
 
   v39 = +[NSNotificationCenter defaultCenter];
@@ -244,34 +244,34 @@
   [v40 postNotificationName:MFMailComposeControllerShouldReloadAccounts object:self];
 }
 
-- (void)_gatherStatisticsWithAccounts:(id)a3
+- (void)_gatherStatisticsWithAccounts:(id)accounts
 {
-  v3 = a3;
+  accountsCopy = accounts;
   v4 = +[EFScheduler globalAsyncScheduler];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10004C2B0;
   v6[3] = &unk_100156400;
-  v5 = v3;
+  v5 = accountsCopy;
   v7 = v5;
   [v4 performBlock:v6];
 }
 
-- (void)currentFocusChanged:(id)a3
+- (void)currentFocusChanged:(id)changed
 {
-  v5 = a3;
+  changedCopy = changed;
   v6 = +[MFAccountsController log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 ef_publicDescription];
+    ef_publicDescription = [changedCopy ef_publicDescription];
     *buf = 138543362;
-    v17 = v7;
+    v17 = ef_publicDescription;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Current focus has changed %{public}@", buf, 0xCu);
   }
 
   os_unfair_lock_lock(&self->_currentFocusLock);
   v8 = self->_currentFocus;
-  objc_storeStrong(&self->_currentFocus, a3);
+  objc_storeStrong(&self->_currentFocus, changed);
   os_unfair_lock_unlock(&self->_currentFocusLock);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
@@ -279,9 +279,9 @@
   v12[3] = &unk_1001573C0;
   v9 = v8;
   v13 = v9;
-  v10 = v5;
+  v10 = changedCopy;
   v14 = v10;
-  v15 = self;
+  selfCopy = self;
   v11 = +[EFScheduler mainThreadScheduler];
   [v11 performBlock:v12];
 }

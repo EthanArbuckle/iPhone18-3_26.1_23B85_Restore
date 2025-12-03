@@ -1,5 +1,5 @@
 @interface SPPhotoUtilities
-+ (BOOL)isImageOrVideoIdentifier:(id)a3;
++ (BOOL)isImageOrVideoIdentifier:(id)identifier;
 + (id)allPhotoBundles;
 + (id)bundlesIndexingPhotos;
 @end
@@ -41,7 +41,7 @@ void __41__SPPhotoUtilities_bundlesIndexingPhotos__block_invoke()
   block[1] = 3221225472;
   block[2] = __35__SPPhotoUtilities_allPhotoBundles__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (allPhotoBundles_onceToken != -1)
   {
     dispatch_once(&allPhotoBundles_onceToken, block);
@@ -61,12 +61,12 @@ void __35__SPPhotoUtilities_allPhotoBundles__block_invoke(uint64_t a1)
   allPhotoBundles_allPhotoBundles = v3;
 }
 
-+ (BOOL)isImageOrVideoIdentifier:(id)a3
++ (BOOL)isImageOrVideoIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (v3)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v4 = [MEMORY[0x277CE1CB8] typeWithIdentifier:v3];
+    v4 = [MEMORY[0x277CE1CB8] typeWithIdentifier:identifierCopy];
   }
 
   else

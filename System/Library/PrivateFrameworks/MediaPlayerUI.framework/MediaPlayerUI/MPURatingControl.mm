@@ -1,17 +1,17 @@
 @interface MPURatingControl
 + (id)ratingDotImage;
 + (id)ratingStarImage;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MPURatingControl)initWithFrame:(CGRect)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MPURatingControl)initWithFrame:(CGRect)frame;
 - (MPURatingControlDelegate)delegate;
 - (UIEdgeInsets)hitTestEdgeInsets;
-- (double)ratingValueForLocationInView:(CGPoint)a3;
-- (void)_handlePanGesture:(id)a3;
-- (void)_handleTapGesture:(id)a3;
-- (void)_updateImageViewsForRatingAnimated:(BOOL)a3;
+- (double)ratingValueForLocationInView:(CGPoint)view;
+- (void)_handlePanGesture:(id)gesture;
+- (void)_handleTapGesture:(id)gesture;
+- (void)_updateImageViewsForRatingAnimated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)setRating:(double)a3 animated:(BOOL)a4;
+- (void)setRating:(double)rating animated:(BOOL)animated;
 - (void)viewDidMoveToSuperview;
 @end
 
@@ -20,8 +20,8 @@
 + (id)ratingStarImage
 {
   v2 = MEMORY[0x277D755B8];
-  v3 = [MEMORY[0x277CCA8D8] mediaPlayerUIBundle];
-  v4 = [v2 imageNamed:@"rating-star" inBundle:v3];
+  mediaPlayerUIBundle = [MEMORY[0x277CCA8D8] mediaPlayerUIBundle];
+  v4 = [v2 imageNamed:@"rating-star" inBundle:mediaPlayerUIBundle];
 
   return v4;
 }
@@ -32,7 +32,7 @@
   v4[1] = 3221225472;
   v4[2] = __34__MPURatingControl_ratingDotImage__block_invoke;
   v4[3] = &__block_descriptor_40_e5__8__0l;
-  v4[4] = a1;
+  v4[4] = self;
   v2 = [MPUTheme cachedObjectWithKey:@"MPURatingControl_ratingDot" block:v4];
 
   return v2;
@@ -66,11 +66,11 @@ void __34__MPURatingControl_ratingDotImage__block_invoke_2()
   [v1 fill];
 }
 
-- (MPURatingControl)initWithFrame:(CGRect)a3
+- (MPURatingControl)initWithFrame:(CGRect)frame
 {
   v18.receiver = self;
   v18.super_class = MPURatingControl;
-  v3 = [(MPURatingControl *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MPURatingControl *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:v3 action:sel__handleTapGesture_];
@@ -91,8 +91,8 @@ void __34__MPURatingControl_ratingDotImage__block_invoke_2()
     imageViews = v3->_imageViews;
     v3->_imageViews = v9;
 
-    v11 = [objc_opt_class() ratingStarImage];
-    [v11 size];
+    ratingStarImage = [objc_opt_class() ratingStarImage];
+    [ratingStarImage size];
     v13 = v12;
     v15 = v14;
 
@@ -113,10 +113,10 @@ void __34__MPURatingControl_ratingDotImage__block_invoke_2()
   return v3;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(MPURatingControl *)self bounds];
   v8 = v7;
   v10 = v9;
@@ -180,12 +180,12 @@ void __34__MPURatingControl_ratingDotImage__block_invoke_2()
   }
 }
 
-- (double)ratingValueForLocationInView:(CGPoint)a3
+- (double)ratingValueForLocationInView:(CGPoint)view
 {
-  x = a3.x;
+  x = view.x;
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [(NSMutableArray *)self->_imageViews firstObject];
-  [v5 frame];
+  firstObject = [(NSMutableArray *)self->_imageViews firstObject];
+  [firstObject frame];
   MinX = CGRectGetMinX(v24);
 
   result = 0.0;
@@ -240,49 +240,49 @@ void __34__MPURatingControl_ratingDotImage__block_invoke_2()
   return result;
 }
 
-- (void)_handleTapGesture:(id)a3
+- (void)_handleTapGesture:(id)gesture
 {
-  v5 = a3;
-  if ([v5 state] == 3)
+  gestureCopy = gesture;
+  if ([gestureCopy state] == 3)
   {
-    [v5 locationInView:self];
+    [gestureCopy locationInView:self];
     [(MPURatingControl *)self ratingValueForLocationInView:?];
     [(MPURatingControl *)self setRating:1 animated:?];
-    v4 = [(MPURatingControl *)self delegate];
-    [v4 ratingDidChangeForRatingControl:self];
+    delegate = [(MPURatingControl *)self delegate];
+    [delegate ratingDidChangeForRatingControl:self];
   }
 }
 
-- (void)_handlePanGesture:(id)a3
+- (void)_handlePanGesture:(id)gesture
 {
-  v5 = a3;
-  if ([v5 state] == 2)
+  gestureCopy = gesture;
+  if ([gestureCopy state] == 2)
   {
-    [v5 locationInView:self];
+    [gestureCopy locationInView:self];
     [(MPURatingControl *)self ratingValueForLocationInView:?];
     [(MPURatingControl *)self setRating:1 animated:?];
   }
 
-  if ([v5 state] == 3)
+  if ([gestureCopy state] == 3)
   {
-    v4 = [(MPURatingControl *)self delegate];
-    [v4 ratingDidChangeForRatingControl:self];
+    delegate = [(MPURatingControl *)self delegate];
+    [delegate ratingDidChangeForRatingControl:self];
   }
 }
 
-- (void)setRating:(double)a3 animated:(BOOL)a4
+- (void)setRating:(double)rating animated:(BOOL)animated
 {
-  if (self->_rating != a3)
+  if (self->_rating != rating)
   {
-    self->_rating = a3;
-    [(MPURatingControl *)self _updateImageViewsForRatingAnimated:a4];
+    self->_rating = rating;
+    [(MPURatingControl *)self _updateImageViewsForRatingAnimated:animated];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = [objc_opt_class() ratingStarImage];
-  [v3 size];
+  ratingStarImage = [objc_opt_class() ratingStarImage];
+  [ratingStarImage size];
   v5 = v4;
   v7 = v6;
 
@@ -301,38 +301,38 @@ void __34__MPURatingControl_ratingDotImage__block_invoke_2()
   [(MPURatingControl *)self _updateImageViewsForRatingAnimated:0];
 }
 
-- (void)_updateImageViewsForRatingAnimated:(BOOL)a3
+- (void)_updateImageViewsForRatingAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = 0;
   v6 = llround(self->_rating * 5.0);
   do
   {
     v7 = [(NSMutableArray *)self->_imageViews objectAtIndex:v5];
-    v8 = [v7 _animatesContents];
-    [v7 _setAnimatesContents:v3];
+    _animatesContents = [v7 _animatesContents];
+    [v7 _setAnimatesContents:animatedCopy];
     v9 = objc_opt_class();
     if (v5 >= v6)
     {
-      v10 = [v9 ratingDotImage];
-      v11 = self;
+      ratingDotImage = [v9 ratingDotImage];
+      selfCopy2 = self;
       v12 = v7;
-      v13 = v10;
+      v13 = ratingDotImage;
       v14 = 0;
     }
 
     else
     {
-      v10 = [v9 ratingStarImage];
-      v11 = self;
+      ratingDotImage = [v9 ratingStarImage];
+      selfCopy2 = self;
       v12 = v7;
-      v13 = v10;
+      v13 = ratingDotImage;
       v14 = 1;
     }
 
-    [(MPURatingControl *)v11 _updateImageView:v12 proposedImage:v13 filled:v14];
+    [(MPURatingControl *)selfCopy2 _updateImageView:v12 proposedImage:v13 filled:v14];
 
-    [v7 _setAnimatesContents:v8];
+    [v7 _setAnimatesContents:_animatesContents];
     ++v5;
   }
 

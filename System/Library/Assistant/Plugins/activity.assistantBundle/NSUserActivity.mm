@@ -9,17 +9,17 @@
 
 - (BOOL)hasLocationData
 {
-  v2 = [(NSUserActivity *)self contentAttributeSet];
-  v3 = [v2 hasLocationData];
+  contentAttributeSet = [(NSUserActivity *)self contentAttributeSet];
+  hasLocationData = [contentAttributeSet hasLocationData];
 
-  return v3;
+  return hasLocationData;
 }
 
 - (BOOL)hasPhoneNumber
 {
-  v2 = [(NSUserActivity *)self contentAttributeSet];
-  v3 = [v2 phoneNumbers];
-  v4 = [v3 count] != 0;
+  contentAttributeSet = [(NSUserActivity *)self contentAttributeSet];
+  phoneNumbers = [contentAttributeSet phoneNumbers];
+  v4 = [phoneNumbers count] != 0;
 
   return v4;
 }
@@ -27,98 +27,98 @@
 - (id)clientUserActivity
 {
   v3 = objc_alloc_init(SAClientUserActivity);
-  v4 = [(NSUserActivity *)self _uniqueIdentifier];
-  v5 = [v4 UUIDString];
-  [v3 setAceId:v5];
+  _uniqueIdentifier = [(NSUserActivity *)self _uniqueIdentifier];
+  uUIDString = [_uniqueIdentifier UUIDString];
+  [v3 setAceId:uUIDString];
 
   [v3 setIsEligibleForDirections:{-[NSUserActivity hasLocationData](self, "hasLocationData")}];
   [v3 setIsEligibleForAppPunchout:{-[NSUserActivity hasPhoneNumber](self, "hasPhoneNumber")}];
-  v6 = [(NSUserActivity *)self combinedUserInfo];
-  [v3 setUserInfo:v6];
+  combinedUserInfo = [(NSUserActivity *)self combinedUserInfo];
+  [v3 setUserInfo:combinedUserInfo];
 
-  v7 = [(NSUserActivity *)self activityType];
-  [v3 setType:v7];
+  activityType = [(NSUserActivity *)self activityType];
+  [v3 setType:activityType];
 
-  v8 = [(NSUserActivity *)self title];
-  [v3 setTitle:v8];
+  title = [(NSUserActivity *)self title];
+  [v3 setTitle:title];
 
-  v9 = [(NSUserActivity *)self webpageURL];
-  [v3 setWebpageURL:v9];
+  webpageURL = [(NSUserActivity *)self webpageURL];
+  [v3 setWebpageURL:webpageURL];
 
   [v3 setIsEligibleForSearch:{-[NSUserActivity isEligibleForSearch](self, "isEligibleForSearch")}];
   [v3 setIsEligibleForPublicIndexing:{-[NSUserActivity isEligibleForPublicIndexing](self, "isEligibleForPublicIndexing")}];
   [v3 setIsEligibleForHandoff:{-[NSUserActivity isEligibleForHandoff](self, "isEligibleForHandoff")}];
-  v10 = [(NSUserActivity *)self keywords];
-  v11 = [v10 allObjects];
-  [v3 setKeywords:v11];
+  keywords = [(NSUserActivity *)self keywords];
+  allObjects = [keywords allObjects];
+  [v3 setKeywords:allObjects];
 
-  v12 = [(NSUserActivity *)self requiredUserInfoKeys];
-  v13 = [v12 allObjects];
-  [v3 setRequiredUserInfoKeys:v13];
+  requiredUserInfoKeys = [(NSUserActivity *)self requiredUserInfoKeys];
+  allObjects2 = [requiredUserInfoKeys allObjects];
+  [v3 setRequiredUserInfoKeys:allObjects2];
 
   return v3;
 }
 
 - (id)combinedUserInfo
 {
-  v3 = [(NSUserActivity *)self userInfo];
-  v4 = [NSMutableDictionary dictionaryWithDictionary:v3];
+  userInfo = [(NSUserActivity *)self userInfo];
+  v4 = [NSMutableDictionary dictionaryWithDictionary:userInfo];
 
-  v5 = [(NSUserActivity *)self contentAttributeSet];
-  v6 = [v5 addressDictionary];
-  [v4 addEntriesFromDictionary:v6];
+  contentAttributeSet = [(NSUserActivity *)self contentAttributeSet];
+  addressDictionary = [contentAttributeSet addressDictionary];
+  [v4 addEntriesFromDictionary:addressDictionary];
 
-  v7 = [(NSUserActivity *)self contentAttributeSet];
-  v8 = [v7 longitude];
+  contentAttributeSet2 = [(NSUserActivity *)self contentAttributeSet];
+  longitude = [contentAttributeSet2 longitude];
 
-  if (v8)
+  if (longitude)
   {
-    v9 = [(NSUserActivity *)self contentAttributeSet];
-    v10 = [v9 longitude];
-    [v4 setObject:v10 forKey:@"longitude"];
+    contentAttributeSet3 = [(NSUserActivity *)self contentAttributeSet];
+    longitude2 = [contentAttributeSet3 longitude];
+    [v4 setObject:longitude2 forKey:@"longitude"];
   }
 
-  v11 = [(NSUserActivity *)self contentAttributeSet];
-  v12 = [v11 latitude];
+  contentAttributeSet4 = [(NSUserActivity *)self contentAttributeSet];
+  latitude = [contentAttributeSet4 latitude];
 
-  if (v12)
+  if (latitude)
   {
-    v13 = [(NSUserActivity *)self contentAttributeSet];
-    v14 = [v13 latitude];
-    [v4 setObject:v14 forKey:@"latitude"];
+    contentAttributeSet5 = [(NSUserActivity *)self contentAttributeSet];
+    latitude2 = [contentAttributeSet5 latitude];
+    [v4 setObject:latitude2 forKey:@"latitude"];
   }
 
-  v15 = [(NSUserActivity *)self contentAttributeSet];
-  v16 = [v15 phoneNumbers];
-  v17 = [v16 count];
+  contentAttributeSet6 = [(NSUserActivity *)self contentAttributeSet];
+  phoneNumbers = [contentAttributeSet6 phoneNumbers];
+  v17 = [phoneNumbers count];
 
   if (v17)
   {
-    v18 = [(NSUserActivity *)self contentAttributeSet];
-    v19 = [v18 phoneNumbers];
-    v20 = [v19 firstObject];
-    [v4 setObject:v20 forKey:@"phone"];
+    contentAttributeSet7 = [(NSUserActivity *)self contentAttributeSet];
+    phoneNumbers2 = [contentAttributeSet7 phoneNumbers];
+    firstObject = [phoneNumbers2 firstObject];
+    [v4 setObject:firstObject forKey:@"phone"];
   }
 
-  v21 = [(NSUserActivity *)self contentAttributeSet];
-  v22 = [v21 namedLocation];
+  contentAttributeSet8 = [(NSUserActivity *)self contentAttributeSet];
+  namedLocation = [contentAttributeSet8 namedLocation];
 
-  if (v22)
+  if (namedLocation)
   {
-    v23 = [(NSUserActivity *)self contentAttributeSet];
-    v24 = [v23 namedLocation];
-    [v4 setObject:v24 forKey:@"name"];
+    contentAttributeSet9 = [(NSUserActivity *)self contentAttributeSet];
+    namedLocation2 = [contentAttributeSet9 namedLocation];
+    [v4 setObject:namedLocation2 forKey:@"name"];
   }
 
-  v25 = [(NSUserActivity *)self externalMediaContentIdentifier];
+  externalMediaContentIdentifier = [(NSUserActivity *)self externalMediaContentIdentifier];
 
-  if (v25)
+  if (externalMediaContentIdentifier)
   {
-    v26 = [(NSUserActivity *)self externalMediaContentIdentifier];
-    [v4 setObject:v26 forKey:@"externalMediaContentIdentifier"];
+    externalMediaContentIdentifier2 = [(NSUserActivity *)self externalMediaContentIdentifier];
+    [v4 setObject:externalMediaContentIdentifier2 forKey:@"externalMediaContentIdentifier"];
 
-    v27 = [(NSUserActivity *)self _externalMediaContentBundleIdentifier];
-    [v4 setObject:v27 forKey:@"externalMediaContentBundleIdentifier"];
+    _externalMediaContentBundleIdentifier = [(NSUserActivity *)self _externalMediaContentBundleIdentifier];
+    [v4 setObject:_externalMediaContentBundleIdentifier forKey:@"externalMediaContentBundleIdentifier"];
   }
 
   return v4;

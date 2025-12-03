@@ -50,9 +50,9 @@ void __46__UIWebClipEligibilityObserver_sharedObserver__block_invoke()
   {
     block[9] = v2;
     block[10] = v3;
-    v5 = [MEMORY[0x1E696AAE8] mainBundle];
-    v6 = [v5 bundleIdentifier];
-    v7 = [v6 isEqualToString:@"com.apple.springboard"];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v7 = [bundleIdentifier isEqualToString:@"com.apple.springboard"];
 
     if (v7)
     {
@@ -112,13 +112,13 @@ uint64_t __57__UIWebClipEligibilityObserver_startObservingEligibility__block_inv
 - (void)_updateEligibilityIfNeeded
 {
   v15 = *MEMORY[0x1E69E9840];
-  v2 = [objc_opt_class() webClips];
-  v3 = [objc_opt_class() _determineEligibility];
+  webClips = [objc_opt_class() webClips];
+  _determineEligibility = [objc_opt_class() _determineEligibility];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = v2;
+  v4 = webClips;
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
@@ -136,7 +136,7 @@ uint64_t __57__UIWebClipEligibilityObserver_startObservingEligibility__block_inv
         v9 = *(*(&v10 + 1) + 8 * i);
         if ([v9 _subjectToEligibilityUpdates])
         {
-          [v9 _updateWebClipWithEligibility:v3];
+          [v9 _updateWebClipWithEligibility:_determineEligibility];
         }
       }
 

@@ -1,19 +1,19 @@
 @interface EmbeddedTrackpadFirmwareManager
-- (void)_handleGetPropertyEvent:(id)a3;
-- (void)_handleHostStateEvent:(id)a3;
-- (void)handleConsume:(id)a3;
-- (void)handleSetPropertyEvent:(id)a3;
+- (void)_handleGetPropertyEvent:(id)event;
+- (void)_handleHostStateEvent:(id)event;
+- (void)handleConsume:(id)consume;
+- (void)handleSetPropertyEvent:(id)event;
 @end
 
 @implementation EmbeddedTrackpadFirmwareManager
 
-- (void)handleConsume:(id)a3
+- (void)handleConsume:(id)consume
 {
-  v4 = a3;
+  consumeCopy = consume;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = consumeCopy;
   }
 
   else
@@ -23,12 +23,12 @@
 
   if (v5)
   {
-    [(EmbeddedTrackpadFirmwareManager *)self _handleHostStateEvent:v4];
+    [(EmbeddedTrackpadFirmwareManager *)self _handleHostStateEvent:consumeCopy];
   }
 
   else
   {
-    v6 = v4;
+    v6 = consumeCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -54,13 +54,13 @@
   }
 }
 
-- (void)handleSetPropertyEvent:(id)a3
+- (void)handleSetPropertyEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = [NSString stringWithUTF8String:?];
   if ([(__CFString *)v5 isEqualToString:@"DeviceOpenedByEventSystem"])
   {
-    v6 = v4[5];
+    v6 = eventCopy[5];
     [(TrackpadFirmwareManager *)self mtDeviceRef];
     Service = MTDeviceGetService();
     IORegistryEntrySetCFProperty(Service, v5, v6);
@@ -68,29 +68,29 @@
 
   v8.receiver = self;
   v8.super_class = EmbeddedTrackpadFirmwareManager;
-  [(TrackpadFirmwareManager *)&v8 handleSetPropertyEvent:v4];
+  [(TrackpadFirmwareManager *)&v8 handleSetPropertyEvent:eventCopy];
 }
 
-- (void)_handleGetPropertyEvent:(id)a3
+- (void)_handleGetPropertyEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 39) < 0 && v4[3] == 32)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (*(eventCopy + 39) < 0 && eventCopy[3] == 32)
   {
-    v6 = v4[2];
+    v6 = eventCopy[2];
     v7 = *v6;
     v8 = v6[1];
     v10 = v6[2];
     v9 = v6[3];
     if (v7 == 0x746E696F50444948 && v8 == 0x656C656363417265 && v10 == 0x754D6E6F69746172 && v9 == 0x7265696C7069746CLL)
     {
-      v14 = [(TrackpadFirmwareManager *)self extendedFeatures];
-      v15 = [v14 unsignedIntValue];
+      extendedFeatures = [(TrackpadFirmwareManager *)self extendedFeatures];
+      unsignedIntValue = [extendedFeatures unsignedIntValue];
 
-      v16 = [(TrackpadFirmwareManager *)self productId];
-      v17 = [v16 intValue];
+      productId = [(TrackpadFirmwareManager *)self productId];
+      intValue = [productId intValue];
 
-      if (v17 == 613 && (v15 & 1) == 0)
+      if (intValue == 613 && (unsignedIntValue & 1) == 0)
       {
         v18 = v5[5];
         v5[5] = &off_112458;
@@ -103,10 +103,10 @@
   [(TrackpadFirmwareManager *)&v19 handleConsume:v5];
 }
 
-- (void)_handleHostStateEvent:(id)a3
+- (void)_handleHostStateEvent:(id)event
 {
-  v4 = a3;
-  if (v4)
+  eventCopy = event;
+  if (eventCopy)
   {
     v5 = MTLoggingPlugin();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -118,22 +118,22 @@
       v26 = 2080;
       v27 = "[EmbeddedTrackpadFirmwareManager _handleHostStateEvent:]";
       v28 = 2048;
-      v29 = [(TrackpadFirmwareManager *)self mtDeviceId];
+      mtDeviceId = [(TrackpadFirmwareManager *)self mtDeviceId];
       v30 = 1024;
-      v31 = [v4 coverClosed];
+      coverClosed = [eventCopy coverClosed];
       v32 = 1024;
-      v33 = [v4 displayOff];
+      displayOff = [eventCopy displayOff];
       v34 = 1024;
-      v35 = [v4 screenOrientation];
+      screenOrientation = [eventCopy screenOrientation];
       v36 = 1024;
-      v37 = [v4 deviceOrientation];
+      deviceOrientation = [eventCopy deviceOrientation];
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEBUG, "[HID] [MT] %s%s%s [0x%llX] Notifying device of host state change coverClosed(%d) displayOff(%d) screenOrientation(%d) deviceOrientation(%d)", buf, 0x42u);
     }
 
     v15 = -99;
-    v16 = [v4 screenOrientation];
-    v6 = [v4 coverClosed];
-    if ([v4 displayOff])
+    screenOrientation2 = [eventCopy screenOrientation];
+    coverClosed2 = [eventCopy coverClosed];
+    if ([eventCopy displayOff])
     {
       v7 = 2;
     }
@@ -143,8 +143,8 @@
       v7 = 0;
     }
 
-    v17 = v7 | v6;
-    v18 = [v4 deviceOrientation];
+    v17 = v7 | coverClosed2;
+    deviceOrientation2 = [eventCopy deviceOrientation];
     v19 = 0;
     v20 = 0;
     if (![(TrackpadFirmwareManager *)self mtDeviceRef])
@@ -160,7 +160,7 @@
       v9 = MTLoggingPlugin();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v10 = [(TrackpadFirmwareManager *)self mtDeviceId];
+        mtDeviceId2 = [(TrackpadFirmwareManager *)self mtDeviceId];
         *buf = 136316162;
         v23 = "[Error] ";
         v24 = 2080;
@@ -168,16 +168,16 @@
         v26 = 2080;
         v27 = "[EmbeddedTrackpadFirmwareManager _handleHostStateEvent:]";
         v28 = 2048;
-        v29 = v10;
+        mtDeviceId = mtDeviceId2;
         v30 = 1024;
-        v31 = v8;
+        coverClosed = v8;
         _os_log_impl(&dword_0, v9, OS_LOG_TYPE_ERROR, "[HID] [MT] %s%s%s [0x%llX] Failed to send host state notification to the device with error: 0x%08x", buf, 0x30u);
       }
     }
 
     v14.receiver = self;
     v14.super_class = EmbeddedTrackpadFirmwareManager;
-    [(TrackpadFirmwareManager *)&v14 handleConsume:v4];
+    [(TrackpadFirmwareManager *)&v14 handleConsume:eventCopy];
   }
 
   else
@@ -192,7 +192,7 @@
       v26 = 2080;
       v27 = "[EmbeddedTrackpadFirmwareManager _handleHostStateEvent:]";
       v28 = 2048;
-      v29 = [(TrackpadFirmwareManager *)self mtDeviceId];
+      mtDeviceId = [(TrackpadFirmwareManager *)self mtDeviceId];
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_ERROR, "[HID] [MT] %s%s%s [0x%llX] Received invalid host state event", buf, 0x2Au);
     }
 

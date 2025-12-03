@@ -1,7 +1,7 @@
 @interface VTKFileStoreManager
 - (VTKFileStoreManager)init;
-- (id)saveItems:(id)a3 withID:(id)a4 testCase:(id)a5;
-- (void)setItemsDirectory:(id)a3;
+- (id)saveItems:(id)items withID:(id)d testCase:(id)case;
+- (void)setItemsDirectory:(id)directory;
 @end
 
 @implementation VTKFileStoreManager
@@ -21,30 +21,30 @@
   return v2;
 }
 
-- (void)setItemsDirectory:(id)a3
+- (void)setItemsDirectory:(id)directory
 {
-  v4 = a3;
-  if (self->_itemsDirectory != v4)
+  directoryCopy = directory;
+  if (self->_itemsDirectory != directoryCopy)
   {
-    v12 = v4;
-    v5 = v4;
+    v12 = directoryCopy;
+    v5 = directoryCopy;
     if ([(NSString *)v5 length])
     {
-      v6 = [(NSString *)v5 stringByStandardizingPath];
+      stringByStandardizingPath = [(NSString *)v5 stringByStandardizingPath];
 
-      v7 = [NSURL URLWithString:v6];
+      v7 = [NSURL URLWithString:stringByStandardizingPath];
       if (!v7)
       {
-        [NSException raise:NSInvalidArgumentException format:@"given itemsDirectory:%@ is not valid", v6];
+        [NSException raise:NSInvalidArgumentException format:@"given itemsDirectory:%@ is not valid", stringByStandardizingPath];
       }
     }
 
     else
     {
-      v6 = v5;
+      stringByStandardizingPath = v5;
     }
 
-    v8 = [v6 copy];
+    v8 = [stringByStandardizingPath copy];
 
     itemsDirectory = self->_itemsDirectory;
     self->_itemsDirectory = v8;
@@ -53,26 +53,26 @@
     saveItemsRootURL = self->_saveItemsRootURL;
     self->_saveItemsRootURL = v10;
 
-    v4 = v12;
+    directoryCopy = v12;
   }
 }
 
-- (id)saveItems:(id)a3 withID:(id)a4 testCase:(id)a5
+- (id)saveItems:(id)items withID:(id)d testCase:(id)case
 {
-  v7 = a4;
-  v8 = a3;
+  dCopy = d;
+  itemsCopy = items;
   v9 = +[NSFileManager defaultManager];
-  v10 = [(VTKFileStoreManager *)self saveItemsRootURL];
-  [v9 createDirectoryAtURL:v10 withIntermediateDirectories:1 attributes:0 error:0];
+  saveItemsRootURL = [(VTKFileStoreManager *)self saveItemsRootURL];
+  [v9 createDirectoryAtURL:saveItemsRootURL withIntermediateDirectories:1 attributes:0 error:0];
   v16 = _NSConcreteStackBlock;
   v17 = 3221225472;
   v18 = __49__VTKFileStoreManager_saveItems_withID_testCase___block_invoke;
   v19 = &unk_C0D8;
-  v20 = v7;
-  v21 = v10;
-  v11 = v10;
-  v12 = v7;
-  [v8 enumerateObjectsUsingBlock:&v16];
+  v20 = dCopy;
+  v21 = saveItemsRootURL;
+  v11 = saveItemsRootURL;
+  v12 = dCopy;
+  [itemsCopy enumerateObjectsUsingBlock:&v16];
 
   v13 = [VTKFileStoreManagerResult alloc];
   v14 = [(VTKFileStoreManagerResult *)v13 initWithURL:v11, v16, v17, v18, v19];

@@ -1,79 +1,79 @@
 @interface AAUIProfileCell
 - (void)layoutSubviews;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation AAUIProfileCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v30.receiver = self;
   v30.super_class = AAUIProfileCell;
-  [(PSTableCell *)&v30 refreshCellContentsWithSpecifier:v4];
+  [(PSTableCell *)&v30 refreshCellContentsWithSpecifier:specifierCopy];
   v5 = [MEMORY[0x1E69DCA40] metricsForTextStyle:*MEMORY[0x1E69DDCF8]];
-  v6 = [v4 propertyForKey:@"AAUIPrimaryFontSize"];
+  v6 = [specifierCopy propertyForKey:@"AAUIPrimaryFontSize"];
   if (v6)
   {
-    v7 = [(AAUIProfileCell *)self textLabel];
+    textLabel = [(AAUIProfileCell *)self textLabel];
     v8 = MEMORY[0x1E69DB878];
     [v6 floatValue];
     [v5 scaledValueForValue:v9];
     v10 = [v8 systemFontOfSize:?];
-    [v7 setFont:v10];
+    [textLabel setFont:v10];
   }
 
-  v11 = [v4 propertyForKey:@"AAUIPrimaryTextColor"];
-  v12 = [(AAUIProfileCell *)self textLabel];
-  v13 = v12;
+  v11 = [specifierCopy propertyForKey:@"AAUIPrimaryTextColor"];
+  textLabel2 = [(AAUIProfileCell *)self textLabel];
+  v13 = textLabel2;
   if (v11)
   {
-    [v12 setTextColor:v11];
+    [textLabel2 setTextColor:v11];
   }
 
   else
   {
-    v14 = [MEMORY[0x1E69DC888] labelColor];
-    [v13 setTextColor:v14];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [v13 setTextColor:labelColor];
   }
 
-  v15 = [v4 propertyForKey:@"AAUIDetailFontSize"];
+  v15 = [specifierCopy propertyForKey:@"AAUIDetailFontSize"];
   if (v15)
   {
-    v16 = [(AAUIProfileCell *)self detailTextLabel];
+    detailTextLabel = [(AAUIProfileCell *)self detailTextLabel];
     v17 = MEMORY[0x1E69DB878];
     [v15 floatValue];
     [v5 scaledValueForValue:v18];
     v19 = [v17 systemFontOfSize:?];
-    [v16 setFont:v19];
+    [detailTextLabel setFont:v19];
   }
 
-  v20 = [(AAUIProfileCell *)self detailTextLabel];
-  v21 = [v4 propertyForKey:*MEMORY[0x1E69C59A0]];
-  [v20 setText:v21];
+  detailTextLabel2 = [(AAUIProfileCell *)self detailTextLabel];
+  v21 = [specifierCopy propertyForKey:*MEMORY[0x1E69C59A0]];
+  [detailTextLabel2 setText:v21];
 
-  v22 = [v4 propertyForKey:@"AAUIDetailTextColor"];
-  v23 = [(AAUIProfileCell *)self detailTextLabel];
-  v24 = v23;
+  v22 = [specifierCopy propertyForKey:@"AAUIDetailTextColor"];
+  detailTextLabel3 = [(AAUIProfileCell *)self detailTextLabel];
+  v24 = detailTextLabel3;
   if (v22)
   {
-    [v23 setTextColor:v22];
+    [detailTextLabel3 setTextColor:v22];
   }
 
   else
   {
-    v25 = [MEMORY[0x1E69DC888] tableCellGrayTextColor];
-    [v24 setTextColor:v25];
+    tableCellGrayTextColor = [MEMORY[0x1E69DC888] tableCellGrayTextColor];
+    [v24 setTextColor:tableCellGrayTextColor];
   }
 
-  v26 = [v4 propertyForKey:@"AAUIEvilMember"];
-  v27 = [v26 BOOLValue];
+  v26 = [specifierCopy propertyForKey:@"AAUIEvilMember"];
+  bOOLValue = [v26 BOOLValue];
 
-  if (v27)
+  if (bOOLValue)
   {
-    v28 = [(AAUIProfileCell *)self detailTextLabel];
-    v29 = [MEMORY[0x1E69DC888] systemRedColor];
-    [v28 setTextColor:v29];
+    detailTextLabel4 = [(AAUIProfileCell *)self detailTextLabel];
+    systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+    [detailTextLabel4 setTextColor:systemRedColor];
   }
 
   [(AAUIProfileCell *)self setNeedsLayout];
@@ -84,15 +84,15 @@
   v13.receiver = self;
   v13.super_class = AAUIProfileCell;
   [(PSTableCell *)&v13 layoutSubviews];
-  v3 = [(AAUIProfileCell *)self textLabel];
-  [v3 frame];
+  textLabel = [(AAUIProfileCell *)self textLabel];
+  [textLabel frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(AAUIProfileCell *)self textLabel];
-  [v12 setFrame:{v5, v7 + -1.0, v9, v11}];
+  textLabel2 = [(AAUIProfileCell *)self textLabel];
+  [textLabel2 setFrame:{v5, v7 + -1.0, v9, v11}];
 }
 
 @end

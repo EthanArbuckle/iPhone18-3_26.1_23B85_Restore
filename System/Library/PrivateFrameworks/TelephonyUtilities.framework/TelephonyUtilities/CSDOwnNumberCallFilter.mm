@@ -1,15 +1,15 @@
 @interface CSDOwnNumberCallFilter
-- (BOOL)shouldFilterIncomingCall:(id)a3 from:(id)a4;
+- (BOOL)shouldFilterIncomingCall:(id)call from:(id)from;
 @end
 
 @implementation CSDOwnNumberCallFilter
 
-- (BOOL)shouldFilterIncomingCall:(id)a3 from:(id)a4
+- (BOOL)shouldFilterIncomingCall:(id)call from:(id)from
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_10042A224(v6);
+  callCopy = call;
+  fromCopy = from;
+  selfCopy = self;
+  v9 = sub_10042A224(callCopy);
 
   return v9 & 1;
 }

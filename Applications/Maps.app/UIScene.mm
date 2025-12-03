@@ -6,9 +6,9 @@
 
 - (BOOL)isCarScene
 {
-  v2 = [(UIScene *)self session];
-  v3 = [v2 role];
-  v4 = [v3 isEqualToString:_UIWindowSceneSessionRoleCarPlay];
+  session = [(UIScene *)self session];
+  role = [session role];
+  v4 = [role isEqualToString:_UIWindowSceneSessionRoleCarPlay];
 
   return v4;
 }

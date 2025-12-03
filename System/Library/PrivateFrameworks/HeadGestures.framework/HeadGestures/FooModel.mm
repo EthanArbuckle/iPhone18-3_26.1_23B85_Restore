@@ -1,14 +1,14 @@
 @interface FooModel
 - (_TtC12HeadGestures8FooModel)init;
-- (_TtC12HeadGestures8FooModel)initWithDescription:(id)a3 configuration:(id)a4;
-- (_TtC12HeadGestures8FooModel)initWithName:(id)a3 inputDescription:(id)a4 outputDescription:(id)a5 orderedInputFeatureNames:(id)a6 orderedOutputFeatureNames:(id)a7 configuration:(id)a8;
-- (id)initDescriptionOnlyWithSpecification:(void *)a3 configuration:(id)a4 error:(id *)a5;
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4;
+- (_TtC12HeadGestures8FooModel)initWithDescription:(id)description configuration:(id)configuration;
+- (_TtC12HeadGestures8FooModel)initWithName:(id)name inputDescription:(id)description outputDescription:(id)outputDescription orderedInputFeatureNames:(id)names orderedOutputFeatureNames:(id)featureNames configuration:(id)configuration;
+- (id)initDescriptionOnlyWithSpecification:(void *)specification configuration:(id)configuration error:(id *)error;
+- (id)predictionFromFeatures:(id)features error:(id *)error;
 @end
 
 @implementation FooModel
 
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4
+- (id)predictionFromFeatures:(id)features error:(id *)error
 {
   type metadata accessor for HGMLInput();
   if (swift_dynamicCastClass())
@@ -16,7 +16,7 @@
     type metadata accessor for FooModel.FooModelFeatureProvider();
     v5 = swift_allocObject();
     swift_unknownObjectRetain();
-    v6 = self;
+    selfCopy = self;
     v7 = sub_25113072C(&unk_2863312F8);
     swift_arrayDestroy();
     v5[2] = v7;
@@ -42,37 +42,37 @@
   return [(FooModel *)&v3 init];
 }
 
-- (id)initDescriptionOnlyWithSpecification:(void *)a3 configuration:(id)a4 error:(id *)a5
+- (id)initDescriptionOnlyWithSpecification:(void *)specification configuration:(id)configuration error:(id *)error
 {
-  v6 = a4;
-  v7 = sub_251104C5C(a3, v6);
+  configurationCopy = configuration;
+  v7 = sub_251104C5C(specification, configurationCopy);
 
   return v7;
 }
 
-- (_TtC12HeadGestures8FooModel)initWithDescription:(id)a3 configuration:(id)a4
+- (_TtC12HeadGestures8FooModel)initWithDescription:(id)description configuration:(id)configuration
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for FooModel();
-  return [(MLModel *)&v7 initWithDescription:a3 configuration:a4];
+  return [(MLModel *)&v7 initWithDescription:description configuration:configuration];
 }
 
-- (_TtC12HeadGestures8FooModel)initWithName:(id)a3 inputDescription:(id)a4 outputDescription:(id)a5 orderedInputFeatureNames:(id)a6 orderedOutputFeatureNames:(id)a7 configuration:(id)a8
+- (_TtC12HeadGestures8FooModel)initWithName:(id)name inputDescription:(id)description outputDescription:(id)outputDescription orderedInputFeatureNames:(id)names orderedOutputFeatureNames:(id)featureNames configuration:(id)configuration
 {
   sub_2510FE944(0, &qword_27F41E508, 0x277CBFEE0);
   sub_251130E88();
   sub_251130E88();
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = a8;
+  nameCopy = name;
+  namesCopy = names;
+  featureNamesCopy = featureNames;
+  configurationCopy = configuration;
   v16 = sub_251130E78();
 
   v17 = sub_251130E78();
 
   v21.receiver = self;
   v21.super_class = type metadata accessor for FooModel();
-  v18 = [(MLModel *)&v21 initWithName:v12 inputDescription:v16 outputDescription:v17 orderedInputFeatureNames:v13 orderedOutputFeatureNames:v14 configuration:v15];
+  v18 = [(MLModel *)&v21 initWithName:nameCopy inputDescription:v16 outputDescription:v17 orderedInputFeatureNames:namesCopy orderedOutputFeatureNames:featureNamesCopy configuration:configurationCopy];
 
   return v18;
 }

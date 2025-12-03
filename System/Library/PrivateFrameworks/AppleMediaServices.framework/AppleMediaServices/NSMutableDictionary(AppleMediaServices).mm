@@ -13,40 +13,40 @@
 {
   if (a3)
   {
-    return [a1 setObject:? forKeyedSubscript:?];
+    return [self setObject:? forKeyedSubscript:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)ams_insertValue:()AppleMediaServices forKeyPath:
 {
   if (a3)
   {
-    return [a1 ams_setValue:a3 forKeyPath:a4 shouldAppendToContainers:1 shouldFlatten:0];
+    return [self ams_setValue:a3 forKeyPath:a4 shouldAppendToContainers:1 shouldFlatten:0];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)ams_flatInsertValue:()AppleMediaServices forKeyPath:
 {
   if (a3)
   {
-    return [a1 ams_setValue:a3 forKeyPath:a4 shouldAppendToContainers:1 shouldFlatten:1];
+    return [self ams_setValue:a3 forKeyPath:a4 shouldAppendToContainers:1 shouldFlatten:1];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)ams_setValue:()AppleMediaServices forKeyPath:
 {
   if (a3)
   {
-    return [a1 ams_setValue:a3 forKeyPath:a4 shouldAppendToContainers:0 shouldFlatten:0];
+    return [self ams_setValue:a3 forKeyPath:a4 shouldAppendToContainers:0 shouldFlatten:0];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)ams_setValue:()AppleMediaServices forKeyPath:shouldAppendToContainers:shouldFlatten:
@@ -55,12 +55,12 @@
   v10 = a4;
   if ([v10 length])
   {
-    v11 = [v10 ams_splitKeyPathStringKeepingEnclosedParts];
-    v12 = [v11 mutableCopy];
+    ams_splitKeyPathStringKeepingEnclosedParts = [v10 ams_splitKeyPathStringKeepingEnclosedParts];
+    v12 = [ams_splitKeyPathStringKeepingEnclosedParts mutableCopy];
 
     if ([v12 count] && (objc_msgSend(v12, "containsObject:", &stru_1F071BA78) & 1) == 0)
     {
-      [a1 ams_setValue:v13 forKeyPathComponents:v12 shouldAppendToContainers:a5 shouldFlatten:a6];
+      [self ams_setValue:v13 forKeyPathComponents:v12 shouldAppendToContainers:a5 shouldFlatten:a6];
     }
   }
 }
@@ -82,7 +82,7 @@
   }
 
   v41 = qword_1ED6E32F8;
-  v11 = a1;
+  selfCopy = self;
   v12 = 0;
   while (v12 < [v10 count] - 1)
   {
@@ -93,7 +93,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = v11;
+      v17 = selfCopy;
       v18 = [v17 objectForKey:v13];
       v19 = [v18 mutableCopy];
 
@@ -139,7 +139,7 @@ LABEL_18:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = v11;
+      v17 = selfCopy;
       if (!v15 || (v21 = [v15 unsignedIntegerValue], v21 > objc_msgSend(v17, "count")))
       {
         v19 = 0;
@@ -177,7 +177,7 @@ LABEL_32:
           v23 = 0;
 LABEL_33:
 
-          v11 = v17;
+          selfCopy = v17;
           goto LABEL_34;
         }
       }
@@ -216,8 +216,8 @@ LABEL_34:
     }
   }
 
-  v26 = [v10 lastObject];
-  v27 = [v41 numberFromString:v26];
+  lastObject = [v10 lastObject];
+  v27 = [v41 numberFromString:lastObject];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -227,21 +227,21 @@ LABEL_34:
       goto LABEL_62;
     }
 
-    v32 = [v27 unsignedIntegerValue];
-    v33 = v11;
-    if (!v40 && v32 < [v33 count])
+    unsignedIntegerValue = [v27 unsignedIntegerValue];
+    v33 = selfCopy;
+    if (!v40 && unsignedIntegerValue < [v33 count])
     {
-      [v33 removeObjectAtIndex:v32];
+      [v33 removeObjectAtIndex:unsignedIntegerValue];
       goto LABEL_61;
     }
 
-    if (v32 >= [v33 count])
+    if (unsignedIntegerValue >= [v33 count])
     {
       [v33 addObject:v40];
       goto LABEL_61;
     }
 
-    v34 = [v33 objectAtIndexedSubscript:v32];
+    v34 = [v33 objectAtIndexedSubscript:unsignedIntegerValue];
     v35 = v40;
     if (v39)
     {
@@ -283,14 +283,14 @@ LABEL_76:
       goto LABEL_61;
     }
 
-    [v33 replaceObjectAtIndex:v32 withObject:v35];
+    [v33 replaceObjectAtIndex:unsignedIntegerValue withObject:v35];
 LABEL_75:
 
     goto LABEL_76;
   }
 
-  v28 = v11;
-  v29 = [v28 objectForKeyedSubscript:v26];
+  v28 = selfCopy;
+  v29 = [v28 objectForKeyedSubscript:lastObject];
   v30 = v29;
   if (v39 && v29)
   {
@@ -322,13 +322,13 @@ LABEL_75:
       }
 
 LABEL_59:
-      [v28 setObject:v31 forKeyedSubscript:v26];
+      [v28 setObject:v31 forKeyedSubscript:lastObject];
     }
   }
 
   else
   {
-    [v28 setObject:v40 forKeyedSubscript:v26];
+    [v28 setObject:v40 forKeyedSubscript:lastObject];
   }
 
 LABEL_61:

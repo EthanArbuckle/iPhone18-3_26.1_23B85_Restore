@@ -7,7 +7,7 @@
 - (void)main
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = [a1 host];
+  host = [self host];
   OUTLINED_FUNCTION_0();
   OUTLINED_FUNCTION_2();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0xCu);

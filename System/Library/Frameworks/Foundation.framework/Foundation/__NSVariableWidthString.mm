@@ -1,15 +1,15 @@
 @interface __NSVariableWidthString
-- (__NSVariableWidthString)initWithString:(id)a3 widthVariants:(id)a4;
-- (__NSVariableWidthString)initWithWidthVariants:(id)a3;
+- (__NSVariableWidthString)initWithString:(id)string widthVariants:(id)variants;
+- (__NSVariableWidthString)initWithWidthVariants:(id)variants;
 - (id)_widthVariants;
 - (id)formatConfiguration;
-- (id)variantFittingPresentationWidth:(int64_t)a3;
+- (id)variantFittingPresentationWidth:(int64_t)width;
 - (void)dealloc;
 @end
 
 @implementation __NSVariableWidthString
 
-- (__NSVariableWidthString)initWithString:(id)a3 widthVariants:(id)a4
+- (__NSVariableWidthString)initWithString:(id)string widthVariants:(id)variants
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -17,17 +17,17 @@
   v6 = [(NSString *)&v8 init];
   if (v6)
   {
-    v6->_variants = [a4 copy];
-    v6->_defaultString = [a3 copy];
+    v6->_variants = [variants copy];
+    v6->_defaultString = [string copy];
   }
 
   return v6;
 }
 
-- (__NSVariableWidthString)initWithWidthVariants:(id)a3
+- (__NSVariableWidthString)initWithWidthVariants:(id)variants
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!variants)
   {
     goto LABEL_19;
   }
@@ -36,8 +36,8 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [a3 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v18 count:16];
+  allKeys = [variants allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v19 objects:v18 count:16];
   if (!v6)
   {
     goto LABEL_19;
@@ -53,14 +53,14 @@
     {
       if (*v20 != v10)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(allKeys);
       }
 
       v12 = *(*(&v19 + 1) + 8 * i);
-      v13 = [v12 integerValue];
+      integerValue = [v12 integerValue];
       if (v9)
       {
-        v14 = v13 < v8;
+        v14 = integerValue < v8;
       }
 
       else
@@ -70,18 +70,18 @@
 
       if (v14)
       {
-        v8 = v13;
+        v8 = integerValue;
         v9 = v12;
       }
     }
 
-    v7 = [v5 countByEnumeratingWithState:&v19 objects:v18 count:16];
+    v7 = [allKeys countByEnumeratingWithState:&v19 objects:v18 count:16];
   }
 
   while (v7);
   if (v9)
   {
-    v16 = [a3 objectForKey:v9];
+    v16 = [variants objectForKey:v9];
   }
 
   else
@@ -90,7 +90,7 @@ LABEL_19:
     v16 = &stru_1EEEFDF90;
   }
 
-  return [(__NSVariableWidthString *)self initWithString:v16 widthVariants:a3];
+  return [(__NSVariableWidthString *)self initWithString:v16 widthVariants:variants];
 }
 
 - (void)dealloc
@@ -102,7 +102,7 @@ LABEL_19:
   [(__NSVariableWidthString *)&v3 dealloc];
 }
 
-- (id)variantFittingPresentationWidth:(int64_t)a3
+- (id)variantFittingPresentationWidth:(int64_t)width
 {
   v19 = *MEMORY[0x1E69E9840];
   if (!self->_variants)
@@ -110,7 +110,7 @@ LABEL_19:
     goto LABEL_15;
   }
 
-  v5 = [(NSDictionary *)self->_variants objectForKey:[NSString stringWithFormat:@"%ld", a3]];
+  v5 = [(NSDictionary *)self->_variants objectForKey:[NSString stringWithFormat:@"%ld", width]];
   if (!v5)
   {
     if (![(NSDictionary *)self->_variants count])
@@ -142,7 +142,7 @@ LABEL_8:
       }
 
       v12 = *(*(&v15 + 1) + 8 * v11);
-      if ([v12 integerValue] > a3)
+      if ([v12 integerValue] > width)
       {
         break;
       }
@@ -168,16 +168,16 @@ LABEL_8:
 
   if (v5 != self->_defaultString)
   {
-    v6 = [[__NSVariableWidthString alloc] initWithString:v5 widthVariants:self->_variants];
+    selfCopy = [[__NSVariableWidthString alloc] initWithString:v5 widthVariants:self->_variants];
   }
 
   else
   {
 LABEL_15:
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)formatConfiguration

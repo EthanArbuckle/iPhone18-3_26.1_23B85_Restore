@@ -1,6 +1,6 @@
 @interface FBSceneClientHandshake
 - (FBSceneClientHandshake)init;
-- (id)_initWithHandle:(id)a3 remnants:(id)a4;
+- (id)_initWithHandle:(id)handle remnants:(id)remnants;
 - (id)description;
 @end
 
@@ -10,8 +10,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(_FBSceneClientProcess *)self->_process handle];
-  v6 = [v3 stringWithFormat:@"<%@:%p %@ remnants=%i>", v4, self, v5, -[NSSet count](self->_remnants, "count")];;
+  handle = [(_FBSceneClientProcess *)self->_process handle];
+  v6 = [v3 stringWithFormat:@"<%@:%p %@ remnants=%i>", v4, self, handle, -[NSSet count](self->_remnants, "count")];;
 
   return v6;
 }
@@ -29,7 +29,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"FBSceneClientHandshake.m";
     v17 = 1024;
@@ -45,12 +45,12 @@
   return result;
 }
 
-- (id)_initWithHandle:(id)a3 remnants:(id)a4
+- (id)_initWithHandle:(id)handle remnants:(id)remnants
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
+  handleCopy = handle;
+  remnantsCopy = remnants;
+  v9 = handleCopy;
   NSClassFromString(&cfstr_Rbsprocesshand_1.isa);
   if (!v9)
   {
@@ -62,7 +62,7 @@
     [FBSceneClientHandshake _initWithHandle:a2 remnants:?];
   }
 
-  v10 = v8;
+  v10 = remnantsCopy;
   NSClassFromString(&cfstr_Nsset.isa);
   if (!v10)
   {

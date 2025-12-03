@@ -1,6 +1,6 @@
 @interface TPSInstalledAppsCondition
 - (TPSInstalledAppsCondition)init;
-- (id)_valuesFromValuesArray:(id)a3;
+- (id)_valuesFromValuesArray:(id)array;
 - (id)targetingValidations;
 @end
 
@@ -23,17 +23,17 @@
 - (id)targetingValidations
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(TPSCondition *)self values];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  values = [(TPSCondition *)self values];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(values, "count")}];
 
-  v6 = [(TPSCondition *)self values];
+  values2 = [(TPSCondition *)self values];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __49__TPSInstalledAppsCondition_targetingValidations__block_invoke;
   v9[3] = &unk_2789B1170;
   v7 = v5;
   v10 = v7;
-  [v6 enumerateObjectsUsingBlock:v9];
+  [values2 enumerateObjectsUsingBlock:v9];
 
   return v7;
 }
@@ -46,18 +46,18 @@ void __49__TPSInstalledAppsCondition_targetingValidations__block_invoke(uint64_t
   [*(a1 + 32) addObject:v4];
 }
 
-- (id)_valuesFromValuesArray:(id)a3
+- (id)_valuesFromValuesArray:(id)array
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = a3;
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  arrayCopy = array;
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(arrayCopy, "count")}];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __52__TPSInstalledAppsCondition__valuesFromValuesArray___block_invoke;
   v9[3] = &unk_2789B0078;
   v10 = v5;
   v6 = v5;
-  [v4 enumerateObjectsUsingBlock:v9];
+  [arrayCopy enumerateObjectsUsingBlock:v9];
 
   v7 = [v6 copy];
 

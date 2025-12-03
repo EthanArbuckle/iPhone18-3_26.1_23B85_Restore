@@ -6,10 +6,10 @@
 + (id)localizedSettingName;
 - (id)_localizedFooterText;
 - (id)_localizedHangUpTriggerPhrase;
-- (id)enabled:(id)a3;
+- (id)enabled:(id)enabled;
 - (id)specifiers;
 - (void)_localizedHangUpTriggerPhrase;
-- (void)setEnabled:(id)a3 specifier:(id)a4;
+- (void)setEnabled:(id)enabled specifier:(id)specifier;
 @end
 
 @implementation AssistantSiriInCallController
@@ -36,23 +36,23 @@
     return 0;
   }
 
-  v4 = [a1 _config];
+  _config = [self _config];
 
-  return [v4 supported];
+  return [_config supported];
 }
 
 + (BOOL)isSettingEnabled
 {
-  v2 = [a1 _config];
+  _config = [self _config];
 
-  return [v2 enabled];
+  return [_config enabled];
 }
 
 + (id)localizedSettingName
 {
-  v3 = [a1 bundle];
-  v4 = [objc_msgSend(a1 "_config")];
-  v5 = [v3 localizedStringForKey:v4 value:&stru_285317CF0 table:@"AssistantSettings"];
+  bundle = [self bundle];
+  v4 = [objc_msgSend(self "_config")];
+  v5 = [bundle localizedStringForKey:v4 value:&stru_285317CF0 table:@"AssistantSettings"];
 
   return v5;
 }
@@ -65,8 +65,8 @@
   if (!v4)
   {
     v5 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"SIRI_IN_CALL_GROUP"];
-    v6 = [(AssistantSiriInCallController *)self _localizedFooterText];
-    [v5 setProperty:v6 forKey:*MEMORY[0x277D3FF88]];
+    _localizedFooterText = [(AssistantSiriInCallController *)self _localizedFooterText];
+    [v5 setProperty:_localizedFooterText forKey:*MEMORY[0x277D3FF88]];
 
     v7 = MEMORY[0x277D3FAD8];
     v8 = +[AssistantSiriInCallController localizedSettingName];
@@ -97,27 +97,27 @@
   return v2;
 }
 
-- (id)enabled:(id)a3
+- (id)enabled:(id)enabled
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(objc_class *)+[AssistantSiriInCallController enabled:a3]];
+  v4 = [(objc_class *)+[AssistantSiriInCallController enabled:enabled]];
 
   return [v3 numberWithBool:v4];
 }
 
-- (void)setEnabled:(id)a3 specifier:(id)a4
+- (void)setEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v5 = +[AssistantSiriInCallController _config];
-  v6 = [v4 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [(objc_class *)v5 setEnabled:v6];
+  [(objc_class *)v5 setEnabled:bOOLValue];
 }
 
 - (id)_localizedFooterText
 {
-  v3 = [(objc_class *)+[AssistantSiriInCallController _config](AssistantSiriInCallController localizationFooterKey];
-  v4 = [v3 stringByAppendingString:@"_EXPLANATION"];
+  localizationFooterKey = [(objc_class *)+[AssistantSiriInCallController _config](AssistantSiriInCallController localizationFooterKey];
+  v4 = [localizationFooterKey stringByAppendingString:@"_EXPLANATION"];
 
   if ((MEMORY[0x245CE5E80]() & 1) == 0)
   {
@@ -126,14 +126,14 @@
     v4 = v5;
   }
 
-  v6 = [(AssistantSiriInCallController *)self bundle];
-  v7 = [v6 localizedStringForKey:v4 value:&stru_285317CF0 table:@"AssistantSettings"];
+  bundle = [(AssistantSiriInCallController *)self bundle];
+  v7 = [bundle localizedStringForKey:v4 value:&stru_285317CF0 table:@"AssistantSettings"];
 
   v8 = +[AssistantSiriInCallController _config];
   if (v8 == objc_opt_class())
   {
-    v9 = [(AssistantSiriInCallController *)self _localizedHangUpTriggerPhrase];
-    v10 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v7 validFormatSpecifiers:@"%@" error:0, v9];
+    _localizedHangUpTriggerPhrase = [(AssistantSiriInCallController *)self _localizedHangUpTriggerPhrase];
+    v10 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v7 validFormatSpecifiers:@"%@" error:0, _localizedHangUpTriggerPhrase];
 
     v7 = v10;
   }
@@ -144,15 +144,15 @@
 - (id)_localizedHangUpTriggerPhrase
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CEF368] sharedPreferences];
-  v4 = [v3 languageCode];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  languageCode = [mEMORY[0x277CEF368] languageCode];
 
-  v5 = [MEMORY[0x277D7A8D0] sharedPreferences];
-  v6 = [v5 localizedTriggerPhraseForLanguageCode:v4];
+  mEMORY[0x277D7A8D0] = [MEMORY[0x277D7A8D0] sharedPreferences];
+  v6 = [mEMORY[0x277D7A8D0] localizedTriggerPhraseForLanguageCode:languageCode];
 
-  v7 = [MEMORY[0x277CEF2D8] sharedInstance];
-  v8 = [(AssistantSiriInCallController *)self bundle];
-  v9 = [v7 localizedStringForKey:@"CALL_HANG_UP_TRIGGER_PHRASE" table:@"AssistantSettings" bundle:v8 languageCode:v4];
+  mEMORY[0x277CEF2D8] = [MEMORY[0x277CEF2D8] sharedInstance];
+  bundle = [(AssistantSiriInCallController *)self bundle];
+  v9 = [mEMORY[0x277CEF2D8] localizedStringForKey:@"CALL_HANG_UP_TRIGGER_PHRASE" table:@"AssistantSettings" bundle:bundle languageCode:languageCode];
 
   if ([v6 length] && objc_msgSend(v9, "length"))
   {
@@ -164,7 +164,7 @@
       *buf = 136315650;
       v17 = "[AssistantSiriInCallController _localizedHangUpTriggerPhrase]";
       v18 = 2112;
-      v19 = v4;
+      v19 = languageCode;
       v20 = 2112;
       v21 = v11;
       _os_log_impl(&dword_2413B9000, v12, OS_LOG_TYPE_DEFAULT, "%s languageCode: %@, triggerPhrase: %@", buf, 0x20u);
@@ -176,7 +176,7 @@
     v13 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_ERROR))
     {
-      [(AssistantSiriInCallController *)v4 _localizedHangUpTriggerPhrase];
+      [(AssistantSiriInCallController *)languageCode _localizedHangUpTriggerPhrase];
     }
 
     v11 = &stru_285317CF0;
@@ -193,7 +193,7 @@
   v3 = 136315394;
   v4 = "[AssistantSiriInCallController _localizedHangUpTriggerPhrase]";
   v5 = 2112;
-  v6 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_2413B9000, a2, OS_LOG_TYPE_ERROR, "%s Missing localization for trigger phrase, languageCode: %@", &v3, 0x16u);
   v2 = *MEMORY[0x277D85DE8];
 }

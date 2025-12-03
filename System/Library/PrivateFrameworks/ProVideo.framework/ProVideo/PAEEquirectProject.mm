@@ -1,22 +1,22 @@
 @interface PAEEquirectProject
 - (BOOL)addParameters;
-- (BOOL)frameSetup:(id *)a3 hardware:(BOOL *)a4 software:(BOOL *)a5;
-- (BOOL)renderOutput:(id)a3 withInfo:(id *)a4;
-- (HGEquirectProjectParams)getParams:(SEL)a3 :(id *)a4 :(id)a5 :(id)a6;
-- (PAEEquirectProject)initWithAPIManager:(id)a3;
-- (PCMatrix44Tmpl<float>)getViewMatrix:(SEL)a3;
-- (double)getProjectionFOVYDegrees:(id)a3;
+- (BOOL)frameSetup:(id *)setup hardware:(BOOL *)hardware software:(BOOL *)software;
+- (BOOL)renderOutput:(id)output withInfo:(id *)info;
+- (HGEquirectProjectParams)getParams:(SEL)params :(id *)a4 :(id)a5 :(id)a6;
+- (PAEEquirectProject)initWithAPIManager:(id)manager;
+- (PCMatrix44Tmpl<float>)getViewMatrix:(SEL)matrix;
+- (double)getProjectionFOVYDegrees:(id)degrees;
 - (id)properties;
 - (void)dealloc;
 @end
 
 @implementation PAEEquirectProject
 
-- (PAEEquirectProject)initWithAPIManager:(id)a3
+- (PAEEquirectProject)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEEquirectProject;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (void)dealloc
@@ -50,14 +50,14 @@
   return [v2 dictionaryWithObjectsAndKeys:{v3, @"PixelTransformSupport", v4, @"TransformsFromLocalToScreenSpace", v5, @"UsesRationalTime", v6, @"SupportsHeliumRendering", v7, @"SDRWorkingSpace", v8, @"HDRWorkingSpace", objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", 3), @"AutoColorProcessingSupport", 0}];
 }
 
-- (BOOL)frameSetup:(id *)a3 hardware:(BOOL *)a4 software:(BOOL *)a5
+- (BOOL)frameSetup:(id *)setup hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a4 = 0;
-  *a5 = 0;
+  *hardware = 0;
+  *software = 0;
   return 1;
 }
 
-- (PCMatrix44Tmpl<float>)getViewMatrix:(SEL)a3
+- (PCMatrix44Tmpl<float>)getViewMatrix:(SEL)matrix
 {
   v26[16] = *MEMORY[0x277D85DE8];
   v7 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
@@ -125,9 +125,9 @@
   return result;
 }
 
-- (double)getProjectionFOVYDegrees:(id)a3
+- (double)getProjectionFOVYDegrees:(id)degrees
 {
-  [-[PROAPIAccessing apiForProtocol:](self->super.super._apiManager apiForProtocol:{&unk_28735F4F0), "focalLengthAtFxTime:", a3.var1}];
+  [-[PROAPIAccessing apiForProtocol:](self->super.super._apiManager apiForProtocol:{&unk_28735F4F0), "focalLengthAtFxTime:", degrees.var1}];
   v4 = 0.0;
   if (fabs(v3) != INFINITY)
   {
@@ -138,7 +138,7 @@
   return v4;
 }
 
-- (HGEquirectProjectParams)getParams:(SEL)a3 :(id *)a4 :(id)a5 :(id)a6
+- (HGEquirectProjectParams)getParams:(SEL)params :(id *)a4 :(id)a5 :(id)a6
 {
   *retstr->var0 = xmmword_2603429B0;
   *&retstr->var1[1] = xmmword_2603429B0;
@@ -238,21 +238,21 @@
   return result;
 }
 
-- (BOOL)renderOutput:(id)a3 withInfo:(id *)a4
+- (BOOL)renderOutput:(id)output withInfo:(id *)info
 {
-  if ([a3 imageType] == 3)
+  if ([output imageType] == 3)
   {
     v7 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
-    v8 = [(PAESharedDefaultBase *)self getRenderMode:a4->var0.var1];
+    v8 = [(PAESharedDefaultBase *)self getRenderMode:info->var0.var1];
     if (v8)
     {
       v20 = 0;
-      v9 = *&a4->var2;
-      v10 = *&a4->var4;
-      *v19.var0 = *&a4->var0.var0;
+      v9 = *&info->var2;
+      v10 = *&info->var4;
+      *v19.var0 = *&info->var0.var0;
       *&v19.var1[1] = v9;
       *&v19.var2[2] = v10;
-      [(PAESharedDefaultBase *)self getHeliumImage:&v20 layerOffsetX:0 layerOffsetY:0 requestInfo:&v19 fromParm:1 atTime:a4->var0.var1];
+      [(PAESharedDefaultBase *)self getHeliumImage:&v20 layerOffsetX:0 layerOffsetY:0 requestInfo:&v19 fromParm:1 atTime:info->var0.var1];
       if (v20)
       {
         [v20 heliumRef];
@@ -269,10 +269,10 @@
         v11 = 0;
       }
 
-      v12 = *&a4->var2;
-      v18[0] = *&a4->var0.var0;
+      v12 = *&info->var2;
+      v18[0] = *&info->var0.var0;
       v18[1] = v12;
-      v18[2] = *&a4->var4;
+      v18[2] = *&info->var4;
       [(PAEEquirectProject *)self getParams:v18];
       v13 = HGObject::operator new(0x240uLL);
       HGEquirectProject::HGEquirectProject(v13);
@@ -287,7 +287,7 @@
       (*(*v15 + 576))(v15, v18);
       v17 = v15;
       (*(*v15 + 16))(v15);
-      [a3 setHeliumRef:&v17];
+      [output setHeliumRef:&v17];
       if (v17)
       {
         (*(*v17 + 24))(v17);

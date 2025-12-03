@@ -9,7 +9,7 @@
   v4 = a3;
   if (_NSIsNSString())
   {
-    v5 = [a1 initWithUUIDString:v4];
+    v5 = [self initWithUUIDString:v4];
   }
 
   else

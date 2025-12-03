@@ -1,12 +1,12 @@
 @interface SLFacebookSession
 + (id)sharedSession;
-- (BOOL)uploadProfilePicture:(id)a3 error:(id *)a4;
+- (BOOL)uploadProfilePicture:(id)picture error:(id *)error;
 - (SLFacebookSession)init;
-- (id)tokenSecretForEntitledClientWithError:(id *)a3;
-- (void)fetchLikeStatusForURL:(id)a3 flags:(unint64_t)a4 completion:(id)a5;
-- (void)likeURL:(id)a3 completion:(id)a4;
-- (void)unlikeURL:(id)a3 completion:(id)a4;
-- (void)uploadPost:(id)a3 suppressAlerts:(BOOL)a4 withPostCompletion:(id)a5;
+- (id)tokenSecretForEntitledClientWithError:(id *)error;
+- (void)fetchLikeStatusForURL:(id)l flags:(unint64_t)flags completion:(id)completion;
+- (void)likeURL:(id)l completion:(id)completion;
+- (void)unlikeURL:(id)l completion:(id)completion;
+- (void)uploadPost:(id)post suppressAlerts:(BOOL)alerts withPostCompletion:(id)completion;
 @end
 
 @implementation SLFacebookSession
@@ -37,52 +37,52 @@ uint64_t __34__SLFacebookSession_sharedSession__block_invoke()
   return [(SLFacebookSession *)&v3 init];
 }
 
-- (id)tokenSecretForEntitledClientWithError:(id *)a3
+- (id)tokenSecretForEntitledClientWithError:(id *)error
 {
-  *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E6959978] code:3 userInfo:0];
+  *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E6959978] code:3 userInfo:0];
   return 0;
 }
 
-- (void)uploadPost:(id)a3 suppressAlerts:(BOOL)a4 withPostCompletion:(id)a5
+- (void)uploadPost:(id)post suppressAlerts:(BOOL)alerts withPostCompletion:(id)completion
 {
   v6 = MEMORY[0x1E696ABC0];
   v7 = *MEMORY[0x1E6959978];
-  v8 = a5;
+  completionCopy = completion;
   v9 = [v6 errorWithDomain:v7 code:3 userInfo:0];
-  (*(a5 + 2))(v8, 0, v9);
+  (*(completion + 2))(completionCopy, 0, v9);
 }
 
-- (BOOL)uploadProfilePicture:(id)a3 error:(id *)a4
+- (BOOL)uploadProfilePicture:(id)picture error:(id *)error
 {
-  *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E6959978] code:3 userInfo:0];
+  *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E6959978] code:3 userInfo:0];
   return 0;
 }
 
-- (void)likeURL:(id)a3 completion:(id)a4
+- (void)likeURL:(id)l completion:(id)completion
 {
   v5 = MEMORY[0x1E696ABC0];
   v6 = *MEMORY[0x1E6959978];
-  v7 = a4;
+  completionCopy = completion;
   v8 = [v5 errorWithDomain:v6 code:3 userInfo:0];
-  (*(a4 + 2))(v7, v8);
+  (*(completion + 2))(completionCopy, v8);
 }
 
-- (void)unlikeURL:(id)a3 completion:(id)a4
+- (void)unlikeURL:(id)l completion:(id)completion
 {
   v5 = MEMORY[0x1E696ABC0];
   v6 = *MEMORY[0x1E6959978];
-  v7 = a4;
+  completionCopy = completion;
   v8 = [v5 errorWithDomain:v6 code:3 userInfo:0];
-  (*(a4 + 2))(v7, v8);
+  (*(completion + 2))(completionCopy, v8);
 }
 
-- (void)fetchLikeStatusForURL:(id)a3 flags:(unint64_t)a4 completion:(id)a5
+- (void)fetchLikeStatusForURL:(id)l flags:(unint64_t)flags completion:(id)completion
 {
   v6 = MEMORY[0x1E696ABC0];
   v7 = *MEMORY[0x1E6959978];
-  v8 = a5;
+  completionCopy = completion;
   v9 = [v6 errorWithDomain:v7 code:3 userInfo:0];
-  (*(a5 + 2))(v8, 0, v9);
+  (*(completion + 2))(completionCopy, 0, v9);
 }
 
 @end

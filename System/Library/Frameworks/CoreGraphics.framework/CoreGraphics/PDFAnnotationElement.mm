@@ -1,17 +1,17 @@
 @interface PDFAnnotationElement
-- (PDFAnnotationElement)initWithAnnotation:(CGPDFAnnotation *)a3 boundingBox:(id)a4;
+- (PDFAnnotationElement)initWithAnnotation:(CGPDFAnnotation *)annotation boundingBox:(id)box;
 @end
 
 @implementation PDFAnnotationElement
 
-- (PDFAnnotationElement)initWithAnnotation:(CGPDFAnnotation *)a3 boundingBox:(id)a4
+- (PDFAnnotationElement)initWithAnnotation:(CGPDFAnnotation *)annotation boundingBox:(id)box
 {
   v6.receiver = self;
   v6.super_class = PDFAnnotationElement;
-  result = [(PDFAtomicElement *)&v6 initWithType:2 boundingBox:a4 layoutDirection:1];
+  result = [(PDFAtomicElement *)&v6 initWithType:2 boundingBox:box layoutDirection:1];
   if (result)
   {
-    result->_annotation = a3;
+    result->_annotation = annotation;
   }
 
   return result;

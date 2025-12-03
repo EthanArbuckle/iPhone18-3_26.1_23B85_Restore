@@ -1,29 +1,29 @@
 @interface MFMailRecipients
-- (BOOL)sanitizeForComposeType:(int64_t)a3 sendingEmailAddress:(id)a4 hideMyEmailAddressProvider:(id)a5;
-- (MFMailRecipients)initWithToRecipients:(id)a3 ccRecipients:(id)a4 bccRecipients:(id)a5;
+- (BOOL)sanitizeForComposeType:(int64_t)type sendingEmailAddress:(id)address hideMyEmailAddressProvider:(id)provider;
+- (MFMailRecipients)initWithToRecipients:(id)recipients ccRecipients:(id)ccRecipients bccRecipients:(id)bccRecipients;
 @end
 
 @implementation MFMailRecipients
 
-- (MFMailRecipients)initWithToRecipients:(id)a3 ccRecipients:(id)a4 bccRecipients:(id)a5
+- (MFMailRecipients)initWithToRecipients:(id)recipients ccRecipients:(id)ccRecipients bccRecipients:(id)bccRecipients
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  recipientsCopy = recipients;
+  ccRecipientsCopy = ccRecipients;
+  bccRecipientsCopy = bccRecipients;
   v19.receiver = self;
   v19.super_class = MFMailRecipients;
   v11 = [(MFMailRecipients *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [recipientsCopy copy];
     toRecipients = v11->_toRecipients;
     v11->_toRecipients = v12;
 
-    v14 = [v9 copy];
+    v14 = [ccRecipientsCopy copy];
     ccRecipients = v11->_ccRecipients;
     v11->_ccRecipients = v14;
 
-    v16 = [v10 copy];
+    v16 = [bccRecipientsCopy copy];
     bccRecipients = v11->_bccRecipients;
     v11->_bccRecipients = v16;
   }
@@ -31,30 +31,30 @@
   return v11;
 }
 
-- (BOOL)sanitizeForComposeType:(int64_t)a3 sendingEmailAddress:(id)a4 hideMyEmailAddressProvider:(id)a5
+- (BOOL)sanitizeForComposeType:(int64_t)type sendingEmailAddress:(id)address hideMyEmailAddressProvider:(id)provider
 {
   v108 = *MEMORY[0x1E69E9840];
-  v74 = a4;
-  v75 = a5;
+  addressCopy = address;
+  providerCopy = provider;
   v8 = objc_alloc(MEMORY[0x1E695DF70]);
-  v9 = [(MFMailRecipients *)self toRecipients];
-  v76 = self;
-  v81 = [v8 initWithCapacity:{objc_msgSend(v9, "count")}];
+  toRecipients = [(MFMailRecipients *)self toRecipients];
+  selfCopy = self;
+  v81 = [v8 initWithCapacity:{objc_msgSend(toRecipients, "count")}];
 
   v10 = objc_alloc(MEMORY[0x1E695DF70]);
-  v11 = [(MFMailRecipients *)self ccRecipients];
-  v12 = [v10 initWithCapacity:{objc_msgSend(v11, "count")}];
+  ccRecipients = [(MFMailRecipients *)self ccRecipients];
+  v12 = [v10 initWithCapacity:{objc_msgSend(ccRecipients, "count")}];
 
   v13 = objc_alloc(MEMORY[0x1E695DF70]);
-  v14 = [(MFMailRecipients *)v76 bccRecipients];
-  v15 = [v13 initWithCapacity:{objc_msgSend(v14, "count")}];
+  bccRecipients = [(MFMailRecipients *)selfCopy bccRecipients];
+  v15 = [v13 initWithCapacity:{objc_msgSend(bccRecipients, "count")}];
 
   v101 = 0u;
   v102 = 0u;
   v99 = 0u;
   v100 = 0u;
-  v16 = [(MFMailRecipients *)v76 toRecipients];
-  v17 = [v16 countByEnumeratingWithState:&v99 objects:v107 count:16];
+  toRecipients2 = [(MFMailRecipients *)selfCopy toRecipients];
+  v17 = [toRecipients2 countByEnumeratingWithState:&v99 objects:v107 count:16];
   if (v17)
   {
     v82 = 0;
@@ -65,7 +65,7 @@
       {
         if (*v100 != v18)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(toRecipients2);
         }
 
         v20 = *(*(&v99 + 1) + 8 * i);
@@ -80,7 +80,7 @@
         }
       }
 
-      v17 = [v16 countByEnumeratingWithState:&v99 objects:v107 count:16];
+      v17 = [toRecipients2 countByEnumeratingWithState:&v99 objects:v107 count:16];
     }
 
     while (v17);
@@ -95,8 +95,8 @@
   v98 = 0u;
   v95 = 0u;
   v96 = 0u;
-  v21 = [(MFMailRecipients *)v76 ccRecipients];
-  v22 = [v21 countByEnumeratingWithState:&v95 objects:v106 count:16];
+  ccRecipients2 = [(MFMailRecipients *)selfCopy ccRecipients];
+  v22 = [ccRecipients2 countByEnumeratingWithState:&v95 objects:v106 count:16];
   if (v22)
   {
     v23 = *v96;
@@ -106,7 +106,7 @@
       {
         if (*v96 != v23)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(ccRecipients2);
         }
 
         v25 = *(*(&v95 + 1) + 8 * j);
@@ -121,7 +121,7 @@
         }
       }
 
-      v22 = [v21 countByEnumeratingWithState:&v95 objects:v106 count:16];
+      v22 = [ccRecipients2 countByEnumeratingWithState:&v95 objects:v106 count:16];
     }
 
     while (v22);
@@ -131,8 +131,8 @@
   v94 = 0u;
   v91 = 0u;
   v92 = 0u;
-  v26 = [(MFMailRecipients *)v76 bccRecipients];
-  v27 = [v26 countByEnumeratingWithState:&v91 objects:v105 count:16];
+  bccRecipients2 = [(MFMailRecipients *)selfCopy bccRecipients];
+  v27 = [bccRecipients2 countByEnumeratingWithState:&v91 objects:v105 count:16];
   if (v27)
   {
     v28 = *v92;
@@ -142,7 +142,7 @@
       {
         if (*v92 != v28)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(bccRecipients2);
         }
 
         v30 = *(*(&v91 + 1) + 8 * k);
@@ -157,29 +157,29 @@
         }
       }
 
-      v27 = [v26 countByEnumeratingWithState:&v91 objects:v105 count:16];
+      v27 = [bccRecipients2 countByEnumeratingWithState:&v91 objects:v105 count:16];
     }
 
     while (v27);
   }
 
-  if (a3 == 5)
+  if (type == 5)
   {
-    v31 = v74;
-    v32 = [v31 emailAddressValue];
-    v33 = [v32 simpleAddress];
-    v34 = v33;
-    if (v33)
+    v31 = addressCopy;
+    emailAddressValue = [v31 emailAddressValue];
+    simpleAddress = [emailAddressValue simpleAddress];
+    v34 = simpleAddress;
+    if (simpleAddress)
     {
-      v77 = v33;
+      stringValue = simpleAddress;
     }
 
     else
     {
-      v77 = [v31 stringValue];
+      stringValue = [v31 stringValue];
     }
 
-    v35 = v75[2]();
+    v35 = providerCopy[2]();
     v36 = [v12 count];
     if (v36)
     {
@@ -188,9 +188,9 @@
         if (v35)
         {
           v38 = [v12 objectAtIndex:m];
-          v39 = [v38 emailAddressValue];
-          v40 = [v39 displayName];
-          if (v40)
+          emailAddressValue2 = [v38 emailAddressValue];
+          displayName = [emailAddressValue2 displayName];
+          if (displayName)
           {
             goto LABEL_43;
           }
@@ -199,22 +199,22 @@
         else
         {
           v38 = [v12 objectAtIndex:m];
-          v39 = [v38 emailAddressValue];
-          v40 = [v39 simpleAddress];
-          if (v40)
+          emailAddressValue2 = [v38 emailAddressValue];
+          displayName = [emailAddressValue2 simpleAddress];
+          if (displayName)
           {
 LABEL_43:
-            v41 = v40;
-            v40 = v41;
+            stringValue2 = displayName;
+            displayName = stringValue2;
             goto LABEL_44;
           }
         }
 
-        v41 = [v38 stringValue];
+        stringValue2 = [v38 stringValue];
 LABEL_44:
-        v42 = v41;
+        v42 = stringValue2;
 
-        if (![v42 caseInsensitiveCompare:v77])
+        if (![v42 caseInsensitiveCompare:stringValue])
         {
           [v12 removeObjectAtIndex:m];
           v82 = 1;
@@ -245,20 +245,20 @@ LABEL_51:
       }
 
       v45 = *(*(&v87 + 1) + 8 * v44);
-      v46 = [v45 emailAddressValue];
-      v47 = [v46 simpleAddress];
-      v48 = v47;
-      if (v47)
+      emailAddressValue3 = [v45 emailAddressValue];
+      simpleAddress2 = [emailAddressValue3 simpleAddress];
+      v48 = simpleAddress2;
+      if (simpleAddress2)
       {
-        v49 = v47;
+        stringValue3 = simpleAddress2;
       }
 
       else
       {
-        v49 = [v45 stringValue];
+        stringValue3 = [v45 stringValue];
       }
 
-      v50 = v49;
+      v50 = stringValue3;
 
       v51 = [v12 count];
       if (v51)
@@ -268,9 +268,9 @@ LABEL_51:
           if (v35)
           {
             v53 = [v12 objectAtIndex:n];
-            v54 = [v53 emailAddressValue];
-            v55 = [v54 displayName];
-            if (v55)
+            emailAddressValue4 = [v53 emailAddressValue];
+            displayName2 = [emailAddressValue4 displayName];
+            if (displayName2)
             {
               goto LABEL_63;
             }
@@ -279,20 +279,20 @@ LABEL_51:
           else
           {
             v53 = [v12 objectAtIndex:n];
-            v54 = [v53 emailAddressValue];
-            v55 = [v54 simpleAddress];
-            if (v55)
+            emailAddressValue4 = [v53 emailAddressValue];
+            displayName2 = [emailAddressValue4 simpleAddress];
+            if (displayName2)
             {
 LABEL_63:
-              v56 = v55;
-              v55 = v56;
+              stringValue4 = displayName2;
+              displayName2 = stringValue4;
               goto LABEL_64;
             }
           }
 
-          v56 = [v53 stringValue];
+          stringValue4 = [v53 stringValue];
 LABEL_64:
-          v57 = v56;
+          v57 = stringValue4;
 
           if (![v57 caseInsensitiveCompare:v50])
           {
@@ -330,9 +330,9 @@ LABEL_83:
       if (v35)
       {
         v60 = [v15 objectAtIndex:v59];
-        v61 = [v60 emailAddressValue];
-        v62 = [v61 displayName];
-        if (v62)
+        emailAddressValue5 = [v60 emailAddressValue];
+        displayName3 = [emailAddressValue5 displayName];
+        if (displayName3)
         {
           goto LABEL_75;
         }
@@ -341,20 +341,20 @@ LABEL_83:
       else
       {
         v60 = [v15 objectAtIndex:v59];
-        v61 = [v60 emailAddressValue];
-        v62 = [v61 simpleAddress];
-        if (v62)
+        emailAddressValue5 = [v60 emailAddressValue];
+        displayName3 = [emailAddressValue5 simpleAddress];
+        if (displayName3)
         {
 LABEL_75:
-          v63 = v62;
-          v62 = v63;
+          stringValue5 = displayName3;
+          displayName3 = stringValue5;
           goto LABEL_76;
         }
       }
 
-      v63 = [v60 stringValue];
+      stringValue5 = [v60 stringValue];
 LABEL_76:
-      v64 = v63;
+      v64 = stringValue5;
 
       if (![v64 caseInsensitiveCompare:v50])
       {
@@ -406,13 +406,13 @@ LABEL_84:
   }
 
   v70 = [v81 copy];
-  [(MFMailRecipients *)v76 setToRecipients:v70];
+  [(MFMailRecipients *)selfCopy setToRecipients:v70];
 
   v71 = [v12 copy];
-  [(MFMailRecipients *)v76 setCcRecipients:v71];
+  [(MFMailRecipients *)selfCopy setCcRecipients:v71];
 
   v72 = [v15 copy];
-  [(MFMailRecipients *)v76 setBccRecipients:v72];
+  [(MFMailRecipients *)selfCopy setBccRecipients:v72];
 
   return v82 & 1;
 }

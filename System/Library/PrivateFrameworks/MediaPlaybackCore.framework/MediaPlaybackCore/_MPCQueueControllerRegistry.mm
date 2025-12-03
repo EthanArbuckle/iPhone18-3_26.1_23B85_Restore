@@ -50,8 +50,8 @@
         v11 = [v10 makeExtensionWithInvalidatable:v3->_publisherProxy];
         if (!v11)
         {
-          v13 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v13 handleFailureInMethod:a2 object:v3 file:@"MPCQueueController.m" lineNumber:2005 description:{@"Behavior conforms to MPCQueueControllerBehaviorTransportableImplementation, but failed to provide transportable extension"}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:v3 file:@"MPCQueueController.m" lineNumber:2005 description:{@"Behavior conforms to MPCQueueControllerBehaviorTransportableImplementation, but failed to provide transportable extension"}];
         }
 
         NSMapInsert(v3->_transportableExtensions, i, v11);

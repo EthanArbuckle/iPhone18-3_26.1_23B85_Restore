@@ -1,22 +1,22 @@
 @interface MetricEntryMO
-+ (unint64_t)metricEntryCount:(unint64_t)a3 moc:(id)a4;
++ (unint64_t)metricEntryCount:(unint64_t)count moc:(id)moc;
 @end
 
 @implementation MetricEntryMO
 
-+ (unint64_t)metricEntryCount:(unint64_t)a3 moc:(id)a4
++ (unint64_t)metricEntryCount:(unint64_t)count moc:(id)moc
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  mocCopy = moc;
   v6 = +[MetricEntryMO entity];
-  v7 = [v6 name];
-  v8 = [AnalyticsStoreProxy fetchRequestForEntity:v7];
+  name = [v6 name];
+  v8 = [AnalyticsStoreProxy fetchRequestForEntity:name];
 
   if (v8)
   {
-    [v8 setFetchLimit:a3];
+    [v8 setFetchLimit:count];
     v15 = 0;
-    v9 = [v5 countForFetchRequest:v8 error:&v15];
+    v9 = [mocCopy countForFetchRequest:v8 error:&v15];
     v10 = v15;
     if (v9 == 0x7FFFFFFFFFFFFFFFLL)
     {

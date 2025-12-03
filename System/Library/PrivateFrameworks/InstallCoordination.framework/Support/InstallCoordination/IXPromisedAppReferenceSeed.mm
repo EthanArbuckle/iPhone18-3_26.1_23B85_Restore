@@ -1,23 +1,23 @@
 @interface IXPromisedAppReferenceSeed
-- (IXPromisedAppReferenceSeed)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (IXPromisedAppReferenceSeed)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IXPromisedAppReferenceSeed
 
-- (IXPromisedAppReferenceSeed)initWithCoder:(id)a3
+- (IXPromisedAppReferenceSeed)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = IXPromisedAppReferenceSeed;
-  v5 = [(IXOwnedDataPromiseSeed *)&v10 initWithCoder:v4];
+  v5 = [(IXOwnedDataPromiseSeed *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installationDomain"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installationDomain"];
     v5->_installationDomain = [v6 unsignedIntegerValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identity"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identity"];
     identity = v5->_identity;
     v5->_identity = v7;
   }
@@ -25,27 +25,27 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = IXPromisedAppReferenceSeed;
-  v4 = a3;
-  [(IXOwnedDataPromiseSeed *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(IXOwnedDataPromiseSeed *)&v7 encodeWithCoder:coderCopy];
   v5 = [NSNumber numberWithUnsignedInteger:[(IXPromisedAppReferenceSeed *)self installationDomain:v7.receiver]];
-  [v4 encodeObject:v5 forKey:@"installationDomain"];
+  [coderCopy encodeObject:v5 forKey:@"installationDomain"];
 
-  v6 = [(IXPromisedAppReferenceSeed *)self identity];
-  [v4 encodeObject:v6 forKey:@"identity"];
+  identity = [(IXPromisedAppReferenceSeed *)self identity];
+  [coderCopy encodeObject:identity forKey:@"identity"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = IXPromisedAppReferenceSeed;
-  v4 = [(IXOwnedDataPromiseSeed *)&v8 copyWithZone:a3];
+  v4 = [(IXOwnedDataPromiseSeed *)&v8 copyWithZone:zone];
   [v4 setInstallationDomain:{-[IXPromisedAppReferenceSeed installationDomain](self, "installationDomain")}];
-  v5 = [(IXPromisedAppReferenceSeed *)self identity];
-  v6 = [v5 copy];
+  identity = [(IXPromisedAppReferenceSeed *)self identity];
+  v6 = [identity copy];
   [v4 setIdentity:v6];
 
   return v4;

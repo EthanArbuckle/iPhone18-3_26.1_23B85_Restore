@@ -1,7 +1,7 @@
 @interface APToDCPEndpoint
 + (id)sharedInstance;
 - (APToDCPEndpoint)init;
-- (id)copyProperty:(id)a3;
+- (id)copyProperty:(id)property;
 @end
 
 @implementation APToDCPEndpoint
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __33__APToDCPEndpoint_sharedInstance__block_invoke;
   block[3] = &unk_2784F8E40;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -41,10 +41,10 @@ id __33__APToDCPEndpoint_sharedInstance__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)copyProperty:(id)a3
+- (id)copyProperty:(id)property
 {
   objc_sync_enter(self);
-  v5 = [(CBAPEndpoint *)self->_endpoint copyProperty:a3];
+  v5 = [(CBAPEndpoint *)self->_endpoint copyProperty:property];
   objc_sync_exit(self);
   return v5;
 }

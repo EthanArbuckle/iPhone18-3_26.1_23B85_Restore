@@ -6,20 +6,20 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(UINavigationButtonAccessibility__ChatKit__UIKit *)self accessibilityIdentification];
-  if ([v3 isEqualToString:@"composeButton"])
+  accessibilityIdentification = [(UINavigationButtonAccessibility__ChatKit__UIKit *)self accessibilityIdentification];
+  if ([accessibilityIdentification isEqualToString:@"composeButton"])
   {
-    v4 = accessibilityLocalizedString(@"compose.button.text");
+    accessibilityLabel = accessibilityLocalizedString(@"compose.button.text");
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = UINavigationButtonAccessibility__ChatKit__UIKit;
-    v4 = [(UINavigationButtonAccessibility__ChatKit__UIKit *)&v7 accessibilityLabel];
+    accessibilityLabel = [(UINavigationButtonAccessibility__ChatKit__UIKit *)&v7 accessibilityLabel];
   }
 
-  v5 = v4;
+  v5 = accessibilityLabel;
 
   return v5;
 }

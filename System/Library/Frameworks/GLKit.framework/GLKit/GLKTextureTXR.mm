@@ -1,6 +1,6 @@
 @interface GLKTextureTXR
-- (BOOL)uploadToGLTexture:(unsigned int)a3 error:(id *)a4;
-- (GLKTextureTXR)initWithTexture:(id)a3 API:(unint64_t)a4 options:(id)a5 error:(id *)a6;
+- (BOOL)uploadToGLTexture:(unsigned int)texture error:(id *)error;
+- (GLKTextureTXR)initWithTexture:(id)texture API:(unint64_t)i options:(id)options error:(id *)error;
 - (void)dealloc;
 @end
 
@@ -13,42 +13,42 @@
   [(GLKTextureTXR *)&v3 dealloc];
 }
 
-- (GLKTextureTXR)initWithTexture:(id)a3 API:(unint64_t)a4 options:(id)a5 error:(id *)a6
+- (GLKTextureTXR)initWithTexture:(id)texture API:(unint64_t)i options:(id)options error:(id *)error
 {
   v24.receiver = self;
   v24.super_class = GLKTextureTXR;
-  v9 = [(GLKTextureTXR *)&v24 init:a3];
+  v9 = [(GLKTextureTXR *)&v24 init:texture];
   v10 = v9;
   if (!v9)
   {
     return v10;
   }
 
-  v9->_texture = a3;
-  v11 = a3;
-  v10->_arrayLength = [objc_msgSend(objc_msgSend(objc_msgSend(a3 "mipmapLevels")];
+  v9->_texture = texture;
+  textureCopy = texture;
+  v10->_arrayLength = [objc_msgSend(objc_msgSend(objc_msgSend(texture "mipmapLevels")];
   if ([(TXRTexture *)v10->_texture cubemap])
   {
     if (v10->_arrayLength >= 2)
     {
-      if (a6)
+      if (error)
       {
-        *a6 = _GLKTextureErrorWithCodeAndErrorString(19, @"OpenGL ES does not support cubemap arrays");
+        *error = _GLKTextureErrorWithCodeAndErrorString(19, @"OpenGL ES does not support cubemap arrays");
       }
 
       v10->_arrayLength = 1;
     }
 
     v10->_target = 34067;
-    [a3 dimensions];
+    [texture dimensions];
     if (v12 != 1)
     {
       [GLKTextureTXR initWithTexture:API:options:error:];
     }
 
-    [a3 dimensions];
+    [texture dimensions];
     v14 = v13;
-    [a3 dimensions];
+    [texture dimensions];
     if (v14 != v15)
     {
       [GLKTextureTXR initWithTexture:API:options:error:];
@@ -76,9 +76,9 @@
     {
       if (arrayLength >= 2)
       {
-        if (a6)
+        if (error)
         {
-          *a6 = _GLKTextureErrorWithCodeAndErrorString(19, @"OpenGL does not support 3D texture arrays");
+          *error = _GLKTextureErrorWithCodeAndErrorString(19, @"OpenGL does not support 3D texture arrays");
         }
 
         goto LABEL_19;
@@ -110,21 +110,21 @@ LABEL_19:
   [(TXRTexture *)v10->_texture dimensions];
   v10->_depth = v22;
   v10->_hasAlpha = [MEMORY[0x277D71430] hasAlpha:{-[TXRTexture pixelFormat](v10->_texture, "pixelFormat")}];
-  v10->_API = a4;
+  v10->_API = i;
   return v10;
 }
 
-- (BOOL)uploadToGLTexture:(unsigned int)a3 error:(id *)a4
+- (BOOL)uploadToGLTexture:(unsigned int)texture error:(id *)error
 {
-  v6 = self;
+  selfCopy = self;
   self->_lossyCompressedSource = [MEMORY[0x277D71430] isCompressed:{-[TXRTexture pixelFormat](self->_texture, "pixelFormat")}];
-  v7 = [(TXRTexture *)v6->_texture pixelFormat];
-  API = v6->_API;
-  if (v7 > 79)
+  pixelFormat = [(TXRTexture *)selfCopy->_texture pixelFormat];
+  API = selfCopy->_API;
+  if (pixelFormat > 79)
   {
-    if (v7 <= 551)
+    if (pixelFormat <= 551)
     {
-      switch(v7)
+      switch(pixelFormat)
       {
         case 80:
           v62 = 0x80E100001401;
@@ -378,9 +378,9 @@ LABEL_19:
       }
     }
 
-    if (v7 <= 554)
+    if (pixelFormat <= 554)
     {
-      if (v7 != 553)
+      if (pixelFormat != 553)
       {
         v64 = 32856;
         v62 = 0x80E100001401;
@@ -395,7 +395,7 @@ LABEL_46:
       goto LABEL_147;
     }
 
-    switch(v7)
+    switch(pixelFormat)
     {
       case 555:
         goto LABEL_46;
@@ -413,7 +413,7 @@ LABEL_125:
     }
 
 LABEL_126:
-    v18 = [MEMORY[0x277D71430] isGammaEncoded:v7];
+    v18 = [MEMORY[0x277D71430] isGammaEncoded:pixelFormat];
     if (v18)
     {
       v19 = 35906;
@@ -440,21 +440,21 @@ LABEL_126:
     goto LABEL_147;
   }
 
-  if (v7 <= 39)
+  if (pixelFormat <= 39)
   {
     v64 = 33321;
     v62 = 0x190300001401;
     v10 = 10;
-    if (v7 > 19)
+    if (pixelFormat > 19)
     {
-      if (v7 <= 24)
+      if (pixelFormat <= 24)
       {
-        if (v7 == 20)
+        if (pixelFormat == 20)
         {
           goto LABEL_147;
         }
 
-        if (v7 == 22)
+        if (pixelFormat == 22)
         {
           v64 = 36756;
           v62 = 0x190300001400;
@@ -465,7 +465,7 @@ LABEL_126:
         goto LABEL_126;
       }
 
-      switch(v7)
+      switch(pixelFormat)
       {
         case 25:
           v62 = 0x19030000140BLL;
@@ -486,14 +486,14 @@ LABEL_126:
       goto LABEL_134;
     }
 
-    if (v7 > 10)
+    if (pixelFormat > 10)
     {
-      if (v7 == 11)
+      if (pixelFormat == 11)
       {
         goto LABEL_147;
       }
 
-      if (v7 != 12)
+      if (pixelFormat != 12)
       {
         goto LABEL_126;
       }
@@ -503,9 +503,9 @@ LABEL_126:
       goto LABEL_134;
     }
 
-    if (v7 != 1)
+    if (pixelFormat != 1)
     {
-      if (v7 != 10)
+      if (pixelFormat != 10)
       {
         goto LABEL_126;
       }
@@ -522,11 +522,11 @@ LABEL_109:
     goto LABEL_135;
   }
 
-  if (v7 <= 61)
+  if (pixelFormat <= 61)
   {
-    if (v7 <= 41)
+    if (pixelFormat <= 41)
     {
-      if (v7 == 40)
+      if (pixelFormat == 40)
       {
         v62 = 0x190700008363;
         v9 = 36194;
@@ -541,7 +541,7 @@ LABEL_109:
       goto LABEL_134;
     }
 
-    switch(v7)
+    switch(pixelFormat)
     {
       case '*':
         v62 = 0x190800008033;
@@ -556,7 +556,7 @@ LABEL_109:
         v62 = 0x822700001401;
         v10 = 30;
 LABEL_147:
-        [(TXRTexture *)v6->_texture reformat:v10 gammaDegamma:0 bufferAllocator:0 error:a4];
+        [(TXRTexture *)selfCopy->_texture reformat:v10 gammaDegamma:0 bufferAllocator:0 error:error];
         goto LABEL_148;
       default:
         goto LABEL_126;
@@ -567,9 +567,9 @@ LABEL_134:
     goto LABEL_135;
   }
 
-  if (v7 <= 69)
+  if (pixelFormat <= 69)
   {
-    if (v7 == 62)
+    if (pixelFormat == 62)
     {
       v64 = 36756;
       v62 = 0x822700001400;
@@ -577,7 +577,7 @@ LABEL_134:
       goto LABEL_147;
     }
 
-    if (v7 != 65)
+    if (pixelFormat != 65)
     {
       goto LABEL_126;
     }
@@ -587,16 +587,16 @@ LABEL_134:
     goto LABEL_134;
   }
 
-  if (v7 == 70)
+  if (pixelFormat == 70)
   {
     v62 = 0x190800001401;
     v9 = 32856;
     goto LABEL_134;
   }
 
-  if (v7 != 71)
+  if (pixelFormat != 71)
   {
-    if (v7 != 72)
+    if (pixelFormat != 72)
     {
       goto LABEL_126;
     }
@@ -639,10 +639,10 @@ LABEL_134:
 LABEL_135:
   v20 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:glGetString(0x1F03u)];
   v21 = [v20 componentsSeparatedByString:@" "];
-  if ([MEMORY[0x277D71430] isASTC:{-[TXRTexture pixelFormat](v6->_texture, "pixelFormat")}] && !objc_msgSend(v21, "containsObject:", @"GL_KHR_texture_compression_astc_ldr") || objc_msgSend(MEMORY[0x277D71430], "isETC2:", -[TXRTexture pixelFormat](v6->_texture, "pixelFormat")) && v6->_API != 3)
+  if ([MEMORY[0x277D71430] isASTC:{-[TXRTexture pixelFormat](selfCopy->_texture, "pixelFormat")}] && !objc_msgSend(v21, "containsObject:", @"GL_KHR_texture_compression_astc_ldr") || objc_msgSend(MEMORY[0x277D71430], "isETC2:", -[TXRTexture pixelFormat](selfCopy->_texture, "pixelFormat")) && selfCopy->_API != 3)
   {
-    v22 = [(TXRTexture *)v6->_texture pixelFormat];
-    v23 = [MEMORY[0x277D71430] isGammaEncoded:v22];
+    pixelFormat2 = [(TXRTexture *)selfCopy->_texture pixelFormat];
+    v23 = [MEMORY[0x277D71430] isGammaEncoded:pixelFormat2];
     if (v23)
     {
       v24 = 35906;
@@ -670,42 +670,42 @@ LABEL_135:
   }
 
 LABEL_148:
-  [(TXRTexture *)v6->_texture dimensions];
+  [(TXRTexture *)selfCopy->_texture dimensions];
   v26 = v25;
-  [(TXRTexture *)v6->_texture dimensions];
+  [(TXRTexture *)selfCopy->_texture dimensions];
   if (((v27 - 1) & v26) == 0)
   {
-    [(TXRTexture *)v6->_texture dimensions];
+    [(TXRTexture *)selfCopy->_texture dimensions];
     v29 = v28;
-    [(TXRTexture *)v6->_texture dimensions];
+    [(TXRTexture *)selfCopy->_texture dimensions];
     if (((v30 - 1) & v29) == 0)
     {
       goto LABEL_153;
     }
   }
 
-  v31 = v6->_API;
+  v31 = selfCopy->_API;
   if (v31 != 1)
   {
     if (v31 == 2)
     {
-      v6->_mipmapLevelCount = 1;
+      selfCopy->_mipmapLevelCount = 1;
     }
 
 LABEL_153:
-    v59 = a4;
-    glBindTexture(v6->_target, a3);
-    glTexParameteri(v6->_target, 0x2802u, 33071);
-    glTexParameteri(v6->_target, 0x2803u, 33071);
-    glTexParameteri(v6->_target, 0x2800u, 9729);
-    glTexParameteri(v6->_target, 0x813Du, v6->_mipmapLevelCount);
-    v32 = [MEMORY[0x277D71430] isCompressed:{-[TXRTexture pixelFormat](v6->_texture, "pixelFormat")}];
+    errorCopy = error;
+    glBindTexture(selfCopy->_target, texture);
+    glTexParameteri(selfCopy->_target, 0x2802u, 33071);
+    glTexParameteri(selfCopy->_target, 0x2803u, 33071);
+    glTexParameteri(selfCopy->_target, 0x2800u, 9729);
+    glTexParameteri(selfCopy->_target, 0x813Du, selfCopy->_mipmapLevelCount);
+    v32 = [MEMORY[0x277D71430] isCompressed:{-[TXRTexture pixelFormat](selfCopy->_texture, "pixelFormat")}];
     if ((v32 & 1) == 0)
     {
-      [MEMORY[0x277D71430] pixelBytes:{-[TXRTexture pixelFormat](v6->_texture, "pixelFormat")}];
+      [MEMORY[0x277D71430] pixelBytes:{-[TXRTexture pixelFormat](selfCopy->_texture, "pixelFormat")}];
     }
 
-    if (v6->_mipmapLevelCount <= 1)
+    if (selfCopy->_mipmapLevelCount <= 1)
     {
       v33 = 9729;
     }
@@ -715,16 +715,16 @@ LABEL_153:
       v33 = 9987;
     }
 
-    glTexParameteri(v6->_target, 0x2801u, v33);
-    [(TXRTexture *)v6->_texture dimensions];
+    glTexParameteri(selfCopy->_target, 0x2801u, v33);
+    [(TXRTexture *)selfCopy->_texture dimensions];
     v63 = v34;
-    if (v6->_mipmapLevelCount)
+    if (selfCopy->_mipmapLevelCount)
     {
       v35 = 0;
       while (1)
       {
-        v60 = [-[TXRTexture mipmapLevels](v6->_texture "mipmapLevels")];
-        if (v6->_arrayLength)
+        v60 = [-[TXRTexture mipmapLevels](selfCopy->_texture "mipmapLevels")];
+        if (selfCopy->_arrayLength)
         {
           break;
         }
@@ -745,7 +745,7 @@ LABEL_181:
         *(&v50 + 1) = __PAIR64__(HIDWORD(v63), v51);
         ++v35;
         v63 = v50;
-        if (v35 >= v6->_mipmapLevelCount)
+        if (v35 >= selfCopy->_mipmapLevelCount)
         {
           goto LABEL_185;
         }
@@ -754,7 +754,7 @@ LABEL_181:
       v36 = 0;
       while (1)
       {
-        v37 = v6;
+        v37 = selfCopy;
         v61 = v36;
         v38 = [objc_msgSend(v60 "elements")];
         if ([objc_msgSend(v38 "faces")])
@@ -764,7 +764,7 @@ LABEL_181:
 
 LABEL_180:
         v36 = v61 + 1;
-        v6 = v37;
+        selfCopy = v37;
         if (v61 + 1 >= v37->_arrayLength)
         {
           goto LABEL_181;
@@ -776,14 +776,14 @@ LABEL_180:
       {
         v40 = [objc_msgSend(v38 "faces")];
         v41 = [objc_msgSend(v40 "buffer")];
-        v42 = [v40 bytesPerRow];
-        if (!v42)
+        bytesPerRow = [v40 bytesPerRow];
+        if (!bytesPerRow)
         {
-          v42 = [MEMORY[0x277D71430] packedMemoryLayoutForFormat:-[TXRTexture pixelFormat](v37->_texture dimensions:"pixelFormat"), *&v63];
+          bytesPerRow = [MEMORY[0x277D71430] packedMemoryLayoutForFormat:-[TXRTexture pixelFormat](v37->_texture dimensions:"pixelFormat"), *&v63];
         }
 
-        v43 = [v41 bytes];
-        v44 = [v40 offset];
+        bytes = [v41 bytes];
+        offset = [v40 offset];
         target = v37->_target;
         if (target > 34066)
         {
@@ -818,18 +818,18 @@ LABEL_179:
       }
 
 LABEL_171:
-      pixels = (v43 + v44);
+      pixels = (bytes + offset);
       if (v32)
       {
-        v47 = [v40 bytesPerImage];
-        if (v47)
+        bytesPerImage = [v40 bytesPerImage];
+        if (bytesPerImage)
         {
-          v48 = v47;
+          v48 = bytesPerImage;
         }
 
         else
         {
-          v48 = v42 * DWORD1(v63);
+          v48 = bytesPerRow * DWORD1(v63);
         }
 
         glCompressedTexImage2D(v39 + v37->_loadTarget, v35, v64, v63, SDWORD1(v63), 0, v48, pixels);
@@ -840,7 +840,7 @@ LABEL_171:
         params = 0;
         glGetIntegerv(0xCF5u, &params);
         glPixelStorei(0xCF5u, 1);
-        if (v42 != v63 * [MEMORY[0x277D71430] pixelBytes:{-[TXRTexture pixelFormat](v37->_texture, "pixelFormat")}])
+        if (bytesPerRow != v63 * [MEMORY[0x277D71430] pixelBytes:{-[TXRTexture pixelFormat](v37->_texture, "pixelFormat")}])
         {
           [GLKTextureTXR uploadToGLTexture:error:];
         }
@@ -865,14 +865,14 @@ LABEL_185:
       v66 = 0;
       glGetIntegerv(0xD33u, &v66);
       glGetIntegerv(0x851Cu, &v65);
-      a4 = v59;
-      if (([(TXRTexture *)v6->_texture cubemap]& 1) != 0 || ([(TXRTexture *)v6->_texture dimensions], v53 <= v66))
+      error = errorCopy;
+      if (([(TXRTexture *)selfCopy->_texture cubemap]& 1) != 0 || ([(TXRTexture *)selfCopy->_texture dimensions], v53 <= v66))
       {
-        if (([(TXRTexture *)v6->_texture cubemap]& 1) != 0 || ([(TXRTexture *)v6->_texture dimensions], v56 <= v66))
+        if (([(TXRTexture *)selfCopy->_texture cubemap]& 1) != 0 || ([(TXRTexture *)selfCopy->_texture dimensions], v56 <= v66))
         {
-          if ([(TXRTexture *)v6->_texture cubemap])
+          if ([(TXRTexture *)selfCopy->_texture cubemap])
           {
-            [(TXRTexture *)v6->_texture dimensions];
+            [(TXRTexture *)selfCopy->_texture dimensions];
             if (v57 <= v65)
             {
               v54 = 0;
@@ -905,10 +905,10 @@ LABEL_185:
     else
     {
       v54 = @"OpenGL Error";
-      a4 = v59;
+      error = errorCopy;
     }
 
-    if (a4)
+    if (error)
     {
       goto LABEL_204;
     }
@@ -916,13 +916,13 @@ LABEL_185:
     return 0;
   }
 
-  if (a4)
+  if (error)
   {
     v54 = @"OpenGL ES 1 does not support non-power-of-two-textures";
 LABEL_204:
     v58 = _GLKTextureErrorWithCodeAndErrorString(0, v54);
     result = 0;
-    *a4 = v58;
+    *error = v58;
     return result;
   }
 

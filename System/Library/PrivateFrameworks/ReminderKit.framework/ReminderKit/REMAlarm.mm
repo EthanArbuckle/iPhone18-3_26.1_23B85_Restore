@@ -1,143 +1,143 @@
 @interface REMAlarm
 + (id)newObjectID;
-+ (id)objectIDWithUUID:(id)a3;
++ (id)objectIDWithUUID:(id)d;
 - (BOOL)isAcknowledged;
-- (BOOL)isContentEqual:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isContentEqual:(id)equal;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isOriginal;
 - (BOOL)isSnooze;
-- (REMAlarm)initWithAlarm:(id)a3 objectID:(id)a4;
-- (REMAlarm)initWithCoder:(id)a3;
-- (REMAlarm)initWithTrigger:(id)a3;
-- (REMAlarm)initWithTrigger:(id)a3 objectID:(id)a4;
+- (REMAlarm)initWithAlarm:(id)alarm objectID:(id)d;
+- (REMAlarm)initWithCoder:(id)coder;
+- (REMAlarm)initWithTrigger:(id)trigger;
+- (REMAlarm)initWithTrigger:(id)trigger objectID:(id)d;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMAlarm
 
 + (id)newObjectID
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [a1 objectIDWithUUID:v3];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v4 = [self objectIDWithUUID:uUID];
 
   return v4;
 }
 
-+ (id)objectIDWithUUID:(id)a3
++ (id)objectIDWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 cdEntityName];
-  v6 = [REMObjectID objectIDWithUUID:v4 entityName:v5];
+  dCopy = d;
+  cdEntityName = [self cdEntityName];
+  v6 = [REMObjectID objectIDWithUUID:dCopy entityName:cdEntityName];
 
   return v6;
 }
 
-- (REMAlarm)initWithTrigger:(id)a3 objectID:(id)a4
+- (REMAlarm)initWithTrigger:(id)trigger objectID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  triggerCopy = trigger;
+  dCopy = d;
   v13.receiver = self;
   v13.super_class = REMAlarm;
   v8 = [(REMAlarm *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    [(REMAlarm *)v8 setTrigger:v6];
-    [(REMAlarm *)v9 setObjectID:v7];
-    v10 = [v7 uuid];
-    v11 = [v10 UUIDString];
-    [(REMAlarm *)v9 setAlarmUID:v11];
+    [(REMAlarm *)v8 setTrigger:triggerCopy];
+    [(REMAlarm *)v9 setObjectID:dCopy];
+    uuid = [dCopy uuid];
+    uUIDString = [uuid UUIDString];
+    [(REMAlarm *)v9 setAlarmUID:uUIDString];
   }
 
   return v9;
 }
 
-- (REMAlarm)initWithTrigger:(id)a3
+- (REMAlarm)initWithTrigger:(id)trigger
 {
-  v4 = a3;
-  v5 = [objc_opt_class() newObjectID];
-  v6 = [(REMAlarm *)self initWithTrigger:v4 objectID:v5];
+  triggerCopy = trigger;
+  newObjectID = [objc_opt_class() newObjectID];
+  v6 = [(REMAlarm *)self initWithTrigger:triggerCopy objectID:newObjectID];
 
   return v6;
 }
 
-- (REMAlarm)initWithAlarm:(id)a3 objectID:(id)a4
+- (REMAlarm)initWithAlarm:(id)alarm objectID:(id)d
 {
-  v5 = a3;
+  alarmCopy = alarm;
   v6 = [REMAlarmTrigger alloc];
-  v7 = [v5 trigger];
-  v8 = [v5 trigger];
-  v9 = [objc_opt_class() newObjectID];
-  v10 = [(REMAlarmTrigger *)v6 initWithAlarmTrigger:v7 objectID:v9];
+  trigger = [alarmCopy trigger];
+  trigger2 = [alarmCopy trigger];
+  newObjectID = [objc_opt_class() newObjectID];
+  v10 = [(REMAlarmTrigger *)v6 initWithAlarmTrigger:trigger objectID:newObjectID];
 
   v11 = [(REMAlarm *)self initWithTrigger:v10];
-  v12 = [v5 acknowledgedDate];
+  acknowledgedDate = [alarmCopy acknowledgedDate];
 
-  [(REMAlarm *)v11 setAcknowledgedDate:v12];
+  [(REMAlarm *)v11 setAcknowledgedDate:acknowledgedDate];
   return v11;
 }
 
-- (REMAlarm)initWithCoder:(id)a3
+- (REMAlarm)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"trigger"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"objectID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"trigger"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"objectID"];
   v7 = [(REMAlarm *)self initWithTrigger:v5 objectID:v6];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"acknowledgedDate"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"acknowledgedDate"];
   [(REMAlarm *)v7 setAcknowledgedDate:v8];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"alarmUID"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"alarmUID"];
   [(REMAlarm *)v7 setAlarmUID:v9];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originalAlarmUID"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originalAlarmUID"];
 
   [(REMAlarm *)v7 setOriginalAlarmUID:v10];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMAlarm *)self trigger];
-  [v4 encodeObject:v5 forKey:@"trigger"];
+  coderCopy = coder;
+  trigger = [(REMAlarm *)self trigger];
+  [coderCopy encodeObject:trigger forKey:@"trigger"];
 
-  v6 = [(REMAlarm *)self objectID];
-  [v4 encodeObject:v6 forKey:@"objectID"];
+  objectID = [(REMAlarm *)self objectID];
+  [coderCopy encodeObject:objectID forKey:@"objectID"];
 
-  v7 = [(REMAlarm *)self acknowledgedDate];
-  [v4 encodeObject:v7 forKey:@"acknowledgedDate"];
+  acknowledgedDate = [(REMAlarm *)self acknowledgedDate];
+  [coderCopy encodeObject:acknowledgedDate forKey:@"acknowledgedDate"];
 
-  v8 = [(REMAlarm *)self alarmUID];
-  [v4 encodeObject:v8 forKey:@"alarmUID"];
+  alarmUID = [(REMAlarm *)self alarmUID];
+  [coderCopy encodeObject:alarmUID forKey:@"alarmUID"];
 
-  v9 = [(REMAlarm *)self originalAlarmUID];
-  [v4 encodeObject:v9 forKey:@"originalAlarmUID"];
+  originalAlarmUID = [(REMAlarm *)self originalAlarmUID];
+  [coderCopy encodeObject:originalAlarmUID forKey:@"originalAlarmUID"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 != self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy != self)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(REMAlarm *)self objectID];
-      v8 = [(REMAlarm *)v6 objectID];
-      v9 = v8;
-      if (v7 == v8)
+      objectID = [(REMAlarm *)self objectID];
+      objectID2 = [(REMAlarm *)v6 objectID];
+      v9 = objectID2;
+      if (objectID == objectID2)
       {
       }
 
       else
       {
-        v10 = [(REMAlarm *)self objectID];
-        v11 = [(REMAlarm *)v6 objectID];
-        v12 = [v10 isEqual:v11];
+        objectID3 = [(REMAlarm *)self objectID];
+        objectID4 = [(REMAlarm *)v6 objectID];
+        v12 = [objectID3 isEqual:objectID4];
 
         if (!v12)
         {
@@ -145,18 +145,18 @@
         }
       }
 
-      v14 = [(REMAlarm *)self trigger];
-      v15 = [(REMAlarm *)v6 trigger];
-      v16 = v15;
-      if (v14 == v15)
+      trigger = [(REMAlarm *)self trigger];
+      trigger2 = [(REMAlarm *)v6 trigger];
+      v16 = trigger2;
+      if (trigger == trigger2)
       {
       }
 
       else
       {
-        v17 = [(REMAlarm *)self trigger];
-        v18 = [(REMAlarm *)v6 trigger];
-        v19 = [v17 isEqual:v18];
+        trigger3 = [(REMAlarm *)self trigger];
+        trigger4 = [(REMAlarm *)v6 trigger];
+        v19 = [trigger3 isEqual:trigger4];
 
         if (!v19)
         {
@@ -164,18 +164,18 @@
         }
       }
 
-      v20 = [(REMAlarm *)self acknowledgedDate];
-      v21 = [(REMAlarm *)v6 acknowledgedDate];
-      v22 = v21;
-      if (v20 == v21)
+      acknowledgedDate = [(REMAlarm *)self acknowledgedDate];
+      acknowledgedDate2 = [(REMAlarm *)v6 acknowledgedDate];
+      v22 = acknowledgedDate2;
+      if (acknowledgedDate == acknowledgedDate2)
       {
       }
 
       else
       {
-        v23 = [(REMAlarm *)self acknowledgedDate];
-        v24 = [(REMAlarm *)v6 acknowledgedDate];
-        v25 = [v23 isEqual:v24];
+        acknowledgedDate3 = [(REMAlarm *)self acknowledgedDate];
+        acknowledgedDate4 = [(REMAlarm *)v6 acknowledgedDate];
+        v25 = [acknowledgedDate3 isEqual:acknowledgedDate4];
 
         if (!v25)
         {
@@ -183,18 +183,18 @@
         }
       }
 
-      v26 = [(REMAlarm *)self alarmUID];
-      v27 = [(REMAlarm *)v6 alarmUID];
-      v28 = v27;
-      if (v26 == v27)
+      alarmUID = [(REMAlarm *)self alarmUID];
+      alarmUID2 = [(REMAlarm *)v6 alarmUID];
+      v28 = alarmUID2;
+      if (alarmUID == alarmUID2)
       {
       }
 
       else
       {
-        v29 = [(REMAlarm *)self alarmUID];
-        v30 = [(REMAlarm *)v6 alarmUID];
-        v31 = [v29 isEqual:v30];
+        alarmUID3 = [(REMAlarm *)self alarmUID];
+        alarmUID4 = [(REMAlarm *)v6 alarmUID];
+        v31 = [alarmUID3 isEqual:alarmUID4];
 
         if (!v31)
         {
@@ -202,18 +202,18 @@
         }
       }
 
-      v33 = [(REMAlarm *)self originalAlarmUID];
-      v34 = [(REMAlarm *)v6 originalAlarmUID];
-      if (v33 == v34)
+      originalAlarmUID = [(REMAlarm *)self originalAlarmUID];
+      originalAlarmUID2 = [(REMAlarm *)v6 originalAlarmUID];
+      if (originalAlarmUID == originalAlarmUID2)
       {
         v13 = 1;
       }
 
       else
       {
-        v35 = [(REMAlarm *)self originalAlarmUID];
-        v36 = [(REMAlarm *)v6 originalAlarmUID];
-        v13 = [v35 isEqual:v36];
+        originalAlarmUID3 = [(REMAlarm *)self originalAlarmUID];
+        originalAlarmUID4 = [(REMAlarm *)v6 originalAlarmUID];
+        v13 = [originalAlarmUID3 isEqual:originalAlarmUID4];
       }
 
       goto LABEL_19;
@@ -232,28 +232,28 @@ LABEL_20:
   return v13 & 1;
 }
 
-- (BOOL)isContentEqual:(id)a3
+- (BOOL)isContentEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 != self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy != self)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(REMAlarm *)self trigger];
-      v8 = [(REMAlarm *)v6 trigger];
-      v9 = v8;
-      if (v7 == v8)
+      trigger = [(REMAlarm *)self trigger];
+      trigger2 = [(REMAlarm *)v6 trigger];
+      v9 = trigger2;
+      if (trigger == trigger2)
       {
       }
 
       else
       {
-        v10 = [(REMAlarm *)self trigger];
-        v11 = [(REMAlarm *)v6 trigger];
-        v12 = [v10 isContentEqual:v11];
+        trigger3 = [(REMAlarm *)self trigger];
+        trigger4 = [(REMAlarm *)v6 trigger];
+        v12 = [trigger3 isContentEqual:trigger4];
 
         if (!v12)
         {
@@ -261,18 +261,18 @@ LABEL_20:
         }
       }
 
-      v14 = [(REMAlarm *)self acknowledgedDate];
-      v15 = [(REMAlarm *)v6 acknowledgedDate];
-      v16 = v15;
-      if (v14 == v15)
+      acknowledgedDate = [(REMAlarm *)self acknowledgedDate];
+      acknowledgedDate2 = [(REMAlarm *)v6 acknowledgedDate];
+      v16 = acknowledgedDate2;
+      if (acknowledgedDate == acknowledgedDate2)
       {
       }
 
       else
       {
-        v17 = [(REMAlarm *)self acknowledgedDate];
-        v18 = [(REMAlarm *)v6 acknowledgedDate];
-        v19 = [v17 isEqual:v18];
+        acknowledgedDate3 = [(REMAlarm *)self acknowledgedDate];
+        acknowledgedDate4 = [(REMAlarm *)v6 acknowledgedDate];
+        v19 = [acknowledgedDate3 isEqual:acknowledgedDate4];
 
         if (!v19)
         {
@@ -280,18 +280,18 @@ LABEL_20:
         }
       }
 
-      v20 = [(REMAlarm *)self alarmUID];
-      v21 = [(REMAlarm *)v6 alarmUID];
-      v22 = v21;
-      if (v20 == v21)
+      alarmUID = [(REMAlarm *)self alarmUID];
+      alarmUID2 = [(REMAlarm *)v6 alarmUID];
+      v22 = alarmUID2;
+      if (alarmUID == alarmUID2)
       {
       }
 
       else
       {
-        v23 = [(REMAlarm *)self alarmUID];
-        v24 = [(REMAlarm *)v6 alarmUID];
-        v25 = [v23 isEqual:v24];
+        alarmUID3 = [(REMAlarm *)self alarmUID];
+        alarmUID4 = [(REMAlarm *)v6 alarmUID];
+        v25 = [alarmUID3 isEqual:alarmUID4];
 
         if (!v25)
         {
@@ -299,18 +299,18 @@ LABEL_20:
         }
       }
 
-      v27 = [(REMAlarm *)self originalAlarmUID];
-      v28 = [(REMAlarm *)v6 originalAlarmUID];
-      if (v27 == v28)
+      originalAlarmUID = [(REMAlarm *)self originalAlarmUID];
+      originalAlarmUID2 = [(REMAlarm *)v6 originalAlarmUID];
+      if (originalAlarmUID == originalAlarmUID2)
       {
         v13 = 1;
       }
 
       else
       {
-        v29 = [(REMAlarm *)self originalAlarmUID];
-        v30 = [(REMAlarm *)v6 originalAlarmUID];
-        v13 = [v29 isEqual:v30];
+        originalAlarmUID3 = [(REMAlarm *)self originalAlarmUID];
+        originalAlarmUID4 = [(REMAlarm *)v6 originalAlarmUID];
+        v13 = [originalAlarmUID3 isEqual:originalAlarmUID4];
       }
 
       goto LABEL_15;
@@ -331,26 +331,26 @@ LABEL_16:
 
 - (unint64_t)hash
 {
-  v2 = [(REMAlarm *)self objectID];
-  v3 = [v2 hash];
+  objectID = [(REMAlarm *)self objectID];
+  v3 = [objectID hash];
 
   return v3;
 }
 
 - (id)description
 {
-  v3 = [(REMAlarm *)self originalAlarmUID];
+  originalAlarmUID = [(REMAlarm *)self originalAlarmUID];
   v4 = MEMORY[0x1E696AEC0];
-  if (v3)
+  if (originalAlarmUID)
   {
-    v5 = [(REMAlarm *)self originalAlarmUID];
-    [v4 stringWithFormat:@" (original-uid: %@)", v5];
+    originalAlarmUID2 = [(REMAlarm *)self originalAlarmUID];
+    [v4 stringWithFormat:@" (original-uid: %@)", originalAlarmUID2];
   }
 
   else
   {
-    v5 = [(REMAlarm *)self alarmUID];
-    [v4 stringWithFormat:@" (uid: %@)", v5];
+    originalAlarmUID2 = [(REMAlarm *)self alarmUID];
+    [v4 stringWithFormat:@" (uid: %@)", originalAlarmUID2];
   }
   v6 = ;
 
@@ -358,33 +358,33 @@ LABEL_16:
   v13.receiver = self;
   v13.super_class = REMAlarm;
   v8 = [(REMAlarm *)&v13 description];
-  v9 = [(REMAlarm *)self objectID];
-  v10 = [(REMAlarm *)self trigger];
-  v11 = [v7 stringWithFormat:@"%@ %@ %@%@", v8, v9, v10, v6];
+  objectID = [(REMAlarm *)self objectID];
+  trigger = [(REMAlarm *)self trigger];
+  v11 = [v7 stringWithFormat:@"%@ %@ %@%@", v8, objectID, trigger, v6];
 
   return v11;
 }
 
 - (BOOL)isAcknowledged
 {
-  v2 = [(REMAlarm *)self acknowledgedDate];
-  v3 = v2 != 0;
+  acknowledgedDate = [(REMAlarm *)self acknowledgedDate];
+  v3 = acknowledgedDate != 0;
 
   return v3;
 }
 
 - (BOOL)isOriginal
 {
-  v2 = [(REMAlarm *)self originalAlarmUID];
-  v3 = v2 == 0;
+  originalAlarmUID = [(REMAlarm *)self originalAlarmUID];
+  v3 = originalAlarmUID == 0;
 
   return v3;
 }
 
 - (BOOL)isSnooze
 {
-  v2 = [(REMAlarm *)self originalAlarmUID];
-  v3 = v2 != 0;
+  originalAlarmUID = [(REMAlarm *)self originalAlarmUID];
+  v3 = originalAlarmUID != 0;
 
   return v3;
 }

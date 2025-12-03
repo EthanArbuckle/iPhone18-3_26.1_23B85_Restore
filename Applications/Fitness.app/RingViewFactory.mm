@@ -1,22 +1,22 @@
 @interface RingViewFactory
-+ (id)workoutRingWithPercent:(double)a3 colors:(id)a4 diameter:(double)a5 thickness:(double)a6 renderer:(id)a7;
++ (id)workoutRingWithPercent:(double)percent colors:(id)colors diameter:(double)diameter thickness:(double)thickness renderer:(id)renderer;
 @end
 
 @implementation RingViewFactory
 
-+ (id)workoutRingWithPercent:(double)a3 colors:(id)a4 diameter:(double)a5 thickness:(double)a6 renderer:(id)a7
++ (id)workoutRingWithPercent:(double)percent colors:(id)colors diameter:(double)diameter thickness:(double)thickness renderer:(id)renderer
 {
-  v10 = a4;
+  colorsCopy = colors;
   v11 = [[ARUIRingGroupController alloc] initWithNumberOfRings:1];
-  [v11 setPercentage:0 ofRingAtIndex:0 animated:a3];
-  *&v12 = a5;
+  [v11 setPercentage:0 ofRingAtIndex:0 animated:percent];
+  *&v12 = diameter;
   [v11 setRingDiameter:v12];
-  *&v13 = a6;
+  *&v13 = thickness;
   [v11 setRingThickness:v13];
-  v14 = [v10 gradientDarkColor];
-  v15 = [v10 gradientLightColor];
+  gradientDarkColor = [colorsCopy gradientDarkColor];
+  gradientLightColor = [colorsCopy gradientLightColor];
 
-  [v11 setTopColor:v14 bottomColor:v15 ofRingAtIndex:0];
+  [v11 setTopColor:gradientDarkColor bottomColor:gradientLightColor ofRingAtIndex:0];
   v16 = [ARUIRingsImageFactory renderRingGroupController:v11 withRenderer:0];
 
   return v16;

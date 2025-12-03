@@ -3,7 +3,7 @@
 - (id)description;
 - (id)getMergeInstance;
 - (id)iterator;
-- (id)termsWithNSString:(id)a3;
+- (id)termsWithNSString:(id)string;
 - (int)size;
 - (int64_t)ramBytesUsed;
 - (void)checkIntegrity;
@@ -24,7 +24,7 @@
   return [(JavaUtilCollections_UnmodifiableCollection *)v3 iterator];
 }
 
-- (id)termsWithNSString:(id)a3
+- (id)termsWithNSString:(id)string
 {
   fields = self->fields_;
   if (!fields)
@@ -36,7 +36,7 @@
   if (result)
   {
 
-    return [result termsWithNSString:a3];
+    return [result termsWithNSString:string];
   }
 
   return result;
@@ -61,9 +61,9 @@
     JreThrowNullPointerException();
   }
 
-  v3 = [(JavaUtilMap *)formats values];
+  values = [(JavaUtilMap *)formats values];
 
-  OrgApacheLuceneUtilIOUtils_closeWithJavaLangIterable_(v3);
+  OrgApacheLuceneUtilIOUtils_closeWithJavaLangIterable_(values);
 }
 
 - (int64_t)ramBytesUsed
@@ -99,16 +99,16 @@
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = [(JavaUtilMap *)self->formats_ entrySet];
-  if (!v10)
+  entrySet = [(JavaUtilMap *)self->formats_ entrySet];
+  if (!entrySet)
   {
 LABEL_18:
     JreThrowNullPointerException();
   }
 
-  v11 = v10;
+  v11 = entrySet;
   v12 = v4 + 2 * (v7 * v5 + v9 * v8);
-  v13 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v13 = [entrySet countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v13)
   {
     v14 = v13;
@@ -129,13 +129,13 @@ LABEL_18:
           goto LABEL_18;
         }
 
-        v18 = [v17 getValue];
-        if (!v18)
+        getValue = [v17 getValue];
+        if (!getValue)
         {
           goto LABEL_18;
         }
 
-        v12 += [v18 ramBytesUsed];
+        v12 += [getValue ramBytesUsed];
         v16 = v16 + 1;
       }
 
@@ -222,7 +222,7 @@ LABEL_12:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = OrgApacheLuceneCodecsPerfieldPerFieldPostingsFormat_FieldsReader_class_();
     qword_100554498 = OrgApacheLuceneUtilRamUsageEstimator_shallowSizeOfInstanceWithIOSClass_(v2);

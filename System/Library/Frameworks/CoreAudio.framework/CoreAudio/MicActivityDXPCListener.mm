@@ -1,29 +1,29 @@
 @interface MicActivityDXPCListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (MicActivityDXPCListener)init;
 - (uint64_t)init;
 - (void)createEndpoint;
 - (void)dealloc;
 - (void)destroyEndpoint;
-- (void)microphoneActivityStateChanged:(BOOL)a3 reply:(id)a4;
+- (void)microphoneActivityStateChanged:(BOOL)changed reply:(id)reply;
 @end
 
 @implementation MicActivityDXPCListener
 
-- (void)microphoneActivityStateChanged:(BOOL)a3 reply:(id)a4
+- (void)microphoneActivityStateChanged:(BOOL)changed reply:(id)reply
 {
-  v6 = a4;
-  std::function<void ()(BOOL)>::operator()(self->mtdListenerCallback.__f_.__f_, a3);
-  v6[2](v6, 0);
+  replyCopy = reply;
+  std::function<void ()(BOOL)>::operator()(self->mtdListenerCallback.__f_.__f_, changed);
+  replyCopy[2](replyCopy, 0);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F599A4E8];
-  [v5 setExportedInterface:v6];
-  [v5 setExportedObject:self];
-  [v5 resume];
+  [connectionCopy setExportedInterface:v6];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
 
   return 1;
 }
@@ -40,15 +40,15 @@
 
 - (void)createEndpoint
 {
-  v3 = [MEMORY[0x1E696B0D8] anonymousListener];
+  anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
   listener = self->listener;
-  self->listener = v3;
+  self->listener = anonymousListener;
 
   [(NSXPCListener *)self->listener setDelegate:self];
   [(NSXPCListener *)self->listener resume];
-  v5 = [(NSXPCListener *)self->listener endpoint];
+  endpoint = [(NSXPCListener *)self->listener endpoint];
   endpoint = self->endpoint;
-  self->endpoint = v5;
+  self->endpoint = endpoint;
 }
 
 - (void)dealloc
@@ -83,7 +83,7 @@
 {
   if (std::type_info::operator==[abi:ne200100](*(a2 + 8), "Z31-[MicActivityDXPCListener init]E3$_0"))
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else

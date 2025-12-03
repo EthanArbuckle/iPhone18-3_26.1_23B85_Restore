@@ -1,22 +1,22 @@
 @interface TSCH3DChartRepAs2D
-- (TSCH3DChartRepAs2D)initWithLayout:(id)a3 canvas:(id)a4;
-- (id)p_layoutFrom3DInfo:(id)a3 layout3D:(id)a4;
-- (id)p_mutationsForConverting3DFillFromSeries:(id)a3;
-- (void)addToSet:(id)a3;
+- (TSCH3DChartRepAs2D)initWithLayout:(id)layout canvas:(id)canvas;
+- (id)p_layoutFrom3DInfo:(id)info layout3D:(id)d;
+- (id)p_mutationsForConverting3DFillFromSeries:(id)series;
+- (void)addToSet:(id)set;
 - (void)p_create2DRep;
 - (void)p_update2DLayout;
-- (void)renderIntoContext:(CGContext *)a3 visible:(CGRect)a4;
+- (void)renderIntoContext:(CGContext *)context visible:(CGRect)visible;
 @end
 
 @implementation TSCH3DChartRepAs2D
 
-- (TSCH3DChartRepAs2D)initWithLayout:(id)a3 canvas:(id)a4
+- (TSCH3DChartRepAs2D)initWithLayout:(id)layout canvas:(id)canvas
 {
-  v6 = a3;
-  v7 = a4;
+  layoutCopy = layout;
+  canvasCopy = canvas;
   v15.receiver = self;
   v15.super_class = TSCH3DChartRepAs2D;
-  v8 = [(TSCHChartRep *)&v15 initWithLayout:v6 canvas:v7];
+  v8 = [(TSCHChartRep *)&v15 initWithLayout:layoutCopy canvas:canvasCopy];
   v13 = v8;
   if (v8)
   {
@@ -26,24 +26,24 @@
   return v13;
 }
 
-- (id)p_layoutFrom3DInfo:(id)a3 layout3D:(id)a4
+- (id)p_layoutFrom3DInfo:(id)info layout3D:(id)d
 {
   v200[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v198 = a4;
-  v11 = objc_msgSend_documentRoot(v6, v7, v8, v9, v10);
+  infoCopy = info;
+  dCopy = d;
+  v11 = objc_msgSend_documentRoot(infoCopy, v7, v8, v9, v10);
   v197 = objc_msgSend_context(v11, v12, v13, v14, v15);
 
-  v20 = objc_msgSend_chart(v6, v16, v17, v18, v19);
+  v20 = objc_msgSend_chart(infoCopy, v16, v17, v18, v19);
   v25 = objc_msgSend_model(v20, v21, v22, v23, v24);
 
-  objc_msgSend_chartAreaFrame(v198, v26, v27, v28, v29);
+  objc_msgSend_chartAreaFrame(dCopy, v26, v27, v28, v29);
   v31 = v30;
   v33 = v32;
   v35 = v34;
   v37 = v36;
-  objc_msgSend_legendFrame(v198, v38, v30, v32, v34);
-  v199 = objc_msgSend_p_copyFor3DAs2DWithContext_chartFrame_legendFrame_(v6, v39, v31, v33, v35, v197, v37, v40, v41, v42, v43);
+  objc_msgSend_legendFrame(dCopy, v38, v30, v32, v34);
+  v199 = objc_msgSend_p_copyFor3DAs2DWithContext_chartFrame_legendFrame_(infoCopy, v39, v31, v33, v35, v197, v37, v40, v41, v42, v43);
   v44 = [TSCHChartDrawableLayout alloc];
   v196 = objc_msgSend_initWithInfo_(v44, v45, v46, v47, v48, v199);
   objc_msgSend_setForceLayoutSettingsOmitLabelPlacement_(v196, v49, v50, v51, v52, 1);
@@ -52,7 +52,7 @@
 
   if (v62)
   {
-    v195 = v6;
+    v195 = infoCopy;
     v67 = objc_msgSend_chart(v199, v63, v64, v65, v66);
     v72 = objc_msgSend_model(v67, v68, v69, v70, v71);
 
@@ -119,7 +119,7 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v180, v181, v182, v183);
     }
 
-    v6 = v195;
+    infoCopy = v195;
   }
 
   v184 = objc_msgSend_chart(v199, v63, v64, v65, v66);
@@ -149,15 +149,15 @@
   self->m2DRep = v43;
 }
 
-- (void)addToSet:(id)a3
+- (void)addToSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v9.receiver = self;
   v9.super_class = TSCH3DChartRepAs2D;
-  [(TSDRep *)&v9 addToSet:v4];
+  [(TSDRep *)&v9 addToSet:setCopy];
   if (self->m2DRep)
   {
-    objc_msgSend_addObject_(v4, v5, v6, v7, v8);
+    objc_msgSend_addObject_(setCopy, v5, v6, v7, v8);
   }
 }
 
@@ -169,10 +169,10 @@
   objc_msgSend_layoutForCircumscribingSize_(v10, v15, v16, v17, v16);
 }
 
-- (void)renderIntoContext:(CGContext *)a3 visible:(CGRect)a4
+- (void)renderIntoContext:(CGContext *)context visible:(CGRect)visible
 {
   v4 = MEMORY[0x277D81150];
-  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, a4.origin.x, a4.origin.y, a4.size.width, "[TSCH3DChartRepAs2D renderIntoContext:visible:]", a4.size.height);
+  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, visible.origin.x, visible.origin.y, visible.size.width, "[TSCH3DChartRepAs2D renderIntoContext:visible:]", visible.size.height);
   v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, v7, v8, v9, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DChartRepAs2D.mm");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v4, v11, v12, v13, v14, v5, v10, 184, 0, "should never be called for this rep");
 
@@ -181,11 +181,11 @@
   objc_msgSend_logBacktraceThrottled(v19, v15, v16, v17, v18);
 }
 
-- (id)p_mutationsForConverting3DFillFromSeries:(id)a3
+- (id)p_mutationsForConverting3DFillFromSeries:(id)series
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v8 = objc_msgSend_valueForProperty_(v3, v4, v5, v6, v7, 1160);
+  seriesCopy = series;
+  v8 = objc_msgSend_valueForProperty_(seriesCopy, v4, v5, v6, v7, 1160);
   v13 = v8;
   if (v8)
   {

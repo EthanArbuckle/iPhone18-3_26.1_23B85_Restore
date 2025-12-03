@@ -1,15 +1,15 @@
 @interface CSDMessagingCallDisplayContext
-- (BOOL)isEqual:(id)a3;
-- (CSDMessagingCallDisplayContext)initWithCallDisplayContext:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CSDMessagingCallDisplayContext)initWithCallDisplayContext:(id)context;
 - (TUCallDisplayContext)displayContext;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addContactIdentifiers:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addContactIdentifiers:(id)identifiers;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSDMessagingCallDisplayContext
@@ -27,8 +27,8 @@
   protoPersonNameComponents = self->_protoPersonNameComponents;
   if (protoPersonNameComponents)
   {
-    v7 = [(CSDMessagingPersonNameComponents *)protoPersonNameComponents dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"protoPersonNameComponents"];
+    dictionaryRepresentation = [(CSDMessagingPersonNameComponents *)protoPersonNameComponents dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"protoPersonNameComponents"];
   }
 
   suggestedName = self->_suggestedName;
@@ -118,22 +118,22 @@
   return v4;
 }
 
-- (void)addContactIdentifiers:(id)a3
+- (void)addContactIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   contactIdentifiers = self->_contactIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!contactIdentifiers)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_contactIdentifiers;
     self->_contactIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     contactIdentifiers = self->_contactIdentifiers;
   }
 
-  [(NSMutableArray *)contactIdentifiers addObject:v4];
+  [(NSMutableArray *)contactIdentifiers addObject:identifiersCopy];
 }
 
 - (id)description
@@ -141,15 +141,15 @@
   v7.receiver = self;
   v7.super_class = CSDMessagingCallDisplayContext;
   v3 = [(CSDMessagingCallDisplayContext *)&v7 description];
-  v4 = [(CSDMessagingCallDisplayContext *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CSDMessagingCallDisplayContext *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_name)
   {
     PBDataWriterWriteStringField();
@@ -258,154 +258,154 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (self->_name)
   {
-    [v9 setName:?];
+    [toCopy setName:?];
   }
 
   if (self->_protoPersonNameComponents)
   {
-    [v9 setProtoPersonNameComponents:?];
+    [toCopy setProtoPersonNameComponents:?];
   }
 
   if (self->_suggestedName)
   {
-    [v9 setSuggestedName:?];
+    [toCopy setSuggestedName:?];
   }
 
   if (self->_label)
   {
-    [v9 setLabel:?];
+    [toCopy setLabel:?];
   }
 
   if (self->_companyName)
   {
-    [v9 setCompanyName:?];
+    [toCopy setCompanyName:?];
   }
 
   if (self->_mapName)
   {
-    [v9 setMapName:?];
+    [toCopy setMapName:?];
   }
 
   if (self->_location)
   {
-    [v9 setLocation:?];
+    [toCopy setLocation:?];
   }
 
   if (self->_contactName)
   {
-    [v9 setContactName:?];
+    [toCopy setContactName:?];
   }
 
   if (self->_contactLabel)
   {
-    [v9 setContactLabel:?];
+    [toCopy setContactLabel:?];
   }
 
   if (self->_callDirectoryLabel)
   {
-    [v9 setCallDirectoryLabel:?];
+    [toCopy setCallDirectoryLabel:?];
   }
 
   if (self->_callDirectoryLocalizedExtensionContainingAppName)
   {
-    [v9 setCallDirectoryLocalizedExtensionContainingAppName:?];
+    [toCopy setCallDirectoryLocalizedExtensionContainingAppName:?];
   }
 
   if (self->_callDirectoryExtensionIdentifier)
   {
-    [v9 setCallDirectoryExtensionIdentifier:?];
+    [toCopy setCallDirectoryExtensionIdentifier:?];
   }
 
   if (self->_contactIdentifier)
   {
-    [v9 setContactIdentifier:?];
+    [toCopy setContactIdentifier:?];
   }
 
   if ([(CSDMessagingCallDisplayContext *)self contactIdentifiersCount])
   {
-    [v9 clearContactIdentifiers];
-    v4 = [(CSDMessagingCallDisplayContext *)self contactIdentifiersCount];
-    if (v4)
+    [toCopy clearContactIdentifiers];
+    contactIdentifiersCount = [(CSDMessagingCallDisplayContext *)self contactIdentifiersCount];
+    if (contactIdentifiersCount)
     {
-      v5 = v4;
+      v5 = contactIdentifiersCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(CSDMessagingCallDisplayContext *)self contactIdentifiersAtIndex:i];
-        [v9 addContactIdentifiers:v7];
+        [toCopy addContactIdentifiers:v7];
       }
     }
   }
 
   if (self->_companyDepartment)
   {
-    [v9 setCompanyDepartment:?];
+    [toCopy setCompanyDepartment:?];
   }
 
-  v8 = v9;
+  v8 = toCopy;
   if (self->_companyImageURL)
   {
-    [v9 setCompanyImageURL:?];
-    v8 = v9;
+    [toCopy setCompanyImageURL:?];
+    v8 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_name copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_name copyWithZone:zone];
   v7 = v5[14];
   v5[14] = v6;
 
-  v8 = [(CSDMessagingPersonNameComponents *)self->_protoPersonNameComponents copyWithZone:a3];
+  v8 = [(CSDMessagingPersonNameComponents *)self->_protoPersonNameComponents copyWithZone:zone];
   v9 = v5[15];
   v5[15] = v8;
 
-  v10 = [(NSString *)self->_suggestedName copyWithZone:a3];
+  v10 = [(NSString *)self->_suggestedName copyWithZone:zone];
   v11 = v5[16];
   v5[16] = v10;
 
-  v12 = [(NSString *)self->_label copyWithZone:a3];
+  v12 = [(NSString *)self->_label copyWithZone:zone];
   v13 = v5[11];
   v5[11] = v12;
 
-  v14 = [(NSString *)self->_companyName copyWithZone:a3];
+  v14 = [(NSString *)self->_companyName copyWithZone:zone];
   v15 = v5[6];
   v5[6] = v14;
 
-  v16 = [(NSString *)self->_mapName copyWithZone:a3];
+  v16 = [(NSString *)self->_mapName copyWithZone:zone];
   v17 = v5[13];
   v5[13] = v16;
 
-  v18 = [(NSString *)self->_location copyWithZone:a3];
+  v18 = [(NSString *)self->_location copyWithZone:zone];
   v19 = v5[12];
   v5[12] = v18;
 
-  v20 = [(NSString *)self->_contactName copyWithZone:a3];
+  v20 = [(NSString *)self->_contactName copyWithZone:zone];
   v21 = v5[10];
   v5[10] = v20;
 
-  v22 = [(NSString *)self->_contactLabel copyWithZone:a3];
+  v22 = [(NSString *)self->_contactLabel copyWithZone:zone];
   v23 = v5[9];
   v5[9] = v22;
 
-  v24 = [(NSString *)self->_callDirectoryLabel copyWithZone:a3];
+  v24 = [(NSString *)self->_callDirectoryLabel copyWithZone:zone];
   v25 = v5[2];
   v5[2] = v24;
 
-  v26 = [(NSString *)self->_callDirectoryLocalizedExtensionContainingAppName copyWithZone:a3];
+  v26 = [(NSString *)self->_callDirectoryLocalizedExtensionContainingAppName copyWithZone:zone];
   v27 = v5[3];
   v5[3] = v26;
 
-  v28 = [(NSString *)self->_callDirectoryExtensionIdentifier copyWithZone:a3];
+  v28 = [(NSString *)self->_callDirectoryExtensionIdentifier copyWithZone:zone];
   v29 = v5[1];
   v5[1] = v28;
 
-  v30 = [(NSString *)self->_contactIdentifier copyWithZone:a3];
+  v30 = [(NSString *)self->_contactIdentifier copyWithZone:zone];
   v31 = v5[7];
   v5[7] = v30;
 
@@ -429,7 +429,7 @@
           objc_enumerationMutation(v32);
         }
 
-        v37 = [*(*(&v43 + 1) + 8 * v36) copyWithZone:{a3, v43}];
+        v37 = [*(*(&v43 + 1) + 8 * v36) copyWithZone:{zone, v43}];
         [v5 addContactIdentifiers:v37];
 
         v36 = v36 + 1;
@@ -442,27 +442,27 @@
     while (v34);
   }
 
-  v38 = [(NSString *)self->_companyDepartment copyWithZone:a3];
+  v38 = [(NSString *)self->_companyDepartment copyWithZone:zone];
   v39 = v5[4];
   v5[4] = v38;
 
-  v40 = [(NSString *)self->_companyImageURL copyWithZone:a3];
+  v40 = [(NSString *)self->_companyImageURL copyWithZone:zone];
   v41 = v5[5];
   v5[5] = v40;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_34;
   }
 
   name = self->_name;
-  if (name | v4[14])
+  if (name | equalCopy[14])
   {
     if (![(NSString *)name isEqual:?])
     {
@@ -471,51 +471,51 @@
   }
 
   protoPersonNameComponents = self->_protoPersonNameComponents;
-  if (protoPersonNameComponents | v4[15] && ![(CSDMessagingPersonNameComponents *)protoPersonNameComponents isEqual:?])
+  if (protoPersonNameComponents | equalCopy[15] && ![(CSDMessagingPersonNameComponents *)protoPersonNameComponents isEqual:?])
   {
     goto LABEL_34;
   }
 
   suggestedName = self->_suggestedName;
-  if (suggestedName | v4[16] && ![(NSString *)suggestedName isEqual:?])
+  if (suggestedName | equalCopy[16] && ![(NSString *)suggestedName isEqual:?])
   {
     goto LABEL_34;
   }
 
   label = self->_label;
-  if (label | v4[11] && ![(NSString *)label isEqual:?])
+  if (label | equalCopy[11] && ![(NSString *)label isEqual:?])
   {
     goto LABEL_34;
   }
 
   companyName = self->_companyName;
-  if (companyName | v4[6] && ![(NSString *)companyName isEqual:?])
+  if (companyName | equalCopy[6] && ![(NSString *)companyName isEqual:?])
   {
     goto LABEL_34;
   }
 
   mapName = self->_mapName;
-  if (mapName | v4[13] && ![(NSString *)mapName isEqual:?])
+  if (mapName | equalCopy[13] && ![(NSString *)mapName isEqual:?])
   {
     goto LABEL_34;
   }
 
   location = self->_location;
-  if (location | v4[12] && ![(NSString *)location isEqual:?])
+  if (location | equalCopy[12] && ![(NSString *)location isEqual:?])
   {
     goto LABEL_34;
   }
 
   contactName = self->_contactName;
-  if (contactName | v4[10] && ![(NSString *)contactName isEqual:?])
+  if (contactName | equalCopy[10] && ![(NSString *)contactName isEqual:?])
   {
     goto LABEL_34;
   }
 
-  if (((contactLabel = self->_contactLabel, !(contactLabel | v4[9])) || [(NSString *)contactLabel isEqual:?]) && ((callDirectoryLabel = self->_callDirectoryLabel, !(callDirectoryLabel | v4[2])) || [(NSString *)callDirectoryLabel isEqual:?]) && ((callDirectoryLocalizedExtensionContainingAppName = self->_callDirectoryLocalizedExtensionContainingAppName, !(callDirectoryLocalizedExtensionContainingAppName | v4[3])) || [(NSString *)callDirectoryLocalizedExtensionContainingAppName isEqual:?]) && ((callDirectoryExtensionIdentifier = self->_callDirectoryExtensionIdentifier, !(callDirectoryExtensionIdentifier | v4[1])) || [(NSString *)callDirectoryExtensionIdentifier isEqual:?]) && ((contactIdentifier = self->_contactIdentifier, !(contactIdentifier | v4[7])) || [(NSString *)contactIdentifier isEqual:?]) && ((contactIdentifiers = self->_contactIdentifiers, !(contactIdentifiers | v4[8])) || [(NSMutableArray *)contactIdentifiers isEqual:?]) && ((companyDepartment = self->_companyDepartment, !(companyDepartment | v4[4])) || [(NSString *)companyDepartment isEqual:?]))
+  if (((contactLabel = self->_contactLabel, !(contactLabel | equalCopy[9])) || [(NSString *)contactLabel isEqual:?]) && ((callDirectoryLabel = self->_callDirectoryLabel, !(callDirectoryLabel | equalCopy[2])) || [(NSString *)callDirectoryLabel isEqual:?]) && ((callDirectoryLocalizedExtensionContainingAppName = self->_callDirectoryLocalizedExtensionContainingAppName, !(callDirectoryLocalizedExtensionContainingAppName | equalCopy[3])) || [(NSString *)callDirectoryLocalizedExtensionContainingAppName isEqual:?]) && ((callDirectoryExtensionIdentifier = self->_callDirectoryExtensionIdentifier, !(callDirectoryExtensionIdentifier | equalCopy[1])) || [(NSString *)callDirectoryExtensionIdentifier isEqual:?]) && ((contactIdentifier = self->_contactIdentifier, !(contactIdentifier | equalCopy[7])) || [(NSString *)contactIdentifier isEqual:?]) && ((contactIdentifiers = self->_contactIdentifiers, !(contactIdentifiers | equalCopy[8])) || [(NSMutableArray *)contactIdentifiers isEqual:?]) && ((companyDepartment = self->_companyDepartment, !(companyDepartment | equalCopy[4])) || [(NSString *)companyDepartment isEqual:?]))
   {
     companyImageURL = self->_companyImageURL;
-    if (companyImageURL | v4[5])
+    if (companyImageURL | equalCopy[5])
     {
       v21 = [(NSString *)companyImageURL isEqual:?];
     }
@@ -555,16 +555,16 @@ LABEL_34:
   return v13 ^ v17 ^ [(NSString *)self->_companyImageURL hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 14))
+  fromCopy = from;
+  if (*(fromCopy + 14))
   {
     [(CSDMessagingCallDisplayContext *)self setName:?];
   }
 
   protoPersonNameComponents = self->_protoPersonNameComponents;
-  v6 = *(v4 + 15);
+  v6 = *(fromCopy + 15);
   if (protoPersonNameComponents)
   {
     if (v6)
@@ -578,57 +578,57 @@ LABEL_34:
     [(CSDMessagingCallDisplayContext *)self setProtoPersonNameComponents:?];
   }
 
-  if (*(v4 + 16))
+  if (*(fromCopy + 16))
   {
     [(CSDMessagingCallDisplayContext *)self setSuggestedName:?];
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(CSDMessagingCallDisplayContext *)self setLabel:?];
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(CSDMessagingCallDisplayContext *)self setCompanyName:?];
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(CSDMessagingCallDisplayContext *)self setMapName:?];
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(CSDMessagingCallDisplayContext *)self setLocation:?];
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(CSDMessagingCallDisplayContext *)self setContactName:?];
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(CSDMessagingCallDisplayContext *)self setContactLabel:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(CSDMessagingCallDisplayContext *)self setCallDirectoryLabel:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(CSDMessagingCallDisplayContext *)self setCallDirectoryLocalizedExtensionContainingAppName:?];
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(CSDMessagingCallDisplayContext *)self setCallDirectoryExtensionIdentifier:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(CSDMessagingCallDisplayContext *)self setContactIdentifier:?];
   }
@@ -637,7 +637,7 @@ LABEL_34:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = *(v4 + 8);
+  v7 = *(fromCopy + 8);
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
@@ -661,74 +661,74 @@ LABEL_34:
     while (v9);
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(CSDMessagingCallDisplayContext *)self setCompanyDepartment:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(CSDMessagingCallDisplayContext *)self setCompanyImageURL:?];
   }
 }
 
-- (CSDMessagingCallDisplayContext)initWithCallDisplayContext:(id)a3
+- (CSDMessagingCallDisplayContext)initWithCallDisplayContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v27.receiver = self;
   v27.super_class = CSDMessagingCallDisplayContext;
   v5 = [(CSDMessagingCallDisplayContext *)&v27 init];
   if (v5)
   {
-    v6 = [v4 name];
-    [(CSDMessagingCallDisplayContext *)v5 setName:v6];
+    name = [contextCopy name];
+    [(CSDMessagingCallDisplayContext *)v5 setName:name];
 
     v7 = [CSDMessagingPersonNameComponents alloc];
-    v8 = [v4 personNameComponents];
-    v9 = [(CSDMessagingPersonNameComponents *)v7 initWithPersonNameComponents:v8];
+    personNameComponents = [contextCopy personNameComponents];
+    v9 = [(CSDMessagingPersonNameComponents *)v7 initWithPersonNameComponents:personNameComponents];
     [(CSDMessagingCallDisplayContext *)v5 setProtoPersonNameComponents:v9];
 
-    v10 = [v4 suggestedName];
-    [(CSDMessagingCallDisplayContext *)v5 setSuggestedName:v10];
+    suggestedName = [contextCopy suggestedName];
+    [(CSDMessagingCallDisplayContext *)v5 setSuggestedName:suggestedName];
 
-    v11 = [v4 label];
-    [(CSDMessagingCallDisplayContext *)v5 setLabel:v11];
+    label = [contextCopy label];
+    [(CSDMessagingCallDisplayContext *)v5 setLabel:label];
 
-    v12 = [v4 companyName];
-    [(CSDMessagingCallDisplayContext *)v5 setCompanyName:v12];
+    companyName = [contextCopy companyName];
+    [(CSDMessagingCallDisplayContext *)v5 setCompanyName:companyName];
 
-    v13 = [v4 companyDepartment];
-    [(CSDMessagingCallDisplayContext *)v5 setCompanyDepartment:v13];
+    companyDepartment = [contextCopy companyDepartment];
+    [(CSDMessagingCallDisplayContext *)v5 setCompanyDepartment:companyDepartment];
 
-    v14 = [v4 location];
-    [(CSDMessagingCallDisplayContext *)v5 setLocation:v14];
+    location = [contextCopy location];
+    [(CSDMessagingCallDisplayContext *)v5 setLocation:location];
 
-    v15 = [v4 contactName];
-    [(CSDMessagingCallDisplayContext *)v5 setContactName:v15];
+    contactName = [contextCopy contactName];
+    [(CSDMessagingCallDisplayContext *)v5 setContactName:contactName];
 
-    v16 = [v4 contactLabel];
-    [(CSDMessagingCallDisplayContext *)v5 setContactLabel:v16];
+    contactLabel = [contextCopy contactLabel];
+    [(CSDMessagingCallDisplayContext *)v5 setContactLabel:contactLabel];
 
-    v17 = [v4 callDirectoryLabel];
-    [(CSDMessagingCallDisplayContext *)v5 setCallDirectoryLabel:v17];
+    callDirectoryLabel = [contextCopy callDirectoryLabel];
+    [(CSDMessagingCallDisplayContext *)v5 setCallDirectoryLabel:callDirectoryLabel];
 
-    v18 = [v4 callDirectoryLocalizedExtensionContainingAppName];
-    [(CSDMessagingCallDisplayContext *)v5 setCallDirectoryLocalizedExtensionContainingAppName:v18];
+    callDirectoryLocalizedExtensionContainingAppName = [contextCopy callDirectoryLocalizedExtensionContainingAppName];
+    [(CSDMessagingCallDisplayContext *)v5 setCallDirectoryLocalizedExtensionContainingAppName:callDirectoryLocalizedExtensionContainingAppName];
 
-    v19 = [v4 callDirectoryExtensionIdentifier];
-    [(CSDMessagingCallDisplayContext *)v5 setCallDirectoryExtensionIdentifier:v19];
+    callDirectoryExtensionIdentifier = [contextCopy callDirectoryExtensionIdentifier];
+    [(CSDMessagingCallDisplayContext *)v5 setCallDirectoryExtensionIdentifier:callDirectoryExtensionIdentifier];
 
-    v20 = [v4 contactIdentifiers];
-    v21 = [v20 firstObject];
-    [(CSDMessagingCallDisplayContext *)v5 setContactIdentifier:v21];
+    contactIdentifiers = [contextCopy contactIdentifiers];
+    firstObject = [contactIdentifiers firstObject];
+    [(CSDMessagingCallDisplayContext *)v5 setContactIdentifier:firstObject];
 
-    v22 = [v4 contactIdentifiers];
-    v23 = [v22 mutableCopy];
+    contactIdentifiers2 = [contextCopy contactIdentifiers];
+    v23 = [contactIdentifiers2 mutableCopy];
     [(CSDMessagingCallDisplayContext *)v5 setContactIdentifiers:v23];
 
-    v24 = [v4 companyLogoURL];
-    v25 = [v24 relativePath];
-    [(CSDMessagingCallDisplayContext *)v5 setCompanyImageURL:v25];
+    companyLogoURL = [contextCopy companyLogoURL];
+    relativePath = [companyLogoURL relativePath];
+    [(CSDMessagingCallDisplayContext *)v5 setCompanyImageURL:relativePath];
   }
 
   return v5;
@@ -737,52 +737,52 @@ LABEL_34:
 - (TUCallDisplayContext)displayContext
 {
   v3 = objc_alloc_init(TUMutableCallDisplayContext);
-  v4 = [(CSDMessagingCallDisplayContext *)self name];
-  [v3 setName:v4];
+  name = [(CSDMessagingCallDisplayContext *)self name];
+  [v3 setName:name];
 
-  v5 = [(CSDMessagingCallDisplayContext *)self protoPersonNameComponents];
-  v6 = [v5 personNameComponents];
-  [v3 setPersonNameComponents:v6];
+  protoPersonNameComponents = [(CSDMessagingCallDisplayContext *)self protoPersonNameComponents];
+  personNameComponents = [protoPersonNameComponents personNameComponents];
+  [v3 setPersonNameComponents:personNameComponents];
 
-  v7 = [(CSDMessagingCallDisplayContext *)self location];
-  [v3 setLocation:v7];
+  location = [(CSDMessagingCallDisplayContext *)self location];
+  [v3 setLocation:location];
 
-  v8 = [(CSDMessagingCallDisplayContext *)self label];
-  [v3 setLabel:v8];
+  label = [(CSDMessagingCallDisplayContext *)self label];
+  [v3 setLabel:label];
 
-  v9 = [(CSDMessagingCallDisplayContext *)self companyName];
-  [v3 setCompanyName:v9];
+  companyName = [(CSDMessagingCallDisplayContext *)self companyName];
+  [v3 setCompanyName:companyName];
 
-  v10 = [(CSDMessagingCallDisplayContext *)self companyDepartment];
-  [v3 setCompanyDepartment:v10];
+  companyDepartment = [(CSDMessagingCallDisplayContext *)self companyDepartment];
+  [v3 setCompanyDepartment:companyDepartment];
 
-  v11 = [(CSDMessagingCallDisplayContext *)self suggestedName];
-  [v3 setSuggestedName:v11];
+  suggestedName = [(CSDMessagingCallDisplayContext *)self suggestedName];
+  [v3 setSuggestedName:suggestedName];
 
-  v12 = [(CSDMessagingCallDisplayContext *)self contactName];
-  [v3 setContactName:v12];
+  contactName = [(CSDMessagingCallDisplayContext *)self contactName];
+  [v3 setContactName:contactName];
 
-  v13 = [(CSDMessagingCallDisplayContext *)self contactLabel];
-  [v3 setContactLabel:v13];
+  contactLabel = [(CSDMessagingCallDisplayContext *)self contactLabel];
+  [v3 setContactLabel:contactLabel];
 
-  v14 = [(CSDMessagingCallDisplayContext *)self callDirectoryLabel];
-  [v3 setCallDirectoryLabel:v14];
+  callDirectoryLabel = [(CSDMessagingCallDisplayContext *)self callDirectoryLabel];
+  [v3 setCallDirectoryLabel:callDirectoryLabel];
 
-  v15 = [(CSDMessagingCallDisplayContext *)self callDirectoryLocalizedExtensionContainingAppName];
-  [v3 setCallDirectoryLocalizedExtensionContainingAppName:v15];
+  callDirectoryLocalizedExtensionContainingAppName = [(CSDMessagingCallDisplayContext *)self callDirectoryLocalizedExtensionContainingAppName];
+  [v3 setCallDirectoryLocalizedExtensionContainingAppName:callDirectoryLocalizedExtensionContainingAppName];
 
-  v16 = [(CSDMessagingCallDisplayContext *)self callDirectoryExtensionIdentifier];
-  [v3 setCallDirectoryExtensionIdentifier:v16];
+  callDirectoryExtensionIdentifier = [(CSDMessagingCallDisplayContext *)self callDirectoryExtensionIdentifier];
+  [v3 setCallDirectoryExtensionIdentifier:callDirectoryExtensionIdentifier];
 
-  v17 = [(CSDMessagingCallDisplayContext *)self contactIdentifiers];
-  [v3 setContactIdentifiers:v17];
+  contactIdentifiers = [(CSDMessagingCallDisplayContext *)self contactIdentifiers];
+  [v3 setContactIdentifiers:contactIdentifiers];
 
-  v18 = [(CSDMessagingCallDisplayContext *)self companyImageURL];
+  companyImageURL = [(CSDMessagingCallDisplayContext *)self companyImageURL];
 
-  if (v18)
+  if (companyImageURL)
   {
-    v19 = [(CSDMessagingCallDisplayContext *)self companyImageURL];
-    v20 = [NSURL fileURLWithPath:v19 isDirectory:0];
+    companyImageURL2 = [(CSDMessagingCallDisplayContext *)self companyImageURL];
+    v20 = [NSURL fileURLWithPath:companyImageURL2 isDirectory:0];
     [v3 setCompanyLogoURL:v20];
   }
 

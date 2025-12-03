@@ -1,7 +1,7 @@
 @interface SNTestChain
 - (SNTestChain)init;
-- (void)addLink:(id)a3;
-- (void)popAndRunWithCompletion:(id)a3 testFailure:(id)a4;
+- (void)addLink:(id)link;
+- (void)popAndRunWithCompletion:(id)completion testFailure:(id)failure;
 @end
 
 @implementation SNTestChain
@@ -21,37 +21,37 @@
   return v2;
 }
 
-- (void)addLink:(id)a3
+- (void)addLink:(id)link
 {
-  v4 = a3;
-  v6 = [(SNTestChain *)self linkBlocks];
-  v5 = _Block_copy(v4);
+  linkCopy = link;
+  linkBlocks = [(SNTestChain *)self linkBlocks];
+  v5 = _Block_copy(linkCopy);
 
-  [v6 addObject:v5];
+  [linkBlocks addObject:v5];
 }
 
-- (void)popAndRunWithCompletion:(id)a3 testFailure:(id)a4
+- (void)popAndRunWithCompletion:(id)completion testFailure:(id)failure
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SNTestChain *)self linkBlocks];
-  v9 = [v8 count];
+  completionCopy = completion;
+  failureCopy = failure;
+  linkBlocks = [(SNTestChain *)self linkBlocks];
+  v9 = [linkBlocks count];
 
-  if (v7 || !v9)
+  if (failureCopy || !v9)
   {
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6, v7);
+      completionCopy[2](completionCopy, failureCopy);
     }
   }
 
   else
   {
-    v10 = [(SNTestChain *)self linkBlocks];
-    v11 = [v10 objectAtIndex:0];
+    linkBlocks2 = [(SNTestChain *)self linkBlocks];
+    v11 = [linkBlocks2 objectAtIndex:0];
 
-    v12 = [(SNTestChain *)self linkBlocks];
-    [v12 removeObjectAtIndex:0];
+    linkBlocks3 = [(SNTestChain *)self linkBlocks];
+    [linkBlocks3 removeObjectAtIndex:0];
 
     if ([MEMORY[0x277CCACC8] isMainThread])
     {
@@ -60,7 +60,7 @@
       v17[2] = __51__SNTestChain_popAndRunWithCompletion_testFailure___block_invoke;
       v17[3] = &unk_279D940C8;
       v17[4] = self;
-      v18 = v6;
+      v18 = completionCopy;
       (v11)[2](v11, v17);
       v13 = v18;
     }
@@ -73,7 +73,7 @@
       block[3] = &unk_279D940F0;
       block[4] = self;
       v15 = v11;
-      v16 = v6;
+      v16 = completionCopy;
       dispatch_async(MEMORY[0x277D85CD0], block);
 
       v13 = v15;

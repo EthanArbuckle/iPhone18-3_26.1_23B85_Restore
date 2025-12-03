@@ -1,20 +1,20 @@
 @interface CHTextInputInsertionCaretGesture
 - (CGPoint)caretTipPoint;
-- (CHTextInputInsertionCaretGesture)initWithCaretTipPoint:(CGPoint)a3 targetContentInfo:(id)a4 locale:(id)a5 normalizedDrawing:(id)a6 originalDrawing:(id)a7;
+- (CHTextInputInsertionCaretGesture)initWithCaretTipPoint:(CGPoint)point targetContentInfo:(id)info locale:(id)locale normalizedDrawing:(id)drawing originalDrawing:(id)originalDrawing;
 - (int64_t)caretDirection;
-- (void)getAffectedRange:(_NSRange *)a3 expandedToFullTokens:(BOOL *)a4;
+- (void)getAffectedRange:(_NSRange *)range expandedToFullTokens:(BOOL *)tokens;
 @end
 
 @implementation CHTextInputInsertionCaretGesture
 
-- (CHTextInputInsertionCaretGesture)initWithCaretTipPoint:(CGPoint)a3 targetContentInfo:(id)a4 locale:(id)a5 normalizedDrawing:(id)a6 originalDrawing:(id)a7
+- (CHTextInputInsertionCaretGesture)initWithCaretTipPoint:(CGPoint)point targetContentInfo:(id)info locale:(id)locale normalizedDrawing:(id)drawing originalDrawing:(id)originalDrawing
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v11.receiver = self;
   v11.super_class = CHTextInputInsertionCaretGesture;
   v10 = 0;
-  result = [(CHTextInputGesture *)&v11 initWithGestureType:8 targetContentInfo:a4 locale:a5 normalizedDrawing:a6 originalDrawing:a7 lastStroke:0 preferCharacterLevel:v10];
+  result = [(CHTextInputGesture *)&v11 initWithGestureType:8 targetContentInfo:info locale:locale normalizedDrawing:drawing originalDrawing:originalDrawing lastStroke:0 preferCharacterLevel:v10];
   if (result)
   {
     result->_caretTipPoint.x = x;
@@ -24,10 +24,10 @@
   return result;
 }
 
-- (void)getAffectedRange:(_NSRange *)a3 expandedToFullTokens:(BOOL *)a4
+- (void)getAffectedRange:(_NSRange *)range expandedToFullTokens:(BOOL *)tokens
 {
   v213 = *MEMORY[0x1E69E9840];
-  v9 = objc_msgSend_targetContentInfo(self, a2, a3, a4, v4, v5);
+  v9 = objc_msgSend_targetContentInfo(self, a2, range, tokens, v4, v5);
   objc_msgSend_referenceSubstringRange(v9, v10, v11, v12, v13, v14);
   v16 = v15;
 
@@ -166,15 +166,15 @@ LABEL_39:
           v178 = v208;
         }
 
-        if (a3)
+        if (range)
         {
-          a3->location = v178;
-          a3->length = 0;
+          range->location = v178;
+          range->length = 0;
         }
 
-        if (a4)
+        if (tokens)
         {
-          *a4 = 0;
+          *tokens = 0;
         }
 
         return;
@@ -226,14 +226,14 @@ LABEL_28:
     goto LABEL_33;
   }
 
-  if (a3)
+  if (range)
   {
-    *a3 = xmmword_1839D0630;
+    *range = xmmword_1839D0630;
   }
 
-  if (a4)
+  if (tokens)
   {
-    *a4 = 0;
+    *tokens = 0;
   }
 }
 

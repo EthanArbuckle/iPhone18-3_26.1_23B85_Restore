@@ -1,23 +1,23 @@
 @interface HDQuantitySampleAttenuationEngine
-- ($A3DB90B81A8072650F44011264F9C29D)attenuateSample:(SEL)a3;
-- (BOOL)delegateLoadingWasSuccessful:(id *)a3;
-- (HDQuantitySampleAttenuationEngine)initWithAttenuationEngineDelegate:(id)a3;
+- ($A3DB90B81A8072650F44011264F9C29D)attenuateSample:(SEL)sample;
+- (BOOL)delegateLoadingWasSuccessful:(id *)successful;
+- (HDQuantitySampleAttenuationEngine)initWithAttenuationEngineDelegate:(id)delegate;
 - (HDQuantitySampleAttenuationEngineDelegate)attenuationEngineDelegate;
-- (void)_loadSamplesFromDelegateAtLocation:(char *)a1;
+- (void)_loadSamplesFromDelegateAtLocation:(char *)location;
 @end
 
 @implementation HDQuantitySampleAttenuationEngine
 
-- (HDQuantitySampleAttenuationEngine)initWithAttenuationEngineDelegate:(id)a3
+- (HDQuantitySampleAttenuationEngine)initWithAttenuationEngineDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = HDQuantitySampleAttenuationEngine;
   v5 = [(HDQuantitySampleAttenuationEngine *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_attenuationEngineDelegate, v4);
+    objc_storeWeak(&v5->_attenuationEngineDelegate, delegateCopy);
     *&v6->_sampleCountFromDelegate = xmmword_22916DD30;
     v6->_noMoreDelegateSamples = 0;
     delegateLoadFirstError = v6->_delegateLoadFirstError;
@@ -28,9 +28,9 @@
   return v6;
 }
 
-- ($A3DB90B81A8072650F44011264F9C29D)attenuateSample:(SEL)a3
+- ($A3DB90B81A8072650F44011264F9C29D)attenuateSample:(SEL)sample
 {
-  v5 = self;
+  selfCopy = self;
   if (self)
   {
     if (self[1024].var3)
@@ -48,30 +48,30 @@ LABEL_22:
     if ((*&var1 & 0x8000000000000000) != 0)
     {
       [(HDQuantitySampleAttenuationEngine *)self _loadSamplesFromDelegateAtLocation:?];
-      var1 = v5[1024].var1;
+      var1 = selfCopy[1024].var1;
       if (var1 == 0.0)
       {
 LABEL_21:
-        v5[1024].var3 = 1;
+        selfCopy[1024].var3 = 1;
         goto LABEL_22;
       }
     }
 
-    var2 = v5[1024].var2;
-    for (i = v5[*&var2].var2; var0 >= i; i = v5[*&var2].var2)
+    var2 = selfCopy[1024].var2;
+    for (i = selfCopy[*&var2].var2; var0 >= i; i = selfCopy[*&var2].var2)
     {
       ++*&var2;
-      v5[1024].var2 = var2;
+      selfCopy[1024].var2 = var2;
       if (*&var2 >= *&var1)
       {
-        [(HDQuantitySampleAttenuationEngine *)v5 _loadSamplesFromDelegateAtLocation:?];
-        var1 = v5[1024].var1;
+        [(HDQuantitySampleAttenuationEngine *)selfCopy _loadSamplesFromDelegateAtLocation:?];
+        var1 = selfCopy[1024].var1;
         if (var1 == 0.0)
         {
           goto LABEL_21;
         }
 
-        var2 = v5[1024].var2;
+        var2 = selfCopy[1024].var2;
       }
     }
 
@@ -86,7 +86,7 @@ LABEL_21:
     var2 = 0.0;
   }
 
-  p_var0 = &v5[*&var2].var0;
+  p_var0 = &selfCopy[*&var2].var0;
   v12 = p_var0[1];
   v13 = a4->var1;
   if (v13 <= v12)
@@ -139,12 +139,12 @@ LABEL_21:
   return self;
 }
 
-- (void)_loadSamplesFromDelegateAtLocation:(char *)a1
+- (void)_loadSamplesFromDelegateAtLocation:(char *)location
 {
-  v4 = (a1 + 40960);
-  v5 = [a1 attenuationEngineDelegate];
+  v4 = (location + 40960);
+  attenuationEngineDelegate = [location attenuationEngineDelegate];
   v9 = 0;
-  v6 = [v5 loadAttenuationSamples:a1 + 8 anchorTime:&v9 errorOut:a2];
+  v6 = [attenuationEngineDelegate loadAttenuationSamples:location + 8 anchorTime:&v9 errorOut:a2];
   v7 = v9;
   v8 = v9;
 
@@ -166,7 +166,7 @@ LABEL_21:
   v4[2] = 0;
 }
 
-- (BOOL)delegateLoadingWasSuccessful:(id *)a3
+- (BOOL)delegateLoadingWasSuccessful:(id *)successful
 {
   delegateLoadErrorCount = self->_delegateLoadErrorCount;
   if (delegateLoadErrorCount >= 1)
@@ -175,10 +175,10 @@ LABEL_21:
     v6 = v5;
     if (v5)
     {
-      if (a3)
+      if (successful)
       {
         v7 = v5;
-        *a3 = v6;
+        *successful = v6;
       }
 
       else

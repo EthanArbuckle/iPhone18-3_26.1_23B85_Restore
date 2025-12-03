@@ -1,15 +1,15 @@
 @interface DashboardAnimator
 - (_TtC6HomeUI17DashboardAnimator)init;
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation DashboardAnimator
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_20CFBDAEC(a3);
+  selfCopy = self;
+  sub_20CFBDAEC(transition);
   swift_unknownObjectRelease();
 }
 

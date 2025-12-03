@@ -1,16 +1,16 @@
 @interface SBSlideOverAppsInFullScreenSwitcherSwitcherModifier
-- (id)_handleEvent:(id)a3;
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3;
+- (id)_handleEvent:(id)event;
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts;
 @end
 
 @implementation SBSlideOverAppsInFullScreenSwitcherSwitcherModifier
 
-- (id)_handleEvent:(id)a3
+- (id)_handleEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v11.receiver = self;
   v11.super_class = SBSlideOverAppsInFullScreenSwitcherSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v11 _handleEvent:v4];
+  v5 = [(SBSwitcherModifier *)&v11 _handleEvent:eventCopy];
   if (!self->_haveInvalidatedAppLayouts)
   {
     self->_haveInvalidatedAppLayouts = 1;
@@ -21,7 +21,7 @@
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 isExitingAnyPeekEvent])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [eventCopy isExitingAnyPeekEvent])
   {
     [(SBChainableModifier *)self setState:1];
     v8 = objc_alloc_init(SBInvalidateAdjustedAppLayoutsSwitcherEventResponse);
@@ -33,14 +33,14 @@
   return v5;
 }
 
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts
 {
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __87__SBSlideOverAppsInFullScreenSwitcherSwitcherModifier_adjustedAppLayoutsForAppLayouts___block_invoke;
   v8[3] = &unk_2783C0D00;
   v8[4] = self;
-  v4 = [a3 bs_compactMap:v8];
+  v4 = [layouts bs_compactMap:v8];
   v7.receiver = self;
   v7.super_class = SBSlideOverAppsInFullScreenSwitcherSwitcherModifier;
   v5 = [(SBSlideOverAppsInFullScreenSwitcherSwitcherModifier *)&v7 adjustedAppLayoutsForAppLayouts:v4];

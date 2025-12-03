@@ -1,33 +1,33 @@
 @interface TSDStyledLayout
-- (CGRect)aliasedAlignmentFrameForScale:(double)a3;
+- (CGRect)aliasedAlignmentFrameForScale:(double)scale;
 - (CGRect)alignmentFrameInRoot;
-- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)a3;
-- (CGRect)frameForCullingWithBaseFrame:(CGRect)a3 additionalTransform:(CGAffineTransform *)a4;
-- (CGRect)fullReflectionBoundsForRect:(CGRect)a3;
+- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)transform;
+- (CGRect)frameForCullingWithBaseFrame:(CGRect)frame additionalTransform:(CGAffineTransform *)transform;
+- (CGRect)fullReflectionBoundsForRect:(CGRect)rect;
 - (CGRect)fullReflectionFrame;
 - (CGRect)i_baseFrame;
-- (CGRect)reflectionBoundsForRect:(CGRect)a3;
+- (CGRect)reflectionBoundsForRect:(CGRect)rect;
 - (CGRect)reflectionFrame;
-- (CGRect)reflectionFrameForSubRect:(CGRect)a3;
+- (CGRect)reflectionFrameForSubRect:(CGRect)rect;
 - (CGRect)shadowedNaturalBoundsWithoutOffset;
 - (double)opacity;
-- (double)scaleToApplyToPathSourceNaturalSizeApplyingLayoutTransform:(CGAffineTransform *)a3 withStartingPathSource:(id)a4;
-- (void)setSuppressesShadowsAndReflections:(BOOL)a3;
+- (double)scaleToApplyToPathSourceNaturalSizeApplyingLayoutTransform:(CGAffineTransform *)transform withStartingPathSource:(id)source;
+- (void)setSuppressesShadowsAndReflections:(BOOL)reflections;
 @end
 
 @implementation TSDStyledLayout
 
-- (void)setSuppressesShadowsAndReflections:(BOOL)a3
+- (void)setSuppressesShadowsAndReflections:(BOOL)reflections
 {
-  if (self->_suppressesShadowsAndReflections != a3)
+  if (self->_suppressesShadowsAndReflections != reflections)
   {
-    self->_suppressesShadowsAndReflections = a3;
+    self->_suppressesShadowsAndReflections = reflections;
   }
 }
 
-- (double)scaleToApplyToPathSourceNaturalSizeApplyingLayoutTransform:(CGAffineTransform *)a3 withStartingPathSource:(id)a4
+- (double)scaleToApplyToPathSourceNaturalSizeApplyingLayoutTransform:(CGAffineTransform *)transform withStartingPathSource:(id)source
 {
-  v6 = a4;
+  sourceCopy = source;
   objc_opt_class();
   v9 = objc_msgSend_parent(self, v7, v8);
   v10 = TSUDynamicCast();
@@ -55,7 +55,7 @@
   }
 
   v18 = objc_msgSend_stroke(self, v11, v12);
-  v21 = objc_msgSend_copy(v6, v19, v20);
+  v21 = objc_msgSend_copy(sourceCopy, v19, v20);
   objc_msgSend_naturalSize(v21, v22, v23);
   v105 = v25;
   v106 = v24;
@@ -68,16 +68,16 @@
   while (1)
   {
     v35 = objc_msgSend_bezierPath(v21, v28, v29);
-    v36 = *&a3->c;
-    *&v115.a = *&a3->a;
+    v36 = *&transform->c;
+    *&v115.a = *&transform->a;
     *&v115.c = v36;
-    *&v115.tx = *&a3->tx;
+    *&v115.tx = *&transform->tx;
     if (!CGAffineTransformIsIdentity(&v115))
     {
-      v38 = *&a3->c;
-      *&v115.a = *&a3->a;
+      v38 = *&transform->c;
+      *&v115.a = *&transform->a;
       *&v115.c = v38;
-      *&v115.tx = *&a3->tx;
+      *&v115.tx = *&transform->tx;
       objc_msgSend_transformUsingAffineTransform_(v35, v37, &v115);
     }
 
@@ -256,7 +256,7 @@ LABEL_60:
   return v17;
 }
 
-- (CGRect)aliasedAlignmentFrameForScale:(double)a3
+- (CGRect)aliasedAlignmentFrameForScale:(double)scale
 {
   objc_msgSend_alignmentFrame(self, a2, v3);
 
@@ -352,14 +352,14 @@ LABEL_60:
   return result;
 }
 
-- (CGRect)reflectionBoundsForRect:(CGRect)a3
+- (CGRect)reflectionBoundsForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = fmin(a3.size.height * 0.400000006, 120.0);
-  MinX = CGRectGetMinX(a3);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v7 = fmin(rect.size.height * 0.400000006, 120.0);
+  MinX = CGRectGetMinX(rect);
   v14.origin.x = x;
   v14.origin.y = y;
   v14.size.width = width;
@@ -380,13 +380,13 @@ LABEL_60:
   return result;
 }
 
-- (CGRect)fullReflectionBoundsForRect:(CGRect)a3
+- (CGRect)fullReflectionBoundsForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  MinX = CGRectGetMinX(a3);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  MinX = CGRectGetMinX(rect);
   v14.origin.x = x;
   v14.origin.y = y;
   v14.size.width = width;
@@ -467,12 +467,12 @@ LABEL_60:
   return result;
 }
 
-- (CGRect)reflectionFrameForSubRect:(CGRect)a3
+- (CGRect)reflectionFrameForSubRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   objc_msgSend_i_baseFrame(self, a2, v3);
   v10 = v9;
   v12 = v11;
@@ -528,29 +528,29 @@ LABEL_60:
   return CGRectIntersection(*&v32, *&v25);
 }
 
-- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)a3
+- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)transform
 {
-  objc_msgSend_alignmentFrame(self, a2, a3);
-  v4 = *&a3->c;
-  *&v5.a = *&a3->a;
+  objc_msgSend_alignmentFrame(self, a2, transform);
+  v4 = *&transform->c;
+  *&v5.a = *&transform->a;
   *&v5.c = v4;
-  *&v5.tx = *&a3->tx;
+  *&v5.tx = *&transform->tx;
   return CGRectApplyAffineTransform(v6, &v5);
 }
 
-- (CGRect)frameForCullingWithBaseFrame:(CGRect)a3 additionalTransform:(CGAffineTransform *)a4
+- (CGRect)frameForCullingWithBaseFrame:(CGRect)frame additionalTransform:(CGAffineTransform *)transform
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v52.receiver = self;
   v52.super_class = TSDStyledLayout;
-  v9 = *&a4->c;
-  v51[0] = *&a4->a;
+  v9 = *&transform->c;
+  v51[0] = *&transform->a;
   v51[1] = v9;
-  v51[2] = *&a4->tx;
-  [(TSDLayout *)&v52 frameForCullingWithBaseFrame:v51 additionalTransform:a3.origin.x, y];
+  v51[2] = *&transform->tx;
+  [(TSDLayout *)&v52 frameForCullingWithBaseFrame:v51 additionalTransform:frame.origin.x, y];
   v11 = v10;
   v13 = v12;
   v15 = v14;

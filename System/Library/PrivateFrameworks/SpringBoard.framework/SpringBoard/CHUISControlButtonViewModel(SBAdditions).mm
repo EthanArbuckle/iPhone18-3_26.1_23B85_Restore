@@ -8,52 +8,52 @@
 
 - (id)sb_secondaryTextColor
 {
-  v2 = [a1 tint];
-  v3 = v2;
-  if (v2)
+  tint = [self tint];
+  v3 = tint;
+  if (tint)
   {
-    v4 = v2;
+    systemBlueColor = tint;
   }
 
   else
   {
-    v4 = [MEMORY[0x277D75348] systemBlueColor];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
   }
 
-  v5 = v4;
+  v5 = systemBlueColor;
 
-  if ([a1 isAnimating])
+  if ([self isAnimating])
   {
-    v6 = v5;
+    labelColor = v5;
   }
 
   else
   {
-    v6 = [MEMORY[0x277D75348] labelColor];
+    labelColor = [MEMORY[0x277D75348] labelColor];
   }
 
-  v7 = v6;
+  v7 = labelColor;
 
   return v7;
 }
 
 - (void)sb_keyColor
 {
-  v2 = [a1 tint];
-  v3 = v2;
-  if (v2)
+  tint = [self tint];
+  v3 = tint;
+  if (tint)
   {
-    v4 = v2;
+    systemBlueColor = tint;
   }
 
   else
   {
-    v4 = [MEMORY[0x277D75348] systemBlueColor];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
   }
 
-  v5 = v4;
+  v5 = systemBlueColor;
 
-  if (([a1 isAnimating] & 1) != 0 || objc_msgSend(a1, "isLauncher"))
+  if (([self isAnimating] & 1) != 0 || objc_msgSend(self, "isLauncher"))
   {
     v6 = v5;
   }
@@ -70,30 +70,30 @@
 
 - (id)sb_actionHintTextWithType:()SBAdditions
 {
-  v5 = [a1 actionHint];
-  v6 = v5;
-  if (v5)
+  actionHint = [self actionHint];
+  v6 = actionHint;
+  if (actionHint)
   {
     *a3 = 1;
-    v7 = v5;
+    title = actionHint;
   }
 
   else
   {
-    if ([a1 isLauncher])
+    if ([self isLauncher])
     {
       *a3 = 1;
-      v8 = [MEMORY[0x277CCA8D8] mainBundle];
-      v9 = [v8 localizedStringForKey:@"CONTROL_OPEN" value:&stru_283094718 table:@"SpringBoard"];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v9 = [mainBundle localizedStringForKey:@"CONTROL_OPEN" value:&stru_283094718 table:@"SpringBoard"];
 
       goto LABEL_7;
     }
 
     *a3 = 0;
-    v7 = [a1 title];
+    title = [self title];
   }
 
-  v9 = v7;
+  v9 = title;
 LABEL_7:
 
   return v9;

@@ -3,13 +3,13 @@
 - (CWFPowerTableElectionTelemetry)init;
 - (id)getElectionSummaryStringForABC;
 - (void)sendTelemetryAndClear;
-- (void)setCandidatePowerTableVersionBluetooth:(id)a3;
-- (void)setCandidatePowerTableVersionWiFi:(id)a3;
-- (void)setCurrentPowerTableVersionAtReadiness:(id)a3 fileName:(id)a4;
-- (void)setFinalPowerTableVersion:(id)a3;
-- (void)setFinalResultAndSendTelemetry:(id)a3;
-- (void)setPowerTableReadiness:(BOOL)a3;
-- (void)setPowerTableVote:(BOOL)a3;
+- (void)setCandidatePowerTableVersionBluetooth:(id)bluetooth;
+- (void)setCandidatePowerTableVersionWiFi:(id)fi;
+- (void)setCurrentPowerTableVersionAtReadiness:(id)readiness fileName:(id)name;
+- (void)setFinalPowerTableVersion:(id)version;
+- (void)setFinalResultAndSendTelemetry:(id)telemetry;
+- (void)setPowerTableReadiness:(BOOL)readiness;
+- (void)setPowerTableVote:(BOOL)vote;
 @end
 
 @implementation CWFPowerTableElectionTelemetry
@@ -61,87 +61,87 @@
   return v2;
 }
 
-- (void)setCandidatePowerTableVersionWiFi:(id)a3
+- (void)setCandidatePowerTableVersionWiFi:(id)fi
 {
-  v4 = a3;
+  fiCopy = fi;
   v5 = [MEMORY[0x1E695DF00] now];
   handoffAvailableDate = self->_handoffAvailableDate;
   self->_handoffAvailableDate = v5;
 
   handoffWiFiAssetVersionInfo = self->_handoffWiFiAssetVersionInfo;
-  self->_handoffWiFiAssetVersionInfo = v4;
+  self->_handoffWiFiAssetVersionInfo = fiCopy;
 }
 
-- (void)setCandidatePowerTableVersionBluetooth:(id)a3
+- (void)setCandidatePowerTableVersionBluetooth:(id)bluetooth
 {
-  v4 = a3;
+  bluetoothCopy = bluetooth;
   v5 = [MEMORY[0x1E695DF00] now];
   handoffAvailableDate = self->_handoffAvailableDate;
   self->_handoffAvailableDate = v5;
 
   handoffBTAssetVersionInfo = self->_handoffBTAssetVersionInfo;
-  self->_handoffBTAssetVersionInfo = v4;
+  self->_handoffBTAssetVersionInfo = bluetoothCopy;
 }
 
-- (void)setCurrentPowerTableVersionAtReadiness:(id)a3 fileName:(id)a4
+- (void)setCurrentPowerTableVersionAtReadiness:(id)readiness fileName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  readinessCopy = readiness;
+  nameCopy = name;
   v8 = [MEMORY[0x1E695DF00] now];
   initialAssetVersionInfoDate = self->_initialAssetVersionInfoDate;
   self->_initialAssetVersionInfoDate = v8;
 
   initialAssetVersionInfoVersion = self->_initialAssetVersionInfoVersion;
-  self->_initialAssetVersionInfoVersion = v6;
-  v12 = v6;
+  self->_initialAssetVersionInfoVersion = readinessCopy;
+  v12 = readinessCopy;
 
   initialAssetFilename = self->_initialAssetFilename;
-  self->_initialAssetFilename = v7;
+  self->_initialAssetFilename = nameCopy;
 }
 
-- (void)setPowerTableReadiness:(BOOL)a3
+- (void)setPowerTableReadiness:(BOOL)readiness
 {
   v5 = [MEMORY[0x1E695DF00] now];
   readinessReplyDeliveredDate = self->_readinessReplyDeliveredDate;
   self->_readinessReplyDeliveredDate = v5;
 
-  self->_readinessReply = a3;
+  self->_readinessReply = readiness;
 }
 
-- (void)setPowerTableVote:(BOOL)a3
+- (void)setPowerTableVote:(BOOL)vote
 {
   v5 = [MEMORY[0x1E695DF00] now];
   voteDeliveredDate = self->_voteDeliveredDate;
   self->_voteDeliveredDate = v5;
 
-  self->_voteResult = a3;
+  self->_voteResult = vote;
 }
 
-- (void)setFinalPowerTableVersion:(id)a3
+- (void)setFinalPowerTableVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   v5 = [MEMORY[0x1E695DF00] now];
   finalAssetVersionInfoDate = self->_finalAssetVersionInfoDate;
   self->_finalAssetVersionInfoDate = v5;
 
   finalAssetVersionInfoVersion = self->_finalAssetVersionInfoVersion;
-  self->_finalAssetVersionInfoVersion = v4;
+  self->_finalAssetVersionInfoVersion = versionCopy;
 }
 
-- (void)setFinalResultAndSendTelemetry:(id)a3
+- (void)setFinalResultAndSendTelemetry:(id)telemetry
 {
-  objc_storeStrong(&self->_finalResultString, a3);
+  objc_storeStrong(&self->_finalResultString, telemetry);
 
   [(CWFPowerTableElectionTelemetry *)self sendTelemetryAndClear];
 }
 
 - (id)getElectionSummaryStringForABC
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  v4 = v3;
+  string = [MEMORY[0x1E696AD60] string];
+  v4 = string;
   if (self->_handoffWiFiAssetVersionInfo)
   {
-    [v3 appendFormat:@"WiFiVer: %@, ", self->_handoffWiFiAssetVersionInfo];
+    [string appendFormat:@"WiFiVer: %@, ", self->_handoffWiFiAssetVersionInfo];
   }
 
   if (self->_handoffBTAssetVersionInfo)

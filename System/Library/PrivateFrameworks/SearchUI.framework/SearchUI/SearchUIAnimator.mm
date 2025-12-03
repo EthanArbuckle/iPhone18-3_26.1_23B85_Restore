@@ -1,12 +1,12 @@
 @interface SearchUIAnimator
-+ (id)animateWith:(id)a3 animations:(id)a4 completion:(id)a5;
-+ (void)animateWithLayer:(id)a3 with:(id)a4 key:(id)a5 animations:(id)a6 delegate:(id)a7;
++ (id)animateWith:(id)with animations:(id)animations completion:(id)completion;
++ (void)animateWithLayer:(id)layer with:(id)with key:(id)key animations:(id)animations delegate:(id)delegate;
 - (_TtC8SearchUI16SearchUIAnimator)init;
 @end
 
 @implementation SearchUIAnimator
 
-+ (void)animateWithLayer:(id)a3 with:(id)a4 key:(id)a5 animations:(id)a6 delegate:(id)a7
++ (void)animateWithLayer:(id)layer with:(id)with key:(id)key animations:(id)animations delegate:(id)delegate
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1ECBA3748);
   v11 = sub_1DA25F324();
@@ -15,23 +15,23 @@
   *&v13[OBJC_IVAR____TtC8SearchUI29SearchUIGroupedLayerAnimation_animations] = v11;
   v18.receiver = v13;
   v18.super_class = v12;
-  v14 = a3;
+  layerCopy = layer;
   swift_unknownObjectRetain();
-  v15 = a5;
+  keyCopy = key;
   swift_unknownObjectRetain();
   v16 = objc_msgSendSuper2(&v18, sel_init);
-  v17 = sub_1DA23B074(a4);
+  v17 = sub_1DA23B074(with);
   [v17 setDelegate_];
-  [v14 addAnimation:v17 forKey:v15];
+  [layerCopy addAnimation:v17 forKey:keyCopy];
 
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }
 
-+ (id)animateWith:(id)a3 animations:(id)a4 completion:(id)a5
++ (id)animateWith:(id)with animations:(id)animations completion:(id)completion
 {
-  v6 = _Block_copy(a4);
-  v7 = _Block_copy(a5);
+  v6 = _Block_copy(animations);
+  v7 = _Block_copy(completion);
   v8 = swift_allocObject();
   *(v8 + 16) = v6;
   if (v7)

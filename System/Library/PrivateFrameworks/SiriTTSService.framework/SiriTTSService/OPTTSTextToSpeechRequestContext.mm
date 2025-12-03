@@ -1,12 +1,12 @@
 @interface OPTTSTextToSpeechRequestContext
 - (NSArray)context_info;
 - (NSString)dialog_identifier;
-- (OPTTSTextToSpeechRequestContext)initWithFlatbuffData:(id)a3 root:(const TextToSpeechRequestContext *)a4 verify:(BOOL)a5;
-- (Offset<siri::speech::schema_fb::TextToSpeechRequestContext>)addObjectToBuffer:(void *)a3;
-- (id)context_info_objectAtIndex:(unint64_t)a3;
+- (OPTTSTextToSpeechRequestContext)initWithFlatbuffData:(id)data root:(const TextToSpeechRequestContext *)root verify:(BOOL)verify;
+- (Offset<siri::speech::schema_fb::TextToSpeechRequestContext>)addObjectToBuffer:(void *)buffer;
+- (id)context_info_objectAtIndex:(unint64_t)index;
 - (id)flatbuffData;
 - (unint64_t)context_info_count;
-- (void)context_info_enumerateObjectsUsingBlock:(id)a3;
+- (void)context_info_enumerateObjectsUsingBlock:(id)block;
 @end
 
 @implementation OPTTSTextToSpeechRequestContext
@@ -40,21 +40,21 @@ apple::aiml::flatbuffers2::DetachedBuffer *__47__OPTTSTextToSpeechRequestContext
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::TextToSpeechRequestContext>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TextToSpeechRequestContext>)addObjectToBuffer:(void *)buffer
 {
   v32 = *MEMORY[0x1E69E9840];
   v28 = 0;
   v29 = 0;
   v30 = 0;
-  v5 = [(OPTTSTextToSpeechRequestContext *)self context_info];
-  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::TextToSpeechRequest_::ContextInfoEntry>>::reserve(&v28, [v5 count]);
+  context_info = [(OPTTSTextToSpeechRequestContext *)self context_info];
+  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::TextToSpeechRequest_::ContextInfoEntry>>::reserve(&v28, [context_info count]);
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = [(OPTTSTextToSpeechRequestContext *)self context_info];
-  v7 = [v6 countByEnumeratingWithState:&v24 objects:v31 count:16];
+  context_info2 = [(OPTTSTextToSpeechRequestContext *)self context_info];
+  v7 = [context_info2 countByEnumeratingWithState:&v24 objects:v31 count:16];
   if (v7)
   {
     v8 = *v25;
@@ -64,14 +64,14 @@ apple::aiml::flatbuffers2::DetachedBuffer *__47__OPTTSTextToSpeechRequestContext
       {
         if (*v25 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(context_info2);
         }
 
-        v23 = [*(*(&v24 + 1) + 8 * i) addObjectToBuffer:a3];
+        v23 = [*(*(&v24 + 1) + 8 * i) addObjectToBuffer:buffer];
         std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::TextToSpeechRequest_::ContextInfoEntry>>::push_back[abi:ne200100](&v28, &v23);
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v24 objects:v31 count:16];
+      v7 = [context_info2 countByEnumeratingWithState:&v24 objects:v31 count:16];
     }
 
     while (v7);
@@ -88,26 +88,26 @@ apple::aiml::flatbuffers2::DetachedBuffer *__47__OPTTSTextToSpeechRequestContext
     v11 = v28;
   }
 
-  v12 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(a3, v11, (v29 - v28) >> 2);
-  v13 = [(OPTTSTextToSpeechRequestContext *)self dialog_identifier];
-  v14 = v13;
-  if (!v13)
+  v12 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(buffer, v11, (v29 - v28) >> 2);
+  dialog_identifier = [(OPTTSTextToSpeechRequestContext *)self dialog_identifier];
+  v14 = dialog_identifier;
+  if (!dialog_identifier)
   {
-    v13 = &stru_1F28C4E90;
+    dialog_identifier = &stru_1F28C4E90;
   }
 
-  v15 = [(__CFString *)v13 UTF8String];
-  v16 = strlen(v15);
-  LODWORD(v15) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v15, v16);
+  uTF8String = [(__CFString *)dialog_identifier UTF8String];
+  v16 = strlen(uTF8String);
+  LODWORD(uTF8String) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String, v16);
 
-  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v17 = *(a3 + 8);
-  v18 = *(a3 + 12);
-  v19 = *(a3 + 10);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::Vector<unsigned char>>(a3, 4, v12);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::Vector<unsigned char>>(a3, 6, v15);
-  v20.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v17 - v18 + v19);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v17 = *(buffer + 8);
+  v18 = *(buffer + 12);
+  v19 = *(buffer + 10);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::Vector<unsigned char>>(buffer, 4, v12);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::Vector<unsigned char>>(buffer, 6, uTF8String);
+  v20.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v17 - v18 + v19);
   if (v10)
   {
     operator delete(v10);
@@ -140,14 +140,14 @@ apple::aiml::flatbuffers2::DetachedBuffer *__47__OPTTSTextToSpeechRequestContext
   return v6;
 }
 
-- (void)context_info_enumerateObjectsUsingBlock:(id)a3
+- (void)context_info_enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"context_info"];
   v6 = v5;
   if (v5)
   {
-    [v5 enumerateObjectsUsingBlock:v4];
+    [v5 enumerateObjectsUsingBlock:blockCopy];
   }
 
   else
@@ -170,7 +170,7 @@ apple::aiml::flatbuffers2::DetachedBuffer *__47__OPTTSTextToSpeechRequestContext
           do
           {
             v15 = [[OPTTSTextToSpeechRequest_ContextInfoEntry alloc] initWithFlatbuffData:self->_data root:&v14[*v14->var0] verify:0];
-            v4[2](v4, v15, v12, &v18);
+            blockCopy[2](blockCopy, v15, v12, &v18);
             v16 = v18;
 
             if (v16)
@@ -218,13 +218,13 @@ apple::aiml::flatbuffers2::DetachedBuffer *__47__OPTTSTextToSpeechRequestContext
   return v5;
 }
 
-- (id)context_info_objectAtIndex:(unint64_t)a3
+- (id)context_info_objectAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"context_info"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectAtIndexedSubscript:a3];
+    v7 = [v5 objectAtIndexedSubscript:index];
 LABEL_3:
     v8 = v7;
     goto LABEL_9;
@@ -238,12 +238,12 @@ LABEL_3:
     if (v11)
     {
       v12 = &root[v11 + *root[v11].var0];
-      if (*v12->var0 <= a3)
+      if (*v12->var0 <= index)
       {
         __assert_rtn("Get", "flatbuffers.h", 275, "i < size()");
       }
 
-      v7 = [[OPTTSTextToSpeechRequest_ContextInfoEntry alloc] initWithFlatbuffData:self->_data root:&v12[4 * a3 + 4 + *v12[4 * a3 + 4].var0] verify:0];
+      v7 = [[OPTTSTextToSpeechRequest_ContextInfoEntry alloc] initWithFlatbuffData:self->_data root:&v12[4 * index + 4 + *v12[4 * index + 4].var0] verify:0];
       goto LABEL_3;
     }
   }
@@ -259,12 +259,12 @@ LABEL_9:
   v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"context_info"];
   if (!v3)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __47__OPTTSTextToSpeechRequestContext_context_info__block_invoke;
     v6[3] = &unk_1E7AF3888;
-    v3 = v4;
+    v3 = array;
     v7 = v3;
     [(OPTTSTextToSpeechRequestContext *)self context_info_enumerateObjectsUsingBlock:v6];
     [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"context_info"];
@@ -273,10 +273,10 @@ LABEL_9:
   return v3;
 }
 
-- (OPTTSTextToSpeechRequestContext)initWithFlatbuffData:(id)a3 root:(const TextToSpeechRequestContext *)a4 verify:(BOOL)a5
+- (OPTTSTextToSpeechRequestContext)initWithFlatbuffData:(id)data root:(const TextToSpeechRequestContext *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = OPTTSTextToSpeechRequestContext;
   v10 = [(OPTTSTextToSpeechRequestContext *)&v25 init];
@@ -285,35 +285,35 @@ LABEL_9:
     goto LABEL_14;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_15;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_14;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_15;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_1B1C41700;
   v23 = 0;

@@ -1,17 +1,17 @@
 @interface PXMockAudioSession
-- (PXMockAudioSession)initWithAsset:(id)a3 volume:(float)a4 startTime:(id *)a5 queue:(id)a6 audioSessionDelegate:(id)a7;
-- (void)_handleCurrentTimeUpdateTimer:(id)a3;
+- (PXMockAudioSession)initWithAsset:(id)asset volume:(float)volume startTime:(id *)time queue:(id)queue audioSessionDelegate:(id)delegate;
+- (void)_handleCurrentTimeUpdateTimer:(id)timer;
 - (void)_invalidateCurrentTimeUpdateTimer;
 - (void)_startCurrentTimeUpdateTimer;
 - (void)pause;
 - (void)play;
-- (void)playFromTime:(id *)a3;
+- (void)playFromTime:(id *)time;
 - (void)prepareToPlay;
 @end
 
 @implementation PXMockAudioSession
 
-- (void)_handleCurrentTimeUpdateTimer:(id)a3
+- (void)_handleCurrentTimeUpdateTimer:(id)timer
 {
   p_currentTime = &self->_currentTime;
   CMTimeMake(&rhs, 1, 10);
@@ -39,11 +39,11 @@
   self->_currentTimeUpdateTimer = v3;
 }
 
-- (void)playFromTime:(id *)a3
+- (void)playFromTime:(id *)time
 {
   [(PXAudioSession *)self performInternalChanges:&__block_literal_global_9_159222];
-  var3 = a3->var3;
-  *&self->_currentTime.value = *&a3->var0;
+  var3 = time->var3;
+  *&self->_currentTime.value = *&time->var0;
   self->_currentTime.epoch = var3;
 
   [(PXMockAudioSession *)self _startCurrentTimeUpdateTimer];
@@ -82,16 +82,16 @@ void __35__PXMockAudioSession_prepareToPlay__block_invoke_3(uint64_t a1, void *a
   [v2 setStatus:2];
 }
 
-- (PXMockAudioSession)initWithAsset:(id)a3 volume:(float)a4 startTime:(id *)a5 queue:(id)a6 audioSessionDelegate:(id)a7
+- (PXMockAudioSession)initWithAsset:(id)asset volume:(float)volume startTime:(id *)time queue:(id)queue audioSessionDelegate:(id)delegate
 {
   v11.receiver = self;
   v11.super_class = PXMockAudioSession;
-  v10 = *a5;
-  result = [(PXAudioSession *)&v11 initWithAsset:a3 volume:&v10 startTime:a6 queue:0 audioSessionDelegate:?];
+  v10 = *time;
+  result = [(PXAudioSession *)&v11 initWithAsset:asset volume:&v10 startTime:queue queue:0 audioSessionDelegate:?];
   if (result)
   {
-    var3 = a5->var3;
-    *&result->_currentTime.value = *&a5->var0;
+    var3 = time->var3;
+    *&result->_currentTime.value = *&time->var0;
     result->_currentTime.epoch = var3;
   }
 

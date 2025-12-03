@@ -4,56 +4,56 @@
 - (NSArray)colors;
 - (NSArray)locations;
 - (id)color;
-- (void)setColors:(id)a3;
-- (void)setEndPoint:(CGPoint)a3;
-- (void)setLocations:(id)a3;
-- (void)setStartPoint:(CGPoint)a3;
+- (void)setColors:(id)colors;
+- (void)setEndPoint:(CGPoint)point;
+- (void)setLocations:(id)locations;
+- (void)setStartPoint:(CGPoint)point;
 @end
 
 @implementation BKGradientView
 
 - (id)color
 {
-  v2 = [(BKGradientView *)self layer];
-  v3 = [v2 colors];
+  layer = [(BKGradientView *)self layer];
+  colors = [layer colors];
 
-  return v3;
+  return colors;
 }
 
-- (void)setColors:(id)a3
+- (void)setColors:(id)colors
 {
-  v4 = a3;
-  v5 = [(BKGradientView *)self layer];
-  [v5 setColors:v4];
+  colorsCopy = colors;
+  layer = [(BKGradientView *)self layer];
+  [layer setColors:colorsCopy];
 }
 
 - (NSArray)colors
 {
-  v2 = [(BKGradientView *)self layer];
-  v3 = [v2 colors];
+  layer = [(BKGradientView *)self layer];
+  colors = [layer colors];
 
-  return v3;
+  return colors;
 }
 
 - (NSArray)locations
 {
-  v2 = [(BKGradientView *)self layer];
-  v3 = [v2 locations];
+  layer = [(BKGradientView *)self layer];
+  locations = [layer locations];
 
-  return v3;
+  return locations;
 }
 
-- (void)setLocations:(id)a3
+- (void)setLocations:(id)locations
 {
-  v4 = a3;
-  v5 = [(BKGradientView *)self layer];
-  [v5 setLocations:v4];
+  locationsCopy = locations;
+  layer = [(BKGradientView *)self layer];
+  [layer setLocations:locationsCopy];
 }
 
 - (CGPoint)startPoint
 {
-  v2 = [(BKGradientView *)self layer];
-  [v2 startPoint];
+  layer = [(BKGradientView *)self layer];
+  [layer startPoint];
   v4 = v3;
   v6 = v5;
 
@@ -64,18 +64,18 @@
   return result;
 }
 
-- (void)setStartPoint:(CGPoint)a3
+- (void)setStartPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(BKGradientView *)self layer];
-  [v5 setStartPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  layer = [(BKGradientView *)self layer];
+  [layer setStartPoint:{x, y}];
 }
 
 - (CGPoint)endPoint
 {
-  v2 = [(BKGradientView *)self layer];
-  [v2 endPoint];
+  layer = [(BKGradientView *)self layer];
+  [layer endPoint];
   v4 = v3;
   v6 = v5;
 
@@ -86,12 +86,12 @@
   return result;
 }
 
-- (void)setEndPoint:(CGPoint)a3
+- (void)setEndPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(BKGradientView *)self layer];
-  [v5 setEndPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  layer = [(BKGradientView *)self layer];
+  [layer setEndPoint:{x, y}];
 }
 
 @end

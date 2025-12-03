@@ -5,7 +5,7 @@
 - (id)createUserProfileLink;
 - (id)retrieveSubtitleText;
 - (void)_fetchCount;
-- (void)_updateLinkWithCount:(int64_t)a3 notifyObservers:(BOOL)a4;
+- (void)_updateLinkWithCount:(int64_t)count notifyObservers:(BOOL)observers;
 @end
 
 @implementation UserProfileLinkRatingsProvider
@@ -25,9 +25,9 @@
   return observers;
 }
 
-- (void)_updateLinkWithCount:(int64_t)a3 notifyObservers:(BOOL)a4
+- (void)_updateLinkWithCount:(int64_t)count notifyObservers:(BOOL)observers
 {
-  v4 = a4;
+  observersCopy = observers;
   v8 = sub_100026868();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -39,20 +39,20 @@
     v16 = 2112;
     v17 = v11;
     v18 = 1024;
-    v19 = a3;
+    countCopy = count;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%@ %@, count = %d", &v14, 0x1Cu);
   }
 
-  if (self->_count != a3)
+  if (self->_count != count)
   {
-    self->_count = a3;
-    v12 = [(UserProfileLinkRatingsProvider *)self retrieveSubtitleText];
-    [(UserProfileLink *)self->_newLink setSubtitle:v12];
+    self->_count = count;
+    retrieveSubtitleText = [(UserProfileLinkRatingsProvider *)self retrieveSubtitleText];
+    [(UserProfileLink *)self->_newLink setSubtitle:retrieveSubtitleText];
 
-    if (v4)
+    if (observersCopy)
     {
-      v13 = [(UserProfileLinkRatingsProvider *)self observers];
-      [v13 dataDidUpdateForUserProfileLinkType:{-[UserProfileLinkRatingsProvider userProfileLinkType](self, "userProfileLinkType")}];
+      observers = [(UserProfileLinkRatingsProvider *)self observers];
+      [observers dataDidUpdateForUserProfileLinkType:{-[UserProfileLinkRatingsProvider userProfileLinkType](self, "userProfileLinkType")}];
     }
   }
 }
@@ -105,8 +105,8 @@
   self->_newLink = v11;
 
   [(UserProfileLink *)self->_newLink setUserProfileLinkType:[(UserProfileLinkRatingsProvider *)self userProfileLinkType]];
-  v13 = [(UserProfileLinkRatingsProvider *)self retrieveSubtitleText];
-  [(UserProfileLink *)self->_newLink setSubtitle:v13];
+  retrieveSubtitleText = [(UserProfileLinkRatingsProvider *)self retrieveSubtitleText];
+  [(UserProfileLink *)self->_newLink setSubtitle:retrieveSubtitleText];
 
   v14 = self->_newLink;
   v15 = v14;

@@ -1,19 +1,19 @@
 @interface FMDPairingCheckHelper
-+ (id)getPairingData:(id)a3;
-+ (id)getUserPrivateKey:(id)a3;
-+ (id)registerDevice:(id)a3;
-+ (id)updatePairingData:(id)a3 pairingData:(id)a4;
-+ (void)checkAndHealPairingKeys:(id)a3 completion:(id)a4;
-+ (void)pairingCheckForAccessory:(id)a3 useEraseKeyType:(id)a4 completion:(id)a5;
++ (id)getPairingData:(id)data;
++ (id)getUserPrivateKey:(id)key;
++ (id)registerDevice:(id)device;
++ (id)updatePairingData:(id)data pairingData:(id)pairingData;
++ (void)checkAndHealPairingKeys:(id)keys completion:(id)completion;
++ (void)pairingCheckForAccessory:(id)accessory useEraseKeyType:(id)type completion:(id)completion;
 @end
 
 @implementation FMDPairingCheckHelper
 
-+ (void)pairingCheckForAccessory:(id)a3 useEraseKeyType:(id)a4 completion:(id)a5
++ (void)pairingCheckForAccessory:(id)accessory useEraseKeyType:(id)type completion:(id)completion
 {
-  v7 = a3;
-  v105 = a4;
-  v8 = a5;
+  accessoryCopy = accessory;
+  typeCopy = type;
+  completionCopy = completion;
   v9 = dispatch_group_create();
   v10 = sub_100002400();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -43,7 +43,7 @@
   v125 = &v126;
   v11 = v9;
   v123 = v11;
-  [v7 getPairingDataWithCompletion:v122];
+  [accessoryCopy getPairingDataWithCompletion:v122];
   v12 = dispatch_time(0, 5000000000);
   v13 = dispatch_group_wait(v11, v12);
   if (!*(v127[0] + 40) && !v13)
@@ -51,38 +51,38 @@
     v14 = sub_100002400();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      v98 = [v130[5] data];
-      v76 = [v98 fm_hexString];
-      v96 = [v130[5] pairingCheckToken];
-      groupa = [v96 fm_hexString];
-      v95 = [v130[5] phoneNumber];
-      v100 = [v95 fm_hexString];
-      v77 = [v130[5] keysUpdated];
-      v78 = [v77 fm_hexString];
-      v79 = [v130[5] lostModePrivateKey];
-      v80 = [v79 fm_hexString];
+      data = [v130[5] data];
+      fm_hexString = [data fm_hexString];
+      pairingCheckToken = [v130[5] pairingCheckToken];
+      groupa = [pairingCheckToken fm_hexString];
+      phoneNumber = [v130[5] phoneNumber];
+      fm_hexString2 = [phoneNumber fm_hexString];
+      keysUpdated = [v130[5] keysUpdated];
+      fm_hexString3 = [keysUpdated fm_hexString];
+      lostModePrivateKey = [v130[5] lostModePrivateKey];
+      fm_hexString4 = [lostModePrivateKey fm_hexString];
       *buf = 138413314;
-      *&buf[4] = v76;
+      *&buf[4] = fm_hexString;
       *&buf[12] = 2112;
       *&buf[14] = groupa;
       *&buf[22] = 2112;
-      v144 = v100;
+      v144 = fm_hexString2;
       *v145 = 2112;
-      *&v145[2] = v78;
+      *&v145[2] = fm_hexString3;
       *&v145[10] = 2112;
-      *&v145[12] = v80;
+      *&v145[12] = fm_hexString4;
       _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "pairingCheckData = %@\npairingCheckToken = %@\nphoneNumber = %@\nkeysUpdated = %@\nlostModePrivateKey = %@", buf, 0x34u);
     }
 
-    if (v105)
+    if (typeCopy)
     {
-      v15 = [v105 isEqualToString:@"2"];
+      v15 = [typeCopy isEqualToString:@"2"];
     }
 
     else
     {
-      v19 = [v130[5] keysUpdated];
-      if (v19)
+      keysUpdated2 = [v130[5] keysUpdated];
+      if (keysUpdated2)
       {
         v15 = [FMPreferencesUtil BOOLForKey:@"userKeyEraseDisabled" inDomain:kFMDNotBackedUpPrefDomain]^ 1;
       }
@@ -125,7 +125,7 @@
       v121[5] = buf;
       v121[6] = &v126;
       v121[4] = v11;
-      [v7 beginUserKeyEraseWithCompletion:v121];
+      [accessoryCopy beginUserKeyEraseWithCompletion:v121];
     }
 
     else
@@ -138,7 +138,7 @@
       v120[5] = buf;
       v120[6] = &v126;
       v120[4] = v11;
-      [v7 getAuthNonceWithCompletion:v120];
+      [accessoryCopy getAuthNonceWithCompletion:v120];
     }
 
     v23 = dispatch_time(0, 5000000000);
@@ -154,7 +154,7 @@
       v41 = *(v127[0] + 40);
       if (v41)
       {
-        v8[2](v8, v41, 0);
+        completionCopy[2](completionCopy, v41, 0);
 LABEL_91:
         _Block_object_dispose(buf, 8);
 
@@ -162,7 +162,7 @@ LABEL_91:
       }
 
       v26 = +[NSError fm_timeoutError];
-      v8[2](v8, v26, 0);
+      completionCopy[2](completionCopy, v26, 0);
 LABEL_90:
 
       goto LABEL_91;
@@ -176,15 +176,15 @@ LABEL_90:
     }
 
     v26 = objc_alloc_init(FMDPairingCheckCommandRequestInfo);
-    v27 = [v130[5] pairingCheckToken];
-    v28 = [v27 fm_hexString];
-    [v26 setPairingCheckToken:v28];
+    pairingCheckToken2 = [v130[5] pairingCheckToken];
+    fm_hexString5 = [pairingCheckToken2 fm_hexString];
+    [v26 setPairingCheckToken:fm_hexString5];
 
-    v29 = [*(*&buf[8] + 40) fm_hexString];
-    [v26 setAuthNonce:v29];
+    fm_hexString6 = [*(*&buf[8] + 40) fm_hexString];
+    [v26 setAuthNonce:fm_hexString6];
 
-    v30 = [v7 accessoryType];
-    [v26 setAccessoryType:v30];
+    accessoryType = [accessoryCopy accessoryType];
+    [v26 setAccessoryType:accessoryType];
 
     if (v15)
     {
@@ -221,12 +221,12 @@ LABEL_90:
     {
       if (v15)
       {
-        [v7 cancelUserKeyEraseWithCompletion:0];
+        [accessoryCopy cancelUserKeyEraseWithCompletion:0];
       }
 
       else
       {
-        [v7 cancelVendorKeyEraseWithCompletion:0];
+        [accessoryCopy cancelVendorKeyEraseWithCompletion:0];
       }
 
       v42 = sub_100002400();
@@ -238,7 +238,7 @@ LABEL_90:
       v43 = *(v127[0] + 40);
       if (v43)
       {
-        v8[2](v8, v43, 0);
+        completionCopy[2](completionCopy, v43, 0);
 LABEL_89:
 
         _Block_object_dispose(v114, 8);
@@ -246,7 +246,7 @@ LABEL_89:
       }
 
       v44 = +[NSError fm_timeoutError];
-      v8[2](v8, v44, 0);
+      completionCopy[2](completionCopy, v44, 0);
 LABEL_88:
 
       goto LABEL_89;
@@ -259,10 +259,10 @@ LABEL_88:
       _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "getting lostModeInfo", v135, 2u);
     }
 
-    v36 = [*(v115 + 5) lostModeInfo];
-    v37 = [NSData dataWithHexString:v36];
-    v38 = [v130[5] lostModePrivateKey];
-    v99 = [FMDCryptoUtil decryptData:v37 privateKeyData:v38];
+    lostModeInfo = [*(v115 + 5) lostModeInfo];
+    v37 = [NSData dataWithHexString:lostModeInfo];
+    lostModePrivateKey2 = [v130[5] lostModePrivateKey];
+    v99 = [FMDCryptoUtil decryptData:v37 privateKeyData:lostModePrivateKey2];
 
     if (v99)
     {
@@ -277,9 +277,9 @@ LABEL_88:
     v45 = sub_100002400();
     if (os_log_type_enabled(v45, OS_LOG_TYPE_DEBUG))
     {
-      v90 = [*(v115 + 5) lostModeInfo];
+      lostModeInfo2 = [*(v115 + 5) lostModeInfo];
       *v135 = 138412802;
-      v136 = v90;
+      v136 = lostModeInfo2;
       v137 = 2112;
       v138 = v99;
       v139 = 2112;
@@ -291,9 +291,9 @@ LABEL_88:
     if (objc_opt_respondsToSelector())
     {
       v47 = [v39 objectForKeyedSubscript:@"isLost"];
-      v48 = [v47 BOOLValue];
+      bOOLValue = [v47 BOOLValue];
 
-      if (v48)
+      if (bOOLValue)
       {
         goto LABEL_61;
       }
@@ -314,15 +314,15 @@ LABEL_61:
     v50 = *(v115 + 5);
     if (v50)
     {
-      v51 = [v50 statusCode];
-      if (([v51 isEqualToString:@"409"] & 1) != 0 || (objc_msgSend(*(v115 + 5), "signature"), (v52 = objc_claimAutoreleasedReturnValue()) == 0))
+      statusCode = [v50 statusCode];
+      if (([statusCode isEqualToString:@"409"] & 1) != 0 || (objc_msgSend(*(v115 + 5), "signature"), (v52 = objc_claimAutoreleasedReturnValue()) == 0))
       {
       }
 
       else
       {
-        v53 = [*(v115 + 5) serverNonce];
-        v54 = v53 == 0;
+        serverNonce = [*(v115 + 5) serverNonce];
+        v54 = serverNonce == 0;
 
         if (!v54)
         {
@@ -341,11 +341,11 @@ LABEL_61:
           }
 
           dispatch_group_enter(group);
-          v57 = [*(v115 + 5) serverNonce];
-          v104 = [NSData dataWithHexString:v57];
+          serverNonce2 = [*(v115 + 5) serverNonce];
+          v104 = [NSData dataWithHexString:serverNonce2];
 
-          v58 = [*(v115 + 5) signature];
-          v97 = [NSData dataWithHexString:v58];
+          signature = [*(v115 + 5) signature];
+          v97 = [NSData dataWithHexString:signature];
 
           if (v15)
           {
@@ -353,7 +353,7 @@ LABEL_61:
             if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
             {
               v60 = *(*&buf[8] + 40);
-              v61 = [v7 endPointUUID];
+              endPointUUID = [accessoryCopy endPointUUID];
               *v135 = 138413058;
               v136 = v104;
               v137 = 2112;
@@ -361,12 +361,12 @@ LABEL_61:
               v139 = 2112;
               v140 = v60;
               v141 = 2112;
-              v142 = v61;
+              v142 = endPointUUID;
               _os_log_impl(&_mh_execute_header, v59, OS_LOG_TYPE_DEFAULT, "continueUserKeyErase serverNonce = %@, signature  = %@, accessoryNonce = %@ endPointUUID = %@", v135, 0x2Au);
             }
 
             v62 = *(*&buf[8] + 40);
-            v63 = [v7 endPointUUID];
+            endPointUUID2 = [accessoryCopy endPointUUID];
             v64 = v107;
             v107[0] = _NSConcreteStackBlock;
             v107[1] = 3221225472;
@@ -376,7 +376,7 @@ LABEL_61:
             v107[4] = v65;
             v107[6] = &v126;
             v107[5] = group;
-            [v7 continueUserKeyErase:v65 withSignature:v97 andAccessoryNonce:v62 forEndpoint:v63 completion:v107];
+            [accessoryCopy continueUserKeyErase:v65 withSignature:v97 andAccessoryNonce:v62 forEndpoint:endPointUUID2 completion:v107];
           }
 
           else
@@ -385,7 +385,7 @@ LABEL_61:
             if (os_log_type_enabled(v81, OS_LOG_TYPE_DEFAULT))
             {
               v82 = *(*&buf[8] + 40);
-              v83 = [v7 endPointUUID];
+              endPointUUID3 = [accessoryCopy endPointUUID];
               *v135 = 138413058;
               v136 = v104;
               v137 = 2112;
@@ -393,12 +393,12 @@ LABEL_61:
               v139 = 2112;
               v140 = v82;
               v141 = 2112;
-              v142 = v83;
+              v142 = endPointUUID3;
               _os_log_impl(&_mh_execute_header, v81, OS_LOG_TYPE_DEFAULT, "vendorKeyErase serverNonce = %@, signature  = %@, accessoryNonce = %@ endPointUUID = %@", v135, 0x2Au);
             }
 
             v84 = *(*&buf[8] + 40);
-            v63 = [v7 endPointUUID];
+            endPointUUID2 = [accessoryCopy endPointUUID];
             v64 = v106;
             v106[0] = _NSConcreteStackBlock;
             v106[1] = 3221225472;
@@ -408,7 +408,7 @@ LABEL_61:
             v106[4] = v85;
             v106[6] = &v126;
             v106[5] = group;
-            [v7 vendorKeyErase:v85 withSignature:v97 andAccessoryNonce:v84 forEndpoint:v63 completion:v106];
+            [accessoryCopy vendorKeyErase:v85 withSignature:v97 andAccessoryNonce:v84 forEndpoint:endPointUUID2 completion:v106];
           }
 
           v86 = dispatch_time(0, 5000000000);
@@ -424,22 +424,22 @@ LABEL_61:
             v89 = *(v127[0] + 40);
             if (v89)
             {
-              (v8)[2](v8, v89, v39);
+              (completionCopy)[2](completionCopy, v89, v39);
             }
 
             else
             {
               v94 = +[NSError fm_timeoutError];
-              (v8)[2](v8, v94, v39);
+              (completionCopy)[2](completionCopy, v94, v39);
             }
           }
 
           else
           {
-            (v8)[2](v8, 0, v39);
+            (completionCopy)[2](completionCopy, 0, v39);
           }
 
-          v93 = v104;
+          useEraseKeyType4 = v104;
 LABEL_108:
 
           goto LABEL_87;
@@ -464,7 +464,7 @@ LABEL_108:
       v109[3] = &unk_1000388A8;
       v109[5] = &v126;
       v109[4] = group;
-      [v7 cancelUserKeyEraseWithCompletion:v109];
+      [accessoryCopy cancelUserKeyEraseWithCompletion:v109];
     }
 
     else
@@ -476,7 +476,7 @@ LABEL_108:
       v108[3] = &unk_1000388A8;
       v108[5] = &v126;
       v108[4] = group;
-      [v7 cancelVendorKeyEraseWithCompletion:v108];
+      [accessoryCopy cancelVendorKeyEraseWithCompletion:v108];
     }
 
     v68 = dispatch_time(0, 5000000000);
@@ -491,34 +491,34 @@ LABEL_108:
       }
     }
 
-    else if (!(v105 | *(v127[0] + 40)))
+    else if (!(typeCopy | *(v127[0] + 40)))
     {
-      v72 = [*(v115 + 5) useEraseKeyType];
-      if (v72)
+      useEraseKeyType = [*(v115 + 5) useEraseKeyType];
+      if (useEraseKeyType)
       {
-        v73 = [*(v115 + 5) useEraseKeyType];
-        v74 = [v26 eraseKeyType];
-        v75 = [v73 isEqualToString:v74];
+        useEraseKeyType2 = [*(v115 + 5) useEraseKeyType];
+        eraseKeyType = [v26 eraseKeyType];
+        v75 = [useEraseKeyType2 isEqualToString:eraseKeyType];
 
         if ((v75 & 1) == 0)
         {
           v91 = sub_100002400();
           if (os_log_type_enabled(v91, OS_LOG_TYPE_DEFAULT))
           {
-            v92 = [*(v115 + 5) useEraseKeyType];
+            useEraseKeyType3 = [*(v115 + 5) useEraseKeyType];
             *v135 = 138412290;
-            v136 = v92;
+            v136 = useEraseKeyType3;
             _os_log_impl(&_mh_execute_header, v91, OS_LOG_TYPE_DEFAULT, "Performing pairing check again with eraseKeyType = %@", v135, 0xCu);
           }
 
-          v93 = [*(v115 + 5) useEraseKeyType];
-          [a1 pairingCheckForAccessory:v7 useEraseKeyType:v93 completion:v8];
+          useEraseKeyType4 = [*(v115 + 5) useEraseKeyType];
+          [self pairingCheckForAccessory:accessoryCopy useEraseKeyType:useEraseKeyType4 completion:completionCopy];
           goto LABEL_108;
         }
       }
     }
 
-    (v8)[2](v8, 0, v39);
+    (completionCopy)[2](completionCopy, 0, v39);
 LABEL_87:
 
     v44 = v99;
@@ -534,13 +534,13 @@ LABEL_87:
   v17 = *(v127[0] + 40);
   if (v17)
   {
-    v8[2](v8, v17, 0);
+    completionCopy[2](completionCopy, v17, 0);
   }
 
   else
   {
     v18 = +[NSError fm_timeoutError];
-    v8[2](v8, v18, 0);
+    completionCopy[2](completionCopy, v18, 0);
   }
 
 LABEL_92:
@@ -549,21 +549,21 @@ LABEL_92:
   _Block_object_dispose(&v129, 8);
 }
 
-+ (void)checkAndHealPairingKeys:(id)a3 completion:(id)a4
++ (void)checkAndHealPairingKeys:(id)keys completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_opt_class() getPairingData:v5];
+  keysCopy = keys;
+  completionCopy = completion;
+  v7 = [objc_opt_class() getPairingData:keysCopy];
   v8 = sub_100002400();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 data];
-    v10 = [v9 fm_hexString];
-    v11 = [v7 keysUpdated];
+    data = [v7 data];
+    fm_hexString = [data fm_hexString];
+    keysUpdated = [v7 keysUpdated];
     *buf = 138412546;
-    *v70 = v10;
+    *v70 = fm_hexString;
     *&v70[8] = 2112;
-    *v71 = v11;
+    *v71 = keysUpdated;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "pairing data = %@ keys Updated = %@", buf, 0x16u);
   }
 
@@ -573,19 +573,19 @@ LABEL_92:
     sub_10001EA60(v7, v12);
   }
 
-  v13 = [v7 pairingCheckToken];
-  v14 = v13 == 0;
+  pairingCheckToken = [v7 pairingCheckToken];
+  v14 = pairingCheckToken == 0;
 
-  if (v13)
+  if (pairingCheckToken)
   {
 LABEL_8:
     v19 = +[FMDMagSafeDataStore sharedInstance];
-    v20 = [v19 readLostModeAccessoriesList];
+    readLostModeAccessoriesList = [v19 readLostModeAccessoriesList];
 
-    v21 = [v5 serialNumber];
-    v22 = [FMDExtHelper deviceIDFromAddress:v21];
+    serialNumber = [keysCopy serialNumber];
+    v22 = [FMDExtHelper deviceIDFromAddress:serialNumber];
 
-    v23 = [v20 containsObject:v22];
+    v23 = [readLostModeAccessoriesList containsObject:v22];
     v24 = sub_100002400();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
@@ -599,9 +599,9 @@ LABEL_8:
 
     else
     {
-      v26 = [v7 lostModePrivateKey];
+      lostModePrivateKey = [v7 lostModePrivateKey];
 
-      if (v26)
+      if (lostModePrivateKey)
       {
         v27 = 0;
         goto LABEL_20;
@@ -622,7 +622,7 @@ LABEL_8:
     if (!v28 || !v29)
     {
       v40 = [NSError errorWithMessage:@"lost mode key generation failed"];
-      v6[2](v6, v40);
+      completionCopy[2](completionCopy, v40);
 
 LABEL_47:
       goto LABEL_48;
@@ -646,16 +646,16 @@ LABEL_20:
     v62 = v22;
     if (v27)
     {
-      v32 = [v7 keysUpdated];
+      keysUpdated2 = [v7 keysUpdated];
 
-      if (v32)
+      if (keysUpdated2)
       {
         [v7 setKeysUpdated:0];
         v14 = 1;
       }
 
-      v33 = [v5 serialNumber];
-      [FMPreferencesUtil removeKey:v33 inDomain:kFMDNotBackedUpMagSafePrefDomain];
+      serialNumber2 = [keysCopy serialNumber];
+      [FMPreferencesUtil removeKey:serialNumber2 inDomain:kFMDNotBackedUpMagSafePrefDomain];
 
       v34 = 0;
       v35 = 1;
@@ -663,15 +663,15 @@ LABEL_20:
 
     else
     {
-      v36 = [v5 serialNumber];
-      v37 = [FMPreferencesUtil BOOLForKey:v36 inDomain:kFMDNotBackedUpMagSafePrefDomain];
+      serialNumber3 = [keysCopy serialNumber];
+      v37 = [FMPreferencesUtil BOOLForKey:serialNumber3 inDomain:kFMDNotBackedUpMagSafePrefDomain];
 
-      v38 = [v7 keysUpdated];
+      keysUpdated3 = [v7 keysUpdated];
 
-      if (v38 || !v37)
+      if (keysUpdated3 || !v37)
       {
-        v41 = [v7 keysUpdated];
-        v42 = v41 == 0;
+        keysUpdated4 = [v7 keysUpdated];
+        v42 = keysUpdated4 == 0;
 
         v34 = 0;
         v35 = v42 & (v37 ^ 1);
@@ -692,13 +692,13 @@ LABEL_20:
     v43 = sub_100002400();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
     {
-      v44 = [v7 keysUpdated];
+      keysUpdated5 = [v7 keysUpdated];
       *buf = 67109634;
       *v70 = v35;
       *&v70[4] = 1024;
       *&v70[6] = v14;
       *v71 = 2112;
-      *&v71[2] = v44;
+      *&v71[2] = keysUpdated5;
       _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "### updateServerInfo = %d, updateMulderInfo = %d %@", buf, 0x18u);
     }
 
@@ -707,13 +707,13 @@ LABEL_20:
       goto LABEL_44;
     }
 
-    v45 = [objc_opt_class() updatePairingData:v5 pairingData:v7];
+    v45 = [objc_opt_class() updatePairingData:keysCopy pairingData:v7];
     if (v45)
     {
       v46 = sub_100002400();
       if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
       {
-        sub_10001EC78(v5, v46);
+        sub_10001EC78(keysCopy, v46);
       }
     }
 
@@ -721,8 +721,8 @@ LABEL_20:
     {
       if (v34)
       {
-        v47 = [v5 serialNumber];
-        [FMPreferencesUtil removeKey:v47 inDomain:kFMDNotBackedUpMagSafePrefDomain];
+        serialNumber4 = [keysCopy serialNumber];
+        [FMPreferencesUtil removeKey:serialNumber4 inDomain:kFMDNotBackedUpMagSafePrefDomain];
       }
 
       if (!v23)
@@ -740,7 +740,7 @@ LABEL_20:
       v63[3] = &unk_100039B28;
       v64 = v62;
       v65 = v49;
-      v66 = v20;
+      v66 = readLostModeAccessoriesList;
       v46 = v49;
       [v50 updateLostModeKeyRollTimeFor:v64 lastLostModeKeyRollTime:v46 withCompletion:v63];
     }
@@ -750,21 +750,21 @@ LABEL_44:
     if (v35)
     {
       v51 = objc_alloc_init(FMDPairingLockUpdateRequestInfo);
-      v52 = [v7 pairingCheckToken];
-      v53 = [v52 fm_hexString];
-      [v51 setPairingCheckToken:v53];
+      pairingCheckToken2 = [v7 pairingCheckToken];
+      fm_hexString2 = [pairingCheckToken2 fm_hexString];
+      [v51 setPairingCheckToken:fm_hexString2];
 
-      v54 = [v7 lostModePrivateKey];
-      v55 = [FMDCryptoUtil publicKeyFromPrivateKey:v54];
+      lostModePrivateKey2 = [v7 lostModePrivateKey];
+      v55 = [FMDCryptoUtil publicKeyFromPrivateKey:lostModePrivateKey2];
 
-      v56 = [v55 fm_hexString];
-      [v51 setLostModePubKey:v56];
+      fm_hexString3 = [v55 fm_hexString];
+      [v51 setLostModePubKey:fm_hexString3];
 
-      v57 = [objc_opt_class() getUserPrivateKey:v5];
+      v57 = [objc_opt_class() getUserPrivateKey:keysCopy];
       [v51 setUserPrivateKey:v57];
 
-      v58 = [v5 serialNumber];
-      [v51 setSerialNumber:v58];
+      serialNumber5 = [keysCopy serialNumber];
+      [v51 setSerialNumber:serialNumber5];
 
       v59 = +[NSDate date];
       v60 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lld", [v59 fm_epoch]);
@@ -774,30 +774,30 @@ LABEL_44:
       [v61 updatePairingLockInfo:v51 completion:&stru_100039B48];
     }
 
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
     v22 = v62;
     goto LABEL_47;
   }
 
-  v15 = [objc_opt_class() registerDevice:v5];
+  v15 = [objc_opt_class() registerDevice:keysCopy];
   if (v15)
   {
     v16 = v15;
-    v17 = [v15 pairingToken];
-    v18 = [NSData dataWithHexString:v17];
+    pairingToken = [v15 pairingToken];
+    v18 = [NSData dataWithHexString:pairingToken];
     [v7 setPairingCheckToken:v18];
 
     goto LABEL_8;
   }
 
-  v20 = [NSError errorWithMessage:@"Unable to register device"];
-  v6[2](v6, v20);
+  readLostModeAccessoriesList = [NSError errorWithMessage:@"Unable to register device"];
+  completionCopy[2](completionCopy, readLostModeAccessoriesList);
 LABEL_48:
 }
 
-+ (id)getUserPrivateKey:(id)a3
++ (id)getUserPrivateKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = sub_100002400();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -827,7 +827,7 @@ LABEL_48:
   v15 = &v16;
   v6 = v5;
   v13 = v6;
-  [v3 copyUserPrivateKeyWithCompletion:v12];
+  [keyCopy copyUserPrivateKeyWithCompletion:v12];
   v7 = dispatch_time(0, 5000000000);
   v8 = dispatch_group_wait(v6, v7);
   if (*(v23[0] + 40) || v8)
@@ -838,24 +838,24 @@ LABEL_48:
       sub_10001E08C(v23);
     }
 
-    v9 = 0;
+    fm_hexString = 0;
   }
 
   else
   {
-    v9 = [v17[5] fm_hexString];
+    fm_hexString = [v17[5] fm_hexString];
   }
 
   _Block_object_dispose(&v16, 8);
   _Block_object_dispose(buf, 8);
 
-  return v9;
+  return fm_hexString;
 }
 
-+ (id)updatePairingData:(id)a3 pairingData:(id)a4
++ (id)updatePairingData:(id)data pairingData:(id)pairingData
 {
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  pairingDataCopy = pairingData;
   v7 = sub_100002400();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -878,7 +878,7 @@ LABEL_48:
   v22 = buf;
   v9 = v8;
   v21 = v9;
-  [v5 setPairingData:v6 withCompletion:&v17];
+  [dataCopy setPairingData:pairingDataCopy withCompletion:&v17];
   v10 = dispatch_time(0, 5000000000);
   v11 = dispatch_group_wait(v9, v10);
   if (*(v24[0] + 40) || (v12 = 0, v11))
@@ -908,23 +908,23 @@ LABEL_48:
   return v12;
 }
 
-+ (id)registerDevice:(id)a3
++ (id)registerDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = objc_alloc_init(FMDPairingLockRegisterRequestInfo);
-  v5 = [v3 serialNumber];
-  [v4 setSerialNumber:v5];
+  serialNumber = [deviceCopy serialNumber];
+  [v4 setSerialNumber:serialNumber];
 
-  v6 = [v3 accessoryType];
-  [v4 setAccessoryType:v6];
+  accessoryType = [deviceCopy accessoryType];
+  [v4 setAccessoryType:accessoryType];
 
   v7 = dispatch_group_create();
   v8 = sub_100002400();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v4 serialNumber];
+    serialNumber2 = [v4 serialNumber];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v9;
+    *(&buf + 4) = serialNumber2;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Doing register to server for accessory with serial number = %@", &buf, 0xCu);
   }
 
@@ -968,11 +968,11 @@ LABEL_48:
     v14 = *(*(&buf + 1) + 40);
     if (v14)
     {
-      v15 = [v14 pairingToken];
-      if (v15)
+      pairingToken = [v14 pairingToken];
+      if (pairingToken)
       {
-        v16 = [*(*(&buf + 1) + 40) serialNumber];
-        v17 = v16 == 0;
+        serialNumber3 = [*(*(&buf + 1) + 40) serialNumber];
+        v17 = serialNumber3 == 0;
 
         if (!v17)
         {
@@ -985,9 +985,9 @@ LABEL_48:
     v20 = sub_100002400();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v21 = [*(*(&buf + 1) + 40) pairingToken];
-      v22 = [*(*(&buf + 1) + 40) serialNumber];
-      sub_10001ED10(v21, v22, v31, v20);
+      pairingToken2 = [*(*(&buf + 1) + 40) pairingToken];
+      serialNumber4 = [*(*(&buf + 1) + 40) serialNumber];
+      sub_10001ED10(pairingToken2, serialNumber4, v31, v20);
     }
   }
 
@@ -1000,9 +1000,9 @@ LABEL_16:
   return v18;
 }
 
-+ (id)getPairingData:(id)a3
++ (id)getPairingData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = dispatch_group_create();
   v5 = sub_100002400();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1032,7 +1032,7 @@ LABEL_16:
   v15 = &v16;
   v6 = v4;
   v13 = v6;
-  [v3 getPairingDataWithCompletion:v12];
+  [dataCopy getPairingDataWithCompletion:v12];
   v7 = dispatch_time(0, 5000000000);
   v8 = dispatch_group_wait(v6, v7);
   if (*(v17[0] + 40) || v8)

@@ -1,5 +1,5 @@
 @interface SBUIStartupToHomescreenAnimationController
-- (SBUIStartupToHomescreenAnimationController)initWithTransitionContextProvider:(id)a3 overlay:(id)a4;
+- (SBUIStartupToHomescreenAnimationController)initWithTransitionContextProvider:(id)provider overlay:(id)overlay;
 - (double)_animationDelay;
 - (id)_homeScreenAppearanceController;
 - (id)_iconManager;
@@ -13,32 +13,32 @@
 
 @implementation SBUIStartupToHomescreenAnimationController
 
-- (SBUIStartupToHomescreenAnimationController)initWithTransitionContextProvider:(id)a3 overlay:(id)a4
+- (SBUIStartupToHomescreenAnimationController)initWithTransitionContextProvider:(id)provider overlay:(id)overlay
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  providerCopy = provider;
+  overlayCopy = overlay;
+  if (!providerCopy)
   {
     [SBUIStartupToHomescreenAnimationController initWithTransitionContextProvider:a2 overlay:self];
   }
 
   v14.receiver = self;
   v14.super_class = SBUIStartupToHomescreenAnimationController;
-  v9 = [(SBUIMainScreenAnimationController *)&v14 initWithTransitionContextProvider:v7];
+  v9 = [(SBUIMainScreenAnimationController *)&v14 initWithTransitionContextProvider:providerCopy];
   if (v9)
   {
-    v10 = [v7 toApplicationSceneEntities];
-    v11 = [v10 count];
+    toApplicationSceneEntities = [providerCopy toApplicationSceneEntities];
+    v11 = [toApplicationSceneEntities count];
 
     if (v11)
     {
       [SBUIStartupToHomescreenAnimationController initWithTransitionContextProvider:a2 overlay:v9];
     }
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:v9 selector:sel__bootCompleted name:@"SBBootCompleteNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__bootCompleted name:@"SBBootCompleteNotification" object:0];
 
-    objc_storeStrong(&v9->_persistentSnapshotOverlay, a4);
+    objc_storeStrong(&v9->_persistentSnapshotOverlay, overlay);
   }
 
   return v9;
@@ -55,8 +55,8 @@
 
 - (void)_startAnimation
 {
-  v3 = [(SBUIStartupToHomescreenAnimationController *)self _iconManager];
-  if (v3 && (v4 = v3, [(SBUIStartupToHomescreenAnimationController *)self _homeScreenAppearanceController], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  _iconManager = [(SBUIStartupToHomescreenAnimationController *)self _iconManager];
+  if (_iconManager && (v4 = _iconManager, [(SBUIStartupToHomescreenAnimationController *)self _homeScreenAppearanceController], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
 
     [(SBUIStartupToHomescreenAnimationController *)self _actuallyAnimateWhenReady];
@@ -85,8 +85,8 @@ void __61__SBUIStartupToHomescreenAnimationController__startAnimation__block_inv
 
 - (void)_actuallyAnimateWhenReady
 {
-  v3 = [(SBUIStartupToHomescreenAnimationController *)self _homeScreenAppearanceController];
-  [v3 beginRequiringContentForReason:@"SBUIHomeScreenActiveContentRequirementReason"];
+  _homeScreenAppearanceController = [(SBUIStartupToHomescreenAnimationController *)self _homeScreenAppearanceController];
+  [_homeScreenAppearanceController beginRequiringContentForReason:@"SBUIHomeScreenActiveContentRequirementReason"];
 
   persistentSnapshotOverlay = self->_persistentSnapshotOverlay;
   if (persistentSnapshotOverlay)
@@ -95,20 +95,20 @@ void __61__SBUIStartupToHomescreenAnimationController__startAnimation__block_inv
     [(BKSDisplayRenderOverlay *)persistentSnapshotOverlay dismissWithAnimation:v5];
   }
 
-  v6 = [(SBUIStartupToHomescreenAnimationController *)self _iconManager];
+  _iconManager = [(SBUIStartupToHomescreenAnimationController *)self _iconManager];
   [(SBUIStartupToHomescreenAnimationController *)self _animationDelay];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__SBUIStartupToHomescreenAnimationController__actuallyAnimateWhenReady__block_invoke;
   v7[3] = &unk_2783A9398;
   v7[4] = self;
-  [v6 unscatterAnimated:1 afterDelay:v7 withCompletion:?];
+  [_iconManager unscatterAnimated:1 afterDelay:v7 withCompletion:?];
 }
 
 - (void)_cleanupAnimation
 {
-  v3 = [(SBUIStartupToHomescreenAnimationController *)self _homeScreenAppearanceController];
-  [v3 beginRequiringContentForReason:@"SBUIHomeScreenActiveContentRequirementReason"];
+  _homeScreenAppearanceController = [(SBUIStartupToHomescreenAnimationController *)self _homeScreenAppearanceController];
+  [_homeScreenAppearanceController beginRequiringContentForReason:@"SBUIHomeScreenActiveContentRequirementReason"];
 
   v4.receiver = self;
   v4.super_class = SBUIStartupToHomescreenAnimationController;
@@ -128,40 +128,40 @@ void __61__SBUIStartupToHomescreenAnimationController__startAnimation__block_inv
 
 - (id)_windowScene
 {
-  v2 = [SBApp windowSceneManager];
-  v3 = [v2 embeddedDisplayWindowScene];
+  windowSceneManager = [SBApp windowSceneManager];
+  embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
 
-  return v3;
+  return embeddedDisplayWindowScene;
 }
 
 - (id)_homeScreenAppearanceController
 {
-  v2 = [(SBUIStartupToHomescreenAnimationController *)self _windowScene];
-  v3 = [v2 homeScreenController];
+  _windowScene = [(SBUIStartupToHomescreenAnimationController *)self _windowScene];
+  homeScreenController = [_windowScene homeScreenController];
 
-  return v3;
+  return homeScreenController;
 }
 
 - (id)_iconManager
 {
-  v2 = [(SBUIStartupToHomescreenAnimationController *)self _windowScene];
-  v3 = [v2 homeScreenController];
-  v4 = [v3 iconManager];
+  _windowScene = [(SBUIStartupToHomescreenAnimationController *)self _windowScene];
+  homeScreenController = [_windowScene homeScreenController];
+  iconManager = [homeScreenController iconManager];
 
-  return v4;
+  return iconManager;
 }
 
 - (void)_bootCompleted
 {
   if ([(SBUIStartupToHomescreenAnimationController *)self isWaitingForMilestone:@"SBWaitingForIconManagerMilestone"])
   {
-    v3 = [(SBUIStartupToHomescreenAnimationController *)self _iconManager];
-    if (v3)
+    _iconManager = [(SBUIStartupToHomescreenAnimationController *)self _iconManager];
+    if (_iconManager)
     {
-      v4 = v3;
-      v5 = [(SBUIStartupToHomescreenAnimationController *)self _homeScreenAppearanceController];
+      v4 = _iconManager;
+      _homeScreenAppearanceController = [(SBUIStartupToHomescreenAnimationController *)self _homeScreenAppearanceController];
 
-      if (v5)
+      if (_homeScreenAppearanceController)
       {
 
         [(SBUIStartupToHomescreenAnimationController *)self satisfyMilestone:@"SBWaitingForIconManagerMilestone"];

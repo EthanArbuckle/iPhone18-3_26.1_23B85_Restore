@@ -1,19 +1,19 @@
 @interface NavdDefaultsUpdater
-- (NavdDefaultsUpdater)initWithDefaults:(id)a3 navigationService:(id)a4 carDisplayController:(id)a5;
+- (NavdDefaultsUpdater)initWithDefaults:(id)defaults navigationService:(id)service carDisplayController:(id)controller;
 - (int64_t)_currentTransportType;
 - (void)_migrateDeprecatedSettings;
 - (void)_startObserving;
 - (void)_updateSettings;
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5;
-- (void)setRoutePlanningSession:(id)a3;
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession;
+- (void)setRoutePlanningSession:(id)session;
 @end
 
 @implementation NavdDefaultsUpdater
 
 - (void)_migrateDeprecatedSettings
 {
-  v3 = [(NavdDefaultsUpdater *)self userDefaults];
-  v13 = [v3 objectForKey:@"VoiceNavigationVolume"];
+  userDefaults = [(NavdDefaultsUpdater *)self userDefaults];
+  v13 = [userDefaults objectForKey:@"VoiceNavigationVolume"];
 
   v4 = v13;
   if (v13)
@@ -28,7 +28,7 @@
     v7 = [v5 isEqualToString:@"Off Volume"];
     if ((v7 & 1) == 0)
     {
-      v8 = [v6 path];
+      path = [v6 path];
       _CFPreferencesSetAppValueWithContainer();
     }
 
@@ -39,17 +39,17 @@
 
     v9 = qword_10195E0D0;
     [NSNumber numberWithBool:v7];
-    v10 = [v9 path];
+    path2 = [v9 path];
     _CFPreferencesSetAppValueWithContainer();
 
-    v11 = [v9 path];
+    path3 = [v9 path];
 
     _CFPreferencesSynchronizeWithContainer();
     GSSendAppPreferencesChanged();
     GSSendAppPreferencesChanged();
 
-    v12 = [(NavdDefaultsUpdater *)self userDefaults];
-    [v12 removeObjectForKey:@"VoiceNavigationVolume"];
+    userDefaults2 = [(NavdDefaultsUpdater *)self userDefaults];
+    [userDefaults2 removeObjectForKey:@"VoiceNavigationVolume"];
 
     v4 = v13;
   }
@@ -69,67 +69,67 @@
 
 - (void)_updateSettings
 {
-  v3 = [(NavdDefaultsUpdater *)self carDisplayController];
-  v4 = [v3 isCurrentlyConnectedToAnyCarScene];
-  v5 = [(NavdDefaultsUpdater *)self settingsMonitor];
-  [v5 setIsCarPlay:v4];
+  carDisplayController = [(NavdDefaultsUpdater *)self carDisplayController];
+  isCurrentlyConnectedToAnyCarScene = [carDisplayController isCurrentlyConnectedToAnyCarScene];
+  settingsMonitor = [(NavdDefaultsUpdater *)self settingsMonitor];
+  [settingsMonitor setIsCarPlay:isCurrentlyConnectedToAnyCarScene];
 
-  v6 = [(NavdDefaultsUpdater *)self _currentTransportType];
-  v7 = [(NavdDefaultsUpdater *)self settingsMonitor];
-  [v7 setTransportType:v6];
+  _currentTransportType = [(NavdDefaultsUpdater *)self _currentTransportType];
+  settingsMonitor2 = [(NavdDefaultsUpdater *)self settingsMonitor];
+  [settingsMonitor2 setTransportType:_currentTransportType];
 
-  v10 = [(NavdDefaultsUpdater *)self navigationService];
-  v8 = [(NavdDefaultsUpdater *)self settingsMonitor];
-  v9 = [v8 userOptions];
-  [v10 changeUserOptions:v9];
+  navigationService = [(NavdDefaultsUpdater *)self navigationService];
+  settingsMonitor3 = [(NavdDefaultsUpdater *)self settingsMonitor];
+  userOptions = [settingsMonitor3 userOptions];
+  [navigationService changeUserOptions:userOptions];
 }
 
 - (int64_t)_currentTransportType
 {
-  v3 = [(NavdDefaultsUpdater *)self routePlanningSession];
+  routePlanningSession = [(NavdDefaultsUpdater *)self routePlanningSession];
 
-  if (v3)
+  if (routePlanningSession)
   {
-    v4 = [(NavdDefaultsUpdater *)self routePlanningSession];
+    routePlanningSession2 = [(NavdDefaultsUpdater *)self routePlanningSession];
 LABEL_5:
-    v6 = v4;
-    v7 = [v4 currentTransportType];
+    v6 = routePlanningSession2;
+    currentTransportType = [routePlanningSession2 currentTransportType];
 
-    return v7;
+    return currentTransportType;
   }
 
-  v5 = [(NavdDefaultsUpdater *)self navigationSession];
+  navigationSession = [(NavdDefaultsUpdater *)self navigationSession];
 
-  if (v5)
+  if (navigationSession)
   {
-    v4 = [(NavdDefaultsUpdater *)self navigationSession];
+    routePlanningSession2 = [(NavdDefaultsUpdater *)self navigationSession];
     goto LABEL_5;
   }
 
   return 0;
 }
 
-- (void)setRoutePlanningSession:(id)a3
+- (void)setRoutePlanningSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   routePlanningSession = self->_routePlanningSession;
-  if (routePlanningSession != v5)
+  if (routePlanningSession != sessionCopy)
   {
-    v7 = v5;
+    v7 = sessionCopy;
     [(RoutePlanningSession *)routePlanningSession unregisterObserver:self];
-    objc_storeStrong(&self->_routePlanningSession, a3);
+    objc_storeStrong(&self->_routePlanningSession, session);
     [(RoutePlanningSession *)self->_routePlanningSession registerObserver:self];
-    v5 = v7;
+    sessionCopy = v7;
   }
 }
 
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession
 {
-  v6 = a5;
+  toSessionCopy = toSession;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = toSessionCopy;
   }
 
   else
@@ -140,7 +140,7 @@ LABEL_5:
   v8 = v7;
   [(NavdDefaultsUpdater *)self setNavigationSession:v8];
 
-  v11 = v6;
+  v11 = toSessionCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -158,21 +158,21 @@ LABEL_5:
   [(NavdDefaultsUpdater *)self _updateSettings];
 }
 
-- (NavdDefaultsUpdater)initWithDefaults:(id)a3 navigationService:(id)a4 carDisplayController:(id)a5
+- (NavdDefaultsUpdater)initWithDefaults:(id)defaults navigationService:(id)service carDisplayController:(id)controller
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  defaultsCopy = defaults;
+  serviceCopy = service;
+  controllerCopy = controller;
   v17.receiver = self;
   v17.super_class = NavdDefaultsUpdater;
   v12 = [(NavdDefaultsUpdater *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_userDefaults, a3);
-    objc_storeStrong(&v13->_navigationService, a4);
-    objc_storeStrong(&v13->_carDisplayController, a5);
-    v14 = [[NavigationSettingsMonitor alloc] initWithUserDefaults:v9];
+    objc_storeStrong(&v12->_userDefaults, defaults);
+    objc_storeStrong(&v13->_navigationService, service);
+    objc_storeStrong(&v13->_carDisplayController, controller);
+    v14 = [[NavigationSettingsMonitor alloc] initWithUserDefaults:defaultsCopy];
     settingsMonitor = v13->_settingsMonitor;
     v13->_settingsMonitor = v14;
 

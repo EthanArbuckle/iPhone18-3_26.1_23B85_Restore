@@ -1,15 +1,15 @@
 @interface PSAccessoriesPolicyController
-- (PSAccessoriesPolicyController)initWithAppBundleID:(id)a3;
-- (id)appSpecifierWithName:(id)a3 bundleID:(id)a4;
-- (id)numberOfAccessories:(id)a3;
-- (void)handleSessionEvent:(id)a3;
+- (PSAccessoriesPolicyController)initWithAppBundleID:(id)d;
+- (id)appSpecifierWithName:(id)name bundleID:(id)d;
+- (id)numberOfAccessories:(id)accessories;
+- (void)handleSessionEvent:(id)event;
 @end
 
 @implementation PSAccessoriesPolicyController
 
-- (PSAccessoriesPolicyController)initWithAppBundleID:(id)a3
+- (PSAccessoriesPolicyController)initWithAppBundleID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v13.receiver = self;
   v13.super_class = PSAccessoriesPolicyController;
   v6 = [(PSAccessoriesPolicyController *)&v13 init];
@@ -17,7 +17,7 @@
   appSession = v6->_appSession;
   v6->_appSession = v7;
 
-  objc_storeStrong(&v6->_bundleID, a3);
+  objc_storeStrong(&v6->_bundleID, d);
   [(DASession *)v6->_appSession activate];
   objc_initWeak(&location, v6);
   v10[0] = MEMORY[0x1E69E9820];
@@ -39,17 +39,17 @@ void __53__PSAccessoriesPolicyController_initWithAppBundleID___block_invoke(uint
   [WeakRetained handleSessionEvent:v3];
 }
 
-- (id)appSpecifierWithName:(id)a3 bundleID:(id)a4
+- (id)appSpecifierWithName:(id)name bundleID:(id)d
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  dCopy = d;
   if (_os_feature_enabled_impl())
   {
-    v27 = v7;
-    v28 = v6;
+    v27 = dCopy;
+    v28 = nameCopy;
     v8 = [getDADaemonSessionClass() getDevicesWithFlags:8 session:self->_appSession error:0];
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -70,13 +70,13 @@ void __53__PSAccessoriesPolicyController_initWithAppBundleID___block_invoke(uint
           }
 
           v15 = *(*(&v29 + 1) + 8 * i);
-          v16 = [v15 appAccessInfoMap];
-          v17 = [v16 allKeys];
-          v18 = [v17 containsObject:self->_bundleID];
+          appAccessInfoMap = [v15 appAccessInfoMap];
+          allKeys = [appAccessInfoMap allKeys];
+          v18 = [allKeys containsObject:self->_bundleID];
 
           if (v18)
           {
-            [v9 addObject:v15];
+            [array addObject:v15];
           }
         }
 
@@ -86,12 +86,12 @@ void __53__PSAccessoriesPolicyController_initWithAppBundleID___block_invoke(uint
       while (v12);
     }
 
-    objc_storeStrong(&self->_devices, v9);
-    if ([v9 count])
+    objc_storeStrong(&self->_devices, array);
+    if ([array count])
     {
       v19 = [v10 count];
-      v7 = v27;
-      v6 = v28;
+      dCopy = v27;
+      nameCopy = v28;
       if (v19 == 1)
       {
         v20 = NSClassFromString(&cfstr_Asaccessoryinf.isa);
@@ -106,8 +106,8 @@ void __53__PSAccessoriesPolicyController_initWithAppBundleID___block_invoke(uint
       [v21 setProperty:v27 forKey:@"bundleID"];
       if (v19 == 1)
       {
-        v22 = [v10 firstObject];
-        [v21 setProperty:v22 forKey:@"device"];
+        firstObject = [v10 firstObject];
+        [v21 setProperty:firstObject forKey:@"device"];
       }
 
       v23 = MEMORY[0x1E69DCAB8];
@@ -123,8 +123,8 @@ void __53__PSAccessoriesPolicyController_initWithAppBundleID___block_invoke(uint
     else
     {
       v21 = 0;
-      v7 = v27;
-      v6 = v28;
+      dCopy = v27;
+      nameCopy = v28;
     }
   }
 
@@ -136,7 +136,7 @@ void __53__PSAccessoriesPolicyController_initWithAppBundleID___block_invoke(uint
   return v21;
 }
 
-- (id)numberOfAccessories:(id)a3
+- (id)numberOfAccessories:(id)accessories
 {
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0u;
@@ -159,11 +159,11 @@ void __53__PSAccessoriesPolicyController_initWithAppBundleID___block_invoke(uint
           objc_enumerationMutation(v4);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * i) appAccessInfoMap];
-        v11 = [v10 objectForKeyedSubscript:self->_bundleID];
-        v12 = [v11 state];
+        appAccessInfoMap = [*(*(&v15 + 1) + 8 * i) appAccessInfoMap];
+        v11 = [appAccessInfoMap objectForKeyedSubscript:self->_bundleID];
+        state = [v11 state];
 
-        if (v12 == 25)
+        if (state == 25)
         {
           ++v7;
         }
@@ -185,10 +185,10 @@ void __53__PSAccessoriesPolicyController_initWithAppBundleID___block_invoke(uint
   return v13;
 }
 
-- (void)handleSessionEvent:(id)a3
+- (void)handleSessionEvent:(id)event
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (([a3 eventType] - 41) <= 1)
+  if (([event eventType] - 41) <= 1)
   {
     v4 = [getDADaemonSessionClass() getDevicesWithFlags:8 session:self->_appSession error:0];
     objc_storeStrong(&self->_devices, v4);
@@ -212,11 +212,11 @@ void __53__PSAccessoriesPolicyController_initWithAppBundleID___block_invoke(uint
             objc_enumerationMutation(v5);
           }
 
-          v11 = [*(*(&v14 + 1) + 8 * i) appAccessInfoMap];
-          v12 = [v11 objectForKeyedSubscript:self->_bundleID];
-          v13 = [v12 state];
+          appAccessInfoMap = [*(*(&v14 + 1) + 8 * i) appAccessInfoMap];
+          v12 = [appAccessInfoMap objectForKeyedSubscript:self->_bundleID];
+          state = [v12 state];
 
-          if (v13 == 25)
+          if (state == 25)
           {
             ++v8;
           }

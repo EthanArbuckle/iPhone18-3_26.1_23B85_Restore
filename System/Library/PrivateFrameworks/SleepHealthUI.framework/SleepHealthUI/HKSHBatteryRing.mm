@@ -1,13 +1,13 @@
 @interface HKSHBatteryRing
-- (HKSHBatteryRing)initWithFillFraction:(double)a3 radius:(double)a4 strokeWidth:(double)a5;
-- (double)_validFillFraction:(double)a3;
+- (HKSHBatteryRing)initWithFillFraction:(double)fraction radius:(double)radius strokeWidth:(double)width;
+- (double)_validFillFraction:(double)fraction;
 - (id)fillFractionString;
 - (id)ringImage;
 @end
 
 @implementation HKSHBatteryRing
 
-- (HKSHBatteryRing)initWithFillFraction:(double)a3 radius:(double)a4 strokeWidth:(double)a5
+- (HKSHBatteryRing)initWithFillFraction:(double)fraction radius:(double)radius strokeWidth:(double)width
 {
   v12.receiver = self;
   v12.super_class = HKSHBatteryRing;
@@ -15,10 +15,10 @@
   v9 = v8;
   if (v8)
   {
-    [(HKSHBatteryRing *)v8 _validFillFraction:a3];
-    v9->_radius = a4;
+    [(HKSHBatteryRing *)v8 _validFillFraction:fraction];
+    v9->_radius = radius;
     v9->_fillFraction = v10;
-    v9->_strokeWidth = a5;
+    v9->_strokeWidth = width;
     v9->_backgroundRingAlpha = 0.200000003;
   }
 
@@ -36,8 +36,8 @@
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSetLineWidth(CurrentContext, self->_strokeWidth);
   CGContextSetLineCap(CurrentContext, kCGLineCapRound);
-  v7 = [(HKSHBatteryRing *)self fillColor];
-  [v7 setStroke];
+  fillColor = [(HKSHBatteryRing *)self fillColor];
+  [fillColor setStroke];
   CGContextAddArc(CurrentContext, radius, radius, v4, -1.57079637, v5, 0);
   CGContextStrokePath(CurrentContext);
   if (self->_fillFraction != 1.0)
@@ -45,7 +45,7 @@
     v8 = ringImage_drainColor;
     if (!ringImage_drainColor)
     {
-      v9 = [v7 colorWithAlphaComponent:self->_backgroundRingAlpha];
+      v9 = [fillColor colorWithAlphaComponent:self->_backgroundRingAlpha];
       v10 = ringImage_drainColor;
       ringImage_drainColor = v9;
 
@@ -89,19 +89,19 @@ void __37__HKSHBatteryRing_fillFractionString__block_invoke()
   [v2 setLocale:v3];
 }
 
-- (double)_validFillFraction:(double)a3
+- (double)_validFillFraction:(double)fraction
 {
-  v3 = 1.0;
-  if (a3 <= 1.0)
+  fractionCopy = 1.0;
+  if (fraction <= 1.0)
   {
-    v3 = a3;
+    fractionCopy = fraction;
   }
 
-  v4 = a3 < 0.0;
+  v4 = fraction < 0.0;
   result = 0.0;
   if (!v4)
   {
-    return v3;
+    return fractionCopy;
   }
 
   return result;

@@ -1,34 +1,34 @@
 @interface REExportedDictionaryValue
-- (REExportedDictionaryValue)initWithDictionary:(id)a3;
-- (id)exportedValueForKey:(id)a3;
-- (void)enumerateValuesUsingBlock:(id)a3;
+- (REExportedDictionaryValue)initWithDictionary:(id)dictionary;
+- (id)exportedValueForKey:(id)key;
+- (void)enumerateValuesUsingBlock:(id)block;
 @end
 
 @implementation REExportedDictionaryValue
 
-- (REExportedDictionaryValue)initWithDictionary:(id)a3
+- (REExportedDictionaryValue)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = REExportedDictionaryValue;
   v6 = [(REExportedDictionaryValue *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dictionary, a3);
+    objc_storeStrong(&v6->_dictionary, dictionary);
   }
 
   return v7;
 }
 
-- (void)enumerateValuesUsingBlock:(id)a3
+- (void)enumerateValuesUsingBlock:(id)block
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v5 = [(NSDictionary *)self->_dictionary allKeys];
-    v6 = [v5 mutableCopy];
+    allKeys = [(NSDictionary *)self->_dictionary allKeys];
+    v6 = [allKeys mutableCopy];
 
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
@@ -58,7 +58,7 @@
           v12 = *(*(&v16 + 1) + 8 * i);
           v13 = [(NSDictionary *)self->_dictionary objectForKeyedSubscript:v12, v16];
           v14 = __55__REExportedDictionaryValue_enumerateValuesUsingBlock___block_invoke(v13, v12);
-          v4[2](v4, v14, v13);
+          blockCopy[2](blockCopy, v14, v13);
         }
 
         v9 = [v7 countByEnumeratingWithState:&v16 objects:v22 count:16];
@@ -102,9 +102,9 @@ uint64_t __55__REExportedDictionaryValue_enumerateValuesUsingBlock___block_invok
   return v10;
 }
 
-- (id)exportedValueForKey:(id)a3
+- (id)exportedValueForKey:(id)key
 {
-  v3 = [(NSDictionary *)self->_dictionary objectForKeyedSubscript:a3];
+  v3 = [(NSDictionary *)self->_dictionary objectForKeyedSubscript:key];
   v4 = [REExportedValue exportedValueForObject:v3];
 
   return v4;

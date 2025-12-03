@@ -1,25 +1,25 @@
 @interface RAPDirectionsReportContaineeViewController
-- (RAPDirectionsReportContaineeViewController)initWithReport:(id)a3 directionsReportContext:(unint64_t)a4;
-- (double)heightForLayout:(unint64_t)a3;
-- (id)_routeFeedbackViewControllerForRequest:(id)a3;
-- (void)_cancelButtonPressed:(id)a3;
+- (RAPDirectionsReportContaineeViewController)initWithReport:(id)report directionsReportContext:(unint64_t)context;
+- (double)heightForLayout:(unint64_t)layout;
+- (id)_routeFeedbackViewControllerForRequest:(id)request;
+- (void)_cancelButtonPressed:(id)pressed;
 - (void)_setupConstraints;
 - (void)_setupViews;
-- (void)rapRouteListViewController:(id)a3 didSelectRequest:(id)a4;
-- (void)rapRouteListViewControllerDidDismiss:(id)a3;
-- (void)routeFeedbackViewControllerDidDismiss:(id)a3;
+- (void)rapRouteListViewController:(id)controller didSelectRequest:(id)request;
+- (void)rapRouteListViewControllerDidDismiss:(id)dismiss;
+- (void)routeFeedbackViewControllerDidDismiss:(id)dismiss;
 - (void)viewDidLoad;
 @end
 
 @implementation RAPDirectionsReportContaineeViewController
 
-- (void)rapRouteListViewController:(id)a3 didSelectRequest:(id)a4
+- (void)rapRouteListViewController:(id)controller didSelectRequest:(id)request
 {
-  v5 = [(RAPDirectionsReportContaineeViewController *)self _routeFeedbackViewControllerForRequest:a4];
+  v5 = [(RAPDirectionsReportContaineeViewController *)self _routeFeedbackViewControllerForRequest:request];
   [(UINavigationController *)self->_navController pushViewController:v5 animated:1];
 }
 
-- (void)rapRouteListViewControllerDidDismiss:(id)a3
+- (void)rapRouteListViewControllerDidDismiss:(id)dismiss
 {
   v4 = sub_100798874();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -28,13 +28,13 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "rapRouteListViewControllerDidDismiss: will dismiss directionsReportContaineeVC", v8, 2u);
   }
 
-  v5 = [(ContaineeViewController *)self cardPresentationController];
-  v6 = [v5 usingSheetPresentation];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  usingSheetPresentation = [cardPresentationController usingSheetPresentation];
 
-  if (v6)
+  if (usingSheetPresentation)
   {
-    v7 = [(ContaineeViewController *)self containeeDelegate];
-    [v7 containeeViewControllerGoToPreviousState:self withSender:0];
+    containeeDelegate = [(ContaineeViewController *)self containeeDelegate];
+    [containeeDelegate containeeViewControllerGoToPreviousState:self withSender:0];
   }
 
   else
@@ -43,16 +43,16 @@
   }
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  [v3 availableHeight];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController availableHeight];
   v5 = v4;
 
   return v5;
 }
 
-- (void)routeFeedbackViewControllerDidDismiss:(id)a3
+- (void)routeFeedbackViewControllerDidDismiss:(id)dismiss
 {
   v4 = sub_100798874();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -61,13 +61,13 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "routeFeedbackViewControllerDidDismiss: will dismiss the card", v8, 2u);
   }
 
-  v5 = [(ContaineeViewController *)self cardPresentationController];
-  v6 = [v5 usingSheetPresentation];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  usingSheetPresentation = [cardPresentationController usingSheetPresentation];
 
-  if (v6)
+  if (usingSheetPresentation)
   {
-    v7 = [(ContaineeViewController *)self containeeDelegate];
-    [v7 containeeViewControllerGoToPreviousState:self withSender:0];
+    containeeDelegate = [(ContaineeViewController *)self containeeDelegate];
+    [containeeDelegate containeeViewControllerGoToPreviousState:self withSender:0];
   }
 
   else
@@ -76,9 +76,9 @@
   }
 }
 
-- (void)_cancelButtonPressed:(id)a3
+- (void)_cancelButtonPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   v5 = sub_100798874();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -87,13 +87,13 @@
   }
 
   [GEOAPPortal captureUserAction:10109 target:31 value:0];
-  v6 = [(ContaineeViewController *)self cardPresentationController];
-  v7 = [v6 usingSheetPresentation];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  usingSheetPresentation = [cardPresentationController usingSheetPresentation];
 
-  if (v7)
+  if (usingSheetPresentation)
   {
-    v8 = [(ContaineeViewController *)self containeeDelegate];
-    [v8 containeeViewControllerGoToPreviousState:self withSender:v4];
+    containeeDelegate = [(ContaineeViewController *)self containeeDelegate];
+    [containeeDelegate containeeViewControllerGoToPreviousState:self withSender:pressedCopy];
   }
 
   else
@@ -102,22 +102,22 @@
   }
 }
 
-- (id)_routeFeedbackViewControllerForRequest:(id)a3
+- (id)_routeFeedbackViewControllerForRequest:(id)request
 {
-  v4 = [a3 recording];
-  v5 = [(RAPReport *)self->_report initialQuestion];
+  recording = [request recording];
+  initialQuestion = [(RAPReport *)self->_report initialQuestion];
 
-  if (!v5)
+  if (!initialQuestion)
   {
-    v6 = [[RAPWebBundleQuestion alloc] initWithReport:self->_report directionsRecording:v4];
+    v6 = [[RAPWebBundleQuestion alloc] initWithReport:self->_report directionsRecording:recording];
     [(RAPReport *)self->_report setInitialQuestion:v6];
   }
 
-  v7 = [(RAPReport *)self->_report initialQuestion];
+  initialQuestion2 = [(RAPReport *)self->_report initialQuestion];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = initialQuestion2;
   }
 
   else
@@ -127,41 +127,41 @@
 
   v9 = v8;
 
-  [v9 setDirectionsRecording:v4];
-  v10 = [[RAPRouteFeedbackViewController alloc] initWithReport:self->_report recording:v4 delegate:self];
+  [v9 setDirectionsRecording:recording];
+  v10 = [[RAPRouteFeedbackViewController alloc] initWithReport:self->_report recording:recording delegate:self];
   [(RAPRouteFeedbackViewController *)v10 setAllowsScrolling:1];
   v11 = +[UIColor systemGroupedBackgroundColor];
-  v12 = [(RAPRouteFeedbackViewController *)v10 view];
-  [v12 setBackgroundColor:v11];
+  view = [(RAPRouteFeedbackViewController *)v10 view];
+  [view setBackgroundColor:v11];
 
   return v10;
 }
 
 - (void)_setupConstraints
 {
-  v23 = [(UINavigationController *)self->_navController view];
-  v21 = [v23 topAnchor];
-  v22 = [(RAPDirectionsReportContaineeViewController *)self view];
-  v20 = [v22 topAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20];
+  view = [(UINavigationController *)self->_navController view];
+  topAnchor = [view topAnchor];
+  view2 = [(RAPDirectionsReportContaineeViewController *)self view];
+  topAnchor2 = [view2 topAnchor];
+  v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v24[0] = v19;
-  v18 = [(UINavigationController *)self->_navController view];
-  v16 = [v18 leadingAnchor];
-  v17 = [(RAPDirectionsReportContaineeViewController *)self view];
-  v15 = [v17 leadingAnchor];
-  v14 = [v16 constraintEqualToAnchor:v15];
+  view3 = [(UINavigationController *)self->_navController view];
+  leadingAnchor = [view3 leadingAnchor];
+  view4 = [(RAPDirectionsReportContaineeViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v24[1] = v14;
-  v13 = [(UINavigationController *)self->_navController view];
-  v3 = [v13 trailingAnchor];
-  v4 = [(RAPDirectionsReportContaineeViewController *)self view];
-  v5 = [v4 trailingAnchor];
-  v6 = [v3 constraintEqualToAnchor:v5];
+  view5 = [(UINavigationController *)self->_navController view];
+  trailingAnchor = [view5 trailingAnchor];
+  view6 = [(RAPDirectionsReportContaineeViewController *)self view];
+  trailingAnchor2 = [view6 trailingAnchor];
+  v6 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v24[2] = v6;
-  v7 = [(UINavigationController *)self->_navController view];
-  v8 = [v7 bottomAnchor];
-  v9 = [(RAPDirectionsReportContaineeViewController *)self view];
-  v10 = [v9 bottomAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  view7 = [(UINavigationController *)self->_navController view];
+  bottomAnchor = [view7 bottomAnchor];
+  view8 = [(RAPDirectionsReportContaineeViewController *)self view];
+  bottomAnchor2 = [view8 bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v24[3] = v11;
   v12 = [NSArray arrayWithObjects:v24 count:4];
   [NSLayoutConstraint activateConstraints:v12];
@@ -169,26 +169,26 @@
 
 - (void)_setupViews
 {
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  [v3 setPresentedModally:1];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController setPresentedModally:1];
 
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  [v4 setTakesAvailableHeight:1];
+  cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController2 setTakesAvailableHeight:1];
 
-  v5 = [(ContaineeViewController *)self cardPresentationController];
-  [v5 setAllowsSwipeToDismiss:0];
+  cardPresentationController3 = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController3 setAllowsSwipeToDismiss:0];
 
-  v6 = [(ContaineeViewController *)self cardPresentationController];
-  [v6 setDefaultContaineeLayout:5];
+  cardPresentationController4 = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController4 setDefaultContaineeLayout:5];
 
   v7 = [[UINavigationController alloc] initWithRootViewController:self->_contentViewController];
-  v8 = [(UINavigationController *)v7 view];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [(UINavigationController *)v7 view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
   [(RAPDirectionsReportContaineeViewController *)self addChildViewController:v7];
-  v9 = [(RAPDirectionsReportContaineeViewController *)self view];
-  v10 = [(UINavigationController *)v7 view];
-  [v9 addSubview:v10];
+  view2 = [(RAPDirectionsReportContaineeViewController *)self view];
+  view3 = [(UINavigationController *)v7 view];
+  [view2 addSubview:view3];
 
   [(UINavigationController *)v7 didMoveToParentViewController:self];
   navController = self->_navController;
@@ -204,10 +204,10 @@
   [(RAPDirectionsReportContaineeViewController *)self _setupConstraints];
 }
 
-- (RAPDirectionsReportContaineeViewController)initWithReport:(id)a3 directionsReportContext:(unint64_t)a4
+- (RAPDirectionsReportContaineeViewController)initWithReport:(id)report directionsReportContext:(unint64_t)context
 {
-  v7 = a3;
-  if (a4 || (-[RAPReport _context](self->_report, "_context"), v18 = objc_claimAutoreleasedReturnValue(), [v18 directionsHistory], v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "firstObject"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "recording"), v21 = objc_claimAutoreleasedReturnValue(), v21, v20, v19, v18, !v21))
+  reportCopy = report;
+  if (context || (-[RAPReport _context](self->_report, "_context"), v18 = objc_claimAutoreleasedReturnValue(), [v18 directionsHistory], v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "firstObject"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "recording"), v21 = objc_claimAutoreleasedReturnValue(), v21, v20, v19, v18, !v21))
   {
     v27.receiver = self;
     v27.super_class = RAPDirectionsReportContaineeViewController;
@@ -217,12 +217,12 @@
     {
 LABEL_13:
       self = v9;
-      v24 = self;
+      selfCopy = self;
       goto LABEL_14;
     }
 
-    v8->_context = a4;
-    objc_storeStrong(&v8->_report, a3);
+    v8->_context = context;
+    objc_storeStrong(&v8->_report, report);
     context = v9->_context;
     if (context == 1)
     {
@@ -240,16 +240,16 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      v11 = [(RAPReport *)v9->_report _context];
-      v12 = [v11 directionsHistory];
-      v13 = [v12 firstObject];
-      v14 = [(RAPDirectionsReportContaineeViewController *)v9 _routeFeedbackViewControllerForRequest:v13];
+      _context = [(RAPReport *)v9->_report _context];
+      directionsHistory = [_context directionsHistory];
+      firstObject = [directionsHistory firstObject];
+      v14 = [(RAPDirectionsReportContaineeViewController *)v9 _routeFeedbackViewControllerForRequest:firstObject];
       v15 = v9->_contentViewController;
       v9->_contentViewController = v14;
 
       contentViewController = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:v9 action:"_cancelButtonPressed:"];
-      v17 = [(UIViewController *)v9->_contentViewController navigationItem];
-      [v17 setLeftBarButtonItem:contentViewController];
+      navigationItem = [(UIViewController *)v9->_contentViewController navigationItem];
+      [navigationItem setLeftBarButtonItem:contentViewController];
     }
 
     goto LABEL_12;
@@ -260,14 +260,14 @@ LABEL_12:
   {
     report = self->_report;
     *buf = 138412290;
-    v29 = report;
+    reportCopy2 = report;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_FAULT, "Tried to present RAPDirectionsReportContaineeVC, but didn't have a route in the report: %@", buf, 0xCu);
   }
 
-  v24 = 0;
+  selfCopy = 0;
 LABEL_14:
 
-  return v24;
+  return selfCopy;
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface CNPropertyNoteCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -7,11 +7,11 @@
 
 @implementation CNPropertyNoteCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNPropertyNoteCell" hasInstanceMethod:@"labelLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNPropertyNoteCell" hasInstanceMethod:@"textView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNPropertyNoteCell" hasInstanceMethod:@"labelLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNPropertyNoteCell" hasInstanceMethod:@"textView" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -47,17 +47,17 @@ id __77__CNPropertyNoteCellAccessibility__accessibilityLoadAccessibilityInformat
 - (id)accessibilityLabel
 {
   v2 = [(CNPropertyNoteCellAccessibility *)self safeValueForKey:@"labelLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
   v2 = [(CNPropertyNoteCellAccessibility *)self safeValueForKey:@"textView"];
-  v3 = [v2 accessibilityValue];
+  accessibilityValue = [v2 accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 @end

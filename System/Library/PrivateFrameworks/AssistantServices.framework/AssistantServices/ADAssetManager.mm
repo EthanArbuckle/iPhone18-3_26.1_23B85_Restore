@@ -1,26 +1,26 @@
 @interface ADAssetManager
 + (ADAssetManager)sharedInstance;
 - (ADAssetManager)init;
-- (ADAssetManager)initWithLanguageCode:(id)a3 speechAssetManager:(id)a4 cdmClient:(id)a5 morphunAssetManager:(id)a6 supportsSiriUoD:(BOOL)a7 supportsSiriHybridUoD:(BOOL)a8;
-- (id)_fetchAssetStatusForLanguage:(id)a3;
-- (id)assetsAvailableStatusForLanguage:(id)a3;
+- (ADAssetManager)initWithLanguageCode:(id)code speechAssetManager:(id)manager cdmClient:(id)client morphunAssetManager:(id)assetManager supportsSiriUoD:(BOOL)d supportsSiriHybridUoD:(BOOL)uoD;
+- (id)_fetchAssetStatusForLanguage:(id)language;
+- (id)assetsAvailableStatusForLanguage:(id)language;
 - (void)_checkAssetsStatusForIntervalRecording;
-- (void)_emitUODAssetPreparedEventWithLanguage:(id)a3 elapsed:(unsigned int)a4;
-- (void)_recordAssetsNeededForLanguage:(id)a3 resetPrevious:(BOOL)a4;
+- (void)_emitUODAssetPreparedEventWithLanguage:(id)language elapsed:(unsigned int)elapsed;
+- (void)_recordAssetsNeededForLanguage:(id)language resetPrevious:(BOOL)previous;
 - (void)_registerAssetStatusTrackers;
 - (void)_registerCDMStatusTracker;
-- (void)_subscribeToMorphunAssetStatusForLanguage:(id)a3;
-- (void)addAvailabilityObserver:(id)a3;
-- (void)assetStatus:(id)a3;
-- (void)assetsAvailableForLocale:(id)a3 withType:(int64_t)a4;
-- (void)assetsUnavailableWithType:(int64_t)a3;
-- (void)attentionAssetStatus:(id)a3;
-- (void)dumpAssistantStateChunk:(id)a3;
-- (void)fetchAssetsAvailabilityForLanguage:(id)a3 completion:(id)a4;
-- (void)languageCodeWasChangedTo:(id)a3;
+- (void)_subscribeToMorphunAssetStatusForLanguage:(id)language;
+- (void)addAvailabilityObserver:(id)observer;
+- (void)assetStatus:(id)status;
+- (void)assetsAvailableForLocale:(id)locale withType:(int64_t)type;
+- (void)assetsUnavailableWithType:(int64_t)type;
+- (void)attentionAssetStatus:(id)status;
+- (void)dumpAssistantStateChunk:(id)chunk;
+- (void)fetchAssetsAvailabilityForLanguage:(id)language completion:(id)completion;
+- (void)languageCodeWasChangedTo:(id)to;
 - (void)notifyObserversAssetAvailabilityChanged;
-- (void)notifyObserversLanguageCodeChanged:(id)a3;
-- (void)removeAvailabilityObserver:(id)a3;
+- (void)notifyObserversLanguageCodeChanged:(id)changed;
+- (void)removeAvailabilityObserver:(id)observer;
 @end
 
 @implementation ADAssetManager
@@ -37,14 +37,14 @@
   return v3;
 }
 
-- (void)dumpAssistantStateChunk:(id)a3
+- (void)dumpAssistantStateChunk:(id)chunk
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1002407C0;
   v9[3] = &unk_10051CF08;
-  v10 = a3;
-  v4 = v10;
+  chunkCopy = chunk;
+  v4 = chunkCopy;
   v5 = objc_retainBlock(v9);
   v6 = [NSMutableDictionary alloc];
   v7 = [(ADAssetManager *)self assetsAvailableStatusForLanguage:self->_currentLanguageCode];
@@ -54,14 +54,14 @@
   (v5[2])(v5, v8);
 }
 
-- (void)_emitUODAssetPreparedEventWithLanguage:(id)a3 elapsed:(unsigned int)a4
+- (void)_emitUODAssetPreparedEventWithLanguage:(id)language elapsed:(unsigned int)elapsed
 {
-  v4 = *&a4;
-  v5 = a3;
+  v4 = *&elapsed;
+  languageCopy = language;
   v6 = objc_alloc_init(SADSchemaSADUODAssetsPrepared);
-  v7 = [v5 uppercaseString];
+  uppercaseString = [languageCopy uppercaseString];
 
-  v8 = [v7 stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
+  v8 = [uppercaseString stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
 
   v9 = [NSString stringWithFormat:@"LOCALE_%@", v8];
 
@@ -457,10 +457,10 @@
   }
 }
 
-- (void)_recordAssetsNeededForLanguage:(id)a3 resetPrevious:(BOOL)a4
+- (void)_recordAssetsNeededForLanguage:(id)language resetPrevious:(BOOL)previous
 {
-  v4 = a4;
-  v6 = a3;
+  previousCopy = previous;
+  languageCopy = language;
   if (![(ADAssetManager *)self _shouldLogAssetsPreparedEvent])
   {
     goto LABEL_11;
@@ -478,14 +478,14 @@
   if (!currentLanguageCode)
   {
 LABEL_11:
-    v9 = v6;
+    v9 = languageCopy;
     goto LABEL_12;
   }
 
-  v9 = [v6 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+  v9 = [languageCopy stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
 
   v10 = [(NSMutableDictionary *)self->_assetFetchIntervalBeginDates valueForKey:v9];
-  if (!v10 || v4)
+  if (!v10 || previousCopy)
   {
     v11 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -505,10 +505,10 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)_subscribeToMorphunAssetStatusForLanguage:(id)a3
+- (void)_subscribeToMorphunAssetStatusForLanguage:(id)language
 {
-  v4 = a3;
-  if (([v4 isEqualToString:self->_currentLanguageCode] & 1) == 0)
+  languageCopy = language;
+  if (([languageCopy isEqualToString:self->_currentLanguageCode] & 1) == 0)
   {
     morphunAssetsManager = self->_morphunAssetsManager;
     v6 = [[NSLocale alloc] initWithLocaleIdentifier:self->_currentLanguageCode];
@@ -517,13 +517,13 @@ LABEL_12:
 
   objc_initWeak(&location, self);
   v7 = self->_morphunAssetsManager;
-  v8 = [NSLocale localeWithLocaleIdentifier:v4];
+  v8 = [NSLocale localeWithLocaleIdentifier:languageCopy];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100241520;
   v10[3] = &unk_100517838;
   objc_copyWeak(&v12, &location);
-  v9 = v4;
+  v9 = languageCopy;
   v11 = v9;
   [(MorphunAssets *)v7 subscribeToLocale:v8 withCompletion:v10];
 
@@ -531,21 +531,21 @@ LABEL_12:
   objc_destroyWeak(&location);
 }
 
-- (id)_fetchAssetStatusForLanguage:(id)a3
+- (id)_fetchAssetStatusForLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [NSLocale localeWithLocaleIdentifier:v4];
-  v6 = [v5 languageCode];
-  v7 = [SFUtilities languageStringForLocaleString:v4];
+  v5 = [NSLocale localeWithLocaleIdentifier:languageCopy];
+  languageCode = [v5 languageCode];
+  v7 = [SFUtilities languageStringForLocaleString:languageCopy];
   v35 = [(NSDictionary *)self->_speechAssetStatusForLocale objectForKeyedSubscript:v7];
   if (AFOfflineDictationStatusStringIsInstalled())
   {
     if (AFIsNano() && AFDeviceSupportsFullSiriUOD())
     {
       v8 = [(NSDictionary *)self->_speechAssetTasksForLocale objectForKey:v7, v35];
-      v9 = [v8 supportsAssistant];
-      if ((v9 & 1) == 0)
+      supportsAssistant = [v8 supportsAssistant];
+      if ((supportsAssistant & 1) == 0)
       {
         v10 = AFSiriLogContextDaemon;
         if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
@@ -561,42 +561,42 @@ LABEL_12:
 
     else
     {
-      v9 = 1;
+      supportsAssistant = 1;
     }
   }
 
   else
   {
-    v9 = 0;
+    supportsAssistant = 0;
   }
 
-  v11 = [(NSMutableDictionary *)self->_nlAssetStatus objectForKeyedSubscript:v4, v35];
+  v11 = [(NSMutableDictionary *)self->_nlAssetStatus objectForKeyedSubscript:languageCopy, v35];
   v37 = v7;
   if ([v11 BOOLValue])
   {
-    v12 = 1;
+    bOOLValue = 1;
   }
 
   else
   {
-    v13 = [(NSMutableDictionary *)self->_nlAssetStatus objectForKeyedSubscript:v6];
-    v12 = [v13 BOOLValue];
+    v13 = [(NSMutableDictionary *)self->_nlAssetStatus objectForKeyedSubscript:languageCode];
+    bOOLValue = [v13 BOOLValue];
   }
 
-  v14 = [(NSMutableDictionary *)self->_nlRouterAssetStatus objectForKeyedSubscript:v4];
+  v14 = [(NSMutableDictionary *)self->_nlRouterAssetStatus objectForKeyedSubscript:languageCopy];
   if ([v14 BOOLValue])
   {
-    v15 = 1;
+    bOOLValue2 = 1;
   }
 
   else
   {
-    v16 = [(NSMutableDictionary *)self->_nlRouterAssetStatus objectForKeyedSubscript:v6];
-    v15 = [v16 BOOLValue];
+    v16 = [(NSMutableDictionary *)self->_nlRouterAssetStatus objectForKeyedSubscript:languageCode];
+    bOOLValue2 = [v16 BOOLValue];
   }
 
   v17 = [(MorphunAssets *)self->_morphunAssetsManager isAssetReadyForLocale:v5];
-  if (v12)
+  if (bOOLValue)
   {
     v18 = 1;
   }
@@ -618,17 +618,17 @@ LABEL_12:
     v18 = 0;
   }
 
-  v20 = [(NSDictionary *)self->_attentionAssetStatus objectForKeyedSubscript:v4];
-  v38 = v6;
+  v20 = [(NSDictionary *)self->_attentionAssetStatus objectForKeyedSubscript:languageCopy];
+  v38 = languageCode;
   if ([v20 BOOLValue])
   {
-    v21 = 1;
+    bOOLValue3 = 1;
   }
 
   else
   {
-    v22 = [(NSDictionary *)self->_attentionAssetStatus objectForKeyedSubscript:v6];
-    v21 = [v22 BOOLValue];
+    v22 = [(NSDictionary *)self->_attentionAssetStatus objectForKeyedSubscript:languageCode];
+    bOOLValue3 = [v22 BOOLValue];
   }
 
   v23 = AFSiriLogContextDaemon;
@@ -639,17 +639,17 @@ LABEL_12:
     *buf = 136317186;
     v42 = "[ADAssetManager _fetchAssetStatusForLanguage:]";
     v43 = 1024;
-    *v44 = v9;
+    *v44 = supportsAssistant;
     *&v44[4] = 1024;
     *&v44[6] = v18;
     v45 = 1024;
     v46 = v17;
     v47 = 1024;
-    v48 = v21;
+    v48 = bOOLValue3;
     v49 = 1024;
-    v50 = v15;
+    v50 = bOOLValue2;
     v51 = 2114;
-    v52 = v4;
+    v52 = languageCopy;
     v53 = 1024;
     v54 = supportsSiriUoD;
     v55 = 1024;
@@ -675,22 +675,22 @@ LABEL_12:
   v28 = [NSNumber numberWithBool:v18];
   v40[0] = v28;
   v39[1] = AFAssetManagerSpeechAssetsTag;
-  v29 = [NSNumber numberWithBool:v9];
+  v29 = [NSNumber numberWithBool:supportsAssistant];
   v40[1] = v29;
   v39[2] = AFAssetManagerMorphunAssetsTag;
   v30 = [NSNumber numberWithBool:v17];
   v40[2] = v30;
   v39[3] = AFAssetManagerAttentionAssetsTag;
-  v31 = [NSNumber numberWithBool:v21];
+  v31 = [NSNumber numberWithBool:bOOLValue3];
   v40[3] = v31;
   v39[4] = AFAssetManagerNLRouterAssetsTag;
-  v32 = [NSNumber numberWithBool:v15];
+  v32 = [NSNumber numberWithBool:bOOLValue2];
   v40[4] = v32;
   v33 = [NSDictionary dictionaryWithObjects:v40 forKeys:v39 count:5];
 
   if ([(ADAssetManager *)self _shouldLogAssetsPreparedEvent]&& (AFUODStatusSupportedFull() & 1) == 0)
   {
-    [(ADAssetManager *)self _recordAssetsNeededForLanguage:v4 resetPrevious:0];
+    [(ADAssetManager *)self _recordAssetsNeededForLanguage:languageCopy resetPrevious:0];
   }
 
   return v33;
@@ -843,10 +843,10 @@ LABEL_12:
   }
 }
 
-- (void)assetsUnavailableWithType:(int64_t)a3
+- (void)assetsUnavailableWithType:(int64_t)type
 {
   objc_initWeak(&location, self);
-  if (a3 == 1)
+  if (type == 1)
   {
     group = self->_group;
     queue = self->_queue;
@@ -860,7 +860,7 @@ LABEL_12:
     goto LABEL_5;
   }
 
-  if (!a3)
+  if (!type)
   {
     group = self->_group;
     queue = self->_queue;
@@ -889,11 +889,11 @@ LABEL_8:
   objc_destroyWeak(&location);
 }
 
-- (void)assetsAvailableForLocale:(id)a3 withType:(int64_t)a4
+- (void)assetsAvailableForLocale:(id)locale withType:(int64_t)type
 {
-  v6 = a3;
+  localeCopy = locale;
   objc_initWeak(&location, self);
-  if (a4 == 1)
+  if (type == 1)
   {
     group = self->_group;
     queue = self->_queue;
@@ -903,13 +903,13 @@ LABEL_8:
     v14[2] = sub_1002431CC;
     v14[3] = &unk_10051C650;
     objc_copyWeak(&v16, &location);
-    v15 = v6;
+    v15 = localeCopy;
     dispatch_group_async(group, queue, v14);
     v10 = v15;
     goto LABEL_5;
   }
 
-  if (!a4)
+  if (!type)
   {
     v7 = self->_group;
     v8 = self->_queue;
@@ -919,7 +919,7 @@ LABEL_8:
     block[2] = sub_100243024;
     block[3] = &unk_10051C650;
     objc_copyWeak(&v19, &location);
-    v18 = v6;
+    v18 = localeCopy;
     dispatch_group_async(v7, v8, block);
     v10 = v18;
 LABEL_5:
@@ -940,9 +940,9 @@ LABEL_8:
   objc_destroyWeak(&location);
 }
 
-- (void)attentionAssetStatus:(id)a3
+- (void)attentionAssetStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   objc_initWeak(&location, self);
   group = self->_group;
   queue = self->_queue;
@@ -951,17 +951,17 @@ LABEL_8:
   block[2] = sub_100243440;
   block[3] = &unk_10051C650;
   objc_copyWeak(&v10, &location);
-  v9 = v4;
-  v7 = v4;
+  v9 = statusCopy;
+  v7 = statusCopy;
   dispatch_group_async(group, queue, block);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 }
 
-- (void)assetStatus:(id)a3
+- (void)assetStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   objc_initWeak(&location, self);
   group = self->_group;
   queue = self->_queue;
@@ -970,17 +970,17 @@ LABEL_8:
   block[2] = sub_100243684;
   block[3] = &unk_10051C650;
   objc_copyWeak(&v10, &location);
-  v9 = v4;
-  v7 = v4;
+  v9 = statusCopy;
+  v7 = statusCopy;
   dispatch_group_async(group, queue, block);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 }
 
-- (void)notifyObserversLanguageCodeChanged:(id)a3
+- (void)notifyObserversLanguageCodeChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   if ([(NSMutableSet *)self->_availabilityObservers count])
   {
     v5 = [(NSMutableSet *)self->_availabilityObservers copy];
@@ -992,7 +992,7 @@ LABEL_8:
     v8[3] = &unk_1005177E8;
     objc_copyWeak(&v11, &location);
     v9 = v5;
-    v10 = v4;
+    v10 = changedCopy;
     v7 = v5;
     dispatch_async(queue, v8);
 
@@ -1022,9 +1022,9 @@ LABEL_8:
   }
 }
 
-- (void)removeAvailabilityObserver:(id)a3
+- (void)removeAvailabilityObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -1032,17 +1032,17 @@ LABEL_8:
   block[2] = sub_100243CE0;
   block[3] = &unk_10051C650;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)addAvailabilityObserver:(id)a3
+- (void)addAvailabilityObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -1050,17 +1050,17 @@ LABEL_8:
   block[2] = sub_100243E04;
   block[3] = &unk_10051C650;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)languageCodeWasChangedTo:(id)a3
+- (void)languageCodeWasChangedTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_supportsSiriUoD || self->_supportsSiriHybridUoD)
   {
     objc_initWeak(location, self);
@@ -1072,7 +1072,7 @@ LABEL_8:
     v9[2] = sub_100243FE8;
     v9[3] = &unk_10051C650;
     objc_copyWeak(&v11, location);
-    v10 = v4;
+    v10 = toCopy;
     dispatch_group_notify(v6, delegateQueue, v9);
 
     objc_destroyWeak(&v11);
@@ -1091,13 +1091,13 @@ LABEL_8:
   }
 }
 
-- (void)fetchAssetsAvailabilityForLanguage:(id)a3 completion:(id)a4
+- (void)fetchAssetsAvailabilityForLanguage:(id)language completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  languageCopy = language;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if ([v6 length])
+    if ([languageCopy length])
     {
       if (self->_supportsSiriUoD || self->_supportsSiriHybridUoD)
       {
@@ -1109,8 +1109,8 @@ LABEL_8:
         block[2] = sub_100244468;
         block[3] = &unk_1005180B0;
         objc_copyWeak(&v19, location);
-        v17 = v6;
-        v18 = v7;
+        v17 = languageCopy;
+        v18 = completionCopy;
         dispatch_group_notify(group, queue, block);
 
         objc_destroyWeak(&v19);
@@ -1131,7 +1131,7 @@ LABEL_8:
       v20[1] = 3221225472;
       v20[2] = sub_100244450;
       v20[3] = &unk_10051CF58;
-      v21 = v7;
+      v21 = completionCopy;
       dispatch_async(v15, v20);
       v13 = v21;
     }
@@ -1151,7 +1151,7 @@ LABEL_8:
       v22[1] = 3221225472;
       v22[2] = sub_100244438;
       v22[3] = &unk_10051CF58;
-      v23 = v7;
+      v23 = completionCopy;
       dispatch_async(v12, v22);
       v13 = v23;
     }
@@ -1170,10 +1170,10 @@ LABEL_8:
 LABEL_12:
 }
 
-- (id)assetsAvailableStatusForLanguage:(id)a3
+- (id)assetsAvailableStatusForLanguage:(id)language
 {
-  v4 = a3;
-  if (!v4)
+  languageCopy = language;
+  if (!languageCopy)
   {
     v8 = AFSiriLogContextDaemon;
     if (!os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -1206,7 +1206,7 @@ LABEL_13:
     block[3] = &unk_10051C588;
     p_buf = &buf;
     block[4] = self;
-    v11 = v4;
+    v11 = languageCopy;
     dispatch_sync(queue, block);
     v6 = *(*(&buf + 1) + 40);
 
@@ -1230,21 +1230,21 @@ LABEL_5:
   return v6;
 }
 
-- (ADAssetManager)initWithLanguageCode:(id)a3 speechAssetManager:(id)a4 cdmClient:(id)a5 morphunAssetManager:(id)a6 supportsSiriUoD:(BOOL)a7 supportsSiriHybridUoD:(BOOL)a8
+- (ADAssetManager)initWithLanguageCode:(id)code speechAssetManager:(id)manager cdmClient:(id)client morphunAssetManager:(id)assetManager supportsSiriUoD:(BOOL)d supportsSiriHybridUoD:(BOOL)uoD
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  codeCopy = code;
+  managerCopy = manager;
+  clientCopy = client;
+  assetManagerCopy = assetManager;
   v42.receiver = self;
   v42.super_class = ADAssetManager;
   v18 = [(ADAssetManager *)&v42 init];
   if (v18)
   {
     dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v19 = v40 = v14;
+    v19 = v40 = codeCopy;
     dispatch_queue_attr_make_with_qos_class(v19, QOS_CLASS_USER_INITIATED, 0);
-    v20 = v39 = v15;
+    v20 = v39 = managerCopy;
 
     v21 = dispatch_queue_create("com.apple.ADAssetManager", v20);
     queue = v18->_queue;
@@ -1259,9 +1259,9 @@ LABEL_5:
     v18->_group = v25;
 
     v27 = +[AFPreferences sharedPreferences];
-    v28 = [v27 languageCode];
+    languageCode = [v27 languageCode];
     currentLanguageCode = v18->_currentLanguageCode;
-    v18->_currentLanguageCode = v28;
+    v18->_currentLanguageCode = languageCode;
 
     v30 = objc_opt_new();
     nlAssetStatus = v18->_nlAssetStatus;
@@ -1271,23 +1271,23 @@ LABEL_5:
     nlRouterAssetStatus = v18->_nlRouterAssetStatus;
     v18->_nlRouterAssetStatus = v32;
 
-    objc_storeStrong(&v18->_currentLanguageCode, a3);
-    v18->_supportsSiriUoD = a7;
-    v18->_supportsSiriHybridUoD = a8;
-    objc_storeStrong(&v18->_speechAssetManager, a4);
-    objc_storeStrong(&v18->_cdmClient, a5);
-    objc_storeStrong(&v18->_morphunAssetsManager, a6);
+    objc_storeStrong(&v18->_currentLanguageCode, code);
+    v18->_supportsSiriUoD = d;
+    v18->_supportsSiriHybridUoD = uoD;
+    objc_storeStrong(&v18->_speechAssetManager, manager);
+    objc_storeStrong(&v18->_cdmClient, client);
+    objc_storeStrong(&v18->_morphunAssetsManager, assetManager);
     v34 = +[NSMutableSet set];
     availabilityObservers = v18->_availabilityObservers;
     v18->_availabilityObservers = v34;
 
     [(ADAssetManager *)v18 _registerAssetStatusTrackers];
-    v14 = v40;
+    codeCopy = v40;
     v36 = +[NSMutableDictionary dictionary];
     assetFetchIntervalBeginDates = v18->_assetFetchIntervalBeginDates;
     v18->_assetFetchIntervalBeginDates = v36;
 
-    v15 = v39;
+    managerCopy = v39;
   }
 
   return v18;
@@ -1296,9 +1296,9 @@ LABEL_5:
 - (ADAssetManager)init
 {
   v3 = +[AFPreferences sharedPreferences];
-  v4 = [v3 languageCode];
+  languageCode = [v3 languageCode];
   v5 = AFDeviceSupportsSiriUOD();
-  v6 = [(ADAssetManager *)self initWithLanguageCode:v4 speechAssetManager:0 cdmClient:0 morphunAssetManager:0 supportsSiriUoD:v5 supportsSiriHybridUoD:AFDeviceSupportsHybridUOD()];
+  v6 = [(ADAssetManager *)self initWithLanguageCode:languageCode speechAssetManager:0 cdmClient:0 morphunAssetManager:0 supportsSiriUoD:v5 supportsSiriHybridUoD:AFDeviceSupportsHybridUOD()];
 
   return v6;
 }

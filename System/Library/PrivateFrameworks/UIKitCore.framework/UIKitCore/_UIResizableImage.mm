@@ -1,17 +1,17 @@
 @interface _UIResizableImage
-- (BOOL)_isTiledWhenStretchedToSize:(CGSize)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_isTiledWhenStretchedToSize:(CGSize)size;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)_contentRectInPixels;
-- (CGRect)_contentRectInPixelsApplyingInsets:(UIEdgeInsets)a3 emptySizeFallback:(id)a4;
+- (CGRect)_contentRectInPixelsApplyingInsets:(UIEdgeInsets)insets emptySizeFallback:(id)fallback;
 - (CGRect)_contentStretchInPixels;
 - (UIEdgeInsets)_subimageInsets;
 - (UIEdgeInsets)capInsets;
-- (_UIResizableImage)initWithCoder:(id)a3;
-- (_UIResizableImage)initWithImage:(id)a3 capInsets:(UIEdgeInsets)a4;
-- (id)_resizableImageWithCapMask:(int)a3;
-- (void)_configureImage:(id)a3 assumePreconfigured:(BOOL)a4;
-- (void)_setSubimageInsets:(UIEdgeInsets)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_UIResizableImage)initWithCoder:(id)coder;
+- (_UIResizableImage)initWithImage:(id)image capInsets:(UIEdgeInsets)insets;
+- (id)_resizableImageWithCapMask:(int)mask;
+- (void)_configureImage:(id)image assumePreconfigured:(BOOL)preconfigured;
+- (void)_setSubimageInsets:(UIEdgeInsets)insets;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIResizableImage
@@ -44,34 +44,34 @@
   return result;
 }
 
-- (void)_configureImage:(id)a3 assumePreconfigured:(BOOL)a4
+- (void)_configureImage:(id)image assumePreconfigured:(BOOL)preconfigured
 {
-  v4 = a4;
-  v6 = a3;
+  preconfiguredCopy = preconfigured;
+  imageCopy = image;
   v8.receiver = self;
   v8.super_class = _UIResizableImage;
-  [(UIImage *)&v8 _configureImage:v6 assumePreconfigured:v4];
-  if ([v6 _isResizable])
+  [(UIImage *)&v8 _configureImage:imageCopy assumePreconfigured:preconfiguredCopy];
+  if ([imageCopy _isResizable])
   {
     [(_UIResizableImage *)self capInsets];
-    [v6 _setCapInsets:?];
-    *(v6 + 208) = *(v6 + 208) & 0xFD | *&self->_rImageFlags & 2;
+    [imageCopy _setCapInsets:?];
+    *(imageCopy + 208) = *(imageCopy + 208) & 0xFD | *&self->_rImageFlags & 2;
     v7 = *&self->_subimageInsets.bottom;
-    *(v6 + 11) = *&self->_subimageInsets.top;
-    *(v6 + 12) = v7;
-    [v6 _setAlwaysStretches:*&self->_rImageFlags & 1];
+    *(imageCopy + 11) = *&self->_subimageInsets.top;
+    *(imageCopy + 12) = v7;
+    [imageCopy _setAlwaysStretches:*&self->_rImageFlags & 1];
   }
 }
 
-- (_UIResizableImage)initWithImage:(id)a3 capInsets:(UIEdgeInsets)a4
+- (_UIResizableImage)initWithImage:(id)image capInsets:(UIEdgeInsets)insets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v9.receiver = self;
   v9.super_class = _UIResizableImage;
-  result = [(UIImage *)&v9 _initWithOtherImage:a3];
+  result = [(UIImage *)&v9 _initWithOtherImage:image];
   if (result)
   {
     result->_capInsets.top = top;
@@ -83,32 +83,32 @@
   return result;
 }
 
-- (_UIResizableImage)initWithCoder:(id)a3
+- (_UIResizableImage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = _UIResizableImage;
-  v5 = [(UIImage *)&v17 initWithCoder:v4];
+  v5 = [(UIImage *)&v17 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
     p_top = &v5->_capInsets.top;
-    [v4 decodeUIEdgeInsetsForKey:@"UICapInsets"];
+    [coderCopy decodeUIEdgeInsetsForKey:@"UICapInsets"];
     *p_top = v8;
     v6->_capInsets.left = v9;
     v6->_capInsets.bottom = v10;
     v6->_capInsets.right = v11;
-    if ([v4 containsValueForKey:@"UILeftCapWidth"])
+    if ([coderCopy containsValueForKey:@"UILeftCapWidth"])
     {
-      v6->_capInsets.left = [v4 decodeIntegerForKey:@"UILeftCapWidth"];
-      *p_top = [v4 decodeIntegerForKey:@"UITopCapHeight"];
+      v6->_capInsets.left = [coderCopy decodeIntegerForKey:@"UILeftCapWidth"];
+      *p_top = [coderCopy decodeIntegerForKey:@"UITopCapHeight"];
       [(UIImage *)v6 size];
       v6->_capInsets.right = v12 - v6->_capInsets.left + -1.0;
       [(UIImage *)v6 size];
       v6->_capInsets.bottom = v13 - *p_top + -1.0;
     }
 
-    v14 = [v4 decodeIntForKey:@"UIResizingMode"];
+    v14 = [coderCopy decodeIntForKey:@"UIResizingMode"];
     v15 = *&v6->_rImageFlags & 0xFE;
     if (v14)
     {
@@ -124,19 +124,19 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _UIResizableImage;
-  v4 = a3;
-  [(UIImage *)&v5 encodeWithCoder:v4];
-  [v4 encodeUIEdgeInsets:@"UICapInsets" forKey:{self->_capInsets.top, self->_capInsets.left, self->_capInsets.bottom, self->_capInsets.right, v5.receiver, v5.super_class}];
-  [v4 encodeInt:*&self->_rImageFlags & 1 forKey:@"UIResizingMode"];
+  coderCopy = coder;
+  [(UIImage *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeUIEdgeInsets:@"UICapInsets" forKey:{self->_capInsets.top, self->_capInsets.left, self->_capInsets.bottom, self->_capInsets.right, v5.receiver, v5.super_class}];
+  [coderCopy encodeInt:*&self->_rImageFlags & 1 forKey:@"UIResizingMode"];
 }
 
-- (void)_setSubimageInsets:(UIEdgeInsets)a3
+- (void)_setSubimageInsets:(UIEdgeInsets)insets
 {
-  if (a3.top == 0.0 && a3.left == 0.0 && a3.right == 0.0 && a3.bottom == 0.0)
+  if (insets.top == 0.0 && insets.left == 0.0 && insets.right == 0.0 && insets.bottom == 0.0)
   {
     v6 = 0;
   }
@@ -147,7 +147,7 @@
   }
 
   *&self->_rImageFlags = *&self->_rImageFlags & 0xFD | v6;
-  self->_subimageInsets = a3;
+  self->_subimageInsets = insets;
 }
 
 - (UIEdgeInsets)_subimageInsets
@@ -163,22 +163,22 @@
   return result;
 }
 
-- (CGRect)_contentRectInPixelsApplyingInsets:(UIEdgeInsets)a3 emptySizeFallback:(id)a4
+- (CGRect)_contentRectInPixelsApplyingInsets:(UIEdgeInsets)insets emptySizeFallback:(id)fallback
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v9 = a4;
-  v10 = [(UIImage *)self content];
-  [v10 sizeInPixels];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  fallbackCopy = fallback;
+  content = [(UIImage *)self content];
+  [content sizeInPixels];
   v13 = v12;
   v14 = v11;
   if (v12 <= 0.0 || v11 <= 0.0)
   {
-    if (v9)
+    if (fallbackCopy)
     {
-      v21 = v9[2](v9);
+      v21 = fallbackCopy[2](fallbackCopy);
       v22 = v23;
       v13 = v24;
       v14 = v25;
@@ -193,7 +193,7 @@
 
   else
   {
-    [v10 scale];
+    [content scale];
     v16 = top * v15;
     v17 = bottom * v15;
     v18 = *MEMORY[0x1E695EFF8] + left * v15;
@@ -231,15 +231,15 @@
   return result;
 }
 
-- (BOOL)_isTiledWhenStretchedToSize:(CGSize)a3
+- (BOOL)_isTiledWhenStretchedToSize:(CGSize)size
 {
   if (*&self->_rImageFlags)
   {
     return 0;
   }
 
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(UIImage *)self size];
   if (v6 - self->_capInsets.left - self->_capInsets.right > 1.0 && width != v6)
   {
@@ -254,9 +254,9 @@
   return v7 - self->_capInsets.top - self->_capInsets.bottom > 1.0;
 }
 
-- (id)_resizableImageWithCapMask:(int)a3
+- (id)_resizableImageWithCapMask:(int)mask
 {
-  v3 = a3;
+  maskCopy = mask;
   [(_UIResizableImage *)self capInsets];
   v6 = v5;
   v8 = v7;
@@ -266,18 +266,18 @@
   v52 = 0u;
   v53 = 0u;
   v17 = 0.0;
-  if ((v3 & 1) == 0)
+  if ((maskCopy & 1) == 0)
   {
     v14 = 0.0;
     v50 = 0.0;
-    if ((v3 & 2) != 0)
+    if ((maskCopy & 2) != 0)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     v49 = 0.0;
-    if ((v3 & 4) != 0)
+    if ((maskCopy & 4) != 0)
     {
       goto LABEL_4;
     }
@@ -288,7 +288,7 @@ LABEL_6:
   *(&v52 + 1) = v14;
   v50 = v8;
   v8 = 0.0;
-  if ((v3 & 2) == 0)
+  if ((maskCopy & 2) == 0)
   {
     goto LABEL_6;
   }
@@ -298,7 +298,7 @@ LABEL_3:
   v17 = v13;
   v49 = v6;
   v6 = 0.0;
-  if ((v3 & 4) != 0)
+  if ((maskCopy & 4) != 0)
   {
 LABEL_4:
     *(&v53 + 1) = v16;
@@ -314,7 +314,7 @@ LABEL_8:
   v47 = v16;
   v48 = v14;
   v46 = v17;
-  if ((v3 & 8) != 0)
+  if ((maskCopy & 8) != 0)
   {
     *&v53 = v15;
     v44 = v15;
@@ -358,12 +358,12 @@ LABEL_8:
     y = v57.origin.y;
     width = v57.size.width;
     height = v57.size.height;
-    v35 = [(UIImage *)self CGImage];
+    cGImage = [(UIImage *)self CGImage];
     v58.origin.x = x;
     v58.origin.y = y;
     v58.size.width = width;
     v58.size.height = height;
-    v36 = CGImageCreateWithImageInRect(v35, v58);
+    v36 = CGImageCreateWithImageInRect(cGImage, v58);
     v37 = [[UIImage alloc] initWithCGImage:v36 scale:[(UIImage *)self imageOrientation] orientation:v30];
     CGImageRelease(v36);
     v38 = [(UIImage *)v37 resizableImageWithCapInsets:v49, v50, v19, v18];
@@ -394,13 +394,13 @@ LABEL_8:
   return v28;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v21.receiver = self;
     v21.super_class = _UIResizableImage;
     if ([(UIImage *)&v21 isEqual:v5])
@@ -414,8 +414,8 @@ LABEL_8:
       v17 = 0;
       if (v9 == v18 && v7 == v14 && v13 == v16 && v11 == v15)
       {
-        v19 = [(_UIResizableImage *)self resizingMode];
-        v17 = v19 == [v5 resizingMode];
+        resizingMode = [(_UIResizableImage *)self resizingMode];
+        v17 = resizingMode == [v5 resizingMode];
       }
     }
 

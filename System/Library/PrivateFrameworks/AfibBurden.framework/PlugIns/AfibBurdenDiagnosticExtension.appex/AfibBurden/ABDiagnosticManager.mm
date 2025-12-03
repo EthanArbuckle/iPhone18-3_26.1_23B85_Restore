@@ -1,22 +1,22 @@
 @interface ABDiagnosticManager
-- (ABDiagnosticManager)initWithDiagnosticName:(id)a3 loggingDirectoryPath:(id)a4;
+- (ABDiagnosticManager)initWithDiagnosticName:(id)name loggingDirectoryPath:(id)path;
 - (void)performDiagnosticsAndWriteToFile;
 @end
 
 @implementation ABDiagnosticManager
 
-- (ABDiagnosticManager)initWithDiagnosticName:(id)a3 loggingDirectoryPath:(id)a4
+- (ABDiagnosticManager)initWithDiagnosticName:(id)name loggingDirectoryPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = ABDiagnosticManager;
   v9 = [(ABDiagnosticManager *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_diagnosticName, a3);
-    objc_storeStrong(&v10->_loggingDirectoryPath, a4);
+    objc_storeStrong(&v9->_diagnosticName, name);
+    objc_storeStrong(&v10->_loggingDirectoryPath, path);
   }
 
   return v10;
@@ -35,21 +35,21 @@
 
   if (v6)
   {
-    v8 = [(ABDiagnosticManager *)self extractDiagnosticContent];
+    extractDiagnosticContent = [(ABDiagnosticManager *)self extractDiagnosticContent];
     v9 = ab_get_framework_log();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-    if (v8)
+    if (extractDiagnosticContent)
     {
       if (v10)
       {
         *buf = 138543362;
-        v20 = self;
+        selfCopy4 = self;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Writing to file", buf, 0xCu);
       }
 
       v9 = [NSString stringWithFormat:@"%@/%@.txt", self->_loggingDirectoryPath, self->_diagnosticName];
       v17 = 0;
-      [v8 writeToFile:v9 atomically:1 encoding:4 error:&v17];
+      [extractDiagnosticContent writeToFile:v9 atomically:1 encoding:4 error:&v17];
       v11 = v17;
       v12 = ab_get_framework_log();
       v13 = v12;
@@ -59,7 +59,7 @@
         {
           diagnosticName = self->_diagnosticName;
           *buf = 138544130;
-          v20 = self;
+          selfCopy4 = self;
           v21 = 2114;
           v22 = diagnosticName;
           v23 = 2112;
@@ -74,7 +74,7 @@
       {
         v16 = self->_diagnosticName;
         *buf = 138543874;
-        v20 = self;
+        selfCopy4 = self;
         v21 = 2114;
         v22 = v16;
         v23 = 2112;
@@ -87,7 +87,7 @@
     {
       v15 = self->_diagnosticName;
       *buf = 138543618;
-      v20 = self;
+      selfCopy4 = self;
       v21 = 2114;
       v22 = v15;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@:%{public}@]: No diagnostic content", buf, 0x16u);
@@ -96,10 +96,10 @@
 
   else
   {
-    v8 = ab_get_framework_log();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    extractDiagnosticContent = ab_get_framework_log();
+    if (os_log_type_enabled(extractDiagnosticContent, OS_LOG_TYPE_ERROR))
     {
-      sub_100002C24(self, v7, v8);
+      sub_100002C24(self, v7, extractDiagnosticContent);
     }
   }
 }

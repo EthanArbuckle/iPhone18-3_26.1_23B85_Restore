@@ -1,6 +1,6 @@
 @interface MOSuggestionRoundView
-- (_TtC16MomentsUIService21MOSuggestionRoundView)initWithCoder:(id)a3;
-- (_TtC16MomentsUIService21MOSuggestionRoundView)initWithFrame:(CGRect)a3;
+- (_TtC16MomentsUIService21MOSuggestionRoundView)initWithCoder:(id)coder;
+- (_TtC16MomentsUIService21MOSuggestionRoundView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -17,23 +17,23 @@
   [v2 _setCornerRadius:CGRectGetHeight(v4) * 0.5];
 }
 
-- (_TtC16MomentsUIService21MOSuggestionRoundView)initWithFrame:(CGRect)a3
+- (_TtC16MomentsUIService21MOSuggestionRoundView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for MOSuggestionRoundView();
   return [(MOSuggestionRoundView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC16MomentsUIService21MOSuggestionRoundView)initWithCoder:(id)a3
+- (_TtC16MomentsUIService21MOSuggestionRoundView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for MOSuggestionRoundView();
-  v4 = a3;
-  v5 = [(MOSuggestionRoundView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(MOSuggestionRoundView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

@@ -1,7 +1,7 @@
 @interface WiFiUsageSession
-+ (BOOL)isDriverUnavailabilityReasonVoluntary:(int)a3 subReason:(int)a4 orReasonString:(id)a5;
-+ (id)disconnectReasonString:(unint64_t)a3;
-+ (id)joinReasonString:(unint64_t)a3;
++ (BOOL)isDriverUnavailabilityReasonVoluntary:(int)voluntary subReason:(int)reason orReasonString:(id)string;
++ (id)disconnectReasonString:(unint64_t)string;
++ (id)joinReasonString:(unint64_t)string;
 - ($06992ED503081CE345EDB9EEA121564E)bandUsageDuration;
 - ($13477CEFC6EEA4B326536BBEC35DF1AE)roamNeighsLrgstCurrentToBestRssiByBandTransition;
 - ($13477CEFC6EEA4B326536BBEC35DF1AE)roamNeighsLrgstCurrentToNextBestRssiByBandTransition;
@@ -10,11 +10,11 @@
 - ($FEE1510A43A03BFC9F45CB2D5A0A197D)strongestRSSIByBand;
 - ($FEE1510A43A03BFC9F45CB2D5A0A197D)strongestRSSICountByBand;
 - (BOOL)canSubmitToCA;
-- (BOOL)incrementCountWithPrefix:(id)a3 name:(id)a4;
+- (BOOL)incrementCountWithPrefix:(id)prefix name:(id)name;
 - (BOOL)infraIsPartOfSplitSSID;
-- (WiFiUsageSession)initWithSessionType:(unint64_t)a3 andInterfaceName:(id)a4 andCapabilities:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)countWithPrefix:(id)a3 name:(id)a4;
+- (WiFiUsageSession)initWithSessionType:(unint64_t)type andInterfaceName:(id)name andCapabilities:(id)capabilities;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)countWithPrefix:(id)prefix name:(id)name;
 - (id)description;
 - (id)redactedDescription;
 - (id)sessionName;
@@ -23,63 +23,63 @@
 - (int64_t)averageSnr;
 - (int64_t)lastRssi;
 - (os_state_data_s)_generateState;
-- (unint64_t)faultReasonCount:(unint64_t)a3;
+- (unint64_t)faultReasonCount:(unint64_t)count;
 - (unint64_t)totalRxFrames;
 - (unint64_t)totalTxFrames;
-- (void)applicationStateDidChange:(id)a3 withAttributes:(id)a4;
-- (void)chargingStateDidChange:(BOOL)a3;
-- (void)companionStateDidChange:(BOOL)a3;
+- (void)applicationStateDidChange:(id)change withAttributes:(id)attributes;
+- (void)chargingStateDidChange:(BOOL)change;
+- (void)companionStateDidChange:(BOOL)change;
 - (void)dealloc;
-- (void)displayStateDidChange:(BOOL)a3;
-- (void)faultEventDetected:(unint64_t)a3 event:(id)a4;
-- (void)joinStateDidChange:(id)a3 withReason:(unint64_t)a4 lastDisconnectReason:(int64_t)a5 lastJoinFailure:(int64_t)a6 andNetworkDetails:(id)a7;
-- (void)linkQualityDidChange:(id)a3;
-- (void)linkStateDidChange:(BOOL)a3 isInvoluntary:(BOOL)a4 linkChangeReason:(int64_t)a5 linkChangeSubreason:(int64_t)a6 withNetworkDetails:(id)a7;
-- (void)lockStateDidChange:(BOOL)a3;
-- (void)mediaStateDidChange:(BOOL)a3;
-- (void)motionStateDidChange:(id)a3;
-- (void)poorLinkSessionStats:(id)a3;
-- (void)powerBudgetDidChange:(int64_t)a3 andThermalIndex:(int64_t)a4;
-- (void)powerStateDidChange:(BOOL)a3;
-- (void)processIPv4Changes:(id)a3;
-- (void)processIPv6Changes:(id)a3;
-- (void)roamCandidatesStatsDidUpdate:(id *)a3;
-- (void)roamingARConfigurationDidChange:(id *)a3;
-- (void)roamingStateDidChange:(BOOL)a3 reason:(unint64_t)a4 andStatus:(unint64_t)a5 andLatency:(unint64_t)a6 andRoamData:(id)a7 andPingPongStats:(id)a8;
+- (void)displayStateDidChange:(BOOL)change;
+- (void)faultEventDetected:(unint64_t)detected event:(id)event;
+- (void)joinStateDidChange:(id)change withReason:(unint64_t)reason lastDisconnectReason:(int64_t)disconnectReason lastJoinFailure:(int64_t)failure andNetworkDetails:(id)details;
+- (void)linkQualityDidChange:(id)change;
+- (void)linkStateDidChange:(BOOL)change isInvoluntary:(BOOL)involuntary linkChangeReason:(int64_t)reason linkChangeSubreason:(int64_t)subreason withNetworkDetails:(id)details;
+- (void)lockStateDidChange:(BOOL)change;
+- (void)mediaStateDidChange:(BOOL)change;
+- (void)motionStateDidChange:(id)change;
+- (void)poorLinkSessionStats:(id)stats;
+- (void)powerBudgetDidChange:(int64_t)change andThermalIndex:(int64_t)index;
+- (void)powerStateDidChange:(BOOL)change;
+- (void)processIPv4Changes:(id)changes;
+- (void)processIPv6Changes:(id)changes;
+- (void)roamCandidatesStatsDidUpdate:(id *)update;
+- (void)roamingARConfigurationDidChange:(id *)change;
+- (void)roamingStateDidChange:(BOOL)change reason:(unint64_t)reason andStatus:(unint64_t)status andLatency:(unint64_t)latency andRoamData:(id)data andPingPongStats:(id)stats;
 - (void)sessionDidEnd;
 - (void)sessionDidStart;
-- (void)setAwdlSequence:(id)a3 infraScore:(unint64_t)a4 p2pScore:(double)a5;
-- (void)setBandUsageDuration:(id *)a3;
-- (void)setCompletionHandler:(id)a3 withContext:(id)a4 onQueue:(id)a5;
-- (void)setLastDisconnectReason:(int64_t)a3;
-- (void)setRealtimeCoexStarted:(BOOL)a3 type:(unint64_t)a4 reasons:(id)a5;
-- (void)setRoamNeighsLrgstCurrentToBestRssiByBandTransition:(id *)a3;
-- (void)setRoamNeighsLrgstCurrentToNextBestRssiByBandTransition:(id *)a3;
-- (void)setRoamNeighsSmllstCurrentToBestRssiByBandTransition:(id *)a3;
-- (void)setRoamNeighsSmllstCurrentToNextBestRssiByBandTransition:(id *)a3;
-- (void)setSSIDTransitionCandidates:(id)a3 SSIDTransitionPotentialCandidates:(id)a4 potentialCandidatesMinusCandidates:(id)a5 roamCandidates:(unint64_t)a6 uniqueChannels:(unint64_t)a7 uniqueBands:(unint64_t)a8;
-- (void)setStrongestRSSIByBand:(id *)a3;
-- (void)setStrongestRSSICountByBand:(id *)a3;
-- (void)summarizeAndReset6eModeStats:(id)a3;
+- (void)setAwdlSequence:(id)sequence infraScore:(unint64_t)score p2pScore:(double)p2pScore;
+- (void)setBandUsageDuration:(id *)duration;
+- (void)setCompletionHandler:(id)handler withContext:(id)context onQueue:(id)queue;
+- (void)setLastDisconnectReason:(int64_t)reason;
+- (void)setRealtimeCoexStarted:(BOOL)started type:(unint64_t)type reasons:(id)reasons;
+- (void)setRoamNeighsLrgstCurrentToBestRssiByBandTransition:(id *)transition;
+- (void)setRoamNeighsLrgstCurrentToNextBestRssiByBandTransition:(id *)transition;
+- (void)setRoamNeighsSmllstCurrentToBestRssiByBandTransition:(id *)transition;
+- (void)setRoamNeighsSmllstCurrentToNextBestRssiByBandTransition:(id *)transition;
+- (void)setSSIDTransitionCandidates:(id)candidates SSIDTransitionPotentialCandidates:(id)potentialCandidates potentialCandidatesMinusCandidates:(id)minusCandidates roamCandidates:(unint64_t)roamCandidates uniqueChannels:(unint64_t)channels uniqueBands:(unint64_t)bands;
+- (void)setStrongestRSSIByBand:(id *)band;
+- (void)setStrongestRSSICountByBand:(id *)band;
+- (void)summarizeAndReset6eModeStats:(id)stats;
 - (void)summarizeSession;
-- (void)systemWakeStateDidChange:(BOOL)a3 wokenByWiFi:(BOOL)a4;
-- (void)tallyAssociatedDuration:(id)a3;
-- (void)tallyInfraScoreDuration:(unint64_t)a3 until:(id)a4;
-- (void)tallyP2PScoreDuration:(double)a3 until:(id)a4;
+- (void)systemWakeStateDidChange:(BOOL)change wokenByWiFi:(BOOL)fi;
+- (void)tallyAssociatedDuration:(id)duration;
+- (void)tallyInfraScoreDuration:(unint64_t)duration until:(id)until;
+- (void)tallyP2PScoreDuration:(double)duration until:(id)until;
 - (void)trackEventLatencies;
-- (void)triggerDisconnectAlerted:(BOOL)a3 confirmed:(BOOL)a4 executed:(BOOL)a5;
-- (void)update6eModeStats:(id)a3;
-- (void)updateApProfile:(id)a3;
-- (void)updateAssociatedNetworkDetails:(id)a3;
-- (void)updateBandUsageFor:(int)a3 With:(id)a4;
-- (void)updateLinkRecoveryDisabled:(BOOL)a3;
-- (void)updateRssiDiffStats:(id *)a3 For:(id)a4;
-- (void)updateScanForwardStats:(id)a3;
-- (void)updateUsbInsertedDuration:(id)a3;
-- (void)updateUsbStatus:(BOOL)a3 currentDevices:(id)a4;
-- (void)updateWithCompatibilityMode:(unsigned __int8)a3;
-- (void)updateWithRoamingSuppression:(unsigned __int8)a3;
-- (void)updateWowState:(BOOL)a3 lpasState:(BOOL)a4 lowPowerState:(BOOL)a5 batterySaverState:(BOOL)a6;
+- (void)triggerDisconnectAlerted:(BOOL)alerted confirmed:(BOOL)confirmed executed:(BOOL)executed;
+- (void)update6eModeStats:(id)stats;
+- (void)updateApProfile:(id)profile;
+- (void)updateAssociatedNetworkDetails:(id)details;
+- (void)updateBandUsageFor:(int)for With:(id)with;
+- (void)updateLinkRecoveryDisabled:(BOOL)disabled;
+- (void)updateRssiDiffStats:(id *)stats For:(id)for;
+- (void)updateScanForwardStats:(id)stats;
+- (void)updateUsbInsertedDuration:(id)duration;
+- (void)updateUsbStatus:(BOOL)status currentDevices:(id)devices;
+- (void)updateWithCompatibilityMode:(unsigned __int8)mode;
+- (void)updateWithRoamingSuppression:(unsigned __int8)suppression;
+- (void)updateWowState:(BOOL)state lpasState:(BOOL)lpasState lowPowerState:(BOOL)powerState batterySaverState:(BOOL)saverState;
 @end
 
 @implementation WiFiUsageSession
@@ -92,11 +92,11 @@
     v14 = 136315394;
     v15 = "[WiFiUsageSession sessionDidStart]";
     v16 = 2112;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s on %@ -- Warning! active session is being RE-started", &v14, 0x16u);
   }
 
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   [(WiFiUsageSession *)self setDeferCompletion:0];
   [(WiFiUsageSession *)self setSessionDuration:0.0];
   [(WiFiUsageSession *)self setSystemAwakeDuration:0.0];
@@ -233,7 +233,7 @@
   }
 
   [(WiFiUsageSession *)self setIsSessionActive:1];
-  [(WiFiUsageSession *)self setLastPowerBudgetChangedTime:v3];
+  [(WiFiUsageSession *)self setLastPowerBudgetChangedTime:date];
   [(WiFiUsageSession *)self setPowerBudgetMaxDuration:0.0];
   [(WiFiUsageSession *)self setPowerBudget90Duration:0.0];
   [(WiFiUsageSession *)self setPowerBudget80Duration:0.0];
@@ -322,7 +322,7 @@
   *&self->_roamNeighsLrgstCurrentToNextBestRssiByBandTransition.valueByBands[0][0] = 0u;
   if (self->_sessionEndTime)
   {
-    [v3 timeIntervalSinceDate:?];
+    [date timeIntervalSinceDate:?];
     [(WiFiUsageSession *)self setSessionTimeSinceLastSession:?];
   }
 
@@ -332,12 +332,12 @@
     [(WiFiUsageSessionLQM *)lqm reset];
   }
 
-  [(WiFiUsageSession *)self setSessionStartTime:v3];
+  [(WiFiUsageSession *)self setSessionStartTime:date];
   [(WiFiUsageSession *)self setSessionEndTime:0];
   [(WiFiUsageSession *)self setDriverUnavailabilityCount:0];
   [(WiFiUsageSession *)self trackEventLatencies];
   [(WiFiUsageSession *)self setIsCompatibilityModeEnabledAtStart:self->_isCompatibilityModeEnabled];
-  [(WiFiUsageSession *)self setLastCompatibilityModeChangedTime:v3];
+  [(WiFiUsageSession *)self setLastCompatibilityModeChangedTime:date];
   [(WiFiUsageSession *)self setCompatibilityModeChangeCount:0];
   [(WiFiUsageSession *)self setInCompatibilityModeEnabledDuration:0.0];
   [(WiFiUsageSession *)self setNetworkDetailsAtEnd:0];
@@ -363,13 +363,13 @@
   [(WiFiUsageSession *)self setLastSSIDdisable6eModeAtStart:0];
   [(WiFiUsageSession *)self setLastSSIDdisabled6eModeChangeCount:0];
   [(WiFiUsageSession *)self setLastSSIDIn6eModeOffDuration:0.0];
-  v10 = [(WiFiUsageNetworkDetails *)self->_networkDetails disable6eMode];
-  [(WiFiUsageSession *)self setNetworkDisable6eModeAtStart:v10];
+  disable6eMode = [(WiFiUsageNetworkDetails *)self->_networkDetails disable6eMode];
+  [(WiFiUsageSession *)self setNetworkDisable6eModeAtStart:disable6eMode];
 
-  v11 = [(WiFiUsageNetworkDetails *)self->_networkDetails disable6eMode];
-  if (v11)
+  disable6eMode2 = [(WiFiUsageNetworkDetails *)self->_networkDetails disable6eMode];
+  if (disable6eMode2)
   {
-    v12 = v3;
+    v12 = date;
   }
 
   else
@@ -433,25 +433,25 @@
   [(WiFiUsageSession *)self setLastDriverUnavailableReason:0];
 }
 
-- (WiFiUsageSession)initWithSessionType:(unint64_t)a3 andInterfaceName:(id)a4 andCapabilities:(id)a5
+- (WiFiUsageSession)initWithSessionType:(unint64_t)type andInterfaceName:(id)name andCapabilities:(id)capabilities
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CBEAA8] date];
-  if (v8)
+  nameCopy = name;
+  capabilitiesCopy = capabilities;
+  date = [MEMORY[0x277CBEAA8] date];
+  if (nameCopy)
   {
     v22.receiver = self;
     v22.super_class = WiFiUsageSession;
     v11 = [(WiFiUsageSession *)&v22 init];
-    [v11 setSessionInitTime:v10];
+    [v11 setSessionInitTime:date];
     [v11 setSessionPid:getpid()];
-    [v11 setType:a3];
-    [v11 setInterfaceName:v8];
-    [v11 setCapabilities:v9];
+    [v11 setType:type];
+    [v11 setInterfaceName:nameCopy];
+    [v11 setCapabilities:capabilitiesCopy];
     [v11 setSessionTimeSinceLastSession:-1.0];
     [v11 setIsSessionActive:0];
-    [v11 setLastSystemWakeTime:v10];
+    [v11 setLastSystemWakeTime:date];
     [v11 setLastPowerBudget:-1];
     [v11 setLastThermalIndex:-1];
     [v11 setLastJoinReason:-1];
@@ -528,7 +528,7 @@
     [v11 setDriverAvailabilityLifespan:0.0];
     [v11 setIsDriverAvailable:1];
     [v11 setDriverUnavailabilityCount:0];
-    [v11 setLastDriverAvailableTime:v10];
+    [v11 setLastDriverAvailableTime:date];
     [v11 trackEventLatencies];
     v16 = objc_opt_new();
     [v11 setRoamNeighborsByBand:v16];
@@ -547,7 +547,7 @@
     [v11 setConsecutiveJoinFailureCount:0];
     v11[9067] = 0;
     self = v11;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
@@ -561,11 +561,11 @@
       _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s - Cannot create Session (invalid interfaceName: %@)", buf, 0x16u);
     }
 
-    v13 = 0;
+    selfCopy = 0;
   }
 
   v20 = *MEMORY[0x277D85DE8];
-  return v13;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -592,29 +592,29 @@
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(WiFiUsageSession *)self sessionName];
+    sessionName = [(WiFiUsageSession *)self sessionName];
     *buf = 136315394;
     v26 = "[WiFiUsageSession _generateState]";
     v27 = 2112;
-    v28 = v5;
+    v28 = sessionName;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: %@ BEGIN", buf, 0x16u);
   }
 
   if (self->_isSessionActive)
   {
     v6 = MEMORY[0x277CCACA8];
-    v7 = [(WiFiUsageSession *)self sessionName];
-    v8 = [v6 stringWithFormat:@"%s %@", "-[WiFiUsageSession _generateState]", v7];
+    sessionName2 = [(WiFiUsageSession *)self sessionName];
+    v8 = [v6 stringWithFormat:@"%s %@", "-[WiFiUsageSession _generateState]", sessionName2];
 
     v9 = [MEMORY[0x277CBEB98] setWithObjects:{@"Avg", @"Min", @"Max", @"Count", @"Duration", 0}];
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v11 = [(WiFiUsageSession *)self sessionSummary:0];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __34__WiFiUsageSession__generateState__block_invoke;
     v22[3] = &unk_2789C7E80;
     v23 = v9;
-    v12 = v10;
+    v12 = dictionary;
     v24 = v12;
     v13 = v9;
     [v11 enumerateKeysAndObjectsUsingBlock:v22];
@@ -736,14 +736,14 @@ LABEL_13:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCompletionHandler:(id)a3 withContext:(id)a4 onQueue:(id)a5
+- (void)setCompletionHandler:(id)handler withContext:(id)context onQueue:(id)queue
 {
-  v8 = a5;
-  v9 = a4;
-  [(WiFiUsageSession *)self setCompletionHandler:a3];
-  [(WiFiUsageSession *)self setCompletionContext:v9];
+  queueCopy = queue;
+  contextCopy = context;
+  [(WiFiUsageSession *)self setCompletionHandler:handler];
+  [(WiFiUsageSession *)self setCompletionContext:contextCopy];
 
-  [(WiFiUsageSession *)self setCompletionQueue:v8];
+  [(WiFiUsageSession *)self setCompletionQueue:queueCopy];
   objc_initWeak(&location, self);
   objc_copyWeak(&v11, &location);
   v10 = os_state_add_handler();
@@ -761,11 +761,11 @@ uint64_t __61__WiFiUsageSession_setCompletionHandler_withContext_onQueue___block
   return v2;
 }
 
-- (void)setLastDisconnectReason:(int64_t)a3
+- (void)setLastDisconnectReason:(int64_t)reason
 {
   v5 = [WiFiUsageSession disconnectReasonString:?];
   v6 = v5;
-  self->_lastDisconnectReason = a3;
+  self->_lastDisconnectReason = reason;
   if (v5)
   {
     v14 = v5;
@@ -776,10 +776,10 @@ uint64_t __61__WiFiUsageSession_setCompletionHandler_withContext_onQueue___block
     if (v8)
     {
       v10 = [(NSMutableDictionary *)disconnectReasonMap objectForKeyedSubscript:v7];
-      v11 = [v10 integerValue];
+      integerValue = [v10 integerValue];
 
       v12 = self->_disconnectReasonMap;
-      v13 = [MEMORY[0x277CCABB0] numberWithInteger:v11 + 1];
+      v13 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue + 1];
       [(NSMutableDictionary *)v12 setObject:v13 forKey:v7];
     }
 
@@ -794,21 +794,21 @@ uint64_t __61__WiFiUsageSession_setCompletionHandler_withContext_onQueue___block
   MEMORY[0x2821F96F8](v5, v6);
 }
 
-- (void)systemWakeStateDidChange:(BOOL)a3 wokenByWiFi:(BOOL)a4
+- (void)systemWakeStateDidChange:(BOOL)change wokenByWiFi:(BOOL)fi
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v11 = v7;
-  if (v5)
+  fiCopy = fi;
+  changeCopy = change;
+  date = [MEMORY[0x277CBEAA8] date];
+  v11 = date;
+  if (changeCopy)
   {
     ++self->_systemWakeStateChangedCount;
-    if (v4)
+    if (fiCopy)
     {
       ++self->_systemWokenByWiFiCount;
     }
 
-    [(WiFiUsageSession *)self setLastSystemWakeTime:v7];
+    [(WiFiUsageSession *)self setLastSystemWakeTime:date];
     lastSystemSleepTime = self->_lastSystemSleepTime;
     if (lastSystemSleepTime)
     {
@@ -828,10 +828,10 @@ uint64_t __61__WiFiUsageSession_setCompletionHandler_withContext_onQueue___block
 
   else
   {
-    lastSystemSleepTime = v7;
+    lastSystemSleepTime = date;
     if (self->_lastSystemWakeTime)
     {
-      [(NSDate *)v7 timeIntervalSinceDate:self->_lastSystemWakeTime];
+      [(NSDate *)date timeIntervalSinceDate:self->_lastSystemWakeTime];
       self->_systemAwakeDuration = v10 + self->_systemAwakeDuration;
       [(WiFiUsageSession *)self setLastSystemWakeTime:v11];
       lastSystemSleepTime = v11;
@@ -841,40 +841,40 @@ uint64_t __61__WiFiUsageSession_setCompletionHandler_withContext_onQueue___block
   [(WiFiUsageSession *)self setLastSystemSleepTime:lastSystemSleepTime];
 }
 
-- (void)lockStateDidChange:(BOOL)a3
+- (void)lockStateDidChange:(BOOL)change
 {
-  if (a3)
+  if (change)
   {
     ++self->_lockStateChangedCount;
   }
 
-  self->_isUnlocked = !a3;
+  self->_isUnlocked = !change;
 }
 
-- (void)displayStateDidChange:(BOOL)a3
+- (void)displayStateDidChange:(BOOL)change
 {
-  if (a3)
+  if (change)
   {
     ++self->_displayStateChangedCount;
   }
 
-  self->_isDisplayOn = a3;
+  self->_isDisplayOn = change;
 }
 
-- (void)motionStateDidChange:(id)a3
+- (void)motionStateDidChange:(id)change
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
-  v12 = [v4 date];
-  v6 = [v5 isEqualToString:@"Stationary"];
-  v7 = [v5 containsString:@"Driving"];
-  v8 = [v5 isEqualToString:@"Walking"];
+  changeCopy = change;
+  date = [v4 date];
+  v6 = [changeCopy isEqualToString:@"Stationary"];
+  v7 = [changeCopy containsString:@"Driving"];
+  v8 = [changeCopy isEqualToString:@"Walking"];
 
   if (v6)
   {
     if (self->_inMotionStartedTime)
     {
-      [v12 timeIntervalSinceDate:?];
+      [date timeIntervalSinceDate:?];
       self->_inMotionDuration = v9 + self->_inMotionDuration;
       [(WiFiUsageSession *)self setInMotionStartedTime:0];
     }
@@ -887,12 +887,12 @@ uint64_t __61__WiFiUsageSession_setCompletionHandler_withContext_onQueue___block
 
   else
   {
-    [(WiFiUsageSession *)self setInMotionStartedTime:v12];
+    [(WiFiUsageSession *)self setInMotionStartedTime:date];
     ++self->_inMotionEventCount;
     if (v7)
     {
 LABEL_5:
-      [(WiFiUsageSession *)self setInVehicleEntryTime:v12];
+      [(WiFiUsageSession *)self setInVehicleEntryTime:date];
       ++self->_inVehicleEventCount;
       goto LABEL_9;
     }
@@ -900,7 +900,7 @@ LABEL_5:
 
   if (self->_inVehicleEntryTime)
   {
-    [v12 timeIntervalSinceDate:?];
+    [date timeIntervalSinceDate:?];
     self->_inVehicleDuration = v10 + self->_inVehicleDuration;
     [(WiFiUsageSession *)self setInVehicleEntryTime:0];
   }
@@ -908,13 +908,13 @@ LABEL_5:
 LABEL_9:
   if (v8)
   {
-    [(WiFiUsageSession *)self setInWalkingEntryTime:v12];
+    [(WiFiUsageSession *)self setInWalkingEntryTime:date];
     ++self->_inWalkingEventCount;
   }
 
   else if (self->_inWalkingEntryTime)
   {
-    [v12 timeIntervalSinceDate:?];
+    [date timeIntervalSinceDate:?];
     self->_inWalkingDuration = v11 + self->_inWalkingDuration;
     [(WiFiUsageSession *)self setInWalkingEntryTime:0];
   }
@@ -922,163 +922,163 @@ LABEL_9:
   [(WiFiUsageBssSession *)self->_currentBssSession motionStateDidChange:v6 ^ 1u andVehicularState:v7];
 }
 
-- (void)mediaStateDidChange:(BOOL)a3
+- (void)mediaStateDidChange:(BOOL)change
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = v5;
-  if (v3)
+  changeCopy = change;
+  date = [MEMORY[0x277CBEAA8] date];
+  v6 = date;
+  if (changeCopy)
   {
-    v8 = v5;
-    v5 = [(WiFiUsageSession *)self setMediaStartedTime:v5];
+    v8 = date;
+    date = [(WiFiUsageSession *)self setMediaStartedTime:date];
     v6 = v8;
     ++self->_mediaPlaybackEventCount;
   }
 
   else if (self->_mediaStartedTime)
   {
-    v9 = v5;
-    [v5 timeIntervalSinceDate:?];
+    v9 = date;
+    [date timeIntervalSinceDate:?];
     self->_mediaPlaybackDuration = v7 + self->_mediaPlaybackDuration;
-    v5 = [(WiFiUsageSession *)self setMediaStartedTime:0];
+    date = [(WiFiUsageSession *)self setMediaStartedTime:0];
     v6 = v9;
   }
 
-  MEMORY[0x2821F96F8](v5, v6);
+  MEMORY[0x2821F96F8](date, v6);
 }
 
-- (void)chargingStateDidChange:(BOOL)a3
+- (void)chargingStateDidChange:(BOOL)change
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = v5;
-  if (v3)
+  changeCopy = change;
+  date = [MEMORY[0x277CBEAA8] date];
+  v6 = date;
+  if (changeCopy)
   {
-    v8 = v5;
-    v5 = [(WiFiUsageSession *)self setChargingStartedTime:v5];
+    v8 = date;
+    date = [(WiFiUsageSession *)self setChargingStartedTime:date];
     v6 = v8;
     ++self->_chargingEventCount;
   }
 
   else if (self->_chargingStartedTime)
   {
-    v9 = v5;
-    [v5 timeIntervalSinceDate:?];
+    v9 = date;
+    [date timeIntervalSinceDate:?];
     self->_chargingDuration = v7 + self->_chargingDuration;
-    v5 = [(WiFiUsageSession *)self setChargingStartedTime:0];
+    date = [(WiFiUsageSession *)self setChargingStartedTime:0];
     v6 = v9;
   }
 
-  MEMORY[0x2821F96F8](v5, v6);
+  MEMORY[0x2821F96F8](date, v6);
 }
 
-- (void)companionStateDidChange:(BOOL)a3
+- (void)companionStateDidChange:(BOOL)change
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = v5;
-  if (v3)
+  changeCopy = change;
+  date = [MEMORY[0x277CBEAA8] date];
+  v6 = date;
+  if (changeCopy)
   {
-    v8 = v5;
-    v5 = [(WiFiUsageSession *)self setCompanionConnectionTime:v5];
+    v8 = date;
+    date = [(WiFiUsageSession *)self setCompanionConnectionTime:date];
     v6 = v8;
     ++self->_companionConnectionStateChangedCount;
   }
 
   else if (self->_companionConnectionTime)
   {
-    v9 = v5;
-    [v5 timeIntervalSinceDate:?];
+    v9 = date;
+    [date timeIntervalSinceDate:?];
     self->_companionConnectedDuration = v7 + self->_companionConnectedDuration;
-    v5 = [(WiFiUsageSession *)self setCompanionConnectionTime:0];
+    date = [(WiFiUsageSession *)self setCompanionConnectionTime:0];
     v6 = v9;
   }
 
-  MEMORY[0x2821F96F8](v5, v6);
+  MEMORY[0x2821F96F8](date, v6);
 }
 
-- (void)updateWowState:(BOOL)a3 lpasState:(BOOL)a4 lowPowerState:(BOOL)a5 batterySaverState:(BOOL)a6
+- (void)updateWowState:(BOOL)state lpasState:(BOOL)lpasState lowPowerState:(BOOL)powerState batterySaverState:(BOOL)saverState
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v19 = [MEMORY[0x277CBEAA8] date];
+  saverStateCopy = saverState;
+  powerStateCopy = powerState;
+  lpasStateCopy = lpasState;
+  stateCopy = state;
+  date = [MEMORY[0x277CBEAA8] date];
   wowStateEntryTime = self->_wowStateEntryTime;
-  if (v9)
+  if (stateCopy)
   {
     if (!wowStateEntryTime)
     {
-      [(WiFiUsageSession *)self setWowStateEntryTime:v19];
+      [(WiFiUsageSession *)self setWowStateEntryTime:date];
       ++self->_wowStateChangedCount;
     }
   }
 
   else if (wowStateEntryTime)
   {
-    [v19 timeIntervalSinceDate:?];
+    [date timeIntervalSinceDate:?];
     self->_inWowStateDuration = v12 + self->_inWowStateDuration;
     [(WiFiUsageSession *)self setWowStateEntryTime:0];
   }
 
   lpasStateEntryTime = self->_lpasStateEntryTime;
-  if (v8)
+  if (lpasStateCopy)
   {
     if (!lpasStateEntryTime)
     {
-      [(WiFiUsageSession *)self setLpasStateEntryTime:v19];
+      [(WiFiUsageSession *)self setLpasStateEntryTime:date];
       ++self->_lpasStateChangedCount;
     }
   }
 
   else if (lpasStateEntryTime)
   {
-    [v19 timeIntervalSinceDate:?];
+    [date timeIntervalSinceDate:?];
     self->_inLpasStateDuration = v14 + self->_inLpasStateDuration;
     [(WiFiUsageSession *)self setLpasStateEntryTime:0];
   }
 
   lowPowerStateEntryTime = self->_lowPowerStateEntryTime;
-  if (v7)
+  if (powerStateCopy)
   {
     if (!lowPowerStateEntryTime)
     {
-      [(WiFiUsageSession *)self setLowPowerStateEntryTime:v19];
+      [(WiFiUsageSession *)self setLowPowerStateEntryTime:date];
       ++self->_lowPowerStateChangedCount;
     }
   }
 
   else if (lowPowerStateEntryTime)
   {
-    [v19 timeIntervalSinceDate:?];
+    [date timeIntervalSinceDate:?];
     self->_inLowPowerStateDuration = v16 + self->_inLowPowerStateDuration;
     [(WiFiUsageSession *)self setLowPowerStateEntryTime:0];
   }
 
   batterySaverStateEntryTime = self->_batterySaverStateEntryTime;
-  if (v6)
+  if (saverStateCopy)
   {
     if (!batterySaverStateEntryTime)
     {
-      [(WiFiUsageSession *)self setBatterySaverStateEntryTime:v19];
+      [(WiFiUsageSession *)self setBatterySaverStateEntryTime:date];
       ++self->_batterySaverStateChangedCount;
     }
   }
 
   else if (batterySaverStateEntryTime)
   {
-    [v19 timeIntervalSinceDate:?];
+    [date timeIntervalSinceDate:?];
     self->_inBatterySaverStateDuration = v18 + self->_inBatterySaverStateDuration;
     [(WiFiUsageSession *)self setBatterySaverStateEntryTime:0];
   }
 }
 
-- (void)applicationStateDidChange:(id)a3 withAttributes:(id)a4
+- (void)applicationStateDidChange:(id)change withAttributes:(id)attributes
 {
   v6 = &self->_disconnectReasonCount[928];
-  v16 = a3;
-  v7 = a4;
-  if (v16 && (v8 = [v16 isEqualToString:@"com.apple.springboard"], v9 = v16, (v8 & 1) == 0))
+  changeCopy = change;
+  attributesCopy = attributes;
+  if (changeCopy && (v8 = [changeCopy isEqualToString:@"com.apple.springboard"], v9 = changeCopy, (v8 & 1) == 0))
   {
     ++self->_applicationStateChangedCount;
     activeApplications = self->_activeApplications;
@@ -1088,7 +1088,7 @@ LABEL_9:
       v13 = self->_activeApplications;
       self->_activeApplications = v12;
 
-      v9 = v16;
+      v9 = changeCopy;
       activeApplications = self->_activeApplications;
     }
 
@@ -1105,17 +1105,17 @@ LABEL_9:
   *(v6 + 878) = v10;
   if (*(v6 + 875) == 1)
   {
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v15 = [MEMORY[0x277CCAB88] notificationWithName:@"applicationStateDidChange" object:0];
-    [v14 postNotification:v15];
+    [defaultCenter postNotification:v15];
   }
 }
 
-- (void)updateBandUsageFor:(int)a3 With:(id)a4
+- (void)updateBandUsageFor:(int)for With:(id)with
 {
-  lastBssChangedTime = a4;
+  lastBssChangedTime = with;
   v7 = lastBssChangedTime;
-  if (a3 <= 2)
+  if (for <= 2)
   {
     lastBssChangedTime = self->_lastBssChangedTime;
     if (lastBssChangedTime)
@@ -1131,15 +1131,15 @@ LABEL_9:
       v10 = *(&self->super.isa + v8);
       p_bandUsageDuration = &self->_bandUsageDuration;
       valid = self->_bandUsageDuration.valid;
-      if (!self->_bandUsageDuration.valid[a3])
+      if (!self->_bandUsageDuration.valid[for])
       {
-        p_bandUsageDuration->valueByBand[a3] = 0.0;
+        p_bandUsageDuration->valueByBand[for] = 0.0;
       }
 
       v13 = v10;
       [(NSDate *)v15 timeIntervalSinceDate:v13];
-      p_bandUsageDuration->valueByBand[a3] = v14 + p_bandUsageDuration->valueByBand[a3];
-      valid[a3] = 1;
+      p_bandUsageDuration->valueByBand[for] = v14 + p_bandUsageDuration->valueByBand[for];
+      valid[for] = 1;
 
       v7 = v15;
     }
@@ -1148,11 +1148,11 @@ LABEL_9:
   MEMORY[0x2821F96F8](lastBssChangedTime, v7);
 }
 
-- (void)joinStateDidChange:(id)a3 withReason:(unint64_t)a4 lastDisconnectReason:(int64_t)a5 lastJoinFailure:(int64_t)a6 andNetworkDetails:(id)a7
+- (void)joinStateDidChange:(id)change withReason:(unint64_t)reason lastDisconnectReason:(int64_t)disconnectReason lastJoinFailure:(int64_t)failure andNetworkDetails:(id)details
 {
-  v20 = a7;
-  v12 = [MEMORY[0x277CBEAA8] date];
-  if (a3)
+  detailsCopy = details;
+  date = [MEMORY[0x277CBEAA8] date];
+  if (change)
   {
     if ([(WiFiUsageSession *)self useSavedJoinStats])
     {
@@ -1186,18 +1186,18 @@ LABEL_9:
     }
 
     ++self->_joinStateChangedCount;
-    ++self->_joinReasonCount[a4];
+    ++self->_joinReasonCount[reason];
     [(WiFiUsageSession *)self setPrevJoinReason:self->_lastJoinReason];
-    [v12 timeIntervalSinceDate:self->_lastJoinTime];
+    [date timeIntervalSinceDate:self->_lastJoinTime];
     [(WiFiUsageSession *)self setTimeSincePrevJoin:?];
-    [(WiFiUsageSession *)self setLastJoinTime:v12];
+    [(WiFiUsageSession *)self setLastJoinTime:date];
     [(WiFiUsageSession *)self setInCoexRealTimeAtLastJoin:self->_inCoexRealTime];
-    [(WiFiUsageSession *)self setLastJoinReason:a4];
+    [(WiFiUsageSession *)self setLastJoinReason:reason];
     [(WiFiUsageSession *)self setPreviousDisconnectReason:self->_lastDisconnectReason];
     [(WiFiUsageSession *)self setLastJoinFailure:0];
     if (self->_joinStartedLatencyFromDriverAvailability == 0.0 && self->_lastDriverAvailableTime)
     {
-      [v12 timeIntervalSinceDate:?];
+      [date timeIntervalSinceDate:?];
       [(WiFiUsageSession *)self setJoinStartedLatencyFromDriverAvailability:?];
     }
   }
@@ -1205,15 +1205,15 @@ LABEL_9:
   else
   {
     [(WiFiUsageSession *)self setPreviousDisconnectReason:self->_lastDisconnectReason];
-    [(WiFiUsageSession *)self setLastDisconnectReason:a5];
-    [(WiFiUsageSession *)self setLastJoinFailure:a6];
+    [(WiFiUsageSession *)self setLastDisconnectReason:disconnectReason];
+    [(WiFiUsageSession *)self setLastJoinFailure:failure];
     if ([(WiFiUsageSession *)self useSavedJoinStats]&& self->_lastJoinReason != -1)
     {
       self->_savedPreviousDisconnectReason = self->_previousDisconnectReason;
       self->_savedLastJoinFailure = self->_lastJoinFailure;
     }
 
-    if (a6)
+    if (failure)
     {
       ++self->_consecutiveJoinFailureCount;
     }
@@ -1221,81 +1221,81 @@ LABEL_9:
 
   if (self->_rssiAtSessionStart == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v17 = [v20 connectedBss];
-    if ([v17 rssi] != 0x7FFFFFFFFFFFFFFFLL)
+    connectedBss = [detailsCopy connectedBss];
+    if ([connectedBss rssi] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v18 = [v20 connectedBss];
-      v19 = [v18 rssi];
+      connectedBss2 = [detailsCopy connectedBss];
+      rssi = [connectedBss2 rssi];
 
-      if (!v19)
+      if (!rssi)
       {
         goto LABEL_20;
       }
 
-      v17 = [v20 connectedBss];
-      self->_rssiAtSessionStart = [v17 rssi];
+      connectedBss = [detailsCopy connectedBss];
+      self->_rssiAtSessionStart = [connectedBss rssi];
     }
   }
 
 LABEL_20:
 }
 
-- (void)linkStateDidChange:(BOOL)a3 isInvoluntary:(BOOL)a4 linkChangeReason:(int64_t)a5 linkChangeSubreason:(int64_t)a6 withNetworkDetails:(id)a7
+- (void)linkStateDidChange:(BOOL)change isInvoluntary:(BOOL)involuntary linkChangeReason:(int64_t)reason linkChangeSubreason:(int64_t)subreason withNetworkDetails:(id)details
 {
-  v52 = a5;
-  v54 = a4;
-  v56 = a3;
+  reasonCopy = reason;
+  involuntaryCopy = involuntary;
+  changeCopy = change;
   v81 = *MEMORY[0x277D85DE8];
-  v8 = a7;
-  v9 = [MEMORY[0x277CBEAA8] date];
-  v10 = [(WiFiUsageBssSession *)self->_currentBssSession originBssDetails];
-  v11 = [v10 bssid];
+  detailsCopy = details;
+  date = [MEMORY[0x277CBEAA8] date];
+  originBssDetails = [(WiFiUsageBssSession *)self->_currentBssSession originBssDetails];
+  bssid = [originBssDetails bssid];
 
-  v12 = [v8 connectedBss];
-  v13 = [v12 bssid];
+  connectedBss = [detailsCopy connectedBss];
+  bssid2 = [connectedBss bssid];
 
-  v14 = [(WiFiUsageNetworkDetails *)self->_networkDetails connectedBss];
-  v55 = [v14 band];
+  connectedBss2 = [(WiFiUsageNetworkDetails *)self->_networkDetails connectedBss];
+  band = [connectedBss2 band];
 
-  v15 = [v8 connectedBss];
-  self->_currentBand = [v15 band];
+  connectedBss3 = [detailsCopy connectedBss];
+  self->_currentBand = [connectedBss3 band];
 
-  v16 = [(WiFiUsageNetworkDetails *)self->_networkDetails connectedBss];
-  v17 = [v16 channel];
+  connectedBss4 = [(WiFiUsageNetworkDetails *)self->_networkDetails connectedBss];
+  channel = [connectedBss4 channel];
 
-  v18 = [v8 connectedBss];
-  v19 = [v18 channel];
+  connectedBss5 = [detailsCopy connectedBss];
+  channel2 = [connectedBss5 channel];
 
-  v20 = [v8 connectedBss];
+  connectedBss6 = [detailsCopy connectedBss];
   v60 = 0;
-  v21 = [WiFiUsageAccessPointProfile profileForBSSID:v13 withError:&v60];
+  v21 = [WiFiUsageAccessPointProfile profileForBSSID:bssid2 withError:&v60];
   v22 = v60;
-  [v20 setApProfile:v21];
+  [connectedBss6 setApProfile:v21];
 
-  v23 = [v8 connectedBss];
+  connectedBss7 = [detailsCopy connectedBss];
   v57 = v22;
-  [v23 setApProfileError:v22];
+  [connectedBss7 setApProfileError:v22];
 
-  v58 = v13;
-  v59 = v11;
+  v58 = bssid2;
+  v59 = bssid;
   v24 = 1;
-  if ([v11 isEqual:v13] && v17 == v19)
+  if ([bssid isEqual:bssid2] && channel == channel2)
   {
-    v24 = v55 != self->_currentBand;
+    v24 = band != self->_currentBand;
   }
 
-  v25 = v9;
-  if (v56)
+  v25 = date;
+  if (changeCopy)
   {
     if (!self->_isAssociated)
     {
-      [v9 timeIntervalSinceDate:self->_sessionStartTime];
+      [date timeIntervalSinceDate:self->_sessionStartTime];
       [(WiFiUsageSession *)self setJoinLinkUpLatencyFromSessionStart:?];
     }
 
     self->_isAssociated = 1;
     networkDetails = self->_networkDetails;
-    if (networkDetails && (-[WiFiUsageNetworkDetails networkName](networkDetails, "networkName"), v27 = objc_claimAutoreleasedReturnValue(), [v8 networkName], v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v27, "isEqualToString:", v28), v28, v27, (v29 & 1) == 0))
+    if (networkDetails && (-[WiFiUsageNetworkDetails networkName](networkDetails, "networkName"), v27 = objc_claimAutoreleasedReturnValue(), [detailsCopy networkName], v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v27, "isEqualToString:", v28), v28, v27, (v29 & 1) == 0))
     {
       ++self->_networkChangedCount;
       if ([(NSMutableArray *)self->_prevNetworkNames count]&& [(NSMutableArray *)self->_prevNetworkNames count]>= 2)
@@ -1303,16 +1303,16 @@ LABEL_20:
         [(NSMutableArray *)self->_prevNetworkNames removeObjectAtIndex:0];
       }
 
-      v40 = [(WiFiUsageNetworkDetails *)self->_networkDetails networkName];
+      networkName = [(WiFiUsageNetworkDetails *)self->_networkDetails networkName];
 
-      if (!v40)
+      if (!networkName)
       {
         goto LABEL_36;
       }
 
       prevNetworkNames = self->_prevNetworkNames;
-      v34 = [(WiFiUsageNetworkDetails *)self->_networkDetails networkName];
-      [(NSMutableArray *)prevNetworkNames addObject:v34];
+      networkName2 = [(WiFiUsageNetworkDetails *)self->_networkDetails networkName];
+      [(NSMutableArray *)prevNetworkNames addObject:networkName2];
     }
 
     else
@@ -1324,19 +1324,19 @@ LABEL_20:
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
-        v30 = [(WiFiUsageSession *)self sessionName];
-        v31 = [WiFiUsagePrivacyFilter bandAsString:v55];
+        sessionName = [(WiFiUsageSession *)self sessionName];
+        v31 = [WiFiUsagePrivacyFilter bandAsString:band];
         v32 = [WiFiUsagePrivacyFilter bandAsString:self->_currentBand];
         *buf = 136317442;
         v62 = "[WiFiUsageSession linkStateDidChange:isInvoluntary:linkChangeReason:linkChangeSubreason:withNetworkDetails:]";
         v63 = 2112;
-        v64 = v30;
+        v64 = sessionName;
         v65 = 2160;
         v66 = 1752392040;
         v67 = 2112;
         v68 = v59;
         v69 = 1024;
-        v70 = v17;
+        v70 = channel;
         v71 = 2112;
         v72 = v31;
         v73 = 2160;
@@ -1344,7 +1344,7 @@ LABEL_20:
         v75 = 2112;
         v76 = v58;
         v77 = 1024;
-        v78 = v19;
+        v78 = channel2;
         v79 = 2112;
         v80 = v32;
         _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: %@: roamed from BSSID %{mask.hash}@ on channel %d(%@Ghz) to BSSID %{mask.hash}@ on channel %d(%@Ghz)", buf, 0x5Eu);
@@ -1352,24 +1352,24 @@ LABEL_20:
 
       if ([(WiFiUsageSession *)self isSessionActive]&& self->_lastBssChangedTime)
       {
-        [(WiFiUsageSession *)self updateBandUsageFor:v55 With:v25];
+        [(WiFiUsageSession *)self updateBandUsageFor:band With:v25];
       }
 
       [(WiFiUsageSession *)self setLastBssChangedTime:v25];
       currentBssSession = self->_currentBssSession;
-      v34 = [v8 bssEnvironment];
-      v35 = [v8 connectedBss];
-      [(WiFiUsageBssSession *)currentBssSession bssDidChange:v34 withDetails:v35];
+      networkName2 = [detailsCopy bssEnvironment];
+      connectedBss8 = [detailsCopy connectedBss];
+      [(WiFiUsageBssSession *)currentBssSession bssDidChange:networkName2 withDetails:connectedBss8];
     }
 
 LABEL_36:
-    if (v8 && !self->_currentBssSession && self->_type == 4)
+    if (detailsCopy && !self->_currentBssSession && self->_type == 4)
     {
       v42 = [WiFiUsageBssSession alloc];
       interfaceName = self->_interfaceName;
-      v44 = [v8 bssEnvironment];
-      v45 = [v8 connectedBss];
-      v46 = [(WiFiUsageBssSession *)v42 initWithInterfaceName:interfaceName bssEnvironment:v44 andBssDetails:v45 andNetworkDetails:v8];
+      bssEnvironment = [detailsCopy bssEnvironment];
+      connectedBss9 = [detailsCopy connectedBss];
+      v46 = [(WiFiUsageBssSession *)v42 initWithInterfaceName:interfaceName bssEnvironment:bssEnvironment andBssDetails:connectedBss9 andNetworkDetails:detailsCopy];
       [(WiFiUsageSession *)self setCurrentBssSession:v46];
     }
 
@@ -1392,7 +1392,7 @@ LABEL_36:
       }
     }
 
-    [(WiFiUsageSession *)self setLastUnexpectedLinkDownTime:0, v52];
+    [(WiFiUsageSession *)self setLastUnexpectedLinkDownTime:0, reasonCopy];
     if (!self->_lastLinkStateChangedTime)
     {
       [(WiFiUsageSession *)self setLastLinkStateChangedTime:v25];
@@ -1409,8 +1409,8 @@ LABEL_36:
       [(WiFiUsageSession *)self setJoinLinkUpLatencyFromDriverAvailability:?];
     }
 
-    v49 = [v8 connectedBss];
-    v50 = +[WiFiUsageLQMTransformations maxPhyModeFrom:](WiFiUsageLQMTransformations, "maxPhyModeFrom:", [v49 phyMode]);
+    connectedBss10 = [detailsCopy connectedBss];
+    v50 = +[WiFiUsageLQMTransformations maxPhyModeFrom:](WiFiUsageLQMTransformations, "maxPhyModeFrom:", [connectedBss10 phyMode]);
 
     if (v50 > self->_maxPhyMode)
     {
@@ -1421,11 +1421,11 @@ LABEL_36:
   }
 
   self->_isAssociated = 0;
-  [(WiFiUsageSession *)self setLastDisconnectReason:v52];
-  [(WiFiUsageSession *)self setLastDisconnectSubreason:a6];
-  if (v54)
+  [(WiFiUsageSession *)self setLastDisconnectReason:reasonCopy];
+  [(WiFiUsageSession *)self setLastDisconnectSubreason:subreason];
+  if (involuntaryCopy)
   {
-    v36 = v9;
+    v36 = date;
   }
 
   else
@@ -1433,15 +1433,15 @@ LABEL_36:
     v36 = 0;
   }
 
-  [(WiFiUsageSession *)self setLastUnexpectedLinkDownTime:v36, v52];
-  [(WiFiUsageSession *)self tallyAssociatedDuration:v9];
+  [(WiFiUsageSession *)self setLastUnexpectedLinkDownTime:v36, reasonCopy];
+  [(WiFiUsageSession *)self tallyAssociatedDuration:date];
   if (self->_lastBssChangedTime)
   {
     v37 = self->_networkDetails;
     if (v37)
     {
-      v38 = [(WiFiUsageNetworkDetails *)v37 connectedBss];
-      -[WiFiUsageSession updateBandUsageFor:With:](self, "updateBandUsageFor:With:", [v38 band], v9);
+      connectedBss11 = [(WiFiUsageNetworkDetails *)v37 connectedBss];
+      -[WiFiUsageSession updateBandUsageFor:With:](self, "updateBandUsageFor:With:", [connectedBss11 band], date);
     }
 
     [(WiFiUsageSession *)self setLastBssChangedTime:0];
@@ -1455,73 +1455,73 @@ LABEL_36:
 
   if (self->_lastAWDLSequenceUpdate)
   {
-    [(WiFiUsageSession *)self tallyInfraScoreDuration:0 until:v9];
-    [(WiFiUsageSession *)self tallyP2PScoreDuration:v9 until:self->_inAWDL_lastP2PScore];
-    objc_storeStrong(&self->_lastAWDLSequenceUpdate, v9);
+    [(WiFiUsageSession *)self tallyInfraScoreDuration:0 until:date];
+    [(WiFiUsageSession *)self tallyP2PScoreDuration:date until:self->_inAWDL_lastP2PScore];
+    objc_storeStrong(&self->_lastAWDLSequenceUpdate, date);
   }
 
 LABEL_55:
-  -[WiFiUsageSession setIsInstantHotspot:](self, "setIsInstantHotspot:", [v8 isInstantHotspot]);
-  -[WiFiUsageSession setIsAutoHotspot:](self, "setIsAutoHotspot:", [v8 isAutoHotspot]);
-  [(WiFiUsageSession *)self updateAssociatedNetworkDetails:v8];
+  -[WiFiUsageSession setIsInstantHotspot:](self, "setIsInstantHotspot:", [detailsCopy isInstantHotspot]);
+  -[WiFiUsageSession setIsAutoHotspot:](self, "setIsAutoHotspot:", [detailsCopy isAutoHotspot]);
+  [(WiFiUsageSession *)self updateAssociatedNetworkDetails:detailsCopy];
 
   v51 = *MEMORY[0x277D85DE8];
 }
 
-- (void)linkQualityDidChange:(id)a3
+- (void)linkQualityDidChange:(id)change
 {
-  v8 = a3;
+  changeCopy = change;
   if ([(WiFiUsageSession *)self isSessionActive])
   {
     lqm = self->_lqm;
     if (lqm)
     {
-      [(WiFiUsageSessionLQM *)lqm updateLinkQuality:v8 forSession:self->_type];
+      [(WiFiUsageSessionLQM *)lqm updateLinkQuality:changeCopy forSession:self->_type];
     }
 
     else
     {
-      v5 = [[WiFiUsageSessionLQM alloc] initWithLQMSample:v8 forInterface:self->_interfaceName];
+      v5 = [[WiFiUsageSessionLQM alloc] initWithLQMSample:changeCopy forInterface:self->_interfaceName];
       v6 = self->_lqm;
       self->_lqm = v5;
     }
 
     if (self->_rssiAtSessionStart == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v7 = 1;
+      rssi = 1;
     }
 
     else
     {
-      v7 = [v8 rssi];
+      rssi = [changeCopy rssi];
     }
 
-    self->_rssiAtSessionStart = v7;
-    [(WiFiUsageBssSession *)self->_currentBssSession linkQualityDidChange:v8];
+    self->_rssiAtSessionStart = rssi;
+    [(WiFiUsageBssSession *)self->_currentBssSession linkQualityDidChange:changeCopy];
   }
 }
 
-- (void)updateApProfile:(id)a3
+- (void)updateApProfile:(id)profile
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  profileCopy = profile;
+  v5 = profileCopy;
   if (self->_networkDetails)
   {
-    v6 = [v4 bssid];
-    v7 = [(WiFiUsageNetworkDetails *)self->_networkDetails connectedBss];
-    v8 = [v7 bssid];
-    v9 = [WiFiUsagePrivacyFilter reformatMACAddress:v8];
-    v10 = [v6 isEqualToString:v9];
+    bssid = [profileCopy bssid];
+    connectedBss = [(WiFiUsageNetworkDetails *)self->_networkDetails connectedBss];
+    bssid2 = [connectedBss bssid];
+    v9 = [WiFiUsagePrivacyFilter reformatMACAddress:bssid2];
+    v10 = [bssid isEqualToString:v9];
 
     if (v10)
     {
-      v11 = [(WiFiUsageNetworkDetails *)self->_networkDetails connectedBss];
-      v12 = [v5 apProfile];
-      [v11 setApProfile:v12];
+      connectedBss2 = [(WiFiUsageNetworkDetails *)self->_networkDetails connectedBss];
+      apProfile = [v5 apProfile];
+      [connectedBss2 setApProfile:apProfile];
 
-      v13 = [(WiFiUsageNetworkDetails *)self->_networkDetails connectedBss];
-      [v13 setHasColocatedMLOs:{objc_msgSend(v5, "hasColocatedMLOs")}];
+      connectedBss3 = [(WiFiUsageNetworkDetails *)self->_networkDetails connectedBss];
+      [connectedBss3 setHasColocatedMLOs:{objc_msgSend(v5, "hasColocatedMLOs")}];
 LABEL_6:
 
       goto LABEL_7;
@@ -1529,11 +1529,11 @@ LABEL_6:
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(WiFiUsageSession *)self sessionName];
+      connectedBss3 = [(WiFiUsageSession *)self sessionName];
       v15 = 136315394;
       v16 = "[WiFiUsageSession updateApProfile:]";
       v17 = 2112;
-      v18 = v13;
+      v18 = connectedBss3;
       _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s - mismatched BSSID between beaconData and connectedBss - not updating session %@", &v15, 0x16u);
       goto LABEL_6;
     }
@@ -1544,11 +1544,11 @@ LABEL_7:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)powerBudgetDidChange:(int64_t)a3 andThermalIndex:(int64_t)a4
+- (void)powerBudgetDidChange:(int64_t)change andThermalIndex:(int64_t)index
 {
-  v7 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   lastPowerBudget = self->_lastPowerBudget;
-  v14 = v7;
+  v14 = date;
   if (lastPowerBudget <= 99)
   {
     if (lastPowerBudget <= 89)
@@ -1636,8 +1636,8 @@ LABEL_7:
     v9 = 10104;
   }
 
-  [v7 timeIntervalSinceDate:self->_lastPowerBudgetChangedTime];
-  v7 = v14;
+  [date timeIntervalSinceDate:self->_lastPowerBudgetChangedTime];
+  date = v14;
   *(&self->super.isa + v9) = v10 + *(&self->super.isa + v9);
 LABEL_24:
   lastThermalIndex = self->_lastThermalIndex;
@@ -1667,7 +1667,7 @@ LABEL_24:
                       }
 
                       v12 = 10272;
-                      v7 = v14;
+                      date = v14;
                     }
 
                     else
@@ -1729,25 +1729,25 @@ LABEL_24:
     v12 = 10192;
   }
 
-  [v7 timeIntervalSinceDate:self->_lastPowerBudgetChangedTime];
+  [date timeIntervalSinceDate:self->_lastPowerBudgetChangedTime];
   *(&self->super.isa + v12) = v13 + *(&self->super.isa + v12);
 LABEL_47:
-  [(WiFiUsageSession *)self setLastPowerBudget:a3];
-  [(WiFiUsageSession *)self setLastThermalIndex:a4];
+  [(WiFiUsageSession *)self setLastPowerBudget:change];
+  [(WiFiUsageSession *)self setLastThermalIndex:index];
   [(WiFiUsageSession *)self setLastPowerBudgetChangedTime:v14];
 }
 
-- (void)roamingStateDidChange:(BOOL)a3 reason:(unint64_t)a4 andStatus:(unint64_t)a5 andLatency:(unint64_t)a6 andRoamData:(id)a7 andPingPongStats:(id)a8
+- (void)roamingStateDidChange:(BOOL)change reason:(unint64_t)reason andStatus:(unint64_t)status andLatency:(unint64_t)latency andRoamData:(id)data andPingPongStats:(id)stats
 {
-  v11 = a3;
+  changeCopy = change;
   v34 = *MEMORY[0x277D85DE8];
-  v13 = a7;
-  v14 = a8;
-  v15 = [MEMORY[0x277CBEAA8] date];
-  v16 = v15;
-  if (v11)
+  dataCopy = data;
+  statsCopy = stats;
+  date = [MEMORY[0x277CBEAA8] date];
+  v16 = date;
+  if (changeCopy)
   {
-    [(WiFiUsageSession *)self setRoamingActiveTime:v15];
+    [(WiFiUsageSession *)self setRoamingActiveTime:date];
     ++self->_inRoamEventCount;
     if (self->_lastRoamSuppressionToggled)
     {
@@ -1767,7 +1767,7 @@ LABEL_47:
       }
     }
 
-    switch(a4)
+    switch(reason)
     {
       case 0xE0820C00uLL:
         ++self->_roamReasonInitialAssociationCount;
@@ -1819,7 +1819,7 @@ LABEL_47:
     goto LABEL_25;
   }
 
-  [v15 timeIntervalSinceDate:?];
+  [date timeIntervalSinceDate:?];
   self->_inRoamDuration = v19 + self->_inRoamDuration;
   [(WiFiUsageSession *)self setRoamingActiveTime:0];
   if (self->_lastRoamSuppressionToggled)
@@ -1844,40 +1844,40 @@ LABEL_47:
     }
   }
 
-  if (a5 - 3766617153u > 0xA)
+  if (status - 3766617153u > 0xA)
   {
     goto LABEL_19;
   }
 
-  if (((1 << (a5 - 65)) & 0x1CF) != 0)
+  if (((1 << (status - 65)) & 0x1CF) != 0)
   {
 LABEL_21:
-    v23 = 1;
+    pingPongSequenceIsReassocOnly = 1;
     v24 = 9968;
     goto LABEL_22;
   }
 
-  if (a5 != 3766617163)
+  if (status != 3766617163)
   {
 LABEL_19:
-    if (a5 - 3766617091u <= 0xC)
+    if (status - 3766617091u <= 0xC)
     {
-      if (((1 << (a5 - 3)) & 0x1702) != 0)
+      if (((1 << (status - 3)) & 0x1702) != 0)
       {
         goto LABEL_21;
       }
 
-      if (a5 == 3766617091)
+      if (status == 3766617091)
       {
-        v23 = 1;
+        pingPongSequenceIsReassocOnly = 1;
         v24 = 9952;
         goto LABEL_22;
       }
     }
 
-    if (a5)
+    if (status)
     {
-      v23 = 1;
+      pingPongSequenceIsReassocOnly = 1;
       v24 = 9944;
     }
 
@@ -1886,27 +1886,27 @@ LABEL_19:
       ++self->_roamStatusSucceededCount;
       if (!self->_inMotionStartedTime)
       {
-        if ([v14 pingPongNth] >= 3)
+        if ([statsCopy pingPongNth] >= 3)
         {
           ++self->_roamPingPongAboveThresholdCount;
-          self->_roamPingPongAboveThresholdCountLowRssiOnly += [v14 pingPongSequenceIsLowRssiOnly];
+          self->_roamPingPongAboveThresholdCountLowRssiOnly += [statsCopy pingPongSequenceIsLowRssiOnly];
         }
 
-        self->_roamPingPongLowRssiAndReassocOnly += [v14 pingPongSequenceIsReassocOrLowRSSIOnly];
+        self->_roamPingPongLowRssiAndReassocOnly += [statsCopy pingPongSequenceIsReassocOrLowRSSIOnly];
       }
 
-      v23 = [v14 pingPongSequenceIsReassocOnly];
+      pingPongSequenceIsReassocOnly = [statsCopy pingPongSequenceIsReassocOnly];
       v24 = 10008;
     }
 
     goto LABEL_22;
   }
 
-  v23 = 1;
+  pingPongSequenceIsReassocOnly = 1;
   v24 = 9960;
 LABEL_22:
-  *(&self->super.isa + v24) = (*(&self->super.isa + v24) + v23);
-  v25 = [v13 objectForKey:@"ROAMEDEVENT_FLAGS"];
+  *(&self->super.isa + v24) = (*(&self->super.isa + v24) + pingPongSequenceIsReassocOnly);
+  v25 = [dataCopy objectForKey:@"ROAMEDEVENT_FLAGS"];
   v26 = v25;
   if (v25)
   {
@@ -1917,28 +1917,28 @@ LABEL_25:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)roamingARConfigurationDidChange:(id *)a3
+- (void)roamingARConfigurationDidChange:(id *)change
 {
   currentBssSession = self->_currentBssSession;
-  v4 = *&a3->var5;
-  v5[0] = *&a3->var0;
+  v4 = *&change->var5;
+  v5[0] = *&change->var0;
   v5[1] = v4;
   [(WiFiUsageBssSession *)currentBssSession roamingARConfigurationDidChange:v5];
 }
 
-- (void)updateRssiDiffStats:(id *)a3 For:(id)a4
+- (void)updateRssiDiffStats:(id *)stats For:(id)for
 {
-  v6 = a4;
-  var3 = a3->var3;
-  var0 = a3->var0;
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"roamNeighsSmllst%@RssiByBandTransition", v6];
+  forCopy = for;
+  var3 = stats->var3;
+  var0 = stats->var0;
+  forCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"roamNeighsSmllst%@RssiByBandTransition", forCopy];
   v41 = 0;
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
   v36 = 0u;
-  v10 = [(WiFiUsageSession *)self valueForKey:v9];
+  v10 = [(WiFiUsageSession *)self valueForKey:forCopy];
   v11 = v10;
   if (v10)
   {
@@ -1957,8 +1957,8 @@ LABEL_25:
 
   v12 = var3 - var0;
 
-  var1 = a3->var1;
-  var5 = a3->var5;
+  var1 = stats->var1;
+  var5 = stats->var5;
   v15 = &v36 + 3 * var1 + var5;
   v17 = v15[72];
   v16 = v15 + 72;
@@ -1973,10 +1973,10 @@ LABEL_25:
     v30 = v36;
     v31 = v37;
     v18 = [MEMORY[0x277CCAE60] valuewithIntegerByBandTransition:&v30];
-    [(WiFiUsageSession *)self setValue:v18 forKey:v9];
+    [(WiFiUsageSession *)self setValue:v18 forKey:forCopy];
   }
 
-  v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"roamNeighsLrgst%@RssiByBandTransition", v6];
+  forCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"roamNeighsLrgst%@RssiByBandTransition", forCopy];
 
   v35 = 0;
   v33 = 0u;
@@ -1984,7 +1984,7 @@ LABEL_25:
   v31 = 0u;
   v32 = 0u;
   v30 = 0u;
-  v20 = [(WiFiUsageSession *)self valueForKey:v19];
+  v20 = [(WiFiUsageSession *)self valueForKey:forCopy2];
   v21 = v20;
   if (v20)
   {
@@ -2001,8 +2001,8 @@ LABEL_25:
     v30 = 0u;
   }
 
-  v22 = a3->var1;
-  v23 = a3->var5;
+  v22 = stats->var1;
+  v23 = stats->var5;
   v24 = &v30 + 3 * v22 + v23;
   v26 = v24[72];
   v25 = v24 + 72;
@@ -2017,19 +2017,19 @@ LABEL_25:
     v28[0] = v30;
     v28[1] = v31;
     v27 = [MEMORY[0x277CCAE60] valuewithIntegerByBandTransition:v28];
-    [(WiFiUsageSession *)self setValue:v27 forKey:v19];
+    [(WiFiUsageSession *)self setValue:v27 forKey:forCopy2];
   }
 }
 
-- (void)roamCandidatesStatsDidUpdate:(id *)a3
+- (void)roamCandidatesStatsDidUpdate:(id *)update
 {
   v63 = *MEMORY[0x277D85DE8];
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v5 = [a3->var7 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v57 objects:v62 count:16];
+  allKeys = [update->var7 allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v57 objects:v62 count:16];
   if (v6)
   {
     v7 = *v58;
@@ -2039,7 +2039,7 @@ LABEL_25:
       {
         if (*v58 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v57 + 1) + 8 * i);
@@ -2050,21 +2050,21 @@ LABEL_25:
           [(NSMutableDictionary *)self->_roamNeighborsByBand setObject:v10 forKeyedSubscript:v9];
         }
 
-        v11 = [a3->var7 objectForKeyedSubscript:v9];
-        v12 = [v11 allObjects];
-        [v10 addObjectsFromArray:v12];
+        v11 = [update->var7 objectForKeyedSubscript:v9];
+        allObjects = [v11 allObjects];
+        [v10 addObjectsFromArray:allObjects];
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v57 objects:v62 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v57 objects:v62 count:16];
     }
 
     while (v6);
   }
 
   minCandidatesCount = self->_minCandidatesCount;
-  if (minCandidatesCount >= a3->var6)
+  if (minCandidatesCount >= update->var6)
   {
-    var6 = a3->var6;
+    var6 = update->var6;
   }
 
   else
@@ -2079,14 +2079,14 @@ LABEL_25:
 
   else
   {
-    v15 = a3->var6;
+    v15 = update->var6;
   }
 
   self->_minCandidatesCount = v15;
   maxCandidatesCount = self->_maxCandidatesCount;
-  if (maxCandidatesCount <= a3->var6)
+  if (maxCandidatesCount <= update->var6)
   {
-    v17 = a3->var6;
+    v17 = update->var6;
   }
 
   else
@@ -2101,26 +2101,26 @@ LABEL_25:
 
   else
   {
-    v18 = a3->var6;
+    v18 = update->var6;
   }
 
   self->_maxCandidatesCount = v18;
-  if (a3->var2 == a3->var0)
+  if (update->var2 == update->var0)
   {
     ++self->_currentRSSIStrongestCount;
   }
 
-  var4 = a3->var4;
+  var4 = update->var4;
   v20 = &self->super.isa + var4;
   v20[1448] = (v20[1448] + 1);
   v21 = self + var4;
   v21[11608] = 1;
-  v20[1452] = a3->var2;
+  v20[1452] = update->var2;
   v21[11640] = 1;
-  var0 = a3->var0;
-  if (a3->var0 >= -94)
+  var0 = update->var0;
+  if (update->var0 >= -94)
   {
-    var3 = a3->var3;
+    var3 = update->var3;
     if (var3 >= -94)
     {
       if (var3 <= var0)
@@ -2143,13 +2143,13 @@ LABEL_25:
         v25 = @"CurrentToBest";
       }
 
-      v26 = *&a3->var2;
-      *v24 = *&a3->var0;
+      v26 = *&update->var2;
+      *v24 = *&update->var0;
       *(v24 + 1) = v26;
-      *(v24 + 2) = *&a3->var4;
-      *(v24 + 6) = a3->var7;
-      *(v24 + 7) = a3->var8;
-      v24[64] = a3->var9;
+      *(v24 + 2) = *&update->var4;
+      *(v24 + 6) = update->var7;
+      *(v24 + 7) = update->var8;
+      v24[64] = update->var9;
       [(WiFiUsageSession *)self updateRssiDiffStats:v24 For:v25];
     }
   }
@@ -2160,8 +2160,8 @@ LABEL_25:
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v27 = [a3->var7 allKeys];
-  v28 = [v27 countByEnumeratingWithState:&v49 objects:v61 count:16];
+  allKeys2 = [update->var7 allKeys];
+  v28 = [allKeys2 countByEnumeratingWithState:&v49 objects:v61 count:16];
   if (v28)
   {
     v29 = *v50;
@@ -2171,21 +2171,21 @@ LABEL_25:
       {
         if (*v50 != v29)
         {
-          objc_enumerationMutation(v27);
+          objc_enumerationMutation(allKeys2);
         }
 
         v31 = *(*(&v49 + 1) + 8 * j);
-        v32 = [v31 unsignedIntegerValue];
-        if (v32 <= 3)
+        unsignedIntegerValue = [v31 unsignedIntegerValue];
+        if (unsignedIntegerValue <= 3)
         {
-          v33 = [a3->var7 objectForKeyedSubscript:v31];
-          *(&v53 + v32) = [v33 count];
+          v33 = [update->var7 objectForKeyedSubscript:v31];
+          *(&v53 + unsignedIntegerValue) = [v33 count];
 
-          *(&v54 + v32 + 8) = 1;
+          *(&v54 + unsignedIntegerValue + 8) = 1;
         }
       }
 
-      v28 = [v27 countByEnumeratingWithState:&v49 objects:v61 count:16];
+      v28 = [allKeys2 countByEnumeratingWithState:&v49 objects:v61 count:16];
     }
 
     while (v28);
@@ -2195,7 +2195,7 @@ LABEL_25:
   v48[1] = v54;
   v34 = [IntegerByBandObj integerByBandWith:v48 withCap:1];
   v35 = 10096;
-  if (a3->var9)
+  if (update->var9)
   {
     v35 = 10088;
   }
@@ -2210,15 +2210,15 @@ LABEL_25:
 
   [v37 increment];
   currentBssSession = self->_currentBssSession;
-  v39 = *&a3->var2;
-  v44[0] = *&a3->var0;
+  v39 = *&update->var2;
+  v44[0] = *&update->var0;
   v44[1] = v39;
-  v44[2] = *&a3->var4;
-  v40 = a3->var7;
+  v44[2] = *&update->var4;
+  v40 = update->var7;
   v45 = v40;
-  v41 = a3->var8;
+  v41 = update->var8;
   v46 = v41;
-  var9 = a3->var9;
+  var9 = update->var9;
   if (currentBssSession)
   {
     [(WiFiUsageBssSession *)currentBssSession roamCandidatesStatsDidUpdate:v44];
@@ -2232,17 +2232,17 @@ LABEL_25:
   v43 = *MEMORY[0x277D85DE8];
 }
 
-- (void)powerStateDidChange:(BOOL)a3
+- (void)powerStateDidChange:(BOOL)change
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277CBEAA8] date];
-  self->_poweredOn = v3;
+  changeCopy = change;
+  date = [MEMORY[0x277CBEAA8] date];
+  self->_poweredOn = changeCopy;
   ++self->_powerStateChangedCount;
   lastPowerStateChangedTime = self->_lastPowerStateChangedTime;
-  v10 = v5;
-  if (v3)
+  v10 = date;
+  if (changeCopy)
   {
-    [v5 timeIntervalSinceDate:lastPowerStateChangedTime];
+    [date timeIntervalSinceDate:lastPowerStateChangedTime];
     v7 = v10;
     if (v8 < 5.0)
     {
@@ -2252,10 +2252,10 @@ LABEL_25:
 
   else
   {
-    v7 = v5;
+    v7 = date;
     if (lastPowerStateChangedTime)
     {
-      [v5 timeIntervalSinceDate:?];
+      [date timeIntervalSinceDate:?];
       v7 = v10;
       self->_poweredOnDuration = v9 + self->_poweredOnDuration;
     }
@@ -2264,30 +2264,30 @@ LABEL_25:
   [(WiFiUsageSession *)self setLastPowerStateChangedTime:v7];
 }
 
-- (void)faultEventDetected:(unint64_t)a3 event:(id)a4
+- (void)faultEventDetected:(unint64_t)detected event:(id)event
 {
-  v6 = [MEMORY[0x277CBEAA8] date];
-  if (a3 - 1 <= 0x24)
+  date = [MEMORY[0x277CBEAA8] date];
+  if (detected - 1 <= 0x24)
   {
-    ++self->_faultReasonCount[a3];
+    ++self->_faultReasonCount[detected];
   }
 
-  if (a3 == 7)
+  if (detected == 7)
   {
 LABEL_6:
-    [(WiFiUsageSession *)self setLastChipResetTime:v6];
+    [(WiFiUsageSession *)self setLastChipResetTime:date];
     if (self->_driverAvailabilityLifespan == 0.0)
     {
-      [v6 timeIntervalSinceDate:self->_lastDriverAvailableTime];
+      [date timeIntervalSinceDate:self->_lastDriverAvailableTime];
       [(WiFiUsageSession *)self setDriverAvailabilityLifespan:?];
     }
 
     goto LABEL_10;
   }
 
-  if (a3 != 24)
+  if (detected != 24)
   {
-    if (a3 != 21)
+    if (detected != 21)
     {
       goto LABEL_10;
     }
@@ -2295,29 +2295,29 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  [(WiFiUsageSession *)self setLastDriverTerminationTime:v6];
+  [(WiFiUsageSession *)self setLastDriverTerminationTime:date];
   if (self->_driverProcessLifespan == 0.0)
   {
-    [v6 timeIntervalSinceDate:self->_lastDriverAvailableTime];
+    [date timeIntervalSinceDate:self->_lastDriverAvailableTime];
     [(WiFiUsageSession *)self setDriverProcessLifespan:?];
   }
 
 LABEL_10:
-  [(WiFiUsageBssSession *)self->_currentBssSession faultEventDetected:a3];
+  [(WiFiUsageBssSession *)self->_currentBssSession faultEventDetected:detected];
 }
 
-- (void)triggerDisconnectAlerted:(BOOL)a3 confirmed:(BOOL)a4 executed:(BOOL)a5
+- (void)triggerDisconnectAlerted:(BOOL)alerted confirmed:(BOOL)confirmed executed:(BOOL)executed
 {
-  if (!a3)
+  if (!alerted)
   {
-    if (!a4)
+    if (!confirmed)
     {
       goto LABEL_3;
     }
 
 LABEL_7:
     ++self->_triggerDisconnectConfirmedCount;
-    if (!a5)
+    if (!executed)
     {
       goto LABEL_5;
     }
@@ -2326,13 +2326,13 @@ LABEL_7:
   }
 
   ++self->_triggerDisconnectAlertedCount;
-  if (a4)
+  if (confirmed)
   {
     goto LABEL_7;
   }
 
 LABEL_3:
-  if (a5)
+  if (executed)
   {
 LABEL_4:
     ++self->_triggerDisconnectExecutedCount;
@@ -2342,27 +2342,27 @@ LABEL_5:
   [WiFiUsageBssSession triggerDisconnectAlerted:"triggerDisconnectAlerted:confirmed:executed:" confirmed:? executed:?];
 }
 
-- (BOOL)incrementCountWithPrefix:(id)a3 name:(id)a4
+- (BOOL)incrementCountWithPrefix:(id)prefix name:(id)name
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  prefixCopy = prefix;
+  nameCopy = name;
+  if (nameCopy)
   {
     v8 = &stru_28487EF20;
-    if (v6)
+    if (prefixCopy)
     {
-      v8 = v6;
+      v8 = prefixCopy;
     }
 
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@Count", v8, v7];
-    v10 = [(WiFiUsageSession *)self valueForKey:v9];
+    nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@Count", v8, nameCopy];
+    v10 = [(WiFiUsageSession *)self valueForKey:nameCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v10 unsignedIntegerValue];
-      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v11 + 1];
-      [(WiFiUsageSession *)self setValue:v12 forKey:v9];
+      unsignedIntegerValue = [v10 unsignedIntegerValue];
+      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue + 1];
+      [(WiFiUsageSession *)self setValue:v12 forKey:nameCopy];
     }
 
     v13 = 1;
@@ -2377,20 +2377,20 @@ LABEL_5:
   return v13;
 }
 
-- (id)countWithPrefix:(id)a3 name:(id)a4
+- (id)countWithPrefix:(id)prefix name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  prefixCopy = prefix;
+  nameCopy = name;
+  if (nameCopy)
   {
     v8 = &stru_28487EF20;
-    if (v6)
+    if (prefixCopy)
     {
-      v8 = v6;
+      v8 = prefixCopy;
     }
 
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@Count", v8, v7];
-    v10 = [(WiFiUsageSession *)self valueForKey:v9];
+    nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@Count", v8, nameCopy];
+    v10 = [(WiFiUsageSession *)self valueForKey:nameCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2411,13 +2411,13 @@ LABEL_5:
   return v11;
 }
 
-- (void)poorLinkSessionStats:(id)a3
+- (void)poorLinkSessionStats:(id)stats
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  statsCopy = stats;
+  if ([statsCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = statsCopy;
     ++self->_inPoorLinkSessionCount;
     [v5 sessionDuration];
     self->_inPoorLinkSessionDuration = v6 + self->_inPoorLinkSessionDuration;
@@ -2456,9 +2456,9 @@ LABEL_5:
       v15 = 2112;
       v16 = v11;
       v17 = 1024;
-      v18 = [v5 sessionStartedBy];
+      sessionStartedBy = [v5 sessionStartedBy];
       v19 = 2112;
-      v20 = self;
+      selfCopy = self;
       _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s - tdSession started by %@ (%u) but no counter for this trigger in %@", &v13, 0x26u);
     }
 
@@ -2471,13 +2471,13 @@ LABEL_5:
 - (void)summarizeSession
 {
   v64 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   if (self->_sessionStartTime)
   {
     sessionEndTime = self->_sessionEndTime;
     if (!sessionEndTime)
     {
-      sessionEndTime = v3;
+      sessionEndTime = date;
     }
 
     [(NSDate *)sessionEndTime timeIntervalSinceDate:?];
@@ -2486,180 +2486,180 @@ LABEL_5:
 
   if (self->_mediaStartedTime)
   {
-    [(NSDate *)v3 timeIntervalSinceDate:?];
+    [(NSDate *)date timeIntervalSinceDate:?];
     self->_mediaPlaybackDuration = v6 + self->_mediaPlaybackDuration;
   }
 
   if (self->_chargingStartedTime)
   {
-    [(NSDate *)v3 timeIntervalSinceDate:?];
+    [(NSDate *)date timeIntervalSinceDate:?];
     self->_chargingDuration = v7 + self->_chargingDuration;
   }
 
   if (self->_companionConnectionTime)
   {
-    [(NSDate *)v3 timeIntervalSinceDate:?];
+    [(NSDate *)date timeIntervalSinceDate:?];
     self->_companionConnectedDuration = v8 + self->_companionConnectedDuration;
   }
 
   if (self->_wowStateEntryTime)
   {
-    [(NSDate *)v3 timeIntervalSinceDate:?];
+    [(NSDate *)date timeIntervalSinceDate:?];
     self->_inWowStateDuration = v9 + self->_inWowStateDuration;
   }
 
   if (self->_lpasStateEntryTime)
   {
-    [(NSDate *)v3 timeIntervalSinceDate:?];
+    [(NSDate *)date timeIntervalSinceDate:?];
     self->_inLpasStateDuration = v10 + self->_inLpasStateDuration;
   }
 
   if (self->_lowPowerStateEntryTime)
   {
-    [(NSDate *)v3 timeIntervalSinceDate:?];
+    [(NSDate *)date timeIntervalSinceDate:?];
     self->_inLowPowerStateDuration = v11 + self->_inLowPowerStateDuration;
   }
 
   if (self->_batterySaverStateEntryTime)
   {
-    [(NSDate *)v3 timeIntervalSinceDate:?];
+    [(NSDate *)date timeIntervalSinceDate:?];
     self->_inBatterySaverStateDuration = v12 + self->_inBatterySaverStateDuration;
   }
 
   if (self->_callStartedTime)
   {
-    [(NSDate *)v3 timeIntervalSinceDate:?];
+    [(NSDate *)date timeIntervalSinceDate:?];
     self->_inCallDuration = v13 + self->_inCallDuration;
   }
 
   if (self->_inVehicleEntryTime)
   {
-    [(NSDate *)v3 timeIntervalSinceDate:?];
+    [(NSDate *)date timeIntervalSinceDate:?];
     self->_inVehicleDuration = v14 + self->_inVehicleDuration;
   }
 
   if (self->_inMotionStartedTime)
   {
-    [(NSDate *)v3 timeIntervalSinceDate:?];
+    [(NSDate *)date timeIntervalSinceDate:?];
     self->_inMotionDuration = v15 + self->_inMotionDuration;
   }
 
   if (self->_a2dpActiveTime)
   {
-    [(NSDate *)v3 timeIntervalSinceDate:?];
+    [(NSDate *)date timeIntervalSinceDate:?];
     self->_inA2dpDuration = v16 + self->_inA2dpDuration;
   }
 
   if (self->_scoActiveTime)
   {
-    [(NSDate *)v3 timeIntervalSinceDate:?];
+    [(NSDate *)date timeIntervalSinceDate:?];
     self->_inScoDuration = v17 + self->_inScoDuration;
   }
 
   if (self->_hidPresentTime)
   {
-    [(NSDate *)v3 timeIntervalSinceDate:?];
+    [(NSDate *)date timeIntervalSinceDate:?];
     self->_inHidPresentDuration = v18 + self->_inHidPresentDuration;
   }
 
   if (self->_awdlActiveTime)
   {
-    [(NSDate *)v3 timeIntervalSinceDate:?];
+    [(NSDate *)date timeIntervalSinceDate:?];
     self->_inAwdlDuration = v19 + self->_inAwdlDuration;
   }
 
   if (self->_roamingActiveTime)
   {
-    [(NSDate *)v3 timeIntervalSinceDate:?];
+    [(NSDate *)date timeIntervalSinceDate:?];
     self->_inRoamDuration = v20 + self->_inRoamDuration;
   }
 
   if (self->_lastRoamSuppressionToggled && self->_isRoamSuppressionEnabled)
   {
-    [(NSDate *)v3 timeIntervalSinceDate:?];
+    [(NSDate *)date timeIntervalSinceDate:?];
     self->_inRoamSuppressionEnabled = v21 + self->_inRoamSuppressionEnabled;
   }
 
   if (self->_scanningActiveTime)
   {
-    [(NSDate *)v3 timeIntervalSinceDate:?];
+    [(NSDate *)date timeIntervalSinceDate:?];
     self->_inScanDuration = v22 + self->_inScanDuration;
   }
 
   if (self->_softApActiveTime)
   {
-    [(NSDate *)v3 timeIntervalSinceDate:?];
+    [(NSDate *)date timeIntervalSinceDate:?];
     self->_inSoftApDuration = v23 + self->_inSoftApDuration;
   }
 
   if (self->_lastSystemWakeTime)
   {
-    [(NSDate *)v3 timeIntervalSinceDate:?];
+    [(NSDate *)date timeIntervalSinceDate:?];
     self->_systemAwakeDuration = v24 + self->_systemAwakeDuration;
-    [(WiFiUsageSession *)self setLastSystemWakeTime:v3];
+    [(WiFiUsageSession *)self setLastSystemWakeTime:date];
   }
 
   if (self->_poweredOn)
   {
     if (self->_lastPowerStateChangedTime)
     {
-      [(NSDate *)v3 timeIntervalSinceDate:?];
+      [(NSDate *)date timeIntervalSinceDate:?];
       self->_poweredOnDuration = v25 + self->_poweredOnDuration;
     }
 
-    [(WiFiUsageSession *)self setLastPowerStateChangedTime:v3];
+    [(WiFiUsageSession *)self setLastPowerStateChangedTime:date];
   }
 
   if (self->_linkRecoveryDisabledTime)
   {
-    [(NSDate *)v3 timeIntervalSinceDate:?];
+    [(NSDate *)date timeIntervalSinceDate:?];
     self->_linkRecoveryDisabledDuration = v26 + self->_linkRecoveryDisabledDuration;
   }
 
-  [(WiFiUsageSession *)self tallyAssociatedDuration:v3];
+  [(WiFiUsageSession *)self tallyAssociatedDuration:date];
   if (self->_lastBssChangedTime)
   {
     networkDetails = self->_networkDetails;
     if (networkDetails)
     {
-      v28 = [(WiFiUsageNetworkDetails *)networkDetails connectedBss];
-      -[WiFiUsageSession updateBandUsageFor:With:](self, "updateBandUsageFor:With:", [v28 band], v3);
+      connectedBss = [(WiFiUsageNetworkDetails *)networkDetails connectedBss];
+      -[WiFiUsageSession updateBandUsageFor:With:](self, "updateBandUsageFor:With:", [connectedBss band], date);
     }
 
-    [(WiFiUsageSession *)self setLastBssChangedTime:v3];
+    [(WiFiUsageSession *)self setLastBssChangedTime:date];
   }
 
   if (self->_cellularFallbackEnabled)
   {
     if (self->_lastCellularFallbackStateChangedTime)
     {
-      [(NSDate *)v3 timeIntervalSinceDate:?];
+      [(NSDate *)date timeIntervalSinceDate:?];
       self->_inCellularFallbackDuration = v29 + self->_inCellularFallbackDuration;
     }
 
-    [(WiFiUsageSession *)self setLastCellularFallbackStateChangedTime:v3];
+    [(WiFiUsageSession *)self setLastCellularFallbackStateChangedTime:date];
   }
 
   if (self->_cellularOutrankingEnabled)
   {
     if (self->_lastCellularOutrankingStateChangedTime)
     {
-      [(NSDate *)v3 timeIntervalSinceDate:?];
+      [(NSDate *)date timeIntervalSinceDate:?];
       self->_inCellularOutrankingDuration = v30 + self->_inCellularOutrankingDuration;
     }
 
-    [(WiFiUsageSession *)self setLastCellularOutrankingStateChangedTime:v3];
+    [(WiFiUsageSession *)self setLastCellularOutrankingStateChangedTime:date];
   }
 
   if (!self->_controlCenterEnabled)
   {
     if (self->_lastControlCenterStateChangedTime)
     {
-      [(NSDate *)v3 timeIntervalSinceDate:?];
+      [(NSDate *)date timeIntervalSinceDate:?];
       self->_inControlCenterAutoJoinDisabledDuration = v31 + self->_inControlCenterAutoJoinDisabledDuration;
     }
 
-    [(WiFiUsageSession *)self setLastControlCenterStateChangedTime:v3];
+    [(WiFiUsageSession *)self setLastControlCenterStateChangedTime:date];
   }
 
   v32 = [WiFiUsageInterfaceStats statsForInterfaceName:self->_interfaceName];
@@ -2675,7 +2675,7 @@ LABEL_5:
 
   if (self->_isCompatibilityModeEnabled)
   {
-    [(NSDate *)v3 timeIntervalSinceDate:self->_lastCompatibilityModeChangedTime];
+    [(NSDate *)date timeIntervalSinceDate:self->_lastCompatibilityModeChangedTime];
     self->_inCompatibilityModeEnabledDuration = v34 + self->_inCompatibilityModeEnabledDuration;
     v35 = MEMORY[0x277D86220];
     v36 = MEMORY[0x277D86220];
@@ -2685,19 +2685,19 @@ LABEL_5:
       v54 = 136315394;
       v55 = "[WiFiUsageSession summarizeSession]";
       v56 = 2048;
-      v57 = compatibilityModeChangeCount;
+      selfCopy2 = compatibilityModeChangeCount;
       _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s - _compatibilityModeChangeCount:%lu", &v54, 0x16u);
     }
   }
 
-  v38 = [(WiFiUsageNetworkDetails *)self->_networkDetails disable6eMode];
-  if ([v38 isEqualToString:@"off"])
+  disable6eMode = [(WiFiUsageNetworkDetails *)self->_networkDetails disable6eMode];
+  if ([disable6eMode isEqualToString:@"off"])
   {
     lastNetwork6eDisableModeChangedTime = self->_lastNetwork6eDisableModeChangedTime;
 
     if (lastNetwork6eDisableModeChangedTime)
     {
-      [(NSDate *)v3 timeIntervalSinceDate:self->_lastNetwork6eDisableModeChangedTime];
+      [(NSDate *)date timeIntervalSinceDate:self->_lastNetwork6eDisableModeChangedTime];
       self->_inNetwork6eModeOffDuration = v40 + self->_inNetwork6eModeOffDuration;
     }
   }
@@ -2716,7 +2716,7 @@ LABEL_5:
     v54 = 136316162;
     v55 = "[WiFiUsageSession summarizeSession]";
     v56 = 2112;
-    v57 = self;
+    selfCopy2 = self;
     v58 = 2048;
     v59 = inNetwork6eModeOffDuration;
     v60 = 2112;
@@ -2754,7 +2754,7 @@ LABEL_5:
       v54 = 136315906;
       v55 = "[WiFiUsageSession summarizeSession]";
       v56 = 2112;
-      v57 = self;
+      selfCopy2 = self;
       v58 = 2112;
       v59 = *&v50;
       v60 = 2112;
@@ -2770,16 +2770,16 @@ LABEL_5:
 
   if (self->_lastAWDLSequenceUpdate)
   {
-    [(WiFiUsageSession *)self tallyInfraScoreDuration:self->_inAWDL_lastInfraScore until:v3];
-    [(WiFiUsageSession *)self tallyP2PScoreDuration:v3 until:self->_inAWDL_lastP2PScore];
-    objc_storeStrong(&self->_lastAWDLSequenceUpdate, v3);
+    [(WiFiUsageSession *)self tallyInfraScoreDuration:self->_inAWDL_lastInfraScore until:date];
+    [(WiFiUsageSession *)self tallyP2PScoreDuration:date until:self->_inAWDL_lastP2PScore];
+    objc_storeStrong(&self->_lastAWDLSequenceUpdate, date);
   }
 
   if (self->_lastLinkStateChangedTime)
   {
     if (!self->_isAssociated)
     {
-      [(NSDate *)v3 timeIntervalSinceDate:?];
+      [(NSDate *)date timeIntervalSinceDate:?];
       if (v52 > self->_longestUnassociatedDuration)
       {
         self->_longestUnassociatedDuration = v52;
@@ -2810,7 +2810,7 @@ LABEL_5:
     }
 
     v15 = 2112;
-    v16 = self;
+    selfCopy = self;
     v17 = 2080;
     v18 = v5;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s on %@ deferCompletion=%s", buf, 0x20u);
@@ -2819,8 +2819,8 @@ LABEL_5:
   if (*(v3 + 872) == 1)
   {
     [(WiFiUsageSession *)self setIsSessionActive:0];
-    v6 = [MEMORY[0x277CBEAA8] date];
-    [(WiFiUsageSession *)self setSessionEndTime:v6];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(WiFiUsageSession *)self setSessionEndTime:date];
 
     [(WiFiUsageSession *)self summarizeSession];
     if ((v3[110] & 1) == 0 && self->_completionHandler && self->_completionQueue)
@@ -2861,35 +2861,35 @@ uint64_t __33__WiFiUsageSession_sessionDidEnd__block_invoke(uint64_t a1)
   }
 }
 
-+ (id)joinReasonString:(unint64_t)a3
++ (id)joinReasonString:(unint64_t)string
 {
-  if (a3 + 1 >= 0x10)
+  if (string + 1 >= 0x10)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown=%u", a3];
+    string = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown=%u", string];
   }
 
   else
   {
-    v4 = off_2789C7F20[a3 + 1];
+    string = off_2789C7F20[string + 1];
   }
 
-  return v4;
+  return string;
 }
 
-+ (id)disconnectReasonString:(unint64_t)a3
++ (id)disconnectReasonString:(unint64_t)string
 {
-  if (a3 <= 5)
+  if (string <= 5)
   {
-    if (a3 <= 1)
+    if (string <= 1)
     {
-      if (a3 == -1)
+      if (string == -1)
       {
         v4 = @"Uninitialized";
       }
 
-      else if (a3)
+      else if (string)
       {
-        if (a3 == 1)
+        if (string == 1)
         {
           v4 = @"Deauth";
         }
@@ -2897,9 +2897,9 @@ uint64_t __33__WiFiUsageSession_sessionDidEnd__block_invoke(uint64_t a1)
         else
         {
 LABEL_39:
-          if (a3 > 0x3E7)
+          if (string > 0x3E7)
           {
-            [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown=%u", a3];
+            [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown=%u", string];
           }
 
           else
@@ -2916,9 +2916,9 @@ LABEL_39:
       }
     }
 
-    else if (a3 > 3)
+    else if (string > 3)
     {
-      if (a3 == 4)
+      if (string == 4)
       {
         v4 = @"SystemSleep";
       }
@@ -2929,7 +2929,7 @@ LABEL_39:
       }
     }
 
-    else if (a3 == 2)
+    else if (string == 2)
     {
       v4 = @"BeaconLoss";
     }
@@ -2942,7 +2942,7 @@ LABEL_39:
 
   else
   {
-    switch(a3)
+    switch(string)
     {
       case 0x3E8uLL:
         v4 = @"TriggerDisconnect";
@@ -3089,14 +3089,14 @@ LABEL_39:
 
         break;
       default:
-        if (a3 == 6)
+        if (string == 6)
         {
           v4 = @"JoinFailure";
         }
 
         else
         {
-          if (a3 != 7)
+          if (string != 7)
           {
             goto LABEL_39;
           }
@@ -3111,62 +3111,62 @@ LABEL_39:
   return v4;
 }
 
-+ (BOOL)isDriverUnavailabilityReasonVoluntary:(int)a3 subReason:(int)a4 orReasonString:(id)a5
++ (BOOL)isDriverUnavailabilityReasonVoluntary:(int)voluntary subReason:(int)reason orReasonString:(id)string
 {
-  v7 = (a3 + 528345087) < 4 || a3 == -528340989 || a3 == -528336891;
-  v8 = a4 == -528340989 || v7;
-  return [a5 isEqualToString:@"Driver Booted"] | v8;
+  v7 = (voluntary + 528345087) < 4 || voluntary == -528340989 || voluntary == -528336891;
+  v8 = reason == -528340989 || v7;
+  return [string isEqualToString:@"Driver Booted"] | v8;
 }
 
 - (unint64_t)totalRxFrames
 {
   v2 = [(WiFiUsageSession *)self lqm];
-  v3 = [v2 totalRxFrames];
+  totalRxFrames = [v2 totalRxFrames];
 
-  return v3;
+  return totalRxFrames;
 }
 
 - (unint64_t)totalTxFrames
 {
   v2 = [(WiFiUsageSession *)self lqm];
-  v3 = [v2 totalTxFrames];
+  totalTxFrames = [v2 totalTxFrames];
 
-  return v3;
+  return totalTxFrames;
 }
 
 - (int64_t)averageCca
 {
   v2 = [(WiFiUsageSession *)self lqm];
-  v3 = [v2 avgTotalCca];
+  avgTotalCca = [v2 avgTotalCca];
 
-  return v3;
+  return avgTotalCca;
 }
 
 - (int64_t)averageRssi
 {
   v2 = [(WiFiUsageSession *)self lqm];
-  v3 = [v2 avgRssi];
+  avgRssi = [v2 avgRssi];
 
-  return v3;
+  return avgRssi;
 }
 
 - (int64_t)averageSnr
 {
   v2 = [(WiFiUsageSession *)self lqm];
-  v3 = [v2 avgSnr];
+  avgSnr = [v2 avgSnr];
 
-  return v3;
+  return avgSnr;
 }
 
 - (int64_t)lastRssi
 {
   v2 = [(WiFiUsageSession *)self lqm];
-  v3 = [v2 lastRssi];
+  lastRssi = [v2 lastRssi];
 
-  return v3;
+  return lastRssi;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = &self->_disconnectReasonCount[928];
   v5 = [objc_alloc(objc_opt_class()) initWithSessionType:self->_type andInterfaceName:self->_interfaceName andCapabilities:self->_capabilities];
@@ -3771,29 +3771,29 @@ LABEL_39:
   return v5;
 }
 
-- (unint64_t)faultReasonCount:(unint64_t)a3
+- (unint64_t)faultReasonCount:(unint64_t)count
 {
-  if (a3 - 1 > 0x24)
+  if (count - 1 > 0x24)
   {
     return 0;
   }
 
   else
   {
-    return self->_faultReasonCount[a3];
+    return self->_faultReasonCount[count];
   }
 }
 
-- (void)processIPv4Changes:(id)a3
+- (void)processIPv4Changes:(id)changes
 {
-  v4 = a3;
-  v5 = v4;
-  v8 = v4;
-  if (v4 && self->_ipV4DetailsPrevSession)
+  changesCopy = changes;
+  v5 = changesCopy;
+  v8 = changesCopy;
+  if (changesCopy && self->_ipV4DetailsPrevSession)
   {
-    v6 = [v4 isValid];
+    isValid = [changesCopy isValid];
     v5 = v8;
-    if (v6)
+    if (isValid)
     {
       v7 = [(WiFiUsageNetworkIPv4Details *)self->_ipV4DetailsPrevSession isEqual:v8];
       v5 = v8;
@@ -3801,34 +3801,34 @@ LABEL_39:
     }
   }
 
-  else if (!v4)
+  else if (!changesCopy)
   {
     goto LABEL_8;
   }
 
-  v4 = [v5 isValid];
+  changesCopy = [v5 isValid];
   v5 = v8;
-  if (v4)
+  if (changesCopy)
   {
-    v4 = [(WiFiUsageSession *)self setIpV4Details:v8];
+    changesCopy = [(WiFiUsageSession *)self setIpV4Details:v8];
     v5 = v8;
   }
 
 LABEL_8:
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](changesCopy, v5);
 }
 
-- (void)processIPv6Changes:(id)a3
+- (void)processIPv6Changes:(id)changes
 {
-  v4 = a3;
-  v5 = v4;
-  v8 = v4;
-  if (v4 && self->_ipV6DetailsPrevSession)
+  changesCopy = changes;
+  v5 = changesCopy;
+  v8 = changesCopy;
+  if (changesCopy && self->_ipV6DetailsPrevSession)
   {
-    v6 = [v4 isValid];
+    isValid = [changesCopy isValid];
     v5 = v8;
-    if (v6)
+    if (isValid)
     {
       v7 = [(WiFiUsageNetworkIPv6Details *)self->_ipV6DetailsPrevSession isEqual:v8];
       v5 = v8;
@@ -3836,82 +3836,82 @@ LABEL_8:
     }
   }
 
-  else if (!v4)
+  else if (!changesCopy)
   {
     goto LABEL_8;
   }
 
-  v4 = [v5 isValid];
+  changesCopy = [v5 isValid];
   v5 = v8;
-  if (v4)
+  if (changesCopy)
   {
-    v4 = [(WiFiUsageSession *)self setIpV6Details:v8];
+    changesCopy = [(WiFiUsageSession *)self setIpV6Details:v8];
     v5 = v8;
   }
 
 LABEL_8:
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](changesCopy, v5);
 }
 
-- (void)setRealtimeCoexStarted:(BOOL)a3 type:(unint64_t)a4 reasons:(id)a5
+- (void)setRealtimeCoexStarted:(BOOL)started type:(unint64_t)type reasons:(id)reasons
 {
-  v5 = a3;
-  v7 = a5;
+  startedCopy = started;
+  reasonsCopy = reasons;
   inCoexRealTime = self->_inCoexRealTime;
-  v13 = v7;
-  if (v5 && !self->_inCoexRealTime)
+  v13 = reasonsCopy;
+  if (startedCopy && !self->_inCoexRealTime)
   {
     v9 = [MEMORY[0x277CBEAA8] now];
     lastCoexRealTimeOn = self->_lastCoexRealTimeOn;
     self->_lastCoexRealTimeOn = v9;
 
-    v7 = v13;
+    reasonsCopy = v13;
     inCoexRealTime = self->_inCoexRealTime;
   }
 
-  if (inCoexRealTime && !v5)
+  if (inCoexRealTime && !startedCopy)
   {
     v11 = [MEMORY[0x277CBEAA8] now];
     lastCoexRealTimeOff = self->_lastCoexRealTimeOff;
     self->_lastCoexRealTimeOff = v11;
 
-    v7 = v13;
+    reasonsCopy = v13;
   }
 
-  self->_inCoexRealTime = v5;
+  self->_inCoexRealTime = startedCopy;
 }
 
-- (void)setAwdlSequence:(id)a3 infraScore:(unint64_t)a4 p2pScore:(double)a5
+- (void)setAwdlSequence:(id)sequence infraScore:(unint64_t)score p2pScore:(double)p2pScore
 {
   v8 = [MEMORY[0x277CBEAA8] now];
   if (self->_isAssociated)
   {
-    v9 = a4;
+    scoreCopy = score;
   }
 
   else
   {
-    v9 = 0;
+    scoreCopy = 0;
   }
 
-  [(WiFiUsageSession *)self tallyInfraScoreDuration:v9 until:v8];
-  [(WiFiUsageSession *)self tallyP2PScoreDuration:v8 until:a5];
+  [(WiFiUsageSession *)self tallyInfraScoreDuration:scoreCopy until:v8];
+  [(WiFiUsageSession *)self tallyP2PScoreDuration:v8 until:p2pScore];
   lastAWDLSequenceUpdate = self->_lastAWDLSequenceUpdate;
   self->_lastAWDLSequenceUpdate = v8;
 }
 
-- (void)updateLinkRecoveryDisabled:(BOOL)a3
+- (void)updateLinkRecoveryDisabled:(BOOL)disabled
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = v5;
-  if (v3)
+  disabledCopy = disabled;
+  date = [MEMORY[0x277CBEAA8] date];
+  v6 = date;
+  if (disabledCopy)
   {
     if (!self->_linkRecoveryDisabled)
     {
-      v8 = v5;
-      v5 = [(WiFiUsageSession *)self setLinkRecoveryDisabledTime:v5];
+      v8 = date;
+      date = [(WiFiUsageSession *)self setLinkRecoveryDisabledTime:date];
       v6 = v8;
       ++self->_linkRecoveryDisabledCount;
     }
@@ -3919,16 +3919,16 @@ LABEL_8:
 
   else if (self->_linkRecoveryDisabledTime)
   {
-    v9 = v5;
-    [v5 timeIntervalSinceDate:?];
+    v9 = date;
+    [date timeIntervalSinceDate:?];
     self->_linkRecoveryDisabledDuration = v7 + self->_linkRecoveryDisabledDuration;
-    v5 = [(WiFiUsageSession *)self setLinkRecoveryDisabledTime:0];
+    date = [(WiFiUsageSession *)self setLinkRecoveryDisabledTime:0];
     v6 = v9;
   }
 
-  self->_linkRecoveryDisabled = v3;
+  self->_linkRecoveryDisabled = disabledCopy;
 
-  MEMORY[0x2821F96F8](v5, v6);
+  MEMORY[0x2821F96F8](date, v6);
 }
 
 - (BOOL)infraIsPartOfSplitSSID
@@ -3943,11 +3943,11 @@ LABEL_8:
   return [(WiFiUsageNetworkDetails *)networkDetails isStandalone6E];
 }
 
-- (void)updateWithRoamingSuppression:(unsigned __int8)a3
+- (void)updateWithRoamingSuppression:(unsigned __int8)suppression
 {
-  v3 = a3;
+  suppressionCopy = suppression;
   v5 = [MEMORY[0x277CBEAA8] now];
-  if (v3)
+  if (suppressionCopy)
   {
     if (self->_isRoamSuppressionEnabled)
     {
@@ -3977,61 +3977,61 @@ LABEL_8:
   objc_storeStrong(p_lastRoamSuppressionToggled, v5);
   v5 = obja;
 LABEL_7:
-  self->_isRoamSuppressionEnabled = v3 != 0;
+  self->_isRoamSuppressionEnabled = suppressionCopy != 0;
 }
 
-- (void)updateWithCompatibilityMode:(unsigned __int8)a3
+- (void)updateWithCompatibilityMode:(unsigned __int8)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   isCompatibilityModeEnabled = self->_isCompatibilityModeEnabled;
-  if (!a3 && self->_isCompatibilityModeEnabled)
+  if (!mode && self->_isCompatibilityModeEnabled)
   {
     [(NSDate *)self->_lastCompatibilityModeChangedTime timeIntervalSinceNow];
     self->_inCompatibilityModeEnabledDuration = self->_inCompatibilityModeEnabledDuration - v6;
     isCompatibilityModeEnabled = self->_isCompatibilityModeEnabled;
   }
 
-  if (isCompatibilityModeEnabled != v3)
+  if (isCompatibilityModeEnabled != modeCopy)
   {
-    [(WiFiUsageSession *)self setIsCompatibilityModeEnabled:v3 != 0];
+    [(WiFiUsageSession *)self setIsCompatibilityModeEnabled:modeCopy != 0];
     ++self->_compatibilityModeChangeCount;
     v7 = [MEMORY[0x277CBEAA8] now];
     [(WiFiUsageSession *)self setLastCompatibilityModeChangedTime:v7];
   }
 }
 
-- (void)updateAssociatedNetworkDetails:(id)a3
+- (void)updateAssociatedNetworkDetails:(id)details
 {
-  v4 = a3;
-  if (v4)
+  detailsCopy = details;
+  if (detailsCopy)
   {
-    v18 = v4;
+    v18 = detailsCopy;
     v5 = [MEMORY[0x277CBEAA8] now];
     if (self->_networkDetails)
     {
-      v6 = [v18 networkName];
-      v7 = [(WiFiUsageNetworkDetails *)self->_networkDetails networkName];
-      v8 = [v6 isEqualToString:v7];
+      networkName = [v18 networkName];
+      networkName2 = [(WiFiUsageNetworkDetails *)self->_networkDetails networkName];
+      v8 = [networkName isEqualToString:networkName2];
 
-      v9 = [v18 disable6eMode];
+      disable6eMode = [v18 disable6eMode];
       if (v8)
       {
-        [(WiFiUsageSession *)self update6eModeStats:v9];
+        [(WiFiUsageSession *)self update6eModeStats:disable6eMode];
       }
 
       else
       {
-        [(WiFiUsageSession *)self summarizeAndReset6eModeStats:v9];
+        [(WiFiUsageSession *)self summarizeAndReset6eModeStats:disable6eMode];
       }
     }
 
     else
     {
-      v10 = [v18 disable6eMode];
-      [(WiFiUsageSession *)self setNetworkDisable6eModeAtStart:v10];
+      disable6eMode2 = [v18 disable6eMode];
+      [(WiFiUsageSession *)self setNetworkDisable6eModeAtStart:disable6eMode2];
 
-      v9 = [v18 disable6eMode];
-      if (v9)
+      disable6eMode = [v18 disable6eMode];
+      if (disable6eMode)
       {
         v11 = v5;
       }
@@ -4049,26 +4049,26 @@ LABEL_7:
       goto LABEL_17;
     }
 
-    v12 = [v18 networkName];
-    v13 = [(WiFiUsageNetworkDetails *)self->_networkDetails networkName];
-    if ([v12 isEqualToString:v13])
+    networkName3 = [v18 networkName];
+    networkName4 = [(WiFiUsageNetworkDetails *)self->_networkDetails networkName];
+    if ([networkName3 isEqualToString:networkName4])
     {
-      v14 = [(WiFiUsageNetworkDetails *)self->_networkDetails connectedBss];
-      v15 = [v14 band];
-      v16 = [v18 connectedBss];
-      v17 = [v16 band];
+      connectedBss = [(WiFiUsageNetworkDetails *)self->_networkDetails connectedBss];
+      band = [connectedBss band];
+      connectedBss2 = [v18 connectedBss];
+      band2 = [connectedBss2 band];
 
-      if (v15 == v17)
+      if (band == band2)
       {
 LABEL_17:
         [(WiFiUsageSession *)self setNetworkDetails:v18];
 
-        v4 = v18;
+        detailsCopy = v18;
         goto LABEL_18;
       }
 
-      v12 = [(WiFiUsageNetworkDetails *)self->_networkDetails connectedBss];
-      -[WiFiUsageSession updateBandUsageFor:With:](self, "updateBandUsageFor:With:", [v12 band], v5);
+      networkName3 = [(WiFiUsageNetworkDetails *)self->_networkDetails connectedBss];
+      -[WiFiUsageSession updateBandUsageFor:With:](self, "updateBandUsageFor:With:", [networkName3 band], v5);
     }
 
     else
@@ -4081,16 +4081,16 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)update6eModeStats:(id)a3
+- (void)update6eModeStats:(id)stats
 {
-  v14 = a3;
-  v4 = [(WiFiUsageNetworkDetails *)self->_networkDetails disable6eMode];
-  v5 = [v4 isEqualToString:v14];
+  statsCopy = stats;
+  disable6eMode = [(WiFiUsageNetworkDetails *)self->_networkDetails disable6eMode];
+  v5 = [disable6eMode isEqualToString:statsCopy];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(WiFiUsageNetworkDetails *)self->_networkDetails disable6eMode];
-    v7 = [v6 isEqualToString:@"off"];
+    disable6eMode2 = [(WiFiUsageNetworkDetails *)self->_networkDetails disable6eMode];
+    v7 = [disable6eMode2 isEqualToString:@"off"];
 
     if (v7)
     {
@@ -4103,9 +4103,9 @@ LABEL_18:
       }
     }
 
-    v11 = [(WiFiUsageNetworkDetails *)self->_networkDetails disable6eMode];
+    disable6eMode3 = [(WiFiUsageNetworkDetails *)self->_networkDetails disable6eMode];
 
-    if (v11)
+    if (disable6eMode3)
     {
       ++self->_network6eDisabledModeChangeCount;
       v12 = [MEMORY[0x277CBEAA8] now];
@@ -4118,21 +4118,21 @@ LABEL_18:
     }
   }
 
-  v13 = [(WiFiUsageSession *)self networkDisable6eModeAtStart];
+  networkDisable6eModeAtStart = [(WiFiUsageSession *)self networkDisable6eModeAtStart];
 
-  if (!v13)
+  if (!networkDisable6eModeAtStart)
   {
-    [(WiFiUsageSession *)self setNetworkDisable6eModeAtStart:v14];
+    [(WiFiUsageSession *)self setNetworkDisable6eModeAtStart:statsCopy];
   }
 }
 
-- (void)summarizeAndReset6eModeStats:(id)a3
+- (void)summarizeAndReset6eModeStats:(id)stats
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
+  statsCopy = stats;
   v10 = [v4 now];
-  v6 = [(WiFiUsageNetworkDetails *)self->_networkDetails disable6eMode];
-  if ([v6 isEqualToString:@"off"])
+  disable6eMode = [(WiFiUsageNetworkDetails *)self->_networkDetails disable6eMode];
+  if ([disable6eMode isEqualToString:@"off"])
   {
     lastNetwork6eDisableModeChangedTime = self->_lastNetwork6eDisableModeChangedTime;
 
@@ -4150,9 +4150,9 @@ LABEL_18:
   [(WiFiUsageSession *)self setLastSSIDdisable6eModeAtStart:self->_networkDisable6eModeAtStart];
   [(WiFiUsageSession *)self setLastSSIDdisabled6eModeChangeCount:self->_network6eDisabledModeChangeCount];
   [(WiFiUsageSession *)self setLastSSIDIn6eModeOffDuration:self->_inNetwork6eModeOffDuration];
-  [(WiFiUsageSession *)self setNetworkDisable6eModeAtStart:v5];
+  [(WiFiUsageSession *)self setNetworkDisable6eModeAtStart:statsCopy];
 
-  if (v5)
+  if (statsCopy)
   {
     v9 = v10;
   }
@@ -4165,16 +4165,16 @@ LABEL_18:
   [(WiFiUsageSession *)self setLastNetwork6eDisableModeChangedTime:v9];
 }
 
-- (void)setSSIDTransitionCandidates:(id)a3 SSIDTransitionPotentialCandidates:(id)a4 potentialCandidatesMinusCandidates:(id)a5 roamCandidates:(unint64_t)a6 uniqueChannels:(unint64_t)a7 uniqueBands:(unint64_t)a8
+- (void)setSSIDTransitionCandidates:(id)candidates SSIDTransitionPotentialCandidates:(id)potentialCandidates potentialCandidatesMinusCandidates:(id)minusCandidates roamCandidates:(unint64_t)roamCandidates uniqueChannels:(unint64_t)channels uniqueBands:(unint64_t)bands
 {
-  v20 = a3;
-  v14 = a4;
-  v15 = a5;
+  candidatesCopy = candidates;
+  potentialCandidatesCopy = potentialCandidates;
+  minusCandidatesCopy = minusCandidates;
   if ([(WiFiUsageSession *)self isSessionActive])
   {
     ++self->_countRoamScan;
-    v16 = [v20 count];
-    v17 = [v14 count];
+    v16 = [candidatesCopy count];
+    v17 = [potentialCandidatesCopy count];
     [(WiFiUsageSession *)self setLastRoamScanFoundSSIDTransitionTarget:v16 != 0];
     [(WiFiUsageSession *)self setCountSSIDTransitionTargetInLastRoamScan:v16];
     countRoamScanThatFoundSSIDTransitionTarget = self->_countRoamScanThatFoundSSIDTransitionTarget;
@@ -4193,34 +4193,34 @@ LABEL_18:
     }
 
     self->_countRoamScanThatFoundSSIDTransitionPotentialCandidate = countRoamScanThatFoundSSIDTransitionPotentialCandidate;
-    self->_countSSIDTransitionPotentialCandidatesInLastRoamScanNotInTransitionableSet = [v15 count];
-    self->_lastRoamScanContainsRoamCandidateCount = a6;
-    self->_lastRoamScanUniqueChannelsCount = a7;
-    self->_lastRoamScanUniqueBandsCount = a8;
+    self->_countSSIDTransitionPotentialCandidatesInLastRoamScanNotInTransitionableSet = [minusCandidatesCopy count];
+    self->_lastRoamScanContainsRoamCandidateCount = roamCandidates;
+    self->_lastRoamScanUniqueChannelsCount = channels;
+    self->_lastRoamScanUniqueBandsCount = bands;
   }
 }
 
-- (void)updateUsbInsertedDuration:(id)a3
+- (void)updateUsbInsertedDuration:(id)duration
 {
-  v4 = a3;
-  v5 = v4;
+  durationCopy = duration;
+  v5 = durationCopy;
   lastUsbStatusChange = self->_lastUsbStatusChange;
   if (!lastUsbStatusChange)
   {
     lastUsbStatusChange = self->_sessionStartTime;
   }
 
-  [(NSDate *)v4 timeIntervalSinceDate:lastUsbStatusChange];
+  [(NSDate *)durationCopy timeIntervalSinceDate:lastUsbStatusChange];
   self->_usbInsertedDuration = v7 + self->_usbInsertedDuration;
   v8 = self->_lastUsbStatusChange;
   self->_lastUsbStatusChange = v5;
 }
 
-- (void)updateUsbStatus:(BOOL)a3 currentDevices:(id)a4
+- (void)updateUsbStatus:(BOOL)status currentDevices:(id)devices
 {
-  v8 = a4;
+  devicesCopy = devices;
   v5 = [MEMORY[0x277CBEAA8] now];
-  v6 = [v8 count];
+  v6 = [devicesCopy count];
   if (self->_lastUsbStatusChange)
   {
     if (!self->_anyUsbDeviceConnected && v6)
@@ -4235,21 +4235,21 @@ LABEL_18:
     }
   }
 
-  else if (![v8 count])
+  else if (![devicesCopy count])
   {
     goto LABEL_7;
   }
 
   [(WiFiUsageSession *)self updateUsbInsertedDuration:v5];
 LABEL_7:
-  self->_anyUsbDeviceConnected = [v8 count] != 0;
+  self->_anyUsbDeviceConnected = [devicesCopy count] != 0;
   ++self->_usbDeviceEventCount;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(WiFiUsageSession *)self sessionName];
+  sessionName = [(WiFiUsageSession *)self sessionName];
   if (self->_isSessionActive)
   {
     v5 = @"YES";
@@ -4262,8 +4262,8 @@ LABEL_7:
 
   sessionStartTime = self->_sessionStartTime;
   sessionEndTime = self->_sessionEndTime;
-  v8 = [(WiFiUsageNetworkDetails *)self->_networkDetails networkName];
-  v9 = [v3 stringWithFormat:@"%@ session (active:%@ start:%@ end:%@ network:%@)", v4, v5, sessionStartTime, sessionEndTime, v8];
+  networkName = [(WiFiUsageNetworkDetails *)self->_networkDetails networkName];
+  v9 = [v3 stringWithFormat:@"%@ session (active:%@ start:%@ end:%@ network:%@)", sessionName, v5, sessionStartTime, sessionEndTime, networkName];
 
   return v9;
 }
@@ -4271,8 +4271,8 @@ LABEL_7:
 - (id)redactedDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(WiFiUsageSession *)self sessionName];
-  v5 = v4;
+  sessionName = [(WiFiUsageSession *)self sessionName];
+  v5 = sessionName;
   if (self->_isSessionActive)
   {
     v6 = @"YES";
@@ -4284,20 +4284,20 @@ LABEL_7:
   }
 
   sessionStartTime = self->_sessionStartTime;
-  v8 = [v3 stringWithFormat:@"%@ session (active:%@ start:%@ end:%@ network:<REDACTED>)", v4, v6, sessionStartTime, self->_sessionEndTime];
+  v8 = [v3 stringWithFormat:@"%@ session (active:%@ start:%@ end:%@ network:<REDACTED>)", sessionName, v6, sessionStartTime, self->_sessionEndTime];
 
   return v8;
 }
 
-- (void)tallyAssociatedDuration:(id)a3
+- (void)tallyAssociatedDuration:(id)duration
 {
   lastLinkStateChangedTime = self->_lastLinkStateChangedTime;
   if (lastLinkStateChangedTime)
   {
     sessionStartTime = self->_sessionStartTime;
-    v6 = a3;
+    durationCopy = duration;
     v7 = [(NSDate *)lastLinkStateChangedTime laterDate:sessionStartTime];
-    [v6 timeIntervalSinceDate:v7];
+    [durationCopy timeIntervalSinceDate:v7];
     v9 = v8;
 
     self->_associatedDuration = v9 + self->_associatedDuration;
@@ -4306,17 +4306,17 @@ LABEL_7:
   }
 }
 
-- (void)tallyInfraScoreDuration:(unint64_t)a3 until:(id)a4
+- (void)tallyInfraScoreDuration:(unint64_t)duration until:(id)until
 {
-  v6 = a4;
+  untilCopy = until;
   inAWDL_BestInfraScore = self->_inAWDL_BestInfraScore;
   if (self->_inAWDL_lastInfraScore == inAWDL_BestInfraScore)
   {
     if (self->_lastAWDLSequenceUpdate)
     {
-      v11 = v6;
-      [v6 timeIntervalSinceDate:?];
-      v6 = v11;
+      v11 = untilCopy;
+      [untilCopy timeIntervalSinceDate:?];
+      untilCopy = v11;
       self->_inAWDL_BestInfraScoreDuration = v8 + self->_inAWDL_BestInfraScoreDuration;
       inAWDL_BestInfraScore = self->_inAWDL_BestInfraScore;
     }
@@ -4327,9 +4327,9 @@ LABEL_7:
     }
   }
 
-  if (inAWDL_BestInfraScore < a3 || !self->_lastAWDLSequenceUpdate)
+  if (inAWDL_BestInfraScore < duration || !self->_lastAWDLSequenceUpdate)
   {
-    self->_inAWDL_BestInfraScore = a3;
+    self->_inAWDL_BestInfraScore = duration;
     self->_inAWDL_BestInfraScoreDuration = 0.0;
   }
 
@@ -4338,9 +4338,9 @@ LABEL_7:
   {
     if (self->_lastAWDLSequenceUpdate)
     {
-      v12 = v6;
-      [v6 timeIntervalSinceDate:?];
-      v6 = v12;
+      v12 = untilCopy;
+      [untilCopy timeIntervalSinceDate:?];
+      untilCopy = v12;
       self->_inAWDL_WorstInfraScoreDuration = v10 + self->_inAWDL_WorstInfraScoreDuration;
       inAWDL_WorstInfraScore = self->_inAWDL_WorstInfraScore;
     }
@@ -4351,162 +4351,162 @@ LABEL_7:
     }
   }
 
-  if (inAWDL_WorstInfraScore > a3 || !self->_lastAWDLSequenceUpdate)
+  if (inAWDL_WorstInfraScore > duration || !self->_lastAWDLSequenceUpdate)
   {
-    self->_inAWDL_WorstInfraScore = a3;
+    self->_inAWDL_WorstInfraScore = duration;
     self->_inAWDL_WorstInfraScoreDuration = 0.0;
   }
 
-  self->_inAWDL_lastInfraScore = a3;
+  self->_inAWDL_lastInfraScore = duration;
 }
 
-- (void)tallyP2PScoreDuration:(double)a3 until:(id)a4
+- (void)tallyP2PScoreDuration:(double)duration until:(id)until
 {
-  v6 = a4;
+  untilCopy = until;
   inAWDL_BestP2PScore = self->_inAWDL_BestP2PScore;
   if (self->_inAWDL_lastP2PScore == inAWDL_BestP2PScore && self->_lastAWDLSequenceUpdate)
   {
-    v11 = v6;
-    [v6 timeIntervalSinceDate:?];
-    v6 = v11;
+    v11 = untilCopy;
+    [untilCopy timeIntervalSinceDate:?];
+    untilCopy = v11;
     self->_inAWDL_BestP2PScoreDuration = v8 + self->_inAWDL_BestP2PScoreDuration;
     inAWDL_BestP2PScore = self->_inAWDL_BestP2PScore;
   }
 
-  if (inAWDL_BestP2PScore < a3 || !self->_lastAWDLSequenceUpdate)
+  if (inAWDL_BestP2PScore < duration || !self->_lastAWDLSequenceUpdate)
   {
-    self->_inAWDL_BestP2PScore = a3;
+    self->_inAWDL_BestP2PScore = duration;
     self->_inAWDL_BestP2PScoreDuration = 0.0;
   }
 
   inAWDL_WorstP2PScore = self->_inAWDL_WorstP2PScore;
   if (self->_inAWDL_lastP2PScore == inAWDL_WorstP2PScore && self->_lastAWDLSequenceUpdate)
   {
-    v12 = v6;
-    [v6 timeIntervalSinceDate:?];
-    v6 = v12;
+    v12 = untilCopy;
+    [untilCopy timeIntervalSinceDate:?];
+    untilCopy = v12;
     self->_inAWDL_WorstP2PScoreDuration = v10 + self->_inAWDL_WorstP2PScoreDuration;
     inAWDL_WorstP2PScore = self->_inAWDL_WorstP2PScore;
   }
 
-  if (inAWDL_WorstP2PScore > a3 || !self->_lastAWDLSequenceUpdate)
+  if (inAWDL_WorstP2PScore > duration || !self->_lastAWDLSequenceUpdate)
   {
-    self->_inAWDL_WorstP2PScore = a3;
+    self->_inAWDL_WorstP2PScore = duration;
     self->_inAWDL_WorstP2PScoreDuration = 0.0;
   }
 
-  self->_inAWDL_lastP2PScore = a3;
+  self->_inAWDL_lastP2PScore = duration;
 }
 
-- (void)updateScanForwardStats:(id)a3
+- (void)updateScanForwardStats:(id)stats
 {
-  v21 = a3;
-  v4 = [v21 objectForKey:@"SCAN_FWD_STATS_BSS_AWAKE_CNT"];
+  statsCopy = stats;
+  v4 = [statsCopy objectForKey:@"SCAN_FWD_STATS_BSS_AWAKE_CNT"];
   v5 = v4;
   if (v4)
   {
     self->_forwardedBssInwakeCount += [v4 unsignedIntegerValue];
   }
 
-  v6 = [v21 objectForKey:@"SCAN_FWD_STATS_BSS_SLEEP_CNT"];
+  v6 = [statsCopy objectForKey:@"SCAN_FWD_STATS_BSS_SLEEP_CNT"];
 
   if (v6)
   {
     self->_forwardedBssInSleepCount += [v6 unsignedIntegerValue];
   }
 
-  v7 = [v21 objectForKey:@"SCAN_FWD_STATS_HOST_SCAN_CNT"];
+  v7 = [statsCopy objectForKey:@"SCAN_FWD_STATS_HOST_SCAN_CNT"];
 
   if (v7)
   {
     self->_hostScanTriggersCount += [v7 unsignedIntegerValue];
   }
 
-  v8 = [v21 objectForKey:@"SCAN_FWD_STATS_ROAM_SCAN_CNT"];
+  v8 = [statsCopy objectForKey:@"SCAN_FWD_STATS_ROAM_SCAN_CNT"];
 
   if (v8)
   {
     self->_roamScanTriggersCount += [v8 unsignedIntegerValue];
   }
 
-  v9 = [v21 objectForKey:@"SCAN_FWD_STATS_PNO_SCAN_CNT"];
+  v9 = [statsCopy objectForKey:@"SCAN_FWD_STATS_PNO_SCAN_CNT"];
 
   if (v9)
   {
     self->_pnoScanTriggersCount += [v9 unsignedIntegerValue];
   }
 
-  v10 = [v21 objectForKey:@"SCAN_FWD_STATS_EPNO_SCAN_CNT"];
+  v10 = [statsCopy objectForKey:@"SCAN_FWD_STATS_EPNO_SCAN_CNT"];
 
   if (v10)
   {
     self->_epnoScanTriggersCount += [v10 unsignedIntegerValue];
   }
 
-  v11 = [v21 objectForKey:@"SCAN_FWD_STATS_CUR_BSS_AWAKE_CNT"];
+  v11 = [statsCopy objectForKey:@"SCAN_FWD_STATS_CUR_BSS_AWAKE_CNT"];
 
   if (v11)
   {
     self->_currentBssMsgInWakeCount += [v11 unsignedIntegerValue];
   }
 
-  v12 = [v21 objectForKey:@"SCAN_FWD_STATS_CUR_BSS_SLEEP_CNT"];
+  v12 = [statsCopy objectForKey:@"SCAN_FWD_STATS_CUR_BSS_SLEEP_CNT"];
 
   if (v12)
   {
     self->_currentBssMsgInSleepCount += [v12 unsignedIntegerValue];
   }
 
-  v13 = [v21 objectForKey:@"SCAN_FWD_STATS_SCAN_DATA_AWAKE_CNT"];
+  v13 = [statsCopy objectForKey:@"SCAN_FWD_STATS_SCAN_DATA_AWAKE_CNT"];
 
   if (v13)
   {
     self->_scanDataMsgInWakeCount += [v13 unsignedIntegerValue];
   }
 
-  v14 = [v21 objectForKey:@"SCAN_FWD_STATS_SCAN_DATA_SLEEP_CNT"];
+  v14 = [statsCopy objectForKey:@"SCAN_FWD_STATS_SCAN_DATA_SLEEP_CNT"];
 
   if (v14)
   {
     self->_scanDataMsgInSleepCount += [v14 unsignedIntegerValue];
   }
 
-  v15 = [v21 objectForKey:@"SCAN_FWD_STATS_SPMI_MSG_AWAKE_CNT"];
+  v15 = [statsCopy objectForKey:@"SCAN_FWD_STATS_SPMI_MSG_AWAKE_CNT"];
 
   if (v15)
   {
     self->_spmiMsgInAwakeCount += [v15 unsignedIntegerValue];
   }
 
-  v16 = [v21 objectForKey:@"SCAN_FWD_STATS_SPMI_MSG_SLEEP_CNT"];
+  v16 = [statsCopy objectForKey:@"SCAN_FWD_STATS_SPMI_MSG_SLEEP_CNT"];
 
   if (v16)
   {
     self->_spmiMsgInSleepCount += [v16 unsignedIntegerValue];
   }
 
-  v17 = [v21 objectForKey:@"SCAN_FWD_STATS_SPMI_MSG_DROP_RSSI_CNT"];
+  v17 = [statsCopy objectForKey:@"SCAN_FWD_STATS_SPMI_MSG_DROP_RSSI_CNT"];
 
   if (v17)
   {
     self->_spmiMsgDropRssiFilterCount += [v17 unsignedIntegerValue];
   }
 
-  v18 = [v21 objectForKey:@"SCAN_FWD_STATS_SPMI_MSG_DROP_MAX_CNT"];
+  v18 = [statsCopy objectForKey:@"SCAN_FWD_STATS_SPMI_MSG_DROP_MAX_CNT"];
 
   if (v18)
   {
     self->_spmiMsgDropMaxFilterCount += [v18 unsignedIntegerValue];
   }
 
-  v19 = [v21 objectForKey:@"SCAN_FWD_STATS_SPMI_MSG_DROP_FAIL_CNT"];
+  v19 = [statsCopy objectForKey:@"SCAN_FWD_STATS_SPMI_MSG_DROP_FAIL_CNT"];
 
   if (v19)
   {
     self->_spmiMsgDropSpmiFailCount += [v19 unsignedIntegerValue];
   }
 
-  v20 = [v21 objectForKey:@"SCAN_FWD_STATS_BSS_DROP_LOW_MEM_CNT"];
+  v20 = [statsCopy objectForKey:@"SCAN_FWD_STATS_BSS_DROP_LOW_MEM_CNT"];
 
   if (v20)
   {
@@ -4524,17 +4524,17 @@ LABEL_7:
     result = 0;
     if (v6)
     {
-      v7 = [(WiFiUsageSession *)self sessionName];
-      v8 = [(WiFiUsageSession *)self metricName];
-      v9 = [(WiFiUsageSession *)self ca_config];
+      sessionName = [(WiFiUsageSession *)self sessionName];
+      metricName = [(WiFiUsageSession *)self metricName];
+      ca_config = [(WiFiUsageSession *)self ca_config];
       v10 = 138413058;
-      v11 = v7;
+      v11 = sessionName;
       v12 = 2080;
       v13 = "[WiFiUsageSession canSubmitToCA]";
       v14 = 2112;
-      v15 = v8;
+      v15 = metricName;
       v16 = 2112;
-      v17 = v9;
+      v17 = ca_config;
       _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%@ %s - skipping %@ submission (%@)", &v10, 0x2Au);
 
       result = 0;
@@ -4558,10 +4558,10 @@ LABEL_7:
   return self;
 }
 
-- (void)setBandUsageDuration:(id *)a3
+- (void)setBandUsageDuration:(id *)duration
 {
-  v3 = *a3->var0;
-  *&self->_bandUsageDuration.valueByBand[2] = *&a3->var0[2];
+  v3 = *duration->var0;
+  *&self->_bandUsageDuration.valueByBand[2] = *&duration->var0[2];
   *self->_bandUsageDuration.valueByBand = v3;
 }
 
@@ -4573,10 +4573,10 @@ LABEL_7:
   return self;
 }
 
-- (void)setStrongestRSSICountByBand:(id *)a3
+- (void)setStrongestRSSICountByBand:(id *)band
 {
-  v3 = *a3->var0;
-  *&self->_strongestRSSICountByBand.valueByBand[2] = *&a3->var0[2];
+  v3 = *band->var0;
+  *&self->_strongestRSSICountByBand.valueByBand[2] = *&band->var0[2];
   *self->_strongestRSSICountByBand.valueByBand = v3;
 }
 
@@ -4588,10 +4588,10 @@ LABEL_7:
   return self;
 }
 
-- (void)setStrongestRSSIByBand:(id *)a3
+- (void)setStrongestRSSIByBand:(id *)band
 {
-  v3 = *a3->var0;
-  *&self->_strongestRSSIByBand.valueByBand[2] = *&a3->var0[2];
+  v3 = *band->var0;
+  *&self->_strongestRSSIByBand.valueByBand[2] = *&band->var0[2];
   *self->_strongestRSSIByBand.valueByBand = v3;
 }
 
@@ -4608,15 +4608,15 @@ LABEL_7:
   return self;
 }
 
-- (void)setRoamNeighsSmllstCurrentToBestRssiByBandTransition:(id *)a3
+- (void)setRoamNeighsSmllstCurrentToBestRssiByBandTransition:(id *)transition
 {
-  v3 = *&a3->var0[0][0];
-  *&self->_roamNeighsSmllstCurrentToBestRssiByBandTransition.valueByBands[0][2] = *&a3->var0[0][2];
+  v3 = *&transition->var0[0][0];
+  *&self->_roamNeighsSmllstCurrentToBestRssiByBandTransition.valueByBands[0][2] = *&transition->var0[0][2];
   *&self->_roamNeighsSmllstCurrentToBestRssiByBandTransition.valueByBands[0][0] = v3;
-  v4 = *&a3->var0[1][1];
-  v5 = *&a3->var0[2][0];
-  v6 = *&a3->var0[2][2];
-  *&self->_roamNeighsSmllstCurrentToBestRssiByBandTransition.valid[2][2] = *&a3->var1[2][2];
+  v4 = *&transition->var0[1][1];
+  v5 = *&transition->var0[2][0];
+  v6 = *&transition->var0[2][2];
+  *&self->_roamNeighsSmllstCurrentToBestRssiByBandTransition.valid[2][2] = *&transition->var1[2][2];
   *&self->_roamNeighsSmllstCurrentToBestRssiByBandTransition.valueByBands[2][2] = v6;
   *&self->_roamNeighsSmllstCurrentToBestRssiByBandTransition.valueByBands[2][0] = v5;
   *&self->_roamNeighsSmllstCurrentToBestRssiByBandTransition.valueByBands[1][1] = v4;
@@ -4635,14 +4635,14 @@ LABEL_7:
   return self;
 }
 
-- (void)setRoamNeighsLrgstCurrentToBestRssiByBandTransition:(id *)a3
+- (void)setRoamNeighsLrgstCurrentToBestRssiByBandTransition:(id *)transition
 {
-  v3 = *&a3->var0[1][1];
-  v4 = *&a3->var0[2][0];
-  v5 = *&a3->var0[2][2];
-  *&self->_roamNeighsLrgstCurrentToBestRssiByBandTransition.valid[2][2] = *&a3->var1[2][2];
-  v6 = *&a3->var0[0][2];
-  *&self->_roamNeighsLrgstCurrentToBestRssiByBandTransition.valueByBands[0][0] = *&a3->var0[0][0];
+  v3 = *&transition->var0[1][1];
+  v4 = *&transition->var0[2][0];
+  v5 = *&transition->var0[2][2];
+  *&self->_roamNeighsLrgstCurrentToBestRssiByBandTransition.valid[2][2] = *&transition->var1[2][2];
+  v6 = *&transition->var0[0][2];
+  *&self->_roamNeighsLrgstCurrentToBestRssiByBandTransition.valueByBands[0][0] = *&transition->var0[0][0];
   *&self->_roamNeighsLrgstCurrentToBestRssiByBandTransition.valueByBands[0][2] = v6;
   *&self->_roamNeighsLrgstCurrentToBestRssiByBandTransition.valueByBands[2][0] = v4;
   *&self->_roamNeighsLrgstCurrentToBestRssiByBandTransition.valueByBands[2][2] = v5;
@@ -4662,15 +4662,15 @@ LABEL_7:
   return self;
 }
 
-- (void)setRoamNeighsSmllstCurrentToNextBestRssiByBandTransition:(id *)a3
+- (void)setRoamNeighsSmllstCurrentToNextBestRssiByBandTransition:(id *)transition
 {
-  v3 = *&a3->var0[0][0];
-  *&self->_roamNeighsSmllstCurrentToNextBestRssiByBandTransition.valueByBands[0][2] = *&a3->var0[0][2];
+  v3 = *&transition->var0[0][0];
+  *&self->_roamNeighsSmllstCurrentToNextBestRssiByBandTransition.valueByBands[0][2] = *&transition->var0[0][2];
   *&self->_roamNeighsSmllstCurrentToNextBestRssiByBandTransition.valueByBands[0][0] = v3;
-  v4 = *&a3->var0[1][1];
-  v5 = *&a3->var0[2][0];
-  v6 = *&a3->var0[2][2];
-  *&self->_roamNeighsSmllstCurrentToNextBestRssiByBandTransition.valid[2][2] = *&a3->var1[2][2];
+  v4 = *&transition->var0[1][1];
+  v5 = *&transition->var0[2][0];
+  v6 = *&transition->var0[2][2];
+  *&self->_roamNeighsSmllstCurrentToNextBestRssiByBandTransition.valid[2][2] = *&transition->var1[2][2];
   *&self->_roamNeighsSmllstCurrentToNextBestRssiByBandTransition.valueByBands[2][2] = v6;
   *&self->_roamNeighsSmllstCurrentToNextBestRssiByBandTransition.valueByBands[2][0] = v5;
   *&self->_roamNeighsSmllstCurrentToNextBestRssiByBandTransition.valueByBands[1][1] = v4;
@@ -4689,14 +4689,14 @@ LABEL_7:
   return self;
 }
 
-- (void)setRoamNeighsLrgstCurrentToNextBestRssiByBandTransition:(id *)a3
+- (void)setRoamNeighsLrgstCurrentToNextBestRssiByBandTransition:(id *)transition
 {
-  v3 = *&a3->var0[1][1];
-  v4 = *&a3->var0[2][0];
-  v5 = *&a3->var0[2][2];
-  *&self->_roamNeighsLrgstCurrentToNextBestRssiByBandTransition.valid[2][2] = *&a3->var1[2][2];
-  v6 = *&a3->var0[0][2];
-  *&self->_roamNeighsLrgstCurrentToNextBestRssiByBandTransition.valueByBands[0][0] = *&a3->var0[0][0];
+  v3 = *&transition->var0[1][1];
+  v4 = *&transition->var0[2][0];
+  v5 = *&transition->var0[2][2];
+  *&self->_roamNeighsLrgstCurrentToNextBestRssiByBandTransition.valid[2][2] = *&transition->var1[2][2];
+  v6 = *&transition->var0[0][2];
+  *&self->_roamNeighsLrgstCurrentToNextBestRssiByBandTransition.valueByBands[0][0] = *&transition->var0[0][0];
   *&self->_roamNeighsLrgstCurrentToNextBestRssiByBandTransition.valueByBands[0][2] = v6;
   *&self->_roamNeighsLrgstCurrentToNextBestRssiByBandTransition.valueByBands[2][0] = v4;
   *&self->_roamNeighsLrgstCurrentToNextBestRssiByBandTransition.valueByBands[2][2] = v5;

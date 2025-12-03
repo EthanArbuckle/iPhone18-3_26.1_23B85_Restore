@@ -1,26 +1,26 @@
 @interface DYMTLDerivedCounterSupport
-+ (void)mergeDictionaries:(id)a3 right:(id)a4;
-- (BOOL)addAnalysisWithPrefix:(id)a3 andScriptPrefix:(id)a4;
++ (void)mergeDictionaries:(id)dictionaries right:(id)right;
+- (BOOL)addAnalysisWithPrefix:(id)prefix andScriptPrefix:(id)scriptPrefix;
 - (DYMTLDerivedCounterSupport)init;
-- (DYMTLDerivedCounterSupport)initWithAcceleratorPort:(unsigned int)a3;
-- (DYMTLDerivedCounterSupport)initWithMTLDevice:(id)a3;
+- (DYMTLDerivedCounterSupport)initWithAcceleratorPort:(unsigned int)port;
+- (DYMTLDerivedCounterSupport)initWithMTLDevice:(id)device;
 - (id)_addGPUTimeEntry;
 - (void)_addGPUTimeEntry;
-- (void)_loadAnalysis:(id)a3 vendorStringNames:(id)a4 vendorScriptPrefix:(id)a5;
+- (void)_loadAnalysis:(id)analysis vendorStringNames:(id)names vendorScriptPrefix:(id)prefix;
 @end
 
 @implementation DYMTLDerivedCounterSupport
 
-+ (void)mergeDictionaries:(id)a3 right:(id)a4
++ (void)mergeDictionaries:(id)dictionaries right:(id)right
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v22 = a4;
-  v6 = [v5 objectForKeyedSubscript:@"Version"];
+  dictionariesCopy = dictionaries;
+  rightCopy = right;
+  v6 = [dictionariesCopy objectForKeyedSubscript:@"Version"];
   if (v6)
   {
-    v7 = [v5 objectForKeyedSubscript:@"Version"];
-    v8 = [v22 objectForKeyedSubscript:@"Version"];
+    v7 = [dictionariesCopy objectForKeyedSubscript:@"Version"];
+    v8 = [rightCopy objectForKeyedSubscript:@"Version"];
     v9 = [v7 isEqualToString:v8];
 
     if ((v9 & 1) == 0)
@@ -35,7 +35,7 @@
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v10 = v22;
+  v10 = rightCopy;
   v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (!v11)
   {
@@ -54,11 +54,11 @@
       }
 
       v15 = *(*(&v23 + 1) + 8 * i);
-      v16 = [v5 objectForKey:v15];
+      v16 = [dictionariesCopy objectForKey:v15];
       v17 = [v10 objectForKey:v15];
       if (!v16)
       {
-        [v5 setObject:v17 forKeyedSubscript:v15];
+        [dictionariesCopy setObject:v17 forKeyedSubscript:v15];
         goto LABEL_17;
       }
 
@@ -103,10 +103,10 @@ LABEL_21:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)addAnalysisWithPrefix:(id)a3 andScriptPrefix:(id)a4
+- (BOOL)addAnalysisWithPrefix:(id)prefix andScriptPrefix:(id)scriptPrefix
 {
-  v6 = a4;
-  v7 = [a3 stringByAppendingString:@"-counters.plist"];
+  scriptPrefixCopy = scriptPrefix;
+  v7 = [prefix stringByAppendingString:@"-counters.plist"];
   v31 = 0;
   v8 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:v7 options:0 error:&v31];
   v9 = v31;
@@ -127,7 +127,7 @@ LABEL_21:
       [DYMTLDerivedCounterSupport mergeDictionaries:self->_counterDictionary right:v10];
     }
 
-    v14 = [v6 stringByAppendingString:@"-analysis.js"];
+    v14 = [scriptPrefixCopy stringByAppendingString:@"-analysis.js"];
     v29 = 0;
     v15 = [objc_alloc(MEMORY[0x277CCACA8]) initWithContentsOfFile:v14 encoding:4 error:&v29];
     v16 = v29;
@@ -156,7 +156,7 @@ LABEL_21:
       self->_analysisScript = v20;
     }
 
-    v21 = [v6 stringByAppendingString:@"-derived.js"];
+    v21 = [scriptPrefixCopy stringByAppendingString:@"-derived.js"];
 
     v28 = 0;
     v22 = [objc_alloc(MEMORY[0x277CCACA8]) initWithContentsOfFile:v21 encoding:4 error:&v28];
@@ -188,15 +188,15 @@ LABEL_21:
   return v8 != 0;
 }
 
-- (void)_loadAnalysis:(id)a3 vendorStringNames:(id)a4 vendorScriptPrefix:(id)a5
+- (void)_loadAnalysis:(id)analysis vendorStringNames:(id)names vendorScriptPrefix:(id)prefix
 {
   v42 = *MEMORY[0x277D85DE8];
-  v31 = a3;
-  v25 = a4;
-  v26 = a5;
+  analysisCopy = analysis;
+  namesCopy = names;
+  prefixCopy = prefix;
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
   counterDictionary = self->_counterDictionary;
-  v30 = self;
+  selfCopy = self;
   self->_counterDictionary = v8;
 
   v38 = 0u;
@@ -217,15 +217,15 @@ LABEL_21:
         }
 
         v10 = *(*(&v36 + 1) + 8 * i);
-        if (v26 && ([MEMORY[0x277CCACA8] stringWithFormat:v10, v31, v26], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
+        if (prefixCopy && ([MEMORY[0x277CCACA8] stringWithFormat:v10, analysisCopy, prefixCopy], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
         {
           v28 = v11;
-          v12 = [v11 stringByStandardizingPath];
+          stringByStandardizingPath = [v11 stringByStandardizingPath];
         }
 
         else
         {
-          v12 = 0;
+          stringByStandardizingPath = 0;
           v28 = 0;
         }
 
@@ -233,7 +233,7 @@ LABEL_21:
         v35 = 0u;
         v32 = 0u;
         v33 = 0u;
-        v13 = v25;
+        v13 = namesCopy;
         v14 = [v13 countByEnumeratingWithState:&v32 objects:v40 count:16];
         if (v14)
         {
@@ -250,11 +250,11 @@ LABEL_12:
             v17 = *(*(&v32 + 1) + 8 * v16);
             if (([v17 containsString:@"autocorr"] & 1) == 0)
             {
-              v18 = [MEMORY[0x277CCACA8] stringWithFormat:v10, v31, v17];
-              v19 = [v18 stringByStandardizingPath];
-              v20 = v19;
-              v21 = v12 ? v12 : v19;
-              v22 = [(DYMTLDerivedCounterSupport *)v30 addAnalysisWithPrefix:v19 andScriptPrefix:v21];
+              v18 = [MEMORY[0x277CCACA8] stringWithFormat:v10, analysisCopy, v17];
+              stringByStandardizingPath2 = [v18 stringByStandardizingPath];
+              v20 = stringByStandardizingPath2;
+              v21 = stringByStandardizingPath ? stringByStandardizingPath : stringByStandardizingPath2;
+              v22 = [(DYMTLDerivedCounterSupport *)selfCopy addAnalysisWithPrefix:stringByStandardizingPath2 andScriptPrefix:v21];
 
               if (v22)
               {
@@ -312,9 +312,9 @@ LABEL_12:
   }
 }
 
-- (DYMTLDerivedCounterSupport)initWithMTLDevice:(id)a3
+- (DYMTLDerivedCounterSupport)initWithMTLDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = DYMTLDerivedCounterSupport;
   v5 = [(DYMTLDerivedCounterSupport *)&v9 init];
@@ -331,14 +331,14 @@ LABEL_12:
       break;
     }
 
-    v6 = [v4 baseObject];
+    baseObject = [deviceCopy baseObject];
 
-    v4 = v6;
+    deviceCopy = baseObject;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = -[DYMTLDerivedCounterSupport initWithAcceleratorPort:](v5, "initWithAcceleratorPort:", [v4 acceleratorPort]);
+    v5 = -[DYMTLDerivedCounterSupport initWithAcceleratorPort:](v5, "initWithAcceleratorPort:", [deviceCopy acceleratorPort]);
     v7 = v5;
   }
 
@@ -351,18 +351,18 @@ LABEL_6:
   return v7;
 }
 
-- (DYMTLDerivedCounterSupport)initWithAcceleratorPort:(unsigned int)a3
+- (DYMTLDerivedCounterSupport)initWithAcceleratorPort:(unsigned int)port
 {
   v23.receiver = self;
   v23.super_class = DYMTLDerivedCounterSupport;
   v4 = [(DYMTLDerivedCounterSupport *)&v23 init];
   if (v4)
   {
-    CFProperty = IORegistryEntryCreateCFProperty(a3, @"MetalPluginName", 0, 0);
+    CFProperty = IORegistryEntryCreateCFProperty(port, @"MetalPluginName", 0, 0);
     if (CFProperty)
     {
       objc_storeStrong(&v4->_metalPluginName, CFProperty);
-      v6 = IORegistryEntryCreateCFProperty(a3, @"MetalStatisticsName", 0, 0);
+      v6 = IORegistryEntryCreateCFProperty(port, @"MetalStatisticsName", 0, 0);
       if (v6)
       {
         v7 = v6;
@@ -401,16 +401,16 @@ LABEL_6:
       }
 
       v14 = MTLCreateSystemDefaultDevice();
-      v15 = [v14 name];
-      v16 = [v15 compare:@"Unknown Unknown"];
+      name = [v14 name];
+      v16 = [name compare:@"Unknown Unknown"];
 
       if (!v16 && [(__CFString *)v9 count])
       {
-        v17 = [(__CFString *)v9 firstObject];
-        v18 = [v17 rangeOfString:@"AGXMetalStatistics"];
-        if ([v17 rangeOfString:@"AGXMetalStatisticsExternal"] == 0x7FFFFFFFFFFFFFFFLL && v18 < objc_msgSend(v17, "length"))
+        firstObject = [(__CFString *)v9 firstObject];
+        v18 = [firstObject rangeOfString:@"AGXMetalStatistics"];
+        if ([firstObject rangeOfString:@"AGXMetalStatisticsExternal"] == 0x7FFFFFFFFFFFFFFFLL && v18 < objc_msgSend(firstObject, "length"))
         {
-          v19 = [v17 substringFromIndex:{objc_msgSend(@"AGXMetalStatistics", "length")}];
+          v19 = [firstObject substringFromIndex:{objc_msgSend(@"AGXMetalStatistics", "length")}];
           v20 = [@"AGXMetalStatisticsExternal" stringByAppendingString:v19];
 
           [(__CFString *)v9 addObject:v20];

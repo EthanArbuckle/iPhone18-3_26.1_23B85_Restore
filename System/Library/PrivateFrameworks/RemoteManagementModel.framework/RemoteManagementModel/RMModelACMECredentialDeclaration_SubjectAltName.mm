@@ -1,10 +1,10 @@
 @interface RMModelACMECredentialDeclaration_SubjectAltName
 + (NSSet)allowedPayloadKeys;
 + (id)buildRequiredOnly;
-+ (id)buildWithRfc822Name:(id)a3 dnsName:(id)a4 uniformResourceIdentifier:(id)a5 ntPrincipalName:(id)a6;
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
++ (id)buildWithRfc822Name:(id)name dnsName:(id)dnsName uniformResourceIdentifier:(id)identifier ntPrincipalName:(id)principalName;
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
 @end
 
 @implementation RMModelACMECredentialDeclaration_SubjectAltName
@@ -25,19 +25,19 @@
   return v4;
 }
 
-+ (id)buildWithRfc822Name:(id)a3 dnsName:(id)a4 uniformResourceIdentifier:(id)a5 ntPrincipalName:(id)a6
++ (id)buildWithRfc822Name:(id)name dnsName:(id)dnsName uniformResourceIdentifier:(id)identifier ntPrincipalName:(id)principalName
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  principalNameCopy = principalName;
+  identifierCopy = identifier;
+  dnsNameCopy = dnsName;
+  nameCopy = name;
   v13 = objc_opt_new();
-  [v13 setPayloadRfc822Name:v12];
+  [v13 setPayloadRfc822Name:nameCopy];
 
-  [v13 setPayloadDNSName:v11];
-  [v13 setPayloadUniformResourceIdentifier:v10];
+  [v13 setPayloadDNSName:dnsNameCopy];
+  [v13 setPayloadUniformResourceIdentifier:identifierCopy];
 
-  [v13 setPayloadNtPrincipalName:v9];
+  [v13 setPayloadNtPrincipalName:principalNameCopy];
 
   return v13;
 }
@@ -49,12 +49,12 @@
   return v2;
 }
 
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelACMECredentialDeclaration_SubjectAltName allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -62,35 +62,35 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"rfc822Name" forKeyPath:@"payloadRfc822Name" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"dNSName" forKeyPath:@"payloadDNSName" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"uniformResourceIdentifier" forKeyPath:@"payloadUniformResourceIdentifier" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"ntPrincipalName" forKeyPath:@"payloadNtPrincipalName" isRequired:0 defaultValue:0 error:a5];
+  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"rfc822Name" forKeyPath:@"payloadRfc822Name" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"dNSName" forKeyPath:@"payloadDNSName" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"uniformResourceIdentifier" forKeyPath:@"payloadUniformResourceIdentifier" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"ntPrincipalName" forKeyPath:@"payloadNtPrincipalName" isRequired:0 defaultValue:0 error:error];
   return v13;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelACMECredentialDeclaration_SubjectAltName *)self payloadRfc822Name];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"rfc822Name" value:v5 isRequired:0 defaultValue:0];
+  payloadRfc822Name = [(RMModelACMECredentialDeclaration_SubjectAltName *)self payloadRfc822Name];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"rfc822Name" value:payloadRfc822Name isRequired:0 defaultValue:0];
 
-  v6 = [(RMModelACMECredentialDeclaration_SubjectAltName *)self payloadDNSName];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"dNSName" value:v6 isRequired:0 defaultValue:0];
+  payloadDNSName = [(RMModelACMECredentialDeclaration_SubjectAltName *)self payloadDNSName];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"dNSName" value:payloadDNSName isRequired:0 defaultValue:0];
 
-  v7 = [(RMModelACMECredentialDeclaration_SubjectAltName *)self payloadUniformResourceIdentifier];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"uniformResourceIdentifier" value:v7 isRequired:0 defaultValue:0];
+  payloadUniformResourceIdentifier = [(RMModelACMECredentialDeclaration_SubjectAltName *)self payloadUniformResourceIdentifier];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"uniformResourceIdentifier" value:payloadUniformResourceIdentifier isRequired:0 defaultValue:0];
 
-  v8 = [(RMModelACMECredentialDeclaration_SubjectAltName *)self payloadNtPrincipalName];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"ntPrincipalName" value:v8 isRequired:0 defaultValue:0];
+  payloadNtPrincipalName = [(RMModelACMECredentialDeclaration_SubjectAltName *)self payloadNtPrincipalName];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"ntPrincipalName" value:payloadNtPrincipalName isRequired:0 defaultValue:0];
 
   v9 = [v4 copy];
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v14.receiver = self;
   v14.super_class = RMModelACMECredentialDeclaration_SubjectAltName;
-  v4 = [(RMModelPayloadBase *)&v14 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v14 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadRfc822Name copy];
   v6 = v4[2];
   v4[2] = v5;

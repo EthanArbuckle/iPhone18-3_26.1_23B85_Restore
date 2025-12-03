@@ -1,5 +1,5 @@
 @interface NSURL
-+ (uint64_t)setIOPolicy:(uint64_t)a1 type:(uint64_t)a2 scope:forBlock:;
++ (uint64_t)setIOPolicy:(uint64_t)policy type:(uint64_t)type scope:forBlock:;
 @end
 
 @implementation NSURL
@@ -366,7 +366,7 @@ LABEL_58:
   }
 }
 
-+ (uint64_t)setIOPolicy:(uint64_t)a1 type:(uint64_t)a2 scope:forBlock:
++ (uint64_t)setIOPolicy:(uint64_t)policy type:(uint64_t)type scope:forBlock:
 {
   v13 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -379,15 +379,15 @@ LABEL_58:
       _os_log_debug_impl(&dword_18075C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[NSURL setIOPolicy:] sandbox_check: current process does not allow iopolicy syscalls", buf, 2u);
     }
 
-    return (*(a2 + 16))(a2);
+    return (*(type + 16))(type);
   }
 
   v4 = getiopolicy_np(3, 1);
   if (v4 == 1)
   {
-    v6 = *(a2 + 16);
+    v6 = *(type + 16);
 
-    return v6(a2);
+    return v6(type);
   }
 
   else
@@ -406,11 +406,11 @@ LABEL_58:
         _os_log_error_impl(&dword_18075C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[NSURL setIOPolicy:] getiopolicy_np failed when setting policy: %d, type: %d, scope: %d", buf, 0x14u);
       }
 
-      return (*(a2 + 16))(a2);
+      return (*(type + 16))(type);
     }
 
     setiopolicy_np(3, 1, 1);
-    result = (*(a2 + 16))(a2);
+    result = (*(type + 16))(type);
     if ((v5 & 0x80000000) == 0)
     {
 

@@ -1,9 +1,9 @@
 @interface AVOutputDeviceCommunicationChannel
-- (AVOutputDeviceCommunicationChannel)initWithOutputDeviceCommunicationChannelImpl:(id)a3;
-- (void)communicationChannelImpl:(id)a3 didReceiveData:(id)a4;
-- (void)communicationChannelImplDidClose:(id)a3;
+- (AVOutputDeviceCommunicationChannel)initWithOutputDeviceCommunicationChannelImpl:(id)impl;
+- (void)communicationChannelImpl:(id)impl didReceiveData:(id)data;
+- (void)communicationChannelImplDidClose:(id)close;
 - (void)dealloc;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation AVOutputDeviceCommunicationChannel
@@ -15,7 +15,7 @@
   [(AVOutputDeviceCommunicationChannel *)&v3 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v7 = *MEMORY[0x1E69E9840];
   if (dword_1ED6F6B68)
@@ -25,11 +25,11 @@
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)communicationChannelImpl:(id)a3 didReceiveData:(id)a4
+- (void)communicationChannelImpl:(id)impl didReceiveData:(id)data
 {
   v12 = *MEMORY[0x1E69E9840];
   Weak = objc_loadWeak(&self->_delegate);
@@ -42,7 +42,7 @@
       fig_log_call_emit_and_clean_up_after_send_and_compose();
     }
 
-    [Weak communicationChannel:self didReceiveData:{a4, v10, v11}];
+    [Weak communicationChannel:self didReceiveData:{data, v10, v11}];
   }
 
   else if (dword_1ED6F6B68)
@@ -55,7 +55,7 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)communicationChannelImplDidClose:(id)a3
+- (void)communicationChannelImplDidClose:(id)close
 {
   v10 = *MEMORY[0x1E69E9840];
   Weak = objc_loadWeak(&self->_delegate);
@@ -81,12 +81,12 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (AVOutputDeviceCommunicationChannel)initWithOutputDeviceCommunicationChannelImpl:(id)a3
+- (AVOutputDeviceCommunicationChannel)initWithOutputDeviceCommunicationChannelImpl:(id)impl
 {
   v8.receiver = self;
   v8.super_class = AVOutputDeviceCommunicationChannel;
   v4 = [(AVOutputDeviceCommunicationChannel *)&v8 init];
-  if (v4 && (v5 = a3, (v4->_impl = v5) != 0))
+  if (v4 && (v5 = impl, (v4->_impl = v5) != 0))
   {
     [v5 setParentChannel:v4];
     v6 = v4;

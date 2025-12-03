@@ -1,20 +1,20 @@
 @interface MRIRRouteRecommendationContext
-+ (id)fromObject:(id)a3;
++ (id)fromObject:(id)object;
 - (MRIRRouteRecommendationContext)init;
-- (MRIRRouteRecommendationContext)initWithCandidateResults:(id)a3 contextIdentifier:(id)a4;
+- (MRIRRouteRecommendationContext)initWithCandidateResults:(id)results contextIdentifier:(id)identifier;
 @end
 
 @implementation MRIRRouteRecommendationContext
 
-+ (id)fromObject:(id)a3
++ (id)fromObject:(id)object
 {
-  v3 = a3;
-  v4 = sub_1A22287A0(v3);
+  objectCopy = object;
+  v4 = sub_1A22287A0(objectCopy);
 
   return v4;
 }
 
-- (MRIRRouteRecommendationContext)initWithCandidateResults:(id)a3 contextIdentifier:(id)a4
+- (MRIRRouteRecommendationContext)initWithCandidateResults:(id)results contextIdentifier:(id)identifier
 {
   type metadata accessor for RouteRecommendationCandidateResult();
   sub_1A2229900(&qword_1EB088B00, type metadata accessor for RouteRecommendationCandidateResult);

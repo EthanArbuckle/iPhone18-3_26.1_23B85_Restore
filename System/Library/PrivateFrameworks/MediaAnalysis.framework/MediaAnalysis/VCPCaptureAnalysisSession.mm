@@ -1,48 +1,48 @@
 @interface VCPCaptureAnalysisSession
-+ (id)aggregateAnalysisForTypes:(unint64_t)a3 withFramesMeta:(id)a4 properties:(id)a5;
-+ (id)analyzerForAnalysisTypes:(unint64_t)a3 withPreferredTransform:(CGAffineTransform *)a4 properties:(id)a5;
-+ (id)analyzerForMediaAnalysis:(unint64_t)a3 withProperties:(id)a4 andResultsHandler:(id)a5;
++ (id)aggregateAnalysisForTypes:(unint64_t)types withFramesMeta:(id)meta properties:(id)properties;
++ (id)analyzerForAnalysisTypes:(unint64_t)types withPreferredTransform:(CGAffineTransform *)transform properties:(id)properties;
++ (id)analyzerForMediaAnalysis:(unint64_t)analysis withProperties:(id)properties andResultsHandler:(id)handler;
 - (BOOL)finalizeAnalysis;
-- (BOOL)shouldCutAt:(id *)a3 stillPTS:(id *)a4 withCut:(BOOL)a5;
-- (BOOL)updatePreferredTransform:(const CGAffineTransform *)a3 properties:(id)a4;
-- (CGAffineTransform)flipTransform:(SEL)a3;
-- (CGAffineTransform)transformForAngle:(SEL)a3 pixelBuffer:(int)a4;
+- (BOOL)shouldCutAt:(id *)at stillPTS:(id *)s withCut:(BOOL)cut;
+- (BOOL)updatePreferredTransform:(const CGAffineTransform *)transform properties:(id)properties;
+- (CGAffineTransform)flipTransform:(SEL)transform;
+- (CGAffineTransform)transformForAngle:(SEL)angle pixelBuffer:(int)buffer;
 - (NSDictionary)aggregatedResults;
-- (VCPCaptureAnalysisSession)initWithAnalysisTypes:(unint64_t)a3 withPreferredTransform:(CGAffineTransform *)a4 withFocalLengthInPixels:(float)a5 withAnalysisQueue:(id)a6 withTurbo:(BOOL)a7;
-- (VCPCaptureAnalysisSession)initWithAudioAnalysisTypes:(unint64_t)a3 properties:(id)a4 andResultsHandler:(id)a5;
-- (double)rotateTransform:(uint64_t)a3 byAngle:(int)a4;
-- (id)analyzePixelBuffer:(__CVBuffer *)a3 withTimestamp:(id *)a4 andDuration:(id *)a5 properties:(id)a6 error:(id *)a7;
-- (int)analyzeFrameWithTimeRange:(id *)a3 analysisData:(id)a4;
-- (int)analyzePixelBuffer:(__CVBuffer *)a3 withTimestamp:(id *)a4 andDuration:(id *)a5 properties:(id)a6 completion:(id)a7;
-- (int)analyzeSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (int)prewarmWithProperties:(id)a3;
+- (VCPCaptureAnalysisSession)initWithAnalysisTypes:(unint64_t)types withPreferredTransform:(CGAffineTransform *)transform withFocalLengthInPixels:(float)pixels withAnalysisQueue:(id)queue withTurbo:(BOOL)turbo;
+- (VCPCaptureAnalysisSession)initWithAudioAnalysisTypes:(unint64_t)types properties:(id)properties andResultsHandler:(id)handler;
+- (double)rotateTransform:(uint64_t)transform byAngle:(int)angle;
+- (id)analyzePixelBuffer:(__CVBuffer *)buffer withTimestamp:(id *)timestamp andDuration:(id *)duration properties:(id)properties error:(id *)error;
+- (int)analyzeFrameWithTimeRange:(id *)range analysisData:(id)data;
+- (int)analyzePixelBuffer:(__CVBuffer *)buffer withTimestamp:(id *)timestamp andDuration:(id *)duration properties:(id)properties completion:(id)completion;
+- (int)analyzeSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (int)prewarmWithProperties:(id)properties;
 - (void)dealloc;
 @end
 
 @implementation VCPCaptureAnalysisSession
 
-- (VCPCaptureAnalysisSession)initWithAnalysisTypes:(unint64_t)a3 withPreferredTransform:(CGAffineTransform *)a4 withFocalLengthInPixels:(float)a5 withAnalysisQueue:(id)a6 withTurbo:(BOOL)a7
+- (VCPCaptureAnalysisSession)initWithAnalysisTypes:(unint64_t)types withPreferredTransform:(CGAffineTransform *)transform withFocalLengthInPixels:(float)pixels withAnalysisQueue:(id)queue withTurbo:(BOOL)turbo
 {
-  v7 = a7;
-  v13 = a6;
+  turboCopy = turbo;
+  queueCopy = queue;
   v63.receiver = self;
   v63.super_class = VCPCaptureAnalysisSession;
   v14 = [(VCPCaptureAnalysisSession *)&v63 init];
   v15 = v14;
   v16 = v14;
-  if (!v14 || (v14->_analysisTypes = a3, v14->_focalLengthInPixels = a5, objc_storeStrong(&v14->_analysisQueue, a6), v16->_preWarmed = 0, a3 != 4) && v16->_analysisQueue)
+  if (!v14 || (v14->_analysisTypes = types, v14->_focalLengthInPixels = pixels, objc_storeStrong(&v14->_analysisQueue, queue), v16->_preWarmed = 0, types != 4) && v16->_analysisQueue)
   {
     v17 = 0;
     goto LABEL_5;
   }
 
-  v20 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   aggregatedResults = v16->_aggregatedResults;
-  v16->_aggregatedResults = v20;
+  v16->_aggregatedResults = dictionary;
 
-  if ((a3 & 0x20) == 0 || (v22 = [VCPVideoFullFaceDetector alloc], v23 = *&a4->c, v60 = *&a4->a, v61 = v23, v62 = *&a4->tx, v24 = [(VCPVideoFullFaceDetector *)v22 initWithTransform:&v60], faceDetector = v16->_faceDetector, v16->_faceDetector = v24, faceDetector, (v17 = v16->_faceDetector) != 0) && (v26 = objc_alloc_init(VCPFrameAnalysisStats), frameStats = v16->_frameStats, v16->_frameStats = v26, frameStats, (v17 = v16->_frameStats) != 0))
+  if ((types & 0x20) == 0 || (v22 = [VCPVideoFullFaceDetector alloc], v23 = *&transform->c, v60 = *&transform->a, v61 = v23, v62 = *&transform->tx, v24 = [(VCPVideoFullFaceDetector *)v22 initWithTransform:&v60], faceDetector = v16->_faceDetector, v16->_faceDetector = v24, faceDetector, (v17 = v16->_faceDetector) != 0) && (v26 = objc_alloc_init(VCPFrameAnalysisStats), frameStats = v16->_frameStats, v16->_frameStats = v26, frameStats, (v17 = v16->_frameStats) != 0))
   {
-    if ((a3 & 0x200) == 0 || (v28 = [[VCPImageBlurAnalyzer alloc] initWithFaceResults:0 sdof:0], blurAnalyzer = v16->_blurAnalyzer, v16->_blurAnalyzer = v28, blurAnalyzer, (v17 = v16->_blurAnalyzer) != 0))
+    if ((types & 0x200) == 0 || (v28 = [[VCPImageBlurAnalyzer alloc] initWithFaceResults:0 sdof:0], blurAnalyzer = v16->_blurAnalyzer, v16->_blurAnalyzer = v28, blurAnalyzer, (v17 = v16->_blurAnalyzer) != 0))
     {
       analysisTypes = v16->_analysisTypes;
       if ((analysisTypes & 0x802) != 0)
@@ -96,7 +96,7 @@
 
       else if ((v39 & 4) != 0)
       {
-        v46 = [[VCPLightMotionAnalyzer alloc] initWithQueue:v15->_analysisQueue turbo:v7];
+        v46 = [[VCPLightMotionAnalyzer alloc] initWithQueue:v15->_analysisQueue turbo:turboCopy];
         lightMotionAnalyzer = v16->_lightMotionAnalyzer;
         v16->_lightMotionAnalyzer = v46;
 
@@ -120,39 +120,39 @@
         }
       }
 
-      if ((a3 & 0x400) != 0)
+      if ((types & 0x400) != 0)
       {
         v48 = objc_alloc_init(VCPSceneChangeAnalyzer);
         sceneChangeAnalyzer = v16->_sceneChangeAnalyzer;
         v16->_sceneChangeAnalyzer = v48;
       }
 
-      if ((a3 & 0x1000) != 0)
+      if ((types & 0x1000) != 0)
       {
         v50 = objc_alloc_init(VCPTrimAnalyzer);
         trimAnalyzer = v16->_trimAnalyzer;
         v16->_trimAnalyzer = v50;
       }
 
-      if ((a3 & 0x10000) != 0)
+      if ((types & 0x10000) != 0)
       {
         v52 = [[VCPImagePetsAnalyzer alloc] initWithMaxNumRegions:5];
         petsDetAnalyzer = v16->_petsDetAnalyzer;
         v16->_petsDetAnalyzer = v52;
       }
 
-      v54 = *&a4->a;
-      v55 = *&a4->tx;
-      *&v16->_preferredTransform.c = *&a4->c;
+      v54 = *&transform->a;
+      v55 = *&transform->tx;
+      *&v16->_preferredTransform.c = *&transform->c;
       *&v16->_preferredTransform.tx = v55;
       *&v16->_preferredTransform.a = v54;
       v16->_rotationAngleForFacePose = 0;
       v16->_rotator = 0;
       v16->_rotatorForFacePose = 0;
-      v56 = *&a4->c;
-      v60 = *&a4->a;
+      v56 = *&transform->c;
+      v60 = *&transform->a;
       v61 = v56;
-      v62 = *&a4->tx;
+      v62 = *&transform->tx;
       v57 = angleForTransform(&v60);
       v16->_preferredAngle = v57;
       v17 = v16;
@@ -182,10 +182,10 @@ LABEL_5:
   return v18;
 }
 
-- (int)prewarmWithProperties:(id)a3
+- (int)prewarmWithProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
   if (self->_preWarmed)
   {
     v6 = 0;
@@ -193,24 +193,24 @@ LABEL_5:
 
   else
   {
-    v7 = [v4 objectForKeyedSubscript:@"frameWidth"];
+    v7 = [propertiesCopy objectForKeyedSubscript:@"frameWidth"];
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 intValue];
+      intValue = [v7 intValue];
     }
 
     else
     {
-      v9 = 0;
+      intValue = 0;
     }
 
     v10 = [v5 objectForKeyedSubscript:@"frameHeight"];
     v11 = v10;
-    if (v10 && (v12 = [v10 intValue], v12) && v9)
+    if (v10 && (v12 = [v10 intValue], v12) && intValue)
     {
       lightMotionAnalyzer = self->_lightMotionAnalyzer;
-      if (!lightMotionAnalyzer || (v6 = [(VCPLightMotionAnalyzer *)lightMotionAnalyzer prewarmWithWidth:v9 height:v12]) == 0)
+      if (!lightMotionAnalyzer || (v6 = [(VCPLightMotionAnalyzer *)lightMotionAnalyzer prewarmWithWidth:intValue height:v12]) == 0)
       {
         v6 = 0;
         self->_preWarmed = 1;
@@ -232,13 +232,13 @@ LABEL_5:
   return v6;
 }
 
-+ (id)analyzerForAnalysisTypes:(unint64_t)a3 withPreferredTransform:(CGAffineTransform *)a4 properties:(id)a5
++ (id)analyzerForAnalysisTypes:(unint64_t)types withPreferredTransform:(CGAffineTransform *)transform properties:(id)properties
 {
-  v8 = a5;
-  v9 = v8;
-  if (v8)
+  propertiesCopy = properties;
+  v9 = propertiesCopy;
+  if (propertiesCopy)
   {
-    v10 = [v8 objectForKeyedSubscript:@"focalLengthInPixels"];
+    v10 = [propertiesCopy objectForKeyedSubscript:@"focalLengthInPixels"];
     v11 = v10;
     if (v10)
     {
@@ -256,57 +256,57 @@ LABEL_5:
     v17 = v16;
     if (v16)
     {
-      v14 = [v16 BOOLValue];
+      bOOLValue = [v16 BOOLValue];
     }
 
     else
     {
-      v14 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v14 = 0;
+    bOOLValue = 0;
     v15 = 0;
     v13 = 1000.0;
   }
 
-  v18 = [a1 alloc];
-  v19 = *&a4->c;
-  v22[0] = *&a4->a;
+  v18 = [self alloc];
+  v19 = *&transform->c;
+  v22[0] = *&transform->a;
   v22[1] = v19;
-  v23 = *&a4->tx;
-  v20 = [v18 initWithAnalysisTypes:a3 withPreferredTransform:v22 withFocalLengthInPixels:v15 withAnalysisQueue:v14 withTurbo:{COERCE_DOUBLE(__PAIR64__(DWORD1(v23), LODWORD(v13)))}];
+  v23 = *&transform->tx;
+  v20 = [v18 initWithAnalysisTypes:types withPreferredTransform:v22 withFocalLengthInPixels:v15 withAnalysisQueue:bOOLValue withTurbo:{COERCE_DOUBLE(__PAIR64__(DWORD1(v23), LODWORD(v13)))}];
 
   return v20;
 }
 
-+ (id)analyzerForMediaAnalysis:(unint64_t)a3 withProperties:(id)a4 andResultsHandler:(id)a5
++ (id)analyzerForMediaAnalysis:(unint64_t)analysis withProperties:(id)properties andResultsHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [[a1 alloc] initWithAudioAnalysisTypes:a3 properties:v8 andResultsHandler:v9];
+  propertiesCopy = properties;
+  handlerCopy = handler;
+  v10 = [[self alloc] initWithAudioAnalysisTypes:analysis properties:propertiesCopy andResultsHandler:handlerCopy];
 
   return v10;
 }
 
-- (VCPCaptureAnalysisSession)initWithAudioAnalysisTypes:(unint64_t)a3 properties:(id)a4 andResultsHandler:(id)a5
+- (VCPCaptureAnalysisSession)initWithAudioAnalysisTypes:(unint64_t)types properties:(id)properties andResultsHandler:(id)handler
 {
-  v5 = a3;
-  v7 = a5;
+  typesCopy = types;
+  handlerCopy = handler;
   v16.receiver = self;
   v16.super_class = VCPCaptureAnalysisSession;
   v8 = [(VCPCaptureAnalysisSession *)&v16 init];
   v9 = v8;
-  if (v5 < 0 && v8)
+  if (typesCopy < 0 && v8)
   {
     v10 = [VCPAudioAnalyzer alloc];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __85__VCPCaptureAnalysisSession_initWithAudioAnalysisTypes_properties_andResultsHandler___block_invoke;
     v14[3] = &unk_1E8350A48;
-    v15 = v7;
+    v15 = handlerCopy;
     v11 = [(VCPAudioAnalyzer *)v10 initWithAnalysisTypes:0x20000000000 forStreaming:0 andResultHandler:v14];
     audioAnalyzer = v9->_audioAnalyzer;
     v9->_audioAnalyzer = v11;
@@ -351,21 +351,21 @@ void __85__VCPCaptureAnalysisSession_initWithAudioAnalysisTypes_properties_andRe
   }
 }
 
-- (BOOL)updatePreferredTransform:(const CGAffineTransform *)a3 properties:(id)a4
+- (BOOL)updatePreferredTransform:(const CGAffineTransform *)transform properties:(id)properties
 {
-  v6 = a4;
-  if (a3)
+  propertiesCopy = properties;
+  if (transform)
   {
-    v7 = *&a3->c;
-    v14[0] = *&a3->a;
+    v7 = *&transform->c;
+    v14[0] = *&transform->a;
     v14[1] = v7;
-    v14[2] = *&a3->tx;
+    v14[2] = *&transform->tx;
     self->_preferredAngle = angleForTransform(v14);
   }
 
-  if (v6)
+  if (propertiesCopy)
   {
-    v8 = [v6 objectForKeyedSubscript:@"focalLengthInPixels"];
+    v8 = [propertiesCopy objectForKeyedSubscript:@"focalLengthInPixels"];
     v9 = v8;
     if (v8)
     {
@@ -391,14 +391,14 @@ void __85__VCPCaptureAnalysisSession_initWithAudioAnalysisTypes_properties_andRe
   return 1;
 }
 
-+ (id)aggregateAnalysisForTypes:(unint64_t)a3 withFramesMeta:(id)a4 properties:(id)a5
++ (id)aggregateAnalysisForTypes:(unint64_t)types withFramesMeta:(id)meta properties:(id)properties
 {
-  v5 = a3;
+  typesCopy = types;
   v11[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (v5)
+  metaCopy = meta;
+  if (typesCopy)
   {
-    [VCPLightMotionAnalyzer autoLiveMotionScore:v6];
+    [VCPLightMotionAnalyzer autoLiveMotionScore:metaCopy];
     v10 = @"aggSubjectMotionScore";
     v8 = [MEMORY[0x1E696AD98] numberWithFloat:?];
     v11[0] = v8;
@@ -434,7 +434,7 @@ void __85__VCPCaptureAnalysisSession_initWithAudioAnalysisTypes_properties_andRe
   [(VCPCaptureAnalysisSession *)&v5 dealloc];
 }
 
-- (CGAffineTransform)flipTransform:(SEL)a3
+- (CGAffineTransform)flipTransform:(SEL)transform
 {
   if (a4->tx != 0.0)
   {
@@ -460,7 +460,7 @@ void __85__VCPCaptureAnalysisSession_initWithAudioAnalysisTypes_properties_andRe
   return CGAffineTransformConcat(retstr, &t1, &v8);
 }
 
-- (CGAffineTransform)transformForAngle:(SEL)a3 pixelBuffer:(int)a4
+- (CGAffineTransform)transformForAngle:(SEL)angle pixelBuffer:(int)buffer
 {
   v6 = MEMORY[0x1E695EFD0];
   v7 = *(MEMORY[0x1E695EFD0] + 16);
@@ -471,7 +471,7 @@ void __85__VCPCaptureAnalysisSession_initWithAudioAnalysisTypes_properties_andRe
   {
     Width = CVPixelBufferGetWidth(a5);
     self = CVPixelBufferGetHeight(a5);
-    switch(a4)
+    switch(buffer)
     {
       case 270:
         *&retstr->a = xmmword_1C9F60790;
@@ -500,56 +500,56 @@ void __85__VCPCaptureAnalysisSession_initWithAudioAnalysisTypes_properties_andRe
   return self;
 }
 
-- (double)rotateTransform:(uint64_t)a3 byAngle:(int)a4
+- (double)rotateTransform:(uint64_t)transform byAngle:(int)angle
 {
-  switch(a4)
+  switch(angle)
   {
     case 270:
-      *&v4 = -a1.f32[1];
-      HIDWORD(v4) = a1.i32[0];
-      a1.i64[0] = v4;
+      *&v4 = -self.f32[1];
+      HIDWORD(v4) = self.i32[0];
+      self.i64[0] = v4;
       break;
     case 180:
-      a1.i64[0] = vnegq_f32(a1).u64[0];
+      self.i64[0] = vnegq_f32(self).u64[0];
       break;
     case 90:
-      a1.i64[0] = __PAIR64__(-a1.f32[0], a1.u32[1]);
+      self.i64[0] = __PAIR64__(-self.f32[0], self.u32[1]);
       break;
   }
 
-  return *a1.i64;
+  return *self.i64;
 }
 
-- (id)analyzePixelBuffer:(__CVBuffer *)a3 withTimestamp:(id *)a4 andDuration:(id *)a5 properties:(id)a6 error:(id *)a7
+- (id)analyzePixelBuffer:(__CVBuffer *)buffer withTimestamp:(id *)timestamp andDuration:(id *)duration properties:(id)properties error:(id *)error
 {
   v124[1] = *MEMORY[0x1E69E9840];
-  v10 = a6;
-  v11 = [MEMORY[0x1E695DF90] dictionary];
-  [v11 removeObjectForKey:@"quality"];
-  [v11 removeObjectForKey:@"subjectMotionScore"];
-  [v11 removeObjectForKey:@"interestingnessScore"];
-  [v11 removeObjectForKey:@"obstructionScore"];
-  [v11 removeObjectForKey:@"trackingScore"];
-  [v11 removeObjectForKey:@"petsDetection"];
+  propertiesCopy = properties;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary removeObjectForKey:@"quality"];
+  [dictionary removeObjectForKey:@"subjectMotionScore"];
+  [dictionary removeObjectForKey:@"interestingnessScore"];
+  [dictionary removeObjectForKey:@"obstructionScore"];
+  [dictionary removeObjectForKey:@"trackingScore"];
+  [dictionary removeObjectForKey:@"petsDetection"];
   v121 = 0;
   v122 = 0;
-  v114 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   x = *MEMORY[0x1E695F058];
   y = *(MEMORY[0x1E695F058] + 8);
   width = *(MEMORY[0x1E695F058] + 16);
   height = *(MEMORY[0x1E695F058] + 24);
   v120 = 0;
-  if (!a3)
+  if (!buffer)
   {
     v28 = 0;
     v17 = 0;
     v16 = 0;
     v29 = 0;
-    v30 = -50;
+    height = -50;
     goto LABEL_57;
   }
 
-  if (!v10)
+  if (!propertiesCopy)
   {
     v110 = 0;
     v17 = 0;
@@ -557,8 +557,8 @@ void __85__VCPCaptureAnalysisSession_initWithAudioAnalysisTypes_properties_andRe
     goto LABEL_20;
   }
 
-  v16 = [v10 objectForKeyedSubscript:@"faceBounds"];
-  v17 = [v10 objectForKeyedSubscript:@"faceRollAngles"];
+  v16 = [propertiesCopy objectForKeyedSubscript:@"faceBounds"];
+  v17 = [propertiesCopy objectForKeyedSubscript:@"faceRollAngles"];
   if ([v16 count])
   {
     v18 = [v16 objectAtIndexedSubscript:0];
@@ -581,8 +581,8 @@ void __85__VCPCaptureAnalysisSession_initWithAudioAnalysisTypes_properties_andRe
   else
   {
     v19 = [v17 objectAtIndexedSubscript:0];
-    v20 = [v19 intValue];
-    v21 = ((v20 + 45) % 90 - v20 + 315) % 360;
+    intValue = [v19 intValue];
+    v21 = ((intValue + 45) % 90 - intValue + 315) % 360;
 
     rotationAngleForFacePose = self->_rotationAngleForFacePose;
     v23 = __OFSUB__(v21, rotationAngleForFacePose);
@@ -614,7 +614,7 @@ void __85__VCPCaptureAnalysisSession_initWithAudioAnalysisTypes_properties_andRe
         v28 = 0;
         v29 = 0;
         self->_rotatorForFacePose = 0;
-        v30 = -108;
+        height = -108;
         goto LABEL_57;
       }
 
@@ -625,11 +625,11 @@ void __85__VCPCaptureAnalysisSession_initWithAudioAnalysisTypes_properties_andRe
   }
 
 LABEL_17:
-  v31 = [v10 objectForKeyedSubscript:@"objects"];
+  v31 = [propertiesCopy objectForKeyedSubscript:@"objects"];
   if (v31)
   {
     v29 = v31;
-    [v114 setObject:? forKeyedSubscript:?];
+    [dictionary2 setObject:? forKeyedSubscript:?];
     goto LABEL_21;
   }
 
@@ -639,8 +639,8 @@ LABEL_21:
   rotator = self->_rotator;
   if (rotator)
   {
-    v30 = ma::Rotator::Rotate(rotator, a3, &v122);
-    if (v30)
+    height = ma::Rotator::Rotate(rotator, buffer, &v122);
+    if (height)
     {
       goto LABEL_56;
     }
@@ -648,12 +648,12 @@ LABEL_21:
 
   else
   {
-    v122 = CFRetain(a3);
+    v122 = CFRetain(buffer);
   }
 
   if (!self->_rotationAngleForFacePose)
   {
-    v35 = CFRetain(a3);
+    v35 = CFRetain(buffer);
     goto LABEL_31;
   }
 
@@ -673,8 +673,8 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  v30 = ma::Rotator::Rotate(v33, a3, &v121);
-  if (v30)
+  height = ma::Rotator::Rotate(v33, buffer, &v121);
+  if (height)
   {
     goto LABEL_56;
   }
@@ -689,22 +689,22 @@ LABEL_32:
       goto LABEL_54;
     }
 
-    *&v117.a = *&a4->var0;
-    *&v117.c = a4->var3;
-    v115 = *&a5->var0;
-    var3 = a5->var3;
-    v30 = [(VCPLightMotionAnalyzer *)lightMotionAnalyzer analyzeFrame:v122 withTimestamp:&v117 andDuration:&v115 flags:&v120];
-    if (!v30)
+    *&v117.a = *&timestamp->var0;
+    *&v117.c = timestamp->var3;
+    v115 = *&duration->var0;
+    var3 = duration->var3;
+    height = [(VCPLightMotionAnalyzer *)lightMotionAnalyzer analyzeFrame:v122 withTimestamp:&v117 andDuration:&v115 flags:&v120];
+    if (!height)
     {
       v57 = MEMORY[0x1E696AD98];
       [(VCPLightMotionAnalyzer *)self->_lightMotionAnalyzer actionScore];
       v58 = [v57 numberWithFloat:?];
-      [v11 setObject:v58 forKeyedSubscript:@"subjectMotionScore"];
+      [dictionary setObject:v58 forKeyedSubscript:@"subjectMotionScore"];
 
       v59 = MEMORY[0x1E696AD98];
       [(VCPLightMotionAnalyzer *)self->_lightMotionAnalyzer motionDivScore];
       v55 = [v59 numberWithFloat:?];
-      [v11 setObject:v55 forKeyedSubscript:@"motionDivScore"];
+      [dictionary setObject:v55 forKeyedSubscript:@"motionDivScore"];
       goto LABEL_53;
     }
 
@@ -713,12 +713,12 @@ LABEL_56:
     goto LABEL_57;
   }
 
-  *&v117.a = *&a4->var0;
-  *&v117.c = a4->var3;
-  v115 = *&a5->var0;
-  var3 = a5->var3;
-  v30 = [(VCPFullVideoAnalyzer *)videoAnalysis analyzeFrame:v122 timestamp:&v117 duration:&v115 properties:v114 frameStats:0 flags:&v120 cancel:&__block_literal_global_66];
-  if (v30)
+  *&v117.a = *&timestamp->var0;
+  *&v117.c = timestamp->var3;
+  v115 = *&duration->var0;
+  var3 = duration->var3;
+  height = [(VCPFullVideoAnalyzer *)videoAnalysis analyzeFrame:v122 timestamp:&v117 duration:&v115 properties:dictionary2 frameStats:0 flags:&v120 cancel:&__block_literal_global_66];
+  if (height)
   {
     goto LABEL_56;
   }
@@ -729,7 +729,7 @@ LABEL_56:
     v38 = MEMORY[0x1E696AD98];
     [(VCPFullVideoAnalyzer *)self->_videoAnalysis qualityScore];
     v39 = [v38 numberWithFloat:?];
-    [v11 setObject:v39 forKeyedSubscript:@"quality"];
+    [dictionary setObject:v39 forKeyedSubscript:@"quality"];
 
     analysisTypes = self->_analysisTypes;
   }
@@ -739,23 +739,23 @@ LABEL_56:
     v40 = MEMORY[0x1E696AD98];
     [(VCPFullVideoAnalyzer *)self->_videoAnalysis actionScore];
     v41 = [v40 numberWithFloat:?];
-    [v11 setObject:v41 forKeyedSubscript:@"subjectMotionScore"];
+    [dictionary setObject:v41 forKeyedSubscript:@"subjectMotionScore"];
 
-    v42 = [(VCPFullVideoAnalyzer *)self->_videoAnalysis objectsMotion];
-    if (v42)
+    objectsMotion = [(VCPFullVideoAnalyzer *)self->_videoAnalysis objectsMotion];
+    if (objectsMotion)
     {
-      v43 = [(VCPFullVideoAnalyzer *)self->_videoAnalysis globalMotion];
-      v44 = v43 == 0;
+      globalMotion = [(VCPFullVideoAnalyzer *)self->_videoAnalysis globalMotion];
+      v44 = globalMotion == 0;
 
       if (!v44)
       {
-        v45 = [(VCPFullVideoAnalyzer *)self->_videoAnalysis objectsMotion];
-        v46 = [v45 copy];
-        [v11 setObject:v46 forKeyedSubscript:@"objectsMotion"];
+        objectsMotion2 = [(VCPFullVideoAnalyzer *)self->_videoAnalysis objectsMotion];
+        v46 = [objectsMotion2 copy];
+        [dictionary setObject:v46 forKeyedSubscript:@"objectsMotion"];
 
-        v47 = [(VCPFullVideoAnalyzer *)self->_videoAnalysis globalMotion];
-        v48 = [v47 copy];
-        [v11 setObject:v48 forKeyedSubscript:@"globalMotion"];
+        globalMotion2 = [(VCPFullVideoAnalyzer *)self->_videoAnalysis globalMotion];
+        v48 = [globalMotion2 copy];
+        [dictionary setObject:v48 forKeyedSubscript:@"globalMotion"];
       }
     }
   }
@@ -766,7 +766,7 @@ LABEL_56:
     v50 = MEMORY[0x1E696AD98];
     [(VCPFullVideoAnalyzer *)self->_videoAnalysis interestingnessScore];
     v51 = [v50 numberWithFloat:?];
-    [v11 setObject:v51 forKeyedSubscript:@"interestingnessScore"];
+    [dictionary setObject:v51 forKeyedSubscript:@"interestingnessScore"];
 
     v49 = self->_analysisTypes;
   }
@@ -776,7 +776,7 @@ LABEL_56:
     v52 = MEMORY[0x1E696AD98];
     [(VCPFullVideoAnalyzer *)self->_videoAnalysis obstructionScore];
     v53 = [v52 numberWithFloat:?];
-    [v11 setObject:v53 forKeyedSubscript:@"obstructionScore"];
+    [dictionary setObject:v53 forKeyedSubscript:@"obstructionScore"];
 
     v49 = self->_analysisTypes;
   }
@@ -786,7 +786,7 @@ LABEL_56:
     v54 = MEMORY[0x1E696AD98];
     [(VCPFullVideoAnalyzer *)self->_videoAnalysis trackingScore];
     v55 = [v54 numberWithFloat:?];
-    [v11 setObject:v55 forKeyedSubscript:@"trackingScore"];
+    [dictionary setObject:v55 forKeyedSubscript:@"trackingScore"];
 LABEL_53:
   }
 
@@ -794,35 +794,35 @@ LABEL_54:
   faceDetector = self->_faceDetector;
   if (faceDetector)
   {
-    *&v117.a = *&a4->var0;
-    *&v117.c = a4->var3;
-    v115 = *&a5->var0;
-    var3 = a5->var3;
-    v30 = [(VCPVideoFullFaceDetector *)faceDetector analyzeFrame:v122 timestamp:&v117 duration:&v115 frameStats:self->_frameStats flags:&v120];
-    if (v30)
+    *&v117.a = *&timestamp->var0;
+    *&v117.c = timestamp->var3;
+    v115 = *&duration->var0;
+    var3 = duration->var3;
+    height = [(VCPVideoFullFaceDetector *)faceDetector analyzeFrame:v122 timestamp:&v117 duration:&v115 frameStats:self->_frameStats flags:&v120];
+    if (height)
     {
       goto LABEL_56;
     }
 
-    v64 = [(VCPVideoFullFaceDetector *)self->_faceDetector frameFaceResults];
-    [v11 addEntriesFromDictionary:v64];
+    frameFaceResults = [(VCPVideoFullFaceDetector *)self->_faceDetector frameFaceResults];
+    [dictionary addEntriesFromDictionary:frameFaceResults];
   }
 
   petsDetAnalyzer = self->_petsDetAnalyzer;
   if (petsDetAnalyzer)
   {
     v119 = 0;
-    v30 = [(VCPImagePetsAnalyzer *)petsDetAnalyzer analyzePixelBuffer:v122 flags:&v120 results:&v119 cancel:&__block_literal_global_666];
+    height = [(VCPImagePetsAnalyzer *)petsDetAnalyzer analyzePixelBuffer:v122 flags:&v120 results:&v119 cancel:&__block_literal_global_666];
     v66 = v119;
     v28 = v66;
-    if (v30)
+    if (height)
     {
       goto LABEL_57;
     }
 
     if ([v66 count])
     {
-      [v11 setObject:v28 forKeyedSubscript:@"petsDetection"];
+      [dictionary setObject:v28 forKeyedSubscript:@"petsDetection"];
     }
   }
 
@@ -835,9 +835,9 @@ LABEL_54:
   if (blurAnalyzer)
   {
     v118 = 0;
-    v30 = [(VCPImageBlurAnalyzer *)blurAnalyzer analyzePixelBuffer:v122 flags:&v120 results:&v118 cancel:&__block_literal_global_668];
+    height = [(VCPImageBlurAnalyzer *)blurAnalyzer analyzePixelBuffer:v122 flags:&v120 results:&v118 cancel:&__block_literal_global_668];
     v68 = v118;
-    if (v30)
+    if (height)
     {
 
       goto LABEL_57;
@@ -854,13 +854,13 @@ LABEL_54:
       v70 = [v102 objectForKeyedSubscript:@"attributes"];
       v100 = [v70 objectForKeyedSubscript:@"sharpness"];
 
-      [v11 setObject:v100 forKeyedSubscript:@"sharpnessScore"];
+      [dictionary setObject:v100 forKeyedSubscript:@"sharpnessScore"];
     }
   }
 
   if (self->_poseAnalyzer || self->_meshAnalyzer)
   {
-    [(VCPCaptureAnalysisSession *)self transformForAngle:self->_rotationAngleForFacePose pixelBuffer:a3];
+    [(VCPCaptureAnalysisSession *)self transformForAngle:self->_rotationAngleForFacePose pixelBuffer:buffer];
     [(VCPCaptureAnalysisSession *)self flipTransform:&v115];
     v128.origin.x = x;
     v128.origin.y = y;
@@ -875,10 +875,10 @@ LABEL_54:
     if (self->_poseAnalyzer && !CGRectIsEmpty(v129))
     {
       poseAnalyzer = self->_poseAnalyzer;
-      *&v117.a = *&a4->var0;
-      *&v117.c = a4->var3;
-      v30 = [(VCPVideoFacePoseAnalyzer *)poseAnalyzer analyzeFrameForPose:v121 withFaceRect:&v117 withTimestamp:x, y, width, height];
-      if (v30)
+      *&v117.a = *&timestamp->var0;
+      *&v117.c = timestamp->var3;
+      height = [(VCPVideoFacePoseAnalyzer *)poseAnalyzer analyzeFrameForPose:v121 withFaceRect:&v117 withTimestamp:x, y, width, height];
+      if (height)
       {
         goto LABEL_57;
       }
@@ -894,7 +894,7 @@ LABEL_54:
 
       v124[0] = v76;
       v78 = [MEMORY[0x1E695DEC8] arrayWithObjects:v124 count:1];
-      [v11 setObject:v78 forKeyedSubscript:@"faceAnchor"];
+      [dictionary setObject:v78 forKeyedSubscript:@"faceAnchor"];
     }
   }
 
@@ -906,10 +906,10 @@ LABEL_54:
   meshAnalyzer = self->_meshAnalyzer;
   if (meshAnalyzer)
   {
-    *&v117.a = *&a4->var0;
-    *&v117.c = a4->var3;
-    v30 = [(VCPVideoFaceMeshAnalyzer *)meshAnalyzer analyzeFrame:v121 withFaceRect:v110 withRotation:&v117 withTimestamp:x, y, width, height];
-    if (v30)
+    *&v117.a = *&timestamp->var0;
+    *&v117.c = timestamp->var3;
+    height = [(VCPVideoFaceMeshAnalyzer *)meshAnalyzer analyzeFrame:v121 withFaceRect:v110 withRotation:&v117 withTimestamp:x, y, width, height];
+    if (height)
     {
       goto LABEL_57;
     }
@@ -927,21 +927,21 @@ LABEL_54:
         v101 = v84;
         v103 = v83;
         v85 = [VCPFaceAnchor alloc];
-        v86 = [(VCPVideoFaceMeshAnalyzer *)self->_meshAnalyzer blendShapes];
-        v87 = [(VCPFaceAnchor *)v85 initWithTransform:v86 blendShapes:v111 geometry:v109, v106, v103, v101];
+        blendShapes = [(VCPVideoFaceMeshAnalyzer *)self->_meshAnalyzer blendShapes];
+        v101 = [(VCPFaceAnchor *)v85 initWithTransform:blendShapes blendShapes:v111 geometry:v109, v106, v103, v101];
 
-        if (v87)
+        if (v101)
         {
-          v123 = v87;
+          v123 = v101;
           v88 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v123 count:1];
-          [v11 setObject:v88 forKeyedSubscript:@"faceAnchor"];
+          [dictionary setObject:v88 forKeyedSubscript:@"faceAnchor"];
 
           goto LABEL_97;
         }
       }
 
 LABEL_49:
-      v30 = -18;
+      height = -18;
       goto LABEL_57;
     }
   }
@@ -950,29 +950,29 @@ LABEL_97:
   sceneChangeAnalyzer = self->_sceneChangeAnalyzer;
   if (sceneChangeAnalyzer)
   {
-    *&v117.a = *&a4->var0;
-    *&v117.c = a4->var3;
-    v115 = *&a5->var0;
-    var3 = a5->var3;
-    v30 = [(VCPSceneChangeAnalyzer *)sceneChangeAnalyzer analyzeFrame:v122 withTimestamp:&v117 andDuration:&v115 flags:&v120];
-    if (v30)
+    *&v117.a = *&timestamp->var0;
+    *&v117.c = timestamp->var3;
+    v115 = *&duration->var0;
+    var3 = duration->var3;
+    height = [(VCPSceneChangeAnalyzer *)sceneChangeAnalyzer analyzeFrame:v122 withTimestamp:&v117 andDuration:&v115 flags:&v120];
+    if (height)
     {
       goto LABEL_57;
     }
 
     v90 = [MEMORY[0x1E696AD98] numberWithBool:{-[VCPSceneChangeAnalyzer isSegmentPoint](self->_sceneChangeAnalyzer, "isSegmentPoint")}];
-    [v11 setObject:v90 forKeyedSubscript:@"sceneChangeScore"];
+    [dictionary setObject:v90 forKeyedSubscript:@"sceneChangeScore"];
   }
 
   homeKitMotionAnalyzer = self->_homeKitMotionAnalyzer;
   if (homeKitMotionAnalyzer)
   {
-    *&v117.a = *&a4->var0;
-    *&v117.c = a4->var3;
-    v115 = *&a5->var0;
-    var3 = a5->var3;
-    v30 = [(VCPHomeKitMotionAnalyzer *)homeKitMotionAnalyzer analyzeFrame:v122 withTimestamp:&v117 andDuration:&v115 flags:&v120];
-    if (v30)
+    *&v117.a = *&timestamp->var0;
+    *&v117.c = timestamp->var3;
+    v115 = *&duration->var0;
+    var3 = duration->var3;
+    height = [(VCPHomeKitMotionAnalyzer *)homeKitMotionAnalyzer analyzeFrame:v122 withTimestamp:&v117 andDuration:&v115 flags:&v120];
+    if (height)
     {
       goto LABEL_57;
     }
@@ -980,24 +980,24 @@ LABEL_97:
     v92 = MEMORY[0x1E696AD98];
     [(VCPHomeKitMotionAnalyzer *)self->_homeKitMotionAnalyzer actionScore];
     v93 = [v92 numberWithFloat:?];
-    [v11 setObject:v93 forKeyedSubscript:@"subjectMotionScore"];
+    [dictionary setObject:v93 forKeyedSubscript:@"subjectMotionScore"];
 
-    v94 = [(VCPHomeKitMotionAnalyzer *)self->_homeKitMotionAnalyzer regionsOfInterest];
-    v95 = [v94 count] == 0;
+    regionsOfInterest = [(VCPHomeKitMotionAnalyzer *)self->_homeKitMotionAnalyzer regionsOfInterest];
+    v95 = [regionsOfInterest count] == 0;
 
     if (!v95)
     {
       v96 = MEMORY[0x1E695DEC8];
-      v97 = [(VCPHomeKitMotionAnalyzer *)self->_homeKitMotionAnalyzer regionsOfInterest];
-      v98 = [v96 arrayWithArray:v97];
-      [v11 setObject:v98 forKeyedSubscript:@"regionsOfInterest"];
+      regionsOfInterest2 = [(VCPHomeKitMotionAnalyzer *)self->_homeKitMotionAnalyzer regionsOfInterest];
+      v98 = [v96 arrayWithArray:regionsOfInterest2];
+      [dictionary setObject:v98 forKeyedSubscript:@"regionsOfInterest"];
     }
   }
 
   v99 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v120];
-  [v11 setObject:v99 forKey:@"flags"];
+  [dictionary setObject:v99 forKey:@"flags"];
 
-  v30 = 0;
+  height = 0;
 LABEL_57:
   if (v122)
   {
@@ -1009,19 +1009,19 @@ LABEL_57:
     CFRelease(v121);
   }
 
-  if (a7 && v30)
+  if (error && height)
   {
-    *a7 = [MEMORY[0x1E696ABC0] errorWithDomain:@"VCPCaptureAnalysis" code:v30 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"VCPCaptureAnalysis" code:height userInfo:0];
   }
 
-  if (v30)
+  if (height)
   {
     v61 = 0;
   }
 
   else
   {
-    v61 = v11;
+    v61 = dictionary;
   }
 
   v62 = v61;
@@ -1029,22 +1029,22 @@ LABEL_57:
   return v62;
 }
 
-- (int)analyzePixelBuffer:(__CVBuffer *)a3 withTimestamp:(id *)a4 andDuration:(id *)a5 properties:(id)a6 completion:(id)a7
+- (int)analyzePixelBuffer:(__CVBuffer *)buffer withTimestamp:(id *)timestamp andDuration:(id *)duration properties:(id)properties completion:(id)completion
 {
-  v11 = a7;
-  v12 = v11;
+  completionCopy = completion;
+  v12 = completionCopy;
   if (self->_analysisQueue && (lightMotionAnalyzer = self->_lightMotionAnalyzer) != 0)
   {
-    v20 = *&a4->var0;
-    var3 = a4->var3;
-    v18 = *&a5->var0;
-    v19 = a5->var3;
+    v20 = *&timestamp->var0;
+    var3 = timestamp->var3;
+    v18 = *&duration->var0;
+    v19 = duration->var3;
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __96__VCPCaptureAnalysisSession_analyzePixelBuffer_withTimestamp_andDuration_properties_completion___block_invoke;
     v16[3] = &unk_1E8350A70;
-    v17 = v11;
-    [(VCPLightMotionAnalyzer *)lightMotionAnalyzer analyzeFrame:a3 withTimestamp:&v20 andDuration:&v18 completion:v16];
+    v17 = completionCopy;
+    [(VCPLightMotionAnalyzer *)lightMotionAnalyzer analyzeFrame:buffer withTimestamp:&v20 andDuration:&v18 completion:v16];
 
     v14 = 0;
   }
@@ -1084,10 +1084,10 @@ void __96__VCPCaptureAnalysisSession_analyzePixelBuffer_withTimestamp_andDuratio
   (*(*(a1 + 32) + 16))();
 }
 
-- (int)analyzeSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (int)analyzeSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   result = -18;
-  if (a3)
+  if (buffer)
   {
     audioAnalyzer = self->_audioAnalyzer;
     if (audioAnalyzer)
@@ -1141,16 +1141,16 @@ void __96__VCPCaptureAnalysisSession_analyzePixelBuffer_withTimestamp_andDuratio
   if (sceneChangeAnalyzer)
   {
     aggregatedResults = self->_aggregatedResults;
-    v5 = [(VCPSceneChangeAnalyzer *)sceneChangeAnalyzer results];
-    [(NSMutableDictionary *)aggregatedResults addEntriesFromDictionary:v5];
+    results = [(VCPSceneChangeAnalyzer *)sceneChangeAnalyzer results];
+    [(NSMutableDictionary *)aggregatedResults addEntriesFromDictionary:results];
   }
 
   faceDetector = self->_faceDetector;
   if (faceDetector)
   {
     v7 = self->_aggregatedResults;
-    v8 = [(VCPVideoFaceDetector *)faceDetector results];
-    [(NSMutableDictionary *)v7 addEntriesFromDictionary:v8];
+    results2 = [(VCPVideoFaceDetector *)faceDetector results];
+    [(NSMutableDictionary *)v7 addEntriesFromDictionary:results2];
   }
 
   v9 = self->_aggregatedResults;
@@ -1158,17 +1158,17 @@ void __96__VCPCaptureAnalysisSession_analyzePixelBuffer_withTimestamp_andDuratio
   return v9;
 }
 
-- (int)analyzeFrameWithTimeRange:(id *)a3 analysisData:(id)a4
+- (int)analyzeFrameWithTimeRange:(id *)range analysisData:(id)data
 {
-  v6 = a4;
+  dataCopy = data;
   trimAnalyzer = self->_trimAnalyzer;
   if (trimAnalyzer)
   {
-    v8 = *&a3->var0.var3;
-    v11[0] = *&a3->var0.var0;
+    v8 = *&range->var0.var3;
+    v11[0] = *&range->var0.var0;
     v11[1] = v8;
-    v11[2] = *&a3->var1.var1;
-    v9 = [(VCPTrimAnalyzer *)trimAnalyzer analyzeFrameWithTimeRange:v11 analysisData:v6];
+    v11[2] = *&range->var1.var1;
+    v9 = [(VCPTrimAnalyzer *)trimAnalyzer analyzeFrameWithTimeRange:v11 analysisData:dataCopy];
   }
 
   else
@@ -1179,21 +1179,21 @@ void __96__VCPCaptureAnalysisSession_analyzePixelBuffer_withTimestamp_andDuratio
   return v9;
 }
 
-- (BOOL)shouldCutAt:(id *)a3 stillPTS:(id *)a4 withCut:(BOOL)a5
+- (BOOL)shouldCutAt:(id *)at stillPTS:(id *)s withCut:(BOOL)cut
 {
   trimAnalyzer = self->_trimAnalyzer;
   if (trimAnalyzer)
   {
-    v7 = a5;
+    cutCopy = cut;
     LODWORD(trimAnalyzer) = [(VCPTrimAnalyzer *)trimAnalyzer isReady];
     if (trimAnalyzer)
     {
       v10 = self->_trimAnalyzer;
-      v14 = *&a3->var0;
-      var3 = a3->var3;
-      v12 = *&a4->var0;
-      v13 = a4->var3;
-      LOBYTE(trimAnalyzer) = [(VCPTrimAnalyzer *)v10 shouldCutAt:&v14 stillPTS:&v12 withCut:v7];
+      v14 = *&at->var0;
+      var3 = at->var3;
+      v12 = *&s->var0;
+      v13 = s->var3;
+      LOBYTE(trimAnalyzer) = [(VCPTrimAnalyzer *)v10 shouldCutAt:&v14 stillPTS:&v12 withCut:cutCopy];
     }
   }
 

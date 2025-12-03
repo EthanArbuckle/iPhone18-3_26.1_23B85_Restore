@@ -1,17 +1,17 @@
 @interface MUPlaceActionDispatcher.CustomAction
 - (_TtCC6MapsUI23MUPlaceActionDispatcher12CustomAction)init;
-- (void)addHandler:(id)a3;
+- (void)addHandler:(id)handler;
 @end
 
 @implementation MUPlaceActionDispatcher.CustomAction
 
-- (void)addHandler:(id)a3
+- (void)addHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   _Block_copy(v4);
   v5 = OBJC_IVAR____TtCC6MapsUI23MUPlaceActionDispatcher12CustomAction_handlers;
   swift_beginAccess();
-  v6 = self;
+  selfCopy = self;
   MEMORY[0x1C6949DF0]();
   if (*((*(&self->super.super.isa + v5) & 0xFFFFFFFFFFFFFF8) + 0x10) >= *((*(&self->super.super.isa + v5) & 0xFFFFFFFFFFFFFF8) + 0x18) >> 1)
   {

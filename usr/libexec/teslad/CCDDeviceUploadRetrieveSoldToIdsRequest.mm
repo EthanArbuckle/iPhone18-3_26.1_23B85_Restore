@@ -7,9 +7,9 @@
 - (id)requestBody
 {
   v6 = @"searchString";
-  v2 = [(CCDDeviceUploadRetrieveSoldToIdsRequest *)self organization];
-  v3 = [v2 orgId];
-  v7 = v3;
+  organization = [(CCDDeviceUploadRetrieveSoldToIdsRequest *)self organization];
+  orgId = [organization orgId];
+  v7 = orgId;
   v4 = [NSDictionary dictionaryWithObjects:&v7 forKeys:&v6 count:1];
 
   return v4;

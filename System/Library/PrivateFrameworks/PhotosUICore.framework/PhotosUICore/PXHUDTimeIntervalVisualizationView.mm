@@ -1,5 +1,5 @@
 @interface PXHUDTimeIntervalVisualizationView
-- (PXHUDTimeIntervalVisualizationView)initWithFrame:(CGRect)a3;
+- (PXHUDTimeIntervalVisualizationView)initWithFrame:(CGRect)frame;
 - (void)_cleanupTimer;
 - (void)_setupTimer;
 - (void)_updateTimer;
@@ -13,17 +13,17 @@
 - (void)_updateTitleAndTimeLabel
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PXHUDAbstractVisualizationView *)self visualization];
-  v5 = [v4 title];
-  v6 = [(PXHUDAbstractVisualizationView *)self visualization];
-  v7 = [v6 timeInterval];
-  [v7 duration];
-  v9 = [v3 stringWithFormat:@"%@: %.2f", v5, v8];
+  visualization = [(PXHUDAbstractVisualizationView *)self visualization];
+  title = [visualization title];
+  visualization2 = [(PXHUDAbstractVisualizationView *)self visualization];
+  timeInterval = [visualization2 timeInterval];
+  [timeInterval duration];
+  v9 = [v3 stringWithFormat:@"%@: %.2f", title, v8];
   [(UILabel *)self->_titleAndTimeLabel setText:v9];
 
-  v11 = [(PXHUDAbstractVisualizationView *)self visualization];
-  v10 = [v11 color];
-  [(UILabel *)self->_titleAndTimeLabel setTextColor:v10];
+  visualization3 = [(PXHUDAbstractVisualizationView *)self visualization];
+  color = [visualization3 color];
+  [(UILabel *)self->_titleAndTimeLabel setTextColor:color];
 }
 
 - (void)_cleanupTimer
@@ -68,11 +68,11 @@ void __49__PXHUDTimeIntervalVisualizationView__setupTimer__block_invoke(uint64_t
   if (!self->_timer)
   {
 LABEL_4:
-    v6 = [(PXHUDAbstractVisualizationView *)self visualization];
-    v7 = [v6 timeInterval];
-    v8 = [v7 state];
+    visualization = [(PXHUDAbstractVisualizationView *)self visualization];
+    timeInterval = [visualization timeInterval];
+    state = [timeInterval state];
 
-    if (v8 == 1)
+    if (state == 1)
     {
 
       [(PXHUDTimeIntervalVisualizationView *)self _setupTimer];
@@ -81,11 +81,11 @@ LABEL_4:
     return;
   }
 
-  v3 = [(PXHUDAbstractVisualizationView *)self visualization];
-  v4 = [v3 timeInterval];
-  v5 = [v4 state];
+  visualization2 = [(PXHUDAbstractVisualizationView *)self visualization];
+  timeInterval2 = [visualization2 timeInterval];
+  state2 = [timeInterval2 state];
 
-  if (v5 == 1)
+  if (state2 == 1)
   {
     if (self->_timer)
     {
@@ -116,11 +116,11 @@ LABEL_4:
   [(PXHUDTimeIntervalVisualizationView *)self _updateTitleAndTimeLabel];
 }
 
-- (PXHUDTimeIntervalVisualizationView)initWithFrame:(CGRect)a3
+- (PXHUDTimeIntervalVisualizationView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = PXHUDTimeIntervalVisualizationView;
-  v3 = [(PXHUDTimeIntervalVisualizationView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXHUDTimeIntervalVisualizationView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCC10]);

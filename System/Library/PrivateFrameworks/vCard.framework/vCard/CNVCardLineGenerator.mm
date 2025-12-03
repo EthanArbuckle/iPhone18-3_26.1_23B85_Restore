@@ -1,35 +1,35 @@
 @interface CNVCardLineGenerator
-+ (id)generatorWithName:(id)a3 groupingCount:(int64_t *)a4;
-- (CNVCardLineGenerator)initWithName:(id)a3 groupingCount:(int64_t *)a4;
-- (id)lineWithValue:(id)a3 label:(id)a4;
-- (id)makeLineWithName:(id)a3 value:(id)a4;
-- (id)standardLabelsForLabel:(id)a3;
-- (void)addCustomLabel:(id)a3 toLine:(id)a4;
++ (id)generatorWithName:(id)name groupingCount:(int64_t *)count;
+- (CNVCardLineGenerator)initWithName:(id)name groupingCount:(int64_t *)count;
+- (id)lineWithValue:(id)value label:(id)label;
+- (id)makeLineWithName:(id)name value:(id)value;
+- (id)standardLabelsForLabel:(id)label;
+- (void)addCustomLabel:(id)label toLine:(id)line;
 @end
 
 @implementation CNVCardLineGenerator
 
-+ (id)generatorWithName:(id)a3 groupingCount:(int64_t *)a4
++ (id)generatorWithName:(id)name groupingCount:(int64_t *)count
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithName:v6 groupingCount:a4];
+  nameCopy = name;
+  v7 = [[self alloc] initWithName:nameCopy groupingCount:count];
 
   return v7;
 }
 
-- (CNVCardLineGenerator)initWithName:(id)a3 groupingCount:(int64_t *)a4
+- (CNVCardLineGenerator)initWithName:(id)name groupingCount:(int64_t *)count
 {
-  v6 = a3;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = CNVCardLineGenerator;
   v7 = [(CNVCardLineGenerator *)&v14 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [nameCopy copy];
     lineName = v7->_lineName;
     v7->_lineName = v8;
 
-    v7->_groupingCount = a4;
+    v7->_groupingCount = count;
     v10 = +[CNVCardLineFactory version30LineFactory];
     lineFactory = v7->_lineFactory;
     v7->_lineFactory = v10;
@@ -40,14 +40,14 @@
   return v7;
 }
 
-- (id)lineWithValue:(id)a3 label:(id)a4
+- (id)lineWithValue:(id)value label:(id)label
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (a3)
+  labelCopy = label;
+  if (value)
   {
-    a3 = [(CNVCardLineGenerator *)self makeLineWithName:self->_lineName value:a3];
-    v7 = [(CNVCardLineGenerator *)self standardLabelsForLabel:v6];
+    value = [(CNVCardLineGenerator *)self makeLineWithName:self->_lineName value:value];
+    v7 = [(CNVCardLineGenerator *)self standardLabelsForLabel:labelCopy];
     if ([v7 count])
     {
       v17 = 0u;
@@ -69,7 +69,7 @@
               objc_enumerationMutation(v8);
             }
 
-            [(CNVCardLineGenerator *)self addStandardLabel:*(*(&v15 + 1) + 8 * i) toLine:a3, v15];
+            [(CNVCardLineGenerator *)self addStandardLabel:*(*(&v15 + 1) + 8 * i) toLine:value, v15];
           }
 
           v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -79,21 +79,21 @@
       }
     }
 
-    else if (v6)
+    else if (labelCopy)
     {
-      [(CNVCardLineGenerator *)self addCustomLabel:v6 toLine:a3];
+      [(CNVCardLineGenerator *)self addCustomLabel:labelCopy toLine:value];
     }
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return a3;
+  return value;
 }
 
-- (id)makeLineWithName:(id)a3 value:(id)a4
+- (id)makeLineWithName:(id)name value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  valueCopy = value;
   if ((*(*MEMORY[0x277CFBD30] + 16))())
   {
     v8 = 0;
@@ -101,17 +101,17 @@
 
   else
   {
-    v8 = [(CNVCardLineFactory *)self->_lineFactory stringLineWithName:v6 value:v7];
+    v8 = [(CNVCardLineFactory *)self->_lineFactory stringLineWithName:nameCopy value:valueCopy];
   }
 
   return v8;
 }
 
-- (id)standardLabelsForLabel:(id)a3
+- (id)standardLabelsForLabel:(id)label
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 isEqualToString:@"_$!<Work>!$_"])
+  labelCopy = label;
+  if ([labelCopy isEqualToString:@"_$!<Work>!$_"])
   {
     v9[0] = @"WORK";
     v4 = v9;
@@ -120,7 +120,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToString:@"_$!<Home>!$_"])
+  if ([labelCopy isEqualToString:@"_$!<Home>!$_"])
   {
     v8 = @"HOME";
     v4 = &v8;
@@ -135,14 +135,14 @@ LABEL_7:
   return v5;
 }
 
-- (void)addCustomLabel:(id)a3 toLine:(id)a4
+- (void)addCustomLabel:(id)label toLine:(id)line
 {
-  v8 = a3;
-  v6 = a4;
-  if (v6 && ([v8 isEqualToString:&stru_288651EC0] & 1) == 0)
+  labelCopy = label;
+  lineCopy = line;
+  if (lineCopy && ([labelCopy isEqualToString:&stru_288651EC0] & 1) == 0)
   {
-    v7 = [(CNVCardLineFactory *)self->_lineFactory stringLineWithName:@"X-ABLabel" value:v8];
-    [v6 addGroupedLine:v7 withCounter:self->_groupingCount];
+    v7 = [(CNVCardLineFactory *)self->_lineFactory stringLineWithName:@"X-ABLabel" value:labelCopy];
+    [lineCopy addGroupedLine:v7 withCounter:self->_groupingCount];
   }
 }
 

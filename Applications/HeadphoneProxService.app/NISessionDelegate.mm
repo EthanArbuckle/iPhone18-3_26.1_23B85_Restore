@@ -1,60 +1,60 @@
 @interface NISessionDelegate
 - (_TtC20HeadphoneProxServiceP33_7F40A8BD0FFA2DB164E8C23B672FD2D917NISessionDelegate)init;
-- (void)session:(id)a3 didFailWithError:(id)a4;
-- (void)session:(id)a3 didInvalidateWithError:(id)a4;
-- (void)session:(id)a3 object:(id)a4 didUpdateRegion:(id)a5 previousRegion:(id)a6;
-- (void)session:(id)a3 suspendedWithReason:(int64_t)a4;
-- (void)session:(id)a3 suspensionReasonEnded:(int64_t)a4 isNoLongerSuspended:(BOOL)a5;
-- (void)sessionDidStartRunning:(id)a3;
+- (void)session:(id)session didFailWithError:(id)error;
+- (void)session:(id)session didInvalidateWithError:(id)error;
+- (void)session:(id)session object:(id)object didUpdateRegion:(id)region previousRegion:(id)previousRegion;
+- (void)session:(id)session suspendedWithReason:(int64_t)reason;
+- (void)session:(id)session suspensionReasonEnded:(int64_t)ended isNoLongerSuspended:(BOOL)suspended;
+- (void)sessionDidStartRunning:(id)running;
 @end
 
 @implementation NISessionDelegate
 
-- (void)sessionDidStartRunning:(id)a3
+- (void)sessionDidStartRunning:(id)running
 {
-  v4 = a3;
-  v5 = self;
-  sub_10009B284(v4);
+  runningCopy = running;
+  selfCopy = self;
+  sub_10009B284(runningCopy);
 }
 
-- (void)session:(id)a3 didFailWithError:(id)a4
+- (void)session:(id)session didFailWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  sub_10009B428(v6);
+  sessionCopy = session;
+  errorCopy = error;
+  selfCopy = self;
+  sub_10009B428(sessionCopy);
 }
 
-- (void)session:(id)a3 didInvalidateWithError:(id)a4
+- (void)session:(id)session didInvalidateWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  sub_10009A944(v6);
+  sessionCopy = session;
+  errorCopy = error;
+  selfCopy = self;
+  sub_10009A944(sessionCopy);
 }
 
-- (void)session:(id)a3 suspendedWithReason:(int64_t)a4
+- (void)session:(id)session suspendedWithReason:(int64_t)reason
 {
-  v6 = a3;
-  v7 = self;
-  sub_10009B648(v6, a4);
+  sessionCopy = session;
+  selfCopy = self;
+  sub_10009B648(sessionCopy, reason);
 }
 
-- (void)session:(id)a3 suspensionReasonEnded:(int64_t)a4 isNoLongerSuspended:(BOOL)a5
+- (void)session:(id)session suspensionReasonEnded:(int64_t)ended isNoLongerSuspended:(BOOL)suspended
 {
-  v8 = a3;
-  v9 = self;
-  sub_10009ACDC(v8, a4, a5);
+  sessionCopy = session;
+  selfCopy = self;
+  sub_10009ACDC(sessionCopy, ended, suspended);
 }
 
-- (void)session:(id)a3 object:(id)a4 didUpdateRegion:(id)a5 previousRegion:(id)a6
+- (void)session:(id)session object:(id)object didUpdateRegion:(id)region previousRegion:(id)previousRegion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = self;
-  sub_10009B918(v11, a5);
+  sessionCopy = session;
+  objectCopy = object;
+  regionCopy = region;
+  previousRegionCopy = previousRegion;
+  selfCopy = self;
+  sub_10009B918(objectCopy, region);
 }
 
 - (_TtC20HeadphoneProxServiceP33_7F40A8BD0FFA2DB164E8C23B672FD2D917NISessionDelegate)init

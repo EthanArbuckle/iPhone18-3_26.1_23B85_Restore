@@ -1,24 +1,24 @@
 @interface SXDataTableCellStyle
-+ (id)valueClassBlockForPropertyWithName:(id)a3;
-- (id)paddingWithValue:(id)a3 withType:(int)a4;
-- (id)textStylesWithValue:(id)a3 withType:(int)a4;
-- (unint64_t)horizontalAlignmentWithValue:(id)a3 withType:(int)a4;
-- (unint64_t)verticalAlignmentWithValue:(id)a3 withType:(int)a4;
++ (id)valueClassBlockForPropertyWithName:(id)name;
+- (id)paddingWithValue:(id)value withType:(int)type;
+- (id)textStylesWithValue:(id)value withType:(int)type;
+- (unint64_t)horizontalAlignmentWithValue:(id)value withType:(int)type;
+- (unint64_t)verticalAlignmentWithValue:(id)value withType:(int)type;
 @end
 
 @implementation SXDataTableCellStyle
 
-- (id)paddingWithValue:(id)a3 withType:(int)a4
+- (id)paddingWithValue:(id)value withType:(int)type
 {
   v16[4] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6 && a4 == 5)
+  valueCopy = value;
+  if (valueCopy && type == 5)
   {
     v7 = [SXPadding alloc];
-    v8 = [(SXJSONObject *)self specificationVersion];
-    v9 = [(SXJSONObject *)v7 initWithJSONObject:v6 andVersion:v8];
+    specificationVersion = [(SXJSONObject *)self specificationVersion];
+    v9 = [(SXJSONObject *)v7 initWithJSONObject:valueCopy andVersion:specificationVersion];
 
-    v10 = v6;
+    v10 = valueCopy;
   }
 
   else
@@ -37,8 +37,8 @@
       v16[2] = v10;
       v16[3] = v10;
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:4];
-      v13 = [(SXJSONObject *)self specificationVersion];
-      v9 = [(SXJSONObject *)v11 initWithJSONObject:v12 andVersion:v13];
+      specificationVersion2 = [(SXJSONObject *)self specificationVersion];
+      v9 = [(SXJSONObject *)v11 initWithJSONObject:v12 andVersion:specificationVersion2];
     }
 
     else
@@ -50,41 +50,41 @@
   return v9;
 }
 
-+ (id)valueClassBlockForPropertyWithName:(id)a3
++ (id)valueClassBlockForPropertyWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"conditional"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"conditional"])
   {
     v5 = &__block_literal_global_39;
   }
 
-  else if ([v4 isEqualToString:@"selectors"])
+  else if ([nameCopy isEqualToString:@"selectors"])
   {
     v5 = &__block_literal_global_25;
   }
 
-  else if ([v4 isEqualToString:@"textStyles"])
+  else if ([nameCopy isEqualToString:@"textStyles"])
   {
     v5 = &__block_literal_global_31;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SXDataTableCellStyle;
-    v5 = objc_msgSendSuper2(&v7, sel_valueClassBlockForPropertyWithName_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_valueClassBlockForPropertyWithName_, nameCopy);
   }
 
   return v5;
 }
 
-- (unint64_t)verticalAlignmentWithValue:(id)a3 withType:(int)a4
+- (unint64_t)verticalAlignmentWithValue:(id)value withType:(int)type
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 == 3)
+  valueCopy = value;
+  v6 = valueCopy;
+  if (type == 3)
   {
-    if ([v5 isEqualToString:@"top"])
+    if ([valueCopy isEqualToString:@"top"])
     {
       v7 = 1;
     }
@@ -113,13 +113,13 @@
   return v7;
 }
 
-- (unint64_t)horizontalAlignmentWithValue:(id)a3 withType:(int)a4
+- (unint64_t)horizontalAlignmentWithValue:(id)value withType:(int)type
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 == 3)
+  valueCopy = value;
+  v6 = valueCopy;
+  if (type == 3)
   {
-    if ([v5 isEqualToString:@"left"])
+    if ([valueCopy isEqualToString:@"left"])
     {
       v7 = 1;
     }
@@ -148,22 +148,22 @@
   return v7;
 }
 
-- (id)textStylesWithValue:(id)a3 withType:(int)a4
+- (id)textStylesWithValue:(id)value withType:(int)type
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = v7;
-  if (a4 == 4)
+  valueCopy = value;
+  array = [MEMORY[0x1E695DF70] array];
+  v8 = array;
+  if (type == 4)
   {
-    [v7 addObjectsFromArray:v6];
+    [array addObjectsFromArray:valueCopy];
   }
 
-  v9 = [(SXDataTableCellStyle *)self textStyle];
+  textStyle = [(SXDataTableCellStyle *)self textStyle];
 
-  if (v9)
+  if (textStyle)
   {
-    v10 = [(SXDataTableCellStyle *)self textStyle];
-    [v8 addObject:v10];
+    textStyle2 = [(SXDataTableCellStyle *)self textStyle];
+    [v8 addObject:textStyle2];
   }
 
   return v8;

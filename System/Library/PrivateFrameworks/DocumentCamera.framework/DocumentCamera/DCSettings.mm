@@ -10,11 +10,11 @@
 - (id)finishAfterFirstScanBoxed;
 - (id)imageQualityBoxed;
 - (id)useDocumentSegmentationRequestBoxed;
-- (void)setEnableViewServiceBoxed:(id)a3;
-- (void)setEnableWindexBoxed:(id)a3;
-- (void)setFinishAfterFirstScanBoxed:(id)a3;
-- (void)setImageQualityBoxed:(id)a3;
-- (void)setUseDocumentSegmentationRequestBoxed:(id)a3;
+- (void)setEnableViewServiceBoxed:(id)boxed;
+- (void)setEnableWindexBoxed:(id)boxed;
+- (void)setFinishAfterFirstScanBoxed:(id)boxed;
+- (void)setImageQualityBoxed:(id)boxed;
+- (void)setUseDocumentSegmentationRequestBoxed:(id)boxed;
 @end
 
 @implementation DCSettings
@@ -40,7 +40,7 @@
   block[1] = 3221225472;
   block[2] = __28__DCSettings_sharedSettings__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedSettings_once != -1)
   {
     dispatch_once(&sharedSettings_once, block);
@@ -64,15 +64,15 @@ void __28__DCSettings_sharedSettings__block_invoke(uint64_t a1)
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = DCDebugInterfaceEnabled();
+    bOOLValue = DCDebugInterfaceEnabled();
   }
 
-  v5 = v4;
+  v5 = bOOLValue;
 
   return v5;
 }
@@ -83,15 +83,15 @@ void __28__DCSettings_sharedSettings__block_invoke(uint64_t a1)
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)enableWindex
@@ -105,15 +105,15 @@ void __28__DCSettings_sharedSettings__block_invoke(uint64_t a1)
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (double)imageQuality
@@ -132,63 +132,63 @@ void __28__DCSettings_sharedSettings__block_invoke(uint64_t a1)
 - (id)enableViewServiceBoxed
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(DCSettings *)self enableViewService];
+  enableViewService = [(DCSettings *)self enableViewService];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:enableViewService];
 }
 
-- (void)setEnableViewServiceBoxed:(id)a3
+- (void)setEnableViewServiceBoxed:(id)boxed
 {
   userDefaults = self->_userDefaults;
-  v5 = a3;
-  -[NSUserDefaults setBool:forKey:](userDefaults, "setBool:forKey:", [v5 BOOLValue], @"EnableViewService");
+  boxedCopy = boxed;
+  -[NSUserDefaults setBool:forKey:](userDefaults, "setBool:forKey:", [boxedCopy BOOLValue], @"EnableViewService");
   v6 = *MEMORY[0x277CCA208];
   v7 = [(NSUserDefaults *)self->_userDefaults persistentDomainForName:*MEMORY[0x277CCA208]];
   v8 = [v7 mutableCopy];
 
-  [v8 setObject:v5 forKey:@"EnableViewService"];
+  [v8 setObject:boxedCopy forKey:@"EnableViewService"];
   [(NSUserDefaults *)self->_userDefaults setPersistentDomain:v8 forName:v6];
 }
 
 - (id)finishAfterFirstScanBoxed
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(DCSettings *)self finishAfterFirstScan];
+  finishAfterFirstScan = [(DCSettings *)self finishAfterFirstScan];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:finishAfterFirstScan];
 }
 
-- (void)setFinishAfterFirstScanBoxed:(id)a3
+- (void)setFinishAfterFirstScanBoxed:(id)boxed
 {
   userDefaults = self->_userDefaults;
-  v5 = a3;
-  -[NSUserDefaults setBool:forKey:](userDefaults, "setBool:forKey:", [v5 BOOLValue], @"DCFinishAfterFirstScan");
+  boxedCopy = boxed;
+  -[NSUserDefaults setBool:forKey:](userDefaults, "setBool:forKey:", [boxedCopy BOOLValue], @"DCFinishAfterFirstScan");
   v6 = *MEMORY[0x277CCA208];
   v7 = [(NSUserDefaults *)self->_userDefaults persistentDomainForName:*MEMORY[0x277CCA208]];
   v8 = [v7 mutableCopy];
 
-  [v8 setObject:v5 forKey:@"DCFinishAfterFirstScan"];
+  [v8 setObject:boxedCopy forKey:@"DCFinishAfterFirstScan"];
   [(NSUserDefaults *)self->_userDefaults setPersistentDomain:v8 forName:v6];
 }
 
 - (id)useDocumentSegmentationRequestBoxed
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(DCSettings *)self useDocumentSegmentationRequest];
+  useDocumentSegmentationRequest = [(DCSettings *)self useDocumentSegmentationRequest];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:useDocumentSegmentationRequest];
 }
 
-- (void)setUseDocumentSegmentationRequestBoxed:(id)a3
+- (void)setUseDocumentSegmentationRequestBoxed:(id)boxed
 {
   userDefaults = self->_userDefaults;
-  v5 = a3;
-  -[NSUserDefaults setBool:forKey:](userDefaults, "setBool:forKey:", [v5 BOOLValue], @"UseDocumentSegmentationRequest");
+  boxedCopy = boxed;
+  -[NSUserDefaults setBool:forKey:](userDefaults, "setBool:forKey:", [boxedCopy BOOLValue], @"UseDocumentSegmentationRequest");
   v6 = *MEMORY[0x277CCA208];
   v7 = [(NSUserDefaults *)self->_userDefaults persistentDomainForName:*MEMORY[0x277CCA208]];
   v8 = [v7 mutableCopy];
 
-  [v8 setObject:v5 forKey:@"UseDocumentSegmentationRequest"];
+  [v8 setObject:boxedCopy forKey:@"UseDocumentSegmentationRequest"];
   [(NSUserDefaults *)self->_userDefaults setPersistentDomain:v8 forName:v6];
 }
 
@@ -200,10 +200,10 @@ void __28__DCSettings_sharedSettings__block_invoke(uint64_t a1)
   return [v2 numberWithDouble:?];
 }
 
-- (void)setImageQualityBoxed:(id)a3
+- (void)setImageQualityBoxed:(id)boxed
 {
   userDefaults = self->_userDefaults;
-  [a3 doubleValue];
+  [boxed doubleValue];
   [(NSUserDefaults *)userDefaults setDouble:@"DCImageQuality" forKey:?];
   v5 = *MEMORY[0x277CCA208];
   v6 = [(NSUserDefaults *)self->_userDefaults persistentDomainForName:*MEMORY[0x277CCA208]];
@@ -216,21 +216,21 @@ void __28__DCSettings_sharedSettings__block_invoke(uint64_t a1)
 - (id)enableWindexBoxed
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(DCSettings *)self enableWindex];
+  enableWindex = [(DCSettings *)self enableWindex];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:enableWindex];
 }
 
-- (void)setEnableWindexBoxed:(id)a3
+- (void)setEnableWindexBoxed:(id)boxed
 {
   userDefaults = self->_userDefaults;
-  v5 = a3;
-  -[NSUserDefaults setBool:forKey:](userDefaults, "setBool:forKey:", [v5 BOOLValue], @"EnableWindex");
+  boxedCopy = boxed;
+  -[NSUserDefaults setBool:forKey:](userDefaults, "setBool:forKey:", [boxedCopy BOOLValue], @"EnableWindex");
   v6 = *MEMORY[0x277CCA208];
   v7 = [(NSUserDefaults *)self->_userDefaults persistentDomainForName:*MEMORY[0x277CCA208]];
   v8 = [v7 mutableCopy];
 
-  [v8 setObject:v5 forKey:@"EnableWindex"];
+  [v8 setObject:boxedCopy forKey:@"EnableWindex"];
   [(NSUserDefaults *)self->_userDefaults setPersistentDomain:v8 forName:v6];
 }
 

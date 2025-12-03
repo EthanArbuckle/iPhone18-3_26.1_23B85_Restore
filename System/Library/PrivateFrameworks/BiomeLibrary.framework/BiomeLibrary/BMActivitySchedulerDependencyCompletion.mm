@@ -1,15 +1,15 @@
 @interface BMActivitySchedulerDependencyCompletion
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMActivitySchedulerDependencyCompletion)initWithIdentifier:(id)a3 consumerIdentifier:(id)a4 type:(int)a5;
-- (BMActivitySchedulerDependencyCompletion)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMActivitySchedulerDependencyCompletion)initWithIdentifier:(id)identifier consumerIdentifier:(id)consumerIdentifier type:(int)type;
+- (BMActivitySchedulerDependencyCompletion)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMActivitySchedulerDependencyCompletion
@@ -30,25 +30,25 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMActivitySchedulerDependencyCompletion *)self identifier];
-    v7 = [v5 identifier];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    identifier = [(BMActivitySchedulerDependencyCompletion *)self identifier];
+    identifier2 = [v5 identifier];
+    v8 = identifier2;
+    if (identifier == identifier2)
     {
     }
 
     else
     {
-      v9 = [(BMActivitySchedulerDependencyCompletion *)self identifier];
-      v10 = [v5 identifier];
-      v11 = [v9 isEqual:v10];
+      identifier3 = [(BMActivitySchedulerDependencyCompletion *)self identifier];
+      identifier4 = [v5 identifier];
+      v11 = [identifier3 isEqual:identifier4];
 
       if (!v11)
       {
@@ -56,18 +56,18 @@
       }
     }
 
-    v13 = [(BMActivitySchedulerDependencyCompletion *)self consumerIdentifier];
-    v14 = [v5 consumerIdentifier];
-    v15 = v14;
-    if (v13 == v14)
+    consumerIdentifier = [(BMActivitySchedulerDependencyCompletion *)self consumerIdentifier];
+    consumerIdentifier2 = [v5 consumerIdentifier];
+    v15 = consumerIdentifier2;
+    if (consumerIdentifier == consumerIdentifier2)
     {
     }
 
     else
     {
-      v16 = [(BMActivitySchedulerDependencyCompletion *)self consumerIdentifier];
-      v17 = [v5 consumerIdentifier];
-      v18 = [v16 isEqual:v17];
+      consumerIdentifier3 = [(BMActivitySchedulerDependencyCompletion *)self consumerIdentifier];
+      consumerIdentifier4 = [v5 consumerIdentifier];
+      v18 = [consumerIdentifier3 isEqual:consumerIdentifier4];
 
       if (!v18)
       {
@@ -79,8 +79,8 @@ LABEL_12:
       }
     }
 
-    v19 = [(BMActivitySchedulerDependencyCompletion *)self type];
-    v12 = v19 == [v5 type];
+    type = [(BMActivitySchedulerDependencyCompletion *)self type];
+    v12 = type == [v5 type];
     goto LABEL_12;
   }
 
@@ -93,44 +93,44 @@ LABEL_13:
 - (id)jsonDictionary
 {
   v13[3] = *MEMORY[0x1E69E9840];
-  v3 = [(BMActivitySchedulerDependencyCompletion *)self identifier];
-  v4 = [(BMActivitySchedulerDependencyCompletion *)self consumerIdentifier];
+  identifier = [(BMActivitySchedulerDependencyCompletion *)self identifier];
+  consumerIdentifier = [(BMActivitySchedulerDependencyCompletion *)self consumerIdentifier];
   v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMActivitySchedulerDependencyCompletion type](self, "type")}];
   v12[0] = @"identifier";
-  v6 = v3;
-  if (!v3)
+  null = identifier;
+  if (!identifier)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[0] = v6;
+  v13[0] = null;
   v12[1] = @"consumerIdentifier";
-  v7 = v4;
-  if (!v4)
+  null2 = consumerIdentifier;
+  if (!consumerIdentifier)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v7;
+  v13[1] = null2;
   v12[2] = @"type";
-  v8 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[2] = v8;
+  v13[2] = null3;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
   if (v5)
   {
-    if (v4)
+    if (consumerIdentifier)
     {
       goto LABEL_9;
     }
 
 LABEL_14:
 
-    if (v3)
+    if (identifier)
     {
       goto LABEL_10;
     }
@@ -138,13 +138,13 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v4)
+  if (!consumerIdentifier)
   {
     goto LABEL_14;
   }
 
 LABEL_9:
-  if (v3)
+  if (identifier)
   {
     goto LABEL_10;
   }
@@ -157,25 +157,25 @@ LABEL_10:
   return v9;
 }
 
-- (BMActivitySchedulerDependencyCompletion)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMActivitySchedulerDependencyCompletion)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"identifier"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"consumerIdentifier"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"consumerIdentifier"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v10 = 0;
-          v16 = 0;
+          selfCopy = 0;
           goto LABEL_25;
         }
 
@@ -187,8 +187,8 @@ LABEL_4:
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
         v18 = [v24 initWithDomain:v17 code:2 userInfo:v11];
         v10 = 0;
-        v16 = 0;
-        *a4 = v18;
+        selfCopy = 0;
+        *error = v18;
         goto LABEL_24;
       }
 
@@ -200,7 +200,7 @@ LABEL_4:
       v10 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"type"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -214,7 +214,7 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (a4)
+          if (error)
           {
             v25 = objc_alloc(MEMORY[0x1E696ABC0]);
             v23 = *MEMORY[0x1E698F240];
@@ -222,11 +222,11 @@ LABEL_4:
             v21 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"type"];
             v27 = v21;
             v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-            *a4 = [v25 initWithDomain:v23 code:2 userInfo:v22];
+            *error = [v25 initWithDomain:v23 code:2 userInfo:v22];
           }
 
           v12 = 0;
-          v16 = 0;
+          selfCopy = 0;
           goto LABEL_24;
         }
 
@@ -242,7 +242,7 @@ LABEL_4:
     }
 
     self = -[BMActivitySchedulerDependencyCompletion initWithIdentifier:consumerIdentifier:type:](self, "initWithIdentifier:consumerIdentifier:type:", v8, v10, [v12 intValue]);
-    v16 = self;
+    selfCopy = self;
 LABEL_24:
 
     goto LABEL_25;
@@ -255,10 +255,10 @@ LABEL_24:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_26;
   }
 
@@ -269,27 +269,27 @@ LABEL_24:
   v31[0] = v10;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1];
   v8 = 0;
-  v16 = 0;
-  *a4 = [v14 initWithDomain:v15 code:2 userInfo:v9];
+  selfCopy = 0;
+  *error = [v14 initWithDomain:v15 code:2 userInfo:v9];
 LABEL_25:
 
 LABEL_26:
   v19 = *MEMORY[0x1E69E9840];
-  return v16;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMActivitySchedulerDependencyCompletion *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
@@ -304,9 +304,9 @@ LABEL_26:
   PBDataWriterWriteUint32Field();
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v29.receiver = self;
   v29.super_class = BMActivitySchedulerDependencyCompletion;
   v5 = [(BMEventBase *)&v29 init];
@@ -315,12 +315,12 @@ LABEL_26:
     goto LABEL_42;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -331,18 +331,18 @@ LABEL_26:
       while (1)
       {
         v30 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v30 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v30 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v30 & 0x7F) << v7;
@@ -359,9 +359,9 @@ LABEL_26:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -385,18 +385,18 @@ LABEL_16:
             while (1)
             {
               v30 = 0;
-              v19 = [v4 position] + 1;
-              if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+              v19 = [fromCopy position] + 1;
+              if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
               {
-                v21 = [v4 data];
-                [v21 getBytes:&v30 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v30 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (v30 & 0x7F) << v16;
@@ -412,7 +412,7 @@ LABEL_16:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v18 > 2)
+            if (([fromCopy hasError] & 1) != 0 || v18 > 2)
             {
 LABEL_37:
               LODWORD(v18) = 0;
@@ -437,13 +437,13 @@ LABEL_37:
       *(&v5->super.super.isa + v24) = v23;
 
 LABEL_39:
-      v26 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v26 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_41:
     v27 = 0;
@@ -461,27 +461,27 @@ LABEL_42:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMActivitySchedulerDependencyCompletion *)self identifier];
-  v5 = [(BMActivitySchedulerDependencyCompletion *)self consumerIdentifier];
+  identifier = [(BMActivitySchedulerDependencyCompletion *)self identifier];
+  consumerIdentifier = [(BMActivitySchedulerDependencyCompletion *)self consumerIdentifier];
   v6 = BMActivitySchedulerDependencyCompletionEventTypeAsString([(BMActivitySchedulerDependencyCompletion *)self type]);
-  v7 = [v3 initWithFormat:@"BMActivitySchedulerDependencyCompletion with identifier: %@, consumerIdentifier: %@, type: %@", v4, v5, v6];
+  v7 = [v3 initWithFormat:@"BMActivitySchedulerDependencyCompletion with identifier: %@, consumerIdentifier: %@, type: %@", identifier, consumerIdentifier, v6];
 
   return v7;
 }
 
-- (BMActivitySchedulerDependencyCompletion)initWithIdentifier:(id)a3 consumerIdentifier:(id)a4 type:(int)a5
+- (BMActivitySchedulerDependencyCompletion)initWithIdentifier:(id)identifier consumerIdentifier:(id)consumerIdentifier type:(int)type
 {
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  consumerIdentifierCopy = consumerIdentifier;
   v13.receiver = self;
   v13.super_class = BMActivitySchedulerDependencyCompletion;
   v11 = [(BMEventBase *)&v13 init];
   if (v11)
   {
     v11->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v11->_identifier, a3);
-    objc_storeStrong(&v11->_consumerIdentifier, a4);
-    v11->_type = a5;
+    objc_storeStrong(&v11->_identifier, identifier);
+    objc_storeStrong(&v11->_consumerIdentifier, consumerIdentifier);
+    v11->_type = type;
   }
 
   return v11;
@@ -502,9 +502,9 @@ LABEL_42:
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -512,8 +512,8 @@ LABEL_42:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMActivitySchedulerDependencyCompletion alloc] initByReadFrom:v7];
     v4 = v8;

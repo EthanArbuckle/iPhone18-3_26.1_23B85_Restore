@@ -1,77 +1,77 @@
 @interface WPClient
 + (BOOL)supportsRanging;
-+ (id)stateAsString:(int64_t)a3;
++ (id)stateAsString:(int64_t)string;
 + (void)initialize;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NSString)description;
-- (WPClient)initWithQueue:(id)a3 machName:(id)a4;
+- (WPClient)initWithQueue:(id)queue machName:(id)name;
 - (id)connection;
 - (void)addServices;
-- (void)allowlistConnectionMethods:(id)a3;
-- (void)checkAllowDuplicates:(id)a3;
-- (void)clearDuplicateFilterCache:(id)a3;
-- (void)connectToPeer:(id)a3 withOptions:(id)a4;
+- (void)allowlistConnectionMethods:(id)methods;
+- (void)checkAllowDuplicates:(id)duplicates;
+- (void)clearDuplicateFilterCache:(id)cache;
+- (void)connectToPeer:(id)peer withOptions:(id)options;
 - (void)dealloc;
 - (void)destroyConnection;
 - (void)disableScanning;
-- (void)disconnectFromPeer:(id)a3;
-- (void)discoverCharacteristicsAndServices:(id)a3 forPeripheral:(id)a4;
-- (void)dispatchAdvertisement:(id)a3;
+- (void)disconnectFromPeer:(id)peer;
+- (void)discoverCharacteristicsAndServices:(id)services forPeripheral:(id)peripheral;
+- (void)dispatchAdvertisement:(id)advertisement;
 - (void)dumpDaemonState;
 - (void)enableBubbleTestMode;
-- (void)enableRanging:(BOOL)a3 reply:(id)a4;
+- (void)enableRanging:(BOOL)ranging reply:(id)reply;
 - (void)enableTestMode;
 - (void)establishConnection;
 - (void)getAllTrackedZones;
-- (void)getPowerLogStats:(id)a3;
-- (void)isRangingEnabledReply:(id)a3;
+- (void)getPowerLogStats:(id)stats;
+- (void)isRangingEnabledReply:(id)reply;
 - (void)listenToBandwidthNotifications;
-- (void)notifyNotApprovedUseCase:(id)a3;
-- (void)overrideAdvTimeout:(double)a3;
-- (void)overrideScanTimeout:(double)a3;
-- (void)receivedTestResponse:(id)a3;
-- (void)registerEndpoint:(id)a3 requireAck:(BOOL)a4 requireEncryption:(BOOL)a5;
-- (void)registerForAnyScanResults:(BOOL)a3;
-- (void)registeredWithDaemonAndContinuingSession:(BOOL)a3;
-- (void)sendDataToCharacteristic:(id)a3 inService:(id)a4 forPeer:(id)a5;
-- (void)sendDatatoLePipe:(id)a3 forPeer:(id)a4;
-- (void)sendTestRequest:(id)a3;
+- (void)notifyNotApprovedUseCase:(id)case;
+- (void)overrideAdvTimeout:(double)timeout;
+- (void)overrideScanTimeout:(double)timeout;
+- (void)receivedTestResponse:(id)response;
+- (void)registerEndpoint:(id)endpoint requireAck:(BOOL)ack requireEncryption:(BOOL)encryption;
+- (void)registerForAnyScanResults:(BOOL)results;
+- (void)registeredWithDaemonAndContinuingSession:(BOOL)session;
+- (void)sendDataToCharacteristic:(id)characteristic inService:(id)service forPeer:(id)peer;
+- (void)sendDatatoLePipe:(id)pipe forPeer:(id)peer;
+- (void)sendTestRequest:(id)request;
 - (void)setupMachXPCService;
-- (void)shouldSubscribe:(BOOL)a3 toPeer:(id)a4 withCharacteristic:(id)a5 inService:(id)a6;
-- (void)startAdvertising:(id)a3;
-- (void)startScanning:(id)a3;
-- (void)startScanning:(id)a3 andAdvertising:(id)a4;
-- (void)startTrackingPeerWithRequest:(id)a3;
-- (void)startTrackingZone:(id)a3;
-- (void)stateDidChange:(int64_t)a3;
-- (void)stopAdvertising:(id)a3;
-- (void)stopScanning:(id)a3;
+- (void)shouldSubscribe:(BOOL)subscribe toPeer:(id)peer withCharacteristic:(id)characteristic inService:(id)service;
+- (void)startAdvertising:(id)advertising;
+- (void)startScanning:(id)scanning;
+- (void)startScanning:(id)scanning andAdvertising:(id)advertising;
+- (void)startTrackingPeerWithRequest:(id)request;
+- (void)startTrackingZone:(id)zone;
+- (void)stateDidChange:(int64_t)change;
+- (void)stopAdvertising:(id)advertising;
+- (void)stopScanning:(id)scanning;
 - (void)stopTrackingAllZones;
-- (void)stopTrackingPeerWithRequest:(id)a3;
-- (void)stopTrackingZones:(id)a3;
-- (void)unregisterEndpoint:(id)a3;
-- (void)updateAdvertisingRequest:(id)a3 withUpdate:(id)a4;
-- (void)updateScanningRequest:(id)a3 withUpdate:(id)a4;
+- (void)stopTrackingPeerWithRequest:(id)request;
+- (void)stopTrackingZones:(id)zones;
+- (void)unregisterEndpoint:(id)endpoint;
+- (void)updateAdvertisingRequest:(id)request withUpdate:(id)update;
+- (void)updateScanningRequest:(id)request withUpdate:(id)update;
 @end
 
 @implementation WPClient
 
 - (id)connection
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(WPClient *)v2 xpcConnection];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  xpcConnection = [(WPClient *)selfCopy xpcConnection];
 
-  if (!v3)
+  if (!xpcConnection)
   {
     v4 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.wirelessproxd" options:4096];
-    [(WPClient *)v2 allowlistConnectionMethods:v4];
+    [(WPClient *)selfCopy allowlistConnectionMethods:v4];
     v13[0] = 0;
     v13[1] = v13;
     v13[2] = 0x3032000000;
     v13[3] = __Block_byref_object_copy__0;
     v13[4] = __Block_byref_object_dispose__0;
-    v5 = v2;
+    v5 = selfCopy;
     v14 = v5;
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
@@ -87,42 +87,42 @@
     v11[4] = v5;
     v11[5] = v13;
     [v4 setInvalidationHandler:v11];
-    v6 = [(WPClient *)v5 clientQueue];
+    clientQueue = [(WPClient *)v5 clientQueue];
 
-    if (v6)
+    if (clientQueue)
     {
-      v7 = [(WPClient *)v5 clientQueue];
-      [v4 _setQueue:v7];
+      clientQueue2 = [(WPClient *)v5 clientQueue];
+      [v4 _setQueue:clientQueue2];
     }
 
     [(WPClient *)v5 setXpcConnection:v4];
-    v8 = [(WPClient *)v5 xpcConnection];
-    [v8 resume];
+    xpcConnection2 = [(WPClient *)v5 xpcConnection];
+    [xpcConnection2 resume];
 
     _Block_object_dispose(v13, 8);
   }
 
-  if ([(WPClient *)v2 needsToRegister]&& ![(WPClient *)v2 registering])
+  if ([(WPClient *)selfCopy needsToRegister]&& ![(WPClient *)selfCopy registering])
   {
-    [(WPClient *)v2 establishConnection];
+    [(WPClient *)selfCopy establishConnection];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v9 = [(WPClient *)v2 xpcConnection];
+  xpcConnection3 = [(WPClient *)selfCopy xpcConnection];
 
-  return v9;
+  return xpcConnection3;
 }
 
 - (void)establishConnection
 {
-  v3 = [(WPClient *)self daemonDeliveryQueue];
+  daemonDeliveryQueue = [(WPClient *)self daemonDeliveryQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __31__WPClient_establishConnection__block_invoke;
   block[3] = &unk_279ED7688;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(daemonDeliveryQueue, block);
 }
 
 void __31__WPClient_establishConnection__block_invoke(uint64_t a1)
@@ -216,11 +216,11 @@ uint64_t __27__WPClient_supportsRanging__block_invoke()
   v1 = *MEMORY[0x277D85DE8];
 }
 
-- (WPClient)initWithQueue:(id)a3 machName:(id)a4
+- (WPClient)initWithQueue:(id)queue machName:(id)name
 {
   v55 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  nameCopy = name;
   v41.receiver = self;
   v41.super_class = WPClient;
   v9 = [(WPClient *)&v41 init];
@@ -230,11 +230,11 @@ uint64_t __27__WPClient_supportsRanging__block_invoke()
     goto LABEL_20;
   }
 
-  v40 = v7;
+  v40 = queueCopy;
   v9->_state = 0;
   v9->_advertiserState = 0;
   v9->_scannerState = 0;
-  objc_storeStrong(&v9->_clientQueue, a3);
+  objc_storeStrong(&v9->_clientQueue, queue);
   v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.wiproxd.daemonMessageQueue.%lu", -[WPClient hash](v10, "hash")];
   if ([objc_opt_class() holdVouchers] && (clientQueue = v10->_clientQueue) != 0)
   {
@@ -254,12 +254,12 @@ uint64_t __27__WPClient_supportsRanging__block_invoke()
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
     {
       v18 = v17;
-      v19 = [(WPClient *)v10 clientAsString];
+      clientAsString = [(WPClient *)v10 clientAsString];
       v20 = qos2string(qos_class);
       *buf = 134219010;
       v44 = v10;
       v45 = 2112;
-      v46 = v19;
+      v46 = clientAsString;
       v47 = 2112;
       v48 = v11;
       v49 = 2080;
@@ -272,9 +272,9 @@ uint64_t __27__WPClient_supportsRanging__block_invoke()
 
   else
   {
-    v21 = [v11 UTF8String];
+    uTF8String = [v11 UTF8String];
     v22 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v23 = dispatch_queue_create(v21, v22);
+    v23 = dispatch_queue_create(uTF8String, v22);
     v24 = v10->_daemonDeliveryQueue;
     v10->_daemonDeliveryQueue = v23;
 
@@ -290,11 +290,11 @@ uint64_t __27__WPClient_supportsRanging__block_invoke()
     }
 
     v14 = v25;
-    v26 = [(WPClient *)v10 clientAsString];
+    clientAsString2 = [(WPClient *)v10 clientAsString];
     *buf = 134218498;
     v44 = v10;
     v45 = 2112;
-    v46 = v26;
+    v46 = clientAsString2;
     v47 = 2112;
     v48 = v11;
     _os_log_impl(&dword_274327000, v14, OS_LOG_TYPE_DEFAULT, "WPClient (%p - %@) created queue %@ (default)", buf, 0x20u);
@@ -319,13 +319,13 @@ LABEL_13:
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v34 = v33;
-    v35 = [(WPClient *)v30 clientAsString];
+    clientAsString3 = [(WPClient *)v30 clientAsString];
     v36 = [v31 description];
     v37 = qos2string(v32);
     *buf = 134219266;
     v44 = v30;
     v45 = 2112;
-    v46 = v35;
+    v46 = clientAsString3;
     v47 = 2112;
     v48 = v36;
     v49 = 2080;
@@ -339,9 +339,9 @@ LABEL_13:
 
   *&v30->_isTestClient = 0x10000;
   v30->_registering = 0;
-  if (v8)
+  if (nameCopy)
   {
-    objc_storeStrong(&v30->_machName, a4);
+    objc_storeStrong(&v30->_machName, name);
     [(WPClient *)v30 setupMachXPCService];
   }
 
@@ -350,7 +350,7 @@ LABEL_13:
   v30->_connectionUseCase = 0;
   v30->_maxAllowedConnectionDelayMs = 0;
 
-  v7 = v40;
+  queueCopy = v40;
 LABEL_20:
 
   v38 = *MEMORY[0x277D85DE8];
@@ -369,31 +369,31 @@ LABEL_20:
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(WPClient *)self clientAsString];
+    clientAsString = [(WPClient *)self clientAsString];
     *buf = 134218242;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
-    v15 = v5;
+    v15 = clientAsString;
     _os_log_impl(&dword_274327000, v4, OS_LOG_TYPE_DEFAULT, "WPClient deallocing (%p - %{public}@)", buf, 0x16u);
   }
 
   [(WPClient *)self destroyConnection];
-  v6 = [(WPClient *)self daemonRegisteredSemaphore];
+  daemonRegisteredSemaphore = [(WPClient *)self daemonRegisteredSemaphore];
 
-  if (v6)
+  if (daemonRegisteredSemaphore)
   {
     [(WPClient *)self setDaemonRegisteredSemaphore:0];
   }
 
-  v7 = [(WPClient *)self xpcListener];
+  xpcListener = [(WPClient *)self xpcListener];
 
-  if (v7)
+  if (xpcListener)
   {
-    v8 = [(WPClient *)self xpcListener];
-    [v8 setDelegate:0];
+    xpcListener2 = [(WPClient *)self xpcListener];
+    [xpcListener2 setDelegate:0];
 
-    v9 = [(WPClient *)self xpcListener];
-    [v9 invalidate];
+    xpcListener3 = [(WPClient *)self xpcListener];
+    [xpcListener3 invalidate];
 
     [(WPClient *)self setXpcListener:0];
   }
@@ -407,15 +407,15 @@ LABEL_20:
 - (void)setupMachXPCService
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(WPClient *)self machName];
-  v4 = [objc_alloc(MEMORY[0x277CCAE98]) initWithMachServiceName:v3];
+  machName = [(WPClient *)self machName];
+  v4 = [objc_alloc(MEMORY[0x277CCAE98]) initWithMachServiceName:machName];
   [(WPClient *)self setXpcListener:v4];
 
-  v5 = [(WPClient *)self xpcListener];
-  [v5 setDelegate:self];
+  xpcListener = [(WPClient *)self xpcListener];
+  [xpcListener setDelegate:self];
 
-  v6 = [(WPClient *)self xpcListener];
-  [v6 resume];
+  xpcListener2 = [(WPClient *)self xpcListener];
+  [xpcListener2 resume];
 
   if (WPLogInitOnce != -1)
   {
@@ -426,24 +426,24 @@ LABEL_20:
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_INFO))
   {
     v8 = v7;
-    v9 = [(WPClient *)self clientAsString];
+    clientAsString = [(WPClient *)self clientAsString];
     v11 = 138412802;
-    v12 = v3;
+    v12 = machName;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
-    v16 = v9;
+    v16 = clientAsString;
     _os_log_impl(&dword_274327000, v8, OS_LOG_TYPE_INFO, "WPClient started listening for mach service %@ for client (%p - %@)", &v11, 0x20u);
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   if (WPLogInitOnce != -1)
   {
     [WPClient listener:shouldAcceptNewConnection:];
@@ -454,10 +454,10 @@ LABEL_20:
   {
     v8 = MEMORY[0x277CCAC38];
     v9 = v7;
-    v10 = [v8 processInfo];
-    v11 = [v10 processName];
+    processInfo = [v8 processInfo];
+    processName = [processInfo processName];
     v14 = 138412290;
-    v15 = v11;
+    v15 = processName;
     _os_log_impl(&dword_274327000, v9, OS_LOG_TYPE_INFO, "WPClient Process %@ was woken up from mach port tickle", &v14, 0xCu);
   }
 
@@ -541,11 +541,11 @@ uint64_t __22__WPClient_connection__block_invoke_182(uint64_t a1)
   return [v2 setXpcConnection:0];
 }
 
-- (void)allowlistConnectionMethods:(id)a3
+- (void)allowlistConnectionMethods:(id)methods
 {
   v36[5] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAE90];
-  v28 = a3;
+  methodsCopy = methods;
   v4 = [v3 interfaceWithProtocol:&unk_28835E1E0];
   v5 = MEMORY[0x277CBEB98];
   v36[0] = objc_opt_class();
@@ -617,23 +617,23 @@ uint64_t __22__WPClient_connection__block_invoke_182(uint64_t a1)
 
   [v4 setClasses:v21 forSelector:sel_receivedTestResponse_ argumentIndex:0 ofReply:0];
   v22 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_28835EA58];
-  [v28 setExportedInterface:v4];
-  [v28 setExportedObject:self];
-  [v28 setRemoteObjectInterface:v22];
+  [methodsCopy setExportedInterface:v4];
+  [methodsCopy setExportedObject:self];
+  [methodsCopy setRemoteObjectInterface:v22];
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
 - (void)destroyConnection
 {
-  v2 = [(WPClient *)self xpcConnection];
-  [v2 invalidate];
+  xpcConnection = [(WPClient *)self xpcConnection];
+  [xpcConnection invalidate];
 }
 
-- (void)registeredWithDaemonAndContinuingSession:(BOOL)a3
+- (void)registeredWithDaemonAndContinuingSession:(BOOL)session
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (session)
   {
     [(WPClient *)self setServicesAdded:1];
   }
@@ -649,16 +649,16 @@ uint64_t __22__WPClient_connection__block_invoke_182(uint64_t a1)
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_INFO))
   {
     v5 = v4;
-    v6 = [(WPClient *)self clientAsString];
+    clientAsString = [(WPClient *)self clientAsString];
     v9 = 134218242;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v6;
+    v12 = clientAsString;
     _os_log_impl(&dword_274327000, v5, OS_LOG_TYPE_INFO, "WPClient (%p - %@) registered with daemon, continuing any messages", &v9, 0x16u);
   }
 
-  v7 = [(WPClient *)self daemonRegisteredSemaphore];
-  dispatch_semaphore_signal(v7);
+  daemonRegisteredSemaphore = [(WPClient *)self daemonRegisteredSemaphore];
+  dispatch_semaphore_signal(daemonRegisteredSemaphore);
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -674,16 +674,16 @@ uint64_t __22__WPClient_connection__block_invoke_182(uint64_t a1)
   return v7;
 }
 
-+ (id)stateAsString:(int64_t)a3
++ (id)stateAsString:(int64_t)string
 {
-  if ((a3 - 1) > 2)
+  if ((string - 1) > 2)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_279ED7998[a3 - 1];
+    return off_279ED7998[string - 1];
   }
 }
 
@@ -769,19 +769,19 @@ void __23__WPClient_addServices__block_invoke_2_408(uint64_t a1, void *a2)
   }
 }
 
-- (void)dispatchAdvertisement:(id)a3
+- (void)dispatchAdvertisement:(id)advertisement
 {
-  v4 = a3;
+  advertisementCopy = advertisement;
   objc_initWeak(&location, self);
-  v5 = [(WPClient *)self daemonDeliveryQueue];
+  daemonDeliveryQueue = [(WPClient *)self daemonDeliveryQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __34__WPClient_dispatchAdvertisement___block_invoke;
   block[3] = &unk_279ED7798;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = advertisementCopy;
+  v6 = advertisementCopy;
+  dispatch_async(daemonDeliveryQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -832,22 +832,22 @@ void __34__WPClient_dispatchAdvertisement___block_invoke_2(uint64_t a1, void *a2
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startAdvertising:(id)a3
+- (void)startAdvertising:(id)advertising
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![v4 clientType] || objc_msgSend(v4, "clientType") >= 0x1C)
+  advertisingCopy = advertising;
+  if (![advertisingCopy clientType] || objc_msgSend(advertisingCopy, "clientType") >= 0x1C)
   {
-    [MEMORY[0x277CBEAD8] raise:@"Unknown client type" format:{@"Trying to start advertising for an unknown client type %ld", objc_msgSend(v4, "clientType")}];
+    [MEMORY[0x277CBEAD8] raise:@"Unknown client type" format:{@"Trying to start advertising for an unknown client type %ld", objc_msgSend(advertisingCopy, "clientType")}];
   }
 
-  v5 = [v4 advertisingData];
+  advertisingData = [advertisingCopy advertisingData];
 
-  if (!v5)
+  if (!advertisingData)
   {
     v8 = MEMORY[0x277CCACA8];
-    v9 = [(WPClient *)self clientAsString];
-    v10 = [v8 stringWithFormat:@"WPClient %@ advertising data is nil", v9];
+    clientAsString = [(WPClient *)self clientAsString];
+    v10 = [v8 stringWithFormat:@"WPClient %@ advertising data is nil", clientAsString];
 
     if (WPLogInitOnce != -1)
     {
@@ -868,20 +868,20 @@ void __34__WPClient_dispatchAdvertisement___block_invoke_2(uint64_t a1, void *a2
     goto LABEL_23;
   }
 
-  v6 = [v4 advertisingRate] == 32 || objc_msgSend(v4, "advertisingRate") == 48 || objc_msgSend(v4, "advertisingRate") == 192 || objc_msgSend(v4, "advertisingRate") == 96 || objc_msgSend(v4, "advertisingRate") == 290 || objc_msgSend(v4, "advertisingRate") == 432 || objc_msgSend(v4, "advertisingRate") == 996 || objc_msgSend(v4, "advertisingRate") == 1636 || objc_msgSend(v4, "advertisingRate") == 3200 || objc_msgSend(v4, "advertisingRate") == 0x4000;
-  v7 = [v4 clientType];
-  if (v7 > 0x1B)
+  v6 = [advertisingCopy advertisingRate] == 32 || objc_msgSend(advertisingCopy, "advertisingRate") == 48 || objc_msgSend(advertisingCopy, "advertisingRate") == 192 || objc_msgSend(advertisingCopy, "advertisingRate") == 96 || objc_msgSend(advertisingCopy, "advertisingRate") == 290 || objc_msgSend(advertisingCopy, "advertisingRate") == 432 || objc_msgSend(advertisingCopy, "advertisingRate") == 996 || objc_msgSend(advertisingCopy, "advertisingRate") == 1636 || objc_msgSend(advertisingCopy, "advertisingRate") == 3200 || objc_msgSend(advertisingCopy, "advertisingRate") == 0x4000;
+  clientType = [advertisingCopy clientType];
+  if (clientType > 0x1B)
   {
     goto LABEL_31;
   }
 
-  if (((1 << v7) & 0xD6C0000) == 0)
+  if (((1 << clientType) & 0xD6C0000) == 0)
   {
-    if (v7 == 2)
+    if (clientType == 2)
     {
       if (+[WPClient isHomePodOrIOS])
       {
-        v18 = [v4 advertisingRate] == 160;
+        v18 = [advertisingCopy advertisingRate] == 160;
       }
 
       else
@@ -896,8 +896,8 @@ void __34__WPClient_dispatchAdvertisement___block_invoke_2(uint64_t a1, void *a2
 
 LABEL_35:
       v19 = MEMORY[0x277CCACA8];
-      v20 = [(WPClient *)self clientAsString];
-      v10 = [v19 stringWithFormat:@"WPClient %@ advertising rate 0x%lx is not valid", v20, objc_msgSend(v4, "advertisingRate")];
+      clientAsString2 = [(WPClient *)self clientAsString];
+      v10 = [v19 stringWithFormat:@"WPClient %@ advertising rate 0x%lx is not valid", clientAsString2, objc_msgSend(advertisingCopy, "advertisingRate")];
 
       if (WPLogInitOnce != -1)
       {
@@ -919,11 +919,11 @@ LABEL_23:
       v15 = [v12 dictionaryWithObjects:v13 forKeys:v14 count:1];
       v16 = [v11 errorWithDomain:@"WPErrorDomain" code:13 userInfo:v15];
 
-      -[WPClient advertisingFailedToStart:ofType:](self, "advertisingFailedToStart:ofType:", v16, [v4 clientType]);
+      -[WPClient advertisingFailedToStart:ofType:](self, "advertisingFailedToStart:ofType:", v16, [advertisingCopy clientType]);
       goto LABEL_24;
     }
 
-    if (v7 == 8)
+    if (clientType == 8)
     {
       if ((v6 | +[WPClient isHomePodOrIOS]))
       {
@@ -943,30 +943,30 @@ LABEL_31:
   }
 
 LABEL_17:
-  [(WPClient *)self dispatchAdvertisement:v4];
+  [(WPClient *)self dispatchAdvertisement:advertisingCopy];
 LABEL_24:
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopAdvertising:(id)a3
+- (void)stopAdvertising:(id)advertising
 {
-  v4 = a3;
-  if (![v4 clientType] || objc_msgSend(v4, "clientType") >= 0x1C)
+  advertisingCopy = advertising;
+  if (![advertisingCopy clientType] || objc_msgSend(advertisingCopy, "clientType") >= 0x1C)
   {
-    [MEMORY[0x277CBEAD8] raise:@"Unknown client type" format:{@"Trying to stop advertising for an unknown client type %ld", objc_msgSend(v4, "clientType")}];
+    [MEMORY[0x277CBEAD8] raise:@"Unknown client type" format:{@"Trying to stop advertising for an unknown client type %ld", objc_msgSend(advertisingCopy, "clientType")}];
   }
 
   objc_initWeak(&location, self);
-  v5 = [(WPClient *)self daemonDeliveryQueue];
+  daemonDeliveryQueue = [(WPClient *)self daemonDeliveryQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __28__WPClient_stopAdvertising___block_invoke;
   block[3] = &unk_279ED7798;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = advertisingCopy;
+  v6 = advertisingCopy;
+  dispatch_async(daemonDeliveryQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -1001,11 +1001,11 @@ void __28__WPClient_stopAdvertising___block_invoke_2(uint64_t a1, void *a2)
   }
 }
 
-- (void)updateAdvertisingRequest:(id)a3 withUpdate:(id)a4
+- (void)updateAdvertisingRequest:(id)request withUpdate:(id)update
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  requestCopy = request;
+  updateCopy = update;
+  if (requestCopy)
   {
     if (WPLogInitOnce != -1)
     {
@@ -1034,17 +1034,17 @@ void __28__WPClient_stopAdvertising___block_invoke_2(uint64_t a1, void *a2)
   }
 }
 
-- (void)registerForAnyScanResults:(BOOL)a3
+- (void)registerForAnyScanResults:(BOOL)results
 {
   objc_initWeak(&location, self);
-  v5 = [(WPClient *)self daemonDeliveryQueue];
+  daemonDeliveryQueue = [(WPClient *)self daemonDeliveryQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __38__WPClient_registerForAnyScanResults___block_invoke;
   block[3] = &unk_279ED77C0;
   objc_copyWeak(&v7, &location);
-  v8 = a3;
-  dispatch_async(v5, block);
+  resultsCopy = results;
+  dispatch_async(daemonDeliveryQueue, block);
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -1081,39 +1081,39 @@ void __38__WPClient_registerForAnyScanResults___block_invoke_2(uint64_t a1, void
   }
 }
 
-- (void)startScanning:(id)a3
+- (void)startScanning:(id)scanning
 {
-  v4 = a3;
-  if (![v4 clientType] || objc_msgSend(v4, "clientType") >= 0x1C)
+  scanningCopy = scanning;
+  if (![scanningCopy clientType] || objc_msgSend(scanningCopy, "clientType") >= 0x1C)
   {
-    [MEMORY[0x277CBEAD8] raise:@"Unknown client type" format:{@"Trying to start scanning for an unknown client type %ld", objc_msgSend(v4, "clientType")}];
+    [MEMORY[0x277CBEAD8] raise:@"Unknown client type" format:{@"Trying to start scanning for an unknown client type %ld", objc_msgSend(scanningCopy, "clientType")}];
   }
 
-  if ([v4 clientType] == 8)
+  if ([scanningCopy clientType] == 8)
   {
-    v5 = [(WPClient *)self daemonDeliveryQueue];
+    daemonDeliveryQueue = [(WPClient *)self daemonDeliveryQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __26__WPClient_startScanning___block_invoke;
     block[3] = &unk_279ED77E8;
     block[4] = self;
-    v14 = v4;
-    v6 = v4;
-    dispatch_sync(v5, block);
+    v14 = scanningCopy;
+    v6 = scanningCopy;
+    dispatch_sync(daemonDeliveryQueue, block);
   }
 
   else
   {
     objc_initWeak(&location, self);
-    v7 = [(WPClient *)self daemonDeliveryQueue];
+    daemonDeliveryQueue2 = [(WPClient *)self daemonDeliveryQueue];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __26__WPClient_startScanning___block_invoke_3;
     v9[3] = &unk_279ED7798;
     objc_copyWeak(&v11, &location);
-    v10 = v4;
-    v8 = v4;
-    dispatch_async(v7, v9);
+    v10 = scanningCopy;
+    v8 = scanningCopy;
+    dispatch_async(daemonDeliveryQueue2, v9);
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -1168,24 +1168,24 @@ void __26__WPClient_startScanning___block_invoke_4(uint64_t a1, void *a2)
   [v2 handleStartScanningError:v4 ofType:{objc_msgSend(v3, "clientType")}];
 }
 
-- (void)stopScanning:(id)a3
+- (void)stopScanning:(id)scanning
 {
-  v4 = a3;
-  if (![v4 clientType] || objc_msgSend(v4, "clientType") >= 0x1C)
+  scanningCopy = scanning;
+  if (![scanningCopy clientType] || objc_msgSend(scanningCopy, "clientType") >= 0x1C)
   {
-    [MEMORY[0x277CBEAD8] raise:@"Unknown client type" format:{@"Trying to stop scanning for an unknown client type %ld", objc_msgSend(v4, "clientType")}];
+    [MEMORY[0x277CBEAD8] raise:@"Unknown client type" format:{@"Trying to stop scanning for an unknown client type %ld", objc_msgSend(scanningCopy, "clientType")}];
   }
 
   objc_initWeak(&location, self);
-  v5 = [(WPClient *)self daemonDeliveryQueue];
+  daemonDeliveryQueue = [(WPClient *)self daemonDeliveryQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __25__WPClient_stopScanning___block_invoke;
   block[3] = &unk_279ED7798;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = scanningCopy;
+  v6 = scanningCopy;
+  dispatch_async(daemonDeliveryQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -1236,24 +1236,24 @@ void __25__WPClient_stopScanning___block_invoke_2(uint64_t a1, void *a2)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clearDuplicateFilterCache:(id)a3
+- (void)clearDuplicateFilterCache:(id)cache
 {
-  v4 = a3;
-  if (![v4 clientType] || objc_msgSend(v4, "clientType") >= 0x1C)
+  cacheCopy = cache;
+  if (![cacheCopy clientType] || objc_msgSend(cacheCopy, "clientType") >= 0x1C)
   {
-    [MEMORY[0x277CBEAD8] raise:@"Unknown client type" format:{@"Trying to clear duplicate filter cache for an unknown client type %ld", objc_msgSend(v4, "clientType")}];
+    [MEMORY[0x277CBEAD8] raise:@"Unknown client type" format:{@"Trying to clear duplicate filter cache for an unknown client type %ld", objc_msgSend(cacheCopy, "clientType")}];
   }
 
   objc_initWeak(&location, self);
-  v5 = [(WPClient *)self daemonDeliveryQueue];
+  daemonDeliveryQueue = [(WPClient *)self daemonDeliveryQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __38__WPClient_clearDuplicateFilterCache___block_invoke;
   block[3] = &unk_279ED7798;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = cacheCopy;
+  v6 = cacheCopy;
+  dispatch_async(daemonDeliveryQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -1290,11 +1290,11 @@ void __38__WPClient_clearDuplicateFilterCache___block_invoke_2(uint64_t a1, void
   }
 }
 
-- (void)updateScanningRequest:(id)a3 withUpdate:(id)a4
+- (void)updateScanningRequest:(id)request withUpdate:(id)update
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  requestCopy = request;
+  updateCopy = update;
+  if (requestCopy)
   {
     if (WPLogInitOnce != -1)
     {
@@ -1323,28 +1323,28 @@ void __38__WPClient_clearDuplicateFilterCache___block_invoke_2(uint64_t a1, void
   }
 }
 
-- (void)startScanning:(id)a3 andAdvertising:(id)a4
+- (void)startScanning:(id)scanning andAdvertising:(id)advertising
 {
-  v6 = a3;
-  [(WPClient *)self startAdvertising:a4];
-  [(WPClient *)self startScanning:v6];
+  scanningCopy = scanning;
+  [(WPClient *)self startAdvertising:advertising];
+  [(WPClient *)self startScanning:scanningCopy];
 }
 
-- (void)registerEndpoint:(id)a3 requireAck:(BOOL)a4 requireEncryption:(BOOL)a5
+- (void)registerEndpoint:(id)endpoint requireAck:(BOOL)ack requireEncryption:(BOOL)encryption
 {
-  v8 = a3;
+  endpointCopy = endpoint;
   objc_initWeak(&location, self);
-  v9 = [(WPClient *)self daemonDeliveryQueue];
+  daemonDeliveryQueue = [(WPClient *)self daemonDeliveryQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __58__WPClient_registerEndpoint_requireAck_requireEncryption___block_invoke;
   v11[3] = &unk_279ED7810;
   objc_copyWeak(&v13, &location);
-  v12 = v8;
-  v14 = a4;
-  v15 = a5;
-  v10 = v8;
-  dispatch_async(v9, v11);
+  v12 = endpointCopy;
+  ackCopy = ack;
+  encryptionCopy = encryption;
+  v10 = endpointCopy;
+  dispatch_async(daemonDeliveryQueue, v11);
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -1381,19 +1381,19 @@ void __58__WPClient_registerEndpoint_requireAck_requireEncryption___block_invoke
   }
 }
 
-- (void)unregisterEndpoint:(id)a3
+- (void)unregisterEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   objc_initWeak(&location, self);
-  v5 = [(WPClient *)self daemonDeliveryQueue];
+  daemonDeliveryQueue = [(WPClient *)self daemonDeliveryQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __31__WPClient_unregisterEndpoint___block_invoke;
   block[3] = &unk_279ED7798;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = endpointCopy;
+  v6 = endpointCopy;
+  dispatch_async(daemonDeliveryQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -1430,22 +1430,22 @@ void __31__WPClient_unregisterEndpoint___block_invoke_2(uint64_t a1, void *a2)
   }
 }
 
-- (void)sendDatatoLePipe:(id)a3 forPeer:(id)a4
+- (void)sendDatatoLePipe:(id)pipe forPeer:(id)peer
 {
-  v6 = a3;
-  v7 = a4;
+  pipeCopy = pipe;
+  peerCopy = peer;
   objc_initWeak(&location, self);
-  v8 = [(WPClient *)self daemonDeliveryQueue];
+  daemonDeliveryQueue = [(WPClient *)self daemonDeliveryQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __37__WPClient_sendDatatoLePipe_forPeer___block_invoke;
   v11[3] = &unk_279ED7720;
   objc_copyWeak(&v14, &location);
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, v11);
+  v12 = peerCopy;
+  v13 = pipeCopy;
+  v9 = pipeCopy;
+  v10 = peerCopy;
+  dispatch_async(daemonDeliveryQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -1483,43 +1483,43 @@ void __37__WPClient_sendDatatoLePipe_forPeer___block_invoke_2(uint64_t a1, void 
   }
 }
 
-- (void)startTrackingPeerWithRequest:(id)a3
+- (void)startTrackingPeerWithRequest:(id)request
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCA9B8];
   v10 = *MEMORY[0x277CCA450];
   v11[0] = @"Peer tracking is unsupported as the platform is not OS X";
   v5 = MEMORY[0x277CBEAC0];
-  v6 = a3;
+  requestCopy = request;
   v7 = [v5 dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v8 = [v4 errorWithDomain:@"WPErrorDomain" code:5 userInfo:v7];
 
-  [(WPClient *)self failedToStartTrackingPeer:v6 error:v8];
+  [(WPClient *)self failedToStartTrackingPeer:requestCopy error:v8];
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopTrackingPeerWithRequest:(id)a3
+- (void)stopTrackingPeerWithRequest:(id)request
 {
-  v4 = a3;
-  v6 = [v4 peerUUID];
-  v5 = [v4 clientType];
+  requestCopy = request;
+  peerUUID = [requestCopy peerUUID];
+  clientType = [requestCopy clientType];
 
-  [(WPClient *)self stoppedTrackingPeer:v6 ofType:v5];
+  [(WPClient *)self stoppedTrackingPeer:peerUUID ofType:clientType];
 }
 
-- (void)connectToPeer:(id)a3 withOptions:(id)a4
+- (void)connectToPeer:(id)peer withOptions:(id)options
 {
   v39[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v7)
+  peerCopy = peer;
+  optionsCopy = options;
+  v8 = optionsCopy;
+  if (!optionsCopy)
   {
     goto LABEL_9;
   }
 
   v9 = *MEMORY[0x277CBDEA0];
-  v10 = [v7 objectForKeyedSubscript:*MEMORY[0x277CBDEA0]];
+  v10 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277CBDEA0]];
 
   if (!v10)
   {
@@ -1527,7 +1527,7 @@ void __37__WPClient_sendDatatoLePipe_forPeer___block_invoke_2(uint64_t a1, void 
   }
 
   v11 = [v8 objectForKeyedSubscript:v9];
-  v12 = [v11 BOOLValue];
+  bOOLValue = [v11 BOOLValue];
 
   if (WPLogInitOnce != -1)
   {
@@ -1539,18 +1539,18 @@ void __37__WPClient_sendDatatoLePipe_forPeer___block_invoke_2(uint64_t a1, void 
     [WPClient connectToPeer:withOptions:];
   }
 
-  if (v12 && ([(WPClient *)self isMemberOfClass:objc_opt_class()]& 1) == 0)
+  if (bOOLValue && ([(WPClient *)self isMemberOfClass:objc_opt_class()]& 1) == 0)
   {
     objc_initWeak(&location, self);
-    v28 = [(WPClient *)self daemonDeliveryQueue];
+    daemonDeliveryQueue = [(WPClient *)self daemonDeliveryQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __38__WPClient_connectToPeer_withOptions___block_invoke_511;
     block[3] = &unk_279ED7798;
     objc_copyWeak(&v36, &location);
-    v35 = v6;
-    v29 = v6;
-    dispatch_async(v28, block);
+    v35 = peerCopy;
+    v29 = peerCopy;
+    dispatch_async(daemonDeliveryQueue, block);
 
     objc_destroyWeak(&v36);
     objc_destroyWeak(&location);
@@ -1576,8 +1576,8 @@ LABEL_9:
       if ([v19 count])
       {
         v20 = MEMORY[0x277CBEA60];
-        v21 = [v19 allObjects];
-        v22 = [v20 arrayWithArray:v21];
+        allObjects = [v19 allObjects];
+        v22 = [v20 arrayWithArray:allObjects];
         [v18 setObject:v22 forKey:@"kCBOptionUseCaseList"];
 
         if ([v19 count] == 1)
@@ -1597,17 +1597,17 @@ LABEL_9:
 
     objc_autoreleasePoolPop(v13);
     objc_initWeak(&location, self);
-    v24 = [(WPClient *)self daemonDeliveryQueue];
+    daemonDeliveryQueue2 = [(WPClient *)self daemonDeliveryQueue];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __38__WPClient_connectToPeer_withOptions___block_invoke_522;
     v30[3] = &unk_279ED7720;
     objc_copyWeak(&v33, &location);
-    v31 = v6;
+    v31 = peerCopy;
     v32 = v17;
-    v25 = v6;
+    v25 = peerCopy;
     v26 = v17;
-    dispatch_async(v24, v30);
+    dispatch_async(daemonDeliveryQueue2, v30);
 
     objc_destroyWeak(&v33);
     objc_destroyWeak(&location);
@@ -1677,19 +1677,19 @@ void __38__WPClient_connectToPeer_withOptions___block_invoke_2_523(uint64_t a1, 
   }
 }
 
-- (void)disconnectFromPeer:(id)a3
+- (void)disconnectFromPeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   objc_initWeak(&location, self);
-  v5 = [(WPClient *)self daemonDeliveryQueue];
+  daemonDeliveryQueue = [(WPClient *)self daemonDeliveryQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __31__WPClient_disconnectFromPeer___block_invoke;
   block[3] = &unk_279ED7798;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = peerCopy;
+  v6 = peerCopy;
+  dispatch_async(daemonDeliveryQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -1727,22 +1727,22 @@ void __31__WPClient_disconnectFromPeer___block_invoke_2(uint64_t a1, void *a2)
   }
 }
 
-- (void)discoverCharacteristicsAndServices:(id)a3 forPeripheral:(id)a4
+- (void)discoverCharacteristicsAndServices:(id)services forPeripheral:(id)peripheral
 {
-  v6 = a3;
-  v7 = a4;
+  servicesCopy = services;
+  peripheralCopy = peripheral;
   objc_initWeak(&location, self);
-  v8 = [(WPClient *)self daemonDeliveryQueue];
+  daemonDeliveryQueue = [(WPClient *)self daemonDeliveryQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __61__WPClient_discoverCharacteristicsAndServices_forPeripheral___block_invoke;
   v11[3] = &unk_279ED7720;
   objc_copyWeak(&v14, &location);
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, v11);
+  v12 = peripheralCopy;
+  v13 = servicesCopy;
+  v9 = servicesCopy;
+  v10 = peripheralCopy;
+  dispatch_async(daemonDeliveryQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -1780,26 +1780,26 @@ void __61__WPClient_discoverCharacteristicsAndServices_forPeripheral___block_inv
   }
 }
 
-- (void)shouldSubscribe:(BOOL)a3 toPeer:(id)a4 withCharacteristic:(id)a5 inService:(id)a6
+- (void)shouldSubscribe:(BOOL)subscribe toPeer:(id)peer withCharacteristic:(id)characteristic inService:(id)service
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  peerCopy = peer;
+  characteristicCopy = characteristic;
+  serviceCopy = service;
   objc_initWeak(&location, self);
-  v13 = [(WPClient *)self daemonDeliveryQueue];
+  daemonDeliveryQueue = [(WPClient *)self daemonDeliveryQueue];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __64__WPClient_shouldSubscribe_toPeer_withCharacteristic_inService___block_invoke;
   v17[3] = &unk_279ED7860;
   objc_copyWeak(&v21, &location);
-  v22 = a3;
-  v18 = v10;
-  v19 = v11;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, v17);
+  subscribeCopy = subscribe;
+  v18 = peerCopy;
+  v19 = characteristicCopy;
+  v20 = serviceCopy;
+  v14 = serviceCopy;
+  v15 = characteristicCopy;
+  v16 = peerCopy;
+  dispatch_async(daemonDeliveryQueue, v17);
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);
@@ -1837,12 +1837,12 @@ void __64__WPClient_shouldSubscribe_toPeer_withCharacteristic_inService___block_
   }
 }
 
-- (void)sendDataToCharacteristic:(id)a3 inService:(id)a4 forPeer:(id)a5
+- (void)sendDataToCharacteristic:(id)characteristic inService:(id)service forPeer:(id)peer
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  characteristicCopy = characteristic;
+  serviceCopy = service;
+  peerCopy = peer;
   if (WPLogInitOnce != -1)
   {
     [WPClient sendDataToCharacteristic:inService:forPeer:];
@@ -1852,24 +1852,24 @@ void __64__WPClient_shouldSubscribe_toPeer_withCharacteristic_inService___block_
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v23 = v8;
+    v23 = characteristicCopy;
     _os_log_impl(&dword_274327000, v11, OS_LOG_TYPE_INFO, "Sending data to %@", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v12 = [(WPClient *)self daemonDeliveryQueue];
+  daemonDeliveryQueue = [(WPClient *)self daemonDeliveryQueue];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __55__WPClient_sendDataToCharacteristic_inService_forPeer___block_invoke_534;
   v17[3] = &unk_279ED7888;
   objc_copyWeak(&v21, buf);
-  v18 = v10;
-  v19 = v8;
-  v20 = v9;
-  v13 = v9;
-  v14 = v8;
-  v15 = v10;
-  dispatch_async(v12, v17);
+  v18 = peerCopy;
+  v19 = characteristicCopy;
+  v20 = serviceCopy;
+  v13 = serviceCopy;
+  v14 = characteristicCopy;
+  v15 = peerCopy;
+  dispatch_async(daemonDeliveryQueue, v17);
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(buf);
@@ -1908,24 +1908,24 @@ void __55__WPClient_sendDataToCharacteristic_inService_forPeer___block_invoke_2(
   }
 }
 
-- (void)startTrackingZone:(id)a3
+- (void)startTrackingZone:(id)zone
 {
-  v4 = a3;
-  if (![v4 clientType] || objc_msgSend(v4, "clientType") >= 0x1C)
+  zoneCopy = zone;
+  if (![zoneCopy clientType] || objc_msgSend(zoneCopy, "clientType") >= 0x1C)
   {
-    [MEMORY[0x277CBEAD8] raise:@"Unknown client type" format:{@"Trying to start tracking a zone for an unknown client type %ld", objc_msgSend(v4, "clientType")}];
+    [MEMORY[0x277CBEAD8] raise:@"Unknown client type" format:{@"Trying to start tracking a zone for an unknown client type %ld", objc_msgSend(zoneCopy, "clientType")}];
   }
 
   objc_initWeak(&location, self);
-  v5 = [(WPClient *)self daemonDeliveryQueue];
+  daemonDeliveryQueue = [(WPClient *)self daemonDeliveryQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __30__WPClient_startTrackingZone___block_invoke;
   block[3] = &unk_279ED7798;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = zoneCopy;
+  v6 = zoneCopy;
+  dispatch_async(daemonDeliveryQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -1968,19 +1968,19 @@ void __30__WPClient_startTrackingZone___block_invoke_542(uint64_t a1, void *a2)
   }
 }
 
-- (void)stopTrackingZones:(id)a3
+- (void)stopTrackingZones:(id)zones
 {
-  v4 = a3;
+  zonesCopy = zones;
   objc_initWeak(&location, self);
-  v5 = [(WPClient *)self daemonDeliveryQueue];
+  daemonDeliveryQueue = [(WPClient *)self daemonDeliveryQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __30__WPClient_stopTrackingZones___block_invoke;
   block[3] = &unk_279ED7798;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = zonesCopy;
+  v6 = zonesCopy;
+  dispatch_async(daemonDeliveryQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -2026,13 +2026,13 @@ void __30__WPClient_stopTrackingZones___block_invoke_550(uint64_t a1, void *a2)
 - (void)stopTrackingAllZones
 {
   objc_initWeak(&location, self);
-  v3 = [(WPClient *)self daemonDeliveryQueue];
+  daemonDeliveryQueue = [(WPClient *)self daemonDeliveryQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __32__WPClient_stopTrackingAllZones__block_invoke;
   v4[3] = &unk_279ED78B0;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(daemonDeliveryQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -2078,13 +2078,13 @@ void __32__WPClient_stopTrackingAllZones__block_invoke_558(uint64_t a1, void *a2
 - (void)getAllTrackedZones
 {
   objc_initWeak(&location, self);
-  v3 = [(WPClient *)self daemonDeliveryQueue];
+  daemonDeliveryQueue = [(WPClient *)self daemonDeliveryQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __30__WPClient_getAllTrackedZones__block_invoke;
   v4[3] = &unk_279ED78B0;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(daemonDeliveryQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -2127,20 +2127,20 @@ void __30__WPClient_getAllTrackedZones__block_invoke_566(uint64_t a1, void *a2)
   }
 }
 
-- (void)enableRanging:(BOOL)a3 reply:(id)a4
+- (void)enableRanging:(BOOL)ranging reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   objc_initWeak(&location, self);
-  v7 = [(WPClient *)self daemonDeliveryQueue];
+  daemonDeliveryQueue = [(WPClient *)self daemonDeliveryQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __32__WPClient_enableRanging_reply___block_invoke;
   v9[3] = &unk_279ED78D8;
   objc_copyWeak(&v11, &location);
-  v12 = a3;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, v9);
+  rangingCopy = ranging;
+  v10 = replyCopy;
+  v8 = replyCopy;
+  dispatch_async(daemonDeliveryQueue, v9);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -2175,19 +2175,19 @@ void __32__WPClient_enableRanging_reply___block_invoke_2(uint64_t a1, void *a2)
   }
 }
 
-- (void)isRangingEnabledReply:(id)a3
+- (void)isRangingEnabledReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   objc_initWeak(&location, self);
-  v5 = [(WPClient *)self daemonDeliveryQueue];
+  daemonDeliveryQueue = [(WPClient *)self daemonDeliveryQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __34__WPClient_isRangingEnabledReply___block_invoke;
   block[3] = &unk_279ED7900;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = replyCopy;
+  v6 = replyCopy;
+  dispatch_async(daemonDeliveryQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -2225,13 +2225,13 @@ void __34__WPClient_isRangingEnabledReply___block_invoke_2(uint64_t a1, void *a2
 - (void)listenToBandwidthNotifications
 {
   objc_initWeak(&location, self);
-  v3 = [(WPClient *)self daemonDeliveryQueue];
+  daemonDeliveryQueue = [(WPClient *)self daemonDeliveryQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __42__WPClient_listenToBandwidthNotifications__block_invoke;
   v4[3] = &unk_279ED78B0;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(daemonDeliveryQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -2274,7 +2274,7 @@ void __42__WPClient_listenToBandwidthNotifications__block_invoke_582(uint64_t a1
   }
 }
 
-- (void)stateDidChange:(int64_t)a3
+- (void)stateDidChange:(int64_t)change
 {
   v20 = *MEMORY[0x277D85DE8];
   if (WPLogInitOnce != -1)
@@ -2287,15 +2287,15 @@ void __42__WPClient_listenToBandwidthNotifications__block_invoke_582(uint64_t a1
   {
     v6 = v5;
     v16 = 134218240;
-    v17 = a3;
+    changeCopy3 = change;
     v18 = 2048;
-    v19 = [(WPClient *)self state];
+    state = [(WPClient *)self state];
     _os_log_impl(&dword_274327000, v6, OS_LOG_TYPE_DEFAULT, "State changed to %ld from %ld", &v16, 0x16u);
   }
 
-  if ([(WPClient *)self state]!= a3)
+  if ([(WPClient *)self state]!= change)
   {
-    [(WPClient *)self setState:a3];
+    [(WPClient *)self setState:change];
     if (WPLogInitOnce != -1)
     {
       [WPClient stateDidChange:];
@@ -2305,17 +2305,17 @@ void __42__WPClient_listenToBandwidthNotifications__block_invoke_582(uint64_t a1
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
     {
       v8 = v7;
-      v9 = [(WPClient *)self advertiserState];
+      advertiserState = [(WPClient *)self advertiserState];
       v16 = 134218240;
-      v17 = a3;
+      changeCopy3 = change;
       v18 = 2048;
-      v19 = v9;
+      state = advertiserState;
       _os_log_impl(&dword_274327000, v8, OS_LOG_TYPE_DEFAULT, "Advertiser state changed to %ld from %ld", &v16, 0x16u);
     }
 
-    if ([(WPClient *)self advertiserState]!= a3)
+    if ([(WPClient *)self advertiserState]!= change)
     {
-      [(WPClient *)self setAdvertiserState:a3];
+      [(WPClient *)self setAdvertiserState:change];
       if ([(WPClient *)self advertiserState]== 1)
       {
         if (WPLogInitOnce != -1)
@@ -2363,23 +2363,23 @@ void __42__WPClient_listenToBandwidthNotifications__block_invoke_582(uint64_t a1
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
     {
       v13 = v12;
-      v14 = [(WPClient *)self scannerState];
+      scannerState = [(WPClient *)self scannerState];
       v16 = 134218240;
-      v17 = a3;
+      changeCopy3 = change;
       v18 = 2048;
-      v19 = v14;
+      state = scannerState;
       _os_log_impl(&dword_274327000, v13, OS_LOG_TYPE_DEFAULT, "Scanner state changed to %ld from %ld", &v16, 0x16u);
     }
 
-    [(WPClient *)self setScannerState:a3];
+    [(WPClient *)self setScannerState:change];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)receivedTestResponse:(id)a3
+- (void)receivedTestResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   if (WPLogInitOnce != -1)
   {
     [WPClient receivedTestResponse:];
@@ -2391,19 +2391,19 @@ void __42__WPClient_listenToBandwidthNotifications__block_invoke_582(uint64_t a1
   }
 }
 
-- (void)checkAllowDuplicates:(id)a3
+- (void)checkAllowDuplicates:(id)duplicates
 {
-  v4 = a3;
+  duplicatesCopy = duplicates;
   objc_initWeak(&location, self);
-  v5 = [(WPClient *)self daemonDeliveryQueue];
+  daemonDeliveryQueue = [(WPClient *)self daemonDeliveryQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __33__WPClient_checkAllowDuplicates___block_invoke;
   block[3] = &unk_279ED7900;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = duplicatesCopy;
+  v6 = duplicatesCopy;
+  dispatch_async(daemonDeliveryQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -2455,13 +2455,13 @@ void __33__WPClient_checkAllowDuplicates___block_invoke_606(uint64_t a1, void *a
 {
   [(WPClient *)self setIsTestClient:1];
   objc_initWeak(&location, self);
-  v3 = [(WPClient *)self daemonDeliveryQueue];
+  daemonDeliveryQueue = [(WPClient *)self daemonDeliveryQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __26__WPClient_enableTestMode__block_invoke;
   v4[3] = &unk_279ED78B0;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(daemonDeliveryQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -2509,13 +2509,13 @@ void __26__WPClient_enableTestMode__block_invoke_616(uint64_t a1, void *a2)
   [(WPClient *)self setIsTestClient:1];
   [(WPClient *)self setIsBubbleTestClient:1];
   objc_initWeak(&location, self);
-  v3 = [(WPClient *)self daemonDeliveryQueue];
+  daemonDeliveryQueue = [(WPClient *)self daemonDeliveryQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __32__WPClient_enableBubbleTestMode__block_invoke;
   v4[3] = &unk_279ED78B0;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(daemonDeliveryQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -2558,17 +2558,17 @@ void __32__WPClient_enableBubbleTestMode__block_invoke_624(uint64_t a1, void *a2
   }
 }
 
-- (void)overrideScanTimeout:(double)a3
+- (void)overrideScanTimeout:(double)timeout
 {
   objc_initWeak(&location, self);
-  v5 = [(WPClient *)self daemonDeliveryQueue];
+  daemonDeliveryQueue = [(WPClient *)self daemonDeliveryQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __32__WPClient_overrideScanTimeout___block_invoke;
   block[3] = &unk_279ED7950;
   objc_copyWeak(v7, &location);
-  v7[1] = *&a3;
-  dispatch_async(v5, block);
+  v7[1] = *&timeout;
+  dispatch_async(daemonDeliveryQueue, block);
 
   objc_destroyWeak(v7);
   objc_destroyWeak(&location);
@@ -2619,17 +2619,17 @@ void __32__WPClient_overrideScanTimeout___block_invoke_632(uint64_t a1, void *a2
   }
 }
 
-- (void)overrideAdvTimeout:(double)a3
+- (void)overrideAdvTimeout:(double)timeout
 {
   objc_initWeak(&location, self);
-  v5 = [(WPClient *)self daemonDeliveryQueue];
+  daemonDeliveryQueue = [(WPClient *)self daemonDeliveryQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __31__WPClient_overrideAdvTimeout___block_invoke;
   block[3] = &unk_279ED7950;
   objc_copyWeak(v7, &location);
-  v7[1] = *&a3;
-  dispatch_async(v5, block);
+  v7[1] = *&timeout;
+  dispatch_async(daemonDeliveryQueue, block);
 
   objc_destroyWeak(v7);
   objc_destroyWeak(&location);
@@ -2680,19 +2680,19 @@ void __31__WPClient_overrideAdvTimeout___block_invoke_640(uint64_t a1, void *a2)
   }
 }
 
-- (void)getPowerLogStats:(id)a3
+- (void)getPowerLogStats:(id)stats
 {
-  v4 = a3;
+  statsCopy = stats;
   objc_initWeak(&location, self);
-  v5 = [(WPClient *)self daemonDeliveryQueue];
+  daemonDeliveryQueue = [(WPClient *)self daemonDeliveryQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __29__WPClient_getPowerLogStats___block_invoke;
   block[3] = &unk_279ED7900;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = statsCopy;
+  v6 = statsCopy;
+  dispatch_async(daemonDeliveryQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -2743,13 +2743,13 @@ void __29__WPClient_getPowerLogStats___block_invoke_648(uint64_t a1, void *a2)
 - (void)dumpDaemonState
 {
   objc_initWeak(&location, self);
-  v3 = [(WPClient *)self daemonDeliveryQueue];
+  daemonDeliveryQueue = [(WPClient *)self daemonDeliveryQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __27__WPClient_dumpDaemonState__block_invoke;
   v4[3] = &unk_279ED78B0;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(daemonDeliveryQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -2795,13 +2795,13 @@ void __27__WPClient_dumpDaemonState__block_invoke_658(uint64_t a1, void *a2)
 - (void)disableScanning
 {
   objc_initWeak(&location, self);
-  v3 = [(WPClient *)self daemonDeliveryQueue];
+  daemonDeliveryQueue = [(WPClient *)self daemonDeliveryQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __27__WPClient_disableScanning__block_invoke;
   v4[3] = &unk_279ED78B0;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(daemonDeliveryQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -2844,20 +2844,20 @@ void __27__WPClient_disableScanning__block_invoke_666(uint64_t a1, void *a2)
   }
 }
 
-- (void)sendTestRequest:(id)a3
+- (void)sendTestRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(WPClient *)self setIsTestClient:1];
   objc_initWeak(&location, self);
-  v5 = [(WPClient *)self daemonDeliveryQueue];
+  daemonDeliveryQueue = [(WPClient *)self daemonDeliveryQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __28__WPClient_sendTestRequest___block_invoke;
   block[3] = &unk_279ED7798;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = requestCopy;
+  v6 = requestCopy;
+  dispatch_async(daemonDeliveryQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -2900,9 +2900,9 @@ void __28__WPClient_sendTestRequest___block_invoke_674(uint64_t a1, void *a2)
   }
 }
 
-- (void)notifyNotApprovedUseCase:(id)a3
+- (void)notifyNotApprovedUseCase:(id)case
 {
-  v3 = a3;
+  caseCopy = case;
   if (WPLogInitOnce != -1)
   {
     [WPClient notifyNotApprovedUseCase:];

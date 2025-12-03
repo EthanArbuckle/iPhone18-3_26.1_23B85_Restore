@@ -1,16 +1,16 @@
 @interface SARAnalytics
-+ (void)captureAddStopAnalyticsForTransportType:(int)a3;
++ (void)captureAddStopAnalyticsForTransportType:(int)type;
 + (void)captureCancelSearchResults;
 + (void)captureListScrollDown;
 + (void)captureListScrollUp;
-+ (void)captureListStartDetourToMapItem:(id)a3 index:(int64_t)a4;
++ (void)captureListStartDetourToMapItem:(id)item index:(int64_t)index;
 + (void)captureListTapToHideTray;
 + (void)captureListTapToShowTray;
-+ (void)captureMapSelectMapItem:(id)a3;
++ (void)captureMapSelectMapItem:(id)item;
 + (void)captureMapTapToHideTray;
 + (void)captureResumePreviousNavigation;
-+ (void)captureSelectCategory:(id)a3 fromDisplayedCategories:(id)a4 isAddStopTray:(BOOL)a5;
-+ (void)captureShowSearchResults:(id)a3;
++ (void)captureSelectCategory:(id)category fromDisplayedCategories:(id)categories isAddStopTray:(BOOL)tray;
++ (void)captureShowSearchResults:(id)results;
 @end
 
 @implementation SARAnalytics
@@ -21,19 +21,19 @@
   [v2 captureUserAction:3058 onTarget:616 eventValue:0];
 }
 
-+ (void)captureListStartDetourToMapItem:(id)a3 index:(int64_t)a4
++ (void)captureListStartDetourToMapItem:(id)item index:(int64_t)index
 {
-  v5 = a3;
-  v6 = [v5 _geoMapItem];
-  v14 = [GEOPlaceActionDetails actionDetailsWithMapItem:v6 timestamp:a4 resultIndex:0.0];
+  itemCopy = item;
+  _geoMapItem = [itemCopy _geoMapItem];
+  v14 = [GEOPlaceActionDetails actionDetailsWithMapItem:_geoMapItem timestamp:index resultIndex:0.0];
 
   v7 = +[MNNavigationService sharedService];
-  v8 = [v7 navigationTransportType];
-  if (v8 <= 2)
+  navigationTransportType = [v7 navigationTransportType];
+  if (navigationTransportType <= 2)
   {
-    if (v8 != 1)
+    if (navigationTransportType != 1)
     {
-      if (v8 == 2)
+      if (navigationTransportType == 2)
       {
         IsEnabled_Maps182 = MapsFeature_IsEnabled_Maps182();
         goto LABEL_11;
@@ -47,7 +47,7 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  if (v8 == 3)
+  if (navigationTransportType == 3)
   {
     IsEnabled_Maps182 = MapsFeature_IsEnabled_Maps420();
 LABEL_11:
@@ -63,7 +63,7 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  if (v8 == 6)
+  if (navigationTransportType == 6)
   {
     goto LABEL_7;
   }
@@ -80,7 +80,7 @@ LABEL_12:
   v11 = 6097;
 LABEL_13:
   v13 = +[MKMapService sharedService];
-  [v13 captureUserAction:v11 onTarget:104 placeActionDetails:v14 mapItem:v5 resultIndex:a4];
+  [v13 captureUserAction:v11 onTarget:104 placeActionDetails:v14 mapItem:itemCopy resultIndex:index];
 }
 
 + (void)captureMapTapToHideTray
@@ -89,10 +89,10 @@ LABEL_13:
   [v2 captureUserAction:1038 onTarget:506 eventValue:0];
 }
 
-+ (void)captureMapSelectMapItem:(id)a3
++ (void)captureMapSelectMapItem:(id)item
 {
-  v3 = [a3 _geoMapItem];
-  v7 = [GEOPlaceActionDetails actionDetailsWithMapItem:v3 timestamp:0xFFFFFFFFLL resultIndex:0.0];
+  _geoMapItem = [item _geoMapItem];
+  v7 = [GEOPlaceActionDetails actionDetailsWithMapItem:_geoMapItem timestamp:0xFFFFFFFFLL resultIndex:0.0];
 
   v4 = objc_alloc_init(SearchSessionAnalytics);
   [(SearchSessionAnalytics *)v4 setAction:1017];
@@ -146,11 +146,11 @@ LABEL_13:
   [v2 captureUserAction:18 onTarget:104 eventValue:0];
 }
 
-+ (void)captureShowSearchResults:(id)a3
++ (void)captureShowSearchResults:(id)results
 {
-  v3 = a3;
+  resultsCopy = results;
   v4 = +[MKMapService sharedService];
-  v5 = v3;
+  v5 = resultsCopy;
   if ([v5 count])
   {
     v6 = objc_opt_new();
@@ -198,13 +198,13 @@ LABEL_13:
   [v4 captureUserAction:2015 onTarget:104 eventValue:v13];
 }
 
-+ (void)captureSelectCategory:(id)a3 fromDisplayedCategories:(id)a4 isAddStopTray:(BOOL)a5
++ (void)captureSelectCategory:(id)category fromDisplayedCategories:(id)categories isAddStopTray:(BOOL)tray
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = a3;
+  trayCopy = tray;
+  categoriesCopy = categories;
+  categoryCopy = category;
   v11 = +[MKMapService sharedService];
-  if (v5)
+  if (trayCopy)
   {
     v9 = 742;
   }
@@ -214,15 +214,15 @@ LABEL_13:
     v9 = 401;
   }
 
-  v10 = [v8 displayString];
-  [v11 captureUserAction:3005 onTarget:v9 eventValue:v10 categoriesDisplayed:v7 categorySelected:v8];
+  displayString = [categoryCopy displayString];
+  [v11 captureUserAction:3005 onTarget:v9 eventValue:displayString categoriesDisplayed:categoriesCopy categorySelected:categoryCopy];
 }
 
-+ (void)captureAddStopAnalyticsForTransportType:(int)a3
++ (void)captureAddStopAnalyticsForTransportType:(int)type
 {
-  if (a3)
+  if (type)
   {
-    if (a3 != 3)
+    if (type != 3)
     {
       return;
     }

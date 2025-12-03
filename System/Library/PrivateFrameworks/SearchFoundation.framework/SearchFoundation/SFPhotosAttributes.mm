@@ -1,52 +1,52 @@
 @interface SFPhotosAttributes
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFPhotosAttributes)initWithCoder:(id)a3;
-- (SFPhotosAttributes)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFPhotosAttributes)initWithCoder:(id)coder;
+- (SFPhotosAttributes)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFPhotosAttributes
 
-- (SFPhotosAttributes)initWithProtobuf:(id)a3
+- (SFPhotosAttributes)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v8.receiver = self;
   v8.super_class = SFPhotosAttributes;
   v5 = [(SFPhotosAttributes *)&v8 init];
   if (v5)
   {
-    if ([v4 positionIndex])
+    if ([protobufCopy positionIndex])
     {
-      -[SFPhotosAttributes setPositionIndex:](v5, "setPositionIndex:", [v4 positionIndex]);
+      -[SFPhotosAttributes setPositionIndex:](v5, "setPositionIndex:", [protobufCopy positionIndex]);
     }
 
-    if ([v4 isEmbeddingMatched])
+    if ([protobufCopy isEmbeddingMatched])
     {
-      -[SFPhotosAttributes setIsEmbeddingMatched:](v5, "setIsEmbeddingMatched:", [v4 isEmbeddingMatched]);
+      -[SFPhotosAttributes setIsEmbeddingMatched:](v5, "setIsEmbeddingMatched:", [protobufCopy isEmbeddingMatched]);
     }
 
-    if ([v4 isMetadataMatched])
+    if ([protobufCopy isMetadataMatched])
     {
-      -[SFPhotosAttributes setIsMetadataMatched:](v5, "setIsMetadataMatched:", [v4 isMetadataMatched]);
+      -[SFPhotosAttributes setIsMetadataMatched:](v5, "setIsMetadataMatched:", [protobufCopy isMetadataMatched]);
     }
 
-    if ([v4 isVideo])
+    if ([protobufCopy isVideo])
     {
-      -[SFPhotosAttributes setIsVideo:](v5, "setIsVideo:", [v4 isVideo]);
+      -[SFPhotosAttributes setIsVideo:](v5, "setIsVideo:", [protobufCopy isVideo]);
     }
 
-    if ([v4 isFavorite])
+    if ([protobufCopy isFavorite])
     {
-      -[SFPhotosAttributes setIsFavorite:](v5, "setIsFavorite:", [v4 isFavorite]);
+      -[SFPhotosAttributes setIsFavorite:](v5, "setIsFavorite:", [protobufCopy isFavorite]);
     }
 
-    if ([v4 photosSuggestionType])
+    if ([protobufCopy photosSuggestionType])
     {
-      -[SFPhotosAttributes setPhotosSuggestionType:](v5, "setPhotosSuggestionType:", [v4 photosSuggestionType]);
+      -[SFPhotosAttributes setPhotosSuggestionType:](v5, "setPhotosSuggestionType:", [protobufCopy photosSuggestionType]);
     }
 
     v6 = v5;
@@ -57,30 +57,30 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SFPhotosAttributes *)self positionIndex];
-  v4 = v3 ^ [(SFPhotosAttributes *)self isEmbeddingMatched];
-  v5 = [(SFPhotosAttributes *)self isMetadataMatched];
-  v6 = v4 ^ v5 ^ [(SFPhotosAttributes *)self isVideo];
-  v7 = [(SFPhotosAttributes *)self isFavorite];
-  return v6 ^ v7 ^ [(SFPhotosAttributes *)self photosSuggestionType];
+  positionIndex = [(SFPhotosAttributes *)self positionIndex];
+  v4 = positionIndex ^ [(SFPhotosAttributes *)self isEmbeddingMatched];
+  isMetadataMatched = [(SFPhotosAttributes *)self isMetadataMatched];
+  v6 = v4 ^ isMetadataMatched ^ [(SFPhotosAttributes *)self isVideo];
+  isFavorite = [(SFPhotosAttributes *)self isFavorite];
+  return v6 ^ isFavorite ^ [(SFPhotosAttributes *)self photosSuggestionType];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
-  else if ([(SFPhotosAttributes *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(SFPhotosAttributes *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(SFPhotosAttributes *)self positionIndex];
-    if (v6 == [(SFPhotosAttributes *)v5 positionIndex]&& (v7 = [(SFPhotosAttributes *)self isEmbeddingMatched], v7 == [(SFPhotosAttributes *)v5 isEmbeddingMatched]) && (v8 = [(SFPhotosAttributes *)self isMetadataMatched], v8 == [(SFPhotosAttributes *)v5 isMetadataMatched]) && (v9 = [(SFPhotosAttributes *)self isVideo], v9 == [(SFPhotosAttributes *)v5 isVideo]) && (v10 = [(SFPhotosAttributes *)self isFavorite], v10 == [(SFPhotosAttributes *)v5 isFavorite]))
+    v5 = equalCopy;
+    positionIndex = [(SFPhotosAttributes *)self positionIndex];
+    if (positionIndex == [(SFPhotosAttributes *)v5 positionIndex]&& (v7 = [(SFPhotosAttributes *)self isEmbeddingMatched], v7 == [(SFPhotosAttributes *)v5 isEmbeddingMatched]) && (v8 = [(SFPhotosAttributes *)self isMetadataMatched], v8 == [(SFPhotosAttributes *)v5 isMetadataMatched]) && (v9 = [(SFPhotosAttributes *)self isVideo], v9 == [(SFPhotosAttributes *)v5 isVideo]) && (v10 = [(SFPhotosAttributes *)self isFavorite], v10 == [(SFPhotosAttributes *)v5 isFavorite]))
     {
-      v13 = [(SFPhotosAttributes *)self photosSuggestionType];
-      v11 = v13 == [(SFPhotosAttributes *)v5 photosSuggestionType];
+      photosSuggestionType = [(SFPhotosAttributes *)self photosSuggestionType];
+      v11 = photosSuggestionType == [(SFPhotosAttributes *)v5 photosSuggestionType];
     }
 
     else
@@ -97,9 +97,9 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setPositionIndex:{-[SFPhotosAttributes positionIndex](self, "positionIndex")}];
   [v4 setIsEmbeddingMatched:{-[SFPhotosAttributes isEmbeddingMatched](self, "isEmbeddingMatched")}];
   [v4 setIsMetadataMatched:{-[SFPhotosAttributes isMetadataMatched](self, "isMetadataMatched")}];
@@ -112,31 +112,31 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBPhotosAttributes alloc] initWithFacade:self];
-  v3 = [(_SFPBPhotosAttributes *)v2 jsonData];
+  jsonData = [(_SFPBPhotosAttributes *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBPhotosAttributes alloc] initWithFacade:self];
-  v3 = [(_SFPBPhotosAttributes *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBPhotosAttributes *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBPhotosAttributes alloc] initWithFacade:self];
-  v5 = [(_SFPBPhotosAttributes *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBPhotosAttributes *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFPhotosAttributes)initWithCoder:(id)a3
+- (SFPhotosAttributes)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBPhotosAttributes alloc] initWithData:v5];
   v7 = [(SFPhotosAttributes *)self initWithProtobuf:v6];

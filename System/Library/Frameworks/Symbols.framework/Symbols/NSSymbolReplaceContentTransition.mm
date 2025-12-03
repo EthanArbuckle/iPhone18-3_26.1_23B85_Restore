@@ -6,14 +6,14 @@
 - (NSSymbolReplaceContentTransition)transitionWithByLayer;
 - (NSSymbolReplaceContentTransition)transitionWithWholeSymbol;
 - (id)_rbOptionsMutable;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation NSSymbolReplaceContentTransition
 
 + (NSSymbolReplaceContentTransition)transition
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___NSSymbolReplaceContentTransition;
   v2 = objc_msgSendSuper2(&v4, sel__transitionWithType_, 7);
   v2[2] = 0;
@@ -24,24 +24,24 @@
 
 + (NSSymbolReplaceContentTransition)replaceDownUpTransition
 {
-  v2 = [a1 transition];
-  v3 = [v2 _withStyle:1];
+  transition = [self transition];
+  v3 = [transition _withStyle:1];
 
   return v3;
 }
 
 + (NSSymbolReplaceContentTransition)replaceUpUpTransition
 {
-  v2 = [a1 transition];
-  v3 = [v2 _withStyle:2];
+  transition = [self transition];
+  v3 = [transition _withStyle:2];
 
   return v3;
 }
 
 + (NSSymbolReplaceContentTransition)replaceOffUpTransition
 {
-  v2 = [a1 transition];
-  v3 = [v2 _withStyle:3];
+  transition = [self transition];
+  v3 = [transition _withStyle:3];
 
   return v3;
 }
@@ -64,8 +64,8 @@
 
 - (id)_rbOptionsMutable
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [NSSymbolEffect _addLayerBehavior:self->_layerBehavior ToOptions:v3];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [NSSymbolEffect _addLayerBehavior:self->_layerBehavior ToOptions:dictionary];
   if ((self->_style - 1) >= 3)
   {
     if (dyld_program_sdk_at_least())
@@ -85,16 +85,16 @@
   }
 
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v4];
-  [v3 setObject:v5 forKeyedSubscript:*MEMORY[0x1E69C7250]];
+  [dictionary setObject:v5 forKeyedSubscript:*MEMORY[0x1E69C7250]];
 
-  return v3;
+  return dictionary;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = NSSymbolReplaceContentTransition;
-  result = [(NSSymbolContentTransition *)&v5 copyWithZone:a3];
+  result = [(NSSymbolContentTransition *)&v5 copyWithZone:zone];
   *(result + 3) = self->_style;
   *(result + 2) = self->_layerBehavior;
   return result;

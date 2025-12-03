@@ -1,32 +1,32 @@
 @interface RDStoreControllerManagedObjectContext
-+ (id)managedObjectIDsSortedByTopologicalWeightsForEffectiveMinimumSupportedVersionPropagation:(id)a3;
++ (id)managedObjectIDsSortedByTopologicalWeightsForEffectiveMinimumSupportedVersionPropagation:(id)propagation;
 + (id)topologicallyWeightedEntitiesForEffectiveMinimumSupportedVersionPropagation;
-+ (unint64_t)_heightOfEntityNodeInMOMTreeForEffectiveMinimumSupportedVersionPropagation:(id)a3 heightMap:(id)a4;
-- (BOOL)__unsafe_doesNotWorkUniversally_setAffectedStoresWithAccountIdentifier:(id)a3;
-- (BOOL)canAccessAllPersistentStoresReferencedByFetchResultToken:(id)a3;
-- (BOOL)containerShouldSortChildrenAfterFetchingWithRecordID:(id)a3;
-- (BOOL)coreDataSave:(id *)a3;
++ (unint64_t)_heightOfEntityNodeInMOMTreeForEffectiveMinimumSupportedVersionPropagation:(id)propagation heightMap:(id)map;
+- (BOOL)__unsafe_doesNotWorkUniversally_setAffectedStoresWithAccountIdentifier:(id)identifier;
+- (BOOL)canAccessAllPersistentStoresReferencedByFetchResultToken:(id)token;
+- (BOOL)containerShouldSortChildrenAfterFetchingWithRecordID:(id)d;
+- (BOOL)coreDataSave:(id *)save;
 - (BOOL)hasPendingListNameRelatedChanges;
-- (BOOL)save:(id *)a3;
+- (BOOL)save:(id *)save;
 - (NSMutableDictionary)candidateFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier;
 - (NSMutableDictionary)confirmedFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier;
 - (NSMutableDictionary)fileAttachmentIdentifiersToPurgeByAccountIdentifier;
 - (NSMutableSet)managedObjectIDsHavingDirtyEffectiveMinimumSupportedVersion;
 - (RDStoreController)storeController;
-- (id)_debug_managedObjectIDsSortedByTopologicalWeightsForEffectiveMinimumSupportedVersionPropagation:(id)a3;
-- (id)executeFetchRequest:(id)a3 error:(id *)a4;
-- (id)executeRequest:(id)a3 error:(id *)a4;
-- (id)existingFileAttachmentsMatchingSHA512Sums:(id)a3 accountID:(id)a4 error:(id *)a5;
-- (id)latestFetchResultTokenWithError:(id *)a3;
-- (id)objectTreeProcessorDelegateFactoryWithTreeNode:(id)a3;
-- (id)persistentStoreOfAccountWithAccountID:(id)a3;
-- (unint64_t)_validateDirtyEffectiveMinimumSupportedVersionsWithBatchSize:(unint64_t)a3 isManualValidation:(BOOL)a4;
-- (unint64_t)countForFetchRequest:(id)a3 error:(id *)a4;
+- (id)_debug_managedObjectIDsSortedByTopologicalWeightsForEffectiveMinimumSupportedVersionPropagation:(id)propagation;
+- (id)executeFetchRequest:(id)request error:(id *)error;
+- (id)executeRequest:(id)request error:(id *)error;
+- (id)existingFileAttachmentsMatchingSHA512Sums:(id)sums accountID:(id)d error:(id *)error;
+- (id)latestFetchResultTokenWithError:(id *)error;
+- (id)objectTreeProcessorDelegateFactoryWithTreeNode:(id)node;
+- (id)persistentStoreOfAccountWithAccountID:(id)d;
+- (unint64_t)_validateDirtyEffectiveMinimumSupportedVersionsWithBatchSize:(unint64_t)size isManualValidation:(BOOL)validation;
+- (unint64_t)countForFetchRequest:(id)request error:(id *)error;
 - (void)confirmOrRejectFilePurgeCandidatesThatMightBeDeduplicatedAcrossMultipleAttachments;
 - (void)notifyDidMarkExtraneousAlarmsPendingToSyncUpDelete;
-- (void)proposePurgingFileAttachmentWithSha512Sum:(id)a3 fileExtension:(id)a4 account:(id)a5;
+- (void)proposePurgingFileAttachmentWithSha512Sum:(id)sum fileExtension:(id)extension account:(id)account;
 - (void)purgeDeletedFileAttachments;
-- (void)rejectPurgingFileAttachmentWithSha512Sum:(id)a3 fileExtension:(id)a4 account:(id)a5;
+- (void)rejectPurgingFileAttachmentWithSha512Sum:(id)sum fileExtension:(id)extension account:(id)account;
 - (void)validateDirtyEffectiveMinimumSupportedVersions;
 @end
 
@@ -45,10 +45,10 @@
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v2 = [(RDStoreControllerManagedObjectContext *)self updatedObjects];
-  v3 = [v2 allObjects];
+  updatedObjects = [(RDStoreControllerManagedObjectContext *)self updatedObjects];
+  allObjects = [updatedObjects allObjects];
 
-  v4 = [v3 countByEnumeratingWithState:&v32 objects:v38 count:16];
+  v4 = [allObjects countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (v4)
   {
     v5 = v4;
@@ -59,22 +59,22 @@
       {
         if (*v33 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allObjects);
         }
 
         v8 = *(*(&v32 + 1) + 8 * i);
         if ([v8 isMemberOfClass:objc_opt_class()])
         {
-          v9 = [v8 changedValues];
-          v10 = [v9 objectForKeyedSubscript:@"name"];
+          changedValues = [v8 changedValues];
+          v10 = [changedValues objectForKeyedSubscript:@"name"];
           if (v10)
           {
 
             goto LABEL_29;
           }
 
-          v11 = [v8 changedValues];
-          v12 = [v11 objectForKeyedSubscript:@"markedForDeletion"];
+          changedValues2 = [v8 changedValues];
+          v12 = [changedValues2 objectForKeyedSubscript:@"markedForDeletion"];
 
           if (v12)
           {
@@ -83,7 +83,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v32 objects:v38 count:16];
+      v5 = [allObjects countByEnumeratingWithState:&v32 objects:v38 count:16];
       if (v5)
       {
         continue;
@@ -97,10 +97,10 @@
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v13 = [(RDStoreControllerManagedObjectContext *)self insertedObjects];
-  v3 = [v13 allObjects];
+  insertedObjects = [(RDStoreControllerManagedObjectContext *)self insertedObjects];
+  allObjects = [insertedObjects allObjects];
 
-  v14 = [v3 countByEnumeratingWithState:&v28 objects:v37 count:16];
+  v14 = [allObjects countByEnumeratingWithState:&v28 objects:v37 count:16];
   if (v14)
   {
     v15 = v14;
@@ -111,7 +111,7 @@ LABEL_13:
     {
       if (*v29 != v16)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(allObjects);
       }
 
       if ([*(*(&v28 + 1) + 8 * v17) isMemberOfClass:objc_opt_class()])
@@ -121,7 +121,7 @@ LABEL_13:
 
       if (v15 == ++v17)
       {
-        v15 = [v3 countByEnumeratingWithState:&v28 objects:v37 count:16];
+        v15 = [allObjects countByEnumeratingWithState:&v28 objects:v37 count:16];
         if (v15)
         {
           goto LABEL_13;
@@ -136,10 +136,10 @@ LABEL_13:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v18 = [(RDStoreControllerManagedObjectContext *)self deletedObjects];
-  v3 = [v18 allObjects];
+  deletedObjects = [(RDStoreControllerManagedObjectContext *)self deletedObjects];
+  allObjects = [deletedObjects allObjects];
 
-  v19 = [v3 countByEnumeratingWithState:&v24 objects:v36 count:16];
+  v19 = [allObjects countByEnumeratingWithState:&v24 objects:v36 count:16];
   if (v19)
   {
     v20 = *v25;
@@ -149,7 +149,7 @@ LABEL_21:
     {
       if (*v25 != v20)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(allObjects);
       }
 
       if ([*(*(&v24 + 1) + 8 * v21) isMemberOfClass:objc_opt_class()])
@@ -159,7 +159,7 @@ LABEL_21:
 
       if (v19 == ++v21)
       {
-        v19 = [v3 countByEnumeratingWithState:&v24 objects:v36 count:16];
+        v19 = [allObjects countByEnumeratingWithState:&v24 objects:v36 count:16];
         if (v19)
         {
           goto LABEL_21;
@@ -210,7 +210,7 @@ LABEL_30:
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v46 = self;
+  selfCopy = self;
   obj = [(RDStoreControllerManagedObjectContext *)self candidateFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier];
   v43 = [obj countByEnumeratingWithState:&v56 objects:v68 count:16];
   if (v43)
@@ -230,8 +230,8 @@ LABEL_30:
         v45 = i;
         v10 = *(*(&v56 + 1) + 8 * i);
         context = objc_autoreleasePoolPush();
-        v11 = [(RDStoreControllerManagedObjectContext *)v46 candidateFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier];
-        v12 = [v11 objectForKeyedSubscript:v10];
+        candidateFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier = [(RDStoreControllerManagedObjectContext *)selfCopy candidateFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier];
+        v12 = [candidateFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier objectForKeyedSubscript:v10];
 
         v13 = [v8[332] setWithCapacity:{objc_msgSend(v12, "count")}];
         v52 = 0u;
@@ -253,8 +253,8 @@ LABEL_30:
                 objc_enumerationMutation(v14);
               }
 
-              v19 = [*(*(&v52 + 1) + 8 * j) stringByDeletingPathExtension];
-              [v13 addObject:v19];
+              stringByDeletingPathExtension = [*(*(&v52 + 1) + 8 * j) stringByDeletingPathExtension];
+              [v13 addObject:stringByDeletingPathExtension];
             }
 
             v16 = [v14 countByEnumeratingWithState:&v52 objects:v67 count:16];
@@ -264,28 +264,28 @@ LABEL_30:
         }
 
         v51 = 0;
-        v20 = [(RDStoreControllerManagedObjectContext *)v46 existingFileAttachmentsMatchingSHA512Sums:v13 accountID:v10 error:&v51];
+        v20 = [(RDStoreControllerManagedObjectContext *)selfCopy existingFileAttachmentsMatchingSHA512Sums:v13 accountID:v10 error:&v51];
         v21 = v51;
         if (v21)
         {
-          v22 = [v13 allObjects];
-          v23 = [v22 componentsJoinedByString:{@", "}];
+          allObjects = [v13 allObjects];
+          candidateFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier2 = [allObjects componentsJoinedByString:{@", "}];
 
           v24 = +[REMLogStore container];
           if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
           {
-            v37 = [v10 UUIDString];
+            uUIDString = [v10 UUIDString];
             *buf = 138543874;
             v62 = v39;
             v63 = 2114;
-            v64 = v37;
+            v64 = uUIDString;
             v65 = 2114;
-            v66 = v23;
+            v66 = candidateFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier2;
             _os_log_error_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to fetch existing attachments in account [%{public}@] with sha512Sums [%{public}@]. Not purging any attachments for this account.", buf, 0x20u);
           }
 
-          v25 = [(RDStoreControllerManagedObjectContext *)v46 confirmedFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier];
-          [v25 removeObjectForKey:v10];
+          confirmedFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier = [(RDStoreControllerManagedObjectContext *)selfCopy confirmedFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier];
+          [confirmedFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier removeObjectForKey:v10];
           v26 = v45;
         }
 
@@ -312,11 +312,11 @@ LABEL_30:
                 }
 
                 v32 = *(*(&v47 + 1) + 8 * k);
-                v33 = [v32 sha512Sum];
-                v34 = [v32 fileName];
-                v35 = [v34 pathExtension];
+                sha512Sum = [v32 sha512Sum];
+                fileName = [v32 fileName];
+                pathExtension = [fileName pathExtension];
 
-                [(RDStoreControllerManagedObjectContext *)v46 rejectPurgingFileAttachmentWithSha512Sum:v33 fileExtension:v35 account:v10];
+                [(RDStoreControllerManagedObjectContext *)selfCopy rejectPurgingFileAttachmentWithSha512Sum:sha512Sum fileExtension:pathExtension account:v10];
               }
 
               v29 = [v27 countByEnumeratingWithState:&v47 objects:v60 count:16];
@@ -325,10 +325,10 @@ LABEL_30:
             while (v29);
           }
 
-          v23 = [(RDStoreControllerManagedObjectContext *)v46 candidateFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier];
-          v25 = [v23 objectForKeyedSubscript:v10];
-          v36 = [(RDStoreControllerManagedObjectContext *)v46 confirmedFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier];
-          [v36 setObject:v25 forKeyedSubscript:v10];
+          candidateFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier2 = [(RDStoreControllerManagedObjectContext *)selfCopy candidateFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier];
+          confirmedFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier = [candidateFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier2 objectForKeyedSubscript:v10];
+          confirmedFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier2 = [(RDStoreControllerManagedObjectContext *)selfCopy confirmedFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier];
+          [confirmedFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier2 setObject:confirmedFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier forKeyedSubscript:v10];
 
           v7 = v40;
           v8 = &_s19ReminderKitInternal24REMRemindersListDataViewO25ScheduledDateBucketsModelVSeAAMc_ptr;
@@ -346,8 +346,8 @@ LABEL_30:
     while (v43);
   }
 
-  v38 = [(RDStoreControllerManagedObjectContext *)v46 candidateFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier];
-  [v38 removeAllObjects];
+  candidateFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier3 = [(RDStoreControllerManagedObjectContext *)selfCopy candidateFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier];
+  [candidateFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier3 removeAllObjects];
 }
 
 - (NSMutableDictionary)candidateFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier
@@ -372,16 +372,16 @@ LABEL_30:
   v33 = 0x3032000000;
   v34 = sub_1000C8D64;
   v35 = sub_1000C8D74;
-  v4 = [(RDStoreControllerManagedObjectContext *)self fileAttachmentIdentifiersToPurgeByAccountIdentifier];
-  v36 = [v4 copy];
+  fileAttachmentIdentifiersToPurgeByAccountIdentifier = [(RDStoreControllerManagedObjectContext *)self fileAttachmentIdentifiersToPurgeByAccountIdentifier];
+  v36 = [fileAttachmentIdentifiersToPurgeByAccountIdentifier copy];
 
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
   v28 = sub_1000C8D64;
   v29 = sub_1000C8D74;
-  v5 = [(RDStoreControllerManagedObjectContext *)self confirmedFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier];
-  v30 = [v5 copy];
+  confirmedFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier = [(RDStoreControllerManagedObjectContext *)self confirmedFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier];
+  v30 = [confirmedFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier copy];
 
   if ([v32[5] count] || objc_msgSend(v26[5], "count"))
   {
@@ -395,14 +395,14 @@ LABEL_30:
     v8 = NSStringFromSelector(a2);
     v24 = [NSString stringWithFormat:@"%@.%@", v7, v8];
 
-    v9 = [(RDStoreControllerManagedObjectContext *)self storeController];
-    v10 = v9;
-    if (v9)
+    storeController = [(RDStoreControllerManagedObjectContext *)self storeController];
+    v10 = storeController;
+    if (storeController)
     {
-      v11 = [v9 fileIOWorkerQueue];
-      if (v11)
+      fileIOWorkerQueue = [storeController fileIOWorkerQueue];
+      if (fileIOWorkerQueue)
       {
-        v12 = [(RDStoreControllerManagedObjectContext *)self _unitTest_purgeDeletedFileAttachmentsDidComplete];
+        _unitTest_purgeDeletedFileAttachmentsDidComplete = [(RDStoreControllerManagedObjectContext *)self _unitTest_purgeDeletedFileAttachmentsDidComplete];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = sub_1000C8D7C;
@@ -411,14 +411,14 @@ LABEL_30:
         v20 = &v31;
         v17 = v10;
         v21 = &v25;
-        v13 = v12;
+        v13 = _unitTest_purgeDeletedFileAttachmentsDidComplete;
         v18 = v13;
-        dispatch_async(v11, block);
-        v14 = [(RDStoreControllerManagedObjectContext *)self fileAttachmentIdentifiersToPurgeByAccountIdentifier];
-        [v14 removeAllObjects];
+        dispatch_async(fileIOWorkerQueue, block);
+        fileAttachmentIdentifiersToPurgeByAccountIdentifier2 = [(RDStoreControllerManagedObjectContext *)self fileAttachmentIdentifiersToPurgeByAccountIdentifier];
+        [fileAttachmentIdentifiersToPurgeByAccountIdentifier2 removeAllObjects];
 
-        v15 = [(RDStoreControllerManagedObjectContext *)self confirmedFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier];
-        [v15 removeAllObjects];
+        confirmedFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier2 = [(RDStoreControllerManagedObjectContext *)self confirmedFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier];
+        [confirmedFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier2 removeAllObjects];
       }
 
       else
@@ -433,10 +433,10 @@ LABEL_30:
 
     else
     {
-      v11 = +[REMLogStore container];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+      fileIOWorkerQueue = +[REMLogStore container];
+      if (os_log_type_enabled(fileIOWorkerQueue, OS_LOG_TYPE_ERROR))
       {
-        sub_10076C230(v23, v11);
+        sub_10076C230(v23, fileIOWorkerQueue);
       }
     }
 
@@ -478,10 +478,10 @@ LABEL_30:
   return confirmedFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier;
 }
 
-- (id)objectTreeProcessorDelegateFactoryWithTreeNode:(id)a3
+- (id)objectTreeProcessorDelegateFactoryWithTreeNode:(id)node
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  nodeCopy = node;
+  if ([nodeCopy isMemberOfClass:objc_opt_class()])
   {
     v5 = REMCDObjectEffectiveVersionValidationDelegateImpl;
 LABEL_5:
@@ -489,7 +489,7 @@ LABEL_5:
     goto LABEL_9;
   }
 
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  if ([nodeCopy isMemberOfClass:objc_opt_class()])
   {
     v5 = _REMCDObjectEffectiveVersionManualValidationDelegateImpl;
     goto LABEL_5;
@@ -498,7 +498,7 @@ LABEL_5:
   v7 = +[REMLogStore write];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
   {
-    sub_10076A6B8(v4, v7);
+    sub_10076A6B8(nodeCopy, v7);
   }
 
   v6 = 0;
@@ -507,18 +507,18 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)save:(id *)a3
+- (BOOL)save:(id *)save
 {
-  v5 = [(RDStoreControllerManagedObjectContext *)self insertedObjects];
-  v6 = [v5 count];
+  insertedObjects = [(RDStoreControllerManagedObjectContext *)self insertedObjects];
+  v6 = [insertedObjects count];
 
-  v7 = [(RDStoreControllerManagedObjectContext *)self updatedObjects];
-  v8 = [v7 count];
+  updatedObjects = [(RDStoreControllerManagedObjectContext *)self updatedObjects];
+  v8 = [updatedObjects count];
 
-  v9 = [(RDStoreControllerManagedObjectContext *)self deletedObjects];
-  v10 = [v9 count];
+  deletedObjects = [(RDStoreControllerManagedObjectContext *)self deletedObjects];
+  v10 = [deletedObjects count];
 
-  v11 = [(RDStoreControllerManagedObjectContext *)self hasPendingListNameRelatedChanges];
+  hasPendingListNameRelatedChanges = [(RDStoreControllerManagedObjectContext *)self hasPendingListNameRelatedChanges];
   v33.receiver = self;
   v33.super_class = RDStoreControllerManagedObjectContext;
   v34 = 0;
@@ -531,9 +531,9 @@ LABEL_9:
   {
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
+      transactionAuthor = [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
       *buf = 138544130;
-      v36 = v17;
+      v36 = transactionAuthor;
       v37 = 2048;
       v38 = v6;
       v39 = 2048;
@@ -545,7 +545,7 @@ LABEL_9:
       v14 = REMCRMergeableOrderedSet_ptr;
     }
 
-    if (v11)
+    if (hasPendingListNameRelatedChanges)
     {
       notify_post("com.apple.reminder.list.name.siri_data_changed");
     }
@@ -577,9 +577,9 @@ LABEL_9:
   {
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v32 = [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
+      transactionAuthor2 = [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
       *buf = 138544386;
-      v36 = v32;
+      v36 = transactionAuthor2;
       v37 = 2048;
       v38 = v6;
       v39 = 2048;
@@ -592,31 +592,31 @@ LABEL_9:
     }
   }
 
-  v20 = [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
+  transactionAuthor3 = [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
 
-  if (v20)
+  if (transactionAuthor3)
   {
-    v21 = [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
-    [_TtC7remindd16RDAsyncAnalytics recordSaveWith:v21];
+    transactionAuthor4 = [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
+    [_TtC7remindd16RDAsyncAnalytics recordSaveWith:transactionAuthor4];
 
-    if (a3)
+    if (save)
     {
 LABEL_18:
       v22 = v13;
-      *a3 = v13;
+      *save = v13;
     }
   }
 
   else
   {
-    v24 = [v14[51] write];
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
+    write = [v14[51] write];
+    if (os_log_type_enabled(write, OS_LOG_TYPE_FAULT))
     {
-      sub_10076BCEC(v24, v25, v26, v27, v28, v29, v30, v31);
+      sub_10076BCEC(write, v25, v26, v27, v28, v29, v30, v31);
     }
 
     [_TtC7remindd16RDAsyncAnalytics recordSaveWith:@"nil author"];
-    if (a3)
+    if (save)
     {
       goto LABEL_18;
     }
@@ -625,21 +625,21 @@ LABEL_18:
   return v12;
 }
 
-- (id)executeRequest:(id)a3 error:(id *)a4
+- (id)executeRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 affectedStores];
-  if (!v7)
+  requestCopy = request;
+  affectedStores = [requestCopy affectedStores];
+  if (!affectedStores)
   {
-    v8 = [(RDStoreControllerManagedObjectContext *)self __unsafe_doesNotWorkUniversally_affectedStores];
+    __unsafe_doesNotWorkUniversally_affectedStores = [(RDStoreControllerManagedObjectContext *)self __unsafe_doesNotWorkUniversally_affectedStores];
 
-    if (!v8)
+    if (!__unsafe_doesNotWorkUniversally_affectedStores)
     {
       goto LABEL_5;
     }
 
-    v7 = [(RDStoreControllerManagedObjectContext *)self __unsafe_doesNotWorkUniversally_affectedStores];
-    [v6 setAffectedStores:v7];
+    affectedStores = [(RDStoreControllerManagedObjectContext *)self __unsafe_doesNotWorkUniversally_affectedStores];
+    [requestCopy setAffectedStores:affectedStores];
   }
 
 LABEL_5:
@@ -652,48 +652,48 @@ LABEL_5:
   v16.receiver = self;
   v16.super_class = RDStoreControllerManagedObjectContext;
   v17 = 0;
-  v10 = [(RDStoreControllerManagedObjectContext *)&v16 executeRequest:v6 error:&v17];
+  v10 = [(RDStoreControllerManagedObjectContext *)&v16 executeRequest:requestCopy error:&v17];
   v11 = v17;
   if (!v10)
   {
     v12 = +[REMLogStore read];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v15 = [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
+      transactionAuthor = [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
       *buf = 138543874;
-      v19 = v15;
+      v19 = transactionAuthor;
       v20 = 2114;
-      v21 = v6;
+      v21 = requestCopy;
       v22 = 2114;
       v23 = v11;
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "COREDATA REQUEST ERROR {author: %{public}@, request: %{public}@, error: %{public}@}", buf, 0x20u);
     }
   }
 
-  if (a4)
+  if (error)
   {
     v13 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
   return v10;
 }
 
-- (id)executeFetchRequest:(id)a3 error:(id *)a4
+- (id)executeFetchRequest:(id)request error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 affectedStores];
-  if (!v6)
+  requestCopy = request;
+  affectedStores = [requestCopy affectedStores];
+  if (!affectedStores)
   {
-    v7 = [(RDStoreControllerManagedObjectContext *)self __unsafe_doesNotWorkUniversally_affectedStores];
+    __unsafe_doesNotWorkUniversally_affectedStores = [(RDStoreControllerManagedObjectContext *)self __unsafe_doesNotWorkUniversally_affectedStores];
 
-    if (!v7)
+    if (!__unsafe_doesNotWorkUniversally_affectedStores)
     {
       goto LABEL_5;
     }
 
-    v6 = [(RDStoreControllerManagedObjectContext *)self __unsafe_doesNotWorkUniversally_affectedStores];
-    [v5 setAffectedStores:v6];
+    affectedStores = [(RDStoreControllerManagedObjectContext *)self __unsafe_doesNotWorkUniversally_affectedStores];
+    [requestCopy setAffectedStores:affectedStores];
   }
 
 LABEL_5:
@@ -708,7 +708,7 @@ LABEL_5:
   v57.receiver = self;
   v57.super_class = RDStoreControllerManagedObjectContext;
   v58 = 0;
-  v11 = [(RDStoreControllerManagedObjectContext *)&v57 executeFetchRequest:v5 error:&v58];
+  v11 = [(RDStoreControllerManagedObjectContext *)&v57 executeFetchRequest:requestCopy error:&v58];
   v12 = v58;
   if (v11)
   {
@@ -716,34 +716,34 @@ LABEL_5:
     [v13 timeIntervalSinceDate:v10];
     v15 = v14 * 1000.0;
 
-    v16 = [v5 fetchBatchSize];
+    fetchBatchSize = [requestCopy fetchBatchSize];
     v17 = +[REMLogStore read];
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
-    if (v16)
+    if (fetchBatchSize)
     {
       if (!v18)
       {
         goto LABEL_16;
       }
 
-      v19 = [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
-      v20 = [v5 entityName];
+      transactionAuthor = [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
+      entityName = [requestCopy entityName];
       v48 = [v11 count];
-      v54 = [v5 affectedStores];
-      v46 = [v54 count];
-      v52 = [(RDStoreControllerManagedObjectContext *)self persistentStoreCoordinator];
-      v50 = [v52 persistentStores];
-      v44 = [v50 count];
+      affectedStores2 = [requestCopy affectedStores];
+      v46 = [affectedStores2 count];
+      persistentStoreCoordinator = [(RDStoreControllerManagedObjectContext *)self persistentStoreCoordinator];
+      persistentStores = [persistentStoreCoordinator persistentStores];
+      v44 = [persistentStores count];
       v21 = v10;
-      v22 = [v5 fetchBatchSize];
-      v23 = [v5 propertiesToFetch];
-      v24 = [v23 count];
+      fetchBatchSize2 = [requestCopy fetchBatchSize];
+      propertiesToFetch = [requestCopy propertiesToFetch];
+      v24 = [propertiesToFetch count];
       *buf = 134219778;
       v60 = v15;
       v61 = 2114;
-      v62 = v19;
+      v62 = transactionAuthor;
       v63 = 2114;
-      v64 = v20;
+      v64 = entityName;
       v65 = 2048;
       v66 = v48;
       v67 = 2048;
@@ -751,7 +751,7 @@ LABEL_5:
       v69 = 2048;
       v70 = v44;
       v71 = 2048;
-      v72 = v22;
+      v72 = fetchBatchSize2;
       v10 = v21;
       v8 = REMCRMergeableOrderedSet_ptr;
       v73 = 2048;
@@ -763,24 +763,24 @@ LABEL_5:
 
     if (v18)
     {
-      v47 = [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
-      v26 = [v5 entityName];
+      transactionAuthor2 = [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
+      entityName2 = [requestCopy entityName];
       v45 = [v11 count];
-      v53 = [v5 affectedStores];
+      affectedStores3 = [requestCopy affectedStores];
       v55 = v10;
-      v27 = [v53 count];
-      v51 = [(RDStoreControllerManagedObjectContext *)self persistentStoreCoordinator];
-      v49 = [v51 persistentStores];
-      v28 = [v49 count];
-      v29 = [v5 propertiesToFetch];
-      v30 = [v29 count];
+      v27 = [affectedStores3 count];
+      persistentStoreCoordinator2 = [(RDStoreControllerManagedObjectContext *)self persistentStoreCoordinator];
+      persistentStores2 = [persistentStoreCoordinator2 persistentStores];
+      v28 = [persistentStores2 count];
+      propertiesToFetch2 = [requestCopy propertiesToFetch];
+      v30 = [propertiesToFetch2 count];
       *buf = 134219522;
       v60 = v15;
       v61 = 2114;
-      v62 = v47;
+      v62 = transactionAuthor2;
       v63 = 2114;
-      v64 = v26;
-      v31 = v26;
+      v64 = entityName2;
+      v31 = entityName2;
       v65 = 2048;
       v66 = v45;
       v67 = 2048;
@@ -801,12 +801,12 @@ LABEL_5:
     v17 = +[REMLogStore read];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v19 = [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
-      v25 = [v5 entityName];
+      transactionAuthor = [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
+      entityName3 = [requestCopy entityName];
       *buf = 138543874;
-      v60 = *&v19;
+      v60 = *&transactionAuthor;
       v61 = 2114;
-      v62 = v25;
+      v62 = entityName3;
       v63 = 2114;
       v64 = v12;
       _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "FETCH COREDATA ERROR {author: %{public}@, entityName: %{public}@, error: %{public}@}", buf, 0x20u);
@@ -818,49 +818,49 @@ LABEL_11:
 
 LABEL_16:
 
-  v32 = [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
+  transactionAuthor3 = [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
 
-  if (v32)
+  if (transactionAuthor3)
   {
-    v33 = [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
-    [_TtC7remindd16RDAsyncAnalytics recordFetchWith:v33];
+    transactionAuthor4 = [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
+    [_TtC7remindd16RDAsyncAnalytics recordFetchWith:transactionAuthor4];
   }
 
   else
   {
-    v34 = [v8[51] write];
-    if (os_log_type_enabled(v34, OS_LOG_TYPE_FAULT))
+    write = [v8[51] write];
+    if (os_log_type_enabled(write, OS_LOG_TYPE_FAULT))
     {
-      sub_10076BE4C(v34, v35, v36, v37, v38, v39, v40, v41);
+      sub_10076BE4C(write, v35, v36, v37, v38, v39, v40, v41);
     }
 
     [_TtC7remindd16RDAsyncAnalytics recordFetchWith:@"nil author"];
   }
 
-  if (a4)
+  if (error)
   {
     v42 = v12;
-    *a4 = v12;
+    *error = v12;
   }
 
   return v11;
 }
 
-- (unint64_t)countForFetchRequest:(id)a3 error:(id *)a4
+- (unint64_t)countForFetchRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 affectedStores];
-  if (!v7)
+  requestCopy = request;
+  affectedStores = [requestCopy affectedStores];
+  if (!affectedStores)
   {
-    v8 = [(RDStoreControllerManagedObjectContext *)self __unsafe_doesNotWorkUniversally_affectedStores];
+    __unsafe_doesNotWorkUniversally_affectedStores = [(RDStoreControllerManagedObjectContext *)self __unsafe_doesNotWorkUniversally_affectedStores];
 
-    if (!v8)
+    if (!__unsafe_doesNotWorkUniversally_affectedStores)
     {
       goto LABEL_5;
     }
 
-    v7 = [(RDStoreControllerManagedObjectContext *)self __unsafe_doesNotWorkUniversally_affectedStores];
-    [v6 setAffectedStores:v7];
+    affectedStores = [(RDStoreControllerManagedObjectContext *)self __unsafe_doesNotWorkUniversally_affectedStores];
+    [requestCopy setAffectedStores:affectedStores];
   }
 
 LABEL_5:
@@ -874,7 +874,7 @@ LABEL_5:
   v41.receiver = self;
   v41.super_class = RDStoreControllerManagedObjectContext;
   v42 = 0;
-  v11 = [(RDStoreControllerManagedObjectContext *)&v41 countForFetchRequest:v6 error:&v42];
+  v11 = [(RDStoreControllerManagedObjectContext *)&v41 countForFetchRequest:requestCopy error:&v42];
   v12 = v42;
   v13 = +[NSDate now];
   [v13 timeIntervalSinceDate:v10];
@@ -888,11 +888,11 @@ LABEL_5:
     {
       [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
       v18 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-      v19 = [v6 entityName];
+      entityName = [requestCopy entityName];
       *buf = 138543874;
       v44 = v18;
       v45 = 2114;
-      v46 = v19;
+      v46 = entityName;
       v47 = 2114;
       v48 = v12;
       _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "FETCH COUNT COREDATA ERROR {author: %{public}@, entityName: %{public}@, error: %{public}@}", buf, 0x20u);
@@ -901,19 +901,19 @@ LABEL_5:
 
   else if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
-    [v6 entityName];
+    transactionAuthor = [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
+    [requestCopy entityName];
     v21 = v39 = v10;
-    [v6 affectedStores];
-    v38 = v40 = a4;
+    [requestCopy affectedStores];
+    v38 = v40 = error;
     v22 = [v38 count];
-    v23 = [(RDStoreControllerManagedObjectContext *)self persistentStoreCoordinator];
-    v24 = [v23 persistentStores];
-    v25 = [v24 count];
+    persistentStoreCoordinator = [(RDStoreControllerManagedObjectContext *)self persistentStoreCoordinator];
+    persistentStores = [persistentStoreCoordinator persistentStores];
+    v25 = [persistentStores count];
     *buf = 134219266;
     v44 = v15 * 1000.0;
     v45 = 2114;
-    v46 = v20;
+    v46 = transactionAuthor;
     v47 = 2114;
     v48 = v21;
     v49 = 2048;
@@ -924,22 +924,22 @@ LABEL_5:
     v54 = v25;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "FETCH COUNT COREDATA {elapsedTime: %.9lf ms, author: %{public}@, entityName: %{public}@, count: %ld, affectedStores.count: %ld, persistentStoreCoordinator.persistentStores.count: %ld}", buf, 0x3Eu);
 
-    a4 = v40;
+    error = v40;
     v10 = v39;
   }
 
-  v26 = [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
+  transactionAuthor2 = [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
 
-  if (v26)
+  if (transactionAuthor2)
   {
-    v27 = [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
-    [_TtC7remindd16RDAsyncAnalytics recordFetchWith:v27];
+    transactionAuthor3 = [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
+    [_TtC7remindd16RDAsyncAnalytics recordFetchWith:transactionAuthor3];
 
-    if (a4)
+    if (error)
     {
 LABEL_14:
       v28 = v12;
-      *a4 = v12;
+      *error = v12;
     }
   }
 
@@ -952,7 +952,7 @@ LABEL_14:
     }
 
     [_TtC7remindd16RDAsyncAnalytics recordFetchWith:@"nil author"];
-    if (a4)
+    if (error)
     {
       goto LABEL_14;
     }
@@ -961,13 +961,13 @@ LABEL_14:
   return v11;
 }
 
-- (BOOL)__unsafe_doesNotWorkUniversally_setAffectedStoresWithAccountIdentifier:(id)a3
+- (BOOL)__unsafe_doesNotWorkUniversally_setAffectedStoresWithAccountIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v5 = [(RDStoreControllerManagedObjectContext *)self storeController];
-    v6 = [v5 storeForAccountIdentifier:v4];
+    storeController = [(RDStoreControllerManagedObjectContext *)self storeController];
+    v6 = [storeController storeForAccountIdentifier:identifierCopy];
 
     v7 = v6 != 0;
     if (v6)
@@ -991,30 +991,30 @@ LABEL_14:
   return v7;
 }
 
-- (id)persistentStoreOfAccountWithAccountID:(id)a3
+- (id)persistentStoreOfAccountWithAccountID:(id)d
 {
-  v4 = a3;
-  v5 = [(RDStoreControllerManagedObjectContext *)self storeController];
-  v6 = [v4 uuid];
+  dCopy = d;
+  storeController = [(RDStoreControllerManagedObjectContext *)self storeController];
+  uuid = [dCopy uuid];
 
-  v7 = [v6 UUIDString];
-  v8 = [v5 storeForAccountIdentifier:v7];
+  uUIDString = [uuid UUIDString];
+  v8 = [storeController storeForAccountIdentifier:uUIDString];
 
   return v8;
 }
 
-- (BOOL)containerShouldSortChildrenAfterFetchingWithRecordID:(id)a3
+- (BOOL)containerShouldSortChildrenAfterFetchingWithRecordID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if ([(RDStoreControllerManagedObjectContext *)self shouldSortChildrenAfterFetching])
   {
-    v5 = [(RDStoreControllerManagedObjectContext *)self recordIDsToSortChildrenAfterFetching];
+    recordIDsToSortChildrenAfterFetching = [(RDStoreControllerManagedObjectContext *)self recordIDsToSortChildrenAfterFetching];
 
     v6 = 0;
-    if (v4 && v5)
+    if (dCopy && recordIDsToSortChildrenAfterFetching)
     {
-      v7 = [(RDStoreControllerManagedObjectContext *)self recordIDsToSortChildrenAfterFetching];
-      [v7 addObject:v4];
+      recordIDsToSortChildrenAfterFetching2 = [(RDStoreControllerManagedObjectContext *)self recordIDsToSortChildrenAfterFetching];
+      [recordIDsToSortChildrenAfterFetching2 addObject:dCopy];
 
       v6 = 1;
     }
@@ -1028,30 +1028,30 @@ LABEL_14:
   return v6;
 }
 
-+ (unint64_t)_heightOfEntityNodeInMOMTreeForEffectiveMinimumSupportedVersionPropagation:(id)a3 heightMap:(id)a4
++ (unint64_t)_heightOfEntityNodeInMOMTreeForEffectiveMinimumSupportedVersionPropagation:(id)propagation heightMap:(id)map
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 name];
+  propagationCopy = propagation;
+  mapCopy = map;
+  name = [propagationCopy name];
 
-  if (!v8)
+  if (!name)
   {
-    v9 = +[REMLogStore utility];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
+    name2 = +[REMLogStore utility];
+    if (os_log_type_enabled(name2, OS_LOG_TYPE_FAULT))
     {
-      sub_10076BF18(v6, v9);
+      sub_10076BF18(propagationCopy, name2);
     }
 
     goto LABEL_9;
   }
 
-  v9 = [v6 name];
-  v10 = [v6 superentity];
-  if (!v10)
+  name2 = [propagationCopy name];
+  superentity = [propagationCopy superentity];
+  if (!superentity)
   {
     v11 = +[REMCDObject subclassNamesOfREMCDObjectRepresentingRootCoreDataEntities];
-    v12 = [v6 managedObjectClassName];
-    v13 = [v11 containsObject:v12];
+    managedObjectClassName = [propagationCopy managedObjectClassName];
+    v13 = [v11 containsObject:managedObjectClassName];
 
     if (v13)
     {
@@ -1064,24 +1064,24 @@ LABEL_9:
   }
 
 LABEL_7:
-  v14 = [v7 objectForKey:v9];
+  v14 = [mapCopy objectForKey:name2];
   v15 = v14;
   if (v14)
   {
-    v16 = [v14 unsignedIntegerValue];
+    unsignedIntegerValue = [v14 unsignedIntegerValue];
     v17 = 0;
   }
 
   else
   {
-    [v7 setObject:&off_100905148 forKey:v9];
-    v18 = [REMCDObject relationshipsEligibleForEffectiveMinimumSupportedVersionPropagationWithEntity:v6];
+    [mapCopy setObject:&off_100905148 forKey:name2];
+    v18 = [REMCDObject relationshipsEligibleForEffectiveMinimumSupportedVersionPropagationWithEntity:propagationCopy];
     v19 = +[REMLogStore utility];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       v20 = [v18 valueForKeyPath:@"destinationEntity.name"];
       *buf = 138543618;
-      v45 = v9;
+      v45 = name2;
       v46 = 2114;
       v47 = v20;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "[entity-height-in-MoM-tree] node.entity=%{public}@, node.entity.relationships=%{public}@", buf, 0x16u);
@@ -1097,8 +1097,8 @@ LABEL_7:
     {
       v23 = v22;
       v35 = 0;
-      v36 = v9;
-      v37 = v6;
+      v36 = name2;
+      v37 = propagationCopy;
       obj = v21;
       v24 = 0;
       v25 = *v40;
@@ -1111,9 +1111,9 @@ LABEL_7:
             objc_enumerationMutation(obj);
           }
 
-          v27 = [*(*(&v39 + 1) + 8 * i) destinationEntity];
-          v28 = [v27 subentities];
-          v29 = [v28 mutableCopy];
+          destinationEntity = [*(*(&v39 + 1) + 8 * i) destinationEntity];
+          subentities = [destinationEntity subentities];
+          v29 = [subentities mutableCopy];
           while (1)
           {
 
@@ -1122,19 +1122,19 @@ LABEL_7:
               break;
             }
 
-            v28 = [v29 lastObject];
-            v30 = [a1 _heightOfEntityNodeInMOMTreeForEffectiveMinimumSupportedVersionPropagation:v28 heightMap:v7];
+            subentities = [v29 lastObject];
+            v30 = [self _heightOfEntityNodeInMOMTreeForEffectiveMinimumSupportedVersionPropagation:subentities heightMap:mapCopy];
             if (v24 <= v30)
             {
               v24 = v30;
             }
 
             [v29 removeLastObject];
-            v31 = [v28 subentities];
-            [v29 addObjectsFromArray:v31];
+            v28Subentities = [subentities subentities];
+            [v29 addObjectsFromArray:v28Subentities];
           }
 
-          v32 = [a1 _heightOfEntityNodeInMOMTreeForEffectiveMinimumSupportedVersionPropagation:v27 heightMap:v7];
+          v32 = [self _heightOfEntityNodeInMOMTreeForEffectiveMinimumSupportedVersionPropagation:destinationEntity heightMap:mapCopy];
           if (v24 <= v32)
           {
             v24 = v32;
@@ -1147,9 +1147,9 @@ LABEL_7:
       while (v23);
 
       v17 = v24 + 1;
-      v16 = v24 + 1;
-      v9 = v36;
-      v6 = v37;
+      unsignedIntegerValue = v24 + 1;
+      name2 = v36;
+      propagationCopy = v37;
       v15 = v35;
     }
 
@@ -1157,12 +1157,12 @@ LABEL_7:
     {
 
       v17 = 1;
-      v16 = 1;
+      unsignedIntegerValue = 1;
     }
   }
 
-  v33 = [NSNumber numberWithUnsignedInteger:v16];
-  [v7 setObject:v33 forKey:v9];
+  v33 = [NSNumber numberWithUnsignedInteger:unsignedIntegerValue];
+  [mapCopy setObject:v33 forKey:name2];
 
 LABEL_29:
   return v17;
@@ -1174,7 +1174,7 @@ LABEL_29:
   block[1] = 3221225472;
   block[2] = sub_1000C7AF4;
   block[3] = &unk_1008DBDD8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100952B10 != -1)
   {
     dispatch_once(&qword_100952B10, block);
@@ -1191,37 +1191,37 @@ LABEL_29:
   return v3;
 }
 
-+ (id)managedObjectIDsSortedByTopologicalWeightsForEffectiveMinimumSupportedVersionPropagation:(id)a3
++ (id)managedObjectIDsSortedByTopologicalWeightsForEffectiveMinimumSupportedVersionPropagation:(id)propagation
 {
-  v3 = a3;
+  propagationCopy = propagation;
   [objc_opt_class() topologicallyWeightedEntitiesForEffectiveMinimumSupportedVersionPropagation];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000C7C48;
   v8 = v7[3] = &unk_1008DC3B0;
   v4 = v8;
-  v5 = [v3 sortedArrayUsingComparator:v7];
+  v5 = [propagationCopy sortedArrayUsingComparator:v7];
 
   return v5;
 }
 
-- (unint64_t)_validateDirtyEffectiveMinimumSupportedVersionsWithBatchSize:(unint64_t)a3 isManualValidation:(BOOL)a4
+- (unint64_t)_validateDirtyEffectiveMinimumSupportedVersionsWithBatchSize:(unint64_t)size isManualValidation:(BOOL)validation
 {
-  v7 = [(RDStoreControllerManagedObjectContext *)self managedObjectIDsHavingDirtyEffectiveMinimumSupportedVersion];
-  v8 = [v7 allObjects];
+  managedObjectIDsHavingDirtyEffectiveMinimumSupportedVersion = [(RDStoreControllerManagedObjectContext *)self managedObjectIDsHavingDirtyEffectiveMinimumSupportedVersion];
+  allObjects = [managedObjectIDsHavingDirtyEffectiveMinimumSupportedVersion allObjects];
 
-  if ([v8 count])
+  if ([allObjects count])
   {
     v9 = +[NSDate date];
-    v10 = [objc_opt_class() managedObjectIDsSortedByTopologicalWeightsForEffectiveMinimumSupportedVersionPropagation:v8];
+    v10 = [objc_opt_class() managedObjectIDsSortedByTopologicalWeightsForEffectiveMinimumSupportedVersionPropagation:allObjects];
     v11 = +[REMLogStore write];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
+      transactionAuthor = [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
       *buf = 138543618;
-      *&buf[4] = v12;
+      *&buf[4] = transactionAuthor;
       *&buf[12] = 2048;
-      *&buf[14] = [v8 count];
+      *&buf[14] = [allObjects count];
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "REMSupportedVersionUpdating: VALIDATING dirty MOIDs for effectiveMinimumSupportedVersion {author: %{public}@, dirtyObjectIDs.count: %ld}", buf, 0x16u);
     }
 
@@ -1236,23 +1236,23 @@ LABEL_29:
     v23[3] = &unk_1008DC3D8;
     v14 = v13;
     v24 = v14;
-    v25 = self;
-    v28 = a4;
+    selfCopy = self;
+    validationCopy = validation;
     v26 = buf;
-    v27 = a3;
+    sizeCopy = size;
     [v10 enumerateObjectsUsingBlock:v23];
-    v15 = [(RDStoreControllerManagedObjectContext *)self managedObjectIDsHavingDirtyEffectiveMinimumSupportedVersion];
-    [v15 removeAllObjects];
+    managedObjectIDsHavingDirtyEffectiveMinimumSupportedVersion2 = [(RDStoreControllerManagedObjectContext *)self managedObjectIDsHavingDirtyEffectiveMinimumSupportedVersion];
+    [managedObjectIDsHavingDirtyEffectiveMinimumSupportedVersion2 removeAllObjects];
 
     v16 = +[REMLogStore write];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
+      transactionAuthor2 = [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
       v18 = *(*&buf[8] + 24);
       v19 = +[NSDate date];
       [v19 timeIntervalSinceDate:v9];
       *v29 = 138543874;
-      v30 = v17;
+      v30 = transactionAuthor2;
       v31 = 2048;
       v32 = v18;
       v33 = 2048;
@@ -1272,32 +1272,32 @@ LABEL_29:
   return v21;
 }
 
-- (BOOL)coreDataSave:(id *)a3
+- (BOOL)coreDataSave:(id *)save
 {
   v4.receiver = self;
   v4.super_class = RDStoreControllerManagedObjectContext;
-  return [(RDStoreControllerManagedObjectContext *)&v4 save:a3];
+  return [(RDStoreControllerManagedObjectContext *)&v4 save:save];
 }
 
-- (id)latestFetchResultTokenWithError:(id *)a3
+- (id)latestFetchResultTokenWithError:(id *)error
 {
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   v8 = NSStringFromSelector(a2);
   v24 = [NSString stringWithFormat:@"%@.%@", v7, v8];
 
-  v9 = [(RDStoreControllerManagedObjectContext *)self persistentStoreCoordinator];
-  if (v9)
+  persistentStoreCoordinator = [(RDStoreControllerManagedObjectContext *)self persistentStoreCoordinator];
+  if (persistentStoreCoordinator)
   {
     v10 = +[NSMutableDictionary dictionary];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v11 = [(RDStoreControllerManagedObjectContext *)self storeController];
-    v12 = [v11 validPersistentStores];
+    storeController = [(RDStoreControllerManagedObjectContext *)self storeController];
+    validPersistentStores = [storeController validPersistentStores];
 
-    v13 = [v12 countByEnumeratingWithState:&v25 objects:v34 count:16];
+    v13 = [validPersistentStores countByEnumeratingWithState:&v25 objects:v34 count:16];
     if (v13)
     {
       v14 = v13;
@@ -1308,35 +1308,35 @@ LABEL_29:
         {
           if (*v26 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(validPersistentStores);
           }
 
           v17 = *(*(&v25 + 1) + 8 * i);
           v33 = v17;
           v18 = [NSArray arrayWithObjects:&v33 count:1];
-          v19 = [v9 currentPersistentHistoryTokenFromStores:v18];
+          v19 = [persistentStoreCoordinator currentPersistentHistoryTokenFromStores:v18];
 
           if (v19)
           {
-            v20 = [v17 identifier];
-            [v10 setObject:v19 forKeyedSubscript:v20];
+            identifier = [v17 identifier];
+            [v10 setObject:v19 forKeyedSubscript:identifier];
           }
 
           else
           {
-            v20 = +[REMLogStore container];
-            if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+            identifier = +[REMLogStore container];
+            if (os_log_type_enabled(identifier, OS_LOG_TYPE_ERROR))
             {
               *buf = 138543618;
               v30 = v24;
               v31 = 2112;
               v32 = v17;
-              _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "[%{public}@] store has no transactions. Not getting tokens {store: %@}", buf, 0x16u);
+              _os_log_error_impl(&_mh_execute_header, identifier, OS_LOG_TYPE_ERROR, "[%{public}@] store has no transactions. Not getting tokens {store: %@}", buf, 0x16u);
             }
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v25 objects:v34 count:16];
+        v14 = [validPersistentStores countByEnumeratingWithState:&v25 objects:v34 count:16];
       }
 
       while (v14);
@@ -1352,11 +1352,11 @@ LABEL_29:
     sub_10076C134();
   }
 
-  if (a3)
+  if (error)
   {
     v10 = [NSString stringWithFormat:@"[%@] missing persistentStoreCoordinator -- Can't get REMFetchResultToken {managedObjectContext: %@}", v24, self];
     [REMError internalErrorWithDebugDescription:v10];
-    *a3 = v21 = 0;
+    *error = v21 = 0;
 LABEL_18:
 
     goto LABEL_19;
@@ -1368,18 +1368,18 @@ LABEL_19:
   return v21;
 }
 
-- (BOOL)canAccessAllPersistentStoresReferencedByFetchResultToken:(id)a3
+- (BOOL)canAccessAllPersistentStoresReferencedByFetchResultToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = +[NSMutableSet set];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [(RDStoreControllerManagedObjectContext *)self storeController];
-  v7 = [v6 validPersistentStores];
+  storeController = [(RDStoreControllerManagedObjectContext *)self storeController];
+  validPersistentStores = [storeController validPersistentStores];
 
-  v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v8 = [validPersistentStores countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1391,44 +1391,44 @@ LABEL_19:
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(validPersistentStores);
         }
 
-        v12 = [*(*(&v18 + 1) + 8 * v11) identifier];
-        [v5 addObject:v12];
+        identifier = [*(*(&v18 + 1) + 8 * v11) identifier];
+        [v5 addObject:identifier];
 
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [validPersistentStores countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v9);
   }
 
-  v13 = [v4 persistentHistoryTokens];
-  v14 = [v13 allKeys];
-  v15 = [NSSet setWithArray:v14];
+  persistentHistoryTokens = [tokenCopy persistentHistoryTokens];
+  allKeys = [persistentHistoryTokens allKeys];
+  v15 = [NSSet setWithArray:allKeys];
 
   v16 = [v15 isSubsetOfSet:v5];
   return v16;
 }
 
-- (void)proposePurgingFileAttachmentWithSha512Sum:(id)a3 fileExtension:(id)a4 account:(id)a5
+- (void)proposePurgingFileAttachmentWithSha512Sum:(id)sum fileExtension:(id)extension account:(id)account
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v8;
+  sumCopy = sum;
+  extensionCopy = extension;
+  accountCopy = account;
+  v11 = sumCopy;
   v15 = v11;
-  if (v9)
+  if (extensionCopy)
   {
-    v11 = [v11 stringByAppendingPathExtension:v9];
+    v11 = [v11 stringByAppendingPathExtension:extensionCopy];
   }
 
-  v12 = [(RDStoreControllerManagedObjectContext *)self candidateFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier];
-  v13 = [v12 objectForKeyedSubscript:v10];
+  candidateFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier = [(RDStoreControllerManagedObjectContext *)self candidateFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier];
+  v13 = [candidateFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier objectForKeyedSubscript:accountCopy];
 
   if (v13)
   {
@@ -1438,41 +1438,41 @@ LABEL_19:
   else
   {
     v13 = [NSMutableSet setWithObject:v11];
-    v14 = [(RDStoreControllerManagedObjectContext *)self candidateFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier];
-    [v14 setObject:v13 forKeyedSubscript:v10];
+    candidateFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier2 = [(RDStoreControllerManagedObjectContext *)self candidateFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier];
+    [candidateFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier2 setObject:v13 forKeyedSubscript:accountCopy];
   }
 }
 
-- (void)rejectPurgingFileAttachmentWithSha512Sum:(id)a3 fileExtension:(id)a4 account:(id)a5
+- (void)rejectPurgingFileAttachmentWithSha512Sum:(id)sum fileExtension:(id)extension account:(id)account
 {
-  v8 = a3;
-  v9 = a5;
-  v13 = v8;
+  sumCopy = sum;
+  accountCopy = account;
+  v13 = sumCopy;
   v10 = v13;
-  if (a4)
+  if (extension)
   {
-    v10 = [v13 stringByAppendingPathExtension:a4];
+    v10 = [v13 stringByAppendingPathExtension:extension];
   }
 
-  v11 = [(RDStoreControllerManagedObjectContext *)self candidateFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier];
-  v12 = [v11 objectForKeyedSubscript:v9];
+  candidateFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier = [(RDStoreControllerManagedObjectContext *)self candidateFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier];
+  v12 = [candidateFileAttachmentSha512SumsAndExtensionsToPurgeByAccountIdentifier objectForKeyedSubscript:accountCopy];
 
   [v12 removeObject:v10];
 }
 
-- (id)existingFileAttachmentsMatchingSHA512Sums:(id)a3 accountID:(id)a4 error:(id *)a5
+- (id)existingFileAttachmentsMatchingSHA512Sums:(id)sums accountID:(id)d error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(RDStoreControllerManagedObjectContext *)self storeController];
-  v11 = [v9 UUIDString];
-  v12 = [v10 storeForAccountIdentifier:v11];
+  sumsCopy = sums;
+  dCopy = d;
+  storeController = [(RDStoreControllerManagedObjectContext *)self storeController];
+  uUIDString = [dCopy UUIDString];
+  v12 = [storeController storeForAccountIdentifier:uUIDString];
 
   if (!v12)
   {
-    v20 = [v9 UUIDString];
-    v21 = [NSString stringWithFormat:@"Failed to acquire persistentStore for account identifier %@", v20];
-    *a5 = [REMError internalErrorWithDebugDescription:v21];
+    uUIDString2 = [dCopy UUIDString];
+    v21 = [NSString stringWithFormat:@"Failed to acquire persistentStore for account identifier %@", uUIDString2];
+    *error = [REMError internalErrorWithDebugDescription:v21];
 
     v22 = 0;
     goto LABEL_9;
@@ -1484,8 +1484,8 @@ LABEL_19:
   v15 = [NSArray arrayWithObjects:&v33 count:1];
   [v14 setAffectedStores:v15];
 
-  v16 = [NSPredicate predicateWithFormat:@"%K IN %@", @"sha512Sum", v8];
-  [v14 setPredicate:v16];
+  sumsCopy = [NSPredicate predicateWithFormat:@"%K IN %@", @"sha512Sum", sumsCopy];
+  [v14 setPredicate:sumsCopy];
   [v14 setPropertiesToFetch:&off_100905830];
   [v14 setReturnsDistinctResults:1];
   v31 = 0;
@@ -1494,7 +1494,7 @@ LABEL_19:
   if (v18)
   {
     v19 = v18;
-    *a5 = v18;
+    *error = v18;
   }
 
   else
@@ -1506,8 +1506,8 @@ LABEL_19:
     v24 = [NSArray arrayWithObjects:&v32 count:1];
     [v23 setAffectedStores:v24];
 
-    v25 = [NSPredicate predicateWithFormat:@"%K IN %@", @"sha512Sum", v8];
-    [v23 setPredicate:v25];
+    sumsCopy2 = [NSPredicate predicateWithFormat:@"%K IN %@", @"sha512Sum", sumsCopy];
+    [v23 setPredicate:sumsCopy2];
     [v23 setPropertiesToFetch:&off_100905848];
     [v23 setReturnsDistinctResults:1];
     v30 = 0;
@@ -1522,7 +1522,7 @@ LABEL_19:
     }
 
     v28 = v27;
-    *a5 = v27;
+    *error = v27;
   }
 
   v22 = 0;
@@ -1536,22 +1536,22 @@ LABEL_9:
 - (void)notifyDidMarkExtraneousAlarmsPendingToSyncUpDelete
 {
   v6 = +[NSMutableDictionary dictionary];
-  v3 = [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
+  transactionAuthor = [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
 
-  if (v3)
+  if (transactionAuthor)
   {
-    v4 = [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
-    [v6 setObject:v4 forKeyedSubscript:@"RDStoreControllerManagedObjectContextNotificationTransactionAuthorKey"];
+    transactionAuthor2 = [(RDStoreControllerManagedObjectContext *)self transactionAuthor];
+    [v6 setObject:transactionAuthor2 forKeyedSubscript:@"RDStoreControllerManagedObjectContextNotificationTransactionAuthorKey"];
   }
 
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 postNotificationName:@"RDStoreControllerManagedObjectContextDidMarkExtraneousAlarmsPendingToSyncUpDeleteNotification" object:0 userInfo:v6];
 }
 
-- (id)_debug_managedObjectIDsSortedByTopologicalWeightsForEffectiveMinimumSupportedVersionPropagation:(id)a3
+- (id)_debug_managedObjectIDsSortedByTopologicalWeightsForEffectiveMinimumSupportedVersionPropagation:(id)propagation
 {
-  v3 = a3;
-  v4 = [objc_opt_class() managedObjectIDsSortedByTopologicalWeightsForEffectiveMinimumSupportedVersionPropagation:v3];
+  propagationCopy = propagation;
+  v4 = [objc_opt_class() managedObjectIDsSortedByTopologicalWeightsForEffectiveMinimumSupportedVersionPropagation:propagationCopy];
 
   return v4;
 }

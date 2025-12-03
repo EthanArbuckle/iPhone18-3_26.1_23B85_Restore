@@ -1,8 +1,8 @@
 @interface AndroidUtilLruCache
 - (id)description;
-- (id)getWithId:(id)a3;
-- (id)putWithId:(id)a3 withId:(id)a4;
-- (id)removeWithId:(id)a3;
+- (id)getWithId:(id)id;
+- (id)putWithId:(id)id withId:(id)withId;
+- (id)removeWithId:(id)id;
 - (id)snapshot;
 - (int)createCount;
 - (int)evictionCount;
@@ -12,14 +12,14 @@
 - (int)putCount;
 - (int)size;
 - (void)dealloc;
-- (void)trimToSizeWithInt:(int)a3;
+- (void)trimToSizeWithInt:(int)int;
 @end
 
 @implementation AndroidUtilLruCache
 
-- (id)getWithId:(id)a3
+- (id)getWithId:(id)id
 {
-  if (!a3)
+  if (!id)
   {
     v10 = new_JavaLangNullPointerException_initWithNSString_(@"key == null");
     objc_exception_throw(v10);
@@ -32,7 +32,7 @@
     JreThrowNullPointerException();
   }
 
-  v6 = [(JavaUtilLinkedHashMap *)map getWithId:a3];
+  v6 = [(JavaUtilLinkedHashMap *)map getWithId:id];
   if (v6)
   {
     ++self->hitCount_;
@@ -43,23 +43,23 @@
   {
     ++self->missCount_;
     objc_sync_exit(self);
-    v8 = [(AndroidUtilLruCache *)self createWithId:a3];
+    v8 = [(AndroidUtilLruCache *)self createWithId:id];
     if (v8)
     {
       v9 = v8;
       objc_sync_enter(self);
       ++self->createCount_;
-      v6 = [(JavaUtilHashMap *)self->map_ putWithId:a3 withId:v9];
+      v6 = [(JavaUtilHashMap *)self->map_ putWithId:id withId:v9];
       if (v6)
       {
-        [(JavaUtilHashMap *)self->map_ putWithId:a3 withId:v6];
+        [(JavaUtilHashMap *)self->map_ putWithId:id withId:v6];
         objc_sync_exit(self);
-        [(AndroidUtilLruCache *)self entryRemovedWithBoolean:0 withId:a3 withId:v9 withId:v6];
+        [(AndroidUtilLruCache *)self entryRemovedWithBoolean:0 withId:id withId:v9 withId:v6];
       }
 
       else
       {
-        self->size_ += sub_10020F2A8(self, a3, v9);
+        self->size_ += sub_10020F2A8(self, id, v9);
         objc_sync_exit(self);
         [(AndroidUtilLruCache *)self trimToSizeWithInt:self->maxSize_];
         return v9;
@@ -75,9 +75,9 @@
   return v6;
 }
 
-- (id)putWithId:(id)a3 withId:(id)a4
+- (id)putWithId:(id)id withId:(id)withId
 {
-  if (!a3 || !a4)
+  if (!id || !withId)
   {
     v10 = new_JavaLangNullPointerException_initWithNSString_(@"key == null || value == null");
     objc_exception_throw(v10);
@@ -85,19 +85,19 @@
 
   objc_sync_enter(self);
   ++self->putCount_;
-  self->size_ += sub_10020F2A8(self, a3, a4);
+  self->size_ += sub_10020F2A8(self, id, withId);
   map = self->map_;
   if (!map)
   {
     JreThrowNullPointerException();
   }
 
-  v8 = [(JavaUtilHashMap *)map putWithId:a3 withId:a4];
+  v8 = [(JavaUtilHashMap *)map putWithId:id withId:withId];
   if (v8)
   {
-    self->size_ -= sub_10020F2A8(self, a3, v8);
+    self->size_ -= sub_10020F2A8(self, id, v8);
     objc_sync_exit(self);
-    [(AndroidUtilLruCache *)self entryRemovedWithBoolean:0 withId:a3 withId:v8 withId:a4];
+    [(AndroidUtilLruCache *)self entryRemovedWithBoolean:0 withId:id withId:v8 withId:withId];
   }
 
   else
@@ -109,7 +109,7 @@
   return v8;
 }
 
-- (void)trimToSizeWithInt:(int)a3
+- (void)trimToSizeWithInt:(int)int
 {
   for (i = self; ; self = i)
   {
@@ -125,9 +125,9 @@
       JreThrowNullPointerException();
     }
 
-    v6 = [(JavaUtilHashMap *)map isEmpty];
+    isEmpty = [(JavaUtilHashMap *)map isEmpty];
     size = i->size_;
-    v8 = size ? v6 : 0;
+    v8 = size ? isEmpty : 0;
     if (v8 == 1)
     {
 LABEL_17:
@@ -137,7 +137,7 @@ LABEL_17:
       objc_exception_throw(v23);
     }
 
-    if (size <= a3)
+    if (size <= int)
     {
       break;
     }
@@ -148,28 +148,28 @@ LABEL_17:
       JreThrowNullPointerException();
     }
 
-    v10 = [(JavaUtilLinkedHashMap *)v9 eldest];
-    v11 = v10;
-    if (!v10)
+    eldest = [(JavaUtilLinkedHashMap *)v9 eldest];
+    v11 = eldest;
+    if (!eldest)
     {
       break;
     }
 
-    v12 = [v10 getKey];
-    v13 = [v11 getValue];
-    [(JavaUtilHashMap *)i->map_ removeWithId:v12];
-    i->size_ -= sub_10020F2A8(i, v12, v13);
+    getKey = [eldest getKey];
+    getValue = [v11 getValue];
+    [(JavaUtilHashMap *)i->map_ removeWithId:getKey];
+    i->size_ -= sub_10020F2A8(i, getKey, getValue);
     ++i->evictionCount_;
     objc_sync_exit(i);
-    [(AndroidUtilLruCache *)i entryRemovedWithBoolean:1 withId:v12 withId:v13 withId:0];
+    [(AndroidUtilLruCache *)i entryRemovedWithBoolean:1 withId:getKey withId:getValue withId:0];
   }
 
   objc_sync_exit(i);
 }
 
-- (id)removeWithId:(id)a3
+- (id)removeWithId:(id)id
 {
-  if (!a3)
+  if (!id)
   {
     v8 = new_JavaLangNullPointerException_initWithNSString_(@"key == null");
     objc_exception_throw(v8);
@@ -182,12 +182,12 @@ LABEL_17:
     JreThrowNullPointerException();
   }
 
-  v6 = [(JavaUtilHashMap *)map removeWithId:a3];
+  v6 = [(JavaUtilHashMap *)map removeWithId:id];
   if (v6)
   {
-    self->size_ -= sub_10020F2A8(self, a3, v6);
+    self->size_ -= sub_10020F2A8(self, id, v6);
     objc_sync_exit(self);
-    [(AndroidUtilLruCache *)self entryRemovedWithBoolean:0 withId:a3 withId:v6 withId:0];
+    [(AndroidUtilLruCache *)self entryRemovedWithBoolean:0 withId:id withId:v6 withId:0];
   }
 
   else

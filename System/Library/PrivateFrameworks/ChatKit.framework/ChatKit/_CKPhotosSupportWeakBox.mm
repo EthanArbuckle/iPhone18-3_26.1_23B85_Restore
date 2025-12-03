@@ -1,20 +1,20 @@
 @interface _CKPhotosSupportWeakBox
-- (_CKPhotosSupportWeakBox)initWithObject:(id)a3;
+- (_CKPhotosSupportWeakBox)initWithObject:(id)object;
 - (id)object;
 @end
 
 @implementation _CKPhotosSupportWeakBox
 
-- (_CKPhotosSupportWeakBox)initWithObject:(id)a3
+- (_CKPhotosSupportWeakBox)initWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v8.receiver = self;
   v8.super_class = _CKPhotosSupportWeakBox;
   v5 = [(_CKPhotosSupportWeakBox *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_object, v4);
+    objc_storeWeak(&v5->_object, objectCopy);
   }
 
   return v6;

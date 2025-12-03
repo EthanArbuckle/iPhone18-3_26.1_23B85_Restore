@@ -1,30 +1,30 @@
 @interface NNChangeSerializer
-- (id)changeFromData:(id)a3 ofType:(int64_t)a4;
-- (id)dataFromChange:(id)a3;
+- (id)changeFromData:(id)data ofType:(int64_t)type;
+- (id)dataFromChange:(id)change;
 @end
 
 @implementation NNChangeSerializer
 
-- (id)dataFromChange:(id)a3
+- (id)dataFromChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v3;
+    result = changeCopy;
     v7 = +[NSMutableDictionary dictionary];
-    v8 = [v6 resultIdentifier];
-    if (v8)
+    resultIdentifier = [result resultIdentifier];
+    if (resultIdentifier)
     {
-      [v7 setObject:v8 forKeyedSubscript:@"identifier"];
+      [v7 setObject:resultIdentifier forKeyedSubscript:@"identifier"];
     }
 
-    v9 = [v6 requestDate];
-    if (v9)
+    requestDate = [result requestDate];
+    if (requestDate)
     {
-      [v7 setObject:v9 forKeyedSubscript:@"date"];
+      [v7 setObject:requestDate forKeyedSubscript:@"date"];
     }
 
     v10 = [v7 copy];
@@ -39,8 +39,8 @@
       goto LABEL_16;
     }
 
-    v6 = [v3 result];
-    v10 = NNHeadlineSyncableResultFromResult(v6, 1);
+    result = [changeCopy result];
+    v10 = NNHeadlineSyncableResultFromResult(result, 1);
   }
 
   if (v5 && v10)
@@ -69,7 +69,7 @@ LABEL_16:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v18 = v3;
+    v18 = changeCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Couldn't make data for change %@", buf, 0xCu);
   }
 
@@ -79,18 +79,18 @@ LABEL_19:
   return v12;
 }
 
-- (id)changeFromData:(id)a3 ofType:(int64_t)a4
+- (id)changeFromData:(id)data ofType:(int64_t)type
 {
-  v5 = a3;
+  dataCopy = data;
   v28 = 0;
-  v6 = [NSPropertyListSerialization propertyListWithData:v5 options:0 format:0 error:&v28];
+  v6 = [NSPropertyListSerialization propertyListWithData:dataCopy options:0 format:0 error:&v28];
   v7 = v28;
   if (!v6)
   {
     v8 = NNSetupCompanionSyncLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      sub_100008F70(v5, v7, v8);
+      sub_100008F70(dataCopy, v7, v8);
     }
   }
 
@@ -100,19 +100,19 @@ LABEL_19:
     v9 = v6;
     if ([v9 count]!= 1)
     {
-      v11 = NNSetupCompanionSyncLog();
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+      firstObject = NNSetupCompanionSyncLog();
+      if (os_log_type_enabled(firstObject, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
         v30 = v9;
-        _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Expected a dictionary, got a %@", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, firstObject, OS_LOG_TYPE_INFO, "Expected a dictionary, got a %@", buf, 0xCu);
       }
 
       goto LABEL_23;
     }
 
-    v10 = [v9 allKeys];
-    v11 = [v10 firstObject];
+    allKeys = [v9 allKeys];
+    firstObject = [allKeys firstObject];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -121,9 +121,9 @@ LABEL_19:
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v30 = v11;
+        v30 = firstObject;
         v31 = 2112;
-        v32 = v9;
+        typeCopy = v9;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "Invalid objects for ClassName %@ and Dictionary %@", buf, 0x16u);
       }
 
@@ -132,12 +132,12 @@ LABEL_19:
 
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    v14 = [v11 isEqualToString:v13];
+    v14 = [firstObject isEqualToString:v13];
 
     if (v14)
     {
-      v15 = [v9 allValues];
-      v16 = [v15 firstObject];
+      allValues = [v9 allValues];
+      firstObject2 = [allValues firstObject];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -168,20 +168,20 @@ LABEL_19:
     {
       v22 = objc_opt_class();
       v23 = NSStringFromClass(v22);
-      v24 = [v11 isEqualToString:v23];
+      v24 = [firstObject isEqualToString:v23];
 
       if (!v24)
       {
         goto LABEL_23;
       }
 
-      v25 = [v9 allValues];
-      v16 = [v25 firstObject];
+      allValues2 = [v9 allValues];
+      firstObject2 = [allValues2 firstObject];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v19 = [[NNHeadlineResultChange alloc] initWithHeadlineResult:v16];
+        v19 = [[NNHeadlineResultChange alloc] initWithHeadlineResult:firstObject2];
         goto LABEL_35;
       }
 
@@ -189,7 +189,7 @@ LABEL_19:
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v30 = v16;
+        v30 = firstObject2;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "Why does this change have an invalid result %@?", buf, 0xCu);
       }
     }
@@ -221,9 +221,9 @@ LABEL_24:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v30 = v5;
+    v30 = dataCopy;
     v31 = 2048;
-    v32 = a4;
+    typeCopy = type;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Expected a data object, got a %@ with type %ld", buf, 0x16u);
   }
 

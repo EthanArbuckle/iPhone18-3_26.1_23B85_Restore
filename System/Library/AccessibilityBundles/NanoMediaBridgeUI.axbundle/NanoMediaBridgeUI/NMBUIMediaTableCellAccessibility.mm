@@ -1,5 +1,5 @@
 @interface NMBUIMediaTableCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsShowingControl;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityValue;
@@ -8,15 +8,15 @@
 
 @implementation NMBUIMediaTableCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NMBUIMediaTableCell" isKindOfClass:@"PSControlTableCell"];
-  [v3 validateClass:@"PSControlTableCell" hasInstanceMethod:@"control" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NMBUIMediaTableCell" isKindOfClass:@"PSTableCell"];
-  [v3 validateClass:@"PSTableCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NMBUIMediaTableCell" isKindOfClass:@"UITableViewCell"];
-  [v3 validateClass:@"UITableViewCell" hasInstanceMethod:@"detailTextLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NMBUIMediaTableCell" isKindOfClass:@"PSControlTableCell"];
+  [validationsCopy validateClass:@"PSControlTableCell" hasInstanceMethod:@"control" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NMBUIMediaTableCell" isKindOfClass:@"PSTableCell"];
+  [validationsCopy validateClass:@"PSTableCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NMBUIMediaTableCell" isKindOfClass:@"UITableViewCell"];
+  [validationsCopy validateClass:@"UITableViewCell" hasInstanceMethod:@"detailTextLabel" withFullSignature:{"@", 0}];
 }
 
 - (CGPoint)accessibilityActivationPoint
@@ -48,15 +48,15 @@
 {
   v7.receiver = self;
   v7.super_class = NMBUIMediaTableCellAccessibility;
-  v3 = [(NMBUIMediaTableCellAccessibility *)&v7 accessibilityTraits];
+  accessibilityTraits = [(NMBUIMediaTableCellAccessibility *)&v7 accessibilityTraits];
   if ([(NMBUIMediaTableCellAccessibility *)self _axIsShowingControl])
   {
     v4 = kAXToggleTrait;
     v5 = [(NMBUIMediaTableCellAccessibility *)self safeValueForKey:@"control"];
-    v3 |= v4 | [v5 accessibilityTraits];
+    accessibilityTraits |= v4 | [v5 accessibilityTraits];
   }
 
-  return v3;
+  return accessibilityTraits;
 }
 
 - (id)accessibilityValue
@@ -64,17 +64,17 @@
   if ([(NMBUIMediaTableCellAccessibility *)self _axIsShowingControl])
   {
     v3 = [(NMBUIMediaTableCellAccessibility *)self safeValueForKey:@"control"];
-    v4 = [v3 accessibilityValue];
+    accessibilityValue = [v3 accessibilityValue];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = NMBUIMediaTableCellAccessibility;
-    v4 = [(NMBUIMediaTableCellAccessibility *)&v6 accessibilityValue];
+    accessibilityValue = [(NMBUIMediaTableCellAccessibility *)&v6 accessibilityValue];
   }
 
-  return v4;
+  return accessibilityValue;
 }
 
 - (BOOL)_axIsShowingControl
@@ -91,8 +91,8 @@
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v6 = [v4 arrangedSubviews];
-    v7 = [v6 countByEnumeratingWithState:&v11 objects:v16 count:16];
+    arrangedSubviews = [v4 arrangedSubviews];
+    v7 = [arrangedSubviews countByEnumeratingWithState:&v11 objects:v16 count:16];
     if (v7)
     {
       v8 = *v12;
@@ -102,7 +102,7 @@
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(arrangedSubviews);
           }
 
           if (*(*(&v11 + 1) + 8 * i) == v5)
@@ -112,7 +112,7 @@
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v11 objects:v16 count:16];
+        v7 = [arrangedSubviews countByEnumeratingWithState:&v11 objects:v16 count:16];
         if (v7)
         {
           continue;

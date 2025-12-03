@@ -1,48 +1,48 @@
 @interface ReceivedInvitation
-+ (id)predicateForPresenceIdentifier:(id)a3;
-+ (id)predicateForSenderHandle:(id)a3;
-+ (id)predicateForSenderHandleString:(id)a3;
-+ (id)predicateForStatusTypeIdentifier:(id)a3;
++ (id)predicateForPresenceIdentifier:(id)identifier;
++ (id)predicateForSenderHandle:(id)handle;
++ (id)predicateForSenderHandleString:(id)string;
++ (id)predicateForStatusTypeIdentifier:(id)identifier;
 @end
 
 @implementation ReceivedInvitation
 
-+ (id)predicateForSenderHandle:(id)a3
++ (id)predicateForSenderHandle:(id)handle
 {
-  v4 = [a3 normalizedHandleString];
-  v5 = [a1 predicateForSenderHandleString:v4];
+  normalizedHandleString = [handle normalizedHandleString];
+  v5 = [self predicateForSenderHandleString:normalizedHandleString];
 
   return v5;
 }
 
-+ (id)predicateForSenderHandleString:(id)a3
++ (id)predicateForSenderHandleString:(id)string
 {
   v3 = MEMORY[0x277CCAC30];
-  v4 = a3;
+  stringCopy = string;
   v5 = +[ReceivedInvitation senderHandleKeyPath];
-  v6 = [v3 predicateWithFormat:@"%K == %@", v5, v4];
+  stringCopy = [v3 predicateWithFormat:@"%K == %@", v5, stringCopy];
 
-  return v6;
+  return stringCopy;
 }
 
-+ (id)predicateForStatusTypeIdentifier:(id)a3
++ (id)predicateForStatusTypeIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277CCAC30];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[ReceivedInvitation statusTypeIdentifierKeyPath];
-  v6 = [v3 predicateWithFormat:@"%K == %@", v5, v4];
+  identifierCopy = [v3 predicateWithFormat:@"%K == %@", v5, identifierCopy];
 
-  return v6;
+  return identifierCopy;
 }
 
-+ (id)predicateForPresenceIdentifier:(id)a3
++ (id)predicateForPresenceIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277CCAC30];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[ReceivedInvitation presenceIdentifierKeyPath];
-  v6 = [v3 predicateWithFormat:@"%K == %@", v5, v4];
+  identifierCopy = [v3 predicateWithFormat:@"%K == %@", v5, identifierCopy];
 
-  return v6;
+  return identifierCopy;
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface CAMProminentObjectManager
 - (BCSAction)currentMachineReadableCodeAction;
-- (BOOL)_isMetadataObject:(id)a3 semanticallyEqualToMetadataObject:(id)a4;
+- (BOOL)_isMetadataObject:(id)object semanticallyEqualToMetadataObject:(id)metadataObject;
 - (CAMProminentObjectManager)init;
 - (CAMProminentObjectManagerDelegate)delegate;
-- (CGRect)_referenceBoundsForAspectRatio:(int64_t)a3;
-- (double)_expirationTimeForObjectType:(unint64_t)a3;
-- (double)_selectionDelayForNewObject:(id)a3;
-- (id)_candidateObjectMatchingCurrentObject:(id)a3;
-- (id)_mostSignificantObjectFromObjects:(id)a3 preferredObject:(id)a4 pointOfInterest:(CGPoint)a5;
-- (unint64_t)typeForMetadataObject:(id)a3;
+- (CGRect)_referenceBoundsForAspectRatio:(int64_t)ratio;
+- (double)_expirationTimeForObjectType:(unint64_t)type;
+- (double)_selectionDelayForNewObject:(id)object;
+- (id)_candidateObjectMatchingCurrentObject:(id)object;
+- (id)_mostSignificantObjectFromObjects:(id)objects preferredObject:(id)object pointOfInterest:(CGPoint)interest;
+- (unint64_t)typeForMetadataObject:(id)object;
 - (void)_beginExpiringCurrentObjectIfNeeded;
-- (void)_handleExpiredObject:(id)a3;
-- (void)_setCurrentMachineReadableCodeAction:(id)a3 updatePreviousAction:(BOOL)a4;
-- (void)_setCurrentObject:(id)a3 forPointOfInterest:(CGPoint)a4;
+- (void)_handleExpiredObject:(id)object;
+- (void)_setCurrentMachineReadableCodeAction:(id)action updatePreviousAction:(BOOL)previousAction;
+- (void)_setCurrentObject:(id)object forPointOfInterest:(CGPoint)interest;
 - (void)_updateCurrentMRCActionWhenReady;
 - (void)reset;
-- (void)updateWithCandidateObjects:(id)a3;
+- (void)updateWithCandidateObjects:(id)objects;
 @end
 
 @implementation CAMProminentObjectManager
@@ -33,45 +33,45 @@
   return result;
 }
 
-- (void)_setCurrentObject:(id)a3 forPointOfInterest:(CGPoint)a4
+- (void)_setCurrentObject:(id)object forPointOfInterest:(CGPoint)interest
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a3;
-  v9 = v8;
+  y = interest.y;
+  x = interest.x;
+  objectCopy = object;
+  v9 = objectCopy;
   currentObject = self->_currentObject;
-  if (currentObject != v8)
+  if (currentObject != objectCopy)
   {
-    v13 = v8;
-    v11 = [(CAMProminentObjectManager *)self _isMetadataObject:currentObject semanticallyEqualToMetadataObject:v8];
-    objc_storeStrong(&self->_currentObject, a3);
+    v13 = objectCopy;
+    v11 = [(CAMProminentObjectManager *)self _isMetadataObject:currentObject semanticallyEqualToMetadataObject:objectCopy];
+    objc_storeStrong(&self->_currentObject, object);
     v9 = v13;
     if (!v11)
     {
       self->_currentObjectPointOfInterest.x = x;
       self->_currentObjectPointOfInterest.y = y;
-      v12 = [(CAMProminentObjectManager *)self delegate];
-      [v12 prominentObjectManager:self didChangeCurrentObject:v13];
+      delegate = [(CAMProminentObjectManager *)self delegate];
+      [delegate prominentObjectManager:self didChangeCurrentObject:v13];
 
-      v8 = [(CAMProminentObjectManager *)self _updateCurrentMRCActionWhenReady];
+      objectCopy = [(CAMProminentObjectManager *)self _updateCurrentMRCActionWhenReady];
       v9 = v13;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v8, v9);
+  MEMORY[0x1EEE66BB8](objectCopy, v9);
 }
 
-- (void)_setCurrentMachineReadableCodeAction:(id)a3 updatePreviousAction:(BOOL)a4
+- (void)_setCurrentMachineReadableCodeAction:(id)action updatePreviousAction:(BOOL)previousAction
 {
-  v4 = a4;
-  v7 = a3;
+  previousActionCopy = previousAction;
+  actionCopy = action;
   currentAction = self->_currentAction;
-  if (currentAction != v7)
+  if (currentAction != actionCopy)
   {
-    v11 = v7;
+    v11 = actionCopy;
     if (currentAction)
     {
-      v9 = !v4;
+      v9 = !previousActionCopy;
     }
 
     else
@@ -84,11 +84,11 @@
       objc_storeStrong(&self->_previousAction, currentAction);
     }
 
-    objc_storeStrong(&self->_currentAction, a3);
+    objc_storeStrong(&self->_currentAction, action);
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained prominentObjectManager:self didChangeCurrentMachineReadableCodeAction:v11];
 
-    v7 = v11;
+    actionCopy = v11;
   }
 }
 
@@ -107,17 +107,17 @@
   return v3;
 }
 
-- (unint64_t)typeForMetadataObject:(id)a3
+- (unint64_t)typeForMetadataObject:(id)object
 {
-  v3 = a3;
-  if (v3)
+  objectCopy = object;
+  if (objectCopy)
   {
-    if ([v3 isMemberOfClass:objc_opt_class()])
+    if ([objectCopy isMemberOfClass:objc_opt_class()])
     {
       v4 = 1;
     }
 
-    else if ([v3 isMemberOfClass:objc_opt_class()])
+    else if ([objectCopy isMemberOfClass:objc_opt_class()])
     {
       v4 = 2;
     }
@@ -138,7 +138,7 @@
 
 - (void)reset
 {
-  v3 = [(CAMProminentObjectManager *)self isCurrentObjectExpiring];
+  isCurrentObjectExpiring = [(CAMProminentObjectManager *)self isCurrentObjectExpiring];
   currentlyParsingCode = self->_currentlyParsingCode;
   self->_currentlyParsingCode = 0;
 
@@ -150,24 +150,24 @@
 
   [(CAMProminentObjectManager *)self _setCurrentMachineReadableCodeAction:0 updatePreviousAction:0];
   [(CAMProminentObjectManager *)self _setCurrentObject:0 forPointOfInterest:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
-  if (v3 != [(CAMProminentObjectManager *)self isCurrentObjectExpiring])
+  if (isCurrentObjectExpiring != [(CAMProminentObjectManager *)self isCurrentObjectExpiring])
   {
-    v7 = [(CAMProminentObjectManager *)self delegate];
-    [v7 prominentObjectManagerDidChangeIsCurrentObjectExpiring:self];
+    delegate = [(CAMProminentObjectManager *)self delegate];
+    [delegate prominentObjectManagerDidChangeIsCurrentObjectExpiring:self];
   }
 }
 
-- (void)updateWithCandidateObjects:(id)a3
+- (void)updateWithCandidateObjects:(id)objects
 {
-  v16 = a3;
-  v4 = [(CAMProminentObjectManager *)self _candidateObjectMatchingCurrentObject:v16];
+  objectsCopy = objects;
+  v4 = [(CAMProminentObjectManager *)self _candidateObjectMatchingCurrentObject:objectsCopy];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained prominentObjectManagerPointOfInterestInNormalizedDeviceSpace:self];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(CAMProminentObjectManager *)self isCurrentObjectExpiring];
-  if (![v16 count])
+  isCurrentObjectExpiring = [(CAMProminentObjectManager *)self isCurrentObjectExpiring];
+  if (![objectsCopy count])
   {
     [(CAMProminentObjectManager *)self _beginExpiringCurrentObjectIfNeeded];
 LABEL_7:
@@ -176,7 +176,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v11 = [(CAMProminentObjectManager *)self _mostSignificantObjectFromObjects:v16 preferredObject:v4 pointOfInterest:v7, v9];
+  v11 = [(CAMProminentObjectManager *)self _mostSignificantObjectFromObjects:objectsCopy preferredObject:v4 pointOfInterest:v7, v9];
   v12 = v11;
   if (v11 && v11 == v4)
   {
@@ -195,10 +195,10 @@ LABEL_8:
   v14 = expiringObject;
 
   [(CAMProminentObjectManager *)self _setCurrentObject:v14 forPointOfInterest:v7, v9];
-  if (v10 != [(CAMProminentObjectManager *)self isCurrentObjectExpiring])
+  if (isCurrentObjectExpiring != [(CAMProminentObjectManager *)self isCurrentObjectExpiring])
   {
-    v15 = [(CAMProminentObjectManager *)self delegate];
-    [v15 prominentObjectManagerDidChangeIsCurrentObjectExpiring:self];
+    delegate = [(CAMProminentObjectManager *)self delegate];
+    [delegate prominentObjectManagerDidChangeIsCurrentObjectExpiring:self];
   }
 }
 
@@ -237,34 +237,34 @@ void __64__CAMProminentObjectManager__beginExpiringCurrentObjectIfNeeded__block_
   [WeakRetained _handleExpiredObject:*(a1 + 32)];
 }
 
-- (void)_handleExpiredObject:(id)a3
+- (void)_handleExpiredObject:(id)object
 {
   expiringObject = self->_expiringObject;
-  if (expiringObject == a3)
+  if (expiringObject == object)
   {
     self->_expiringObject = 0;
-    v5 = a3;
+    objectCopy = object;
 
     currentObject = self->_currentObject;
-    if (currentObject == v5)
+    if (currentObject == objectCopy)
     {
       [(CAMProminentObjectManager *)self _setCurrentObject:0 forPointOfInterest:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
     }
 
-    v7 = [(CAMProminentObjectManager *)self delegate];
-    [v7 prominentObjectManagerDidChangeIsCurrentObjectExpiring:self];
+    delegate = [(CAMProminentObjectManager *)self delegate];
+    [delegate prominentObjectManagerDidChangeIsCurrentObjectExpiring:self];
   }
 }
 
-- (double)_expirationTimeForObjectType:(unint64_t)a3
+- (double)_expirationTimeForObjectType:(unint64_t)type
 {
   result = 0.45;
-  if (a3 != 1)
+  if (type != 1)
   {
     result = 0.0;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     return 4.0;
   }
@@ -272,41 +272,41 @@ void __64__CAMProminentObjectManager__beginExpiringCurrentObjectIfNeeded__block_
   return result;
 }
 
-- (BOOL)_isMetadataObject:(id)a3 semanticallyEqualToMetadataObject:(id)a4
+- (BOOL)_isMetadataObject:(id)object semanticallyEqualToMetadataObject:(id)metadataObject
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  objectCopy = object;
+  metadataObjectCopy = metadataObject;
+  v8 = metadataObjectCopy;
+  if (objectCopy)
   {
-    if ([v7 isMemberOfClass:objc_opt_class()])
+    if ([metadataObjectCopy isMemberOfClass:objc_opt_class()])
     {
-      v9 = [(CAMProminentObjectManager *)self typeForMetadataObject:v6];
+      v9 = [(CAMProminentObjectManager *)self typeForMetadataObject:objectCopy];
       if (v9)
       {
         if (v9 == 2)
         {
-          v14 = v6;
+          v14 = objectCopy;
           BCSDetectedCodeClass = getBCSDetectedCodeClass();
-          v16 = [v14 underlyingMachineReadableCodeObject];
+          underlyingMachineReadableCodeObject = [v14 underlyingMachineReadableCodeObject];
 
-          v10 = [BCSDetectedCodeClass detectedCodeWithMachineReadableObject:v16];
+          uniqueIdentifier = [BCSDetectedCodeClass detectedCodeWithMachineReadableObject:underlyingMachineReadableCodeObject];
 
           v17 = v8;
           v18 = getBCSDetectedCodeClass();
-          v19 = [v17 underlyingMachineReadableCodeObject];
+          underlyingMachineReadableCodeObject2 = [v17 underlyingMachineReadableCodeObject];
 
-          v11 = [v18 detectedCodeWithMachineReadableObject:v19];
+          uniqueIdentifier2 = [v18 detectedCodeWithMachineReadableObject:underlyingMachineReadableCodeObject2];
 
-          v12 = [v10 isLikelyEqualToCode:v11];
+          v12 = [uniqueIdentifier isLikelyEqualToCode:uniqueIdentifier2];
           goto LABEL_9;
         }
 
         if (v9 == 1)
         {
-          v10 = [v6 uniqueIdentifier];
-          v11 = [v8 uniqueIdentifier];
-          v12 = [v11 isEqualToString:v10];
+          uniqueIdentifier = [objectCopy uniqueIdentifier];
+          uniqueIdentifier2 = [v8 uniqueIdentifier];
+          v12 = [uniqueIdentifier2 isEqualToString:uniqueIdentifier];
 LABEL_9:
           v13 = v12;
 
@@ -319,7 +319,7 @@ LABEL_9:
         v20 = os_log_create("com.apple.camera", "Camera");
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
-          [CAMProminentObjectManager _isMetadataObject:v6 semanticallyEqualToMetadataObject:v20];
+          [CAMProminentObjectManager _isMetadataObject:objectCopy semanticallyEqualToMetadataObject:v20];
         }
       }
     }
@@ -328,24 +328,24 @@ LABEL_9:
     goto LABEL_14;
   }
 
-  v13 = v7 == 0;
+  v13 = metadataObjectCopy == 0;
 LABEL_14:
 
   return v13;
 }
 
-- (id)_candidateObjectMatchingCurrentObject:(id)a3
+- (id)_candidateObjectMatchingCurrentObject:(id)object
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  objectCopy = object;
+  v5 = objectCopy;
   if (self->_currentObject)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v4;
+    v6 = objectCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -390,15 +390,15 @@ LABEL_12:
   return v12;
 }
 
-- (id)_mostSignificantObjectFromObjects:(id)a3 preferredObject:(id)a4 pointOfInterest:(CGPoint)a5
+- (id)_mostSignificantObjectFromObjects:(id)objects preferredObject:(id)object pointOfInterest:(CGPoint)interest
 {
-  y = a5.y;
-  x = a5.x;
+  y = interest.y;
+  x = interest.x;
   v57 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = [v9 count];
-  if (!v10 && !v11)
+  objectsCopy = objects;
+  objectCopy = object;
+  v11 = [objectsCopy count];
+  if (!objectCopy && !v11)
   {
     v12 = 0;
     goto LABEL_32;
@@ -422,13 +422,13 @@ LABEL_12:
   v55 = 0u;
   *&point[1] = 0u;
   v53 = 0u;
-  v17 = v9;
+  v17 = objectsCopy;
   v18 = [v17 countByEnumeratingWithState:&point[1] objects:v56 count:16];
   if (v18)
   {
     v19 = v18;
     v50 = v16;
-    v51 = self;
+    selfCopy = self;
     v20 = 0;
     v21 = *v53;
     v22 = 1.79769313e308;
@@ -442,8 +442,8 @@ LABEL_12:
         }
 
         v24 = *(*&point[2] + 8 * i);
-        v25 = [v24 underlyingMetadataObject];
-        [v25 bounds];
+        underlyingMetadataObject = [v24 underlyingMetadataObject];
+        [underlyingMetadataObject bounds];
 
         CEKExpandNormalizedRect();
         v27 = v26;
@@ -468,12 +468,12 @@ LABEL_12:
 
             LOBYTE(v16) = 1;
             v20 = v41;
-            self = v51;
+            self = selfCopy;
             goto LABEL_26;
           }
         }
 
-        if (v24 == v10)
+        if (v24 == objectCopy)
         {
           v39 = ((v15 - v37) * (v15 - v37) + (point[0] - v35) * (point[0] - v35)) * 0.5625;
         }
@@ -505,7 +505,7 @@ LABEL_12:
       break;
     }
 
-    self = v51;
+    self = selfCopy;
     LOBYTE(v16) = v50;
   }
 
@@ -516,7 +516,7 @@ LABEL_12:
 
 LABEL_26:
 
-  v12 = v10;
+  v12 = objectCopy;
   v42 = [(CAMProminentObjectManager *)self _isMetadataObject:v20 semanticallyEqualToMetadataObject:self->_currentObject];
   if (v20 && !v42)
   {
@@ -557,9 +557,9 @@ LABEL_32:
   return v12;
 }
 
-- (double)_selectionDelayForNewObject:(id)a3
+- (double)_selectionDelayForNewObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   if (_selectionDelayForNewObject__onceToken != -1)
   {
     [CAMProminentObjectManager _selectionDelayForNewObject:];
@@ -568,7 +568,7 @@ LABEL_32:
   currentObject = self->_currentObject;
   if (!currentObject || (v6 = 0.75, currentObject == self->_expiringObject))
   {
-    v7 = [(CAMProminentObjectManager *)self typeForMetadataObject:v4];
+    v7 = [(CAMProminentObjectManager *)self typeForMetadataObject:objectCopy];
     if (!v7 || v7 == 2)
     {
       v6 = 0.25;
@@ -605,21 +605,21 @@ CFIndex __57__CAMProminentObjectManager__selectionDelayForNewObject___block_invo
   return result;
 }
 
-- (CGRect)_referenceBoundsForAspectRatio:(int64_t)a3
+- (CGRect)_referenceBoundsForAspectRatio:(int64_t)ratio
 {
   v3 = *MEMORY[0x1E695F058];
   v4 = *(MEMORY[0x1E695F058] + 8);
   v5 = *(MEMORY[0x1E695F058] + 16);
-  if (a3 <= 2)
+  if (ratio <= 2)
   {
-    if (a3)
+    if (ratio)
     {
-      if (a3 == 1)
+      if (ratio == 1)
       {
         v5 = 1.77777778;
       }
 
-      else if (a3 == 2)
+      else if (ratio == 2)
       {
         v5 = 1.5;
       }
@@ -631,15 +631,15 @@ CFIndex __57__CAMProminentObjectManager__selectionDelayForNewObject___block_invo
     }
   }
 
-  else if (a3 > 4)
+  else if (ratio > 4)
   {
     v11 = 0.5625;
-    if (a3 != 6)
+    if (ratio != 6)
     {
       v11 = *(MEMORY[0x1E695F058] + 16);
     }
 
-    if (a3 == 5)
+    if (ratio == 5)
     {
       v5 = 0.75;
     }
@@ -650,15 +650,15 @@ CFIndex __57__CAMProminentObjectManager__selectionDelayForNewObject___block_invo
     }
   }
 
-  else if (a3 == 3)
+  else if (ratio == 3)
   {
     v5 = 1.0;
   }
 
   else
   {
-    v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v6 _referenceBounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen _referenceBounds];
     v8 = v7;
     v10 = v9;
 
@@ -678,24 +678,24 @@ CFIndex __57__CAMProminentObjectManager__selectionDelayForNewObject___block_invo
 - (void)_updateCurrentMRCActionWhenReady
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(CAMProminentObjectManager *)self currentObjectType];
+  currentObjectType = [(CAMProminentObjectManager *)self currentObjectType];
   currentlyParsingCode = self->_currentlyParsingCode;
-  if (v3 == 2)
+  if (currentObjectType == 2)
   {
     if (!currentlyParsingCode)
     {
       v5 = self->_currentObject;
       BCSDetectedCodeClass = getBCSDetectedCodeClass();
-      v7 = [(CAMMetadataObjectResult *)v5 underlyingMachineReadableCodeObject];
-      v8 = [BCSDetectedCodeClass detectedCodeWithMachineReadableObject:v7];
+      underlyingMachineReadableCodeObject = [(CAMMetadataObjectResult *)v5 underlyingMachineReadableCodeObject];
+      v8 = [BCSDetectedCodeClass detectedCodeWithMachineReadableObject:underlyingMachineReadableCodeObject];
 
-      v9 = [(BCSAction *)self->_currentAction detectedCode];
-      v10 = [v8 isLikelyEqualToCode:v9];
+      detectedCode = [(BCSAction *)self->_currentAction detectedCode];
+      v10 = [v8 isLikelyEqualToCode:detectedCode];
 
       if ((v10 & 1) == 0)
       {
-        v11 = [(BCSAction *)self->_previousAction detectedCode];
-        v12 = [v8 isLikelyEqualToCode:v11];
+        detectedCode2 = [(BCSAction *)self->_previousAction detectedCode];
+        v12 = [v8 isLikelyEqualToCode:detectedCode2];
 
         if (v12)
         {
@@ -718,7 +718,7 @@ CFIndex __57__CAMProminentObjectManager__selectionDelayForNewObject___block_invo
           v14[2] = __61__CAMProminentObjectManager__updateCurrentMRCActionWhenReady__block_invoke;
           v14[3] = &unk_1E76F8258;
           v15 = v8;
-          v16 = self;
+          selfCopy = self;
           [v15 parseCodeWithCompletion:v14];
         }
       }

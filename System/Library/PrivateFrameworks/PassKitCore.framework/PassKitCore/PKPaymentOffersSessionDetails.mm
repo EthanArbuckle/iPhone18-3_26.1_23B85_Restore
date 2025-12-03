@@ -1,124 +1,124 @@
 @interface PKPaymentOffersSessionDetails
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentOffersSessionDetails)initWithCoder:(id)a3;
-- (PKPaymentOffersSessionDetails)initWithContext:(unint64_t)a3;
-- (PKPaymentOffersSessionDetails)initWithTransactionAmount:(id)a3 currencyCode:(id)a4 merchantCountryCode:(id)a5 merchantIdentifier:(id)a6 originURL:(id)a7 webMerchantIdentifier:(id)a8 webMerchantName:(id)a9 merchantName:(id)a10 adamIdentifier:(id)a11 shouldUseMerchantSession:(BOOL)a12 merchantCategoryCode:(signed __int16)a13 supportedNetworks:(id)a14 merchantCapabilities:(unint64_t)a15 payLaterSuppressionMode:(int64_t)a16 options:(unint64_t)a17;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentOffersSessionDetails)initWithCoder:(id)coder;
+- (PKPaymentOffersSessionDetails)initWithContext:(unint64_t)context;
+- (PKPaymentOffersSessionDetails)initWithTransactionAmount:(id)amount currencyCode:(id)code merchantCountryCode:(id)countryCode merchantIdentifier:(id)identifier originURL:(id)l webMerchantIdentifier:(id)merchantIdentifier webMerchantName:(id)name merchantName:(id)self0 adamIdentifier:(id)self1 shouldUseMerchantSession:(BOOL)self2 merchantCategoryCode:(signed __int16)self3 supportedNetworks:(id)self4 merchantCapabilities:(unint64_t)self5 payLaterSuppressionMode:(int64_t)self6 options:(unint64_t)self7;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)httpDictionaryRepresentation;
-- (id)initForInstoreConextWithPassUniqueID:(id)a3;
-- (id)initForPostPurchaseInstallmentsWithTransaction:(id)a3 userEnteredAmount:(id)a4;
+- (id)initForInstoreConextWithPassUniqueID:(id)d;
+- (id)initForPostPurchaseInstallmentsWithTransaction:(id)transaction userEnteredAmount:(id)amount;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)removeTransactionAmount;
-- (void)updateCurrencyCode:(id)a3;
-- (void)updateMerchantIdentifier:(id)a3 originURL:(id)a4 webMerchantIdentifier:(id)a5 webMerchantName:(id)a6;
-- (void)updateTransactionAmount:(id)a3;
+- (void)updateCurrencyCode:(id)code;
+- (void)updateMerchantIdentifier:(id)identifier originURL:(id)l webMerchantIdentifier:(id)merchantIdentifier webMerchantName:(id)name;
+- (void)updateTransactionAmount:(id)amount;
 @end
 
 @implementation PKPaymentOffersSessionDetails
 
-- (PKPaymentOffersSessionDetails)initWithContext:(unint64_t)a3
+- (PKPaymentOffersSessionDetails)initWithContext:(unint64_t)context
 {
   v5.receiver = self;
   v5.super_class = PKPaymentOffersSessionDetails;
   result = [(PKPaymentOffersSessionDetails *)&v5 init];
   if (result)
   {
-    result->_context = a3;
+    result->_context = context;
   }
 
   return result;
 }
 
-- (id)initForInstoreConextWithPassUniqueID:(id)a3
+- (id)initForInstoreConextWithPassUniqueID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v6 = [(PKPaymentOffersSessionDetails *)self initWithContext:1];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_passUniqueID, a3);
+    objc_storeStrong(&v6->_passUniqueID, d);
   }
 
   return v7;
 }
 
-- (id)initForPostPurchaseInstallmentsWithTransaction:(id)a3 userEnteredAmount:(id)a4
+- (id)initForPostPurchaseInstallmentsWithTransaction:(id)transaction userEnteredAmount:(id)amount
 {
-  v6 = a3;
-  v7 = a4;
+  transactionCopy = transaction;
+  amountCopy = amount;
   v8 = [(PKPaymentOffersSessionDetails *)self initWithContext:3];
   if (v8)
   {
-    v9 = [[PKPaymentOffersSessionTransactionDetails alloc] initWithTransaction:v6];
+    v9 = [[PKPaymentOffersSessionTransactionDetails alloc] initWithTransaction:transactionCopy];
     transactionDetails = v8->_transactionDetails;
     v8->_transactionDetails = v9;
 
-    v11 = [v6 amount];
+    amount = [transactionCopy amount];
     transactionAmount = v8->_transactionAmount;
-    v8->_transactionAmount = v11;
+    v8->_transactionAmount = amount;
 
-    v13 = [v6 currencyCode];
+    currencyCode = [transactionCopy currencyCode];
     currencyCode = v8->_currencyCode;
-    v8->_currencyCode = v13;
+    v8->_currencyCode = currencyCode;
 
-    v15 = [v6 merchant];
-    v16 = [v15 name];
+    merchant = [transactionCopy merchant];
+    name = [merchant name];
     merchantName = v8->_merchantName;
-    v8->_merchantName = v16;
+    v8->_merchantName = name;
 
-    objc_storeStrong(&v8->_userEnteredAmount, a4);
+    objc_storeStrong(&v8->_userEnteredAmount, amount);
   }
 
   return v8;
 }
 
-- (PKPaymentOffersSessionDetails)initWithTransactionAmount:(id)a3 currencyCode:(id)a4 merchantCountryCode:(id)a5 merchantIdentifier:(id)a6 originURL:(id)a7 webMerchantIdentifier:(id)a8 webMerchantName:(id)a9 merchantName:(id)a10 adamIdentifier:(id)a11 shouldUseMerchantSession:(BOOL)a12 merchantCategoryCode:(signed __int16)a13 supportedNetworks:(id)a14 merchantCapabilities:(unint64_t)a15 payLaterSuppressionMode:(int64_t)a16 options:(unint64_t)a17
+- (PKPaymentOffersSessionDetails)initWithTransactionAmount:(id)amount currencyCode:(id)code merchantCountryCode:(id)countryCode merchantIdentifier:(id)identifier originURL:(id)l webMerchantIdentifier:(id)merchantIdentifier webMerchantName:(id)name merchantName:(id)self0 adamIdentifier:(id)self1 shouldUseMerchantSession:(BOOL)self2 merchantCategoryCode:(signed __int16)self3 supportedNetworks:(id)self4 merchantCapabilities:(unint64_t)self5 payLaterSuppressionMode:(int64_t)self6 options:(unint64_t)self7
 {
-  v39 = a3;
-  v38 = a4;
-  obj = a5;
-  v37 = a5;
-  v31 = a6;
-  v36 = a6;
-  v32 = a7;
-  v35 = a7;
-  v34 = a8;
-  v23 = a9;
-  v24 = a10;
-  v25 = a11;
-  v26 = a14;
+  amountCopy = amount;
+  codeCopy = code;
+  obj = countryCode;
+  countryCodeCopy = countryCode;
+  identifierCopy = identifier;
+  identifierCopy2 = identifier;
+  lCopy = l;
+  lCopy2 = l;
+  merchantIdentifierCopy = merchantIdentifier;
+  nameCopy = name;
+  merchantNameCopy = merchantName;
+  adamIdentifierCopy = adamIdentifier;
+  networksCopy = networks;
   v27 = [(PKPaymentOffersSessionDetails *)self initWithContext:0];
   v28 = v27;
   if (v27)
   {
-    objc_storeStrong(&v27->_transactionAmount, a3);
-    objc_storeStrong(&v28->_currencyCode, a4);
+    objc_storeStrong(&v27->_transactionAmount, amount);
+    objc_storeStrong(&v28->_currencyCode, code);
     objc_storeStrong(&v28->_merchantCountryCode, obj);
-    objc_storeStrong(&v28->_merchantIdentifier, v31);
-    objc_storeStrong(&v28->_originURL, v32);
-    objc_storeStrong(&v28->_webMerchantIdentifier, a8);
-    objc_storeStrong(&v28->_webMerchantName, a9);
-    objc_storeStrong(&v28->_merchantName, a10);
-    objc_storeStrong(&v28->_adamIdentifier, a11);
-    objc_storeStrong(&v28->_supportedNetworks, a14);
-    v28->_merchantCategoryCode = a13;
-    v28->_merchantCapabilities = a15;
-    v28->_payLaterSuppressionMode = a16;
-    v28->_options = a17;
-    v28->_shouldUseMerchantSession = a12;
+    objc_storeStrong(&v28->_merchantIdentifier, identifierCopy);
+    objc_storeStrong(&v28->_originURL, lCopy);
+    objc_storeStrong(&v28->_webMerchantIdentifier, merchantIdentifier);
+    objc_storeStrong(&v28->_webMerchantName, name);
+    objc_storeStrong(&v28->_merchantName, merchantName);
+    objc_storeStrong(&v28->_adamIdentifier, adamIdentifier);
+    objc_storeStrong(&v28->_supportedNetworks, networks);
+    v28->_merchantCategoryCode = categoryCode;
+    v28->_merchantCapabilities = capabilities;
+    v28->_payLaterSuppressionMode = mode;
+    v28->_options = options;
+    v28->_shouldUseMerchantSession = session;
   }
 
   return v28;
 }
 
-- (void)updateCurrencyCode:(id)a3
+- (void)updateCurrencyCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   currencyCode = self->_currencyCode;
-  v6 = v4;
+  v6 = codeCopy;
   v10 = v6;
   if (currencyCode == v6)
   {
@@ -150,16 +150,16 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)updateTransactionAmount:(id)a3
+- (void)updateTransactionAmount:(id)amount
 {
-  v5 = a3;
+  amountCopy = amount;
   transactionAmount = self->_transactionAmount;
   p_transactionAmount = &self->_transactionAmount;
   v6 = transactionAmount;
-  v9 = v5;
-  if (!v5 || !v6)
+  v9 = amountCopy;
+  if (!amountCopy || !v6)
   {
-    if (v6 == v5)
+    if (v6 == amountCopy)
     {
       goto LABEL_7;
     }
@@ -167,10 +167,10 @@ LABEL_10:
     goto LABEL_6;
   }
 
-  if (([(NSDecimalNumber *)v6 isEqual:v5]& 1) == 0)
+  if (([(NSDecimalNumber *)v6 isEqual:amountCopy]& 1) == 0)
   {
 LABEL_6:
-    objc_storeStrong(p_transactionAmount, a3);
+    objc_storeStrong(p_transactionAmount, amount);
   }
 
 LABEL_7:
@@ -185,33 +185,33 @@ LABEL_7:
   self->_currencyCode = 0;
 }
 
-- (void)updateMerchantIdentifier:(id)a3 originURL:(id)a4 webMerchantIdentifier:(id)a5 webMerchantName:(id)a6
+- (void)updateMerchantIdentifier:(id)identifier originURL:(id)l webMerchantIdentifier:(id)merchantIdentifier webMerchantName:(id)name
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  lCopy = l;
+  merchantIdentifierCopy = merchantIdentifier;
+  nameCopy = name;
   merchantIdentifier = self->_merchantIdentifier;
-  self->_merchantIdentifier = v10;
-  v20 = v10;
+  self->_merchantIdentifier = identifierCopy;
+  v20 = identifierCopy;
 
   originURL = self->_originURL;
-  self->_originURL = v11;
-  v16 = v11;
+  self->_originURL = lCopy;
+  v16 = lCopy;
 
   webMerchantIdentifier = self->_webMerchantIdentifier;
-  self->_webMerchantIdentifier = v12;
-  v18 = v12;
+  self->_webMerchantIdentifier = merchantIdentifierCopy;
+  v18 = merchantIdentifierCopy;
 
   webMerchantName = self->_webMerchantName;
-  self->_webMerchantName = v13;
+  self->_webMerchantName = nameCopy;
 }
 
 - (id)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(NSDecimalNumber *)self->_transactionAmount stringValue];
-  [v3 setObject:v4 forKeyedSubscript:@"amount"];
+  stringValue = [(NSDecimalNumber *)self->_transactionAmount stringValue];
+  [v3 setObject:stringValue forKeyedSubscript:@"amount"];
 
   [v3 setObject:self->_currencyCode forKeyedSubscript:@"currencyCode"];
   [v3 setObject:self->_merchantCountryCode forKeyedSubscript:@"countryCode"];
@@ -247,14 +247,14 @@ LABEL_7:
   [v3 setObject:v10 forKeyedSubscript:@"options"];
 
   [v3 setObject:self->_passUniqueID forKeyedSubscript:@"passUniqueID"];
-  v11 = [(PKPaymentOffersSessionTransactionDetails *)self->_transactionDetails dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"kTransactionDetails"];
+  dictionaryRepresentation = [(PKPaymentOffersSessionTransactionDetails *)self->_transactionDetails dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"kTransactionDetails"];
 
-  v12 = [(NSSet *)self->_merchandisingOfferIdentifiers allObjects];
-  [v3 setObject:v12 forKeyedSubscript:@"merchandisingOfferIdentifiers"];
+  allObjects = [(NSSet *)self->_merchandisingOfferIdentifiers allObjects];
+  [v3 setObject:allObjects forKeyedSubscript:@"merchandisingOfferIdentifiers"];
 
-  v13 = [(PKCurrencyAmount *)self->_userEnteredAmount dictionaryRepresentation];
-  [v3 setObject:v13 forKeyedSubscript:@"userEnteredAmount"];
+  dictionaryRepresentation2 = [(PKCurrencyAmount *)self->_userEnteredAmount dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation2 forKeyedSubscript:@"userEnteredAmount"];
 
   v14 = [MEMORY[0x1E696AD98] numberWithBool:self->_shouldUseMerchantSession];
   [v3 setObject:v14 forKeyedSubscript:@"shouldUseMerchantSession"];
@@ -267,8 +267,8 @@ LABEL_7:
 - (id)httpDictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(NSDecimalNumber *)self->_transactionAmount stringValue];
-  [v3 setObject:v4 forKeyedSubscript:@"amount"];
+  stringValue = [(NSDecimalNumber *)self->_transactionAmount stringValue];
+  [v3 setObject:stringValue forKeyedSubscript:@"amount"];
 
   [v3 setObject:self->_currencyCode forKeyedSubscript:@"currencyCode"];
   [v3 setObject:self->_merchantCountryCode forKeyedSubscript:@"countryCode"];
@@ -283,24 +283,24 @@ LABEL_7:
   [v3 setObject:v5 forKeyedSubscript:@"merchantCategoryCode"];
 
   [v3 setObject:self->_merchandisingOfferIdentifiers forKeyedSubscript:@"merchandisingOfferIdentifiers"];
-  v6 = [(PKCurrencyAmount *)self->_userEnteredAmount dictionaryRepresentation];
-  [v3 setObject:v6 forKeyedSubscript:@"userEnteredAmount"];
+  dictionaryRepresentation = [(PKCurrencyAmount *)self->_userEnteredAmount dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"userEnteredAmount"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -696,169 +696,169 @@ LABEL_66:
   return v3;
 }
 
-- (PKPaymentOffersSessionDetails)initWithCoder:(id)a3
+- (PKPaymentOffersSessionDetails)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v41.receiver = self;
   v41.super_class = PKPaymentOffersSessionDetails;
   v5 = [(PKPaymentOffersSessionDetails *)&v41 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
     transactionAmount = v5->_transactionAmount;
     v5->_transactionAmount = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
     currencyCode = v5->_currencyCode;
     v5->_currencyCode = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
     merchantCountryCode = v5->_merchantCountryCode;
     v5->_merchantCountryCode = v10;
 
     v12 = MEMORY[0x1E695DFD8];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"supportedNetworks"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"supportedNetworks"];
     supportedNetworks = v5->_supportedNetworks;
     v5->_supportedNetworks = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchantIdentifier"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchantIdentifier"];
     merchantIdentifier = v5->_merchantIdentifier;
     v5->_merchantIdentifier = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originURL"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originURL"];
     originURL = v5->_originURL;
     v5->_originURL = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"webMerchantIdentifier"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"webMerchantIdentifier"];
     webMerchantIdentifier = v5->_webMerchantIdentifier;
     v5->_webMerchantIdentifier = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"webMerchantName"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"webMerchantName"];
     webMerchantName = v5->_webMerchantName;
     v5->_webMerchantName = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchantName"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchantName"];
     merchantName = v5->_merchantName;
     v5->_merchantName = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"adamIdentifier"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"adamIdentifier"];
     adamIdentifier = v5->_adamIdentifier;
     v5->_adamIdentifier = v27;
 
     v29 = MEMORY[0x1E695DFD8];
     v30 = objc_opt_class();
     v31 = [v29 setWithObjects:{v30, objc_opt_class(), 0}];
-    v32 = [v4 decodeObjectOfClasses:v31 forKey:@"merchandisingOfferIdentifiers"];
+    v32 = [coderCopy decodeObjectOfClasses:v31 forKey:@"merchandisingOfferIdentifiers"];
     merchandisingOfferIdentifiers = v5->_merchandisingOfferIdentifiers;
     v5->_merchandisingOfferIdentifiers = v32;
 
-    v5->_merchantCategoryCode = [v4 decodeIntegerForKey:@"merchantCategoryCode"];
-    v5->_payLaterSuppressionMode = [v4 decodeIntegerForKey:@"payLaterSuppressionMode"];
-    v5->_merchantCapabilities = [v4 decodeIntegerForKey:@"merchantCapabilities"];
-    v5->_context = [v4 decodeIntegerForKey:@"context"];
-    v5->_options = [v4 decodeIntegerForKey:@"options"];
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passUniqueID"];
+    v5->_merchantCategoryCode = [coderCopy decodeIntegerForKey:@"merchantCategoryCode"];
+    v5->_payLaterSuppressionMode = [coderCopy decodeIntegerForKey:@"payLaterSuppressionMode"];
+    v5->_merchantCapabilities = [coderCopy decodeIntegerForKey:@"merchantCapabilities"];
+    v5->_context = [coderCopy decodeIntegerForKey:@"context"];
+    v5->_options = [coderCopy decodeIntegerForKey:@"options"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passUniqueID"];
     passUniqueID = v5->_passUniqueID;
     v5->_passUniqueID = v34;
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kTransactionDetails"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kTransactionDetails"];
     transactionDetails = v5->_transactionDetails;
     v5->_transactionDetails = v36;
 
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userEnteredAmount"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userEnteredAmount"];
     userEnteredAmount = v5->_userEnteredAmount;
     v5->_userEnteredAmount = v38;
 
-    v5->_shouldUseMerchantSession = [v4 decodeBoolForKey:@"shouldUseMerchantSession"];
+    v5->_shouldUseMerchantSession = [coderCopy decodeBoolForKey:@"shouldUseMerchantSession"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   transactionAmount = self->_transactionAmount;
-  v5 = a3;
-  [v5 encodeObject:transactionAmount forKey:@"amount"];
-  [v5 encodeObject:self->_currencyCode forKey:@"currencyCode"];
-  [v5 encodeObject:self->_merchantCountryCode forKey:@"countryCode"];
-  [v5 encodeObject:self->_supportedNetworks forKey:@"supportedNetworks"];
-  [v5 encodeObject:self->_merchantIdentifier forKey:@"merchantIdentifier"];
-  [v5 encodeObject:self->_originURL forKey:@"originURL"];
-  [v5 encodeObject:self->_webMerchantIdentifier forKey:@"webMerchantIdentifier"];
-  [v5 encodeObject:self->_webMerchantName forKey:@"webMerchantName"];
-  [v5 encodeObject:self->_merchantName forKey:@"merchantName"];
-  [v5 encodeObject:self->_adamIdentifier forKey:@"adamIdentifier"];
-  [v5 encodeObject:self->_merchandisingOfferIdentifiers forKey:@"merchandisingOfferIdentifiers"];
-  [v5 encodeInteger:self->_merchantCategoryCode forKey:@"merchantCategoryCode"];
-  [v5 encodeInteger:self->_payLaterSuppressionMode forKey:@"payLaterSuppressionMode"];
-  [v5 encodeInteger:self->_merchantCapabilities forKey:@"merchantCapabilities"];
-  [v5 encodeInteger:self->_context forKey:@"context"];
-  [v5 encodeInteger:self->_options forKey:@"options"];
-  [v5 encodeObject:self->_passUniqueID forKey:@"passUniqueID"];
-  [v5 encodeObject:self->_transactionDetails forKey:@"kTransactionDetails"];
-  [v5 encodeObject:self->_userEnteredAmount forKey:@"userEnteredAmount"];
-  [v5 encodeBool:self->_shouldUseMerchantSession forKey:@"shouldUseMerchantSession"];
+  coderCopy = coder;
+  [coderCopy encodeObject:transactionAmount forKey:@"amount"];
+  [coderCopy encodeObject:self->_currencyCode forKey:@"currencyCode"];
+  [coderCopy encodeObject:self->_merchantCountryCode forKey:@"countryCode"];
+  [coderCopy encodeObject:self->_supportedNetworks forKey:@"supportedNetworks"];
+  [coderCopy encodeObject:self->_merchantIdentifier forKey:@"merchantIdentifier"];
+  [coderCopy encodeObject:self->_originURL forKey:@"originURL"];
+  [coderCopy encodeObject:self->_webMerchantIdentifier forKey:@"webMerchantIdentifier"];
+  [coderCopy encodeObject:self->_webMerchantName forKey:@"webMerchantName"];
+  [coderCopy encodeObject:self->_merchantName forKey:@"merchantName"];
+  [coderCopy encodeObject:self->_adamIdentifier forKey:@"adamIdentifier"];
+  [coderCopy encodeObject:self->_merchandisingOfferIdentifiers forKey:@"merchandisingOfferIdentifiers"];
+  [coderCopy encodeInteger:self->_merchantCategoryCode forKey:@"merchantCategoryCode"];
+  [coderCopy encodeInteger:self->_payLaterSuppressionMode forKey:@"payLaterSuppressionMode"];
+  [coderCopy encodeInteger:self->_merchantCapabilities forKey:@"merchantCapabilities"];
+  [coderCopy encodeInteger:self->_context forKey:@"context"];
+  [coderCopy encodeInteger:self->_options forKey:@"options"];
+  [coderCopy encodeObject:self->_passUniqueID forKey:@"passUniqueID"];
+  [coderCopy encodeObject:self->_transactionDetails forKey:@"kTransactionDetails"];
+  [coderCopy encodeObject:self->_userEnteredAmount forKey:@"userEnteredAmount"];
+  [coderCopy encodeBool:self->_shouldUseMerchantSession forKey:@"shouldUseMerchantSession"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPaymentOffersSessionDetails allocWithZone:](PKPaymentOffersSessionDetails init];
-  v6 = [(NSDecimalNumber *)self->_transactionAmount copyWithZone:a3];
+  v6 = [(NSDecimalNumber *)self->_transactionAmount copyWithZone:zone];
   transactionAmount = v5->_transactionAmount;
   v5->_transactionAmount = v6;
 
-  v8 = [(NSString *)self->_currencyCode copyWithZone:a3];
+  v8 = [(NSString *)self->_currencyCode copyWithZone:zone];
   currencyCode = v5->_currencyCode;
   v5->_currencyCode = v8;
 
-  v10 = [(NSString *)self->_merchantCountryCode copyWithZone:a3];
+  v10 = [(NSString *)self->_merchantCountryCode copyWithZone:zone];
   merchantCountryCode = v5->_merchantCountryCode;
   v5->_merchantCountryCode = v10;
 
-  v12 = [(NSArray *)self->_supportedNetworks copyWithZone:a3];
+  v12 = [(NSArray *)self->_supportedNetworks copyWithZone:zone];
   supportedNetworks = v5->_supportedNetworks;
   v5->_supportedNetworks = v12;
 
-  v14 = [(NSString *)self->_merchantIdentifier copyWithZone:a3];
+  v14 = [(NSString *)self->_merchantIdentifier copyWithZone:zone];
   merchantIdentifier = v5->_merchantIdentifier;
   v5->_merchantIdentifier = v14;
 
-  v16 = [(NSString *)self->_originURL copyWithZone:a3];
+  v16 = [(NSString *)self->_originURL copyWithZone:zone];
   originURL = v5->_originURL;
   v5->_originURL = v16;
 
-  v18 = [(NSString *)self->_webMerchantIdentifier copyWithZone:a3];
+  v18 = [(NSString *)self->_webMerchantIdentifier copyWithZone:zone];
   webMerchantIdentifier = v5->_webMerchantIdentifier;
   v5->_webMerchantIdentifier = v18;
 
-  v20 = [(NSString *)self->_webMerchantName copyWithZone:a3];
+  v20 = [(NSString *)self->_webMerchantName copyWithZone:zone];
   webMerchantName = v5->_webMerchantName;
   v5->_webMerchantName = v20;
 
-  v22 = [(NSString *)self->_merchantName copyWithZone:a3];
+  v22 = [(NSString *)self->_merchantName copyWithZone:zone];
   merchantName = v5->_merchantName;
   v5->_merchantName = v22;
 
-  v24 = [(NSNumber *)self->_adamIdentifier copyWithZone:a3];
+  v24 = [(NSNumber *)self->_adamIdentifier copyWithZone:zone];
   adamIdentifier = v5->_adamIdentifier;
   v5->_adamIdentifier = v24;
 
-  v26 = [(NSSet *)self->_merchandisingOfferIdentifiers copyWithZone:a3];
+  v26 = [(NSSet *)self->_merchandisingOfferIdentifiers copyWithZone:zone];
   merchandisingOfferIdentifiers = v5->_merchandisingOfferIdentifiers;
   v5->_merchandisingOfferIdentifiers = v26;
 
-  v28 = [(NSString *)self->_passUniqueID copyWithZone:a3];
+  v28 = [(NSString *)self->_passUniqueID copyWithZone:zone];
   passUniqueID = v5->_passUniqueID;
   v5->_passUniqueID = v28;
 
-  v30 = [(PKPaymentOffersSessionTransactionDetails *)self->_transactionDetails copyWithZone:a3];
+  v30 = [(PKPaymentOffersSessionTransactionDetails *)self->_transactionDetails copyWithZone:zone];
   transactionDetails = v5->_transactionDetails;
   v5->_transactionDetails = v30;
 
-  v32 = [(PKCurrencyAmount *)self->_userEnteredAmount copyWithZone:a3];
+  v32 = [(PKCurrencyAmount *)self->_userEnteredAmount copyWithZone:zone];
   userEnteredAmount = v5->_userEnteredAmount;
   v5->_userEnteredAmount = v32;
 

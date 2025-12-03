@@ -1,25 +1,25 @@
 @interface SCATDefaultVsLongPressController
-- (id)_actionStringForSpecifier:(id)a3;
-- (id)actionStringForLongPress:(BOOL)a3;
-- (id)controllerForLongPress:(BOOL)a3;
+- (id)_actionStringForSpecifier:(id)specifier;
+- (id)actionStringForLongPress:(BOOL)press;
+- (id)controllerForLongPress:(BOOL)press;
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SCATDefaultVsLongPressController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SCATDefaultVsLongPressController;
-  [(SCATDefaultVsLongPressController *)&v4 viewWillAppear:a3];
+  [(SCATDefaultVsLongPressController *)&v4 viewWillAppear:appear];
   [(SCATDefaultVsLongPressController *)self reloadSpecifiers];
 }
 
-- (id)_actionStringForSpecifier:(id)a3
+- (id)_actionStringForSpecifier:(id)specifier
 {
-  v4 = [a3 objectForKeyedSubscript:@"LongPressKey"];
+  v4 = [specifier objectForKeyedSubscript:@"LongPressKey"];
   v5 = -[SCATDefaultVsLongPressController actionStringForLongPress:](self, "actionStringForLongPress:", [v4 BOOLValue]);
 
   return v5;
@@ -58,18 +58,18 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v22.receiver = self;
   v22.super_class = SCATDefaultVsLongPressController;
-  v8 = [(SCATDefaultVsLongPressController *)&v22 tableView:v6 cellForRowAtIndexPath:v7];
-  v9 = [v8 specifier];
-  v10 = [v9 objectForKeyedSubscript:@"LongPressKey"];
-  v11 = [v10 BOOLValue];
+  v8 = [(SCATDefaultVsLongPressController *)&v22 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
+  specifier = [v8 specifier];
+  v10 = [specifier objectForKeyedSubscript:@"LongPressKey"];
+  bOOLValue = [v10 BOOLValue];
 
-  v12 = [(SCATDefaultVsLongPressController *)self controllerForLongPress:v11];
+  v12 = [(SCATDefaultVsLongPressController *)self controllerForLongPress:bOOLValue];
   if ([v12 conformsToProtocol:&OBJC_PROTOCOL___SCATControllerCompletionDelegate])
   {
     v13 = [[UINavigationController alloc] initWithRootViewController:v12];
@@ -96,8 +96,8 @@
 
   else
   {
-    v16 = [v9 name];
-    v15 = [PSSpecifier preferenceSpecifierNamed:v16 target:self set:0 get:0 detail:0 cell:-1 edit:0];
+    name = [specifier name];
+    v15 = [PSSpecifier preferenceSpecifierNamed:name target:self set:0 get:0 detail:0 cell:-1 edit:0];
 
     [(SCATDefaultVsLongPressController *)self showController:v12 withSpecifier:v15];
   }
@@ -110,14 +110,14 @@ void __70__SCATDefaultVsLongPressController_tableView_didSelectRowAtIndexPath___
   [*(a1 + 32) dismissViewControllerAnimated:1 completion:0];
 }
 
-- (id)actionStringForLongPress:(BOOL)a3
+- (id)actionStringForLongPress:(BOOL)press
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
   return 0;
 }
 
-- (id)controllerForLongPress:(BOOL)a3
+- (id)controllerForLongPress:(BOOL)press
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

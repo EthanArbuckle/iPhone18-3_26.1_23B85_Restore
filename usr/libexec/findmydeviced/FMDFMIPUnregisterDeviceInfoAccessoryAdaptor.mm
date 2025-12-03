@@ -1,39 +1,39 @@
 @interface FMDFMIPUnregisterDeviceInfoAccessoryAdaptor
-- (FMDFMIPUnregisterDeviceInfoAccessoryAdaptor)initWithAccessory:(id)a3 unregisterToken:(id)a4;
+- (FMDFMIPUnregisterDeviceInfoAccessoryAdaptor)initWithAccessory:(id)accessory unregisterToken:(id)token;
 @end
 
 @implementation FMDFMIPUnregisterDeviceInfoAccessoryAdaptor
 
-- (FMDFMIPUnregisterDeviceInfoAccessoryAdaptor)initWithAccessory:(id)a3 unregisterToken:(id)a4
+- (FMDFMIPUnregisterDeviceInfoAccessoryAdaptor)initWithAccessory:(id)accessory unregisterToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  accessoryCopy = accessory;
+  tokenCopy = token;
   v16.receiver = self;
   v16.super_class = FMDFMIPUnregisterDeviceInfoAccessoryAdaptor;
   v8 = [(FMDFMIPUnregisterDeviceInfoAccessoryAdaptor *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    [(FMDFMIPUnregisterDeviceInfoAccessoryAdaptor *)v8 setAccessory:v6];
-    v10 = [v6 udid];
-    [(FMDFMIPUnregisterDeviceInfo *)v9 setUdid:v10];
+    [(FMDFMIPUnregisterDeviceInfoAccessoryAdaptor *)v8 setAccessory:accessoryCopy];
+    udid = [accessoryCopy udid];
+    [(FMDFMIPUnregisterDeviceInfo *)v9 setUdid:udid];
 
-    v11 = [v6 serialNumber];
-    [(FMDFMIPUnregisterDeviceInfo *)v9 setSerialNumber:v11];
+    serialNumber = [accessoryCopy serialNumber];
+    [(FMDFMIPUnregisterDeviceInfo *)v9 setSerialNumber:serialNumber];
 
-    v12 = [v6 productType];
-    [(FMDFMIPUnregisterDeviceInfo *)v9 setProductType:v12];
+    productType = [accessoryCopy productType];
+    [(FMDFMIPUnregisterDeviceInfo *)v9 setProductType:productType];
 
-    v13 = [v6 productVersion];
-    [(FMDFMIPUnregisterDeviceInfo *)v9 setProductVersion:v13];
+    productVersion = [accessoryCopy productVersion];
+    [(FMDFMIPUnregisterDeviceInfo *)v9 setProductVersion:productVersion];
 
-    v14 = [v6 buildVersion];
-    [(FMDFMIPUnregisterDeviceInfo *)v9 setBuildVersion:v14];
+    buildVersion = [accessoryCopy buildVersion];
+    [(FMDFMIPUnregisterDeviceInfo *)v9 setBuildVersion:buildVersion];
 
-    -[FMDFMIPUnregisterDeviceInfo setPaired:](v9, "setPaired:", [v6 paired]);
-    -[FMDFMIPUnregisterDeviceInfo setMigrationConfirmed:](v9, "setMigrationConfirmed:", [v6 migrationPossible]);
+    -[FMDFMIPUnregisterDeviceInfo setPaired:](v9, "setPaired:", [accessoryCopy paired]);
+    -[FMDFMIPUnregisterDeviceInfo setMigrationConfirmed:](v9, "setMigrationConfirmed:", [accessoryCopy migrationPossible]);
     [(FMDFMIPUnregisterDeviceInfo *)v9 setDisableContext:7];
-    [(FMDFMIPUnregisterDeviceInfo *)v9 setUnregisterToken:v7];
+    [(FMDFMIPUnregisterDeviceInfo *)v9 setUnregisterToken:tokenCopy];
   }
 
   return v9;

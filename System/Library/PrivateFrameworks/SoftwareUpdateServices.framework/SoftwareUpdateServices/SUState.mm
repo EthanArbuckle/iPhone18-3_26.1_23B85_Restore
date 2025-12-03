@@ -5,7 +5,7 @@
 - (BOOL)autoDownloadNeedsOneTimeRetry;
 - (BOOL)mobileAssetSuspended;
 - (BOOL)underExclusiveControl;
-- (Class)unarchiver:(id)a3 cannotDecodeObjectOfClassName:(id)a4 originalClasses:(id)a5;
+- (Class)unarchiver:(id)unarchiver cannotDecodeObjectOfClassName:(id)name originalClasses:(id)classes;
 - (NSArray)failedPatchBuildVersions;
 - (NSDate)appliedTime;
 - (NSDate)lastAutoDownloadDate;
@@ -46,68 +46,68 @@
 - (SUState)init;
 - (_SUAutoInstallOperationModel)lastAutoInstallOperationModel;
 - (id)_stateAsDictionary;
-- (void)_queue_addFailedPatchBuildVersion:(id)a3;
-- (void)addFailedPatchBuildVersion:(id)a3;
-- (void)addRolledBackBuildVersion:(id)a3;
+- (void)_queue_addFailedPatchBuildVersion:(id)version;
+- (void)addFailedPatchBuildVersion:(id)version;
+- (void)addRolledBackBuildVersion:(id)version;
 - (void)load;
 - (void)loadPersistedFailedPatchBuildVersions;
 - (void)loadRolledBackBuildVersions;
 - (void)persistFailedPatchBuildVersions;
 - (void)persistRolledBackBuildVersions;
-- (void)queue_addRolledBackBuildVersion:(id)a3;
+- (void)queue_addRolledBackBuildVersion:(id)version;
 - (void)resetAllHistory;
 - (void)resetDownloadAndScanHistory;
 - (void)save;
-- (void)setAlternateLastScannedCoreDescriptor:(id)a3;
-- (void)setAppliedTime:(id)a3;
-- (void)setAutoDownloadNeedsOneTimeRetry:(BOOL)a3;
-- (void)setDdmPersistedError:(id)a3;
-- (void)setDdmPersistedErrorDescription:(id)a3;
-- (void)setFailedPatchBuildVersions:(id)a3;
-- (void)setFailedToAutoInstallError:(id)a3;
-- (void)setInstallPolicy:(id)a3;
-- (void)setLastAssetAudience:(id)a3;
-- (void)setLastAutoDownloadDate:(id)a3;
-- (void)setLastAutoInstallOperationModel:(id)a3;
-- (void)setLastBuildWithStashKeybagCreated:(id)a3;
-- (void)setLastDeletedSUAssetID:(id)a3;
-- (void)setLastDownload:(id)a3;
-- (void)setLastPendingSplatAlertDate:(id)a3;
-- (void)setLastProductBuild:(id)a3;
-- (void)setLastProductType:(id)a3;
-- (void)setLastProductVersion:(id)a3;
-- (void)setLastProductVersionExtra:(id)a3;
-- (void)setLastRecommendedUpdateDiscoveryDate:(id)a3;
-- (void)setLastRecommendedUpdateInterval:(id)a3;
-- (void)setLastRecommendedUpdateVersion:(id)a3;
-- (void)setLastReleaseType:(id)a3;
-- (void)setLastRollbackDescriptor:(id)a3;
-- (void)setLastRollbackRecommendedBuildVersion:(id)a3;
-- (void)setLastScanDate:(id)a3;
-- (void)setLastScannedDescriptorScanOptions:(id)a3;
-- (void)setLastSentOTAPostponedDate:(id)a3;
-- (void)setLastSpaceCleanupLevel:(id)a3;
-- (void)setLastSplatRestoreVersion:(id)a3;
-- (void)setMandatoryUpdateDict:(id)a3;
-- (void)setMdmDelay:(id)a3;
-- (void)setMobileAssetSuspended:(BOOL)a3;
-- (void)setPreferredLastScannedCoreDescriptor:(id)a3;
-- (void)setScheduledAutoDownloadPolicyChangeTime:(id)a3;
-- (void)setScheduledAutoDownloadWifiPeriodEndTime:(id)a3;
-- (void)setScheduledManualDownloadWifiPeriodEndTime:(id)a3;
-- (void)setUnderExclusiveControl:(BOOL)a3;
-- (void)setUnlockCallbacks:(id)a3;
-- (void)setUpdateDiscoveryDates:(id)a3;
-- (void)setUpdateFullyUnrampedDates:(id)a3;
+- (void)setAlternateLastScannedCoreDescriptor:(id)descriptor;
+- (void)setAppliedTime:(id)time;
+- (void)setAutoDownloadNeedsOneTimeRetry:(BOOL)retry;
+- (void)setDdmPersistedError:(id)error;
+- (void)setDdmPersistedErrorDescription:(id)description;
+- (void)setFailedPatchBuildVersions:(id)versions;
+- (void)setFailedToAutoInstallError:(id)error;
+- (void)setInstallPolicy:(id)policy;
+- (void)setLastAssetAudience:(id)audience;
+- (void)setLastAutoDownloadDate:(id)date;
+- (void)setLastAutoInstallOperationModel:(id)model;
+- (void)setLastBuildWithStashKeybagCreated:(id)created;
+- (void)setLastDeletedSUAssetID:(id)d;
+- (void)setLastDownload:(id)download;
+- (void)setLastPendingSplatAlertDate:(id)date;
+- (void)setLastProductBuild:(id)build;
+- (void)setLastProductType:(id)type;
+- (void)setLastProductVersion:(id)version;
+- (void)setLastProductVersionExtra:(id)extra;
+- (void)setLastRecommendedUpdateDiscoveryDate:(id)date;
+- (void)setLastRecommendedUpdateInterval:(id)interval;
+- (void)setLastRecommendedUpdateVersion:(id)version;
+- (void)setLastReleaseType:(id)type;
+- (void)setLastRollbackDescriptor:(id)descriptor;
+- (void)setLastRollbackRecommendedBuildVersion:(id)version;
+- (void)setLastScanDate:(id)date;
+- (void)setLastScannedDescriptorScanOptions:(id)options;
+- (void)setLastSentOTAPostponedDate:(id)date;
+- (void)setLastSpaceCleanupLevel:(id)level;
+- (void)setLastSplatRestoreVersion:(id)version;
+- (void)setMandatoryUpdateDict:(id)dict;
+- (void)setMdmDelay:(id)delay;
+- (void)setMobileAssetSuspended:(BOOL)suspended;
+- (void)setPreferredLastScannedCoreDescriptor:(id)descriptor;
+- (void)setScheduledAutoDownloadPolicyChangeTime:(id)time;
+- (void)setScheduledAutoDownloadWifiPeriodEndTime:(id)time;
+- (void)setScheduledManualDownloadWifiPeriodEndTime:(id)time;
+- (void)setUnderExclusiveControl:(BOOL)control;
+- (void)setUnlockCallbacks:(id)callbacks;
+- (void)setUpdateDiscoveryDates:(id)dates;
+- (void)setUpdateFullyUnrampedDates:(id)dates;
 @end
 
 @implementation SUState
 
 + (void)enableTesting
 {
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v12 = 0;
-  v3 = [v2 removeItemAtPath:@"/tmp/softwareupdateservicesd.plist" error:&v12];
+  v3 = [defaultManager removeItemAtPath:@"/tmp/softwareupdateservicesd.plist" error:&v12];
   v4 = v12;
 
   SULogInfo(@"[SUState] removed the testing state file: %d (%@)", v5, v6, v7, v8, v9, v10, v11, v3);
@@ -129,12 +129,12 @@
     if (v9)
     {
       v11 = MEMORY[0x277CCACA8];
-      v20 = [v9 path];
+      path = [v9 path];
       v8 = [v11 stringWithFormat:@"%@%@"];
 
       if (!v8)
       {
-        SULogInfo(@"Failed to create state file path", v12, v13, v14, v15, v16, v17, v18, v20);
+        SULogInfo(@"Failed to create state file path", v12, v13, v14, v15, v16, v17, v18, path);
       }
     }
 
@@ -849,31 +849,31 @@ void __15__SUState_save__block_invoke(uint64_t a1)
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SUState *)self preferredLastScannedCoreDescriptor];
-  v53 = [v3 stringWithFormat:@"%@", v4];
+  preferredLastScannedCoreDescriptor = [(SUState *)self preferredLastScannedCoreDescriptor];
+  v53 = [v3 stringWithFormat:@"%@", preferredLastScannedCoreDescriptor];
 
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(SUState *)self alternateLastScannedCoreDescriptor];
-  v54 = [v5 stringWithFormat:@"%@", v6];
+  alternateLastScannedCoreDescriptor = [(SUState *)self alternateLastScannedCoreDescriptor];
+  v54 = [v5 stringWithFormat:@"%@", alternateLastScannedCoreDescriptor];
 
   v31 = MEMORY[0x277CCACA8];
-  v50 = [(SUState *)self lastDownload];
-  v52 = [(SUState *)self failedPatchBuildVersions];
+  lastDownload = [(SUState *)self lastDownload];
+  failedPatchBuildVersions = [(SUState *)self failedPatchBuildVersions];
   v7 = MEMORY[0x277CCA968];
-  v37 = [(SUState *)self scheduledManualDownloadWifiPeriodEndTime];
-  v51 = [v7 localizedStringFromDate:v37 dateStyle:1 timeStyle:1];
+  scheduledManualDownloadWifiPeriodEndTime = [(SUState *)self scheduledManualDownloadWifiPeriodEndTime];
+  v51 = [v7 localizedStringFromDate:scheduledManualDownloadWifiPeriodEndTime dateStyle:1 timeStyle:1];
   v8 = MEMORY[0x277CCA968];
-  v36 = [(SUState *)self scheduledAutoDownloadWifiPeriodEndTime];
-  v49 = [v8 localizedStringFromDate:v36 dateStyle:1 timeStyle:1];
+  scheduledAutoDownloadWifiPeriodEndTime = [(SUState *)self scheduledAutoDownloadWifiPeriodEndTime];
+  v49 = [v8 localizedStringFromDate:scheduledAutoDownloadWifiPeriodEndTime dateStyle:1 timeStyle:1];
   v9 = MEMORY[0x277CCA968];
-  v35 = [(SUState *)self scheduledAutoDownloadPolicyChangeTime];
-  v46 = [v9 localizedStringFromDate:v35 dateStyle:1 timeStyle:1];
+  scheduledAutoDownloadPolicyChangeTime = [(SUState *)self scheduledAutoDownloadPolicyChangeTime];
+  v46 = [v9 localizedStringFromDate:scheduledAutoDownloadPolicyChangeTime dateStyle:1 timeStyle:1];
   v10 = MEMORY[0x277CCA968];
-  v34 = [(SUState *)self lastScanDate];
-  v48 = [v10 localizedStringFromDate:v34 dateStyle:1 timeStyle:1];
+  lastScanDate = [(SUState *)self lastScanDate];
+  v48 = [v10 localizedStringFromDate:lastScanDate dateStyle:1 timeStyle:1];
   v11 = MEMORY[0x277CCA968];
-  v33 = [(SUState *)self lastAutoDownloadDate];
-  v45 = [v11 localizedStringFromDate:v33 dateStyle:1 timeStyle:1];
+  lastAutoDownloadDate = [(SUState *)self lastAutoDownloadDate];
+  v45 = [v11 localizedStringFromDate:lastAutoDownloadDate dateStyle:1 timeStyle:1];
   if ([(SUState *)self autoDownloadNeedsOneTimeRetry])
   {
     v12 = @"YES";
@@ -885,23 +885,23 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   }
 
   v30 = v12;
-  v41 = [(SUState *)self lastProductVersion];
-  v47 = [(SUState *)self lastProductVersionExtra];
-  v44 = [(SUState *)self lastProductBuild];
-  v39 = [(SUState *)self lastProductType];
-  v43 = [(SUState *)self lastReleaseType];
-  v28 = [(SUState *)self lastSplatRestoreVersion];
-  v27 = [(SUState *)self lastAutoInstallOperationModel];
-  v42 = [(SUState *)self mdmDelay];
-  v40 = [(SUState *)self installPolicy];
-  v26 = [(SUState *)self mandatoryUpdateDict];
-  v38 = [(SUState *)self lastRollbackRecommendedBuildVersion];
-  v25 = [(SUState *)self rolledBackBuildVersions];
-  v13 = [(SUState *)self lastDeletedSUAssetID];
-  v14 = [(SUState *)self lastAssetAudience];
+  lastProductVersion = [(SUState *)self lastProductVersion];
+  lastProductVersionExtra = [(SUState *)self lastProductVersionExtra];
+  lastProductBuild = [(SUState *)self lastProductBuild];
+  lastProductType = [(SUState *)self lastProductType];
+  lastReleaseType = [(SUState *)self lastReleaseType];
+  lastSplatRestoreVersion = [(SUState *)self lastSplatRestoreVersion];
+  lastAutoInstallOperationModel = [(SUState *)self lastAutoInstallOperationModel];
+  mdmDelay = [(SUState *)self mdmDelay];
+  installPolicy = [(SUState *)self installPolicy];
+  mandatoryUpdateDict = [(SUState *)self mandatoryUpdateDict];
+  lastRollbackRecommendedBuildVersion = [(SUState *)self lastRollbackRecommendedBuildVersion];
+  rolledBackBuildVersions = [(SUState *)self rolledBackBuildVersions];
+  lastDeletedSUAssetID = [(SUState *)self lastDeletedSUAssetID];
+  lastAssetAudience = [(SUState *)self lastAssetAudience];
   v15 = MEMORY[0x277CCA968];
-  v29 = [(SUState *)self appliedTime];
-  v16 = [v15 localizedStringFromDate:v29 dateStyle:1 timeStyle:1];
+  appliedTime = [(SUState *)self appliedTime];
+  v16 = [v15 localizedStringFromDate:appliedTime dateStyle:1 timeStyle:1];
   if ([(SUState *)self underExclusiveControl])
   {
     v17 = @"YES";
@@ -912,20 +912,20 @@ void __15__SUState_save__block_invoke(uint64_t a1)
     v17 = @"NO";
   }
 
-  v18 = [(SUState *)self lastRecommendedUpdateVersion];
-  v24 = [(SUState *)self lastRecommendedUpdateInterval];
-  v19 = [(SUState *)self lastRecommendedUpdateDiscoveryDate];
-  v20 = [(SUState *)self updateDiscoveryDates];
-  v21 = [(SUState *)self lastSpaceCleanupLevel];
-  v22 = [(SUState *)self lastPendingSplatAlertDate];
-  v32 = [v31 stringWithFormat:@"LastDownload: %@            \npreferredLastScannedCoreDescriptor: %@            \nalternateLastScannedCoreDescriptor: %@            \nFailedPatchBuildVersions: %@            \nScheduledManualDownloadWifiPeriodEndTime: %@            \nScheduledAutoDownloadWifiPeriodEndTime: %@            \nScheduledAutoDownloadPolicyChangeTime: %@            \nLastScanDate: %@            \nLastAutoDownloadDate: %@            \nNeedsOneTimeAutoDownloadRetry: %@            \nLastProductVersion: %@            \nLastProductVersionExtra: %@            \nLastProductBuild: %@            \nLastProductType: %@            \nLastReleaseType: %@            \nLastSplatRestoreVersion: %@            \nLastAutoInstallOperationModel: %@            \nManagedDeviceDelay: %@            \nInstallPolicy: %@            \nMandatoryUpdateDict: %@            \nLastRollbackRecommendedBuildVersion: %@            \rolledBackBuildVersions: %@            \nlastDeletedAssetID: %@            \nlastAssetAudience: %@            \nappliedSate: %@            \nunderExclusiveControl: %@            \nLastRecommendedUpdateVersion: %@            \nLastRecommendedUpdateInterval: %@            \nLastRecommendedUpdateDiscoveryDate: %@            \nUpdateDiscoveryDates: %@            \nLastSpaceCleanupLevel: %@            \nLastPendingSplatAlertDate: %@", v50, v53, v54, v52, v51, v49, v46, v48, v45, v30, v41, v47, v44, v39, v43, v28, v27, v42, v40, v26, v38, v25, v13, v14, v16, v17, v18, v24, v19, v20, v21, v22];
+  lastRecommendedUpdateVersion = [(SUState *)self lastRecommendedUpdateVersion];
+  lastRecommendedUpdateInterval = [(SUState *)self lastRecommendedUpdateInterval];
+  lastRecommendedUpdateDiscoveryDate = [(SUState *)self lastRecommendedUpdateDiscoveryDate];
+  updateDiscoveryDates = [(SUState *)self updateDiscoveryDates];
+  lastSpaceCleanupLevel = [(SUState *)self lastSpaceCleanupLevel];
+  lastPendingSplatAlertDate = [(SUState *)self lastPendingSplatAlertDate];
+  v32 = [v31 stringWithFormat:@"LastDownload: %@            \npreferredLastScannedCoreDescriptor: %@            \nalternateLastScannedCoreDescriptor: %@            \nFailedPatchBuildVersions: %@            \nScheduledManualDownloadWifiPeriodEndTime: %@            \nScheduledAutoDownloadWifiPeriodEndTime: %@            \nScheduledAutoDownloadPolicyChangeTime: %@            \nLastScanDate: %@            \nLastAutoDownloadDate: %@            \nNeedsOneTimeAutoDownloadRetry: %@            \nLastProductVersion: %@            \nLastProductVersionExtra: %@            \nLastProductBuild: %@            \nLastProductType: %@            \nLastReleaseType: %@            \nLastSplatRestoreVersion: %@            \nLastAutoInstallOperationModel: %@            \nManagedDeviceDelay: %@            \nInstallPolicy: %@            \nMandatoryUpdateDict: %@            \nLastRollbackRecommendedBuildVersion: %@            \rolledBackBuildVersions: %@            \nlastDeletedAssetID: %@            \nlastAssetAudience: %@            \nappliedSate: %@            \nunderExclusiveControl: %@            \nLastRecommendedUpdateVersion: %@            \nLastRecommendedUpdateInterval: %@            \nLastRecommendedUpdateDiscoveryDate: %@            \nUpdateDiscoveryDates: %@            \nLastSpaceCleanupLevel: %@            \nLastPendingSplatAlertDate: %@", lastDownload, v53, v54, failedPatchBuildVersions, v51, v49, v46, v48, v45, v30, lastProductVersion, lastProductVersionExtra, lastProductBuild, lastProductType, lastReleaseType, lastSplatRestoreVersion, lastAutoInstallOperationModel, mdmDelay, installPolicy, mandatoryUpdateDict, lastRollbackRecommendedBuildVersion, rolledBackBuildVersions, lastDeletedSUAssetID, lastAssetAudience, v16, v17, lastRecommendedUpdateVersion, lastRecommendedUpdateInterval, lastRecommendedUpdateDiscoveryDate, updateDiscoveryDates, lastSpaceCleanupLevel, lastPendingSplatAlertDate];
 
   return v32;
 }
 
-- (void)setLastDownload:(id)a3
+- (void)setLastDownload:(id)download
 {
-  v4 = [a3 copy];
+  v4 = [download copy];
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -959,17 +959,17 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setLastRecommendedUpdateVersion:(id)a3
+- (void)setLastRecommendedUpdateVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__SUState_setLastRecommendedUpdateVersion___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = versionCopy;
+  v6 = versionCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -995,17 +995,17 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setLastRecommendedUpdateInterval:(id)a3
+- (void)setLastRecommendedUpdateInterval:(id)interval
 {
-  v4 = a3;
+  intervalCopy = interval;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__SUState_setLastRecommendedUpdateInterval___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = intervalCopy;
+  v6 = intervalCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -1031,17 +1031,17 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setLastRecommendedUpdateDiscoveryDate:(id)a3
+- (void)setLastRecommendedUpdateDiscoveryDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__SUState_setLastRecommendedUpdateDiscoveryDate___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dateCopy;
+  v6 = dateCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -1067,17 +1067,17 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setLastSentOTAPostponedDate:(id)a3
+- (void)setLastSentOTAPostponedDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__SUState_setLastSentOTAPostponedDate___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dateCopy;
+  v6 = dateCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -1103,17 +1103,17 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setPreferredLastScannedCoreDescriptor:(id)a3
+- (void)setPreferredLastScannedCoreDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__SUState_setPreferredLastScannedCoreDescriptor___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = descriptorCopy;
+  v6 = descriptorCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -1139,17 +1139,17 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setAlternateLastScannedCoreDescriptor:(id)a3
+- (void)setAlternateLastScannedCoreDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__SUState_setAlternateLastScannedCoreDescriptor___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = descriptorCopy;
+  v6 = descriptorCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -1175,17 +1175,17 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setUpdateDiscoveryDates:(id)a3
+- (void)setUpdateDiscoveryDates:(id)dates
 {
-  v4 = a3;
+  datesCopy = dates;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__SUState_setUpdateDiscoveryDates___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = datesCopy;
+  v6 = datesCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -1211,17 +1211,17 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setUpdateFullyUnrampedDates:(id)a3
+- (void)setUpdateFullyUnrampedDates:(id)dates
 {
-  v4 = a3;
+  datesCopy = dates;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__SUState_setUpdateFullyUnrampedDates___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = datesCopy;
+  v6 = datesCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -1247,17 +1247,17 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setLastScannedDescriptorScanOptions:(id)a3
+- (void)setLastScannedDescriptorScanOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__SUState_setLastScannedDescriptorScanOptions___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = optionsCopy;
+  v6 = optionsCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -1283,29 +1283,29 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)addFailedPatchBuildVersion:(id)a3
+- (void)addFailedPatchBuildVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__SUState_addFailedPatchBuildVersion___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = versionCopy;
+  v6 = versionCopy;
   dispatch_sync(stateQueue, v7);
 }
 
-- (void)_queue_addFailedPatchBuildVersion:(id)a3
+- (void)_queue_addFailedPatchBuildVersion:(id)version
 {
-  v8 = a3;
+  versionCopy = version;
   dispatch_assert_queue_V2(self->_stateQueue);
-  v4 = v8;
-  if (v8)
+  v4 = versionCopy;
+  if (versionCopy)
   {
     v5 = [MEMORY[0x277CBEB18] arrayWithArray:self->_failedPatchBuildVersions];
-    [v5 addObject:v8];
+    [v5 addObject:versionCopy];
     if ([v5 count] >= 3)
     {
       do
@@ -1320,21 +1320,21 @@ void __15__SUState_save__block_invoke(uint64_t a1)
     failedPatchBuildVersions = self->_failedPatchBuildVersions;
     self->_failedPatchBuildVersions = v6;
 
-    v4 = v8;
+    v4 = versionCopy;
   }
 }
 
-- (void)setFailedPatchBuildVersions:(id)a3
+- (void)setFailedPatchBuildVersions:(id)versions
 {
-  v4 = a3;
+  versionsCopy = versions;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__SUState_setFailedPatchBuildVersions___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = versionsCopy;
+  v6 = versionsCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -1360,17 +1360,17 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setScheduledManualDownloadWifiPeriodEndTime:(id)a3
+- (void)setScheduledManualDownloadWifiPeriodEndTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__SUState_setScheduledManualDownloadWifiPeriodEndTime___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = timeCopy;
+  v6 = timeCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -1396,17 +1396,17 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setScheduledAutoDownloadWifiPeriodEndTime:(id)a3
+- (void)setScheduledAutoDownloadWifiPeriodEndTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__SUState_setScheduledAutoDownloadWifiPeriodEndTime___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = timeCopy;
+  v6 = timeCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -1432,17 +1432,17 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setScheduledAutoDownloadPolicyChangeTime:(id)a3
+- (void)setScheduledAutoDownloadPolicyChangeTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__SUState_setScheduledAutoDownloadPolicyChangeTime___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = timeCopy;
+  v6 = timeCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -1468,17 +1468,17 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setLastScanDate:(id)a3
+- (void)setLastScanDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __27__SUState_setLastScanDate___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dateCopy;
+  v6 = dateCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -1504,17 +1504,17 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setLastAutoDownloadDate:(id)a3
+- (void)setLastAutoDownloadDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__SUState_setLastAutoDownloadDate___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dateCopy;
+  v6 = dateCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -1540,7 +1540,7 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setAutoDownloadNeedsOneTimeRetry:(BOOL)a3
+- (void)setAutoDownloadNeedsOneTimeRetry:(BOOL)retry
 {
   stateQueue = self->_stateQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1548,7 +1548,7 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   v4[2] = __44__SUState_setAutoDownloadNeedsOneTimeRetry___block_invoke;
   v4[3] = &unk_279CAAD00;
   v4[4] = self;
-  v5 = a3;
+  retryCopy = retry;
   dispatch_async(stateQueue, v4);
 }
 
@@ -1571,17 +1571,17 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setLastProductVersion:(id)a3
+- (void)setLastProductVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__SUState_setLastProductVersion___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = versionCopy;
+  v6 = versionCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -1607,17 +1607,17 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setLastProductVersionExtra:(id)a3
+- (void)setLastProductVersionExtra:(id)extra
 {
-  v4 = a3;
+  extraCopy = extra;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__SUState_setLastProductVersionExtra___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = extraCopy;
+  v6 = extraCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -1643,17 +1643,17 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setLastProductBuild:(id)a3
+- (void)setLastProductBuild:(id)build
 {
-  v4 = a3;
+  buildCopy = build;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __31__SUState_setLastProductBuild___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = buildCopy;
+  v6 = buildCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -1679,17 +1679,17 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setLastProductType:(id)a3
+- (void)setLastProductType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __30__SUState_setLastProductType___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = typeCopy;
+  v6 = typeCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -1715,17 +1715,17 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setLastReleaseType:(id)a3
+- (void)setLastReleaseType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __30__SUState_setLastReleaseType___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = typeCopy;
+  v6 = typeCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -1751,9 +1751,9 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setUnlockCallbacks:(id)a3
+- (void)setUnlockCallbacks:(id)callbacks
 {
-  v4 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:a3];
+  v4 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:callbacks];
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -1787,17 +1787,17 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setMandatoryUpdateDict:(id)a3
+- (void)setMandatoryUpdateDict:(id)dict
 {
-  v4 = a3;
+  dictCopy = dict;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __34__SUState_setMandatoryUpdateDict___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dictCopy;
+  v6 = dictCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -1823,17 +1823,17 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setLastRollbackRecommendedBuildVersion:(id)a3
+- (void)setLastRollbackRecommendedBuildVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__SUState_setLastRollbackRecommendedBuildVersion___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = versionCopy;
+  v6 = versionCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -1859,25 +1859,25 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)addRolledBackBuildVersion:(id)a3
+- (void)addRolledBackBuildVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__SUState_addRolledBackBuildVersion___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = versionCopy;
+  v6 = versionCopy;
   dispatch_async(stateQueue, v7);
 }
 
-- (void)queue_addRolledBackBuildVersion:(id)a3
+- (void)queue_addRolledBackBuildVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   dispatch_assert_queue_V2(self->_stateQueue);
-  if (v4 && ([(NSMutableArray *)self->_rolledBackBuildVersions containsObject:v4]& 1) == 0)
+  if (versionCopy && ([(NSMutableArray *)self->_rolledBackBuildVersions containsObject:versionCopy]& 1) == 0)
   {
     if ([(NSMutableArray *)self->_rolledBackBuildVersions count]>= 5)
     {
@@ -1889,7 +1889,7 @@ void __15__SUState_save__block_invoke(uint64_t a1)
       while ([(NSMutableArray *)self->_rolledBackBuildVersions count]> 4);
     }
 
-    [(NSMutableArray *)self->_rolledBackBuildVersions addObject:v4];
+    [(NSMutableArray *)self->_rolledBackBuildVersions addObject:versionCopy];
   }
 
   MEMORY[0x2821F96F8]();
@@ -1917,17 +1917,17 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setLastAutoInstallOperationModel:(id)a3
+- (void)setLastAutoInstallOperationModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__SUState_setLastAutoInstallOperationModel___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = modelCopy;
+  v6 = modelCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -1953,17 +1953,17 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setMdmDelay:(id)a3
+- (void)setMdmDelay:(id)delay
 {
-  v4 = a3;
+  delayCopy = delay;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __23__SUState_setMdmDelay___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delayCopy;
+  v6 = delayCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -1989,17 +1989,17 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setInstallPolicy:(id)a3
+- (void)setInstallPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __28__SUState_setInstallPolicy___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = policyCopy;
+  v6 = policyCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -2025,17 +2025,17 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setLastDeletedSUAssetID:(id)a3
+- (void)setLastDeletedSUAssetID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__SUState_setLastDeletedSUAssetID___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -2061,17 +2061,17 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setLastAssetAudience:(id)a3
+- (void)setLastAssetAudience:(id)audience
 {
-  v4 = a3;
+  audienceCopy = audience;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __32__SUState_setLastAssetAudience___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = audienceCopy;
+  v6 = audienceCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -2097,17 +2097,17 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setAppliedTime:(id)a3
+- (void)setAppliedTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __26__SUState_setAppliedTime___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = timeCopy;
+  v6 = timeCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -2133,7 +2133,7 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setUnderExclusiveControl:(BOOL)a3
+- (void)setUnderExclusiveControl:(BOOL)control
 {
   stateQueue = self->_stateQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -2141,7 +2141,7 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   v4[2] = __36__SUState_setUnderExclusiveControl___block_invoke;
   v4[3] = &unk_279CAAD00;
   v4[4] = self;
-  v5 = a3;
+  controlCopy = control;
   dispatch_async(stateQueue, v4);
 }
 
@@ -2164,17 +2164,17 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setLastSplatRestoreVersion:(id)a3
+- (void)setLastSplatRestoreVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__SUState_setLastSplatRestoreVersion___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = versionCopy;
+  v6 = versionCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -2200,17 +2200,17 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setLastRollbackDescriptor:(id)a3
+- (void)setLastRollbackDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__SUState_setLastRollbackDescriptor___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = descriptorCopy;
+  v6 = descriptorCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -2236,17 +2236,17 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setLastBuildWithStashKeybagCreated:(id)a3
+- (void)setLastBuildWithStashKeybagCreated:(id)created
 {
-  v4 = a3;
+  createdCopy = created;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__SUState_setLastBuildWithStashKeybagCreated___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = createdCopy;
+  v6 = createdCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -2269,7 +2269,7 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setMobileAssetSuspended:(BOOL)a3
+- (void)setMobileAssetSuspended:(BOOL)suspended
 {
   stateQueue = self->_stateQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -2277,21 +2277,21 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   v4[2] = __35__SUState_setMobileAssetSuspended___block_invoke;
   v4[3] = &unk_279CAAD00;
   v4[4] = self;
-  v5 = a3;
+  suspendedCopy = suspended;
   dispatch_async(stateQueue, v4);
 }
 
-- (void)setFailedToAutoInstallError:(id)a3
+- (void)setFailedToAutoInstallError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__SUState_setFailedToAutoInstallError___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -2317,17 +2317,17 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setLastSpaceCleanupLevel:(id)a3
+- (void)setLastSpaceCleanupLevel:(id)level
 {
-  v4 = a3;
+  levelCopy = level;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__SUState_setLastSpaceCleanupLevel___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = levelCopy;
+  v6 = levelCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -2353,31 +2353,31 @@ void __15__SUState_save__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setDdmPersistedError:(id)a3
+- (void)setDdmPersistedError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __32__SUState_setDdmPersistedError___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(stateQueue, v7);
 }
 
-- (void)setDdmPersistedErrorDescription:(id)a3
+- (void)setDdmPersistedErrorDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__SUState_setDdmPersistedErrorDescription___block_invoke;
   v7[3] = &unk_279CAA7C0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = descriptionCopy;
+  selfCopy = self;
+  v6 = descriptionCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -2418,17 +2418,17 @@ void __43__SUState_setDdmPersistedErrorDescription___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setLastPendingSplatAlertDate:(id)a3
+- (void)setLastPendingSplatAlertDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__SUState_setLastPendingSplatAlertDate___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dateCopy;
+  v6 = dateCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -2454,9 +2454,9 @@ void __43__SUState_setDdmPersistedErrorDescription___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (Class)unarchiver:(id)a3 cannotDecodeObjectOfClassName:(id)a4 originalClasses:(id)a5
+- (Class)unarchiver:(id)unarchiver cannotDecodeObjectOfClassName:(id)name originalClasses:(id)classes
 {
-  if ([a4 isEqualToString:@"SUDownloadInterfaceReport"])
+  if ([name isEqualToString:@"SUDownloadInterfaceReport"])
   {
     SULogDebug(@"Skipping SUDownloadInterfaceReport in SUState (legacy).", v5, v6, v7, v8, v9, v10, v11, vars0);
     v12 = objc_opt_class();

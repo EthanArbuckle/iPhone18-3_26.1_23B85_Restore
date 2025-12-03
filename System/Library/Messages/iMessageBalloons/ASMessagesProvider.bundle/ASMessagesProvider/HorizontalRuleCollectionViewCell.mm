@@ -1,12 +1,12 @@
 @interface HorizontalRuleCollectionViewCell
-- (_TtC18ASMessagesProvider32HorizontalRuleCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC18ASMessagesProvider32HorizontalRuleCollectionViewCell)initWithCoder:(id)coder;
 - (void)_dynamicUserInterfaceTraitDidChange;
 - (void)layoutSubviews;
 @end
 
 @implementation HorizontalRuleCollectionViewCell
 
-- (_TtC18ASMessagesProvider32HorizontalRuleCollectionViewCell)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider32HorizontalRuleCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC18ASMessagesProvider32HorizontalRuleCollectionViewCell_itemLayoutContext;
   v5 = sub_75C840();
@@ -27,13 +27,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_21F6B0();
 }
 
 - (void)_dynamicUserInterfaceTraitDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_21F8F8();
 }
 

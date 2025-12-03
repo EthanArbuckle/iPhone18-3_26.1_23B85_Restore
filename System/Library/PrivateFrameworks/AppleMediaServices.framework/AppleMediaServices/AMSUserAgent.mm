@@ -1,25 +1,25 @@
 @interface AMSUserAgent
 + (id)_sharedCache;
-+ (id)cachedUserAgentForBundleIdentifier:(id)a3;
-+ (id)userAgentForProcessInfo:(id)a3;
-+ (void)cacheUserAgent:(id)a3 forBundleIdentifier:(id)a4;
-- (AMSUserAgent)initWithProcessInfo:(id)a3;
++ (id)cachedUserAgentForBundleIdentifier:(id)identifier;
++ (id)userAgentForProcessInfo:(id)info;
++ (void)cacheUserAgent:(id)agent forBundleIdentifier:(id)identifier;
+- (AMSUserAgent)initWithProcessInfo:(id)info;
 - (NSString)clientName;
 - (NSString)clientVersion;
-- (id)_compiledAMSUserAgentShouldCache:(BOOL *)a3;
+- (id)_compiledAMSUserAgentShouldCache:(BOOL *)cache;
 - (id)_iOSComponentBuildVersion;
 - (id)_iOSComponentClientInfo;
 - (id)_iOSComponentDeviceModel;
 - (id)_iOSComponentHardwarePlatform;
 - (id)_iOSComponentProductVersion;
-- (id)_initWithProcessInfo:(id)a3 deviceInfoProvider:(id)a4;
+- (id)_initWithProcessInfo:(id)info deviceInfoProvider:(id)provider;
 - (id)_sharedComponentFairPlayDeviceType;
 - (id)_sharedComponentFrameworkVersion;
-- (id)_sharedComponentParentheticalWithFairPlayDeviceType:(id)a3;
-- (id)_sharedComponentParentheticalWithFairPlayDeviceType:(id)a3 productType:(id)a4;
+- (id)_sharedComponentParentheticalWithFairPlayDeviceType:(id)type;
+- (id)_sharedComponentParentheticalWithFairPlayDeviceType:(id)type productType:(id)productType;
 - (id)_userAgentSuffix;
-- (void)setClientName:(id)a3;
-- (void)setClientVersion:(id)a3;
+- (void)setClientName:(id)name;
+- (void)setClientVersion:(id)version;
 @end
 
 @implementation AMSUserAgent
@@ -38,20 +38,20 @@
 
 - (id)_userAgentSuffix
 {
-  v3 = [(AMSUserAgent *)self processInfo];
-  v4 = [v3 userAgentSuffix];
-  if (v4)
+  processInfo = [(AMSUserAgent *)self processInfo];
+  userAgentSuffix = [processInfo userAgentSuffix];
+  if (userAgentSuffix)
   {
-    v5 = [(AMSUserAgent *)self processInfo];
-    v6 = [v5 userAgentSuffix];
+    processInfo2 = [(AMSUserAgent *)self processInfo];
+    userAgentSuffix2 = [processInfo2 userAgentSuffix];
   }
 
   else
   {
-    v6 = &stru_1F071BA78;
+    userAgentSuffix2 = &stru_1F071BA78;
   }
 
-  return v6;
+  return userAgentSuffix2;
 }
 
 uint64_t __28__AMSUserAgent__sharedCache__block_invoke()
@@ -70,15 +70,15 @@ uint64_t __28__AMSUserAgent__sharedCache__block_invoke()
 
   if (_MergedGlobals_161 == 1)
   {
-    v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"dt:%lu", dword_1ED6E3254];
+    dword_1ED6E3254 = [MEMORY[0x1E696AEC0] stringWithFormat:@"dt:%lu", dword_1ED6E3254];
   }
 
   else
   {
-    v2 = 0;
+    dword_1ED6E3254 = 0;
   }
 
-  return v2;
+  return dword_1ED6E3254;
 }
 
 BOOL __50__AMSUserAgent__sharedComponentFairPlayDeviceType__block_invoke()
@@ -93,22 +93,22 @@ BOOL __50__AMSUserAgent__sharedComponentFairPlayDeviceType__block_invoke()
 - (id)_iOSComponentProductVersion
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v4 = [(AMSUserAgent *)self deviceInfoProvider];
-  v5 = [v4 productVersion];
+  deviceInfoProvider = [(AMSUserAgent *)self deviceInfoProvider];
+  productVersion = [deviceInfoProvider productVersion];
 
-  if ([v5 length])
+  if ([productVersion length])
   {
-    v6 = [(AMSUserAgent *)self deviceInfoProvider];
-    v7 = [v6 deviceIsAppleWatch];
+    deviceInfoProvider2 = [(AMSUserAgent *)self deviceInfoProvider];
+    deviceIsAppleWatch = [deviceInfoProvider2 deviceIsAppleWatch];
 
-    v8 = v7 ? @"watchOS/%@" : @"iOS/%@";
-    [(__CFString *)v3 appendFormat:v8, v5];
-    v9 = [(AMSUserAgent *)self deviceInfoProvider];
-    v10 = [v9 deviceIsAppleTV];
+    v8 = deviceIsAppleWatch ? @"watchOS/%@" : @"iOS/%@";
+    [(__CFString *)v3 appendFormat:v8, productVersion];
+    deviceInfoProvider3 = [(AMSUserAgent *)self deviceInfoProvider];
+    deviceIsAppleTV = [deviceInfoProvider3 deviceIsAppleTV];
 
-    if (v10)
+    if (deviceIsAppleTV)
     {
-      [(__CFString *)v3 appendFormat:@" AppleTV/%@", v5];
+      [(__CFString *)v3 appendFormat:@" AppleTV/%@", productVersion];
     }
   }
 
@@ -130,23 +130,23 @@ BOOL __50__AMSUserAgent__sharedComponentFairPlayDeviceType__block_invoke()
 - (id)_iOSComponentClientInfo
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(AMSUserAgent *)self bundleInfo];
-  v5 = [v4 clientName];
-  v6 = [(AMSUserAgent *)self bundleInfo];
-  v7 = [v6 clientVersion];
-  v8 = [v3 stringWithFormat:@"%@/%@", v5, v7];
+  bundleInfo = [(AMSUserAgent *)self bundleInfo];
+  clientName = [bundleInfo clientName];
+  bundleInfo2 = [(AMSUserAgent *)self bundleInfo];
+  clientVersion = [bundleInfo2 clientVersion];
+  v8 = [v3 stringWithFormat:@"%@/%@", clientName, clientVersion];
 
   return v8;
 }
 
 - (id)_iOSComponentDeviceModel
 {
-  v2 = [(AMSUserAgent *)self deviceInfoProvider];
-  v3 = [v2 productType];
+  deviceInfoProvider = [(AMSUserAgent *)self deviceInfoProvider];
+  productType = [deviceInfoProvider productType];
 
-  if ([v3 length])
+  if ([productType length])
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"model/%@", v3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"model/%@", productType];
   }
 
   else
@@ -171,12 +171,12 @@ BOOL __50__AMSUserAgent__sharedComponentFairPlayDeviceType__block_invoke()
 
 - (id)_iOSComponentHardwarePlatform
 {
-  v2 = [(AMSUserAgent *)self deviceInfoProvider];
-  v3 = [v2 hardwarePlatform];
+  deviceInfoProvider = [(AMSUserAgent *)self deviceInfoProvider];
+  hardwarePlatform = [deviceInfoProvider hardwarePlatform];
 
-  if ([v3 length])
+  if ([hardwarePlatform length])
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hwp/%@", v3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hwp/%@", hardwarePlatform];
   }
 
   else
@@ -189,12 +189,12 @@ BOOL __50__AMSUserAgent__sharedComponentFairPlayDeviceType__block_invoke()
 
 - (id)_iOSComponentBuildVersion
 {
-  v2 = [(AMSUserAgent *)self deviceInfoProvider];
-  v3 = [v2 buildVersion];
+  deviceInfoProvider = [(AMSUserAgent *)self deviceInfoProvider];
+  buildVersion = [deviceInfoProvider buildVersion];
 
-  if ([v3 length])
+  if ([buildVersion length])
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"build/%@", v3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"build/%@", buildVersion];
   }
 
   else
@@ -207,9 +207,9 @@ BOOL __50__AMSUserAgent__sharedComponentFairPlayDeviceType__block_invoke()
 
 - (id)_sharedComponentFrameworkVersion
 {
-  v2 = [MEMORY[0x1E696AAE8] ams_AppleMediaServicesBundle];
-  v3 = [v2 infoDictionary];
-  v4 = [v3 objectForKey:@"CFBundleVersion"];
+  ams_AppleMediaServicesBundle = [MEMORY[0x1E696AAE8] ams_AppleMediaServicesBundle];
+  infoDictionary = [ams_AppleMediaServicesBundle infoDictionary];
+  v4 = [infoDictionary objectForKey:@"CFBundleVersion"];
 
   if (![(__CFString *)v4 length])
   {
@@ -222,11 +222,11 @@ BOOL __50__AMSUserAgent__sharedComponentFairPlayDeviceType__block_invoke()
   return v5;
 }
 
-- (AMSUserAgent)initWithProcessInfo:(id)a3
+- (AMSUserAgent)initWithProcessInfo:(id)info
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  infoCopy = info;
+  v5 = infoCopy;
+  if (!infoCopy)
   {
     v5 = +[AMSProcessInfo currentProcess];
   }
@@ -234,28 +234,28 @@ BOOL __50__AMSUserAgent__sharedComponentFairPlayDeviceType__block_invoke()
   v6 = objc_opt_new();
   v7 = [(AMSUserAgent *)self _initWithProcessInfo:v5 deviceInfoProvider:v6];
 
-  if (!v4)
+  if (!infoCopy)
   {
   }
 
   return v7;
 }
 
-- (id)_initWithProcessInfo:(id)a3 deviceInfoProvider:(id)a4
+- (id)_initWithProcessInfo:(id)info deviceInfoProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  infoCopy = info;
+  providerCopy = provider;
   v13.receiver = self;
   v13.super_class = AMSUserAgent;
   v9 = [(AMSUserAgent *)&v13 init];
   if (v9)
   {
-    v10 = [AMSMappedBundleInfo bundleInfoForProcessInfo:v7];
+    v10 = [AMSMappedBundleInfo bundleInfoForProcessInfo:infoCopy];
     bundleInfo = v9->_bundleInfo;
     v9->_bundleInfo = v10;
 
-    objc_storeStrong(&v9->_processInfo, a3);
-    objc_storeStrong(&v9->_deviceInfoProvider, a4);
+    objc_storeStrong(&v9->_processInfo, info);
+    objc_storeStrong(&v9->_deviceInfoProvider, provider);
   }
 
   return v9;
@@ -263,82 +263,82 @@ BOOL __50__AMSUserAgent__sharedComponentFairPlayDeviceType__block_invoke()
 
 - (NSString)clientName
 {
-  v2 = [(AMSUserAgent *)self bundleInfo];
-  v3 = [v2 clientName];
+  bundleInfo = [(AMSUserAgent *)self bundleInfo];
+  clientName = [bundleInfo clientName];
 
-  return v3;
+  return clientName;
 }
 
 - (NSString)clientVersion
 {
-  v2 = [(AMSUserAgent *)self bundleInfo];
-  v3 = [v2 clientVersion];
+  bundleInfo = [(AMSUserAgent *)self bundleInfo];
+  clientVersion = [bundleInfo clientVersion];
 
-  return v3;
+  return clientVersion;
 }
 
-- (void)setClientName:(id)a3
+- (void)setClientName:(id)name
 {
-  v5 = a3;
-  v4 = [(AMSUserAgent *)self bundleInfo];
-  [v4 setClientName:v5];
+  nameCopy = name;
+  bundleInfo = [(AMSUserAgent *)self bundleInfo];
+  [bundleInfo setClientName:nameCopy];
 }
 
-- (void)setClientVersion:(id)a3
+- (void)setClientVersion:(id)version
 {
-  v5 = a3;
-  v4 = [(AMSUserAgent *)self bundleInfo];
-  [v4 setClientVersion:v5];
+  versionCopy = version;
+  bundleInfo = [(AMSUserAgent *)self bundleInfo];
+  [bundleInfo setClientVersion:versionCopy];
 }
 
-+ (id)cachedUserAgentForBundleIdentifier:(id)a3
++ (id)cachedUserAgentForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 _sharedCache];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  _sharedCache = [self _sharedCache];
+  v6 = [_sharedCache objectForKey:identifierCopy];
 
   return v6;
 }
 
-+ (void)cacheUserAgent:(id)a3 forBundleIdentifier:(id)a4
++ (void)cacheUserAgent:(id)agent forBundleIdentifier:(id)identifier
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [a1 _sharedCache];
-  [v7 setObject:v8 forKey:v6];
+  agentCopy = agent;
+  identifierCopy = identifier;
+  _sharedCache = [self _sharedCache];
+  [_sharedCache setObject:agentCopy forKey:identifierCopy];
 }
 
-+ (id)userAgentForProcessInfo:(id)a3
++ (id)userAgentForProcessInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [v5 bundleIdentifier];
-  v8 = v7;
-  if (!v7)
+  bundleIdentifier = [infoCopy bundleIdentifier];
+  processName = bundleIdentifier;
+  if (!bundleIdentifier)
   {
-    v3 = [MEMORY[0x1E696AE30] processInfo];
-    v8 = [v3 processName];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    processName = [processInfo processName];
   }
 
-  v9 = [v5 accountMediaType];
-  v10 = [v6 stringWithFormat:@"%@-%@", v8, v9];
+  accountMediaType = [infoCopy accountMediaType];
+  v10 = [v6 stringWithFormat:@"%@-%@", processName, accountMediaType];
 
-  if (!v7)
+  if (!bundleIdentifier)
   {
   }
 
-  v11 = [v5 userAgentSuffix];
+  userAgentSuffix = [infoCopy userAgentSuffix];
 
-  if (v11)
+  if (userAgentSuffix)
   {
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [v5 userAgentSuffix];
-    v14 = [v12 stringWithFormat:@"%@-%@", v10, v13];
+    userAgentSuffix2 = [infoCopy userAgentSuffix];
+    v14 = [v12 stringWithFormat:@"%@-%@", v10, userAgentSuffix2];
 
     v10 = v14;
   }
 
-  v15 = [a1 cachedUserAgentForBundleIdentifier:v10];
+  v15 = [self cachedUserAgentForBundleIdentifier:v10];
   v16 = [v15 mutableCopy];
 
   if ([(__CFString *)v16 length])
@@ -349,12 +349,12 @@ BOOL __50__AMSUserAgent__sharedComponentFairPlayDeviceType__block_invoke()
   else
   {
     v22 = 0;
-    v18 = [[AMSUserAgent alloc] initWithProcessInfo:v5];
+    v18 = [[AMSUserAgent alloc] initWithProcessInfo:infoCopy];
     v17 = [(AMSUserAgent *)v18 _compileAndShouldCache:&v22];
 
     if (v22 == 1)
     {
-      [a1 cacheUserAgent:v17 forBundleIdentifier:v10];
+      [self cacheUserAgent:v17 forBundleIdentifier:v10];
     }
   }
 
@@ -373,31 +373,31 @@ BOOL __50__AMSUserAgent__sharedComponentFairPlayDeviceType__block_invoke()
   return v19;
 }
 
-- (id)_compiledAMSUserAgentShouldCache:(BOOL *)a3
+- (id)_compiledAMSUserAgentShouldCache:(BOOL *)cache
 {
   v17[8] = *MEMORY[0x1E69E9840];
-  v16 = [(AMSUserAgent *)self _sharedComponentFairPlayDeviceType];
-  v5 = [(AMSUserAgent *)self _iOSComponentClientInfo];
-  v17[0] = v5;
-  v6 = [(AMSUserAgent *)self _iOSComponentProductVersion];
-  v17[1] = v6;
-  v7 = [(AMSUserAgent *)self _iOSComponentDeviceModel];
-  v17[2] = v7;
-  v8 = [(AMSUserAgent *)self _iOSComponentHardwarePlatform];
-  v17[3] = v8;
-  v9 = [(AMSUserAgent *)self _iOSComponentBuildVersion];
-  v17[4] = v9;
-  v10 = [(AMSUserAgent *)self _sharedComponentParentheticalWithFairPlayDeviceType:v16];
+  _sharedComponentFairPlayDeviceType = [(AMSUserAgent *)self _sharedComponentFairPlayDeviceType];
+  _iOSComponentClientInfo = [(AMSUserAgent *)self _iOSComponentClientInfo];
+  v17[0] = _iOSComponentClientInfo;
+  _iOSComponentProductVersion = [(AMSUserAgent *)self _iOSComponentProductVersion];
+  v17[1] = _iOSComponentProductVersion;
+  _iOSComponentDeviceModel = [(AMSUserAgent *)self _iOSComponentDeviceModel];
+  v17[2] = _iOSComponentDeviceModel;
+  _iOSComponentHardwarePlatform = [(AMSUserAgent *)self _iOSComponentHardwarePlatform];
+  v17[3] = _iOSComponentHardwarePlatform;
+  _iOSComponentBuildVersion = [(AMSUserAgent *)self _iOSComponentBuildVersion];
+  v17[4] = _iOSComponentBuildVersion;
+  v10 = [(AMSUserAgent *)self _sharedComponentParentheticalWithFairPlayDeviceType:_sharedComponentFairPlayDeviceType];
   v17[5] = v10;
-  v11 = [(AMSUserAgent *)self _sharedComponentFrameworkVersion];
-  v17[6] = v11;
-  v12 = [(AMSUserAgent *)self _userAgentSuffix];
-  v17[7] = v12;
+  _sharedComponentFrameworkVersion = [(AMSUserAgent *)self _sharedComponentFrameworkVersion];
+  v17[6] = _sharedComponentFrameworkVersion;
+  _userAgentSuffix = [(AMSUserAgent *)self _userAgentSuffix];
+  v17[7] = _userAgentSuffix;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:8];
 
-  if (a3)
+  if (cache)
   {
-    *a3 = v16 != 0;
+    *cache = _sharedComponentFairPlayDeviceType != 0;
   }
 
   v14 = [v13 ams_nonEmptyComponentsJoinedByString:@" "];
@@ -405,38 +405,38 @@ BOOL __50__AMSUserAgent__sharedComponentFairPlayDeviceType__block_invoke()
   return v14;
 }
 
-- (id)_sharedComponentParentheticalWithFairPlayDeviceType:(id)a3
+- (id)_sharedComponentParentheticalWithFairPlayDeviceType:(id)type
 {
-  v4 = a3;
-  v5 = [(AMSUserAgent *)self deviceInfoProvider];
-  v6 = [v5 productType];
+  typeCopy = type;
+  deviceInfoProvider = [(AMSUserAgent *)self deviceInfoProvider];
+  productType = [deviceInfoProvider productType];
 
-  v7 = [(AMSUserAgent *)self _sharedComponentParentheticalWithFairPlayDeviceType:v4 productType:v6];
+  v7 = [(AMSUserAgent *)self _sharedComponentParentheticalWithFairPlayDeviceType:typeCopy productType:productType];
 
   return v7;
 }
 
-- (id)_sharedComponentParentheticalWithFairPlayDeviceType:(id)a3 productType:(id)a4
+- (id)_sharedComponentParentheticalWithFairPlayDeviceType:(id)type productType:(id)productType
 {
-  v5 = a3;
-  v6 = a4;
+  typeCopy = type;
+  productTypeCopy = productType;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([v6 hasPrefix:@"iPad"])
+  if ([productTypeCopy hasPrefix:@"iPad"])
   {
     v8 = @"5";
   }
 
-  else if ([v6 hasPrefix:@"iPhone"] & 1) != 0 || (objc_msgSend(v6, "hasPrefix:", @"Watch"))
+  else if ([productTypeCopy hasPrefix:@"iPhone"] & 1) != 0 || (objc_msgSend(productTypeCopy, "hasPrefix:", @"Watch"))
   {
     v8 = @"6";
   }
 
-  else if ([v6 hasPrefix:@"RealityDevice"])
+  else if ([productTypeCopy hasPrefix:@"RealityDevice"])
   {
     v8 = @"7";
   }
 
-  else if (([v6 hasPrefix:@"AppleTV"] & 1) != 0 || objc_msgSend(v6, "hasPrefix:", @"iProd"))
+  else if (([productTypeCopy hasPrefix:@"AppleTV"] & 1) != 0 || objc_msgSend(productTypeCopy, "hasPrefix:", @"iProd"))
   {
     v8 = @"3";
   }
@@ -451,9 +451,9 @@ BOOL __50__AMSUserAgent__sharedComponentFairPlayDeviceType__block_invoke()
     [v7 addObject:v8];
   }
 
-  if ([v5 length])
+  if ([typeCopy length])
   {
-    [v7 addObject:v5];
+    [v7 addObject:typeCopy];
   }
 
   if ([v7 count])

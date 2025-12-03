@@ -1,16 +1,16 @@
 @interface RMSLocalDiscoverySession
 - (RMSDiscoverySessionDelegate)delegate;
 - (RMSLocalDiscoverySession)init;
-- (id)_providerForDiscoveryType:(int64_t)a3;
+- (id)_providerForDiscoveryType:(int64_t)type;
 - (void)_enableProviders;
-- (void)_handleHSGroupIDDidChangeNotification:(id)a3;
+- (void)_handleHSGroupIDDidChangeNotification:(id)notification;
 - (void)_updateWifiAvailability;
 - (void)beginDiscovery;
 - (void)dealloc;
 - (void)endDiscovery;
-- (void)serviceProvider:(id)a3 serviceDidBecomeAvailable:(id)a4;
-- (void)serviceProvider:(id)a3 serviceDidBecomeUnavailable:(id)a4;
-- (void)setPairedNetworkNames:(id)a3;
+- (void)serviceProvider:(id)provider serviceDidBecomeAvailable:(id)available;
+- (void)serviceProvider:(id)provider serviceDidBecomeUnavailable:(id)unavailable;
+- (void)setPairedNetworkNames:(id)names;
 @end
 
 @implementation RMSLocalDiscoverySession
@@ -30,11 +30,11 @@
     reachability = v2->_reachability;
     v2->_reachability = v5;
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v2 selector:sel__handleHSGroupIDDidChangeNotification_ name:*MEMORY[0x277D18000] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleHSGroupIDDidChangeNotification_ name:*MEMORY[0x277D18000] object:0];
     if (v2->_reachability)
     {
-      [v7 addObserver:v2 selector:sel__handleReachabilityChangedNotification_ name:kReachabilityChangedNotification object:0];
+      [defaultCenter addObserver:v2 selector:sel__handleReachabilityChangedNotification_ name:kReachabilityChangedNotification object:0];
     }
   }
 
@@ -44,8 +44,8 @@
 - (void)dealloc
 {
   [(RMSLocalDiscoverySession *)self endDiscovery];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = RMSLocalDiscoverySession;
@@ -128,13 +128,13 @@
   [(NSMutableSet *)self->_availableServices removeAllObjects];
 }
 
-- (void)setPairedNetworkNames:(id)a3
+- (void)setPairedNetworkNames:(id)names
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  namesCopy = names;
+  if (namesCopy)
   {
-    v5 = v4;
+    v5 = namesCopy;
   }
 
   else
@@ -181,13 +181,13 @@
   }
 }
 
-- (void)serviceProvider:(id)a3 serviceDidBecomeAvailable:(id)a4
+- (void)serviceProvider:(id)provider serviceDidBecomeAvailable:(id)available
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if ((self->_discoveryTypes & 8) != 0 && [v7 serviceType] == 2 && (objc_msgSend(v8, "isLegacyAppleTV") & 1) == 0 && (objc_msgSend(v8, "isTVRemoteCoreSupported") & 1) == 0)
+  providerCopy = provider;
+  availableCopy = available;
+  v8 = availableCopy;
+  if ((self->_discoveryTypes & 8) != 0 && [availableCopy serviceType] == 2 && (objc_msgSend(v8, "isLegacyAppleTV") & 1) == 0 && (objc_msgSend(v8, "isTVRemoteCoreSupported") & 1) == 0)
   {
     v10 = RMSLogger();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -206,9 +206,9 @@
   }
 }
 
-- (void)serviceProvider:(id)a3 serviceDidBecomeUnavailable:(id)a4
+- (void)serviceProvider:(id)provider serviceDidBecomeUnavailable:(id)unavailable
 {
-  [(NSMutableSet *)self->_availableServices removeObject:a4];
+  [(NSMutableSet *)self->_availableServices removeObject:unavailable];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained discoverySessionDidUpdateAvailableServices:self];
 }
@@ -240,14 +240,14 @@
   self->_providers = v3;
 }
 
-- (id)_providerForDiscoveryType:(int64_t)a3
+- (id)_providerForDiscoveryType:(int64_t)type
 {
   v12 = *MEMORY[0x277D85DE8];
   v5 = RMSLogger();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (a3 <= 3)
+  if (type <= 3)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       if (v6)
       {
@@ -258,7 +258,7 @@
       goto LABEL_17;
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
       if (v6)
       {
@@ -277,9 +277,9 @@ LABEL_18:
     goto LABEL_12;
   }
 
-  if (a3 != 4)
+  if (type != 4)
   {
-    if (a3 == 8)
+    if (type == 8)
     {
       if (v6)
       {
@@ -295,7 +295,7 @@ LABEL_12:
     if (v6)
     {
       v10 = 134217984;
-      v11 = a3;
+      typeCopy = type;
       _os_log_impl(&dword_261E98000, v5, OS_LOG_TYPE_DEFAULT, "Discovery controller attempted to enable unknown provider type: %zd", &v10, 0xCu);
     }
 
@@ -316,7 +316,7 @@ LABEL_22:
   return v8;
 }
 
-- (void)_handleHSGroupIDDidChangeNotification:(id)a3
+- (void)_handleHSGroupIDDidChangeNotification:(id)notification
 {
   v4 = RMSLogger();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))

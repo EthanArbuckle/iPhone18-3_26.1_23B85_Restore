@@ -1,8 +1,8 @@
 @interface GCSettingsButtonRemapController
 - (id)newSpecifiers;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation GCSettingsButtonRemapController
@@ -13,9 +13,9 @@
   v4 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(GCSettingsButtonRemapController *)self newSpecifiers];
+    newSpecifiers = [(GCSettingsButtonRemapController *)self newSpecifiers];
     v6 = *&self->PSListController_opaque[v3];
-    *&self->PSListController_opaque[v3] = v5;
+    *&self->PSListController_opaque[v3] = newSpecifiers;
 
     v4 = *&self->PSListController_opaque[v3];
   }
@@ -88,44 +88,44 @@
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v14.receiver = self;
   v14.super_class = GCSettingsButtonRemapController;
-  v6 = a4;
-  v7 = [(GCSettingsButtonRemapController *)&v14 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(GCSettingsButtonRemapController *)self specifierAtIndexPath:v6, v14.receiver, v14.super_class];
+  pathCopy = path;
+  v7 = [(GCSettingsButtonRemapController *)&v14 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(GCSettingsButtonRemapController *)self specifierAtIndexPath:pathCopy, v14.receiver, v14.super_class];
 
   v9 = [v8 propertyForKey:@"ControllerElement"];
-  v10 = [(GCSettingsButtonRemapController *)self parentController];
-  v11 = [v10 conformsToProtocol:&OBJC_PROTOCOL___GCSettingsRemapControllerDelegate];
+  parentController = [(GCSettingsButtonRemapController *)self parentController];
+  v11 = [parentController conformsToProtocol:&OBJC_PROTOCOL___GCSettingsRemapControllerDelegate];
 
   if (v11)
   {
-    v12 = [(GCSettingsButtonRemapController *)self parentController];
-    [v12 onLoadItemInRemapController:self item:v9 cell:v7];
+    parentController2 = [(GCSettingsButtonRemapController *)self parentController];
+    [parentController2 onLoadItemInRemapController:self item:v9 cell:v7];
   }
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v12 = [(GCSettingsButtonRemapController *)self specifierAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v12 = [(GCSettingsButtonRemapController *)self specifierAtIndexPath:pathCopy];
   v8 = [v12 propertyForKey:@"ControllerElement"];
-  v9 = [(GCSettingsButtonRemapController *)self parentController];
-  v10 = [v9 conformsToProtocol:&OBJC_PROTOCOL___GCSettingsRemapControllerDelegate];
+  parentController = [(GCSettingsButtonRemapController *)self parentController];
+  v10 = [parentController conformsToProtocol:&OBJC_PROTOCOL___GCSettingsRemapControllerDelegate];
 
   if (v10)
   {
-    v11 = [(GCSettingsButtonRemapController *)self parentController];
-    [v11 didSelectItemInRemapController:self item:v8];
+    parentController2 = [(GCSettingsButtonRemapController *)self parentController];
+    [parentController2 didSelectItemInRemapController:self item:v8];
   }
 
   [(GCSettingsButtonRemapController *)self reloadSpecifiers];
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
 @end

@@ -6,12 +6,12 @@
 
 - (BOOL)accessibilityPerformMagicTap
 {
-  v3 = [(WFImagePickerController *)self magicTapHandler];
+  magicTapHandler = [(WFImagePickerController *)self magicTapHandler];
 
-  if (v3)
+  if (magicTapHandler)
   {
-    v4 = [(WFImagePickerController *)self magicTapHandler];
-    v5 = v4[2]();
+    magicTapHandler2 = [(WFImagePickerController *)self magicTapHandler];
+    v5 = magicTapHandler2[2]();
 
     return v5;
   }

@@ -1,85 +1,85 @@
 @interface ATXInformationStore
 + (ATXInformationStore)sharedInstance;
 - (ATXInformationStore)init;
-- (ATXInformationStore)initWithDatabasePath:(id)a3 cachedSuggestionsPath:(id)a4;
+- (ATXInformationStore)initWithDatabasePath:(id)path cachedSuggestionsPath:(id)suggestionsPath;
 - (BOOL)_configureDatabase;
 - (BOOL)_handleCorruptionIfNeeded;
-- (BOOL)_insertTimelineEntries:(id)a3 forWidget:(id)a4 storageLimit:(unint64_t)a5;
+- (BOOL)_insertTimelineEntries:(id)entries forWidget:(id)widget storageLimit:(unint64_t)limit;
 - (BOOL)_migrateDatabaseIfNeeded;
 - (BOOL)_openDatabase;
-- (BOOL)addAbuseControlOutcomeForSuggestion:(id)a3 forTimestamp:(int64_t)a4 outcome:(int64_t)a5;
-- (BOOL)addAbuseControlOutcomes:(id)a3;
-- (BOOL)addEngagementRecordForWidget:(id)a3 date:(id)a4 engagementType:(int64_t)a5;
-- (BOOL)addStackConfigStatistics:(id)a3;
-- (BOOL)appendDismissRecord:(id)a3;
-- (BOOL)atomicallyDeleteInfoSuggestions:(id)a3 insertInfoSuggestions:(id)a4;
+- (BOOL)addAbuseControlOutcomeForSuggestion:(id)suggestion forTimestamp:(int64_t)timestamp outcome:(int64_t)outcome;
+- (BOOL)addAbuseControlOutcomes:(id)outcomes;
+- (BOOL)addEngagementRecordForWidget:(id)widget date:(id)date engagementType:(int64_t)type;
+- (BOOL)addStackConfigStatistics:(id)statistics;
+- (BOOL)appendDismissRecord:(id)record;
+- (BOOL)atomicallyDeleteInfoSuggestions:(id)suggestions insertInfoSuggestions:(id)infoSuggestions;
 - (BOOL)clearOldAbuseControlOutcomeData;
 - (BOOL)clearOutdatedSuggestedWidgetEntries;
 - (BOOL)clearOutdatedWidgetEngagements;
 - (BOOL)clearOutdatedWidgetReloadEntries;
-- (BOOL)clearWidgetRemovalHistoryOlderThan:(id)a3;
-- (BOOL)deleteAllInfoSuggestionsWithSourceIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)deleteAllSuggestionsForSourceId:(id)a3 excludingSuggestionId:(id)a4;
+- (BOOL)clearWidgetRemovalHistoryOlderThan:(id)than;
+- (BOOL)deleteAllInfoSuggestionsWithSourceIdentifier:(id)identifier error:(id *)error;
+- (BOOL)deleteAllSuggestionsForSourceId:(id)id excludingSuggestionId:(id)suggestionId;
 - (BOOL)deleteExpiredProactiveStackRotations;
-- (BOOL)deleteInfoSuggestion:(id)a3;
-- (BOOL)didMostRecentReloadFailForExtension:(id)a3 kind:(id)a4 intent:(id)a5 cutoffDate:(id)a6;
-- (BOOL)didSuggestionReachDurationLimit:(id)a3;
-- (BOOL)insertOrIgnoreProactiveStackRotationRecord:(id)a3;
+- (BOOL)deleteInfoSuggestion:(id)suggestion;
+- (BOOL)didMostRecentReloadFailForExtension:(id)extension kind:(id)kind intent:(id)intent cutoffDate:(id)date;
+- (BOOL)didSuggestionReachDurationLimit:(id)limit;
+- (BOOL)insertOrIgnoreProactiveStackRotationRecord:(id)record;
 - (BOOL)pruneTimelineEntries;
-- (BOOL)recordSuggestedWidgetUniqueIdIfNotExist:(id)a3;
-- (BOOL)recordSuggestionPassedTimelineFiltersForTheFirstTime:(id)a3;
-- (BOOL)recordUserRemovalOfSuggestedWidget:(id)a3 kind:(id)a4 intent:(id)a5 atDate:(id)a6 duration:(double)a7;
-- (BOOL)recordWidgetReloadForSuggestion:(id)a3 date:(id)a4 readyForDisplay:(BOOL)a5;
-- (BOOL)rotationExistsForSuggestionWithId:(id)a3 considerStalenessRotation:(BOOL)a4;
-- (BOOL)updateEndDateForInfoSuggestions:(id)a3;
-- (BOOL)writeCacheWithNewSuggestions:(id)a3;
-- (BOOL)writeInfoSuggestions:(id)a3;
-- (id)_dateIntervalFromDismissStatement:(id)a3;
-- (id)_openSqliteDatabaseAtPath:(id)a3;
-- (id)criterionOfInfoSuggestionWithIdentifier:(id)a3;
-- (id)dateIntervalsOfUserRemovalOfSuggestedWidget:(id)a3 kind:(id)a4 intent:(id)a5;
-- (id)dateIntervalsOfUserRemovalOfSuggestedWidgetWithExtensionBundleId:(id)a3;
-- (id)dateIntervalsOfUserRemovalOfSuggestedWidgetWithIntent:(id)a3;
+- (BOOL)recordSuggestedWidgetUniqueIdIfNotExist:(id)exist;
+- (BOOL)recordSuggestionPassedTimelineFiltersForTheFirstTime:(id)time;
+- (BOOL)recordUserRemovalOfSuggestedWidget:(id)widget kind:(id)kind intent:(id)intent atDate:(id)date duration:(double)duration;
+- (BOOL)recordWidgetReloadForSuggestion:(id)suggestion date:(id)date readyForDisplay:(BOOL)display;
+- (BOOL)rotationExistsForSuggestionWithId:(id)id considerStalenessRotation:(BOOL)rotation;
+- (BOOL)updateEndDateForInfoSuggestions:(id)suggestions;
+- (BOOL)writeCacheWithNewSuggestions:(id)suggestions;
+- (BOOL)writeInfoSuggestions:(id)suggestions;
+- (id)_dateIntervalFromDismissStatement:(id)statement;
+- (id)_openSqliteDatabaseAtPath:(id)path;
+- (id)criterionOfInfoSuggestionWithIdentifier:(id)identifier;
+- (id)dateIntervalsOfUserRemovalOfSuggestedWidget:(id)widget kind:(id)kind intent:(id)intent;
+- (id)dateIntervalsOfUserRemovalOfSuggestedWidgetWithExtensionBundleId:(id)id;
+- (id)dateIntervalsOfUserRemovalOfSuggestedWidgetWithIntent:(id)intent;
 - (id)deleteExpiredSuggestions;
-- (id)distinctScoresForWidget:(id)a3 kind:(id)a4;
+- (id)distinctScoresForWidget:(id)widget kind:(id)kind;
 - (id)earliestFutureSuggestionChangeDate;
-- (id)engagementTimestampsForExtensionBundleId:(id)a3 kind:(id)a4 intent:(id)a5 engagementType:(int64_t)a6;
-- (id)fetchAbuseControlOutcomesForSuggestion:(id)a3 sinceDate:(id)a4;
-- (id)fetchAllTimelineEntriesForWidget:(id)a3;
+- (id)engagementTimestampsForExtensionBundleId:(id)id kind:(id)kind intent:(id)intent engagementType:(int64_t)type;
+- (id)fetchAbuseControlOutcomesForSuggestion:(id)suggestion sinceDate:(id)date;
+- (id)fetchAllTimelineEntriesForWidget:(id)widget;
 - (id)fetchDistinctScoreCountForWidgets;
-- (id)fetchDistinctWidgetsIgnoringIntentSinceDate:(id)a3;
-- (id)fetchStackConfigStatisticsForWidgetBundleId:(id)a3 widgetKind:(id)a4 containerBundleIdentifier:(id)a5 widgetFamily:(int64_t)a6;
-- (id)fetchTimelineEntriesForWidget:(id)a3 sinceDate:(id)a4;
+- (id)fetchDistinctWidgetsIgnoringIntentSinceDate:(id)date;
+- (id)fetchStackConfigStatisticsForWidgetBundleId:(id)id widgetKind:(id)kind containerBundleIdentifier:(id)identifier widgetFamily:(int64_t)family;
+- (id)fetchTimelineEntriesForWidget:(id)widget sinceDate:(id)date;
 - (id)fetchWidgetEngagementRecords;
-- (id)fetchWidgetTapEngagementCountSinceStartDate:(id)a3;
-- (id)fetchWidgetTapEngagementsBetweenStartDate:(id)a3 endDate:(id)a4;
-- (id)firstAppearDateOfSuggestedWidgetWithUniqueId:(id)a3;
-- (id)firstEngagementOfWidget:(id)a3 kind:(id)a4 intent:(id)a5 sinceTimestamp:(id)a6;
-- (id)firstTimeAtWhichSuggestionPassedTimelineFilters:(id)a3;
-- (id)latestInfoSuggestionRelevantNowForSourceId:(id)a3;
-- (id)latestUpdateDateForSourceId:(id)a3;
+- (id)fetchWidgetTapEngagementCountSinceStartDate:(id)date;
+- (id)fetchWidgetTapEngagementsBetweenStartDate:(id)date endDate:(id)endDate;
+- (id)firstAppearDateOfSuggestedWidgetWithUniqueId:(id)id;
+- (id)firstEngagementOfWidget:(id)widget kind:(id)kind intent:(id)intent sinceTimestamp:(id)timestamp;
+- (id)firstTimeAtWhichSuggestionPassedTimelineFilters:(id)filters;
+- (id)latestInfoSuggestionRelevantNowForSourceId:(id)id;
+- (id)latestUpdateDateForSourceId:(id)id;
 - (id)migrations;
-- (id)mostRecentEngagementOfWidget:(id)a3;
-- (id)mostRecentEngagementOfWidget:(id)a3 kind:(id)a4 ofType:(int64_t)a5;
-- (id)mostRecentEngagementOfWidget:(id)a3 ofType:(int64_t)a4;
-- (id)mostRecentRotationRecordForSuggestionIdentifier:(id)a3;
-- (id)mostRecentRotationRecordForWidget:(id)a3 kind:(id)a4 intent:(id)a5 considerStalenessRotation:(BOOL)a6 filterByClientModelId:(id)a7;
-- (id)mostRecentTimelineEntryWithScoreForWidget:(id)a3 kind:(id)a4 family:(int64_t)a5 intentIndexingHash:(int64_t)a6;
-- (id)mostRecentTimelineUpdateDateOfWidget:(id)a3 kind:(id)a4;
+- (id)mostRecentEngagementOfWidget:(id)widget;
+- (id)mostRecentEngagementOfWidget:(id)widget kind:(id)kind ofType:(int64_t)type;
+- (id)mostRecentEngagementOfWidget:(id)widget ofType:(int64_t)type;
+- (id)mostRecentRotationRecordForSuggestionIdentifier:(id)identifier;
+- (id)mostRecentRotationRecordForWidget:(id)widget kind:(id)kind intent:(id)intent considerStalenessRotation:(BOOL)rotation filterByClientModelId:(id)id;
+- (id)mostRecentTimelineEntryWithScoreForWidget:(id)widget kind:(id)kind family:(int64_t)family intentIndexingHash:(int64_t)hash;
+- (id)mostRecentTimelineUpdateDateOfWidget:(id)widget kind:(id)kind;
 - (id)nextImportantDateAmongTimelineInducedProactiveStackRotationRecords;
-- (id)proactiveRotationsForWidgetInThePastDay:(id)a3 kind:(id)a4 intent:(id)a5 filterByClientModelId:(id)a6;
-- (id)queriesToSkipFromEmptyToVersion:(unsigned int *)a3;
+- (id)proactiveRotationsForWidgetInThePastDay:(id)day kind:(id)kind intent:(id)intent filterByClientModelId:(id)id;
+- (id)queriesToSkipFromEmptyToVersion:(unsigned int *)version;
 - (id)readAllDismissRecords;
 - (id)readAllInfoSuggestions;
-- (id)readAllInfoSuggestionsWithSourceIdentifier:(id)a3;
+- (id)readAllInfoSuggestionsWithSourceIdentifier:(id)identifier;
 - (id)readCachedSuggestions;
 - (id)readCurrentlyRelevantSuggestions;
-- (id)recentRelevantTimelineEntriesOrderedByDescendingScoreForWidget:(id)a3 kind:(id)a4 family:(int64_t)a5 intent:(id)a6;
-- (id)upcomingDateThatTimelineScoreChangesToOrFromZeroForWidget:(id)a3 kind:(id)a4 familyMask:(unint64_t)a5 intent:(id)a6;
+- (id)recentRelevantTimelineEntriesOrderedByDescendingScoreForWidget:(id)widget kind:(id)kind family:(int64_t)family intent:(id)intent;
+- (id)upcomingDateThatTimelineScoreChangesToOrFromZeroForWidget:(id)widget kind:(id)kind familyMask:(unint64_t)mask intent:(id)intent;
 - (id)widgetSuggestionRemovalRecordsForDiagnostics;
-- (int64_t)mostRecentAbuseControlOutcomeForSuggestionId:(id)a3;
-- (unint64_t)numberOfInfoSuggestionsForAppBundleIdentifier:(id)a3;
-- (unint64_t)numberOfInfoSuggestionsForSourceId:(id)a3;
+- (int64_t)mostRecentAbuseControlOutcomeForSuggestionId:(id)id;
+- (unint64_t)numberOfInfoSuggestionsForAppBundleIdentifier:(id)identifier;
+- (unint64_t)numberOfInfoSuggestionsForSourceId:(id)id;
 - (unint64_t)numberOfSuggestedWidgetsInPastDay;
 - (unint64_t)numberOfWidgetReloadForSuggestionInPastDay;
 - (void)_migrateDatabaseIfNeeded;
@@ -122,14 +122,14 @@ void __37__ATXInformationStore_sharedInstance__block_invoke()
   return v5;
 }
 
-- (ATXInformationStore)initWithDatabasePath:(id)a3 cachedSuggestionsPath:(id)a4
+- (ATXInformationStore)initWithDatabasePath:(id)path cachedSuggestionsPath:(id)suggestionsPath
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  suggestionsPathCopy = suggestionsPath;
   v15.receiver = self;
   v15.super_class = ATXInformationStore;
   v8 = [(ATXInformationStore *)&v15 init];
-  if (v8 && (v9 = [v6 copy], databasePath = v8->_databasePath, v8->_databasePath = v9, databasePath, v11 = objc_msgSend(v7, "copy"), cachedSuggestionsPath = v8->_cachedSuggestionsPath, v8->_cachedSuggestionsPath = v11, cachedSuggestionsPath, !-[ATXInformationStore _openDatabase](v8, "_openDatabase")))
+  if (v8 && (v9 = [pathCopy copy], databasePath = v8->_databasePath, v8->_databasePath = v9, databasePath, v11 = objc_msgSend(suggestionsPathCopy, "copy"), cachedSuggestionsPath = v8->_cachedSuggestionsPath, v8->_cachedSuggestionsPath = v11, cachedSuggestionsPath, !-[ATXInformationStore _openDatabase](v8, "_openDatabase")))
   {
     v13 = 0;
   }
@@ -159,8 +159,8 @@ void __37__ATXInformationStore_sharedInstance__block_invoke()
 
 - (BOOL)_openDatabase
 {
-  v3 = [(ATXInformationStore *)self _handleCorruptionIfNeeded];
-  if (v3)
+  _handleCorruptionIfNeeded = [(ATXInformationStore *)self _handleCorruptionIfNeeded];
+  if (_handleCorruptionIfNeeded)
   {
     p_databasePath = &self->_databasePath;
     v5 = [(ATXInformationStore *)self _openSqliteDatabaseAtPath:self->_databasePath];
@@ -173,8 +173,8 @@ void __37__ATXInformationStore_sharedInstance__block_invoke()
       {
         if ([(ATXInformationStore *)self _migrateDatabaseIfNeeded])
         {
-          LOBYTE(v3) = 1;
-          return v3;
+          LOBYTE(_handleCorruptionIfNeeded) = 1;
+          return _handleCorruptionIfNeeded;
         }
 
         v7 = __atxlog_handle_gi();
@@ -203,10 +203,10 @@ void __37__ATXInformationStore_sharedInstance__block_invoke()
       }
     }
 
-    LOBYTE(v3) = 0;
+    LOBYTE(_handleCorruptionIfNeeded) = 0;
   }
 
-  return v3;
+  return _handleCorruptionIfNeeded;
 }
 
 - (void)close
@@ -219,8 +219,8 @@ void __37__ATXInformationStore_sharedInstance__block_invoke()
 - (BOOL)_handleCorruptionIfNeeded
 {
   v3 = [MEMORY[0x1E69C5D88] corruptionMarkerPathForPath:self->_databasePath];
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:v3];
 
   if (v5)
   {
@@ -238,9 +238,9 @@ void __37__ATXInformationStore_sharedInstance__block_invoke()
     }
 
     [MEMORY[0x1E69C5D88] truncateDatabaseAtPath:self->_databasePath];
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v13 = 0;
-    v9 = [v8 removeItemAtPath:v3 error:&v13];
+    v9 = [defaultManager2 removeItemAtPath:v3 error:&v13];
     v10 = v13;
 
     if ((v9 & 1) == 0)
@@ -261,11 +261,11 @@ void __37__ATXInformationStore_sharedInstance__block_invoke()
   return v9;
 }
 
-- (id)_openSqliteDatabaseAtPath:(id)a3
+- (id)_openSqliteDatabaseAtPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v9 = 0;
-  v4 = [MEMORY[0x1E69C5D88] sqliteDatabaseWithFilename:v3 contentProtection:3 errorHandler:0 error:&v9];
+  v4 = [MEMORY[0x1E69C5D88] sqliteDatabaseWithFilename:pathCopy contentProtection:3 errorHandler:0 error:&v9];
   v5 = v9;
   if (v4)
   {
@@ -355,12 +355,12 @@ uint64_t __41__ATXInformationStore__configureDatabase__block_invoke(uint64_t a1,
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
   v6 = [v3 initWithMigrationObjects:v5];
 
-  v7 = [v6 migrateDatabases];
-  if (v7 > 2)
+  migrateDatabases = [v6 migrateDatabases];
+  if (migrateDatabases > 2)
   {
-    if (v7 <= 4)
+    if (migrateDatabases <= 4)
     {
-      if (v7 != 3)
+      if (migrateDatabases != 3)
       {
         v8 = __atxlog_handle_gi();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
@@ -386,7 +386,7 @@ LABEL_24:
       goto LABEL_25;
     }
 
-    if (v7 == 5)
+    if (migrateDatabases == 5)
     {
       v8 = __atxlog_handle_gi();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
@@ -397,7 +397,7 @@ LABEL_24:
       goto LABEL_22;
     }
 
-    if (v7 == 6)
+    if (migrateDatabases == 6)
     {
       v8 = __atxlog_handle_gi();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
@@ -413,7 +413,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (!v7)
+  if (!migrateDatabases)
   {
     v9 = __atxlog_handle_gi();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -424,9 +424,9 @@ LABEL_23:
     goto LABEL_19;
   }
 
-  if (v7 != 1)
+  if (migrateDatabases != 1)
   {
-    if (v7 == 2)
+    if (migrateDatabases == 2)
     {
       v8 = __atxlog_handle_gi();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
@@ -509,11 +509,11 @@ LABEL_25:
   return v2;
 }
 
-- (id)queriesToSkipFromEmptyToVersion:(unsigned int *)a3
+- (id)queriesToSkipFromEmptyToVersion:(unsigned int *)version
 {
-  if (a3)
+  if (version)
   {
-    *a3 = 0;
+    *version = 0;
   }
 
   return MEMORY[0x1E695E0F0];
@@ -630,17 +630,17 @@ uint64_t __44__ATXInformationStore_readCachedSuggestions__block_invoke_364(uint6
   return *v7;
 }
 
-- (BOOL)writeCacheWithNewSuggestions:(id)a3
+- (BOOL)writeCacheWithNewSuggestions:(id)suggestions
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  suggestionsCopy = suggestions;
   context = objc_autoreleasePoolPush();
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(suggestionsCopy, "count")}];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = v4;
+  v6 = suggestionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v7)
   {
@@ -657,11 +657,11 @@ uint64_t __44__ATXInformationStore_readCachedSuggestions__block_invoke_364(uint6
 
         v11 = *(*(&v25 + 1) + 8 * i);
         v12 = objc_opt_new();
-        v13 = [v11 suggestionIdentifier];
-        [v12 setSuggestionId:v13];
+        suggestionIdentifier = [v11 suggestionIdentifier];
+        [v12 setSuggestionId:suggestionIdentifier];
 
-        v14 = [v11 sourceIdentifier];
-        [v12 setSourceId:v14];
+        sourceIdentifier = [v11 sourceIdentifier];
+        [v12 setSourceId:sourceIdentifier];
 
         [v5 addObject:v12];
       }
@@ -674,8 +674,8 @@ uint64_t __44__ATXInformationStore_readCachedSuggestions__block_invoke_364(uint6
 
   v15 = objc_opt_new();
   [v15 setEntries:v5];
-  v16 = [v15 encodeAsProto];
-  if (!v16)
+  encodeAsProto = [v15 encodeAsProto];
+  if (!encodeAsProto)
   {
     v21 = __atxlog_handle_gi();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -686,8 +686,8 @@ uint64_t __44__ATXInformationStore_readCachedSuggestions__block_invoke_364(uint6
     goto LABEL_18;
   }
 
-  v17 = [(NSString *)self->_cachedSuggestionsPath UTF8String];
-  v18 = open(v17, 514, 384, context, v25);
+  uTF8String = [(NSString *)self->_cachedSuggestionsPath UTF8String];
+  v18 = open(uTF8String, 514, 384, context, v25);
   if (v18 == -1)
   {
     v22 = __atxlog_handle_default();
@@ -860,9 +860,9 @@ uint64_t __55__ATXInformationStore_readCurrentlyRelevantSuggestions__block_invok
   return *v7;
 }
 
-- (id)readAllInfoSuggestionsWithSourceIdentifier:(id)a3
+- (id)readAllInfoSuggestionsWithSourceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -874,7 +874,7 @@ uint64_t __55__ATXInformationStore_readCurrentlyRelevantSuggestions__block_invok
   v11[1] = 3221225472;
   v11[2] = __66__ATXInformationStore_readAllInfoSuggestionsWithSourceIdentifier___block_invoke;
   v11[3] = &unk_1E80C4CC8;
-  v6 = v4;
+  v6 = identifierCopy;
   v12 = v6;
   v9[4] = &v13;
   v10[0] = MEMORY[0x1E69E9820];
@@ -937,9 +937,9 @@ uint64_t __66__ATXInformationStore_readAllInfoSuggestionsWithSourceIdentifier___
   return *v7;
 }
 
-- (id)latestInfoSuggestionRelevantNowForSourceId:(id)a3
+- (id)latestInfoSuggestionRelevantNowForSourceId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -951,7 +951,7 @@ uint64_t __66__ATXInformationStore_readAllInfoSuggestionsWithSourceIdentifier___
   v12[1] = 3221225472;
   v12[2] = __66__ATXInformationStore_latestInfoSuggestionRelevantNowForSourceId___block_invoke;
   v12[3] = &unk_1E80C4CC8;
-  v13 = v4;
+  v13 = idCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __66__ATXInformationStore_latestInfoSuggestionRelevantNowForSourceId___block_invoke_2;
@@ -1020,9 +1020,9 @@ uint64_t __66__ATXInformationStore_latestInfoSuggestionRelevantNowForSourceId___
   return *v4;
 }
 
-- (id)criterionOfInfoSuggestionWithIdentifier:(id)a3
+- (id)criterionOfInfoSuggestionWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1034,7 +1034,7 @@ uint64_t __66__ATXInformationStore_latestInfoSuggestionRelevantNowForSourceId___
   v10[1] = 3221225472;
   v10[2] = __63__ATXInformationStore_criterionOfInfoSuggestionWithIdentifier___block_invoke;
   v10[3] = &unk_1E80C4CC8;
-  v6 = v4;
+  v6 = identifierCopy;
   v11 = v6;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -1079,8 +1079,8 @@ uint64_t __63__ATXInformationStore_criterionOfInfoSuggestionWithIdentifier___blo
   v23 = 0;
   v24[0] = &v23;
   v24[1] = 0x2020000000;
-  v5 = [MEMORY[0x1E695DF00] distantFuture];
-  [v5 timeIntervalSinceReferenceDate];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  [distantFuture timeIntervalSinceReferenceDate];
   v7 = v6;
 
   v24[2] = v7;
@@ -1099,8 +1099,8 @@ uint64_t __63__ATXInformationStore_criterionOfInfoSuggestionWithIdentifier___blo
   v19 = 0;
   v20[0] = &v19;
   v20[1] = 0x2020000000;
-  v9 = [MEMORY[0x1E695DF00] distantFuture];
-  [v9 timeIntervalSinceReferenceDate];
+  distantFuture2 = [MEMORY[0x1E695DF00] distantFuture];
+  [distantFuture2 timeIntervalSinceReferenceDate];
   v11 = v10;
 
   v20[2] = v11;
@@ -1161,9 +1161,9 @@ uint64_t __57__ATXInformationStore_earliestFutureSuggestionChangeDate__block_inv
   return *v4;
 }
 
-- (id)latestUpdateDateForSourceId:(id)a3
+- (id)latestUpdateDateForSourceId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -1175,7 +1175,7 @@ uint64_t __57__ATXInformationStore_earliestFutureSuggestionChangeDate__block_inv
   v12[1] = 3221225472;
   v12[2] = __51__ATXInformationStore_latestUpdateDateForSourceId___block_invoke;
   v12[3] = &unk_1E80C4CC8;
-  v13 = v4;
+  v13 = idCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __51__ATXInformationStore_latestUpdateDateForSourceId___block_invoke_2;
@@ -1224,9 +1224,9 @@ uint64_t __51__ATXInformationStore_latestUpdateDateForSourceId___block_invoke_3(
   return *v4;
 }
 
-- (unint64_t)numberOfInfoSuggestionsForSourceId:(id)a3
+- (unint64_t)numberOfInfoSuggestionsForSourceId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -1236,7 +1236,7 @@ uint64_t __51__ATXInformationStore_latestUpdateDateForSourceId___block_invoke_3(
   v12[1] = 3221225472;
   v12[2] = __58__ATXInformationStore_numberOfInfoSuggestionsForSourceId___block_invoke;
   v12[3] = &unk_1E80C4CC8;
-  v13 = v4;
+  v13 = idCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __58__ATXInformationStore_numberOfInfoSuggestionsForSourceId___block_invoke_2;
@@ -1268,9 +1268,9 @@ uint64_t __58__ATXInformationStore_numberOfInfoSuggestionsForSourceId___block_in
   return *v4;
 }
 
-- (unint64_t)numberOfInfoSuggestionsForAppBundleIdentifier:(id)a3
+- (unint64_t)numberOfInfoSuggestionsForAppBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -1280,7 +1280,7 @@ uint64_t __58__ATXInformationStore_numberOfInfoSuggestionsForSourceId___block_in
   v12[1] = 3221225472;
   v12[2] = __69__ATXInformationStore_numberOfInfoSuggestionsForAppBundleIdentifier___block_invoke;
   v12[3] = &unk_1E80C4CC8;
-  v13 = v4;
+  v13 = identifierCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __69__ATXInformationStore_numberOfInfoSuggestionsForAppBundleIdentifier___block_invoke_2;
@@ -1312,11 +1312,11 @@ uint64_t __69__ATXInformationStore_numberOfInfoSuggestionsForAppBundleIdentifier
   return *v4;
 }
 
-- (BOOL)writeInfoSuggestions:(id)a3
+- (BOOL)writeInfoSuggestions:(id)suggestions
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  suggestionsCopy = suggestions;
+  v5 = suggestionsCopy;
+  if (suggestionsCopy)
   {
     v6 = MEMORY[0x1E69C5D90];
     db = self->_db;
@@ -1324,7 +1324,7 @@ uint64_t __69__ATXInformationStore_numberOfInfoSuggestionsForAppBundleIdentifier
     v10[1] = 3221225472;
     v10[2] = __44__ATXInformationStore_writeInfoSuggestions___block_invoke;
     v10[3] = &unk_1E80C4DF8;
-    v11 = v4;
+    v11 = suggestionsCopy;
     v8 = ([v6 writeTransactionWithHandle:db failableBlock:v10] & 1) == 0;
   }
 
@@ -1480,11 +1480,11 @@ uint64_t __44__ATXInformationStore_writeInfoSuggestions___block_invoke_3(uint64_
   return *v5;
 }
 
-- (BOOL)updateEndDateForInfoSuggestions:(id)a3
+- (BOOL)updateEndDateForInfoSuggestions:(id)suggestions
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  suggestionsCopy = suggestions;
+  v5 = suggestionsCopy;
+  if (suggestionsCopy)
   {
     v6 = MEMORY[0x1E69C5D90];
     db = self->_db;
@@ -1492,7 +1492,7 @@ uint64_t __44__ATXInformationStore_writeInfoSuggestions___block_invoke_3(uint64_
     v10[1] = 3221225472;
     v10[2] = __55__ATXInformationStore_updateEndDateForInfoSuggestions___block_invoke;
     v10[3] = &unk_1E80C4DF8;
-    v11 = v4;
+    v11 = suggestionsCopy;
     v8 = ([v6 writeTransactionWithHandle:db failableBlock:v10] & 1) == 0;
   }
 
@@ -1608,11 +1608,11 @@ uint64_t __55__ATXInformationStore_updateEndDateForInfoSuggestions___block_invok
   return *v5;
 }
 
-- (BOOL)atomicallyDeleteInfoSuggestions:(id)a3 insertInfoSuggestions:(id)a4
+- (BOOL)atomicallyDeleteInfoSuggestions:(id)suggestions insertInfoSuggestions:(id)infoSuggestions
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count] || objc_msgSend(v7, "count"))
+  suggestionsCopy = suggestions;
+  infoSuggestionsCopy = infoSuggestions;
+  if ([suggestionsCopy count] || objc_msgSend(infoSuggestionsCopy, "count"))
   {
     v8 = MEMORY[0x1E69C5D90];
     db = self->_db;
@@ -1620,8 +1620,8 @@ uint64_t __55__ATXInformationStore_updateEndDateForInfoSuggestions___block_invok
     v12[1] = 3221225472;
     v12[2] = __77__ATXInformationStore_atomicallyDeleteInfoSuggestions_insertInfoSuggestions___block_invoke;
     v12[3] = &unk_1E80C4E20;
-    v13 = v6;
-    v14 = v7;
+    v13 = suggestionsCopy;
+    v14 = infoSuggestionsCopy;
     v10 = ([v8 writeTransactionWithHandle:db failableBlock:v12] & 1) == 0;
   }
 
@@ -1859,11 +1859,11 @@ uint64_t __77__ATXInformationStore_atomicallyDeleteInfoSuggestions_insertInfoSug
   return *v5;
 }
 
-- (BOOL)deleteInfoSuggestion:(id)a3
+- (BOOL)deleteInfoSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  suggestionCopy = suggestion;
+  v5 = suggestionCopy;
+  if (suggestionCopy)
   {
     v14 = 0;
     v15 = &v14;
@@ -1874,7 +1874,7 @@ uint64_t __77__ATXInformationStore_atomicallyDeleteInfoSuggestions_insertInfoSug
     v12[1] = 3221225472;
     v12[2] = __44__ATXInformationStore_deleteInfoSuggestion___block_invoke;
     v12[3] = &unk_1E80C4CC8;
-    v13 = v4;
+    v13 = suggestionCopy;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __44__ATXInformationStore_deleteInfoSuggestion___block_invoke_2;
@@ -1921,11 +1921,11 @@ uint64_t __44__ATXInformationStore_deleteInfoSuggestion___block_invoke_2(uint64_
   return *v5;
 }
 
-- (BOOL)deleteAllInfoSuggestionsWithSourceIdentifier:(id)a3 error:(id *)a4
+- (BOOL)deleteAllInfoSuggestionsWithSourceIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  identifierCopy = identifier;
+  v7 = identifierCopy;
+  if (identifierCopy)
   {
     v23 = 0;
     v24 = &v23;
@@ -1942,7 +1942,7 @@ uint64_t __44__ATXInformationStore_deleteInfoSuggestion___block_invoke_2(uint64_
     v15[1] = 3221225472;
     v15[2] = __74__ATXInformationStore_deleteAllInfoSuggestionsWithSourceIdentifier_error___block_invoke;
     v15[3] = &unk_1E80C4CC8;
-    v16 = v6;
+    v16 = identifierCopy;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __74__ATXInformationStore_deleteAllInfoSuggestionsWithSourceIdentifier_error___block_invoke_2;
@@ -1951,9 +1951,9 @@ uint64_t __44__ATXInformationStore_deleteInfoSuggestion___block_invoke_2(uint64_
     v13 = &v23;
     v14 = &v17;
     [(_PASSqliteDatabase *)db prepAndRunQuery:@"DELETE FROM suggestions WHERE sourceId = :sourceId" onPrep:v15 onRow:0 onError:v11];
-    if (a4)
+    if (error)
     {
-      *a4 = v18[5];
+      *error = v18[5];
     }
 
     v9 = *(v24 + 24);
@@ -2102,10 +2102,10 @@ uint64_t __47__ATXInformationStore_deleteExpiredSuggestions__block_invoke_2_458(
   return *v4;
 }
 
-- (BOOL)deleteAllSuggestionsForSourceId:(id)a3 excludingSuggestionId:(id)a4
+- (BOOL)deleteAllSuggestionsForSourceId:(id)id excludingSuggestionId:(id)suggestionId
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  suggestionIdCopy = suggestionId;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -2115,8 +2115,8 @@ uint64_t __47__ATXInformationStore_deleteExpiredSuggestions__block_invoke_2_458(
   v16[1] = 3221225472;
   v16[2] = __77__ATXInformationStore_deleteAllSuggestionsForSourceId_excludingSuggestionId___block_invoke;
   v16[3] = &unk_1E80C4EC0;
-  v17 = v6;
-  v18 = v7;
+  v17 = idCopy;
+  v18 = suggestionIdCopy;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __77__ATXInformationStore_deleteAllSuggestionsForSourceId_excludingSuggestionId___block_invoke_2;
@@ -2164,9 +2164,9 @@ uint64_t __77__ATXInformationStore_deleteAllSuggestionsForSourceId_excludingSugg
   return *v5;
 }
 
-- (BOOL)recordSuggestionPassedTimelineFiltersForTheFirstTime:(id)a3
+- (BOOL)recordSuggestionPassedTimelineFiltersForTheFirstTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -2176,7 +2176,7 @@ uint64_t __77__ATXInformationStore_deleteAllSuggestionsForSourceId_excludingSugg
   v11[1] = 3221225472;
   v11[2] = __76__ATXInformationStore_recordSuggestionPassedTimelineFiltersForTheFirstTime___block_invoke;
   v11[3] = &unk_1E80C4CC8;
-  v12 = v4;
+  v12 = timeCopy;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __76__ATXInformationStore_recordSuggestionPassedTimelineFiltersForTheFirstTime___block_invoke_2;
@@ -2219,9 +2219,9 @@ uint64_t __76__ATXInformationStore_recordSuggestionPassedTimelineFiltersForTheFi
   return *v5;
 }
 
-- (id)firstTimeAtWhichSuggestionPassedTimelineFilters:(id)a3
+- (id)firstTimeAtWhichSuggestionPassedTimelineFilters:(id)filters
 {
-  v4 = a3;
+  filtersCopy = filters;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -2233,7 +2233,7 @@ uint64_t __76__ATXInformationStore_recordSuggestionPassedTimelineFiltersForTheFi
   v12[1] = 3221225472;
   v12[2] = __71__ATXInformationStore_firstTimeAtWhichSuggestionPassedTimelineFilters___block_invoke;
   v12[3] = &unk_1E80C4CC8;
-  v13 = v4;
+  v13 = filtersCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __71__ATXInformationStore_firstTimeAtWhichSuggestionPassedTimelineFilters___block_invoke_2;
@@ -2294,18 +2294,18 @@ uint64_t __71__ATXInformationStore_firstTimeAtWhichSuggestionPassedTimelineFilte
   return *v4;
 }
 
-- (BOOL)insertOrIgnoreProactiveStackRotationRecord:(id)a3
+- (BOOL)insertOrIgnoreProactiveStackRotationRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v5 = os_transaction_create();
-  v6 = [v4 intent];
+  intent = [recordCopy intent];
 
-  if (v6 && (v7 = objc_autoreleasePoolPush(), v8 = MEMORY[0x1E696ACC8], [v4 intent], v9 = objc_claimAutoreleasedReturnValue(), v26 = 0, objc_msgSend(v8, "archivedDataWithRootObject:requiringSecureCoding:error:", v9, 1, &v26), v6 = objc_claimAutoreleasedReturnValue(), v10 = v26, v9, objc_autoreleasePoolPop(v7), v10))
+  if (intent && (v7 = objc_autoreleasePoolPush(), v8 = MEMORY[0x1E696ACC8], [recordCopy intent], v9 = objc_claimAutoreleasedReturnValue(), v26 = 0, objc_msgSend(v8, "archivedDataWithRootObject:requiringSecureCoding:error:", v9, 1, &v26), intent = objc_claimAutoreleasedReturnValue(), v10 = v26, v9, objc_autoreleasePoolPop(v7), v10))
   {
     v11 = __atxlog_handle_gi();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [ATXInformationStore insertOrIgnoreProactiveStackRotationRecord:v4];
+      [ATXInformationStore insertOrIgnoreProactiveStackRotationRecord:recordCopy];
     }
 
     v12 = 0;
@@ -2322,9 +2322,9 @@ uint64_t __71__ATXInformationStore_firstTimeAtWhichSuggestionPassedTimelineFilte
     v19[1] = 3221225472;
     v19[2] = __66__ATXInformationStore_insertOrIgnoreProactiveStackRotationRecord___block_invoke;
     v19[3] = &unk_1E80C4EC0;
-    v20 = v4;
-    v6 = v6;
-    v21 = v6;
+    v20 = recordCopy;
+    intent = intent;
+    v21 = intent;
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __66__ATXInformationStore_insertOrIgnoreProactiveStackRotationRecord___block_invoke_2;
@@ -2389,20 +2389,20 @@ uint64_t __66__ATXInformationStore_insertOrIgnoreProactiveStackRotationRecord___
   return *v5;
 }
 
-- (id)mostRecentRotationRecordForWidget:(id)a3 kind:(id)a4 intent:(id)a5 considerStalenessRotation:(BOOL)a6 filterByClientModelId:(id)a7
+- (id)mostRecentRotationRecordForWidget:(id)widget kind:(id)kind intent:(id)intent considerStalenessRotation:(BOOL)rotation filterByClientModelId:(id)id
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  rotationCopy = rotation;
+  widgetCopy = widget;
+  kindCopy = kind;
+  intentCopy = intent;
+  idCopy = id;
   v36 = 0;
   v37 = &v36;
   v38 = 0x3032000000;
   v39 = __Block_byref_object_copy__16;
   v40 = __Block_byref_object_dispose__16;
   v41 = 0;
-  if (v8)
+  if (rotationCopy)
   {
     v16 = @"SELECT suggestionId, criterion, isStalenessRotation, rotationTimestamp, relevancyDurationLimit, coolDownTimeInterval, clientModelId FROM proactiveStackRotations WHERE widgetBundleId = :widgetBundleId AND widgetKind = :widgetKind AND intentHash = :intentHash ORDER BY rotationTimestamp DESC LIMIT 1";
   }
@@ -2417,14 +2417,14 @@ uint64_t __66__ATXInformationStore_insertOrIgnoreProactiveStackRotationRecord___
   v32[1] = 3221225472;
   v32[2] = __117__ATXInformationStore_mostRecentRotationRecordForWidget_kind_intent_considerStalenessRotation_filterByClientModelId___block_invoke;
   v32[3] = &unk_1E80C4F10;
-  v33 = v12;
-  v34 = v13;
-  v35 = v14;
+  v33 = widgetCopy;
+  v34 = kindCopy;
+  v35 = intentCopy;
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __117__ATXInformationStore_mostRecentRotationRecordForWidget_kind_intent_considerStalenessRotation_filterByClientModelId___block_invoke_2;
   v26[3] = &unk_1E80C4F38;
-  v18 = v15;
+  v18 = idCopy;
   v27 = v18;
   v31 = &v36;
   v28 = v33;
@@ -2493,9 +2493,9 @@ uint64_t __117__ATXInformationStore_mostRecentRotationRecordForWidget_kind_inten
   return *v4;
 }
 
-- (id)mostRecentRotationRecordForSuggestionIdentifier:(id)a3
+- (id)mostRecentRotationRecordForSuggestionIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -2507,7 +2507,7 @@ uint64_t __117__ATXInformationStore_mostRecentRotationRecordForWidget_kind_inten
   v14[1] = 3221225472;
   v14[2] = __71__ATXInformationStore_mostRecentRotationRecordForSuggestionIdentifier___block_invoke;
   v14[3] = &unk_1E80C4CC8;
-  v15 = v4;
+  v15 = identifierCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __71__ATXInformationStore_mostRecentRotationRecordForSuggestionIdentifier___block_invoke_2;
@@ -2573,8 +2573,8 @@ uint64_t __71__ATXInformationStore_mostRecentRotationRecordForSuggestionIdentifi
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
-  v6 = [MEMORY[0x1E695DF00] distantFuture];
-  [v6 timeIntervalSinceReferenceDate];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  [distantFuture timeIntervalSinceReferenceDate];
   v8 = v7;
 
   v20 = v8;
@@ -2643,15 +2643,15 @@ uint64_t __89__ATXInformationStore_nextImportantDateAmongTimelineInducedProactiv
   return *v4;
 }
 
-- (BOOL)rotationExistsForSuggestionWithId:(id)a3 considerStalenessRotation:(BOOL)a4
+- (BOOL)rotationExistsForSuggestionWithId:(id)id considerStalenessRotation:(BOOL)rotation
 {
-  v4 = a4;
-  v6 = a3;
+  rotationCopy = rotation;
+  idCopy = id;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  if (v4)
+  if (rotationCopy)
   {
     v7 = @"SELECT rotationTimestamp FROM proactiveStackRotations WHERE suggestionId = :suggestionId";
   }
@@ -2666,7 +2666,7 @@ uint64_t __89__ATXInformationStore_nextImportantDateAmongTimelineInducedProactiv
   v12[1] = 3221225472;
   v12[2] = __83__ATXInformationStore_rotationExistsForSuggestionWithId_considerStalenessRotation___block_invoke;
   v12[3] = &unk_1E80C4CC8;
-  v9 = v6;
+  v9 = idCopy;
   v13 = v9;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -2693,9 +2693,9 @@ uint64_t __83__ATXInformationStore_rotationExistsForSuggestionWithId_considerSta
   return *v4;
 }
 
-- (BOOL)didSuggestionReachDurationLimit:(id)a3
+- (BOOL)didSuggestionReachDurationLimit:(id)limit
 {
-  v4 = a3;
+  limitCopy = limit;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -2705,7 +2705,7 @@ uint64_t __83__ATXInformationStore_rotationExistsForSuggestionWithId_considerSta
   v9[1] = 3221225472;
   v9[2] = __55__ATXInformationStore_didSuggestionReachDurationLimit___block_invoke;
   v9[3] = &unk_1E80C4CC8;
-  v6 = v4;
+  v6 = limitCopy;
   v10 = v6;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -2750,12 +2750,12 @@ uint64_t __55__ATXInformationStore_didSuggestionReachDurationLimit___block_invok
   return *v4;
 }
 
-- (id)proactiveRotationsForWidgetInThePastDay:(id)a3 kind:(id)a4 intent:(id)a5 filterByClientModelId:(id)a6
+- (id)proactiveRotationsForWidgetInThePastDay:(id)day kind:(id)kind intent:(id)intent filterByClientModelId:(id)id
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dayCopy = day;
+  kindCopy = kind;
+  intentCopy = intent;
+  idCopy = id;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
@@ -2767,14 +2767,14 @@ uint64_t __55__ATXInformationStore_didSuggestionReachDurationLimit___block_invok
   v29[1] = 3221225472;
   v29[2] = __97__ATXInformationStore_proactiveRotationsForWidgetInThePastDay_kind_intent_filterByClientModelId___block_invoke;
   v29[3] = &unk_1E80C4F10;
-  v30 = v10;
-  v31 = v11;
-  v32 = v12;
+  v30 = dayCopy;
+  v31 = kindCopy;
+  v32 = intentCopy;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __97__ATXInformationStore_proactiveRotationsForWidgetInThePastDay_kind_intent_filterByClientModelId___block_invoke_2;
   v23[3] = &unk_1E80C4FD8;
-  v15 = v13;
+  v15 = idCopy;
   v24 = v15;
   v25 = v30;
   v16 = v31;
@@ -2885,14 +2885,14 @@ uint64_t __59__ATXInformationStore_deleteExpiredProactiveStackRotations__block_i
   return *v5;
 }
 
-- (BOOL)recordUserRemovalOfSuggestedWidget:(id)a3 kind:(id)a4 intent:(id)a5 atDate:(id)a6 duration:(double)a7
+- (BOOL)recordUserRemovalOfSuggestedWidget:(id)widget kind:(id)kind intent:(id)intent atDate:(id)date duration:(double)duration
 {
   v51 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  [v15 timeIntervalSinceNow];
+  widgetCopy = widget;
+  kindCopy = kind;
+  intentCopy = intent;
+  dateCopy = date;
+  [dateCopy timeIntervalSinceNow];
   if (v16 <= 0.0)
   {
     v37 = 0;
@@ -2904,11 +2904,11 @@ uint64_t __59__ATXInformationStore_deleteExpiredProactiveStackRotations__block_i
     v31[1] = 3221225472;
     v31[2] = __86__ATXInformationStore_recordUserRemovalOfSuggestedWidget_kind_intent_atDate_duration___block_invoke;
     v31[3] = &unk_1E80C5000;
-    v32 = v12;
-    v33 = v13;
-    v34 = v14;
-    v35 = v15;
-    v36 = a7;
+    v32 = widgetCopy;
+    v33 = kindCopy;
+    v34 = intentCopy;
+    v35 = dateCopy;
+    durationCopy = duration;
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __86__ATXInformationStore_recordUserRemovalOfSuggestedWidget_kind_intent_atDate_duration___block_invoke_2;
@@ -2946,15 +2946,15 @@ uint64_t __59__ATXInformationStore_deleteExpiredProactiveStackRotations__block_i
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138413314;
-      v42 = v12;
+      v42 = widgetCopy;
       v43 = 2112;
-      v44 = v13;
+      v44 = kindCopy;
       v45 = 2112;
-      v46 = v14;
+      v46 = intentCopy;
       v47 = 2112;
-      v48 = v15;
+      v48 = dateCopy;
       v49 = 2048;
-      v50 = a7;
+      durationCopy2 = duration;
       _os_log_error_impl(&dword_1BF549000, v17, OS_LOG_TYPE_ERROR, "ATXInformationStore: Received call to write user removal of suggested widget with a date in the future! (extBundleId %@, kind %@, intent %@, date %@, duration %f)", buf, 0x34u);
     }
 
@@ -2999,31 +2999,31 @@ uint64_t __86__ATXInformationStore_recordUserRemovalOfSuggestedWidget_kind_inten
   return *v5;
 }
 
-- (id)_dateIntervalFromDismissStatement:(id)a3
+- (id)_dateIntervalFromDismissStatement:(id)statement
 {
-  v3 = a3;
+  statementCopy = statement;
   v4 = MEMORY[0x1E695DF00];
-  [v3 getDoubleForColumnName:"date" table:0];
+  [statementCopy getDoubleForColumnName:"date" table:0];
   v5 = [v4 dateWithTimeIntervalSinceReferenceDate:?];
-  v6 = [MEMORY[0x1E695DF00] distantFuture];
-  if (([v3 isNullForColumnName:"duration" table:0] & 1) == 0)
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  if (([statementCopy isNullForColumnName:"duration" table:0] & 1) == 0)
   {
-    [v3 getDoubleForColumnName:"duration" table:0];
+    [statementCopy getDoubleForColumnName:"duration" table:0];
     v7 = [v5 dateByAddingTimeInterval:?];
 
-    v6 = v7;
+    distantFuture = v7;
   }
 
-  v8 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v5 endDate:v6];
+  v8 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v5 endDate:distantFuture];
 
   return v8;
 }
 
-- (id)dateIntervalsOfUserRemovalOfSuggestedWidget:(id)a3 kind:(id)a4 intent:(id)a5
+- (id)dateIntervalsOfUserRemovalOfSuggestedWidget:(id)widget kind:(id)kind intent:(id)intent
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  widgetCopy = widget;
+  kindCopy = kind;
+  intentCopy = intent;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -3035,9 +3035,9 @@ uint64_t __86__ATXInformationStore_recordUserRemovalOfSuggestedWidget_kind_inten
   v23[1] = 3221225472;
   v23[2] = __79__ATXInformationStore_dateIntervalsOfUserRemovalOfSuggestedWidget_kind_intent___block_invoke;
   v23[3] = &unk_1E80C4F10;
-  v24 = v8;
-  v25 = v9;
-  v26 = v10;
+  v24 = widgetCopy;
+  v25 = kindCopy;
+  v26 = intentCopy;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __79__ATXInformationStore_dateIntervalsOfUserRemovalOfSuggestedWidget_kind_intent___block_invoke_2;
@@ -3098,9 +3098,9 @@ uint64_t __79__ATXInformationStore_dateIntervalsOfUserRemovalOfSuggestedWidget_k
   return *v7;
 }
 
-- (id)dateIntervalsOfUserRemovalOfSuggestedWidgetWithExtensionBundleId:(id)a3
+- (id)dateIntervalsOfUserRemovalOfSuggestedWidgetWithExtensionBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -3112,7 +3112,7 @@ uint64_t __79__ATXInformationStore_dateIntervalsOfUserRemovalOfSuggestedWidget_k
   v13[1] = 3221225472;
   v13[2] = __88__ATXInformationStore_dateIntervalsOfUserRemovalOfSuggestedWidgetWithExtensionBundleId___block_invoke;
   v13[3] = &unk_1E80C4CC8;
-  v14 = v4;
+  v14 = idCopy;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __88__ATXInformationStore_dateIntervalsOfUserRemovalOfSuggestedWidgetWithExtensionBundleId___block_invoke_2;
@@ -3160,9 +3160,9 @@ uint64_t __88__ATXInformationStore_dateIntervalsOfUserRemovalOfSuggestedWidgetWi
   return *v7;
 }
 
-- (id)dateIntervalsOfUserRemovalOfSuggestedWidgetWithIntent:(id)a3
+- (id)dateIntervalsOfUserRemovalOfSuggestedWidgetWithIntent:(id)intent
 {
-  v4 = a3;
+  intentCopy = intent;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -3174,7 +3174,7 @@ uint64_t __88__ATXInformationStore_dateIntervalsOfUserRemovalOfSuggestedWidgetWi
   v13[1] = 3221225472;
   v13[2] = __77__ATXInformationStore_dateIntervalsOfUserRemovalOfSuggestedWidgetWithIntent___block_invoke;
   v13[3] = &unk_1E80C4CC8;
-  v14 = v4;
+  v14 = intentCopy;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __77__ATXInformationStore_dateIntervalsOfUserRemovalOfSuggestedWidgetWithIntent___block_invoke_2;
@@ -3229,9 +3229,9 @@ uint64_t __77__ATXInformationStore_dateIntervalsOfUserRemovalOfSuggestedWidgetWi
   return *v7;
 }
 
-- (BOOL)clearWidgetRemovalHistoryOlderThan:(id)a3
+- (BOOL)clearWidgetRemovalHistoryOlderThan:(id)than
 {
-  v4 = a3;
+  thanCopy = than;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -3241,7 +3241,7 @@ uint64_t __77__ATXInformationStore_dateIntervalsOfUserRemovalOfSuggestedWidgetWi
   v9[1] = 3221225472;
   v9[2] = __58__ATXInformationStore_clearWidgetRemovalHistoryOlderThan___block_invoke;
   v9[3] = &unk_1E80C4CC8;
-  v6 = v4;
+  v6 = thanCopy;
   v10 = v6;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -3429,10 +3429,10 @@ uint64_t __44__ATXInformationStore_readAllDismissRecords__block_invoke_2_591(uin
   return *v7;
 }
 
-- (BOOL)appendDismissRecord:(id)a3
+- (BOOL)appendDismissRecord:(id)record
 {
-  v4 = a3;
-  if (v4)
+  recordCopy = record;
+  if (recordCopy)
   {
     v5 = os_transaction_create();
     v15 = 0;
@@ -3444,7 +3444,7 @@ uint64_t __44__ATXInformationStore_readAllDismissRecords__block_invoke_2_591(uin
     v13[1] = 3221225472;
     v13[2] = __43__ATXInformationStore_appendDismissRecord___block_invoke;
     v13[3] = &unk_1E80C4CC8;
-    v14 = v4;
+    v14 = recordCopy;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __43__ATXInformationStore_appendDismissRecord___block_invoke_2;
@@ -3500,10 +3500,10 @@ uint64_t __43__ATXInformationStore_appendDismissRecord___block_invoke_2(uint64_t
   return *v5;
 }
 
-- (id)mostRecentTimelineEntryWithScoreForWidget:(id)a3 kind:(id)a4 family:(int64_t)a5 intentIndexingHash:(int64_t)a6
+- (id)mostRecentTimelineEntryWithScoreForWidget:(id)widget kind:(id)kind family:(int64_t)family intentIndexingHash:(int64_t)hash
 {
-  v10 = a3;
-  v11 = a4;
+  widgetCopy = widget;
+  kindCopy = kind;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -3515,10 +3515,10 @@ uint64_t __43__ATXInformationStore_appendDismissRecord___block_invoke_2(uint64_t
   v21[1] = 3221225472;
   v21[2] = __96__ATXInformationStore_mostRecentTimelineEntryWithScoreForWidget_kind_family_intentIndexingHash___block_invoke;
   v21[3] = &unk_1E80C5078;
-  v22 = v10;
-  v23 = v11;
-  v24 = a5;
-  v25 = a6;
+  v22 = widgetCopy;
+  v23 = kindCopy;
+  familyCopy = family;
+  hashCopy = hash;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __96__ATXInformationStore_mostRecentTimelineEntryWithScoreForWidget_kind_family_intentIndexingHash___block_invoke_2;
@@ -3585,11 +3585,11 @@ uint64_t __96__ATXInformationStore_mostRecentTimelineEntryWithScoreForWidget_kin
   return *v4;
 }
 
-- (id)upcomingDateThatTimelineScoreChangesToOrFromZeroForWidget:(id)a3 kind:(id)a4 familyMask:(unint64_t)a5 intent:(id)a6
+- (id)upcomingDateThatTimelineScoreChangesToOrFromZeroForWidget:(id)widget kind:(id)kind familyMask:(unint64_t)mask intent:(id)intent
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  widgetCopy = widget;
+  kindCopy = kind;
+  intentCopy = intent;
   v35 = 0;
   v36 = &v35;
   v37 = 0x2020000000;
@@ -3601,9 +3601,9 @@ uint64_t __96__ATXInformationStore_mostRecentTimelineEntryWithScoreForWidget_kin
   v30[1] = 3221225472;
   v30[2] = __104__ATXInformationStore_upcomingDateThatTimelineScoreChangesToOrFromZeroForWidget_kind_familyMask_intent___block_invoke;
   v30[3] = &unk_1E80C50C8;
-  v31 = v10;
-  v32 = v11;
-  v16 = v12;
+  v31 = widgetCopy;
+  v32 = kindCopy;
+  v16 = intentCopy;
   v33 = v16;
   v34 = v14;
   v29[0] = MEMORY[0x1E69E9820];
@@ -3612,7 +3612,7 @@ uint64_t __96__ATXInformationStore_mostRecentTimelineEntryWithScoreForWidget_kin
   v29[3] = &unk_1E80C50F0;
   v29[6] = v14;
   v29[4] = &v35;
-  v29[5] = a5;
+  v29[5] = mask;
   v22 = MEMORY[0x1E69E9820];
   v23 = 3221225472;
   v24 = __104__ATXInformationStore_upcomingDateThatTimelineScoreChangesToOrFromZeroForWidget_kind_familyMask_intent___block_invoke_3;
@@ -3690,32 +3690,32 @@ uint64_t __104__ATXInformationStore_upcomingDateThatTimelineScoreChangesToOrFrom
   return *v5;
 }
 
-- (id)recentRelevantTimelineEntriesOrderedByDescendingScoreForWidget:(id)a3 kind:(id)a4 family:(int64_t)a5 intent:(id)a6
+- (id)recentRelevantTimelineEntriesOrderedByDescendingScoreForWidget:(id)widget kind:(id)kind family:(int64_t)family intent:(id)intent
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  widgetCopy = widget;
+  kindCopy = kind;
+  intentCopy = intent;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
   v31 = __Block_byref_object_copy__16;
   v32 = __Block_byref_object_dispose__16;
   v33 = objc_opt_new();
-  v13 = [v12 atx_indexingHash];
+  atx_indexingHash = [intentCopy atx_indexingHash];
   db = self->_db;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __105__ATXInformationStore_recentRelevantTimelineEntriesOrderedByDescendingScoreForWidget_kind_family_intent___block_invoke;
   v24[3] = &unk_1E80C5140;
-  v25 = v10;
-  v26 = v11;
-  v27 = a5;
+  v25 = widgetCopy;
+  v26 = kindCopy;
+  familyCopy = family;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __105__ATXInformationStore_recentRelevantTimelineEntriesOrderedByDescendingScoreForWidget_kind_family_intent___block_invoke_2;
   v23[3] = &unk_1E80C4FB0;
   v23[4] = &v28;
-  v23[5] = v13;
+  v23[5] = atx_indexingHash;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __105__ATXInformationStore_recentRelevantTimelineEntriesOrderedByDescendingScoreForWidget_kind_family_intent___block_invoke_3;
@@ -3782,10 +3782,10 @@ uint64_t __105__ATXInformationStore_recentRelevantTimelineEntriesOrderedByDescen
   return *v7;
 }
 
-- (id)mostRecentTimelineUpdateDateOfWidget:(id)a3 kind:(id)a4
+- (id)mostRecentTimelineUpdateDateOfWidget:(id)widget kind:(id)kind
 {
-  v6 = a3;
-  v7 = a4;
+  widgetCopy = widget;
+  kindCopy = kind;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -3797,9 +3797,9 @@ uint64_t __105__ATXInformationStore_recentRelevantTimelineEntriesOrderedByDescen
   v14[1] = 3221225472;
   v14[2] = __65__ATXInformationStore_mostRecentTimelineUpdateDateOfWidget_kind___block_invoke;
   v14[3] = &unk_1E80C4EC0;
-  v9 = v6;
+  v9 = widgetCopy;
   v15 = v9;
-  v10 = v7;
+  v10 = kindCopy;
   v16 = v10;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -3852,21 +3852,21 @@ uint64_t __65__ATXInformationStore_mostRecentTimelineUpdateDateOfWidget_kind___b
   return *v4;
 }
 
-- (BOOL)_insertTimelineEntries:(id)a3 forWidget:(id)a4 storageLimit:(unint64_t)a5
+- (BOOL)_insertTimelineEntries:(id)entries forWidget:(id)widget storageLimit:(unint64_t)limit
 {
-  v8 = a3;
-  v9 = a4;
+  entriesCopy = entries;
+  widgetCopy = widget;
   v10 = MEMORY[0x1E69C5D90];
   db = self->_db;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __69__ATXInformationStore__insertTimelineEntries_forWidget_storageLimit___block_invoke;
   v15[3] = &unk_1E80C5168;
-  v16 = v9;
-  v17 = v8;
-  v18 = a5;
-  v12 = v8;
-  v13 = v9;
+  v16 = widgetCopy;
+  v17 = entriesCopy;
+  limitCopy = limit;
+  v12 = entriesCopy;
+  v13 = widgetCopy;
   LOBYTE(db) = ([v10 writeTransactionWithHandle:db failableBlock:v15] & 1) == 0;
 
   return db;
@@ -4168,10 +4168,10 @@ uint64_t __46__ATXInformationStore_pruneInvalidSuggestions__block_invoke_2(uint6
   return *v4;
 }
 
-- (id)distinctScoresForWidget:(id)a3 kind:(id)a4
+- (id)distinctScoresForWidget:(id)widget kind:(id)kind
 {
-  v6 = a3;
-  v7 = a4;
+  widgetCopy = widget;
+  kindCopy = kind;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -4183,8 +4183,8 @@ uint64_t __46__ATXInformationStore_pruneInvalidSuggestions__block_invoke_2(uint6
   v17[1] = 3221225472;
   v17[2] = __52__ATXInformationStore_distinctScoresForWidget_kind___block_invoke;
   v17[3] = &unk_1E80C4EC0;
-  v18 = v6;
-  v19 = v7;
+  v18 = widgetCopy;
+  v19 = kindCopy;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __52__ATXInformationStore_distinctScoresForWidget_kind___block_invoke_2;
@@ -4280,10 +4280,10 @@ uint64_t __53__ATXInformationStore_clearOutdatedWidgetEngagements__block_invoke_
   return *v5;
 }
 
-- (BOOL)addEngagementRecordForWidget:(id)a3 date:(id)a4 engagementType:(int64_t)a5
+- (BOOL)addEngagementRecordForWidget:(id)widget date:(id)date engagementType:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  widgetCopy = widget;
+  dateCopy = date;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -4293,22 +4293,22 @@ uint64_t __53__ATXInformationStore_clearOutdatedWidgetEngagements__block_invoke_
   v15[1] = 3221225472;
   v15[2] = __72__ATXInformationStore_addEngagementRecordForWidget_date_engagementType___block_invoke;
   v15[3] = &unk_1E80C5140;
-  v11 = v8;
+  v11 = widgetCopy;
   v16 = v11;
-  v12 = v9;
+  v12 = dateCopy;
   v17 = v12;
-  v18 = a5;
+  typeCopy = type;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __72__ATXInformationStore_addEngagementRecordForWidget_date_engagementType___block_invoke_2;
   v14[3] = &unk_1E80C5190;
   v14[4] = &v19;
-  v14[5] = a5;
+  v14[5] = type;
   [(_PASSqliteDatabase *)db prepAndRunQuery:@"INSERT INTO widgetEngagements (widgetUniqueId onPrep:extensionBundleId onRow:widgetKind onError:size, intentHash, date, engagementType, containerBundleIdentifier) VALUES (:widgetUniqueId, :extensionBundleId, :widgetKind, :size, :intentHash, :date, :engagementType, :containerBundleIdentifier)", v15, 0, v14];
-  LOBYTE(a5) = *(v20 + 24);
+  LOBYTE(type) = *(v20 + 24);
 
   _Block_object_dispose(&v19, 8);
-  return a5;
+  return type;
 }
 
 void __72__ATXInformationStore_addEngagementRecordForWidget_date_engagementType___block_invoke(uint64_t a1, void *a2)
@@ -4350,9 +4350,9 @@ uint64_t __72__ATXInformationStore_addEngagementRecordForWidget_date_engagementT
   return *v5;
 }
 
-- (id)mostRecentEngagementOfWidget:(id)a3
+- (id)mostRecentEngagementOfWidget:(id)widget
 {
-  v4 = a3;
+  widgetCopy = widget;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -4364,7 +4364,7 @@ uint64_t __72__ATXInformationStore_addEngagementRecordForWidget_date_engagementT
   v10[1] = 3221225472;
   v10[2] = __52__ATXInformationStore_mostRecentEngagementOfWidget___block_invoke;
   v10[3] = &unk_1E80C4CC8;
-  v6 = v4;
+  v6 = widgetCopy;
   v11 = v6;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -4416,9 +4416,9 @@ uint64_t __52__ATXInformationStore_mostRecentEngagementOfWidget___block_invoke_3
   return *v4;
 }
 
-- (id)mostRecentEngagementOfWidget:(id)a3 ofType:(int64_t)a4
+- (id)mostRecentEngagementOfWidget:(id)widget ofType:(int64_t)type
 {
-  v6 = a3;
+  widgetCopy = widget;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -4430,15 +4430,15 @@ uint64_t __52__ATXInformationStore_mostRecentEngagementOfWidget___block_invoke_3
   v12[1] = 3221225472;
   v12[2] = __59__ATXInformationStore_mostRecentEngagementOfWidget_ofType___block_invoke;
   v12[3] = &unk_1E80C4F88;
-  v8 = v6;
+  v8 = widgetCopy;
   v13 = v8;
-  v14 = a4;
+  typeCopy = type;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __59__ATXInformationStore_mostRecentEngagementOfWidget_ofType___block_invoke_2;
   v11[3] = &unk_1E80C4FB0;
   v11[4] = &v15;
-  v11[5] = a4;
+  v11[5] = type;
   [(_PASSqliteDatabase *)db prepAndRunQuery:@"SELECT date FROM widgetEngagements WHERE widgetUniqueId = :widgetUniqueId AND engagementType = :engagementType ORDER BY date DESC LIMIT 1" onPrep:v12 onRow:v11 onError:&__block_literal_global_682];
   v9 = v16[5];
 
@@ -4487,10 +4487,10 @@ uint64_t __59__ATXInformationStore_mostRecentEngagementOfWidget_ofType___block_i
   return *v4;
 }
 
-- (id)mostRecentEngagementOfWidget:(id)a3 kind:(id)a4 ofType:(int64_t)a5
+- (id)mostRecentEngagementOfWidget:(id)widget kind:(id)kind ofType:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  widgetCopy = widget;
+  kindCopy = kind;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -4502,17 +4502,17 @@ uint64_t __59__ATXInformationStore_mostRecentEngagementOfWidget_ofType___block_i
   v16[1] = 3221225472;
   v16[2] = __64__ATXInformationStore_mostRecentEngagementOfWidget_kind_ofType___block_invoke;
   v16[3] = &unk_1E80C5140;
-  v11 = v8;
+  v11 = widgetCopy;
   v17 = v11;
-  v12 = v9;
+  v12 = kindCopy;
   v18 = v12;
-  v19 = a5;
+  typeCopy = type;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __64__ATXInformationStore_mostRecentEngagementOfWidget_kind_ofType___block_invoke_2;
   v15[3] = &unk_1E80C4FB0;
   v15[4] = &v20;
-  v15[5] = a5;
+  v15[5] = type;
   [(_PASSqliteDatabase *)db prepAndRunQuery:@"SELECT date FROM widgetEngagements WHERE extensionBundleId = :extensionBundleId AND widgetKind = :widgetKind AND engagementType = :engagementType ORDER BY date DESC LIMIT 1" onPrep:v16 onRow:v15 onError:&__block_literal_global_687];
   v13 = v21[5];
 
@@ -4560,12 +4560,12 @@ uint64_t __64__ATXInformationStore_mostRecentEngagementOfWidget_kind_ofType___bl
   return *v4;
 }
 
-- (id)firstEngagementOfWidget:(id)a3 kind:(id)a4 intent:(id)a5 sinceTimestamp:(id)a6
+- (id)firstEngagementOfWidget:(id)widget kind:(id)kind intent:(id)intent sinceTimestamp:(id)timestamp
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  widgetCopy = widget;
+  kindCopy = kind;
+  intentCopy = intent;
+  timestampCopy = timestamp;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -4577,13 +4577,13 @@ uint64_t __64__ATXInformationStore_mostRecentEngagementOfWidget_kind_ofType___bl
   v22[1] = 3221225472;
   v22[2] = __74__ATXInformationStore_firstEngagementOfWidget_kind_intent_sinceTimestamp___block_invoke;
   v22[3] = &unk_1E80C51B8;
-  v15 = v10;
+  v15 = widgetCopy;
   v23 = v15;
-  v16 = v11;
+  v16 = kindCopy;
   v24 = v16;
-  v17 = v12;
+  v17 = intentCopy;
   v25 = v17;
-  v18 = v13;
+  v18 = timestampCopy;
   v26 = v18;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
@@ -4638,11 +4638,11 @@ uint64_t __74__ATXInformationStore_firstEngagementOfWidget_kind_intent_sinceTime
   return *v4;
 }
 
-- (id)engagementTimestampsForExtensionBundleId:(id)a3 kind:(id)a4 intent:(id)a5 engagementType:(int64_t)a6
+- (id)engagementTimestampsForExtensionBundleId:(id)id kind:(id)kind intent:(id)intent engagementType:(int64_t)type
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  idCopy = id;
+  kindCopy = kind;
+  intentCopy = intent;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -4654,12 +4654,12 @@ uint64_t __74__ATXInformationStore_firstEngagementOfWidget_kind_intent_sinceTime
   v20[1] = 3221225472;
   v20[2] = __91__ATXInformationStore_engagementTimestampsForExtensionBundleId_kind_intent_engagementType___block_invoke;
   v20[3] = &unk_1E80C50C8;
-  v14 = v10;
+  v14 = idCopy;
   v21 = v14;
-  v15 = v11;
+  v15 = kindCopy;
   v22 = v15;
-  v24 = a6;
-  v16 = v12;
+  typeCopy = type;
+  v16 = intentCopy;
   v23 = v16;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
@@ -4775,10 +4775,10 @@ uint64_t __51__ATXInformationStore_fetchWidgetEngagementRecords__block_invoke_2(
   return *v7;
 }
 
-- (id)fetchWidgetTapEngagementsBetweenStartDate:(id)a3 endDate:(id)a4
+- (id)fetchWidgetTapEngagementsBetweenStartDate:(id)date endDate:(id)endDate
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -4790,9 +4790,9 @@ uint64_t __51__ATXInformationStore_fetchWidgetEngagementRecords__block_invoke_2(
   v14[1] = 3221225472;
   v14[2] = __73__ATXInformationStore_fetchWidgetTapEngagementsBetweenStartDate_endDate___block_invoke;
   v14[3] = &unk_1E80C4EC0;
-  v9 = v6;
+  v9 = dateCopy;
   v15 = v9;
-  v10 = v7;
+  v10 = endDateCopy;
   v16 = v10;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -4849,9 +4849,9 @@ uint64_t __73__ATXInformationStore_fetchWidgetTapEngagementsBetweenStartDate_end
   return *v4;
 }
 
-- (id)fetchWidgetTapEngagementCountSinceStartDate:(id)a3
+- (id)fetchWidgetTapEngagementCountSinceStartDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -4863,7 +4863,7 @@ uint64_t __73__ATXInformationStore_fetchWidgetTapEngagementsBetweenStartDate_end
   v10[1] = 3221225472;
   v10[2] = __67__ATXInformationStore_fetchWidgetTapEngagementCountSinceStartDate___block_invoke;
   v10[3] = &unk_1E80C4CC8;
-  v6 = v4;
+  v6 = dateCopy;
   v11 = v6;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -4982,16 +4982,16 @@ uint64_t __56__ATXInformationStore_fetchDistinctScoreCountForWidgets__block_invo
   return *v7;
 }
 
-- (id)fetchDistinctWidgetsIgnoringIntentSinceDate:(id)a3
+- (id)fetchDistinctWidgetsIgnoringIntentSinceDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__16;
   v18 = __Block_byref_object_dispose__16;
   v19 = objc_opt_new();
-  if (v4)
+  if (dateCopy)
   {
     v5 = @"SELECT DISTINCT extensionBundleId, containerBundleIdentifier, widgetKind, widgetFamily FROM timelineDonations WHERE suggestionMappingReason IS NOT NULL AND suggestionId IS NOT NULL AND timestamp > :date;";
   }
@@ -5006,7 +5006,7 @@ uint64_t __56__ATXInformationStore_fetchDistinctScoreCountForWidgets__block_invo
   v12[1] = 3221225472;
   v12[2] = __67__ATXInformationStore_fetchDistinctWidgetsIgnoringIntentSinceDate___block_invoke;
   v12[3] = &unk_1E80C4CC8;
-  v7 = v4;
+  v7 = dateCopy;
   v13 = v7;
   v10[4] = &v14;
   v11[0] = MEMORY[0x1E69E9820];
@@ -5073,9 +5073,9 @@ uint64_t __67__ATXInformationStore_fetchDistinctWidgetsIgnoringIntentSinceDate__
   return *v7;
 }
 
-- (id)fetchAllTimelineEntriesForWidget:(id)a3
+- (id)fetchAllTimelineEntriesForWidget:(id)widget
 {
-  v4 = a3;
+  widgetCopy = widget;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -5087,7 +5087,7 @@ uint64_t __67__ATXInformationStore_fetchDistinctWidgetsIgnoringIntentSinceDate__
   v13[1] = 3221225472;
   v13[2] = __56__ATXInformationStore_fetchAllTimelineEntriesForWidget___block_invoke;
   v13[3] = &unk_1E80C4CC8;
-  v14 = v4;
+  v14 = widgetCopy;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __56__ATXInformationStore_fetchAllTimelineEntriesForWidget___block_invoke_2;
@@ -5172,17 +5172,17 @@ uint64_t __56__ATXInformationStore_fetchAllTimelineEntriesForWidget___block_invo
   return *v7;
 }
 
-- (id)fetchTimelineEntriesForWidget:(id)a3 sinceDate:(id)a4
+- (id)fetchTimelineEntriesForWidget:(id)widget sinceDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  widgetCopy = widget;
+  dateCopy = date;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__16;
   v25 = __Block_byref_object_dispose__16;
   v26 = objc_opt_new();
-  if (v7)
+  if (dateCopy)
   {
     v8 = @"SELECT timestamp, score, duration, suggestionId, suggestionMappingReason FROM timelineDonations WHERE extensionBundleId = :extensionBundleId AND widgetKind = :widgetKind AND widgetFamily = :widgetFamily AND containerBundleIdentifier = :containerBundleIdentifier AND suggestionMappingReason IS NOT NULL AND timestamp > :date ORDER BY timestamp";
   }
@@ -5197,8 +5197,8 @@ uint64_t __56__ATXInformationStore_fetchAllTimelineEntriesForWidget___block_invo
   v18[1] = 3221225472;
   v18[2] = __63__ATXInformationStore_fetchTimelineEntriesForWidget_sinceDate___block_invoke;
   v18[3] = &unk_1E80C4EC0;
-  v19 = v6;
-  v10 = v7;
+  v19 = widgetCopy;
+  v10 = dateCopy;
   v20 = v10;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -5291,9 +5291,9 @@ uint64_t __63__ATXInformationStore_fetchTimelineEntriesForWidget_sinceDate___blo
   return *v7;
 }
 
-- (int64_t)mostRecentAbuseControlOutcomeForSuggestionId:(id)a3
+- (int64_t)mostRecentAbuseControlOutcomeForSuggestionId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -5303,7 +5303,7 @@ uint64_t __63__ATXInformationStore_fetchTimelineEntriesForWidget_sinceDate___blo
   v12[1] = 3221225472;
   v12[2] = __68__ATXInformationStore_mostRecentAbuseControlOutcomeForSuggestionId___block_invoke;
   v12[3] = &unk_1E80C4CC8;
-  v13 = v4;
+  v13 = idCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __68__ATXInformationStore_mostRecentAbuseControlOutcomeForSuggestionId___block_invoke_2;
@@ -5335,9 +5335,9 @@ uint64_t __68__ATXInformationStore_mostRecentAbuseControlOutcomeForSuggestionId_
   return *v4;
 }
 
-- (BOOL)addAbuseControlOutcomeForSuggestion:(id)a3 forTimestamp:(int64_t)a4 outcome:(int64_t)a5
+- (BOOL)addAbuseControlOutcomeForSuggestion:(id)suggestion forTimestamp:(int64_t)timestamp outcome:(int64_t)outcome
 {
-  v8 = a3;
+  suggestionCopy = suggestion;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -5347,9 +5347,9 @@ uint64_t __68__ATXInformationStore_mostRecentAbuseControlOutcomeForSuggestionId_
   v15[1] = 3221225472;
   v15[2] = __80__ATXInformationStore_addAbuseControlOutcomeForSuggestion_forTimestamp_outcome___block_invoke;
   v15[3] = &unk_1E80C51E0;
-  v16 = v8;
-  v17 = a4;
-  v18 = a5;
+  v16 = suggestionCopy;
+  timestampCopy = timestamp;
+  outcomeCopy = outcome;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __80__ATXInformationStore_addAbuseControlOutcomeForSuggestion_forTimestamp_outcome___block_invoke_2;
@@ -5358,10 +5358,10 @@ uint64_t __68__ATXInformationStore_mostRecentAbuseControlOutcomeForSuggestionId_
   v13 = v10;
   v14 = &v19;
   [(_PASSqliteDatabase *)db prepAndRunQuery:@"INSERT OR REPLACE INTO abuseControlOutcomes (suggestionId onPrep:timestamp onRow:outcome) VALUES (:suggestionId onError::timestamp, :outcome)", v15, 0, v12];
-  LOBYTE(a4) = *(v20 + 24);
+  LOBYTE(timestamp) = *(v20 + 24);
 
   _Block_object_dispose(&v19, 8);
-  return a4;
+  return timestamp;
 }
 
 void __80__ATXInformationStore_addAbuseControlOutcomeForSuggestion_forTimestamp_outcome___block_invoke(void *a1, void *a2)
@@ -5388,9 +5388,9 @@ uint64_t __80__ATXInformationStore_addAbuseControlOutcomeForSuggestion_forTimest
   return *v5;
 }
 
-- (BOOL)addAbuseControlOutcomes:(id)a3
+- (BOOL)addAbuseControlOutcomes:(id)outcomes
 {
-  v4 = a3;
+  outcomesCopy = outcomes;
   v12[0] = 0;
   v12[1] = v12;
   v12[2] = 0x2020000000;
@@ -5401,7 +5401,7 @@ uint64_t __80__ATXInformationStore_addAbuseControlOutcomeForSuggestion_forTimest
   v9[1] = 3221225472;
   v9[2] = __47__ATXInformationStore_addAbuseControlOutcomes___block_invoke;
   v9[3] = &unk_1E80C5208;
-  v7 = v4;
+  v7 = outcomesCopy;
   v10 = v7;
   v11 = v12;
   LOBYTE(v5) = ([v5 writeTransactionWithHandle:db failableBlock:v9] & 1) == 0;
@@ -5545,17 +5545,17 @@ uint64_t __54__ATXInformationStore_clearOldAbuseControlOutcomeData__block_invoke
   return *v5;
 }
 
-- (id)fetchAbuseControlOutcomesForSuggestion:(id)a3 sinceDate:(id)a4
+- (id)fetchAbuseControlOutcomesForSuggestion:(id)suggestion sinceDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  suggestionCopy = suggestion;
+  dateCopy = date;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
   v26 = __Block_byref_object_copy__16;
   v27 = __Block_byref_object_dispose__16;
   v28 = objc_opt_new();
-  if (v7)
+  if (dateCopy)
   {
     v8 = @"SELECT timestamp, outcome FROM abuseControlOutcomes WHERE suggestionId = :suggestionId AND timestamp > :timestamp ORDER BY timestamp";
   }
@@ -5570,8 +5570,8 @@ uint64_t __54__ATXInformationStore_clearOldAbuseControlOutcomeData__block_invoke
   v20[1] = 3221225472;
   v20[2] = __72__ATXInformationStore_fetchAbuseControlOutcomesForSuggestion_sinceDate___block_invoke;
   v20[3] = &unk_1E80C4EC0;
-  v21 = v6;
-  v10 = v7;
+  v21 = suggestionCopy;
+  v10 = dateCopy;
   v22 = v10;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -5636,9 +5636,9 @@ uint64_t __72__ATXInformationStore_fetchAbuseControlOutcomesForSuggestion_sinceD
   return *v7;
 }
 
-- (BOOL)addStackConfigStatistics:(id)a3
+- (BOOL)addStackConfigStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -5653,7 +5653,7 @@ uint64_t __72__ATXInformationStore_fetchAbuseControlOutcomesForSuggestion_sinceD
   v9[1] = 3221225472;
   v9[2] = __48__ATXInformationStore_addStackConfigStatistics___block_invoke;
   v9[3] = &unk_1E80C5230;
-  v7 = v4;
+  v7 = statisticsCopy;
   v10 = v7;
   v11 = v13;
   v12 = &v15;
@@ -5839,11 +5839,11 @@ uint64_t __48__ATXInformationStore_addStackConfigStatistics___block_invoke_2_781
   return *v5;
 }
 
-- (id)fetchStackConfigStatisticsForWidgetBundleId:(id)a3 widgetKind:(id)a4 containerBundleIdentifier:(id)a5 widgetFamily:(int64_t)a6
+- (id)fetchStackConfigStatisticsForWidgetBundleId:(id)id widgetKind:(id)kind containerBundleIdentifier:(id)identifier widgetFamily:(int64_t)family
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  idCopy = id;
+  kindCopy = kind;
+  identifierCopy = identifier;
   v36 = 0;
   v37 = &v36;
   v38 = 0x3032000000;
@@ -5855,10 +5855,10 @@ uint64_t __48__ATXInformationStore_addStackConfigStatistics___block_invoke_2_781
   v31[1] = 3221225472;
   v31[2] = __117__ATXInformationStore_fetchStackConfigStatisticsForWidgetBundleId_widgetKind_containerBundleIdentifier_widgetFamily___block_invoke;
   v31[3] = &unk_1E80C50C8;
-  v32 = v10;
-  v33 = v11;
-  v34 = v12;
-  v35 = a6;
+  v32 = idCopy;
+  v33 = kindCopy;
+  v34 = identifierCopy;
+  familyCopy = family;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __117__ATXInformationStore_fetchStackConfigStatisticsForWidgetBundleId_widgetKind_containerBundleIdentifier_widgetFamily___block_invoke_2;
@@ -5867,7 +5867,7 @@ uint64_t __48__ATXInformationStore_addStackConfigStatistics___block_invoke_2_781
   v26 = v32;
   v27 = v33;
   v28 = v34;
-  v30 = a6;
+  familyCopy2 = family;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __117__ATXInformationStore_fetchStackConfigStatisticsForWidgetBundleId_widgetKind_containerBundleIdentifier_widgetFamily___block_invoke_4;
@@ -5878,7 +5878,7 @@ uint64_t __48__ATXInformationStore_addStackConfigStatistics___block_invoke_2_781
   v21 = v15;
   v16 = v28;
   v23 = &v36;
-  v24 = a6;
+  familyCopy3 = family;
   v22 = v16;
   [(_PASSqliteDatabase *)db prepAndRunQuery:@"SELECT countOfSmartStacksWithWidget onPrep:countOfNonSmartStacksWithWidget onRow:countOfStandaloneWidgets onError:countOfWidgetsWithUnknownStackKind, timestamp FROM stackConfigurationHistory WHERE (widgetBundleId = :widgetBundleId AND widgetKind = :widgetKind AND containerBundleIdentifier = :containerBundleIdentifier AND widgetFamily = :widgetFamily) ORDER BY timestamp", v31, v25, v19];
   v17 = v37[5];
@@ -5988,12 +5988,12 @@ uint64_t __65__ATXInformationStore_numberOfWidgetReloadForSuggestionInPastDay__b
   return *v4;
 }
 
-- (BOOL)didMostRecentReloadFailForExtension:(id)a3 kind:(id)a4 intent:(id)a5 cutoffDate:(id)a6
+- (BOOL)didMostRecentReloadFailForExtension:(id)extension kind:(id)kind intent:(id)intent cutoffDate:(id)date
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  extensionCopy = extension;
+  kindCopy = kind;
+  intentCopy = intent;
+  dateCopy = date;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -6003,13 +6003,13 @@ uint64_t __65__ATXInformationStore_numberOfWidgetReloadForSuggestionInPastDay__b
   v21[1] = 3221225472;
   v21[2] = __82__ATXInformationStore_didMostRecentReloadFailForExtension_kind_intent_cutoffDate___block_invoke;
   v21[3] = &unk_1E80C51B8;
-  v15 = v13;
+  v15 = dateCopy;
   v22 = v15;
-  v16 = v10;
+  v16 = extensionCopy;
   v23 = v16;
-  v17 = v11;
+  v17 = kindCopy;
   v24 = v17;
-  v18 = v12;
+  v18 = intentCopy;
   v25 = v18;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
@@ -6047,10 +6047,10 @@ uint64_t __82__ATXInformationStore_didMostRecentReloadFailForExtension_kind_inte
   return *v4;
 }
 
-- (BOOL)recordWidgetReloadForSuggestion:(id)a3 date:(id)a4 readyForDisplay:(BOOL)a5
+- (BOOL)recordWidgetReloadForSuggestion:(id)suggestion date:(id)date readyForDisplay:(BOOL)display
 {
-  v8 = a3;
-  v9 = a4;
+  suggestionCopy = suggestion;
+  dateCopy = date;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -6060,10 +6060,10 @@ uint64_t __82__ATXInformationStore_didMostRecentReloadFailForExtension_kind_inte
   v15[1] = 3221225472;
   v15[2] = __76__ATXInformationStore_recordWidgetReloadForSuggestion_date_readyForDisplay___block_invoke;
   v15[3] = &unk_1E80C52D0;
-  v11 = v9;
+  v11 = dateCopy;
   v16 = v11;
-  v18 = a5;
-  v12 = v8;
+  displayCopy = display;
+  v12 = suggestionCopy;
   v17 = v12;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -6188,9 +6188,9 @@ uint64_t __56__ATXInformationStore_numberOfSuggestedWidgetsInPastDay__block_invo
   return *v4;
 }
 
-- (id)firstAppearDateOfSuggestedWidgetWithUniqueId:(id)a3
+- (id)firstAppearDateOfSuggestedWidgetWithUniqueId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -6202,7 +6202,7 @@ uint64_t __56__ATXInformationStore_numberOfSuggestedWidgetsInPastDay__block_invo
   v10[1] = 3221225472;
   v10[2] = __68__ATXInformationStore_firstAppearDateOfSuggestedWidgetWithUniqueId___block_invoke;
   v10[3] = &unk_1E80C4CC8;
-  v6 = v4;
+  v6 = idCopy;
   v11 = v6;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -6241,9 +6241,9 @@ uint64_t __68__ATXInformationStore_firstAppearDateOfSuggestedWidgetWithUniqueId_
   return *v4;
 }
 
-- (BOOL)recordSuggestedWidgetUniqueIdIfNotExist:(id)a3
+- (BOOL)recordSuggestedWidgetUniqueIdIfNotExist:(id)exist
 {
-  v4 = a3;
+  existCopy = exist;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -6255,7 +6255,7 @@ uint64_t __68__ATXInformationStore_firstAppearDateOfSuggestedWidgetWithUniqueId_
   v11[1] = 3221225472;
   v11[2] = __63__ATXInformationStore_recordSuggestedWidgetUniqueIdIfNotExist___block_invoke;
   v11[3] = &unk_1E80C4F88;
-  v8 = v4;
+  v8 = existCopy;
   v12 = v8;
   v13 = v6;
   v10[0] = MEMORY[0x1E69E9820];

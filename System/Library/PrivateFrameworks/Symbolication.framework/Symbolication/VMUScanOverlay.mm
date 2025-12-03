@@ -1,21 +1,21 @@
 @interface VMUScanOverlay
-+ (id)defaultOverlayWithScanner:(id)a3;
-- (VMUScanOverlay)initWithScanner:(id)a3;
-- (void)addMetadataRefinementRule:(id)a3;
++ (id)defaultOverlayWithScanner:(id)scanner;
+- (VMUScanOverlay)initWithScanner:(id)scanner;
+- (void)addMetadataRefinementRule:(id)rule;
 @end
 
 @implementation VMUScanOverlay
 
-+ (id)defaultOverlayWithScanner:(id)a3
++ (id)defaultOverlayWithScanner:(id)scanner
 {
-  v3 = a3;
+  scannerCopy = scanner;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __44__VMUScanOverlay_defaultOverlayWithScanner___block_invoke;
   block[3] = &unk_1E8278288;
-  v10 = v3;
+  v10 = scannerCopy;
   v4 = defaultOverlayWithScanner__onceToken;
-  v5 = v3;
+  v5 = scannerCopy;
   if (v4 != -1)
   {
     dispatch_once(&defaultOverlayWithScanner__onceToken, block);
@@ -34,12 +34,12 @@ void __44__VMUScanOverlay_defaultOverlayWithScanner___block_invoke(uint64_t a1)
   defaultOverlayWithScanner__s_defaultOverlay = v1;
 }
 
-- (VMUScanOverlay)initWithScanner:(id)a3
+- (VMUScanOverlay)initWithScanner:(id)scanner
 {
-  v4 = a3;
+  scannerCopy = scanner;
   if (getenv("DT_NO_SCAN_OVERLAY"))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -66,47 +66,47 @@ void __44__VMUScanOverlay_defaultOverlayWithScanner___block_invoke(uint64_t a1)
       v12 = v10;
       v13 = _Block_copy(aBlock);
       v14 = [v11 setByAddingObject:@"libswiftCore.dylib"];
-      v15 = [v4 objectIdentifier];
-      v16 = [v15 swiftRuntimeInfoStableABI];
-      v17 = v16;
-      if (v16)
+      objectIdentifier = [scannerCopy objectIdentifier];
+      swiftRuntimeInfoStableABI = [objectIdentifier swiftRuntimeInfoStableABI];
+      v17 = swiftRuntimeInfoStableABI;
+      if (swiftRuntimeInfoStableABI)
       {
-        v18 = v16;
+        swiftRuntimeInfoPreABI = swiftRuntimeInfoStableABI;
       }
 
       else
       {
-        v19 = [v4 objectIdentifier];
-        v18 = [v19 swiftRuntimeInfoPreABI];
+        objectIdentifier2 = [scannerCopy objectIdentifier];
+        swiftRuntimeInfoPreABI = [objectIdentifier2 swiftRuntimeInfoPreABI];
       }
 
-      v20 = [v15 swiftRuntimeInfoStableABI];
-      if (v20)
+      swiftRuntimeInfoStableABI2 = [objectIdentifier swiftRuntimeInfoStableABI];
+      if (swiftRuntimeInfoStableABI2)
       {
-        [v4 objectIdentifier];
-        v36 = v15;
-        v21 = v4;
-        v22 = v18;
+        [scannerCopy objectIdentifier];
+        v36 = objectIdentifier;
+        v21 = scannerCopy;
+        v22 = swiftRuntimeInfoPreABI;
         v23 = v6;
         v24 = v14;
         v25 = v13;
         v26 = v11;
         v28 = v27 = v12;
-        v29 = [v28 swiftRuntimeInfoPreABI];
+        swiftRuntimeInfoPreABI2 = [v28 swiftRuntimeInfoPreABI];
 
         v12 = v27;
         v11 = v26;
         v13 = v25;
         v14 = v24;
         v6 = v23;
-        v18 = v22;
-        v4 = v21;
-        v15 = v36;
+        swiftRuntimeInfoPreABI = v22;
+        scannerCopy = v21;
+        objectIdentifier = v36;
       }
 
       else
       {
-        v29 = 0;
+        swiftRuntimeInfoPreABI2 = 0;
       }
 
       v37[0] = MEMORY[0x1E69E9820];
@@ -114,24 +114,24 @@ void __44__VMUScanOverlay_defaultOverlayWithScanner___block_invoke(uint64_t a1)
       v37[2] = __34__VMUScanOverlay_initWithScanner___block_invoke_4;
       v37[3] = &unk_1E82783B0;
       v38 = &unk_1F4638B30;
-      v39 = v15;
-      v40 = v18;
-      v41 = v29;
+      v39 = objectIdentifier;
+      v40 = swiftRuntimeInfoPreABI;
+      v41 = swiftRuntimeInfoPreABI2;
       v42 = v14;
       v43 = v13;
       v30 = v13;
       v31 = v14;
-      v32 = v29;
-      v33 = v18;
-      v34 = v15;
+      v32 = swiftRuntimeInfoPreABI2;
+      v33 = swiftRuntimeInfoPreABI;
+      v34 = objectIdentifier;
       [(VMUScanOverlay *)v6 addMetadataRefinementRule:v37];
     }
 
     self = v6;
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 void __34__VMUScanOverlay_initWithScanner___block_invoke(uint64_t a1, void *a2)
@@ -1380,10 +1380,10 @@ void __34__VMUScanOverlay_initWithScanner___block_invoke_34(uint64_t a1, void *a
   }
 }
 
-- (void)addMetadataRefinementRule:(id)a3
+- (void)addMetadataRefinementRule:(id)rule
 {
   rules = self->_rules;
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(rule);
   [(NSMutableArray *)rules addObject:v4];
 }
 

@@ -1,15 +1,15 @@
 @interface APMediaServiceErrorResponseProcessor
-+ (void)processJourneyErrorEventsForContentDataItems:(id)a3 contextFingerprint:(id)a4 params:(id)a5;
++ (void)processJourneyErrorEventsForContentDataItems:(id)items contextFingerprint:(id)fingerprint params:(id)params;
 @end
 
 @implementation APMediaServiceErrorResponseProcessor
 
-+ (void)processJourneyErrorEventsForContentDataItems:(id)a3 contextFingerprint:(id)a4 params:(id)a5
++ (void)processJourneyErrorEventsForContentDataItems:(id)items contextFingerprint:(id)fingerprint params:(id)params
 {
-  v7 = a3;
-  v31 = a4;
-  v8 = a5;
-  if (![v7 count])
+  itemsCopy = items;
+  fingerprintCopy = fingerprint;
+  paramsCopy = params;
+  if (![itemsCopy count])
   {
     v9 = APLogForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -19,20 +19,20 @@
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Encountered error from client. Error code: %{public}lu", buf, 0xCu);
     }
 
-    v10 = [[NSUUID alloc] initWithUUIDString:v31];
+    v10 = [[NSUUID alloc] initWithUUIDString:fingerprintCopy];
     v11 = [APContentData createForServerUnfilledReason:1025 placementType:5 contextIdentifier:v10];
 
     v12 = [[APJourneyDaemonMetricHelper alloc] initWithContentData:v11];
-    v13 = [v8 requestID];
-    v14 = [v13 UUIDString];
-    -[APJourneyDaemonMetricHelper requestFailedForBundleID:withCode:requestID:placement:placementType:](v12, "requestFailedForBundleID:withCode:requestID:placement:placementType:", @"com.apple.AppStore", 3304, v14, [v8 placement], 5);
+    requestID = [paramsCopy requestID];
+    uUIDString = [requestID UUIDString];
+    -[APJourneyDaemonMetricHelper requestFailedForBundleID:withCode:requestID:placement:placementType:](v12, "requestFailedForBundleID:withCode:requestID:placement:placementType:", @"com.apple.AppStore", 3304, uUIDString, [paramsCopy placement], 5);
   }
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v15 = v7;
+  v15 = itemsCopy;
   v16 = [v15 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v16)
   {
@@ -55,20 +55,20 @@
           v22 = APLogForCategory();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
           {
-            v23 = [v21 serverUnfilledReason];
+            serverUnfilledReason = [v21 serverUnfilledReason];
             *buf = v30;
-            v38 = v23;
+            v38 = serverUnfilledReason;
             _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "Encountered error from client. Error code: %{public}lu", buf, 0xCu);
           }
 
-          v24 = [v21 serverUnfilledReason];
-          v25 = [[NSUUID alloc] initWithUUIDString:v31];
-          v26 = [APContentData createForServerUnfilledReason:v24 placementType:5 contextIdentifier:v25];
+          serverUnfilledReason2 = [v21 serverUnfilledReason];
+          v25 = [[NSUUID alloc] initWithUUIDString:fingerprintCopy];
+          v26 = [APContentData createForServerUnfilledReason:serverUnfilledReason2 placementType:5 contextIdentifier:v25];
 
           v27 = [[APJourneyDaemonMetricHelper alloc] initWithContentData:v26];
-          v28 = [v8 requestID];
-          v29 = [v28 UUIDString];
-          -[APJourneyDaemonMetricHelper requestFailedForBundleID:withCode:requestID:placement:placementType:](v27, "requestFailedForBundleID:withCode:requestID:placement:placementType:", @"com.apple.AppStore", 3304, v29, [v8 placement], 5);
+          requestID2 = [paramsCopy requestID];
+          uUIDString2 = [requestID2 UUIDString];
+          -[APJourneyDaemonMetricHelper requestFailedForBundleID:withCode:requestID:placement:placementType:](v27, "requestFailedForBundleID:withCode:requestID:placement:placementType:", @"com.apple.AppStore", 3304, uUIDString2, [paramsCopy placement], 5);
         }
       }
 

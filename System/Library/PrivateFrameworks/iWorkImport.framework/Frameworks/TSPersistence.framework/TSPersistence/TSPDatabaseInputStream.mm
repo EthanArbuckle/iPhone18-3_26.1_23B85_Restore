@@ -1,15 +1,15 @@
 @interface TSPDatabaseInputStream
-- (TSPDatabaseInputStream)initWithBlob:(sqlite3_blob *)a3;
-- (unint64_t)readToBuffer:(char *)a3 size:(unint64_t)a4;
+- (TSPDatabaseInputStream)initWithBlob:(sqlite3_blob *)blob;
+- (unint64_t)readToBuffer:(char *)buffer size:(unint64_t)size;
 - (void)close;
 - (void)dealloc;
-- (void)readWithHandler:(id)a3;
-- (void)seekToOffset:(int64_t)a3;
+- (void)readWithHandler:(id)handler;
+- (void)seekToOffset:(int64_t)offset;
 @end
 
 @implementation TSPDatabaseInputStream
 
-- (TSPDatabaseInputStream)initWithBlob:(sqlite3_blob *)a3
+- (TSPDatabaseInputStream)initWithBlob:(sqlite3_blob *)blob
 {
   v9.receiver = self;
   v9.super_class = TSPDatabaseInputStream;
@@ -21,8 +21,8 @@
     readQueue = v4->_readQueue;
     v4->_readQueue = v6;
 
-    v4->_blob = a3;
-    v4->_length = sqlite3_blob_bytes(a3);
+    v4->_blob = blob;
+    v4->_length = sqlite3_blob_bytes(blob);
   }
 
   return v4;
@@ -46,10 +46,10 @@
   }
 }
 
-- (void)readWithHandler:(id)a3
+- (void)readWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   length = self->_length;
   if (length)
   {
@@ -123,7 +123,7 @@ LABEL_13:
     v27[2] = sub_276A5BA74;
     v27[3] = &unk_27A6E4E90;
     v17 = &v28;
-    v28 = v4;
+    v28 = handlerCopy;
     v18 = v27;
   }
 
@@ -132,36 +132,36 @@ LABEL_13:
 LABEL_15:
 }
 
-- (unint64_t)readToBuffer:(char *)a3 size:(unint64_t)a4
+- (unint64_t)readToBuffer:(char *)buffer size:(unint64_t)size
 {
-  if (a4 >> 31)
+  if (size >> 31)
   {
     sub_276BD4E24(self, a2);
-    LODWORD(a4) = 0x7FFFFFFF;
+    LODWORD(size) = 0x7FFFFFFF;
   }
 
-  if (a4 >= self->_length - self->_offset)
+  if (size >= self->_length - self->_offset)
   {
-    v6 = self->_length - self->_offset;
+    sizeCopy = self->_length - self->_offset;
   }
 
   else
   {
-    v6 = a4;
+    sizeCopy = size;
   }
 
-  if (sqlite3_blob_read(self->_blob, a3, v6, self->_offset))
+  if (sqlite3_blob_read(self->_blob, buffer, sizeCopy, self->_offset))
   {
     return 0;
   }
 
-  self->_offset += v6;
-  return v6;
+  self->_offset += sizeCopy;
+  return sizeCopy;
 }
 
-- (void)seekToOffset:(int64_t)a3
+- (void)seekToOffset:(int64_t)offset
 {
-  if (a3 > 0x7FFFFFFF || self->_length < a3)
+  if (offset > 0x7FFFFFFF || self->_length < offset)
   {
     v5 = MEMORY[0x277D81150];
     v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSPDatabaseInputStream seekToOffset:]");
@@ -169,10 +169,10 @@ LABEL_15:
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v5, v9, v6, v8, 116, 0, "Requested seek to offset past end of stream");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v10, v11);
-    LODWORD(a3) = self->_length;
+    LODWORD(offset) = self->_length;
   }
 
-  self->_offset = a3;
+  self->_offset = offset;
 }
 
 @end

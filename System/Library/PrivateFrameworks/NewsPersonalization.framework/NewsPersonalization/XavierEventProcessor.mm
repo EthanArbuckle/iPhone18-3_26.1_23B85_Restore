@@ -1,6 +1,6 @@
 @interface XavierEventProcessor
 - (_TtC19NewsPersonalization20XavierEventProcessor)init;
-- (void)configurationManager:(id)a3 appConfigurationDidChange:(id)a4;
+- (void)configurationManager:(id)manager appConfigurationDidChange:(id)change;
 @end
 
 @implementation XavierEventProcessor
@@ -12,7 +12,7 @@
   return result;
 }
 
-- (void)configurationManager:(id)a3 appConfigurationDidChange:(id)a4
+- (void)configurationManager:(id)manager appConfigurationDidChange:(id)change
 {
   v6 = sub_1C6D76A40();
   v7 = *(v6 - 8);
@@ -22,11 +22,11 @@
   MEMORY[0x1EEE9AC00](v11);
   v13 = &v17 - v12;
   swift_unknownObjectRetain();
-  v14 = self;
-  v15 = [a4 personalizationTreatment];
+  selfCopy = self;
+  personalizationTreatment = [change personalizationTreatment];
   sub_1C6B7A268();
 
-  v16 = *(&v14->super.isa + OBJC_IVAR____TtC19NewsPersonalization20XavierEventProcessor__configuration);
+  v16 = *(&selfCopy->super.isa + OBJC_IVAR____TtC19NewsPersonalization20XavierEventProcessor__configuration);
   (*(v7 + 16))(v10, v13, v6);
 
   sub_1C6D78240();

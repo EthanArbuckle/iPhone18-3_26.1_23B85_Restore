@@ -1,67 +1,67 @@
 @interface CHBPlotArea
-+ (id)readWithState:(id)a3;
-+ (void)readAxisGroup:(int)a3 to:(id)a4 state:(id)a5;
++ (id)readWithState:(id)state;
++ (void)readAxisGroup:(int)group to:(id)to state:(id)state;
 @end
 
 @implementation CHBPlotArea
 
-+ (id)readWithState:(id)a3
++ (id)readWithState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 chart];
-  v6 = [v5 plotArea];
+  stateCopy = state;
+  chart = [stateCopy chart];
+  plotArea = [chart plotArea];
 
   XlChartFrameType::XlChartFrameType(&v11);
   v11.var0 = &unk_286EC9A70;
   *(&v11.var16 + 1) = 0;
-  v7 = [v4 xlReader];
-  (*(*v7 + 704))(v7, &v11);
-  v8 = [CHBGraphicProperties oadGraphicPropertiesFromXlChartFrameType:&v11 state:v4];
-  v9 = [v4 autoStyling];
-  [v9 resolvePlotAreaGraphicProperties:v8];
+  xlReader = [stateCopy xlReader];
+  (*(*xlReader + 704))(xlReader, &v11);
+  v8 = [CHBGraphicProperties oadGraphicPropertiesFromXlChartFrameType:&v11 state:stateCopy];
+  autoStyling = [stateCopy autoStyling];
+  [autoStyling resolvePlotAreaGraphicProperties:v8];
 
-  [v6 setGraphicProperties:v8];
-  [a1 readAxisGroup:0 to:v6 state:v4];
-  [a1 readAxisGroup:1 to:v6 state:v4];
+  [plotArea setGraphicProperties:v8];
+  [self readAxisGroup:0 to:plotArea state:stateCopy];
+  [self readAxisGroup:1 to:plotArea state:stateCopy];
 
   XlChartFrameType::~XlChartFrameType(&v11);
 
-  return v6;
+  return plotArea;
 }
 
-+ (void)readAxisGroup:(int)a3 to:(id)a4 state:(id)a5
++ (void)readAxisGroup:(int)group to:(id)to state:(id)state
 {
-  v6 = *&a3;
-  v7 = a4;
-  v8 = a5;
-  [v8 setAxisGroup:v6];
-  v9 = [v7 axes];
-  v10 = [CHBAxis readWithXlPlotAxis:0 state:v8];
-  [v9 addObject:v10];
+  v6 = *&group;
+  toCopy = to;
+  stateCopy = state;
+  [stateCopy setAxisGroup:v6];
+  axes = [toCopy axes];
+  v10 = [CHBAxis readWithXlPlotAxis:0 state:stateCopy];
+  [axes addObject:v10];
 
-  v11 = [CHBAxis readWithXlPlotAxis:1 state:v8];
-  [v9 addObject:v11];
+  v11 = [CHBAxis readWithXlPlotAxis:1 state:stateCopy];
+  [axes addObject:v11];
 
-  v12 = [CHBAxis readWithXlPlotAxis:2 state:v8];
-  [v9 addObject:v12];
+  v12 = [CHBAxis readWithXlPlotAxis:2 state:stateCopy];
+  [axes addObject:v12];
 
-  v13 = [v8 xlReader];
-  v14 = [v7 chartTypes];
-  v24 = v7;
-  v15 = [v8 xlPlotCount];
-  if (v15 >= 1)
+  xlReader = [stateCopy xlReader];
+  chartTypes = [toCopy chartTypes];
+  v24 = toCopy;
+  xlPlotCount = [stateCopy xlPlotCount];
+  if (xlPlotCount >= 1)
   {
     v16 = 0;
     do
     {
       v29 = 0;
-      (*(*v13 + 712))(v13, v6, v16, &v29);
+      (*(*xlReader + 712))(xlReader, v6, v16, &v29);
       v17 = v29;
       if (v29)
       {
         if (!v16)
         {
-          if (XlChartBinaryReader::hasLegend(v13))
+          if (XlChartBinaryReader::hasLegend(xlReader))
           {
             XlChartTextFrame::XlChartTextFrame(v25);
             v25[0] = &unk_286EC9AA8;
@@ -69,33 +69,33 @@
             v26 = 0;
             v27 = 16843009;
             v28 = 1;
-            v18 = [v8 xlReader];
-            (*(*v18 + 768))(v18, v25);
-            v19 = [v8 chart];
-            v20 = [CHBLegend readFrom:v25 state:v8];
-            [v19 setLegend:v20];
+            xlReader2 = [stateCopy xlReader];
+            (*(*xlReader2 + 768))(xlReader2, v25);
+            chart = [stateCopy chart];
+            v20 = [CHBLegend readFrom:v25 state:stateCopy];
+            [chart setLegend:v20];
 
             XlChartTextFrame::~XlChartTextFrame(v25);
           }
 
-          v21 = [v8 chart];
+          chart2 = [stateCopy chart];
           v22 = [CHBView3D readFrom:v29[1]];
-          [v21 setView3D:v22];
+          [chart2 setView3D:v22];
 
           v17 = v29;
         }
 
-        [v8 setXlCurrentPlotIndex:*(v17[2] + 16)];
-        [v8 setXlCurrentPlot:v29];
-        v23 = [CHBChartType readWithState:v8];
-        [v14 addObject:v23];
-        if ([v14 count] == 1 && objc_msgSend(v23, "isHorizontal"))
+        [stateCopy setXlCurrentPlotIndex:*(v17[2] + 16)];
+        [stateCopy setXlCurrentPlot:v29];
+        v23 = [CHBChartType readWithState:stateCopy];
+        [chartTypes addObject:v23];
+        if ([chartTypes count] == 1 && objc_msgSend(v23, "isHorizontal"))
         {
-          [v9 adjustAxesPositionForHorizontalChart];
+          [axes adjustAxesPositionForHorizontalChart];
         }
 
-        [v8 setXlCurrentPlot:0];
-        [v8 setXlCurrentPlotIndex:0xFFFFFFFFLL];
+        [stateCopy setXlCurrentPlot:0];
+        [stateCopy setXlCurrentPlotIndex:0xFFFFFFFFLL];
         if (v29)
         {
           (*(*v29 + 8))(v29);
@@ -105,7 +105,7 @@
       v16 = (v16 + 1);
     }
 
-    while (v15 != v16);
+    while (xlPlotCount != v16);
   }
 }
 

@@ -1,19 +1,19 @@
 @interface INResolveObjectReferenceIntent
-- (INResolveObjectReferenceIntent)initWithReference:(id)a3;
+- (INResolveObjectReferenceIntent)initWithReference:(id)reference;
 - (NSData)reference;
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setReference:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setReference:(id)reference;
 @end
 
 @implementation INResolveObjectReferenceIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = [(INResolveObjectReferenceIntent *)self _typedBackingStore:a3];
+  v6 = [(INResolveObjectReferenceIntent *)self _typedBackingStore:options];
   v5 = [v6 copy];
   [(INIntent *)self setBackingStore:v5];
 }
@@ -22,16 +22,16 @@
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"reference";
-  v2 = [(INResolveObjectReferenceIntent *)self reference];
-  v3 = v2;
-  if (!v2)
+  reference = [(INResolveObjectReferenceIntent *)self reference];
+  null = reference;
+  if (!reference)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v8[0] = v3;
+  v8[0] = null;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-  if (!v2)
+  if (!reference)
   {
   }
 
@@ -40,59 +40,59 @@
   return v4;
 }
 
-- (void)setReference:(id)a3
+- (void)setReference:(id)reference
 {
-  v4 = a3;
-  v5 = [(INResolveObjectReferenceIntent *)self _typedBackingStore];
-  [v5 setReference:v4];
+  referenceCopy = reference;
+  _typedBackingStore = [(INResolveObjectReferenceIntent *)self _typedBackingStore];
+  [_typedBackingStore setReference:referenceCopy];
 }
 
 - (NSData)reference
 {
-  v2 = [(INResolveObjectReferenceIntent *)self _typedBackingStore];
-  v3 = [v2 reference];
-  v4 = [v3 copy];
+  _typedBackingStore = [(INResolveObjectReferenceIntent *)self _typedBackingStore];
+  reference = [_typedBackingStore reference];
+  v4 = [reference copy];
 
   return v4;
 }
 
-- (INResolveObjectReferenceIntent)initWithReference:(id)a3
+- (INResolveObjectReferenceIntent)initWithReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   v8.receiver = self;
   v8.super_class = INResolveObjectReferenceIntent;
   v5 = [(INIntent *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(INResolveObjectReferenceIntent *)v5 setReference:v4];
+    [(INResolveObjectReferenceIntent *)v5 setReference:referenceCopy];
   }
 
   return v6;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INResolveObjectReferenceIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INResolveObjectReferenceIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INResolveObjectReferenceIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INResolveObjectReferenceIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

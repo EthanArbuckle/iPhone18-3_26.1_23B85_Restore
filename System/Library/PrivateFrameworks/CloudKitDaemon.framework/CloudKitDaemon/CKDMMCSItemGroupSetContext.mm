@@ -1,29 +1,29 @@
 @interface CKDMMCSItemGroupSetContext
-- (CKDMMCSItemGroupSetContext)initWithItemGroupSet:(id)a3 itemGroupSetCompletionBlock:(id)a4;
+- (CKDMMCSItemGroupSetContext)initWithItemGroupSet:(id)set itemGroupSetCompletionBlock:(id)block;
 - (CKDOperation)operation;
-- (void)addItemGroupContext:(id)a3;
+- (void)addItemGroupContext:(id)context;
 - (void)cancel;
 - (void)start;
 @end
 
 @implementation CKDMMCSItemGroupSetContext
 
-- (CKDMMCSItemGroupSetContext)initWithItemGroupSet:(id)a3 itemGroupSetCompletionBlock:(id)a4
+- (CKDMMCSItemGroupSetContext)initWithItemGroupSet:(id)set itemGroupSetCompletionBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  setCopy = set;
+  blockCopy = block;
   v23.receiver = self;
   v23.super_class = CKDMMCSItemGroupSetContext;
   v9 = [(CKDMMCSItemGroupSetContext *)&v23 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_itemGroupSet, a3);
+    objc_storeStrong(&v9->_itemGroupSet, set);
     v11 = objc_opt_new();
     itemGroupContexts = v10->_itemGroupContexts;
     v10->_itemGroupContexts = v11;
 
-    v13 = _Block_copy(v8);
+    v13 = _Block_copy(blockCopy);
     itemGroupSetCompletionBlock = v10->_itemGroupSetCompletionBlock;
     v10->_itemGroupSetCompletionBlock = v13;
 
@@ -84,13 +84,13 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addItemGroupContext:(id)a3
+- (void)addItemGroupContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v7 = objc_msgSend_mmcsOperationType(self, v5, v6);
-  objc_msgSend_setMmcsOperationType_(v4, v8, v7);
+  objc_msgSend_setMmcsOperationType_(contextCopy, v8, v7);
   v12 = objc_msgSend_itemGroupContexts(self, v9, v10);
-  objc_msgSend_addObject_(v12, v11, v4);
+  objc_msgSend_addObject_(v12, v11, contextCopy);
 }
 
 - (void)start

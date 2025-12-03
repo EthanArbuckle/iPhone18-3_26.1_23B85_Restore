@@ -12,16 +12,16 @@
 - (id)description;
 - (int64_t)detuning;
 - (int64_t)waveform;
-- (void)addFmOperatorIdentifier:(id)a3;
+- (void)addFmOperatorIdentifier:(id)identifier;
 - (void)addSupportedParameters;
-- (void)removeFmOperatorIdentifier:(id)a3;
-- (void)routeTo:(id)a3;
-- (void)setBaseFrequency:(float)a3;
-- (void)setDetuning:(int64_t)a3;
-- (void)setFrequencyRatio:(float)a3;
-- (void)setGain:(float)a3;
-- (void)setIsBypassed:(BOOL)a3;
-- (void)setWaveform:(int64_t)a3;
+- (void)removeFmOperatorIdentifier:(id)identifier;
+- (void)routeTo:(id)to;
+- (void)setBaseFrequency:(float)frequency;
+- (void)setDetuning:(int64_t)detuning;
+- (void)setFrequencyRatio:(float)ratio;
+- (void)setGain:(float)gain;
+- (void)setIsBypassed:(BOOL)bypassed;
+- (void)setWaveform:(int64_t)waveform;
 @end
 
 @implementation AXMSynthOscillatorParameters
@@ -37,42 +37,42 @@
     envelopeParameters = v2->_envelopeParameters;
     v2->_envelopeParameters = v3;
 
-    v5 = [(AXMSynthOscillatorParameters *)v2 mainParameters];
-    [(AXMSynthEnvelopeParameters *)v2->_envelopeParameters setMainParameters:v5];
+    mainParameters = [(AXMSynthOscillatorParameters *)v2 mainParameters];
+    [(AXMSynthEnvelopeParameters *)v2->_envelopeParameters setMainParameters:mainParameters];
   }
 
   return v2;
 }
 
-- (void)addFmOperatorIdentifier:(id)a3
+- (void)addFmOperatorIdentifier:(id)identifier
 {
-  v9 = a3;
+  identifierCopy = identifier;
   v4 = [(AXMSynthObservableParameters *)self getValueForParameter:@"kSynthParameterFMOperatorIdentifiers"];
-  if (([v4 containsObject:v9] & 1) == 0)
+  if (([v4 containsObject:identifierCopy] & 1) == 0)
   {
-    v5 = [v4 arrayByAddingObject:v9];
+    v5 = [v4 arrayByAddingObject:identifierCopy];
     [(AXMSynthObservableParameters *)self setValue:v5 forParameter:@"kSynthParameterFMOperatorIdentifiers"];
-    v6 = [(AXMSynthOscillatorParameters *)self mainParameters];
-    v7 = [v6 oscillatorParametersWithIdentifier:v9];
+    mainParameters = [(AXMSynthOscillatorParameters *)self mainParameters];
+    v7 = [mainParameters oscillatorParametersWithIdentifier:identifierCopy];
 
-    v8 = [(AXMSynthOscillatorParameters *)self identifier];
-    [v7 setValue:v8 forParameter:@"kSynthParameterFMTargetIdentifier"];
+    identifier = [(AXMSynthOscillatorParameters *)self identifier];
+    [v7 setValue:identifier forParameter:@"kSynthParameterFMTargetIdentifier"];
   }
 }
 
-- (void)removeFmOperatorIdentifier:(id)a3
+- (void)removeFmOperatorIdentifier:(id)identifier
 {
-  v9 = a3;
+  identifierCopy = identifier;
   v4 = [(AXMSynthObservableParameters *)self getValueForParameter:@"kSynthParameterFMOperatorIdentifiers"];
-  if ([v4 containsObject:v9])
+  if ([v4 containsObject:identifierCopy])
   {
     v5 = [v4 mutableCopy];
-    [v5 removeObject:v9];
+    [v5 removeObject:identifierCopy];
     v6 = [v5 copy];
     [(AXMSynthObservableParameters *)self setValue:v6 forParameter:@"kSynthParameterFMOperatorIdentifiers"];
 
-    v7 = [(AXMSynthOscillatorParameters *)self mainParameters];
-    v8 = [v7 oscillatorParametersWithIdentifier:v9];
+    mainParameters = [(AXMSynthOscillatorParameters *)self mainParameters];
+    v8 = [mainParameters oscillatorParametersWithIdentifier:identifierCopy];
 
     [v8 setValue:0 forParameter:@"kSynthParameterFMTargetIdentifier"];
   }
@@ -80,13 +80,13 @@
 
 - (AXMSynthOscillatorParameters)fmTargetParameters
 {
-  v3 = [(AXMSynthOscillatorParameters *)self fmTargetIdentifier];
+  fmTargetIdentifier = [(AXMSynthOscillatorParameters *)self fmTargetIdentifier];
 
-  if (v3)
+  if (fmTargetIdentifier)
   {
-    v4 = [(AXMSynthOscillatorParameters *)self mainParameters];
-    v5 = [(AXMSynthOscillatorParameters *)self fmTargetIdentifier];
-    v6 = [v4 oscillatorParametersWithIdentifier:v5];
+    mainParameters = [(AXMSynthOscillatorParameters *)self mainParameters];
+    fmTargetIdentifier2 = [(AXMSynthOscillatorParameters *)self fmTargetIdentifier];
+    v6 = [mainParameters oscillatorParametersWithIdentifier:fmTargetIdentifier2];
   }
 
   else
@@ -97,22 +97,22 @@
   return v6;
 }
 
-- (void)routeTo:(id)a3
+- (void)routeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(AXMSynthOscillatorParameters *)self fmTargetParameters];
-  v5 = [(AXMSynthOscillatorParameters *)self identifier];
-  [v4 removeFmOperatorIdentifier:v5];
+  toCopy = to;
+  fmTargetParameters = [(AXMSynthOscillatorParameters *)self fmTargetParameters];
+  identifier = [(AXMSynthOscillatorParameters *)self identifier];
+  [fmTargetParameters removeFmOperatorIdentifier:identifier];
 
-  v6 = [(AXMSynthOscillatorParameters *)self identifier];
-  [v7 addFmOperatorIdentifier:v6];
+  identifier2 = [(AXMSynthOscillatorParameters *)self identifier];
+  [toCopy addFmOperatorIdentifier:identifier2];
 }
 
 - (NSString)displayName
 {
-  v3 = [(AXMSynthOscillatorParameters *)self fmTargetIdentifier];
+  fmTargetIdentifier = [(AXMSynthOscillatorParameters *)self fmTargetIdentifier];
   v4 = @"Operator";
-  if (!v3)
+  if (!fmTargetIdentifier)
   {
     v4 = @"Oscillator";
   }
@@ -120,8 +120,8 @@
   v5 = v4;
 
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [(AXMSynthOscillatorParameters *)self identifier];
-  v8 = [v6 stringWithFormat:@"%@ %@", v5, v7];
+  identifier = [(AXMSynthOscillatorParameters *)self identifier];
+  v8 = [v6 stringWithFormat:@"%@ %@", v5, identifier];
 
   return v8;
 }
@@ -129,21 +129,21 @@
 - (int64_t)waveform
 {
   v2 = [(AXMSynthObservableParameters *)self getValueForParameter:@"kSynthParameterWaveform"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-- (void)setWaveform:(int64_t)a3
+- (void)setWaveform:(int64_t)waveform
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:waveform];
   [AXMSynthObservableParameters setValue:"setValue:forParameter:" forParameter:?];
 }
 
 - (float)sampleRate
 {
-  v2 = [(AXMSynthOscillatorParameters *)self mainParameters];
-  v3 = [v2 getValueForParameter:@"kSynthParameterSampleRate"];
+  mainParameters = [(AXMSynthOscillatorParameters *)self mainParameters];
+  v3 = [mainParameters getValueForParameter:@"kSynthParameterSampleRate"];
   [v3 floatValue];
   v5 = v4;
 
@@ -152,15 +152,15 @@
 
 - (float)baseFrequency
 {
-  v2 = [(AXMSynthOscillatorParameters *)self mainParameters];
-  v3 = [v2 getValueForParameter:@"kSynthParameterBaseFrequency"];
+  mainParameters = [(AXMSynthOscillatorParameters *)self mainParameters];
+  v3 = [mainParameters getValueForParameter:@"kSynthParameterBaseFrequency"];
   [v3 floatValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setBaseFrequency:(float)a3
+- (void)setBaseFrequency:(float)frequency
 {
   v4 = [MEMORY[0x1E696AD98] numberWithFloat:?];
   [AXMSynthObservableParameters setValue:"setValue:forParameter:" forParameter:?];
@@ -175,7 +175,7 @@
   return v4;
 }
 
-- (void)setFrequencyRatio:(float)a3
+- (void)setFrequencyRatio:(float)ratio
 {
   v4 = [MEMORY[0x1E696AD98] numberWithFloat:?];
   [AXMSynthObservableParameters setValue:"setValue:forParameter:" forParameter:?];
@@ -190,7 +190,7 @@
   return v4;
 }
 
-- (void)setGain:(float)a3
+- (void)setGain:(float)gain
 {
   v4 = [MEMORY[0x1E696AD98] numberWithFloat:?];
   [AXMSynthObservableParameters setValue:"setValue:forParameter:" forParameter:?];
@@ -199,28 +199,28 @@
 - (int64_t)detuning
 {
   v2 = [(AXMSynthObservableParameters *)self getValueForParameter:@"kSynthParameterDetuning"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setDetuning:(int64_t)a3
+- (void)setDetuning:(int64_t)detuning
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:detuning];
   [AXMSynthObservableParameters setValue:"setValue:forParameter:" forParameter:?];
 }
 
 - (BOOL)isBypassed
 {
   v2 = [(AXMSynthObservableParameters *)self getValueForParameter:@"kSynthParameterBypass"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setIsBypassed:(BOOL)a3
+- (void)setIsBypassed:(BOOL)bypassed
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:bypassed];
   [AXMSynthObservableParameters setValue:"setValue:forParameter:" forParameter:?];
 }
 
@@ -238,8 +238,8 @@
   v5[8] = @"kSynthParameterADSREnvelope";
   v5[9] = @"kSynthParameterLowpassCutoff";
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:10];
-  v4 = [(AXMSynthObservableParameters *)self supportedParameters];
-  [v4 addObjectsFromArray:v3];
+  supportedParameters = [(AXMSynthObservableParameters *)self supportedParameters];
+  [supportedParameters addObjectsFromArray:v3];
 }
 
 + (id)defaultParameters
@@ -262,7 +262,7 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(AXMSynthOscillatorParameters *)self identifier];
+  identifier = [(AXMSynthOscillatorParameters *)self identifier];
   [(AXMSynthOscillatorParameters *)self gain];
   v7 = v6;
   [(AXMSynthOscillatorParameters *)self baseFrequency];
@@ -270,14 +270,14 @@
   [(AXMSynthOscillatorParameters *)self frequencyRatio];
   v11 = v10;
   v12 = [MEMORY[0x1E696AD98] numberWithInteger:{-[AXMSynthOscillatorParameters waveform](self, "waveform")}];
-  v13 = [(AXMSynthOscillatorParameters *)self isBypassed];
+  isBypassed = [(AXMSynthOscillatorParameters *)self isBypassed];
   v14 = &stru_1F23EA908;
-  if (v13)
+  if (isBypassed)
   {
     v14 = @"bypassed";
   }
 
-  v15 = [v3 stringWithFormat:@"<%@ %p id=%@ gain=%.2f frq=%.1f wf=%@ %@>", v4, self, v5, v7, (v9 * v11), v12, v14];
+  v15 = [v3 stringWithFormat:@"<%@ %p id=%@ gain=%.2f frq=%.1f wf=%@ %@>", v4, self, identifier, v7, (v9 * v11), v12, v14];
 
   return v15;
 }

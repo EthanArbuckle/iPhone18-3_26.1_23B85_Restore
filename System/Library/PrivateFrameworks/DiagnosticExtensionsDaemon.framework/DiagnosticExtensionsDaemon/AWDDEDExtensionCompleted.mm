@@ -1,25 +1,25 @@
 @interface AWDDEDExtensionCompleted
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsError:(id)a3;
+- (int)StringAsError:(id)error;
 - (int)error;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasError:(BOOL)a3;
-- (void)setHasNumbytes:(BOOL)a3;
-- (void)setHasNumfiles:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasError:(BOOL)error;
+- (void)setHasNumbytes:(BOOL)numbytes;
+- (void)setHasNumfiles:(BOOL)numfiles;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDDEDExtensionCompleted
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 8;
   }
@@ -32,9 +32,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasNumfiles:(BOOL)a3
+- (void)setHasNumfiles:(BOOL)numfiles
 {
-  if (a3)
+  if (numfiles)
   {
     v3 = 4;
   }
@@ -47,9 +47,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasNumbytes:(BOOL)a3
+- (void)setHasNumbytes:(BOOL)numbytes
 {
-  if (a3)
+  if (numbytes)
   {
     v3 = 2;
   }
@@ -75,9 +75,9 @@
   }
 }
 
-- (void)setHasError:(BOOL)a3
+- (void)setHasError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 16;
   }
@@ -90,25 +90,25 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (int)StringAsError:(id)a3
+- (int)StringAsError:(id)error
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"DEDCollectErrorNone"])
+  errorCopy = error;
+  if ([errorCopy isEqualToString:@"DEDCollectErrorNone"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"DEDCollectErrorNoSpace"])
+  else if ([errorCopy isEqualToString:@"DEDCollectErrorNoSpace"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"DEDCollectErrorNoExtension"])
+  else if ([errorCopy isEqualToString:@"DEDCollectErrorNoExtension"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"DEDCollectErrorNoFiles"])
+  else if ([errorCopy isEqualToString:@"DEDCollectErrorNoFiles"])
   {
     v4 = 3;
   }
@@ -127,32 +127,32 @@
   v8.receiver = self;
   v8.super_class = AWDDEDExtensionCompleted;
   v4 = [(AWDDEDExtensionCompleted *)&v8 description];
-  v5 = [(AWDDEDExtensionCompleted *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDDEDExtensionCompleted *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 8) != 0)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v4 forKey:@"timestamp"];
+    [dictionary setObject:v4 forKey:@"timestamp"];
   }
 
   extension = self->_extension;
   if (extension)
   {
-    [v3 setObject:extension forKey:@"extension"];
+    [dictionary setObject:extension forKey:@"extension"];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_numfiles];
-    [v3 setObject:v9 forKey:@"numfiles"];
+    [dictionary setObject:v9 forKey:@"numfiles"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -173,7 +173,7 @@ LABEL_7:
   }
 
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_numbytes];
-  [v3 setObject:v10 forKey:@"numbytes"];
+  [dictionary setObject:v10 forKey:@"numbytes"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -199,7 +199,7 @@ LABEL_15:
     v12 = off_278F66DA8[error];
   }
 
-  [v3 setObject:v12 forKey:@"error"];
+  [dictionary setObject:v12 forKey:@"error"];
 
   if ((*&self->_has & 1) == 0)
   {
@@ -208,16 +208,16 @@ LABEL_15:
 
 LABEL_9:
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_duration];
-  [v3 setObject:v7 forKey:@"duration"];
+  [dictionary setObject:v7 forKey:@"duration"];
 
 LABEL_10:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   if ((*&self->_has & 8) != 0)
   {
     timestamp = self->_timestamp;
@@ -279,27 +279,27 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 8) != 0)
   {
-    v4[4] = self->_timestamp;
-    *(v4 + 56) |= 8u;
+    toCopy[4] = self->_timestamp;
+    *(toCopy + 56) |= 8u;
   }
 
   if (self->_extension)
   {
-    v6 = v4;
-    [v4 setExtension:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setExtension:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[3] = self->_numfiles;
-    *(v4 + 56) |= 4u;
+    toCopy[3] = self->_numfiles;
+    *(toCopy + 56) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -318,8 +318,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v4[2] = self->_numbytes;
-  *(v4 + 56) |= 2u;
+  toCopy[2] = self->_numbytes;
+  *(toCopy + 56) |= 2u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -333,21 +333,21 @@ LABEL_8:
   }
 
 LABEL_15:
-  *(v4 + 10) = self->_error;
-  *(v4 + 56) |= 0x10u;
+  *(toCopy + 10) = self->_error;
+  *(toCopy + 56) |= 0x10u;
   if (*&self->_has)
   {
 LABEL_9:
-    v4[1] = self->_duration;
-    *(v4 + 56) |= 1u;
+    toCopy[1] = self->_duration;
+    *(toCopy + 56) |= 1u;
   }
 
 LABEL_10:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 8) != 0)
   {
@@ -355,7 +355,7 @@ LABEL_10:
     *(v5 + 56) |= 8u;
   }
 
-  v7 = [(NSString *)self->_extension copyWithZone:a3];
+  v7 = [(NSString *)self->_extension copyWithZone:zone];
   v8 = *(v6 + 48);
   *(v6 + 48) = v7;
 
@@ -409,31 +409,31 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_29;
   }
 
   has = self->_has;
-  v6 = *(v4 + 56);
+  v6 = *(equalCopy + 56);
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 56) & 8) == 0 || self->_timestamp != *(v4 + 4))
+    if ((*(equalCopy + 56) & 8) == 0 || self->_timestamp != *(equalCopy + 4))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 56) & 8) != 0)
+  else if ((*(equalCopy + 56) & 8) != 0)
   {
     goto LABEL_29;
   }
 
   extension = self->_extension;
-  if (extension | *(v4 + 6))
+  if (extension | *(equalCopy + 6))
   {
     if (![(NSString *)extension isEqual:?])
     {
@@ -447,47 +447,47 @@ LABEL_29:
 
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 56) & 4) == 0 || self->_numfiles != *(v4 + 3))
+    if ((*(equalCopy + 56) & 4) == 0 || self->_numfiles != *(equalCopy + 3))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 56) & 4) != 0)
+  else if ((*(equalCopy + 56) & 4) != 0)
   {
     goto LABEL_29;
   }
 
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 56) & 2) == 0 || self->_numbytes != *(v4 + 2))
+    if ((*(equalCopy + 56) & 2) == 0 || self->_numbytes != *(equalCopy + 2))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 56) & 2) != 0)
+  else if ((*(equalCopy + 56) & 2) != 0)
   {
     goto LABEL_29;
   }
 
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 56) & 0x10) == 0 || self->_error != *(v4 + 10))
+    if ((*(equalCopy + 56) & 0x10) == 0 || self->_error != *(equalCopy + 10))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 56) & 0x10) != 0)
+  else if ((*(equalCopy + 56) & 0x10) != 0)
   {
     goto LABEL_29;
   }
 
-  v8 = (*(v4 + 56) & 1) == 0;
+  v8 = (*(equalCopy + 56) & 1) == 0;
   if (has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_duration != *(v4 + 1))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_duration != *(equalCopy + 1))
     {
       goto LABEL_29;
     }
@@ -565,28 +565,28 @@ LABEL_8:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((*(v4 + 56) & 8) != 0)
+  fromCopy = from;
+  if ((*(fromCopy + 56) & 8) != 0)
   {
-    self->_timestamp = *(v4 + 4);
+    self->_timestamp = *(fromCopy + 4);
     *&self->_has |= 8u;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(AWDDEDExtensionCompleted *)self setExtension:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 4) != 0)
   {
-    self->_numfiles = *(v4 + 3);
+    self->_numfiles = *(fromCopy + 3);
     *&self->_has |= 4u;
-    v5 = *(v4 + 56);
+    v5 = *(fromCopy + 56);
     if ((v5 & 2) == 0)
     {
 LABEL_7:
@@ -599,14 +599,14 @@ LABEL_7:
     }
   }
 
-  else if ((*(v4 + 56) & 2) == 0)
+  else if ((*(fromCopy + 56) & 2) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_numbytes = *(v4 + 2);
+  self->_numbytes = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 0x10) == 0)
   {
 LABEL_8:
@@ -619,12 +619,12 @@ LABEL_8:
   }
 
 LABEL_15:
-  self->_error = *(v4 + 10);
+  self->_error = *(fromCopy + 10);
   *&self->_has |= 0x10u;
-  if (*(v4 + 56))
+  if (*(fromCopy + 56))
   {
 LABEL_9:
-    self->_duration = *(v4 + 1);
+    self->_duration = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 

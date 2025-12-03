@@ -1,18 +1,18 @@
 @interface GKChallengeIssueExtensionViewController
 - (BOOL)_useBackdropViewForWindowBackground;
-- (GKChallengeIssueExtensionViewController)initWithCoder:(id)a3;
+- (GKChallengeIssueExtensionViewController)initWithCoder:(id)coder;
 - (id)hostObjectProxy;
 - (void)constructContentViewController;
-- (void)setInitialState:(id)a3 withReply:(id)a4;
+- (void)setInitialState:(id)state withReply:(id)reply;
 @end
 
 @implementation GKChallengeIssueExtensionViewController
 
-- (GKChallengeIssueExtensionViewController)initWithCoder:(id)a3
+- (GKChallengeIssueExtensionViewController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = GKChallengeIssueExtensionViewController;
-  v3 = [(GKChallengeIssueExtensionViewController *)&v6 initWithCoder:a3];
+  v3 = [(GKChallengeIssueExtensionViewController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -23,28 +23,28 @@
   return v4;
 }
 
-- (void)setInitialState:(id)a3 withReply:(id)a4
+- (void)setInitialState:(id)state withReply:(id)reply
 {
   v6 = GKExtensionItemChallengeInternalKey;
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 objectForKeyedSubscript:v6];
+  replyCopy = reply;
+  stateCopy = state;
+  v9 = [stateCopy objectForKeyedSubscript:v6];
   v10 = [GKChallenge challengeForInternalRepresentation:v9];
   [(GKChallengeIssueExtensionViewController *)self setChallenge:v10];
 
-  v11 = [v8 objectForKeyedSubscript:GKExtensionItemMessageKey];
+  v11 = [stateCopy objectForKeyedSubscript:GKExtensionItemMessageKey];
   [(GKChallengeIssueExtensionViewController *)self setDefaultMessage:v11];
 
-  v12 = [v8 objectForKeyedSubscript:GKExtensionItemForcePickerKey];
+  v12 = [stateCopy objectForKeyedSubscript:GKExtensionItemForcePickerKey];
   -[GKChallengeIssueExtensionViewController setForcePicker:](self, "setForcePicker:", [v12 BOOLValue]);
 
-  v13 = [v8 objectForKeyedSubscript:GKExtensionItemPlayerInternalsKey];
+  v13 = [stateCopy objectForKeyedSubscript:GKExtensionItemPlayerInternalsKey];
   v14 = [v13 _gkMapWithBlock:&stru_1000041A8];
   [(GKChallengeIssueExtensionViewController *)self setPlayers:v14];
 
   v15.receiver = self;
   v15.super_class = GKChallengeIssueExtensionViewController;
-  [(GKChallengeIssueExtensionViewController *)&v15 setInitialState:v8 withReply:v7];
+  [(GKChallengeIssueExtensionViewController *)&v15 setInitialState:stateCopy withReply:replyCopy];
 }
 
 - (void)constructContentViewController
@@ -57,16 +57,16 @@
   v10[2] = 0x3032000000;
   v10[3] = sub_1000011B8;
   v10[4] = sub_1000011C8;
-  v11 = self;
-  challenge = v11->_challenge;
-  players = v11->_players;
-  defaultMessage = v11->_defaultMessage;
-  forcePicker = v11->_forcePicker;
+  selfCopy = self;
+  challenge = selfCopy->_challenge;
+  players = selfCopy->_players;
+  defaultMessage = selfCopy->_defaultMessage;
+  forcePicker = selfCopy->_forcePicker;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000011D0;
   v9[3] = &unk_1000041D0;
-  v9[4] = v11;
+  v9[4] = selfCopy;
   v9[5] = v10;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -80,9 +80,9 @@
 - (BOOL)_useBackdropViewForWindowBackground
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     LOBYTE(v4) = 1;
   }
@@ -98,9 +98,9 @@
 
 - (id)hostObjectProxy
 {
-  v4 = [(GKChallengeIssueExtensionViewController *)self extensionContext];
-  v5 = [v4 _auxiliaryConnection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:&stru_100004278];
+  extensionContext = [(GKChallengeIssueExtensionViewController *)self extensionContext];
+  _auxiliaryConnection = [extensionContext _auxiliaryConnection];
+  v6 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&stru_100004278];
 
   if (!v6)
   {

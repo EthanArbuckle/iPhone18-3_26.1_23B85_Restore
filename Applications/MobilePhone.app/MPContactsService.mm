@@ -1,11 +1,11 @@
 @interface MPContactsService
 - (MPContactsService)init;
-- (MPContactsService)initWithDataProvider:(id)a3;
+- (MPContactsService)initWithDataProvider:(id)provider;
 @end
 
 @implementation MPContactsService
 
-- (MPContactsService)initWithDataProvider:(id)a3
+- (MPContactsService)initWithDataProvider:(id)provider
 {
   swift_getObjectType();
   v4 = swift_unknownObjectRetain();

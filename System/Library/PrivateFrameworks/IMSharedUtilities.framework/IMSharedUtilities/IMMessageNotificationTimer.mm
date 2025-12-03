@@ -1,19 +1,19 @@
 @interface IMMessageNotificationTimer
-- (IMMessageNotificationTimer)initWithDate:(id)a3;
+- (IMMessageNotificationTimer)initWithDate:(id)date;
 - (void)dealloc;
 - (void)reduceNumberDingsLeft;
 @end
 
 @implementation IMMessageNotificationTimer
 
-- (IMMessageNotificationTimer)initWithDate:(id)a3
+- (IMMessageNotificationTimer)initWithDate:(id)date
 {
   v6.receiver = self;
   v6.super_class = IMMessageNotificationTimer;
   v4 = [(IMMessageNotificationTimer *)&v6 init];
   if (v4)
   {
-    v4->_date = a3;
+    v4->_date = date;
     v4->_numberDingsLeft = &unk_1F1BFA778;
   }
 

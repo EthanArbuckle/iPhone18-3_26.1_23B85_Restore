@@ -1,56 +1,56 @@
 @interface PKPassFaceView
-+ (Class)_faceClassForStyle:(int64_t)a3;
-+ (id)newFrontFaceViewForStyle:(int64_t)a3;
++ (Class)_faceClassForStyle:(int64_t)style;
++ (id)newFrontFaceViewForStyle:(int64_t)style;
 - (BOOL)flushFormattedFieldValues;
 - (CGSize)cobrandLogoSize;
 - (CGSize)contentSize;
-- (PKPassFaceView)initWithStyle:(int64_t)a3;
+- (PKPassFaceView)initWithStyle:(int64_t)style;
 - (PKPassFaceViewDelegate)delegate;
 - (UIEdgeInsets)alignmentRectInsets;
 - (UIEdgeInsets)shadowBackgroundInsets;
 - (UIEdgeInsets)shadowInsets;
-- (id)_viewSetForContentViewType:(int64_t)a3;
+- (id)_viewSetForContentViewType:(int64_t)type;
 - (void)_createBucketsIfNecessary;
-- (void)_createContentViewsForRegions:(unint64_t)a3;
+- (void)_createContentViewsForRegions:(unint64_t)regions;
 - (void)_createDimmingFilterIfNecessary;
-- (void)_createInvariantViewsForRegions:(unint64_t)a3;
-- (void)_flushContentViewsForRegions:(unint64_t)a3;
-- (void)_handleTimeOrLocaleChange:(id)a3;
+- (void)_createInvariantViewsForRegions:(unint64_t)regions;
+- (void)_flushContentViewsForRegions:(unint64_t)regions;
+- (void)_handleTimeOrLocaleChange:(id)change;
 - (void)_loadFaceImageIfNecessary;
-- (void)_presentDiffRecursivelyDiff:(id)a3 forBucketAtIndex:(unint64_t)a4 withBuckets:(id)a5 completion:(id)a6;
+- (void)_presentDiffRecursivelyDiff:(id)diff forBucketAtIndex:(unint64_t)index withBuckets:(id)buckets completion:(id)completion;
 - (void)_recreateFieldDerivedContent;
-- (void)_setBalances:(id)a3;
-- (void)_setContentViewsAlpha:(double)a3;
-- (void)_setShowsBackgroundView:(BOOL)a3;
-- (void)_setShowsBodyViews:(BOOL)a3;
-- (void)_setShowsHeaderViews:(BOOL)a3;
+- (void)_setBalances:(id)balances;
+- (void)_setContentViewsAlpha:(double)alpha;
+- (void)_setShowsBackgroundView:(BOOL)view;
+- (void)_setShowsBodyViews:(BOOL)views;
+- (void)_setShowsHeaderViews:(BOOL)views;
 - (void)_updateEffectiveShowsBackgroundView;
 - (void)_updateForeignBalances;
 - (void)_updateShowsPanSuffix;
 - (void)createBodyContentViews;
-- (void)createContentViewsWithFade:(BOOL)a3;
+- (void)createContentViewsWithFade:(BOOL)fade;
 - (void)createHeaderContentViews;
 - (void)dealloc;
 - (void)didAuthenticate;
 - (void)didInvalidate;
-- (void)foregroundActiveArbiter:(id)a3 didUpdateForegroundActiveState:(id)a4;
-- (void)insertContentView:(id)a3 ofType:(int64_t)a4;
+- (void)foregroundActiveArbiter:(id)arbiter didUpdateForegroundActiveState:(id)state;
+- (void)insertContentView:(id)view ofType:(int64_t)type;
 - (void)invalidate;
 - (void)layoutSubviews;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didReceiveBalanceUpdate:(id)a4;
-- (void)presentDiff:(id)a3 completion:(id)a4;
-- (void)removeContentView:(id)a3 ofType:(int64_t)a4;
-- (void)setBackgroundMode:(int64_t)a3;
-- (void)setClipsContent:(BOOL)a3;
-- (void)setDimmer:(double)a3 animated:(BOOL)a4;
-- (void)setLiveMotionEnabled:(BOOL)a3;
-- (void)setModallyPresented:(BOOL)a3;
-- (void)setPass:(id)a3 colorProfile:(id)a4;
-- (void)setPassState:(id)a3;
-- (void)setPaused:(BOOL)a3;
-- (void)setShowsLiveRendering:(BOOL)a3 rendererState:(id)a4;
-- (void)setVisibleRegions:(unint64_t)a3;
-- (void)updateShadow:(double)a3 animated:(BOOL)a4 withDelay:(double)a5;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didReceiveBalanceUpdate:(id)update;
+- (void)presentDiff:(id)diff completion:(id)completion;
+- (void)removeContentView:(id)view ofType:(int64_t)type;
+- (void)setBackgroundMode:(int64_t)mode;
+- (void)setClipsContent:(BOOL)content;
+- (void)setDimmer:(double)dimmer animated:(BOOL)animated;
+- (void)setLiveMotionEnabled:(BOOL)enabled;
+- (void)setModallyPresented:(BOOL)presented;
+- (void)setPass:(id)pass colorProfile:(id)profile;
+- (void)setPassState:(id)state;
+- (void)setPaused:(BOOL)paused;
+- (void)setShowsLiveRendering:(BOOL)rendering rendererState:(id)state;
+- (void)setVisibleRegions:(unint64_t)regions;
+- (void)updateShadow:(double)shadow animated:(BOOL)animated withDelay:(double)delay;
 @end
 
 @implementation PKPassFaceView
@@ -128,7 +128,7 @@ LABEL_11:
 
     if (!self->_faceImage && (self->_partialFaceImage == 0 || modallyPresented))
     {
-      v5 = [(PKPass *)self->_pass style];
+      style = [(PKPass *)self->_pass style];
       [(PKPassFaceView *)self contentSize];
       v7 = v6;
       v9 = v8;
@@ -136,13 +136,13 @@ LABEL_11:
       aBlock[1] = 3221225472;
       aBlock[2] = __43__PKPassFaceView__loadFaceImageIfNecessary__block_invoke;
       aBlock[3] = &__block_descriptor_40_e24_v16__0__PKPassFaceView_8l;
-      aBlock[4] = v5;
+      aBlock[4] = style;
       v10 = _Block_copy(aBlock);
       v28[0] = MEMORY[0x1E69E9820];
       v28[1] = 3221225472;
       v28[2] = __43__PKPassFaceView__loadFaceImageIfNecessary__block_invoke_2;
       v28[3] = &__block_descriptor_56_e24_v16__0__PKPassFaceView_8l;
-      v28[4] = v5;
+      v28[4] = style;
       v28[5] = v7;
       v28[6] = v9;
       v11 = _Block_copy(v28);
@@ -150,7 +150,7 @@ LABEL_11:
       v27[1] = 3221225472;
       v27[2] = __43__PKPassFaceView__loadFaceImageIfNecessary__block_invoke_3;
       v27[3] = &__block_descriptor_56_e24_v16__0__PKPassFaceView_8l;
-      v27[4] = v5;
+      v27[4] = style;
       v27[5] = v7;
       v27[6] = v9;
       v12 = _Block_copy(v27);
@@ -276,12 +276,12 @@ LABEL_25:
 
           v12 = v11;
           v13 = objc_alloc_init(PKPassBucketView);
-          v14 = [(PKPassFaceView *)self pass];
-          [(PKPassBucketView *)v13 setPass:v14];
+          pass = [(PKPassFaceView *)self pass];
+          [(PKPassBucketView *)v13 setPass:pass];
 
           [(PKPassBucketView *)v13 setBucketTemplate:v12];
-          v15 = [(PKPassFaceView *)self colorProfile];
-          [(PKPassBucketView *)v13 setColorProfile:v15];
+          colorProfile = [(PKPassFaceView *)self colorProfile];
+          [(PKPassBucketView *)v13 setColorProfile:colorProfile];
 
           [(PKPassBucketView *)v13 setBucket:v10];
           [(PKPassFaceView *)self insertContentView:v13 ofType:2];
@@ -312,9 +312,9 @@ LABEL_11:
   buckets = self->_buckets;
   if (!buckets)
   {
-    v4 = [(PKPassFaceView *)self fetchRelevantBuckets];
+    fetchRelevantBuckets = [(PKPassFaceView *)self fetchRelevantBuckets];
     v5 = self->_buckets;
-    self->_buckets = v4;
+    self->_buckets = fetchRelevantBuckets;
 
     buckets = self->_buckets;
   }
@@ -381,9 +381,9 @@ LABEL_10:
             return;
           }
 
-          v20 = [MEMORY[0x1E69B8DB8] paymentService];
+          paymentService = [MEMORY[0x1E69B8DB8] paymentService];
           paymentService = self->_paymentService;
-          self->_paymentService = v20;
+          self->_paymentService = paymentService;
 
           [(PKPaymentService *)self->_paymentService registerObserver:self];
           [(PKPassFaceView *)self _updateForeignBalances];
@@ -471,10 +471,10 @@ LABEL_22:
   backgroundPlaceholderView = self->_backgroundPlaceholderView;
   if (backgroundPlaceholderView)
   {
-    v12 = [(UIImageView *)backgroundPlaceholderView image];
+    image = [(UIImageView *)backgroundPlaceholderView image];
     placeholderFaceImage = self->_placeholderFaceImage;
 
-    if (v12 != placeholderFaceImage)
+    if (image != placeholderFaceImage)
     {
       [(UIImageView *)self->_backgroundPlaceholderView setImage:self->_placeholderFaceImage];
     }
@@ -493,18 +493,18 @@ LABEL_22:
     [(UIImageView *)shadowBackgroundView setFrame:?];
     if (self->_faceImage || self->_backgroundMode == 1 && self->_modallyPresented)
     {
-      v17 = [(UIImageView *)self->_backgroundView image];
+      image2 = [(UIImageView *)self->_backgroundView image];
       faceImage = self->_faceImage;
 
-      if (v17 != faceImage)
+      if (image2 != faceImage)
       {
         [(UIImageView *)self->_backgroundView setImage:self->_faceImage];
       }
 
-      v19 = [(UIImageView *)self->_shadowBackgroundView image];
+      image3 = [(UIImageView *)self->_shadowBackgroundView image];
       faceShadowImage = self->_faceShadowImage;
 
-      if (v19 != faceShadowImage)
+      if (image3 != faceShadowImage)
       {
         [(UIImageView *)self->_shadowBackgroundView setImage:self->_faceShadowImage];
       }
@@ -515,10 +515,10 @@ LABEL_22:
 
     else
     {
-      v22 = [(UIImageView *)self->_backgroundView image];
+      image4 = [(UIImageView *)self->_backgroundView image];
       partialFaceImage = self->_partialFaceImage;
 
-      if (v22 != partialFaceImage)
+      if (image4 != partialFaceImage)
       {
         [(UIImageView *)self->_backgroundView setImage:self->_partialFaceImage];
       }
@@ -529,7 +529,7 @@ LABEL_22:
     }
 
     [(UIImageView *)backgroundView setFrame:?];
-    v24 = [(PKDynamicLayerView *)self->_dynamicCardView layer];
+    layer = [(PKDynamicLayerView *)self->_dynamicCardView layer];
     PKPaymentStyleApplyCorners();
 
     [(PKDynamicLayerView *)self->_dynamicCardView setFrame:v4, v6, v8, v10];
@@ -629,8 +629,8 @@ LABEL_34:
         }
 
         v38 = *(*(&v52 + 1) + 8 * i);
-        v39 = [v38 bucketTemplate];
-        [v39 bucketRect];
+        bucketTemplate = [v38 bucketTemplate];
+        [bucketTemplate bucketRect];
         [v38 setFrame:?];
       }
 
@@ -660,8 +660,8 @@ LABEL_34:
         }
 
         v45 = *(*(&v48 + 1) + 8 * j);
-        v46 = [v45 bucketTemplate];
-        [v46 bucketRect];
+        bucketTemplate2 = [v45 bucketTemplate];
+        [bucketTemplate2 bucketRect];
         [v45 setFrame:?];
       }
 
@@ -729,7 +729,7 @@ void __43__PKPassFaceView__loadFaceImageIfNecessary__block_invoke(uint64_t a1, v
     }
 
 LABEL_6:
-    v6 = 0;
+    requiresFaceImage = 0;
     goto LABEL_7;
   }
 
@@ -740,9 +740,9 @@ LABEL_6:
   }
 
 LABEL_4:
-  v6 = [(PKLiveRenderedCardFaceView *)self->_liveBackgroundView requiresFaceImage];
+  requiresFaceImage = [(PKLiveRenderedCardFaceView *)self->_liveBackgroundView requiresFaceImage];
 LABEL_7:
-  if (((v5 | v6) & 1) == 0 || [(PKPass *)self->_pass passType]!= PKPassTypeSecureElement)
+  if (((v5 | requiresFaceImage) & 1) == 0 || [(PKPass *)self->_pass passType]!= PKPassTypeSecureElement)
   {
     v7 = 0;
 LABEL_16:
@@ -757,14 +757,14 @@ LABEL_16:
   }
 
   v7 = self->_pass;
-  v8 = [(PKPass *)v7 primaryAccountNumberSuffix];
-  if (!v8)
+  primaryAccountNumberSuffix = [(PKPass *)v7 primaryAccountNumberSuffix];
+  if (!primaryAccountNumberSuffix)
   {
     goto LABEL_16;
   }
 
-  v19 = v8;
-  v9 = [v8 length];
+  v19 = primaryAccountNumberSuffix;
+  v9 = [primaryAccountNumberSuffix length];
   v10 = self->_flags;
   if ((v9 != 0) != ((v10 & 0x100) == 0))
   {
@@ -778,9 +778,9 @@ LABEL_16:
     if (!primaryAccountNumberSuffixView)
     {
       v12 = MEMORY[0x1E69DC888];
-      v13 = [(PKPass *)v7 displayProfile];
-      v14 = [v13 foregroundColor];
-      v15 = [v12 colorWithCGColor:{objc_msgSend(v14, "CGColor")}];
+      displayProfile = [(PKPass *)v7 displayProfile];
+      foregroundColor = [displayProfile foregroundColor];
+      v15 = [v12 colorWithCGColor:{objc_msgSend(foregroundColor, "CGColor")}];
 
       v16 = [[PKMaskedPANSuffixView alloc] initWithSuffix:v19 foregroundColor:v15];
       v17 = self->_primaryAccountNumberSuffixView;
@@ -811,8 +811,8 @@ LABEL_19:
   headerBucketViews = self->_headerBucketViews;
   self->_headerBucketViews = v3;
 
-  v5 = [(PKPassFaceView *)self pass];
-  [v5 cobrandLogoRect];
+  pass = [(PKPassFaceView *)self pass];
+  [pass cobrandLogoRect];
   self->_cobrandLogoSize.width = v6;
   self->_cobrandLogoSize.height = v7;
 
@@ -820,14 +820,14 @@ LABEL_19:
   if ([v12 count])
   {
     v8 = objc_alloc_init(PKPassBucketView);
-    v9 = [(PKPassFaceView *)self pass];
-    [(PKPassBucketView *)v8 setPass:v9];
+    pass2 = [(PKPassFaceView *)self pass];
+    [(PKPassBucketView *)v8 setPass:pass2];
 
-    v10 = [(PKPassFaceView *)self headerTemplate];
-    [(PKPassBucketView *)v8 setBucketTemplate:v10];
+    headerTemplate = [(PKPassFaceView *)self headerTemplate];
+    [(PKPassBucketView *)v8 setBucketTemplate:headerTemplate];
 
-    v11 = [(PKPassFaceView *)self colorProfile];
-    [(PKPassBucketView *)v8 setColorProfile:v11];
+    colorProfile = [(PKPassFaceView *)self colorProfile];
+    [(PKPassBucketView *)v8 setColorProfile:colorProfile];
 
     [(PKPassBucketView *)v8 setBucket:v12];
     [(PKPassFaceView *)self insertContentView:v8 ofType:0];
@@ -999,9 +999,9 @@ void __43__PKPassFaceView__loadFaceImageIfNecessary__block_invoke_2(uint64_t a1,
   }
 }
 
-+ (Class)_faceClassForStyle:(int64_t)a3
++ (Class)_faceClassForStyle:(int64_t)style
 {
-  if (a3 > 0xA || ((0x7D7u >> a3) & 1) == 0 || (v3 = objc_opt_class()) == 0)
+  if (style > 0xA || ((0x7D7u >> style) & 1) == 0 || (v3 = objc_opt_class()) == 0)
   {
     v3 = objc_opt_class();
   }
@@ -1009,14 +1009,14 @@ void __43__PKPassFaceView__loadFaceImageIfNecessary__block_invoke_2(uint64_t a1,
   return v3;
 }
 
-+ (id)newFrontFaceViewForStyle:(int64_t)a3
++ (id)newFrontFaceViewForStyle:(int64_t)style
 {
-  v4 = objc_alloc([a1 _faceClassForStyle:?]);
+  v4 = objc_alloc([self _faceClassForStyle:?]);
 
-  return [v4 initWithStyle:a3];
+  return [v4 initWithStyle:style];
 }
 
-- (PKPassFaceView)initWithStyle:(int64_t)a3
+- (PKPassFaceView)initWithStyle:(int64_t)style
 {
   v22.receiver = self;
   v22.super_class = PKPassFaceView;
@@ -1024,7 +1024,7 @@ void __43__PKPassFaceView__loadFaceImageIfNecessary__block_invoke_2(uint64_t a1,
   v5 = v4;
   if (v4)
   {
-    v4->_style = a3;
+    v4->_style = style;
     *&v4->_flags |= 7u;
     if (PKIsLowEndDevice())
     {
@@ -1032,12 +1032,12 @@ void __43__PKPassFaceView__loadFaceImageIfNecessary__block_invoke_2(uint64_t a1,
       shadowBackgroundView = v5->_shadowBackgroundView;
       v5->_shadowBackgroundView = v6;
 
-      v8 = [(UIImageView *)v5->_shadowBackgroundView layer];
+      layer = [(UIImageView *)v5->_shadowBackgroundView layer];
       v9 = [MEMORY[0x1E69DC888] colorWithRed:0.0 green:0.0 blue:0.09803922 alpha:1.0];
-      v10 = [v9 CGColor];
+      cGColor = [v9 CGColor];
 
-      [v8 setContentsMultiplyColor:v10];
-      [v8 setOpacity:0.0];
+      [layer setContentsMultiplyColor:cGColor];
+      [layer setOpacity:0.0];
       [(UIImageView *)v5->_shadowBackgroundView setClipsToBounds:0];
       [(PKPassFaceView *)v5 addSubview:v5->_shadowBackgroundView];
     }
@@ -1059,16 +1059,16 @@ void __43__PKPassFaceView__loadFaceImageIfNecessary__block_invoke_2(uint64_t a1,
 
     [(UIView *)v5->_contentView setMargins:0.0, 0.0, 20.0, 20.0];
     [(PKPassFaceView *)v5 addSubview:v5->_contentView];
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v17 addObserver:v5 selector:sel__handleTimeOrLocaleChange_ name:*MEMORY[0x1E69DDB88] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__handleTimeOrLocaleChange_ name:*MEMORY[0x1E69DDB88] object:0];
 
-    v18 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v18 addObserver:v5 selector:sel__handleTimeOrLocaleChange_ name:*MEMORY[0x1E695D8F0] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v5 selector:sel__handleTimeOrLocaleChange_ name:*MEMORY[0x1E695D8F0] object:0];
 
-    v19 = [(PKPassFaceView *)v5 layer];
-    v20 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v20 scale];
-    [v19 setRasterizationScale:?];
+    layer2 = [(PKPassFaceView *)v5 layer];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
+    [layer2 setRasterizationScale:?];
   }
 
   return v5;
@@ -1076,11 +1076,11 @@ void __43__PKPassFaceView__loadFaceImageIfNecessary__block_invoke_2(uint64_t a1,
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDB88] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDB88] object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x1E695D8F0] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x1E695D8F0] object:0];
 
   paymentService = self->_paymentService;
   if (paymentService)
@@ -1105,13 +1105,13 @@ void __43__PKPassFaceView__loadFaceImageIfNecessary__block_invoke_2(uint64_t a1,
   }
 }
 
-- (void)setPass:(id)a3 colorProfile:(id)a4
+- (void)setPass:(id)pass colorProfile:(id)profile
 {
-  v13 = a3;
-  v7 = a4;
-  if (self->_pass != v13)
+  passCopy = pass;
+  profileCopy = profile;
+  if (self->_pass != passCopy)
   {
-    objc_storeStrong(&self->_pass, a3);
+    objc_storeStrong(&self->_pass, pass);
     pass = self->_pass;
     if (pass)
     {
@@ -1151,66 +1151,66 @@ void __43__PKPassFaceView__loadFaceImageIfNecessary__block_invoke_2(uint64_t a1,
   }
 
 LABEL_10:
-  if (self->_colorProfile != v7)
+  if (self->_colorProfile != profileCopy)
   {
-    objc_storeStrong(&self->_colorProfile, a4);
+    objc_storeStrong(&self->_colorProfile, profile);
   }
 }
 
-- (void)setPassState:(id)a3
+- (void)setPassState:(id)state
 {
-  v5 = a3;
-  if (self->_passState != v5)
+  stateCopy = state;
+  if (self->_passState != stateCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_passState, a3);
-    v6 = [(PKPassFaceView *)self flushPassStateFieldValues];
-    v5 = v7;
-    if (v6)
+    v7 = stateCopy;
+    objc_storeStrong(&self->_passState, state);
+    flushPassStateFieldValues = [(PKPassFaceView *)self flushPassStateFieldValues];
+    stateCopy = v7;
+    if (flushPassStateFieldValues)
     {
       [(PKPassFaceView *)self _recreateFieldDerivedContent];
-      v5 = v7;
+      stateCopy = v7;
     }
   }
 }
 
-- (void)setVisibleRegions:(unint64_t)a3
+- (void)setVisibleRegions:(unint64_t)regions
 {
   [(PKPassFaceView *)self _createInvariantViewsForRegions:?];
-  [(PKPassFaceView *)self _createContentViewsForRegions:a3];
-  [(PKPassFaceView *)self _setShowsHeaderViews:(a3 >> 1) & 1];
-  [(PKPassFaceView *)self _setShowsBodyViews:(a3 >> 2) & 1];
-  [(PKPassFaceView *)self _setShowsBackgroundView:a3 & 1];
-  self->_visibleRegions = a3;
+  [(PKPassFaceView *)self _createContentViewsForRegions:regions];
+  [(PKPassFaceView *)self _setShowsHeaderViews:(regions >> 1) & 1];
+  [(PKPassFaceView *)self _setShowsBodyViews:(regions >> 2) & 1];
+  [(PKPassFaceView *)self _setShowsBackgroundView:regions & 1];
+  self->_visibleRegions = regions;
 }
 
-- (void)setClipsContent:(BOOL)a3
+- (void)setClipsContent:(BOOL)content
 {
-  if (self->_clipsContent != a3)
+  if (self->_clipsContent != content)
   {
     [(PKPassFaceView *)self setClipsToBounds:?];
-    self->_clipsContent = a3;
+    self->_clipsContent = content;
   }
 }
 
-- (void)setBackgroundMode:(int64_t)a3
+- (void)setBackgroundMode:(int64_t)mode
 {
   flags = self->_flags;
-  if (self->_backgroundMode != a3 || (flags & 0x2000) == 0)
+  if (self->_backgroundMode != mode || (flags & 0x2000) == 0)
   {
     *&self->_flags = flags | 0x2000;
-    self->_backgroundMode = a3;
+    self->_backgroundMode = mode;
     [(PKPassFaceView *)self _loadFaceImageIfNecessary];
 
     [(PKPassFaceView *)self setNeedsLayout];
   }
 }
 
-- (void)setModallyPresented:(BOOL)a3
+- (void)setModallyPresented:(BOOL)presented
 {
-  if (self->_modallyPresented != a3)
+  if (self->_modallyPresented != presented)
   {
-    self->_modallyPresented = a3;
+    self->_modallyPresented = presented;
     [(PKPassFaceView *)self _loadFaceImageIfNecessary];
     if (self->_modallyPresented)
     {
@@ -1226,36 +1226,36 @@ LABEL_10:
   }
 }
 
-- (void)setLiveMotionEnabled:(BOOL)a3
+- (void)setLiveMotionEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  self->_liveMotionEnabled = a3;
+  enabledCopy = enabled;
+  self->_liveMotionEnabled = enabled;
   [(PKLiveRenderedCardFaceView *)self->_liveBackgroundView setMotionEnabled:?];
-  [(PKTransactionDataOverlayCardFaceView *)self->_transactionDataOverlayView setMotionEnabled:v3];
+  [(PKTransactionDataOverlayCardFaceView *)self->_transactionDataOverlayView setMotionEnabled:enabledCopy];
   dynamicCardView = self->_dynamicCardView;
 
-  [(PKDynamicLayerView *)dynamicCardView setMotionEnabled:v3];
+  [(PKDynamicLayerView *)dynamicCardView setMotionEnabled:enabledCopy];
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  if (self->_paused != a3)
+  if (self->_paused != paused)
   {
-    v4 = a3;
-    self->_paused = a3;
+    pausedCopy = paused;
+    self->_paused = paused;
     [(PKTransactionDataOverlayCardFaceView *)self->_transactionDataOverlayView setPaused:?];
     dynamicCardView = self->_dynamicCardView;
 
-    [(PKDynamicLayerView *)dynamicCardView setPaused:v4];
+    [(PKDynamicLayerView *)dynamicCardView setPaused:pausedCopy];
   }
 }
 
-- (void)setShowsLiveRendering:(BOOL)a3 rendererState:(id)a4
+- (void)setShowsLiveRendering:(BOOL)rendering rendererState:(id)state
 {
-  v4 = a3;
-  v35 = a4;
+  renderingCopy = rendering;
+  stateCopy = state;
   flags = self->_flags;
-  if (v4)
+  if (renderingCopy)
   {
     v7 = 4;
   }
@@ -1267,7 +1267,7 @@ LABEL_10:
 
   v8 = flags & 0xFFFB | v7;
   *&self->_flags = v8;
-  if (v4)
+  if (renderingCopy)
   {
     if ([(PKPass *)self->_pass passType]== PKPassTypeSecureElement)
     {
@@ -1349,7 +1349,7 @@ LABEL_27:
       v20 = *(MEMORY[0x1E695EFF8] + 8);
       [(PKPass *)self->_pass style];
       PKPassFrontFaceContentSize();
-      v23 = [(PKTransactionDataOverlayCardFaceView *)v18 initWithFrame:self->_pass pass:v35 rendererState:v19, v20, v21, v22];
+      v23 = [(PKTransactionDataOverlayCardFaceView *)v18 initWithFrame:self->_pass pass:stateCopy rendererState:v19, v20, v21, v22];
       v24 = self->_transactionDataOverlayView;
       self->_transactionDataOverlayView = v23;
 
@@ -1449,7 +1449,7 @@ LABEL_44:
   v10[1] = *MEMORY[0x1E69E9840];
   if (!self->_dimmingFilter)
   {
-    v3 = [(PKPassFaceView *)self layer];
+    layer = [(PKPassFaceView *)self layer];
     v4 = objc_alloc(MEMORY[0x1E6979378]);
     v5 = [v4 initWithType:*MEMORY[0x1E6979CB0]];
     dimmingFilter = self->_dimmingFilter;
@@ -1462,23 +1462,23 @@ LABEL_44:
 
     v10[0] = self->_dimmingFilter;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-    [v3 setFilters:v9];
+    [layer setFilters:v9];
   }
 }
 
-- (void)setDimmer:(double)a3 animated:(BOOL)a4
+- (void)setDimmer:(double)dimmer animated:(BOOL)animated
 {
-  if (self->_dimmer != a3)
+  if (self->_dimmer != dimmer)
   {
-    v4 = a4;
-    self->_dimmer = a3;
+    animatedCopy = animated;
+    self->_dimmer = dimmer;
     [(PKPassFaceView *)self _createDimmingFilterIfNecessary];
-    v13 = [(PKPassFaceView *)self layer];
+    layer = [(PKPassFaceView *)self layer];
     v6 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 - self->_dimmer alpha:?];
-    if (v4)
+    if (animatedCopy)
     {
       v7 = MEMORY[0x1E69DC888];
-      v8 = [v13 valueForKeyPath:@"filters.dimmingFilter.inputColor"];
+      v8 = [layer valueForKeyPath:@"filters.dimmingFilter.inputColor"];
       v9 = [v7 colorWithCGColor:v8];
 
       v10 = [MEMORY[0x1E6979318] animationWithKeyPath:@"filters.dimmingFilter.inputColor"];
@@ -1496,18 +1496,18 @@ LABEL_44:
       }
 
       [v10 setToValue:{objc_msgSend(v6, "CGColor")}];
-      v12 = [v13 pkui_addAdditiveAnimation:v10];
+      v12 = [layer pkui_addAdditiveAnimation:v10];
     }
 
-    [v13 setValue:objc_msgSend(v6 forKeyPath:{"CGColor"), @"filters.dimmingFilter.inputColor"}];
+    [layer setValue:objc_msgSend(v6 forKeyPath:{"CGColor"), @"filters.dimmingFilter.inputColor"}];
   }
 }
 
-- (void)createContentViewsWithFade:(BOOL)a3
+- (void)createContentViewsWithFade:(BOOL)fade
 {
-  v3 = a3;
+  fadeCopy = fade;
   [(PKPassFaceView *)self _createContentViewsForRegions:self->_visibleRegions];
-  if (v3)
+  if (fadeCopy)
   {
     [(PKPassFaceView *)self _setContentViewsAlpha:0.0];
     v5[0] = MEMORY[0x1E69E9820];
@@ -1519,9 +1519,9 @@ LABEL_44:
   }
 }
 
-- (void)presentDiff:(id)a3 completion:(id)a4
+- (void)presentDiff:(id)diff completion:(id)completion
 {
-  if (a3)
+  if (diff)
   {
     clipsContent = 1;
   }
@@ -1531,39 +1531,39 @@ LABEL_44:
     clipsContent = self->_clipsContent;
   }
 
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  diffCopy = diff;
   [(PKPassFaceView *)self setClipsToBounds:clipsContent];
   v9 = [(NSMutableArray *)self->_headerBucketViews arrayByAddingObjectsFromArray:self->_bodyBucketViews];
-  [(PKPassFaceView *)self _presentDiffRecursivelyDiff:v8 forBucketAtIndex:0 withBuckets:v9 completion:v7];
+  [(PKPassFaceView *)self _presentDiffRecursivelyDiff:diffCopy forBucketAtIndex:0 withBuckets:v9 completion:completionCopy];
 }
 
-- (void)_presentDiffRecursivelyDiff:(id)a3 forBucketAtIndex:(unint64_t)a4 withBuckets:(id)a5 completion:(id)a6
+- (void)_presentDiffRecursivelyDiff:(id)diff forBucketAtIndex:(unint64_t)index withBuckets:(id)buckets completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if ([v11 count] <= a4)
+  diffCopy = diff;
+  bucketsCopy = buckets;
+  completionCopy = completion;
+  if ([bucketsCopy count] <= index)
   {
-    if (v12)
+    if (completionCopy)
     {
-      v12[2](v12);
+      completionCopy[2](completionCopy);
     }
   }
 
   else
   {
     objc_initWeak(&location, self);
-    v13 = [v11 objectAtIndex:a4];
+    v13 = [bucketsCopy objectAtIndex:index];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __86__PKPassFaceView__presentDiffRecursivelyDiff_forBucketAtIndex_withBuckets_completion___block_invoke;
     v14[3] = &unk_1E80123E0;
     objc_copyWeak(v18, &location);
-    v15 = v10;
-    v18[1] = a4;
-    v16 = v11;
-    v17 = v12;
+    v15 = diffCopy;
+    v18[1] = index;
+    v16 = bucketsCopy;
+    v17 = completionCopy;
     [v13 presentDiff:v15 inView:self completion:v14];
 
     objc_destroyWeak(v18);
@@ -1577,23 +1577,23 @@ void __86__PKPassFaceView__presentDiffRecursivelyDiff_forBucketAtIndex_withBucke
   [WeakRetained _presentDiffRecursivelyDiff:*(a1 + 32) forBucketAtIndex:*(a1 + 64) + 1 withBuckets:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)updateShadow:(double)a3 animated:(BOOL)a4 withDelay:(double)a5
+- (void)updateShadow:(double)shadow animated:(BOOL)animated withDelay:(double)delay
 {
-  v6 = a4;
+  animatedCopy = animated;
   [(PKRemoveableAnimationTrackerStore *)self->_delayedAnimations preempt];
   [(UIImageView *)self->_shadowBackgroundView layer];
-  v17 = v9 = a3 * 0.27;
+  v17 = v9 = shadow * 0.27;
   [v17 opacity];
-  if (v6)
+  if (animatedCopy)
   {
     v11 = *&v10;
     if (v9 != *&v10)
     {
       v12 = [MEMORY[0x1E69B92B0] springAnimationWithKeyPath:@"opacity"];
-      [v12 setBeginTime:a5];
+      [v12 setBeginTime:delay];
       [v12 pkui_updateForAdditiveAnimationFromScalar:v11 toScalar:v9];
       [v12 duration];
-      [v12 setDuration:{fmax(v13 + a5, 0.0)}];
+      [v12 setDuration:{fmax(v13 + delay, 0.0)}];
       delayedAnimations = self->_delayedAnimations;
       if (!delayedAnimations)
       {
@@ -1635,54 +1635,54 @@ void __50__PKPassFaceView_updateShadow_animated_withDelay___block_invoke(uint64_
 
 - (BOOL)flushFormattedFieldValues
 {
-  v2 = [(PKPassFaceView *)self pass];
-  [v2 flushFormattedFieldValues];
+  pass = [(PKPassFaceView *)self pass];
+  [pass flushFormattedFieldValues];
 
   return 1;
 }
 
-- (id)_viewSetForContentViewType:(int64_t)a3
+- (id)_viewSetForContentViewType:(int64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     return 0;
   }
 
   else
   {
-    return *(&self->super.super.super.super.isa + *off_1E80124E0[a3]);
+    return *(&self->super.super.super.super.isa + *off_1E80124E0[type]);
   }
 }
 
-- (void)insertContentView:(id)a3 ofType:(int64_t)a4
+- (void)insertContentView:(id)view ofType:(int64_t)type
 {
-  v6 = a3;
-  if (v6)
+  viewCopy = view;
+  if (viewCopy)
   {
-    v11 = v6;
-    v7 = [v6 superview];
+    v11 = viewCopy;
+    superview = [viewCopy superview];
     contentView = self->_contentView;
 
-    if (v7 != contentView)
+    if (superview != contentView)
     {
       [(UIView *)self->_contentView addSubview:v11];
     }
 
-    if ((a4 - 2) < 2)
+    if ((type - 2) < 2)
     {
       LOBYTE(v9) = (*&self->_flags & 2) == 0;
     }
 
     else
     {
-      if (a4 > 1)
+      if (type > 1)
       {
 LABEL_9:
-        v10 = [(PKPassFaceView *)self _viewSetForContentViewType:a4];
+        v10 = [(PKPassFaceView *)self _viewSetForContentViewType:type];
         [v10 addObject:v11];
 
         [(PKPassFaceView *)self setNeedsLayout];
-        v6 = v11;
+        viewCopy = v11;
         goto LABEL_10;
       }
 
@@ -1696,25 +1696,25 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)removeContentView:(id)a3 ofType:(int64_t)a4
+- (void)removeContentView:(id)view ofType:(int64_t)type
 {
-  v6 = a3;
-  if (v6)
+  viewCopy = view;
+  if (viewCopy)
   {
-    v10 = v6;
-    v7 = [v6 superview];
+    v10 = viewCopy;
+    superview = [viewCopy superview];
     contentView = self->_contentView;
 
-    if (v7 == contentView)
+    if (superview == contentView)
     {
       [v10 removeFromSuperview];
     }
 
-    v9 = [(PKPassFaceView *)self _viewSetForContentViewType:a4];
+    v9 = [(PKPassFaceView *)self _viewSetForContentViewType:type];
     [v9 removeObject:v10];
 
     [(PKPassFaceView *)self setNeedsLayout];
-    v6 = v10;
+    viewCopy = v10;
   }
 }
 
@@ -1735,9 +1735,9 @@ LABEL_10:
   [(PKTransactionDataOverlayCardFaceView *)transactionDataOverlayView setContentSuppressed:0];
 }
 
-- (void)_createInvariantViewsForRegions:(unint64_t)a3
+- (void)_createInvariantViewsForRegions:(unint64_t)regions
 {
-  v4 = a3 & ~self->_invariantViewCreatedRegions;
+  v4 = regions & ~self->_invariantViewCreatedRegions;
   if ((v4 & 2) != 0)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -1761,11 +1761,11 @@ LABEL_10:
   [(PKPassFaceView *)self setNeedsLayout];
 }
 
-- (void)_createContentViewsForRegions:(unint64_t)a3
+- (void)_createContentViewsForRegions:(unint64_t)regions
 {
   if ([(PKPass *)self->_pass isContentLoaded])
   {
-    v5 = a3 & ~self->_contentViewCreatedRegions;
+    v5 = regions & ~self->_contentViewCreatedRegions;
     if ((v5 & 2) != 0)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -1779,9 +1779,9 @@ LABEL_10:
     {
       if (!self->_faceTemplate)
       {
-        v8 = [(PKPassFaceView *)self passFaceTemplate];
+        passFaceTemplate = [(PKPassFaceView *)self passFaceTemplate];
         faceTemplate = self->_faceTemplate;
-        self->_faceTemplate = v8;
+        self->_faceTemplate = passFaceTemplate;
       }
 
       v10 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -1797,7 +1797,7 @@ LABEL_10:
   }
 }
 
-- (void)_flushContentViewsForRegions:(unint64_t)a3
+- (void)_flushContentViewsForRegions:(unint64_t)regions
 {
   v27 = *MEMORY[0x1E69E9840];
   contentViewCreatedRegions = self->_contentViewCreatedRegions;
@@ -1879,11 +1879,11 @@ LABEL_10:
   }
 }
 
-- (void)_setShowsHeaderViews:(BOOL)a3
+- (void)_setShowsHeaderViews:(BOOL)views
 {
-  v3 = a3;
+  viewsCopy = views;
   v25 = *MEMORY[0x1E69E9840];
-  *&self->_flags = *&self->_flags & 0xFFFE | a3;
+  *&self->_flags = *&self->_flags & 0xFFFE | views;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -1904,7 +1904,7 @@ LABEL_10:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v19 + 1) + 8 * v9++) setHidden:!v3];
+        [*(*(&v19 + 1) + 8 * v9++) setHidden:!viewsCopy];
       }
 
       while (v7 != v9);
@@ -1934,7 +1934,7 @@ LABEL_10:
           objc_enumerationMutation(v10);
         }
 
-        [*(*(&v15 + 1) + 8 * v14++) setHidden:{!v3, v15}];
+        [*(*(&v15 + 1) + 8 * v14++) setHidden:{!viewsCopy, v15}];
       }
 
       while (v12 != v14);
@@ -1945,11 +1945,11 @@ LABEL_10:
   }
 }
 
-- (void)_setShowsBodyViews:(BOOL)a3
+- (void)_setShowsBodyViews:(BOOL)views
 {
-  v3 = a3;
+  viewsCopy = views;
   v26 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (views)
   {
     v5 = 2;
   }
@@ -1979,7 +1979,7 @@ LABEL_10:
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v20 + 1) + 8 * i) setHidden:!v3];
+        [*(*(&v20 + 1) + 8 * i) setHidden:!viewsCopy];
       }
 
       v8 = [(NSMutableSet *)v6 countByEnumeratingWithState:&v20 objects:v25 count:16];
@@ -2007,7 +2007,7 @@ LABEL_10:
           objc_enumerationMutation(v11);
         }
 
-        [*(*(&v16 + 1) + 8 * j) setHidden:{!v3, v16}];
+        [*(*(&v16 + 1) + 8 * j) setHidden:{!viewsCopy, v16}];
       }
 
       v13 = [(NSMutableSet *)v11 countByEnumeratingWithState:&v16 objects:v24 count:16];
@@ -2017,7 +2017,7 @@ LABEL_10:
   }
 }
 
-- (void)_setContentViewsAlpha:(double)a3
+- (void)_setContentViewsAlpha:(double)alpha
 {
   v25 = *MEMORY[0x1E69E9840];
   v19 = 0u;
@@ -2040,7 +2040,7 @@ LABEL_10:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v19 + 1) + 8 * v9++) setAlpha:a3];
+        [*(*(&v19 + 1) + 8 * v9++) setAlpha:alpha];
       }
 
       while (v7 != v9);
@@ -2070,7 +2070,7 @@ LABEL_10:
           objc_enumerationMutation(v10);
         }
 
-        [*(*(&v15 + 1) + 8 * v14++) setAlpha:{a3, v15}];
+        [*(*(&v15 + 1) + 8 * v14++) setAlpha:{alpha, v15}];
       }
 
       while (v12 != v14);
@@ -2081,9 +2081,9 @@ LABEL_10:
   }
 }
 
-- (void)_setShowsBackgroundView:(BOOL)a3
+- (void)_setShowsBackgroundView:(BOOL)view
 {
-  if (a3)
+  if (view)
   {
     v3 = 64;
   }
@@ -2129,14 +2129,14 @@ void __43__PKPassFaceView__loadFaceImageIfNecessary__block_invoke_7(uint64_t a1)
   {
     objc_initWeak(&location, self);
     paymentService = self->_paymentService;
-    v4 = [(PKPassFaceView *)self pass];
-    v5 = [v4 uniqueID];
+    pass = [(PKPassFaceView *)self pass];
+    uniqueID = [pass uniqueID];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __40__PKPassFaceView__updateForeignBalances__block_invoke;
     v6[3] = &unk_1E8012468;
     objc_copyWeak(&v7, &location);
-    [(PKPaymentService *)paymentService balancesForPaymentPassWithUniqueIdentifier:v5 completion:v6];
+    [(PKPaymentService *)paymentService balancesForPaymentPassWithUniqueIdentifier:uniqueID completion:v6];
 
     objc_destroyWeak(&v7);
     objc_destroyWeak(&location);
@@ -2164,13 +2164,13 @@ void __40__PKPassFaceView__updateForeignBalances__block_invoke_2(uint64_t a1)
   [WeakRetained _setBalances:*(a1 + 32)];
 }
 
-- (void)_setBalances:(id)a3
+- (void)_setBalances:(id)balances
 {
   v54 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  v31 = self;
-  if (self->_paymentService && [v4 count])
+  balancesCopy = balances;
+  v5 = balancesCopy;
+  selfCopy = self;
+  if (self->_paymentService && [balancesCopy count])
   {
     v37 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v47 = 0u;
@@ -2193,10 +2193,10 @@ void __40__PKPassFaceView__updateForeignBalances__block_invoke_2(uint64_t a1)
           }
 
           v11 = *(*(&v47 + 1) + 8 * i);
-          v12 = [v11 identifiers];
-          if (v12)
+          identifiers = [v11 identifiers];
+          if (identifiers)
           {
-            [v37 setObject:v11 forKeyedSubscript:v12];
+            [v37 setObject:v11 forKeyedSubscript:identifiers];
           }
         }
 
@@ -2210,7 +2210,7 @@ void __40__PKPassFaceView__updateForeignBalances__block_invoke_2(uint64_t a1)
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v13 = v31->_buckets;
+    v13 = selfCopy->_buckets;
     v34 = [(NSArray *)v13 countByEnumeratingWithState:&v43 objects:v52 count:16];
     if (v34)
     {
@@ -2252,38 +2252,38 @@ void __40__PKPassFaceView__updateForeignBalances__block_invoke_2(uint64_t a1)
                 v20 = *(*(&v39 + 1) + 8 * j);
                 if ([v20 foreignReferenceType] == 1)
                 {
-                  v21 = [v20 foreignReferenceIdentifiers];
-                  if (v21)
+                  foreignReferenceIdentifiers = [v20 foreignReferenceIdentifiers];
+                  if (foreignReferenceIdentifiers)
                   {
-                    v22 = [v37 objectForKeyedSubscript:v21];
+                    v22 = [v37 objectForKeyedSubscript:foreignReferenceIdentifiers];
                     v23 = v22;
                     if (v22)
                     {
-                      v24 = [v22 localizedTitle];
-                      v25 = [v23 formattedValue];
+                      localizedTitle = [v22 localizedTitle];
+                      formattedValue = [v23 formattedValue];
                     }
 
                     else
                     {
-                      v25 = 0;
-                      v24 = 0;
+                      formattedValue = 0;
+                      localizedTitle = 0;
                     }
 
-                    v26 = [v20 label];
+                    label = [v20 label];
                     v27 = PKEqualObjects();
 
                     if ((v27 & 1) == 0)
                     {
-                      [v20 setLabel:v24];
+                      [v20 setLabel:localizedTitle];
                       v36 = 1;
                     }
 
-                    v28 = [v20 value];
+                    value = [v20 value];
                     v29 = PKEqualObjects();
 
                     if ((v29 & 1) == 0)
                     {
-                      [v20 setUnformattedValue:v25];
+                      [v20 setUnformattedValue:formattedValue];
                       [v20 flushCachedValue];
                       v36 = 1;
                     }
@@ -2310,7 +2310,7 @@ void __40__PKPassFaceView__updateForeignBalances__block_invoke_2(uint64_t a1)
       v5 = v30;
       if (v36)
       {
-        [(PKPassFaceView *)v31 _recreateFieldDerivedContent];
+        [(PKPassFaceView *)selfCopy _recreateFieldDerivedContent];
       }
     }
 
@@ -2328,19 +2328,19 @@ void __40__PKPassFaceView__updateForeignBalances__block_invoke_2(uint64_t a1)
   [(PKPassFaceView *)self _createContentViewsForRegions:contentViewCreatedRegions & 6];
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didReceiveBalanceUpdate:(id)a4
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didReceiveBalanceUpdate:(id)update
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  updateCopy = update;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__PKPassFaceView_paymentPassWithUniqueIdentifier_didReceiveBalanceUpdate___block_invoke;
   block[3] = &unk_1E8010A88;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifierCopy;
+  v12 = updateCopy;
+  v8 = updateCopy;
+  v9 = identifierCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -2359,9 +2359,9 @@ void __74__PKPassFaceView_paymentPassWithUniqueIdentifier_didReceiveBalanceUpdat
   }
 }
 
-- (void)foregroundActiveArbiter:(id)a3 didUpdateForegroundActiveState:(id)a4
+- (void)foregroundActiveArbiter:(id)arbiter didUpdateForegroundActiveState:(id)state
 {
-  v4 = *&a4 & 0x100;
+  v4 = *&state & 0x100;
   if (self->_foregroundActive != v4 >> 8)
   {
     self->_foregroundActive = BYTE1(v4);
@@ -2372,7 +2372,7 @@ void __74__PKPassFaceView_paymentPassWithUniqueIdentifier_didReceiveBalanceUpdat
   }
 }
 
-- (void)_handleTimeOrLocaleChange:(id)a3
+- (void)_handleTimeOrLocaleChange:(id)change
 {
   if ([(PKPassFaceView *)self flushFormattedFieldValues])
   {

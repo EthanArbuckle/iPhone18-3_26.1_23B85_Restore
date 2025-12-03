@@ -1,39 +1,39 @@
 @interface CPLMingleChangesScopeTask
 - (BOOL)_shouldStashMasterRecords;
-- (BOOL)checkScopeIsValidInTransaction:(id)a3;
-- (CPLMingleChangesScopeTask)initWithEngineLibrary:(id)a3 session:(id)a4 clientCacheIdentifier:(id)a5 scope:(id)a6 transportScope:(id)a7;
-- (id)_filteredBatchByStashingRecordsIfNecessary:(id)a3 error:(id *)a4;
-- (void)_acknownledgeFixUpTasks:(id)a3;
+- (BOOL)checkScopeIsValidInTransaction:(id)transaction;
+- (CPLMingleChangesScopeTask)initWithEngineLibrary:(id)library session:(id)session clientCacheIdentifier:(id)identifier scope:(id)scope transportScope:(id)transportScope;
+- (id)_filteredBatchByStashingRecordsIfNecessary:(id)necessary error:(id *)error;
+- (void)_acknownledgeFixUpTasks:(id)tasks;
 - (void)_finishMingling;
-- (void)_fixUpPrivateRecordsPointingToRemappedSharedRecords:(id)a3;
+- (void)_fixUpPrivateRecordsPointingToRemappedSharedRecords:(id)records;
 - (void)_mingleOtherChanges;
 - (void)_mingleRemappings;
 - (void)_mingleSharedRemappings;
-- (void)_noteBatchWasAddedInPullQueue:(id)a3 fromBatch:(id)a4 transaction:(id)a5;
-- (void)_notifySchedulerPullQueueIsFullInTransaction:(id)a3;
+- (void)_noteBatchWasAddedInPullQueue:(id)queue fromBatch:(id)batch transaction:(id)transaction;
+- (void)_notifySchedulerPullQueueIsFullInTransaction:(id)transaction;
 - (void)_notifySchedulerPullQueueIsFullNowIfNecessary;
 - (void)_reallyNotifySchedulerPullQueueIsFull;
-- (void)_unstashRecordsForScope:(id)a3;
+- (void)_unstashRecordsForScope:(id)scope;
 - (void)cancel;
 - (void)launch;
-- (void)taskDidFinishWithError:(id)a3;
-- (void)transientRepository:(id)a3 didResetMingledRecordsForScopesWithFiler:(id)a4;
+- (void)taskDidFinishWithError:(id)error;
+- (void)transientRepository:(id)repository didResetMingledRecordsForScopesWithFiler:(id)filer;
 @end
 
 @implementation CPLMingleChangesScopeTask
 
-- (void)transientRepository:(id)a3 didResetMingledRecordsForScopesWithFiler:(id)a4
+- (void)transientRepository:(id)repository didResetMingledRecordsForScopesWithFiler:(id)filer
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  repositoryCopy = repository;
+  filerCopy = filer;
   if (!self->_minglingHasBeenReset)
   {
-    v8 = [(CPLEngineScopedTask *)self scope];
-    v9 = [v8 scopeIdentifier];
-    v10 = [v7 filterOnScopeIdentifier:v9];
+    scope = [(CPLEngineScopedTask *)self scope];
+    scopeIdentifier = [scope scopeIdentifier];
+    v10 = [filerCopy filterOnScopeIdentifier:scopeIdentifier];
 
-    if ((v10 & 1) != 0 || (sharedScope = self->_sharedScope) != 0 && (-[CPLEngineScope scopeIdentifier](sharedScope, "scopeIdentifier"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v7 filterOnScopeIdentifier:v12], v12, v13))
+    if ((v10 & 1) != 0 || (sharedScope = self->_sharedScope) != 0 && (-[CPLEngineScope scopeIdentifier](sharedScope, "scopeIdentifier"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [filerCopy filterOnScopeIdentifier:v12], v12, v13))
     {
       self->_minglingHasBeenReset = 1;
     }
@@ -45,9 +45,9 @@
         v14 = __CPLTaskOSLogDomain_14068();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          v15 = [(CPLEngineScopedTask *)self scope];
+          scope2 = [(CPLEngineScopedTask *)self scope];
           v17 = 138412290;
-          v18 = v15;
+          v18 = scope2;
           _os_log_impl(&dword_1DC05A000, v14, OS_LOG_TYPE_DEFAULT, "Mingling has been reset for %@ - will need to restart", &v17, 0xCu);
         }
       }
@@ -86,27 +86,27 @@
   v23.receiver = self;
   v23.super_class = CPLMingleChangesScopeTask;
   [(CPLEngineSyncTask *)&v23 launch];
-  v3 = [(CPLEngineSyncTask *)self engineLibrary];
-  v4 = [v3 scheduler];
-  [v4 willRunEngineElement:CPLEngineElementMingling];
+  engineLibrary = [(CPLEngineSyncTask *)self engineLibrary];
+  scheduler = [engineLibrary scheduler];
+  [scheduler willRunEngineElement:CPLEngineElementMingling];
 
-  v5 = [(CPLEngineScopedTask *)self store];
+  store = [(CPLEngineScopedTask *)self store];
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x2020000000;
   v22 = 0;
-  v6 = [(CPLEngineScopedTask *)self scope];
-  v7 = [v5 transientPullRepository];
+  scope = [(CPLEngineScopedTask *)self scope];
+  transientPullRepository = [store transientPullRepository];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __35__CPLMingleChangesScopeTask_launch__block_invoke;
   v15[3] = &unk_1E8620058;
-  v8 = v7;
+  v8 = transientPullRepository;
   v16 = v8;
-  v17 = self;
-  v9 = v5;
+  selfCopy = self;
+  v9 = store;
   v18 = v9;
-  v19 = v6;
+  v19 = scope;
   v20 = v21;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -234,10 +234,10 @@ uint64_t __35__CPLMingleChangesScopeTask_launch__block_invoke_2(uint64_t a1, uin
   return v6;
 }
 
-- (void)_unstashRecordsForScope:(id)a3
+- (void)_unstashRecordsForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLEngineScopedTask *)self store];
+  scopeCopy = scope;
+  store = [(CPLEngineScopedTask *)self store];
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x2020000000;
@@ -247,7 +247,7 @@ uint64_t __35__CPLMingleChangesScopeTask_launch__block_invoke_2(uint64_t a1, uin
   v11[2] = __53__CPLMingleChangesScopeTask__unstashRecordsForScope___block_invoke;
   v11[3] = &unk_1E86200A8;
   v11[4] = self;
-  v12 = v4;
+  v12 = scopeCopy;
   v13 = v14;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -257,7 +257,7 @@ uint64_t __35__CPLMingleChangesScopeTask_launch__block_invoke_2(uint64_t a1, uin
   v10 = v14;
   v6 = v12;
   v9 = v6;
-  v7 = [v5 performWriteTransactionWithBlock:v11 completionHandler:v8];
+  v7 = [store performWriteTransactionWithBlock:v11 completionHandler:v8];
 
   _Block_object_dispose(v14, 8);
 }
@@ -419,8 +419,8 @@ uint64_t __53__CPLMingleChangesScopeTask__unstashRecordsForScope___block_invoke_
 
   else
   {
-    v7 = [(CPLEngineSyncTask *)self engineLibrary];
-    v8 = [v7 store];
+    engineLibrary = [(CPLEngineSyncTask *)self engineLibrary];
+    store = [engineLibrary store];
 
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -431,7 +431,7 @@ uint64_t __53__CPLMingleChangesScopeTask__unstashRecordsForScope___block_invoke_
     v12[2] = __46__CPLMingleChangesScopeTask__mingleRemappings__block_invoke;
     v12[3] = &unk_1E86200A8;
     v12[4] = self;
-    v6 = v8;
+    v6 = store;
     v13 = v6;
     p_buf = &buf;
     v11[0] = MEMORY[0x1E69E9820];
@@ -607,8 +607,8 @@ void __46__CPLMingleChangesScopeTask__mingleRemappings__block_invoke_5(uint64_t 
 
   else
   {
-    v7 = [(CPLEngineSyncTask *)self engineLibrary];
-    v8 = [v7 store];
+    engineLibrary = [(CPLEngineSyncTask *)self engineLibrary];
+    store = [engineLibrary store];
 
     v16[0] = 0;
     v16[1] = v16;
@@ -625,7 +625,7 @@ void __46__CPLMingleChangesScopeTask__mingleRemappings__block_invoke_5(uint64_t 
     v12[2] = __52__CPLMingleChangesScopeTask__mingleSharedRemappings__block_invoke;
     v12[3] = &unk_1E8620260;
     v12[4] = self;
-    v6 = v8;
+    v6 = store;
     v13 = v6;
     p_buf = &buf;
     v15 = v16;
@@ -751,16 +751,16 @@ BOOL __52__CPLMingleChangesScopeTask__mingleSharedRemappings__block_invoke_2(uin
   return v9;
 }
 
-- (void)_fixUpPrivateRecordsPointingToRemappedSharedRecords:(id)a3
+- (void)_fixUpPrivateRecordsPointingToRemappedSharedRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   lock = self->_lock;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __81__CPLMingleChangesScopeTask__fixUpPrivateRecordsPointingToRemappedSharedRecords___block_invoke;
   v10[3] = &unk_1E861B290;
   v10[4] = self;
-  v11 = v4;
+  v11 = recordsCopy;
   v6 = v10;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -768,7 +768,7 @@ BOOL __52__CPLMingleChangesScopeTask__mingleSharedRemappings__block_invoke_2(uin
   block[3] = &unk_1E861B4E0;
   v13 = v6;
   v7 = lock;
-  v8 = v4;
+  v8 = recordsCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
@@ -833,10 +833,10 @@ void __81__CPLMingleChangesScopeTask__fixUpPrivateRecordsPointingToRemappedShare
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_acknownledgeFixUpTasks:(id)a3
+- (void)_acknownledgeFixUpTasks:(id)tasks
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tasksCopy = tasks;
   if ([(CPLEngineSyncTask *)self diskPressureState]== 2)
   {
     if ((_CPLSilentLogging & 1) == 0)
@@ -845,7 +845,7 @@ void __81__CPLMingleChangesScopeTask__fixUpPrivateRecordsPointingToRemappedShare
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v21 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1DC05A000, v5, OS_LOG_TYPE_DEFAULT, "System had not enough disk space to continue %@", buf, 0xCu);
       }
     }
@@ -862,22 +862,22 @@ void __81__CPLMingleChangesScopeTask__fixUpPrivateRecordsPointingToRemappedShare
 
   else
   {
-    v10 = [(CPLEngineSyncTask *)self engineLibrary];
-    v11 = [v10 store];
+    engineLibrary = [(CPLEngineSyncTask *)self engineLibrary];
+    store = [engineLibrary store];
 
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __53__CPLMingleChangesScopeTask__acknownledgeFixUpTasks___block_invoke;
     v15[3] = &unk_1E86200D0;
     v15[4] = self;
-    v16 = v4;
-    v17 = v11;
+    v16 = tasksCopy;
+    v17 = store;
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __53__CPLMingleChangesScopeTask__acknownledgeFixUpTasks___block_invoke_4;
     v14[3] = &unk_1E86205E0;
     v14[4] = self;
-    v9 = v11;
+    v9 = store;
     v12 = [v9 performWriteTransactionWithBlock:v15 completionHandler:v14];
   }
 
@@ -973,8 +973,8 @@ BOOL __53__CPLMingleChangesScopeTask__acknownledgeFixUpTasks___block_invoke_2(ui
 
   else
   {
-    v7 = [(CPLEngineSyncTask *)self engineLibrary];
-    v8 = [v7 store];
+    engineLibrary = [(CPLEngineSyncTask *)self engineLibrary];
+    store = [engineLibrary store];
 
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -986,7 +986,7 @@ BOOL __53__CPLMingleChangesScopeTask__acknownledgeFixUpTasks___block_invoke_2(ui
     v12[3] = &unk_1E86200A8;
     v12[4] = self;
     p_buf = &buf;
-    v6 = v8;
+    v6 = store;
     v13 = v6;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
@@ -1208,17 +1208,17 @@ void __48__CPLMingleChangesScopeTask__mingleOtherChanges__block_invoke_5(uint64_
   [v3 addCompletedWorkItemCount:objc_msgSend(v2 kindOfWork:{"count"), @"records"}];
 }
 
-- (id)_filteredBatchByStashingRecordsIfNecessary:(id)a3 error:(id *)a4
+- (id)_filteredBatchByStashingRecordsIfNecessary:(id)necessary error:(id *)error
 {
   v104 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v56 = self;
-  v50 = [(CPLEngineScopedTask *)self store];
-  v55 = [v50 pushRepository];
-  v54 = [v50 cloudCache];
-  v53 = [v50 idMapping];
-  v49 = [(CPLEngineScopedTask *)self scope];
-  v6 = [v49 localIndex];
+  necessaryCopy = necessary;
+  selfCopy = self;
+  store = [(CPLEngineScopedTask *)self store];
+  pushRepository = [store pushRepository];
+  cloudCache = [store cloudCache];
+  idMapping = [store idMapping];
+  scope = [(CPLEngineScopedTask *)self scope];
+  localIndex = [scope localIndex];
   v92 = 0;
   v93 = &v92;
   v94 = 0x3032000000;
@@ -1230,7 +1230,7 @@ void __48__CPLMingleChangesScopeTask__mingleOtherChanges__block_invoke_5(uint64_
   v88 = 0x3032000000;
   v89 = __Block_byref_object_copy__14099;
   v90 = __Block_byref_object_dispose__14100;
-  v47 = v5;
+  v47 = necessaryCopy;
   v91 = v47;
   v7 = objc_alloc(MEMORY[0x1E695DF90]);
   v52 = [v7 initWithCapacity:{objc_msgSend(v87[5], "count")}];
@@ -1249,33 +1249,33 @@ void __48__CPLMingleChangesScopeTask__mingleOtherChanges__block_invoke_5(uint64_
     }
 
     v9 = objc_autoreleasePoolPush();
-    v10 = [v87[5] records];
+    records = [v87[5] records];
     v11 = objc_alloc_init(MEMORY[0x1E696AD50]);
     v68[0] = MEMORY[0x1E69E9820];
     v68[1] = 3221225472;
     v68[2] = __78__CPLMingleChangesScopeTask__filteredBatchByStashingRecordsIfNecessary_error___block_invoke;
     v68[3] = &unk_1E861DD00;
-    v69 = v53;
-    v78 = v6;
-    v70 = v55;
-    v71 = v54;
+    v69 = idMapping;
+    v78 = localIndex;
+    v70 = pushRepository;
+    v71 = cloudCache;
     v72 = v52;
-    v73 = v56;
+    v73 = selfCopy;
     v75 = &v86;
     v12 = v11;
     v74 = v12;
     v79 = a2;
     v76 = &v80;
     v77 = &v92;
-    [v10 enumerateObjectsUsingBlock:v68];
+    [records enumerateObjectsUsingBlock:v68];
     v13 = v87[5];
     if (v13 && [v12 count])
     {
-      v14 = [v10 mutableCopy];
+      v14 = [records mutableCopy];
       [v14 removeObjectsAtIndexes:v12];
       v15 = [v14 count];
       v16 = [v12 count];
-      if (v16 + v15 != [v10 count])
+      if (v16 + v15 != [records count])
       {
         if ((_CPLSilentLogging & 1) == 0)
         {
@@ -1283,7 +1283,7 @@ void __48__CPLMingleChangesScopeTask__mingleOtherChanges__block_invoke_5(uint64_
           if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
           {
             v36 = [v12 count];
-            v37 = [v10 count];
+            v37 = [records count];
             v38 = [v14 count];
             *buf = 134218496;
             v99 = v36;
@@ -1295,9 +1295,9 @@ void __48__CPLMingleChangesScopeTask__mingleOtherChanges__block_invoke_5(uint64_
           }
         }
 
-        v39 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v40 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLMingleChangesTask.m"];
-        [v39 handleFailureInMethod:a2 object:v56 file:v40 lineNumber:459 description:{@"Trying to remove objects at %lu indexes from an array of %lu elements returned %lu elements", objc_msgSend(v12, "count"), objc_msgSend(v10, "count"), objc_msgSend(v14, "count")}];
+        [currentHandler handleFailureInMethod:a2 object:selfCopy file:v40 lineNumber:459 description:{@"Trying to remove objects at %lu indexes from an array of %lu elements returned %lu elements", objc_msgSend(v12, "count"), objc_msgSend(records, "count"), objc_msgSend(v14, "count")}];
 
 LABEL_32:
         abort();
@@ -1328,7 +1328,7 @@ LABEL_32:
     v20 = [v19 initWithCapacity:{objc_msgSend(v81[5], "count")}];
     v21 = objc_alloc(MEMORY[0x1E695DF90]);
     v22 = [v21 initWithCapacity:{objc_msgSend(v81[5], "count")}];
-    v23 = [v87[5] records];
+    records2 = [v87[5] records];
     v64[0] = MEMORY[0x1E69E9820];
     v64[1] = 3221225472;
     v64[2] = __78__CPLMingleChangesScopeTask__filteredBatchByStashingRecordsIfNecessary_error___block_invoke_59;
@@ -1338,7 +1338,7 @@ LABEL_32:
     v65 = v24;
     v25 = v22;
     v66 = v25;
-    [v23 enumerateObjectsUsingBlock:v64];
+    [records2 enumerateObjectsUsingBlock:v64];
     if ([v24 count])
     {
       v26 = objc_alloc_init(MEMORY[0x1E696AD50]);
@@ -1349,18 +1349,18 @@ LABEL_32:
       v27 = v26;
       v58 = v27;
       v59 = v25;
-      v60 = v56;
+      v60 = selfCopy;
       v61 = &v92;
       v62 = &v86;
       v63 = a2;
       [v24 enumerateKeysAndObjectsUsingBlock:v57];
       if (v87[5] && v27)
       {
-        v28 = [v23 mutableCopy];
+        v28 = [records2 mutableCopy];
         [v28 removeObjectsAtIndexes:v27];
         v29 = [v28 count];
         v30 = [v27 count];
-        if (v30 + v29 != [v23 count])
+        if (v30 + v29 != [records2 count])
         {
           if ((_CPLSilentLogging & 1) == 0)
           {
@@ -1368,7 +1368,7 @@ LABEL_32:
             if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
             {
               v42 = [v27 count];
-              v43 = [v23 count];
+              v43 = [records2 count];
               v44 = [v28 count];
               *buf = 134218496;
               v99 = v42;
@@ -1380,9 +1380,9 @@ LABEL_32:
             }
           }
 
-          v45 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
           v46 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLMingleChangesTask.m"];
-          [v45 handleFailureInMethod:a2 object:v56 file:v46 lineNumber:508 description:{@"Trying to remove objects at %lu indexes from an array of %lu elements returned %lu elements", objc_msgSend(v27, "count"), objc_msgSend(v23, "count"), objc_msgSend(v28, "count")}];
+          [currentHandler2 handleFailureInMethod:a2 object:selfCopy file:v46 lineNumber:508 description:{@"Trying to remove objects at %lu indexes from an array of %lu elements returned %lu elements", objc_msgSend(v27, "count"), objc_msgSend(records2, "count"), objc_msgSend(v28, "count")}];
 
           goto LABEL_32;
         }
@@ -1393,9 +1393,9 @@ LABEL_32:
   }
 
   v31 = v87[5];
-  if (a4 && !v31)
+  if (error && !v31)
   {
-    *a4 = v93[5];
+    *error = v93[5];
     v31 = v87[5];
   }
 
@@ -2001,8 +2001,8 @@ void __78__CPLMingleChangesScopeTask__filteredBatchByStashingRecordsIfNecessary_
   v10 = *MEMORY[0x1E69E9840];
   if (os_variant_has_internal_content())
   {
-    v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v4 = [v3 BOOLForKey:@"CPLMingleDisableStashMaster"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v4 = [standardUserDefaults BOOLForKey:@"CPLMingleDisableStashMaster"];
 
     if (v4 && !self->_didLogShouldStashMasterRecords)
     {
@@ -2012,7 +2012,7 @@ void __78__CPLMingleChangesScopeTask__filteredBatchByStashingRecordsIfNecessary_
         if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
         {
           v8 = 138412290;
-          v9 = self;
+          selfCopy = self;
           _os_log_impl(&dword_1DC05A000, v5, OS_LOG_TYPE_DEFAULT, "CPLMingleDisableStashMaster user default set to override stash master on mingle: %@", &v8, 0xCu);
         }
       }
@@ -2043,7 +2043,7 @@ void __78__CPLMingleChangesScopeTask__filteredBatchByStashingRecordsIfNecessary_
       if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v18 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1DC05A000, v3, OS_LOG_TYPE_DEFAULT, "System had not enough disk space to continue %@", buf, 0xCu);
       }
     }
@@ -2060,21 +2060,21 @@ void __78__CPLMingleChangesScopeTask__filteredBatchByStashingRecordsIfNecessary_
 
   else
   {
-    v8 = [(CPLEngineSyncTask *)self engineLibrary];
-    v9 = [v8 store];
+    engineLibrary = [(CPLEngineSyncTask *)self engineLibrary];
+    store = [engineLibrary store];
 
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __44__CPLMingleChangesScopeTask__finishMingling__block_invoke;
     v13[3] = &unk_1E86205B8;
     v13[4] = self;
-    v14 = v9;
+    v14 = store;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __44__CPLMingleChangesScopeTask__finishMingling__block_invoke_34;
     v12[3] = &unk_1E86205E0;
     v12[4] = self;
-    v7 = v9;
+    v7 = store;
     v10 = [v7 performWriteTransactionWithBlock:v13 completionHandler:v12];
   }
 
@@ -2190,27 +2190,27 @@ LABEL_14:
   return v13;
 }
 
-- (void)_noteBatchWasAddedInPullQueue:(id)a3 fromBatch:(id)a4 transaction:(id)a5
+- (void)_noteBatchWasAddedInPullQueue:(id)queue fromBatch:(id)batch transaction:(id)transaction
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  queueCopy = queue;
+  batchCopy = batch;
+  transactionCopy = transaction;
+  if ([queueCopy count])
   {
-    if (v9)
+    if (batchCopy)
     {
       if ((_CPLSilentLogging & 1) == 0)
       {
         v11 = __CPLTaskOSLogDomain_14068();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
-          v12 = [v8 summaryDescription];
-          v13 = [v9 summaryDescription];
+          summaryDescription = [queueCopy summaryDescription];
+          summaryDescription2 = [batchCopy summaryDescription];
           v15 = 138543618;
-          v16 = v12;
+          v16 = summaryDescription;
           v17 = 2114;
-          v18 = v13;
+          v18 = summaryDescription2;
           _os_log_impl(&dword_1DC05A000, v11, OS_LOG_TYPE_DEFAULT, "Adding %{public}@ to pull queue from %{public}@", &v15, 0x16u);
 
 LABEL_9:
@@ -2226,9 +2226,9 @@ LABEL_9:
       v11 = __CPLTaskOSLogDomain_14068();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v8 summaryDescription];
+        summaryDescription = [queueCopy summaryDescription];
         v15 = 138412290;
-        v16 = v12;
+        v16 = summaryDescription;
         _os_log_impl(&dword_1DC05A000, v11, OS_LOG_TYPE_DEFAULT, "Adding %@ to pull queue", &v15, 0xCu);
         goto LABEL_9;
       }
@@ -2236,51 +2236,51 @@ LABEL_9:
 LABEL_10:
     }
 
-    [(CPLMingleChangesScopeTask *)self _notifySchedulerPullQueueIsFullInTransaction:v10];
+    [(CPLMingleChangesScopeTask *)self _notifySchedulerPullQueueIsFullInTransaction:transactionCopy];
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)taskDidFinishWithError:(id)a3
+- (void)taskDidFinishWithError:(id)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v5 = __CPLTaskOSLogDomain_14068();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       minglingCount = self->_minglingCount;
-      v7 = [(CPLEngineScopedTask *)self scope];
+      scope = [(CPLEngineScopedTask *)self scope];
       *buf = 134218242;
       v24 = minglingCount;
       v25 = 2112;
-      v26 = v7;
+      v26 = scope;
       _os_log_impl(&dword_1DC05A000, v5, OS_LOG_TYPE_DEFAULT, "Mingled %lu changes for %@", buf, 0x16u);
     }
   }
 
   [(CPLMingleChangesScopeTask *)self _notifySchedulerPullQueueIsFullNowIfNecessary];
-  v8 = [(CPLEngineScopedTask *)self scope];
-  v9 = [(CPLEngineScopedTask *)self store];
+  scope2 = [(CPLEngineScopedTask *)self scope];
+  store = [(CPLEngineScopedTask *)self store];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __52__CPLMingleChangesScopeTask_taskDidFinishWithError___block_invoke;
   v18[3] = &unk_1E861F1D0;
-  v19 = v9;
-  v20 = self;
-  v21 = v4;
-  v22 = v8;
+  v19 = store;
+  selfCopy = self;
+  v21 = errorCopy;
+  v22 = scope2;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __52__CPLMingleChangesScopeTask_taskDidFinishWithError___block_invoke_33;
   v15[3] = &unk_1E86205B8;
   v16 = v21;
-  v17 = self;
+  selfCopy2 = self;
   v10 = v21;
-  v11 = v8;
-  v12 = v9;
+  v11 = scope2;
+  v12 = store;
   v13 = [v12 performWriteTransactionWithBlock:v18 completionHandler:v15];
 
   v14 = *MEMORY[0x1E69E9840];
@@ -2415,14 +2415,14 @@ void __74__CPLMingleChangesScopeTask__notifySchedulerPullQueueIsFullNowIfNecessa
   }
 }
 
-- (void)_notifySchedulerPullQueueIsFullInTransaction:(id)a3
+- (void)_notifySchedulerPullQueueIsFullInTransaction:(id)transaction
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __74__CPLMingleChangesScopeTask__notifySchedulerPullQueueIsFullInTransaction___block_invoke;
   v3[3] = &unk_1E8620A88;
   v3[4] = self;
-  [a3 addCleanupBlock:v3];
+  [transaction addCleanupBlock:v3];
 }
 
 void __74__CPLMingleChangesScopeTask__notifySchedulerPullQueueIsFullInTransaction___block_invoke(uint64_t a1, void *a2)
@@ -2503,16 +2503,16 @@ void __74__CPLMingleChangesScopeTask__notifySchedulerPullQueueIsFullInTransactio
     }
   }
 
-  v4 = [(CPLEngineSyncTask *)self session];
-  [v4 noteClientNeedsToPullIfNecessary];
+  session = [(CPLEngineSyncTask *)self session];
+  [session noteClientNeedsToPullIfNecessary];
 }
 
-- (BOOL)checkScopeIsValidInTransaction:(id)a3
+- (BOOL)checkScopeIsValidInTransaction:(id)transaction
 {
   v32 = *MEMORY[0x1E69E9840];
   v27.receiver = self;
   v27.super_class = CPLMingleChangesScopeTask;
-  if (![(CPLEngineScopedTask *)&v27 checkScopeIsValidInTransaction:a3]|| self->_minglingHasBeenReset)
+  if (![(CPLEngineScopedTask *)&v27 checkScopeIsValidInTransaction:transaction]|| self->_minglingHasBeenReset)
   {
 LABEL_14:
     v15 = 0;
@@ -2521,10 +2521,10 @@ LABEL_14:
 
   if (self->_sharedScope)
   {
-    v4 = [(CPLEngineScopedTask *)self store];
-    v5 = [v4 scopes];
-    v6 = [v5 validLocalScopeIndexes];
-    v7 = [v6 containsIndex:{-[CPLEngineScope localIndex](self->_sharedScope, "localIndex")}];
+    store = [(CPLEngineScopedTask *)self store];
+    scopes = [store scopes];
+    validLocalScopeIndexes = [scopes validLocalScopeIndexes];
+    v7 = [validLocalScopeIndexes containsIndex:{-[CPLEngineScope localIndex](self->_sharedScope, "localIndex")}];
 
     if ((v7 & 1) == 0)
     {
@@ -2549,34 +2549,34 @@ LABEL_14:
     }
   }
 
-  v8 = [(CPLEngineScopedTask *)self store];
-  v9 = [v8 pushRepository];
-  v10 = [(CPLEngineScopedTask *)self scope];
-  v11 = [v10 scopeIdentifier];
-  v12 = [v9 minimumPriorityForChangesInScopeWithIdentifier:v11];
+  store2 = [(CPLEngineScopedTask *)self store];
+  pushRepository = [store2 pushRepository];
+  scope = [(CPLEngineScopedTask *)self scope];
+  scopeIdentifier = [scope scopeIdentifier];
+  v12 = [pushRepository minimumPriorityForChangesInScopeWithIdentifier:scopeIdentifier];
   if (v12 >= +[CPLRecordPushContext minimumPriorityForLocalConflictResolution])
   {
     goto LABEL_7;
   }
 
-  v13 = [(CPLEngineSyncTask *)self session];
-  v14 = [v13 allowsLocalConflictResolution];
+  session = [(CPLEngineSyncTask *)self session];
+  allowsLocalConflictResolution = [session allowsLocalConflictResolution];
 
-  if (v14)
+  if (allowsLocalConflictResolution)
   {
     goto LABEL_7;
   }
 
-  v22 = [(CPLEngineSyncTask *)self session];
-  v23 = [v22 allowsLocalConflictResolutionWhenOverQuota];
+  session2 = [(CPLEngineSyncTask *)self session];
+  allowsLocalConflictResolutionWhenOverQuota = [session2 allowsLocalConflictResolutionWhenOverQuota];
 
-  if (!v23)
+  if (!allowsLocalConflictResolutionWhenOverQuota)
   {
     goto LABEL_19;
   }
 
-  v24 = [v8 scopes];
-  v25 = [v24 valueForFlag:2 forScope:v10];
+  scopes2 = [store2 scopes];
+  v25 = [scopes2 valueForFlag:2 forScope:scope];
 
   if (v25)
   {
@@ -2603,7 +2603,7 @@ LABEL_19:
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v29 = v11;
+        v29 = scopeIdentifier;
         _os_log_impl(&dword_1DC05A000, v26, OS_LOG_TYPE_DEFAULT, "Push repository contains changes for %@, stopping mingle now", buf, 0xCu);
       }
     }
@@ -2617,11 +2617,11 @@ LABEL_15:
   return v15;
 }
 
-- (CPLMingleChangesScopeTask)initWithEngineLibrary:(id)a3 session:(id)a4 clientCacheIdentifier:(id)a5 scope:(id)a6 transportScope:(id)a7
+- (CPLMingleChangesScopeTask)initWithEngineLibrary:(id)library session:(id)session clientCacheIdentifier:(id)identifier scope:(id)scope transportScope:(id)transportScope
 {
   v15.receiver = self;
   v15.super_class = CPLMingleChangesScopeTask;
-  v7 = [(CPLEngineScopedTask *)&v15 initWithEngineLibrary:a3 session:a4 clientCacheIdentifier:a5 scope:a6 transportScope:a7];
+  v7 = [(CPLEngineScopedTask *)&v15 initWithEngineLibrary:library session:session clientCacheIdentifier:identifier scope:scope transportScope:transportScope];
   if (v7)
   {
     v8 = CPLCopyDefaultSerialQueueAttributes();

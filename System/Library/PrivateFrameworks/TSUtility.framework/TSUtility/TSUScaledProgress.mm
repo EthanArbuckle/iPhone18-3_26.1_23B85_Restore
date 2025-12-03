@@ -3,13 +3,13 @@
 - (TSUProgress)progress;
 - (TSUScaledProgress)init;
 - (double)value;
-- (id)addProgressObserverWithValueInterval:(double)a3 queue:(id)a4 handler:(id)a5;
+- (id)addProgressObserverWithValueInterval:(double)interval queue:(id)queue handler:(id)handler;
 - (void)dealloc;
 - (void)p_addProgressObserverToProgressInQueue;
 - (void)p_removeProgressObserverFromProgressInQueue;
-- (void)removeProgressObserver:(id)a3;
-- (void)setMaxValue:(double)a3;
-- (void)setProgress:(id)a3;
+- (void)removeProgressObserver:(id)observer;
+- (void)setMaxValue:(double)value;
+- (void)setProgress:(id)progress;
 @end
 
 @implementation TSUScaledProgress
@@ -71,7 +71,7 @@ uint64_t __29__TSUScaledProgress_progress__block_invoke(uint64_t a1)
   return [v2 drain];
 }
 
-- (void)setProgress:(id)a3
+- (void)setProgress:(id)progress
 {
   mProgressQueue = self->mProgressQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -79,7 +79,7 @@ uint64_t __29__TSUScaledProgress_progress__block_invoke(uint64_t a1)
   v4[2] = __33__TSUScaledProgress_setProgress___block_invoke;
   v4[3] = &unk_279D65F40;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = progress;
   dispatch_async(mProgressQueue, v4);
 }
 
@@ -102,14 +102,14 @@ uint64_t __33__TSUScaledProgress_setProgress___block_invoke(uint64_t a1)
 
 - (double)value
 {
-  v3 = [(TSUScaledProgress *)self progress];
-  if (!v3)
+  progress = [(TSUScaledProgress *)self progress];
+  if (!progress)
   {
     return 0.0;
   }
 
-  v4 = v3;
-  [(TSUProgress *)v3 value];
+  v4 = progress;
+  [(TSUProgress *)progress value];
   v6 = v5;
   [(TSUProgress *)v4 maxValue];
   v8 = v6 / v7;
@@ -117,29 +117,29 @@ uint64_t __33__TSUScaledProgress_setProgress___block_invoke(uint64_t a1)
   return v8 * v9;
 }
 
-- (void)setMaxValue:(double)a3
+- (void)setMaxValue:(double)value
 {
-  [(TSUScaledProgressStorage *)self->mStorage setMaxValue:a3];
+  [(TSUScaledProgressStorage *)self->mStorage setMaxValue:value];
 
   [(TSUProgress *)self protected_progressDidChange];
 }
 
 - (BOOL)isIndeterminate
 {
-  v2 = [(TSUScaledProgress *)self progress];
-  if (!v2)
+  progress = [(TSUScaledProgress *)self progress];
+  if (!progress)
   {
     return 1;
   }
 
-  return [(TSUProgress *)v2 isIndeterminate];
+  return [(TSUProgress *)progress isIndeterminate];
 }
 
-- (id)addProgressObserverWithValueInterval:(double)a3 queue:(id)a4 handler:(id)a5
+- (id)addProgressObserverWithValueInterval:(double)interval queue:(id)queue handler:(id)handler
 {
   v10.receiver = self;
   v10.super_class = TSUScaledProgress;
-  v6 = [(TSUProgress *)&v10 addProgressObserverWithValueInterval:a4 queue:a5 handler:a3];
+  v6 = [(TSUProgress *)&v10 addProgressObserverWithValueInterval:queue queue:handler handler:interval];
   mProgressQueue = self->mProgressQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -159,11 +159,11 @@ uint64_t __72__TSUScaledProgress_addProgressObserverWithValueInterval_queue_hand
   return [v2 drain];
 }
 
-- (void)removeProgressObserver:(id)a3
+- (void)removeProgressObserver:(id)observer
 {
   v6.receiver = self;
   v6.super_class = TSUScaledProgress;
-  [(TSUProgress *)&v6 removeProgressObserver:a3];
+  [(TSUProgress *)&v6 removeProgressObserver:observer];
   mProgressQueue = self->mProgressQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;

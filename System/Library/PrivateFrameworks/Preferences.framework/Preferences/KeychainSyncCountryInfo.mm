@@ -1,10 +1,10 @@
 @interface KeychainSyncCountryInfo
 + (id)allCountries;
-+ (id)countryInfoForCountryCode:(id)a3 dialingPrefix:(id)a4;
-+ (id)countryInfoWithDictionary:(id)a3;
++ (id)countryInfoForCountryCode:(id)code dialingPrefix:(id)prefix;
++ (id)countryInfoWithDictionary:(id)dictionary;
 + (void)_loadCountriesIfNeeded;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -112,18 +112,18 @@ uint64_t __49__KeychainSyncCountryInfo__loadCountriesIfNeeded__block_invoke_2(ui
 
 + (id)allCountries
 {
-  [a1 _loadCountriesIfNeeded];
+  [self _loadCountriesIfNeeded];
   v2 = _countryInfoCountries;
 
   return v2;
 }
 
-+ (id)countryInfoWithDictionary:(id)a3
++ (id)countryInfoWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"prefix"];
-  v5 = [v3 objectForKey:@"name"];
-  v6 = [v3 objectForKey:@"code"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKey:@"prefix"];
+  v5 = [dictionaryCopy objectForKey:@"name"];
+  v6 = [dictionaryCopy objectForKey:@"code"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && [v4 length] && (objc_opt_class(), (objc_opt_isKindOfClass()) && objc_msgSend(v5, "length") && (objc_opt_class(), (objc_opt_isKindOfClass()) && objc_msgSend(v6, "length"))
@@ -142,17 +142,17 @@ uint64_t __49__KeychainSyncCountryInfo__loadCountriesIfNeeded__block_invoke_2(ui
   return v7;
 }
 
-+ (id)countryInfoForCountryCode:(id)a3 dialingPrefix:(id)a4
++ (id)countryInfoForCountryCode:(id)code dialingPrefix:(id)prefix
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  codeCopy = code;
+  prefixCopy = prefix;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [a1 allCountries];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  allCountries = [self allCountries];
+  v9 = [allCountries countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = *v18;
@@ -162,14 +162,14 @@ uint64_t __49__KeychainSyncCountryInfo__loadCountriesIfNeeded__block_invoke_2(ui
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allCountries);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 countryCode];
-        if ([v13 isEqualToString:v6])
+        countryCode = [v12 countryCode];
+        if ([countryCode isEqualToString:codeCopy])
         {
-          if (![v7 length])
+          if (![prefixCopy length])
           {
 
 LABEL_15:
@@ -177,8 +177,8 @@ LABEL_15:
             goto LABEL_16;
           }
 
-          v14 = [v12 dialingPrefix];
-          v15 = [v14 isEqualToString:v7];
+          dialingPrefix = [v12 dialingPrefix];
+          v15 = [dialingPrefix isEqualToString:prefixCopy];
 
           if (v15)
           {
@@ -191,7 +191,7 @@ LABEL_15:
         }
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [allCountries countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v9)
       {
         continue;
@@ -206,19 +206,19 @@ LABEL_16:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(KeychainSyncCountryInfo *)self countryCode];
-    v6 = [v4 countryCode];
-    if ([v5 isEqualToString:v6])
+    countryCode = [(KeychainSyncCountryInfo *)self countryCode];
+    countryCode2 = [equalCopy countryCode];
+    if ([countryCode isEqualToString:countryCode2])
     {
-      v7 = [(KeychainSyncCountryInfo *)self dialingPrefix];
-      v8 = [v4 dialingPrefix];
-      v9 = [v7 isEqualToString:v8];
+      dialingPrefix = [(KeychainSyncCountryInfo *)self dialingPrefix];
+      dialingPrefix2 = [equalCopy dialingPrefix];
+      v9 = [dialingPrefix isEqualToString:dialingPrefix2];
     }
 
     else
@@ -235,20 +235,20 @@ LABEL_16:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(KeychainSyncCountryInfo);
-  v5 = [(KeychainSyncCountryInfo *)self countryCode];
-  [(KeychainSyncCountryInfo *)v4 setCountryCode:v5];
+  countryCode = [(KeychainSyncCountryInfo *)self countryCode];
+  [(KeychainSyncCountryInfo *)v4 setCountryCode:countryCode];
 
-  v6 = [(KeychainSyncCountryInfo *)self countryName];
-  [(KeychainSyncCountryInfo *)v4 setCountryName:v6];
+  countryName = [(KeychainSyncCountryInfo *)self countryName];
+  [(KeychainSyncCountryInfo *)v4 setCountryName:countryName];
 
-  v7 = [(KeychainSyncCountryInfo *)self localizedCountryName];
-  [(KeychainSyncCountryInfo *)v4 setLocalizedCountryName:v7];
+  localizedCountryName = [(KeychainSyncCountryInfo *)self localizedCountryName];
+  [(KeychainSyncCountryInfo *)v4 setLocalizedCountryName:localizedCountryName];
 
-  v8 = [(KeychainSyncCountryInfo *)self dialingPrefix];
-  [(KeychainSyncCountryInfo *)v4 setDialingPrefix:v8];
+  dialingPrefix = [(KeychainSyncCountryInfo *)self dialingPrefix];
+  [(KeychainSyncCountryInfo *)v4 setDialingPrefix:dialingPrefix];
 
   return v4;
 }
@@ -257,9 +257,9 @@ LABEL_16:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = [objc_opt_class() description];
-  v5 = [(KeychainSyncCountryInfo *)self dialingPrefix];
-  v6 = [(KeychainSyncCountryInfo *)self countryName];
-  v7 = [v3 stringWithFormat:@"<%@: %p +%@ (%@)>", v4, self, v5, v6];
+  dialingPrefix = [(KeychainSyncCountryInfo *)self dialingPrefix];
+  countryName = [(KeychainSyncCountryInfo *)self countryName];
+  v7 = [v3 stringWithFormat:@"<%@: %p +%@ (%@)>", v4, self, dialingPrefix, countryName];
 
   return v7;
 }

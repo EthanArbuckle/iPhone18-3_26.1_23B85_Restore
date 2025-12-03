@@ -1,19 +1,19 @@
 @interface CSDMessagingScreenShareContext
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)incomingScreenShareRequestFromParticipant:(id)a3 handleEligibilityBlock:(id)a4 error:(id *)a5;
-- (id)initOutgoingRequestWithScreenSharingRequest:(id)a3;
-- (int)StringAsOriginType:(id)a3;
-- (int)StringAsType:(id)a3;
+- (id)incomingScreenShareRequestFromParticipant:(id)participant handleEligibilityBlock:(id)block error:(id *)error;
+- (id)initOutgoingRequestWithScreenSharingRequest:(id)request;
+- (int)StringAsOriginType:(id)type;
+- (int)StringAsType:(id)type;
 - (int)originType;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSDMessagingScreenShareContext
@@ -31,9 +31,9 @@
   }
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -46,25 +46,25 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ShareScreen"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"ShareScreen"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ViewScreen"])
+  else if ([typeCopy isEqualToString:@"ViewScreen"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Cancel"])
+  else if ([typeCopy isEqualToString:@"Cancel"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Deny"])
+  else if ([typeCopy isEqualToString:@"Deny"])
   {
     v4 = 3;
   }
@@ -90,17 +90,17 @@
   }
 }
 
-- (int)StringAsOriginType:(id)a3
+- (int)StringAsOriginType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"JoinRequest"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"JoinRequest"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"AskToShare"];
+    v4 = [typeCopy isEqualToString:@"AskToShare"];
   }
 
   return v4;
@@ -111,8 +111,8 @@
   v7.receiver = self;
   v7.super_class = CSDMessagingScreenShareContext;
   v3 = [(CSDMessagingScreenShareContext *)&v7 description];
-  v4 = [(CSDMessagingScreenShareContext *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CSDMessagingScreenShareContext *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -173,21 +173,21 @@
   metadata = self->_metadata;
   if (metadata)
   {
-    v12 = [(CSDMessagingScreenShareContextMetadata *)metadata dictionaryRepresentation];
-    [v4 setObject:v12 forKey:@"metadata"];
+    dictionaryRepresentation = [(CSDMessagingScreenShareContextMetadata *)metadata dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"metadata"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_screenShareUUID)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -195,7 +195,7 @@
   {
     type = self->_type;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -203,51 +203,51 @@
   {
     originType = self->_originType;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_metadata)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_screenShareUUID)
   {
-    [v4 setScreenShareUUID:?];
-    v4 = v6;
+    [toCopy setScreenShareUUID:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 8) = self->_type;
-    *(v4 + 36) |= 2u;
+    *(toCopy + 8) = self->_type;
+    *(toCopy + 36) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 4) = self->_originType;
-    *(v4 + 36) |= 1u;
+    *(toCopy + 4) = self->_originType;
+    *(toCopy + 36) |= 1u;
   }
 
   if (self->_metadata)
   {
     [v6 setMetadata:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_screenShareUUID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_screenShareUUID copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
@@ -265,23 +265,23 @@
     *(v5 + 36) |= 1u;
   }
 
-  v9 = [(CSDMessagingScreenShareContextMetadata *)self->_metadata copyWithZone:a3];
+  v9 = [(CSDMessagingScreenShareContextMetadata *)self->_metadata copyWithZone:zone];
   v10 = v5[1];
   v5[1] = v9;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   screenShareUUID = self->_screenShareUUID;
-  if (screenShareUUID | *(v4 + 3))
+  if (screenShareUUID | *(equalCopy + 3))
   {
     if (![(NSString *)screenShareUUID isEqual:?])
     {
@@ -289,16 +289,16 @@
     }
   }
 
-  v6 = *(v4 + 36);
+  v6 = *(equalCopy + 36);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_type != *(v4 + 8))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_type != *(equalCopy + 8))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
 LABEL_16:
     v8 = 0;
@@ -307,19 +307,19 @@ LABEL_16:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_originType != *(v4 + 4))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_originType != *(equalCopy + 4))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_16;
   }
 
   metadata = self->_metadata;
-  if (metadata | *(v4 + 1))
+  if (metadata | *(equalCopy + 1))
   {
     v8 = [(CSDMessagingScreenShareContextMetadata *)metadata isEqual:?];
   }
@@ -361,32 +361,32 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ [(CSDMessagingScreenShareContextMetadata *)self->_metadata hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v8 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v8 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(CSDMessagingScreenShareContext *)self setScreenShareUUID:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 2) != 0)
   {
-    self->_type = v4[8];
+    self->_type = fromCopy[8];
     *&self->_has |= 2u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
   }
 
   if (v5)
   {
-    self->_originType = v4[4];
+    self->_originType = fromCopy[4];
     *&self->_has |= 1u;
   }
 
   metadata = self->_metadata;
-  v7 = *(v4 + 1);
+  v7 = *(fromCopy + 1);
   if (metadata)
   {
     if (!v7)
@@ -407,39 +407,39 @@ LABEL_3:
     [(CSDMessagingScreenShareContext *)self setMetadata:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_13:
 }
 
-- (id)initOutgoingRequestWithScreenSharingRequest:(id)a3
+- (id)initOutgoingRequestWithScreenSharingRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = [(CSDMessagingScreenShareContext *)self init];
   if (!v5)
   {
     goto LABEL_19;
   }
 
-  v6 = [v4 UUID];
-  v7 = [v6 UUIDString];
-  [(CSDMessagingScreenShareContext *)v5 setScreenShareUUID:v7];
+  uUID = [requestCopy UUID];
+  uUIDString = [uUID UUIDString];
+  [(CSDMessagingScreenShareContext *)v5 setScreenShareUUID:uUIDString];
 
-  v8 = [v4 type];
-  if (v8 == 4)
+  type = [requestCopy type];
+  if (type == 4)
   {
     v9 = v5;
     v10 = 3;
     goto LABEL_8;
   }
 
-  if (v8 == 2)
+  if (type == 2)
   {
     v9 = v5;
     v10 = 1;
     goto LABEL_8;
   }
 
-  if (v8 == 1)
+  if (type == 1)
   {
     v9 = v5;
     v10 = 0;
@@ -456,15 +456,15 @@ LABEL_8:
 
   v5 = 0;
 LABEL_12:
-  v12 = [v4 originType];
-  if (v12 == 1)
+  originType = [requestCopy originType];
+  if (originType == 1)
   {
     v13 = 0;
   }
 
   else
   {
-    if (v12 != 2)
+    if (originType != 2)
     {
       goto LABEL_17;
     }
@@ -474,18 +474,18 @@ LABEL_12:
 
   [(CSDMessagingScreenShareContext *)v5 setOriginType:v13];
 LABEL_17:
-  v14 = [v4 metadata];
+  metadata = [requestCopy metadata];
 
-  if (v14)
+  if (metadata)
   {
     v15 = objc_alloc_init(CSDMessagingScreenShareContextMetadata);
-    v16 = [v4 metadata];
-    v17 = [v16 appName];
-    [(CSDMessagingScreenShareContextMetadata *)v15 setAppName:v17];
+    metadata2 = [requestCopy metadata];
+    appName = [metadata2 appName];
+    [(CSDMessagingScreenShareContextMetadata *)v15 setAppName:appName];
 
-    v18 = [v4 metadata];
-    v19 = [v18 bundleIdentifier];
-    [(CSDMessagingScreenShareContextMetadata *)v15 setBundleIdentifier:v19];
+    metadata3 = [requestCopy metadata];
+    bundleIdentifier = [metadata3 bundleIdentifier];
+    [(CSDMessagingScreenShareContextMetadata *)v15 setBundleIdentifier:bundleIdentifier];
 
     [(CSDMessagingScreenShareContext *)v5 setMetadata:v15];
   }
@@ -495,67 +495,67 @@ LABEL_19:
   return v5;
 }
 
-- (id)incomingScreenShareRequestFromParticipant:(id)a3 handleEligibilityBlock:(id)a4 error:(id *)a5
+- (id)incomingScreenShareRequestFromParticipant:(id)participant handleEligibilityBlock:(id)block error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  blockCopy = block;
+  participantCopy = participant;
   v10 = [NSUUID alloc];
-  v11 = [(CSDMessagingScreenShareContext *)self screenShareUUID];
-  v12 = [v10 initWithUUIDString:v11];
+  screenShareUUID = [(CSDMessagingScreenShareContext *)self screenShareUUID];
+  v12 = [v10 initWithUUIDString:screenShareUUID];
 
-  v13 = [v9 handle];
-  v14 = [v9 identifier];
+  handle = [participantCopy handle];
+  identifier = [participantCopy identifier];
 
-  v15 = [(CSDMessagingScreenShareContext *)self type];
-  if (!v15)
+  type = [(CSDMessagingScreenShareContext *)self type];
+  if (!type)
   {
     v16 = 4;
     goto LABEL_5;
   }
 
-  if (v15 == 1)
+  if (type == 1)
   {
     v16 = 3;
 LABEL_5:
-    v17 = [(CSDMessagingScreenShareContext *)self originType];
-    if (!v17)
+    originType = [(CSDMessagingScreenShareContext *)self originType];
+    if (!originType)
     {
       v18 = 1;
 LABEL_13:
-      v21 = [(CSDMessagingScreenShareContext *)self metadata];
+      metadata = [(CSDMessagingScreenShareContext *)self metadata];
 
-      if (v21)
+      if (metadata)
       {
-        v21 = objc_alloc_init(TUScreenSharingRequestMetadata);
-        v22 = [(CSDMessagingScreenShareContext *)self metadata];
-        [v22 appName];
-        v39 = v14;
+        metadata = objc_alloc_init(TUScreenSharingRequestMetadata);
+        metadata2 = [(CSDMessagingScreenShareContext *)self metadata];
+        [metadata2 appName];
+        v39 = identifier;
         v23 = v12;
-        v24 = v13;
-        v25 = a5;
-        v26 = v8;
+        v24 = handle;
+        errorCopy = error;
+        v26 = blockCopy;
         v27 = v16;
         v29 = v28 = v18;
-        [v21 setAppName:v29];
+        [metadata setAppName:v29];
 
-        v30 = [(CSDMessagingScreenShareContext *)self metadata];
-        v31 = [v30 bundleIdentifier];
-        [v21 setBundleIdentifier:v31];
+        metadata3 = [(CSDMessagingScreenShareContext *)self metadata];
+        bundleIdentifier = [metadata3 bundleIdentifier];
+        [metadata setBundleIdentifier:bundleIdentifier];
 
         v18 = v28;
         v16 = v27;
-        v8 = v26;
-        a5 = v25;
-        v13 = v24;
+        blockCopy = v26;
+        error = errorCopy;
+        handle = v24;
         v12 = v23;
-        v14 = v39;
+        identifier = v39;
       }
 
       if (v12)
       {
-        if (v8[2](v8, v13))
+        if (blockCopy[2](blockCopy, handle))
         {
-          v32 = [[TUScreenSharingRequest alloc] initWithHandle:v13 type:v16 originType:v18 UUID:v12 participantIdentifier:v14 metadata:v21];
+          v32 = [[TUScreenSharingRequest alloc] initWithHandle:handle type:v16 originType:v18 UUID:v12 participantIdentifier:identifier metadata:metadata];
           goto LABEL_33;
         }
 
@@ -565,7 +565,7 @@ LABEL_13:
           sub_100478E4C();
         }
 
-        if (a5)
+        if (error)
         {
           v35 = TUScreenSharingRequestErrorDomain;
           v36 = 3;
@@ -581,7 +581,7 @@ LABEL_13:
           sub_100478EB4();
         }
 
-        if (a5)
+        if (error)
         {
           v35 = TUScreenSharingRequestErrorDomain;
           v36 = 2;
@@ -596,7 +596,7 @@ LABEL_22:
       goto LABEL_33;
     }
 
-    if (v17 == 1)
+    if (originType == 1)
     {
       v18 = 2;
       goto LABEL_13;
@@ -609,7 +609,7 @@ LABEL_22:
     }
 
 LABEL_21:
-    v21 = 0;
+    metadata = 0;
     goto LABEL_22;
   }
 
@@ -619,16 +619,16 @@ LABEL_21:
     sub_100478F84();
   }
 
-  if (!a5)
+  if (!error)
   {
     goto LABEL_21;
   }
 
   v20 = [NSError errorWithDomain:TUScreenSharingRequestErrorDomain code:1 userInfo:0];
-  v21 = 0;
+  metadata = 0;
 LABEL_32:
   v32 = 0;
-  *a5 = v20;
+  *error = v20;
 LABEL_33:
 
   return v32;

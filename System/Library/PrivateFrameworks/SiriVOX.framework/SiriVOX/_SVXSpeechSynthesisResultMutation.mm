@@ -1,5 +1,5 @@
 @interface _SVXSpeechSynthesisResultMutation
-- (_SVXSpeechSynthesisResultMutation)initWithBaseModel:(id)a3;
+- (_SVXSpeechSynthesisResultMutation)initWithBaseModel:(id)model;
 - (id)generate;
 @end
 
@@ -31,27 +31,27 @@
       if ((*&self->_mutationFlags & 4) != 0)
       {
 LABEL_8:
-        v7 = self->_utteranceInfo;
+        utteranceInfo = self->_utteranceInfo;
 LABEL_11:
-        v8 = v7;
+        v8 = utteranceInfo;
         if ((*&self->_mutationFlags & 8) != 0)
         {
-          v9 = self->_error;
+          error = self->_error;
         }
 
         else
         {
-          v9 = [(SVXSpeechSynthesisResult *)self->_baseModel error];
+          error = [(SVXSpeechSynthesisResult *)self->_baseModel error];
         }
 
-        v10 = v9;
-        v5 = [[SVXSpeechSynthesisResult alloc] initWithType:type utteranceInfo:v8 error:v9];
+        v10 = error;
+        v5 = [[SVXSpeechSynthesisResult alloc] initWithType:type utteranceInfo:v8 error:error];
 
         goto LABEL_15;
       }
     }
 
-    v7 = [(SVXSpeechSynthesisResult *)self->_baseModel utteranceInfo];
+    utteranceInfo = [(SVXSpeechSynthesisResult *)self->_baseModel utteranceInfo];
     goto LABEL_11;
   }
 
@@ -63,16 +63,16 @@ LABEL_15:
   return v5;
 }
 
-- (_SVXSpeechSynthesisResultMutation)initWithBaseModel:(id)a3
+- (_SVXSpeechSynthesisResultMutation)initWithBaseModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _SVXSpeechSynthesisResultMutation;
   v6 = [(_SVXSpeechSynthesisResultMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseModel, a3);
+    objc_storeStrong(&v6->_baseModel, model);
   }
 
   return v7;

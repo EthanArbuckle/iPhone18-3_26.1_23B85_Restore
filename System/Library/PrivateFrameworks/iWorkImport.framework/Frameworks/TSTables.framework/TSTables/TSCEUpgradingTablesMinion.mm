@@ -1,24 +1,24 @@
 @interface TSCEUpgradingTablesMinion
-- (TSCEUpgradingTablesMinion)initWithCalcEngine:(id)a3;
+- (TSCEUpgradingTablesMinion)initWithCalcEngine:(id)engine;
 - (void)flushAllChanges;
-- (void)markCellRefAsDirty:(const TSCECellRef *)a3;
-- (void)markRangeRefAsDirty:(const TSCERangeRef *)a3;
-- (void)replaceFormula:(id)a3 atCellCoord:(const TSUCellCoord *)a4 inOwner:(const TSKUIDStruct *)a5 replaceOptions:(TSCEReplaceFormulaOptions *)a6;
-- (void)replaceFormulaAt:(const TSUCellCoord *)a3 inOwner:(const TSKUIDStruct *)a4 precedents:(id)a5 replaceOptions:(TSCEReplaceFormulaOptions *)a6;
+- (void)markCellRefAsDirty:(const TSCECellRef *)dirty;
+- (void)markRangeRefAsDirty:(const TSCERangeRef *)dirty;
+- (void)replaceFormula:(id)formula atCellCoord:(const TSUCellCoord *)coord inOwner:(const TSKUIDStruct *)owner replaceOptions:(TSCEReplaceFormulaOptions *)options;
+- (void)replaceFormulaAt:(const TSUCellCoord *)at inOwner:(const TSKUIDStruct *)owner precedents:(id)precedents replaceOptions:(TSCEReplaceFormulaOptions *)options;
 @end
 
 @implementation TSCEUpgradingTablesMinion
 
-- (TSCEUpgradingTablesMinion)initWithCalcEngine:(id)a3
+- (TSCEUpgradingTablesMinion)initWithCalcEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v11.receiver = self;
   v11.super_class = TSCEUpgradingTablesMinion;
   v5 = [(TSCEUpgradingTablesMinion *)&v11 init];
   if (v5)
   {
     v6 = [TSCEFormulasToSet alloc];
-    v8 = objc_msgSend_initWithCalcEngine_forMinion_options_(v6, v7, v4, v5, 2);
+    v8 = objc_msgSend_initWithCalcEngine_forMinion_options_(v6, v7, engineCopy, v5, 2);
     formulasToSet = v5->_formulasToSet;
     v5->_formulasToSet = v8;
   }
@@ -26,32 +26,32 @@
   return v5;
 }
 
-- (void)replaceFormula:(id)a3 atCellCoord:(const TSUCellCoord *)a4 inOwner:(const TSKUIDStruct *)a5 replaceOptions:(TSCEReplaceFormulaOptions *)a6
+- (void)replaceFormula:(id)formula atCellCoord:(const TSUCellCoord *)coord inOwner:(const TSKUIDStruct *)owner replaceOptions:(TSCEReplaceFormulaOptions *)options
 {
-  v10 = a3;
+  formulaCopy = formula;
   formulasToSet = self->_formulasToSet;
-  TSCEReplaceFormulaOptions::TSCEReplaceFormulaOptions(&v13, a6);
-  objc_msgSend_replaceFormula_atCellCoord_inOwner_replaceOptions_(formulasToSet, v12, v10, a4, a5, &v13);
+  TSCEReplaceFormulaOptions::TSCEReplaceFormulaOptions(&v13, options);
+  objc_msgSend_replaceFormula_atCellCoord_inOwner_replaceOptions_(formulasToSet, v12, formulaCopy, coord, owner, &v13);
 }
 
-- (void)replaceFormulaAt:(const TSUCellCoord *)a3 inOwner:(const TSKUIDStruct *)a4 precedents:(id)a5 replaceOptions:(TSCEReplaceFormulaOptions *)a6
+- (void)replaceFormulaAt:(const TSUCellCoord *)at inOwner:(const TSKUIDStruct *)owner precedents:(id)precedents replaceOptions:(TSCEReplaceFormulaOptions *)options
 {
-  v10 = a5;
+  precedentsCopy = precedents;
   formulasToSet = self->_formulasToSet;
-  TSCEReplaceFormulaOptions::TSCEReplaceFormulaOptions(&v13, a6);
-  objc_msgSend_replaceFormulaAt_inOwner_precedents_replaceOptions_(formulasToSet, v12, a3, a4, v10, &v13);
+  TSCEReplaceFormulaOptions::TSCEReplaceFormulaOptions(&v13, options);
+  objc_msgSend_replaceFormulaAt_inOwner_precedents_replaceOptions_(formulasToSet, v12, at, owner, precedentsCopy, &v13);
 }
 
-- (void)markCellRefAsDirty:(const TSCECellRef *)a3
+- (void)markCellRefAsDirty:(const TSCECellRef *)dirty
 {
-  v9 = objc_msgSend_calcEngine(self->_formulasToSet, a2, a3, v3, v4);
-  objc_msgSend_markCellRefAsDirty_(v9, v6, a3, v7, v8);
+  v9 = objc_msgSend_calcEngine(self->_formulasToSet, a2, dirty, v3, v4);
+  objc_msgSend_markCellRefAsDirty_(v9, v6, dirty, v7, v8);
 }
 
-- (void)markRangeRefAsDirty:(const TSCERangeRef *)a3
+- (void)markRangeRefAsDirty:(const TSCERangeRef *)dirty
 {
-  v9 = objc_msgSend_calcEngine(self->_formulasToSet, a2, a3, v3, v4);
-  objc_msgSend_markRangeRefAsDirty_(v9, v6, a3, v7, v8);
+  v9 = objc_msgSend_calcEngine(self->_formulasToSet, a2, dirty, v3, v4);
+  objc_msgSend_markRangeRefAsDirty_(v9, v6, dirty, v7, v8);
 }
 
 - (void)flushAllChanges

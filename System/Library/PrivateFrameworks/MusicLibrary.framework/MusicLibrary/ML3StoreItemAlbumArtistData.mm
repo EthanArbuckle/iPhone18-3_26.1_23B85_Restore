@@ -1,7 +1,7 @@
 @interface ML3StoreItemAlbumArtistData
-- (ML3StoreItemAlbumArtistData)initWithAlbumArtistData:(id)a3;
-- (ML3StoreItemAlbumArtistData)initWithLookupItems:(id)a3;
-- (ML3StoreItemAlbumArtistData)initWithTrackItemImportProperties:(id)a3;
+- (ML3StoreItemAlbumArtistData)initWithAlbumArtistData:(id)data;
+- (ML3StoreItemAlbumArtistData)initWithLookupItems:(id)items;
+- (ML3StoreItemAlbumArtistData)initWithTrackItemImportProperties:(id)properties;
 - (NSArray)parsedStoreAlbumArtistImportProperties;
 - (NSData)albumArtistData;
 - (id)_parsedStoreAlbumArtistItemsImportPropertiesFromLookupItems;
@@ -28,7 +28,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218242;
-      v13 = self;
+      selfCopy = self;
       v14 = 2114;
       v15 = v7;
       _os_log_impl(&dword_22D2FA000, v8, OS_LOG_TYPE_ERROR, "ML3StoreItemAlbumArtistData=%p Failed to decode album artist data. err=%{public}@", buf, 0x16u);
@@ -43,39 +43,39 @@
 - (id)_parsedStoreAlbumArtistItemsImportPropertiesFromTrackImportItems
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [(NSDictionary *)self->_trackItemImportProperties objectForKey:&unk_2840C94B8];
   if (objc_opt_respondsToSelector())
   {
     v5 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v4, "longLongValue")}];
-    [v3 setObject:v5 forKeyedSubscript:&unk_2840C94B8];
+    [dictionary setObject:v5 forKeyedSubscript:&unk_2840C94B8];
   }
 
   v6 = [(NSDictionary *)self->_trackItemImportProperties objectForKey:&unk_2840C94D0];
   if (objc_opt_respondsToSelector())
   {
     v7 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v6, "longLongValue")}];
-    [v3 setObject:v7 forKeyedSubscript:&unk_2840C94D0];
+    [dictionary setObject:v7 forKeyedSubscript:&unk_2840C94D0];
   }
 
   v8 = [(NSDictionary *)self->_trackItemImportProperties objectForKey:&unk_2840C94E8];
   if (objc_opt_respondsToSelector())
   {
     v9 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v8, "longLongValue")}];
-    [v3 setObject:v9 forKeyedSubscript:&unk_2840C94A0];
+    [dictionary setObject:v9 forKeyedSubscript:&unk_2840C94A0];
   }
 
   v10 = [(NSDictionary *)self->_trackItemImportProperties objectForKey:&unk_2840C9500];
   if (_NSIsNSString())
   {
-    [v3 setObject:v10 forKeyedSubscript:&unk_2840C9470];
+    [dictionary setObject:v10 forKeyedSubscript:&unk_2840C9470];
   }
 
   v27 = v10;
   v11 = [(NSDictionary *)self->_trackItemImportProperties objectForKey:&unk_2840C9518];
   if (_NSIsNSString())
   {
-    [v3 setObject:v11 forKeyedSubscript:&unk_2840C9488];
+    [dictionary setObject:v11 forKeyedSubscript:&unk_2840C9488];
   }
 
   v26 = v11;
@@ -83,52 +83,52 @@
   if (objc_opt_respondsToSelector())
   {
     v13 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v12, "longLongValue")}];
-    [v3 setObject:v13 forKeyedSubscript:&unk_2840C9530];
+    [dictionary setObject:v13 forKeyedSubscript:&unk_2840C9530];
   }
 
   v14 = [(NSDictionary *)self->_trackItemImportProperties objectForKey:&unk_2840C9548];
   if (objc_opt_respondsToSelector())
   {
     v15 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v14, "longLongValue")}];
-    [v3 setObject:v15 forKeyedSubscript:&unk_2840C9548];
+    [dictionary setObject:v15 forKeyedSubscript:&unk_2840C9548];
   }
 
   v29 = v4;
   v16 = [(NSDictionary *)self->_trackItemImportProperties objectForKey:&unk_2840C9560];
   if (_NSIsNSString())
   {
-    [v3 setObject:v16 forKeyedSubscript:&unk_2840C9578];
+    [dictionary setObject:v16 forKeyedSubscript:&unk_2840C9578];
   }
 
   v28 = v6;
   v17 = [(NSDictionary *)self->_trackItemImportProperties objectForKey:&unk_2840C9590];
   if (_NSIsNSString())
   {
-    [v3 setObject:v17 forKeyedSubscript:&unk_2840C95A8];
+    [dictionary setObject:v17 forKeyedSubscript:&unk_2840C95A8];
   }
 
   v25 = v12;
   v18 = [(NSDictionary *)self->_trackItemImportProperties objectForKey:&unk_2840C95C0];
   if (_NSIsNSString())
   {
-    [v3 setObject:v18 forKeyedSubscript:&unk_2840C95D8];
+    [dictionary setObject:v18 forKeyedSubscript:&unk_2840C95D8];
   }
 
   v19 = v8;
   v20 = [(NSDictionary *)self->_trackItemImportProperties objectForKey:&unk_2840C95F0];
   if (_NSIsNSString())
   {
-    [v3 setObject:v20 forKeyedSubscript:&unk_2840C9608];
+    [dictionary setObject:v20 forKeyedSubscript:&unk_2840C9608];
   }
 
   v21 = [(NSDictionary *)self->_trackItemImportProperties objectForKey:&unk_2840C9620];
   if (objc_opt_respondsToSelector())
   {
     v22 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v21, "longLongValue")}];
-    [v3 setObject:v22 forKeyedSubscript:&unk_2840C9638];
+    [dictionary setObject:v22 forKeyedSubscript:&unk_2840C9638];
   }
 
-  v30[0] = v3;
+  v30[0] = dictionary;
   v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:1];
 
   return v23;
@@ -137,13 +137,13 @@
 - (id)_parsedStoreAlbumArtistItemsImportPropertiesFromLookupItems
 {
   v40 = *MEMORY[0x277D85DE8];
-  v28 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v3 = [MEMORY[0x277CBEB58] set];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v27 = self;
+  selfCopy = self;
   obj = self->_lookupItems;
   v4 = [(NSArray *)obj countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v4)
@@ -163,48 +163,48 @@
         }
 
         v10 = *(*(&v31 + 1) + 8 * i);
-        v11 = [v10 storeAdamID];
-        v12 = [*(v7 + 2992) numberWithLongLong:v11];
+        storeAdamID = [v10 storeAdamID];
+        v12 = [*(v7 + 2992) numberWithLongLong:storeAdamID];
         v13 = [v3 containsObject:v12];
 
         if (v13)
         {
-          v14 = os_log_create("com.apple.amp.medialibrary", "Default");
-          if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+          metadataDictionary = os_log_create("com.apple.amp.medialibrary", "Default");
+          if (os_log_type_enabled(metadataDictionary, OS_LOG_TYPE_DEFAULT))
           {
             *buf = v26;
-            v36 = v27;
+            v36 = selfCopy;
             v37 = 2048;
-            v38 = v11;
-            _os_log_impl(&dword_22D2FA000, v14, OS_LOG_TYPE_DEFAULT, "ML3StoreItemAlbumArtistData=%p album artist with store identifier:%lld is already imported", buf, 0x16u);
+            v38 = storeAdamID;
+            _os_log_impl(&dword_22D2FA000, metadataDictionary, OS_LOG_TYPE_DEFAULT, "ML3StoreItemAlbumArtistData=%p album artist with store identifier:%lld is already imported", buf, 0x16u);
           }
         }
 
         else
         {
-          v14 = [v10 metadataDictionary];
-          v15 = [MEMORY[0x277CBEB38] dictionary];
-          v16 = [v14 objectForKeyedSubscript:@"name"];
+          metadataDictionary = [v10 metadataDictionary];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
+          v16 = [metadataDictionary objectForKeyedSubscript:@"name"];
           if (_NSIsNSString())
           {
-            [v15 setObject:v16 forKeyedSubscript:&unk_2840C9470];
+            [dictionary setObject:v16 forKeyedSubscript:&unk_2840C9470];
           }
 
-          v17 = [v14 objectForKeyedSubscript:@"nameSortValue"];
+          v17 = [metadataDictionary objectForKeyedSubscript:@"nameSortValue"];
           if (_NSIsNSString())
           {
-            [v15 setObject:v17 forKeyedSubscript:&unk_2840C9488];
+            [dictionary setObject:v17 forKeyedSubscript:&unk_2840C9488];
           }
 
-          if (v11)
+          if (storeAdamID)
           {
-            [*(v7 + 2992) numberWithLongLong:v11];
+            [*(v7 + 2992) numberWithLongLong:storeAdamID];
             v30 = v16;
             v18 = v3;
             v19 = v6;
             v20 = v8;
             v22 = v21 = v7;
-            [v15 setObject:v22 forKeyedSubscript:&unk_2840C94A0];
+            [dictionary setObject:v22 forKeyedSubscript:&unk_2840C94A0];
 
             v7 = v21;
             v8 = v20;
@@ -213,8 +213,8 @@
             v16 = v30;
           }
 
-          [(ML3StoreItemAlbumArtistData *)v28 addObject:v15];
-          v23 = [*(v7 + 2992) numberWithLongLong:v11];
+          [(ML3StoreItemAlbumArtistData *)array addObject:dictionary];
+          v23 = [*(v7 + 2992) numberWithLongLong:storeAdamID];
           [v3 addObject:v23];
         }
       }
@@ -229,11 +229,11 @@
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v36 = v28;
+    v36 = array;
     _os_log_impl(&dword_22D2FA000, v24, OS_LOG_TYPE_DEFAULT, "_parsedStoreAlbumArtistItemsImportPropertiesFromLookupItems=%{public}@", buf, 0xCu);
   }
 
-  return v28;
+  return array;
 }
 
 - (NSArray)parsedStoreAlbumArtistImportProperties
@@ -243,10 +243,10 @@
   {
     if (self->_lookupItems)
     {
-      v4 = [(ML3StoreItemAlbumArtistData *)self _parsedStoreAlbumArtistItemsImportPropertiesFromLookupItems];
+      _parsedStoreAlbumArtistItemsImportPropertiesFromLookupItems = [(ML3StoreItemAlbumArtistData *)self _parsedStoreAlbumArtistItemsImportPropertiesFromLookupItems];
 LABEL_8:
       v5 = self->_parsedStoreAlbumArtistImportProperties;
-      self->_parsedStoreAlbumArtistImportProperties = v4;
+      self->_parsedStoreAlbumArtistImportProperties = _parsedStoreAlbumArtistItemsImportPropertiesFromLookupItems;
 
       parsedStoreAlbumArtistImportProperties = self->_parsedStoreAlbumArtistImportProperties;
       goto LABEL_9;
@@ -254,13 +254,13 @@ LABEL_8:
 
     if (self->_trackItemImportProperties)
     {
-      v4 = [(ML3StoreItemAlbumArtistData *)self _parsedStoreAlbumArtistItemsImportPropertiesFromTrackImportItems];
+      _parsedStoreAlbumArtistItemsImportPropertiesFromLookupItems = [(ML3StoreItemAlbumArtistData *)self _parsedStoreAlbumArtistItemsImportPropertiesFromTrackImportItems];
       goto LABEL_8;
     }
 
     if (self->_albumArtistData)
     {
-      v4 = [(ML3StoreItemAlbumArtistData *)self _parsedStoreAlbumArtistItemsImportPropertiesFromSerializedLookupItems];
+      _parsedStoreAlbumArtistItemsImportPropertiesFromLookupItems = [(ML3StoreItemAlbumArtistData *)self _parsedStoreAlbumArtistItemsImportPropertiesFromSerializedLookupItems];
       goto LABEL_8;
     }
 
@@ -275,12 +275,12 @@ LABEL_9:
 - (NSData)albumArtistData
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v2 = [(ML3StoreItemAlbumArtistData *)self parsedStoreAlbumArtistImportProperties];
-  v3 = v2;
-  if (v2)
+  parsedStoreAlbumArtistImportProperties = [(ML3StoreItemAlbumArtistData *)self parsedStoreAlbumArtistImportProperties];
+  v3 = parsedStoreAlbumArtistImportProperties;
+  if (parsedStoreAlbumArtistImportProperties)
   {
     v7 = @"album_artists";
-    v8[0] = v2;
+    v8[0] = parsedStoreAlbumArtistImportProperties;
     v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
     v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:0];
   }
@@ -295,21 +295,21 @@ LABEL_9:
 
 - (unint64_t)albumArtistCount
 {
-  v2 = [(ML3StoreItemAlbumArtistData *)self parsedStoreAlbumArtistImportProperties];
-  v3 = [v2 count];
+  parsedStoreAlbumArtistImportProperties = [(ML3StoreItemAlbumArtistData *)self parsedStoreAlbumArtistImportProperties];
+  v3 = [parsedStoreAlbumArtistImportProperties count];
 
   return v3;
 }
 
-- (ML3StoreItemAlbumArtistData)initWithAlbumArtistData:(id)a3
+- (ML3StoreItemAlbumArtistData)initWithAlbumArtistData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = ML3StoreItemAlbumArtistData;
   v5 = [(ML3StoreItemAlbumArtistData *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dataCopy copy];
     albumArtistData = v5->_albumArtistData;
     v5->_albumArtistData = v6;
   }
@@ -317,15 +317,15 @@ LABEL_9:
   return v5;
 }
 
-- (ML3StoreItemAlbumArtistData)initWithTrackItemImportProperties:(id)a3
+- (ML3StoreItemAlbumArtistData)initWithTrackItemImportProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v9.receiver = self;
   v9.super_class = ML3StoreItemAlbumArtistData;
   v5 = [(ML3StoreItemAlbumArtistData *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [propertiesCopy copy];
     trackItemImportProperties = v5->_trackItemImportProperties;
     v5->_trackItemImportProperties = v6;
   }
@@ -333,15 +333,15 @@ LABEL_9:
   return v5;
 }
 
-- (ML3StoreItemAlbumArtistData)initWithLookupItems:(id)a3
+- (ML3StoreItemAlbumArtistData)initWithLookupItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v9.receiver = self;
   v9.super_class = ML3StoreItemAlbumArtistData;
   v5 = [(ML3StoreItemAlbumArtistData *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [itemsCopy copy];
     lookupItems = v5->_lookupItems;
     v5->_lookupItems = v6;
   }

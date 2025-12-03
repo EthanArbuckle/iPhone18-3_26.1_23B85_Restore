@@ -1,26 +1,26 @@
 @interface DTKTraceTapMemoHandlerDelegate
-- (id)peekAtMemo:(id)a3;
-- (void)sendDataMemo:(id)a3 toBulkReceiver:(id)a4;
-- (void)sendDataMemo:(id)a3 toClientUsingConfig:(id)a4;
-- (void)sendHeartbeatMemo:(id)a3 toClientUsingConfig:(id)a4;
+- (id)peekAtMemo:(id)memo;
+- (void)sendDataMemo:(id)memo toBulkReceiver:(id)receiver;
+- (void)sendDataMemo:(id)memo toClientUsingConfig:(id)config;
+- (void)sendHeartbeatMemo:(id)memo toClientUsingConfig:(id)config;
 @end
 
 @implementation DTKTraceTapMemoHandlerDelegate
 
-- (void)sendDataMemo:(id)a3 toBulkReceiver:(id)a4
+- (void)sendDataMemo:(id)memo toBulkReceiver:(id)receiver
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isSession])
+  memoCopy = memo;
+  receiverCopy = receiver;
+  if ([memoCopy isSession])
   {
     v7 = objc_opt_new();
-    v8 = [v5 isRawKtraceFile];
-    v9 = [v5 datastream];
-    v10 = v9;
-    if (v8)
+    isRawKtraceFile = [memoCopy isRawKtraceFile];
+    datastream = [memoCopy datastream];
+    v10 = datastream;
+    if (isRawKtraceFile)
     {
-      v11 = [v9 fileURL];
-      if (!v11)
+      fileURL = [datastream fileURL];
+      if (!fileURL)
       {
         sub_24802CF64();
       }
@@ -31,7 +31,7 @@
         {
           v12 = objc_autoreleasePoolPush();
           v13 = [v10 read:0x100000 error:0];
-          [v6 handleBulkData:v13];
+          [receiverCopy handleBulkData:v13];
 
           objc_autoreleasePoolPop(v12);
         }
@@ -39,32 +39,32 @@
         while (([v10 hasData] & 1) != 0);
       }
 
-      v14 = [MEMORY[0x277CCAA00] defaultManager];
-      v15 = [v10 fileURL];
-      [v14 removeItemAtURL:v15 error:0];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      fileURL2 = [v10 fileURL];
+      [defaultManager removeItemAtURL:fileURL2 error:0];
     }
 
     else
     {
-      v20 = [v9 hasData];
+      hasData = [datastream hasData];
 
-      if (v20)
+      if (hasData)
       {
         do
         {
-          v21 = [v5 datastream];
-          v22 = [v21 read:1024 error:0];
-          [v6 handleBulkData:v22];
+          datastream2 = [memoCopy datastream];
+          v22 = [datastream2 read:1024 error:0];
+          [receiverCopy handleBulkData:v22];
 
-          v23 = [v5 datastream];
-          LOBYTE(v22) = [v23 hasData];
+          datastream3 = [memoCopy datastream];
+          LOBYTE(v22) = [datastream3 hasData];
         }
 
         while ((v22 & 1) != 0);
       }
     }
 
-    if ([v5 isRawKtraceFile])
+    if ([memoCopy isRawKtraceFile])
     {
       v24 = 1025;
     }
@@ -75,21 +75,21 @@
     }
 
     [v7 setKind:v24];
-    [v6 sendFrameMessage:v7];
+    [receiverCopy sendFrameMessage:v7];
   }
 
   else
   {
-    v16 = [v5 stackshot];
+    stackshot = [memoCopy stackshot];
 
-    if (v16)
+    if (stackshot)
     {
       v26 = 0;
       v27 = &v26;
       v28 = 0x3032000000;
       v29 = sub_247F8B674;
       v30 = sub_247F8B684;
-      v31 = [v5 stackshot];
+      stackshot2 = [memoCopy stackshot];
       bytes_ptr = xpc_data_get_bytes_ptr(v27[5]);
       length = xpc_data_get_length(v27[5]);
       v25[0] = MEMORY[0x277D85DD0];
@@ -97,48 +97,48 @@
       v25[2] = sub_247F8B68C;
       v25[3] = &unk_278EF1D40;
       v25[4] = &v26;
-      [v6 handleBulkData:bytes_ptr size:length destructor:v25];
+      [receiverCopy handleBulkData:bytes_ptr size:length destructor:v25];
       v19 = objc_opt_new();
       [v19 setKind:1024];
-      [v6 sendFrameMessage:v19];
+      [receiverCopy sendFrameMessage:v19];
 
       _Block_object_dispose(&v26, 8);
     }
   }
 }
 
-- (void)sendDataMemo:(id)a3 toClientUsingConfig:(id)a4
+- (void)sendDataMemo:(id)memo toClientUsingConfig:(id)config
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 datastream];
-  if ([v5 isSession])
+  memoCopy = memo;
+  configCopy = config;
+  datastream = [memoCopy datastream];
+  if ([memoCopy isSession])
   {
-    v8 = [v6 sessionHandler];
+    sessionHandler = [configCopy sessionHandler];
 
-    if (v8)
+    if (sessionHandler)
     {
-      v9 = objc_opt_new();
-      [v9 setMemo:v5];
-      if (([v5 isRawKtraceFile] & 1) == 0)
+      stackshotHandler2 = objc_opt_new();
+      [stackshotHandler2 setMemo:memoCopy];
+      if (([memoCopy isRawKtraceFile] & 1) == 0)
       {
         v10 = objc_opt_new();
-        if ([v7 hasData])
+        if ([datastream hasData])
         {
           do
           {
-            v11 = [v7 read:1024 error:0];
+            v11 = [datastream read:1024 error:0];
             [v10 addObject:v11];
           }
 
-          while (([v7 hasData] & 1) != 0);
+          while (([datastream hasData] & 1) != 0);
         }
 
-        [v9 setDataBlocks:v10];
+        [stackshotHandler2 setDataBlocks:v10];
       }
 
-      v12 = [v6 sessionHandler];
-      v12[2](v12, v9);
+      sessionHandler2 = [configCopy sessionHandler];
+      sessionHandler2[2](sessionHandler2, stackshotHandler2);
       goto LABEL_11;
     }
 
@@ -150,51 +150,51 @@
 
   else
   {
-    v13 = [v5 stackshot];
+    stackshot = [memoCopy stackshot];
 
-    if (v13)
+    if (stackshot)
     {
-      v14 = [v6 stackshotHandler];
+      stackshotHandler = [configCopy stackshotHandler];
 
-      if (v14)
+      if (stackshotHandler)
       {
-        v9 = [v6 stackshotHandler];
-        v12 = [v5 stackshot];
-        v9[2](v9, v12);
+        stackshotHandler2 = [configCopy stackshotHandler];
+        sessionHandler2 = [memoCopy stackshot];
+        stackshotHandler2[2](stackshotHandler2, sessionHandler2);
 LABEL_11:
       }
     }
   }
 }
 
-- (void)sendHeartbeatMemo:(id)a3 toClientUsingConfig:(id)a4
+- (void)sendHeartbeatMemo:(id)memo toClientUsingConfig:(id)config
 {
-  v9 = a3;
-  v5 = a4;
-  v6 = [v5 sessionHandler];
+  memoCopy = memo;
+  configCopy = config;
+  sessionHandler = [configCopy sessionHandler];
 
-  if (v6)
+  if (sessionHandler)
   {
     v7 = objc_opt_new();
-    [v7 setMemo:v9];
-    v8 = [v5 sessionHandler];
-    (v8)[2](v8, v7);
+    [v7 setMemo:memoCopy];
+    sessionHandler2 = [configCopy sessionHandler];
+    (sessionHandler2)[2](sessionHandler2, v7);
   }
 }
 
-- (id)peekAtMemo:(id)a3
+- (id)peekAtMemo:(id)memo
 {
-  v3 = a3;
+  memoCopy = memo;
   v4 = objc_opt_new();
-  if ([v3 isSession])
+  if ([memoCopy isSession])
   {
-    v5 = [v3 isRawKtraceFile];
-    v6 = [v3 datastream];
-    v7 = v6;
-    if (v5)
+    isRawKtraceFile = [memoCopy isRawKtraceFile];
+    datastream = [memoCopy datastream];
+    v7 = datastream;
+    if (isRawKtraceFile)
     {
-      v8 = [v6 file];
-      dup([v8 fileDescriptor]);
+      file = [datastream file];
+      dup([file fileDescriptor]);
       ktrace_file_open_fd();
 
       ktrace_file_earliest_timestamp();
@@ -204,7 +204,7 @@ LABEL_11:
       ktrace_file_close();
     }
 
-    else if (v6)
+    else if (datastream)
     {
       v12 = kpdecode_cursor_create();
       if ([v7 hasData])
@@ -259,9 +259,9 @@ LABEL_18:
 
   else
   {
-    v10 = [v3 stackshot];
+    stackshot = [memoCopy stackshot];
 
-    if (!v10)
+    if (!stackshot)
     {
       sub_24802CFD8();
     }

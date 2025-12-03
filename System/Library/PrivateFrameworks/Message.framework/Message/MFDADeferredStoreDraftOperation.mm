@@ -1,10 +1,10 @@
 @interface MFDADeferredStoreDraftOperation
 + (id)log;
-- (BOOL)translateToLocalActionWithConnection:(id)a3;
-- (MFDADeferredStoreDraftOperation)initWithCoder:(id)a3;
-- (MFDADeferredStoreDraftOperation)initWithMessageIDHeader:(id)a3 mailbox:(id)a4;
+- (BOOL)translateToLocalActionWithConnection:(id)connection;
+- (MFDADeferredStoreDraftOperation)initWithCoder:(id)coder;
+- (MFDADeferredStoreDraftOperation)initWithMessageIDHeader:(id)header mailbox:(id)mailbox;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MFDADeferredStoreDraftOperation
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __38__MFDADeferredStoreDraftOperation_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_369 != -1)
   {
     dispatch_once(&log_onceToken_369, block);
@@ -34,20 +34,20 @@ void __38__MFDADeferredStoreDraftOperation_log__block_invoke(uint64_t a1)
   log_log_368 = v1;
 }
 
-- (MFDADeferredStoreDraftOperation)initWithMessageIDHeader:(id)a3 mailbox:(id)a4
+- (MFDADeferredStoreDraftOperation)initWithMessageIDHeader:(id)header mailbox:(id)mailbox
 {
-  v6 = a3;
-  v7 = a4;
+  headerCopy = header;
+  mailboxCopy = mailbox;
   v15.receiver = self;
   v15.super_class = MFDADeferredStoreDraftOperation;
   v8 = [(MFDADeferredStoreDraftOperation *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [headerCopy copy];
     messageIDHeader = v8->_messageIDHeader;
     v8->_messageIDHeader = v9;
 
-    v11 = [v7 copy];
+    v11 = [mailboxCopy copy];
     folderID = v8->_folderID;
     v8->_folderID = v11;
 
@@ -57,24 +57,24 @@ void __38__MFDADeferredStoreDraftOperation_log__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (MFDADeferredStoreDraftOperation)initWithCoder:(id)a3
+- (MFDADeferredStoreDraftOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = MFDADeferredStoreDraftOperation;
   v5 = [(MFDADeferredStoreDraftOperation *)&v12 init];
   if (v5)
   {
-    if (([v4 allowsKeyedCoding] & 1) == 0)
+    if (([coderCopy allowsKeyedCoding] & 1) == 0)
     {
       __assert_rtn("[MFDADeferredStoreDraftOperation initWithCoder:]", "MFMailMessageLibraryLocalActionsTablesMigrationStep.m", 684, "[aDecoder allowsKeyedCoding] && aDecoder must allow keyed coding");
     }
 
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MessageID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MessageID"];
     messageIDHeader = v5->_messageIDHeader;
     v5->_messageIDHeader = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FolderID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FolderID"];
     folderID = v5->_folderID;
     v5->_folderID = v8;
 
@@ -84,22 +84,22 @@ void __38__MFDADeferredStoreDraftOperation_log__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     __assert_rtn("[MFDADeferredStoreDraftOperation encodeWithCoder:]", "MFMailMessageLibraryLocalActionsTablesMigrationStep.m", 693, "[aCoder allowsKeyedCoding] && aCoder must allow keyed coding");
   }
 
-  [v4 encodeObject:self->_messageIDHeader forKey:@"MessageID"];
-  [v4 encodeObject:self->_folderID forKey:@"FolderID"];
+  [coderCopy encodeObject:self->_messageIDHeader forKey:@"MessageID"];
+  [coderCopy encodeObject:self->_folderID forKey:@"FolderID"];
 }
 
-- (BOOL)translateToLocalActionWithConnection:(id)a3
+- (BOOL)translateToLocalActionWithConnection:(id)connection
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  connectionCopy = connection;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -112,7 +112,7 @@ void __38__MFDADeferredStoreDraftOperation_log__block_invoke(uint64_t a1)
   v29 = __Block_byref_object_copy__15;
   v30 = __Block_byref_object_dispose__15;
   v31 = 0;
-  v5 = [v4 preparedStatementForQueryString:{@"SELECT ROWID, mailbox FROM messages JOIN WHERE message_id = ? LIMIT 1"}];
+  v5 = [connectionCopy preparedStatementForQueryString:{@"SELECT ROWID, mailbox FROM messages JOIN WHERE message_id = ? LIMIT 1"}];
   messageIDHeader = self->_messageIDHeader;
   v7 = [MEMORY[0x1E696AD98] numberWithLongLong:MFStringHashForMessageIDHeader()];
   v40[0] = v7;
@@ -131,7 +131,7 @@ void __38__MFDADeferredStoreDraftOperation_log__block_invoke(uint64_t a1)
   {
     if (v27[5])
     {
-      v11 = [v4 preparedStatementForQueryString:{@"INSERT INTO local_message_actions (action_type, mailbox, source_mailbox, destination_mailbox, user_initiated) VALUES (2, ?, NULL, ?, 0)"}];
+      v11 = [connectionCopy preparedStatementForQueryString:{@"INSERT INTO local_message_actions (action_type, mailbox, source_mailbox, destination_mailbox, user_initiated) VALUES (2, ?, NULL, ?, 0)"}];
       v39[0] = v27[5];
       v39[1] = v39[0];
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:2];
@@ -141,7 +141,7 @@ void __38__MFDADeferredStoreDraftOperation_log__block_invoke(uint64_t a1)
 
       if (!v13)
       {
-        [v4 handleError:v14 message:@"Inserting append action"];
+        [connectionCopy handleError:v14 message:@"Inserting append action"];
         v16 = 0;
 LABEL_10:
 
@@ -149,18 +149,18 @@ LABEL_10:
         goto LABEL_11;
       }
 
-      v15 = [v4 lastInsertedDatabaseID];
+      lastInsertedDatabaseID = [connectionCopy lastInsertedDatabaseID];
 
       v10 = v14;
     }
 
     else
     {
-      v15 = 0;
+      lastInsertedDatabaseID = 0;
     }
 
-    v11 = [v4 preparedStatementForQueryString:{@"INSERT INTO action_messages (action, message, remote_id, destination_message, action_phase) VALUES (?, NULL, NULL, ?, 3)"}];
-    v17 = [MEMORY[0x1E696AD98] numberWithLongLong:v15];
+    v11 = [connectionCopy preparedStatementForQueryString:{@"INSERT INTO action_messages (action, message, remote_id, destination_message, action_phase) VALUES (?, NULL, NULL, ?, 3)"}];
+    v17 = [MEMORY[0x1E696AD98] numberWithLongLong:lastInsertedDatabaseID];
     v18 = v33[5];
     v38[0] = v17;
     v38[1] = v18;
@@ -171,13 +171,13 @@ LABEL_10:
 
     if ((v16 & 1) == 0)
     {
-      [v4 handleError:v14 message:@"Inserting message for append"];
+      [connectionCopy handleError:v14 message:@"Inserting message for append"];
     }
 
     goto LABEL_10;
   }
 
-  [v4 handleError:v10 message:@"Selecting message for append"];
+  [connectionCopy handleError:v10 message:@"Selecting message for append"];
   v16 = 0;
 LABEL_11:
 

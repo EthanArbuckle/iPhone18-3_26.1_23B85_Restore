@@ -1,15 +1,15 @@
 @interface AUNotificationRequest
-- (AUNotificationRequest)initWithCoder:(id)a3;
-- (id)initUnplugReplugNotificationWithAccessoryName:(id)a3;
+- (AUNotificationRequest)initWithCoder:(id)coder;
+- (id)initUnplugReplugNotificationWithAccessoryName:(id)name;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AUNotificationRequest
 
-- (id)initUnplugReplugNotificationWithAccessoryName:(id)a3
+- (id)initUnplugReplugNotificationWithAccessoryName:(id)name
 {
-  if (!a3)
+  if (!name)
   {
     return 0;
   }
@@ -21,7 +21,7 @@
   if (v4)
   {
     v4->_type = 1;
-    v4->_accessoryName = [a3 copy];
+    v4->_accessoryName = [name copy];
   }
 
   return v5;
@@ -34,23 +34,23 @@
   [(AUNotificationRequest *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_accessoryName forKey:@"accessoryName"];
+  [coder encodeObject:self->_accessoryName forKey:@"accessoryName"];
   type = self->_type;
 
-  [a3 encodeInteger:type forKey:@"type"];
+  [coder encodeInteger:type forKey:@"type"];
 }
 
-- (AUNotificationRequest)initWithCoder:(id)a3
+- (AUNotificationRequest)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = AUNotificationRequest;
   v4 = [(AUNotificationRequest *)&v6 init];
   if (v4)
   {
-    v4->_accessoryName = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"accessoryName", "copy"}];
-    v4->_type = [a3 decodeIntegerForKey:@"type"];
+    v4->_accessoryName = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"accessoryName", "copy"}];
+    v4->_type = [coder decodeIntegerForKey:@"type"];
   }
 
   return v4;

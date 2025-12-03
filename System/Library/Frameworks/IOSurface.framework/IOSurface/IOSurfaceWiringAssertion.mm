@@ -1,17 +1,17 @@
 @interface IOSurfaceWiringAssertion
-- (IOSurfaceWiringAssertion)initWithIOSurfaceClient:(__IOSurfaceClient *)a3;
+- (IOSurfaceWiringAssertion)initWithIOSurfaceClient:(__IOSurfaceClient *)client;
 - (void)dealloc;
 @end
 
 @implementation IOSurfaceWiringAssertion
 
-- (IOSurfaceWiringAssertion)initWithIOSurfaceClient:(__IOSurfaceClient *)a3
+- (IOSurfaceWiringAssertion)initWithIOSurfaceClient:(__IOSurfaceClient *)client
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = IOSurfaceWiringAssertion;
   v4 = [(IOSurfaceWiringAssertion *)&v8 init];
-  MachPortWithOptions = IOSurfaceClientCreateMachPortWithOptions(a3, 1uLL);
+  MachPortWithOptions = IOSurfaceClientCreateMachPortWithOptions(client, 1uLL);
   v4->_mach_port = MachPortWithOptions;
   if (!MachPortWithOptions)
   {

@@ -1,5 +1,5 @@
 @interface PRXPCServicesManager
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (PRXPCServicesManager)init;
 - (void)createServices;
 - (void)setupXPCListeners;
@@ -41,8 +41,8 @@
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v8 = [v7 machServicesNames];
-  v9 = [v8 countByEnumeratingWithState:&v64 objects:v73 count:16];
+  machServicesNames = [v7 machServicesNames];
+  v9 = [machServicesNames countByEnumeratingWithState:&v64 objects:v73 count:16];
   if (v9)
   {
     v10 = v9;
@@ -54,7 +54,7 @@
       {
         if (*v65 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(machServicesNames);
         }
 
         [(NSMutableDictionary *)self->_machServices setObject:v7 forKey:*(*(&v64 + 1) + 8 * v12)];
@@ -62,7 +62,7 @@
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v64 objects:v73 count:16];
+      v10 = [machServicesNames countByEnumeratingWithState:&v64 objects:v73 count:16];
     }
 
     while (v10);
@@ -73,8 +73,8 @@
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v14 = [v13 machServicesNames];
-  v15 = [v14 countByEnumeratingWithState:&v60 objects:v72 count:16];
+  machServicesNames2 = [v13 machServicesNames];
+  v15 = [machServicesNames2 countByEnumeratingWithState:&v60 objects:v72 count:16];
   if (v15)
   {
     v16 = v15;
@@ -86,7 +86,7 @@
       {
         if (*v61 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(machServicesNames2);
         }
 
         [(NSMutableDictionary *)self->_machServices setObject:v13 forKey:*(*(&v60 + 1) + 8 * v18)];
@@ -94,7 +94,7 @@
       }
 
       while (v16 != v18);
-      v16 = [v14 countByEnumeratingWithState:&v60 objects:v72 count:16];
+      v16 = [machServicesNames2 countByEnumeratingWithState:&v60 objects:v72 count:16];
     }
 
     while (v16);
@@ -105,8 +105,8 @@
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v20 = [v19 machServicesNames];
-  v21 = [v20 countByEnumeratingWithState:&v56 objects:v71 count:16];
+  machServicesNames3 = [v19 machServicesNames];
+  v21 = [machServicesNames3 countByEnumeratingWithState:&v56 objects:v71 count:16];
   if (v21)
   {
     v22 = v21;
@@ -118,7 +118,7 @@
       {
         if (*v57 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(machServicesNames3);
         }
 
         [(NSMutableDictionary *)self->_machServices setObject:v19 forKey:*(*(&v56 + 1) + 8 * v24)];
@@ -126,7 +126,7 @@
       }
 
       while (v22 != v24);
-      v22 = [v20 countByEnumeratingWithState:&v56 objects:v71 count:16];
+      v22 = [machServicesNames3 countByEnumeratingWithState:&v56 objects:v71 count:16];
     }
 
     while (v22);
@@ -139,8 +139,8 @@
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v26 = [(PRDiagnosticsService *)v25 machServicesNames];
-  v27 = [v26 countByEnumeratingWithState:&v52 objects:v70 count:16];
+  machServicesNames4 = [(PRDiagnosticsService *)v25 machServicesNames];
+  v27 = [machServicesNames4 countByEnumeratingWithState:&v52 objects:v70 count:16];
   if (v27)
   {
     v28 = v27;
@@ -152,7 +152,7 @@
       {
         if (*v53 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(machServicesNames4);
         }
 
         [(NSMutableDictionary *)self->_machServices setObject:v25 forKey:*(*(&v52 + 1) + 8 * v30)];
@@ -160,7 +160,7 @@
       }
 
       while (v28 != v30);
-      v28 = [v26 countByEnumeratingWithState:&v52 objects:v70 count:16];
+      v28 = [machServicesNames4 countByEnumeratingWithState:&v52 objects:v70 count:16];
     }
 
     while (v28);
@@ -171,8 +171,8 @@
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v32 = [v31 machServicesNames];
-  v33 = [v32 countByEnumeratingWithState:&v48 objects:v69 count:16];
+  machServicesNames5 = [v31 machServicesNames];
+  v33 = [machServicesNames5 countByEnumeratingWithState:&v48 objects:v69 count:16];
   if (v33)
   {
     v34 = v33;
@@ -184,7 +184,7 @@
       {
         if (*v49 != v35)
         {
-          objc_enumerationMutation(v32);
+          objc_enumerationMutation(machServicesNames5);
         }
 
         [(NSMutableDictionary *)self->_machServices setObject:v31 forKey:*(*(&v48 + 1) + 8 * v36)];
@@ -192,7 +192,7 @@
       }
 
       while (v34 != v36);
-      v34 = [v32 countByEnumeratingWithState:&v48 objects:v69 count:16];
+      v34 = [machServicesNames5 countByEnumeratingWithState:&v48 objects:v69 count:16];
     }
 
     while (v34);
@@ -203,8 +203,8 @@
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v38 = [v37 machServicesNames];
-  v39 = [v38 countByEnumeratingWithState:&v44 objects:v68 count:16];
+  machServicesNames6 = [v37 machServicesNames];
+  v39 = [machServicesNames6 countByEnumeratingWithState:&v44 objects:v68 count:16];
   if (v39)
   {
     v40 = v39;
@@ -216,7 +216,7 @@
       {
         if (*v45 != v41)
         {
-          objc_enumerationMutation(v38);
+          objc_enumerationMutation(machServicesNames6);
         }
 
         [(NSMutableDictionary *)self->_machServices setObject:v37 forKey:*(*(&v44 + 1) + 8 * v42)];
@@ -224,7 +224,7 @@
       }
 
       while (v40 != v42);
-      v40 = [v38 countByEnumeratingWithState:&v44 objects:v68 count:16];
+      v40 = [machServicesNames6 countByEnumeratingWithState:&v44 objects:v68 count:16];
     }
 
     while (v40);
@@ -244,8 +244,8 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(NSMutableDictionary *)self->_machServices allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v18 count:16];
+  allKeys = [(NSMutableDictionary *)self->_machServices allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v12 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -256,7 +256,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -273,7 +273,7 @@
         [(NSMutableArray *)self->_listeners addObject:v11];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v18 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v12 objects:v18 count:16];
     }
 
     while (v6);
@@ -309,9 +309,9 @@
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
         {
           v10 = v9;
-          v11 = [v8 serviceName];
+          serviceName = [v8 serviceName];
           *buf = v12;
-          v18 = v11;
+          v18 = serviceName;
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[PRXPCServicesManager] resuming listener for mach service: %@", buf, 0xCu);
         }
 
@@ -327,25 +327,25 @@
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v7;
+    v16 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[PRXPCServicesManager] listener shouldAcceptNewConnection. Connection: %@", &v15, 0xCu);
   }
 
   machServices = self->_machServices;
-  v10 = [v7 serviceName];
-  v11 = [(NSMutableDictionary *)machServices objectForKey:v10];
+  serviceName = [connectionCopy serviceName];
+  v11 = [(NSMutableDictionary *)machServices objectForKey:serviceName];
 
   if (v11)
   {
-    v12 = [v11 shouldAcceptNewConnection:v7];
+    v12 = [v11 shouldAcceptNewConnection:connectionCopy];
   }
 
   else
@@ -353,7 +353,7 @@
     v13 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
-      sub_10049D48C(v13, v7);
+      sub_10049D48C(v13, connectionCopy);
     }
 
     v12 = 0;

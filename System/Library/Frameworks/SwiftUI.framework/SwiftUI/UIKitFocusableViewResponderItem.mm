@@ -1,6 +1,6 @@
 @interface UIKitFocusableViewResponderItem
 - (BOOL)canBecomeFocused;
-- (BOOL)shouldUpdateFocusInContext:(id)a3;
+- (BOOL)shouldUpdateFocusInContext:(id)context;
 - (CGRect)frame;
 - (NSArray)preferredFocusEnvironments;
 - (NSString)swiftui_focusGroupIdentifier;
@@ -8,7 +8,7 @@
 - (UIFocusEnvironment)parentFocusEnvironment;
 - (UIResponder)nextResponder;
 - (_TtC7SwiftUIP33_B6A2D4E72E5722B5103497ADB7778B5F31UIKitFocusableViewResponderItem)init;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)setNeedsFocusUpdate;
 - (void)updateFocusIfNeeded;
 @end
@@ -45,17 +45,17 @@
   return Strong;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  specialized UIKitFocusableViewResponderItem.didUpdateFocus(in:with:)(v6);
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  specialized UIKitFocusableViewResponderItem.didUpdateFocus(in:with:)(contextCopy);
 }
 
 - (CGRect)frame
 {
-  v2 = self;
+  selfCopy = self;
   MEMORY[0x18D00ABE0]();
   AGGraphClearUpdate();
   type metadata accessor for CGRect(0);
@@ -100,7 +100,7 @@
 
 - (UIResponder)nextResponder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = UIKitFocusableViewResponderItem.next.getter();
 
   return v3;
@@ -108,7 +108,7 @@
 
 - (NSString)swiftui_focusGroupIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   v3 = UIKitFocusableViewResponderItem.swiftui_focusGroupIdentifier.getter();
   v5 = v4;
 
@@ -128,7 +128,7 @@
 - (void)setNeedsFocusUpdate
 {
   type metadata accessor for UIFocusSystem();
-  v5 = self;
+  selfCopy = self;
   v3 = static UIFocusSystem.focusSystem(for:)();
   if (v3)
   {
@@ -140,23 +140,23 @@
 - (void)updateFocusIfNeeded
 {
   type metadata accessor for UIFocusSystem();
-  v4 = self;
+  selfCopy = self;
   v3 = static UIFocusSystem.focusSystem(for:)();
   [v3 updateFocusIfNeeded];
 }
 
-- (BOOL)shouldUpdateFocusInContext:(id)a3
+- (BOOL)shouldUpdateFocusInContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = UIKitFocusableViewResponderItem.shouldUpdateFocus(in:)(v4);
+  contextCopy = context;
+  selfCopy = self;
+  LOBYTE(self) = UIKitFocusableViewResponderItem.shouldUpdateFocus(in:)(contextCopy);
 
   return self & 1;
 }
 
 - (UIFocusEffect)focusEffect
 {
-  v2 = self;
+  selfCopy = self;
   v3 = UIKitFocusableViewResponderItem.focusEffect.getter();
 
   return v3;

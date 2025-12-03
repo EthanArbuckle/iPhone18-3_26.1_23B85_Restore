@@ -1,6 +1,6 @@
 @interface HDClinicalIngestionIsAccountFetchableOperation
-- (BOOL)_refreshAccountWithErrorString:(id *)a3;
-- (BOOL)_verifyShouldFetchWithErrorString:(id *)a3;
+- (BOOL)_refreshAccountWithErrorString:(id *)string;
+- (BOOL)_verifyShouldFetchWithErrorString:(id *)string;
 - (void)main;
 @end
 
@@ -8,10 +8,10 @@
 
 - (void)main
 {
-  v3 = [(HDClinicalIngestionOperation *)self task];
-  v4 = [v3 profileExtension];
-  v5 = [v4 ingestionManager];
-  [(HDClinicalIngestionIsAccountFetchableOperation *)self setIngestionManager:v5];
+  task = [(HDClinicalIngestionOperation *)self task];
+  profileExtension = [task profileExtension];
+  ingestionManager = [profileExtension ingestionManager];
+  [(HDClinicalIngestionIsAccountFetchableOperation *)self setIngestionManager:ingestionManager];
 
   if (self->_ingestionManager)
   {
@@ -58,38 +58,38 @@ LABEL_10:
   }
 }
 
-- (BOOL)_refreshAccountWithErrorString:(id *)a3
+- (BOOL)_refreshAccountWithErrorString:(id *)string
 {
-  v5 = [(HDClinicalIngestionPerAccountOperation *)self account];
-  v6 = [v5 identifier];
+  account = [(HDClinicalIngestionPerAccountOperation *)self account];
+  identifier = [account identifier];
 
-  if (v6)
+  if (identifier)
   {
-    v16 = v6;
+    v16 = identifier;
     v7 = [NSArray arrayWithObjects:&v16 count:1];
-    v8 = [(HDClinicalIngestionOperation *)self profile];
+    profile = [(HDClinicalIngestionOperation *)self profile];
     v15 = 0;
-    v9 = [HDClinicalAccountEntity fetchableAccountsWithIdentifiers:v7 profile:v8 error:&v15];
+    v9 = [HDClinicalAccountEntity fetchableAccountsWithIdentifiers:v7 profile:profile error:&v15];
     v10 = v15;
 
     if (v9)
     {
-      v11 = [v9 firstObject];
-      if (v11)
+      firstObject = [v9 firstObject];
+      if (firstObject)
       {
-        [(HDClinicalIngestionIsAccountFetchableOperation *)self setRefreshedAccount:v11];
+        [(HDClinicalIngestionIsAccountFetchableOperation *)self setRefreshedAccount:firstObject];
         v12 = 1;
 LABEL_13:
 
         goto LABEL_14;
       }
 
-      if (a3)
+      if (string)
       {
         v13 = @"the account does not have a credential or the associated gateway is disabled";
 LABEL_11:
         v12 = 0;
-        *a3 = [(__CFString *)v13 copy];
+        *string = [(__CFString *)v13 copy];
         goto LABEL_13;
       }
     }
@@ -97,8 +97,8 @@ LABEL_11:
     else
     {
       v13 = [NSString stringWithFormat:@"account entity retrieval failed with error: %@", v10];
-      v11 = v13;
-      if (a3)
+      firstObject = v13;
+      if (string)
       {
         goto LABEL_11;
       }
@@ -109,9 +109,9 @@ LABEL_11:
   }
 
   v12 = 0;
-  if (a3)
+  if (string)
   {
-    *a3 = [@"account entity retrieval failed because there is no account identifier" copy];
+    *string = [@"account entity retrieval failed because there is no account identifier" copy];
   }
 
 LABEL_14:
@@ -119,18 +119,18 @@ LABEL_14:
   return v12;
 }
 
-- (BOOL)_verifyShouldFetchWithErrorString:(id *)a3
+- (BOOL)_verifyShouldFetchWithErrorString:(id *)string
 {
-  v5 = [(HDClinicalIngestionOperation *)self task];
-  v6 = [v5 context];
+  task = [(HDClinicalIngestionOperation *)self task];
+  context = [task context];
 
-  if (([v6 shouldFetchImmediately] & 1) == 0)
+  if (([context shouldFetchImmediately] & 1) == 0)
   {
     v8 = +[NSDate date];
-    v9 = [(HDClinicalIngestionIsAccountFetchableOperation *)self refreshedAccount];
-    if ([v6 isBackgroundTask] && (objc_msgSend(v9, "shouldPerformBackgroundFetchWithNowDate:", v8) & 1) == 0)
+    refreshedAccount = [(HDClinicalIngestionIsAccountFetchableOperation *)self refreshedAccount];
+    if ([context isBackgroundTask] && (objc_msgSend(refreshedAccount, "shouldPerformBackgroundFetchWithNowDate:", v8) & 1) == 0)
     {
-      if (a3)
+      if (string)
       {
         v10 = @"background ingest should not yet be performed";
         goto LABEL_11;
@@ -139,7 +139,7 @@ LABEL_14:
 
     else
     {
-      if ([v9 shouldPerformFetchWithNowDate:v8])
+      if ([refreshedAccount shouldPerformFetchWithNowDate:v8])
       {
         v7 = 1;
 LABEL_13:
@@ -147,12 +147,12 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      if (a3)
+      if (string)
       {
         v10 = @"account is still blocked from fetching";
 LABEL_11:
         v7 = 0;
-        *a3 = [(__CFString *)v10 copy];
+        *string = [(__CFString *)v10 copy];
         goto LABEL_13;
       }
     }

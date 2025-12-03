@@ -1,5 +1,5 @@
 @interface RAPHomeFooterToolBarView
-- (RAPHomeFooterToolBarView)initWithFrame:(CGRect)a3;
+- (RAPHomeFooterToolBarView)initWithFrame:(CGRect)frame;
 - (void)_refreshToolbarItems;
 - (void)_setupConstraints;
 - (void)_setupSubviews;
@@ -11,8 +11,8 @@
 
 - (void)tapCreateButton
 {
-  v3 = [(RAPHomeFooterToolBarView *)self delegate];
-  [v3 tappedMenuForRAPHomeFooterToolBarView:self];
+  delegate = [(RAPHomeFooterToolBarView *)self delegate];
+  [delegate tappedMenuForRAPHomeFooterToolBarView:self];
 }
 
 - (void)_refreshToolbarItems
@@ -35,8 +35,8 @@
     self->_createButton = v7;
   }
 
-  v9 = [(RAPHomeFooterToolBarView *)self delegate];
-  v10 = [v9 menuForRAPHomeFooterToolBarView:self];
+  delegate = [(RAPHomeFooterToolBarView *)self delegate];
+  v10 = [delegate menuForRAPHomeFooterToolBarView:self];
   [(UIButton *)self->_createButton setMenu:v10];
 
   [(UIButton *)self->_createButton addTarget:self action:"tapCreateButton" forControlEvents:0x4000];
@@ -51,21 +51,21 @@
 
 - (void)_setupConstraints
 {
-  v15 = [(UIToolbar *)self->_toolBar topAnchor];
-  v14 = [(RAPHomeFooterToolBarView *)self topAnchor];
-  v13 = [v15 constraintEqualToAnchor:v14];
+  topAnchor = [(UIToolbar *)self->_toolBar topAnchor];
+  topAnchor2 = [(RAPHomeFooterToolBarView *)self topAnchor];
+  v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v16[0] = v13;
-  v3 = [(UIToolbar *)self->_toolBar bottomAnchor];
-  v4 = [(RAPHomeFooterToolBarView *)self bottomAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4];
+  bottomAnchor = [(UIToolbar *)self->_toolBar bottomAnchor];
+  bottomAnchor2 = [(RAPHomeFooterToolBarView *)self bottomAnchor];
+  v5 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v16[1] = v5;
-  v6 = [(UIToolbar *)self->_toolBar leadingAnchor];
-  v7 = [(RAPHomeFooterToolBarView *)self leadingAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  leadingAnchor = [(UIToolbar *)self->_toolBar leadingAnchor];
+  leadingAnchor2 = [(RAPHomeFooterToolBarView *)self leadingAnchor];
+  v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v16[2] = v8;
-  v9 = [(UIToolbar *)self->_toolBar trailingAnchor];
-  v10 = [(RAPHomeFooterToolBarView *)self trailingAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  trailingAnchor = [(UIToolbar *)self->_toolBar trailingAnchor];
+  trailingAnchor2 = [(RAPHomeFooterToolBarView *)self trailingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v16[3] = v11;
   v12 = [NSArray arrayWithObjects:v16 count:4];
   [NSLayoutConstraint activateConstraints:v12];
@@ -93,11 +93,11 @@
   [(RAPHomeFooterToolBarView *)self _refreshToolbarItems];
 }
 
-- (RAPHomeFooterToolBarView)initWithFrame:(CGRect)a3
+- (RAPHomeFooterToolBarView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = RAPHomeFooterToolBarView;
-  v3 = [(RAPHomeFooterToolBarView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(RAPHomeFooterToolBarView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

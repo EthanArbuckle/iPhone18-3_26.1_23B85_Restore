@@ -3,12 +3,12 @@
 + (NSString)bagSubProfile;
 + (NSString)bagSubProfileVersion;
 + (id)createBagForSubProfile;
-- (AMSMarketingItemTask)initWithAccount:(id)a3 bag:(id)a4 clientIdentifier:(id)a5 clientVersion:(id)a6 placement:(id)a7 serviceType:(id)a8;
-- (AMSMarketingItemTask)initWithBag:(id)a3 clientIdentifier:(id)a4 clientVersion:(id)a5 placement:(id)a6 serviceType:(id)a7;
+- (AMSMarketingItemTask)initWithAccount:(id)account bag:(id)bag clientIdentifier:(id)identifier clientVersion:(id)version placement:(id)placement serviceType:(id)type;
+- (AMSMarketingItemTask)initWithBag:(id)bag clientIdentifier:(id)identifier clientVersion:(id)version placement:(id)placement serviceType:(id)type;
 - (id)_fetchItems;
-- (id)_fetchItemsFromURL:(id)a3;
-- (id)_processMediaResultFromPromise:(id)a3;
-- (id)_requestForURL:(id)a3 tokenService:(id)a4;
+- (id)_fetchItemsFromURL:(id)l;
+- (id)_processMediaResultFromPromise:(id)promise;
+- (id)_requestForURL:(id)l tokenService:(id)service;
 - (id)perform;
 - (id)performWithFetchOnly;
 @end
@@ -51,45 +51,45 @@ id __44__AMSMarketingItemTask_performWithFetchOnly__block_invoke(uint64_t a1)
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = v5;
-    v7 = [(AMSMarketingItemTask *)self logKey];
-    v8 = [(AMSMarketingItemTask *)self serviceType];
-    v9 = [(AMSMarketingItemTask *)self placement];
-    v10 = [(AMSMarketingItemTask *)self contextInfo];
+    logKey = [(AMSMarketingItemTask *)self logKey];
+    serviceType = [(AMSMarketingItemTask *)self serviceType];
+    placement = [(AMSMarketingItemTask *)self placement];
+    contextInfo = [(AMSMarketingItemTask *)self contextInfo];
     *buf = 138544386;
     v31 = v5;
     v32 = 2114;
-    v33 = v7;
+    v33 = logKey;
     v34 = 2114;
-    v35 = v8;
+    v35 = serviceType;
     v36 = 2114;
-    v37 = v9;
+    v37 = placement;
     v38 = 2114;
-    v39 = v10;
-    _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Fetching marketing items for serviceType: %{public}@ \nplacement: %{public}@ \ncontext: %{public}@", buf, 0x34u);
+    v39 = contextInfo;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Fetching marketing items for serviceType: %{public}@ \nplacement: %{public}@ \ncontext: %{public}@", buf, 0x34u);
   }
 
   if (+[AMSDefaults disableStubbedMarketingItems])
   {
-    v11 = objc_alloc_init(AMSMarketingItemTaskURLBuilder);
-    v12 = [(AMSMarketingItemTask *)self serviceType];
-    v13 = [(AMSMarketingItemTask *)self placement];
+    serviceType3 = objc_alloc_init(AMSMarketingItemTaskURLBuilder);
+    serviceType2 = [(AMSMarketingItemTask *)self serviceType];
+    placement2 = [(AMSMarketingItemTask *)self placement];
     v14 = [(AMSMarketingItemTask *)self bag];
-    v15 = [(AMSMarketingItemTask *)self hydrateRelatedContent];
-    v16 = [(AMSMarketingItemTask *)self offerHints];
-    v17 = [(AMSMarketingItemTask *)self contextInfo];
-    v18 = [(AMSMarketingItemTaskURLBuilder *)v11 urlWithServiceType:v12 placement:v13 bag:v14 hydrateRelatedContents:v15 offerHints:v16 additionalParameters:v17];
+    hydrateRelatedContent = [(AMSMarketingItemTask *)self hydrateRelatedContent];
+    offerHints = [(AMSMarketingItemTask *)self offerHints];
+    contextInfo2 = [(AMSMarketingItemTask *)self contextInfo];
+    placement3 = [(AMSMarketingItemTaskURLBuilder *)serviceType3 urlWithServiceType:serviceType2 placement:placement2 bag:v14 hydrateRelatedContents:hydrateRelatedContent offerHints:offerHints additionalParameters:contextInfo2];
 
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __35__AMSMarketingItemTask__fetchItems__block_invoke;
     v28[3] = &unk_1E73B5A70;
     v28[4] = self;
-    v19 = [v18 thenWithBlock:v28];
+    v19 = [placement3 thenWithBlock:v28];
   }
 
   else
@@ -100,22 +100,22 @@ id __44__AMSMarketingItemTask_performWithFetchOnly__block_invoke(uint64_t a1)
       v20 = +[AMSLogConfig sharedConfig];
     }
 
-    v21 = [v20 OSLogObject];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v20 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v22 = objc_opt_class();
       v23 = v22;
-      v24 = [(AMSMarketingItemTask *)self logKey];
+      logKey2 = [(AMSMarketingItemTask *)self logKey];
       *buf = 138543618;
       v31 = v22;
       v32 = 2114;
-      v33 = v24;
-      _os_log_impl(&dword_192869000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Using local stubs", buf, 0x16u);
+      v33 = logKey2;
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Using local stubs", buf, 0x16u);
     }
 
-    v11 = [(AMSMarketingItemTask *)self serviceType];
-    v18 = [(AMSMarketingItemTask *)self placement];
-    v25 = [AMSMarketingItemStub stubForServiceType:v11 placement:v18];
+    serviceType3 = [(AMSMarketingItemTask *)self serviceType];
+    placement3 = [(AMSMarketingItemTask *)self placement];
+    v25 = [AMSMarketingItemStub stubForServiceType:serviceType3 placement:placement3];
     v29 = v25;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v29 count:1];
     v19 = [AMSPromise promiseWithResult:v26];
@@ -124,39 +124,39 @@ id __44__AMSMarketingItemTask_performWithFetchOnly__block_invoke(uint64_t a1)
   return v19;
 }
 
-- (AMSMarketingItemTask)initWithBag:(id)a3 clientIdentifier:(id)a4 clientVersion:(id)a5 placement:(id)a6 serviceType:(id)a7
+- (AMSMarketingItemTask)initWithBag:(id)bag clientIdentifier:(id)identifier clientVersion:(id)version placement:(id)placement serviceType:(id)type
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v20 = a6;
-  v16 = a7;
+  bagCopy = bag;
+  identifierCopy = identifier;
+  versionCopy = version;
+  placementCopy = placement;
+  typeCopy = type;
   v21.receiver = self;
   v21.super_class = AMSMarketingItemTask;
   v17 = [(AMSTask *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_bag, a3);
-    objc_storeStrong(&v18->_clientIdentifier, a4);
-    objc_storeStrong(&v18->_clientVersion, a5);
+    objc_storeStrong(&v17->_bag, bag);
+    objc_storeStrong(&v18->_clientIdentifier, identifier);
+    objc_storeStrong(&v18->_clientVersion, version);
     v18->_hydrateRelatedContent = 1;
     v18->_includeMediaAssets = 1;
-    objc_storeStrong(&v18->_placement, a6);
-    objc_storeStrong(&v18->_serviceType, a7);
+    objc_storeStrong(&v18->_placement, placement);
+    objc_storeStrong(&v18->_serviceType, type);
   }
 
   return v18;
 }
 
-- (AMSMarketingItemTask)initWithAccount:(id)a3 bag:(id)a4 clientIdentifier:(id)a5 clientVersion:(id)a6 placement:(id)a7 serviceType:(id)a8
+- (AMSMarketingItemTask)initWithAccount:(id)account bag:(id)bag clientIdentifier:(id)identifier clientVersion:(id)version placement:(id)placement serviceType:(id)type
 {
-  v15 = a3;
-  v16 = [(AMSMarketingItemTask *)self initWithBag:a4 clientIdentifier:a5 clientVersion:a6 placement:a7 serviceType:a8];
+  accountCopy = account;
+  v16 = [(AMSMarketingItemTask *)self initWithBag:bag clientIdentifier:identifier clientVersion:version placement:placement serviceType:type];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_account, a3);
+    objc_storeStrong(&v16->_account, account);
   }
 
   return v17;
@@ -217,19 +217,19 @@ AMSMarketingItem *__44__AMSMarketingItemTask_performWithFetchOnly__block_invoke_
   return v3;
 }
 
-- (id)_fetchItemsFromURL:(id)a3
+- (id)_fetchItemsFromURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = [AMSMediaSharedProperties propertiesForMarketingItemTask:self];
-  v6 = [v5 tokenService];
-  v7 = [(AMSMarketingItemTask *)self _requestForURL:v4 tokenService:v6];
+  tokenService = [v5 tokenService];
+  v7 = [(AMSMarketingItemTask *)self _requestForURL:lCopy tokenService:tokenService];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __43__AMSMarketingItemTask__fetchItemsFromURL___block_invoke;
   v11[3] = &unk_1E73B45F0;
   v12 = v5;
-  v13 = self;
+  selfCopy = self;
   v8 = v5;
   v9 = [v7 thenWithBlock:v11];
 
@@ -262,26 +262,26 @@ void __43__AMSMarketingItemTask__fetchItemsFromURL___block_invoke_2(uint64_t a1,
   [v4 finishWithPromise:v5];
 }
 
-- (id)_requestForURL:(id)a3 tokenService:(id)a4
+- (id)_requestForURL:(id)l tokenService:(id)service
 {
-  v6 = a4;
-  v7 = a3;
+  serviceCopy = service;
+  lCopy = l;
   v8 = [AMSMediaRequestEncoder alloc];
   v9 = [(AMSMarketingItemTask *)self bag];
-  v10 = [(AMSMediaRequestEncoder *)v8 initWithTokenService:v6 bag:v9];
+  v10 = [(AMSMediaRequestEncoder *)v8 initWithTokenService:serviceCopy bag:v9];
 
-  v11 = [(AMSMarketingItemTask *)self account];
-  [(AMSMediaRequestEncoder *)v10 setAccount:v11];
+  account = [(AMSMarketingItemTask *)self account];
+  [(AMSMediaRequestEncoder *)v10 setAccount:account];
 
-  v12 = [(AMSMarketingItemTask *)self clientInfo];
-  [(AMSMediaRequestEncoder *)v10 setClientInfo:v12];
+  clientInfo = [(AMSMarketingItemTask *)self clientInfo];
+  [(AMSMediaRequestEncoder *)v10 setClientInfo:clientInfo];
 
-  v13 = [(AMSMarketingItemTask *)self logKey];
-  [(AMSMediaRequestEncoder *)v10 setLogKey:v13];
+  logKey = [(AMSMarketingItemTask *)self logKey];
+  [(AMSMediaRequestEncoder *)v10 setLogKey:logKey];
 
   v14 = objc_alloc_init(AMSMediaResponseDecoder);
   [(AMSMediaRequestEncoder *)v10 setResponseDecoder:v14];
-  v15 = [(AMSMediaRequestEncoder *)v10 requestWithURL:v7];
+  v15 = [(AMSMediaRequestEncoder *)v10 requestWithURL:lCopy];
 
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
@@ -346,16 +346,16 @@ void __52__AMSMarketingItemTask__requestForURL_tokenService___block_invoke_2(uin
   }
 }
 
-- (id)_processMediaResultFromPromise:(id)a3
+- (id)_processMediaResultFromPromise:(id)promise
 {
-  v3 = a3;
+  promiseCopy = promise;
   v4 = [AMSMutableLazyPromise alloc];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __55__AMSMarketingItemTask__processMediaResultFromPromise___block_invoke;
   v8[3] = &unk_1E73B56C8;
-  v9 = v3;
-  v5 = v3;
+  v9 = promiseCopy;
+  v5 = promiseCopy;
   v6 = [(AMSMutableLazyPromise *)v4 initWithTimeout:v8 block:60.0];
 
   return v6;
@@ -452,9 +452,9 @@ void __44__AMSMarketingItemTask_bagSubProfileVersion__block_invoke()
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagSubProfile];
-  v3 = [objc_opt_class() bagSubProfileVersion];
-  v4 = [AMSBag bagForProfile:v2 profileVersion:v3];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  v4 = [AMSBag bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   return v4;
 }

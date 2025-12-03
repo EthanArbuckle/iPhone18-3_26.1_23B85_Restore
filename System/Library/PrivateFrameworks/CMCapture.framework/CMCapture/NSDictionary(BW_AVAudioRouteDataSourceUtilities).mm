@@ -35,7 +35,7 @@
     return 0;
   }
 
-  v6 = [a1 objectForKeyedSubscript:*MEMORY[0x1E69B0570]];
+  v6 = [self objectForKeyedSubscript:*MEMORY[0x1E69B0570]];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -69,9 +69,9 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v14 = [v13 intValue];
+        intValue = [v13 intValue];
         v15 = 0;
-        while (v14 != v22[v15])
+        while (intValue != v22[v15])
         {
           if (++v15 == 3)
           {
@@ -88,7 +88,7 @@
         else
         {
           v11 = v15;
-          v9 = v14;
+          v9 = intValue;
         }
       }
     }

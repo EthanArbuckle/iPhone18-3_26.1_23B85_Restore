@@ -1,18 +1,18 @@
 @interface AXEventHandInfoRepresentation
-- (AXEventHandInfoRepresentation)initWithCoder:(id)a3;
+- (AXEventHandInfoRepresentation)initWithCoder:(id)coder;
 - (BOOL)isStylus;
 - (CGPoint)handPosition;
 - (NSArray)paths;
 - (NSArray)pathsIncludingMayBeginEvents;
 - (NSString)description;
 - (id)accessibilityEventRepresentationTabularDescription;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXEventHandInfoRepresentation
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(AXEventHandInfoRepresentation);
   [(AXEventHandInfoRepresentation *)v4 setEventType:[(AXEventHandInfoRepresentation *)self eventType]];
@@ -34,73 +34,73 @@
   return v4;
 }
 
-- (AXEventHandInfoRepresentation)initWithCoder:(id)a3
+- (AXEventHandInfoRepresentation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = AXEventHandInfoRepresentation;
   v5 = [(AXEventHandInfoRepresentation *)&v18 init];
   if (v5)
   {
-    v5->_eventType = [v4 decodeInt32ForKey:@"eventType"];
-    v5->_initialFingerCount = [v4 decodeInt32ForKey:@"initialFingerCount"];
-    v5->_currentFingerCount = [v4 decodeInt32ForKey:@"currentFingerCount"];
-    v5->_lifetimeFingerCount = [v4 decodeInt32ForKey:@"lifetimeFingerCount"];
-    v5->_swipe = [v4 decodeInt32ForKey:@"swipe"];
-    v5->_systemGesturePossible = [v4 decodeInt32ForKey:@"systemGesturePossible"];
+    v5->_eventType = [coderCopy decodeInt32ForKey:@"eventType"];
+    v5->_initialFingerCount = [coderCopy decodeInt32ForKey:@"initialFingerCount"];
+    v5->_currentFingerCount = [coderCopy decodeInt32ForKey:@"currentFingerCount"];
+    v5->_lifetimeFingerCount = [coderCopy decodeInt32ForKey:@"lifetimeFingerCount"];
+    v5->_swipe = [coderCopy decodeInt32ForKey:@"swipe"];
+    v5->_systemGesturePossible = [coderCopy decodeInt32ForKey:@"systemGesturePossible"];
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"paths"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"paths"];
     paths = v5->_paths;
     v5->_paths = v9;
 
     v11 = MEMORY[0x1E695DFD8];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"pathsIncludingMayBeginEvents"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"pathsIncludingMayBeginEvents"];
     pathsIncludingMayBeginEvents = v5->_pathsIncludingMayBeginEvents;
     v5->_pathsIncludingMayBeginEvents = v14;
 
-    v5->_handIdentity = [v4 decodeInt32ForKey:@"handIdentity"];
-    v5->_handIndex = [v4 decodeInt32ForKey:@"handIndex"];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"handPosition"];
+    v5->_handIdentity = [coderCopy decodeInt32ForKey:@"handIdentity"];
+    v5->_handIndex = [coderCopy decodeInt32ForKey:@"handIndex"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"handPosition"];
     [v16 getValue:&v5->_handPosition size:16];
 
-    v5->_handEventMask = [v4 decodeInt32ForKey:@"handEventMask"];
+    v5->_handEventMask = [coderCopy decodeInt32ForKey:@"handEventMask"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  [v7 encodeInt32:self->_eventType forKey:@"eventType"];
-  [v7 encodeInt32:self->_initialFingerCount forKey:@"initialFingerCount"];
-  [v7 encodeInt32:self->_currentFingerCount forKey:@"currentFingerCount"];
-  [v7 encodeInt32:self->_lifetimeFingerCount forKey:@"lifetimeFingerCount"];
-  [v7 encodeInt32:self->_swipe forKey:@"swipe"];
-  [v7 encodeInt32:self->_systemGesturePossible forKey:@"systemGesturePossible"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:self->_eventType forKey:@"eventType"];
+  [coderCopy encodeInt32:self->_initialFingerCount forKey:@"initialFingerCount"];
+  [coderCopy encodeInt32:self->_currentFingerCount forKey:@"currentFingerCount"];
+  [coderCopy encodeInt32:self->_lifetimeFingerCount forKey:@"lifetimeFingerCount"];
+  [coderCopy encodeInt32:self->_swipe forKey:@"swipe"];
+  [coderCopy encodeInt32:self->_systemGesturePossible forKey:@"systemGesturePossible"];
   if ([(AXEventHandInfoRepresentation *)self encodePathsForCompatibility])
   {
-    v4 = [(AXEventHandInfoRepresentation *)self paths];
+    paths = [(AXEventHandInfoRepresentation *)self paths];
   }
 
   else
   {
-    v4 = self->_paths;
+    paths = self->_paths;
   }
 
-  v5 = v4;
-  [v7 encodeObject:v4 forKey:@"paths"];
-  [v7 encodeObject:self->_pathsIncludingMayBeginEvents forKey:@"pathsIncludingMayBeginEvents"];
-  [v7 encodeInt32:self->_handIdentity forKey:@"handIdentity"];
+  v5 = paths;
+  [coderCopy encodeObject:paths forKey:@"paths"];
+  [coderCopy encodeObject:self->_pathsIncludingMayBeginEvents forKey:@"pathsIncludingMayBeginEvents"];
+  [coderCopy encodeInt32:self->_handIdentity forKey:@"handIdentity"];
   v6 = [MEMORY[0x1E696B098] valueWithBytes:&self->_handPosition objCType:"{CGPoint=dd}"];
-  [v7 encodeObject:v6 forKey:@"handPosition"];
+  [coderCopy encodeObject:v6 forKey:@"handPosition"];
 
-  [v7 encodeInt32:self->_handIndex forKey:@"handIndex"];
-  [v7 encodeInt32:self->_handEventMask forKey:@"handEventMask"];
+  [coderCopy encodeInt32:self->_handIndex forKey:@"handIndex"];
+  [coderCopy encodeInt32:self->_handEventMask forKey:@"handEventMask"];
 }
 
 - (id)accessibilityEventRepresentationTabularDescription
@@ -110,8 +110,8 @@
   v4 = AXDebugDescriptionForAXHandEventType([(AXEventHandInfoRepresentation *)self eventType]);
   v5 = [v3 stringWithFormat:@"  Hand Info\n    Type:                    %@\n    Initial Finger Count:    %i\n    Current Finger Count:    %i\n    Lifetime Finger Count:    %i\n    Swipe:                   %i\n    System Gesture Possible: %i\n", v4, -[AXEventHandInfoRepresentation initialFingerCount](self, "initialFingerCount"), -[AXEventHandInfoRepresentation currentFingerCount](self, "currentFingerCount"), -[AXEventHandInfoRepresentation lifetimeFingerCount](self, "lifetimeFingerCount"), -[AXEventHandInfoRepresentation swipe](self, "swipe"), -[AXEventHandInfoRepresentation systemGesturePossible](self, "systemGesturePossible")];
 
-  v6 = [(AXEventHandInfoRepresentation *)self paths];
-  v7 = [v6 count];
+  paths = [(AXEventHandInfoRepresentation *)self paths];
+  v7 = [paths count];
 
   if (v7)
   {
@@ -120,8 +120,8 @@
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = [(AXEventHandInfoRepresentation *)self paths];
-    v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    paths2 = [(AXEventHandInfoRepresentation *)self paths];
+    v9 = [paths2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {
       v10 = v9;
@@ -132,14 +132,14 @@
         {
           if (*v16 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(paths2);
           }
 
-          v13 = [*(*(&v15 + 1) + 8 * i) accessibilityEventRepresentationTabularDescription];
-          [v5 appendFormat:@"%@", v13];
+          accessibilityEventRepresentationTabularDescription = [*(*(&v15 + 1) + 8 * i) accessibilityEventRepresentationTabularDescription];
+          [v5 appendFormat:@"%@", accessibilityEventRepresentationTabularDescription];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v10 = [paths2 countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v10);
@@ -151,13 +151,13 @@
 
 - (BOOL)isStylus
 {
-  v3 = [(AXEventHandInfoRepresentation *)self paths];
-  v4 = [v3 firstObject];
-  if (v4)
+  paths = [(AXEventHandInfoRepresentation *)self paths];
+  firstObject = [paths firstObject];
+  if (firstObject)
   {
-    v5 = [(AXEventHandInfoRepresentation *)self paths];
-    v6 = [v5 firstObject];
-    v7 = [v6 transducerType] == 0;
+    paths2 = [(AXEventHandInfoRepresentation *)self paths];
+    firstObject2 = [paths2 firstObject];
+    v7 = [firstObject2 transducerType] == 0;
   }
 
   else
@@ -174,14 +174,14 @@
   v14.super_class = AXEventHandInfoRepresentation;
   v3 = [(AXEventHandInfoRepresentation *)&v14 description];
   v4 = AXDebugDescriptionForAXHandEventType([(AXEventHandInfoRepresentation *)self eventType]);
-  v5 = [(AXEventHandInfoRepresentation *)self initialFingerCount];
-  v6 = [(AXEventHandInfoRepresentation *)self currentFingerCount];
-  v7 = [(AXEventHandInfoRepresentation *)self lifetimeFingerCount];
-  v8 = [(AXEventHandInfoRepresentation *)self swipe];
-  v9 = [(AXEventHandInfoRepresentation *)self systemGesturePossible];
-  v10 = [(AXEventHandInfoRepresentation *)self isStylus];
-  v11 = [(AXEventHandInfoRepresentation *)self paths];
-  v12 = [v3 stringByAppendingFormat:@" - eventType %@, initialFingerCount %i, currentFingerCount %i, lifetimeFingerCount %i, swipe %i, systemGesturePossible %i, isStylus %i, \n\t\tpaths %@", v4, v5, v6, v7, v8, v9, v10, v11];
+  initialFingerCount = [(AXEventHandInfoRepresentation *)self initialFingerCount];
+  currentFingerCount = [(AXEventHandInfoRepresentation *)self currentFingerCount];
+  lifetimeFingerCount = [(AXEventHandInfoRepresentation *)self lifetimeFingerCount];
+  swipe = [(AXEventHandInfoRepresentation *)self swipe];
+  systemGesturePossible = [(AXEventHandInfoRepresentation *)self systemGesturePossible];
+  isStylus = [(AXEventHandInfoRepresentation *)self isStylus];
+  paths = [(AXEventHandInfoRepresentation *)self paths];
+  v12 = [v3 stringByAppendingFormat:@" - eventType %@, initialFingerCount %i, currentFingerCount %i, lifetimeFingerCount %i, swipe %i, systemGesturePossible %i, isStylus %i, \n\t\tpaths %@", v4, initialFingerCount, currentFingerCount, lifetimeFingerCount, swipe, systemGesturePossible, isStylus, paths];
 
   return v12;
 }

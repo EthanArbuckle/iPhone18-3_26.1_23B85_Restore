@@ -1,13 +1,13 @@
 @interface ConversationControlsShareCardViewController
-- (_TtC15ConversationKit43ConversationControlsShareCardViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15ConversationKit43ConversationControlsShareCardViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (int64_t)modalPresentationStyle;
-- (void)didTapAskToScreenShareButton:(id)a3;
+- (void)didTapAskToScreenShareButton:(id)button;
 - (void)didTapCloseButton;
 - (void)didTapCollaborateButton;
 - (void)didTapEndSharePlay;
 - (void)didTapScreenShareButton;
-- (void)setModalPresentationStyle:(int64_t)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setModalPresentationStyle:(int64_t)style;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -16,75 +16,75 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   ConversationControlsShareCardViewController.viewDidLoad()();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  ConversationControlsShareCardViewController.viewDidDisappear(_:)(a3);
+  selfCopy = self;
+  ConversationControlsShareCardViewController.viewDidDisappear(_:)(disappear);
 }
 
 - (int64_t)modalPresentationStyle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ConversationControlsShareCardViewController.modalPresentationStyle.getter();
 
   return v3;
 }
 
-- (void)setModalPresentationStyle:(int64_t)a3
+- (void)setModalPresentationStyle:(int64_t)style
 {
-  v3 = self;
+  selfCopy = self;
   ConversationControlsShareCardViewController.modalPresentationStyle.setter();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   ConversationControlsShareCardViewController.viewDidLayoutSubviews()();
 }
 
 - (void)didTapScreenShareButton
 {
-  v2 = self;
+  selfCopy = self;
   ConversationControlsShareCardViewController.didTapScreenShareButton()();
 }
 
-- (void)didTapAskToScreenShareButton:(id)a3
+- (void)didTapAskToScreenShareButton:(id)button
 {
-  v5 = a3;
-  v6 = self;
-  ConversationControlsShareCardViewController.didTapAskToScreenShareButton(_:)(a3);
+  buttonCopy = button;
+  selfCopy = self;
+  ConversationControlsShareCardViewController.didTapAskToScreenShareButton(_:)(button);
 }
 
 - (void)didTapCollaborateButton
 {
-  v2 = self;
+  selfCopy = self;
   ConversationControlsShareCardViewController.didTapCollaborateButton()();
 }
 
 - (void)didTapCloseButton
 {
-  v2 = self;
+  selfCopy = self;
   ConversationControlsShareCardViewController.didTapCloseButton()();
 }
 
 - (void)didTapEndSharePlay
 {
-  v2 = self;
+  selfCopy = self;
   ConversationControlsShareCardViewController.didTapEndSharePlay()();
 }
 
-- (_TtC15ConversationKit43ConversationControlsShareCardViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15ConversationKit43ConversationControlsShareCardViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   ConversationControlsShareCardViewController.init(nibName:bundle:)();
 }
 

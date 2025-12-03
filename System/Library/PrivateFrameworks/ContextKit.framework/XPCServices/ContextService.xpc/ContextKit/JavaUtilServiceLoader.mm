@@ -1,5 +1,5 @@
 @interface JavaUtilServiceLoader
-+ (id)load__WithIOSClass:(id)a3;
++ (id)load__WithIOSClass:(id)class;
 - (NSString)description;
 - (id)internalLoad;
 - (id)iterator;
@@ -10,20 +10,20 @@
 
 - (id)internalLoad
 {
-  v2 = *(a1 + 24);
+  v2 = *(self + 24);
   if (!v2)
   {
     JreThrowNullPointerException();
   }
 
   [v2 clear];
-  v3 = *(a1 + 8);
-  if (!v3 || ([v3 getName], v11 = JreStrcat("$$", v4, v5, v6, v7, v8, v9, v10, @"META-INF/services/"), (v12 = *(a1 + 16)) == 0))
+  v3 = *(self + 8);
+  if (!v3 || ([v3 getName], v11 = JreStrcat("$$", v4, v5, v6, v7, v8, v9, v10, @"META-INF/services/"), (v12 = *(self + 16)) == 0))
   {
     JreThrowNullPointerException();
   }
 
-  return [*(a1 + 24) addAllWithJavaUtilCollection:{JavaUtilCollections_listWithJavaUtilEnumeration_(objc_msgSend(v12, "getResourcesWithNSString:", v11))}];
+  return [*(self + 24) addAllWithJavaUtilCollection:{JavaUtilCollections_listWithJavaUtilEnumeration_(objc_msgSend(v12, "getResourcesWithNSString:", v11))}];
 }
 
 - (id)iterator
@@ -34,7 +34,7 @@
   return v3;
 }
 
-+ (id)load__WithIOSClass:(id)a3
++ (id)load__WithIOSClass:(id)class
 {
   v4 = JavaLangThread_currentThread();
   if (!v4)
@@ -42,9 +42,9 @@
     JreThrowNullPointerException();
   }
 
-  v5 = [(JavaLangThread *)v4 getContextClassLoader];
+  getContextClassLoader = [(JavaLangThread *)v4 getContextClassLoader];
 
-  return JavaUtilServiceLoader_load__WithIOSClass_withJavaLangClassLoader_(a3, v5);
+  return JavaUtilServiceLoader_load__WithIOSClass_withJavaLangClassLoader_(class, getContextClassLoader);
 }
 
 - (NSString)description

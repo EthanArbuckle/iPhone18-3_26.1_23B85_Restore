@@ -1,30 +1,30 @@
 @interface FedStatsPluginTelemetry
-+ (void)reportPluginForAssetProvider:(id)a3 recipeIdentifier:(id)a4 withError:(id)a5;
++ (void)reportPluginForAssetProvider:(id)provider recipeIdentifier:(id)identifier withError:(id)error;
 @end
 
 @implementation FedStatsPluginTelemetry
 
-+ (void)reportPluginForAssetProvider:(id)a3 recipeIdentifier:(id)a4 withError:(id)a5
++ (void)reportPluginForAssetProvider:(id)provider recipeIdentifier:(id)identifier withError:(id)error
 {
   v7 = MEMORY[0x277D23430];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v7 sharedInstance];
+  errorCopy = error;
+  identifierCopy = identifier;
+  providerCopy = provider;
+  sharedInstance = [v7 sharedInstance];
   v12 = objc_alloc(MEMORY[0x277D23440]);
-  v13 = [v10 experimentIdentifierForRecipe:v9];
-  v14 = [v10 deploymentIdentifierForRecipe:v9];
-  v15 = [v14 intValue];
-  v16 = [v10 treatmentIdentifierForRecipe:v9];
+  v13 = [providerCopy experimentIdentifierForRecipe:identifierCopy];
+  v14 = [providerCopy deploymentIdentifierForRecipe:identifierCopy];
+  intValue = [v14 intValue];
+  v16 = [providerCopy treatmentIdentifierForRecipe:identifierCopy];
 
-  v17 = [v12 initWithExperimentID:v13 deploymentID:v15 treatmentID:v16];
-  v18 = [objc_alloc(MEMORY[0x277D23438]) initWithPerformTrialTaskStatus:v8 == 0 error:v8 usePrivateUpload:1];
+  v17 = [v12 initWithExperimentID:v13 deploymentID:intValue treatmentID:v16];
+  v18 = [objc_alloc(MEMORY[0x277D23438]) initWithPerformTrialTaskStatus:errorCopy == 0 error:errorCopy usePrivateUpload:1];
 
   v22 = 0;
-  LODWORD(v9) = [v11 addLighthousePluginEvent:v18 identifiers:v17 error:&v22];
+  LODWORD(identifierCopy) = [sharedInstance addLighthousePluginEvent:v18 identifiers:v17 error:&v22];
   v19 = v22;
   v20 = v19;
-  if (v9 && v19)
+  if (identifierCopy && v19)
   {
     v21 = +[FedStatsPluginLog logger];
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))

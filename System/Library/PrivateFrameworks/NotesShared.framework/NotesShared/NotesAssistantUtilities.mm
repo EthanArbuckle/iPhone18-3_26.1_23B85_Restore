@@ -1,35 +1,35 @@
 @interface NotesAssistantUtilities
-+ (id)folderForGroupName:(id)a3 withNoteContext:(id)a4 htmlNoteContext:(id)a5;
-+ (id)folderOptionsForModernContext:(id)a3 htmlContext:(id)a4;
-+ (id)legacyFolderForGroupName:(id)a3 withContext:(id)a4;
-+ (id)modernFolderForGroupName:(id)a3 withContext:(id)a4;
-+ (id)objectForIDURL:(id)a3 inContext:(id)a4;
++ (id)folderForGroupName:(id)name withNoteContext:(id)context htmlNoteContext:(id)noteContext;
++ (id)folderOptionsForModernContext:(id)context htmlContext:(id)htmlContext;
++ (id)legacyFolderForGroupName:(id)name withContext:(id)context;
++ (id)modernFolderForGroupName:(id)name withContext:(id)context;
++ (id)objectForIDURL:(id)l inContext:(id)context;
 @end
 
 @implementation NotesAssistantUtilities
 
-+ (id)folderOptionsForModernContext:(id)a3 htmlContext:(id)a4
++ (id)folderOptionsForModernContext:(id)context htmlContext:(id)htmlContext
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] array];
+  contextCopy = context;
+  htmlContextCopy = htmlContext;
+  array = [MEMORY[0x277CBEB18] array];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __69__NotesAssistantUtilities_folderOptionsForModernContext_htmlContext___block_invoke;
   v21[3] = &unk_278194AD8;
-  v22 = v5;
-  v8 = v7;
+  v22 = contextCopy;
+  v8 = array;
   v23 = v8;
-  v9 = v5;
+  v9 = contextCopy;
   [v9 performBlockAndWait:v21];
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __69__NotesAssistantUtilities_folderOptionsForModernContext_htmlContext___block_invoke_2;
   v18 = &unk_278194AD8;
-  v19 = v6;
+  v19 = htmlContextCopy;
   v10 = v8;
   v20 = v10;
-  v11 = v6;
+  v11 = htmlContextCopy;
   [v11 performBlockAndWait:&v15];
   [NotesAssistantFolderOption disambiguateFolderOptions:v10, v15, v16, v17, v18];
   v12 = v20;
@@ -117,11 +117,11 @@ void __69__NotesAssistantUtilities_folderOptionsForModernContext_htmlContext___b
   }
 }
 
-+ (id)folderForGroupName:(id)a3 withNoteContext:(id)a4 htmlNoteContext:(id)a5
++ (id)folderForGroupName:(id)name withNoteContext:(id)context htmlNoteContext:(id)noteContext
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a1 modernFolderForGroupName:v8 withContext:a4];
+  nameCopy = name;
+  noteContextCopy = noteContext;
+  v10 = [self modernFolderForGroupName:nameCopy withContext:context];
   v11 = v10;
   if (v10)
   {
@@ -130,7 +130,7 @@ void __69__NotesAssistantUtilities_folderOptionsForModernContext_htmlContext___b
 
   else
   {
-    v12 = [a1 legacyFolderForGroupName:v8 withContext:v9];
+    v12 = [self legacyFolderForGroupName:nameCopy withContext:noteContextCopy];
   }
 
   v13 = v12;
@@ -138,14 +138,14 @@ void __69__NotesAssistantUtilities_folderOptionsForModernContext_htmlContext___b
   return v13;
 }
 
-+ (id)legacyFolderForGroupName:(id)a3 withContext:(id)a4
++ (id)legacyFolderForGroupName:(id)name withContext:(id)context
 {
   v5 = MEMORY[0x277CBEBC0];
-  v6 = a4;
-  v7 = [a3 vocabularyIdentifier];
-  v8 = [v5 URLWithString:v7];
+  contextCopy = context;
+  vocabularyIdentifier = [name vocabularyIdentifier];
+  v8 = [v5 URLWithString:vocabularyIdentifier];
 
-  v9 = [NotesAssistantUtilities objectForIDURL:v8 inContext:v6];
+  v9 = [NotesAssistantUtilities objectForIDURL:v8 inContext:contextCopy];
 
   objc_opt_class();
   v10 = ICDynamicCast();
@@ -153,14 +153,14 @@ void __69__NotesAssistantUtilities_folderOptionsForModernContext_htmlContext___b
   return v10;
 }
 
-+ (id)modernFolderForGroupName:(id)a3 withContext:(id)a4
++ (id)modernFolderForGroupName:(id)name withContext:(id)context
 {
   v5 = MEMORY[0x277CBEBC0];
-  v6 = a4;
-  v7 = [a3 vocabularyIdentifier];
-  v8 = [v5 URLWithString:v7];
+  contextCopy = context;
+  vocabularyIdentifier = [name vocabularyIdentifier];
+  v8 = [v5 URLWithString:vocabularyIdentifier];
 
-  v9 = [NotesAssistantUtilities objectForIDURL:v8 inContext:v6];
+  v9 = [NotesAssistantUtilities objectForIDURL:v8 inContext:contextCopy];
 
   if (v9)
   {
@@ -176,10 +176,10 @@ void __69__NotesAssistantUtilities_folderOptionsForModernContext_htmlContext___b
   return v10;
 }
 
-+ (id)objectForIDURL:(id)a3 inContext:(id)a4
++ (id)objectForIDURL:(id)l inContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  contextCopy = context;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -190,9 +190,9 @@ void __69__NotesAssistantUtilities_folderOptionsForModernContext_htmlContext___b
   v11[1] = 3221225472;
   v11[2] = __52__NotesAssistantUtilities_objectForIDURL_inContext___block_invoke;
   v11[3] = &unk_2781961E0;
-  v7 = v6;
+  v7 = contextCopy;
   v12 = v7;
-  v8 = v5;
+  v8 = lCopy;
   v13 = v8;
   v14 = &v15;
   [v7 performBlockAndWait:v11];

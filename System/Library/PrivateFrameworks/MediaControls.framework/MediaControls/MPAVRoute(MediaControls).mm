@@ -10,12 +10,12 @@
 
 - (uint64_t)isLocalDeviceOrHeadphone
 {
-  if ([a1 isDeviceSpeakerRoute] & 1) != 0 || (objc_msgSend(a1, "isSplitterCapable"))
+  if ([self isDeviceSpeakerRoute] & 1) != 0 || (objc_msgSend(self, "isSplitterCapable"))
   {
     return 1;
   }
 
-  return [a1 isHeadphonesRoute];
+  return [self isHeadphonesRoute];
 }
 
 - (BOOL)isWiredDevice
@@ -26,8 +26,8 @@
     return 0;
   }
 
-  v2 = [a1 outputDevices];
-  v3 = [v2 msv_firstWhere:&__block_literal_global_9];
+  outputDevices = [self outputDevices];
+  v3 = [outputDevices msv_firstWhere:&__block_literal_global_9];
   v4 = v3 != 0;
 
   return v4;
@@ -35,12 +35,12 @@
 
 - (uint64_t)isGroupSession
 {
-  if ([a1 isDiscoveredGroupSession])
+  if ([self isDiscoveredGroupSession])
   {
     return 1;
   }
 
-  return [a1 isActiveGroupSession];
+  return [self isActiveGroupSession];
 }
 
 - (uint64_t)isActiveGroupSession
@@ -57,9 +57,9 @@
     return 0;
   }
 
-  v3 = [a1 endpointObject];
-  v4 = [v3 groupSessionInfo];
-  v2 = v4 != 0;
+  endpointObject = [self endpointObject];
+  groupSessionInfo = [endpointObject groupSessionInfo];
+  v2 = groupSessionInfo != 0;
 
   return v2;
 }
@@ -69,8 +69,8 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [a1 groupSessionInfo];
-    v3 = [v2 isHosted];
+    groupSessionInfo = [self groupSessionInfo];
+    isHosted = [groupSessionInfo isHosted];
   }
 
   else
@@ -81,12 +81,12 @@
       return 0;
     }
 
-    v2 = [a1 endpointObject];
-    v4 = [v2 groupSessionInfo];
-    v3 = [v4 isHosted];
+    groupSessionInfo = [self endpointObject];
+    v2GroupSessionInfo = [groupSessionInfo groupSessionInfo];
+    isHosted = [v2GroupSessionInfo isHosted];
   }
 
-  return v3;
+  return isHosted;
 }
 
 @end

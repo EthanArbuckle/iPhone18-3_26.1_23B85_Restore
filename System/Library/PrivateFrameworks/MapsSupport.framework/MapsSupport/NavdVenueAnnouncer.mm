@@ -1,33 +1,33 @@
 @interface NavdVenueAnnouncer
 - (NSString)uniqueName;
-- (char)_airportMapItemForEntry:(id)a3 completion:(id)a4;
-- (char)_terminalMapItemForEntry:(id)a3 completion:(id)a4;
-- (id)_shouldTreatArrivalAirport:(id)a3 over:(id)a4;
-- (id)initFromResourceDepot:(id)a3 sharedRegister:(id)a4;
+- (char)_airportMapItemForEntry:(id)entry completion:(id)completion;
+- (char)_terminalMapItemForEntry:(id)entry completion:(id)completion;
+- (id)_shouldTreatArrivalAirport:(id)airport over:(id)over;
+- (id)initFromResourceDepot:(id)depot sharedRegister:(id)register;
 - (void)_cleanup;
-- (void)_fireNotificationIfAtEntry:(id)a3;
-- (void)_logStateForStep:(id)a3 stopReason:(id)a4;
-- (void)_processEntries:(id)a3;
-- (void)_setupOfflineDownloadNotificationCircuitForEntry:(id)a3;
-- (void)_startStreamersWithNotificationName:(id)a3 resourceDepot:(id)a4;
-- (void)_startTrackingLeavingTheAirport:(id)a3;
-- (void)_trackArrivalAirportForEntry:(id)a3;
-- (void)_treatAirportEntry:(id)a3;
-- (void)_treatGateEntry:(id)a3;
-- (void)_treatTerminalEntry:(id)a3;
+- (void)_fireNotificationIfAtEntry:(id)entry;
+- (void)_logStateForStep:(id)step stopReason:(id)reason;
+- (void)_processEntries:(id)entries;
+- (void)_setupOfflineDownloadNotificationCircuitForEntry:(id)entry;
+- (void)_startStreamersWithNotificationName:(id)name resourceDepot:(id)depot;
+- (void)_startTrackingLeavingTheAirport:(id)airport;
+- (void)_trackArrivalAirportForEntry:(id)entry;
+- (void)_treatAirportEntry:(id)entry;
+- (void)_treatGateEntry:(id)entry;
+- (void)_treatTerminalEntry:(id)entry;
 - (void)cleanupAirportArrival;
-- (void)engineRunner:(id)a3 startedBecauseOfTrigger:(id)a4;
-- (void)engineRunner:(id)a3 step:(id)a4 jsonDict:(id)a5;
-- (void)engineRunner:(id)a3 stoppedWithEntries:(id)a4;
+- (void)engineRunner:(id)runner startedBecauseOfTrigger:(id)trigger;
+- (void)engineRunner:(id)runner step:(id)step jsonDict:(id)dict;
+- (void)engineRunner:(id)runner stoppedWithEntries:(id)entries;
 @end
 
 @implementation NavdVenueAnnouncer
 
-- (id)initFromResourceDepot:(id)a3 sharedRegister:(id)a4
+- (id)initFromResourceDepot:(id)depot sharedRegister:(id)register
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  depotCopy = depot;
+  registerCopy = register;
+  if (!depotCopy)
   {
     v68 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v68, OS_LOG_TYPE_FAULT))
@@ -46,9 +46,9 @@
     goto LABEL_17;
   }
 
-  v8 = [v6 oneNetworkRequester];
+  oneNetworkRequester = [depotCopy oneNetworkRequester];
 
-  if (!v8)
+  if (!oneNetworkRequester)
   {
     v68 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v68, OS_LOG_TYPE_FAULT))
@@ -79,7 +79,7 @@
 
 LABEL_17:
 
-    v67 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
@@ -93,9 +93,9 @@ LABEL_17:
     queue = v10->_queue;
     v10->_queue = v12;
 
-    v14 = [v6 oneNetworkRequester];
+    oneNetworkRequester2 = [depotCopy oneNetworkRequester];
     network = v10->_network;
-    v10->_network = v14;
+    v10->_network = oneNetworkRequester2;
 
     v16 = objc_alloc_init(MapsSuggestionsShortcutFilter);
     v70 = [NSSet setWithObjects:v16, 0];
@@ -104,7 +104,7 @@ LABEL_17:
     v18 = [NSSet setWithObjects:v17, 0];
 
     v19 = +[MapsSuggestionsEngineBuilder forDevice];
-    v20 = [v19 withResourceDepot:v6];
+    v20 = [v19 withResourceDepot:depotCopy];
 
     v21 = +[MapsSuggestionsNavdLBALocationManager sharedLocationManager];
     v22 = [v20 withLocationUpdater:v21];
@@ -113,7 +113,7 @@ LABEL_17:
 
     v24 = [v23 withoutPreFilters:v18];
 
-    v25 = [v24 withoutTracker];
+    withoutTracker = [v24 withoutTracker];
 
     v26 = [MapsSuggestionsEngineRunner alloc];
     v27 = GEOConfigNavdVenueAnnouncerMinRunTime[1];
@@ -131,12 +131,12 @@ LABEL_17:
     v39 = GEOConfigNavdVenueAnnouncerSleepTimeLeeway[1];
     GEOConfigGetDouble();
     v40 = GEOConfigNavdVenueAnnouncerEngineRunnerMaxEntries[1];
-    v42 = [v26 initWithEngineBuilder:v25 name:@"NavdVenueAnnouncerRunner" minRunTime:GEOConfigGetInteger() maxRunTime:1 minSleepTime:v29 runTimeLeeway:v32 sleepTimeLeeway:v35 maxEntries:v38 nilledWhenAsleep:v41];
+    v42 = [v26 initWithEngineBuilder:withoutTracker name:@"NavdVenueAnnouncerRunner" minRunTime:GEOConfigGetInteger() maxRunTime:1 minSleepTime:v29 runTimeLeeway:v32 sleepTimeLeeway:v35 maxEntries:v38 nilledWhenAsleep:v41];
     engineRunner = v10->_engineRunner;
     v10->_engineRunner = v42;
 
     [(MapsSuggestionsEngineRunner *)v10->_engineRunner registerObserver:v10];
-    objc_storeStrong(&v10->_lastEngineRunnerState, a4);
+    objc_storeStrong(&v10->_lastEngineRunnerState, register);
     v44 = objc_alloc_init(MapsSuggestionsAirportArrivalBudget);
     v45 = *&v10->_state.triggerLocation.currentSession;
     *&v10->_state.triggerLocation.currentSession = v44;
@@ -161,8 +161,8 @@ LABEL_17:
     v55 = v10->_engineRunner;
     v56 = v10->_lastEngineRunnerState;
     v57 = +[MapsSuggestionsSiri isEnabledCondition];
-    v58 = [v57 uniqueName];
-    v59 = [(NSDictionary *)v56 objectForKeyedSubscript:v58];
+    uniqueName = [v57 uniqueName];
+    v59 = [(NSDictionary *)v56 objectForKeyedSubscript:uniqueName];
     [(MapsSuggestionsEngineRunner *)v55 addCondition:v59];
 
     v60 = v10->_engineRunner;
@@ -176,7 +176,7 @@ LABEL_17:
     v65 = [[MapsSuggestionsBlockFilter alloc] initWithBlock:&stru_1000679E8];
     [(MapsSuggestionsEngineRunner *)v10->_engineRunner addPostFilter:v65];
     [(MapsSuggestionsEngineRunner *)v10->_engineRunner runASAP];
-    [(NavdVenueAnnouncer *)v10 _startStreamersWithNotificationName:@"AirportAnnouncerNotification" resourceDepot:v6];
+    [(NavdVenueAnnouncer *)v10 _startStreamersWithNotificationName:@"AirportAnnouncerNotification" resourceDepot:depotCopy];
     v66 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v66, OS_LOG_TYPE_DEBUG))
     {
@@ -188,16 +188,16 @@ LABEL_17:
   }
 
   self = v10;
-  v67 = self;
+  selfCopy = self;
 LABEL_18:
 
-  return v67;
+  return selfCopy;
 }
 
-- (void)_startStreamersWithNotificationName:(id)a3 resourceDepot:(id)a4
+- (void)_startStreamersWithNotificationName:(id)name resourceDepot:(id)depot
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  depotCopy = depot;
   objc_initWeak(&location, self);
   v8 = [MapsSuggestionsBlockAction alloc];
   v28[0] = _NSConcreteStackBlock;
@@ -205,9 +205,9 @@ LABEL_18:
   v28[2] = sub_10003804C;
   v28[3] = &unk_100065F88;
   objc_copyWeak(&v31, &location);
-  v9 = v7;
+  v9 = depotCopy;
   v29 = v9;
-  v10 = v6;
+  v10 = nameCopy;
   v30 = v10;
   v11 = [v8 initWithName:@"startStreamerAction" block:v28];
   if (!self->_state.locations)
@@ -260,9 +260,9 @@ LABEL_18:
   }
 }
 
-- (void)engineRunner:(id)a3 stoppedWithEntries:(id)a4
+- (void)engineRunner:(id)runner stoppedWithEntries:(id)entries
 {
-  v5 = a4;
+  entriesCopy = entries;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -270,17 +270,17 @@ LABEL_18:
   block[2] = sub_100038400;
   block[3] = &unk_1000655F8;
   objc_copyWeak(&v10, &location);
-  v9 = v5;
-  v7 = v5;
+  v9 = entriesCopy;
+  v7 = entriesCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 }
 
-- (void)_processEntries:(id)a3
+- (void)_processEntries:(id)entries
 {
-  v52 = a3;
+  entriesCopy = entries;
   v51 = MapsSuggestionsCurrentBestLocation();
   if (v51)
   {
@@ -318,7 +318,7 @@ LABEL_18:
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    obj = v52;
+    obj = entriesCopy;
     v13 = [obj countByEnumeratingWithState:&v57 objects:v61 count:16];
     if (!v13)
     {
@@ -360,7 +360,7 @@ LABEL_18:
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "receiving Flight entry", buf, 2u);
         }
 
-        v19 = [v16 geoMapItem];
+        geoMapItem = [v16 geoMapItem];
         IsVenue = MapsSuggestionsMapItemIsVenue();
 
         if (IsVenue)
@@ -448,7 +448,7 @@ LABEL_46:
         if (v54)
         {
           [(NavdVenueAnnouncer *)self _logStateForStep:@"entriesProcessed" stopReason:@"Found a flight at a Venue!"];
-          v45 = [v54 geoMapItem];
+          geoMapItem2 = [v54 geoMapItem];
           IsAirport = MapsSuggestionsMapItemIsAirport();
 
           if (IsAirport)
@@ -458,7 +458,7 @@ LABEL_46:
 
           else
           {
-            v47 = [v54 geoMapItem];
+            geoMapItem3 = [v54 geoMapItem];
             IsTerminal = MapsSuggestionsMapItemIsTerminal();
 
             if (IsTerminal)
@@ -468,7 +468,7 @@ LABEL_46:
 
             else
             {
-              v49 = [v54 geoMapItem];
+              geoMapItem4 = [v54 geoMapItem];
               IsGate = MapsSuggestionsMapItemIsGate();
 
               if (IsGate)
@@ -518,32 +518,32 @@ LABEL_46:
 LABEL_59:
 }
 
-- (id)_shouldTreatArrivalAirport:(id)a3 over:(id)a4
+- (id)_shouldTreatArrivalAirport:(id)airport over:(id)over
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 stringForKey:@"MapsSuggestionsFlightArrivalAirportCodeKey"];
+  airportCopy = airport;
+  overCopy = over;
+  v8 = [airportCopy stringForKey:@"MapsSuggestionsFlightArrivalAirportCodeKey"];
 
   if (v8)
   {
     if ([*&self->_state.triggerLocation.currentSession hasBudgetLeft])
     {
-      v9 = [v7 dateForKey:@"MapsSuggestionsFlightDepartureTimeKey"];
-      if (!v7)
+      v9 = [overCopy dateForKey:@"MapsSuggestionsFlightDepartureTimeKey"];
+      if (!overCopy)
       {
-        v17 = v6;
+        v17 = airportCopy;
         goto LABEL_16;
       }
 
-      v10 = [v6 dateForKey:@"MapsSuggestionsFlightDepartureTimeKey"];
+      v10 = [airportCopy dateForKey:@"MapsSuggestionsFlightDepartureTimeKey"];
       v11 = [v9 compare:v10];
       if (v11 == -1)
       {
-        v21 = [v7 stringForKey:@"MapsSuggestionsFlightDepartureAirportCodeKey"];
-        v22 = [v6 stringForKey:@"MapsSuggestionsFlightArrivalAirportCodeKey"];
+        v21 = [overCopy stringForKey:@"MapsSuggestionsFlightDepartureAirportCodeKey"];
+        v22 = [airportCopy stringForKey:@"MapsSuggestionsFlightArrivalAirportCodeKey"];
         v23 = [v21 isEqualToString:v22];
 
-        v12 = v7;
+        v12 = overCopy;
         if (v23)
         {
           goto LABEL_8;
@@ -552,17 +552,17 @@ LABEL_59:
 
       else
       {
-        v12 = v7;
+        v12 = overCopy;
         if (v11 != 1)
         {
           goto LABEL_8;
         }
 
-        v13 = [v7 stringForKey:@"MapsSuggestionsFlightArrivalAirportCodeKey"];
-        v14 = [v6 stringForKey:@"MapsSuggestionsFlightDepartureAirportCodeKey"];
+        v13 = [overCopy stringForKey:@"MapsSuggestionsFlightArrivalAirportCodeKey"];
+        v14 = [airportCopy stringForKey:@"MapsSuggestionsFlightDepartureAirportCodeKey"];
         v15 = [v13 isEqualToString:v14];
 
-        v12 = v7;
+        v12 = overCopy;
         if ((v15 & 1) == 0)
         {
           goto LABEL_8;
@@ -572,7 +572,7 @@ LABEL_59:
       routeCoordinate = self->_state.routeCoordinate;
       self->_state.routeCoordinate = 0;
 
-      v12 = v6;
+      v12 = airportCopy;
 LABEL_8:
       v17 = v12;
 
@@ -599,7 +599,7 @@ LABEL_16:
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "No arrival airport, sticking with what we have", buf, 2u);
     }
 
-    v17 = v7;
+    v17 = overCopy;
   }
 
 LABEL_17:
@@ -607,23 +607,23 @@ LABEL_17:
   return v17;
 }
 
-- (void)_startTrackingLeavingTheAirport:(id)a3
+- (void)_startTrackingLeavingTheAirport:(id)airport
 {
-  v4 = a3;
-  v5 = [v4 numberForKey:@"MapsSuggestionsFlightArrivalAirportLatitudeKey"];
+  airportCopy = airport;
+  v5 = [airportCopy numberForKey:@"MapsSuggestionsFlightArrivalAirportLatitudeKey"];
   [v5 doubleValue];
   v7 = v6;
 
-  v8 = [v4 numberForKey:@"MapsSuggestionsFlightArrivalAirportLongitudeKey"];
+  v8 = [airportCopy numberForKey:@"MapsSuggestionsFlightArrivalAirportLongitudeKey"];
   [v8 doubleValue];
   v10 = v9;
 
   v11 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [v4 departingAirportCode];
+    departingAirportCode = [airportCopy departingAirportCode];
     *buf = 138412290;
-    v35 = v12;
+    v35 = departingAirportCode;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "Start tracking Leaving Airport:%@", buf, 0xCu);
   }
 
@@ -645,7 +645,7 @@ LABEL_17:
   v30[2] = sub_10003930C;
   v30[3] = &unk_100065FB0;
   objc_copyWeak(&v32, buf);
-  v24 = v4;
+  v24 = airportCopy;
   v31 = v24;
   v25 = [v23 initWithName:@"departureAction" block:v30];
   v26 = [MapsSuggestionsActionCircuit alloc];
@@ -674,9 +674,9 @@ LABEL_17:
   *&self->_state.skipScoring = 0;
 }
 
-- (void)_setupOfflineDownloadNotificationCircuitForEntry:(id)a3
+- (void)_setupOfflineDownloadNotificationCircuitForEntry:(id)entry
 {
-  v41 = a3;
+  entryCopy = entry;
   if (self->_state.locationHistory)
   {
     objc_initWeak(location, self);
@@ -687,7 +687,7 @@ LABEL_17:
     v42[2] = sub_100039B00;
     v42[3] = &unk_100065548;
     objc_copyWeak(&v43, location);
-    v40 = [(MapsSuggestionsOfflineDownloadNotificationAction *)v4 initWithEntry:v41 budget:v5 completion:v42];
+    v40 = [(MapsSuggestionsOfflineDownloadNotificationAction *)v4 initWithEntry:entryCopy budget:v5 completion:v42];
     lastEngineRunnerState = self->_lastEngineRunnerState;
     v37 = +[MapsSuggestionsMapsInstalledTriggeringToggle description];
     v7 = [(NSDictionary *)lastEngineRunnerState objectForKeyedSubscript:?];
@@ -722,8 +722,8 @@ LABEL_17:
     v44[1] = v25;
     v26 = self->_lastEngineRunnerState;
     v27 = +[MapsSuggestionsSiri isEnabledCondition];
-    v28 = [v27 uniqueName];
-    v29 = [(NSDictionary *)v26 objectForKeyedSubscript:v28];
+    uniqueName = [v27 uniqueName];
+    v29 = [(NSDictionary *)v26 objectForKeyedSubscript:uniqueName];
     v44[2] = v29;
     v30 = self->_lastEngineRunnerState;
     v31 = +[MapsSuggestionsFirstUnlockTrigger description];
@@ -757,23 +757,23 @@ LABEL_17:
   }
 }
 
-- (void)_trackArrivalAirportForEntry:(id)a3
+- (void)_trackArrivalAirportForEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [v4 numberForKey:@"MapsSuggestionsFlightArrivalAirportLatitudeKey"];
+  entryCopy = entry;
+  v5 = [entryCopy numberForKey:@"MapsSuggestionsFlightArrivalAirportLatitudeKey"];
   [v5 doubleValue];
   v7 = v6;
 
-  v8 = [v4 numberForKey:@"MapsSuggestionsFlightArrivalAirportLongitudeKey"];
+  v8 = [entryCopy numberForKey:@"MapsSuggestionsFlightArrivalAirportLongitudeKey"];
   [v8 doubleValue];
   v10 = v9;
 
   v11 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [v4 arrivingAirportCode];
+    arrivingAirportCode = [entryCopy arrivingAirportCode];
     *buf = 138412290;
-    v48 = v12;
+    v48 = arrivingAirportCode;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "Start tracking arriving at Airport:%@", buf, 0xCu);
   }
 
@@ -801,7 +801,7 @@ LABEL_17:
   v43[2] = sub_10003A138;
   v43[3] = &unk_100065FB0;
   objc_copyWeak(&v45, buf);
-  v25 = v4;
+  v25 = entryCopy;
   v44 = v25;
   v26 = v43;
   v27 = [[MapsSuggestionsBlockAction alloc] initWithName:@"NavdVenueAnnouncerAirportArrivalAction" block:v26];
@@ -835,23 +835,23 @@ LABEL_17:
   objc_destroyWeak(buf);
 }
 
-- (void)_treatAirportEntry:(id)a3
+- (void)_treatAirportEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   [(NavdVenueAnnouncer *)self _logStateForStep:@"got Airport" stopReason:0];
-  v5 = [v4 geoMapItem];
-  v6 = [v5 _browseCategories];
-  v7 = [v6 count];
+  geoMapItem = [entryCopy geoMapItem];
+  _browseCategories = [geoMapItem _browseCategories];
+  v7 = [_browseCategories count];
 
   if (v7)
   {
-    [(NavdVenueAnnouncer *)self _fireNotificationIfAtEntry:v4];
+    [(NavdVenueAnnouncer *)self _fireNotificationIfAtEntry:entryCopy];
   }
 
   else
   {
     [(NavdVenueAnnouncer *)self _logStateForStep:@"Airport has no browse categories" stopReason:0];
-    v8 = [v4 stringForKey:@"MapsSuggestionsFlightTerminalSearchKey"];
+    v8 = [entryCopy stringForKey:@"MapsSuggestionsFlightTerminalSearchKey"];
 
     if (v8)
     {
@@ -861,8 +861,8 @@ LABEL_17:
       v9[2] = sub_10003A69C;
       v9[3] = &unk_100065670;
       objc_copyWeak(&v12, &location);
-      v10 = v4;
-      v11 = self;
+      v10 = entryCopy;
+      selfCopy = self;
       [(NavdVenueAnnouncer *)self _terminalMapItemForEntry:v10 completion:v9];
 
       objc_destroyWeak(&v12);
@@ -876,9 +876,9 @@ LABEL_17:
   }
 }
 
-- (void)_treatTerminalEntry:(id)a3
+- (void)_treatTerminalEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   [(NavdVenueAnnouncer *)self _logStateForStep:@"got Terminal" stopReason:0];
   objc_initWeak(&location, self);
   v6[0] = _NSConcreteStackBlock;
@@ -886,7 +886,7 @@ LABEL_17:
   v6[2] = sub_10003A980;
   v6[3] = &unk_100067A10;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = entryCopy;
   v7 = v5;
   [(NavdVenueAnnouncer *)self _airportMapItemForEntry:v5 completion:v6];
 
@@ -894,9 +894,9 @@ LABEL_17:
   objc_destroyWeak(&location);
 }
 
-- (void)_treatGateEntry:(id)a3
+- (void)_treatGateEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   [(NavdVenueAnnouncer *)self _logStateForStep:@"got Gate" stopReason:0];
   objc_initWeak(&location, self);
   v6[0] = _NSConcreteStackBlock;
@@ -904,7 +904,7 @@ LABEL_17:
   v6[2] = sub_10003AD30;
   v6[3] = &unk_100067A10;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = entryCopy;
   v7 = v5;
   [(NavdVenueAnnouncer *)self _airportMapItemForEntry:v5 completion:v6];
 
@@ -912,12 +912,12 @@ LABEL_17:
   objc_destroyWeak(&location);
 }
 
-- (char)_airportMapItemForEntry:(id)a3 completion:(id)a4
+- (char)_airportMapItemForEntry:(id)entry completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  entryCopy = entry;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [v6 stringForKey:@"MapsSuggestionsFlightDepartureAirportCodeKey"];
+  v8 = [entryCopy stringForKey:@"MapsSuggestionsFlightDepartureAirportCodeKey"];
   v9 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -927,7 +927,7 @@ LABEL_17:
   }
 
   network = self->_network;
-  v12 = v7;
+  v12 = completionCopy;
   objc_copyWeak(&v13, &location);
   LOBYTE(network) = MapsSuggestionsSearchAirport();
   objc_destroyWeak(&v13);
@@ -936,12 +936,12 @@ LABEL_17:
   return network;
 }
 
-- (char)_terminalMapItemForEntry:(id)a3 completion:(id)a4
+- (char)_terminalMapItemForEntry:(id)entry completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  entryCopy = entry;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [v6 stringForKey:@"MapsSuggestionsFlightTerminalSearchKey"];
+  v8 = [entryCopy stringForKey:@"MapsSuggestionsFlightTerminalSearchKey"];
   v9 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -951,7 +951,7 @@ LABEL_17:
   }
 
   network = self->_network;
-  v12 = v7;
+  v12 = completionCopy;
   objc_copyWeak(&v13, &location);
   LOBYTE(network) = MapsSuggestionsSearchTerminal();
   objc_destroyWeak(&v13);
@@ -960,12 +960,12 @@ LABEL_17:
   return network;
 }
 
-- (void)_fireNotificationIfAtEntry:(id)a3
+- (void)_fireNotificationIfAtEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [v4 geoMapItem];
+  entryCopy = entry;
+  geoMapItem = [entryCopy geoMapItem];
 
-  if (!v5)
+  if (!geoMapItem)
   {
     v76 = [[NSString alloc] initWithFormat:@"There is no mapItem?!"];
     v77 = GEOFindOrCreateLog();
@@ -979,14 +979,14 @@ LABEL_17:
     goto LABEL_31;
   }
 
-  v6 = [v4 geoMapItem];
+  geoMapItem2 = [entryCopy geoMapItem];
   IsVenue = MapsSuggestionsMapItemIsVenue();
 
   if ((IsVenue & 1) == 0)
   {
     v78 = [NSString alloc];
-    v79 = [v4 geoMapItem];
-    v76 = [v78 initWithFormat:@"'%@' is not a not an Venue!", v79];
+    geoMapItem3 = [entryCopy geoMapItem];
+    v76 = [v78 initWithFormat:@"'%@' is not a not an Venue!", geoMapItem3];
 
     v77 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v77, OS_LOG_TYPE_ERROR))
@@ -1004,17 +1004,17 @@ LABEL_61:
     goto LABEL_62;
   }
 
-  v8 = [v4 geoMapItem];
-  v9 = [v8 _browseCategories];
-  v10 = [v9 count];
+  geoMapItem4 = [entryCopy geoMapItem];
+  _browseCategories = [geoMapItem4 _browseCategories];
+  v10 = [_browseCategories count];
 
   if (v10)
   {
-    v11 = [v4 stringForKey:@"MapsSuggestionsFlightDepartureAirportCodeKey"];
+    v11 = [entryCopy stringForKey:@"MapsSuggestionsFlightDepartureAirportCodeKey"];
 
     if (v11)
     {
-      v12 = [v4 geoMapItem];
+      geoMapItem5 = [entryCopy geoMapItem];
       v13 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
@@ -1025,44 +1025,44 @@ LABEL_61:
       v14 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
-        v15 = [v12 _venueInfo];
-        v16 = [v15 venueIdentifier];
+        _venueInfo = [geoMapItem5 _venueInfo];
+        venueIdentifier = [_venueInfo venueIdentifier];
         *buf = 138412290;
-        v137 = v16;
+        v137 = venueIdentifier;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "VBB:VenueIdentifier: %@", buf, 0xCu);
       }
 
       v17 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
-        v18 = [v12 name];
+        name = [geoMapItem5 name];
         *buf = 138412290;
-        v137 = v18;
+        v137 = name;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "VBB:Venue name: %@", buf, 0xCu);
       }
 
-      v19 = [v12 geoFenceMapRegion];
-      if ([v19 hasEastLng])
+      geoFenceMapRegion = [geoMapItem5 geoFenceMapRegion];
+      if ([geoFenceMapRegion hasEastLng])
       {
-        v20 = [v12 geoFenceMapRegion];
-        if ([v20 hasWestLng])
+        geoFenceMapRegion2 = [geoMapItem5 geoFenceMapRegion];
+        if ([geoFenceMapRegion2 hasWestLng])
         {
-          v21 = [v12 geoFenceMapRegion];
-          if ([v21 hasNorthLat])
+          geoFenceMapRegion3 = [geoMapItem5 geoFenceMapRegion];
+          if ([geoFenceMapRegion3 hasNorthLat])
           {
-            v22 = [v12 geoFenceMapRegion];
-            v23 = [v22 hasSouthLat];
+            geoFenceMapRegion4 = [geoMapItem5 geoFenceMapRegion];
+            hasSouthLat = [geoFenceMapRegion4 hasSouthLat];
 
-            if (v23)
+            if (hasSouthLat)
             {
               v24 = GEOFindOrCreateLog();
               if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
               {
-                v25 = [v12 geoFenceMapRegion];
-                [v25 centerLat];
+                geoFenceMapRegion5 = [geoMapItem5 geoFenceMapRegion];
+                [geoFenceMapRegion5 centerLat];
                 v27 = v26;
-                v28 = [v12 geoFenceMapRegion];
-                [v28 centerLng];
+                geoFenceMapRegion6 = [geoMapItem5 geoFenceMapRegion];
+                [geoFenceMapRegion6 centerLng];
                 *buf = 134218240;
                 v137 = v27;
                 v138 = 2048;
@@ -1073,11 +1073,11 @@ LABEL_61:
               v30 = GEOFindOrCreateLog();
               if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
               {
-                v31 = [v12 geoFenceMapRegion];
-                [v31 northLat];
+                geoFenceMapRegion7 = [geoMapItem5 geoFenceMapRegion];
+                [geoFenceMapRegion7 northLat];
                 v33 = v32;
-                v34 = [v12 geoFenceMapRegion];
-                [v34 westLng];
+                geoFenceMapRegion8 = [geoMapItem5 geoFenceMapRegion];
+                [geoFenceMapRegion8 westLng];
                 *buf = 134218240;
                 v137 = v33;
                 v138 = 2048;
@@ -1088,11 +1088,11 @@ LABEL_61:
               v36 = GEOFindOrCreateLog();
               if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
               {
-                v37 = [v12 geoFenceMapRegion];
-                [v37 northLat];
+                geoFenceMapRegion9 = [geoMapItem5 geoFenceMapRegion];
+                [geoFenceMapRegion9 northLat];
                 v39 = v38;
-                v40 = [v12 geoFenceMapRegion];
-                [v40 eastLng];
+                geoFenceMapRegion10 = [geoMapItem5 geoFenceMapRegion];
+                [geoFenceMapRegion10 eastLng];
                 *buf = 134218240;
                 v137 = v39;
                 v138 = 2048;
@@ -1103,11 +1103,11 @@ LABEL_61:
               v42 = GEOFindOrCreateLog();
               if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
               {
-                v43 = [v12 geoFenceMapRegion];
-                [v43 southLat];
+                geoFenceMapRegion11 = [geoMapItem5 geoFenceMapRegion];
+                [geoFenceMapRegion11 southLat];
                 v45 = v44;
-                v46 = [v12 geoFenceMapRegion];
-                [v46 westLng];
+                geoFenceMapRegion12 = [geoMapItem5 geoFenceMapRegion];
+                [geoFenceMapRegion12 westLng];
                 *buf = 134218240;
                 v137 = v45;
                 v138 = 2048;
@@ -1118,11 +1118,11 @@ LABEL_61:
               v48 = GEOFindOrCreateLog();
               if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
               {
-                v49 = [v12 geoFenceMapRegion];
-                [v49 southLat];
+                geoFenceMapRegion13 = [geoMapItem5 geoFenceMapRegion];
+                [geoFenceMapRegion13 southLat];
                 v51 = v50;
-                v52 = [v12 geoFenceMapRegion];
-                [v52 eastLng];
+                geoFenceMapRegion14 = [geoMapItem5 geoFenceMapRegion];
+                [geoFenceMapRegion14 eastLng];
                 *buf = 134218240;
                 v137 = v51;
                 v138 = 2048;
@@ -1133,29 +1133,29 @@ LABEL_61:
               v54 = GEOFindOrCreateLog();
               if (os_log_type_enabled(v54, OS_LOG_TYPE_DEBUG))
               {
-                v135 = [v12 geoFenceMapRegion];
-                [v135 northLat];
+                geoFenceMapRegion15 = [geoMapItem5 geoFenceMapRegion];
+                [geoFenceMapRegion15 northLat];
                 v56 = v55;
-                v134 = [v12 geoFenceMapRegion];
-                [v134 westLng];
+                geoFenceMapRegion16 = [geoMapItem5 geoFenceMapRegion];
+                [geoFenceMapRegion16 westLng];
                 v58 = v57;
-                v133 = [v12 geoFenceMapRegion];
-                [v133 northLat];
+                geoFenceMapRegion17 = [geoMapItem5 geoFenceMapRegion];
+                [geoFenceMapRegion17 northLat];
                 v60 = v59;
-                v61 = [v12 geoFenceMapRegion];
-                [v61 eastLng];
+                geoFenceMapRegion18 = [geoMapItem5 geoFenceMapRegion];
+                [geoFenceMapRegion18 eastLng];
                 v63 = v62;
-                v64 = [v12 geoFenceMapRegion];
-                [v64 southLat];
+                geoFenceMapRegion19 = [geoMapItem5 geoFenceMapRegion];
+                [geoFenceMapRegion19 southLat];
                 v66 = v65;
-                v67 = [v12 geoFenceMapRegion];
-                [v67 eastLng];
+                geoFenceMapRegion20 = [geoMapItem5 geoFenceMapRegion];
+                [geoFenceMapRegion20 eastLng];
                 v69 = v68;
-                v70 = [v12 geoFenceMapRegion];
-                [v70 southLat];
+                geoFenceMapRegion21 = [geoMapItem5 geoFenceMapRegion];
+                [geoFenceMapRegion21 southLat];
                 v72 = v71;
-                v73 = [v12 geoFenceMapRegion];
-                [v73 westLng];
+                geoFenceMapRegion22 = [geoMapItem5 geoFenceMapRegion];
+                [geoFenceMapRegion22 westLng];
                 *buf = 134219776;
                 v137 = v56;
                 v138 = 2048;
@@ -1192,43 +1192,43 @@ LABEL_46:
               [v76 coordinate];
               v85 = v84;
               [(NavdVenueAnnouncer *)self _logStateForStep:@"checkLocation" stopReason:0];
-              v86 = [v4 geoMapItem];
-              v87 = [v86 geoFenceMapRegion];
-              v88 = [v87 containsCoordinate:{v83, v85}];
+              geoMapItem6 = [entryCopy geoMapItem];
+              geoFenceMapRegion23 = [geoMapItem6 geoFenceMapRegion];
+              v88 = [geoFenceMapRegion23 containsCoordinate:{v83, v85}];
 
               if (v88)
               {
-                v89 = self;
-                objc_sync_enter(v89);
-                [(NavdVenueAnnouncer *)v89 _logStateForStep:@"showNotification" stopReason:0];
-                v90 = [v4 geoMapItem];
-                v91 = [v90 _venueInfo];
-                v92 = [v91 venueIdentifier];
-                v89->_state.queue._innerQueue = [v92 venueID];
+                selfCopy = self;
+                objc_sync_enter(selfCopy);
+                [(NavdVenueAnnouncer *)selfCopy _logStateForStep:@"showNotification" stopReason:0];
+                geoMapItem7 = [entryCopy geoMapItem];
+                _venueInfo2 = [geoMapItem7 _venueInfo];
+                venueIdentifier2 = [_venueInfo2 venueIdentifier];
+                selfCopy->_state.queue._innerQueue = [venueIdentifier2 venueID];
 
                 v93 = [MapsSuggestionsBudget alloc];
-                v94 = [v4 stringForKey:@"MapsSuggestionsFlightDepartureAirportCodeKey"];
-                v95 = [v93 initWithDelegate:v89 name:v94];
-                v96 = *&v89->_state.active;
-                *&v89->_state.active = v95;
+                v94 = [entryCopy stringForKey:@"MapsSuggestionsFlightDepartureAirportCodeKey"];
+                v95 = [v93 initWithDelegate:selfCopy name:v94];
+                v96 = *&selfCopy->_state.active;
+                *&selfCopy->_state.active = v95;
 
-                v97 = *&v89->_state.active;
+                v97 = *&selfCopy->_state.active;
                 v98 = GEOConfigNavdVenueAnnouncerNotificationFrequencyShortWindow[1];
                 Integer = GEOConfigGetInteger();
                 v100 = GEOConfigNavdVenueAnnouncerNotificationFrequencyShortWindowDuration[1];
                 GEOConfigGetDouble();
                 [v97 addRollingWindowOfCount:Integer perTimeInterval:@"shortWindow" name:?];
-                v101 = *&v89->_state.active;
+                v101 = *&selfCopy->_state.active;
                 v102 = GEOConfigNavdVenueAnnouncerNotificationFrequencyLongWindow[1];
                 v103 = GEOConfigGetInteger();
                 v104 = GEOConfigNavdVenueAnnouncerNotificationFrequencyLongWindowDuration[1];
                 GEOConfigGetDouble();
                 [v101 addRollingWindowOfCount:v103 perTimeInterval:@"longWindow" name:?];
-                if ([*&v89->_state.active hasBudgetLeft])
+                if ([*&selfCopy->_state.active hasBudgetLeft])
                 {
-                  v105 = [v4 geoMapItem];
-                  v106 = [v4 stringForKey:@"MapsSuggestionsFlightDepartureAirportCodeKey"];
-                  [NavdVenueNotification showWithMapItem:v105 airport:v106];
+                  geoMapItem8 = [entryCopy geoMapItem];
+                  v106 = [entryCopy stringForKey:@"MapsSuggestionsFlightDepartureAirportCodeKey"];
+                  [NavdVenueNotification showWithMapItem:geoMapItem8 airport:v106];
 
                   v107 = GEOFindOrCreateLog();
                   if (os_log_type_enabled(v107, OS_LOG_TYPE_DEBUG))
@@ -1237,7 +1237,7 @@ LABEL_46:
                     _os_log_impl(&_mh_execute_header, v107, OS_LOG_TYPE_DEBUG, "Spending Bugdet", buf, 2u);
                   }
 
-                  [*&v89->_state.active spendNow];
+                  [*&selfCopy->_state.active spendNow];
                 }
 
                 else
@@ -1251,22 +1251,22 @@ LABEL_46:
                 }
 
                 v128 = [MapsSuggestionsOutsideOfMapItemFenceCondition alloc];
-                v129 = [v4 geoMapItem];
+                geoMapItem9 = [entryCopy geoMapItem];
                 v130 = GEOConfigNavdVenueAnnouncerDepartureRadius[1];
                 GEOConfigGetDouble();
-                v131 = [v128 initWithMapItem:v129 radius:?];
-                startTime = v89->_state.startTime;
-                v89->_state.startTime = v131;
+                v131 = [v128 initWithMapItem:geoMapItem9 radius:?];
+                startTime = selfCopy->_state.startTime;
+                selfCopy->_state.startTime = v131;
 
-                [(MapsSuggestionsEngineRunner *)v89->_engineRunner addCondition:v89->_state.startTime];
-                [(NavdRouteGeniusRoute *)v89->_state.route stop];
-                objc_sync_exit(v89);
+                [(MapsSuggestionsEngineRunner *)selfCopy->_engineRunner addCondition:selfCopy->_state.startTime];
+                [(NavdRouteGeniusRoute *)selfCopy->_state.route stop];
+                objc_sync_exit(selfCopy);
               }
 
               else
               {
-                v108 = [v4 geoMapItem];
-                v89 = MapsSuggestionsLocationForMapItem();
+                geoMapItem10 = [entryCopy geoMapItem];
+                selfCopy = MapsSuggestionsLocationForMapItem();
 
                 if (!self->_state.routes)
                 {
@@ -1292,12 +1292,12 @@ LABEL_46:
                   route = self->_state.route;
                 }
 
-                [v76 distanceFromLocation:v89];
+                [v76 distanceFromLocation:selfCopy];
                 v119 = v118;
                 v120 = GEOConfigNavdVenueAnnouncerSpeed[1];
                 GEOConfigGetDouble();
                 v122 = v121;
-                [v76 distanceFromLocation:v89];
+                [v76 distanceFromLocation:selfCopy];
                 v124 = v123;
                 v125 = GEOConfigNavdVenueAnnouncerDistanceFraction[1];
                 GEOConfigGetDouble();
@@ -1342,42 +1342,42 @@ LABEL_41:
 LABEL_62:
 }
 
-- (void)engineRunner:(id)a3 startedBecauseOfTrigger:(id)a4
+- (void)engineRunner:(id)runner startedBecauseOfTrigger:(id)trigger
 {
-  v5 = a4;
+  triggerCopy = trigger;
   [(NavdRouteGeniusRoute *)self->_state.route stop];
   v6 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [v5 uniqueName];
+    uniqueName = [triggerCopy uniqueName];
     v8 = 138412290;
-    v9 = v7;
+    v9 = uniqueName;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "Triggered by %@", &v8, 0xCu);
   }
 
   [(NavdVenueAnnouncer *)self _logStateForStep:@"didStart" stopReason:0];
 }
 
-- (void)engineRunner:(id)a3 step:(id)a4 jsonDict:(id)a5
+- (void)engineRunner:(id)runner step:(id)step jsonDict:(id)dict
 {
-  v11 = a4;
-  v7 = a5;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [v7 copy];
-  name = v8->_state.queue._name;
-  v8->_state.queue._name = v9;
+  stepCopy = step;
+  dictCopy = dict;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [dictCopy copy];
+  name = selfCopy->_state.queue._name;
+  selfCopy->_state.queue._name = v9;
 
-  objc_sync_exit(v8);
-  [(NavdVenueAnnouncer *)v8 _logStateForStep:v11];
+  objc_sync_exit(selfCopy);
+  [(NavdVenueAnnouncer *)selfCopy _logStateForStep:stepCopy];
 }
 
-- (void)_logStateForStep:(id)a3 stopReason:(id)a4
+- (void)_logStateForStep:(id)step stopReason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
+  stepCopy = step;
+  reasonCopy = reason;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v20[0] = @"step";
   v9 = MSg::jsonFor();
   v21[0] = v9;
@@ -1385,12 +1385,12 @@ LABEL_62:
   v10 = MSg::jsonFor();
   v21[1] = v10;
   v20[2] = @"engineRunner";
-  name = v8->_state.queue._name;
+  name = selfCopy->_state.queue._name;
   v12 = MSg::jsonFor();
   v21[2] = v12;
   v20[3] = @"feature";
   v22 = @"displayedMapItem";
-  v13 = [NSNumber numberWithUnsignedLongLong:v8->_state.queue._innerQueue];
+  v13 = [NSNumber numberWithUnsignedLongLong:selfCopy->_state.queue._innerQueue];
   v14 = MSg::jsonFor();
   *v19 = v14;
   v15 = [NSDictionary dictionaryWithObjects:v19 forKeys:&v22 count:1];
@@ -1407,7 +1407,7 @@ LABEL_62:
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "EVAL{Welcome}=%@", v19, 0xCu);
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSString)uniqueName

@@ -1,56 +1,56 @@
 @interface FMDPairingCheckCommandResponseInfo
-- (FMDPairingCheckCommandResponseInfo)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (FMDPairingCheckCommandResponseInfo)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FMDPairingCheckCommandResponseInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(FMDPairingCheckCommandResponseInfo *)self signature];
-  [v4 encodeObject:v5 forKey:@"signature"];
+  coderCopy = coder;
+  signature = [(FMDPairingCheckCommandResponseInfo *)self signature];
+  [coderCopy encodeObject:signature forKey:@"signature"];
 
-  v6 = [(FMDPairingCheckCommandResponseInfo *)self serverNonce];
-  [v4 encodeObject:v6 forKey:@"serverNonce"];
+  serverNonce = [(FMDPairingCheckCommandResponseInfo *)self serverNonce];
+  [coderCopy encodeObject:serverNonce forKey:@"serverNonce"];
 
-  v7 = [(FMDPairingCheckCommandResponseInfo *)self phoneNumber];
-  [v4 encodeObject:v7 forKey:@"phoneNumber"];
+  phoneNumber = [(FMDPairingCheckCommandResponseInfo *)self phoneNumber];
+  [coderCopy encodeObject:phoneNumber forKey:@"phoneNumber"];
 
-  v8 = [(FMDPairingCheckCommandResponseInfo *)self statusCode];
-  [v4 encodeObject:v8 forKey:@"statusCode"];
+  statusCode = [(FMDPairingCheckCommandResponseInfo *)self statusCode];
+  [coderCopy encodeObject:statusCode forKey:@"statusCode"];
 
-  v9 = [(FMDPairingCheckCommandResponseInfo *)self lostModeInfo];
-  [v4 encodeObject:v9 forKey:@"lostModeInfo"];
+  lostModeInfo = [(FMDPairingCheckCommandResponseInfo *)self lostModeInfo];
+  [coderCopy encodeObject:lostModeInfo forKey:@"lostModeInfo"];
 
-  v10 = [(FMDPairingCheckCommandResponseInfo *)self useEraseKeyType];
-  [v4 encodeObject:v10 forKey:@"useEraseKeyType"];
+  useEraseKeyType = [(FMDPairingCheckCommandResponseInfo *)self useEraseKeyType];
+  [coderCopy encodeObject:useEraseKeyType forKey:@"useEraseKeyType"];
 }
 
-- (FMDPairingCheckCommandResponseInfo)initWithCoder:(id)a3
+- (FMDPairingCheckCommandResponseInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = FMDPairingCheckCommandResponseInfo;
   v5 = [(FMDPairingCheckCommandResponseInfo *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
     [(FMDPairingCheckCommandResponseInfo *)v5 setSignature:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serverNonce"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serverNonce"];
     [(FMDPairingCheckCommandResponseInfo *)v5 setServerNonce:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
     [(FMDPairingCheckCommandResponseInfo *)v5 setPhoneNumber:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"statusCode"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"statusCode"];
     [(FMDPairingCheckCommandResponseInfo *)v5 setStatusCode:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lostModeInfo"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lostModeInfo"];
     [(FMDPairingCheckCommandResponseInfo *)v5 setLostModeInfo:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"useEraseKeyType"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"useEraseKeyType"];
     [(FMDPairingCheckCommandResponseInfo *)v5 setUseEraseKeyType:v11];
   }
 

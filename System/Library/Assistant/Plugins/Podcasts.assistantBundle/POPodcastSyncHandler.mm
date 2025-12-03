@@ -1,8 +1,8 @@
 @interface POPodcastSyncHandler
 - (POPodcastSyncHandler)init;
 - (id)validity;
-- (void)beginSyncWithAnchor:(id)a3 validity:(id)a4 count:(int64_t)a5 forKey:(id)a6 beginInfo:(id)a7;
-- (void)getChangeAfterAnchor:(id)a3 changeInfo:(id)a4;
+- (void)beginSyncWithAnchor:(id)anchor validity:(id)validity count:(int64_t)count forKey:(id)key beginInfo:(id)info;
+- (void)getChangeAfterAnchor:(id)anchor changeInfo:(id)info;
 - (void)syncDidEnd;
 @end
 
@@ -51,14 +51,14 @@
   return v10;
 }
 
-- (void)beginSyncWithAnchor:(id)a3 validity:(id)a4 count:(int64_t)a5 forKey:(id)a6 beginInfo:(id)a7
+- (void)beginSyncWithAnchor:(id)anchor validity:(id)validity count:(int64_t)count forKey:(id)key beginInfo:(id)info
 {
   v115 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
-  if (objc_msgSend_isEqual_(v13, v15, @"com.apple.media.podcasts", v16, v17) && (v11 | v12 || (objc_msgSend_sharedInstance(PODataSource, v18, v19, v20, v21), v22 = objc_claimAutoreleasedReturnValue(), isPodcastsInstalled = objc_msgSend_isPodcastsInstalled(v22, v23, v24, v25, v26), v22, (isPodcastsInstalled & 1) != 0)))
+  anchorCopy = anchor;
+  validityCopy = validity;
+  keyCopy = key;
+  infoCopy = info;
+  if (objc_msgSend_isEqual_(keyCopy, v15, @"com.apple.media.podcasts", v16, v17) && (anchorCopy | validityCopy || (objc_msgSend_sharedInstance(PODataSource, v18, v19, v20, v21), v22 = objc_claimAutoreleasedReturnValue(), isPodcastsInstalled = objc_msgSend_isPodcastsInstalled(v22, v23, v24, v25, v26), v22, (isPodcastsInstalled & 1) != 0)))
   {
     POLogInitIfNeeded();
     if (POLogContextSync)
@@ -74,21 +74,21 @@
     if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
     {
       *buf = 138413058;
-      v108 = v11;
+      v108 = anchorCopy;
       v109 = 2112;
-      v110 = v12;
+      v110 = validityCopy;
       v111 = 2112;
-      v112 = v13;
+      v112 = keyCopy;
       v113 = 2112;
-      v114 = v14;
+      v114 = infoCopy;
       _os_log_impl(&dword_23352D000, v28, OS_LOG_TYPE_INFO, "Begin sync with anchor getting called, anchor is %@, validity is %@, key is %@ and beginInfo is %@", buf, 0x2Au);
     }
 
     v33 = objc_msgSend_validity(self, v29, v30, v31, v32);
-    isEqual = objc_msgSend_isEqual_(v12, v34, v33, v35, v36);
+    isEqual = objc_msgSend_isEqual_(validityCopy, v34, v33, v35, v36);
 
-    v100 = v12;
-    v99 = v14;
+    v100 = validityCopy;
+    v99 = infoCopy;
     if ((isEqual & 1) == 0)
     {
       POLogInitIfNeeded();
@@ -112,9 +112,9 @@
       }
 
       v53 = objc_msgSend_validity(self, v43, v44, v45, v46);
-      objc_msgSend_resetWithValidity_(v14, v54, v53, v55, v56);
+      objc_msgSend_resetWithValidity_(infoCopy, v54, v53, v55, v56);
 
-      v11 = @"0";
+      anchorCopy = @"0";
     }
 
     v104 = 0u;
@@ -122,8 +122,8 @@
     v102 = 0u;
     v103 = 0u;
     v57 = objc_msgSend_sharedInstance(PODataSource, v38, v39, v40, v41);
-    v101 = v11;
-    v62 = objc_msgSend_longLongValue(v11, v58, v59, v60, v61);
+    v101 = anchorCopy;
+    v62 = objc_msgSend_longLongValue(anchorCopy, v58, v59, v60, v61);
     v66 = objc_msgSend_podcastRevisionsSinceAnchor_(v57, v63, v62, v64, v65);
 
     v68 = objc_msgSend_countByEnumeratingWithState_objects_count_(v66, v67, &v102, v106, 16);
@@ -174,9 +174,9 @@
       _os_log_impl(&dword_23352D000, v91, OS_LOG_TYPE_INFO, "Anchors to revisions are %@", buf, 0xCu);
     }
 
-    v12 = v100;
-    v11 = v101;
-    v14 = v99;
+    validityCopy = v100;
+    anchorCopy = v101;
+    infoCopy = v99;
   }
 
   else
@@ -202,40 +202,40 @@
   v98 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getChangeAfterAnchor:(id)a3 changeInfo:(id)a4
+- (void)getChangeAfterAnchor:(id)anchor changeInfo:(id)info
 {
   v107 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v11 = a4;
-  if (!v6)
+  anchorCopy = anchor;
+  infoCopy = info;
+  if (!anchorCopy)
   {
-    v6 = @"0";
+    anchorCopy = @"0";
   }
 
   v12 = objc_msgSend_anchorToRevision(self, v7, v8, v9, v10);
-  v16 = objc_msgSend_objectForKeyedSubscript_(v12, v13, v6, v14, v15);
+  v16 = objc_msgSend_objectForKeyedSubscript_(v12, v13, anchorCopy, v14, v15);
 
   if (v16)
   {
     v21 = MEMORY[0x277CCACA8];
     v22 = objc_msgSend_revisionID(v16, v17, v18, v19, v20);
     v26 = objc_msgSend_stringWithFormat_(v21, v23, @"%lu", v24, v25, v22 + 1);
-    objc_msgSend_setPostAnchor_(v11, v27, v26, v28, v29);
+    objc_msgSend_setPostAnchor_(infoCopy, v27, v26, v28, v29);
 
     v34 = objc_msgSend_revisionType(v16, v30, v31, v32, v33) == 2;
-    objc_msgSend_setIsDelete_(v11, v35, v34, v36, v37);
-    if (objc_msgSend_isDelete(v11, v38, v39, v40, v41))
+    objc_msgSend_setIsDelete_(infoCopy, v35, v34, v36, v37);
+    if (objc_msgSend_isDelete(infoCopy, v38, v39, v40, v41))
     {
       v46 = objc_msgSend_deletedModelObject(v16, v42, v43, v44, v45);
       v51 = objc_msgSend_SAMPCollection(v46, v47, v48, v49, v50);
-      objc_msgSend_setObject_(v11, v52, v51, v53, v54);
+      objc_msgSend_setObject_(infoCopy, v52, v51, v53, v54);
       goto LABEL_11;
     }
 
     v46 = objc_msgSend_sharedInstance(PODataSource, v42, v43, v44, v45);
     v51 = objc_msgSend_objectID(v16, v91, v92, v93, v94);
     v87 = objc_msgSend_domainObjectWithUUID_(v46, v95, v51, v96, v97);
-    objc_msgSend_setObject_(v11, v98, v87, v99, v100);
+    objc_msgSend_setObject_(infoCopy, v98, v87, v99, v100);
   }
 
   else
@@ -253,15 +253,15 @@
     }
 
     v73 = objc_msgSend_longLongValue(v68, v69, v70, v71, v72);
-    if (v73 <= objc_msgSend_longLongValue(v6, v74, v75, v76, v77))
+    if (v73 <= objc_msgSend_longLongValue(anchorCopy, v74, v75, v76, v77))
     {
       goto LABEL_11;
     }
 
     v82 = MEMORY[0x277CCACA8];
-    v83 = objc_msgSend_longLongValue(v6, v78, v79, v80, v81);
+    v83 = objc_msgSend_longLongValue(anchorCopy, v78, v79, v80, v81);
     v87 = objc_msgSend_stringWithFormat_(v82, v84, @"%lli", v85, v86, v83 + 1);
-    objc_msgSend_setPostAnchor_(v11, v88, v87, v89, v90);
+    objc_msgSend_setPostAnchor_(infoCopy, v88, v87, v89, v90);
   }
 
 LABEL_11:
@@ -279,9 +279,9 @@ LABEL_11:
   if (os_log_type_enabled(v101, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v104 = v6;
+    v104 = anchorCopy;
     v105 = 2112;
-    v106 = v11;
+    v106 = infoCopy;
     _os_log_impl(&dword_23352D000, v101, OS_LOG_TYPE_INFO, "Get change getting called with anchor %@, changeInfo %@", buf, 0x16u);
   }
 

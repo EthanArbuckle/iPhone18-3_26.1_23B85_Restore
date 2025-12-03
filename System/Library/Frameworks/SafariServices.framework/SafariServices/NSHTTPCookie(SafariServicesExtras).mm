@@ -7,8 +7,8 @@
 - (uint64_t)sf_matchesTopLevelDomain:()SafariServicesExtras
 {
   v4 = a3;
-  v5 = [a1 domain];
-  v6 = [v5 isEqualToString:v4];
+  domain = [self domain];
+  v6 = [domain isEqualToString:v4];
 
   if (v6)
   {
@@ -25,8 +25,8 @@
 
     else
     {
-      v9 = [a1 domain];
-      v7 = [v9 hasSuffix:v8];
+      domain2 = [self domain];
+      v7 = [domain2 hasSuffix:v8];
     }
   }
 

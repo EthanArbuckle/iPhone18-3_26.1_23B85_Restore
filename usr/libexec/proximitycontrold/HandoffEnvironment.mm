@@ -1,20 +1,20 @@
 @interface HandoffEnvironment
 - (id)interruptionHandler;
 - (id)invalidationHandler;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)invalidate;
-- (void)setDispatchQueue:(id)a3;
-- (void)setInterruptionHandler:(id)a3;
-- (void)setInvalidationHandler:(id)a3;
+- (void)setDispatchQueue:(id)queue;
+- (void)setInterruptionHandler:(id)handler;
+- (void)setInvalidationHandler:(id)handler;
 @end
 
 @implementation HandoffEnvironment
 
-- (void)setDispatchQueue:(id)a3
+- (void)setDispatchQueue:(id)queue
 {
   v4 = *(self + 2);
-  *(self + 2) = a3;
-  v3 = a3;
+  *(self + 2) = queue;
+  queueCopy = queue;
 }
 
 - (id)invalidationHandler
@@ -39,9 +39,9 @@
   return v3;
 }
 
-- (void)setInvalidationHandler:(id)a3
+- (void)setInvalidationHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -85,9 +85,9 @@
   return v3;
 }
 
-- (void)setInterruptionHandler:(id)a3
+- (void)setInterruptionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -109,9 +109,9 @@
   sub_10002689C(v7);
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(completion);
   v4 = swift_allocObject();
   *(v4 + 16) = v3;
 

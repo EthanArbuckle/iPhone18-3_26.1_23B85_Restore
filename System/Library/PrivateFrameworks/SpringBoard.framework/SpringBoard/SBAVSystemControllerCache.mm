@@ -11,28 +11,28 @@
 - (NSString)activeCategoryName;
 - (OS_dispatch_workloop)avscOperationsWorkloop;
 - (SBAVSystemControllerCache)init;
-- (SBAVSystemControllerCache)initWithCallOutQueue:(id)a3 notificationCenter:(id)a4 dataProviderInitializer:(id)a5;
+- (SBAVSystemControllerCache)initWithCallOutQueue:(id)queue notificationCenter:(id)center dataProviderInitializer:(id)initializer;
 - (id)_backgroundQueryQueue_rebuildDataProvider;
-- (id)_queryActiveOutputDevicesFromContext:(id)a3;
-- (id)_queue_backgroundQueryCancellationSignalForNotificationCreatingIfNecessary:(id)a3;
+- (id)_queryActiveOutputDevicesFromContext:(id)context;
+- (id)_queue_backgroundQueryCancellationSignalForNotificationCreatingIfNecessary:(id)necessary;
 - (void)_backgroundQueryQueue_rebuildDataProvider;
-- (void)_queue_finishRebuildingCacheWithDataProvider:(id)a3 serverDeathSignal:(id)a4;
-- (void)_queue_notifyObserversWithBlock:(id)a3;
+- (void)_queue_finishRebuildingCacheWithDataProvider:(id)provider serverDeathSignal:(id)signal;
+- (void)_queue_notifyObserversWithBlock:(id)block;
 - (void)_queue_rebuildCache;
-- (void)_queue_signalBackgroundQueryCancellationForNotification:(id)a3;
-- (void)_queue_updateActiveAudioRouteFromNotification:(id)a3 allowingBackgroundQueries:(BOOL)a4 backgroundQueriesCancelledBlock:(id)a5 cancelBackgroundQueriesBlock:(id)a6 completion:(id)a7;
-- (void)_queue_updateActiveCategoryNameFromNotification:(id)a3 allowingBackgroundQueries:(BOOL)a4 backgroundQueriesCancelledBlock:(id)a5 cancelBackgroundQueriesBlock:(id)a6 completion:(id)a7;
-- (void)_queue_updateActiveOutputDevicesFromNotification:(id)a3 allowingBackgroundQueries:(BOOL)a4 backgroundQueriesCancelledBlock:(id)a5 cancelBackgroundQueriesBlock:(id)a6 completion:(id)a7;
-- (void)_queue_updateAirplayDisplayActiveFromNotification:(id)a3 allowingBackgroundQueries:(BOOL)a4 backgroundQueriesCancelledBlock:(id)a5 cancelBackgroundQueriesBlock:(id)a6 completion:(id)a7;
-- (void)_queue_updateAudioSessionPlayingFromNotification:(id)a3 allowingBackgroundQueries:(BOOL)a4 backgroundQueriesCancelledBlock:(id)a5 cancelBackgroundQueriesBlock:(id)a6 completion:(id)a7;
-- (void)_queue_updateFullyMutedFromNotification:(id)a3 allowingBackgroundQueries:(BOOL)a4 backgroundQueriesCancelledBlock:(id)a5 cancelBackgroundQueriesBlock:(id)a6 completion:(id)a7;
-- (void)_queue_updatePickableRoutesFromNotification:(id)a3 allowingBackgroundQueries:(BOOL)a4 backgroundQueriesCancelledBlock:(id)a5 cancelBackgroundQueriesBlock:(id)a6 completion:(id)a7;
-- (void)_queue_updateRingerMutedFromNotification:(id)a3 allowingBackgroundQueries:(BOOL)a4 backgroundQueriesCancelledBlock:(id)a5 cancelBackgroundQueriesBlock:(id)a6 completion:(id)a7;
-- (void)_receiveUpdatedValueFromNotification:(id)a3;
-- (void)_serverDied:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_queue_signalBackgroundQueryCancellationForNotification:(id)notification;
+- (void)_queue_updateActiveAudioRouteFromNotification:(id)notification allowingBackgroundQueries:(BOOL)queries backgroundQueriesCancelledBlock:(id)block cancelBackgroundQueriesBlock:(id)queriesBlock completion:(id)completion;
+- (void)_queue_updateActiveCategoryNameFromNotification:(id)notification allowingBackgroundQueries:(BOOL)queries backgroundQueriesCancelledBlock:(id)block cancelBackgroundQueriesBlock:(id)queriesBlock completion:(id)completion;
+- (void)_queue_updateActiveOutputDevicesFromNotification:(id)notification allowingBackgroundQueries:(BOOL)queries backgroundQueriesCancelledBlock:(id)block cancelBackgroundQueriesBlock:(id)queriesBlock completion:(id)completion;
+- (void)_queue_updateAirplayDisplayActiveFromNotification:(id)notification allowingBackgroundQueries:(BOOL)queries backgroundQueriesCancelledBlock:(id)block cancelBackgroundQueriesBlock:(id)queriesBlock completion:(id)completion;
+- (void)_queue_updateAudioSessionPlayingFromNotification:(id)notification allowingBackgroundQueries:(BOOL)queries backgroundQueriesCancelledBlock:(id)block cancelBackgroundQueriesBlock:(id)queriesBlock completion:(id)completion;
+- (void)_queue_updateFullyMutedFromNotification:(id)notification allowingBackgroundQueries:(BOOL)queries backgroundQueriesCancelledBlock:(id)block cancelBackgroundQueriesBlock:(id)queriesBlock completion:(id)completion;
+- (void)_queue_updatePickableRoutesFromNotification:(id)notification allowingBackgroundQueries:(BOOL)queries backgroundQueriesCancelledBlock:(id)block cancelBackgroundQueriesBlock:(id)queriesBlock completion:(id)completion;
+- (void)_queue_updateRingerMutedFromNotification:(id)notification allowingBackgroundQueries:(BOOL)queries backgroundQueriesCancelledBlock:(id)block cancelBackgroundQueriesBlock:(id)queriesBlock completion:(id)completion;
+- (void)_receiveUpdatedValueFromNotification:(id)notification;
+- (void)_serverDied:(id)died;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)fetchPickableRoutesWithCompletion:(id)a3;
+- (void)fetchPickableRoutesWithCompletion:(id)completion;
 @end
 
 @implementation SBAVSystemControllerCache
@@ -114,26 +114,26 @@
 
 - (SBAVSystemControllerCache)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBAVSystemControllerCache.m" lineNumber:54 description:@"-init is not allowed on SBAVSystemControllerCache"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBAVSystemControllerCache.m" lineNumber:54 description:@"-init is not allowed on SBAVSystemControllerCache"];
 
   return 0;
 }
 
-- (SBAVSystemControllerCache)initWithCallOutQueue:(id)a3 notificationCenter:(id)a4 dataProviderInitializer:(id)a5
+- (SBAVSystemControllerCache)initWithCallOutQueue:(id)queue notificationCenter:(id)center dataProviderInitializer:(id)initializer
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  centerCopy = center;
+  initializerCopy = initializer;
   v33.receiver = self;
   v33.super_class = SBAVSystemControllerCache;
   v12 = [(SBAVSystemControllerCache *)&v33 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_callOutQueue, a3);
-    objc_storeStrong(&v13->_notificationCenter, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_callOutQueue, queue);
+    objc_storeStrong(&v13->_notificationCenter, center);
+    v14 = [initializerCopy copy];
     dataProviderInitializer = v13->_dataProviderInitializer;
     v13->_dataProviderInitializer = v14;
 
@@ -145,13 +145,13 @@
     queue = v13->_queue;
     v13->_queue = Serial;
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     notificationToHandlerMap = v13->_notificationToHandlerMap;
-    v13->_notificationToHandlerMap = v20;
+    v13->_notificationToHandlerMap = dictionary;
 
-    v22 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     notificationToBackgroundQueryCancellationSignalMap = v13->_notificationToBackgroundQueryCancellationSignalMap;
-    v13->_notificationToBackgroundQueryCancellationSignalMap = v22;
+    v13->_notificationToBackgroundQueryCancellationSignalMap = dictionary2;
 
     v24 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v25 = BSDispatchQueueCreateWithQualityOfService();
@@ -255,10 +255,10 @@ void __43__SBAVSystemControllerCache_sharedInstance__block_invoke()
   sharedInstance___sharedInstance_7 = v1;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
-  if (!v5)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     [(SBAVSystemControllerCache *)a2 addObserver:?];
   }
@@ -269,8 +269,8 @@ void __43__SBAVSystemControllerCache_sharedInstance__block_invoke()
   v8[2] = __41__SBAVSystemControllerCache_addObserver___block_invoke;
   v8[3] = &unk_2783A92D8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = observerCopy;
+  v7 = observerCopy;
   dispatch_async(queue, v8);
 }
 
@@ -411,11 +411,11 @@ uint64_t __41__SBAVSystemControllerCache_addObserver___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)fetchPickableRoutesWithCompletion:(id)a3
+- (void)fetchPickableRoutesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -423,7 +423,7 @@ uint64_t __41__SBAVSystemControllerCache_addObserver___block_invoke(uint64_t a1)
     v7[2] = __63__SBAVSystemControllerCache_fetchPickableRoutesWithCompletion___block_invoke;
     v7[3] = &unk_2783A98A0;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -460,11 +460,11 @@ void __63__SBAVSystemControllerCache_fetchPickableRoutesWithCompletion___block_i
   return avscOperationsWorkloop;
 }
 
-- (void)_queue_notifyObserversWithBlock:(id)a3
+- (void)_queue_notifyObserversWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(NSHashTable *)self->_queue_observers allObjects];
-  v6 = [v5 copy];
+  blockCopy = block;
+  allObjects = [(NSHashTable *)self->_queue_observers allObjects];
+  v6 = [allObjects copy];
 
   callOutQueue = self->_callOutQueue;
   v10[0] = MEMORY[0x277D85DD0];
@@ -472,8 +472,8 @@ void __63__SBAVSystemControllerCache_fetchPickableRoutesWithCompletion___block_i
   v10[2] = __61__SBAVSystemControllerCache__queue_notifyObserversWithBlock___block_invoke;
   v10[3] = &unk_2783A98A0;
   v11 = v6;
-  v12 = v4;
-  v8 = v4;
+  v12 = blockCopy;
+  v8 = blockCopy;
   v9 = v6;
   dispatch_async(callOutQueue, v10);
 }
@@ -513,25 +513,25 @@ void __61__SBAVSystemControllerCache__queue_notifyObserversWithBlock___block_inv
   }
 }
 
-- (void)_queue_updateFullyMutedFromNotification:(id)a3 allowingBackgroundQueries:(BOOL)a4 backgroundQueriesCancelledBlock:(id)a5 cancelBackgroundQueriesBlock:(id)a6 completion:(id)a7
+- (void)_queue_updateFullyMutedFromNotification:(id)notification allowingBackgroundQueries:(BOOL)queries backgroundQueriesCancelledBlock:(id)block cancelBackgroundQueriesBlock:(id)queriesBlock completion:(id)completion
 {
-  v10 = a4;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  queriesCopy = queries;
+  notificationCopy = notification;
+  blockCopy = block;
+  queriesBlockCopy = queriesBlock;
+  completionCopy = completion;
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __167__SBAVSystemControllerCache__queue_updateFullyMutedFromNotification_allowingBackgroundQueries_backgroundQueriesCancelledBlock_cancelBackgroundQueriesBlock_completion___block_invoke;
   v29[3] = &unk_2783B1E48;
-  v31 = v10;
+  v31 = queriesCopy;
   v29[4] = self;
-  v16 = v15;
+  v16 = completionCopy;
   v30 = v16;
   v17 = MEMORY[0x223D6F7F0](v29);
-  if (v10)
+  if (queriesCopy)
   {
-    if (!v12)
+    if (!notificationCopy)
     {
       v21 = self->_queue_dataProvider;
       backgroundQueryQueue = self->_backgroundQueryQueue;
@@ -540,8 +540,8 @@ void __61__SBAVSystemControllerCache__queue_notifyObserversWithBlock___block_inv
       block[2] = __167__SBAVSystemControllerCache__queue_updateFullyMutedFromNotification_allowingBackgroundQueries_backgroundQueriesCancelledBlock_cancelBackgroundQueriesBlock_completion___block_invoke_50;
       block[3] = &unk_2783B1E98;
       v25 = v21;
-      v26 = self;
-      v27 = v13;
+      selfCopy = self;
+      v27 = blockCopy;
       v28 = v17;
       v23 = v21;
       dispatch_async(backgroundQueryQueue, block);
@@ -549,19 +549,19 @@ void __61__SBAVSystemControllerCache__queue_notifyObserversWithBlock___block_inv
       goto LABEL_6;
     }
 
-    v18 = [v12 objectForKey:*MEMORY[0x277D26B38]];
-    v19 = [v18 BOOLValue];
+    v18 = [notificationCopy objectForKey:*MEMORY[0x277D26B38]];
+    bOOLValue = [v18 BOOLValue];
 
-    v14[2](v14);
+    queriesBlockCopy[2](queriesBlockCopy);
   }
 
   else
   {
     v20 = [(SBAVSystemControllerDataProviding *)self->_queue_dataProvider attributeForKey:*MEMORY[0x277D26BE8]];
-    v19 = [v20 BOOLValue];
+    bOOLValue = [v20 BOOLValue];
   }
 
-  v17[2](v17, v19);
+  v17[2](v17, bOOLValue);
 LABEL_6:
 }
 
@@ -642,25 +642,25 @@ uint64_t __167__SBAVSystemControllerCache__queue_updateFullyMutedFromNotificatio
   return result;
 }
 
-- (void)_queue_updateRingerMutedFromNotification:(id)a3 allowingBackgroundQueries:(BOOL)a4 backgroundQueriesCancelledBlock:(id)a5 cancelBackgroundQueriesBlock:(id)a6 completion:(id)a7
+- (void)_queue_updateRingerMutedFromNotification:(id)notification allowingBackgroundQueries:(BOOL)queries backgroundQueriesCancelledBlock:(id)block cancelBackgroundQueriesBlock:(id)queriesBlock completion:(id)completion
 {
-  v10 = a4;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  queriesCopy = queries;
+  notificationCopy = notification;
+  blockCopy = block;
+  queriesBlockCopy = queriesBlock;
+  completionCopy = completion;
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __168__SBAVSystemControllerCache__queue_updateRingerMutedFromNotification_allowingBackgroundQueries_backgroundQueriesCancelledBlock_cancelBackgroundQueriesBlock_completion___block_invoke;
   v29[3] = &unk_2783B1E48;
-  v31 = v10;
+  v31 = queriesCopy;
   v29[4] = self;
-  v16 = v15;
+  v16 = completionCopy;
   v30 = v16;
   v17 = MEMORY[0x223D6F7F0](v29);
-  if (v10)
+  if (queriesCopy)
   {
-    if (!v12)
+    if (!notificationCopy)
     {
       v21 = self->_queue_dataProvider;
       backgroundQueryQueue = self->_backgroundQueryQueue;
@@ -669,8 +669,8 @@ uint64_t __167__SBAVSystemControllerCache__queue_updateFullyMutedFromNotificatio
       block[2] = __168__SBAVSystemControllerCache__queue_updateRingerMutedFromNotification_allowingBackgroundQueries_backgroundQueriesCancelledBlock_cancelBackgroundQueriesBlock_completion___block_invoke_55;
       block[3] = &unk_2783B1E98;
       v25 = v21;
-      v26 = self;
-      v27 = v13;
+      selfCopy = self;
+      v27 = blockCopy;
       v28 = v17;
       v23 = v21;
       dispatch_async(backgroundQueryQueue, block);
@@ -678,19 +678,19 @@ uint64_t __167__SBAVSystemControllerCache__queue_updateFullyMutedFromNotificatio
       goto LABEL_6;
     }
 
-    v18 = [v12 objectForKey:*MEMORY[0x277D26D60]];
-    v19 = [v18 BOOLValue];
+    v18 = [notificationCopy objectForKey:*MEMORY[0x277D26D60]];
+    bOOLValue = [v18 BOOLValue];
 
-    v14[2](v14);
+    queriesBlockCopy[2](queriesBlockCopy);
   }
 
   else
   {
     v20 = [(SBAVSystemControllerDataProviding *)self->_queue_dataProvider attributeForKey:*MEMORY[0x277D26D50]];
-    v19 = [v20 BOOLValue];
+    bOOLValue = [v20 BOOLValue];
   }
 
-  v17[2](v17, v19);
+  v17[2](v17, bOOLValue);
 LABEL_6:
 }
 
@@ -784,25 +784,25 @@ uint64_t __168__SBAVSystemControllerCache__queue_updateRingerMutedFromNotificati
   return result;
 }
 
-- (void)_queue_updateAudioSessionPlayingFromNotification:(id)a3 allowingBackgroundQueries:(BOOL)a4 backgroundQueriesCancelledBlock:(id)a5 cancelBackgroundQueriesBlock:(id)a6 completion:(id)a7
+- (void)_queue_updateAudioSessionPlayingFromNotification:(id)notification allowingBackgroundQueries:(BOOL)queries backgroundQueriesCancelledBlock:(id)block cancelBackgroundQueriesBlock:(id)queriesBlock completion:(id)completion
 {
-  v10 = a4;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  queriesCopy = queries;
+  notificationCopy = notification;
+  blockCopy = block;
+  queriesBlockCopy = queriesBlock;
+  completionCopy = completion;
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __176__SBAVSystemControllerCache__queue_updateAudioSessionPlayingFromNotification_allowingBackgroundQueries_backgroundQueriesCancelledBlock_cancelBackgroundQueriesBlock_completion___block_invoke;
   v26[3] = &unk_2783B1EE8;
-  v28 = v10;
+  v28 = queriesCopy;
   v26[4] = self;
-  v16 = v15;
+  v16 = completionCopy;
   v27 = v16;
   v17 = MEMORY[0x223D6F7F0](v26);
-  if (v10)
+  if (queriesCopy)
   {
-    if (!v12)
+    if (!notificationCopy)
     {
       v19 = self->_queue_dataProvider;
       backgroundQueryQueue = self->_backgroundQueryQueue;
@@ -811,8 +811,8 @@ uint64_t __168__SBAVSystemControllerCache__queue_updateRingerMutedFromNotificati
       block[2] = __176__SBAVSystemControllerCache__queue_updateAudioSessionPlayingFromNotification_allowingBackgroundQueries_backgroundQueriesCancelledBlock_cancelBackgroundQueriesBlock_completion___block_invoke_60;
       block[3] = &unk_2783B1E98;
       v22 = v19;
-      v23 = self;
-      v24 = v13;
+      selfCopy = self;
+      v24 = blockCopy;
       v25 = v17;
       v18 = v19;
       dispatch_async(backgroundQueryQueue, block);
@@ -820,8 +820,8 @@ uint64_t __168__SBAVSystemControllerCache__queue_updateRingerMutedFromNotificati
       goto LABEL_6;
     }
 
-    v18 = [v12 objectForKey:*MEMORY[0x277D26DB8]];
-    v14[2](v14);
+    v18 = [notificationCopy objectForKey:*MEMORY[0x277D26DB8]];
+    queriesBlockCopy[2](queriesBlockCopy);
   }
 
   else
@@ -922,30 +922,30 @@ uint64_t __176__SBAVSystemControllerCache__queue_updateAudioSessionPlayingFromNo
   return result;
 }
 
-- (void)_queue_updateActiveCategoryNameFromNotification:(id)a3 allowingBackgroundQueries:(BOOL)a4 backgroundQueriesCancelledBlock:(id)a5 cancelBackgroundQueriesBlock:(id)a6 completion:(id)a7
+- (void)_queue_updateActiveCategoryNameFromNotification:(id)notification allowingBackgroundQueries:(BOOL)queries backgroundQueriesCancelledBlock:(id)block cancelBackgroundQueriesBlock:(id)queriesBlock completion:(id)completion
 {
-  v10 = a4;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  queriesCopy = queries;
+  notificationCopy = notification;
+  blockCopy = block;
+  queriesBlockCopy = queriesBlock;
+  completionCopy = completion;
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __175__SBAVSystemControllerCache__queue_updateActiveCategoryNameFromNotification_allowingBackgroundQueries_backgroundQueriesCancelledBlock_cancelBackgroundQueriesBlock_completion___block_invoke;
   v34[3] = &unk_2783B1F60;
-  v36 = v10;
+  v36 = queriesCopy;
   v34[4] = self;
-  v16 = v15;
+  v16 = completionCopy;
   v35 = v16;
   v17 = MEMORY[0x223D6F7F0](v34);
-  if (v10)
+  if (queriesCopy)
   {
-    v18 = [v12 objectForKey:*MEMORY[0x277D26BB0]];
+    v18 = [notificationCopy objectForKey:*MEMORY[0x277D26BB0]];
     v19 = [v18 copy];
 
     if (v19)
     {
-      v14[2](v14);
+      queriesBlockCopy[2](queriesBlockCopy);
       (v17)[2](v17, v19);
     }
 
@@ -958,8 +958,8 @@ uint64_t __176__SBAVSystemControllerCache__queue_updateAudioSessionPlayingFromNo
       block[2] = __175__SBAVSystemControllerCache__queue_updateActiveCategoryNameFromNotification_allowingBackgroundQueries_backgroundQueriesCancelledBlock_cancelBackgroundQueriesBlock_completion___block_invoke_65;
       block[3] = &unk_2783B1E98;
       v30 = v25;
-      v31 = self;
-      v32 = v13;
+      selfCopy = self;
+      v32 = blockCopy;
       v33 = v17;
       v27 = v25;
       dispatch_async(backgroundQueryQueue, block);
@@ -1099,22 +1099,22 @@ uint64_t __175__SBAVSystemControllerCache__queue_updateActiveCategoryNameFromNot
   return result;
 }
 
-- (void)_queue_updateActiveAudioRouteFromNotification:(id)a3 allowingBackgroundQueries:(BOOL)a4 backgroundQueriesCancelledBlock:(id)a5 cancelBackgroundQueriesBlock:(id)a6 completion:(id)a7
+- (void)_queue_updateActiveAudioRouteFromNotification:(id)notification allowingBackgroundQueries:(BOOL)queries backgroundQueriesCancelledBlock:(id)block cancelBackgroundQueriesBlock:(id)queriesBlock completion:(id)completion
 {
-  v8 = a4;
-  v10 = a5;
-  v11 = a7;
+  queriesCopy = queries;
+  blockCopy = block;
+  completionCopy = completion;
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __173__SBAVSystemControllerCache__queue_updateActiveAudioRouteFromNotification_allowingBackgroundQueries_backgroundQueriesCancelledBlock_cancelBackgroundQueriesBlock_completion___block_invoke;
   v26[3] = &unk_2783B1FB0;
-  v28 = v8;
+  v28 = queriesCopy;
   v26[4] = self;
-  v12 = v11;
+  v12 = completionCopy;
   v27 = v12;
   v13 = MEMORY[0x223D6F7F0](v26);
   queue_dataProvider = self->_queue_dataProvider;
-  if (v8)
+  if (queriesCopy)
   {
     v15 = queue_dataProvider;
     backgroundQueryQueue = self->_backgroundQueryQueue;
@@ -1123,8 +1123,8 @@ uint64_t __175__SBAVSystemControllerCache__queue_updateActiveCategoryNameFromNot
     block[2] = __173__SBAVSystemControllerCache__queue_updateActiveAudioRouteFromNotification_allowingBackgroundQueries_backgroundQueriesCancelledBlock_cancelBackgroundQueriesBlock_completion___block_invoke_73;
     block[3] = &unk_2783B1E98;
     v22 = v15;
-    v23 = self;
-    v24 = v10;
+    selfCopy = self;
+    v24 = blockCopy;
     v25 = v13;
     v17 = v15;
     dispatch_async(backgroundQueryQueue, block);
@@ -1275,25 +1275,25 @@ uint64_t __173__SBAVSystemControllerCache__queue_updateActiveAudioRouteFromNotif
   return result;
 }
 
-- (void)_queue_updateActiveOutputDevicesFromNotification:(id)a3 allowingBackgroundQueries:(BOOL)a4 backgroundQueriesCancelledBlock:(id)a5 cancelBackgroundQueriesBlock:(id)a6 completion:(id)a7
+- (void)_queue_updateActiveOutputDevicesFromNotification:(id)notification allowingBackgroundQueries:(BOOL)queries backgroundQueriesCancelledBlock:(id)block cancelBackgroundQueriesBlock:(id)queriesBlock completion:(id)completion
 {
-  v8 = a4;
-  v10 = a5;
-  v11 = a7;
+  queriesCopy = queries;
+  blockCopy = block;
+  completionCopy = completion;
   v12 = self->_queue_activeOutputDevices;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __176__SBAVSystemControllerCache__queue_updateActiveOutputDevicesFromNotification_allowingBackgroundQueries_backgroundQueriesCancelledBlock_cancelBackgroundQueriesBlock_completion___block_invoke;
   v24[3] = &unk_2783B2000;
-  v28 = v8;
+  v28 = queriesCopy;
   v13 = v12;
   v25 = v13;
-  v26 = self;
-  v14 = v11;
+  selfCopy = self;
+  v14 = completionCopy;
   v27 = v14;
   v15 = MEMORY[0x223D6F7F0](v24);
   queue_outputContext = self->_queue_outputContext;
-  if (v8)
+  if (queriesCopy)
   {
     v17 = queue_outputContext;
     backgroundQueryQueue = self->_backgroundQueryQueue;
@@ -1303,7 +1303,7 @@ uint64_t __173__SBAVSystemControllerCache__queue_updateActiveAudioRouteFromNotif
     v20[3] = &unk_2783B1E98;
     v20[4] = self;
     v21 = v17;
-    v22 = v10;
+    v22 = blockCopy;
     v23 = v15;
     v19 = v17;
     dispatch_async(backgroundQueryQueue, v20);
@@ -1435,22 +1435,22 @@ uint64_t __176__SBAVSystemControllerCache__queue_updateActiveOutputDevicesFromNo
   return result;
 }
 
-- (void)_queue_updatePickableRoutesFromNotification:(id)a3 allowingBackgroundQueries:(BOOL)a4 backgroundQueriesCancelledBlock:(id)a5 cancelBackgroundQueriesBlock:(id)a6 completion:(id)a7
+- (void)_queue_updatePickableRoutesFromNotification:(id)notification allowingBackgroundQueries:(BOOL)queries backgroundQueriesCancelledBlock:(id)block cancelBackgroundQueriesBlock:(id)queriesBlock completion:(id)completion
 {
-  v8 = a4;
-  v10 = a5;
-  v11 = a7;
+  queriesCopy = queries;
+  blockCopy = block;
+  completionCopy = completion;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __171__SBAVSystemControllerCache__queue_updatePickableRoutesFromNotification_allowingBackgroundQueries_backgroundQueriesCancelledBlock_cancelBackgroundQueriesBlock_completion___block_invoke;
   v24[3] = &unk_2783B1EE8;
-  v26 = v8;
+  v26 = queriesCopy;
   v24[4] = self;
-  v12 = v11;
+  v12 = completionCopy;
   v25 = v12;
   v13 = MEMORY[0x223D6F7F0](v24);
   queue_dataProvider = self->_queue_dataProvider;
-  if (v8)
+  if (queriesCopy)
   {
     v15 = queue_dataProvider;
     backgroundQueryQueue = self->_backgroundQueryQueue;
@@ -1459,8 +1459,8 @@ uint64_t __176__SBAVSystemControllerCache__queue_updateActiveOutputDevicesFromNo
     block[2] = __171__SBAVSystemControllerCache__queue_updatePickableRoutesFromNotification_allowingBackgroundQueries_backgroundQueriesCancelledBlock_cancelBackgroundQueriesBlock_completion___block_invoke_81;
     block[3] = &unk_2783B1E98;
     v20 = v15;
-    v21 = self;
-    v22 = v10;
+    selfCopy = self;
+    v22 = blockCopy;
     v23 = v13;
     v17 = v15;
     dispatch_async(backgroundQueryQueue, block);
@@ -1583,22 +1583,22 @@ uint64_t __171__SBAVSystemControllerCache__queue_updatePickableRoutesFromNotific
   return result;
 }
 
-- (void)_queue_updateAirplayDisplayActiveFromNotification:(id)a3 allowingBackgroundQueries:(BOOL)a4 backgroundQueriesCancelledBlock:(id)a5 cancelBackgroundQueriesBlock:(id)a6 completion:(id)a7
+- (void)_queue_updateAirplayDisplayActiveFromNotification:(id)notification allowingBackgroundQueries:(BOOL)queries backgroundQueriesCancelledBlock:(id)block cancelBackgroundQueriesBlock:(id)queriesBlock completion:(id)completion
 {
-  v8 = a4;
-  v10 = a5;
-  v11 = a7;
+  queriesCopy = queries;
+  blockCopy = block;
+  completionCopy = completion;
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __177__SBAVSystemControllerCache__queue_updateAirplayDisplayActiveFromNotification_allowingBackgroundQueries_backgroundQueriesCancelledBlock_cancelBackgroundQueriesBlock_completion___block_invoke;
   v25[3] = &unk_2783B1E48;
-  v27 = v8;
+  v27 = queriesCopy;
   v25[4] = self;
-  v12 = v11;
+  v12 = completionCopy;
   v26 = v12;
   v13 = MEMORY[0x223D6F7F0](v25);
   queue_dataProvider = self->_queue_dataProvider;
-  if (v8)
+  if (queriesCopy)
   {
     v15 = queue_dataProvider;
     backgroundQueryQueue = self->_backgroundQueryQueue;
@@ -1607,8 +1607,8 @@ uint64_t __171__SBAVSystemControllerCache__queue_updatePickableRoutesFromNotific
     block[2] = __177__SBAVSystemControllerCache__queue_updateAirplayDisplayActiveFromNotification_allowingBackgroundQueries_backgroundQueriesCancelledBlock_cancelBackgroundQueriesBlock_completion___block_invoke_85;
     block[3] = &unk_2783B1E98;
     v21 = v15;
-    v22 = self;
-    v23 = v10;
+    selfCopy = self;
+    v23 = blockCopy;
     v24 = v13;
     v17 = v15;
     dispatch_async(backgroundQueryQueue, block);
@@ -1713,53 +1713,53 @@ uint64_t __177__SBAVSystemControllerCache__queue_updateAirplayDisplayActiveFromN
   return result;
 }
 
-- (id)_queryActiveOutputDevicesFromContext:(id)a3
+- (id)_queryActiveOutputDevicesFromContext:(id)context
 {
   if (self->_outputContextSupportsMultipleOutputDevices)
   {
-    v3 = [a3 outputDevices];
+    outputDevices = [context outputDevices];
   }
 
   else
   {
-    v4 = [a3 outputDevice];
-    if (v4)
+    outputDevice = [context outputDevice];
+    if (outputDevice)
     {
-      [MEMORY[0x277CBEA60] arrayWithObject:v4];
+      [MEMORY[0x277CBEA60] arrayWithObject:outputDevice];
     }
 
     else
     {
       [MEMORY[0x277CBEA60] array];
     }
-    v3 = ;
+    outputDevices = ;
   }
 
-  return v3;
+  return outputDevices;
 }
 
-- (id)_queue_backgroundQueryCancellationSignalForNotificationCreatingIfNecessary:(id)a3
+- (id)_queue_backgroundQueryCancellationSignalForNotificationCreatingIfNecessary:(id)necessary
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_notificationToBackgroundQueryCancellationSignalMap objectForKey:v4];
+  necessaryCopy = necessary;
+  v5 = [(NSMutableDictionary *)self->_notificationToBackgroundQueryCancellationSignalMap objectForKey:necessaryCopy];
   if (!v5)
   {
     v5 = objc_alloc_init(MEMORY[0x277CF0B80]);
-    [(NSMutableDictionary *)self->_notificationToBackgroundQueryCancellationSignalMap setObject:v5 forKey:v4];
+    [(NSMutableDictionary *)self->_notificationToBackgroundQueryCancellationSignalMap setObject:v5 forKey:necessaryCopy];
   }
 
   return v5;
 }
 
-- (void)_queue_signalBackgroundQueryCancellationForNotification:(id)a3
+- (void)_queue_signalBackgroundQueryCancellationForNotification:(id)notification
 {
-  v6 = a3;
+  notificationCopy = notification;
   v4 = [(NSMutableDictionary *)self->_notificationToBackgroundQueryCancellationSignalMap objectForKey:?];
   v5 = v4;
   if (v4)
   {
     [v4 signal];
-    [(NSMutableDictionary *)self->_notificationToBackgroundQueryCancellationSignalMap removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_notificationToBackgroundQueryCancellationSignalMap removeObjectForKey:notificationCopy];
   }
 }
 
@@ -1783,7 +1783,7 @@ uint64_t __177__SBAVSystemControllerCache__queue_updateAirplayDisplayActiveFromN
   v9[2] = __48__SBAVSystemControllerCache__queue_rebuildCache__block_invoke;
   v9[3] = &unk_2783A92D8;
   v10 = v5;
-  v11 = self;
+  selfCopy = self;
   v7 = v5;
   v8 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INITIATED, 0, v9);
   dispatch_async(self->_backgroundQueryQueue, v8);
@@ -1879,14 +1879,14 @@ void __48__SBAVSystemControllerCache__queue_rebuildCache__block_invoke(uint64_t 
   return v4;
 }
 
-- (void)_queue_finishRebuildingCacheWithDataProvider:(id)a3 serverDeathSignal:(id)a4
+- (void)_queue_finishRebuildingCacheWithDataProvider:(id)provider serverDeathSignal:(id)signal
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 hasBeenSignalled];
+  providerCopy = provider;
+  signalCopy = signal;
+  hasBeenSignalled = [signalCopy hasBeenSignalled];
   v10 = SBLogAVSystemControllerCache();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (v9)
+  if (hasBeenSignalled)
   {
     if (v11)
     {
@@ -1903,7 +1903,7 @@ void __48__SBAVSystemControllerCache__queue_rebuildCache__block_invoke(uint64_t 
       _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "Finishing rebuilding cache", buf, 2u);
     }
 
-    objc_storeStrong(&self->_queue_dataProvider, a3);
+    objc_storeStrong(&self->_queue_dataProvider, provider);
     *buf = 0;
     v29 = buf;
     v30 = 0x2020000000;
@@ -1912,9 +1912,9 @@ void __48__SBAVSystemControllerCache__queue_rebuildCache__block_invoke(uint64_t 
     v25[1] = 3221225472;
     v25[2] = __92__SBAVSystemControllerCache__queue_finishRebuildingCacheWithDataProvider_serverDeathSignal___block_invoke;
     v25[3] = &unk_2783A92D8;
-    v12 = v8;
+    v12 = signalCopy;
     v26 = v12;
-    v27 = self;
+    selfCopy = self;
     v13 = MEMORY[0x223D6F7F0](v25);
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
@@ -2050,16 +2050,16 @@ uint64_t __92__SBAVSystemControllerCache__queue_finishRebuildingCacheWithDataPro
   return result;
 }
 
-- (void)_serverDied:(id)a3
+- (void)_serverDied:(id)died
 {
-  v4 = a3;
+  diedCopy = died;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__SBAVSystemControllerCache__serverDied___block_invoke;
   v7[3] = &unk_2783A92D8;
-  v8 = v4;
-  v9 = self;
-  v5 = v4;
+  v8 = diedCopy;
+  selfCopy = self;
+  v5 = diedCopy;
   v6 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INITIATED, 0, v7);
   dispatch_async(self->_queue, v6);
 }
@@ -2079,25 +2079,25 @@ uint64_t __41__SBAVSystemControllerCache__serverDied___block_invoke(uint64_t a1)
   return [*(a1 + 40) _queue_rebuildCache];
 }
 
-- (void)_receiveUpdatedValueFromNotification:(id)a3
+- (void)_receiveUpdatedValueFromNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [v4 name];
-  v7 = [v4 userInfo];
+  notificationCopy = notification;
+  object = [notificationCopy object];
+  name = [notificationCopy name];
+  userInfo = [notificationCopy userInfo];
 
   queue = self->_queue;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __66__SBAVSystemControllerCache__receiveUpdatedValueFromNotification___block_invoke;
   v12[3] = &unk_2783A9BD8;
-  v13 = v5;
-  v14 = self;
-  v15 = v6;
-  v16 = v7;
-  v9 = v7;
-  v10 = v6;
-  v11 = v5;
+  v13 = object;
+  selfCopy = self;
+  v15 = name;
+  v16 = userInfo;
+  v9 = userInfo;
+  v10 = name;
+  v11 = object;
   dispatch_async(queue, v12);
 }
 

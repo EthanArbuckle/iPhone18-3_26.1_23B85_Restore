@@ -1,26 +1,26 @@
 @interface ODMSiriSchemaODMTrialExperimentIdentifiers
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODMSiriSchemaODMTrialExperimentIdentifiers)initWithDictionary:(id)a3;
-- (ODMSiriSchemaODMTrialExperimentIdentifiers)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODMSiriSchemaODMTrialExperimentIdentifiers)initWithDictionary:(id)dictionary;
+- (ODMSiriSchemaODMTrialExperimentIdentifiers)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODMSiriSchemaODMTrialExperimentIdentifiers
 
-- (ODMSiriSchemaODMTrialExperimentIdentifiers)initWithDictionary:(id)a3
+- (ODMSiriSchemaODMTrialExperimentIdentifiers)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = ODMSiriSchemaODMTrialExperimentIdentifiers;
   v5 = [(ODMSiriSchemaODMTrialExperimentIdentifiers *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"experimentId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"experimentId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(ODMSiriSchemaODMTrialExperimentIdentifiers *)v5 setExperimentId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"treatmentId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"treatmentId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(ODMSiriSchemaODMTrialExperimentIdentifiers *)v5 setTreatmentId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"deploymentId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"deploymentId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (ODMSiriSchemaODMTrialExperimentIdentifiers)initWithJSON:(id)a3
+- (ODMSiriSchemaODMTrialExperimentIdentifiers)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODMSiriSchemaODMTrialExperimentIdentifiers *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODMSiriSchemaODMTrialExperimentIdentifiers *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODMSiriSchemaODMTrialExperimentIdentifiers *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,39 +85,39 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[ODMSiriSchemaODMTrialExperimentIdentifiers deploymentId](self, "deploymentId")}];
-    [v3 setObject:v4 forKeyedSubscript:@"deploymentId"];
+    [dictionary setObject:v4 forKeyedSubscript:@"deploymentId"];
   }
 
   if (self->_experimentId)
   {
-    v5 = [(ODMSiriSchemaODMTrialExperimentIdentifiers *)self experimentId];
-    v6 = [v5 copy];
-    [v3 setObject:v6 forKeyedSubscript:@"experimentId"];
+    experimentId = [(ODMSiriSchemaODMTrialExperimentIdentifiers *)self experimentId];
+    v6 = [experimentId copy];
+    [dictionary setObject:v6 forKeyedSubscript:@"experimentId"];
   }
 
   if (self->_treatmentId)
   {
-    v7 = [(ODMSiriSchemaODMTrialExperimentIdentifiers *)self treatmentId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    treatmentId = [(ODMSiriSchemaODMTrialExperimentIdentifiers *)self treatmentId];
+    dictionaryRepresentation = [treatmentId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"treatmentId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"treatmentId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"treatmentId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"treatmentId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -137,28 +137,28 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(ODMSiriSchemaODMTrialExperimentIdentifiers *)self experimentId];
-  v6 = [v4 experimentId];
-  if ((v5 != 0) == (v6 == 0))
+  experimentId = [(ODMSiriSchemaODMTrialExperimentIdentifiers *)self experimentId];
+  experimentId2 = [equalCopy experimentId];
+  if ((experimentId != 0) == (experimentId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(ODMSiriSchemaODMTrialExperimentIdentifiers *)self experimentId];
-  if (v7)
+  experimentId3 = [(ODMSiriSchemaODMTrialExperimentIdentifiers *)self experimentId];
+  if (experimentId3)
   {
-    v8 = v7;
-    v9 = [(ODMSiriSchemaODMTrialExperimentIdentifiers *)self experimentId];
-    v10 = [v4 experimentId];
-    v11 = [v9 isEqual:v10];
+    v8 = experimentId3;
+    experimentId4 = [(ODMSiriSchemaODMTrialExperimentIdentifiers *)self experimentId];
+    experimentId5 = [equalCopy experimentId];
+    v11 = [experimentId4 isEqual:experimentId5];
 
     if (!v11)
     {
@@ -170,22 +170,22 @@
   {
   }
 
-  v5 = [(ODMSiriSchemaODMTrialExperimentIdentifiers *)self treatmentId];
-  v6 = [v4 treatmentId];
-  if ((v5 != 0) == (v6 == 0))
+  experimentId = [(ODMSiriSchemaODMTrialExperimentIdentifiers *)self treatmentId];
+  experimentId2 = [equalCopy treatmentId];
+  if ((experimentId != 0) == (experimentId2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(ODMSiriSchemaODMTrialExperimentIdentifiers *)self treatmentId];
-  if (v12)
+  treatmentId = [(ODMSiriSchemaODMTrialExperimentIdentifiers *)self treatmentId];
+  if (treatmentId)
   {
-    v13 = v12;
-    v14 = [(ODMSiriSchemaODMTrialExperimentIdentifiers *)self treatmentId];
-    v15 = [v4 treatmentId];
-    v16 = [v14 isEqual:v15];
+    v13 = treatmentId;
+    treatmentId2 = [(ODMSiriSchemaODMTrialExperimentIdentifiers *)self treatmentId];
+    treatmentId3 = [equalCopy treatmentId];
+    v16 = [treatmentId2 isEqual:treatmentId3];
 
     if (!v16)
     {
@@ -197,9 +197,9 @@ LABEL_11:
   {
   }
 
-  if ((*&self->_has & 1) == (v4[32] & 1))
+  if ((*&self->_has & 1) == (equalCopy[32] & 1))
   {
-    if ((*&self->_has & 1) == 0 || (deploymentId = self->_deploymentId, deploymentId == [v4 deploymentId]))
+    if ((*&self->_has & 1) == 0 || (deploymentId = self->_deploymentId, deploymentId == [equalCopy deploymentId]))
     {
       v17 = 1;
       goto LABEL_13;
@@ -213,21 +213,21 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(ODMSiriSchemaODMTrialExperimentIdentifiers *)self experimentId];
+  toCopy = to;
+  experimentId = [(ODMSiriSchemaODMTrialExperimentIdentifiers *)self experimentId];
 
-  if (v4)
+  if (experimentId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(ODMSiriSchemaODMTrialExperimentIdentifiers *)self treatmentId];
+  treatmentId = [(ODMSiriSchemaODMTrialExperimentIdentifiers *)self treatmentId];
 
-  if (v5)
+  if (treatmentId)
   {
-    v6 = [(ODMSiriSchemaODMTrialExperimentIdentifiers *)self treatmentId];
+    treatmentId2 = [(ODMSiriSchemaODMTrialExperimentIdentifiers *)self treatmentId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -237,17 +237,17 @@ LABEL_13:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = ODMSiriSchemaODMTrialExperimentIdentifiers;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(ODMSiriSchemaODMTrialExperimentIdentifiers *)self treatmentId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(ODMSiriSchemaODMTrialExperimentIdentifiers *)self deleteTreatmentId];
   }

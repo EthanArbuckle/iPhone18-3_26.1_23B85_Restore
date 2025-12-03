@@ -1,31 +1,31 @@
 @interface MCUIAppSignerUninstallerUtilities
-+ (id)_provisioningProfileUUIDsForAppSigner:(id)a3;
-+ (void)_asyncUninstallApplicationsForAppsigner:(id)a3 withUninstaller:(id)a4 dispatchGroup:(id)a5;
-+ (void)_asyncUninstallProvisioningProfilesForAppSigner:(id)a3 withUninstaller:(id)a4 dispatchGroup:(id)a5;
-+ (void)uninstallAppSigner:(id)a3 withUninstaller:(id)a4 dispatchGroup:(id)a5 completion:(id)a6;
++ (id)_provisioningProfileUUIDsForAppSigner:(id)signer;
++ (void)_asyncUninstallApplicationsForAppsigner:(id)appsigner withUninstaller:(id)uninstaller dispatchGroup:(id)group;
++ (void)_asyncUninstallProvisioningProfilesForAppSigner:(id)signer withUninstaller:(id)uninstaller dispatchGroup:(id)group;
++ (void)uninstallAppSigner:(id)signer withUninstaller:(id)uninstaller dispatchGroup:(id)group completion:(id)completion;
 @end
 
 @implementation MCUIAppSignerUninstallerUtilities
 
-+ (void)uninstallAppSigner:(id)a3 withUninstaller:(id)a4 dispatchGroup:(id)a5 completion:(id)a6
++ (void)uninstallAppSigner:(id)signer withUninstaller:(id)uninstaller dispatchGroup:(id)group completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  signerCopy = signer;
+  uninstallerCopy = uninstaller;
+  groupCopy = group;
+  completionCopy = completion;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __97__MCUIAppSignerUninstallerUtilities_uninstallAppSigner_withUninstaller_dispatchGroup_completion___block_invoke;
   block[3] = &unk_279861F08;
-  v22 = v13;
-  v23 = a1;
-  v19 = v10;
-  v20 = v11;
-  v21 = v12;
-  v14 = v13;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
+  v22 = completionCopy;
+  selfCopy = self;
+  v19 = signerCopy;
+  v20 = uninstallerCopy;
+  v21 = groupCopy;
+  v14 = completionCopy;
+  v15 = groupCopy;
+  v16 = uninstallerCopy;
+  v17 = signerCopy;
   dispatch_group_notify(v15, MEMORY[0x277D85CD0], block);
 }
 
@@ -42,23 +42,23 @@ void __97__MCUIAppSignerUninstallerUtilities_uninstallAppSigner_withUninstaller_
   dispatch_group_notify(v2, MEMORY[0x277D85CD0], block);
 }
 
-+ (void)_asyncUninstallProvisioningProfilesForAppSigner:(id)a3 withUninstaller:(id)a4 dispatchGroup:(id)a5
++ (void)_asyncUninstallProvisioningProfilesForAppSigner:(id)signer withUninstaller:(id)uninstaller dispatchGroup:(id)group
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  signerCopy = signer;
+  uninstallerCopy = uninstaller;
+  groupCopy = group;
   v11 = dispatch_get_global_queue(25, 0);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __115__MCUIAppSignerUninstallerUtilities__asyncUninstallProvisioningProfilesForAppSigner_withUninstaller_dispatchGroup___block_invoke;
   v15[3] = &unk_279861F58;
-  v16 = v8;
-  v17 = v10;
-  v18 = v9;
-  v19 = a1;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v16 = signerCopy;
+  v17 = groupCopy;
+  v18 = uninstallerCopy;
+  selfCopy = self;
+  v12 = uninstallerCopy;
+  v13 = groupCopy;
+  v14 = signerCopy;
   dispatch_async(v11, v15);
 }
 
@@ -102,22 +102,22 @@ void __115__MCUIAppSignerUninstallerUtilities__asyncUninstallProvisioningProfile
   dispatch_group_leave(v5);
 }
 
-+ (void)_asyncUninstallApplicationsForAppsigner:(id)a3 withUninstaller:(id)a4 dispatchGroup:(id)a5
++ (void)_asyncUninstallApplicationsForAppsigner:(id)appsigner withUninstaller:(id)uninstaller dispatchGroup:(id)group
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  appsignerCopy = appsigner;
+  uninstallerCopy = uninstaller;
+  groupCopy = group;
   v10 = dispatch_get_global_queue(25, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __107__MCUIAppSignerUninstallerUtilities__asyncUninstallApplicationsForAppsigner_withUninstaller_dispatchGroup___block_invoke;
   block[3] = &unk_279861DF8;
-  v15 = v7;
-  v16 = v9;
-  v17 = v8;
-  v11 = v8;
-  v12 = v9;
-  v13 = v7;
+  v15 = appsignerCopy;
+  v16 = groupCopy;
+  v17 = uninstallerCopy;
+  v11 = uninstallerCopy;
+  v12 = groupCopy;
+  v13 = appsignerCopy;
   dispatch_async(v10, block);
 }
 
@@ -166,17 +166,17 @@ void __107__MCUIAppSignerUninstallerUtilities__asyncUninstallApplicationsForApps
   dispatch_group_leave(v8);
 }
 
-+ (id)_provisioningProfileUUIDsForAppSigner:(id)a3
++ (id)_provisioningProfileUUIDsForAppSigner:(id)signer
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  signerCopy = signer;
   v4 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v3 provisioningProfiles];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  provisioningProfiles = [signerCopy provisioningProfiles];
+  v6 = [provisioningProfiles countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -187,21 +187,21 @@ void __107__MCUIAppSignerUninstallerUtilities__asyncUninstallApplicationsForApps
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(provisioningProfiles);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 uuid];
-        v12 = [v11 length];
+        uuid = [v10 uuid];
+        v12 = [uuid length];
 
         if (v12)
         {
-          v13 = [v10 uuid];
-          [v4 addObject:v13];
+          uuid2 = [v10 uuid];
+          [v4 addObject:uuid2];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [provisioningProfiles countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);

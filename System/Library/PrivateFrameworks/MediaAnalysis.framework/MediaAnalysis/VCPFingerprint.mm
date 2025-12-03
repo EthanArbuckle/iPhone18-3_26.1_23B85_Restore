@@ -1,55 +1,55 @@
 @interface VCPFingerprint
-+ (id)fingerprintWithMaster:(id)a3 adjusted:(id)a4;
-- (BOOL)isEqualToFingerprint:(id)a3;
-- (VCPFingerprint)initWithMaster:(id)a3 adjusted:(id)a4;
++ (id)fingerprintWithMaster:(id)master adjusted:(id)adjusted;
+- (BOOL)isEqualToFingerprint:(id)fingerprint;
+- (VCPFingerprint)initWithMaster:(id)master adjusted:(id)adjusted;
 @end
 
 @implementation VCPFingerprint
 
-- (VCPFingerprint)initWithMaster:(id)a3 adjusted:(id)a4
+- (VCPFingerprint)initWithMaster:(id)master adjusted:(id)adjusted
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7 && (v12.receiver = self, v12.super_class = VCPFingerprint, v9 = [(VCPFingerprint *)&v12 init], (self = v9) != 0))
+  masterCopy = master;
+  adjustedCopy = adjusted;
+  if (masterCopy && (v12.receiver = self, v12.super_class = VCPFingerprint, v9 = [(VCPFingerprint *)&v12 init], (self = v9) != 0))
   {
-    objc_storeStrong(&v9->_master, a3);
-    objc_storeStrong(&self->_adjusted, a4);
+    objc_storeStrong(&v9->_master, master);
+    objc_storeStrong(&self->_adjusted, adjusted);
     self = self;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-+ (id)fingerprintWithMaster:(id)a3 adjusted:(id)a4
++ (id)fingerprintWithMaster:(id)master adjusted:(id)adjusted
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[VCPFingerprint alloc] initWithMaster:v5 adjusted:v6];
+  masterCopy = master;
+  adjustedCopy = adjusted;
+  v7 = [[VCPFingerprint alloc] initWithMaster:masterCopy adjusted:adjustedCopy];
 
   return v7;
 }
 
-- (BOOL)isEqualToFingerprint:(id)a3
+- (BOOL)isEqualToFingerprint:(id)fingerprint
 {
-  v4 = a3;
+  fingerprintCopy = fingerprint;
   master = self->_master;
-  v6 = [v4 master];
-  LOBYTE(master) = [(NSString *)master isEqualToString:v6];
+  master = [fingerprintCopy master];
+  LOBYTE(master) = [(NSString *)master isEqualToString:master];
 
   if (master)
   {
     adjusted = self->_adjusted;
     if (!adjusted)
     {
-      v8 = [v4 adjusted];
+      adjusted = [fingerprintCopy adjusted];
 
-      if (!v8)
+      if (!adjusted)
       {
         v10 = 1;
         goto LABEL_7;
@@ -58,8 +58,8 @@
       adjusted = self->_adjusted;
     }
 
-    v9 = [v4 adjusted];
-    v10 = [(NSString *)adjusted isEqualToString:v9];
+    adjusted2 = [fingerprintCopy adjusted];
+    v10 = [(NSString *)adjusted isEqualToString:adjusted2];
   }
 
   else

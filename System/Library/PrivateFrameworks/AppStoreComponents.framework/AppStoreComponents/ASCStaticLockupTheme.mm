@@ -2,15 +2,15 @@
 + (ASCStaticLockupTheme)adTheme;
 + (ASCStaticLockupTheme)adWhiteTheme;
 + (ASCStaticLockupTheme)webBrowserTheme;
-- (ASCStaticLockupTheme)initWithTitleTextColor:(id)a3 titleFontSizeProvider:(id)a4 titleFontWeight:(double)a5 subtitleTextColor:(id)a6 subtitleFontSizeProvider:(id)a7 subtitleFontWeight:(double)a8 headingTextColor:(id)a9 headingFontSizeProvider:(id)a10 headingFontWeight:(double)a11;
-- (ASCStaticLockupTheme)initWithTitleTextColor:(id)a3 titleTextStyle:(id)a4 titleFontWeight:(double)a5 titleTraits:(unsigned int)a6 subtitleTextColor:(id)a7 subtitleTextStyle:(id)a8 subtitleFontWeight:(double)a9 subtitleTraits:(unsigned int)a10 headingTextColor:(id)a11 headingTextStyle:(id)a12 headingFontWeight:(double)a13 headingTraits:(unsigned int)a14;
-- (BOOL)isEqual:(id)a3;
+- (ASCStaticLockupTheme)initWithTitleTextColor:(id)color titleFontSizeProvider:(id)provider titleFontWeight:(double)weight subtitleTextColor:(id)textColor subtitleFontSizeProvider:(id)sizeProvider subtitleFontWeight:(double)fontWeight headingTextColor:(id)headingTextColor headingFontSizeProvider:(id)self0 headingFontWeight:(double)self1;
+- (ASCStaticLockupTheme)initWithTitleTextColor:(id)color titleTextStyle:(id)style titleFontWeight:(double)weight titleTraits:(unsigned int)traits subtitleTextColor:(id)textColor subtitleTextStyle:(id)textStyle subtitleFontWeight:(double)fontWeight subtitleTraits:(unsigned int)self0 headingTextColor:(id)self1 headingTextStyle:(id)self2 headingFontWeight:(double)self3 headingTraits:(unsigned int)self4;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)headingFontCompatibleWithTraitCollection:(id)a3;
-- (id)subtitleFontCompatibleWithTraitCollection:(id)a3;
-- (id)titleFontCompatibleWithTraitCollection:(id)a3;
+- (id)headingFontCompatibleWithTraitCollection:(id)collection;
+- (id)subtitleFontCompatibleWithTraitCollection:(id)collection;
+- (id)titleFontCompatibleWithTraitCollection:(id)collection;
 - (unint64_t)hash;
-- (void)applyToLockupContentView:(id)a3 compatibleWithTraitCollection:(id)a4;
+- (void)applyToLockupContentView:(id)view compatibleWithTraitCollection:(id)collection;
 @end
 
 @implementation ASCStaticLockupTheme
@@ -95,84 +95,84 @@ void __39__ASCStaticLockupTheme_webBrowserTheme__block_invoke()
   webBrowserTheme_webBrowserTheme = v6;
 }
 
-- (ASCStaticLockupTheme)initWithTitleTextColor:(id)a3 titleTextStyle:(id)a4 titleFontWeight:(double)a5 titleTraits:(unsigned int)a6 subtitleTextColor:(id)a7 subtitleTextStyle:(id)a8 subtitleFontWeight:(double)a9 subtitleTraits:(unsigned int)a10 headingTextColor:(id)a11 headingTextStyle:(id)a12 headingFontWeight:(double)a13 headingTraits:(unsigned int)a14
+- (ASCStaticLockupTheme)initWithTitleTextColor:(id)color titleTextStyle:(id)style titleFontWeight:(double)weight titleTraits:(unsigned int)traits subtitleTextColor:(id)textColor subtitleTextStyle:(id)textStyle subtitleFontWeight:(double)fontWeight subtitleTraits:(unsigned int)self0 headingTextColor:(id)self1 headingTextStyle:(id)self2 headingFontWeight:(double)self3 headingTraits:(unsigned int)self4
 {
-  v22 = a3;
-  v32 = a4;
-  v31 = a7;
-  v30 = a8;
-  v23 = a11;
-  v24 = a12;
+  colorCopy = color;
+  styleCopy = style;
+  textColorCopy = textColor;
+  textStyleCopy = textStyle;
+  headingTextColorCopy = headingTextColor;
+  headingTextStyleCopy = headingTextStyle;
   v33.receiver = self;
   v33.super_class = ASCStaticLockupTheme;
   v25 = [(ASCStaticLockupTheme *)&v33 init];
   v26 = v25;
   if (v25)
   {
-    objc_storeStrong(&v25->_titleTextColor, a3);
-    objc_storeStrong(&v26->_titleTextStyle, a4);
-    v26->_titleFontWeight = a5;
-    v26->_titleTraits = a6;
-    objc_storeStrong(&v26->_subtitleTextColor, a7);
-    objc_storeStrong(&v26->_subtitleTextStyle, a8);
-    v26->_subtitleFontWeight = a9;
-    v26->_subtitleTraits = a10;
-    objc_storeStrong(&v26->_headingTextColor, a11);
-    objc_storeStrong(&v26->_headingTextStyle, a12);
-    v26->_headingFontWeight = a13;
-    v26->_headingTraits = a14;
+    objc_storeStrong(&v25->_titleTextColor, color);
+    objc_storeStrong(&v26->_titleTextStyle, style);
+    v26->_titleFontWeight = weight;
+    v26->_titleTraits = traits;
+    objc_storeStrong(&v26->_subtitleTextColor, textColor);
+    objc_storeStrong(&v26->_subtitleTextStyle, textStyle);
+    v26->_subtitleFontWeight = fontWeight;
+    v26->_subtitleTraits = subtitleTraits;
+    objc_storeStrong(&v26->_headingTextColor, headingTextColor);
+    objc_storeStrong(&v26->_headingTextStyle, headingTextStyle);
+    v26->_headingFontWeight = headingFontWeight;
+    v26->_headingTraits = headingTraits;
   }
 
   return v26;
 }
 
-- (ASCStaticLockupTheme)initWithTitleTextColor:(id)a3 titleFontSizeProvider:(id)a4 titleFontWeight:(double)a5 subtitleTextColor:(id)a6 subtitleFontSizeProvider:(id)a7 subtitleFontWeight:(double)a8 headingTextColor:(id)a9 headingFontSizeProvider:(id)a10 headingFontWeight:(double)a11
+- (ASCStaticLockupTheme)initWithTitleTextColor:(id)color titleFontSizeProvider:(id)provider titleFontWeight:(double)weight subtitleTextColor:(id)textColor subtitleFontSizeProvider:(id)sizeProvider subtitleFontWeight:(double)fontWeight headingTextColor:(id)headingTextColor headingFontSizeProvider:(id)self0 headingFontWeight:(double)self1
 {
-  v35 = a3;
-  v21 = a4;
-  v22 = a6;
-  v23 = a7;
-  v24 = a9;
-  v25 = a10;
+  colorCopy = color;
+  providerCopy = provider;
+  textColorCopy = textColor;
+  sizeProviderCopy = sizeProvider;
+  headingTextColorCopy = headingTextColor;
+  fontSizeProviderCopy = fontSizeProvider;
   v36.receiver = self;
   v36.super_class = ASCStaticLockupTheme;
   v26 = [(ASCStaticLockupTheme *)&v36 init];
   v27 = v26;
   if (v26)
   {
-    objc_storeStrong(&v26->_titleTextColor, a3);
-    v28 = MEMORY[0x216070C30](v21);
+    objc_storeStrong(&v26->_titleTextColor, color);
+    v28 = MEMORY[0x216070C30](providerCopy);
     titleFontSizeProvider = v27->_titleFontSizeProvider;
     v27->_titleFontSizeProvider = v28;
 
-    v27->_titleFontWeight = a5;
-    objc_storeStrong(&v27->_subtitleTextColor, a6);
-    v30 = MEMORY[0x216070C30](v23);
+    v27->_titleFontWeight = weight;
+    objc_storeStrong(&v27->_subtitleTextColor, textColor);
+    v30 = MEMORY[0x216070C30](sizeProviderCopy);
     subtitleFontSizeProvider = v27->_subtitleFontSizeProvider;
     v27->_subtitleFontSizeProvider = v30;
 
-    v27->_subtitleFontWeight = a8;
-    objc_storeStrong(&v27->_headingTextColor, a9);
-    v32 = MEMORY[0x216070C30](v25);
+    v27->_subtitleFontWeight = fontWeight;
+    objc_storeStrong(&v27->_headingTextColor, headingTextColor);
+    v32 = MEMORY[0x216070C30](fontSizeProviderCopy);
     headingFontSizeProvider = v27->_headingFontSizeProvider;
     v27->_headingFontSizeProvider = v32;
 
-    v27->_headingFontWeight = a11;
+    v27->_headingFontWeight = headingFontWeight;
   }
 
   return v27;
 }
 
-- (id)titleFontCompatibleWithTraitCollection:(id)a3
+- (id)titleFontCompatibleWithTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(ASCStaticLockupTheme *)self titleFontSizeProvider];
+  collectionCopy = collection;
+  titleFontSizeProvider = [(ASCStaticLockupTheme *)self titleFontSizeProvider];
 
-  if (v5)
+  if (titleFontSizeProvider)
   {
-    v6 = [(ASCStaticLockupTheme *)self titleFontSizeProvider];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = (v6)[2](v6, v7);
+    titleFontSizeProvider2 = [(ASCStaticLockupTheme *)self titleFontSizeProvider];
+    preferredContentSizeCategory = [collectionCopy preferredContentSizeCategory];
+    v8 = (titleFontSizeProvider2)[2](titleFontSizeProvider2, preferredContentSizeCategory);
 
     if (!titleFontCompatibleWithTraitCollection__titleFont || ([titleFontCompatibleWithTraitCollection__titleFont pointSize], v9 != v8))
     {
@@ -188,18 +188,18 @@ void __39__ASCStaticLockupTheme_webBrowserTheme__block_invoke()
 
   else
   {
-    v15 = [(ASCStaticLockupTheme *)self titleTraits];
+    titleTraits = [(ASCStaticLockupTheme *)self titleTraits];
     v16 = MEMORY[0x277D74300];
-    v17 = [(ASCStaticLockupTheme *)self titleTextStyle];
-    if (v15)
+    titleTextStyle = [(ASCStaticLockupTheme *)self titleTextStyle];
+    if (titleTraits)
     {
-      [v16 asc_preferredFontForTextStyle:v17 withTraits:-[ASCStaticLockupTheme titleTraits](self compatibleWithTraitCollection:{"titleTraits"), v4}];
+      [v16 asc_preferredFontForTextStyle:titleTextStyle withTraits:-[ASCStaticLockupTheme titleTraits](self compatibleWithTraitCollection:{"titleTraits"), collectionCopy}];
     }
 
     else
     {
       [(ASCStaticLockupTheme *)self titleFontWeight];
-      [v16 asc_fontDerivedFromTextStyle:v17 byApplyingFontWeight:v4 compatibleWithTraitCollection:?];
+      [v16 asc_fontDerivedFromTextStyle:titleTextStyle byApplyingFontWeight:collectionCopy compatibleWithTraitCollection:?];
     }
     v14 = ;
   }
@@ -207,16 +207,16 @@ void __39__ASCStaticLockupTheme_webBrowserTheme__block_invoke()
   return v14;
 }
 
-- (id)subtitleFontCompatibleWithTraitCollection:(id)a3
+- (id)subtitleFontCompatibleWithTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(ASCStaticLockupTheme *)self subtitleFontSizeProvider];
+  collectionCopy = collection;
+  subtitleFontSizeProvider = [(ASCStaticLockupTheme *)self subtitleFontSizeProvider];
 
-  if (v5)
+  if (subtitleFontSizeProvider)
   {
-    v6 = [(ASCStaticLockupTheme *)self subtitleFontSizeProvider];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = (v6)[2](v6, v7);
+    subtitleFontSizeProvider2 = [(ASCStaticLockupTheme *)self subtitleFontSizeProvider];
+    preferredContentSizeCategory = [collectionCopy preferredContentSizeCategory];
+    v8 = (subtitleFontSizeProvider2)[2](subtitleFontSizeProvider2, preferredContentSizeCategory);
 
     if (!subtitleFontCompatibleWithTraitCollection__subtitleFont || ([subtitleFontCompatibleWithTraitCollection__subtitleFont pointSize], v9 != v8))
     {
@@ -232,18 +232,18 @@ void __39__ASCStaticLockupTheme_webBrowserTheme__block_invoke()
 
   else
   {
-    v15 = [(ASCStaticLockupTheme *)self subtitleTraits];
+    subtitleTraits = [(ASCStaticLockupTheme *)self subtitleTraits];
     v16 = MEMORY[0x277D74300];
-    v17 = [(ASCStaticLockupTheme *)self subtitleTextStyle];
-    if (v15)
+    subtitleTextStyle = [(ASCStaticLockupTheme *)self subtitleTextStyle];
+    if (subtitleTraits)
     {
-      [v16 asc_preferredFontForTextStyle:v17 withTraits:-[ASCStaticLockupTheme subtitleTraits](self compatibleWithTraitCollection:{"subtitleTraits"), v4}];
+      [v16 asc_preferredFontForTextStyle:subtitleTextStyle withTraits:-[ASCStaticLockupTheme subtitleTraits](self compatibleWithTraitCollection:{"subtitleTraits"), collectionCopy}];
     }
 
     else
     {
       [(ASCStaticLockupTheme *)self subtitleFontWeight];
-      [v16 asc_fontDerivedFromTextStyle:v17 byApplyingFontWeight:v4 compatibleWithTraitCollection:?];
+      [v16 asc_fontDerivedFromTextStyle:subtitleTextStyle byApplyingFontWeight:collectionCopy compatibleWithTraitCollection:?];
     }
     v14 = ;
   }
@@ -251,16 +251,16 @@ void __39__ASCStaticLockupTheme_webBrowserTheme__block_invoke()
   return v14;
 }
 
-- (id)headingFontCompatibleWithTraitCollection:(id)a3
+- (id)headingFontCompatibleWithTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(ASCStaticLockupTheme *)self headingFontSizeProvider];
+  collectionCopy = collection;
+  headingFontSizeProvider = [(ASCStaticLockupTheme *)self headingFontSizeProvider];
 
-  if (v5)
+  if (headingFontSizeProvider)
   {
-    v6 = [(ASCStaticLockupTheme *)self headingFontSizeProvider];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = (v6)[2](v6, v7);
+    headingFontSizeProvider2 = [(ASCStaticLockupTheme *)self headingFontSizeProvider];
+    preferredContentSizeCategory = [collectionCopy preferredContentSizeCategory];
+    v8 = (headingFontSizeProvider2)[2](headingFontSizeProvider2, preferredContentSizeCategory);
 
     if (!headingFontCompatibleWithTraitCollection__headingFont || ([headingFontCompatibleWithTraitCollection__headingFont pointSize], v9 != v8))
     {
@@ -276,18 +276,18 @@ void __39__ASCStaticLockupTheme_webBrowserTheme__block_invoke()
 
   else
   {
-    v15 = [(ASCStaticLockupTheme *)self headingTraits];
+    headingTraits = [(ASCStaticLockupTheme *)self headingTraits];
     v16 = MEMORY[0x277D74300];
-    v17 = [(ASCStaticLockupTheme *)self headingTextStyle];
-    if (v15)
+    headingTextStyle = [(ASCStaticLockupTheme *)self headingTextStyle];
+    if (headingTraits)
     {
-      [v16 asc_preferredFontForTextStyle:v17 withTraits:-[ASCStaticLockupTheme headingTraits](self compatibleWithTraitCollection:{"headingTraits"), v4}];
+      [v16 asc_preferredFontForTextStyle:headingTextStyle withTraits:-[ASCStaticLockupTheme headingTraits](self compatibleWithTraitCollection:{"headingTraits"), collectionCopy}];
     }
 
     else
     {
       [(ASCStaticLockupTheme *)self headingFontWeight];
-      [v16 asc_fontDerivedFromTextStyle:v17 byApplyingFontWeight:v4 compatibleWithTraitCollection:?];
+      [v16 asc_fontDerivedFromTextStyle:headingTextStyle byApplyingFontWeight:collectionCopy compatibleWithTraitCollection:?];
     }
     v14 = ;
   }
@@ -295,77 +295,77 @@ void __39__ASCStaticLockupTheme_webBrowserTheme__block_invoke()
   return v14;
 }
 
-- (void)applyToLockupContentView:(id)a3 compatibleWithTraitCollection:(id)a4
+- (void)applyToLockupContentView:(id)view compatibleWithTraitCollection:(id)collection
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ASCStaticLockupTheme *)self titleTextColor];
-  v9 = [v7 titleLabel];
-  [v9 setTextColor:v8];
+  collectionCopy = collection;
+  viewCopy = view;
+  titleTextColor = [(ASCStaticLockupTheme *)self titleTextColor];
+  titleLabel = [viewCopy titleLabel];
+  [titleLabel setTextColor:titleTextColor];
 
-  v10 = [(ASCStaticLockupTheme *)self subtitleTextColor];
-  v11 = [v7 subtitleLabel];
-  [v11 setTextColor:v10];
+  subtitleTextColor = [(ASCStaticLockupTheme *)self subtitleTextColor];
+  subtitleLabel = [viewCopy subtitleLabel];
+  [subtitleLabel setTextColor:subtitleTextColor];
 
-  v12 = [(ASCStaticLockupTheme *)self headingTextColor];
-  v13 = [v7 headingLabelIfLoaded];
-  [v13 setTextColor:v12];
+  headingTextColor = [(ASCStaticLockupTheme *)self headingTextColor];
+  headingLabelIfLoaded = [viewCopy headingLabelIfLoaded];
+  [headingLabelIfLoaded setTextColor:headingTextColor];
 
-  v14 = [(ASCStaticLockupTheme *)self titleFontCompatibleWithTraitCollection:v6];
-  v15 = [v7 titleLabel];
-  [v15 setFont:v14];
+  v14 = [(ASCStaticLockupTheme *)self titleFontCompatibleWithTraitCollection:collectionCopy];
+  titleLabel2 = [viewCopy titleLabel];
+  [titleLabel2 setFont:v14];
 
-  v16 = [(ASCStaticLockupTheme *)self subtitleFontCompatibleWithTraitCollection:v6];
-  v17 = [v7 subtitleLabel];
-  [v17 setFont:v16];
+  v16 = [(ASCStaticLockupTheme *)self subtitleFontCompatibleWithTraitCollection:collectionCopy];
+  subtitleLabel2 = [viewCopy subtitleLabel];
+  [subtitleLabel2 setFont:v16];
 
-  v19 = [(ASCStaticLockupTheme *)self headingFontCompatibleWithTraitCollection:v6];
+  v19 = [(ASCStaticLockupTheme *)self headingFontCompatibleWithTraitCollection:collectionCopy];
 
-  v18 = [v7 headingLabelIfLoaded];
+  headingLabelIfLoaded2 = [viewCopy headingLabelIfLoaded];
 
-  [v18 setFont:v19];
+  [headingLabelIfLoaded2 setFont:v19];
 }
 
 - (unint64_t)hash
 {
   v3 = objc_alloc_init(ASCHasher);
-  v4 = [(ASCStaticLockupTheme *)self titleTextColor];
-  [(ASCHasher *)v3 combineObject:v4];
+  titleTextColor = [(ASCStaticLockupTheme *)self titleTextColor];
+  [(ASCHasher *)v3 combineObject:titleTextColor];
 
-  v5 = [(ASCStaticLockupTheme *)self titleTextStyle];
-  [(ASCHasher *)v3 combineObject:v5];
+  titleTextStyle = [(ASCStaticLockupTheme *)self titleTextStyle];
+  [(ASCHasher *)v3 combineObject:titleTextStyle];
 
   [(ASCStaticLockupTheme *)self titleFontWeight];
   [(ASCHasher *)v3 combineDouble:?];
   [(ASCHasher *)v3 combineUnsignedInteger:[(ASCStaticLockupTheme *)self titleTraits]];
-  v6 = [(ASCStaticLockupTheme *)self subtitleTextColor];
-  [(ASCHasher *)v3 combineObject:v6];
+  subtitleTextColor = [(ASCStaticLockupTheme *)self subtitleTextColor];
+  [(ASCHasher *)v3 combineObject:subtitleTextColor];
 
-  v7 = [(ASCStaticLockupTheme *)self subtitleTextStyle];
-  [(ASCHasher *)v3 combineObject:v7];
+  subtitleTextStyle = [(ASCStaticLockupTheme *)self subtitleTextStyle];
+  [(ASCHasher *)v3 combineObject:subtitleTextStyle];
 
   [(ASCStaticLockupTheme *)self subtitleFontWeight];
   [(ASCHasher *)v3 combineDouble:?];
   [(ASCHasher *)v3 combineUnsignedInteger:[(ASCStaticLockupTheme *)self subtitleTraits]];
-  v8 = [(ASCStaticLockupTheme *)self headingTextColor];
-  [(ASCHasher *)v3 combineObject:v8];
+  headingTextColor = [(ASCStaticLockupTheme *)self headingTextColor];
+  [(ASCHasher *)v3 combineObject:headingTextColor];
 
-  v9 = [(ASCStaticLockupTheme *)self headingTextStyle];
-  [(ASCHasher *)v3 combineObject:v9];
+  headingTextStyle = [(ASCStaticLockupTheme *)self headingTextStyle];
+  [(ASCHasher *)v3 combineObject:headingTextStyle];
 
   [(ASCStaticLockupTheme *)self headingFontWeight];
   [(ASCHasher *)v3 combineDouble:?];
   [(ASCHasher *)v3 combineUnsignedInteger:[(ASCStaticLockupTheme *)self headingTraits]];
-  v10 = [(ASCHasher *)v3 finalizeHash];
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
 
-  return v10;
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -388,26 +388,26 @@ void __39__ASCStaticLockupTheme_webBrowserTheme__block_invoke()
 
   if (v7)
   {
-    v8 = [(ASCStaticLockupTheme *)self titleTextColor];
-    v9 = [v7 titleTextColor];
-    v10 = v9;
-    if (v8 && v9)
+    titleTextColor = [(ASCStaticLockupTheme *)self titleTextColor];
+    titleTextColor2 = [v7 titleTextColor];
+    v10 = titleTextColor2;
+    if (titleTextColor && titleTextColor2)
     {
-      if ([v8 isEqual:v9])
+      if ([titleTextColor isEqual:titleTextColor2])
       {
 LABEL_10:
-        v11 = [(ASCStaticLockupTheme *)self titleTextStyle];
-        v12 = [v7 titleTextStyle];
-        v13 = v12;
-        if (v11 && v12)
+        titleTextStyle = [(ASCStaticLockupTheme *)self titleTextStyle];
+        titleTextStyle2 = [v7 titleTextStyle];
+        v13 = titleTextStyle2;
+        if (titleTextStyle && titleTextStyle2)
         {
-          if (![v11 isEqual:v12])
+          if (![titleTextStyle isEqual:titleTextStyle2])
           {
             goto LABEL_33;
           }
         }
 
-        else if (v11 != v12)
+        else if (titleTextStyle != titleTextStyle2)
         {
           goto LABEL_33;
         }
@@ -417,26 +417,26 @@ LABEL_10:
         [v7 titleFontWeight];
         if (v16 == v17)
         {
-          v18 = [(ASCStaticLockupTheme *)self subtitleTextColor];
-          v19 = [v7 subtitleTextColor];
-          v20 = v19;
-          if (v18 && v19)
+          subtitleTextColor = [(ASCStaticLockupTheme *)self subtitleTextColor];
+          subtitleTextColor2 = [v7 subtitleTextColor];
+          v20 = subtitleTextColor2;
+          if (subtitleTextColor && subtitleTextColor2)
           {
-            if ([v18 isEqual:v19])
+            if ([subtitleTextColor isEqual:subtitleTextColor2])
             {
 LABEL_22:
-              v21 = [(ASCStaticLockupTheme *)self subtitleTextStyle];
-              v22 = [v7 subtitleTextStyle];
-              v23 = v22;
-              if (v21 && v22)
+              subtitleTextStyle = [(ASCStaticLockupTheme *)self subtitleTextStyle];
+              subtitleTextStyle2 = [v7 subtitleTextStyle];
+              v23 = subtitleTextStyle2;
+              if (subtitleTextStyle && subtitleTextStyle2)
               {
-                v24 = v21;
+                v24 = subtitleTextStyle;
                 v51 = v20;
-                v25 = v21;
+                v25 = subtitleTextStyle;
                 v26 = v23;
                 v27 = [v24 isEqual:v23];
                 v23 = v26;
-                v21 = v25;
+                subtitleTextStyle = v25;
                 v20 = v51;
                 if (v27)
                 {
@@ -444,11 +444,11 @@ LABEL_22:
                 }
               }
 
-              else if (v21 == v22)
+              else if (subtitleTextStyle == subtitleTextStyle2)
               {
 LABEL_25:
                 v49 = v23;
-                v50 = v21;
+                v50 = subtitleTextStyle;
                 [(ASCStaticLockupTheme *)self subtitleFontWeight];
                 v29 = v28;
                 [v7 subtitleFontWeight];
@@ -457,38 +457,38 @@ LABEL_25:
                   v14 = 0;
 LABEL_45:
                   v23 = v49;
-                  v21 = v50;
+                  subtitleTextStyle = v50;
                   goto LABEL_46;
                 }
 
-                v31 = [(ASCStaticLockupTheme *)self headingTextColor];
-                v32 = [v7 headingTextColor];
-                v33 = v32;
-                v52 = v31;
-                if (v31 && v32)
+                headingTextColor = [(ASCStaticLockupTheme *)self headingTextColor];
+                headingTextColor2 = [v7 headingTextColor];
+                v33 = headingTextColor2;
+                v52 = headingTextColor;
+                if (headingTextColor && headingTextColor2)
                 {
-                  v34 = v32;
-                  v35 = [v52 isEqual:v32];
+                  v34 = headingTextColor2;
+                  v35 = [v52 isEqual:headingTextColor2];
                   v33 = v34;
                   if (v35)
                   {
 LABEL_29:
                     v47 = v33;
-                    v36 = [(ASCStaticLockupTheme *)self headingTextStyle];
-                    v37 = [v7 headingTextStyle];
-                    v38 = v37;
-                    v48 = v36;
-                    if (v36 && v37)
+                    headingTextStyle = [(ASCStaticLockupTheme *)self headingTextStyle];
+                    headingTextStyle2 = [v7 headingTextStyle];
+                    v38 = headingTextStyle2;
+                    v48 = headingTextStyle;
+                    if (headingTextStyle && headingTextStyle2)
                     {
-                      v39 = v37;
-                      v40 = [v48 isEqual:v37];
+                      v39 = headingTextStyle2;
+                      v40 = [v48 isEqual:headingTextStyle2];
                       v38 = v39;
                       if (v40)
                       {
 LABEL_32:
-                        v41 = self;
+                        selfCopy = self;
                         v42 = v38;
-                        [(ASCStaticLockupTheme *)v41 headingFontWeight];
+                        [(ASCStaticLockupTheme *)selfCopy headingFontWeight];
                         v44 = v43;
                         [v7 headingFontWeight];
                         v38 = v42;
@@ -500,7 +500,7 @@ LABEL_43:
                       }
                     }
 
-                    else if (v36 == v37)
+                    else if (headingTextStyle == headingTextStyle2)
                     {
                       goto LABEL_32;
                     }
@@ -510,7 +510,7 @@ LABEL_43:
                   }
                 }
 
-                else if (v31 == v32)
+                else if (headingTextColor == headingTextColor2)
                 {
                   goto LABEL_29;
                 }
@@ -528,7 +528,7 @@ LABEL_46:
             }
           }
 
-          else if (v18 == v19)
+          else if (subtitleTextColor == subtitleTextColor2)
           {
             goto LABEL_22;
           }
@@ -547,7 +547,7 @@ LABEL_48:
       }
     }
 
-    else if (v8 == v9)
+    else if (titleTextColor == titleTextColor2)
     {
       goto LABEL_10;
     }
@@ -567,36 +567,36 @@ LABEL_50:
 - (NSString)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCStaticLockupTheme *)self titleTextColor];
-  [(ASCDescriber *)v3 addObject:v4 withName:@"titleTextColor"];
+  titleTextColor = [(ASCStaticLockupTheme *)self titleTextColor];
+  [(ASCDescriber *)v3 addObject:titleTextColor withName:@"titleTextColor"];
 
-  v5 = [(ASCStaticLockupTheme *)self titleTextStyle];
-  [(ASCDescriber *)v3 addObject:v5 withName:@"titleTextStyle"];
+  titleTextStyle = [(ASCStaticLockupTheme *)self titleTextStyle];
+  [(ASCDescriber *)v3 addObject:titleTextStyle withName:@"titleTextStyle"];
 
   [(ASCStaticLockupTheme *)self titleFontWeight];
   [(ASCDescriber *)v3 addDouble:@"titleFontWeight" withName:?];
   [(ASCDescriber *)v3 addUnsignedInteger:[(ASCStaticLockupTheme *)self titleTraits] withName:@"titleTraits"];
-  v6 = [(ASCStaticLockupTheme *)self subtitleTextColor];
-  [(ASCDescriber *)v3 addObject:v6 withName:@"subtitleTextColor"];
+  subtitleTextColor = [(ASCStaticLockupTheme *)self subtitleTextColor];
+  [(ASCDescriber *)v3 addObject:subtitleTextColor withName:@"subtitleTextColor"];
 
-  v7 = [(ASCStaticLockupTheme *)self subtitleTextStyle];
-  [(ASCDescriber *)v3 addObject:v7 withName:@"subtitleTextStyle"];
+  subtitleTextStyle = [(ASCStaticLockupTheme *)self subtitleTextStyle];
+  [(ASCDescriber *)v3 addObject:subtitleTextStyle withName:@"subtitleTextStyle"];
 
   [(ASCStaticLockupTheme *)self subtitleFontWeight];
   [(ASCDescriber *)v3 addDouble:@"subtitleFontWeight" withName:?];
   [(ASCDescriber *)v3 addUnsignedInteger:[(ASCStaticLockupTheme *)self subtitleTraits] withName:@"subtitleTraits"];
-  v8 = [(ASCStaticLockupTheme *)self headingTextColor];
-  [(ASCDescriber *)v3 addObject:v8 withName:@"headingTextColor"];
+  headingTextColor = [(ASCStaticLockupTheme *)self headingTextColor];
+  [(ASCDescriber *)v3 addObject:headingTextColor withName:@"headingTextColor"];
 
-  v9 = [(ASCStaticLockupTheme *)self headingTextStyle];
-  [(ASCDescriber *)v3 addObject:v9 withName:@"headingTextStyle"];
+  headingTextStyle = [(ASCStaticLockupTheme *)self headingTextStyle];
+  [(ASCDescriber *)v3 addObject:headingTextStyle withName:@"headingTextStyle"];
 
   [(ASCStaticLockupTheme *)self headingFontWeight];
   [(ASCDescriber *)v3 addDouble:@"headingFontWeight" withName:?];
   [(ASCDescriber *)v3 addUnsignedInteger:[(ASCStaticLockupTheme *)self headingTraits] withName:@"headingTraits"];
-  v10 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v10;
+  return finalizeDescription;
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface TIFacemarkSorter
-+ (id)candidatesSortedByFacemarkCategoryFromCandidates:(id)a3;
++ (id)candidatesSortedByFacemarkCategoryFromCandidates:(id)candidates;
 @end
 
 @implementation TIFacemarkSorter
 
-+ (id)candidatesSortedByFacemarkCategoryFromCandidates:(id)a3
++ (id)candidatesSortedByFacemarkCategoryFromCandidates:(id)candidates
 {
   v40 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v25 = [MEMORY[0x1E695DF70] array];
+  candidatesCopy = candidates;
+  array = [MEMORY[0x1E695DF70] array];
   context = objc_autoreleasePoolPush();
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   if (candidatesSortedByFacemarkCategoryFromCandidates__onceToken != -1)
@@ -37,7 +37,7 @@
 
         v10 = *(*(&v34 + 1) + 8 * i);
         v11 = objc_alloc_init(MEMORY[0x1E695DFA0]);
-        [v4 setObject:v11 forKeyedSubscript:{v10, v25, context}];
+        [v4 setObject:v11 forKeyedSubscript:{v10, array, context}];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v34 objects:v39 count:16];
@@ -50,7 +50,7 @@
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v12 = v3;
+  v12 = candidatesCopy;
   v13 = [v12 countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v13)
   {
@@ -70,15 +70,15 @@
         if (objc_opt_isKindOfClass())
         {
           v18 = v17;
-          v19 = [v18 category];
-          v20 = [v4 objectForKeyedSubscript:v19];
+          category = [v18 category];
+          v20 = [v4 objectForKeyedSubscript:category];
 
           if (!v20)
           {
             v20 = [v4 objectForKey:@"O"];
           }
 
-          [v20 addObject:{v18, v25}];
+          [v20 addObject:{v18, array}];
         }
       }
 
@@ -94,7 +94,7 @@
   v27[2] = __69__TIFacemarkSorter_candidatesSortedByFacemarkCategoryFromCandidates___block_invoke_2;
   v27[3] = &unk_1E6F4D770;
   v28 = v4;
-  v22 = v25;
+  v22 = array;
   v29 = v22;
   v23 = v4;
   [v21 enumerateObjectsUsingBlock:v27];

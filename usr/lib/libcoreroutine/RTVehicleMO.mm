@@ -1,15 +1,15 @@
 @interface RTVehicleMO
-+ (id)managedObjectWithVehicle:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithVehicle:(id)vehicle inManagedObjectContext:(id)context;
 @end
 
 @implementation RTVehicleMO
 
-+ (id)managedObjectWithVehicle:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithVehicle:(id)vehicle inManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  vehicleCopy = vehicle;
+  contextCopy = context;
+  v7 = contextCopy;
+  if (!vehicleCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -25,25 +25,25 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  if (v6)
+  if (contextCopy)
   {
-    v8 = [[RTVehicleMO alloc] initWithContext:v6];
-    v9 = [v5 dateInterval];
-    v10 = [v9 startDate];
-    [(RTVehicleMO *)v8 setStartDate:v10];
+    v8 = [[RTVehicleMO alloc] initWithContext:contextCopy];
+    dateInterval = [vehicleCopy dateInterval];
+    startDate = [dateInterval startDate];
+    [(RTVehicleMO *)v8 setStartDate:startDate];
 
-    v11 = [v5 dateInterval];
-    v12 = [v11 endDate];
-    [(RTVehicleMO *)v8 setEndDate:v12];
+    dateInterval2 = [vehicleCopy dateInterval];
+    endDate = [dateInterval2 endDate];
+    [(RTVehicleMO *)v8 setEndDate:endDate];
 
-    v13 = [v5 bluetoothAddress];
-    [(RTVehicleMO *)v8 setBluetoothAddress:v13];
+    bluetoothAddress = [vehicleCopy bluetoothAddress];
+    [(RTVehicleMO *)v8 setBluetoothAddress:bluetoothAddress];
 
-    v14 = [v5 vehicleName];
-    [(RTVehicleMO *)v8 setVehicleName:v14];
+    vehicleName = [vehicleCopy vehicleName];
+    [(RTVehicleMO *)v8 setVehicleName:vehicleName];
 
-    v15 = [v5 vehicleModelName];
-    [(RTVehicleMO *)v8 setVehicleModelName:v15];
+    vehicleModelName = [vehicleCopy vehicleModelName];
+    [(RTVehicleMO *)v8 setVehicleModelName:vehicleModelName];
 
     goto LABEL_8;
   }

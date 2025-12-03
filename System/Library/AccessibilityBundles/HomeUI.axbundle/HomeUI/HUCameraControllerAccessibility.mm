@@ -1,31 +1,31 @@
 @interface HUCameraControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)nextControlItem;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axLoadAccessibilityInformationForDayOrTimeLabel:(id)a3;
+- (void)_axLoadAccessibilityInformationForDayOrTimeLabel:(id)label;
 - (void)configureClipScrubberViewController;
 - (void)viewDidLoad;
 @end
 
 @implementation HUCameraControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUCameraController" hasInstanceVariable:@"_dayLabel" withType:"UILabel"];
-  [v3 validateClass:@"HUCameraController" hasInstanceVariable:@"_timeLabel" withType:"UILabel"];
-  [v3 validateClass:@"HULegibilityLabel" hasInstanceVariable:@"_lookasideLabel" withType:"UILabel"];
-  [v3 validateClass:@"HUCameraController" hasInstanceVariable:@"_cameraStatusView" withType:"HUCameraStatusOverlayView"];
-  [v3 validateClass:@"HUCameraStatusOverlayView" hasInstanceMethod:@"statusLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUCameraController" hasInstanceMethod:@"homeHasMultipleCameraProfiles" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"HUCameraController" hasInstanceMethod:@"nextControlItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUCameraController" hasInstanceVariable:@"_nextControlItem" withType:"AVHomeLoadingButtonControlItem"];
-  [v3 validateClass:@"AVHomeLoadingButtonControlItem" hasInstanceVariable:@"_loadingButtonView" withType:"AVLoadingButtonView"];
-  [v3 validateClass:@"AVLoadingButtonView" hasInstanceMethod:@"button" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIViewController" hasInstanceMethod:@"hu_dismissViewControllerAnimated:" withFullSignature:{"@", "B", 0}];
-  [v3 validateClass:@"AVPlayerViewController" hasInstanceMethod:@"customControlItems" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVControlItem" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUCameraController" hasInstanceMethod:@"configureClipScrubberViewController" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUCameraController" hasInstanceVariable:@"_dayLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"HUCameraController" hasInstanceVariable:@"_timeLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"HULegibilityLabel" hasInstanceVariable:@"_lookasideLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"HUCameraController" hasInstanceVariable:@"_cameraStatusView" withType:"HUCameraStatusOverlayView"];
+  [validationsCopy validateClass:@"HUCameraStatusOverlayView" hasInstanceMethod:@"statusLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUCameraController" hasInstanceMethod:@"homeHasMultipleCameraProfiles" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"HUCameraController" hasInstanceMethod:@"nextControlItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUCameraController" hasInstanceVariable:@"_nextControlItem" withType:"AVHomeLoadingButtonControlItem"];
+  [validationsCopy validateClass:@"AVHomeLoadingButtonControlItem" hasInstanceVariable:@"_loadingButtonView" withType:"AVLoadingButtonView"];
+  [validationsCopy validateClass:@"AVLoadingButtonView" hasInstanceMethod:@"button" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIViewController" hasInstanceMethod:@"hu_dismissViewControllerAnimated:" withFullSignature:{"@", "B", 0}];
+  [validationsCopy validateClass:@"AVPlayerViewController" hasInstanceMethod:@"customControlItems" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVControlItem" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUCameraController" hasInstanceMethod:@"configureClipScrubberViewController" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -158,11 +158,11 @@ id __77__HUCameraControllerAccessibility__accessibilityLoadAccessibilityInformat
   return v2;
 }
 
-- (void)_axLoadAccessibilityInformationForDayOrTimeLabel:(id)a3
+- (void)_axLoadAccessibilityInformationForDayOrTimeLabel:(id)label
 {
-  v3 = a3;
-  [v3 setIsAccessibilityElement:1];
-  v4 = [v3 safeValueForKey:@"_lookasideLabel"];
+  labelCopy = label;
+  [labelCopy setIsAccessibilityElement:1];
+  v4 = [labelCopy safeValueForKey:@"_lookasideLabel"];
   objc_initWeak(&location, v4);
 
   v7[0] = MEMORY[0x29EDCA5F8];
@@ -170,14 +170,14 @@ id __77__HUCameraControllerAccessibility__accessibilityLoadAccessibilityInformat
   v7[2] = __84__HUCameraControllerAccessibility__axLoadAccessibilityInformationForDayOrTimeLabel___block_invoke;
   v7[3] = &unk_29F2C6B48;
   objc_copyWeak(&v8, &location);
-  [v3 _setAccessibilityLabelBlock:v7];
+  [labelCopy _setAccessibilityLabelBlock:v7];
   v5[0] = MEMORY[0x29EDCA5F8];
   v5[1] = 3221225472;
   v5[2] = __84__HUCameraControllerAccessibility__axLoadAccessibilityInformationForDayOrTimeLabel___block_invoke_2;
   v5[3] = &unk_29F2C6C00;
   objc_copyWeak(&v6, &location);
-  [v3 _setAccessibilityFrameBlock:v5];
-  [v3 _accessibilitySetBoolValue:1 forKey:AXHomeUIUseAccessibilityFrameForHitTest];
+  [labelCopy _setAccessibilityFrameBlock:v5];
+  [labelCopy _accessibilitySetBoolValue:1 forKey:AXHomeUIUseAccessibilityFrameForHitTest];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -229,16 +229,16 @@ void __61__HUCameraControllerAccessibility_accessibilityPerformEscape__block_inv
 {
   v6.receiver = self;
   v6.super_class = HUCameraControllerAccessibility;
-  v2 = [(HUCameraControllerAccessibility *)&v6 nextControlItem];
+  nextControlItem = [(HUCameraControllerAccessibility *)&v6 nextControlItem];
   MEMORY[0x29C2DA460](@"AVHomeLoadingButtonControlItem");
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 safeValueForKeyPath:@"_loadingButtonView.button"];
+    v3 = [nextControlItem safeValueForKeyPath:@"_loadingButtonView.button"];
     v4 = accessibilityHomeUILocalizedString(@"camera.clip.next.button.share");
     [v3 setAccessibilityHint:v4];
   }
 
-  return v2;
+  return nextControlItem;
 }
 
 @end

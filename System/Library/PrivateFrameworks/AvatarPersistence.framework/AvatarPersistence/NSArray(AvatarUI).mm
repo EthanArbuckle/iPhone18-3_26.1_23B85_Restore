@@ -8,7 +8,7 @@
 
 - (id)avt_description
 {
-  v1 = [a1 description];
+  v1 = [self description];
   v2 = [v1 stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"];
 
   return v2;
@@ -18,13 +18,13 @@
 {
   v22 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -36,7 +36,7 @@
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
@@ -46,16 +46,16 @@
           [MEMORY[0x277CBEAD8] raise:v10 format:{@"Got nil transformed object for %@", v12}];
         }
 
-        [v5 addObject:v13];
+        [array addObject:v13];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
   }
 
-  v14 = [MEMORY[0x277CBEA60] arrayWithArray:v5];
+  v14 = [MEMORY[0x277CBEA60] arrayWithArray:array];
 
   v15 = *MEMORY[0x277D85DE8];
 
@@ -70,8 +70,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = a1;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  selfCopy = self;
+  v6 = [selfCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -81,7 +81,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -92,7 +92,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [selfCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;

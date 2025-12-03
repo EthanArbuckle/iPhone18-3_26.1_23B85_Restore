@@ -1,26 +1,26 @@
 @interface CKDRemoveAnonymousShareFromSharedDBOperation
-+ (id)nameForState:(unint64_t)a3;
++ (id)nameForState:(unint64_t)state;
 - (BOOL)makeStateTransition;
-- (CKDRemoveAnonymousShareFromSharedDBOperation)initWithOperationInfo:(id)a3 container:(id)a4;
+- (CKDRemoveAnonymousShareFromSharedDBOperation)initWithOperationInfo:(id)info container:(id)container;
 - (id)activityCreate;
 - (void)_removeAnonymousShareFromSharedDB;
 @end
 
 @implementation CKDRemoveAnonymousShareFromSharedDBOperation
 
-- (CKDRemoveAnonymousShareFromSharedDBOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDRemoveAnonymousShareFromSharedDBOperation)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a3;
+  infoCopy = info;
   v18.receiver = self;
   v18.super_class = CKDRemoveAnonymousShareFromSharedDBOperation;
-  v9 = [(CKDDatabaseOperation *)&v18 initWithOperationInfo:v6 container:a4];
+  v9 = [(CKDDatabaseOperation *)&v18 initWithOperationInfo:infoCopy container:container];
   if (v9)
   {
-    v10 = objc_msgSend_encryptedAnonymousSharesToRemove(v6, v7, v8);
+    v10 = objc_msgSend_encryptedAnonymousSharesToRemove(infoCopy, v7, v8);
     encryptedAnonymousSharesToRemove = v9->_encryptedAnonymousSharesToRemove;
     v9->_encryptedAnonymousSharesToRemove = v10;
 
-    v14 = objc_msgSend_anonymousShareRemovedBlock(v6, v12, v13);
+    v14 = objc_msgSend_anonymousShareRemovedBlock(infoCopy, v12, v13);
     anonymousShareRemovedBlock = v9->_anonymousShareRemovedBlock;
     v9->_anonymousShareRemovedBlock = v14;
 
@@ -56,9 +56,9 @@
   return 1;
 }
 
-+ (id)nameForState:(unint64_t)a3
++ (id)nameForState:(unint64_t)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     v5 = @"Call _removeAnonymousShareFromSharedDB";
   }
@@ -67,7 +67,7 @@
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CKDRemoveAnonymousShareFromSharedDBOperation;
     v5 = objc_msgSendSuper2(&v7, sel_nameForState_);
   }

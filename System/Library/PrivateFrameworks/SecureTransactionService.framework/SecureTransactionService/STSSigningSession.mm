@@ -2,9 +2,9 @@
 - (id)_createHandlerForMerchantPaymentSign;
 - (id)_createHandlerForPeerPaymentSign;
 - (id)canStartSession;
-- (id)setActiveCredential:(id)a3;
-- (id)signInAppPayment:(id)a3 authorization:(id)a4 error:(id *)a5;
-- (id)signPeerPayment:(id)a3 authorization:(id)a4 error:(id *)a5;
+- (id)setActiveCredential:(id)credential;
+- (id)signInAppPayment:(id)payment authorization:(id)authorization error:(id *)error;
+- (id)signPeerPayment:(id)payment authorization:(id)authorization error:(id *)error;
 @end
 
 @implementation STSSigningSession
@@ -12,10 +12,10 @@
 - (id)canStartSession
 {
   v19[4] = *MEMORY[0x277D85DE8];
-  v4 = [(STSSessionBase *)self nfHardwareManager];
-  v5 = [v4 getHwSupport];
+  nfHardwareManager = [(STSSessionBase *)self nfHardwareManager];
+  getHwSupport = [nfHardwareManager getHwSupport];
 
-  if (v5 == 2)
+  if (getHwSupport == 2)
   {
     v8 = 0;
   }
@@ -50,8 +50,8 @@
   v34[4] = *MEMORY[0x277D85DE8];
   if ([(STSCredential *)self->_activeCredential type]!= 1)
   {
-    v10 = [(STSCredential *)self->_activeCredential type];
-    sub_265398094(OS_LOG_TYPE_ERROR, 0, "[STSSigningSession _createHandlerForMerchantPaymentSign]", 42, self, @"Unsupported credential type %02x", v11, v12, v10);
+    type = [(STSCredential *)self->_activeCredential type];
+    sub_265398094(OS_LOG_TYPE_ERROR, 0, "[STSSigningSession _createHandlerForMerchantPaymentSign]", 42, self, @"Unsupported credential type %02x", v11, v12, type);
     v13 = MEMORY[0x277CCA9B8];
     v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
     v33[0] = *MEMORY[0x277CCA450];
@@ -75,12 +75,12 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v4 = [(STSSessionBase *)self handler];
+  handler = [(STSSessionBase *)self handler];
 
-  if (v4)
+  if (handler)
   {
-    v5 = [(STSSessionBase *)self handler];
-    v6 = [v5 isMemberOfClass:objc_opt_class()];
+    handler2 = [(STSSessionBase *)self handler];
+    v6 = [handler2 isMemberOfClass:objc_opt_class()];
 
     if (v6)
     {
@@ -112,18 +112,18 @@ LABEL_9:
   v21 = [[SignMerchantPaymentHandler alloc] initWithParent:self];
   [(STSSessionBase *)self setHandler:v21];
 
-  v22 = [(STSSessionBase *)self activateChildSession];
-  if (v22)
+  activateChildSession = [(STSSessionBase *)self activateChildSession];
+  if (activateChildSession)
   {
-    v9 = v22;
-    sub_265398094(OS_LOG_TYPE_ERROR, 0, "[STSSigningSession _createHandlerForMerchantPaymentSign]", 60, self, @"Handler activation failure: %@", v23, v24, v22);
+    v9 = activateChildSession;
+    sub_265398094(OS_LOG_TYPE_ERROR, 0, "[STSSigningSession _createHandlerForMerchantPaymentSign]", 60, self, @"Handler activation failure: %@", v23, v24, activateChildSession);
   }
 
   else
   {
     sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSigningSession _createHandlerForMerchantPaymentSign]", 62, self, @"Setting new activeCredential %@ on handler", v23, v24, self->_activeCredential);
-    v28 = [(STSSessionBase *)self handler];
-    v9 = [v28 setActiveCredential:self->_activeCredential];
+    handler3 = [(STSSessionBase *)self handler];
+    v9 = [handler3 setActiveCredential:self->_activeCredential];
 
     if (!v9)
     {
@@ -131,8 +131,8 @@ LABEL_9:
     }
   }
 
-  v29 = [(STSSessionBase *)self handler];
-  [v29 tearDownWithCompletion:0];
+  handler4 = [(STSSessionBase *)self handler];
+  [handler4 tearDownWithCompletion:0];
 
   [(STSSessionBase *)self setHandler:0];
 LABEL_10:
@@ -146,8 +146,8 @@ LABEL_10:
   v34[4] = *MEMORY[0x277D85DE8];
   if ([(STSCredential *)self->_activeCredential type]!= 1)
   {
-    v10 = [(STSCredential *)self->_activeCredential type];
-    sub_265398094(OS_LOG_TYPE_ERROR, 0, "[STSSigningSession _createHandlerForPeerPaymentSign]", 77, self, @"Unsupported credential type %02x", v11, v12, v10);
+    type = [(STSCredential *)self->_activeCredential type];
+    sub_265398094(OS_LOG_TYPE_ERROR, 0, "[STSSigningSession _createHandlerForPeerPaymentSign]", 77, self, @"Unsupported credential type %02x", v11, v12, type);
     v13 = MEMORY[0x277CCA9B8];
     v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
     v33[0] = *MEMORY[0x277CCA450];
@@ -171,12 +171,12 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v4 = [(STSSessionBase *)self handler];
+  handler = [(STSSessionBase *)self handler];
 
-  if (v4)
+  if (handler)
   {
-    v5 = [(STSSessionBase *)self handler];
-    v6 = [v5 isMemberOfClass:objc_opt_class()];
+    handler2 = [(STSSessionBase *)self handler];
+    v6 = [handler2 isMemberOfClass:objc_opt_class()];
 
     if (v6)
     {
@@ -208,18 +208,18 @@ LABEL_9:
   v21 = [[SignPeerPaymentHandler alloc] initWithParent:self];
   [(STSSessionBase *)self setHandler:v21];
 
-  v22 = [(STSSessionBase *)self activateChildSession];
-  if (v22)
+  activateChildSession = [(STSSessionBase *)self activateChildSession];
+  if (activateChildSession)
   {
-    v9 = v22;
-    sub_265398094(OS_LOG_TYPE_ERROR, 0, "[STSSigningSession _createHandlerForPeerPaymentSign]", 95, self, @"Handler activation failure: %@", v23, v24, v22);
+    v9 = activateChildSession;
+    sub_265398094(OS_LOG_TYPE_ERROR, 0, "[STSSigningSession _createHandlerForPeerPaymentSign]", 95, self, @"Handler activation failure: %@", v23, v24, activateChildSession);
   }
 
   else
   {
     sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSigningSession _createHandlerForPeerPaymentSign]", 97, self, @"Seting new activeCredential %@ on handler", v23, v24, self->_activeCredential);
-    v28 = [(STSSessionBase *)self handler];
-    v9 = [v28 setActiveCredential:self->_activeCredential];
+    handler3 = [(STSSessionBase *)self handler];
+    v9 = [handler3 setActiveCredential:self->_activeCredential];
 
     if (!v9)
     {
@@ -227,8 +227,8 @@ LABEL_9:
     }
   }
 
-  v29 = [(STSSessionBase *)self handler];
-  [v29 tearDownWithCompletion:0];
+  handler4 = [(STSSessionBase *)self handler];
+  [handler4 tearDownWithCompletion:0];
 
   [(STSSessionBase *)self setHandler:0];
 LABEL_10:
@@ -237,35 +237,35 @@ LABEL_10:
   return v9;
 }
 
-- (id)signPeerPayment:(id)a3 authorization:(id)a4 error:(id *)a5
+- (id)signPeerPayment:(id)payment authorization:(id)authorization error:(id *)error
 {
   v29[4] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  paymentCopy = payment;
+  authorizationCopy = authorization;
   v11 = _os_activity_create(&dword_26536F000, "signPeerPayment:authorization:error:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v11, &state);
   os_activity_scope_leave(&state);
 
-  if ([v9 isMemberOfClass:objc_opt_class()])
+  if ([paymentCopy isMemberOfClass:objc_opt_class()])
   {
-    v12 = [(STSSigningSession *)self _createHandlerForPeerPaymentSign];
-    if (!v12)
+    _createHandlerForPeerPaymentSign = [(STSSigningSession *)self _createHandlerForPeerPaymentSign];
+    if (!_createHandlerForPeerPaymentSign)
     {
-      v24 = [(STSSessionBase *)self handler];
-      v15 = [v24 signPeerPayment:v9 authorization:v10 error:a5];
+      handler = [(STSSessionBase *)self handler];
+      v15 = [handler signPeerPayment:paymentCopy authorization:authorizationCopy error:error];
 
       v13 = 0;
       goto LABEL_9;
     }
 
-    v13 = v12;
-    if (a5)
+    v13 = _createHandlerForPeerPaymentSign;
+    if (error)
     {
-      v14 = v12;
+      v14 = _createHandlerForPeerPaymentSign;
       v15 = 0;
-      *a5 = v13;
+      *error = v13;
 LABEL_9:
 
       goto LABEL_10;
@@ -276,9 +276,9 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  ClassName = object_getClassName(v9);
+  ClassName = object_getClassName(paymentCopy);
   sub_265398094(OS_LOG_TYPE_ERROR, 0, "[STSSigningSession signPeerPayment:authorization:error:]", 115, self, @"Unsupported request type - %s", v17, v18, ClassName);
-  if (a5)
+  if (error)
   {
     v19 = MEMORY[0x277CCA9B8];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
@@ -294,7 +294,7 @@ LABEL_7:
     v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", sel_getName(a2), 117];
     v29[3] = v22;
     v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:4];
-    *a5 = [v19 errorWithDomain:v13 code:8 userInfo:v23];
+    *error = [v19 errorWithDomain:v13 code:8 userInfo:v23];
 
     goto LABEL_7;
   }
@@ -307,35 +307,35 @@ LABEL_10:
   return v15;
 }
 
-- (id)signInAppPayment:(id)a3 authorization:(id)a4 error:(id *)a5
+- (id)signInAppPayment:(id)payment authorization:(id)authorization error:(id *)error
 {
   v29[4] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  paymentCopy = payment;
+  authorizationCopy = authorization;
   v11 = _os_activity_create(&dword_26536F000, "signInAppPayment:authorization:error:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v11, &state);
   os_activity_scope_leave(&state);
 
-  if ([v9 isMemberOfClass:objc_opt_class()])
+  if ([paymentCopy isMemberOfClass:objc_opt_class()])
   {
-    v12 = [(STSSigningSession *)self _createHandlerForMerchantPaymentSign];
-    if (!v12)
+    _createHandlerForMerchantPaymentSign = [(STSSigningSession *)self _createHandlerForMerchantPaymentSign];
+    if (!_createHandlerForMerchantPaymentSign)
     {
-      v24 = [(STSSessionBase *)self handler];
-      v15 = [v24 signInAppPayment:v9 authorization:v10 error:a5];
+      handler = [(STSSessionBase *)self handler];
+      v15 = [handler signInAppPayment:paymentCopy authorization:authorizationCopy error:error];
 
       v13 = 0;
       goto LABEL_9;
     }
 
-    v13 = v12;
-    if (a5)
+    v13 = _createHandlerForMerchantPaymentSign;
+    if (error)
     {
-      v14 = v12;
+      v14 = _createHandlerForMerchantPaymentSign;
       v15 = 0;
-      *a5 = v13;
+      *error = v13;
 LABEL_9:
 
       goto LABEL_10;
@@ -346,9 +346,9 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  ClassName = object_getClassName(v9);
+  ClassName = object_getClassName(paymentCopy);
   sub_265398094(OS_LOG_TYPE_ERROR, 0, "[STSSigningSession signInAppPayment:authorization:error:]", 142, self, @"Unsupported request type - %s", v17, v18, ClassName);
-  if (a5)
+  if (error)
   {
     v19 = MEMORY[0x277CCA9B8];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
@@ -364,7 +364,7 @@ LABEL_7:
     v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", sel_getName(a2), 144];
     v29[3] = v22;
     v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:4];
-    *a5 = [v19 errorWithDomain:v13 code:8 userInfo:v23];
+    *error = [v19 errorWithDomain:v13 code:8 userInfo:v23];
 
     goto LABEL_7;
   }
@@ -377,24 +377,24 @@ LABEL_10:
   return v15;
 }
 
-- (id)setActiveCredential:(id)a3
+- (id)setActiveCredential:(id)credential
 {
   v52[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  credentialCopy = credential;
   v7 = _os_activity_create(&dword_26536F000, "setActiveCredential:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v7, &state);
   os_activity_scope_leave(&state);
 
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSigningSession setActiveCredential:]", 165, self, @"%@", v8, v9, v6);
-  v10 = [(STSSessionBase *)self handler];
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSigningSession setActiveCredential:]", 165, self, @"%@", v8, v9, credentialCopy);
+  handler = [(STSSessionBase *)self handler];
 
-  if (v10)
+  if (handler)
   {
     sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSigningSession setActiveCredential:]", 168, self, @"New handler will be required, Tearing down current handler.", v11, v12, v46);
-    v13 = [(STSSessionBase *)self handler];
-    [v13 tearDownWithCompletion:0];
+    handler2 = [(STSSessionBase *)self handler];
+    [handler2 tearDownWithCompletion:0];
 
     [(STSSessionBase *)self setHandler:0];
     sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[STSSigningSession setActiveCredential:]", 172, self, @"Waiting for Control SE session ready", v14, v15, v47);
@@ -407,38 +407,38 @@ LABEL_10:
     }
   }
 
-  v20 = [v6 identifier];
-  v21 = [v20 length];
+  identifier = [credentialCopy identifier];
+  v21 = [identifier length];
 
   if (v21)
   {
-    v24 = [(STSSessionBase *)self masterSESession];
-    v25 = [v6 identifier];
-    v26 = [v24 appletWithIdentifier:v25];
+    masterSESession = [(STSSessionBase *)self masterSESession];
+    identifier2 = [credentialCopy identifier];
+    v26 = [masterSESession appletWithIdentifier:identifier2];
 
     if (v26)
     {
       sub_265398094(OS_LOG_TYPE_INFO, 0, "[STSSigningSession setActiveCredential:]", 184, self, @"Applet is present: applet=%@", v27, v28, v26);
 LABEL_10:
 
-      objc_storeStrong(&self->_activeCredential, a3);
+      objc_storeStrong(&self->_activeCredential, credential);
       v19 = 0;
       goto LABEL_13;
     }
 
-    v37 = [v6 identifier];
-    v38 = [v37 isEqualToString:0x2876E5030];
+    identifier3 = [credentialCopy identifier];
+    v38 = [identifier3 isEqualToString:0x2876E5030];
 
-    v39 = [v6 identifier];
-    v42 = v39;
+    identifier4 = [credentialCopy identifier];
+    v42 = identifier4;
     if (v38)
     {
-      sub_265398094(OS_LOG_TYPE_INFO, 0, "[STSSigningSession setActiveCredential:]", 192, self, @"Applet is presumed to be present = %@", v40, v41, v39);
+      sub_265398094(OS_LOG_TYPE_INFO, 0, "[STSSigningSession setActiveCredential:]", 192, self, @"Applet is presumed to be present = %@", v40, v41, identifier4);
 
       goto LABEL_10;
     }
 
-    sub_265398094(OS_LOG_TYPE_ERROR, 0, "[STSSigningSession setActiveCredential:]", 189, self, @"Applet not found for identifier = %@", v40, v41, v39);
+    sub_265398094(OS_LOG_TYPE_ERROR, 0, "[STSSigningSession setActiveCredential:]", 189, self, @"Applet not found for identifier = %@", v40, v41, identifier4);
 
     v29 = MEMORY[0x277CCA9B8];
     v30 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];

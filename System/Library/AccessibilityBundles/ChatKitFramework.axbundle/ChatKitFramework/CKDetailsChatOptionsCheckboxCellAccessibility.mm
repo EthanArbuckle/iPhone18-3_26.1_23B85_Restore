@@ -1,5 +1,5 @@
 @interface CKDetailsChatOptionsCheckboxCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
@@ -8,35 +8,35 @@
 
 @implementation CKDetailsChatOptionsCheckboxCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKDetailsChatOptionsCheckboxCell" isKindOfClass:@"UITableViewCell"];
-  [v3 validateClass:@"CKDetailsChatOptionsCheckboxCell" hasInstanceMethod:@"controlSwitch" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKDetailsChatOptionsCheckboxCell" isKindOfClass:@"UITableViewCell"];
+  [validationsCopy validateClass:@"CKDetailsChatOptionsCheckboxCell" hasInstanceMethod:@"controlSwitch" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(CKDetailsChatOptionsCheckboxCellAccessibility *)self safeUIViewForKey:@"controlSwitch"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
   v2 = [(CKDetailsChatOptionsCheckboxCellAccessibility *)self safeUIViewForKey:@"controlSwitch"];
-  v3 = [v2 accessibilityValue];
+  accessibilityValue = [v2 accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (unint64_t)accessibilityTraits
 {
   v2 = [(CKDetailsChatOptionsCheckboxCellAccessibility *)self safeUIViewForKey:@"controlSwitch"];
-  v3 = [v2 accessibilityTraits];
+  accessibilityTraits = [v2 accessibilityTraits];
 
-  return v3;
+  return accessibilityTraits;
 }
 
 - (CGPoint)accessibilityActivationPoint

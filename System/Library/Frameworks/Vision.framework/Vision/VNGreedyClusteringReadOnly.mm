@@ -1,27 +1,27 @@
 @interface VNGreedyClusteringReadOnly
-+ (id)clustererModelFileNamesFromState:(id)a3 storedInPath:(id)a4 error:(id *)a5;
-+ (id)getRepresentativenessForFaces:(id)a3 error:(id *)a4;
++ (id)clustererModelFileNamesFromState:(id)state storedInPath:(id)path error:(id *)error;
++ (id)getRepresentativenessForFaces:(id)faces error:(id *)error;
 + (id)nonGroupedGroupID;
-+ (void)addFaceObservations:(id)a3 toFaceDescriptorBuffer:(void *)a4;
-+ (void)addFaceObservations:(id)a3 withGroupingIdentifiers:(id)a4 toFaceDescriptorBuffer:(void *)a5;
-+ (void)addPersonData:(id)a3 withGroupingIdentifiers:(id)a4 toFaceDescriptorBuffer:(void *)a5;
-- (BOOL)_parseOptions:(id)a3 error:(id *)a4;
-- (VNGreedyClusteringReadOnly)initWithOptions:(id)a3 error:(id *)a4;
++ (void)addFaceObservations:(id)observations toFaceDescriptorBuffer:(void *)buffer;
++ (void)addFaceObservations:(id)observations withGroupingIdentifiers:(id)identifiers toFaceDescriptorBuffer:(void *)buffer;
++ (void)addPersonData:(id)data withGroupingIdentifiers:(id)identifiers toFaceDescriptorBuffer:(void *)buffer;
+- (BOOL)_parseOptions:(id)options error:(id *)error;
+- (VNGreedyClusteringReadOnly)initWithOptions:(id)options error:(id *)error;
 - (id).cxx_construct;
-- (id)convertUpdatePairsToClusters:(void *)a3;
-- (id)getAllClustersFromStateAndReturnError:(id *)a3;
-- (id)getClusterState:(id *)a3;
-- (id)getClusteredIds:(id *)a3;
-- (id)getClustersForClusterIds:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)getDistanceBetweenLevel0ClustersWithFaceId:(id)a3 andFaceId:(id)a4 error:(id *)a5;
-- (id)getDistanceBetweenLevel1Clusters:(id)a3 error:(id *)a4;
-- (id)getDistances:(id)a3 to:(id)a4 error:(id *)a5;
-- (id)getLevel0ClusteredIdsForFaceId:(id)a3 error:(id *)a4;
-- (id)getLevel1ClusteredIdsGroupedByLevel0ClustersForFaceId:(id)a3 error:(id *)a4;
-- (id)maximumFaceIdInModelAndReturnError:(id *)a3;
-- (id)suggestionsForClusterIdsWithFlags:(id)a3 affinityThreshold:(float)a4 error:(id *)a5;
+- (id)convertUpdatePairsToClusters:(void *)clusters;
+- (id)getAllClustersFromStateAndReturnError:(id *)error;
+- (id)getClusterState:(id *)state;
+- (id)getClusteredIds:(id *)ids;
+- (id)getClustersForClusterIds:(id)ids options:(id)options error:(id *)error;
+- (id)getDistanceBetweenLevel0ClustersWithFaceId:(id)id andFaceId:(id)faceId error:(id *)error;
+- (id)getDistanceBetweenLevel1Clusters:(id)clusters error:(id *)error;
+- (id)getDistances:(id)distances to:(id)to error:(id *)error;
+- (id)getLevel0ClusteredIdsForFaceId:(id)id error:(id *)error;
+- (id)getLevel1ClusteredIdsGroupedByLevel0ClustersForFaceId:(id)id error:(id *)error;
+- (id)maximumFaceIdInModelAndReturnError:(id *)error;
+- (id)suggestionsForClusterIdsWithFlags:(id)flags affinityThreshold:(float)threshold error:(id *)error;
 - (void)initializeLogging;
-- (void)setGreedyClustererFaces_const:(shared_ptr<const vision::mod::FaceClustering>)a3;
+- (void)setGreedyClustererFaces_const:(shared_ptr<const vision::mod::FaceClustering>)faces_const;
 @end
 
 @implementation VNGreedyClusteringReadOnly
@@ -33,7 +33,7 @@
   return self;
 }
 
-- (id)maximumFaceIdInModelAndReturnError:(id *)a3
+- (id)maximumFaceIdInModelAndReturnError:(id *)error
 {
   v6 = 0;
   v7 = &v6;
@@ -45,7 +45,7 @@
   v5[3] = &unk_1E77B25B8;
   v5[4] = self;
   v5[5] = &v6;
-  if (VNExecuteBlock(v5, a3))
+  if (VNExecuteBlock(v5, error))
   {
     v3 = [MEMORY[0x1E696AD98] numberWithLongLong:v7[3]];
   }
@@ -60,12 +60,12 @@
   return v3;
 }
 
-- (id)getDistances:(id)a3 to:(id)a4 error:(id *)a5
+- (id)getDistances:(id)distances to:(id)to error:(id *)error
 {
   v91 = *MEMORY[0x1E69E9840];
-  v54 = a3;
-  v57 = a4;
-  v8 = [v57 count];
+  distancesCopy = distances;
+  toCopy = to;
+  v8 = [toCopy count];
   if (!v8)
   {
     v12 = MEMORY[0x1E695E0F8];
@@ -74,19 +74,19 @@
 
   v9 = [(NSString *)self->_algorithmType isEqualToString:@"VNClusteringAlgorithm_GreedyWithTorso"];
   v89 = 0;
-  [v57 objectAtIndexedSubscript:0];
+  [toCopy objectAtIndexedSubscript:0];
   v71 = 0uLL;
   v53 = v72 = 0;
-  v10 = [v53 faceprint];
-  v11 = [v10 lengthInBytes];
-  vision::mod::ImageDescriptorBufferAbstract::ImageDescriptorBufferAbstract(v86, &v71, &v89, v11, 0, 0);
+  faceprint = [v53 faceprint];
+  lengthInBytes = [faceprint lengthInBytes];
+  vision::mod::ImageDescriptorBufferAbstract::ImageDescriptorBufferAbstract(v86, &v71, &v89, lengthInBytes, 0, 0);
   v87 = 1;
   v88 = 0;
   v86[0] = &unk_1F19764A8;
-  v86[12] = (v11 >> 2);
+  v86[12] = (lengthInBytes >> 2);
 
   v87 = 2;
-  [VNGreedyClusteringReadOnly addFaceObservations:v57 toFaceDescriptorBuffer:v86];
+  [VNGreedyClusteringReadOnly addFaceObservations:toCopy toFaceDescriptorBuffer:v86];
   memset(&v85, 0, sizeof(v85));
   v81 = 0;
   v82 = &v81;
@@ -98,7 +98,7 @@
   v80[3] = &unk_1E77B25B8;
   v80[5] = &v81;
   v80[4] = self;
-  if (VNExecuteBlock(v80, a5))
+  if (VNExecuteBlock(v80, error))
   {
     if (!v9)
     {
@@ -106,9 +106,9 @@
     }
 
     v82[6] /= 2;
-    v55 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     memset(v79, 0, sizeof(v79));
-    if (v54)
+    if (distancesCopy)
     {
       *&v71 = 0;
       *(&v71 + 1) = &v71;
@@ -135,7 +135,7 @@
       v65 = 0u;
       v66 = 0u;
       v67 = 0u;
-      v16 = v54;
+      v16 = distancesCopy;
       v17 = [v16 countByEnumeratingWithState:&v64 objects:v90 count:16];
       if (v17)
       {
@@ -149,8 +149,8 @@
               objc_enumerationMutation(v16);
             }
 
-            v58 = [*(*(&v64 + 1) + 8 * i) unsignedIntegerValue];
-            std::vector<long long>::push_back[abi:ne200100](&v68, &v58);
+            unsignedIntegerValue = [*(*(&v64 + 1) + 8 * i) unsignedIntegerValue];
+            std::vector<long long>::push_back[abi:ne200100](&v68, &unsignedIntegerValue);
           }
 
           v17 = [v16 countByEnumeratingWithState:&v64 objects:v90 count:16];
@@ -176,7 +176,7 @@
       v63 = 0;
       std::vector<long long>::__init_with_size[abi:ne200100]<long long *,long long *>(&__p, v52, v17, (v17 - v52) >> 3);
       v60[5] = &v71;
-      if ((VNExecuteBlock(v60, a5) & 1) == 0)
+      if ((VNExecuteBlock(v60, error) & 1) == 0)
       {
         if (__p)
         {
@@ -197,9 +197,9 @@
         goto LABEL_56;
       }
 
-      vision::mod::ImageDescriptorBufferFloat32::computeDistancesFrom(v86, (*(&v71 + 1) + 48), &v58);
-      v21 = v58;
-      *v79 = v58;
+      vision::mod::ImageDescriptorBufferFloat32::computeDistancesFrom(v86, (*(&v71 + 1) + 48), &unsignedIntegerValue);
+      v21 = unsignedIntegerValue;
+      *v79 = unsignedIntegerValue;
       v56 = v59;
       *&v79[8] = v59;
       if ([v16 count] * v8 == (v56 - v21) >> 2)
@@ -207,7 +207,7 @@
         v36 = 0;
         for (j = 0; j != v8; ++j)
         {
-          v38 = [MEMORY[0x1E695DF90] dictionary];
+          dictionary2 = [MEMORY[0x1E695DF90] dictionary];
           for (k = 0; ; ++k)
           {
             v40 = [v16 count];
@@ -220,12 +220,12 @@
             *&v42 = *(&v21[k] + v36 * [v16 count]);
             v43 = [v41 numberWithFloat:v42];
             v44 = [v16 objectAtIndexedSubscript:k];
-            [v38 setObject:v43 forKeyedSubscript:v44];
+            [dictionary2 setObject:v43 forKeyedSubscript:v44];
           }
 
-          v45 = [v57 objectAtIndexedSubscript:j];
+          v45 = [toCopy objectAtIndexedSubscript:j];
           v46 = [v41 numberWithUnsignedInteger:{objc_msgSend(v45, "faceId")}];
-          [v55 setObject:v38 forKeyedSubscript:v46];
+          [dictionary setObject:dictionary2 forKeyedSubscript:v46];
 
           v36 += 4;
         }
@@ -257,15 +257,15 @@
       v21 = v71;
       do
       {
-        v22 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary3 = [MEMORY[0x1E695DF90] dictionary];
         for (m = 0; m != v8; ++m)
         {
           v25 = MEMORY[0x1E696AD98];
           if (v20 == m)
           {
-            v26 = [v57 objectAtIndexedSubscript:v20];
+            v26 = [toCopy objectAtIndexedSubscript:v20];
             v27 = [v25 numberWithUnsignedInteger:{objc_msgSend(v26, "faceId")}];
-            [v22 setObject:&unk_1F19C0F10 forKeyedSubscript:v27];
+            [dictionary3 setObject:&unk_1F19C0F10 forKeyedSubscript:v27];
           }
 
           else
@@ -300,16 +300,16 @@
             *&v23 = v21[v30 + (v29 - 1) * v29 / 2];
             v26 = [MEMORY[0x1E696AD98] numberWithFloat:v23];
             v31 = MEMORY[0x1E696AD98];
-            v27 = [v57 objectAtIndexedSubscript:m];
+            v27 = [toCopy objectAtIndexedSubscript:m];
             v32 = [v31 numberWithUnsignedInteger:{objc_msgSend(v27, "faceId")}];
-            [v22 setObject:v26 forKeyedSubscript:v32];
+            [dictionary3 setObject:v26 forKeyedSubscript:v32];
           }
         }
 
         v33 = MEMORY[0x1E696AD98];
-        v34 = [v57 objectAtIndexedSubscript:v20];
+        v34 = [toCopy objectAtIndexedSubscript:v20];
         v35 = [v33 numberWithUnsignedInteger:{objc_msgSend(v34, "faceId")}];
-        [v55 setObject:v22 forKeyedSubscript:v35];
+        [dictionary setObject:dictionary3 forKeyedSubscript:v35];
 
         ++v20;
       }
@@ -317,7 +317,7 @@
       while (v20 != v8);
     }
 
-    v12 = v55;
+    v12 = dictionary;
     if (v21)
     {
       *&v79[8] = v21;
@@ -365,11 +365,11 @@ uint64_t __52__VNGreedyClusteringReadOnly_getDistances_to_error___block_invoke_2
   return 1;
 }
 
-- (id)getClustersForClusterIds:(id)a3 options:(id)a4 error:(id *)a5
+- (id)getClustersForClusterIds:(id)ids options:(id)options error:(id *)error
 {
   v51 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  idsCopy = ids;
+  optionsCopy = options;
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v43 = 0;
   v44 = &v43;
@@ -378,13 +378,13 @@ uint64_t __52__VNGreedyClusteringReadOnly_getDistances_to_error___block_invoke_2
   v47 = __Block_byref_object_dispose__274;
   v48 = "";
   memset(v49, 0, sizeof(v49));
-  if (v8)
+  if (idsCopy)
   {
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    obj = v8;
+    obj = idsCopy;
     v11 = [obj countByEnumeratingWithState:&v39 objects:v50 count:16];
     if (v11)
     {
@@ -399,7 +399,7 @@ uint64_t __52__VNGreedyClusteringReadOnly_getDistances_to_error___block_invoke_2
             objc_enumerationMutation(obj);
           }
 
-          v14 = [*(*(&v39 + 1) + 8 * i) unsignedIntegerValue];
+          unsignedIntegerValue = [*(*(&v39 + 1) + 8 * i) unsignedIntegerValue];
           v30 = 0;
           v31 = &v30;
           v32 = 0x4812000000;
@@ -414,9 +414,9 @@ uint64_t __52__VNGreedyClusteringReadOnly_getDistances_to_error___block_invoke_2
           v29[2] = __69__VNGreedyClusteringReadOnly_getClustersForClusterIds_options_error___block_invoke;
           v29[3] = &unk_1E77B64B8;
           v29[5] = &v30;
-          v29[6] = v14;
+          v29[6] = unsignedIntegerValue;
           v29[4] = self;
-          if ((VNExecuteBlock(v29, a5) & 1) == 0)
+          if ((VNExecuteBlock(v29, error) & 1) == 0)
           {
             _Block_object_dispose(&v30, 8);
             if (__p)
@@ -459,7 +459,7 @@ uint64_t __52__VNGreedyClusteringReadOnly_getDistances_to_error___block_invoke_2
     aBlock[4] = self;
     aBlock[5] = &v43;
     v15 = _Block_copy(aBlock);
-    v16 = VNExecuteBlock(v15, a5);
+    v16 = VNExecuteBlock(v15, error);
 
     if (!v16)
     {
@@ -532,7 +532,7 @@ uint64_t __69__VNGreedyClusteringReadOnly_getClustersForClusterIds_options_error
   return 1;
 }
 
-- (id)getAllClustersFromStateAndReturnError:(id *)a3
+- (id)getAllClustersFromStateAndReturnError:(id *)error
 {
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   (*(*self->m_ClusteringImpl_const.__ptr_ + 152))(&v13);
@@ -565,11 +565,11 @@ uint64_t __69__VNGreedyClusteringReadOnly_getClustersForClusterIds_options_error
   return v4;
 }
 
-- (id)getDistanceBetweenLevel1Clusters:(id)a3 error:(id *)a4
+- (id)getDistanceBetweenLevel1Clusters:(id)clusters error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6 && [v6 count] == 2)
+  clustersCopy = clusters;
+  v7 = clustersCopy;
+  if (clustersCopy && [clustersCopy count] == 2)
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -581,7 +581,7 @@ uint64_t __69__VNGreedyClusteringReadOnly_getClustersForClusterIds_options_error
     v9 = v8;
     v15 = v9;
     v10 = _Block_copy(aBlock);
-    if (VNExecuteBlock(v10, a4))
+    if (VNExecuteBlock(v10, error))
     {
       v11 = v9;
     }
@@ -592,10 +592,10 @@ uint64_t __69__VNGreedyClusteringReadOnly_getClustersForClusterIds_options_error
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     [VNError errorWithCode:1 message:@"Parameter validation failed for getDistanceBetweenLevel1Clusters"];
-    *a4 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -709,13 +709,13 @@ void __69__VNGreedyClusteringReadOnly_getDistanceBetweenLevel1Clusters_error___b
   *(*(*(*(a1 + 32) + 8) + 48) + 8 * a3) = [v5 unsignedIntegerValue];
 }
 
-- (id)getDistanceBetweenLevel0ClustersWithFaceId:(id)a3 andFaceId:(id)a4 error:(id *)a5
+- (id)getDistanceBetweenLevel0ClustersWithFaceId:(id)id andFaceId:(id)faceId error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  idCopy = id;
+  faceIdCopy = faceId;
+  v10 = faceIdCopy;
   v11 = 0;
-  if (v8 && v9)
+  if (idCopy && faceIdCopy)
   {
     v18 = 0;
     v19 = &v18;
@@ -728,11 +728,11 @@ void __69__VNGreedyClusteringReadOnly_getDistanceBetweenLevel1Clusters_error___b
     v14[2] = __89__VNGreedyClusteringReadOnly_getDistanceBetweenLevel0ClustersWithFaceId_andFaceId_error___block_invoke;
     v14[3] = &unk_1E77B1198;
     v14[4] = self;
-    v15 = v8;
+    v15 = idCopy;
     v16 = v10;
     v17 = &v18;
     v12 = _Block_copy(v14);
-    if (VNExecuteBlock(v12, a5))
+    if (VNExecuteBlock(v12, error))
     {
       v11 = v19[5];
     }
@@ -788,11 +788,11 @@ uint64_t __89__VNGreedyClusteringReadOnly_getDistanceBetweenLevel0ClustersWithFa
   return 1;
 }
 
-- (id)getLevel1ClusteredIdsGroupedByLevel0ClustersForFaceId:(id)a3 error:(id *)a4
+- (id)getLevel1ClusteredIdsGroupedByLevel0ClustersForFaceId:(id)id error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  idCopy = id;
+  v7 = idCopy;
+  if (idCopy)
   {
     v46 = 0;
     v47 = &v46;
@@ -814,10 +814,10 @@ uint64_t __89__VNGreedyClusteringReadOnly_getDistanceBetweenLevel0ClustersWithFa
     aBlock[4] = self;
     v40 = &v46;
     v41 = &v42;
-    v8 = v6;
+    v8 = idCopy;
     v39 = v8;
     v9 = _Block_copy(aBlock);
-    if (VNExecuteBlock(v9, a4))
+    if (VNExecuteBlock(v9, error))
     {
       v10 = v47[7];
       if (!v10)
@@ -880,12 +880,12 @@ LABEL_10:
         v31[4] = self;
         v31[5] = &v32;
         v20 = _Block_copy(v31);
-        if (v20[2](v20, v8, v16, a4))
+        if (v20[2](v20, v8, v16, error))
         {
           while ([v16 count])
           {
-            v21 = [v16 firstObject];
-            v22 = v20[2](v20, v21, v16, a4);
+            firstObject = [v16 firstObject];
+            v22 = v20[2](v20, firstObject, v16, error);
 
             if ((v22 & 1) == 0)
             {
@@ -908,12 +908,12 @@ LABEL_21:
       else
       {
         v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"getLevel1ClusteredIdsGroupedByLevel0ClustersForFaceId: Level-1 cluster size is zero for a valid clusterID descriptor (%lld)", v43[3]];
-        v23 = [v16 UTF8String];
-        VNValidatedLog(4, @"%s", v24, v25, v26, v27, v28, v29, v23);
-        if (a4)
+        uTF8String = [v16 UTF8String];
+        VNValidatedLog(4, @"%s", v24, v25, v26, v27, v28, v29, uTF8String);
+        if (error)
         {
           [VNError errorForInternalErrorWithLocalizedDescription:v16];
-          *a4 = v14 = 0;
+          *error = v14 = 0;
         }
 
         else
@@ -936,9 +936,9 @@ LABEL_21:
   else
   {
     v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"getLevel1ClusteredIdsGroupedByLevel0ClustersForFaceId: faceId (%@) is not initialized", 0];
-    if (a4)
+    if (error)
     {
-      *a4 = [VNError errorForInternalErrorWithLocalizedDescription:v13];
+      *error = [VNError errorForInternalErrorWithLocalizedDescription:v13];
     }
 
     v14 = 0;
@@ -993,9 +993,9 @@ BOOL __90__VNGreedyClusteringReadOnly_getLevel1ClusteredIdsGroupedByLevel0Cluste
   return v8 != 0;
 }
 
-- (id)getLevel0ClusteredIdsForFaceId:(id)a3 error:(id *)a4
+- (id)getLevel0ClusteredIdsForFaceId:(id)id error:(id *)error
 {
-  v6 = a3;
+  idCopy = id;
   v26 = 0;
   v27 = &v26;
   v28 = 0x4812000000;
@@ -1014,32 +1014,32 @@ BOOL __90__VNGreedyClusteringReadOnly_getLevel1ClusteredIdsGroupedByLevel0Cluste
   v16 = __67__VNGreedyClusteringReadOnly_getLevel0ClusteredIdsForFaceId_error___block_invoke;
   v17 = &unk_1E77B3720;
   v20 = &v22;
-  v18 = self;
-  v7 = v6;
+  selfCopy = self;
+  v7 = idCopy;
   v19 = v7;
   v21 = &v26;
-  if ((VNExecuteBlock(&v14, a4) & 1) == 0)
+  if ((VNExecuteBlock(&v14, error) & 1) == 0)
   {
 LABEL_8:
-    a4 = 0;
+    error = 0;
     goto LABEL_9;
   }
 
   if (v23[3] != 5248)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_9;
     }
 
     v11 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v12 = [v11 initWithFormat:@"getting clusters failed with error: %lld", v23[3], v14, v15, v16, v17, v18];
-    *a4 = [VNError errorForInternalErrorWithLocalizedDescription:v12];
+    selfCopy = [v11 initWithFormat:@"getting clusters failed with error: %lld", v23[3], v14, v15, v16, v17, selfCopy];
+    *error = [VNError errorForInternalErrorWithLocalizedDescription:selfCopy];
 
     goto LABEL_8;
   }
 
-  a4 = [MEMORY[0x1E695DFA0] orderedSetWithCapacity:v27[8]];
+  error = [MEMORY[0x1E695DFA0] orderedSetWithCapacity:v27[8]];
   v8 = v27 + 6;
   v9 = v27[7];
   if (v9 != v27 + 6)
@@ -1047,7 +1047,7 @@ LABEL_8:
     do
     {
       v10 = [MEMORY[0x1E696AD98] numberWithLongLong:v9[2]];
-      [a4 addObject:v10];
+      [error addObject:v10];
 
       v9 = v9[1];
     }
@@ -1061,10 +1061,10 @@ LABEL_9:
   _Block_object_dispose(&v26, 8);
   std::__list_imp<long long>::clear(v32);
 
-  return a4;
+  return error;
 }
 
-- (id)getClusteredIds:(id *)a3
+- (id)getClusteredIds:(id *)ids
 {
   v5 = [MEMORY[0x1E695DFA8] set];
   v11 = 0;
@@ -1082,7 +1082,7 @@ LABEL_9:
   v10[3] = &unk_1E77B25B8;
   v10[4] = self;
   v10[5] = &v11;
-  if (VNExecuteBlock(v10, a3))
+  if (VNExecuteBlock(v10, ids))
   {
     for (i = v12[6]; i != v12[7]; ++i)
     {
@@ -1108,7 +1108,7 @@ LABEL_9:
   return v8;
 }
 
-- (id)getClusterState:(id *)a3
+- (id)getClusterState:(id *)state
 {
   v7 = 0;
   v8 = &v7;
@@ -1124,7 +1124,7 @@ LABEL_9:
   v6[3] = &unk_1E77B25B8;
   v6[4] = self;
   v6[5] = &v7;
-  if ((VNExecuteBlock(v6, a3) & 1) != 0 && (v3 = v8[6]) != 0)
+  if ((VNExecuteBlock(v6, state) & 1) != 0 && (v3 = v8[6]) != 0)
   {
     v4 = [MEMORY[0x1E695DEF0] dataWithBytes:*v3 length:v3[1] - *v3];
   }
@@ -1163,13 +1163,13 @@ uint64_t __46__VNGreedyClusteringReadOnly_getClusterState___block_invoke(uint64_
   return 1;
 }
 
-- (id)suggestionsForClusterIdsWithFlags:(id)a3 affinityThreshold:(float)a4 error:(id *)a5
+- (id)suggestionsForClusterIdsWithFlags:(id)flags affinityThreshold:(float)threshold error:(id *)error
 {
   v193 = *MEMORY[0x1E69E9840];
-  v101 = a3;
+  flagsCopy = flags;
   context = objc_autoreleasePoolPush();
   [(VNClusteringLogger *)self->_suggestionsLogger resetFileNameURLWithCurentDateTime];
-  [(VNSuggestionsLogger *)self->_suggestionsLogger logInputFaceIdsWithFlags:v101];
+  [(VNSuggestionsLogger *)self->_suggestionsLogger logInputFaceIdsWithFlags:flagsCopy];
   v180[0] = 0;
   v180[1] = v180;
   v180[2] = 0x4812000000;
@@ -1187,31 +1187,31 @@ uint64_t __46__VNGreedyClusteringReadOnly_getClusterState___block_invoke(uint64_
   v179[5] = v180;
   v178 = 0;
   v6 = VNExecuteBlock(v179, &v178);
-  v7 = self;
+  selfCopy = self;
   v8 = v178;
   if ((v6 & 1) == 0)
   {
-    v30 = 0;
+    allObjects2 = 0;
     goto LABEL_20;
   }
 
   v9 = MEMORY[0x1E695DF90];
-  v10 = [v101 allKeys];
-  v104 = v7;
-  v109 = [v9 dictionaryWithCapacity:{objc_msgSend(v10, "count")}];
+  allKeys = [flagsCopy allKeys];
+  v104 = selfCopy;
+  v109 = [v9 dictionaryWithCapacity:{objc_msgSend(allKeys, "count")}];
 
   v11 = MEMORY[0x1E695DF90];
-  v12 = [v101 allKeys];
-  v108 = [v11 dictionaryWithCapacity:{objc_msgSend(v12, "count")}];
+  allKeys2 = [flagsCopy allKeys];
+  v108 = [v11 dictionaryWithCapacity:{objc_msgSend(allKeys2, "count")}];
 
   v97 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v177 = 0u;
   v176 = 0u;
   v175 = 0u;
   v174 = 0u;
-  v13 = [v101 allKeys];
-  obj = v13;
-  v14 = [v13 countByEnumeratingWithState:&v174 objects:v192 count:16];
+  allKeys3 = [flagsCopy allKeys];
+  obj = allKeys3;
+  v14 = [allKeys3 countByEnumeratingWithState:&v174 objects:v192 count:16];
   if (v14)
   {
     v15 = *v175;
@@ -1244,7 +1244,7 @@ uint64_t __46__VNGreedyClusteringReadOnly_getClusterState___block_invoke(uint64_
         if ((v18 & 1) == 0)
         {
           _Block_object_dispose(&v159, 8);
-          v13 = obj;
+          allKeys3 = obj;
           goto LABEL_17;
         }
 
@@ -1264,7 +1264,7 @@ uint64_t __46__VNGreedyClusteringReadOnly_getClusterState___block_invoke(uint64_
             v26 = [MEMORY[0x1E696AD98] numberWithLongLong:v160[3]];
             [v108 setObject:v25 forKeyedSubscript:v26];
 
-            v27 = [v101 objectForKeyedSubscript:v17];
+            v27 = [flagsCopy objectForKeyedSubscript:v17];
             v28 = [v27 isEqual:MEMORY[0x1E695E110]];
 
             if (v28)
@@ -1278,7 +1278,7 @@ uint64_t __46__VNGreedyClusteringReadOnly_getClusterState___block_invoke(uint64_
         _Block_object_dispose(&v159, 8);
       }
 
-      v13 = obj;
+      allKeys3 = obj;
       v14 = [obj countByEnumeratingWithState:&v174 objects:v192 count:16];
       if (v14)
       {
@@ -1300,8 +1300,8 @@ LABEL_17:
   v171 = 0u;
   v168 = 0u;
   v169 = 0u;
-  v34 = [v109 allKeys];
-  v35 = [v34 countByEnumeratingWithState:&v168 objects:v191 count:16];
+  allKeys4 = [v109 allKeys];
+  v35 = [allKeys4 countByEnumeratingWithState:&v168 objects:v191 count:16];
   if (!v35)
   {
 
@@ -1313,8 +1313,8 @@ LABEL_59:
     v148 = 0u;
     v145 = 0u;
     v146 = 0u;
-    v100 = [v108 allKeys];
-    v54 = [v100 countByEnumeratingWithState:&v145 objects:v189 count:16];
+    allKeys5 = [v108 allKeys];
+    v54 = [allKeys5 countByEnumeratingWithState:&v145 objects:v189 count:16];
     if (v54)
     {
       v102 = *v146;
@@ -1326,7 +1326,7 @@ LABEL_59:
         {
           if (*v146 != v102)
           {
-            objc_enumerationMutation(v100);
+            objc_enumerationMutation(allKeys5);
           }
 
           v107 = v55;
@@ -1352,8 +1352,8 @@ LABEL_59:
                 }
 
                 v60 = *(*(&v141 + 1) + 8 * j);
-                v61 = [v56 unsignedIntegerValue];
-                if (v61 != [v60 unsignedIntegerValue] && objc_msgSend(v113, "containsObject:", v60))
+                unsignedIntegerValue = [v56 unsignedIntegerValue];
+                if (unsignedIntegerValue != [v60 unsignedIntegerValue] && objc_msgSend(v113, "containsObject:", v60))
                 {
                   if ([v111 count])
                   {
@@ -1457,7 +1457,7 @@ LABEL_92:
         }
 
         while (v107 + 1 != v103);
-        v54 = [v100 countByEnumeratingWithState:&v145 objects:v189 count:16];
+        v54 = [allKeys5 countByEnumeratingWithState:&v145 objects:v189 count:16];
       }
 
       while (v54);
@@ -1542,7 +1542,7 @@ LABEL_92:
         }
 
         [v80 minusSet:v97];
-        v86 = [v80 allObjects];
+        allObjects = [v80 allObjects];
       }
 
       else
@@ -1552,8 +1552,8 @@ LABEL_92:
         v124 = 0u;
         v121 = 0u;
         v122 = 0u;
-        v91 = [v109 allValues];
-        v92 = [v91 countByEnumeratingWithState:&v121 objects:v183 count:16];
+        allValues = [v109 allValues];
+        v92 = [allValues countByEnumeratingWithState:&v121 objects:v183 count:16];
         if (v92)
         {
           v93 = *v122;
@@ -1563,23 +1563,23 @@ LABEL_92:
             {
               if (*v122 != v93)
               {
-                objc_enumerationMutation(v91);
+                objc_enumerationMutation(allValues);
               }
 
               [v80 unionSet:*(*(&v121 + 1) + 8 * jj)];
             }
 
-            v92 = [v91 countByEnumeratingWithState:&v121 objects:v183 count:16];
+            v92 = [allValues countByEnumeratingWithState:&v121 objects:v183 count:16];
           }
 
           while (v92);
         }
 
         [v80 minusSet:v97];
-        v86 = [v80 allObjects];
+        allObjects = [v80 allObjects];
       }
 
-      v30 = v86;
+      allObjects2 = allObjects;
     }
 
     else
@@ -1589,8 +1589,8 @@ LABEL_92:
       v132 = 0u;
       v129 = 0u;
       v130 = 0u;
-      v87 = [v109 allValues];
-      v88 = [v87 countByEnumeratingWithState:&v129 objects:v185 count:16];
+      allValues2 = [v109 allValues];
+      v88 = [allValues2 countByEnumeratingWithState:&v129 objects:v185 count:16];
       if (v88)
       {
         v89 = *v130;
@@ -1600,28 +1600,28 @@ LABEL_92:
           {
             if (*v130 != v89)
             {
-              objc_enumerationMutation(v87);
+              objc_enumerationMutation(allValues2);
             }
 
             [v72 unionSet:*(*(&v129 + 1) + 8 * kk)];
           }
 
-          v88 = [v87 countByEnumeratingWithState:&v129 objects:v185 count:16];
+          v88 = [allValues2 countByEnumeratingWithState:&v129 objects:v185 count:16];
         }
 
         while (v88);
       }
 
       [v72 minusSet:v97];
-      v30 = [v72 allObjects];
+      allObjects2 = [v72 allObjects];
     }
 
-    [(VNSuggestionsLogger *)v104->_suggestionsLogger logFinalSuggestionsList:v30];
+    [(VNSuggestionsLogger *)v104->_suggestionsLogger logFinalSuggestionsList:allObjects2];
     v8 = 0;
     goto LABEL_19;
   }
 
-  v98 = v34;
+  v98 = allKeys4;
   v99 = v35;
   v8 = 0;
   v106 = *v169;
@@ -1636,7 +1636,7 @@ LABEL_30:
 
     v37 = *(*(&v168 + 1) + 8 * v36);
     v112 = objc_autoreleasePoolPush();
-    v38 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v159 = 0;
     v160 = &v159;
     v161 = 0x4812000000;
@@ -1675,7 +1675,7 @@ LABEL_30:
           LODWORD(v40) = *(v41 + 8);
           v43 = [MEMORY[0x1E696AD98] numberWithFloat:v40];
           v44 = [MEMORY[0x1E696AD98] numberWithLongLong:*v41];
-          [v38 setObject:v43 forKeyedSubscript:v44];
+          [dictionary setObject:v43 forKeyedSubscript:v44];
 
           v41 += 16;
         }
@@ -1684,8 +1684,8 @@ LABEL_30:
         v152 = 0u;
         v149 = 0u;
         v150 = 0u;
-        v45 = [v38 allKeys];
-        v46 = [v45 countByEnumeratingWithState:&v149 objects:v190 count:16];
+        allKeys6 = [dictionary allKeys];
+        v46 = [allKeys6 countByEnumeratingWithState:&v149 objects:v190 count:16];
         if (v46)
         {
           v47 = *v150;
@@ -1695,15 +1695,15 @@ LABEL_30:
             {
               if (*v150 != v47)
               {
-                objc_enumerationMutation(v45);
+                objc_enumerationMutation(allKeys6);
               }
 
               v49 = *(*(&v149 + 1) + 8 * mm);
               v50 = [v109 objectForKeyedSubscript:v37];
               [v50 addObject:v49];
 
-              v51 = [v109 allKeys];
-              v52 = [v51 containsObject:v49];
+              allKeys7 = [v109 allKeys];
+              v52 = [allKeys7 containsObject:v49];
 
               if (v52)
               {
@@ -1712,7 +1712,7 @@ LABEL_30:
               }
             }
 
-            v46 = [v45 countByEnumeratingWithState:&v149 objects:v190 count:16];
+            v46 = [allKeys6 countByEnumeratingWithState:&v149 objects:v190 count:16];
           }
 
           while (v46);
@@ -1723,8 +1723,8 @@ LABEL_30:
 
       else
       {
-        v45 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Internal error querying similar faces"];
-        v8 = [VNError errorForInternalErrorWithLocalizedDescription:v45];
+        allKeys6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Internal error querying similar faces"];
+        v8 = [VNError errorForInternalErrorWithLocalizedDescription:allKeys6];
       }
     }
 
@@ -1766,7 +1766,7 @@ LABEL_30:
   }
 
 LABEL_18:
-  v30 = 0;
+  allObjects2 = 0;
 LABEL_19:
 
 LABEL_20:
@@ -1775,11 +1775,11 @@ LABEL_20:
   objc_autoreleasePoolPop(context);
   if (v8)
   {
-    if (a5)
+    if (error)
     {
       v31 = v8;
       v32 = 0;
-      *a5 = v8;
+      *error = v8;
     }
 
     else
@@ -1790,18 +1790,18 @@ LABEL_20:
 
   else
   {
-    v32 = v30;
+    v32 = allObjects2;
   }
 
   return v32;
 }
 
-- (id)convertUpdatePairsToClusters:(void *)a3
+- (id)convertUpdatePairsToClusters:(void *)clusters
 {
   v25 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  for (i = *a3; i != *(a3 + 1); i += 2)
+  for (i = *clusters; i != *(clusters + 1); i += 2)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithLongLong:i[1]];
     v8 = [v5 objectForKeyedSubscript:v7];
@@ -1827,8 +1827,8 @@ LABEL_20:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v12 = [v5 allKeys];
-  v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  allKeys = [v5 allKeys];
+  v13 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v13)
   {
     v14 = *v21;
@@ -1838,7 +1838,7 @@ LABEL_20:
       {
         if (*v21 != v14)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allKeys);
         }
 
         v16 = *(*(&v20 + 1) + 8 * j);
@@ -1850,7 +1850,7 @@ LABEL_20:
         [v4 addObject:v17];
       }
 
-      v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v13 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v13);
@@ -1859,10 +1859,10 @@ LABEL_20:
   return v4;
 }
 
-- (void)setGreedyClustererFaces_const:(shared_ptr<const vision::mod::FaceClustering>)a3
+- (void)setGreedyClustererFaces_const:(shared_ptr<const vision::mod::FaceClustering>)faces_const
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *faces_const.__ptr_;
+  v3 = *(faces_const.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);
@@ -1877,19 +1877,19 @@ LABEL_20:
   }
 }
 
-- (VNGreedyClusteringReadOnly)initWithOptions:(id)a3 error:(id *)a4
+- (VNGreedyClusteringReadOnly)initWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   v25.receiver = self;
   v25.super_class = VNGreedyClusteringReadOnly;
   v7 = [(VNGreedyClusteringReadOnly *)&v25 init];
   v8 = v7;
   if (!v7)
   {
-    if (a4)
+    if (error)
     {
       +[VNError errorForMemoryAllocationFailure];
-      *a4 = v15 = 0;
+      *error = v15 = 0;
       goto LABEL_28;
     }
 
@@ -1898,7 +1898,7 @@ LABEL_10:
     goto LABEL_28;
   }
 
-  if (![(VNGreedyClusteringReadOnly *)v7 _parseOptions:v6 error:a4])
+  if (![(VNGreedyClusteringReadOnly *)v7 _parseOptions:optionsCopy error:error])
   {
     goto LABEL_10;
   }
@@ -1909,10 +1909,10 @@ LABEL_10:
   apple::vision::GreedyClusteringParamsWrapper::createClusteringHacksWrapper(&v23, faceprintRevision, torsoprintRevision);
   if (!v23)
   {
-    if (a4)
+    if (error)
     {
       v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Creating clustering parameters object failed for following face and torsoprint revisions: %lu and %lu and algorith type: %@", v8->_faceprintRevision, v8->_torsoprintRevision, v8->_algorithmType];
-      *a4 = [VNError errorForInternalErrorWithLocalizedDescription:v16];
+      *error = [VNError errorForInternalErrorWithLocalizedDescription:v16];
     }
 
     goto LABEL_25;
@@ -1920,18 +1920,18 @@ LABEL_10:
 
   if ([(NSString *)v8->_algorithmType isEqualToString:@"VNClusteringAlgorithm_Greedy"])
   {
-    v11 = [(NSString *)v8->_cacheFolderPath UTF8String];
+    uTF8String = [(NSString *)v8->_cacheFolderPath UTF8String];
     vectorMapReadOnlyFlag = v8->_vectorMapReadOnlyFlag;
-    v13 = [(NSData *)v8->_state bytes];
+    bytes = [(NSData *)v8->_state bytes];
     v14 = [(NSData *)v8->_state length];
-    v29 = v11;
+    v29 = uTF8String;
     v28 = vectorMapReadOnlyFlag;
-    if (v11)
+    if (uTF8String)
     {
       if (v14)
       {
-        v27 = v13;
-        *&v26 = v13 + v14;
+        v27 = bytes;
+        *&v26 = bytes + v14;
         std::allocate_shared[abi:ne200100]<std::vector<unsigned char>,std::allocator<std::vector<unsigned char>>,unsigned char const* const&,unsigned char const*,0>();
       }
 
@@ -1946,18 +1946,18 @@ LABEL_10:
       goto LABEL_21;
     }
 
-    v17 = [(NSString *)v8->_cacheFolderPath UTF8String];
+    uTF8String2 = [(NSString *)v8->_cacheFolderPath UTF8String];
     v18 = v8->_vectorMapReadOnlyFlag;
-    v19 = [(NSData *)v8->_state bytes];
+    bytes2 = [(NSData *)v8->_state bytes];
     v20 = [(NSData *)v8->_state length];
-    v29 = v17;
+    v29 = uTF8String2;
     v28 = v18;
-    if (v17)
+    if (uTF8String2)
     {
       if (v20)
       {
-        v27 = v19;
-        *&v26 = v19 + v20;
+        v27 = bytes2;
+        *&v26 = bytes2 + v20;
         std::allocate_shared[abi:ne200100]<std::vector<unsigned char>,std::allocator<std::vector<unsigned char>>,unsigned char const* const&,unsigned char const*,0>();
       }
 
@@ -1980,10 +1980,10 @@ LABEL_21:
     goto LABEL_26;
   }
 
-  if (a4)
+  if (error)
   {
     [VNError errorForInternalErrorWithLocalizedDescription:@"Error initializing cluster state"];
-    *a4 = v15 = 0;
+    *error = v15 = 0;
     goto LABEL_26;
   }
 
@@ -2025,9 +2025,9 @@ LABEL_28:
     v9 = v8;
     if ((v7 & 1) == 0)
     {
-      v10 = [v8 localizedDescription];
-      v11 = [v10 UTF8String];
-      VNValidatedLog(4, @"%s", v12, v13, v14, v15, v16, v17, v11);
+      localizedDescription = [v8 localizedDescription];
+      uTF8String = [localizedDescription UTF8String];
+      VNValidatedLog(4, @"%s", v12, v13, v14, v15, v16, v17, uTF8String);
     }
   }
 }
@@ -2071,24 +2071,24 @@ uint64_t __47__VNGreedyClusteringReadOnly_initializeLogging__block_invoke(uint64
   return 1;
 }
 
-- (BOOL)_parseOptions:(id)a3 error:(id *)a4
+- (BOOL)_parseOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   v7 = objc_opt_class();
   v8 = objc_opt_class();
-  v9 = [VNValidationUtilities requiredObjectOfClass:v7 forKey:@"VNClusterOptionCacheFolderPath" inOptions:v6 error:a4];
+  v9 = [VNValidationUtilities requiredObjectOfClass:v7 forKey:@"VNClusterOptionCacheFolderPath" inOptions:optionsCopy error:error];
   if (v9)
   {
     v26 = 0;
-    v10 = [MEMORY[0x1E696AC08] defaultManager];
-    v11 = [v10 fileExistsAtPath:v9 isDirectory:&v26];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v11 = [defaultManager fileExistsAtPath:v9 isDirectory:&v26];
 
     if (v11 && (v26 & 1) != 0)
     {
-      v12 = [VNValidationUtilities requiredObjectOfClass:v8 forKey:@"VNClusterOptionFaceprintRevision" inOptions:v6 error:a4];
+      v12 = [VNValidationUtilities requiredObjectOfClass:v8 forKey:@"VNClusterOptionFaceprintRevision" inOptions:optionsCopy error:error];
       if (v12)
       {
-        v13 = [VNValidationUtilities requiredObjectOfClass:v8 forKey:@"VNClusterOptionTorsoprintRevision" inOptions:v6 error:a4];
+        v13 = [VNValidationUtilities requiredObjectOfClass:v8 forKey:@"VNClusterOptionTorsoprintRevision" inOptions:optionsCopy error:error];
         if (!v13)
         {
           v21 = 0;
@@ -2097,7 +2097,7 @@ LABEL_28:
           goto LABEL_29;
         }
 
-        v14 = [VNValidationUtilities requiredObjectOfClass:v7 forKey:@"VNClusterOptionClusteringAlgorithm" inOptions:v6 error:a4];
+        v14 = [VNValidationUtilities requiredObjectOfClass:v7 forKey:@"VNClusterOptionClusteringAlgorithm" inOptions:optionsCopy error:error];
         v15 = v14;
         if (!v14)
         {
@@ -2108,7 +2108,7 @@ LABEL_28:
         {
           v24 = v15;
           v25 = 0;
-          v16 = [VNValidationUtilities getOptionalObject:&v25 ofClass:objc_opt_class() forKey:@"VNClusterOptionRestoreClusteringState" inOptions:v6 error:a4];
+          v16 = [VNValidationUtilities getOptionalObject:&v25 ofClass:objc_opt_class() forKey:@"VNClusterOptionRestoreClusteringState" inOptions:optionsCopy error:error];
           v17 = v25;
           v18 = v25;
           if (v16)
@@ -2117,7 +2117,7 @@ LABEL_28:
             v19 = v18;
             if (!v18 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
             {
-              v20 = [VNValidationUtilities requiredObjectOfClass:v8 forKey:@"VNClusterOptionVectorMapReadOnlyFlag" inOptions:v6 error:a4];
+              v20 = [VNValidationUtilities requiredObjectOfClass:v8 forKey:@"VNClusterOptionVectorMapReadOnlyFlag" inOptions:optionsCopy error:error];
               v21 = v20 != 0;
               v15 = v24;
               if (v20)
@@ -2149,10 +2149,10 @@ LABEL_26:
           goto LABEL_27;
         }
 
-        if (a4)
+        if (error)
         {
           [VNError errorForInternalErrorWithLocalizedDescription:@"VNClusterOptionClusteringAlgorithm must be set to either VNClusteringAlgorithm_Greedy or VNClusteringAlgorithm_GreedyWithTorso"];
-          *a4 = v21 = 0;
+          *error = v21 = 0;
         }
 
         else
@@ -2172,11 +2172,11 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    if (a4)
+    if (error)
     {
       v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid cache file path: %@", v9];
       [VNError errorForInternalErrorWithLocalizedDescription:v12];
-      *a4 = v21 = 0;
+      *error = v21 = 0;
       goto LABEL_29;
     }
   }
@@ -2187,42 +2187,42 @@ LABEL_30:
   return v21;
 }
 
-+ (id)clustererModelFileNamesFromState:(id)a3 storedInPath:(id)a4 error:(id *)a5
++ (id)clustererModelFileNamesFromState:(id)state storedInPath:(id)path error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  stateCopy = state;
+  pathCopy = path;
+  if (!pathCopy)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_13;
     }
 
-    v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cache file path is a required parameter"];
-    v20 = [VNError errorForInternalErrorWithLocalizedDescription:v19];
+    pathCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cache file path is a required parameter"];
+    v20 = [VNError errorForInternalErrorWithLocalizedDescription:pathCopy];
     goto LABEL_12;
   }
 
   v40 = 0;
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
-  v10 = [v9 fileExistsAtPath:v8 isDirectory:&v40];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v10 = [defaultManager fileExistsAtPath:pathCopy isDirectory:&v40];
 
   if (!v10 || (v40 & 1) == 0)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_13;
     }
 
-    v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid cache file path: %@", v8];
-    v20 = [VNError errorForInternalErrorWithLocalizedDescription:v19];
+    pathCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid cache file path: %@", pathCopy];
+    v20 = [VNError errorForInternalErrorWithLocalizedDescription:pathCopy];
 LABEL_12:
-    *a5 = v20;
+    *error = v20;
 
     goto LABEL_13;
   }
 
-  if (v7)
+  if (stateCopy)
   {
     v37 = 0;
     v38 = 0;
@@ -2230,13 +2230,13 @@ LABEL_12:
     v34 = 0;
     v35 = 0;
     v36 = 0;
-    std::string::basic_string[abi:ne200100]<0>(__p, [v8 UTF8String]);
-    v11 = [v7 bytes];
-    v12 = [v7 length];
-    if (v11 && v12)
+    std::string::basic_string[abi:ne200100]<0>(__p, [pathCopy UTF8String]);
+    bytes = [stateCopy bytes];
+    v12 = [stateCopy length];
+    if (bytes && v12)
     {
-      v42 = v11;
-      v41 = v11 + v12;
+      v42 = bytes;
+      v41 = bytes + v12;
       std::allocate_shared[abi:ne200100]<std::vector<unsigned char>,std::allocator<std::vector<unsigned char>>,unsigned char const* const&,unsigned char const*,0>();
     }
 
@@ -2246,13 +2246,13 @@ LABEL_12:
       operator delete(__p[0]);
     }
 
-    std::string::basic_string[abi:ne200100]<0>(__p, [v8 UTF8String]);
-    v22 = [v7 bytes];
-    v23 = [v7 length];
-    if (v22 && v23)
+    std::string::basic_string[abi:ne200100]<0>(__p, [pathCopy UTF8String]);
+    bytes2 = [stateCopy bytes];
+    v23 = [stateCopy length];
+    if (bytes2 && v23)
     {
-      v42 = v22;
-      v41 = v22 + v23;
+      v42 = bytes2;
+      v41 = bytes2 + v23;
       std::allocate_shared[abi:ne200100]<std::vector<unsigned char>,std::allocator<std::vector<unsigned char>>,unsigned char const* const&,unsigned char const*,0>();
     }
 
@@ -2262,9 +2262,9 @@ LABEL_12:
       operator delete(__p[0]);
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = VNErrorForCVMLStatus(0x147C);
+      *error = VNErrorForCVMLStatus(0x147C);
     }
 
     if (SHIBYTE(v36) < 0)
@@ -2278,9 +2278,9 @@ LABEL_12:
     }
   }
 
-  else if (a5)
+  else if (error)
   {
-    *a5 = [VNError errorForInternalErrorWithLocalizedDescription:@"RestoreClusteringState is a required parameter"];
+    *error = [VNError errorForInternalErrorWithLocalizedDescription:@"RestoreClusteringState is a required parameter"];
   }
 
 LABEL_13:
@@ -2288,11 +2288,11 @@ LABEL_13:
   return 0;
 }
 
-+ (id)getRepresentativenessForFaces:(id)a3 error:(id *)a4
++ (id)getRepresentativenessForFaces:(id)faces error:(id *)error
 {
-  v5 = a3;
+  facesCopy = faces;
   v6 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_255];
-  v7 = [v5 filteredArrayUsingPredicate:v6];
+  v7 = [facesCopy filteredArrayUsingPredicate:v6];
 
   if ([v7 count])
   {
@@ -2315,10 +2315,10 @@ LABEL_13:
     v10 = v7;
     v36 = v10;
     v37 = &v38;
-    if (VNExecuteBlock(v34, a4))
+    if (VNExecuteBlock(v34, error))
     {
-      v33 = v5;
-      v11 = [MEMORY[0x1E695DF90] dictionary];
+      v33 = facesCopy;
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v12 = v39[6];
       if (v12 != v39[7])
       {
@@ -2326,12 +2326,12 @@ LABEL_13:
         do
         {
           v14 = [v10 objectAtIndexedSubscript:v13];
-          v15 = [v14 faceId];
-          VNValidatedLog(1, @"  face[%lu].representativeness = %.3f", v16, v17, v18, v19, v20, v21, v15);
+          faceId = [v14 faceId];
+          VNValidatedLog(1, @"  face[%lu].representativeness = %.3f", v16, v17, v18, v19, v20, v21, faceId);
           LODWORD(v22) = *v12;
           v23 = [MEMORY[0x1E696AD98] numberWithFloat:v22];
           v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v14, "faceId")}];
-          [v11 setObject:v23 forKeyedSubscript:v24];
+          [dictionary setObject:v23 forKeyedSubscript:v24];
 
           ++v12;
           ++v13;
@@ -2340,14 +2340,14 @@ LABEL_13:
         while (v12 != v39[7]);
       }
 
-      v25 = [v9 faceId];
-      VNValidatedLog(1, @"  best rep = %lu", v26, v27, v28, v29, v30, v31, v25);
-      v5 = v33;
+      faceId2 = [v9 faceId];
+      VNValidatedLog(1, @"  best rep = %lu", v26, v27, v28, v29, v30, v31, faceId2);
+      facesCopy = v33;
     }
 
     else
     {
-      v11 = 0;
+      dictionary = 0;
     }
 
     _Block_object_dispose(&v38, 8);
@@ -2360,10 +2360,10 @@ LABEL_13:
 
   else
   {
-    v11 = MEMORY[0x1E695E0F8];
+    dictionary = MEMORY[0x1E695E0F8];
   }
 
-  return v11;
+  return dictionary;
 }
 
 uint64_t __66__VNGreedyClusteringReadOnly_getRepresentativenessForFaces_error___block_invoke_259(uint64_t a1)
@@ -2432,25 +2432,25 @@ BOOL __66__VNGreedyClusteringReadOnly_getRepresentativenessForFaces_error___bloc
   return v3;
 }
 
-+ (void)addPersonData:(id)a3 withGroupingIdentifiers:(id)a4 toFaceDescriptorBuffer:(void *)a5
++ (void)addPersonData:(id)data withGroupingIdentifiers:(id)identifiers toFaceDescriptorBuffer:(void *)buffer
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 objectAtIndexedSubscript:0];
-  v10 = [v9 lengthInBytes];
+  dataCopy = data;
+  identifiersCopy = identifiers;
+  v9 = [dataCopy objectAtIndexedSubscript:0];
+  lengthInBytes = [v9 lengthInBytes];
 
-  v11 = [v7 count];
-  vision::mod::ImageDescriptorBufferJoint::resizeForDescriptorsCount(a5, v11, v10 > 3);
-  std::vector<long long>::resize(a5 + 1, v11);
+  v11 = [dataCopy count];
+  vision::mod::ImageDescriptorBufferJoint::resizeForDescriptorsCount(buffer, v11, lengthInBytes > 3);
+  std::vector<long long>::resize(buffer + 1, v11);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __91__VNGreedyClusteringReadOnly_addPersonData_withGroupingIdentifiers_toFaceDescriptorBuffer___block_invoke;
   v13[3] = &unk_1E77B1120;
-  v15 = a5;
-  v16 = v10;
-  v12 = v8;
+  bufferCopy = buffer;
+  v16 = lengthInBytes;
+  v12 = identifiersCopy;
   v14 = v12;
-  [v7 enumerateObjectsUsingBlock:v13];
+  [dataCopy enumerateObjectsUsingBlock:v13];
 }
 
 void __91__VNGreedyClusteringReadOnly_addPersonData_withGroupingIdentifiers_toFaceDescriptorBuffer___block_invoke(uint64_t a1, void *a2, unint64_t a3)
@@ -2470,26 +2470,26 @@ void __91__VNGreedyClusteringReadOnly_addPersonData_withGroupingIdentifiers_toFa
   vision::mod::ImageDescriptorBufferAbstract::setDescriptorIdForKthDescriptor(*(a1 + 40), a3, [v5 personId]);
 }
 
-+ (void)addFaceObservations:(id)a3 withGroupingIdentifiers:(id)a4 toFaceDescriptorBuffer:(void *)a5
++ (void)addFaceObservations:(id)observations withGroupingIdentifiers:(id)identifiers toFaceDescriptorBuffer:(void *)buffer
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 objectAtIndexedSubscript:0];
-  v10 = [v9 faceTorsoprint];
-  v11 = [v10 lengthInBytes];
+  observationsCopy = observations;
+  identifiersCopy = identifiers;
+  v9 = [observationsCopy objectAtIndexedSubscript:0];
+  faceTorsoprint = [v9 faceTorsoprint];
+  lengthInBytes = [faceTorsoprint lengthInBytes];
 
-  v12 = [v7 count];
-  vision::mod::ImageDescriptorBufferJoint::resizeForDescriptorsCount(a5, v12, v11 > 3);
-  std::vector<long long>::resize(a5 + 1, v12);
+  v12 = [observationsCopy count];
+  vision::mod::ImageDescriptorBufferJoint::resizeForDescriptorsCount(buffer, v12, lengthInBytes > 3);
+  std::vector<long long>::resize(buffer + 1, v12);
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __97__VNGreedyClusteringReadOnly_addFaceObservations_withGroupingIdentifiers_toFaceDescriptorBuffer___block_invoke;
   v14[3] = &unk_1E77B10F8;
-  v16 = a5;
-  v17 = v11;
-  v13 = v8;
+  bufferCopy = buffer;
+  v17 = lengthInBytes;
+  v13 = identifiersCopy;
   v15 = v13;
-  [v7 enumerateObjectsUsingBlock:v14];
+  [observationsCopy enumerateObjectsUsingBlock:v14];
 }
 
 void __97__VNGreedyClusteringReadOnly_addFaceObservations_withGroupingIdentifiers_toFaceDescriptorBuffer___block_invoke(uint64_t a1, void *a2, unint64_t a3)
@@ -2516,21 +2516,21 @@ void __97__VNGreedyClusteringReadOnly_addFaceObservations_withGroupingIdentifier
   vision::mod::ImageDescriptorBufferAbstract::setDescriptorIdForKthDescriptor(*(a1 + 40), a3, [v5 faceId]);
 }
 
-+ (void)addFaceObservations:(id)a3 toFaceDescriptorBuffer:(void *)a4
++ (void)addFaceObservations:(id)observations toFaceDescriptorBuffer:(void *)buffer
 {
   v24 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v5 = [v18 objectAtIndex:0];
-  v6 = [v5 faceprint];
-  v7 = [v6 lengthInBytes];
+  observationsCopy = observations;
+  v5 = [observationsCopy objectAtIndex:0];
+  faceprint = [v5 faceprint];
+  lengthInBytes = [faceprint lengthInBytes];
 
-  vision::mod::ImageDescriptorBufferAbstract::resizeForDescriptorsCount(a4, [v18 count], v7 > 3);
-  std::vector<long long>::resize(a4 + 1, [v18 count]);
+  vision::mod::ImageDescriptorBufferAbstract::resizeForDescriptorsCount(buffer, [observationsCopy count], lengthInBytes > 3);
+  std::vector<long long>::resize(buffer + 1, [observationsCopy count]);
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v18;
+  v8 = observationsCopy;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
@@ -2548,13 +2548,13 @@ void __97__VNGreedyClusteringReadOnly_addFaceObservations_withGroupingIdentifier
         }
 
         v13 = *(*(&v19 + 1) + 8 * v12);
-        v14 = [v13 faceprint];
-        v15 = [v14 descriptorData];
+        faceprint2 = [v13 faceprint];
+        descriptorData = [faceprint2 descriptorData];
 
-        DataForKthDescriptor = vision::mod::ImageDescriptorBufferAbstract::getDataForKthDescriptor(a4, v10);
-        v17 = v15;
-        memcpy(DataForKthDescriptor, [v15 bytes], v7);
-        vision::mod::ImageDescriptorBufferAbstract::setDescriptorIdForKthDescriptor(a4, v10, [v13 faceId]);
+        DataForKthDescriptor = vision::mod::ImageDescriptorBufferAbstract::getDataForKthDescriptor(buffer, v10);
+        v17 = descriptorData;
+        memcpy(DataForKthDescriptor, [descriptorData bytes], lengthInBytes);
+        vision::mod::ImageDescriptorBufferAbstract::setDescriptorIdForKthDescriptor(buffer, v10, [v13 faceId]);
 
         ++v12;
         ++v10;

@@ -1,13 +1,13 @@
 @interface BWRenderListAnimator
 - (BOOL)isCompleted;
 - (BOOL)isPrepared;
-- (BWRenderListAnimator)initWithInitialParameters:(id)a3 initialRenderList:(id)a4 finalParameters:(id)a5 finalRenderList:(id)a6 animation:(int64_t)a7;
+- (BWRenderListAnimator)initWithInitialParameters:(id)parameters initialRenderList:(id)list finalParameters:(id)finalParameters finalRenderList:(id)renderList animation:(int64_t)animation;
 - (id)interpolateParameters;
 - (uint64_t)_configureSpringSimulationWithAnimation:(uint64_t)result;
-- (uint64_t)_parametersContainLiveStageRendering:(uint64_t)a1;
+- (uint64_t)_parametersContainLiveStageRendering:(uint64_t)rendering;
 - (void)dealloc;
-- (void)prepareWithInputVideoFormat:(id)a3 inputMediaPropertiesByAttachedMediaKey:(id)a4;
-- (void)setPrepared:(uint64_t)a1;
+- (void)prepareWithInputVideoFormat:(id)format inputMediaPropertiesByAttachedMediaKey:(id)key;
+- (void)setPrepared:(uint64_t)prepared;
 @end
 
 @implementation BWRenderListAnimator
@@ -54,21 +54,21 @@
       initialParameters = self->_initialRenderList;
     }
 
-    v10 = [initialParameters parameterList];
+    parameterList = [initialParameters parameterList];
     finalParameters = self->_finalParameters;
     if (!finalParameters)
     {
       finalParameters = self->_finalRenderList;
     }
 
-    v12 = [finalParameters parameterList];
+    parameterList2 = [finalParameters parameterList];
     interpolatingParameters = self->_interpolatingParameters;
     p_interpolatingParameters = &self->_interpolatingParameters;
-    v14 = [(BWRenderListParameters *)interpolatingParameters parameterList];
-    if (v10)
+    parameterList3 = [(BWRenderListParameters *)interpolatingParameters parameterList];
+    if (parameterList)
     {
-      v15 = *v10;
-      if (v12)
+      v15 = *parameterList;
+      if (parameterList2)
       {
         goto LABEL_13;
       }
@@ -77,14 +77,14 @@
     else
     {
       v15 = 0;
-      if (v12)
+      if (parameterList2)
       {
 LABEL_13:
-        v16 = *v12;
-        if (v14)
+        v16 = *parameterList2;
+        if (parameterList3)
         {
 LABEL_14:
-          slh_first = v14->slh_first;
+          slh_first = parameterList3->slh_first;
           goto LABEL_42;
         }
 
@@ -93,7 +93,7 @@ LABEL_14:
     }
 
     v16 = 0;
-    if (v14)
+    if (parameterList3)
     {
       goto LABEL_14;
     }
@@ -158,8 +158,8 @@ LABEL_39:
         {
           if (v20)
           {
-            v24 = [v18 type];
-            if (v24 == [v20 type])
+            type = [v18 type];
+            if (type == [v20 type])
             {
               *&v25 = v5;
               [v20 updateByInterpolatingFromParameters:v18 toParameters:0 withFractionComplete:v25];
@@ -173,8 +173,8 @@ LABEL_39:
         {
           if (v20)
           {
-            v26 = [v19 type];
-            if (v26 == [v20 type])
+            type2 = [v19 type];
+            if (type2 == [v20 type])
             {
               *&v27 = v5;
               [v20 updateByInterpolatingFromParameters:0 toParameters:v19 withFractionComplete:v27];
@@ -210,7 +210,7 @@ LABEL_40:
   return v4 > 0.998;
 }
 
-- (BWRenderListAnimator)initWithInitialParameters:(id)a3 initialRenderList:(id)a4 finalParameters:(id)a5 finalRenderList:(id)a6 animation:(int64_t)a7
+- (BWRenderListAnimator)initWithInitialParameters:(id)parameters initialRenderList:(id)list finalParameters:(id)finalParameters finalRenderList:(id)renderList animation:(int64_t)animation
 {
   v59.receiver = self;
   v59.super_class = BWRenderListAnimator;
@@ -221,54 +221,54 @@ LABEL_40:
   }
 
   v13 = v12;
-  if (a7)
+  if (animation)
   {
     v12->_preparationMutexQueue = dispatch_queue_create("com.apple.bwgraph.render-list-animator.preparation", 0);
-    *(v13 + 56) = a3;
-    *(v13 + 48) = a4;
-    *(v13 + 72) = a5;
-    *(v13 + 64) = a6;
+    *(v13 + 56) = parameters;
+    *(v13 + 48) = list;
+    *(v13 + 72) = finalParameters;
+    *(v13 + 64) = renderList;
     if ([*(v13 + 48) affectsMetadata])
     {
-      v15 = 1;
+      affectsMetadata = 1;
     }
 
     else
     {
-      v15 = [*(v13 + 64) affectsMetadata];
+      affectsMetadata = [*(v13 + 64) affectsMetadata];
     }
 
-    v52 = [[BWRenderList alloc] initWithAnimationSupported:1 affectsMetadata:v15];
-    v16 = [(BWRenderList *)v52 rendererList];
-    v17 = [*(v13 + 48) rendererList];
-    v18 = [*(v13 + 64) rendererList];
+    v52 = [[BWRenderList alloc] initWithAnimationSupported:1 affectsMetadata:affectsMetadata];
+    rendererList = [(BWRenderList *)v52 rendererList];
+    rendererList2 = [*(v13 + 48) rendererList];
+    rendererList3 = [*(v13 + 64) rendererList];
     v51 = objc_alloc_init(BWRenderListParameters);
-    v55 = [(BWRenderListParameters *)v51 parameterList];
-    if (a3)
+    parameterList = [(BWRenderListParameters *)v51 parameterList];
+    if (parameters)
     {
-      v19 = a3;
+      listCopy = parameters;
     }
 
     else
     {
-      v19 = a4;
+      listCopy = list;
     }
 
-    v20 = [v19 parameterList];
-    if (a5)
+    parameterList2 = [listCopy parameterList];
+    if (finalParameters)
     {
-      v21 = a5;
+      renderListCopy = finalParameters;
     }
 
     else
     {
-      v21 = a6;
+      renderListCopy = renderList;
     }
 
-    v22 = [v21 parameterList];
-    if (v17)
+    parameterList3 = [renderListCopy parameterList];
+    if (rendererList2)
     {
-      v23 = *v17;
+      v23 = *rendererList2;
     }
 
     else
@@ -276,10 +276,10 @@ LABEL_40:
       v23 = 0;
     }
 
-    v53 = a7;
-    if (v18)
+    animationCopy = animation;
+    if (rendererList3)
     {
-      v24 = *v18;
+      v24 = *rendererList3;
     }
 
     else
@@ -287,15 +287,15 @@ LABEL_40:
       v24 = 0;
     }
 
-    v54 = v16;
-    if (v16)
+    v54 = rendererList;
+    if (rendererList)
     {
-      v16 = v16->slh_first;
+      rendererList = rendererList->slh_first;
     }
 
-    if (v20)
+    if (parameterList2)
     {
-      v25 = *v20;
+      v25 = *parameterList2;
     }
 
     else
@@ -303,9 +303,9 @@ LABEL_40:
       v25 = 0;
     }
 
-    if (v22)
+    if (parameterList3)
     {
-      v26 = *v22;
+      v26 = *parameterList3;
     }
 
     else
@@ -313,9 +313,9 @@ LABEL_40:
       v26 = 0;
     }
 
-    if (v55)
+    if (parameterList)
     {
-      slh_first = v55->slh_first;
+      slh_first = parameterList->slh_first;
     }
 
     else
@@ -327,11 +327,11 @@ LABEL_40:
     {
       if (!(v23 | v24))
       {
-        a7 = v13;
+        animation = v13;
         *(v13 + 24) = v52;
         *(v13 + 32) = v51;
-        [(BWRenderListAnimator *)v13 _configureSpringSimulationWithAnimation:v53];
-        return a7;
+        [(BWRenderListAnimator *)v13 _configureSpringSimulationWithAnimation:animationCopy];
+        return animation;
       }
 
       if (v23)
@@ -386,8 +386,8 @@ LABEL_43:
           goto LABEL_53;
         }
 
-        v31 = [v27 type];
-        if (v31 != [v28 type])
+        type = [v27 type];
+        if (type != [v28 type])
         {
           goto LABEL_53;
         }
@@ -395,9 +395,9 @@ LABEL_43:
         v32 = malloc_type_malloc(0x10uLL, 0xA0040AFF93C70uLL);
         v33 = v28;
         v34 = v54;
-        if (v16)
+        if (rendererList)
         {
-          v34 = v16;
+          v34 = rendererList;
         }
 
         v32->slh_first = v34->slh_first;
@@ -415,7 +415,7 @@ LABEL_43:
 
         v36 = malloc_type_malloc(0x10uLL, 0xA0040AFF93C70uLL);
         v37 = [v35 copyWithZone:0];
-        v38 = v55;
+        v38 = parameterList;
         if (slh_first)
         {
           v38 = slh_first;
@@ -429,7 +429,7 @@ LABEL_43:
         v24 = *v24;
         v26 = *v57;
         slh_first = v36;
-        v16 = v32;
+        rendererList = v32;
       }
 
       else
@@ -446,9 +446,9 @@ LABEL_53:
           v39 = malloc_type_malloc(0x10uLL, 0xA0040AFF93C70uLL);
           v40 = v27;
           v41 = v54;
-          if (v16)
+          if (rendererList)
           {
-            v41 = v16;
+            v41 = rendererList;
           }
 
           v39->slh_first = v41->slh_first;
@@ -456,7 +456,7 @@ LABEL_53:
           v41->slh_first = v39;
           v42 = malloc_type_malloc(0x10uLL, 0xA0040AFF93C70uLL);
           v43 = [v29 copyWithZone:0];
-          v44 = v55;
+          v44 = parameterList;
           if (slh_first)
           {
             v44 = slh_first;
@@ -469,7 +469,7 @@ LABEL_53:
           v26 = v57;
           v25 = *v58;
           slh_first = v42;
-          v16 = v39;
+          rendererList = v39;
         }
 
         else if (v24)
@@ -477,9 +477,9 @@ LABEL_53:
           v45 = malloc_type_malloc(0x10uLL, 0xA0040AFF93C70uLL);
           v46 = v28;
           v47 = v54;
-          if (v16)
+          if (rendererList)
           {
-            v47 = v16;
+            v47 = rendererList;
           }
 
           v45->slh_first = v47->slh_first;
@@ -488,7 +488,7 @@ LABEL_53:
           v48 = malloc_type_malloc(0x10uLL, 0xA0040AFF93C70uLL);
           v49 = [v30 copyWithZone:0];
           v23 = 0;
-          v50 = v55;
+          v50 = parameterList;
           if (slh_first)
           {
             v50 = slh_first;
@@ -501,7 +501,7 @@ LABEL_53:
           v25 = v58;
           v26 = *v57;
           slh_first = v48;
-          v16 = v45;
+          rendererList = v45;
         }
 
         else
@@ -515,7 +515,7 @@ LABEL_53:
     }
   }
 
-  return a7;
+  return animation;
 }
 
 - (void)dealloc
@@ -525,11 +525,11 @@ LABEL_53:
   [(BWRenderListAnimator *)&v3 dealloc];
 }
 
-- (void)prepareWithInputVideoFormat:(id)a3 inputMediaPropertiesByAttachedMediaKey:(id)a4
+- (void)prepareWithInputVideoFormat:(id)format inputMediaPropertiesByAttachedMediaKey:(id)key
 {
   if (![(BWRenderListAnimator *)self isPrepared])
   {
-    [(BWRenderListAnimator *)self prepareWithInputVideoFormat:a3 inputMediaPropertiesByAttachedMediaKey:a4];
+    [(BWRenderListAnimator *)self prepareWithInputVideoFormat:format inputMediaPropertiesByAttachedMediaKey:key];
   }
 }
 
@@ -547,16 +547,16 @@ LABEL_53:
       v5 = *(v3 + 48);
     }
 
-    v6 = [v5 parameterList];
+    parameterList = [v5 parameterList];
     v7 = *(v3 + 72);
     if (!v7)
     {
       v7 = *(v3 + 64);
     }
 
-    v8 = [v7 parameterList];
-    v9 = [(BWRenderListAnimator *)v3 _parametersContainLiveStageRendering:v6];
-    result = [(BWRenderListAnimator *)v3 _parametersContainLiveStageRendering:v8];
+    parameterList2 = [v7 parameterList];
+    v9 = [(BWRenderListAnimator *)v3 _parametersContainLiveStageRendering:parameterList];
+    result = [(BWRenderListAnimator *)v3 _parametersContainLiveStageRendering:parameterList2];
     if (v9 == result)
     {
       v12 = a2 - 1;
@@ -584,25 +584,25 @@ LABEL_53:
   return result;
 }
 
-- (void)setPrepared:(uint64_t)a1
+- (void)setPrepared:(uint64_t)prepared
 {
-  if (a1)
+  if (prepared)
   {
-    v2 = *(a1 + 8);
+    v2 = *(prepared + 8);
     v3[0] = MEMORY[0x1E69E9820];
     v3[1] = 3221225472;
     v3[2] = __36__BWRenderListAnimator_setPrepared___block_invoke;
     v3[3] = &unk_1E7990078;
-    v3[4] = a1;
+    v3[4] = prepared;
     v4 = a2;
     dispatch_sync(v2, v3);
   }
 }
 
-- (uint64_t)_parametersContainLiveStageRendering:(uint64_t)a1
+- (uint64_t)_parametersContainLiveStageRendering:(uint64_t)rendering
 {
   result = 0;
-  if (a1 && a2)
+  if (rendering && a2)
   {
     v4 = *a2;
     if (*a2)

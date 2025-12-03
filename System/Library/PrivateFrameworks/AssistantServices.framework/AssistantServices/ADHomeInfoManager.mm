@@ -1,28 +1,28 @@
 @interface ADHomeInfoManager
-+ (id)findSettingWithKeyPath:(id)a3 group:(id)a4;
++ (id)findSettingWithKeyPath:(id)path group:(id)group;
 + (id)sharedInfoManager;
-- (ADHomeInfoManager)initWithHomeManager:(id)a3 queue:(id)a4;
+- (ADHomeInfoManager)initWithHomeManager:(id)manager queue:(id)queue;
 - (AFHomeAccessoryInfo)currentAccessoryInfo;
-- (BOOL)_allowExplicitContentSettingForUser:(id)a3 forHome:(id)a4;
-- (BOOL)_hasSiriCapableDeviceInHome:(id)a3;
+- (BOOL)_allowExplicitContentSettingForUser:(id)user forHome:(id)home;
+- (BOOL)_hasSiriCapableDeviceInHome:(id)home;
 - (BOOL)_updateHomeUserSettings;
 - (BOOL)areActivityNotificationsOffForAllHomes;
 - (BOOL)hasOptedInHH2;
 - (NSUUID)accessoryLoggingSalt;
-- (id)_accessoryForIdentifier:(id)a3 inHome:(id *)a4;
-- (id)_accessoryInfoForAccessory:(id)a3;
+- (id)_accessoryForIdentifier:(id)identifier inHome:(id *)home;
+- (id)_accessoryInfoForAccessory:(id)accessory;
 - (id)_accessoryLoggingSalt;
-- (id)_activityNotificationsForHomes:(id)a3;
+- (id)_activityNotificationsForHomes:(id)homes;
 - (id)_currentAccessoryInfo;
 - (id)_currentHome;
 - (id)_currentHomeInfo;
-- (id)_getAccessoryCategoryForExecutionInfo:(id)a3;
+- (id)_getAccessoryCategoryForExecutionInfo:(id)info;
 - (id)_homeManager;
 - (id)_homesWithMultiUserEnabled;
 - (id)_homesWithSiriCapableDevices;
 - (id)_init;
-- (id)_initWithContext:(id)a3;
-- (id)_settingsForHomeUser:(id)a3 forHome:(id)a4;
+- (id)_initWithContext:(id)context;
+- (id)_settingsForHomeUser:(id)user forHome:(id)home;
 - (id)accessoriesInHome;
 - (id)accessoriesWithPersonalRequestsEnabled;
 - (id)getCurrentASRLanguages;
@@ -30,91 +30,91 @@
 - (id)infoForThisDevice;
 - (id)preferredMediaUserInfo;
 - (id)rootAfHomeInfoForThisDevice;
-- (id)updatedHomeInfoForRootInfo:(id)a3;
+- (id)updatedHomeInfoForRootInfo:(id)info;
 - (void)_checkAndDisableVoiceIDIfRequired;
-- (void)_enumerateListenersUsingBlock:(id)a3;
-- (void)_homeManagerUpdatedHomes:(id)a3 homesToDelete:(id)a4;
-- (void)_logRelevantAnalyticsOnHomeUserSettingsUpdateForCurrentSettings:(id)a3 allowVoiceIdSettingValue:(int64_t)a4 isPrimaryUser:(BOOL)a5;
-- (void)_onceSiriDataSharingAdjustment:(id)a3;
-- (void)_propagateSiriDataSharingOptInStatus:(int64_t)a3 toAccessory:(id)a4;
-- (void)_resolveSiriDataSharingStatusMismatch:(id)a3;
-- (void)_setPreferredMediaUserForAccessories:(id)a3;
-- (void)_setPreferredMediaUserForAccessory:(id)a3;
-- (void)_siriDataSharingAdjustment:(id)a3;
-- (void)_siriDataSharingOptInStatusDidChange:(id)a3;
+- (void)_enumerateListenersUsingBlock:(id)block;
+- (void)_homeManagerUpdatedHomes:(id)homes homesToDelete:(id)delete;
+- (void)_logRelevantAnalyticsOnHomeUserSettingsUpdateForCurrentSettings:(id)settings allowVoiceIdSettingValue:(int64_t)value isPrimaryUser:(BOOL)user;
+- (void)_onceSiriDataSharingAdjustment:(id)adjustment;
+- (void)_propagateSiriDataSharingOptInStatus:(int64_t)status toAccessory:(id)accessory;
+- (void)_resolveSiriDataSharingStatusMismatch:(id)mismatch;
+- (void)_setPreferredMediaUserForAccessories:(id)accessories;
+- (void)_setPreferredMediaUserForAccessory:(id)accessory;
+- (void)_siriDataSharingAdjustment:(id)adjustment;
+- (void)_siriDataSharingOptInStatusDidChange:(id)change;
 - (void)_startAcceptingCloudSharesForMultiUserService;
-- (void)_startCloudKitActivityForHomes:(id)a3 homesToDelete:(id)a4;
-- (void)_startCloudSharingForMultiUserService:(id)a3;
-- (void)_updateCurrentAccessoryInfoWithAccessory:(id)a3;
-- (void)_updateHomeContext:(id)a3;
+- (void)_startCloudKitActivityForHomes:(id)homes homesToDelete:(id)delete;
+- (void)_startCloudSharingForMultiUserService:(id)service;
+- (void)_updateCurrentAccessoryInfoWithAccessory:(id)accessory;
+- (void)_updateHomeContext:(id)context;
 - (void)_updateVoiceTriggerPhrase;
-- (void)accessory:(id)a3 didUpdateSettings:(id)a4;
-- (void)accessoryDidUpdateName:(id)a3;
-- (void)accessoryDidUpdateSupportsThirdPartyMusic:(id)a3;
-- (void)addListener:(id)a3;
-- (void)availableLanguagesInTheHome:(id)a3;
-- (void)currentHomeWithCompletion:(id)a3;
+- (void)accessory:(id)accessory didUpdateSettings:(id)settings;
+- (void)accessoryDidUpdateName:(id)name;
+- (void)accessoryDidUpdateSupportsThirdPartyMusic:(id)music;
+- (void)addListener:(id)listener;
+- (void)availableLanguagesInTheHome:(id)home;
+- (void)currentHomeWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)dumpAssistantStateChunk:(id)a3;
+- (void)dumpAssistantStateChunk:(id)chunk;
 - (void)emitHomeMetricInvocationEvent;
-- (void)fetchAccessoriesInRoom:(id)a3 matchingCategoryTypes:(id)a4 completion:(id)a5;
-- (void)fetchMultiUserMetricsWithCompletion:(id)a3;
-- (void)getAccessoryCategoryForExecutionInfo:(id)a3 completion:(id)a4;
-- (void)getAccessoryInfoForAccessoryWithUUID:(id)a3 completionHandler:(id)a4;
-- (void)getCurrentAccessoryInfoWithCompletion:(id)a3;
-- (void)getCurrentAccessoryWithCompletion:(id)a3;
-- (void)getCurrentHomeMemberIds:(id)a3;
-- (void)getHomeContext:(id)a3;
-- (void)getHomeIdForAccessoryId:(id)a3 completion:(id)a4;
-- (void)getHomeManagerWithCompletion:(id)a3;
-- (void)getLocalizedAccessoryCategoryForExecutionInfo:(id)a3 completion:(id)a4;
-- (void)getSpeakerCapabilityForAccessoryWithUUID:(id)a3 completionHandler:(id)a4;
-- (void)getVoiceSettingsForHomeMembers:(id)a3;
-- (void)home:(id)a3 didAddAccessory:(id)a4;
-- (void)home:(id)a3 didAddUser:(id)a4;
-- (void)home:(id)a3 didRemoveAccessory:(id)a4;
-- (void)home:(id)a3 didRemoveUser:(id)a4;
-- (void)home:(id)a3 didUpdateRoom:(id)a4 forAccessory:(id)a5;
-- (void)homeDidEnableMultiUser:(id)a3;
-- (void)homeDidUpdateName:(id)a3;
-- (void)homeManager:(id)a3 didAddHome:(id)a4;
-- (void)homeManager:(id)a3 didRemoveHome:(id)a4;
-- (void)homeManager:(id)a3 didUpdateStatus:(unint64_t)a4;
-- (void)homeManagerDidUpdateAssistantIdentifiers:(id)a3;
-- (void)homeManagerDidUpdateCurrentHome:(id)a3;
-- (void)homeManagerDidUpdateDataSyncState:(id)a3;
-- (void)homeManagerDidUpdateHomes:(id)a3;
-- (void)initializeHomeSiriPhraseOptions:(id)a3 completion:(id)a4 queue:(id)a5;
-- (void)isJustSiriEnabledInTheHome:(id)a3 queue:(id)a4;
-- (void)removeListener:(id)a3;
+- (void)fetchAccessoriesInRoom:(id)room matchingCategoryTypes:(id)types completion:(id)completion;
+- (void)fetchMultiUserMetricsWithCompletion:(id)completion;
+- (void)getAccessoryCategoryForExecutionInfo:(id)info completion:(id)completion;
+- (void)getAccessoryInfoForAccessoryWithUUID:(id)d completionHandler:(id)handler;
+- (void)getCurrentAccessoryInfoWithCompletion:(id)completion;
+- (void)getCurrentAccessoryWithCompletion:(id)completion;
+- (void)getCurrentHomeMemberIds:(id)ids;
+- (void)getHomeContext:(id)context;
+- (void)getHomeIdForAccessoryId:(id)id completion:(id)completion;
+- (void)getHomeManagerWithCompletion:(id)completion;
+- (void)getLocalizedAccessoryCategoryForExecutionInfo:(id)info completion:(id)completion;
+- (void)getSpeakerCapabilityForAccessoryWithUUID:(id)d completionHandler:(id)handler;
+- (void)getVoiceSettingsForHomeMembers:(id)members;
+- (void)home:(id)home didAddAccessory:(id)accessory;
+- (void)home:(id)home didAddUser:(id)user;
+- (void)home:(id)home didRemoveAccessory:(id)accessory;
+- (void)home:(id)home didRemoveUser:(id)user;
+- (void)home:(id)home didUpdateRoom:(id)room forAccessory:(id)accessory;
+- (void)homeDidEnableMultiUser:(id)user;
+- (void)homeDidUpdateName:(id)name;
+- (void)homeManager:(id)manager didAddHome:(id)home;
+- (void)homeManager:(id)manager didRemoveHome:(id)home;
+- (void)homeManager:(id)manager didUpdateStatus:(unint64_t)status;
+- (void)homeManagerDidUpdateAssistantIdentifiers:(id)identifiers;
+- (void)homeManagerDidUpdateCurrentHome:(id)home;
+- (void)homeManagerDidUpdateDataSyncState:(id)state;
+- (void)homeManagerDidUpdateHomes:(id)homes;
+- (void)initializeHomeSiriPhraseOptions:(id)options completion:(id)completion queue:(id)queue;
+- (void)isJustSiriEnabledInTheHome:(id)home queue:(id)queue;
+- (void)removeListener:(id)listener;
 - (void)restartShareDeletion;
 - (void)restartSharing;
-- (void)setAllowJustSiriHomeKitSetting:(BOOL)a3 withCompletion:(id)a4 queue:(id)a5;
-- (void)setRecognizeMyVoiceEnabled:(BOOL)a3;
-- (void)settingsDidUpdate:(id)a3;
-- (void)settingsForMultiUserWithRefresh:(BOOL)a3 completion:(id)a4;
-- (void)settingsWillUpdate:(id)a3;
-- (void)shareManager:(id)a3 didReceiveShareInvitation:(id)a4 completion:(id)a5;
+- (void)setAllowJustSiriHomeKitSetting:(BOOL)setting withCompletion:(id)completion queue:(id)queue;
+- (void)setRecognizeMyVoiceEnabled:(BOOL)enabled;
+- (void)settingsDidUpdate:(id)update;
+- (void)settingsForMultiUserWithRefresh:(BOOL)refresh completion:(id)completion;
+- (void)settingsWillUpdate:(id)update;
+- (void)shareManager:(id)manager didReceiveShareInvitation:(id)invitation completion:(id)completion;
 - (void)startAcceptingCloudSharesForMultiUserService;
-- (void)updateCurrentUserRMVSettingForHome:(id)a3 enabled:(BOOL)a4 completion:(id)a5;
-- (void)updateRMVSettingForUser:(id)a3 enabled:(BOOL)a4 completion:(id)a5;
-- (void)updateVoiceTriggerPhrase:(unint64_t)a3 currentAccessoryInfo:(id)a4;
-- (void)user:(id)a3 didUpdateAssistantAccessControl:(id)a4 forHome:(id)a5;
+- (void)updateCurrentUserRMVSettingForHome:(id)home enabled:(BOOL)enabled completion:(id)completion;
+- (void)updateRMVSettingForUser:(id)user enabled:(BOOL)enabled completion:(id)completion;
+- (void)updateVoiceTriggerPhrase:(unint64_t)phrase currentAccessoryInfo:(id)info;
+- (void)user:(id)user didUpdateAssistantAccessControl:(id)control forHome:(id)home;
 @end
 
 @implementation ADHomeInfoManager
 
 - (BOOL)_updateHomeUserSettings
 {
-  v2 = self;
-  v3 = [(ADHomeInfoManager *)self _homeManager];
-  v4 = [v3 homes];
+  selfCopy = self;
+  _homeManager = [(ADHomeInfoManager *)self _homeManager];
+  homes = [_homeManager homes];
 
-  if (!v2->_homeUserSettings)
+  if (!selfCopy->_homeUserSettings)
   {
     v5 = objc_alloc_init(NSMutableDictionary);
-    homeUserSettings = v2->_homeUserSettings;
-    v2->_homeUserSettings = v5;
+    homeUserSettings = selfCopy->_homeUserSettings;
+    selfCopy->_homeUserSettings = v5;
   }
 
   v90 = +[ADMultiUserService sharedService];
@@ -122,7 +122,7 @@
   v116 = 0u;
   v117 = 0u;
   v118 = 0u;
-  obj = v4;
+  obj = homes;
   v93 = [obj countByEnumeratingWithState:&v115 objects:v126 count:16];
   if (v93)
   {
@@ -130,7 +130,7 @@
     v7 = 0;
     v96 = 2;
     v92 = *v116;
-    p_isa = &v2->super.isa;
+    p_isa = &selfCopy->super.isa;
 LABEL_5:
     v8 = 0;
     while (1)
@@ -141,13 +141,13 @@ LABEL_5:
       }
 
       v9 = *(*(&v115 + 1) + 8 * v8);
-      if (!AFSupportsMultiUser() || v9 == v2->_currentHome)
+      if (!AFSupportsMultiUser() || v9 == selfCopy->_currentHome)
       {
-        v10 = [(HMHome *)v9 owner];
-        v11 = [v10 uniqueIdentifier];
-        v12 = [v11 UUIDString];
+        owner = [(HMHome *)v9 owner];
+        uniqueIdentifier = [owner uniqueIdentifier];
+        uUIDString = [uniqueIdentifier UUIDString];
 
-        if (!v12)
+        if (!uUIDString)
         {
           v81 = AFSiriLogContextDaemon;
           if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
@@ -167,9 +167,9 @@ LABEL_5:
         v95 = v8;
         v99 = +[NSMutableDictionary dictionary];
         v102 = +[NSMutableDictionary dictionary];
-        v13 = [(NSMutableDictionary *)v2->_homeUserSettings objectForKey:v12];
+        v13 = [(NSMutableDictionary *)selfCopy->_homeUserSettings objectForKey:uUIDString];
         v14 = [(NSMutableDictionary *)v13 objectForKey:@"allowVoiceID"];
-        v105 = [v14 integerValue];
+        integerValue = [v14 integerValue];
         v15 = v13;
         if (v13)
         {
@@ -185,17 +185,17 @@ LABEL_5:
             _os_log_debug_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "%s primaryUser previous settings %{private}@ for home (%@)", buf, 0x20u);
           }
 
-          [v99 setObject:v14 forKey:v12];
+          [v99 setObject:v14 forKey:uUIDString];
         }
 
         v108 = v14;
-        v17 = [(HMHome *)v9 owner];
-        v18 = [(ADHomeInfoManager *)v2 _settingsForHomeUser:v17 forHome:v9];
+        owner2 = [(HMHome *)v9 owner];
+        v18 = [(ADHomeInfoManager *)selfCopy _settingsForHomeUser:owner2 forHome:v9];
 
         v19 = [(NSMutableDictionary *)v18 objectForKey:@"allowVoiceID"];
-        v20 = [v19 integerValue];
+        integerValue2 = [v19 integerValue];
         v21 = v19;
-        [v102 setObject:v19 forKey:v12];
+        [v102 setObject:v19 forKey:uUIDString];
         v22 = AFSiriLogContextDaemon;
         if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
         {
@@ -213,24 +213,24 @@ LABEL_5:
         {
           if (AFIsMultiUserCompanion())
           {
-            v23 = [(HMHome *)v9 currentUser];
-            v24 = [v23 uniqueIdentifier];
-            v25 = [v24 UUIDString];
-            v26 = [(NSMutableDictionary *)v12 isEqualToString:v25];
+            currentUser = [(HMHome *)v9 currentUser];
+            uniqueIdentifier2 = [currentUser uniqueIdentifier];
+            uUIDString2 = [uniqueIdentifier2 UUIDString];
+            v26 = [(NSMutableDictionary *)uUIDString isEqualToString:uUIDString2];
 
             if (v26)
             {
-              if (v20 == 1)
+              if (integerValue2 == 1)
               {
                 v27 = AFSiriLogContextDaemon;
                 v9 = v104;
-                v28 = v105;
+                v28 = integerValue;
                 if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
                 {
                   *buf = 136315395;
                   v121 = "[ADHomeInfoManager _updateHomeUserSettings]";
                   v122 = 2113;
-                  v123 = v12;
+                  v123 = uUIDString;
                   _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "%s Voice ID setting is ON for %{private}@", buf, 0x16u);
                 }
 
@@ -241,7 +241,7 @@ LABEL_5:
               else
               {
                 v30 = v96;
-                if (!v20)
+                if (!integerValue2)
                 {
                   v30 = 0;
                 }
@@ -249,7 +249,7 @@ LABEL_5:
                 v96 = v30;
                 v29 = v101;
                 v9 = v104;
-                v28 = v105;
+                v28 = integerValue;
               }
 
               if (v28)
@@ -259,7 +259,7 @@ LABEL_5:
 
               else
               {
-                v31 = v20 == 1;
+                v31 = integerValue2 == 1;
               }
 
               v32 = v31;
@@ -281,21 +281,21 @@ LABEL_5:
           }
 
           v7 = 1;
-          [(ADHomeInfoManager *)v2 _logRelevantAnalyticsOnHomeUserSettingsUpdateForCurrentSettings:v18 allowVoiceIdSettingValue:v20 isPrimaryUser:1];
+          [(ADHomeInfoManager *)selfCopy _logRelevantAnalyticsOnHomeUserSettingsUpdateForCurrentSettings:v18 allowVoiceIdSettingValue:integerValue2 isPrimaryUser:1];
         }
 
-        v34 = v2->_homeUserSettings;
+        v34 = selfCopy->_homeUserSettings;
         v35 = [(NSMutableDictionary *)v18 mutableCopy];
-        v94 = v12;
-        [(NSMutableDictionary *)v34 setObject:v35 forKey:v12];
+        v94 = uUIDString;
+        [(NSMutableDictionary *)v34 setObject:v35 forKey:uUIDString];
 
-        v36 = [(HMHome *)v9 users];
+        users = [(HMHome *)v9 users];
         v111 = 0u;
         v112 = 0u;
         v113 = 0u;
         v114 = 0u;
-        v98 = v36;
-        v103 = [v36 countByEnumeratingWithState:&v111 objects:v119 count:16];
+        v98 = users;
+        v103 = [users countByEnumeratingWithState:&v111 objects:v119 count:16];
         if (v103)
         {
           v100 = *v112;
@@ -315,14 +315,14 @@ LABEL_5:
               }
 
               v43 = *(*(&v111 + 1) + 8 * v39);
-              v44 = [v43 uniqueIdentifier];
-              v45 = [v44 UUIDString];
+              uniqueIdentifier3 = [v43 uniqueIdentifier];
+              uUIDString3 = [uniqueIdentifier3 UUIDString];
 
-              v46 = [p_isa[8] objectForKey:v45];
+              v46 = [p_isa[8] objectForKey:uUIDString3];
 
               v47 = [(NSMutableDictionary *)v46 objectForKey:@"allowVoiceID"];
 
-              v106 = [v47 integerValue];
+              integerValue3 = [v47 integerValue];
               v109 = v46;
               if (v46)
               {
@@ -338,7 +338,7 @@ LABEL_5:
                   _os_log_debug_impl(&_mh_execute_header, v48, OS_LOG_TYPE_DEBUG, "%s Secondary user previous settings %{private}@ for home (%@)", buf, 0x20u);
                 }
 
-                [v99 setObject:v47 forKey:v45];
+                [v99 setObject:v47 forKey:uUIDString3];
               }
 
               v41 = v47;
@@ -346,8 +346,8 @@ LABEL_5:
 
               v49 = [(NSMutableDictionary *)v18 objectForKey:@"allowVoiceID"];
 
-              v50 = [v49 integerValue];
-              [v102 setObject:v49 forKey:v45];
+              integerValue4 = [v49 integerValue];
+              [v102 setObject:v49 forKey:uUIDString3];
               v51 = AFSiriLogContextDaemon;
               if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
               {
@@ -365,17 +365,17 @@ LABEL_5:
                 if (AFIsMultiUserCompanion())
                 {
                   v97 = v49;
-                  v52 = [(HMHome *)v104 currentUser];
-                  v53 = [v52 uniqueIdentifier];
-                  v54 = [v53 UUIDString];
-                  v55 = [(NSMutableDictionary *)v45 isEqualToString:v54];
+                  currentUser2 = [(HMHome *)v104 currentUser];
+                  uniqueIdentifier4 = [currentUser2 uniqueIdentifier];
+                  uUIDString4 = [uniqueIdentifier4 UUIDString];
+                  v55 = [(NSMutableDictionary *)uUIDString3 isEqualToString:uUIDString4];
 
                   if (v55)
                   {
-                    if (v50)
+                    if (integerValue4)
                     {
                       v49 = v97;
-                      if (v50 == 1)
+                      if (integerValue4 == 1)
                       {
                         v56 = AFSiriLogContextDaemon;
                         if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -383,7 +383,7 @@ LABEL_5:
                           *buf = 136315395;
                           v121 = "[ADHomeInfoManager _updateHomeUserSettings]";
                           v122 = 2113;
-                          v123 = v45;
+                          v123 = uUIDString3;
                           _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_INFO, "%s Voice ID setting is ON for %{private}@", buf, 0x16u);
                         }
 
@@ -408,15 +408,15 @@ LABEL_59:
                   _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_INFO, "%s #multi-user _updateHomeUserSettings- MultiUserSetupHomepodUserAddedToHome secondary user", buf, 0xCu);
                 }
 
-                [p_isa _logRelevantAnalyticsOnHomeUserSettingsUpdateForCurrentSettings:v18 allowVoiceIdSettingValue:v50 isPrimaryUser:0];
-                if (v106)
+                [p_isa _logRelevantAnalyticsOnHomeUserSettingsUpdateForCurrentSettings:v18 allowVoiceIdSettingValue:integerValue4 isPrimaryUser:0];
+                if (integerValue3)
                 {
                   v58 = 0;
                 }
 
                 else
                 {
-                  v58 = v50 == 1;
+                  v58 = integerValue4 == 1;
                 }
 
                 v59 = v58;
@@ -426,7 +426,7 @@ LABEL_59:
 
               v60 = p_isa[8];
               v61 = [(NSMutableDictionary *)v18 mutableCopy];
-              [v60 setObject:v61 forKey:v45];
+              [v60 setObject:v61 forKey:uUIDString3];
 
               v39 = v39 + 1;
               v21 = v49;
@@ -451,18 +451,18 @@ LABEL_59:
         v38 = v15;
 LABEL_72:
         v110 = v37;
-        v63 = [(HMHome *)v104 currentUser];
-        v64 = [v63 uniqueIdentifier];
-        v65 = [v64 UUIDString];
+        currentUser3 = [(HMHome *)v104 currentUser];
+        uniqueIdentifier5 = [currentUser3 uniqueIdentifier];
+        uUIDString5 = [uniqueIdentifier5 UUIDString];
 
-        v66 = [(HMHome *)v104 currentUser];
-        v2 = p_isa;
-        [v66 setDelegate:p_isa];
+        currentUser4 = [(HMHome *)v104 currentUser];
+        selfCopy = p_isa;
+        [currentUser4 setDelegate:p_isa];
 
-        v67 = [(HMHome *)v104 currentUser];
-        v68 = [p_isa _settingsForHomeUser:v67 forHome:v104];
+        currentUser5 = [(HMHome *)v104 currentUser];
+        v68 = [p_isa _settingsForHomeUser:currentUser5 forHome:v104];
 
-        v69 = [p_isa[8] objectForKey:v65];
+        v69 = [p_isa[8] objectForKey:uUIDString5];
 
         if (v69)
         {
@@ -480,10 +480,10 @@ LABEL_72:
         }
 
         v71 = [v68 objectForKey:@"allowVoiceID"];
-        v72 = [v71 integerValue];
+        integerValue5 = [v71 integerValue];
 
         v73 = [(NSMutableDictionary *)v69 objectForKey:@"allowVoiceID"];
-        v74 = [v73 integerValue];
+        integerValue6 = [v73 integerValue];
 
         if (([(NSMutableDictionary *)v69 isEqualToDictionary:v68]& 1) != 0)
         {
@@ -494,7 +494,7 @@ LABEL_72:
         {
           if (AFIsMultiUserCompanion())
           {
-            if (v72 == 1)
+            if (integerValue5 == 1)
             {
               v75 = AFSiriLogContextDaemon;
               if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -502,7 +502,7 @@ LABEL_72:
                 *buf = 136315395;
                 v121 = "[ADHomeInfoManager _updateHomeUserSettings]";
                 v122 = 2113;
-                v123 = v65;
+                v123 = uUIDString5;
                 _os_log_impl(&_mh_execute_header, v75, OS_LOG_TYPE_INFO, "%s Voice ID setting is ON for current user %{private}@", buf, 0x16u);
               }
 
@@ -512,25 +512,25 @@ LABEL_72:
             else
             {
               v76 = v96;
-              if (!v72)
+              if (!integerValue5)
               {
                 v76 = 0;
               }
             }
 
             v96 = v76;
-            v78 = v72 == 1 && v74 == 0;
+            v78 = integerValue5 == 1 && integerValue6 == 0;
             v101 |= v78;
           }
 
           v8 = v95;
           v7 = 1;
-          [p_isa _logRelevantAnalyticsOnHomeUserSettingsUpdateForCurrentSettings:v68 allowVoiceIdSettingValue:v72 isPrimaryUser:1];
+          [p_isa _logRelevantAnalyticsOnHomeUserSettingsUpdateForCurrentSettings:v68 allowVoiceIdSettingValue:integerValue5 isPrimaryUser:1];
         }
 
         v79 = p_isa[8];
         v80 = [v68 mutableCopy];
-        [v79 setObject:v80 forKey:v65];
+        [v79 setObject:v80 forKey:uUIDString5];
       }
 
       if (++v8 == v93)
@@ -568,7 +568,7 @@ LABEL_100:
           _os_log_impl(&_mh_execute_header, v86, OS_LOG_TYPE_INFO, "%s Start sharing", buf, 0xCu);
         }
 
-        [(ADHomeInfoManager *)v2 restartSharing];
+        [(ADHomeInfoManager *)selfCopy restartSharing];
       }
     }
   }
@@ -581,7 +581,7 @@ LABEL_100:
     v82 = obj;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
     {
-      v88 = v2->_homeUserSettings;
+      v88 = selfCopy->_homeUserSettings;
       *buf = 136315394;
       v121 = "[ADHomeInfoManager _updateHomeUserSettings]";
       v122 = 2112;
@@ -619,12 +619,12 @@ LABEL_110:
     v5 = self->_homeManager;
     if (![(HMHomeManager *)v5 status])
     {
-      v6 = [(HMHomeManager *)v5 homes];
+      homes = [(HMHomeManager *)v5 homes];
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v7 = [v6 countByEnumeratingWithState:&v19 objects:v27 count:16];
+      v7 = [homes countByEnumeratingWithState:&v19 objects:v27 count:16];
       if (v7)
       {
         v8 = v7;
@@ -635,27 +635,27 @@ LABEL_110:
           {
             if (*v20 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(homes);
             }
 
             v11 = *(*(&v19 + 1) + 8 * i);
             if ([v11 isMultiUserEnabled])
             {
-              v12 = [v11 owner];
-              v13 = [v12 uniqueIdentifier];
-              v14 = [v13 UUIDString];
+              owner = [v11 owner];
+              uniqueIdentifier = [owner uniqueIdentifier];
+              uUIDString = [uniqueIdentifier UUIDString];
 
-              if (v14)
+              if (uUIDString)
               {
-                v15 = [v11 uniqueIdentifier];
-                v16 = [v15 UUIDString];
+                uniqueIdentifier2 = [v11 uniqueIdentifier];
+                uUIDString2 = [uniqueIdentifier2 UUIDString];
 
-                [v4 setObject:v14 forKey:v16];
+                [v4 setObject:uUIDString forKey:uUIDString2];
               }
             }
           }
 
-          v8 = [v6 countByEnumeratingWithState:&v19 objects:v27 count:16];
+          v8 = [homes countByEnumeratingWithState:&v19 objects:v27 count:16];
         }
 
         while (v8);
@@ -715,10 +715,10 @@ LABEL_110:
   return v3;
 }
 
-- (void)setAllowJustSiriHomeKitSetting:(BOOL)a3 withCompletion:(id)a4 queue:(id)a5
+- (void)setAllowJustSiriHomeKitSetting:(BOOL)setting withCompletion:(id)completion queue:(id)queue
 {
-  v8 = a4;
-  v9 = a5;
+  completionCopy = completion;
+  queueCopy = queue;
   v10 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -731,23 +731,23 @@ LABEL_110:
   v16[1] = 3221225472;
   v16[2] = sub_100071630;
   v16[3] = &unk_10051D2F0;
-  v17 = v8;
-  v11 = v8;
+  v17 = completionCopy;
+  v11 = completionCopy;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100071648;
   v13[3] = &unk_10051D228;
-  v15 = a3;
+  settingCopy = setting;
   v13[4] = self;
   v14 = objc_retainBlock(v16);
   v12 = v14;
-  dispatch_async(v9, v13);
+  dispatch_async(queueCopy, v13);
 }
 
-- (void)isJustSiriEnabledInTheHome:(id)a3 queue:(id)a4
+- (void)isJustSiriEnabledInTheHome:(id)home queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  queueCopy = queue;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -756,23 +756,23 @@ LABEL_110:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s ", buf, 0xCu);
   }
 
-  if (v6)
+  if (homeCopy)
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100071940;
     v9[3] = &unk_10051E038;
     v9[4] = self;
-    v10 = v6;
-    dispatch_async(v7, v9);
+    v10 = homeCopy;
+    dispatch_async(queueCopy, v9);
   }
 }
 
-- (void)initializeHomeSiriPhraseOptions:(id)a3 completion:(id)a4 queue:(id)a5
+- (void)initializeHomeSiriPhraseOptions:(id)options completion:(id)completion queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  optionsCopy = options;
+  completionCopy = completion;
+  queueCopy = queue;
   v10 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -785,10 +785,10 @@ LABEL_110:
   v22[1] = 3221225472;
   v22[2] = sub_100071CAC;
   v22[3] = &unk_10051D2F0;
-  v11 = v8;
+  v11 = completionCopy;
   v23 = v11;
   v12 = objc_retainBlock(v22);
-  if (!v7)
+  if (!optionsCopy)
   {
     v18 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -801,19 +801,19 @@ LABEL_110:
     goto LABEL_9;
   }
 
-  v13 = [v7 siriPhraseOptions];
+  siriPhraseOptions = [optionsCopy siriPhraseOptions];
   v14 = AFSiriLogContextDaemon;
   v15 = os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO);
-  if (v13)
+  if (siriPhraseOptions)
   {
     if (v15)
     {
       v16 = v14;
-      v17 = [v7 name];
+      name = [optionsCopy name];
       *buf = 136315394;
       v25 = "[ADHomeInfoManager(VoiceActivation) initializeHomeSiriPhraseOptions:completion:queue:]";
       v26 = 2112;
-      v27 = v17;
+      v27 = name;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "%s phraseType was set for home %@", buf, 0x16u);
     }
 
@@ -833,49 +833,49 @@ LABEL_9:
   block[1] = 3221225472;
   block[2] = sub_100071CC4;
   block[3] = &unk_10051E038;
-  v20 = v7;
+  v20 = optionsCopy;
   v21 = v12;
-  dispatch_async(v9, block);
+  dispatch_async(queueCopy, block);
 
 LABEL_13:
 }
 
-- (void)updateVoiceTriggerPhrase:(unint64_t)a3 currentAccessoryInfo:(id)a4
+- (void)updateVoiceTriggerPhrase:(unint64_t)phrase currentAccessoryInfo:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   v7 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     v14 = v7;
-    v15 = [v6 uniqueIdentifier];
+    uniqueIdentifier = [infoCopy uniqueIdentifier];
     v16 = 136315906;
     v17 = "[ADHomeInfoManager(VoiceActivation) updateVoiceTriggerPhrase:currentAccessoryInfo:]";
     v18 = 2112;
-    v19 = v6;
+    v19 = infoCopy;
     v20 = 2112;
-    v21 = v15;
+    v21 = uniqueIdentifier;
     v22 = 2048;
-    v23 = a3;
+    phraseCopy = phrase;
     _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "%s Endpoint = %@\n %@ %ld", &v16, 0x2Au);
   }
 
-  v8 = [v6 categoryType];
-  v9 = [v8 isEqual:HMAccessoryCategoryTypeHomePod];
+  categoryType = [infoCopy categoryType];
+  v9 = [categoryType isEqual:HMAccessoryCategoryTypeHomePod];
 
   if (v9)
   {
     v10 = 0;
-    v11 = 0;
+    uniqueIdentifier2 = 0;
   }
 
   else
   {
-    v11 = [v6 uniqueIdentifier];
+    uniqueIdentifier2 = [infoCopy uniqueIdentifier];
     v10 = 2;
   }
 
   v12 = +[VTPreferences sharedPreferences];
-  v13 = [v12 setUserPreferredVoiceTriggerPhraseType:a3 == 3 sender:self deviceType:v10 endpointId:v11];
+  v13 = [v12 setUserPreferredVoiceTriggerPhraseType:phrase == 3 sender:self deviceType:v10 endpointId:uniqueIdentifier2];
 }
 
 - (void)emitHomeMetricInvocationEvent
@@ -889,15 +889,15 @@ LABEL_13:
   dispatch_async(queue, block);
 }
 
-- (id)_activityNotificationsForHomes:(id)a3
+- (id)_activityNotificationsForHomes:(id)homes
 {
-  v3 = a3;
+  homesCopy = homes;
   v4 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = homesCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -913,11 +913,11 @@ LABEL_13:
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 currentUser];
-        v12 = [v11 assistantAccessControlForHome:v10];
+        currentUser = [v10 currentUser];
+        v12 = [currentUser assistantAccessControlForHome:v10];
         v13 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v12 areActivityNotificationsEnabledForPersonalRequests]);
-        v14 = [v10 uniqueIdentifier];
-        [v4 setObject:v13 forKey:v14];
+        uniqueIdentifier = [v10 uniqueIdentifier];
+        [v4 setObject:v13 forKey:uniqueIdentifier];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -929,55 +929,55 @@ LABEL_13:
   return v4;
 }
 
-- (id)updatedHomeInfoForRootInfo:(id)a3
+- (id)updatedHomeInfoForRootInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 homeIdentifier];
-  v6 = [(HMHomeManager *)self->_homeManager homes];
-  v7 = [(ADHomeInfoManager *)self _activityNotificationsForHomes:v6];
+  infoCopy = info;
+  homeIdentifier = [infoCopy homeIdentifier];
+  homes = [(HMHomeManager *)self->_homeManager homes];
+  v7 = [(ADHomeInfoManager *)self _activityNotificationsForHomes:homes];
 
-  v8 = [v7 objectForKey:v5];
+  v8 = [v7 objectForKey:homeIdentifier];
 
   if (v8)
   {
-    v9 = [v7 objectForKey:v5];
-    v10 = [v9 BOOLValue];
+    v9 = [v7 objectForKey:homeIdentifier];
+    bOOLValue = [v9 BOOLValue];
   }
 
   else
   {
-    v10 = 1;
+    bOOLValue = 1;
   }
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100216BD0;
   v13[3] = &unk_100516FC0;
-  v14 = v10;
-  v11 = [v4 mutatedCopyWithMutator:v13];
+  v14 = bOOLValue;
+  v11 = [infoCopy mutatedCopyWithMutator:v13];
 
   return v11;
 }
 
-- (id)_getAccessoryCategoryForExecutionInfo:(id)a3
+- (id)_getAccessoryCategoryForExecutionInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 originPeerInfo];
-  v6 = [v4 instanceInfo];
-  v7 = [v6 applicationUUID];
-  if (v7)
+  infoCopy = info;
+  originPeerInfo = [infoCopy originPeerInfo];
+  instanceInfo = [infoCopy instanceInfo];
+  applicationUUID = [instanceInfo applicationUUID];
+  if (applicationUUID)
   {
-    v8 = v7;
+    v8 = applicationUUID;
 LABEL_4:
     v11 = [(ADHomeInfoManager *)self _accessoryForIdentifier:v8 inHome:0];
-    v12 = [v11 category];
+    category = [v11 category];
 
     goto LABEL_5;
   }
 
   v9 = [NSUUID alloc];
-  v10 = [v5 homeKitAccessoryIdentifier];
-  v8 = [v9 initWithUUIDString:v10];
+  homeKitAccessoryIdentifier = [originPeerInfo homeKitAccessoryIdentifier];
+  v8 = [v9 initWithUUIDString:homeKitAccessoryIdentifier];
 
   if (v8)
   {
@@ -990,53 +990,53 @@ LABEL_4:
     v15 = 136315394;
     v16 = "[ADHomeInfoManager _getAccessoryCategoryForExecutionInfo:]";
     v17 = 2112;
-    v18 = v4;
+    v18 = infoCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%s Unable to get accessoryIdentifier from AFCommandExecutionInfo: %@", &v15, 0x16u);
   }
 
-  v12 = 0;
+  category = 0;
 LABEL_5:
 
-  return v12;
+  return category;
 }
 
-- (void)getAccessoryCategoryForExecutionInfo:(id)a3 completion:(id)a4
+- (void)getAccessoryCategoryForExecutionInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100216E2C;
   block[3] = &unk_10051E088;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = infoCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = infoCopy;
   dispatch_async(queue, block);
 }
 
-- (void)getLocalizedAccessoryCategoryForExecutionInfo:(id)a3 completion:(id)a4
+- (void)getLocalizedAccessoryCategoryForExecutionInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100216FF8;
   block[3] = &unk_10051E088;
-  v12 = v6;
-  v13 = v7;
+  v12 = infoCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = infoCopy;
+  v10 = completionCopy;
   dispatch_async(queue, block);
 }
 
-- (BOOL)_hasSiriCapableDeviceInHome:(id)a3
+- (BOOL)_hasSiriCapableDeviceInHome:(id)home
 {
-  [a3 accessories];
+  [home accessories];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -1057,8 +1057,8 @@ LABEL_5:
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 siriEndpointProfile];
-        if (v10)
+        siriEndpointProfile = [v9 siriEndpointProfile];
+        if (siriEndpointProfile)
         {
 
 LABEL_13:
@@ -1066,9 +1066,9 @@ LABEL_13:
           goto LABEL_14;
         }
 
-        v11 = [v9 category];
-        v12 = [v11 categoryType];
-        v13 = [v12 isEqualToString:v7];
+        category = [v9 category];
+        categoryType = [category categoryType];
+        v13 = [categoryType isEqualToString:v7];
 
         if (v13)
         {
@@ -1097,11 +1097,11 @@ LABEL_14:
   return v14;
 }
 
-- (void)getHomeManagerWithCompletion:(id)a3
+- (void)getHomeManagerWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -1109,20 +1109,20 @@ LABEL_14:
     v7[2] = sub_100217280;
     v7[3] = &unk_10051E038;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(queue, v7);
   }
 }
 
 - (id)_homesWithSiriCapableDevices
 {
-  v3 = [(HMHomeManager *)self->_homeManager homes];
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  homes = [(HMHomeManager *)self->_homeManager homes];
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [homes count]);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = homes;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -1155,15 +1155,15 @@ LABEL_14:
 
 - (BOOL)areActivityNotificationsOffForAllHomes
 {
-  v3 = [(ADHomeInfoManager *)self _homesWithSiriCapableDevices];
+  _homesWithSiriCapableDevices = [(ADHomeInfoManager *)self _homesWithSiriCapableDevices];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(ADHomeInfoManager *)self _activityNotificationsForHomes:v3, 0];
-  v5 = [v4 allValues];
+  v4 = [(ADHomeInfoManager *)self _activityNotificationsForHomes:_homesWithSiriCapableDevices, 0];
+  allValues = [v4 allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1174,7 +1174,7 @@ LABEL_14:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         if ([*(*(&v12 + 1) + 8 * i) BOOLValue])
@@ -1184,7 +1184,7 @@ LABEL_14:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         continue;
@@ -1202,17 +1202,17 @@ LABEL_11:
 
 - (id)rootAfHomeInfoForThisDevice
 {
-  v2 = [(ADHomeInfoManager *)self infoForThisDevice];
-  v3 = [v2 currentHomeIdentifier];
-  v4 = [[AFHomeInfo alloc] initWithHomeIdentifier:v3 activityNotificationsEnabledForPersonalRequests:1];
+  infoForThisDevice = [(ADHomeInfoManager *)self infoForThisDevice];
+  currentHomeIdentifier = [infoForThisDevice currentHomeIdentifier];
+  v4 = [[AFHomeInfo alloc] initWithHomeIdentifier:currentHomeIdentifier activityNotificationsEnabledForPersonalRequests:1];
 
   return v4;
 }
 
 - (void)_startAcceptingCloudSharesForMultiUserService
 {
-  v3 = [(HMHomeManager *)self->_homeManager userCloudShareManager];
-  [v3 setDelegate:self];
+  userCloudShareManager = [(HMHomeManager *)self->_homeManager userCloudShareManager];
+  [userCloudShareManager setDelegate:self];
   v4 = +[ADCloudKitManager sharedManager];
   v5 = v4;
   if (v4)
@@ -1223,18 +1223,18 @@ LABEL_11:
     v7[2] = sub_1002176B4;
     v8 = v7[3] = &unk_10051C498;
     v6 = v8;
-    [v3 registerForContainerIDs:v6 completion:v7];
+    [userCloudShareManager registerForContainerIDs:v6 completion:v7];
   }
 }
 
-- (void)_startCloudSharingForMultiUserService:(id)a3
+- (void)_startCloudSharingForMultiUserService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   if (AFIsMultiUserCompanion())
   {
-    v5 = [v4 owner];
-    v6 = [v5 uniqueIdentifier];
-    v7 = [v6 UUIDString];
+    owner = [serviceCopy owner];
+    uniqueIdentifier = [owner uniqueIdentifier];
+    uUIDString = [uniqueIdentifier UUIDString];
 
     v8 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -1242,22 +1242,22 @@ LABEL_11:
       *buf = 136315395;
       v25 = "[ADHomeInfoManager _startCloudSharingForMultiUserService:]";
       v26 = 2113;
-      v27 = v7;
+      v27 = uUIDString;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s (%{private}@)", buf, 0x16u);
     }
 
-    if (v7)
+    if (uUIDString)
     {
-      v9 = [v4 currentUser];
-      v10 = [v9 uniqueIdentifier];
-      v11 = [v10 UUIDString];
+      currentUser = [serviceCopy currentUser];
+      uniqueIdentifier2 = [currentUser uniqueIdentifier];
+      uUIDString2 = [uniqueIdentifier2 UUIDString];
 
-      if (([v7 isEqualToString:v11] & 1) == 0)
+      if (([uUIDString isEqualToString:uUIDString2] & 1) == 0)
       {
-        v12 = [(NSMutableDictionary *)self->_homeSharingStates objectForKey:v7];
-        v13 = [v12 integerValue];
+        v12 = [(NSMutableDictionary *)self->_homeSharingStates objectForKey:uUIDString];
+        integerValue = [v12 integerValue];
 
-        if (v13 <= 0)
+        if (integerValue <= 0)
         {
           homeSharingStates = self->_homeSharingStates;
           if (!homeSharingStates)
@@ -1269,7 +1269,7 @@ LABEL_11:
             homeSharingStates = self->_homeSharingStates;
           }
 
-          [(NSMutableDictionary *)homeSharingStates setObject:&off_100533C38 forKey:v7];
+          [(NSMutableDictionary *)homeSharingStates setObject:&off_100533C38 forKey:uUIDString];
           v17 = arc4random_uniform(9u);
           v18 = dispatch_time(0, ((v17 + 6.0) * 1000000000.0));
           queue = self->_queue;
@@ -1277,9 +1277,9 @@ LABEL_11:
           block[1] = 3221225472;
           block[2] = sub_100217A3C;
           block[3] = &unk_10051DB68;
-          v21 = v7;
-          v22 = self;
-          v23 = v4;
+          v21 = uUIDString;
+          selfCopy = self;
+          v23 = serviceCopy;
           dispatch_after(v18, queue, block);
         }
       }
@@ -1287,42 +1287,42 @@ LABEL_11:
   }
 }
 
-- (void)accessoryDidUpdateSupportsThirdPartyMusic:(id)a3
+- (void)accessoryDidUpdateSupportsThirdPartyMusic:(id)music
 {
-  v8 = a3;
-  v4 = [(ADHomeInfoManager *)self _currentAccessory];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v8 uniqueIdentifier];
-  v7 = [v5 isEqual:v6];
+  musicCopy = music;
+  _currentAccessory = [(ADHomeInfoManager *)self _currentAccessory];
+  uniqueIdentifier = [_currentAccessory uniqueIdentifier];
+  uniqueIdentifier2 = [musicCopy uniqueIdentifier];
+  v7 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
   if (v7)
   {
-    [(ADHomeInfoManager *)self _updateCurrentAccessoryInfoWithAccessory:v8];
+    [(ADHomeInfoManager *)self _updateCurrentAccessoryInfoWithAccessory:musicCopy];
   }
 }
 
-- (void)accessory:(id)a3 didUpdateSettings:(id)a4
+- (void)accessory:(id)accessory didUpdateSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
+  accessoryCopy = accessory;
+  settingsCopy = settings;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v13 = 136315395;
     v14 = "[ADHomeInfoManager accessory:didUpdateSettings:]";
     v15 = 2113;
-    v16 = v6;
+    v16 = accessoryCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s %{private}@", &v13, 0x16u);
   }
 
-  v9 = [v7 rootGroup];
-  v10 = [ADHomeInfoManager findSettingWithKeyPath:@"root.general.analytics.shareSiriAnalytics" group:v9];
+  rootGroup = [settingsCopy rootGroup];
+  v10 = [ADHomeInfoManager findSettingWithKeyPath:@"root.general.analytics.shareSiriAnalytics" group:rootGroup];
 
   if (v10)
   {
-    v11 = [v10 value];
+    value = [v10 value];
 
-    if (!v11)
+    if (!value)
     {
       v12 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -1330,25 +1330,25 @@ LABEL_11:
         v13 = 136315395;
         v14 = "[ADHomeInfoManager accessory:didUpdateSettings:]";
         v15 = 2113;
-        v16 = v6;
+        v16 = accessoryCopy;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%s Unset opt-in status detected on accessory (%{private}@).  Will attempt to propagate opt-in status.", &v13, 0x16u);
       }
 
-      [(ADHomeInfoManager *)self _propagateSiriDataSharingOptInStatus:_AFPreferencesSiriDataSharingOptInStatus() toAccessory:v6];
+      [(ADHomeInfoManager *)self _propagateSiriDataSharingOptInStatus:_AFPreferencesSiriDataSharingOptInStatus() toAccessory:accessoryCopy];
     }
   }
 }
 
-- (void)accessoryDidUpdateName:(id)a3
+- (void)accessoryDidUpdateName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315395;
     v11 = "[ADHomeInfoManager accessoryDidUpdateName:]";
     v12 = 2113;
-    v13 = v4;
+    v13 = nameCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s %{private}@", buf, 0x16u);
   }
 
@@ -1358,14 +1358,14 @@ LABEL_11:
   v8[2] = sub_10021864C;
   v8[3] = &unk_10051E010;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = nameCopy;
+  v7 = nameCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)homeDidEnableMultiUser:(id)a3
+- (void)homeDidEnableMultiUser:(id)user
 {
-  v4 = a3;
+  userCopy = user;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -1374,7 +1374,7 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s ", buf, 0xCu);
   }
 
-  if ([v4 isMultiUserEnabled])
+  if ([userCopy isMultiUserEnabled])
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -1382,24 +1382,24 @@ LABEL_11:
     v7[2] = sub_100218824;
     v7[3] = &unk_10051E010;
     v7[4] = self;
-    v8 = v4;
+    v8 = userCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)home:(id)a3 didUpdateRoom:(id)a4 forAccessory:(id)a5
+- (void)home:(id)home didUpdateRoom:(id)room forAccessory:(id)accessory
 {
-  v7 = a4;
-  v8 = a5;
+  roomCopy = room;
+  accessoryCopy = accessory;
   v9 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315651;
     v15 = "[ADHomeInfoManager home:didUpdateRoom:forAccessory:]";
     v16 = 2113;
-    v17 = v7;
+    v17 = roomCopy;
     v18 = 2113;
-    v19 = v8;
+    v19 = accessoryCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s %{private}@ %{private}@", buf, 0x20u);
   }
 
@@ -1409,21 +1409,21 @@ LABEL_11:
   v12[2] = sub_10021897C;
   v12[3] = &unk_10051E010;
   v12[4] = self;
-  v13 = v8;
-  v11 = v8;
+  v13 = accessoryCopy;
+  v11 = accessoryCopy;
   dispatch_async(queue, v12);
 }
 
-- (void)home:(id)a3 didRemoveAccessory:(id)a4
+- (void)home:(id)home didRemoveAccessory:(id)accessory
 {
-  v5 = a4;
+  accessoryCopy = accessory;
   v6 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315395;
     v14 = "[ADHomeInfoManager home:didRemoveAccessory:]";
     v15 = 2113;
-    v16 = v5;
+    v16 = accessoryCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s %{private}@", buf, 0x16u);
   }
 
@@ -1432,36 +1432,36 @@ LABEL_11:
   block[1] = 3221225472;
   block[2] = sub_100218B94;
   block[3] = &unk_10051DFE8;
-  v12 = v5;
-  v8 = v5;
+  v12 = accessoryCopy;
+  v8 = accessoryCopy;
   dispatch_async(queue, block);
   v9 = [(ADHomeInfoManager *)self _accessoryInfoForAccessory:v8];
   v10 = +[NSNotificationCenter defaultCenter];
   [v10 postNotificationName:@"ADHomeInfoAccessoryRemovedNotification" object:v9];
 }
 
-- (void)home:(id)a3 didAddAccessory:(id)a4
+- (void)home:(id)home didAddAccessory:(id)accessory
 {
-  v5 = a4;
+  accessoryCopy = accessory;
   v6 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v9 = 136315395;
     v10 = "[ADHomeInfoManager home:didAddAccessory:]";
     v11 = 2113;
-    v12 = v5;
+    v12 = accessoryCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s %{private}@", &v9, 0x16u);
   }
 
-  v7 = [(ADHomeInfoManager *)self _accessoryInfoForAccessory:v5];
+  v7 = [(ADHomeInfoManager *)self _accessoryInfoForAccessory:accessoryCopy];
   v8 = +[NSNotificationCenter defaultCenter];
   [v8 postNotificationName:@"ADHomeInfoAccessoryAddedNotification" object:v7];
 }
 
-- (void)home:(id)a3 didRemoveUser:(id)a4
+- (void)home:(id)home didRemoveUser:(id)user
 {
-  v5 = a3;
-  v6 = a4;
+  homeCopy = home;
+  userCopy = user;
   if (AFSupportsMultiUser())
   {
     v7 = AFSiriLogContextDaemon;
@@ -1470,35 +1470,35 @@ LABEL_11:
       *buf = 136315651;
       v20 = "[ADHomeInfoManager home:didRemoveUser:]";
       v21 = 2113;
-      v22 = v6;
+      v22 = userCopy;
       v23 = 2113;
-      v24 = v5;
+      v24 = homeCopy;
       _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "%s Deleting user (%{private}@) home is (%{private}@)", buf, 0x20u);
     }
 
     v8 = +[ADMultiUserService sharedService];
-    v9 = [v6 uniqueIdentifier];
-    v10 = [v9 UUIDString];
-    [v8 removeUserWithHomeUUID:v10 completion:&stru_100516F50];
+    uniqueIdentifier = [userCopy uniqueIdentifier];
+    uUIDString = [uniqueIdentifier UUIDString];
+    [v8 removeUserWithHomeUUID:uUIDString completion:&stru_100516F50];
 
-    v11 = [v5 uniqueIdentifier];
-    v12 = [v11 UUIDString];
+    uniqueIdentifier2 = [homeCopy uniqueIdentifier];
+    uUIDString2 = [uniqueIdentifier2 UUIDString];
 
-    v13 = [v6 uniqueIdentifier];
-    v14 = [v13 UUIDString];
+    uniqueIdentifier3 = [userCopy uniqueIdentifier];
+    uUIDString3 = [uniqueIdentifier3 UUIDString];
 
     v15 = +[ADMultiUserCloudKitSyncer sharedService];
-    v17 = v12;
-    v18 = v14;
+    v17 = uUIDString2;
+    v18 = uUIDString3;
     v16 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
     [v15 markHomeMembershipsForDeletion:v16];
   }
 }
 
-- (void)home:(id)a3 didAddUser:(id)a4
+- (void)home:(id)home didAddUser:(id)user
 {
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  userCopy = user;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -1512,33 +1512,33 @@ LABEL_11:
   block[1] = 3221225472;
   block[2] = sub_1002190E4;
   block[3] = &unk_10051DB68;
-  v13 = v7;
-  v14 = self;
-  v15 = v6;
-  v10 = v6;
-  v11 = v7;
+  v13 = userCopy;
+  selfCopy = self;
+  v15 = homeCopy;
+  v10 = homeCopy;
+  v11 = userCopy;
   dispatch_async(queue, block);
 }
 
-- (void)homeDidUpdateName:(id)a3
+- (void)homeDidUpdateName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1002191F4;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nameCopy;
+  v6 = nameCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)shareManager:(id)a3 didReceiveShareInvitation:(id)a4 completion:(id)a5
+- (void)shareManager:(id)manager didReceiveShareInvitation:(id)invitation completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  managerCopy = manager;
+  invitationCopy = invitation;
+  completionCopy = completion;
   v10 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -1550,30 +1550,30 @@ LABEL_11:
   v11 = +[ADCloudKitManager sharedManager];
   if (v11)
   {
-    v12 = [v8 shareURL];
-    v13 = [v8 shareToken];
-    v14 = [v8 containerID];
-    [v11 acceptShare:v12 token:v13 containerID:v14];
+    shareURL = [invitationCopy shareURL];
+    shareToken = [invitationCopy shareToken];
+    containerID = [invitationCopy containerID];
+    [v11 acceptShare:shareURL token:shareToken containerID:containerID];
   }
 
-  if (v9)
+  if (completionCopy)
   {
-    v9[2](v9, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 }
 
-- (void)_propagateSiriDataSharingOptInStatus:(int64_t)a3 toAccessory:(id)a4
+- (void)_propagateSiriDataSharingOptInStatus:(int64_t)status toAccessory:(id)accessory
 {
-  v6 = a4;
-  v7 = [(__CFString *)v6 category];
-  v8 = [v7 categoryType];
-  v9 = [v8 isEqualToString:HMAccessoryCategoryTypeHomePod];
+  accessoryCopy = accessory;
+  category = [(__CFString *)accessoryCopy category];
+  categoryType = [category categoryType];
+  v9 = [categoryType isEqualToString:HMAccessoryCategoryTypeHomePod];
 
   if (v9)
   {
-    v10 = [(__CFString *)v6 settings];
-    v11 = [v10 rootGroup];
-    v12 = [ADHomeInfoManager findSettingWithKeyPath:@"root.general.analytics.shareSiriAnalytics" group:v11];
+    settings = [(__CFString *)accessoryCopy settings];
+    rootGroup = [settings rootGroup];
+    v12 = [ADHomeInfoManager findSettingWithKeyPath:@"root.general.analytics.shareSiriAnalytics" group:rootGroup];
 
     if (!v12)
     {
@@ -1585,32 +1585,32 @@ LABEL_11:
         v30 = 2113;
         v31 = @"root.general.analytics.shareSiriAnalytics";
         v32 = 2113;
-        v33 = v6;
+        v33 = accessoryCopy;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "%s Not setting (%{private}@) because the setting does not exist for accessory (%{private}@), so we won't touch it", buf, 0x20u);
       }
 
-      [(__CFString *)v6 setDelegate:self];
+      [(__CFString *)accessoryCopy setDelegate:self];
       goto LABEL_18;
     }
 
-    v13 = [v12 value];
+    value = [v12 value];
 
     v14 = AFSiriLogContextDaemon;
     v15 = os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO);
-    if (v13)
+    if (value)
     {
       if (v15)
       {
         v16 = v14;
-        v17 = [v12 value];
-        v18 = [v17 BOOLValue];
+        value2 = [v12 value];
+        bOOLValue = [value2 BOOLValue];
         v19 = @"Opted-Out";
         v29 = "[ADHomeInfoManager _propagateSiriDataSharingOptInStatus:toAccessory:]";
         v30 = 2113;
         *buf = 136315907;
-        v31 = v6;
+        v31 = accessoryCopy;
         v32 = 2112;
-        if (v18)
+        if (bOOLValue)
         {
           v19 = @"Opted-In";
         }
@@ -1629,17 +1629,17 @@ LABEL_11:
       *buf = 136315395;
       v29 = "[ADHomeInfoManager _propagateSiriDataSharingOptInStatus:toAccessory:]";
       v30 = 2113;
-      v31 = v6;
+      v31 = accessoryCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%s First time setting HomePod accessory (%{private}@) because the setting has not been set before", buf, 0x16u);
     }
 
-    if (a3 == 2)
+    if (status == 2)
     {
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
       v22[2] = sub_1002199A8;
       v22[3] = &unk_100517D00;
-      v23 = v6;
+      v23 = accessoryCopy;
       v24 = 2;
       [v12 updateValue:&off_100533BF0 completionHandler:v22];
       v21 = v23;
@@ -1647,7 +1647,7 @@ LABEL_11:
 
     else
     {
-      if (a3 != 1)
+      if (status != 1)
       {
 LABEL_18:
 
@@ -1658,7 +1658,7 @@ LABEL_18:
       v25[1] = 3221225472;
       v25[2] = sub_10021985C;
       v25[3] = &unk_100517D00;
-      v26 = v6;
+      v26 = accessoryCopy;
       v27 = 1;
       [v12 updateValue:&off_100533C20 completionHandler:v25];
       v21 = v26;
@@ -1670,38 +1670,38 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)user:(id)a3 didUpdateAssistantAccessControl:(id)a4 forHome:(id)a5
+- (void)user:(id)user didUpdateAssistantAccessControl:(id)control forHome:(id)home
 {
-  v7 = a3;
-  v8 = a5;
+  userCopy = user;
+  homeCopy = home;
   queue = self->_queue;
   v21 = _NSConcreteStackBlock;
   v22 = 3221225472;
   v23 = sub_100219C80;
   v24 = &unk_10051E010;
-  v25 = self;
-  v10 = v8;
+  selfCopy = self;
+  v10 = homeCopy;
   v26 = v10;
   dispatch_async(queue, &v21);
-  v11 = [v10 currentUser];
-  v12 = [v11 uniqueIdentifier];
-  v13 = [v7 uniqueIdentifier];
-  v14 = [v12 isEqual:v13];
+  currentUser = [v10 currentUser];
+  uniqueIdentifier = [currentUser uniqueIdentifier];
+  uniqueIdentifier2 = [userCopy uniqueIdentifier];
+  v14 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
   if (v14)
   {
-    v15 = [v7 assistantAccessControlForHome:v10];
-    v16 = [v15 areActivityNotificationsEnabledForPersonalRequests];
+    v15 = [userCopy assistantAccessControlForHome:v10];
+    areActivityNotificationsEnabledForPersonalRequests = [v15 areActivityNotificationsEnabledForPersonalRequests];
     v17 = [AFHomeInfo alloc];
-    v18 = [v10 uniqueIdentifier];
-    v19 = [v17 initWithHomeIdentifier:v18 activityNotificationsEnabledForPersonalRequests:v16];
+    uniqueIdentifier3 = [v10 uniqueIdentifier];
+    v19 = [v17 initWithHomeIdentifier:uniqueIdentifier3 activityNotificationsEnabledForPersonalRequests:areActivityNotificationsEnabledForPersonalRequests];
 
     v20 = +[NSNotificationCenter defaultCenter];
     [v20 postNotificationName:@"ADHomeInfoPersonalDomainsChangedNotification" object:v19];
   }
 }
 
-- (void)settingsWillUpdate:(id)a3
+- (void)settingsWillUpdate:(id)update
 {
   v3 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -1712,9 +1712,9 @@ LABEL_19:
   }
 }
 
-- (void)settingsDidUpdate:(id)a3
+- (void)settingsDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -1729,110 +1729,110 @@ LABEL_19:
   v8[2] = sub_100219F80;
   v8[3] = &unk_10051E010;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = updateCopy;
+  v7 = updateCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)homeManagerDidUpdateAssistantIdentifiers:(id)a3
+- (void)homeManagerDidUpdateAssistantIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10021A528;
   v7[3] = &unk_10051E010;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = identifiersCopy;
+  selfCopy = self;
+  v6 = identifiersCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)homeManagerDidUpdateDataSyncState:(id)a3
+- (void)homeManagerDidUpdateDataSyncState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10021A680;
   v7[3] = &unk_10051E010;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = stateCopy;
+  selfCopy = self;
+  v6 = stateCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)homeManagerDidUpdateCurrentHome:(id)a3
+- (void)homeManagerDidUpdateCurrentHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10021A828;
   v7[3] = &unk_10051E010;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = homeCopy;
+  selfCopy = self;
+  v6 = homeCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)homeManager:(id)a3 didUpdateStatus:(unint64_t)a4
+- (void)homeManager:(id)manager didUpdateStatus:(unint64_t)status
 {
-  v5 = a3;
+  managerCopy = manager;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10021A980;
   v8[3] = &unk_10051E010;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = managerCopy;
+  selfCopy = self;
+  v7 = managerCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)homeManager:(id)a3 didRemoveHome:(id)a4
+- (void)homeManager:(id)manager didRemoveHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  homeCopy = home;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315395;
     v15 = "[ADHomeInfoManager homeManager:didRemoveHome:]";
     v16 = 2113;
-    v17 = v7;
+    v17 = homeCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s home is %{private}@", buf, 0x16u);
   }
 
-  if (v7)
+  if (homeCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10021ADF4;
     block[3] = &unk_10051DB68;
-    v11 = v7;
-    v12 = self;
-    v13 = v6;
+    v11 = homeCopy;
+    selfCopy = self;
+    v13 = managerCopy;
     dispatch_async(queue, block);
   }
 }
 
-- (void)homeManager:(id)a3 didAddHome:(id)a4
+- (void)homeManager:(id)manager didAddHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  homeCopy = home;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v16 = "[ADHomeInfoManager homeManager:didAddHome:]";
     v17 = 2112;
-    v18 = v6;
+    v18 = managerCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s homeManager is %@", buf, 0x16u);
   }
 
-  if (v7)
+  if (homeCopy)
   {
     v9 = +[AFAnalytics sharedAnalytics];
     [v9 logEventWithType:6108 contextProvider:&stru_100516ED0];
@@ -1842,39 +1842,39 @@ LABEL_19:
     block[1] = 3221225472;
     block[2] = sub_10021B274;
     block[3] = &unk_10051DB68;
-    v12 = v7;
-    v13 = self;
-    v14 = v6;
+    v12 = homeCopy;
+    selfCopy = self;
+    v14 = managerCopy;
     dispatch_async(queue, block);
   }
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
-  v4 = a3;
+  homesCopy = homes;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10021B55C;
   v7[3] = &unk_10051E010;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = homesCopy;
+  selfCopy = self;
+  v6 = homesCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_homeManagerUpdatedHomes:(id)a3 homesToDelete:(id)a4
+- (void)_homeManagerUpdatedHomes:(id)homes homesToDelete:(id)delete
 {
-  v8 = a3;
-  v6 = a4;
+  homesCopy = homes;
+  deleteCopy = delete;
   if (![(HMHomeManager *)self->_homeManager status])
   {
-    [(ADHomeInfoManager *)self _startCloudKitActivityForHomes:v8 homesToDelete:v6];
-    v7 = [(ADHomeInfoManager *)self _currentHomeInfo];
+    [(ADHomeInfoManager *)self _startCloudKitActivityForHomes:homesCopy homesToDelete:deleteCopy];
+    _currentHomeInfo = [(ADHomeInfoManager *)self _currentHomeInfo];
     [(ADHomeInfoManager *)self _checkAndDisableVoiceIDIfRequired];
   }
 
-  [(ADHomeInfoManager *)self _updateHomeContext:v8];
+  [(ADHomeInfoManager *)self _updateHomeContext:homesCopy];
 }
 
 - (void)_checkAndDisableVoiceIDIfRequired
@@ -1886,18 +1886,18 @@ LABEL_19:
   }
 }
 
-- (void)_startCloudKitActivityForHomes:(id)a3 homesToDelete:(id)a4
+- (void)_startCloudKitActivityForHomes:(id)homes homesToDelete:(id)delete
 {
-  v5 = a3;
-  v59 = a4;
-  v60 = v5;
-  v6 = [v5 homes];
+  homesCopy = homes;
+  deleteCopy = delete;
+  v60 = homesCopy;
+  homes = [homesCopy homes];
   v70 = objc_alloc_init(NSMutableDictionary);
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
-  obj = v6;
+  obj = homes;
   v7 = &AFSiriLogContextDaemon;
   v69 = [obj countByEnumeratingWithState:&v75 objects:v88 count:16];
   if (v69)
@@ -1906,7 +1906,7 @@ LABEL_19:
     v62 = 0;
     v68 = *v76;
     v8 = 2;
-    v63 = 2;
+    bOOLValue = 2;
     do
     {
       for (i = 0; i != v69; i = i + 1)
@@ -1917,23 +1917,23 @@ LABEL_19:
         }
 
         v10 = *(*(&v75 + 1) + 8 * i);
-        v11 = [v10 isMultiUserEnabled];
-        v12 = [v10 owner];
-        v13 = [v12 uniqueIdentifier];
-        v14 = [v13 UUIDString];
+        isMultiUserEnabled = [v10 isMultiUserEnabled];
+        owner = [v10 owner];
+        uniqueIdentifier = [owner uniqueIdentifier];
+        uUIDString = [uniqueIdentifier UUIDString];
 
-        v15 = [v10 currentUser];
-        v16 = [v15 uniqueIdentifier];
-        v17 = [v16 UUIDString];
+        currentUser = [v10 currentUser];
+        uniqueIdentifier2 = [currentUser uniqueIdentifier];
+        uUIDString2 = [uniqueIdentifier2 UUIDString];
 
-        if (v17)
+        if (uUIDString2)
         {
-          v18 = [v10 uniqueIdentifier];
-          v19 = [v18 UUIDString];
-          [v70 setObject:v17 forKey:v19];
+          uniqueIdentifier3 = [v10 uniqueIdentifier];
+          uUIDString3 = [uniqueIdentifier3 UUIDString];
+          [v70 setObject:uUIDString2 forKey:uUIDString3];
         }
 
-        v20 = [(__CFString *)v14 isEqualToString:v17];
+        v20 = [(__CFString *)uUIDString isEqualToString:uUIDString2];
         v21 = *v7;
         v22 = os_log_type_enabled(*v7, OS_LOG_TYPE_INFO);
         if (v20)
@@ -1941,23 +1941,23 @@ LABEL_19:
           if (v22)
           {
             v23 = v21;
-            v24 = [v10 name];
-            v25 = [v10 uniqueIdentifier];
-            [v25 UUIDString];
+            name = [v10 name];
+            uniqueIdentifier4 = [v10 uniqueIdentifier];
+            [uniqueIdentifier4 UUIDString];
             v64 = v8;
             v26 = v7;
-            v28 = v27 = v12;
+            v28 = v27 = owner;
             *buf = 136315907;
             v81 = "[ADHomeInfoManager _startCloudKitActivityForHomes:homesToDelete:]";
             v82 = 2113;
-            v83 = v14;
+            v83 = uUIDString;
             v84 = 2113;
-            v85 = v24;
+            v85 = name;
             v86 = 2113;
             v87 = v28;
             _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "%s Owner %{private}@ accepting shares in home (%{private}@/%{private}@)", buf, 0x2Au);
 
-            v12 = v27;
+            owner = v27;
             v7 = v26;
             v8 = v64;
           }
@@ -1967,18 +1967,18 @@ LABEL_19:
         {
           if (v22)
           {
-            v65 = v12;
+            v65 = owner;
             v29 = v21;
-            v30 = [v10 name];
-            v31 = [v10 uniqueIdentifier];
-            [v31 UUIDString];
+            name2 = [v10 name];
+            uniqueIdentifier5 = [v10 uniqueIdentifier];
+            [uniqueIdentifier5 UUIDString];
             v33 = v32 = v8;
             *buf = 136315907;
             v81 = "[ADHomeInfoManager _startCloudKitActivityForHomes:homesToDelete:]";
             v82 = 2113;
-            v83 = v17;
+            v83 = uUIDString2;
             v84 = 2113;
-            v85 = v30;
+            v85 = name2;
             v86 = 2113;
             v87 = v33;
             _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "%s Sharer %{private}@ sharing in home (%{private}@/%{private}@)", buf, 0x2Au);
@@ -1986,10 +1986,10 @@ LABEL_19:
             v8 = v32;
             v7 = &AFSiriLogContextDaemon;
 
-            v12 = v65;
+            owner = v65;
           }
 
-          if (v11)
+          if (isMultiUserEnabled)
           {
             [(ADHomeInfoManager *)self _startCloudSharingForMultiUserService:v10];
           }
@@ -1997,21 +1997,21 @@ LABEL_19:
 
         if (v8 != 1 && AFIsMultiUserCompanion())
         {
-          v34 = v12;
+          v34 = owner;
           v35 = v8;
-          v36 = [v10 currentUser];
-          v37 = [v36 userSettingsForHome:v10];
-          v38 = [v37 settings];
+          currentUser2 = [v10 currentUser];
+          v37 = [currentUser2 userSettingsForHome:v10];
+          settings = [v37 settings];
 
           if ([v10 isMultiUserEnabled])
           {
-            v39 = [v38 rootGroup];
-            v40 = [ADHomeInfoManager findSettingWithKeyPath:@"root.siri.identifyVoice" group:v39];
+            rootGroup = [settings rootGroup];
+            v40 = [ADHomeInfoManager findSettingWithKeyPath:@"root.siri.identifyVoice" group:rootGroup];
 
             if (v40)
             {
-              v41 = [v40 value];
-              v63 = [v41 BOOLValue];
+              value = [v40 value];
+              bOOLValue = [value BOOLValue];
 
               v62 = v40;
             }
@@ -2022,18 +2022,18 @@ LABEL_19:
             }
           }
 
-          v12 = v34;
-          if (v63 >= 2)
+          owner = v34;
+          if (bOOLValue >= 2)
           {
             v8 = v35;
           }
 
           else
           {
-            v8 = v63;
+            v8 = bOOLValue;
           }
 
-          v66 = v38;
+          v66 = settings;
         }
       }
 
@@ -2057,7 +2057,7 @@ LABEL_19:
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
-  v44 = v59;
+  v44 = deleteCopy;
   v45 = [v44 countByEnumeratingWithState:&v71 objects:v79 count:16];
   if (v45)
   {
@@ -2073,15 +2073,15 @@ LABEL_19:
         }
 
         v49 = *(*(&v71 + 1) + 8 * j);
-        v50 = [v49 currentUser];
-        v51 = [v50 uniqueIdentifier];
-        v52 = [v51 UUIDString];
+        currentUser3 = [v49 currentUser];
+        uniqueIdentifier6 = [currentUser3 uniqueIdentifier];
+        uUIDString4 = [uniqueIdentifier6 UUIDString];
 
-        v53 = [v49 uniqueIdentifier];
-        v54 = [v53 UUIDString];
+        uniqueIdentifier7 = [v49 uniqueIdentifier];
+        uUIDString5 = [uniqueIdentifier7 UUIDString];
 
-        [v43 setObject:v52 forKey:v54];
-        [v70 removeObjectForKey:v54];
+        [v43 setObject:uUIDString4 forKey:uUIDString5];
+        [v70 removeObjectForKey:uUIDString5];
       }
 
       v46 = [v44 countByEnumeratingWithState:&v71 objects:v79 count:16];
@@ -2116,15 +2116,15 @@ LABEL_19:
   }
 }
 
-- (void)fetchAccessoriesInRoom:(id)a3 matchingCategoryTypes:(id)a4 completion:(id)a5
+- (void)fetchAccessoriesInRoom:(id)room matchingCategoryTypes:(id)types completion:(id)completion
 {
-  v8 = a3;
-  v39 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  roomCopy = room;
+  typesCopy = types;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (completionCopy)
   {
-    v30 = v9;
+    v30 = completionCopy;
     +[NSMutableArray array];
     v38 = v37 = self;
     [(ADHomeInfoManager *)self _currentHome];
@@ -2136,7 +2136,7 @@ LABEL_19:
     v34 = [obj countByEnumeratingWithState:&v49 objects:v55 count:16];
     if (v34)
     {
-      v32 = v8;
+      v32 = roomCopy;
       v33 = *v50;
       do
       {
@@ -2148,10 +2148,10 @@ LABEL_19:
           }
 
           v12 = *(*(&v49 + 1) + 8 * i);
-          if (v8)
+          if (roomCopy)
           {
-            v13 = [*(*(&v49 + 1) + 8 * i) name];
-            v14 = [v8 isEqual:v13];
+            name = [*(*(&v49 + 1) + 8 * i) name];
+            v14 = [roomCopy isEqual:name];
 
             if (!v14)
             {
@@ -2164,8 +2164,8 @@ LABEL_19:
           v48 = 0u;
           v45 = 0u;
           v46 = 0u;
-          v36 = [v12 accessories];
-          v15 = [v36 countByEnumeratingWithState:&v45 objects:v54 count:16];
+          accessories = [v12 accessories];
+          v15 = [accessories countByEnumeratingWithState:&v45 objects:v54 count:16];
           if (v15)
           {
             v16 = v15;
@@ -2176,7 +2176,7 @@ LABEL_19:
               {
                 if (*v46 != v40)
                 {
-                  objc_enumerationMutation(v36);
+                  objc_enumerationMutation(accessories);
                 }
 
                 v18 = *(*(&v45 + 1) + 8 * j);
@@ -2184,7 +2184,7 @@ LABEL_19:
                 v42 = 0u;
                 v43 = 0u;
                 v44 = 0u;
-                v19 = v39;
+                v19 = typesCopy;
                 v20 = [v19 countByEnumeratingWithState:&v41 objects:v53 count:16];
                 if (v20)
                 {
@@ -2200,9 +2200,9 @@ LABEL_19:
                       }
 
                       v24 = *(*(&v41 + 1) + 8 * k);
-                      v25 = [v18 category];
-                      v26 = [v25 categoryType];
-                      LODWORD(v24) = [v26 isEqual:v24];
+                      category = [v18 category];
+                      categoryType = [category categoryType];
+                      LODWORD(v24) = [categoryType isEqual:v24];
 
                       if (v24)
                       {
@@ -2226,13 +2226,13 @@ LABEL_19:
 LABEL_24:
               }
 
-              v16 = [v36 countByEnumeratingWithState:&v45 objects:v54 count:16];
+              v16 = [accessories countByEnumeratingWithState:&v45 objects:v54 count:16];
             }
 
             while (v16);
           }
 
-          v8 = v32;
+          roomCopy = v32;
           i = v35;
         }
 
@@ -2248,9 +2248,9 @@ LABEL_24:
   }
 }
 
-- (void)fetchMultiUserMetricsWithCompletion:(id)a3
+- (void)fetchMultiUserMetricsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -2269,8 +2269,8 @@ LABEL_24:
   v24[3] = 0;
   v6 = objc_alloc_init(SISchemaMultiUserSetup);
   v7 = dispatch_group_create();
-  v8 = [(HMHomeManager *)self->_homeManager createMultiuserSettingsMessenger];
-  if (v8)
+  createMultiuserSettingsMessenger = [(HMHomeManager *)self->_homeManager createMultiuserSettingsMessenger];
+  if (createMultiuserSettingsMessenger)
   {
     dispatch_group_enter(v7);
     v18[0] = _NSConcreteStackBlock;
@@ -2279,11 +2279,11 @@ LABEL_24:
     v18[3] = &unk_100516EB0;
     p_buf = &buf;
     v23 = v24;
-    v21 = v4;
+    v21 = completionCopy;
     v18[4] = self;
     v19 = v6;
     v20 = v7;
-    [v8 sendFetchMultiuserSettingsRequest:v18];
+    [createMultiuserSettingsMessenger sendFetchMultiuserSettingsRequest:v18];
   }
 
   else
@@ -2304,8 +2304,8 @@ LABEL_24:
   v16 = &buf;
   v17 = v24;
   v14 = v6;
-  v15 = v4;
-  v10 = v4;
+  v15 = completionCopy;
+  v10 = completionCopy;
   v11 = v6;
   v12 = objc_retainBlock(v13);
   dispatch_group_notify(v7, self->_queue, v12);
@@ -2314,10 +2314,10 @@ LABEL_24:
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)_enumerateListenersUsingBlock:(id)a3
+- (void)_enumerateListenersUsingBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v12 = 0u;
     v13 = 0u;
@@ -2339,7 +2339,7 @@ LABEL_24:
             objc_enumerationMutation(v5);
           }
 
-          v4[2](v4, *(*(&v10 + 1) + 8 * v9));
+          blockCopy[2](blockCopy, *(*(&v10 + 1) + 8 * v9));
           v9 = v9 + 1;
         }
 
@@ -2352,11 +2352,11 @@ LABEL_24:
   }
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  listenerCopy = listener;
+  v5 = listenerCopy;
+  if (listenerCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -2364,16 +2364,16 @@ LABEL_24:
     v7[2] = sub_10021CC18;
     v7[3] = &unk_10051E010;
     v7[4] = self;
-    v8 = v4;
+    v8 = listenerCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)addListener:(id)a3
+- (void)addListener:(id)listener
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  listenerCopy = listener;
+  v5 = listenerCopy;
+  if (listenerCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -2381,16 +2381,16 @@ LABEL_24:
     v7[2] = sub_10021CCCC;
     v7[3] = &unk_10051E010;
     v7[4] = self;
-    v8 = v4;
+    v8 = listenerCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)getCurrentAccessoryInfoWithCompletion:(id)a3
+- (void)getCurrentAccessoryInfoWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -2398,7 +2398,7 @@ LABEL_24:
     v7[2] = sub_10021CD7C;
     v7[3] = &unk_10051E038;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -2430,9 +2430,9 @@ LABEL_24:
   accessoryLoggingSalt = self->_accessoryLoggingSalt;
   if (!accessoryLoggingSalt)
   {
-    v4 = [(ADHomeInfoManager *)self _currentHome];
-    v5 = [v4 uniqueIdentifier];
-    v6 = [v5 copy];
+    _currentHome = [(ADHomeInfoManager *)self _currentHome];
+    uniqueIdentifier = [_currentHome uniqueIdentifier];
+    v6 = [uniqueIdentifier copy];
     v7 = self->_accessoryLoggingSalt;
     self->_accessoryLoggingSalt = v6;
 
@@ -2442,12 +2442,12 @@ LABEL_24:
   return accessoryLoggingSalt;
 }
 
-- (void)_updateCurrentAccessoryInfoWithAccessory:(id)a3
+- (void)_updateCurrentAccessoryInfoWithAccessory:(id)accessory
 {
-  v4 = a3;
-  if (v4 && (-[ADHomeInfoManager _currentAccessory](self, "_currentAccessory"), v5 = objc_claimAutoreleasedReturnValue(), [v5 uniqueIdentifier], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "uniqueIdentifier"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v6, "isEqual:", v7), v7, v6, v5, v8))
+  accessoryCopy = accessory;
+  if (accessoryCopy && (-[ADHomeInfoManager _currentAccessory](self, "_currentAccessory"), v5 = objc_claimAutoreleasedReturnValue(), [v5 uniqueIdentifier], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(accessoryCopy, "uniqueIdentifier"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v6, "isEqual:", v7), v7, v6, v5, v8))
   {
-    v9 = [(ADHomeInfoManager *)self _accessoryInfoForAccessory:v4];
+    v9 = [(ADHomeInfoManager *)self _accessoryInfoForAccessory:accessoryCopy];
   }
 
   else
@@ -2507,97 +2507,97 @@ LABEL_24:
 LABEL_15:
 }
 
-- (id)_accessoryInfoForAccessory:(id)a3
+- (id)_accessoryInfoForAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [v4 category];
-  v6 = [v5 categoryType];
+  accessoryCopy = accessory;
+  category = [accessoryCopy category];
+  categoryType = [category categoryType];
   v7 = HMAccessoryCategoryTypeSpeaker;
-  if ([v6 isEqual:HMAccessoryCategoryTypeSpeaker])
+  if ([categoryType isEqual:HMAccessoryCategoryTypeSpeaker])
   {
     v8 = 1;
   }
 
   else
   {
-    v9 = [v4 category];
-    v10 = [v9 categoryType];
-    v8 = [v10 isEqual:HMAccessoryCategoryTypeAudioReceiver];
+    category2 = [accessoryCopy category];
+    categoryType2 = [category2 categoryType];
+    v8 = [categoryType2 isEqual:HMAccessoryCategoryTypeAudioReceiver];
   }
 
-  v11 = [v4 category];
-  v12 = [v11 categoryType];
-  if ([v12 isEqualToString:v7] & 1) != 0 || (objc_msgSend(v12, "isEqualToString:", HMAccessoryCategoryTypeHomePod) & 1) != 0 || (objc_msgSend(v12, "isEqualToString:", HMAccessoryCategoryTypeAudioReceiver))
+  category3 = [accessoryCopy category];
+  categoryType3 = [category3 categoryType];
+  if ([categoryType3 isEqualToString:v7] & 1) != 0 || (objc_msgSend(categoryType3, "isEqualToString:", HMAccessoryCategoryTypeHomePod) & 1) != 0 || (objc_msgSend(categoryType3, "isEqualToString:", HMAccessoryCategoryTypeAudioReceiver))
   {
     v13 = 32;
   }
 
-  else if ([v12 isEqualToString:HMAccessoryCategoryTypeThermostat])
+  else if ([categoryType3 isEqualToString:HMAccessoryCategoryTypeThermostat])
   {
     v13 = 6;
   }
 
-  else if ([v12 isEqualToString:HMAccessoryCategoryTypeAppleTV])
+  else if ([categoryType3 isEqualToString:HMAccessoryCategoryTypeAppleTV])
   {
     v13 = 33;
   }
 
-  else if ([v12 isEqualToString:HMAccessoryCategoryTypeTelevision])
+  else if ([categoryType3 isEqualToString:HMAccessoryCategoryTypeTelevision])
   {
     v13 = 38;
   }
 
-  else if ([v12 isEqualToString:HMAccessoryCategoryTypeLightbulb])
+  else if ([categoryType3 isEqualToString:HMAccessoryCategoryTypeLightbulb])
   {
     v13 = 1;
   }
 
-  else if ([v12 isEqualToString:HMAccessoryCategoryTypeDoorLock])
+  else if ([categoryType3 isEqualToString:HMAccessoryCategoryTypeDoorLock])
   {
     v13 = 2;
   }
 
-  else if ([v12 isEqualToString:HMAccessoryCategoryTypeIPCamera])
+  else if ([categoryType3 isEqualToString:HMAccessoryCategoryTypeIPCamera])
   {
     v13 = 3;
   }
 
-  else if ([v12 isEqualToString:HMAccessoryCategoryTypeGarageDoorOpener])
+  else if ([categoryType3 isEqualToString:HMAccessoryCategoryTypeGarageDoorOpener])
   {
     v13 = 4;
   }
 
-  else if ([v12 isEqualToString:HMAccessoryCategoryTypeOutlet])
+  else if ([categoryType3 isEqualToString:HMAccessoryCategoryTypeOutlet])
   {
     v13 = 5;
   }
 
-  else if ([v12 isEqualToString:HMAccessoryCategoryTypeFan] & 1) != 0 || (objc_msgSend(v12, "isEqualToString:", HMAccessoryCategoryTypeFan))
+  else if ([categoryType3 isEqualToString:HMAccessoryCategoryTypeFan] & 1) != 0 || (objc_msgSend(categoryType3, "isEqualToString:", HMAccessoryCategoryTypeFan))
   {
     v13 = 7;
   }
 
-  else if ([v12 isEqualToString:HMAccessoryCategoryTypeSecuritySystem])
+  else if ([categoryType3 isEqualToString:HMAccessoryCategoryTypeSecuritySystem])
   {
     v13 = 17;
   }
 
-  else if ([v12 isEqualToString:HMAccessoryCategoryTypeSwitch])
+  else if ([categoryType3 isEqualToString:HMAccessoryCategoryTypeSwitch])
   {
     v13 = 26;
   }
 
-  else if ([v12 isEqualToString:HMAccessoryCategoryTypeAirPurifier])
+  else if ([categoryType3 isEqualToString:HMAccessoryCategoryTypeAirPurifier])
   {
     v13 = 27;
   }
 
-  else if ([v12 isEqualToString:HMAccessoryCategoryTypeAirPort])
+  else if ([categoryType3 isEqualToString:HMAccessoryCategoryTypeAirPort])
   {
     v13 = 34;
   }
 
-  else if ([v12 isEqualToString:HMAccessoryCategoryTypeFaucet])
+  else if ([categoryType3 isEqualToString:HMAccessoryCategoryTypeFaucet])
   {
     v13 = 37;
   }
@@ -2612,10 +2612,10 @@ LABEL_15:
   v17[2] = sub_10021D5B8;
   v17[3] = &unk_100516E60;
   v21 = v8;
-  v19 = self;
+  selfCopy = self;
   v20 = v13;
-  v18 = v4;
-  v14 = v4;
+  v18 = accessoryCopy;
+  v14 = accessoryCopy;
   v15 = [AFHomeAccessoryInfo newWithBuilder:v17];
 
   return v15;
@@ -2626,7 +2626,7 @@ LABEL_15:
   currentAccessoryInfo = self->_currentAccessoryInfo;
   if (!currentAccessoryInfo)
   {
-    v4 = [(ADHomeInfoManager *)self _currentAccessory];
+    _currentAccessory = [(ADHomeInfoManager *)self _currentAccessory];
     currentAccessoryInfo = self->_currentAccessoryInfo;
   }
 
@@ -2635,16 +2635,16 @@ LABEL_15:
   return v5;
 }
 
-- (id)_accessoryForIdentifier:(id)a3 inHome:(id *)a4
+- (id)_accessoryForIdentifier:(id)identifier inHome:(id *)home
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  identifierCopy = identifier;
+  v7 = identifierCopy;
+  if (home)
   {
-    *a4 = 0;
+    *home = 0;
   }
 
-  if (!v6)
+  if (!identifierCopy)
   {
     v12 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
@@ -2655,17 +2655,17 @@ LABEL_15:
     }
 
     v11 = 0;
-    if (a4)
+    if (home)
     {
-      *a4 = 0;
+      *home = 0;
     }
 
     goto LABEL_52;
   }
 
-  v50 = v6;
-  v8 = [(ADHomeInfoManager *)self _homeManager];
-  if ([v8 isDataSyncInProgress])
+  v50 = identifierCopy;
+  _homeManager = [(ADHomeInfoManager *)self _homeManager];
+  if ([_homeManager isDataSyncInProgress])
   {
     v9 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
@@ -2677,9 +2677,9 @@ LABEL_15:
 
     v10 = 0;
     v11 = 0;
-    if (a4)
+    if (home)
     {
-      *a4 = 0;
+      *home = 0;
     }
 
     goto LABEL_51;
@@ -2689,9 +2689,9 @@ LABEL_15:
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v49 = v8;
-  v13 = [v8 homes];
-  v45 = [v13 countByEnumeratingWithState:&v55 objects:v68 count:16];
+  v49 = _homeManager;
+  homes = [_homeManager homes];
+  v45 = [homes countByEnumeratingWithState:&v55 objects:v68 count:16];
   v10 = 0;
   if (!v45)
   {
@@ -2701,8 +2701,8 @@ LABEL_15:
   }
 
   v14 = *v56;
-  v47 = v13;
-  v48 = a4;
+  v47 = homes;
+  homeCopy = home;
   v44 = *v56;
 LABEL_15:
   v15 = 0;
@@ -2710,7 +2710,7 @@ LABEL_15:
   {
     if (*v56 != v14)
     {
-      objc_enumerationMutation(v13);
+      objc_enumerationMutation(homes);
     }
 
     v46 = v15;
@@ -2732,8 +2732,8 @@ LABEL_15:
     v51 = 0u;
     v52 = 0u;
     v20 = v16;
-    v21 = [v16 accessories];
-    v22 = [v21 countByEnumeratingWithState:&v51 objects:v67 count:16];
+    accessories = [v16 accessories];
+    v22 = [accessories countByEnumeratingWithState:&v51 objects:v67 count:16];
     if (!v22)
     {
       v25 = v50;
@@ -2749,7 +2749,7 @@ LABEL_15:
       {
         if (*v52 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(accessories);
         }
 
         v27 = *(*(&v51 + 1) + 8 * i);
@@ -2765,15 +2765,15 @@ LABEL_15:
           _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "%s accessory:%{private}@", buf, 0x16u);
         }
 
-        v31 = [v27 uniqueIdentifier];
-        if ([v31 isEqual:v25])
+        uniqueIdentifier = [v27 uniqueIdentifier];
+        if ([uniqueIdentifier isEqual:v25])
         {
         }
 
         else
         {
-          v32 = [v27 uuid];
-          v33 = [v32 isEqual:v25];
+          uuid = [v27 uuid];
+          v33 = [uuid isEqual:v25];
 
           if (!v33)
           {
@@ -2796,16 +2796,16 @@ LABEL_15:
         v25 = v50;
         if (v35)
         {
-          v10 = v21;
-          v13 = v47;
-          a4 = v48;
+          v10 = accessories;
+          homes = v47;
+          home = homeCopy;
           goto LABEL_45;
         }
 
         v10 = v36;
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v51 objects:v67 count:16];
+      v23 = [accessories countByEnumeratingWithState:&v51 objects:v67 count:16];
       if (v23)
       {
         continue;
@@ -2819,8 +2819,8 @@ LABEL_39:
     if (!+[AFFeatureFlags isRemoraEnabled](AFFeatureFlags, "isRemoraEnabled") || ([v20 accessoryWithUniqueIdentifier:v25], (v37 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v15 = v46 + 1;
-      v13 = v47;
-      a4 = v48;
+      homes = v47;
+      home = homeCopy;
       v14 = v44;
       if ((v46 + 1) != v45)
       {
@@ -2842,8 +2842,8 @@ LABEL_39:
 
   v35 = v37;
   v41 = AFSiriLogContextDaemon;
-  v13 = v47;
-  a4 = v48;
+  homes = v47;
+  home = homeCopy;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v42 = v41;
@@ -2883,21 +2883,21 @@ LABEL_47:
     v65 = 2113;
     v66 = v10;
     _os_log_debug_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEBUG, "%s %@ -> %{private}@ (%{private}@)", buf, 0x2Au);
-    if (a4)
+    if (home)
     {
 LABEL_49:
       v39 = v10;
-      *a4 = v10;
+      *home = v10;
     }
   }
 
-  else if (a4)
+  else if (home)
   {
     goto LABEL_49;
   }
 
   v11 = v35;
-  v8 = v49;
+  _homeManager = v49;
 LABEL_51:
 
   v7 = v50;
@@ -2909,15 +2909,15 @@ LABEL_52:
 - (id)getCurrentASRLanguages
 {
   v2 = +[ADPreferences sharedPreferences];
-  v3 = [v2 languageCode];
+  languageCode = [v2 languageCode];
 
   v4 = +[ADCommandCenter sharedCommandCenter];
-  v5 = [v4 _assetManager];
-  v6 = [v5 assetsAvailableStatusForLanguage:v3];
+  _assetManager = [v4 _assetManager];
+  v6 = [_assetManager assetsAvailableStatusForLanguage:languageCode];
 
   if (AFIsSpeechAssetAvailableFromUodStatus())
   {
-    v7 = [[NSSet alloc] initWithObjects:{v3, 0}];
+    v7 = [[NSSet alloc] initWithObjects:{languageCode, 0}];
   }
 
   else
@@ -2928,11 +2928,11 @@ LABEL_52:
   return v7;
 }
 
-- (void)getHomeContext:(id)a3
+- (void)getHomeContext:(id)context
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  contextCopy = context;
+  v5 = contextCopy;
+  if (contextCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -2940,7 +2940,7 @@ LABEL_52:
     v7[2] = sub_10021E0A4;
     v7[3] = &unk_10051E038;
     v7[4] = self;
-    v8 = v4;
+    v8 = contextCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -3011,7 +3011,7 @@ LABEL_52:
   return v4;
 }
 
-- (void)setRecognizeMyVoiceEnabled:(BOOL)a3
+- (void)setRecognizeMyVoiceEnabled:(BOOL)enabled
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -3019,7 +3019,7 @@ LABEL_52:
   v4[2] = sub_10021EB18;
   v4[3] = &unk_10051CBD8;
   v4[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_async(queue, v4);
 }
 
@@ -3045,32 +3045,32 @@ LABEL_52:
   dispatch_async(queue, block);
 }
 
-- (void)getSpeakerCapabilityForAccessoryWithUUID:(id)a3 completionHandler:(id)a4
+- (void)getSpeakerCapabilityForAccessoryWithUUID:(id)d completionHandler:(id)handler
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10021F500;
   v7[3] = &unk_100516E10;
-  v8 = a4;
-  v6 = v8;
-  [(ADHomeInfoManager *)self getAccessoryInfoForAccessoryWithUUID:a3 completionHandler:v7];
+  handlerCopy = handler;
+  v6 = handlerCopy;
+  [(ADHomeInfoManager *)self getAccessoryInfoForAccessoryWithUUID:d completionHandler:v7];
 }
 
-- (void)getAccessoryInfoForAccessoryWithUUID:(id)a3 completionHandler:(id)a4
+- (void)getAccessoryInfoForAccessoryWithUUID:(id)d completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v4 = [NSError errorWithDomain:kAFAssistantErrorDomain code:44 userInfo:0];
-  if (v5)
+  if (handlerCopy)
   {
-    (*(v5 + 2))(v5, 0, 0, v4);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v4);
   }
 }
 
-- (void)getCurrentAccessoryWithCompletion:(id)a3
+- (void)getCurrentAccessoryWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -3078,20 +3078,20 @@ LABEL_52:
     v7[2] = sub_10021F650;
     v7[3] = &unk_10051E038;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)_onceSiriDataSharingAdjustment:(id)a3
+- (void)_onceSiriDataSharingAdjustment:(id)adjustment
 {
   v34[0] = _NSConcreteStackBlock;
   v34[1] = 3221225472;
   v34[2] = sub_10021FBF4;
   v34[3] = &unk_10051C9D0;
   v34[4] = self;
-  v4 = a3;
-  v35 = v4;
+  adjustmentCopy = adjustment;
+  v35 = adjustmentCopy;
   v5 = objc_retainBlock(v34);
   v6 = +[ADPreferences sharedPreferences];
   if ([v6 siriDataSharingHomePodSetupDeviceIsValid])
@@ -3108,12 +3108,12 @@ LABEL_52:
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v9 = v8;
-    v10 = [(ADHomeInfoManager *)self _currentAccessory];
-    v11 = [v10 uniqueIdentifier];
+    _currentAccessory = [(ADHomeInfoManager *)self _currentAccessory];
+    uniqueIdentifier = [_currentAccessory uniqueIdentifier];
     *buf = 136315651;
     v37 = "[ADHomeInfoManager _onceSiriDataSharingAdjustment:]";
     v38 = 2113;
-    v39 = v11;
+    v39 = uniqueIdentifier;
     v40 = 1024;
     LODWORD(v41) = v7;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s Current status of accessory %{private}@ is: %d", buf, 0x1Cu);
@@ -3121,14 +3121,14 @@ LABEL_52:
 
   if (!v7)
   {
-    v14 = [(ADHomeInfoManager *)self _currentAccessory];
-    v13 = [v14 settings];
+    _currentAccessory2 = [(ADHomeInfoManager *)self _currentAccessory];
+    settings = [_currentAccessory2 settings];
 
-    v15 = [v13 rootGroup];
-    v16 = [ADHomeInfoManager findSettingWithKeyPath:@"root.general.analytics.shareSiriAnalytics" group:v15];
+    rootGroup = [settings rootGroup];
+    v16 = [ADHomeInfoManager findSettingWithKeyPath:@"root.general.analytics.shareSiriAnalytics" group:rootGroup];
 
-    v17 = [(ADHomeInfoManager *)self _homeManager];
-    if ([v17 hasOptedToHH2])
+    _homeManager = [(ADHomeInfoManager *)self _homeManager];
+    if ([_homeManager hasOptedToHH2])
     {
     }
 
@@ -3153,12 +3153,12 @@ LABEL_52:
             if (v22)
             {
               v25 = v21;
-              v26 = [(ADHomeInfoManager *)self _currentAccessory];
-              v27 = [v26 uniqueIdentifier];
+              _currentAccessory3 = [(ADHomeInfoManager *)self _currentAccessory];
+              uniqueIdentifier2 = [_currentAccessory3 uniqueIdentifier];
               *buf = 136315395;
               v37 = "[ADHomeInfoManager _onceSiriDataSharingAdjustment:]";
               v38 = 2113;
-              v39 = v27;
+              v39 = uniqueIdentifier2;
               _os_log_error_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "%s Error setting siriDataSharing for accessory %{private}@ in HomeKit. siriDataSharing is nil.  Maximum retries reached", buf, 0x16u);
             }
           }
@@ -3168,12 +3168,12 @@ LABEL_52:
             if (v22)
             {
               v28 = v21;
-              v29 = [(ADHomeInfoManager *)self _currentAccessory];
-              v30 = [v29 uniqueIdentifier];
+              _currentAccessory4 = [(ADHomeInfoManager *)self _currentAccessory];
+              uniqueIdentifier3 = [_currentAccessory4 uniqueIdentifier];
               *buf = 136315651;
               v37 = "[ADHomeInfoManager _onceSiriDataSharingAdjustment:]";
               v38 = 2113;
-              v39 = v30;
+              v39 = uniqueIdentifier3;
               v40 = 2048;
               v41 = qword_1005905F0;
               _os_log_error_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "%s Error setting siriDataSharing for accessory %{private}@ in HomeKit. siriDataSharing is nil. Scheduling retry %lu", buf, 0x20u);
@@ -3186,7 +3186,7 @@ LABEL_52:
             block[2] = sub_10021FDF0;
             block[3] = &unk_10051E010;
             block[4] = self;
-            v32 = v4;
+            v32 = adjustmentCopy;
             dispatch_after(v23, queue, block);
           }
         }
@@ -3206,13 +3206,13 @@ LABEL_15:
     v12 = _AFPreferencesSiriDataSharingLegacyOptInStatusWithContext();
     if ((v12 - 1) <= 1)
     {
-      v13 = +[ADPreferences sharedPreferences];
+      settings = +[ADPreferences sharedPreferences];
       v33[0] = _NSConcreteStackBlock;
       v33[1] = 3221225472;
       v33[2] = sub_10021FCAC;
       v33[3] = &unk_10051B9B8;
       v33[4] = v12;
-      [v13 setSiriDataSharingOptInStatus:v12 propagateToHomeAccessories:0 source:11 reason:@"Migration upon upgrade" completion:v33];
+      [settings setSiriDataSharingOptInStatus:v12 propagateToHomeAccessories:0 source:11 reason:@"Migration upon upgrade" completion:v33];
 LABEL_16:
 
       goto LABEL_17;
@@ -3234,16 +3234,16 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)_siriDataSharingAdjustment:(id)a3
+- (void)_siriDataSharingAdjustment:(id)adjustment
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100220464;
   v5[3] = &unk_10051E010;
   v5[4] = self;
-  v6 = a3;
+  adjustmentCopy = adjustment;
   v3 = qword_1005905E8;
-  v4 = v6;
+  v4 = adjustmentCopy;
   if (v3 != -1)
   {
     dispatch_once(&qword_1005905E8, v5);
@@ -3265,23 +3265,23 @@ LABEL_17:
     currentHome = self->_currentHome;
     if (currentHome)
     {
-      v5 = [(HMHome *)currentHome siriPhraseOptions];
-      v6 = [(ADHomeInfoManager *)self _currentAccessoryInfo];
-      [(ADHomeInfoManager *)self updateVoiceTriggerPhrase:v5 currentAccessoryInfo:v6];
+      siriPhraseOptions = [(HMHome *)currentHome siriPhraseOptions];
+      _currentAccessoryInfo = [(ADHomeInfoManager *)self _currentAccessoryInfo];
+      [(ADHomeInfoManager *)self updateVoiceTriggerPhrase:siriPhraseOptions currentAccessoryInfo:_currentAccessoryInfo];
     }
   }
 }
 
-- (void)availableLanguagesInTheHome:(id)a3
+- (void)availableLanguagesInTheHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315138;
     v10 = "[ADHomeInfoManager availableLanguagesInTheHome:]";
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s ", buf, 0xCu);
-    if (!v4)
+    if (!homeCopy)
     {
       goto LABEL_4;
     }
@@ -3289,7 +3289,7 @@ LABEL_17:
     goto LABEL_3;
   }
 
-  if (v4)
+  if (homeCopy)
   {
 LABEL_3:
     queue = self->_queue;
@@ -3298,21 +3298,21 @@ LABEL_3:
     v7[2] = sub_1002206C8;
     v7[3] = &unk_10051E038;
     v7[4] = self;
-    v8 = v4;
+    v8 = homeCopy;
     dispatch_async(queue, v7);
   }
 
 LABEL_4:
 }
 
-- (void)getHomeIdForAccessoryId:(id)a3 completion:(id)a4
+- (void)getHomeIdForAccessoryId:(id)id completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  idCopy = id;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
-    if (v6)
+    if (idCopy)
     {
       queue = self->_queue;
       block[0] = _NSConcreteStackBlock;
@@ -3320,38 +3320,38 @@ LABEL_4:
       block[2] = sub_100220CF4;
       block[3] = &unk_10051E088;
       block[4] = self;
-      v11 = v6;
+      v11 = idCopy;
       v12 = v8;
       dispatch_async(queue, block);
     }
 
     else
     {
-      (*(v7 + 2))(v7, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
 
-- (void)getVoiceSettingsForHomeMembers:(id)a3
+- (void)getVoiceSettingsForHomeMembers:(id)members
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  membersCopy = members;
+  v5 = membersCopy;
+  if (membersCopy)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100220E14;
     v6[3] = &unk_100516DE8;
-    v7 = v4;
+    v7 = membersCopy;
     [(ADHomeInfoManager *)self settingsForMultiUserWithRefresh:0 completion:v6];
   }
 }
 
-- (void)settingsForMultiUserWithRefresh:(BOOL)a3 completion:(id)a4
+- (void)settingsForMultiUserWithRefresh:(BOOL)refresh completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -3359,17 +3359,17 @@ LABEL_4:
     block[2] = sub_100221038;
     block[3] = &unk_10051D228;
     block[4] = self;
-    v11 = a3;
-    v10 = v6;
+    refreshCopy = refresh;
+    v10 = completionCopy;
     dispatch_async(queue, block);
   }
 }
 
-- (void)getCurrentHomeMemberIds:(id)a3
+- (void)getCurrentHomeMemberIds:(id)ids
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  idsCopy = ids;
+  v5 = idsCopy;
+  if (idsCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -3377,37 +3377,37 @@ LABEL_4:
     v7[2] = sub_1002211C0;
     v7[3] = &unk_10051E038;
     v7[4] = self;
-    v8 = v4;
+    v8 = idsCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)_setPreferredMediaUserForAccessory:(id)a3
+- (void)_setPreferredMediaUserForAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315395;
     v26 = "[ADHomeInfoManager _setPreferredMediaUserForAccessory:]";
     v27 = 2113;
-    v28 = v4;
+    v28 = accessoryCopy;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s accessory = %{private}@", buf, 0x16u);
   }
 
-  v6 = [v4 preferredMediaUser];
-  v7 = [v6 uniqueIdentifier];
-  v8 = [v7 UUIDString];
+  preferredMediaUser = [accessoryCopy preferredMediaUser];
+  uniqueIdentifier = [preferredMediaUser uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
 
-  if (v8)
+  if (uUIDString)
   {
     goto LABEL_7;
   }
 
-  v9 = [(ADHomeInfoManager *)self _currentHome];
-  v10 = [v9 owner];
-  v11 = [v10 uniqueIdentifier];
-  v8 = [v11 UUIDString];
+  _currentHome = [(ADHomeInfoManager *)self _currentHome];
+  owner = [_currentHome owner];
+  uniqueIdentifier2 = [owner uniqueIdentifier];
+  uUIDString = [uniqueIdentifier2 UUIDString];
 
   v12 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -3415,21 +3415,21 @@ LABEL_4:
     *buf = 136315395;
     v26 = "[ADHomeInfoManager _setPreferredMediaUserForAccessory:]";
     v27 = 2113;
-    v28 = v8;
+    v28 = uUIDString;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%s preferredMediaUser is not available, falling back to use home owner (%{private}@) as default", buf, 0x16u);
   }
 
-  if (v8)
+  if (uUIDString)
   {
 LABEL_7:
-    v13 = [(ADHomeInfoManager *)self _currentAccessory];
-    v14 = [v4 uniqueIdentifier];
-    v15 = [v13 uniqueIdentifier];
-    if ([v14 isEqual:v15])
+    _currentAccessory = [(ADHomeInfoManager *)self _currentAccessory];
+    uniqueIdentifier3 = [accessoryCopy uniqueIdentifier];
+    uniqueIdentifier4 = [_currentAccessory uniqueIdentifier];
+    if ([uniqueIdentifier3 isEqual:uniqueIdentifier4])
     {
-      v16 = [v4 category];
-      v17 = [v16 categoryType];
-      v18 = [v17 isEqualToString:HMAccessoryCategoryTypeHomePod];
+      category = [accessoryCopy category];
+      categoryType = [category categoryType];
+      v18 = [categoryType isEqualToString:HMAccessoryCategoryTypeHomePod];
 
       if (v18)
       {
@@ -3439,7 +3439,7 @@ LABEL_7:
         v23[2] = sub_10022180C;
         v23[3] = &unk_100517E08;
         v23[4] = self;
-        v24 = v8;
+        v24 = uUIDString;
         [v19 getSharedUserIdForHomeUserId:v24 completion:v23];
 
 LABEL_13:
@@ -3468,30 +3468,30 @@ LABEL_13:
     goto LABEL_15;
   }
 
-  v8 = v21;
-  v22 = [(ADHomeInfoManager *)self _currentHome];
+  uUIDString = v21;
+  _currentHome2 = [(ADHomeInfoManager *)self _currentHome];
   *buf = 136315651;
   v26 = "[ADHomeInfoManager _setPreferredMediaUserForAccessory:]";
   v27 = 2113;
-  v28 = v22;
+  v28 = _currentHome2;
   v29 = 2113;
-  v30 = v4;
-  _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "%s Unable to determine preferredMediaUser at this time for current home (%{private}@), home owner not available. Not setting preferredMediaUser for accessory (%{private}@)", buf, 0x20u);
+  v30 = accessoryCopy;
+  _os_log_error_impl(&_mh_execute_header, uUIDString, OS_LOG_TYPE_ERROR, "%s Unable to determine preferredMediaUser at this time for current home (%{private}@), home owner not available. Not setting preferredMediaUser for accessory (%{private}@)", buf, 0x20u);
 
 LABEL_14:
 LABEL_15:
 }
 
-- (void)_setPreferredMediaUserForAccessories:(id)a3
+- (void)_setPreferredMediaUserForAccessories:(id)accessories
 {
-  v4 = a3;
-  v19 = self;
-  v5 = [(ADHomeInfoManager *)self _currentAccessory];
+  accessoriesCopy = accessories;
+  selfCopy = self;
+  _currentAccessory = [(ADHomeInfoManager *)self _currentAccessory];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v4;
+  obj = accessoriesCopy;
   v6 = [obj countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v6)
   {
@@ -3510,13 +3510,13 @@ LABEL_15:
         }
 
         v11 = *(*(&v22 + 1) + 8 * i);
-        v12 = [v11 uniqueIdentifier];
-        v13 = [v5 uniqueIdentifier];
-        if ([v12 isEqual:v13])
+        uniqueIdentifier = [v11 uniqueIdentifier];
+        uniqueIdentifier2 = [_currentAccessory uniqueIdentifier];
+        if ([uniqueIdentifier isEqual:uniqueIdentifier2])
         {
-          v14 = [v11 category];
-          v15 = [v14 categoryType];
-          v16 = [v15 isEqualToString:v20];
+          category = [v11 category];
+          categoryType = [category categoryType];
+          v16 = [categoryType isEqualToString:v20];
 
           if (v16)
           {
@@ -3530,8 +3530,8 @@ LABEL_15:
               _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "%s HomePod = %@", buf, 0x16u);
             }
 
-            [v11 setDelegate:v19];
-            [(ADHomeInfoManager *)v19 _setPreferredMediaUserForAccessory:v11];
+            [v11 setDelegate:selfCopy];
+            [(ADHomeInfoManager *)selfCopy _setPreferredMediaUserForAccessory:v11];
           }
         }
 
@@ -3591,52 +3591,52 @@ LABEL_15:
   return v3;
 }
 
-- (id)_settingsForHomeUser:(id)a3 forHome:(id)a4
+- (id)_settingsForHomeUser:(id)user forHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 userSettingsForHome:v7];
-  v9 = [v8 settings];
+  userCopy = user;
+  homeCopy = home;
+  v8 = [userCopy userSettingsForHome:homeCopy];
+  settings = [v8 settings];
 
-  [v6 setDelegate:self];
-  [v9 setDelegate:self];
-  if ([v7 isMultiUserEnabled] && (objc_msgSend(v9, "rootGroup"), v10 = objc_claimAutoreleasedReturnValue(), +[ADHomeInfoManager findSettingWithKeyPath:group:](ADHomeInfoManager, "findSettingWithKeyPath:group:", @"root.siri.identifyVoice", v10), v11 = objc_claimAutoreleasedReturnValue(), v10, v11))
+  [userCopy setDelegate:self];
+  [settings setDelegate:self];
+  if ([homeCopy isMultiUserEnabled] && (objc_msgSend(settings, "rootGroup"), v10 = objc_claimAutoreleasedReturnValue(), +[ADHomeInfoManager findSettingWithKeyPath:group:](ADHomeInfoManager, "findSettingWithKeyPath:group:", @"root.siri.identifyVoice", v10), v11 = objc_claimAutoreleasedReturnValue(), v10, v11))
   {
-    v12 = [v11 value];
-    v13 = [v12 BOOLValue];
+    value = [v11 value];
+    bOOLValue = [value BOOLValue];
   }
 
   else
   {
-    v13 = 2;
+    bOOLValue = 2;
   }
 
-  v14 = [(ADHomeInfoManager *)self _allowExplicitContentSettingForUser:v6 forHome:v7];
-  v15 = [v6 assistantAccessControlForHome:v7];
-  v16 = [(ADHomeInfoManager *)self _currentAccessory];
-  v17 = sub_100222250(v15, v16);
+  v14 = [(ADHomeInfoManager *)self _allowExplicitContentSettingForUser:userCopy forHome:homeCopy];
+  v15 = [userCopy assistantAccessControlForHome:homeCopy];
+  _currentAccessory = [(ADHomeInfoManager *)self _currentAccessory];
+  v17 = sub_100222250(v15, _currentAccessory);
 
-  v18 = [v17 personalDomainsIsEnabled];
-  v19 = [v17 securePersonalDomainsRequireAuth];
+  personalDomainsIsEnabled = [v17 personalDomainsIsEnabled];
+  securePersonalDomainsRequireAuth = [v17 securePersonalDomainsRequireAuth];
   v20 = [NSDictionary alloc];
-  v21 = [NSNumber numberWithBool:v18];
-  v22 = [NSNumber numberWithBool:v19 ^ 1];
-  v23 = [NSNumber numberWithInteger:v13];
+  v21 = [NSNumber numberWithBool:personalDomainsIsEnabled];
+  v22 = [NSNumber numberWithBool:securePersonalDomainsRequireAuth ^ 1];
+  v23 = [NSNumber numberWithInteger:bOOLValue];
   v24 = [NSNumber numberWithBool:v14];
   v25 = [v20 initWithObjectsAndKeys:{v21, @"personalDomainsIsEnabled", v22, @"allowUnauthenticatedRequests", v23, @"allowVoiceID", v24, @"allowExplicitContent", 0}];
 
   return v25;
 }
 
-- (BOOL)_allowExplicitContentSettingForUser:(id)a3 forHome:(id)a4
+- (BOOL)_allowExplicitContentSettingForUser:(id)user forHome:(id)home
 {
-  v4 = [MCProfileConnection sharedConnection:a3];
+  v4 = [MCProfileConnection sharedConnection:user];
   v5 = [v4 effectiveBoolValueForSetting:MCFeatureExplicitContentAllowed] == 1;
 
   return v5;
 }
 
-- (void)_resolveSiriDataSharingStatusMismatch:(id)a3
+- (void)_resolveSiriDataSharingStatusMismatch:(id)mismatch
 {
   if (AFIsHorseman() && !_AFPreferencesSiriDataSharingOptInStatus())
   {
@@ -3648,22 +3648,22 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%s Siri Data Sharing status is unspecified on this device, check if there's a mismatch between this and HomeKit accessory's setting and recover", &v21, 0xCu);
     }
 
-    v5 = [(ADHomeInfoManager *)self _currentAccessory];
-    v6 = [v5 settings];
+    _currentAccessory = [(ADHomeInfoManager *)self _currentAccessory];
+    settings = [_currentAccessory settings];
 
-    v7 = [v6 rootGroup];
-    v8 = [ADHomeInfoManager findSettingWithKeyPath:@"root.general.analytics.shareSiriAnalytics" group:v7];
+    rootGroup = [settings rootGroup];
+    v8 = [ADHomeInfoManager findSettingWithKeyPath:@"root.general.analytics.shareSiriAnalytics" group:rootGroup];
 
     if (v8)
     {
-      v9 = [v8 value];
+      value = [v8 value];
 
-      if (v9)
+      if (value)
       {
-        v10 = [v8 value];
-        v11 = [v10 BOOLValue];
+        value2 = [v8 value];
+        bOOLValue = [value2 BOOLValue];
 
-        if (v11)
+        if (bOOLValue)
         {
           v12 = AFSiriLogContextDaemon;
           if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -3682,10 +3682,10 @@ LABEL_20:
           goto LABEL_21;
         }
 
-        v18 = [v8 value];
-        v19 = [v18 BOOLValue];
+        value3 = [v8 value];
+        bOOLValue2 = [value3 BOOLValue];
 
-        if ((v19 & 1) == 0)
+        if ((bOOLValue2 & 1) == 0)
         {
           v20 = AFSiriLogContextDaemon;
           if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -3739,9 +3739,9 @@ LABEL_21:
   }
 }
 
-- (void)_siriDataSharingOptInStatusDidChange:(id)a3
+- (void)_siriDataSharingOptInStatusDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -3762,12 +3762,12 @@ LABEL_21:
   }
 }
 
-- (void)_logRelevantAnalyticsOnHomeUserSettingsUpdateForCurrentSettings:(id)a3 allowVoiceIdSettingValue:(int64_t)a4 isPrimaryUser:(BOOL)a5
+- (void)_logRelevantAnalyticsOnHomeUserSettingsUpdateForCurrentSettings:(id)settings allowVoiceIdSettingValue:(int64_t)value isPrimaryUser:(BOOL)user
 {
-  v5 = a5;
+  userCopy = user;
   if (AFIsHorseman())
   {
-    if (v5)
+    if (userCopy)
     {
       v7 = @"owner";
     }
@@ -3785,7 +3785,7 @@ LABEL_21:
     v15[1] = v9;
     v10 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:2];
 
-    if (!a3)
+    if (!settings)
     {
       v11 = +[AFAnalytics sharedAnalytics];
       v12[0] = _NSConcreteStackBlock;
@@ -3802,11 +3802,11 @@ LABEL_21:
 {
   if (!self->_currentHomeInfo)
   {
-    v3 = [(ADHomeInfoManager *)self _currentHome];
-    v4 = [(ADHomeInfoManager *)self _currentAccessory];
-    v5 = [v3 owner];
-    v6 = [v5 assistantAccessControlForHome:v3];
-    v7 = sub_100222250(v6, v4);
+    _currentHome = [(ADHomeInfoManager *)self _currentHome];
+    _currentAccessory = [(ADHomeInfoManager *)self _currentAccessory];
+    owner = [_currentHome owner];
+    v6 = [owner assistantAccessControlForHome:_currentHome];
+    v7 = sub_100222250(v6, _currentAccessory);
     currentHomeInfo = self->_currentHomeInfo;
     self->_currentHomeInfo = v7;
 
@@ -3817,9 +3817,9 @@ LABEL_21:
       v16 = 136315907;
       v17 = "[ADHomeInfoManager _currentHomeInfo]";
       v18 = 2113;
-      v19 = v3;
+      v19 = _currentHome;
       v20 = 2113;
-      v21 = v5;
+      v21 = owner;
       v22 = 2113;
       v23 = v10;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s home (%{private}@) owner (%{private}@) %{private}@", &v16, 0x2Au);
@@ -3828,8 +3828,8 @@ LABEL_21:
     if (AFIsHorseman())
     {
       v11 = self->_currentHomeInfo;
-      v12 = [v3 uniqueIdentifier];
-      [(ADHomeInfo *)v11 setCurrentHomeIdentifier:v12];
+      uniqueIdentifier = [_currentHome uniqueIdentifier];
+      [(ADHomeInfo *)v11 setCurrentHomeIdentifier:uniqueIdentifier];
     }
 
     if (self->_currentHomeInfo)
@@ -3844,8 +3844,8 @@ LABEL_21:
 
   if (AFIsMultiUserCompanion() && [(ADHomeInfoManager *)self _updateHomeUserSettings])
   {
-    v3 = +[NSNotificationCenter defaultCenter];
-    [v3 postNotificationName:@"ADHomeInfoForThisDeviceDidChangeNotification" object:0];
+    _currentHome = +[NSNotificationCenter defaultCenter];
+    [_currentHome postNotificationName:@"ADHomeInfoForThisDeviceDidChangeNotification" object:0];
 LABEL_12:
   }
 
@@ -3859,8 +3859,8 @@ LABEL_12:
   currentHome = self->_currentHome;
   if (!currentHome)
   {
-    v4 = [(ADHomeInfoManager *)self _homeManager];
-    if ([v4 isDataSyncInProgress])
+    _homeManager = [(ADHomeInfoManager *)self _homeManager];
+    if ([_homeManager isDataSyncInProgress])
     {
       v5 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -3875,10 +3875,10 @@ LABEL_12:
     {
       if ((AFIsHorseman() & 1) != 0 || AFIsATV())
       {
-        v6 = [(ADHomeInfoManager *)self _currentAccessory];
-        v7 = [v6 home];
+        _currentAccessory = [(ADHomeInfoManager *)self _currentAccessory];
+        home = [_currentAccessory home];
         v8 = self->_currentHome;
-        self->_currentHome = v7;
+        self->_currentHome = home;
 
         v9 = self->_currentHome;
         if (!v9)
@@ -3891,17 +3891,17 @@ LABEL_12:
             _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s Unable to get current accessory, trying current home.", buf, 0xCu);
           }
 
-          v11 = [(ADHomeInfoManager *)self _homeManager];
-          v12 = [v11 currentHome];
+          _homeManager2 = [(ADHomeInfoManager *)self _homeManager];
+          currentHome = [_homeManager2 currentHome];
           v13 = self->_currentHome;
-          self->_currentHome = v12;
+          self->_currentHome = currentHome;
 
           v9 = self->_currentHome;
         }
 
         [(HMHome *)v9 setDelegate:self];
-        v14 = [(HMHome *)self->_currentHome owner];
-        [v14 setDelegate:self];
+        owner = [(HMHome *)self->_currentHome owner];
+        [owner setDelegate:self];
         [(HMHome *)self->_currentHome setDelegate:self];
         v15 = AFSiriLogContextDaemon;
         if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -3910,7 +3910,7 @@ LABEL_12:
           *buf = 136315651;
           v36 = "[ADHomeInfoManager _currentHome]";
           v37 = 2113;
-          v38 = v14;
+          v38 = owner;
           v39 = 2113;
           v40 = v16;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s Home owner %{private}@ home %{private}@", buf, 0x20u);
@@ -3918,8 +3918,8 @@ LABEL_12:
 
         if (AFIsHorseman())
         {
-          v17 = [v6 settings];
-          [v17 setDelegate:self];
+          settings = [_currentAccessory settings];
+          [settings setDelegate:self];
           if (self->_currentHome)
           {
             [(ADHomeInfoManager *)self _siriDataSharingAdjustment:?];
@@ -3929,17 +3929,17 @@ LABEL_12:
 
       else
       {
-        v20 = [v4 primaryHome];
+        primaryHome = [_homeManager primaryHome];
         v21 = self->_currentHome;
-        self->_currentHome = v20;
+        self->_currentHome = primaryHome;
 
         [(HMHome *)self->_currentHome setDelegate:self];
-        v6 = [v4 homes];
+        _currentAccessory = [_homeManager homes];
         v30 = 0u;
         v31 = 0u;
         v32 = 0u;
         v33 = 0u;
-        v22 = [v6 countByEnumeratingWithState:&v30 objects:v34 count:16];
+        v22 = [_currentAccessory countByEnumeratingWithState:&v30 objects:v34 count:16];
         if (v22)
         {
           v23 = v22;
@@ -3950,20 +3950,20 @@ LABEL_12:
             {
               if (*v31 != v24)
               {
-                objc_enumerationMutation(v6);
+                objc_enumerationMutation(_currentAccessory);
               }
 
               v26 = *(*(&v30 + 1) + 8 * i);
               [v26 setDelegate:self];
-              v27 = [v26 currentUser];
-              [v27 setDelegate:self];
-              v28 = [v27 userSettingsForHome:v26];
-              v29 = [v28 settings];
+              currentUser = [v26 currentUser];
+              [currentUser setDelegate:self];
+              v28 = [currentUser userSettingsForHome:v26];
+              settings2 = [v28 settings];
 
-              [v29 setDelegate:self];
+              [settings2 setDelegate:self];
             }
 
-            v23 = [v6 countByEnumeratingWithState:&v30 objects:v34 count:16];
+            v23 = [_currentAccessory countByEnumeratingWithState:&v30 objects:v34 count:16];
           }
 
           while (v23);
@@ -3983,11 +3983,11 @@ LABEL_12:
   return currentHome;
 }
 
-- (void)currentHomeWithCompletion:(id)a3
+- (void)currentHomeWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -3995,14 +3995,14 @@ LABEL_12:
     v7[2] = sub_1002236B8;
     v7[3] = &unk_10051E038;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)_updateHomeContext:(id)a3
+- (void)_updateHomeContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -4011,20 +4011,20 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s ", buf, 0xCu);
   }
 
-  v50 = self;
+  selfCopy = self;
   dispatch_assert_queue_V2(self->_queue);
-  v6 = v4;
-  v7 = [v6 homes];
-  v8 = [v7 count];
+  v6 = contextCopy;
+  homes = [v6 homes];
+  v8 = [homes count];
   v9 = [NSMutableArray arrayWithCapacity:v8];
   v55 = [NSMutableArray arrayWithCapacity:v8];
   v51 = v6;
-  v10 = [v6 currentHome];
+  currentHome = [v6 currentHome];
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
-  obj = v7;
+  obj = homes;
   v11 = [obj countByEnumeratingWithState:&v67 objects:buf count:16];
   if (v11)
   {
@@ -4044,19 +4044,19 @@ LABEL_12:
         v16 = *(*(&v67 + 1) + 8 * v15);
         v17 = objc_alloc_init(SAHAEntity);
         [v17 setEntityType:v14];
-        v18 = [v16 name];
-        [v17 setName:v18];
+        name = [v16 name];
+        [v17 setName:name];
 
-        v19 = [v16 assistantIdentifier];
-        v20 = [NSURL URLWithString:v19];
+        assistantIdentifier = [v16 assistantIdentifier];
+        v20 = [NSURL URLWithString:assistantIdentifier];
         [v17 setIdentifier:v20];
 
         [v9 addObject:v17];
-        v21 = [v16 uniqueIdentifier];
-        v22 = [v10 uniqueIdentifier];
-        LODWORD(v19) = [v21 isEqual:v22];
+        uniqueIdentifier = [v16 uniqueIdentifier];
+        uniqueIdentifier2 = [currentHome uniqueIdentifier];
+        LODWORD(assistantIdentifier) = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
-        if (v19)
+        if (assistantIdentifier)
         {
           [v55 addObject:v17];
         }
@@ -4089,9 +4089,9 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "%s Created homeContext", v73, 0xCu);
   }
 
-  v28 = v50;
-  objc_storeStrong(&v50->_homeContext, v23);
-  homeManager = v50->_homeManager;
+  v28 = selfCopy;
+  objc_storeStrong(&selfCopy->_homeContext, v23);
+  homeManager = selfCopy->_homeManager;
   if (homeManager)
   {
     v49 = v23;
@@ -4128,8 +4128,8 @@ LABEL_12:
         v60 = 0u;
         v61 = 0u;
         v62 = 0u;
-        v36 = [v35 accessories];
-        v37 = [v36 countByEnumeratingWithState:&v59 objects:v71 count:16];
+        accessories = [v35 accessories];
+        v37 = [accessories countByEnumeratingWithState:&v59 objects:v71 count:16];
         if (v37)
         {
           v38 = v37;
@@ -4141,13 +4141,13 @@ LABEL_12:
             {
               if (*v60 != v39)
               {
-                objc_enumerationMutation(v36);
+                objc_enumerationMutation(accessories);
               }
 
-              v41 = [*(*(&v59 + 1) + 8 * v40) category];
-              v42 = [v41 categoryType];
+              category = [*(*(&v59 + 1) + 8 * v40) category];
+              categoryType = [category categoryType];
 
-              if (v32 & 1) != 0 || ([v42 isEqualToString:v33])
+              if (v32 & 1) != 0 || ([categoryType isEqualToString:v33])
               {
                 v32 = 1;
                 if (v30)
@@ -4158,7 +4158,7 @@ LABEL_12:
 
               else
               {
-                v32 = [v42 isEqualToString:obja];
+                v32 = [categoryType isEqualToString:obja];
                 if (v30)
                 {
 LABEL_28:
@@ -4172,11 +4172,11 @@ LABEL_28:
                 }
               }
 
-              v30 = [v42 isEqualToString:v33];
+              v30 = [categoryType isEqualToString:v33];
               if ((v31 & 1) == 0)
               {
 LABEL_29:
-                v31 = [v42 isEqualToString:obja];
+                v31 = [categoryType isEqualToString:obja];
                 goto LABEL_33;
               }
 
@@ -4188,7 +4188,7 @@ LABEL_33:
             }
 
             while (v38 != v40);
-            v38 = [v36 countByEnumeratingWithState:&v59 objects:v71 count:16];
+            v38 = [accessories countByEnumeratingWithState:&v59 objects:v71 count:16];
           }
 
           while (v38);
@@ -4226,7 +4226,7 @@ LABEL_37:
         [v46 setHasHomePodInHome:v30 & 1];
 
         v23 = v49;
-        v28 = v50;
+        v28 = selfCopy;
         break;
       }
     }
@@ -4300,24 +4300,24 @@ LABEL_37:
 
 - (BOOL)hasOptedInHH2
 {
-  v2 = [(ADHomeInfoManager *)self _homeManager];
-  v3 = [v2 hasOptedToHH2];
+  _homeManager = [(ADHomeInfoManager *)self _homeManager];
+  hasOptedToHH2 = [_homeManager hasOptedToHH2];
 
-  return v3;
+  return hasOptedToHH2;
 }
 
-- (ADHomeInfoManager)initWithHomeManager:(id)a3 queue:(id)a4
+- (ADHomeInfoManager)initWithHomeManager:(id)manager queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  queueCopy = queue;
   v17.receiver = self;
   v17.super_class = ADHomeInfoManager;
   v9 = [(ADHomeInfoManager *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a4);
-    objc_storeStrong(&v10->_homeManager, a3);
+    objc_storeStrong(&v9->_queue, queue);
+    objc_storeStrong(&v10->_homeManager, manager);
     v11 = +[AFInstanceContext defaultContext];
     instanceContext = v10->_instanceContext;
     v10->_instanceContext = v11;
@@ -4333,10 +4333,10 @@ LABEL_37:
   return v10;
 }
 
-- (void)updateCurrentUserRMVSettingForHome:(id)a3 enabled:(BOOL)a4 completion:(id)a5
+- (void)updateCurrentUserRMVSettingForHome:(id)home enabled:(BOOL)enabled completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  homeCopy = home;
+  completionCopy = completion;
   v10 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -4351,18 +4351,18 @@ LABEL_37:
   v14[2] = sub_1002242E4;
   v14[3] = &unk_10051C6C8;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = a4;
-  v12 = v9;
-  v13 = v8;
+  v15 = homeCopy;
+  v16 = completionCopy;
+  enabledCopy = enabled;
+  v12 = completionCopy;
+  v13 = homeCopy;
   dispatch_async(queue, v14);
 }
 
-- (void)updateRMVSettingForUser:(id)a3 enabled:(BOOL)a4 completion:(id)a5
+- (void)updateRMVSettingForUser:(id)user enabled:(BOOL)enabled completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  userCopy = user;
+  completionCopy = completion;
   v10 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -4376,18 +4376,18 @@ LABEL_37:
   v14[1] = 3221225472;
   v14[2] = sub_1002249BC;
   v14[3] = &unk_10051C6C8;
-  v15 = v8;
-  v16 = v9;
+  v15 = userCopy;
+  v16 = completionCopy;
   v14[4] = self;
-  v17 = a4;
-  v12 = v8;
-  v13 = v9;
+  enabledCopy = enabled;
+  v12 = userCopy;
+  v13 = completionCopy;
   dispatch_async(queue, v14);
 }
 
-- (id)_initWithContext:(id)a3
+- (id)_initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v19.receiver = self;
   v19.super_class = ADHomeInfoManager;
   v5 = [(ADHomeInfoManager *)&v19 init];
@@ -4405,7 +4405,7 @@ LABEL_37:
     block[2] = sub_1002250E4;
     block[3] = &unk_10051E010;
     v17 = v5;
-    v18 = v4;
+    v18 = contextCopy;
     dispatch_async(v9, block);
     v10 = v5->_queue;
     v11 = +[ADQueueMonitor sharedMonitor];
@@ -4429,16 +4429,16 @@ LABEL_37:
   return v4;
 }
 
-+ (id)findSettingWithKeyPath:(id)a3 group:(id)a4
++ (id)findSettingWithKeyPath:(id)path group:(id)group
 {
-  v5 = a3;
-  v6 = a4;
+  pathCopy = path;
+  groupCopy = group;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v7 = [v6 settings];
-  v8 = [v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  settings = [groupCopy settings];
+  v8 = [settings countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v8)
   {
     v9 = v8;
@@ -4449,12 +4449,12 @@ LABEL_37:
       {
         if (*v27 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(settings);
         }
 
         v12 = *(*(&v26 + 1) + 8 * i);
-        v13 = [v12 keyPath];
-        v14 = [v13 isEqualToString:v5];
+        keyPath = [v12 keyPath];
+        v14 = [keyPath isEqualToString:pathCopy];
 
         if (v14)
         {
@@ -4463,7 +4463,7 @@ LABEL_37:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v9 = [settings countByEnumeratingWithState:&v26 objects:v31 count:16];
       if (v9)
       {
         continue;
@@ -4477,8 +4477,8 @@ LABEL_37:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [v6 groups];
-  v15 = [v7 countByEnumeratingWithState:&v22 objects:v30 count:16];
+  settings = [groupCopy groups];
+  v15 = [settings countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v15)
   {
     v16 = v15;
@@ -4489,10 +4489,10 @@ LABEL_11:
     {
       if (*v23 != v17)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(settings);
       }
 
-      v19 = [ADHomeInfoManager findSettingWithKeyPath:v5 group:*(*(&v22 + 1) + 8 * v18)];
+      v19 = [ADHomeInfoManager findSettingWithKeyPath:pathCopy group:*(*(&v22 + 1) + 8 * v18)];
       if (v19)
       {
         break;
@@ -4500,7 +4500,7 @@ LABEL_11:
 
       if (v16 == ++v18)
       {
-        v16 = [v7 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        v16 = [settings countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v16)
         {
           goto LABEL_11;
@@ -4523,16 +4523,16 @@ LABEL_17:
   return v20;
 }
 
-- (void)dumpAssistantStateChunk:(id)a3
+- (void)dumpAssistantStateChunk:(id)chunk
 {
-  v4 = a3;
+  chunkCopy = chunk;
   v13 = objc_alloc_init(NSMutableDictionary);
-  v5 = [(ADHomeInfoManager *)self currentHome];
-  v6 = [v5 uniqueIdentifier];
-  v7 = v6;
-  if (v6)
+  currentHome = [(ADHomeInfoManager *)self currentHome];
+  uniqueIdentifier = [currentHome uniqueIdentifier];
+  v7 = uniqueIdentifier;
+  if (uniqueIdentifier)
   {
-    v8 = v6;
+    v8 = uniqueIdentifier;
   }
 
   else
@@ -4542,12 +4542,12 @@ LABEL_17:
 
   [v13 setObject:v8 forKeyedSubscript:@"currentHomeIdentifier"];
 
-  v9 = [(ADHomeInfoManager *)self currentAccessoryInfo];
-  v10 = [v9 uniqueIdentifier];
-  v11 = v10;
-  if (v10)
+  currentAccessoryInfo = [(ADHomeInfoManager *)self currentAccessoryInfo];
+  uniqueIdentifier2 = [currentAccessoryInfo uniqueIdentifier];
+  v11 = uniqueIdentifier2;
+  if (uniqueIdentifier2)
   {
-    v12 = v10;
+    v12 = uniqueIdentifier2;
   }
 
   else
@@ -4557,7 +4557,7 @@ LABEL_17:
 
   [v13 setObject:v12 forKeyedSubscript:@"currentAccessoryIdentifier"];
 
-  v4[2](v4, v13);
+  chunkCopy[2](chunkCopy, v13);
 }
 
 @end

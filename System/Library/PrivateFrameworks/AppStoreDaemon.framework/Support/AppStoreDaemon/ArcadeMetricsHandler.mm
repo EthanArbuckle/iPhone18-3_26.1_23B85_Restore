@@ -1,20 +1,20 @@
 @interface ArcadeMetricsHandler
-- (BOOL)isCandidateAppMetadata:(id)a3;
-- (BOOL)isCandidateAppProxy:(id)a3 isMetadataLookup:(BOOL)a4;
+- (BOOL)isCandidateAppMetadata:(id)metadata;
+- (BOOL)isCandidateAppProxy:(id)proxy isMetadataLookup:(BOOL)lookup;
 - (BOOL)shouldCollectMetrics;
 - (id)logKey;
 - (int64_t)_arcadeAppCount;
-- (void)recordDeletedBundleIDs:(id)a3;
-- (void)recordInstallEventsForBundleIDs:(id)a3 installType:(unsigned __int8)a4;
+- (void)recordDeletedBundleIDs:(id)ds;
+- (void)recordInstallEventsForBundleIDs:(id)ds installType:(unsigned __int8)type;
 @end
 
 @implementation ArcadeMetricsHandler
 
-- (BOOL)isCandidateAppMetadata:(id)a3
+- (BOOL)isCandidateAppMetadata:(id)metadata
 {
-  if (a3)
+  if (metadata)
   {
-    return sub_100382758(a3);
+    return sub_100382758(metadata);
   }
 
   else
@@ -23,18 +23,18 @@
   }
 }
 
-- (BOOL)isCandidateAppProxy:(id)a3 isMetadataLookup:(BOOL)a4
+- (BOOL)isCandidateAppProxy:(id)proxy isMetadataLookup:(BOOL)lookup
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = v4 && ([v4[15] isPlaceholder] & 1) == 0 && (sub_1003D2BDC(v5) & 1) != 0;
+  proxyCopy = proxy;
+  v5 = proxyCopy;
+  v6 = proxyCopy && ([proxyCopy[15] isPlaceholder] & 1) == 0 && (sub_1003D2BDC(v5) & 1) != 0;
 
   return v6;
 }
 
-- (void)recordInstallEventsForBundleIDs:(id)a3 installType:(unsigned __int8)a4
+- (void)recordInstallEventsForBundleIDs:(id)ds installType:(unsigned __int8)type
 {
-  v5 = a3;
+  dsCopy = ds;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -44,33 +44,33 @@
   v15[1] = 3221225472;
   v15[2] = sub_1002307A4;
   v15[3] = &unk_10051DF80;
-  v7 = v5;
+  v7 = dsCopy;
   v16 = v7;
-  v17 = self;
+  selfCopy = self;
   v18 = &v19;
   [v6 accessUsingBlock:v15];
 
   if (v20[3] >= 1)
   {
-    v8 = [(ArcadeMetricsHandler *)self _arcadeAppCount];
+    _arcadeAppCount = [(ArcadeMetricsHandler *)self _arcadeAppCount];
     v9 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(ArcadeMetricsHandler *)self logKey];
+      logKey = [(ArcadeMetricsHandler *)self logKey];
       v11 = [v7 componentsJoinedByString:{@", "}];
       v12 = v20[3];
       *buf = 138413058;
-      v24 = v10;
+      v24 = logKey;
       v25 = 2114;
       v26 = v11;
       v27 = 2048;
       v28 = v12;
       v29 = 2048;
-      v30 = v8;
+      v30 = _arcadeAppCount;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[%@] Apps installed [%{public}@] arcade install count: %ld arcade app count: %ld", buf, 0x2Au);
     }
 
-    if (v8 == v20[3])
+    if (_arcadeAppCount == v20[3])
     {
       v13 = +[BagService appstoredService];
       v14[0] = _NSConcreteStackBlock;
@@ -101,16 +101,16 @@
   return logKey;
 }
 
-- (void)recordDeletedBundleIDs:(id)a3
+- (void)recordDeletedBundleIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(ArcadeMetricsHandler *)self logKey];
-    v7 = [v4 componentsJoinedByString:{@", "}];
+    logKey = [(ArcadeMetricsHandler *)self logKey];
+    v7 = [dsCopy componentsJoinedByString:{@", "}];
     v8 = 138412546;
-    v9 = v6;
+    v9 = logKey;
     v10 = 2114;
     v11 = v7;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%@] Apps uninstalled: [%{public}@]", &v8, 0x16u);
@@ -120,9 +120,9 @@
 - (BOOL)shouldCollectMetrics
 {
   v2 = sub_1003BBF50();
-  v3 = [v2 isHRNMode];
+  isHRNMode = [v2 isHRNMode];
 
-  return v3 ^ 1;
+  return isHRNMode ^ 1;
 }
 
 - (int64_t)_arcadeAppCount

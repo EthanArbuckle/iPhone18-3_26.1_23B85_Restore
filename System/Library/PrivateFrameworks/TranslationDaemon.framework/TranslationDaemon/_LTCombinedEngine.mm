@@ -1,20 +1,20 @@
 @interface _LTCombinedEngine
-- (BOOL)translatesPair:(id)a3;
+- (BOOL)translatesPair:(id)pair;
 - (_LTCombinedEngine)init;
-- (void)addSpeechAudioData:(id)a3;
+- (void)addSpeechAudioData:(id)data;
 - (void)endAudio;
 - (void)endpoint;
 - (void)hybridEndpointerFoundEndpoint;
-- (void)serverEndpointerFeatures:(id)a3 locale:(id)a4;
-- (void)setLanguagesRecognized:(id)a3 context:(id)a4;
-- (void)speak:(id)a3 withContext:(id)a4 completion:(id)a5;
-- (void)speechRecognitionResult:(id)a3;
-- (void)startSpeechTranslationWithContext:(id)a3 delegate:(id)a4;
-- (void)startTextToSpeechTranslationWithContext:(id)a3 text:(id)a4 delegate:(id)a5;
-- (void)translate:(id)a3 withContext:(id)a4 paragraphResult:(id)a5 completion:(id)a6;
-- (void)translateSentence:(id)a3 withContext:(id)a4 completion:(id)a5;
-- (void)translationDidFinishWithError:(id)a3;
-- (void)translatorDidTranslate:(id)a3;
+- (void)serverEndpointerFeatures:(id)features locale:(id)locale;
+- (void)setLanguagesRecognized:(id)recognized context:(id)context;
+- (void)speak:(id)speak withContext:(id)context completion:(id)completion;
+- (void)speechRecognitionResult:(id)result;
+- (void)startSpeechTranslationWithContext:(id)context delegate:(id)delegate;
+- (void)startTextToSpeechTranslationWithContext:(id)context text:(id)text delegate:(id)delegate;
+- (void)translate:(id)translate withContext:(id)context paragraphResult:(id)result completion:(id)completion;
+- (void)translateSentence:(id)sentence withContext:(id)context completion:(id)completion;
+- (void)translationDidFinishWithError:(id)error;
+- (void)translatorDidTranslate:(id)translate;
 @end
 
 @implementation _LTCombinedEngine
@@ -34,114 +34,114 @@
   return v3;
 }
 
-- (BOOL)translatesPair:(id)a3
+- (BOOL)translatesPair:(id)pair
 {
-  v4 = a3;
-  v5 = [(_LTCombinedEngine *)self offlineEngine];
-  if ([v5 translatesPair:v4])
+  pairCopy = pair;
+  offlineEngine = [(_LTCombinedEngine *)self offlineEngine];
+  if ([offlineEngine translatesPair:pairCopy])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [(_LTCombinedEngine *)self onlineEngine];
-    v6 = [v7 translatesPair:v4];
+    onlineEngine = [(_LTCombinedEngine *)self onlineEngine];
+    v6 = [onlineEngine translatesPair:pairCopy];
   }
 
   return v6;
 }
 
-- (void)addSpeechAudioData:(id)a3
+- (void)addSpeechAudioData:(id)data
 {
-  v4 = a3;
-  v5 = [(_LTCombinedEngine *)self offlineEngine];
-  [v5 addSpeechAudioData:v4];
+  dataCopy = data;
+  offlineEngine = [(_LTCombinedEngine *)self offlineEngine];
+  [offlineEngine addSpeechAudioData:dataCopy];
 
-  v6 = [(_LTCombinedEngine *)self onlineEngine];
-  [v6 addSpeechAudioData:v4];
+  onlineEngine = [(_LTCombinedEngine *)self onlineEngine];
+  [onlineEngine addSpeechAudioData:dataCopy];
 }
 
 - (void)endAudio
 {
-  v3 = [(_LTCombinedEngine *)self offlineEngine];
-  [v3 endAudio];
+  offlineEngine = [(_LTCombinedEngine *)self offlineEngine];
+  [offlineEngine endAudio];
 
-  v4 = [(_LTCombinedEngine *)self onlineEngine];
-  [v4 endAudio];
+  onlineEngine = [(_LTCombinedEngine *)self onlineEngine];
+  [onlineEngine endAudio];
 }
 
-- (void)setLanguagesRecognized:(id)a3 context:(id)a4
+- (void)setLanguagesRecognized:(id)recognized context:(id)context
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(_LTCombinedEngine *)self offlineEngine];
+  recognizedCopy = recognized;
+  contextCopy = context;
+  offlineEngine = [(_LTCombinedEngine *)self offlineEngine];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(_LTCombinedEngine *)self offlineEngine];
-    [v9 setLanguagesRecognized:v13 context:v6];
+    offlineEngine2 = [(_LTCombinedEngine *)self offlineEngine];
+    [offlineEngine2 setLanguagesRecognized:recognizedCopy context:contextCopy];
   }
 
-  v10 = [(_LTCombinedEngine *)self onlineEngine];
+  onlineEngine = [(_LTCombinedEngine *)self onlineEngine];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(_LTCombinedEngine *)self onlineEngine];
-    [v12 setLanguagesRecognized:v13 context:v6];
+    onlineEngine2 = [(_LTCombinedEngine *)self onlineEngine];
+    [onlineEngine2 setLanguagesRecognized:recognizedCopy context:contextCopy];
   }
 }
 
-- (void)startTextToSpeechTranslationWithContext:(id)a3 text:(id)a4 delegate:(id)a5
+- (void)startTextToSpeechTranslationWithContext:(id)context text:(id)text delegate:(id)delegate
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  delegateCopy = delegate;
+  textCopy = text;
+  contextCopy = context;
   v11 = _LTOSLogTranslationEngine();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     [_LTCombinedEngine startTextToSpeechTranslationWithContext:v11 text:? delegate:?];
   }
 
-  objc_storeWeak(&self->_delegate, v8);
+  objc_storeWeak(&self->_delegate, delegateCopy);
   self->_onlineTranslationStarted = 0;
   v12 = objc_alloc_init(_LTSpeechTranslationResultsBuffer);
   offlineDelegateBuffer = self->_offlineDelegateBuffer;
   self->_offlineDelegateBuffer = v12;
 
-  [(_LTSpeechTranslationResultsBuffer *)self->_offlineDelegateBuffer setDelegate:v8];
-  v14 = [(_LTCombinedEngine *)self onlineEngine];
-  [v14 startTextToSpeechTranslationWithContext:v10 text:v9 delegate:self];
+  [(_LTSpeechTranslationResultsBuffer *)self->_offlineDelegateBuffer setDelegate:delegateCopy];
+  onlineEngine = [(_LTCombinedEngine *)self onlineEngine];
+  [onlineEngine startTextToSpeechTranslationWithContext:contextCopy text:textCopy delegate:self];
 
-  v15 = [(_LTCombinedEngine *)self offlineEngine];
-  [v15 startTextToSpeechTranslationWithContext:v10 text:v9 delegate:self->_offlineDelegateBuffer];
+  offlineEngine = [(_LTCombinedEngine *)self offlineEngine];
+  [offlineEngine startTextToSpeechTranslationWithContext:contextCopy text:textCopy delegate:self->_offlineDelegateBuffer];
 }
 
-- (void)startSpeechTranslationWithContext:(id)a3 delegate:(id)a4
+- (void)startSpeechTranslationWithContext:(id)context delegate:(id)delegate
 {
-  v6 = a4;
-  v7 = a3;
-  objc_storeWeak(&self->_delegate, v6);
+  delegateCopy = delegate;
+  contextCopy = context;
+  objc_storeWeak(&self->_delegate, delegateCopy);
   self->_onlineTranslationStarted = 0;
   v8 = objc_alloc_init(_LTSpeechTranslationResultsBuffer);
   offlineDelegateBuffer = self->_offlineDelegateBuffer;
   self->_offlineDelegateBuffer = v8;
 
-  [(_LTSpeechTranslationResultsBuffer *)self->_offlineDelegateBuffer setDelegate:v6];
-  v10 = [(_LTCombinedEngine *)self onlineEngine];
-  [v10 startSpeechTranslationWithContext:v7 delegate:self];
+  [(_LTSpeechTranslationResultsBuffer *)self->_offlineDelegateBuffer setDelegate:delegateCopy];
+  onlineEngine = [(_LTCombinedEngine *)self onlineEngine];
+  [onlineEngine startSpeechTranslationWithContext:contextCopy delegate:self];
 
-  v11 = [(_LTCombinedEngine *)self offlineEngine];
-  [v11 startSpeechTranslationWithContext:v7 delegate:self->_offlineDelegateBuffer];
+  offlineEngine = [(_LTCombinedEngine *)self offlineEngine];
+  [offlineEngine startSpeechTranslationWithContext:contextCopy delegate:self->_offlineDelegateBuffer];
 }
 
-- (void)speak:(id)a3 withContext:(id)a4 completion:(id)a5
+- (void)speak:(id)speak withContext:(id)context completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  speakCopy = speak;
+  contextCopy = context;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   onlineEngine = self->_onlineEngine;
   v15[0] = MEMORY[0x277D85DD0];
@@ -149,11 +149,11 @@
   v15[2] = __50___LTCombinedEngine_speak_withContext_completion___block_invoke;
   v15[3] = &unk_2789B5558;
   objc_copyWeak(&v19, &location);
-  v12 = v8;
+  v12 = speakCopy;
   v16 = v12;
-  v13 = v9;
+  v13 = contextCopy;
   v17 = v13;
-  v14 = v10;
+  v14 = completionCopy;
   v18 = v14;
   [(_LTTranslationEngine *)onlineEngine speak:v12 withContext:v13 completion:v15];
 
@@ -161,16 +161,16 @@
   objc_destroyWeak(&location);
 }
 
-- (void)translate:(id)a3 withContext:(id)a4 paragraphResult:(id)a5 completion:(id)a6
+- (void)translate:(id)translate withContext:(id)context paragraphResult:(id)result completion:(id)completion
 {
-  v10 = a3;
-  v33 = a4;
-  v11 = a5;
-  v32 = a6;
-  v12 = [v10 _ltCompactMap:&__block_literal_global];
+  translateCopy = translate;
+  contextCopy = context;
+  resultCopy = result;
+  completionCopy = completion;
+  v12 = [translateCopy _ltCompactMap:&__block_literal_global];
   v13 = [v12 mutableCopy];
 
-  v14 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v62[0] = 0;
   v62[1] = v62;
   v62[2] = 0x2020000000;
@@ -190,7 +190,7 @@
   v15 = dispatch_group_create();
   v16 = dispatch_queue_create("com.apple.translation.combined", 0);
   dispatch_group_enter(v15);
-  v17 = [(_LTCombinedEngine *)self offlineEngine];
+  offlineEngine = [(_LTCombinedEngine *)self offlineEngine];
   v52[0] = MEMORY[0x277D85DD0];
   v52[1] = 3221225472;
   v52[2] = __70___LTCombinedEngine_translate_withContext_paragraphResult_completion___block_invoke_6;
@@ -200,9 +200,9 @@
   v57 = v60;
   v19 = v13;
   v54 = v19;
-  v20 = v11;
+  v20 = resultCopy;
   v56 = v20;
-  v21 = v14;
+  v21 = dictionary;
   v55 = v21;
   v49[0] = MEMORY[0x277D85DD0];
   v49[1] = 3221225472;
@@ -211,10 +211,10 @@
   v51 = v58;
   v22 = v15;
   v50 = v22;
-  [v17 translate:v10 withContext:v33 paragraphResult:v52 completion:v49];
+  [offlineEngine translate:translateCopy withContext:contextCopy paragraphResult:v52 completion:v49];
 
   dispatch_group_enter(v22);
-  v23 = [(_LTCombinedEngine *)self onlineEngine];
+  onlineEngine = [(_LTCombinedEngine *)self onlineEngine];
   v45[0] = MEMORY[0x277D85DD0];
   v45[1] = 3221225472;
   v45[2] = __70___LTCombinedEngine_translate_withContext_paragraphResult_completion___block_invoke_4;
@@ -232,7 +232,7 @@
   v44 = v60;
   v27 = v22;
   v43 = v27;
-  [v23 translate:v10 withContext:v33 paragraphResult:v45 completion:v42];
+  [onlineEngine translate:translateCopy withContext:contextCopy paragraphResult:v45 completion:v42];
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -243,12 +243,12 @@
   v41 = v60;
   v35 = v25;
   v36 = v21;
-  v37 = v32;
+  v37 = completionCopy;
   v38 = v26;
   v28 = v26;
   v29 = v21;
   v30 = v25;
-  v31 = v32;
+  v31 = completionCopy;
   dispatch_group_notify(v27, v24, block);
 
   _Block_object_dispose(v58, 8);
@@ -257,11 +257,11 @@
   _Block_object_dispose(v62, 8);
 }
 
-- (void)translateSentence:(id)a3 withContext:(id)a4 completion:(id)a5
+- (void)translateSentence:(id)sentence withContext:(id)context completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sentenceCopy = sentence;
+  contextCopy = context;
+  completionCopy = completion;
   v38[0] = 0;
   v38[1] = v38;
   v38[2] = 0x2020000000;
@@ -287,7 +287,7 @@
   v11 = dispatch_group_create();
   v12 = dispatch_queue_create("com.apple.translation.combined", 0);
   dispatch_group_enter(v11);
-  v13 = [(_LTCombinedEngine *)self offlineEngine];
+  offlineEngine = [(_LTCombinedEngine *)self offlineEngine];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __62___LTCombinedEngine_translateSentence_withContext_completion___block_invoke;
@@ -296,20 +296,20 @@
   v31 = v34;
   v14 = v11;
   v29 = v14;
-  [v13 translateSentence:v8 withContext:v9 completion:v28];
+  [offlineEngine translateSentence:sentenceCopy withContext:contextCopy completion:v28];
 
   dispatch_group_enter(v14);
-  v15 = [(_LTCombinedEngine *)self onlineEngine];
+  onlineEngine = [(_LTCombinedEngine *)self onlineEngine];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __62___LTCombinedEngine_translateSentence_withContext_completion___block_invoke_2;
   v24[3] = &unk_2789B56B8;
   v27 = v38;
-  v16 = v10;
+  v16 = completionCopy;
   v26 = v16;
   v17 = v14;
   v25 = v17;
-  [v15 translateSentence:v8 withContext:v9 completion:v24];
+  [onlineEngine translateSentence:sentenceCopy withContext:contextCopy completion:v24];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -357,23 +357,23 @@
   }
 }
 
-- (void)serverEndpointerFeatures:(id)a3 locale:(id)a4
+- (void)serverEndpointerFeatures:(id)features locale:(id)locale
 {
-  v10 = a3;
-  v6 = a4;
+  featuresCopy = features;
+  localeCopy = locale;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    [v9 serverEndpointerFeatures:v10 locale:v6];
+    [v9 serverEndpointerFeatures:featuresCopy locale:localeCopy];
   }
 }
 
-- (void)speechRecognitionResult:(id)a3
+- (void)speechRecognitionResult:(id)result
 {
-  v7 = a3;
+  resultCopy = result;
   self->_onlineTranslationStarted = 1;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -381,33 +381,33 @@
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 speechRecognitionResult:v7];
+    [v6 speechRecognitionResult:resultCopy];
   }
 }
 
-- (void)translatorDidTranslate:(id)a3
+- (void)translatorDidTranslate:(id)translate
 {
-  v7 = a3;
+  translateCopy = translate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 translatorDidTranslate:v7];
+    [v6 translatorDidTranslate:translateCopy];
   }
 }
 
-- (void)translationDidFinishWithError:(id)a3
+- (void)translationDidFinishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = _LTOSLogTranslationEngine();
   v6 = v5;
-  if (v4)
+  if (errorCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(_LTCombinedEngine *)v4 translationDidFinishWithError:v6];
+      [(_LTCombinedEngine *)errorCopy translationDidFinishWithError:v6];
     }
 
     if (![(_LTSpeechTranslationResultsBuffer *)self->_offlineDelegateBuffer hasFailed])
@@ -419,8 +419,8 @@
         _os_log_impl(&dword_232E53000, v7, OS_LOG_TYPE_INFO, "Online translation failed, continue with offline", v12, 2u);
       }
 
-      v8 = [(_LTCombinedEngine *)self onlineEngine];
-      [v8 cancelSpeechTranslation:0];
+      onlineEngine = [(_LTCombinedEngine *)self onlineEngine];
+      [onlineEngine cancelSpeechTranslation:0];
 
       [(_LTSpeechTranslationResultsBuffer *)self->_offlineDelegateBuffer stopBuffering];
       goto LABEL_12;
@@ -440,7 +440,7 @@
   if (v10)
   {
     v11 = objc_loadWeakRetained(&self->_delegate);
-    [v11 translationDidFinishWithError:v4];
+    [v11 translationDidFinishWithError:errorCopy];
   }
 
 LABEL_12:

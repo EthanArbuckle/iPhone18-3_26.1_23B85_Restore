@@ -7,11 +7,11 @@
 - (HKGenericQuantityDataProviderCurrentValue)dataProviderValue
 {
   v2 = [HKGenericQuantityDataProviderCurrentValue alloc];
-  v3 = [a1 quantity];
-  v4 = [(HKGenericQuantityDataProviderCurrentValue *)v2 initWithQuantity:v3];
+  quantity = [self quantity];
+  v4 = [(HKGenericQuantityDataProviderCurrentValue *)v2 initWithQuantity:quantity];
 
-  v5 = [a1 endDate];
-  [(HKGenericQuantityDataProviderCurrentValue *)v4 setDate:v5];
+  endDate = [self endDate];
+  [(HKGenericQuantityDataProviderCurrentValue *)v4 setDate:endDate];
 
   return v4;
 }

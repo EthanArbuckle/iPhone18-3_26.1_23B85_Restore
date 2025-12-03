@@ -1,14 +1,14 @@
 @interface HKHeartRhythmAvailability
-- (BOOL)hprf_isElectrocardiogramSupportedOnWatch:(id)a3;
+- (BOOL)hprf_isElectrocardiogramSupportedOnWatch:(id)watch;
 @end
 
 @implementation HKHeartRhythmAvailability
 
-- (BOOL)hprf_isElectrocardiogramSupportedOnWatch:(id)a3
+- (BOOL)hprf_isElectrocardiogramSupportedOnWatch:(id)watch
 {
-  v4 = a3;
-  v5 = [(HKHeartRhythmAvailability *)self electrocardiogramOnboardingCountryCode];
-  if (![objc_opt_class() isElectrocardiogramSupportedOnWatch:v4] || objc_msgSend(objc_opt_class(), "isCompanionRegionCheckEnabledForActiveWatch") && v5 && !-[HKHeartRhythmAvailability isElectrocardiogramAvailableOnWatch:countryCode:](self, "isElectrocardiogramAvailableOnWatch:countryCode:", v4, v5))
+  watchCopy = watch;
+  electrocardiogramOnboardingCountryCode = [(HKHeartRhythmAvailability *)self electrocardiogramOnboardingCountryCode];
+  if (![objc_opt_class() isElectrocardiogramSupportedOnWatch:watchCopy] || objc_msgSend(objc_opt_class(), "isCompanionRegionCheckEnabledForActiveWatch") && electrocardiogramOnboardingCountryCode && !-[HKHeartRhythmAvailability isElectrocardiogramAvailableOnWatch:countryCode:](self, "isElectrocardiogramAvailableOnWatch:countryCode:", watchCopy, electrocardiogramOnboardingCountryCode))
   {
     LOBYTE(v7) = 0;
   }

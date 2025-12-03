@@ -1,5 +1,5 @@
 @interface PXStoryTransitionWipe
-- (PXStoryTransitionWipe)initWithConfiguration:(id)a3;
+- (PXStoryTransitionWipe)initWithConfiguration:(id)configuration;
 - (void)timeDidChange;
 - (void)wasStopped;
 @end
@@ -60,17 +60,17 @@ void __38__PXStoryTransitionWipe_timeDidChange__block_invoke(uint64_t a1, void *
   PXRectByLinearlyInterpolatingRects();
 }
 
-- (PXStoryTransitionWipe)initWithConfiguration:(id)a3
+- (PXStoryTransitionWipe)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v5 identifier];
-  v9 = [v7 stringByAppendingFormat:@".%@", v8];
+  identifier = [configurationCopy identifier];
+  v9 = [v7 stringByAppendingFormat:@".%@", identifier];
 
-  if (v5)
+  if (configurationCopy)
   {
-    [v5 duration];
+    [configurationCopy duration];
   }
 
   else
@@ -84,7 +84,7 @@ void __38__PXStoryTransitionWipe_timeDidChange__block_invoke(uint64_t a1, void *
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_configuration, a3);
+    objc_storeStrong(&v10->_configuration, configuration);
     LODWORD(v12) = 1045220557;
     LODWORD(v13) = 1051931443;
     LODWORD(v14) = 1042536202;

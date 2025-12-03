@@ -1,11 +1,11 @@
 @interface DashboardViewModel
-- (void)checLoadingStateWithNotification:(id)a3;
-- (void)reloadDataWithNotification:(id)a3;
+- (void)checLoadingStateWithNotification:(id)notification;
+- (void)reloadDataWithNotification:(id)notification;
 @end
 
 @implementation DashboardViewModel
 
-- (void)reloadDataWithNotification:(id)a3
+- (void)reloadDataWithNotification:(id)notification
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);
@@ -19,7 +19,7 @@
   (*(v4 + 8))(v7, v3);
 }
 
-- (void)checLoadingStateWithNotification:(id)a3
+- (void)checLoadingStateWithNotification:(id)notification
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);

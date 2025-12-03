@@ -1,43 +1,43 @@
 @interface MLCSoftmaxLayer
-- (BOOL)compileForDevice:(id)a3 sourceTensors:(id)a4 resultTensor:(id)a5;
-- (MLCSoftmaxLayer)initWithSoftmaxOperation:(int)a3 dimension:(unint64_t)a4;
+- (BOOL)compileForDevice:(id)device sourceTensors:(id)tensors resultTensor:(id)tensor;
+- (MLCSoftmaxLayer)initWithSoftmaxOperation:(int)operation dimension:(unint64_t)dimension;
 - (id)description;
-- (id)resultTensorFromSources:(id)a3;
+- (id)resultTensorFromSources:(id)sources;
 - (id)summarizedDOTDescription;
 @end
 
 @implementation MLCSoftmaxLayer
 
-- (MLCSoftmaxLayer)initWithSoftmaxOperation:(int)a3 dimension:(unint64_t)a4
+- (MLCSoftmaxLayer)initWithSoftmaxOperation:(int)operation dimension:(unint64_t)dimension
 {
   v7.receiver = self;
   v7.super_class = MLCSoftmaxLayer;
   result = [(MLCLayer *)&v7 initWithLabel:@"Softmax"];
   if (result)
   {
-    result->_operation = a3;
-    result->_dimension = a4;
+    result->_operation = operation;
+    result->_dimension = dimension;
   }
 
   return result;
 }
 
-- (BOOL)compileForDevice:(id)a3 sourceTensors:(id)a4 resultTensor:(id)a5
+- (BOOL)compileForDevice:(id)device sourceTensors:(id)tensors resultTensor:(id)tensor
 {
   v34 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v10 objectAtIndexedSubscript:0];
-  v13 = [v12 descriptor];
-  v14 = [v13 shape];
-  v15 = [v14 count];
+  deviceCopy = device;
+  tensorsCopy = tensors;
+  tensorCopy = tensor;
+  v12 = [tensorsCopy objectAtIndexedSubscript:0];
+  descriptor = [v12 descriptor];
+  shape = [descriptor shape];
+  v15 = [shape count];
 
-  v16 = [v10 objectAtIndexedSubscript:0];
-  v17 = [v16 descriptor];
-  v18 = [v17 dataType];
+  v16 = [tensorsCopy objectAtIndexedSubscript:0];
+  descriptor2 = [v16 descriptor];
+  dataType = [descriptor2 dataType];
 
-  if (![(MLCLayer *)MLCSoftmaxLayer supportsDataType:v18 onDevice:v9])
+  if (![(MLCLayer *)MLCSoftmaxLayer supportsDataType:dataType onDevice:deviceCopy])
   {
     v20 = +[MLCLog framework];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -46,17 +46,17 @@
       *buf = 138412802;
       v29 = v23;
       v30 = 1024;
-      v31 = v18;
+      v31 = dataType;
       v32 = 2112;
-      v33 = v9;
+      v33 = deviceCopy;
       _os_log_error_impl(&dword_238C1D000, v20, OS_LOG_TYPE_ERROR, "%@: softmax layer with data type = %d is not supported on a device = %@", buf, 0x1Cu);
     }
 
     goto LABEL_10;
   }
 
-  v19 = [v9 computeEngine];
-  v20 = [v19 softmaxLayerWithOperation:-[MLCSoftmaxLayer operation](self dimension:"operation") sourceShapeCount:{-[MLCSoftmaxLayer dimension](self, "dimension"), v15}];
+  computeEngine = [deviceCopy computeEngine];
+  v20 = [computeEngine softmaxLayerWithOperation:-[MLCSoftmaxLayer operation](self dimension:"operation") sourceShapeCount:{-[MLCSoftmaxLayer dimension](self, "dimension"), v15}];
 
   if (!v20 || ![v20 count])
   {
@@ -71,45 +71,45 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v21 = [v9 computeEngine];
-  v22 = [v21 compileLayerDeviceOps:v20 sourceTensors:v10 resultTensor:v11];
+  computeEngine2 = [deviceCopy computeEngine];
+  v22 = [computeEngine2 compileLayerDeviceOps:v20 sourceTensors:tensorsCopy resultTensor:tensorCopy];
 
   v27.receiver = self;
   v27.super_class = MLCSoftmaxLayer;
-  [(MLCLayer *)&v27 bindDevice:v9 deviceOps:v20];
+  [(MLCLayer *)&v27 bindDevice:deviceCopy deviceOps:v20];
 LABEL_11:
 
   v25 = *MEMORY[0x277D85DE8];
   return v22;
 }
 
-- (id)resultTensorFromSources:(id)a3
+- (id)resultTensorFromSources:(id)sources
 {
-  v3 = a3;
+  sourcesCopy = sources;
   v4 = [MEMORY[0x277CBEBF8] mutableCopy];
   for (i = 0; ; ++i)
   {
-    v6 = [v3 objectAtIndexedSubscript:0];
-    v7 = [v6 descriptor];
-    v8 = [v7 shape];
-    v9 = [v8 count];
+    v6 = [sourcesCopy objectAtIndexedSubscript:0];
+    descriptor = [v6 descriptor];
+    shape = [descriptor shape];
+    v9 = [shape count];
 
     if (i >= v9)
     {
       break;
     }
 
-    v10 = [v3 objectAtIndexedSubscript:0];
-    v11 = [v10 descriptor];
-    v12 = [v11 shape];
-    v13 = [v12 objectAtIndexedSubscript:i];
+    v10 = [sourcesCopy objectAtIndexedSubscript:0];
+    descriptor2 = [v10 descriptor];
+    shape2 = [descriptor2 shape];
+    v13 = [shape2 objectAtIndexedSubscript:i];
     [v4 setObject:v13 atIndexedSubscript:i];
   }
 
   v14 = [v4 copy];
-  v15 = [v3 objectAtIndexedSubscript:0];
-  v16 = [v15 descriptor];
-  v17 = +[MLCTensorDescriptor descriptorWithShape:dataType:](MLCTensorDescriptor, "descriptorWithShape:dataType:", v14, [v16 dataType]);
+  v15 = [sourcesCopy objectAtIndexedSubscript:0];
+  descriptor3 = [v15 descriptor];
+  v17 = +[MLCTensorDescriptor descriptorWithShape:dataType:](MLCTensorDescriptor, "descriptorWithShape:dataType:", v14, [descriptor3 dataType]);
 
   v18 = [MLCTensor tensorWithDescriptor:v17];
 
@@ -121,10 +121,10 @@ LABEL_11:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MLCSoftmaxLayer *)self operation];
-  v7 = [(MLCLayer *)self conditionalTreeNode];
-  v8 = [(MLCLayer *)self resultTensors];
-  v9 = [v3 stringWithFormat:@"%@: { operation=%d : conditionalTreeNode=%@ : resultTensor=%@ }", v5, v6, v7, v8];
+  operation = [(MLCSoftmaxLayer *)self operation];
+  conditionalTreeNode = [(MLCLayer *)self conditionalTreeNode];
+  resultTensors = [(MLCLayer *)self resultTensors];
+  v9 = [v3 stringWithFormat:@"%@: { operation=%d : conditionalTreeNode=%@ : resultTensor=%@ }", v5, operation, conditionalTreeNode, resultTensors];
 
   return v9;
 }
@@ -134,9 +134,9 @@ LABEL_11:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MLCLayer *)self layerID];
+  layerID = [(MLCLayer *)self layerID];
   v7 = MLCSoftmaxOperationDebugDescription([(MLCSoftmaxLayer *)self operation]);
-  v8 = [v3 stringWithFormat:@"<%@ (%lu)<BR /><FONT POINT-SIZE=10>Operation: %@    Dimension: %lu</FONT>>", v5, v6, v7, -[MLCSoftmaxLayer dimension](self, "dimension")];
+  v8 = [v3 stringWithFormat:@"<%@ (%lu)<BR /><FONT POINT-SIZE=10>Operation: %@    Dimension: %lu</FONT>>", v5, layerID, v7, -[MLCSoftmaxLayer dimension](self, "dimension")];
 
   return v8;
 }

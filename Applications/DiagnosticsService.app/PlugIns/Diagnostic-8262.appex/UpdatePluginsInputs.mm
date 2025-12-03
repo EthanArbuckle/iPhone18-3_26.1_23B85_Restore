@@ -1,6 +1,6 @@
 @interface UpdatePluginsInputs
 - (BOOL)_readUseMobileAssetFromDefaults;
-- (BOOL)validateAndInitializeParameters:(id)a3;
+- (BOOL)validateAndInitializeParameters:(id)parameters;
 @end
 
 @implementation UpdatePluginsInputs
@@ -35,9 +35,9 @@
   return has_internal_content;
 }
 
-- (BOOL)validateAndInitializeParameters:(id)a3
+- (BOOL)validateAndInitializeParameters:(id)parameters
 {
-  v5 = a3;
+  parametersCopy = parameters;
   v43 = 0;
   self->useMobileAsset = 1;
   v6 = handleForCategory();
@@ -56,7 +56,7 @@
 
   if (!self->useMobileAsset)
   {
-    self->needRequestURL = [v5 BOOLFromKey:@"needRequestURL" defaultValue:0 failed:&v43];
+    self->needRequestURL = [parametersCopy BOOLFromKey:@"needRequestURL" defaultValue:0 failed:&v43];
     v8 = handleForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -73,7 +73,7 @@
 
     if (self->needRequestURL)
     {
-      v10 = [v5 NSStringFromKey:@"ast2RequestURL" defaultValue:@"https://diagnostics-mdn1.apple.com/api/v1/ast2-companion/public/services/assets/plugin" failed:&v43];
+      v10 = [parametersCopy NSStringFromKey:@"ast2RequestURL" defaultValue:@"https://diagnostics-mdn1.apple.com/api/v1/ast2-companion/public/services/assets/plugin" failed:&v43];
       ast2RequestURL = self->ast2RequestURL;
       self->ast2RequestURL = v10;
 
@@ -91,7 +91,7 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    v12 = [v5 NSStringFromRequiredKey:@"pdiURL" maxLength:1024 failed:&v43];
+    v12 = [parametersCopy NSStringFromRequiredKey:@"pdiURL" maxLength:1024 failed:&v43];
     v14 = handleForCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
@@ -107,17 +107,17 @@ LABEL_29:
     v17 = self->PDIURL;
     if (v17)
     {
-      v18 = [(NSURL *)v17 scheme];
-      v19 = [v18 caseInsensitiveCompare:@"http"];
-      if (v19 || (-[NSURL scheme](self->PDIURL, "scheme"), v3 = objc_claimAutoreleasedReturnValue(), [v3 caseInsensitiveCompare:@"https"]))
+      scheme = [(NSURL *)v17 scheme];
+      v19 = [scheme caseInsensitiveCompare:@"http"];
+      if (v19 || (-[NSURL scheme](self->PDIURL, "scheme"), scheme3 = objc_claimAutoreleasedReturnValue(), [scheme3 caseInsensitiveCompare:@"https"]))
       {
-        v20 = [(NSURL *)self->PDIURL host];
+        host = [(NSURL *)self->PDIURL host];
 
         if (!v19)
         {
         }
 
-        if (v20)
+        if (host)
         {
           goto LABEL_26;
         }
@@ -136,7 +136,7 @@ LABEL_29:
 
     v43 = 1;
 LABEL_26:
-    v22 = [v5 NSStringFromRequiredKey:@"pdiDigest" maxLength:1024 failed:&v43];
+    v22 = [parametersCopy NSStringFromRequiredKey:@"pdiDigest" maxLength:1024 failed:&v43];
     PDIDigest = self->PDIDigest;
     self->PDIDigest = v22;
 
@@ -153,7 +153,7 @@ LABEL_26:
   }
 
 LABEL_30:
-  v26 = [v5 NSNumberFromKey:@"timeoutPeriod" lowerBound:&off_100008C70 upperBound:&off_100008C88 defaultValue:&off_100008CA0 failed:&v43];
+  v26 = [parametersCopy NSNumberFromKey:@"timeoutPeriod" lowerBound:&off_100008C70 upperBound:&off_100008C88 defaultValue:&off_100008CA0 failed:&v43];
   timeoutPeriod = self->timeoutPeriod;
   self->timeoutPeriod = v26;
 
@@ -166,7 +166,7 @@ LABEL_30:
     _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Timeout period : %@ s", buf, 0xCu);
   }
 
-  v30 = [v5 NSStringFromKey:@"tatsuURL" defaultValue:@"https://gs.apple.com:443" failed:&v43];
+  v30 = [parametersCopy NSStringFromKey:@"tatsuURL" defaultValue:@"https://gs.apple.com:443" failed:&v43];
   v31 = handleForCategory();
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
   {
@@ -185,12 +185,12 @@ LABEL_30:
     goto LABEL_42;
   }
 
-  v35 = [(NSURL *)v34 scheme];
-  v36 = [v35 caseInsensitiveCompare:@"http"];
+  scheme2 = [(NSURL *)v34 scheme];
+  v36 = [scheme2 caseInsensitiveCompare:@"http"];
   if (!v36)
   {
-    v3 = [(NSURL *)self->tatsuURL scheme];
-    if (![v3 caseInsensitiveCompare:@"https"])
+    scheme3 = [(NSURL *)self->tatsuURL scheme];
+    if (![scheme3 caseInsensitiveCompare:@"https"])
     {
 
 LABEL_42:
@@ -205,19 +205,19 @@ LABEL_42:
     }
   }
 
-  v37 = [(NSURL *)self->tatsuURL host];
+  host2 = [(NSURL *)self->tatsuURL host];
 
   if (!v36)
   {
   }
 
-  if (!v37)
+  if (!host2)
   {
     goto LABEL_42;
   }
 
 LABEL_45:
-  self->useAppleConnect = [v5 BOOLFromKey:@"useAppleConnect" defaultValue:0 failed:&v43];
+  self->useAppleConnect = [parametersCopy BOOLFromKey:@"useAppleConnect" defaultValue:0 failed:&v43];
   v39 = handleForCategory();
   if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
   {

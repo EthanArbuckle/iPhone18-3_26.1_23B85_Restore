@@ -3,14 +3,14 @@
 - (BOOL)shouldShowCallout;
 - (UIColor)_balloonInnerStrokeColor;
 - (UIColor)_balloonTintColor;
-- (_MKUserLocationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4;
-- (void)_dismissCallout:(BOOL)a3;
-- (void)_mkObserveValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)_setBalloonImage:(id)a3;
-- (void)_setBalloonImageTintColor:(id)a3;
-- (void)_setCalloutStyle:(int64_t)a3;
-- (void)_setShowingPreciseAuthorizedLocation:(BOOL)a3;
-- (void)_showCallout:(BOOL)a3;
+- (_MKUserLocationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier;
+- (void)_dismissCallout:(BOOL)callout;
+- (void)_mkObserveValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)_setBalloonImage:(id)image;
+- (void)_setBalloonImageTintColor:(id)color;
+- (void)_setCalloutStyle:(int64_t)style;
+- (void)_setShowingPreciseAuthorizedLocation:(BOOL)location;
+- (void)_showCallout:(BOOL)callout;
 - (void)_startObservingAnnotation;
 - (void)_stopObservingAnnotation;
 - (void)_updateCalloutOffset;
@@ -19,34 +19,34 @@
 - (void)_updateMaxRadiusToShowAccuracyRing;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setAnnotation:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setDetailCalloutAccessoryView:(id)a3;
-- (void)setLeftCalloutAccessoryView:(id)a3;
-- (void)setRightCalloutAccessoryView:(id)a3;
+- (void)setAnnotation:(id)annotation;
+- (void)setBounds:(CGRect)bounds;
+- (void)setDetailCalloutAccessoryView:(id)view;
+- (void)setLeftCalloutAccessoryView:(id)view;
+- (void)setRightCalloutAccessoryView:(id)view;
 @end
 
 @implementation _MKUserLocationView
 
 - (void)_stopObservingAnnotation
 {
-  v3 = [(MKAnnotationView *)self annotation];
-  if (v3)
+  annotation = [(MKAnnotationView *)self annotation];
+  if (annotation)
   {
-    v4 = v3;
-    [(_MKKVOProxy *)self->_kvoProxy removeObserverForObject:v3 forKeyPath:@"title"];
+    v4 = annotation;
+    [(_MKKVOProxy *)self->_kvoProxy removeObserverForObject:annotation forKeyPath:@"title"];
     [(_MKKVOProxy *)self->_kvoProxy removeObserverForObject:v4 forKeyPath:@"subtitle"];
-    v3 = v4;
+    annotation = v4;
   }
 }
 
 - (void)_startObservingAnnotation
 {
-  v3 = [(MKAnnotationView *)self annotation];
-  if (v3)
+  annotation = [(MKAnnotationView *)self annotation];
+  if (annotation)
   {
     kvoProxy = self->_kvoProxy;
-    v7 = v3;
+    v7 = annotation;
     if (!kvoProxy)
     {
       v5 = [[_MKKVOProxy alloc] initWithDelegate:self];
@@ -58,7 +58,7 @@
 
     [(_MKKVOProxy *)kvoProxy addObserverForObject:v7 forKeyPath:@"title" options:0 context:0];
     [(_MKKVOProxy *)self->_kvoProxy addObserverForObject:v7 forKeyPath:@"subtitle" options:0 context:0];
-    v3 = v7;
+    annotation = v7;
   }
 }
 
@@ -86,19 +86,19 @@
   {
     if (self->_radiusBasedAccuracyOpacity)
     {
-      v4 = [(MKAnnotationView *)self _staticMapView];
-      v5 = v4;
-      if (v4)
+      _staticMapView = [(MKAnnotationView *)self _staticMapView];
+      v5 = _staticMapView;
+      if (_staticMapView)
       {
-        v6 = v4;
+        _mapView = _staticMapView;
       }
 
       else
       {
-        v6 = [(MKAnnotationView *)self _mapView];
+        _mapView = [(MKAnnotationView *)self _mapView];
       }
 
-      v7 = v6;
+      v7 = _mapView;
 
       [v7 bounds];
       v9 = v8;
@@ -167,31 +167,31 @@
 
     if (_MKModernPuckDesignEnabled_linkedOnOrAfterGoldenAzulHunterArcher == 1 && (_MKModernPuckDesignEnabled_newPuckEnabled & 1) != 0)
     {
-      v3 = [(MKAnnotationView *)self _calloutStyle];
-      v4 = [(MKAnnotationView *)self leftCalloutAccessoryView];
-      if (v4)
+      _calloutStyle = [(MKAnnotationView *)self _calloutStyle];
+      leftCalloutAccessoryView = [(MKAnnotationView *)self leftCalloutAccessoryView];
+      if (leftCalloutAccessoryView)
       {
         v5 = 1;
       }
 
       else
       {
-        v6 = [(MKAnnotationView *)self rightCalloutAccessoryView];
-        if (v6)
+        rightCalloutAccessoryView = [(MKAnnotationView *)self rightCalloutAccessoryView];
+        if (rightCalloutAccessoryView)
         {
           v5 = 1;
         }
 
         else
         {
-          v7 = [(MKAnnotationView *)self detailCalloutAccessoryView];
-          v5 = v7 != 0;
+          detailCalloutAccessoryView = [(MKAnnotationView *)self detailCalloutAccessoryView];
+          v5 = detailCalloutAccessoryView != 0;
         }
       }
 
-      v8 = [(MKAnnotationView *)self canShowCallout];
-      v9 = !v8 || !v5;
-      if ((!v8 || !v5) && !self->_imageProvider)
+      canShowCallout = [(MKAnnotationView *)self canShowCallout];
+      v9 = !canShowCallout || !v5;
+      if ((!canShowCallout || !v5) && !self->_imageProvider)
       {
         v10 = [[_MKUserLocationViewImageProvider alloc] initWithUserLocationView:self];
         imageProvider = self->_imageProvider;
@@ -202,11 +202,11 @@
       v13.super_class = _MKUserLocationView;
       [(MKAnnotationView *)&v13 _setCalloutStyle:v9];
       [(_MKUserLocationView *)self _updateCalloutOffset];
-      if (v3 != v9)
+      if (_calloutStyle != v9)
       {
-        v12 = [(MKAnnotationView *)self _calloutView];
+        _calloutView = [(MKAnnotationView *)self _calloutView];
 
-        if (v12)
+        if (_calloutView)
         {
           [(_MKUserLocationView *)self _dismissCallout:1];
           [(MKAnnotationView *)self updateCalloutViewIfNeededAnimated:1];
@@ -240,16 +240,16 @@
     v6 = MidY + v5 * -0.5 * 0.5;
     v7 = 0.0;
 LABEL_5:
-    v8 = self;
+    selfCopy2 = self;
     goto LABEL_7;
   }
 
   v7 = 0.0;
-  v8 = self;
+  selfCopy2 = self;
   v6 = MidY;
 LABEL_7:
 
-  [(MKAnnotationView *)v8 setCalloutOffset:v7, v6];
+  [(MKAnnotationView *)selfCopy2 setCalloutOffset:v7, v6];
 }
 
 - (void)layoutSubviews
@@ -260,63 +260,63 @@ LABEL_7:
   [(_MKUserLocationView *)self _updateMaxRadiusToShowAccuracyRing];
 }
 
-- (void)_mkObserveValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)_mkObserveValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = a3;
-  if (([v7 isEqualToString:@"title"] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"subtitle"))
+  pathCopy = path;
+  if (([pathCopy isEqualToString:@"title"] & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"subtitle"))
   {
     [(_MKUserLocationView *)self _updateCalloutStyle];
   }
 }
 
-- (void)_setBalloonImageTintColor:(id)a3
+- (void)_setBalloonImageTintColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   [(_MKUserLocationView *)self willChangeValueForKey:@"balloonImageTintColor"];
   balloonImageTintColor = self->_balloonImageTintColor;
-  self->_balloonImageTintColor = v4;
+  self->_balloonImageTintColor = colorCopy;
 
   [(_MKUserLocationView *)self didChangeValueForKey:@"balloonImageTintColor"];
 }
 
 - (UIColor)_balloonInnerStrokeColor
 {
-  v2 = [(MKAnnotationView *)self _mapType];
+  _mapType = [(MKAnnotationView *)self _mapType];
 
-  return _MKPuckAnnotationViewBaseColor(v2, 0);
+  return _MKPuckAnnotationViewBaseColor(_mapType, 0);
 }
 
 - (UIColor)_balloonTintColor
 {
-  v2 = [(MKAnnotationView *)self _mapType];
+  _mapType = [(MKAnnotationView *)self _mapType];
 
-  return _MKPuckAnnotationViewBaseColor(v2, 0);
+  return _MKPuckAnnotationViewBaseColor(_mapType, 0);
 }
 
-- (void)_setBalloonImage:(id)a3
+- (void)_setBalloonImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   [(_MKUserLocationView *)self willChangeValueForKey:@"balloonImage"];
   balloonImage = self->_balloonImage;
-  self->_balloonImage = v4;
+  self->_balloonImage = imageCopy;
 
   [(_MKUserLocationView *)self didChangeValueForKey:@"balloonImage"];
 }
 
-- (void)_dismissCallout:(BOOL)a3
+- (void)_dismissCallout:(BOOL)callout
 {
-  v3 = a3;
+  calloutCopy = callout;
   [(_MKPuckAnnotationView *)self setPuckScale:1.0];
   [(_MKPuckAnnotationView *)self setShouldInnerPulse:1];
   [(_MKPuckAnnotationView *)self setCanShowHeadingIndicator:1];
   v5.receiver = self;
   v5.super_class = _MKUserLocationView;
-  [(MKAnnotationView *)&v5 _dismissCallout:v3];
+  [(MKAnnotationView *)&v5 _dismissCallout:calloutCopy];
 }
 
-- (void)_showCallout:(BOOL)a3
+- (void)_showCallout:(BOOL)callout
 {
-  v3 = a3;
+  calloutCopy = callout;
   if ([(MKAnnotationView *)self _calloutStyle]== 1)
   {
     [(_MKPuckAnnotationView *)self setShouldInnerPulse:0];
@@ -336,20 +336,20 @@ LABEL_7:
 
   v5.receiver = self;
   v5.super_class = _MKUserLocationView;
-  [(MKAnnotationView *)&v5 _showCallout:v3];
+  [(MKAnnotationView *)&v5 _showCallout:calloutCopy];
 }
 
 - (BOOL)shouldShowCallout
 {
-  v3 = [(MKAnnotationView *)self _calloutStyle];
-  if (v3 != 1)
+  _calloutStyle = [(MKAnnotationView *)self _calloutStyle];
+  if (_calloutStyle != 1)
   {
     v5.receiver = self;
     v5.super_class = _MKUserLocationView;
-    LOBYTE(v3) = [(MKAnnotationView *)&v5 shouldShowCallout];
+    LOBYTE(_calloutStyle) = [(MKAnnotationView *)&v5 shouldShowCallout];
   }
 
-  return v3;
+  return _calloutStyle;
 }
 
 - (BOOL)_allowedToShowCallout
@@ -364,52 +364,52 @@ LABEL_7:
   return [(MKAnnotationView *)&v4 _allowedToShowCallout];
 }
 
-- (void)setDetailCalloutAccessoryView:(id)a3
+- (void)setDetailCalloutAccessoryView:(id)view
 {
   v4.receiver = self;
   v4.super_class = _MKUserLocationView;
-  [(MKAnnotationView *)&v4 setDetailCalloutAccessoryView:a3];
+  [(MKAnnotationView *)&v4 setDetailCalloutAccessoryView:view];
   [(_MKUserLocationView *)self _updateCalloutStyle];
 }
 
-- (void)setRightCalloutAccessoryView:(id)a3
+- (void)setRightCalloutAccessoryView:(id)view
 {
   v4.receiver = self;
   v4.super_class = _MKUserLocationView;
-  [(MKAnnotationView *)&v4 setRightCalloutAccessoryView:a3];
+  [(MKAnnotationView *)&v4 setRightCalloutAccessoryView:view];
   [(_MKUserLocationView *)self _updateCalloutStyle];
 }
 
-- (void)setLeftCalloutAccessoryView:(id)a3
+- (void)setLeftCalloutAccessoryView:(id)view
 {
   v4.receiver = self;
   v4.super_class = _MKUserLocationView;
-  [(MKAnnotationView *)&v4 setLeftCalloutAccessoryView:a3];
+  [(MKAnnotationView *)&v4 setLeftCalloutAccessoryView:view];
   [(_MKUserLocationView *)self _updateCalloutStyle];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = _MKUserLocationView;
-  [(MKAnnotationView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(MKAnnotationView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(_MKUserLocationView *)self _updateCalloutOffset];
 }
 
-- (void)_setCalloutStyle:(int64_t)a3
+- (void)_setCalloutStyle:(int64_t)style
 {
   self->_hasExplicitCalloutStyle = 1;
   v3.receiver = self;
   v3.super_class = _MKUserLocationView;
-  [(MKAnnotationView *)&v3 _setCalloutStyle:a3];
+  [(MKAnnotationView *)&v3 _setCalloutStyle:style];
 }
 
-- (void)_setShowingPreciseAuthorizedLocation:(BOOL)a3
+- (void)_setShowingPreciseAuthorizedLocation:(BOOL)location
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (self->_showingPreciseAuthorizedLocation != a3)
+  if (self->_showingPreciseAuthorizedLocation != location)
   {
-    self->_showingPreciseAuthorizedLocation = a3;
+    self->_showingPreciseAuthorizedLocation = location;
     if (_MKModernPuckDesignEnabled_onceToken != -1)
     {
       dispatch_once(&_MKModernPuckDesignEnabled_onceToken, &__block_literal_global_25_27148);
@@ -453,9 +453,9 @@ LABEL_7:
 
       [(_MKPuckAnnotationView *)self _setMinimumAccuracyUncertainty:v6];
       [(_MKUserLocationView *)self _updateCalloutOffset];
-      v8 = [(MKAnnotationView *)self _calloutView];
+      _calloutView = [(MKAnnotationView *)self _calloutView];
 
-      if (v8)
+      if (_calloutView)
       {
         [(_MKUserLocationView *)self _dismissCallout:1];
         [(MKAnnotationView *)self updateCalloutViewIfNeededAnimated:1];
@@ -464,13 +464,13 @@ LABEL_7:
   }
 }
 
-- (void)setAnnotation:(id)a3
+- (void)setAnnotation:(id)annotation
 {
-  v4 = a3;
+  annotationCopy = annotation;
   [(_MKUserLocationView *)self _stopObservingAnnotation];
   v5.receiver = self;
   v5.super_class = _MKUserLocationView;
-  [(MKAnnotationView *)&v5 setAnnotation:v4];
+  [(MKAnnotationView *)&v5 setAnnotation:annotationCopy];
 
   [(_MKUserLocationView *)self _startObservingAnnotation];
 }
@@ -483,10 +483,10 @@ LABEL_7:
   [(_MKPuckAnnotationView *)&v3 dealloc];
 }
 
-- (_MKUserLocationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4
+- (_MKUserLocationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  annotationCopy = annotation;
+  identifierCopy = identifier;
   v8 = MKGetUserLocationViewLog();
   if (os_signpost_enabled(v8))
   {
@@ -496,7 +496,7 @@ LABEL_7:
 
   v13.receiver = self;
   v13.super_class = _MKUserLocationView;
-  v9 = [(_MKPuckAnnotationView *)&v13 initWithAnnotation:v6 reuseIdentifier:v7];
+  v9 = [(_MKPuckAnnotationView *)&v13 initWithAnnotation:annotationCopy reuseIdentifier:identifierCopy];
 
   if (v9)
   {
@@ -505,8 +505,8 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v6 location];
-      [(_MKPuckAnnotationView *)v9 updateStateFromLocation:v10 duration:0.0];
+      location = [annotationCopy location];
+      [(_MKPuckAnnotationView *)v9 updateStateFromLocation:location duration:0.0];
     }
 
     [(_MKUserLocationView *)v9 _updateCalloutOffset];

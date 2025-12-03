@@ -1,16 +1,16 @@
 @interface FBApplicationProcessAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_setSceneLifecycleState:(unsigned __int8)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_setSceneLifecycleState:(unsigned __int8)state;
 - (void)_bootstrapAndExec;
 @end
 
 @implementation FBApplicationProcessAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"FBProcess" hasInstanceMethod:@"_bootstrapAndExec" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"FBProcess" hasInstanceMethod:@"_setSceneLifecycleState:" withFullSignature:{"B", "C", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"FBProcess" hasInstanceMethod:@"_bootstrapAndExec" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"FBProcess" hasInstanceMethod:@"_setSceneLifecycleState:" withFullSignature:{"B", "C", 0}];
 }
 
 - (void)_bootstrapAndExec
@@ -21,42 +21,42 @@
   [(FBApplicationProcessAccessibility *)self _accessibilitySetWasJustLaunched:1];
 }
 
-- (BOOL)_setSceneLifecycleState:(unsigned __int8)a3
+- (BOOL)_setSceneLifecycleState:(unsigned __int8)state
 {
-  v3 = a3;
+  stateCopy = state;
   v19[3] = *MEMORY[0x29EDCA608];
   v17.receiver = self;
   v17.super_class = FBApplicationProcessAccessibility;
   v5 = [(FBApplicationProcessAccessibility *)&v17 _setSceneLifecycleState:?];
-  if (v3 == 2)
+  if (stateCopy == 2)
   {
     if (_AXSApplicationAccessibilityEnabled() && [(FBApplicationProcessAccessibility *)self _accessibilityWasJustLaunched])
     {
-      v6 = self;
+      selfCopy = self;
       if (UIAccessibilityIsVoiceOverRunning())
       {
-        v7 = [(FBApplicationProcessAccessibility *)v6 bundleIdentifier];
+        bundleIdentifier = [(FBApplicationProcessAccessibility *)selfCopy bundleIdentifier];
         AXApplicationNameLabelForBundleIdentifier();
       }
 
       else
       {
-        v7 = [(FBApplicationProcessAccessibility *)v6 handle];
-        [v7 name];
+        bundleIdentifier = [(FBApplicationProcessAccessibility *)selfCopy handle];
+        [bundleIdentifier name];
       }
       v8 = ;
 
-      v9 = [(FBApplicationProcessAccessibility *)v6 pid];
+      v9 = [(FBApplicationProcessAccessibility *)selfCopy pid];
       if (v8)
       {
         v10 = v9;
-        v11 = [(FBApplicationProcessAccessibility *)v6 bundleIdentifier];
+        bundleIdentifier2 = [(FBApplicationProcessAccessibility *)selfCopy bundleIdentifier];
 
-        if (v11)
+        if (bundleIdentifier2)
         {
           v18[0] = @"bundleID";
-          v12 = [(FBApplicationProcessAccessibility *)v6 bundleIdentifier];
-          v19[0] = v12;
+          bundleIdentifier3 = [(FBApplicationProcessAccessibility *)selfCopy bundleIdentifier];
+          v19[0] = bundleIdentifier3;
           v19[1] = v8;
           v18[1] = @"displayName";
           v18[2] = @"pid";

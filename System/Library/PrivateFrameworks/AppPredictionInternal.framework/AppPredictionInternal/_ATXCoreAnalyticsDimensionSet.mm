@@ -1,7 +1,7 @@
 @interface _ATXCoreAnalyticsDimensionSet
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)_dictionaryKeys;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)powerset;
 - (unint64_t)hash;
 @end
@@ -20,9 +20,9 @@
 
 - (id)_dictionaryKeys
 {
-  v2 = [(_ATXCoreAnalyticsDimensionSet *)self coreAnalyticsDictionary];
-  v3 = [v2 allKeys];
-  v4 = [v3 sortedArrayUsingComparator:&__block_literal_global_124];
+  coreAnalyticsDictionary = [(_ATXCoreAnalyticsDimensionSet *)self coreAnalyticsDictionary];
+  allKeys = [coreAnalyticsDictionary allKeys];
+  v4 = [allKeys sortedArrayUsingComparator:&__block_literal_global_124];
 
   return v4;
 }
@@ -30,13 +30,13 @@
 - (unint64_t)hash
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(_ATXCoreAnalyticsDimensionSet *)self _dictionaryKeys];
-  v4 = [(_ATXCoreAnalyticsDimensionSet *)self coreAnalyticsDictionary];
+  _dictionaryKeys = [(_ATXCoreAnalyticsDimensionSet *)self _dictionaryKeys];
+  coreAnalyticsDictionary = [(_ATXCoreAnalyticsDimensionSet *)self coreAnalyticsDictionary];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = _dictionaryKeys;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -52,7 +52,7 @@
           objc_enumerationMutation(v5);
         }
 
-        v11 = [v4 objectForKeyedSubscript:{*(*(&v14 + 1) + 8 * i), v14}];
+        v11 = [coreAnalyticsDictionary objectForKeyedSubscript:{*(*(&v14 + 1) + 8 * i), v14}];
         v8 = [v11 hash] - v8 + 32 * v8;
       }
 
@@ -71,22 +71,22 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(_ATXCoreAnalyticsDimensionSet *)self coreAnalyticsDictionary];
-    v8 = [(_ATXCoreAnalyticsDimensionSet *)v6 coreAnalyticsDictionary];
+    coreAnalyticsDictionary = [(_ATXCoreAnalyticsDimensionSet *)self coreAnalyticsDictionary];
+    coreAnalyticsDictionary2 = [(_ATXCoreAnalyticsDimensionSet *)v6 coreAnalyticsDictionary];
 
-    v9 = [v7 isEqualToDictionary:v8];
+    v9 = [coreAnalyticsDictionary isEqualToDictionary:coreAnalyticsDictionary2];
   }
 
   else
@@ -97,9 +97,9 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [_ATXCoreAnalyticsDimensionSet allocWithZone:a3];
+  v3 = [_ATXCoreAnalyticsDimensionSet allocWithZone:zone];
 
   return [(_ATXCoreAnalyticsDimensionSet *)v3 init];
 }

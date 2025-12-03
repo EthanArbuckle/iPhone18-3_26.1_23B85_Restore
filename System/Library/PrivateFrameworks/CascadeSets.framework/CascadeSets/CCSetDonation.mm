@@ -1,11 +1,11 @@
 @interface CCSetDonation
-- (BOOL)_addItem:(id)a3 error:(id *)a4;
-- (BOOL)_flushItemsWithError:(id *)a3;
-- (BOOL)_remoteUpdateFromDeviceUUID:(id)a3 withType:(unsigned __int8)a4 mergeableDelta:(id)a5 peerDeviceSite:(id)a6 relayedDeviceSites:(id)a7;
-- (BOOL)_removeSourceItemIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)updateRevisionToken:(id)a3 error:(id *)a4;
+- (BOOL)_addItem:(id)item error:(id *)error;
+- (BOOL)_flushItemsWithError:(id *)error;
+- (BOOL)_remoteUpdateFromDeviceUUID:(id)d withType:(unsigned __int8)type mergeableDelta:(id)delta peerDeviceSite:(id)site relayedDeviceSites:(id)sites;
+- (BOOL)_removeSourceItemIdentifier:(id)identifier error:(id *)error;
+- (BOOL)updateRevisionToken:(id)token error:(id *)error;
 - (CCSetDonation)init;
-- (CCSetDonation)initWithName:(id)a3 itemType:(unsigned __int16)a4 service:(id)a5 errorCode:(int64_t)a6 priors:(id)a7 flushThreshold:(unint64_t)a8;
+- (CCSetDonation)initWithName:(id)name itemType:(unsigned __int16)type service:(id)service errorCode:(int64_t)code priors:(id)priors flushThreshold:(unint64_t)threshold;
 - (NSString)priorRevisionToken;
 - (void)cancel;
 - (void)dealloc;
@@ -38,11 +38,11 @@
   objc_exception_throw(v2);
 }
 
-- (CCSetDonation)initWithName:(id)a3 itemType:(unsigned __int16)a4 service:(id)a5 errorCode:(int64_t)a6 priors:(id)a7 flushThreshold:(unint64_t)a8
+- (CCSetDonation)initWithName:(id)name itemType:(unsigned __int16)type service:(id)service errorCode:(int64_t)code priors:(id)priors flushThreshold:(unint64_t)threshold
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a7;
+  nameCopy = name;
+  serviceCopy = service;
+  priorsCopy = priors;
   v36.receiver = self;
   v36.super_class = CCSetDonation;
   v17 = [(CCSetDonation *)&v36 init];
@@ -55,13 +55,13 @@
   v35.receiver = v17;
   v35.super_class = CCSetDonation;
   v19 = [(CCSetDonation *)&v35 description];
-  v20 = [v19 stringByAppendingString:v14];
+  v20 = [v19 stringByAppendingString:nameCopy];
   v21 = *(v18 + 24);
   *(v18 + 24) = v20;
 
-  objc_storeStrong((v18 + 8), a5);
-  *(v18 + 16) = a4;
-  *(v18 + 48) = a8;
+  objc_storeStrong((v18 + 8), service);
+  *(v18 + 16) = type;
+  *(v18 + 48) = threshold;
   *(v18 + 56) = 0;
   v22 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v23 = *(v18 + 32);
@@ -77,12 +77,12 @@
   *(v18 + 96) = v27;
 
   *(v18 + 64) = 0;
-  objc_storeStrong((v18 + 80), a7);
+  objc_storeStrong((v18 + 80), priors);
   v29 = objc_opt_class();
   if (v29 == objc_opt_class() || (v30 = objc_opt_class(), v30 == objc_opt_class()))
   {
 LABEL_9:
-    *(v18 + 88) = a6;
+    *(v18 + 88) = code;
 LABEL_10:
     v33 = v18;
     goto LABEL_11;
@@ -91,7 +91,7 @@ LABEL_10:
   v31 = objc_opt_class();
   if (v31 == objc_opt_class())
   {
-    a6 = 0;
+    code = 0;
     goto LABEL_9;
   }
 
@@ -341,91 +341,91 @@ void __125__CCSetDonation__setDonationWithItemType_descriptors_version_validity_
 
 - (NSString)priorRevisionToken
 {
-  v2 = [(CCSetDonation *)self priors];
-  v3 = [v2 revisionToken];
+  priors = [(CCSetDonation *)self priors];
+  revisionToken = [priors revisionToken];
 
-  return v3;
+  return revisionToken;
 }
 
-- (BOOL)_addItem:(id)a3 error:(id *)a4
+- (BOOL)_addItem:(id)item error:(id *)error
 {
   v57[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (CCValidateNonNilField(@"item", v6, a4))
+  itemCopy = item;
+  if (CCValidateNonNilField(@"item", itemCopy, error))
   {
     v7 = objc_opt_class();
-    if (CCValidateIsInstanceOfExpectedClass(@"item", v6, v7, a4))
+    if (CCValidateIsInstanceOfExpectedClass(@"item", itemCopy, v7, error))
     {
-      v8 = [v6 content];
-      v9 = [objc_opt_class() itemType];
+      content = [itemCopy content];
+      itemType = [objc_opt_class() itemType];
       itemType = self->_itemType;
 
-      if (v9 == itemType)
+      if (itemType == itemType)
       {
-        v11 = [v6 metaContent];
-        v12 = [objc_opt_class() itemType];
+        metaContent = [itemCopy metaContent];
+        itemType2 = [objc_opt_class() itemType];
         v13 = self->_itemType;
 
-        if (v12 == v13)
+        if (itemType2 == v13)
         {
-          v14 = [v6 content];
-          v15 = [v14 data];
+          content2 = [itemCopy content];
+          data = [content2 data];
 
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
             v28 = MEMORY[0x1E696ABC0];
             v52 = *MEMORY[0x1E696A578];
-            v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Donation %@ item has invalid content buffer: %@", self, v6];
-            v53 = v18;
-            v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v53 forKeys:&v52 count:1];
+            itemCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Donation %@ item has invalid content buffer: %@", self, itemCopy];
+            v53 = itemCopy;
+            itemCopy2 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v53 forKeys:&v52 count:1];
             v20 = v28;
             goto LABEL_17;
           }
 
-          v16 = [v15 length];
+          v16 = [data length];
           if (v16 >= 0xC801)
           {
             v17 = MEMORY[0x1E696ABC0];
             v50 = *MEMORY[0x1E696A578];
-            v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Donation %@ item content must be less than %lu bytes, received %lu: %@", self, 51200, v16, v6];
-            v51 = v18;
-            v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v51 forKeys:&v50 count:1];
+            itemCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Donation %@ item content must be less than %lu bytes, received %lu: %@", self, 51200, v16, itemCopy];
+            v51 = itemCopy;
+            itemCopy2 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v51 forKeys:&v50 count:1];
             v20 = v17;
 LABEL_17:
-            v29 = [v20 errorWithDomain:@"com.apple.CascadeSets.Item" code:4 userInfo:v19];
-            CCSetError(a4, v29);
+            v29 = [v20 errorWithDomain:@"com.apple.CascadeSets.Item" code:4 userInfo:itemCopy2];
+            CCSetError(error, v29);
 
             goto LABEL_12;
           }
 
-          v30 = [v6 metaContent];
-          v18 = [v30 data];
+          metaContent2 = [itemCopy metaContent];
+          itemCopy = [metaContent2 data];
 
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) != 0 && [v18 length])
+          if ((objc_opt_isKindOfClass() & 1) != 0 && [itemCopy length])
           {
-            v31 = [v18 length];
+            v31 = [itemCopy length];
             if (v31 < 0xC801)
             {
               if (self->_service)
               {
-                [(NSMutableArray *)self->_contentBuffers addObject:v15];
-                [(NSMutableArray *)self->_metaContentBuffers addObject:v18];
+                [(NSMutableArray *)self->_contentBuffers addObject:data];
+                [(NSMutableArray *)self->_metaContentBuffers addObject:itemCopy];
                 flushThreshold = self->_flushThreshold;
                 v39 = v31 + v16 + self->_bufferSize;
                 self->_bufferSize = v39;
-                v21 = v39 < flushThreshold || [(CCSetDonation *)self _flushItemsWithError:a4];
+                v21 = v39 < flushThreshold || [(CCSetDonation *)self _flushItemsWithError:error];
                 goto LABEL_14;
               }
 
               name = self->_name;
               v41 = MEMORY[0x1E696AEC0];
-              v42 = [v6 metaContent];
-              v43 = [v42 sourceItemIdentifier];
-              v44 = [v41 stringWithFormat:@"add item with sourceItemIdentifier: %@", v43];
+              metaContent3 = [itemCopy metaContent];
+              sourceItemIdentifier = [metaContent3 sourceItemIdentifier];
+              v44 = [v41 stringWithFormat:@"add item with sourceItemIdentifier: %@", sourceItemIdentifier];
               v45 = _donationInactiveError(name, v44);
-              CCSetError(a4, v45);
+              CCSetError(error, v45);
 
 LABEL_13:
               v21 = 0;
@@ -436,22 +436,22 @@ LABEL_14:
 
             v32 = MEMORY[0x1E696ABC0];
             v46 = *MEMORY[0x1E696A578];
-            v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Donation %@ item meta content must be less than %lu bytes, received %lu: %@", self, 51200, v31, v6];
-            v47 = v19;
+            itemCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Donation %@ item meta content must be less than %lu bytes, received %lu: %@", self, 51200, v31, itemCopy];
+            v47 = itemCopy2;
             v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v47 forKeys:&v46 count:1];
             v34 = [v32 errorWithDomain:@"com.apple.CascadeSets.Item" code:4 userInfo:v33];
-            CCSetError(a4, v34);
+            CCSetError(error, v34);
           }
 
           else
           {
             v35 = MEMORY[0x1E696ABC0];
             v48 = *MEMORY[0x1E696A578];
-            v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Donation %@ item has invalid meta content buffer: %@", self, v6];
-            v49 = v19;
+            itemCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Donation %@ item has invalid meta content buffer: %@", self, itemCopy];
+            v49 = itemCopy2;
             v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
             v37 = [v35 errorWithDomain:@"com.apple.CascadeSets.Item" code:4 userInfo:v36];
-            CCSetError(a4, v37);
+            CCSetError(error, v37);
           }
 
 LABEL_12:
@@ -461,8 +461,8 @@ LABEL_12:
 
         v22 = MEMORY[0x1E696ABC0];
         v54 = *MEMORY[0x1E696A578];
-        v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Donation %@ item metaContent must have itemType: %hu. Received: %@", self, self->_itemType, v6];
-        v55 = v15;
+        data = [MEMORY[0x1E696AEC0] stringWithFormat:@"Donation %@ item metaContent must have itemType: %hu. Received: %@", self, self->_itemType, itemCopy];
+        v55 = data;
         v23 = MEMORY[0x1E695DF20];
         v24 = &v55;
         v25 = &v54;
@@ -472,16 +472,16 @@ LABEL_12:
       {
         v22 = MEMORY[0x1E696ABC0];
         v56 = *MEMORY[0x1E696A578];
-        v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Donation %@ item content must have itemType: %hu. Received: %@", self, self->_itemType, v6];
-        v57[0] = v15;
+        data = [MEMORY[0x1E696AEC0] stringWithFormat:@"Donation %@ item content must have itemType: %hu. Received: %@", self, self->_itemType, itemCopy];
+        v57[0] = data;
         v23 = MEMORY[0x1E695DF20];
         v24 = v57;
         v25 = &v56;
       }
 
-      v18 = [v23 dictionaryWithObjects:v24 forKeys:v25 count:1];
-      v19 = [v22 errorWithDomain:@"com.apple.CascadeSets.Set" code:1 userInfo:v18];
-      CCSetError(a4, v19);
+      itemCopy = [v23 dictionaryWithObjects:v24 forKeys:v25 count:1];
+      itemCopy2 = [v22 errorWithDomain:@"com.apple.CascadeSets.Set" code:1 userInfo:itemCopy];
+      CCSetError(error, itemCopy2);
       goto LABEL_12;
     }
   }
@@ -493,7 +493,7 @@ LABEL_15:
   return v21;
 }
 
-- (BOOL)_flushItemsWithError:(id *)a3
+- (BOOL)_flushItemsWithError:(id *)error
 {
   if (![(NSMutableArray *)self->_contentBuffers count])
   {
@@ -523,7 +523,7 @@ LABEL_15:
     name = self->_name;
     v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"add %u item(s)", -[NSMutableArray count](self->_contentBuffers, "count")];
     v12 = _donationResponseError(name, v11, *(v17 + 12));
-    CCSetError(a3, v12);
+    CCSetError(error, v12);
 
     v13 = self->_service;
     self->_service = 0;
@@ -534,14 +534,14 @@ LABEL_15:
   return v9;
 }
 
-- (BOOL)_removeSourceItemIdentifier:(id)a3 error:(id *)a4
+- (BOOL)_removeSourceItemIdentifier:(id)identifier error:(id *)error
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = objc_opt_class();
-  if (CCValidateIsInstanceOfExpectedClass(@"sourceItemIdentifier", v6, v7, a4))
+  if (CCValidateIsInstanceOfExpectedClass(@"sourceItemIdentifier", identifierCopy, v7, error))
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     if ([v8 length])
     {
       service = self->_service;
@@ -564,7 +564,7 @@ LABEL_15:
           name = self->_name;
           v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"remove sourceItemIdentifier: %@", v8];
           v14 = _donationResponseError(name, v13, *(v27 + 12));
-          CCSetError(a4, v14);
+          CCSetError(error, v14);
 
           v15 = self->_service;
           self->_service = 0;
@@ -577,7 +577,7 @@ LABEL_15:
       v20 = self->_name;
       v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"remove sourceItemIdentifier: %@", v8];
       v22 = _donationInactiveError(v20, v21);
-      CCSetError(a4, v22);
+      CCSetError(error, v22);
     }
 
     else
@@ -588,7 +588,7 @@ LABEL_15:
       v31[0] = v17;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1];
       v19 = [v16 errorWithDomain:@"com.apple.CascadeSets.Item" code:7 userInfo:v18];
-      CCSetError(a4, v19);
+      CCSetError(error, v19);
     }
 
     v11 = 0;
@@ -604,14 +604,14 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)updateRevisionToken:(id)a3 error:(id *)a4
+- (BOOL)updateRevisionToken:(id)token error:(id *)error
 {
-  v6 = a3;
+  tokenCopy = token;
   v7 = objc_opt_class();
-  IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass(@"revisionToken", v6, v7, a4);
+  IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass(@"revisionToken", tokenCopy, v7, error);
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 copy];
+    v9 = [tokenCopy copy];
     v10 = 72;
   }
 
@@ -627,19 +627,19 @@ LABEL_12:
   return IsInstanceOfExpectedClass;
 }
 
-- (BOOL)_remoteUpdateFromDeviceUUID:(id)a3 withType:(unsigned __int8)a4 mergeableDelta:(id)a5 peerDeviceSite:(id)a6 relayedDeviceSites:(id)a7
+- (BOOL)_remoteUpdateFromDeviceUUID:(id)d withType:(unsigned __int8)type mergeableDelta:(id)delta peerDeviceSite:(id)site relayedDeviceSites:(id)sites
 {
-  v10 = a4;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if ((v10 - 1) >= 3)
+  typeCopy = type;
+  dCopy = d;
+  deltaCopy = delta;
+  siteCopy = site;
+  sitesCopy = sites;
+  if ((typeCopy - 1) >= 3)
   {
     v18 = __biome_log_for_category();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      [CCSetDonation _remoteUpdateFromDeviceUUID:v10 withType:v18 mergeableDelta:? peerDeviceSite:? relayedDeviceSites:?];
+      [CCSetDonation _remoteUpdateFromDeviceUUID:typeCopy withType:v18 mergeableDelta:? peerDeviceSite:? relayedDeviceSites:?];
     }
 
     v17 = 0;
@@ -657,7 +657,7 @@ LABEL_12:
     v20[2] = __103__CCSetDonation__remoteUpdateFromDeviceUUID_withType_mergeableDelta_peerDeviceSite_relayedDeviceSites___block_invoke;
     v20[3] = &unk_1E7C8B628;
     v20[4] = &v21;
-    [(CCDonateService *)service remoteUpdateFromDeviceUUID:v12 options:(0x10000800040uLL >> (16 * ((v10 - 1) & 0xFu))) & 0x1C0 mergeableDelta:v13 peerDeviceSite:v14 relayedDeviceSites:v15 completion:v20];
+    [(CCDonateService *)service remoteUpdateFromDeviceUUID:dCopy options:(0x10000800040uLL >> (16 * ((typeCopy - 1) & 0xFu))) & 0x1C0 mergeableDelta:deltaCopy peerDeviceSite:siteCopy relayedDeviceSites:sitesCopy completion:v20];
     v17 = *(v22 + 12) == 7;
     _Block_object_dispose(&v21, 8);
   }

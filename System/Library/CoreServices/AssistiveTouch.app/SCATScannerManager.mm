@@ -1,18 +1,18 @@
 @interface SCATScannerManager
 + (id)sharedManager;
 + (void)updateElementCacheScheme;
-- (BOOL)_isPostScanningMenu:(id)a3;
-- (BOOL)_isScannerControlledByDriver:(id)a3;
+- (BOOL)_isPostScanningMenu:(id)menu;
+- (BOOL)_isScannerControlledByDriver:(id)driver;
 - (BOOL)_shouldIgnoreAllScannerControlMessages;
 - (BOOL)_userHasDisabledUSBRM;
-- (BOOL)actionHandler:(id)a3 shouldActImmediatelyOnActionCount:(unint64_t)a4;
-- (BOOL)activateElement:(id)a3;
+- (BOOL)actionHandler:(id)handler shouldActImmediatelyOnActionCount:(unint64_t)count;
+- (BOOL)activateElement:(id)element;
 - (BOOL)areSoundEffectsEnabled;
 - (BOOL)canAdvertise;
-- (BOOL)canReturnControlToForwarderDevice:(id)a3;
-- (BOOL)canSearchForControllableDevicesWithMenu:(id)a3;
-- (BOOL)candidateBarManager:(id)a3 hasValidTypingCandidates:(id)a4;
-- (BOOL)cursorManagerShouldHideMenuCursor:(id)a3;
+- (BOOL)canReturnControlToForwarderDevice:(id)device;
+- (BOOL)canSearchForControllableDevicesWithMenu:(id)menu;
+- (BOOL)candidateBarManager:(id)manager hasValidTypingCandidates:(id)candidates;
+- (BOOL)cursorManagerShouldHideMenuCursor:(id)cursor;
 - (BOOL)highlightFocusContext;
 - (BOOL)isActive;
 - (BOOL)isAutoscanEnabled;
@@ -27,17 +27,17 @@
 - (BOOL)isOnDeviceEyeTrackingSupported;
 - (BOOL)isPaused;
 - (BOOL)isSpeechEnabled;
-- (BOOL)isSwitchWithSource:(id)a3;
+- (BOOL)isSwitchWithSource:(id)source;
 - (BOOL)isSystemSleeping;
 - (BOOL)isUIContextHidden;
 - (BOOL)isUsingPointMode;
-- (BOOL)pointPicker:(id)a3 pauseForNumberOfCycles:(unint64_t)a4;
-- (BOOL)shouldBypassShowingMenuForElement:(id)a3;
+- (BOOL)pointPicker:(id)picker pauseForNumberOfCycles:(unint64_t)cycles;
+- (BOOL)shouldBypassShowingMenuForElement:(id)element;
 - (BOOL)shouldUseCameraPointPicker;
 - (BOOL)waitingForSecureIntent;
-- (CGPoint)_startingPointForGesturesForPointPicker:(id)a3;
-- (CGPoint)_tadmorNewPickedPointWithDelta:(CGPoint)a3;
-- (CGRect)menu:(id)a3 rectToClearForFingersWithGestureSheet:(BOOL)a4;
+- (CGPoint)_startingPointForGesturesForPointPicker:(id)picker;
+- (CGPoint)_tadmorNewPickedPointWithDelta:(CGPoint)delta;
+- (CGRect)menu:(id)menu rectToClearForFingersWithGestureSheet:(BOOL)sheet;
 - (NSArray)recentSpeechOutputStrings;
 - (NSString)description;
 - (SCATElement)currentElement;
@@ -46,31 +46,31 @@
 - (SCATScannerManagerDelegate)delegate;
 - (id)_driverForScannerState;
 - (id)_elementManagerForScannerState;
-- (id)_focusContextAtPoint:(CGPoint)a3;
+- (id)_focusContextAtPoint:(CGPoint)point;
 - (id)_primaryElementManagerForScannerState;
 - (id)_typingCandidates;
 - (id)axManager;
-- (id)contentViewForGestureProvider:(id)a3;
-- (id)exitActionElementForFingersInMenu:(id)a3;
-- (id)focusContextForActionHandler:(id)a3;
-- (id)gesturesSheetForMenu:(id)a3;
+- (id)contentViewForGestureProvider:(id)provider;
+- (id)exitActionElementForFingersInMenu:(id)menu;
+- (id)focusContextForActionHandler:(id)handler;
+- (id)gesturesSheetForMenu:(id)menu;
 - (id)pointerPointPicker;
 - (id)scatBackCursorUIContext;
-- (id)scatBackCursorUIContextForDisplayID:(unsigned int)a3;
+- (id)scatBackCursorUIContextForDisplayID:(unsigned int)d;
 - (id)scatFrontCursorUIContext;
-- (id)scatFrontCursorUIContextForDisplayID:(unsigned int)a3;
+- (id)scatFrontCursorUIContextForDisplayID:(unsigned int)d;
 - (id)scatUIContext;
-- (id)scatUIContextForDisplayID:(unsigned int)a3;
-- (id)userInterfaceClientForInputController:(id)a3;
-- (int)_validatedSelectBehaviorForCurrentSelectBehavior:(int)a3 replacementElement:(id)a4;
+- (id)scatUIContextForDisplayID:(unsigned int)d;
+- (id)userInterfaceClientForInputController:(id)controller;
+- (int)_validatedSelectBehaviorForCurrentSelectBehavior:(int)behavior replacementElement:(id)element;
 - (int64_t)_dwellSwitchAssignedAction;
 - (int64_t)scanningMode;
 - (unsigned)currentDisplayID;
 - (void)_applyLaunchRecipeUUID;
-- (void)_beginOrContinueScanningWithFocusContext:(id)a3 shouldBegin:(BOOL)a4 foundNewElements:(BOOL)a5;
+- (void)_beginOrContinueScanningWithFocusContext:(id)context shouldBegin:(BOOL)begin foundNewElements:(BOOL)elements;
 - (void)_deactivateAudioSession;
 - (void)_disableUserInterfaceClientForPotentialReceiver;
-- (void)_driver:(id)a3 outputAudioForContext:(id)a4;
+- (void)_driver:(id)_driver outputAudioForContext:(id)context;
 - (void)_exitRecipeOnTimeout;
 - (void)_handleActiveHoldAndDragAction;
 - (void)_handleAppSwitcherAction;
@@ -84,124 +84,124 @@
 - (void)_handleForceTouchAction;
 - (void)_handleHomeAction;
 - (void)_handleNotificationCenterAction;
-- (void)_handleScrollAction:(int64_t)a3;
+- (void)_handleScrollAction:(int64_t)action;
 - (void)_handleSiriAction;
 - (void)_handleTripleClickAction;
 - (void)_handleVisualIntelligence;
 - (void)_handleVolumeDownAction;
 - (void)_handleVolumeUpAction;
-- (void)_notifyObserversInputController:(id)a3 didReceivePoint:(CGPoint)a4;
+- (void)_notifyObserversInputController:(id)controller didReceivePoint:(CGPoint)point;
 - (void)_notifyObserversScannerDidBecomeActive;
 - (void)_notifyObserversScannerDidBecomeInactive;
-- (void)_notifyObserversScannerDidFocusOnContext:(id)a3 oldContext:(id)a4;
+- (void)_notifyObserversScannerDidFocusOnContext:(id)context oldContext:(id)oldContext;
 - (void)_notifyObserversScannerDidPause;
-- (void)_notifyObserversScannerWillFocusOnContext:(id)a3;
-- (void)_notifyObserversScannerWillUnfocusFromContext:(id)a3;
+- (void)_notifyObserversScannerWillFocusOnContext:(id)context;
+- (void)_notifyObserversScannerWillUnfocusFromContext:(id)context;
 - (void)_overrideScanningModeAtStartupIfNecessary;
 - (void)_removeInterdeviceSwitches;
 - (void)_resetRecipeTimeoutIfApplicable;
 - (void)_scanningModePreferenceDidChange;
-- (void)_setCurrentRecipe:(id)a3 shouldShowAlert:(BOOL)a4;
+- (void)_setCurrentRecipe:(id)recipe shouldShowAlert:(BOOL)alert;
 - (void)_setUSBRMPreferenceDisabled;
-- (void)_showSimpleAlertForProfile:(id)a3;
-- (void)_showSimpleBannerWithText:(id)a3;
-- (void)_updateActiveElementManager:(id)a3;
+- (void)_showSimpleAlertForProfile:(id)profile;
+- (void)_showSimpleBannerWithText:(id)text;
+- (void)_updateActiveElementManager:(id)manager;
 - (void)_updateAudioSessionState;
 - (void)_updateCameraPointPickerSwitchesCache;
 - (void)_updateElementVisuals;
-- (void)_updateMenuAfterElementFetchFoundNewElements:(BOOL)a3;
+- (void)_updateMenuAfterElementFetchFoundNewElements:(BOOL)elements;
 - (void)_updateScanningStyle;
-- (void)_waitForApplication:(id)a3;
-- (void)accessibilityManager:(id)a3 applicationWasActivated:(id)a4;
-- (void)accessibilityManager:(id)a3 didFetchElementsForEvent:(int64_t)a4 foundNewElements:(BOOL)a5;
-- (void)accessibilityManager:(id)a3 didReceiveEvent:(int64_t)a4 data:(id)a5;
-- (void)accessibilityManager:(id)a3 nativeFocusElementDidChange:(id)a4;
-- (void)accessibilityManager:(id)a3 screenWillChange:(__CFData *)a4;
-- (void)accessibilityManager:(id)a3 updateElementVisuals:(id)a4;
-- (void)actionHandlerDidFireAction:(id)a3;
-- (void)actionHandlerForUI:(id)a3 willPerformDelayedActionOnContext:(id)a4 withCount:(unint64_t)a5;
-- (void)actionHandlerForUIDidCancelPendingAction:(id)a3;
-- (void)actionHandlerForUIWillFireAction:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)addPointerPointPickerForMovementNotifications:(id)a3;
-- (void)addReasonToDisableScanning:(id)a3;
-- (void)alternateKeysManager:(id)a3 didSelectAlternateKey:(id)a4;
+- (void)_waitForApplication:(id)application;
+- (void)accessibilityManager:(id)manager applicationWasActivated:(id)activated;
+- (void)accessibilityManager:(id)manager didFetchElementsForEvent:(int64_t)event foundNewElements:(BOOL)elements;
+- (void)accessibilityManager:(id)manager didReceiveEvent:(int64_t)event data:(id)data;
+- (void)accessibilityManager:(id)manager nativeFocusElementDidChange:(id)change;
+- (void)accessibilityManager:(id)manager screenWillChange:(__CFData *)change;
+- (void)accessibilityManager:(id)manager updateElementVisuals:(id)visuals;
+- (void)actionHandlerDidFireAction:(id)action;
+- (void)actionHandlerForUI:(id)i willPerformDelayedActionOnContext:(id)context withCount:(unint64_t)count;
+- (void)actionHandlerForUIDidCancelPendingAction:(id)action;
+- (void)actionHandlerForUIWillFireAction:(id)action;
+- (void)addObserver:(id)observer;
+- (void)addPointerPointPickerForMovementNotifications:(id)notifications;
+- (void)addReasonToDisableScanning:(id)scanning;
+- (void)alternateKeysManager:(id)manager didSelectAlternateKey:(id)key;
 - (void)calibrateEyeTracking;
 - (void)cancelDrag;
 - (void)clearRecentSpeech;
 - (void)dealloc;
 - (void)didBecomeIdle;
-- (void)didBeginLongPressForInputController:(id)a3;
-- (void)didChooseCreateCustomGestureFromGestureProvider:(id)a3;
-- (void)didConnectAsForwarderToDeviceWithName:(id)a3;
-- (void)didConnectAsReceiverWithSettings:(id)a3;
-- (void)didDisconnectAsForwarderFromDeviceWithName:(id)a3;
+- (void)didBeginLongPressForInputController:(id)controller;
+- (void)didChooseCreateCustomGestureFromGestureProvider:(id)provider;
+- (void)didConnectAsForwarderToDeviceWithName:(id)name;
+- (void)didConnectAsReceiverWithSettings:(id)settings;
+- (void)didDisconnectAsForwarderFromDeviceWithName:(id)name;
 - (void)didDisconnectAsReceiver;
-- (void)didEndLongPressForInputController:(id)a3;
-- (void)didPressScreenChangingButtonInMenu:(id)a3;
-- (void)driver:(id)a3 didFocusOnContext:(id)a4 oldContext:(id)a5;
-- (void)driver:(id)a3 indicateDwellScanningWillAbort:(BOOL)a4;
-- (void)driverDidBecomeActive:(id)a3 didChange:(BOOL)a4;
-- (void)driverDidBecomeInactive:(id)a3;
-- (void)driverDidPause:(id)a3;
+- (void)didEndLongPressForInputController:(id)controller;
+- (void)didPressScreenChangingButtonInMenu:(id)menu;
+- (void)driver:(id)driver didFocusOnContext:(id)context oldContext:(id)oldContext;
+- (void)driver:(id)driver indicateDwellScanningWillAbort:(BOOL)abort;
+- (void)driverDidBecomeActive:(id)active didChange:(BOOL)change;
+- (void)driverDidBecomeInactive:(id)inactive;
+- (void)driverDidPause:(id)pause;
 - (void)endScanning;
-- (void)gestureProvider:(id)a3 shouldResetScanningFromElement:(id)a4;
-- (void)handleAlertDidAppear:(id)a3;
-- (void)handleAnnouncement:(id)a3;
-- (void)handleScreenChange:(id)a3;
-- (void)handleStopSpeaking:(id)a3;
+- (void)gestureProvider:(id)provider shouldResetScanningFromElement:(id)element;
+- (void)handleAlertDidAppear:(id)appear;
+- (void)handleAnnouncement:(id)announcement;
+- (void)handleScreenChange:(id)change;
+- (void)handleStopSpeaking:(id)speaking;
 - (void)handleUSBMFiDeviceConnected;
-- (void)hideUIContext:(BOOL)a3;
-- (void)highlightAsPotentialReceiverForDeviceWithName:(id)a3;
-- (void)inputController:(id)a3 didReceiveAction:(id)a4;
-- (void)inputController:(id)a3 didReceiveItemSelectionIndex:(int64_t)a4;
-- (void)inputController:(id)a3 didReceiveMovementDelta:(CGPoint)a4;
-- (void)inputController:(id)a3 didReceivePoint:(CGPoint)a4;
-- (void)inputController:(id)a3 didReceiveRecipeActionForMappingAtIndex:(unint64_t)a4 isLongPressAction:(BOOL)a5;
-- (void)inputController:(id)a3 didReceiveRecipeHoldAtPoint:(CGPoint)a4 isDown:(BOOL)a5;
-- (void)inputController:(id)a3 didUpdateSignalQuality:(int64_t)a4;
-- (void)inputController:(id)a3 shouldHideAlerts:(BOOL)a4;
-- (void)inputController:(id)a3 showAlert:(id)a4;
-- (void)inputControllerPointPickerInterrupted:(id)a3;
+- (void)hideUIContext:(BOOL)context;
+- (void)highlightAsPotentialReceiverForDeviceWithName:(id)name;
+- (void)inputController:(id)controller didReceiveAction:(id)action;
+- (void)inputController:(id)controller didReceiveItemSelectionIndex:(int64_t)index;
+- (void)inputController:(id)controller didReceiveMovementDelta:(CGPoint)delta;
+- (void)inputController:(id)controller didReceivePoint:(CGPoint)point;
+- (void)inputController:(id)controller didReceiveRecipeActionForMappingAtIndex:(unint64_t)index isLongPressAction:(BOOL)action;
+- (void)inputController:(id)controller didReceiveRecipeHoldAtPoint:(CGPoint)point isDown:(BOOL)down;
+- (void)inputController:(id)controller didUpdateSignalQuality:(int64_t)quality;
+- (void)inputController:(id)controller shouldHideAlerts:(BOOL)alerts;
+- (void)inputController:(id)controller showAlert:(id)alert;
+- (void)inputControllerPointPickerInterrupted:(id)interrupted;
 - (void)loadScanner;
-- (void)menu:(id)a3 activateProfile:(id)a4;
-- (void)menu:(id)a3 playSoundEffect:(int)a4;
-- (void)menu:(id)a3 showAlternateKeysForKey:(id)a4;
-- (void)menu:(id)a3 showScrollViewPickerForScrollViews:(id)a4 elementsToScroll:(id)a5 scrollAction:(int)a6;
-- (void)menu:(id)a3 showTypingCandidates:(id)a4;
-- (void)menu:(id)a3 speakAnnouncement:(id)a4 completionBlock:(id)a5;
-- (void)menuDidDisappear:(id)a3;
-- (void)menuDidFinishTransition:(id)a3;
-- (void)menuWillBeginTransition:(id)a3;
-- (void)moveDragSessionToFixedSpaceScreenPoint:(CGPoint)a3;
-- (void)overrideMotionTrackerLookAtPoint:(CGPoint)a3;
-- (void)pauseScanningWithScreenLockDisabled:(BOOL)a3;
+- (void)menu:(id)menu activateProfile:(id)profile;
+- (void)menu:(id)menu playSoundEffect:(int)effect;
+- (void)menu:(id)menu showAlternateKeysForKey:(id)key;
+- (void)menu:(id)menu showScrollViewPickerForScrollViews:(id)views elementsToScroll:(id)scroll scrollAction:(int)action;
+- (void)menu:(id)menu showTypingCandidates:(id)candidates;
+- (void)menu:(id)menu speakAnnouncement:(id)announcement completionBlock:(id)block;
+- (void)menuDidDisappear:(id)disappear;
+- (void)menuDidFinishTransition:(id)transition;
+- (void)menuWillBeginTransition:(id)transition;
+- (void)moveDragSessionToFixedSpaceScreenPoint:(CGPoint)point;
+- (void)overrideMotionTrackerLookAtPoint:(CGPoint)point;
+- (void)pauseScanningWithScreenLockDisabled:(BOOL)disabled;
 - (void)performDrop;
-- (void)performSysdiagnoseForInputController:(id)a3;
-- (void)pointPicker:(id)a3 didFinishDwellingOnPoint:(CGPoint)a4;
-- (void)pointPicker:(id)a3 didPickPoint:(CGPoint)a4;
-- (void)pointPicker:(id)a3 didSweepIntoFocusContext:(id)a4 isRefiningPoint:(BOOL)a5;
-- (void)pointPicker:(id)a3 didSweepOutOfFocusContext:(id)a4 isRefiningPoint:(BOOL)a5;
-- (void)presentPostScanningMenuForElementNavigationController:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)removePointerPointPickerForMovementNotifications:(id)a3;
-- (void)removeReasonToDisableScanning:(id)a3;
+- (void)performSysdiagnoseForInputController:(id)controller;
+- (void)pointPicker:(id)picker didFinishDwellingOnPoint:(CGPoint)point;
+- (void)pointPicker:(id)picker didPickPoint:(CGPoint)point;
+- (void)pointPicker:(id)picker didSweepIntoFocusContext:(id)context isRefiningPoint:(BOOL)point;
+- (void)pointPicker:(id)picker didSweepOutOfFocusContext:(id)context isRefiningPoint:(BOOL)point;
+- (void)presentPostScanningMenuForElementNavigationController:(id)controller;
+- (void)removeObserver:(id)observer;
+- (void)removePointerPointPickerForMovementNotifications:(id)notifications;
+- (void)removeReasonToDisableScanning:(id)scanning;
 - (void)resumeScanning;
-- (void)returnControlToForwarderDevice:(id)a3;
-- (void)searchForControllableDevicesWithMenu:(id)a3;
-- (void)selectElement:(id)a3;
-- (void)selectElementAtPoint:(CGPoint)a3;
-- (void)setActiveElementManager:(id)a3 completion:(id)a4;
-- (void)setActiveScannerDriver:(id)a3;
-- (void)setHighlightFocusContext:(BOOL)a3;
-- (void)setPointPicker:(id)a3;
-- (void)shouldEndScanningGestureProvider:(id)a3;
-- (void)shouldStartScanningGestureProvider:(id)a3;
-- (void)showUIContext:(BOOL)a3;
+- (void)returnControlToForwarderDevice:(id)device;
+- (void)searchForControllableDevicesWithMenu:(id)menu;
+- (void)selectElement:(id)element;
+- (void)selectElementAtPoint:(CGPoint)point;
+- (void)setActiveElementManager:(id)manager completion:(id)completion;
+- (void)setActiveScannerDriver:(id)driver;
+- (void)setHighlightFocusContext:(BOOL)context;
+- (void)setPointPicker:(id)picker;
+- (void)shouldEndScanningGestureProvider:(id)provider;
+- (void)shouldStartScanningGestureProvider:(id)provider;
+- (void)showUIContext:(BOOL)context;
 - (void)switchCurrentDisplayContext;
 - (void)unloadScanner;
-- (void)useFocusContextOnResume:(id)a3;
-- (void)waitForDragStartFromPid:(int)a3 completion:(id)a4;
+- (void)useFocusContextOnResume:(id)resume;
+- (void)waitForDragStartFromPid:(int)pid completion:(id)completion;
 @end
 
 @implementation SCATScannerManager
@@ -221,9 +221,9 @@
 + (void)updateElementCacheScheme
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 switchControlTapBehavior];
+  switchControlTapBehavior = [v2 switchControlTapBehavior];
 
-  if (v3 == 2)
+  if (switchControlTapBehavior == 2)
   {
     v4 = 3;
   }
@@ -279,53 +279,53 @@
   [(SCATScannerManager *)&v3 dealloc];
 }
 
-- (void)waitForDragStartFromPid:(int)a3 completion:(id)a4
+- (void)waitForDragStartFromPid:(int)pid completion:(id)completion
 {
-  v4 = *&a3;
-  v5 = a4;
+  v4 = *&pid;
+  completionCopy = completion;
   v7 = +[HNDHandManager sharedManager];
-  v6 = [v7 dragManager];
-  [v6 waitForDragStartFromPid:v4 completionHandler:v5];
+  dragManager = [v7 dragManager];
+  [dragManager waitForDragStartFromPid:v4 completionHandler:completionCopy];
 }
 
 - (BOOL)isDragActive
 {
   v2 = +[HNDHandManager sharedManager];
-  v3 = [v2 dragManager];
-  v4 = [v3 isDragActive];
+  dragManager = [v2 dragManager];
+  isDragActive = [dragManager isDragActive];
 
-  return v4;
+  return isDragActive;
 }
 
 - (void)cancelDrag
 {
   v3 = +[HNDHandManager sharedManager];
-  v2 = [v3 dragManager];
-  [v2 cancelDrag];
+  dragManager = [v3 dragManager];
+  [dragManager cancelDrag];
 }
 
-- (void)moveDragSessionToFixedSpaceScreenPoint:(CGPoint)a3
+- (void)moveDragSessionToFixedSpaceScreenPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = +[HNDHandManager sharedManager];
-  v5 = [v6 dragManager];
-  [v5 moveToPoint:{x, y}];
+  dragManager = [v6 dragManager];
+  [dragManager moveToPoint:{x, y}];
 }
 
 - (void)performDrop
 {
   v3 = +[HNDHandManager sharedManager];
-  v2 = [v3 dragManager];
-  [v2 drop];
+  dragManager = [v3 dragManager];
+  [dragManager drop];
 }
 
 - (BOOL)waitingForSecureIntent
 {
   v2 = +[HNDSecureIntentManager sharedInstance];
-  v3 = [v2 waitingForSecureIntent];
+  waitingForSecureIntent = [v2 waitingForSecureIntent];
 
-  return v3;
+  return waitingForSecureIntent;
 }
 
 - (BOOL)_userHasDisabledUSBRM
@@ -349,13 +349,13 @@
 - (void)handleUSBMFiDeviceConnected
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 switchControlUserDidReadUSBRestrictedModeAlert];
+  switchControlUserDidReadUSBRestrictedModeAlert = [v3 switchControlUserDidReadUSBRestrictedModeAlert];
 
-  v5 = [(SCATScannerManager *)self _userHasDisabledUSBRM];
+  _userHasDisabledUSBRM = [(SCATScannerManager *)self _userHasDisabledUSBRM];
   v6 = +[AXSettings sharedInstance];
-  v7 = [v6 switchControlShouldDisallowUSBRestrictedMode];
+  switchControlShouldDisallowUSBRestrictedMode = [v6 switchControlShouldDisallowUSBRestrictedMode];
 
-  if (((v4 | v5) & 1) == 0 || v7)
+  if (((switchControlUserDidReadUSBRestrictedModeAlert | _userHasDisabledUSBRM) & 1) == 0 || switchControlShouldDisallowUSBRestrictedMode)
   {
     v8 = +[AXSettings sharedInstance];
     [v8 setSwitchControlShouldDisallowUSBRestrictedMode:0];
@@ -437,13 +437,13 @@
   [v7 addObserver:self];
 
   v8 = +[HNDHandManager sharedManager];
-  v9 = [v8 mainDisplayManager];
-  [v9 addUserInterfaceClientEnabler:@"Scanner"];
+  mainDisplayManager = [v8 mainDisplayManager];
+  [mainDisplayManager addUserInterfaceClientEnabler:@"Scanner"];
 
   v10 = +[HNDAccessibilityManager sharedManager];
   v11 = +[HNDHandManager sharedManager];
-  v12 = [v11 displayManagers];
-  [v10 displaysDidChange:v12];
+  displayManagers = [v11 displayManagers];
+  [v10 displaysDidChange:displayManagers];
 
   v13 = objc_alloc_init(AXOutputManager);
   [(SCATScannerManager *)self setOutputManager:v13];
@@ -461,8 +461,8 @@
   v84 = [[AXDispatchTimer alloc] initWithTargetSerialQueue:&_dispatch_main_q];
   [(SCATScannerManager *)self setBeginScanningTimer:?];
   v17 = [SCATInputController alloc];
-  v18 = [(SCATScannerManager *)self interDeviceCommunicator];
-  v19 = [(SCATInputController *)v17 initWithInterDeviceCommunicator:v18];
+  interDeviceCommunicator = [(SCATScannerManager *)self interDeviceCommunicator];
+  v19 = [(SCATInputController *)v17 initWithInterDeviceCommunicator:interDeviceCommunicator];
 
   v20 = +[AXAccessQueue mainAccessQueue];
   [(SCATInputController *)v19 setDelegate:self queue:v20];
@@ -492,8 +492,8 @@
   v78 = objc_alloc_init(HNDScannerAutoscroller);
   [(SCATScannerManager *)self setAutoscroller:?];
   v28 = [SCATGestureProvider alloc];
-  v29 = [(SCATScannerManager *)self menu];
-  v30 = [(SCATGestureProvider *)v28 initWithMenu:v29];
+  menu = [(SCATScannerManager *)self menu];
+  v30 = [(SCATGestureProvider *)v28 initWithMenu:menu];
 
   [(SCATGestureProvider *)v30 setDelegate:self];
   v77 = v30;
@@ -525,10 +525,10 @@
   v32 = objc_alloc_init(SCATElementNavigationController);
   [(SCATElementNavigationController *)v32 setDelegate:self];
   [(SCATScannerManager *)self setElementNavController:v32];
-  v33 = [(SCATScannerManager *)self scanningMode];
+  scanningMode = [(SCATScannerManager *)self scanningMode];
   v76 = v32;
   v34 = AXDeviceSupportsTadmor();
-  if (v33 == 6)
+  if (scanningMode == 6)
   {
     v35 = v34;
   }
@@ -540,13 +540,13 @@
 
   spid = v4;
   v75 = v16;
-  if ([(SCATScannerManager *)self shouldUseCameraPointPicker]&& (v33 == 3 || v33 == 5) || v35)
+  if ([(SCATScannerManager *)self shouldUseCameraPointPicker]&& (scanningMode == 3 || scanningMode == 5) || v35)
   {
     v36 = +[AXSpringBoardServer server];
-    v37 = [v36 isContinuitySessionActive];
-    v38 = v37 ^ 1;
+    isContinuitySessionActive = [v36 isContinuitySessionActive];
+    v38 = isContinuitySessionActive ^ 1;
 
-    if (v37)
+    if (isContinuitySessionActive)
     {
       v39 = 1;
     }
@@ -567,15 +567,15 @@
   v40 = +[AXSettings sharedInstance];
   [v40 setAssistiveTouchPreferredPointPicker:v39];
 
-  v41 = [(SCATScannerManager *)self menu];
-  v42 = [SCATPointPicker pointPickerWithMode:v39 menu:v41];
+  menu2 = [(SCATScannerManager *)self menu];
+  v42 = [SCATPointPicker pointPickerWithMode:v39 menu:menu2];
 
   if (v38)
   {
     if ([(SCATScannerManager *)self isEyeTrackingEnabled])
     {
-      v43 = [(SCATScannerManager *)self inputController];
-      [v43 setEyeGazeMotionTrackingEnabled:1];
+      inputController = [(SCATScannerManager *)self inputController];
+      [inputController setEyeGazeMotionTrackingEnabled:1];
 
       v44 = +[AXSettings sharedInstance];
       -[SCATScannerManager setHighlightFocusContext:](self, "setHighlightFocusContext:", [v44 assistiveTouchBubbleModeEnabled]);
@@ -583,17 +583,17 @@
 
     if (v35)
     {
-      v45 = [(SCATScannerManager *)self inputController];
-      [v45 setTadmorPointerEnabled:1];
+      inputController2 = [(SCATScannerManager *)self inputController];
+      [inputController2 setTadmorPointerEnabled:1];
 LABEL_23:
 
       goto LABEL_24;
     }
 
-    if (v33 == 3)
+    if (scanningMode == 3)
     {
-      v45 = [(SCATScannerManager *)self inputController];
-      [v45 setHeadMotionTrackingEnabled:1];
+      inputController2 = [(SCATScannerManager *)self inputController];
+      [inputController2 setHeadMotionTrackingEnabled:1];
       goto LABEL_23;
     }
   }
@@ -607,8 +607,8 @@ LABEL_24:
   v47 = objc_alloc_init(SCATCandidateBarManager);
   [(SCATCandidateBarManager *)v47 setDelegate:self];
   [(SCATScannerManager *)self setCandidateBarManager:v47];
-  v48 = [(SCATScannerManager *)self _elementManagerForScannerState];
-  [(SCATScannerManager *)self setActiveElementManager:v48];
+  _elementManagerForScannerState = [(SCATScannerManager *)self _elementManagerForScannerState];
+  [(SCATScannerManager *)self setActiveElementManager:_elementManagerForScannerState];
 
   v49 = [[SCATAutomaticDriver alloc] initWithDelegate:self];
   [(SCATScannerManager *)self setAutoScanningDriver:v49];
@@ -619,8 +619,8 @@ LABEL_24:
   v51 = [(SCATDriver *)[SCATDwellDriver alloc] initWithDelegate:self];
   [(SCATScannerManager *)self setDwellScanningDriver:v51];
 
-  v52 = [(SCATScannerManager *)self _driverForScannerState];
-  [(SCATScannerManager *)self setActiveScannerDriver:v52];
+  _driverForScannerState = [(SCATScannerManager *)self _driverForScannerState];
+  [(SCATScannerManager *)self setActiveScannerDriver:_driverForScannerState];
 
   [(SCATScannerManager *)self _updateCameraPointPickerSwitchesCache];
   v53 = +[AXSettings sharedInstance];
@@ -711,14 +711,14 @@ LABEL_24:
   [(SCATScannerManager *)self _applyLaunchRecipeUUID];
   [(SCATScannerManager *)self hideUIContext:0];
   v66 = +[AXSettings sharedInstance];
-  v67 = [v66 switchControlProfiles];
-  v68 = [v67 count];
+  switchControlProfiles = [v66 switchControlProfiles];
+  v68 = [switchControlProfiles count];
 
   if (v68 >= 2)
   {
     v69 = +[AXSettings sharedInstance];
-    v70 = [v69 switchControlSelectedProfile];
-    [(SCATScannerManager *)self _showSimpleAlertForProfile:v70];
+    switchControlSelectedProfile = [v69 switchControlSelectedProfile];
+    [(SCATScannerManager *)self _showSimpleAlertForProfile:switchControlSelectedProfile];
   }
 
   self->_isLoaded = 1;
@@ -746,20 +746,20 @@ LABEL_24:
 
     [(SCATScannerManager *)self endScanning];
     _UIAccessibilityUnblockPostingOfAllNotifications();
-    v5 = [(SCATScannerManager *)self inputController];
-    [v5 setDelegate:0 queue:0];
+    inputController = [(SCATScannerManager *)self inputController];
+    [inputController setDelegate:0 queue:0];
 
     [(SCATScannerManager *)self setInputController:0];
-    v6 = [(SCATScannerManager *)self menu];
-    [v6 setDelegate:0];
+    menu = [(SCATScannerManager *)self menu];
+    [menu setDelegate:0];
 
-    v7 = [(SCATScannerManager *)self menu];
-    [v7 unregisterMenuObserver:self];
+    menu2 = [(SCATScannerManager *)self menu];
+    [menu2 unregisterMenuObserver:self];
 
     [(SCATScannerManager *)self setMenu:0];
     [(SCATScannerManager *)self setAutoscroller:0];
-    v8 = [(SCATScannerManager *)self gestureProvider];
-    [v8 setDelegate:0];
+    gestureProvider = [(SCATScannerManager *)self gestureProvider];
+    [gestureProvider setDelegate:0];
 
     [(SCATScannerManager *)self setGestureProvider:0];
     [(SCATScannerManager *)self setUpdateElementVisualsCoalescer:0];
@@ -767,38 +767,38 @@ LABEL_24:
     [(SCATScannerManager *)self setManualScanningDriver:0];
     [(SCATScannerManager *)self setActiveScannerDriver:0];
     [(SCATScannerManager *)self setElementNavController:0];
-    v9 = [(SCATScannerManager *)self pointPicker];
-    [v9 setDelegate:0];
+    pointPicker = [(SCATScannerManager *)self pointPicker];
+    [pointPicker setDelegate:0];
 
     [(SCATScannerManager *)self setPointPicker:0];
-    v10 = [(SCATScannerManager *)self alternateKeysManager];
-    [v10 setDelegate:0];
+    alternateKeysManager = [(SCATScannerManager *)self alternateKeysManager];
+    [alternateKeysManager setDelegate:0];
 
     [(SCATScannerManager *)self setAlternateKeysManager:0];
-    v11 = [(SCATScannerManager *)self candidateBarManager];
-    [v11 setDelegate:0];
+    candidateBarManager = [(SCATScannerManager *)self candidateBarManager];
+    [candidateBarManager setDelegate:0];
 
     [(SCATScannerManager *)self setCandidateBarManager:0];
     [(SCATScannerManager *)self setScrollViewPickerManager:0];
     [(SCATScannerManager *)self setActiveElementManager:0];
     [(SCATScannerManager *)self setBeginScanningTimer:0];
     [(SCATScannerManager *)self setShowPointerTimer:0];
-    v12 = [(SCATScannerManager *)self cursorManager];
-    [v12 setDelegate:0];
+    cursorManager = [(SCATScannerManager *)self cursorManager];
+    [cursorManager setDelegate:0];
 
     [(SCATScannerManager *)self setCursorManager:0];
-    v13 = [(SCATScannerManager *)self selectActionHandler];
-    [v13 setDelegate:0];
+    selectActionHandler = [(SCATScannerManager *)self selectActionHandler];
+    [selectActionHandler setDelegate:0];
 
-    v14 = [(SCATScannerManager *)self selectActionHandler];
-    [v14 setUiDelegate:0];
+    selectActionHandler2 = [(SCATScannerManager *)self selectActionHandler];
+    [selectActionHandler2 setUiDelegate:0];
 
     [(SCATScannerManager *)self setSelectActionHandler:0];
-    v15 = [(SCATScannerManager *)self activateActionHandler];
-    [v15 setDelegate:0];
+    activateActionHandler = [(SCATScannerManager *)self activateActionHandler];
+    [activateActionHandler setDelegate:0];
 
-    v16 = [(SCATScannerManager *)self activateActionHandler];
-    [v16 setUiDelegate:0];
+    activateActionHandler2 = [(SCATScannerManager *)self activateActionHandler];
+    [activateActionHandler2 setUiDelegate:0];
 
     [(SCATScannerManager *)self setActivateActionHandler:0];
     [(SCATScannerManager *)self setOutputManager:0];
@@ -825,8 +825,8 @@ LABEL_24:
     [v22 manipulateDimTimer:0];
 
     v23 = +[HNDHandManager sharedManager];
-    v24 = [v23 mainDisplayManager];
-    [v24 removeUserInterfaceClientEnabler:@"Scanner"];
+    mainDisplayManager = [v23 mainDisplayManager];
+    [mainDisplayManager removeUserInterfaceClientEnabler:@"Scanner"];
 
     v25 = +[AXSettings sharedInstance];
     [v25 setSwitchControlOnDeviceEyeTrackingEnabled:0];
@@ -840,9 +840,9 @@ LABEL_24:
 {
   v3 = [NSNumber numberWithBool:[(SCATScannerManager *)self isActive]];
   v4 = [NSNumber numberWithBool:[(SCATScannerManager *)self isPaused]];
-  v5 = [(SCATScannerManager *)self activeScannerDriver];
-  v6 = [(SCATScannerManager *)self activeElementManager];
-  v7 = [NSString stringWithFormat:@"SCATScannerManager<%p>. Active:%@ Paused:%@ ActiveDriver:%@. ActiveElementManager:%@.", self, v3, v4, v5, v6];
+  activeScannerDriver = [(SCATScannerManager *)self activeScannerDriver];
+  activeElementManager = [(SCATScannerManager *)self activeElementManager];
+  v7 = [NSString stringWithFormat:@"SCATScannerManager<%p>. Active:%@ Paused:%@ ActiveDriver:%@. ActiveElementManager:%@.", self, v3, v4, activeScannerDriver, activeElementManager];
 
   return v7;
 }
@@ -864,9 +864,9 @@ LABEL_24:
     }
 
     v6 = +[AXSettings sharedInstance];
-    v7 = [v6 switchControlUseCameraForPointMode];
+    switchControlUseCameraForPointMode = [v6 switchControlUseCameraForPointMode];
 
-    if (v7)
+    if (switchControlUseCameraForPointMode)
     {
       v8 = 1;
     }
@@ -883,25 +883,25 @@ LABEL_24:
     }
 
     v10 = +[AXSettings sharedInstance];
-    v11 = [v10 switchControlFirstLaunchScanningMode];
+    switchControlFirstLaunchScanningMode = [v10 switchControlFirstLaunchScanningMode];
 
-    if (v11 == 5)
+    if (switchControlFirstLaunchScanningMode == 5)
     {
       v12 = +[AXSettings sharedInstance];
       [v12 setSwitchControlOnDeviceEyeTrackingEnabled:1];
     }
 
     v15 = +[AXSettings sharedInstance];
-    v13 = [v15 switchControlFirstLaunchScanningMode];
+    switchControlFirstLaunchScanningMode2 = [v15 switchControlFirstLaunchScanningMode];
     v14 = +[AXSettings sharedInstance];
-    [v14 setAssistiveTouchScanningMode:v13];
+    [v14 setAssistiveTouchScanningMode:switchControlFirstLaunchScanningMode2];
   }
 }
 
 - (void)_scanningModePreferenceDidChange
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 assistiveTouchScanningMode];
+  assistiveTouchScanningMode = [v3 assistiveTouchScanningMode];
   if (AXDeviceSupportsTadmor())
   {
     v5 = [(SCATScannerManager *)self scanningMode]== 6;
@@ -913,47 +913,47 @@ LABEL_24:
   }
 
   v6 = +[AXSettings sharedInstance];
-  v7 = [v6 switchControlFirstLaunchScanningMode];
+  switchControlFirstLaunchScanningMode = [v6 switchControlFirstLaunchScanningMode];
 
-  if (v7 != v4 && !v5)
+  if (switchControlFirstLaunchScanningMode != assistiveTouchScanningMode && !v5)
   {
     v8 = +[AXSettings sharedInstance];
-    [v8 setSwitchControlFirstLaunchScanningMode:v4];
+    [v8 setSwitchControlFirstLaunchScanningMode:assistiveTouchScanningMode];
   }
 
   if (!v5)
   {
-    v9 = [(SCATScannerManager *)self inputController];
-    [v9 setTadmorPointerEnabled:0];
+    inputController = [(SCATScannerManager *)self inputController];
+    [inputController setTadmorPointerEnabled:0];
   }
 
-  if (v4 != 5)
+  if (assistiveTouchScanningMode != 5)
   {
     [v3 setSwitchControlOnDeviceEyeTrackingEnabled:0];
   }
 
-  v10 = [(SCATScannerManager *)self activeElementManager];
-  v11 = [(SCATScannerManager *)self elementNavController];
-  v12 = v11;
-  if (v10 == v11)
+  activeElementManager = [(SCATScannerManager *)self activeElementManager];
+  elementNavController = [(SCATScannerManager *)self elementNavController];
+  v12 = elementNavController;
+  if (activeElementManager == elementNavController)
   {
   }
 
   else
   {
-    v13 = [(SCATScannerManager *)self activeElementManager];
-    v14 = [(SCATScannerManager *)self pointPicker];
+    activeElementManager2 = [(SCATScannerManager *)self activeElementManager];
+    pointPicker = [(SCATScannerManager *)self pointPicker];
 
-    if (v13 != v14)
+    if (activeElementManager2 != pointPicker)
     {
       goto LABEL_55;
     }
   }
 
   v15 = 0;
-  if (v4 <= 2)
+  if (assistiveTouchScanningMode <= 2)
   {
-    if (!v4)
+    if (!assistiveTouchScanningMode)
     {
 LABEL_19:
       v16 = SWCHLogModernMenuActions();
@@ -967,9 +967,9 @@ LABEL_19:
       goto LABEL_35;
     }
 
-    if (v4 != 1)
+    if (assistiveTouchScanningMode != 1)
     {
-      if (v4 != 2)
+      if (assistiveTouchScanningMode != 2)
       {
         goto LABEL_36;
       }
@@ -978,8 +978,8 @@ LABEL_19:
     }
 
     [v3 setAssistiveTouchPreferredPointPicker:1];
-    v29 = [(SCATScannerManager *)self menu];
-    v15 = [SCATPointPicker mostSuitablePointPickerWithMenu:v29];
+    menu = [(SCATScannerManager *)self menu];
+    v15 = [SCATPointPicker mostSuitablePointPickerWithMenu:menu];
 
     v16 = SWCHLogModernMenuActions();
     if (!os_signpost_enabled(v16))
@@ -997,25 +997,25 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  if (v4 != 3 && v4 != 5)
+  if (assistiveTouchScanningMode != 3 && assistiveTouchScanningMode != 5)
   {
-    if (v4 != 6)
+    if (assistiveTouchScanningMode != 6)
     {
       goto LABEL_36;
     }
 
     [v3 setAssistiveTouchPreferredPointPicker:2];
-    v17 = [(SCATScannerManager *)self menu];
-    v15 = [SCATPointPicker mostSuitablePointPickerWithMenu:v17];
+    menu2 = [(SCATScannerManager *)self menu];
+    v15 = [SCATPointPicker mostSuitablePointPickerWithMenu:menu2];
 
-    v18 = [(SCATScannerManager *)self inputController];
-    [v18 setTadmorPointerEnabled:1];
+    inputController2 = [(SCATScannerManager *)self inputController];
+    [inputController2 setTadmorPointerEnabled:1];
 
-    v19 = [(SCATScannerManager *)self inputController];
-    [v19 setHeadMotionTrackingEnabled:0];
+    inputController3 = [(SCATScannerManager *)self inputController];
+    [inputController3 setHeadMotionTrackingEnabled:0];
 
-    v20 = [(SCATScannerManager *)self inputController];
-    [v20 setEyeGazeMotionTrackingEnabled:0];
+    inputController4 = [(SCATScannerManager *)self inputController];
+    [inputController4 setEyeGazeMotionTrackingEnabled:0];
 
     v16 = SWCHLogModernMenuActions();
     if (!os_signpost_enabled(v16))
@@ -1030,8 +1030,8 @@ LABEL_34:
   }
 
   [v3 setAssistiveTouchPreferredPointPicker:2];
-  v23 = [(SCATScannerManager *)self menu];
-  v15 = [SCATPointPicker mostSuitablePointPickerWithMenu:v23];
+  menu3 = [(SCATScannerManager *)self menu];
+  v15 = [SCATPointPicker mostSuitablePointPickerWithMenu:menu3];
 
   v24 = SWCHLogModernMenuActions();
   if (os_signpost_enabled(v24))
@@ -1040,15 +1040,15 @@ LABEL_34:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v24, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "Toggle", "Scanning Mode Preference Did Change: Eye Tracking", v49, 2u);
   }
 
-  if (v4 != 3)
+  if (assistiveTouchScanningMode != 3)
   {
 LABEL_36:
-    v30 = [(SCATScannerManager *)self inputController];
-    v31 = [v30 headMotionTrackingEnabled];
+    inputController5 = [(SCATScannerManager *)self inputController];
+    headMotionTrackingEnabled = [inputController5 headMotionTrackingEnabled];
 
     v27 = 0;
     v28 = 0;
-    if (!v31)
+    if (!headMotionTrackingEnabled)
     {
       goto LABEL_38;
     }
@@ -1056,19 +1056,19 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  v25 = [(SCATScannerManager *)self inputController];
-  v26 = [v25 headMotionTrackingEnabled];
+  inputController6 = [(SCATScannerManager *)self inputController];
+  headMotionTrackingEnabled2 = [inputController6 headMotionTrackingEnabled];
 
   v27 = 1;
   v28 = 1;
-  if ((v26 & 1) == 0)
+  if ((headMotionTrackingEnabled2 & 1) == 0)
   {
 LABEL_37:
-    v32 = [(SCATScannerManager *)self inputController];
-    [v32 setHeadMotionTrackingEnabled:v27];
+    inputController7 = [(SCATScannerManager *)self inputController];
+    [inputController7 setHeadMotionTrackingEnabled:v27];
 
-    v33 = [(SCATScannerManager *)self inputController];
-    [v33 setEyeGazeMotionTrackingEnabled:0];
+    inputController8 = [(SCATScannerManager *)self inputController];
+    [inputController8 setEyeGazeMotionTrackingEnabled:0];
 
     v28 = v27;
   }
@@ -1076,16 +1076,16 @@ LABEL_37:
 LABEL_38:
   if ([(SCATScannerManager *)self isOnDeviceEyeTrackingSupported])
   {
-    if (v4 == 5 && (-[SCATScannerManager inputController](self, "inputController"), v34 = objc_claimAutoreleasedReturnValue(), v35 = [v34 eyeGazeMotionTrackingEnabled], v34, (v35 & 1) == 0))
+    if (assistiveTouchScanningMode == 5 && (-[SCATScannerManager inputController](self, "inputController"), v34 = objc_claimAutoreleasedReturnValue(), v35 = [v34 eyeGazeMotionTrackingEnabled], v34, (v35 & 1) == 0))
     {
-      v43 = [(SCATScannerManager *)self inputController];
-      [v43 setHeadMotionTrackingEnabled:0];
+      inputController9 = [(SCATScannerManager *)self inputController];
+      [inputController9 setHeadMotionTrackingEnabled:0];
 
-      v44 = [(SCATScannerManager *)self inputController];
-      [v44 setEyeGazeMotionTrackingEnabled:1];
+      inputController10 = [(SCATScannerManager *)self inputController];
+      [inputController10 setEyeGazeMotionTrackingEnabled:1];
 
       v40 = +[AXSettings sharedInstance];
-      v41 = v40;
+      inputController14 = v40;
       v42 = 1;
     }
 
@@ -1096,22 +1096,22 @@ LABEL_38:
         goto LABEL_48;
       }
 
-      v36 = [(SCATScannerManager *)self inputController];
-      v37 = [v36 eyeGazeMotionTrackingEnabled];
+      inputController11 = [(SCATScannerManager *)self inputController];
+      eyeGazeMotionTrackingEnabled = [inputController11 eyeGazeMotionTrackingEnabled];
 
-      if (!v37)
+      if (!eyeGazeMotionTrackingEnabled)
       {
         goto LABEL_48;
       }
 
-      v38 = [(SCATScannerManager *)self inputController];
-      [v38 setHeadMotionTrackingEnabled:0];
+      inputController12 = [(SCATScannerManager *)self inputController];
+      [inputController12 setHeadMotionTrackingEnabled:0];
 
-      v39 = [(SCATScannerManager *)self inputController];
-      [v39 setEyeGazeMotionTrackingEnabled:0];
+      inputController13 = [(SCATScannerManager *)self inputController];
+      [inputController13 setEyeGazeMotionTrackingEnabled:0];
 
       v40 = +[AXSettings sharedInstance];
-      v41 = v40;
+      inputController14 = v40;
       v42 = 0;
     }
 
@@ -1120,14 +1120,14 @@ LABEL_38:
 
   else
   {
-    v41 = [(SCATScannerManager *)self inputController];
-    [v41 setEyeGazeMotionTrackingEnabled:0];
+    inputController14 = [(SCATScannerManager *)self inputController];
+    [inputController14 setEyeGazeMotionTrackingEnabled:0];
   }
 
 LABEL_48:
   if (v15)
   {
-    v45 = [(SCATScannerManager *)self pointPicker];
+    pointPicker2 = [(SCATScannerManager *)self pointPicker];
     v46 = objc_opt_class();
     v47 = objc_opt_class();
 
@@ -1154,63 +1154,63 @@ LABEL_55:
 
 - (BOOL)isHandlingInterDeviceCommunication
 {
-  v2 = [(SCATScannerManager *)self interDeviceCommunicator];
-  v3 = [v2 isIdle];
+  interDeviceCommunicator = [(SCATScannerManager *)self interDeviceCommunicator];
+  isIdle = [interDeviceCommunicator isIdle];
 
-  return v3 ^ 1;
+  return isIdle ^ 1;
 }
 
 - (BOOL)isControllingOtherDevice
 {
-  v2 = [(SCATScannerManager *)self interDeviceCommunicator];
-  v3 = [v2 isForwardingSwitchEvents];
+  interDeviceCommunicator = [(SCATScannerManager *)self interDeviceCommunicator];
+  isForwardingSwitchEvents = [interDeviceCommunicator isForwardingSwitchEvents];
 
-  return v3;
+  return isForwardingSwitchEvents;
 }
 
-- (void)setPointPicker:(id)a3
+- (void)setPointPicker:(id)picker
 {
-  v5 = a3;
-  if (self->_pointPicker != v5)
+  pickerCopy = picker;
+  if (self->_pointPicker != pickerCopy)
   {
     v6 = SWCHLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      sub_10012B5EC(v5, v6);
+      sub_10012B5EC(pickerCopy, v6);
     }
 
-    objc_storeStrong(&self->_pointPicker, a3);
-    v7 = [(SCATScannerManager *)self pointerPointPicker];
-    [v7 setShouldTrackFocusContext:self->_highlightFocusContext];
+    objc_storeStrong(&self->_pointPicker, picker);
+    pointerPointPicker = [(SCATScannerManager *)self pointerPointPicker];
+    [pointerPointPicker setShouldTrackFocusContext:self->_highlightFocusContext];
   }
 }
 
 - (id)pointerPointPicker
 {
-  v3 = [(SCATScannerManager *)self pointPicker];
+  pointPicker = [(SCATScannerManager *)self pointPicker];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(SCATScannerManager *)self pointPicker];
+    pointPicker2 = [(SCATScannerManager *)self pointPicker];
   }
 
   else
   {
-    v5 = 0;
+    pointPicker2 = 0;
   }
 
-  return v5;
+  return pointPicker2;
 }
 
-- (void)setActiveScannerDriver:(id)a3
+- (void)setActiveScannerDriver:(id)driver
 {
-  v4 = a3;
+  driverCopy = driver;
   activeScannerDriver = self->_activeScannerDriver;
-  if (activeScannerDriver != v4)
+  if (activeScannerDriver != driverCopy)
   {
-    v10 = v4;
+    v10 = driverCopy;
     [(SCATDriver *)activeScannerDriver willFinishAsScannerDriver];
     [(SCATDriver *)v10 willBecomeScannerDriver];
     v6 = self->_activeScannerDriver;
@@ -1222,25 +1222,25 @@ LABEL_55:
     [(SCATDriver *)v9 didFinishAsScannerDriver];
     [(SCATDriver *)v7 didBecomeScannerDriver];
 
-    v4 = v10;
+    driverCopy = v10;
   }
 
-  _objc_release_x1(activeScannerDriver, v4);
+  _objc_release_x1(activeScannerDriver, driverCopy);
 }
 
 - (id)_driverForScannerState
 {
   if ([(SCATScannerManager *)self isAutoscanEnabled])
   {
-    v3 = [(SCATScannerManager *)self autoScanningDriver];
+    autoScanningDriver = [(SCATScannerManager *)self autoScanningDriver];
   }
 
   else
   {
     v4 = +[AXSettings sharedInstance];
-    v5 = [v4 switchControlScanningStyle];
+    switchControlScanningStyle = [v4 switchControlScanningStyle];
 
-    if (v5 == 1)
+    if (switchControlScanningStyle == 1)
     {
       [(SCATScannerManager *)self manualScanningDriver];
     }
@@ -1249,38 +1249,38 @@ LABEL_55:
     {
       [(SCATScannerManager *)self dwellScanningDriver];
     }
-    v3 = ;
+    autoScanningDriver = ;
   }
 
-  return v3;
+  return autoScanningDriver;
 }
 
-- (void)setActiveElementManager:(id)a3 completion:(id)a4
+- (void)setActiveElementManager:(id)manager completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  completionCopy = completion;
   activeElementManager = self->_activeElementManager;
-  if (activeElementManager == v7)
+  if (activeElementManager == managerCopy)
   {
     goto LABEL_4;
   }
 
-  [(SCATElementManager *)activeElementManager scannerWillMakeManagerInactive:self activeElementManager:v7];
-  [(SCATElementManager *)v7 scannerWillMakeManagerActive:self forDisplayID:[(SCATScannerManager *)self currentDisplayID]];
-  objc_storeStrong(&self->_activeElementManager, a3);
+  [(SCATElementManager *)activeElementManager scannerWillMakeManagerInactive:self activeElementManager:managerCopy];
+  [(SCATElementManager *)managerCopy scannerWillMakeManagerActive:self forDisplayID:[(SCATScannerManager *)self currentDisplayID]];
+  objc_storeStrong(&self->_activeElementManager, manager);
   if (![(SCATScannerManager *)self isSpeechEnabled])
   {
     goto LABEL_4;
   }
 
-  v10 = [(SCATScannerManager *)self pointPicker];
+  pointPicker = [(SCATScannerManager *)self pointPicker];
 
-  if (v10 != v7)
+  if (pointPicker != managerCopy)
   {
     goto LABEL_4;
   }
 
-  v12 = [(SCATScannerManager *)self pointPicker];
+  pointPicker2 = [(SCATScannerManager *)self pointPicker];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1295,7 +1295,7 @@ LABEL_55:
 
   else
   {
-    v15 = [(SCATScannerManager *)self pointPicker];
+    pointPicker3 = [(SCATScannerManager *)self pointPicker];
     objc_opt_class();
     v16 = objc_opt_isKindOfClass();
 
@@ -1303,7 +1303,7 @@ LABEL_55:
     {
 LABEL_4:
       v11 = 1;
-      if (!v8)
+      if (!completionCopy)
       {
         goto LABEL_7;
       }
@@ -1312,28 +1312,28 @@ LABEL_4:
     }
   }
 
-  v19 = [(SCATScannerManager *)self _driverForScannerState];
-  v20 = [(SCATScannerManager *)self outputManager];
-  [v19 outputManager:v20 willSpeakFocusContext:0];
+  _driverForScannerState = [(SCATScannerManager *)self _driverForScannerState];
+  outputManager = [(SCATScannerManager *)self outputManager];
+  [_driverForScannerState outputManager:outputManager willSpeakFocusContext:0];
 
-  v21 = [(SCATScannerManager *)self outputManager];
-  objc_initWeak(&location, v21);
+  outputManager2 = [(SCATScannerManager *)self outputManager];
+  objc_initWeak(&location, outputManager2);
 
-  v22 = [(SCATScannerManager *)self outputManager];
+  outputManager3 = [(SCATScannerManager *)self outputManager];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_1000E1EA8;
   v23[3] = &unk_1001D7570;
   v23[4] = self;
   objc_copyWeak(&v25, &location);
-  v24 = v8;
-  [v22 outputScannerAnnouncement:v14 completionBlock:v23];
+  v24 = completionCopy;
+  [outputManager3 outputScannerAnnouncement:v14 completionBlock:v23];
 
   objc_destroyWeak(&v25);
   objc_destroyWeak(&location);
 
   v11 = 0;
-  if (!v8)
+  if (!completionCopy)
   {
     goto LABEL_7;
   }
@@ -1341,7 +1341,7 @@ LABEL_4:
 LABEL_5:
   if (v11)
   {
-    v8[2](v8);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_7:
@@ -1349,50 +1349,50 @@ LABEL_7:
 
 - (id)_elementManagerForScannerState
 {
-  v3 = [(SCATScannerManager *)self alternateKeysManager];
-  v4 = [v3 canBeActiveElementManager];
+  alternateKeysManager = [(SCATScannerManager *)self alternateKeysManager];
+  canBeActiveElementManager = [alternateKeysManager canBeActiveElementManager];
 
-  if (v4)
+  if (canBeActiveElementManager)
   {
-    v5 = [(SCATScannerManager *)self alternateKeysManager];
+    alternateKeysManager2 = [(SCATScannerManager *)self alternateKeysManager];
   }
 
   else
   {
-    v6 = [(SCATScannerManager *)self candidateBarManager];
-    v7 = [v6 canBeActiveElementManager];
+    candidateBarManager = [(SCATScannerManager *)self candidateBarManager];
+    canBeActiveElementManager2 = [candidateBarManager canBeActiveElementManager];
 
-    if (v7)
+    if (canBeActiveElementManager2)
     {
-      v5 = [(SCATScannerManager *)self candidateBarManager];
+      alternateKeysManager2 = [(SCATScannerManager *)self candidateBarManager];
     }
 
     else
     {
-      v8 = [(SCATScannerManager *)self scrollViewPickerManager];
-      v9 = [v8 canBeActiveElementManager];
+      scrollViewPickerManager = [(SCATScannerManager *)self scrollViewPickerManager];
+      canBeActiveElementManager3 = [scrollViewPickerManager canBeActiveElementManager];
 
-      if (v9)
+      if (canBeActiveElementManager3)
       {
-        v5 = [(SCATScannerManager *)self scrollViewPickerManager];
+        alternateKeysManager2 = [(SCATScannerManager *)self scrollViewPickerManager];
       }
 
       else
       {
-        v10 = [(SCATScannerManager *)self gestureProvider];
-        v11 = [v10 canBeActiveElementManager];
+        gestureProvider = [(SCATScannerManager *)self gestureProvider];
+        canBeActiveElementManager4 = [gestureProvider canBeActiveElementManager];
 
-        if (v11)
+        if (canBeActiveElementManager4)
         {
-          v5 = [(SCATScannerManager *)self gestureProvider];
+          alternateKeysManager2 = [(SCATScannerManager *)self gestureProvider];
         }
 
         else
         {
-          v12 = [(SCATScannerManager *)self menu];
-          v13 = [v12 canBeActiveElementManager];
+          menu = [(SCATScannerManager *)self menu];
+          canBeActiveElementManager5 = [menu canBeActiveElementManager];
 
-          if (v13)
+          if (canBeActiveElementManager5)
           {
             [(SCATScannerManager *)self menu];
           }
@@ -1401,133 +1401,133 @@ LABEL_7:
           {
             [(SCATScannerManager *)self _primaryElementManagerForScannerState];
           }
-          v5 = ;
+          alternateKeysManager2 = ;
         }
       }
     }
   }
 
-  return v5;
+  return alternateKeysManager2;
 }
 
 - (id)_primaryElementManagerForScannerState
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 assistiveTouchScannerPointPickerModeEnabled];
+  assistiveTouchScannerPointPickerModeEnabled = [v3 assistiveTouchScannerPointPickerModeEnabled];
 
-  v5 = [(SCATScannerManager *)self scanningMode];
-  v6 = v5;
-  if (!v4)
+  scanningMode = [(SCATScannerManager *)self scanningMode];
+  v6 = scanningMode;
+  if (!assistiveTouchScannerPointPickerModeEnabled)
   {
     goto LABEL_11;
   }
 
-  if (v5 > 6)
+  if (scanningMode > 6)
   {
     goto LABEL_14;
   }
 
-  if (((1 << v5) & 0x6A) == 0)
+  if (((1 << scanningMode) & 0x6A) == 0)
   {
 LABEL_11:
-    if (v5 == 2)
+    if (scanningMode == 2)
     {
       _AXAssert();
 LABEL_13:
-      v7 = 0;
+      pointPicker3 = 0;
       goto LABEL_27;
     }
 
 LABEL_14:
-    v10 = [(SCATScannerManager *)self axManager];
-    v11 = [v10 hasZeroElements];
+    axManager = [(SCATScannerManager *)self axManager];
+    hasZeroElements = [axManager hasZeroElements];
 
-    if (v11)
+    if (hasZeroElements)
     {
-      v12 = [(SCATScannerManager *)self axManager];
-      v13 = [v12 frontmostAppMayBeLoading];
+      axManager2 = [(SCATScannerManager *)self axManager];
+      frontmostAppMayBeLoading = [axManager2 frontmostAppMayBeLoading];
 
       v14 = SWCHLogElementNav();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v21 = 67109120;
-        LODWORD(v22) = v13;
+        LODWORD(v22) = frontmostAppMayBeLoading;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "*** Zero elements found. Frontmost app may be loading %i", &v21, 8u);
       }
 
-      if (v13)
+      if (frontmostAppMayBeLoading)
       {
         goto LABEL_13;
       }
 
       v15 = SWCHLogElementNav();
       v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-      if (v4)
+      if (assistiveTouchScannerPointPickerModeEnabled)
       {
         if (v16)
         {
-          v17 = [(SCATScannerManager *)self pointPicker];
+          pointPicker = [(SCATScannerManager *)self pointPicker];
           v21 = 138412290;
-          v22 = v17;
+          v22 = pointPicker;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "*** Zero elements found. Frontmost app not loading. Switching to point picker: %@.", &v21, 0xCu);
         }
 
-        v18 = [(SCATScannerManager *)self pointPicker];
+        pointPicker2 = [(SCATScannerManager *)self pointPicker];
         goto LABEL_26;
       }
 
       if (v16)
       {
-        v19 = [(SCATScannerManager *)self elementNavController];
+        elementNavController = [(SCATScannerManager *)self elementNavController];
         v21 = 138412290;
-        v22 = v19;
+        v22 = elementNavController;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "*** Zero elements found. Frontmost app not loading. Switching to element manager: %@.", &v21, 0xCu);
       }
     }
 
-    v18 = [(SCATScannerManager *)self elementNavController];
+    pointPicker2 = [(SCATScannerManager *)self elementNavController];
 LABEL_26:
-    v7 = v18;
+    pointPicker3 = pointPicker2;
     goto LABEL_27;
   }
 
-  v7 = [(SCATScannerManager *)self pointPicker];
+  pointPicker3 = [(SCATScannerManager *)self pointPicker];
   v8 = +[AXSpringBoardServer server];
   if ([v8 isDockVisible] && objc_msgSend(v8, "isShowingNonSystemApp") && !-[SCATScannerManager isExternalDisplayConnected](self, "isExternalDisplayConnected") && v6 != 3 && v6 != 5)
   {
-    v9 = [(SCATScannerManager *)self elementNavController];
+    elementNavController2 = [(SCATScannerManager *)self elementNavController];
 
-    v7 = v9;
+    pointPicker3 = elementNavController2;
   }
 
 LABEL_27:
 
-  return v7;
+  return pointPicker3;
 }
 
-- (void)_updateActiveElementManager:(id)a3
+- (void)_updateActiveElementManager:(id)manager
 {
-  v4 = a3;
-  v5 = [(SCATScannerManager *)self _elementManagerForScannerState];
-  [(SCATScannerManager *)self setActiveElementManager:v5 completion:v4];
+  managerCopy = manager;
+  _elementManagerForScannerState = [(SCATScannerManager *)self _elementManagerForScannerState];
+  [(SCATScannerManager *)self setActiveElementManager:_elementManagerForScannerState completion:managerCopy];
 }
 
-- (BOOL)_isScannerControlledByDriver:(id)a3
+- (BOOL)_isScannerControlledByDriver:(id)driver
 {
-  v4 = a3;
-  v5 = [(SCATScannerManager *)self activeScannerDriver];
-  v6 = [v5 isEqual:v4];
+  driverCopy = driver;
+  activeScannerDriver = [(SCATScannerManager *)self activeScannerDriver];
+  v6 = [activeScannerDriver isEqual:driverCopy];
 
   return v6;
 }
 
 - (void)_deactivateAudioSession
 {
-  v3 = [(SCATScannerManager *)self outputManager];
-  [v3 setSoundAudioSessionActive:0];
+  outputManager = [(SCATScannerManager *)self outputManager];
+  [outputManager setSoundAudioSessionActive:0];
 
-  v4 = [(SCATScannerManager *)self outputManager];
-  [v4 setSpeechAudioSessionActive:0];
+  outputManager2 = [(SCATScannerManager *)self outputManager];
+  [outputManager2 setSpeechAudioSessionActive:0];
 }
 
 - (void)_updateAudioSessionState
@@ -1537,21 +1537,21 @@ LABEL_27:
   {
     if ([(SCATScannerManager *)self isSpeechEnabled])
     {
-      v3 = [(SCATScannerManager *)self outputManager];
-      [v3 setSpeechAudioSessionActive:1];
+      outputManager = [(SCATScannerManager *)self outputManager];
+      [outputManager setSpeechAudioSessionActive:1];
     }
 
     if ([(SCATScannerManager *)self areSoundEffectsEnabled])
     {
-      v5 = [(SCATScannerManager *)self outputManager];
-      [v5 setSoundAudioSessionActive:1];
+      outputManager2 = [(SCATScannerManager *)self outputManager];
+      [outputManager2 setSoundAudioSessionActive:1];
     }
   }
 
   else
   {
-    v4 = [(SCATScannerManager *)self outputManager];
-    [v4 cancelSpeech];
+    outputManager3 = [(SCATScannerManager *)self outputManager];
+    [outputManager3 cancelSpeech];
 
     [(SCATScannerManager *)self performSelector:"_deactivateAudioSession" withObject:0 afterDelay:2.0];
   }
@@ -1559,20 +1559,20 @@ LABEL_27:
 
 - (BOOL)isAutoscanEnabled
 {
-  v3 = [(SCATScannerManager *)self currentRecipe];
-  if (v3)
+  currentRecipe = [(SCATScannerManager *)self currentRecipe];
+  if (currentRecipe)
   {
-    v4 = [(SCATScannerManager *)self currentRecipe];
-    v5 = [v4 shouldContinueScanning];
+    currentRecipe2 = [(SCATScannerManager *)self currentRecipe];
+    shouldContinueScanning = [currentRecipe2 shouldContinueScanning];
   }
 
   else
   {
-    v5 = 0;
+    shouldContinueScanning = 0;
   }
 
   v6 = +[AXSettings sharedInstance];
-  v7 = ([v6 switchControlScanningStyle] == 0) | v5;
+  v7 = ([v6 switchControlScanningStyle] == 0) | shouldContinueScanning;
 
   return v7 & 1;
 }
@@ -1580,52 +1580,52 @@ LABEL_27:
 - (BOOL)isGroupingEnabled
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchGroupElementsEnabled];
+  assistiveTouchGroupElementsEnabled = [v2 assistiveTouchGroupElementsEnabled];
 
-  return v3;
+  return assistiveTouchGroupElementsEnabled;
 }
 
 - (int64_t)scanningMode
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchScanningMode];
+  assistiveTouchScanningMode = [v2 assistiveTouchScanningMode];
 
-  return v3;
+  return assistiveTouchScanningMode;
 }
 
 - (BOOL)areSoundEffectsEnabled
 {
-  v2 = [(SCATScannerManager *)self outputManager];
-  v3 = [v2 areSoundEffectsEnabled];
+  outputManager = [(SCATScannerManager *)self outputManager];
+  areSoundEffectsEnabled = [outputManager areSoundEffectsEnabled];
 
-  return v3;
+  return areSoundEffectsEnabled;
 }
 
 - (BOOL)isSpeechEnabled
 {
-  v2 = [(SCATScannerManager *)self outputManager];
-  v3 = [v2 isSpeechEnabled];
+  outputManager = [(SCATScannerManager *)self outputManager];
+  isSpeechEnabled = [outputManager isSpeechEnabled];
 
-  return v3;
+  return isSpeechEnabled;
 }
 
-- (BOOL)isSwitchWithSource:(id)a3
+- (BOOL)isSwitchWithSource:(id)source
 {
-  v4 = a3;
-  v5 = [(SCATScannerManager *)self inputController];
-  v6 = [v5 isSwitchWithSource:v4];
+  sourceCopy = source;
+  inputController = [(SCATScannerManager *)self inputController];
+  v6 = [inputController isSwitchWithSource:sourceCopy];
 
   return v6;
 }
 
 - (BOOL)isUsingPointMode
 {
-  v2 = self;
-  v3 = [(SCATScannerManager *)self _primaryElementManagerForScannerState];
-  v4 = [(SCATScannerManager *)v2 pointPicker];
-  LOBYTE(v2) = v3 == v4;
+  selfCopy = self;
+  _primaryElementManagerForScannerState = [(SCATScannerManager *)self _primaryElementManagerForScannerState];
+  pointPicker = [(SCATScannerManager *)selfCopy pointPicker];
+  LOBYTE(selfCopy) = _primaryElementManagerForScannerState == pointPicker;
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isOnDeviceEyeTrackingSupported
@@ -1642,17 +1642,17 @@ LABEL_27:
 
 - (BOOL)isLandscape
 {
-  v2 = [(SCATScannerManager *)self currentDisplayID];
+  currentDisplayID = [(SCATScannerManager *)self currentDisplayID];
   v3 = +[HNDHandManager sharedManager];
-  v4 = [v3 displayManagerForDisplayId:v2];
+  v4 = [v3 displayManagerForDisplayId:currentDisplayID];
 
   if ([v4 isMainDisplay])
   {
     v5 = +[HNDHandManager sharedManager];
-    v6 = [v5 mainDisplayManager];
-    v7 = [v6 orientation];
+    mainDisplayManager = [v5 mainDisplayManager];
+    orientation = [mainDisplayManager orientation];
 
-    v8 = v7 - 3 < 2;
+    v8 = orientation - 3 < 2;
   }
 
   else
@@ -1666,25 +1666,25 @@ LABEL_27:
 - (BOOL)isSystemSleeping
 {
   v2 = +[AXSystemAppServer server];
-  v3 = [v2 isSystemSleeping];
+  isSystemSleeping = [v2 isSystemSleeping];
 
-  return v3;
+  return isSystemSleeping;
 }
 
 - (SCATFocusContext)currentFocusContext
 {
-  v2 = [(SCATScannerManager *)self activeScannerDriver];
-  v3 = [v2 focusContext];
+  activeScannerDriver = [(SCATScannerManager *)self activeScannerDriver];
+  focusContext = [activeScannerDriver focusContext];
 
-  return v3;
+  return focusContext;
 }
 
 - (SCATElement)currentElement
 {
-  v2 = [(SCATScannerManager *)self currentFocusContext];
-  v3 = [v2 element];
+  currentFocusContext = [(SCATScannerManager *)self currentFocusContext];
+  element = [currentFocusContext element];
 
-  return v3;
+  return element;
 }
 
 - (unsigned)currentDisplayID
@@ -1699,14 +1699,14 @@ LABEL_27:
   v19 = 0x2020000000;
   v20 = 0;
   v3 = +[HNDHandManager sharedManager];
-  v4 = [v3 displayManagers];
+  displayManagers = [v3 displayManagers];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1000E2C30;
   v16[3] = &unk_1001D7598;
   v16[4] = self;
   v16[5] = &v17;
-  [v4 enumerateObjectsUsingBlock:v16];
+  [displayManagers enumerateObjectsUsingBlock:v16];
 
   v5 = *(v18 + 24);
   if (v5 == 1)
@@ -1723,43 +1723,43 @@ LABEL_27:
   if ((v5 & 1) == 0)
   {
 LABEL_6:
-    v6 = [(SCATScannerManager *)self activeElementManager];
-    v7 = [(SCATScannerManager *)self pointPicker];
+    activeElementManager = [(SCATScannerManager *)self activeElementManager];
+    pointPicker = [(SCATScannerManager *)self pointPicker];
 
-    if (v6 == v7)
+    if (activeElementManager == pointPicker)
     {
-      v11 = [(SCATScannerManager *)self activeElementManager];
-      v12 = [v11 currentDisplayID];
+      activeElementManager2 = [(SCATScannerManager *)self activeElementManager];
+      currentDisplayID = [activeElementManager2 currentDisplayID];
     }
 
     else
     {
-      v8 = [(SCATScannerManager *)self menu];
-      v9 = [v8 element];
-      if (v9)
+      menu = [(SCATScannerManager *)self menu];
+      element = [menu element];
+      if (element)
       {
-        v10 = [(SCATScannerManager *)self menu];
-        v11 = [v10 element];
+        menu2 = [(SCATScannerManager *)self menu];
+        activeElementManager2 = [menu2 element];
       }
 
       else
       {
-        v11 = [(SCATScannerManager *)self currentElement];
+        activeElementManager2 = [(SCATScannerManager *)self currentElement];
       }
 
-      if (![v11 scatDisplayId])
+      if (![activeElementManager2 scatDisplayId])
       {
         v13 = +[HNDHandManager sharedManager];
-        v14 = [v13 mainDisplayManager];
-        LODWORD(v3) = [v14 displayID];
+        mainDisplayManager = [v13 mainDisplayManager];
+        LODWORD(v3) = [mainDisplayManager displayID];
 
         goto LABEL_15;
       }
 
-      v12 = [v11 scatDisplayId];
+      currentDisplayID = [activeElementManager2 scatDisplayId];
     }
 
-    LODWORD(v3) = v12;
+    LODWORD(v3) = currentDisplayID;
 LABEL_15:
   }
 
@@ -1769,8 +1769,8 @@ LABEL_15:
 - (BOOL)isExternalDisplayConnected
 {
   v2 = +[HNDHandManager sharedManager];
-  v3 = [v2 displayManagers];
-  v4 = [v3 count] > 1;
+  displayManagers = [v2 displayManagers];
+  v4 = [displayManagers count] > 1;
 
   return v4;
 }
@@ -1780,7 +1780,7 @@ LABEL_15:
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
-  v12 = [(SCATScannerManager *)self lockedToDisplayID];
+  lockedToDisplayID = [(SCATScannerManager *)self lockedToDisplayID];
   v3 = *(v10 + 6);
   if (!v3)
   {
@@ -1789,20 +1789,20 @@ LABEL_15:
   }
 
   v4 = +[HNDHandManager sharedManager];
-  v5 = [v4 displayManagers];
+  displayManagers = [v4 displayManagers];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000E2E40;
   v8[3] = &unk_1001D75C0;
   v8[4] = &v9;
-  [v5 enumerateObjectsUsingBlock:v8];
+  [displayManagers enumerateObjectsUsingBlock:v8];
 
   if (v3 != *(v10 + 6))
   {
     [(SCATScannerManager *)self setLockedToDisplayID:?];
-    v6 = [(SCATScannerManager *)self activeElementManager];
+    activeElementManager = [(SCATScannerManager *)self activeElementManager];
     v7 = [(SCATScannerManager *)self scatUIContextForDisplayID:*(v10 + 6)];
-    [v6 presentWithDisplayContext:v7 animated:1];
+    [activeElementManager presentWithDisplayContext:v7 animated:1];
   }
 
   _Block_object_dispose(&v9, 8);
@@ -1812,29 +1812,29 @@ LABEL_15:
 {
   if (_AXSInUnitTestMode() && ([(SCATScannerManager *)self testAxManager], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
-    v4 = [(SCATScannerManager *)self testAxManager];
+    testAxManager = [(SCATScannerManager *)self testAxManager];
   }
 
   else
   {
-    v4 = +[HNDAccessibilityManager sharedManager];
+    testAxManager = +[HNDAccessibilityManager sharedManager];
   }
 
-  return v4;
+  return testAxManager;
 }
 
 - (NSArray)recentSpeechOutputStrings
 {
-  v2 = [(SCATScannerManager *)self outputManager];
-  v3 = [v2 recentSpeechOutputStrings];
+  outputManager = [(SCATScannerManager *)self outputManager];
+  recentSpeechOutputStrings = [outputManager recentSpeechOutputStrings];
 
-  return v3;
+  return recentSpeechOutputStrings;
 }
 
 - (void)clearRecentSpeech
 {
-  v2 = [(SCATScannerManager *)self outputManager];
-  [v2 clearRecentSpeech];
+  outputManager = [(SCATScannerManager *)self outputManager];
+  [outputManager clearRecentSpeech];
 }
 
 - (BOOL)isEyeTrackingEnabled
@@ -1852,70 +1852,70 @@ LABEL_15:
 
 - (BOOL)highlightFocusContext
 {
-  v2 = [(SCATScannerManager *)self pointerPointPicker];
-  v3 = [v2 shouldTrackFocusContext];
+  pointerPointPicker = [(SCATScannerManager *)self pointerPointPicker];
+  shouldTrackFocusContext = [pointerPointPicker shouldTrackFocusContext];
 
-  return v3;
+  return shouldTrackFocusContext;
 }
 
-- (void)setHighlightFocusContext:(BOOL)a3
+- (void)setHighlightFocusContext:(BOOL)context
 {
-  if (self->_highlightFocusContext != a3)
+  if (self->_highlightFocusContext != context)
   {
-    v4 = a3;
-    self->_highlightFocusContext = a3;
-    v5 = [(SCATScannerManager *)self pointerPointPicker];
-    [v5 setShouldTrackFocusContext:v4];
+    contextCopy = context;
+    self->_highlightFocusContext = context;
+    pointerPointPicker = [(SCATScannerManager *)self pointerPointPicker];
+    [pointerPointPicker setShouldTrackFocusContext:contextCopy];
   }
 }
 
 - (BOOL)isActive
 {
-  v2 = [(SCATScannerManager *)self activeScannerDriver];
-  v3 = [v2 isActive];
+  activeScannerDriver = [(SCATScannerManager *)self activeScannerDriver];
+  isActive = [activeScannerDriver isActive];
 
-  return v3;
+  return isActive;
 }
 
 - (BOOL)isPaused
 {
-  v2 = [(SCATScannerManager *)self activeScannerDriver];
-  v3 = [v2 isPaused];
+  activeScannerDriver = [(SCATScannerManager *)self activeScannerDriver];
+  isPaused = [activeScannerDriver isPaused];
 
-  return v3;
+  return isPaused;
 }
 
 - (BOOL)isInactive
 {
-  v2 = [(SCATScannerManager *)self activeScannerDriver];
-  v3 = [v2 isInactive];
+  activeScannerDriver = [(SCATScannerManager *)self activeScannerDriver];
+  isInactive = [activeScannerDriver isInactive];
 
-  return v3;
+  return isInactive;
 }
 
-- (void)_beginOrContinueScanningWithFocusContext:(id)a3 shouldBegin:(BOOL)a4 foundNewElements:(BOOL)a5
+- (void)_beginOrContinueScanningWithFocusContext:(id)context shouldBegin:(BOOL)begin foundNewElements:(BOOL)elements
 {
-  v8 = a3;
+  contextCopy = context;
   if (![(SCATScannerManager *)self _shouldIgnoreAllScannerControlMessages])
   {
-    v9 = [(SCATScannerManager *)self menu];
-    v10 = [v9 isVisible];
+    menu = [(SCATScannerManager *)self menu];
+    isVisible = [menu isVisible];
 
-    if (v10)
+    if (isVisible)
     {
-      v11 = [(SCATScannerManager *)self menu];
-      v12 = [v11 element];
-      [v8 setMenuElement:v12];
+      menu2 = [(SCATScannerManager *)self menu];
+      element = [menu2 element];
+      [contextCopy setMenuElement:element];
     }
 
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_1000E328C;
     v14[3] = &unk_1001D3BE0;
-    v16 = a5;
+    elementsCopy = elements;
     v14[4] = self;
-    v17 = a4;
-    v15 = v8;
+    beginCopy = begin;
+    v15 = contextCopy;
     v13 = objc_retainBlock(v14);
     [(SCATScannerManager *)self _updateActiveElementManager:v13];
   }
@@ -1927,33 +1927,33 @@ LABEL_15:
   {
     if ([(SCATScannerManager *)self didSetFocusContextForResume])
     {
-      v6 = [(SCATScannerManager *)self focusContextForResume];
-      [(SCATScannerManager *)self beginScanningWithFocusContext:v6];
+      focusContextForResume = [(SCATScannerManager *)self focusContextForResume];
+      [(SCATScannerManager *)self beginScanningWithFocusContext:focusContextForResume];
     }
 
     else
     {
       [(SCATScannerManager *)self _updateActiveElementManager];
-      v3 = [(SCATScannerManager *)self activeElementManager];
+      activeElementManager = [(SCATScannerManager *)self activeElementManager];
 
-      if (!v3)
+      if (!activeElementManager)
       {
-        v4 = [(SCATScannerManager *)self beginScanningTimer];
-        [v4 cancel];
+        beginScanningTimer = [(SCATScannerManager *)self beginScanningTimer];
+        [beginScanningTimer cancel];
 
-        v5 = [(SCATScannerManager *)self beginScanningTimer];
+        beginScanningTimer2 = [(SCATScannerManager *)self beginScanningTimer];
         v7[0] = _NSConcreteStackBlock;
         v7[1] = 3221225472;
         v7[2] = sub_1000E35A8;
         v7[3] = &unk_1001D3488;
         v7[4] = self;
-        [v5 afterDelay:v7 processBlock:1.0];
+        [beginScanningTimer2 afterDelay:v7 processBlock:1.0];
 
         return;
       }
 
-      v6 = [(SCATScannerManager *)self activeScannerDriver];
-      [v6 resumeScanning];
+      focusContextForResume = [(SCATScannerManager *)self activeScannerDriver];
+      [focusContextForResume resumeScanning];
     }
   }
 }
@@ -1962,57 +1962,57 @@ LABEL_15:
 {
   if (![(SCATScannerManager *)self _shouldIgnoreAllScannerControlMessages])
   {
-    v3 = [(SCATScannerManager *)self beginScanningTimer];
-    [v3 cancel];
+    beginScanningTimer = [(SCATScannerManager *)self beginScanningTimer];
+    [beginScanningTimer cancel];
 
-    v4 = [(SCATScannerManager *)self activeScannerDriver];
-    [v4 endScanning];
+    activeScannerDriver = [(SCATScannerManager *)self activeScannerDriver];
+    [activeScannerDriver endScanning];
   }
 }
 
-- (void)pauseScanningWithScreenLockDisabled:(BOOL)a3
+- (void)pauseScanningWithScreenLockDisabled:(BOOL)disabled
 {
-  v3 = a3;
+  disabledCopy = disabled;
   if (![(SCATScannerManager *)self _shouldIgnoreAllScannerControlMessages])
   {
-    [(SCATScannerManager *)self setForceDisableScreenLock:v3];
-    v5 = [(SCATScannerManager *)self beginScanningTimer];
-    [v5 cancel];
+    [(SCATScannerManager *)self setForceDisableScreenLock:disabledCopy];
+    beginScanningTimer = [(SCATScannerManager *)self beginScanningTimer];
+    [beginScanningTimer cancel];
 
-    v6 = [(SCATScannerManager *)self activeScannerDriver];
-    [v6 pauseScanning];
+    activeScannerDriver = [(SCATScannerManager *)self activeScannerDriver];
+    [activeScannerDriver pauseScanning];
 
     [(SCATScannerManager *)self setForceDisableScreenLock:0];
   }
 }
 
-- (void)addReasonToDisableScanning:(id)a3
+- (void)addReasonToDisableScanning:(id)scanning
 {
-  v4 = a3;
-  v5 = [(SCATScannerManager *)self reasonsToDisableScanning];
+  scanningCopy = scanning;
+  reasonsToDisableScanning = [(SCATScannerManager *)self reasonsToDisableScanning];
 
-  if (!v5)
+  if (!reasonsToDisableScanning)
   {
     v6 = +[NSMutableSet set];
     [(SCATScannerManager *)self setReasonsToDisableScanning:v6];
   }
 
-  v7 = [(SCATScannerManager *)self reasonsToDisableScanning];
-  v8 = [v7 containsObject:v4];
+  reasonsToDisableScanning2 = [(SCATScannerManager *)self reasonsToDisableScanning];
+  v8 = [reasonsToDisableScanning2 containsObject:scanningCopy];
 
   if ((v8 & 1) == 0)
   {
-    v9 = [(SCATScannerManager *)self reasonsToDisableScanning];
-    v10 = [v9 count];
+    reasonsToDisableScanning3 = [(SCATScannerManager *)self reasonsToDisableScanning];
+    v10 = [reasonsToDisableScanning3 count];
 
     if (!v10)
     {
-      v11 = [(SCATScannerManager *)self activeScannerDriver];
-      v12 = [v11 isActive];
+      activeScannerDriver = [(SCATScannerManager *)self activeScannerDriver];
+      isActive = [activeScannerDriver isActive];
 
       v13 = SWCHLogPauseResume();
       v14 = os_log_type_enabled(v13, OS_LOG_TYPE_INFO);
-      if (v12)
+      if (isActive)
       {
         if (v14)
         {
@@ -2032,46 +2032,46 @@ LABEL_15:
         }
       }
 
-      [(SCATScannerManager *)self setDidPauseForReasonsToDisableScanning:v12];
+      [(SCATScannerManager *)self setDidPauseForReasonsToDisableScanning:isActive];
     }
 
-    v15 = [(SCATScannerManager *)self reasonsToDisableScanning];
-    [v15 addObject:v4];
+    reasonsToDisableScanning4 = [(SCATScannerManager *)self reasonsToDisableScanning];
+    [reasonsToDisableScanning4 addObject:scanningCopy];
   }
 }
 
-- (void)removeReasonToDisableScanning:(id)a3
+- (void)removeReasonToDisableScanning:(id)scanning
 {
-  v4 = a3;
-  v5 = [(SCATScannerManager *)self reasonsToDisableScanning];
-  v6 = [v5 containsObject:v4];
+  scanningCopy = scanning;
+  reasonsToDisableScanning = [(SCATScannerManager *)self reasonsToDisableScanning];
+  v6 = [reasonsToDisableScanning containsObject:scanningCopy];
 
   if (v6)
   {
-    v7 = [(SCATScannerManager *)self reasonsToDisableScanning];
-    [v7 removeObject:v4];
+    reasonsToDisableScanning2 = [(SCATScannerManager *)self reasonsToDisableScanning];
+    [reasonsToDisableScanning2 removeObject:scanningCopy];
 
     v8 = SWCHLogPauseResume();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [(SCATScannerManager *)self reasonsToDisableScanning];
+      reasonsToDisableScanning3 = [(SCATScannerManager *)self reasonsToDisableScanning];
       v12 = 134218240;
-      v13 = [v9 count];
+      v13 = [reasonsToDisableScanning3 count];
       v14 = 1024;
-      v15 = [(SCATScannerManager *)self didPauseForReasonsToDisableScanning];
+      didPauseForReasonsToDisableScanning = [(SCATScannerManager *)self didPauseForReasonsToDisableScanning];
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Reasons to disable scanning count: %lu.  Did pause: %i", &v12, 0x12u);
     }
 
-    v10 = [(SCATScannerManager *)self reasonsToDisableScanning];
-    if ([v10 count])
+    reasonsToDisableScanning4 = [(SCATScannerManager *)self reasonsToDisableScanning];
+    if ([reasonsToDisableScanning4 count])
     {
     }
 
     else
     {
-      v11 = [(SCATScannerManager *)self didPauseForReasonsToDisableScanning];
+      didPauseForReasonsToDisableScanning2 = [(SCATScannerManager *)self didPauseForReasonsToDisableScanning];
 
-      if (v11)
+      if (didPauseForReasonsToDisableScanning2)
       {
         [(SCATScannerManager *)self beginScanningWithFocusContext:0];
       }
@@ -2081,64 +2081,64 @@ LABEL_15:
 
 - (BOOL)_shouldIgnoreAllScannerControlMessages
 {
-  v2 = [(SCATScannerManager *)self reasonsToDisableScanning];
-  v3 = [v2 count] != 0;
+  reasonsToDisableScanning = [(SCATScannerManager *)self reasonsToDisableScanning];
+  v3 = [reasonsToDisableScanning count] != 0;
 
   return v3;
 }
 
-- (void)useFocusContextOnResume:(id)a3
+- (void)useFocusContextOnResume:(id)resume
 {
-  [(SCATScannerManager *)self setFocusContextForResume:a3];
+  [(SCATScannerManager *)self setFocusContextForResume:resume];
 
   [(SCATScannerManager *)self setDidSetFocusContextForResume:1];
 }
 
-- (BOOL)activateElement:(id)a3
+- (BOOL)activateElement:(id)element
 {
-  v4 = a3;
-  if ([v4 isGroup])
+  elementCopy = element;
+  if ([elementCopy isGroup])
   {
-    v5 = [(SCATScannerManager *)self activeScannerDriver];
-    v6 = [(SCATScannerManager *)self elementNavController];
-    [v5 handleDrillInOnGroup:v4 elementManager:v6];
+    activeScannerDriver = [(SCATScannerManager *)self activeScannerDriver];
+    elementNavController = [(SCATScannerManager *)self elementNavController];
+    [activeScannerDriver handleDrillInOnGroup:elementCopy elementManager:elementNavController];
 
-    v7 = [(SCATScannerManager *)self activeScannerDriver];
-    v8 = [v7 focusContext];
+    activeScannerDriver2 = [(SCATScannerManager *)self activeScannerDriver];
+    focusContext = [activeScannerDriver2 focusContext];
     v9 = 1;
-    [v8 setShouldResumeFromMenuDismissal:1];
+    [focusContext setShouldResumeFromMenuDismissal:1];
   }
 
   else
   {
-    v9 = [v4 scatPerformAction:2010];
+    v9 = [elementCopy scatPerformAction:2010];
   }
 
-  v10 = [(SCATScannerManager *)self outputManager];
-  [v10 playSound:1001];
+  outputManager = [(SCATScannerManager *)self outputManager];
+  [outputManager playSound:1001];
 
   [(SCATScannerManager *)self _updateActiveElementManager];
-  v11 = [(SCATScannerManager *)self activeElementManager];
-  [v11 scannerManager:self didActivateElement:v4];
+  activeElementManager = [(SCATScannerManager *)self activeElementManager];
+  [activeElementManager scannerManager:self didActivateElement:elementCopy];
 
-  if ([v4 scatBeginScanningFromSelfAfterActivation])
+  if ([elementCopy scatBeginScanningFromSelfAfterActivation])
   {
-    v12 = [(SCATScannerManager *)self activeElementManager];
-    v13 = [SCATFocusContext focusContextWithElement:v4 elementManager:v12 selectBehavior:0 options:0];
+    activeElementManager2 = [(SCATScannerManager *)self activeElementManager];
+    v13 = [SCATFocusContext focusContextWithElement:elementCopy elementManager:activeElementManager2 selectBehavior:0 options:0];
     [(SCATScannerManager *)self beginScanningWithFocusContext:v13];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v4 scatUpdateValue];
+    [elementCopy scatUpdateValue];
   }
 
   if ((AXDeviceHasJindo() & v9) == 1)
   {
-    if ([v4 scatIsAXElement])
+    if ([elementCopy scatIsAXElement])
     {
-      v14 = [v4 uiElement];
-      v15 = [v14 BOOLWithAXAttribute:2229];
+      uiElement = [elementCopy uiElement];
+      v15 = [uiElement BOOLWithAXAttribute:2229];
 
       if ((v15 & 1) == 0)
       {
@@ -2150,90 +2150,90 @@ LABEL_15:
   return v9;
 }
 
-- (void)selectElement:(id)a3
+- (void)selectElement:(id)element
 {
-  [a3 scatCenterPoint];
+  [element scatCenterPoint];
 
   [(SCATScannerManager *)self selectElementAtPoint:?];
 }
 
-- (void)selectElementAtPoint:(CGPoint)a3
+- (void)selectElementAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(SCATScannerManager *)self gestureProvider];
+  y = point.y;
+  x = point.x;
+  gestureProvider = [(SCATScannerManager *)self gestureProvider];
   v5 = [AXNamedReplayableGesture tapGestureAtPoint:x, y];
-  [v6 replayGesture:v5];
+  [gestureProvider replayGesture:v5];
 }
 
-- (BOOL)shouldBypassShowingMenuForElement:(id)a3
+- (BOOL)shouldBypassShowingMenuForElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 switchControlTapBehavior];
+  switchControlTapBehavior = [v5 switchControlTapBehavior];
 
-  v8 = v6 == 2 && (v7 = [v4 scatTraits], (kAXAdjustableTrait & ~v7) != 0) && -[SCATScannerManager itemMenuState](self, "itemMenuState") == 0;
+  v8 = switchControlTapBehavior == 2 && (v7 = [elementCopy scatTraits], (kAXAdjustableTrait & ~v7) != 0) && -[SCATScannerManager itemMenuState](self, "itemMenuState") == 0;
   return v8;
 }
 
 - (void)_updateScanningStyle
 {
-  v5 = [(SCATScannerManager *)self _driverForScannerState];
-  v3 = [(SCATScannerManager *)self activeScannerDriver];
+  _driverForScannerState = [(SCATScannerManager *)self _driverForScannerState];
+  activeScannerDriver = [(SCATScannerManager *)self activeScannerDriver];
 
-  v4 = v5;
-  if (v3 != v5)
+  v4 = _driverForScannerState;
+  if (activeScannerDriver != _driverForScannerState)
   {
-    [(SCATScannerManager *)self setActiveScannerDriver:v5];
+    [(SCATScannerManager *)self setActiveScannerDriver:_driverForScannerState];
     [(SCATScannerManager *)self beginScanningWithFocusContext:0];
-    v4 = v5;
+    v4 = _driverForScannerState;
   }
 }
 
-- (void)_showSimpleBannerWithText:(id)a3
+- (void)_showSimpleBannerWithText:(id)text
 {
-  v3 = a3;
+  textCopy = text;
   v6 = +[HNDHandManager sharedManager];
-  v4 = [v6 mainDisplayManager];
+  mainDisplayManager = [v6 mainDisplayManager];
   v5 = sub_100042B24(@"SWITCH_CONTROL_TITLE");
-  [v4 showSimpleBannerWithTitle:v5 text:v3];
+  [mainDisplayManager showSimpleBannerWithTitle:v5 text:textCopy];
 }
 
-- (void)addPointerPointPickerForMovementNotifications:(id)a3
+- (void)addPointerPointPickerForMovementNotifications:(id)notifications
 {
-  v4 = a3;
-  v5 = [(SCATScannerManager *)self _pointerPointPickersToNotify];
-  [v5 addPointer:v4];
+  notificationsCopy = notifications;
+  _pointerPointPickersToNotify = [(SCATScannerManager *)self _pointerPointPickersToNotify];
+  [_pointerPointPickersToNotify addPointer:notificationsCopy];
 }
 
-- (void)removePointerPointPickerForMovementNotifications:(id)a3
+- (void)removePointerPointPickerForMovementNotifications:(id)notifications
 {
-  v6 = a3;
-  v4 = [(SCATScannerManager *)self _pointerPointPickersToNotify];
-  if ([v4 count])
+  notificationsCopy = notifications;
+  _pointerPointPickersToNotify = [(SCATScannerManager *)self _pointerPointPickersToNotify];
+  if ([_pointerPointPickersToNotify count])
   {
     v5 = 0;
-    while ([v4 pointerAtIndex:v5] != v6)
+    while ([_pointerPointPickersToNotify pointerAtIndex:v5] != notificationsCopy)
     {
-      if (++v5 >= [v4 count])
+      if (++v5 >= [_pointerPointPickersToNotify count])
       {
         goto LABEL_7;
       }
     }
 
-    [v4 removePointerAtIndex:v5];
+    [_pointerPointPickersToNotify removePointerAtIndex:v5];
   }
 
 LABEL_7:
-  [v4 compact];
+  [_pointerPointPickersToNotify compact];
 }
 
-- (void)overrideMotionTrackerLookAtPoint:(CGPoint)a3
+- (void)overrideMotionTrackerLookAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(SCATScannerManager *)self inputController];
-  [v5 overrideMotionTrackerLookAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  inputController = [(SCATScannerManager *)self inputController];
+  [inputController overrideMotionTrackerLookAtPoint:{x, y}];
 }
 
 - (void)_resetRecipeTimeoutIfApplicable
@@ -2247,19 +2247,19 @@ LABEL_7:
   }
 
   [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"_exitRecipeOnTimeout" object:0];
-  v5 = [(SCATScannerManager *)self currentRecipe];
-  if (v5)
+  currentRecipe = [(SCATScannerManager *)self currentRecipe];
+  if (currentRecipe)
   {
-    v6 = v5;
-    v7 = [(SCATScannerManager *)self currentRecipe];
-    [v7 timeout];
+    v6 = currentRecipe;
+    currentRecipe2 = [(SCATScannerManager *)self currentRecipe];
+    [currentRecipe2 timeout];
     v9 = v8;
     v10 = AXSwitchRecipeTimeoutNone;
 
     if (v9 != v10)
     {
-      v11 = [(SCATScannerManager *)self currentRecipe];
-      [v11 timeout];
+      currentRecipe3 = [(SCATScannerManager *)self currentRecipe];
+      [currentRecipe3 timeout];
       [(SCATScannerManager *)self performSelector:"_exitRecipeOnTimeout" withObject:0 afterDelay:?];
     }
   }
@@ -2267,9 +2267,9 @@ LABEL_7:
 
 - (void)_exitRecipeOnTimeout
 {
-  v3 = [(SCATScannerManager *)self currentRecipe];
+  currentRecipe = [(SCATScannerManager *)self currentRecipe];
 
-  if (!v3)
+  if (!currentRecipe)
   {
     _AXAssert();
   }
@@ -2282,18 +2282,18 @@ LABEL_7:
 - (void)_applyLaunchRecipeUUID
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 switchControlLaunchRecipeUUID];
+  switchControlLaunchRecipeUUID = [v3 switchControlLaunchRecipeUUID];
 
-  if (v4)
+  if (switchControlLaunchRecipeUUID)
   {
     v5 = +[AXSettings sharedInstance];
-    v6 = [v5 switchControlRecipes];
+    switchControlRecipes = [v5 switchControlRecipes];
 
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = v6;
+    v7 = switchControlRecipes;
     v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
@@ -2309,9 +2309,9 @@ LABEL_7:
           }
 
           v12 = *(*(&v16 + 1) + 8 * i);
-          v13 = [v12 uuid];
-          v14 = [v3 switchControlLaunchRecipeUUID];
-          v15 = [v13 isEqual:v14];
+          uuid = [v12 uuid];
+          switchControlLaunchRecipeUUID2 = [v3 switchControlLaunchRecipeUUID];
+          v15 = [uuid isEqual:switchControlLaunchRecipeUUID2];
 
           if (v15)
           {
@@ -2334,33 +2334,33 @@ LABEL_12:
   }
 }
 
-- (void)_setCurrentRecipe:(id)a3 shouldShowAlert:(BOOL)a4
+- (void)_setCurrentRecipe:(id)recipe shouldShowAlert:(BOOL)alert
 {
-  v21 = a3;
+  recipeCopy = recipe;
   v6 = +[NSThread currentThread];
   v7 = +[NSThread mainThread];
 
   if (v6 != v7)
   {
-    v8 = _AXAssert();
+    _resetRecipeTimeoutIfApplicable = _AXAssert();
   }
 
-  v9 = v21;
-  if (v21)
+  v9 = recipeCopy;
+  if (recipeCopy)
   {
     v10 = +[AXSettings sharedInstance];
-    v11 = [v10 validateAndUpdateRecipeIfNeeded:v21];
+    v11 = [v10 validateAndUpdateRecipeIfNeeded:recipeCopy];
 
     if (v11)
     {
-      v9 = v21;
+      v9 = recipeCopy;
     }
 
     else
     {
       v12 = sub_100042B24(@"RECIPE_VALIDATION_FAILED_FORMAT");
-      v13 = [(AXSwitchRecipe *)v21 name];
-      v14 = [NSString stringWithFormat:v12, v13];
+      name = [(AXSwitchRecipe *)recipeCopy name];
+      v14 = [NSString stringWithFormat:v12, name];
       [(SCATScannerManager *)self _showSimpleBannerWithText:v14];
 
       v9 = 0;
@@ -2371,14 +2371,14 @@ LABEL_12:
   {
     v22 = v9;
     objc_storeStrong(&self->_currentRecipe, v9);
-    v15 = [(SCATScannerManager *)self inputController];
-    [v15 setRecipe:v22];
+    inputController = [(SCATScannerManager *)self inputController];
+    [inputController setRecipe:v22];
 
     if (v22 && ![(AXSwitchRecipe *)v22 shouldContinueScanning])
     {
       [(SCATScannerManager *)self addReasonToDisableScanning:@"Recipe"];
       [(SCATScannerManager *)self _updateScanningStyle];
-      if (a4)
+      if (alert)
       {
         goto LABEL_14;
       }
@@ -2388,14 +2388,14 @@ LABEL_12:
     {
       [(SCATScannerManager *)self removeReasonToDisableScanning:@"Recipe"];
       [(SCATScannerManager *)self _updateScanningStyle];
-      if (a4)
+      if (alert)
       {
         if (!v22)
         {
           v16 = +[HNDHandManager sharedManager];
-          v17 = [v16 mainDisplayManager];
+          mainDisplayManager = [v16 mainDisplayManager];
           v18 = sub_100042B24(@"RECIPE_DEACTIVATED");
-          [v17 showSimpleAlertWithText:v18];
+          [mainDisplayManager showSimpleAlertWithText:v18];
 LABEL_15:
 
           goto LABEL_16;
@@ -2403,46 +2403,46 @@ LABEL_15:
 
 LABEL_14:
         v16 = +[HNDHandManager sharedManager];
-        v17 = [v16 mainDisplayManager];
+        mainDisplayManager = [v16 mainDisplayManager];
         v18 = sub_100042B24(@"RECIPE_ACTIVATED_FORMAT");
-        v19 = [(AXSwitchRecipe *)v22 name];
-        v20 = [NSString stringWithFormat:v18, v19];
-        [v17 showSimpleAlertWithText:v20];
+        name2 = [(AXSwitchRecipe *)v22 name];
+        v20 = [NSString stringWithFormat:v18, name2];
+        [mainDisplayManager showSimpleAlertWithText:v20];
 
         goto LABEL_15;
       }
     }
 
 LABEL_16:
-    v8 = [(SCATScannerManager *)self _resetRecipeTimeoutIfApplicable];
+    _resetRecipeTimeoutIfApplicable = [(SCATScannerManager *)self _resetRecipeTimeoutIfApplicable];
     v9 = v22;
   }
 
-  _objc_release_x1(v8, v9);
+  _objc_release_x1(_resetRecipeTimeoutIfApplicable, v9);
 }
 
-- (void)_showSimpleAlertForProfile:(id)a3
+- (void)_showSimpleAlertForProfile:(id)profile
 {
-  v3 = a3;
+  profileCopy = profile;
   v8 = +[HNDHandManager sharedManager];
-  v4 = [v8 mainDisplayManager];
+  mainDisplayManager = [v8 mainDisplayManager];
   v5 = sub_100042B24(@"SWITCH_CONTROL_PROFILE_ALERT_TITLE");
-  v6 = [v3 name];
+  name = [profileCopy name];
 
-  v7 = [NSString stringWithFormat:v5, v6];
-  [v4 showSimpleAlertWithText:v7];
+  v7 = [NSString stringWithFormat:v5, name];
+  [mainDisplayManager showSimpleAlertWithText:v7];
 }
 
 - (void)calibrateEyeTracking
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 switchControlOnDeviceEyeTrackingEnabled];
+  switchControlOnDeviceEyeTrackingEnabled = [v2 switchControlOnDeviceEyeTrackingEnabled];
 
-  if (v3)
+  if (switchControlOnDeviceEyeTrackingEnabled)
   {
     v5 = +[HNDHandManager sharedManager];
-    v4 = [v5 mainDisplayManager];
-    [v4 setNeedsRecalibration:1];
+    mainDisplayManager = [v5 mainDisplayManager];
+    [mainDisplayManager setNeedsRecalibration:1];
   }
 }
 
@@ -2488,29 +2488,29 @@ LABEL_16:
 - (void)_handleForceTouchAction
 {
   y = CGPointZero.y;
-  v4 = [(SCATScannerManager *)self menu];
-  v5 = [v4 isVisible];
+  menu = [(SCATScannerManager *)self menu];
+  isVisible = [menu isVisible];
 
-  if (v5)
+  if (isVisible)
   {
-    v6 = [(SCATScannerManager *)self gestureProvider];
-    [v6 startingScreenPointForGestures];
+    gestureProvider = [(SCATScannerManager *)self gestureProvider];
+    [gestureProvider startingScreenPointForGestures];
     x = v7;
     v10 = v9;
 
-    v11 = [(SCATScannerManager *)self menu];
-    [v11 hideWithCompletion:0];
+    menu2 = [(SCATScannerManager *)self menu];
+    [menu2 hideWithCompletion:0];
   }
 
   else
   {
-    v12 = [(SCATScannerManager *)self activeScannerDriver];
-    v13 = [v12 focusContext];
-    v11 = [v13 element];
+    activeScannerDriver = [(SCATScannerManager *)self activeScannerDriver];
+    focusContext = [activeScannerDriver focusContext];
+    menu2 = [focusContext element];
 
-    if (v11)
+    if (menu2)
     {
-      [v11 scatScreenPointForOperations];
+      [menu2 scatScreenPointForOperations];
       x = v14;
       v10 = v15;
     }
@@ -2524,17 +2524,17 @@ LABEL_16:
 
   if (x != CGPointZero.x || v10 != y)
   {
-    v18 = [(SCATScannerManager *)self gestureProvider];
+    gestureProvider2 = [(SCATScannerManager *)self gestureProvider];
     v17 = [AXNamedReplayableGesture forceTouchGestureAtPoint:x, v10];
-    [v18 replayGesture:v17];
+    [gestureProvider2 replayGesture:v17];
   }
 }
 
 - (void)_handleDictationAction
 {
-  v3 = [(SCATScannerManager *)self menu];
-  v2 = [v3 keyboardApplication];
-  [v2 scatPerformAction:2049];
+  menu = [(SCATScannerManager *)self menu];
+  keyboardApplication = [menu keyboardApplication];
+  [keyboardApplication scatPerformAction:2049];
 }
 
 - (void)_handleTripleClickAction
@@ -2551,10 +2551,10 @@ LABEL_16:
 
 - (void)_handleEscapeAction
 {
-  v17 = [(SCATScannerManager *)self currentElement];
-  if ([v17 scatIsAXElement])
+  currentElement = [(SCATScannerManager *)self currentElement];
+  if ([currentElement scatIsAXElement])
   {
-    v3 = v17;
+    v3 = currentElement;
   }
 
   else
@@ -2563,29 +2563,29 @@ LABEL_16:
   }
 
   v4 = v3;
-  v5 = [(SCATScannerManager *)self menu];
-  v6 = [v5 isVisible];
+  menu = [(SCATScannerManager *)self menu];
+  isVisible = [menu isVisible];
 
-  if (v6)
+  if (isVisible)
   {
-    v7 = [(SCATScannerManager *)self menu];
-    [v7 hideWithCompletion:0];
+    menu2 = [(SCATScannerManager *)self menu];
+    [menu2 hideWithCompletion:0];
   }
 
   else
   {
-    v8 = [(SCATScannerManager *)self inputController];
-    if ([v8 isTadmorInputSourceConnected] && (objc_msgSend(v17, "scatIsMemberOfGroup") & 1) != 0)
+    inputController = [(SCATScannerManager *)self inputController];
+    if ([inputController isTadmorInputSourceConnected] && (objc_msgSend(currentElement, "scatIsMemberOfGroup") & 1) != 0)
     {
-      v9 = [v17 parentGroup];
-      v10 = [v9 isRootGroup];
+      parentGroup = [currentElement parentGroup];
+      isRootGroup = [parentGroup isRootGroup];
 
-      if ((v10 & 1) == 0)
+      if ((isRootGroup & 1) == 0)
       {
-        v11 = [(SCATScannerManager *)self activeScannerDriver];
-        v12 = [v17 parentGroup];
-        v13 = [(SCATScannerManager *)self elementNavController];
-        [v11 handleDrillOutOnGroup:v12 elementManager:v13];
+        activeScannerDriver = [(SCATScannerManager *)self activeScannerDriver];
+        parentGroup2 = [currentElement parentGroup];
+        elementNavController = [(SCATScannerManager *)self elementNavController];
+        [activeScannerDriver handleDrillOutOnGroup:parentGroup2 elementManager:elementNavController];
 
         goto LABEL_16;
       }
@@ -2602,47 +2602,47 @@ LABEL_16:
     }
 
     v14 = +[HNDAccessibilityManager sharedManager];
-    v7 = [v14 elementsForMatchingBlock:&stru_1001D7600];
+    menu2 = [v14 elementsForMatchingBlock:&stru_1001D7600];
 
-    v15 = [v7 firstObject];
-    if (v15)
+    firstObject = [menu2 firstObject];
+    if (firstObject)
     {
-      v16 = v15;
-      [v15 performAction:2013];
+      v16 = firstObject;
+      [firstObject performAction:2013];
     }
   }
 
 LABEL_16:
 }
 
-- (void)_handleScrollAction:(int64_t)a3
+- (void)_handleScrollAction:(int64_t)action
 {
-  if ((a3 - 215) >= 4)
+  if ((action - 215) >= 4)
   {
     v10 = SWCHLogCommon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
     {
-      sub_10012B664(a3, v10);
+      sub_10012B664(action, v10);
     }
   }
 
   else
   {
-    v4 = dword_1001BD530[a3 - 215];
-    v5 = [(SCATScannerManager *)self menu];
-    v6 = [v5 isVisible];
+    v4 = dword_1001BD530[action - 215];
+    menu = [(SCATScannerManager *)self menu];
+    isVisible = [menu isVisible];
 
-    if (v6)
+    if (isVisible)
     {
-      v7 = [(SCATScannerManager *)self menu];
-      [v7 hideWithCompletion:0];
+      menu2 = [(SCATScannerManager *)self menu];
+      [menu2 hideWithCompletion:0];
     }
 
-    v11 = [(SCATScannerManager *)self currentElement];
-    v8 = [v11 scrollableElement];
-    if ([v8 supportsAction:v4])
+    currentElement = [(SCATScannerManager *)self currentElement];
+    scrollableElement = [currentElement scrollableElement];
+    if ([scrollableElement supportsAction:v4])
     {
-      [v8 performAction:v4];
+      [scrollableElement performAction:v4];
     }
   }
 }
@@ -2673,27 +2673,27 @@ LABEL_16:
 
 - (void)_handleActiveHoldAndDragAction
 {
-  v3 = [(SCATScannerManager *)self menu];
-  v4 = [v3 isVisible];
+  menu = [(SCATScannerManager *)self menu];
+  isVisible = [menu isVisible];
 
-  if (v4)
+  if (isVisible)
   {
-    v5 = [(SCATScannerManager *)self menu];
-    [v5 hideWithCompletion:0];
+    menu2 = [(SCATScannerManager *)self menu];
+    [menu2 hideWithCompletion:0];
 
-    v9 = [(SCATScannerManager *)self gestureProvider];
-    v6 = [(SCATScannerManager *)self gestureProvider];
-    [v6 startingScreenPointForGestures];
+    gestureProvider = [(SCATScannerManager *)self gestureProvider];
+    gestureProvider2 = [(SCATScannerManager *)self gestureProvider];
+    [gestureProvider2 startingScreenPointForGestures];
   }
 
   else
   {
-    v9 = [(SCATScannerManager *)self gestureProvider];
-    v6 = [(SCATScannerManager *)self pointPicker];
-    [v6 pickedPointInDeviceCoordinates];
+    gestureProvider = [(SCATScannerManager *)self gestureProvider];
+    gestureProvider2 = [(SCATScannerManager *)self pointPicker];
+    [gestureProvider2 pickedPointInDeviceCoordinates];
   }
 
-  [v9 toggleActiveHoldAndDragGestureAtScreenPoint:-[SCATScannerManager currentDisplayID](self withDisplayID:{"currentDisplayID"), v7, v8}];
+  [gestureProvider toggleActiveHoldAndDragGestureAtScreenPoint:-[SCATScannerManager currentDisplayID](self withDisplayID:{"currentDisplayID"), v7, v8}];
 }
 
 - (void)_handleAppleWatchRemoteScreen
@@ -2705,13 +2705,13 @@ LABEL_16:
 - (BOOL)canAdvertise
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 switchControlDeviceMenuItems];
+  switchControlDeviceMenuItems = [v2 switchControlDeviceMenuItems];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = v3;
+  obj = switchControlDeviceMenuItems;
   v4 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v4)
   {
@@ -2732,11 +2732,11 @@ LABEL_16:
 
         v12 = *(*(&v19 + 1) + 8 * i);
         v13 = [v12 objectForKeyedSubscript:v8];
-        v14 = [v13 BOOLValue];
+        bOOLValue = [v13 BOOLValue];
 
         v15 = [v12 objectForKeyedSubscript:v9];
         v16 = v15;
-        if (v14)
+        if (bOOLValue)
         {
           v6 |= [v15 isEqualToString:v10];
         }
@@ -2756,13 +2756,13 @@ LABEL_16:
   return v6 & 1;
 }
 
-- (void)didConnectAsForwarderToDeviceWithName:(id)a3
+- (void)didConnectAsForwarderToDeviceWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = sub_100042B24(@"CONNECTED_TO_RECEIVER_FORMAT");
-  v6 = [NSString stringWithFormat:v5, v4];
+  nameCopy = [NSString stringWithFormat:v5, nameCopy];
 
-  [(SCATScannerManager *)self _showSimpleBannerWithText:v6];
+  [(SCATScannerManager *)self _showSimpleBannerWithText:nameCopy];
   [(SCATScannerManager *)self addReasonToDisableScanning:@"ForwardingActions"];
   if ((CPSetPowerAssertionWithIdentifier() & 1) == 0)
   {
@@ -2774,9 +2774,9 @@ LABEL_16:
   }
 }
 
-- (void)didConnectAsReceiverWithSettings:(id)a3
+- (void)didConnectAsReceiverWithSettings:(id)settings
 {
-  v3 = a3;
+  settingsCopy = settings;
   if (!_AXSAssistiveTouchScannerEnabled())
   {
     _AXSAssistiveTouchScannerSetEnabled();
@@ -2788,11 +2788,11 @@ LABEL_16:
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         v8 = 138412290;
-        v9 = v3;
+        v9 = settingsCopy;
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Applying forwarder device settings %@", &v8, 0xCu);
       }
 
-      sub_100044950(v3);
+      sub_100044950(settingsCopy);
       [v4 setAssistiveTouchSwitchUsageConfirmed:1];
     }
   }
@@ -2804,22 +2804,22 @@ LABEL_16:
   [v7 wakeDeviceFromSleepIfNecessary];
 }
 
-- (void)didDisconnectAsForwarderFromDeviceWithName:(id)a3
+- (void)didDisconnectAsForwarderFromDeviceWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = AXSSLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138477827;
-    v10 = v4;
+    v10 = nameCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Did disconnect as forwarder from device name: %{private}@.", buf, 0xCu);
   }
 
   if (_AXSAssistiveTouchScannerEnabled())
   {
     v6 = sub_100042B24(@"DISCONNECTED_FROM_RECEIVER_FORMAT");
-    v7 = [NSString stringWithFormat:v6, v4];
-    [(SCATScannerManager *)self _showSimpleBannerWithText:v7];
+    nameCopy = [NSString stringWithFormat:v6, nameCopy];
+    [(SCATScannerManager *)self _showSimpleBannerWithText:nameCopy];
   }
 
   [(SCATScannerManager *)self removeReasonToDisableScanning:@"ForwardingActions"];
@@ -2843,9 +2843,9 @@ LABEL_16:
   }
 
   v4 = +[AXSettings sharedInstance];
-  v5 = [v4 switchControlIsEnabledAsReceiver];
+  switchControlIsEnabledAsReceiver = [v4 switchControlIsEnabledAsReceiver];
 
-  if (v5)
+  if (switchControlIsEnabledAsReceiver)
   {
     v6 = +[AXSettings sharedInstance];
     [v6 setSwitchControlIsEnabledAsReceiver:0];
@@ -2865,17 +2865,17 @@ LABEL_16:
 
 - (void)didBecomeIdle
 {
-  v2 = [(SCATScannerManager *)self delegate];
-  [v2 stopIfAllowed];
+  delegate = [(SCATScannerManager *)self delegate];
+  [delegate stopIfAllowed];
 }
 
 - (void)_removeInterdeviceSwitches
 {
   v2 = +[AXSettings sharedInstance];
-  v6 = [v2 assistiveTouchSwitches];
+  assistiveTouchSwitches = [v2 assistiveTouchSwitches];
 
-  v3 = [v6 mutableCopy];
-  v4 = [v6 objectsPassingTest:&stru_1001D7620];
+  v3 = [assistiveTouchSwitches mutableCopy];
+  v4 = [assistiveTouchSwitches objectsPassingTest:&stru_1001D7620];
   [v3 minusSet:v4];
   v5 = +[AXSettings sharedInstance];
   [v5 setAssistiveTouchSwitches:v3];
@@ -2884,40 +2884,40 @@ LABEL_16:
 - (void)_disableUserInterfaceClientForPotentialReceiver
 {
   v3 = +[HNDHandManager sharedManager];
-  v2 = [v3 mainDisplayManager];
-  [v2 removeUserInterfaceClientEnabler:@"PotentialReceiver"];
+  mainDisplayManager = [v3 mainDisplayManager];
+  [mainDisplayManager removeUserInterfaceClientEnabler:@"PotentialReceiver"];
 }
 
-- (void)highlightAsPotentialReceiverForDeviceWithName:(id)a3
+- (void)highlightAsPotentialReceiverForDeviceWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"_disableUserInterfaceClientForPotentialReceiver" object:0];
   v5 = +[HNDHandManager sharedManager];
-  v6 = [v5 mainDisplayManager];
-  [v6 addUserInterfaceClientEnabler:@"PotentialReceiver"];
+  mainDisplayManager = [v5 mainDisplayManager];
+  [mainDisplayManager addUserInterfaceClientEnabler:@"PotentialReceiver"];
 
   v7 = +[HNDEventManager sharedManager];
   [v7 wakeDeviceFromSleepIfNecessary];
 
   v8 = sub_100042B24(@"POTENTIAL_RECEIVER_MESSAGE_FORMAT");
-  v9 = [NSString stringWithFormat:v8, v4];
+  nameCopy = [NSString stringWithFormat:v8, nameCopy];
 
-  [(SCATScannerManager *)self _showSimpleBannerWithText:v9];
+  [(SCATScannerManager *)self _showSimpleBannerWithText:nameCopy];
 
   [(SCATScannerManager *)self performSelector:"_disableUserInterfaceClientForPotentialReceiver" withObject:0 afterDelay:15.0];
 }
 
-- (void)_driver:(id)a3 outputAudioForContext:(id)a4
+- (void)_driver:(id)_driver outputAudioForContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SCATScannerManager *)self areSoundEffectsEnabled];
-  if (v7 && v8 && ([v7 shouldSuppressAudioOutput] & 1) == 0)
+  _driverCopy = _driver;
+  contextCopy = context;
+  areSoundEffectsEnabled = [(SCATScannerManager *)self areSoundEffectsEnabled];
+  if (contextCopy && areSoundEffectsEnabled && ([contextCopy shouldSuppressAudioOutput] & 1) == 0)
   {
-    v9 = [v7 shouldPlayMenuSoundOnFocus];
-    v10 = [(SCATScannerManager *)self outputManager];
-    v11 = v10;
-    if (v9)
+    shouldPlayMenuSoundOnFocus = [contextCopy shouldPlayMenuSoundOnFocus];
+    outputManager = [(SCATScannerManager *)self outputManager];
+    v11 = outputManager;
+    if (shouldPlayMenuSoundOnFocus)
     {
       v12 = 1002;
     }
@@ -2927,42 +2927,42 @@ LABEL_16:
       v12 = 1000;
     }
 
-    [v10 playSound:v12];
+    [outputManager playSound:v12];
   }
 
-  if (-[SCATScannerManager isSpeechEnabled](self, "isSpeechEnabled") && ([v7 shouldSuppressAudioOutput] & 1) == 0)
+  if (-[SCATScannerManager isSpeechEnabled](self, "isSpeechEnabled") && ([contextCopy shouldSuppressAudioOutput] & 1) == 0)
   {
-    v13 = [v7 element];
-    v14 = [v13 scatSpeakableDescription];
+    element = [contextCopy element];
+    scatSpeakableDescription = [element scatSpeakableDescription];
 
-    if ([v14 length])
+    if ([scatSpeakableDescription length])
     {
-      v15 = [(SCATScannerManager *)self outputManager];
-      v16 = [v15 scanningInterruptsSpeech];
+      outputManager2 = [(SCATScannerManager *)self outputManager];
+      scanningInterruptsSpeech = [outputManager2 scanningInterruptsSpeech];
 
-      v17 = [(SCATScannerManager *)self outputManager];
-      v18 = v17;
-      if (v16)
+      outputManager3 = [(SCATScannerManager *)self outputManager];
+      v18 = outputManager3;
+      if (scanningInterruptsSpeech)
       {
-        [v17 outputScannerFocusContext:v7 completion:0];
+        [outputManager3 outputScannerFocusContext:contextCopy completion:0];
       }
 
       else
       {
-        [v6 outputManager:v17 willSpeakFocusContext:v7];
+        [_driverCopy outputManager:outputManager3 willSpeakFocusContext:contextCopy];
 
-        v19 = [(SCATScannerManager *)self outputManager];
-        objc_initWeak(&location, v19);
+        outputManager4 = [(SCATScannerManager *)self outputManager];
+        objc_initWeak(&location, outputManager4);
 
-        v20 = [(SCATScannerManager *)self outputManager];
+        outputManager5 = [(SCATScannerManager *)self outputManager];
         v21[0] = _NSConcreteStackBlock;
         v21[1] = 3221225472;
         v21[2] = sub_1000E5C38;
         v21[3] = &unk_1001D7670;
-        v22 = v6;
+        v22 = _driverCopy;
         objc_copyWeak(&v24, &location);
-        v23 = v7;
-        [v20 outputScannerFocusContext:v23 completion:v21];
+        v23 = contextCopy;
+        [outputManager5 outputScannerFocusContext:v23 completion:v21];
 
         objc_destroyWeak(&v24);
         objc_destroyWeak(&location);
@@ -2971,12 +2971,12 @@ LABEL_16:
   }
 }
 
-- (void)driver:(id)a3 didFocusOnContext:(id)a4 oldContext:(id)a5
+- (void)driver:(id)driver didFocusOnContext:(id)context oldContext:(id)oldContext
 {
-  v17 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v8 isFirstInSequence])
+  driverCopy = driver;
+  contextCopy = context;
+  oldContextCopy = oldContext;
+  if ([contextCopy isFirstInSequence])
   {
     v10 = 4;
   }
@@ -2987,32 +2987,32 @@ LABEL_16:
   }
 
   v11 = ![(SCATScannerManager *)self isGroupingEnabled];
-  v12 = [(SCATScannerManager *)self menu];
-  v13 = [v12 isVisible];
+  menu = [(SCATScannerManager *)self menu];
+  isVisible = [menu isVisible];
 
-  if (v13)
+  if (isVisible)
   {
-    v14 = [(SCATScannerManager *)self menu];
-    v15 = [v14 element];
-    [v8 setMenuElement:v15];
+    menu2 = [(SCATScannerManager *)self menu];
+    element = [menu2 element];
+    [contextCopy setMenuElement:element];
   }
 
-  v16 = [(SCATScannerManager *)self cursorManager];
-  [v16 updateWithFocusContext:v8 animated:0 options:v10 | v11];
+  cursorManager = [(SCATScannerManager *)self cursorManager];
+  [cursorManager updateWithFocusContext:contextCopy animated:0 options:v10 | v11];
 
   if ([(SCATScannerManager *)self isActive])
   {
-    [(SCATScannerManager *)self _driver:v17 outputAudioForContext:v8];
+    [(SCATScannerManager *)self _driver:driverCopy outputAudioForContext:contextCopy];
   }
 
   [(SCATScannerManager *)self setFocusContextForResume:0];
   [(SCATScannerManager *)self setDidSetFocusContextForResume:0];
-  [(SCATScannerManager *)self _notifyObserversScannerDidFocusOnContext:v8 oldContext:v9];
+  [(SCATScannerManager *)self _notifyObserversScannerDidFocusOnContext:contextCopy oldContext:oldContextCopy];
 }
 
-- (void)driverDidPause:(id)a3
+- (void)driverDidPause:(id)pause
 {
-  if ([(SCATScannerManager *)self _isScannerControlledByDriver:a3])
+  if ([(SCATScannerManager *)self _isScannerControlledByDriver:pause])
   {
     [(SCATScannerManager *)self hideUIContext:1];
     [(SCATScannerManager *)self _updateAudioSessionState];
@@ -3021,9 +3021,9 @@ LABEL_16:
   [(SCATScannerManager *)self _notifyObserversScannerDidPause];
 }
 
-- (void)driverDidBecomeInactive:(id)a3
+- (void)driverDidBecomeInactive:(id)inactive
 {
-  if ([(SCATScannerManager *)self _isScannerControlledByDriver:a3])
+  if ([(SCATScannerManager *)self _isScannerControlledByDriver:inactive])
   {
     [(SCATScannerManager *)self hideUIContext:1];
     [(SCATScannerManager *)self _updateAudioSessionState];
@@ -3032,33 +3032,33 @@ LABEL_16:
   [(SCATScannerManager *)self _notifyObserversScannerDidBecomeInactive];
 }
 
-- (void)driverDidBecomeActive:(id)a3 didChange:(BOOL)a4
+- (void)driverDidBecomeActive:(id)active didChange:(BOOL)change
 {
-  v4 = a4;
-  v7 = a3;
+  changeCopy = change;
+  activeCopy = active;
   if ([(SCATScannerManager *)self _isScannerControlledByDriver:?])
   {
     [(SCATScannerManager *)self showUIContext:1];
     [(SCATScannerManager *)self _updateAudioSessionState];
-    if (v4)
+    if (changeCopy)
     {
-      v6 = [(SCATScannerManager *)self currentFocusContext];
-      [(SCATScannerManager *)self _driver:v7 outputAudioForContext:v6];
+      currentFocusContext = [(SCATScannerManager *)self currentFocusContext];
+      [(SCATScannerManager *)self _driver:activeCopy outputAudioForContext:currentFocusContext];
 
       [(SCATScannerManager *)self _notifyObserversScannerDidBecomeActive];
     }
   }
 }
 
-- (void)driver:(id)a3 indicateDwellScanningWillAbort:(BOOL)a4
+- (void)driver:(id)driver indicateDwellScanningWillAbort:(BOOL)abort
 {
-  v4 = a4;
-  v9 = a3;
+  abortCopy = abort;
+  driverCopy = driver;
   if ([(SCATScannerManager *)self _isScannerControlledByDriver:?])
   {
-    v6 = [(SCATScannerManager *)self cursorManager];
-    v7 = [v9 focusContext];
-    if (v4)
+    cursorManager = [(SCATScannerManager *)self cursorManager];
+    focusContext = [driverCopy focusContext];
+    if (abortCopy)
     {
       v8 = 8;
     }
@@ -3068,101 +3068,101 @@ LABEL_16:
       v8 = 0;
     }
 
-    [v6 updateWithFocusContext:v7 animated:0 options:v8];
+    [cursorManager updateWithFocusContext:focusContext animated:0 options:v8];
   }
 }
 
-- (void)actionHandlerForUIDidCancelPendingAction:(id)a3
+- (void)actionHandlerForUIDidCancelPendingAction:(id)action
 {
-  v4 = a3;
-  v5 = [(SCATScannerManager *)self selectActionHandler];
-  v6 = [v4 isEqual:v5];
+  actionCopy = action;
+  selectActionHandler = [(SCATScannerManager *)self selectActionHandler];
+  v6 = [actionCopy isEqual:selectActionHandler];
 
   if (v6)
   {
-    v7 = [(SCATScannerManager *)self cursorManager];
-    [v7 cancelSelectTimeoutAnimationIfNeeded];
+    cursorManager = [(SCATScannerManager *)self cursorManager];
+    [cursorManager cancelSelectTimeoutAnimationIfNeeded];
 
-    v8 = [(SCATScannerManager *)self autoScanningDriver];
-    [v8 resumeAutoscanning:1];
+    autoScanningDriver = [(SCATScannerManager *)self autoScanningDriver];
+    [autoScanningDriver resumeAutoscanning:1];
   }
 }
 
-- (void)actionHandlerForUIWillFireAction:(id)a3
+- (void)actionHandlerForUIWillFireAction:(id)action
 {
-  v4 = a3;
-  v5 = [(SCATScannerManager *)self selectActionHandler];
-  v6 = [v4 isEqual:v5];
+  actionCopy = action;
+  selectActionHandler = [(SCATScannerManager *)self selectActionHandler];
+  v6 = [actionCopy isEqual:selectActionHandler];
 
   if (v6)
   {
-    v7 = [(SCATScannerManager *)self cursorManager];
-    [v7 cancelSelectTimeoutAnimationIfNeeded];
+    cursorManager = [(SCATScannerManager *)self cursorManager];
+    [cursorManager cancelSelectTimeoutAnimationIfNeeded];
 
-    v8 = [(SCATScannerManager *)self autoScanningDriver];
-    [v8 resumeAutoscanning:1];
+    autoScanningDriver = [(SCATScannerManager *)self autoScanningDriver];
+    [autoScanningDriver resumeAutoscanning:1];
   }
 }
 
-- (void)actionHandlerForUI:(id)a3 willPerformDelayedActionOnContext:(id)a4 withCount:(unint64_t)a5
+- (void)actionHandlerForUI:(id)i willPerformDelayedActionOnContext:(id)context withCount:(unint64_t)count
 {
-  v7 = a3;
-  v8 = [(SCATScannerManager *)self selectActionHandler];
-  v9 = [v7 isEqual:v8];
+  iCopy = i;
+  selectActionHandler = [(SCATScannerManager *)self selectActionHandler];
+  v9 = [iCopy isEqual:selectActionHandler];
 
-  if (a5 == 1 && v9)
+  if (count == 1 && v9)
   {
-    v10 = [(SCATScannerManager *)self activeElementManager];
-    [v10 hideIfNeeded:0];
+    activeElementManager = [(SCATScannerManager *)self activeElementManager];
+    [activeElementManager hideIfNeeded:0];
 
-    v11 = [(SCATScannerManager *)self autoScanningDriver];
-    [v11 pauseAutoscanning];
+    autoScanningDriver = [(SCATScannerManager *)self autoScanningDriver];
+    [autoScanningDriver pauseAutoscanning];
 
-    v13 = [(SCATScannerManager *)self cursorManager];
-    v12 = [(SCATScannerManager *)self selectActionHandler];
-    [v12 timeoutDuration];
-    [v13 beginSelectTimeoutAnimation:?];
+    cursorManager = [(SCATScannerManager *)self cursorManager];
+    selectActionHandler2 = [(SCATScannerManager *)self selectActionHandler];
+    [selectActionHandler2 timeoutDuration];
+    [cursorManager beginSelectTimeoutAnimation:?];
   }
 }
 
-- (BOOL)cursorManagerShouldHideMenuCursor:(id)a3
+- (BOOL)cursorManagerShouldHideMenuCursor:(id)cursor
 {
-  v3 = [(SCATScannerManager *)self menu];
-  v4 = [v3 shouldHideMenuCursor];
+  menu = [(SCATScannerManager *)self menu];
+  shouldHideMenuCursor = [menu shouldHideMenuCursor];
 
-  return v4;
+  return shouldHideMenuCursor;
 }
 
-- (void)accessibilityManager:(id)a3 didReceiveEvent:(int64_t)a4 data:(id)a5
+- (void)accessibilityManager:(id)manager didReceiveEvent:(int64_t)event data:(id)data
 {
-  v17 = a3;
-  v8 = a5;
-  if (a4 <= 5)
+  managerCopy = manager;
+  dataCopy = data;
+  if (event <= 5)
   {
-    if (a4 <= 3)
+    if (event <= 3)
     {
-      if (a4 == 1)
+      if (event == 1)
       {
-        [(SCATScannerManager *)self handleScreenChange:v8];
+        [(SCATScannerManager *)self handleScreenChange:dataCopy];
       }
 
-      else if (a4 == 2)
+      else if (event == 2)
       {
-        [(SCATScannerManager *)self handleAlertDidAppear:v8];
+        [(SCATScannerManager *)self handleAlertDidAppear:dataCopy];
       }
 
       goto LABEL_23;
     }
 
     [(SCATScannerManager *)self activeElementManager];
-    if (a4 == 4)
-      v12 = {;
-      [v12 appTransitionDidOccur:self];
+    if (event == 4)
+      menu2 = {;
+      [menu2 appTransitionDidOccur:self];
     }
 
     else
-      v12 = {;
-      [v12 firstResponderDidChange:self];
+      menu2 = {;
+      [menu2 firstResponderDidChange:self];
     }
 
 LABEL_21:
@@ -3170,51 +3170,51 @@ LABEL_21:
     goto LABEL_23;
   }
 
-  if (a4 > 9)
+  if (event > 9)
   {
-    if (a4 == 10)
+    if (event == 10)
     {
-      [(SCATScannerManager *)self handleAnnouncement:v8];
+      [(SCATScannerManager *)self handleAnnouncement:dataCopy];
     }
 
-    else if (a4 == 11)
+    else if (event == 11)
     {
-      [(SCATScannerManager *)self handleStopSpeaking:v8];
+      [(SCATScannerManager *)self handleStopSpeaking:dataCopy];
     }
   }
 
   else
   {
-    if (a4 == 6)
+    if (event == 6)
     {
-      v13 = [(SCATScannerManager *)self gestureProvider];
-      [v13 orientationDidChange:self];
+      gestureProvider = [(SCATScannerManager *)self gestureProvider];
+      [gestureProvider orientationDidChange:self];
 
-      v14 = [(SCATScannerManager *)self activeElementManager];
-      [v14 orientationDidChange:self];
+      activeElementManager = [(SCATScannerManager *)self activeElementManager];
+      [activeElementManager orientationDidChange:self];
 
-      v15 = [(SCATScannerManager *)self activeElementManager];
-      v16 = [(SCATScannerManager *)self menu];
+      activeElementManager2 = [(SCATScannerManager *)self activeElementManager];
+      menu = [(SCATScannerManager *)self menu];
 
-      if (v15 == v16)
+      if (activeElementManager2 == menu)
       {
         goto LABEL_23;
       }
 
-      v12 = [(SCATScannerManager *)self menu];
-      [v12 orientationDidChange:self];
+      menu2 = [(SCATScannerManager *)self menu];
+      [menu2 orientationDidChange:self];
       goto LABEL_21;
     }
 
-    if (a4 == 7)
+    if (event == 7)
     {
-      v9 = [(SCATScannerManager *)self outputManager];
-      v10 = [v9 areSoundEffectsEnabled];
+      outputManager = [(SCATScannerManager *)self outputManager];
+      areSoundEffectsEnabled = [outputManager areSoundEffectsEnabled];
 
-      if (v10)
+      if (areSoundEffectsEnabled)
       {
-        v11 = [(SCATScannerManager *)self outputManager];
-        [v11 playSound:1006];
+        outputManager2 = [(SCATScannerManager *)self outputManager];
+        [outputManager2 playSound:1006];
       }
 
       [(SCATScannerManager *)self _setCurrentRecipe:0 shouldShowAlert:0];
@@ -3225,171 +3225,171 @@ LABEL_21:
 LABEL_23:
 }
 
-- (void)accessibilityManager:(id)a3 screenWillChange:(__CFData *)a4
+- (void)accessibilityManager:(id)manager screenWillChange:(__CFData *)change
 {
-  v5 = [(SCATScannerManager *)self activeElementManager:a3];
+  v5 = [(SCATScannerManager *)self activeElementManager:manager];
   [v5 screenWillChange:self];
 }
 
-- (int)_validatedSelectBehaviorForCurrentSelectBehavior:(int)a3 replacementElement:(id)a4
+- (int)_validatedSelectBehaviorForCurrentSelectBehavior:(int)behavior replacementElement:(id)element
 {
-  v4 = a3;
-  if ((a3 - 3) <= 1 && ![a4 isGroup])
+  behaviorCopy = behavior;
+  if ((behavior - 3) <= 1 && ![element isGroup])
   {
     return 0;
   }
 
-  return v4;
+  return behaviorCopy;
 }
 
-- (void)handleAnnouncement:(id)a3
+- (void)handleAnnouncement:(id)announcement
 {
-  v7 = a3;
-  v4 = [(SCATScannerManager *)self outputManager];
-  v5 = [v4 isSpeechEnabled];
+  announcementCopy = announcement;
+  outputManager = [(SCATScannerManager *)self outputManager];
+  isSpeechEnabled = [outputManager isSpeechEnabled];
 
-  if (v5)
+  if (isSpeechEnabled)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ([v7 hasPrefix:@"AXAnnouncementType"] & 1) == 0 && (objc_msgSend(v7, "isEqualToString:", kAXAnnouncementCollaborationOccurredSound) & 1) == 0)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ([announcementCopy hasPrefix:@"AXAnnouncementType"] & 1) == 0 && (objc_msgSend(announcementCopy, "isEqualToString:", kAXAnnouncementCollaborationOccurredSound) & 1) == 0)
     {
-      v6 = [(SCATScannerManager *)self outputManager];
-      [v6 outputScannerAnnouncement:v7 completionBlock:0];
+      outputManager2 = [(SCATScannerManager *)self outputManager];
+      [outputManager2 outputScannerAnnouncement:announcementCopy completionBlock:0];
     }
   }
 }
 
-- (void)handleAlertDidAppear:(id)a3
+- (void)handleAlertDidAppear:(id)appear
 {
-  v4 = [(SCATScannerManager *)self activeElementManager];
-  [v4 alertDidAppear:self];
+  activeElementManager = [(SCATScannerManager *)self activeElementManager];
+  [activeElementManager alertDidAppear:self];
 
-  v5 = [(SCATScannerManager *)self outputManager];
-  v6 = [v5 areSoundEffectsEnabled];
+  outputManager = [(SCATScannerManager *)self outputManager];
+  areSoundEffectsEnabled = [outputManager areSoundEffectsEnabled];
 
-  if (v6)
+  if (areSoundEffectsEnabled)
   {
-    v7 = [(SCATScannerManager *)self outputManager];
-    [v7 playSound:1003];
+    outputManager2 = [(SCATScannerManager *)self outputManager];
+    [outputManager2 playSound:1003];
   }
 }
 
-- (void)handleScreenChange:(id)a3
+- (void)handleScreenChange:(id)change
 {
-  v4 = a3;
-  v5 = [(SCATScannerManager *)self outputManager];
-  v6 = [v5 areSoundEffectsEnabled];
+  changeCopy = change;
+  outputManager = [(SCATScannerManager *)self outputManager];
+  areSoundEffectsEnabled = [outputManager areSoundEffectsEnabled];
 
-  if (v6)
+  if (areSoundEffectsEnabled)
   {
-    v7 = [(SCATScannerManager *)self outputManager];
-    [v7 playSound:1005];
+    outputManager2 = [(SCATScannerManager *)self outputManager];
+    [outputManager2 playSound:1005];
   }
 
-  v8 = [(SCATScannerManager *)self activeElementManager];
-  [v8 screenDidChange:self data:v4];
+  activeElementManager = [(SCATScannerManager *)self activeElementManager];
+  [activeElementManager screenDidChange:self data:changeCopy];
 }
 
-- (void)handleStopSpeaking:(id)a3
+- (void)handleStopSpeaking:(id)speaking
 {
-  v4 = [(SCATScannerManager *)self outputManager];
-  v5 = [v4 isSpeechEnabled];
+  outputManager = [(SCATScannerManager *)self outputManager];
+  isSpeechEnabled = [outputManager isSpeechEnabled];
 
-  if (v5)
+  if (isSpeechEnabled)
   {
-    v6 = [(SCATScannerManager *)self outputManager];
-    [v6 cancelSpeech];
+    outputManager2 = [(SCATScannerManager *)self outputManager];
+    [outputManager2 cancelSpeech];
   }
 }
 
-- (void)_updateMenuAfterElementFetchFoundNewElements:(BOOL)a3
+- (void)_updateMenuAfterElementFetchFoundNewElements:(BOOL)elements
 {
-  v3 = a3;
+  elementsCopy = elements;
   if ([(SCATScannerManager *)self isActive]&& ([(SCATScannerManager *)self activeElementManager], v5 = objc_claimAutoreleasedReturnValue(), [(SCATScannerManager *)self menu], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v5 == v6))
   {
-    v7 = [(SCATScannerManager *)self currentElement];
+    currentElement = [(SCATScannerManager *)self currentElement];
   }
 
   else
   {
-    v7 = 0;
+    currentElement = 0;
   }
 
   v18 = 0;
-  v8 = [(SCATScannerManager *)self menu];
-  v9 = [v8 updateAfterFetchWithCurrentlyScannedElement:v7 options:&v18];
+  menu = [(SCATScannerManager *)self menu];
+  v9 = [menu updateAfterFetchWithCurrentlyScannedElement:currentElement options:&v18];
 
   if (v9)
   {
-    v10 = [(SCATScannerManager *)self currentFocusContext];
-    v11 = -[SCATScannerManager _validatedSelectBehaviorForCurrentSelectBehavior:replacementElement:](self, "_validatedSelectBehaviorForCurrentSelectBehavior:replacementElement:", [v10 selectBehavior], v9);
+    currentFocusContext = [(SCATScannerManager *)self currentFocusContext];
+    v11 = -[SCATScannerManager _validatedSelectBehaviorForCurrentSelectBehavior:replacementElement:](self, "_validatedSelectBehaviorForCurrentSelectBehavior:replacementElement:", [currentFocusContext selectBehavior], v9);
 
-    v12 = [(SCATScannerManager *)self menu];
-    v13 = [SCATFocusContext focusContextWithElement:v9 elementManager:v12 selectBehavior:v11 options:v18];
-    [(SCATScannerManager *)self continueScanningWithFocusContext:v13 foundNewElements:v3];
+    menu2 = [(SCATScannerManager *)self menu];
+    v13 = [SCATFocusContext focusContextWithElement:v9 elementManager:menu2 selectBehavior:v11 options:v18];
+    [(SCATScannerManager *)self continueScanningWithFocusContext:v13 foundNewElements:elementsCopy];
   }
 
-  v14 = [(SCATScannerManager *)self currentFocusContext];
-  v15 = [(SCATScannerManager *)self menu];
-  v16 = [v15 element];
-  [v14 setMenuElement:v16];
+  currentFocusContext2 = [(SCATScannerManager *)self currentFocusContext];
+  menu3 = [(SCATScannerManager *)self menu];
+  element = [menu3 element];
+  [currentFocusContext2 setMenuElement:element];
 
-  v17 = [(SCATScannerManager *)self cursorManager];
-  [v17 updateWithFocusContext:v14 animated:0 options:0];
+  cursorManager = [(SCATScannerManager *)self cursorManager];
+  [cursorManager updateWithFocusContext:currentFocusContext2 animated:0 options:0];
 }
 
-- (void)accessibilityManager:(id)a3 didFetchElementsForEvent:(int64_t)a4 foundNewElements:(BOOL)a5
+- (void)accessibilityManager:(id)manager didFetchElementsForEvent:(int64_t)event foundNewElements:(BOOL)elements
 {
-  v5 = a5;
-  v7 = a3;
-  if (!_AXSInUnitTestMode() || ([(SCATScannerManager *)self testAxManager], v8 = objc_claimAutoreleasedReturnValue(), v8, v8 == v7))
+  elementsCopy = elements;
+  managerCopy = manager;
+  if (!_AXSInUnitTestMode() || ([(SCATScannerManager *)self testAxManager], v8 = objc_claimAutoreleasedReturnValue(), v8, v8 == managerCopy))
   {
-    v9 = [(SCATScannerManager *)self activeElementManager];
+    activeElementManager = [(SCATScannerManager *)self activeElementManager];
     [(SCATScannerManager *)self _updateActiveElementManager];
-    v10 = [(SCATScannerManager *)self activeElementManager];
+    activeElementManager2 = [(SCATScannerManager *)self activeElementManager];
 
-    if (v10)
+    if (activeElementManager2)
     {
-      v11 = [(SCATScannerManager *)self activeElementManager];
-      v12 = [(SCATScannerManager *)self currentFocusContext];
-      v13 = [(SCATScannerManager *)self activeElementManager];
-      [v11 didFetchElements:self foundNewElements:v5 currentFocusContext:v12 didChangeActiveElementManager:v9 != v13];
+      activeElementManager3 = [(SCATScannerManager *)self activeElementManager];
+      currentFocusContext = [(SCATScannerManager *)self currentFocusContext];
+      activeElementManager4 = [(SCATScannerManager *)self activeElementManager];
+      [activeElementManager3 didFetchElements:self foundNewElements:elementsCopy currentFocusContext:currentFocusContext didChangeActiveElementManager:activeElementManager != activeElementManager4];
     }
 
     else
     {
-      v14 = [(SCATScannerManager *)self beginScanningTimer];
-      [v14 cancel];
+      beginScanningTimer = [(SCATScannerManager *)self beginScanningTimer];
+      [beginScanningTimer cancel];
 
-      v11 = [(SCATScannerManager *)self beginScanningTimer];
+      activeElementManager3 = [(SCATScannerManager *)self beginScanningTimer];
       v24[0] = _NSConcreteStackBlock;
       v24[1] = 3221225472;
       v24[2] = sub_1000E6D00;
       v24[3] = &unk_1001D3488;
       v24[4] = self;
-      [v11 afterDelay:v24 processBlock:1.0];
+      [activeElementManager3 afterDelay:v24 processBlock:1.0];
     }
 
-    v15 = [(SCATScannerManager *)self menu];
-    v16 = [v15 isVisible];
+    menu = [(SCATScannerManager *)self menu];
+    isVisible = [menu isVisible];
 
-    if (v16)
+    if (isVisible)
     {
-      v17 = [(SCATScannerManager *)self menu];
-      v18 = [v17 element];
+      menu2 = [(SCATScannerManager *)self menu];
+      element = [menu2 element];
 
-      if (([v18 scatUpdatesMenu] & 1) != 0 || (v19 = objc_msgSend(v18, "scatTraits"), (kAXCausesPageTurnTrait & ~v19) == 0) && (-[SCATScannerManager axManager](self, "axManager"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "scannerElementMatchingElement:", v18), v21 = objc_claimAutoreleasedReturnValue(), v21, v20, !v21))
+      if (([element scatUpdatesMenu] & 1) != 0 || (v19 = objc_msgSend(element, "scatTraits"), (kAXCausesPageTurnTrait & ~v19) == 0) && (-[SCATScannerManager axManager](self, "axManager"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "scannerElementMatchingElement:", element), v21 = objc_claimAutoreleasedReturnValue(), v21, v20, !v21))
       {
-        [(SCATScannerManager *)self _updateMenuAfterElementFetchFoundNewElements:v5];
+        [(SCATScannerManager *)self _updateMenuAfterElementFetchFoundNewElements:elementsCopy];
       }
     }
 
     if (AXInPreboardScenario())
     {
-      v22 = [(SCATScannerManager *)self axManager];
-      v23 = [v22 hasZeroElements];
+      axManager = [(SCATScannerManager *)self axManager];
+      hasZeroElements = [axManager hasZeroElements];
 
-      if (v23)
+      if (hasZeroElements)
       {
         AXPerformBlockOnMainThreadAfterDelay();
       }
@@ -3397,52 +3397,52 @@ LABEL_23:
   }
 }
 
-- (void)accessibilityManager:(id)a3 nativeFocusElementDidChange:(id)a4
+- (void)accessibilityManager:(id)manager nativeFocusElementDidChange:(id)change
 {
-  v14 = a4;
-  [a3 refreshElements];
-  v6 = [(SCATScannerManager *)self menu];
-  v7 = [v6 isWaitingToBePresented];
+  changeCopy = change;
+  [manager refreshElements];
+  menu = [(SCATScannerManager *)self menu];
+  isWaitingToBePresented = [menu isWaitingToBePresented];
 
-  if (v7)
+  if (isWaitingToBePresented)
   {
-    v8 = [(SCATScannerManager *)self menu];
-    [v8 presentWithElement:v14];
+    menu2 = [(SCATScannerManager *)self menu];
+    [menu2 presentWithElement:changeCopy];
 
-    v9 = [(SCATScannerManager *)self menu];
-    [v9 setIsWaitingToBePresented:0];
+    menu3 = [(SCATScannerManager *)self menu];
+    [menu3 setIsWaitingToBePresented:0];
   }
 
-  v10 = [(SCATScannerManager *)self activeElementManager];
-  v11 = [(SCATScannerManager *)self menu];
+  activeElementManager = [(SCATScannerManager *)self activeElementManager];
+  menu4 = [(SCATScannerManager *)self menu];
 
-  if (v10 == v11)
+  if (activeElementManager == menu4)
   {
-    v12 = [(SCATScannerManager *)self menu];
-    [v12 nativeFocusElementDidChange:v14];
+    menu5 = [(SCATScannerManager *)self menu];
+    [menu5 nativeFocusElementDidChange:changeCopy];
 
-    v13 = [(SCATScannerManager *)self activeScannerDriver];
-    [v13 tickleIdleTimer];
+    activeScannerDriver = [(SCATScannerManager *)self activeScannerDriver];
+    [activeScannerDriver tickleIdleTimer];
   }
 }
 
-- (void)accessibilityManager:(id)a3 updateElementVisuals:(id)a4
+- (void)accessibilityManager:(id)manager updateElementVisuals:(id)visuals
 {
-  v4 = [(SCATScannerManager *)self updateElementVisualsCoalescer:a3];
+  v4 = [(SCATScannerManager *)self updateElementVisualsCoalescer:manager];
   [v4 notifyUpdateElementVisualsEventDidOccur];
 }
 
-- (void)accessibilityManager:(id)a3 applicationWasActivated:(id)a4
+- (void)accessibilityManager:(id)manager applicationWasActivated:(id)activated
 {
-  v6 = a4;
-  [a3 refreshElements];
-  v7 = [(SCATScannerManager *)self activeElementManager];
-  v8 = [(SCATScannerManager *)self menu];
+  activatedCopy = activated;
+  [manager refreshElements];
+  activeElementManager = [(SCATScannerManager *)self activeElementManager];
+  menu = [(SCATScannerManager *)self menu];
 
-  if (v7 == v8)
+  if (activeElementManager == menu)
   {
-    v9 = [(SCATScannerManager *)self menu];
-    [v9 hideWithCompletion:0];
+    menu2 = [(SCATScannerManager *)self menu];
+    [menu2 hideWithCompletion:0];
 
     [(SCATScannerManager *)self endScanning];
     v10 = dispatch_get_global_queue(9, 0);
@@ -3451,21 +3451,21 @@ LABEL_23:
     v11[2] = sub_1000E6FBC;
     v11[3] = &unk_1001D36E8;
     v11[4] = self;
-    v12 = v6;
+    v12 = activatedCopy;
     dispatch_async(v10, v11);
   }
 }
 
-- (void)_waitForApplication:(id)a3
+- (void)_waitForApplication:(id)application
 {
-  v3 = a3;
+  applicationCopy = application;
   v24 = +[NSDate date];
   v4 = 0;
   while (1)
   {
-    v5 = [v4 bundleId];
-    v6 = [v3 valueForKey:@"bundleID"];
-    v7 = [v5 isEqualToString:v6];
+    bundleId = [v4 bundleId];
+    v6 = [applicationCopy valueForKey:@"bundleID"];
+    v7 = [bundleId isEqualToString:v6];
 
     if (v7)
     {
@@ -3473,14 +3473,14 @@ LABEL_23:
     }
 
     v8 = +[AXElement systemWideElement];
-    v9 = [v8 systemApplication];
-    v10 = [v9 currentApplications];
+    systemApplication = [v8 systemApplication];
+    currentApplications = [systemApplication currentApplications];
 
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v11 = v10;
+    v11 = currentApplications;
     v12 = [v11 countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v12)
     {
@@ -3497,9 +3497,9 @@ LABEL_23:
           }
 
           v16 = *(*(&v28 + 1) + 8 * i);
-          v17 = [v16 bundleId];
-          v18 = [v3 valueForKey:@"bundleID"];
-          v19 = [v17 isEqualToString:v18];
+          bundleId2 = [v16 bundleId];
+          v18 = [applicationCopy valueForKey:@"bundleID"];
+          v19 = [bundleId2 isEqualToString:v18];
 
           if (v19)
           {
@@ -3546,14 +3546,14 @@ LABEL_16:
 
 - (void)_updateElementVisuals
 {
-  v10 = [(SCATScannerManager *)self activeScannerDriver];
-  v3 = [v10 focusContext];
-  v4 = v3;
-  if (v3)
+  activeScannerDriver = [(SCATScannerManager *)self activeScannerDriver];
+  focusContext = [activeScannerDriver focusContext];
+  v4 = focusContext;
+  if (focusContext)
   {
-    v5 = [v3 elementManager];
-    v6 = [(SCATScannerManager *)self menu];
-    if (v5 == v6)
+    elementManager = [focusContext elementManager];
+    menu = [(SCATScannerManager *)self menu];
+    if (elementManager == menu)
     {
       [v4 menuElement];
     }
@@ -3573,74 +3573,74 @@ LABEL_16:
       [v8 updateCache:2042];
     }
 
-    v9 = [(SCATScannerManager *)self cursorManager];
-    [v9 updateWithFocusContext:v4 animated:0 options:0];
+    cursorManager = [(SCATScannerManager *)self cursorManager];
+    [cursorManager updateWithFocusContext:v4 animated:0 options:0];
   }
 }
 
-- (void)didBeginLongPressForInputController:(id)a3
+- (void)didBeginLongPressForInputController:(id)controller
 {
   v4 = +[AXSettings sharedInstance];
-  v5 = [v4 assistiveTouchLongPressPauseScanningEnabled];
+  assistiveTouchLongPressPauseScanningEnabled = [v4 assistiveTouchLongPressPauseScanningEnabled];
 
-  if (v5)
+  if (assistiveTouchLongPressPauseScanningEnabled)
   {
-    v6 = [(SCATScannerManager *)self autoScanningDriver];
-    [v6 pauseAutoscanning];
+    autoScanningDriver = [(SCATScannerManager *)self autoScanningDriver];
+    [autoScanningDriver pauseAutoscanning];
   }
 }
 
-- (void)didEndLongPressForInputController:(id)a3
+- (void)didEndLongPressForInputController:(id)controller
 {
   v4 = +[AXSettings sharedInstance];
-  v5 = [v4 assistiveTouchLongPressPauseScanningEnabled];
+  assistiveTouchLongPressPauseScanningEnabled = [v4 assistiveTouchLongPressPauseScanningEnabled];
 
-  if (v5)
+  if (assistiveTouchLongPressPauseScanningEnabled)
   {
-    v7 = [(SCATScannerManager *)self autoScanningDriver];
-    v6 = [(SCATScannerManager *)self selectActionHandler];
-    [v7 resumeAutoscanning:{objc_msgSend(v6, "isPending") ^ 1}];
+    autoScanningDriver = [(SCATScannerManager *)self autoScanningDriver];
+    selectActionHandler = [(SCATScannerManager *)self selectActionHandler];
+    [autoScanningDriver resumeAutoscanning:{objc_msgSend(selectActionHandler, "isPending") ^ 1}];
   }
 }
 
-- (void)inputController:(id)a3 didReceiveAction:(id)a4
+- (void)inputController:(id)controller didReceiveAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  [(SCATScannerManager *)self setCurrentAction:v7];
+  controllerCopy = controller;
+  actionCopy = action;
+  [(SCATScannerManager *)self setCurrentAction:actionCopy];
   v8 = +[HNDHandManager sharedManager];
   [v8 notifyUserEventOccurred];
 
   if (![(SCATScannerManager *)self isSystemSleeping])
   {
-    v10 = [(SCATScannerManager *)self selectActionHandler];
-    v11 = [v10 delegate];
-    if ([v11 isEqual:self])
+    selectActionHandler = [(SCATScannerManager *)self selectActionHandler];
+    delegate = [selectActionHandler delegate];
+    if ([delegate isEqual:self])
     {
-      v12 = [(SCATScannerManager *)self selectActionHandler];
-      v13 = [v12 actionCount];
+      selectActionHandler2 = [(SCATScannerManager *)self selectActionHandler];
+      actionCount = [selectActionHandler2 actionCount];
 
-      if (v13)
+      if (actionCount)
       {
-        if ([v7 action] == 103)
+        if ([actionCopy action] == 103)
         {
-          v14 = [(SCATScannerManager *)self selectActionHandler];
-          v15 = v14;
+          selectActionHandler3 = [(SCATScannerManager *)self selectActionHandler];
+          _driverForScannerState = selectActionHandler3;
         }
 
         else
         {
-          v19 = [v7 action];
-          v14 = [(SCATScannerManager *)self selectActionHandler];
-          v15 = v14;
-          if (v19 != 109)
+          action = [actionCopy action];
+          selectActionHandler3 = [(SCATScannerManager *)self selectActionHandler];
+          _driverForScannerState = selectActionHandler3;
+          if (action != 109)
           {
-            [v14 cancelPendingAction];
+            [selectActionHandler3 cancelPendingAction];
             goto LABEL_22;
           }
         }
 
-        [v14 notifyDidReceiveAction:self];
+        [selectActionHandler3 notifyDidReceiveAction:self];
 LABEL_22:
 
         goto LABEL_23;
@@ -3653,8 +3653,8 @@ LABEL_22:
 
     if ([(SCATScannerManager *)self isInactive])
     {
-      v15 = [(SCATScannerManager *)self _driverForScannerState];
-      [(SCATScannerManager *)self setActiveScannerDriver:v15];
+      _driverForScannerState = [(SCATScannerManager *)self _driverForScannerState];
+      [(SCATScannerManager *)self setActiveScannerDriver:_driverForScannerState];
       [(SCATScannerManager *)self beginScanningWithFocusContext:0];
       goto LABEL_22;
     }
@@ -3668,11 +3668,11 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    v16 = [(SCATScannerManager *)self activeScannerDriver];
+    activeScannerDriver = [(SCATScannerManager *)self activeScannerDriver];
     if (objc_opt_respondsToSelector())
     {
-      v17 = [(SCATScannerManager *)self activeScannerDriver];
-      v18 = [v17 handleInputAction:v7];
+      activeScannerDriver2 = [(SCATScannerManager *)self activeScannerDriver];
+      v18 = [activeScannerDriver2 handleInputAction:actionCopy];
 
       if (v18)
       {
@@ -3684,27 +3684,27 @@ LABEL_23:
     {
     }
 
-    v20 = [v7 shortcutIdentifier];
+    shortcutIdentifier = [actionCopy shortcutIdentifier];
 
-    if (v20)
+    if (shortcutIdentifier)
     {
       v21 = +[AXSiriShortcutsManager sharedManager];
-      v22 = [v7 shortcutIdentifier];
-      v23 = [v21 shortcutForIdentifier:v22];
+      shortcutIdentifier2 = [actionCopy shortcutIdentifier];
+      focusContext = [v21 shortcutForIdentifier:shortcutIdentifier2];
 
       v24 = +[AXSiriShortcutsManager sharedManager];
-      [v24 performShortcut:v23];
+      [v24 performShortcut:focusContext];
 
 LABEL_20:
       goto LABEL_23;
     }
 
-    v25 = [v7 action];
-    if (v25 > 199)
+    action2 = [actionCopy action];
+    if (action2 > 199)
     {
-      if (v25 <= 299)
+      if (action2 <= 299)
       {
-        switch(v25)
+        switch(action2)
         {
           case 200:
             [(SCATScannerManager *)self _handleAppSwitcherAction];
@@ -3752,7 +3752,7 @@ LABEL_20:
           case 216:
           case 217:
           case 218:
-            -[SCATScannerManager _handleScrollAction:](self, "_handleScrollAction:", [v7 action]);
+            -[SCATScannerManager _handleScrollAction:](self, "_handleScrollAction:", [actionCopy action]);
             break;
           default:
             goto LABEL_83;
@@ -3761,62 +3761,62 @@ LABEL_20:
         goto LABEL_23;
       }
 
-      if (v25 <= 303)
+      if (action2 <= 303)
       {
-        if (v25 > 301)
+        if (action2 > 301)
         {
-          if (v25 == 302)
+          if (action2 == 302)
           {
-            v31 = +[AXElement systemWideElement];
-            [v31 systemPressTVHomeButton];
+            menu = +[AXElement systemWideElement];
+            [menu systemPressTVHomeButton];
           }
 
           else
           {
-            v31 = +[AXElement systemWideElement];
-            [v31 systemPressTVPlayPauseButton];
+            menu = +[AXElement systemWideElement];
+            [menu systemPressTVPlayPauseButton];
           }
         }
 
-        else if (v25 == 300)
+        else if (action2 == 300)
         {
-          v31 = +[AXElement systemWideElement];
-          [v31 systemPressTVSelectButton];
+          menu = +[AXElement systemWideElement];
+          [menu systemPressTVSelectButton];
         }
 
         else
         {
-          v31 = +[AXElement systemWideElement];
-          [v31 systemPressTVMenuButton];
+          menu = +[AXElement systemWideElement];
+          [menu systemPressTVMenuButton];
         }
       }
 
-      else if (v25 <= 305)
+      else if (action2 <= 305)
       {
-        if (v25 == 304)
+        if (action2 == 304)
         {
-          v31 = +[AXElement systemWideElement];
-          [v31 systemPressTVUpButton];
+          menu = +[AXElement systemWideElement];
+          [menu systemPressTVUpButton];
         }
 
         else
         {
-          v31 = +[AXElement systemWideElement];
-          [v31 systemPressTVDownButton];
+          menu = +[AXElement systemWideElement];
+          [menu systemPressTVDownButton];
         }
       }
 
       else
       {
-        switch(v25)
+        switch(action2)
         {
           case 306:
-            v31 = +[AXElement systemWideElement];
-            [v31 systemPressTVLeftButton];
+            menu = +[AXElement systemWideElement];
+            [menu systemPressTVLeftButton];
             break;
           case 307:
-            v31 = +[AXElement systemWideElement];
-            [v31 systemPressTVRightButton];
+            menu = +[AXElement systemWideElement];
+            [menu systemPressTVRightButton];
             break;
           case 400:
             [(SCATScannerManager *)self _handleActiveHoldAndDragAction];
@@ -3831,11 +3831,11 @@ LABEL_86:
       goto LABEL_23;
     }
 
-    if (v25 > 104)
+    if (action2 > 104)
     {
-      if (v25 <= 106)
+      if (action2 <= 106)
       {
-        if (v25 != 105)
+        if (action2 != 105)
         {
           [(SCATScannerManager *)self endScanning];
           goto LABEL_23;
@@ -3844,20 +3844,20 @@ LABEL_86:
         LOBYTE(v46) = 1;
         _AXLogWithFacility();
         v34 = [(SCATScannerManager *)self activeScannerDriver:v46];
-        v15 = [v34 focusContext];
+        _driverForScannerState = [v34 focusContext];
 
-        v27 = [(SCATScannerManager *)self activeScannerDriver];
-        v28 = v27;
-        v29 = v15;
+        activeScannerDriver3 = [(SCATScannerManager *)self activeScannerDriver];
+        v28 = activeScannerDriver3;
+        v29 = _driverForScannerState;
         v30 = 1;
         goto LABEL_79;
       }
 
-      switch(v25)
+      switch(action2)
       {
         case 'k':
-          v31 = [(SCATScannerManager *)self menu];
-          [v31 presentSiriShortcutsMenu];
+          menu = [(SCATScannerManager *)self menu];
+          [menu presentSiriShortcutsMenu];
           goto LABEL_86;
         case 'l':
           [(SCATScannerManager *)self _handleAppleWatchRemoteScreen];
@@ -3871,39 +3871,39 @@ LABEL_52:
 
     else
     {
-      if (v25 > 101)
+      if (action2 > 101)
       {
-        if (v25 == 102)
+        if (action2 == 102)
         {
-          v38 = [(SCATScannerManager *)self activeScannerDriver];
-          v23 = [v38 focusContext];
+          activeScannerDriver4 = [(SCATScannerManager *)self activeScannerDriver];
+          focusContext = [activeScannerDriver4 focusContext];
 
-          v39 = [(SCATScannerManager *)self autoScanningDriver];
-          [(SCATScannerManager *)self setActiveScannerDriver:v39];
+          autoScanningDriver = [(SCATScannerManager *)self autoScanningDriver];
+          [(SCATScannerManager *)self setActiveScannerDriver:autoScanningDriver];
 
-          [(SCATScannerManager *)self beginScanningWithFocusContext:v23];
+          [(SCATScannerManager *)self beginScanningWithFocusContext:focusContext];
           goto LABEL_20;
         }
 
-        if (v25 != 103)
+        if (action2 != 103)
         {
           LOBYTE(v46) = 1;
           _AXLogWithFacility();
           v26 = [(SCATScannerManager *)self activeScannerDriver:v46];
-          v15 = [v26 focusContext];
+          _driverForScannerState = [v26 focusContext];
 
-          v27 = [(SCATScannerManager *)self activeScannerDriver];
-          v28 = v27;
-          v29 = v15;
+          activeScannerDriver3 = [(SCATScannerManager *)self activeScannerDriver];
+          v28 = activeScannerDriver3;
+          v29 = _driverForScannerState;
           v30 = 0;
 LABEL_79:
-          v35 = [v27 nextFocusContextFromContext:v29 inDirection:v30 didWrap:0];
+          v35 = [activeScannerDriver3 nextFocusContextFromContext:v29 inDirection:v30 didWrap:0];
 
-          v36 = [(SCATScannerManager *)self manualScanningDriver];
-          [(SCATScannerManager *)self setActiveScannerDriver:v36];
+          manualScanningDriver = [(SCATScannerManager *)self manualScanningDriver];
+          [(SCATScannerManager *)self setActiveScannerDriver:manualScanningDriver];
 
-          v37 = [(SCATScannerManager *)self activeScannerDriver];
-          [v37 beginScanningWithFocusContext:v35];
+          activeScannerDriver5 = [(SCATScannerManager *)self activeScannerDriver];
+          [activeScannerDriver5 beginScanningWithFocusContext:v35];
 
           goto LABEL_22;
         }
@@ -3911,63 +3911,63 @@ LABEL_79:
         goto LABEL_52;
       }
 
-      if (v25 == 100)
+      if (action2 == 100)
       {
         goto LABEL_52;
       }
 
-      if (v25 == 101)
+      if (action2 == 101)
       {
         v32 = +[AXSettings sharedInstance];
-        v33 = [v32 switchControlHasEmptyTopLevelMenu];
+        switchControlHasEmptyTopLevelMenu = [v32 switchControlHasEmptyTopLevelMenu];
 
-        if (v33)
+        if (switchControlHasEmptyTopLevelMenu)
         {
-          v51 = v6;
+          v51 = controllerCopy;
           AXPerformBlockAsynchronouslyOnMainThread();
 
           goto LABEL_23;
         }
 
-        v40 = [(SCATScannerManager *)self menu];
-        v41 = [v40 isVisible];
+        menu2 = [(SCATScannerManager *)self menu];
+        isVisible = [menu2 isVisible];
 
-        if (!v41)
+        if (!isVisible)
         {
-          v42 = [(SCATScannerManager *)self activeScannerDriver];
-          v15 = [v42 focusContext];
+          activeScannerDriver6 = [(SCATScannerManager *)self activeScannerDriver];
+          _driverForScannerState = [activeScannerDriver6 focusContext];
 
-          v43 = [v15 element];
+          element = [_driverForScannerState element];
 
-          v44 = [(SCATScannerManager *)self menu];
-          if (v43)
+          menu3 = [(SCATScannerManager *)self menu];
+          if (element)
           {
-            v45 = [v15 element];
-            [v44 presentWithElement:v45];
+            element2 = [_driverForScannerState element];
+            [menu3 presentWithElement:element2];
           }
 
           else
           {
-            v45 = [(SCATScannerManager *)self pointPicker];
-            [v44 presentWithPointPicker:v45];
+            element2 = [(SCATScannerManager *)self pointPicker];
+            [menu3 presentWithPointPicker:element2];
           }
 
           goto LABEL_22;
         }
 
-        v31 = [(SCATScannerManager *)self menu];
-        [v31 hideWithCompletion:&stru_1001D7690];
+        menu = [(SCATScannerManager *)self menu];
+        [menu hideWithCompletion:&stru_1001D7690];
         goto LABEL_86;
       }
     }
 
 LABEL_83:
-    [v7 action];
-    v15 = SCATActionDescription();
-    v49 = v15;
-    v50 = self;
+    [actionCopy action];
+    _driverForScannerState = SCATActionDescription();
+    v49 = _driverForScannerState;
+    selfCopy = self;
     v47 = @"Unable to handle unknown action: %@ (%@). manager:%@";
-    v48 = v7;
+    v48 = actionCopy;
     LOBYTE(v46) = 1;
     _AXLogWithFacility();
     goto LABEL_22;
@@ -3978,16 +3978,16 @@ LABEL_83:
 LABEL_24:
 }
 
-- (void)inputController:(id)a3 didReceiveRecipeActionForMappingAtIndex:(unint64_t)a4 isLongPressAction:(BOOL)a5
+- (void)inputController:(id)controller didReceiveRecipeActionForMappingAtIndex:(unint64_t)index isLongPressAction:(BOOL)action
 {
-  v5 = a5;
-  v26 = a3;
+  actionCopy = action;
+  controllerCopy = controller;
   [(SCATScannerManager *)self _resetRecipeTimeoutIfApplicable];
-  v8 = [v26 recipe];
-  v9 = [v8 mappings];
-  v10 = [v9 objectAtIndexedSubscript:a4];
+  recipe = [controllerCopy recipe];
+  mappings = [recipe mappings];
+  v10 = [mappings objectAtIndexedSubscript:index];
 
-  if (v5)
+  if (actionCopy)
   {
     [v10 longPressAction];
   }
@@ -3999,15 +3999,15 @@ LABEL_24:
   v11 = ;
   if (!v11)
   {
-    v24 = a4;
-    v25 = v5;
+    indexCopy = index;
+    v25 = actionCopy;
     _AXAssert();
   }
 
-  if ([v11 isEqualToString:{AXSwitchRecipeMappingActionSelect, v24, v25}])
+  if ([v11 isEqualToString:{AXSwitchRecipeMappingActionSelect, indexCopy, v25}])
   {
     v12 = [SCATActionItem fromAction:103];
-    [(SCATScannerManager *)self inputController:v26 didReceiveAction:v12];
+    [(SCATScannerManager *)self inputController:controllerCopy didReceiveAction:v12];
 LABEL_16:
 
     goto LABEL_17;
@@ -4025,8 +4025,8 @@ LABEL_16:
     v13 = objc_alloc_init(AXCenterTapReplayableGesture);
 LABEL_15:
     v12 = v13;
-    v16 = [(SCATScannerManager *)self gestureProvider];
-    [v16 replayGesture:v12];
+    gestureProvider = [(SCATScannerManager *)self gestureProvider];
+    [gestureProvider replayGesture:v12];
 
     goto LABEL_16;
   }
@@ -4041,7 +4041,7 @@ LABEL_15:
 
   if (![v11 isEqualToString:AXSwitchRecipeMappingGameControlButtonPress])
   {
-    if (v5)
+    if (actionCopy)
     {
       [v10 longPressGesture];
     }
@@ -4054,39 +4054,39 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v17 = [v10 gameControlButtonPress];
+  gameControlButtonPress = [v10 gameControlButtonPress];
   v18 = +[AXElement systemWideElement];
-  v19 = [v18 systemApplication];
-  v20 = [v19 currentApplications];
-  v21 = [v20 firstObject];
+  systemApplication = [v18 systemApplication];
+  currentApplications = [systemApplication currentApplications];
+  firstObject = [currentApplications firstObject];
 
-  v22 = [v21 uiElement];
-  v23 = [v17 dictionaryRepresentation];
-  [v22 performAXAction:7000 withValue:v23];
+  uiElement = [firstObject uiElement];
+  dictionaryRepresentation = [gameControlButtonPress dictionaryRepresentation];
+  [uiElement performAXAction:7000 withValue:dictionaryRepresentation];
 
 LABEL_17:
 }
 
-- (void)inputController:(id)a3 didReceiveRecipeHoldAtPoint:(CGPoint)a4 isDown:(BOOL)a5
+- (void)inputController:(id)controller didReceiveRecipeHoldAtPoint:(CGPoint)point isDown:(BOOL)down
 {
-  v5 = a5;
-  y = a4.y;
-  x = a4.x;
+  downCopy = down;
+  y = point.y;
+  x = point.x;
   [(SCATScannerManager *)self _resetRecipeTimeoutIfApplicable];
-  v9 = [(SCATScannerManager *)self gestureProvider];
-  [v9 performHoldAtPoint:v5 isDown:{x, y}];
+  gestureProvider = [(SCATScannerManager *)self gestureProvider];
+  [gestureProvider performHoldAtPoint:downCopy isDown:{x, y}];
 }
 
-- (id)userInterfaceClientForInputController:(id)a3
+- (id)userInterfaceClientForInputController:(id)controller
 {
   v3 = +[HNDHandManager sharedManager];
-  v4 = [v3 mainDisplayManager];
-  v5 = [v4 userInterfaceClient];
+  mainDisplayManager = [v3 mainDisplayManager];
+  userInterfaceClient = [mainDisplayManager userInterfaceClient];
 
-  return v5;
+  return userInterfaceClient;
 }
 
-- (void)performSysdiagnoseForInputController:(id)a3
+- (void)performSysdiagnoseForInputController:(id)controller
 {
   v3 = AXSSLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -4098,20 +4098,20 @@ LABEL_17:
   [Libsysdiagnose sysdiagnoseWithMetadata:&off_1001E5930 onCompletion:&stru_1001D76D0];
 }
 
-- (void)inputController:(id)a3 didReceivePoint:(CGPoint)a4
+- (void)inputController:(id)controller didReceivePoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = [(SCATScannerManager *)self pointPicker];
-  [v8 moveToPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  controllerCopy = controller;
+  pointPicker = [(SCATScannerManager *)self pointPicker];
+  [pointPicker moveToPoint:{x, y}];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = [(SCATScannerManager *)self _pointerPointPickersToNotify];
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  _pointerPointPickersToNotify = [(SCATScannerManager *)self _pointerPointPickersToNotify];
+  v10 = [_pointerPointPickersToNotify countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = v10;
@@ -4123,7 +4123,7 @@ LABEL_17:
       {
         if (*v16 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(_pointerPointPickersToNotify);
         }
 
         v14 = *(*(&v15 + 1) + 8 * v13);
@@ -4136,63 +4136,63 @@ LABEL_17:
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v11 = [_pointerPointPickersToNotify countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v11);
   }
 
-  [(SCATScannerManager *)self _notifyObserversInputController:v7 didReceivePoint:x, y];
+  [(SCATScannerManager *)self _notifyObserversInputController:controllerCopy didReceivePoint:x, y];
 }
 
-- (void)inputController:(id)a3 didUpdateSignalQuality:(int64_t)a4
+- (void)inputController:(id)controller didUpdateSignalQuality:(int64_t)quality
 {
   if (![(SCATScannerManager *)self scanningMode])
   {
-    v6 = [(SCATScannerManager *)self cursorManager];
-    [v6 didUpdateSignalQuality:a4];
+    cursorManager = [(SCATScannerManager *)self cursorManager];
+    [cursorManager didUpdateSignalQuality:quality];
   }
 }
 
-- (void)inputController:(id)a3 didReceiveItemSelectionIndex:(int64_t)a4
+- (void)inputController:(id)controller didReceiveItemSelectionIndex:(int64_t)index
 {
-  v5 = [(SCATScannerManager *)self activeScannerDriver];
-  [v5 selectItemWithIndex:a4];
+  activeScannerDriver = [(SCATScannerManager *)self activeScannerDriver];
+  [activeScannerDriver selectItemWithIndex:index];
 }
 
-- (void)inputController:(id)a3 didReceiveMovementDelta:(CGPoint)a4
+- (void)inputController:(id)controller didReceiveMovementDelta:(CGPoint)delta
 {
-  y = a4.y;
-  x = a4.x;
+  y = delta.y;
+  x = delta.x;
   if ([(SCATScannerManager *)self scanningMode]== 6)
   {
     [(SCATScannerManager *)self _tadmorNewPickedPointWithDelta:x, y];
     v8 = v7;
     v10 = v9;
-    v11 = [(SCATScannerManager *)self pointPicker];
-    [v11 moveToPoint:{v8, v10}];
+    pointPicker = [(SCATScannerManager *)self pointPicker];
+    [pointPicker moveToPoint:{v8, v10}];
   }
 }
 
-- (void)inputController:(id)a3 showAlert:(id)a4
+- (void)inputController:(id)controller showAlert:(id)alert
 {
-  v4 = a4;
+  alertCopy = alert;
   v5 = SWCHLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = alertCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Showing alert with message: %@.", &v8, 0xCu);
   }
 
   v6 = +[HNDHandManager sharedManager];
-  v7 = [v6 mainDisplayManager];
-  [v7 showBubbleNotificationWithError:v4 duration:1.84467441e19];
+  mainDisplayManager = [v6 mainDisplayManager];
+  [mainDisplayManager showBubbleNotificationWithError:alertCopy duration:1.84467441e19];
 }
 
-- (void)inputController:(id)a3 shouldHideAlerts:(BOOL)a4
+- (void)inputController:(id)controller shouldHideAlerts:(BOOL)alerts
 {
-  if (a4)
+  if (alerts)
   {
     v4 = SWCHLogCommon();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -4202,22 +4202,22 @@ LABEL_17:
     }
 
     v5 = +[HNDHandManager sharedManager];
-    v6 = [v5 mainDisplayManager];
-    [v6 hideBubbleNotification];
+    mainDisplayManager = [v5 mainDisplayManager];
+    [mainDisplayManager hideBubbleNotification];
   }
 }
 
-- (CGPoint)_tadmorNewPickedPointWithDelta:(CGPoint)a3
+- (CGPoint)_tadmorNewPickedPointWithDelta:(CGPoint)delta
 {
-  y = a3.y;
-  x = a3.x;
+  y = delta.y;
+  x = delta.x;
   v6 = +[UIScreen mainScreen];
   [v6 bounds];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(SCATScannerManager *)self pointPicker];
-  [v11 lastReceivedPoint];
+  pointPicker = [(SCATScannerManager *)self pointPicker];
+  [pointPicker lastReceivedPoint];
   v13 = v12;
   v15 = v14;
 
@@ -4231,12 +4231,12 @@ LABEL_17:
 - (BOOL)shouldUseCameraPointPicker
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 switchControlUseCameraForPointMode];
+  switchControlUseCameraForPointMode = [v2 switchControlUseCameraForPointMode];
 
-  return v3;
+  return switchControlUseCameraForPointMode;
 }
 
-- (void)inputControllerPointPickerInterrupted:(id)a3
+- (void)inputControllerPointPickerInterrupted:(id)interrupted
 {
   v3 = +[AXSettings sharedInstance];
   if ([v3 assistiveTouchScanningMode] == 3)
@@ -4246,9 +4246,9 @@ LABEL_17:
   else
   {
     v4 = +[AXSettings sharedInstance];
-    v5 = [v4 assistiveTouchScanningMode];
+    assistiveTouchScanningMode = [v4 assistiveTouchScanningMode];
 
-    if (v5 != 5)
+    if (assistiveTouchScanningMode != 5)
     {
       return;
     }
@@ -4258,25 +4258,25 @@ LABEL_17:
   [v6 setAssistiveTouchScanningMode:0];
 }
 
-- (void)menu:(id)a3 showAlternateKeysForKey:(id)a4
+- (void)menu:(id)menu showAlternateKeysForKey:(id)key
 {
-  v5 = a4;
-  v6 = [(SCATScannerManager *)self alternateKeysManager];
-  [v6 showAlternateKeysForKey:v5];
+  keyCopy = key;
+  alternateKeysManager = [(SCATScannerManager *)self alternateKeysManager];
+  [alternateKeysManager showAlternateKeysForKey:keyCopy];
 }
 
-- (void)menu:(id)a3 showTypingCandidates:(id)a4
+- (void)menu:(id)menu showTypingCandidates:(id)candidates
 {
-  v5 = a4;
-  v6 = [(SCATScannerManager *)self candidateBarManager];
-  [v6 setTypingCandidates:v5];
+  candidatesCopy = candidates;
+  candidateBarManager = [(SCATScannerManager *)self candidateBarManager];
+  [candidateBarManager setTypingCandidates:candidatesCopy];
 }
 
-- (CGRect)menu:(id)a3 rectToClearForFingersWithGestureSheet:(BOOL)a4
+- (CGRect)menu:(id)menu rectToClearForFingersWithGestureSheet:(BOOL)sheet
 {
-  v4 = a4;
-  v5 = [(SCATScannerManager *)self gestureProvider];
-  [v5 rectToClearForFingersWithGestureSheet:v4];
+  sheetCopy = sheet;
+  gestureProvider = [(SCATScannerManager *)self gestureProvider];
+  [gestureProvider rectToClearForFingersWithGestureSheet:sheetCopy];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -4293,150 +4293,150 @@ LABEL_17:
   return result;
 }
 
-- (id)gesturesSheetForMenu:(id)a3
+- (id)gesturesSheetForMenu:(id)menu
 {
-  v3 = [(SCATScannerManager *)self gestureProvider];
-  v4 = [v3 gesturesSheet];
+  gestureProvider = [(SCATScannerManager *)self gestureProvider];
+  gesturesSheet = [gestureProvider gesturesSheet];
 
-  return v4;
+  return gesturesSheet;
 }
 
-- (void)didPressScreenChangingButtonInMenu:(id)a3
+- (void)didPressScreenChangingButtonInMenu:(id)menu
 {
-  v4 = [(SCATScannerManager *)self activeElementManager];
-  [v4 screenChangingButtonWasPressed:self];
+  activeElementManager = [(SCATScannerManager *)self activeElementManager];
+  [activeElementManager screenChangingButtonWasPressed:self];
 }
 
-- (id)exitActionElementForFingersInMenu:(id)a3
+- (id)exitActionElementForFingersInMenu:(id)menu
 {
-  v3 = [(SCATScannerManager *)self gestureProvider];
-  v4 = [v3 elementForFingers];
+  gestureProvider = [(SCATScannerManager *)self gestureProvider];
+  elementForFingers = [gestureProvider elementForFingers];
 
-  return v4;
+  return elementForFingers;
 }
 
-- (void)menu:(id)a3 activateProfile:(id)a4
+- (void)menu:(id)menu activateProfile:(id)profile
 {
-  if (a4)
+  if (profile)
   {
-    v6 = a4;
+    profileCopy = profile;
     v5 = +[AXSettings sharedInstance];
-    [v5 setSwitchControlSelectedProfile:v6];
+    [v5 setSwitchControlSelectedProfile:profileCopy];
 
-    [(SCATScannerManager *)self _showSimpleAlertForProfile:v6];
+    [(SCATScannerManager *)self _showSimpleAlertForProfile:profileCopy];
   }
 }
 
-- (BOOL)_isPostScanningMenu:(id)a3
+- (BOOL)_isPostScanningMenu:(id)menu
 {
-  v3 = [a3 screenPoint];
-  v4 = v3 == 0;
+  screenPoint = [menu screenPoint];
+  v4 = screenPoint == 0;
 
   return v4;
 }
 
-- (void)menu:(id)a3 showScrollViewPickerForScrollViews:(id)a4 elementsToScroll:(id)a5 scrollAction:(int)a6
+- (void)menu:(id)menu showScrollViewPickerForScrollViews:(id)views elementsToScroll:(id)scroll scrollAction:(int)action
 {
-  v6 = *&a6;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(SCATScannerManager *)self scrollViewPickerManager];
+  v6 = *&action;
+  scrollCopy = scroll;
+  viewsCopy = views;
+  scrollViewPickerManager = [(SCATScannerManager *)self scrollViewPickerManager];
 
-  if (!v11)
+  if (!scrollViewPickerManager)
   {
     v12 = objc_alloc_init(SCATScrollViewPickerManager);
     [(SCATScannerManager *)self setScrollViewPickerManager:v12];
   }
 
-  v13 = [(SCATScannerManager *)self scrollViewPickerManager];
-  [v13 setScrollViews:v10];
+  scrollViewPickerManager2 = [(SCATScannerManager *)self scrollViewPickerManager];
+  [scrollViewPickerManager2 setScrollViews:viewsCopy];
 
-  v14 = [(SCATScannerManager *)self scrollViewPickerManager];
-  [v14 setElementsToScroll:v9];
+  scrollViewPickerManager3 = [(SCATScannerManager *)self scrollViewPickerManager];
+  [scrollViewPickerManager3 setElementsToScroll:scrollCopy];
 
-  v15 = [(SCATScannerManager *)self scrollViewPickerManager];
-  [v15 setScrollAction:v6];
+  scrollViewPickerManager4 = [(SCATScannerManager *)self scrollViewPickerManager];
+  [scrollViewPickerManager4 setScrollAction:v6];
 }
 
-- (BOOL)canSearchForControllableDevicesWithMenu:(id)a3
+- (BOOL)canSearchForControllableDevicesWithMenu:(id)menu
 {
-  v3 = [(SCATScannerManager *)self interDeviceCommunicator];
-  v4 = [v3 canSearch];
+  interDeviceCommunicator = [(SCATScannerManager *)self interDeviceCommunicator];
+  canSearch = [interDeviceCommunicator canSearch];
 
-  return v4;
+  return canSearch;
 }
 
-- (void)searchForControllableDevicesWithMenu:(id)a3
+- (void)searchForControllableDevicesWithMenu:(id)menu
 {
-  v3 = [(SCATScannerManager *)self interDeviceCommunicator];
-  [v3 search];
+  interDeviceCommunicator = [(SCATScannerManager *)self interDeviceCommunicator];
+  [interDeviceCommunicator search];
 }
 
-- (BOOL)canReturnControlToForwarderDevice:(id)a3
+- (BOOL)canReturnControlToForwarderDevice:(id)device
 {
-  v3 = [(SCATScannerManager *)self interDeviceCommunicator];
-  v4 = [v3 isReceivingSwitchEvents];
+  interDeviceCommunicator = [(SCATScannerManager *)self interDeviceCommunicator];
+  isReceivingSwitchEvents = [interDeviceCommunicator isReceivingSwitchEvents];
 
-  return v4;
+  return isReceivingSwitchEvents;
 }
 
-- (void)returnControlToForwarderDevice:(id)a3
+- (void)returnControlToForwarderDevice:(id)device
 {
-  v3 = [(SCATScannerManager *)self interDeviceCommunicator];
-  [v3 stop];
+  interDeviceCommunicator = [(SCATScannerManager *)self interDeviceCommunicator];
+  [interDeviceCommunicator stop];
 }
 
-- (void)menu:(id)a3 speakAnnouncement:(id)a4 completionBlock:(id)a5
+- (void)menu:(id)menu speakAnnouncement:(id)announcement completionBlock:(id)block
 {
-  v9 = a4;
-  v7 = a5;
+  announcementCopy = announcement;
+  blockCopy = block;
   if ([(SCATScannerManager *)self isSpeechEnabled])
   {
-    v8 = [(SCATScannerManager *)self outputManager];
-    [v8 outputScannerAnnouncement:v9 completionBlock:v7];
+    outputManager = [(SCATScannerManager *)self outputManager];
+    [outputManager outputScannerAnnouncement:announcementCopy completionBlock:blockCopy];
   }
 
-  else if (v7)
+  else if (blockCopy)
   {
-    v7[2](v7, 0);
+    blockCopy[2](blockCopy, 0);
   }
 }
 
-- (void)menu:(id)a3 playSoundEffect:(int)a4
+- (void)menu:(id)menu playSoundEffect:(int)effect
 {
-  v4 = *&a4;
+  v4 = *&effect;
   if ([(SCATScannerManager *)self areSoundEffectsEnabled])
   {
-    v6 = [(SCATScannerManager *)self outputManager];
-    [v6 playSound:v4];
+    outputManager = [(SCATScannerManager *)self outputManager];
+    [outputManager playSound:v4];
   }
 }
 
-- (void)menuDidDisappear:(id)a3
+- (void)menuDidDisappear:(id)disappear
 {
-  v15 = a3;
-  v4 = [(SCATScannerManager *)self activeScannerDriver];
-  v5 = [v4 focusContext];
+  disappearCopy = disappear;
+  activeScannerDriver = [(SCATScannerManager *)self activeScannerDriver];
+  focusContext = [activeScannerDriver focusContext];
 
   [(SCATScannerManager *)self _updateActiveElementManager];
-  v6 = [(SCATScannerManager *)self activeElementManager];
-  v7 = [(SCATScannerManager *)self pointPicker];
+  activeElementManager = [(SCATScannerManager *)self activeElementManager];
+  pointPicker = [(SCATScannerManager *)self pointPicker];
 
   v8 = +[AXSettings sharedInstance];
-  v9 = [v8 switchControlScanAfterTapLocation];
+  switchControlScanAfterTapLocation = [v8 switchControlScanAfterTapLocation];
 
-  if (v9 && [v5 shouldResumeFromMenuDismissal] && v6 != v7)
+  if (switchControlScanAfterTapLocation && [focusContext shouldResumeFromMenuDismissal] && activeElementManager != pointPicker)
   {
-    v10 = [v5 element];
-    v11 = [(SCATScannerManager *)self activeElementManager];
-    v12 = [SCATFocusContext focusContextWithElement:v10 elementManager:v11 selectBehavior:0 options:0];
+    element = [focusContext element];
+    activeElementManager2 = [(SCATScannerManager *)self activeElementManager];
+    v12 = [SCATFocusContext focusContextWithElement:element elementManager:activeElementManager2 selectBehavior:0 options:0];
   }
 
   else
   {
-    v10 = [(SCATScannerManager *)self activeElementManager];
-    v11 = [v15 element];
-    v12 = [v10 nextFocusContextAfterDismissingMenuForElement:v11];
+    element = [(SCATScannerManager *)self activeElementManager];
+    activeElementManager2 = [disappearCopy element];
+    v12 = [element nextFocusContextAfterDismissingMenuForElement:activeElementManager2];
   }
 
   v13 = v12;
@@ -4444,9 +4444,9 @@ LABEL_17:
   [(SCATScannerManager *)self beginScanningWithFocusContext:v13];
   if ([(SCATScannerManager *)self itemMenuState])
   {
-    v14 = [v15 element];
+    element2 = [disappearCopy element];
 
-    if (v14)
+    if (element2)
     {
       if ([(SCATScannerManager *)self itemMenuState]== 1)
       {
@@ -4456,20 +4456,20 @@ LABEL_17:
   }
 }
 
-- (void)menuWillBeginTransition:(id)a3
+- (void)menuWillBeginTransition:(id)transition
 {
-  v3 = [(SCATScannerManager *)self cursorManager];
-  [v3 hideCursor:1 animated:0];
+  cursorManager = [(SCATScannerManager *)self cursorManager];
+  [cursorManager hideCursor:1 animated:0];
 }
 
-- (void)menuDidFinishTransition:(id)a3
+- (void)menuDidFinishTransition:(id)transition
 {
   [(SCATScannerManager *)self beginScanningWithFocusContext:0];
-  v4 = [(SCATScannerManager *)self cursorManager];
-  [v4 hideCursor:0 animated:0];
+  cursorManager = [(SCATScannerManager *)self cursorManager];
+  [cursorManager hideCursor:0 animated:0];
 }
 
-- (void)shouldStartScanningGestureProvider:(id)a3
+- (void)shouldStartScanningGestureProvider:(id)provider
 {
   if ([(SCATScannerManager *)self isActive])
   {
@@ -4478,7 +4478,7 @@ LABEL_17:
   }
 }
 
-- (void)shouldEndScanningGestureProvider:(id)a3
+- (void)shouldEndScanningGestureProvider:(id)provider
 {
   if ([(SCATScannerManager *)self isActive])
   {
@@ -4487,24 +4487,24 @@ LABEL_17:
   }
 }
 
-- (id)contentViewForGestureProvider:(id)a3
+- (id)contentViewForGestureProvider:(id)provider
 {
-  v4 = [(SCATScannerManager *)self currentDisplayID];
+  currentDisplayID = [(SCATScannerManager *)self currentDisplayID];
 
-  return [(SCATScannerManager *)self scatUIContextForDisplayID:v4];
+  return [(SCATScannerManager *)self scatUIContextForDisplayID:currentDisplayID];
 }
 
-- (void)gestureProvider:(id)a3 shouldResetScanningFromElement:(id)a4
+- (void)gestureProvider:(id)provider shouldResetScanningFromElement:(id)element
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(SCATScannerManager *)self activeElementManager];
+  providerCopy = provider;
+  elementCopy = element;
+  activeElementManager = [(SCATScannerManager *)self activeElementManager];
 
-  if (v7 == v9)
+  if (activeElementManager == providerCopy)
   {
-    if (v6)
+    if (elementCopy)
     {
-      v8 = [SCATFocusContext focusContextWithElement:v6 elementManager:v9 selectBehavior:0 options:0];
+      v8 = [SCATFocusContext focusContextWithElement:elementCopy elementManager:providerCopy selectBehavior:0 options:0];
       [(SCATScannerManager *)self beginScanningWithFocusContext:v8];
     }
 
@@ -4515,37 +4515,37 @@ LABEL_17:
   }
 }
 
-- (void)didChooseCreateCustomGestureFromGestureProvider:(id)a3
+- (void)didChooseCreateCustomGestureFromGestureProvider:(id)provider
 {
   v4 = +[HNDEventManager sharedManager];
   [v4 openCreateCustomGestureForSCAT];
 
-  v5 = [(SCATScannerManager *)self menu];
-  [v5 hideWithCompletion:0];
+  menu = [(SCATScannerManager *)self menu];
+  [menu hideWithCompletion:0];
 
-  v6 = [(SCATScannerManager *)self activeElementManager];
-  [v6 screenChangingButtonWasPressed:self];
+  activeElementManager = [(SCATScannerManager *)self activeElementManager];
+  [activeElementManager screenChangingButtonWasPressed:self];
 }
 
-- (void)pointPicker:(id)a3 didPickPoint:(CGPoint)a4
+- (void)pointPicker:(id)picker didPickPoint:(CGPoint)point
 {
-  v5 = a3;
-  v6 = [(SCATScannerManager *)self pointPicker];
-  [v6 pickedPointInDeviceCoordinates];
+  pickerCopy = picker;
+  pointPicker = [(SCATScannerManager *)self pointPicker];
+  [pointPicker pickedPointInDeviceCoordinates];
   v7 = [(SCATScannerManager *)self _focusContextAtPoint:?];
 
-  v8 = [(SCATScannerManager *)self menu];
-  v9 = [v8 isVisible];
+  menu = [(SCATScannerManager *)self menu];
+  isVisible = [menu isVisible];
 
-  if (v9)
+  if (isVisible)
   {
-    v10 = [(SCATScannerManager *)self menu];
-    v11 = [v10 element];
-    [v7 setMenuElement:v11];
+    menu2 = [(SCATScannerManager *)self menu];
+    element = [menu2 element];
+    [v7 setMenuElement:element];
   }
 
-  v12 = [(SCATScannerManager *)self cursorManager];
-  [v12 updateWithFocusContext:v7 animated:0 options:1];
+  cursorManager = [(SCATScannerManager *)self cursorManager];
+  [cursorManager updateWithFocusContext:v7 animated:0 options:1];
 
   if (!v7)
   {
@@ -4556,53 +4556,53 @@ LABEL_17:
     if (v15 != 0.0)
     {
       v16 = +[HNDHandManager sharedManager];
-      v17 = [v16 fingerController];
+      fingerController = [v16 fingerController];
 
-      [(SCATScannerManager *)self _startingPointForGesturesForPointPicker:v5];
+      [(SCATScannerManager *)self _startingPointForGesturesForPointPicker:pickerCopy];
       v18 = [AXPIFingerModel fingerModelForLocation:?];
       v30 = v18;
       v19 = [NSArray arrayWithObjects:&v30 count:1];
-      [v17 showFingerModels:v19 animated:0 startPointForAnimation:{CGPointZero.x, CGPointZero.y}];
+      [fingerController showFingerModels:v19 animated:0 startPointForAnimation:{CGPointZero.x, CGPointZero.y}];
 
       v20 = +[AXSettings sharedInstance];
       [v20 switchControlAutoTapTimeout];
-      [v17 animateToTapWithDuration:?];
+      [fingerController animateToTapWithDuration:?];
     }
   }
 
-  v21 = [(SCATScannerManager *)self currentAction];
-  v22 = [v21 action];
+  currentAction = [(SCATScannerManager *)self currentAction];
+  action = [currentAction action];
 
-  if (v22 == 101)
+  if (action == 101)
   {
-    v23 = [(SCATScannerManager *)self menu];
-    v24 = [v23 isVisible];
+    menu3 = [(SCATScannerManager *)self menu];
+    isVisible2 = [menu3 isVisible];
 
-    if (v24)
+    if (isVisible2)
     {
-      v25 = [(SCATScannerManager *)self menu];
-      [v25 hideWithCompletion:&stru_1001D76F0];
+      menu4 = [(SCATScannerManager *)self menu];
+      [menu4 hideWithCompletion:&stru_1001D76F0];
     }
 
-    v26 = [v7 element];
+    element2 = [v7 element];
 
-    v27 = [(SCATScannerManager *)self menu];
-    if (v26)
+    menu5 = [(SCATScannerManager *)self menu];
+    if (element2)
     {
-      v28 = [v7 element];
-      [v27 presentWithElement:v28];
+      element3 = [v7 element];
+      [menu5 presentWithElement:element3];
     }
 
     else
     {
-      v28 = [(SCATScannerManager *)self pointPicker];
-      [v27 presentWithPointPicker:v28];
+      element3 = [(SCATScannerManager *)self pointPicker];
+      [menu5 presentWithPointPicker:element3];
     }
   }
 
   else
   {
-    if (v22 == 100)
+    if (action == 100)
     {
       [(SCATScannerManager *)self activateActionHandler];
     }
@@ -4611,59 +4611,59 @@ LABEL_17:
     {
       [(SCATScannerManager *)self selectActionHandler];
     }
-    v27 = ;
-    [v27 notifyDidReceiveAction:self];
+    menu5 = ;
+    [menu5 notifyDidReceiveAction:self];
   }
 
-  v29 = [(SCATScannerManager *)self cursorManager];
-  [v29 updateWithFocusContext:0 animated:0 options:0];
+  cursorManager2 = [(SCATScannerManager *)self cursorManager];
+  [cursorManager2 updateWithFocusContext:0 animated:0 options:0];
 }
 
-- (void)pointPicker:(id)a3 didSweepIntoFocusContext:(id)a4 isRefiningPoint:(BOOL)a5
+- (void)pointPicker:(id)picker didSweepIntoFocusContext:(id)context isRefiningPoint:(BOOL)point
 {
-  v10 = a4;
-  v6 = [(SCATScannerManager *)self menu];
-  v7 = [v6 isVisible];
+  contextCopy = context;
+  menu = [(SCATScannerManager *)self menu];
+  isVisible = [menu isVisible];
 
-  if ((v7 & 1) == 0)
+  if ((isVisible & 1) == 0)
   {
     if ([(SCATScannerManager *)self highlightFocusContext])
     {
-      v8 = [(SCATScannerManager *)self cursorManager];
-      [v8 updateWithFocusContext:v10 animated:0 options:1];
+      cursorManager = [(SCATScannerManager *)self cursorManager];
+      [cursorManager updateWithFocusContext:contextCopy animated:0 options:1];
     }
 
-    if (v10 && [(SCATScannerManager *)self isActive]&& [(SCATScannerManager *)self areSoundEffectsEnabled])
+    if (contextCopy && [(SCATScannerManager *)self isActive]&& [(SCATScannerManager *)self areSoundEffectsEnabled])
     {
-      v9 = [(SCATScannerManager *)self outputManager];
-      [v9 playSound:1000];
+      outputManager = [(SCATScannerManager *)self outputManager];
+      [outputManager playSound:1000];
     }
   }
 }
 
-- (void)pointPicker:(id)a3 didSweepOutOfFocusContext:(id)a4 isRefiningPoint:(BOOL)a5
+- (void)pointPicker:(id)picker didSweepOutOfFocusContext:(id)context isRefiningPoint:(BOOL)point
 {
-  v6 = [(SCATScannerManager *)self menu:a3];
-  v7 = [v6 isVisible];
+  v6 = [(SCATScannerManager *)self menu:picker];
+  isVisible = [v6 isVisible];
 
-  if ((v7 & 1) == 0 && [(SCATScannerManager *)self highlightFocusContext])
+  if ((isVisible & 1) == 0 && [(SCATScannerManager *)self highlightFocusContext])
   {
-    v8 = [(SCATScannerManager *)self cursorManager];
-    [v8 updateWithFocusContext:0 animated:1 options:0];
+    cursorManager = [(SCATScannerManager *)self cursorManager];
+    [cursorManager updateWithFocusContext:0 animated:1 options:0];
   }
 }
 
-- (BOOL)pointPicker:(id)a3 pauseForNumberOfCycles:(unint64_t)a4
+- (BOOL)pointPicker:(id)picker pauseForNumberOfCycles:(unint64_t)cycles
 {
-  v5 = [(SCATScannerManager *)self activeScannerDriver];
-  LOBYTE(a4) = [v5 pauseScanningForPointPickerNumberOfCycles:a4];
+  activeScannerDriver = [(SCATScannerManager *)self activeScannerDriver];
+  LOBYTE(cycles) = [activeScannerDriver pauseScanningForPointPickerNumberOfCycles:cycles];
 
-  return a4;
+  return cycles;
 }
 
-- (void)pointPicker:(id)a3 didFinishDwellingOnPoint:(CGPoint)a4
+- (void)pointPicker:(id)picker didFinishDwellingOnPoint:(CGPoint)point
 {
-  v5 = [(SCATScannerManager *)self _dwellSwitchAssignedAction:a3];
+  v5 = [(SCATScannerManager *)self _dwellSwitchAssignedAction:picker];
   if (v5)
   {
     v6 = [SCATActionItem fromAction:v5];
@@ -4674,18 +4674,18 @@ LABEL_17:
 - (void)_updateCameraPointPickerSwitchesCache
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 assistiveTouchCameraPointPickerSwitches];
-  [(SCATScannerManager *)self setCachedCameraPointPickerSwitches:v4];
+  assistiveTouchCameraPointPickerSwitches = [v3 assistiveTouchCameraPointPickerSwitches];
+  [(SCATScannerManager *)self setCachedCameraPointPickerSwitches:assistiveTouchCameraPointPickerSwitches];
 
-  v5 = [(SCATScannerManager *)self pointPicker];
+  pointPicker = [(SCATScannerManager *)self pointPicker];
   objc_opt_class();
-  LOBYTE(v4) = objc_opt_isKindOfClass();
+  LOBYTE(assistiveTouchCameraPointPickerSwitches) = objc_opt_isKindOfClass();
 
-  if (v4)
+  if (assistiveTouchCameraPointPickerSwitches)
   {
     v6 = [(SCATScannerManager *)self _dwellSwitchAssignedAction]!= 0;
-    v7 = [(SCATScannerManager *)self pointPicker];
-    [v7 setDwellSwitchAssigned:v6];
+    pointPicker2 = [(SCATScannerManager *)self pointPicker];
+    [pointPicker2 setDwellSwitchAssigned:v6];
   }
 }
 
@@ -4695,8 +4695,8 @@ LABEL_17:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [(SCATScannerManager *)self cachedCameraPointPickerSwitches];
-  v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  cachedCameraPointPickerSwitches = [(SCATScannerManager *)self cachedCameraPointPickerSwitches];
+  v3 = [cachedCameraPointPickerSwitches countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v3)
   {
     v4 = v3;
@@ -4708,18 +4708,18 @@ LABEL_17:
       {
         if (*v14 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(cachedCameraPointPickerSwitches);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v8 source];
-        if ([v9 isEqualToString:v6] && objc_msgSend(v8, "cameraSwitch") == 9)
+        source = [v8 source];
+        if ([source isEqualToString:v6] && objc_msgSend(v8, "cameraSwitch") == 9)
         {
-          v10 = [v8 action];
+          action = [v8 action];
 
-          if (v10)
+          if (action)
           {
-            v11 = [v8 action];
+            action2 = [v8 action];
             goto LABEL_14;
           }
         }
@@ -4729,29 +4729,29 @@ LABEL_17:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [cachedCameraPointPickerSwitches countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v4);
   }
 
-  v11 = 0;
+  action2 = 0;
 LABEL_14:
 
-  return v11;
+  return action2;
 }
 
-- (id)_focusContextAtPoint:(CGPoint)a3
+- (id)_focusContextAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = +[HNDAccessibilityManager sharedManager];
   v7 = [v6 elementAtPoint:-[SCATScannerManager currentDisplayID](self displayID:{"currentDisplayID"), x, y}];
 
   if (v7)
   {
-    v8 = [(SCATScannerManager *)self elementNavController];
-    v9 = [SCATFocusContext focusContextWithElement:v7 elementManager:v8 selectBehavior:0 options:0];
+    elementNavController = [(SCATScannerManager *)self elementNavController];
+    v9 = [SCATFocusContext focusContextWithElement:v7 elementManager:elementNavController selectBehavior:0 options:0];
   }
 
   else
@@ -4762,70 +4762,70 @@ LABEL_14:
   return v9;
 }
 
-- (BOOL)actionHandler:(id)a3 shouldActImmediatelyOnActionCount:(unint64_t)a4
+- (BOOL)actionHandler:(id)handler shouldActImmediatelyOnActionCount:(unint64_t)count
 {
-  v6 = a3;
-  v7 = [(SCATScannerManager *)self selectActionHandler];
-  v8 = [v6 isEqual:v7];
+  handlerCopy = handler;
+  selectActionHandler = [(SCATScannerManager *)self selectActionHandler];
+  v8 = [handlerCopy isEqual:selectActionHandler];
 
-  return !v8 || [(SCATScannerManager *)self immediateSelectActionCount]== a4;
+  return !v8 || [(SCATScannerManager *)self immediateSelectActionCount]== count;
 }
 
-- (void)actionHandlerDidFireAction:(id)a3
+- (void)actionHandlerDidFireAction:(id)action
 {
-  v4 = a3;
-  v5 = [(SCATScannerManager *)self pointPicker];
-  [v5 pickedPointInDeviceCoordinates];
+  actionCopy = action;
+  pointPicker = [(SCATScannerManager *)self pointPicker];
+  [pointPicker pickedPointInDeviceCoordinates];
   v6 = [(SCATScannerManager *)self _focusContextAtPoint:?];
 
-  v7 = [v4 actionCount];
-  v8 = [(SCATScannerManager *)self activateActionHandler];
-  v9 = [v4 isEqual:v8];
+  actionCount = [actionCopy actionCount];
+  activateActionHandler = [(SCATScannerManager *)self activateActionHandler];
+  v9 = [actionCopy isEqual:activateActionHandler];
 
   if ((v9 & 1) == 0)
   {
-    v19 = [(SCATScannerManager *)self selectActionHandler];
-    v20 = [v4 isEqual:v19];
+    selectActionHandler = [(SCATScannerManager *)self selectActionHandler];
+    v20 = [actionCopy isEqual:selectActionHandler];
 
     if (!v20)
     {
       goto LABEL_19;
     }
 
-    if ((v7 != 1 || [v4 shouldShowMenuOnFirstSelectAction]) && objc_msgSend(v6, "selectBehavior") != 1)
+    if ((actionCount != 1 || [actionCopy shouldShowMenuOnFirstSelectAction]) && objc_msgSend(v6, "selectBehavior") != 1)
     {
-      v21 = [(SCATScannerManager *)self menu];
-      v22 = [(SCATScannerManager *)self pointPicker];
-      [v21 presentWithPointPicker:v22];
+      menu = [(SCATScannerManager *)self menu];
+      pointPicker2 = [(SCATScannerManager *)self pointPicker];
+      [menu presentWithPointPicker:pointPicker2];
 
       goto LABEL_19;
     }
   }
 
-  v10 = [(SCATScannerManager *)self pointPicker];
-  [v10 resetRefinedSelectedPoint];
+  pointPicker3 = [(SCATScannerManager *)self pointPicker];
+  [pointPicker3 resetRefinedSelectedPoint];
 
-  v11 = [v6 element];
-  if (!v11)
+  element = [v6 element];
+  if (!element)
   {
     goto LABEL_16;
   }
 
-  v12 = v11;
-  v13 = [(SCATScannerManager *)self pointPicker];
-  if (v13)
+  v12 = element;
+  pointPicker4 = [(SCATScannerManager *)self pointPicker];
+  if (pointPicker4)
   {
-    v14 = v13;
-    v15 = [v6 element];
-    if (([v15 scatIsAXElement] & 1) == 0)
+    v14 = pointPicker4;
+    element2 = [v6 element];
+    if (([element2 scatIsAXElement] & 1) == 0)
     {
 
       goto LABEL_16;
     }
 
-    v16 = [v6 element];
-    v17 = [v16 uiElement];
-    v18 = [v17 BOOLWithAXAttribute:2150];
+    element3 = [v6 element];
+    uiElement = [element3 uiElement];
+    v18 = [uiElement BOOLWithAXAttribute:2150];
 
     if (!v18)
     {
@@ -4837,26 +4837,26 @@ LABEL_14:
   {
   }
 
-  v23 = [v6 element];
-  v24 = [(SCATScannerManager *)self activateElement:v23];
+  element4 = [v6 element];
+  v24 = [(SCATScannerManager *)self activateElement:element4];
 
   if ((v24 & 1) == 0)
   {
 LABEL_16:
-    v25 = [(SCATScannerManager *)self gestureProvider];
-    v26 = [(SCATScannerManager *)self pointPicker];
-    [(SCATScannerManager *)self _startingPointForGesturesForPointPicker:v26];
+    gestureProvider = [(SCATScannerManager *)self gestureProvider];
+    pointPicker5 = [(SCATScannerManager *)self pointPicker];
+    [(SCATScannerManager *)self _startingPointForGesturesForPointPicker:pointPicker5];
     v27 = [AXNamedReplayableGesture tapGestureAtPoint:?];
-    [v25 replayGesture:v27];
+    [gestureProvider replayGesture:v27];
   }
 
-  v28 = [(SCATScannerManager *)self pointPicker];
-  v29 = [v28 shouldRescanAfterTap];
+  pointPicker6 = [(SCATScannerManager *)self pointPicker];
+  shouldRescanAfterTap = [pointPicker6 shouldRescanAfterTap];
 
-  if (v29)
+  if (shouldRescanAfterTap)
   {
-    v30 = [(SCATScannerManager *)self cursorManager];
-    [v30 updateWithFocusContext:0 animated:0 options:0];
+    cursorManager = [(SCATScannerManager *)self cursorManager];
+    [cursorManager updateWithFocusContext:0 animated:0 options:0];
 
     AXPerformBlockOnMainThreadAfterDelay();
   }
@@ -4864,144 +4864,144 @@ LABEL_16:
 LABEL_19:
 }
 
-- (id)focusContextForActionHandler:(id)a3
+- (id)focusContextForActionHandler:(id)handler
 {
-  v4 = [(SCATScannerManager *)self pointPicker];
-  [v4 pickedPointInDeviceCoordinates];
+  pointPicker = [(SCATScannerManager *)self pointPicker];
+  [pointPicker pickedPointInDeviceCoordinates];
   v5 = [(SCATScannerManager *)self _focusContextAtPoint:?];
 
   return v5;
 }
 
-- (void)alternateKeysManager:(id)a3 didSelectAlternateKey:(id)a4
+- (void)alternateKeysManager:(id)manager didSelectAlternateKey:(id)key
 {
-  v5 = a4;
-  v6 = [(SCATScannerManager *)self outputManager];
-  [v6 playSound:1001];
+  keyCopy = key;
+  outputManager = [(SCATScannerManager *)self outputManager];
+  [outputManager playSound:1001];
 
   [(SCATScannerManager *)self _updateActiveElementManager];
-  v7 = [(SCATScannerManager *)self activeElementManager];
-  [v7 scannerManager:self didActivateElement:v5];
+  activeElementManager = [(SCATScannerManager *)self activeElementManager];
+  [activeElementManager scannerManager:self didActivateElement:keyCopy];
 }
 
 - (id)_typingCandidates
 {
   v2 = +[HNDAccessibilityManager sharedManager];
-  v3 = [v2 firstResponder];
-  v4 = [v3 elementForAttribute:2017];
-  v5 = [v4 typingCandidates];
+  firstResponder = [v2 firstResponder];
+  v4 = [firstResponder elementForAttribute:2017];
+  typingCandidates = [v4 typingCandidates];
 
-  return v5;
+  return typingCandidates;
 }
 
-- (BOOL)candidateBarManager:(id)a3 hasValidTypingCandidates:(id)a4
+- (BOOL)candidateBarManager:(id)manager hasValidTypingCandidates:(id)candidates
 {
-  v5 = a4;
-  v6 = [(SCATScannerManager *)self _typingCandidates];
-  v7 = [v6 isEqualToArray:v5];
+  candidatesCopy = candidates;
+  _typingCandidates = [(SCATScannerManager *)self _typingCandidates];
+  v7 = [_typingCandidates isEqualToArray:candidatesCopy];
 
   return v7;
 }
 
-- (void)presentPostScanningMenuForElementNavigationController:(id)a3
+- (void)presentPostScanningMenuForElementNavigationController:(id)controller
 {
-  v3 = [(SCATScannerManager *)self menu];
-  [v3 presentWithRootLevelSheet:0 useCurrentElementAndPoint:0];
+  menu = [(SCATScannerManager *)self menu];
+  [menu presentWithRootLevelSheet:0 useCurrentElementAndPoint:0];
 }
 
 - (id)scatUIContext
 {
-  v2 = [(SCATScannerManager *)self currentDisplayID];
+  currentDisplayID = [(SCATScannerManager *)self currentDisplayID];
   v3 = +[HNDHandManager sharedManager];
-  v4 = [v3 displayManagerForDisplayId:v2];
-  v5 = [v4 scannerContentView];
+  v4 = [v3 displayManagerForDisplayId:currentDisplayID];
+  scannerContentView = [v4 scannerContentView];
 
-  return v5;
+  return scannerContentView;
 }
 
 - (id)scatBackCursorUIContext
 {
-  v2 = [(SCATScannerManager *)self currentDisplayID];
+  currentDisplayID = [(SCATScannerManager *)self currentDisplayID];
   v3 = +[HNDHandManager sharedManager];
-  v4 = [v3 displayManagerForDisplayId:v2];
-  v5 = [v4 scannerBackCursorView];
+  v4 = [v3 displayManagerForDisplayId:currentDisplayID];
+  scannerBackCursorView = [v4 scannerBackCursorView];
 
-  return v5;
+  return scannerBackCursorView;
 }
 
 - (id)scatFrontCursorUIContext
 {
-  v2 = [(SCATScannerManager *)self currentDisplayID];
+  currentDisplayID = [(SCATScannerManager *)self currentDisplayID];
   v3 = +[HNDHandManager sharedManager];
-  v4 = [v3 displayManagerForDisplayId:v2];
-  v5 = [v4 scannerFrontCursorView];
+  v4 = [v3 displayManagerForDisplayId:currentDisplayID];
+  scannerFrontCursorView = [v4 scannerFrontCursorView];
 
-  return v5;
+  return scannerFrontCursorView;
 }
 
-- (id)scatUIContextForDisplayID:(unsigned int)a3
+- (id)scatUIContextForDisplayID:(unsigned int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v4 = +[HNDHandManager sharedManager];
   v5 = [v4 displayManagerForDisplayId:v3];
-  v6 = [v5 scannerContentView];
+  scannerContentView = [v5 scannerContentView];
 
-  return v6;
+  return scannerContentView;
 }
 
-- (id)scatFrontCursorUIContextForDisplayID:(unsigned int)a3
+- (id)scatFrontCursorUIContextForDisplayID:(unsigned int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v4 = +[HNDHandManager sharedManager];
   v5 = [v4 displayManagerForDisplayId:v3];
-  v6 = [v5 scannerFrontCursorView];
+  scannerFrontCursorView = [v5 scannerFrontCursorView];
 
-  return v6;
+  return scannerFrontCursorView;
 }
 
-- (id)scatBackCursorUIContextForDisplayID:(unsigned int)a3
+- (id)scatBackCursorUIContextForDisplayID:(unsigned int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v4 = +[HNDHandManager sharedManager];
   v5 = [v4 displayManagerForDisplayId:v3];
-  v6 = [v5 scannerBackCursorView];
+  scannerBackCursorView = [v5 scannerBackCursorView];
 
-  return v6;
+  return scannerBackCursorView;
 }
 
 - (BOOL)isUIContextHidden
 {
-  v3 = [(SCATScannerManager *)self currentDisplayID];
-  v4 = [(SCATScannerManager *)self scatUIContextForDisplayID:v3];
+  currentDisplayID = [(SCATScannerManager *)self currentDisplayID];
+  v4 = [(SCATScannerManager *)self scatUIContextForDisplayID:currentDisplayID];
   if ([v4 isHidden])
   {
-    v5 = [(SCATScannerManager *)self scatBackCursorUIContextForDisplayID:v3];
+    v5 = [(SCATScannerManager *)self scatBackCursorUIContextForDisplayID:currentDisplayID];
     if ([v5 isHidden])
     {
-      v6 = [(SCATScannerManager *)self scatFrontCursorUIContextForDisplayID:v3];
-      v7 = [v6 isHidden];
+      v6 = [(SCATScannerManager *)self scatFrontCursorUIContextForDisplayID:currentDisplayID];
+      isHidden = [v6 isHidden];
     }
 
     else
     {
-      v7 = 0;
+      isHidden = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    isHidden = 0;
   }
 
-  return v7;
+  return isHidden;
 }
 
-- (void)hideUIContext:(BOOL)a3
+- (void)hideUIContext:(BOOL)context
 {
-  v5 = [(SCATScannerManager *)self currentDisplayID];
+  currentDisplayID = [(SCATScannerManager *)self currentDisplayID];
   if (![(SCATScannerManager *)self isUIContextHidden])
   {
-    if (!a3)
+    if (!context)
     {
       +[CATransaction begin];
       [CATransaction setDisableActions:1];
@@ -5010,19 +5010,19 @@ LABEL_19:
     v6 = +[NSNotificationCenter defaultCenter];
     [v6 postNotificationName:off_100217018 object:self];
 
-    v7 = [(SCATScannerManager *)self scatUIContextForDisplayID:v5];
+    v7 = [(SCATScannerManager *)self scatUIContextForDisplayID:currentDisplayID];
     [v7 setHidden:1];
 
-    v8 = [(SCATScannerManager *)self scatBackCursorUIContextForDisplayID:v5];
+    v8 = [(SCATScannerManager *)self scatBackCursorUIContextForDisplayID:currentDisplayID];
     [v8 setHidden:1];
 
-    v9 = [(SCATScannerManager *)self scatFrontCursorUIContextForDisplayID:v5];
+    v9 = [(SCATScannerManager *)self scatFrontCursorUIContextForDisplayID:currentDisplayID];
     [v9 setHidden:1];
 
-    v10 = [(SCATScannerManager *)self gestureProvider];
-    [v10 setHidden:1];
+    gestureProvider = [(SCATScannerManager *)self gestureProvider];
+    [gestureProvider setHidden:1];
 
-    if (!a3)
+    if (!context)
     {
       +[CATransaction commit];
     }
@@ -5035,12 +5035,12 @@ LABEL_19:
   }
 }
 
-- (void)showUIContext:(BOOL)a3
+- (void)showUIContext:(BOOL)context
 {
-  v5 = [(SCATScannerManager *)self currentDisplayID];
+  currentDisplayID = [(SCATScannerManager *)self currentDisplayID];
   if ([(SCATScannerManager *)self isUIContextHidden])
   {
-    if (!a3)
+    if (!context)
     {
       +[CATransaction begin];
       [CATransaction setDisableActions:1];
@@ -5049,19 +5049,19 @@ LABEL_19:
     v6 = +[NSNotificationCenter defaultCenter];
     [v6 postNotificationName:off_100217020 object:self];
 
-    v7 = [(SCATScannerManager *)self scatUIContextForDisplayID:v5];
+    v7 = [(SCATScannerManager *)self scatUIContextForDisplayID:currentDisplayID];
     [v7 setHidden:0];
 
-    v8 = [(SCATScannerManager *)self scatBackCursorUIContextForDisplayID:v5];
+    v8 = [(SCATScannerManager *)self scatBackCursorUIContextForDisplayID:currentDisplayID];
     [v8 setHidden:0];
 
-    v9 = [(SCATScannerManager *)self scatFrontCursorUIContextForDisplayID:v5];
+    v9 = [(SCATScannerManager *)self scatFrontCursorUIContextForDisplayID:currentDisplayID];
     [v9 setHidden:0];
 
-    v10 = [(SCATScannerManager *)self gestureProvider];
-    [v10 setHidden:0];
+    gestureProvider = [(SCATScannerManager *)self gestureProvider];
+    [gestureProvider setHidden:0];
 
-    if (!a3)
+    if (!context)
     {
       +[CATransaction commit];
     }
@@ -5071,29 +5071,29 @@ LABEL_19:
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SCATScannerManager *)self scannerObservers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  scannerObservers = [(SCATScannerManager *)self scannerObservers];
+  [scannerObservers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SCATScannerManager *)self scannerObservers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  scannerObservers = [(SCATScannerManager *)self scannerObservers];
+  [scannerObservers removeObject:observerCopy];
 }
 
-- (void)_notifyObserversScannerWillFocusOnContext:(id)a3
+- (void)_notifyObserversScannerWillFocusOnContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(SCATScannerManager *)self scannerObservers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  scannerObservers = [(SCATScannerManager *)self scannerObservers];
+  v6 = [scannerObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -5105,36 +5105,36 @@ LABEL_19:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(scannerObservers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 scannerManager:self willFocusOnContext:v4];
+          [v10 scannerManager:self willFocusOnContext:contextCopy];
         }
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [scannerObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_notifyObserversScannerDidFocusOnContext:(id)a3 oldContext:(id)a4
+- (void)_notifyObserversScannerDidFocusOnContext:(id)context oldContext:(id)oldContext
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  oldContextCopy = oldContext;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(SCATScannerManager *)self scannerObservers];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  scannerObservers = [(SCATScannerManager *)self scannerObservers];
+  v9 = [scannerObservers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -5146,35 +5146,35 @@ LABEL_19:
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(scannerObservers);
         }
 
         v13 = *(*(&v14 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 scannerManager:self didFocusOnContext:v6 oldContext:v7];
+          [v13 scannerManager:self didFocusOnContext:contextCopy oldContext:oldContextCopy];
         }
 
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [scannerObservers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)_notifyObserversScannerWillUnfocusFromContext:(id)a3
+- (void)_notifyObserversScannerWillUnfocusFromContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(SCATScannerManager *)self scannerObservers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  scannerObservers = [(SCATScannerManager *)self scannerObservers];
+  v6 = [scannerObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -5186,20 +5186,20 @@ LABEL_19:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(scannerObservers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 scannerManager:self willUnfocusFromContext:v4];
+          [v10 scannerManager:self willUnfocusFromContext:contextCopy];
         }
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [scannerObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -5212,8 +5212,8 @@ LABEL_19:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(SCATScannerManager *)self scannerObservers];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  scannerObservers = [(SCATScannerManager *)self scannerObservers];
+  v4 = [scannerObservers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -5225,7 +5225,7 @@ LABEL_19:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(scannerObservers);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -5238,7 +5238,7 @@ LABEL_19:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [scannerObservers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -5251,8 +5251,8 @@ LABEL_19:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(SCATScannerManager *)self scannerObservers];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  scannerObservers = [(SCATScannerManager *)self scannerObservers];
+  v4 = [scannerObservers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -5264,7 +5264,7 @@ LABEL_19:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(scannerObservers);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -5277,7 +5277,7 @@ LABEL_19:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [scannerObservers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -5290,8 +5290,8 @@ LABEL_19:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(SCATScannerManager *)self scannerObservers];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  scannerObservers = [(SCATScannerManager *)self scannerObservers];
+  v4 = [scannerObservers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -5303,7 +5303,7 @@ LABEL_19:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(scannerObservers);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -5316,24 +5316,24 @@ LABEL_19:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [scannerObservers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_notifyObserversInputController:(id)a3 didReceivePoint:(CGPoint)a4
+- (void)_notifyObserversInputController:(id)controller didReceivePoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = point.y;
+  x = point.x;
+  controllerCopy = controller;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(SCATScannerManager *)self scannerObservers];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  scannerObservers = [(SCATScannerManager *)self scannerObservers];
+  v9 = [scannerObservers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -5344,26 +5344,26 @@ LABEL_19:
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(scannerObservers);
         }
 
         v13 = *(*(&v14 + 1) + 8 * i);
         if ([v13 conformsToProtocol:&OBJC_PROTOCOL___SCATInputControllerDelegate] && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          [v13 inputController:v7 didReceivePoint:{x, y}];
+          [v13 inputController:controllerCopy didReceivePoint:{x, y}];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [scannerObservers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
   }
 }
 
-- (CGPoint)_startingPointForGesturesForPointPicker:(id)a3
+- (CGPoint)_startingPointForGesturesForPointPicker:(id)picker
 {
-  [a3 pickedPoint];
+  [picker pickedPoint];
   result.y = v4;
   result.x = v3;
   return result;

@@ -1,9 +1,9 @@
 @interface _ANEVirtualModel
-+ (id)objectWithModel:(id)a3;
-+ (id)objectWithModel:(id)a3 tmpModelFilesPath:(id)a4 tmpWeightFilesPath:(id)a5;
++ (id)objectWithModel:(id)model;
++ (id)objectWithModel:(id)model tmpModelFilesPath:(id)path tmpWeightFilesPath:(id)filesPath;
 + (void)initialize;
 - (BOOL)removeCachedReference;
-- (_ANEVirtualModel)initWithModel:(id)a3 tmpModelFilesPath:(id)a4 tmpWeightFilesPath:(id)a5;
+- (_ANEVirtualModel)initWithModel:(id)model tmpModelFilesPath:(id)path tmpWeightFilesPath:(id)filesPath;
 - (void)addCachedReference;
 @end
 
@@ -16,21 +16,21 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (_ANEVirtualModel)initWithModel:(id)a3 tmpModelFilesPath:(id)a4 tmpWeightFilesPath:(id)a5
+- (_ANEVirtualModel)initWithModel:(id)model tmpModelFilesPath:(id)path tmpWeightFilesPath:(id)filesPath
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  modelCopy = model;
+  pathCopy = path;
+  filesPathCopy = filesPath;
   v16.receiver = self;
   v16.super_class = _ANEVirtualModel;
   v12 = [(_ANEVirtualModel *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    [(_ANEVirtualModel *)v12 setModel:v9];
+    [(_ANEVirtualModel *)v12 setModel:modelCopy];
     [(_ANEVirtualModel *)v13 setRefcount:1];
-    [(_ANEVirtualModel *)v13 setTmpModelFilesPath:v10];
-    [(_ANEVirtualModel *)v13 setTmpWeightFilesPath:v11];
+    [(_ANEVirtualModel *)v13 setTmpModelFilesPath:pathCopy];
+    [(_ANEVirtualModel *)v13 setTmpWeightFilesPath:filesPathCopy];
     v14 = gLogger;
     if (os_log_type_enabled(gLogger, OS_LOG_TYPE_DEBUG))
     {
@@ -41,20 +41,20 @@
   return v13;
 }
 
-+ (id)objectWithModel:(id)a3
++ (id)objectWithModel:(id)model
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithModel:v4 tmpModelFilesPath:0 tmpWeightFilesPath:0];
+  modelCopy = model;
+  v5 = [[self alloc] initWithModel:modelCopy tmpModelFilesPath:0 tmpWeightFilesPath:0];
 
   return v5;
 }
 
-+ (id)objectWithModel:(id)a3 tmpModelFilesPath:(id)a4 tmpWeightFilesPath:(id)a5
++ (id)objectWithModel:(id)model tmpModelFilesPath:(id)path tmpWeightFilesPath:(id)filesPath
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithModel:v10 tmpModelFilesPath:v9 tmpWeightFilesPath:v8];
+  filesPathCopy = filesPath;
+  pathCopy = path;
+  modelCopy = model;
+  v11 = [[self alloc] initWithModel:modelCopy tmpModelFilesPath:pathCopy tmpWeightFilesPath:filesPathCopy];
 
   return v11;
 }
@@ -62,10 +62,10 @@
 - (void)addCachedReference
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a1;
+  selfCopy = self;
   v6 = NSStringFromSelector(a2);
-  v7 = [a3 model];
-  v8 = [v7 modelURL];
+  model = [a3 model];
+  modelURL = [model modelURL];
   [a3 refcount];
   OUTLINED_FUNCTION_0();
   OUTLINED_FUNCTION_1(&dword_25DF54000, v9, v10, "%@: ANEVirtualModel addCachedReference model url %@ refcount %lld", v11, v12, v13, v14, v16);
@@ -76,27 +76,27 @@
 - (BOOL)removeCachedReference
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = [(_ANEVirtualModel *)self model];
+  model = [(_ANEVirtualModel *)self model];
 
-  if (v4)
+  if (model)
   {
     [(_ANEVirtualModel *)self setRefcount:[(_ANEVirtualModel *)self refcount]- 1];
-    v5 = [(_ANEVirtualModel *)self refcount];
-    v6 = v5 < 1;
+    refcount = [(_ANEVirtualModel *)self refcount];
+    v6 = refcount < 1;
     v7 = gLogger;
     if (os_log_type_enabled(gLogger, OS_LOG_TYPE_DEBUG))
     {
-      v8 = v5 < 1;
+      v8 = refcount < 1;
       v9 = v7;
       v10 = NSStringFromSelector(a2);
-      v11 = [(_ANEVirtualModel *)self model];
-      v12 = [v11 modelURL];
+      model2 = [(_ANEVirtualModel *)self model];
+      modelURL = [model2 modelURL];
       v15 = 138413058;
       v16 = v10;
       v17 = 2112;
-      v18 = v12;
+      v18 = modelURL;
       v19 = 2048;
-      v20 = [(_ANEVirtualModel *)self refcount];
+      refcount2 = [(_ANEVirtualModel *)self refcount];
       v21 = 1024;
       v22 = v8;
       _os_log_debug_impl(&dword_25DF54000, v9, OS_LOG_TYPE_DEBUG, "%@: ANEVirtualModel removeCachedReference model url %@ refcount %lld canBeRemoved %d", &v15, 0x26u);

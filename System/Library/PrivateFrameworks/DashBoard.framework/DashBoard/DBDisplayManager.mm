@@ -1,41 +1,41 @@
 @interface DBDisplayManager
-- (BOOL)_isPassengerDisplay:(id)a3;
-- (BOOL)bundleIdentifierIsCertificationApp:(id)a3;
-- (BOOL)bundleIdentifierSupportsDashboard:(id)a3;
-- (BOOL)bundleIdentifierSupportsInstrumentCluster:(id)a3;
+- (BOOL)_isPassengerDisplay:(id)display;
+- (BOOL)bundleIdentifierIsCertificationApp:(id)app;
+- (BOOL)bundleIdentifierSupportsDashboard:(id)dashboard;
+- (BOOL)bundleIdentifierSupportsInstrumentCluster:(id)cluster;
 - (DBAppHistory)appHistory;
 - (DBDisplayManager)init;
-- (id)_createEnvironmentConfigurationForDisplayConfiguration:(id)a3 session:(id)a4;
-- (id)_createRootSceneWithIdentifier:(id)a3 displayConfiguration:(id)a4;
-- (id)focusWindowForDisplayIdentity:(id)a3;
-- (id)iconLayoutDataProviderForVehicleIdentifier:(id)a3;
-- (id)systemGestureWindowForDisplayIdentity:(id)a3;
-- (id)widgetLayoutDataProviderForVehicleIdentifier:(id)a3;
+- (id)_createEnvironmentConfigurationForDisplayConfiguration:(id)configuration session:(id)session;
+- (id)_createRootSceneWithIdentifier:(id)identifier displayConfiguration:(id)configuration;
+- (id)focusWindowForDisplayIdentity:(id)identity;
+- (id)iconLayoutDataProviderForVehicleIdentifier:(id)identifier;
+- (id)systemGestureWindowForDisplayIdentity:(id)identity;
+- (id)widgetLayoutDataProviderForVehicleIdentifier:(id)identifier;
 - (void)_enableMapsProbabilisticGuardMalloc;
 - (void)_handleConnectedDisplaysIfPossible;
-- (void)_setCornerMaskImageIfNecessaryForPrimaryDisplayConfiguration:(id)a3;
-- (void)_setNeedsNavigationStateProvider:(BOOL)a3 forDisplayIdentity:(id)a4;
-- (void)_setNeedsTemplateProcessMonitor:(BOOL)a3 forDisplayIdentity:(id)a4;
-- (void)_setupInstrumentClusterWithDisplayConfiguration:(id)a3 session:(id)a4 defaultSceneWorkspaceIdentifier:(id)a5;
-- (void)_setupMainDisplayWithDisplayConfiguration:(id)a3 session:(id)a4 defaultSceneWorkspaceIdentifier:(id)a5;
-- (void)_setupPassengerDisplayWithDisplayConfiguration:(id)a3 session:(id)a4 defaultSceneWorkspaceIdentifier:(id)a5;
+- (void)_setCornerMaskImageIfNecessaryForPrimaryDisplayConfiguration:(id)configuration;
+- (void)_setNeedsNavigationStateProvider:(BOOL)provider forDisplayIdentity:(id)identity;
+- (void)_setNeedsTemplateProcessMonitor:(BOOL)monitor forDisplayIdentity:(id)identity;
+- (void)_setupInstrumentClusterWithDisplayConfiguration:(id)configuration session:(id)session defaultSceneWorkspaceIdentifier:(id)identifier;
+- (void)_setupMainDisplayWithDisplayConfiguration:(id)configuration session:(id)session defaultSceneWorkspaceIdentifier:(id)identifier;
+- (void)_setupPassengerDisplayWithDisplayConfiguration:(id)configuration session:(id)session defaultSceneWorkspaceIdentifier:(id)identifier;
 - (void)_updateNavigationStateProvider;
 - (void)_updateSessionAssertionsIfNecessary;
 - (void)_updateTemplateProcessMonitor;
-- (void)_updateVehicleViewAreasForSession:(id)a3 environmentConfiguration:(id)a4;
+- (void)_updateVehicleViewAreasForSession:(id)session environmentConfiguration:(id)configuration;
 - (void)activate;
-- (void)didChangeAppearanceMode:(int64_t)a3 forDisplayID:(id)a4;
-- (void)didConnectDisplayID:(id)a3;
-- (void)didDisconnectDisplayID:(id)a3;
-- (void)didForegroundAssetForDisplayID:(id)a3;
-- (void)displayMonitor:(id)a3 didConnectIdentity:(id)a4 withConfiguration:(id)a5;
-- (void)displayMonitor:(id)a3 didUpdateIdentity:(id)a4 withConfiguration:(id)a5;
-- (void)displayMonitor:(id)a3 willDisconnectIdentity:(id)a4;
-- (void)sceneDidInvalidate:(id)a3;
-- (void)sessionController:(id)a3 didConnectSession:(id)a4;
-- (void)sessionServiceBecameActive:(id)a3;
-- (void)sessionServiceBecameInactive:(id)a3;
-- (void)workspace:(id)a3 didAddScene:(id)a4;
+- (void)didChangeAppearanceMode:(int64_t)mode forDisplayID:(id)d;
+- (void)didConnectDisplayID:(id)d;
+- (void)didDisconnectDisplayID:(id)d;
+- (void)didForegroundAssetForDisplayID:(id)d;
+- (void)displayMonitor:(id)monitor didConnectIdentity:(id)identity withConfiguration:(id)configuration;
+- (void)displayMonitor:(id)monitor didUpdateIdentity:(id)identity withConfiguration:(id)configuration;
+- (void)displayMonitor:(id)monitor willDisconnectIdentity:(id)identity;
+- (void)sceneDidInvalidate:(id)invalidate;
+- (void)sessionController:(id)controller didConnectSession:(id)session;
+- (void)sessionServiceBecameActive:(id)active;
+- (void)sessionServiceBecameInactive:(id)inactive;
+- (void)workspace:(id)workspace didAddScene:(id)scene;
 @end
 
 @implementation DBDisplayManager
@@ -73,21 +73,21 @@
     defaultSceneWorkspaceManager = v2->_defaultSceneWorkspaceManager;
     v2->_defaultSceneWorkspaceManager = v13;
 
-    v15 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     displayToScreenControllerMap = v2->_displayToScreenControllerMap;
-    v2->_displayToScreenControllerMap = v15;
+    v2->_displayToScreenControllerMap = dictionary;
 
-    v17 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     displayToPresentationBinderMap = v2->_displayToPresentationBinderMap;
-    v2->_displayToPresentationBinderMap = v17;
+    v2->_displayToPresentationBinderMap = dictionary2;
 
-    v19 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     displayToRootSceneMap = v2->_displayToRootSceneMap;
-    v2->_displayToRootSceneMap = v19;
+    v2->_displayToRootSceneMap = dictionary3;
 
-    v21 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary4 = [MEMORY[0x277CBEB38] dictionary];
     displayToEndpointInjector = v2->_displayToEndpointInjector;
-    v2->_displayToEndpointInjector = v21;
+    v2->_displayToEndpointInjector = dictionary4;
 
     v23 = objc_alloc_init(DBIconImageCache);
     iconImageCache = v2->_iconImageCache;
@@ -115,14 +115,14 @@
   v16 = *MEMORY[0x277D85DE8];
   if (![(DBDisplayManager *)self activated])
   {
-    v3 = [MEMORY[0x277D0AA90] sharedInstance];
-    [v3 addObserver:self];
+    mEMORY[0x277D0AA90] = [MEMORY[0x277D0AA90] sharedInstance];
+    [mEMORY[0x277D0AA90] addObserver:self];
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [v3 connectedIdentities];
-    v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    connectedIdentities = [mEMORY[0x277D0AA90] connectedIdentities];
+    v5 = [connectedIdentities countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
       v6 = v5;
@@ -133,18 +133,18 @@
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(connectedIdentities);
           }
 
           v9 = *(*(&v11 + 1) + 8 * i);
-          v10 = [v3 configurationForIdentity:v9];
+          v10 = [mEMORY[0x277D0AA90] configurationForIdentity:v9];
           if (v10)
           {
-            [(DBDisplayManager *)self displayMonitor:v3 didConnectIdentity:v9 withConfiguration:v10];
+            [(DBDisplayManager *)self displayMonitor:mEMORY[0x277D0AA90] didConnectIdentity:v9 withConfiguration:v10];
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [connectedIdentities countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v6);
@@ -154,117 +154,117 @@
   }
 }
 
-- (id)focusWindowForDisplayIdentity:(id)a3
+- (id)focusWindowForDisplayIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = [(DBDisplayManager *)self displayToScreenControllerMap];
-  v6 = [v5 objectForKey:v4];
+  identityCopy = identity;
+  displayToScreenControllerMap = [(DBDisplayManager *)self displayToScreenControllerMap];
+  v6 = [displayToScreenControllerMap objectForKey:identityCopy];
 
-  v7 = [v6 focusWindow];
+  focusWindow = [v6 focusWindow];
 
-  return v7;
+  return focusWindow;
 }
 
-- (id)systemGestureWindowForDisplayIdentity:(id)a3
+- (id)systemGestureWindowForDisplayIdentity:(id)identity
 {
-  if (a3)
+  if (identity)
   {
-    v4 = a3;
-    v5 = [(DBDisplayManager *)self displayToScreenControllerMap];
-    v6 = [v5 objectForKey:v4];
+    identityCopy = identity;
+    displayToScreenControllerMap = [(DBDisplayManager *)self displayToScreenControllerMap];
+    v6 = [displayToScreenControllerMap objectForKey:identityCopy];
 
-    v7 = [v6 systemGestureWindow];
+    systemGestureWindow = [v6 systemGestureWindow];
   }
 
   else
   {
-    v7 = 0;
+    systemGestureWindow = 0;
   }
 
-  return v7;
+  return systemGestureWindow;
 }
 
 - (DBAppHistory)appHistory
 {
-  v2 = [(DBDisplayManager *)self mainScreenController];
-  v3 = [v2 environmentConfiguration];
-  v4 = [v3 appHistory];
+  mainScreenController = [(DBDisplayManager *)self mainScreenController];
+  environmentConfiguration = [mainScreenController environmentConfiguration];
+  appHistory = [environmentConfiguration appHistory];
 
-  return v4;
+  return appHistory;
 }
 
-- (id)iconLayoutDataProviderForVehicleIdentifier:(id)a3
+- (id)iconLayoutDataProviderForVehicleIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v4 = a3;
-    v5 = [(DBDisplayManager *)self mainScreenController];
-    v6 = [v5 environmentConfiguration];
-    v7 = [v6 vehicleID];
-    v8 = [v4 isEqualToString:v7];
+    identifierCopy = identifier;
+    mainScreenController = [(DBDisplayManager *)self mainScreenController];
+    environmentConfiguration = [mainScreenController environmentConfiguration];
+    vehicleID = [environmentConfiguration vehicleID];
+    v8 = [identifierCopy isEqualToString:vehicleID];
 
     if (v8)
     {
-      v9 = [v5 iconLayoutDataProvider];
+      iconLayoutDataProvider = [mainScreenController iconLayoutDataProvider];
     }
 
     else
     {
-      v9 = 0;
+      iconLayoutDataProvider = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    iconLayoutDataProvider = 0;
   }
 
-  return v9;
+  return iconLayoutDataProvider;
 }
 
-- (id)widgetLayoutDataProviderForVehicleIdentifier:(id)a3
+- (id)widgetLayoutDataProviderForVehicleIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v4 = a3;
-    v5 = [(DBDisplayManager *)self mainScreenController];
-    v6 = [v5 environmentConfiguration];
-    v7 = [v6 vehicleID];
-    v8 = [v4 isEqualToString:v7];
+    identifierCopy = identifier;
+    mainScreenController = [(DBDisplayManager *)self mainScreenController];
+    environmentConfiguration = [mainScreenController environmentConfiguration];
+    vehicleID = [environmentConfiguration vehicleID];
+    v8 = [identifierCopy isEqualToString:vehicleID];
 
     if (v8)
     {
-      v9 = [v5 widgetLayoutDataProvider];
+      widgetLayoutDataProvider = [mainScreenController widgetLayoutDataProvider];
     }
 
     else
     {
-      v9 = 0;
+      widgetLayoutDataProvider = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    widgetLayoutDataProvider = 0;
   }
 
-  return v9;
+  return widgetLayoutDataProvider;
 }
 
-- (void)displayMonitor:(id)a3 didConnectIdentity:(id)a4 withConfiguration:(id)a5
+- (void)displayMonitor:(id)monitor didConnectIdentity:(id)identity withConfiguration:(id)configuration
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 isCarDisplay];
-  v10 = [v8 isCarInstrumentsDisplay];
+  identityCopy = identity;
+  configurationCopy = configuration;
+  isCarDisplay = [configurationCopy isCarDisplay];
+  isCarInstrumentsDisplay = [configurationCopy isCarInstrumentsDisplay];
   v11 = DBLogForCategory(0x1DuLL);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = NSStringFromBOOL();
     v13 = NSStringFromBOOL();
     v20 = 138543874;
-    v21 = v7;
+    v21 = identityCopy;
     v22 = 2114;
     v23 = v12;
     v24 = 2114;
@@ -272,75 +272,75 @@
     _os_log_impl(&dword_248146000, v11, OS_LOG_TYPE_DEFAULT, "didConnectIdentity:%{public}@, is car display: %{public}@, is cluster display: %{public}@", &v20, 0x20u);
   }
 
-  if (v10)
+  if (isCarInstrumentsDisplay)
   {
     kdebug_trace();
-    v14 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     clusterDisplayReadyDate = self->_clusterDisplayReadyDate;
-    self->_clusterDisplayReadyDate = v14;
+    self->_clusterDisplayReadyDate = date;
 
-    v16 = [(DBDisplayManager *)self clusterDisplayReadyDate];
-    [(DBAnalytics *)self->_analytics setClusterDisplayReadyTimestamp:v16];
+    clusterDisplayReadyDate = [(DBDisplayManager *)self clusterDisplayReadyDate];
+    [(DBAnalytics *)self->_analytics setClusterDisplayReadyTimestamp:clusterDisplayReadyDate];
 LABEL_7:
 
-    [(DBDisplayManager *)self _setNeedsNavigationStateProvider:1 forDisplayIdentity:v7];
-    [(DBDisplayManager *)self _setNeedsTemplateProcessMonitor:1 forDisplayIdentity:v7];
-    v19 = [(DBDisplayManager *)self pendingDisplays];
-    [v19 addObject:v8];
+    [(DBDisplayManager *)self _setNeedsNavigationStateProvider:1 forDisplayIdentity:identityCopy];
+    [(DBDisplayManager *)self _setNeedsTemplateProcessMonitor:1 forDisplayIdentity:identityCopy];
+    pendingDisplays = [(DBDisplayManager *)self pendingDisplays];
+    [pendingDisplays addObject:configurationCopy];
 
     [(DBDisplayManager *)self _handleConnectedDisplaysIfPossible];
     [(DBDisplayManager *)self _updateSessionAssertionsIfNecessary];
     goto LABEL_8;
   }
 
-  if (v9)
+  if (isCarDisplay)
   {
     kdebug_trace();
-    v17 = [MEMORY[0x277CBEAA8] date];
+    date2 = [MEMORY[0x277CBEAA8] date];
     mainDisplayReadyDate = self->_mainDisplayReadyDate;
-    self->_mainDisplayReadyDate = v17;
+    self->_mainDisplayReadyDate = date2;
 
-    v16 = [(DBDisplayManager *)self mainDisplayReadyDate];
-    [(DBAnalytics *)self->_analytics setMainDisplayReadyTimestamp:v16];
+    clusterDisplayReadyDate = [(DBDisplayManager *)self mainDisplayReadyDate];
+    [(DBAnalytics *)self->_analytics setMainDisplayReadyTimestamp:clusterDisplayReadyDate];
     goto LABEL_7;
   }
 
 LABEL_8:
 }
 
-- (void)displayMonitor:(id)a3 didUpdateIdentity:(id)a4 withConfiguration:(id)a5
+- (void)displayMonitor:(id)monitor didUpdateIdentity:(id)identity withConfiguration:(id)configuration
 {
   v9 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  identityCopy = identity;
   v6 = DBLogForCategory(0x1DuLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v5;
+    v8 = identityCopy;
     _os_log_impl(&dword_248146000, v6, OS_LOG_TYPE_DEFAULT, "didUpdateIdentity:%{public}@", &v7, 0xCu);
   }
 }
 
-- (void)displayMonitor:(id)a3 willDisconnectIdentity:(id)a4
+- (void)displayMonitor:(id)monitor willDisconnectIdentity:(id)identity
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  identityCopy = identity;
   v6 = DBLogForCategory(0x1DuLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v25 = v5;
+    v25 = identityCopy;
     _os_log_impl(&dword_248146000, v6, OS_LOG_TYPE_DEFAULT, "willDisconnectIdentity:%{public}@", buf, 0xCu);
   }
 
-  v7 = [(DBDisplayManager *)self pendingDisplays];
+  pendingDisplays = [(DBDisplayManager *)self pendingDisplays];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __58__DBDisplayManager_displayMonitor_willDisconnectIdentity___block_invoke;
   v22[3] = &unk_278F03BE0;
-  v8 = v5;
+  v8 = identityCopy;
   v23 = v8;
-  v9 = [v7 bs_firstObjectPassingTest:v22];
+  v9 = [pendingDisplays bs_firstObjectPassingTest:v22];
 
   if (v9)
   {
@@ -352,17 +352,17 @@ LABEL_8:
       _os_log_impl(&dword_248146000, v10, OS_LOG_TYPE_DEFAULT, "Discarding pending display: %{public}@", buf, 0xCu);
     }
 
-    v11 = [(DBDisplayManager *)self pendingDisplays];
-    [v11 removeObject:v9];
+    pendingDisplays2 = [(DBDisplayManager *)self pendingDisplays];
+    [pendingDisplays2 removeObject:v9];
   }
 
   [(DBDisplayManager *)self _setNeedsNavigationStateProvider:0 forDisplayIdentity:v8];
   [(DBDisplayManager *)self _setNeedsTemplateProcessMonitor:0 forDisplayIdentity:v8];
-  v12 = [(DBDisplayManager *)self sessionController];
-  [v12 setNeedsLayerMetadataService:0 forDisplayIdentity:v8];
+  sessionController = [(DBDisplayManager *)self sessionController];
+  [sessionController setNeedsLayerMetadataService:0 forDisplayIdentity:v8];
 
-  v13 = [(DBDisplayManager *)self displayToScreenControllerMap];
-  v14 = [v13 objectForKey:v8];
+  displayToScreenControllerMap = [(DBDisplayManager *)self displayToScreenControllerMap];
+  v14 = [displayToScreenControllerMap objectForKey:v8];
 
   v15 = DBLogForCategory(0x1DuLL);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -373,20 +373,20 @@ LABEL_8:
   }
 
   [v14 invalidate];
-  v16 = [(DBDisplayManager *)self mainScreenController];
+  mainScreenController = [(DBDisplayManager *)self mainScreenController];
 
-  if (v14 == v16)
+  if (v14 == mainScreenController)
   {
     [(DBDisplayManager *)self setMainScreenController:0];
     analytics = self->_analytics;
     self->_analytics = 0;
   }
 
-  v18 = [(DBDisplayManager *)self displayToScreenControllerMap];
-  [v18 removeObjectForKey:v8];
+  displayToScreenControllerMap2 = [(DBDisplayManager *)self displayToScreenControllerMap];
+  [displayToScreenControllerMap2 removeObjectForKey:v8];
 
-  v19 = [(DBDisplayManager *)self defaultSceneWorkspaceManager];
-  [v19 relinquishWorkspaceIdentifierForDisplayIdentity:v8];
+  defaultSceneWorkspaceManager = [(DBDisplayManager *)self defaultSceneWorkspaceManager];
+  [defaultSceneWorkspaceManager relinquishWorkspaceIdentifierForDisplayIdentity:v8];
 
   v20 = [(NSMutableDictionary *)self->_displayToRootSceneMap objectForKey:v8];
   v21 = v20;
@@ -408,61 +408,61 @@ uint64_t __58__DBDisplayManager_displayMonitor_willDisconnectIdentity___block_in
   return v4;
 }
 
-- (void)sceneDidInvalidate:(id)a3
+- (void)sceneDidInvalidate:(id)invalidate
 {
-  v20 = a3;
-  v4 = [(DBDisplayManager *)self displayToPresentationBinderMap];
-  v5 = [v20 settings];
-  v6 = [v5 displayIdentity];
-  v7 = [v4 objectForKey:v6];
+  invalidateCopy = invalidate;
+  displayToPresentationBinderMap = [(DBDisplayManager *)self displayToPresentationBinderMap];
+  settings = [invalidateCopy settings];
+  displayIdentity = [settings displayIdentity];
+  v7 = [displayToPresentationBinderMap objectForKey:displayIdentity];
 
-  [v7 removeScene:v20];
-  v8 = [v7 scenes];
-  v9 = [v8 count];
+  [v7 removeScene:invalidateCopy];
+  scenes = [v7 scenes];
+  v9 = [scenes count];
 
   if (!v9)
   {
     [v7 invalidate];
-    v10 = [(DBDisplayManager *)self displayToPresentationBinderMap];
-    v11 = [v20 settings];
-    v12 = [v11 displayIdentity];
-    [v10 setObject:0 forKeyedSubscript:v12];
+    displayToPresentationBinderMap2 = [(DBDisplayManager *)self displayToPresentationBinderMap];
+    settings2 = [invalidateCopy settings];
+    displayIdentity2 = [settings2 displayIdentity];
+    [displayToPresentationBinderMap2 setObject:0 forKeyedSubscript:displayIdentity2];
   }
 
-  v13 = [(DBDisplayManager *)self displayToEndpointInjector];
-  v14 = [v20 settings];
-  v15 = [v14 displayIdentity];
-  v16 = [v13 objectForKey:v15];
+  displayToEndpointInjector = [(DBDisplayManager *)self displayToEndpointInjector];
+  settings3 = [invalidateCopy settings];
+  displayIdentity3 = [settings3 displayIdentity];
+  v16 = [displayToEndpointInjector objectForKey:displayIdentity3];
 
-  v17 = [(DBDisplayManager *)self displayToEndpointInjector];
-  v18 = [v20 settings];
-  v19 = [v18 displayIdentity];
-  [v17 removeObjectForKey:v19];
+  displayToEndpointInjector2 = [(DBDisplayManager *)self displayToEndpointInjector];
+  settings4 = [invalidateCopy settings];
+  displayIdentity4 = [settings4 displayIdentity];
+  [displayToEndpointInjector2 removeObjectForKey:displayIdentity4];
 
   [v16 invalidate];
 }
 
-- (void)workspace:(id)a3 didAddScene:(id)a4
+- (void)workspace:(id)workspace didAddScene:(id)scene
 {
-  v5 = a4;
-  v6 = [(DBDisplayManager *)self displayToPresentationBinderMap];
-  v7 = [v5 settings];
-  v8 = [v7 displayIdentity];
-  v9 = [v6 objectForKey:v8];
+  sceneCopy = scene;
+  displayToPresentationBinderMap = [(DBDisplayManager *)self displayToPresentationBinderMap];
+  settings = [sceneCopy settings];
+  displayIdentity = [settings displayIdentity];
+  v9 = [displayToPresentationBinderMap objectForKey:displayIdentity];
 
   if (!v9)
   {
     v10 = objc_alloc(MEMORY[0x277D75928]);
-    v11 = [v5 settings];
-    v12 = [v11 displayConfiguration];
-    v13 = [v10 initWithDisplayConfiguration:v12];
+    settings2 = [sceneCopy settings];
+    displayConfiguration = [settings2 displayConfiguration];
+    v13 = [v10 initWithDisplayConfiguration:displayConfiguration];
 
     [v13 setVisibilityIdentifier:@"com.apple.CarPlayApp"];
-    v14 = [MEMORY[0x277CF32D0] bootstrapConfiguration];
-    v15 = [MEMORY[0x277D0AD78] serviceName];
-    v16 = [v14 domainsContainingServiceIdentifier:v15];
-    v17 = [v16 anyObject];
-    v18 = [v17 identifier];
+    bootstrapConfiguration = [MEMORY[0x277CF32D0] bootstrapConfiguration];
+    serviceName = [MEMORY[0x277D0AD78] serviceName];
+    v16 = [bootstrapConfiguration domainsContainingServiceIdentifier:serviceName];
+    anyObject = [v16 anyObject];
+    identifier = [anyObject identifier];
 
     v19 = MEMORY[0x277CF3290];
     v34 = MEMORY[0x277D85DD0];
@@ -470,30 +470,30 @@ uint64_t __58__DBDisplayManager_displayMonitor_willDisconnectIdentity___block_in
     v36 = __42__DBDisplayManager_workspace_didAddScene___block_invoke;
     v37 = &unk_278F03C28;
     v38 = v13;
-    v39 = v18;
-    v20 = v18;
+    v39 = identifier;
+    v20 = identifier;
     v21 = v13;
     v22 = [v19 injectorWithConfigurator:&v34];
-    v23 = [(DBDisplayManager *)self displayToEndpointInjector];
-    v24 = [v5 settings];
-    v25 = [v24 displayIdentity];
-    [v23 setObject:v22 forKey:v25];
+    displayToEndpointInjector = [(DBDisplayManager *)self displayToEndpointInjector];
+    settings3 = [sceneCopy settings];
+    displayIdentity2 = [settings3 displayIdentity];
+    [displayToEndpointInjector setObject:v22 forKey:displayIdentity2];
 
     v26 = MEMORY[0x277CCACA8];
-    v27 = [v5 settings];
-    v28 = [v27 displayConfiguration];
-    v29 = [v28 identity];
-    v30 = [v26 stringWithFormat:@"RootWindow-%@-%p", v29, self, v34, v35, v36, v37];
+    settings4 = [sceneCopy settings];
+    displayConfiguration2 = [settings4 displayConfiguration];
+    identity = [displayConfiguration2 identity];
+    v30 = [v26 stringWithFormat:@"RootWindow-%@-%p", identity, self, v34, v35, v36, v37];
 
     v9 = [objc_alloc(MEMORY[0x277D75930]) initWithIdentifier:v30 priority:0 appearanceStyle:0 rootWindow:v21];
-    v31 = [(DBDisplayManager *)self displayToPresentationBinderMap];
-    v32 = [v5 settings];
-    v33 = [v32 displayIdentity];
-    [v31 setObject:v9 forKeyedSubscript:v33];
+    displayToPresentationBinderMap2 = [(DBDisplayManager *)self displayToPresentationBinderMap];
+    settings5 = [sceneCopy settings];
+    displayIdentity3 = [settings5 displayIdentity];
+    [displayToPresentationBinderMap2 setObject:v9 forKeyedSubscript:displayIdentity3];
   }
 
-  [v9 addScene:v5];
-  [v5 addObserver:self];
+  [v9 addScene:sceneCopy];
+  [sceneCopy addObserver:self];
 }
 
 void __42__DBDisplayManager_workspace_didAddScene___block_invoke(uint64_t a1, void *a2)
@@ -510,26 +510,26 @@ void __42__DBDisplayManager_workspace_didAddScene___block_invoke(uint64_t a1, vo
   [v4 setService:v8];
 }
 
-- (void)sessionServiceBecameActive:(id)a3
+- (void)sessionServiceBecameActive:(id)active
 {
   [(DBDisplayManager *)self setSessionServiceIsActive:1];
 
   [(DBDisplayManager *)self _updateSessionAssertionsIfNecessary];
 }
 
-- (void)sessionServiceBecameInactive:(id)a3
+- (void)sessionServiceBecameInactive:(id)inactive
 {
   [(DBDisplayManager *)self setSessionServiceIsActive:0];
 
   [(DBDisplayManager *)self _updateSessionAssertionsIfNecessary];
 }
 
-- (void)sessionController:(id)a3 didConnectSession:(id)a4
+- (void)sessionController:(id)controller didConnectSession:(id)session
 {
-  v5 = a4;
+  sessionCopy = session;
   [(DBDisplayManager *)self _updateSessionAssertionsIfNecessary];
   v6 = +[_TtC9DashBoard14DBAssetLibrary shared];
-  [v6 setSession:v5];
+  [v6 setSession:sessionCopy];
 
   v7 = +[DBApplicationController sharedInstance];
   [v7 sessionDidConnect];
@@ -545,50 +545,50 @@ void __42__DBDisplayManager_workspace_didAddScene___block_invoke(uint64_t a1, vo
   [(DBDisplayManager *)self _handleConnectedDisplaysIfPossible];
 }
 
-- (void)didConnectDisplayID:(id)a3
+- (void)didConnectDisplayID:(id)d
 {
-  v4 = a3;
-  v5 = [(DBDisplayManager *)self mainScreenController];
-  v6 = [v5 displayInfo];
-  v7 = [v6 identifier];
+  dCopy = d;
+  mainScreenController = [(DBDisplayManager *)self mainScreenController];
+  displayInfo = [mainScreenController displayInfo];
+  identifier = [displayInfo identifier];
 
-  if (v7 == v4)
+  if (identifier == dCopy)
   {
-    v8 = [(DBDisplayManager *)self mainScreenController];
-    [v8 handleMainAssetForegrounded];
+    mainScreenController2 = [(DBDisplayManager *)self mainScreenController];
+    [mainScreenController2 handleMainAssetForegrounded];
   }
 }
 
-- (void)didDisconnectDisplayID:(id)a3
+- (void)didDisconnectDisplayID:(id)d
 {
-  v4 = a3;
-  v5 = [(DBDisplayManager *)self foregroundedAssetDisplayIDs];
-  [v5 removeObject:v4];
+  dCopy = d;
+  foregroundedAssetDisplayIDs = [(DBDisplayManager *)self foregroundedAssetDisplayIDs];
+  [foregroundedAssetDisplayIDs removeObject:dCopy];
 }
 
-- (void)didForegroundAssetForDisplayID:(id)a3
+- (void)didForegroundAssetForDisplayID:(id)d
 {
-  v4 = a3;
-  v5 = [(DBDisplayManager *)self foregroundedAssetDisplayIDs];
-  [v5 addObject:v4];
+  dCopy = d;
+  foregroundedAssetDisplayIDs = [(DBDisplayManager *)self foregroundedAssetDisplayIDs];
+  [foregroundedAssetDisplayIDs addObject:dCopy];
 
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 1;
-  v6 = [(DBDisplayManager *)self displayToScreenControllerMap];
+  displayToScreenControllerMap = [(DBDisplayManager *)self displayToScreenControllerMap];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __51__DBDisplayManager_didForegroundAssetForDisplayID___block_invoke;
   v8[3] = &unk_278F03C50;
   v8[4] = self;
   v8[5] = &v9;
-  [v6 enumerateKeysAndObjectsUsingBlock:v8];
+  [displayToScreenControllerMap enumerateKeysAndObjectsUsingBlock:v8];
 
   if (*(v10 + 24) == 1)
   {
-    v7 = [(DBDisplayManager *)self mainScreenController];
-    [v7 handleAllAssetsForegrounded];
+    mainScreenController = [(DBDisplayManager *)self mainScreenController];
+    [mainScreenController handleAllAssetsForegrounded];
   }
 
   _Block_object_dispose(&v9, 8);
@@ -611,18 +611,18 @@ void __51__DBDisplayManager_didForegroundAssetForDisplayID___block_invoke(uint64
   }
 }
 
-- (void)didChangeAppearanceMode:(int64_t)a3 forDisplayID:(id)a4
+- (void)didChangeAppearanceMode:(int64_t)mode forDisplayID:(id)d
 {
-  v6 = a4;
-  v7 = [(DBDisplayManager *)self displayToScreenControllerMap];
+  dCopy = d;
+  displayToScreenControllerMap = [(DBDisplayManager *)self displayToScreenControllerMap];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__DBDisplayManager_didChangeAppearanceMode_forDisplayID___block_invoke;
   v9[3] = &unk_278F03C78;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
-  [v7 enumerateKeysAndObjectsUsingBlock:v9];
+  v10 = dCopy;
+  modeCopy = mode;
+  v8 = dCopy;
+  [displayToScreenControllerMap enumerateKeysAndObjectsUsingBlock:v9];
 }
 
 void __57__DBDisplayManager_didChangeAppearanceMode_forDisplayID___block_invoke(uint64_t a1, uint64_t a2, void *a3, _BYTE *a4)
@@ -655,17 +655,17 @@ void __57__DBDisplayManager_didChangeAppearanceMode_forDisplayID___block_invoke(
 
   else
   {
-    v4 = [(DBDisplayManager *)self displayToScreenControllerMap];
-    if ([v4 count])
+    displayToScreenControllerMap = [(DBDisplayManager *)self displayToScreenControllerMap];
+    if ([displayToScreenControllerMap count])
     {
       v3 = 1;
     }
 
     else
     {
-      v5 = [(DBDisplayManager *)self sessionController];
-      v6 = [v5 currentSession];
-      v3 = v6 != 0;
+      sessionController = [(DBDisplayManager *)self sessionController];
+      currentSession = [sessionController currentSession];
+      v3 = currentSession != 0;
     }
   }
 
@@ -678,11 +678,11 @@ void __57__DBDisplayManager_didChangeAppearanceMode_forDisplayID___block_invoke(
     _os_log_impl(&dword_248146000, v7, OS_LOG_TYPE_DEFAULT, "Updating session assertions, should hold: %{public}@", &v27, 0xCu);
   }
 
-  v9 = [(DBDisplayManager *)self idleExitTransaction];
+  idleExitTransaction = [(DBDisplayManager *)self idleExitTransaction];
 
   if (v3)
   {
-    if (!v9)
+    if (!idleExitTransaction)
     {
       v10 = DBLogForCategory(0x1DuLL);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -695,9 +695,9 @@ void __57__DBDisplayManager_didChangeAppearanceMode_forDisplayID___block_invoke(
       [(DBDisplayManager *)self setIdleExitTransaction:v11];
     }
 
-    v12 = [(DBDisplayManager *)self watchdogMonitoringAssertion];
+    watchdogMonitoringAssertion = [(DBDisplayManager *)self watchdogMonitoringAssertion];
 
-    if (!v12)
+    if (!watchdogMonitoringAssertion)
     {
       v13 = DBLogForCategory(0x1DuLL);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -706,18 +706,18 @@ void __57__DBDisplayManager_didChangeAppearanceMode_forDisplayID___block_invoke(
         _os_log_impl(&dword_248146000, v13, OS_LOG_TYPE_DEFAULT, "Taking system shell watchdog monitoring assertion", &v27, 2u);
       }
 
-      v14 = [MEMORY[0x277D0AB10] sharedInstance];
-      v15 = [v14 assertWatchdogEnabledForLimitedDurationForReason:@"CarPlaySession"];
+      mEMORY[0x277D0AB10] = [MEMORY[0x277D0AB10] sharedInstance];
+      v15 = [mEMORY[0x277D0AB10] assertWatchdogEnabledForLimitedDurationForReason:@"CarPlaySession"];
       [(DBDisplayManager *)self setWatchdogMonitoringAssertion:v15];
     }
 
-    v16 = [(DBDisplayManager *)self modelPolicyAssertion];
-    if (!v16)
+    modelPolicyAssertion = [(DBDisplayManager *)self modelPolicyAssertion];
+    if (!modelPolicyAssertion)
     {
-      v17 = [MEMORY[0x277CF89D0] enableModelPolicyAssertion];
-      v18 = [v17 valueBool];
+      enableModelPolicyAssertion = [MEMORY[0x277CF89D0] enableModelPolicyAssertion];
+      valueBool = [enableModelPolicyAssertion valueBool];
 
-      if (!v18)
+      if (!valueBool)
       {
         return;
       }
@@ -732,14 +732,14 @@ void __57__DBDisplayManager_didChangeAppearanceMode_forDisplayID___block_invoke(
       v20 = objc_alloc_init(_TtC9DashBoard22DBModelPolicyAssertion);
       [(DBDisplayManager *)self setModelPolicyAssertion:v20];
 
-      v16 = [(DBDisplayManager *)self modelPolicyAssertion];
-      [v16 acquireAssertionWithCompletionHandler:&__block_literal_global_252];
+      modelPolicyAssertion = [(DBDisplayManager *)self modelPolicyAssertion];
+      [modelPolicyAssertion acquireAssertionWithCompletionHandler:&__block_literal_global_252];
     }
 
     goto LABEL_35;
   }
 
-  if (v9)
+  if (idleExitTransaction)
   {
     v21 = DBLogForCategory(0x1DuLL);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -751,9 +751,9 @@ void __57__DBDisplayManager_didChangeAppearanceMode_forDisplayID___block_invoke(
     [(DBDisplayManager *)self setIdleExitTransaction:0];
   }
 
-  v22 = [(DBDisplayManager *)self watchdogMonitoringAssertion];
+  watchdogMonitoringAssertion2 = [(DBDisplayManager *)self watchdogMonitoringAssertion];
 
-  if (v22)
+  if (watchdogMonitoringAssertion2)
   {
     v23 = DBLogForCategory(0x1DuLL);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -762,15 +762,15 @@ void __57__DBDisplayManager_didChangeAppearanceMode_forDisplayID___block_invoke(
       _os_log_impl(&dword_248146000, v23, OS_LOG_TYPE_DEFAULT, "Releasing system shell watchding monitoring assertion", &v27, 2u);
     }
 
-    v24 = [(DBDisplayManager *)self watchdogMonitoringAssertion];
-    [v24 invalidate];
+    watchdogMonitoringAssertion3 = [(DBDisplayManager *)self watchdogMonitoringAssertion];
+    [watchdogMonitoringAssertion3 invalidate];
 
     [(DBDisplayManager *)self setWatchdogMonitoringAssertion:0];
   }
 
-  v25 = [(DBDisplayManager *)self modelPolicyAssertion];
+  modelPolicyAssertion2 = [(DBDisplayManager *)self modelPolicyAssertion];
 
-  if (v25)
+  if (modelPolicyAssertion2)
   {
     v26 = DBLogForCategory(0x1DuLL);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -779,9 +779,9 @@ void __57__DBDisplayManager_didChangeAppearanceMode_forDisplayID___block_invoke(
       _os_log_impl(&dword_248146000, v26, OS_LOG_TYPE_DEFAULT, "Releasing CarPlay model policy assertion", &v27, 2u);
     }
 
-    v16 = [(DBDisplayManager *)self modelPolicyAssertion];
+    modelPolicyAssertion = [(DBDisplayManager *)self modelPolicyAssertion];
     [(DBDisplayManager *)self setModelPolicyAssertion:0];
-    [v16 invalidateWithCompletionHandler:&__block_literal_global_256];
+    [modelPolicyAssertion invalidateWithCompletionHandler:&__block_literal_global_256];
 LABEL_35:
   }
 }
@@ -816,14 +816,14 @@ void __55__DBDisplayManager__updateSessionAssertionsIfNecessary__block_invoke_25
   }
 }
 
-- (void)_setCornerMaskImageIfNecessaryForPrimaryDisplayConfiguration:(id)a3
+- (void)_setCornerMaskImageIfNecessaryForPrimaryDisplayConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(DBDisplayManager *)self sessionController];
-  v6 = [v5 currentSession];
-  v7 = [v6 configuration];
-  v8 = [v7 screens];
-  v9 = [v8 bs_firstObjectPassingTest:&__block_literal_global_259];
+  configurationCopy = configuration;
+  sessionController = [(DBDisplayManager *)self sessionController];
+  currentSession = [sessionController currentSession];
+  configuration = [currentSession configuration];
+  screens = [configuration screens];
+  v9 = [screens bs_firstObjectPassingTest:&__block_literal_global_259];
 
   if ([v9 wantsCornerMasks])
   {
@@ -834,13 +834,13 @@ void __55__DBDisplayManager__updateSessionAssertionsIfNecessary__block_invoke_25
       _os_log_impl(&dword_248146000, v10, OS_LOG_TYPE_DEFAULT, "Main screen is requesting corner masks.", v19, 2u);
     }
 
-    v11 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v11 addObserver:self forKeyPath:@"CARCornerRadius" options:1 context:0];
-    v12 = [v11 objectForKey:@"CARCornerRadius"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults addObserver:self forKeyPath:@"CARCornerRadius" options:1 context:0];
+    v12 = [standardUserDefaults objectForKey:@"CARCornerRadius"];
 
     if (v12)
     {
-      [v11 floatForKey:@"CARCornerRadius"];
+      [standardUserDefaults floatForKey:@"CARCornerRadius"];
       v14 = v13;
     }
 
@@ -851,9 +851,9 @@ void __55__DBDisplayManager__updateSessionAssertionsIfNecessary__block_invoke_25
 
     CRDisplayScaleAdjustedPointScale();
     v16 = DBAirPlayCornerMaskImageData(0, v14, v15);
-    v17 = [(DBDisplayManager *)self sessionController];
-    v18 = [v17 currentSession];
-    [v18 setCornerMaskImageData:v16 forScreenInfo:v9];
+    sessionController2 = [(DBDisplayManager *)self sessionController];
+    currentSession2 = [sessionController2 currentSession];
+    [currentSession2 setCornerMaskImageData:v16 forScreenInfo:v9];
   }
 }
 
@@ -861,37 +861,37 @@ void __55__DBDisplayManager__updateSessionAssertionsIfNecessary__block_invoke_25
 {
   v16 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v3 = [(DBDisplayManager *)self pendingDisplays];
-  v4 = [v3 copy];
+  pendingDisplays = [(DBDisplayManager *)self pendingDisplays];
+  v4 = [pendingDisplays copy];
 
   if ([v4 count])
   {
-    v5 = [(DBDisplayManager *)self sessionController];
-    v6 = [v5 currentSession];
+    sessionController = [(DBDisplayManager *)self sessionController];
+    currentSession = [sessionController currentSession];
 
     v7 = DBLogForCategory(0x1DuLL);
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-    if (v6)
+    if (currentSession)
     {
       if (v8)
       {
         *buf = 138543618;
         v13 = v4;
         v14 = 2114;
-        v15 = v6;
+        v15 = currentSession;
         _os_log_impl(&dword_248146000, v7, OS_LOG_TYPE_DEFAULT, "Handling connected displays: %{public}@ with session: %{public}@", buf, 0x16u);
       }
 
-      v9 = [(DBDisplayManager *)self pendingDisplays];
-      [v9 removeAllObjects];
+      pendingDisplays2 = [(DBDisplayManager *)self pendingDisplays];
+      [pendingDisplays2 removeAllObjects];
 
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __54__DBDisplayManager__handleConnectedDisplaysIfPossible__block_invoke;
       v10[3] = &unk_278F03CC8;
       v10[4] = self;
-      v6 = v6;
-      v11 = v6;
+      currentSession = currentSession;
+      v11 = currentSession;
       [v4 enumerateObjectsUsingBlock:v10];
     }
 
@@ -907,11 +907,11 @@ void __55__DBDisplayManager__updateSessionAssertionsIfNecessary__block_invoke_25
 
   else
   {
-    v6 = DBLogForCategory(0x1DuLL);
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    currentSession = DBLogForCategory(0x1DuLL);
+    if (os_log_type_enabled(currentSession, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_248146000, v6, OS_LOG_TYPE_DEFAULT, "No pending displays", buf, 2u);
+      _os_log_impl(&dword_248146000, currentSession, OS_LOG_TYPE_DEFAULT, "No pending displays", buf, 2u);
     }
   }
 }
@@ -983,15 +983,15 @@ void __54__DBDisplayManager__handleConnectedDisplaysIfPossible__block_invoke_2(u
   }
 }
 
-- (void)_setupPassengerDisplayWithDisplayConfiguration:(id)a3 session:(id)a4 defaultSceneWorkspaceIdentifier:(id)a5
+- (void)_setupPassengerDisplayWithDisplayConfiguration:(id)configuration session:(id)session defaultSceneWorkspaceIdentifier:(id)identifier
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 identity];
-  v12 = [(DBDisplayManager *)self displayToScreenControllerMap];
-  v13 = [v12 objectForKey:v11];
+  configurationCopy = configuration;
+  sessionCopy = session;
+  identifierCopy = identifier;
+  identity = [configurationCopy identity];
+  displayToScreenControllerMap = [(DBDisplayManager *)self displayToScreenControllerMap];
+  v13 = [displayToScreenControllerMap objectForKey:identity];
 
   if (v13)
   {
@@ -999,72 +999,72 @@ void __54__DBDisplayManager__handleConnectedDisplaysIfPossible__block_invoke_2(u
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v27 = v11;
+      v27 = identity;
       _os_log_impl(&dword_248146000, v14, OS_LOG_TYPE_INFO, "Passenger display screen controller already set up for %{public}@", buf, 0xCu);
     }
   }
 
   else
   {
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"DBPassengerDisplay-%@", v11];
-    v16 = [(DBDisplayManager *)self _createRootSceneWithIdentifier:v15 displayConfiguration:v8];
-    v17 = [(DBDisplayManager *)self displayToRootSceneMap];
-    [v17 setObject:v16 forKey:v11];
+    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"DBPassengerDisplay-%@", identity];
+    v16 = [(DBDisplayManager *)self _createRootSceneWithIdentifier:v15 displayConfiguration:configurationCopy];
+    displayToRootSceneMap = [(DBDisplayManager *)self displayToRootSceneMap];
+    [displayToRootSceneMap setObject:v16 forKey:identity];
 
-    v18 = [(DBDisplayManager *)self _createEnvironmentConfigurationForDisplayConfiguration:v8 session:v9];
-    v19 = [(DBDisplayManager *)self sessionController];
-    v20 = [v19 uisyncChannel];
-    [v18 setUisyncChannel:v20];
+    v18 = [(DBDisplayManager *)self _createEnvironmentConfigurationForDisplayConfiguration:configurationCopy session:sessionCopy];
+    sessionController = [(DBDisplayManager *)self sessionController];
+    uisyncChannel = [sessionController uisyncChannel];
+    [v18 setUisyncChannel:uisyncChannel];
 
-    v21 = [(DBDisplayManager *)self sessionController];
-    v22 = [v21 layerMetadataService];
-    [v18 setLayerMetadataService:v22];
+    sessionController2 = [(DBDisplayManager *)self sessionController];
+    layerMetadataService = [sessionController2 layerMetadataService];
+    [v18 setLayerMetadataService:layerMetadataService];
 
     [v18 setUisyncSessionEventDelegate:self];
-    v23 = [[DBPassengerDisplay alloc] initWithRootScene:v16 environmentConfiguration:v18 defaultSceneWorkspaceIdentifier:v10];
-    v24 = [(DBDisplayManager *)self displayToScreenControllerMap];
-    [v24 setObject:v23 forKey:v11];
+    v23 = [[DBPassengerDisplay alloc] initWithRootScene:v16 environmentConfiguration:v18 defaultSceneWorkspaceIdentifier:identifierCopy];
+    displayToScreenControllerMap2 = [(DBDisplayManager *)self displayToScreenControllerMap];
+    [displayToScreenControllerMap2 setObject:v23 forKey:identity];
 
-    v25 = [(DBDisplayManager *)self sessionController];
-    [v25 addSessionObserver:v18];
+    sessionController3 = [(DBDisplayManager *)self sessionController];
+    [sessionController3 addSessionObserver:v18];
   }
 }
 
-- (BOOL)_isPassengerDisplay:(id)a3
+- (BOOL)_isPassengerDisplay:(id)display
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DBDisplayManager *)self sessionController];
-  v6 = [v5 currentSession];
+  displayCopy = display;
+  sessionController = [(DBDisplayManager *)self sessionController];
+  currentSession = [sessionController currentSession];
 
-  v7 = [v6 configuration];
-  v8 = [v7 screens];
+  configuration = [currentSession configuration];
+  screens = [configuration screens];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __40__DBDisplayManager__isPassengerDisplay___block_invoke;
   v16[3] = &unk_278F01870;
-  v9 = v4;
+  v9 = displayCopy;
   v17 = v9;
-  v10 = [v8 bs_firstObjectPassingTest:v16];
+  v10 = [screens bs_firstObjectPassingTest:v16];
 
-  v11 = [v10 physicalDisplay];
+  physicalDisplay = [v10 physicalDisplay];
   v12 = DBLogForCategory(0x1DuLL);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v9 hardwareIdentifier];
+    hardwareIdentifier = [v9 hardwareIdentifier];
     *buf = 136446978;
     v19 = "[DBDisplayManager _isPassengerDisplay:]";
     v20 = 2114;
-    v21 = v6;
+    v21 = currentSession;
     v22 = 2114;
-    v23 = v13;
+    v23 = hardwareIdentifier;
     v24 = 2114;
-    v25 = v11;
+    v25 = physicalDisplay;
     _os_log_impl(&dword_248146000, v12, OS_LOG_TYPE_DEFAULT, "%{public}s: session = %{public}@. hardwareID =  = %{public}@. passengerDisplayInfo = %{public}@", buf, 0x2Au);
   }
 
-  v14 = [v11 supportsAdditionalContent];
-  return v14;
+  supportsAdditionalContent = [physicalDisplay supportsAdditionalContent];
+  return supportsAdditionalContent;
 }
 
 uint64_t __40__DBDisplayManager__isPassengerDisplay___block_invoke(uint64_t a1, void *a2)
@@ -1076,15 +1076,15 @@ uint64_t __40__DBDisplayManager__isPassengerDisplay___block_invoke(uint64_t a1, 
   return v5;
 }
 
-- (void)_setupInstrumentClusterWithDisplayConfiguration:(id)a3 session:(id)a4 defaultSceneWorkspaceIdentifier:(id)a5
+- (void)_setupInstrumentClusterWithDisplayConfiguration:(id)configuration session:(id)session defaultSceneWorkspaceIdentifier:(id)identifier
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 identity];
-  v12 = [(DBDisplayManager *)self displayToScreenControllerMap];
-  v13 = [v12 objectForKey:v11];
+  configurationCopy = configuration;
+  sessionCopy = session;
+  identifierCopy = identifier;
+  identity = [configurationCopy identity];
+  displayToScreenControllerMap = [(DBDisplayManager *)self displayToScreenControllerMap];
+  v13 = [displayToScreenControllerMap objectForKey:identity];
 
   if (v13)
   {
@@ -1092,57 +1092,57 @@ uint64_t __40__DBDisplayManager__isPassengerDisplay___block_invoke(uint64_t a1, 
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v31 = v11;
+      v31 = identity;
       _os_log_impl(&dword_248146000, v14, OS_LOG_TYPE_INFO, "Instrument cluster screen controller already set up for %{public}@", buf, 0xCu);
     }
   }
 
   else
   {
-    v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"DBInstrumentCluster-%@", v11];
+    v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"DBInstrumentCluster-%@", identity];
     v15 = [DBDisplayManager _createRootSceneWithIdentifier:"_createRootSceneWithIdentifier:displayConfiguration:" displayConfiguration:?];
-    v16 = [(DBDisplayManager *)self displayToRootSceneMap];
-    [v16 setObject:v15 forKey:v11];
+    displayToRootSceneMap = [(DBDisplayManager *)self displayToRootSceneMap];
+    [displayToRootSceneMap setObject:v15 forKey:identity];
 
-    v17 = [(DBDisplayManager *)self _createEnvironmentConfigurationForDisplayConfiguration:v8 session:v9];
-    v18 = [(DBDisplayManager *)self sessionController];
-    v19 = [v18 uisyncChannel];
-    [v17 setUisyncChannel:v19];
+    v17 = [(DBDisplayManager *)self _createEnvironmentConfigurationForDisplayConfiguration:configurationCopy session:sessionCopy];
+    sessionController = [(DBDisplayManager *)self sessionController];
+    uisyncChannel = [sessionController uisyncChannel];
+    [v17 setUisyncChannel:uisyncChannel];
 
-    v20 = [(DBDisplayManager *)self sessionController];
-    v21 = [v20 layerMetadataService];
-    [v17 setLayerMetadataService:v21];
+    sessionController2 = [(DBDisplayManager *)self sessionController];
+    layerMetadataService = [sessionController2 layerMetadataService];
+    [v17 setLayerMetadataService:layerMetadataService];
 
     [v17 setUisyncSessionEventDelegate:self];
-    v22 = [[DBInstrumentCluster alloc] initWithRootScene:v15 environmentConfiguration:v17 defaultSceneWorkspaceIdentifier:v10];
+    v22 = [[DBInstrumentCluster alloc] initWithRootScene:v15 environmentConfiguration:v17 defaultSceneWorkspaceIdentifier:identifierCopy];
     [(DBInstrumentCluster *)v22 handleConnect];
-    v23 = [(DBDisplayManager *)self displayToScreenControllerMap];
-    [v23 setObject:v22 forKey:v11];
+    displayToScreenControllerMap2 = [(DBDisplayManager *)self displayToScreenControllerMap];
+    [displayToScreenControllerMap2 setObject:v22 forKey:identity];
 
-    v24 = [(DBDisplayManager *)self sessionController];
-    [v24 addSessionObserver:v17];
+    sessionController3 = [(DBDisplayManager *)self sessionController];
+    [sessionController3 addSessionObserver:v17];
 
-    v25 = [(DBScreenController *)v22 displayInfo];
-    v26 = [v25 identifier];
+    displayInfo = [(DBScreenController *)v22 displayInfo];
+    identifier = [displayInfo identifier];
 
-    if (([v26 isEqualToString:@"Cluster_Display"] & 1) != 0 || objc_msgSend(v26, "isEqualToString:", @"Secondary_Cluster_Display"))
+    if (([identifier isEqualToString:@"Cluster_Display"] & 1) != 0 || objc_msgSend(identifier, "isEqualToString:", @"Secondary_Cluster_Display"))
     {
-      v27 = [(DBDisplayManager *)self sessionController];
-      v28 = [v27 clusterThemeService];
-      [v28 registerThemeObserver:v22];
+      sessionController4 = [(DBDisplayManager *)self sessionController];
+      clusterThemeService = [sessionController4 clusterThemeService];
+      [clusterThemeService registerThemeObserver:v22];
     }
   }
 }
 
-- (void)_setupMainDisplayWithDisplayConfiguration:(id)a3 session:(id)a4 defaultSceneWorkspaceIdentifier:(id)a5
+- (void)_setupMainDisplayWithDisplayConfiguration:(id)configuration session:(id)session defaultSceneWorkspaceIdentifier:(id)identifier
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 identity];
-  v12 = [(DBDisplayManager *)self displayToScreenControllerMap];
-  v13 = [v12 objectForKey:v11];
+  configurationCopy = configuration;
+  sessionCopy = session;
+  identifierCopy = identifier;
+  identity = [configurationCopy identity];
+  displayToScreenControllerMap = [(DBDisplayManager *)self displayToScreenControllerMap];
+  v13 = [displayToScreenControllerMap objectForKey:identity];
 
   if (v13)
   {
@@ -1150,29 +1150,29 @@ uint64_t __40__DBDisplayManager__isPassengerDisplay___block_invoke(uint64_t a1, 
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v41 = v11;
+      v41 = identity;
       _os_log_impl(&dword_248146000, v14, OS_LOG_TYPE_INFO, "Main screen controller already set up for %{public}@", buf, 0xCu);
     }
   }
 
   else
   {
-    v15 = [(DBDisplayManager *)self mainScreenController];
+    mainScreenController = [(DBDisplayManager *)self mainScreenController];
 
-    if (v15)
+    if (mainScreenController)
     {
-      v16 = [(DBDisplayManager *)self mainScreenController];
-      v17 = [v16 environmentConfiguration];
-      v18 = [v17 displayIdentity];
+      mainScreenController2 = [(DBDisplayManager *)self mainScreenController];
+      environmentConfiguration = [mainScreenController2 environmentConfiguration];
+      displayIdentity = [environmentConfiguration displayIdentity];
 
       v19 = DBLogForCategory(0x1DuLL);
       if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
       {
-        [DBDisplayManager _setupMainDisplayWithDisplayConfiguration:v11 session:v18 defaultSceneWorkspaceIdentifier:v19];
+        [DBDisplayManager _setupMainDisplayWithDisplayConfiguration:identity session:displayIdentity defaultSceneWorkspaceIdentifier:v19];
       }
 
-      v20 = [(DBDisplayManager *)self mainScreenController];
-      [v20 invalidate];
+      mainScreenController3 = [(DBDisplayManager *)self mainScreenController];
+      [mainScreenController3 invalidate];
 
       [(DBDisplayManager *)self setMainScreenController:0];
     }
@@ -1185,22 +1185,22 @@ uint64_t __40__DBDisplayManager__isPassengerDisplay___block_invoke(uint64_t a1, 
       _os_signpost_emit_with_name_impl(&dword_248146000, v21, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "CarPlayReceivedMainDisplay", "", buf, 2u);
     }
 
-    [(DBDisplayManager *)self _setCornerMaskImageIfNecessaryForPrimaryDisplayConfiguration:v8];
-    v22 = [(DBDisplayManager *)self dashboardDisplayLayoutPublisher];
-    v14 = [v22 transitionAssertionWithReason:@"Display Connection"];
+    [(DBDisplayManager *)self _setCornerMaskImageIfNecessaryForPrimaryDisplayConfiguration:configurationCopy];
+    dashboardDisplayLayoutPublisher = [(DBDisplayManager *)self dashboardDisplayLayoutPublisher];
+    v14 = [dashboardDisplayLayoutPublisher transitionAssertionWithReason:@"Display Connection"];
 
-    v39 = [MEMORY[0x277CCACA8] stringWithFormat:@"DBDashboard-%@", v11];
+    v39 = [MEMORY[0x277CCACA8] stringWithFormat:@"DBDashboard-%@", identity];
     v23 = [DBDisplayManager _createRootSceneWithIdentifier:"_createRootSceneWithIdentifier:displayConfiguration:" displayConfiguration:?];
-    v24 = [(DBDisplayManager *)self displayToRootSceneMap];
-    [v24 setObject:v23 forKey:v11];
+    displayToRootSceneMap = [(DBDisplayManager *)self displayToRootSceneMap];
+    [displayToRootSceneMap setObject:v23 forKey:identity];
 
-    v25 = [(DBDisplayManager *)self _createEnvironmentConfigurationForDisplayConfiguration:v8 session:v9];
-    v26 = [(DBDisplayManager *)self iconImageCache];
-    [v25 setIconImageCache:v26];
+    v25 = [(DBDisplayManager *)self _createEnvironmentConfigurationForDisplayConfiguration:configurationCopy session:sessionCopy];
+    iconImageCache = [(DBDisplayManager *)self iconImageCache];
+    [v25 setIconImageCache:iconImageCache];
 
-    v27 = [(DBDisplayManager *)self sessionController];
-    v28 = [v27 uisyncChannel];
-    [v25 setUisyncChannel:v28];
+    sessionController = [(DBDisplayManager *)self sessionController];
+    uisyncChannel = [sessionController uisyncChannel];
+    [v25 setUisyncChannel:uisyncChannel];
 
     [v25 setUisyncSessionEventDelegate:self];
     v29 = [[DBAnalytics alloc] initWithEnvironmentConfiguration:v25];
@@ -1208,22 +1208,22 @@ uint64_t __40__DBDisplayManager__isPassengerDisplay___block_invoke(uint64_t a1, 
     self->_analytics = v29;
 
     v31 = self->_analytics;
-    v32 = [(DBDisplayManager *)self mainDisplayReadyDate];
-    [(DBAnalytics *)v31 setMainDisplayReadyTimestamp:v32];
+    mainDisplayReadyDate = [(DBDisplayManager *)self mainDisplayReadyDate];
+    [(DBAnalytics *)v31 setMainDisplayReadyTimestamp:mainDisplayReadyDate];
 
     v33 = self->_analytics;
-    v34 = [(DBDisplayManager *)self clusterDisplayReadyDate];
-    [(DBAnalytics *)v33 setClusterDisplayReadyTimestamp:v34];
+    clusterDisplayReadyDate = [(DBDisplayManager *)self clusterDisplayReadyDate];
+    [(DBAnalytics *)v33 setClusterDisplayReadyTimestamp:clusterDisplayReadyDate];
 
-    v35 = [[DBDashboard alloc] initWithRootScene:v23 environmentConfiguration:v25 defaultSceneWorkspaceIdentifier:v10];
-    [(DBDisplayManager *)self _updateVehicleViewAreasForSession:v9 environmentConfiguration:v25];
+    v35 = [[DBDashboard alloc] initWithRootScene:v23 environmentConfiguration:v25 defaultSceneWorkspaceIdentifier:identifierCopy];
+    [(DBDisplayManager *)self _updateVehicleViewAreasForSession:sessionCopy environmentConfiguration:v25];
     [(DBDashboard *)v35 handleConnect];
-    v36 = [(DBDisplayManager *)self displayToScreenControllerMap];
-    [v36 setObject:v35 forKey:v11];
+    displayToScreenControllerMap2 = [(DBDisplayManager *)self displayToScreenControllerMap];
+    [displayToScreenControllerMap2 setObject:v35 forKey:identity];
 
     [(DBDisplayManager *)self setMainScreenController:v35];
-    v37 = [(DBDisplayManager *)self sessionController];
-    [v37 addSessionObserver:v25];
+    sessionController2 = [(DBDisplayManager *)self sessionController];
+    [sessionController2 addSessionObserver:v25];
 
     HTEndNonResponsiveTask();
     v38 = DBLogForCategory(0xFuLL);
@@ -1237,17 +1237,17 @@ uint64_t __40__DBDisplayManager__isPassengerDisplay___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)_updateVehicleViewAreasForSession:(id)a3 environmentConfiguration:(id)a4
+- (void)_updateVehicleViewAreasForSession:(id)session environmentConfiguration:(id)configuration
 {
   v4 = MEMORY[0x277CF8A68];
-  v5 = a4;
+  configurationCopy = configuration;
   v10 = objc_alloc_init(v4);
-  v6 = [v5 vehicle];
-  v7 = [v5 statusBarInsetViewAreas];
+  vehicle = [configurationCopy vehicle];
+  statusBarInsetViewAreas = [configurationCopy statusBarInsetViewAreas];
 
-  v8 = [v6 identifier];
-  v9 = [v8 UUIDString];
-  [v10 saveViewAreas:v7 forVehicleIdentifier:v9 completion:&__block_literal_global_283];
+  identifier = [vehicle identifier];
+  uUIDString = [identifier UUIDString];
+  [v10 saveViewAreas:statusBarInsetViewAreas forVehicleIdentifier:uUIDString completion:&__block_literal_global_283];
 }
 
 void __79__DBDisplayManager__updateVehicleViewAreasForSession_environmentConfiguration___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1273,19 +1273,19 @@ void __79__DBDisplayManager__updateVehicleViewAreasForSession_environmentConfigu
   }
 }
 
-- (id)_createRootSceneWithIdentifier:(id)a3 displayConfiguration:(id)a4
+- (id)_createRootSceneWithIdentifier:(id)identifier displayConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  configurationCopy = configuration;
   rootSceneWorkspace = self->_rootSceneWorkspace;
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __72__DBDisplayManager__createRootSceneWithIdentifier_displayConfiguration___block_invoke;
   v16 = &unk_278F021D0;
-  v17 = v6;
-  v18 = v7;
-  v9 = v7;
-  v10 = v6;
+  v17 = identifierCopy;
+  v18 = configurationCopy;
+  v9 = configurationCopy;
+  v10 = identifierCopy;
   v11 = [(DBSceneWorkspace *)rootSceneWorkspace createScene:&v13];
   [v11 activate:{&__block_literal_global_291, v13, v14, v15, v16}];
 
@@ -1331,70 +1331,70 @@ void __72__DBDisplayManager__createRootSceneWithIdentifier_displayConfiguration_
   [v4 setForeground:1];
 }
 
-- (id)_createEnvironmentConfigurationForDisplayConfiguration:(id)a3 session:(id)a4
+- (id)_createEnvironmentConfigurationForDisplayConfiguration:(id)configuration session:(id)session
 {
   v27 = *MEMORY[0x277D85DE8];
-  v23 = a4;
-  v22 = a3;
-  if ([v22 isCarDisplay])
+  sessionCopy = session;
+  configurationCopy = configuration;
+  if ([configurationCopy isCarDisplay])
   {
-    v24 = [(DBDisplayManager *)self dashboardDisplayLayoutPublisher];
+    dashboardDisplayLayoutPublisher = [(DBDisplayManager *)self dashboardDisplayLayoutPublisher];
   }
 
   else
   {
-    v24 = 0;
+    dashboardDisplayLayoutPublisher = 0;
   }
 
-  v6 = [(DBDisplayManager *)self sessionController];
-  v7 = [v6 themeController];
+  sessionController = [(DBDisplayManager *)self sessionController];
+  themeController = [sessionController themeController];
 
   v8 = DBLogForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v26 = v7;
+    v26 = themeController;
     _os_log_impl(&dword_248146000, v8, OS_LOG_TYPE_DEFAULT, "#wallpaperDebug Theme Controller found from session controller: %@", buf, 0xCu);
   }
 
   v9 = [DBEnvironmentConfiguration alloc];
-  v10 = [(DBDisplayManager *)self iconBadgeController];
-  v21 = [(DBDisplayManager *)self sessionController];
-  v11 = v7;
-  v20 = v7;
-  v12 = [v21 currentSupportedFeatures];
-  v13 = [(DBDisplayManager *)self processMonitor];
-  v14 = [(DBDisplayManager *)self thermalMonitor];
-  v15 = [(DBDisplayManager *)self sessionController];
-  v16 = [v15 currentVehicle];
-  v17 = [(DBDisplayManager *)self navigationStateProvider];
-  v18 = [(DBEnvironmentConfiguration *)v9 initWithDisplayConfiguration:v22 layoutPublisher:v24 iconBadgeController:v10 session:v23 supportedFeatures:v12 processMonitor:v13 thermalMonitor:v14 vehicle:v16 themeController:v11 navigationStateProvider:v17 analyticsProvider:self];
+  iconBadgeController = [(DBDisplayManager *)self iconBadgeController];
+  sessionController2 = [(DBDisplayManager *)self sessionController];
+  v11 = themeController;
+  v20 = themeController;
+  currentSupportedFeatures = [sessionController2 currentSupportedFeatures];
+  processMonitor = [(DBDisplayManager *)self processMonitor];
+  thermalMonitor = [(DBDisplayManager *)self thermalMonitor];
+  sessionController3 = [(DBDisplayManager *)self sessionController];
+  currentVehicle = [sessionController3 currentVehicle];
+  navigationStateProvider = [(DBDisplayManager *)self navigationStateProvider];
+  v18 = [(DBEnvironmentConfiguration *)v9 initWithDisplayConfiguration:configurationCopy layoutPublisher:dashboardDisplayLayoutPublisher iconBadgeController:iconBadgeController session:sessionCopy supportedFeatures:currentSupportedFeatures processMonitor:processMonitor thermalMonitor:thermalMonitor vehicle:currentVehicle themeController:v11 navigationStateProvider:navigationStateProvider analyticsProvider:self];
 
   return v18;
 }
 
-- (void)_setNeedsNavigationStateProvider:(BOOL)a3 forDisplayIdentity:(id)a4
+- (void)_setNeedsNavigationStateProvider:(BOOL)provider forDisplayIdentity:(id)identity
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(DBDisplayManager *)self navigationStateProviderRequesters];
-  v8 = v7;
-  if (v4)
+  providerCopy = provider;
+  identityCopy = identity;
+  navigationStateProviderRequesters = [(DBDisplayManager *)self navigationStateProviderRequesters];
+  navigationStateProviderRequesters2 = navigationStateProviderRequesters;
+  if (providerCopy)
   {
 
-    if (!v8)
+    if (!navigationStateProviderRequesters2)
     {
       v9 = objc_alloc_init(MEMORY[0x277CBEB58]);
       [(DBDisplayManager *)self setNavigationStateProviderRequesters:v9];
     }
 
-    v8 = [(DBDisplayManager *)self navigationStateProviderRequesters];
-    [v8 addObject:v6];
+    navigationStateProviderRequesters2 = [(DBDisplayManager *)self navigationStateProviderRequesters];
+    [navigationStateProviderRequesters2 addObject:identityCopy];
   }
 
   else
   {
-    [v7 removeObject:v6];
+    [navigationStateProviderRequesters removeObject:identityCopy];
   }
 
   [(DBDisplayManager *)self _updateNavigationStateProvider];
@@ -1402,8 +1402,8 @@ void __72__DBDisplayManager__createRootSceneWithIdentifier_displayConfiguration_
 
 - (void)_updateNavigationStateProvider
 {
-  v3 = [(DBDisplayManager *)self navigationStateProviderRequesters];
-  v4 = [v3 count];
+  navigationStateProviderRequesters = [(DBDisplayManager *)self navigationStateProviderRequesters];
+  v4 = [navigationStateProviderRequesters count];
 
   if (v4)
   {
@@ -1421,8 +1421,8 @@ void __72__DBDisplayManager__createRootSceneWithIdentifier_displayConfiguration_
 
   else
   {
-    v5 = [(DBDisplayManager *)self navigationStateProvider];
-    [v5 invalidate];
+    navigationStateProvider = [(DBDisplayManager *)self navigationStateProvider];
+    [navigationStateProvider invalidate];
 
     v6 = self->_navigationStateProvider;
     self->_navigationStateProvider = 0;
@@ -1439,12 +1439,12 @@ void __72__DBDisplayManager__createRootSceneWithIdentifier_displayConfiguration_
   }
 
   v3 = +[DBApplicationController sharedInstance];
-  v4 = [v3 mapsApplication];
+  mapsApplication = [v3 mapsApplication];
 
   v5 = MEMORY[0x277D46F60];
-  v6 = [v4 info];
-  v7 = [v6 applicationIdentity];
-  v8 = [v5 identityForLSApplicationIdentity:v7];
+  info = [mapsApplication info];
+  applicationIdentity = [info applicationIdentity];
+  v8 = [v5 identityForLSApplicationIdentity:applicationIdentity];
 
   v9 = MEMORY[0x277D46F48];
   v10 = [MEMORY[0x277D46FA0] predicateMatchingIdentity:v8];
@@ -1452,13 +1452,13 @@ void __72__DBDisplayManager__createRootSceneWithIdentifier_displayConfiguration_
 
   if (v11)
   {
-    v12 = [MEMORY[0x277D0AAC0] sharedInstance];
+    mEMORY[0x277D0AAC0] = [MEMORY[0x277D0AAC0] sharedInstance];
     [v11 auditToken];
-    v13 = [v12 registerProcessForAuditToken:buf];
+    v13 = [mEMORY[0x277D0AAC0] registerProcessForAuditToken:buf];
   }
 
-  v14 = [MEMORY[0x277D0AAC0] sharedInstance];
-  v15 = [v14 processForIdentity:v8];
+  mEMORY[0x277D0AAC0]2 = [MEMORY[0x277D0AAC0] sharedInstance];
+  v15 = [mEMORY[0x277D0AAC0]2 processForIdentity:v8];
   v16 = objc_opt_class();
   v17 = v15;
   if (v16)
@@ -1501,7 +1501,7 @@ void __72__DBDisplayManager__createRootSceneWithIdentifier_displayConfiguration_
     v24[3] = &unk_278F01690;
     v25 = v20;
     [v19 killForReason:5 andReport:0 withDescription:@"Enabling PGM" completion:v24];
-    v23 = v25;
+    mEMORY[0x277D0AAC0]3 = v25;
   }
 
   else
@@ -1512,8 +1512,8 @@ void __72__DBDisplayManager__createRootSceneWithIdentifier_displayConfiguration_
       _os_log_impl(&dword_248146000, v21, OS_LOG_TYPE_DEFAULT, "[MapsPGM] Requesting process launch of Maps with PGM environment variables", buf, 2u);
     }
 
-    v23 = [MEMORY[0x277D0AAC0] sharedInstance];
-    [v23 launchProcessWithContext:v20];
+    mEMORY[0x277D0AAC0]3 = [MEMORY[0x277D0AAC0] sharedInstance];
+    [mEMORY[0x277D0AAC0]3 launchProcessWithContext:v20];
   }
 }
 
@@ -1545,58 +1545,58 @@ void __55__DBDisplayManager__enableMapsProbabilisticGuardMalloc__block_invoke(ui
   [v7 launchProcessWithContext:*(a1 + 32)];
 }
 
-- (BOOL)bundleIdentifierSupportsDashboard:(id)a3
+- (BOOL)bundleIdentifierSupportsDashboard:(id)dashboard
 {
-  v3 = a3;
+  dashboardCopy = dashboard;
   v4 = +[DBApplicationController sharedInstance];
-  v5 = [v4 applicationWithBundleIdentifier:v3];
+  v5 = [v4 applicationWithBundleIdentifier:dashboardCopy];
 
-  LOBYTE(v3) = [v5 supportsDashboardNavigation];
-  return v3;
+  LOBYTE(dashboardCopy) = [v5 supportsDashboardNavigation];
+  return dashboardCopy;
 }
 
-- (BOOL)bundleIdentifierSupportsInstrumentCluster:(id)a3
+- (BOOL)bundleIdentifierSupportsInstrumentCluster:(id)cluster
 {
-  v3 = a3;
+  clusterCopy = cluster;
   v4 = +[DBApplicationController sharedInstance];
-  v5 = [v4 applicationWithBundleIdentifier:v3];
+  v5 = [v4 applicationWithBundleIdentifier:clusterCopy];
 
-  LOBYTE(v3) = [v5 supportsInstrumentClusterNavigation];
-  return v3;
+  LOBYTE(clusterCopy) = [v5 supportsInstrumentClusterNavigation];
+  return clusterCopy;
 }
 
-- (BOOL)bundleIdentifierIsCertificationApp:(id)a3
+- (BOOL)bundleIdentifierIsCertificationApp:(id)app
 {
-  v3 = a3;
+  appCopy = app;
   v4 = +[DBApplicationController sharedInstance];
-  v5 = [v4 applicationWithBundleIdentifier:v3];
+  v5 = [v4 applicationWithBundleIdentifier:appCopy];
 
-  LOBYTE(v3) = [v5 isCertificationApp];
-  return v3;
+  LOBYTE(appCopy) = [v5 isCertificationApp];
+  return appCopy;
 }
 
-- (void)_setNeedsTemplateProcessMonitor:(BOOL)a3 forDisplayIdentity:(id)a4
+- (void)_setNeedsTemplateProcessMonitor:(BOOL)monitor forDisplayIdentity:(id)identity
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(DBDisplayManager *)self processMonitorRequesters];
-  v8 = v7;
-  if (v4)
+  monitorCopy = monitor;
+  identityCopy = identity;
+  processMonitorRequesters = [(DBDisplayManager *)self processMonitorRequesters];
+  processMonitorRequesters2 = processMonitorRequesters;
+  if (monitorCopy)
   {
 
-    if (!v8)
+    if (!processMonitorRequesters2)
     {
       v9 = objc_alloc_init(MEMORY[0x277CBEB58]);
       [(DBDisplayManager *)self setProcessMonitorRequesters:v9];
     }
 
-    v8 = [(DBDisplayManager *)self processMonitorRequesters];
-    [v8 addObject:v6];
+    processMonitorRequesters2 = [(DBDisplayManager *)self processMonitorRequesters];
+    [processMonitorRequesters2 addObject:identityCopy];
   }
 
   else
   {
-    [v7 removeObject:v6];
+    [processMonitorRequesters removeObject:identityCopy];
   }
 
   [(DBDisplayManager *)self _updateTemplateProcessMonitor];
@@ -1604,8 +1604,8 @@ void __55__DBDisplayManager__enableMapsProbabilisticGuardMalloc__block_invoke(ui
 
 - (void)_updateTemplateProcessMonitor
 {
-  v3 = [(DBDisplayManager *)self processMonitorRequesters];
-  v4 = [v3 count];
+  processMonitorRequesters = [(DBDisplayManager *)self processMonitorRequesters];
+  v4 = [processMonitorRequesters count];
 
   processMonitor = self->_processMonitor;
   if (v4)

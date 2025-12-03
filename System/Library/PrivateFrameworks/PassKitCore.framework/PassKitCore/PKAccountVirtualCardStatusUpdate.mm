@@ -1,28 +1,28 @@
 @interface PKAccountVirtualCardStatusUpdate
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (PKAccountVirtualCardStatusUpdate)initWithCoder:(id)a3;
-- (PKAccountVirtualCardStatusUpdate)initWithRecord:(id)a3;
+- (PKAccountVirtualCardStatusUpdate)initWithCoder:(id)coder;
+- (PKAccountVirtualCardStatusUpdate)initWithRecord:(id)record;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithRecord:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithRecord:(id)record;
 @end
 
 @implementation PKAccountVirtualCardStatusUpdate
 
-- (PKAccountVirtualCardStatusUpdate)initWithCoder:(id)a3
+- (PKAccountVirtualCardStatusUpdate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = PKAccountVirtualCardStatusUpdate;
   v5 = [(PKAccountVirtualCardStatusUpdate *)&v12 init];
   if (v5)
   {
-    v5->_reason = [v4 decodeIntegerForKey:@"reason"];
+    v5->_reason = [coderCopy decodeIntegerForKey:@"reason"];
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"updatedVirtualCards"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"updatedVirtualCards"];
     updatedVirtualCards = v5->_updatedVirtualCards;
     v5->_updatedVirtualCards = v9;
   }
@@ -30,27 +30,27 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   reason = self->_reason;
-  v5 = a3;
-  [v5 encodeInteger:reason forKey:@"reason"];
-  [v5 encodeObject:self->_updatedVirtualCards forKey:@"updatedVirtualCards"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:reason forKey:@"reason"];
+  [coderCopy encodeObject:self->_updatedVirtualCards forKey:@"updatedVirtualCards"];
 }
 
-- (PKAccountVirtualCardStatusUpdate)initWithRecord:(id)a3
+- (PKAccountVirtualCardStatusUpdate)initWithRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v12.receiver = self;
   v12.super_class = PKAccountVirtualCardStatusUpdate;
   v5 = [(PKAccountVirtualCardStatusUpdate *)&v12 init];
   if (v5)
   {
-    v6 = [v4 pk_encryptedStringForKey:@"reason"];
+    v6 = [recordCopy pk_encryptedStringForKey:@"reason"];
     v5->_reason = PKAccountVirtualCardStatusUpdateReasonFromString(v6);
 
     v7 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
-    v8 = [v4 pk_encryptedArrayOfClasses:v7 forKey:@"updatedVirtualCards"];
+    v8 = [recordCopy pk_encryptedArrayOfClasses:v7 forKey:@"updatedVirtualCards"];
     v9 = [v8 pk_arrayByApplyingBlock:&__block_literal_global_203];
     updatedVirtualCards = v5->_updatedVirtualCards;
     v5->_updatedVirtualCards = v9;
@@ -67,9 +67,9 @@ PKVirtualCard *__51__PKAccountVirtualCardStatusUpdate_initWithRecord___block_inv
   return v3;
 }
 
-- (void)encodeWithRecord:(id)a3
+- (void)encodeWithRecord:(id)record
 {
-  v4 = [a3 encryptedValues];
+  encryptedValues = [record encryptedValues];
   v5 = self->_reason - 1;
   if (v5 > 3)
   {
@@ -81,22 +81,22 @@ PKVirtualCard *__51__PKAccountVirtualCardStatusUpdate_initWithRecord___block_inv
     v6 = off_1E79E0700[v5];
   }
 
-  v10 = v4;
-  [v4 setObject:v6 forKey:@"reason"];
+  v10 = encryptedValues;
+  [encryptedValues setObject:v6 forKey:@"reason"];
   v7 = [(NSArray *)self->_updatedVirtualCards pk_arrayByApplyingBlock:&__block_literal_global_43];
   v8 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v7 options:0 error:0];
   v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v8 encoding:4];
   [v10 setObject:v9 forKey:@"updatedVirtualCards"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && self->_reason == v4[1])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && self->_reason == equalCopy[1])
   {
     updatedVirtualCards = self->_updatedVirtualCards;
-    v6 = v4[2];
+    v6 = equalCopy[2];
     if (updatedVirtualCards && v6)
     {
       v7 = [(NSArray *)updatedVirtualCards isEqual:?];
@@ -118,9 +118,9 @@ PKVirtualCard *__51__PKAccountVirtualCardStatusUpdate_initWithRecord___block_inv
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_updatedVirtualCards];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_updatedVirtualCards];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_reason - v4 + 32 * v4;
 
   return v5;

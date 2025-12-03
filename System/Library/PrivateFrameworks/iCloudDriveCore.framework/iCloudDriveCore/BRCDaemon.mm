@@ -1,13 +1,13 @@
 @interface BRCDaemon
 + (BOOL)isDaemonRunning;
 + (id)daemon;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)selfCheck:(__sFILE *)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)selfCheck:(__sFILE *)check;
 - (BOOL)shouldRejectXPCCalls;
 - (BRCDaemon)init;
 - (id)currentAccountHandler;
-- (id)getCurrentSessionMustFinishedLoading:(BOOL)a3;
-- (id)registerShareAcceptOperation:(id)a3 forURL:(id)a4;
+- (id)getCurrentSessionMustFinishedLoading:(BOOL)loading;
+- (id)registerShareAcceptOperation:(id)operation forURL:(id)l;
 - (void)_dbgSleepIfRequested;
 - (void)_finishStartup;
 - (void)_initSignals;
@@ -16,12 +16,12 @@
 - (void)_setupVNodeRapidAging;
 - (void)_startXPCListeners;
 - (void)_startupAndLoadAccount;
-- (void)dumpToContext:(id)a3;
-- (void)exitWithCode:(int)a3;
-- (void)handleExitSignal:(int)a3;
+- (void)dumpToContext:(id)context;
+- (void)exitWithCode:(int)code;
+- (void)handleExitSignal:(int)signal;
 - (void)localeDidChange;
-- (void)networkReachabilityChanged:(BOOL)a3;
-- (void)performWithSessionForVolume:(id)a3 action:(id)a4;
+- (void)networkReachabilityChanged:(BOOL)changed;
+- (void)performWithSessionForVolume:(id)volume action:(id)action;
 - (void)setUpAnonymousListener;
 - (void)setUpSandbox;
 - (void)start;
@@ -33,9 +33,9 @@
 - (id)currentAccountHandler
 {
   v2 = +[BRCAccountsManager sharedManager];
-  v3 = [v2 accountHandlerForCurrentPersona];
+  accountHandlerForCurrentPersona = [v2 accountHandlerForCurrentPersona];
 
-  return v3;
+  return accountHandlerForCurrentPersona;
 }
 
 + (id)daemon
@@ -166,9 +166,9 @@ void __19__BRCDaemon_daemon__block_invoke()
   dispatch_resume(self->_sigQuitSrc);
   dispatch_resume(self->_sigTermSrc);
   self->_unitTestMode = 1;
-  v3 = [MEMORY[0x277CCAE98] serviceListener];
+  serviceListener = [MEMORY[0x277CCAE98] serviceListener];
   xpcListener = self->_xpcListener;
-  self->_xpcListener = v3;
+  self->_xpcListener = serviceListener;
 
   [(NSXPCListener *)self->_xpcListener setDelegate:self];
   [(NSXPCListener *)self->_xpcListener resume];
@@ -177,9 +177,9 @@ void __19__BRCDaemon_daemon__block_invoke()
 
 - (void)setUpAnonymousListener
 {
-  v3 = [MEMORY[0x277CCAE98] anonymousListener];
+  anonymousListener = [MEMORY[0x277CCAE98] anonymousListener];
   xpcListener = self->_xpcListener;
-  self->_xpcListener = v3;
+  self->_xpcListener = anonymousListener;
 
   [(NSXPCListener *)self->_xpcListener setDelegate:self];
   v5 = self->_xpcListener;
@@ -192,9 +192,9 @@ void __19__BRCDaemon_daemon__block_invoke()
   if (!self->_shouldRejectXPCCalls)
   {
     v2 = +[BRCAccountsManager sharedManager];
-    v3 = [v2 isInSyncBubble];
+    isInSyncBubble = [v2 isInSyncBubble];
 
-    if (v3)
+    if (isInSyncBubble)
     {
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.bird.%u", getuid()];
       v4 = v5;
@@ -210,30 +210,30 @@ void __19__BRCDaemon_daemon__block_invoke()
   }
 }
 
-- (id)getCurrentSessionMustFinishedLoading:(BOOL)a3
+- (id)getCurrentSessionMustFinishedLoading:(BOOL)loading
 {
-  v3 = a3;
-  v4 = [(BRCDaemon *)self currentAccountHandler];
-  v5 = v4;
-  if (v3 && ![v4 finishedLoading])
+  loadingCopy = loading;
+  currentAccountHandler = [(BRCDaemon *)self currentAccountHandler];
+  v5 = currentAccountHandler;
+  if (loadingCopy && ![currentAccountHandler finishedLoading])
   {
-    v6 = 0;
+    session = 0;
   }
 
   else
   {
-    v6 = [v5 session];
+    session = [v5 session];
   }
 
-  return v6;
+  return session;
 }
 
-- (void)performWithSessionForVolume:(id)a3 action:(id)a4
+- (void)performWithSessionForVolume:(id)volume action:(id)action
 {
-  v5 = a3;
-  v6 = a4;
+  volumeCopy = volume;
+  actionCopy = action;
   memset(&v13, 0, sizeof(v13));
-  if (lstat([v5 fileSystemRepresentation], &v13) < 0)
+  if (lstat([volumeCopy fileSystemRepresentation], &v13) < 0)
   {
     v8 = brc_bread_crumbs();
     v9 = brc_default_log();
@@ -251,7 +251,7 @@ void __19__BRCDaemon_daemon__block_invoke()
     v12 = v13;
     v10[2] = __48__BRCDaemon_performWithSessionForVolume_action___block_invoke;
     v10[3] = &unk_278501A28;
-    v11 = v6;
+    v11 = actionCopy;
     [v7 enumerateAccountHandlers:v10];
 
     v8 = v11;
@@ -283,8 +283,8 @@ void __48__BRCDaemon_performWithSessionForVolume_action___block_invoke(uint64_t 
     CacheDeleteRegisterInfoCallbacks();
     v2 = [BRCBGSystemTaskManager sharedManager:v5];
     v3 = [BRCUserDefaults defaultsForMangledID:0];
-    v4 = [v3 cacheDeletePushBGSystemTaskConfig];
-    [v2 submitBGSystemTaskWithIdentifier:@"com.apple.bird.cache-delete.push" configuration:v4 block:&__block_literal_global_66];
+    cacheDeletePushBGSystemTaskConfig = [v3 cacheDeletePushBGSystemTaskConfig];
+    [v2 submitBGSystemTaskWithIdentifier:@"com.apple.bird.cache-delete.push" configuration:cacheDeletePushBGSystemTaskConfig block:&__block_literal_global_66];
   }
 }
 
@@ -668,9 +668,9 @@ void __30__BRCDaemon__setupCacheDelete__block_invoke_2_68(uint64_t a1, void *a2,
     _os_log_impl(&dword_223E7A000, v4, OS_LOG_TYPE_DEFAULT, "[NOTICE] starting bird in FPFS mode%s%@", buf, 0x16u);
   }
 
-  v5 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   startupDate = self->_startupDate;
-  self->_startupDate = v5;
+  self->_startupDate = date;
 
   memset(v28, 0, sizeof(v28));
   __brc_create_section(0, "[BRCDaemon _startXPCListeners]", 613, 0, v28);
@@ -679,26 +679,26 @@ void __30__BRCDaemon__setupCacheDelete__block_invoke_2_68(uint64_t a1, void *a2,
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v25 = v28[0];
-    v27 = [MEMORY[0x277CCA8D8] mainBundle];
-    v26 = [v27 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
     v16 = getpid();
     v17 = getuid();
     v18 = OSVersion();
     v19 = BRVersion();
     v20 = NSHomeDirectory();
-    v21 = [v20 br_realpath];
+    br_realpath = [v20 br_realpath];
     v22 = +[BRCAccountsManager sharedManager];
-    v23 = [v22 isInSyncBubble];
+    isInSyncBubble = [v22 isInSyncBubble];
     v24 = @"NO";
     *buf = 134220034;
     v30 = v25;
     v31 = 2112;
-    if (v23)
+    if (isInSyncBubble)
     {
       v24 = @"YES";
     }
 
-    v32 = v26;
+    v32 = bundleIdentifier;
     v33 = 1024;
     v34 = v16;
     v35 = 1024;
@@ -708,7 +708,7 @@ void __30__BRCDaemon__setupCacheDelete__block_invoke_2_68(uint64_t a1, void *a2,
     v39 = 2112;
     v40 = v19;
     v41 = 2112;
-    v42 = v21;
+    v42 = br_realpath;
     v43 = 2112;
     v44 = v24;
     v45 = 2112;
@@ -743,7 +743,7 @@ void __30__BRCDaemon__setupCacheDelete__block_invoke_2_68(uint64_t a1, void *a2,
 {
   v5 = *MEMORY[0x277D85DE8];
   LODWORD(v4) = 138412546;
-  *(&v4 + 4) = *a1;
+  *(&v4 + 4) = *self;
   OUTLINED_FUNCTION_0_0();
   OUTLINED_FUNCTION_4(&dword_223E7A000, v1, v2, "[DEBUG] using Cloud Database class: %@%@", v4, DWORD2(v4));
   v3 = *MEMORY[0x277D85DE8];
@@ -765,7 +765,7 @@ void __30__BRCDaemon__setupCacheDelete__block_invoke_2_68(uint64_t a1, void *a2,
 {
   v5 = *MEMORY[0x277D85DE8];
   LODWORD(v4) = 134218242;
-  *(&v4 + 4) = *a1;
+  *(&v4 + 4) = *self;
   OUTLINED_FUNCTION_0_0();
   OUTLINED_FUNCTION_4(&dword_223E7A000, v1, v2, "[DEBUG] ┏%llx sending token change notification%@", v4, DWORD2(v4));
   v3 = *MEMORY[0x277D85DE8];
@@ -868,35 +868,35 @@ void __18__BRCDaemon_start__block_invoke_3(uint64_t a1)
   dispatch_async(v3, block);
 }
 
-- (id)registerShareAcceptOperation:(id)a3 forURL:(id)a4
+- (id)registerShareAcceptOperation:(id)operation forURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  if (!v8->_shareAcceptOperationsByToken)
+  operationCopy = operation;
+  lCopy = l;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_shareAcceptOperationsByToken)
   {
     v9 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:1];
-    shareAcceptOperationsByToken = v8->_shareAcceptOperationsByToken;
-    v8->_shareAcceptOperationsByToken = v9;
+    shareAcceptOperationsByToken = selfCopy->_shareAcceptOperationsByToken;
+    selfCopy->_shareAcceptOperationsByToken = v9;
   }
 
-  shareAcceptQueue = v8->_shareAcceptQueue;
+  shareAcceptQueue = selfCopy->_shareAcceptQueue;
   if (!shareAcceptQueue)
   {
     v12 = objc_alloc_init(MEMORY[0x277CCABD8]);
-    v13 = v8->_shareAcceptQueue;
-    v8->_shareAcceptQueue = v12;
+    v13 = selfCopy->_shareAcceptQueue;
+    selfCopy->_shareAcceptQueue = v12;
 
-    [(NSOperationQueue *)v8->_shareAcceptQueue setName:@"share-accept"];
-    shareAcceptQueue = v8->_shareAcceptQueue;
+    [(NSOperationQueue *)selfCopy->_shareAcceptQueue setName:@"share-accept"];
+    shareAcceptQueue = selfCopy->_shareAcceptQueue;
   }
 
   v14 = shareAcceptQueue;
-  v15 = v8->_shareAcceptOperationsByToken;
-  v16 = [v7 path];
-  v17 = [v16 lastPathComponent];
-  v18 = [(NSMutableDictionary *)v15 objectForKeyedSubscript:v17];
+  v15 = selfCopy->_shareAcceptOperationsByToken;
+  path = [lCopy path];
+  lastPathComponent = [path lastPathComponent];
+  v18 = [(NSMutableDictionary *)v15 objectForKeyedSubscript:lastPathComponent];
 
   if (v18)
   {
@@ -905,38 +905,38 @@ void __18__BRCDaemon_start__block_invoke_3(uint64_t a1)
 
   else
   {
-    shareAcceptWaitersByToken = v8->_shareAcceptWaitersByToken;
-    v21 = [v7 path];
-    v22 = [v21 lastPathComponent];
-    v23 = [(NSMutableDictionary *)shareAcceptWaitersByToken objectForKeyedSubscript:v22];
+    shareAcceptWaitersByToken = selfCopy->_shareAcceptWaitersByToken;
+    path2 = [lCopy path];
+    lastPathComponent2 = [path2 lastPathComponent];
+    v23 = [(NSMutableDictionary *)shareAcceptWaitersByToken objectForKeyedSubscript:lastPathComponent2];
 
     if (v23)
     {
-      [v6 setSkipOpenInApp:1];
-      [v6 setSkipAcceptDialogs:{objc_msgSend(v23, "skipShareAcceptationDialogs")}];
+      [operationCopy setSkipOpenInApp:1];
+      [operationCopy setSkipAcceptDialogs:{objc_msgSend(v23, "skipShareAcceptationDialogs")}];
     }
 
-    v24 = v8->_shareAcceptOperationsByToken;
-    v25 = [v7 path];
-    v26 = [v25 lastPathComponent];
-    [(NSMutableDictionary *)v24 setObject:v6 forKeyedSubscript:v26];
+    v24 = selfCopy->_shareAcceptOperationsByToken;
+    path3 = [lCopy path];
+    lastPathComponent3 = [path3 lastPathComponent];
+    [(NSMutableDictionary *)v24 setObject:operationCopy forKeyedSubscript:lastPathComponent3];
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   if (!v18)
   {
-    v27 = [v6 finishBlock];
+    finishBlock = [operationCopy finishBlock];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __49__BRCDaemon_registerShareAcceptOperation_forURL___block_invoke;
     v30[3] = &unk_278501BA8;
-    v32 = v27;
-    v30[4] = v8;
-    v31 = v7;
-    v28 = v27;
-    [v6 setFinishBlock:v30];
-    [(NSOperationQueue *)v14 addOperation:v6];
-    v18 = v6;
+    v32 = finishBlock;
+    v30[4] = selfCopy;
+    v31 = lCopy;
+    v28 = finishBlock;
+    [operationCopy setFinishBlock:v30];
+    [(NSOperationQueue *)v14 addOperation:operationCopy];
+    v18 = operationCopy;
   }
 
   return v18;
@@ -1110,29 +1110,29 @@ void __63__BRCDaemon_registerWaiterBlock_forShareURL_skipAcceptDialogs___block_i
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dumpToContext:(id)a3
+- (void)dumpToContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ([(NSMutableDictionary *)v5->_shareAcceptOperationsByToken count])
+  contextCopy = context;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(NSMutableDictionary *)selfCopy->_shareAcceptOperationsByToken count])
   {
-    [v4 writeLineWithFormat:@"share accept operations"];
-    [v4 writeLineWithFormat:@"-----------------------------------------------------"];
-    [v4 pushIndentation];
-    shareAcceptOperationsByToken = v5->_shareAcceptOperationsByToken;
+    [contextCopy writeLineWithFormat:@"share accept operations"];
+    [contextCopy writeLineWithFormat:@"-----------------------------------------------------"];
+    [contextCopy pushIndentation];
+    shareAcceptOperationsByToken = selfCopy->_shareAcceptOperationsByToken;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __27__BRCDaemon_dumpToContext___block_invoke;
     v8[3] = &unk_278501BD0;
-    v7 = v4;
+    v7 = contextCopy;
     v9 = v7;
     [(NSMutableDictionary *)shareAcceptOperationsByToken enumerateKeysAndObjectsUsingBlock:v8];
     [v7 popIndentation];
     [v7 writeLineWithFormat:&stru_2837504F0];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __27__BRCDaemon_dumpToContext___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1158,11 +1158,11 @@ void __27__BRCDaemon_dumpToContext___block_invoke(uint64_t a1, void *a2, void *a
   exit(0);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   memset(v37, 0, sizeof(v37));
   __brc_create_section(0, "[BRCDaemon listener:shouldAcceptNewConnection:]", 905, 0, v37);
   v8 = brc_bread_crumbs();
@@ -1174,7 +1174,7 @@ void __27__BRCDaemon_dumpToContext___block_invoke(uint64_t a1, void *a2, void *a
     *buf = 134218754;
     *&buf[4] = v29;
     *&buf[12] = 2112;
-    *&buf[14] = v7;
+    *&buf[14] = connectionCopy;
     *&buf[22] = 1024;
     *&buf[24] = v30;
     *&buf[28] = 2112;
@@ -1192,9 +1192,9 @@ void __27__BRCDaemon_dumpToContext___block_invoke(uint64_t a1, void *a2, void *a
     if (!self->_disableAccountChangesHandling)
     {
       v15 = +[BRCAccountsManager sharedManager];
-      v16 = [v15 _isDeviceUnlocked];
+      _isDeviceUnlocked = [v15 _isDeviceUnlocked];
 
-      if ((v16 & 1) == 0)
+      if ((_isDeviceUnlocked & 1) == 0)
       {
         v10 = brc_bread_crumbs();
         v11 = brc_default_log();
@@ -1211,9 +1211,9 @@ void __27__BRCDaemon_dumpToContext___block_invoke(uint64_t a1, void *a2, void *a
     }
 
     v17 = [BRCClientPrivilegesDescriptor alloc];
-    if (v7)
+    if (connectionCopy)
     {
-      [v7 auditToken];
+      [connectionCopy auditToken];
     }
 
     else
@@ -1225,9 +1225,9 @@ void __27__BRCDaemon_dumpToContext___block_invoke(uint64_t a1, void *a2, void *a
     v18 = +[BRCAccountsManager sharedManager];
     if ([v18 isInSyncBubble])
     {
-      v19 = [(BRCClientPrivilegesDescriptor *)v10 isSyncBubbleClientEntitled];
+      isSyncBubbleClientEntitled = [(BRCClientPrivilegesDescriptor *)v10 isSyncBubbleClientEntitled];
 
-      if (!v19)
+      if (!isSyncBubbleClientEntitled)
       {
         v11 = brc_bread_crumbs();
         v20 = brc_default_log();
@@ -1249,20 +1249,20 @@ LABEL_27:
     {
     }
 
-    if (self->_tokenListener == v6)
+    if (self->_tokenListener == listenerCopy)
     {
-      v21 = [(BRCXPCClient *)[BRCXPCTokenClient alloc] initWithConnection:v7];
+      v21 = [(BRCXPCClient *)[BRCXPCTokenClient alloc] initWithConnection:connectionCopy];
       BRCXPCTokenInterface();
     }
 
     else
     {
       [(BRCDaemon *)self waitOnAccountResumedQueue];
-      v21 = [(BRCXPCClient *)[BRCXPCRegularIPCsClient alloc] initWithConnection:v7];
+      v21 = [(BRCXPCClient *)[BRCXPCRegularIPCsClient alloc] initWithConnection:connectionCopy];
       BRCXPCInterface();
     }
     v22 = ;
-    [v7 setExportedInterface:v22];
+    [connectionCopy setExportedInterface:v22];
 
     [(BRCXPCClient *)v21 setPrivilegesDescriptor:v10];
     v23 = [(BRCDaemon *)self getCurrentSessionMustFinishedLoading:1];
@@ -1275,24 +1275,24 @@ LABEL_27:
       [BRCDaemon listener:shouldAcceptNewConnection:];
     }
 
-    [v7 setExportedObject:v21];
+    [connectionCopy setExportedObject:v21];
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __48__BRCDaemon_listener_shouldAcceptNewConnection___block_invoke_135;
     v34[3] = &unk_278501BF8;
-    v36 = v7;
+    v36 = connectionCopy;
     v26 = v21;
     p_super = &v26->super.super;
-    [v7 setInterruptionHandler:v34];
+    [connectionCopy setInterruptionHandler:v34];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __48__BRCDaemon_listener_shouldAcceptNewConnection___block_invoke_2_141;
     v31[3] = &unk_278501C20;
     v11 = v26;
     v32 = v11;
-    v33 = v7;
-    [v7 setInvalidationHandler:v31];
-    [v7 resume];
+    v33 = connectionCopy;
+    [connectionCopy setInvalidationHandler:v31];
+    [connectionCopy resume];
 
     v13 = 1;
     v20 = p_super;
@@ -1368,17 +1368,17 @@ void __48__BRCDaemon_listener_shouldAcceptNewConnection___block_invoke_2_141(uin
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)selfCheck:(__sFILE *)a3
+- (BOOL)selfCheck:(__sFILE *)check
 {
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  v4 = [(BRCDaemon *)self currentSession];
-  v5 = [v4 clientDB];
-  [v5 performWithFlags:17 action:&__block_literal_global_145];
+  currentSession = [(BRCDaemon *)self currentSession];
+  clientDB = [currentSession clientDB];
+  [clientDB performWithFlags:17 action:&__block_literal_global_145];
   v19 = 0;
-  v6 = [v4 newConnectionWithLabel:@"checker" readonly:0 error:&v19];
+  v6 = [currentSession newConnectionWithLabel:@"checker" readonly:0 error:&v19];
   v7 = v19;
 
   if (v6)
@@ -1388,8 +1388,8 @@ void __48__BRCDaemon_listener_shouldAcceptNewConnection___block_invoke_2_141(uin
     v14 = __23__BRCDaemon_selfCheck___block_invoke_149;
     v15 = &unk_278501C70;
     v17 = &v20;
-    v16 = v4;
-    v18 = a3;
+    v16 = currentSession;
+    checkCopy = check;
     [v6 groupInTransaction:&v12];
     [v6 brc_close];
     v8 = v16;
@@ -1487,9 +1487,9 @@ uint64_t __23__BRCDaemon_selfCheck___block_invoke_2(void *a1, void *a2)
   return 1;
 }
 
-- (void)networkReachabilityChanged:(BOOL)a3
+- (void)networkReachabilityChanged:(BOOL)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   v5 = brc_bread_crumbs();
   v6 = brc_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -1502,7 +1502,7 @@ uint64_t __23__BRCDaemon_selfCheck___block_invoke_2(void *a1, void *a2)
   [v8 UTF8String];
   brc_notify_set_state_and_post();
 
-  if (v3)
+  if (changedCopy)
   {
     dispatch_async(self->_startupQueue, &__block_literal_global_153);
   }
@@ -1557,7 +1557,7 @@ void __40__BRCDaemon_networkReachabilityChanged___block_invoke_157(uint64_t a1, 
   }
 }
 
-- (void)handleExitSignal:(int)a3
+- (void)handleExitSignal:(int)signal
 {
   v15 = *MEMORY[0x277D85DE8];
   v5 = brc_bread_crumbs();
@@ -1565,7 +1565,7 @@ void __40__BRCDaemon_networkReachabilityChanged___block_invoke_157(uint64_t a1, 
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 136315394;
-    v12 = strsignal(a3);
+    v12 = strsignal(signal);
     v13 = 2112;
     v14 = v5;
     _os_log_impl(&dword_223E7A000, v6, OS_LOG_TYPE_DEFAULT, "[NOTICE] starting exit sequence because of received signal (%s)%@", &v11, 0x16u);
@@ -1580,7 +1580,7 @@ void __40__BRCDaemon_networkReachabilityChanged___block_invoke_157(uint64_t a1, 
   [(BRCDaemon *)v8 exitWithCode:v9, v10];
 }
 
-- (void)exitWithCode:(int)a3
+- (void)exitWithCode:(int)code
 {
   v9 = *MEMORY[0x277D85DE8];
   +[BRCAccountsManager sharedManager];
@@ -1590,13 +1590,13 @@ void __40__BRCDaemon_networkReachabilityChanged___block_invoke_157(uint64_t a1, 
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109378;
-    v6[1] = a3;
+    v6[1] = code;
     v7 = 2112;
     v8 = v4;
     _os_log_impl(&dword_223E7A000, v5, OS_LOG_TYPE_DEFAULT, "[NOTICE] exiting with code %d...%@", v6, 0x12u);
   }
 
-  exit(a3);
+  exit(code);
 }
 
 void __26__BRCDaemon_exitWithCode___block_invoke(uint64_t a1, void *a2)

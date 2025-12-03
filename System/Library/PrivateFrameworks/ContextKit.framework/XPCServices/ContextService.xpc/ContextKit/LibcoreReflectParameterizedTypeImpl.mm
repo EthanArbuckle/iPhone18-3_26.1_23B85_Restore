@@ -1,5 +1,5 @@
 @interface LibcoreReflectParameterizedTypeImpl
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)getActualTypeArguments;
 - (id)getOwnerType;
@@ -29,21 +29,21 @@
   {
     if (self->ownerType0_)
     {
-      v3 = [(LibcoreReflectParameterizedTypeImpl *)self->ownerType0_ getResolvedType];
+      getResolvedType = [(LibcoreReflectParameterizedTypeImpl *)self->ownerType0_ getResolvedType];
     }
 
     else
     {
-      v4 = [(LibcoreReflectParameterizedTypeImpl *)self getRawType];
-      if (!v4)
+      getRawType = [(LibcoreReflectParameterizedTypeImpl *)self getRawType];
+      if (!getRawType)
       {
         JreThrowNullPointerException();
       }
 
-      v3 = [v4 getDeclaringClass];
+      getResolvedType = [getRawType getDeclaringClass];
     }
 
-    JreStrongAssign(p_ownerTypeRes, v3);
+    JreStrongAssign(p_ownerTypeRes, getResolvedType);
   }
 
   return *p_ownerTypeRes;
@@ -79,26 +79,26 @@
   return [(LibcoreReflectParameterizedTypeImpl *)self getRawType];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (![JavaLangReflectParameterizedType_class_() isInstance:a3])
+  if (![JavaLangReflectParameterizedType_class_() isInstance:equal])
   {
     return 0;
   }
 
   v5 = JavaLangReflectParameterizedType_class_();
-  if (!a3)
+  if (!equal)
   {
     [(LibcoreReflectParameterizedTypeImpl *)self getRawType];
     JreThrowNullPointerException();
   }
 
-  if (([v5 isInstance:a3] & 1) == 0)
+  if (([v5 isInstance:equal] & 1) == 0)
   {
     JreThrowClassCastException();
   }
 
-  if (!JavaUtilObjects_equalsWithId_withId_(-[LibcoreReflectParameterizedTypeImpl getRawType](self, "getRawType"), [a3 getRawType]) || !JavaUtilObjects_equalsWithId_withId_(-[LibcoreReflectParameterizedTypeImpl getOwnerType](self, "getOwnerType"), objc_msgSend(a3, "getOwnerType")))
+  if (!JavaUtilObjects_equalsWithId_withId_(-[LibcoreReflectParameterizedTypeImpl getRawType](self, "getRawType"), [equal getRawType]) || !JavaUtilObjects_equalsWithId_withId_(-[LibcoreReflectParameterizedTypeImpl getOwnerType](self, "getOwnerType"), objc_msgSend(equal, "getOwnerType")))
   {
     return 0;
   }
@@ -109,10 +109,10 @@
     JreThrowNullPointerException();
   }
 
-  v7 = [(LibcoreReflectListOfTypes *)args getResolvedTypes];
-  v8 = [a3 getActualTypeArguments];
+  getResolvedTypes = [(LibcoreReflectListOfTypes *)args getResolvedTypes];
+  getActualTypeArguments = [equal getActualTypeArguments];
 
-  return JavaUtilArrays_equalsWithNSObjectArray_withNSObjectArray_(v7, v8);
+  return JavaUtilArrays_equalsWithNSObjectArray_withNSObjectArray_(getResolvedTypes, getActualTypeArguments);
 }
 
 - (unint64_t)hash

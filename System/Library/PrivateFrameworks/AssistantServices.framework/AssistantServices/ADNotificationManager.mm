@@ -1,40 +1,40 @@
 @interface ADNotificationManager
-+ (id)_createBBObserverWithQueue:(id)a3;
++ (id)_createBBObserverWithQueue:(id)queue;
 + (id)sharedManager;
 - (ADNotificationManagerDataSource)dataSource;
-- (BOOL)_isAppRestrictedAndSiriRelated:(id)a3;
+- (BOOL)_isAppRestrictedAndSiriRelated:(id)related;
 - (BOOL)hasIncomingCallNotification;
-- (id)_afbulletinForBBBulletin:(id)a3 forFeed:(unint64_t)a4;
-- (id)_displayNameForBulletin:(id)a3;
+- (id)_afbulletinForBBBulletin:(id)bulletin forFeed:(unint64_t)feed;
+- (id)_displayNameForBulletin:(id)bulletin;
 - (id)_init;
-- (id)_siriRelatedRestrictedAppsForApps:(id)a3;
+- (id)_siriRelatedRestrictedAppsForApps:(id)apps;
 - (void)_bulletinsDidChange;
 - (void)_fetchFromDataSourceIfNecessary;
 - (void)_fetchInitialState;
 - (void)_getNotificationsFromBulletinBoard;
 - (void)_getRestrictedAppsFromBulletinBoard;
-- (void)_notifyDelegatesDidAddBulletin:(id)a3;
-- (void)_notifyDelegatesDidRemoveBulletin:(id)a3;
-- (void)_performActionWithIdentifier:(id)a3 forAFBulletin:(id)a4 completion:(id)a5;
+- (void)_notifyDelegatesDidAddBulletin:(id)bulletin;
+- (void)_notifyDelegatesDidRemoveBulletin:(id)bulletin;
+- (void)_performActionWithIdentifier:(id)identifier forAFBulletin:(id)bulletin completion:(id)completion;
 - (void)_setUpBBObserver;
-- (void)fetchActionsForBulletinWithID:(id)a3 completion:(id)a4;
-- (void)fetchAllBulletinsWithCompletion:(id)a3;
-- (void)fetchBulletinWithID:(id)a3 completion:(id)a4;
-- (void)fetchBulletinsAfterBulletinWithID:(id)a3 completion:(id)a4;
-- (void)fetchBulletinsOnLockScreenWithCompletion:(id)a3;
-- (void)fetchSiriRelatedNotificationPreviewRestrictedAppsWithCompletion:(id)a3;
-- (void)fetchSpokenNotificationEnabledAppsWithCompletion:(id)a3;
-- (void)observer:(id)a3 addBulletin:(id)a4 forFeed:(unint64_t)a5;
-- (void)observer:(id)a3 modifyBulletin:(id)a4 forFeed:(unint64_t)a5;
-- (void)observer:(id)a3 noteInvalidatedBulletinIDs:(id)a4;
-- (void)observer:(id)a3 noteServerConnectionStateChanged:(BOOL)a4;
-- (void)observer:(id)a3 purgeReferencesToBulletinID:(id)a4;
-- (void)observer:(id)a3 removeBulletin:(id)a4;
-- (void)observer:(id)a3 removeBulletin:(id)a4 forFeed:(unint64_t)a5;
-- (void)observer:(id)a3 updateSectionInfo:(id)a4;
-- (void)performActionWithIdentifier:(id)a3 forBulletinWithIdentifier:(id)a4 completion:(id)a5;
-- (void)performActionWithIdentifier:(id)a3 forUNNotificationWithIdentifier:(id)a4 completion:(id)a5;
-- (void)setDataSource:(id)a3;
+- (void)fetchActionsForBulletinWithID:(id)d completion:(id)completion;
+- (void)fetchAllBulletinsWithCompletion:(id)completion;
+- (void)fetchBulletinWithID:(id)d completion:(id)completion;
+- (void)fetchBulletinsAfterBulletinWithID:(id)d completion:(id)completion;
+- (void)fetchBulletinsOnLockScreenWithCompletion:(id)completion;
+- (void)fetchSiriRelatedNotificationPreviewRestrictedAppsWithCompletion:(id)completion;
+- (void)fetchSpokenNotificationEnabledAppsWithCompletion:(id)completion;
+- (void)observer:(id)observer addBulletin:(id)bulletin forFeed:(unint64_t)feed;
+- (void)observer:(id)observer modifyBulletin:(id)bulletin forFeed:(unint64_t)feed;
+- (void)observer:(id)observer noteInvalidatedBulletinIDs:(id)ds;
+- (void)observer:(id)observer noteServerConnectionStateChanged:(BOOL)changed;
+- (void)observer:(id)observer purgeReferencesToBulletinID:(id)d;
+- (void)observer:(id)observer removeBulletin:(id)bulletin;
+- (void)observer:(id)observer removeBulletin:(id)bulletin forFeed:(unint64_t)feed;
+- (void)observer:(id)observer updateSectionInfo:(id)info;
+- (void)performActionWithIdentifier:(id)identifier forBulletinWithIdentifier:(id)withIdentifier completion:(id)completion;
+- (void)performActionWithIdentifier:(id)identifier forUNNotificationWithIdentifier:(id)withIdentifier completion:(id)completion;
+- (void)setDataSource:(id)source;
 @end
 
 @implementation ADNotificationManager
@@ -55,14 +55,14 @@
 {
   if (+[AFFeatureFlags isHSAnswerCallNotificationEnabled])
   {
-    v3 = [(ADCallNotificationObserver *)self->_callNotificationObserver hasIncomingCallNotification];
+    hasIncomingCallNotification = [(ADCallNotificationObserver *)self->_callNotificationObserver hasIncomingCallNotification];
     v4 = +[ADExternalNotificationRequestHandler sharedNotificationRequestHandler];
-    v5 = [v4 currentRequest];
+    currentRequest = [v4 currentRequest];
 
-    if ([v5 requestType] == 1)
+    if ([currentRequest requestType] == 1)
     {
-      v6 = [v5 announcementType] == 7;
-      if (!v3)
+      v6 = [currentRequest announcementType] == 7;
+      if (!hasIncomingCallNotification)
       {
         goto LABEL_8;
       }
@@ -71,10 +71,10 @@
     else
     {
       v6 = 0;
-      if (!v3)
+      if (!hasIncomingCallNotification)
       {
 LABEL_8:
-        v7 = v3 & !v6;
+        v7 = hasIncomingCallNotification & !v6;
 
         return v7;
       }
@@ -171,18 +171,18 @@ LABEL_8:
   return WeakRetained;
 }
 
-- (BOOL)_isAppRestrictedAndSiriRelated:(id)a3
+- (BOOL)_isAppRestrictedAndSiriRelated:(id)related
 {
-  v4 = a3;
-  v5 = [v4 sectionID];
-  if ([v4 allowsNotifications] && objc_msgSend(v4, "lockScreenSetting") == 2 && objc_msgSend(v4, "contentPreviewSetting") == 1)
+  relatedCopy = related;
+  sectionID = [relatedCopy sectionID];
+  if ([relatedCopy allowsNotifications] && objc_msgSend(relatedCopy, "lockScreenSetting") == 2 && objc_msgSend(relatedCopy, "contentPreviewSetting") == 1)
   {
     v6 = 0;
   }
 
   else
   {
-    v10 = v5;
+    v10 = sectionID;
     v7 = [NSArray arrayWithObjects:&v10 count:1];
     v8 = [(ADNotificationManager *)self _siriRelatedRestrictedAppsForApps:v7];
     v6 = [v8 count] != 0;
@@ -191,36 +191,36 @@ LABEL_8:
   return v6;
 }
 
-- (id)_displayNameForBulletin:(id)a3
+- (id)_displayNameForBulletin:(id)bulletin
 {
-  v3 = a3;
-  v4 = [v3 sectionID];
-  v5 = [v4 isEqualToString:@"com.apple.cmas"];
+  bulletinCopy = bulletin;
+  sectionID = [bulletinCopy sectionID];
+  v5 = [sectionID isEqualToString:@"com.apple.cmas"];
 
   if (v5)
   {
-    v6 = [v3 title];
+    title = [bulletinCopy title];
   }
 
   else
   {
-    v6 = [v3 sectionDisplayName];
-    if (![v6 length])
+    title = [bulletinCopy sectionDisplayName];
+    if (![title length])
     {
-      v7 = [v3 sectionID];
-      v8 = [LSApplicationProxy applicationProxyForIdentifier:v7];
+      sectionID2 = [bulletinCopy sectionID];
+      v8 = [LSApplicationProxy applicationProxyForIdentifier:sectionID2];
       v9 = [v8 localizedNameForContext:0];
 
-      v6 = v9;
+      title = v9;
     }
   }
 
-  return v6;
+  return title;
 }
 
-- (void)_notifyDelegatesDidRemoveBulletin:(id)a3
+- (void)_notifyDelegatesDidRemoveBulletin:(id)bulletin
 {
-  v4 = a3;
+  bulletinCopy = bulletin;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -244,7 +244,7 @@ LABEL_8:
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 notificationManager:self didRemoveBulletin:{v4, v11}];
+          [v10 notificationManager:self didRemoveBulletin:{bulletinCopy, v11}];
         }
 
         v9 = v9 + 1;
@@ -258,9 +258,9 @@ LABEL_8:
   }
 }
 
-- (void)_notifyDelegatesDidAddBulletin:(id)a3
+- (void)_notifyDelegatesDidAddBulletin:(id)bulletin
 {
-  v4 = a3;
+  bulletinCopy = bulletin;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -284,7 +284,7 @@ LABEL_8:
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 notificationManager:self didAddBulletin:{v4, v11}];
+          [v10 notificationManager:self didAddBulletin:{bulletinCopy, v11}];
         }
 
         v9 = v9 + 1;
@@ -350,16 +350,16 @@ LABEL_8:
   }
 }
 
-- (id)_afbulletinForBBBulletin:(id)a3 forFeed:(unint64_t)a4
+- (id)_afbulletinForBBBulletin:(id)bulletin forFeed:(unint64_t)feed
 {
-  v6 = a3;
+  bulletinCopy = bulletin;
   v7 = objc_alloc_init(AFBulletin);
   [v7 setRead:0];
-  [v7 setBulletin:v6 forFeed:a4];
+  [v7 setBulletin:bulletinCopy forFeed:feed];
 
   bulletinsOnLockScreen = self->_bulletinsOnLockScreen;
-  v9 = [v7 internalID];
-  v10 = [(NSMutableDictionary *)bulletinsOnLockScreen objectForKey:v9];
+  internalID = [v7 internalID];
+  v10 = [(NSMutableDictionary *)bulletinsOnLockScreen objectForKey:internalID];
 
   [v7 setAvailableOnLockScreen:{objc_msgSend(v10, "availableOnLockScreen")}];
   [v7 setSupportsSpokenNotification:{objc_msgSend(v10, "supportsSpokenNotification")}];
@@ -382,21 +382,21 @@ LABEL_8:
   }
 }
 
-- (void)observer:(id)a3 noteServerConnectionStateChanged:(BOOL)a4
+- (void)observer:(id)observer noteServerConnectionStateChanged:(BOOL)changed
 {
-  v4 = a4;
-  v6 = a3;
+  changedCopy = changed;
+  observerCopy = observer;
   v7 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v11 = "[ADNotificationManager observer:noteServerConnectionStateChanged:]";
     v12 = 1024;
-    v13 = v4;
+    v13 = changedCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s %d", buf, 0x12u);
   }
 
-  if (!v4 && self->_observer == v6)
+  if (!changedCopy && self->_observer == observerCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -408,16 +408,16 @@ LABEL_8:
   }
 }
 
-- (void)observer:(id)a3 updateSectionInfo:(id)a4
+- (void)observer:(id)observer updateSectionInfo:(id)info
 {
-  v5 = a4;
+  infoCopy = info;
   v6 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v10 = "[ADNotificationManager observer:updateSectionInfo:]";
     v11 = 2112;
-    v12 = v5;
+    v12 = infoCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
   }
 
@@ -430,15 +430,15 @@ LABEL_8:
   dispatch_async(queue, block);
 }
 
-- (void)observer:(id)a3 noteInvalidatedBulletinIDs:(id)a4
+- (void)observer:(id)observer noteInvalidatedBulletinIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  dsCopy = ds;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v8 = [dsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -450,92 +450,92 @@ LABEL_8:
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(dsCopy);
         }
 
-        [(ADNotificationManager *)self observer:v6 purgeReferencesToBulletinID:*(*(&v12 + 1) + 8 * v11)];
+        [(ADNotificationManager *)self observer:observerCopy purgeReferencesToBulletinID:*(*(&v12 + 1) + 8 * v11)];
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [dsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)observer:(id)a3 purgeReferencesToBulletinID:(id)a4
+- (void)observer:(id)observer purgeReferencesToBulletinID:(id)d
 {
-  v5 = a4;
+  dCopy = d;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100371FDC;
   v8[3] = &unk_10051E010;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = dCopy;
+  selfCopy = self;
+  v7 = dCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)observer:(id)a3 removeBulletin:(id)a4 forFeed:(unint64_t)a5
+- (void)observer:(id)observer removeBulletin:(id)bulletin forFeed:(unint64_t)feed
 {
-  v7 = a4;
+  bulletinCopy = bulletin;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100372228;
   block[3] = &unk_10051E128;
-  v11 = v7;
-  v12 = self;
-  v13 = a5;
-  v9 = v7;
+  v11 = bulletinCopy;
+  selfCopy = self;
+  feedCopy = feed;
+  v9 = bulletinCopy;
   dispatch_async(queue, block);
 }
 
-- (void)observer:(id)a3 removeBulletin:(id)a4
+- (void)observer:(id)observer removeBulletin:(id)bulletin
 {
-  v6 = a3;
-  v7 = [a4 bulletinID];
-  [(ADNotificationManager *)self observer:v6 purgeReferencesToBulletinID:v7];
+  observerCopy = observer;
+  bulletinID = [bulletin bulletinID];
+  [(ADNotificationManager *)self observer:observerCopy purgeReferencesToBulletinID:bulletinID];
 }
 
-- (void)observer:(id)a3 modifyBulletin:(id)a4 forFeed:(unint64_t)a5
+- (void)observer:(id)observer modifyBulletin:(id)bulletin forFeed:(unint64_t)feed
 {
-  v7 = a4;
+  bulletinCopy = bulletin;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100372508;
   block[3] = &unk_10051E128;
   block[4] = self;
-  v11 = v7;
-  v12 = a5;
-  v9 = v7;
+  v11 = bulletinCopy;
+  feedCopy = feed;
+  v9 = bulletinCopy;
   dispatch_async(queue, block);
 }
 
-- (void)observer:(id)a3 addBulletin:(id)a4 forFeed:(unint64_t)a5
+- (void)observer:(id)observer addBulletin:(id)bulletin forFeed:(unint64_t)feed
 {
-  v7 = a4;
+  bulletinCopy = bulletin;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100372730;
   block[3] = &unk_10051E128;
-  v11 = v7;
-  v12 = self;
-  v13 = a5;
-  v9 = v7;
+  v11 = bulletinCopy;
+  selfCopy = self;
+  feedCopy = feed;
+  v9 = bulletinCopy;
   dispatch_async(queue, block);
 }
 
-- (void)fetchSpokenNotificationEnabledAppsWithCompletion:(id)a3
+- (void)fetchSpokenNotificationEnabledAppsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     settingsGroup = self->_settingsGroup;
     queue = self->_queue;
@@ -544,16 +544,16 @@ LABEL_8:
     v8[2] = sub_100372A1C;
     v8[3] = &unk_10051E038;
     v8[4] = self;
-    v9 = v4;
+    v9 = completionCopy;
     dispatch_group_notify(settingsGroup, queue, v8);
   }
 }
 
-- (void)fetchSiriRelatedNotificationPreviewRestrictedAppsWithCompletion:(id)a3
+- (void)fetchSiriRelatedNotificationPreviewRestrictedAppsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     settingsGroup = self->_settingsGroup;
     queue = self->_queue;
@@ -562,21 +562,21 @@ LABEL_8:
     v8[2] = sub_100372AE0;
     v8[3] = &unk_10051E038;
     v8[4] = self;
-    v9 = v4;
+    v9 = completionCopy;
     dispatch_group_notify(settingsGroup, queue, v8);
   }
 }
 
-- (id)_siriRelatedRestrictedAppsForApps:(id)a3
+- (id)_siriRelatedRestrictedAppsForApps:(id)apps
 {
-  v3 = a3;
-  v17 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v3, "count")}];
+  appsCopy = apps;
+  v17 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(appsCopy, "count")}];
   v4 = [[NSSet alloc] initWithObjects:{@"com.apple.MobileSMS", @"com.apple.mobilephone", @"com.apple.facetime", @"com.apple.NanoPhone", @"com.apple.tincan", 0}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v3;
+  obj = appsCopy;
   v5 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
@@ -602,8 +602,8 @@ LABEL_8:
           v10 = objc_autoreleasePoolPush();
           v11 = [LSApplicationProxy applicationProxyForIdentifier:v9];
           v12 = [INAppInfo appInfoWithAppProxy:v11];
-          v13 = [v12 supportedIntents];
-          v14 = [v13 count];
+          supportedIntents = [v12 supportedIntents];
+          v14 = [supportedIntents count];
 
           if (v14)
           {
@@ -623,12 +623,12 @@ LABEL_8:
   return v17;
 }
 
-- (void)_performActionWithIdentifier:(id)a3 forAFBulletin:(id)a4 completion:(id)a5
+- (void)_performActionWithIdentifier:(id)identifier forAFBulletin:(id)bulletin completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![v8 length])
+  identifierCopy = identifier;
+  bulletinCopy = bulletin;
+  completionCopy = completion;
+  if (![identifierCopy length])
   {
     v17 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
@@ -636,56 +636,56 @@ LABEL_8:
       *buf = 136315138;
       v36 = "[ADNotificationManager _performActionWithIdentifier:forAFBulletin:completion:]";
       _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%s Missing action identifier", buf, 0xCu);
-      if (!v10)
+      if (!completionCopy)
       {
         goto LABEL_9;
       }
     }
 
-    else if (!v10)
+    else if (!completionCopy)
     {
       goto LABEL_9;
     }
 
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_9;
   }
 
-  v11 = [v9 actionForIdentifier:v8];
+  v11 = [bulletinCopy actionForIdentifier:identifierCopy];
   v12 = v11;
   if (!v11)
   {
-    v18 = [v8 isEqualToString:UNNotificationDismissActionIdentifier];
+    v18 = [identifierCopy isEqualToString:UNNotificationDismissActionIdentifier];
     v19 = AFSiriLogContextDaemon;
     if (v18)
     {
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
       {
         v29 = v19;
-        v30 = [v9 bulletinID];
-        v31 = [v9 sectionID];
+        bulletinID = [bulletinCopy bulletinID];
+        sectionID = [bulletinCopy sectionID];
         *buf = 136315650;
         v36 = "[ADNotificationManager _performActionWithIdentifier:forAFBulletin:completion:]";
         v37 = 2112;
-        v38 = v30;
+        v38 = bulletinID;
         v39 = 2112;
-        v40 = v31;
+        v40 = sectionID;
         _os_log_debug_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEBUG, "%s Clearing bulletin: %@ from section: %@", buf, 0x20u);
       }
 
-      v20 = [v9 bbBulletin];
+      bbBulletin = [bulletinCopy bbBulletin];
 
-      if (v20)
+      if (bbBulletin)
       {
         v21 = [NSSet alloc];
-        v22 = [v9 bbBulletin];
-        v34 = v22;
+        bbBulletin2 = [bulletinCopy bbBulletin];
+        v34 = bbBulletin2;
         v23 = [NSArray arrayWithObjects:&v34 count:1];
-        v13 = [v21 initWithArray:v23];
+        bbAction = [v21 initWithArray:v23];
 
         observer = self->_observer;
-        v25 = [v9 sectionID];
-        [(BBObserver *)observer clearBulletins:v13 inSection:v25];
+        sectionID2 = [bulletinCopy sectionID];
+        [(BBObserver *)observer clearBulletins:bbAction inSection:sectionID2];
 
         goto LABEL_4;
       }
@@ -707,13 +707,13 @@ LABEL_8:
       if (!os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
       {
 LABEL_18:
-        if (!v10)
+        if (!completionCopy)
         {
           goto LABEL_5;
         }
 
 LABEL_19:
-        v10[2](v10, 0);
+        completionCopy[2](completionCopy, 0);
         goto LABEL_5;
       }
 
@@ -724,7 +724,7 @@ LABEL_19:
     }
 
     _os_log_error_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, v26, buf, 0xCu);
-    if (!v10)
+    if (!completionCopy)
     {
       goto LABEL_5;
     }
@@ -732,16 +732,16 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v13 = [v11 bbAction];
-  v14 = [v9 bbBulletin];
-  v15 = [v14 responseForAction:v13];
+  bbAction = [v11 bbAction];
+  bbBulletin3 = [bulletinCopy bbBulletin];
+  v15 = [bbBulletin3 responseForAction:bbAction];
 
   v16 = self->_observer;
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_10037310C;
   v32[3] = &unk_10051E100;
-  v33 = v10;
+  v33 = completionCopy;
   [(BBObserver *)v16 sendResponse:v15 withCompletion:v32];
 
 LABEL_4:
@@ -750,12 +750,12 @@ LABEL_5:
 LABEL_9:
 }
 
-- (void)performActionWithIdentifier:(id)a3 forUNNotificationWithIdentifier:(id)a4 completion:(id)a5
+- (void)performActionWithIdentifier:(id)identifier forUNNotificationWithIdentifier:(id)withIdentifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![v9 length])
+  identifierCopy = identifier;
+  withIdentifierCopy = withIdentifier;
+  completionCopy = completion;
+  if (![withIdentifierCopy length])
   {
     v12 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
@@ -763,18 +763,18 @@ LABEL_9:
       *buf = 136315138;
       v18 = "[ADNotificationManager performActionWithIdentifier:forUNNotificationWithIdentifier:completion:]";
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%s Missing notification identifier", buf, 0xCu);
-      if (!v10)
+      if (!completionCopy)
       {
         goto LABEL_6;
       }
     }
 
-    else if (!v10)
+    else if (!completionCopy)
     {
       goto LABEL_6;
     }
 
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_6;
   }
 
@@ -784,20 +784,20 @@ LABEL_9:
   v13[2] = sub_1003732C4;
   v13[3] = &unk_10051E0D8;
   v13[4] = self;
-  v14 = v9;
-  v15 = v8;
-  v16 = v10;
+  v14 = withIdentifierCopy;
+  v15 = identifierCopy;
+  v16 = completionCopy;
   dispatch_async(queue, v13);
 
 LABEL_6:
 }
 
-- (void)performActionWithIdentifier:(id)a3 forBulletinWithIdentifier:(id)a4 completion:(id)a5
+- (void)performActionWithIdentifier:(id)identifier forBulletinWithIdentifier:(id)withIdentifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![v9 length])
+  identifierCopy = identifier;
+  withIdentifierCopy = withIdentifier;
+  completionCopy = completion;
+  if (![withIdentifierCopy length])
   {
     v12 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
@@ -805,18 +805,18 @@ LABEL_6:
       *buf = 136315138;
       v19 = "[ADNotificationManager performActionWithIdentifier:forBulletinWithIdentifier:completion:]";
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%s Missing bulletin identifer", buf, 0xCu);
-      if (!v10)
+      if (!completionCopy)
       {
         goto LABEL_6;
       }
     }
 
-    else if (!v10)
+    else if (!completionCopy)
     {
       goto LABEL_6;
     }
 
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_6;
   }
 
@@ -825,71 +825,71 @@ LABEL_6:
   v13[1] = 3221225472;
   v13[2] = sub_1003734C0;
   v13[3] = &unk_10051E0D8;
-  v14 = v9;
-  v15 = self;
-  v16 = v8;
-  v17 = v10;
+  v14 = withIdentifierCopy;
+  selfCopy = self;
+  v16 = identifierCopy;
+  v17 = completionCopy;
   dispatch_async(queue, v13);
 
 LABEL_6:
 }
 
-- (void)fetchActionsForBulletinWithID:(id)a3 completion:(id)a4
+- (void)fetchActionsForBulletinWithID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (completionCopy)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_1003735E8;
     v8[3] = &unk_10051E0B0;
-    v9 = v6;
-    [(ADNotificationManager *)self fetchBulletinWithID:a3 completion:v8];
+    v9 = completionCopy;
+    [(ADNotificationManager *)self fetchBulletinWithID:d completion:v8];
   }
 }
 
-- (void)fetchBulletinWithID:(id)a3 completion:(id)a4
+- (void)fetchBulletinWithID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dCopy = d;
+  completionCopy = completion;
+  if (completionCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10037370C;
     block[3] = &unk_10051E088;
-    v10 = v6;
-    v11 = self;
-    v12 = v7;
+    v10 = dCopy;
+    selfCopy = self;
+    v12 = completionCopy;
     dispatch_async(queue, block);
   }
 }
 
-- (void)fetchBulletinsAfterBulletinWithID:(id)a3 completion:(id)a4
+- (void)fetchBulletinsAfterBulletinWithID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dCopy = d;
+  completionCopy = completion;
+  if (completionCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1003738D8;
     block[3] = &unk_10051E088;
-    v10 = v6;
-    v11 = self;
-    v12 = v7;
+    v10 = dCopy;
+    selfCopy = self;
+    v12 = completionCopy;
     dispatch_async(queue, block);
   }
 }
 
-- (void)fetchBulletinsOnLockScreenWithCompletion:(id)a3
+- (void)fetchBulletinsOnLockScreenWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -897,16 +897,16 @@ LABEL_6:
     v7[2] = sub_100373B08;
     v7[3] = &unk_10051E038;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)fetchAllBulletinsWithCompletion:(id)a3
+- (void)fetchAllBulletinsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -914,22 +914,22 @@ LABEL_6:
     v7[2] = sub_100373D30;
     v7[3] = &unk_10051E038;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100373EA0;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = sourceCopy;
+  v6 = sourceCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1007,9 +1007,9 @@ LABEL_6:
   return v2;
 }
 
-+ (id)_createBBObserverWithQueue:(id)a3
++ (id)_createBBObserverWithQueue:(id)queue
 {
-  v3 = a3;
+  queueCopy = queue;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2050000000;
@@ -1028,7 +1028,7 @@ LABEL_6:
 
   v5 = v4;
   _Block_object_dispose(&v9, 8);
-  v6 = [[v4 alloc] initWithQueue:v3 calloutQueue:v3];
+  v6 = [[v4 alloc] initWithQueue:queueCopy calloutQueue:queueCopy];
 
   return v6;
 }

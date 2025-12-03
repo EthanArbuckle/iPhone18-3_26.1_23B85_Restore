@@ -1,15 +1,15 @@
 @interface PGGraphPetPresentEdge
 + (id)filter;
-- (id)initFromPetNode:(id)a3 toMomentNode:(id)a4;
+- (id)initFromPetNode:(id)node toMomentNode:(id)momentNode;
 @end
 
 @implementation PGGraphPetPresentEdge
 
-- (id)initFromPetNode:(id)a3 toMomentNode:(id)a4
+- (id)initFromPetNode:(id)node toMomentNode:(id)momentNode
 {
   v5.receiver = self;
   v5.super_class = PGGraphPetPresentEdge;
-  return [(PGGraphEdge *)&v5 initWithSourceNode:a3 targetNode:a4];
+  return [(PGGraphEdge *)&v5 initWithSourceNode:node targetNode:momentNode];
 }
 
 + (id)filter

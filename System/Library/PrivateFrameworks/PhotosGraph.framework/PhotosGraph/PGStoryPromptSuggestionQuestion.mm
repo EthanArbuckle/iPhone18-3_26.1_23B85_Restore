@@ -1,21 +1,21 @@
 @interface PGStoryPromptSuggestionQuestion
-- (BOOL)isEquivalentToPersistedQuestion:(id)a3;
+- (BOOL)isEquivalentToPersistedQuestion:(id)question;
 - (NSDictionary)additionalInfo;
 - (NSString)entityIdentifier;
 - (PGStoryPromptSuggestionQuestion)init;
-- (PGStoryPromptSuggestionQuestion)initWithPromptId:(id)a3 promptText:(id)a4 isValidated:(BOOL)a5 assetCount:(int64_t)a6 source:(id)a7 mcAvailabilityStatus:(int64_t)a8 localFactoryScore:(double)a9;
+- (PGStoryPromptSuggestionQuestion)initWithPromptId:(id)id promptText:(id)text isValidated:(BOOL)validated assetCount:(int64_t)count source:(id)source mcAvailabilityStatus:(int64_t)status localFactoryScore:(double)score;
 @end
 
 @implementation PGStoryPromptSuggestionQuestion
 
-- (PGStoryPromptSuggestionQuestion)initWithPromptId:(id)a3 promptText:(id)a4 isValidated:(BOOL)a5 assetCount:(int64_t)a6 source:(id)a7 mcAvailabilityStatus:(int64_t)a8 localFactoryScore:(double)a9
+- (PGStoryPromptSuggestionQuestion)initWithPromptId:(id)id promptText:(id)text isValidated:(BOOL)validated assetCount:(int64_t)count source:(id)source mcAvailabilityStatus:(int64_t)status localFactoryScore:(double)score
 {
   v13 = sub_22F740E20();
   v15 = v14;
   v16 = sub_22F740E20();
   v18 = v17;
   v19 = sub_22F740E20();
-  return sub_22F2F9C28(v13, v15, v16, v18, a5, a6, v19, v20, a9, a8);
+  return sub_22F2F9C28(v13, v15, v16, v18, validated, count, v19, v20, score, status);
 }
 
 - (NSString)entityIdentifier
@@ -30,7 +30,7 @@
 
 - (NSDictionary)additionalInfo
 {
-  v2 = self;
+  selfCopy = self;
   PGStoryPromptSuggestionQuestion.additionalInfo.getter();
 
   v3 = sub_22F740C80();
@@ -38,11 +38,11 @@
   return v3;
 }
 
-- (BOOL)isEquivalentToPersistedQuestion:(id)a3
+- (BOOL)isEquivalentToPersistedQuestion:(id)question
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = PGStoryPromptSuggestionQuestion.isEquivalent(toPersistedQuestion:)(v4);
+  questionCopy = question;
+  selfCopy = self;
+  LOBYTE(self) = PGStoryPromptSuggestionQuestion.isEquivalent(toPersistedQuestion:)(questionCopy);
 
   return self & 1;
 }

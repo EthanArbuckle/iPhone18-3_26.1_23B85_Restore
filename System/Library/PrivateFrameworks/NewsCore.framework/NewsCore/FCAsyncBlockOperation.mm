@@ -1,8 +1,8 @@
 @interface FCAsyncBlockOperation
-+ (id)asyncBlockOperationWithBlock:(id)a3;
-+ (id)asyncBlockOperationWithMainThreadBlock:(id)a3;
++ (id)asyncBlockOperationWithBlock:(id)block;
++ (id)asyncBlockOperationWithMainThreadBlock:(id)block;
 - (FCAsyncBlockOperation)init;
-- (FCAsyncBlockOperation)initWithBlock:(id)a3;
+- (FCAsyncBlockOperation)initWithBlock:(id)block;
 - (void)start;
 @end
 
@@ -24,13 +24,13 @@
     atomic_store(1u, &self->_executing);
     [(FCAsyncBlockOperation *)self didChangeValueForKey:@"isExecuting"];
     v3 = objc_autoreleasePoolPush();
-    v4 = [(FCAsyncBlockOperation *)self block];
+    block = [(FCAsyncBlockOperation *)self block];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __30__FCAsyncBlockOperation_start__block_invoke;
     v5[3] = &unk_1E7C36EA0;
     v5[4] = self;
-    (v4)[2](v4, v5);
+    (block)[2](block, v5);
 
     objc_autoreleasePoolPop(v3);
   }
@@ -48,24 +48,24 @@ uint64_t __30__FCAsyncBlockOperation_start__block_invoke(uint64_t a1)
   return [v2 didChangeValueForKey:@"isFinished"];
 }
 
-+ (id)asyncBlockOperationWithBlock:(id)a3
++ (id)asyncBlockOperationWithBlock:(id)block
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBlock:v3];
+  blockCopy = block;
+  v4 = [objc_alloc(objc_opt_class()) initWithBlock:blockCopy];
 
   return v4;
 }
 
-+ (id)asyncBlockOperationWithMainThreadBlock:(id)a3
++ (id)asyncBlockOperationWithMainThreadBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __64__FCAsyncBlockOperation_asyncBlockOperationWithMainThreadBlock___block_invoke;
   v8[3] = &unk_1E7C3A148;
-  v9 = v4;
-  v5 = v4;
-  v6 = [a1 asyncBlockOperationWithBlock:v8];
+  v9 = blockCopy;
+  v5 = blockCopy;
+  v6 = [self asyncBlockOperationWithBlock:v8];
 
   return v6;
 }
@@ -109,11 +109,11 @@ void __64__FCAsyncBlockOperation_asyncBlockOperationWithMainThreadBlock___block_
   objc_exception_throw(v6);
 }
 
-- (FCAsyncBlockOperation)initWithBlock:(id)a3
+- (FCAsyncBlockOperation)initWithBlock:(id)block
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  blockCopy = block;
+  if (!blockCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "block"];
     *buf = 136315906;
@@ -132,7 +132,7 @@ void __64__FCAsyncBlockOperation_asyncBlockOperationWithMainThreadBlock___block_
   v5 = [(FCAsyncBlockOperation *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [blockCopy copy];
     block = v5->_block;
     v5->_block = v6;
   }

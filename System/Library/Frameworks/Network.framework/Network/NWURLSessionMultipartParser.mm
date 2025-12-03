@@ -1,52 +1,52 @@
 @interface NWURLSessionMultipartParser
-- (void)task:(void *)a3 handleMultipartData:(int)a4 complete:(void *)a5 error:(void *)a6 completionHandler:;
+- (void)task:(void *)task handleMultipartData:(int)data complete:(void *)complete error:(void *)error completionHandler:;
 @end
 
 @implementation NWURLSessionMultipartParser
 
-- (void)task:(void *)a3 handleMultipartData:(int)a4 complete:(void *)a5 error:(void *)a6 completionHandler:
+- (void)task:(void *)task handleMultipartData:(int)data complete:(void *)complete error:(void *)error completionHandler:
 {
   v11 = a2;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  if (!a1)
+  taskCopy = task;
+  completeCopy = complete;
+  errorCopy = error;
+  if (!self)
   {
     goto LABEL_34;
   }
 
-  v15 = *(a1 + 40);
+  v15 = *(self + 40);
   if (v15)
   {
-    size = dispatch_data_get_size(*(a1 + 40));
-    v51 = v12 != 0;
-    if (!v12)
+    size = dispatch_data_get_size(*(self + 40));
+    v51 = taskCopy != 0;
+    if (!taskCopy)
     {
       goto LABEL_10;
     }
 
     v16 = v15;
-    concat = dispatch_data_create_concat(v16, v12);
-    v18 = *(a1 + 40);
-    *(a1 + 40) = concat;
+    concat = dispatch_data_create_concat(v16, taskCopy);
+    v18 = *(self + 40);
+    *(self + 40) = concat;
   }
 
   else
   {
     size = 0;
     v19 = 0;
-    v51 = v12 != 0;
-    if (!v12)
+    v51 = taskCopy != 0;
+    if (!taskCopy)
     {
       goto LABEL_12;
     }
 
-    v20 = v12;
-    v16 = *(a1 + 40);
-    *(a1 + 40) = v20;
+    v20 = taskCopy;
+    v16 = *(self + 40);
+    *(self + 40) = v20;
   }
 
-  v15 = *(a1 + 40);
+  v15 = *(self + 40);
   if (v15)
   {
 LABEL_10:
@@ -56,7 +56,7 @@ LABEL_10:
 
   v19 = 0;
 LABEL_12:
-  v52 = v14;
+  v52 = errorCopy;
   v86 = 0;
   v87 = &v86;
   v88 = 0x2020000000;
@@ -67,8 +67,8 @@ LABEL_12:
   v84[2] = 0x3032000000;
   v84[3] = __Block_byref_object_copy__50485;
   v84[4] = __Block_byref_object_dispose__50486;
-  v49 = v13;
-  v48 = v13;
+  v49 = completeCopy;
+  v48 = completeCopy;
   v85 = v48;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -76,7 +76,7 @@ LABEL_12:
   aBlock[3] = &unk_1E6A34230;
   v22 = v21;
   v81 = v22;
-  v82 = a1;
+  selfCopy = self;
   v50 = v11;
   v23 = v11;
   v83 = v23;
@@ -93,8 +93,8 @@ LABEL_12:
   v67[3] = &unk_1E6A34280;
   v71 = &v74;
   v72 = v84;
-  v67[4] = a1;
-  v73 = a4;
+  v67[4] = self;
+  dataCopy = data;
   v25 = v22;
   v68 = v25;
   v26 = v23;
@@ -106,11 +106,11 @@ LABEL_12:
   v63[1] = 3221225472;
   v63[2] = __89__NWURLSessionMultipartParser_task_handleMultipartData_complete_error_completionHandler___block_invoke_75;
   v63[3] = &unk_1E6A342D0;
-  v63[4] = a1;
+  v63[4] = self;
   v66 = v84;
   v47 = v27;
   v65 = v47;
-  v29 = v12;
+  v29 = taskCopy;
   v64 = v29;
   v30 = _Block_copy(v63);
   v31 = v30;
@@ -121,20 +121,20 @@ LABEL_12:
     applier[2] = __89__NWURLSessionMultipartParser_task_handleMultipartData_complete_error_completionHandler___block_invoke_79;
     applier[3] = &unk_1E6A342F8;
     v62 = size;
-    applier[4] = a1;
+    applier[4] = self;
     v60 = &v86;
     v59 = v30;
     v61 = v84;
     dispatch_data_apply(v29, applier);
   }
 
-  v14 = v52;
-  if (!a4)
+  errorCopy = v52;
+  if (!data)
   {
     goto LABEL_31;
   }
 
-  v32 = *(a1 + 12);
+  v32 = *(self + 12);
   if ((v32 - 2) < 3)
   {
     goto LABEL_30;
@@ -142,29 +142,29 @@ LABEL_12:
 
   if (!v32)
   {
-    subrange = dispatch_data_create_subrange(*(a1 + 40), v87[3], v19 - v87[3]);
-    if ((*(a1 + 8) & 1) == 0)
+    subrange = dispatch_data_create_subrange(*(self + 40), v87[3], v19 - v87[3]);
+    if ((*(self + 8) & 1) == 0)
     {
       (v31)[2](v31, subrange, 0);
     }
 
     v87[3] = v19;
-    *(a1 + 12) = 3;
+    *(self + 12) = 3;
 
-    v14 = v52;
+    errorCopy = v52;
     goto LABEL_31;
   }
 
   if (v32 == 1)
   {
-    v33 = *(a1 + 72);
+    v33 = *(self + 72);
     if (v33)
     {
       v33 = *(v33 + 32);
     }
 
-    v34 = dispatch_data_create_subrange(*(a1 + 40), v87[3], v19 - (*(a1 + 96) + v33) - v87[3]);
-    if (*(a1 + 8))
+    v34 = dispatch_data_create_subrange(*(self + 40), v87[3], v19 - (*(self + 96) + v33) - v87[3]);
+    if (*(self + 8))
     {
       v87[3] = v19;
     }
@@ -172,57 +172,57 @@ LABEL_12:
     else
     {
       (v31)[2](v31, v34, 0);
-      v36 = *(a1 + 8);
+      v36 = *(self + 8);
       v87[3] = v19;
       if ((v36 & 1) == 0)
       {
 LABEL_27:
-        v37 = *(a1 + 56);
+        v37 = *(self + 56);
         if (v37)
         {
           *(v37 + 40) = 0;
           *(v37 + 48) = 0;
         }
 
-        *(a1 + 12) = 3;
+        *(self + 12) = 3;
 
 LABEL_30:
         v31[2](v31, MEMORY[0x1E69E9668], 0);
-        *(a1 + 12) = 3;
+        *(self + 12) = 3;
         goto LABEL_31;
       }
     }
 
-    *(a1 + 8) = 0;
+    *(self + 8) = 0;
     goto LABEL_27;
   }
 
 LABEL_31:
-  v38 = *(a1 + 40);
+  v38 = *(self + 40);
   if (v38)
   {
     v39 = v87[3];
     v40 = v19 - v39;
     v41 = v38;
     v42 = v39;
-    v14 = v52;
+    errorCopy = v52;
     v43 = dispatch_data_create_subrange(v41, v42, v40);
-    v44 = *(a1 + 40);
-    *(a1 + 40) = v43;
+    v44 = *(self + 40);
+    *(self + 40) = v43;
   }
 
   objc_storeWeak(v75 + 5, v28);
   v28[2](v28);
-  v45 = *(a1 + 88);
+  v45 = *(self + 88);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __89__NWURLSessionMultipartParser_task_handleMultipartData_complete_error_completionHandler___block_invoke_2_87;
   block[3] = &unk_1E6A34320;
   v57 = v84;
-  block[4] = a1;
+  block[4] = self;
   v54 = v26;
   v55 = v48;
-  v56 = v14;
+  v56 = errorCopy;
   dispatch_group_notify(v25, v45, block);
 
   _Block_object_dispose(&v74, 8);
@@ -230,7 +230,7 @@ LABEL_31:
 
   _Block_object_dispose(v84, 8);
   _Block_object_dispose(&v86, 8);
-  v13 = v49;
+  completeCopy = v49;
   v11 = v50;
 LABEL_34:
 }

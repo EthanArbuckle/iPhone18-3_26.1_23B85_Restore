@@ -1,88 +1,88 @@
 @interface _UIPhysicalButtonConfigurationHostSceneComponent
 - (NSString)debugDescription;
-- (void)_evaluateProxyInteractionEligibilityForFinalAttempt:(uint64_t)a1;
-- (void)_installProxyInteractionIfPossibleForHostingController:(uint64_t)a1;
-- (void)_physicalButtonInteraction:(id)a3 handleAction:(id)a4 withActiveActions:(id)a5;
-- (void)_physicalButtonProxyInteraction:(id)a3 didReceiveBSAction:(id)a4;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)setScene:(id)a3;
+- (void)_evaluateProxyInteractionEligibilityForFinalAttempt:(uint64_t)attempt;
+- (void)_installProxyInteractionIfPossibleForHostingController:(uint64_t)controller;
+- (void)_physicalButtonInteraction:(id)interaction handleAction:(id)action withActiveActions:(id)actions;
+- (void)_physicalButtonProxyInteraction:(id)interaction didReceiveBSAction:(id)action;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings;
+- (void)setScene:(id)scene;
 @end
 
 @implementation _UIPhysicalButtonConfigurationHostSceneComponent
 
-- (void)setScene:(id)a3
+- (void)setScene:(id)scene
 {
   v4.receiver = self;
   v4.super_class = _UIPhysicalButtonConfigurationHostSceneComponent;
-  [(FBSSceneComponent *)&v4 setScene:a3];
+  [(FBSSceneComponent *)&v4 setScene:scene];
   *&self->_flags |= 3u;
 }
 
-- (void)_installProxyInteractionIfPossibleForHostingController:(uint64_t)a1
+- (void)_installProxyInteractionIfPossibleForHostingController:(uint64_t)controller
 {
   v3 = a2;
-  if (a1 && v3 && (*(a1 + 24) & 2) != 0)
+  if (controller && v3 && (*(controller + 24) & 2) != 0)
   {
     v6 = v3;
-    v4 = [v3 sceneView];
-    v5 = v4;
-    if (v4 && *(a1 + 40))
+    sceneView = [v3 sceneView];
+    v5 = sceneView;
+    if (sceneView && *(controller + 40))
     {
-      [v4 addInteraction:?];
+      [sceneView addInteraction:?];
     }
 
     v3 = v6;
   }
 }
 
-- (void)_evaluateProxyInteractionEligibilityForFinalAttempt:(uint64_t)a1
+- (void)_evaluateProxyInteractionEligibilityForFinalAttempt:(uint64_t)attempt
 {
-  if (a1 && (*(a1 + 24) & 1) != 0)
+  if (attempt && (*(attempt + 24) & 1) != 0)
   {
-    v4 = [a1 hostScene];
-    v8 = [v4 uiSceneHostingController];
+    hostScene = [attempt hostScene];
+    uiSceneHostingController = [hostScene uiSceneHostingController];
 
-    if (v8 || a2)
+    if (uiSceneHostingController || a2)
     {
-      *(a1 + 24) &= ~1u;
-      *(a1 + 24) = *(a1 + 24) & 0xFD | (2 * (v8 != 0));
+      *(attempt + 24) &= ~1u;
+      *(attempt + 24) = *(attempt + 24) & 0xFD | (2 * (uiSceneHostingController != 0));
     }
 
-    [(_UIPhysicalButtonConfigurationHostSceneComponent *)a1 _installProxyInteractionIfPossibleForHostingController:v8];
-    if ((*(a1 + 24) & 2) == 0)
+    [(_UIPhysicalButtonConfigurationHostSceneComponent *)attempt _installProxyInteractionIfPossibleForHostingController:uiSceneHostingController];
+    if ((*(attempt + 24) & 2) == 0)
     {
-      v5 = [*(a1 + 40) view];
-      [v5 removeInteraction:*(a1 + 40)];
+      view = [*(attempt + 40) view];
+      [view removeInteraction:*(attempt + 40)];
 
-      v6 = *(a1 + 40);
-      *(a1 + 40) = 0;
+      v6 = *(attempt + 40);
+      *(attempt + 40) = 0;
 
-      v7 = *(a1 + 32);
-      *(a1 + 32) = 0;
+      v7 = *(attempt + 32);
+      *(attempt + 32) = 0;
     }
   }
 }
 
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings
 {
   v49 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  sceneCopy = scene;
+  settingsCopy = settings;
+  v8 = settingsCopy;
   if ((*&self->_flags & 2) != 0)
   {
-    v9 = [v7 settingsDiff];
-    v10 = [v9 containsProperty:sel_physicalButtonConfigurations];
+    settingsDiff = [settingsCopy settingsDiff];
+    v10 = [settingsDiff containsProperty:sel_physicalButtonConfigurations];
 
     if (v10)
     {
       [(_UIPhysicalButtonConfigurationHostSceneComponent *)self _evaluateProxyInteractionEligibilityForFinalAttempt:?];
-      v11 = [v8 settings];
-      v12 = [v11 physicalButtonConfigurations];
+      settings = [v8 settings];
+      physicalButtonConfigurations = [settings physicalButtonConfigurations];
 
       v13 = self->_clientPhysicalButtonConfigurations;
-      v14 = v12;
+      v14 = physicalButtonConfigurations;
       v15 = v14;
       if (v13 == v14)
       {
@@ -102,20 +102,20 @@
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         v18 = MEMORY[0x1E696AEC0];
-        v19 = self;
+        selfCopy = self;
         v20 = v17;
         v21 = objc_opt_class();
         v22 = NSStringFromClass(v21);
-        v23 = [v18 stringWithFormat:@"<%@: %p>", v22, v19];
+        selfCopy = [v18 stringWithFormat:@"<%@: %p>", v22, selfCopy];
 
-        v24 = v23;
-        v25 = [(_UIPhysicalButtonConfigurationSet *)v15 succinctDescription];
+        v24 = selfCopy;
+        succinctDescription = [(_UIPhysicalButtonConfigurationSet *)v15 succinctDescription];
         *buf = 138543874;
-        v42 = v23;
+        v42 = selfCopy;
         v43 = 1026;
         v44 = v16 ^ 1;
         v45 = 2114;
-        *v46 = v25;
+        *v46 = succinctDescription;
         _os_log_impl(&dword_188A29000, v20, OS_LOG_TYPE_DEFAULT, "Received resolved configurations update from client: self: %{public}@; didChange: %{public}d; configurations: %{public}@", buf, 0x1Cu);
       }
 
@@ -125,22 +125,22 @@
       }
 
       v26 = self->_clientPhysicalButtonConfigurations;
-      objc_storeStrong(&self->_clientPhysicalButtonConfigurations, v12);
+      objc_storeStrong(&self->_clientPhysicalButtonConfigurations, physicalButtonConfigurations);
       v27 = _UIPBIProxyOwnerActionsForState(self->_proxyPhysicalButtonInteraction, v26, self->_clientPhysicalButtonConfigurations);
       v28 = *(__UILogGetCategoryCachedImpl("PhysicalButtonInteraction", &qword_1ED499FA8) + 8);
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
         v29 = MEMORY[0x1E696AEC0];
-        v30 = self;
+        selfCopy2 = self;
         log = v28;
         v31 = objc_opt_class();
         NSStringFromClass(v31);
         v33 = v32 = v26;
-        v34 = [v29 stringWithFormat:@"<%@: %p>", v33, v30];
+        selfCopy2 = [v29 stringWithFormat:@"<%@: %p>", v33, selfCopy2];
 
         v26 = v32;
         *buf = 138544386;
-        v42 = v34;
+        v42 = selfCopy2;
         v43 = 1026;
         v44 = v27 & 1;
         v45 = 1026;
@@ -173,21 +173,21 @@ LABEL_26:
           }
 
 LABEL_18:
-          v35 = [(_UIPhysicalButtonConfigurationSet *)&self->_clientPhysicalButtonConfigurations->super.isa _nsSetRepresentation];
+          _nsSetRepresentation = [(_UIPhysicalButtonConfigurationSet *)&self->_clientPhysicalButtonConfigurations->super.isa _nsSetRepresentation];
           if (v27)
           {
-            v36 = [[_UIPhysicalButtonProxyInteraction alloc] initWithConfigurations:v35 proxyDelegate:self];
+            v36 = [[_UIPhysicalButtonProxyInteraction alloc] initWithConfigurations:_nsSetRepresentation proxyDelegate:self];
             proxyPhysicalButtonInteraction = self->_proxyPhysicalButtonInteraction;
             self->_proxyPhysicalButtonInteraction = v36;
 
-            v38 = [(FBSSceneComponent *)self hostScene];
-            v39 = [v38 uiSceneHostingController];
-            [(_UIPhysicalButtonConfigurationHostSceneComponent *)self _installProxyInteractionIfPossibleForHostingController:v39];
+            hostScene = [(FBSSceneComponent *)self hostScene];
+            uiSceneHostingController = [hostScene uiSceneHostingController];
+            [(_UIPhysicalButtonConfigurationHostSceneComponent *)self _installProxyInteractionIfPossibleForHostingController:uiSceneHostingController];
           }
 
           else if ((v27 & 0x100) != 0)
           {
-            [(_UIPhysicalButtonInteraction *)self->_proxyPhysicalButtonInteraction _setConfigurations:v35];
+            [(_UIPhysicalButtonInteraction *)self->_proxyPhysicalButtonInteraction _setConfigurations:_nsSetRepresentation];
           }
 
           goto LABEL_23;
@@ -212,20 +212,20 @@ LABEL_18:
 LABEL_27:
 }
 
-- (void)_physicalButtonInteraction:(id)a3 handleAction:(id)a4 withActiveActions:(id)a5
+- (void)_physicalButtonInteraction:(id)interaction handleAction:(id)action withActiveActions:(id)actions
 {
   v8 = MEMORY[0x1E696AAA8];
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 currentHandler];
-  [v11 handleFailureInMethod:a2 object:self file:@"_UIPhysicalButtonConfigurationHostSceneComponent.m" lineNumber:184 description:{@"Unexpected request to handle a non-proxy action: self: %@; interaction: %@; action: %@", self, v10, v9}];
+  actionCopy = action;
+  interactionCopy = interaction;
+  currentHandler = [v8 currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPhysicalButtonConfigurationHostSceneComponent.m" lineNumber:184 description:{@"Unexpected request to handle a non-proxy action: self: %@; interaction: %@; action: %@", self, interactionCopy, actionCopy}];
 }
 
-- (void)_physicalButtonProxyInteraction:(id)a3 didReceiveBSAction:(id)a4
+- (void)_physicalButtonProxyInteraction:(id)interaction didReceiveBSAction:(id)action
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  interactionCopy = interaction;
+  actionCopy = action;
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("PhysicalButtonInteraction", &_physicalButtonProxyInteraction_didReceiveBSAction____s_category);
   if (*CategoryCachedImpl)
   {
@@ -235,44 +235,44 @@ LABEL_27:
       if (self)
       {
         v12 = MEMORY[0x1E696AEC0];
-        v13 = self;
+        selfCopy = self;
         v14 = objc_opt_class();
         v15 = NSStringFromClass(v14);
-        v16 = [v12 stringWithFormat:@"<%@: %p>", v15, v13];
+        selfCopy = [v12 stringWithFormat:@"<%@: %p>", v15, selfCopy];
       }
 
       else
       {
-        v16 = @"(nil)";
+        selfCopy = @"(nil)";
       }
 
-      v17 = v16;
-      v18 = [v6 succinctDescription];
+      v17 = selfCopy;
+      succinctDescription = [interactionCopy succinctDescription];
       *buf = 138412802;
-      v20 = v16;
+      v20 = selfCopy;
       v21 = 2112;
-      v22 = v18;
+      v22 = succinctDescription;
       v23 = 2112;
-      v24 = v7;
+      v24 = actionCopy;
       _os_log_impl(&dword_188A29000, v11, OS_LOG_TYPE_ERROR, "Received proxy physicalButtonBSAction from interaction: self: %@; proxyInteraction: %@; physicalButtonBSAction: %@", buf, 0x20u);
     }
   }
 
-  v9 = [(FBSSceneComponent *)self hostScene];
-  v10 = [MEMORY[0x1E695DFD8] setWithObject:v7];
-  [v9 sendActions:v10];
+  hostScene = [(FBSSceneComponent *)self hostScene];
+  v10 = [MEMORY[0x1E695DFD8] setWithObject:actionCopy];
+  [hostScene sendActions:v10];
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __78___UIPhysicalButtonConfigurationHostSceneComponent_appendDescriptionToStream___block_invoke;
   v9[3] = &unk_1E70F35B8;
-  v5 = v4;
+  v5 = streamCopy;
   v10 = v5;
-  v11 = self;
+  selfCopy = self;
   [v5 appendProem:self block:v9];
   if ([v5 hasDebugStyle])
   {
@@ -281,7 +281,7 @@ LABEL_27:
     v6[2] = __78___UIPhysicalButtonConfigurationHostSceneComponent_appendDescriptionToStream___block_invoke_2;
     v6[3] = &unk_1E70F35B8;
     v7 = v5;
-    v8 = self;
+    selfCopy2 = self;
     [v7 appendBodySectionWithName:0 block:v6];
   }
 }
@@ -289,8 +289,8 @@ LABEL_27:
 - (NSString)debugDescription
 {
   v3 = MEMORY[0x1E698E688];
-  v4 = [MEMORY[0x1E698E690] debugStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  debugStyle = [MEMORY[0x1E698E690] debugStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:debugStyle];
 
   return v5;
 }

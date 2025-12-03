@@ -1,24 +1,24 @@
 @interface BYODSubtitleTableCell
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation BYODSubtitleTableCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v9.receiver = self;
   v9.super_class = BYODSubtitleTableCell;
-  [(BYODSubtitleTableCell *)&v9 refreshCellContentsWithSpecifier:v4];
-  v5 = [(BYODSubtitleTableCell *)self detailTextLabel];
-  v6 = [v4 propertyForKey:PSTableCellSubtitleTextKey];
-  [v5 setText:v6];
+  [(BYODSubtitleTableCell *)&v9 refreshCellContentsWithSpecifier:specifierCopy];
+  detailTextLabel = [(BYODSubtitleTableCell *)self detailTextLabel];
+  v6 = [specifierCopy propertyForKey:PSTableCellSubtitleTextKey];
+  [detailTextLabel setText:v6];
 
-  v7 = [(BYODSubtitleTableCell *)self detailTextLabel];
-  [v7 setLineBreakMode:0];
+  detailTextLabel2 = [(BYODSubtitleTableCell *)self detailTextLabel];
+  [detailTextLabel2 setLineBreakMode:0];
 
-  v8 = [(BYODSubtitleTableCell *)self detailTextLabel];
-  [v8 setNumberOfLines:0];
+  detailTextLabel3 = [(BYODSubtitleTableCell *)self detailTextLabel];
+  [detailTextLabel3 setNumberOfLines:0];
 
   [(BYODSubtitleTableCell *)self setNeedsLayout];
 }

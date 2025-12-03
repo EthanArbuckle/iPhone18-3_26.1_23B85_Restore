@@ -1,28 +1,28 @@
 @interface SUUIGiftValidationResponse
-- (SUUIGiftValidationResponse)initWithValidationDictionary:(id)a3;
+- (SUUIGiftValidationResponse)initWithValidationDictionary:(id)dictionary;
 @end
 
 @implementation SUUIGiftValidationResponse
 
-- (SUUIGiftValidationResponse)initWithValidationDictionary:(id)a3
+- (SUUIGiftValidationResponse)initWithValidationDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = SUUIGiftValidationResponse;
   v5 = [(SUUIGiftValidationResponse *)&v21 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"status"];
+    v6 = [dictionaryCopy objectForKey:@"status"];
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v6 integerValue];
-      v5->_valid = v7 == 0;
-      if (!v7)
+      integerValue = [v6 integerValue];
+      v5->_valid = integerValue == 0;
+      if (!integerValue)
       {
-        v8 = [v4 objectForKey:@"amountFormatted"];
+        v8 = [dictionaryCopy objectForKey:@"amountFormatted"];
         if (!v8)
         {
-          v8 = [v4 objectForKey:@"totalPriceFormatted"];
+          v8 = [dictionaryCopy objectForKey:@"totalPriceFormatted"];
         }
 
         objc_opt_class();
@@ -33,7 +33,7 @@
           v5->_totalGiftAmountString = v9;
         }
 
-        v11 = [v4 objectForKey:@"giftKey"];
+        v11 = [dictionaryCopy objectForKey:@"giftKey"];
 
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -56,7 +56,7 @@ LABEL_22:
       v5->_valid = 0;
     }
 
-    v11 = [v4 objectForKey:@"errorEntries"];
+    v11 = [dictionaryCopy objectForKey:@"errorEntries"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v11 count])
     {
@@ -80,7 +80,7 @@ LABEL_22:
       goto LABEL_22;
     }
 
-    giftKey = [v4 objectForKey:@"userPresentableErrorMessage"];
+    giftKey = [dictionaryCopy objectForKey:@"userPresentableErrorMessage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

@@ -1,8 +1,8 @@
 @interface _EFURLConnectionDelegate
 - (_EFURLConnectionDelegate)init;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
 @end
 
 @implementation _EFURLConnectionDelegate
@@ -24,40 +24,40 @@
   return v2;
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  objc_storeStrong(&self->_response, a5);
-  v7 = a6;
-  v7[2](v7, 1);
+  objc_storeStrong(&self->_response, response);
+  handlerCopy = handler;
+  handlerCopy[2](handlerCopy, 1);
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v6 = a5;
+  dataCopy = data;
   responseBody = self->_responseBody;
-  v10 = v6;
+  v10 = dataCopy;
   if (responseBody)
   {
-    [(NSMutableData *)responseBody appendData:v6];
+    [(NSMutableData *)responseBody appendData:dataCopy];
   }
 
   else
   {
-    v8 = [v6 mutableCopy];
+    v8 = [dataCopy mutableCopy];
     v9 = self->_responseBody;
     self->_responseBody = v8;
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  errorCopy = error;
   promise = self->_promise;
-  if (v9)
+  if (errorCopy)
   {
-    [(EFPromise *)self->_promise finishWithError:v9];
+    [(EFPromise *)self->_promise finishWithError:errorCopy];
   }
 
   else

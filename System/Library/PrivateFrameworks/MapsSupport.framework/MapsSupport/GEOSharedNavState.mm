@@ -8,15 +8,15 @@
 {
   if ([(GEOSharedNavState *)self hasTransportType])
   {
-    v3 = [(GEOSharedNavState *)self transportType];
-    if (v3 >= 7)
+    transportType = [(GEOSharedNavState *)self transportType];
+    if (transportType >= 7)
     {
-      v4 = [NSString stringWithFormat:@"(unknown: %i)", v3];
+      v4 = [NSString stringWithFormat:@"(unknown: %i)", transportType];
     }
 
     else
     {
-      v4 = *(&off_10003D940 + v3);
+      v4 = *(&off_10003D940 + transportType);
     }
   }
 

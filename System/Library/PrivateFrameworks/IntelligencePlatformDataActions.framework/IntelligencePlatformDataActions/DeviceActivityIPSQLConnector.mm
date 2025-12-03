@@ -1,6 +1,6 @@
 @interface DeviceActivityIPSQLConnector
 + (BMSQLSchema)schema;
-- (void)vtabMetadataWithDatabase:(id)a3;
+- (void)vtabMetadataWithDatabase:(id)database;
 @end
 
 @implementation DeviceActivityIPSQLConnector
@@ -12,9 +12,9 @@
   return v2;
 }
 
-- (void)vtabMetadataWithDatabase:(id)a3
+- (void)vtabMetadataWithDatabase:(id)database
 {
-  v3 = a3;
+  databaseCopy = database;
 
   v4 = sub_254FD5E84();
 

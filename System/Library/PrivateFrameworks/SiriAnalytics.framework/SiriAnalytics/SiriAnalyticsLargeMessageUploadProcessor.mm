@@ -1,19 +1,19 @@
 @interface SiriAnalyticsLargeMessageUploadProcessor
-- (void)processWithUploadEvent:(DUSchemaDUEvent *)a3 requestIdentifier:(NSUUID *)a4 completionHandler:(id)a5;
+- (void)processWithUploadEvent:(DUSchemaDUEvent *)event requestIdentifier:(NSUUID *)identifier completionHandler:(id)handler;
 @end
 
 @implementation SiriAnalyticsLargeMessageUploadProcessor
 
-- (void)processWithUploadEvent:(DUSchemaDUEvent *)a3 requestIdentifier:(NSUUID *)a4 completionHandler:(id)a5
+- (void)processWithUploadEvent:(DUSchemaDUEvent *)event requestIdentifier:(NSUUID *)identifier completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
-  v9[2] = a3;
-  v9[3] = a4;
+  v9[2] = event;
+  v9[3] = identifier;
   v9[4] = v8;
   v9[5] = self;
-  v10 = a3;
-  v11 = a4;
+  eventCopy = event;
+  identifierCopy = identifier;
 
   sub_1D9905654(&unk_1D99324F8, v9);
 }

@@ -1,18 +1,18 @@
 @interface RestoreFromComputerController
 - (RestoreFromComputerController)init;
-- (void)_setHeaderTitle:(id)a3 animated:(BOOL)a4;
-- (void)_setText:(id)a3;
-- (void)_updateHeaderForConnectedToComputer:(BOOL)a3 animated:(BOOL)a4;
+- (void)_setHeaderTitle:(id)title animated:(BOOL)animated;
+- (void)_setText:(id)text;
+- (void)_updateHeaderForConnectedToComputer:(BOOL)computer animated:(BOOL)animated;
 - (void)_updateImageViewHeight;
 - (void)_updateImageViewPadding;
-- (void)connection:(id)a3 updatedProgress:(id)a4;
-- (void)connectionWasInterrupted:(id)a3;
+- (void)connection:(id)connection updatedProgress:(id)progress;
+- (void)connectionWasInterrupted:(id)interrupted;
 - (void)dealloc;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation RestoreFromComputerController
@@ -22,12 +22,12 @@
   location = self;
   v15 = a2;
   v2 = objc_alloc_init(BuddyFeatureFlags);
-  v3 = [v2 isSolariumEnabled];
+  isSolariumEnabled = [v2 isSolariumEnabled];
 
-  v14 = v3 & 1;
+  v14 = isSolariumEnabled & 1;
   v4 = location;
   v5 = +[NSBundle mainBundle];
-  if (v3)
+  if (isSolariumEnabled)
   {
     v6 = [(NSBundle *)v5 localizedStringForKey:@"CONNECT_TO_COMPUTER" value:&stru_10032F900 table:@"Localizable"];
     location = 0;
@@ -64,22 +64,22 @@
 
 - (void)dealloc
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v2 = [(RestoreFromComputerController *)self airTrafficConnection];
-  [(ATConnection *)v2 unregisterForStatus];
+  airTrafficConnection = [(RestoreFromComputerController *)self airTrafficConnection];
+  [(ATConnection *)airTrafficConnection unregisterForStatus];
 
-  v3 = [(RestoreFromComputerController *)v6 airTrafficConnection];
-  [(ATConnection *)v3 setDelegate:0];
+  airTrafficConnection2 = [(RestoreFromComputerController *)selfCopy airTrafficConnection];
+  [(ATConnection *)airTrafficConnection2 setDelegate:0];
 
-  v4.receiver = v6;
+  v4.receiver = selfCopy;
   v4.super_class = RestoreFromComputerController;
   [(RestoreFromComputerController *)&v4 dealloc];
 }
 
 - (void)viewDidLoad
 {
-  v31 = self;
+  selfCopy = self;
   v30 = a2;
   v29.receiver = self;
   v29.super_class = RestoreFromComputerController;
@@ -90,154 +90,154 @@
 
   [location setContentMode:1];
   [location setTranslatesAutoresizingMaskIntoConstraints:0];
-  v4 = [(RestoreFromComputerController *)v31 contentView];
-  [v4 addSubview:location];
+  contentView = [(RestoreFromComputerController *)selfCopy contentView];
+  [contentView addSubview:location];
 
-  v5 = [location topAnchor];
-  v6 = [(RestoreFromComputerController *)v31 contentView];
-  v7 = [v6 topAnchor];
-  v8 = [v5 constraintEqualToAnchor:v7];
-  [(RestoreFromComputerController *)v31 setImageViewTopConstraint:v8];
+  topAnchor = [location topAnchor];
+  contentView2 = [(RestoreFromComputerController *)selfCopy contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v8 = [topAnchor constraintEqualToAnchor:topAnchor2];
+  [(RestoreFromComputerController *)selfCopy setImageViewTopConstraint:v8];
 
-  v9 = [location heightAnchor];
-  v10 = [v9 constraintEqualToConstant:0.0];
-  [(RestoreFromComputerController *)v31 setImageViewHeightConstraint:v10];
+  heightAnchor = [location heightAnchor];
+  v10 = [heightAnchor constraintEqualToConstant:0.0];
+  [(RestoreFromComputerController *)selfCopy setImageViewHeightConstraint:v10];
 
-  v27 = [(RestoreFromComputerController *)v31 contentView];
-  v26 = [v27 trailingAnchor];
-  v25 = [location trailingAnchor];
-  v24 = [v26 constraintEqualToAnchor:?];
+  contentView3 = [(RestoreFromComputerController *)selfCopy contentView];
+  trailingAnchor = [contentView3 trailingAnchor];
+  trailingAnchor2 = [location trailingAnchor];
+  v24 = [trailingAnchor constraintEqualToAnchor:?];
   v32[0] = v24;
-  v23 = [(RestoreFromComputerController *)v31 contentView];
-  v11 = [v23 bottomAnchor];
-  v12 = [location bottomAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  contentView4 = [(RestoreFromComputerController *)selfCopy contentView];
+  bottomAnchor = [contentView4 bottomAnchor];
+  bottomAnchor2 = [location bottomAnchor];
+  v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v32[1] = v13;
-  v14 = [(RestoreFromComputerController *)v31 contentView];
-  v15 = [v14 leadingAnchor];
-  v16 = [location leadingAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  contentView5 = [(RestoreFromComputerController *)selfCopy contentView];
+  leadingAnchor = [contentView5 leadingAnchor];
+  leadingAnchor2 = [location leadingAnchor];
+  v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v32[2] = v17;
-  v18 = [(RestoreFromComputerController *)v31 imageViewTopConstraint];
-  v32[3] = v18;
-  v19 = [(RestoreFromComputerController *)v31 imageViewHeightConstraint];
-  v32[4] = v19;
+  imageViewTopConstraint = [(RestoreFromComputerController *)selfCopy imageViewTopConstraint];
+  v32[3] = imageViewTopConstraint;
+  imageViewHeightConstraint = [(RestoreFromComputerController *)selfCopy imageViewHeightConstraint];
+  v32[4] = imageViewHeightConstraint;
   v20 = [NSArray arrayWithObjects:v32 count:5];
   [NSLayoutConstraint activateConstraints:v20];
 
-  [(RestoreFromComputerController *)v31 _updateImageViewHeight];
-  [(RestoreFromComputerController *)v31 _updateImageViewPadding];
-  [(RestoreFromComputerController *)v31 _updateHeaderForConnectedToComputer:0 animated:0];
-  v21 = [(RestoreFromComputerController *)v31 headerView];
-  [v21 setAlpha:0.0];
+  [(RestoreFromComputerController *)selfCopy _updateImageViewHeight];
+  [(RestoreFromComputerController *)selfCopy _updateImageViewPadding];
+  [(RestoreFromComputerController *)selfCopy _updateHeaderForConnectedToComputer:0 animated:0];
+  headerView = [(RestoreFromComputerController *)selfCopy headerView];
+  [headerView setAlpha:0.0];
 
-  v22 = [(RestoreFromComputerController *)v31 contentView];
-  [v22 setAlpha:0.0];
+  contentView6 = [(RestoreFromComputerController *)selfCopy contentView];
+  [contentView6 setAlpha:0.0];
 
   objc_storeStrong(&location, 0);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v18 = self;
+  selfCopy = self;
   v17 = a2;
-  v16 = a3;
+  appearCopy = appear;
   v10 = _NSConcreteStackBlock;
   v11 = -1073741824;
   v12 = 0;
   v13 = sub_100103644;
   v14 = &unk_10032B0D0;
-  v15 = self;
+  selfCopy2 = self;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_100103670;
   v8 = &unk_10032B2E0;
-  v9 = v18;
+  v9 = selfCopy;
   [UIView animateWithDuration:&v10 animations:&v4 completion:0.5];
-  v3.receiver = v18;
+  v3.receiver = selfCopy;
   v3.super_class = RestoreFromComputerController;
-  [(RestoreFromComputerController *)&v3 viewDidAppear:v16];
+  [(RestoreFromComputerController *)&v3 viewDidAppear:appearCopy];
   objc_storeStrong(&v9, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&selfCopy2, 0);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  disappearCopy = disappear;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1001038A4;
   v8 = &unk_10032B0D0;
-  v9 = self;
+  selfCopy2 = self;
   [UIView animateWithDuration:&v4 animations:0.25];
-  v3.receiver = v12;
+  v3.receiver = selfCopy;
   v3.super_class = RestoreFromComputerController;
-  [(RestoreFromComputerController *)&v3 viewWillDisappear:v10];
-  objc_storeStrong(&v9, 0);
+  [(RestoreFromComputerController *)&v3 viewWillDisappear:disappearCopy];
+  objc_storeStrong(&selfCopy2, 0);
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = RestoreFromComputerController;
   [(RestoreFromComputerController *)&v2 viewDidLayoutSubviews];
-  [(RestoreFromComputerController *)v4 _updateImageViewHeight];
-  [(RestoreFromComputerController *)v4 _updateImageViewPadding];
+  [(RestoreFromComputerController *)selfCopy _updateImageViewHeight];
+  [(RestoreFromComputerController *)selfCopy _updateImageViewPadding];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, change);
+  v3.receiver = selfCopy;
   v3.super_class = RestoreFromComputerController;
   [(RestoreFromComputerController *)&v3 traitCollectionDidChange:location[0]];
-  [(RestoreFromComputerController *)v5 _updateImageViewPadding];
+  [(RestoreFromComputerController *)selfCopy _updateImageViewPadding];
   objc_storeStrong(location, 0);
 }
 
 - (void)_updateImageViewHeight
 {
-  v2 = [(RestoreFromComputerController *)self navigationController];
-  v3 = [v2 view];
-  [v3 frame];
+  navigationController = [(RestoreFromComputerController *)self navigationController];
+  view = [navigationController view];
+  [view frame];
   v4 = CGRectGetHeight(v7) * 0.55;
 
-  v5 = [(RestoreFromComputerController *)self imageViewHeightConstraint];
-  [(NSLayoutConstraint *)v5 setConstant:v4];
+  imageViewHeightConstraint = [(RestoreFromComputerController *)self imageViewHeightConstraint];
+  [(NSLayoutConstraint *)imageViewHeightConstraint setConstant:v4];
 }
 
 - (void)_updateImageViewPadding
 {
-  v2 = [(RestoreFromComputerController *)self view];
-  v3 = [(RestoreFromComputerController *)self contentView];
-  [v3 frame];
+  view = [(RestoreFromComputerController *)self view];
+  contentView = [(RestoreFromComputerController *)self contentView];
+  [contentView frame];
   v24 = v4;
   v23 = v5;
   v26 = v6;
   v25 = v7;
-  v8 = [(RestoreFromComputerController *)self scrollView];
-  [v2 convertRect:v8 fromView:{v23, v24, v25, v26}];
+  scrollView = [(RestoreFromComputerController *)self scrollView];
+  [view convertRect:scrollView fromView:{v23, v24, v25, v26}];
   v27.origin.y = v9;
   v27.origin.x = v10;
   v27.size.height = v11;
   v27.size.width = v12;
 
-  v13 = [(RestoreFromComputerController *)self imageViewHeightConstraint];
-  [(NSLayoutConstraint *)v13 constant];
+  imageViewHeightConstraint = [(RestoreFromComputerController *)self imageViewHeightConstraint];
+  [(NSLayoutConstraint *)imageViewHeightConstraint constant];
   v15 = v14;
 
   v22 = v15;
-  v16 = [(RestoreFromComputerController *)self view];
-  [v16 frame];
+  view2 = [(RestoreFromComputerController *)self view];
+  [view2 frame];
   rect = v29;
   MaxY = CGRectGetMaxY(v29);
   v18 = MaxY - CGRectGetMinY(v27) - v22;
@@ -245,21 +245,21 @@
   v19 = [(RestoreFromComputerController *)self scrollView:v18];
   [v19 setScrollEnabled:v18 < 0.0];
 
-  v20 = [(RestoreFromComputerController *)self imageViewTopConstraint];
+  imageViewTopConstraint = [(RestoreFromComputerController *)self imageViewTopConstraint];
   if (v18 <= 0.0)
   {
-    [(NSLayoutConstraint *)v20 setConstant:0.0];
+    [(NSLayoutConstraint *)imageViewTopConstraint setConstant:0.0];
   }
 
   else
   {
-    [(NSLayoutConstraint *)v20 setConstant:v18];
+    [(NSLayoutConstraint *)imageViewTopConstraint setConstant:v18];
   }
 }
 
-- (void)_updateHeaderForConnectedToComputer:(BOOL)a3 animated:(BOOL)a4
+- (void)_updateHeaderForConnectedToComputer:(BOOL)computer animated:(BOOL)animated
 {
-  if (a3)
+  if (computer)
   {
     v4 = +[NSBundle mainBundle];
     v5 = [(NSBundle *)v4 localizedStringForKey:@"CONNECTED_TO_COMPUTER" value:&stru_10032F900 table:@"Localizable"];
@@ -271,18 +271,18 @@
     v5 = [(NSBundle *)v4 localizedStringForKey:@"CONNECT_TO_COMPUTER" value:&stru_10032F900 table:@"Localizable"];
   }
 
-  [(RestoreFromComputerController *)self _setHeaderTitle:v5 animated:a4];
+  [(RestoreFromComputerController *)self _setHeaderTitle:v5 animated:animated];
 }
 
-- (void)_setHeaderTitle:(id)a3 animated:(BOOL)a4
+- (void)_setHeaderTitle:(id)title animated:(BOOL)animated
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v21 = a4;
-  v5 = [(RestoreFromComputerController *)v23 headerTitle];
-  v6 = [(NSString *)v5 isEqualToString:location[0]];
+  objc_storeStrong(location, title);
+  animatedCopy = animated;
+  headerTitle = [(RestoreFromComputerController *)selfCopy headerTitle];
+  v6 = [(NSString *)headerTitle isEqualToString:location[0]];
 
   if (v6)
   {
@@ -291,21 +291,21 @@
 
   else
   {
-    [(RestoreFromComputerController *)v23 setHeaderTitle:location[0]];
-    if (v21)
+    [(RestoreFromComputerController *)selfCopy setHeaderTitle:location[0]];
+    if (animatedCopy)
     {
       v14 = _NSConcreteStackBlock;
       v15 = -1073741824;
       v16 = 0;
       v17 = sub_100103FE0;
       v18 = &unk_10032B0D0;
-      v19 = v23;
+      v19 = selfCopy;
       v7 = _NSConcreteStackBlock;
       v8 = -1073741824;
       v9 = 0;
       v10 = sub_100104034;
       v11 = &unk_10032AEF0;
-      v12 = v23;
+      v12 = selfCopy;
       v13 = location[0];
       [UIView animateWithDuration:&v14 animations:&v7 completion:0.5];
       objc_storeStrong(&v13, 0);
@@ -315,7 +315,7 @@
 
     else
     {
-      [(RestoreFromComputerController *)v23 _setText:location[0]];
+      [(RestoreFromComputerController *)selfCopy _setText:location[0]];
     }
 
     v20 = 0;
@@ -324,40 +324,40 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_setText:(id)a3
+- (void)_setText:(id)text
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(RestoreFromComputerController *)v7 featureFlags];
-  v4 = [(BuddyFeatureFlags *)v3 isSolariumEnabled];
+  objc_storeStrong(location, text);
+  featureFlags = [(RestoreFromComputerController *)selfCopy featureFlags];
+  isSolariumEnabled = [(BuddyFeatureFlags *)featureFlags isSolariumEnabled];
 
-  v5 = [(RestoreFromComputerController *)v7 headerView];
-  if (v4)
+  headerView = [(RestoreFromComputerController *)selfCopy headerView];
+  if (isSolariumEnabled)
   {
-    [v5 setTitle:&stru_10032F900];
+    [headerView setTitle:&stru_10032F900];
 
-    v5 = [(RestoreFromComputerController *)v7 headerView];
-    [v5 setDetailText:location[0]];
+    headerView = [(RestoreFromComputerController *)selfCopy headerView];
+    [headerView setDetailText:location[0]];
   }
 
   else
   {
-    [v5 setTitle:location[0]];
+    [headerView setTitle:location[0]];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)connection:(id)a3 updatedProgress:(id)a4
+- (void)connection:(id)connection updatedProgress:(id)progress
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, connection);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, progress);
   v5 = [v14 objectForKey:@"ConnectedLibraries"];
   v6 = [v5 count];
 
@@ -368,7 +368,7 @@
   v10 = 0;
   v11 = sub_1001043D4;
   v12 = &unk_10032B718;
-  v13[0] = v16;
+  v13[0] = selfCopy;
   v13[1] = v6;
   dispatch_async(v7, &block);
 
@@ -377,19 +377,19 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)connectionWasInterrupted:(id)a3
+- (void)connectionWasInterrupted:(id)interrupted
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, interrupted);
   v3 = &_dispatch_main_q;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_100104504;
   v8 = &unk_10032B0D0;
-  v9 = v11;
+  v9 = selfCopy;
   dispatch_async(v3, &v4);
 
   objc_storeStrong(&v9, 0);

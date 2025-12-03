@@ -1,13 +1,13 @@
 @interface SSRBiometricMatch
 + (id)sharedInstance;
-- (BOOL)_getLastBiometricMatchEvent:(BOOL *)a3 atTime:(unint64_t *)a4;
+- (BOOL)_getLastBiometricMatchEvent:(BOOL *)event atTime:(unint64_t *)time;
 - (SSRBiometricMatch)init;
-- (unint64_t)getLastBiometricMatchForVoiceTriggerTimeStamp:(unint64_t)a3;
+- (unint64_t)getLastBiometricMatchForVoiceTriggerTimeStamp:(unint64_t)stamp;
 @end
 
 @implementation SSRBiometricMatch
 
-- (BOOL)_getLastBiometricMatchEvent:(BOOL *)a3 atTime:(unint64_t *)a4
+- (BOOL)_getLastBiometricMatchEvent:(BOOL *)event atTime:(unint64_t *)time
 {
   *&v22[13] = *MEMORY[0x277D85DE8];
   biometricDevice = self->_biometricDevice;
@@ -50,25 +50,25 @@ LABEL_15:
   if (v10)
   {
     v11 = v9;
-    v12 = [v7 result];
-    v13 = [v7 timeStamp];
+    result = [v7 result];
+    timeStamp = [v7 timeStamp];
     *buf = 136315650;
     v20 = "[SSRBiometricMatch _getLastBiometricMatchEvent:atTime:]";
     v21 = 1024;
-    *v22 = v12;
+    *v22 = result;
     v22[2] = 2048;
-    *&v22[3] = v13;
+    *&v22[3] = timeStamp;
     _os_log_impl(&dword_225E12000, v11, OS_LOG_TYPE_DEFAULT, "%s BiometricMatchEvent: result = %u, timeStamp = %llu", buf, 0x1Cu);
   }
 
-  if (a3)
+  if (event)
   {
-    *a3 = [v7 result];
+    *event = [v7 result];
   }
 
-  if (a4)
+  if (time)
   {
-    *a4 = [v7 timeStamp];
+    *time = [v7 timeStamp];
   }
 
   LOBYTE(v14) = 1;
@@ -77,10 +77,10 @@ LABEL_16:
   return v14;
 }
 
-- (unint64_t)getLastBiometricMatchForVoiceTriggerTimeStamp:(unint64_t)a3
+- (unint64_t)getLastBiometricMatchForVoiceTriggerTimeStamp:(unint64_t)stamp
 {
   v22 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!stamp)
   {
     v10 = *MEMORY[0x277D01970];
     if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_ERROR))
@@ -210,10 +210,10 @@ LABEL_13:
 
     v6 = v5;
     _Block_object_dispose(&v17, 8);
-    v7 = [v5 availableDevices];
-    v8 = [v7 firstObject];
+    availableDevices = [v5 availableDevices];
+    firstObject = [availableDevices firstObject];
     v15 = 0;
-    v9 = [v3 deviceWithDescriptor:v8 error:&v15];
+    v9 = [v3 deviceWithDescriptor:firstObject error:&v15];
     v10 = v15;
     biometricDevice = v2->_biometricDevice;
     v2->_biometricDevice = v9;

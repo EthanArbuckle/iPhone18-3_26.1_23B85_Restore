@@ -1,20 +1,20 @@
 @interface HMDHelper
-- (HMDHelper)initWithExternalProtocol:(id)a3;
-- (id)hashedRouteIDForIdentifier:(id)a3;
+- (HMDHelper)initWithExternalProtocol:(id)protocol;
+- (id)hashedRouteIDForIdentifier:(id)identifier;
 @end
 
 @implementation HMDHelper
 
-- (id)hashedRouteIDForIdentifier:(id)a3
+- (id)hashedRouteIDForIdentifier:(id)identifier
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(HMDHelper *)self externalProtocol];
-    v6 = [v5 createAFSecurityConnection];
+    externalProtocol = [(HMDHelper *)self externalProtocol];
+    createAFSecurityConnection = [externalProtocol createAFSecurityConnection];
 
-    if (!v6)
+    if (!createAFSecurityConnection)
     {
       v18 = objc_autoreleasePoolPush();
       v19 = HMFGetOSLogHandle();
@@ -39,13 +39,13 @@
     v42 = __Block_byref_object_dispose__242490;
     v43 = 0;
     dispatch_group_enter(v7);
-    v8 = [v4 dataUsingEncoding:4];
+    v8 = [identifierCopy dataUsingEncoding:4];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __40__HMDHelper_hashedRouteIDForIdentifier___block_invoke;
     v31[3] = &unk_2786842D8;
     v34 = &v39;
-    v32 = v6;
+    v32 = createAFSecurityConnection;
     v9 = v7;
     v33 = v9;
     [v32 processData:v8 usingProcedure:1 completion:v31];
@@ -60,7 +60,7 @@
         *buf = 138543618;
         v36 = v13;
         v37 = 2112;
-        v38 = v4;
+        v38 = identifierCopy;
         _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_ERROR, "%{public}@Timed out encoding routeID %@", buf, 0x16u);
       }
     }
@@ -120,7 +120,7 @@ LABEL_15:
         *buf = 138543618;
         v36 = v27;
         v37 = 2112;
-        v38 = v4;
+        v38 = identifierCopy;
         _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_ERROR, "%{public}@Failed to encode routeID %@", buf, 0x16u);
       }
     }
@@ -179,16 +179,16 @@ void __40__HMDHelper_hashedRouteIDForIdentifier___block_invoke(uint64_t a1, void
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDHelper)initWithExternalProtocol:(id)a3
+- (HMDHelper)initWithExternalProtocol:(id)protocol
 {
-  v5 = a3;
+  protocolCopy = protocol;
   v9.receiver = self;
   v9.super_class = HMDHelper;
   v6 = [(HMDHelper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_externalProtocol, a3);
+    objc_storeStrong(&v6->_externalProtocol, protocol);
   }
 
   return v7;

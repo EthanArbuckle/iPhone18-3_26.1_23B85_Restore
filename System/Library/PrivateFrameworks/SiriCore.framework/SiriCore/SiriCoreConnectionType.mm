@@ -1,7 +1,7 @@
 @interface SiriCoreConnectionType
 - (BOOL)isEdge;
 - (BOOL)isWWAN;
-- (SiriCoreConnectionType)initWithTechnology:(int64_t)a3;
+- (SiriCoreConnectionType)initWithTechnology:(int64_t)technology;
 - (id)description;
 - (int64_t)diagnosticConnectionType;
 - (unint64_t)aggregatorConnectionType;
@@ -127,14 +127,14 @@ LABEL_14:
   return v6;
 }
 
-- (SiriCoreConnectionType)initWithTechnology:(int64_t)a3
+- (SiriCoreConnectionType)initWithTechnology:(int64_t)technology
 {
   v5.receiver = self;
   v5.super_class = SiriCoreConnectionType;
   result = [(SiriCoreConnectionType *)&v5 init];
   if (result)
   {
-    result->_technology = a3;
+    result->_technology = technology;
   }
 
   return result;

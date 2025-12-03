@@ -3,7 +3,7 @@
 + (NSArray)orderedProfileColorOptions;
 + (WBSNamedColorOption)defaultPersonalProfileColor;
 + (id)_availableSymbolImageNamesToAccessibilityLabels;
-+ (id)accessibilityLabelForSymbol:(id)a3;
++ (id)accessibilityLabelForSymbol:(id)symbol;
 @end
 
 @implementation WBSCoreProfilesConstants
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __53__WBSCoreProfilesConstants_availableSymbolImageNames__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (availableSymbolImageNames_onceToken != -1)
   {
     dispatch_once(&availableSymbolImageNames_onceToken, block);
@@ -240,15 +240,15 @@ void __53__WBSCoreProfilesConstants_availableSymbolImageNames__block_invoke(uint
   availableSymbolImageNames_orderedSymbolImageNames = v1;
 }
 
-+ (id)accessibilityLabelForSymbol:(id)a3
++ (id)accessibilityLabelForSymbol:(id)symbol
 {
-  v4 = a3;
-  v5 = [a1 _availableSymbolImageNamesToAccessibilityLabels];
-  v6 = [v5 objectForKey:v4];
+  symbolCopy = symbol;
+  _availableSymbolImageNamesToAccessibilityLabels = [self _availableSymbolImageNamesToAccessibilityLabels];
+  v6 = [_availableSymbolImageNamesToAccessibilityLabels objectForKey:symbolCopy];
 
-  v7 = [v6 string];
+  string = [v6 string];
 
-  return v7;
+  return string;
 }
 
 + (NSArray)orderedProfileColorOptions
@@ -339,8 +339,8 @@ void __54__WBSCoreProfilesConstants_orderedProfileColorOptions__block_invoke()
 
 + (WBSNamedColorOption)defaultPersonalProfileColor
 {
-  v2 = [a1 orderedProfileColorOptions];
-  v3 = [v2 objectAtIndexedSubscript:0];
+  orderedProfileColorOptions = [self orderedProfileColorOptions];
+  v3 = [orderedProfileColorOptions objectAtIndexedSubscript:0];
 
   return v3;
 }

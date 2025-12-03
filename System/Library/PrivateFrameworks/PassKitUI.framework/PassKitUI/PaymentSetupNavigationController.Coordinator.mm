@@ -1,14 +1,14 @@
 @interface PaymentSetupNavigationController.Coordinator
 - (_TtCV9PassKitUI32PaymentSetupNavigationController11Coordinator)init;
-- (void)paymentSetupDidFinish:(id)a3;
+- (void)paymentSetupDidFinish:(id)finish;
 @end
 
 @implementation PaymentSetupNavigationController.Coordinator
 
-- (void)paymentSetupDidFinish:(id)a3
+- (void)paymentSetupDidFinish:(id)finish
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtCV9PassKitUI32PaymentSetupNavigationController11Coordinator_setupFinishedAction);
-  v4 = self;
+  selfCopy = self;
   v3();
 }
 

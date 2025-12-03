@@ -1,7 +1,7 @@
 @interface HFNetworkRouterServiceItem
 + (NSSet)supportedServiceTypes;
-- (HFNetworkRouterServiceItem)initWithValueSource:(id)a3 service:(id)a4;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HFNetworkRouterServiceItem)initWithValueSource:(id)source service:(id)service;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HFNetworkRouterServiceItem
@@ -25,9 +25,9 @@
   return v7;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  if (a3)
+  if (options)
   {
     v4 = sub_20DD64DC4();
   }
@@ -37,17 +37,17 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   v6 = HFNetworkRouterServiceItem._subclass_update(options:)(v4);
 
   return v6;
 }
 
-- (HFNetworkRouterServiceItem)initWithValueSource:(id)a3 service:(id)a4
+- (HFNetworkRouterServiceItem)initWithValueSource:(id)source service:(id)service
 {
   v5.receiver = self;
   v5.super_class = HFNetworkRouterServiceItem;
-  return [(HFServiceItem *)&v5 initWithValueSource:a3 service:a4];
+  return [(HFServiceItem *)&v5 initWithValueSource:source service:service];
 }
 
 @end

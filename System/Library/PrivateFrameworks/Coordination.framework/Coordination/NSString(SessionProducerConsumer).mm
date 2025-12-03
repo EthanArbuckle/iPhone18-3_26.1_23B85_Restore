@@ -7,10 +7,10 @@
 
 - (id)_sessionProducerSubTopic
 {
-  if ([a1 hasPrefix:@"SessionProducer+"])
+  if ([self hasPrefix:@"SessionProducer+"])
   {
-    v2 = [a1 rangeOfString:@"SessionProducer+"];
-    v4 = [a1 substringFromIndex:v2 + v3];
+    v2 = [self rangeOfString:@"SessionProducer+"];
+    v4 = [self substringFromIndex:v2 + v3];
   }
 
   else
@@ -23,10 +23,10 @@
 
 - (id)_sessionConsumerSubTopic
 {
-  if ([a1 hasPrefix:@"SessionConsumer+"])
+  if ([self hasPrefix:@"SessionConsumer+"])
   {
-    v2 = [a1 rangeOfString:@"SessionConsumer+"];
-    v4 = [a1 substringFromIndex:v2 + v3];
+    v2 = [self rangeOfString:@"SessionConsumer+"];
+    v4 = [self substringFromIndex:v2 + v3];
   }
 
   else

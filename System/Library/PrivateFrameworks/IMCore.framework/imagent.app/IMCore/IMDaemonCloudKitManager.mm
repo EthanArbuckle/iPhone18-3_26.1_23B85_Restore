@@ -6,7 +6,7 @@
 - (void)_registerForMessageSyncing;
 - (void)_registerForMetricsLogging;
 - (void)_registerForTelemetrySyncing;
-- (void)fetchLatestSaltWithMessageContext:(id)a3;
+- (void)fetchLatestSaltWithMessageContext:(id)context;
 - (void)registerForCloudKitSyncing;
 - (void)uploadDailyAnalyticstoCloudKit;
 @end
@@ -58,9 +58,9 @@
 - (void)_registerForBackupSyncing
 {
   v2 = +[IMFeatureFlags sharedFeatureFlags];
-  v3 = [v2 isMessagesIniCloudVersion2];
+  isMessagesIniCloudVersion2 = [v2 isMessagesIniCloudVersion2];
 
-  if (v3)
+  if (isMessagesIniCloudVersion2)
   {
     v4 = +[IMDCKSyncController sharedInstance];
     [v4 registerCloudSyncDependencies];
@@ -99,9 +99,9 @@
 - (void)_registerForMessageSyncing
 {
   v3 = +[IMFeatureFlags sharedFeatureFlags];
-  v4 = [v3 isMessagesIniCloudVersion2];
+  isMessagesIniCloudVersion2 = [v3 isMessagesIniCloudVersion2];
 
-  if (v4)
+  if (isMessagesIniCloudVersion2)
   {
     v5 = +[IMDCKSyncController sharedInstance];
     [v5 registerCloudSyncDependencies];
@@ -152,7 +152,7 @@ LABEL_14:
   {
   }
 
-  v10 = [(IMDaemonCloudKitManager *)self _messageSyncingIntervalBagValue];
+  _messageSyncingIntervalBagValue = [(IMDaemonCloudKitManager *)self _messageSyncingIntervalBagValue];
   if (IMOSLoggingEnabled())
   {
     v11 = OSLogHandleForIMFoundationCategory();
@@ -161,7 +161,7 @@ LABEL_14:
       v12 = 136315394;
       v13 = "com.apple.messages.messageSyncing";
       v14 = 2048;
-      v15 = v10;
+      v15 = _messageSyncingIntervalBagValue;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Registering for message syncing using identifier %s interval %lld", &v12, 0x16u);
     }
   }
@@ -172,9 +172,9 @@ LABEL_14:
 - (void)_registerForTelemetrySyncing
 {
   v2 = +[IMFeatureFlags sharedFeatureFlags];
-  v3 = [v2 isMessagesIniCloudVersion2];
+  isMessagesIniCloudVersion2 = [v2 isMessagesIniCloudVersion2];
 
-  if (v3)
+  if (isMessagesIniCloudVersion2)
   {
     v4 = +[IMDCKSyncController sharedInstance];
     [v4 registerCloudSyncDependencies];
@@ -212,7 +212,7 @@ LABEL_14:
 
 - (void)_registerForAttachmentFileSizeUpdate
 {
-  v2 = [(IMDaemonCloudKitManager *)self _attachmentFileSizeUpdateIntervalBagValue];
+  _attachmentFileSizeUpdateIntervalBagValue = [(IMDaemonCloudKitManager *)self _attachmentFileSizeUpdateIntervalBagValue];
   if (IMOSLoggingEnabled())
   {
     v3 = OSLogHandleForIMFoundationCategory();
@@ -221,7 +221,7 @@ LABEL_14:
       *buf = 136315394;
       v5 = "com.apple.messages.attachmentFileSizeUpdate";
       v6 = 2048;
-      v7 = v2;
+      v7 = _attachmentFileSizeUpdateIntervalBagValue;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Registering for filesize update using identifier %s interval %lld", buf, 0x16u);
     }
   }
@@ -246,7 +246,7 @@ LABEL_14:
   IMRegisterSADAwareXPCActivity();
 }
 
-- (void)fetchLatestSaltWithMessageContext:(id)a3
+- (void)fetchLatestSaltWithMessageContext:(id)context
 {
   v3 = +[IMDCKRecordSaltManager sharedInstance];
   [v3 fetchLatestRecordKeyFromCKAndCreateIfKeyDoesNotExistWithCompletion:0];
@@ -265,10 +265,10 @@ LABEL_14:
   }
 
   v3 = +[IMDCKSyncController sharedInstance];
-  v4 = [v3 logCloudKitAnalytics];
+  logCloudKitAnalytics = [v3 logCloudKitAnalytics];
 
   v5 = IMOSLoggingEnabled();
-  if (v4)
+  if (logCloudKitAnalytics)
   {
     if (!v5)
     {

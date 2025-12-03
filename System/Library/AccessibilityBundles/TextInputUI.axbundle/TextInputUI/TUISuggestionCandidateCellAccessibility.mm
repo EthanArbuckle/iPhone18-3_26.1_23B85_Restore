@@ -8,9 +8,9 @@
 - (id)accessibilityLabel
 {
   v2 = [(TUISuggestionCandidateCellAccessibility *)self safeValueForKey:@"textLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (BOOL)isAccessibilityElement
@@ -20,8 +20,8 @@
     return 1;
   }
 
-  v4 = [(TUISuggestionCandidateCellAccessibility *)self accessibilityLabel];
-  v3 = [v4 length] != 0;
+  accessibilityLabel = [(TUISuggestionCandidateCellAccessibility *)self accessibilityLabel];
+  v3 = [accessibilityLabel length] != 0;
 
   return v3;
 }

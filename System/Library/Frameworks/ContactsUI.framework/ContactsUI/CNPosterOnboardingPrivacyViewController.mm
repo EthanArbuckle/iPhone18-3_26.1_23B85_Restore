@@ -3,19 +3,19 @@
 - (void)onboardingPrivacyViewDidTapCancel;
 - (void)onboardingPrivacyViewDidTapContinue;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation CNPosterOnboardingPrivacyViewController
 
 - (void)onboardingPrivacyViewDidTapCancel
 {
-  v3 = [(CNPosterOnboardingPrivacyViewController *)self onCancel];
+  onCancel = [(CNPosterOnboardingPrivacyViewController *)self onCancel];
 
-  if (v3)
+  if (onCancel)
   {
-    v5 = [(CNPosterOnboardingPrivacyViewController *)self onCancel];
-    v5[2](v5, self);
+    onCancel2 = [(CNPosterOnboardingPrivacyViewController *)self onCancel];
+    onCancel2[2](onCancel2, self);
   }
 
   else
@@ -33,12 +33,12 @@
 
 - (void)onboardingPrivacyViewDidTapContinue
 {
-  v3 = [(CNPosterOnboardingPrivacyViewController *)self onContinue];
+  onContinue = [(CNPosterOnboardingPrivacyViewController *)self onContinue];
 
-  if (v3)
+  if (onContinue)
   {
-    v5 = [(CNPosterOnboardingPrivacyViewController *)self onContinue];
-    v5[2](v5, self);
+    onContinue2 = [(CNPosterOnboardingPrivacyViewController *)self onContinue];
+    onContinue2[2](onContinue2, self);
   }
 
   else
@@ -54,11 +54,11 @@
   }
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v3.receiver = self;
   v3.super_class = CNPosterOnboardingPrivacyViewController;
-  [(CNPosterOnboardingPrivacyViewController *)&v3 viewIsAppearing:a3];
+  [(CNPosterOnboardingPrivacyViewController *)&v3 viewIsAppearing:appearing];
 }
 
 - (void)viewDidLoad
@@ -67,47 +67,47 @@
   v29.receiver = self;
   v29.super_class = CNPosterOnboardingPrivacyViewController;
   [(CNPosterOnboardingPrivacyViewController *)&v29 viewDidLoad];
-  v3 = [(CNPosterOnboardingPrivacyViewController *)self navigationItem];
-  [v3 _setBackgroundHidden:1];
+  navigationItem = [(CNPosterOnboardingPrivacyViewController *)self navigationItem];
+  [navigationItem _setBackgroundHidden:1];
 
   v28 = [[_TtC10ContactsUI36CNPosterOnboardingPrivacyViewWrapper alloc] initWithDelegate:self];
-  v4 = [(CNPosterOnboardingPrivacyViewWrapper *)v28 hostingController];
-  v5 = [v4 view];
+  hostingController = [(CNPosterOnboardingPrivacyViewWrapper *)v28 hostingController];
+  view = [hostingController view];
 
-  v6 = [(CNPosterOnboardingPrivacyViewWrapper *)v28 model];
-  [(CNPosterOnboardingPrivacyViewController *)self setModel:v6];
+  model = [(CNPosterOnboardingPrivacyViewWrapper *)v28 model];
+  [(CNPosterOnboardingPrivacyViewController *)self setModel:model];
 
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v7 = [(CNPosterOnboardingPrivacyViewController *)self view];
-  [v7 addSubview:v5];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  view2 = [(CNPosterOnboardingPrivacyViewController *)self view];
+  [view2 addSubview:view];
 
   v20 = MEMORY[0x1E696ACD8];
-  v26 = [v5 leadingAnchor];
-  v27 = [(CNPosterOnboardingPrivacyViewController *)self view];
-  v25 = [v27 leadingAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25];
+  leadingAnchor = [view leadingAnchor];
+  view3 = [(CNPosterOnboardingPrivacyViewController *)self view];
+  leadingAnchor2 = [view3 leadingAnchor];
+  v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v30[0] = v24;
-  v22 = [v5 trailingAnchor];
-  v23 = [(CNPosterOnboardingPrivacyViewController *)self view];
-  v21 = [v23 trailingAnchor];
-  v19 = [v22 constraintEqualToAnchor:v21];
+  trailingAnchor = [view trailingAnchor];
+  view4 = [(CNPosterOnboardingPrivacyViewController *)self view];
+  trailingAnchor2 = [view4 trailingAnchor];
+  v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v30[1] = v19;
-  v18 = [v5 topAnchor];
-  v8 = [(CNPosterOnboardingPrivacyViewController *)self view];
-  v9 = [v8 topAnchor];
-  v10 = [v18 constraintEqualToAnchor:v9];
+  topAnchor = [view topAnchor];
+  view5 = [(CNPosterOnboardingPrivacyViewController *)self view];
+  topAnchor2 = [view5 topAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v30[2] = v10;
-  v11 = [v5 bottomAnchor];
-  v12 = [(CNPosterOnboardingPrivacyViewController *)self view];
-  v13 = [v12 bottomAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  bottomAnchor = [view bottomAnchor];
+  view6 = [(CNPosterOnboardingPrivacyViewController *)self view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v30[3] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:4];
   [v20 activateConstraints:v15];
 
-  v16 = [(CNPosterOnboardingPrivacyViewController *)self model];
-  v17 = [(CNIDSDeviceListService *)self->_service fetch];
-  [v16 setWithItems:v17];
+  model2 = [(CNPosterOnboardingPrivacyViewController *)self model];
+  fetch = [(CNIDSDeviceListService *)self->_service fetch];
+  [model2 setWithItems:fetch];
 }
 
 - (CNPosterOnboardingPrivacyViewController)init

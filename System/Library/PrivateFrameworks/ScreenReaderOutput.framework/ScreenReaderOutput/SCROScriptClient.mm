@@ -1,14 +1,14 @@
 @interface SCROScriptClient
 + (SCROScriptClient)sharedClient;
 - (BOOL)_isReady;
-- (BOOL)_runAsyncWithConnection:(int)a3 object:(id)a4;
-- (BOOL)runScriptFile:(id)a3;
-- (BOOL)runShortcutWithIdentifier:(id)a3;
+- (BOOL)_runAsyncWithConnection:(int)connection object:(id)object;
+- (BOOL)runScriptFile:(id)file;
+- (BOOL)runShortcutWithIdentifier:(id)identifier;
 - (SCROScriptClient)init;
 - (id)_lazyConnection;
 - (void)_killConnection;
 - (void)dealloc;
-- (void)handleCallback:(id)a3;
+- (void)handleCallback:(id)callback;
 @end
 
 @implementation SCROScriptClient
@@ -133,10 +133,10 @@ LABEL_6:
   return v5 < 0x31;
 }
 
-- (void)handleCallback:(id)a3
+- (void)handleCallback:(id)callback
 {
-  v8 = a3;
-  v4 = [v8 key];
+  callbackCopy = callback;
+  v4 = [callbackCopy key];
   if (v4 == 4)
   {
     v7 = 0;
@@ -145,10 +145,10 @@ LABEL_6:
 
   if (v4 == 3)
   {
-    v5 = [v8 object];
+    object = [callbackCopy object];
     connection = self->_connection;
 
-    if (v5 == connection)
+    if (object == connection)
     {
       v7 = 1;
 LABEL_6:
@@ -157,37 +157,37 @@ LABEL_6:
   }
 }
 
-- (BOOL)_runAsyncWithConnection:(int)a3 object:(id)a4
+- (BOOL)_runAsyncWithConnection:(int)connection object:(id)object
 {
-  v6 = a4;
-  v7 = [(SCROScriptClient *)self _lazyConnection];
-  if (v7)
+  objectCopy = object;
+  _lazyConnection = [(SCROScriptClient *)self _lazyConnection];
+  if (_lazyConnection)
   {
-    v8 = [(SCROScriptClient *)self _scriptDispatchQueue];
+    _scriptDispatchQueue = [(SCROScriptClient *)self _scriptDispatchQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __51__SCROScriptClient__runAsyncWithConnection_object___block_invoke;
     block[3] = &unk_279B74918;
-    v11 = v7;
-    v13 = a3;
-    v12 = v6;
-    dispatch_async(v8, block);
+    v11 = _lazyConnection;
+    connectionCopy = connection;
+    v12 = objectCopy;
+    dispatch_async(_scriptDispatchQueue, block);
   }
 
-  return v7 != 0;
+  return _lazyConnection != 0;
 }
 
-- (BOOL)runScriptFile:(id)a3
+- (BOOL)runScriptFile:(id)file
 {
-  v5 = a3;
-  if (!v5)
+  fileCopy = file;
+  if (!fileCopy)
   {
     [(SCROScriptClient *)a2 runScriptFile:?];
   }
 
-  if ([v5 length])
+  if ([fileCopy length])
   {
-    v6 = [(SCROScriptClient *)self _runAsyncWithConnection:105 object:v5];
+    v6 = [(SCROScriptClient *)self _runAsyncWithConnection:105 object:fileCopy];
   }
 
   else
@@ -198,17 +198,17 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)runShortcutWithIdentifier:(id)a3
+- (BOOL)runShortcutWithIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [(SCROScriptClient *)a2 runShortcutWithIdentifier:?];
   }
 
-  if ([v5 length])
+  if ([identifierCopy length])
   {
-    v6 = [(SCROScriptClient *)self _runAsyncWithConnection:106 object:v5];
+    v6 = [(SCROScriptClient *)self _runAsyncWithConnection:106 object:identifierCopy];
   }
 
   else

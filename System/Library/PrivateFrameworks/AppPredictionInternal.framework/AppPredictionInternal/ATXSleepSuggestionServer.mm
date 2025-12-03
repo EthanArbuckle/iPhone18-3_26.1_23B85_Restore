@@ -1,11 +1,11 @@
 @interface ATXSleepSuggestionServer
 + (id)sharedInstance;
 - (ATXSleepSuggestionServer)init;
-- (ATXSleepSuggestionServer)initWithEvents:(id)a3;
-- (BOOL)isSleepScheduleBetweenTheBoundariesWithBedtime:(id)a3 wakeupTime:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (ATXSleepSuggestionServer)initWithEvents:(id)events;
+- (BOOL)isSleepScheduleBetweenTheBoundariesWithBedtime:(id)bedtime wakeupTime:(id)time;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (id)queryEvents;
-- (void)predictedSleepSuggestionWithCompletionHandler:(id)a3;
+- (void)predictedSleepSuggestionWithCompletionHandler:(id)handler;
 @end
 
 @implementation ATXSleepSuggestionServer
@@ -57,34 +57,34 @@ void __42__ATXSleepSuggestionServer_sharedInstance__block_invoke()
   return v2;
 }
 
-- (ATXSleepSuggestionServer)initWithEvents:(id)a3
+- (ATXSleepSuggestionServer)initWithEvents:(id)events
 {
-  v5 = a3;
+  eventsCopy = events;
   v6 = [(ATXSleepSuggestionServer *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_events, a3);
+    objc_storeStrong(&v6->_events, events);
   }
 
   return v7;
 }
 
-- (void)predictedSleepSuggestionWithCompletionHandler:(id)a3
+- (void)predictedSleepSuggestionWithCompletionHandler:(id)handler
 {
   v86[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if (!self->_events)
   {
-    v5 = [(ATXSleepSuggestionServer *)self queryEvents];
+    queryEvents = [(ATXSleepSuggestionServer *)self queryEvents];
     events = self->_events;
-    self->_events = v5;
+    self->_events = queryEvents;
   }
 
-  v7 = [MEMORY[0x277CBEA80] currentCalendar];
-  v8 = [MEMORY[0x277CBEBB0] defaultTimeZone];
-  v73 = v7;
-  [v7 setTimeZone:v8];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  defaultTimeZone = [MEMORY[0x277CBEBB0] defaultTimeZone];
+  v73 = currentCalendar;
+  [currentCalendar setTimeZone:defaultTimeZone];
 
   v9 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v9 setDateFormat:@"HH:mm"];
@@ -93,8 +93,8 @@ void __42__ATXSleepSuggestionServer_sharedInstance__block_invoke()
   v12 = self->_events;
   if (v12 && [(NSArray *)v12 count])
   {
-    v71 = v4;
-    v72 = self;
+    v71 = handlerCopy;
+    selfCopy = self;
     v76 = 0u;
     v77 = 0u;
     v74 = 0u;
@@ -115,8 +115,8 @@ void __42__ATXSleepSuggestionServer_sharedInstance__block_invoke()
           }
 
           v18 = *(*(&v74 + 1) + 8 * i);
-          v19 = [v18 sleepStartTime];
-          v20 = [v9 stringFromDate:v19];
+          sleepStartTime = [v18 sleepStartTime];
+          v20 = [v9 stringFromDate:sleepStartTime];
           [v10 addObject:v20];
 
           v21 = __atxlog_handle_sleep_schedule();
@@ -125,8 +125,8 @@ void __42__ATXSleepSuggestionServer_sharedInstance__block_invoke()
             [(ATXSleepSuggestionServer *)v83 predictedSleepSuggestionWithCompletionHandler:v18];
           }
 
-          v22 = [v18 wakeUpTime];
-          v23 = [v9 stringFromDate:v22];
+          wakeUpTime = [v18 wakeUpTime];
+          v23 = [v9 stringFromDate:wakeUpTime];
           [v11 addObject:v23];
 
           v24 = __atxlog_handle_sleep_schedule();
@@ -162,31 +162,31 @@ void __42__ATXSleepSuggestionServer_sharedInstance__block_invoke()
       v32 = objc_alloc_init(MEMORY[0x277CBEAB8]);
       v41 = [v11 objectAtIndexedSubscript:{objc_msgSend(v11, "count") >> 1}];
       v42 = [v41 componentsSeparatedByString:@":"];
-      v43 = [v42 firstObject];
-      [v32 setHour:{objc_msgSend(v43, "integerValue")}];
+      firstObject = [v42 firstObject];
+      [v32 setHour:{objc_msgSend(firstObject, "integerValue")}];
 
       v70 = v41;
       v44 = [v41 componentsSeparatedByString:@":"];
-      v45 = [v44 lastObject];
-      [v32 setMinute:{objc_msgSend(v45, "integerValue")}];
+      lastObject = [v44 lastObject];
+      [v32 setMinute:{objc_msgSend(lastObject, "integerValue")}];
 
       [v32 setCalendar:v73];
-      v46 = [v73 timeZone];
-      [v32 setTimeZone:v46];
+      timeZone = [v73 timeZone];
+      [v32 setTimeZone:timeZone];
 
       v47 = objc_alloc_init(MEMORY[0x277CBEAB8]);
       v48 = [v10 objectAtIndexedSubscript:{objc_msgSend(v10, "count") >> 1}];
       v49 = [v48 componentsSeparatedByString:@":"];
-      v50 = [v49 firstObject];
-      [v47 setHour:{objc_msgSend(v50, "integerValue")}];
+      firstObject2 = [v49 firstObject];
+      [v47 setHour:{objc_msgSend(firstObject2, "integerValue")}];
 
       v51 = [v48 componentsSeparatedByString:@":"];
-      v52 = [v51 lastObject];
-      [v47 setMinute:{objc_msgSend(v52, "integerValue")}];
+      lastObject2 = [v51 lastObject];
+      [v47 setMinute:{objc_msgSend(lastObject2, "integerValue")}];
 
       [v47 setCalendar:v73];
-      v53 = [v73 timeZone];
-      [v47 setTimeZone:v53];
+      timeZone2 = [v73 timeZone];
+      [v47 setTimeZone:timeZone2];
 
       v54 = __atxlog_handle_sleep_schedule();
       if (os_log_type_enabled(v54, OS_LOG_TYPE_DEBUG))
@@ -194,7 +194,7 @@ void __42__ATXSleepSuggestionServer_sharedInstance__block_invoke()
         [(ATXSleepSuggestionServer *)v47 predictedSleepSuggestionWithCompletionHandler:v32, v54];
       }
 
-      if ([(ATXSleepSuggestionServer *)v72 isSleepScheduleBetweenTheBoundariesWithBedtime:v47 wakeupTime:v32])
+      if ([(ATXSleepSuggestionServer *)selfCopy isSleepScheduleBetweenTheBoundariesWithBedtime:v47 wakeupTime:v32])
       {
         v67 = [objc_alloc(MEMORY[0x277CEB838]) initWithBedtimeComponents:v47 wakeupComponents:v32 weekdays:127];
         v55 = [objc_alloc(MEMORY[0x277CEB828]) initWithOccurence:v67];
@@ -202,13 +202,13 @@ void __42__ATXSleepSuggestionServer_sharedInstance__block_invoke()
         v57 = [v56 initWithSuiteName:*MEMORY[0x277CEBD00]];
         v68 = v48;
         v58 = 3600 * [v47 hour];
-        v59 = [v47 minute];
-        [v57 setInteger:v58 + 60 * v59 forKey:*MEMORY[0x277CEBDD8]];
+        minute = [v47 minute];
+        [v57 setInteger:v58 + 60 * minute forKey:*MEMORY[0x277CEBDD8]];
         v71[2](v71, v55, 0);
-        v60 = v72->_events;
-        v72->_events = 0;
+        v60 = selfCopy->_events;
+        selfCopy->_events = 0;
 
-        v4 = v71;
+        handlerCopy = v71;
         v61 = v67;
         v48 = v68;
       }
@@ -228,18 +228,18 @@ void __42__ATXSleepSuggestionServer_sharedInstance__block_invoke()
         v79 = @"Predicted schedule isn't between the boundaries";
         v65 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v79 forKeys:&v78 count:1];
         v66 = [v69 errorWithDomain:v63 code:v64 userInfo:v65];
-        v4 = v71;
+        handlerCopy = v71;
         (v71)[2](v71, 0, v66);
 
-        v61 = v72->_events;
-        v72->_events = 0;
+        v61 = selfCopy->_events;
+        selfCopy->_events = 0;
       }
     }
 
     else
     {
       v25 = __atxlog_handle_sleep_schedule();
-      v4 = v71;
+      handlerCopy = v71;
       v26 = v73;
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
@@ -255,8 +255,8 @@ void __42__ATXSleepSuggestionServer_sharedInstance__block_invoke()
       v31 = [v27 errorWithDomain:v28 code:v29 userInfo:v30];
       (v71)[2](v71, 0, v31);
 
-      v32 = v72->_events;
-      v72->_events = 0;
+      v32 = selfCopy->_events;
+      selfCopy->_events = 0;
     }
   }
 
@@ -275,9 +275,9 @@ void __42__ATXSleepSuggestionServer_sharedInstance__block_invoke()
     v86[0] = @"ATXSleepSuggestionServer: Failed to retrieve sleep events from ATXSleepStream";
     v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v86 forKeys:&v85 count:1];
     v37 = [v34 errorWithDomain:v35 code:v36 userInfo:v32];
-    v4[2](v4, 0, v37);
+    handlerCopy[2](handlerCopy, 0, v37);
 
-    v26 = v7;
+    v26 = currentCalendar;
   }
 
   v38 = *MEMORY[0x277D85DE8];
@@ -312,31 +312,31 @@ void __39__ATXSleepSuggestionServer_queryEvents__block_invoke(uint64_t a1, void 
   }
 }
 
-- (BOOL)isSleepScheduleBetweenTheBoundariesWithBedtime:(id)a3 wakeupTime:(id)a4
+- (BOOL)isSleepScheduleBetweenTheBoundariesWithBedtime:(id)bedtime wakeupTime:(id)time
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 hour];
-  v8 = [v6 minute];
+  timeCopy = time;
+  bedtimeCopy = bedtime;
+  hour = [bedtimeCopy hour];
+  minute = [bedtimeCopy minute];
 
-  v9 = v8 / 60.0 + v7;
-  v10 = [v5 hour];
-  v11 = [v5 minute];
+  v9 = minute / 60.0 + hour;
+  hour2 = [timeCopy hour];
+  minute2 = [timeCopy minute];
 
   v12 = [MEMORY[0x277D41C58] isTime:v9 betweenStartTime:19.9833333 endTime:11.0166667];
   if (v12)
   {
     v13 = MEMORY[0x277D41C58];
 
-    LOBYTE(v12) = [v13 isTime:v11 / 60.0 + v10 betweenStartTime:19.9833333 endTime:11.0166667];
+    LOBYTE(v12) = [v13 isTime:minute2 / 60.0 + hour2 betweenStartTime:19.9833333 endTime:11.0166667];
   }
 
   return v12;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = __atxlog_handle_sleep_schedule();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -344,16 +344,16 @@ void __39__ATXSleepSuggestionServer_queryEvents__block_invoke(uint64_t a1, void 
     _os_log_impl(&dword_2263AA000, v6, OS_LOG_TYPE_DEFAULT, "ATXSleepSuggestionServer: connection attempted", v12, 2u);
   }
 
-  v7 = [v5 valueForEntitlement:@"com.apple.proactive.sleepSchedule"];
+  v7 = [connectionCopy valueForEntitlement:@"com.apple.proactive.sleepSchedule"];
   if (v7 && (objc_opt_respondsToSelector() & 1) != 0 && ([v7 BOOLValue] & 1) != 0)
   {
     v8 = ATXSleepSuggestionInterface();
-    [v5 setExportedInterface:v8];
+    [connectionCopy setExportedInterface:v8];
 
-    [v5 setExportedObject:self];
-    [v5 setInterruptionHandler:&__block_literal_global_54_1];
-    [v5 setInvalidationHandler:&__block_literal_global_57];
-    [v5 resume];
+    [connectionCopy setExportedObject:self];
+    [connectionCopy setInterruptionHandler:&__block_literal_global_54_1];
+    [connectionCopy setInvalidationHandler:&__block_literal_global_57];
+    [connectionCopy resume];
     v9 = 1;
   }
 
@@ -362,7 +362,7 @@ void __39__ATXSleepSuggestionServer_queryEvents__block_invoke(uint64_t a1, void 
     v10 = __atxlog_handle_sleep_schedule();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [ATXSleepSuggestionServer listener:v5 shouldAcceptNewConnection:v10];
+      [ATXSleepSuggestionServer listener:connectionCopy shouldAcceptNewConnection:v10];
     }
 
     v9 = 0;

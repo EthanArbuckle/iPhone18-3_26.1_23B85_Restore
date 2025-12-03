@@ -1,16 +1,16 @@
 @interface RPNWActivityUtils
-+ (id)activityFromToken:(id)a3;
-+ (id)tokenForActivity:(id)a3;
-+ (id)updateOptions:(id)a3 withNWActivityMetrics:(id)a4;
-+ (void)failActivity:(id)a3 error:(id)a4;
++ (id)activityFromToken:(id)token;
++ (id)tokenForActivity:(id)activity;
++ (id)updateOptions:(id)options withNWActivityMetrics:(id)metrics;
++ (void)failActivity:(id)activity error:(id)error;
 @end
 
 @implementation RPNWActivityUtils
 
-+ (id)tokenForActivity:(id)a3
++ (id)tokenForActivity:(id)activity
 {
-  v3 = a3;
-  if (v3 && nw_activity_is_activated())
+  activityCopy = activity;
+  if (activityCopy && nw_activity_is_activated())
   {
     *uu = 0;
     v7 = 0;
@@ -30,30 +30,30 @@
   return v4;
 }
 
-+ (id)activityFromToken:(id)a3
++ (id)activityFromToken:(id)token
 {
-  v3 = a3;
-  if (a3)
+  tokenCopy = token;
+  if (token)
   {
     v5[0] = 0;
     v5[1] = 0;
-    [a3 getUUIDBytes:v5];
-    v3 = nw_activity_create_from_token();
+    [token getUUIDBytes:v5];
+    tokenCopy = nw_activity_create_from_token();
   }
 
-  return v3;
+  return tokenCopy;
 }
 
-+ (void)failActivity:(id)a3 error:(id)a4
++ (void)failActivity:(id)activity error:(id)error
 {
-  v7 = a4;
-  v5 = a3;
-  if (v7)
+  errorCopy = error;
+  activityCopy = activity;
+  if (errorCopy)
   {
-    v6 = [v7 domain];
-    [v6 UTF8String];
+    domain = [errorCopy domain];
+    [domain UTF8String];
 
-    [v7 code];
+    [errorCopy code];
     nw_activity_complete_with_reason_and_underlying_error_string();
   }
 
@@ -63,24 +63,24 @@
   }
 }
 
-+ (id)updateOptions:(id)a3 withNWActivityMetrics:(id)a4
++ (id)updateOptions:(id)options withNWActivityMetrics:(id)metrics
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  optionsCopy = options;
+  metricsCopy = metrics;
+  if (metricsCopy)
   {
-    v7 = [v5 mutableCopy];
+    v7 = [optionsCopy mutableCopy];
     if (!v7)
     {
       v7 = objc_alloc_init(NSMutableDictionary);
     }
 
-    [v7 setObject:v6 forKeyedSubscript:@"nwActivityMetrics"];
+    [v7 setObject:metricsCopy forKeyedSubscript:@"nwActivityMetrics"];
 
-    v5 = v7;
+    optionsCopy = v7;
   }
 
-  return v5;
+  return optionsCopy;
 }
 
 @end

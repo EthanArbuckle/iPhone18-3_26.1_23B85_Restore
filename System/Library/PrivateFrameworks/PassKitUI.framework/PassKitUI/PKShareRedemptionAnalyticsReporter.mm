@@ -1,28 +1,28 @@
 @interface PKShareRedemptionAnalyticsReporter
-- (PKShareRedemptionAnalyticsReporter)initWithSessionToken:(id)a3;
-- (void)_sendEventForPage:(unint64_t)a3 button:(unint64_t)a4 eventType:(id)a5 specifics:(id)a6;
-- (void)sendAuthenticationEventForSuccess:(BOOL)a3 specifics:(id)a4;
-- (void)sendEvent:(id)a3;
-- (void)sendEventForPage:(unint64_t)a3 error:(id)a4 specifics:(id)a5;
+- (PKShareRedemptionAnalyticsReporter)initWithSessionToken:(id)token;
+- (void)_sendEventForPage:(unint64_t)page button:(unint64_t)button eventType:(id)type specifics:(id)specifics;
+- (void)sendAuthenticationEventForSuccess:(BOOL)success specifics:(id)specifics;
+- (void)sendEvent:(id)event;
+- (void)sendEventForPage:(unint64_t)page error:(id)error specifics:(id)specifics;
 @end
 
 @implementation PKShareRedemptionAnalyticsReporter
 
-- (PKShareRedemptionAnalyticsReporter)initWithSessionToken:(id)a3
+- (PKShareRedemptionAnalyticsReporter)initWithSessionToken:(id)token
 {
   v4 = *MEMORY[0x1E69BB700];
   v6.receiver = self;
   v6.super_class = PKShareRedemptionAnalyticsReporter;
-  return [(PKSharingAnalyticsReporter *)&v6 initWithSubject:v4 sessionToken:a3 reuseExistingSession:0];
+  return [(PKSharingAnalyticsReporter *)&v6 initWithSubject:v4 sessionToken:token reuseExistingSession:0];
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v4 = a3;
-  v5 = [0 secureElementPass];
-  v6 = [v5 isIdentityPass];
+  eventCopy = event;
+  secureElementPass = [0 secureElementPass];
+  isIdentityPass = [secureElementPass isIdentityPass];
 
-  if (v6)
+  if (isIdentityPass)
   {
     v7 = @"identity";
   }
@@ -32,11 +32,11 @@
     v7 = @"access";
   }
 
-  [v4 setObject:v7 forKeyedSubscript:*MEMORY[0x1E69BACA8]];
-  v8 = [0 secureElementPass];
-  v9 = [v8 isIdentityPass];
+  [eventCopy setObject:v7 forKeyedSubscript:*MEMORY[0x1E69BACA8]];
+  secureElementPass2 = [0 secureElementPass];
+  isIdentityPass2 = [secureElementPass2 isIdentityPass];
 
-  if (v9)
+  if (isIdentityPass2)
   {
     v10 = @"identity";
   }
@@ -46,7 +46,7 @@
     v10 = @"access";
   }
 
-  [v4 setObject:v10 forKeyedSubscript:*MEMORY[0x1E69BAC90]];
+  [eventCopy setObject:v10 forKeyedSubscript:*MEMORY[0x1E69BAC90]];
   accessPassType = self->_accessPassType;
   if (accessPassType >= 7)
   {
@@ -58,17 +58,17 @@
     v12 = off_1E8012678[accessPassType];
   }
 
-  [v4 setObject:v12 forKeyedSubscript:*MEMORY[0x1E69BAC88]];
+  [eventCopy setObject:v12 forKeyedSubscript:*MEMORY[0x1E69BAC88]];
 
   v13.receiver = self;
   v13.super_class = PKShareRedemptionAnalyticsReporter;
-  [(PKSharingAnalyticsReporter *)&v13 sendEvent:v4];
+  [(PKSharingAnalyticsReporter *)&v13 sendEvent:eventCopy];
 }
 
-- (void)sendEventForPage:(unint64_t)a3 error:(id)a4 specifics:(id)a5
+- (void)sendEventForPage:(unint64_t)page error:(id)error specifics:(id)specifics
 {
-  v8 = a4;
-  v9 = [a5 mutableCopy];
+  errorCopy = error;
+  v9 = [specifics mutableCopy];
   v10 = v9;
   if (v9)
   {
@@ -82,16 +82,16 @@
 
   v13 = v11;
 
-  v12 = ErrorTypeFromError(v8);
+  v12 = ErrorTypeFromError(errorCopy);
 
   [v13 setObject:v12 forKeyedSubscript:*MEMORY[0x1E69BA678]];
-  [(PKShareRedemptionAnalyticsReporter *)self _sendEventForPage:a3 button:0 eventType:*MEMORY[0x1E69BA818] specifics:v13];
+  [(PKShareRedemptionAnalyticsReporter *)self _sendEventForPage:page button:0 eventType:*MEMORY[0x1E69BA818] specifics:v13];
 }
 
-- (void)sendAuthenticationEventForSuccess:(BOOL)a3 specifics:(id)a4
+- (void)sendAuthenticationEventForSuccess:(BOOL)success specifics:(id)specifics
 {
-  v4 = a3;
-  v6 = [a4 mutableCopy];
+  successCopy = success;
+  v6 = [specifics mutableCopy];
   v7 = v6;
   if (v6)
   {
@@ -105,7 +105,7 @@
 
   v10 = v8;
 
-  if (v4)
+  if (successCopy)
   {
     v9 = @"success";
   }
@@ -119,10 +119,10 @@
   [(PKShareRedemptionAnalyticsReporter *)self _sendEventForPage:1 button:0 eventType:*MEMORY[0x1E69BA760] specifics:v10];
 }
 
-- (void)_sendEventForPage:(unint64_t)a3 button:(unint64_t)a4 eventType:(id)a5 specifics:(id)a6
+- (void)_sendEventForPage:(unint64_t)page button:(unint64_t)button eventType:(id)type specifics:(id)specifics
 {
-  v10 = a5;
-  v11 = [a6 mutableCopy];
+  typeCopy = type;
+  v11 = [specifics mutableCopy];
   v12 = v11;
   if (v11)
   {
@@ -136,7 +136,7 @@
 
   v20 = v13;
 
-  [v20 setObject:v10 forKeyedSubscript:*MEMORY[0x1E69BA680]];
+  [v20 setObject:typeCopy forKeyedSubscript:*MEMORY[0x1E69BA680]];
   v14 = *MEMORY[0x1E69BABE8];
   v15 = [v20 objectForKeyedSubscript:*MEMORY[0x1E69BABE8]];
 
@@ -147,12 +147,12 @@
 
   else
   {
-    v16 = a3 > 2;
+    v16 = page > 2;
   }
 
   if (!v16)
   {
-    [v20 setObject:off_1E80126B0[a3] forKeyedSubscript:v14];
+    [v20 setObject:off_1E80126B0[page] forKeyedSubscript:v14];
   }
 
   v17 = *MEMORY[0x1E69BA440];
@@ -160,14 +160,14 @@
 
   if (!v18)
   {
-    if (a4 == 1)
+    if (button == 1)
     {
       v19 = MEMORY[0x1E69BA468];
     }
 
     else
     {
-      if (a4 != 2)
+      if (button != 2)
       {
         goto LABEL_15;
       }

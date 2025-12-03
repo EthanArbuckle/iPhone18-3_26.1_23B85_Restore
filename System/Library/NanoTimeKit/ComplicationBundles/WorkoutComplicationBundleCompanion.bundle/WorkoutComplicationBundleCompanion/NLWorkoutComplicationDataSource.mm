@@ -1,77 +1,77 @@
 @interface NLWorkoutComplicationDataSource
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4;
-+ (BOOL)acceptsComplicationType:(unint64_t)a3 forDevice:(id)a4;
-+ (BOOL)hasMigratedToWidgetForFamily:(int64_t)a3 device:(id)a4;
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device;
++ (BOOL)acceptsComplicationType:(unint64_t)type forDevice:(id)device;
++ (BOOL)hasMigratedToWidgetForFamily:(int64_t)family device:(id)device;
 - (BOOL)_hasActiveWorkout;
 - (BOOL)_hasPausedActiveWorkout;
-- (NLWorkoutComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5;
+- (NLWorkoutComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device;
 - (id)_animationImages;
 - (id)_makeAnimatedImageProvider;
 - (id)_noWorkoutsTemplate;
-- (id)_signatureTemplateWithFamily:(int64_t)a3 hasActiveWorkout:(BOOL)a4 hasPausedActiveWorkout:(BOOL)a5;
-- (id)_templateForActiveWorkoutInSwitcher:(BOOL)a3;
-- (id)_templateForWorkout:(id)a3 family:(int64_t)a4;
-- (id)_unknownTemplateForFamily:(int64_t)a3;
+- (id)_signatureTemplateWithFamily:(int64_t)family hasActiveWorkout:(BOOL)workout hasPausedActiveWorkout:(BOOL)activeWorkout;
+- (id)_templateForActiveWorkoutInSwitcher:(BOOL)switcher;
+- (id)_templateForWorkout:(id)workout family:(int64_t)family;
+- (id)_unknownTemplateForFamily:(int64_t)family;
 - (id)lockedTemplate;
 - (id)sampleTemplate;
 - (void)_handleDeviceLockChange;
 - (void)_invalidate;
-- (void)_stopObservingSynchronously:(BOOL)a3;
+- (void)_stopObservingSynchronously:(BOOL)synchronously;
 - (void)_updateActiveWorkoutState;
 - (void)dealloc;
-- (void)didUpdateWorkoutSnapshot:(id)a3;
-- (void)fetchWidgetMigrationForDescriptor:(id)a3 family:(int64_t)a4 completion:(id)a5;
-- (void)getCurrentTimelineEntryWithHandler:(id)a3;
-- (void)getLaunchURLForTimelineEntryDate:(id)a3 timeTravelDate:(id)a4 withHandler:(id)a5;
+- (void)didUpdateWorkoutSnapshot:(id)snapshot;
+- (void)fetchWidgetMigrationForDescriptor:(id)descriptor family:(int64_t)family completion:(id)completion;
+- (void)getCurrentTimelineEntryWithHandler:(id)handler;
+- (void)getLaunchURLForTimelineEntryDate:(id)date timeTravelDate:(id)travelDate withHandler:(id)handler;
 @end
 
 @implementation NLWorkoutComplicationDataSource
 
-- (NLWorkoutComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5
+- (NLWorkoutComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v23 = a4;
+  objc_storeStrong(location, complication);
+  familyCopy = family;
   v22 = 0;
-  objc_storeStrong(&v22, a5);
-  v5 = v25;
-  v25 = 0;
+  objc_storeStrong(&v22, device);
+  v5 = selfCopy;
+  selfCopy = 0;
   v21.receiver = v5;
   v21.super_class = NLWorkoutComplicationDataSource;
-  v25 = [(NLWorkoutComplicationDataSource *)&v21 initWithComplication:location[0] family:v23 forDevice:v22];
-  objc_storeStrong(&v25, v25);
-  if (v25)
+  selfCopy = [(NLWorkoutComplicationDataSource *)&v21 initWithComplication:location[0] family:familyCopy forDevice:v22];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    v25->_inUVPreview = CLKIsUVPreviewApp();
-    if (!v25->_inUVPreview)
+    selfCopy->_inUVPreview = CLKIsUVPreviewApp();
+    if (!selfCopy->_inUVPreview)
     {
       v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v6 = dispatch_queue_create("com.apple.nanolifestyle.workout.health-queue", v11);
-      healthQueue = v25->_healthQueue;
-      v25->_healthQueue = v6;
+      healthQueue = selfCopy->_healthQueue;
+      selfCopy->_healthQueue = v6;
 
-      queue = v25->_healthQueue;
+      queue = selfCopy->_healthQueue;
       v15 = _NSConcreteStackBlock;
       v16 = -1073741824;
       v17 = 0;
       v18 = __73__NLWorkoutComplicationDataSource_initWithComplication_family_forDevice___block_invoke;
       v19 = &unk_103C0;
-      v20 = v25;
+      v20 = selfCopy;
       dispatch_async(queue, &v15);
-      v8 = [v22 isLocked];
-      v25->_deviceIsLocked = v8;
-      [(NLWorkoutComplicationDataSource *)v25 _updateActiveWorkoutState];
-      [(NLWorkoutComplicationDataSource *)v25 _startObserving];
+      isLocked = [v22 isLocked];
+      selfCopy->_deviceIsLocked = isLocked;
+      [(NLWorkoutComplicationDataSource *)selfCopy _updateActiveWorkoutState];
+      [(NLWorkoutComplicationDataSource *)selfCopy _startObserving];
       objc_storeStrong(&v20, 0);
     }
   }
 
-  v10 = v25;
+  v10 = selfCopy;
   objc_storeStrong(&v22, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v25, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v10;
 }
 
@@ -103,40 +103,40 @@ void __73__NLWorkoutComplicationDataSource_initWithComplication_family_forDevice
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(NLWorkoutComplicationDataSource *)self _stopObservingSynchronously:1];
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = NLWorkoutComplicationDataSource;
   [(NLWorkoutComplicationDataSource *)&v2 dealloc];
 }
 
-+ (BOOL)acceptsComplicationType:(unint64_t)a3 forDevice:(id)a4
++ (BOOL)acceptsComplicationType:(unint64_t)type forDevice:(id)device
 {
-  v9 = a1;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  typeCopy = type;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v5 = v7 == 18;
+  objc_storeStrong(&location, device);
+  v5 = typeCopy == 18;
   objc_storeStrong(&location, 0);
   return v5;
 }
 
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device
 {
-  v9 = a1;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  familyCopy = family;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, device);
   v5 = 0;
-  if (v7 <= 4 || v7 - 6 <= 6)
+  if (familyCopy <= 4 || familyCopy - 6 <= 6)
   {
     v5 = 1;
   }
 
-  if (v7 == CLKComplicationFamilyCircularMedium)
+  if (familyCopy == CLKComplicationFamilyCircularMedium)
   {
     v5 = 1;
   }
@@ -145,18 +145,18 @@ void __73__NLWorkoutComplicationDataSource_initWithComplication_family_forDevice
   return v5 & 1;
 }
 
-- (void)getCurrentTimelineEntryWithHandler:(id)a3
+- (void)getCurrentTimelineEntryWithHandler:(id)handler
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, handler);
   _HKInitializeLogging();
   v17 = HKLogWorkouts;
   v16 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    if ([(NLWorkoutComplicationDataSource *)v19 _hasActiveWorkout])
+    if ([(NLWorkoutComplicationDataSource *)selfCopy _hasActiveWorkout])
     {
       v3 = @"Yes";
     }
@@ -172,30 +172,30 @@ void __73__NLWorkoutComplicationDataSource_initWithComplication_family_forDevice
 
   objc_storeStrong(&v17, 0);
   v15 = 0;
-  if ([(NLWorkoutComplicationDataSource *)v19 _hasActiveWorkout])
+  if ([(NLWorkoutComplicationDataSource *)selfCopy _hasActiveWorkout])
   {
-    v4 = [(NLWorkoutComplicationDataSource *)v19 _templateForActiveWorkoutInSwitcher:0];
+    v4 = [(NLWorkoutComplicationDataSource *)selfCopy _templateForActiveWorkoutInSwitcher:0];
     v5 = v15;
     v15 = v4;
   }
 
-  else if (v19->_lastWorkout)
+  else if (selfCopy->_lastWorkout)
   {
-    v6 = [(NLWorkoutComplicationDataSource *)v19 _templateForWorkout:v19->_lastWorkout family:[(NLWorkoutComplicationDataSource *)v19 family]];
+    v6 = [(NLWorkoutComplicationDataSource *)selfCopy _templateForWorkout:selfCopy->_lastWorkout family:[(NLWorkoutComplicationDataSource *)selfCopy family]];
     v7 = v15;
     v15 = v6;
   }
 
-  else if (!v19->_loadingLastWorkout || v19->_hasKnownLastWorkoutState)
+  else if (!selfCopy->_loadingLastWorkout || selfCopy->_hasKnownLastWorkoutState)
   {
-    v10 = [(NLWorkoutComplicationDataSource *)v19 _noWorkoutsTemplate];
+    _noWorkoutsTemplate = [(NLWorkoutComplicationDataSource *)selfCopy _noWorkoutsTemplate];
     v11 = v15;
-    v15 = v10;
+    v15 = _noWorkoutsTemplate;
   }
 
   else
   {
-    v8 = [(NLWorkoutComplicationDataSource *)v19 _unknownTemplateForFamily:[(NLWorkoutComplicationDataSource *)v19 family]];
+    v8 = [(NLWorkoutComplicationDataSource *)selfCopy _unknownTemplateForFamily:[(NLWorkoutComplicationDataSource *)selfCopy family]];
     v9 = v15;
     v15 = v8;
   }
@@ -211,7 +211,7 @@ void __73__NLWorkoutComplicationDataSource_initWithComplication_family_forDevice
 
 - (id)sampleTemplate
 {
-  v35 = self;
+  selfCopy = self;
   v34[1] = a2;
   v23 = v34;
   v34[0] = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
@@ -248,10 +248,10 @@ void __73__NLWorkoutComplicationDataSource_initWithComplication_family_forDevice
   v2 = [HKWorkout _workoutWithActivityType:37 startDate:v29 endDate:v31 workoutEvents:0 workoutActivities:0 duration:v28 totalActiveEnergyBurned:v30 totalBasalEnergyBurned:0 totalDistance:v27 totalSwimmingStrokeCount:0 totalFlightsClimbed:0 goalType:0 goal:0 device:0 metadata:0];
   location = &v26;
   v26 = v2;
-  v15 = v35;
+  v15 = selfCopy;
   v14 = v2;
-  v3 = [(NLWorkoutComplicationDataSource *)v35 family];
-  v25 = [(NLWorkoutComplicationDataSource *)v15 _templateForWorkout:v14 family:v3];
+  family = [(NLWorkoutComplicationDataSource *)selfCopy family];
+  v25 = [(NLWorkoutComplicationDataSource *)v15 _templateForWorkout:v14 family:family];
   objc_storeStrong(location, v24);
   objc_storeStrong(v17, v24);
   objc_storeStrong(v18, v24);
@@ -267,11 +267,11 @@ void __73__NLWorkoutComplicationDataSource_initWithComplication_family_forDevice
 
 - (id)lockedTemplate
 {
-  v27 = self;
+  selfCopy = self;
   v26[1] = a2;
   v26[0] = 0;
-  v25 = [(NLWorkoutComplicationDataSource *)self family];
-  if (v25 == &dword_0 + 1)
+  family = [(NLWorkoutComplicationDataSource *)self family];
+  if (family == &dword_0 + 1)
   {
     v17 = NLWorkoutComplicationLocalizedString(@"WORKOUT_TITLE_NONE", @"Workout");
     v24 = [CLKSimpleTextProvider textProviderWithText:?];
@@ -287,9 +287,9 @@ void __73__NLWorkoutComplicationDataSource_initWithComplication_family_forDevice
     objc_storeStrong(&v24, 0);
   }
 
-  else if (v25 == &dword_0 + 3)
+  else if (family == &dword_0 + 3)
   {
-    v13 = [(NLWorkoutComplicationDataSource *)v27 _noActiveWorkoutImageForComplicationFamily:3];
+    v13 = [(NLWorkoutComplicationDataSource *)selfCopy _noActiveWorkoutImageForComplicationFamily:3];
     v20 = [CLKImageProvider imageProviderWithOnePieceImage:?];
 
     v14 = NTKClockFaceLocalizedString();
@@ -303,7 +303,7 @@ void __73__NLWorkoutComplicationDataSource_initWithComplication_family_forDevice
     objc_storeStrong(&v20, 0);
   }
 
-  else if (v25 == &dword_8 + 3)
+  else if (family == &dword_8 + 3)
   {
     v15 = NLWorkoutComplicationLocalizedString(@"WORKOUT_TITLE_NONE", @"Workout");
     v22 = [CLKSimpleTextProvider textProviderWithText:?];
@@ -321,12 +321,12 @@ void __73__NLWorkoutComplicationDataSource_initWithComplication_family_forDevice
 
   else
   {
-    v8 = [(NLWorkoutComplicationDataSource *)v27 _unknownTemplateForFamily:[(NLWorkoutComplicationDataSource *)v27 family]];
+    v8 = [(NLWorkoutComplicationDataSource *)selfCopy _unknownTemplateForFamily:[(NLWorkoutComplicationDataSource *)selfCopy family]];
     v9 = v26[0];
     v26[0] = v8;
   }
 
-  v11 = [objc_opt_class() _workoutTintColor];
+  _workoutTintColor = [objc_opt_class() _workoutTintColor];
   [v26[0] setTintColor:?];
 
   v12 = v26[0];
@@ -335,16 +335,16 @@ void __73__NLWorkoutComplicationDataSource_initWithComplication_family_forDevice
   return v12;
 }
 
-- (void)getLaunchURLForTimelineEntryDate:(id)a3 timeTravelDate:(id)a4 withHandler:(id)a5
+- (void)getLaunchURLForTimelineEntryDate:(id)date timeTravelDate:(id)travelDate withHandler:(id)handler
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, date);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, travelDate);
   v9 = 0;
-  objc_storeStrong(&v9, a5);
+  objc_storeStrong(&v9, handler);
   v7 = v9;
   v8 = [NSURL URLWithString:@"SessionTrackerApp://"];
   v7[2]();
@@ -354,16 +354,16 @@ void __73__NLWorkoutComplicationDataSource_initWithComplication_family_forDevice
   objc_storeStrong(location, 0);
 }
 
-- (id)_unknownTemplateForFamily:(int64_t)a3
+- (id)_unknownTemplateForFamily:(int64_t)family
 {
-  v52 = self;
+  selfCopy = self;
   v51 = a2;
-  v50 = a3;
+  familyCopy = family;
   v49 = 0;
-  switch(a3)
+  switch(family)
   {
     case 0:
-      v31 = [(NLWorkoutComplicationDataSource *)v52 _noActiveWorkoutImageForComplicationFamily:0];
+      v31 = [(NLWorkoutComplicationDataSource *)selfCopy _noActiveWorkoutImageForComplicationFamily:0];
       v44 = [CLKImageProvider imageProviderWithOnePieceImage:?];
 
       v9 = [CLKComplicationTemplateModularSmallSimpleImage templateWithImageProvider:v44];
@@ -385,7 +385,7 @@ void __73__NLWorkoutComplicationDataSource_initWithComplication_family_forDevice
       objc_storeStrong(&v43, 0);
       break;
     case 2:
-      v35 = [(NLWorkoutComplicationDataSource *)v52 _noActiveWorkoutImageForComplicationFamily:v50];
+      v35 = [(NLWorkoutComplicationDataSource *)selfCopy _noActiveWorkoutImageForComplicationFamily:familyCopy];
       v48 = [CLKImageProvider imageProviderWithOnePieceImage:?];
 
       v3 = [CLKComplicationTemplateUtilitarianSmallSquare templateWithImageProvider:v48];
@@ -395,7 +395,7 @@ void __73__NLWorkoutComplicationDataSource_initWithComplication_family_forDevice
       objc_storeStrong(&v48, 0);
       break;
     case 3:
-      v33 = [(NLWorkoutComplicationDataSource *)v52 _noActiveWorkoutImageForComplicationFamily:v50];
+      v33 = [(NLWorkoutComplicationDataSource *)selfCopy _noActiveWorkoutImageForComplicationFamily:familyCopy];
       v47 = [CLKImageProvider imageProviderWithOnePieceImage:?];
 
       v34 = NLWorkoutComplicationLocalizedString(@"WORKOUT_STATE_NONE_UTILITY_LARGE", @"New Workout");
@@ -409,7 +409,7 @@ void __73__NLWorkoutComplicationDataSource_initWithComplication_family_forDevice
       objc_storeStrong(&v47, 0);
       break;
     case 4:
-      v32 = [(NLWorkoutComplicationDataSource *)v52 _noActiveWorkoutImageForComplicationFamily:v50];
+      v32 = [(NLWorkoutComplicationDataSource *)selfCopy _noActiveWorkoutImageForComplicationFamily:familyCopy];
       v45 = [CLKImageProvider imageProviderWithOnePieceImage:?];
 
       v7 = [CLKComplicationTemplateCircularSmallSimpleImage templateWithImageProvider:v45];
@@ -420,7 +420,7 @@ void __73__NLWorkoutComplicationDataSource_initWithComplication_family_forDevice
       break;
     case 6:
       v38 = [CLKSimpleTextProvider textProviderWithText:&stru_10518];
-      v27 = [(NLWorkoutComplicationDataSource *)v52 _noActiveWorkoutImageForComplicationFamily:v50];
+      v27 = [(NLWorkoutComplicationDataSource *)selfCopy _noActiveWorkoutImageForComplicationFamily:familyCopy];
       v37 = [CLKImageProvider imageProviderWithOnePieceImage:?];
 
       v17 = [CLKComplicationTemplateUtilitarianSmallFlat templateWithTextProvider:v38 imageProvider:v37];
@@ -431,7 +431,7 @@ void __73__NLWorkoutComplicationDataSource_initWithComplication_family_forDevice
       objc_storeStrong(&v38, 0);
       break;
     case 7:
-      v28 = [(NLWorkoutComplicationDataSource *)v52 _noActiveWorkoutImageForComplicationFamily:v50];
+      v28 = [(NLWorkoutComplicationDataSource *)selfCopy _noActiveWorkoutImageForComplicationFamily:familyCopy];
       v39 = [CLKImageProvider imageProviderWithOnePieceImage:?];
 
       v15 = [CLKComplicationTemplateExtraLargeSimpleImage templateWithImageProvider:v39];
@@ -441,12 +441,12 @@ void __73__NLWorkoutComplicationDataSource_initWithComplication_family_forDevice
       objc_storeStrong(&v39, 0);
       break;
     default:
-      if ((a3 - 8) <= 2)
+      if ((family - 8) <= 2)
       {
         goto LABEL_20;
       }
 
-      if (a3 == 11)
+      if (family == 11)
       {
         v29 = NLWorkoutComplicationLocalizedString(@"WORKOUT_TITLE_NONE", @"Workout");
         v41 = [CLKSimpleTextProvider textProviderWithText:?];
@@ -461,10 +461,10 @@ void __73__NLWorkoutComplicationDataSource_initWithComplication_family_forDevice
         break;
       }
 
-      if (a3 == 12)
+      if (family == 12)
       {
 LABEL_20:
-        v19 = [(NLWorkoutComplicationDataSource *)v52 _signatureTemplateWithFamily:v50 hasActiveWorkout:0 hasPausedActiveWorkout:0];
+        v19 = [(NLWorkoutComplicationDataSource *)selfCopy _signatureTemplateWithFamily:familyCopy hasActiveWorkout:0 hasPausedActiveWorkout:0];
         v20 = v49;
         v49 = v19;
       }
@@ -472,9 +472,9 @@ LABEL_20:
       break;
   }
 
-  if (v50 == CLKComplicationFamilyCircularMedium)
+  if (familyCopy == CLKComplicationFamilyCircularMedium)
   {
-    v26 = [(NLWorkoutComplicationDataSource *)v52 _noActiveWorkoutImageForComplicationFamily:v50];
+    v26 = [(NLWorkoutComplicationDataSource *)selfCopy _noActiveWorkoutImageForComplicationFamily:familyCopy];
     v36 = [CLKImageProvider imageProviderWithOnePieceImage:?];
 
     v21 = [CLKComplicationTemplateCircularMediumSimpleImage templateWithImageProvider:v36];
@@ -484,7 +484,7 @@ LABEL_20:
     objc_storeStrong(&v36, 0);
   }
 
-  v24 = [objc_opt_class() _workoutTintColor];
+  _workoutTintColor = [objc_opt_class() _workoutTintColor];
   [v49 setTintColor:?];
 
   v25 = v49;
@@ -495,16 +495,16 @@ LABEL_20:
 
 - (id)_noWorkoutsTemplate
 {
-  v35 = self;
+  selfCopy = self;
   v34[1] = a2;
   v34[0] = 0;
-  v33 = [(NLWorkoutComplicationDataSource *)self family];
-  if (!v33)
+  family = [(NLWorkoutComplicationDataSource *)self family];
+  if (!family)
   {
     goto LABEL_10;
   }
 
-  if (v33 == (&dword_0 + 1))
+  if (family == (&dword_0 + 1))
   {
     v21 = NLWorkoutComplicationLocalizedString(@"WORKOUT_TITLE_NONE", @"Workout");
     v30 = [CLKSimpleTextProvider textProviderWithText:?];
@@ -521,14 +521,14 @@ LABEL_20:
     goto LABEL_15;
   }
 
-  if (v33 == (&dword_0 + 2))
+  if (family == (&dword_0 + 2))
   {
     goto LABEL_10;
   }
 
-  if (v33 == (&dword_0 + 3))
+  if (family == (&dword_0 + 3))
   {
-    v23 = [(NLWorkoutComplicationDataSource *)v35 _noActiveWorkoutImageForComplicationFamily:3];
+    v23 = [(NLWorkoutComplicationDataSource *)selfCopy _noActiveWorkoutImageForComplicationFamily:3];
     v32 = [CLKImageProvider imageProviderWithOnePieceImage:?];
 
     v24 = NLWorkoutComplicationLocalizedString(@"WORKOUT_STATE_NONE_UTILITY_LARGE", @"New Workout");
@@ -543,14 +543,14 @@ LABEL_20:
     goto LABEL_15;
   }
 
-  if (v33 == &dword_4)
+  if (family == &dword_4)
   {
     goto LABEL_10;
   }
 
-  if (v33 == (&dword_4 + 2))
+  if (family == (&dword_4 + 2))
   {
-    v17 = [(NLWorkoutComplicationDataSource *)v35 _noActiveWorkoutImageForComplicationFamily:6];
+    v17 = [(NLWorkoutComplicationDataSource *)selfCopy _noActiveWorkoutImageForComplicationFamily:6];
     v26 = [CLKImageProvider imageProviderWithOnePieceImage:?];
 
     v18 = NLWorkoutComplicationLocalizedString(@"WORKOUT_STATE_NONE_UTILITY_SMALL_FLAT", @"New");
@@ -565,19 +565,19 @@ LABEL_20:
     goto LABEL_15;
   }
 
-  if (v33 - 7 <= 3)
+  if (family - 7 <= 3)
   {
 LABEL_10:
-    v2 = [(NLWorkoutComplicationDataSource *)v35 _unknownTemplateForFamily:v33];
+    v2 = [(NLWorkoutComplicationDataSource *)selfCopy _unknownTemplateForFamily:family];
     v3 = v34[0];
     v34[0] = v2;
 
     goto LABEL_15;
   }
 
-  if (v33 != (&dword_8 + 3))
+  if (family != (&dword_8 + 3))
   {
-    if (v33 != &dword_C)
+    if (family != &dword_C)
     {
       goto LABEL_15;
     }
@@ -598,14 +598,14 @@ LABEL_10:
   objc_storeStrong(&v27, 0);
   objc_storeStrong(&v28, 0);
 LABEL_15:
-  if (v33 == CLKComplicationFamilyCircularMedium)
+  if (family == CLKComplicationFamilyCircularMedium)
   {
-    v12 = [(NLWorkoutComplicationDataSource *)v35 _unknownTemplateForFamily:v33];
+    v12 = [(NLWorkoutComplicationDataSource *)selfCopy _unknownTemplateForFamily:family];
     v13 = v34[0];
     v34[0] = v12;
   }
 
-  v15 = [objc_opt_class() _workoutTintColor];
+  _workoutTintColor = [objc_opt_class() _workoutTintColor];
   [v34[0] setTintColor:?];
 
   v16 = v34[0];
@@ -614,28 +614,28 @@ LABEL_15:
   return v16;
 }
 
-- (id)_templateForWorkout:(id)a3 family:(int64_t)a4
+- (id)_templateForWorkout:(id)workout family:(int64_t)family
 {
-  v52 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v50 = a4;
+  objc_storeStrong(location, workout);
+  familyCopy = family;
   v49 = 0;
   v48 = 0;
-  if (a4 == 1 || v50 == 3 || v50 == 11)
+  if (family == 1 || familyCopy == 3 || familyCopy == 11)
   {
-    v47 = [location[0] fiui_swimmingLocationType];
-    v46 = 0;
-    v29 = [location[0] metadata];
-    v45 = [v29 objectForKeyedSubscript:HKMetadataKeyIndoorWorkout];
+    fiui_swimmingLocationType = [location[0] fiui_swimmingLocationType];
+    bOOLValue = 0;
+    metadata = [location[0] metadata];
+    v45 = [metadata objectForKeyedSubscript:HKMetadataKeyIndoorWorkout];
 
     if (v45)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v46 = [v45 BOOLValue];
+        bOOLValue = [v45 BOOLValue];
       }
     }
 
@@ -656,7 +656,7 @@ LABEL_15:
   }
 
   objc_storeStrong(&v53, 0);
-  switch(v50)
+  switch(familyCopy)
   {
     case 0:
       goto LABEL_19;
@@ -664,7 +664,7 @@ LABEL_15:
       v40 = [CLKSimpleTextProvider textProviderWithText:v48];
       v39 = [_templateForWorkout_family__formattingManager localizedKeyMetricStringForWorkout:location[0] unitStyle:3];
       v38 = [CLKSimpleTextProvider textProviderWithText:v39];
-      v23 = [location[0] endDate];
+      endDate = [location[0] endDate];
       v37 = [CLKDateTextProvider textProviderWithDate:"textProviderWithDate:units:" units:?];
 
       v10 = [CLKComplicationTemplateModularLargeStandardBody templateWithHeaderTextProvider:v40 body1TextProvider:v38 body2TextProvider:v37];
@@ -679,13 +679,13 @@ LABEL_15:
     case 2:
       goto LABEL_19;
     case 3:
-      v24 = [(NLWorkoutComplicationDataSource *)v52 _noActiveWorkoutImageForComplicationFamily:3];
+      v24 = [(NLWorkoutComplicationDataSource *)selfCopy _noActiveWorkoutImageForComplicationFamily:3];
       v44 = [CLKImageProvider imageProviderWithOnePieceImage:?];
 
       v25 = [_templateForWorkout_family__formattingManager localizedKeyMetricStringForWorkout:location[0] unitStyle:1];
-      v43 = [v25 localizedLowercaseString];
+      localizedLowercaseString = [v25 localizedLowercaseString];
 
-      v42 = [CLKSimpleTextProvider textProviderWithText:v43];
+      v42 = [CLKSimpleTextProvider textProviderWithText:localizedLowercaseString];
       [(CLKSimpleTextProvider *)v42 setUseLowercaseSmallCaps:1];
       v28 = NLWorkoutComplicationLocalizedString(@"WORKOUT_DESCRIPTION_FORMAT_UTILITY", 0);
       v26 = v42;
@@ -698,13 +698,13 @@ LABEL_15:
 
       objc_storeStrong(&v41, 0);
       objc_storeStrong(&v42, 0);
-      objc_storeStrong(&v43, 0);
+      objc_storeStrong(&localizedLowercaseString, 0);
       objc_storeStrong(&v44, 0);
       goto LABEL_24;
     case 4:
       goto LABEL_19;
     case 6:
-      v21 = [(NLWorkoutComplicationDataSource *)v52 _noActiveWorkoutImageForComplicationFamily:6];
+      v21 = [(NLWorkoutComplicationDataSource *)selfCopy _noActiveWorkoutImageForComplicationFamily:6];
       v32 = [CLKImageProvider imageProviderWithOnePieceImage:?];
 
       v31 = [CLKSimpleTextProvider textProviderWithText:&stru_10518];
@@ -717,19 +717,19 @@ LABEL_15:
       goto LABEL_24;
   }
 
-  if ((v50 - 7) <= 3)
+  if ((familyCopy - 7) <= 3)
   {
 LABEL_19:
-    v6 = [(NLWorkoutComplicationDataSource *)v52 _unknownTemplateForFamily:v50];
+    v6 = [(NLWorkoutComplicationDataSource *)selfCopy _unknownTemplateForFamily:familyCopy];
     v7 = v49;
     v49 = v6;
 
     goto LABEL_24;
   }
 
-  if (v50 != 11)
+  if (familyCopy != 11)
   {
-    if (v50 != 12)
+    if (familyCopy != 12)
     {
       goto LABEL_24;
     }
@@ -740,7 +740,7 @@ LABEL_19:
   v36 = [CLKSimpleTextProvider textProviderWithText:v48];
   v35 = [_templateForWorkout_family__formattingManager localizedKeyMetricStringForWorkout:location[0] unitStyle:3];
   v34 = [CLKSimpleTextProvider textProviderWithText:v35];
-  v22 = [location[0] endDate];
+  endDate2 = [location[0] endDate];
   v33 = [CLKDateTextProvider textProviderWithDate:"textProviderWithDate:units:" units:?];
 
   v12 = [CLKComplicationTemplateGraphicRectangularStandardBody templateWithHeaderTextProvider:v36 body1TextProvider:v34 body2TextProvider:v33];
@@ -752,14 +752,14 @@ LABEL_19:
   objc_storeStrong(&v35, 0);
   objc_storeStrong(&v36, 0);
 LABEL_24:
-  if (v50 == CLKComplicationFamilyCircularMedium)
+  if (familyCopy == CLKComplicationFamilyCircularMedium)
   {
-    v16 = [(NLWorkoutComplicationDataSource *)v52 _unknownTemplateForFamily:v50];
+    v16 = [(NLWorkoutComplicationDataSource *)selfCopy _unknownTemplateForFamily:familyCopy];
     v17 = v49;
     v49 = v16;
   }
 
-  v19 = [objc_opt_class() _workoutTintColor];
+  _workoutTintColor = [objc_opt_class() _workoutTintColor];
   [v49 setTintColor:?];
 
   v20 = v49;
@@ -786,23 +786,23 @@ void __62__NLWorkoutComplicationDataSource__templateForWorkout_family___block_in
   objc_storeStrong(v6, 0);
 }
 
-- (id)_signatureTemplateWithFamily:(int64_t)a3 hasActiveWorkout:(BOOL)a4 hasPausedActiveWorkout:(BOOL)a5
+- (id)_signatureTemplateWithFamily:(int64_t)family hasActiveWorkout:(BOOL)workout hasPausedActiveWorkout:(BOOL)activeWorkout
 {
-  v38 = self;
+  selfCopy = self;
   v37 = a2;
-  v36 = a3;
-  v35 = a4;
-  v34 = a5;
+  familyCopy = family;
+  workoutCopy = workout;
+  activeWorkoutCopy = activeWorkout;
   v33 = 0;
-  switch(a3)
+  switch(family)
   {
     case 8:
       v30 = [CLKFullColorImageProvider fullColorImageProviderWithImageViewClass:objc_opt_class()];
       v45[0] = @"NLWorkoutComplicationMetadataHasActiveWorkoutKey";
-      v24 = [NSNumber numberWithBool:v35];
+      v24 = [NSNumber numberWithBool:workoutCopy];
       v46[0] = v24;
       v45[1] = @"NLWorkoutComplicationMetadataActiveWorkoutIsPausedKey";
-      v23 = [NSNumber numberWithBool:v34];
+      v23 = [NSNumber numberWithBool:activeWorkoutCopy];
       v46[1] = v23;
       v22 = [NSDictionary dictionaryWithObjects:v46 forKeys:v45 count:2];
       [(CLKFullColorImageProvider *)v30 setMetadata:?];
@@ -816,10 +816,10 @@ void __62__NLWorkoutComplicationDataSource__templateForWorkout_family___block_in
     case 9:
       v32 = [CLKFullColorImageProvider fullColorImageProviderWithImageViewClass:objc_opt_class()];
       v47[0] = @"NLWorkoutComplicationMetadataHasActiveWorkoutKey";
-      v27 = [NSNumber numberWithBool:v35];
+      v27 = [NSNumber numberWithBool:workoutCopy];
       v48[0] = v27;
       v47[1] = @"NLWorkoutComplicationMetadataActiveWorkoutIsPausedKey";
-      v26 = [NSNumber numberWithBool:v34];
+      v26 = [NSNumber numberWithBool:activeWorkoutCopy];
       v48[1] = v26;
       v25 = [NSDictionary dictionaryWithObjects:v48 forKeys:v47 count:2];
       [(CLKFullColorImageProvider *)v32 setMetadata:?];
@@ -835,10 +835,10 @@ void __62__NLWorkoutComplicationDataSource__templateForWorkout_family___block_in
     case 10:
       v29 = [CLKFullColorImageProvider fullColorImageProviderWithImageViewClass:objc_opt_class()];
       v43[0] = @"NLWorkoutComplicationMetadataHasActiveWorkoutKey";
-      v21 = [NSNumber numberWithBool:v35];
+      v21 = [NSNumber numberWithBool:workoutCopy];
       v44[0] = v21;
       v43[1] = @"NLWorkoutComplicationMetadataActiveWorkoutIsPausedKey";
-      v20 = [NSNumber numberWithBool:v34];
+      v20 = [NSNumber numberWithBool:activeWorkoutCopy];
       v44[1] = v20;
       v19 = [NSDictionary dictionaryWithObjects:v44 forKeys:v43 count:2];
       [(CLKFullColorImageProvider *)v29 setMetadata:?];
@@ -852,10 +852,10 @@ void __62__NLWorkoutComplicationDataSource__templateForWorkout_family___block_in
     case 12:
       v28 = [CLKFullColorImageProvider fullColorImageProviderWithImageViewClass:objc_opt_class()];
       v41[0] = @"NLWorkoutComplicationMetadataHasActiveWorkoutKey";
-      v18 = [NSNumber numberWithBool:v35];
+      v18 = [NSNumber numberWithBool:workoutCopy];
       v42[0] = v18;
       v41[1] = @"NLWorkoutComplicationMetadataActiveWorkoutIsPausedKey";
-      v17 = [NSNumber numberWithBool:v34];
+      v17 = [NSNumber numberWithBool:activeWorkoutCopy];
       v42[1] = v17;
       v16 = [NSDictionary dictionaryWithObjects:v42 forKeys:v41 count:2];
       [(CLKFullColorImageProvider *)v28 setMetadata:?];
@@ -879,16 +879,16 @@ void __62__NLWorkoutComplicationDataSource__templateForWorkout_family___block_in
   return v15;
 }
 
-- (id)_templateForActiveWorkoutInSwitcher:(BOOL)a3
+- (id)_templateForActiveWorkoutInSwitcher:(BOOL)switcher
 {
-  v68 = self;
+  selfCopy = self;
   v67 = a2;
-  v66 = a3;
+  switcherCopy = switcher;
   v65[8] = 0;
   *v65 = [(NLWorkoutComplicationDataSource *)self _hasPausedActiveWorkout];
   v64 = +[NSDate date];
   v63 = 0;
-  [(_HKCurrentWorkoutSnapshot *)v68->_activeWorkoutSnapshot elapsedTimeAtDate:v64];
+  [(_HKCurrentWorkoutSnapshot *)selfCopy->_activeWorkoutSnapshot elapsedTimeAtDate:v64];
   v62[1] = v3;
   v62[0] = [NSDate dateWithTimeIntervalSinceNow:-*&v3];
   v63 = [CLKRelativeDateTextProvider textProviderWithDate:v62[0] style:2 units:224];
@@ -899,22 +899,22 @@ void __62__NLWorkoutComplicationDataSource__templateForWorkout_family___block_in
     [v63 setRelativeToDate:v64];
   }
 
-  v61 = [(NLWorkoutComplicationDataSource *)v68 family];
-  if (!v61)
+  family = [(NLWorkoutComplicationDataSource *)selfCopy family];
+  if (!family)
   {
-    v50 = [(NLWorkoutComplicationDataSource *)v68 _makeAnimatedImageProvider];
-    v9 = [CLKComplicationTemplateModularSmallSimpleImage templateWithImageProvider:v50];
+    _makeAnimatedImageProvider = [(NLWorkoutComplicationDataSource *)selfCopy _makeAnimatedImageProvider];
+    v9 = [CLKComplicationTemplateModularSmallSimpleImage templateWithImageProvider:_makeAnimatedImageProvider];
     v10 = *&v65[1];
     *&v65[1] = v9;
 
-    objc_storeStrong(&v50, 0);
+    objc_storeStrong(&_makeAnimatedImageProvider, 0);
     goto LABEL_46;
   }
 
-  if (v61 == (&dword_0 + 1))
+  if (family == (&dword_0 + 1))
   {
-    v31 = [(_HKCurrentWorkoutSnapshot *)v68->_activeWorkoutSnapshot configuration];
-    [v31 activityType];
+    configuration = [(_HKCurrentWorkoutSnapshot *)selfCopy->_activeWorkoutSnapshot configuration];
+    [configuration activityType];
     v60 = FIUILocalizedNameForIndoorAgnosticActivityType();
 
     v59 = [CLKSimpleTextProvider textProviderWithText:v60];
@@ -929,25 +929,25 @@ void __62__NLWorkoutComplicationDataSource__templateForWorkout_family___block_in
     goto LABEL_46;
   }
 
-  if (v61 == (&dword_0 + 2))
+  if (family == (&dword_0 + 2))
   {
-    v37 = [(NLWorkoutComplicationDataSource *)v68 _makeAnimatedImageProvider];
-    v15 = [CLKComplicationTemplateUtilitarianSmallSquare templateWithImageProvider:v37];
+    _makeAnimatedImageProvider2 = [(NLWorkoutComplicationDataSource *)selfCopy _makeAnimatedImageProvider];
+    v15 = [CLKComplicationTemplateUtilitarianSmallSquare templateWithImageProvider:_makeAnimatedImageProvider2];
     v16 = *&v65[1];
     *&v65[1] = v15;
 
-    objc_storeStrong(&v37, 0);
+    objc_storeStrong(&_makeAnimatedImageProvider2, 0);
     goto LABEL_46;
   }
 
-  if (v61 == (&dword_0 + 3))
+  if (family == (&dword_0 + 3))
   {
     v47 = 0;
     v45 = 0;
     v43 = 0;
-    if (v66)
+    if (switcherCopy)
     {
-      v48 = [(NLWorkoutComplicationDataSource *)v68 _noActiveWorkoutImageForComplicationFamily:v61];
+      v48 = [(NLWorkoutComplicationDataSource *)selfCopy _noActiveWorkoutImageForComplicationFamily:family];
       v47 = 1;
       v46 = [CLKImageProvider imageProviderWithOnePieceImage:?];
       v45 = 1;
@@ -956,9 +956,9 @@ void __62__NLWorkoutComplicationDataSource__templateForWorkout_family___block_in
 
     else
     {
-      v44 = [(NLWorkoutComplicationDataSource *)v68 _makeAnimatedImageProvider];
+      _makeAnimatedImageProvider3 = [(NLWorkoutComplicationDataSource *)selfCopy _makeAnimatedImageProvider];
       v43 = 1;
-      v11 = v44;
+      v11 = _makeAnimatedImageProvider3;
     }
 
     v49 = v11;
@@ -1009,63 +1009,63 @@ void __62__NLWorkoutComplicationDataSource__templateForWorkout_family___block_in
 
   else
   {
-    if (v61 == &dword_4)
+    if (family == &dword_4)
     {
-      v36 = [(NLWorkoutComplicationDataSource *)v68 _makeAnimatedImageProvider];
-      v17 = [CLKComplicationTemplateCircularSmallSimpleImage templateWithImageProvider:v36];
+      _makeAnimatedImageProvider4 = [(NLWorkoutComplicationDataSource *)selfCopy _makeAnimatedImageProvider];
+      v17 = [CLKComplicationTemplateCircularSmallSimpleImage templateWithImageProvider:_makeAnimatedImageProvider4];
       v18 = *&v65[1];
       *&v65[1] = v17;
 
-      objc_storeStrong(&v36, 0);
+      objc_storeStrong(&_makeAnimatedImageProvider4, 0);
       goto LABEL_46;
     }
 
-    if (v61 == (&dword_4 + 2))
+    if (family == (&dword_4 + 2))
     {
-      v34 = [(NLWorkoutComplicationDataSource *)v68 _makeAnimatedImageProvider];
+      _makeAnimatedImageProvider5 = [(NLWorkoutComplicationDataSource *)selfCopy _makeAnimatedImageProvider];
       v33 = [CLKSimpleTextProvider textProviderWithText:&stru_10518];
-      v21 = [CLKComplicationTemplateUtilitarianSmallFlat templateWithTextProvider:v33 imageProvider:v34];
+      v21 = [CLKComplicationTemplateUtilitarianSmallFlat templateWithTextProvider:v33 imageProvider:_makeAnimatedImageProvider5];
       v22 = *&v65[1];
       *&v65[1] = v21;
 
       objc_storeStrong(&v33, 0);
-      objc_storeStrong(&v34, 0);
+      objc_storeStrong(&_makeAnimatedImageProvider5, 0);
       goto LABEL_46;
     }
 
-    if (v61 == (&dword_4 + 3))
+    if (family == (&dword_4 + 3))
     {
-      v35 = [(NLWorkoutComplicationDataSource *)v68 _makeAnimatedImageProvider];
-      v19 = [CLKComplicationTemplateExtraLargeSimpleImage templateWithImageProvider:v35];
+      _makeAnimatedImageProvider6 = [(NLWorkoutComplicationDataSource *)selfCopy _makeAnimatedImageProvider];
+      v19 = [CLKComplicationTemplateExtraLargeSimpleImage templateWithImageProvider:_makeAnimatedImageProvider6];
       v20 = *&v65[1];
       *&v65[1] = v19;
 
-      objc_storeStrong(&v35, 0);
+      objc_storeStrong(&_makeAnimatedImageProvider6, 0);
       goto LABEL_46;
     }
 
-    if ((v61 - 2) <= 2)
+    if ((family - 2) <= 2)
     {
       goto LABEL_45;
     }
 
-    if (v61 != (&dword_8 + 3))
+    if (family != (&dword_8 + 3))
     {
-      if (v61 != &dword_C)
+      if (family != &dword_C)
       {
         goto LABEL_46;
       }
 
 LABEL_45:
-      v23 = [(NLWorkoutComplicationDataSource *)v68 _signatureTemplateWithFamily:v61 hasActiveWorkout:1 hasPausedActiveWorkout:[(NLWorkoutComplicationDataSource *)v68 _hasPausedActiveWorkout]];
+      v23 = [(NLWorkoutComplicationDataSource *)selfCopy _signatureTemplateWithFamily:family hasActiveWorkout:1 hasPausedActiveWorkout:[(NLWorkoutComplicationDataSource *)selfCopy _hasPausedActiveWorkout]];
       v24 = *&v65[1];
       *&v65[1] = v23;
 
       goto LABEL_46;
     }
 
-    v30 = [(_HKCurrentWorkoutSnapshot *)v68->_activeWorkoutSnapshot configuration];
-    [v30 activityType];
+    configuration2 = [(_HKCurrentWorkoutSnapshot *)selfCopy->_activeWorkoutSnapshot configuration];
+    [configuration2 activityType];
     v57 = FIUILocalizedNameForIndoorAgnosticActivityType();
 
     v56 = [CLKSimpleTextProvider textProviderWithText:v57];
@@ -1104,17 +1104,17 @@ LABEL_45:
   }
 
 LABEL_46:
-  if (v61 == CLKComplicationFamilyCircularMedium)
+  if (family == CLKComplicationFamilyCircularMedium)
   {
-    v32 = [(NLWorkoutComplicationDataSource *)v68 _makeAnimatedImageProvider];
-    v25 = [CLKComplicationTemplateCircularMediumSimpleImage templateWithImageProvider:v32];
+    _makeAnimatedImageProvider7 = [(NLWorkoutComplicationDataSource *)selfCopy _makeAnimatedImageProvider];
+    v25 = [CLKComplicationTemplateCircularMediumSimpleImage templateWithImageProvider:_makeAnimatedImageProvider7];
     v26 = *&v65[1];
     *&v65[1] = v25;
 
-    objc_storeStrong(&v32, 0);
+    objc_storeStrong(&_makeAnimatedImageProvider7, 0);
   }
 
-  v28 = [objc_opt_class() _workoutTintColor];
+  _workoutTintColor = [objc_opt_class() _workoutTintColor];
   [*&v65[1] setTintColor:?];
 
   v29 = *&v65[1];
@@ -1128,7 +1128,7 @@ LABEL_46:
 
 - (id)_animationImages
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   if (self->_animationImages)
   {
@@ -1136,25 +1136,25 @@ LABEL_46:
   }
 
   location[0] = 0;
-  v9 = [(NLWorkoutComplicationDataSource *)v11 family];
-  if (v9)
+  family = [(NLWorkoutComplicationDataSource *)selfCopy family];
+  if (family)
   {
-    if (v9 == (&dword_0 + 2))
+    if (family == (&dword_0 + 2))
     {
       objc_storeStrong(location, @"utilityCorner");
       goto LABEL_14;
     }
 
-    if (v9 == (&dword_0 + 3))
+    if (family == (&dword_0 + 3))
     {
       goto LABEL_11;
     }
 
-    if (v9 != &dword_4)
+    if (family != &dword_4)
     {
-      if (v9 != (&dword_4 + 2))
+      if (family != (&dword_4 + 2))
       {
-        if (v9 == (&dword_4 + 3))
+        if (family == (&dword_4 + 3))
         {
           objc_storeStrong(location, @"XL");
         }
@@ -1176,7 +1176,7 @@ LABEL_11:
   }
 
 LABEL_14:
-  if (v9 == CLKComplicationFamilyCircularMedium)
+  if (family == CLKComplicationFamilyCircularMedium)
   {
     objc_storeStrong(location, @"victory");
   }
@@ -1198,21 +1198,21 @@ LABEL_14:
       objc_storeStrong(&v5, 0);
     }
 
-    objc_storeStrong(&v11->_animationImages, v7);
+    objc_storeStrong(&selfCopy->_animationImages, v7);
     objc_storeStrong(&v7, 0);
     objc_storeStrong(&v8, 0);
   }
 
   objc_storeStrong(location, 0);
 LABEL_24:
-  animationImages = v11->_animationImages;
+  animationImages = selfCopy->_animationImages;
 
   return animationImages;
 }
 
 - (id)_makeAnimatedImageProvider
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   objc_initWeak(location, self);
   v5 = _NSConcreteStackBlock;
@@ -1222,8 +1222,8 @@ LABEL_24:
   v9 = &unk_10408;
   objc_copyWeak(&v10, location);
   v11 = [NLWorkoutComplicationImageProvider imageProviderWithImageViewCreationHandler:&v5];
-  v4 = [(NLWorkoutComplicationDataSource *)v13 _hasPausedActiveWorkout];
-  [(NLWorkoutComplicationImageProvider *)v11 setPaused:v4];
+  _hasPausedActiveWorkout = [(NLWorkoutComplicationDataSource *)selfCopy _hasPausedActiveWorkout];
+  [(NLWorkoutComplicationImageProvider *)v11 setPaused:_hasPausedActiveWorkout];
   v3 = v11;
   objc_storeStrong(&v11, 0);
   objc_destroyWeak(&v10);
@@ -1259,16 +1259,16 @@ NLWorkoutComplicationAnimatedWrapperView *__61__NLWorkoutComplicationDataSource_
 
 - (BOOL)_hasActiveWorkout
 {
-  v3 = 0;
+  isFirstPartyWorkout = 0;
   if (self->_activeWorkoutSnapshot)
   {
-    if ([(_HKCurrentWorkoutSnapshot *)self->_activeWorkoutSnapshot sessionState]== &dword_0 + 2 || (v3 = 0, [(_HKCurrentWorkoutSnapshot *)self->_activeWorkoutSnapshot sessionState]== &dword_4))
+    if ([(_HKCurrentWorkoutSnapshot *)self->_activeWorkoutSnapshot sessionState]== &dword_0 + 2 || (isFirstPartyWorkout = 0, [(_HKCurrentWorkoutSnapshot *)self->_activeWorkoutSnapshot sessionState]== &dword_4))
     {
-      v3 = [(_HKCurrentWorkoutSnapshot *)self->_activeWorkoutSnapshot isFirstPartyWorkout];
+      isFirstPartyWorkout = [(_HKCurrentWorkoutSnapshot *)self->_activeWorkoutSnapshot isFirstPartyWorkout];
     }
   }
 
-  return v3 & 1;
+  return isFirstPartyWorkout & 1;
 }
 
 - (BOOL)_hasPausedActiveWorkout
@@ -1288,7 +1288,7 @@ NLWorkoutComplicationAnimatedWrapperView *__61__NLWorkoutComplicationDataSource_
   return v4;
 }
 
-- (void)_stopObservingSynchronously:(BOOL)a3
+- (void)_stopObservingSynchronously:(BOOL)synchronously
 {
   if (!self->_inUVPreview)
   {
@@ -1303,8 +1303,8 @@ NLWorkoutComplicationAnimatedWrapperView *__61__NLWorkoutComplicationDataSource_
 - (void)_handleDeviceLockChange
 {
   deviceIsLocked = self->_deviceIsLocked;
-  v2 = [(NLWorkoutComplicationDataSource *)self device];
-  self->_deviceIsLocked = [v2 isLocked];
+  device = [(NLWorkoutComplicationDataSource *)self device];
+  self->_deviceIsLocked = [device isLocked];
 
   if (self->_deviceIsLocked != deviceIsLocked)
   {
@@ -1314,13 +1314,13 @@ NLWorkoutComplicationAnimatedWrapperView *__61__NLWorkoutComplicationDataSource_
 
 - (void)_invalidate
 {
-  v2 = [(NLWorkoutComplicationDataSource *)self delegate];
-  [v2 invalidateEntries];
+  delegate = [(NLWorkoutComplicationDataSource *)self delegate];
+  [delegate invalidateEntries];
 }
 
 - (void)_updateActiveWorkoutState
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   if (!self->_inUVPreview)
   {
@@ -1336,15 +1336,15 @@ NLWorkoutComplicationAnimatedWrapperView *__61__NLWorkoutComplicationDataSource_
     }
 
     objc_storeStrong(location, 0);
-    v4 = [(_HKCurrentWorkoutSnapshot *)v23->_activeWorkoutSnapshot snapshotDate];
+    snapshotDate = [(_HKCurrentWorkoutSnapshot *)selfCopy->_activeWorkoutSnapshot snapshotDate];
     v18 = 0;
     v16 = 0;
     v5 = 0;
-    if (v4)
+    if (snapshotDate)
     {
       v19 = +[NSDate now];
       v18 = 1;
-      v17 = [(_HKCurrentWorkoutSnapshot *)v23->_activeWorkoutSnapshot snapshotDate];
+      snapshotDate2 = [(_HKCurrentWorkoutSnapshot *)selfCopy->_activeWorkoutSnapshot snapshotDate];
       v16 = 1;
       [(NSDate *)v19 timeIntervalSinceDate:?];
       v5 = v2 < 1.0;
@@ -1360,15 +1360,15 @@ NLWorkoutComplicationAnimatedWrapperView *__61__NLWorkoutComplicationDataSource_
 
     if (!v5)
     {
-      objc_initWeak(&v15, v23);
-      queue = v23->_healthQueue;
+      objc_initWeak(&v15, selfCopy);
+      queue = selfCopy->_healthQueue;
       v8 = _NSConcreteStackBlock;
       v9 = -1073741824;
       v10 = 0;
       v11 = __60__NLWorkoutComplicationDataSource__updateActiveWorkoutState__block_invoke;
       v12 = &unk_10480;
       objc_copyWeak(&v14, &v15);
-      v13 = v23;
+      v13 = selfCopy;
       dispatch_async(queue, &v8);
       objc_storeStrong(&v13, 0);
       objc_destroyWeak(&v14);
@@ -1527,12 +1527,12 @@ void __60__NLWorkoutComplicationDataSource__updateActiveWorkoutState__block_invo
   objc_storeStrong(v9, 0);
 }
 
-- (void)didUpdateWorkoutSnapshot:(id)a3
+- (void)didUpdateWorkoutSnapshot:(id)snapshot
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, snapshot);
   v3 = &_dispatch_main_q;
   queue = &_dispatch_main_q;
   v5 = _NSConcreteStackBlock;
@@ -1540,7 +1540,7 @@ void __60__NLWorkoutComplicationDataSource__updateActiveWorkoutState__block_invo
   v7 = 0;
   v8 = __60__NLWorkoutComplicationDataSource_didUpdateWorkoutSnapshot___block_invoke;
   v9 = &unk_104A8;
-  v10 = v13;
+  v10 = selfCopy;
   v11 = location[0];
   dispatch_async(queue, &v5);
 
@@ -1566,16 +1566,16 @@ id __60__NLWorkoutComplicationDataSource_didUpdateWorkoutSnapshot___block_invoke
   return [(objc_class *)a1[4].isa _invalidate];
 }
 
-- (void)fetchWidgetMigrationForDescriptor:(id)a3 family:(int64_t)a4 completion:(id)a5
+- (void)fetchWidgetMigrationForDescriptor:(id)descriptor family:(int64_t)family completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9 = a4;
+  objc_storeStrong(location, descriptor);
+  familyCopy = family;
   v8 = 0;
-  objc_storeStrong(&v8, a5);
-  if (v9 == 1 || v9 == 11)
+  objc_storeStrong(&v8, completion);
+  if (familyCopy == 1 || familyCopy == 11)
   {
     v7 = [[CLKWidgetComplicationDescriptor alloc] initWithExtensionBundleIdentifier:@"com.apple.SessionTrackerApp.WorkoutWidgetExtension" containerBundleIdentifier:@"com.apple.SessionTrackerApp" kind:@"WorkoutWidget" intent:?];
     (*(v8 + 2))(v8, v7);
@@ -1591,17 +1591,17 @@ id __60__NLWorkoutComplicationDataSource_didUpdateWorkoutSnapshot___block_invoke
   objc_storeStrong(location, 0);
 }
 
-+ (BOOL)hasMigratedToWidgetForFamily:(int64_t)a3 device:(id)a4
++ (BOOL)hasMigratedToWidgetForFamily:(int64_t)family device:(id)device
 {
-  v9 = a1;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  familyCopy = family;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, device);
   v5 = 1;
-  if (v7 != 1)
+  if (familyCopy != 1)
   {
-    v5 = v7 == 11;
+    v5 = familyCopy == 11;
   }
 
   objc_storeStrong(&location, 0);

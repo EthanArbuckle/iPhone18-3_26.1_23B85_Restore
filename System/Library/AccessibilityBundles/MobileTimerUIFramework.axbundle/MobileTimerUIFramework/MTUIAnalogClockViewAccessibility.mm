@@ -27,12 +27,12 @@
 - (id)accessibilityValue
 {
   v3 = [(MTUIAnalogClockViewAccessibility *)self safeValueForKey:@"hour"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
   v5 = [(MTUIAnalogClockViewAccessibility *)self safeValueForKey:@"minute"];
-  v6 = [v5 integerValue];
+  integerValue2 = [v5 integerValue];
 
-  v7 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%ld:%ld", v4, v6];
+  v7 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%ld:%ld", integerValue, integerValue2];
   v8 = AXDateFromStringWithFormat();
 
   v9 = [MEMORY[0x29EDB9F78] localizedStringFromDate:v8 dateStyle:0 timeStyle:1];
@@ -44,8 +44,8 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [MEMORY[0x29EDC7A58] currentDevice];
-  v3 = [v2 userInterfaceIdiom] != 0;
+  currentDevice = [MEMORY[0x29EDC7A58] currentDevice];
+  v3 = [currentDevice userInterfaceIdiom] != 0;
 
   return v3;
 }

@@ -6,12 +6,12 @@
 - (void)_significantTimerEventOccured;
 - (void)_timerFired;
 - (void)dealloc;
-- (void)setInDragAndDrop:(BOOL)a3;
-- (void)setPerformingDismissAnimation:(BOOL)a3;
-- (void)setShowingSharingUI:(BOOL)a3;
-- (void)setShowingWaitingForImageIdentifierUpdatesUI:(BOOL)a3;
-- (void)setUserInterfaceHidden:(BOOL)a3;
-- (void)setViewState:(unint64_t)a3;
+- (void)setInDragAndDrop:(BOOL)drop;
+- (void)setPerformingDismissAnimation:(BOOL)animation;
+- (void)setShowingSharingUI:(BOOL)i;
+- (void)setShowingWaitingForImageIdentifierUpdatesUI:(BOOL)i;
+- (void)setUserInterfaceHidden:(BOOL)hidden;
+- (void)setViewState:(unint64_t)state;
 @end
 
 @implementation SSSDittoDismissTimer
@@ -74,20 +74,20 @@
 
 - (void)_significantTimerEventOccured
 {
-  v3 = [(SSSDittoDismissTimer *)self _timerShouldBeRunning];
+  _timerShouldBeRunning = [(SSSDittoDismissTimer *)self _timerShouldBeRunning];
   v4 = os_log_create("com.apple.screenshotservices", "DismissTimer");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(SSSDittoDismissTimer *)self _stateDescription];
+    _stateDescription = [(SSSDittoDismissTimer *)self _stateDescription];
     v9[0] = 67109378;
-    v9[1] = v3;
+    v9[1] = _timerShouldBeRunning;
     v10 = 2112;
-    v11 = v5;
+    v11 = _stateDescription;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Moving timer to running %d with state %@", v9, 0x12u);
   }
 
   [(NSTimer *)self->_currentTimer invalidate];
-  if (v3)
+  if (_timerShouldBeRunning)
   {
     UIAnimationDragCoefficient();
     v7 = [NSTimer scheduledTimerWithTimeInterval:self target:"_timerFired" selector:0 userInfo:0 repeats:v6 * 6.0];
@@ -111,76 +111,76 @@
   v4 = os_log_create("com.apple.screenshotservices", "DismissTimer");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(SSSDittoDismissTimer *)self _stateDescription];
+    _stateDescription = [(SSSDittoDismissTimer *)self _stateDescription];
     v7 = 138412290;
-    v8 = v5;
+    v8 = _stateDescription;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Dismiss timer fired with state %@", &v7, 0xCu);
   }
 
-  v6 = [(SSSDittoDismissTimer *)self delegate];
-  [v6 dittoDismissTimerFired:self];
+  delegate = [(SSSDittoDismissTimer *)self delegate];
+  [delegate dittoDismissTimerFired:self];
 }
 
-- (void)setViewState:(unint64_t)a3
+- (void)setViewState:(unint64_t)state
 {
-  if (self->_viewState != a3 || !self->_hasSetViewState)
+  if (self->_viewState != state || !self->_hasSetViewState)
   {
-    self->_viewState = a3;
+    self->_viewState = state;
     [(SSSDittoDismissTimer *)self _significantTimerEventOccured];
   }
 
   self->_hasSetViewState = 1;
 }
 
-- (void)setInDragAndDrop:(BOOL)a3
+- (void)setInDragAndDrop:(BOOL)drop
 {
-  if (self->_inDragAndDrop != a3 || !self->_hasSetInDragAndDrop)
+  if (self->_inDragAndDrop != drop || !self->_hasSetInDragAndDrop)
   {
-    self->_inDragAndDrop = a3;
+    self->_inDragAndDrop = drop;
     [(SSSDittoDismissTimer *)self _significantTimerEventOccured];
   }
 
   self->_hasSetInDragAndDrop = 1;
 }
 
-- (void)setShowingSharingUI:(BOOL)a3
+- (void)setShowingSharingUI:(BOOL)i
 {
-  if (self->_showingSharingUI != a3 || !self->_hasSetShowingSharingUI)
+  if (self->_showingSharingUI != i || !self->_hasSetShowingSharingUI)
   {
-    self->_showingSharingUI = a3;
+    self->_showingSharingUI = i;
     [(SSSDittoDismissTimer *)self _significantTimerEventOccured];
   }
 
   self->_hasSetShowingSharingUI = 1;
 }
 
-- (void)setShowingWaitingForImageIdentifierUpdatesUI:(BOOL)a3
+- (void)setShowingWaitingForImageIdentifierUpdatesUI:(BOOL)i
 {
-  if (self->_showingWaitingForImageIdentifierUpdatesUI != a3 || !self->_hasSetShowingWaitingForImageIdentifierUpdatesUI)
+  if (self->_showingWaitingForImageIdentifierUpdatesUI != i || !self->_hasSetShowingWaitingForImageIdentifierUpdatesUI)
   {
-    self->_showingWaitingForImageIdentifierUpdatesUI = a3;
+    self->_showingWaitingForImageIdentifierUpdatesUI = i;
     [(SSSDittoDismissTimer *)self _significantTimerEventOccured];
   }
 
   self->_hasSetShowingWaitingForImageIdentifierUpdatesUI = 1;
 }
 
-- (void)setPerformingDismissAnimation:(BOOL)a3
+- (void)setPerformingDismissAnimation:(BOOL)animation
 {
-  if (self->_performingDismissAnimation != a3 || !self->_hasSetPerformingDismissAnimation)
+  if (self->_performingDismissAnimation != animation || !self->_hasSetPerformingDismissAnimation)
   {
-    self->_performingDismissAnimation = a3;
+    self->_performingDismissAnimation = animation;
     [(SSSDittoDismissTimer *)self _significantTimerEventOccured];
   }
 
   self->_hasSetPerformingDismissAnimation = 1;
 }
 
-- (void)setUserInterfaceHidden:(BOOL)a3
+- (void)setUserInterfaceHidden:(BOOL)hidden
 {
-  if (self->_userInterfaceHidden != a3 || !self->_hasSetUserInterfaceHidden)
+  if (self->_userInterfaceHidden != hidden || !self->_hasSetUserInterfaceHidden)
   {
-    self->_userInterfaceHidden = a3;
+    self->_userInterfaceHidden = hidden;
     [(SSSDittoDismissTimer *)self _significantTimerEventOccured];
   }
 

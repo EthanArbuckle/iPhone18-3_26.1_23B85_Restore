@@ -1,33 +1,33 @@
 @interface OSAEphemeralLog
-- (OSAEphemeralLog)initWithData:(id)a3 andMetadata:(id)a4;
-- (void)retire:(const char *)a3;
+- (OSAEphemeralLog)initWithData:(id)data andMetadata:(id)metadata;
+- (void)retire:(const char *)retire;
 @end
 
 @implementation OSAEphemeralLog
 
-- (OSAEphemeralLog)initWithData:(id)a3 andMetadata:(id)a4
+- (OSAEphemeralLog)initWithData:(id)data andMetadata:(id)metadata
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  metadataCopy = metadata;
   v14.receiver = self;
   v14.super_class = OSAEphemeralLog;
   v9 = [(OSAEphemeralLog *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_content, a3);
+    objc_storeStrong(&v9->_content, data);
     v11 = *MEMORY[0x277D36B90];
     v12 = *(&v10->super.super.isa + v11);
     *(&v10->super.super.isa + v11) = @"<ephemeral>";
 
-    *(&v10->super.super.isa + *MEMORY[0x277D36BA0]) = fmemopen([v7 bytes], objc_msgSend(v7, "length"), "r");
-    objc_storeStrong((&v10->super.super.isa + *MEMORY[0x277D36B98]), a4);
+    *(&v10->super.super.isa + *MEMORY[0x277D36BA0]) = fmemopen([dataCopy bytes], objc_msgSend(dataCopy, "length"), "r");
+    objc_storeStrong((&v10->super.super.isa + *MEMORY[0x277D36B98]), metadata);
   }
 
   return v10;
 }
 
-- (void)retire:(const char *)a3
+- (void)retire:(const char *)retire
 {
   [(OSAEphemeralLog *)self closeFileStream];
   content = self->_content;

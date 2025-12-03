@@ -1,7 +1,7 @@
 @interface DMDFetchOSUpdateStatusOperation
 + (id)whitelistedClassesForRequest;
-- (unint64_t)_downloadStatusAndPercentComplete:(double *)a3 fromStatus:(id)a4;
-- (void)runWithRequest:(id)a3;
+- (unint64_t)_downloadStatusAndPercentComplete:(double *)complete fromStatus:(id)status;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -21,7 +21,7 @@
   return [NSSet setWithObject:v2];
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
   v4 = DMFOSUpdateLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -76,23 +76,23 @@
   }
 }
 
-- (unint64_t)_downloadStatusAndPercentComplete:(double *)a3 fromStatus:(id)a4
+- (unint64_t)_downloadStatusAndPercentComplete:(double *)complete fromStatus:(id)status
 {
-  v5 = a4;
+  statusCopy = status;
   v6 = 1.0;
-  if ([v5 isInstalling])
+  if ([statusCopy isInstalling])
   {
     v7 = 2;
   }
 
-  else if ([v5 isDownloadComplete])
+  else if ([statusCopy isDownloadComplete])
   {
     v7 = 0;
   }
 
-  else if ([v5 isDownloading])
+  else if ([statusCopy isDownloading])
   {
-    [v5 downloadPercentComplete];
+    [statusCopy downloadPercentComplete];
     v6 = v8;
     v7 = 1;
   }
@@ -103,7 +103,7 @@
     v6 = 0.0;
   }
 
-  *a3 = v6;
+  *complete = v6;
 
   return v7;
 }

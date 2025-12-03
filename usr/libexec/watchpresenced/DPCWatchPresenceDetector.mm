@@ -7,18 +7,18 @@
 - (void)_stopWristMonitoring;
 - (void)_updateActiveNRDevice;
 - (void)_updateActiveNRDeviceInternal;
-- (void)centralManager:(id)a3 didUpdateRSSIStatisticsDetectionForPeripheral:(id)a4 results:(id)a5 error:(id)a6;
-- (void)centralManagerDidUpdateState:(id)a3;
-- (void)changeRSSIStatisticsDetection:(id)a3 manager:(id)a4 closer:(id)a5 further:(id)a6 maskDecision:(int64_t)a7;
+- (void)centralManager:(id)manager didUpdateRSSIStatisticsDetectionForPeripheral:(id)peripheral results:(id)results error:(id)error;
+- (void)centralManagerDidUpdateState:(id)state;
+- (void)changeRSSIStatisticsDetection:(id)detection manager:(id)manager closer:(id)closer further:(id)further maskDecision:(int64_t)decision;
 - (void)checkAndStartRSSIDetection;
-- (void)checkPolicyWithRSSI:(id)a3;
+- (void)checkPolicyWithRSSI:(id)i;
 - (void)connectToWatch;
 - (void)dealloc;
-- (void)detectWatchWristStateEvent:(int64_t)a3;
-- (void)deviceIsConnectedDidChange:(id)a3 isConnected:(BOOL)a4;
-- (void)deviceIsNearbyDidChange:(id)a3 isNearby:(BOOL)a4;
-- (void)deviceLinkTypeDidChange:(id)a3 linkType:(unsigned __int8)a4 linkSubtype:(unsigned __int8)a5;
-- (void)disableRSSIStatisticsDetection:(id)a3 manager:(id)a4;
+- (void)detectWatchWristStateEvent:(int64_t)event;
+- (void)deviceIsConnectedDidChange:(id)change isConnected:(BOOL)connected;
+- (void)deviceIsNearbyDidChange:(id)change isNearby:(BOOL)nearby;
+- (void)deviceLinkTypeDidChange:(id)change linkType:(unsigned __int8)type linkSubtype:(unsigned __int8)subtype;
+- (void)disableRSSIStatisticsDetection:(id)detection manager:(id)manager;
 - (void)loadPolicy;
 - (void)monitorRSSIAbsence;
 - (void)monitorRSSIPresence;
@@ -26,7 +26,7 @@
 - (void)resetBT;
 - (void)resetWatchMonitors;
 - (void)runDiscoveryMode;
-- (void)sendWatchWristStateEvent:(int64_t)a3;
+- (void)sendWatchWristStateEvent:(int64_t)event;
 - (void)start;
 - (void)stop;
 - (void)watchConnectivityChanges;
@@ -168,9 +168,9 @@
 
 - (void)_updateActiveNRDeviceInternal
 {
-  v3 = [(NRPairedDeviceRegistry *)self->_nrClient getActivePairedDevice];
-  v4 = v3;
-  if (!v3)
+  getActivePairedDevice = [(NRPairedDeviceRegistry *)self->_nrClient getActivePairedDevice];
+  v4 = getActivePairedDevice;
+  if (!getActivePairedDevice)
   {
     v13 = sub_100001040(off_100016898);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -187,7 +187,7 @@ LABEL_19:
   }
 
   p_currentActiveDevice = &self->_currentActiveDevice;
-  if (v3 == self->_currentActiveDevice)
+  if (getActivePairedDevice == self->_currentActiveDevice)
   {
     v15 = sub_100001040(off_100016898);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -201,7 +201,7 @@ LABEL_19:
 
   else
   {
-    objc_storeStrong(&self->_currentActiveDevice, v3);
+    objc_storeStrong(&self->_currentActiveDevice, getActivePairedDevice);
     v6 = *p_currentActiveDevice;
     v7 = sub_100001040(off_100016898);
     v8 = v7;
@@ -264,9 +264,9 @@ LABEL_20:
 
 - (void)connectToWatch
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NRDevice *)v2->_currentActiveDevice valueForProperty:NRDevicePropertyBluetoothMACAddress];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NRDevice *)selfCopy->_currentActiveDevice valueForProperty:NRDevicePropertyBluetoothMACAddress];
   if (!v3)
   {
     p_super = sub_100001040(off_100016898);
@@ -278,15 +278,15 @@ LABEL_20:
     goto LABEL_16;
   }
 
-  if (![(NSString *)v2->_macAddress isEqualToString:v3])
+  if (![(NSString *)selfCopy->_macAddress isEqualToString:v3])
   {
-    v4 = [(DPCWatchPresenceDetector *)v2 stateMachine];
-    [v4 setIsSwitchingWatch:1];
+    stateMachine = [(DPCWatchPresenceDetector *)selfCopy stateMachine];
+    [stateMachine setIsSwitchingWatch:1];
 
     v5 = sub_100001040(off_100016898);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      macAddress = v2->_macAddress;
+      macAddress = selfCopy->_macAddress;
       v22 = 138412546;
       v23 = macAddress;
       v24 = 2112;
@@ -294,18 +294,18 @@ LABEL_20:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Switching from %@ to %@", &v22, 0x16u);
     }
 
-    v7 = [(DPCWatchPresenceDetector *)v2 detectedNewWatchStatusEventBlock];
-    v7[2](v7, 0);
+    detectedNewWatchStatusEventBlock = [(DPCWatchPresenceDetector *)selfCopy detectedNewWatchStatusEventBlock];
+    detectedNewWatchStatusEventBlock[2](detectedNewWatchStatusEventBlock, 0);
 
-    [(DPCTelemetry *)v2->_telemetry registerWatchSwitch];
+    [(DPCTelemetry *)selfCopy->_telemetry registerWatchSwitch];
   }
 
-  objc_storeStrong(&v2->_macAddress, v3);
-  v8 = [(CBCentralManager *)v2->_manager retrievePeripheralWithAddress:v2->_macAddress];
-  watch = v2->_watch;
-  v2->_watch = v8;
+  objc_storeStrong(&selfCopy->_macAddress, v3);
+  v8 = [(CBCentralManager *)selfCopy->_manager retrievePeripheralWithAddress:selfCopy->_macAddress];
+  watch = selfCopy->_watch;
+  selfCopy->_watch = v8;
 
-  v10 = v2->_watch;
+  v10 = selfCopy->_watch;
   if (!v10 || ([(CBPeripheral *)v10 identifier], v11 = objc_claimAutoreleasedReturnValue(), v12 = v11 == 0, v11, v12))
   {
     v20 = sub_100001040(off_100016898);
@@ -314,8 +314,8 @@ LABEL_20:
       sub_1000076E4(v3, v20);
     }
 
-    p_super = &v2->_watch->super.super;
-    v2->_watch = 0;
+    p_super = &selfCopy->_watch->super.super;
+    selfCopy->_watch = 0;
 LABEL_16:
 
     goto LABEL_17;
@@ -324,50 +324,50 @@ LABEL_16:
   v13 = sub_100001040(off_100016898);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = v2->_watch;
+    v14 = selfCopy->_watch;
     v22 = 138412290;
     v23 = v14;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Successfully retrieved CBPeripheral %@", &v22, 0xCu);
   }
 
   v15 = [NRDeviceMonitor alloc];
-  v16 = [(CBPeripheral *)v2->_watch identifier];
-  v17 = [NRDeviceIdentifier newDeviceIdentifierWithBluetoothUUID:v16];
-  v18 = [v15 initWithDeviceIdentifier:v17 delegate:v2 queue:v2->_executionQueue];
-  nrMonitor = v2->_nrMonitor;
-  v2->_nrMonitor = v18;
+  identifier = [(CBPeripheral *)selfCopy->_watch identifier];
+  v17 = [NRDeviceIdentifier newDeviceIdentifierWithBluetoothUUID:identifier];
+  v18 = [v15 initWithDeviceIdentifier:v17 delegate:selfCopy queue:selfCopy->_executionQueue];
+  nrMonitor = selfCopy->_nrMonitor;
+  selfCopy->_nrMonitor = v18;
 
-  [(SFClient *)v2->_sfClient getPairedWatchWristStateWithCompletionHandler:v2->_wristDetectionHandler];
+  [(SFClient *)selfCopy->_sfClient getPairedWatchWristStateWithCompletionHandler:selfCopy->_wristDetectionHandler];
 LABEL_17:
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)loadPolicy
 {
-  v3 = [(DPCWatchPresenceDetector *)self stateMachine];
-  v4 = [v3 isInRSSIMode];
+  stateMachine = [(DPCWatchPresenceDetector *)self stateMachine];
+  isInRSSIMode = [stateMachine isInRSSIMode];
 
   v5 = &off_100010240;
-  if (!v4)
+  if (!isInRSSIMode)
   {
     v5 = off_100010238;
   }
 
   v6 = objc_alloc(*v5);
-  v7 = [(DPCWatchPresenceDetector *)self stateMachine];
-  v8 = [v6 initWithStateMachine:v7];
+  stateMachine2 = [(DPCWatchPresenceDetector *)self stateMachine];
+  v8 = [v6 initWithStateMachine:stateMachine2];
   policy = self->_policy;
   self->_policy = v8;
 
-  v10 = [(DPCWatchPresenceDetector *)self detectedNewEventBlock];
-  [(DPCBasePolicy *)self->_policy setDetectedNewEventBlock:v10];
+  detectedNewEventBlock = [(DPCWatchPresenceDetector *)self detectedNewEventBlock];
+  [(DPCBasePolicy *)self->_policy setDetectedNewEventBlock:detectedNewEventBlock];
 
-  v11 = [(DPCWatchPresenceDetector *)self detectedNewErrorBlock];
-  [(DPCBasePolicy *)self->_policy setDetectedNewErrorBlock:v11];
+  detectedNewErrorBlock = [(DPCWatchPresenceDetector *)self detectedNewErrorBlock];
+  [(DPCBasePolicy *)self->_policy setDetectedNewErrorBlock:detectedNewErrorBlock];
 
-  v12 = [(DPCWatchPresenceDetector *)self detectedNewWatchStatusEventBlock];
-  [(DPCBasePolicy *)self->_policy setDetectedNewWatchStatusEventBlock:v12];
+  detectedNewWatchStatusEventBlock = [(DPCWatchPresenceDetector *)self detectedNewWatchStatusEventBlock];
+  [(DPCBasePolicy *)self->_policy setDetectedNewWatchStatusEventBlock:detectedNewWatchStatusEventBlock];
 }
 
 - (void)resetWatchMonitors
@@ -379,17 +379,17 @@ LABEL_17:
 
 - (void)checkAndStartRSSIDetection
 {
-  v6 = [(DPCWatchPresenceDetector *)self stateMachine];
-  if ([v6 isRunning] && -[DPCBasePolicy requireRSSI](self->_policy, "requireRSSI"))
+  stateMachine = [(DPCWatchPresenceDetector *)self stateMachine];
+  if ([stateMachine isRunning] && -[DPCBasePolicy requireRSSI](self->_policy, "requireRSSI"))
   {
     watch = self->_watch;
 
     if (watch)
     {
-      v4 = [(DPCWatchPresenceDetector *)self stateMachine];
-      v5 = [v4 currentWatchWristState];
+      stateMachine2 = [(DPCWatchPresenceDetector *)self stateMachine];
+      currentWatchWristState = [stateMachine2 currentWatchWristState];
 
-      if (v5 == 3)
+      if (currentWatchWristState == 3)
       {
 
         [(DPCWatchPresenceDetector *)self runDiscoveryMode];
@@ -441,72 +441,72 @@ LABEL_17:
 - (void)_registerSwitchWatchNotification
 {
   objc_initWeak(&location, self);
-  v3 = [NRPairedDeviceRegistryWatchDidBecomeActiveDarwinNotification UTF8String];
+  uTF8String = [NRPairedDeviceRegistryWatchDidBecomeActiveDarwinNotification UTF8String];
   executionQueue = self->_executionQueue;
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100005880;
   v5[3] = &unk_100010778;
   objc_copyWeak(&v6, &location);
-  notify_register_dispatch(v3, &self->_notifyToken, executionQueue, v5);
+  notify_register_dispatch(uTF8String, &self->_notifyToken, executionQueue, v5);
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
 
-- (void)detectWatchWristStateEvent:(int64_t)a3
+- (void)detectWatchWristStateEvent:(int64_t)event
 {
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v5 = sub_100001040(off_100016898);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    if (a3 >= 4)
+    if (event >= 4)
     {
-      v6 = [NSString stringWithFormat:@"Undefined state (%ld)", a3];
+      event = [NSString stringWithFormat:@"Undefined state (%ld)", event];
     }
 
     else
     {
-      v6 = *(&off_1000107C0 + a3);
+      event = *(&off_1000107C0 + event);
     }
 
     *buf = 138412290;
-    v9 = v6;
+    v9 = event;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[WristEvent]: %@", buf, 0xCu);
   }
 
-  v7 = [(DPCWatchPresenceDetector *)v4 stateMachine];
-  [v7 setCurrentWatchWristState:a3];
+  stateMachine = [(DPCWatchPresenceDetector *)selfCopy stateMachine];
+  [stateMachine setCurrentWatchWristState:event];
 
-  objc_sync_exit(v4);
-  [(DPCWatchPresenceDetector *)v4 sendWatchWristStateEvent:a3];
-  [(DPCBasePolicy *)v4->_policy onWristStateChange:a3];
-  [(DPCWatchPresenceDetector *)v4 checkAndStartRSSIDetection];
+  objc_sync_exit(selfCopy);
+  [(DPCWatchPresenceDetector *)selfCopy sendWatchWristStateEvent:event];
+  [(DPCBasePolicy *)selfCopy->_policy onWristStateChange:event];
+  [(DPCWatchPresenceDetector *)selfCopy checkAndStartRSSIDetection];
 }
 
-- (void)sendWatchWristStateEvent:(int64_t)a3
+- (void)sendWatchWristStateEvent:(int64_t)event
 {
   [(DPCTelemetry *)self->_telemetry registerWatchWristEvent:?];
-  if (a3 == 3)
+  if (event == 3)
   {
-    a3 = 1;
+    event = 1;
   }
 
-  else if (a3 != 2)
+  else if (event != 2)
   {
     return;
   }
 
-  v5 = [(DPCWatchPresenceDetector *)self detectedNewWatchStatusEventBlock];
-  v5[2](v5, a3);
+  detectedNewWatchStatusEventBlock = [(DPCWatchPresenceDetector *)self detectedNewWatchStatusEventBlock];
+  detectedNewWatchStatusEventBlock[2](detectedNewWatchStatusEventBlock, event);
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = [(CBCentralManager *)self->_manager state];
+  state = [(CBCentralManager *)self->_manager state];
   v5 = sub_100001040(off_100016898);
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4 == 5)
+  if (state == 5)
   {
     if (v6)
     {
@@ -522,9 +522,9 @@ LABEL_17:
   {
     if (v6)
     {
-      v7 = [(CBCentralManager *)self->_manager state];
+      state2 = [(CBCentralManager *)self->_manager state];
       v8 = 134217984;
-      v9 = v7;
+      v9 = state2;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Bluetooth is unavailable %ld", &v8, 0xCu);
     }
 
@@ -532,17 +532,17 @@ LABEL_17:
   }
 }
 
-- (void)centralManager:(id)a3 didUpdateRSSIStatisticsDetectionForPeripheral:(id)a4 results:(id)a5 error:(id)a6
+- (void)centralManager:(id)manager didUpdateRSSIStatisticsDetectionForPeripheral:(id)peripheral results:(id)results error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v13)
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  resultsCopy = results;
+  errorCopy = error;
+  v14 = errorCopy;
+  if (errorCopy)
   {
-    v15 = [v13 domain];
-    v16 = [v15 isEqualToString:CBInternalErrorDomain];
+    domain = [errorCopy domain];
+    v16 = [domain isEqualToString:CBInternalErrorDomain];
 
     if (v16 && [v14 code] != 19)
     {
@@ -558,87 +558,87 @@ LABEL_17:
 
   else
   {
-    v18 = [v12 objectForKeyedSubscript:@"kCBGetRssiStatisticsDetectionMaximum"];
+    v18 = [resultsCopy objectForKeyedSubscript:@"kCBGetRssiStatisticsDetectionMaximum"];
     [(DPCWatchPresenceDetector *)self checkPolicyWithRSSI:v18];
   }
 }
 
-- (void)changeRSSIStatisticsDetection:(id)a3 manager:(id)a4 closer:(id)a5 further:(id)a6 maskDecision:(int64_t)a7
+- (void)changeRSSIStatisticsDetection:(id)detection manager:(id)manager closer:(id)closer further:(id)further maskDecision:(int64_t)decision
 {
-  v7 = a7;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  decisionCopy = decision;
+  detectionCopy = detection;
+  managerCopy = manager;
+  closerCopy = closer;
+  furtherCopy = further;
   v16 = +[NSMutableDictionary dictionary];
-  if (v12 && v13)
+  if (detectionCopy && managerCopy)
   {
-    v57 = self;
-    v55 = 1 << v7;
-    v17 = [v14 intValue];
+    selfCopy = self;
+    v55 = 1 << decisionCopy;
+    intValue = [closerCopy intValue];
     v18 = +[DPCDefaults sharedInstance];
     v19 = [v18 NSNumberForDefault:@"DPCDefaultsThresholdDMIN"];
-    v20 = [v19 intValue];
+    intValue2 = [v19 intValue];
 
     v21 = +[DPCDefaults sharedInstance];
     v22 = v21;
     v23 = &off_100010480;
-    if (v17 != v20)
+    if (intValue != intValue2)
     {
       v23 = &off_100010478;
     }
 
     v24 = [v21 NSNumberForDefault:*v23];
-    v25 = [v24 intValue];
+    intValue3 = [v24 intValue];
 
-    if (v25 - 4 >= 0xC)
+    if (intValue3 - 4 >= 0xC)
     {
       v26 = 1;
     }
 
     else
     {
-      v26 = (v25 >> 2) - 1;
+      v26 = (intValue3 >> 2) - 1;
     }
 
     v56 = v26;
-    v27 = [v14 intValue];
+    intValue4 = [closerCopy intValue];
     v28 = +[DPCDefaults sharedInstance];
     v29 = [v28 NSNumberForDefault:@"DPCDefaultsThresholdDMIN"];
-    v30 = [v29 intValue];
+    intValue5 = [v29 intValue];
 
-    if (v27 > v30)
+    if (intValue4 > intValue5)
     {
       v31 = +[DPCDefaults sharedInstance];
       v32 = [v31 NSNumberForDefault:@"DPCDefaultsThresholdDMIN"];
 
-      v14 = v32;
+      closerCopy = v32;
     }
 
-    v33 = [v15 intValue];
+    intValue6 = [furtherCopy intValue];
     v34 = +[DPCDefaults sharedInstance];
     v35 = [v34 NSNumberForDefault:@"DPCDefaultsThresholdDMAX"];
-    v36 = [v35 intValue];
+    intValue7 = [v35 intValue];
 
-    if (v33 < v36)
+    if (intValue6 < intValue7)
     {
       v37 = +[DPCDefaults sharedInstance];
       v38 = [v37 NSNumberForDefault:@"DPCDefaultsThresholdDMAX"];
 
-      v15 = v38;
+      furtherCopy = v38;
     }
 
     v39 = [NSNumber numberWithInt:1];
     [v16 setObject:v39 forKeyedSubscript:CBRSSIStatisticAndDetectionEnable];
 
-    [v16 setObject:v15 forKeyedSubscript:CBRSSIStatisticAndDetectionAverageThresholdFurther];
+    [v16 setObject:furtherCopy forKeyedSubscript:CBRSSIStatisticAndDetectionAverageThresholdFurther];
     v40 = CBRSSIStatisticAndDetectionMaximumThresholdFurther;
-    [v16 setObject:v15 forKeyedSubscript:CBRSSIStatisticAndDetectionMaximumThresholdFurther];
-    [v16 setObject:v15 forKeyedSubscript:CBRSSIStatisticAndDetectionMedianThresholdFurther];
-    [v16 setObject:v14 forKeyedSubscript:CBRSSIStatisticAndDetectionAverageThresholdCloser];
+    [v16 setObject:furtherCopy forKeyedSubscript:CBRSSIStatisticAndDetectionMaximumThresholdFurther];
+    [v16 setObject:furtherCopy forKeyedSubscript:CBRSSIStatisticAndDetectionMedianThresholdFurther];
+    [v16 setObject:closerCopy forKeyedSubscript:CBRSSIStatisticAndDetectionAverageThresholdCloser];
     v41 = CBRSSIStatisticAndDetectionMaximumThresholdCloser;
-    [v16 setObject:v14 forKeyedSubscript:CBRSSIStatisticAndDetectionMaximumThresholdCloser];
-    [v16 setObject:v14 forKeyedSubscript:CBRSSIStatisticAndDetectionMedianThresholdCloser];
+    [v16 setObject:closerCopy forKeyedSubscript:CBRSSIStatisticAndDetectionMaximumThresholdCloser];
+    [v16 setObject:closerCopy forKeyedSubscript:CBRSSIStatisticAndDetectionMedianThresholdCloser];
     v42 = [NSNumber numberWithInt:0];
     [v16 setObject:v42 forKeyedSubscript:CBRSSIStatisticAndDetectionVarThreshold1];
 
@@ -678,25 +678,25 @@ LABEL_17:
       _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_DEFAULT, "Enabled BT RSSI Stat with closer: %@ db, further: %@ db", buf, 0x16u);
     }
 
-    [v13 setRSSIStatisticsDetection:v12 options:v16];
-    v54 = [(DPCWatchPresenceDetector *)v57 stateMachine];
-    [v54 setIsRunningRSSIStatDetecion:1];
+    [managerCopy setRSSIStatisticsDetection:detectionCopy options:v16];
+    stateMachine = [(DPCWatchPresenceDetector *)selfCopy stateMachine];
+    [stateMachine setIsRunningRSSIStatDetecion:1];
   }
 }
 
-- (void)disableRSSIStatisticsDetection:(id)a3 manager:(id)a4
+- (void)disableRSSIStatisticsDetection:(id)detection manager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  detectionCopy = detection;
+  managerCopy = manager;
+  v8 = managerCopy;
+  if (detectionCopy)
   {
-    if (v7)
+    if (managerCopy)
     {
-      v9 = [(DPCWatchPresenceDetector *)self stateMachine];
-      v10 = [v9 isRunningRSSIStatDetecion];
+      stateMachine = [(DPCWatchPresenceDetector *)self stateMachine];
+      isRunningRSSIStatDetecion = [stateMachine isRunningRSSIStatDetecion];
 
-      if (v10)
+      if (isRunningRSSIStatDetecion)
       {
         v11 = +[NSMutableDictionary dictionary];
         v12 = [NSNumber numberWithInt:0];
@@ -706,13 +706,13 @@ LABEL_17:
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           v15 = 138412290;
-          v16 = v6;
+          v16 = detectionCopy;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Disabling BT RSSI Stat against %@", &v15, 0xCu);
         }
 
-        [v8 setRSSIStatisticsDetection:v6 options:v11];
-        v14 = [(DPCWatchPresenceDetector *)self stateMachine];
-        [v14 setIsRunningRSSIStatDetecion:0];
+        [v8 setRSSIStatisticsDetection:detectionCopy options:v11];
+        stateMachine2 = [(DPCWatchPresenceDetector *)self stateMachine];
+        [stateMachine2 setIsRunningRSSIStatDetecion:0];
       }
     }
   }
@@ -721,20 +721,20 @@ LABEL_17:
 - (void)start
 {
   v3 = +[DPCDefaults isRSSIModeEnabled];
-  v4 = [(DPCWatchPresenceDetector *)self stateMachine];
-  [v4 setIsInRSSIMode:v3];
+  stateMachine = [(DPCWatchPresenceDetector *)self stateMachine];
+  [stateMachine setIsInRSSIMode:v3];
 
   [(DPCWatchPresenceDetector *)self loadPolicy];
-  v5 = [(DPCWatchPresenceDetector *)self stateMachine];
-  LOBYTE(v4) = [v5 isRunning];
+  stateMachine2 = [(DPCWatchPresenceDetector *)self stateMachine];
+  LOBYTE(stateMachine) = [stateMachine2 isRunning];
 
-  if ((v4 & 1) == 0)
+  if ((stateMachine & 1) == 0)
   {
-    v6 = [(DPCWatchPresenceDetector *)self stateMachine];
-    [v6 setIsRunning:1];
+    stateMachine3 = [(DPCWatchPresenceDetector *)self stateMachine];
+    [stateMachine3 setIsRunning:1];
 
-    v7 = [(DPCWatchPresenceDetector *)self stateMachine];
-    [v7 setIsMonitoringAbsence:1];
+    stateMachine4 = [(DPCWatchPresenceDetector *)self stateMachine];
+    [stateMachine4 setIsMonitoringAbsence:1];
 
     if (!self->_watch)
     {
@@ -749,13 +749,13 @@ LABEL_17:
 
 - (void)stop
 {
-  v3 = [(DPCWatchPresenceDetector *)self stateMachine];
-  v4 = [v3 isRunning];
+  stateMachine = [(DPCWatchPresenceDetector *)self stateMachine];
+  isRunning = [stateMachine isRunning];
 
-  if (v4)
+  if (isRunning)
   {
-    v5 = [(DPCWatchPresenceDetector *)self stateMachine];
-    [v5 setIsRunning:0];
+    stateMachine2 = [(DPCWatchPresenceDetector *)self stateMachine];
+    [stateMachine2 setIsRunning:0];
 
     [(DPCWatchPresenceDetector *)self disableRSSIStatisticsDetection];
   }
@@ -771,9 +771,9 @@ LABEL_6:
     return v3;
   }
 
-  v4 = [(DPCWatchPresenceDetector *)self getCurrentWatchMACAddress];
+  getCurrentWatchMACAddress = [(DPCWatchPresenceDetector *)self getCurrentWatchMACAddress];
 
-  if (!v4)
+  if (!getCurrentWatchMACAddress)
   {
     v3 = 2;
     goto LABEL_6;
@@ -815,19 +815,19 @@ LABEL_6:
   dispatch_async(executionQueue, block);
 }
 
-- (void)checkPolicyWithRSSI:(id)a3
+- (void)checkPolicyWithRSSI:(id)i
 {
-  v4 = a3;
+  iCopy = i;
   v5 = sub_100001040(off_100016898);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    [v4 floatValue];
+    [iCopy floatValue];
     v8 = 134217984;
     v9 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "RSSI Updates: %.2f", &v8, 0xCu);
   }
 
-  v7 = [(DPCBasePolicy *)self->_policy onRSSIChange:v4];
+  v7 = [(DPCBasePolicy *)self->_policy onRSSIChange:iCopy];
   if (v7 == 2)
   {
     [(DPCWatchPresenceDetector *)self monitorRSSIAbsence];
@@ -839,7 +839,7 @@ LABEL_6:
   }
 }
 
-- (void)deviceIsNearbyDidChange:(id)a3 isNearby:(BOOL)a4
+- (void)deviceIsNearbyDidChange:(id)change isNearby:(BOOL)nearby
 {
   objc_initWeak(&location, self);
   executionQueue = self->_executionQueue;
@@ -848,32 +848,32 @@ LABEL_6:
   block[2] = sub_100006E14;
   block[3] = &unk_1000107A0;
   objc_copyWeak(&v8, &location);
-  v9 = a4;
+  nearbyCopy = nearby;
   dispatch_async(executionQueue, block);
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 }
 
-- (void)deviceIsConnectedDidChange:(id)a3 isConnected:(BOOL)a4
+- (void)deviceIsConnectedDidChange:(id)change isConnected:(BOOL)connected
 {
-  v4 = a4;
+  connectedCopy = connected;
   v5 = sub_100001040(off_100016898);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = v4;
+    v6[1] = connectedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "deviceIsConnectedDidChange isConnected: %d", v6, 8u);
   }
 }
 
-- (void)deviceLinkTypeDidChange:(id)a3 linkType:(unsigned __int8)a4 linkSubtype:(unsigned __int8)a5
+- (void)deviceLinkTypeDidChange:(id)change linkType:(unsigned __int8)type linkSubtype:(unsigned __int8)subtype
 {
-  v5 = a4;
+  typeCopy = type;
   v6 = sub_100001040(off_100016898);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67109120;
-    v7[1] = v5;
+    v7[1] = typeCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "deviceLinkTypeDidChange to :%d", v7, 8u);
   }
 }
@@ -885,31 +885,31 @@ LABEL_6:
     v3 = sub_100001040(off_100016898);
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(NRDeviceMonitor *)self->_nrMonitor deviceIdentifier];
-      v5 = [(NRDeviceMonitor *)self->_nrMonitor isConnected];
-      v6 = [(NRDeviceMonitor *)self->_nrMonitor isCloudConnected];
-      v7 = [(NRDeviceMonitor *)self->_nrMonitor isNearby];
+      deviceIdentifier = [(NRDeviceMonitor *)self->_nrMonitor deviceIdentifier];
+      isConnected = [(NRDeviceMonitor *)self->_nrMonitor isConnected];
+      isCloudConnected = [(NRDeviceMonitor *)self->_nrMonitor isCloudConnected];
+      isNearby = [(NRDeviceMonitor *)self->_nrMonitor isNearby];
       [(NRDeviceMonitor *)self->_nrMonitor linkType];
       StringFromNRLinkType = createStringFromNRLinkType();
       v25 = 138413314;
-      v26 = v4;
+      v26 = deviceIdentifier;
       v27 = 1024;
-      v28 = v5;
+      v28 = isConnected;
       v29 = 1024;
-      v30 = v6;
+      v30 = isCloudConnected;
       v31 = 1024;
-      v32 = v7;
+      v32 = isNearby;
       v33 = 2112;
       v34 = StringFromNRLinkType;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Current connection to %@, isConnected %d, isCloudConnected %d, isBluetoothConnected %d, linkType %@", &v25, 0x28u);
     }
 
     [(DPCTelemetry *)self->_telemetry registerWatchConnectivity:[(NRDeviceMonitor *)self->_nrMonitor isNearby]];
-    v9 = [(DPCWatchPresenceDetector *)self detectedNewWatchStatusEventBlock];
+    detectedNewWatchStatusEventBlock = [(DPCWatchPresenceDetector *)self detectedNewWatchStatusEventBlock];
 
-    if (v9)
+    if (detectedNewWatchStatusEventBlock)
     {
-      v10 = [(DPCWatchPresenceDetector *)self detectedNewWatchStatusEventBlock];
+      detectedNewWatchStatusEventBlock2 = [(DPCWatchPresenceDetector *)self detectedNewWatchStatusEventBlock];
       if ([(NRDeviceMonitor *)self->_nrMonitor isNearby])
       {
         v11 = 4;
@@ -920,50 +920,50 @@ LABEL_6:
         v11 = 3;
       }
 
-      v10[2](v10, v11);
+      detectedNewWatchStatusEventBlock2[2](detectedNewWatchStatusEventBlock2, v11);
     }
 
-    v12 = [(NRDeviceMonitor *)self->_nrMonitor isConnected];
-    v13 = [(DPCWatchPresenceDetector *)self stateMachine];
-    [v13 setIsWatchConnected:v12];
+    isConnected2 = [(NRDeviceMonitor *)self->_nrMonitor isConnected];
+    stateMachine = [(DPCWatchPresenceDetector *)self stateMachine];
+    [stateMachine setIsWatchConnected:isConnected2];
 
-    v14 = [(NRDeviceMonitor *)self->_nrMonitor isNearby];
-    v15 = [(DPCWatchPresenceDetector *)self stateMachine];
-    [v15 setIsBluetoothConnected:v14];
+    isNearby2 = [(NRDeviceMonitor *)self->_nrMonitor isNearby];
+    stateMachine2 = [(DPCWatchPresenceDetector *)self stateMachine];
+    [stateMachine2 setIsBluetoothConnected:isNearby2];
 
     if ([(NRDeviceMonitor *)self->_nrMonitor isNearby])
     {
-      v16 = [(DPCWatchPresenceDetector *)self stateMachine];
-      v17 = [v16 isSwitchingWatch];
+      stateMachine3 = [(DPCWatchPresenceDetector *)self stateMachine];
+      isSwitchingWatch = [stateMachine3 isSwitchingWatch];
 
-      v18 = sub_100001040(off_100016898);
-      v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
-      if (v17)
+      stateMachine4 = sub_100001040(off_100016898);
+      v19 = os_log_type_enabled(stateMachine4, OS_LOG_TYPE_DEFAULT);
+      if (isSwitchingWatch)
       {
         if (v19)
         {
-          v20 = [(NRDeviceMonitor *)self->_nrMonitor deviceIdentifier];
+          deviceIdentifier2 = [(NRDeviceMonitor *)self->_nrMonitor deviceIdentifier];
           v25 = 138412290;
-          v26 = v20;
-          _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Switched to watch: %@", &v25, 0xCu);
+          v26 = deviceIdentifier2;
+          _os_log_impl(&_mh_execute_header, stateMachine4, OS_LOG_TYPE_DEFAULT, "Switched to watch: %@", &v25, 0xCu);
         }
 
-        v18 = [(DPCWatchPresenceDetector *)self stateMachine];
-        [v18 setIsSwitchingWatch:0];
+        stateMachine4 = [(DPCWatchPresenceDetector *)self stateMachine];
+        [stateMachine4 setIsSwitchingWatch:0];
       }
 
       else if (v19)
       {
-        v22 = [(NRDeviceMonitor *)self->_nrMonitor deviceIdentifier];
+        deviceIdentifier3 = [(NRDeviceMonitor *)self->_nrMonitor deviceIdentifier];
         v25 = 138412290;
-        v26 = v22;
-        _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Watch %@ connected.", &v25, 0xCu);
+        v26 = deviceIdentifier3;
+        _os_log_impl(&_mh_execute_header, stateMachine4, OS_LOG_TYPE_DEFAULT, "Watch %@ connected.", &v25, 0xCu);
       }
 
-      v23 = [(DPCWatchPresenceDetector *)self stateMachine];
-      v24 = [v23 isInRSSIMode];
+      stateMachine5 = [(DPCWatchPresenceDetector *)self stateMachine];
+      isInRSSIMode = [stateMachine5 isInRSSIMode];
 
-      if (v24)
+      if (isInRSSIMode)
       {
         [(DPCWatchPresenceDetector *)self checkAndStartRSSIDetection];
       }

@@ -1,6 +1,6 @@
 @interface ACSettingsGuidedAccess
 - (ACSettingsGuidedAccess)init;
-- (void)setEnabled:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation ACSettingsGuidedAccess
@@ -22,9 +22,9 @@
   return v2;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     +[PSGuidedAccessSettingsDetail enterGuidedAccessMode];
   }

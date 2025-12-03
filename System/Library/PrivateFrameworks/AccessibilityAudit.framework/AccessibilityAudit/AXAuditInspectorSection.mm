@@ -1,21 +1,21 @@
 @interface AXAuditInspectorSection
-+ (id)identifierForType:(int64_t)a3;
-+ (id)titleForType:(int64_t)a3;
-+ (void)registerTransportableObjectWithManager:(id)a3;
-- (AXAuditInspectorSection)initWithType:(int64_t)a3;
++ (id)identifierForType:(int64_t)type;
++ (id)titleForType:(int64_t)type;
++ (void)registerTransportableObjectWithManager:(id)manager;
+- (AXAuditInspectorSection)initWithType:(int64_t)type;
 - (BOOL)displaysHierarchy;
 - (BOOL)hasActions;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)elementAttributes;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)addAttribute:(id)a3;
+- (void)addAttribute:(id)attribute;
 @end
 
 @implementation AXAuditInspectorSection
 
-- (AXAuditInspectorSection)initWithType:(int64_t)a3
+- (AXAuditInspectorSection)initWithType:(int64_t)type
 {
   v10.receiver = self;
   v10.super_class = AXAuditInspectorSection;
@@ -26,39 +26,39 @@
     elementAttributes = v4->__elementAttributes;
     v4->__elementAttributes = v5;
 
-    v7 = [AXAuditInspectorSection identifierForType:a3];
+    v7 = [AXAuditInspectorSection identifierForType:type];
     [(AXAuditInspectorSection *)v4 setIdentifier:v7];
 
-    v8 = [AXAuditInspectorSection titleForType:a3];
+    v8 = [AXAuditInspectorSection titleForType:type];
     [(AXAuditInspectorSection *)v4 setTitle:v8];
 
-    [(AXAuditInspectorSection *)v4 setAllowsFilter:a3 == 1];
+    [(AXAuditInspectorSection *)v4 setAllowsFilter:type == 1];
   }
 
   return v4;
 }
 
-+ (id)identifierForType:(int64_t)a3
++ (id)identifierForType:(int64_t)type
 {
-  if ((a3 - 1) > 4)
+  if ((type - 1) > 4)
   {
     return @"Actions_v1";
   }
 
   else
   {
-    return off_278BE2BD0[a3 - 1];
+    return off_278BE2BD0[type - 1];
   }
 }
 
-+ (id)titleForType:(int64_t)a3
++ (id)titleForType:(int64_t)type
 {
-  if (a3 <= 5)
+  if (type <= 5)
   {
-    a1 = AXAuditLocString(off_278BE2BF8[a3], 1);
+    self = AXAuditLocString(off_278BE2BF8[type], 1);
   }
 
-  return a1;
+  return self;
 }
 
 - (BOOL)displaysHierarchy
@@ -68,8 +68,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(AXAuditInspectorSection *)self elementAttributes];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  elementAttributes = [(AXAuditInspectorSection *)self elementAttributes];
+  v3 = [elementAttributes countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = *v12;
@@ -79,14 +79,14 @@
       {
         if (*v12 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(elementAttributes);
         }
 
         v6 = *(*(&v11 + 1) + 8 * i);
         if ([v6 displayAsTree])
         {
-          v7 = [v6 humanReadableName];
-          v8 = [v7 length];
+          humanReadableName = [v6 humanReadableName];
+          v8 = [humanReadableName length];
 
           if (v8)
           {
@@ -96,7 +96,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v3 = [elementAttributes countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v3)
       {
         continue;
@@ -119,8 +119,8 @@ LABEL_12:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(AXAuditInspectorSection *)self elementAttributes];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  elementAttributes = [(AXAuditInspectorSection *)self elementAttributes];
+  v3 = [elementAttributes countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = *v12;
@@ -130,14 +130,14 @@ LABEL_12:
       {
         if (*v12 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(elementAttributes);
         }
 
         v6 = *(*(&v11 + 1) + 8 * i);
         if ([v6 performsAction])
         {
-          v7 = [v6 humanReadableName];
-          v8 = [v7 length];
+          humanReadableName = [v6 humanReadableName];
+          v8 = [humanReadableName length];
 
           if (v8)
           {
@@ -147,7 +147,7 @@ LABEL_12:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v3 = [elementAttributes countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v3)
       {
         continue;
@@ -163,9 +163,9 @@ LABEL_12:
   return v3;
 }
 
-+ (void)registerTransportableObjectWithManager:(id)a3
++ (void)registerTransportableObjectWithManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   v8 = [[AXAuditObjectTransportInfoPropertyBased alloc] initWithClass:objc_opt_class() transportKey:@"AXAuditInspectorSection_v1"];
   v4 = objc_alloc_init(AXAuditObjectTransportPropertyEntry);
   [(AXAuditObjectTransportInfoPropertyBased *)v8 addPropertyEntry:v4];
@@ -187,7 +187,7 @@ LABEL_12:
   [(AXAuditObjectTransportPropertyEntry *)v7 setTransportKey:@"AllowsFilter_v1"];
   [(AXAuditObjectTransportPropertyEntry *)v7 setLocalValueToTransportValue:&__block_literal_global_71_1];
   [(AXAuditObjectTransportPropertyEntry *)v7 setPopulateLocalObjectWithTransportValue:&__block_literal_global_74];
-  [v3 registerTransportInfoPropertyBased:v8];
+  [managerCopy registerTransportInfoPropertyBased:v8];
 }
 
 void __66__AXAuditInspectorSection_registerTransportableObjectWithManager___block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -243,48 +243,48 @@ void __66__AXAuditInspectorSection_registerTransportableObjectWithManager___bloc
   }
 }
 
-- (void)addAttribute:(id)a3
+- (void)addAttribute:(id)attribute
 {
-  if (a3)
+  if (attribute)
   {
-    v4 = a3;
-    v5 = [(AXAuditInspectorSection *)self _elementAttributes];
+    attributeCopy = attribute;
+    _elementAttributes = [(AXAuditInspectorSection *)self _elementAttributes];
 
-    if (!v5)
+    if (!_elementAttributes)
     {
       v6 = objc_opt_new();
       [(AXAuditInspectorSection *)self set_elementAttributes:v6];
     }
 
-    v7 = [(AXAuditInspectorSection *)self _elementAttributes];
-    [v7 addObject:v4];
+    _elementAttributes2 = [(AXAuditInspectorSection *)self _elementAttributes];
+    [_elementAttributes2 addObject:attributeCopy];
   }
 }
 
 - (NSArray)elementAttributes
 {
-  v2 = [(AXAuditInspectorSection *)self _elementAttributes];
-  v3 = [v2 copy];
+  _elementAttributes = [(AXAuditInspectorSection *)self _elementAttributes];
+  v3 = [_elementAttributes copy];
 
   return v3;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(AXAuditInspectorSection *)self title];
-  v4 = [v3 hash];
-  v5 = [(AXAuditInspectorSection *)self elementAttributes];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(AXAuditInspectorSection *)self identifier];
-  v8 = [v7 hash];
+  title = [(AXAuditInspectorSection *)self title];
+  v4 = [title hash];
+  elementAttributes = [(AXAuditInspectorSection *)self elementAttributes];
+  v6 = [elementAttributes hash] ^ v4;
+  identifier = [(AXAuditInspectorSection *)self identifier];
+  v8 = [identifier hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -294,28 +294,28 @@ void __66__AXAuditInspectorSection_registerTransportableObjectWithManager___bloc
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(AXAuditInspectorSection *)self title];
-      v7 = [(AXAuditInspectorSection *)v5 title];
-      if (v6 | v7 && ![v6 isEqual:v7])
+      v5 = equalCopy;
+      title = [(AXAuditInspectorSection *)self title];
+      title2 = [(AXAuditInspectorSection *)v5 title];
+      if (title | title2 && ![title isEqual:title2])
       {
         v12 = 0;
       }
 
       else
       {
-        v8 = [(AXAuditInspectorSection *)self elementAttributes];
-        v9 = [(AXAuditInspectorSection *)v5 elementAttributes];
-        if (v8 | v9 && ![v8 isEqual:v9])
+        elementAttributes = [(AXAuditInspectorSection *)self elementAttributes];
+        elementAttributes2 = [(AXAuditInspectorSection *)v5 elementAttributes];
+        if (elementAttributes | elementAttributes2 && ![elementAttributes isEqual:elementAttributes2])
         {
           v12 = 0;
         }
 
         else
         {
-          v10 = [(AXAuditInspectorSection *)self identifier];
-          v11 = [(AXAuditInspectorSection *)v5 identifier];
-          v12 = !(v10 | v11) || [v10 isEqual:v11];
+          identifier = [(AXAuditInspectorSection *)self identifier];
+          identifier2 = [(AXAuditInspectorSection *)v5 identifier];
+          v12 = !(identifier | identifier2) || [identifier isEqual:identifier2];
         }
       }
     }
@@ -329,18 +329,18 @@ void __66__AXAuditInspectorSection_registerTransportableObjectWithManager___bloc
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(AXAuditInspectorSection *)self title];
-  [v4 setTitle:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  title = [(AXAuditInspectorSection *)self title];
+  [v4 setTitle:title];
 
-  v6 = [(AXAuditInspectorSection *)self identifier];
-  [v4 setIdentifier:v6];
+  identifier = [(AXAuditInspectorSection *)self identifier];
+  [v4 setIdentifier:identifier];
 
   [v4 setAllowsFilter:{-[AXAuditInspectorSection allowsFilter](self, "allowsFilter")}];
-  v7 = [(AXAuditInspectorSection *)self _elementAttributes];
-  v8 = [v7 mutableCopy];
+  _elementAttributes = [(AXAuditInspectorSection *)self _elementAttributes];
+  v8 = [_elementAttributes mutableCopy];
   [v4 set_elementAttributes:v8];
 
   return v4;
@@ -351,8 +351,8 @@ void __66__AXAuditInspectorSection_registerTransportableObjectWithManager___bloc
   v7.receiver = self;
   v7.super_class = AXAuditInspectorSection;
   v3 = [(AXAuditInspectorSection *)&v7 description];
-  v4 = [(AXAuditInspectorSection *)self title];
-  v5 = [v3 stringByAppendingFormat:@" %@", v4];
+  title = [(AXAuditInspectorSection *)self title];
+  v5 = [v3 stringByAppendingFormat:@" %@", title];
 
   return v5;
 }

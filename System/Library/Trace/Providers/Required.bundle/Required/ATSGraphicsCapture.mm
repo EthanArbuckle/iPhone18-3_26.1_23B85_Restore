@@ -1,23 +1,23 @@
 @interface ATSGraphicsCapture
-- (ATSGraphicsCapture)initWithLogger:(id)a3 config:(ktrace_config *)a4;
-- (void)addExtendedGPUInformationToFile:(ktrace_file *)a3;
+- (ATSGraphicsCapture)initWithLogger:(id)logger config:(ktrace_config *)config;
+- (void)addExtendedGPUInformationToFile:(ktrace_file *)file;
 - (void)disableGFXTracingIfNeeded;
 - (void)enableGFXTracingIfNeeded;
 @end
 
 @implementation ATSGraphicsCapture
 
-- (ATSGraphicsCapture)initWithLogger:(id)a3 config:(ktrace_config *)a4
+- (ATSGraphicsCapture)initWithLogger:(id)logger config:(ktrace_config *)config
 {
-  v6 = a3;
+  loggerCopy = logger;
   v17.receiver = self;
   v17.super_class = ATSGraphicsCapture;
   v7 = [(ATSGraphicsCapture *)&v17 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_logger, a3);
-    v9 = v6;
+    objc_storeStrong(&v7->_logger, logger);
+    v9 = loggerCopy;
     RootEntry = IORegistryGetRootEntry(kIOMainPortDefault);
     if (RootEntry)
     {
@@ -58,7 +58,7 @@ LABEL_10:
   return v8;
 }
 
-- (void)addExtendedGPUInformationToFile:(ktrace_file *)a3
+- (void)addExtendedGPUInformationToFile:(ktrace_file *)file
 {
   if (self->_deviceKind != 1)
   {

@@ -1,15 +1,15 @@
 @interface KVDataset
-- (BOOL)enumerateCascadeItemsWithError:(id *)a3 usingBlock:(id)a4;
+- (BOOL)enumerateCascadeItemsWithError:(id *)error usingBlock:(id)block;
 - (KVDataset)init;
-- (KVDataset)initWithReader:(id)a3;
+- (KVDataset)initWithReader:(id)reader;
 @end
 
 @implementation KVDataset
 
-- (BOOL)enumerateCascadeItemsWithError:(id *)a3 usingBlock:(id)a4
+- (BOOL)enumerateCascadeItemsWithError:(id *)error usingBlock:(id)block
 {
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  blockCopy = block;
   v52 = 0;
   v53 = &v52;
   v54 = 0x3032000000;
@@ -53,7 +53,7 @@
           v26 = objc_autoreleasePoolPush();
           v32 = objc_msgSend_unsignedShortValue(v25, v27, v28, v29, v30, v31);
           v37 = objc_msgSend_objectForKey_(v8, v33, v25, v34, v35, v36);
-          LODWORD(v25) = v6[2](v6, v32, v37);
+          LODWORD(v25) = blockCopy[2](blockCopy, v32, v37);
 
           objc_autoreleasePoolPop(v26);
           if (!v25)
@@ -87,9 +87,9 @@
       v13 = v53[5];
     }
 
-    if (a3 && v13)
+    if (error && v13)
     {
-      *a3 = v13;
+      *error = v13;
     }
 
     v40 = 0;
@@ -103,16 +103,16 @@ LABEL_19:
   return v40;
 }
 
-- (KVDataset)initWithReader:(id)a3
+- (KVDataset)initWithReader:(id)reader
 {
-  v5 = a3;
+  readerCopy = reader;
   v9.receiver = self;
   v9.super_class = KVDataset;
   v6 = [(KVDataset *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_datasetReader, a3);
+    objc_storeStrong(&v6->_datasetReader, reader);
   }
 
   return v7;

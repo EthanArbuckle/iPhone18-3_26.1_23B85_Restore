@@ -1,37 +1,37 @@
 @interface EKShareePickerViewController
 - (CGSize)preferredContentSize;
-- (EKShareePickerViewController)initWithFrame:(CGRect)a3 calendar:(id)a4;
+- (EKShareePickerViewController)initWithFrame:(CGRect)frame calendar:(id)calendar;
 - (EKShareePickerViewControllerDelegate)delegate;
 - (NSArray)sharees;
-- (id)_createRecipientFromSharee:(id)a3;
-- (id)_createShareeFromRecipient:(id)a3;
-- (id)_recipientFromSharee:(id)a3;
-- (id)_shareeFromRecipient:(id)a3;
-- (unint64_t)eventAttendeePicker:(id)a3 getValidationStatusForAddress:(id)a4;
+- (id)_createRecipientFromSharee:(id)sharee;
+- (id)_createShareeFromRecipient:(id)recipient;
+- (id)_recipientFromSharee:(id)sharee;
+- (id)_shareeFromRecipient:(id)recipient;
+- (unint64_t)eventAttendeePicker:(id)picker getValidationStatusForAddress:(id)address;
 - (void)add;
 - (void)cancel;
-- (void)eventAttendeePicker:(id)a3 cacheValidationStatus:(unint64_t)a4 forAddress:(id)a5;
-- (void)setSharees:(id)a3;
+- (void)eventAttendeePicker:(id)picker cacheValidationStatus:(unint64_t)status forAddress:(id)address;
+- (void)setSharees:(id)sharees;
 - (void)viewDidLoad;
 @end
 
 @implementation EKShareePickerViewController
 
-- (EKShareePickerViewController)initWithFrame:(CGRect)a3 calendar:(id)a4
+- (EKShareePickerViewController)initWithFrame:(CGRect)frame calendar:(id)calendar
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  calendarCopy = calendar;
   v20.receiver = self;
   v20.super_class = EKShareePickerViewController;
   v10 = [(EKShareePickerViewController *)&v20 initWithNibName:0 bundle:0];
   if (v10)
   {
-    v11 = [(EKEventAttendeePicker *)[EKCalendarShareePicker alloc] initWithFrame:0 event:v9 calendar:0 overriddenEventStartDate:0 overriddenEventEndDate:x, y, width, height];
+    height = [(EKEventAttendeePicker *)[EKCalendarShareePicker alloc] initWithFrame:0 event:calendarCopy calendar:0 overriddenEventStartDate:0 overriddenEventEndDate:x, y, width, height];
     picker = v10->_picker;
-    v10->_picker = v11;
+    v10->_picker = height;
 
     [(EKEventAttendeePicker *)v10->_picker setAddressValidationDelegate:v10];
     [(EKShareePickerViewController *)v10 addChildViewController:v10->_picker];
@@ -40,12 +40,12 @@
     [(EKShareePickerViewController *)v10 setTitle:v14];
 
     v15 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:v10 action:sel_cancel];
-    v16 = [(EKShareePickerViewController *)v10 navigationItem];
-    [v16 setLeftBarButtonItem:v15];
+    navigationItem = [(EKShareePickerViewController *)v10 navigationItem];
+    [navigationItem setLeftBarButtonItem:v15];
 
     v17 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:v10 action:&sel_add];
-    v18 = [(EKShareePickerViewController *)v10 navigationItem];
-    [v18 setRightBarButtonItem:v17];
+    navigationItem2 = [(EKShareePickerViewController *)v10 navigationItem];
+    [navigationItem2 setRightBarButtonItem:v17];
   }
 
   return v10;
@@ -56,18 +56,18 @@
   v15.receiver = self;
   v15.super_class = EKShareePickerViewController;
   [(EKShareePickerViewController *)&v15 viewDidLoad];
-  v3 = [(EKShareePickerViewController *)self view];
-  [v3 bounds];
+  view = [(EKShareePickerViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(EKCalendarShareePicker *)self->_picker view];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  view2 = [(EKCalendarShareePicker *)self->_picker view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 
-  v13 = [(EKShareePickerViewController *)self view];
-  v14 = [(EKCalendarShareePicker *)self->_picker view];
-  [v13 addSubview:v14];
+  view3 = [(EKShareePickerViewController *)self view];
+  view4 = [(EKCalendarShareePicker *)self->_picker view];
+  [view3 addSubview:view4];
 }
 
 - (void)cancel
@@ -95,47 +95,47 @@
   }
 }
 
-- (id)_shareeFromRecipient:(id)a3
+- (id)_shareeFromRecipient:(id)recipient
 {
-  v4 = a3;
-  v5 = objc_getAssociatedObject(v4, &shareeKey);
-  if (!v5)
+  recipientCopy = recipient;
+  address = objc_getAssociatedObject(recipientCopy, &shareeKey);
+  if (!address)
   {
-    v5 = [v4 address];
+    address = [recipientCopy address];
 
-    if (v5)
+    if (address)
     {
-      v5 = [(EKShareePickerViewController *)self _createShareeFromRecipient:v4];
+      address = [(EKShareePickerViewController *)self _createShareeFromRecipient:recipientCopy];
     }
   }
 
-  return v5;
+  return address;
 }
 
-- (id)_createShareeFromRecipient:(id)a3
+- (id)_createShareeFromRecipient:(id)recipient
 {
-  v3 = a3;
-  if (![v3 kind])
+  recipientCopy = recipient;
+  if (![recipientCopy kind])
   {
     v11 = MEMORY[0x1E6966AE8];
-    v5 = [v3 displayString];
-    v6 = [v3 address];
+    displayString = [recipientCopy displayString];
+    address = [recipientCopy address];
     v7 = v11;
-    v8 = v5;
-    v9 = v6;
+    v8 = displayString;
+    v9 = address;
     v10 = 0;
     goto LABEL_5;
   }
 
-  if ([v3 kind] == 1)
+  if ([recipientCopy kind] == 1)
   {
     v4 = MEMORY[0x1E6966AE8];
-    v5 = IdentityNameFromRecipient(v3);
-    v6 = [v3 normalizedAddress];
+    displayString = IdentityNameFromRecipient(recipientCopy);
+    address = [recipientCopy normalizedAddress];
     v7 = v4;
-    v8 = v5;
+    v8 = displayString;
     v9 = 0;
-    v10 = v6;
+    v10 = address;
 LABEL_5:
     v12 = 0;
 LABEL_6:
@@ -144,16 +144,16 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if ([v3 kind] == 4)
+  if ([recipientCopy kind] == 4)
   {
     v15 = MEMORY[0x1E6966AE8];
-    v5 = [v3 displayString];
-    v6 = [v3 address];
+    displayString = [recipientCopy displayString];
+    address = [recipientCopy address];
     v7 = v15;
-    v8 = v5;
+    v8 = displayString;
     v9 = 0;
     v10 = 0;
-    v12 = v6;
+    v12 = address;
     goto LABEL_6;
   }
 
@@ -163,13 +163,13 @@ LABEL_7:
   return v13;
 }
 
-- (id)_recipientFromSharee:(id)a3
+- (id)_recipientFromSharee:(id)sharee
 {
-  if (a3)
+  if (sharee)
   {
-    v4 = a3;
-    v5 = [(EKShareePickerViewController *)self _createRecipientFromSharee:v4];
-    objc_setAssociatedObject(v5, &shareeKey, v4, 0x301);
+    shareeCopy = sharee;
+    v5 = [(EKShareePickerViewController *)self _createRecipientFromSharee:shareeCopy];
+    objc_setAssociatedObject(v5, &shareeKey, shareeCopy, 0x301);
   }
 
   else
@@ -180,66 +180,66 @@ LABEL_7:
   return v5;
 }
 
-- (id)_createRecipientFromSharee:(id)a3
+- (id)_createRecipientFromSharee:(id)sharee
 {
-  v3 = a3;
-  v4 = [v3 contactPredicate];
-  v5 = [MEMORY[0x1E6992F50] defaultProvider];
-  v6 = [getCNComposeRecipientClass_0() descriptorsForRequiredKeysForContact];
-  v7 = [v5 unifiedContactsMatchingPredicate:v4 keysToFetch:v6];
+  shareeCopy = sharee;
+  contactPredicate = [shareeCopy contactPredicate];
+  defaultProvider = [MEMORY[0x1E6992F50] defaultProvider];
+  descriptorsForRequiredKeysForContact = [getCNComposeRecipientClass_0() descriptorsForRequiredKeysForContact];
+  v7 = [defaultProvider unifiedContactsMatchingPredicate:contactPredicate keysToFetch:descriptorsForRequiredKeysForContact];
 
-  v8 = [v7 firstObject];
-  v9 = [v3 emailAddress];
+  firstObject = [v7 firstObject];
+  emailAddress = [shareeCopy emailAddress];
 
-  if (v9)
+  if (emailAddress)
   {
     v10 = objc_alloc(getCNComposeRecipientClass_0());
-    v11 = [v3 emailAddress];
+    emailAddress2 = [shareeCopy emailAddress];
     v12 = v10;
-    v13 = v8;
-    v14 = v11;
+    v13 = firstObject;
+    v14 = emailAddress2;
     v15 = 0;
   }
 
   else
   {
-    v16 = [v3 phoneNumber];
+    phoneNumber = [shareeCopy phoneNumber];
 
-    if (!v16)
+    if (!phoneNumber)
     {
       goto LABEL_6;
     }
 
     v17 = objc_alloc(getCNComposeRecipientClass_0());
-    v11 = [v3 phoneNumber];
+    emailAddress2 = [shareeCopy phoneNumber];
     v12 = v17;
-    v13 = v8;
-    v14 = v11;
+    v13 = firstObject;
+    v14 = emailAddress2;
     v15 = 1;
   }
 
-  v16 = [v12 initWithContact:v13 address:v14 kind:v15];
+  phoneNumber = [v12 initWithContact:v13 address:v14 kind:v15];
 
 LABEL_6:
-  if (v8)
+  if (firstObject)
   {
-    v18 = [v8 CalDisplayName];
-    [v16 setDisplayString:v18];
+    calDisplayName = [firstObject CalDisplayName];
+    [phoneNumber setDisplayString:calDisplayName];
   }
 
-  return v16;
+  return phoneNumber;
 }
 
 - (NSArray)sharees
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(EKEventAttendeePicker *)self->_picker recipients];
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  recipients = [(EKEventAttendeePicker *)self->_picker recipients];
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(recipients, "count")}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = recipients;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -270,16 +270,16 @@ LABEL_6:
   return v4;
 }
 
-- (void)setSharees:(id)a3
+- (void)setSharees:(id)sharees
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  shareesCopy = sharees;
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(shareesCopy, "count")}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v4;
+  v6 = shareesCopy;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -317,8 +317,8 @@ LABEL_6:
 - (CGSize)preferredContentSize
 {
   v3 = EKUIContainedControllerIdealWidth();
-  v4 = [(EKShareePickerViewController *)self view];
-  [v4 sizeThatFits:{v3, 1100.0}];
+  view = [(EKShareePickerViewController *)self view];
+  [view sizeThatFits:{v3, 1100.0}];
   v6 = v5;
 
   v7 = v3;
@@ -328,20 +328,20 @@ LABEL_6:
   return result;
 }
 
-- (void)eventAttendeePicker:(id)a3 cacheValidationStatus:(unint64_t)a4 forAddress:(id)a5
+- (void)eventAttendeePicker:(id)picker cacheValidationStatus:(unint64_t)status forAddress:(id)address
 {
-  v7 = a5;
+  addressCopy = address;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = [WeakRetained eventStoreForShareePickerViewController:self];
-  [v8 cacheValidationStatusForAddress:v7 status:a4];
+  [v8 cacheValidationStatusForAddress:addressCopy status:status];
 }
 
-- (unint64_t)eventAttendeePicker:(id)a3 getValidationStatusForAddress:(id)a4
+- (unint64_t)eventAttendeePicker:(id)picker getValidationStatusForAddress:(id)address
 {
-  v5 = a4;
+  addressCopy = address;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = [WeakRetained eventStoreForShareePickerViewController:self];
-  v8 = [v7 addressValidationStatus:v5];
+  v8 = [v7 addressValidationStatus:addressCopy];
 
   return v8;
 }

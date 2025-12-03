@@ -1,6 +1,6 @@
 @interface MTConvenienceEnvironmentDelegate
 - (MTConvenienceEnvironmentDelegate)init;
-- (MTConvenienceEnvironmentDelegate)initWithPageURLBlock:(id)a3 resourceRevNumBlock:(id)a4 hostAppBlock:(id)a5;
+- (MTConvenienceEnvironmentDelegate)initWithPageURLBlock:(id)block resourceRevNumBlock:(id)numBlock hostAppBlock:(id)appBlock;
 - (id)hostApp;
 - (id)pageUrl;
 - (id)resourceRevNum;
@@ -19,25 +19,25 @@
   objc_exception_throw(v6);
 }
 
-- (MTConvenienceEnvironmentDelegate)initWithPageURLBlock:(id)a3 resourceRevNumBlock:(id)a4 hostAppBlock:(id)a5
+- (MTConvenienceEnvironmentDelegate)initWithPageURLBlock:(id)block resourceRevNumBlock:(id)numBlock hostAppBlock:(id)appBlock
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  blockCopy = block;
+  numBlockCopy = numBlock;
+  appBlockCopy = appBlock;
   v19.receiver = self;
   v19.super_class = MTConvenienceEnvironmentDelegate;
   v11 = [(MTConvenienceEnvironmentDelegate *)&v19 init];
   if (v11)
   {
-    v12 = MEMORY[0x259C9F5D0](v8);
+    v12 = MEMORY[0x259C9F5D0](blockCopy);
     pageURLBlock = v11->__pageURLBlock;
     v11->__pageURLBlock = v12;
 
-    v14 = MEMORY[0x259C9F5D0](v9);
+    v14 = MEMORY[0x259C9F5D0](numBlockCopy);
     resourceRevNumBlock = v11->__resourceRevNumBlock;
     v11->__resourceRevNumBlock = v14;
 
-    v16 = MEMORY[0x259C9F5D0](v10);
+    v16 = MEMORY[0x259C9F5D0](appBlockCopy);
     hostAppBlock = v11->__hostAppBlock;
     v11->__hostAppBlock = v16;
   }
@@ -47,11 +47,11 @@
 
 - (id)hostApp
 {
-  v3 = [(MTConvenienceEnvironmentDelegate *)self _hostAppBlock];
-  if (v3)
+  _hostAppBlock = [(MTConvenienceEnvironmentDelegate *)self _hostAppBlock];
+  if (_hostAppBlock)
   {
-    v4 = [(MTConvenienceEnvironmentDelegate *)self _hostAppBlock];
-    v5 = v4[2]();
+    _hostAppBlock2 = [(MTConvenienceEnvironmentDelegate *)self _hostAppBlock];
+    v5 = _hostAppBlock2[2]();
   }
 
   else
@@ -64,11 +64,11 @@
 
 - (id)pageUrl
 {
-  v3 = [(MTConvenienceEnvironmentDelegate *)self _pageURLBlock];
-  if (v3)
+  _pageURLBlock = [(MTConvenienceEnvironmentDelegate *)self _pageURLBlock];
+  if (_pageURLBlock)
   {
-    v4 = [(MTConvenienceEnvironmentDelegate *)self _pageURLBlock];
-    v5 = v4[2]();
+    _pageURLBlock2 = [(MTConvenienceEnvironmentDelegate *)self _pageURLBlock];
+    v5 = _pageURLBlock2[2]();
   }
 
   else
@@ -81,11 +81,11 @@
 
 - (id)resourceRevNum
 {
-  v3 = [(MTConvenienceEnvironmentDelegate *)self _resourceRevNumBlock];
-  if (v3)
+  _resourceRevNumBlock = [(MTConvenienceEnvironmentDelegate *)self _resourceRevNumBlock];
+  if (_resourceRevNumBlock)
   {
-    v4 = [(MTConvenienceEnvironmentDelegate *)self _resourceRevNumBlock];
-    v5 = v4[2]();
+    _resourceRevNumBlock2 = [(MTConvenienceEnvironmentDelegate *)self _resourceRevNumBlock];
+    v5 = _resourceRevNumBlock2[2]();
   }
 
   else

@@ -1,50 +1,50 @@
 @interface CRKFailIfSimulatorTransportProvider
-- (CRKFailIfSimulatorTransportProvider)initWithTransportProvider:(id)a3;
-- (CRKFailIfSimulatorTransportProvider)initWithTransportProvider:(id)a3 failureError:(id)a4;
-- (void)fetchTransportWithCompletion:(id)a3;
+- (CRKFailIfSimulatorTransportProvider)initWithTransportProvider:(id)provider;
+- (CRKFailIfSimulatorTransportProvider)initWithTransportProvider:(id)provider failureError:(id)error;
+- (void)fetchTransportWithCompletion:(id)completion;
 @end
 
 @implementation CRKFailIfSimulatorTransportProvider
 
-- (CRKFailIfSimulatorTransportProvider)initWithTransportProvider:(id)a3
+- (CRKFailIfSimulatorTransportProvider)initWithTransportProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = CRKErrorWithCodeAndUserInfo(31, 0);
-  v6 = [(CRKFailIfSimulatorTransportProvider *)self initWithTransportProvider:v4 failureError:v5];
+  v6 = [(CRKFailIfSimulatorTransportProvider *)self initWithTransportProvider:providerCopy failureError:v5];
 
   return v6;
 }
 
-- (CRKFailIfSimulatorTransportProvider)initWithTransportProvider:(id)a3 failureError:(id)a4
+- (CRKFailIfSimulatorTransportProvider)initWithTransportProvider:(id)provider failureError:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  errorCopy = error;
   v12.receiver = self;
   v12.super_class = CRKFailIfSimulatorTransportProvider;
   v9 = [(CRKFailIfSimulatorTransportProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_baseProvider, a3);
-    objc_storeStrong(&v10->_failureError, a4);
+    objc_storeStrong(&v9->_baseProvider, provider);
+    objc_storeStrong(&v10->_failureError, error);
   }
 
   return v10;
 }
 
-- (void)fetchTransportWithCompletion:(id)a3
+- (void)fetchTransportWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (CRKIsSimulator())
   {
-    v5 = [(CRKFailIfSimulatorTransportProvider *)self failureError];
-    v4[2](v4, 0);
+    failureError = [(CRKFailIfSimulatorTransportProvider *)self failureError];
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
-    v5 = [(CRKFailIfSimulatorTransportProvider *)self baseProvider];
-    [v5 fetchTransportWithCompletion:v4];
+    failureError = [(CRKFailIfSimulatorTransportProvider *)self baseProvider];
+    [failureError fetchTransportWithCompletion:completionCopy];
   }
 }
 

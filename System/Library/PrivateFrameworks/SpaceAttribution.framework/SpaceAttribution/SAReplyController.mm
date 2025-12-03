@@ -1,72 +1,72 @@
 @interface SAReplyController
 - (NSUUID)controllerID;
-- (void)callAppSizerHandlerWithError:(id)a3;
-- (void)callAppSizerHandlerWithResults:(id)a3 error:(id)a4 withHandlerResultBlock:(id)a5;
-- (void)callURLSizerHandlerWithError:(id)a3;
-- (void)callURLSizerHandlerWithResults:(id)a3 error:(id)a4 withHandlerResultsBlock:(id)a5;
-- (void)setControllerID:(id)a3;
+- (void)callAppSizerHandlerWithError:(id)error;
+- (void)callAppSizerHandlerWithResults:(id)results error:(id)error withHandlerResultBlock:(id)block;
+- (void)callURLSizerHandlerWithError:(id)error;
+- (void)callURLSizerHandlerWithResults:(id)results error:(id)error withHandlerResultsBlock:(id)block;
+- (void)setControllerID:(id)d;
 @end
 
 @implementation SAReplyController
 
 - (NSUUID)controllerID
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_controllerID;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_controllerID;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setControllerID:(id)a3
+- (void)setControllerID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   obj = self;
   objc_sync_enter(obj);
   controllerID = obj->_controllerID;
-  obj->_controllerID = v4;
+  obj->_controllerID = dCopy;
 
   objc_sync_exit(obj);
 }
 
-- (void)callAppSizerHandlerWithError:(id)a3
+- (void)callAppSizerHandlerWithError:(id)error
 {
-  v6 = a3;
-  v4 = [(SAReplyController *)self appSizerUpdateHandler];
+  errorCopy = error;
+  appSizerUpdateHandler = [(SAReplyController *)self appSizerUpdateHandler];
 
-  if (v4)
+  if (appSizerUpdateHandler)
   {
-    v5 = [(SAReplyController *)self appSizerUpdateHandler];
-    (v5)[2](v5, 0, v6);
+    appSizerUpdateHandler2 = [(SAReplyController *)self appSizerUpdateHandler];
+    (appSizerUpdateHandler2)[2](appSizerUpdateHandler2, 0, errorCopy);
   }
 }
 
-- (void)callURLSizerHandlerWithError:(id)a3
+- (void)callURLSizerHandlerWithError:(id)error
 {
-  v6 = a3;
-  v4 = [(SAReplyController *)self urlSizerUpdateHandler];
+  errorCopy = error;
+  urlSizerUpdateHandler = [(SAReplyController *)self urlSizerUpdateHandler];
 
-  if (v4)
+  if (urlSizerUpdateHandler)
   {
-    v5 = [(SAReplyController *)self urlSizerUpdateHandler];
-    (v5)[2](v5, 0, v6);
+    urlSizerUpdateHandler2 = [(SAReplyController *)self urlSizerUpdateHandler];
+    (urlSizerUpdateHandler2)[2](urlSizerUpdateHandler2, 0, errorCopy);
   }
 }
 
-- (void)callAppSizerHandlerWithResults:(id)a3 error:(id)a4 withHandlerResultBlock:(id)a5
+- (void)callAppSizerHandlerWithResults:(id)results error:(id)error withHandlerResultBlock:(id)block
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(SAReplyController *)self appSizerUpdateHandler];
+  resultsCopy = results;
+  errorCopy = error;
+  blockCopy = block;
+  appSizerUpdateHandler = [(SAReplyController *)self appSizerUpdateHandler];
 
-  if (v10)
+  if (appSizerUpdateHandler)
   {
-    v11 = [(SAReplyController *)self appSizerUpdateHandler];
-    v12 = (v11)[2](v11, v13, v8);
+    appSizerUpdateHandler2 = [(SAReplyController *)self appSizerUpdateHandler];
+    v12 = (appSizerUpdateHandler2)[2](appSizerUpdateHandler2, resultsCopy, errorCopy);
 
-    v9[2](v9, v12);
+    blockCopy[2](blockCopy, v12);
     if (v12)
     {
       [(SAReplyController *)self setAppSizerUpdateHandler:0];
@@ -76,23 +76,23 @@
 
   else
   {
-    v9[2](v9, 0);
+    blockCopy[2](blockCopy, 0);
   }
 }
 
-- (void)callURLSizerHandlerWithResults:(id)a3 error:(id)a4 withHandlerResultsBlock:(id)a5
+- (void)callURLSizerHandlerWithResults:(id)results error:(id)error withHandlerResultsBlock:(id)block
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(SAReplyController *)self urlSizerUpdateHandler];
+  resultsCopy = results;
+  errorCopy = error;
+  blockCopy = block;
+  urlSizerUpdateHandler = [(SAReplyController *)self urlSizerUpdateHandler];
 
-  if (v10)
+  if (urlSizerUpdateHandler)
   {
-    v11 = [(SAReplyController *)self urlSizerUpdateHandler];
-    v12 = (v11)[2](v11, v13, v8);
+    urlSizerUpdateHandler2 = [(SAReplyController *)self urlSizerUpdateHandler];
+    v12 = (urlSizerUpdateHandler2)[2](urlSizerUpdateHandler2, resultsCopy, errorCopy);
 
-    v9[2](v9, v12);
+    blockCopy[2](blockCopy, v12);
     if (v12)
     {
       [(SAReplyController *)self setUrlSizerUpdateHandler:0];
@@ -101,7 +101,7 @@
 
   else
   {
-    v9[2](v9, 0);
+    blockCopy[2](blockCopy, 0);
   }
 }
 

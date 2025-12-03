@@ -1,23 +1,23 @@
 @interface TUIScrollAnchor
-- (TUIScrollAnchor)initWithAnchor:(id)a3 relativeDistance:(double)a4;
+- (TUIScrollAnchor)initWithAnchor:(id)anchor relativeDistance:(double)distance;
 - (id)description;
 @end
 
 @implementation TUIScrollAnchor
 
-- (TUIScrollAnchor)initWithAnchor:(id)a3 relativeDistance:(double)a4
+- (TUIScrollAnchor)initWithAnchor:(id)anchor relativeDistance:(double)distance
 {
-  v6 = a3;
+  anchorCopy = anchor;
   v11.receiver = self;
   v11.super_class = TUIScrollAnchor;
   v7 = [(TUIScrollAnchor *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [anchorCopy copy];
     anchor = v7->_anchor;
     v7->_anchor = v8;
 
-    v7->_relativeDistance = a4;
+    v7->_relativeDistance = distance;
   }
 
   return v7;

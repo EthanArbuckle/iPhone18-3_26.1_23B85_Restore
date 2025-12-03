@@ -1,21 +1,21 @@
 @interface REMExternalSyncMetadataUtils
-+ (BOOL)shouldUseExternalIdentifierAsDeletionKeyWithAccountType:(int64_t)a3;
-+ (id)decodeExternalIdentifierForMarkedForDeletionObject:(id)a3;
-+ (id)encodeExternalIdentifierForMarkedForDeletionObject:(id)a3;
++ (BOOL)shouldUseExternalIdentifierAsDeletionKeyWithAccountType:(int64_t)type;
++ (id)decodeExternalIdentifierForMarkedForDeletionObject:(id)object;
++ (id)encodeExternalIdentifierForMarkedForDeletionObject:(id)object;
 @end
 
 @implementation REMExternalSyncMetadataUtils
 
-+ (id)encodeExternalIdentifierForMarkedForDeletionObject:(id)a3
++ (id)encodeExternalIdentifierForMarkedForDeletionObject:(id)object
 {
-  if (a3)
+  if (object)
   {
     v3 = MEMORY[0x1E696AEC0];
     v4 = MEMORY[0x1E696AFB0];
-    v5 = a3;
-    v6 = [v4 UUID];
-    v7 = [v6 UUIDString];
-    v8 = [v3 stringWithFormat:@"%@%@%@", v5, @"-REMCDOBJECT_DELETED-", v7];
+    objectCopy = object;
+    uUID = [v4 UUID];
+    uUIDString = [uUID UUIDString];
+    v8 = [v3 stringWithFormat:@"%@%@%@", objectCopy, @"-REMCDOBJECT_DELETED-", uUIDString];
   }
 
   else
@@ -26,18 +26,18 @@
   return v8;
 }
 
-+ (id)decodeExternalIdentifierForMarkedForDeletionObject:(id)a3
++ (id)decodeExternalIdentifierForMarkedForDeletionObject:(id)object
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"-REMCDOBJECT_DELETED-"];
+  objectCopy = object;
+  v4 = [objectCopy rangeOfString:@"-REMCDOBJECT_DELETED-"];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = v3;
+    v5 = objectCopy;
   }
 
   else
   {
-    v5 = [v3 substringToIndex:v4];
+    v5 = [objectCopy substringToIndex:v4];
   }
 
   v6 = v5;
@@ -45,11 +45,11 @@
   return v6;
 }
 
-+ (BOOL)shouldUseExternalIdentifierAsDeletionKeyWithAccountType:(int64_t)a3
++ (BOOL)shouldUseExternalIdentifierAsDeletionKeyWithAccountType:(int64_t)type
 {
-  if (a3)
+  if (type)
   {
-    v3 = (a3 - 3) >= 2;
+    v3 = (type - 3) >= 2;
   }
 
   else

@@ -1,19 +1,19 @@
 @interface AMSUIWebPresentPrivacySplashAction
-- (AMSUIWebPresentPrivacySplashAction)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebPresentPrivacySplashAction)initWithJSObject:(id)object context:(id)context;
 - (id)runAction;
 @end
 
 @implementation AMSUIWebPresentPrivacySplashAction
 
-- (AMSUIWebPresentPrivacySplashAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebPresentPrivacySplashAction)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
+  objectCopy = object;
   v12.receiver = self;
   v12.super_class = AMSUIWebPresentPrivacySplashAction;
-  v7 = [(AMSUIWebAction *)&v12 initWithJSObject:v6 context:a4];
+  v7 = [(AMSUIWebAction *)&v12 initWithJSObject:objectCopy context:context];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"privacyIdentifier"];
+    v8 = [objectCopy objectForKeyedSubscript:@"privacyIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,20 +37,20 @@
   v28 = *MEMORY[0x1E69E9840];
   v23.receiver = self;
   v23.super_class = AMSUIWebPresentPrivacySplashAction;
-  v3 = [(AMSUIWebAction *)&v23 runAction];
-  v4 = [(AMSUIWebPresentPrivacySplashAction *)self privacyIdentifier];
+  runAction = [(AMSUIWebAction *)&v23 runAction];
+  privacyIdentifier = [(AMSUIWebPresentPrivacySplashAction *)self privacyIdentifier];
 
-  v5 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  v6 = v5;
-  if (v4)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  mEMORY[0x1E698C968]2 = mEMORY[0x1E698C968];
+  if (privacyIdentifier)
   {
-    if (!v5)
+    if (!mEMORY[0x1E698C968])
     {
-      v6 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v7 = [v6 OSLogObject];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E698C968]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v8 = objc_opt_class();
       v9 = AMSLogKey();
@@ -58,7 +58,7 @@
       v25 = v8;
       v26 = 2114;
       v27 = v9;
-      _os_log_impl(&dword_1BB036000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Presenting OBPrivacyPresenter", buf, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Presenting OBPrivacyPresenter", buf, 0x16u);
     }
 
     v10 = objc_alloc_init(MEMORY[0x1E698CAD0]);
@@ -78,13 +78,13 @@
 
   else
   {
-    if (!v5)
+    if (!mEMORY[0x1E698C968])
     {
-      v6 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v15 = [v6 OSLogObject];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v16 = objc_opt_class();
       v17 = AMSLogKey();
@@ -92,7 +92,7 @@
       v25 = v16;
       v26 = 2114;
       v27 = v17;
-      _os_log_impl(&dword_1BB036000, v15, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] No privacyIdentifier found", buf, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] No privacyIdentifier found", buf, 0x16u);
     }
 
     v18 = MEMORY[0x1E698CAD0];

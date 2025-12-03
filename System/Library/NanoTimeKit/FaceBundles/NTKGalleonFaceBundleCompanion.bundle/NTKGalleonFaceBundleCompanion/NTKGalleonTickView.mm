@@ -1,36 +1,36 @@
 @interface NTKGalleonTickView
-+ (id)galleon_newTickViewWithDevice:(id)a3 numberOfTicks:(unint64_t)a4 tickSizes:(id)a5;
++ (id)galleon_newTickViewWithDevice:(id)device numberOfTicks:(unint64_t)ticks tickSizes:(id)sizes;
 - ($0B56E7081CBE040606E62B6BB81BA072)sizeRange;
-- (NTKGalleonTickView)initWithDevice:(id)a3 dialDiameter:(double)a4 numberOfTicks:(unint64_t)a5 tickSizes:(id)a6;
-- (void)_setTickColor:(id)a3;
-- (void)galleon_setProgress:(double)a3;
-- (void)setTintColor:(id)a3;
+- (NTKGalleonTickView)initWithDevice:(id)device dialDiameter:(double)diameter numberOfTicks:(unint64_t)ticks tickSizes:(id)sizes;
+- (void)_setTickColor:(id)color;
+- (void)galleon_setProgress:(double)progress;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation NTKGalleonTickView
 
-- (NTKGalleonTickView)initWithDevice:(id)a3 dialDiameter:(double)a4 numberOfTicks:(unint64_t)a5 tickSizes:(id)a6
+- (NTKGalleonTickView)initWithDevice:(id)device dialDiameter:(double)diameter numberOfTicks:(unint64_t)ticks tickSizes:(id)sizes
 {
-  var1 = a6.var1.var1;
-  var0 = a6.var1.var0;
-  v8 = a6.var0.var1;
-  v9 = a6.var0.var0;
+  var1 = sizes.var1.var1;
+  var0 = sizes.var1.var0;
+  v8 = sizes.var0.var1;
+  v9 = sizes.var0.var0;
   v86[1] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  objc_storeStrong(&self->_device, a3);
+  deviceCopy = device;
+  objc_storeStrong(&self->_device, device);
   v82.receiver = self;
   v82.super_class = NTKGalleonTickView;
-  v15 = [(NTKGalleonTickView *)&v82 initWithFrame:0.0, 0.0, a4, a4];
-  v19 = v15;
-  if (v15)
+  diameter = [(NTKGalleonTickView *)&v82 initWithFrame:0.0, 0.0, diameter, diameter];
+  v19 = diameter;
+  if (diameter)
   {
-    v15->_diameter = a4;
-    v15->_numberOfTicks = a5;
-    v15->_sizeRange.widthRange.minimum = v9;
-    v15->_sizeRange.widthRange.maximum = v8;
-    v15->_sizeRange.heightRange.minimum = var0;
-    v15->_sizeRange.heightRange.maximum = var1;
-    v20 = objc_msgSend_layer(v15, v16, v17, v18);
+    diameter->_diameter = diameter;
+    diameter->_numberOfTicks = ticks;
+    diameter->_sizeRange.widthRange.minimum = v9;
+    diameter->_sizeRange.widthRange.maximum = v8;
+    diameter->_sizeRange.heightRange.minimum = var0;
+    diameter->_sizeRange.heightRange.maximum = var1;
+    v20 = objc_msgSend_layer(diameter, v16, v17, v18);
     v85 = @"instanceColor";
     v24 = objc_msgSend_null(MEMORY[0x277CBEB68], v21, v22, v23);
     v86[0] = v24;
@@ -43,8 +43,8 @@
     v39 = objc_msgSend_CGColor(v35, v36, v37, v38);
     objc_msgSend_setInstanceColor_(v20, v40, v39, v41);
 
-    objc_msgSend_setInstanceCount_(v20, v42, a5, v43);
-    CATransform3DMakeRotation(&v81, 6.28318531 / a5, 0.0, 0.0, 1.0);
+    objc_msgSend_setInstanceCount_(v20, v42, ticks, v43);
+    CATransform3DMakeRotation(&v81, 6.28318531 / ticks, 0.0, 0.0, 1.0);
     objc_msgSend_setInstanceTransform_(v20, v44, &v81, v45);
     v49 = objc_msgSend_currentDevice(MEMORY[0x277CBBAE8], v46, v47, v48);
     objc_msgSend_screenScale(v49, v50, v51, v52);
@@ -89,18 +89,18 @@
   return v19;
 }
 
-- (void)_setTickColor:(id)a3
+- (void)_setTickColor:(id)color
 {
   tickLayer = self->_tickLayer;
-  v5 = a3;
-  v10 = objc_msgSend_CGColor(a3, v6, v7, v8);
+  colorCopy = color;
+  v10 = objc_msgSend_CGColor(color, v6, v7, v8);
 
   objc_msgSend_setBackgroundColor_(tickLayer, v9, v10, v11);
 }
 
-- (void)galleon_setProgress:(double)a3
+- (void)galleon_setProgress:(double)progress
 {
-  v4 = NTKGalleonTickSizePercentageValue(self->_sizeRange.widthRange.minimum, self->_sizeRange.widthRange.maximum, self->_sizeRange.heightRange.minimum, self->_sizeRange.heightRange.maximum, a3);
+  v4 = NTKGalleonTickSizePercentageValue(self->_sizeRange.widthRange.minimum, self->_sizeRange.widthRange.maximum, self->_sizeRange.heightRange.minimum, self->_sizeRange.heightRange.maximum, progress);
   v6 = v5;
   objc_msgSend_bounds(self->_tickLayer, v7, v8, v9);
   if (v4 != v14 || v6 != v13)
@@ -124,13 +124,13 @@
   }
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v7.receiver = self;
   v7.super_class = NTKGalleonTickView;
-  v4 = a3;
-  [(NTKGalleonTickView *)&v7 setTintColor:v4];
-  objc_msgSend__setTickColor_(self, v5, v4, v6, v7.receiver, v7.super_class);
+  colorCopy = color;
+  [(NTKGalleonTickView *)&v7 setTintColor:colorCopy];
+  objc_msgSend__setTickColor_(self, v5, colorCopy, v6, v7.receiver, v7.super_class);
 }
 
 - ($0B56E7081CBE040606E62B6BB81BA072)sizeRange
@@ -146,12 +146,12 @@
   return result;
 }
 
-+ (id)galleon_newTickViewWithDevice:(id)a3 numberOfTicks:(unint64_t)a4 tickSizes:(id)a5
++ (id)galleon_newTickViewWithDevice:(id)device numberOfTicks:(unint64_t)ticks tickSizes:(id)sizes
 {
-  var1 = a5.var1.var1;
-  var0 = a5.var1.var0;
-  v7 = a5.var0.var1;
-  v8 = a5.var0.var0;
+  var1 = sizes.var1.var1;
+  var0 = sizes.var1.var0;
+  v7 = sizes.var0.var1;
+  v8 = sizes.var0.var0;
   v37 = 0;
   v35 = 0u;
   v36 = 0u;
@@ -170,12 +170,12 @@
   v21 = 0u;
   v22 = 0u;
   v20 = 0u;
-  v10 = a3;
-  _NTKGalleonLayoutConstants(v10, &v20);
+  deviceCopy = device;
+  _NTKGalleonLayoutConstants(deviceCopy, &v20);
   v11 = *&v20;
   v12 = *&v20 + *&v21 * -2.0;
   v13 = [NTKGalleonTickView alloc];
-  v15 = objc_msgSend_initWithDevice_dialDiameter_numberOfTicks_tickSizes_(v13, v14, v10, a4, v12, v8, v7, var0, var1);
+  v15 = objc_msgSend_initWithDevice_dialDiameter_numberOfTicks_tickSizes_(v13, v14, deviceCopy, ticks, v12, v8, v7, var0, var1);
 
   objc_msgSend_setCenter_(v15, v16, v17, v18, v11 * 0.5, v11 * 0.5);
 

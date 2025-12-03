@@ -1,7 +1,7 @@
 @interface ManagedNetworkSettings
 + (id)sharedMNS;
 - (ManagedNetworkSettings)init;
-- (void)handleEvent:(id)a3;
+- (void)handleEvent:(id)event;
 - (void)reloadMNS;
 - (void)reloadNetworkdSettings;
 @end
@@ -11,7 +11,7 @@
 - (void)reloadMNS
 {
   *(&v108[15] + 2) = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v3 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfFile:@"/Library/Preferences/com.apple.networkd.sysctl.plist"];
   v4 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfFile:@"/Library/Managed Preferences/mobile/com.apple.networkd.sysctl.plist"];
   v91 = 0u;
@@ -34,7 +34,7 @@
 
         v9 = *(*(&v91 + 1) + 8 * i);
         v10 = [v4 objectForKeyedSubscript:v9];
-        [v2 setObject:v10 forKeyedSubscript:v9];
+        [dictionary setObject:v10 forKeyedSubscript:v9];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v91 objects:&v105 count:16];
@@ -63,7 +63,7 @@
         }
 
         v17 = *(*(&v87 + 1) + 8 * j);
-        v18 = [v2 objectForKeyedSubscript:v17];
+        v18 = [dictionary objectForKeyedSubscript:v17];
         if (v18)
         {
           v19 = v18;
@@ -93,7 +93,7 @@
         }
 
         v16 = [v11 objectForKeyedSubscript:v17];
-        [v2 setObject:v16 forKeyedSubscript:v17];
+        [dictionary setObject:v16 forKeyedSubscript:v17];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v87 objects:type count:16];
@@ -106,7 +106,7 @@
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
-  v25 = v2;
+  v25 = dictionary;
   v26 = [v25 countByEnumeratingWithState:&v83 objects:v95 count:16];
   v27 = &qword_1ED411000;
   if (v26)
@@ -251,27 +251,27 @@ LABEL_50:
         v33 = v32;
         if (v33 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          v34 = [v33 longLongValue];
-          v35 = 0x7FFFFFFF;
-          if (v34 <= 0x7FFFFFFF)
+          longLongValue = [v33 longLongValue];
+          intValue = 0x7FFFFFFF;
+          if (longLongValue <= 0x7FFFFFFF)
           {
-            if (v34 >= 0xFFFFFFFF80000000)
+            if (longLongValue >= 0xFFFFFFFF80000000)
             {
-              v35 = [v33 intValue];
+              intValue = [v33 intValue];
             }
 
             else
             {
-              v35 = 0x80000000;
+              intValue = 0x80000000;
             }
           }
 
-          LODWORD(v91) = v35;
+          LODWORD(v91) = intValue;
 
-          v49 = [v31 UTF8String];
+          uTF8String = [v31 UTF8String];
           LODWORD(v87) = 0;
           type[0] = 4;
-          if (!sysctlbyname(v49, &v87, type, 0, 0) && type[0] == 4)
+          if (!sysctlbyname(uTF8String, &v87, type, 0, 0) && type[0] == 4)
           {
             if (v91 == v87)
             {
@@ -279,7 +279,7 @@ LABEL_50:
             }
 
 LABEL_83:
-            if (!sysctlbyname(v49, 0, 0, &v91, 4uLL))
+            if (!sysctlbyname(uTF8String, 0, 0, &v91, 4uLL))
             {
               pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
               networkd_settings_init();
@@ -623,13 +623,13 @@ LABEL_25:
   }
 
   v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:nw_file_path_settings];
-  v5 = [MEMORY[0x1E695DF90] dictionaryWithContentsOfFile:v4];
-  if (!v5)
+  dictionary = [MEMORY[0x1E695DF90] dictionaryWithContentsOfFile:v4];
+  if (!dictionary)
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  v13 = v5;
+  v13 = dictionary;
 
   v6 = [v13 copy];
   v7 = MEMORY[0x1E695DF90];
@@ -645,14 +645,14 @@ LABEL_25:
   v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:nw_settings_managed_settings];
   if (v9)
   {
-    v11 = v13;
+    dictionary2 = v13;
     if (!v13)
     {
-      v11 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    v13 = v11;
-    [v11 setObject:v9 forKeyedSubscript:v10];
+    v13 = dictionary2;
+    [dictionary2 setObject:v9 forKeyedSubscript:v10];
   }
 
   else
@@ -675,12 +675,12 @@ LABEL_25:
   saveAndPostNetworkdSettings(v12, v6, int64);
 }
 
-- (void)handleEvent:(id)a3
+- (void)handleEvent:(id)event
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (!eventCopy)
   {
     pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
     networkd_settings_init();
@@ -782,7 +782,7 @@ LABEL_25:
     goto LABEL_27;
   }
 
-  string = xpc_dictionary_get_string(v4, *MEMORY[0x1E69E9E40]);
+  string = xpc_dictionary_get_string(eventCopy, *MEMORY[0x1E69E9E40]);
   if (string)
   {
     v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:string];

@@ -1,21 +1,21 @@
 @interface CoreDataStoreServerHandlingPolicy
-- (BOOL)shouldAcceptConnectionsFromClientWithContext:(id)a3;
+- (BOOL)shouldAcceptConnectionsFromClientWithContext:(id)context;
 - (_TtC10FinanceKit33CoreDataStoreServerHandlingPolicy)init;
-- (id)allowableClassesForClientWithContext:(id)a3;
+- (id)allowableClassesForClientWithContext:(id)context;
 @end
 
 @implementation CoreDataStoreServerHandlingPolicy
 
-- (BOOL)shouldAcceptConnectionsFromClientWithContext:(id)a3
+- (BOOL)shouldAcceptConnectionsFromClientWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1B73991EC(v4);
+  contextCopy = context;
+  selfCopy = self;
+  v6 = sub_1B73991EC(contextCopy);
 
   return v6 & 1;
 }
 
-- (id)allowableClassesForClientWithContext:(id)a3
+- (id)allowableClassesForClientWithContext:(id)context
 {
   if (sub_1B73993D4())
   {

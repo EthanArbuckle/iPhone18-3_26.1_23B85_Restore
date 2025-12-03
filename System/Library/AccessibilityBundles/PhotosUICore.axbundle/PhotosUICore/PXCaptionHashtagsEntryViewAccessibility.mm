@@ -1,35 +1,35 @@
 @interface PXCaptionHashtagsEntryViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilitySupportsHandwriting;
-- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)a3;
+- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)column;
 - (_NSRange)_accessibilitySelectedTextRange;
-- (id)_accessibilityLineNumberAndColumnForPoint:(CGPoint)a3;
+- (id)_accessibilityLineNumberAndColumnForPoint:(CGPoint)point;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3;
-- (void)moreButtonTapped:(id)a3;
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range;
+- (void)moreButtonTapped:(id)tapped;
 @end
 
 @implementation PXCaptionHashtagsEntryViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PXCaptionHashtagsEntryView" hasInstanceMethod:@"isEditing" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PXCaptionHashtagsEntryView" hasInstanceMethod:@"textView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXCaptionHashtagsEntryView" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXCaptionHashtagsEntryView" hasInstanceMethod:@"moreButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXCaptionHashtagsEntryView" hasInstanceMethod:@"moreButtonTapped:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PXCaptionHashtagsEntryView" hasInstanceMethod:@"isEditing" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PXCaptionHashtagsEntryView" hasInstanceMethod:@"textView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXCaptionHashtagsEntryView" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXCaptionHashtagsEntryView" hasInstanceMethod:@"moreButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXCaptionHashtagsEntryView" hasInstanceMethod:@"moreButtonTapped:" withFullSignature:{"v", "@", 0}];
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(PXCaptionHashtagsEntryViewAccessibility *)self _accessibilityTextViewTextOperationResponder];
-  v3 = [v2 accessibilityLabel];
+  _accessibilityTextViewTextOperationResponder = [(PXCaptionHashtagsEntryViewAccessibility *)self _accessibilityTextViewTextOperationResponder];
+  accessibilityLabel = [_accessibilityTextViewTextOperationResponder accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
@@ -37,30 +37,30 @@
   v3 = [(PXCaptionHashtagsEntryViewAccessibility *)self safeStringForKey:@"text"];
   if (![v3 length])
   {
-    v4 = [(PXCaptionHashtagsEntryViewAccessibility *)self _accessibilityTextViewTextOperationResponder];
-    v5 = [v4 accessibilityValue];
+    _accessibilityTextViewTextOperationResponder = [(PXCaptionHashtagsEntryViewAccessibility *)self _accessibilityTextViewTextOperationResponder];
+    accessibilityValue = [_accessibilityTextViewTextOperationResponder accessibilityValue];
 
-    v3 = v5;
+    v3 = accessibilityValue;
   }
 
   return v3;
 }
 
-- (id)_accessibilityLineNumberAndColumnForPoint:(CGPoint)a3
+- (id)_accessibilityLineNumberAndColumnForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(PXCaptionHashtagsEntryViewAccessibility *)self _accessibilityTextViewTextOperationResponder];
-  v6 = [v5 _accessibilityLineNumberAndColumnForPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  _accessibilityTextViewTextOperationResponder = [(PXCaptionHashtagsEntryViewAccessibility *)self _accessibilityTextViewTextOperationResponder];
+  v6 = [_accessibilityTextViewTextOperationResponder _accessibilityLineNumberAndColumnForPoint:{x, y}];
 
   return v6;
 }
 
-- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)a3
+- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)column
 {
-  v4 = a3;
-  v5 = [(PXCaptionHashtagsEntryViewAccessibility *)self _accessibilityTextViewTextOperationResponder];
-  v6 = [v5 _accessibilityRangeForLineNumberAndColumn:v4];
+  columnCopy = column;
+  _accessibilityTextViewTextOperationResponder = [(PXCaptionHashtagsEntryViewAccessibility *)self _accessibilityTextViewTextOperationResponder];
+  v6 = [_accessibilityTextViewTextOperationResponder _accessibilityRangeForLineNumberAndColumn:columnCopy];
   v8 = v7;
 
   v9 = v6;
@@ -70,21 +70,21 @@
   return result;
 }
 
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(PXCaptionHashtagsEntryViewAccessibility *)self _accessibilityTextViewTextOperationResponder];
-  [v5 _accessibilitySetSelectedTextRange:{location, length}];
+  length = range.length;
+  location = range.location;
+  _accessibilityTextViewTextOperationResponder = [(PXCaptionHashtagsEntryViewAccessibility *)self _accessibilityTextViewTextOperationResponder];
+  [_accessibilityTextViewTextOperationResponder _accessibilitySetSelectedTextRange:{location, length}];
 }
 
 - (_NSRange)_accessibilitySelectedTextRange
 {
-  v2 = [(PXCaptionHashtagsEntryViewAccessibility *)self _accessibilityTextViewTextOperationResponder];
-  v3 = [v2 _accessibilitySelectedTextRange];
+  _accessibilityTextViewTextOperationResponder = [(PXCaptionHashtagsEntryViewAccessibility *)self _accessibilityTextViewTextOperationResponder];
+  _accessibilitySelectedTextRange = [_accessibilityTextViewTextOperationResponder _accessibilitySelectedTextRange];
   v5 = v4;
 
-  v6 = v3;
+  v6 = _accessibilitySelectedTextRange;
   v7 = v5;
   result.length = v7;
   result.location = v6;
@@ -106,8 +106,8 @@
 
 - (BOOL)_accessibilitySupportsHandwriting
 {
-  v3 = [(PXCaptionHashtagsEntryViewAccessibility *)self accessibilityTraits];
-  if ((*MEMORY[0x29EDC7528] & ~v3) == 0)
+  accessibilityTraits = [(PXCaptionHashtagsEntryViewAccessibility *)self accessibilityTraits];
+  if ((*MEMORY[0x29EDC7528] & ~accessibilityTraits) == 0)
   {
     return 1;
   }
@@ -123,20 +123,20 @@
   v4 = MEMORY[0x29EDB8DE8];
   v11.receiver = self;
   v11.super_class = PXCaptionHashtagsEntryViewAccessibility;
-  v5 = [(PXCaptionHashtagsEntryViewAccessibility *)&v11 _accessibilitySupplementaryFooterViews];
-  v6 = [v4 axArrayWithPossiblyNilArrays:{1, v5}];
+  _accessibilitySupplementaryFooterViews = [(PXCaptionHashtagsEntryViewAccessibility *)&v11 _accessibilitySupplementaryFooterViews];
+  v6 = [v4 axArrayWithPossiblyNilArrays:{1, _accessibilitySupplementaryFooterViews}];
   v7 = v6;
   if (v6)
   {
-    v8 = v6;
+    array = v6;
   }
 
   else
   {
-    v8 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
   }
 
-  v9 = v8;
+  v9 = array;
 
   if ([v3 _accessibilityViewIsVisible])
   {
@@ -146,11 +146,11 @@
   return v9;
 }
 
-- (void)moreButtonTapped:(id)a3
+- (void)moreButtonTapped:(id)tapped
 {
   v4.receiver = self;
   v4.super_class = PXCaptionHashtagsEntryViewAccessibility;
-  [(PXCaptionHashtagsEntryViewAccessibility *)&v4 moreButtonTapped:a3];
+  [(PXCaptionHashtagsEntryViewAccessibility *)&v4 moreButtonTapped:tapped];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], self);
 }
 

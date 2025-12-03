@@ -1,63 +1,63 @@
 @interface SNSoundPrintASpeechModelOutput
-- (SNSoundPrintASpeechModelOutput)initWithInput_1:(id)a3 Confidence:(id)a4 Detected:(id)a5 detectedHistoryOut:(id)a6;
-- (id)featureValueForName:(id)a3;
+- (SNSoundPrintASpeechModelOutput)initWithInput_1:(id)input_1 Confidence:(id)confidence Detected:(id)detected detectedHistoryOut:(id)out;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation SNSoundPrintASpeechModelOutput
 
-- (SNSoundPrintASpeechModelOutput)initWithInput_1:(id)a3 Confidence:(id)a4 Detected:(id)a5 detectedHistoryOut:(id)a6
+- (SNSoundPrintASpeechModelOutput)initWithInput_1:(id)input_1 Confidence:(id)confidence Detected:(id)detected detectedHistoryOut:(id)out
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  input_1Copy = input_1;
+  confidenceCopy = confidence;
+  detectedCopy = detected;
+  outCopy = out;
   v18.receiver = self;
   v18.super_class = SNSoundPrintASpeechModelOutput;
   v15 = [(SNSoundPrintASpeechModelOutput *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_input_1, a3);
-    objc_storeStrong(&v16->_Confidence, a4);
-    objc_storeStrong(&v16->_Detected, a5);
-    objc_storeStrong(&v16->_detectedHistoryOut, a6);
+    objc_storeStrong(&v15->_input_1, input_1);
+    objc_storeStrong(&v16->_Confidence, confidence);
+    objc_storeStrong(&v16->_Detected, detected);
+    objc_storeStrong(&v16->_detectedHistoryOut, out);
   }
 
   return v16;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"input_1"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"input_1"])
   {
     v5 = MEMORY[0x1E695FE60];
-    v6 = [(SNSoundPrintASpeechModelOutput *)self input];
+    input = [(SNSoundPrintASpeechModelOutput *)self input];
 LABEL_9:
-    v7 = v6;
-    v8 = [v5 featureValueWithMultiArray:v6];
+    v7 = input;
+    v8 = [v5 featureValueWithMultiArray:input];
 
     goto LABEL_10;
   }
 
-  if ([v4 isEqualToString:@"Confidence"])
+  if ([nameCopy isEqualToString:@"Confidence"])
   {
     v5 = MEMORY[0x1E695FE60];
-    v6 = [(SNSoundPrintASpeechModelOutput *)self Confidence];
+    input = [(SNSoundPrintASpeechModelOutput *)self Confidence];
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"Detected"])
+  if ([nameCopy isEqualToString:@"Detected"])
   {
     v5 = MEMORY[0x1E695FE60];
-    v6 = [(SNSoundPrintASpeechModelOutput *)self Detected];
+    input = [(SNSoundPrintASpeechModelOutput *)self Detected];
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"detectedHistoryOut"])
+  if ([nameCopy isEqualToString:@"detectedHistoryOut"])
   {
     v5 = MEMORY[0x1E695FE60];
-    v6 = [(SNSoundPrintASpeechModelOutput *)self detectedHistoryOut];
+    input = [(SNSoundPrintASpeechModelOutput *)self detectedHistoryOut];
     goto LABEL_9;
   }
 

@@ -1,19 +1,19 @@
 @interface AVCVideoDataOutput
-- (AVCVideoDataOutput)initWithStreamToken:(int64_t)a3 delegate:(id)a4 queue:(id)a5 error:(id *)a6;
-- (BOOL)parseVideoAttributes:(opaqueCMSampleBuffer *)a3;
+- (AVCVideoDataOutput)initWithStreamToken:(int64_t)token delegate:(id)delegate queue:(id)queue error:(id *)error;
+- (BOOL)parseVideoAttributes:(opaqueCMSampleBuffer *)attributes;
 - (void)dealloc;
-- (void)streamOutput:(id)a3 didDegrade:(BOOL)a4;
-- (void)streamOutput:(id)a3 didPause:(BOOL)a4;
-- (void)streamOutput:(id)a3 didReceiveSampleBuffer:(opaqueCMSampleBuffer *)a4;
-- (void)streamOutput:(id)a3 didStall:(BOOL)a4;
-- (void)streamOutput:(id)a3 didSuspend:(BOOL)a4;
-- (void)streamOutputDidBecomeInvalid:(id)a3;
-- (void)streamOutputServerDidDie:(id)a3;
+- (void)streamOutput:(id)output didDegrade:(BOOL)degrade;
+- (void)streamOutput:(id)output didPause:(BOOL)pause;
+- (void)streamOutput:(id)output didReceiveSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)streamOutput:(id)output didStall:(BOOL)stall;
+- (void)streamOutput:(id)output didSuspend:(BOOL)suspend;
+- (void)streamOutputDidBecomeInvalid:(id)invalid;
+- (void)streamOutputServerDidDie:(id)die;
 @end
 
 @implementation AVCVideoDataOutput
 
-- (AVCVideoDataOutput)initWithStreamToken:(int64_t)a3 delegate:(id)a4 queue:(id)a5 error:(id *)a6
+- (AVCVideoDataOutput)initWithStreamToken:(int64_t)token delegate:(id)delegate queue:(id)queue error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -22,9 +22,9 @@
     v12 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      if (a6)
+      if (error)
       {
-        v13 = *a6;
+        v13 = *error;
       }
 
       else
@@ -39,11 +39,11 @@
       v22 = 1024;
       v23 = 76;
       v24 = 2048;
-      v25 = a3;
+      tokenCopy = token;
       v26 = 2112;
-      v27 = a4;
+      delegateCopy = delegate;
       v28 = 2112;
-      v29 = a5;
+      queueCopy = queue;
       v30 = 2112;
       v31 = v13;
       _os_log_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d streamToken=%ld, delegate=%@, queue=%@, error=%@", buf, 0x44u);
@@ -56,12 +56,12 @@
   if (v14)
   {
     VRTraceReset();
-    v15 = [[AVCStreamOutput alloc] initWithStreamToken:a3 delegate:v14 queue:a5 error:a6];
+    v15 = [[AVCStreamOutput alloc] initWithStreamToken:token delegate:v14 queue:queue error:error];
     v14->_streamOutput = v15;
     if (v15)
     {
-      objc_storeWeak(&v14->_delegate, a4);
-      v14->_streamToken = a3;
+      objc_storeWeak(&v14->_delegate, delegate);
+      v14->_streamToken = token;
       v14->_isValid = 1;
       return v14;
     }
@@ -75,13 +75,13 @@
     v16 = -4;
   }
 
-  if (!a6 || *a6)
+  if (!error || *error)
   {
     return 0;
   }
 
   v14 = 0;
-  *a6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"AVCVideoDataOutput" code:v16 userInfo:0];
+  *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"AVCVideoDataOutput" code:v16 userInfo:0];
   return v14;
 }
 
@@ -108,12 +108,12 @@
   [(AVCVideoDataOutput *)&v5 dealloc];
 }
 
-- (BOOL)parseVideoAttributes:(opaqueCMSampleBuffer *)a3
+- (BOOL)parseVideoAttributes:(opaqueCMSampleBuffer *)attributes
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = CMGetAttachment(a3, @"cameraStatusBits", 0);
-  v6 = CMGetAttachment(a3, @"contentsRect", 0);
-  v7 = CMGetAttachment(a3, @"aspectRatio", 0);
+  v5 = CMGetAttachment(attributes, @"cameraStatusBits", 0);
+  v6 = CMGetAttachment(attributes, @"contentsRect", 0);
+  v7 = CMGetAttachment(attributes, @"aspectRatio", 0);
   v8 = v7;
   if (!self->_videoAttributes.videoAttributes)
   {
@@ -187,23 +187,23 @@ LABEL_5:
     [(VideoAttributes *)self->_videoAttributes.videoAttributes setRatio:*&v16.origin];
   }
 
-  [(AVCVideoDataOutputDelegate *)[(AVCVideoDataOutput *)self delegate] videoDataOutput:self didReceiveFrame:a3 videoAttributes:self->_videoAttributes.videoAttributes];
+  [(AVCVideoDataOutputDelegate *)[(AVCVideoDataOutput *)self delegate] videoDataOutput:self didReceiveFrame:attributes videoAttributes:self->_videoAttributes.videoAttributes];
   LOBYTE(v10) = 1;
   return v10;
 }
 
-- (void)streamOutput:(id)a3 didReceiveSampleBuffer:(opaqueCMSampleBuffer *)a4
+- (void)streamOutput:(id)output didReceiveSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  if ([(AVCVideoDataOutput *)self parseVideoAttributes:a4])
+  if ([(AVCVideoDataOutput *)self parseVideoAttributes:buffer])
   {
-    v6 = [(AVCVideoDataOutput *)self delegate];
+    delegate = [(AVCVideoDataOutput *)self delegate];
     videoAttributes = self->_videoAttributes.videoAttributes;
 
-    [(AVCVideoDataOutputDelegate *)v6 videoDataOutput:self didReceiveFrame:a4 videoAttributes:videoAttributes];
+    [(AVCVideoDataOutputDelegate *)delegate videoDataOutput:self didReceiveFrame:buffer videoAttributes:videoAttributes];
   }
 }
 
-- (void)streamOutputServerDidDie:(id)a3
+- (void)streamOutputServerDidDie:(id)die
 {
   if (VRTraceGetErrorLogLevelForModule() >= 3)
   {
@@ -217,17 +217,17 @@ LABEL_5:
   [(AVCVideoDataOutputDelegate *)[(AVCVideoDataOutput *)self delegate] videoDataOutputServerDidDie:self];
 }
 
-- (void)streamOutputDidBecomeInvalid:(id)a3
+- (void)streamOutputDidBecomeInvalid:(id)invalid
 {
   self->_isValid = 0;
-  v4 = [(AVCVideoDataOutput *)self delegate];
+  delegate = [(AVCVideoDataOutput *)self delegate];
 
-  [(AVCVideoDataOutputDelegate *)v4 videoDataOutputDidBecomeInvalid:self];
+  [(AVCVideoDataOutputDelegate *)delegate videoDataOutputDidBecomeInvalid:self];
 }
 
-- (void)streamOutput:(id)a3 didPause:(BOOL)a4
+- (void)streamOutput:(id)output didPause:(BOOL)pause
 {
-  v4 = a4;
+  pauseCopy = pause;
   v19 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -243,24 +243,24 @@ LABEL_5:
       v13 = 1024;
       v14 = 184;
       v15 = 1024;
-      v16 = v4;
+      v16 = pauseCopy;
       v17 = 1024;
       v18 = streamToken;
       _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d AVCVideoDataOutput callback: didPause=%d for streamToken=%u", &v9, 0x28u);
     }
   }
 
-  self->_isVideoPaused = v4;
+  self->_isVideoPaused = pauseCopy;
   [(AVCVideoDataOutput *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [(AVCVideoDataOutputDelegate *)[(AVCVideoDataOutput *)self delegate] videoDataOutput:self videoDidPause:v4];
+    [(AVCVideoDataOutputDelegate *)[(AVCVideoDataOutput *)self delegate] videoDataOutput:self videoDidPause:pauseCopy];
   }
 }
 
-- (void)streamOutput:(id)a3 didStall:(BOOL)a4
+- (void)streamOutput:(id)output didStall:(BOOL)stall
 {
-  v4 = a4;
+  stallCopy = stall;
   v19 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -276,24 +276,24 @@ LABEL_5:
       v13 = 1024;
       v14 = 193;
       v15 = 1024;
-      v16 = v4;
+      v16 = stallCopy;
       v17 = 1024;
       v18 = streamToken;
       _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d AVCVideoDataOutput callback: mediaDidStall=%d for streamToken=%u", &v9, 0x28u);
     }
   }
 
-  self->_isMediaStalled = v4;
+  self->_isMediaStalled = stallCopy;
   [(AVCVideoDataOutput *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [(AVCVideoDataOutputDelegate *)[(AVCVideoDataOutput *)self delegate] videoDataOutput:self mediaDidStall:v4];
+    [(AVCVideoDataOutputDelegate *)[(AVCVideoDataOutput *)self delegate] videoDataOutput:self mediaDidStall:stallCopy];
   }
 }
 
-- (void)streamOutput:(id)a3 didDegrade:(BOOL)a4
+- (void)streamOutput:(id)output didDegrade:(BOOL)degrade
 {
-  v4 = a4;
+  degradeCopy = degrade;
   v19 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -309,31 +309,31 @@ LABEL_5:
       v13 = 1024;
       v14 = 202;
       v15 = 1024;
-      v16 = v4;
+      v16 = degradeCopy;
       v17 = 1024;
       v18 = streamToken;
       _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d AVCVideoDataOutput callback: videoDidDegrade=%d for streamToken=%u", &v9, 0x28u);
     }
   }
 
-  self->_isVideoDegraded = v4;
+  self->_isVideoDegraded = degradeCopy;
   [(AVCVideoDataOutput *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [(AVCVideoDataOutputDelegate *)[(AVCVideoDataOutput *)self delegate] videoDataOutput:self videoDidDegrade:v4];
+    [(AVCVideoDataOutputDelegate *)[(AVCVideoDataOutput *)self delegate] videoDataOutput:self videoDidDegrade:degradeCopy];
   }
 }
 
-- (void)streamOutput:(id)a3 didSuspend:(BOOL)a4
+- (void)streamOutput:(id)output didSuspend:(BOOL)suspend
 {
-  v4 = a4;
-  self->_isVideoSuspended = a4;
+  suspendCopy = suspend;
+  self->_isVideoSuspended = suspend;
   [(AVCVideoDataOutput *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(AVCVideoDataOutput *)self delegate];
+    delegate = [(AVCVideoDataOutput *)self delegate];
 
-    [(AVCVideoDataOutputDelegate *)v6 videoDataOutput:self videoDidSuspend:v4];
+    [(AVCVideoDataOutputDelegate *)delegate videoDataOutput:self videoDidSuspend:suspendCopy];
   }
 }
 

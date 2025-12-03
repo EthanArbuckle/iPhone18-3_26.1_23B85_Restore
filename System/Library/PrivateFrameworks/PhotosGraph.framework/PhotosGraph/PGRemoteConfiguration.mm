@@ -1,59 +1,59 @@
 @interface PGRemoteConfiguration
-- (BOOL)_isValidFilePath:(id)a3;
+- (BOOL)_isValidFilePath:(id)path;
 - (PGRemoteConfiguration)init;
-- (PGRemoteConfiguration)initWithConfigurationSources:(id)a3;
-- (double)doubleValueForKey:(id)a3 withFallbackValue:(double)a4;
-- (id)_configValueForKey:(id)a3 withFallbackValue:(id)a4;
-- (id)arrayValueForKey:(id)a3 withFallbackValue:(id)a4;
-- (id)dictionaryValueForKey:(id)a3 withFallbackValue:(id)a4;
-- (id)fileValueForKey:(id)a3 withFallbackValue:(id)a4;
-- (id)onDiskConfigurationPathForResourceFileName:(id)a3;
-- (id)stringValueForKey:(id)a3 withFallbackValue:(id)a4;
-- (int64_t)longValueForKey:(id)a3 withFallbackValue:(int64_t)a4;
-- (void)_cacheFallbackValueForKey:(id)a3 withValue:(id)a4;
+- (PGRemoteConfiguration)initWithConfigurationSources:(id)sources;
+- (double)doubleValueForKey:(id)key withFallbackValue:(double)value;
+- (id)_configValueForKey:(id)key withFallbackValue:(id)value;
+- (id)arrayValueForKey:(id)key withFallbackValue:(id)value;
+- (id)dictionaryValueForKey:(id)key withFallbackValue:(id)value;
+- (id)fileValueForKey:(id)key withFallbackValue:(id)value;
+- (id)onDiskConfigurationPathForResourceFileName:(id)name;
+- (id)stringValueForKey:(id)key withFallbackValue:(id)value;
+- (int64_t)longValueForKey:(id)key withFallbackValue:(int64_t)value;
+- (void)_cacheFallbackValueForKey:(id)key withValue:(id)value;
 @end
 
 @implementation PGRemoteConfiguration
 
-- (void)_cacheFallbackValueForKey:(id)a3 withValue:(id)a4
+- (void)_cacheFallbackValueForKey:(id)key withValue:(id)value
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_remoteConfigurationCache objectForKey:v6];
-  if (([v8 isEqual:v7] & 1) == 0)
+  keyCopy = key;
+  valueCopy = value;
+  v8 = [(NSMutableDictionary *)self->_remoteConfigurationCache objectForKey:keyCopy];
+  if (([v8 isEqual:valueCopy] & 1) == 0)
   {
     if (v8)
     {
       v9 = +[PGLogging sharedLogging];
-      v10 = [v9 loggingConnection];
+      loggingConnection = [v9 loggingConnection];
 
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         v12 = 138412802;
-        v13 = v6;
+        v13 = keyCopy;
         v14 = 2112;
         v15 = v8;
         v16 = 2112;
-        v17 = v7;
-        _os_log_error_impl(&dword_22F0FC000, v10, OS_LOG_TYPE_ERROR, "[PGRemoteConfiguration] fallback value for Key: %@ is given multiple unequal values: %@, %@", &v12, 0x20u);
+        v17 = valueCopy;
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[PGRemoteConfiguration] fallback value for Key: %@ is given multiple unequal values: %@, %@", &v12, 0x20u);
       }
     }
 
     else
     {
-      [(NSMutableDictionary *)self->_remoteConfigurationCache setObject:v7 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)self->_remoteConfigurationCache setObject:valueCopy forKeyedSubscript:keyCopy];
     }
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_configValueForKey:(id)a3 withFallbackValue:(id)a4
+- (id)_configValueForKey:(id)key withFallbackValue:(id)value
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  [(PGRemoteConfiguration *)self _cacheFallbackValueForKey:v6 withValue:a4];
+  keyCopy = key;
+  [(PGRemoteConfiguration *)self _cacheFallbackValueForKey:keyCopy withValue:value];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
@@ -73,7 +73,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v16 + 1) + 8 * i) objectForKey:{v6, v16}];
+        v12 = [*(*(&v16 + 1) + 8 * i) objectForKey:{keyCopy, v16}];
         if (v12)
         {
           v13 = v12;
@@ -99,12 +99,12 @@ LABEL_11:
   return v13;
 }
 
-- (id)fileValueForKey:(id)a3 withFallbackValue:(id)a4
+- (id)fileValueForKey:(id)key withFallbackValue:(id)value
 {
-  v6 = a4;
-  v7 = [(PGRemoteConfiguration *)self _configValueForKey:a3 withFallbackValue:v6];
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  v9 = [v8 fileExistsAtPath:v7];
+  valueCopy = value;
+  v7 = [(PGRemoteConfiguration *)self _configValueForKey:key withFallbackValue:valueCopy];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v9 = [defaultManager fileExistsAtPath:v7];
 
   if (v9)
   {
@@ -113,7 +113,7 @@ LABEL_11:
 
   else
   {
-    v10 = v6;
+    v10 = valueCopy;
   }
 
   v11 = v10;
@@ -121,21 +121,21 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)_isValidFilePath:(id)a3
+- (BOOL)_isValidFilePath:(id)path
 {
   v3 = MEMORY[0x277CCAA00];
-  v4 = a3;
-  v5 = [v3 defaultManager];
-  v6 = [v5 fileExistsAtPath:v4];
+  pathCopy = path;
+  defaultManager = [v3 defaultManager];
+  v6 = [defaultManager fileExistsAtPath:pathCopy];
 
   return v6;
 }
 
-- (id)dictionaryValueForKey:(id)a3 withFallbackValue:(id)a4
+- (id)dictionaryValueForKey:(id)key withFallbackValue:(id)value
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(PGRemoteConfiguration *)self _configValueForKey:a3 withFallbackValue:v6];
+  valueCopy = value;
+  v7 = [(PGRemoteConfiguration *)self _configValueForKey:key withFallbackValue:valueCopy];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || ![(PGRemoteConfiguration *)self _isValidFilePath:v7])
   {
@@ -148,7 +148,7 @@ LABEL_7:
 
     else
     {
-      v11 = v6;
+      v11 = valueCopy;
     }
 
     v8 = v11;
@@ -159,13 +159,13 @@ LABEL_7:
   if (!v8)
   {
     v9 = +[PGLogging sharedLogging];
-    v10 = [v9 loggingConnection];
+    loggingConnection = [v9 loggingConnection];
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
     {
       v14 = 138412290;
       v15 = v7;
-      _os_log_impl(&dword_22F0FC000, v10, OS_LOG_TYPE_INFO, "[RemoteConfiguration] failed to load dictionary from Trial at filepath %@", &v14, 0xCu);
+      _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "[RemoteConfiguration] failed to load dictionary from Trial at filepath %@", &v14, 0xCu);
     }
 
     goto LABEL_7;
@@ -178,11 +178,11 @@ LABEL_11:
   return v8;
 }
 
-- (id)arrayValueForKey:(id)a3 withFallbackValue:(id)a4
+- (id)arrayValueForKey:(id)key withFallbackValue:(id)value
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(PGRemoteConfiguration *)self _configValueForKey:a3 withFallbackValue:v6];
+  valueCopy = value;
+  v7 = [(PGRemoteConfiguration *)self _configValueForKey:key withFallbackValue:valueCopy];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [(PGRemoteConfiguration *)self _isValidFilePath:v7])
   {
@@ -191,16 +191,16 @@ LABEL_11:
     if (!v8)
     {
       v10 = +[PGLogging sharedLogging];
-      v11 = [v10 loggingConnection];
+      loggingConnection = [v10 loggingConnection];
 
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         v16 = 138412290;
         v17 = v7;
-        _os_log_error_impl(&dword_22F0FC000, v11, OS_LOG_TYPE_ERROR, "[RemoteConfiguration] failed to load array from Trial at filepath %@", &v16, 0xCu);
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[RemoteConfiguration] failed to load array from Trial at filepath %@", &v16, 0xCu);
       }
 
-      v9 = v6;
+      v9 = valueCopy;
     }
 
     v12 = v9;
@@ -216,7 +216,7 @@ LABEL_11:
 
     else
     {
-      v13 = v6;
+      v13 = valueCopy;
     }
 
     v12 = v13;
@@ -227,41 +227,41 @@ LABEL_11:
   return v12;
 }
 
-- (double)doubleValueForKey:(id)a3 withFallbackValue:(double)a4
+- (double)doubleValueForKey:(id)key withFallbackValue:(double)value
 {
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
-  v8 = [v6 numberWithDouble:a4];
-  v9 = [(PGRemoteConfiguration *)self _configValueForKey:v7 withFallbackValue:v8];
+  keyCopy = key;
+  v8 = [v6 numberWithDouble:value];
+  v9 = [(PGRemoteConfiguration *)self _configValueForKey:keyCopy withFallbackValue:v8];
 
   if (v9)
   {
     [v9 doubleValue];
-    a4 = v10;
+    value = v10;
   }
 
-  return a4;
+  return value;
 }
 
-- (int64_t)longValueForKey:(id)a3 withFallbackValue:(int64_t)a4
+- (int64_t)longValueForKey:(id)key withFallbackValue:(int64_t)value
 {
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
-  v8 = [v6 numberWithLongLong:a4];
-  v9 = [(PGRemoteConfiguration *)self _configValueForKey:v7 withFallbackValue:v8];
+  keyCopy = key;
+  v8 = [v6 numberWithLongLong:value];
+  v9 = [(PGRemoteConfiguration *)self _configValueForKey:keyCopy withFallbackValue:v8];
 
   if (v9)
   {
-    a4 = [v9 longValue];
+    value = [v9 longValue];
   }
 
-  return a4;
+  return value;
 }
 
-- (id)stringValueForKey:(id)a3 withFallbackValue:(id)a4
+- (id)stringValueForKey:(id)key withFallbackValue:(id)value
 {
-  v6 = a4;
-  v7 = [(PGRemoteConfiguration *)self _configValueForKey:a3 withFallbackValue:v6];
+  valueCopy = value;
+  v7 = [(PGRemoteConfiguration *)self _configValueForKey:key withFallbackValue:valueCopy];
   v8 = v7;
   if (v7)
   {
@@ -270,7 +270,7 @@ LABEL_11:
 
   else
   {
-    v9 = v6;
+    v9 = valueCopy;
   }
 
   v10 = v9;
@@ -278,15 +278,15 @@ LABEL_11:
   return v10;
 }
 
-- (id)onDiskConfigurationPathForResourceFileName:(id)a3
+- (id)onDiskConfigurationPathForResourceFileName:(id)name
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nameCopy = name;
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v5 = [v4 pathForResource:v3 ofType:@"remoteconfig.plist"];
+  v5 = [v4 pathForResource:nameCopy ofType:@"remoteconfig.plist"];
 
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v6 fileExistsAtPath:v5];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v7 = [defaultManager fileExistsAtPath:v5];
 
   if (v7)
   {
@@ -296,15 +296,15 @@ LABEL_11:
   else
   {
     v9 = +[PGLogging sharedLogging];
-    v10 = [v9 loggingConnection];
+    loggingConnection = [v9 loggingConnection];
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412546;
       v14 = v5;
       v15 = 2112;
-      v16 = v3;
-      _os_log_error_impl(&dword_22F0FC000, v10, OS_LOG_TYPE_ERROR, "[PGRemoteConfiguration] Failed to find resourceFilePath:%@ for resourceFileName:%@", &v13, 0x16u);
+      v16 = nameCopy;
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[PGRemoteConfiguration] Failed to find resourceFilePath:%@ for resourceFileName:%@", &v13, 0x16u);
     }
 
     v8 = 0;
@@ -315,9 +315,9 @@ LABEL_11:
   return v8;
 }
 
-- (PGRemoteConfiguration)initWithConfigurationSources:(id)a3
+- (PGRemoteConfiguration)initWithConfigurationSources:(id)sources
 {
-  v5 = a3;
+  sourcesCopy = sources;
   v10.receiver = self;
   v10.super_class = PGRemoteConfiguration;
   v6 = [(PGRemoteConfiguration *)&v10 init];
@@ -327,7 +327,7 @@ LABEL_11:
     remoteConfigurationCache = v6->_remoteConfigurationCache;
     v6->_remoteConfigurationCache = v7;
 
-    objc_storeStrong(&v6->_configurationSources, a3);
+    objc_storeStrong(&v6->_configurationSources, sources);
   }
 
   return v6;

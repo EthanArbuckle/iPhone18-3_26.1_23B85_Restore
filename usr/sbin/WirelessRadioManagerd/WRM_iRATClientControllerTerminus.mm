@@ -1,10 +1,10 @@
 @interface WRM_iRATClientControllerTerminus
 - (WRM_iRATClientControllerTerminus)init;
 - (void)dealloc;
-- (void)handleLinkPrefSubscribeTerminus:(id)a3;
+- (void)handleLinkPrefSubscribeTerminus:(id)terminus;
 - (void)handleLinkPreferenceNotificationTerminus;
-- (void)handleMessage:(id)a3;
-- (void)handleSubscribeStatusUpdateTerminus:(id)a3;
+- (void)handleMessage:(id)message;
+- (void)handleSubscribeStatusUpdateTerminus:(id)terminus;
 @end
 
 @implementation WRM_iRATClientControllerTerminus
@@ -45,16 +45,16 @@
   [(WRM_iRATClientController *)&v3 dealloc];
 }
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  uint64 = xpc_dictionary_get_uint64(a3, "kMessageId");
+  uint64 = xpc_dictionary_get_uint64(message, "kMessageId");
   if (uint64 > 420)
   {
     if (uint64 == 421)
     {
       v6 = +[WRM_IDSLinkEvalManager WRM_IDSLinkEvalManagerSingleton];
 
-      [v6 updateControllerState:a3];
+      [v6 updateControllerState:message];
     }
 
     else
@@ -78,25 +78,25 @@ LABEL_12:
       if (uint64 == 414)
       {
 
-        [(WRM_iRATClientControllerTerminus *)self handleSubscribeStatusUpdateTerminus:a3];
+        [(WRM_iRATClientControllerTerminus *)self handleSubscribeStatusUpdateTerminus:message];
         return;
       }
 
       goto LABEL_12;
     }
 
-    [(WRM_iRATClientControllerTerminus *)self handleLinkPrefSubscribeTerminus:a3];
+    [(WRM_iRATClientControllerTerminus *)self handleLinkPrefSubscribeTerminus:message];
   }
 }
 
-- (void)handleLinkPrefSubscribeTerminus:(id)a3
+- (void)handleLinkPrefSubscribeTerminus:(id)terminus
 {
-  xpc_dictionary_set_uint64(a3, "kClientType", [(WRM_iRATClientController *)self getMyClientType]);
-  if (xpc_dictionary_get_value(a3, "kMessageArgs"))
+  xpc_dictionary_set_uint64(terminus, "kClientType", [(WRM_iRATClientController *)self getMyClientType]);
+  if (xpc_dictionary_get_value(terminus, "kMessageArgs"))
   {
     v4 = +[WRM_IDSLinkEvalManager WRM_IDSLinkEvalManagerSingleton];
 
-    [v4 updateControllerState:a3];
+    [v4 updateControllerState:terminus];
   }
 
   else
@@ -106,10 +106,10 @@ LABEL_12:
   }
 }
 
-- (void)handleSubscribeStatusUpdateTerminus:(id)a3
+- (void)handleSubscribeStatusUpdateTerminus:(id)terminus
 {
-  xpc_dictionary_set_uint64(a3, "kClientType", [(WRM_iRATClientController *)self getMyClientType]);
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  xpc_dictionary_set_uint64(terminus, "kClientType", [(WRM_iRATClientController *)self getMyClientType]);
+  value = xpc_dictionary_get_value(terminus, "kMessageArgs");
   if (value)
   {
     v5 = value;
@@ -117,7 +117,7 @@ LABEL_12:
     [WCM_Logging logLevel:18 message:@"Application link preference %d active %d", uint64, xpc_dictionary_get_BOOL(v5, "kWRMProximityAppLinkPreferenceActive")];
     v7 = +[WRM_IDSLinkEvalManager WRM_IDSLinkEvalManagerSingleton];
 
-    [v7 updateControllerState:a3];
+    [v7 updateControllerState:terminus];
   }
 
   else
@@ -132,30 +132,30 @@ LABEL_12:
   v3 = xpc_array_create(0, 0);
   if ([(WRM_TerminusContext *)[(WRM_iRATClientControllerTerminus *)self mTerminusContext] mBtLinkRecommendationUpdateNeeded]|| [(WRM_TerminusContext *)[(WRM_iRATClientControllerTerminus *)self mTerminusContext] mForceUpdateNeeded])
   {
-    v4 = [(WRM_TerminusContext *)[(WRM_iRATClientControllerTerminus *)self mTerminusContext] mBtLinkIsRecommended];
+    mBtLinkIsRecommended = [(WRM_TerminusContext *)[(WRM_iRATClientControllerTerminus *)self mTerminusContext] mBtLinkIsRecommended];
     v5 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_uint64(v5, "kWRMProximityLinkRecommendationType", 1uLL);
-    xpc_dictionary_set_BOOL(v5, "kWRMProximityLinkisRecommended", v4);
+    xpc_dictionary_set_BOOL(v5, "kWRMProximityLinkisRecommended", mBtLinkIsRecommended);
     xpc_array_append_value(v3, v5);
     [(WRM_TerminusContext *)[(WRM_iRATClientControllerTerminus *)self mTerminusContext] setMBtLinkRecommendationUpdateNeeded:0];
   }
 
   if ([(WRM_TerminusContext *)[(WRM_iRATClientControllerTerminus *)self mTerminusContext] mCompanionWifiLinkRecommendationUpdateNeeded])
   {
-    v6 = [(WRM_TerminusContext *)[(WRM_iRATClientControllerTerminus *)self mTerminusContext] mCompanionWifiLinkIsRecommended];
+    mCompanionWifiLinkIsRecommended = [(WRM_TerminusContext *)[(WRM_iRATClientControllerTerminus *)self mTerminusContext] mCompanionWifiLinkIsRecommended];
     v7 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_uint64(v7, "kWRMProximityLinkRecommendationType", 0);
-    xpc_dictionary_set_BOOL(v7, "kWRMProximityLinkisRecommended", v6);
+    xpc_dictionary_set_BOOL(v7, "kWRMProximityLinkisRecommended", mCompanionWifiLinkIsRecommended);
     xpc_array_append_value(v3, v7);
     [(WRM_TerminusContext *)[(WRM_iRATClientControllerTerminus *)self mTerminusContext] setMCompanionWifiLinkRecommendationUpdateNeeded:0];
   }
 
   if ([(WRM_TerminusContext *)[(WRM_iRATClientControllerTerminus *)self mTerminusContext] mDirectWifiLinkRecommendationUpdateNeeded]|| [(WRM_TerminusContext *)[(WRM_iRATClientControllerTerminus *)self mTerminusContext] mForceUpdateNeeded])
   {
-    v8 = [(WRM_TerminusContext *)[(WRM_iRATClientControllerTerminus *)self mTerminusContext] mDirectWifiLinkIsRecommended];
+    mDirectWifiLinkIsRecommended = [(WRM_TerminusContext *)[(WRM_iRATClientControllerTerminus *)self mTerminusContext] mDirectWifiLinkIsRecommended];
     v9 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_uint64(v9, "kWRMProximityLinkRecommendationType", 2uLL);
-    xpc_dictionary_set_BOOL(v9, "kWRMProximityLinkisRecommended", v8);
+    xpc_dictionary_set_BOOL(v9, "kWRMProximityLinkisRecommended", mDirectWifiLinkIsRecommended);
     xpc_dictionary_set_uint64(v9, "kWRMProximityBtRssi", [(WRM_TerminusContext *)[(WRM_iRATClientControllerTerminus *)self mTerminusContext] btMovingAvgRSSI]);
     xpc_dictionary_set_int64(v9, "kWRMProximityBtRetransmissionRateTx", [(WRM_TerminusContext *)[(WRM_iRATClientControllerTerminus *)self mTerminusContext] btRetransmissionRateTx]);
     xpc_dictionary_set_int64(v9, "kWRMProximityBtRetransmissionRateRx", [(WRM_TerminusContext *)[(WRM_iRATClientControllerTerminus *)self mTerminusContext] btRetransmissionRateRx]);
@@ -201,9 +201,9 @@ LABEL_12:
 
   xpc_release(v3);
   [(WRM_TerminusContext *)[(WRM_iRATClientControllerTerminus *)self mTerminusContext] setMForceUpdateNeeded:0];
-  v17 = [(WRM_iRATClientControllerTerminus *)self mTerminusContext];
+  mTerminusContext = [(WRM_iRATClientControllerTerminus *)self mTerminusContext];
 
-  [(WRM_TerminusContext *)v17 setMIsRetry:0];
+  [(WRM_TerminusContext *)mTerminusContext setMIsRetry:0];
 }
 
 @end

@@ -11,7 +11,7 @@
   v4 = RCCloudRecordingsStoreURL();
   v5 = [v3 initWithURL:v4];
 
-  v6 = [v5 newBackgroundModel];
+  newBackgroundModel = [v5 newBackgroundModel];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_100000D9C;
@@ -20,17 +20,17 @@
   v24 = v7;
   v8 = objc_retainBlock(v23);
   v9 = RCLogsDirectoryURL();
-  v10 = [v9 path];
+  path = [v9 path];
 
-  v11 = [v10 stringByAppendingPathComponent:@"VoiceMemos-AllRecordings.txt"];
+  v11 = [path stringByAppendingPathComponent:@"VoiceMemos-AllRecordings.txt"];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100000F40;
   v21[3] = &unk_1000041A8;
-  v12 = v6;
+  v12 = newBackgroundModel;
   v22 = v12;
   (v8[2])(v8, v11, v21);
-  v13 = [v10 stringByAppendingPathComponent:@"VoiceMemos-PersistentHistory.txt"];
+  v13 = [path stringByAppendingPathComponent:@"VoiceMemos-PersistentHistory.txt"];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_100001120;

@@ -1,18 +1,18 @@
 @interface PMLDataChunk
-+ (id)chunkOfType:(unsigned int)a3 data:(id)a4 superdata:(id)a5;
-+ (id)chunksFromData:(id)a3;
-+ (id)chunksFromFileAtPath:(id)a3;
-+ (id)serializeChunks:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PMLDataChunk)initWithData:(id)a3;
++ (id)chunkOfType:(unsigned int)type data:(id)data superdata:(id)superdata;
++ (id)chunksFromData:(id)data;
++ (id)chunksFromFileAtPath:(id)path;
++ (id)serializeChunks:(id)chunks;
+- (BOOL)isEqual:(id)equal;
+- (PMLDataChunk)initWithData:(id)data;
 @end
 
 @implementation PMLDataChunk
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -20,40 +20,40 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSData *)self->_backingData isEqualToData:v4->_backingData];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSData *)self->_backingData isEqualToData:equalCopy->_backingData];
   }
 
   return v5;
 }
 
-- (PMLDataChunk)initWithData:(id)a3
+- (PMLDataChunk)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = PMLDataChunk;
   v6 = [(PMLDataChunk *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_backingData, a3);
+    objc_storeStrong(&v6->_backingData, data);
   }
 
   return v7;
 }
 
-+ (id)serializeChunks:(id)a3
++ (id)serializeChunks:(id)chunks
 {
   v40 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  chunksCopy = chunks;
+  if (!chunksCopy)
   {
-    v28 = [MEMORY[0x277CCA890] currentHandler];
-    [v28 handleFailureInMethod:a2 object:a1 file:@"PMLDataChunk.m" lineNumber:177 description:{@"Invalid parameter not satisfying: %@", @"chunks"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLDataChunk.m" lineNumber:177 description:{@"Invalid parameter not satisfying: %@", @"chunks"}];
   }
 
   v6 = objc_opt_new();
   v38 = 1563411470;
-  v39 = [v5 count];
+  v39 = [chunksCopy count];
   [v6 appendBytes:&v38 length:8];
   v7 = v39;
   v8 = 12 * v39;
@@ -105,7 +105,7 @@ LABEL_29:
   v13 = memptr;
 LABEL_7:
   bzero(v13, v11);
-  if ([v5 count])
+  if ([chunksCopy count])
   {
     v14 = 0;
     v15 = v35 + 8;
@@ -121,21 +121,21 @@ LABEL_7:
 
       v18 = &v9[12 * v14];
       *v18 = v15;
-      v19 = [v5 objectAtIndexedSubscript:v14];
+      v19 = [chunksCopy objectAtIndexedSubscript:v14];
       *(v18 + 1) = [v19[1] length];
 
-      v20 = [v5 objectAtIndexedSubscript:v14];
+      v20 = [chunksCopy objectAtIndexedSubscript:v14];
       *(v18 + 2) = [objc_opt_class() dataChunkType];
 
       v15 += *(v18 + 1);
       v14 = v16;
     }
 
-    while ([v5 count] > v16++);
+    while ([chunksCopy count] > v16++);
   }
 
   [v6 appendBytes:v9 length:v35];
-  if ([v5 count])
+  if ([chunksCopy count])
   {
     v22 = 0;
     v23 = 0;
@@ -153,13 +153,13 @@ LABEL_7:
         while (v24 < *&v13[4 * v22]);
       }
 
-      v25 = [v5 objectAtIndexedSubscript:v22];
+      v25 = [chunksCopy objectAtIndexedSubscript:v22];
       [v6 appendData:v25[1]];
 
       v22 = ++v23;
     }
 
-    while ([v5 count] > v23);
+    while ([chunksCopy count] > v23);
   }
 
   if (v34 >= 0x16)
@@ -177,18 +177,18 @@ LABEL_7:
   return v6;
 }
 
-+ (id)chunksFromData:(id)a3
++ (id)chunksFromData:(id)data
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 bytes];
-  v5 = [v3 length];
-  if (v5 < 8 || *v4 != 1563411470)
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v5 = [dataCopy length];
+  if (v5 < 8 || *bytes != 1563411470)
   {
     goto LABEL_5;
   }
 
-  v6 = v4[1];
+  v6 = bytes[1];
   if (v6)
   {
     v7 = v5;
@@ -202,7 +202,7 @@ LABEL_5:
     }
 
     v13 = malloc_type_malloc(v8 + 8, 0x3D3618B9uLL);
-    memcpy(v13, v4, v9);
+    memcpy(v13, bytes, v9);
     v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v13[1]];
     if (v13[1])
     {
@@ -216,8 +216,8 @@ LABEL_5:
           break;
         }
 
-        v17 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytesNoCopy:v4 + *v15 length:v15[1] freeWhenDone:0];
-        v18 = [PMLDataChunk chunkOfType:v15[2] data:v17 superdata:v3];
+        v17 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytesNoCopy:bytes + *v15 length:v15[1] freeWhenDone:0];
+        v18 = [PMLDataChunk chunkOfType:v15[2] data:v17 superdata:dataCopy];
         if (!v18)
         {
           v20 = PML_LogHandle();
@@ -273,12 +273,12 @@ LABEL_6:
   return v10;
 }
 
-+ (id)chunksFromFileAtPath:(id)a3
++ (id)chunksFromFileAtPath:(id)path
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  pathCopy = path;
   v10 = 0;
-  v4 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:v3 options:1 error:&v10];
+  v4 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:pathCopy options:1 error:&v10];
   v5 = v10;
   if (v4)
   {
@@ -291,7 +291,7 @@ LABEL_6:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v12 = v3;
+      v12 = pathCopy;
       v13 = 2112;
       v14 = v5;
       _os_log_error_impl(&dword_260D68000, v7, OS_LOG_TYPE_ERROR, "Could not open chunk file at %@: %@", buf, 0x16u);
@@ -305,22 +305,22 @@ LABEL_6:
   return v6;
 }
 
-+ (id)chunkOfType:(unsigned int)a3 data:(id)a4 superdata:(id)a5
++ (id)chunkOfType:(unsigned int)type data:(id)data superdata:(id)superdata
 {
-  v7 = a4;
-  v8 = a5;
-  if (a3 > 3)
+  dataCopy = data;
+  superdataCopy = superdata;
+  if (type > 3)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = objc_alloc(*off_279AC06E0[a3]);
+    v9 = objc_alloc(*off_279AC06E0[type]);
   }
 
-  v10 = [v9 initWithData:v7];
-  [v10 setSuperdata:v8];
+  v10 = [v9 initWithData:dataCopy];
+  [v10 setSuperdata:superdataCopy];
 
   return v10;
 }

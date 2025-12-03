@@ -1,5 +1,5 @@
 @interface AVFigEndpointSecondDisplayModeToken
-- (AVFigEndpointSecondDisplayModeToken)initWithEndpoint:(OpaqueFigEndpoint *)a3;
+- (AVFigEndpointSecondDisplayModeToken)initWithEndpoint:(OpaqueFigEndpoint *)endpoint;
 - (void)dealloc;
 @end
 
@@ -18,7 +18,7 @@
   [(AVFigEndpointSecondDisplayModeToken *)&v4 dealloc];
 }
 
-- (AVFigEndpointSecondDisplayModeToken)initWithEndpoint:(OpaqueFigEndpoint *)a3
+- (AVFigEndpointSecondDisplayModeToken)initWithEndpoint:(OpaqueFigEndpoint *)endpoint
 {
   v8.receiver = self;
   v8.super_class = AVFigEndpointSecondDisplayModeToken;
@@ -29,25 +29,25 @@
     goto LABEL_7;
   }
 
-  if (!a3)
+  if (!endpoint)
   {
     v4->_endpoint = 0;
     goto LABEL_6;
   }
 
-  v6 = CFRetain(a3);
+  v6 = CFRetain(endpoint);
   v5->_endpoint = v6;
   if (!v6)
   {
 LABEL_7:
-    a3 = 0;
+    endpoint = 0;
     goto LABEL_6;
   }
 
-  a3 = v5;
+  endpoint = v5;
 LABEL_6:
 
-  return a3;
+  return endpoint;
 }
 
 @end

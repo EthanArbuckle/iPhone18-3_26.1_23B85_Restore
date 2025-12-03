@@ -1,32 +1,32 @@
 @interface MCProfileHandler
-+ (id)payloadsOfClass:(Class)a3 installedBeforePayload:(id)a4;
-+ (id)payloadsOfClass:(Class)a3 removedBeforePayload:(id)a4;
-+ (id)payloadsOfClass:(Class)a3 setAsideBeforePayload:(id)a4;
-+ (id)payloadsOfClass:(Class)a3 unsetAsideBeforePayload:(id)a4;
++ (id)payloadsOfClass:(Class)class installedBeforePayload:(id)payload;
++ (id)payloadsOfClass:(Class)class removedBeforePayload:(id)payload;
++ (id)payloadsOfClass:(Class)class setAsideBeforePayload:(id)payload;
++ (id)payloadsOfClass:(Class)class unsetAsideBeforePayload:(id)payload;
 + (id)userCancelledError;
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6;
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error;
 - (BOOL)isInstalled;
-- (BOOL)preflightUserInputResponses:(id)a3 forPayloadIndex:(unint64_t)a4 outError:(id *)a5;
-- (BOOL)stageForInstallationWithInstaller:(id)a3 interactionClient:(id)a4 outError:(id *)a5;
-- (MCProfileHandler)initWithProfile:(id)a3;
-- (id)_profileInstallationErrorWithUnderlyingError:(id)a3;
-- (id)payloadHandlerWithUUID:(id)a3;
-- (id)persistentIDForCertificateUUID:(id)a3;
+- (BOOL)preflightUserInputResponses:(id)responses forPayloadIndex:(unint64_t)index outError:(id *)error;
+- (BOOL)stageForInstallationWithInstaller:(id)installer interactionClient:(id)client outError:(id *)error;
+- (MCProfileHandler)initWithProfile:(id)profile;
+- (id)_profileInstallationErrorWithUnderlyingError:(id)error;
+- (id)payloadHandlerWithUUID:(id)d;
+- (id)persistentIDForCertificateUUID:(id)d;
 - (id)userCancelledError;
-- (void)convertPayloadWithUUIDToUnknownPayload:(id)a3;
-- (void)didInstallOldGlobalRestrictions:(id)a3 newGlobalRestrictions:(id)a4;
-- (void)didRemoveOldGlobalRestrictions:(id)a3 newGlobalRestrictions:(id)a4;
-- (void)removeWithInstaller:(id)a3 options:(id)a4;
-- (void)setAsideWithInstaller:(id)a3;
+- (void)convertPayloadWithUUIDToUnknownPayload:(id)payload;
+- (void)didInstallOldGlobalRestrictions:(id)restrictions newGlobalRestrictions:(id)globalRestrictions;
+- (void)didRemoveOldGlobalRestrictions:(id)restrictions newGlobalRestrictions:(id)globalRestrictions;
+- (void)removeWithInstaller:(id)installer options:(id)options;
+- (void)setAsideWithInstaller:(id)installer;
 - (void)unsetAside;
-- (void)unstageFromInstallationWithInstaller:(id)a3;
+- (void)unstageFromInstallationWithInstaller:(id)installer;
 @end
 
 @implementation MCProfileHandler
 
-- (id)payloadHandlerWithUUID:(id)a3
+- (id)payloadHandlerWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -46,9 +46,9 @@
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 payload];
-        v11 = [v10 UUID];
-        v12 = [v11 isEqualToString:v4];
+        payload = [v9 payload];
+        uUID = [payload UUID];
+        v12 = [uUID isEqualToString:dCopy];
 
         if (v12)
         {
@@ -72,19 +72,19 @@ LABEL_11:
   return v6;
 }
 
-- (MCProfileHandler)initWithProfile:(id)a3
+- (MCProfileHandler)initWithProfile:(id)profile
 {
-  v5 = a3;
+  profileCopy = profile;
   v31.receiver = self;
   v31.super_class = MCProfileHandler;
   v6 = [(MCProfileHandler *)&v31 init];
   p_isa = &v6->super.isa;
   if (v6)
   {
-    objc_storeStrong(&v6->_profile, a3);
+    objc_storeStrong(&v6->_profile, profile);
     v8 = [NSMutableArray alloc];
-    v9 = [v5 payloads];
-    v10 = [v8 initWithCapacity:{objc_msgSend(v9, "count")}];
+    payloads = [profileCopy payloads];
+    v10 = [v8 initWithCapacity:{objc_msgSend(payloads, "count")}];
     v11 = p_isa[2];
     p_isa[2] = v10;
 
@@ -92,8 +92,8 @@ LABEL_11:
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v12 = [v5 payloads];
-    v13 = [v12 countByEnumeratingWithState:&v27 objects:v36 count:16];
+    payloads2 = [profileCopy payloads];
+    v13 = [payloads2 countByEnumeratingWithState:&v27 objects:v36 count:16];
     if (v13)
     {
       v14 = v13;
@@ -104,7 +104,7 @@ LABEL_11:
         {
           if (*v28 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(payloads2);
           }
 
           v17 = *(*(&v27 + 1) + 8 * i);
@@ -117,11 +117,11 @@ LABEL_11:
               v22 = v21;
               v23 = objc_opt_class();
               v24 = v23;
-              v25 = [v17 friendlyName];
+              friendlyName = [v17 friendlyName];
               *buf = 138543618;
               v33 = v23;
               v34 = 2114;
-              v35 = v25;
+              v35 = friendlyName;
               _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "%{public}@ Cannot instantiate a payload handler for payload “%{public}@”.", buf, 0x16u);
             }
 
@@ -133,7 +133,7 @@ LABEL_11:
           [p_isa[2] addObject:v18];
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v27 objects:v36 count:16];
+        v14 = [payloads2 countByEnumeratingWithState:&v27 objects:v36 count:16];
         if (v14)
         {
           continue;
@@ -162,35 +162,35 @@ LABEL_15:
 - (id)userCancelledError
 {
   v2 = MCInstallationErrorDomain;
-  v3 = [(MCProfileHandler *)self profile];
-  v4 = [v3 friendlyName];
+  profile = [(MCProfileHandler *)self profile];
+  friendlyName = [profile friendlyName];
   v5 = MCErrorArray();
-  v6 = [NSError MCErrorWithDomain:v2 code:4004 descriptionArray:v5 errorType:MCErrorTypeFatal, v4, 0];
+  v6 = [NSError MCErrorWithDomain:v2 code:4004 descriptionArray:v5 errorType:MCErrorTypeFatal, friendlyName, 0];
 
   return v6;
 }
 
-- (id)_profileInstallationErrorWithUnderlyingError:(id)a3
+- (id)_profileInstallationErrorWithUnderlyingError:(id)error
 {
   v4 = MCProfileErrorDomain;
-  v5 = a3;
-  v6 = [(MCProfileHandler *)self profile];
-  v7 = [v6 friendlyName];
+  errorCopy = error;
+  profile = [(MCProfileHandler *)self profile];
+  friendlyName = [profile friendlyName];
   v8 = MCErrorArray();
-  v9 = [NSError MCErrorWithDomain:v4 code:1009 descriptionArray:v8 underlyingError:v5 errorType:MCErrorTypeFatal, v7, 0];
+  v9 = [NSError MCErrorWithDomain:v4 code:1009 descriptionArray:v8 underlyingError:errorCopy errorType:MCErrorTypeFatal, friendlyName, 0];
 
   return v9;
 }
 
-- (BOOL)stageForInstallationWithInstaller:(id)a3 interactionClient:(id)a4 outError:(id *)a5
+- (BOOL)stageForInstallationWithInstaller:(id)installer interactionClient:(id)client outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v64 = v9;
+  installerCopy = installer;
+  clientCopy = client;
+  v64 = clientCopy;
   v65 = [[NSMutableArray alloc] initWithCapacity:{-[NSMutableArray count](self->_payloadHandlers, "count")}];
-  v71 = self;
-  v63 = a5;
-  if (v9)
+  selfCopy = self;
+  errorCopy = error;
+  if (clientCopy)
   {
     v66 = [NSMutableArray arrayWithCapacity:[(NSMutableArray *)self->_payloadHandlers count]];
     v86 = 0u;
@@ -201,7 +201,7 @@ LABEL_15:
     v68 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v86 objects:v97 count:16];
     if (v68)
     {
-      v62 = v8;
+      v62 = installerCopy;
       v11 = 0;
       v67 = *v87;
       v12 = kMCIDFinePrintKey;
@@ -216,16 +216,16 @@ LABEL_15:
             objc_enumerationMutation(v10);
           }
 
-          v16 = [*(*(&v86 + 1) + 8 * i) userInputFields];
-          if ([v16 count])
+          userInputFields = [*(*(&v86 + 1) + 8 * i) userInputFields];
+          if ([userInputFields count])
           {
-            v69 = v16;
+            v69 = userInputFields;
             v70 = i;
             v84 = 0u;
             v85 = 0u;
             v82 = 0u;
             v83 = 0u;
-            v17 = v16;
+            v17 = userInputFields;
             v18 = [v17 countByEnumeratingWithState:&v82 objects:v96 count:16];
             if (v18)
             {
@@ -248,10 +248,10 @@ LABEL_15:
                     v24 = [v22 objectForKey:v13];
                     [v24 intValue];
 
-                    v61 = [(MCProfile *)v71->_profile friendlyName];
+                    friendlyName = [(MCProfile *)selfCopy->_profile friendlyName];
                     v25 = MCLocalizedFormat();
 
-                    [v22 setObject:v25 forKey:{v12, v61}];
+                    [v22 setObject:v25 forKey:{v12, friendlyName}];
                   }
                 }
 
@@ -263,11 +263,11 @@ LABEL_15:
 
             v11 = 1;
             v14 = v66;
-            v16 = v69;
+            userInputFields = v69;
             i = v70;
           }
 
-          [v14 addObject:v16];
+          [v14 addObject:userInputFields];
         }
 
         v68 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v86 objects:v97 count:16];
@@ -275,36 +275,36 @@ LABEL_15:
 
       while (v68);
 
-      v8 = v62;
-      v26 = v63;
-      v9 = v64;
-      self = v71;
+      installerCopy = v62;
+      v26 = errorCopy;
+      clientCopy = v64;
+      self = selfCopy;
       if ((v11 & 1) == 0)
       {
         goto LABEL_27;
       }
 
       v81 = 0;
-      v27 = [v64 requestUserInput:v66 delegate:v71 outResult:&v81];
+      v27 = [v64 requestUserInput:v66 delegate:selfCopy outResult:&v81];
       v28 = v81;
       v10 = v28;
       if (!v27 || (v29 = -[NSMutableArray count](v28, "count"), v29 != [v66 count]))
       {
-        v44 = [(MCProfileHandler *)v71 userCancelledError];
+        userCancelledError = [(MCProfileHandler *)selfCopy userCancelledError];
 
         v38 = v66;
 LABEL_42:
 
-        if (v44)
+        if (userCancelledError)
         {
           v45 = _MCLogObjects[0];
           if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
           {
             v46 = v45;
-            v47 = [(MCProfileHandler *)v71 profile];
-            v48 = [v47 identifier];
+            profile = [(MCProfileHandler *)selfCopy profile];
+            identifier = [profile identifier];
             *buf = 138543362;
-            v91 = v48;
+            v91 = identifier;
             _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_ERROR, "Rolling back staging of profile “%{public}@”...", buf, 0xCu);
           }
 
@@ -327,7 +327,7 @@ LABEL_42:
                   objc_enumerationMutation(v49);
                 }
 
-                [*(*(&v72 + 1) + 8 * k) unstageFromInstallationWithInstaller:v8];
+                [*(*(&v72 + 1) + 8 * k) unstageFromInstallationWithInstaller:installerCopy];
               }
 
               v51 = [v49 countByEnumeratingWithState:&v72 objects:v94 count:16];
@@ -340,40 +340,40 @@ LABEL_42:
           if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
           {
             v55 = v54;
-            v56 = [(MCProfileHandler *)v71 profile];
-            v57 = [v56 identifier];
-            v58 = [v44 MCVerboseDescription];
+            profile2 = [(MCProfileHandler *)selfCopy profile];
+            identifier2 = [profile2 identifier];
+            mCVerboseDescription = [userCancelledError MCVerboseDescription];
             *buf = 138543618;
-            v91 = v57;
+            v91 = identifier2;
             v92 = 2114;
-            v93 = v58;
+            v93 = mCVerboseDescription;
             _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_ERROR, "Installation of profile “%{public}@” failed with error: %{public}@", buf, 0x16u);
           }
 
           if (v26)
           {
-            v59 = v44;
-            *v26 = v44;
+            v59 = userCancelledError;
+            *v26 = userCancelledError;
           }
         }
 
         goto LABEL_56;
       }
 
-      if ([(NSMutableArray *)v71->_payloadHandlers count])
+      if ([(NSMutableArray *)selfCopy->_payloadHandlers count])
       {
         v30 = 0;
         v31 = 1;
         do
         {
-          v32 = [(NSMutableArray *)v71->_payloadHandlers objectAtIndex:v30];
+          v32 = [(NSMutableArray *)selfCopy->_payloadHandlers objectAtIndex:v30];
           v33 = [(NSMutableArray *)v10 objectAtIndex:v30];
           [v32 setUserInputResponses:v33];
 
           v30 = v31;
         }
 
-        while ([(NSMutableArray *)v71->_payloadHandlers count]> v31++);
+        while ([(NSMutableArray *)selfCopy->_payloadHandlers count]> v31++);
       }
     }
 
@@ -391,9 +391,9 @@ LABEL_27:
     v38 = 0;
 LABEL_40:
 
-    v44 = 0;
+    userCancelledError = 0;
 LABEL_41:
-    v26 = v63;
+    v26 = errorCopy;
     goto LABEL_42;
   }
 
@@ -412,7 +412,7 @@ LABEL_30:
 
     v42 = *(*(&v77 + 1) + 8 * v40);
     v76 = v41;
-    v43 = [v42 stageForInstallationWithInstaller:v8 interactionClient:v9 outError:&v76];
+    v43 = [v42 stageForInstallationWithInstaller:installerCopy interactionClient:clientCopy outError:&v76];
     v38 = v76;
 
     if (!v43)
@@ -437,21 +437,21 @@ LABEL_30:
 
   if (v38)
   {
-    v44 = [(MCProfileHandler *)v71 _profileInstallationErrorWithUnderlyingError:v38];
+    userCancelledError = [(MCProfileHandler *)selfCopy _profileInstallationErrorWithUnderlyingError:v38];
     goto LABEL_41;
   }
 
-  v44 = 0;
+  userCancelledError = 0;
 LABEL_56:
 
-  return v44 == 0;
+  return userCancelledError == 0;
 }
 
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v60 = a5;
+  installerCopy = installer;
+  optionsCopy = options;
+  clientCopy = client;
   v62 = [[NSMutableArray alloc] initWithCapacity:{-[NSMutableArray count](self->_payloadHandlers, "count")}];
   v61 = [(NSMutableArray *)self->_payloadHandlers mutableCopy];
   v12 = objc_alloc_init(NSMutableDictionary);
@@ -464,17 +464,17 @@ LABEL_56:
   v74 = 0u;
   v14 = self->_payloadHandlers;
   v15 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v73 objects:v83 count:16];
-  v59 = v11;
+  v59 = optionsCopy;
   if (v15)
   {
     v16 = v15;
-    v58 = self;
-    v57 = a6;
-    v17 = 0;
+    selfCopy = self;
+    errorCopy = error;
+    profile = 0;
     v18 = *v74;
 LABEL_3:
     v19 = 0;
-    v20 = v17;
+    v20 = profile;
     while (1)
     {
       if (*v74 != v18)
@@ -492,8 +492,8 @@ LABEL_3:
       }
 
       v72 = v20;
-      v23 = [v21 installWithInstaller:v10 options:v11 interactionClient:v60 outError:&v72];
-      v17 = v72;
+      v23 = [v21 installWithInstaller:installerCopy options:optionsCopy interactionClient:clientCopy outError:&v72];
+      profile = v72;
 
       if (!v23)
       {
@@ -505,17 +505,17 @@ LABEL_3:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v24 = [v21 payload];
-        v25 = v58->_UUIDToPersistentIDMap;
-        v26 = [v24 certificatePersistentID];
-        v27 = [v24 UUID];
-        [(NSMutableDictionary *)v25 setObject:v26 forKey:v27];
+        payload = [v21 payload];
+        v25 = selfCopy->_UUIDToPersistentIDMap;
+        certificatePersistentID = [payload certificatePersistentID];
+        uUID = [payload UUID];
+        [(NSMutableDictionary *)v25 setObject:certificatePersistentID forKey:uUID];
 
-        v11 = v59;
+        optionsCopy = v59;
       }
 
       v19 = v19 + 1;
-      v20 = v17;
+      v20 = profile;
       if (v16 == v19)
       {
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v73 objects:v83 count:16];
@@ -528,11 +528,11 @@ LABEL_3:
       }
     }
 
-    a6 = v57;
-    self = v58;
-    if (v17)
+    error = errorCopy;
+    self = selfCopy;
+    if (profile)
     {
-      v28 = [(MCProfileHandler *)v58 _profileInstallationErrorWithUnderlyingError:v17];
+      v28 = [(MCProfileHandler *)selfCopy _profileInstallationErrorWithUnderlyingError:profile];
       goto LABEL_20;
     }
   }
@@ -541,17 +541,17 @@ LABEL_3:
   {
   }
 
-  v17 = [(MCProfileHandler *)self profile];
-  if ([v17 isLocked] && (objc_msgSend(v17, "removalPasscode"), v29 = objc_claimAutoreleasedReturnValue(), v29, v29))
+  profile = [(MCProfileHandler *)self profile];
+  if ([profile isLocked] && (objc_msgSend(profile, "removalPasscode"), v29 = objc_claimAutoreleasedReturnValue(), v29, v29))
   {
-    v30 = [v17 removalPasscode];
+    removalPasscode = [profile removalPasscode];
     v31 = kMCProfileRemovalPasscodeService;
-    v32 = [v17 UUID];
-    v33 = [v17 isInstalledForSystem];
+    uUID2 = [profile UUID];
+    isInstalledForSystem = [profile isInstalledForSystem];
     v71 = 0;
     v34 = v31;
-    v11 = v59;
-    [MCKeychain setString:v30 forService:v34 account:v32 label:0 description:0 useSystemKeychain:v33 outError:&v71];
+    optionsCopy = v59;
+    [MCKeychain setString:removalPasscode forService:v34 account:uUID2 label:0 description:0 useSystemKeychain:isInstalledForSystem outError:&v71];
     v28 = v71;
   }
 
@@ -571,10 +571,10 @@ LABEL_20:
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
     {
       v37 = v36;
-      v38 = [(MCProfileHandler *)self profile];
-      v39 = [v38 identifier];
+      profile2 = [(MCProfileHandler *)self profile];
+      identifier = [profile2 identifier];
       *buf = 138543362;
-      v78 = v39;
+      v78 = identifier;
       _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_ERROR, "Rolling back installation of profile “%{public}@”...", buf, 0xCu);
     }
 
@@ -625,7 +625,7 @@ LABEL_20:
             objc_enumerationMutation(v45);
           }
 
-          [*(*(&v63 + 1) + 8 * j) unstageFromInstallationWithInstaller:v10];
+          [*(*(&v63 + 1) + 8 * j) unstageFromInstallationWithInstaller:installerCopy];
         }
 
         v47 = [v45 countByEnumeratingWithState:&v63 objects:v81 count:16];
@@ -638,38 +638,38 @@ LABEL_20:
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
     {
       v51 = v50;
-      v52 = [(MCProfileHandler *)self profile];
-      v53 = [v52 identifier];
-      v54 = [v28 MCVerboseDescription];
+      profile3 = [(MCProfileHandler *)self profile];
+      identifier2 = [profile3 identifier];
+      mCVerboseDescription = [v28 MCVerboseDescription];
       *buf = 138543618;
-      v78 = v53;
+      v78 = identifier2;
       v79 = 2114;
-      v80 = v54;
+      v80 = mCVerboseDescription;
       _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_ERROR, "Installation of profile “%{public}@” failed with error: %{public}@", buf, 0x16u);
     }
 
-    v11 = v59;
-    if (a6)
+    optionsCopy = v59;
+    if (error)
     {
       v55 = v28;
-      *a6 = v28;
+      *error = v28;
     }
   }
 
   return v28 == 0;
 }
 
-- (void)unstageFromInstallationWithInstaller:(id)a3
+- (void)unstageFromInstallationWithInstaller:(id)installer
 {
-  v4 = a3;
+  installerCopy = installer;
   v5 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_INFO))
   {
     v6 = v5;
-    v7 = [(MCProfileHandler *)self profile];
-    v8 = [v7 identifier];
+    profile = [(MCProfileHandler *)self profile];
+    identifier = [profile identifier];
     *buf = 138543362;
-    v20 = v8;
+    v20 = identifier;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Unstaging profile “%{public}@”...", buf, 0xCu);
   }
 
@@ -693,7 +693,7 @@ LABEL_20:
           objc_enumerationMutation(v9);
         }
 
-        [*(*(&v14 + 1) + 8 * v13) unstageFromInstallationWithInstaller:{v4, v14}];
+        [*(*(&v14 + 1) + 8 * v13) unstageFromInstallationWithInstaller:{installerCopy, v14}];
         v13 = v13 + 1;
       }
 
@@ -705,13 +705,13 @@ LABEL_20:
   }
 }
 
-- (void)didInstallOldGlobalRestrictions:(id)a3 newGlobalRestrictions:(id)a4
+- (void)didInstallOldGlobalRestrictions:(id)restrictions newGlobalRestrictions:(id)globalRestrictions
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MCProfileHandler *)self profile];
+  restrictionsCopy = restrictions;
+  globalRestrictionsCopy = globalRestrictions;
+  profile = [(MCProfileHandler *)self profile];
   v9 = +[NSDate date];
-  [v8 setInstallDate:v9];
+  [profile setInstallDate:v9];
 
   v17 = 0u;
   v18 = 0u;
@@ -733,7 +733,7 @@ LABEL_20:
           objc_enumerationMutation(v10);
         }
 
-        [*(*(&v15 + 1) + 8 * v14) didInstallOldGlobalRestrictions:v6 newGlobalRestrictions:{v7, v15}];
+        [*(*(&v15 + 1) + 8 * v14) didInstallOldGlobalRestrictions:restrictionsCopy newGlobalRestrictions:{globalRestrictionsCopy, v15}];
         v14 = v14 + 1;
       }
 
@@ -745,10 +745,10 @@ LABEL_20:
   }
 }
 
-- (void)didRemoveOldGlobalRestrictions:(id)a3 newGlobalRestrictions:(id)a4
+- (void)didRemoveOldGlobalRestrictions:(id)restrictions newGlobalRestrictions:(id)globalRestrictions
 {
-  v6 = a3;
-  v7 = a4;
+  restrictionsCopy = restrictions;
+  globalRestrictionsCopy = globalRestrictions;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -769,7 +769,7 @@ LABEL_20:
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v13 + 1) + 8 * v12) didRemoveOldGlobalRestrictions:v6 newGlobalRestrictions:{v7, v13}];
+        [*(*(&v13 + 1) + 8 * v12) didRemoveOldGlobalRestrictions:restrictionsCopy newGlobalRestrictions:{globalRestrictionsCopy, v13}];
         v12 = v12 + 1;
       }
 
@@ -823,17 +823,17 @@ LABEL_20:
   return v6;
 }
 
-- (void)setAsideWithInstaller:(id)a3
+- (void)setAsideWithInstaller:(id)installer
 {
-  v4 = a3;
+  installerCopy = installer;
   v5 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEBUG))
   {
     v6 = v5;
-    v7 = [(MCProfileHandler *)self profile];
-    v8 = [v7 identifier];
+    profile = [(MCProfileHandler *)self profile];
+    identifier = [profile identifier];
     *buf = 138543362;
-    v22 = v8;
+    v22 = identifier;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "Profile “%{public}@” being set aside.", buf, 0xCu);
   }
 
@@ -859,7 +859,7 @@ LABEL_20:
 
         v14 = *(*(&v16 + 1) + 8 * v13);
         v15 = objc_autoreleasePoolPush();
-        [v14 setAsideWithInstaller:{v4, v16}];
+        [v14 setAsideWithInstaller:{installerCopy, v16}];
         objc_autoreleasePoolPop(v15);
         v13 = v13 + 1;
       }
@@ -880,10 +880,10 @@ LABEL_20:
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEBUG))
   {
     v4 = v3;
-    v5 = [(MCProfileHandler *)self profile];
-    v6 = [v5 identifier];
+    profile = [(MCProfileHandler *)self profile];
+    identifier = [profile identifier];
     v11 = 138543362;
-    v12 = v6;
+    v12 = identifier;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "Profile “%{public}@” being unset aside.", &v11, 0xCu);
   }
 
@@ -905,18 +905,18 @@ LABEL_20:
   }
 }
 
-- (void)removeWithInstaller:(id)a3 options:(id)a4
+- (void)removeWithInstaller:(id)installer options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  installerCopy = installer;
+  optionsCopy = options;
   v8 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEBUG))
   {
     v9 = v8;
-    v10 = [(MCProfileHandler *)self profile];
-    v11 = [v10 identifier];
+    profile = [(MCProfileHandler *)self profile];
+    identifier = [profile identifier];
     v20 = 138543362;
-    v21 = v11;
+    v21 = identifier;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "Profile “%{public}@” being removed.", &v20, 0xCu);
   }
 
@@ -928,7 +928,7 @@ LABEL_20:
     {
       v14 = objc_autoreleasePoolPush();
       v15 = [(NSMutableArray *)self->_payloadHandlers objectAtIndex:v13 - 2];
-      [v15 removeWithInstaller:v6 options:v7];
+      [v15 removeWithInstaller:installerCopy options:optionsCopy];
 
       objc_autoreleasePoolPop(v14);
       --v13;
@@ -937,23 +937,23 @@ LABEL_20:
     while (v13 > 1);
   }
 
-  v16 = [(MCProfileHandler *)self profile];
-  if ([v16 isLocked])
+  profile2 = [(MCProfileHandler *)self profile];
+  if ([profile2 isLocked])
   {
-    v17 = [v16 removalPasscode];
+    removalPasscode = [profile2 removalPasscode];
 
-    if (v17)
+    if (removalPasscode)
     {
       v18 = kMCProfileRemovalPasscodeService;
-      v19 = [v16 UUID];
-      +[MCKeychain removeItemForService:account:label:description:useSystemKeychain:group:](MCKeychain, "removeItemForService:account:label:description:useSystemKeychain:group:", v18, v19, 0, 0, [v16 isInstalledForSystem], 0);
+      uUID = [profile2 UUID];
+      +[MCKeychain removeItemForService:account:label:description:useSystemKeychain:group:](MCKeychain, "removeItemForService:account:label:description:useSystemKeychain:group:", v18, uUID, 0, 0, [profile2 isInstalledForSystem], 0);
     }
   }
 }
 
-- (void)convertPayloadWithUUIDToUnknownPayload:(id)a3
+- (void)convertPayloadWithUUIDToUnknownPayload:(id)payload
 {
-  v16 = a3;
+  payloadCopy = payload;
   if ([(NSMutableArray *)self->_payloadHandlers count])
   {
     v4 = 0;
@@ -961,18 +961,18 @@ LABEL_20:
     do
     {
       v6 = [(NSMutableArray *)self->_payloadHandlers objectAtIndex:v4];
-      v7 = [v6 payload];
-      v8 = [v7 UUID];
-      v9 = [v8 isEqualToString:v16];
+      payload = [v6 payload];
+      uUID = [payload UUID];
+      v9 = [uUID isEqualToString:payloadCopy];
 
       if (v9)
       {
         v10 = objc_autoreleasePoolPush();
         v11 = [MCUnknownPayload alloc];
-        v12 = [v6 payload];
-        v13 = [v11 initWithContentsOfPayload:v12 profile:self->_profile];
+        payload2 = [v6 payload];
+        v13 = [v11 initWithContentsOfPayload:payload2 profile:self->_profile];
 
-        [(MCProfile *)self->_profile replacePayloadWithUUID:v16 withPayload:v13];
+        [(MCProfile *)self->_profile replacePayloadWithUUID:payloadCopy withPayload:v13];
         v14 = [v13 handlerWithProfileHandler:self];
         [(NSMutableArray *)self->_payloadHandlers setObject:v14 atIndexedSubscript:v4];
 
@@ -987,18 +987,18 @@ LABEL_20:
   }
 }
 
-+ (id)payloadsOfClass:(Class)a3 installedBeforePayload:(id)a4
++ (id)payloadsOfClass:(Class)class installedBeforePayload:(id)payload
 {
-  v4 = a4;
+  payloadCopy = payload;
   v5 = +[NSMutableArray array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [v4 profile];
-  v7 = [v6 payloads];
+  profile = [payloadCopy profile];
+  payloads = [profile payloads];
 
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v8 = [payloads countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1009,11 +1009,11 @@ LABEL_3:
     {
       if (*v16 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(payloads);
       }
 
       v12 = *(*(&v15 + 1) + 8 * v11);
-      if (v12 == v4)
+      if (v12 == payloadCopy)
       {
         break;
       }
@@ -1026,7 +1026,7 @@ LABEL_3:
 
       if (v9 == ++v11)
       {
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [payloads countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v9)
         {
           goto LABEL_3;
@@ -1040,24 +1040,24 @@ LABEL_3:
   return v5;
 }
 
-+ (id)payloadsOfClass:(Class)a3 removedBeforePayload:(id)a4
++ (id)payloadsOfClass:(Class)class removedBeforePayload:(id)payload
 {
-  v4 = a4;
+  payloadCopy = payload;
   v5 = +[NSMutableArray array];
-  v6 = [v4 profile];
-  v7 = [v6 payloads];
-  v8 = [v7 count];
+  profile = [payloadCopy profile];
+  payloads = [profile payloads];
+  v8 = [payloads count];
 
   if (v8 >= 1)
   {
     v9 = (v8 & 0x7FFFFFFF) + 1;
     while (1)
     {
-      v10 = [v4 profile];
-      v11 = [v10 payloads];
-      v12 = [v11 objectAtIndexedSubscript:v9 - 2];
+      profile2 = [payloadCopy profile];
+      payloads2 = [profile2 payloads];
+      v12 = [payloads2 objectAtIndexedSubscript:v9 - 2];
 
-      if (v12 == v4)
+      if (v12 == payloadCopy)
       {
         break;
       }
@@ -1079,18 +1079,18 @@ LABEL_9:
   return v5;
 }
 
-+ (id)payloadsOfClass:(Class)a3 setAsideBeforePayload:(id)a4
++ (id)payloadsOfClass:(Class)class setAsideBeforePayload:(id)payload
 {
-  v4 = a4;
+  payloadCopy = payload;
   v5 = +[NSMutableArray array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [v4 profile];
-  v7 = [v6 payloads];
+  profile = [payloadCopy profile];
+  payloads = [profile payloads];
 
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v8 = [payloads countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1101,11 +1101,11 @@ LABEL_3:
     {
       if (*v16 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(payloads);
       }
 
       v12 = *(*(&v15 + 1) + 8 * v11);
-      if (v12 == v4)
+      if (v12 == payloadCopy)
       {
         break;
       }
@@ -1118,7 +1118,7 @@ LABEL_3:
 
       if (v9 == ++v11)
       {
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [payloads countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v9)
         {
           goto LABEL_3;
@@ -1132,24 +1132,24 @@ LABEL_3:
   return v5;
 }
 
-+ (id)payloadsOfClass:(Class)a3 unsetAsideBeforePayload:(id)a4
++ (id)payloadsOfClass:(Class)class unsetAsideBeforePayload:(id)payload
 {
-  v4 = a4;
+  payloadCopy = payload;
   v5 = +[NSMutableArray array];
-  v6 = [v4 profile];
-  v7 = [v6 payloads];
-  v8 = [v7 count];
+  profile = [payloadCopy profile];
+  payloads = [profile payloads];
+  v8 = [payloads count];
 
   if (v8 >= 1)
   {
     v9 = (v8 & 0x7FFFFFFF) + 1;
     while (1)
     {
-      v10 = [v4 profile];
-      v11 = [v10 payloads];
-      v12 = [v11 objectAtIndexedSubscript:v9 - 2];
+      profile2 = [payloadCopy profile];
+      payloads2 = [profile2 payloads];
+      v12 = [payloads2 objectAtIndexedSubscript:v9 - 2];
 
-      if (v12 == v4)
+      if (v12 == payloadCopy)
       {
         break;
       }
@@ -1171,10 +1171,10 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)preflightUserInputResponses:(id)a3 forPayloadIndex:(unint64_t)a4 outError:(id *)a5
+- (BOOL)preflightUserInputResponses:(id)responses forPayloadIndex:(unint64_t)index outError:(id *)error
 {
-  v8 = a3;
-  if ([(NSMutableArray *)self->_payloadHandlers count]<= a4)
+  responsesCopy = responses;
+  if ([(NSMutableArray *)self->_payloadHandlers count]<= index)
   {
     v11 = _MCLogObjects[0];
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
@@ -1188,16 +1188,16 @@ LABEL_9:
 
   else
   {
-    v9 = [(NSMutableArray *)self->_payloadHandlers objectAtIndex:a4];
-    v10 = [v9 preflightUserInputResponses:v8 outError:a5];
+    v9 = [(NSMutableArray *)self->_payloadHandlers objectAtIndex:index];
+    v10 = [v9 preflightUserInputResponses:responsesCopy outError:error];
   }
 
   return v10;
 }
 
-- (id)persistentIDForCertificateUUID:(id)a3
+- (id)persistentIDForCertificateUUID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v4 = [(NSMutableDictionary *)self->_UUIDToPersistentIDMap objectForKey:?];
   }

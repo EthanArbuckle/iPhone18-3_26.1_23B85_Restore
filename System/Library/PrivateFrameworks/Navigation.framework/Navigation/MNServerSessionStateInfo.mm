@@ -1,12 +1,12 @@
 @interface MNServerSessionStateInfo
-- (MNServerSessionStateInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MNServerSessionStateInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)addDisplayedBannerID:(id)a3 withEventInfo:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithETAUResponse:(id)a3;
-- (void)updateWithRoute:(id)a3;
-- (void)updateWithSessionState:(id)a3;
+- (void)addDisplayedBannerID:(id)d withEventInfo:(id)info;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithETAUResponse:(id)response;
+- (void)updateWithRoute:(id)route;
+- (void)updateWithSessionState:(id)state;
 @end
 
 @implementation MNServerSessionStateInfo
@@ -33,8 +33,8 @@
   {
     v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:self->_directionsResponseID encoding:4];
     v8 = MEMORY[0x1E696AEC0];
-    v9 = [v7 uppercaseString];
-    v10 = [v8 stringWithFormat:@"DirectionsResponse: %@", v9];
+    uppercaseString = [v7 uppercaseString];
+    v10 = [v8 stringWithFormat:@"DirectionsResponse: %@", uppercaseString];
     [v3 addObject:v10];
   }
 
@@ -42,8 +42,8 @@
   {
     v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:self->_etauResponseID encoding:4];
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [v11 uppercaseString];
-    v14 = [v12 stringWithFormat:@"ETAUResponse: %@", v13];
+    uppercaseString2 = [v11 uppercaseString];
+    v14 = [v12 stringWithFormat:@"ETAUResponse: %@", uppercaseString2];
     [v3 addObject:v14];
   }
 
@@ -52,40 +52,40 @@
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sessionState = self->_sessionState;
-  v5 = a3;
-  [v5 encodeObject:sessionState forKey:@"_sessionState"];
-  [v5 encodeObject:self->_uniqueRouteID forKey:@"_uniqueRouteID"];
-  [v5 encodeObject:self->_directionsResponseID forKey:@"_directionsResponseID"];
-  [v5 encodeObject:self->_etauResponseID forKey:@"_etauResponseID"];
-  [v5 encodeObject:self->_displayedTrafficBanners forKey:@"_displayedTrafficBanners"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sessionState forKey:@"_sessionState"];
+  [coderCopy encodeObject:self->_uniqueRouteID forKey:@"_uniqueRouteID"];
+  [coderCopy encodeObject:self->_directionsResponseID forKey:@"_directionsResponseID"];
+  [coderCopy encodeObject:self->_etauResponseID forKey:@"_etauResponseID"];
+  [coderCopy encodeObject:self->_displayedTrafficBanners forKey:@"_displayedTrafficBanners"];
 }
 
-- (MNServerSessionStateInfo)initWithCoder:(id)a3
+- (MNServerSessionStateInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(MNServerSessionStateInfo *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_sessionState"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_sessionState"];
     sessionState = v5->_sessionState;
     v5->_sessionState = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_uniqueRouteID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_uniqueRouteID"];
     uniqueRouteID = v5->_uniqueRouteID;
     v5->_uniqueRouteID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_directionsResponseID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_directionsResponseID"];
     directionsResponseID = v5->_directionsResponseID;
     v5->_directionsResponseID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_etauResponseID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_etauResponseID"];
     etauResponseID = v5->_etauResponseID;
     v5->_etauResponseID = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_displayedTrafficBanners"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_displayedTrafficBanners"];
     displayedTrafficBanners = v5->_displayedTrafficBanners;
     v5->_displayedTrafficBanners = v14;
 
@@ -95,9 +95,9 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSData *)self->_sessionState copy];
   v6 = v4[1];
   v4[1] = v5;
@@ -121,13 +121,13 @@
   return v4;
 }
 
-- (void)updateWithSessionState:(id)a3
+- (void)updateWithSessionState:(id)state
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  stateCopy = state;
   if (self->_uniqueRouteID)
   {
-    objc_storeStrong(&self->_sessionState, a3);
+    objc_storeStrong(&self->_sessionState, state);
     etauResponseID = self->_etauResponseID;
     self->_etauResponseID = 0;
 
@@ -138,7 +138,7 @@
     if (os_log_type_enabled(p_super, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1D311E000, p_super, OS_LOG_TYPE_DEFAULT, "Updating session state from unknown source: %@", &v13, 0xCu);
     }
   }
@@ -171,20 +171,20 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addDisplayedBannerID:(id)a3 withEventInfo:(id)a4
+- (void)addDisplayedBannerID:(id)d withEventInfo:(id)info
 {
-  v12 = a3;
-  v6 = a4;
-  if (v12)
+  dCopy = d;
+  infoCopy = info;
+  if (dCopy)
   {
     displayedTrafficBanners = self->_displayedTrafficBanners;
-    v8 = v12;
+    v8 = dCopy;
     if (displayedTrafficBanners)
     {
-      if (v6)
+      if (infoCopy)
       {
 LABEL_4:
-        [(NSMutableDictionary *)displayedTrafficBanners setValue:v6 forKey:v8];
+        [(NSMutableDictionary *)displayedTrafficBanners setValue:infoCopy forKey:v8];
         goto LABEL_7;
       }
     }
@@ -195,29 +195,29 @@ LABEL_4:
       v10 = self->_displayedTrafficBanners;
       self->_displayedTrafficBanners = v9;
 
-      v8 = v12;
+      v8 = dCopy;
       displayedTrafficBanners = self->_displayedTrafficBanners;
-      if (v6)
+      if (infoCopy)
       {
         goto LABEL_4;
       }
     }
 
-    v11 = [MEMORY[0x1E695DEF0] data];
-    [(NSMutableDictionary *)displayedTrafficBanners setValue:v11 forKey:v12];
+    data = [MEMORY[0x1E695DEF0] data];
+    [(NSMutableDictionary *)displayedTrafficBanners setValue:data forKey:dCopy];
   }
 
 LABEL_7:
 }
 
-- (void)updateWithETAUResponse:(id)a3
+- (void)updateWithETAUResponse:(id)response
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  responseCopy = response;
+  v5 = responseCopy;
   if (self->_uniqueRouteID)
   {
-    if (!v4)
+    if (!responseCopy)
     {
       p_super = MNGetMNServerSessionStateInfoLog();
       if (!os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
@@ -233,15 +233,15 @@ LABEL_7:
       goto LABEL_6;
     }
 
-    if ([v4 hasSessionState])
+    if ([responseCopy hasSessionState])
     {
-      v6 = [v5 sessionState];
+      sessionState = [v5 sessionState];
       sessionState = self->_sessionState;
-      self->_sessionState = v6;
+      self->_sessionState = sessionState;
 
-      v8 = [v5 responseId];
+      responseId = [v5 responseId];
       etauResponseID = self->_etauResponseID;
-      self->_etauResponseID = v8;
+      self->_etauResponseID = responseId;
 
       directionsResponseID = self->_directionsResponseID;
       self->_directionsResponseID = 0;
@@ -250,7 +250,7 @@ LABEL_7:
       if (os_log_type_enabled(p_super, OS_LOG_TYPE_DEFAULT))
       {
         v21 = 138412290;
-        v22 = self;
+        selfCopy = self;
         v12 = "Updating session state from ETAU response: %@";
         v13 = p_super;
         v14 = OS_LOG_TYPE_DEFAULT;
@@ -265,9 +265,9 @@ LABEL_6:
       p_super = MNGetMNServerSessionStateInfoLog();
       if (os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
       {
-        v20 = [v5 formattedText];
+        formattedText = [v5 formattedText];
         v21 = 138412290;
-        v22 = v20;
+        selfCopy = formattedText;
         _os_log_impl(&dword_1D311E000, p_super, OS_LOG_TYPE_ERROR, "ETAU response has no session state. This is probably a server error. Full ETAU response: %@", &v21, 0xCu);
       }
     }
@@ -303,64 +303,64 @@ LABEL_7:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateWithRoute:(id)a3
+- (void)updateWithRoute:(id)route
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  routeCopy = route;
+  v5 = routeCopy;
+  if (routeCopy)
   {
-    v6 = [v4 directionsResponseID];
+    directionsResponseID = [routeCopy directionsResponseID];
 
-    if (v6)
+    if (directionsResponseID)
     {
-      v7 = [v5 routeInitializerData];
-      v8 = [v7 directionsResponse];
-      v9 = [v8 sessionState];
+      routeInitializerData = [v5 routeInitializerData];
+      directionsResponse = [routeInitializerData directionsResponse];
+      sessionState = [directionsResponse sessionState];
       sessionState = self->_sessionState;
-      self->_sessionState = v9;
+      self->_sessionState = sessionState;
 
-      v11 = [v5 directionsResponseID];
+      directionsResponseID2 = [v5 directionsResponseID];
       v12 = 32;
       v13 = 24;
     }
 
     else
     {
-      v14 = [v5 etauResponseID];
+      etauResponseID = [v5 etauResponseID];
 
-      if (!v14)
+      if (!etauResponseID)
       {
         goto LABEL_7;
       }
 
-      v15 = [v5 routeInitializerData];
-      v16 = [v15 etaTrafficUpdateResponse];
-      v17 = [v16 sessionState];
+      routeInitializerData2 = [v5 routeInitializerData];
+      etaTrafficUpdateResponse = [routeInitializerData2 etaTrafficUpdateResponse];
+      sessionState2 = [etaTrafficUpdateResponse sessionState];
       v18 = self->_sessionState;
-      self->_sessionState = v17;
+      self->_sessionState = sessionState2;
 
-      v11 = [v5 etauResponseID];
+      directionsResponseID2 = [v5 etauResponseID];
       v12 = 24;
       v13 = 32;
     }
 
     v19 = *(&self->super.isa + v13);
-    *(&self->super.isa + v13) = v11;
+    *(&self->super.isa + v13) = directionsResponseID2;
 
     v20 = *(&self->super.isa + v12);
     *(&self->super.isa + v12) = 0;
 
 LABEL_7:
-    v21 = [v5 uniqueRouteID];
+    uniqueRouteID = [v5 uniqueRouteID];
     uniqueRouteID = self->_uniqueRouteID;
-    self->_uniqueRouteID = v21;
+    self->_uniqueRouteID = uniqueRouteID;
 
     p_super = MNGetMNServerSessionStateInfoLog();
     if (os_log_type_enabled(p_super, OS_LOG_TYPE_DEFAULT))
     {
       v29 = 138412290;
-      v30 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1D311E000, p_super, OS_LOG_TYPE_DEFAULT, "Updating session state with route: %@", &v29, 0xCu);
     }
 

@@ -1,21 +1,21 @@
 @interface PLModelMigrationAction_UpdateImportedFileSystemAssetsGlobalKeyValue
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_UpdateImportedFileSystemAssetsGlobalKeyValue
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
-  v5 = [PLGlobalKeyValue fetchGlobalKeyValueForKey:@"ImportedFileSystemAssets" withManagedObjectContext:a3 createIfMissing:0];
+  v5 = [PLGlobalKeyValue fetchGlobalKeyValueForKey:@"ImportedFileSystemAssets" withManagedObjectContext:context createIfMissing:0];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 integerGlobalValue];
-    if (!v7)
+    integerGlobalValue = [v5 integerGlobalValue];
+    if (!integerGlobalValue)
     {
-      v8 = [v6 BOOLGlobalValue];
+      bOOLGlobalValue = [v6 BOOLGlobalValue];
 
-      if (!v8)
+      if (!bOOLGlobalValue)
       {
 LABEL_6:
         [v6 setBoolGlobalValue:0];
@@ -23,8 +23,8 @@ LABEL_6:
       }
 
       v9 = MEMORY[0x1E696AD98];
-      v7 = [v6 BOOLGlobalValue];
-      v10 = [v9 numberWithInteger:{objc_msgSend(v7, "integerValue")}];
+      integerGlobalValue = [v6 BOOLGlobalValue];
+      v10 = [v9 numberWithInteger:{objc_msgSend(integerGlobalValue, "integerValue")}];
       [v6 setIntegerGlobalValue:v10];
     }
 

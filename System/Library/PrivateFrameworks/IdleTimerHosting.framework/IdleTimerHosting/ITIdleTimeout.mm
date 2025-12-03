@@ -1,10 +1,10 @@
 @interface ITIdleTimeout
-+ (id)timeoutGeneratorUsingIdentifier:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)timeoutGeneratorUsingIdentifier:(unint64_t)identifier;
+- (BOOL)isEqual:(id)equal;
 - (ITIdleTimeout)init;
-- (ITIdleTimeout)initWithDuration:(double)a3 identifier:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (ITIdleTimeout)initWithDuration:(double)duration identifier:(unint64_t)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
@@ -13,33 +13,33 @@
 
 - (ITIdleTimeout)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"ITIdleTimeout.m" lineNumber:20 description:@"wrong initializer"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ITIdleTimeout.m" lineNumber:20 description:@"wrong initializer"];
 
   return 0;
 }
 
-- (ITIdleTimeout)initWithDuration:(double)a3 identifier:(unint64_t)a4
+- (ITIdleTimeout)initWithDuration:(double)duration identifier:(unint64_t)identifier
 {
   v7.receiver = self;
   v7.super_class = ITIdleTimeout;
   result = [(ITIdleTimeout *)&v7 init];
   if (result)
   {
-    result->_duration = a3;
-    result->_identifier = a4;
+    result->_duration = duration;
+    result->_identifier = identifier;
   }
 
   return result;
 }
 
-+ (id)timeoutGeneratorUsingIdentifier:(unint64_t)a3
++ (id)timeoutGeneratorUsingIdentifier:(unint64_t)identifier
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __49__ITIdleTimeout_timeoutGeneratorUsingIdentifier___block_invoke;
   v5[3] = &__block_descriptor_40_e23___ITIdleTimeout_16__0d8l;
-  v5[4] = a3;
+  v5[4] = identifier;
   v3 = MEMORY[0x259C227A0](v5, a2);
 
   return v3;
@@ -52,12 +52,12 @@ ITIdleTimeout *__49__ITIdleTimeout_timeoutGeneratorUsingIdentifier___block_invok
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (v5 = objc_opt_class(), v5 == objc_opt_class()) && v4[2] == self->_identifier)
+  equalCopy = equal;
+  if (equalCopy && (v5 = objc_opt_class(), v5 == objc_opt_class()) && equalCopy[2] == self->_identifier)
   {
-    v6 = v4[1];
+    v6 = equalCopy[1];
     duration = self->_duration;
     v8 = BSFloatEqualToFloat();
   }
@@ -70,9 +70,9 @@ ITIdleTimeout *__49__ITIdleTimeout_timeoutGeneratorUsingIdentifier___block_invok
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ITIdleTimeout allocWithZone:a3];
+  v4 = [ITIdleTimeout allocWithZone:zone];
   duration = self->_duration;
   identifier = self->_identifier;
 
@@ -81,10 +81,10 @@ ITIdleTimeout *__49__ITIdleTimeout_timeoutGeneratorUsingIdentifier___block_invok
 
 - (id)succinctDescription
 {
-  v2 = [(ITIdleTimeout *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(ITIdleTimeout *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -96,12 +96,12 @@ ITIdleTimeout *__49__ITIdleTimeout_timeoutGeneratorUsingIdentifier___block_invok
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(ITIdleTimeout *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(ITIdleTimeout *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

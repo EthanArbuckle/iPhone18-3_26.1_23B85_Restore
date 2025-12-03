@@ -1,52 +1,52 @@
 @interface BKSharedCADisplayProvider
 + (id)sharedInstance;
 - (BKSharedCADisplayProvider)init;
-- (void)_lock_addObserversToDisplay:(id)a3;
-- (void)_lock_removeObserversFromDisplay:(id)a3;
+- (void)_lock_addObserversToDisplay:(id)display;
+- (void)_lock_removeObserversFromDisplay:(id)display;
 - (void)_lock_updateObservingState;
-- (void)_postImmutableDisplayToObservers:(id)a3 context:(void *)a4;
-- (void)addMonitor:(id)a3;
+- (void)_postImmutableDisplayToObservers:(id)observers context:(void *)context;
+- (void)addMonitor:(id)monitor;
 - (void)invalidate;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeMonitor:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeMonitor:(id)monitor;
 @end
 
 @implementation BKSharedCADisplayProvider
 
-- (void)_lock_removeObserversFromDisplay:(id)a3
+- (void)_lock_removeObserversFromDisplay:(id)display
 {
   lock_observedDisplays = self->_lock_observedDisplays;
-  v7 = a3;
+  displayCopy = display;
   if (([(NSMutableSet *)lock_observedDisplays containsObject:?]& 1) == 0)
   {
     v6 = +[NSAssertionHandler currentHandler];
     [v6 handleFailureInMethod:a2 object:self file:@"BKCADisplayMonitor.m" lineNumber:182 description:@"attempting to remove ourselves as an observer for an untracked display. did we mix up mutable and immutable?"];
   }
 
-  [(NSMutableSet *)self->_lock_observedDisplays removeObject:v7];
-  [v7 removeObserver:self forKeyPath:@"availableModes" context:off_100125058];
-  [v7 removeObserver:self forKeyPath:@"currentMode" context:off_100125060];
-  [v7 removeObserver:self forKeyPath:@"logicalScale" context:off_100125068];
-  [v7 removeObserver:self forKeyPath:@"pointScale" context:off_100125070];
-  [v7 removeObserver:self forKeyPath:@"tag" context:off_100125078];
+  [(NSMutableSet *)self->_lock_observedDisplays removeObject:displayCopy];
+  [displayCopy removeObserver:self forKeyPath:@"availableModes" context:off_100125058];
+  [displayCopy removeObserver:self forKeyPath:@"currentMode" context:off_100125060];
+  [displayCopy removeObserver:self forKeyPath:@"logicalScale" context:off_100125068];
+  [displayCopy removeObserver:self forKeyPath:@"pointScale" context:off_100125070];
+  [displayCopy removeObserver:self forKeyPath:@"tag" context:off_100125078];
 }
 
-- (void)_lock_addObserversToDisplay:(id)a3
+- (void)_lock_addObserversToDisplay:(id)display
 {
   lock_observedDisplays = self->_lock_observedDisplays;
-  v7 = a3;
+  displayCopy = display;
   if ([(NSMutableSet *)lock_observedDisplays containsObject:?])
   {
     v6 = +[NSAssertionHandler currentHandler];
     [v6 handleFailureInMethod:a2 object:self file:@"BKCADisplayMonitor.m" lineNumber:172 description:@"attempting to add ourselves as an observer for an already tracked display. did we mix up mutable and immutable?"];
   }
 
-  [(NSMutableSet *)self->_lock_observedDisplays addObject:v7];
-  [v7 addObserver:self forKeyPath:@"availableModes" options:0 context:off_100125058];
-  [v7 addObserver:self forKeyPath:@"currentMode" options:0 context:off_100125060];
-  [v7 addObserver:self forKeyPath:@"logicalScale" options:0 context:off_100125068];
-  [v7 addObserver:self forKeyPath:@"pointScale" options:0 context:off_100125070];
-  [v7 addObserver:self forKeyPath:@"tag" options:0 context:off_100125078];
+  [(NSMutableSet *)self->_lock_observedDisplays addObject:displayCopy];
+  [displayCopy addObserver:self forKeyPath:@"availableModes" options:0 context:off_100125058];
+  [displayCopy addObserver:self forKeyPath:@"currentMode" options:0 context:off_100125060];
+  [displayCopy addObserver:self forKeyPath:@"logicalScale" options:0 context:off_100125068];
+  [displayCopy addObserver:self forKeyPath:@"pointScale" options:0 context:off_100125070];
+  [displayCopy addObserver:self forKeyPath:@"tag" options:0 context:off_100125078];
 }
 
 - (void)_lock_updateObservingState
@@ -55,12 +55,12 @@
   {
     if (!self->_isObserving)
     {
-      v3 = [(BKSharedCADisplayProvider *)self displays];
+      displays = [(BKSharedCADisplayProvider *)self displays];
       v17 = 0u;
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v4 = [v3 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      v4 = [displays countByEnumeratingWithState:&v17 objects:v22 count:16];
       if (v4)
       {
         v5 = v4;
@@ -71,13 +71,13 @@
           {
             if (*v18 != v6)
             {
-              objc_enumerationMutation(v3);
+              objc_enumerationMutation(displays);
             }
 
             [(BKSharedCADisplayProvider *)self _lock_addObserversToDisplay:*(*(&v17 + 1) + 8 * i)];
           }
 
-          v5 = [v3 countByEnumeratingWithState:&v17 objects:v22 count:16];
+          v5 = [displays countByEnumeratingWithState:&v17 objects:v22 count:16];
         }
 
         while (v5);
@@ -121,9 +121,9 @@
   }
 }
 
-- (void)_postImmutableDisplayToObservers:(id)a3 context:(void *)a4
+- (void)_postImmutableDisplayToObservers:(id)observers context:(void *)context
 {
-  v6 = a3;
+  observersCopy = observers;
   os_unfair_lock_lock(&self->_lock);
   v7 = [(NSMutableSet *)self->_lock_monitors copy];
   os_unfair_lock_unlock(&self->_lock);
@@ -132,20 +132,20 @@
   block[2] = sub_100089A68;
   block[3] = &unk_1000FCA90;
   v11 = v7;
-  v12 = v6;
-  v13 = a4;
-  v8 = v6;
+  v12 = observersCopy;
+  contextCopy = context;
+  v8 = observersCopy;
   v9 = v7;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   v13 = objc_opt_class();
-  v14 = v11;
+  v14 = objectCopy;
   if (v13)
   {
     if (objc_opt_isKindOfClass())
@@ -166,7 +166,7 @@
 
   v16 = v15;
 
-  if (off_100125058 == a6)
+  if (off_100125058 == context)
   {
     v17 = sub_10005263C();
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -174,11 +174,11 @@
       goto LABEL_20;
     }
 
-    v18 = [v16 uniqueId];
+    uniqueId = [v16 uniqueId];
     *buf = 138543618;
     v35 = v16;
     v36 = 2114;
-    v37 = v18;
+    v37 = uniqueId;
     v19 = "available modes changed for display %{public}@ %{public}@";
 LABEL_19:
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, v19, buf, 0x16u);
@@ -186,7 +186,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (off_100125060 == a6)
+  if (off_100125060 == context)
   {
     v17 = sub_10005263C();
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -194,16 +194,16 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    v18 = [v16 uniqueId];
+    uniqueId = [v16 uniqueId];
     *buf = 138543618;
     v35 = v16;
     v36 = 2114;
-    v37 = v18;
+    v37 = uniqueId;
     v19 = "current modes changed for display %{public}@ %{public}@";
     goto LABEL_19;
   }
 
-  if (off_100125068 == a6)
+  if (off_100125068 == context)
   {
     v17 = sub_10005263C();
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -211,24 +211,24 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    v18 = [v16 uniqueId];
+    uniqueId = [v16 uniqueId];
     *buf = 138543618;
     v35 = v16;
     v36 = 2114;
-    v37 = v18;
+    v37 = uniqueId;
     v19 = "logical scale changed for display %{public}@ %{public}@";
     goto LABEL_19;
   }
 
-  if (off_100125050 != a6)
+  if (off_100125050 != context)
   {
-    if (off_100125070 != a6)
+    if (off_100125070 != context)
     {
-      if (off_100125078 != a6)
+      if (off_100125078 != context)
       {
         v32.receiver = self;
         v32.super_class = BKSharedCADisplayProvider;
-        [(BKSharedCADisplayProvider *)&v32 observeValueForKeyPath:v10 ofObject:v14 change:v12 context:a6];
+        [(BKSharedCADisplayProvider *)&v32 observeValueForKeyPath:pathCopy ofObject:v14 change:changeCopy context:context];
         goto LABEL_29;
       }
 
@@ -244,13 +244,13 @@ LABEL_19:
       v33[2] = v30;
       v33[3] = v31;
       v25 = [NSValue valueWithBytes:v33 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
-      v26 = [v16 uniqueId];
+      uniqueId2 = [v16 uniqueId];
       *buf = 138543874;
       v35 = v25;
       v36 = 2114;
       v37 = v16;
       v38 = 2114;
-      v39 = v26;
+      v39 = uniqueId2;
       v27 = "tag changed to %{public}@ for display %{public}@ %{public}@";
       goto LABEL_34;
     }
@@ -259,13 +259,13 @@ LABEL_19:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v25 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v16 pointScale]);
-      v26 = [v16 uniqueId];
+      uniqueId2 = [v16 uniqueId];
       *buf = 138543874;
       v35 = v25;
       v36 = 2114;
       v37 = v16;
       v38 = 2114;
-      v39 = v26;
+      v39 = uniqueId2;
       v27 = "point scale changed to %{public}@ for display %{public}@ %{public}@";
 LABEL_34:
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, v27, buf, 0x20u);
@@ -296,31 +296,31 @@ LABEL_20:
 
   v23 = v22;
 
-  v24 = [v23 immutableCopy];
-  if (v24)
+  immutableCopy = [v23 immutableCopy];
+  if (immutableCopy)
   {
-    [(BKSharedCADisplayProvider *)self _postImmutableDisplayToObservers:v24 context:a6];
+    [(BKSharedCADisplayProvider *)self _postImmutableDisplayToObservers:immutableCopy context:context];
   }
 
 LABEL_29:
 }
 
-- (void)removeMonitor:(id)a3
+- (void)removeMonitor:(id)monitor
 {
-  v4 = a3;
+  monitorCopy = monitor;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_lock_monitors removeObject:v4];
+  [(NSMutableSet *)self->_lock_monitors removeObject:monitorCopy];
 
   [(BKSharedCADisplayProvider *)self _lock_updateObservingState];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)addMonitor:(id)a3
+- (void)addMonitor:(id)monitor
 {
-  v4 = a3;
+  monitorCopy = monitor;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_lock_monitors addObject:v4];
+  [(NSMutableSet *)self->_lock_monitors addObject:monitorCopy];
 
   [(BKSharedCADisplayProvider *)self _lock_updateObservingState];
 

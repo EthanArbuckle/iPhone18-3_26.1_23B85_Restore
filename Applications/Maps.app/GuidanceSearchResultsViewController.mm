@@ -1,28 +1,28 @@
 @interface GuidanceSearchResultsViewController
 - (BOOL)_isEmpty;
 - (GuidanceSearchResultsViewController)init;
-- (GuidanceSearchResultsViewController)initWithViewModel:(id)a3;
+- (GuidanceSearchResultsViewController)initWithViewModel:(id)model;
 - (NavActionCoordination)navContaineeDelegate;
 - (double)_mediumLayoutHeightInSAR;
-- (double)heightForLayout:(unint64_t)a3;
-- (void)_updateLayoutWithContainerStyle:(unint64_t)a3 traitCollection:(id)a4;
-- (void)applyAlphaToContent:(double)a3;
-- (void)configureWithViewModel:(id)a3;
-- (void)dataSource:(id)a3 itemTapped:(id)a4;
-- (void)dataSourceUpdated:(id)a3;
-- (void)didChangePersonalItems:(id)a3;
-- (void)didTapOnAddStopAtIndex:(unint64_t)a3;
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4;
-- (void)headerViewTapped:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setHideHeader:(BOOL)a3;
+- (double)heightForLayout:(unint64_t)layout;
+- (void)_updateLayoutWithContainerStyle:(unint64_t)style traitCollection:(id)collection;
+- (void)applyAlphaToContent:(double)content;
+- (void)configureWithViewModel:(id)model;
+- (void)dataSource:(id)source itemTapped:(id)tapped;
+- (void)dataSourceUpdated:(id)updated;
+- (void)didChangePersonalItems:(id)items;
+- (void)didTapOnAddStopAtIndex:(unint64_t)index;
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type;
+- (void)headerViewTapped:(id)tapped;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setHideHeader:(BOOL)header;
 - (void)viewDidLoad;
-- (void)viewModelDidFinishLoading:(id)a3 error:(id)a4;
-- (void)viewModelWillStartLoading:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)willChangeContainerStyle:(unint64_t)a3;
-- (void)willChangeLayout:(unint64_t)a3;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)viewModelDidFinishLoading:(id)loading error:(id)error;
+- (void)viewModelWillStartLoading:(id)loading;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)willChangeContainerStyle:(unint64_t)style;
+- (void)willChangeLayout:(unint64_t)layout;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation GuidanceSearchResultsViewController
@@ -34,31 +34,31 @@
   return WeakRetained;
 }
 
-- (void)viewModelDidFinishLoading:(id)a3 error:(id)a4
+- (void)viewModelDidFinishLoading:(id)loading error:(id)error
 {
-  v5 = a3;
-  v6 = [v5 results];
-  [SARAnalytics captureShowSearchResults:v6];
+  loadingCopy = loading;
+  results = [loadingCopy results];
+  [SARAnalytics captureShowSearchResults:results];
 
   [(GuidanceSearchResultsViewController *)self setHideHeader:0];
-  v7 = [(GuidanceSearchResultsViewController *)self resultsView];
-  [v7 setLoading:0];
+  resultsView = [(GuidanceSearchResultsViewController *)self resultsView];
+  [resultsView setLoading:0];
 
-  v8 = [(GuidanceSearchResultsViewController *)self viewModel];
-  v9 = [v8 title];
-  [(ResultsTitleView *)self->_resultsTitleView setTitle:v9];
+  viewModel = [(GuidanceSearchResultsViewController *)self viewModel];
+  title = [viewModel title];
+  [(ResultsTitleView *)self->_resultsTitleView setTitle:title];
 
-  v10 = [(GuidanceSearchResultsViewController *)self viewModel];
-  v11 = [v10 subtitle];
-  [(ResultsTitleView *)self->_resultsTitleView setSubtitle:v11];
+  viewModel2 = [(GuidanceSearchResultsViewController *)self viewModel];
+  subtitle = [viewModel2 subtitle];
+  [(ResultsTitleView *)self->_resultsTitleView setSubtitle:subtitle];
 
-  v12 = +[MNNavigationService sharedService];
-  v13 = [v12 navigationTransportType];
-  if (v13 <= 2)
+  viewModel3 = +[MNNavigationService sharedService];
+  navigationTransportType = [viewModel3 navigationTransportType];
+  if (navigationTransportType <= 2)
   {
-    if (v13 != 1)
+    if (navigationTransportType != 1)
     {
-      if (v13 == 2)
+      if (navigationTransportType == 2)
       {
         IsEnabled_Maps182 = MapsFeature_IsEnabled_Maps182();
         goto LABEL_8;
@@ -80,12 +80,12 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (v13 == 6)
+  if (navigationTransportType == 6)
   {
     goto LABEL_12;
   }
 
-  if (v13 != 3)
+  if (navigationTransportType != 3)
   {
     goto LABEL_10;
   }
@@ -97,9 +97,9 @@ LABEL_8:
   if (v15)
   {
 LABEL_11:
-    v12 = [(GuidanceSearchResultsViewController *)self viewModel];
-    v17 = [v12 headerImage];
-    [(ResultsTitleView *)self->_resultsTitleView setHeaderImage:v17];
+    viewModel3 = [(GuidanceSearchResultsViewController *)self viewModel];
+    headerImage = [viewModel3 headerImage];
+    [(ResultsTitleView *)self->_resultsTitleView setHeaderImage:headerImage];
 
     goto LABEL_12;
   }
@@ -110,8 +110,8 @@ LABEL_13:
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v19 = [v5 results];
-  v20 = [v19 countByEnumeratingWithState:&v33 objects:v37 count:16];
+  results2 = [loadingCopy results];
+  v20 = [results2 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v20)
   {
     v21 = v20;
@@ -123,7 +123,7 @@ LABEL_13:
       {
         if (*v34 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(results2);
         }
 
         v24 = [[SearchResult alloc] initWithMapItem:*(*(&v33 + 1) + 8 * v23)];
@@ -133,20 +133,20 @@ LABEL_13:
       }
 
       while (v21 != v23);
-      v21 = [v19 countByEnumeratingWithState:&v33 objects:v37 count:16];
+      v21 = [results2 countByEnumeratingWithState:&v33 objects:v37 count:16];
     }
 
     while (v21);
   }
 
   v25 = [[IdenticallyOrderedDataSource alloc] initWithObjects:v18];
-  v26 = [v5 placeSummaryMetadata];
-  v27 = [(GuidanceSearchResultsViewController *)self dataSource];
-  [v27 setPlaceSummaryMetadata:v26];
+  placeSummaryMetadata = [loadingCopy placeSummaryMetadata];
+  dataSource = [(GuidanceSearchResultsViewController *)self dataSource];
+  [dataSource setPlaceSummaryMetadata:placeSummaryMetadata];
 
   v28 = [[SearchResultsDataSourceContent alloc] initWithOrderedDataSource:v25];
-  v29 = [(GuidanceSearchResultsViewController *)self dataSource];
-  [v29 setContent:v28];
+  dataSource2 = [(GuidanceSearchResultsViewController *)self dataSource];
+  [dataSource2 setContent:v28];
 
   if ([(GuidanceSearchResultsViewController *)self _isEmpty])
   {
@@ -154,35 +154,35 @@ LABEL_13:
     v31 = [v30 localizedStringForKey:@"SaR_NoResults" value:@"localized string not found" table:0];
     [(ResultsTitleView *)self->_resultsTitleView setTitle:v31];
 
-    v32 = [(ContaineeViewController *)self cardPresentationController];
-    [v32 wantsLayout:2];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController wantsLayout:2];
   }
 
   else
   {
-    v32 = [(ContaineeViewController *)self cardPresentationController];
-    [v32 updateHeightForCurrentLayout];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController updateHeightForCurrentLayout];
   }
 }
 
-- (void)viewModelWillStartLoading:(id)a3
+- (void)viewModelWillStartLoading:(id)loading
 {
-  v3 = [(GuidanceSearchResultsViewController *)self resultsView];
-  [v3 setLoading:1];
+  resultsView = [(GuidanceSearchResultsViewController *)self resultsView];
+  [resultsView setLoading:1];
 }
 
-- (void)didTapOnAddStopAtIndex:(unint64_t)a3
+- (void)didTapOnAddStopAtIndex:(unint64_t)index
 {
-  v4 = [(GuidanceSearchResultsViewController *)self viewModel];
-  [v4 navigateToItemAtIndex:a3];
+  viewModel = [(GuidanceSearchResultsViewController *)self viewModel];
+  [viewModel navigateToItemAtIndex:index];
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
+  y = velocity.y;
   v6.receiver = self;
   v6.super_class = GuidanceSearchResultsViewController;
-  [(ContaineeViewController *)&v6 scrollViewWillEndDragging:a3 withVelocity:a5 targetContentOffset:a4.x];
+  [(ContaineeViewController *)&v6 scrollViewWillEndDragging:dragging withVelocity:offset targetContentOffset:velocity.x];
   if (y <= 0.0)
   {
     if (y < 0.0)
@@ -197,48 +197,48 @@ LABEL_13:
   }
 }
 
-- (void)dataSource:(id)a3 itemTapped:(id)a4
+- (void)dataSource:(id)source itemTapped:(id)tapped
 {
-  v5 = a4;
-  v6 = [(GuidanceSearchResultsViewController *)self resultsView];
-  v7 = [v6 tableView];
-  v8 = [(GuidanceSearchResultsViewController *)self resultsView];
-  v9 = [v8 tableView];
-  v10 = [v9 indexPathForSelectedRow];
-  [v7 deselectRowAtIndexPath:v10 animated:1];
+  tappedCopy = tapped;
+  resultsView = [(GuidanceSearchResultsViewController *)self resultsView];
+  tableView = [resultsView tableView];
+  resultsView2 = [(GuidanceSearchResultsViewController *)self resultsView];
+  tableView2 = [resultsView2 tableView];
+  indexPathForSelectedRow = [tableView2 indexPathForSelectedRow];
+  [tableView deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
 
-  v16 = v5;
+  v16 = tappedCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v16 mapItem];
-    v12 = [(GuidanceSearchResultsViewController *)self viewModel];
-    v13 = [v12 results];
-    v14 = [v13 indexOfObject:v11];
+    mapItem = [v16 mapItem];
+    viewModel = [(GuidanceSearchResultsViewController *)self viewModel];
+    results = [viewModel results];
+    v14 = [results indexOfObject:mapItem];
 
     if (v14 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v15 = [(GuidanceSearchResultsViewController *)self viewModel];
-      [v15 selectMapItemAtIndex:v14];
+      viewModel2 = [(GuidanceSearchResultsViewController *)self viewModel];
+      [viewModel2 selectMapItemAtIndex:v14];
     }
   }
 }
 
-- (void)dataSourceUpdated:(id)a3
+- (void)dataSourceUpdated:(id)updated
 {
-  v4 = [(GuidanceSearchResultsViewController *)self resultsView];
-  v3 = [v4 tableView];
-  [v3 reloadData];
+  resultsView = [(GuidanceSearchResultsViewController *)self resultsView];
+  tableView = [resultsView tableView];
+  [tableView reloadData];
 }
 
-- (void)setHideHeader:(BOOL)a3
+- (void)setHideHeader:(BOOL)header
 {
-  if (self->_hideHeader != a3)
+  if (self->_hideHeader != header)
   {
     v12 = v7;
     v13 = v3;
-    self->_hideHeader = a3;
-    if (a3)
+    self->_hideHeader = header;
+    if (header)
     {
       v10 = 0.0;
     }
@@ -255,12 +255,12 @@ LABEL_13:
   }
 }
 
-- (void)headerViewTapped:(id)a3
+- (void)headerViewTapped:(id)tapped
 {
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  v5 = [v4 containeeLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containeeLayout = [cardPresentationController containeeLayout];
 
-  if (v5 == 1)
+  if (containeeLayout == 1)
   {
     +[SARAnalytics captureListTapToShowTray];
     v6 = 2;
@@ -268,10 +268,10 @@ LABEL_13:
 
   else
   {
-    v7 = [(ContaineeViewController *)self cardPresentationController];
-    v8 = [v7 containeeLayout];
+    cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+    containeeLayout2 = [cardPresentationController2 containeeLayout];
 
-    if (v8 != 2)
+    if (containeeLayout2 != 2)
     {
       return;
     }
@@ -280,24 +280,24 @@ LABEL_13:
     v6 = 1;
   }
 
-  v9 = [(ContaineeViewController *)self cardPresentationController];
-  [v9 wantsLayout:v6];
+  cardPresentationController3 = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController3 wantsLayout:v6];
 }
 
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type
 {
-  [SARAnalytics captureCancelSearchResults:a3];
-  v5 = [(GuidanceSearchResultsViewController *)self viewModel];
-  [v5 cancelResultsView];
+  [SARAnalytics captureCancelSearchResults:tapped];
+  viewModel = [(GuidanceSearchResultsViewController *)self viewModel];
+  [viewModel cancelResultsView];
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
   [(ContainerHeaderView *)self->_containerHeaderView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height];
   v6 = v5;
   if ([(GuidanceSearchResultsViewController *)self _isEmpty])
   {
-    if (a3 == 2)
+    if (layout == 2)
     {
       return v6;
     }
@@ -308,10 +308,10 @@ LABEL_13:
     }
   }
 
-  if (a3 - 3 < 2)
+  if (layout - 3 < 2)
   {
-    v11 = [(ContaineeViewController *)self cardPresentationController];
-    [v11 availableHeight];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController availableHeight];
     v13 = v12;
 
     return v13;
@@ -319,13 +319,13 @@ LABEL_13:
 
   else
   {
-    if (a3 != 2)
+    if (layout != 2)
     {
       v7 = -1.0;
-      if (a3 == 1)
+      if (layout == 1)
       {
-        v9 = [(ContaineeViewController *)self cardPresentationController];
-        [v9 bottomSafeOffset];
+        cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+        [cardPresentationController2 bottomSafeOffset];
         v7 = v10 + v6;
       }
 
@@ -346,66 +346,66 @@ LABEL_13:
   return result;
 }
 
-- (void)willChangeContainerStyle:(unint64_t)a3
+- (void)willChangeContainerStyle:(unint64_t)style
 {
   v6.receiver = self;
   v6.super_class = GuidanceSearchResultsViewController;
   [(ContaineeViewController *)&v6 willChangeContainerStyle:?];
-  v5 = [(GuidanceSearchResultsViewController *)self traitCollection];
-  [(GuidanceSearchResultsViewController *)self _updateLayoutWithContainerStyle:a3 traitCollection:v5];
+  traitCollection = [(GuidanceSearchResultsViewController *)self traitCollection];
+  [(GuidanceSearchResultsViewController *)self _updateLayoutWithContainerStyle:style traitCollection:traitCollection];
 }
 
-- (void)willChangeLayout:(unint64_t)a3
+- (void)willChangeLayout:(unint64_t)layout
 {
   v7.receiver = self;
   v7.super_class = GuidanceSearchResultsViewController;
   [(ContaineeViewController *)&v7 willChangeLayout:?];
-  v5 = [(GuidanceSearchResultsViewController *)self navContaineeDelegate];
-  v6 = v5;
-  if (a3 == 1)
+  navContaineeDelegate = [(GuidanceSearchResultsViewController *)self navContaineeDelegate];
+  v6 = navContaineeDelegate;
+  if (layout == 1)
   {
-    [v5 showJunctionViewIfNeeded];
+    [navContaineeDelegate showJunctionViewIfNeeded];
   }
 
   else
   {
-    [v5 hideJunctionViewIfNeeded];
+    [navContaineeDelegate hideJunctionViewIfNeeded];
   }
 }
 
-- (void)applyAlphaToContent:(double)a3
+- (void)applyAlphaToContent:(double)content
 {
   v5.receiver = self;
   v5.super_class = GuidanceSearchResultsViewController;
   [(ContaineeViewController *)&v5 applyAlphaToContent:?];
   if (![(GuidanceSearchResultsViewController *)self isHeaderHidden])
   {
-    [(ContainerHeaderView *)self->_containerHeaderView setHairLineAlpha:a3];
+    [(ContainerHeaderView *)self->_containerHeaderView setHairLineAlpha:content];
   }
 }
 
-- (void)_updateLayoutWithContainerStyle:(unint64_t)a3 traitCollection:(id)a4
+- (void)_updateLayoutWithContainerStyle:(unint64_t)style traitCollection:(id)collection
 {
-  if (sub_100A5FC54(a3, a4))
+  if (sub_100A5FC54(style, collection))
   {
-    v5 = [(ContaineeViewController *)self cardPresentationController];
-    [v5 wantsLayout:1];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController wantsLayout:1];
   }
 }
 
 - (BOOL)_isEmpty
 {
-  v3 = [(GuidanceSearchResultsViewController *)self resultsView];
-  if ([v3 isLoading])
+  resultsView = [(GuidanceSearchResultsViewController *)self resultsView];
+  if ([resultsView isLoading])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(GuidanceSearchResultsViewController *)self dataSource];
-    v6 = [v5 content];
-    v4 = [v6 count] == 0;
+    dataSource = [(GuidanceSearchResultsViewController *)self dataSource];
+    content = [dataSource content];
+    v4 = [content count] == 0;
   }
 
   return v4;
@@ -413,22 +413,22 @@ LABEL_13:
 
 - (double)_mediumLayoutHeightInSAR
 {
-  v2 = [(GuidanceSearchResultsViewController *)self view];
-  v3 = [v2 window];
-  v4 = [v3 windowScene];
-  v5 = [v4 screen];
+  view = [(GuidanceSearchResultsViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  screen = [windowScene screen];
 
-  if (!v5)
+  if (!screen)
   {
-    v5 = +[UIScreen mainScreen];
+    screen = +[UIScreen mainScreen];
   }
 
-  [v5 bounds];
+  [screen bounds];
   v7 = v6;
-  [v5 bounds];
+  [screen bounds];
   if (v7 == 320.0)
   {
-    [v5 bounds];
+    [screen bounds];
     UIRoundToScreenScale();
     v10 = v9;
   }
@@ -441,28 +441,28 @@ LABEL_13:
   return v10;
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
   v8.receiver = self;
   v8.super_class = GuidanceSearchResultsViewController;
-  v6 = a3;
-  [(GuidanceSearchResultsViewController *)&v8 willTransitionToTraitCollection:v6 withTransitionCoordinator:a4];
+  collectionCopy = collection;
+  [(GuidanceSearchResultsViewController *)&v8 willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinator];
   v7 = [(ContaineeViewController *)self cardPresentationController:v8.receiver];
-  -[GuidanceSearchResultsViewController _updateLayoutWithContainerStyle:traitCollection:](self, "_updateLayoutWithContainerStyle:traitCollection:", [v7 containerStyle], v6);
+  -[GuidanceSearchResultsViewController _updateLayoutWithContainerStyle:traitCollection:](self, "_updateLayoutWithContainerStyle:traitCollection:", [v7 containerStyle], collectionCopy);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = GuidanceSearchResultsViewController;
-  [(ContaineeViewController *)&v8 viewWillAppear:a3];
-  v4 = [(GuidanceSearchResultsViewController *)self viewModel];
-  [v4 clearSelection];
+  [(ContaineeViewController *)&v8 viewWillAppear:appear];
+  viewModel = [(GuidanceSearchResultsViewController *)self viewModel];
+  [viewModel clearSelection];
 
-  v5 = [(ContaineeViewController *)self cardPresentationController];
-  v6 = [v5 containerStyle];
-  v7 = [(GuidanceSearchResultsViewController *)self traitCollection];
-  [(GuidanceSearchResultsViewController *)self _updateLayoutWithContainerStyle:v6 traitCollection:v7];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containerStyle = [cardPresentationController containerStyle];
+  traitCollection = [(GuidanceSearchResultsViewController *)self traitCollection];
+  [(GuidanceSearchResultsViewController *)self _updateLayoutWithContainerStyle:containerStyle traitCollection:traitCollection];
 }
 
 - (void)viewDidLoad
@@ -470,8 +470,8 @@ LABEL_13:
   v72.receiver = self;
   v72.super_class = GuidanceSearchResultsViewController;
   [(ContaineeViewController *)&v72 viewDidLoad];
-  v3 = [(GuidanceSearchResultsViewController *)self view];
-  [v3 setAccessibilityIdentifier:@"GuidanceSearchResults"];
+  view = [(GuidanceSearchResultsViewController *)self view];
+  [view setAccessibilityIdentifier:@"GuidanceSearchResults"];
 
   v4 = [GuidanceSearchResultsView alloc];
   v5 = +[UIScreen mainScreen];
@@ -479,113 +479,113 @@ LABEL_13:
   v6 = [(GuidanceSearchResultsView *)v4 initWithFrame:?];
   [(GuidanceSearchResultsViewController *)self setResultsView:v6];
 
-  v7 = [(GuidanceSearchResultsViewController *)self resultsView];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  resultsView = [(GuidanceSearchResultsViewController *)self resultsView];
+  [resultsView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v8 = [(GuidanceSearchResultsViewController *)self resultsView];
-  [v8 setPreservesSuperviewLayoutMargins:1];
+  resultsView2 = [(GuidanceSearchResultsViewController *)self resultsView];
+  [resultsView2 setPreservesSuperviewLayoutMargins:1];
 
-  v9 = [(GuidanceSearchResultsViewController *)self view];
-  v10 = [(GuidanceSearchResultsViewController *)self resultsView];
-  [v9 addSubview:v10];
+  view2 = [(GuidanceSearchResultsViewController *)self view];
+  resultsView3 = [(GuidanceSearchResultsViewController *)self resultsView];
+  [view2 addSubview:resultsView3];
 
   v11 = [ResultsTitleView alloc];
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v15 = [(ResultsTitleView *)v11 initWithFrame:CGRectZero.origin.x, y, width, height];
+  height = [(ResultsTitleView *)v11 initWithFrame:CGRectZero.origin.x, y, width, height];
   resultsTitleView = self->_resultsTitleView;
-  self->_resultsTitleView = v15;
+  self->_resultsTitleView = height;
 
   [(ResultsTitleView *)self->_resultsTitleView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v17 = [(GuidanceSearchResultsViewController *)self viewModel];
-  v18 = [v17 title];
-  [(ResultsTitleView *)self->_resultsTitleView setTitle:v18];
+  viewModel = [(GuidanceSearchResultsViewController *)self viewModel];
+  title = [viewModel title];
+  [(ResultsTitleView *)self->_resultsTitleView setTitle:title];
 
   [(ResultsTitleView *)self->_resultsTitleView setEditButtonHidden:1];
   [(GuidanceSearchResultsViewController *)self setHideHeader:1];
   v19 = [SearchResultsDataSource alloc];
-  v20 = [(GuidanceSearchResultsViewController *)self resultsView];
-  v21 = [v20 tableView];
-  v22 = [(SearchResultsDataSource *)v19 initWithTableView:v21];
+  resultsView4 = [(GuidanceSearchResultsViewController *)self resultsView];
+  tableView = [resultsView4 tableView];
+  v22 = [(SearchResultsDataSource *)v19 initWithTableView:tableView];
   [(GuidanceSearchResultsViewController *)self setDataSource:v22];
 
-  v23 = [(GuidanceSearchResultsViewController *)self dataSource];
-  [v23 setDelegate:self];
+  dataSource = [(GuidanceSearchResultsViewController *)self dataSource];
+  [dataSource setDelegate:self];
 
-  v24 = [(GuidanceSearchResultsViewController *)self dataSource];
-  [v24 setIsPresentingSearchAlongTheRouteResults:1];
+  dataSource2 = [(GuidanceSearchResultsViewController *)self dataSource];
+  [dataSource2 setIsPresentingSearchAlongTheRouteResults:1];
 
-  v25 = [(GuidanceSearchResultsViewController *)self dataSource];
-  v26 = [(GuidanceSearchResultsViewController *)self resultsView];
-  v27 = [v26 tableView];
-  [v27 setDataSource:v25];
+  dataSource3 = [(GuidanceSearchResultsViewController *)self dataSource];
+  resultsView5 = [(GuidanceSearchResultsViewController *)self resultsView];
+  tableView2 = [resultsView5 tableView];
+  [tableView2 setDataSource:dataSource3];
 
-  v28 = [(GuidanceSearchResultsViewController *)self dataSource];
-  v29 = [(GuidanceSearchResultsViewController *)self resultsView];
-  v30 = [v29 tableView];
-  [v30 setDelegate:v28];
+  dataSource4 = [(GuidanceSearchResultsViewController *)self dataSource];
+  resultsView6 = [(GuidanceSearchResultsViewController *)self resultsView];
+  tableView3 = [resultsView6 tableView];
+  [tableView3 setDelegate:dataSource4];
 
-  v31 = [(GuidanceSearchResultsViewController *)self resultsView];
-  v32 = [v31 tableView];
-  [v32 setSectionHeaderTopPadding:0.0];
+  resultsView7 = [(GuidanceSearchResultsViewController *)self resultsView];
+  tableView4 = [resultsView7 tableView];
+  [tableView4 setSectionHeaderTopPadding:0.0];
 
-  v33 = [[ContainerHeaderView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  height2 = [[ContainerHeaderView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
   containerHeaderView = self->_containerHeaderView;
-  self->_containerHeaderView = v33;
+  self->_containerHeaderView = height2;
 
   [(ContainerHeaderView *)self->_containerHeaderView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(ContainerHeaderView *)self->_containerHeaderView setDelegate:self];
   [(ContainerHeaderView *)self->_containerHeaderView setTitleView:self->_resultsTitleView];
-  v35 = [(GuidanceSearchResultsViewController *)self view];
-  [v35 addSubview:self->_containerHeaderView];
+  view3 = [(GuidanceSearchResultsViewController *)self view];
+  [view3 addSubview:self->_containerHeaderView];
 
-  v70 = [(ContainerHeaderView *)self->_containerHeaderView leadingAnchor];
-  v71 = [(GuidanceSearchResultsViewController *)self view];
-  v69 = [v71 leadingAnchor];
-  v68 = [v70 constraintEqualToAnchor:v69];
+  leadingAnchor = [(ContainerHeaderView *)self->_containerHeaderView leadingAnchor];
+  view4 = [(GuidanceSearchResultsViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v68 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v73[0] = v68;
-  v66 = [(ContainerHeaderView *)self->_containerHeaderView trailingAnchor];
-  v67 = [(GuidanceSearchResultsViewController *)self view];
-  v65 = [v67 trailingAnchor];
-  v64 = [v66 constraintEqualToAnchor:v65];
+  trailingAnchor = [(ContainerHeaderView *)self->_containerHeaderView trailingAnchor];
+  view5 = [(GuidanceSearchResultsViewController *)self view];
+  trailingAnchor2 = [view5 trailingAnchor];
+  v64 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v73[1] = v64;
-  v62 = [(ContainerHeaderView *)self->_containerHeaderView topAnchor];
-  v63 = [(GuidanceSearchResultsViewController *)self view];
-  v61 = [v63 topAnchor];
-  v60 = [v62 constraintEqualToAnchor:v61];
+  topAnchor = [(ContainerHeaderView *)self->_containerHeaderView topAnchor];
+  view6 = [(GuidanceSearchResultsViewController *)self view];
+  topAnchor2 = [view6 topAnchor];
+  v60 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v73[2] = v60;
-  v59 = [(GuidanceSearchResultsViewController *)self resultsView];
-  v57 = [v59 leadingAnchor];
-  v58 = [(GuidanceSearchResultsViewController *)self view];
-  v56 = [v58 leadingAnchor];
-  v55 = [v57 constraintEqualToAnchor:v56];
+  resultsView8 = [(GuidanceSearchResultsViewController *)self resultsView];
+  leadingAnchor3 = [resultsView8 leadingAnchor];
+  view7 = [(GuidanceSearchResultsViewController *)self view];
+  leadingAnchor4 = [view7 leadingAnchor];
+  v55 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v73[3] = v55;
-  v54 = [(GuidanceSearchResultsViewController *)self resultsView];
-  v52 = [v54 trailingAnchor];
-  v53 = [(GuidanceSearchResultsViewController *)self view];
-  v51 = [v53 trailingAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51];
+  resultsView9 = [(GuidanceSearchResultsViewController *)self resultsView];
+  trailingAnchor3 = [resultsView9 trailingAnchor];
+  view8 = [(GuidanceSearchResultsViewController *)self view];
+  trailingAnchor4 = [view8 trailingAnchor];
+  v50 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v73[4] = v50;
-  v49 = [(GuidanceSearchResultsViewController *)self resultsView];
-  v36 = [v49 topAnchor];
-  v37 = [(ContainerHeaderView *)self->_containerHeaderView bottomAnchor];
-  v38 = [v36 constraintEqualToAnchor:v37];
+  resultsView10 = [(GuidanceSearchResultsViewController *)self resultsView];
+  topAnchor3 = [resultsView10 topAnchor];
+  bottomAnchor = [(ContainerHeaderView *)self->_containerHeaderView bottomAnchor];
+  v38 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
   v73[5] = v38;
-  v39 = [(GuidanceSearchResultsViewController *)self resultsView];
-  v40 = [v39 bottomAnchor];
-  v41 = [(GuidanceSearchResultsViewController *)self view];
-  v42 = [v41 bottomAnchor];
-  v43 = [v40 constraintEqualToAnchor:v42];
+  resultsView11 = [(GuidanceSearchResultsViewController *)self resultsView];
+  bottomAnchor2 = [resultsView11 bottomAnchor];
+  view9 = [(GuidanceSearchResultsViewController *)self view];
+  bottomAnchor3 = [view9 bottomAnchor];
+  v43 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v73[6] = v43;
   v44 = [NSArray arrayWithObjects:v73 count:7];
   [NSLayoutConstraint activateConstraints:v44];
 
   v45 = +[MNNavigationService sharedService];
-  v46 = [v45 navigationTransportType];
-  if (v46 > 2)
+  navigationTransportType = [v45 navigationTransportType];
+  if (navigationTransportType > 2)
   {
-    if (v46 == 3)
+    if (navigationTransportType == 3)
     {
       IsEnabled_Maps420 = MapsFeature_IsEnabled_Maps420();
 LABEL_10:
@@ -599,7 +599,7 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    if (v46 != 6)
+    if (navigationTransportType != 6)
     {
 LABEL_8:
       IsEnabled_Maps420 = MapsFeature_IsEnabled_DrivingMultiWaypointRoutes();
@@ -607,9 +607,9 @@ LABEL_8:
     }
   }
 
-  else if (v46 != 1)
+  else if (navigationTransportType != 1)
   {
-    if (v46 == 2)
+    if (navigationTransportType == 2)
     {
       IsEnabled_Maps420 = MapsFeature_IsEnabled_Maps182();
       goto LABEL_10;
@@ -622,72 +622,72 @@ LABEL_11:
   [(GuidanceSearchResultsViewModel *)self->_viewModel loadDataIfNeeded];
 }
 
-- (void)didChangePersonalItems:(id)a3
+- (void)didChangePersonalItems:(id)items
 {
-  v5 = [(GuidanceSearchResultsViewController *)self viewModel];
-  v6 = [v5 results];
-  v7 = [v6 count];
+  viewModel = [(GuidanceSearchResultsViewController *)self viewModel];
+  results = [viewModel results];
+  v7 = [results count];
 
-  v8 = [(GuidanceSearchResultsViewController *)self viewModel];
-  v9 = [v8 results];
-  v10 = v9;
+  viewModel2 = [(GuidanceSearchResultsViewController *)self viewModel];
+  results2 = [viewModel2 results];
+  v10 = results2;
   if (v7 == 1)
   {
-    v11 = [v9 firstObject];
+    firstObject = [results2 firstObject];
 
     v12 = sub_100067540();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v13 = [v11 name];
+      name = [firstObject name];
       v26 = 138412290;
-      v27 = v13;
+      v27 = name;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "SAR: didChangePersonalItems. Opening placecard with map Item: %@", &v26, 0xCu);
     }
 
-    v14 = [(GuidanceSearchResultsViewController *)self navContaineeDelegate];
-    [v14 selectMapItem:v11 shouldRemoveResults:1];
+    navContaineeDelegate = [(GuidanceSearchResultsViewController *)self navContaineeDelegate];
+    [navContaineeDelegate selectMapItem:firstObject shouldRemoveResults:1];
 
     goto LABEL_5;
   }
 
-  v15 = [v9 count];
+  v15 = [results2 count];
 
-  if (a3 && v15 >= 2)
+  if (items && v15 >= 2)
   {
-    v16 = [(GuidanceSearchResultsViewController *)self navContaineeDelegate];
-    v11 = [v16 currentSearchInfo];
+    navContaineeDelegate2 = [(GuidanceSearchResultsViewController *)self navContaineeDelegate];
+    firstObject = [navContaineeDelegate2 currentSearchInfo];
 
-    if ([v11 selectedIndex] != 0x7FFFFFFFFFFFFFFFLL)
+    if ([firstObject selectedIndex] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v17 = [v11 selectedIndex];
-      v18 = [(GuidanceSearchResultsViewController *)self viewModel];
-      v19 = [v18 results];
-      if (v17 >= [v19 count])
+      selectedIndex = [firstObject selectedIndex];
+      viewModel3 = [(GuidanceSearchResultsViewController *)self viewModel];
+      results3 = [viewModel3 results];
+      if (selectedIndex >= [results3 count])
       {
 
 LABEL_16:
         goto LABEL_5;
       }
 
-      v20 = [v11 spotlightMapsIdentifier];
+      spotlightMapsIdentifier = [firstObject spotlightMapsIdentifier];
 
-      if (v20)
+      if (spotlightMapsIdentifier)
       {
-        v21 = [(GuidanceSearchResultsViewController *)self viewModel];
-        v22 = [v21 results];
-        v18 = [v22 objectAtIndexedSubscript:{objc_msgSend(v11, "selectedIndex")}];
+        viewModel4 = [(GuidanceSearchResultsViewController *)self viewModel];
+        results4 = [viewModel4 results];
+        viewModel3 = [results4 objectAtIndexedSubscript:{objc_msgSend(firstObject, "selectedIndex")}];
 
         v23 = sub_100067540();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
         {
-          v24 = [v18 name];
+          name2 = [viewModel3 name];
           v26 = 138412290;
-          v27 = v24;
+          v27 = name2;
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEBUG, "SAR: didChangePersonalItems. Opening placecard with map Item: %@", &v26, 0xCu);
         }
 
-        v25 = [(GuidanceSearchResultsViewController *)self navContaineeDelegate];
-        [v25 selectMapItem:v18 shouldRemoveResults:0];
+        navContaineeDelegate3 = [(GuidanceSearchResultsViewController *)self navContaineeDelegate];
+        [navContaineeDelegate3 selectMapItem:viewModel3 shouldRemoveResults:0];
 
         goto LABEL_16;
       }
@@ -697,16 +697,16 @@ LABEL_5:
   }
 }
 
-- (void)configureWithViewModel:(id)a3
+- (void)configureWithViewModel:(id)model
 {
-  v5 = a3;
-  if (self->_viewModel != v5)
+  modelCopy = model;
+  if (self->_viewModel != modelCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_viewModel, a3);
+    v6 = modelCopy;
+    objc_storeStrong(&self->_viewModel, model);
     [(GuidanceSearchResultsViewModel *)self->_viewModel setDelegate:self];
     [(GuidanceSearchResultsViewModel *)self->_viewModel loadDataIfNeeded];
-    v5 = v6;
+    modelCopy = v6;
   }
 }
 
@@ -718,25 +718,25 @@ LABEL_5:
   v3 = v2;
   if (v2)
   {
-    v4 = [(ContaineeViewController *)v2 cardPresentationController];
-    [v4 setBlurInCardView:0];
+    cardPresentationController = [(ContaineeViewController *)v2 cardPresentationController];
+    [cardPresentationController setBlurInCardView:0];
 
     v5 = [UIColor colorNamed:@"NavigationMaterialColor"];
-    v6 = [(ContaineeViewController *)v3 cardPresentationController];
-    [v6 setCardColor:v5];
+    cardPresentationController2 = [(ContaineeViewController *)v3 cardPresentationController];
+    [cardPresentationController2 setCardColor:v5];
   }
 
   return v3;
 }
 
-- (GuidanceSearchResultsViewController)initWithViewModel:(id)a3
+- (GuidanceSearchResultsViewController)initWithViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v6 = [(GuidanceSearchResultsViewController *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewModel, a3);
+    objc_storeStrong(&v6->_viewModel, model);
     [(GuidanceSearchResultsViewModel *)v7->_viewModel setDelegate:v7];
   }
 

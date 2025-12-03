@@ -1,34 +1,34 @@
 @interface KSEditUserWordController
-+ (BOOL)wantsToDelegate:(id)a3;
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldBeginEditing:(id)a3;
-- (BOOL)textFieldShouldClear:(id)a3;
-- (BOOL)textFieldShouldEndEditing:(id)a3;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (KSEditUserWordController)initWithUserWord:(id)a3;
++ (BOOL)wantsToDelegate:(id)delegate;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldBeginEditing:(id)editing;
+- (BOOL)textFieldShouldClear:(id)clear;
+- (BOOL)textFieldShouldEndEditing:(id)editing;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (KSEditUserWordController)initWithUserWord:(id)word;
 - (NSString)shortcut;
 - (NSString)target;
 - (UITextField)shortcutTextField;
 - (UITextField)targetTextField;
-- (id)originalDelegateForTextField:(id)a3;
+- (id)originalDelegateForTextField:(id)field;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)validationErrorStringFromError:(int64_t)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)validationErrorStringFromError:(int64_t)error;
 - (void)_dismiss;
-- (void)_handleValidationWithError:(int64_t)a3;
-- (void)_unpackTextReplacementError:(id)a3;
+- (void)_handleValidationWithError:(int64_t)error;
+- (void)_unpackTextReplacementError:(id)error;
 - (void)dealloc;
 - (void)save;
-- (void)setShortcut:(id)a3;
-- (void)setTarget:(id)a3;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)setShortcut:(id)shortcut;
+- (void)setTarget:(id)target;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
 - (void)viewDidLoad;
 @end
 
 @implementation KSEditUserWordController
 
-- (KSEditUserWordController)initWithUserWord:(id)a3
+- (KSEditUserWordController)initWithUserWord:(id)word
 {
   v7.receiver = self;
   v7.super_class = KSEditUserWordController;
@@ -36,13 +36,13 @@
   v5 = v4;
   if (v4)
   {
-    [(KSEditUserWordController *)v4 setOldEntry:a3];
-    if (!a3)
+    [(KSEditUserWordController *)v4 setOldEntry:word];
+    if (!word)
     {
-      a3 = objc_alloc_init(MEMORY[0x277D22AE0]);
+      word = objc_alloc_init(MEMORY[0x277D22AE0]);
     }
 
-    [(KSEditUserWordController *)v5 setNextEntry:a3];
+    [(KSEditUserWordController *)v5 setNextEntry:word];
   }
 
   return v5;
@@ -57,37 +57,37 @@
 
 - (NSString)target
 {
-  v2 = [(KSEditUserWordController *)self nextEntry];
+  nextEntry = [(KSEditUserWordController *)self nextEntry];
 
-  return [(_KSTextReplacementEntry *)v2 phrase];
+  return [(_KSTextReplacementEntry *)nextEntry phrase];
 }
 
-- (void)setTarget:(id)a3
+- (void)setTarget:(id)target
 {
-  v4 = [(KSEditUserWordController *)self nextEntry];
+  nextEntry = [(KSEditUserWordController *)self nextEntry];
 
-  [(_KSTextReplacementEntry *)v4 setPhrase:a3];
+  [(_KSTextReplacementEntry *)nextEntry setPhrase:target];
 }
 
 - (NSString)shortcut
 {
-  v2 = [(KSEditUserWordController *)self nextEntry];
+  nextEntry = [(KSEditUserWordController *)self nextEntry];
 
-  return [(_KSTextReplacementEntry *)v2 shortcut];
+  return [(_KSTextReplacementEntry *)nextEntry shortcut];
 }
 
-- (void)setShortcut:(id)a3
+- (void)setShortcut:(id)shortcut
 {
-  v4 = [(KSEditUserWordController *)self nextEntry];
+  nextEntry = [(KSEditUserWordController *)self nextEntry];
 
-  [(_KSTextReplacementEntry *)v4 setShortcut:a3];
+  [(_KSTextReplacementEntry *)nextEntry setShortcut:shortcut];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = KSEditUserWordController;
-  v5 = [(KSEditUserWordController *)&v7 tableView:a3 cellForRowAtIndexPath:a4];
+  v5 = [(KSEditUserWordController *)&v7 tableView:view cellForRowAtIndexPath:path];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [objc_opt_class() wantsToDelegate:{objc_msgSend(objc_msgSend(v5, "specifier"), "identifier")}] && objc_msgSend(objc_msgSend(v5, "textField"), "delegate") != self)
   {
@@ -98,19 +98,19 @@
   return v5;
 }
 
-+ (BOOL)wantsToDelegate:(id)a3
++ (BOOL)wantsToDelegate:(id)delegate
 {
-  v4 = [a1 propertyTitles];
+  propertyTitles = [self propertyTitles];
 
-  return [v4 containsObject:a3];
+  return [propertyTitles containsObject:delegate];
 }
 
-- (id)originalDelegateForTextField:(id)a3
+- (id)originalDelegateForTextField:(id)field
 {
-  result = objc_getAssociatedObject(a3, "kTextFieldOriginalDelegate");
+  result = objc_getAssociatedObject(field, "kTextFieldOriginalDelegate");
   if (!result)
   {
-    result = [a3 delegate];
+    result = [field delegate];
   }
 
   if (result == self)
@@ -140,22 +140,22 @@
   result = *(&self->super.super.super.super.super.isa + v3);
   if (!result)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     if (![(NSString *)[(KSEditUserWordController *)self footerTitle] length])
     {
       -[KSEditUserWordController setFooterTitle:](self, "setFooterTitle:", [objc_msgSend(MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", @"USER_WORD_EXPLANATORY_TEXT", &stru_28679E3A8, @"Keyboard"}]);
     }
 
-    v6 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-    v7 = [(KSEditUserWordController *)self footerTitle];
-    [v6 setProperty:v7 forKey:*MEMORY[0x277D3FF88]];
-    [v5 addObject:v6];
-    [(KSEditUserWordController *)self setGroupSpecifier:v6];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    footerTitle = [(KSEditUserWordController *)self footerTitle];
+    [emptyGroupSpecifier setProperty:footerTitle forKey:*MEMORY[0x277D3FF88]];
+    [array addObject:emptyGroupSpecifier];
+    [(KSEditUserWordController *)self setGroupSpecifier:emptyGroupSpecifier];
     v8 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8] target:"bundleForClass:" set:objc_opt_class()) get:"localizedStringForKey:value:table:" detail:@"WORD" cell:&stru_28679E3A8 edit:{@"Keyboard", self, sel_setTarget_, sel_target, 0, 8, 0}];
     v9 = *MEMORY[0x277D3FFB8];
     [v8 setProperty:@"WORD" forKey:*MEMORY[0x277D3FFB8]];
     [v8 setKeyboardType:0 autoCaps:0 autoCorrection:1];
-    [v5 addObject:v8];
+    [array addObject:v8];
     if ([(NSString *)[(KSEditUserWordController *)self target] isEqualToString:[(KSEditUserWordController *)self shortcut]])
     {
       [(KSEditUserWordController *)self setShortcut:&stru_28679E3A8];
@@ -169,8 +169,8 @@
 
     [v10 setProperty:@"SHORTCUT" forKey:v9];
     [v10 setKeyboardType:0 autoCaps:0 autoCorrection:1];
-    [v5 addObject:v10];
-    result = v5;
+    [array addObject:v10];
+    result = array;
     *(&self->super.super.super.super.super.isa + v3) = result;
   }
 
@@ -191,14 +191,14 @@
   return [v2 editableTextField];
 }
 
-- (id)validationErrorStringFromError:(int64_t)a3
+- (id)validationErrorStringFromError:(int64_t)error
 {
-  if ((a3 - 1) > 8)
+  if ((error - 1) > 8)
   {
     return 0;
   }
 
-  v4 = off_2797FA1E8[a3 - 1];
+  v4 = off_2797FA1E8[error - 1];
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
 
   return [v5 localizedStringForKey:v4 value:&stru_28679E3A8 table:@"Keyboard"];
@@ -206,25 +206,25 @@
 
 - (void)_dismiss
 {
-  v2 = [(KSEditUserWordController *)self navigationController];
+  navigationController = [(KSEditUserWordController *)self navigationController];
 
-  [v2 popViewControllerAnimated:1];
+  [navigationController popViewControllerAnimated:1];
 }
 
-- (void)_unpackTextReplacementError:(id)a3
+- (void)_unpackTextReplacementError:(id)error
 {
-  if ([a3 code] == 11)
+  if ([error code] == 11)
   {
-    v5 = [a3 userInfo];
-    v6 = [objc_msgSend(v5 objectForKeyedSubscript:{*MEMORY[0x277D22AF8]), "firstObject"}];
-    v7 = [a3 userInfo];
-    v8 = [objc_msgSend(v7 objectForKeyedSubscript:{*MEMORY[0x277D22AE8]), "firstObject"}];
+    userInfo = [error userInfo];
+    v6 = [objc_msgSend(userInfo objectForKeyedSubscript:{*MEMORY[0x277D22AF8]), "firstObject"}];
+    userInfo2 = [error userInfo];
+    errorCopy = [objc_msgSend(userInfo2 objectForKeyedSubscript:{*MEMORY[0x277D22AE8]), "firstObject"}];
     if (v6)
     {
-      v8 = v6;
+      errorCopy = v6;
     }
 
-    else if (!v8)
+    else if (!errorCopy)
     {
       return;
     }
@@ -232,25 +232,25 @@
     goto LABEL_8;
   }
 
-  v9 = [a3 domain];
-  if ([v9 isEqual:*MEMORY[0x277D22AF0]])
+  domain = [error domain];
+  if ([domain isEqual:*MEMORY[0x277D22AF0]])
   {
-    v8 = a3;
+    errorCopy = error;
 LABEL_8:
-    v10 = [v8 code];
+    code = [errorCopy code];
     goto LABEL_9;
   }
 
-  v10 = -2;
+  code = -2;
 LABEL_9:
 
-  [(KSEditUserWordController *)self _handleValidationWithError:v10];
+  [(KSEditUserWordController *)self _handleValidationWithError:code];
 }
 
-- (void)_handleValidationWithError:(int64_t)a3
+- (void)_handleValidationWithError:(int64_t)error
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (error)
   {
     v4 = [(KSEditUserWordController *)self validationErrorStringFromError:?];
     if ([v4 length])
@@ -279,10 +279,10 @@ LABEL_9:
     TIStatisticGetKey();
     [(NSString *)[(UITextField *)[(KSEditUserWordController *)self shortcutTextField] text] length];
     TIStatisticDistributionPushValue();
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v13 = @"shortcut";
     v14[0] = [(KSEditUserWordController *)self shortcut];
-    [v10 postNotificationName:@"EditUserWordShortcutDidUpdateNotification" object:self userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v14, &v13, 1)}];
+    [defaultCenter postNotificationName:@"EditUserWordShortcutDidUpdateNotification" object:self userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v14, &v13, 1)}];
     [(KSEditUserWordController *)self _dismiss];
   }
 
@@ -299,13 +299,13 @@ LABEL_9:
     [(_KSTextReplacementEntry *)[(KSEditUserWordController *)self nextEntry] setPriorValue:[(KSEditUserWordController *)self oldEntry]];
   }
 
-  v3 = [(KSEditUserWordController *)self dictionaryController];
+  dictionaryController = [(KSEditUserWordController *)self dictionaryController];
   v9[0] = [(KSEditUserWordController *)self nextEntry];
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
   if ([(KSEditUserWordController *)self oldEntry])
   {
-    v8 = [(KSEditUserWordController *)self oldEntry];
-    v5 = [MEMORY[0x277CBEA60] arrayWithObjects:&v8 count:1];
+    oldEntry = [(KSEditUserWordController *)self oldEntry];
+    v5 = [MEMORY[0x277CBEA60] arrayWithObjects:&oldEntry count:1];
   }
 
   else
@@ -318,21 +318,21 @@ LABEL_9:
   v7[2] = __32__KSEditUserWordController_save__block_invoke;
   v7[3] = &unk_2797FA1C8;
   v7[4] = self;
-  [(KSUserWordsManager *)v3 addEntries:v4 removeEntries:v5 withCompletionHandler:v7];
+  [(KSUserWordsManager *)dictionaryController addEntries:v4 removeEntries:v5 withCompletionHandler:v7];
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v10 = [(KSEditUserWordController *)self originalDelegateForTextField:?];
-  if ([(KSEditUserWordController *)self targetTextField]== a3)
+  if ([(KSEditUserWordController *)self targetTextField]== field)
   {
-    v11 = [objc_msgSend(a3 "text")];
-    v12 = [v11 _containsIdeographicCharacters];
+    v11 = [objc_msgSend(field "text")];
+    _containsIdeographicCharacters = [v11 _containsIdeographicCharacters];
     v13 = [-[KSEditUserWordController specifiers](self "specifiers")];
-    if (v12)
+    if (_containsIdeographicCharacters)
     {
       v14 = @" ";
     }
@@ -348,7 +348,7 @@ LABEL_9:
     if (v15)
     {
       [v16 setEnabled:1];
-      if (!v12 || [(NSString *)[(KSEditUserWordController *)self shortcut] length])
+      if (!_containsIdeographicCharacters || [(NSString *)[(KSEditUserWordController *)self shortcut] length])
       {
         goto LABEL_10;
       }
@@ -361,12 +361,12 @@ LABEL_10:
     [(KSEditUserWordController *)self reloadSpecifier:v13];
   }
 
-  if ([(KSEditUserWordController *)self shortcutTextField]!= a3)
+  if ([(KSEditUserWordController *)self shortcutTextField]!= field)
   {
     goto LABEL_17;
   }
 
-  v17 = [objc_msgSend(a3 "text")];
+  v17 = [objc_msgSend(field "text")];
   v18 = [(NSString *)[(KSEditUserWordController *)self target] length];
   v19 = [-[KSEditUserWordController navigationItem](self "navigationItem")];
   if (!v18)
@@ -388,10 +388,10 @@ LABEL_17:
     return 1;
   }
 
-  return [v10 textField:a3 shouldChangeCharactersInRange:location replacementString:{length, a5}];
+  return [v10 textField:field shouldChangeCharactersInRange:location replacementString:{length, string}];
 }
 
-- (BOOL)textFieldShouldBeginEditing:(id)a3
+- (BOOL)textFieldShouldBeginEditing:(id)editing
 {
   v4 = [(KSEditUserWordController *)self originalDelegateForTextField:?];
   if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -399,20 +399,20 @@ LABEL_17:
     return 1;
   }
 
-  return [v4 textFieldShouldBeginEditing:a3];
+  return [v4 textFieldShouldBeginEditing:editing];
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
   v4 = [(KSEditUserWordController *)self originalDelegateForTextField:?];
   if (objc_opt_respondsToSelector())
   {
 
-    [v4 textFieldDidBeginEditing:a3];
+    [v4 textFieldDidBeginEditing:editing];
   }
 }
 
-- (BOOL)textFieldShouldEndEditing:(id)a3
+- (BOOL)textFieldShouldEndEditing:(id)editing
 {
   v4 = [(KSEditUserWordController *)self originalDelegateForTextField:?];
   if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -420,20 +420,20 @@ LABEL_17:
     return 1;
   }
 
-  return [v4 textFieldShouldEndEditing:a3];
+  return [v4 textFieldShouldEndEditing:editing];
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
   v4 = [(KSEditUserWordController *)self originalDelegateForTextField:?];
   if (objc_opt_respondsToSelector())
   {
 
-    [v4 textFieldDidEndEditing:a3];
+    [v4 textFieldDidEndEditing:editing];
   }
 }
 
-- (BOOL)textFieldShouldClear:(id)a3
+- (BOOL)textFieldShouldClear:(id)clear
 {
   v4 = [(KSEditUserWordController *)self originalDelegateForTextField:?];
   if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -441,10 +441,10 @@ LABEL_17:
     return 1;
   }
 
-  return [v4 textFieldShouldClear:a3];
+  return [v4 textFieldShouldClear:clear];
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
   v4 = [(KSEditUserWordController *)self originalDelegateForTextField:?];
   if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -452,7 +452,7 @@ LABEL_17:
     return 1;
   }
 
-  return [v4 textFieldShouldReturn:a3];
+  return [v4 textFieldShouldReturn:return];
 }
 
 @end

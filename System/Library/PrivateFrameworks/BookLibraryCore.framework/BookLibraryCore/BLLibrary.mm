@@ -1,29 +1,29 @@
 @interface BLLibrary
-+ (BOOL)_addDate:(id)a3 toPlist:(id)a4 bookItem:(id)a5 error:(id *)a6;
-+ (id)_bookItemsFromPlist:(id)a3 sharedPlist:(id)a4;
++ (BOOL)_addDate:(id)date toPlist:(id)plist bookItem:(id)item error:(id *)error;
++ (id)_bookItemsFromPlist:(id)plist sharedPlist:(id)sharedPlist;
 + (id)defaultBookLibrary;
 + (void)initialize;
-- (BOOL)_addBookItemToEduContainer:(id)a3 error:(id *)a4;
-- (BOOL)_addSharedBookToPurchasesPlistWithPermlink:(id)a3 error:(id *)a4;
-- (BOOL)_bookItemIsShared:(id)a3;
-- (BOOL)_isShareableBook:(id)a3;
-- (BOOL)_removeBookFromLibraryWithPath:(id)a3 error:(id *)a4;
-- (BOOL)removeBookFromLibraryWithIdentifier:(id)a3 error:(id *)a4;
+- (BOOL)_addBookItemToEduContainer:(id)container error:(id *)error;
+- (BOOL)_addSharedBookToPurchasesPlistWithPermlink:(id)permlink error:(id *)error;
+- (BOOL)_bookItemIsShared:(id)shared;
+- (BOOL)_isShareableBook:(id)book;
+- (BOOL)_removeBookFromLibraryWithPath:(id)path error:(id *)error;
+- (BOOL)removeBookFromLibraryWithIdentifier:(id)identifier error:(id *)error;
 - (id)_allPlists;
-- (id)_bookItemFromPermlink:(id)a3 error:(id *)a4;
-- (id)_bookItemFromStoreID:(id)a3 permlink:(id)a4 error:(id *)a5;
-- (id)_bookItemsFromPlist:(id)a3;
-- (id)_findBookItemWithTestBlock:(id)a3 foundWhere:(int64_t *)a4;
+- (id)_bookItemFromPermlink:(id)permlink error:(id *)error;
+- (id)_bookItemFromStoreID:(id)d permlink:(id)permlink error:(id *)error;
+- (id)_bookItemsFromPlist:(id)plist;
+- (id)_findBookItemWithTestBlock:(id)block foundWhere:(int64_t *)where;
 - (id)_init;
-- (id)_initWithBooksPlist:(id)a3 purchasedPlist:(id)a4 managedPlist:(id)a5 sharedPlist:(id)a6;
-- (id)_list:(id)a3 testBlock:(id)a4;
-- (id)_lookupBookItemExhaustiveFromPermlink:(id)a3 error:(id *)a4;
-- (id)_perUserBookURLForBookURL:(id)a3;
+- (id)_initWithBooksPlist:(id)plist purchasedPlist:(id)purchasedPlist managedPlist:(id)managedPlist sharedPlist:(id)sharedPlist;
+- (id)_list:(id)_list testBlock:(id)block;
+- (id)_lookupBookItemExhaustiveFromPermlink:(id)permlink error:(id *)error;
+- (id)_perUserBookURLForBookURL:(id)l;
 - (id)allBookItems;
-- (id)bookIdentifierFromURL:(id)a3 error:(id *)a4;
-- (void)_bookWasOpenedWithStoreID:(id)a3 permlink:(id)a4 date:(id)a5;
-- (void)_downloadWithPermalink:(id)a3 title:(id)a4 result:(id)a5;
-- (void)addITunesUBookToLibraryWithPermlink:(id)a3 title:(id)a4 result:(id)a5;
+- (id)bookIdentifierFromURL:(id)l error:(id *)error;
+- (void)_bookWasOpenedWithStoreID:(id)d permlink:(id)permlink date:(id)date;
+- (void)_downloadWithPermalink:(id)permalink title:(id)title result:(id)result;
+- (void)addITunesUBookToLibraryWithPermlink:(id)permlink title:(id)title result:(id)result;
 @end
 
 @implementation BLLibrary
@@ -42,30 +42,30 @@
   block[1] = 3221225472;
   block[2] = sub_241D230F8;
   block[3] = &unk_278D16940;
-  block[4] = a1;
+  block[4] = self;
   dispatch_sync(qword_280BC59A8, block);
   v2 = qword_280BC59B0;
 
   return v2;
 }
 
-- (id)_initWithBooksPlist:(id)a3 purchasedPlist:(id)a4 managedPlist:(id)a5 sharedPlist:(id)a6
+- (id)_initWithBooksPlist:(id)plist purchasedPlist:(id)purchasedPlist managedPlist:(id)managedPlist sharedPlist:(id)sharedPlist
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  plistCopy = plist;
+  purchasedPlistCopy = purchasedPlist;
+  managedPlistCopy = managedPlist;
+  sharedPlistCopy = sharedPlist;
   v23.receiver = self;
   v23.super_class = BLLibrary;
   v15 = [(BLLibrary *)&v23 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_purchasedPlist, a4);
-    objc_storeStrong(&v16->_booksPlist, a3);
-    objc_storeStrong(&v16->_managedPlist, a5);
-    objc_storeStrong(&v16->_sharedPlist, a6);
+    objc_storeStrong(&v15->_purchasedPlist, purchasedPlist);
+    objc_storeStrong(&v16->_booksPlist, plist);
+    objc_storeStrong(&v16->_managedPlist, managedPlist);
+    objc_storeStrong(&v16->_sharedPlist, sharedPlist);
     v17 = dispatch_queue_create("com.apple.BookLibrary.BLLibrary", 0);
     dispatchQueue = v16->_dispatchQueue;
     v16->_dispatchQueue = v17;
@@ -73,8 +73,8 @@
     v24 = @"BLLibraryAllowsDownloadsViaBookAssetDaemonForITunesUBooks";
     v25[0] = MEMORY[0x277CBEC28];
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
-    v20 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v20 registerDefaults:v19];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults registerDefaults:v19];
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -92,23 +92,23 @@
   return v7;
 }
 
-- (id)_bookItemsFromPlist:(id)a3
+- (id)_bookItemsFromPlist:(id)plist
 {
-  v4 = a3;
-  v5 = [(BLLibrary *)self sharedPlist];
-  v6 = [BLLibrary _bookItemsFromPlist:v4 sharedPlist:v5];
+  plistCopy = plist;
+  sharedPlist = [(BLLibrary *)self sharedPlist];
+  v6 = [BLLibrary _bookItemsFromPlist:plistCopy sharedPlist:sharedPlist];
 
   return v6;
 }
 
-+ (id)_bookItemsFromPlist:(id)a3 sharedPlist:(id)a4
++ (id)_bookItemsFromPlist:(id)plist sharedPlist:(id)sharedPlist
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] array];
-  v28 = [MEMORY[0x277CCAA00] defaultManager];
-  [v5 contents];
+  plistCopy = plist;
+  sharedPlistCopy = sharedPlist;
+  array = [MEMORY[0x277CBEB18] array];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  [plistCopy contents];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -119,7 +119,7 @@
   if (v27)
   {
     v26 = *v30;
-    v24 = v6;
+    v24 = sharedPlistCopy;
     do
     {
       for (i = 0; i != v27; ++i)
@@ -131,31 +131,31 @@
 
         v10 = *(*(&v29 + 1) + 8 * i);
         v11 = [*(v8 + 1488) folderNameFromPlistEntry:v10];
-        v12 = [v5 directory];
-        v13 = [v12 stringByAppendingPathComponent:v11];
-        v14 = [v28 fileExistsAtPath:v13];
-        if (v6 && (v14 & 1) == 0)
+        directory = [plistCopy directory];
+        v13 = [directory stringByAppendingPathComponent:v11];
+        v14 = [defaultManager fileExistsAtPath:v13];
+        if (sharedPlistCopy && (v14 & 1) == 0)
         {
-          v15 = v7;
-          v16 = v5;
-          v17 = [v6 directory];
-          v18 = [v17 stringByAppendingPathComponent:v11];
+          v15 = array;
+          v16 = plistCopy;
+          directory2 = [sharedPlistCopy directory];
+          v18 = [directory2 stringByAppendingPathComponent:v11];
 
-          if ([v28 fileExistsAtPath:v18])
+          if ([defaultManager fileExistsAtPath:v18])
           {
-            v19 = [v6 directory];
+            directory3 = [sharedPlistCopy directory];
 
-            v12 = v19;
+            directory = directory3;
           }
 
-          v5 = v16;
-          v7 = v15;
+          plistCopy = v16;
+          array = v15;
           v8 = 0x278D16000;
-          v6 = v24;
+          sharedPlistCopy = v24;
         }
 
-        v20 = [[BLBookItem alloc] initWithEntry:v10 basePath:v12];
-        [v7 addObject:v20];
+        v20 = [[BLBookItem alloc] initWithEntry:v10 basePath:directory];
+        [array addObject:v20];
       }
 
       v27 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -166,26 +166,26 @@
 
   v21 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return array;
 }
 
 - (id)allBookItems
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = +[BLLockFile iTunesSyncLockFile];
   if ([v4 tryLock:0])
   {
-    v5 = [(BLLibrary *)self purchasedPlist];
-    v6 = [(BLLibrary *)self _bookItemsFromPlist:v5];
-    [v3 addObjectsFromArray:v6];
+    purchasedPlist = [(BLLibrary *)self purchasedPlist];
+    v6 = [(BLLibrary *)self _bookItemsFromPlist:purchasedPlist];
+    [array addObjectsFromArray:v6];
 
-    v7 = [(BLLibrary *)self booksPlist];
-    v8 = [(BLLibrary *)self _bookItemsFromPlist:v7];
-    [v3 addObjectsFromArray:v8];
+    booksPlist = [(BLLibrary *)self booksPlist];
+    v8 = [(BLLibrary *)self _bookItemsFromPlist:booksPlist];
+    [array addObjectsFromArray:v8];
 
-    v9 = [(BLLibrary *)self managedPlist];
-    v10 = [(BLLibrary *)self _bookItemsFromPlist:v9];
-    [v3 addObjectsFromArray:v10];
+    managedPlist = [(BLLibrary *)self managedPlist];
+    v10 = [(BLLibrary *)self _bookItemsFromPlist:managedPlist];
+    [array addObjectsFromArray:v10];
   }
 
   else
@@ -198,16 +198,16 @@
     }
   }
 
-  return v3;
+  return array;
 }
 
-- (void)addITunesUBookToLibraryWithPermlink:(id)a3 title:(id)a4 result:(id)a5
+- (void)addITunesUBookToLibraryWithPermlink:(id)permlink title:(id)title result:(id)result
 {
   v56[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  permlinkCopy = permlink;
+  titleCopy = title;
+  resultCopy = result;
+  if (permlinkCopy)
   {
     *&v52 = 0;
     *(&v52 + 1) = &v52;
@@ -221,7 +221,7 @@
     v47 = sub_241D23E0C;
     v48 = sub_241D23E1C;
     obj = 0;
-    v11 = [(BLLibrary *)self _bookItemFromPermlink:v8 error:&obj];
+    v11 = [(BLLibrary *)self _bookItemFromPermlink:permlinkCopy error:&obj];
     objc_storeStrong(v56, obj);
     v49 = v11;
     if (!v45[5])
@@ -241,14 +241,14 @@
 LABEL_42:
       if ([(BLLibrary *)self _isMultiUser])
       {
-        v13 = [(BLLibrary *)self sharedPlist];
+        sharedPlist = [(BLLibrary *)self sharedPlist];
         v41[0] = MEMORY[0x277D85DD0];
         v41[1] = 3221225472;
         v41[2] = sub_241D23E24;
         v41[3] = &unk_278D16968;
-        v14 = v8;
+        v14 = permlinkCopy;
         v42 = v14;
-        v15 = [(BLLibrary *)self _list:v13 testBlock:v41];
+        v15 = [(BLLibrary *)self _list:sharedPlist testBlock:v41];
         v16 = v45[5];
         v45[5] = v15;
 
@@ -315,7 +315,7 @@ LABEL_28:
     v39 = &v52;
     v26 = v25;
     v37 = v26;
-    [(BLLibrary *)self _downloadWithPermalink:v8 title:v9 result:v36];
+    [(BLLibrary *)self _downloadWithPermalink:permlinkCopy title:titleCopy result:v36];
     dispatch_semaphore_wait(v26, 0xFFFFFFFFFFFFFFFFLL);
 
 LABEL_30:
@@ -344,9 +344,9 @@ LABEL_30:
       }
     }
 
-    if (v10)
+    if (resultCopy)
     {
-      v10[2](v10, v45[5], *(*(&v52 + 1) + 40));
+      resultCopy[2](resultCopy, v45[5], *(*(&v52 + 1) + 40));
     }
 
     _Block_object_dispose(&v44, 8);
@@ -356,9 +356,9 @@ LABEL_30:
   }
 
   v23 = [MEMORY[0x277CCA9B8] errorWithDomain:@"BLLibraryErrorDomain" code:-1002 userInfo:0];
-  if (v10)
+  if (resultCopy)
   {
-    (v10)[2](v10, 0, v23);
+    (resultCopy)[2](resultCopy, 0, v23);
   }
 
   else
@@ -376,24 +376,24 @@ LABEL_39:
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_lookupBookItemExhaustiveFromPermlink:(id)a3 error:(id *)a4
+- (id)_lookupBookItemExhaustiveFromPermlink:(id)permlink error:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  permlinkCopy = permlink;
+  if (!permlinkCopy)
   {
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:@"BLLibraryErrorDomain" code:-1002 userInfo:0];
       v8 = 0;
-      *a4 = v9 = 0;
+      *error = v9 = 0;
       goto LABEL_17;
     }
 
     goto LABEL_15;
   }
 
-  v7 = [(BLLibrary *)self _bookItemFromPermlink:v6 error:a4];
+  v7 = [(BLLibrary *)self _bookItemFromPermlink:permlinkCopy error:error];
   if (v7)
   {
     v8 = v7;
@@ -409,14 +409,14 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v10 = [(BLLibrary *)self sharedPlist];
+  sharedPlist = [(BLLibrary *)self sharedPlist];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = sub_241D24160;
   v19[3] = &unk_278D16968;
-  v11 = v6;
+  v11 = permlinkCopy;
   v20 = v11;
-  v8 = [(BLLibrary *)self _list:v10 testBlock:v19];
+  v8 = [(BLLibrary *)self _list:sharedPlist testBlock:v19];
 
   if (v8)
   {
@@ -440,10 +440,10 @@ LABEL_15:
         _os_log_impl(&dword_241D1F000, v14, OS_LOG_TYPE_ERROR, "Error adding shared entry to local plist.  %@", buf, 0xCu);
       }
 
-      if (a4)
+      if (error)
       {
         v15 = v9;
-        *a4 = v9;
+        *error = v9;
       }
     }
   }
@@ -459,20 +459,20 @@ LABEL_17:
   return v8;
 }
 
-- (BOOL)_addBookItemToEduContainer:(id)a3 error:(id *)a4
+- (BOOL)_addBookItemToEduContainer:(id)container error:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  containerCopy = container;
   v6 = +[BLEduCloudContainer sharedEduCloudContainer];
   v7 = v6;
-  if (!v5 || ![v6 isSignedIn])
+  if (!containerCopy || ![v6 isSignedIn])
   {
     v9 = 0;
     goto LABEL_9;
   }
 
   v15 = 0;
-  v8 = [v7 addBookItem:v5 error:&v15];
+  v8 = [v7 addBookItem:containerCopy error:&v15];
   v9 = v15;
   if (v8)
   {
@@ -489,11 +489,11 @@ LABEL_9:
     _os_log_impl(&dword_241D1F000, v10, OS_LOG_TYPE_ERROR, "Failed to add to the cloud. Error:  %@", buf, 0xCu);
   }
 
-  if (a4)
+  if (error)
   {
     v11 = v9;
     v12 = 0;
-    *a4 = v9;
+    *error = v9;
   }
 
   else
@@ -507,9 +507,9 @@ LABEL_10:
   return v12;
 }
 
-- (BOOL)removeBookFromLibraryWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)removeBookFromLibraryWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -526,18 +526,18 @@ LABEL_10:
   v12[2] = sub_241D24470;
   v12[3] = &unk_278D169B8;
   v12[4] = self;
-  v8 = v6;
+  v8 = identifierCopy;
   v13 = v8;
   v14 = &v23;
   v15 = &v17;
-  v16 = a4;
-  [v7 lockWithBlock:v12 error:a4];
-  if (a4)
+  errorCopy = error;
+  [v7 lockWithBlock:v12 error:error];
+  if (error)
   {
     v9 = v18[5];
     if (v9)
     {
-      *a4 = v9;
+      *error = v9;
     }
   }
 
@@ -549,9 +549,9 @@ LABEL_10:
   return v10;
 }
 
-- (BOOL)_removeBookFromLibraryWithPath:(id)a3 error:(id *)a4
+- (BOOL)_removeBookFromLibraryWithPath:(id)path error:(id *)error
 {
-  v6 = a3;
+  pathCopy = path;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -568,18 +568,18 @@ LABEL_10:
   v12[2] = sub_241D2492C;
   v12[3] = &unk_278D169B8;
   v12[4] = self;
-  v8 = v6;
+  v8 = pathCopy;
   v13 = v8;
   v14 = &v23;
   v15 = &v17;
-  v16 = a4;
-  [v7 lockWithBlock:v12 error:a4];
-  if (a4)
+  errorCopy = error;
+  [v7 lockWithBlock:v12 error:error];
+  if (error)
   {
     v9 = v18[5];
     if (v9)
     {
-      *a4 = v9;
+      *error = v9;
     }
   }
 
@@ -591,10 +591,10 @@ LABEL_10:
   return v10;
 }
 
-- (id)bookIdentifierFromURL:(id)a3 error:(id *)a4
+- (id)bookIdentifierFromURL:(id)l error:(id *)error
 {
-  v5 = [a3 path];
-  v6 = [BLLibraryUtility identifierFromBookPath:v5 error:a4];
+  path = [l path];
+  v6 = [BLLibraryUtility identifierFromBookPath:path error:error];
 
   return v6;
 }
@@ -602,12 +602,12 @@ LABEL_10:
 - (id)_allPlists
 {
   v16[3] = *MEMORY[0x277D85DE8];
-  v3 = [(BLLibrary *)self booksPlist];
-  v4 = v3;
+  booksPlist = [(BLLibrary *)self booksPlist];
+  v4 = booksPlist;
   v5 = MEMORY[0x277CBEBF8];
-  if (v3)
+  if (booksPlist)
   {
-    v6 = v3;
+    v6 = booksPlist;
   }
 
   else
@@ -615,11 +615,11 @@ LABEL_10:
     v6 = MEMORY[0x277CBEBF8];
   }
 
-  v7 = [(BLLibrary *)self purchasedPlist];
-  v8 = v7;
-  if (v7)
+  purchasedPlist = [(BLLibrary *)self purchasedPlist];
+  v8 = purchasedPlist;
+  if (purchasedPlist)
   {
-    v9 = v7;
+    v9 = purchasedPlist;
   }
 
   else
@@ -628,11 +628,11 @@ LABEL_10:
   }
 
   v16[1] = v9;
-  v10 = [(BLLibrary *)self managedPlist];
-  v11 = v10;
-  if (v10)
+  managedPlist = [(BLLibrary *)self managedPlist];
+  v11 = managedPlist;
+  if (managedPlist)
   {
-    v12 = v10;
+    v12 = managedPlist;
   }
 
   else
@@ -648,11 +648,11 @@ LABEL_10:
   return v13;
 }
 
-- (id)_list:(id)a3 testBlock:(id)a4
+- (id)_list:(id)_list testBlock:(id)block
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  [(BLLibrary *)self _bookItemsFromPlist:a3];
+  blockCopy = block;
+  [(BLLibrary *)self _bookItemsFromPlist:_list];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -671,7 +671,7 @@ LABEL_10:
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        if (v6[2](v6, v11))
+        if (blockCopy[2](blockCopy, v11))
         {
           v8 = v11;
           goto LABEL_11;
@@ -695,20 +695,20 @@ LABEL_11:
   return v8;
 }
 
-- (id)_findBookItemWithTestBlock:(id)a3 foundWhere:(int64_t *)a4
+- (id)_findBookItemWithTestBlock:(id)block foundWhere:(int64_t *)where
 {
-  v6 = a3;
-  v7 = [(BLLibrary *)self _allPlists];
-  if (a4)
+  blockCopy = block;
+  _allPlists = [(BLLibrary *)self _allPlists];
+  if (where)
   {
-    *a4 = 3;
+    *where = 3;
   }
 
   v8 = 0;
   while (1)
   {
-    v9 = [v7 objectAtIndexedSubscript:v8];
-    v10 = [(BLLibrary *)self _list:v9 testBlock:v6];
+    v9 = [_allPlists objectAtIndexedSubscript:v8];
+    v10 = [(BLLibrary *)self _list:v9 testBlock:blockCopy];
 
     if (v10)
     {
@@ -721,9 +721,9 @@ LABEL_11:
     }
   }
 
-  if (a4)
+  if (where)
   {
-    *a4 = v8;
+    *where = v8;
   }
 
 LABEL_9:
@@ -731,58 +731,58 @@ LABEL_9:
   return v10;
 }
 
-- (id)_bookItemFromStoreID:(id)a3 permlink:(id)a4 error:(id *)a5
+- (id)_bookItemFromStoreID:(id)d permlink:(id)permlink error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  permlinkCopy = permlink;
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = sub_241D25100;
   v18 = &unk_278D169E0;
-  v10 = v8;
+  v10 = dCopy;
   v19 = v10;
-  v11 = v9;
+  v11 = permlinkCopy;
   v20 = v11;
   v12 = [(BLLibrary *)self _findBookItemWithTestBlock:&v15 foundWhere:0];
   v13 = v12;
-  if (a5 && !v12)
+  if (error && !v12)
   {
-    *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:4 userInfo:{0, v15, v16, v17, v18, v19}];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:4 userInfo:{0, v15, v16, v17, v18, v19}];
   }
 
   return v13;
 }
 
-- (id)_bookItemFromPermlink:(id)a3 error:(id *)a4
+- (id)_bookItemFromPermlink:(id)permlink error:(id *)error
 {
-  v6 = a3;
+  permlinkCopy = permlink;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_241D25270;
   v11[3] = &unk_278D16968;
-  v7 = v6;
+  v7 = permlinkCopy;
   v12 = v7;
   v8 = [(BLLibrary *)self _findBookItemWithTestBlock:v11 foundWhere:0];
   v9 = v8;
-  if (a4 && !v8)
+  if (error && !v8)
   {
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:4 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:4 userInfo:0];
   }
 
   return v9;
 }
 
-- (BOOL)_isShareableBook:(id)a3
+- (BOOL)_isShareableBook:(id)book
 {
-  v3 = a3;
-  v4 = [IMLibraryPlist storeIdFromPlistEntry:v3];
-  v5 = [IMLibraryPlist isSampleFromPlistEntry:v3];
-  v6 = [v5 BOOLValue];
+  bookCopy = book;
+  v4 = [IMLibraryPlist storeIdFromPlistEntry:bookCopy];
+  v5 = [IMLibraryPlist isSampleFromPlistEntry:bookCopy];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [IMLibraryPlist isSupplementalContentFromPlistEntry:v3];
-  v8 = [IMLibraryPlist isPDFFromPlistEntry:v3];
+  v7 = [IMLibraryPlist isSupplementalContentFromPlistEntry:bookCopy];
+  v8 = [IMLibraryPlist isPDFFromPlistEntry:bookCopy];
   v9 = 0;
-  if ((v6 & 1) == 0 && (!v7 || !v8))
+  if ((bOOLValue & 1) == 0 && (!v7 || !v8))
   {
     if ([v4 length])
     {
@@ -791,7 +791,7 @@ LABEL_9:
 
     else
     {
-      v10 = [IMLibraryPlist permlinkFromPlistEntry:v3];
+      v10 = [IMLibraryPlist permlinkFromPlistEntry:bookCopy];
       v9 = v10 != 0;
     }
   }
@@ -799,30 +799,30 @@ LABEL_9:
   return v9;
 }
 
-- (id)_perUserBookURLForBookURL:(id)a3
+- (id)_perUserBookURLForBookURL:(id)l
 {
   v59 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 path];
-  v6 = [v5 stringByStandardizingPath];
+  lCopy = l;
+  path = [lCopy path];
+  stringByStandardizingPath = [path stringByStandardizingPath];
 
-  v7 = [(BLLibrary *)self sharedPlist];
-  v8 = [v7 path];
-  v9 = [v8 stringByDeletingLastPathComponent];
-  v10 = [v9 stringByStandardizingPath];
+  sharedPlist = [(BLLibrary *)self sharedPlist];
+  path2 = [sharedPlist path];
+  stringByDeletingLastPathComponent = [path2 stringByDeletingLastPathComponent];
+  stringByStandardizingPath2 = [stringByDeletingLastPathComponent stringByStandardizingPath];
 
-  v11 = [v6 stringByDeletingLastPathComponent];
-  LODWORD(v8) = [v11 isEqualToString:v10];
+  stringByDeletingLastPathComponent2 = [stringByStandardizingPath stringByDeletingLastPathComponent];
+  LODWORD(path2) = [stringByDeletingLastPathComponent2 isEqualToString:stringByStandardizingPath2];
 
-  if (!v8)
+  if (!path2)
   {
     goto LABEL_30;
   }
 
-  v12 = [v6 lastPathComponent];
-  v13 = [(BLLibrary *)self sharedPlist];
-  v14 = [v13 contents];
-  v15 = [IMLibraryPlist booksArrayFromPlistEntry:v14];
+  lastPathComponent = [stringByStandardizingPath lastPathComponent];
+  sharedPlist2 = [(BLLibrary *)self sharedPlist];
+  contents = [sharedPlist2 contents];
+  v15 = [IMLibraryPlist booksArrayFromPlistEntry:contents];
 
   v55 = 0u;
   v56 = 0u;
@@ -830,7 +830,7 @@ LABEL_9:
   v54 = 0u;
   obj = v15;
   v16 = [obj countByEnumeratingWithState:&v53 objects:v58 count:16];
-  v45 = self;
+  selfCopy = self;
   if (v16)
   {
     v17 = v16;
@@ -846,7 +846,7 @@ LABEL_9:
 
         v20 = *(*(&v53 + 1) + 8 * i);
         v21 = [IMLibraryPlist folderNameFromPlistEntry:v20];
-        if ([v21 isEqualToString:v12])
+        if ([v21 isEqualToString:lastPathComponent])
         {
           v22 = [IMLibraryPlist assetIDFromPlistEntry:v20];
           v47 = [IMLibraryPlist temporaryItemIdentifierFromPlistEntry:v20];
@@ -867,7 +867,7 @@ LABEL_9:
     v47 = 0;
     v22 = 0;
 LABEL_12:
-    self = v45;
+    self = selfCopy;
   }
 
   else
@@ -878,10 +878,10 @@ LABEL_12:
 
   if ([v22 length] || objc_msgSend(v47, "length"))
   {
-    v44 = v10;
-    v23 = [(BLLibrary *)self purchasedPlist];
-    v24 = [v23 contents];
-    v25 = [IMLibraryPlist booksArrayFromPlistEntry:v24];
+    v44 = stringByStandardizingPath2;
+    purchasedPlist = [(BLLibrary *)self purchasedPlist];
+    contents2 = [purchasedPlist contents];
+    v25 = [IMLibraryPlist booksArrayFromPlistEntry:contents2];
 
     v51 = 0u;
     v52 = 0u;
@@ -893,8 +893,8 @@ LABEL_12:
     {
       v28 = v27;
       v29 = *v50;
-      v42 = v6;
-      v43 = v4;
+      v42 = stringByStandardizingPath;
+      v43 = lCopy;
       while (2)
       {
         for (j = 0; j != v28; ++j)
@@ -910,23 +910,23 @@ LABEL_12:
           if (([v22 isEqualToString:v32] & 1) != 0 || objc_msgSend(v47, "isEqualToString:", v33))
           {
             v41 = MEMORY[0x277CBEBC0];
-            v46 = [(BLLibrary *)v45 purchasedPlist];
-            v35 = [v46 path];
-            v36 = [v35 stringByDeletingLastPathComponent];
+            purchasedPlist2 = [(BLLibrary *)selfCopy purchasedPlist];
+            path3 = [purchasedPlist2 path];
+            stringByDeletingLastPathComponent3 = [path3 stringByDeletingLastPathComponent];
             v37 = [IMLibraryPlist folderNameFromPlistEntry:v31];
-            v38 = [v36 stringByAppendingPathComponent:v37];
+            v38 = [stringByDeletingLastPathComponent3 stringByAppendingPathComponent:v37];
             v34 = [v41 fileURLWithPath:v38];
 
-            v6 = v42;
-            v4 = v43;
+            stringByStandardizingPath = v42;
+            lCopy = v43;
             goto LABEL_28;
           }
         }
 
         v28 = [v26 countByEnumeratingWithState:&v49 objects:v57 count:16];
         v34 = 0;
-        v6 = v42;
-        v4 = v43;
+        stringByStandardizingPath = v42;
+        lCopy = v43;
         if (v28)
         {
           continue;
@@ -943,7 +943,7 @@ LABEL_12:
 
 LABEL_28:
 
-    v10 = v44;
+    stringByStandardizingPath2 = v44;
   }
 
   else
@@ -954,7 +954,7 @@ LABEL_28:
   if (!v34)
   {
 LABEL_30:
-    v34 = v4;
+    v34 = lCopy;
   }
 
   v39 = *MEMORY[0x277D85DE8];
@@ -962,28 +962,28 @@ LABEL_30:
   return v34;
 }
 
-- (void)_downloadWithPermalink:(id)a3 title:(id)a4 result:(id)a5
+- (void)_downloadWithPermalink:(id)permalink title:(id)title result:(id)result
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  permalinkCopy = permalink;
+  titleCopy = title;
+  resultCopy = result;
   v10 = +[BLDownloadQueueNonUI sharedInstance];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = sub_241D25904;
   v14[3] = &unk_278D16A08;
-  v15 = v7;
-  v16 = v8;
-  v17 = v9;
-  v11 = v9;
-  v12 = v8;
-  v13 = v7;
+  v15 = permalinkCopy;
+  v16 = titleCopy;
+  v17 = resultCopy;
+  v11 = resultCopy;
+  v12 = titleCopy;
+  v13 = permalinkCopy;
   [v10 addDownloadWithPermlink:v13 title:v12 completion:v14];
 }
 
-- (BOOL)_addSharedBookToPurchasesPlistWithPermlink:(id)a3 error:(id *)a4
+- (BOOL)_addSharedBookToPurchasesPlistWithPermlink:(id)permlink error:(id *)error
 {
-  v6 = a3;
+  permlinkCopy = permlink;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -1000,18 +1000,18 @@ LABEL_30:
   v12[2] = sub_241D25BB4;
   v12[3] = &unk_278D169B8;
   v12[4] = self;
-  v8 = v6;
+  v8 = permlinkCopy;
   v13 = v8;
   v14 = &v23;
   v15 = &v17;
-  v16 = a4;
-  [v7 lockWithBlock:v12 error:a4];
-  if (a4)
+  errorCopy = error;
+  [v7 lockWithBlock:v12 error:error];
+  if (error)
   {
     v9 = v18[5];
     if (v9)
     {
-      *a4 = v9;
+      *error = v9;
     }
   }
 
@@ -1023,16 +1023,16 @@ LABEL_30:
   return v10;
 }
 
-- (BOOL)_bookItemIsShared:(id)a3
+- (BOOL)_bookItemIsShared:(id)shared
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sharedCopy = shared;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = [(BLLibrary *)self sharedPlist];
-  v6 = [(BLLibrary *)self _bookItemsFromPlist:v5];
+  sharedPlist = [(BLLibrary *)self sharedPlist];
+  v6 = [(BLLibrary *)self _bookItemsFromPlist:sharedPlist];
 
   v7 = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v7)
@@ -1048,28 +1048,28 @@ LABEL_30:
         }
 
         v10 = *(*(&v25 + 1) + 8 * i);
-        v11 = v4;
+        v11 = sharedCopy;
         v12 = v10;
-        v13 = [v11 permlink];
-        if (v13 && (v14 = v13, [v12 permlink], v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v15))
+        permlink = [v11 permlink];
+        if (permlink && (v14 = permlink, [v12 permlink], v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v15))
         {
-          v16 = [v11 permlink];
-          v17 = [v12 permlink];
-          v18 = [v16 isEqual:v17];
+          permlink2 = [v11 permlink];
+          permlink3 = [v12 permlink];
+          v18 = [permlink2 isEqual:permlink3];
         }
 
         else
         {
-          v19 = [v11 storeIdentifier];
-          if (!v19 || (v20 = v19, [v12 storeIdentifier], v21 = objc_claimAutoreleasedReturnValue(), v21, v20, !v21))
+          storeIdentifier = [v11 storeIdentifier];
+          if (!storeIdentifier || (v20 = storeIdentifier, [v12 storeIdentifier], v21 = objc_claimAutoreleasedReturnValue(), v21, v20, !v21))
           {
 
             continue;
           }
 
-          v16 = [v11 storeIdentifier];
-          v17 = [v12 storeIdentifier];
-          v18 = [v16 isEqualToString:v17];
+          permlink2 = [v11 storeIdentifier];
+          permlink3 = [v12 storeIdentifier];
+          v18 = [permlink2 isEqualToString:permlink3];
         }
 
         v22 = v18;
@@ -1093,31 +1093,31 @@ LABEL_17:
   return v7;
 }
 
-- (void)_bookWasOpenedWithStoreID:(id)a3 permlink:(id)a4 date:(id)a5
+- (void)_bookWasOpenedWithStoreID:(id)d permlink:(id)permlink date:(id)date
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(BLLibrary *)self dispatchQueue];
+  dCopy = d;
+  permlinkCopy = permlink;
+  dateCopy = date;
+  dispatchQueue = [(BLLibrary *)self dispatchQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_241D262D8;
   v15[3] = &unk_278D16A30;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = dCopy;
+  v17 = permlinkCopy;
+  selfCopy = self;
+  v19 = dateCopy;
+  v12 = dateCopy;
+  v13 = permlinkCopy;
+  v14 = dCopy;
+  dispatch_async(dispatchQueue, v15);
 }
 
-+ (BOOL)_addDate:(id)a3 toPlist:(id)a4 bookItem:(id)a5 error:(id *)a6
++ (BOOL)_addDate:(id)date toPlist:(id)plist bookItem:(id)item error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dateCopy = date;
+  plistCopy = plist;
+  itemCopy = item;
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
@@ -1133,22 +1133,22 @@ LABEL_17:
   v19[1] = 3221225472;
   v19[2] = sub_241D265C8;
   v19[3] = &unk_278D16A58;
-  v13 = v10;
+  v13 = plistCopy;
   v20 = v13;
-  v14 = v11;
+  v14 = itemCopy;
   v21 = v14;
-  v15 = v9;
+  v15 = dateCopy;
   v22 = v15;
   v23 = &v32;
   v24 = &v26;
-  v25 = a6;
-  [v12 lockWithBlock:v19 error:a6];
-  if (a6)
+  errorCopy = error;
+  [v12 lockWithBlock:v19 error:error];
+  if (error)
   {
     v16 = v27[5];
     if (v16)
     {
-      *a6 = v16;
+      *error = v16;
     }
   }
 

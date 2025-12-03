@@ -1,21 +1,21 @@
 @interface MapsRouteCreationContainee
 - (BOOL)_isValidRoute;
-- (MapsRouteCreationContainee)initWithContext:(id)a3;
+- (MapsRouteCreationContainee)initWithContext:(id)context;
 - (double)headerHeight;
-- (double)heightForLayout:(unint64_t)a3;
-- (void)_insertAppropriateCardStateForRoute:(id)a3;
+- (double)heightForLayout:(unint64_t)layout;
+- (void)_insertAppropriateCardStateForRoute:(id)route;
 - (void)_insertEmptyStateIfNeeded;
 - (void)_insertRouteCardIfNeeded;
 - (void)_showExitConfirmationAlert;
 - (void)_updateDoneButton;
 - (void)_updateEmptyStateContent;
-- (void)_updateRouteCardWithRoute:(id)a3;
-- (void)headerViewTappedWithHeaderView:(id)a3;
-- (void)setRoute:(id)a3;
-- (void)trailingButtonTappedWithHeaderView:(id)a3 buttonType:(int64_t)a4;
+- (void)_updateRouteCardWithRoute:(id)route;
+- (void)headerViewTappedWithHeaderView:(id)view;
+- (void)setRoute:(id)route;
+- (void)trailingButtonTappedWithHeaderView:(id)view buttonType:(int64_t)type;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)willChangeLayout:(unint64_t)a3;
+- (void)willChangeLayout:(unint64_t)layout;
 @end
 
 @implementation MapsRouteCreationContainee
@@ -23,54 +23,54 @@
 - (void)_updateEmptyStateContent
 {
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  v4 = [WeakRetained emptyStateVideoName];
+  emptyStateVideoName = [WeakRetained emptyStateVideoName];
 
   v5 = sub_1007989A4();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134349314;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
-    v16 = v4;
+    v16 = emptyStateVideoName;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Updating video: %@", buf, 0x16u);
   }
 
-  if (v4 && ![(NSString *)self->_currentVideoName isEqualToString:v4])
+  if (emptyStateVideoName && ![(NSString *)self->_currentVideoName isEqualToString:emptyStateVideoName])
   {
-    v6 = [[NSDataAsset alloc] initWithName:v4];
-    v7 = [v6 data];
+    v6 = [[NSDataAsset alloc] initWithName:emptyStateVideoName];
+    data = [v6 data];
     v11[0] = AVAssetPreferPreciseDurationAndTimingKey;
     v11[1] = AVAssetReferenceRestrictionsKey;
     v12[0] = &__kCFBooleanFalse;
     v12[1] = &off_1016E6D40;
     v8 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:2];
-    v9 = [AVAsset assetWithData:v7 contentType:AVFileTypeAppleM4V options:v8];
+    v9 = [AVAsset assetWithData:data contentType:AVFileTypeAppleM4V options:v8];
 
     v10 = [AVPlayerItem playerItemWithAsset:v9];
     [(MapsLoopingVideoPlayerView *)self->_playerView replaceCurrentItemWithPlayerItem:v10 preserveCurrentTimestamp:0];
-    objc_storeStrong(&self->_currentVideoName, v4);
+    objc_storeStrong(&self->_currentVideoName, emptyStateVideoName);
   }
 }
 
 - (void)_updateDoneButton
 {
-  v3 = [(MapsRouteCreationContainee *)self _isValidRoute];
-  v4 = [(RouteCreationCardView *)self->_cardView saveButton];
-  [v4 setEnabled:v3];
+  _isValidRoute = [(MapsRouteCreationContainee *)self _isValidRoute];
+  saveButton = [(RouteCreationCardView *)self->_cardView saveButton];
+  [saveButton setEnabled:_isValidRoute];
 }
 
 - (BOOL)_isValidRoute
 {
-  v2 = [(RouteCreationCardView *)self->_cardView route];
-  v3 = [v2 legs];
-  v4 = [v3 count] != 0;
+  route = [(RouteCreationCardView *)self->_cardView route];
+  legs = [route legs];
+  v4 = [legs count] != 0;
 
   return v4;
 }
 
-- (void)_updateRouteCardWithRoute:(id)a3
+- (void)_updateRouteCardWithRoute:(id)route
 {
-  [(RouteCreationCardView *)self->_cardView setRoute:a3];
+  [(RouteCreationCardView *)self->_cardView setRoute:route];
 
   [(MapsRouteCreationContainee *)self _updateDoneButton];
 }
@@ -83,34 +83,34 @@
 
   v4 = self->_cardView;
   [(RouteCreationCardView *)v4 setAlpha:1.0];
-  v5 = [(RouteCreationCardView *)v4 superview];
+  superview = [(RouteCreationCardView *)v4 superview];
 
-  if (!v5)
+  if (!superview)
   {
-    v6 = [(ContaineeViewController *)self contentView];
-    [v6 addSubview:v4];
+    contentView = [(ContaineeViewController *)self contentView];
+    [contentView addSubview:v4];
 
-    v7 = [(RouteCreationCardView *)v4 bottomAnchor];
-    v8 = [(ContaineeViewController *)self contentView];
-    v9 = [v8 bottomAnchor];
-    v10 = [v7 constraintEqualToAnchor:v9 constant:-16.0];
+    bottomAnchor = [(RouteCreationCardView *)v4 bottomAnchor];
+    contentView2 = [(ContaineeViewController *)self contentView];
+    bottomAnchor2 = [contentView2 bottomAnchor];
+    v10 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-16.0];
     bottomConstraint = self->_bottomConstraint;
     self->_bottomConstraint = v10;
 
-    v24 = [(RouteCreationCardView *)v4 leadingAnchor];
-    v25 = [(ContaineeViewController *)self contentView];
-    v23 = [v25 leadingAnchor];
-    v22 = [v24 constraintEqualToAnchor:v23];
+    leadingAnchor = [(RouteCreationCardView *)v4 leadingAnchor];
+    contentView3 = [(ContaineeViewController *)self contentView];
+    leadingAnchor2 = [contentView3 leadingAnchor];
+    v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v26[0] = v22;
-    v21 = [(RouteCreationCardView *)v4 trailingAnchor];
-    v12 = [(ContaineeViewController *)self contentView];
-    v13 = [v12 trailingAnchor];
-    v14 = [v21 constraintEqualToAnchor:v13];
+    trailingAnchor = [(RouteCreationCardView *)v4 trailingAnchor];
+    contentView4 = [(ContaineeViewController *)self contentView];
+    trailingAnchor2 = [contentView4 trailingAnchor];
+    v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v26[1] = v14;
-    v15 = [(RouteCreationCardView *)v4 topAnchor];
-    v16 = [(ContaineeViewController *)self headerView];
-    v17 = [v16 bottomAnchor];
-    v18 = [v15 constraintEqualToAnchor:v17];
+    topAnchor = [(RouteCreationCardView *)v4 topAnchor];
+    headerView = [(ContaineeViewController *)self headerView];
+    bottomAnchor3 = [headerView bottomAnchor];
+    v18 = [topAnchor constraintEqualToAnchor:bottomAnchor3];
     v19 = self->_bottomConstraint;
     v26[2] = v18;
     v26[3] = v19;
@@ -126,32 +126,32 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [(MapsLoopingVideoPlayerView *)v3 superview];
+    superview = [(MapsLoopingVideoPlayerView *)v3 superview];
 
-    if (!v5)
+    if (!superview)
     {
-      v6 = [(ContaineeViewController *)self contentView];
-      [v6 addSubview:v4];
+      contentView = [(ContaineeViewController *)self contentView];
+      [contentView addSubview:v4];
 
-      v22 = [(MapsLoopingVideoPlayerView *)v4 leadingAnchor];
-      v23 = [(ContaineeViewController *)self contentView];
-      v21 = [v23 leadingAnchor];
-      v20 = [v22 constraintEqualToAnchor:v21];
+      leadingAnchor = [(MapsLoopingVideoPlayerView *)v4 leadingAnchor];
+      contentView2 = [(ContaineeViewController *)self contentView];
+      leadingAnchor2 = [contentView2 leadingAnchor];
+      v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v24[0] = v20;
-      v18 = [(MapsLoopingVideoPlayerView *)v4 trailingAnchor];
-      v19 = [(ContaineeViewController *)self contentView];
-      v17 = [v19 trailingAnchor];
-      v16 = [v18 constraintEqualToAnchor:v17];
+      trailingAnchor = [(MapsLoopingVideoPlayerView *)v4 trailingAnchor];
+      contentView3 = [(ContaineeViewController *)self contentView];
+      trailingAnchor2 = [contentView3 trailingAnchor];
+      v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v24[1] = v16;
-      v7 = [(MapsLoopingVideoPlayerView *)v4 topAnchor];
-      v8 = [(ContaineeViewController *)self headerView];
-      v9 = [v8 bottomAnchor];
-      v10 = [v7 constraintEqualToAnchor:v9];
+      topAnchor = [(MapsLoopingVideoPlayerView *)v4 topAnchor];
+      headerView = [(ContaineeViewController *)self headerView];
+      bottomAnchor = [headerView bottomAnchor];
+      v10 = [topAnchor constraintEqualToAnchor:bottomAnchor];
       v24[2] = v10;
-      v11 = [(MapsLoopingVideoPlayerView *)v4 heightAnchor];
-      v12 = [(ContaineeViewController *)self contentView];
-      v13 = [v12 widthAnchor];
-      v14 = [v11 constraintEqualToAnchor:v13 multiplier:0.580817044 constant:0.0];
+      heightAnchor = [(MapsLoopingVideoPlayerView *)v4 heightAnchor];
+      contentView4 = [(ContaineeViewController *)self contentView];
+      widthAnchor = [contentView4 widthAnchor];
+      v14 = [heightAnchor constraintEqualToAnchor:widthAnchor multiplier:0.580817044 constant:0.0];
       v24[3] = v14;
       v15 = [NSArray arrayWithObjects:v24 count:4];
       [NSLayoutConstraint activateConstraints:v15];
@@ -159,21 +159,21 @@
   }
 }
 
-- (void)_insertAppropriateCardStateForRoute:(id)a3
+- (void)_insertAppropriateCardStateForRoute:(id)route
 {
-  v9 = a3;
-  v4 = [(MapsLoopingVideoPlayerView *)self->_playerView superview];
+  routeCopy = route;
+  superview = [(MapsLoopingVideoPlayerView *)self->_playerView superview];
 
   [(MapsRouteCreationContainee *)self loadViewIfNeeded];
-  v5 = [v9 legs];
-  if (![v5 count])
+  legs = [routeCopy legs];
+  if (![legs count])
   {
 
     goto LABEL_6;
   }
 
-  v6 = [v9 waypoints];
-  v7 = [v6 count];
+  waypoints = [routeCopy waypoints];
+  v7 = [waypoints count];
 
   if (v7 < 2)
   {
@@ -184,20 +184,20 @@ LABEL_6:
   }
 
   [(MapsRouteCreationContainee *)self _insertRouteCardIfNeeded];
-  [(MapsRouteCreationContainee *)self _updateRouteCardWithRoute:v9];
-  if (v4)
+  [(MapsRouteCreationContainee *)self _updateRouteCardWithRoute:routeCopy];
+  if (superview)
   {
 LABEL_7:
-    v8 = [(ContaineeViewController *)self cardPresentationController];
-    [v8 updateHeightForCurrentLayout];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController updateHeightForCurrentLayout];
   }
 }
 
-- (void)setRoute:(id)a3
+- (void)setRoute:(id)route
 {
-  objc_storeStrong(&self->_route, a3);
-  v5 = a3;
-  [(MapsRouteCreationContainee *)self _insertAppropriateCardStateForRoute:v5];
+  objc_storeStrong(&self->_route, route);
+  routeCopy = route;
+  [(MapsRouteCreationContainee *)self _insertAppropriateCardStateForRoute:routeCopy];
 }
 
 - (void)_showExitConfirmationAlert
@@ -209,8 +209,8 @@ LABEL_7:
   v7 = [UIAlertController alertControllerWithTitle:v4 message:v6 preferredStyle:1];
 
   objc_initWeak(&location, self);
-  v8 = [v7 view];
-  [v8 setAccessibilityIdentifier:@"ExitAlert"];
+  view = [v7 view];
+  [view setAccessibilityIdentifier:@"ExitAlert"];
 
   v9 = +[NSBundle mainBundle];
   v10 = [v9 localizedStringForKey:@"[Route Creation] Exit Delete Option" value:@"localized string not found" table:0];
@@ -235,10 +235,10 @@ LABEL_7:
   objc_destroyWeak(&location);
 }
 
-- (void)trailingButtonTappedWithHeaderView:(id)a3 buttonType:(int64_t)a4
+- (void)trailingButtonTappedWithHeaderView:(id)view buttonType:(int64_t)type
 {
-  v6 = a3;
-  if (a4 == 9)
+  viewCopy = view;
+  if (type == 9)
   {
     v8 = sub_1007989A4();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -252,7 +252,7 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
     v7 = sub_1007989A4();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -303,10 +303,10 @@ LABEL_10:
 LABEL_17:
 }
 
-- (void)headerViewTappedWithHeaderView:(id)a3
+- (void)headerViewTappedWithHeaderView:(id)view
 {
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  if ([v4 containeeLayout] == 2)
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  if ([cardPresentationController containeeLayout] == 2)
   {
 
     v5 = 1;
@@ -314,10 +314,10 @@ LABEL_17:
 
   else
   {
-    v6 = [(ContaineeViewController *)self cardPresentationController];
-    v7 = [v6 containeeLayout];
+    cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+    containeeLayout = [cardPresentationController2 containeeLayout];
 
-    if (v7 == 3)
+    if (containeeLayout == 3)
     {
       v5 = 1;
     }
@@ -328,36 +328,36 @@ LABEL_17:
     }
   }
 
-  v8 = [(ContaineeViewController *)self cardPresentationController];
-  [v8 wantsLayout:v5];
+  cardPresentationController3 = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController3 wantsLayout:v5];
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
-  if (a3 - 2 >= 2)
+  if (layout - 2 >= 2)
   {
     v9 = -1.0;
-    if (a3 == 1)
+    if (layout == 1)
     {
       [(MapsRouteCreationContainee *)self headerHeight];
       v11 = v10;
-      v12 = [(ContaineeViewController *)self cardPresentationController];
-      [v12 bottomSafeOffset];
+      cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+      [cardPresentationController bottomSafeOffset];
       v9 = v13 + v11;
     }
   }
 
   else
   {
-    v4 = [(MapsLoopingVideoPlayerView *)self->_playerView superview];
+    superview = [(MapsLoopingVideoPlayerView *)self->_playerView superview];
 
-    if (v4)
+    if (superview)
     {
-      v5 = [(ContaineeViewController *)self contentView];
-      [v5 layoutIfNeeded];
+      contentView = [(ContaineeViewController *)self contentView];
+      [contentView layoutIfNeeded];
 
-      v6 = [(ContaineeViewController *)self contentView];
-      [v6 frame];
+      contentView2 = [(ContaineeViewController *)self contentView];
+      [contentView2 frame];
       v8 = v7 * 0.580817044;
     }
 
@@ -373,8 +373,8 @@ LABEL_17:
       v8 = v18;
     }
 
-    v19 = [(ContaineeViewController *)self cardPresentationController];
-    [v19 bottomSafeOffset];
+    cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController2 bottomSafeOffset];
     v21 = v20;
 
     if (fabs(v21) <= 2.22044605e-16)
@@ -389,12 +389,12 @@ LABEL_17:
   return v9;
 }
 
-- (void)willChangeLayout:(unint64_t)a3
+- (void)willChangeLayout:(unint64_t)layout
 {
   v5.receiver = self;
   v5.super_class = MapsRouteCreationContainee;
   [(ContaineeViewController *)&v5 willChangeLayout:?];
-  [(NSLayoutConstraint *)self->_bottomConstraint setActive:a3 != 1];
+  [(NSLayoutConstraint *)self->_bottomConstraint setActive:layout != 1];
 }
 
 - (double)headerHeight
@@ -414,8 +414,8 @@ LABEL_17:
   v11.receiver = self;
   v11.super_class = MapsRouteCreationContainee;
   [(ContaineeViewController *)&v11 viewDidLayoutSubviews];
-  v3 = [(ContaineeViewController *)self contentView];
-  [v3 frame];
+  contentView = [(ContaineeViewController *)self contentView];
+  [contentView frame];
   v5 = v4;
 
   previousWidth = self->_previousWidth;
@@ -424,8 +424,8 @@ LABEL_17:
   if (v7 <= 2.22044605e-16 || v8 > 2.22044605e-16)
   {
     self->_previousWidth = v5;
-    v10 = [(ContaineeViewController *)self cardPresentationController];
-    [v10 updateHeightForCurrentLayout];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController updateHeightForCurrentLayout];
   }
 }
 
@@ -434,10 +434,10 @@ LABEL_17:
   v37.receiver = self;
   v37.super_class = MapsRouteCreationContainee;
   [(ContaineeViewController *)&v37 viewDidLoad];
-  v3 = [(MapsRouteCreationContainee *)self view];
-  [v3 setAccessibilityIdentifier:@"CreateARouteView"];
+  view = [(MapsRouteCreationContainee *)self view];
+  [view setAccessibilityIdentifier:@"CreateARouteView"];
 
-  v4 = [(ContaineeViewController *)self headerView];
+  headerView = [(ContaineeViewController *)self headerView];
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"[Route Creation] Create Route" value:@"localized string not found" table:0];
 
@@ -454,7 +454,7 @@ LABEL_17:
   [(MapsSubtitleHeaderView *)v7 setTranslatesAutoresizingMaskIntoConstraints:0];
   LODWORD(v8) = 1148846080;
   [(MapsSubtitleHeaderView *)v7 setContentCompressionResistancePriority:1 forAxis:v8];
-  [v4 addSubview:v7];
+  [headerView addSubview:v7];
   objc_storeStrong(&self->_modalHeaderView, v7);
   v9 = objc_opt_new();
   v35 = v7;
@@ -473,25 +473,25 @@ LABEL_17:
   [(RouteCreationCardView *)self->_cardView setEditingDelegate:WeakRetained];
 
   v15 = objc_loadWeakRetained(&self->_context);
-  v16 = [v15 composedRoute];
-  [(MapsRouteCreationContainee *)self _updateRouteCardWithRoute:v16];
+  composedRoute = [v15 composedRoute];
+  [(MapsRouteCreationContainee *)self _updateRouteCardWithRoute:composedRoute];
 
-  v33 = [(MapsSubtitleHeaderView *)self->_modalHeaderView leadingAnchor];
-  v32 = [v4 leadingAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32];
+  leadingAnchor = [(MapsSubtitleHeaderView *)self->_modalHeaderView leadingAnchor];
+  leadingAnchor2 = [headerView leadingAnchor];
+  v31 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v39[0] = v31;
-  v30 = [(MapsSubtitleHeaderView *)self->_modalHeaderView topAnchor];
-  v17 = [v4 topAnchor];
-  v18 = [v30 constraintEqualToAnchor:v17];
+  topAnchor = [(MapsSubtitleHeaderView *)self->_modalHeaderView topAnchor];
+  topAnchor2 = [headerView topAnchor];
+  v18 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v39[1] = v18;
-  v19 = [(MapsSubtitleHeaderView *)self->_modalHeaderView trailingAnchor];
-  v34 = v4;
-  v20 = [v4 trailingAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  trailingAnchor = [(MapsSubtitleHeaderView *)self->_modalHeaderView trailingAnchor];
+  v34 = headerView;
+  trailingAnchor2 = [headerView trailingAnchor];
+  v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v39[2] = v21;
-  v22 = [(MapsSubtitleHeaderView *)self->_modalHeaderView bottomAnchor];
-  v23 = [v4 bottomAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
+  bottomAnchor = [(MapsSubtitleHeaderView *)self->_modalHeaderView bottomAnchor];
+  bottomAnchor2 = [headerView bottomAnchor];
+  v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v39[3] = v24;
   v25 = [NSArray arrayWithObjects:v39 count:4];
   [NSLayoutConstraint activateConstraints:v25];
@@ -502,26 +502,26 @@ LABEL_17:
 
   [(MapsRouteCreationContainee *)self _insertRouteCardIfNeeded];
   v28 = objc_loadWeakRetained(&self->_context);
-  v29 = [v28 composedRoute];
-  [(MapsRouteCreationContainee *)self _insertAppropriateCardStateForRoute:v29];
+  composedRoute2 = [v28 composedRoute];
+  [(MapsRouteCreationContainee *)self _insertAppropriateCardStateForRoute:composedRoute2];
 }
 
-- (MapsRouteCreationContainee)initWithContext:(id)a3
+- (MapsRouteCreationContainee)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = MapsRouteCreationContainee;
   v5 = [(MapsRouteCreationContainee *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_context, v4);
+    objc_storeWeak(&v5->_context, contextCopy);
     v6->_previousWidth = 1.79769313e308;
-    v7 = [(ContaineeViewController *)v6 cardPresentationController];
-    [v7 setAllowResizeInFloatingStyle:1];
+    cardPresentationController = [(ContaineeViewController *)v6 cardPresentationController];
+    [cardPresentationController setAllowResizeInFloatingStyle:1];
 
-    v8 = [(ContaineeViewController *)v6 cardPresentationController];
-    [v8 setDefaultContaineeLayout:2];
+    cardPresentationController2 = [(ContaineeViewController *)v6 cardPresentationController];
+    [cardPresentationController2 setDefaultContaineeLayout:2];
   }
 
   return v6;

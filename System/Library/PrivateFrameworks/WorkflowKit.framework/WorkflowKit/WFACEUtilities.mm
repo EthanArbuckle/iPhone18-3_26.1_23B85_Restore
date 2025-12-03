@@ -1,46 +1,46 @@
 @interface WFACEUtilities
-+ (void)wf_handleCommand:(id)a3 onRemoteDevice:(id)a4 usingClient:(id)a5 commandHandler:(id)a6 completion:(id)a7;
++ (void)wf_handleCommand:(id)command onRemoteDevice:(id)device usingClient:(id)client commandHandler:(id)handler completion:(id)completion;
 @end
 
 @implementation WFACEUtilities
 
-+ (void)wf_handleCommand:(id)a3 onRemoteDevice:(id)a4 usingClient:(id)a5 commandHandler:(id)a6 completion:(id)a7
++ (void)wf_handleCommand:(id)command onRemoteDevice:(id)device usingClient:(id)client commandHandler:(id)handler completion:(id)completion
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  deviceCopy = device;
+  clientCopy = client;
+  handlerCopy = handler;
+  completionCopy = completion;
   v15 = MEMORY[0x1E696AE40];
-  v16 = [a3 dictionary];
+  dictionary = [command dictionary];
   v24 = 0;
-  v17 = [v15 dataWithPropertyList:v16 format:200 options:0 error:&v24];
+  v17 = [v15 dataWithPropertyList:dictionary format:200 options:0 error:&v24];
   v18 = v24;
 
   if (v18)
   {
-    if (v14)
+    if (completionCopy)
     {
-      v14[2](v14, 0, v18);
+      completionCopy[2](completionCopy, 0, v18);
     }
   }
 
   else
   {
     v19 = objc_alloc_init(MEMORY[0x1E69C77E0]);
-    [v19 setRemoteDevice:v11];
+    [v19 setRemoteDevice:deviceCopy];
     [v19 setRequiresResponseFromRemote:1];
     [v19 setSerializedCommand:v17];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __88__WFACEUtilities_wf_handleCommand_onRemoteDevice_usingClient_commandHandler_completion___block_invoke;
     v22[3] = &unk_1E837F0C8;
-    v23 = v13;
+    v23 = handlerCopy;
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __88__WFACEUtilities_wf_handleCommand_onRemoteDevice_usingClient_commandHandler_completion___block_invoke_2;
     v20[3] = &unk_1E837F0F0;
-    v21 = v14;
-    [v12 handleCommand:v19 afterCurrentRequest:0 commandHandler:v22 completion:v20];
+    v21 = completionCopy;
+    [clientCopy handleCommand:v19 afterCurrentRequest:0 commandHandler:v22 completion:v20];
   }
 }
 

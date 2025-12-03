@@ -1,15 +1,15 @@
 @interface SKUISettingsGroupController
 - (SKUISettingsGroupControllerDelegate)delegate;
-- (id)_viewForSettingDescription:(id)a3;
-- (void)_reloadSettingDescription:(id)a3;
-- (void)attachSettingDescription:(id)a3;
+- (id)_viewForSettingDescription:(id)description;
+- (void)_reloadSettingDescription:(id)description;
+- (void)attachSettingDescription:(id)description;
 @end
 
 @implementation SKUISettingsGroupController
 
-- (void)attachSettingDescription:(id)a3
+- (void)attachSettingDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUISettingsGroupController attachSettingDescription:];
@@ -25,36 +25,36 @@
     settingDescriptions = self->_settingDescriptions;
   }
 
-  [(NSMutableArray *)settingDescriptions addObject:v4];
-  if ([v4 conformsToProtocol:&unk_282987338])
+  [(NSMutableArray *)settingDescriptions addObject:descriptionCopy];
+  if ([descriptionCopy conformsToProtocol:&unk_282987338])
   {
-    [v4 setController:self];
+    [descriptionCopy setController:self];
   }
 }
 
-- (void)_reloadSettingDescription:(id)a3
+- (void)_reloadSettingDescription:(id)description
 {
-  v7 = a3;
+  descriptionCopy = description;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 settingsGroupController:self reloadSettingDescription:v7];
+    [v6 settingsGroupController:self reloadSettingDescription:descriptionCopy];
   }
 }
 
-- (id)_viewForSettingDescription:(id)a3
+- (id)_viewForSettingDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    v8 = [v7 settingsGroupController:self viewForSettingDescription:v4];
+    v8 = [v7 settingsGroupController:self viewForSettingDescription:descriptionCopy];
   }
 
   else

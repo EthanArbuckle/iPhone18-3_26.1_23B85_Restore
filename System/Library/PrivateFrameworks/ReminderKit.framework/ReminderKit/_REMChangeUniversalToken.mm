@@ -1,8 +1,8 @@
 @interface _REMChangeUniversalToken
 + (id)universalToken;
-- (BOOL)isEqual:(id)a3;
-- (_REMChangeUniversalToken)initWithCoder:(id)a3;
-- (int64_t)compareToken:(id)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (_REMChangeUniversalToken)initWithCoder:(id)coder;
+- (int64_t)compareToken:(id)token error:(id *)error;
 @end
 
 @implementation _REMChangeUniversalToken
@@ -19,7 +19,7 @@
   return v3;
 }
 
-- (int64_t)compareToken:(id)a3 error:(id *)a4
+- (int64_t)compareToken:(id)token error:(id *)error
 {
   v5 = +[REMLog changeTracking];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
@@ -27,17 +27,17 @@
     [_REMChangeUniversalToken compareToken:v5 error:?];
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithREMChangeErrorCode:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithREMChangeErrorCode:0];
   }
 
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   v4 = +[REMLog changeTracking];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
   {
@@ -45,21 +45,21 @@
   }
 
   v5 = objc_opt_class();
-  v6 = REMSpecificCast(v5, v3);
+  v6 = REMSpecificCast(v5, equalCopy);
 
   return v6 != 0;
 }
 
-- (_REMChangeUniversalToken)initWithCoder:(id)a3
+- (_REMChangeUniversalToken)initWithCoder:(id)coder
 {
-  if (([a3 decodeBoolForKey:@"isUniversal"] & 1) == 0)
+  if (([coder decodeBoolForKey:@"isUniversal"] & 1) == 0)
   {
     [_REMChangeUniversalToken initWithCoder:];
   }
 
-  v4 = [objc_opt_class() universalToken];
+  universalToken = [objc_opt_class() universalToken];
 
-  return v4;
+  return universalToken;
 }
 
 - (void)initWithCoder:.cold.1()

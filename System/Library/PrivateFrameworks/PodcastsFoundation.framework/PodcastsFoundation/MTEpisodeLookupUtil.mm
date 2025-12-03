@@ -1,11 +1,11 @@
 @interface MTEpisodeLookupUtil
 + (id)sharedInstance;
-- (id)_entityForFetchRequest:(id)a3 context:(id)a4;
-- (id)_episodeMatchFromPredicate:(id)a3 context:(id)a4;
-- (id)_podcastMatchFromPredicate:(id)a3 context:(id)a4;
-- (id)findEpisodeWithRequest:(id)a3;
-- (id)findEpisodeWithRequest:(id)a3 context:(id)a4;
-- (id)findPodcastWithFeedUrl:(id)a3;
+- (id)_entityForFetchRequest:(id)request context:(id)context;
+- (id)_episodeMatchFromPredicate:(id)predicate context:(id)context;
+- (id)_podcastMatchFromPredicate:(id)predicate context:(id)context;
+- (id)findEpisodeWithRequest:(id)request;
+- (id)findEpisodeWithRequest:(id)request context:(id)context;
+- (id)findPodcastWithFeedUrl:(id)url;
 @end
 
 @implementation MTEpisodeLookupUtil
@@ -29,25 +29,25 @@ uint64_t __37__MTEpisodeLookupUtil_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)findEpisodeWithRequest:(id)a3
+- (id)findEpisodeWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = +[MTDB sharedInstance];
-  v6 = [v5 mainOrPrivateContext];
+  mainOrPrivateContext = [v5 mainOrPrivateContext];
 
-  v7 = [(MTEpisodeLookupUtil *)self findEpisodeWithRequest:v4 context:v6];
+  v7 = [(MTEpisodeLookupUtil *)self findEpisodeWithRequest:requestCopy context:mainOrPrivateContext];
 
   return v7;
 }
 
-- (id)findEpisodeWithRequest:(id)a3 context:(id)a4
+- (id)findEpisodeWithRequest:(id)request context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 uuid];
-  if ([v8 length])
+  requestCopy = request;
+  contextCopy = context;
+  uuid = [requestCopy uuid];
+  if ([uuid length])
   {
-    v9 = [MTEpisode predicateForEpisodeUuid:v8];
+    v9 = [MTEpisode predicateForEpisodeUuid:uuid];
     v10 = [(MTEpisodeLookupUtil *)self _episodeMatchFromPredicate:v9];
 
     if (v10)
@@ -56,11 +56,11 @@ uint64_t __37__MTEpisodeLookupUtil_sharedInstance__block_invoke()
     }
   }
 
-  v11 = [v6 storeTrackId];
-  if ([MTStoreIdentifier isNotEmpty:v11])
+  storeTrackId = [requestCopy storeTrackId];
+  if ([MTStoreIdentifier isNotEmpty:storeTrackId])
   {
-    v12 = [MTEpisode predicateForEpisodeStoreTrackId:v11];
-    v10 = [(MTEpisodeLookupUtil *)self _episodeMatchFromPredicate:v12 context:v7];
+    v12 = [MTEpisode predicateForEpisodeStoreTrackId:storeTrackId];
+    v10 = [(MTEpisodeLookupUtil *)self _episodeMatchFromPredicate:v12 context:contextCopy];
 
     if (v10)
     {
@@ -68,12 +68,12 @@ uint64_t __37__MTEpisodeLookupUtil_sharedInstance__block_invoke()
     }
   }
 
-  if ([v6 persistentID])
+  if ([requestCopy persistentID])
   {
-    v13 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v6, "persistentID")}];
+    v13 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(requestCopy, "persistentID")}];
     v14 = [MTEpisode predicateForPersistentId:v13];
 
-    v10 = [(MTEpisodeLookupUtil *)self _episodeMatchFromPredicate:v14 context:v7];
+    v10 = [(MTEpisodeLookupUtil *)self _episodeMatchFromPredicate:v14 context:contextCopy];
 
     if (v10)
     {
@@ -81,22 +81,22 @@ uint64_t __37__MTEpisodeLookupUtil_sharedInstance__block_invoke()
     }
   }
 
-  v15 = [v6 podcastFeedUrl];
-  v16 = [v6 episodeGuid];
-  if (![v15 length] || !objc_msgSend(v16, "length"))
+  podcastFeedUrl = [requestCopy podcastFeedUrl];
+  episodeGuid = [requestCopy episodeGuid];
+  if (![podcastFeedUrl length] || !objc_msgSend(episodeGuid, "length"))
   {
     goto LABEL_12;
   }
 
-  v17 = [(MTEpisodeLookupUtil *)self findPodcastWithFeedUrl:v15];
-  v18 = v17;
+  v17 = [(MTEpisodeLookupUtil *)self findPodcastWithFeedUrl:podcastFeedUrl];
+  episodeTitle = v17;
   if (!v17)
   {
     goto LABEL_11;
   }
 
-  v19 = [v17 uuid];
-  v20 = [MTEpisode predicateForEpisodeGuid:v16 onPodcastUuid:v19];
+  uuid2 = [v17 uuid];
+  v20 = [MTEpisode predicateForEpisodeGuid:episodeGuid onPodcastUuid:uuid2];
 
   v10 = [(MTEpisodeLookupUtil *)self _episodeMatchFromPredicate:v20];
 
@@ -105,32 +105,32 @@ uint64_t __37__MTEpisodeLookupUtil_sharedInstance__block_invoke()
 LABEL_11:
 
 LABEL_12:
-    v18 = [v6 episodeTitle];
-    v21 = [v6 podcastTitle];
-    v22 = [v6 streamUrl];
-    if ([v21 length] && objc_msgSend(v18, "length"))
+    episodeTitle = [requestCopy episodeTitle];
+    podcastTitle = [requestCopy podcastTitle];
+    streamUrl = [requestCopy streamUrl];
+    if ([podcastTitle length] && objc_msgSend(episodeTitle, "length"))
     {
-      v33 = [MTPodcast predicateForPodcastWithTitle:v21];
+      v33 = [MTPodcast predicateForPodcastWithTitle:podcastTitle];
       v23 = [(MTEpisodeLookupUtil *)self _podcastMatchFromPredicate:?];
       if (v23)
       {
-        v30 = v16;
+        v30 = episodeGuid;
         v32 = v23;
-        v24 = [v23 uuid];
-        v25 = [MTEpisode predicateForEpisodeTitle:v18 onPodcastUuid:v24];
+        uuid3 = [v23 uuid];
+        v25 = [MTEpisode predicateForEpisodeTitle:episodeTitle onPodcastUuid:uuid3];
 
         v31 = v25;
         v10 = [(MTEpisodeLookupUtil *)self _episodeMatchFromPredicate:v25];
-        if (!v10 || ![v22 length] || (objc_msgSend(v10, "enclosureURL"), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v26, "isEqualToString:", v22), v26, (v27 & 1) == 0))
+        if (!v10 || ![streamUrl length] || (objc_msgSend(v10, "enclosureURL"), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v26, "isEqualToString:", streamUrl), v26, (v27 & 1) == 0))
         {
-          if (v22 || ([v10 enclosureURL], v28 = objc_claimAutoreleasedReturnValue(), v28, v28))
+          if (streamUrl || ([v10 enclosureURL], v28 = objc_claimAutoreleasedReturnValue(), v28, v28))
           {
 
             v10 = 0;
           }
         }
 
-        v16 = v30;
+        episodeGuid = v30;
 
         v23 = v32;
       }
@@ -152,51 +152,51 @@ LABEL_27:
   return v10;
 }
 
-- (id)findPodcastWithFeedUrl:(id)a3
+- (id)findPodcastWithFeedUrl:(id)url
 {
-  v4 = [MTPodcast predicateForPodcastWithFeedUrl:a3];
+  v4 = [MTPodcast predicateForPodcastWithFeedUrl:url];
   v5 = [(MTEpisodeLookupUtil *)self _podcastMatchFromPredicate:v4];
 
   return v5;
 }
 
-- (id)_podcastMatchFromPredicate:(id)a3 context:(id)a4
+- (id)_podcastMatchFromPredicate:(id)predicate context:(id)context
 {
   v6 = MEMORY[0x1E695D5E0];
-  v7 = a4;
-  v8 = a3;
+  contextCopy = context;
+  predicateCopy = predicate;
   v9 = [[v6 alloc] initWithEntityName:@"MTPodcast"];
-  [v9 setPredicate:v8];
+  [v9 setPredicate:predicateCopy];
 
   [v9 setFetchLimit:1];
-  v10 = [(MTEpisodeLookupUtil *)self _entityForFetchRequest:v9 context:v7];
+  v10 = [(MTEpisodeLookupUtil *)self _entityForFetchRequest:v9 context:contextCopy];
 
   return v10;
 }
 
-- (id)_episodeMatchFromPredicate:(id)a3 context:(id)a4
+- (id)_episodeMatchFromPredicate:(id)predicate context:(id)context
 {
   v6 = MEMORY[0x1E695D5E0];
-  v7 = a4;
-  v8 = a3;
+  contextCopy = context;
+  predicateCopy = predicate;
   v9 = [[v6 alloc] initWithEntityName:@"MTEpisode"];
-  [v9 setPredicate:v8];
+  [v9 setPredicate:predicateCopy];
 
   [v9 setFetchLimit:1];
-  v10 = [(MTEpisodeLookupUtil *)self _entityForFetchRequest:v9 context:v7];
+  v10 = [(MTEpisodeLookupUtil *)self _entityForFetchRequest:v9 context:contextCopy];
 
   return v10;
 }
 
-- (id)_entityForFetchRequest:(id)a3 context:(id)a4
+- (id)_entityForFetchRequest:(id)request context:(id)context
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  requestCopy = request;
+  contextCopy = context;
+  if (!contextCopy)
   {
     v7 = +[MTDB sharedInstance];
-    v6 = [v7 mainOrPrivateContext];
+    contextCopy = [v7 mainOrPrivateContext];
   }
 
   v29 = 0;
@@ -216,9 +216,9 @@ LABEL_27:
   v17 = __54__MTEpisodeLookupUtil__entityForFetchRequest_context___block_invoke;
   v18 = &unk_1E856B5B8;
   v21 = &v23;
-  v8 = v6;
+  v8 = contextCopy;
   v19 = v8;
-  v9 = v5;
+  v9 = requestCopy;
   v20 = v9;
   v22 = &v29;
   [v8 performBlockAndWait:&v15];
@@ -233,12 +233,12 @@ LABEL_27:
       _os_log_impl(&dword_1D8CEC000, v10, OS_LOG_TYPE_DEFAULT, "Error fetching entity: %@", buf, 0xCu);
     }
 
-    v12 = 0;
+    firstObject = 0;
   }
 
   else
   {
-    v12 = [v24[5] firstObject];
+    firstObject = [v24[5] firstObject];
   }
 
   _Block_object_dispose(&v23, 8);
@@ -246,7 +246,7 @@ LABEL_27:
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v12;
+  return firstObject;
 }
 
 void __54__MTEpisodeLookupUtil__entityForFetchRequest_context___block_invoke(void *a1)

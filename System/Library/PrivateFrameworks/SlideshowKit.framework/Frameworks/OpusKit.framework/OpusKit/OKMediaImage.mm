@@ -1,11 +1,11 @@
 @interface OKMediaImage
-+ (id)mediaImageWithCGImage:(CGImage *)a3;
-+ (id)mediaImageWithUIImage:(id)a3;
-- (CGImage)createComposedImage:(BOOL)a3 colorSpace:(id)a4;
++ (id)mediaImageWithCGImage:(CGImage *)image;
++ (id)mediaImageWithUIImage:(id)image;
+- (CGImage)createComposedImage:(BOOL)image colorSpace:(id)space;
 - (OKMediaImage)init;
-- (OKMediaImage)initWithCGImage:(CGImage *)a3;
-- (OKMediaImage)initWithCGImage:(CGImage *)a3 imageOrientation:(int64_t)a4 scale:(double)a5;
-- (OKMediaImage)initWithUIImage:(id)a3;
+- (OKMediaImage)initWithCGImage:(CGImage *)image;
+- (OKMediaImage)initWithCGImage:(CGImage *)image imageOrientation:(int64_t)orientation scale:(double)scale;
+- (OKMediaImage)initWithUIImage:(id)image;
 - (void)dealloc;
 @end
 
@@ -26,49 +26,49 @@
   return result;
 }
 
-- (OKMediaImage)initWithCGImage:(CGImage *)a3 imageOrientation:(int64_t)a4 scale:(double)a5
+- (OKMediaImage)initWithCGImage:(CGImage *)image imageOrientation:(int64_t)orientation scale:(double)scale
 {
   v8 = [(OKMediaImage *)self init];
   if (v8)
   {
-    v8->_cgImageRef = CGImageRetain(a3);
-    v8->_imageOrientation = a4;
-    v8->_scale = a5;
+    v8->_cgImageRef = CGImageRetain(image);
+    v8->_imageOrientation = orientation;
+    v8->_scale = scale;
   }
 
   return v8;
 }
 
-- (OKMediaImage)initWithCGImage:(CGImage *)a3
+- (OKMediaImage)initWithCGImage:(CGImage *)image
 {
   v4 = [(OKMediaImage *)self init];
   if (v4)
   {
-    v4->_cgImageRef = CGImageRetain(a3);
+    v4->_cgImageRef = CGImageRetain(image);
   }
 
   return v4;
 }
 
-+ (id)mediaImageWithCGImage:(CGImage *)a3
++ (id)mediaImageWithCGImage:(CGImage *)image
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithCGImage:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithCGImage:image];
 
   return v3;
 }
 
-- (OKMediaImage)initWithUIImage:(id)a3
+- (OKMediaImage)initWithUIImage:(id)image
 {
-  v5 = [a3 CGImage];
-  v6 = [a3 imageOrientation];
-  [a3 scale];
+  cGImage = [image CGImage];
+  imageOrientation = [image imageOrientation];
+  [image scale];
 
-  return [(OKMediaImage *)self initWithCGImage:v5 imageOrientation:v6 scale:?];
+  return [(OKMediaImage *)self initWithCGImage:cGImage imageOrientation:imageOrientation scale:?];
 }
 
-+ (id)mediaImageWithUIImage:(id)a3
++ (id)mediaImageWithUIImage:(id)image
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithUIImage:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithUIImage:image];
 
   return v3;
 }
@@ -87,7 +87,7 @@
   [(OKMediaImage *)&v4 dealloc];
 }
 
-- (CGImage)createComposedImage:(BOOL)a3 colorSpace:(id)a4
+- (CGImage)createComposedImage:(BOOL)image colorSpace:(id)space
 {
   imageOrientation = self->_imageOrientation;
   v7 = imageOrientation > 7;
@@ -107,13 +107,13 @@
   v12 = Height;
   v17.width = Width;
   v17.height = Height;
-  UIGraphicsBeginImageContextWithOptions(v17, a3, self->_scale);
+  UIGraphicsBeginImageContextWithOptions(v17, image, self->_scale);
   [objc_msgSend(MEMORY[0x277D755B8] imageWithCGImage:self->_cgImageRef scale:self->_imageOrientation orientation:{self->_scale), "drawInRect:", 0.0, 0.0, Width, v12}];
   ImageFromCurrentImageContext = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
-  v14 = [(UIImage *)ImageFromCurrentImageContext CGImage];
+  cGImage = [(UIImage *)ImageFromCurrentImageContext CGImage];
 
-  return CGImageRetain(v14);
+  return CGImageRetain(cGImage);
 }
 
 @end

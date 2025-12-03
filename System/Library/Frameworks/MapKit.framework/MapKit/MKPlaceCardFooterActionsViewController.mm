@@ -7,9 +7,9 @@
 
 - (void)reloadData
 {
-  v4 = [(MKPlaceCardActionsViewController *)self actionManager];
-  v3 = [v4 createFooterActions];
-  [(MKPlaceCardActionsViewController *)self setActionItemArray:v3];
+  actionManager = [(MKPlaceCardActionsViewController *)self actionManager];
+  createFooterActions = [actionManager createFooterActions];
+  [(MKPlaceCardActionsViewController *)self setActionItemArray:createFooterActions];
 }
 
 - (void)viewDidLoad
@@ -27,13 +27,13 @@
   [(MKPlaceCardActionsViewController *)self setHaveTwoColumns:0];
   [(MKPlaceCardActionsViewController *)self setAllowRowSelection:1];
   -[MKPlaceCardActionsViewController setShowTopButtonSeparator:](self, "setShowTopButtonSeparator:", [MEMORY[0x1E69DB878] _mapkit_accessibilityTextEnabled]);
-  v4 = [(MKPlaceSectionViewController *)self sectionView];
-  [v4 setShowsBottomHairline:0];
+  sectionView = [(MKPlaceSectionViewController *)self sectionView];
+  [sectionView setShowsBottomHairline:0];
 
   [(MKPlaceCardActionsViewController *)self setShowTopSeparator:0];
-  v5 = [(MKPlaceCardActionsViewController *)self actionManager];
-  v6 = [v5 createFooterActions];
-  [(MKPlaceCardActionsViewController *)self setActionItemArray:v6];
+  actionManager = [(MKPlaceCardActionsViewController *)self actionManager];
+  createFooterActions = [actionManager createFooterActions];
+  [(MKPlaceCardActionsViewController *)self setActionItemArray:createFooterActions];
 
   v7 = MKGetPlaceCardLog();
   if (os_signpost_enabled(v7))

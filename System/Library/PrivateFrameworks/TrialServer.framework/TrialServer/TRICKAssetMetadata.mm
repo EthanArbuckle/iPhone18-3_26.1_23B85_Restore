@@ -1,54 +1,54 @@
 @interface TRICKAssetMetadata
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMetadata:(id)a3;
-- (TRICKAssetMetadata)initWithType:(unsigned __int8)a3 namespaceNameForEncryptionKey:(id)a4 treatmentIndex:(id)a5 downloadSize:(unint64_t)a6 compressionMode:(unint64_t)a7;
-- (id)copyWithReplacementCompressionMode:(unint64_t)a3;
-- (id)copyWithReplacementDownloadSize:(unint64_t)a3;
-- (id)copyWithReplacementNamespaceNameForEncryptionKey:(id)a3;
-- (id)copyWithReplacementTreatmentIndex:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMetadata:(id)metadata;
+- (TRICKAssetMetadata)initWithType:(unsigned __int8)type namespaceNameForEncryptionKey:(id)key treatmentIndex:(id)index downloadSize:(unint64_t)size compressionMode:(unint64_t)mode;
+- (id)copyWithReplacementCompressionMode:(unint64_t)mode;
+- (id)copyWithReplacementDownloadSize:(unint64_t)size;
+- (id)copyWithReplacementNamespaceNameForEncryptionKey:(id)key;
+- (id)copyWithReplacementTreatmentIndex:(id)index;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation TRICKAssetMetadata
 
-- (TRICKAssetMetadata)initWithType:(unsigned __int8)a3 namespaceNameForEncryptionKey:(id)a4 treatmentIndex:(id)a5 downloadSize:(unint64_t)a6 compressionMode:(unint64_t)a7
+- (TRICKAssetMetadata)initWithType:(unsigned __int8)type namespaceNameForEncryptionKey:(id)key treatmentIndex:(id)index downloadSize:(unint64_t)size compressionMode:(unint64_t)mode
 {
-  v13 = a4;
-  v14 = a5;
+  keyCopy = key;
+  indexCopy = index;
   v18.receiver = self;
   v18.super_class = TRICKAssetMetadata;
   v15 = [(TRICKAssetMetadata *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    v15->_type = a3;
-    objc_storeStrong(&v15->_namespaceNameForEncryptionKey, a4);
-    objc_storeStrong(&v16->_treatmentIndex, a5);
-    v16->_downloadSize = a6;
-    v16->_compressionMode = a7;
+    v15->_type = type;
+    objc_storeStrong(&v15->_namespaceNameForEncryptionKey, key);
+    objc_storeStrong(&v16->_treatmentIndex, index);
+    v16->_downloadSize = size;
+    v16->_compressionMode = mode;
   }
 
   return v16;
 }
 
-- (id)copyWithReplacementNamespaceNameForEncryptionKey:(id)a3
+- (id)copyWithReplacementNamespaceNameForEncryptionKey:(id)key
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithType:self->_type namespaceNameForEncryptionKey:v4 treatmentIndex:self->_treatmentIndex downloadSize:self->_downloadSize compressionMode:self->_compressionMode];
+  keyCopy = key;
+  v5 = [objc_alloc(objc_opt_class()) initWithType:self->_type namespaceNameForEncryptionKey:keyCopy treatmentIndex:self->_treatmentIndex downloadSize:self->_downloadSize compressionMode:self->_compressionMode];
 
   return v5;
 }
 
-- (id)copyWithReplacementTreatmentIndex:(id)a3
+- (id)copyWithReplacementTreatmentIndex:(id)index
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithType:self->_type namespaceNameForEncryptionKey:self->_namespaceNameForEncryptionKey treatmentIndex:v4 downloadSize:self->_downloadSize compressionMode:self->_compressionMode];
+  indexCopy = index;
+  v5 = [objc_alloc(objc_opt_class()) initWithType:self->_type namespaceNameForEncryptionKey:self->_namespaceNameForEncryptionKey treatmentIndex:indexCopy downloadSize:self->_downloadSize compressionMode:self->_compressionMode];
 
   return v5;
 }
 
-- (id)copyWithReplacementDownloadSize:(unint64_t)a3
+- (id)copyWithReplacementDownloadSize:(unint64_t)size
 {
   v5 = objc_alloc(objc_opt_class());
   type = self->_type;
@@ -56,10 +56,10 @@
   treatmentIndex = self->_treatmentIndex;
   compressionMode = self->_compressionMode;
 
-  return [v5 initWithType:type namespaceNameForEncryptionKey:namespaceNameForEncryptionKey treatmentIndex:treatmentIndex downloadSize:a3 compressionMode:compressionMode];
+  return [v5 initWithType:type namespaceNameForEncryptionKey:namespaceNameForEncryptionKey treatmentIndex:treatmentIndex downloadSize:size compressionMode:compressionMode];
 }
 
-- (id)copyWithReplacementCompressionMode:(unint64_t)a3
+- (id)copyWithReplacementCompressionMode:(unint64_t)mode
 {
   v5 = objc_alloc(objc_opt_class());
   type = self->_type;
@@ -67,27 +67,27 @@
   treatmentIndex = self->_treatmentIndex;
   downloadSize = self->_downloadSize;
 
-  return [v5 initWithType:type namespaceNameForEncryptionKey:namespaceNameForEncryptionKey treatmentIndex:treatmentIndex downloadSize:downloadSize compressionMode:a3];
+  return [v5 initWithType:type namespaceNameForEncryptionKey:namespaceNameForEncryptionKey treatmentIndex:treatmentIndex downloadSize:downloadSize compressionMode:mode];
 }
 
-- (BOOL)isEqualToMetadata:(id)a3
+- (BOOL)isEqualToMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  metadataCopy = metadata;
+  v5 = metadataCopy;
+  if (!metadataCopy)
   {
     goto LABEL_11;
   }
 
   type = self->_type;
-  if (type != [v4 type])
+  if (type != [metadataCopy type])
   {
     goto LABEL_11;
   }
 
   v7 = self->_namespaceNameForEncryptionKey == 0;
-  v8 = [v5 namespaceNameForEncryptionKey];
-  v9 = v8 != 0;
+  namespaceNameForEncryptionKey = [v5 namespaceNameForEncryptionKey];
+  v9 = namespaceNameForEncryptionKey != 0;
 
   if (v7 == v9)
   {
@@ -97,8 +97,8 @@
   namespaceNameForEncryptionKey = self->_namespaceNameForEncryptionKey;
   if (namespaceNameForEncryptionKey)
   {
-    v11 = [v5 namespaceNameForEncryptionKey];
-    v12 = [(NSString *)namespaceNameForEncryptionKey isEqual:v11];
+    namespaceNameForEncryptionKey2 = [v5 namespaceNameForEncryptionKey];
+    v12 = [(NSString *)namespaceNameForEncryptionKey isEqual:namespaceNameForEncryptionKey2];
 
     if (!v12)
     {
@@ -107,8 +107,8 @@
   }
 
   v13 = self->_treatmentIndex == 0;
-  v14 = [v5 treatmentIndex];
-  v15 = v14 != 0;
+  treatmentIndex = [v5 treatmentIndex];
+  v15 = treatmentIndex != 0;
 
   if (v13 == v15)
   {
@@ -118,8 +118,8 @@
   treatmentIndex = self->_treatmentIndex;
   if (treatmentIndex)
   {
-    v17 = [v5 treatmentIndex];
-    v18 = [(TRITreatmentQualifiedAssetIndex *)treatmentIndex isEqual:v17];
+    treatmentIndex2 = [v5 treatmentIndex];
+    v18 = [(TRITreatmentQualifiedAssetIndex *)treatmentIndex isEqual:treatmentIndex2];
 
     if (!v18)
     {
@@ -143,18 +143,18 @@ LABEL_11:
   return v21;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRICKAssetMetadata *)self isEqualToMetadata:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRICKAssetMetadata *)self isEqualToMetadata:v5];
   }
 
   return v6;

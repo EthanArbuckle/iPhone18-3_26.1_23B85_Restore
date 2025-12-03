@@ -20,8 +20,8 @@
 - (uint64_t)mf_lock
 {
   pthread_mutex_lock(&sMutex);
-  [a1 _mf_ntsCheckToAllowLock:a1];
-  v2 = _MFFindObjectLock(a1, 1);
+  [self _mf_ntsCheckToAllowLock:self];
+  v2 = _MFFindObjectLock(self, 1);
 
   return _MFAcquireObjectLock(v2);
 }
@@ -38,7 +38,7 @@
 
   do
   {
-    if (v2[1] == a1)
+    if (v2[1] == self)
     {
       v3 = v2;
     }
@@ -135,7 +135,7 @@
       v24 = 138412546;
       v25 = v19;
       v26 = 2048;
-      v27 = v20;
+      selfCopy = v20;
       v9 = "*** Can't unlock <%@:%p>: it's already been unlocked.";
       goto LABEL_13;
     }
@@ -149,7 +149,7 @@
       v24 = 138412546;
       v25 = v7;
       v26 = 2048;
-      v27 = v8;
+      selfCopy = v8;
       v9 = "*** Can't unlock <%@:%p>: it was locked by another thread.";
 LABEL_13:
       v10 = v5;
@@ -167,7 +167,7 @@ LABEL_14:
       v24 = 138412546;
       v25 = objc_opt_class();
       v26 = 2048;
-      v27 = a1;
+      selfCopy = self;
       v9 = "*** Can't unlock <%@:%p>: it's not locked.";
       v10 = v11;
       goto LABEL_16;
@@ -371,7 +371,7 @@ LABEL_19:
 
   do
   {
-    if (v1[1] == a1)
+    if (v1[1] == self)
     {
       v2 = v1;
     }
@@ -403,15 +403,15 @@ LABEL_19:
   switch(a3)
   {
     case 3:
-      v4 = [a1 mf_exclusiveLocks];
+      mf_exclusiveLocks = [self mf_exclusiveLocks];
       goto LABEL_7;
     case 2:
-      v4 = [a1 mf_strictLockOrdering];
+      mf_exclusiveLocks = [self mf_strictLockOrdering];
       goto LABEL_7;
     case 1:
-      v4 = [a1 mf_lockOrdering];
+      mf_exclusiveLocks = [self mf_lockOrdering];
 LABEL_7:
-      v5 = v4;
+      v5 = mf_exclusiveLocks;
       goto LABEL_9;
   }
 
@@ -436,7 +436,7 @@ LABEL_9:
           objc_enumerationMutation(v5);
         }
 
-        if (*(*(&v12 + 1) + 8 * v9) == a1)
+        if (*(*(&v12 + 1) + 8 * v9) == self)
         {
           [NSObject(LockingAdditions) _mf_lockOrderingForType:];
         }
@@ -486,13 +486,13 @@ LABEL_9:
         v13 = [v4 objectAtIndex:v5];
         if (v13 == v10)
         {
-          v14 = a1;
-          v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"<MFLockOrderingSelfReference: %@: %p>", objc_opt_class(), a1];
+          selfCopy = self;
+          v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"<MFLockOrderingSelfReference: %@: %p>", objc_opt_class(), self];
         }
 
         else
         {
-          v14 = v13;
+          selfCopy = v13;
           v15 = [-[__CFString description](v13 "description")];
         }
 
@@ -505,7 +505,7 @@ LABEL_9:
           v20 = v11;
           v21 = v10;
           v22 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-          v23 = objc_getAssociatedObject(v14, @"MFLock Call Stack Symbols");
+          v23 = objc_getAssociatedObject(selfCopy, @"MFLock Call Stack Symbols");
           v24 = v22;
           v10 = v21;
           v11 = v20;
@@ -574,7 +574,7 @@ LABEL_9:
 
 - (unint64_t)_mf_checkToAllowOrderingWithLock:()LockingAdditions
 {
-  if (a3 == a1)
+  if (a3 == self)
   {
     v4 = @"com.apple.Message.MFLockOrderingSelfReference";
   }
@@ -584,7 +584,7 @@ LABEL_9:
     v4 = a3;
   }
 
-  v5 = [(__CFString *)a1 _mf_lockOrderingForType:1];
+  v5 = [(__CFString *)self _mf_lockOrderingForType:1];
   result = [v5 indexOfObject:v4];
   if (v5)
   {
@@ -601,29 +601,29 @@ LABEL_9:
           v10 = [v5 objectAtIndex:v8];
           if (v10 == @"com.apple.Message.MFLockOrderingSelfReference")
           {
-            v11 = a1;
+            selfCopy = self;
           }
 
           else
           {
-            v11 = v10;
+            selfCopy = v10;
           }
 
-          if ([(__CFString *)v11 conformsToProtocol:&unk_1F4F425E8])
+          if ([(__CFString *)selfCopy conformsToProtocol:&unk_1F4F425E8])
           {
-            result = [(__CFString *)v11 isLockedByMe];
+            result = [(__CFString *)selfCopy isLockedByMe];
             if (result)
             {
-              [(NSObject(LockingAdditions) *)a1 _mf_checkToAllowOrderingWithLock:v7, v5];
+              [(NSObject(LockingAdditions) *)self _mf_checkToAllowOrderingWithLock:v7, v5];
             }
           }
 
           else
           {
-            result = [(__CFString *)v11 _mf_ntsIsLocked];
+            result = [(__CFString *)selfCopy _mf_ntsIsLocked];
             if (result)
             {
-              [(NSObject(LockingAdditions) *)a1 _mf_checkToAllowOrderingWithLock:v7, v5];
+              [(NSObject(LockingAdditions) *)self _mf_checkToAllowOrderingWithLock:v7, v5];
             }
           }
 
@@ -640,7 +640,7 @@ LABEL_9:
 
 - (uint64_t)_mf_checkToAllowStrictProgressionWithLock:()LockingAdditions
 {
-  if (a3 == a1)
+  if (a3 == self)
   {
     v4 = @"com.apple.Message.MFLockOrderingSelfReference";
   }
@@ -650,7 +650,7 @@ LABEL_9:
     v4 = a3;
   }
 
-  v5 = [(__CFString *)a1 _mf_lockOrderingForType:2];
+  v5 = [(__CFString *)self _mf_lockOrderingForType:2];
   result = [v5 indexOfObject:v4];
   if (v5)
   {
@@ -663,29 +663,29 @@ LABEL_9:
         v10 = [v5 objectAtIndex:v9];
         if (v10 == @"com.apple.Message.MFLockOrderingSelfReference")
         {
-          v11 = a1;
+          selfCopy = self;
         }
 
         else
         {
-          v11 = v10;
+          selfCopy = v10;
         }
 
-        if ([(__CFString *)v11 conformsToProtocol:&unk_1F4F425E8])
+        if ([(__CFString *)selfCopy conformsToProtocol:&unk_1F4F425E8])
         {
-          result = [(__CFString *)v11 isLockedByMe];
+          result = [(__CFString *)selfCopy isLockedByMe];
           if (result)
           {
-            [(NSObject(LockingAdditions) *)a1 _mf_checkToAllowStrictProgressionWithLock:v7, v5];
+            [(NSObject(LockingAdditions) *)self _mf_checkToAllowStrictProgressionWithLock:v7, v5];
           }
         }
 
         else
         {
-          result = [(__CFString *)v11 _mf_ntsIsLocked];
+          result = [(__CFString *)selfCopy _mf_ntsIsLocked];
           if (result)
           {
-            [(NSObject(LockingAdditions) *)a1 _mf_checkToAllowStrictProgressionWithLock:v7, v5];
+            [(NSObject(LockingAdditions) *)self _mf_checkToAllowStrictProgressionWithLock:v7, v5];
           }
         }
 
@@ -702,7 +702,7 @@ LABEL_9:
 - (uint64_t)_mf_checkToAllowExclusiveLocksWithLock:()LockingAdditions
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (a3 == a1)
+  if (a3 == self)
   {
     v4 = @"com.apple.Message.MFLockOrderingSelfReference";
   }
@@ -712,7 +712,7 @@ LABEL_9:
     v4 = a3;
   }
 
-  v5 = [(__CFString *)a1 _mf_lockOrderingForType:3];
+  v5 = [(__CFString *)self _mf_lockOrderingForType:3];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -737,25 +737,25 @@ LABEL_9:
         {
           if (v10 == @"com.apple.Message.MFLockOrderingSelfReference")
           {
-            v11 = a1;
+            selfCopy = self;
           }
 
           else
           {
-            v11 = *(*(&v13 + 1) + 8 * v9);
+            selfCopy = *(*(&v13 + 1) + 8 * v9);
           }
 
-          if ([(__CFString *)v11 conformsToProtocol:&unk_1F4F425E8])
+          if ([(__CFString *)selfCopy conformsToProtocol:&unk_1F4F425E8])
           {
-            if ([(__CFString *)v11 isLockedByMe])
+            if ([(__CFString *)selfCopy isLockedByMe])
             {
-              [(NSObject(LockingAdditions) *)v5 _mf_checkToAllowExclusiveLocksWithLock:a1];
+              [(NSObject(LockingAdditions) *)v5 _mf_checkToAllowExclusiveLocksWithLock:self];
             }
           }
 
-          else if ([(__CFString *)v11 _mf_ntsIsLocked])
+          else if ([(__CFString *)selfCopy _mf_ntsIsLocked])
           {
-            [(NSObject(LockingAdditions) *)v5 _mf_checkToAllowExclusiveLocksWithLock:a1];
+            [(NSObject(LockingAdditions) *)v5 _mf_checkToAllowExclusiveLocksWithLock:self];
           }
         }
 
@@ -777,23 +777,23 @@ LABEL_9:
 - (uint64_t)_mf_checkToAllowLock:()LockingAdditions
 {
   pthread_mutex_lock(&sMutex);
-  [a1 _mf_ntsCheckToAllowLock:a3];
+  [self _mf_ntsCheckToAllowLock:a3];
 
   return pthread_mutex_unlock(&sMutex);
 }
 
 - (uint64_t)_mf_ntsCheckToAllowLock:()LockingAdditions
 {
-  [a1 _mf_checkToAllowOrderingWithLock:?];
-  [a1 _mf_checkToAllowStrictProgressionWithLock:a3];
+  [self _mf_checkToAllowOrderingWithLock:?];
+  [self _mf_checkToAllowStrictProgressionWithLock:a3];
 
-  return [a1 _mf_checkToAllowExclusiveLocksWithLock:a3];
+  return [self _mf_checkToAllowExclusiveLocksWithLock:a3];
 }
 
 - (uint64_t)mf_tryLock
 {
   pthread_mutex_lock(&sMutex);
-  v2 = _MFFindObjectLock(a1, 1);
+  v2 = _MFFindObjectLock(self, 1);
 
   return _MFTryObjectLock(v2);
 }
@@ -801,7 +801,7 @@ LABEL_9:
 - (uint64_t)mf_lockWithPriority
 {
   pthread_mutex_lock(&sMutex);
-  v2 = _MFFindObjectLock(a1, 2);
+  v2 = _MFFindObjectLock(self, 2);
 
   return _MFAcquireObjectLock(v2);
 }
@@ -809,7 +809,7 @@ LABEL_9:
 - (uint64_t)mf_tryLockWithPriority
 {
   pthread_mutex_lock(&sMutex);
-  v2 = _MFFindObjectLock(a1, 1);
+  v2 = _MFFindObjectLock(self, 1);
 
   return _MFTryObjectLock(v2);
 }

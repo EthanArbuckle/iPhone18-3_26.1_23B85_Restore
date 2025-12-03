@@ -1,10 +1,10 @@
 @interface SKCloudServiceSetupConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SKCloudServiceSetupConfiguration)init;
-- (SKCloudServiceSetupConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SKCloudServiceSetupConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKCloudServiceSetupConfiguration
@@ -59,10 +59,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -72,7 +72,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       applicationIdentifier = self->_applicationIdentifier;
       v8 = (applicationIdentifier == v5->_applicationIdentifier || [(NSString *)applicationIdentifier isEqual:?]) && ((applicationVersion = self->_applicationVersion, applicationVersion == v5->_applicationVersion) || [(NSString *)applicationVersion isEqualToString:?]) && self->_targetsFinanceApplication == v5->_targetsFinanceApplication && self->_forPublicSDK == v5->_forPublicSDK;
     }
@@ -86,7 +86,7 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = [(NSString *)self->_applicationIdentifier copy];
@@ -102,37 +102,37 @@
   return v4;
 }
 
-- (SKCloudServiceSetupConfiguration)initWithCoder:(id)a3
+- (SKCloudServiceSetupConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SKCloudServiceSetupConfiguration *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
     v7 = [v6 copy];
     applicationIdentifier = v5->_applicationIdentifier;
     v5->_applicationIdentifier = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationVersion"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationVersion"];
     v10 = [v9 copy];
     applicationVersion = v5->_applicationVersion;
     v5->_applicationVersion = v10;
 
-    v5->_targetsFinanceApplication = [v4 decodeBoolForKey:@"targetsFinanceApplication"];
-    v5->_forPublicSDK = [v4 decodeBoolForKey:@"forPublicSDK"];
+    v5->_targetsFinanceApplication = [coderCopy decodeBoolForKey:@"targetsFinanceApplication"];
+    v5->_forPublicSDK = [coderCopy decodeBoolForKey:@"forPublicSDK"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   applicationIdentifier = self->_applicationIdentifier;
-  v5 = a3;
-  [v5 encodeObject:applicationIdentifier forKey:@"applicationIdentifier"];
-  [v5 encodeObject:self->_applicationVersion forKey:@"applicationVersion"];
-  [v5 encodeBool:self->_targetsFinanceApplication forKey:@"targetsFinanceApplication"];
-  [v5 encodeBool:self->_forPublicSDK forKey:@"forPublicSDK"];
+  coderCopy = coder;
+  [coderCopy encodeObject:applicationIdentifier forKey:@"applicationIdentifier"];
+  [coderCopy encodeObject:self->_applicationVersion forKey:@"applicationVersion"];
+  [coderCopy encodeBool:self->_targetsFinanceApplication forKey:@"targetsFinanceApplication"];
+  [coderCopy encodeBool:self->_forPublicSDK forKey:@"forPublicSDK"];
 }
 
 @end

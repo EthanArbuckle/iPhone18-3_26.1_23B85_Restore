@@ -1,15 +1,15 @@
 @interface VPContext
-+ (unsigned)findVPProductType:(unsigned int)a3;
-- (BOOL)isEqual:(id)a3;
++ (unsigned)findVPProductType:(unsigned int)type;
+- (BOOL)isEqual:(id)equal;
 - (NSString)shortHardwareModelName;
 - (NSString)temporaryDirectoryPath;
 - (NSString)tuningDirectoryPath;
 - (VPContext)init;
 - (id).cxx_construct;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unsigned)acousticID;
 - (unsigned)deviceClass;
-- (unsigned)hardwareLayoutID:(unsigned int)a3;
+- (unsigned)hardwareLayoutID:(unsigned int)d;
 - (unsigned)operatingSystem;
 - (unsigned)productType;
 @end
@@ -47,65 +47,65 @@
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_36;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v18 = 1;
     goto LABEL_37;
   }
 
-  if (self->_context.m_os != v4->_context.m_os)
+  if (self->_context.m_os != equalCopy->_context.m_os)
   {
     goto LABEL_36;
   }
 
-  if (applesauce::CF::compare<applesauce::CF::StringRef,0,applesauce::CF::StringRef,0>(self->_context.m_os_release_type.mObject.mCFObject, &v4->_context.m_os_release_type.mObject.mCFObject))
+  if (applesauce::CF::compare<applesauce::CF::StringRef,0,applesauce::CF::StringRef,0>(self->_context.m_os_release_type.mObject.mCFObject, &equalCopy->_context.m_os_release_type.mObject.mCFObject))
   {
     goto LABEL_36;
   }
 
-  if (self->_context.m_is_internal_build != v4->_context.m_is_internal_build)
+  if (self->_context.m_is_internal_build != equalCopy->_context.m_is_internal_build)
   {
     goto LABEL_36;
   }
 
-  if (self->_context.m_is_ui_build != v4->_context.m_is_ui_build)
+  if (self->_context.m_is_ui_build != equalCopy->_context.m_is_ui_build)
   {
     goto LABEL_36;
   }
 
-  v5.__data_ = v4->_context.m_tuning_resources_path.__pn_.__rep_.__s.__data_;
+  v5.__data_ = equalCopy->_context.m_tuning_resources_path.__pn_.__rep_.__s.__data_;
   if (!std::__fs::filesystem::operator==[abi:ne200100](&self->_context.m_tuning_resources_path, v5))
   {
     goto LABEL_36;
   }
 
-  v6.__data_ = &v4->_context.m_tuning_resources_path.var0;
+  v6.__data_ = &equalCopy->_context.m_tuning_resources_path.var0;
   if (!std::__fs::filesystem::operator==[abi:ne200100](&self->_context.m_tuning_resources_path.var0, v6))
   {
     goto LABEL_36;
   }
 
-  v7.__data_ = &v4[1]._context;
-  if (!std::__fs::filesystem::operator==[abi:ne200100](&self[1]._context, v7) || self[1]._context.m_tuning_resources_path.__pn_.__rep_.__s.__data_[0] != v4[1]._context.m_tuning_resources_path.__pn_.__rep_.__s.__data_[0] || self[1]._context.m_tuning_resources_path.__pn_.__rep_.__s.__data_[1] != v4[1]._context.m_tuning_resources_path.__pn_.__rep_.__s.__data_[1] || !std::equal_to<std::string>::operator()[abi:ne200100](&self[1]._context.m_tuning_resources_path.__pn_.__rep_.__l.__size_, &v4[1]._context.m_tuning_resources_path.__pn_.__rep_.__l.__size_))
+  v7.__data_ = &equalCopy[1]._context;
+  if (!std::__fs::filesystem::operator==[abi:ne200100](&self[1]._context, v7) || self[1]._context.m_tuning_resources_path.__pn_.__rep_.__s.__data_[0] != equalCopy[1]._context.m_tuning_resources_path.__pn_.__rep_.__s.__data_[0] || self[1]._context.m_tuning_resources_path.__pn_.__rep_.__s.__data_[1] != equalCopy[1]._context.m_tuning_resources_path.__pn_.__rep_.__s.__data_[1] || !std::equal_to<std::string>::operator()[abi:ne200100](&self[1]._context.m_tuning_resources_path.__pn_.__rep_.__l.__size_, &equalCopy[1]._context.m_tuning_resources_path.__pn_.__rep_.__l.__size_))
   {
     goto LABEL_36;
   }
 
   var0 = BYTE4(self[1]._context.var0);
-  v9 = BYTE4(v4[1]._context.var0);
+  v9 = BYTE4(equalCopy[1]._context.var0);
   if (var0 == v9 && BYTE4(self[1]._context.var0))
   {
     var0 = self[1]._context.var0;
-    v9 = v4[1]._context.var0;
+    v9 = equalCopy[1]._context.var0;
   }
 
   if (var0 != v9)
@@ -114,24 +114,24 @@
   }
 
   isa = BYTE4(self[2].super.isa);
-  v11 = BYTE4(v4[2].super.isa);
+  v11 = BYTE4(equalCopy[2].super.isa);
   if (isa == v11 && BYTE4(self[2].super.isa))
   {
     isa = self[2].super.isa;
-    v11 = v4[2].super.isa;
+    v11 = equalCopy[2].super.isa;
   }
 
-  if (isa != v11 || self[2]._context.m_os != v4[2]._context.m_os)
+  if (isa != v11 || self[2]._context.m_os != equalCopy[2]._context.m_os)
   {
     goto LABEL_36;
   }
 
   mCFObject_low = LOBYTE(self[2]._context.m_os_release_type.mObject.mCFObject);
-  v13 = LOBYTE(v4[2]._context.m_os_release_type.mObject.mCFObject);
+  v13 = LOBYTE(equalCopy[2]._context.m_os_release_type.mObject.mCFObject);
   if (mCFObject_low == v13 && LOBYTE(self[2]._context.m_os_release_type.mObject.mCFObject))
   {
     mCFObject_low = *(&self[2]._context.m_os + 1);
-    v13 = *(&v4[2]._context.m_os + 1);
+    v13 = *(&equalCopy[2]._context.m_os + 1);
   }
 
   if (mCFObject_low != v13)
@@ -140,11 +140,11 @@
   }
 
   m_is_internal_build = self[2]._context.m_is_internal_build;
-  mCFObject_high = v4[2]._context.m_is_internal_build;
+  mCFObject_high = equalCopy[2]._context.m_is_internal_build;
   if (m_is_internal_build == mCFObject_high && self[2]._context.m_is_internal_build)
   {
     m_is_internal_build = HIDWORD(self[2]._context.m_os_release_type.mObject.mCFObject);
-    mCFObject_high = HIDWORD(v4[2]._context.m_os_release_type.mObject.mCFObject);
+    mCFObject_high = HIDWORD(equalCopy[2]._context.m_os_release_type.mObject.mCFObject);
   }
 
   if (m_is_internal_build != mCFObject_high)
@@ -153,16 +153,16 @@
   }
 
   v16 = self[2]._context.m_tuning_resources_path.__pn_.__rep_.__s.__data_[0];
-  v17 = v4[2]._context.m_tuning_resources_path.__pn_.__rep_.__s.__data_[0];
+  v17 = equalCopy[2]._context.m_tuning_resources_path.__pn_.__rep_.__s.__data_[0];
   if (v16 == v17 && self[2]._context.m_tuning_resources_path.__pn_.__rep_.__s.__data_[0])
   {
     v16 = *(&self[2]._context.m_is_ui_build + 3);
-    v17 = *(&v4[2]._context.m_is_ui_build + 3);
+    v17 = *(&equalCopy[2]._context.m_is_ui_build + 3);
   }
 
-  if (v16 == v17 && applesauce::CF::operator==(self[2]._context.m_tuning_resources_path.__pn_.__rep_.__l.__size_, v4[2]._context.m_tuning_resources_path.__pn_.__rep_.__l.__size_))
+  if (v16 == v17 && applesauce::CF::operator==(self[2]._context.m_tuning_resources_path.__pn_.__rep_.__l.__size_, equalCopy[2]._context.m_tuning_resources_path.__pn_.__rep_.__l.__size_))
   {
-    v18 = self[2]._context.m_tuning_resources_path.__pn_.__rep_.__s.__data_[16] == v4[2]._context.m_tuning_resources_path.__pn_.__rep_.__s.__data_[16];
+    v18 = self[2]._context.m_tuning_resources_path.__pn_.__rep_.__s.__data_[16] == equalCopy[2]._context.m_tuning_resources_path.__pn_.__rep_.__s.__data_[16];
   }
 
   else
@@ -176,27 +176,27 @@ LABEL_37:
   return v18;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [VPMutableContext allocWithZone:a3];
+  v4 = [VPMutableContext allocWithZone:zone];
   vp::Context::operator=(&v4->super._context, &self->_context);
   return v4;
 }
 
-+ (unsigned)findVPProductType:(unsigned int)a3
++ (unsigned)findVPProductType:(unsigned int)type
 {
-  if (a3 - 1 > 0x43)
+  if (type - 1 > 0x43)
   {
     return 0;
   }
 
   else
   {
-    return dword_2727597B8[a3 - 1];
+    return dword_2727597B8[type - 1];
   }
 }
 
-- (unsigned)hardwareLayoutID:(unsigned int)a3
+- (unsigned)hardwareLayoutID:(unsigned int)d
 {
   p_var0 = &self[1]._context.var0;
   if (!BYTE4(self[1]._context.var0))

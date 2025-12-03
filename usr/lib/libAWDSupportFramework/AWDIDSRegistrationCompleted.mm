@@ -1,17 +1,17 @@
 @interface AWDIDSRegistrationCompleted
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCircleStatus:(BOOL)a3;
-- (void)setHasRegistrationError:(BOOL)a3;
-- (void)setHasRegistrationType:(BOOL)a3;
-- (void)setHasWasSuccessful:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasCircleStatus:(BOOL)status;
+- (void)setHasRegistrationError:(BOOL)error;
+- (void)setHasRegistrationType:(BOOL)type;
+- (void)setHasWasSuccessful:(BOOL)successful;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDIDSRegistrationCompleted
@@ -24,9 +24,9 @@
   [(AWDIDSRegistrationCompleted *)&v3 dealloc];
 }
 
-- (void)setHasRegistrationType:(BOOL)a3
+- (void)setHasRegistrationType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -39,9 +39,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasWasSuccessful:(BOOL)a3
+- (void)setHasWasSuccessful:(BOOL)successful
 {
-  if (a3)
+  if (successful)
   {
     v3 = 16;
   }
@@ -54,9 +54,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasRegistrationError:(BOOL)a3
+- (void)setHasRegistrationError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 4;
   }
@@ -69,9 +69,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasCircleStatus:(BOOL)a3
+- (void)setHasCircleStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 2;
   }
@@ -93,23 +93,23 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
   }
 
   if ((has & 8) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_registrationType), @"registrationType"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_registrationType), @"registrationType"}];
   }
 
   serviceIdentifier = self->_serviceIdentifier;
   if (serviceIdentifier)
   {
-    [v3 setObject:serviceIdentifier forKey:@"serviceIdentifier"];
+    [dictionary setObject:serviceIdentifier forKey:@"serviceIdentifier"];
   }
 
   v6 = self->_has;
@@ -121,16 +121,16 @@
     }
 
 LABEL_13:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_registrationError), @"registrationError"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_registrationError), @"registrationError"}];
     if ((*&self->_has & 2) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_10;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wasSuccessful), @"wasSuccessful"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_wasSuccessful), @"wasSuccessful"}];
   v6 = self->_has;
   if ((v6 & 4) != 0)
   {
@@ -141,13 +141,13 @@ LABEL_9:
   if ((v6 & 2) != 0)
   {
 LABEL_10:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_circleStatus), @"circleStatus"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_circleStatus), @"circleStatus"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -207,32 +207,32 @@ LABEL_13:
   PBDataWriterWriteInt32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 44) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 44) |= 1u;
     has = self->_has;
   }
 
   if ((has & 8) != 0)
   {
-    *(a3 + 6) = self->_registrationType;
-    *(a3 + 44) |= 8u;
+    *(to + 6) = self->_registrationType;
+    *(to + 44) |= 8u;
   }
 
   if (self->_serviceIdentifier)
   {
-    [a3 setServiceIdentifier:?];
+    [to setServiceIdentifier:?];
   }
 
   v6 = self->_has;
   if ((v6 & 0x10) != 0)
   {
-    *(a3 + 10) = self->_wasSuccessful;
-    *(a3 + 44) |= 0x10u;
+    *(to + 10) = self->_wasSuccessful;
+    *(to + 44) |= 0x10u;
     v6 = self->_has;
     if ((v6 & 4) == 0)
     {
@@ -251,21 +251,21 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(a3 + 5) = self->_registrationError;
-  *(a3 + 44) |= 4u;
+  *(to + 5) = self->_registrationError;
+  *(to + 44) |= 4u;
   if ((*&self->_has & 2) == 0)
   {
     return;
   }
 
 LABEL_10:
-  *(a3 + 4) = self->_circleStatus;
-  *(a3 + 44) |= 2u;
+  *(to + 4) = self->_circleStatus;
+  *(to + 44) |= 2u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -281,7 +281,7 @@ LABEL_10:
     *(v5 + 44) |= 8u;
   }
 
-  *(v6 + 32) = [(NSString *)self->_serviceIdentifier copyWithZone:a3];
+  *(v6 + 32) = [(NSString *)self->_serviceIdentifier copyWithZone:zone];
   v8 = self->_has;
   if ((v8 & 0x10) == 0)
   {
@@ -320,22 +320,22 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 44);
+    v7 = *(equal + 44);
     if (has)
     {
-      if ((*(a3 + 44) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 44) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_29;
       }
     }
 
-    else if (*(a3 + 44))
+    else if (*(equal + 44))
     {
 LABEL_29:
       LOBYTE(v5) = 0;
@@ -344,19 +344,19 @@ LABEL_29:
 
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 44) & 8) == 0 || self->_registrationType != *(a3 + 6))
+      if ((*(equal + 44) & 8) == 0 || self->_registrationType != *(equal + 6))
       {
         goto LABEL_29;
       }
     }
 
-    else if ((*(a3 + 44) & 8) != 0)
+    else if ((*(equal + 44) & 8) != 0)
     {
       goto LABEL_29;
     }
 
     serviceIdentifier = self->_serviceIdentifier;
-    if (serviceIdentifier | *(a3 + 4))
+    if (serviceIdentifier | *(equal + 4))
     {
       v5 = [(NSString *)serviceIdentifier isEqual:?];
       if (!v5)
@@ -369,34 +369,34 @@ LABEL_29:
 
     if ((has & 0x10) != 0)
     {
-      if ((*(a3 + 44) & 0x10) == 0 || self->_wasSuccessful != *(a3 + 10))
+      if ((*(equal + 44) & 0x10) == 0 || self->_wasSuccessful != *(equal + 10))
       {
         goto LABEL_29;
       }
     }
 
-    else if ((*(a3 + 44) & 0x10) != 0)
+    else if ((*(equal + 44) & 0x10) != 0)
     {
       goto LABEL_29;
     }
 
     if ((has & 4) != 0)
     {
-      if ((*(a3 + 44) & 4) == 0 || self->_registrationError != *(a3 + 5))
+      if ((*(equal + 44) & 4) == 0 || self->_registrationError != *(equal + 5))
       {
         goto LABEL_29;
       }
     }
 
-    else if ((*(a3 + 44) & 4) != 0)
+    else if ((*(equal + 44) & 4) != 0)
     {
       goto LABEL_29;
     }
 
-    LOBYTE(v5) = (*(a3 + 44) & 2) == 0;
+    LOBYTE(v5) = (*(equal + 44) & 2) == 0;
     if ((has & 2) != 0)
     {
-      if ((*(a3 + 44) & 2) == 0 || self->_circleStatus != *(a3 + 4))
+      if ((*(equal + 44) & 2) == 0 || self->_circleStatus != *(equal + 4))
       {
         goto LABEL_29;
       }
@@ -471,33 +471,33 @@ LABEL_9:
   return v4 ^ v3 ^ v6 ^ v7 ^ v8 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 44);
+  v5 = *(from + 44);
   if (v5)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v5 = *(a3 + 44);
+    v5 = *(from + 44);
   }
 
   if ((v5 & 8) != 0)
   {
-    self->_registrationType = *(a3 + 6);
+    self->_registrationType = *(from + 6);
     *&self->_has |= 8u;
   }
 
-  if (*(a3 + 4))
+  if (*(from + 4))
   {
     [(AWDIDSRegistrationCompleted *)self setServiceIdentifier:?];
   }
 
-  v6 = *(a3 + 44);
+  v6 = *(from + 44);
   if ((v6 & 0x10) != 0)
   {
-    self->_wasSuccessful = *(a3 + 10);
+    self->_wasSuccessful = *(from + 10);
     *&self->_has |= 0x10u;
-    v6 = *(a3 + 44);
+    v6 = *(from + 44);
     if ((v6 & 4) == 0)
     {
 LABEL_9:
@@ -510,20 +510,20 @@ LABEL_9:
     }
   }
 
-  else if ((*(a3 + 44) & 4) == 0)
+  else if ((*(from + 44) & 4) == 0)
   {
     goto LABEL_9;
   }
 
-  self->_registrationError = *(a3 + 5);
+  self->_registrationError = *(from + 5);
   *&self->_has |= 4u;
-  if ((*(a3 + 44) & 2) == 0)
+  if ((*(from + 44) & 2) == 0)
   {
     return;
   }
 
 LABEL_10:
-  self->_circleStatus = *(a3 + 4);
+  self->_circleStatus = *(from + 4);
   *&self->_has |= 2u;
 }
 

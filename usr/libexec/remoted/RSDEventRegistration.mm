@@ -1,33 +1,33 @@
 @interface RSDEventRegistration
-- (RSDEventRegistration)initWithToken:(unint64_t)a3 name:(char *)a4;
+- (RSDEventRegistration)initWithToken:(unint64_t)token name:(char *)name;
 - (void)cancelBrowsing;
 - (void)dealloc;
-- (void)fire:(id)a3;
-- (void)startBrowsing:(id)a3;
+- (void)fire:(id)fire;
+- (void)startBrowsing:(id)browsing;
 @end
 
 @implementation RSDEventRegistration
 
-- (RSDEventRegistration)initWithToken:(unint64_t)a3 name:(char *)a4
+- (RSDEventRegistration)initWithToken:(unint64_t)token name:(char *)name
 {
   v6 = [(RSDEventRegistration *)self init];
   v7 = v6;
   if (v6)
   {
-    [(RSDEventRegistration *)v6 setToken:a3];
-    [(RSDEventRegistration *)v7 setName:strdup(a4)];
+    [(RSDEventRegistration *)v6 setToken:token];
+    [(RSDEventRegistration *)v7 setName:strdup(name)];
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)startBrowsing:(id)a3
+- (void)startBrowsing:(id)browsing
 {
-  v4 = a3;
-  v5 = [(RSDEventRegistration *)self browser];
+  browsingCopy = browsing;
+  browser = [(RSDEventRegistration *)self browser];
 
-  if (v5)
+  if (browser)
   {
     sub_100037E64(&v15, v16);
   }
@@ -36,29 +36,29 @@
   v10 = 3221225472;
   v11 = sub_100002E90;
   v12 = &unk_10005CE60;
-  v13 = self;
-  v14 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v14 = browsingCopy;
+  v6 = browsingCopy;
   v7 = objc_retainBlock(&v9);
   started = remote_device_start_browsing_matching();
-  [(RSDEventRegistration *)self setBrowser:started, v9, v10, v11, v12, v13];
+  [(RSDEventRegistration *)self setBrowser:started, v9, v10, v11, v12, selfCopy];
 }
 
 - (void)cancelBrowsing
 {
-  v3 = [(RSDEventRegistration *)self browser];
+  browser = [(RSDEventRegistration *)self browser];
 
-  if (!v3)
+  if (!browser)
   {
     sub_100037EFC(&v5, v6);
   }
 
   [(RSDEventRegistration *)self setDontRestartBrowse:1];
-  v4 = [(RSDEventRegistration *)self browser];
+  browser2 = [(RSDEventRegistration *)self browser];
   remote_device_browser_cancel();
 }
 
-- (void)fire:(id)a3
+- (void)fire:(id)fire
 {
   memset(uuid, 170, sizeof(uuid));
   remote_device_copy_uuid();
@@ -78,7 +78,7 @@
     {
       v8 = v7;
       v9 = 136446466;
-      v10 = [(RSDEventRegistration *)self name];
+      name = [(RSDEventRegistration *)self name];
       v11 = 2082;
       v12 = out;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Delivering RSD event to %{public}s for device %{public}s", &v9, 0x16u);

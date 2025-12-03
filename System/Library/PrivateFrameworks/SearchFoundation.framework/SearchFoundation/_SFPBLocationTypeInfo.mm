@@ -1,28 +1,28 @@
 @interface _SFPBLocationTypeInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBLocationTypeInfo)initWithDictionary:(id)a3;
-- (_SFPBLocationTypeInfo)initWithFacade:(id)a3;
-- (_SFPBLocationTypeInfo)initWithJSON:(id)a3;
+- (_SFPBLocationTypeInfo)initWithDictionary:(id)dictionary;
+- (_SFPBLocationTypeInfo)initWithFacade:(id)facade;
+- (_SFPBLocationTypeInfo)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)setAddress:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setAddress:(id)address;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBLocationTypeInfo
 
-- (_SFPBLocationTypeInfo)initWithFacade:(id)a3
+- (_SFPBLocationTypeInfo)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBLocationTypeInfo *)self init];
   if (v5)
   {
-    v6 = [v4 address];
+    address = [facadeCopy address];
 
-    if (v6)
+    if (address)
     {
-      v7 = [v4 address];
-      [(_SFPBLocationTypeInfo *)v5 setAddress:v7];
+      address2 = [facadeCopy address];
+      [(_SFPBLocationTypeInfo *)v5 setAddress:address2];
     }
 
     v8 = v5;
@@ -31,15 +31,15 @@
   return v5;
 }
 
-- (_SFPBLocationTypeInfo)initWithDictionary:(id)a3
+- (_SFPBLocationTypeInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = _SFPBLocationTypeInfo;
   v5 = [(_SFPBLocationTypeInfo *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"address"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"address"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,30 +53,30 @@
   return v5;
 }
 
-- (_SFPBLocationTypeInfo)initWithJSON:(id)a3
+- (_SFPBLocationTypeInfo)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBLocationTypeInfo *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBLocationTypeInfo *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBLocationTypeInfo *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -89,29 +89,29 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_address)
   {
-    v4 = [(_SFPBLocationTypeInfo *)self address];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"address"];
+    address = [(_SFPBLocationTypeInfo *)self address];
+    v5 = [address copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"address"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_SFPBLocationTypeInfo *)self address];
-    v6 = [v4 address];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    address = [(_SFPBLocationTypeInfo *)self address];
+    address2 = [equalCopy address];
+    v7 = address2;
+    if ((address != 0) != (address2 == 0))
     {
-      v8 = [(_SFPBLocationTypeInfo *)self address];
-      if (!v8)
+      address3 = [(_SFPBLocationTypeInfo *)self address];
+      if (!address3)
       {
 
 LABEL_10:
@@ -119,10 +119,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_SFPBLocationTypeInfo *)self address];
-      v11 = [v4 address];
-      v12 = [v10 isEqual:v11];
+      v9 = address3;
+      address4 = [(_SFPBLocationTypeInfo *)self address];
+      address5 = [equalCopy address];
+      v12 = [address4 isEqual:address5];
 
       if (v12)
       {
@@ -141,19 +141,19 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(_SFPBLocationTypeInfo *)self address];
-  if (v4)
+  toCopy = to;
+  address = [(_SFPBLocationTypeInfo *)self address];
+  if (address)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setAddress:(id)a3
+- (void)setAddress:(id)address
 {
-  v4 = [a3 copy];
+  v4 = [address copy];
   address = self->_address;
   self->_address = v4;
 

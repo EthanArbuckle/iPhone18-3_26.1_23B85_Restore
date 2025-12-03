@@ -1,44 +1,44 @@
 @interface _LSAvailableApplicationsForURLQuery
-- (_LSAvailableApplicationsForURLQuery)initWithCoder:(id)a3;
-- (_LSAvailableApplicationsForURLQuery)initWithURL:(id)a3;
-- (void)_enumerateWithXPCConnection:(id)a3 block:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)yieldBundles:(const void *)a3 context:(LSContext *)a4 block:(id)a5;
+- (_LSAvailableApplicationsForURLQuery)initWithCoder:(id)coder;
+- (_LSAvailableApplicationsForURLQuery)initWithURL:(id)l;
+- (void)_enumerateWithXPCConnection:(id)connection block:(id)block;
+- (void)encodeWithCoder:(id)coder;
+- (void)yieldBundles:(const void *)bundles context:(LSContext *)context block:(id)block;
 @end
 
 @implementation _LSAvailableApplicationsForURLQuery
 
-- (_LSAvailableApplicationsForURLQuery)initWithURL:(id)a3
+- (_LSAvailableApplicationsForURLQuery)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = _LSAvailableApplicationsForURLQuery;
-  v6 = [(_LSQuery *)&v9 _init];
-  v7 = v6;
-  if (v6)
+  _init = [(_LSQuery *)&v9 _init];
+  v7 = _init;
+  if (_init)
   {
-    objc_storeStrong(v6 + 2, a3);
+    objc_storeStrong(_init + 2, l);
   }
 
   return v7;
 }
 
-- (void)yieldBundles:(const void *)a3 context:(LSContext *)a4 block:(id)a5
+- (void)yieldBundles:(const void *)bundles context:(LSContext *)context block:(id)block
 {
-  v12 = a5;
-  v7 = *a3;
-  v8 = *(a3 + 1);
-  if (*a3 != v8)
+  blockCopy = block;
+  v7 = *bundles;
+  v8 = *(bundles + 1);
+  if (*bundles != v8)
   {
     while (1)
     {
       v9 = *v7;
       v10 = objc_autoreleasePoolPush();
-      v11 = [LSApplicationProxy applicationProxyWithBundleUnitID:v9 withContext:a4];
+      v11 = [LSApplicationProxy applicationProxyWithBundleUnitID:v9 withContext:context];
       objc_autoreleasePoolPop(v10);
       if (v11)
       {
-        if ((v12[2](v12, v11, 0) & 1) == 0)
+        if ((blockCopy[2](blockCopy, v11, 0) & 1) == 0)
         {
           break;
         }
@@ -54,20 +54,20 @@
 LABEL_7:
 }
 
-- (void)_enumerateWithXPCConnection:(id)a3 block:(id)a4
+- (void)_enumerateWithXPCConnection:(id)connection block:(id)block
 {
   v51 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  blockCopy = block;
   v8 = [(_LSAvailableApplicationsForURLQuery *)self URL];
-  v9 = [v8 scheme];
+  scheme = [v8 scheme];
 
-  if (v9)
+  if (scheme)
   {
-    if ([v9 isEqualToString:@"com-apple-audiounit"])
+    if ([scheme isEqualToString:@"com-apple-audiounit"])
     {
       v10 = [LSApplicationProxy applicationProxyForIdentifier:@"com.apple.audioUnit.temp" placeholder:1];
-      v7[2](v7, v10, 0);
+      blockCopy[2](blockCopy, v10, 0);
     }
 
     else
@@ -81,7 +81,7 @@ LABEL_7:
 
       if (v14)
       {
-        [_LSCanOpenURLManager bindingEvaluatorForScheme:v9];
+        [_LSCanOpenURLManager bindingEvaluatorForScheme:scheme];
         v41 = 0;
         LaunchServices::BindingEvaluator::evaluateBindings(v50, v14, &v41, &v42);
         v15 = v41;
@@ -101,7 +101,7 @@ LABEL_7:
 
           else
           {
-            (v7)[2](v7, 0, v16);
+            (blockCopy)[2](blockCopy, 0, v16);
           }
         }
 
@@ -160,7 +160,7 @@ LABEL_7:
             v22 = &v38;
           }
 
-          [(_LSAvailableApplicationsForURLQuery *)self yieldBundles:v22 context:v14 block:v7, v30];
+          [(_LSAvailableApplicationsForURLQuery *)self yieldBundles:v22 context:v14 block:blockCopy, v30];
           v16 = v31;
           if (v32)
           {
@@ -202,7 +202,7 @@ LABEL_7:
           v25 = v47;
         }
 
-        (v7)[2](v7, 0, v25);
+        (blockCopy)[2](blockCopy, 0, v25);
       }
 
       if (v44 && v46 == 1)
@@ -226,30 +226,30 @@ LABEL_7:
     v49 = @"invalid URL or scheme";
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
     v12 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v11, "[_LSAvailableApplicationsForURLQuery _enumerateWithXPCConnection:block:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Server/LSCanOpenURLManager.mm", 666);
-    (v7)[2](v7, 0, v12);
+    (blockCopy)[2](blockCopy, 0, v12);
   }
 
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = _LSAvailableApplicationsForURLQuery;
-  [(_LSQuery *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_URL forKey:@"URL"];
+  [(_LSQuery *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_URL forKey:@"URL"];
 }
 
-- (_LSAvailableApplicationsForURLQuery)initWithCoder:(id)a3
+- (_LSAvailableApplicationsForURLQuery)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = _LSAvailableApplicationsForURLQuery;
-  v5 = [(_LSQuery *)&v9 initWithCoder:v4];
+  v5 = [(_LSQuery *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
+    v6 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
     URL = v5->_URL;
     v5->_URL = v6;
   }

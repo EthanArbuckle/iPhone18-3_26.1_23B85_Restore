@@ -1,37 +1,37 @@
 @interface VoicemailDetailViewController
-- (_TtC10CallsAppUI29VoicemailDetailViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4;
+- (_TtC10CallsAppUI29VoicemailDetailViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact;
 - (void)handleBackButtonPressed;
 - (void)handleCallButtonPressed;
-- (void)reportSpamWithShouldDelete:(BOOL)a3;
+- (void)reportSpamWithShouldDelete:(BOOL)delete;
 - (void)shareMessage;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation VoicemailDetailViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   VoicemailDetailViewController.viewDidLoad()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  VoicemailDetailViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  VoicemailDetailViewController.viewWillAppear(_:)(appear);
 }
 
 - (void)handleBackButtonPressed
 {
-  v4 = self;
-  v2 = [(VoicemailDetailViewController *)v4 navigationController];
-  if (v2)
+  selfCopy = self;
+  navigationController = [(VoicemailDetailViewController *)selfCopy navigationController];
+  if (navigationController)
   {
-    v3 = v2;
+    v3 = navigationController;
   }
 }
 
@@ -39,42 +39,42 @@
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC10CallsAppUI29VoicemailDetailViewController_callbackAction);
   v3 = *(&self->super.super._responderFlags + OBJC_IVAR____TtC10CallsAppUI29VoicemailDetailViewController_callbackAction);
-  v4 = self;
+  selfCopy = self;
   v2();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  VoicemailDetailViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  VoicemailDetailViewController.viewDidAppear(_:)(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  VoicemailDetailViewController.viewWillDisappear(_:)(a3);
+  selfCopy = self;
+  VoicemailDetailViewController.viewWillDisappear(_:)(disappear);
 }
 
 - (void)shareMessage
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CFBDF274();
 }
 
-- (void)reportSpamWithShouldDelete:(BOOL)a3
+- (void)reportSpamWithShouldDelete:(BOOL)delete
 {
-  v4 = self;
-  sub_1CFBDFC08(a3);
+  selfCopy = self;
+  sub_1CFBDFC08(delete);
 }
 
-- (_TtC10CallsAppUI29VoicemailDetailViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10CallsAppUI29VoicemailDetailViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC4ED950, &qword_1CFCA2710);
   v7 = *(*(v6 - 8) + 64);
@@ -83,16 +83,16 @@
   v10 = sub_1CFC9F998();
   (*(*(v10 - 8) + 56))(v9, 1, 1, v10);
   sub_1CFC9F968();
-  v11 = a4;
-  v12 = self;
-  v13 = v11;
-  v14 = v12;
+  contactCopy = contact;
+  selfCopy = self;
+  v13 = contactCopy;
+  v14 = selfCopy;
   v15 = sub_1CFC9F958();
   v16 = swift_allocObject();
   v17 = MEMORY[0x1E69E85E0];
   v16[2] = v15;
   v16[3] = v17;
-  v16[4] = a4;
+  v16[4] = contact;
   v16[5] = v14;
   sub_1CFBDC030(0, 0, v9, &unk_1CFCA2CD8, v16);
 }

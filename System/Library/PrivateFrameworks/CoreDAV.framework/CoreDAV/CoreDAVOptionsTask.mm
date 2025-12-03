@@ -1,26 +1,26 @@
 @interface CoreDAVOptionsTask
-- (void)finishCoreDAVTaskWithError:(id)a3;
+- (void)finishCoreDAVTaskWithError:(id)error;
 @end
 
 @implementation CoreDAVOptionsTask
 
-- (void)finishCoreDAVTaskWithError:(id)a3
+- (void)finishCoreDAVTaskWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(CoreDAVTask *)self delegate];
+  errorCopy = error;
+  delegate = [(CoreDAVTask *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CoreDAVTask *)self delegate];
-    [v7 optionsTask:self error:v4];
+    delegate2 = [(CoreDAVTask *)self delegate];
+    [delegate2 optionsTask:self error:errorCopy];
 
     [(CoreDAVTask *)self setDelegate:0];
   }
 
   v8.receiver = self;
   v8.super_class = CoreDAVOptionsTask;
-  [(CoreDAVTask *)&v8 finishCoreDAVTaskWithError:v4];
+  [(CoreDAVTask *)&v8 finishCoreDAVTaskWithError:errorCopy];
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface PPSSignpostService
 - (PPSSignpostService)init;
 - (void)notifyExpired;
-- (void)process:(id)a3 withReply:(id)a4;
+- (void)process:(id)process withReply:(id)reply;
 @end
 
 @implementation PPSSignpostService
@@ -31,20 +31,20 @@
   self->_expired = 1;
 }
 
-- (void)process:(id)a3 withReply:(id)a4
+- (void)process:(id)process withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  processCopy = process;
+  replyCopy = reply;
   v8 = dispatch_get_global_queue(-32768, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000013FC;
   block[3] = &unk_100010428;
-  v12 = v6;
-  v13 = v7;
+  v12 = processCopy;
+  v13 = replyCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = processCopy;
+  v10 = replyCopy;
   dispatch_async(v8, block);
 }
 

@@ -1,38 +1,38 @@
 @interface WFContentCoercionNode
-+ (WFContentCoercionNode)coercionNodeWithItem:(id)a3 parent:(id)a4;
-+ (WFContentCoercionNode)coercionNodeWithItemClass:(Class)a3 parent:(id)a4;
-+ (WFContentCoercionNode)coercionNodeWithItemOrItemClass:(id)a3 parent:(id)a4;
++ (WFContentCoercionNode)coercionNodeWithItem:(id)item parent:(id)parent;
++ (WFContentCoercionNode)coercionNodeWithItemClass:(Class)class parent:(id)parent;
++ (WFContentCoercionNode)coercionNodeWithItemOrItemClass:(id)class parent:(id)parent;
 - (NSOrderedSet)coercionPath;
 - (NSOrderedSet)itemOrItemClassPath;
-- (WFContentCoercionNode)initWithItemOrItemClass:(id)a3 parent:(id)a4;
-- (id)continueCoercionUsingPathEnumerator:(id)a3 contentItems:(id)a4 options:(id)a5 error:(id *)a6;
+- (WFContentCoercionNode)initWithItemOrItemClass:(id)class parent:(id)parent;
+- (id)continueCoercionUsingPathEnumerator:(id)enumerator contentItems:(id)items options:(id)options error:(id *)error;
 - (id)description;
-- (id)runCoercionSynchronouslyWithOptions:(id)a3 error:(id *)a4;
-- (id)successorsWithOptions:(id)a3 goalType:(id)a4;
-- (void)continueCoercionUsingPathEnumerator:(id)a3 contentItems:(id)a4 options:(id)a5 error:(id)a6 completionHandler:(id)a7;
-- (void)runCoercionWithOptions:(id)a3 completionHandler:(id)a4;
+- (id)runCoercionSynchronouslyWithOptions:(id)options error:(id *)error;
+- (id)successorsWithOptions:(id)options goalType:(id)type;
+- (void)continueCoercionUsingPathEnumerator:(id)enumerator contentItems:(id)items options:(id)options error:(id)error completionHandler:(id)handler;
+- (void)runCoercionWithOptions:(id)options completionHandler:(id)handler;
 @end
 
 @implementation WFContentCoercionNode
 
-- (id)continueCoercionUsingPathEnumerator:(id)a3 contentItems:(id)a4 options:(id)a5 error:(id *)a6
+- (id)continueCoercionUsingPathEnumerator:(id)enumerator contentItems:(id)items options:(id)options error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v10 nextObject];
-  v14 = v13;
-  if (v11 && v13)
+  enumeratorCopy = enumerator;
+  itemsCopy = items;
+  optionsCopy = options;
+  nextObject = [enumeratorCopy nextObject];
+  v14 = nextObject;
+  if (itemsCopy && nextObject)
   {
-    v24 = self;
-    v25 = v10;
-    v15 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v11, "count")}];
+    selfCopy = self;
+    v25 = enumeratorCopy;
+    v15 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(itemsCopy, "count")}];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v16 = v11;
+    v16 = itemsCopy;
     v17 = [v16 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v17)
     {
@@ -47,7 +47,7 @@
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v26 + 1) + 8 * i) itemsByCoercingToItemClass:objc_opt_class() options:v12 error:a6];
+          v21 = [*(*(&v26 + 1) + 8 * i) itemsByCoercingToItemClass:objc_opt_class() options:optionsCopy error:error];
           [v15 addObjectsFromArray:v21];
         }
 
@@ -57,64 +57,64 @@
       while (v18);
     }
 
-    v10 = v25;
-    v22 = [(WFContentCoercionNode *)v24 continueCoercionUsingPathEnumerator:v25 contentItems:v15 options:v12 error:a6];
+    enumeratorCopy = v25;
+    v22 = [(WFContentCoercionNode *)selfCopy continueCoercionUsingPathEnumerator:v25 contentItems:v15 options:optionsCopy error:error];
   }
 
   else
   {
-    v22 = v11;
+    v22 = itemsCopy;
   }
 
   return v22;
 }
 
-- (id)runCoercionSynchronouslyWithOptions:(id)a3 error:(id *)a4
+- (id)runCoercionSynchronouslyWithOptions:(id)options error:(id *)error
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(WFContentCoercionNode *)self itemOrItemClassPath];
-  v8 = [v7 objectEnumerator];
+  optionsCopy = options;
+  itemOrItemClassPath = [(WFContentCoercionNode *)self itemOrItemClassPath];
+  objectEnumerator = [itemOrItemClassPath objectEnumerator];
 
-  v9 = [v8 nextObject];
-  v13[0] = v9;
+  nextObject = [objectEnumerator nextObject];
+  v13[0] = nextObject;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
-  v11 = [(WFContentCoercionNode *)self continueCoercionUsingPathEnumerator:v8 contentItems:v10 options:v6 error:a4];
+  v11 = [(WFContentCoercionNode *)self continueCoercionUsingPathEnumerator:objectEnumerator contentItems:v10 options:optionsCopy error:error];
 
   return v11;
 }
 
-- (void)continueCoercionUsingPathEnumerator:(id)a3 contentItems:(id)a4 options:(id)a5 error:(id)a6 completionHandler:(id)a7
+- (void)continueCoercionUsingPathEnumerator:(id)enumerator contentItems:(id)items options:(id)options error:(id)error completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v12 nextObject];
-  v18 = v17;
-  if (v13 && v17 && ((v19 = [v13 count], !v15) || v19))
+  enumeratorCopy = enumerator;
+  itemsCopy = items;
+  optionsCopy = options;
+  errorCopy = error;
+  handlerCopy = handler;
+  nextObject = [enumeratorCopy nextObject];
+  v18 = nextObject;
+  if (itemsCopy && nextObject && ((v19 = [itemsCopy count], !errorCopy) || v19))
   {
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __106__WFContentCoercionNode_continueCoercionUsingPathEnumerator_contentItems_options_error_completionHandler___block_invoke;
     v24[3] = &unk_27834A458;
     v25 = v18;
-    v26 = v14;
+    v26 = optionsCopy;
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __106__WFContentCoercionNode_continueCoercionUsingPathEnumerator_contentItems_options_error_completionHandler___block_invoke_3;
     v20[3] = &unk_27834A480;
     v20[4] = self;
-    v21 = v12;
+    v21 = enumeratorCopy;
     v22 = v26;
-    v23 = v16;
-    [v13 if_flatMapAsynchronously:v24 completionHandler:v20];
+    v23 = handlerCopy;
+    [itemsCopy if_flatMapAsynchronously:v24 completionHandler:v20];
   }
 
   else
   {
-    (*(v16 + 2))(v16, v13, v15);
+    (*(handlerCopy + 2))(handlerCopy, itemsCopy, errorCopy);
   }
 }
 
@@ -155,36 +155,36 @@ void __106__WFContentCoercionNode_continueCoercionUsingPathEnumerator_contentIte
   [*(a1 + 32) continueCoercionUsingPathEnumerator:*(a1 + 40) contentItems:v7 options:*(a1 + 48) error:v5 completionHandler:*(a1 + 56)];
 }
 
-- (void)runCoercionWithOptions:(id)a3 completionHandler:(id)a4
+- (void)runCoercionWithOptions:(id)options completionHandler:(id)handler
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WFContentCoercionNode *)self itemOrItemClassPath];
-  v9 = [v8 objectEnumerator];
+  handlerCopy = handler;
+  optionsCopy = options;
+  itemOrItemClassPath = [(WFContentCoercionNode *)self itemOrItemClassPath];
+  objectEnumerator = [itemOrItemClassPath objectEnumerator];
 
-  v10 = [v9 nextObject];
-  v12[0] = v10;
+  nextObject = [objectEnumerator nextObject];
+  v12[0] = nextObject;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-  [(WFContentCoercionNode *)self continueCoercionUsingPathEnumerator:v9 contentItems:v11 options:v7 error:0 completionHandler:v6];
+  [(WFContentCoercionNode *)self continueCoercionUsingPathEnumerator:objectEnumerator contentItems:v11 options:optionsCopy error:0 completionHandler:handlerCopy];
 }
 
 - (NSOrderedSet)coercionPath
 {
-  v3 = [(WFContentCoercionNode *)self parent];
+  parent = [(WFContentCoercionNode *)self parent];
 
-  if (v3)
+  if (parent)
   {
-    v4 = [(WFContentCoercionNode *)self parent];
-    v5 = [v4 itemOrItemClassPath];
-    v6 = [(WFContentCoercionNode *)self itemOrItemClass];
-    v7 = [v5 orderedSetByAddingObject:objc_opt_class()];
+    parent2 = [(WFContentCoercionNode *)self parent];
+    itemOrItemClassPath = [parent2 itemOrItemClassPath];
+    itemOrItemClass = [(WFContentCoercionNode *)self itemOrItemClass];
+    v7 = [itemOrItemClassPath orderedSetByAddingObject:objc_opt_class()];
   }
 
   else
   {
     v8 = MEMORY[0x277CBEB70];
-    v4 = [(WFContentCoercionNode *)self itemOrItemClass];
+    parent2 = [(WFContentCoercionNode *)self itemOrItemClass];
     v7 = [v8 orderedSetWithObject:objc_opt_class()];
   }
 
@@ -193,41 +193,41 @@ void __106__WFContentCoercionNode_continueCoercionUsingPathEnumerator_contentIte
 
 - (NSOrderedSet)itemOrItemClassPath
 {
-  v3 = [(WFContentCoercionNode *)self parent];
+  parent = [(WFContentCoercionNode *)self parent];
 
-  if (v3)
+  if (parent)
   {
-    v4 = [(WFContentCoercionNode *)self parent];
-    v5 = [v4 itemOrItemClassPath];
-    v6 = [(WFContentCoercionNode *)self itemOrItemClass];
-    v7 = [v5 orderedSetByAddingObject:v6];
+    parent2 = [(WFContentCoercionNode *)self parent];
+    itemOrItemClassPath = [parent2 itemOrItemClassPath];
+    itemOrItemClass = [(WFContentCoercionNode *)self itemOrItemClass];
+    v7 = [itemOrItemClassPath orderedSetByAddingObject:itemOrItemClass];
   }
 
   else
   {
     v8 = MEMORY[0x277CBEB70];
-    v4 = [(WFContentCoercionNode *)self itemOrItemClass];
-    v7 = [v8 orderedSetWithObject:v4];
+    parent2 = [(WFContentCoercionNode *)self itemOrItemClass];
+    v7 = [v8 orderedSetWithObject:parent2];
   }
 
   return v7;
 }
 
-- (id)successorsWithOptions:(id)a3 goalType:(id)a4
+- (id)successorsWithOptions:(id)options goalType:(id)type
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  typeCopy = type;
   v8 = objc_opt_new();
-  v9 = [(WFContentCoercionNode *)self itemOrItemClass];
-  v10 = [v9 supportedItemClasses];
+  itemOrItemClass = [(WFContentCoercionNode *)self itemOrItemClass];
+  supportedItemClasses = [itemOrItemClass supportedItemClasses];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __56__WFContentCoercionNode_successorsWithOptions_goalType___block_invoke;
   v26[3] = &unk_27834A408;
-  v11 = v7;
+  v11 = typeCopy;
   v27 = v11;
-  v12 = [v10 sortedArrayUsingComparator:v26];
+  v12 = [supportedItemClasses sortedArrayUsingComparator:v26];
 
   v24 = 0u;
   v25 = 0u;
@@ -253,9 +253,9 @@ void __106__WFContentCoercionNode_continueCoercionUsingPathEnumerator_contentIte
         if ([objc_opt_class() supportedItemClassMustBeDeterminedByInstance:{v18, v22}])
         {
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) != 0 && [v9 canGenerateIntermediaryRepresentationForItemClass:v18])
+          if ((objc_opt_isKindOfClass() & 1) != 0 && [itemOrItemClass canGenerateIntermediaryRepresentationForItemClass:v18])
           {
-            v19 = [v9 itemsByCoercingToItemClass:v18 options:v6 error:0];
+            v19 = [itemOrItemClass itemsByCoercingToItemClass:v18 options:optionsCopy error:0];
             if ([v19 count])
             {
               [v8 addObjectsFromArray:v19];
@@ -312,50 +312,50 @@ uint64_t __56__WFContentCoercionNode_successorsWithOptions_goalType___block_invo
   v8.receiver = self;
   v8.super_class = WFContentCoercionNode;
   v4 = [(WFContentCoercionNode *)&v8 description];
-  v5 = [(WFContentCoercionNode *)self itemOrItemClass];
-  v6 = [v3 stringWithFormat:@"%@: %@", v4, v5];
+  itemOrItemClass = [(WFContentCoercionNode *)self itemOrItemClass];
+  v6 = [v3 stringWithFormat:@"%@: %@", v4, itemOrItemClass];
 
   return v6;
 }
 
-- (WFContentCoercionNode)initWithItemOrItemClass:(id)a3 parent:(id)a4
+- (WFContentCoercionNode)initWithItemOrItemClass:(id)class parent:(id)parent
 {
-  v7 = a3;
-  v8 = a4;
+  classCopy = class;
+  parentCopy = parent;
   v9 = [(WFContentCoercionNode *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_itemOrItemClass, a3);
-    objc_storeStrong(&v10->_parent, a4);
+    objc_storeStrong(&v9->_itemOrItemClass, class);
+    objc_storeStrong(&v10->_parent, parent);
     v11 = v10;
   }
 
   return v10;
 }
 
-+ (WFContentCoercionNode)coercionNodeWithItemOrItemClass:(id)a3 parent:(id)a4
++ (WFContentCoercionNode)coercionNodeWithItemOrItemClass:(id)class parent:(id)parent
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithItemOrItemClass:v7 parent:v6];
+  parentCopy = parent;
+  classCopy = class;
+  v8 = [[self alloc] initWithItemOrItemClass:classCopy parent:parentCopy];
 
   return v8;
 }
 
-+ (WFContentCoercionNode)coercionNodeWithItemClass:(Class)a3 parent:(id)a4
++ (WFContentCoercionNode)coercionNodeWithItemClass:(Class)class parent:(id)parent
 {
-  v6 = a4;
-  v7 = [[a1 alloc] initWithItemOrItemClass:a3 parent:v6];
+  parentCopy = parent;
+  v7 = [[self alloc] initWithItemOrItemClass:class parent:parentCopy];
 
   return v7;
 }
 
-+ (WFContentCoercionNode)coercionNodeWithItem:(id)a3 parent:(id)a4
++ (WFContentCoercionNode)coercionNodeWithItem:(id)item parent:(id)parent
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithItemOrItemClass:v7 parent:v6];
+  parentCopy = parent;
+  itemCopy = item;
+  v8 = [[self alloc] initWithItemOrItemClass:itemCopy parent:parentCopy];
 
   return v8;
 }

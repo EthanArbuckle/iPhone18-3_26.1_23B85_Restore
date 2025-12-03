@@ -1,10 +1,10 @@
 @interface CMAccelerometerData
-- (int64_t)sr_writeUTF8RepresentationToOutputStream:(id)a3;
+- (int64_t)sr_writeUTF8RepresentationToOutputStream:(id)stream;
 @end
 
 @implementation CMAccelerometerData
 
-- (int64_t)sr_writeUTF8RepresentationToOutputStream:(id)a3
+- (int64_t)sr_writeUTF8RepresentationToOutputStream:(id)stream
 {
   [(CMAccelerometerData *)self acceleration];
   v6 = v5;
@@ -17,7 +17,7 @@
     return result;
   }
 
-  return [a3 write:byte_1000169FF maxLength:result];
+  return [stream write:byte_1000169FF maxLength:result];
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface OrgApacheLuceneDocumentFieldType
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (unint64_t)hash;
 - (void)checkIfFrozen;
 - (void)dealloc;
-- (void)setDocValuesTypeWithOrgApacheLuceneIndexDocValuesTypeEnum:(id)a3;
-- (void)setIndexOptionsWithOrgApacheLuceneIndexIndexOptionsEnum:(id)a3;
-- (void)setNumericPrecisionStepWithInt:(int)a3;
-- (void)setNumericTypeWithOrgApacheLuceneDocumentFieldType_NumericTypeEnum:(id)a3;
+- (void)setDocValuesTypeWithOrgApacheLuceneIndexDocValuesTypeEnum:(id)enum;
+- (void)setIndexOptionsWithOrgApacheLuceneIndexIndexOptionsEnum:(id)enum;
+- (void)setNumericPrecisionStepWithInt:(int)int;
+- (void)setNumericTypeWithOrgApacheLuceneDocumentFieldType_NumericTypeEnum:(id)enum;
 @end
 
 @implementation OrgApacheLuceneDocumentFieldType
@@ -21,36 +21,36 @@
   }
 }
 
-- (void)setIndexOptionsWithOrgApacheLuceneIndexIndexOptionsEnum:(id)a3
+- (void)setIndexOptionsWithOrgApacheLuceneIndexIndexOptionsEnum:(id)enum
 {
   [(OrgApacheLuceneDocumentFieldType *)self checkIfFrozen];
-  if (!a3)
+  if (!enum)
   {
     v5 = new_JavaLangNullPointerException_initWithNSString_(@"IndexOptions cannot be null");
     objc_exception_throw(v5);
   }
 
-  JreStrongAssign(&self->indexOptions_, a3);
+  JreStrongAssign(&self->indexOptions_, enum);
 }
 
-- (void)setNumericTypeWithOrgApacheLuceneDocumentFieldType_NumericTypeEnum:(id)a3
+- (void)setNumericTypeWithOrgApacheLuceneDocumentFieldType_NumericTypeEnum:(id)enum
 {
   [(OrgApacheLuceneDocumentFieldType *)self checkIfFrozen];
 
-  JreStrongAssign(&self->numericType_, a3);
+  JreStrongAssign(&self->numericType_, enum);
 }
 
-- (void)setNumericPrecisionStepWithInt:(int)a3
+- (void)setNumericPrecisionStepWithInt:(int)int
 {
   [(OrgApacheLuceneDocumentFieldType *)self checkIfFrozen];
-  if (a3 <= 0)
+  if (int <= 0)
   {
     v12 = JreStrcat("$IC", v5, v6, v7, v8, v9, v10, v11, @"precisionStep must be >= 1 (got ");
     v13 = new_JavaLangIllegalArgumentException_initWithNSString_(v12);
     objc_exception_throw(v13);
   }
 
-  self->numericPrecisionStep_ = a3;
+  self->numericPrecisionStep_ = int;
 }
 
 - (NSString)description
@@ -146,16 +146,16 @@
   return [(JavaLangStringBuilder *)v3 description];
 }
 
-- (void)setDocValuesTypeWithOrgApacheLuceneIndexDocValuesTypeEnum:(id)a3
+- (void)setDocValuesTypeWithOrgApacheLuceneIndexDocValuesTypeEnum:(id)enum
 {
   [(OrgApacheLuceneDocumentFieldType *)self checkIfFrozen];
-  if (!a3)
+  if (!enum)
   {
     v5 = new_JavaLangNullPointerException_initWithNSString_(@"DocValuesType cannot be null");
     objc_exception_throw(v5);
   }
 
-  JreStrongAssign(&self->docValuesType_, a3);
+  JreStrongAssign(&self->docValuesType_, enum);
 }
 
 - (unint64_t)hash
@@ -266,17 +266,17 @@
   return v23 - v22 + 32 * v22;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  if (a3)
+  if (equal)
   {
-    v5 = [(OrgApacheLuceneDocumentFieldType *)self getClass];
-    if (v5 == [a3 getClass])
+    getClass = [(OrgApacheLuceneDocumentFieldType *)self getClass];
+    if (getClass == [equal getClass])
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -284,9 +284,9 @@
         JreThrowClassCastException();
       }
 
-      if (self->docValuesType_ == *(a3 + 5) && self->indexOptions_ == *(a3 + 2) && self->numericPrecisionStep_ == *(a3 + 9) && self->numericType_ == *(a3 + 3) && self->omitNorms_ == *(a3 + 14) && self->storeTermVectorOffsets_ == *(a3 + 11) && self->storeTermVectorPayloads_ == *(a3 + 13) && self->storeTermVectorPositions_ == *(a3 + 12) && self->storeTermVectors_ == *(a3 + 10) && self->stored_ == *(a3 + 8))
+      if (self->docValuesType_ == *(equal + 5) && self->indexOptions_ == *(equal + 2) && self->numericPrecisionStep_ == *(equal + 9) && self->numericType_ == *(equal + 3) && self->omitNorms_ == *(equal + 14) && self->storeTermVectorOffsets_ == *(equal + 11) && self->storeTermVectorPayloads_ == *(equal + 13) && self->storeTermVectorPositions_ == *(equal + 12) && self->storeTermVectors_ == *(equal + 10) && self->stored_ == *(equal + 8))
       {
-        return self->tokenized_ == *(a3 + 9);
+        return self->tokenized_ == *(equal + 9);
       }
     }
   }

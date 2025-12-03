@@ -1,22 +1,22 @@
 @interface MPAssistantSearch
-- (id)_audiobooksByName:(id)a3;
-- (id)_itemsByTitle:(id)a3 mediaTypes:(int64_t)a4;
+- (id)_audiobooksByName:(id)name;
+- (id)_itemsByTitle:(id)title mediaTypes:(int64_t)types;
 - (id)_perform;
-- (id)_playlistsByDateCreatedOrder:(id)a3;
-- (id)_songCollectionsWithGroupingType:(int64_t)a3 searchString:(id)a4 mediaTypes:(int64_t)a5;
-- (id)_stationDictionariesWithParent:(unint64_t)a3;
-- (id)_stationDictionaryForGenreName:(id)a3 parent:(unint64_t)a4;
-- (id)_stationWithName:(id)a3;
-- (void)performWithCompletion:(id)a3;
+- (id)_playlistsByDateCreatedOrder:(id)order;
+- (id)_songCollectionsWithGroupingType:(int64_t)type searchString:(id)string mediaTypes:(int64_t)types;
+- (id)_stationDictionariesWithParent:(unint64_t)parent;
+- (id)_stationDictionaryForGenreName:(id)name parent:(unint64_t)parent;
+- (id)_stationWithName:(id)name;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation MPAssistantSearch
 
-- (id)_stationDictionaryForGenreName:(id)a3 parent:(unint64_t)a4
+- (id)_stationDictionaryForGenreName:(id)name parent:(unint64_t)parent
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(MPAssistantSearch *)self _stationDictionariesWithParent:a4];
+  nameCopy = name;
+  v7 = [(MPAssistantSearch *)self _stationDictionariesWithParent:parent];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -39,7 +39,7 @@
 
         v13 = *(*(&v25 + 1) + 8 * i);
         v14 = [v13 objectForKey:@"name"];
-        v15 = [v14 compare:v6 options:129];
+        v15 = [v14 compare:nameCopy options:129];
 
         if (!v15)
         {
@@ -50,7 +50,7 @@ LABEL_15:
           goto LABEL_16;
         }
 
-        if (a4)
+        if (parent)
         {
           v16 = [v13 objectForKey:@"children"];
           v17 = [v16 count];
@@ -62,9 +62,9 @@ LABEL_15:
         }
 
         v18 = [v13 objectForKey:@"id"];
-        v19 = [v18 unsignedLongLongValue];
+        unsignedLongLongValue = [v18 unsignedLongLongValue];
 
-        v20 = [(MPAssistantSearch *)self _stationDictionaryForGenreName:v6 parent:v19];
+        v20 = [(MPAssistantSearch *)self _stationDictionaryForGenreName:nameCopy parent:unsignedLongLongValue];
         if (v20)
         {
           goto LABEL_15;
@@ -95,7 +95,7 @@ LABEL_16:
   return v21;
 }
 
-- (id)_stationDictionariesWithParent:(unint64_t)a3
+- (id)_stationDictionariesWithParent:(unint64_t)parent
 {
   v13 = 0;
   v14 = &v13;
@@ -104,7 +104,7 @@ LABEL_16:
   v17 = sub_2334F3E78;
   v18 = 0;
   v4 = dispatch_semaphore_create(0);
-  v5 = [objc_alloc(MEMORY[0x277D44138]) initWithParentNodeID:a3];
+  v5 = [objc_alloc(MEMORY[0x277D44138]) initWithParentNodeID:parent];
   if (v5)
   {
     v10[0] = MEMORY[0x277D85DD0];
@@ -128,16 +128,16 @@ LABEL_16:
   return v8;
 }
 
-- (id)_stationWithName:(id)a3
+- (id)_stationWithName:(id)name
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 length])
+  nameCopy = name;
+  if ([nameCopy length])
   {
-    v4 = [MEMORY[0x277D44140] sharedModel];
-    v5 = [v4 userStations];
-    v6 = [v4 featuredStations];
-    v7 = [v5 arrayByAddingObjectsFromArray:v6];
+    mEMORY[0x277D44140] = [MEMORY[0x277D44140] sharedModel];
+    userStations = [mEMORY[0x277D44140] userStations];
+    featuredStations = [mEMORY[0x277D44140] featuredStations];
+    v7 = [userStations arrayByAddingObjectsFromArray:featuredStations];
 
     v19 = 0u;
     v20 = 0u;
@@ -158,8 +158,8 @@ LABEL_16:
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
-          v13 = [v12 name];
-          [v13 rangeOfString:v3 options:129];
+          name = [v12 name];
+          [name rangeOfString:nameCopy options:129];
           if (v14)
           {
             v9 = v12;
@@ -191,12 +191,12 @@ LABEL_12:
   return v9;
 }
 
-- (id)_playlistsByDateCreatedOrder:(id)a3
+- (id)_playlistsByDateCreatedOrder:(id)order
 {
   v28[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CD5E30];
   v5 = *MEMORY[0x277CD5928];
-  v6 = a3;
+  orderCopy = order;
   v7 = [v4 predicateWithValue:MEMORY[0x277CBEC38] forProperty:v5];
   v8 = MEMORY[0x277CBEC28];
   v9 = [MEMORY[0x277CD5E30] predicateWithValue:MEMORY[0x277CBEC28] forProperty:*MEMORY[0x277CD5910]];
@@ -210,7 +210,7 @@ LABEL_12:
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
   [v13 _setOrderingProperties:v15];
 
-  LODWORD(v15) = [v6 isEqualToString:@"Descending"];
+  LODWORD(v15) = [orderCopy isEqualToString:@"Descending"];
   if (v15)
   {
     v26 = v14;
@@ -239,27 +239,27 @@ LABEL_12:
   v20 = [MEMORY[0x277CD5E10] deviceMediaLibraryWithUserIdentity:self->_userIdentity];
   [v13 setMediaLibrary:v20];
 
-  v21 = [v13 collections];
+  collections = [v13 collections];
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v21;
+  return collections;
 }
 
-- (id)_songCollectionsWithGroupingType:(int64_t)a3 searchString:(id)a4 mediaTypes:(int64_t)a5
+- (id)_songCollectionsWithGroupingType:(int64_t)type searchString:(id)string mediaTypes:(int64_t)types
 {
-  v8 = a4;
-  v9 = [MEMORY[0x277CD5DE0] titlePropertyForGroupingType:a3];
+  stringCopy = string;
+  v9 = [MEMORY[0x277CD5DE0] titlePropertyForGroupingType:type];
   if (v9)
   {
     v10 = MEMORY[0x277CD5E30];
-    v11 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+    v11 = [MEMORY[0x277CCABB0] numberWithInteger:types];
     v12 = [v10 predicateWithValue:v11 forProperty:*MEMORY[0x277CD57C8]];
 
-    if (v8)
+    if (stringCopy)
     {
       v13 = [MEMORY[0x277CBEB98] setWithObject:v9];
-      v14 = [MEMORY[0x277CD6120] predicateWithSearchString:v8 forProperties:v13];
+      v14 = [MEMORY[0x277CD6120] predicateWithSearchString:stringCopy forProperties:v13];
     }
 
     else
@@ -272,33 +272,33 @@ LABEL_12:
     v18 = [v16 initWithFilterPredicates:v17];
 
     [v18 setUseSections:0];
-    [v18 setGroupingType:a3];
+    [v18 setGroupingType:type];
     [v18 setIgnoreSystemFilterPredicates:1];
     [v18 setShouldIncludeNonLibraryEntities:1];
     v19 = [MEMORY[0x277CD5E10] deviceMediaLibraryWithUserIdentity:self->_userIdentity];
     [v18 setMediaLibrary:v19];
 
-    v15 = [v18 collections];
+    collections = [v18 collections];
   }
 
   else
   {
-    v15 = [MEMORY[0x277CBEA60] array];
+    collections = [MEMORY[0x277CBEA60] array];
   }
 
-  return v15;
+  return collections;
 }
 
-- (id)_itemsByTitle:(id)a3 mediaTypes:(int64_t)a4
+- (id)_itemsByTitle:(id)title mediaTypes:(int64_t)types
 {
   v6 = MEMORY[0x277CD5E30];
   v7 = MEMORY[0x277CCABB0];
-  v8 = a3;
-  v9 = [v7 numberWithInteger:a4];
+  titleCopy = title;
+  v9 = [v7 numberWithInteger:types];
   v10 = [v6 predicateWithValue:v9 forProperty:*MEMORY[0x277CD57C8]];
 
   v11 = [MEMORY[0x277CBEB58] setWithObject:*MEMORY[0x277CD58B8]];
-  v12 = [MEMORY[0x277CD6120] predicateWithSearchString:v8 forProperties:v11];
+  v12 = [MEMORY[0x277CD6120] predicateWithSearchString:titleCopy forProperties:v11];
 
   v13 = objc_alloc(MEMORY[0x277CD5E38]);
   v14 = [MEMORY[0x277CBEB98] setWithObjects:{v10, v12, 0}];
@@ -310,20 +310,20 @@ LABEL_12:
   v16 = [MEMORY[0x277CD5E10] deviceMediaLibraryWithUserIdentity:self->_userIdentity];
   [v15 setMediaLibrary:v16];
 
-  v17 = [v15 items];
+  items = [v15 items];
 
-  return v17;
+  return items;
 }
 
-- (id)_audiobooksByName:(id)a3
+- (id)_audiobooksByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v4 = MEMORY[0x277CBEB98];
     v5 = *MEMORY[0x277CD56D0];
-    v6 = a3;
+    nameCopy = name;
     v7 = [v4 setWithObject:v5];
-    v8 = [MEMORY[0x277CD6120] predicateWithSearchString:v6 forProperties:v7];
+    v8 = [MEMORY[0x277CD6120] predicateWithSearchString:nameCopy forProperties:v7];
   }
 
   else
@@ -342,42 +342,42 @@ LABEL_12:
   v12 = [MEMORY[0x277CD5E10] deviceMediaLibraryWithUserIdentity:self->_userIdentity];
   [v11 setMediaLibrary:v12];
 
-  v13 = [v11 collections];
+  collections = [v11 collections];
 
-  return v13;
+  return collections;
 }
 
 - (id)_perform
 {
   v44 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(SAMPSearch *)self maxResults];
+  array = [MEMORY[0x277CBEB18] array];
+  maxResults = [(SAMPSearch *)self maxResults];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v6 = MEMORY[0x277CBEB98];
-  v7 = [(SAMPSearch *)self searchTypes];
-  v8 = [v6 setWithArray:v7];
+  searchTypes = [(SAMPSearch *)self searchTypes];
+  v8 = [v6 setWithArray:searchTypes];
 
   v9 = [v8 containsObject:*MEMORY[0x277D486D8]];
-  v10 = [(SAMPSearch *)self constraints];
+  constraints = [(SAMPSearch *)self constraints];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = sub_2334F4D58;
   v35[3] = &unk_2789DB580;
   v11 = v5;
   v36 = v11;
-  v37 = self;
+  selfCopy = self;
   v39 = v9;
   v12 = v8;
   v38 = v12;
-  [v10 enumerateObjectsUsingBlock:v35];
+  [constraints enumerateObjectsUsingBlock:v35];
 
   v29 = MEMORY[0x277D85DD0];
   v30 = 3221225472;
   v31 = sub_2334F57EC;
   v32 = &unk_2789DB5D0;
-  v13 = v3;
+  v13 = array;
   v33 = v13;
-  v34 = v4;
+  v34 = maxResults;
   [v11 enumerateObjectsUsingBlock:&v29];
   if ([v13 count] || !sub_2335055C0(self->_userIdentity))
   {
@@ -385,8 +385,8 @@ LABEL_12:
     [v20 setResults:v13];
     if (![(NSString *)self->_requestAceHash length])
     {
-      v21 = [(MPAssistantSearch *)self aceId];
-      v22 = sub_233505670(@"Search", v21);
+      aceId = [(MPAssistantSearch *)self aceId];
+      v22 = sub_233505670(@"Search", aceId);
       requestAceHash = self->_requestAceHash;
       self->_requestAceHash = v22;
     }
@@ -408,8 +408,8 @@ LABEL_12:
   {
     if (![(NSString *)self->_requestAceHash length])
     {
-      v14 = [(MPAssistantSearch *)self aceId];
-      v15 = sub_233505670(@"Search", v14);
+      aceId2 = [(MPAssistantSearch *)self aceId];
+      v15 = sub_233505670(@"Search", aceId2);
       v16 = self->_requestAceHash;
       self->_requestAceHash = v15;
     }
@@ -432,14 +432,14 @@ LABEL_12:
   return v20;
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if (![(NSString *)self->_requestAceHash length])
   {
-    v5 = [(MPAssistantSearch *)self aceId];
-    v6 = sub_233505670(@"Search", v5);
+    aceId = [(MPAssistantSearch *)self aceId];
+    v6 = sub_233505670(@"Search", aceId);
     requestAceHash = self->_requestAceHash;
     self->_requestAceHash = v6;
   }
@@ -460,8 +460,8 @@ LABEL_12:
   v13[2] = sub_2334F5AA8;
   v13[3] = &unk_2789DB648;
   v13[4] = self;
-  v14 = v4;
-  v11 = v4;
+  v14 = completionCopy;
+  v11 = completionCopy;
   sub_233506A24(@"Search", v10, 0, 0, v13);
 
   v12 = *MEMORY[0x277D85DE8];

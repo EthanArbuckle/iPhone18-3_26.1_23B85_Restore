@@ -1,31 +1,31 @@
 @interface CKDMMCSItemGroup
-- (CKDMMCSItemGroup)initWithItem:(id)a3;
+- (CKDMMCSItemGroup)initWithItem:(id)item;
 - (id)CKPropertiesDescription;
 @end
 
 @implementation CKDMMCSItemGroup
 
-- (CKDMMCSItemGroup)initWithItem:(id)a3
+- (CKDMMCSItemGroup)initWithItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v29.receiver = self;
   v29.super_class = CKDMMCSItemGroup;
   v7 = [(CKDMMCSItemGroup *)&v29 init];
   if (v7)
   {
-    v8 = objc_msgSend_contentBaseURL(v4, v5, v6);
+    v8 = objc_msgSend_contentBaseURL(itemCopy, v5, v6);
     contentBaseURL = v7->_contentBaseURL;
     v7->_contentBaseURL = v8;
 
-    v12 = objc_msgSend_owner(v4, v10, v11);
+    v12 = objc_msgSend_owner(itemCopy, v10, v11);
     owner = v7->_owner;
     v7->_owner = v12;
 
-    v16 = objc_msgSend_requestor(v4, v14, v15);
+    v16 = objc_msgSend_requestor(itemCopy, v14, v15);
     requestor = v7->_requestor;
     v7->_requestor = v16;
 
-    v20 = objc_msgSend_downloadPreauthorization(v4, v18, v19);
+    v20 = objc_msgSend_downloadPreauthorization(itemCopy, v18, v19);
     downloadPreauthorization = v7->_downloadPreauthorization;
     v7->_downloadPreauthorization = v20;
 

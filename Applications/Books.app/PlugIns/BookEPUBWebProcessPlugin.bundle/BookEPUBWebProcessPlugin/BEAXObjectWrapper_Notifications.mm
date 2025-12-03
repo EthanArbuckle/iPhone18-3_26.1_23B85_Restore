@@ -7,16 +7,16 @@
 
 - (id)_accessibilityMakeScrollStatus
 {
-  v2 = [(BEAXObjectWrapper_Notifications *)self _beaxParentWebPageObject];
-  v3 = [v2 _accessibilityScrollStatus];
+  _beaxParentWebPageObject = [(BEAXObjectWrapper_Notifications *)self _beaxParentWebPageObject];
+  _accessibilityScrollStatus = [_beaxParentWebPageObject _accessibilityScrollStatus];
 
-  return v3;
+  return _accessibilityScrollStatus;
 }
 
 - (id)_beaxParentWebPageObject
 {
-  v2 = [(BEAXObjectWrapper_Notifications *)self accessibilityContainer];
-  if (v2)
+  accessibilityContainer = [(BEAXObjectWrapper_Notifications *)self accessibilityContainer];
+  if (accessibilityContainer)
   {
     while (1)
     {
@@ -26,21 +26,21 @@
         break;
       }
 
-      v3 = [v2 accessibilityContainer];
+      v2AccessibilityContainer = [accessibilityContainer accessibilityContainer];
 
-      v2 = v3;
-      if (!v3)
+      accessibilityContainer = v2AccessibilityContainer;
+      if (!v2AccessibilityContainer)
       {
         goto LABEL_6;
       }
     }
 
-    v2 = v2;
+    accessibilityContainer = accessibilityContainer;
   }
 
 LABEL_6:
 
-  return v2;
+  return accessibilityContainer;
 }
 
 @end

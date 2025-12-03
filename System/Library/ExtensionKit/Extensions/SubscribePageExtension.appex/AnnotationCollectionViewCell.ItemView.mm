@@ -1,12 +1,12 @@
 @interface AnnotationCollectionViewCell.ItemView
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
-- (_TtCC22SubscribePageExtension28AnnotationCollectionViewCell8ItemView)initWithCoder:(id)a3;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
+- (_TtCC22SubscribePageExtension28AnnotationCollectionViewCell8ItemView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation AnnotationCollectionViewCell.ItemView
 
-- (_TtCC22SubscribePageExtension28AnnotationCollectionViewCell8ItemView)initWithCoder:(id)a3
+- (_TtCC22SubscribePageExtension28AnnotationCollectionViewCell8ItemView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtCC22SubscribePageExtension28AnnotationCollectionViewCell8ItemView_leadingPairLabels) = _swiftEmptyArrayStorage;
   *(&self->super.super.super.isa + OBJC_IVAR____TtCC22SubscribePageExtension28AnnotationCollectionViewCell8ItemView_trailingPairLabels) = _swiftEmptyArrayStorage;
@@ -28,7 +28,7 @@
   v11 = &v13 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   v13.receiver = self;
   v13.super_class = ObjectType;
-  v12 = self;
+  selfCopy = self;
   [(AnnotationCollectionViewCell.ItemView *)&v13 layoutSubviews];
   sub_100589E9C();
   sub_1007477B4();
@@ -38,14 +38,14 @@
   (*(v9 + 8))(v11, v8);
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   v5 = sub_10074A634();
   v6 = *(v5 - 8);
   __chkstk_darwin(v5);
   v8 = &v22 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   swift_unknownObjectRetain();
-  v9 = self;
+  selfCopy = self;
   sub_100589E9C();
   sub_10074A5E4();
   v11 = v10;

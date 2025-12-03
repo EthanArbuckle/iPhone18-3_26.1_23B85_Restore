@@ -2,7 +2,7 @@
 + (id)pl_sharedAccountStore;
 - (ACAccount)cachedPrimaryAppleAccount;
 - (PLAccountStore)init;
-- (void)accountDidChange:(id)a3;
+- (void)accountDidChange:(id)change;
 - (void)dealloc;
 @end
 
@@ -34,8 +34,8 @@ void __39__PLAccountStore_pl_sharedAccountStore__block_invoke()
     queue = v2->_queue;
     v2->_queue = v3;
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v2 selector:sel_accountDidChange_ name:*MEMORY[0x1E69597D8] object:v2];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_accountDidChange_ name:*MEMORY[0x1E69597D8] object:v2];
   }
 
   return v2;
@@ -170,9 +170,9 @@ void __39__PLAccountStore_clearCachedProperties__block_invoke(uint64_t a1)
   *(v1 + 120) = 0;
 }
 
-- (void)accountDidChange:(id)a3
+- (void)accountDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -181,7 +181,7 @@ void __39__PLAccountStore_clearCachedProperties__block_invoke(uint64_t a1)
   }
 
   [(PLAccountStore *)self clearCachedProperties];
-  v6 = [v4 userInfo];
+  userInfo = [changeCopy userInfo];
 
   v7 = PLBackendGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -190,14 +190,14 @@ void __39__PLAccountStore_clearCachedProperties__block_invoke(uint64_t a1)
     _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_DEFAULT, "ACAccountStore accountDidChange. Posting PLAccountStoreDidChange notification.", v9, 2u);
   }
 
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 postNotificationName:@"PLAccountStoreDidChangeNotification" object:self userInfo:v6];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"PLAccountStoreDidChangeNotification" object:self userInfo:userInfo];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PLAccountStore;

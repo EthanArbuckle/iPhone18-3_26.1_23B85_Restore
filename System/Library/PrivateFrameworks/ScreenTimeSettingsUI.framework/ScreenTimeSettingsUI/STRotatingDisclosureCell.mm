@@ -1,17 +1,17 @@
 @interface STRotatingDisclosureCell
-- (STRotatingDisclosureCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)_userPressed:(id)a3;
+- (STRotatingDisclosureCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)_userPressed:(id)pressed;
 - (void)layoutSubviews;
-- (void)setSpecifier:(id)a3;
+- (void)setSpecifier:(id)specifier;
 @end
 
 @implementation STRotatingDisclosureCell
 
-- (STRotatingDisclosureCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (STRotatingDisclosureCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v18.receiver = self;
   v18.super_class = STRotatingDisclosureCell;
-  v4 = [(PSTableCell *)&v18 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PSTableCell *)&v18 initWithStyle:style reuseIdentifier:identifier];
   v5 = [MEMORY[0x277D74310] defaultFontDescriptorWithTextStyle:*MEMORY[0x277D76918]];
   v6 = [v5 fontDescriptorWithSymbolicTraits:2];
 
@@ -20,8 +20,8 @@
   v9 = [MEMORY[0x277D755B8] systemImageNamed:@"chevron.forward"];
   v10 = [v9 imageWithConfiguration:v8];
 
-  v11 = [MEMORY[0x277D75348] tertiaryLabelColor];
-  v12 = [v10 imageWithTintColor:v11];
+  tertiaryLabelColor = [MEMORY[0x277D75348] tertiaryLabelColor];
+  v12 = [v10 imageWithTintColor:tertiaryLabelColor];
   v13 = [v12 imageWithRenderingMode:1];
 
   v14 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v13];
@@ -42,35 +42,35 @@
   v9.receiver = self;
   v9.super_class = STRotatingDisclosureCell;
   [(PSTableCell *)&v9 layoutSubviews];
-  v3 = [(STRotatingDisclosureCell *)self longPressGestureRecognizer];
-  v4 = [(STRotatingDisclosureCell *)self gestureRecognizers];
-  v5 = [v4 containsObject:v3];
+  longPressGestureRecognizer = [(STRotatingDisclosureCell *)self longPressGestureRecognizer];
+  gestureRecognizers = [(STRotatingDisclosureCell *)self gestureRecognizers];
+  v5 = [gestureRecognizers containsObject:longPressGestureRecognizer];
 
   if ((v5 & 1) == 0)
   {
-    [(STRotatingDisclosureCell *)self addGestureRecognizer:v3];
+    [(STRotatingDisclosureCell *)self addGestureRecognizer:longPressGestureRecognizer];
   }
 
-  v6 = [(PSTableCell *)self specifier];
-  v7 = [v6 performGetter];
-  v8 = [(STRotatingDisclosureCell *)self detailTextLabel];
-  [v8 setText:v7];
+  specifier = [(PSTableCell *)self specifier];
+  performGetter = [specifier performGetter];
+  detailTextLabel = [(STRotatingDisclosureCell *)self detailTextLabel];
+  [detailTextLabel setText:performGetter];
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v16.receiver = self;
   v16.super_class = STRotatingDisclosureCell;
-  v4 = a3;
-  [(PSTableCell *)&v16 setSpecifier:v4];
-  v5 = [v4 objectForKeyedSubscript:@"RotationDirection"];
+  specifierCopy = specifier;
+  [(PSTableCell *)&v16 setSpecifier:specifierCopy];
+  v5 = [specifierCopy objectForKeyedSubscript:@"RotationDirection"];
 
-  v6 = [v5 integerValue];
-  v7 = [(STRotatingDisclosureCell *)self editingAccessoryView];
-  v8 = v7;
-  if (v7)
+  integerValue = [v5 integerValue];
+  editingAccessoryView = [(STRotatingDisclosureCell *)self editingAccessoryView];
+  v8 = editingAccessoryView;
+  if (editingAccessoryView)
   {
-    [v7 transform];
+    [editingAccessoryView transform];
   }
 
   else
@@ -86,7 +86,7 @@
   *&t2.tx = v10;
   if (CGAffineTransformEqualToTransform(&t1, &t2))
   {
-    if (v6 == 1)
+    if (integerValue == 1)
     {
       CGAffineTransformMakeRotation(&v13, dbl_264CD1AF0[[(STRotatingDisclosureCell *)self effectiveUserInterfaceLayoutDirection]== 1]);
       *&t1.a = *&v13.a;
@@ -98,7 +98,7 @@ LABEL_9:
     }
   }
 
-  else if (!v6)
+  else if (!integerValue)
   {
     *&t1.a = v12;
     *&t1.c = v11;
@@ -107,21 +107,21 @@ LABEL_9:
   }
 }
 
-- (void)_userPressed:(id)a3
+- (void)_userPressed:(id)pressed
 {
-  v4 = a3;
-  if ([v4 state] == 3)
+  pressedCopy = pressed;
+  if ([pressedCopy state] == 3)
   {
-    v5 = [(PSTableCell *)self specifier];
-    v6 = [v5 objectForKeyedSubscript:@"HidesEditControl"];
-    v7 = [v6 BOOLValue];
+    specifier = [(PSTableCell *)self specifier];
+    v6 = [specifier objectForKeyedSubscript:@"HidesEditControl"];
+    bOOLValue = [v6 BOOLValue];
 
-    v8 = [(STRotatingDisclosureCell *)self effectiveUserInterfaceLayoutDirection];
-    [v4 locationInView:self];
+    effectiveUserInterfaceLayoutDirection = [(STRotatingDisclosureCell *)self effectiveUserInterfaceLayoutDirection];
+    [pressedCopy locationInView:self];
     v10 = v9;
-    v11 = [(STRotatingDisclosureCell *)self imageView];
-    [v11 frame];
-    if (v8 == 1)
+    imageView = [(STRotatingDisclosureCell *)self imageView];
+    [imageView frame];
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v16 = v10 > CGRectGetMinX(*&v12);
     }
@@ -131,13 +131,13 @@ LABEL_9:
       v16 = v10 < CGRectGetMaxX(*&v12);
     }
 
-    if (v7 & 1 | !v16)
+    if (bOOLValue & 1 | !v16)
     {
       memset(&v30, 0, sizeof(v30));
-      v17 = [v5 objectForKeyedSubscript:@"RotationDirection"];
-      v18 = [v17 integerValue];
+      v17 = [specifier objectForKeyedSubscript:@"RotationDirection"];
+      integerValue = [v17 integerValue];
 
-      if (v18 == 1)
+      if (integerValue == 1)
       {
         v19 = 0;
         v21 = *(MEMORY[0x277CBF2C0] + 16);
@@ -146,19 +146,19 @@ LABEL_9:
         *&v30.tx = *(MEMORY[0x277CBF2C0] + 32);
       }
 
-      else if (v18)
+      else if (integerValue)
       {
         v19 = 0;
       }
 
       else
       {
-        CGAffineTransformMakeRotation(&v30, dbl_264CD1AF0[v8 == 1]);
+        CGAffineTransformMakeRotation(&v30, dbl_264CD1AF0[effectiveUserInterfaceLayoutDirection == 1]);
         v19 = 1;
       }
 
       v22 = [MEMORY[0x277CCABB0] numberWithInteger:v19];
-      [v5 setObject:v22 forKeyedSubscript:@"RotationDirection"];
+      [specifier setObject:v22 forKeyedSubscript:@"RotationDirection"];
 
       v23 = MEMORY[0x277D75D18];
       v28[0] = MEMORY[0x277D85DD0];
@@ -171,15 +171,15 @@ LABEL_9:
       v24[1] = 3221225472;
       v24[2] = __41__STRotatingDisclosureCell__userPressed___block_invoke_2;
       v24[3] = &unk_279B7E128;
-      v26 = self;
+      selfCopy = self;
       v27 = v19;
-      v25 = v5;
+      v25 = specifier;
       [v23 animateWithDuration:v28 animations:v24 completion:0.1];
     }
 
     else
     {
-      v20 = [v5 objectForKeyedSubscript:@"SelectionHandler"];
+      v20 = [specifier objectForKeyedSubscript:@"SelectionHandler"];
       if (v20)
       {
         v20[2](v20, [(STRotatingDisclosureCell *)self isSelected]^ 1);

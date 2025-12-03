@@ -2,17 +2,17 @@
 + (BAAssetPackManager)sharedManager;
 - (BAAssetPackManager)init;
 - (BAManagedAssetPackDownloadDelegate)delegate;
-- (id)URLForPath:(id)a3 error:(id *)a4;
-- (id)contentsAtPath:(id)a3 searchingInAssetPackWithIdentifier:(id)a4 options:(unint64_t)a5 error:(id *)a6;
-- (id)init:(id)a3;
-- (int)fileDescriptorForPath:(id)a3 searchingInAssetPackWithIdentifier:(id)a4 error:(id *)a5;
-- (void)checkForUpdatesWithCompletionHandler:(id)a3;
-- (void)ensureLocalAvailabilityOfAssetPack:(BAAssetPack *)a3 completionHandler:(id)a4;
-- (void)getAllAssetPacksWithCompletionHandler:(id)a3;
-- (void)getAssetPackWithIdentifier:(NSString *)a3 completionHandler:(id)a4;
-- (void)getStatusOfAssetPackWithIdentifier:(NSString *)a3 completionHandler:(id)a4;
-- (void)removeAssetPackWithIdentifier:(NSString *)a3 completionHandler:(id)a4;
-- (void)setDelegate:(id)a3;
+- (id)URLForPath:(id)path error:(id *)error;
+- (id)contentsAtPath:(id)path searchingInAssetPackWithIdentifier:(id)identifier options:(unint64_t)options error:(id *)error;
+- (id)init:(id)init;
+- (int)fileDescriptorForPath:(id)path searchingInAssetPackWithIdentifier:(id)identifier error:(id *)error;
+- (void)checkForUpdatesWithCompletionHandler:(id)handler;
+- (void)ensureLocalAvailabilityOfAssetPack:(BAAssetPack *)pack completionHandler:(id)handler;
+- (void)getAllAssetPacksWithCompletionHandler:(id)handler;
+- (void)getAssetPackWithIdentifier:(NSString *)identifier completionHandler:(id)handler;
+- (void)getStatusOfAssetPackWithIdentifier:(NSString *)identifier completionHandler:(id)handler;
+- (void)removeAssetPackWithIdentifier:(NSString *)identifier completionHandler:(id)handler;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation BAAssetPackManager
@@ -33,9 +33,9 @@
   v9.super_class = v4;
 
   v6 = objc_msgSendSuper2(&v9, sel_init);
-  v7 = [v3 init_];
+  init_ = [v3 init_];
 
-  return v7;
+  return init_;
 }
 
 - (BAManagedAssetPackDownloadDelegate)delegate
@@ -45,14 +45,14 @@
   return Strong;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectWeakAssign();
   v4 = (*(self + OBJC_IVAR___BAAssetPackManager_manager) + OBJC_IVAR____TtC16BackgroundAssets16AssetPackManager_objcDelegateReference);
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v4);
-  v6 = [(BAAssetPackManager *)v5 delegate];
+  delegate = [(BAAssetPackManager *)selfCopy delegate];
   swift_unknownObjectWeakAssign();
   swift_unknownObjectRelease();
   os_unfair_lock_unlock(v4);
@@ -60,23 +60,23 @@
   swift_unknownObjectRelease();
 }
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
   swift_unknownObjectWeakInit();
-  *(self + OBJC_IVAR___BAAssetPackManager_manager) = *(a3 + OBJC_IVAR____TtCE16BackgroundAssetsCSo18BAAssetPackManagerP33_E4C11CC13CAE77C9CF02057BBB559E6123AssetPackManagerWrapper_manager);
+  *(self + OBJC_IVAR___BAAssetPackManager_manager) = *(init + OBJC_IVAR____TtCE16BackgroundAssetsCSo18BAAssetPackManagerP33_E4C11CC13CAE77C9CF02057BBB559E6123AssetPackManagerWrapper_manager);
   v6.receiver = self;
   v6.super_class = BAAssetPackManager;
 
   return [(BAAssetPackManager *)&v6 init];
 }
 
-- (void)getAllAssetPacksWithCompletionHandler:(id)a3
+- (void)getAllAssetPacksWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DE87DB0, &qword_236E84C50);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -92,19 +92,19 @@
   v13[3] = 0;
   v13[4] = &unk_236E85110;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_236E7A3F4(0, 0, v8, &unk_236E85118, v13);
 }
 
-- (void)getAssetPackWithIdentifier:(NSString *)a3 completionHandler:(id)a4
+- (void)getAssetPackWithIdentifier:(NSString *)identifier completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DE87DB0, &qword_236E84C50);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = identifier;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_236E82034();
@@ -119,20 +119,20 @@
   v15[3] = 0;
   v15[4] = &unk_236E850E8;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  identifierCopy = identifier;
+  selfCopy = self;
   sub_236E7A3F4(0, 0, v10, &unk_236E850F0, v15);
 }
 
-- (void)getStatusOfAssetPackWithIdentifier:(NSString *)a3 completionHandler:(id)a4
+- (void)getStatusOfAssetPackWithIdentifier:(NSString *)identifier completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DE87DB0, &qword_236E84C50);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = identifier;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_236E82034();
@@ -147,20 +147,20 @@
   v15[3] = 0;
   v15[4] = &unk_236E850C0;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  identifierCopy = identifier;
+  selfCopy = self;
   sub_236E7A3F4(0, 0, v10, &unk_236E850C8, v15);
 }
 
-- (void)ensureLocalAvailabilityOfAssetPack:(BAAssetPack *)a3 completionHandler:(id)a4
+- (void)ensureLocalAvailabilityOfAssetPack:(BAAssetPack *)pack completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DE87DB0, &qword_236E84C50);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = pack;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_236E82034();
@@ -175,18 +175,18 @@
   v15[3] = 0;
   v15[4] = &unk_236E85098;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  packCopy = pack;
+  selfCopy = self;
   sub_236E7A3F4(0, 0, v10, &unk_236E850A0, v15);
 }
 
-- (void)checkForUpdatesWithCompletionHandler:(id)a3
+- (void)checkForUpdatesWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DE87DB0, &qword_236E84C50);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -202,18 +202,18 @@
   v13[3] = 0;
   v13[4] = &unk_236E85070;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_236E7A3F4(0, 0, v8, &unk_236E85078, v13);
 }
 
-- (id)contentsAtPath:(id)a3 searchingInAssetPackWithIdentifier:(id)a4 options:(unint64_t)a5 error:(id *)a6
+- (id)contentsAtPath:(id)path searchingInAssetPackWithIdentifier:(id)identifier options:(unint64_t)options error:(id *)error
 {
   v9 = sub_236E81E94();
   v11 = v10;
-  if (a4)
+  if (identifier)
   {
     v12 = sub_236E81E94();
-    a4 = v13;
+    identifier = v13;
   }
 
   else
@@ -221,8 +221,8 @@
     v12 = 0;
   }
 
-  v14 = self;
-  v15 = sub_236E52500(v9, v11, v12, a4, a5);
+  selfCopy = self;
+  v15 = sub_236E52500(v9, v11, v12, identifier, options);
   v17 = v16;
 
   v18 = sub_236E81A24();
@@ -231,14 +231,14 @@
   return v18;
 }
 
-- (int)fileDescriptorForPath:(id)a3 searchingInAssetPackWithIdentifier:(id)a4 error:(id *)a5
+- (int)fileDescriptorForPath:(id)path searchingInAssetPackWithIdentifier:(id)identifier error:(id *)error
 {
   v8 = sub_236E81E94();
   v10 = v9;
-  if (a4)
+  if (identifier)
   {
     v11 = sub_236E81E94();
-    a4 = v12;
+    identifier = v12;
   }
 
   else
@@ -246,13 +246,13 @@
     v11 = 0;
   }
 
-  v13 = self;
-  v14 = sub_236E52898(v8, v10, v11, a4, a5);
+  selfCopy = self;
+  v14 = sub_236E52898(v8, v10, v11, identifier, error);
 
   return v14;
 }
 
-- (id)URLForPath:(id)a3 error:(id *)a4
+- (id)URLForPath:(id)path error:(id *)error
 {
   v5 = sub_236E819F4();
   v6 = *(v5 - 8);
@@ -261,7 +261,7 @@
   v9 = &v16 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   v10 = sub_236E81E94();
   v12 = v11;
-  v13 = self;
+  selfCopy = self;
   sub_236E52BB8(v10, v12, v9);
 
   v14 = sub_236E819B4();
@@ -270,15 +270,15 @@
   return v14;
 }
 
-- (void)removeAssetPackWithIdentifier:(NSString *)a3 completionHandler:(id)a4
+- (void)removeAssetPackWithIdentifier:(NSString *)identifier completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DE87DB0, &qword_236E84C50);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = identifier;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_236E82034();
@@ -293,8 +293,8 @@
   v15[3] = 0;
   v15[4] = &unk_236E85048;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  identifierCopy = identifier;
+  selfCopy = self;
   sub_236E7A3F4(0, 0, v10, &unk_236E85050, v15);
 }
 

@@ -9,7 +9,7 @@
 - (void)dragEnded;
 - (void)dragMoved;
 - (void)dragSessionStarted;
-- (void)dragStatusChanged:(id)a3;
+- (void)dragStatusChanged:(id)changed;
 @end
 
 @implementation VOTDragOutputManager
@@ -62,17 +62,17 @@
   dispatch_async(queue, block);
 }
 
-- (void)dragStatusChanged:(id)a3
+- (void)dragStatusChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000F2AD0;
   v7[3] = &unk_1001C7778;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changedCopy;
+  v6 = changedCopy;
   dispatch_async(queue, v7);
 }
 

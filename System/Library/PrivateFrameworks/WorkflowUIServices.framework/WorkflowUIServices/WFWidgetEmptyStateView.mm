@@ -1,10 +1,10 @@
 @interface WFWidgetEmptyStateView
-- (WFWidgetEmptyStateView)initWithTitle:(id)a3;
+- (WFWidgetEmptyStateView)initWithTitle:(id)title;
 - (WFWidgetEmptyStateViewDelegate)delegate;
 - (void)handleTapGesture;
 - (void)layoutSubviews;
-- (void)setTitleString:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setTitleString:(id)string;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation WFWidgetEmptyStateView
@@ -16,26 +16,26 @@
   return WeakRetained;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v13.receiver = self;
   v13.super_class = WFWidgetEmptyStateView;
-  [(WFWidgetEmptyStateView *)&v13 traitCollectionDidChange:v4];
-  v5 = [v4 preferredContentSizeCategory];
-  v6 = [(WFWidgetEmptyStateView *)self traitCollection];
-  v7 = [v6 preferredContentSizeCategory];
-  v8 = v7;
-  if (v5 == v7)
+  [(WFWidgetEmptyStateView *)&v13 traitCollectionDidChange:changeCopy];
+  preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
+  traitCollection = [(WFWidgetEmptyStateView *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
+  v8 = preferredContentSizeCategory2;
+  if (preferredContentSizeCategory == preferredContentSizeCategory2)
   {
   }
 
   else
   {
-    v9 = [v4 preferredContentSizeCategory];
-    v10 = [(WFWidgetEmptyStateView *)self traitCollection];
-    v11 = [v10 preferredContentSizeCategory];
-    v12 = [v9 isEqualToString:v11];
+    preferredContentSizeCategory3 = [changeCopy preferredContentSizeCategory];
+    traitCollection2 = [(WFWidgetEmptyStateView *)self traitCollection];
+    preferredContentSizeCategory4 = [traitCollection2 preferredContentSizeCategory];
+    v12 = [preferredContentSizeCategory3 isEqualToString:preferredContentSizeCategory4];
 
     if ((v12 & 1) == 0)
     {
@@ -44,13 +44,13 @@
   }
 }
 
-- (void)setTitleString:(id)a3
+- (void)setTitleString:(id)string
 {
-  v4 = a3;
-  v5 = [(WFWidgetEmptyStateView *)self titleLabel];
-  v6 = [v5 text];
-  v10 = v4;
-  v7 = v6;
+  stringCopy = string;
+  titleLabel = [(WFWidgetEmptyStateView *)self titleLabel];
+  text = [titleLabel text];
+  v10 = stringCopy;
+  v7 = text;
   if (v7 == v10)
   {
 
@@ -68,8 +68,8 @@
   if ((v8 & 1) == 0)
   {
 LABEL_8:
-    v9 = [(WFWidgetEmptyStateView *)self titleLabel];
-    [v9 setText:v10];
+    titleLabel2 = [(WFWidgetEmptyStateView *)self titleLabel];
+    [titleLabel2 setText:v10];
 
     [(WFWidgetEmptyStateView *)self setNeedsLayout];
   }
@@ -79,13 +79,13 @@ LABEL_9:
 
 - (void)handleTapGesture
 {
-  v3 = [(WFWidgetEmptyStateView *)self delegate];
+  delegate = [(WFWidgetEmptyStateView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(WFWidgetEmptyStateView *)self delegate];
-    [v5 emptyStateViewWasTapped:self];
+    delegate2 = [(WFWidgetEmptyStateView *)self delegate];
+    [delegate2 emptyStateViewWasTapped:self];
   }
 }
 
@@ -94,48 +94,48 @@ LABEL_9:
   v26.receiver = self;
   v26.super_class = WFWidgetEmptyStateView;
   [(WFWidgetEmptyStateView *)&v26 layoutSubviews];
-  v3 = [(WFWidgetEmptyStateView *)self titleLabel];
-  [v3 sizeToFit];
+  titleLabel = [(WFWidgetEmptyStateView *)self titleLabel];
+  [titleLabel sizeToFit];
 
-  v4 = [(WFWidgetEmptyStateView *)self iconView];
-  v5 = [v4 image];
-  [v5 size];
+  iconView = [(WFWidgetEmptyStateView *)self iconView];
+  image = [iconView image];
+  [image size];
   v7 = v6;
 
-  v8 = [(WFWidgetEmptyStateView *)self iconView];
-  v9 = [v8 image];
-  [v9 size];
+  iconView2 = [(WFWidgetEmptyStateView *)self iconView];
+  image2 = [iconView2 image];
+  [image2 size];
   v11 = v10;
 
-  v12 = [(WFWidgetEmptyStateView *)self titleLabel];
-  [v12 frame];
+  titleLabel2 = [(WFWidgetEmptyStateView *)self titleLabel];
+  [titleLabel2 frame];
   v14 = v13;
 
   [(WFWidgetEmptyStateView *)self bounds];
-  v15 = [(WFWidgetEmptyStateView *)self traitCollection];
-  [v15 displayScale];
+  traitCollection = [(WFWidgetEmptyStateView *)self traitCollection];
+  [traitCollection displayScale];
   BSFloatRoundForScale();
   v17 = v16;
 
   [(WFWidgetEmptyStateView *)self bounds];
-  v18 = [(WFWidgetEmptyStateView *)self traitCollection];
-  [v18 displayScale];
+  traitCollection2 = [(WFWidgetEmptyStateView *)self traitCollection];
+  [traitCollection2 displayScale];
   BSFloatRoundForScale();
   v20 = v19;
 
-  v21 = [(WFWidgetEmptyStateView *)self iconView];
-  [v21 setFrame:{v20, v17, v7, v11}];
+  iconView3 = [(WFWidgetEmptyStateView *)self iconView];
+  [iconView3 setFrame:{v20, v17, v7, v11}];
 
   v22 = v11 + v17 + 9.0;
   [(WFWidgetEmptyStateView *)self bounds];
   v24 = v23;
-  v25 = [(WFWidgetEmptyStateView *)self titleLabel];
-  [v25 setFrame:{0.0, v22, v24, v14}];
+  titleLabel3 = [(WFWidgetEmptyStateView *)self titleLabel];
+  [titleLabel3 setFrame:{0.0, v22, v24, v14}];
 }
 
-- (WFWidgetEmptyStateView)initWithTitle:(id)a3
+- (WFWidgetEmptyStateView)initWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v27.receiver = self;
   v27.super_class = WFWidgetEmptyStateView;
   v5 = [(WFWidgetEmptyStateView *)&v27 init];
@@ -143,8 +143,8 @@ LABEL_9:
   {
     v6 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     [(UIImageView *)v6 setContentMode:1];
-    v7 = [MEMORY[0x1E69DC888] labelColor];
-    [(UIImageView *)v6 setTintColor:v7];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UIImageView *)v6 setTintColor:labelColor];
 
     [(UIImageView *)v6 setClipsToBounds:1];
     [(WFWidgetEmptyStateView *)v5 addSubview:v6];
@@ -153,11 +153,11 @@ LABEL_9:
     v9 = v6;
 
     v10 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-    v11 = [v4 copy];
+    v11 = [titleCopy copy];
     [(UILabel *)v10 setText:v11];
 
-    v12 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v10 setTextColor:v12];
+    labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v10 setTextColor:labelColor2];
 
     [(UILabel *)v10 setNumberOfLines:2];
     [(UILabel *)v10 setTextAlignment:1];
@@ -178,8 +178,8 @@ LABEL_9:
     v20 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:6 weight:34.0];
     v21 = [MEMORY[0x1E69DCAB8] _systemImageNamed:@"app.2.stack.3d"];
     v22 = [v21 imageWithConfiguration:v20];
-    v23 = [(WFWidgetEmptyStateView *)v5 iconView];
-    [v23 setImage:v22];
+    iconView = [(WFWidgetEmptyStateView *)v5 iconView];
+    [iconView setImage:v22];
 
     v24 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v5 action:sel_handleTapGesture];
     [(WFWidgetEmptyStateView *)v5 addGestureRecognizer:v24];

@@ -1,6 +1,6 @@
 @interface ASCOfferBackgroundStyle
 + (id)defaultStyle;
-+ (id)fixedCornerRadiusStyle:(double)a3;
++ (id)fixedCornerRadiusStyle:(double)style;
 - (ASCOfferBackgroundStyle)init;
 - (id)_init;
 @end
@@ -28,9 +28,9 @@
   return v2;
 }
 
-+ (id)fixedCornerRadiusStyle:(double)a3
++ (id)fixedCornerRadiusStyle:(double)style
 {
-  v3 = [[ASCFixedCornerRadiusOfferBackgroundStyle alloc] initWithCornerRadius:a3];
+  v3 = [[ASCFixedCornerRadiusOfferBackgroundStyle alloc] initWithCornerRadius:style];
 
   return v3;
 }

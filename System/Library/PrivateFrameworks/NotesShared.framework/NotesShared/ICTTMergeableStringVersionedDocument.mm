@@ -1,9 +1,9 @@
 @interface ICTTMergeableStringVersionedDocument
 - (ICTTMergeableAttributedString)mergeableString;
-- (ICTTMergeableStringVersionedDocument)initWithMergeableString:(id)a3;
-- (id)serializeCurrentVersion:(unsigned int *)a3;
-- (unint64_t)mergeWithStringVersionedDocument:(id)a3;
-- (void)mergeVersion:(unsigned int)a3 fromData:(id)a4;
+- (ICTTMergeableStringVersionedDocument)initWithMergeableString:(id)string;
+- (id)serializeCurrentVersion:(unsigned int *)version;
+- (unint64_t)mergeWithStringVersionedDocument:(id)document;
+- (void)mergeVersion:(unsigned int)version fromData:(id)data;
 @end
 
 @implementation ICTTMergeableStringVersionedDocument
@@ -14,8 +14,8 @@
   if (!mergeableString)
   {
     v4 = [ICTTMergeableAttributedString alloc];
-    v5 = [(ICTTVersionedDocument *)self replicaID];
-    v6 = [(ICTTMergeableString *)v4 initWithReplicaID:v5];
+    replicaID = [(ICTTVersionedDocument *)self replicaID];
+    v6 = [(ICTTMergeableString *)v4 initWithReplicaID:replicaID];
     v7 = self->_mergeableString;
     self->_mergeableString = v6;
 
@@ -25,60 +25,60 @@
   return mergeableString;
 }
 
-- (ICTTMergeableStringVersionedDocument)initWithMergeableString:(id)a3
+- (ICTTMergeableStringVersionedDocument)initWithMergeableString:(id)string
 {
-  v5 = a3;
-  v6 = [v5 replicaUUID];
+  stringCopy = string;
+  replicaUUID = [stringCopy replicaUUID];
   v9.receiver = self;
   v9.super_class = ICTTMergeableStringVersionedDocument;
-  v7 = [(ICTTVersionedDocument *)&v9 initWithData:0 replicaID:v6];
+  v7 = [(ICTTVersionedDocument *)&v9 initWithData:0 replicaID:replicaUUID];
 
   if (v7)
   {
-    objc_storeStrong(&v7->_mergeableString, a3);
+    objc_storeStrong(&v7->_mergeableString, string);
   }
 
   return v7;
 }
 
-- (unint64_t)mergeWithStringVersionedDocument:(id)a3
+- (unint64_t)mergeWithStringVersionedDocument:(id)document
 {
-  v4 = a3;
-  v5 = [(ICTTMergeableStringVersionedDocument *)self mergeableString];
-  v6 = [v4 mergeableString];
-  v7 = [v5 mergeWithString:v6];
+  documentCopy = document;
+  mergeableString = [(ICTTMergeableStringVersionedDocument *)self mergeableString];
+  mergeableString2 = [documentCopy mergeableString];
+  v7 = [mergeableString mergeWithString:mergeableString2];
 
   if (v7)
   {
     v9.receiver = self;
     v9.super_class = ICTTMergeableStringVersionedDocument;
-    [(ICTTVersionedDocument *)&v9 mergeWithVersionedDocument:v4];
+    [(ICTTVersionedDocument *)&v9 mergeWithVersionedDocument:documentCopy];
   }
 
   return v7;
 }
 
-- (void)mergeVersion:(unsigned int)a3 fromData:(id)a4
+- (void)mergeVersion:(unsigned int)version fromData:(id)data
 {
-  v9 = a4;
+  dataCopy = data;
   v5 = [ICTTMergeableAttributedString alloc];
-  v6 = [MEMORY[0x277CCAD78] UUID];
-  v7 = [(ICTTMergeableString *)v5 initWithData:v9 replicaID:v6];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v7 = [(ICTTMergeableString *)v5 initWithData:dataCopy replicaID:uUID];
 
   if (v7)
   {
-    v8 = [(ICTTMergeableStringVersionedDocument *)self mergeableString];
-    [v8 mergeWithString:v7];
+    mergeableString = [(ICTTMergeableStringVersionedDocument *)self mergeableString];
+    [mergeableString mergeWithString:v7];
   }
 }
 
-- (id)serializeCurrentVersion:(unsigned int *)a3
+- (id)serializeCurrentVersion:(unsigned int *)version
 {
-  *a3 = +[ICTTMergeableStringVersionedDocument serializationVersion];
-  v4 = [(ICTTMergeableStringVersionedDocument *)self mergeableString];
-  v5 = [v4 serialize];
+  *version = +[ICTTMergeableStringVersionedDocument serializationVersion];
+  mergeableString = [(ICTTMergeableStringVersionedDocument *)self mergeableString];
+  serialize = [mergeableString serialize];
 
-  return v5;
+  return serialize;
 }
 
 @end

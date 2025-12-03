@@ -1,21 +1,21 @@
 @interface WFICAppPrefixMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
 - (void)migrateWorkflow;
 @end
 
 @implementation WFICAppPrefixMigration
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ((WFCompareBundleVersions(a4, @"128") - 1) >= 2)
+  migrationCopy = migration;
+  if ((WFCompareBundleVersions(version, @"128") - 1) >= 2)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = [v5 objectForKey:{@"WFWorkflowActions", 0}];
+    v7 = [migrationCopy objectForKey:{@"WFWorkflowActions", 0}];
     v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
@@ -91,8 +91,8 @@ LABEL_17:
 
         v20 = v2;
         v3 = *(*(&v26 + 1) + 8 * v2);
-        v4 = [(WFWorkflowMigration *)self actionIdentifierKey];
-        v5 = [v3 objectForKey:v4];
+        actionIdentifierKey = [(WFWorkflowMigration *)self actionIdentifierKey];
+        v5 = [v3 objectForKey:actionIdentifierKey];
 
         v31[0] = @"com.tapbots.Tweetbot3";
         v31[1] = @"com.tapbots.TweetbotPad";
@@ -107,8 +107,8 @@ LABEL_17:
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v7 = [v6 allKeys];
-        v8 = [v7 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        allKeys = [v6 allKeys];
+        v8 = [allKeys countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v8)
         {
           v9 = v8;
@@ -119,7 +119,7 @@ LABEL_17:
             {
               if (*v23 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(allKeys);
               }
 
               v12 = *(*(&v22 + 1) + 8 * i);
@@ -127,12 +127,12 @@ LABEL_17:
               {
                 v13 = [v6 objectForKey:v12];
                 v14 = [v5 stringByReplacingOccurrencesOfString:v12 withString:v13];
-                v15 = [(WFWorkflowMigration *)self actionIdentifierKey];
-                [v3 setObject:v14 forKeyedSubscript:v15];
+                actionIdentifierKey2 = [(WFWorkflowMigration *)self actionIdentifierKey];
+                [v3 setObject:v14 forKeyedSubscript:actionIdentifierKey2];
               }
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v22 objects:v30 count:16];
+            v9 = [allKeys countByEnumeratingWithState:&v22 objects:v30 count:16];
           }
 
           while (v9);

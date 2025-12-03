@@ -1,35 +1,35 @@
 @interface SecureWindow
-- (_TtC21AppleIDSetupUIService12SecureWindow)initWithCoder:(id)a3;
-- (_TtC21AppleIDSetupUIService12SecureWindow)initWithFrame:(CGRect)a3;
-- (_TtC21AppleIDSetupUIService12SecureWindow)initWithWindowScene:(id)a3;
+- (_TtC21AppleIDSetupUIService12SecureWindow)initWithCoder:(id)coder;
+- (_TtC21AppleIDSetupUIService12SecureWindow)initWithFrame:(CGRect)frame;
+- (_TtC21AppleIDSetupUIService12SecureWindow)initWithWindowScene:(id)scene;
 @end
 
 @implementation SecureWindow
 
-- (_TtC21AppleIDSetupUIService12SecureWindow)initWithWindowScene:(id)a3
+- (_TtC21AppleIDSetupUIService12SecureWindow)initWithWindowScene:(id)scene
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for SecureWindow();
-  return [(SecureWindow *)&v5 initWithWindowScene:a3];
+  return [(SecureWindow *)&v5 initWithWindowScene:scene];
 }
 
-- (_TtC21AppleIDSetupUIService12SecureWindow)initWithFrame:(CGRect)a3
+- (_TtC21AppleIDSetupUIService12SecureWindow)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for SecureWindow();
   return [(SecureWindow *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC21AppleIDSetupUIService12SecureWindow)initWithCoder:(id)a3
+- (_TtC21AppleIDSetupUIService12SecureWindow)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for SecureWindow();
-  v4 = a3;
-  v5 = [(SecureWindow *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(SecureWindow *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

@@ -1,9 +1,9 @@
 @interface NUListPattern
-- (BOOL)isEqualToListPattern:(id)a3;
-- (BOOL)isEqualToPattern:(id)a3;
+- (BOOL)isEqualToListPattern:(id)pattern;
+- (BOOL)isEqualToPattern:(id)pattern;
 - (BOOL)isFixedOrder;
-- (BOOL)match:(id)a3 location:(unint64_t *)a4 count:(unint64_t *)a5;
-- (NUListPattern)initWithList:(id)a3;
+- (BOOL)match:(id)match location:(unint64_t *)location count:(unint64_t *)count;
+- (NUListPattern)initWithList:(id)list;
 - (id)optimizedPattern;
 - (id)shortestMatch;
 - (id)stringRepresentation;
@@ -12,10 +12,10 @@
 
 @implementation NUListPattern
 
-- (BOOL)match:(id)a3 location:(unint64_t *)a4 count:(unint64_t *)a5
+- (BOOL)match:(id)match location:(unint64_t *)location count:(unint64_t *)count
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  matchCopy = match;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -38,7 +38,7 @@
 
         v15 = *(*(&v19 + 1) + 8 * i);
         v18 = 0;
-        if (![v15 match:v8 location:a4 count:&v18])
+        if (![v15 match:matchCopy location:location count:&v18])
         {
           v16 = 0;
           goto LABEL_13;
@@ -65,25 +65,25 @@
   v16 = 1;
 LABEL_13:
 
-  *a5 = v12;
+  *count = v12;
   return v16;
 }
 
-- (BOOL)isEqualToListPattern:(id)a3
+- (BOOL)isEqualToListPattern:(id)pattern
 {
-  v4 = a3;
-  v5 = [(NUListPattern *)self list];
-  v6 = [v4 list];
+  patternCopy = pattern;
+  list = [(NUListPattern *)self list];
+  list2 = [patternCopy list];
 
-  LOBYTE(v4) = [v5 isEqualToArray:v6];
-  return v4;
+  LOBYTE(patternCopy) = [list isEqualToArray:list2];
+  return patternCopy;
 }
 
-- (BOOL)isEqualToPattern:(id)a3
+- (BOOL)isEqualToPattern:(id)pattern
 {
-  v4 = a3;
+  patternCopy = pattern;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUListPattern *)self isEqualToListPattern:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUListPattern *)self isEqualToListPattern:patternCopy];
 
   return v5;
 }
@@ -111,8 +111,8 @@ LABEL_13:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * i) stringRepresentation];
-        [v3 addObject:v9];
+        stringRepresentation = [*(*(&v14 + 1) + 8 * i) stringRepresentation];
+        [v3 addObject:stringRepresentation];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -151,10 +151,10 @@ LABEL_13:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) optimizedPattern];
-        if (([v9 isEmpty] & 1) == 0)
+        optimizedPattern = [*(*(&v13 + 1) + 8 * i) optimizedPattern];
+        if (([optimizedPattern isEmpty] & 1) == 0)
         {
-          [v3 addObject:v9];
+          [v3 addObject:optimizedPattern];
         }
       }
 
@@ -210,16 +210,16 @@ LABEL_13:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) shortestMatch];
-        if (!v9)
+        shortestMatch = [*(*(&v13 + 1) + 8 * i) shortestMatch];
+        if (!shortestMatch)
         {
 
           v11 = 0;
           goto LABEL_11;
         }
 
-        v10 = v9;
-        [v3 addObjectsFromArray:v9];
+        v10 = shortestMatch;
+        [v3 addObjectsFromArray:shortestMatch];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -306,8 +306,8 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) tokens];
-        [v3 unionSet:v9];
+        tokens = [*(*(&v11 + 1) + 8 * i) tokens];
+        [v3 unionSet:tokens];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -319,11 +319,11 @@ LABEL_11:
   return v3;
 }
 
-- (NUListPattern)initWithList:(id)a3
+- (NUListPattern)initWithList:(id)list
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  listCopy = list;
+  if (!listCopy)
   {
     v10 = NUAssertLogger_5128();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -344,8 +344,8 @@ LABEL_11:
         v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v18 = MEMORY[0x1E696AF00];
         v19 = v17;
-        v20 = [v18 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v18 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v28 = v17;
         v29 = 2114;
@@ -356,8 +356,8 @@ LABEL_11:
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v16;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -366,7 +366,7 @@ LABEL_11:
     _NUAssertFailHandler("[NUListPattern initWithList:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUPattern.m", 302, @"Invalid parameter not satisfying: %s", v22, v23, v24, v25, "list != nil");
   }
 
-  v5 = v4;
+  v5 = listCopy;
   v26.receiver = self;
   v26.super_class = NUListPattern;
   v6 = [(NUListPattern *)&v26 init];

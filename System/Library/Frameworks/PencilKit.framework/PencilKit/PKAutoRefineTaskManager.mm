@@ -1,14 +1,14 @@
 @interface PKAutoRefineTaskManager
-- (BOOL)isTrackingQueryItemIdenticalToQueryItem:(void *)a1;
+- (BOOL)isTrackingQueryItemIdenticalToQueryItem:(void *)item;
 - (PKAutoRefineTaskManager)init;
-- (void)autoRefineTask:(id)a3 isReadyToSynthesizeRefinedDrawingForStrokes:(id)a4 transcription:(id)a5 drawingUUID:(id)a6;
+- (void)autoRefineTask:(id)task isReadyToSynthesizeRefinedDrawingForStrokes:(id)strokes transcription:(id)transcription drawingUUID:(id)d;
 - (void)cancelAllTasks;
-- (void)cancelTasksGivenQueryItem:(void *)a1;
-- (void)cancelTasksGivenRefinableStroke:(void *)a1;
+- (void)cancelTasksGivenQueryItem:(void *)item;
+- (void)cancelTasksGivenRefinableStroke:(void *)stroke;
 - (void)dealloc;
 - (void)hasOngoingAnimationTask;
-- (void)scheduleAutoRefineTaskForItem:(uint64_t)a3 firstColumnToCommit:(uint64_t)a4 lastColumnToCommit:(void *)a5 providerVersion:(void *)a6 delay:(double)a7 taskInitBlock:;
-- (void)setCurrentDrawingUUID:(uint64_t)a1;
+- (void)scheduleAutoRefineTaskForItem:(uint64_t)item firstColumnToCommit:(uint64_t)commit lastColumnToCommit:(void *)toCommit providerVersion:(void *)version delay:(double)delay taskInitBlock:;
+- (void)setCurrentDrawingUUID:(uint64_t)d;
 @end
 
 @implementation PKAutoRefineTaskManager
@@ -64,13 +64,13 @@
   [(PKAutoRefineTaskManager *)&v7 dealloc];
 }
 
-- (void)scheduleAutoRefineTaskForItem:(uint64_t)a3 firstColumnToCommit:(uint64_t)a4 lastColumnToCommit:(void *)a5 providerVersion:(void *)a6 delay:(double)a7 taskInitBlock:
+- (void)scheduleAutoRefineTaskForItem:(uint64_t)item firstColumnToCommit:(uint64_t)commit lastColumnToCommit:(void *)toCommit providerVersion:(void *)version delay:(double)delay taskInitBlock:
 {
   v88 = *MEMORY[0x1E69E9840];
   v60 = a2;
-  v59 = a5;
-  v58 = a6;
-  if (a1)
+  toCommitCopy = toCommit;
+  versionCopy = version;
+  if (self)
   {
     v13 = os_log_create("com.apple.pencilkit", "AutoRefine");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -82,11 +82,11 @@
       }
 
       v43 = v42;
-      v44 = [v43 refinableTranscription];
-      v45 = *(a1 + 16);
-      v46 = [*(a1 + 24) count];
+      refinableTranscription = [v43 refinableTranscription];
+      v45 = *(self + 16);
+      v46 = [*(self + 24) count];
       *buf = 138740483;
-      v79 = v44;
+      v79 = refinableTranscription;
       v80 = 1024;
       *v81 = v45 != 0;
       *&v81[4] = 2048;
@@ -101,7 +101,7 @@
     v68 = __Block_byref_object_dispose__141;
     v14 = [PKAutoRefineTask alloc];
     v56 = v60;
-    v57 = v59;
+    v57 = toCommitCopy;
     if (v14)
     {
       v77.receiver = v14;
@@ -113,10 +113,10 @@
       {
         *(v15 + 52) = 0;
         objc_storeStrong(v15 + 1, a2);
-        *(v17 + 32) = a3;
-        *(v17 + 40) = a4;
-        *(v17 + 16) = a3;
-        *(v17 + 24) = a4;
+        *(v17 + 32) = item;
+        *(v17 + 40) = commit;
+        *(v17 + 16) = item;
+        *(v17 + 24) = commit;
         v18 = v16[1];
         if (v18)
         {
@@ -128,14 +128,14 @@
         v21 = [v19 indexSetWithIndexesInRange:{0, objc_msgSend(v20, "tokenColumnCount")}];
         v54 = [v21 mutableCopy];
 
-        v22 = [MEMORY[0x1E696AD50] indexSet];
+        indexSet = [MEMORY[0x1E696AD50] indexSet];
         v74[0] = MEMORY[0x1E69E9820];
         v74[1] = 3221225472;
         v74[2] = __93__PKAutoRefineTask_initWithQueryItem_firstColumnToCommit_lastColumnToCommit_providerVersion___block_invoke;
         v74[3] = &unk_1E82DB190;
         v23 = v17;
         v75 = v23;
-        v24 = v22;
+        v24 = indexSet;
         v76 = v24;
         [v54 enumerateIndexesUsingBlock:v74];
         v25 = os_log_create("com.apple.pencilkit", "AutoRefine");
@@ -181,7 +181,7 @@
           *(v17 + 104) = 1;
         }
 
-        objc_storeStrong(v23 + 6, a5);
+        objc_storeStrong(v23 + 6, toCommit);
         v27 = os_log_create("com.apple.pencilkit", "AutoRefine");
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
         {
@@ -192,22 +192,22 @@
           }
 
           v29 = v28;
-          v30 = [v29 topTranscription];
+          topTranscription = [v29 topTranscription];
           v31 = *(v17 + 32);
           v32 = *(v17 + 40);
           v33 = *(v17 + 104) ^ 1;
           *buf = 134219523;
           v79 = v23;
           v80 = 2117;
-          *v81 = v30;
+          *v81 = topTranscription;
           *&v81[8] = 2048;
           *&v81[10] = v31;
           *&v81[18] = 2048;
           *&v81[20] = v32;
           v82 = 2048;
-          v83 = a3;
+          itemCopy = item;
           v84 = 2048;
-          v85 = a4;
+          commitCopy = commit;
           v86 = 1024;
           v87 = v33;
           _os_log_impl(&dword_1C7CCA000, v27, OS_LOG_TYPE_DEFAULT, "New AutoRefine task created %p with text transcription _%{sensitive}@_, columns to commit (%ld-%ld) from initial columns (%ld-%ld), task valid ? %d", buf, 0x44u);
@@ -239,24 +239,24 @@
     v37 = v65[5];
     if (v37)
     {
-      objc_storeWeak((v37 + 112), a1);
+      objc_storeWeak((v37 + 112), self);
     }
 
-    v38 = a1;
-    objc_sync_enter(v38);
-    [*(v38 + 3) addObject:v65[5]];
-    objc_sync_exit(v38);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [*(selfCopy + 3) addObject:v65[5]];
+    objc_sync_exit(selfCopy);
 
     v39 = os_log_create("com.apple.pencilkit", "AutoRefine");
     if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
     {
       v47 = v65[5];
-      v48 = *(v38 + 2);
-      v49 = [*(v38 + 3) count];
+      v48 = *(selfCopy + 2);
+      v49 = [*(selfCopy + 3) count];
       *buf = 134218752;
       v79 = v47;
       v80 = 2048;
-      *v81 = a7;
+      *v81 = delay;
       *&v81[8] = 1024;
       *&v81[10] = v48 != 0;
       *&v81[14] = 2048;
@@ -264,15 +264,15 @@
       _os_log_debug_impl(&dword_1C7CCA000, v39, OS_LOG_TYPE_DEBUG, "AutoRefine taskManager scheduling task %p for execution with delay = %.2f, has active task ? %d, %ld tasks", buf, 0x26u);
     }
 
-    v40 = dispatch_time(0, (a7 * 1000000000.0));
-    v41 = *(v38 + 1);
+    v40 = dispatch_time(0, (delay * 1000000000.0));
+    v41 = *(selfCopy + 1);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __132__PKAutoRefineTaskManager_scheduleAutoRefineTaskForItem_firstColumnToCommit_lastColumnToCommit_providerVersion_delay_taskInitBlock___block_invoke;
     block[3] = &unk_1E82DB280;
     v63 = &v64;
-    block[4] = v38;
-    v62 = v58;
+    block[4] = selfCopy;
+    v62 = versionCopy;
     dispatch_after(v40, v41, block);
 
     _Block_object_dispose(&v64, 8);
@@ -575,7 +575,7 @@ uint64_t __45__PKAutoRefineTaskManager_updatePendingTasks__block_invoke(uint64_t
 - (void)cancelAllTasks
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = os_log_create("com.apple.pencilkit", "AutoRefine");
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
@@ -584,17 +584,17 @@ uint64_t __45__PKAutoRefineTaskManager_updatePendingTasks__block_invoke(uint64_t
       _os_log_debug_impl(&dword_1C7CCA000, v2, OS_LOG_TYPE_DEBUG, "Cancel all tasks", buf, 2u);
     }
 
-    v3 = a1;
-    objc_sync_enter(v3);
-    [(PKAutoRefineTask *)*(v3 + 2) cancel];
-    v4 = *(v3 + 2);
-    *(v3 + 2) = 0;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(PKAutoRefineTask *)*(selfCopy + 2) cancel];
+    v4 = *(selfCopy + 2);
+    *(selfCopy + 2) = 0;
 
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = *(v3 + 3);
+    v5 = *(selfCopy + 3);
     v6 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
     if (v6)
     {
@@ -619,34 +619,34 @@ uint64_t __45__PKAutoRefineTaskManager_updatePendingTasks__block_invoke(uint64_t
       while (v6);
     }
 
-    [*(v3 + 3) removeAllObjects];
+    [*(selfCopy + 3) removeAllObjects];
     v9 = +[PKHandwritingSynthesisLogger sharedHandwritingSynthesisLogger];
     [(PKHandwritingSynthesisLogger *)v9 clearAllEntries];
 
-    objc_sync_exit(v3);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (BOOL)isTrackingQueryItemIdenticalToQueryItem:(void *)a1
+- (BOOL)isTrackingQueryItemIdenticalToQueryItem:(void *)item
 {
   v3 = a2;
-  if (a1)
+  if (item)
   {
-    v4 = a1;
-    objc_sync_enter(v4);
-    v5 = *(v4 + 2);
+    itemCopy = item;
+    objc_sync_enter(itemCopy);
+    v5 = *(itemCopy + 2);
     if (v5 && (*(v5 + 104) & 1) != 0 || ([(PKAutoRefineTask *)v5 queryItemIsEqualToQueryItem:v3]& 1) == 0)
     {
       for (i = 0; ; ++i)
       {
-        v9 = [*(v4 + 3) count];
+        v9 = [*(itemCopy + 3) count];
         v6 = i < v9;
         if (i >= v9)
         {
           break;
         }
 
-        v10 = [*(v4 + 3) objectAtIndex:i];
+        v10 = [*(itemCopy + 3) objectAtIndex:i];
         v11 = [(PKAutoRefineTask *)v10 queryItemIsEqualToQueryItem:v3];
 
         if (v11)
@@ -661,7 +661,7 @@ uint64_t __45__PKAutoRefineTaskManager_updatePendingTasks__block_invoke(uint64_t
       v6 = 1;
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(itemCopy);
   }
 
   else
@@ -672,14 +672,14 @@ uint64_t __45__PKAutoRefineTaskManager_updatePendingTasks__block_invoke(uint64_t
   return v6;
 }
 
-- (void)cancelTasksGivenQueryItem:(void *)a1
+- (void)cancelTasksGivenQueryItem:(void *)item
 {
   v3 = a2;
-  if (a1)
+  if (item)
   {
-    v4 = a1;
-    objc_sync_enter(v4);
-    v5 = *(v4 + 2);
+    itemCopy = item;
+    objc_sync_enter(itemCopy);
+    v5 = *(itemCopy + 2);
     if (!v5 || (*(v5 + 104) & 1) == 0)
     {
       v14 = 0;
@@ -693,13 +693,13 @@ uint64_t __45__PKAutoRefineTaskManager_updatePendingTasks__block_invoke(uint64_t
           _os_log_debug_impl(&dword_1C7CCA000, v6, OS_LOG_TYPE_DEBUG, "Cancel active task given query item.", buf, 2u);
         }
 
-        [(PKAutoRefineTask *)*(v4 + 2) cancel];
+        [(PKAutoRefineTask *)*(itemCopy + 2) cancel];
       }
     }
 
-    for (i = 0; i < [*(v4 + 3) count]; ++i)
+    for (i = 0; i < [*(itemCopy + 3) count]; ++i)
     {
-      v8 = [*(v4 + 3) objectAtIndex:i];
+      v8 = [*(itemCopy + 3) objectAtIndex:i];
       v9 = v8;
       if (!v8 || (*(v8 + 104) & 1) == 0)
       {
@@ -719,18 +719,18 @@ uint64_t __45__PKAutoRefineTaskManager_updatePendingTasks__block_invoke(uint64_t
       }
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(itemCopy);
   }
 }
 
-- (void)cancelTasksGivenRefinableStroke:(void *)a1
+- (void)cancelTasksGivenRefinableStroke:(void *)stroke
 {
   v3 = a2;
-  if (a1)
+  if (stroke)
   {
-    v4 = a1;
-    objc_sync_enter(v4);
-    v5 = *(v4 + 2);
+    strokeCopy = stroke;
+    objc_sync_enter(strokeCopy);
+    v5 = *(strokeCopy + 2);
     if (!v5 || (*(v5 + 104) & 1) == 0)
     {
       v14 = 0;
@@ -744,13 +744,13 @@ uint64_t __45__PKAutoRefineTaskManager_updatePendingTasks__block_invoke(uint64_t
           _os_log_debug_impl(&dword_1C7CCA000, v6, OS_LOG_TYPE_DEBUG, "Cancel active task given refinable stroke.", buf, 2u);
         }
 
-        [(PKAutoRefineTask *)*(v4 + 2) cancel];
+        [(PKAutoRefineTask *)*(strokeCopy + 2) cancel];
       }
     }
 
-    for (i = 0; i < [*(v4 + 3) count]; ++i)
+    for (i = 0; i < [*(strokeCopy + 3) count]; ++i)
     {
-      v8 = [*(v4 + 3) objectAtIndex:i];
+      v8 = [*(strokeCopy + 3) objectAtIndex:i];
       v9 = v8;
       if (!v8 || (*(v8 + 104) & 1) == 0)
       {
@@ -770,7 +770,7 @@ uint64_t __45__PKAutoRefineTaskManager_updatePendingTasks__block_invoke(uint64_t
       }
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(strokeCopy);
   }
 }
 
@@ -780,37 +780,37 @@ uint64_t __45__PKAutoRefineTaskManager_updatePendingTasks__block_invoke(uint64_t
   {
     v1 = result;
     objc_sync_enter(v1);
-    v2 = [(PKAutoRefineTask *)v1[2] hasOngoingAnimation];
+    hasOngoingAnimation = [(PKAutoRefineTask *)v1[2] hasOngoingAnimation];
     objc_sync_exit(v1);
 
-    return v2;
+    return hasOngoingAnimation;
   }
 
   return result;
 }
 
-- (void)autoRefineTask:(id)a3 isReadyToSynthesizeRefinedDrawingForStrokes:(id)a4 transcription:(id)a5 drawingUUID:(id)a6
+- (void)autoRefineTask:(id)task isReadyToSynthesizeRefinedDrawingForStrokes:(id)strokes transcription:(id)transcription drawingUUID:(id)d
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  taskCopy = task;
+  strokesCopy = strokes;
+  transcriptionCopy = transcription;
+  dCopy = d;
   v14 = dispatch_block_create(DISPATCH_BLOCK_ASSIGN_CURRENT, &__block_literal_global_146);
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __112__PKAutoRefineTaskManager_autoRefineTask_isReadyToSynthesizeRefinedDrawingForStrokes_transcription_drawingUUID___block_invoke_2;
   v20[3] = &unk_1E82DB2C8;
   v20[4] = self;
-  v21 = v10;
-  v22 = v11;
-  v23 = v12;
-  v24 = v13;
+  v21 = taskCopy;
+  v22 = strokesCopy;
+  v23 = transcriptionCopy;
+  v24 = dCopy;
   v25 = v14;
   v15 = v14;
-  v16 = v13;
-  v17 = v12;
-  v18 = v11;
-  v19 = v10;
+  v16 = dCopy;
+  v17 = transcriptionCopy;
+  v18 = strokesCopy;
+  v19 = taskCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v20);
   dispatch_block_wait(v15, 0xFFFFFFFFFFFFFFFFLL);
 }
@@ -830,11 +830,11 @@ void __112__PKAutoRefineTaskManager_autoRefineTask_isReadyToSynthesizeRefinedDra
   [WeakRetained autoRefineTask:v3 synthesizeRefinedDrawingForStrokes:v4 transcription:v5 drawingUUID:v6 completionBlock:v7];
 }
 
-- (void)setCurrentDrawingUUID:(uint64_t)a1
+- (void)setCurrentDrawingUUID:(uint64_t)d
 {
-  if (a1)
+  if (d)
   {
-    objc_storeStrong((a1 + 48), a2);
+    objc_storeStrong((d + 48), a2);
   }
 }
 

@@ -1,23 +1,23 @@
 @interface BMAccountManager
-- (BMAccountManager)initWithUseCase:(id)a3;
+- (BMAccountManager)initWithUseCase:(id)case;
 - (id)_accountIdentifiers;
 - (id)accounts;
-- (id)deviceIdentifiersForAccount:(id)a3;
+- (id)deviceIdentifiersForAccount:(id)account;
 - (void)_accountIdentifiers;
 @end
 
 @implementation BMAccountManager
 
-- (BMAccountManager)initWithUseCase:(id)a3
+- (BMAccountManager)initWithUseCase:(id)case
 {
-  v4 = a3;
+  caseCopy = case;
   v10.receiver = self;
   v10.super_class = BMAccountManager;
   v5 = [(BMAccountManager *)&v10 init];
   if (v5)
   {
     v6 = [BMPaths sharedSyncDirectoryForDomain:0];
-    if (+[BMPaths isTestPathOverridden]|| @"__na__" == v4)
+    if (+[BMPaths isTestPathOverridden]|| @"__na__" == caseCopy)
     {
       v7 = [BMFileManager fileManagerWithDirectAccessToDirectory:v6 cachingOptions:0];
     }
@@ -38,9 +38,9 @@
 {
   p_fileManager = &self->_fileManager;
   fileManager = self->_fileManager;
-  v4 = [(BMFileManager *)fileManager directory];
+  directory = [(BMFileManager *)fileManager directory];
   v10 = 0;
-  v5 = [(BMFileManager *)fileManager contentsOfDirectoryAtPath:v4 error:&v10];
+  v5 = [(BMFileManager *)fileManager contentsOfDirectoryAtPath:directory error:&v10];
   v6 = v10;
 
   v7 = [v5 _pas_filteredArrayWithTest:&__block_literal_global_4];
@@ -67,8 +67,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMAccountManager *)self _accountIdentifiers];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  _accountIdentifiers = [(BMAccountManager *)self _accountIdentifiers];
+  v5 = [_accountIdentifiers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -79,14 +79,14 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_accountIdentifiers);
         }
 
         v9 = [[BMAccount alloc] initWithIdentifier:*(*(&v12 + 1) + 8 * i)];
         [v3 addObject:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [_accountIdentifiers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -97,14 +97,14 @@
   return v3;
 }
 
-- (id)deviceIdentifiersForAccount:(id)a3
+- (id)deviceIdentifiersForAccount:(id)account
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  accountCopy = account;
   v34 = objc_opt_new();
-  v31 = v4;
-  v5 = [BMPaths pathForSharedSyncWithAccount:v4 streamType:2 domain:0];
-  v6 = self;
+  v31 = accountCopy;
+  v5 = [BMPaths pathForSharedSyncWithAccount:accountCopy streamType:2 domain:0];
+  selfCopy = self;
   fileManager = self->_fileManager;
   v40 = 0;
   v8 = [(BMFileManager *)fileManager contentsOfDirectoryAtPath:v5 error:&v40];
@@ -145,7 +145,7 @@
         v19 = +[BMStoreDirectory remoteDevices];
         v20 = [v18 stringByAppendingPathComponent:v19];
 
-        v21 = v6->_fileManager;
+        v21 = selfCopy->_fileManager;
         v35 = 0;
         v22 = [(BMFileManager *)v21 contentsOfDirectoryAtPath:v20 error:&v35];
         v23 = v35;
@@ -155,9 +155,9 @@
           v25 = __biome_log_for_category(0);
           if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
           {
-            v32 = [v31 identifier];
+            identifier = [v31 identifier];
             *buf = v30;
-            v42 = v32;
+            v42 = identifier;
             v43 = 2114;
             v44 = v17;
             v45 = 2112;
@@ -176,11 +176,11 @@
     while (v14);
   }
 
-  v27 = [v34 allObjects];
+  allObjects = [v34 allObjects];
 
   v28 = *MEMORY[0x1E69E9840];
 
-  return v27;
+  return allObjects;
 }
 
 BOOL __48__BMAccountManager_deviceIdentifiersForAccount___block_invoke(uint64_t a1, void *a2)
@@ -195,7 +195,7 @@ BOOL __48__BMAccountManager_deviceIdentifiersForAccount___block_invoke(uint64_t 
 - (void)_accountIdentifiers
 {
   v7 = *MEMORY[0x1E69E9840];
-  v4 = [*a1 directory];
+  directory = [*self directory];
   OUTLINED_FUNCTION_0_4();
   _os_log_fault_impl(&dword_1AC15D000, a3, OS_LOG_TYPE_FAULT, "Failed to enumerate accounts in path: %@ with error: %@", v6, 0x16u);
 

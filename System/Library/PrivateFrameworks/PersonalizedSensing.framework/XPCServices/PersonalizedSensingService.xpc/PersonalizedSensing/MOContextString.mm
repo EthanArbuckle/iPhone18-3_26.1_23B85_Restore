@@ -1,135 +1,135 @@
 @interface MOContextString
-+ (id)describeSource:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (MOContextString)initWithCoder:(id)a3;
-- (MOContextString)initWithContextStringMO:(id)a3;
-- (MOContextString)initWithIdentifier:(id)a3 string:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)describeSource:(unint64_t)source;
+- (BOOL)isEqual:(id)equal;
+- (MOContextString)initWithCoder:(id)coder;
+- (MOContextString)initWithContextStringMO:(id)o;
+- (MOContextString)initWithIdentifier:(id)identifier string:(id)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)describeSource;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOContextString
 
-- (MOContextString)initWithIdentifier:(id)a3 string:(id)a4
+- (MOContextString)initWithIdentifier:(id)identifier string:(id)string
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  stringCopy = string;
   v12.receiver = self;
   v12.super_class = MOContextString;
   v9 = [(MOContextString *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_stringIdentifier, a3);
-    objc_storeStrong(&v10->_textString, a4);
+    objc_storeStrong(&v9->_stringIdentifier, identifier);
+    objc_storeStrong(&v10->_textString, string);
   }
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   stringIdentifier = self->_stringIdentifier;
-  v5 = a3;
-  [v5 encodeObject:stringIdentifier forKey:@"stringIdentifier"];
-  [v5 encodeObject:self->_textString forKey:@"textString"];
-  [v5 encodeInteger:self->_source forKey:@"source"];
-  [v5 encodeObject:self->_contextDimensions forKey:@"contextDimensions"];
-  [v5 encodeDouble:@"accuracy" forKey:self->_accuracy];
-  [v5 encodeDouble:@"satisfaction" forKey:self->_satisfaction];
-  [v5 encodeInteger:self->_contentType forKey:@"contentType"];
-  [v5 encodeInteger:self->_promptIndex forKey:@"promptIndex"];
-  [v5 encodeDouble:@"totalScore" forKey:self->_totalScore];
+  coderCopy = coder;
+  [coderCopy encodeObject:stringIdentifier forKey:@"stringIdentifier"];
+  [coderCopy encodeObject:self->_textString forKey:@"textString"];
+  [coderCopy encodeInteger:self->_source forKey:@"source"];
+  [coderCopy encodeObject:self->_contextDimensions forKey:@"contextDimensions"];
+  [coderCopy encodeDouble:@"accuracy" forKey:self->_accuracy];
+  [coderCopy encodeDouble:@"satisfaction" forKey:self->_satisfaction];
+  [coderCopy encodeInteger:self->_contentType forKey:@"contentType"];
+  [coderCopy encodeInteger:self->_promptIndex forKey:@"promptIndex"];
+  [coderCopy encodeDouble:@"totalScore" forKey:self->_totalScore];
 }
 
-- (MOContextString)initWithCoder:(id)a3
+- (MOContextString)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stringIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"textString"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stringIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textString"];
   v7 = [(MOContextString *)self initWithIdentifier:v5 string:v6];
   if (v7)
   {
-    v7->_source = [v4 decodeIntegerForKey:@"source"];
+    v7->_source = [coderCopy decodeIntegerForKey:@"source"];
     v8 = objc_opt_class();
     v9 = [NSSet setWithObjects:v8, objc_opt_class(), 0];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"contextDimensions"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"contextDimensions"];
     contextDimensions = v7->_contextDimensions;
     v7->_contextDimensions = v10;
 
-    [v4 decodeDoubleForKey:@"accuracy"];
+    [coderCopy decodeDoubleForKey:@"accuracy"];
     v7->_accuracy = v12;
-    [v4 decodeDoubleForKey:@"satisfaction"];
+    [coderCopy decodeDoubleForKey:@"satisfaction"];
     v7->_satisfaction = v13;
-    v7->_contentType = [v4 decodeIntegerForKey:@"contentType"];
-    v7->_promptIndex = [v4 decodeIntegerForKey:@"promptIndex"];
-    [v4 decodeDoubleForKey:@"totalScore"];
+    v7->_contentType = [coderCopy decodeIntegerForKey:@"contentType"];
+    v7->_promptIndex = [coderCopy decodeIntegerForKey:@"promptIndex"];
+    [coderCopy decodeDoubleForKey:@"totalScore"];
     v7->_totalScore = v14;
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 isMemberOfClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [equalCopy isMemberOfClass:objc_opt_class()];
   stringIdentifier = self->_stringIdentifier;
-  v7 = [v4 stringIdentifier];
-  LOBYTE(stringIdentifier) = [(NSUUID *)stringIdentifier isEqual:v7];
+  stringIdentifier = [equalCopy stringIdentifier];
+  LOBYTE(stringIdentifier) = [(NSUUID *)stringIdentifier isEqual:stringIdentifier];
 
   textString = self->_textString;
-  v9 = [v4 textString];
+  textString = [equalCopy textString];
 
-  LOBYTE(textString) = [(NSString *)textString isEqual:v9];
+  LOBYTE(textString) = [(NSString *)textString isEqual:textString];
   return v5 & stringIdentifier & textString;
 }
 
-+ (id)describeSource:(unint64_t)a3
++ (id)describeSource:(unint64_t)source
 {
-  if (a3 - 1 > 2)
+  if (source - 1 > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return *(&off_1000B5028 + a3 - 1);
+    return *(&off_1000B5028 + source - 1);
   }
 }
 
 - (id)describeSource
 {
-  v2 = [(MOContextString *)self source];
+  source = [(MOContextString *)self source];
 
-  return [MOContextString describeSource:v2];
+  return [MOContextString describeSource:source];
 }
 
 - (id)description
 {
-  v3 = [(MOContextString *)self stringIdentifier];
-  v4 = [(MOContextString *)self textString];
-  v5 = [(MOContextString *)self describeSource];
-  v6 = [(MOContextString *)self contextDimensions];
-  v7 = [(MOContextString *)self contentType];
-  v8 = [(MOContextString *)self promptIndex];
+  stringIdentifier = [(MOContextString *)self stringIdentifier];
+  textString = [(MOContextString *)self textString];
+  describeSource = [(MOContextString *)self describeSource];
+  contextDimensions = [(MOContextString *)self contextDimensions];
+  contentType = [(MOContextString *)self contentType];
+  promptIndex = [(MOContextString *)self promptIndex];
   [(MOContextString *)self totalScore];
-  v10 = [NSString stringWithFormat:@"stringIdentifier, %@, string, %@, source, %@, contextDimensions, %@, contentType, %lu, promptIndex, %lu, totalScore, %f", v3, v4, v5, v6, v7, v8, v9];
+  v10 = [NSString stringWithFormat:@"stringIdentifier, %@, string, %@, source, %@, contextDimensions, %@, contentType, %lu, promptIndex, %lu, totalScore, %f", stringIdentifier, textString, describeSource, contextDimensions, contentType, promptIndex, v9];
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MOContextString alloc];
-  v5 = [(MOContextString *)self stringIdentifier];
-  v6 = [(MOContextString *)self textString];
-  v7 = [(MOContextString *)v4 initWithIdentifier:v5 string:v6];
+  stringIdentifier = [(MOContextString *)self stringIdentifier];
+  textString = [(MOContextString *)self textString];
+  v7 = [(MOContextString *)v4 initWithIdentifier:stringIdentifier string:textString];
 
-  v8 = [(MOContextString *)self contextDimensions];
-  [(MOContextString *)v7 setContextDimensions:v8];
+  contextDimensions = [(MOContextString *)self contextDimensions];
+  [(MOContextString *)v7 setContextDimensions:contextDimensions];
 
   [(MOContextString *)v7 setSource:[(MOContextString *)self source]];
   [(MOContextString *)self accuracy];
@@ -143,15 +143,15 @@
   return v7;
 }
 
-- (MOContextString)initWithContextStringMO:(id)a3
+- (MOContextString)initWithContextStringMO:(id)o
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  oCopy = o;
+  v5 = oCopy;
+  if (oCopy)
   {
-    v6 = [v4 stringIdentifier];
-    v7 = [v5 textString];
-    self = [(MOContextString *)self initWithIdentifier:v6 string:v7];
+    stringIdentifier = [oCopy stringIdentifier];
+    textString = [v5 textString];
+    self = [(MOContextString *)self initWithIdentifier:stringIdentifier string:textString];
 
     -[MOContextString setSource:](self, "setSource:", [v5 source]);
     -[MOContextString setContentType:](self, "setContentType:", [v5 contentType]);
@@ -166,8 +166,8 @@
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v9 = [v5 contextDimensions];
-      v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      contextDimensions = [v5 contextDimensions];
+      v10 = [contextDimensions countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v10)
       {
         v11 = v10;
@@ -178,14 +178,14 @@
           {
             if (*v19 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(contextDimensions);
             }
 
             v14 = [[MOContextDimension alloc] initWithContextDimensionMO:*(*(&v18 + 1) + 8 * i)];
             [v8 addObject:v14];
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+          v11 = [contextDimensions countByEnumeratingWithState:&v18 objects:v22 count:16];
         }
 
         while (v11);
@@ -195,15 +195,15 @@
       [(MOContextString *)self setContextDimensions:v15];
     }
 
-    v16 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 @end

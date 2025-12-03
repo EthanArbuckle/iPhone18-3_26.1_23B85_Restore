@@ -10,35 +10,35 @@
 {
   v42 = *MEMORY[0x1E69E9840];
   v36 = a3;
-  v5 = [a1 leftExpression];
-  v6 = [a1 rightExpression];
-  v7 = [a1 predicateOperatorType];
+  leftExpression = [self leftExpression];
+  rightExpression = [self rightExpression];
+  predicateOperatorType = [self predicateOperatorType];
   v8 = MEMORY[0x1E695D940];
-  if ((v7 > 0xA || v7 == 6) && v7 != 99)
+  if ((predicateOperatorType > 0xA || predicateOperatorType == 6) && predicateOperatorType != 99)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Unsupported operator type in comparison expression: %@", a1}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Unsupported operator type in comparison expression: %@", self}];
   }
 
-  v9 = [v5 expressionType];
-  v10 = v5;
-  v11 = v9 != 3;
-  if (v9 == 3 || (v12 = [v6 expressionType], v10 = v6, v12 == 3))
+  expressionType = [leftExpression expressionType];
+  v10 = leftExpression;
+  v11 = expressionType != 3;
+  if (expressionType == 3 || (v12 = [rightExpression expressionType], v10 = rightExpression, v12 == 3))
   {
-    v13 = [v10 keyPath];
+    keyPath = [v10 keyPath];
   }
 
   else
   {
-    v13 = 0;
+    keyPath = 0;
     v11 = 0;
   }
 
-  v35 = v5;
-  if ([v5 expressionType] && (v5 = v6, objc_msgSend(v6, "expressionType")))
+  v35 = leftExpression;
+  if ([leftExpression expressionType] && (leftExpression = rightExpression, objc_msgSend(rightExpression, "expressionType")))
   {
-    v32 = 0;
+    constantValue = 0;
     v14 = 1;
-    if (v13)
+    if (keyPath)
     {
       goto LABEL_13;
     }
@@ -46,29 +46,29 @@
 
   else
   {
-    v32 = [v5 constantValue];
+    constantValue = [leftExpression constantValue];
     v14 = 0;
-    if (v13)
+    if (keyPath)
     {
       goto LABEL_13;
     }
   }
 
-  [MEMORY[0x1E695DF30] raise:*v8 format:{@"Expected key-path in comparison expression: %@", a1}];
+  [MEMORY[0x1E695DF30] raise:*v8 format:{@"Expected key-path in comparison expression: %@", self}];
 LABEL_13:
   if (v14)
   {
-    [MEMORY[0x1E695DF30] raise:*v8 format:{@"Expected constant value in comparison expression: %@", a1}];
+    [MEMORY[0x1E695DF30] raise:*v8 format:{@"Expected constant value in comparison expression: %@", self}];
   }
 
-  v15 = [a1 predicateOperatorType];
-  if (v15 < 4 && v11)
+  predicateOperatorType2 = [self predicateOperatorType];
+  if (predicateOperatorType2 < 4 && v11)
   {
-    v15 = qword_191DCD040[v15];
+    predicateOperatorType2 = qword_191DCD040[predicateOperatorType2];
   }
 
-  v31 = v15;
-  v33 = v6;
+  v31 = predicateOperatorType2;
+  v33 = rightExpression;
   if (hk_filterRepresentationForDataTypes_isSubpredicate__onceToken != -1)
   {
     [NSComparisonPredicate(HKFilterExtension) hk_filterRepresentationForDataTypes:isSubpredicate:];
@@ -96,12 +96,12 @@ LABEL_13:
         }
 
         v23 = *(*(&v37 + 1) + 8 * v22);
-        if ([v13 hasPrefix:v23])
+        if ([keyPath hasPrefix:v23])
         {
-          v24 = [a1 _quantityTypeFromKeyPath:v13 prefix:v23];
+          v24 = [self _quantityTypeFromKeyPath:keyPath prefix:v23];
           if (!v24)
           {
-            [MEMORY[0x1E695DF30] raise:v21 format:{@"Expected quantity type in comparison expression: %@", a1}];
+            [MEMORY[0x1E695DF30] raise:v21 format:{@"Expected quantity type in comparison expression: %@", self}];
           }
 
           if ([v23 isEqualToString:@"sumQuantity"])
@@ -114,7 +114,7 @@ LABEL_13:
 LABEL_35:
             v26 = @"Expected discrete statistics in comparison expression: %@";
 LABEL_36:
-            [MEMORY[0x1E695DF30] raise:v21 format:{v26, a1}];
+            [MEMORY[0x1E695DF30] raise:v21 format:{v26, self}];
           }
 
           else
@@ -151,7 +151,7 @@ LABEL_37:
     while (v27);
   }
 
-  v28 = [a1 _comparisonFilterWithKeyPath:v13 operatorType:v31 value:v32 dataTypes:v36 isSubpredicate:a4];
+  v28 = [self _comparisonFilterWithKeyPath:keyPath operatorType:v31 value:constantValue dataTypes:v36 isSubpredicate:a4];
 
   v29 = *MEMORY[0x1E69E9840];
 
@@ -229,7 +229,7 @@ LABEL_37:
     }
   }
 
-  [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Unsupported key path %@ in comparison expression: %@", v11, a1}];
+  [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Unsupported key path %@ in comparison expression: %@", v11, self}];
   v20 = 0;
 LABEL_11:
 

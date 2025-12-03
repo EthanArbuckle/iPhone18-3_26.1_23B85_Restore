@@ -1,22 +1,22 @@
 @interface CNiOSABUtilities
-- (CNiOSABUtilities)initWithAddressBook:(void *)a3;
+- (CNiOSABUtilities)initWithAddressBook:(void *)book;
 - (id)allAccountIdentifiers;
-- (id)filterPeople:(id)a3 matchingAccountIdentifiers:(id)a4;
+- (id)filterPeople:(id)people matchingAccountIdentifiers:(id)identifiers;
 - (void)dealloc;
 @end
 
 @implementation CNiOSABUtilities
 
-- (CNiOSABUtilities)initWithAddressBook:(void *)a3
+- (CNiOSABUtilities)initWithAddressBook:(void *)book
 {
   v8.receiver = self;
   v8.super_class = CNiOSABUtilities;
   v4 = [(CNiOSABUtilities *)&v8 init];
   if (v4)
   {
-    if (a3)
+    if (book)
     {
-      v5 = CFRetain(a3);
+      v5 = CFRetain(book);
     }
 
     else
@@ -37,7 +37,7 @@
   if (self->_addressBook)
   {
     v2 = ABAddressBookCopyArrayOfAllAccounts();
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
@@ -58,7 +58,7 @@
           }
 
           v9 = ABAccountCopyIdentifier();
-          [v3 addObject:{v9, v11}];
+          [array addObject:{v9, v11}];
           if (v9)
           {
             CFRelease(v9);
@@ -79,33 +79,33 @@
 
   else
   {
-    v3 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
-  return v3;
+  return array;
 }
 
-- (id)filterPeople:(id)a3 matchingAccountIdentifiers:(id)a4
+- (id)filterPeople:(id)people matchingAccountIdentifiers:(id)identifiers
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  peopleCopy = people;
+  identifiersCopy = identifiers;
   if (self->_addressBook)
   {
     if ((*(*MEMORY[0x1E6996530] + 16))())
     {
-      v8 = MEMORY[0x1E695E0F0];
+      array = MEMORY[0x1E695E0F0];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v18 = v6;
-      v9 = v6;
+      v18 = peopleCopy;
+      v9 = peopleCopy;
       v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v10)
       {
@@ -123,9 +123,9 @@
             v14 = *(*(&v19 + 1) + 8 * i);
             v15 = ABPersonCopySource(v14);
             v16 = ABAddressBookCopyAccountIdentifierForSource();
-            if ([v7 containsObject:v16])
+            if ([identifiersCopy containsObject:v16])
             {
-              [v8 addObject:v14];
+              [array addObject:v14];
             }
 
             if (v16)
@@ -145,16 +145,16 @@
         while (v11);
       }
 
-      v6 = v18;
+      peopleCopy = v18;
     }
   }
 
   else
   {
-    v8 = v6;
+    array = peopleCopy;
   }
 
-  return v8;
+  return array;
 }
 
 - (void)dealloc

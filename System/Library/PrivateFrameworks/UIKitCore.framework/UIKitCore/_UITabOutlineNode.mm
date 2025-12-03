@@ -1,80 +1,80 @@
 @interface _UITabOutlineNode
-- (BOOL)isEqual:(id)a3;
-- (_UITabOutlineNode)initWithIdentifier:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_UITabOutlineNode)initWithIdentifier:(id)identifier;
 - (_UITabOutlineNode)parent;
-- (id)_descriptionWithIndentationLevel:(int64_t)a3;
-- (void)addActionIdentifier:(id)a3;
-- (void)addChild:(id)a3;
-- (void)removeChild:(id)a3;
+- (id)_descriptionWithIndentationLevel:(int64_t)level;
+- (void)addActionIdentifier:(id)identifier;
+- (void)addChild:(id)child;
+- (void)removeChild:(id)child;
 @end
 
 @implementation _UITabOutlineNode
 
-- (_UITabOutlineNode)initWithIdentifier:(id)a3
+- (_UITabOutlineNode)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = _UITabOutlineNode;
   v6 = [(_UITabOutlineNode *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
   }
 
   return v7;
 }
 
-- (void)addChild:(id)a3
+- (void)addChild:(id)child
 {
-  v7 = a3;
-  [v7 setParent:self];
+  childCopy = child;
+  [childCopy setParent:self];
   children = self->_children;
   if (children)
   {
-    [(NSMutableArray *)children addObject:v7];
+    [(NSMutableArray *)children addObject:childCopy];
   }
 
   else
   {
-    v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v7, 0}];
+    v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{childCopy, 0}];
     v6 = self->_children;
     self->_children = v5;
   }
 }
 
-- (void)removeChild:(id)a3
+- (void)removeChild:(id)child
 {
   children = self->_children;
-  v4 = a3;
-  [(NSMutableArray *)children removeObject:v4];
-  [v4 setParent:0];
+  childCopy = child;
+  [(NSMutableArray *)children removeObject:childCopy];
+  [childCopy setParent:0];
 }
 
-- (void)addActionIdentifier:(id)a3
+- (void)addActionIdentifier:(id)identifier
 {
   actions = self->_actions;
   if (actions)
   {
 
-    [(NSMutableArray *)actions addObject:a3];
+    [(NSMutableArray *)actions addObject:identifier];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DF70] arrayWithObject:a3];
+    v5 = [MEMORY[0x1E695DF70] arrayWithObject:identifier];
     v6 = self->_actions;
     self->_actions = v5;
   }
 }
 
-- (id)_descriptionWithIndentationLevel:(int64_t)a3
+- (id)_descriptionWithIndentationLevel:(int64_t)level
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [&stru_1EFB14550 stringByPaddingToLength:2 * a3 withString:@" " startingAtIndex:0];
+  v5 = [&stru_1EFB14550 stringByPaddingToLength:2 * level withString:@" " startingAtIndex:0];
   v6 = [MEMORY[0x1E696AD60] stringWithFormat:@"%@%@ (%lu actions)", v5, self->_identifier, -[NSMutableArray count](self->_actions, "count")];
-  v7 = [(_UITabOutlineNode *)self children];
-  v8 = [v7 count];
+  children = [(_UITabOutlineNode *)self children];
+  v8 = [children count];
 
   if (v8)
   {
@@ -83,8 +83,8 @@
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v9 = [(_UITabOutlineNode *)self children];
-    v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    children2 = [(_UITabOutlineNode *)self children];
+    v10 = [children2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v10)
     {
       v11 = v10;
@@ -95,15 +95,15 @@
         {
           if (*v17 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(children2);
           }
 
-          v14 = [*(*(&v16 + 1) + 8 * i) _descriptionWithIndentationLevel:a3 + 1];
+          v14 = [*(*(&v16 + 1) + 8 * i) _descriptionWithIndentationLevel:level + 1];
           [v6 appendString:v14];
           [v6 appendString:@"\n"];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v11 = [children2 countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v11);
@@ -116,10 +116,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
     goto LABEL_16;
@@ -128,10 +128,10 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(_UITabOutlineNode *)self identifier];
-    v6 = [(_UITabOutlineNode *)v4 identifier];
-    v7 = v5;
-    v8 = v6;
+    identifier = [(_UITabOutlineNode *)self identifier];
+    identifier2 = [(_UITabOutlineNode *)equalCopy identifier];
+    v7 = identifier;
+    v8 = identifier2;
     v9 = v8;
     if (v7 == v8)
     {
@@ -155,10 +155,10 @@ LABEL_15:
       }
     }
 
-    v12 = [(_UITabOutlineNode *)self children];
-    v13 = [(_UITabOutlineNode *)v4 children];
-    v7 = v12;
-    v14 = v13;
+    children = [(_UITabOutlineNode *)self children];
+    children2 = [(_UITabOutlineNode *)equalCopy children];
+    v7 = children;
+    v14 = children2;
     v9 = v14;
     if (v7 == v14)
     {

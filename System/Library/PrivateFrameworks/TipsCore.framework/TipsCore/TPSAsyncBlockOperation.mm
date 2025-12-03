@@ -1,9 +1,9 @@
 @interface TPSAsyncBlockOperation
 - (TPSAsyncBlockOperation)init;
-- (TPSAsyncBlockOperation)initWithAsyncBlock:(id)a3;
+- (TPSAsyncBlockOperation)initWithAsyncBlock:(id)block;
 - (id)asyncBlock;
 - (void)main;
-- (void)setAsyncBlock:(id)a3;
+- (void)setAsyncBlock:(id)block;
 @end
 
 @implementation TPSAsyncBlockOperation
@@ -25,9 +25,9 @@
   return v5;
 }
 
-- (void)setAsyncBlock:(id)a3
+- (void)setAsyncBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = (self + OBJC_IVAR___TPSAsyncBlockOperation_asyncBlock);
@@ -37,9 +37,9 @@
   v6[1] = v5;
 }
 
-- (TPSAsyncBlockOperation)initWithAsyncBlock:(id)a3
+- (TPSAsyncBlockOperation)initWithAsyncBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = (self + OBJC_IVAR___TPSAsyncBlockOperation_asyncBlock);
@@ -58,7 +58,7 @@
   v4 = *(v3 + 1);
   v6 = swift_allocObject();
   swift_unknownObjectWeakInit();
-  v7 = self;
+  selfCopy = self;
 
   v5(sub_1C010E334, v6);
 }

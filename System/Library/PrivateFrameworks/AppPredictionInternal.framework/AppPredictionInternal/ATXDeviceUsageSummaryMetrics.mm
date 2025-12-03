@@ -1,18 +1,18 @@
 @interface ATXDeviceUsageSummaryMetrics
-- (ATXDeviceUsageSummaryMetrics)initWithDimensions:(id)a3;
+- (ATXDeviceUsageSummaryMetrics)initWithDimensions:(id)dimensions;
 - (double)averagePickupDuration;
 - (id)coreAnalyticsDictionary;
-- (void)handleConfigurationExit:(id)a3;
-- (void)handleOnInterval:(id)a3;
+- (void)handleConfigurationExit:(id)exit;
+- (void)handleOnInterval:(id)interval;
 @end
 
 @implementation ATXDeviceUsageSummaryMetrics
 
-- (ATXDeviceUsageSummaryMetrics)initWithDimensions:(id)a3
+- (ATXDeviceUsageSummaryMetrics)initWithDimensions:(id)dimensions
 {
   v7.receiver = self;
   v7.super_class = ATXDeviceUsageSummaryMetrics;
-  v3 = [(_ATXCoreAnalyticsMetric *)&v7 initWithDimensions:a3];
+  v3 = [(_ATXCoreAnalyticsMetric *)&v7 initWithDimensions:dimensions];
   v4 = v3;
   if (v3)
   {
@@ -40,12 +40,12 @@
   }
 }
 
-- (void)handleConfigurationExit:(id)a3
+- (void)handleConfigurationExit:(id)exit
 {
   lastEntryTime = self->_lastEntryTime;
   if (lastEntryTime)
   {
-    [a3 timeIntervalSinceDate:lastEntryTime];
+    [exit timeIntervalSinceDate:lastEntryTime];
     self->_totalTime = v5 + self->_totalTime;
     v6 = self->_lastEntryTime;
     self->_lastEntryTime = 0;
@@ -61,11 +61,11 @@
   }
 }
 
-- (void)handleOnInterval:(id)a3
+- (void)handleOnInterval:(id)interval
 {
   ++self->_devicePickupCount;
-  v5 = [a3 onInterval];
-  [v5 duration];
+  onInterval = [interval onInterval];
+  [onInterval duration];
   self->_totalDeviceOnTime = v4 + self->_totalDeviceOnTime;
 }
 

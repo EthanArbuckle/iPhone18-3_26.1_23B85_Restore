@@ -1,43 +1,43 @@
 @interface SBHLibraryIndicatorIconDropInteractionDelegate
-- (BOOL)_canPerformDropForAnyItemInSession:(id)a3;
-- (BOOL)_canPerformDropForDragItem:(id)a3;
-- (BOOL)_canPerformDropForDraggedIcon:(id)a3;
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4;
+- (BOOL)_canPerformDropForAnyItemInSession:(id)session;
+- (BOOL)_canPerformDropForDragItem:(id)item;
+- (BOOL)_canPerformDropForDraggedIcon:(id)icon;
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session;
 - (SBHLibraryIndicatorIconDropInteractionContextProviding)contextProvider;
-- (SBHLibraryIndicatorIconDropInteractionDelegate)initWithLibraryIndicatorIconView:(id)a3;
+- (SBHLibraryIndicatorIconDropInteractionDelegate)initWithLibraryIndicatorIconView:(id)view;
 - (SBIconView)libraryIndicatorIconView;
-- (id)_draggedItemIdentifiersInSession:(id)a3;
-- (id)_iconIdentifierForDragItem:(id)a3;
+- (id)_draggedItemIdentifiersInSession:(id)session;
+- (id)_iconIdentifierForDragItem:(id)item;
 - (id)_iconModel;
-- (id)dropInteraction:(id)a3 previewForDroppingItem:(id)a4 withDefault:(id)a5;
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4;
-- (id)targetItemForSpringLoadingInteractionInView:(id)a3 atLocation:(CGPoint)a4 forDropSession:(id)a5;
-- (id)targetViewForSpringLoadingEffectForView:(id)a3;
-- (void)_handleSpringLoadedInteractionDidActivateWithContext:(id)a3;
-- (void)_notifyDidPerformDropForSession:(id)a3;
-- (void)_updateIndicatorIconViewForSession:(id)a3 isActive:(BOOL)a4;
-- (void)dropInteraction:(id)a3 item:(id)a4 willAnimateDropWithAnimator:(id)a5;
-- (void)dropInteraction:(id)a3 performDrop:(id)a4;
+- (id)dropInteraction:(id)interaction previewForDroppingItem:(id)item withDefault:(id)default;
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update;
+- (id)targetItemForSpringLoadingInteractionInView:(id)view atLocation:(CGPoint)location forDropSession:(id)session;
+- (id)targetViewForSpringLoadingEffectForView:(id)view;
+- (void)_handleSpringLoadedInteractionDidActivateWithContext:(id)context;
+- (void)_notifyDidPerformDropForSession:(id)session;
+- (void)_updateIndicatorIconViewForSession:(id)session isActive:(BOOL)active;
+- (void)dropInteraction:(id)interaction item:(id)item willAnimateDropWithAnimator:(id)animator;
+- (void)dropInteraction:(id)interaction performDrop:(id)drop;
 @end
 
 @implementation SBHLibraryIndicatorIconDropInteractionDelegate
 
-- (SBHLibraryIndicatorIconDropInteractionDelegate)initWithLibraryIndicatorIconView:(id)a3
+- (SBHLibraryIndicatorIconDropInteractionDelegate)initWithLibraryIndicatorIconView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v20.receiver = self;
   v20.super_class = SBHLibraryIndicatorIconDropInteractionDelegate;
   v5 = [(SBHLibraryIndicatorIconDropInteractionDelegate *)&v20 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_libraryIndicatorIconView, v4);
+    objc_storeWeak(&v5->_libraryIndicatorIconView, viewCopy);
     v7 = [objc_alloc(MEMORY[0x1E69DC9B8]) initWithDelegate:v6];
     dropInteraction = v6->_dropInteraction;
     v6->_dropInteraction = v7;
 
     [(UIDropInteraction *)v6->_dropInteraction _setWantsDefaultVisualBehavior:0];
-    [v4 addInteraction:v6->_dropInteraction];
+    [viewCopy addInteraction:v6->_dropInteraction];
     v9 = objc_alloc_init(MEMORY[0x1E69D4010]);
     v10 = objc_alloc_init(MEMORY[0x1E69D4018]);
     [v9 setDelegate:v6];
@@ -51,7 +51,7 @@
     v17 = &unk_1E808B188;
     objc_copyWeak(&v18, &location);
     v12 = [v11 initWithInteractionBehavior:v9 interactionEffect:v10 activationHandler:&v14];
-    [v4 addInteraction:{v12, v14, v15, v16, v17}];
+    [viewCopy addInteraction:{v12, v14, v15, v16, v17}];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(&location);
@@ -67,29 +67,29 @@ void __83__SBHLibraryIndicatorIconDropInteractionDelegate_initWithLibraryIndicat
   [WeakRetained _handleSpringLoadedInteractionDidActivateWithContext:v4];
 }
 
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session
 {
   v13 = *MEMORY[0x1E69E9840];
   v12 = *MEMORY[0x1E69D4390];
   v5 = MEMORY[0x1E695DEC8];
-  v6 = a4;
+  sessionCopy = session;
   v7 = [v5 arrayWithObjects:&v12 count:1];
-  v8 = [v6 hasItemsConformingToTypeIdentifiers:{v7, v12, v13}];
+  v8 = [sessionCopy hasItemsConformingToTypeIdentifiers:{v7, v12, v13}];
 
   if (!v8)
   {
     return 0;
   }
 
-  v9 = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self libraryIndicatorIconView];
-  v10 = [v9 isEditing];
+  libraryIndicatorIconView = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self libraryIndicatorIconView];
+  isEditing = [libraryIndicatorIconView isEditing];
 
-  return v10;
+  return isEditing;
 }
 
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update
 {
-  if ([(SBHLibraryIndicatorIconDropInteractionDelegate *)self _canPerformDropForAnyItemInSession:a4])
+  if ([(SBHLibraryIndicatorIconDropInteractionDelegate *)self _canPerformDropForAnyItemInSession:update])
   {
     v4 = 3;
   }
@@ -104,13 +104,13 @@ void __83__SBHLibraryIndicatorIconDropInteractionDelegate_initWithLibraryIndicat
   return v5;
 }
 
-- (void)dropInteraction:(id)a3 performDrop:(id)a4
+- (void)dropInteraction:(id)interaction performDrop:(id)drop
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self _iconModel];
-  v7 = [v6 rootFolder];
-  v8 = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self _draggedItemIdentifiersInSession:v5];
+  dropCopy = drop;
+  _iconModel = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self _iconModel];
+  rootFolder = [_iconModel rootFolder];
+  v8 = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self _draggedItemIdentifiersInSession:dropCopy];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -130,11 +130,11 @@ void __83__SBHLibraryIndicatorIconDropInteractionDelegate_initWithLibraryIndicat
           objc_enumerationMutation(v8);
         }
 
-        v13 = [v6 leafIconForIdentifier:*(*(&v16 + 1) + 8 * v12)];
+        v13 = [_iconModel leafIconForIdentifier:*(*(&v16 + 1) + 8 * v12)];
         if ([(SBHLibraryIndicatorIconDropInteractionDelegate *)self _canPerformDropForDraggedIcon:v13])
         {
-          v14 = [v7 ignoredList];
-          v15 = [v14 addIcon:v13];
+          ignoredList = [rootFolder ignoredList];
+          v15 = [ignoredList addIcon:v13];
         }
 
         ++v12;
@@ -147,16 +147,16 @@ void __83__SBHLibraryIndicatorIconDropInteractionDelegate_initWithLibraryIndicat
     while (v10);
   }
 
-  [(SBHLibraryIndicatorIconDropInteractionDelegate *)self _notifyDidPerformDropForSession:v5];
+  [(SBHLibraryIndicatorIconDropInteractionDelegate *)self _notifyDidPerformDropForSession:dropCopy];
 }
 
-- (id)dropInteraction:(id)a3 previewForDroppingItem:(id)a4 withDefault:(id)a5
+- (id)dropInteraction:(id)interaction previewForDroppingItem:(id)item withDefault:(id)default
 {
-  v7 = a5;
-  if ([(SBHLibraryIndicatorIconDropInteractionDelegate *)self _canPerformDropForDragItem:a4])
+  defaultCopy = default;
+  if ([(SBHLibraryIndicatorIconDropInteractionDelegate *)self _canPerformDropForDragItem:item])
   {
-    v8 = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self libraryIndicatorIconView];
-    [v8 bounds];
+    libraryIndicatorIconView = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self libraryIndicatorIconView];
+    [libraryIndicatorIconView bounds];
     UIRectGetCenter();
     v10 = v9;
     v12 = v11;
@@ -164,8 +164,8 @@ void __83__SBHLibraryIndicatorIconDropInteractionDelegate_initWithLibraryIndicat
     CGAffineTransformMakeScale(&v18, 0.01, 0.01);
     v13 = objc_alloc(MEMORY[0x1E69DC9A8]);
     v17 = v18;
-    v14 = [v13 initWithContainer:v8 center:&v17 transform:{v10, v12}];
-    v15 = [v7 retargetedPreviewWithTarget:v14];
+    v14 = [v13 initWithContainer:libraryIndicatorIconView center:&v17 transform:{v10, v12}];
+    v15 = [defaultCopy retargetedPreviewWithTarget:v14];
     [v15 set_springboardPlatterStyle:1];
   }
 
@@ -177,14 +177,14 @@ void __83__SBHLibraryIndicatorIconDropInteractionDelegate_initWithLibraryIndicat
   return v15;
 }
 
-- (void)dropInteraction:(id)a3 item:(id)a4 willAnimateDropWithAnimator:(id)a5
+- (void)dropInteraction:(id)interaction item:(id)item willAnimateDropWithAnimator:(id)animator
 {
-  v6 = a5;
-  v7 = [a4 sbh_appDragLocalContext];
-  v8 = [v7 portaledPreview];
+  animatorCopy = animator;
+  sbh_appDragLocalContext = [item sbh_appDragLocalContext];
+  portaledPreview = [sbh_appDragLocalContext portaledPreview];
   if (objc_opt_respondsToSelector())
   {
-    v9 = v8;
+    v9 = portaledPreview;
   }
 
   else
@@ -202,13 +202,13 @@ void __83__SBHLibraryIndicatorIconDropInteractionDelegate_initWithLibraryIndicat
     v14[3] = &unk_1E8088C90;
     v11 = v10;
     v15 = v11;
-    [v6 addAnimations:v14];
+    [animatorCopy addAnimations:v14];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __99__SBHLibraryIndicatorIconDropInteractionDelegate_dropInteraction_item_willAnimateDropWithAnimator___block_invoke_2;
     v12[3] = &unk_1E8089000;
     v13 = v11;
-    [v6 addCompletion:v12];
+    [animatorCopy addCompletion:v12];
   }
 }
 
@@ -222,50 +222,50 @@ uint64_t __99__SBHLibraryIndicatorIconDropInteractionDelegate_dropInteraction_it
   return [v2 setDragState:3];
 }
 
-- (id)targetItemForSpringLoadingInteractionInView:(id)a3 atLocation:(CGPoint)a4 forDropSession:(id)a5
+- (id)targetItemForSpringLoadingInteractionInView:(id)view atLocation:(CGPoint)location forDropSession:(id)session
 {
-  if ([(SBHLibraryIndicatorIconDropInteractionDelegate *)self _canPerformDropForAnyItemInSession:a5, a4.x, a4.y])
+  if ([(SBHLibraryIndicatorIconDropInteractionDelegate *)self _canPerformDropForAnyItemInSession:session, location.x, location.y])
   {
-    v6 = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self libraryIndicatorIconView];
+    libraryIndicatorIconView = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self libraryIndicatorIconView];
   }
 
   else
   {
-    v6 = 0;
+    libraryIndicatorIconView = 0;
   }
 
-  return v6;
+  return libraryIndicatorIconView;
 }
 
-- (id)targetViewForSpringLoadingEffectForView:(id)a3
+- (id)targetViewForSpringLoadingEffectForView:(id)view
 {
-  v3 = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self libraryIndicatorIconView];
-  v4 = [v3 customIconImageViewController];
-  v5 = [v4 springLoadingEffectTargetView];
+  libraryIndicatorIconView = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self libraryIndicatorIconView];
+  customIconImageViewController = [libraryIndicatorIconView customIconImageViewController];
+  springLoadingEffectTargetView = [customIconImageViewController springLoadingEffectTargetView];
 
-  return v5;
+  return springLoadingEffectTargetView;
 }
 
-- (id)_iconIdentifierForDragItem:(id)a3
+- (id)_iconIdentifierForDragItem:(id)item
 {
-  v3 = [a3 sbh_appDragLocalContext];
-  v4 = [v3 uniqueIdentifier];
+  sbh_appDragLocalContext = [item sbh_appDragLocalContext];
+  uniqueIdentifier = [sbh_appDragLocalContext uniqueIdentifier];
 
-  return v4;
+  return uniqueIdentifier;
 }
 
-- (id)_draggedItemIdentifiersInSession:(id)a3
+- (id)_draggedItemIdentifiersInSession:(id)session
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  sessionCopy = session;
+  array = [MEMORY[0x1E695DF70] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v18 = v4;
-  v6 = [v4 items];
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v18 = sessionCopy;
+  items = [sessionCopy items];
+  v7 = [items countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -276,41 +276,41 @@ uint64_t __99__SBHLibraryIndicatorIconDropInteractionDelegate_dropInteraction_it
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(items);
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [v11 sbh_appDragLocalContext];
+        sbh_appDragLocalContext = [v11 sbh_appDragLocalContext];
         v13 = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self _iconIdentifierForDragItem:v11];
         if (v13)
         {
-          [v5 addObject:v13];
+          [array addObject:v13];
         }
 
-        v14 = [v12 containedIconIdentifiers];
-        v15 = v14;
-        if (v14)
+        containedIconIdentifiers = [sbh_appDragLocalContext containedIconIdentifiers];
+        v15 = containedIconIdentifiers;
+        if (containedIconIdentifiers)
         {
-          v16 = [v14 allObjects];
-          [v5 addObjectsFromArray:v16];
+          allObjects = [containedIconIdentifiers allObjects];
+          [array addObjectsFromArray:allObjects];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [items countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
-- (BOOL)_canPerformDropForAnyItemInSession:(id)a3
+- (BOOL)_canPerformDropForAnyItemInSession:(id)session
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self _iconModel];
-  [(SBHLibraryIndicatorIconDropInteractionDelegate *)self _draggedItemIdentifiersInSession:v4];
+  sessionCopy = session;
+  _iconModel = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self _iconModel];
+  [(SBHLibraryIndicatorIconDropInteractionDelegate *)self _draggedItemIdentifiersInSession:sessionCopy];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -329,7 +329,7 @@ uint64_t __99__SBHLibraryIndicatorIconDropInteractionDelegate_dropInteraction_it
           objc_enumerationMutation(v6);
         }
 
-        v11 = [v5 leafIconForIdentifier:{*(*(&v15 + 1) + 8 * i), v15}];
+        v11 = [_iconModel leafIconForIdentifier:{*(*(&v15 + 1) + 8 * i), v15}];
         v12 = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self _canPerformDropForDraggedIcon:v11];
 
         if (v12)
@@ -355,69 +355,69 @@ LABEL_11:
   return v13;
 }
 
-- (BOOL)_canPerformDropForDragItem:(id)a3
+- (BOOL)_canPerformDropForDragItem:(id)item
 {
-  v3 = self;
-  v4 = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self _iconIdentifierForDragItem:a3];
-  v5 = [(SBHLibraryIndicatorIconDropInteractionDelegate *)v3 _iconModel];
-  v6 = [v5 leafIconForIdentifier:v4];
+  selfCopy = self;
+  v4 = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self _iconIdentifierForDragItem:item];
+  _iconModel = [(SBHLibraryIndicatorIconDropInteractionDelegate *)selfCopy _iconModel];
+  v6 = [_iconModel leafIconForIdentifier:v4];
 
-  LOBYTE(v3) = [(SBHLibraryIndicatorIconDropInteractionDelegate *)v3 _canPerformDropForDraggedIcon:v6];
-  return v3;
+  LOBYTE(selfCopy) = [(SBHLibraryIndicatorIconDropInteractionDelegate *)selfCopy _canPerformDropForDraggedIcon:v6];
+  return selfCopy;
 }
 
-- (BOOL)_canPerformDropForDraggedIcon:(id)a3
+- (BOOL)_canPerformDropForDraggedIcon:(id)icon
 {
-  if (!a3)
+  if (!icon)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self _iconModel];
-  v6 = [v5 rootFolder];
-  v7 = [v6 ignoredList];
+  iconCopy = icon;
+  _iconModel = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self _iconModel];
+  rootFolder = [_iconModel rootFolder];
+  ignoredList = [rootFolder ignoredList];
 
-  LOBYTE(v6) = [v7 isAllowedToContainIcon:v4];
-  return v6;
+  LOBYTE(rootFolder) = [ignoredList isAllowedToContainIcon:iconCopy];
+  return rootFolder;
 }
 
 - (id)_iconModel
 {
-  v3 = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self contextProvider];
-  v4 = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self libraryIndicatorIconView];
-  v5 = [v3 iconModelForDroppingIntoLibraryIndicatorIconView:v4];
+  contextProvider = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self contextProvider];
+  libraryIndicatorIconView = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self libraryIndicatorIconView];
+  v5 = [contextProvider iconModelForDroppingIntoLibraryIndicatorIconView:libraryIndicatorIconView];
 
   return v5;
 }
 
-- (void)_notifyDidPerformDropForSession:(id)a3
+- (void)_notifyDidPerformDropForSession:(id)session
 {
-  v4 = a3;
-  v6 = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self contextProvider];
-  v5 = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self libraryIndicatorIconView];
-  [v6 libraryIndicatorIconView:v5 didAcceptDropForSession:v4];
+  sessionCopy = session;
+  contextProvider = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self contextProvider];
+  libraryIndicatorIconView = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self libraryIndicatorIconView];
+  [contextProvider libraryIndicatorIconView:libraryIndicatorIconView didAcceptDropForSession:sessionCopy];
 }
 
-- (void)_handleSpringLoadedInteractionDidActivateWithContext:(id)a3
+- (void)_handleSpringLoadedInteractionDidActivateWithContext:(id)context
 {
-  v5 = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self contextProvider];
-  v4 = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self libraryIndicatorIconView];
-  [v5 handleSpringLoadDidActivateForLibraryIndicatorIconView:v4];
+  contextProvider = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self contextProvider];
+  libraryIndicatorIconView = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self libraryIndicatorIconView];
+  [contextProvider handleSpringLoadDidActivateForLibraryIndicatorIconView:libraryIndicatorIconView];
 }
 
-- (void)_updateIndicatorIconViewForSession:(id)a3 isActive:(BOOL)a4
+- (void)_updateIndicatorIconViewForSession:(id)session isActive:(BOOL)active
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self libraryIndicatorIconView];
-  if (v4)
+  activeCopy = active;
+  sessionCopy = session;
+  libraryIndicatorIconView = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self libraryIndicatorIconView];
+  if (activeCopy)
   {
-    v4 = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self _canPerformDropForAnyItemInSession:v6];
+    activeCopy = [(SBHLibraryIndicatorIconDropInteractionDelegate *)self _canPerformDropForAnyItemInSession:sessionCopy];
   }
 
-  v8 = [v7 customIconImageViewController];
-  if (v4 != [v8 isOverlapping])
+  customIconImageViewController = [libraryIndicatorIconView customIconImageViewController];
+  if (activeCopy != [customIconImageViewController isOverlapping])
   {
     v9 = MEMORY[0x1E69DD250];
     +[SBHIconManager defaultIconLayoutAnimationDuration];
@@ -426,8 +426,8 @@ LABEL_11:
     v12[1] = 3221225472;
     v12[2] = __94__SBHLibraryIndicatorIconDropInteractionDelegate__updateIndicatorIconViewForSession_isActive___block_invoke;
     v12[3] = &unk_1E80897D8;
-    v13 = v8;
-    v14 = v4;
+    v13 = customIconImageViewController;
+    v14 = activeCopy;
     [v9 animateWithDuration:v12 animations:v11];
   }
 }

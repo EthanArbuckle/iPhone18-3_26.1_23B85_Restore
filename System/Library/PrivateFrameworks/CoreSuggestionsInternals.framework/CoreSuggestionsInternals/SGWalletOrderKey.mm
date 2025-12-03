@@ -1,8 +1,8 @@
 @interface SGWalletOrderKey
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToWalletOrderKey:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToWalletOrderKey:(id)key;
 - (NSString)description;
-- (SGWalletOrderKey)initWithIdentifier:(id)a3;
+- (SGWalletOrderKey)initWithIdentifier:(id)identifier;
 @end
 
 @implementation SGWalletOrderKey
@@ -14,10 +14,10 @@
   return v2;
 }
 
-- (BOOL)isEqualToWalletOrderKey:(id)a3
+- (BOOL)isEqualToWalletOrderKey:(id)key
 {
-  v4 = a3;
-  if (v4 == self)
+  keyCopy = key;
+  if (keyCopy == self)
   {
     v7 = 1;
   }
@@ -26,7 +26,7 @@
   {
     v5 = self->_identifier;
     v6 = v5;
-    if (v5 == v4->_identifier)
+    if (v5 == keyCopy->_identifier)
     {
       v7 = 1;
     }
@@ -40,30 +40,30 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGWalletOrderKey *)self isEqualToWalletOrderKey:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGWalletOrderKey *)self isEqualToWalletOrderKey:v5];
   }
 
   return v6;
 }
 
-- (SGWalletOrderKey)initWithIdentifier:(id)a3
+- (SGWalletOrderKey)initWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  if (!v6)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"SGWalletOrderKey.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGWalletOrderKey.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
   v11.receiver = self;
@@ -72,7 +72,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_identifier, a3);
+    objc_storeStrong(&v7->_identifier, identifier);
   }
 
   return v8;

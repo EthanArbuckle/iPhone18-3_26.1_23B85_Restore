@@ -1,7 +1,7 @@
 @interface SCNJSValueTmpImp
-+ (id)valueWithTransform3D:(SCNMatrix4 *)a3 inContext:(id)a4;
-+ (id)valueWithVector3:(SCNVector3)a3 inContext:(id)a4;
-+ (id)valueWithVector4:(SCNVector4)a3 inContext:(id)a4;
++ (id)valueWithTransform3D:(SCNMatrix4 *)d inContext:(id)context;
++ (id)valueWithVector3:(SCNVector3)vector3 inContext:(id)context;
++ (id)valueWithVector4:(SCNVector4)vector4 inContext:(id)context;
 - (SCNMatrix4)toTransform3D;
 - (SCNVector3)toVector3;
 - (SCNVector4)toVector4;
@@ -29,14 +29,14 @@
   return result;
 }
 
-+ (id)valueWithVector4:(SCNVector4)a3 inContext:(id)a4
++ (id)valueWithVector4:(SCNVector4)vector4 inContext:(id)context
 {
-  w = a3.w;
-  z = a3.z;
-  y = a3.y;
+  w = vector4.w;
+  z = vector4.z;
+  y = vector4.y;
   v14[4] = *MEMORY[0x277D85DE8];
   v13[0] = @"x";
-  v14[0] = [MEMORY[0x277CCABB0] numberWithFloat:*&a3.x];
+  v14[0] = [MEMORY[0x277CCABB0] numberWithFloat:*&vector4.x];
   v13[1] = @"y";
   *&v9 = y;
   v14[1] = [MEMORY[0x277CCABB0] numberWithFloat:v9];
@@ -46,7 +46,7 @@
   v13[3] = @"w";
   *&v11 = w;
   v14[3] = [MEMORY[0x277CCABB0] numberWithFloat:v11];
-  return [a1 valueWithObject:objc_msgSend(MEMORY[0x277CBEAC0] inContext:{"dictionaryWithObjects:forKeys:count:", v14, v13, 4), a4}];
+  return [self valueWithObject:objc_msgSend(MEMORY[0x277CBEAC0] inContext:{"dictionaryWithObjects:forKeys:count:", v14, v13, 4), context}];
 }
 
 - (SCNVector3)toVector3
@@ -65,20 +65,20 @@
   return result;
 }
 
-+ (id)valueWithVector3:(SCNVector3)a3 inContext:(id)a4
++ (id)valueWithVector3:(SCNVector3)vector3 inContext:(id)context
 {
-  z = a3.z;
-  y = a3.y;
+  z = vector3.z;
+  y = vector3.y;
   v12[3] = *MEMORY[0x277D85DE8];
   v11[0] = @"x";
-  v12[0] = [MEMORY[0x277CCABB0] numberWithFloat:*&a3.x];
+  v12[0] = [MEMORY[0x277CCABB0] numberWithFloat:*&vector3.x];
   v11[1] = @"y";
   *&v8 = y;
   v12[1] = [MEMORY[0x277CCABB0] numberWithFloat:v8];
   v11[2] = @"z";
   *&v9 = z;
   v12[2] = [MEMORY[0x277CCABB0] numberWithFloat:v9];
-  return [a1 valueWithObject:objc_msgSend(MEMORY[0x277CBEAC0] inContext:{"dictionaryWithObjects:forKeys:count:", v12, v11, 3), a4}];
+  return [self valueWithObject:objc_msgSend(MEMORY[0x277CBEAC0] inContext:{"dictionaryWithObjects:forKeys:count:", v12, v11, 3), context}];
 }
 
 - (SCNMatrix4)toTransform3D
@@ -134,58 +134,58 @@
   return result;
 }
 
-+ (id)valueWithTransform3D:(SCNMatrix4 *)a3 inContext:(id)a4
++ (id)valueWithTransform3D:(SCNMatrix4 *)d inContext:(id)context
 {
   v25[16] = *MEMORY[0x277D85DE8];
   v24[0] = @"m11";
-  *&v4 = a3->m11;
+  *&v4 = d->m11;
   v25[0] = [MEMORY[0x277CCABB0] numberWithFloat:v4];
   v24[1] = @"m12";
-  *&v8 = a3->m12;
+  *&v8 = d->m12;
   v25[1] = [MEMORY[0x277CCABB0] numberWithFloat:v8];
   v24[2] = @"m13";
-  *&v9 = a3->m13;
+  *&v9 = d->m13;
   v25[2] = [MEMORY[0x277CCABB0] numberWithFloat:v9];
   v24[3] = @"m14";
-  *&v10 = a3->m14;
+  *&v10 = d->m14;
   v25[3] = [MEMORY[0x277CCABB0] numberWithFloat:v10];
   v24[4] = @"m21";
-  *&v11 = a3->m21;
+  *&v11 = d->m21;
   v25[4] = [MEMORY[0x277CCABB0] numberWithFloat:v11];
   v24[5] = @"m22";
-  *&v12 = a3->m22;
+  *&v12 = d->m22;
   v25[5] = [MEMORY[0x277CCABB0] numberWithFloat:v12];
   v24[6] = @"m23";
-  *&v13 = a3->m23;
+  *&v13 = d->m23;
   v25[6] = [MEMORY[0x277CCABB0] numberWithFloat:v13];
   v24[7] = @"m24";
-  *&v14 = a3->m24;
+  *&v14 = d->m24;
   v25[7] = [MEMORY[0x277CCABB0] numberWithFloat:v14];
   v24[8] = @"m31";
-  *&v15 = a3->m31;
+  *&v15 = d->m31;
   v25[8] = [MEMORY[0x277CCABB0] numberWithFloat:v15];
   v24[9] = @"m32";
-  *&v16 = a3->m32;
+  *&v16 = d->m32;
   v25[9] = [MEMORY[0x277CCABB0] numberWithFloat:v16];
   v24[10] = @"m33";
-  *&v17 = a3->m33;
+  *&v17 = d->m33;
   v25[10] = [MEMORY[0x277CCABB0] numberWithFloat:v17];
   v24[11] = @"m34";
-  *&v18 = a3->m34;
+  *&v18 = d->m34;
   v25[11] = [MEMORY[0x277CCABB0] numberWithFloat:v18];
   v24[12] = @"m41";
-  *&v19 = a3->m41;
+  *&v19 = d->m41;
   v25[12] = [MEMORY[0x277CCABB0] numberWithFloat:v19];
   v24[13] = @"m42";
-  *&v20 = a3->m42;
+  *&v20 = d->m42;
   v25[13] = [MEMORY[0x277CCABB0] numberWithFloat:v20];
   v24[14] = @"m43";
-  *&v21 = a3->m43;
+  *&v21 = d->m43;
   v25[14] = [MEMORY[0x277CCABB0] numberWithFloat:v21];
   v24[15] = @"m44";
-  *&v22 = a3->m44;
+  *&v22 = d->m44;
   v25[15] = [MEMORY[0x277CCABB0] numberWithFloat:v22];
-  return [a1 valueWithObject:objc_msgSend(MEMORY[0x277CBEAC0] inContext:{"dictionaryWithObjects:forKeys:count:", v25, v24, 16), a4}];
+  return [self valueWithObject:objc_msgSend(MEMORY[0x277CBEAC0] inContext:{"dictionaryWithObjects:forKeys:count:", v25, v24, 16), context}];
 }
 
 @end

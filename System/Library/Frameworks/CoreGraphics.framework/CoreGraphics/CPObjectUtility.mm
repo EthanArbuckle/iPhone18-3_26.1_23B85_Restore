@@ -1,16 +1,16 @@
 @interface CPObjectUtility
-+ (float)complexityOfPage:(id)a3;
++ (float)complexityOfPage:(id)page;
 @end
 
 @implementation CPObjectUtility
 
-+ (float)complexityOfPage:(id)a3
++ (float)complexityOfPage:(id)page
 {
   v4 = 1.0;
-  if ([objc_msgSend(a3 "imagesOnPage")] <= 0x3E8)
+  if ([objc_msgSend(page "imagesOnPage")] <= 0x3E8)
   {
-    v5 = [a3 shapesOnPage];
-    v6 = [v5 count];
+    shapesOnPage = [page shapesOnPage];
+    v6 = [shapesOnPage count];
     v7 = v6;
     if (v6 <= 0x3E8)
     {
@@ -21,7 +21,7 @@
         v10 = (v6 & 0x3FF) - 1;
         do
         {
-          v9 += [objc_msgSend(v5 objectAtIndex:{v8), "pathElementCount"}];
+          v9 += [objc_msgSend(shapesOnPage objectAtIndex:{v8), "pathElementCount"}];
         }
 
         while (v9 >> 4 <= 0x270 && v10 != v8++);

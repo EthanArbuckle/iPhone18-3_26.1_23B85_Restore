@@ -1,12 +1,12 @@
 @interface RCView
 - (RCView)init;
 - (RCWaveformRenderer)renderer;
-- (id)_createSpringAnimationWithKeyPath:(id)a3 basedOnPropertiesFromSpringAnimation:(id)a4;
+- (id)_createSpringAnimationWithKeyPath:(id)path basedOnPropertiesFromSpringAnimation:(id)animation;
 - (id)snapshot;
 - (void)_setNeedsVisibleTimeRangeRenderingFromFrameChange;
-- (void)layoutSublayersOfLayer:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)layoutSublayersOfLayer:(id)layer;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation RCView
@@ -19,8 +19,8 @@
   if (v2)
   {
     v3 = +[RCNoAnimateLayerHelper sharedNoAnimationHelper];
-    v4 = [(RCView *)v2 layer];
-    [v4 setDelegate:v3];
+    layer = [(RCView *)v2 layer];
+    [layer setDelegate:v3];
   }
 
   return v2;
@@ -28,9 +28,9 @@
 
 - (void)_setNeedsVisibleTimeRangeRenderingFromFrameChange
 {
-  v2 = [(RCView *)self renderer];
-  [v2 setCalcBlockShouldRefreshAllSlices:1];
-  [v2 _setNeedsVisibleTimeRangeRenderingFromFrameChange];
+  renderer = [(RCView *)self renderer];
+  [renderer setCalcBlockShouldRefreshAllSlices:1];
+  [renderer _setNeedsVisibleTimeRangeRenderingFromFrameChange];
 }
 
 - (id)snapshot
@@ -56,12 +56,12 @@
   return v10;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(RCView *)self frame];
   v14.origin.x = x;
   v14.origin.y = y;
@@ -83,8 +83,8 @@
       v10 = +[RCNoAnimateLayerHelper sharedNoAnimationHelper];
       [(CALayer *)self->_waveformLayer setDelegate:v10];
 
-      v11 = [(RCView *)self layer];
-      [v11 addSublayer:self->_waveformLayer];
+      layer = [(RCView *)self layer];
+      [layer addSublayer:self->_waveformLayer];
     }
 
     [(RCView *)self bounds];
@@ -93,27 +93,27 @@
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(RCView *)self bounds];
   if (v9 != *&width || v8 != *&height)
   {
-    v11 = [(RCView *)self renderer];
-    v12 = [v11 isOverview];
+    renderer = [(RCView *)self renderer];
+    isOverview = [renderer isOverview];
 
-    if (v12)
+    if (isOverview)
     {
       [(CALayer *)self->_waveformLayer bounds];
       v14 = fmax(v13, 0.01);
       memset(&v27, 0, sizeof(v27));
       CATransform3DMakeScale(&v27, width / v14, 1.0, 1.0);
-      v15 = [(RCView *)self superview];
-      v16 = [v15 layer];
-      v17 = [v16 animationForKey:@"bounds.origin"];
+      superview = [(RCView *)self superview];
+      layer = [superview layer];
+      v17 = [layer animationForKey:@"bounds.origin"];
 
       if ([v17 isMemberOfClass:objc_opt_class()])
       {
@@ -125,10 +125,10 @@
         v18 = 0;
       }
 
-      v19 = [(RCView *)self _isSplitViewControllerTransitioningBetweenStates];
+      _isSplitViewControllerTransitioningBetweenStates = [(RCView *)self _isSplitViewControllerTransitioningBetweenStates];
       if (v18)
       {
-        v20 = v19;
+        v20 = _isSplitViewControllerTransitioningBetweenStates;
       }
 
       else
@@ -160,8 +160,8 @@
       [(CALayer *)self->_waveformLayer setTransform:&v26];
     }
 
-    v24 = [(RCView *)self renderer];
-    [v24 setWaitForFinalCalc:1];
+    renderer2 = [(RCView *)self renderer];
+    [renderer2 setWaitForFinalCalc:1];
 
     [(RCView *)self _setNeedsVisibleTimeRangeRenderingFromFrameChange];
   }
@@ -172,19 +172,19 @@ LABEL_16:
   [(RCView *)&v25 setBounds:x, y, width, height];
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   v15.receiver = self;
   v15.super_class = RCView;
-  [(RCView *)&v15 layoutSublayersOfLayer:v4];
-  v5 = [(RCView *)self layer];
-  v6 = [v4 isEqual:v5];
+  [(RCView *)&v15 layoutSublayersOfLayer:layerCopy];
+  layer = [(RCView *)self layer];
+  v6 = [layerCopy isEqual:layer];
 
   if (v6)
   {
-    v7 = [(RCView *)self layer];
-    v8 = [v7 animationForKey:@"bounds.origin"];
+    layer2 = [(RCView *)self layer];
+    v8 = [layer2 animationForKey:@"bounds.origin"];
 
     if ([v8 isMemberOfClass:objc_opt_class()])
     {
@@ -196,10 +196,10 @@ LABEL_16:
       v9 = 0;
     }
 
-    v10 = [(RCView *)self _isSplitViewControllerTransitioningBetweenStates];
+    _isSplitViewControllerTransitioningBetweenStates = [(RCView *)self _isSplitViewControllerTransitioningBetweenStates];
     if (v9)
     {
-      v11 = v10;
+      v11 = _isSplitViewControllerTransitioningBetweenStates;
     }
 
     else
@@ -212,11 +212,11 @@ LABEL_16:
       goto LABEL_13;
     }
 
-    v12 = [(RCView *)self renderer];
-    if (([v12 isOverview] & 1) == 0)
+    renderer = [(RCView *)self renderer];
+    if (([renderer isOverview] & 1) == 0)
     {
-      v13 = [(CALayer *)self->_waveformLayer animationKeys];
-      v14 = [v13 count];
+      animationKeys = [(CALayer *)self->_waveformLayer animationKeys];
+      v14 = [animationKeys count];
 
       if (v14)
       {
@@ -226,8 +226,8 @@ LABEL_13:
       }
 
       +[CATransaction begin];
-      v12 = [(RCView *)self _createSpringAnimationWithKeyPath:@"bounds" basedOnPropertiesFromSpringAnimation:v9];
-      [(CALayer *)self->_waveformLayer addAnimation:v12 forKey:@"bounds"];
+      renderer = [(RCView *)self _createSpringAnimationWithKeyPath:@"bounds" basedOnPropertiesFromSpringAnimation:v9];
+      [(CALayer *)self->_waveformLayer addAnimation:renderer forKey:@"bounds"];
       +[CATransaction commit];
     }
 
@@ -237,20 +237,20 @@ LABEL_13:
 LABEL_14:
 }
 
-- (id)_createSpringAnimationWithKeyPath:(id)a3 basedOnPropertiesFromSpringAnimation:(id)a4
+- (id)_createSpringAnimationWithKeyPath:(id)path basedOnPropertiesFromSpringAnimation:(id)animation
 {
-  v5 = a4;
-  v6 = [CASpringAnimation animationWithKeyPath:a3];
-  [v5 duration];
+  animationCopy = animation;
+  v6 = [CASpringAnimation animationWithKeyPath:path];
+  [animationCopy duration];
   [v6 setDuration:?];
-  v7 = [v5 timingFunction];
-  [v6 setTimingFunction:v7];
+  timingFunction = [animationCopy timingFunction];
+  [v6 setTimingFunction:timingFunction];
 
-  [v5 damping];
+  [animationCopy damping];
   [v6 setDamping:?];
-  [v5 stiffness];
+  [animationCopy stiffness];
   [v6 setStiffness:?];
-  [v5 mass];
+  [animationCopy mass];
   [v6 setMass:?];
 
   return v6;

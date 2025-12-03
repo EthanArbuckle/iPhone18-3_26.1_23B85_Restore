@@ -1,24 +1,24 @@
 @interface UIKBViewBackedKeyView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (BOOL)retestSelectedVariantIndexForKey:(id)a3 atPoint:(CGPoint)a4 phase:(int64_t)a5;
-- (UIKBViewBackedKeyView)initWithFrame:(CGRect)a3 keyplane:(id)a4 key:(id)a5;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (BOOL)retestSelectedVariantIndexForKey:(id)key atPoint:(CGPoint)point phase:(int64_t)phase;
+- (UIKBViewBackedKeyView)initWithFrame:(CGRect)frame keyplane:(id)keyplane key:(id)key;
 - (UIView)touchForwardingView;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)renderFlagsForTraits:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)renderFlagsForTraits:(id)traits;
 - (void)layoutSubviews;
-- (void)setContentView:(id)a3;
-- (void)setDrawFrame:(CGRect)a3;
-- (void)setRenderConfig:(id)a3;
-- (void)updateForKeyplane:(id)a3 key:(id)a4;
+- (void)setContentView:(id)view;
+- (void)setDrawFrame:(CGRect)frame;
+- (void)setRenderConfig:(id)config;
+- (void)updateForKeyplane:(id)keyplane key:(id)key;
 @end
 
 @implementation UIKBViewBackedKeyView
 
-- (UIKBViewBackedKeyView)initWithFrame:(CGRect)a3 keyplane:(id)a4 key:(id)a5
+- (UIKBViewBackedKeyView)initWithFrame:(CGRect)frame keyplane:(id)keyplane key:(id)key
 {
   v8.receiver = self;
   v8.super_class = UIKBViewBackedKeyView;
-  v5 = [(UIKBKeyView *)&v8 initWithFrame:a4 keyplane:a5 key:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(UIKBKeyView *)&v8 initWithFrame:keyplane keyplane:key key:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
@@ -28,17 +28,17 @@
   return v6;
 }
 
-- (id)renderFlagsForTraits:(id)a3
+- (id)renderFlagsForTraits:(id)traits
 {
-  v4 = a3;
-  v5 = [v4 geometry];
-  v6 = [v5 detachedVariants];
+  traitsCopy = traits;
+  geometry = [traitsCopy geometry];
+  detachedVariants = [geometry detachedVariants];
 
-  if (v6)
+  if (detachedVariants)
   {
     v9.receiver = self;
     v9.super_class = UIKBViewBackedKeyView;
-    v7 = [(UIKBKeyView *)&v9 renderFlagsForTraits:v4];
+    v7 = [(UIKBKeyView *)&v9 renderFlagsForTraits:traitsCopy];
   }
 
   else
@@ -49,28 +49,28 @@
   return v7;
 }
 
-- (void)setRenderConfig:(id)a3
+- (void)setRenderConfig:(id)config
 {
-  v4 = a3;
-  v5 = [(UIKBKeyView *)self factory];
+  configCopy = config;
+  factory = [(UIKBKeyView *)self factory];
   v6 = [(UIKBKeyView *)self key];
-  v7 = [(UIKBKeyView *)self keyplane];
-  v8 = [v5 traitsForKey:v6 onKeyplane:v7];
+  keyplane = [(UIKBKeyView *)self keyplane];
+  v8 = [factory traitsForKey:v6 onKeyplane:keyplane];
 
   if (([v8 blurBlending] & 1) != 0 || (objc_msgSend(v8, "variantTraits"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "blurBlending"), v9, v10))
   {
     if (!self->_backdropView)
     {
       v11 = +[UIKBRenderConfig defaultConfig];
-      v12 = [v11 variantSelectorBackdropStyle];
+      variantSelectorBackdropStyle = [v11 variantSelectorBackdropStyle];
 
       v13 = [UIKBBackdropView alloc];
       [(UIView *)self bounds];
-      v14 = [(UIKBBackdropView *)v13 initWithFrame:v12 style:?];
+      v14 = [(UIKBBackdropView *)v13 initWithFrame:variantSelectorBackdropStyle style:?];
       [(UIKBViewBackedKeyView *)self setBackdropView:v14];
 
-      v15 = [(UIKBViewBackedKeyView *)self backdropView];
-      [(UIView *)self addSubview:v15];
+      backdropView = [(UIKBViewBackedKeyView *)self backdropView];
+      [(UIView *)self addSubview:backdropView];
     }
 
     v19[0] = MEMORY[0x1E69E9820];
@@ -78,17 +78,17 @@
     v19[2] = __41__UIKBViewBackedKeyView_setRenderConfig___block_invoke;
     v19[3] = &unk_1E70F35B8;
     v19[4] = self;
-    v16 = v4;
+    v16 = configCopy;
     v20 = v16;
     [UIView performWithoutAnimation:v19];
-    v17 = [(UIKBViewBackedKeyView *)self backdropView];
-    [(UIKBKeyView *)self configureBackdropView:v17 forRenderConfig:v16];
+    backdropView2 = [(UIKBViewBackedKeyView *)self backdropView];
+    [(UIKBKeyView *)self configureBackdropView:backdropView2 forRenderConfig:v16];
   }
 
-  [(UIKBKeyViewContentView *)self->_contentView updateRenderConfig:v4];
+  [(UIKBKeyViewContentView *)self->_contentView updateRenderConfig:configCopy];
   v18.receiver = self;
   v18.super_class = UIKBViewBackedKeyView;
-  [(UIKBKeyView *)&v18 setRenderConfig:v4];
+  [(UIKBKeyView *)&v18 setRenderConfig:configCopy];
 }
 
 void __41__UIKBViewBackedKeyView_setRenderConfig___block_invoke(uint64_t a1)
@@ -97,68 +97,68 @@ void __41__UIKBViewBackedKeyView_setRenderConfig___block_invoke(uint64_t a1)
   [v2 transitionToStyle:{objc_msgSend(*(a1 + 40), "variantSelectorBackdropStyle")}];
 }
 
-- (void)setDrawFrame:(CGRect)a3
+- (void)setDrawFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = UIKBViewBackedKeyView;
-  [(UIKBKeyView *)&v4 setDrawFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIKBKeyView *)&v4 setDrawFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(UIView *)self setNeedsLayout];
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
-  if (contentView != v5)
+  if (contentView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIKBKeyViewContentView *)contentView removeFromSuperview];
-    objc_storeStrong(&self->_contentView, a3);
+    objc_storeStrong(&self->_contentView, view);
     [(UIView *)self addSubview:v7];
     [(UIView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (void)updateForKeyplane:(id)a3 key:(id)a4
+- (void)updateForKeyplane:(id)keyplane key:(id)key
 {
   v8.receiver = self;
   v8.super_class = UIKBViewBackedKeyView;
-  v6 = a4;
-  v7 = a3;
-  [(UIKBKeyView *)&v8 updateForKeyplane:v7 key:v6];
-  [(UIKBKeyViewContentView *)self->_contentView updateForKeyplane:v7 key:v6, v8.receiver, v8.super_class];
+  keyCopy = key;
+  keyplaneCopy = keyplane;
+  [(UIKBKeyView *)&v8 updateForKeyplane:keyplaneCopy key:keyCopy];
+  [(UIKBKeyViewContentView *)self->_contentView updateForKeyplane:keyplaneCopy key:keyCopy, v8.receiver, v8.super_class];
 }
 
-- (BOOL)retestSelectedVariantIndexForKey:(id)a3 atPoint:(CGPoint)a4 phase:(int64_t)a5
+- (BOOL)retestSelectedVariantIndexForKey:(id)key atPoint:(CGPoint)point phase:(int64_t)phase
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   contentView = self->_contentView;
-  v10 = a3;
+  keyCopy = key;
   [(UIView *)self convertPoint:contentView toView:x, y];
-  LOBYTE(a5) = [(UIKBKeyViewContentView *)self->_contentView retestSelectedVariantIndexForKey:v10 atPoint:a5 phase:?];
+  LOBYTE(phase) = [(UIKBKeyViewContentView *)self->_contentView retestSelectedVariantIndexForKey:keyCopy atPoint:phase phase:?];
 
-  return a5;
+  return phase;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(UIKBViewBackedKeyView *)self touchForwardingView];
-  if (v8)
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
+  touchForwardingView = [(UIKBViewBackedKeyView *)self touchForwardingView];
+  if (touchForwardingView)
   {
-    [(UIView *)self convertPoint:v8 toView:x, y];
-    v9 = [v8 pointInside:v7 withEvent:?];
+    [(UIView *)self convertPoint:touchForwardingView toView:x, y];
+    v9 = [touchForwardingView pointInside:eventCopy withEvent:?];
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = UIKBViewBackedKeyView;
-    v9 = [(UIView *)&v12 pointInside:v7 withEvent:x, y];
+    v9 = [(UIView *)&v12 pointInside:eventCopy withEvent:x, y];
   }
 
   v10 = v9;
@@ -166,23 +166,23 @@ void __41__UIKBViewBackedKeyView_setRenderConfig___block_invoke(uint64_t a1)
   return v10;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(UIKBViewBackedKeyView *)self touchForwardingView];
-  if (v8)
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  touchForwardingView = [(UIKBViewBackedKeyView *)self touchForwardingView];
+  if (touchForwardingView)
   {
-    [(UIView *)self convertPoint:v8 toView:x, y];
-    v9 = [v8 hitTest:v7 withEvent:?];
+    [(UIView *)self convertPoint:touchForwardingView toView:x, y];
+    v9 = [touchForwardingView hitTest:eventCopy withEvent:?];
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = UIKBViewBackedKeyView;
-    v9 = [(UIView *)&v12 hitTest:v7 withEvent:x, y];
+    v9 = [(UIView *)&v12 hitTest:eventCopy withEvent:x, y];
   }
 
   v10 = v9;
@@ -195,17 +195,17 @@ void __41__UIKBViewBackedKeyView_setRenderConfig___block_invoke(uint64_t a1)
   v20.receiver = self;
   v20.super_class = UIKBViewBackedKeyView;
   [(UIKBKeyView *)&v20 layoutSubviews];
-  v3 = [(UIKBKeyView *)self factory];
+  factory = [(UIKBKeyView *)self factory];
   v4 = [(UIKBKeyView *)self key];
-  v5 = [(UIKBKeyView *)self keyplane];
-  v6 = [v3 traitsForKey:v4 onKeyplane:v5];
+  keyplane = [(UIKBKeyView *)self keyplane];
+  v6 = [factory traitsForKey:v4 onKeyplane:keyplane];
 
-  v7 = [v6 variantTraits];
-  v8 = v7;
-  if (v7)
+  variantTraits = [v6 variantTraits];
+  v8 = variantTraits;
+  if (variantTraits)
   {
-    v9 = [v7 geometry];
-    [v9 symbolFrame];
+    geometry = [variantTraits geometry];
+    [geometry symbolFrame];
     [(UIKBKeyViewContentView *)self->_contentView setFrame:?];
   }
 
@@ -214,11 +214,11 @@ void __41__UIKBViewBackedKeyView_setRenderConfig___block_invoke(uint64_t a1)
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(UIKBViewBackedKeyView *)self backdropView];
-  [v18 setFrame:{v11, v13, v15, v17}];
+  backdropView = [(UIKBViewBackedKeyView *)self backdropView];
+  [backdropView setFrame:{v11, v13, v15, v17}];
 
-  v19 = [(UIKBViewBackedKeyView *)self backdropView];
-  [(UIView *)self sendSubviewToBack:v19];
+  backdropView2 = [(UIKBViewBackedKeyView *)self backdropView];
+  [(UIView *)self sendSubviewToBack:backdropView2];
 }
 
 - (UIView)touchForwardingView

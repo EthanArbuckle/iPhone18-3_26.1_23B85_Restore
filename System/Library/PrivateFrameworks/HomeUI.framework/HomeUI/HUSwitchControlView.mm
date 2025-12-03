@@ -1,22 +1,22 @@
 @interface HUSwitchControlView
 - (BOOL)isDisabled;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (HUControlViewDelegate)delegate;
-- (HUSwitchControlView)initWithFrame:(CGRect)a3;
+- (HUSwitchControlView)initWithFrame:(CGRect)frame;
 - (id)value;
-- (void)_switchValueChanged:(id)a3;
-- (void)setDisabled:(BOOL)a3;
-- (void)setValue:(id)a3;
+- (void)_switchValueChanged:(id)changed;
+- (void)setDisabled:(BOOL)disabled;
+- (void)setValue:(id)value;
 @end
 
 @implementation HUSwitchControlView
 
-- (HUSwitchControlView)initWithFrame:(CGRect)a3
+- (HUSwitchControlView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = HUSwitchControlView;
-  v3 = [(HUSwitchControlView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUSwitchControlView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D75AE8]);
@@ -31,12 +31,12 @@
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(HUSwitchControlView *)self switchView];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  switchView = [(HUSwitchControlView *)self switchView];
+  [switchView sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -49,8 +49,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(HUSwitchControlView *)self switchView];
-  [v2 intrinsicContentSize];
+  switchView = [(HUSwitchControlView *)self switchView];
+  [switchView intrinsicContentSize];
   v4 = v3;
   v6 = v5;
 
@@ -64,47 +64,47 @@
 - (id)value
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(HUSwitchControlView *)self switchView];
-  v4 = [v2 numberWithBool:{objc_msgSend(v3, "isOn")}];
+  switchView = [(HUSwitchControlView *)self switchView];
+  v4 = [v2 numberWithBool:{objc_msgSend(switchView, "isOn")}];
 
   return v4;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v4 = a3;
-  v6 = [(HUSwitchControlView *)self switchView];
-  v5 = [v4 BOOLValue];
+  valueCopy = value;
+  switchView = [(HUSwitchControlView *)self switchView];
+  bOOLValue = [valueCopy BOOLValue];
 
-  [v6 setOn:v5 animated:{objc_msgSend(MEMORY[0x277D75D18], "_isInAnimationBlock")}];
+  [switchView setOn:bOOLValue animated:{objc_msgSend(MEMORY[0x277D75D18], "_isInAnimationBlock")}];
 }
 
 - (BOOL)isDisabled
 {
-  v2 = [(HUSwitchControlView *)self switchView];
-  v3 = [v2 isEnabled];
+  switchView = [(HUSwitchControlView *)self switchView];
+  isEnabled = [switchView isEnabled];
 
-  return v3 ^ 1;
+  return isEnabled ^ 1;
 }
 
-- (void)setDisabled:(BOOL)a3
+- (void)setDisabled:(BOOL)disabled
 {
-  v3 = a3;
-  v4 = [(HUSwitchControlView *)self switchView];
-  [v4 setEnabled:!v3];
+  disabledCopy = disabled;
+  switchView = [(HUSwitchControlView *)self switchView];
+  [switchView setEnabled:!disabledCopy];
 }
 
-- (void)_switchValueChanged:(id)a3
+- (void)_switchValueChanged:(id)changed
 {
-  v4 = [(HUSwitchControlView *)self delegate];
-  [v4 controlViewDidBeginUserInteraction:self];
+  delegate = [(HUSwitchControlView *)self delegate];
+  [delegate controlViewDidBeginUserInteraction:self];
 
-  v5 = [(HUSwitchControlView *)self delegate];
-  v6 = [(HUSwitchControlView *)self value];
-  [v5 controlView:self valueDidChange:v6];
+  delegate2 = [(HUSwitchControlView *)self delegate];
+  value = [(HUSwitchControlView *)self value];
+  [delegate2 controlView:self valueDidChange:value];
 
-  v7 = [(HUSwitchControlView *)self delegate];
-  [v7 controlViewDidEndUserInteraction:self];
+  delegate3 = [(HUSwitchControlView *)self delegate];
+  [delegate3 controlViewDidEndUserInteraction:self];
 }
 
 - (HUControlViewDelegate)delegate

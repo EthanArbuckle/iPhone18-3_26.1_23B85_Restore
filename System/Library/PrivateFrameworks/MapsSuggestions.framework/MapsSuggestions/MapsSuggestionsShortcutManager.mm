@@ -1,25 +1,25 @@
 @interface MapsSuggestionsShortcutManager
-- (MapsSuggestionsShortcutManager)initWithStorage:(id)a3 suggestor:(id)a4 contacts:(id)a5 routine:(id)a6 mapsSync:(id)a7 usingMyPlaces:(BOOL)a8;
+- (MapsSuggestionsShortcutManager)initWithStorage:(id)storage suggestor:(id)suggestor contacts:(id)contacts routine:(id)routine mapsSync:(id)sync usingMyPlaces:(BOOL)places;
 - (NSString)uniqueName;
-- (char)addOrUpdateShortcuts:(id)a3 handler:(id)a4;
-- (char)loadAllShortcutsWithHandler:(id)a3;
-- (char)moveShortcut:(id)a3 afterShortcut:(id)a4 handler:(id)a5;
-- (char)moveShortcut:(id)a3 beforeShortcut:(id)a4 handler:(id)a5;
-- (char)moveShortcut:(id)a3 toIndex:(int64_t)a4 withSnapshot:(id)a5 handler:(id)a6;
-- (char)moveShortcutToBack:(id)a3 handler:(id)a4;
-- (char)moveShortcutToFront:(id)a3 handler:(id)a4;
-- (char)proposeAdditionalShortcutsOfType:(int64_t)a3 handler:(id)a4;
-- (char)readMeCardWithHandler:(id)a3;
-- (char)removeShortcuts:(id)a3 handler:(id)a4;
+- (char)addOrUpdateShortcuts:(id)shortcuts handler:(id)handler;
+- (char)loadAllShortcutsWithHandler:(id)handler;
+- (char)moveShortcut:(id)shortcut afterShortcut:(id)afterShortcut handler:(id)handler;
+- (char)moveShortcut:(id)shortcut beforeShortcut:(id)beforeShortcut handler:(id)handler;
+- (char)moveShortcut:(id)shortcut toIndex:(int64_t)index withSnapshot:(id)snapshot handler:(id)handler;
+- (char)moveShortcutToBack:(id)back handler:(id)handler;
+- (char)moveShortcutToFront:(id)front handler:(id)handler;
+- (char)proposeAdditionalShortcutsOfType:(int64_t)type handler:(id)handler;
+- (char)readMeCardWithHandler:(id)handler;
+- (char)removeShortcuts:(id)shortcuts handler:(id)handler;
 - (id).cxx_construct;
-- (id)initFromResourceDepot:(id)a3;
-- (id)test_setUpPlaceholdersIfNeeded:(id)a3 overlays:(id)a4;
-- (uint64_t)__loadCorrectedMeCardWithHandler:(uint64_t)a1;
-- (uint64_t)_loadCorrectedMeCardWithHandler:(uint64_t)a1;
-- (uint64_t)_mergeShortcuts:(void *)a3 toMeCardAndCallHandler:;
+- (id)initFromResourceDepot:(id)depot;
+- (id)test_setUpPlaceholdersIfNeeded:(id)needed overlays:(id)overlays;
+- (uint64_t)__loadCorrectedMeCardWithHandler:(uint64_t)handler;
+- (uint64_t)_loadCorrectedMeCardWithHandler:(uint64_t)handler;
+- (uint64_t)_mergeShortcuts:(void *)shortcuts toMeCardAndCallHandler:;
 - (uint64_t)usingMyPlaces;
-- (void)mapsSync:(id)a3 didChangeForContentType:(int64_t)a4;
-- (void)meCardReader:(id)a3 didUpdateMeCard:(id)a4;
+- (void)mapsSync:(id)sync didChangeForContentType:(int64_t)type;
+- (void)meCardReader:(id)reader didUpdateMeCard:(id)card;
 @end
 
 @implementation MapsSuggestionsShortcutManager
@@ -33,7 +33,7 @@
 
 - (uint64_t)usingMyPlaces
 {
-  if (a1)
+  if (self)
   {
     if (qword_1EDC51ED0 != -1)
     {
@@ -42,7 +42,7 @@
 
     if (_MergedGlobals_2 == 1)
     {
-      v2 = *(a1 + 72);
+      v2 = *(self + 72);
     }
 
     else
@@ -59,12 +59,12 @@
   return v2 & 1;
 }
 
-- (id)initFromResourceDepot:(id)a3
+- (id)initFromResourceDepot:(id)depot
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  depotCopy = depot;
+  v5 = depotCopy;
+  if (!depotCopy)
   {
     v16 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -83,9 +83,9 @@
     goto LABEL_21;
   }
 
-  v6 = [v4 oneFavoritesStorage];
+  oneFavoritesStorage = [depotCopy oneFavoritesStorage];
 
-  if (!v6)
+  if (!oneFavoritesStorage)
   {
     v16 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -104,9 +104,9 @@
     goto LABEL_21;
   }
 
-  v7 = [v5 oneFavoritesSuggestor];
+  oneFavoritesSuggestor = [v5 oneFavoritesSuggestor];
 
-  if (!v7)
+  if (!oneFavoritesSuggestor)
   {
     v16 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -125,9 +125,9 @@
     goto LABEL_21;
   }
 
-  v8 = [v5 oneContacts];
+  oneContacts = [v5 oneContacts];
 
-  if (!v8)
+  if (!oneContacts)
   {
     v16 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -146,9 +146,9 @@
     goto LABEL_21;
   }
 
-  v9 = [v5 oneRoutine];
+  oneRoutine = [v5 oneRoutine];
 
-  if (!v9)
+  if (!oneRoutine)
   {
     v16 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -166,31 +166,31 @@
 
 LABEL_21:
 
-    v15 = 0;
+    selfCopy = 0;
     goto LABEL_22;
   }
 
-  v10 = [v5 oneFavoritesStorage];
-  v11 = [v5 oneFavoritesSuggestor];
-  v12 = [v5 oneContacts];
-  v13 = [v5 oneRoutine];
-  v14 = [v5 oneMapsSync];
-  self = [(MapsSuggestionsShortcutManager *)self initWithStorage:v10 suggestor:v11 contacts:v12 routine:v13 mapsSync:v14 usingMyPlaces:1];
+  oneFavoritesStorage2 = [v5 oneFavoritesStorage];
+  oneFavoritesSuggestor2 = [v5 oneFavoritesSuggestor];
+  oneContacts2 = [v5 oneContacts];
+  oneRoutine2 = [v5 oneRoutine];
+  oneMapsSync = [v5 oneMapsSync];
+  self = [(MapsSuggestionsShortcutManager *)self initWithStorage:oneFavoritesStorage2 suggestor:oneFavoritesSuggestor2 contacts:oneContacts2 routine:oneRoutine2 mapsSync:oneMapsSync usingMyPlaces:1];
 
-  v15 = self;
+  selfCopy = self;
 LABEL_22:
 
-  return v15;
+  return selfCopy;
 }
 
-- (MapsSuggestionsShortcutManager)initWithStorage:(id)a3 suggestor:(id)a4 contacts:(id)a5 routine:(id)a6 mapsSync:(id)a7 usingMyPlaces:(BOOL)a8
+- (MapsSuggestionsShortcutManager)initWithStorage:(id)storage suggestor:(id)suggestor contacts:(id)contacts routine:(id)routine mapsSync:(id)sync usingMyPlaces:(BOOL)places
 {
   v45 = *MEMORY[0x1E69E9840];
-  v36 = a3;
-  v37 = a4;
-  v38 = a5;
-  v39 = a6;
-  v40 = a7;
+  storageCopy = storage;
+  suggestorCopy = suggestor;
+  contactsCopy = contacts;
+  routineCopy = routine;
+  syncCopy = sync;
   v43.receiver = self;
   v43.super_class = MapsSuggestionsShortcutManager;
   v15 = [(MapsSuggestionsShortcutManager *)&v43 init];
@@ -208,11 +208,11 @@ LABEL_22:
     name = v15->_queue._name;
     v15->_queue._name = v19;
 
-    objc_storeStrong(&v15->_storage, a3);
-    objc_storeStrong(&v15->_suggestor, a4);
-    objc_storeStrong(&v15->_contacts, a5);
-    objc_storeStrong(&v15->_routine, a6);
-    objc_storeStrong(&v15->_mapsSync, a7);
+    objc_storeStrong(&v15->_storage, storage);
+    objc_storeStrong(&v15->_suggestor, suggestor);
+    objc_storeStrong(&v15->_contacts, contacts);
+    objc_storeStrong(&v15->_routine, routine);
+    objc_storeStrong(&v15->_mapsSync, sync);
     v21 = objc_alloc_init(MEMORY[0x1E695DF70]);
     hiddenShortcuts = v15->_hiddenShortcuts;
     v15->_hiddenShortcuts = v21;
@@ -232,11 +232,11 @@ LABEL_22:
     currCorrectedMeCard = v15->_currCorrectedMeCard;
     v15->_currCorrectedMeCard = 0;
 
-    v15->_usingMyPlaces = a8;
+    v15->_usingMyPlaces = places;
     v28 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
     {
-      v29 = [(MapsSuggestionsShortcutStorage *)v15->_storage uniqueName:v36];
+      v29 = [(MapsSuggestionsShortcutStorage *)v15->_storage uniqueName:storageCopy];
       LODWORD(buf) = 138412290;
       *(&buf + 4) = v29;
       _os_log_impl(&dword_1C5126000, v28, OS_LOG_TYPE_DEBUG, "Using %@", &buf, 0xCu);
@@ -314,23 +314,23 @@ void __100__MapsSuggestionsShortcutManager_initWithStorage_suggestor_contacts_ro
   }
 }
 
-- (id)test_setUpPlaceholdersIfNeeded:(id)a3 overlays:(id)a4
+- (id)test_setUpPlaceholdersIfNeeded:(id)needed overlays:(id)overlays
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
-  v29 = v6;
+  neededCopy = needed;
+  overlaysCopy = overlays;
+  v7 = neededCopy;
+  v29 = overlaysCopy;
   v30 = v7;
   v8 = isAuthorizedToUseContacts();
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v9 = [v7 shortcutsForAll];
+  shortcutsForAll = [v7 shortcutsForAll];
   v10 = 0;
   v11 = 0;
-  v12 = [v9 countByEnumeratingWithState:&v35 objects:v42 count:16];
+  v12 = [shortcutsForAll countByEnumeratingWithState:&v35 objects:v42 count:16];
   if (v12)
   {
     v13 = *v36;
@@ -340,7 +340,7 @@ void __100__MapsSuggestionsShortcutManager_initWithStorage_suggestor_contacts_ro
       {
         if (*v36 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(shortcutsForAll);
         }
 
         v15 = *(*(&v35 + 1) + 8 * i);
@@ -355,7 +355,7 @@ void __100__MapsSuggestionsShortcutManager_initWithStorage_suggestor_contacts_ro
         }
       }
 
-      v12 = [v9 countByEnumeratingWithState:&v35 objects:v42 count:16];
+      v12 = [shortcutsForAll countByEnumeratingWithState:&v35 objects:v42 count:16];
     }
 
     while (v12);
@@ -504,19 +504,19 @@ LABEL_39:
   return v27;
 }
 
-- (uint64_t)_mergeShortcuts:(void *)a3 toMeCardAndCallHandler:
+- (uint64_t)_mergeShortcuts:(void *)shortcuts toMeCardAndCallHandler:
 {
   v145 = *MEMORY[0x1E69E9840];
   v86 = a2;
-  v5 = a3;
-  v88 = a1;
-  v85 = v5;
-  if (!a1)
+  shortcutsCopy = shortcuts;
+  selfCopy = self;
+  v85 = shortcutsCopy;
+  if (!self)
   {
     goto LABEL_38;
   }
 
-  if (!v5)
+  if (!shortcutsCopy)
   {
     v23 = GEOFindOrCreateLog();
     [MapsSuggestionsShortcutManager _mergeShortcuts:v23 toMeCardAndCallHandler:?];
@@ -525,21 +525,21 @@ LABEL_38:
     goto LABEL_152;
   }
 
-  v6 = a1[1];
+  v6 = self[1];
   dispatch_assert_queue_V2(v6);
 
-  objc_initWeak(&location, a1);
-  v7 = a1[10];
+  objc_initWeak(&location, self);
+  v7 = self[10];
   v102 = v86;
   v8 = isAuthorizedToUseContacts();
   v141 = 0u;
   v142 = 0u;
   v139 = 0u;
   v140 = 0u;
-  v9 = [v7 shortcutsForAll];
+  shortcutsForAll = [v7 shortcutsForAll];
   v10 = 0;
   v11 = 0;
-  v12 = [v9 countByEnumeratingWithState:&v139 objects:v143 count:16];
+  v12 = [shortcutsForAll countByEnumeratingWithState:&v139 objects:v143 count:16];
   if (v12)
   {
     v13 = *v140;
@@ -549,7 +549,7 @@ LABEL_38:
       {
         if (*v140 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(shortcutsForAll);
         }
 
         v15 = *(*(&v139 + 1) + 8 * i);
@@ -564,7 +564,7 @@ LABEL_38:
         }
       }
 
-      v12 = [v9 countByEnumeratingWithState:&v139 objects:v143 count:16];
+      v12 = [shortcutsForAll countByEnumeratingWithState:&v139 objects:v143 count:16];
     }
 
     while (v12);
@@ -708,12 +708,12 @@ LABEL_43:
   *(&buf + 1) = v17;
   v84 = [MEMORY[0x1E695DEC8] arrayWithObjects:&buf count:2];
 
-  v87 = [v88[10] shortcutsForAll];
+  shortcutsForAll2 = [selfCopy[10] shortcutsForAll];
   v27 = [v84 count];
-  v28 = [v87 count];
-  v29 = [obj count];
-  v93 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:&v29[v28 + v27]];
-  v94 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v87, "count")}];
+  v28 = [shortcutsForAll2 count];
+  originatingAddressString3 = [obj count];
+  v93 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:&originatingAddressString3[v28 + v27]];
+  v94 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(shortcutsForAll2, "count")}];
   v122 = 0u;
   v123 = 0u;
   v120 = 0u;
@@ -722,12 +722,12 @@ LABEL_43:
   v30 = [v90 countByEnumeratingWithState:&v120 objects:v132 count:16];
   if (v30)
   {
-    v29 = *v121;
+    originatingAddressString3 = *v121;
     do
     {
       for (k = 0; k != v30; ++k)
       {
-        if (*v121 != v29)
+        if (*v121 != originatingAddressString3)
         {
           objc_enumerationMutation(v90);
         }
@@ -745,12 +745,12 @@ LABEL_43:
     while (v30);
   }
 
-  [v88[8] removeAllObjects];
+  [selfCopy[8] removeAllObjects];
   v118 = 0u;
   v119 = 0u;
   v116 = 0u;
   v117 = 0u;
-  v89 = v87;
+  v89 = shortcutsForAll2;
   v92 = [v89 countByEnumeratingWithState:&v116 objects:v131 count:16];
   if (v92)
   {
@@ -785,31 +785,31 @@ LABEL_43:
               }
 
               v37 = *(*(&v139 + 1) + 8 * n);
-              v38 = [v37 originatingAddressString];
-              if (v38)
+              originatingAddressString = [v37 originatingAddressString];
+              if (originatingAddressString)
               {
-                v100 = [v37 originatingAddressString];
-                v29 = [v33 originatingAddressString];
-                if ([v100 isEqualToString:v29])
+                originatingAddressString2 = [v37 originatingAddressString];
+                originatingAddressString3 = [v33 originatingAddressString];
+                if ([originatingAddressString2 isEqualToString:originatingAddressString3])
                 {
 
 LABEL_86:
-                  v44 = [v37 identifier];
-                  [v33 setIdentifier:v44];
+                  identifier = [v37 identifier];
+                  [v33 setIdentifier:identifier];
 
-                  v45 = [v37 customName];
-                  [v33 setCustomName:v45];
+                  customName = [v37 customName];
+                  [v33 setCustomName:customName];
 
-                  v46 = [v37 geoMapItem];
-                  [v33 setGeoMapItem:v46];
+                  geoMapItem = [v37 geoMapItem];
+                  [v33 setGeoMapItem:geoMapItem];
 
                   [v33 setIsHidden:{objc_msgSend(v37, "isHidden")}];
                   v127 = 0u;
                   v128 = 0u;
                   v125 = 0u;
                   v126 = 0u;
-                  v47 = [v37 contacts];
-                  v48 = [v47 countByEnumeratingWithState:&v125 objects:&v135 count:16];
+                  contacts = [v37 contacts];
+                  v48 = [contacts countByEnumeratingWithState:&v125 objects:&v135 count:16];
                   if (v48)
                   {
                     v49 = *v126;
@@ -819,13 +819,13 @@ LABEL_86:
                       {
                         if (*v126 != v49)
                         {
-                          objc_enumerationMutation(v47);
+                          objc_enumerationMutation(contacts);
                         }
 
                         [v33 addContact:*(*(&v125 + 1) + 8 * ii)];
                       }
 
-                      v48 = [v47 countByEnumeratingWithState:&v125 objects:&v135 count:16];
+                      v48 = [contacts countByEnumeratingWithState:&v125 objects:&v135 count:16];
                     }
 
                     while (v48);
@@ -835,15 +835,15 @@ LABEL_86:
                 }
               }
 
-              v39 = [v37 identifier];
-              v103 = v29;
-              if (v39)
+              identifier2 = [v37 identifier];
+              v103 = originatingAddressString3;
+              if (identifier2)
               {
-                v40 = [v37 identifier];
-                v41 = [v33 identifier];
-                v42 = [v40 isEqualToString:v41];
+                identifier3 = [v37 identifier];
+                identifier4 = [v33 identifier];
+                v42 = [identifier3 isEqualToString:identifier4];
 
-                if (v38)
+                if (originatingAddressString)
                 {
 
                   if (v42)
@@ -858,11 +858,11 @@ LABEL_86:
                 }
               }
 
-              else if (v38)
+              else if (originatingAddressString)
               {
               }
 
-              v29 = v103;
+              originatingAddressString3 = v103;
             }
 
             v35 = [v97 countByEnumeratingWithState:&v139 objects:v143 count:16];
@@ -885,17 +885,17 @@ LABEL_86:
         }
 
 LABEL_94:
-        v29 = [v33 identifier];
-        if (v29)
+        originatingAddressString3 = [v33 identifier];
+        if (originatingAddressString3)
         {
-          if (([v94 containsObject:v29] & 1) == 0)
+          if (([v94 containsObject:originatingAddressString3] & 1) == 0)
           {
-            [v94 addObject:v29];
-            v51 = [v33 isHidden];
+            [v94 addObject:originatingAddressString3];
+            isHidden = [v33 isHidden];
             v52 = v93;
-            if (v51)
+            if (isHidden)
             {
-              v52 = v88[8];
+              v52 = selfCopy[8];
             }
 
             [v52 addObject:v33];
@@ -939,12 +939,12 @@ LABEL_94:
         }
 
         v58 = *(*(&v112 + 1) + 8 * jj);
-        v59 = [v58 identifier];
-        if (v59)
+        identifier5 = [v58 identifier];
+        if (identifier5)
         {
-          if (([v94 containsObject:v59] & 1) == 0 && (objc_msgSend(v58, "isSetupPlaceholder") & 1) == 0)
+          if (([v94 containsObject:identifier5] & 1) == 0 && (objc_msgSend(v58, "isSetupPlaceholder") & 1) == 0)
           {
-            [v94 addObject:v59];
+            [v94 addObject:identifier5];
             if (([v58 isHidden] & 1) == 0)
             {
               [v93 addObject:v58];
@@ -991,8 +991,8 @@ LABEL_94:
         }
 
         v65 = [*(*(&v135 + 1) + 8 * kk) copy];
-        v66 = [v65 identifier];
-        if (!v66 && ([v65 isBackedPlaceholder] & 1) == 0)
+        identifier6 = [v65 identifier];
+        if (!identifier6 && ([v65 isBackedPlaceholder] & 1) == 0)
         {
           if ([v65 isSetupPlaceholder])
           {
@@ -1000,15 +1000,15 @@ LABEL_94:
           }
 
           v67 = objc_alloc_init(MEMORY[0x1E696AFB0]);
-          v68 = [v67 UUIDString];
-          [v65 setIdentifier:v68];
+          uUIDString = [v67 UUIDString];
+          [v65 setIdentifier:uUIDString];
 
-          v66 = GEOFindOrCreateLog();
-          if (os_log_type_enabled(v66, OS_LOG_TYPE_DEBUG))
+          identifier6 = GEOFindOrCreateLog();
+          if (os_log_type_enabled(identifier6, OS_LOG_TYPE_DEBUG))
           {
             LODWORD(v139) = 138412290;
             *(&v139 + 4) = v65;
-            _os_log_impl(&dword_1C5126000, v66, OS_LOG_TYPE_DEBUG, "Set fake identifier on Shortcut: %@", &v139, 0xCu);
+            _os_log_impl(&dword_1C5126000, identifier6, OS_LOG_TYPE_DEBUG, "Set fake identifier on Shortcut: %@", &v139, 0xCu);
           }
         }
 
@@ -1088,7 +1088,7 @@ LABEL_131:
     _os_log_impl(&dword_1C5126000, v80, OS_LOG_TYPE_DEBUG, "Storing changed Shortcuts: %@", v143, 0xCu);
   }
 
-  v81 = v88[3];
+  v81 = selfCopy[3];
   v104[0] = MEMORY[0x1E69E9820];
   v104[1] = 3221225472;
   v104[2] = __73__MapsSuggestionsShortcutManager__mergeShortcuts_toMeCardAndCallHandler___block_invoke;
@@ -1218,11 +1218,11 @@ void __73__MapsSuggestionsShortcutManager__mergeShortcuts_toMeCardAndCallHandler
   [v3 meCardReader:*(a1 + 32) didUpdateMeCard:*(a1 + 40)];
 }
 
-- (uint64_t)__loadCorrectedMeCardWithHandler:(uint64_t)a1
+- (uint64_t)__loadCorrectedMeCardWithHandler:(uint64_t)handler
 {
   v3 = a2;
   v4 = v3;
-  if (!a1)
+  if (!handler)
   {
     goto LABEL_6;
   }
@@ -1236,11 +1236,11 @@ LABEL_6:
     goto LABEL_4;
   }
 
-  dispatch_assert_queue_V2(*(a1 + 8));
-  objc_initWeak(&location, a1);
-  v5 = *(a1 + 8);
-  v6 = *(a1 + 16);
-  v7 = *(a1 + 48);
+  dispatch_assert_queue_V2(*(handler + 8));
+  objc_initWeak(&location, handler);
+  v5 = *(handler + 8);
+  v6 = *(handler + 16);
+  v7 = *(handler + 48);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3321888768;
   v13[2] = __67__MapsSuggestionsShortcutManager___loadCorrectedMeCardWithHandler___block_invoke;
@@ -1249,7 +1249,7 @@ LABEL_6:
   v16 = v8;
   v9 = v6;
   v17 = v9;
-  v13[4] = a1;
+  v13[4] = handler;
   objc_copyWeak(&v15, &location);
   v14 = v4;
   [v7 readMeCardWithHandler:v13];
@@ -1484,11 +1484,11 @@ LABEL_17:
   return v5;
 }
 
-- (uint64_t)_loadCorrectedMeCardWithHandler:(uint64_t)a1
+- (uint64_t)_loadCorrectedMeCardWithHandler:(uint64_t)handler
 {
   v3 = a2;
   v4 = v3;
-  if (!a1)
+  if (!handler)
   {
     goto LABEL_6;
   }
@@ -1502,11 +1502,11 @@ LABEL_6:
     goto LABEL_4;
   }
 
-  dispatch_assert_queue_V2(*(a1 + 8));
-  objc_initWeak(&location, a1);
-  v5 = *(a1 + 8);
-  v6 = *(a1 + 16);
-  v7 = *(a1 + 48);
+  dispatch_assert_queue_V2(*(handler + 8));
+  objc_initWeak(&location, handler);
+  v5 = *(handler + 8);
+  v6 = *(handler + 16);
+  v7 = *(handler + 48);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3321888768;
   v13[2] = __66__MapsSuggestionsShortcutManager__loadCorrectedMeCardWithHandler___block_invoke;
@@ -1599,19 +1599,19 @@ void __66__MapsSuggestionsShortcutManager__loadCorrectedMeCardWithHandler___bloc
   }
 }
 
-- (char)loadAllShortcutsWithHandler:(id)a3
+- (char)loadAllShortcutsWithHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __62__MapsSuggestionsShortcutManager_loadAllShortcutsWithHandler___block_invoke;
     v9[3] = &unk_1E81F6348;
     v9[4] = self;
-    v10 = v4;
+    v10 = handlerCopy;
     MSg::Queue::async<MapsSuggestionsShortcutManager>(&self->_queue, self, v9);
 
     v6 = 1;
@@ -1805,12 +1805,12 @@ void __62__MapsSuggestionsShortcutManager_loadAllShortcutsWithHandler___block_in
   (*(v1 + 16))(v1);
 }
 
-- (char)addOrUpdateShortcuts:(id)a3 handler:(id)a4
+- (char)addOrUpdateShortcuts:(id)shortcuts handler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  shortcutsCopy = shortcuts;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -1833,7 +1833,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!v6)
+  if (!shortcutsCopy)
   {
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -1857,17 +1857,17 @@ LABEL_11:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v18 = v6;
+    v18 = shortcutsCopy;
     _os_log_impl(&dword_1C5126000, v8, OS_LOG_TYPE_DEBUG, "Storing Shortcuts: %@", buf, 0xCu);
   }
 
-  v9 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:v6 copyItems:1];
+  v9 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:shortcutsCopy copyItems:1];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __63__MapsSuggestionsShortcutManager_addOrUpdateShortcuts_handler___block_invoke;
   v14[3] = &unk_1E81F6348;
   v15 = v9;
-  v16 = v7;
+  v16 = handlerCopy;
   v10 = v9;
   MSg::Queue::async<MapsSuggestionsShortcutManager>(&self->_queue, self, v14);
 
@@ -1961,12 +1961,12 @@ LABEL_8:
   [v17[3] addOrUpdateShortcuts:v14 handler:*(v16 + 40)];
 }
 
-- (char)removeShortcuts:(id)a3 handler:(id)a4
+- (char)removeShortcuts:(id)shortcuts handler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  shortcutsCopy = shortcuts;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -1989,7 +1989,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!v6)
+  if (!shortcutsCopy)
   {
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -2014,9 +2014,9 @@ LABEL_9:
   block[1] = 3221225472;
   block[2] = __58__MapsSuggestionsShortcutManager_removeShortcuts_handler___block_invoke;
   block[3] = &unk_1E81F5810;
-  v15 = v6;
+  v15 = shortcutsCopy;
   v16 = v8;
-  v17 = v7;
+  v17 = handlerCopy;
   innerQueue = self->_queue._innerQueue;
   v10 = v8;
   dispatch_async(innerQueue, block);
@@ -2090,13 +2090,13 @@ LABEL_11:
   }
 }
 
-- (char)moveShortcut:(id)a3 toIndex:(int64_t)a4 withSnapshot:(id)a5 handler:(id)a6
+- (char)moveShortcut:(id)shortcut toIndex:(int64_t)index withSnapshot:(id)snapshot handler:(id)handler
 {
   v49 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (!v12)
+  shortcutCopy = shortcut;
+  snapshotCopy = snapshot;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v16 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -2115,7 +2115,7 @@ LABEL_11:
     goto LABEL_16;
   }
 
-  if (!v10)
+  if (!shortcutCopy)
   {
     v16 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -2134,7 +2134,7 @@ LABEL_11:
     goto LABEL_16;
   }
 
-  if (a4 < 0)
+  if (index < 0)
   {
     v16 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -2156,10 +2156,10 @@ LABEL_16:
     goto LABEL_31;
   }
 
-  for (i = 0; i < [v11 count]; ++i)
+  for (i = 0; i < [snapshotCopy count]; ++i)
   {
-    v14 = [v11 objectAtIndexedSubscript:i];
-    v15 = [v14 isEqualToShortcut:v10];
+    v14 = [snapshotCopy objectAtIndexedSubscript:i];
+    v15 = [v14 isEqualToShortcut:shortcutCopy];
 
     if (v15)
     {
@@ -2169,34 +2169,34 @@ LABEL_16:
 
   i = -1;
 LABEL_18:
-  if (i == a4)
+  if (i == index)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __76__MapsSuggestionsShortcutManager_moveShortcut_toIndex_withSnapshot_handler___block_invoke;
     block[3] = &unk_1E81F56F8;
-    v40 = v12;
+    v40 = handlerCopy;
     dispatch_async(self->_queue._innerQueue, block);
   }
 
-  else if (i >= [v11 count])
+  else if (i >= [snapshotCopy count])
   {
     v37[0] = MEMORY[0x1E69E9820];
     v37[1] = 3221225472;
     v37[2] = __76__MapsSuggestionsShortcutManager_moveShortcut_toIndex_withSnapshot_handler___block_invoke_2;
     v37[3] = &unk_1E81F56F8;
-    v38 = v12;
+    v38 = handlerCopy;
     dispatch_async(self->_queue._innerQueue, v37);
   }
 
   else
   {
     objc_initWeak(buf, self);
-    if (a4)
+    if (index)
     {
-      v18 = [v11 objectAtIndex:a4 - (i >= a4)];
-      v19 = [v18 type];
-      if (v19 <= 5 && ((1 << v19) & 0x2C) != 0)
+      v18 = [snapshotCopy objectAtIndex:index - (i >= index)];
+      type = [v18 type];
+      if (type <= 5 && ((1 << type) & 0x2C) != 0)
       {
         v29[0] = MEMORY[0x1E69E9820];
         v29[1] = 3221225472;
@@ -2205,9 +2205,9 @@ LABEL_18:
         v20 = &v32;
         objc_copyWeak(&v32, buf);
         v21 = &v30;
-        v30 = v10;
+        v30 = shortcutCopy;
         v22 = &v31;
-        v31 = v12;
+        v31 = handlerCopy;
         dispatch_async(self->_queue._innerQueue, v29);
       }
 
@@ -2219,9 +2219,9 @@ LABEL_18:
         v24[3] = &unk_1E81F5B78;
         v20 = &v28;
         objc_copyWeak(&v28, buf);
-        v25 = v10;
+        v25 = shortcutCopy;
         v26 = v18;
-        v27 = v12;
+        v27 = handlerCopy;
         dispatch_async(self->_queue._innerQueue, v24);
 
         v21 = &v25;
@@ -2238,8 +2238,8 @@ LABEL_18:
       v33[2] = __76__MapsSuggestionsShortcutManager_moveShortcut_toIndex_withSnapshot_handler___block_invoke_3;
       v33[3] = &unk_1E81F5B00;
       objc_copyWeak(&v36, buf);
-      v34 = v10;
-      v35 = v12;
+      v34 = shortcutCopy;
+      v35 = handlerCopy;
       dispatch_async(self->_queue._innerQueue, v33);
 
       objc_destroyWeak(&v36);
@@ -2332,13 +2332,13 @@ void __76__MapsSuggestionsShortcutManager_moveShortcut_toIndex_withSnapshot_hand
   }
 }
 
-- (char)moveShortcut:(id)a3 beforeShortcut:(id)a4 handler:(id)a5
+- (char)moveShortcut:(id)shortcut beforeShortcut:(id)beforeShortcut handler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  shortcutCopy = shortcut;
+  beforeShortcutCopy = beforeShortcut;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2357,7 +2357,7 @@ void __76__MapsSuggestionsShortcutManager_moveShortcut_toIndex_withSnapshot_hand
     goto LABEL_13;
   }
 
-  if (!v8)
+  if (!shortcutCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2376,7 +2376,7 @@ void __76__MapsSuggestionsShortcutManager_moveShortcut_toIndex_withSnapshot_hand
     goto LABEL_13;
   }
 
-  if (!v9)
+  if (!beforeShortcutCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2404,9 +2404,9 @@ LABEL_13:
   v14[2] = __70__MapsSuggestionsShortcutManager_moveShortcut_beforeShortcut_handler___block_invoke;
   v14[3] = &unk_1E81F5B78;
   objc_copyWeak(&v18, location);
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
+  v15 = shortcutCopy;
+  v16 = beforeShortcutCopy;
+  v17 = handlerCopy;
   dispatch_async(self->_queue._innerQueue, v14);
 
   objc_destroyWeak(&v18);
@@ -2443,13 +2443,13 @@ void __70__MapsSuggestionsShortcutManager_moveShortcut_beforeShortcut_handler___
   }
 }
 
-- (char)moveShortcut:(id)a3 afterShortcut:(id)a4 handler:(id)a5
+- (char)moveShortcut:(id)shortcut afterShortcut:(id)afterShortcut handler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  shortcutCopy = shortcut;
+  afterShortcutCopy = afterShortcut;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2468,7 +2468,7 @@ void __70__MapsSuggestionsShortcutManager_moveShortcut_beforeShortcut_handler___
     goto LABEL_13;
   }
 
-  if (!v8)
+  if (!shortcutCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2487,7 +2487,7 @@ void __70__MapsSuggestionsShortcutManager_moveShortcut_beforeShortcut_handler___
     goto LABEL_13;
   }
 
-  if (!v9)
+  if (!afterShortcutCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2515,9 +2515,9 @@ LABEL_13:
   v14[2] = __69__MapsSuggestionsShortcutManager_moveShortcut_afterShortcut_handler___block_invoke;
   v14[3] = &unk_1E81F5B78;
   objc_copyWeak(&v18, location);
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
+  v15 = shortcutCopy;
+  v16 = afterShortcutCopy;
+  v17 = handlerCopy;
   dispatch_async(self->_queue._innerQueue, v14);
 
   objc_destroyWeak(&v18);
@@ -2554,12 +2554,12 @@ void __69__MapsSuggestionsShortcutManager_moveShortcut_afterShortcut_handler___b
   }
 }
 
-- (char)moveShortcutToFront:(id)a3 handler:(id)a4
+- (char)moveShortcutToFront:(id)front handler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  frontCopy = front;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -2578,7 +2578,7 @@ void __69__MapsSuggestionsShortcutManager_moveShortcut_afterShortcut_handler___b
     goto LABEL_9;
   }
 
-  if (!v6)
+  if (!frontCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -2606,8 +2606,8 @@ LABEL_9:
   block[2] = __62__MapsSuggestionsShortcutManager_moveShortcutToFront_handler___block_invoke;
   block[3] = &unk_1E81F5B00;
   objc_copyWeak(&v14, location);
-  v12 = v6;
-  v13 = v7;
+  v12 = frontCopy;
+  v13 = handlerCopy;
   dispatch_async(self->_queue._innerQueue, block);
 
   objc_destroyWeak(&v14);
@@ -2644,12 +2644,12 @@ void __62__MapsSuggestionsShortcutManager_moveShortcutToFront_handler___block_in
   }
 }
 
-- (char)moveShortcutToBack:(id)a3 handler:(id)a4
+- (char)moveShortcutToBack:(id)back handler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  backCopy = back;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -2668,7 +2668,7 @@ void __62__MapsSuggestionsShortcutManager_moveShortcutToFront_handler___block_in
     goto LABEL_9;
   }
 
-  if (!v6)
+  if (!backCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -2696,8 +2696,8 @@ LABEL_9:
   block[2] = __61__MapsSuggestionsShortcutManager_moveShortcutToBack_handler___block_invoke;
   block[3] = &unk_1E81F5B00;
   objc_copyWeak(&v14, location);
-  v12 = v6;
-  v13 = v7;
+  v12 = backCopy;
+  v13 = handlerCopy;
   dispatch_async(self->_queue._innerQueue, block);
 
   objc_destroyWeak(&v14);
@@ -2734,16 +2734,16 @@ void __61__MapsSuggestionsShortcutManager_moveShortcutToBack_handler___block_inv
   }
 }
 
-- (char)proposeAdditionalShortcutsOfType:(int64_t)a3 handler:(id)a4
+- (char)proposeAdditionalShortcutsOfType:(int64_t)type handler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (v6)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v7 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v8 = NSStringFromMapsSuggestionsShortcutType(a3);
+      v8 = NSStringFromMapsSuggestionsShortcutType(type);
       *buf = 138412290;
       v19 = v8;
       _os_log_impl(&dword_1C5126000, v7, OS_LOG_TYPE_DEBUG, "proposeAdditionalShortcutsOfType:%@", buf, 0xCu);
@@ -2755,8 +2755,8 @@ void __61__MapsSuggestionsShortcutManager_moveShortcutToBack_handler___block_inv
       v15[1] = 3221225472;
       v15[2] = __75__MapsSuggestionsShortcutManager_proposeAdditionalShortcutsOfType_handler___block_invoke;
       v15[3] = &unk_1E81F6398;
-      v16 = v6;
-      v17 = a3;
+      v16 = handlerCopy;
+      typeCopy = type;
       MSg::Queue::async<MapsSuggestionsShortcutManager>(&self->_queue, self, v15);
       v9 = 1;
       v10 = v16;
@@ -2775,7 +2775,7 @@ void __61__MapsSuggestionsShortcutManager_moveShortcutToBack_handler___block_inv
       v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"User turned off Siri Suggestions for Maps"];
       v10 = [v12 GEOErrorWithCode:-8 reason:v13];
 
-      (*(v6 + 2))(v6, 0, v10);
+      (*(handlerCopy + 2))(handlerCopy, 0, v10);
       v9 = 1;
     }
   }
@@ -3264,17 +3264,17 @@ LABEL_81:
   return [v2 description];
 }
 
-- (void)meCardReader:(id)a3 didUpdateMeCard:(id)a4
+- (void)meCardReader:(id)reader didUpdateMeCard:(id)card
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  readerCopy = reader;
+  cardCopy = card;
   v8 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [v6 uniqueName];
+    uniqueName = [readerCopy uniqueName];
     *buf = 138412290;
-    v14 = v9;
+    v14 = uniqueName;
     _os_log_impl(&dword_1C5126000, v8, OS_LOG_TYPE_DEBUG, "Received MeCard update from %@", buf, 0xCu);
   }
 
@@ -3282,7 +3282,7 @@ LABEL_81:
   v11[1] = 3221225472;
   v11[2] = __63__MapsSuggestionsShortcutManager_meCardReader_didUpdateMeCard___block_invoke;
   v11[3] = &unk_1E81F6208;
-  v10 = v7;
+  v10 = cardCopy;
   v12 = v10;
   MSg::Queue::async<MapsSuggestionsShortcutManager>(&self->_queue, self, v11);
 }
@@ -3313,16 +3313,16 @@ void __63__MapsSuggestionsShortcutManager_meCardReader_didUpdateMeCard___block_i
   }
 }
 
-- (void)mapsSync:(id)a3 didChangeForContentType:(int64_t)a4
+- (void)mapsSync:(id)sync didChangeForContentType:(int64_t)type
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  syncCopy = sync;
   v6 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [v5 uniqueName];
+    uniqueName = [syncCopy uniqueName];
     *buf = 138412290;
-    v10 = v7;
+    v10 = uniqueName;
     _os_log_impl(&dword_1C5126000, v6, OS_LOG_TYPE_DEBUG, "Received MapsSync update from %@", buf, 0xCu);
   }
 
@@ -3409,19 +3409,19 @@ void __67__MapsSuggestionsShortcutManager_mapsSync_didChangeForContentType___blo
   [v3 meCardReader:*(a1 + 32) didUpdateMeCard:*(a1 + 40)];
 }
 
-- (char)readMeCardWithHandler:(id)a3
+- (char)readMeCardWithHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __56__MapsSuggestionsShortcutManager_readMeCardWithHandler___block_invoke;
     v9[3] = &unk_1E81F6348;
     v9[4] = self;
-    v10 = v4;
+    v10 = handlerCopy;
     MSg::Queue::async<MapsSuggestionsShortcutManager>(&self->_queue, self, v9);
 
     v6 = 1;

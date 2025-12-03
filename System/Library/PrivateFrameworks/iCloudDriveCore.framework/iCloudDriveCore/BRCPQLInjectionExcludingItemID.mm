@@ -1,14 +1,14 @@
 @interface BRCPQLInjectionExcludingItemID
-+ (id)_createInjection:(id)a3;
-- (BRCPQLInjectionExcludingItemID)initWithExcludingItemID:(id)a3;
++ (id)_createInjection:(id)injection;
+- (BRCPQLInjectionExcludingItemID)initWithExcludingItemID:(id)d;
 @end
 
 @implementation BRCPQLInjectionExcludingItemID
 
-- (BRCPQLInjectionExcludingItemID)initWithExcludingItemID:(id)a3
+- (BRCPQLInjectionExcludingItemID)initWithExcludingItemID:(id)d
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _createInjection:v4];
+  dCopy = d;
+  v5 = [objc_opt_class() _createInjection:dCopy];
 
   v8.receiver = self;
   v8.super_class = BRCPQLInjectionExcludingItemID;
@@ -17,11 +17,11 @@
   return v6;
 }
 
-+ (id)_createInjection:(id)a3
++ (id)_createInjection:(id)injection
 {
-  if (a3)
+  if (injection)
   {
-    [MEMORY[0x277D82C08] formatInjection:{@" item_id != %@", a3}];
+    [MEMORY[0x277D82C08] formatInjection:{@" item_id != %@", injection}];
   }
 
   else

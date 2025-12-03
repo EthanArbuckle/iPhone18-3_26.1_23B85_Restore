@@ -4,9 +4,9 @@
 - (void)addObservers;
 - (void)configureSettingsForAirDrop;
 - (void)dealloc;
-- (void)presentEnableRadiosAlertForBluetooth:(BOOL)a3 andWLAN:(BOOL)a4;
+- (void)presentEnableRadiosAlertForBluetooth:(BOOL)bluetooth andWLAN:(BOOL)n;
 - (void)removeObservers;
-- (void)setProperty:(void *)a3 forKey:(id)a4;
+- (void)setProperty:(void *)property forKey:(id)key;
 - (void)setStatusAndNotify;
 - (void)start;
 - (void)stop;
@@ -60,12 +60,12 @@
 
 - (void)configureSettingsForAirDrop
 {
-  v3 = [(SDStatusMonitor *)self->_monitor bluetoothEnabled];
-  v4 = v3;
-  v5 = v3 ^ 1;
-  v6 = [(SDStatusMonitor *)self->_monitor wirelessEnabled];
-  v7 = v6;
-  v8 = v6 ^ 1;
+  bluetoothEnabled = [(SDStatusMonitor *)self->_monitor bluetoothEnabled];
+  v4 = bluetoothEnabled;
+  v5 = bluetoothEnabled ^ 1;
+  wirelessEnabled = [(SDStatusMonitor *)self->_monitor wirelessEnabled];
+  v7 = wirelessEnabled;
+  v8 = wirelessEnabled ^ 1;
   if ((v5 & 1) != 0 || v8)
   {
     if ([(SDStatusMonitor *)self->_monitor deviceSupportsWAPI])
@@ -91,11 +91,11 @@
   }
 }
 
-- (void)presentEnableRadiosAlertForBluetooth:(BOOL)a3 andWLAN:(BOOL)a4
+- (void)presentEnableRadiosAlertForBluetooth:(BOOL)bluetooth andWLAN:(BOOL)n
 {
   if (!self->_radiosUserNotification)
   {
-    v4 = a4;
+    nCopy = n;
     v7 = objc_opt_new();
     radiosUserNotification = self->_radiosUserNotification;
     self->_radiosUserNotification = v7;
@@ -103,7 +103,7 @@
     v9 = SFLocalizedStringForKey();
     [(SFUserAlert *)self->_radiosUserNotification setTitle:v9];
 
-    if (a3 || v4)
+    if (bluetooth || nCopy)
     {
       v10 = SFLocalizedStringForKey();
       [(SFUserAlert *)self->_radiosUserNotification setMessage:v10];
@@ -120,8 +120,8 @@
     v17[1] = 3221225472;
     v17[2] = sub_1002701B4;
     v17[3] = &unk_1008D6628;
-    v19 = v4;
-    v20 = a3;
+    v19 = nCopy;
+    bluetoothCopy = bluetooth;
     objc_copyWeak(&v18, &location);
     v17[4] = self;
     [(SFUserAlert *)self->_radiosUserNotification setResponseHandler:v17];
@@ -146,14 +146,14 @@
   }
 }
 
-- (void)setProperty:(void *)a3 forKey:(id)a4
+- (void)setProperty:(void *)property forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   properties = self->_properties;
-  v12 = v6;
-  if (a3)
+  v12 = keyCopy;
+  if (property)
   {
-    [(NSMutableDictionary *)properties setObject:a3 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)properties setObject:property forKeyedSubscript:keyCopy];
     v8 = [v12 isEqual:kSFOperationDiscoverableModeKey];
     v9 = v12;
     if (!v8)
@@ -161,7 +161,7 @@
       goto LABEL_13;
     }
 
-    if (CFEqual(a3, kSFOperationDiscoverableModeContactsOnly))
+    if (CFEqual(property, kSFOperationDiscoverableModeContactsOnly))
     {
       v10 = sub_1000929B4();
       v9 = v12;
@@ -175,10 +175,10 @@
 
     else
     {
-      if (!CFEqual(a3, kSFOperationDiscoverableModeEveryone))
+      if (!CFEqual(property, kSFOperationDiscoverableModeEveryone))
       {
 LABEL_11:
-        [(SDStatusMonitor *)self->_monitor setDiscoverableMode:a3];
+        [(SDStatusMonitor *)self->_monitor setDiscoverableMode:property];
         goto LABEL_12;
       }
 
@@ -195,7 +195,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  [(NSMutableDictionary *)properties removeObjectForKey:v6];
+  [(NSMutableDictionary *)properties removeObjectForKey:keyCopy];
 LABEL_12:
   v9 = v12;
 LABEL_13:
@@ -206,8 +206,8 @@ LABEL_13:
   [(NSMutableDictionary *)self->_properties setObject:&__kCFBooleanFalse forKeyedSubscript:kSFOperationLegacyDeviceKey];
   [(NSMutableDictionary *)self->_properties setObject:&__kCFBooleanFalse forKeyedSubscript:kSFOperationLegacyModeEnabledKey];
   [(NSMutableDictionary *)self->_properties setObject:&__kCFBooleanFalse forKeyedSubscript:kSFOperationLegacyModeSettableKey];
-  v3 = [(SDStatusMonitor *)self->_monitor discoverableMode];
-  [(NSMutableDictionary *)self->_properties setObject:v3 forKeyedSubscript:kSFOperationDiscoverableModeKey];
+  discoverableMode = [(SDStatusMonitor *)self->_monitor discoverableMode];
+  [(NSMutableDictionary *)self->_properties setObject:discoverableMode forKeyedSubscript:kSFOperationDiscoverableModeKey];
 
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;

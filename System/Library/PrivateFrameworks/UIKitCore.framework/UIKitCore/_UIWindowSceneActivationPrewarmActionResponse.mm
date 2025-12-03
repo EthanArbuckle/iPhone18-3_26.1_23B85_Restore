@@ -1,5 +1,5 @@
 @interface _UIWindowSceneActivationPrewarmActionResponse
-+ (id)responseWithSceneContainer:(id)a3 expectedSceneFrame:(CGRect)a4 cornerRadii:(UIRectCornerRadii)a5;
++ (id)responseWithSceneContainer:(id)container expectedSceneFrame:(CGRect)frame cornerRadii:(UIRectCornerRadii)radii;
 - (CGRect)sceneFrame;
 - (UIRectCornerRadii)sceneCornerRadii;
 - (unint64_t)sceneContainerRenderId;
@@ -8,26 +8,26 @@
 
 @implementation _UIWindowSceneActivationPrewarmActionResponse
 
-+ (id)responseWithSceneContainer:(id)a3 expectedSceneFrame:(CGRect)a4 cornerRadii:(UIRectCornerRadii)a5
++ (id)responseWithSceneContainer:(id)container expectedSceneFrame:(CGRect)frame cornerRadii:(UIRectCornerRadii)radii
 {
-  topRight = a5.topRight;
-  bottomRight = a5.bottomRight;
-  bottomLeft = a5.bottomLeft;
-  topLeft = a5.topLeft;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v14 = a3;
+  topRight = radii.topRight;
+  bottomRight = radii.bottomRight;
+  bottomLeft = radii.bottomLeft;
+  topLeft = radii.topLeft;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  containerCopy = container;
   v15 = objc_opt_new();
-  v16 = [v14 layer];
-  v17 = [v16 context];
-  v18 = [v17 contextId];
+  layer = [containerCopy layer];
+  context = [layer context];
+  contextId = [context contextId];
 
-  v19 = [v14 layer];
+  layer2 = [containerCopy layer];
 
   RenderId = CALayerGetRenderId();
-  v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v18];
+  v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:contextId];
   [v15 setObject:v21 forSetting:1];
 
   v22 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:RenderId];
@@ -52,33 +52,33 @@
   v27 = [MEMORY[0x1E696AD98] numberWithDouble:bottomLeft];
   [v15 setObject:v27 forSetting:7];
 
-  v28 = [a1 responseWithInfo:v15];
+  v28 = [self responseWithInfo:v15];
 
   return v28;
 }
 
 - (unsigned)sceneContainerContextId
 {
-  v2 = [(_UIWindowSceneActivationPrewarmActionResponse *)self info];
-  v3 = [v2 objectForSetting:1];
-  v4 = [v3 unsignedIntValue];
+  info = [(_UIWindowSceneActivationPrewarmActionResponse *)self info];
+  v3 = [info objectForSetting:1];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
 - (unint64_t)sceneContainerRenderId
 {
-  v2 = [(_UIWindowSceneActivationPrewarmActionResponse *)self info];
-  v3 = [v2 objectForSetting:2];
-  v4 = [v3 unsignedLongLongValue];
+  info = [(_UIWindowSceneActivationPrewarmActionResponse *)self info];
+  v3 = [info objectForSetting:2];
+  unsignedLongLongValue = [v3 unsignedLongLongValue];
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
 - (CGRect)sceneFrame
 {
-  v2 = [(_UIWindowSceneActivationPrewarmActionResponse *)self info];
-  v3 = [v2 objectForSetting:3];
+  info = [(_UIWindowSceneActivationPrewarmActionResponse *)self info];
+  v3 = [info objectForSetting:3];
   [v3 CGRectValue];
   v5 = v4;
   v7 = v6;
@@ -98,23 +98,23 @@
 
 - (UIRectCornerRadii)sceneCornerRadii
 {
-  v3 = [(_UIWindowSceneActivationPrewarmActionResponse *)self info];
-  v4 = [v3 objectForSetting:4];
+  info = [(_UIWindowSceneActivationPrewarmActionResponse *)self info];
+  v4 = [info objectForSetting:4];
   [v4 doubleValue];
   v6 = v5;
 
-  v7 = [(_UIWindowSceneActivationPrewarmActionResponse *)self info];
-  v8 = [v7 objectForSetting:5];
+  info2 = [(_UIWindowSceneActivationPrewarmActionResponse *)self info];
+  v8 = [info2 objectForSetting:5];
   [v8 doubleValue];
   v10 = v9;
 
-  v11 = [(_UIWindowSceneActivationPrewarmActionResponse *)self info];
-  v12 = [v11 objectForSetting:7];
+  info3 = [(_UIWindowSceneActivationPrewarmActionResponse *)self info];
+  v12 = [info3 objectForSetting:7];
   [v12 doubleValue];
   v14 = v13;
 
-  v15 = [(_UIWindowSceneActivationPrewarmActionResponse *)self info];
-  v16 = [v15 objectForSetting:6];
+  info4 = [(_UIWindowSceneActivationPrewarmActionResponse *)self info];
+  v16 = [info4 objectForSetting:6];
   [v16 doubleValue];
   v18 = v17;
 

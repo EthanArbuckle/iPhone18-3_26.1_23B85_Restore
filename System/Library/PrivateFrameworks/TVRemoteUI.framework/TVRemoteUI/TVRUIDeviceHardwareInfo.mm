@@ -3,7 +3,7 @@
 - (CGRect)userIntentButtonRect;
 - (CGRect)volumeDownButtonRect;
 - (CGRect)volumeUpButtonRect;
-- (double)initWithUserIntentButton:(double)a3 volumeUpButton:(double)a4 volumeDownButton:(double)a5 volumeTotalHeight:(double)a6;
+- (double)initWithUserIntentButton:(double)button volumeUpButton:(double)upButton volumeDownButton:(double)downButton volumeTotalHeight:(double)height;
 - (id)description;
 - (unsigned)userIntentButtonEdge;
 - (unsigned)volumeButtonsEdge;
@@ -11,17 +11,17 @@
 
 @implementation TVRUIDeviceHardwareInfo
 
-- (double)initWithUserIntentButton:(double)a3 volumeUpButton:(double)a4 volumeDownButton:(double)a5 volumeTotalHeight:(double)a6
+- (double)initWithUserIntentButton:(double)button volumeUpButton:(double)upButton volumeDownButton:(double)downButton volumeTotalHeight:(double)height
 {
-  v30.receiver = a1;
+  v30.receiver = self;
   v30.super_class = TVRUIDeviceHardwareInfo;
   result = objc_msgSendSuper2(&v30, sel_init);
   if (result)
   {
-    result[3] = a3;
-    result[4] = a4;
-    result[5] = a5;
-    result[6] = a6;
+    result[3] = button;
+    result[4] = upButton;
+    result[5] = downButton;
+    result[6] = height;
     result[7] = a7;
     result[8] = a8;
     result[9] = a9;
@@ -93,9 +93,9 @@
   v7 = [v3 appendFloat:@"totalVolumeHeight" withName:self->_volumeTotalHeight];
   [(TVRUIDeviceHardwareInfo *)self volumeButtonsCenterPoint];
   v8 = [v3 appendPoint:@"volumeButtonsCenterPoint" withName:?];
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
 - (CGRect)userIntentButtonRect

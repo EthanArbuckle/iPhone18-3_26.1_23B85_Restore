@@ -9,7 +9,7 @@
 
 - (void)_assertValidValue
 {
-  v8 = [(RoutePlanningRefinementModel *)self value];
+  value = [(RoutePlanningRefinementModel *)self value];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -17,9 +17,9 @@
 
   else
   {
-    v3 = [(RoutePlanningRefinementModel *)self value];
+    value2 = [(RoutePlanningRefinementModel *)self value];
 
-    if (v3)
+    if (value2)
     {
       v4 = sub_10006D178();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -55,15 +55,15 @@
 
 - (BOOL)shouldShowHighlighted
 {
-  v2 = [(RoutePlanningRefinementModel *)self value];
-  v3 = [v2 hasAnyNonStandardPreferences];
+  value = [(RoutePlanningRefinementModel *)self value];
+  hasAnyNonStandardPreferences = [value hasAnyNonStandardPreferences];
 
-  return v3;
+  return hasAnyNonStandardPreferences;
 }
 
 - (int)buttonPressUsageAction
 {
-  v2 = [(RoutePlanningRefinementModel *)self value];
+  value = [(RoutePlanningRefinementModel *)self value];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -80,17 +80,17 @@
 
 - (id)titleText
 {
-  v3 = [(RoutePlanningRefinementModel *)self value];
+  value = [(RoutePlanningRefinementModel *)self value];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v5 = [(RoutePlanningRefinementModel *)self value];
-  v6 = v5;
+  value2 = [(RoutePlanningRefinementModel *)self value];
+  value4 = value2;
   if (isKindOfClass)
   {
-    if (![v5 avoidTolls]|| ([v6 avoidHighways]& 1) == 0)
+    if (![value2 avoidTolls]|| ([value4 avoidHighways]& 1) == 0)
     {
-      if (([v6 avoidTolls]& 1) != 0)
+      if (([value4 avoidTolls]& 1) != 0)
       {
         v7 = @"[Preferences Picker] Avoid Tolls";
 LABEL_32:
@@ -100,7 +100,7 @@ LABEL_32:
         goto LABEL_77;
       }
 
-      if ([v6 avoidHighways])
+      if ([value4 avoidHighways])
       {
         v7 = @"[Preferences Picker] Avoid Highways";
         goto LABEL_32;
@@ -117,22 +117,22 @@ LABEL_9:
   objc_opt_class();
   v8 = objc_opt_isKindOfClass();
 
-  v9 = [(RoutePlanningRefinementModel *)self value];
-  v6 = v9;
+  value3 = [(RoutePlanningRefinementModel *)self value];
+  value4 = value3;
   if (v8)
   {
-    if ([v9 avoidHills]&& ([v6 avoidBusyRoads]& 1) != 0)
+    if ([value3 avoidHills]&& ([value4 avoidBusyRoads]& 1) != 0)
     {
       goto LABEL_9;
     }
 
-    if (([v6 avoidHills]& 1) != 0)
+    if (([value4 avoidHills]& 1) != 0)
     {
       v7 = @"[Preferences Picker] Avoid Hills";
       goto LABEL_32;
     }
 
-    if ([v6 avoidBusyRoads])
+    if ([value4 avoidBusyRoads])
     {
       v7 = @"[Preferences Picker] Avoid Busy Roads";
       goto LABEL_32;
@@ -141,15 +141,15 @@ LABEL_9:
 LABEL_59:
 
 LABEL_60:
-    v6 = +[NSBundle mainBundle];
-    v25 = [v6 localizedStringForKey:@"[Preferences Picker] Avoid" value:@"localized string not found" table:0];
+    value4 = +[NSBundle mainBundle];
+    v25 = [value4 localizedStringForKey:@"[Preferences Picker] Avoid" value:@"localized string not found" table:0];
     goto LABEL_77;
   }
 
   objc_opt_class();
   v10 = objc_opt_isKindOfClass();
 
-  v6 = [(RoutePlanningRefinementModel *)self value];
+  value4 = [(RoutePlanningRefinementModel *)self value];
   if ((v10 & 1) == 0)
   {
     objc_opt_class();
@@ -174,20 +174,20 @@ LABEL_60:
         goto LABEL_60;
       }
 
-      v6 = sub_10006D178();
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      value4 = sub_10006D178();
+      if (os_log_type_enabled(value4, OS_LOG_TYPE_ERROR))
       {
         v28 = +[NSThread callStackSymbols];
         *buf = 138412290;
         v43 = v28;
-        _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, value4, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
 
       goto LABEL_59;
     }
 
-    v6 = [(RoutePlanningRefinementModel *)self value];
-    if (![v6 disabledModes])
+    value4 = [(RoutePlanningRefinementModel *)self value];
+    if (![value4 disabledModes])
     {
       v32 = +[NSBundle mainBundle];
       v17 = v32;
@@ -195,9 +195,9 @@ LABEL_60:
       goto LABEL_62;
     }
 
-    v13 = [v6 disabledModes];
-    v14 = v13 & 0xF ^ 0xFLL;
-    if ((v13 & 0xF) == 0)
+    disabledModes = [value4 disabledModes];
+    v14 = disabledModes & 0xF ^ 0xFLL;
+    if ((disabledModes & 0xF) == 0)
     {
       v38 = sub_10006D178();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -265,8 +265,8 @@ LABEL_24:
       v18 = [v17 count];
       if (v18 == 1)
       {
-        v19 = [v17 lastObject];
-        v20 = [v19 integerValue] - 1;
+        lastObject = [v17 lastObject];
+        v20 = [lastObject integerValue] - 1;
         if (v20 < 8 && ((0x8Bu >> v20) & 1) != 0)
         {
           v21 = *(&off_10162D838 + v20);
@@ -303,8 +303,8 @@ LABEL_75:
         }
       }
 
-      v19 = +[NSBundle mainBundle];
-      v22 = [v19 localizedStringForKey:@"[Preferences Picker] Prefer #" value:@"localized string not found" table:0];
+      lastObject = +[NSBundle mainBundle];
+      v22 = [lastObject localizedStringForKey:@"[Preferences Picker] Prefer #" value:@"localized string not found" table:0];
       v23 = [NSString localizedStringWithFormat:v22, v18];
       goto LABEL_75;
     }
@@ -316,41 +316,41 @@ LABEL_23:
 
   if (sub_100F2C748())
   {
-    v11 = [v6 avoidHills];
+    avoidHills = [value4 avoidHills];
   }
 
   else
   {
-    v11 = 0;
+    avoidHills = 0;
   }
 
   if (sub_100F2C748())
   {
-    v26 = [v6 avoidBusyRoads];
+    avoidBusyRoads = [value4 avoidBusyRoads];
   }
 
   else
   {
-    v26 = 0;
+    avoidBusyRoads = 0;
   }
 
   if ((sub_100F2C7A8() & 1) == 0)
   {
-    if (v11 & v26)
+    if (avoidHills & avoidBusyRoads)
     {
       v30 = @"[Preferences Picker] Avoid 2";
       goto LABEL_61;
     }
 
-    v29 = 0;
+    avoidStairs = 0;
 LABEL_52:
     v31 = @"[Preferences Picker] Avoid Stairs";
-    if (v26)
+    if (avoidBusyRoads)
     {
       v31 = @"[Preferences Picker] Avoid Busy Roads";
     }
 
-    if (v11)
+    if (avoidHills)
     {
       v30 = @"[Preferences Picker] Avoid Hills";
     }
@@ -360,7 +360,7 @@ LABEL_52:
       v30 = v31;
     }
 
-    if (((v11 | v26) & 1) == 0 && !v29)
+    if (((avoidHills | avoidBusyRoads) & 1) == 0 && !avoidStairs)
     {
       goto LABEL_59;
     }
@@ -368,11 +368,11 @@ LABEL_52:
     goto LABEL_61;
   }
 
-  v29 = [v6 avoidStairs];
-  if ((v11 & v26) != 1 || (v29 & 1) == 0)
+  avoidStairs = [value4 avoidStairs];
+  if ((avoidHills & avoidBusyRoads) != 1 || (avoidStairs & 1) == 0)
   {
     v30 = @"[Preferences Picker] Avoid 2";
-    if (!((v26 ^ 1) & (v29 ^ 1) & 1 | ((v11 & 1) == 0)) || ((v26 ^ 1 | v29 ^ 1) & 1) == 0)
+    if (!((avoidBusyRoads ^ 1) & (avoidStairs ^ 1) & 1 | ((avoidHills & 1) == 0)) || ((avoidBusyRoads ^ 1 | avoidStairs ^ 1) & 1) == 0)
     {
       goto LABEL_61;
     }

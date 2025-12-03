@@ -1,38 +1,38 @@
 @interface FMDPasscodeActivationUnlockIdentityEncoder
-- (BOOL)_certificateRequestAndRefKeyWithError:(id *)a3;
-- (FMDPasscodeActivationUnlockIdentityEncoder)initWithCertificateDataSource:(id)a3 signatureDataSource:(id)a4;
-- (id)_payloadWithContext:(id)a3 error:(id *)a4;
-- (id)_signatureForPayload:(id)a3 error:(id *)a4;
-- (void)_populateDeviceIdentifiersIntoDict:(id)a3;
-- (void)identityForPasscodeActivationUnlockWithContext:(id)a3 completion:(id)a4;
+- (BOOL)_certificateRequestAndRefKeyWithError:(id *)error;
+- (FMDPasscodeActivationUnlockIdentityEncoder)initWithCertificateDataSource:(id)source signatureDataSource:(id)dataSource;
+- (id)_payloadWithContext:(id)context error:(id *)error;
+- (id)_signatureForPayload:(id)payload error:(id *)error;
+- (void)_populateDeviceIdentifiersIntoDict:(id)dict;
+- (void)identityForPasscodeActivationUnlockWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation FMDPasscodeActivationUnlockIdentityEncoder
 
-- (FMDPasscodeActivationUnlockIdentityEncoder)initWithCertificateDataSource:(id)a3 signatureDataSource:(id)a4
+- (FMDPasscodeActivationUnlockIdentityEncoder)initWithCertificateDataSource:(id)source signatureDataSource:(id)dataSource
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  dataSourceCopy = dataSource;
   v12.receiver = self;
   v12.super_class = FMDPasscodeActivationUnlockIdentityEncoder;
   v9 = [(FMDPasscodeActivationUnlockIdentityEncoder *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_certificateDataSource, a3);
-    objc_storeStrong(&v10->_signatureDataSource, a4);
+    objc_storeStrong(&v9->_certificateDataSource, source);
+    objc_storeStrong(&v10->_signatureDataSource, dataSource);
   }
 
   return v10;
 }
 
-- (void)identityForPasscodeActivationUnlockWithContext:(id)a3 completion:(id)a4
+- (void)identityForPasscodeActivationUnlockWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = +[NSMutableDictionary dictionary];
   v25[0] = 0;
-  v9 = [(FMDPasscodeActivationUnlockIdentityEncoder *)self _payloadWithContext:v6 error:v25];
+  v9 = [(FMDPasscodeActivationUnlockIdentityEncoder *)self _payloadWithContext:contextCopy error:v25];
   v10 = v25[0];
   v11 = [v9 base64EncodedStringWithOptions:0];
   [v8 fm_safelyMapKey:@"payload" toObject:v11];
@@ -41,8 +41,8 @@
     v24 = 0;
     [(FMDPasscodeActivationUnlockIdentityEncoder *)self _certificateRequestAndRefKeyWithError:&v24];
     v10 = v24;
-    v12 = [(FMDPasscodeActivationUnlockIdentityEncoder *)self certRequest];
-    [v8 fm_safelyMapKey:@"certRequest" toObject:v12];
+    certRequest = [(FMDPasscodeActivationUnlockIdentityEncoder *)self certRequest];
+    [v8 fm_safelyMapKey:@"certRequest" toObject:certRequest];
 
     if (!v10)
     {
@@ -78,7 +78,7 @@
   }
 
   v20 = [v17 base64EncodedStringWithOptions:0];
-  if (v7)
+  if (completionCopy)
   {
     if (v18)
     {
@@ -90,14 +90,14 @@
       v21 = v10;
     }
 
-    (v7)[2](v7, v20, v21);
+    (completionCopy)[2](completionCopy, v20, v21);
   }
 }
 
-- (id)_payloadWithContext:(id)a3 error:(id *)a4
+- (id)_payloadWithContext:(id)context error:(id *)error
 {
-  v6 = a3;
-  v7 = [NSMutableDictionary dictionaryWithDictionary:v6];
+  contextCopy = context;
+  v7 = [NSMutableDictionary dictionaryWithDictionary:contextCopy];
   [(FMDPasscodeActivationUnlockIdentityEncoder *)self _populateDeviceIdentifiersIntoDict:v7];
   v8 = sub_100001AC8();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -118,74 +118,74 @@
       sub_100004354();
     }
 
-    if (a4)
+    if (error)
     {
       v15 = NSUnderlyingErrorKey;
       v16[0] = v10;
       v12 = [NSDictionary dictionaryWithObjects:v16 forKeys:&v15 count:1];
-      *a4 = [NSError errorWithDomain:@"com.apple.icloud.findmydevice.PasscodeActivationUnlock" code:0 userInfo:v12];
+      *error = [NSError errorWithDomain:@"com.apple.icloud.findmydevice.PasscodeActivationUnlock" code:0 userInfo:v12];
     }
   }
 
   return v9;
 }
 
-- (void)_populateDeviceIdentifiersIntoDict:(id)a3
+- (void)_populateDeviceIdentifiersIntoDict:(id)dict
 {
-  v3 = a3;
+  dictCopy = dict;
   v4 = +[FMSystemInfo sharedInstance];
-  v5 = [v4 deviceUDID];
-  [v3 fm_safelyMapKey:@"udid" toObject:v5];
+  deviceUDID = [v4 deviceUDID];
+  [dictCopy fm_safelyMapKey:@"udid" toObject:deviceUDID];
 
   v6 = +[FMSystemInfo sharedInstance];
-  v7 = [v6 imei];
-  [v3 fm_safelyMapKey:@"imei" toObject:v7];
+  imei = [v6 imei];
+  [dictCopy fm_safelyMapKey:@"imei" toObject:imei];
 
   v8 = +[FMSystemInfo sharedInstance];
-  v9 = [v8 meid];
-  [v3 fm_safelyMapKey:@"meid" toObject:v9];
+  meid = [v8 meid];
+  [dictCopy fm_safelyMapKey:@"meid" toObject:meid];
 
   v10 = +[FMSystemInfo sharedInstance];
-  v11 = [v10 serialNumber];
-  [v3 fm_safelyMapKey:@"serialNumber" toObject:v11];
+  serialNumber = [v10 serialNumber];
+  [dictCopy fm_safelyMapKey:@"serialNumber" toObject:serialNumber];
 
   v12 = +[FMSystemInfo sharedInstance];
-  v13 = [v12 ecid];
-  v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"0x%llx", [v13 longLongValue]);
-  [v3 fm_safelyMapKey:@"ecid" toObject:v14];
+  ecid = [v12 ecid];
+  v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"0x%llx", [ecid longLongValue]);
+  [dictCopy fm_safelyMapKey:@"ecid" toObject:v14];
 
   v15 = +[FMSystemInfo sharedInstance];
-  v16 = [v15 chipId];
-  v17 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"0x%llx", [v16 longLongValue]);
-  [v3 fm_safelyMapKey:@"chipId" toObject:v17];
+  chipId = [v15 chipId];
+  v17 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"0x%llx", [chipId longLongValue]);
+  [dictCopy fm_safelyMapKey:@"chipId" toObject:v17];
 
   v18 = +[FMSystemInfo sharedInstance];
-  v19 = [v18 wifiMacAddress];
-  [v3 fm_safelyMapKey:@"wifiMac" toObject:v19];
+  wifiMacAddress = [v18 wifiMacAddress];
+  [dictCopy fm_safelyMapKey:@"wifiMac" toObject:wifiMacAddress];
 
   v21 = +[FMSystemInfo sharedInstance];
-  v20 = [v21 btMacAddress];
-  [v3 fm_safelyMapKey:@"btMac" toObject:v20];
+  btMacAddress = [v21 btMacAddress];
+  [dictCopy fm_safelyMapKey:@"btMac" toObject:btMacAddress];
 }
 
-- (BOOL)_certificateRequestAndRefKeyWithError:(id *)a3
+- (BOOL)_certificateRequestAndRefKeyWithError:(id *)error
 {
   v15 = 0;
-  v5 = [(FMDPasscodeActivationUnlockIdentityEncoder *)self certificateDataSource];
+  certificateDataSource = [(FMDPasscodeActivationUnlockIdentityEncoder *)self certificateDataSource];
   v13 = 0;
   v14 = 0;
-  [v5 passcodeActivationUnlockCertificateRequest:&v14 withValidityInMins:10 refKey:&v15 error:&v13];
+  [certificateDataSource passcodeActivationUnlockCertificateRequest:&v14 withValidityInMins:10 refKey:&v15 error:&v13];
   v6 = v14;
   v7 = v13;
 
   if (!v7)
   {
-    v9 = [v6 HTTPBody];
-    v8 = [v9 base64EncodedStringWithOptions:0];
+    hTTPBody = [v6 HTTPBody];
+    v8 = [hTTPBody base64EncodedStringWithOptions:0];
 
     v10 = +[NSMutableDictionary dictionary];
-    v11 = [v6 allHTTPHeaderFields];
-    [v10 fm_safelyMapKey:@"headers" toObject:v11];
+    allHTTPHeaderFields = [v6 allHTTPHeaderFields];
+    [v10 fm_safelyMapKey:@"headers" toObject:allHTTPHeaderFields];
 
     [v10 fm_safelyMapKey:@"body" toObject:v8];
     [(FMDPasscodeActivationUnlockIdentityEncoder *)self setCertRequest:v10];
@@ -194,24 +194,24 @@
     goto LABEL_5;
   }
 
-  if (a3)
+  if (error)
   {
     v16 = NSUnderlyingErrorKey;
     v17 = v7;
     v8 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
-    *a3 = [NSError errorWithDomain:@"com.apple.icloud.findmydevice.PasscodeActivationUnlock" code:1 userInfo:v8];
+    *error = [NSError errorWithDomain:@"com.apple.icloud.findmydevice.PasscodeActivationUnlock" code:1 userInfo:v8];
 LABEL_5:
   }
 
   return v7 != 0;
 }
 
-- (id)_signatureForPayload:(id)a3 error:(id *)a4
+- (id)_signatureForPayload:(id)payload error:(id *)error
 {
-  v6 = a3;
-  v7 = [(FMDPasscodeActivationUnlockIdentityEncoder *)self signatureDataSource];
+  payloadCopy = payload;
+  signatureDataSource = [(FMDPasscodeActivationUnlockIdentityEncoder *)self signatureDataSource];
   v12 = 0;
-  v8 = [v7 passcodeActivationUnlockSignatureForPayload:v6 usingKey:-[FMDPasscodeActivationUnlockIdentityEncoder refKey](self error:{"refKey"), &v12}];
+  v8 = [signatureDataSource passcodeActivationUnlockSignatureForPayload:payloadCopy usingKey:-[FMDPasscodeActivationUnlockIdentityEncoder refKey](self error:{"refKey"), &v12}];
 
   v9 = v12;
   if (!v8)
@@ -221,7 +221,7 @@ LABEL_5:
       v13 = NSUnderlyingErrorKey;
       v14 = v9;
       v10 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
-      if (!a4)
+      if (!error)
       {
 LABEL_5:
 
@@ -232,13 +232,13 @@ LABEL_5:
     else
     {
       v10 = 0;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_5;
       }
     }
 
-    *a4 = [NSError errorWithDomain:@"com.apple.icloud.findmydevice.PasscodeActivationUnlock" code:2 userInfo:v10];
+    *error = [NSError errorWithDomain:@"com.apple.icloud.findmydevice.PasscodeActivationUnlock" code:2 userInfo:v10];
     goto LABEL_5;
   }
 

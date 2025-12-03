@@ -1,5 +1,5 @@
 @interface HMDLocationTuple
-- (HMDLocationTuple)initWithLocation:(id)a3 reachableIPAccessoryCount:(unint64_t)a4 reachableBTLEAccessoryCount:(unint64_t)a5 reachableMediaAccessoryCount:(unint64_t)a6;
+- (HMDLocationTuple)initWithLocation:(id)location reachableIPAccessoryCount:(unint64_t)count reachableBTLEAccessoryCount:(unint64_t)accessoryCount reachableMediaAccessoryCount:(unint64_t)mediaAccessoryCount;
 - (id)attributeDescriptions;
 @end
 
@@ -9,8 +9,8 @@
 {
   v19[4] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDLocationTuple *)self location];
-  v5 = locationAsString(v4);
+  location = [(HMDLocationTuple *)self location];
+  v5 = locationAsString(location);
   v6 = [v3 initWithName:@"Location" value:v5];
   v19[0] = v6;
   v7 = objc_alloc(MEMORY[0x277D0F778]);
@@ -32,22 +32,22 @@
   return v16;
 }
 
-- (HMDLocationTuple)initWithLocation:(id)a3 reachableIPAccessoryCount:(unint64_t)a4 reachableBTLEAccessoryCount:(unint64_t)a5 reachableMediaAccessoryCount:(unint64_t)a6
+- (HMDLocationTuple)initWithLocation:(id)location reachableIPAccessoryCount:(unint64_t)count reachableBTLEAccessoryCount:(unint64_t)accessoryCount reachableMediaAccessoryCount:(unint64_t)mediaAccessoryCount
 {
-  v11 = a3;
-  if (v11)
+  locationCopy = location;
+  if (locationCopy)
   {
-    v12 = v11;
+    v12 = locationCopy;
     v17.receiver = self;
     v17.super_class = HMDLocationTuple;
     v13 = [(HMDLocationTuple *)&v17 init];
     v14 = v13;
     if (v13)
     {
-      objc_storeStrong(&v13->_location, a3);
-      v14->_reachableIPAccessoryCount = a4;
-      v14->_reachableBTLEAccessoryCount = a5;
-      v14->_reachableMediaAccessoryCount = a6;
+      objc_storeStrong(&v13->_location, location);
+      v14->_reachableIPAccessoryCount = count;
+      v14->_reachableBTLEAccessoryCount = accessoryCount;
+      v14->_reachableMediaAccessoryCount = mediaAccessoryCount;
     }
 
     return v14;

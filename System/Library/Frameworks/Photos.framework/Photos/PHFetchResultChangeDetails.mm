@@ -1,6 +1,6 @@
 @interface PHFetchResultChangeDetails
 + (PHFetchResultChangeDetails)changeDetailsFromFetchResult:(PHFetchResult *)fromResult toFetchResult:(PHFetchResult *)toResult changedObjects:(NSArray *)changedObjects;
-+ (id)_identifiersForPHObjects:(id)a3;
++ (id)_identifiersForPHObjects:(id)objects;
 - (BOOL)hasAnyChanges;
 - (BOOL)hasDiffs;
 - (NSArray)changedObjects;
@@ -10,14 +10,14 @@
 - (NSIndexSet)insertedIndexes;
 - (NSIndexSet)removedIndexes;
 - (PHFetchResult)fetchResultAfterChanges;
-- (PHFetchResultChangeDetails)initWithFetchResult:(id)a3 currentFetchResult:(id)a4 changedIdentifiers:(id)a5 unknownMergeEvent:(BOOL)a6;
-- (PHFetchResultChangeDetails)initWithFetchResult:(id)a3 currentFetchResult:(id)a4 sortedChangedIdentifiers:(id)a5 unknownMergeEvent:(BOOL)a6;
-- (PHFetchResultChangeDetails)initWithManualFetchResultAfterChanges:(id)a3;
-- (id)_addAdditionalIndexesToChanges:(id)a3 withPreviousIdentifiers:(id)a4 currentIdentifiers:(id)a5;
+- (PHFetchResultChangeDetails)initWithFetchResult:(id)result currentFetchResult:(id)fetchResult changedIdentifiers:(id)identifiers unknownMergeEvent:(BOOL)event;
+- (PHFetchResultChangeDetails)initWithFetchResult:(id)result currentFetchResult:(id)fetchResult sortedChangedIdentifiers:(id)identifiers unknownMergeEvent:(BOOL)event;
+- (PHFetchResultChangeDetails)initWithManualFetchResultAfterChanges:(id)changes;
+- (id)_addAdditionalIndexesToChanges:(id)changes withPreviousIdentifiers:(id)identifiers currentIdentifiers:(id)currentIdentifiers;
 - (id)description;
-- (unint64_t)snapshotIndexForContainedObject:(id)a3;
+- (unint64_t)snapshotIndexForContainedObject:(id)object;
 - (void)calculateDiffs;
-- (void)calculateDiffsAndAccumulateInsertedCount:(unint64_t *)a3 updatedCount:(unint64_t *)a4 deletedCount:(unint64_t *)a5;
+- (void)calculateDiffsAndAccumulateInsertedCount:(unint64_t *)count updatedCount:(unint64_t *)updatedCount deletedCount:(unint64_t *)deletedCount;
 - (void)dealloc;
 - (void)enumerateMovesWithBlock:(void *)handler;
 @end
@@ -28,9 +28,9 @@
 {
   if (!self->_skipIncrementalChanges && !self->_currentObjects)
   {
-    v3 = [(PHFetchResult *)self->_fetchResultAfterChanges fetchedObjects];
+    fetchedObjects = [(PHFetchResult *)self->_fetchResultAfterChanges fetchedObjects];
     currentObjects = self->_currentObjects;
-    self->_currentObjects = v3;
+    self->_currentObjects = fetchedObjects;
 
     v5 = [PHFetchResultChangeDetails _identifiersForPHObjects:self->_previousObjects];
     v6 = [PHFetchResultChangeDetails _identifiersForPHObjects:self->_currentObjects];
@@ -94,13 +94,13 @@
   v12.receiver = self;
   v12.super_class = PHFetchResultChangeDetails;
   v3 = [(PHFetchResultChangeDetails *)&v12 description];
-  v4 = [(PHFetchResultChangeDetails *)self fetchResultBeforeChanges];
-  v5 = [(PHFetchResultChangeDetails *)self fetchResultAfterChanges];
-  v6 = [(PHFetchResultChangeDetails *)self hasIncrementalChanges];
-  v7 = [(PHFetchResultChangeDetails *)self removedIndexes];
-  v8 = [(PHFetchResultChangeDetails *)self insertedIndexes];
-  v9 = [(PHFetchResultChangeDetails *)self changedIndexes];
-  v10 = [v3 stringByAppendingFormat:@" before=%@, after=%@, hasIncremental=%d deleted=%@, inserted=%@, changed=%@, hasMoves=%d", v4, v5, v6, v7, v8, v9, -[PHFetchResultChangeDetails hasMoves](self, "hasMoves")];
+  fetchResultBeforeChanges = [(PHFetchResultChangeDetails *)self fetchResultBeforeChanges];
+  fetchResultAfterChanges = [(PHFetchResultChangeDetails *)self fetchResultAfterChanges];
+  hasIncrementalChanges = [(PHFetchResultChangeDetails *)self hasIncrementalChanges];
+  removedIndexes = [(PHFetchResultChangeDetails *)self removedIndexes];
+  insertedIndexes = [(PHFetchResultChangeDetails *)self insertedIndexes];
+  changedIndexes = [(PHFetchResultChangeDetails *)self changedIndexes];
+  v10 = [v3 stringByAppendingFormat:@" before=%@, after=%@, hasIncremental=%d deleted=%@, inserted=%@, changed=%@, hasMoves=%d", fetchResultBeforeChanges, fetchResultAfterChanges, hasIncrementalChanges, removedIndexes, insertedIndexes, changedIndexes, -[PHFetchResultChangeDetails hasMoves](self, "hasMoves")];
 
   return v10;
 }
@@ -112,60 +112,60 @@
     return 1;
   }
 
-  v4 = [(PHFetchResultChangeDetails *)self insertedIndexes];
-  if (v4)
+  insertedIndexes = [(PHFetchResultChangeDetails *)self insertedIndexes];
+  if (insertedIndexes)
   {
     v3 = 1;
   }
 
   else
   {
-    v5 = [(PHFetchResultChangeDetails *)self removedIndexes];
-    if (v5)
+    removedIndexes = [(PHFetchResultChangeDetails *)self removedIndexes];
+    if (removedIndexes)
     {
       v3 = 1;
     }
 
     else
     {
-      v6 = [(PHFetchResultChangeDetails *)self changedIndexes];
-      v3 = v6 != 0;
+      changedIndexes = [(PHFetchResultChangeDetails *)self changedIndexes];
+      v3 = changedIndexes != 0;
     }
   }
 
   return v3;
 }
 
-- (void)calculateDiffsAndAccumulateInsertedCount:(unint64_t *)a3 updatedCount:(unint64_t *)a4 deletedCount:(unint64_t *)a5
+- (void)calculateDiffsAndAccumulateInsertedCount:(unint64_t *)count updatedCount:(unint64_t *)updatedCount deletedCount:(unint64_t *)deletedCount
 {
   [(PHFetchResultChangeDetails *)self calculateDiffs];
-  *a3 += [(NSIndexSet *)self->_insertedIndexes count];
-  *a4 += [(NSIndexSet *)self->_changedIndexes count];
-  *a5 += [(NSIndexSet *)self->_removedIndexes count];
+  *count += [(NSIndexSet *)self->_insertedIndexes count];
+  *updatedCount += [(NSIndexSet *)self->_changedIndexes count];
+  *deletedCount += [(NSIndexSet *)self->_removedIndexes count];
 }
 
-- (id)_addAdditionalIndexesToChanges:(id)a3 withPreviousIdentifiers:(id)a4 currentIdentifiers:(id)a5
+- (id)_addAdditionalIndexesToChanges:(id)changes withPreviousIdentifiers:(id)identifiers currentIdentifiers:(id)currentIdentifiers
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  changesCopy = changes;
+  identifiersCopy = identifiers;
+  currentIdentifiersCopy = currentIdentifiers;
+  if ([changesCopy count])
   {
-    v11 = [v8 mutableCopy];
+    indexSet = [changesCopy mutableCopy];
   }
 
   else
   {
-    v11 = 0;
+    indexSet = 0;
   }
 
-  v12 = [(PHFetchResult *)self->_fetchResultAfterChanges additionalChangedIdentifiersFromPreviousIdentifiers:v9 currentIdentifiers:v10 inFetchResultBeforeChanges:self->_fetchResultBeforeChanges];
+  v12 = [(PHFetchResult *)self->_fetchResultAfterChanges additionalChangedIdentifiersFromPreviousIdentifiers:identifiersCopy currentIdentifiers:currentIdentifiersCopy inFetchResultBeforeChanges:self->_fetchResultBeforeChanges];
   if ([v12 count])
   {
-    if (!v11)
+    if (!indexSet)
     {
-      v11 = [MEMORY[0x1E696AD50] indexSet];
+      indexSet = [MEMORY[0x1E696AD50] indexSet];
     }
 
     v22 = 0u;
@@ -187,10 +187,10 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [v10 indexOfObject:{*(*(&v20 + 1) + 8 * i), v20}];
+          v18 = [currentIdentifiersCopy indexOfObject:{*(*(&v20 + 1) + 8 * i), v20}];
           if (v18 != 0x7FFFFFFFFFFFFFFFLL)
           {
-            [v11 addIndex:v18];
+            [indexSet addIndex:v18];
           }
         }
 
@@ -201,15 +201,15 @@
     }
   }
 
-  return v11;
+  return indexSet;
 }
 
-- (unint64_t)snapshotIndexForContainedObject:(id)a3
+- (unint64_t)snapshotIndexForContainedObject:(id)object
 {
   fetchResultBeforeChanges = self->_fetchResultBeforeChanges;
   if (fetchResultBeforeChanges)
   {
-    return [(PHFetchResult *)fetchResultBeforeChanges indexOfObject:a3];
+    return [(PHFetchResult *)fetchResultBeforeChanges indexOfObject:object];
   }
 
   else
@@ -327,24 +327,24 @@ uint64_t __54__PHFetchResultChangeDetails_enumerateMovesWithBlock___block_invoke
     return 1;
   }
 
-  v3 = [(PHFetchResultChangeDetails *)self removedIndexes];
-  v4 = [v3 count];
+  removedIndexes = [(PHFetchResultChangeDetails *)self removedIndexes];
+  v4 = [removedIndexes count];
 
   if (v4)
   {
     return 1;
   }
 
-  v5 = [(PHFetchResultChangeDetails *)self insertedIndexes];
-  v6 = [v5 count];
+  insertedIndexes = [(PHFetchResultChangeDetails *)self insertedIndexes];
+  v6 = [insertedIndexes count];
 
   if (v6)
   {
     return 1;
   }
 
-  v7 = [(PHFetchResultChangeDetails *)self changedIndexes];
-  v8 = [v7 count];
+  changedIndexes = [(PHFetchResultChangeDetails *)self changedIndexes];
+  v8 = [changedIndexes count];
 
   if (v8)
   {
@@ -354,19 +354,19 @@ uint64_t __54__PHFetchResultChangeDetails_enumerateMovesWithBlock___block_invoke
   return [(PHFetchResultChangeDetails *)self hasMoves];
 }
 
-- (PHFetchResultChangeDetails)initWithManualFetchResultAfterChanges:(id)a3
+- (PHFetchResultChangeDetails)initWithManualFetchResultAfterChanges:(id)changes
 {
-  v5 = a3;
+  changesCopy = changes;
   v11.receiver = self;
   v11.super_class = PHFetchResultChangeDetails;
   v6 = [(PHFetchResultChangeDetails *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fetchResultAfterChanges, a3);
-    v8 = [v5 fetchedObjects];
+    objc_storeStrong(&v6->_fetchResultAfterChanges, changes);
+    fetchedObjects = [changesCopy fetchedObjects];
     previousObjects = v7->_previousObjects;
-    v7->_previousObjects = v8;
+    v7->_previousObjects = fetchedObjects;
 
     v7->_skipIncrementalChanges = 1;
   }
@@ -374,61 +374,61 @@ uint64_t __54__PHFetchResultChangeDetails_enumerateMovesWithBlock___block_invoke
   return v7;
 }
 
-- (PHFetchResultChangeDetails)initWithFetchResult:(id)a3 currentFetchResult:(id)a4 sortedChangedIdentifiers:(id)a5 unknownMergeEvent:(BOOL)a6
+- (PHFetchResultChangeDetails)initWithFetchResult:(id)result currentFetchResult:(id)fetchResult sortedChangedIdentifiers:(id)identifiers unknownMergeEvent:(BOOL)event
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  resultCopy = result;
+  fetchResultCopy = fetchResult;
+  identifiersCopy = identifiers;
   v19.receiver = self;
   v19.super_class = PHFetchResultChangeDetails;
   v14 = [(PHFetchResultChangeDetails *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_fetchResultBeforeChanges, a3);
-    objc_storeStrong(&v15->_fetchResultAfterChanges, a4);
-    v16 = [v11 fetchedObjects];
+    objc_storeStrong(&v14->_fetchResultBeforeChanges, result);
+    objc_storeStrong(&v15->_fetchResultAfterChanges, fetchResult);
+    fetchedObjects = [resultCopy fetchedObjects];
     previousObjects = v15->_previousObjects;
-    v15->_previousObjects = v16;
+    v15->_previousObjects = fetchedObjects;
 
-    objc_storeStrong(&v15->_sortedChangedIdentifiers, a5);
-    v15->_skipIncrementalChanges = a6;
+    objc_storeStrong(&v15->_sortedChangedIdentifiers, identifiers);
+    v15->_skipIncrementalChanges = event;
   }
 
   return v15;
 }
 
-- (PHFetchResultChangeDetails)initWithFetchResult:(id)a3 currentFetchResult:(id)a4 changedIdentifiers:(id)a5 unknownMergeEvent:(BOOL)a6
+- (PHFetchResultChangeDetails)initWithFetchResult:(id)result currentFetchResult:(id)fetchResult changedIdentifiers:(id)identifiers unknownMergeEvent:(BOOL)event
 {
-  v6 = a6;
+  eventCopy = event;
   v10 = MEMORY[0x1E69BE808];
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[v10 alloc] initWithChangedObjects:v11];
+  identifiersCopy = identifiers;
+  fetchResultCopy = fetchResult;
+  resultCopy = result;
+  v14 = [[v10 alloc] initWithChangedObjects:identifiersCopy];
 
-  v15 = [(PHFetchResultChangeDetails *)self initWithFetchResult:v13 currentFetchResult:v12 sortedChangedIdentifiers:v14 unknownMergeEvent:v6];
+  v15 = [(PHFetchResultChangeDetails *)self initWithFetchResult:resultCopy currentFetchResult:fetchResultCopy sortedChangedIdentifiers:v14 unknownMergeEvent:eventCopy];
   return v15;
 }
 
-+ (id)_identifiersForPHObjects:(id)a3
++ (id)_identifiersForPHObjects:(id)objects
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  objectsCopy = objects;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 oids];
+    oids = [objectsCopy oids];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+    oids = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(objectsCopy, "count")}];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = v3;
+    v5 = objectsCopy;
     v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
@@ -443,8 +443,8 @@ uint64_t __54__PHFetchResultChangeDetails_enumerateMovesWithBlock___block_invoke
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * i) identifier];
-          [v4 addObject:v10];
+          identifier = [*(*(&v12 + 1) + 8 * i) identifier];
+          [oids addObject:identifier];
         }
 
         v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -454,7 +454,7 @@ uint64_t __54__PHFetchResultChangeDetails_enumerateMovesWithBlock___block_invoke
     }
   }
 
-  return v4;
+  return oids;
 }
 
 + (PHFetchResultChangeDetails)changeDetailsFromFetchResult:(PHFetchResult *)fromResult toFetchResult:(PHFetchResult *)toResult changedObjects:(NSArray *)changedObjects

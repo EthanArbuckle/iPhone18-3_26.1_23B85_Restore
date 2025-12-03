@@ -1,8 +1,8 @@
 @interface _CPError
-- (BOOL)isEqual:(id)a3;
-- (_CPError)initWithFacade:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_CPError)initWithFacade:(id)facade;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPError
@@ -24,28 +24,28 @@
   return v4 ^ v3 ^ (2654435761u * self->_errorCode) ^ ((*vbslq_s8(vnegq_f64(v8), v6, v5).i64 * 2654435760.0) + vcvtd_n_u64_f64(code - *v5.i64, 0x40uLL));
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_CPError *)self domain];
-  v6 = [v4 domain];
-  if ((v5 != 0) == (v6 == 0))
+  domain = [(_CPError *)self domain];
+  domain2 = [equalCopy domain];
+  if ((domain != 0) == (domain2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_CPError *)self domain];
-  if (v7)
+  domain3 = [(_CPError *)self domain];
+  if (domain3)
   {
-    v8 = v7;
-    v9 = [(_CPError *)self domain];
-    v10 = [v4 domain];
-    v11 = [v9 isEqual:v10];
+    v8 = domain3;
+    domain4 = [(_CPError *)self domain];
+    domain5 = [equalCopy domain];
+    v11 = [domain4 isEqual:domain5];
 
     if (!v11)
     {
@@ -57,22 +57,22 @@
   {
   }
 
-  v5 = [(_CPError *)self reason];
-  v6 = [v4 reason];
-  if ((v5 != 0) == (v6 == 0))
+  domain = [(_CPError *)self reason];
+  domain2 = [equalCopy reason];
+  if ((domain != 0) == (domain2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(_CPError *)self reason];
-  if (v12)
+  reason = [(_CPError *)self reason];
+  if (reason)
   {
-    v13 = v12;
-    v14 = [(_CPError *)self reason];
-    v15 = [v4 reason];
-    v16 = [v14 isEqual:v15];
+    v13 = reason;
+    reason2 = [(_CPError *)self reason];
+    reason3 = [equalCopy reason];
+    v16 = [reason2 isEqual:reason3];
 
     if (!v16)
     {
@@ -85,11 +85,11 @@ LABEL_11:
   }
 
   code = self->_code;
-  [v4 code];
+  [equalCopy code];
   if (code == v20)
   {
     errorCode = self->_errorCode;
-    v17 = errorCode == [v4 errorCode];
+    v17 = errorCode == [equalCopy errorCode];
     goto LABEL_13;
   }
 
@@ -100,20 +100,20 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  a3;
-  v4 = [(_CPError *)self domain];
+  to;
+  domain = [(_CPError *)self domain];
 
-  if (v4)
+  if (domain)
   {
     domain = self->_domain;
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_CPError *)self reason];
+  reason = [(_CPError *)self reason];
 
-  if (v6)
+  if (reason)
   {
     reason = self->_reason;
     PBDataWriterWriteStringField();
@@ -135,19 +135,19 @@ LABEL_13:
   MEMORY[0x1EEE66BE0]();
 }
 
-- (_CPError)initWithFacade:(id)a3
+- (_CPError)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_CPError *)self init];
   if (v5)
   {
-    v6 = [v4 userInfo];
-    v7 = [v6 objectForKey:@"reason"];
+    userInfo = [facadeCopy userInfo];
+    v7 = [userInfo objectForKey:@"reason"];
     [(_CPError *)v5 setReason:v7];
 
-    -[_CPError setCode:](v5, "setCode:", [v4 code]);
-    v8 = [v4 domain];
-    [(_CPError *)v5 setDomain:v8];
+    -[_CPError setCode:](v5, "setCode:", [facadeCopy code]);
+    domain = [facadeCopy domain];
+    [(_CPError *)v5 setDomain:domain];
 
     v9 = v5;
   }

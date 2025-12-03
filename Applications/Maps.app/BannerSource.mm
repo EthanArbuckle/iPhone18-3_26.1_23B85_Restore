@@ -1,32 +1,32 @@
 @interface BannerSource
 - (BNBannerSource)carPlaySource;
-- (BOOL)_isDynamicIslandTarget:(id)a3;
-- (BOOL)_shouldPresentForPreviousGuidance:(id)a3 nextGuidance:(id)a4 type:(unint64_t)a5 target:(id)a6;
-- (BOOL)_shouldSuppressNextGuidance:(id)a3 type:(unint64_t)a4 target:(id)a5;
-- (BOOL)_shouldUseAperturePresentationForBannerItem:(id)a3 inTarget:(id)a4;
-- (BOOL)updateBannerForGuidanceState:(id)a3 onTarget:(id)a4 type:(unint64_t)a5;
+- (BOOL)_isDynamicIslandTarget:(id)target;
+- (BOOL)_shouldPresentForPreviousGuidance:(id)guidance nextGuidance:(id)nextGuidance type:(unint64_t)type target:(id)target;
+- (BOOL)_shouldSuppressNextGuidance:(id)guidance type:(unint64_t)type target:(id)target;
+- (BOOL)_shouldUseAperturePresentationForBannerItem:(id)item inTarget:(id)target;
+- (BOOL)updateBannerForGuidanceState:(id)state onTarget:(id)target type:(unint64_t)type;
 - (BannerSource)init;
-- (id)_bannerItemForType:(unint64_t)a3 guidanceState:(id)a4;
-- (id)_bannerPresentableForBannerItem:(id)a3 inTarget:(id)a4;
-- (id)_bannerViewForBannerItem:(id)a3 inTarget:(id)a4;
+- (id)_bannerItemForType:(unint64_t)type guidanceState:(id)state;
+- (id)_bannerPresentableForBannerItem:(id)item inTarget:(id)target;
+- (id)_bannerViewForBannerItem:(id)item inTarget:(id)target;
 - (id)activeCarPlayBannerViewController;
-- (id)bannerIdForBannerItem:(id)a3;
-- (void)_cleanUpType:(Class)a3 onTarget:(id)a4 animated:(BOOL)a5;
-- (void)_enqueue:(id)a3 forTarget:(id)a4;
-- (void)_revokeBanner:(id)a3 animated:(BOOL)a4;
+- (id)bannerIdForBannerItem:(id)item;
+- (void)_cleanUpType:(Class)type onTarget:(id)target animated:(BOOL)animated;
+- (void)_enqueue:(id)_enqueue forTarget:(id)target;
+- (void)_revokeBanner:(id)banner animated:(BOOL)animated;
 - (void)_updateCarPlayBannerSource;
 - (void)cleanUpCarPlayBanners;
 - (void)cleanUpPhoneBanners;
 - (void)dealloc;
 - (void)mapsApplicationDidTerminate;
-- (void)pokeTarget:(id)a3;
-- (void)presentBannerItem:(id)a3 onTarget:(id)a4;
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4;
-- (void)receivedGuidanceState:(id)a3;
+- (void)pokeTarget:(id)target;
+- (void)presentBannerItem:(id)item onTarget:(id)target;
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason;
+- (void)receivedGuidanceState:(id)state;
 - (void)reset;
 - (void)resetExcludingJindo;
-- (void)setCarPlaySource:(id)a3;
-- (void)signalTarget:(id)a3;
+- (void)setCarPlaySource:(id)source;
+- (void)signalTarget:(id)target;
 @end
 
 @implementation BannerSource
@@ -96,8 +96,8 @@
 
       latestBannerForTarget = self->_latestBannerForTarget;
       v7 = objc_opt_new();
-      v8 = [(BannerSource *)self carPlaySource];
-      [(NSMapTable *)latestBannerForTarget setObject:v7 forKey:v8];
+      carPlaySource = [(BannerSource *)self carPlaySource];
+      [(NSMapTable *)latestBannerForTarget setObject:v7 forKey:carPlaySource];
     }
   }
 
@@ -138,43 +138,43 @@
   [(BannerSource *)self _cleanUpType:v3 onTarget:carPlaySource animated:1];
 }
 
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  bannerCopy = banner;
+  reasonCopy = reason;
   presentedByTarget = self->_presentedByTarget;
-  v9 = [v6 target];
-  v10 = [(NSMapTable *)presentedByTarget objectForKey:v9];
+  target = [bannerCopy target];
+  v10 = [(NSMapTable *)presentedByTarget objectForKey:target];
 
-  v11 = sub_100032C3C();
-  v12 = os_log_type_enabled(v11, OS_LOG_TYPE_INFO);
-  if (v10 == v6)
+  target2 = sub_100032C3C();
+  v12 = os_log_type_enabled(target2, OS_LOG_TYPE_INFO);
+  if (v10 == bannerCopy)
   {
     if (v12)
     {
       v15 = 138412546;
-      v16 = v6;
+      v16 = bannerCopy;
       v17 = 2112;
-      v18 = v7;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Finished presenting banner: %@ reason: %@", &v15, 0x16u);
+      v18 = reasonCopy;
+      _os_log_impl(&_mh_execute_header, target2, OS_LOG_TYPE_INFO, "Finished presenting banner: %@ reason: %@", &v15, 0x16u);
     }
 
     v13 = self->_presentedByTarget;
-    v11 = [v6 target];
-    [(NSMapTable *)v13 removeObjectForKey:v11];
+    target2 = [bannerCopy target];
+    [(NSMapTable *)v13 removeObjectForKey:target2];
   }
 
   else if (v12)
   {
     v15 = 138412546;
-    v16 = v6;
+    v16 = bannerCopy;
     v17 = 2112;
-    v18 = v7;
-    _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "BannerKit revoked banner: %@ reason: %@", &v15, 0x16u);
+    v18 = reasonCopy;
+    _os_log_impl(&_mh_execute_header, target2, OS_LOG_TYPE_INFO, "BannerKit revoked banner: %@ reason: %@", &v15, 0x16u);
   }
 
-  v14 = [v6 target];
-  [(BannerSource *)self signalTarget:v14];
+  target3 = [bannerCopy target];
+  [(BannerSource *)self signalTarget:target3];
 }
 
 - (void)mapsApplicationDidTerminate
@@ -187,17 +187,17 @@
   }
 }
 
-- (BOOL)updateBannerForGuidanceState:(id)a3 onTarget:(id)a4 type:(unint64_t)a5
+- (BOOL)updateBannerForGuidanceState:(id)state onTarget:(id)target type:(unint64_t)type
 {
-  v8 = a3;
+  stateCopy = state;
   presentedByTarget = self->_presentedByTarget;
-  v10 = a4;
-  v11 = [(NSMapTable *)presentedByTarget objectForKey:v10];
-  v12 = [v11 bannerView];
-  v13 = [v12 aperturePresentation];
-  v14 = [(BannerSource *)self _isDynamicIslandTarget:v10];
+  targetCopy = target;
+  v11 = [(NSMapTable *)presentedByTarget objectForKey:targetCopy];
+  bannerView = [v11 bannerView];
+  aperturePresentation = [bannerView aperturePresentation];
+  v14 = [(BannerSource *)self _isDynamicIslandTarget:targetCopy];
 
-  if (v12)
+  if (bannerView)
   {
     v15 = v14 == 0;
   }
@@ -207,9 +207,9 @@
     v15 = 1;
   }
 
-  if (!v15 && (v13 & 1) != 0 || ([v8 uniqueIdForBannerType:a5], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "item"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "uniqueId"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v16, "isEqual:", v18), v18, v17, v16, v19))
+  if (!v15 && (aperturePresentation & 1) != 0 || ([stateCopy uniqueIdForBannerType:type], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(bannerView, "item"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "uniqueId"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v16, "isEqual:", v18), v18, v17, v16, v19))
   {
-    [v11 updateFromGuidanceState:v8];
+    [v11 updateFromGuidanceState:stateCopy];
     v20 = 1;
   }
 
@@ -221,28 +221,28 @@
   return v20;
 }
 
-- (id)_bannerItemForType:(unint64_t)a3 guidanceState:(id)a4
+- (id)_bannerItemForType:(unint64_t)type guidanceState:(id)state
 {
-  v5 = a4;
-  if (a3 > 3)
+  stateCopy = state;
+  if (type > 3)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [objc_alloc(*off_10162ADC0[a3]) initWithGuidanceState:v5];
+    v6 = [objc_alloc(*off_10162ADC0[type]) initWithGuidanceState:stateCopy];
   }
 
   return v6;
 }
 
-- (void)_enqueue:(id)a3 forTarget:(id)a4
+- (void)_enqueue:(id)_enqueue forTarget:(id)target
 {
   queuedItemsByTarget = self->_queuedItemsByTarget;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(NSMapTable *)queuedItemsByTarget objectForKey:v7];
+  targetCopy = target;
+  _enqueueCopy = _enqueue;
+  v9 = [(NSMapTable *)queuedItemsByTarget objectForKey:targetCopy];
   v10 = v9;
   if (v9)
   {
@@ -256,29 +256,29 @@
 
   v12 = v11;
 
-  [v12 addItem:v8];
-  [(NSMapTable *)self->_queuedItemsByTarget setObject:v12 forKey:v7];
+  [v12 addItem:_enqueueCopy];
+  [(NSMapTable *)self->_queuedItemsByTarget setObject:v12 forKey:targetCopy];
 }
 
-- (void)_revokeBanner:(id)a3 animated:(BOOL)a4
+- (void)_revokeBanner:(id)banner animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  bannerCopy = banner;
   v7 = sub_100032C3C();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [v6 target];
+    target = [bannerCopy target];
     *buf = 138412546;
-    v16 = v6;
+    v16 = bannerCopy;
     v17 = 2112;
-    v18 = v8;
+    v18 = target;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Revoking specific banner: %@ on target: %@", buf, 0x16u);
   }
 
-  v9 = [v6 target];
-  v10 = [v6 requestIdentifier];
+  target2 = [bannerCopy target];
+  requestIdentifier = [bannerCopy requestIdentifier];
   v14 = 0;
-  v11 = [v9 revokePresentableWithRequestIdentifier:v10 reason:@"Dismissed" animated:v4 userInfo:&__NSDictionary0__struct error:&v14];
+  v11 = [target2 revokePresentableWithRequestIdentifier:requestIdentifier reason:@"Dismissed" animated:animatedCopy userInfo:&__NSDictionary0__struct error:&v14];
   v12 = v14;
 
   if (v12)
@@ -289,47 +289,47 @@
       *buf = 138412546;
       v16 = v12;
       v17 = 2112;
-      v18 = v6;
+      v18 = bannerCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Error: %@ revoking specific banner: %@", buf, 0x16u);
     }
 
     if ([v12 code] == 3)
     {
-      [(BannerSource *)self presentableDidDisappearAsBanner:v6 withReason:@"MapsRevocationReasonErrorRecovery"];
+      [(BannerSource *)self presentableDidDisappearAsBanner:bannerCopy withReason:@"MapsRevocationReasonErrorRecovery"];
     }
   }
 }
 
-- (void)_cleanUpType:(Class)a3 onTarget:(id)a4 animated:(BOOL)a5
+- (void)_cleanUpType:(Class)type onTarget:(id)target animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   queuedItemsByTarget = self->_queuedItemsByTarget;
-  v8 = a4;
-  v9 = [(NSMapTable *)queuedItemsByTarget objectForKey:v8];
+  targetCopy = target;
+  v9 = [(NSMapTable *)queuedItemsByTarget objectForKey:targetCopy];
   [v9 removeItemsOfType:objc_opt_class()];
 
-  v13 = [(NSMapTable *)self->_presentedByTarget objectForKey:v8];
+  v13 = [(NSMapTable *)self->_presentedByTarget objectForKey:targetCopy];
 
-  v10 = [v13 bannerView];
-  v11 = [v10 item];
+  bannerView = [v13 bannerView];
+  item = [bannerView item];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    [(BannerSource *)self _revokeBanner:v13 animated:v5];
+    [(BannerSource *)self _revokeBanner:v13 animated:animatedCopy];
   }
 }
 
-- (void)presentBannerItem:(id)a3 onTarget:(id)a4
+- (void)presentBannerItem:(id)item onTarget:(id)target
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BannerSource *)self _bannerPresentableForBannerItem:v6 inTarget:v7];
-  v9 = [v8 bannerView];
-  v10 = [v9 aperturePresentation];
+  itemCopy = item;
+  targetCopy = target;
+  v8 = [(BannerSource *)self _bannerPresentableForBannerItem:itemCopy inTarget:targetCopy];
+  bannerView = [v8 bannerView];
+  aperturePresentation = [bannerView aperturePresentation];
 
-  if (v10)
+  if (aperturePresentation)
   {
     v32 = kSBUIPresentableSystemApertureSupportingUserInfoKey;
     v33 = &__kCFBooleanTrue;
@@ -344,14 +344,14 @@
   v12 = sub_100032C3C();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [v8 requestIdentifier];
+    requestIdentifier = [v8 requestIdentifier];
     *buf = 138412290;
-    v27 = v13;
+    v27 = requestIdentifier;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Registering banner %@", buf, 0xCu);
   }
 
   v25 = 0;
-  v14 = [v7 postPresentable:v8 options:1 userInfo:v11 error:&v25];
+  v14 = [targetCopy postPresentable:v8 options:1 userInfo:v11 error:&v25];
   v15 = v25;
   v16 = sub_100032C3C();
   v17 = v16;
@@ -360,9 +360,9 @@
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v27 = v6;
+      v27 = itemCopy;
       v28 = 2112;
-      v29 = v7;
+      v29 = targetCopy;
       v18 = "Presenting next banner: %@ (%@)";
       v19 = v17;
       v20 = OS_LOG_TYPE_INFO;
@@ -375,11 +375,11 @@ LABEL_11:
   else if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412802;
-    v27 = v6;
+    v27 = itemCopy;
     v28 = 2112;
     v29 = v15;
     v30 = 2112;
-    v31 = v7;
+    v31 = targetCopy;
     v18 = "Failed to add new banner: %@ error: %@ (%@)";
     v19 = v17;
     v20 = OS_LOG_TYPE_ERROR;
@@ -387,39 +387,39 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  [(NSMapTable *)self->_presentedByTarget setObject:v8 forKey:v7];
-  v22 = [(NSMapTable *)self->_latestBannerForTarget objectForKey:v7];
-  v23 = [v8 bannerView];
-  v24 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v23 bannerType]);
+  [(NSMapTable *)self->_presentedByTarget setObject:v8 forKey:targetCopy];
+  v22 = [(NSMapTable *)self->_latestBannerForTarget objectForKey:targetCopy];
+  bannerView2 = [v8 bannerView];
+  v24 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [bannerView2 bannerType]);
   [v22 setObject:v8 forKeyedSubscript:v24];
 }
 
-- (void)signalTarget:(id)a3
+- (void)signalTarget:(id)target
 {
-  v6 = a3;
+  targetCopy = target;
   v4 = [(NSMapTable *)self->_queuedItemsByTarget objectForKey:?];
-  v5 = [v4 popItem];
-  if (v5)
+  popItem = [v4 popItem];
+  if (popItem)
   {
-    [(BannerSource *)self presentBannerItem:v5 onTarget:v6];
+    [(BannerSource *)self presentBannerItem:popItem onTarget:targetCopy];
   }
 }
 
-- (void)pokeTarget:(id)a3
+- (void)pokeTarget:(id)target
 {
-  v5 = a3;
+  targetCopy = target;
   v4 = [(NSMapTable *)self->_presentedByTarget objectForKey:?];
 
   if (!v4)
   {
-    [(BannerSource *)self signalTarget:v5];
+    [(BannerSource *)self signalTarget:targetCopy];
   }
 }
 
-- (id)bannerIdForBannerItem:(id)a3
+- (id)bannerIdForBannerItem:(id)item
 {
-  v4 = [a3 uniqueId];
-  v5 = [(NSMutableDictionary *)self->_bannerIncrements objectForKeyedSubscript:v4];
+  uniqueId = [item uniqueId];
+  v5 = [(NSMutableDictionary *)self->_bannerIncrements objectForKeyedSubscript:uniqueId];
   v6 = v5;
   v7 = &off_1016E7058;
   if (v5)
@@ -429,36 +429,36 @@ LABEL_11:
 
   v8 = v7;
 
-  v9 = [NSString stringWithFormat:@"%@-%@", v4, v8];
-  v10 = [v8 unsignedIntegerValue];
+  v9 = [NSString stringWithFormat:@"%@-%@", uniqueId, v8];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-  v11 = [NSNumber numberWithUnsignedInteger:v10 + 1];
-  [(NSMutableDictionary *)self->_bannerIncrements setObject:v11 forKeyedSubscript:v4];
+  v11 = [NSNumber numberWithUnsignedInteger:unsignedIntegerValue + 1];
+  [(NSMutableDictionary *)self->_bannerIncrements setObject:v11 forKeyedSubscript:uniqueId];
 
   return v9;
 }
 
-- (id)_bannerPresentableForBannerItem:(id)a3 inTarget:(id)a4
+- (id)_bannerPresentableForBannerItem:(id)item inTarget:(id)target
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BannerSource *)self _bannerViewForBannerItem:v7 inTarget:v6];
+  targetCopy = target;
+  itemCopy = item;
+  v8 = [(BannerSource *)self _bannerViewForBannerItem:itemCopy inTarget:targetCopy];
   v9 = [MapsBannerViewController alloc];
-  v10 = [(BannerSource *)self bannerIdForBannerItem:v7];
+  v10 = [(BannerSource *)self bannerIdForBannerItem:itemCopy];
 
-  v11 = -[MapsBannerViewController initWithRequestId:target:bannerView:delegate:aperturePresentation:](v9, "initWithRequestId:target:bannerView:delegate:aperturePresentation:", v10, v6, v8, self, [v8 aperturePresentation]);
+  v11 = -[MapsBannerViewController initWithRequestId:target:bannerView:delegate:aperturePresentation:](v9, "initWithRequestId:target:bannerView:delegate:aperturePresentation:", v10, targetCopy, v8, self, [v8 aperturePresentation]);
 
   return v11;
 }
 
-- (id)_bannerViewForBannerItem:(id)a3 inTarget:(id)a4
+- (id)_bannerViewForBannerItem:(id)item inTarget:(id)target
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  targetCopy = target;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    [v7 destination];
+    [targetCopy destination];
 LABEL_4:
     v8 = objc_opt_class();
     goto LABEL_5;
@@ -478,21 +478,21 @@ LABEL_4:
 
   v8 = 0;
 LABEL_5:
-  v9 = [[v8 alloc] initWithTarget:v7 item:v6 aperturePresentation:{-[BannerSource _shouldUseAperturePresentationForBannerItem:inTarget:](self, "_shouldUseAperturePresentationForBannerItem:inTarget:", v6, v7)}];
+  v9 = [[v8 alloc] initWithTarget:targetCopy item:itemCopy aperturePresentation:{-[BannerSource _shouldUseAperturePresentationForBannerItem:inTarget:](self, "_shouldUseAperturePresentationForBannerItem:inTarget:", itemCopy, targetCopy)}];
 
   return v9;
 }
 
-- (BOOL)_shouldUseAperturePresentationForBannerItem:(id)a3 inTarget:(id)a4
+- (BOOL)_shouldUseAperturePresentationForBannerItem:(id)item inTarget:(id)target
 {
-  v6 = a3;
-  if ([(BannerSource *)self _isDynamicIslandTarget:a4])
+  itemCopy = item;
+  if ([(BannerSource *)self _isDynamicIslandTarget:target])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 guidanceState];
-      v8 = [v7 isMapsForegroundOnMainScreen] ^ 1;
+      guidanceState = [itemCopy guidanceState];
+      v8 = [guidanceState isMapsForegroundOnMainScreen] ^ 1;
     }
 
     else
@@ -509,35 +509,35 @@ LABEL_5:
   return v8;
 }
 
-- (BOOL)_shouldPresentForPreviousGuidance:(id)a3 nextGuidance:(id)a4 type:(unint64_t)a5 target:(id)a6
+- (BOOL)_shouldPresentForPreviousGuidance:(id)guidance nextGuidance:(id)nextGuidance type:(unint64_t)type target:(id)target
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if ([(BannerSource *)self _isDynamicIslandTarget:v12])
+  guidanceCopy = guidance;
+  nextGuidanceCopy = nextGuidance;
+  targetCopy = target;
+  if ([(BannerSource *)self _isDynamicIslandTarget:targetCopy])
   {
     v13 = 1;
   }
 
   else
   {
-    v13 = [v10 shouldPresentNextGuidanceUpdate:v11 forType:a5 target:v12];
+    v13 = [guidanceCopy shouldPresentNextGuidanceUpdate:nextGuidanceCopy forType:type target:targetCopy];
   }
 
   return v13;
 }
 
-- (BOOL)_shouldSuppressNextGuidance:(id)a3 type:(unint64_t)a4 target:(id)a5
+- (BOOL)_shouldSuppressNextGuidance:(id)guidance type:(unint64_t)type target:(id)target
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(BannerSource *)self _isDynamicIslandTarget:v9];
+  guidanceCopy = guidance;
+  targetCopy = target;
+  v10 = [(BannerSource *)self _isDynamicIslandTarget:targetCopy];
   v11 = 0;
-  if (!a4 && (v10 & 1) == 0)
+  if (!type && (v10 & 1) == 0)
   {
-    v12 = [(NSMapTable *)self->_inAppSeenGuidanceByTarget objectForKey:v9];
+    v12 = [(NSMapTable *)self->_inAppSeenGuidanceByTarget objectForKey:targetCopy];
     v13 = v12;
-    if (!v12 || ([v12 shouldPresentNextGuidanceUpdate:v8 forType:0 target:v9] & 1) != 0 || objc_msgSend(v9, "destination") == 1 && (objc_msgSend(v8, "isAlerting") & 1) != 0)
+    if (!v12 || ([v12 shouldPresentNextGuidanceUpdate:guidanceCopy forType:0 target:targetCopy] & 1) != 0 || objc_msgSend(targetCopy, "destination") == 1 && (objc_msgSend(guidanceCopy, "isAlerting") & 1) != 0)
     {
       v11 = 0;
     }
@@ -547,12 +547,12 @@ LABEL_5:
       v14 = sub_100032C3C();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
-        v15 = [v13 shortDescription];
-        v16 = [v8 shortDescription];
+        shortDescription = [v13 shortDescription];
+        shortDescription2 = [guidanceCopy shortDescription];
         v18 = 138412546;
-        v19 = v15;
+        v19 = shortDescription;
         v20 = 2112;
-        v21 = v16;
+        v21 = shortDescription2;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Suppressing alert as it is not significantly different to what was seen in app; seen: %@ vs new: %@", &v18, 0x16u);
       }
 
@@ -563,12 +563,12 @@ LABEL_5:
   return v11;
 }
 
-- (BOOL)_isDynamicIslandTarget:(id)a3
+- (BOOL)_isDynamicIslandTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   if (SBUIIsSystemApertureEnabled())
   {
-    v5 = self->_mainSource == v4;
+    v5 = self->_mainSource == targetCopy;
   }
 
   else
@@ -579,45 +579,45 @@ LABEL_5:
   return v5;
 }
 
-- (void)receivedGuidanceState:(id)a3
+- (void)receivedGuidanceState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = sub_100032C3C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 shortDescription];
+    shortDescription = [stateCopy shortDescription];
     *buf = 138412290;
-    v85 = v6;
+    v85 = shortDescription;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Received: %@", buf, 0xCu);
   }
 
   v7 = [[NSMutableArray alloc] initWithCapacity:2];
-  if ([v4 showInMainScreen])
+  if ([stateCopy showInMainScreen])
   {
     [v7 addObject:self->_mainSource];
   }
 
   else
   {
-    [(NSMapTable *)self->_inAppSeenGuidanceByTarget setObject:v4 forKey:self->_mainSource];
+    [(NSMapTable *)self->_inAppSeenGuidanceByTarget setObject:stateCopy forKey:self->_mainSource];
     [(BannerSource *)self cleanUpPhoneBanners];
   }
 
   if (self->_carPlaySource)
   {
-    if ([v4 showInCarPlay])
+    if ([stateCopy showInCarPlay])
     {
       [v7 addObject:self->_carPlaySource];
     }
 
     else
     {
-      [(NSMapTable *)self->_inAppSeenGuidanceByTarget setObject:v4 forKey:self->_carPlaySource];
+      [(NSMapTable *)self->_inAppSeenGuidanceByTarget setObject:stateCopy forKey:self->_carPlaySource];
       [(BannerSource *)self cleanUpCarPlayBanners];
     }
   }
 
-  v8 = [v4 transportType];
+  transportType = [stateCopy transportType];
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
@@ -627,8 +627,8 @@ LABEL_5:
   if (v77)
   {
     v75 = *v80;
-    v78 = v4;
-    v76 = v8;
+    v78 = stateCopy;
+    v76 = transportType;
     do
     {
       for (i = 0; i != v77; i = i + 1)
@@ -647,7 +647,7 @@ LABEL_5:
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%@ - Processing", buf, 0xCu);
         }
 
-        if (v8 > 3 || v8 == 1)
+        if (transportType > 3 || transportType == 1)
         {
           [(BannerSource *)self _cleanUpType:objc_opt_class() onTarget:v10 animated:1];
           [(BannerSource *)self _cleanUpType:objc_opt_class() onTarget:v10 animated:1];
@@ -655,10 +655,10 @@ LABEL_5:
 
         else
         {
-          if (![(BannerSource *)self updateBannerForGuidanceState:v4 onTarget:v10 type:0])
+          if (![(BannerSource *)self updateBannerForGuidanceState:stateCopy onTarget:v10 type:0])
           {
             [(BannerSource *)self _cleanUpType:objc_opt_class() onTarget:v10 animated:1];
-            if (![(BannerSource *)self _shouldSuppressNextGuidance:v4 type:0 target:v10])
+            if (![(BannerSource *)self _shouldSuppressNextGuidance:stateCopy type:0 target:v10])
             {
               v12 = [(NSMapTable *)self->_latestBannerForTarget objectForKey:v10];
               v13 = [v12 objectForKeyedSubscript:&off_1016E6FF8];
@@ -671,36 +671,36 @@ LABEL_5:
                 _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "New guidance; removing banner. previousBanner: %@", buf, 0xCu);
               }
 
-              if (!v13 || ([v13 bannerView], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "item"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "guidanceState"), v17 = objc_claimAutoreleasedReturnValue(), v18 = -[BannerSource _shouldPresentForPreviousGuidance:nextGuidance:type:target:](self, "_shouldPresentForPreviousGuidance:nextGuidance:type:target:", v17, v4, 0, v10), v17, v16, v15, v18))
+              if (!v13 || ([v13 bannerView], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "item"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "guidanceState"), v17 = objc_claimAutoreleasedReturnValue(), v18 = -[BannerSource _shouldPresentForPreviousGuidance:nextGuidance:type:target:](self, "_shouldPresentForPreviousGuidance:nextGuidance:type:target:", v17, stateCopy, 0, v10), v17, v16, v15, v18))
               {
                 v19 = sub_100032C3C();
                 if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
                 {
-                  v20 = [v4 uniqueIdForBannerType:0];
+                  v20 = [stateCopy uniqueIdForBannerType:0];
                   *buf = 138412290;
                   v85 = v20;
                   _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Enqueue item for this maneuver: %@", buf, 0xCu);
                 }
 
-                v21 = [(BannerSource *)self _bannerItemForType:0 guidanceState:v4];
+                v21 = [(BannerSource *)self _bannerItemForType:0 guidanceState:stateCopy];
                 [(BannerSource *)self _enqueue:v21 forTarget:v10];
               }
             }
           }
 
-          v22 = [v4 trafficIncidentAlert];
+          trafficIncidentAlert = [stateCopy trafficIncidentAlert];
 
-          if (v22)
+          if (trafficIncidentAlert)
           {
-            v23 = [(BannerSource *)self updateBannerForGuidanceState:v4 onTarget:v10 type:1];
+            v23 = [(BannerSource *)self updateBannerForGuidanceState:stateCopy onTarget:v10 type:1];
             if ([(BannerSource *)self _isDynamicIslandTarget:v10])
             {
               v24 = [(NSMapTable *)self->_presentedByTarget objectForKey:v10];
-              v25 = [v4 uniqueIdForBannerType:1];
-              v26 = [v24 alternateBannerView];
-              v27 = [v26 item];
-              v28 = [v27 uniqueId];
-              v29 = [v25 isEqual:v28];
+              v25 = [stateCopy uniqueIdForBannerType:1];
+              alternateBannerView = [v24 alternateBannerView];
+              item = [alternateBannerView item];
+              uniqueId = [item uniqueId];
+              v29 = [v25 isEqual:uniqueId];
 
               if ((v29 & 1) == 0)
               {
@@ -709,7 +709,7 @@ LABEL_5:
                 [v24 postTemporaryAlternateBannerView:v31];
               }
 
-              v4 = v78;
+              stateCopy = v78;
             }
 
             else if ((v23 & 1) == 0)
@@ -725,38 +725,38 @@ LABEL_5:
               v33 = [(NSMapTable *)self->_latestBannerForTarget objectForKey:v10];
               v34 = [v33 objectForKeyedSubscript:&off_1016E7010];
 
-              if (!v34 || ([v34 bannerView], v35 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v35, "item"), v36 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v36, "guidanceState"), v37 = objc_claimAutoreleasedReturnValue(), v38 = -[BannerSource _shouldPresentForPreviousGuidance:nextGuidance:type:target:](self, "_shouldPresentForPreviousGuidance:nextGuidance:type:target:", v37, v78, 1, v10), v37, v36, v4 = v78, v35, v38))
+              if (!v34 || ([v34 bannerView], v35 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v35, "item"), v36 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v36, "guidanceState"), v37 = objc_claimAutoreleasedReturnValue(), v38 = -[BannerSource _shouldPresentForPreviousGuidance:nextGuidance:type:target:](self, "_shouldPresentForPreviousGuidance:nextGuidance:type:target:", v37, v78, 1, v10), v37, v36, stateCopy = v78, v35, v38))
               {
                 v39 = sub_100032C3C();
                 if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
                 {
-                  v40 = [v4 uniqueIdForBannerType:1];
+                  v40 = [stateCopy uniqueIdForBannerType:1];
                   *buf = 138412290;
                   v85 = v40;
                   _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_INFO, "Enqueuing new traffic alert: %@", buf, 0xCu);
                 }
 
-                v41 = [(BannerSource *)self _bannerItemForType:1 guidanceState:v4];
+                v41 = [(BannerSource *)self _bannerItemForType:1 guidanceState:stateCopy];
                 [(BannerSource *)self _enqueue:v41 forTarget:v10];
               }
             }
           }
         }
 
-        v42 = [v4 alightMessage];
-        if (v42)
+        alightMessage = [stateCopy alightMessage];
+        if (alightMessage)
         {
-          v43 = [v4 isMapsForegroundOnMainScreen];
+          isMapsForegroundOnMainScreen = [stateCopy isMapsForegroundOnMainScreen];
         }
 
         else
         {
-          v43 = 0;
+          isMapsForegroundOnMainScreen = 0;
         }
 
-        if ([(BannerSource *)self _isDynamicIslandTarget:v10]&& v8 == 1 && (v43 & 1) == 0)
+        if ([(BannerSource *)self _isDynamicIslandTarget:v10]&& transportType == 1 && (isMapsForegroundOnMainScreen & 1) == 0)
         {
-          if (![(BannerSource *)self updateBannerForGuidanceState:v4 onTarget:v10 type:3])
+          if (![(BannerSource *)self updateBannerForGuidanceState:stateCopy onTarget:v10 type:3])
           {
             [(BannerSource *)self _cleanUpType:objc_opt_class() onTarget:v10 animated:1];
             v44 = [(NSMapTable *)self->_latestBannerForTarget objectForKey:v10];
@@ -770,18 +770,18 @@ LABEL_5:
               _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_INFO, "New guidance; removing banner. previousBanner: %@", buf, 0xCu);
             }
 
-            if (!v45 || ([v45 bannerView], v47 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v47, "item"), v48 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v48, "guidanceState"), v49 = objc_claimAutoreleasedReturnValue(), v50 = -[BannerSource _shouldPresentForPreviousGuidance:nextGuidance:type:target:](self, "_shouldPresentForPreviousGuidance:nextGuidance:type:target:", v49, v78, 3, v10), v49, v48, v4 = v78, v47, v50))
+            if (!v45 || ([v45 bannerView], v47 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v47, "item"), v48 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v48, "guidanceState"), v49 = objc_claimAutoreleasedReturnValue(), v50 = -[BannerSource _shouldPresentForPreviousGuidance:nextGuidance:type:target:](self, "_shouldPresentForPreviousGuidance:nextGuidance:type:target:", v49, v78, 3, v10), v49, v48, stateCopy = v78, v47, v50))
             {
               v51 = sub_100032C3C();
               if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
               {
-                v52 = [v4 uniqueIdForBannerType:3];
+                v52 = [stateCopy uniqueIdForBannerType:3];
                 *buf = 138412290;
                 v85 = v52;
                 _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_INFO, "Enqueue item for this maneuver: %@", buf, 0xCu);
               }
 
-              v53 = [(BannerSource *)self _bannerItemForType:3 guidanceState:v4];
+              v53 = [(BannerSource *)self _bannerItemForType:3 guidanceState:stateCopy];
               [(BannerSource *)self _enqueue:v53 forTarget:v10];
             }
           }
@@ -790,17 +790,17 @@ LABEL_5:
         else
         {
           [(BannerSource *)self _cleanUpType:objc_opt_class() onTarget:v10 animated:1];
-          if (v8 != 1)
+          if (transportType != 1)
           {
             goto LABEL_76;
           }
         }
 
-        v54 = [v4 alightMessage];
+        alightMessage2 = [stateCopy alightMessage];
 
-        if (v54)
+        if (alightMessage2)
         {
-          v55 = [(BannerSource *)self _bannerItemForType:2 guidanceState:v4];
+          v55 = [(BannerSource *)self _bannerItemForType:2 guidanceState:stateCopy];
           v56 = [(BannerSource *)self _shouldUseAperturePresentationForBannerItem:v55 inTarget:v10];
           v57 = sub_100032C3C();
           v58 = os_log_type_enabled(v57, OS_LOG_TYPE_INFO);
@@ -813,11 +813,11 @@ LABEL_5:
             }
 
             v59 = [(NSMapTable *)self->_presentedByTarget objectForKey:v10];
-            v60 = [v4 uniqueIdForBannerType:2];
-            v61 = [v59 alternateBannerView];
-            v62 = [v61 item];
-            v63 = [v62 uniqueId];
-            v64 = [v60 isEqual:v63];
+            v60 = [stateCopy uniqueIdForBannerType:2];
+            alternateBannerView2 = [v59 alternateBannerView];
+            item2 = [alternateBannerView2 item];
+            uniqueId2 = [item2 uniqueId];
+            v64 = [v60 isEqual:uniqueId2];
 
             if ((v64 & 1) == 0)
             {
@@ -825,7 +825,7 @@ LABEL_5:
               [v59 postTemporaryAlternateBannerView:v65];
             }
 
-            v4 = v78;
+            stateCopy = v78;
 LABEL_75:
 
             goto LABEL_76;
@@ -843,12 +843,12 @@ LABEL_75:
 
           if (v59)
           {
-            v67 = [v59 bannerView];
-            v68 = [v67 item];
-            v69 = [v68 guidanceState];
-            v70 = [(BannerSource *)self _shouldPresentForPreviousGuidance:v69 nextGuidance:v78 type:2 target:v10];
+            bannerView = [v59 bannerView];
+            item3 = [bannerView item];
+            guidanceState = [item3 guidanceState];
+            v70 = [(BannerSource *)self _shouldPresentForPreviousGuidance:guidanceState nextGuidance:v78 type:2 target:v10];
 
-            v4 = v78;
+            stateCopy = v78;
             if (!v70)
             {
               goto LABEL_75;
@@ -858,7 +858,7 @@ LABEL_75:
           v71 = sub_100032C3C();
           if (os_log_type_enabled(v71, OS_LOG_TYPE_INFO))
           {
-            v72 = [v4 uniqueIdForBannerType:2];
+            v72 = [stateCopy uniqueIdForBannerType:2];
             *buf = 138412290;
             v85 = v72;
             _os_log_impl(&_mh_execute_header, v71, OS_LOG_TYPE_INFO, "Enqueuing new transit alight: %@", buf, 0xCu);
@@ -877,7 +877,7 @@ LABEL_75:
 LABEL_76:
         [(BannerSource *)self pokeTarget:v10];
 LABEL_77:
-        v8 = v76;
+        transportType = v76;
       }
 
       v77 = [obj countByEnumeratingWithState:&v79 objects:v83 count:16];
@@ -939,18 +939,18 @@ LABEL_77:
   return v3;
 }
 
-- (void)setCarPlaySource:(id)a3
+- (void)setCarPlaySource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   carPlaySource = self->_carPlaySource;
   p_carPlaySource = &self->_carPlaySource;
   v6 = carPlaySource;
-  if (carPlaySource != v5)
+  if (carPlaySource != sourceCopy)
   {
-    v9 = v5;
+    v9 = sourceCopy;
     [(BNBannerSource *)v6 invalidate];
-    objc_storeStrong(p_carPlaySource, a3);
-    v5 = v9;
+    objc_storeStrong(p_carPlaySource, source);
+    sourceCopy = v9;
   }
 }
 

@@ -1,38 +1,38 @@
 @interface BMShareSheetSuggestLessFeedback
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMShareSheetSuggestLessFeedback)initWithBundleID:(id)a3 conversationIdentifier:(id)a4 derivedIntentIdentifier:(id)a5 handle:(id)a6 contactID:(id)a7;
-- (BMShareSheetSuggestLessFeedback)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMShareSheetSuggestLessFeedback)initWithBundleID:(id)d conversationIdentifier:(id)identifier derivedIntentIdentifier:(id)intentIdentifier handle:(id)handle contactID:(id)iD;
+- (BMShareSheetSuggestLessFeedback)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMShareSheetSuggestLessFeedback
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMShareSheetSuggestLessFeedback *)self bundleID];
-    v7 = [v5 bundleID];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    bundleID = [(BMShareSheetSuggestLessFeedback *)self bundleID];
+    bundleID2 = [v5 bundleID];
+    v8 = bundleID2;
+    if (bundleID == bundleID2)
     {
     }
 
     else
     {
-      v9 = [(BMShareSheetSuggestLessFeedback *)self bundleID];
-      v10 = [v5 bundleID];
-      v11 = [v9 isEqual:v10];
+      bundleID3 = [(BMShareSheetSuggestLessFeedback *)self bundleID];
+      bundleID4 = [v5 bundleID];
+      v11 = [bundleID3 isEqual:bundleID4];
 
       if (!v11)
       {
@@ -40,18 +40,18 @@
       }
     }
 
-    v13 = [(BMShareSheetSuggestLessFeedback *)self conversationIdentifier];
-    v14 = [v5 conversationIdentifier];
-    v15 = v14;
-    if (v13 == v14)
+    conversationIdentifier = [(BMShareSheetSuggestLessFeedback *)self conversationIdentifier];
+    conversationIdentifier2 = [v5 conversationIdentifier];
+    v15 = conversationIdentifier2;
+    if (conversationIdentifier == conversationIdentifier2)
     {
     }
 
     else
     {
-      v16 = [(BMShareSheetSuggestLessFeedback *)self conversationIdentifier];
-      v17 = [v5 conversationIdentifier];
-      v18 = [v16 isEqual:v17];
+      conversationIdentifier3 = [(BMShareSheetSuggestLessFeedback *)self conversationIdentifier];
+      conversationIdentifier4 = [v5 conversationIdentifier];
+      v18 = [conversationIdentifier3 isEqual:conversationIdentifier4];
 
       if (!v18)
       {
@@ -59,18 +59,18 @@
       }
     }
 
-    v19 = [(BMShareSheetSuggestLessFeedback *)self derivedIntentIdentifier];
-    v20 = [v5 derivedIntentIdentifier];
-    v21 = v20;
-    if (v19 == v20)
+    derivedIntentIdentifier = [(BMShareSheetSuggestLessFeedback *)self derivedIntentIdentifier];
+    derivedIntentIdentifier2 = [v5 derivedIntentIdentifier];
+    v21 = derivedIntentIdentifier2;
+    if (derivedIntentIdentifier == derivedIntentIdentifier2)
     {
     }
 
     else
     {
-      v22 = [(BMShareSheetSuggestLessFeedback *)self derivedIntentIdentifier];
-      v23 = [v5 derivedIntentIdentifier];
-      v24 = [v22 isEqual:v23];
+      derivedIntentIdentifier3 = [(BMShareSheetSuggestLessFeedback *)self derivedIntentIdentifier];
+      derivedIntentIdentifier4 = [v5 derivedIntentIdentifier];
+      v24 = [derivedIntentIdentifier3 isEqual:derivedIntentIdentifier4];
 
       if (!v24)
       {
@@ -78,18 +78,18 @@
       }
     }
 
-    v25 = [(BMShareSheetSuggestLessFeedback *)self handle];
-    v26 = [v5 handle];
-    v27 = v26;
-    if (v25 == v26)
+    handle = [(BMShareSheetSuggestLessFeedback *)self handle];
+    handle2 = [v5 handle];
+    v27 = handle2;
+    if (handle == handle2)
     {
     }
 
     else
     {
-      v28 = [(BMShareSheetSuggestLessFeedback *)self handle];
-      v29 = [v5 handle];
-      v30 = [v28 isEqual:v29];
+      handle3 = [(BMShareSheetSuggestLessFeedback *)self handle];
+      handle4 = [v5 handle];
+      v30 = [handle3 isEqual:handle4];
 
       if (!v30)
       {
@@ -101,18 +101,18 @@ LABEL_23:
       }
     }
 
-    v31 = [(BMShareSheetSuggestLessFeedback *)self contactID];
-    v32 = [v5 contactID];
-    if (v31 == v32)
+    contactID = [(BMShareSheetSuggestLessFeedback *)self contactID];
+    contactID2 = [v5 contactID];
+    if (contactID == contactID2)
     {
       v12 = 1;
     }
 
     else
     {
-      v33 = [(BMShareSheetSuggestLessFeedback *)self contactID];
-      v34 = [v5 contactID];
-      v12 = [v33 isEqual:v34];
+      contactID3 = [(BMShareSheetSuggestLessFeedback *)self contactID];
+      contactID4 = [v5 contactID];
+      v12 = [contactID3 isEqual:contactID4];
     }
 
     goto LABEL_23;
@@ -127,56 +127,56 @@ LABEL_24:
 - (id)jsonDictionary
 {
   v23[5] = *MEMORY[0x1E69E9840];
-  v3 = [(BMShareSheetSuggestLessFeedback *)self bundleID];
-  v4 = [(BMShareSheetSuggestLessFeedback *)self conversationIdentifier];
-  v5 = [(BMShareSheetSuggestLessFeedback *)self derivedIntentIdentifier];
-  v6 = [(BMShareSheetSuggestLessFeedback *)self handle];
-  v7 = [(BMShareSheetSuggestLessFeedback *)self contactID];
+  bundleID = [(BMShareSheetSuggestLessFeedback *)self bundleID];
+  conversationIdentifier = [(BMShareSheetSuggestLessFeedback *)self conversationIdentifier];
+  derivedIntentIdentifier = [(BMShareSheetSuggestLessFeedback *)self derivedIntentIdentifier];
+  handle = [(BMShareSheetSuggestLessFeedback *)self handle];
+  contactID = [(BMShareSheetSuggestLessFeedback *)self contactID];
   v18 = @"bundleID";
-  v8 = v3;
-  if (!v3)
+  null = bundleID;
+  if (!bundleID)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16 = v8;
-  v23[0] = v8;
+  v16 = null;
+  v23[0] = null;
   v19 = @"conversationIdentifier";
-  v9 = v4;
-  if (!v4)
+  null2 = conversationIdentifier;
+  if (!conversationIdentifier)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[1] = v9;
+  v23[1] = null2;
   v20 = @"derivedIntentIdentifier";
-  v10 = v5;
-  if (!v5)
+  null3 = derivedIntentIdentifier;
+  if (!derivedIntentIdentifier)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[2] = v10;
+  v23[2] = null3;
   v21 = @"handle";
-  v11 = v6;
-  if (!v6)
+  null4 = handle;
+  if (!handle)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[3] = v11;
+  v23[3] = null4;
   v22 = @"contactID";
-  v12 = v7;
-  if (!v7)
+  null5 = contactID;
+  if (!contactID)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[4] = v12;
+  v23[4] = null5;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v18 count:{5, v16}];
-  if (v7)
+  if (contactID)
   {
-    if (v6)
+    if (handle)
     {
       goto LABEL_13;
     }
@@ -185,10 +185,10 @@ LABEL_24:
   else
   {
 
-    if (v6)
+    if (handle)
     {
 LABEL_13:
-      if (v5)
+      if (derivedIntentIdentifier)
       {
         goto LABEL_14;
       }
@@ -197,17 +197,17 @@ LABEL_13:
     }
   }
 
-  if (v5)
+  if (derivedIntentIdentifier)
   {
 LABEL_14:
-    if (v4)
+    if (conversationIdentifier)
     {
       goto LABEL_15;
     }
 
 LABEL_22:
 
-    if (v3)
+    if (bundleID)
     {
       goto LABEL_16;
     }
@@ -217,13 +217,13 @@ LABEL_22:
 
 LABEL_21:
 
-  if (!v4)
+  if (!conversationIdentifier)
   {
     goto LABEL_22;
   }
 
 LABEL_15:
-  if (v3)
+  if (bundleID)
   {
     goto LABEL_16;
   }
@@ -236,29 +236,29 @@ LABEL_16:
   return v13;
 }
 
-- (BMShareSheetSuggestLessFeedback)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMShareSheetSuggestLessFeedback)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v48[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"bundleID"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"bundleID"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"conversationIdentifier"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"conversationIdentifier"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v38 = 0;
           v16 = 0;
           goto LABEL_20;
         }
 
-        v32 = a4;
+        errorCopy = error;
         v22 = objc_alloc(MEMORY[0x1E696ABC0]);
         v23 = *MEMORY[0x1E698F240];
         v45 = *MEMORY[0x1E696A578];
@@ -267,7 +267,7 @@ LABEL_4:
         v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
         v38 = 0;
         v16 = 0;
-        *v32 = [v22 initWithDomain:v23 code:2 userInfo:v10];
+        *errorCopy = [v22 initWithDomain:v23 code:2 userInfo:v10];
         goto LABEL_19;
       }
 
@@ -279,22 +279,22 @@ LABEL_4:
       v38 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"derivedIntentIdentifier"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"derivedIntentIdentifier"];
     v35 = v8;
-    v37 = self;
+    selfCopy = self;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v36 = 0;
           v16 = 0;
           goto LABEL_19;
         }
 
-        v24 = a4;
+        errorCopy2 = error;
         v25 = objc_alloc(MEMORY[0x1E696ABC0]);
         v26 = *MEMORY[0x1E698F240];
         v43 = *MEMORY[0x1E696A578];
@@ -303,10 +303,10 @@ LABEL_4:
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
         v36 = 0;
         v16 = 0;
-        *v24 = [v25 initWithDomain:v26 code:2 userInfo:v11];
+        *errorCopy2 = [v25 initWithDomain:v26 code:2 userInfo:v11];
 LABEL_18:
 
-        self = v37;
+        self = selfCopy;
         v8 = v35;
 LABEL_19:
 
@@ -321,14 +321,14 @@ LABEL_19:
       v36 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"handle"];
-    v12 = a4;
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"handle"];
+    errorCopy3 = error;
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v13 = 0;
           v16 = 0;
@@ -344,7 +344,7 @@ LABEL_19:
         v28 = [v33 initWithDomain:v27 code:2 userInfo:v14];
         v13 = 0;
         v16 = 0;
-        *v12 = v28;
+        *errorCopy3 = v28;
         goto LABEL_17;
       }
 
@@ -356,13 +356,13 @@ LABEL_19:
       v13 = 0;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"contactID"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"contactID"];
     if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v12)
+        if (errorCopy3)
         {
           v34 = objc_alloc(MEMORY[0x1E696ABC0]);
           v31 = *MEMORY[0x1E698F240];
@@ -370,7 +370,7 @@ LABEL_19:
           v29 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"contactID"];
           v40 = v29;
           v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
-          *v12 = [v34 initWithDomain:v31 code:2 userInfo:v30];
+          *errorCopy3 = [v34 initWithDomain:v31 code:2 userInfo:v30];
         }
 
         v15 = 0;
@@ -386,8 +386,8 @@ LABEL_19:
       v15 = 0;
     }
 
-    v16 = [(BMShareSheetSuggestLessFeedback *)v37 initWithBundleID:v35 conversationIdentifier:v38 derivedIntentIdentifier:v36 handle:v13 contactID:v15];
-    v37 = v16;
+    v16 = [(BMShareSheetSuggestLessFeedback *)selfCopy initWithBundleID:v35 conversationIdentifier:v38 derivedIntentIdentifier:v36 handle:v13 contactID:v15];
+    selfCopy = v16;
 LABEL_17:
 
     goto LABEL_18;
@@ -400,14 +400,14 @@ LABEL_17:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v16 = 0;
     goto LABEL_21;
   }
 
-  v19 = a4;
+  errorCopy4 = error;
   v20 = objc_alloc(MEMORY[0x1E696ABC0]);
   v21 = *MEMORY[0x1E698F240];
   v47 = *MEMORY[0x1E696A578];
@@ -416,7 +416,7 @@ LABEL_17:
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:&v47 count:1];
   v8 = 0;
   v16 = 0;
-  *v19 = [v20 initWithDomain:v21 code:2 userInfo:v9];
+  *errorCopy4 = [v20 initWithDomain:v21 code:2 userInfo:v9];
 LABEL_20:
 
 LABEL_21:
@@ -428,49 +428,49 @@ LABEL_21:
 {
   v3 = objc_opt_new();
   [(BMShareSheetSuggestLessFeedback *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_bundleID)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_conversationIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_derivedIntentIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_handle)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_contactID)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v23.receiver = self;
   v23.super_class = BMShareSheetSuggestLessFeedback;
   v5 = [(BMEventBase *)&v23 init];
@@ -479,12 +479,12 @@ LABEL_21:
     goto LABEL_24;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -495,18 +495,18 @@ LABEL_21:
       while (1)
       {
         v24 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v24 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v24 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v24 & 0x7F) << v7;
@@ -523,9 +523,9 @@ LABEL_21:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -548,13 +548,13 @@ LABEL_16:
         *(&v5->super.super.isa + v18) = v17;
       }
 
-      v20 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v20 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_23:
     v21 = 0;
@@ -572,34 +572,34 @@ LABEL_24:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMShareSheetSuggestLessFeedback *)self bundleID];
-  v5 = [(BMShareSheetSuggestLessFeedback *)self conversationIdentifier];
-  v6 = [(BMShareSheetSuggestLessFeedback *)self derivedIntentIdentifier];
-  v7 = [(BMShareSheetSuggestLessFeedback *)self handle];
-  v8 = [(BMShareSheetSuggestLessFeedback *)self contactID];
-  v9 = [v3 initWithFormat:@"BMShareSheetSuggestLessFeedback with bundleID: %@, conversationIdentifier: %@, derivedIntentIdentifier: %@, handle: %@, contactID: %@", v4, v5, v6, v7, v8];
+  bundleID = [(BMShareSheetSuggestLessFeedback *)self bundleID];
+  conversationIdentifier = [(BMShareSheetSuggestLessFeedback *)self conversationIdentifier];
+  derivedIntentIdentifier = [(BMShareSheetSuggestLessFeedback *)self derivedIntentIdentifier];
+  handle = [(BMShareSheetSuggestLessFeedback *)self handle];
+  contactID = [(BMShareSheetSuggestLessFeedback *)self contactID];
+  v9 = [v3 initWithFormat:@"BMShareSheetSuggestLessFeedback with bundleID: %@, conversationIdentifier: %@, derivedIntentIdentifier: %@, handle: %@, contactID: %@", bundleID, conversationIdentifier, derivedIntentIdentifier, handle, contactID];
 
   return v9;
 }
 
-- (BMShareSheetSuggestLessFeedback)initWithBundleID:(id)a3 conversationIdentifier:(id)a4 derivedIntentIdentifier:(id)a5 handle:(id)a6 contactID:(id)a7
+- (BMShareSheetSuggestLessFeedback)initWithBundleID:(id)d conversationIdentifier:(id)identifier derivedIntentIdentifier:(id)intentIdentifier handle:(id)handle contactID:(id)iD
 {
-  v19 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  identifierCopy = identifier;
+  intentIdentifierCopy = intentIdentifier;
+  handleCopy = handle;
+  iDCopy = iD;
   v20.receiver = self;
   v20.super_class = BMShareSheetSuggestLessFeedback;
   v17 = [(BMEventBase *)&v20 init];
   if (v17)
   {
     v17->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v17->_bundleID, a3);
-    objc_storeStrong(&v17->_conversationIdentifier, a4);
-    objc_storeStrong(&v17->_derivedIntentIdentifier, a5);
-    objc_storeStrong(&v17->_handle, a6);
-    objc_storeStrong(&v17->_contactID, a7);
+    objc_storeStrong(&v17->_bundleID, d);
+    objc_storeStrong(&v17->_conversationIdentifier, identifier);
+    objc_storeStrong(&v17->_derivedIntentIdentifier, intentIdentifier);
+    objc_storeStrong(&v17->_handle, handle);
+    objc_storeStrong(&v17->_contactID, iD);
   }
 
   return v17;
@@ -644,9 +644,9 @@ LABEL_24:
   return v7;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -654,8 +654,8 @@ LABEL_24:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMShareSheetSuggestLessFeedback alloc] initByReadFrom:v7];
     v4 = v8;

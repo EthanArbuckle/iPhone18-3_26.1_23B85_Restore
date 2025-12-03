@@ -1,42 +1,42 @@
 @interface HDFHIRJSONObject
-+ (id)_dataFromJSONObject:(id)a3 JSONOptions:(unint64_t)a4;
-+ (id)objectWithResourceData:(id)a3 error:(id *)a4;
-+ (id)resourceTypeOfJSONObject:(id)a3 error:(id *)a4;
++ (id)_dataFromJSONObject:(id)object JSONOptions:(unint64_t)options;
++ (id)objectWithResourceData:(id)data error:(id *)error;
++ (id)resourceTypeOfJSONObject:(id)object error:(id *)error;
 - (BOOL)_isDiagnosticTestReportR4Lab;
-- (BOOL)hasCode:(id)a3 codeSystem:(id)a4 codeableConcept:(id)a5 error:(id *)a6;
-- (BOOL)hasCode:(id)a3 codeSystem:(id)a4 codings:(id)a5 error:(id *)a6;
+- (BOOL)hasCode:(id)code codeSystem:(id)system codeableConcept:(id)concept error:(id *)error;
+- (BOOL)hasCode:(id)code codeSystem:(id)system codings:(id)codings error:(id *)error;
 - (BOOL)isClinicalNoteRecord;
 - (BOOL)isDiagnosticTestReport;
 - (BOOL)isDocumentReference;
-- (BOOL)isEqual:(id)a3;
-- (HDFHIRJSONObject)initWithCoder:(id)a3;
-- (HDFHIRJSONObject)initWithJSONObject:(id)a3 sourceURL:(id)a4 FHIRVersion:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (HDFHIRJSONObject)initWithCoder:(id)coder;
+- (HDFHIRJSONObject)initWithJSONObject:(id)object sourceURL:(id)l FHIRVersion:(id)version;
 - (NSData)data;
 - (NSData)uniquenessChecksum;
 - (NSString)sourceString;
-- (id)_dataWithJSONOptions:(unint64_t)a3;
+- (id)_dataWithJSONOptions:(unint64_t)options;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDFHIRJSONObject
 
 - (BOOL)isDiagnosticTestReport
 {
-  v3 = [(HDFHIRJSONObject *)self detectedResourceType];
-  if (![v3 isEqual:*MEMORY[0x277CCBDE0]])
+  detectedResourceType = [(HDFHIRJSONObject *)self detectedResourceType];
+  if (![detectedResourceType isEqual:*MEMORY[0x277CCBDE0]])
   {
     goto LABEL_7;
   }
 
-  v4 = [(HDFHIRJSONObject *)self FHIRVersion];
-  v5 = [v4 FHIRRelease];
-  v6 = v5;
-  if (v5 == *MEMORY[0x277CCBDD0])
+  fHIRVersion = [(HDFHIRJSONObject *)self FHIRVersion];
+  fHIRRelease = [fHIRVersion FHIRRelease];
+  v6 = fHIRRelease;
+  if (fHIRRelease == *MEMORY[0x277CCBDD0])
   {
-    v7 = [(HDFHIRJSONObject *)self _isDiagnosticTestReportR4Lab];
+    _isDiagnosticTestReportR4Lab = [(HDFHIRJSONObject *)self _isDiagnosticTestReportR4Lab];
 
-    if (v7)
+    if (_isDiagnosticTestReportR4Lab)
     {
       v8 = 1;
       goto LABEL_8;
@@ -47,20 +47,20 @@
   {
   }
 
-  v9 = [(HDFHIRJSONObject *)self FHIRVersion];
-  v10 = [v9 FHIRRelease];
+  fHIRVersion2 = [(HDFHIRJSONObject *)self FHIRVersion];
+  fHIRRelease2 = [fHIRVersion2 FHIRRelease];
   v11 = *MEMORY[0x277CCBDC8];
 
-  if (v10 != v11)
+  if (fHIRRelease2 != v11)
   {
 LABEL_7:
     v8 = 0;
     goto LABEL_8;
   }
 
-  v13 = [(HDFHIRJSONObject *)self JSONObject];
+  jSONObject = [(HDFHIRJSONObject *)self JSONObject];
   v18 = 0;
-  v14 = [v13 hk_safeValueIfExistsForKeyPath:@"category" class:objc_opt_class() error:&v18];
+  v14 = [jSONObject hk_safeValueIfExistsForKeyPath:@"category" class:objc_opt_class() error:&v18];
   v15 = v18;
 
   if (v14)
@@ -84,18 +84,18 @@ LABEL_8:
 - (BOOL)isClinicalNoteRecord
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [(HDFHIRJSONObject *)self FHIRVersion];
-  v4 = [v3 FHIRRelease];
+  fHIRVersion = [(HDFHIRJSONObject *)self FHIRVersion];
+  fHIRRelease = [fHIRVersion FHIRRelease];
   v5 = *MEMORY[0x277CCBDD0];
 
-  if (v4 == v5)
+  if (fHIRRelease == v5)
   {
-    v7 = [(HDFHIRJSONObject *)self detectedResourceType];
-    if ([v7 isEqual:*MEMORY[0x277CCBDE8]])
+    detectedResourceType = [(HDFHIRJSONObject *)self detectedResourceType];
+    if ([detectedResourceType isEqual:*MEMORY[0x277CCBDE8]])
     {
-      v8 = [(HDFHIRJSONObject *)self JSONObject];
+      jSONObject = [(HDFHIRJSONObject *)self JSONObject];
       v29 = 0;
-      v9 = [v8 hk_safeValueIfExistsForKeyPath:@"category" class:objc_opt_class() error:&v29];
+      v9 = [jSONObject hk_safeValueIfExistsForKeyPath:@"category" class:objc_opt_class() error:&v29];
       v10 = v29;
 
       if (!v9)
@@ -104,7 +104,7 @@ LABEL_8:
         goto LABEL_21;
       }
 
-      v22 = v7;
+      v22 = detectedResourceType;
       v27 = 0u;
       v28 = 0u;
       v25 = 0u;
@@ -155,12 +155,12 @@ LABEL_8:
 
       v6 = 0;
 LABEL_18:
-      v7 = v22;
+      detectedResourceType = v22;
     }
 
     else
     {
-      if (![v7 isEqual:*MEMORY[0x277CCBDE0]] || -[HDFHIRJSONObject _isDiagnosticTestReportR4Lab](self, "_isDiagnosticTestReportR4Lab"))
+      if (![detectedResourceType isEqual:*MEMORY[0x277CCBDE0]] || -[HDFHIRJSONObject _isDiagnosticTestReportR4Lab](self, "_isDiagnosticTestReportR4Lab"))
       {
         v6 = 0;
 LABEL_22:
@@ -168,9 +168,9 @@ LABEL_22:
         goto LABEL_23;
       }
 
-      v21 = [(HDFHIRJSONObject *)self JSONObject];
+      jSONObject2 = [(HDFHIRJSONObject *)self JSONObject];
       v23 = 0;
-      v11 = [v21 hk_safeValueIfExistsForKeyPath:@"presentedForm" class:objc_opt_class() error:&v23];
+      v11 = [jSONObject2 hk_safeValueIfExistsForKeyPath:@"presentedForm" class:objc_opt_class() error:&v23];
       v10 = v23;
 
       if (v11)
@@ -197,9 +197,9 @@ LABEL_23:
 - (BOOL)_isDiagnosticTestReportR4Lab
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(HDFHIRJSONObject *)self JSONObject];
+  jSONObject = [(HDFHIRJSONObject *)self JSONObject];
   v23 = 0;
-  v4 = [v3 hk_safeValueIfExistsForKeyPath:@"category" class:objc_opt_class() error:&v23];
+  v4 = [jSONObject hk_safeValueIfExistsForKeyPath:@"category" class:objc_opt_class() error:&v23];
   v5 = v23;
 
   if (v4)
@@ -273,22 +273,22 @@ LABEL_12:
 
 - (BOOL)isDocumentReference
 {
-  v2 = [(HDFHIRJSONObject *)self detectedResourceType];
-  v3 = [v2 isEqual:*MEMORY[0x277CCBDE8]];
+  detectedResourceType = [(HDFHIRJSONObject *)self detectedResourceType];
+  v3 = [detectedResourceType isEqual:*MEMORY[0x277CCBDE8]];
 
   return v3;
 }
 
-- (BOOL)hasCode:(id)a3 codeSystem:(id)a4 codeableConcept:(id)a5 error:(id *)a6
+- (BOOL)hasCode:(id)code codeSystem:(id)system codeableConcept:(id)concept error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v12 hk_safeValueIfExistsForKeyPath:@"coding" class:objc_opt_class() error:a6];
+  codeCopy = code;
+  systemCopy = system;
+  conceptCopy = concept;
+  v13 = [conceptCopy hk_safeValueIfExistsForKeyPath:@"coding" class:objc_opt_class() error:error];
 
   if (v13)
   {
-    v14 = [(HDFHIRJSONObject *)self hasCode:v10 codeSystem:v11 codings:v13 error:a6];
+    v14 = [(HDFHIRJSONObject *)self hasCode:codeCopy codeSystem:systemCopy codings:v13 error:error];
   }
 
   else
@@ -299,16 +299,16 @@ LABEL_12:
   return v14;
 }
 
-- (BOOL)hasCode:(id)a3 codeSystem:(id)a4 codings:(id)a5 error:(id *)a6
+- (BOOL)hasCode:(id)code codeSystem:(id)system codings:(id)codings error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v20 = a4;
+  codeCopy = code;
+  systemCopy = system;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = a5;
+  obj = codings;
   v10 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v10)
   {
@@ -324,9 +324,9 @@ LABEL_12:
         }
 
         v14 = *(*(&v22 + 1) + 8 * i);
-        v15 = [v14 hk_safeValueIfExistsForKeyPath:@"code" class:objc_opt_class() error:a6];
-        v16 = [v14 hk_safeValueIfExistsForKeyPath:@"system" class:objc_opt_class() error:a6];
-        if (![v9 caseInsensitiveCompare:v15] && !objc_msgSend(v20, "caseInsensitiveCompare:", v16))
+        v15 = [v14 hk_safeValueIfExistsForKeyPath:@"code" class:objc_opt_class() error:error];
+        v16 = [v14 hk_safeValueIfExistsForKeyPath:@"system" class:objc_opt_class() error:error];
+        if (![codeCopy caseInsensitiveCompare:v15] && !objc_msgSend(systemCopy, "caseInsensitiveCompare:", v16))
         {
 
           v17 = 1;
@@ -351,25 +351,25 @@ LABEL_12:
   return v17;
 }
 
-- (HDFHIRJSONObject)initWithJSONObject:(id)a3 sourceURL:(id)a4 FHIRVersion:(id)a5
+- (HDFHIRJSONObject)initWithJSONObject:(id)object sourceURL:(id)l FHIRVersion:(id)version
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectCopy = object;
+  lCopy = l;
+  versionCopy = version;
   v19.receiver = self;
   v19.super_class = HDFHIRJSONObject;
   v11 = [(HDFHIRJSONObject *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [objectCopy copy];
     JSONObject = v11->_JSONObject;
     v11->_JSONObject = v12;
 
-    v14 = [v9 copy];
+    v14 = [lCopy copy];
     sourceURL = v11->_sourceURL;
     v11->_sourceURL = v14;
 
-    v16 = [v10 copy];
+    v16 = [versionCopy copy];
     FHIRVersion = v11->_FHIRVersion;
     v11->_FHIRVersion = v16;
   }
@@ -377,10 +377,10 @@ LABEL_12:
   return v11;
 }
 
-+ (id)_dataFromJSONObject:(id)a3 JSONOptions:(unint64_t)a4
++ (id)_dataFromJSONObject:(id)object JSONOptions:(unint64_t)options
 {
   v8 = 0;
-  v4 = [MEMORY[0x277CCAAA0] dataWithJSONObject:a3 options:a4 error:&v8];
+  v4 = [MEMORY[0x277CCAAA0] dataWithJSONObject:object options:options error:&v8];
   v5 = v8;
   if (!v4)
   {
@@ -395,12 +395,12 @@ LABEL_12:
   return v4;
 }
 
-- (id)_dataWithJSONOptions:(unint64_t)a3
+- (id)_dataWithJSONOptions:(unint64_t)options
 {
   v5 = objc_opt_class();
   JSONObject = self->_JSONObject;
 
-  return [v5 _dataFromJSONObject:JSONObject JSONOptions:a3];
+  return [v5 _dataFromJSONObject:JSONObject JSONOptions:options];
 }
 
 - (NSData)data
@@ -409,15 +409,15 @@ LABEL_12:
   v3 = v2;
   if (v2)
   {
-    v4 = v2;
+    data = v2;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
   }
 
-  v5 = v4;
+  v5 = data;
 
   return v5;
 }
@@ -425,8 +425,8 @@ LABEL_12:
 - (NSString)sourceString
 {
   v2 = MEMORY[0x277CCAAA0];
-  v3 = [(HDFHIRJSONObject *)self JSONObject];
-  v4 = [v2 hk_stringForDisplayFromFHIRJSONObject:v3];
+  jSONObject = [(HDFHIRJSONObject *)self JSONObject];
+  v4 = [v2 hk_stringForDisplayFromFHIRJSONObject:jSONObject];
 
   return v4;
 }
@@ -434,32 +434,32 @@ LABEL_12:
 - (NSData)uniquenessChecksum
 {
   v2 = [(HDFHIRJSONObject *)self _dataWithJSONOptions:10];
-  v3 = [v2 hk_MD5];
+  hk_MD5 = [v2 hk_MD5];
 
-  return v3;
+  return hk_MD5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HDFHIRJSONObject *)self JSONObject];
-  [v4 encodeObject:v5 forKey:@"JSONObject"];
+  coderCopy = coder;
+  jSONObject = [(HDFHIRJSONObject *)self JSONObject];
+  [coderCopy encodeObject:jSONObject forKey:@"JSONObject"];
 
-  v6 = [(HDFHIRJSONObject *)self sourceURL];
-  [v4 encodeObject:v6 forKey:@"SourceURL"];
+  sourceURL = [(HDFHIRJSONObject *)self sourceURL];
+  [coderCopy encodeObject:sourceURL forKey:@"SourceURL"];
 
-  v7 = [(HDFHIRJSONObject *)self FHIRVersion];
-  [v4 encodeObject:v7 forKey:@"FHIRVersion"];
+  fHIRVersion = [(HDFHIRJSONObject *)self FHIRVersion];
+  [coderCopy encodeObject:fHIRVersion forKey:@"FHIRVersion"];
 }
 
-- (HDFHIRJSONObject)initWithCoder:(id)a3
+- (HDFHIRJSONObject)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAAA0] hk_JSONObjectSecureCodingClasses];
-  v6 = [v4 decodeObjectOfClasses:v5 forKey:@"JSONObject"];
+  coderCopy = coder;
+  hk_JSONObjectSecureCodingClasses = [MEMORY[0x277CCAAA0] hk_JSONObjectSecureCodingClasses];
+  v6 = [coderCopy decodeObjectOfClasses:hk_JSONObjectSecureCodingClasses forKey:@"JSONObject"];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SourceURL"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FHIRVersion"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SourceURL"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FHIRVersion"];
   v9 = v8;
   if (v6)
   {
@@ -473,17 +473,17 @@ LABEL_12:
 
   if (v10)
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v11 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
   else
   {
     self = [(HDFHIRJSONObject *)self initWithJSONObject:v6 sourceURL:v7 FHIRVersion:v8];
-    v11 = self;
+    selfCopy = self;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (unint64_t)hash
@@ -493,10 +493,10 @@ LABEL_12:
   return v4 ^ [(HKFHIRVersion *)self->_FHIRVersion hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v14 = 1;
   }
@@ -506,10 +506,10 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = equalCopy;
       JSONObject = self->_JSONObject;
-      v8 = [(HDFHIRJSONObject *)v6 JSONObject];
-      if (![(NSDictionary *)JSONObject isEqualToDictionary:v8])
+      jSONObject = [(HDFHIRJSONObject *)v6 JSONObject];
+      if (![(NSDictionary *)JSONObject isEqualToDictionary:jSONObject])
       {
         v14 = 0;
 LABEL_21:
@@ -518,11 +518,11 @@ LABEL_21:
       }
 
       sourceURL = self->_sourceURL;
-      v10 = [(HDFHIRJSONObject *)v6 sourceURL];
-      if (sourceURL != v10)
+      sourceURL = [(HDFHIRJSONObject *)v6 sourceURL];
+      if (sourceURL != sourceURL)
       {
-        v11 = [(HDFHIRJSONObject *)v6 sourceURL];
-        if (!v11)
+        sourceURL2 = [(HDFHIRJSONObject *)v6 sourceURL];
+        if (!sourceURL2)
         {
           v14 = 0;
 LABEL_20:
@@ -530,10 +530,10 @@ LABEL_20:
           goto LABEL_21;
         }
 
-        v3 = v11;
+        v3 = sourceURL2;
         v12 = self->_sourceURL;
-        v13 = [(HDFHIRJSONObject *)v6 sourceURL];
-        if (![(NSURL *)v12 isEqual:v13])
+        sourceURL3 = [(HDFHIRJSONObject *)v6 sourceURL];
+        if (![(NSURL *)v12 isEqual:sourceURL3])
         {
           v14 = 0;
 LABEL_19:
@@ -541,13 +541,13 @@ LABEL_19:
           goto LABEL_20;
         }
 
-        v23 = v13;
+        v23 = sourceURL3;
       }
 
       FHIRVersion = self->_FHIRVersion;
-      v16 = [(HDFHIRJSONObject *)v6 FHIRVersion];
-      v17 = v16;
-      if (FHIRVersion == v16)
+      fHIRVersion = [(HDFHIRJSONObject *)v6 FHIRVersion];
+      v17 = fHIRVersion;
+      if (FHIRVersion == fHIRVersion)
       {
 
         v14 = 1;
@@ -555,13 +555,13 @@ LABEL_19:
 
       else
       {
-        v18 = [(HDFHIRJSONObject *)v6 FHIRVersion];
-        if (v18)
+        fHIRVersion2 = [(HDFHIRJSONObject *)v6 FHIRVersion];
+        if (fHIRVersion2)
         {
-          v19 = v18;
+          v19 = fHIRVersion2;
           v20 = self->_FHIRVersion;
-          v21 = [(HDFHIRJSONObject *)v6 FHIRVersion];
-          v14 = [(HKFHIRVersion *)v20 isEqual:v21];
+          fHIRVersion3 = [(HDFHIRJSONObject *)v6 FHIRVersion];
+          v14 = [(HKFHIRVersion *)v20 isEqual:fHIRVersion3];
         }
 
         else
@@ -571,8 +571,8 @@ LABEL_19:
         }
       }
 
-      v13 = v23;
-      if (sourceURL == v10)
+      sourceURL3 = v23;
+      if (sourceURL == sourceURL)
       {
         goto LABEL_20;
       }
@@ -588,16 +588,16 @@ LABEL_22:
   return v14;
 }
 
-+ (id)objectWithResourceData:(id)a3 error:(id *)a4
++ (id)objectWithResourceData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 JSONDictionaryWithError:a4];
+  dataCopy = data;
+  v7 = [dataCopy JSONDictionaryWithError:error];
   if (v7)
   {
-    v8 = [a1 alloc];
-    v9 = [v6 sourceURL];
-    v10 = [v6 FHIRVersion];
-    v11 = [v8 initWithJSONObject:v7 sourceURL:v9 FHIRVersion:v10];
+    v8 = [self alloc];
+    sourceURL = [dataCopy sourceURL];
+    fHIRVersion = [dataCopy FHIRVersion];
+    v11 = [v8 initWithJSONObject:v7 sourceURL:sourceURL FHIRVersion:fHIRVersion];
   }
 
   else
@@ -608,9 +608,9 @@ LABEL_22:
   return v11;
 }
 
-+ (id)resourceTypeOfJSONObject:(id)a3 error:(id *)a4
++ (id)resourceTypeOfJSONObject:(id)object error:(id *)error
 {
-  v5 = a3;
+  objectCopy = object;
   objc_opt_class();
   v6 = HKSafeObject();
   if (!v6)
@@ -618,15 +618,15 @@ LABEL_22:
     goto LABEL_7;
   }
 
-  if (([v5 hk_hasValueForKeyPath:@"resourceType"] & 1) == 0)
+  if (([objectCopy hk_hasValueForKeyPath:@"resourceType"] & 1) == 0)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 description:@"Missing resourceType string in JSON"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 description:@"Missing resourceType string in JSON"];
 LABEL_7:
     v9 = 0;
     goto LABEL_11;
   }
 
-  v7 = [v5 hk_safeStringForKeyPath:@"resourceType" error:a4];
+  v7 = [objectCopy hk_safeStringForKeyPath:@"resourceType" error:error];
   v8 = v7;
   if (!v7)
   {
@@ -637,7 +637,7 @@ LABEL_9:
 
   if (![v7 length])
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 description:@"Empty resourceType in JSON"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 description:@"Empty resourceType in JSON"];
     goto LABEL_9;
   }
 

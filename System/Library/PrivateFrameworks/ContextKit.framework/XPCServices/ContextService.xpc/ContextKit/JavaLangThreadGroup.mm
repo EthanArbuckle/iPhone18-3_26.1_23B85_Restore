@@ -1,14 +1,14 @@
 @interface JavaLangThreadGroup
-- (BOOL)parentOfWithJavaLangThreadGroup:(id)a3;
+- (BOOL)parentOfWithJavaLangThreadGroup:(id)group;
 - (JavaLangThreadGroup)init;
-- (JavaLangThreadGroup)initWithNSString:(id)a3;
+- (JavaLangThreadGroup)initWithNSString:(id)string;
 - (NSString)description;
 - (int)activeCount;
 - (int)activeGroupCount;
-- (void)addWithJavaLangThread:(id)a3;
+- (void)addWithJavaLangThread:(id)thread;
 - (void)dealloc;
-- (void)removeWithJavaLangThread:(id)a3;
-- (void)uncaughtExceptionWithJavaLangThread:(id)a3 withJavaLangThrowable:(id)a4;
+- (void)removeWithJavaLangThread:(id)thread;
+- (void)uncaughtExceptionWithJavaLangThread:(id)thread withJavaLangThrowable:(id)throwable;
 @end
 
 @implementation JavaLangThreadGroup
@@ -30,7 +30,7 @@
   return self;
 }
 
-- (JavaLangThreadGroup)initWithNSString:(id)a3
+- (JavaLangThreadGroup)initWithNSString:(id)string
 {
   v5 = JavaLangThread_currentThread();
   if (!v5)
@@ -38,7 +38,7 @@
     JreThrowNullPointerException();
   }
 
-  JavaLangThreadGroup_initWithJavaLangThreadGroup_withNSString_(self, [(JavaLangThread *)v5 getThreadGroup], a3);
+  JavaLangThreadGroup_initWithJavaLangThreadGroup_withNSString_(self, [(JavaLangThread *)v5 getThreadGroup], string);
   return self;
 }
 
@@ -127,7 +127,7 @@ LABEL_11:
   return v5;
 }
 
-- (void)addWithJavaLangThread:(id)a3
+- (void)addWithJavaLangThread:(id)thread
 {
   childrenThreadsLock = self->childrenThreadsLock_;
   objc_sync_enter(childrenThreadsLock);
@@ -151,37 +151,37 @@ LABEL_11:
     JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(self->childrenThreads_, 0, v9, 0, self->numThreads_);
     v10 = self->numThreads_;
     self->numThreads_ = v10 + 1;
-    IOSObjectArray_Set(v9, v10, a3);
+    IOSObjectArray_Set(v9, v10, thread);
     JreStrongAssign(&self->childrenThreads_, v9);
   }
 
   else
   {
     self->numThreads_ = numThreads + 1;
-    IOSObjectArray_Set(childrenThreads, numThreads, a3);
+    IOSObjectArray_Set(childrenThreads, numThreads, thread);
   }
 
   objc_sync_exit(childrenThreadsLock);
 }
 
-- (BOOL)parentOfWithJavaLangThreadGroup:(id)a3
+- (BOOL)parentOfWithJavaLangThreadGroup:(id)group
 {
-  v3 = a3 != 0;
-  if (a3 != self && a3)
+  v3 = group != 0;
+  if (group != self && group)
   {
     do
     {
-      a3 = *(a3 + 1);
-      v3 = a3 != 0;
+      group = *(group + 1);
+      v3 = group != 0;
     }
 
-    while (a3 != self && a3 != 0);
+    while (group != self && group != 0);
   }
 
   return v3;
 }
 
-- (void)removeWithJavaLangThread:(id)a3
+- (void)removeWithJavaLangThread:(id)thread
 {
   childrenThreadsLock = self->childrenThreadsLock_;
   objc_sync_enter(childrenThreadsLock);
@@ -210,7 +210,7 @@ LABEL_14:
         JreThrowNullPointerException();
       }
 
-      if ([(IOSClass *)v10 isEqual:a3])
+      if ([(IOSClass *)v10 isEqual:thread])
       {
         break;
       }
@@ -243,14 +243,14 @@ LABEL_11:
   return JreStrcat("$$$$IC", v4, v5, v6, v7, v8, v9, v10, v3);
 }
 
-- (void)uncaughtExceptionWithJavaLangThread:(id)a3 withJavaLangThrowable:(id)a4
+- (void)uncaughtExceptionWithJavaLangThread:(id)thread withJavaLangThrowable:(id)throwable
 {
   parent = self->parent_;
   if (parent)
   {
 LABEL_4:
 
-    [parent uncaughtExceptionWithJavaLangThread:a3 withJavaLangThrowable:a4];
+    [parent uncaughtExceptionWithJavaLangThread:thread withJavaLangThrowable:throwable];
     return;
   }
 
@@ -272,12 +272,12 @@ LABEL_12:
     return;
   }
 
-  if (!a4)
+  if (!throwable)
   {
     goto LABEL_12;
   }
 
-  [a4 printStackTrace];
+  [throwable printStackTrace];
 }
 
 - (void)dealloc

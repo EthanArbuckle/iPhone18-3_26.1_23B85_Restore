@@ -1,10 +1,10 @@
 @interface WFSystemActionConfigurationRemoteViewController
 - (WFSystemActionConfigurationRemoteViewControllerDelegate)delegate;
 - (void)dealloc;
-- (void)didCancelSystemActionConfiguration:(id)a3;
-- (void)didSelectSystemAction:(id)a3;
-- (void)setSelectedAction:(id)a3;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)didCancelSystemActionConfiguration:(id)configuration;
+- (void)didSelectSystemAction:(id)action;
+- (void)setSelectedAction:(id)action;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation WFSystemActionConfigurationRemoteViewController
@@ -16,88 +16,88 @@
   return WeakRetained;
 }
 
-- (void)didSelectSystemAction:(id)a3
+- (void)didSelectSystemAction:(id)action
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actionCopy = action;
   v5 = getWFSystemActionConfigurationLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315394;
     v10 = "[WFSystemActionConfigurationRemoteViewController didSelectSystemAction:]";
     v11 = 2112;
-    v12 = v4;
+    v12 = actionCopy;
     _os_log_impl(&dword_1C830A000, v5, OS_LOG_TYPE_DEFAULT, "%s System Action configuration finished, action = %@", &v9, 0x16u);
   }
 
   selectedAction = self->_selectedAction;
-  self->_selectedAction = v4;
-  v7 = v4;
+  self->_selectedAction = actionCopy;
+  v7 = actionCopy;
 
-  v8 = [(WFSystemActionConfigurationRemoteViewController *)self delegate];
-  [v8 configurationController:self didFinishWithAction:v7 error:0];
+  delegate = [(WFSystemActionConfigurationRemoteViewController *)self delegate];
+  [delegate configurationController:self didFinishWithAction:v7 error:0];
 }
 
-- (void)didCancelSystemActionConfiguration:(id)a3
+- (void)didCancelSystemActionConfiguration:(id)configuration
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = getWFSystemActionConfigurationLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[WFSystemActionConfigurationRemoteViewController didCancelSystemActionConfiguration:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = configurationCopy;
     _os_log_impl(&dword_1C830A000, v5, OS_LOG_TYPE_DEFAULT, "%s System Action configuration finished, error = %@", &v8, 0x16u);
   }
 
   selectedAction = self->_selectedAction;
   self->_selectedAction = 0;
 
-  v7 = [(WFSystemActionConfigurationRemoteViewController *)self delegate];
-  [v7 configurationController:self didFinishWithAction:0 error:v4];
+  delegate = [(WFSystemActionConfigurationRemoteViewController *)self delegate];
+  [delegate configurationController:self didFinishWithAction:0 error:configurationCopy];
 }
 
-- (void)setSelectedAction:(id)a3
+- (void)setSelectedAction:(id)action
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actionCopy = action;
   v5 = getWFSystemActionConfigurationLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315394;
     v10 = "[WFSystemActionConfigurationRemoteViewController setSelectedAction:]";
     v11 = 2112;
-    v12 = v4;
+    v12 = actionCopy;
     _os_log_impl(&dword_1C830A000, v5, OS_LOG_TYPE_DEFAULT, "%s Sending selected action to remote view controller: %@", &v9, 0x16u);
   }
 
   selectedAction = self->_selectedAction;
-  self->_selectedAction = v4;
-  v7 = v4;
+  self->_selectedAction = actionCopy;
+  v7 = actionCopy;
 
-  v8 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-  [v8 setSelectedSystemAction:v7];
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  [serviceViewControllerProxy setSelectedSystemAction:v7];
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = getWFSystemActionConfigurationLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     *buf = 136315394;
     v8 = "[WFSystemActionConfigurationRemoteViewController viewServiceDidTerminateWithError:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = errorCopy;
     _os_log_impl(&dword_1C830A000, v5, OS_LOG_TYPE_ERROR, "%s viewServiceDidTerminateWithError, error = %@", buf, 0x16u);
   }
 
   v6.receiver = self;
   v6.super_class = WFSystemActionConfigurationRemoteViewController;
-  [(_UIRemoteViewController *)&v6 viewServiceDidTerminateWithError:v4];
+  [(_UIRemoteViewController *)&v6 viewServiceDidTerminateWithError:errorCopy];
 }
 
 - (void)dealloc

@@ -1,7 +1,7 @@
 @interface STSSuggestionFooter
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
-- (void)setSearchProviderImage:(id)a3;
+- (void)setSearchProviderImage:(id)image;
 @end
 
 @implementation STSSuggestionFooter
@@ -19,9 +19,9 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UIImageView *)self->_imageView bounds:a3.width];
+  [(UIImageView *)self->_imageView bounds:fits.width];
   v4 = v3 + 0.0;
   v6 = v5 + 18.0;
   result.height = v6;
@@ -29,13 +29,13 @@
   return result;
 }
 
-- (void)setSearchProviderImage:(id)a3
+- (void)setSearchProviderImage:(id)image
 {
-  v5 = a3;
-  if (self->_searchProviderImage != v5)
+  imageCopy = image;
+  if (self->_searchProviderImage != imageCopy)
   {
-    v13 = v5;
-    objc_storeStrong(&self->_searchProviderImage, a3);
+    v13 = imageCopy;
+    objc_storeStrong(&self->_searchProviderImage, image);
     imageView = self->_imageView;
     if (imageView)
     {
@@ -49,8 +49,8 @@
       self->_imageView = v7;
 
       v9 = self->_imageView;
-      v10 = [MEMORY[0x277D75348] sts_providerImageColor];
-      [(UIImageView *)v9 setTintColor:v10];
+      sts_providerImageColor = [MEMORY[0x277D75348] sts_providerImageColor];
+      [(UIImageView *)v9 setTintColor:sts_providerImageColor];
 
       [(STSSuggestionFooter *)self addSubview:self->_imageView];
     }
@@ -58,7 +58,7 @@
     [(UIImageView *)self->_imageView bounds];
     [(STSSuggestionFooter *)self setBounds:0.0, 0.0, v11 + 0.0, v12 + 18.0];
     [(STSSuggestionFooter *)self setNeedsLayout];
-    v5 = v13;
+    imageCopy = v13;
   }
 }
 

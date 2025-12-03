@@ -1,6 +1,6 @@
 @interface INCodableTimeIntervalAttributeMetadata
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4;
-- (INCodableTimeIntervalAttributeMetadata)initWithCoder:(id)a3;
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error;
+- (INCodableTimeIntervalAttributeMetadata)initWithCoder:(id)coder;
 - (NSNumber)defaultValue;
 - (id)__INCodableDescriptionDefaultUnitKey;
 - (id)__INCodableDescriptionDefaultValueKey;
@@ -23,99 +23,99 @@
 - (id)__INTypeCodableDescriptionMinimumUnitKey;
 - (id)__INTypeCodableDescriptionMinimumValueKey;
 - (id)__INTypeCodableDescriptionUnitKey;
-- (id)dictionaryRepresentationWithLocalizer:(id)a3;
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithDictionary:(id)a3;
+- (id)dictionaryRepresentationWithLocalizer:(id)localizer;
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithDictionary:(id)dictionary;
 @end
 
 @implementation INCodableTimeIntervalAttributeMetadata
 
 - (id)__INCodableDescriptionUnitKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataUnitKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableTimeIntervalAttributeMetadataUnitKey = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataUnitKey];
 
-  return v3;
+  return __INCodableTimeIntervalAttributeMetadataUnitKey;
 }
 
 - (id)__INCodableDescriptionDefaultValueKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataDefaultValueKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableTimeIntervalAttributeMetadataDefaultValueKey = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataDefaultValueKey];
 
-  return v3;
+  return __INCodableTimeIntervalAttributeMetadataDefaultValueKey;
 }
 
 - (id)__INCodableDescriptionMinimumValueKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataMinimumValueKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableTimeIntervalAttributeMetadataMinimumValueKey = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataMinimumValueKey];
 
-  return v3;
+  return __INCodableTimeIntervalAttributeMetadataMinimumValueKey;
 }
 
 - (id)__INCodableDescriptionMaximumValueKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataMaximumValueKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableTimeIntervalAttributeMetadataMaximumValueKey = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataMaximumValueKey];
 
-  return v3;
+  return __INCodableTimeIntervalAttributeMetadataMaximumValueKey;
 }
 
-- (INCodableTimeIntervalAttributeMetadata)initWithCoder:(id)a3
+- (INCodableTimeIntervalAttributeMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = INCodableTimeIntervalAttributeMetadata;
-  v5 = [(INCodableAttributeMetadata *)&v10 initWithCoder:v4];
+  v5 = [(INCodableAttributeMetadata *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    -[INCodableTimeIntervalAttributeMetadata setDefaultUnit:](v5, "setDefaultUnit:", [v4 decodeIntegerForKey:@"defaultUnit"]);
-    -[INCodableTimeIntervalAttributeMetadata setMinimumUnit:](v5, "setMinimumUnit:", [v4 decodeIntegerForKey:@"minimumUnit"]);
-    -[INCodableTimeIntervalAttributeMetadata setMaximumUnit:](v5, "setMaximumUnit:", [v4 decodeIntegerForKey:@"maximumUnit"]);
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"defaultValue"];
+    -[INCodableTimeIntervalAttributeMetadata setDefaultUnit:](v5, "setDefaultUnit:", [coderCopy decodeIntegerForKey:@"defaultUnit"]);
+    -[INCodableTimeIntervalAttributeMetadata setMinimumUnit:](v5, "setMinimumUnit:", [coderCopy decodeIntegerForKey:@"minimumUnit"]);
+    -[INCodableTimeIntervalAttributeMetadata setMaximumUnit:](v5, "setMaximumUnit:", [coderCopy decodeIntegerForKey:@"maximumUnit"]);
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"defaultValue"];
     [(INCodableTimeIntervalAttributeMetadata *)v5 setDefaultValue:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"minimumValue"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"minimumValue"];
     [(INCodableTimeIntervalAttributeMetadata *)v5 setMinimumValue:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"maximumValue"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"maximumValue"];
     [(INCodableTimeIntervalAttributeMetadata *)v5 setMaximumValue:v8];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = INCodableTimeIntervalAttributeMetadata;
-  v4 = a3;
-  [(INCodableAttributeMetadata *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_defaultUnit forKey:{@"defaultUnit", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_minimumUnit forKey:@"minimumUnit"];
-  [v4 encodeInteger:self->_maximumUnit forKey:@"maximumUnit"];
-  [v4 encodeObject:self->_defaultValue forKey:@"defaultValue"];
-  [v4 encodeObject:self->_minimumValue forKey:@"minimumValue"];
-  [v4 encodeObject:self->_maximumValue forKey:@"maximumValue"];
+  coderCopy = coder;
+  [(INCodableAttributeMetadata *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_defaultUnit forKey:{@"defaultUnit", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_minimumUnit forKey:@"minimumUnit"];
+  [coderCopy encodeInteger:self->_maximumUnit forKey:@"maximumUnit"];
+  [coderCopy encodeObject:self->_defaultValue forKey:@"defaultValue"];
+  [coderCopy encodeObject:self->_minimumValue forKey:@"minimumValue"];
+  [coderCopy encodeObject:self->_maximumValue forKey:@"maximumValue"];
 }
 
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error
 {
   v12.receiver = self;
   v12.super_class = INCodableTimeIntervalAttributeMetadata;
   v13 = 0;
-  v6 = [(INCodableAttributeMetadata *)&v12 widgetPlistableRepresentationWithParameters:a3 error:&v13];
+  v6 = [(INCodableAttributeMetadata *)&v12 widgetPlistableRepresentationWithParameters:parameters error:&v13];
   v7 = v13;
   v8 = v7;
   if (v7)
   {
-    if (a4)
+    if (error)
     {
       v9 = v7;
       v10 = 0;
-      *a4 = v8;
+      *error = v8;
     }
 
     else
@@ -151,7 +151,7 @@
   }
 }
 
-- (id)dictionaryRepresentationWithLocalizer:(id)a3
+- (id)dictionaryRepresentationWithLocalizer:(id)localizer
 {
   v35[7] = *MEMORY[0x1E69E9840];
   minimumUnit = self->_minimumUnit;
@@ -176,91 +176,91 @@
 
   v33.receiver = self;
   v33.super_class = INCodableTimeIntervalAttributeMetadata;
-  v29 = [(INCodableAttributeMetadata *)&v33 dictionaryRepresentationWithLocalizer:a3];
-  v32 = [(INCodableTimeIntervalAttributeMetadata *)self __INCodableDescriptionUnitKey];
-  v34[0] = v32;
+  v29 = [(INCodableAttributeMetadata *)&v33 dictionaryRepresentationWithLocalizer:localizer];
+  __INCodableDescriptionUnitKey = [(INCodableTimeIntervalAttributeMetadata *)self __INCodableDescriptionUnitKey];
+  v34[0] = __INCodableDescriptionUnitKey;
   v35[0] = v6;
-  v31 = [(INCodableTimeIntervalAttributeMetadata *)self __INCodableDescriptionDefaultUnitKey];
-  v34[1] = v31;
-  v7 = [(INCodableTimeIntervalAttributeMetadata *)self defaultUnit];
-  if ((v7 - 1) > 2)
+  __INCodableDescriptionDefaultUnitKey = [(INCodableTimeIntervalAttributeMetadata *)self __INCodableDescriptionDefaultUnitKey];
+  v34[1] = __INCodableDescriptionDefaultUnitKey;
+  defaultUnit = [(INCodableTimeIntervalAttributeMetadata *)self defaultUnit];
+  if ((defaultUnit - 1) > 2)
   {
     v8 = @"Seconds";
   }
 
   else
   {
-    v8 = *(&off_1E72814B0 + v7 - 1);
+    v8 = *(&off_1E72814B0 + defaultUnit - 1);
   }
 
   v35[1] = v8;
-  v30 = [(INCodableTimeIntervalAttributeMetadata *)self __INCodableDescriptionMinimumUnitKey];
-  v34[2] = v30;
-  v9 = [(INCodableTimeIntervalAttributeMetadata *)self minimumUnit];
-  if ((v9 - 1) > 2)
+  __INCodableDescriptionMinimumUnitKey = [(INCodableTimeIntervalAttributeMetadata *)self __INCodableDescriptionMinimumUnitKey];
+  v34[2] = __INCodableDescriptionMinimumUnitKey;
+  minimumUnit = [(INCodableTimeIntervalAttributeMetadata *)self minimumUnit];
+  if ((minimumUnit - 1) > 2)
   {
     v10 = @"Seconds";
   }
 
   else
   {
-    v10 = *(&off_1E72814B0 + v9 - 1);
+    v10 = *(&off_1E72814B0 + minimumUnit - 1);
   }
 
   v35[2] = v10;
-  v28 = [(INCodableTimeIntervalAttributeMetadata *)self __INCodableDescriptionMaximumUnitKey];
-  v34[3] = v28;
-  v11 = [(INCodableTimeIntervalAttributeMetadata *)self maximumUnit];
-  if ((v11 - 1) > 2)
+  __INCodableDescriptionMaximumUnitKey = [(INCodableTimeIntervalAttributeMetadata *)self __INCodableDescriptionMaximumUnitKey];
+  v34[3] = __INCodableDescriptionMaximumUnitKey;
+  maximumUnit = [(INCodableTimeIntervalAttributeMetadata *)self maximumUnit];
+  if ((maximumUnit - 1) > 2)
   {
     v12 = @"Seconds";
   }
 
   else
   {
-    v12 = *(&off_1E72814B0 + v11 - 1);
+    v12 = *(&off_1E72814B0 + maximumUnit - 1);
   }
 
   v35[3] = v12;
-  v27 = [(INCodableTimeIntervalAttributeMetadata *)self __INCodableDescriptionDefaultValueKey];
-  v34[4] = v27;
-  v13 = [(INCodableTimeIntervalAttributeMetadata *)self defaultValue];
-  v14 = v13;
-  if (!v13)
+  __INCodableDescriptionDefaultValueKey = [(INCodableTimeIntervalAttributeMetadata *)self __INCodableDescriptionDefaultValueKey];
+  v34[4] = __INCodableDescriptionDefaultValueKey;
+  defaultValue = [(INCodableTimeIntervalAttributeMetadata *)self defaultValue];
+  v14 = defaultValue;
+  if (!defaultValue)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    defaultValue = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26 = v13;
-  v35[4] = v13;
-  v15 = [(INCodableTimeIntervalAttributeMetadata *)self __INCodableDescriptionMinimumValueKey];
-  v34[5] = v15;
-  v16 = [(INCodableTimeIntervalAttributeMetadata *)self minimumValue];
-  v17 = v16;
-  if (!v16)
+  v26 = defaultValue;
+  v35[4] = defaultValue;
+  __INCodableDescriptionMinimumValueKey = [(INCodableTimeIntervalAttributeMetadata *)self __INCodableDescriptionMinimumValueKey];
+  v34[5] = __INCodableDescriptionMinimumValueKey;
+  minimumValue = [(INCodableTimeIntervalAttributeMetadata *)self minimumValue];
+  null = minimumValue;
+  if (!minimumValue)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35[5] = v17;
-  v18 = [(INCodableTimeIntervalAttributeMetadata *)self __INCodableDescriptionMaximumValueKey];
-  v34[6] = v18;
-  v19 = [(INCodableTimeIntervalAttributeMetadata *)self maximumValue];
-  v20 = v19;
-  if (!v19)
+  v35[5] = null;
+  __INCodableDescriptionMaximumValueKey = [(INCodableTimeIntervalAttributeMetadata *)self __INCodableDescriptionMaximumValueKey];
+  v34[6] = __INCodableDescriptionMaximumValueKey;
+  maximumValue = [(INCodableTimeIntervalAttributeMetadata *)self maximumValue];
+  null2 = maximumValue;
+  if (!maximumValue)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35[6] = v20;
+  v35[6] = null2;
   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:7];
   v22 = [v29 if_dictionaryByAddingEntriesFromDictionary:v21];
 
-  if (!v19)
+  if (!maximumValue)
   {
   }
 
-  if (!v16)
+  if (!minimumValue)
   {
   }
 
@@ -268,21 +268,21 @@
   {
   }
 
-  v23 = [v22 if_dictionaryWithNonEmptyValues];
+  if_dictionaryWithNonEmptyValues = [v22 if_dictionaryWithNonEmptyValues];
 
   v24 = *MEMORY[0x1E69E9840];
 
-  return v23;
+  return if_dictionaryWithNonEmptyValues;
 }
 
-- (void)updateWithDictionary:(id)a3
+- (void)updateWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v48.receiver = self;
   v48.super_class = INCodableTimeIntervalAttributeMetadata;
-  [(INCodableAttributeMetadata *)&v48 updateWithDictionary:v4];
-  v5 = [(INCodableTimeIntervalAttributeMetadata *)self __INCodableDescriptionUnitKey];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  [(INCodableAttributeMetadata *)&v48 updateWithDictionary:dictionaryCopy];
+  __INCodableDescriptionUnitKey = [(INCodableTimeIntervalAttributeMetadata *)self __INCodableDescriptionUnitKey];
+  v6 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionUnitKey];
 
   if (v6)
   {
@@ -307,8 +307,8 @@
 
   if ([v8 isEqualToString:@"Multiple"])
   {
-    v9 = [(INCodableTimeIntervalAttributeMetadata *)self __INCodableDescriptionDefaultUnitKey];
-    v10 = [v4 objectForKeyedSubscript:v9];
+    __INCodableDescriptionDefaultUnitKey = [(INCodableTimeIntervalAttributeMetadata *)self __INCodableDescriptionDefaultUnitKey];
+    v10 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionDefaultUnitKey];
 
     if (v10)
     {
@@ -333,8 +333,8 @@
 
     v15 = INCodableTimeIntervalAttributeMetadataUnitWithString(v14);
     self->_defaultUnit = v15;
-    v16 = [(INCodableTimeIntervalAttributeMetadata *)self __INCodableDescriptionMinimumUnitKey];
-    v17 = [v4 objectForKeyedSubscript:v16];
+    __INCodableDescriptionMinimumUnitKey = [(INCodableTimeIntervalAttributeMetadata *)self __INCodableDescriptionMinimumUnitKey];
+    v17 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionMinimumUnitKey];
 
     if (v17)
     {
@@ -359,8 +359,8 @@
 
     v20 = INCodableTimeIntervalAttributeMetadataUnitWithString(v19);
     self->_minimumUnit = v20;
-    v21 = [(INCodableTimeIntervalAttributeMetadata *)self __INCodableDescriptionMaximumUnitKey];
-    v22 = [v4 objectForKeyedSubscript:v21];
+    __INCodableDescriptionMaximumUnitKey = [(INCodableTimeIntervalAttributeMetadata *)self __INCodableDescriptionMaximumUnitKey];
+    v22 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionMaximumUnitKey];
 
     if (v22)
     {
@@ -396,8 +396,8 @@
   }
 
   *(&self->super.super.isa + *v13) = v12;
-  v25 = [(INCodableTimeIntervalAttributeMetadata *)self __INCodableDescriptionDefaultValueKey];
-  v26 = [v4 objectForKeyedSubscript:v25];
+  __INCodableDescriptionDefaultValueKey = [(INCodableTimeIntervalAttributeMetadata *)self __INCodableDescriptionDefaultValueKey];
+  v26 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionDefaultValueKey];
 
   if (v26)
   {
@@ -423,8 +423,8 @@
   defaultValue = self->_defaultValue;
   self->_defaultValue = v28;
 
-  v30 = [(INCodableTimeIntervalAttributeMetadata *)self __INCodableDescriptionMinimumValueKey];
-  v31 = [v4 objectForKeyedSubscript:v30];
+  __INCodableDescriptionMinimumValueKey = [(INCodableTimeIntervalAttributeMetadata *)self __INCodableDescriptionMinimumValueKey];
+  v31 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionMinimumValueKey];
 
   if (v31 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -441,8 +441,8 @@
     v31 = 0;
   }
 
-  v33 = [(INCodableTimeIntervalAttributeMetadata *)self __INCodableDescriptionMinimumValueKey];
-  v34 = [v4 objectForKeyedSubscript:v33];
+  __INCodableDescriptionMinimumValueKey2 = [(INCodableTimeIntervalAttributeMetadata *)self __INCodableDescriptionMinimumValueKey];
+  v34 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionMinimumValueKey2];
 
   if (v34)
   {
@@ -481,8 +481,8 @@ LABEL_43:
   minimumValue = self->_minimumValue;
   self->_minimumValue = v32;
 
-  v39 = [(INCodableTimeIntervalAttributeMetadata *)self __INCodableDescriptionMaximumValueKey];
-  v40 = [v4 objectForKeyedSubscript:v39];
+  __INCodableDescriptionMaximumValueKey = [(INCodableTimeIntervalAttributeMetadata *)self __INCodableDescriptionMaximumValueKey];
+  v40 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionMaximumValueKey];
 
   if (v40 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -499,8 +499,8 @@ LABEL_43:
     v40 = 0;
   }
 
-  v42 = [(INCodableTimeIntervalAttributeMetadata *)self __INCodableDescriptionMaximumValueKey];
-  v43 = [v4 objectForKeyedSubscript:v42];
+  __INCodableDescriptionMaximumValueKey2 = [(INCodableTimeIntervalAttributeMetadata *)self __INCodableDescriptionMaximumValueKey];
+  v43 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionMaximumValueKey2];
 
   if (v43)
   {
@@ -540,22 +540,22 @@ LABEL_57:
   self->_maximumValue = v41;
 }
 
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error
 {
-  v6 = a3;
-  v16.receiver = a1;
+  representationCopy = representation;
+  v16.receiver = self;
   v16.super_class = &OBJC_METACLASS___INCodableTimeIntervalAttributeMetadata;
   v17 = 0;
-  v7 = objc_msgSendSuper2(&v16, sel_makeFromWidgetPlistableRepresentation_error_, v6, &v17);
+  v7 = objc_msgSendSuper2(&v16, sel_makeFromWidgetPlistableRepresentation_error_, representationCopy, &v17);
   v8 = v17;
   v9 = v8;
   if (v8)
   {
-    if (a4)
+    if (error)
     {
       v10 = v8;
       v11 = 0;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -566,16 +566,16 @@ LABEL_57:
 
   else
   {
-    [v7 setDefaultUnit:{objc_msgSend(v6, "intents_intForKey:", @"defaultUnit"}];
-    [v7 setMinimumUnit:{objc_msgSend(v6, "intents_intForKey:", @"minimumUnit"}];
-    [v7 setMaximumUnit:{objc_msgSend(v6, "intents_intForKey:", @"maximumUnit"}];
-    v12 = [v6 intents_numberForKey:@"defaultValue"];
+    [v7 setDefaultUnit:{objc_msgSend(representationCopy, "intents_intForKey:", @"defaultUnit"}];
+    [v7 setMinimumUnit:{objc_msgSend(representationCopy, "intents_intForKey:", @"minimumUnit"}];
+    [v7 setMaximumUnit:{objc_msgSend(representationCopy, "intents_intForKey:", @"maximumUnit"}];
+    v12 = [representationCopy intents_numberForKey:@"defaultValue"];
     [v7 setDefaultValue:v12];
 
-    v13 = [v6 intents_numberForKey:@"minimumValue"];
+    v13 = [representationCopy intents_numberForKey:@"minimumValue"];
     [v7 setMinimumValue:v13];
 
-    v14 = [v6 intents_numberForKey:@"maximumValue"];
+    v14 = [representationCopy intents_numberForKey:@"maximumValue"];
     [v7 setMaximumValue:v14];
 
     v11 = v7;
@@ -586,138 +586,138 @@ LABEL_57:
 
 - (id)__INTypeCodableDescriptionUnitKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataUnitKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableTimeIntervalAttributeMetadataUnitKey = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataUnitKey];
 
-  return v3;
+  return __INCodableTimeIntervalAttributeMetadataUnitKey;
 }
 
 - (id)__INTypeCodableDescriptionMinimumValueKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataMinimumValueKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableTimeIntervalAttributeMetadataMinimumValueKey = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataMinimumValueKey];
 
-  return v3;
+  return __INCodableTimeIntervalAttributeMetadataMinimumValueKey;
 }
 
 - (id)__INTypeCodableDescriptionMinimumUnitKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataMinimumUnitKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableTimeIntervalAttributeMetadataMinimumUnitKey = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataMinimumUnitKey];
 
-  return v3;
+  return __INCodableTimeIntervalAttributeMetadataMinimumUnitKey;
 }
 
 - (id)__INTypeCodableDescriptionMaximumValueKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataMaximumValueKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableTimeIntervalAttributeMetadataMaximumValueKey = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataMaximumValueKey];
 
-  return v3;
+  return __INCodableTimeIntervalAttributeMetadataMaximumValueKey;
 }
 
 - (id)__INTypeCodableDescriptionMaximumUnitKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataMaximumUnitKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableTimeIntervalAttributeMetadataMaximumUnitKey = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataMaximumUnitKey];
 
-  return v3;
+  return __INCodableTimeIntervalAttributeMetadataMaximumUnitKey;
 }
 
 - (id)__INTypeCodableDescriptionDefaultValueKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataDefaultValueKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableTimeIntervalAttributeMetadataDefaultValueKey = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataDefaultValueKey];
 
-  return v3;
+  return __INCodableTimeIntervalAttributeMetadataDefaultValueKey;
 }
 
 - (id)__INTypeCodableDescriptionDefaultUnitKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataDefaultUnitKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableTimeIntervalAttributeMetadataDefaultUnitKey = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataDefaultUnitKey];
 
-  return v3;
+  return __INCodableTimeIntervalAttributeMetadataDefaultUnitKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionUnitKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataUnitKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableTimeIntervalAttributeMetadataUnitKey = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataUnitKey];
 
-  return v3;
+  return __INCodableTimeIntervalAttributeMetadataUnitKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionMinimumValueKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataMinimumValueKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableTimeIntervalAttributeMetadataMinimumValueKey = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataMinimumValueKey];
 
-  return v3;
+  return __INCodableTimeIntervalAttributeMetadataMinimumValueKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionMinimumUnitKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataMinimumUnitKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableTimeIntervalAttributeMetadataMinimumUnitKey = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataMinimumUnitKey];
 
-  return v3;
+  return __INCodableTimeIntervalAttributeMetadataMinimumUnitKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionMaximumValueKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataMaximumValueKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableTimeIntervalAttributeMetadataMaximumValueKey = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataMaximumValueKey];
 
-  return v3;
+  return __INCodableTimeIntervalAttributeMetadataMaximumValueKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionMaximumUnitKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataMaximumUnitKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableTimeIntervalAttributeMetadataMaximumUnitKey = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataMaximumUnitKey];
 
-  return v3;
+  return __INCodableTimeIntervalAttributeMetadataMaximumUnitKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionDefaultValueKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataDefaultValueKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableTimeIntervalAttributeMetadataDefaultValueKey = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataDefaultValueKey];
 
-  return v3;
+  return __INCodableTimeIntervalAttributeMetadataDefaultValueKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionDefaultUnitKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataDefaultUnitKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableTimeIntervalAttributeMetadataDefaultUnitKey = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataDefaultUnitKey];
 
-  return v3;
+  return __INCodableTimeIntervalAttributeMetadataDefaultUnitKey;
 }
 
 - (id)__INCodableDescriptionMinimumUnitKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataMinimumUnitKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableTimeIntervalAttributeMetadataMinimumUnitKey = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataMinimumUnitKey];
 
-  return v3;
+  return __INCodableTimeIntervalAttributeMetadataMinimumUnitKey;
 }
 
 - (id)__INCodableDescriptionMaximumUnitKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataMaximumUnitKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableTimeIntervalAttributeMetadataMaximumUnitKey = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataMaximumUnitKey];
 
-  return v3;
+  return __INCodableTimeIntervalAttributeMetadataMaximumUnitKey;
 }
 
 - (id)__INCodableDescriptionDefaultUnitKey
 {
-  v2 = [(INCodableAttributeMetadata *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataDefaultUnitKey];
+  _codableDescription = [(INCodableAttributeMetadata *)self _codableDescription];
+  __INCodableTimeIntervalAttributeMetadataDefaultUnitKey = [objc_opt_class() __INCodableTimeIntervalAttributeMetadataDefaultUnitKey];
 
-  return v3;
+  return __INCodableTimeIntervalAttributeMetadataDefaultUnitKey;
 }
 
 @end

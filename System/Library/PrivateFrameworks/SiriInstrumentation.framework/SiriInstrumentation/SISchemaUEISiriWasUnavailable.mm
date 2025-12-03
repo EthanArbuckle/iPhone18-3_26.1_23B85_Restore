@@ -1,43 +1,43 @@
 @interface SISchemaUEISiriWasUnavailable
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaUEISiriWasUnavailable)initWithDictionary:(id)a3;
-- (SISchemaUEISiriWasUnavailable)initWithJSON:(id)a3;
+- (SISchemaUEISiriWasUnavailable)initWithDictionary:(id)dictionary;
+- (SISchemaUEISiriWasUnavailable)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)assetTypeAtIndex:(unint64_t)a3;
+- (int)assetTypeAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addAssetType:(int)a3;
-- (void)setHasReason:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAssetType:(int)type;
+- (void)setHasReason:(BOOL)reason;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaUEISiriWasUnavailable
 
-- (SISchemaUEISiriWasUnavailable)initWithDictionary:(id)a3
+- (SISchemaUEISiriWasUnavailable)initWithDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = SISchemaUEISiriWasUnavailable;
   v5 = [(SISchemaUEISiriWasUnavailable *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"product"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"product"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaUEISiriWasUnavailable setProduct:](v5, "setProduct:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"reason"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"reason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaUEISiriWasUnavailable setReason:](v5, "setReason:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"assetType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"assetType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -88,30 +88,30 @@
   return v5;
 }
 
-- (SISchemaUEISiriWasUnavailable)initWithJSON:(id)a3
+- (SISchemaUEISiriWasUnavailable)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaUEISiriWasUnavailable *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaUEISiriWasUnavailable *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaUEISiriWasUnavailable *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -124,25 +124,25 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_assetTypes count])
   {
-    v4 = [(SISchemaUEISiriWasUnavailable *)self assetTypes];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"assetType"];
+    assetTypes = [(SISchemaUEISiriWasUnavailable *)self assetTypes];
+    v5 = [assetTypes copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"assetType"];
   }
 
   has = self->_has;
   if (has)
   {
-    v7 = [(SISchemaUEISiriWasUnavailable *)self product];
+    product = [(SISchemaUEISiriWasUnavailable *)self product];
     v8 = @"PRODUCT_UNKNOWN";
-    if (v7 == 1)
+    if (product == 1)
     {
       v8 = @"PRODUCT_ASSISTANT";
     }
 
-    if (v7 == 2)
+    if (product == 2)
     {
       v9 = @"PRODUCT_DICTATION";
     }
@@ -152,20 +152,20 @@
       v9 = v8;
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"product"];
+    [dictionary setObject:v9 forKeyedSubscript:@"product"];
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v10 = [(SISchemaUEISiriWasUnavailable *)self reason];
+    reason = [(SISchemaUEISiriWasUnavailable *)self reason];
     v11 = @"SIRIUNAVAILABLEREASON_UNKNOWN";
-    if (v10 == 1)
+    if (reason == 1)
     {
       v11 = @"SIRIUNAVAILABLEREASON_THERMAL_MITIGATION";
     }
 
-    if (v10 == 2)
+    if (reason == 2)
     {
       v12 = @"SIRIUNAVAILABLEREASON_MISSING_ASSET";
     }
@@ -175,12 +175,12 @@
       v12 = v11;
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"reason"];
+    [dictionary setObject:v12 forKeyedSubscript:@"reason"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -209,16 +209,16 @@ LABEL_3:
   return v7 ^ v6 ^ [(NSArray *)self->_assetTypes hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_14;
@@ -227,27 +227,27 @@ LABEL_3:
   if (*&has)
   {
     product = self->_product;
-    if (product != [v4 product])
+    if (product != [equalCopy product])
     {
       goto LABEL_14;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
   if (v8 == ((v6 >> 1) & 1))
   {
-    if (!v8 || (reason = self->_reason, reason == [v4 reason]))
+    if (!v8 || (reason = self->_reason, reason == [equalCopy reason]))
     {
-      v10 = [(SISchemaUEISiriWasUnavailable *)self assetTypes];
-      v11 = [v4 assetTypes];
-      v12 = v11;
-      if ((v10 != 0) != (v11 == 0))
+      assetTypes = [(SISchemaUEISiriWasUnavailable *)self assetTypes];
+      assetTypes2 = [equalCopy assetTypes];
+      v12 = assetTypes2;
+      if ((assetTypes != 0) != (assetTypes2 == 0))
       {
-        v13 = [(SISchemaUEISiriWasUnavailable *)self assetTypes];
-        if (!v13)
+        assetTypes3 = [(SISchemaUEISiriWasUnavailable *)self assetTypes];
+        if (!assetTypes3)
         {
 
 LABEL_17:
@@ -255,10 +255,10 @@ LABEL_17:
           goto LABEL_15;
         }
 
-        v14 = v13;
-        v15 = [(SISchemaUEISiriWasUnavailable *)self assetTypes];
-        v16 = [v4 assetTypes];
-        v17 = [v15 isEqual:v16];
+        v14 = assetTypes3;
+        assetTypes4 = [(SISchemaUEISiriWasUnavailable *)self assetTypes];
+        assetTypes5 = [equalCopy assetTypes];
+        v17 = [assetTypes4 isEqual:assetTypes5];
 
         if (v17)
         {
@@ -279,10 +279,10 @@ LABEL_15:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -325,23 +325,23 @@ LABEL_15:
   }
 }
 
-- (int)assetTypeAtIndex:(unint64_t)a3
+- (int)assetTypeAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_assetTypes objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_assetTypes objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addAssetType:(int)a3
+- (void)addAssetType:(int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   assetTypes = self->_assetTypes;
   if (!assetTypes)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_assetTypes;
-    self->_assetTypes = v6;
+    self->_assetTypes = array;
 
     assetTypes = self->_assetTypes;
   }
@@ -350,9 +350,9 @@ LABEL_15:
   [(NSArray *)assetTypes addObject:v8];
 }
 
-- (void)setHasReason:(BOOL)a3
+- (void)setHasReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 2;
   }

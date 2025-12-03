@@ -1,14 +1,14 @@
 @interface NSData
-+ (NSData)dataWithHexString:(id)a3;
-+ (NSData)dataWithMACAddressString:(id)a3;
++ (NSData)dataWithHexString:(id)string;
++ (NSData)dataWithMACAddressString:(id)string;
 - (id)hexString;
 @end
 
 @implementation NSData
 
-+ (NSData)dataWithHexString:(id)a3
++ (NSData)dataWithHexString:(id)string
 {
-  v3 = [NSString sanitizedHexString:a3];
+  v3 = [NSString sanitizedHexString:string];
   if ([v3 length])
   {
     v9 = sub_10000EE80();
@@ -23,18 +23,18 @@
   else
   {
     v12 = 0;
-    v4 = [v3 lowercaseString];
+    lowercaseString = [v3 lowercaseString];
 
     v5 = objc_opt_new();
-    v6 = [v4 length];
+    v6 = [lowercaseString length];
     if (v6 >= 2)
     {
       v7 = 0;
       v8 = v6 - 1;
       do
       {
-        __str[0] = [v4 characterAtIndex:v7];
-        __str[1] = [v4 characterAtIndex:v7 + 1];
+        __str[0] = [lowercaseString characterAtIndex:v7];
+        __str[1] = [lowercaseString characterAtIndex:v7 + 1];
         HIBYTE(v12) = strtol(__str, 0, 16);
         [v5 appendBytes:&v12 + 1 length:1];
         v7 += 2;
@@ -43,15 +43,15 @@
       while (v8 > v7);
     }
 
-    v3 = v4;
+    v3 = lowercaseString;
   }
 
   return v5;
 }
 
-+ (NSData)dataWithMACAddressString:(id)a3
++ (NSData)dataWithMACAddressString:(id)string
 {
-  v3 = [NSString sanitizedHexString:a3];
+  v3 = [NSString sanitizedHexString:string];
   if ([v3 length] == 12)
   {
     v4 = [NSData dataWithHexString:v3];

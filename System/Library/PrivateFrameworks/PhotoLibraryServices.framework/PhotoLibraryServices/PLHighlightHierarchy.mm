@@ -1,27 +1,27 @@
 @interface PLHighlightHierarchy
 - (PLHighlightHierarchy)init;
-- (void)_addDayHighlight:(id)a3;
-- (void)_addMoment:(id)a3;
-- (void)addDayGroupHighlight:(id)a3;
-- (void)addDayHighlight:(id)a3;
-- (void)addMoment:(id)a3;
+- (void)_addDayHighlight:(id)highlight;
+- (void)_addMoment:(id)moment;
+- (void)addDayGroupHighlight:(id)highlight;
+- (void)addDayHighlight:(id)highlight;
+- (void)addMoment:(id)moment;
 @end
 
 @implementation PLHighlightHierarchy
 
-- (void)addDayGroupHighlight:(id)a3
+- (void)addDayGroupHighlight:(id)highlight
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([(NSMutableSet *)self->_dayGroupHighlights containsObject:v4]& 1) == 0)
+  highlightCopy = highlight;
+  if (([(NSMutableSet *)self->_dayGroupHighlights containsObject:highlightCopy]& 1) == 0)
   {
-    [(NSMutableSet *)self->_dayGroupHighlights addObject:v4];
+    [(NSMutableSet *)self->_dayGroupHighlights addObject:highlightCopy];
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = [v4 childDayGroupPhotosHighlights];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    childDayGroupPhotosHighlights = [highlightCopy childDayGroupPhotosHighlights];
+    v6 = [childDayGroupPhotosHighlights countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -33,14 +33,14 @@
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(childDayGroupPhotosHighlights);
           }
 
           [(PLHighlightHierarchy *)self _addDayHighlight:*(*(&v10 + 1) + 8 * v9++)];
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [childDayGroupPhotosHighlights countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
@@ -48,19 +48,19 @@
   }
 }
 
-- (void)_addDayHighlight:(id)a3
+- (void)_addDayHighlight:(id)highlight
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([(NSMutableSet *)self->_dayHighlights containsObject:v4]& 1) == 0)
+  highlightCopy = highlight;
+  if (([(NSMutableSet *)self->_dayHighlights containsObject:highlightCopy]& 1) == 0)
   {
-    [(NSMutableSet *)self->_dayHighlights addObject:v4];
+    [(NSMutableSet *)self->_dayHighlights addObject:highlightCopy];
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = [v4 moments];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    moments = [highlightCopy moments];
+    v6 = [moments countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -72,14 +72,14 @@
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(moments);
           }
 
           [(PLHighlightHierarchy *)self _addMoment:*(*(&v10 + 1) + 8 * v9++)];
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [moments countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
@@ -87,42 +87,42 @@
   }
 }
 
-- (void)addDayHighlight:(id)a3
+- (void)addDayHighlight:(id)highlight
 {
-  v5 = a3;
-  v4 = [v5 parentDayGroupPhotosHighlight];
-  if (v4)
+  highlightCopy = highlight;
+  parentDayGroupPhotosHighlight = [highlightCopy parentDayGroupPhotosHighlight];
+  if (parentDayGroupPhotosHighlight)
   {
-    [(PLHighlightHierarchy *)self addDayGroupHighlight:v4];
+    [(PLHighlightHierarchy *)self addDayGroupHighlight:parentDayGroupPhotosHighlight];
   }
 
   else
   {
-    [(PLHighlightHierarchy *)self _addDayHighlight:v5];
+    [(PLHighlightHierarchy *)self _addDayHighlight:highlightCopy];
   }
 }
 
-- (void)_addMoment:(id)a3
+- (void)_addMoment:(id)moment
 {
-  v4 = a3;
-  if (([v4 isDeleted] & 1) == 0 && (-[NSMutableSet containsObject:](self->_moments, "containsObject:", v4) & 1) == 0)
+  momentCopy = moment;
+  if (([momentCopy isDeleted] & 1) == 0 && (-[NSMutableSet containsObject:](self->_moments, "containsObject:", momentCopy) & 1) == 0)
   {
-    [(NSMutableSet *)self->_moments addObject:v4];
+    [(NSMutableSet *)self->_moments addObject:momentCopy];
   }
 }
 
-- (void)addMoment:(id)a3
+- (void)addMoment:(id)moment
 {
-  v5 = a3;
-  v4 = [v5 highlight];
-  if (v4)
+  momentCopy = moment;
+  highlight = [momentCopy highlight];
+  if (highlight)
   {
-    [(PLHighlightHierarchy *)self addDayHighlight:v4];
+    [(PLHighlightHierarchy *)self addDayHighlight:highlight];
   }
 
   else
   {
-    [(PLHighlightHierarchy *)self _addMoment:v5];
+    [(PLHighlightHierarchy *)self _addMoment:momentCopy];
   }
 }
 

@@ -1,27 +1,27 @@
 @interface TVUNContentItem
-+ (id)artworkURLFromTemplate:(id)a3 forSize:(CGSize)a4 cropCode:(id)a5 format:(id)a6;
++ (id)artworkURLFromTemplate:(id)template forSize:(CGSize)size cropCode:(id)code format:(id)format;
 @end
 
 @implementation TVUNContentItem
 
-+ (id)artworkURLFromTemplate:(id)a3 forSize:(CGSize)a4 cropCode:(id)a5 format:(id)a6
++ (id)artworkURLFromTemplate:(id)template forSize:(CGSize)size cropCode:(id)code format:(id)format
 {
-  height = a4.height;
-  width = a4.width;
-  if (a6)
+  height = size.height;
+  width = size.width;
+  if (format)
   {
-    v10 = a6;
+    formatCopy = format;
   }
 
   else
   {
-    v10 = @"jpg";
+    formatCopy = @"jpg";
   }
 
-  v11 = a6;
-  v12 = [WLKArtworkVariant artworkURLFromTemplate:a3 forSize:a5 cropCode:v10 format:width, height];
+  formatCopy2 = format;
+  height = [WLKArtworkVariant artworkURLFromTemplate:template forSize:code cropCode:formatCopy format:width, height];
 
-  return v12;
+  return height;
 }
 
 @end

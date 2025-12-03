@@ -1,27 +1,27 @@
 @interface AAUISignInController
 - (AAUICDPSignInDelegate)cdpDelegate;
-- (AAUISignInController)initWithCoder:(id)a3;
-- (AAUISignInController)initWithNibName:(id)a3 bundle:(id)a4;
+- (AAUISignInController)initWithCoder:(id)coder;
+- (AAUISignInController)initWithNibName:(id)name bundle:(id)bundle;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_commonInit;
 - (void)_configureSignInProperties;
-- (void)_delegate_signInControllerDidSelectChildSignIn:(id)a3;
-- (void)_delegate_signInControllerDidSkip:(id)a3;
-- (void)prepareInViewController:(id)a3 completion:(id)a4;
-- (void)serviceSignInController:(id)a3 didCompleteWithOperationsResults:(id)a4;
-- (void)serviceSignInController:(id)a3 didCompleteWithSuccess:(BOOL)a4 error:(id)a5;
-- (void)serviceSignInController:(id)a3 didSkipWithReason:(int64_t)a4;
-- (void)serviceSignInControllerDidCancel:(id)a3;
+- (void)_delegate_signInControllerDidSelectChildSignIn:(id)in;
+- (void)_delegate_signInControllerDidSkip:(id)skip;
+- (void)prepareInViewController:(id)controller completion:(id)completion;
+- (void)serviceSignInController:(id)controller didCompleteWithOperationsResults:(id)results;
+- (void)serviceSignInController:(id)controller didCompleteWithSuccess:(BOOL)success error:(id)error;
+- (void)serviceSignInController:(id)controller didSkipWithReason:(int64_t)reason;
+- (void)serviceSignInControllerDidCancel:(id)cancel;
 - (void)viewDidLoad;
 @end
 
 @implementation AAUISignInController
 
-- (AAUISignInController)initWithNibName:(id)a3 bundle:(id)a4
+- (AAUISignInController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = AAUISignInController;
-  v4 = [(AAUISignInController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(AAUISignInController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -31,11 +31,11 @@
   return v5;
 }
 
-- (AAUISignInController)initWithCoder:(id)a3
+- (AAUISignInController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = AAUISignInController;
-  v3 = [(AAUISignInController *)&v6 initWithCoder:a3];
+  v3 = [(AAUISignInController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -49,9 +49,9 @@
 {
   [(AAUISignInController *)self setCanEditUsername:1];
   self->_aidaOperationUIPermissions = 1;
-  v3 = [MEMORY[0x1E698DDF8] sharedBag];
+  mEMORY[0x1E698DDF8] = [MEMORY[0x1E698DDF8] sharedBag];
   akURLBag = self->_akURLBag;
-  self->_akURLBag = v3;
+  self->_akURLBag = mEMORY[0x1E698DDF8];
 
   privacyLinkIdentifiers = self->_privacyLinkIdentifiers;
   self->_privacyLinkIdentifiers = &unk_1F44C06A8;
@@ -62,8 +62,8 @@
   v4.receiver = self;
   v4.super_class = AAUISignInController;
   [(AAUISignInController *)&v4 viewDidLoad];
-  v3 = [(AAUISignInController *)self presentationController];
-  [v3 setDelegate:self];
+  presentationController = [(AAUISignInController *)self presentationController];
+  [presentationController setDelegate:self];
 
   [(AAUISignInController *)self setModalInPresentation:1];
   [(AAUISignInController *)self _configureSignInProperties];
@@ -82,59 +82,59 @@
     [(AAUIServiceSignInConfiguration *)self->_signInConfiguration setAuthenticationResults:self->_authenticationResults];
     [(AAUIServiceSignInConfiguration *)self->_signInConfiguration setAidaOperationUIPermissions:self->_aidaOperationUIPermissions];
     [(AAUIServiceSignInConfiguration *)self->_signInConfiguration setNavigationController:self];
-    v5 = [(AAUISignInController *)self username];
-    [(AAUIServiceSignInConfiguration *)self->_signInConfiguration setUsername:v5];
+    username = [(AAUISignInController *)self username];
+    [(AAUIServiceSignInConfiguration *)self->_signInConfiguration setUsername:username];
 
     [(AAUIServiceSignInConfiguration *)self->_signInConfiguration setCanEditUsername:[(AAUISignInController *)self canEditUsername]];
     [(AAUIServiceSignInConfiguration *)self->_signInConfiguration setAllowSkip:[(AAUISignInController *)self allowSkip]];
     [(AAUIServiceSignInConfiguration *)self->_signInConfiguration setShouldShowSystemBackButton:[(AAUISignInController *)self shouldShowSystemBackButton]];
     [(AAUIServiceSignInConfiguration *)self->_signInConfiguration setShouldForceOperation:[(AAUISignInController *)self _shouldForceOperation]];
     [(AAUIServiceSignInConfiguration *)self->_signInConfiguration setOfferiCloudAMSSplitSignIn:[(AAUISignInController *)self offerSplitAccountSignIn]];
-    v6 = [(AAUISignInController *)self delegate];
+    delegate = [(AAUISignInController *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(AAUISignInController *)self delegate];
-      v9 = [v8 serviceContext];
-      v10 = [v9 copy];
+      delegate2 = [(AAUISignInController *)self delegate];
+      serviceContext = [delegate2 serviceContext];
+      v10 = [serviceContext copy];
       [(AAUIServiceSignInConfiguration *)self->_signInConfiguration setServiceContext:v10];
     }
 
     [(AAUIServiceSignInConfiguration *)self->_signInConfiguration setServiceDelegate:self];
     [(AAUIServiceSignInConfiguration *)self->_signInConfiguration setShouldDisableAccountCreation:[(AAUISignInController *)self shouldDisableAccountCreation]];
-    v11 = [(AAUISignInController *)self serviceType];
+    serviceType = [(AAUISignInController *)self serviceType];
 
-    if (v11)
+    if (serviceType)
     {
-      v12 = [(AAUISignInController *)self serviceType];
-      v21[0] = v12;
+      serviceType2 = [(AAUISignInController *)self serviceType];
+      v21[0] = serviceType2;
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
       [(AAUIServiceSignInConfiguration *)self->_signInConfiguration setServiceTypes:v13];
     }
 
     else
     {
-      v12 = [(AAUISignInController *)self serviceTypes];
-      [(AAUIServiceSignInConfiguration *)self->_signInConfiguration setServiceTypes:v12];
+      serviceType2 = [(AAUISignInController *)self serviceTypes];
+      [(AAUIServiceSignInConfiguration *)self->_signInConfiguration setServiceTypes:serviceType2];
     }
 
-    v14 = [(AAUISignInController *)self privacyLinkIdentifiers];
-    [(AAUIServiceSignInConfiguration *)self->_signInConfiguration setPrivacyLinkIdentifiers:v14];
+    privacyLinkIdentifiers = [(AAUISignInController *)self privacyLinkIdentifiers];
+    [(AAUIServiceSignInConfiguration *)self->_signInConfiguration setPrivacyLinkIdentifiers:privacyLinkIdentifiers];
 
     [(AAUIServiceSignInConfiguration *)self->_signInConfiguration setShowsChildSignIn:[(AAUISignInController *)self showsChildSignIn]];
-    v15 = [(AAUISignInController *)self cdpDelegate];
+    cdpDelegate = [(AAUISignInController *)self cdpDelegate];
     if (objc_opt_respondsToSelector())
     {
-      -[AAUIServiceSignInConfiguration setIsAttemptingBackupRestore:](self->_signInConfiguration, "setIsAttemptingBackupRestore:", [v15 isAttemptingBackupRestore]);
+      -[AAUIServiceSignInConfiguration setIsAttemptingBackupRestore:](self->_signInConfiguration, "setIsAttemptingBackupRestore:", [cdpDelegate isAttemptingBackupRestore]);
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v16 = [v15 cdpLocalSecret];
-      if (v16)
+      cdpLocalSecret = [cdpDelegate cdpLocalSecret];
+      if (cdpLocalSecret)
       {
-        [(AAUIServiceSignInConfiguration *)self->_signInConfiguration setLocalSecret:v16];
+        [(AAUIServiceSignInConfiguration *)self->_signInConfiguration setLocalSecret:cdpLocalSecret];
       }
     }
   }
@@ -153,56 +153,56 @@
   }
 
   [(AAUIServiceSignInController *)self->_serviceController setServiceOwnersManager:self->_serviceOwnersManager];
-  v20 = [(AAUISignInController *)self akURLBag];
-  [(AAUIServiceSignInController *)self->_serviceController setAkURLBag:v20];
+  akURLBag = [(AAUISignInController *)self akURLBag];
+  [(AAUIServiceSignInController *)self->_serviceController setAkURLBag:akURLBag];
 }
 
-- (void)serviceSignInController:(id)a3 didCompleteWithSuccess:(BOOL)a4 error:(id)a5
+- (void)serviceSignInController:(id)controller didCompleteWithSuccess:(BOOL)success error:(id)error
 {
-  v5 = a4;
-  v8 = a5;
-  v7 = [(AAUISignInController *)self delegate];
+  successCopy = success;
+  errorCopy = error;
+  delegate = [(AAUISignInController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 signInController:self didCompleteWithSuccess:v5 error:v8];
+    [delegate signInController:self didCompleteWithSuccess:successCopy error:errorCopy];
   }
 }
 
-- (void)serviceSignInController:(id)a3 didCompleteWithOperationsResults:(id)a4
+- (void)serviceSignInController:(id)controller didCompleteWithOperationsResults:(id)results
 {
-  v6 = a4;
-  v5 = [(AAUISignInController *)self delegate];
+  resultsCopy = results;
+  delegate = [(AAUISignInController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 signInController:self didCompleteWithOperationsResults:v6];
+    [delegate signInController:self didCompleteWithOperationsResults:resultsCopy];
   }
 }
 
-- (void)serviceSignInControllerDidCancel:(id)a3
+- (void)serviceSignInControllerDidCancel:(id)cancel
 {
-  v4 = [(AAUISignInController *)self delegate];
+  delegate = [(AAUISignInController *)self delegate];
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   if (objc_opt_respondsToSelector())
   {
-    [v4 signInControllerDidCancel:self];
+    [delegate signInControllerDidCancel:self];
   }
 }
 
-- (void)serviceSignInController:(id)a3 didSkipWithReason:(int64_t)a4
+- (void)serviceSignInController:(id)controller didSkipWithReason:(int64_t)reason
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (a4 == 1)
+  if (reason == 1)
   {
 
     [(AAUISignInController *)self _delegate_signInControllerDidSelectChildSignIn:self];
   }
 
-  else if (a4)
+  else if (reason)
   {
     v6 = _AAUILogSystem();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
-      [AAUISignInController serviceSignInController:a4 didSkipWithReason:v6];
+      [AAUISignInController serviceSignInController:reason didSkipWithReason:v6];
     }
   }
 
@@ -213,39 +213,39 @@
   }
 }
 
-- (void)_delegate_signInControllerDidSkip:(id)a3
+- (void)_delegate_signInControllerDidSkip:(id)skip
 {
-  v4 = [(AAUISignInController *)self delegate];
+  delegate = [(AAUISignInController *)self delegate];
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   if (objc_opt_respondsToSelector())
   {
-    [v4 signInControllerDidSkip:self];
+    [delegate signInControllerDidSkip:self];
   }
 }
 
-- (void)_delegate_signInControllerDidSelectChildSignIn:(id)a3
+- (void)_delegate_signInControllerDidSelectChildSignIn:(id)in
 {
-  v4 = [(AAUISignInController *)self delegate];
+  delegate = [(AAUISignInController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 signInControllerDidSelectChildSignIn:self];
+    [delegate signInControllerDidSelectChildSignIn:self];
   }
 }
 
-- (void)prepareInViewController:(id)a3 completion:(id)a4
+- (void)prepareInViewController:(id)controller completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  controllerCopy = controller;
   [(AAUISignInController *)self _configureSignInProperties];
-  [(AAUIServiceSignInController *)self->_serviceController prepareInViewController:v7 completion:v6];
+  [(AAUIServiceSignInController *)self->_serviceController prepareInViewController:controllerCopy completion:completionCopy];
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }

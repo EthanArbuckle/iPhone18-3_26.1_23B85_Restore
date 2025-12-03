@@ -1,18 +1,18 @@
 @interface APApplication
-+ (APApplication)applicationWithBundleIdentifier:(id)a3;
++ (APApplication)applicationWithBundleIdentifier:(id)identifier;
 + (id)bundleIdentifiersWithContentHiddenFromSearch;
 - (BOOL)isEffectivelyLocked;
 - (BOOL)isHidden;
 - (BOOL)isLocked;
 - (NSString)description;
 - (id)effectiveBundleIdentifier;
-- (id)initFileprivWithBundleID:(id)a3 arena:(id)a4;
+- (id)initFileprivWithBundleID:(id)d arena:(id)arena;
 - (void)dealloc;
 @end
 
 @implementation APApplication
 
-+ (APApplication)applicationWithBundleIdentifier:(id)a3
++ (APApplication)applicationWithBundleIdentifier:(id)identifier
 {
   sub_185B67E4C();
   if (qword_1ED6F4CA8 != -1)
@@ -41,7 +41,7 @@
 
 - (BOOL)isHidden
 {
-  v2 = self;
+  selfCopy = self;
   v3 = APApplication.isHidden.getter();
 
   return v3 & 1;
@@ -49,10 +49,10 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_185B6836C();
 
-  MEMORY[0x1865FCF60](*(&v2->super.super.isa + OBJC_IVAR___APApplication__bundleIdentifier), *&v2->super.clientArenaStorage[OBJC_IVAR___APApplication__bundleIdentifier]);
+  MEMORY[0x1865FCF60](*(&selfCopy->super.super.isa + OBJC_IVAR___APApplication__bundleIdentifier), *&selfCopy->super.clientArenaStorage[OBJC_IVAR___APApplication__bundleIdentifier]);
   MEMORY[0x1865FCF60](62, 0xE100000000000000);
 
   v3 = sub_185B67E1C();
@@ -62,7 +62,7 @@
 
 - (BOOL)isLocked
 {
-  v2 = self;
+  selfCopy = self;
   v3 = APApplication.isLocked.getter();
 
   return v3 & 1;
@@ -70,13 +70,13 @@
 
 - (BOOL)isEffectivelyLocked
 {
-  v2 = self;
+  selfCopy = self;
   v3 = APApplication.isEffectivelyLocked.getter();
 
   return v3 & 1;
 }
 
-- (id)initFileprivWithBundleID:(id)a3 arena:(id)a4
+- (id)initFileprivWithBundleID:(id)d arena:(id)arena
 {
   v6 = sub_185B67E4C();
   v7 = (self + OBJC_IVAR___APApplication__bundleIdentifier);
@@ -84,25 +84,25 @@
   v7[1] = v8;
   v10.receiver = self;
   v10.super_class = APApplication;
-  return [(APSubject *)&v10 initWithArena:a4];
+  return [(APSubject *)&v10 initWithArena:arena];
 }
 
 - (void)dealloc
 {
   sub_185ADF8F0(self + OBJC_IVAR___APSubject_clientArenaStorage, v5);
   __swift_project_boxed_opaque_existential_1(v5, v5[3]);
-  v3 = self;
-  sub_185AC7818(v3);
+  selfCopy = self;
+  sub_185AC7818(selfCopy);
   __swift_destroy_boxed_opaque_existential_0Tm(v5);
 
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = APApplication;
   [(APApplication *)&v4 dealloc];
 }
 
 + (id)bundleIdentifiersWithContentHiddenFromSearch
 {
-  v2 = [a1 lockedAppBundleIdentifiers];
+  lockedAppBundleIdentifiers = [self lockedAppBundleIdentifiers];
   sub_185B67FDC();
 
   v3 = sub_185B67FCC();
@@ -112,15 +112,15 @@
 
 - (id)effectiveBundleIdentifier
 {
-  v2 = self;
-  v3 = [(APApplication *)v2 bundleIdentifier];
-  if (!v3)
+  selfCopy = self;
+  bundleIdentifier = [(APApplication *)selfCopy bundleIdentifier];
+  if (!bundleIdentifier)
   {
     sub_185B67E4C();
-    v3 = sub_185B67E1C();
+    bundleIdentifier = sub_185B67E1C();
   }
 
-  return v3;
+  return bundleIdentifier;
 }
 
 @end

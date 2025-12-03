@@ -209,12 +209,12 @@ LABEL_54:
 {
   if ((a3 - 1001) > 0x15)
   {
-    [a1 errorWithDomain:*MEMORY[0x1E696A5A0] code:a3 userInfo:0];
+    [self errorWithDomain:*MEMORY[0x1E696A5A0] code:a3 userInfo:0];
   }
 
   else
   {
-    [a1 errorWithCADErrorCode:?];
+    [self errorWithCADErrorCode:?];
   }
   v3 = ;
 
@@ -223,16 +223,16 @@ LABEL_54:
 
 + (id)errorWithCADErrorCode:()EventKit
 {
-  v5 = [a1 _defaultDescriptionForCADErrorCode:?];
-  v6 = [a1 errorWithCADErrorCode:a3 description:v5];
+  v5 = [self _defaultDescriptionForCADErrorCode:?];
+  v6 = [self errorWithCADErrorCode:a3 description:v5];
 
   return v6;
 }
 
 + (id)errorWithEKErrorCode:()EventKit
 {
-  v5 = [a1 _defaultDescriptionForEKErrorCode:?];
-  v6 = [a1 errorWithEKErrorCode:a3 description:v5];
+  v5 = [self _defaultDescriptionForEKErrorCode:?];
+  v6 = [self errorWithEKErrorCode:a3 description:v5];
 
   return v6;
 }
@@ -240,8 +240,8 @@ LABEL_54:
 + (id)errorWithEKErrorCode:()EventKit underlyingError:
 {
   v6 = a4;
-  v7 = [a1 _defaultDescriptionForEKErrorCode:a3];
-  v8 = [a1 errorWithEKErrorCode:a3 description:v7 underlyingError:v6 reason:0];
+  v7 = [self _defaultDescriptionForEKErrorCode:a3];
+  v8 = [self errorWithEKErrorCode:a3 description:v7 underlyingError:v6 reason:0];
 
   return v8;
 }
@@ -277,7 +277,7 @@ LABEL_54:
     v17 = 0;
   }
 
-  v18 = [[a1 alloc] initWithDomain:v12 code:a4 userInfo:v17];
+  v18 = [[self alloc] initWithDomain:v12 code:a4 userInfo:v17];
 
   return v18;
 }

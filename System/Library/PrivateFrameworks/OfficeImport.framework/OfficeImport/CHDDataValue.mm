@@ -1,12 +1,12 @@
 @interface CHDDataValue
-+ (CHDDataValue)dataValueWithIndex:(int64_t)a3 value:(EDValue *)a4;
++ (CHDDataValue)dataValueWithIndex:(int64_t)index value:(EDValue *)value;
 + (id)dataValue;
 - (CHDDataValue)init;
-- (CHDDataValue)initWithIndex:(int64_t)a3 value:(EDValue *)a4;
-- (id)contentFormatWithResources:(id)a3;
+- (CHDDataValue)initWithIndex:(int64_t)index value:(EDValue *)value;
+- (id)contentFormatWithResources:(id)resources;
 - (id)description;
-- (void)setContentFormatWithResources:(id)a3 resources:(id)a4;
-- (void)setDataPoint:(CHDDataPoint *)a3;
+- (void)setContentFormatWithResources:(id)resources resources:(id)a4;
+- (void)setDataPoint:(CHDDataPoint *)point;
 @end
 
 @implementation CHDDataValue
@@ -32,7 +32,7 @@
   return result;
 }
 
-- (CHDDataValue)initWithIndex:(int64_t)a3 value:(EDValue *)a4
+- (CHDDataValue)initWithIndex:(int64_t)index value:(EDValue *)value
 {
   v9.receiver = self;
   v9.super_class = CHDDataValue;
@@ -40,50 +40,50 @@
   v7 = v6;
   if (v6)
   {
-    v6->mDataPoint.index = a3;
-    EDValue::operator=(&v6->mDataPoint.value, a4);
+    v6->mDataPoint.index = index;
+    EDValue::operator=(&v6->mDataPoint.value, value);
   }
 
   return v7;
 }
 
-+ (CHDDataValue)dataValueWithIndex:(int64_t)a3 value:(EDValue *)a4
++ (CHDDataValue)dataValueWithIndex:(int64_t)index value:(EDValue *)value
 {
-  v4 = [objc_alloc(objc_opt_class()) initWithIndex:a3 value:a4];
+  v4 = [objc_alloc(objc_opt_class()) initWithIndex:index value:value];
 
   return v4;
 }
 
-- (void)setDataPoint:(CHDDataPoint *)a3
+- (void)setDataPoint:(CHDDataPoint *)point
 {
-  self->mDataPoint.index = a3->index;
-  EDValue::operator=(&self->mDataPoint.value, &a3->value);
-  self->mDataPoint.contentFormatId = a3->contentFormatId;
+  self->mDataPoint.index = point->index;
+  EDValue::operator=(&self->mDataPoint.value, &point->value);
+  self->mDataPoint.contentFormatId = point->contentFormatId;
 }
 
-- (id)contentFormatWithResources:(id)a3
+- (id)contentFormatWithResources:(id)resources
 {
-  v4 = [a3 contentFormats];
-  v5 = [v4 objectWithKey:self->mDataPoint.contentFormatId];
+  contentFormats = [resources contentFormats];
+  v5 = [contentFormats objectWithKey:self->mDataPoint.contentFormatId];
 
   return v5;
 }
 
-- (void)setContentFormatWithResources:(id)a3 resources:(id)a4
+- (void)setContentFormatWithResources:(id)resources resources:(id)a4
 {
-  v10 = a3;
+  resourcesCopy = resources;
   v6 = a4;
-  v7 = [v10 formatId];
-  if (v7 == -1)
+  formatId = [resourcesCopy formatId];
+  if (formatId == -1)
   {
-    v8 = [v6 contentFormats];
-    v9 = [v8 objectAtIndex:{objc_msgSend(v8, "addOrEquivalentObject:", v10)}];
+    contentFormats = [v6 contentFormats];
+    v9 = [contentFormats objectAtIndex:{objc_msgSend(contentFormats, "addOrEquivalentObject:", resourcesCopy)}];
     self->mDataPoint.contentFormatId = [v9 formatId];
   }
 
   else
   {
-    self->mDataPoint.contentFormatId = v7;
+    self->mDataPoint.contentFormatId = formatId;
   }
 }
 

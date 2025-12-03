@@ -1,77 +1,77 @@
 @interface SignMerchantPaymentHandler
 - (STSSigningSession)parent;
-- (SignMerchantPaymentHandler)initWithParent:(id)a3;
-- (id)signInAppPayment:(id)a3 authorization:(id)a4 error:(id *)a5;
-- (id)startNFSessionWithCompletion:(id)a3;
+- (SignMerchantPaymentHandler)initWithParent:(id)parent;
+- (id)signInAppPayment:(id)payment authorization:(id)authorization error:(id *)error;
+- (id)startNFSessionWithCompletion:(id)completion;
 @end
 
 @implementation SignMerchantPaymentHandler
 
-- (SignMerchantPaymentHandler)initWithParent:(id)a3
+- (SignMerchantPaymentHandler)initWithParent:(id)parent
 {
-  v4 = a3;
+  parentCopy = parent;
   v8.receiver = self;
   v8.super_class = SignMerchantPaymentHandler;
   v5 = [(SignMerchantPaymentHandler *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_parent, v4);
+    objc_storeWeak(&v5->_parent, parentCopy);
   }
 
   return v6;
 }
 
-- (id)startNFSessionWithCompletion:(id)a3
+- (id)startNFSessionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(STSHandler *)self nfHardwareManager];
+  completionCopy = completion;
+  nfHardwareManager = [(STSHandler *)self nfHardwareManager];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_2653942D4;
   v9[3] = &unk_279B940A8;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 startECommercePaymentSession:v9];
+  v10 = completionCopy;
+  v6 = completionCopy;
+  v7 = [nfHardwareManager startECommercePaymentSession:v9];
 
   return v7;
 }
 
-- (id)signInAppPayment:(id)a3 authorization:(id)a4 error:(id *)a5
+- (id)signInAppPayment:(id)payment authorization:(id)authorization error:(id *)error
 {
   v57[4] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = [(STSHandler *)self activeSTSCredential];
+  paymentCopy = payment;
+  authorizationCopy = authorization;
+  activeSTSCredential = [(STSHandler *)self activeSTSCredential];
 
-  if (v11)
+  if (activeSTSCredential)
   {
-    if ([v9 isMemberOfClass:objc_opt_class()])
+    if ([paymentCopy isMemberOfClass:objc_opt_class()])
     {
       if (self->_nfECommerceSession)
       {
         v16 = "is";
-        if (!v10)
+        if (!authorizationCopy)
         {
           v16 = "is not";
         }
 
         sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[SignMerchantPaymentHandler signInAppPayment:authorization:error:]", 76, self, @"Authorization %s available", v14, v15, v16);
-        v17 = v9;
-        v18 = [(STSHandler *)self activeSTSCredential];
-        v19 = [v18 identifier];
+        v17 = paymentCopy;
+        activeSTSCredential2 = [(STSHandler *)self activeSTSCredential];
+        identifier = [activeSTSCredential2 identifier];
 
-        v20 = [v17 toNFECommercePaymentRequest:v19];
+        v20 = [v17 toNFECommercePaymentRequest:identifier];
         nfECommerceSession = self->_nfECommerceSession;
         v49 = 0;
-        v22 = [(NFECommercePaymentSession *)nfECommerceSession performECommercePayment:v10 request:v20 error:&v49];
+        v22 = [(NFECommercePaymentSession *)nfECommerceSession performECommercePayment:authorizationCopy request:v20 error:&v49];
         v23 = v49;
         v26 = v23;
         if (v23)
         {
           sub_265398094(OS_LOG_TYPE_ERROR, 0, "[SignMerchantPaymentHandler signInAppPayment:authorization:error:]", 86, self, @"start transaction failed = %@", v24, v25, v23);
-          if (a5)
+          if (error)
           {
             v48 = MEMORY[0x277CCA9B8];
             v46 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
@@ -90,7 +90,7 @@
             v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", sel_getName(a2), 88];
             v51[4] = v28;
             v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v51 forKeys:v50 count:5];
-            *a5 = [v48 errorWithDomain:v46 code:10 userInfo:v29];
+            *error = [v48 errorWithDomain:v46 code:10 userInfo:v29];
           }
 
           v30 = 0;
@@ -105,7 +105,7 @@
       }
 
       sub_265398094(OS_LOG_TYPE_ERROR, 0, "[SignMerchantPaymentHandler signInAppPayment:authorization:error:]", 69, self, @"NF session does not exist!", v14, v15, v44);
-      if (a5)
+      if (error)
       {
         v31 = MEMORY[0x277CCA9B8];
         v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
@@ -115,8 +115,8 @@
         v53[1] = &unk_2876ED860;
         v52[1] = @"Line";
         v52[2] = @"Method";
-        v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", sel_getName(a2)];
-        v53[2] = v19;
+        identifier = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", sel_getName(a2)];
+        v53[2] = identifier;
         v52[3] = *MEMORY[0x277CCA068];
         v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", sel_getName(a2), 71];
         v53[3] = v20;
@@ -129,9 +129,9 @@
 
     else
     {
-      ClassName = object_getClassName(v9);
+      ClassName = object_getClassName(paymentCopy);
       sub_265398094(OS_LOG_TYPE_ERROR, 0, "[SignMerchantPaymentHandler signInAppPayment:authorization:error:]", 61, self, @"Class %s is not supported!", v36, v37, ClassName);
-      if (a5)
+      if (error)
       {
         v38 = MEMORY[0x277CCA9B8];
         v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
@@ -141,8 +141,8 @@
         v55[1] = &unk_2876ED848;
         v54[1] = @"Line";
         v54[2] = @"Method";
-        v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", sel_getName(a2)];
-        v55[2] = v19;
+        identifier = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", sel_getName(a2)];
+        v55[2] = identifier;
         v54[3] = *MEMORY[0x277CCA068];
         v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", sel_getName(a2), 63];
         v55[3] = v20;
@@ -152,7 +152,7 @@
         v41 = 8;
 LABEL_17:
         [v39 errorWithDomain:v40 code:v41 userInfo:v22];
-        *a5 = v30 = 0;
+        *error = v30 = 0;
 LABEL_18:
 
         goto LABEL_20;
@@ -163,7 +163,7 @@ LABEL_18:
   else
   {
     sub_265398094(OS_LOG_TYPE_ERROR, 0, "[SignMerchantPaymentHandler signInAppPayment:authorization:error:]", 55, self, @"Credential does not exist!", v12, v13, v44);
-    if (a5)
+    if (error)
     {
       v31 = MEMORY[0x277CCA9B8];
       v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
@@ -173,8 +173,8 @@ LABEL_18:
       v57[1] = &unk_2876ED830;
       v56[1] = @"Line";
       v56[2] = @"Method";
-      v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", sel_getName(a2)];
-      v57[2] = v19;
+      identifier = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", sel_getName(a2)];
+      v57[2] = identifier;
       v56[3] = *MEMORY[0x277CCA068];
       v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", sel_getName(a2), 57];
       v57[3] = v20;

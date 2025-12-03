@@ -1,7 +1,7 @@
 @interface VMSpeechAnalyzerOperation
 - (VMSpeechAnalyzerOperation)init;
-- (VMSpeechAnalyzerOperation)initWithClientIdentifier:(id)a3 transcriberResultDelegate:(id)a4 endpointingResultDelegate:(id)a5 languageDetectorResultDelegate:(id)a6 transcriberOptions:(id)a7 options:(id)a8 languageDetectorOptions:(id)a9 restrictedLogging:(BOOL)a10 didChangeVolatileRange:(id)a11;
-- (VMSpeechAnalyzerOperation)initWithSpeechAnalyzer:(id)a3;
+- (VMSpeechAnalyzerOperation)initWithClientIdentifier:(id)identifier transcriberResultDelegate:(id)delegate endpointingResultDelegate:(id)resultDelegate languageDetectorResultDelegate:(id)detectorResultDelegate transcriberOptions:(id)options options:(id)a8 languageDetectorOptions:(id)detectorOptions restrictedLogging:(BOOL)self0 didChangeVolatileRange:(id)self1;
+- (VMSpeechAnalyzerOperation)initWithSpeechAnalyzer:(id)analyzer;
 @end
 
 @implementation VMSpeechAnalyzerOperation
@@ -13,22 +13,22 @@
   return 0;
 }
 
-- (VMSpeechAnalyzerOperation)initWithClientIdentifier:(id)a3 transcriberResultDelegate:(id)a4 endpointingResultDelegate:(id)a5 languageDetectorResultDelegate:(id)a6 transcriberOptions:(id)a7 options:(id)a8 languageDetectorOptions:(id)a9 restrictedLogging:(BOOL)a10 didChangeVolatileRange:(id)a11
+- (VMSpeechAnalyzerOperation)initWithClientIdentifier:(id)identifier transcriberResultDelegate:(id)delegate endpointingResultDelegate:(id)resultDelegate languageDetectorResultDelegate:(id)detectorResultDelegate transcriberOptions:(id)options options:(id)a8 languageDetectorOptions:(id)detectorOptions restrictedLogging:(BOOL)self0 didChangeVolatileRange:(id)self1
 {
-  v33 = a11;
-  v32 = a9;
+  rangeCopy = range;
+  detectorOptionsCopy = detectorOptions;
   v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
+  optionsCopy = options;
+  detectorResultDelegateCopy = detectorResultDelegate;
+  resultDelegateCopy = resultDelegate;
+  delegateCopy = delegate;
+  identifierCopy = identifier;
   v23 = [[AVAudioFormat alloc] initWithCommonFormat:3 sampleRate:1 channels:0 interleaved:16000.0];
   v24 = objc_alloc_init(NSOperationQueue);
   [v24 setMaxConcurrentOperationCount:1];
-  LOBYTE(v31) = a10;
+  LOBYTE(v31) = logging;
   v34 = v23;
-  v25 = [[SFSpeechAnalyzer alloc] initWithClientIdentifier:v22 audioFormat:v23 transcriberResultDelegate:v21 endpointingResultDelegate:v20 languageDetectorResultDelegate:v19 queue:v24 transcriberOptions:v18 options:v17 languageDetectorOptions:v32 restrictedLogging:v31 geoLMRegionID:0 contextualNamedEntities:0 didChangeVolatileRange:v33];
+  v25 = [[SFSpeechAnalyzer alloc] initWithClientIdentifier:identifierCopy audioFormat:v23 transcriberResultDelegate:delegateCopy endpointingResultDelegate:resultDelegateCopy languageDetectorResultDelegate:detectorResultDelegateCopy queue:v24 transcriberOptions:optionsCopy options:v17 languageDetectorOptions:detectorOptionsCopy restrictedLogging:v31 geoLMRegionID:0 contextualNamedEntities:0 didChangeVolatileRange:rangeCopy];
 
   if (v25)
   {
@@ -39,29 +39,29 @@
       [(VMSpeechAnalyzerOperation *)v26 setSpeechAnalyzerQueue:v24];
     }
 
-    v28 = v27;
-    v29 = v28;
+    selfCopy = v27;
+    v29 = selfCopy;
   }
 
   else
   {
     v29 = 0;
-    v28 = self;
+    selfCopy = self;
   }
 
   return v29;
 }
 
-- (VMSpeechAnalyzerOperation)initWithSpeechAnalyzer:(id)a3
+- (VMSpeechAnalyzerOperation)initWithSpeechAnalyzer:(id)analyzer
 {
-  v5 = a3;
+  analyzerCopy = analyzer;
   v9.receiver = self;
   v9.super_class = VMSpeechAnalyzerOperation;
   v6 = [(VMSpeechAnalyzerOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_speechAnalyzer, a3);
+    objc_storeStrong(&v6->_speechAnalyzer, analyzer);
   }
 
   return v7;

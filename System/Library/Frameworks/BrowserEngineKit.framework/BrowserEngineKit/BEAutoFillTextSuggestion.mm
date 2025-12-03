@@ -1,19 +1,19 @@
 @interface BEAutoFillTextSuggestion
-- (id)_initWithUIKitTextSuggestion:(id)a3;
+- (id)_initWithUIKitTextSuggestion:(id)suggestion;
 @end
 
 @implementation BEAutoFillTextSuggestion
 
-- (id)_initWithUIKitTextSuggestion:(id)a3
+- (id)_initWithUIKitTextSuggestion:(id)suggestion
 {
-  v5 = a3;
+  suggestionCopy = suggestion;
   v9.receiver = self;
   v9.super_class = BEAutoFillTextSuggestion;
-  v6 = [(BETextSuggestion *)&v9 _initWithUIKitTextSuggestion:v5];
+  v6 = [(BETextSuggestion *)&v9 _initWithUIKitTextSuggestion:suggestionCopy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(v6 + 2, a3);
+    objc_storeStrong(v6 + 2, suggestion);
   }
 
   return v7;

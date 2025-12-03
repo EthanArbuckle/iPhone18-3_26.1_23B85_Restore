@@ -1,25 +1,25 @@
 @interface SBPreferenceChangeDodgingModifierEvent
-- (SBPreferenceChangeDodgingModifierEvent)initWithIdentifier:(id)a3 phase:(unint64_t)a4 style:(unint64_t)a5;
+- (SBPreferenceChangeDodgingModifierEvent)initWithIdentifier:(id)identifier phase:(unint64_t)phase style:(unint64_t)style;
 @end
 
 @implementation SBPreferenceChangeDodgingModifierEvent
 
-- (SBPreferenceChangeDodgingModifierEvent)initWithIdentifier:(id)a3 phase:(unint64_t)a4 style:(unint64_t)a5
+- (SBPreferenceChangeDodgingModifierEvent)initWithIdentifier:(id)identifier phase:(unint64_t)phase style:(unint64_t)style
 {
-  v10 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = SBPreferenceChangeDodgingModifierEvent;
   v11 = [(SBPreferenceChangeDodgingModifierEvent *)&v13 init];
   if (v11)
   {
-    if (!v10)
+    if (!identifierCopy)
     {
       [SBPreferenceChangeDodgingModifierEvent initWithIdentifier:a2 phase:v11 style:?];
     }
 
-    objc_storeStrong(&v11->_identifier, a3);
-    v11->_phase = a4;
-    v11->_style = a5;
+    objc_storeStrong(&v11->_identifier, identifier);
+    v11->_phase = phase;
+    v11->_style = style;
   }
 
   return v11;

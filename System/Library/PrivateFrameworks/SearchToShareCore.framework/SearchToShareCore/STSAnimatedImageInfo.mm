@@ -6,12 +6,12 @@
 
 - (CGSize)size
 {
-  v2 = [(STSAnimatedImageInfo *)self frames];
-  v3 = [v2 firstObject];
+  frames = [(STSAnimatedImageInfo *)self frames];
+  firstObject = [frames firstObject];
 
-  if (v3)
+  if (firstObject)
   {
-    [v3 size];
+    [firstObject size];
     v5 = v4;
     v7 = v6;
   }

@@ -1,106 +1,106 @@
 @interface NPDCompanionPassLibrary
-- (NPDCompanionPassLibrary)initWithConnection:(id)a3 companionPaymentPassDatabase:(id)a4 dataSource:(id)a5;
+- (NPDCompanionPassLibrary)initWithConnection:(id)connection companionPaymentPassDatabase:(id)database dataSource:(id)source;
 - (NPDCompanionPassLibraryDataSource)dataSource;
 - (id)_deviceName;
-- (id)_filteredAndConfiguredPassForPaymentPass:(id)a3 deviceName:(id)a4;
-- (void)_handleCompanionPassDatabaseNotification:(id)a3;
-- (void)addPassesWithData:(id)a3 handler:(id)a4;
-- (void)addSharedFlight:(id)a3 fromSenderAddress:(id)a4 handler:(id)a5;
-- (void)archivePassWithUniqueID:(id)a3 handler:(id)a4;
-- (void)authorizationStatusForCapability:(int64_t)a3 handler:(id)a4;
-- (void)backupMetadataWithHandler:(id)a3;
-- (void)canAddFelicaPassWithHandler:(id)a3;
-- (void)canAddPassesOfType:(unint64_t)a3 handler:(id)a4;
-- (void)canAddSecureElementPassWithConfiguration:(id)a3 completion:(id)a4;
+- (id)_filteredAndConfiguredPassForPaymentPass:(id)pass deviceName:(id)name;
+- (void)_handleCompanionPassDatabaseNotification:(id)notification;
+- (void)addPassesWithData:(id)data handler:(id)handler;
+- (void)addSharedFlight:(id)flight fromSenderAddress:(id)address handler:(id)handler;
+- (void)archivePassWithUniqueID:(id)d handler:(id)handler;
+- (void)authorizationStatusForCapability:(int64_t)capability handler:(id)handler;
+- (void)backupMetadataWithHandler:(id)handler;
+- (void)canAddFelicaPassWithHandler:(id)handler;
+- (void)canAddPassesOfType:(unint64_t)type handler:(id)handler;
+- (void)canAddSecureElementPassWithConfiguration:(id)configuration completion:(id)completion;
 - (void)checkForTransitNotification;
-- (void)countPassesOfType:(unint64_t)a3 handler:(id)a4;
+- (void)countPassesOfType:(unint64_t)type handler:(id)handler;
 - (void)dealloc;
-- (void)defaultPaymentPassWithHandler:(id)a3;
-- (void)expressTransitPassWithHandler:(id)a3;
-- (void)generateIssuerBindingDataForIssuerData:(id)a3 completion:(id)a4;
-- (void)getArchivedObjectWithUniqueID:(id)a3 handler:(id)a4;
-- (void)getContentForUniqueID:(id)a3 handler:(id)a4;
-- (void)getDataForBundleResourceNamed:(id)a3 withExtension:(id)a4 objectUniqueIdentifier:(id)a5 handler:(id)a6;
-- (void)getGroupsControllerSnapshotWithOptions:(id)a3 handler:(id)a4;
-- (void)getIdentityPassesOfTypes:(id)a3 handler:(id)a4;
-- (void)getImageSetForUniqueID:(id)a3 ofType:(int64_t)a4 displayProfile:(id)a5 suffix:(id)a6 handler:(id)a7;
-- (void)getManifestHashAndSettingsForPassTypeID:(id)a3 serialNumber:(id)a4 handler:(id)a5;
-- (void)getPassWithPassTypeID:(id)a3 serialNumber:(id)a4 handler:(id)a5;
-- (void)getPassWithUniqueID:(id)a3 handler:(id)a4;
-- (void)getPassesAndCatalogOfPassTypes:(unint64_t)a3 limitResults:(BOOL)a4 withHandler:(id)a5;
-- (void)getPassesOfCardType:(int64_t)a3 handler:(id)a4;
-- (void)getPassesOfType:(unint64_t)a3 handler:(id)a4;
-- (void)getPassesWithHandler:(id)a3;
-- (void)getPassesWithReaderIdentifier:(id)a3 handler:(id)a4;
-- (void)getPassesWithSearchableTransactions:(id)a3;
-- (void)hasPassWithUniqueID:(id)a3 handler:(id)a4;
-- (void)hasPassesInExpiredSectionWithHandler:(id)a3;
-- (void)hasPassesOfType:(unint64_t)a3 handler:(id)a4;
-- (void)hasRemoteLibraryWithHandler:(id)a3;
-- (void)invalidateVehicleConnectionSessionIdentifier:(id)a3;
-- (void)isIssuerAppProvisioningSupportedWithHandler:(id)a3;
-- (void)isPaymentPassActivationAvailableWithHandler:(id)a3;
-- (void)isWatchIssuerAppProvisioningSupportedWithHandler:(id)a3;
-- (void)passUniqueIDsMatchingSearchTerm:(id)a3 completion:(id)a4;
-- (void)passWithDPANIdentifier:(id)a3 handler:(id)a4;
-- (void)passWithFPANIdentifier:(id)a3 handler:(id)a4;
-- (void)passesWithPrimaryPaymentApplicationStates:(id)a3 handler:(id)a4;
-- (void)paymentSetupFeaturesForConfiguration:(id)a3 completion:(id)a4;
-- (void)peerPaymentPassUniqueIDWithHandler:(id)a3;
-- (void)postUpgradedPassNotificationForMarket:(id)a3 passUniqueID:(id)a4;
-- (void)prepareForBackupRestoreWithExistingPreferencesData:(id)a3 handler:(id)a4;
-- (void)prepareForBackupRestoreWithRequiredFileURLs:(id)a3 destinationFileHandles:(id)a4 handler:(id)a5;
-- (void)recoverPassWithUniqueID:(id)a3 handler:(id)a4;
+- (void)defaultPaymentPassWithHandler:(id)handler;
+- (void)expressTransitPassWithHandler:(id)handler;
+- (void)generateIssuerBindingDataForIssuerData:(id)data completion:(id)completion;
+- (void)getArchivedObjectWithUniqueID:(id)d handler:(id)handler;
+- (void)getContentForUniqueID:(id)d handler:(id)handler;
+- (void)getDataForBundleResourceNamed:(id)named withExtension:(id)extension objectUniqueIdentifier:(id)identifier handler:(id)handler;
+- (void)getGroupsControllerSnapshotWithOptions:(id)options handler:(id)handler;
+- (void)getIdentityPassesOfTypes:(id)types handler:(id)handler;
+- (void)getImageSetForUniqueID:(id)d ofType:(int64_t)type displayProfile:(id)profile suffix:(id)suffix handler:(id)handler;
+- (void)getManifestHashAndSettingsForPassTypeID:(id)d serialNumber:(id)number handler:(id)handler;
+- (void)getPassWithPassTypeID:(id)d serialNumber:(id)number handler:(id)handler;
+- (void)getPassWithUniqueID:(id)d handler:(id)handler;
+- (void)getPassesAndCatalogOfPassTypes:(unint64_t)types limitResults:(BOOL)results withHandler:(id)handler;
+- (void)getPassesOfCardType:(int64_t)type handler:(id)handler;
+- (void)getPassesOfType:(unint64_t)type handler:(id)handler;
+- (void)getPassesWithHandler:(id)handler;
+- (void)getPassesWithReaderIdentifier:(id)identifier handler:(id)handler;
+- (void)getPassesWithSearchableTransactions:(id)transactions;
+- (void)hasPassWithUniqueID:(id)d handler:(id)handler;
+- (void)hasPassesInExpiredSectionWithHandler:(id)handler;
+- (void)hasPassesOfType:(unint64_t)type handler:(id)handler;
+- (void)hasRemoteLibraryWithHandler:(id)handler;
+- (void)invalidateVehicleConnectionSessionIdentifier:(id)identifier;
+- (void)isIssuerAppProvisioningSupportedWithHandler:(id)handler;
+- (void)isPaymentPassActivationAvailableWithHandler:(id)handler;
+- (void)isWatchIssuerAppProvisioningSupportedWithHandler:(id)handler;
+- (void)passUniqueIDsMatchingSearchTerm:(id)term completion:(id)completion;
+- (void)passWithDPANIdentifier:(id)identifier handler:(id)handler;
+- (void)passWithFPANIdentifier:(id)identifier handler:(id)handler;
+- (void)passesWithPrimaryPaymentApplicationStates:(id)states handler:(id)handler;
+- (void)paymentSetupFeaturesForConfiguration:(id)configuration completion:(id)completion;
+- (void)peerPaymentPassUniqueIDWithHandler:(id)handler;
+- (void)postUpgradedPassNotificationForMarket:(id)market passUniqueID:(id)d;
+- (void)prepareForBackupRestoreWithExistingPreferencesData:(id)data handler:(id)handler;
+- (void)prepareForBackupRestoreWithRequiredFileURLs:(id)ls destinationFileHandles:(id)handles handler:(id)handler;
+- (void)recoverPassWithUniqueID:(id)d handler:(id)handler;
 - (void)refreshActiveOrScheduledFlights;
-- (void)removePassWithUniqueID:(id)a3 diagnosticReason:(id)a4 handler:(id)a5;
-- (void)removePassesWithUniqueIDs:(id)a3 diagnosticReason:(id)a4 handler:(id)a5;
-- (void)replacePassWithPassData:(id)a3 handler:(id)a4;
-- (void)requestAuthorizationForCapability:(int64_t)a3 handler:(id)a4;
-- (void)requestIssuerBindingDataForIssuerData:(id)a3 completion:(id)a4;
-- (void)resetAuthorizationForCapability:(int64_t)a3 handler:(id)a4;
-- (void)sendRKEPassThroughMessage:(id)a3 forSessionIdentifier:(id)a4 withCompletion:(id)a5;
-- (void)sendUserEditedCatalog:(id)a3;
+- (void)removePassWithUniqueID:(id)d diagnosticReason:(id)reason handler:(id)handler;
+- (void)removePassesWithUniqueIDs:(id)ds diagnosticReason:(id)reason handler:(id)handler;
+- (void)replacePassWithPassData:(id)data handler:(id)handler;
+- (void)requestAuthorizationForCapability:(int64_t)capability handler:(id)handler;
+- (void)requestIssuerBindingDataForIssuerData:(id)data completion:(id)completion;
+- (void)resetAuthorizationForCapability:(int64_t)capability handler:(id)handler;
+- (void)sendRKEPassThroughMessage:(id)message forSessionIdentifier:(id)identifier withCompletion:(id)completion;
+- (void)sendUserEditedCatalog:(id)catalog;
 - (void)serviceResumed;
 - (void)serviceSuspended;
-- (void)setBackupMetadata:(id)a3 handler:(id)a4;
-- (void)signData:(id)a3 forPassUniqueID:(id)a4 completion:(id)a5;
-- (void)simulateFlightUpdate:(id)a3 forPassUniqueID:(id)a4 handler:(id)a5;
-- (void)sortedTransitPassesForTransitNetworkIdentifiers:(id)a3;
-- (void)startVehicleConnectionSessionWithPassUniqueIdentifier:(id)a3 completion:(id)a4;
-- (void)submitVerificationCode:(id)a3 verificationData:(id)a4 forPassWithUniqueID:(id)a5 handler:(id)a6;
-- (void)supportedTransitPartnersForDigitalIssuance:(id)a3;
-- (void)supportsSearchForPassUniqueID:(id)a3 completion:(id)a4;
-- (void)unexpiredPassesOrderedByGroup:(id)a3;
-- (void)usingSynchronousProxy:(BOOL)a3 canAddCarKeyPassWithConfiguration:(id)a4 completion:(id)a5;
-- (void)usingSynchronousProxy:(BOOL)a3 dynamicStateForPassUniqueID:(id)a4 handler:(id)a5;
-- (void)usingSynchronousProxy:(BOOL)a3 getEncryptedServiceProviderDataForUniqueID:(id)a4 completion:(id)a5;
-- (void)usingSynchronousProxy:(BOOL)a3 getPassForProvisioningCredentialHash:(id)a4 handler:(id)a5;
-- (void)usingSynchronousProxy:(BOOL)a3 getServiceProviderDataForUniqueID:(id)a4 completion:(id)a5;
-- (void)usingSynchronousProxy:(BOOL)a3 meetsProvisioningRequirements:(id)a4 completion:(id)a5;
-- (void)usingSynchronousProxy:(BOOL)a3 passLocalizedStringForKey:(id)a4 uniqueID:(id)a5 completion:(id)a6;
-- (void)usingSynchronousProxy:(BOOL)a3 postUpgradesAvailableNotificationForMarket:(id)a4 passUniqueID:(id)a5;
-- (void)usingSynchronousProxy:(BOOL)a3 setLiveRenderingEnabled:(BOOL)a4 forPassUniqueID:(id)a5 handler:(id)a6;
+- (void)setBackupMetadata:(id)metadata handler:(id)handler;
+- (void)signData:(id)data forPassUniqueID:(id)d completion:(id)completion;
+- (void)simulateFlightUpdate:(id)update forPassUniqueID:(id)d handler:(id)handler;
+- (void)sortedTransitPassesForTransitNetworkIdentifiers:(id)identifiers;
+- (void)startVehicleConnectionSessionWithPassUniqueIdentifier:(id)identifier completion:(id)completion;
+- (void)submitVerificationCode:(id)code verificationData:(id)data forPassWithUniqueID:(id)d handler:(id)handler;
+- (void)supportedTransitPartnersForDigitalIssuance:(id)issuance;
+- (void)supportsSearchForPassUniqueID:(id)d completion:(id)completion;
+- (void)unexpiredPassesOrderedByGroup:(id)group;
+- (void)usingSynchronousProxy:(BOOL)proxy canAddCarKeyPassWithConfiguration:(id)configuration completion:(id)completion;
+- (void)usingSynchronousProxy:(BOOL)proxy dynamicStateForPassUniqueID:(id)d handler:(id)handler;
+- (void)usingSynchronousProxy:(BOOL)proxy getEncryptedServiceProviderDataForUniqueID:(id)d completion:(id)completion;
+- (void)usingSynchronousProxy:(BOOL)proxy getPassForProvisioningCredentialHash:(id)hash handler:(id)handler;
+- (void)usingSynchronousProxy:(BOOL)proxy getServiceProviderDataForUniqueID:(id)d completion:(id)completion;
+- (void)usingSynchronousProxy:(BOOL)proxy meetsProvisioningRequirements:(id)requirements completion:(id)completion;
+- (void)usingSynchronousProxy:(BOOL)proxy passLocalizedStringForKey:(id)key uniqueID:(id)d completion:(id)completion;
+- (void)usingSynchronousProxy:(BOOL)proxy postUpgradesAvailableNotificationForMarket:(id)market passUniqueID:(id)d;
+- (void)usingSynchronousProxy:(BOOL)proxy setLiveRenderingEnabled:(BOOL)enabled forPassUniqueID:(id)d handler:(id)handler;
 @end
 
 @implementation NPDCompanionPassLibrary
 
-- (NPDCompanionPassLibrary)initWithConnection:(id)a3 companionPaymentPassDatabase:(id)a4 dataSource:(id)a5
+- (NPDCompanionPassLibrary)initWithConnection:(id)connection companionPaymentPassDatabase:(id)database dataSource:(id)source
 {
-  v8 = a4;
-  v9 = a5;
+  databaseCopy = database;
+  sourceCopy = source;
   v17.receiver = self;
   v17.super_class = NPDCompanionPassLibrary;
-  v10 = [(NPDPassLibrary *)&v17 initWithConnection:a3];
+  v10 = [(NPDPassLibrary *)&v17 initWithConnection:connection];
   v11 = v10;
   if (v10)
   {
-    [(NPDCompanionPassLibrary *)v10 setCompanionPaymentPassDatabase:v8];
-    [(NPDCompanionPassLibrary *)v11 setDataSource:v9];
+    [(NPDCompanionPassLibrary *)v10 setCompanionPaymentPassDatabase:databaseCopy];
+    [(NPDCompanionPassLibrary *)v11 setDataSource:sourceCopy];
     v12 = +[NSNotificationCenter defaultCenter];
-    [v12 addObserver:v11 selector:"_handleCompanionPassDatabaseNotification:" name:@"com.apple.NanoPassKit.NPDCompanionPaymentPassDatabase.PassAdded" object:v8];
-    [v12 addObserver:v11 selector:"_handleCompanionPassDatabaseNotification:" name:@"com.apple.NanoPassKit.NPDCompanionPaymentPassDatabase.PassUpdated" object:v8];
-    [v12 addObserver:v11 selector:"_handleCompanionPassDatabaseNotification:" name:@"com.apple.NanoPassKit.NPDCompanionPaymentPassDatabase.PassRemoved" object:v8];
-    [v12 addObserver:v11 selector:"_handleCompanionPassDatabaseNotification:" name:@"com.apple.NanoPassKit.NPDCompanionPaymentPassDatabase.CatalogChanged" object:v8];
+    [v12 addObserver:v11 selector:"_handleCompanionPassDatabaseNotification:" name:@"com.apple.NanoPassKit.NPDCompanionPaymentPassDatabase.PassAdded" object:databaseCopy];
+    [v12 addObserver:v11 selector:"_handleCompanionPassDatabaseNotification:" name:@"com.apple.NanoPassKit.NPDCompanionPaymentPassDatabase.PassUpdated" object:databaseCopy];
+    [v12 addObserver:v11 selector:"_handleCompanionPassDatabaseNotification:" name:@"com.apple.NanoPassKit.NPDCompanionPaymentPassDatabase.PassRemoved" object:databaseCopy];
+    [v12 addObserver:v11 selector:"_handleCompanionPassDatabaseNotification:" name:@"com.apple.NanoPassKit.NPDCompanionPaymentPassDatabase.CatalogChanged" object:databaseCopy];
     v13 = pk_General_log();
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
 
@@ -133,7 +133,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Notice: NPDCompanionPassLibrary deallocated: %@", buf, 0xCu);
     }
   }
@@ -175,10 +175,10 @@
   }
 }
 
-- (void)replacePassWithPassData:(id)a3 handler:(id)a4
+- (void)replacePassWithPassData:(id)data handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   v8 = pk_General_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -193,32 +193,32 @@
   }
 
   v18 = 0;
-  v11 = [PKPass createWithData:v6 warnings:0 error:&v18];
+  v11 = [PKPass createWithData:dataCopy warnings:0 error:&v18];
   v12 = v18;
   if (v11)
   {
-    v13 = [v11 passTypeIdentifier];
-    v14 = [v11 serialNumber];
+    passTypeIdentifier = [v11 passTypeIdentifier];
+    serialNumber = [v11 serialNumber];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_10003C3B8;
     v15[3] = &unk_100072908;
     v15[4] = self;
     v16 = v11;
-    v17 = v7;
-    [(NPDCompanionPassLibrary *)self getPassWithPassTypeID:v13 serialNumber:v14 handler:v15];
+    v17 = handlerCopy;
+    [(NPDCompanionPassLibrary *)self getPassWithPassTypeID:passTypeIdentifier serialNumber:serialNumber handler:v15];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (void)addPassesWithData:(id)a3 handler:(id)a4
+- (void)addPassesWithData:(id)data handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   v8 = pk_General_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -228,25 +228,25 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v37 = [v6 count];
+      v37 = [dataCopy count];
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Notice: Companion pass library: Add %d passes", buf, 8u);
     }
   }
 
-  v11 = [(NPDPassLibrary *)self filter];
-  v12 = [v11 allowlist];
-  v13 = [v12 passesAllAccess];
+  filter = [(NPDPassLibrary *)self filter];
+  allowlist = [filter allowlist];
+  passesAllAccess = [allowlist passesAllAccess];
 
-  if (v13)
+  if (passesAllAccess)
   {
-    v26 = self;
-    v14 = [[NSMutableOrderedSet alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+    selfCopy = self;
+    v14 = [[NSMutableOrderedSet alloc] initWithCapacity:{objc_msgSend(dataCopy, "count")}];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v27 = v6;
-    v15 = v6;
+    v27 = dataCopy;
+    v15 = dataCopy;
     v16 = [v15 countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v16)
     {
@@ -292,27 +292,27 @@
       while (v17);
     }
 
-    v25 = [(NPDPassLibrary *)v26 delegate];
+    delegate = [(NPDPassLibrary *)selfCopy delegate];
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = sub_10003C7F8;
     v28[3] = &unk_100070E08;
-    v29 = v7;
-    [v25 passLibrary:v26 requestsAdditionOfPasses:v14 completion:v28];
+    v29 = handlerCopy;
+    [delegate passLibrary:selfCopy requestsAdditionOfPasses:v14 completion:v28];
 
-    v6 = v27;
+    dataCopy = v27;
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (void)removePassWithUniqueID:(id)a3 diagnosticReason:(id)a4 handler:(id)a5
+- (void)removePassWithUniqueID:(id)d diagnosticReason:(id)reason handler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  dCopy = d;
+  handlerCopy = handler;
   v9 = pk_General_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -322,38 +322,38 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412290;
-      v17 = v7;
+      v17 = dCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Notice: Companion pass library: Remove pass with uniqueID %@", &v16, 0xCu);
     }
   }
 
-  v12 = [(NPDPassLibrary *)self filter];
-  v13 = [v12 allowlist];
-  v14 = [v13 passesAllAccess];
+  filter = [(NPDPassLibrary *)self filter];
+  allowlist = [filter allowlist];
+  passesAllAccess = [allowlist passesAllAccess];
 
-  if (v14)
+  if (passesAllAccess)
   {
-    v15 = [(NPDPassLibrary *)self delegate];
-    [v15 passLibrary:self requestsDeletionOfPassWithUniqueID:v7 completion:v8];
+    delegate = [(NPDPassLibrary *)self delegate];
+    [delegate passLibrary:self requestsDeletionOfPassWithUniqueID:dCopy completion:handlerCopy];
   }
 
   else
   {
-    v8[2](v8);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)removePassesWithUniqueIDs:(id)a3 diagnosticReason:(id)a4 handler:(id)a5
+- (void)removePassesWithUniqueIDs:(id)ds diagnosticReason:(id)reason handler:(id)handler
 {
-  if (a5)
+  if (handler)
   {
-    (*(a5 + 2))(a5);
+    (*(handler + 2))(handler);
   }
 }
 
-- (void)getPassesWithHandler:(id)a3
+- (void)getPassesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -367,21 +367,21 @@
     }
   }
 
-  v8 = [(NPDCompanionPassLibrary *)self companionPaymentPassDatabase];
-  v9 = [v8 uniqueIDs];
+  companionPaymentPassDatabase = [(NPDCompanionPassLibrary *)self companionPaymentPassDatabase];
+  uniqueIDs = [companionPaymentPassDatabase uniqueIDs];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10003CB44;
   v11[3] = &unk_100072558;
   v11[4] = self;
-  v10 = [v9 npkComprehension:v11];
+  v10 = [uniqueIDs npkComprehension:v11];
 
-  v4[2](v4, v10);
+  handlerCopy[2](handlerCopy, v10);
 }
 
-- (void)getPassesOfType:(unint64_t)a3 handler:(id)a4
+- (void)getPassesOfType:(unint64_t)type handler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = pk_General_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
 
@@ -391,25 +391,25 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 134217984;
-      v11 = a3;
+      typeCopy = type;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Notice: Companion pass library: get passes of type %llu", &v10, 0xCu);
     }
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
-    [(NPDCompanionPassLibrary *)self getPassesWithHandler:v6];
+    [(NPDCompanionPassLibrary *)self getPassesWithHandler:handlerCopy];
   }
 
   else
   {
-    v6[2](v6, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)getPassesOfCardType:(int64_t)a3 handler:(id)a4
+- (void)getPassesOfCardType:(int64_t)type handler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = pk_General_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
 
@@ -423,22 +423,22 @@
     }
   }
 
-  if (v6)
+  if (handlerCopy)
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10003CE08;
     v10[3] = &unk_100072930;
-    v12 = a3;
-    v11 = v6;
+    typeCopy = type;
+    v11 = handlerCopy;
     [(NPDCompanionPassLibrary *)self getPassesWithHandler:v10];
   }
 }
 
-- (void)getIdentityPassesOfTypes:(id)a3 handler:(id)a4
+- (void)getIdentityPassesOfTypes:(id)types handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  typesCopy = types;
+  handlerCopy = handler;
   v8 = pk_General_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -448,51 +448,51 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v16 = v6;
+      v16 = typesCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Notice: Companion pass library: get identity passes of types %@", buf, 0xCu);
     }
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    [NSSet setWithArray:v6];
+    [NSSet setWithArray:typesCopy];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10003D104;
     v13 = v12[3] = &unk_100072958;
-    v14 = v7;
+    v14 = handlerCopy;
     v11 = v13;
     [(NPDCompanionPassLibrary *)self getPassesWithHandler:v12];
   }
 }
 
-- (void)getPassesAndCatalogOfPassTypes:(unint64_t)a3 limitResults:(BOOL)a4 withHandler:(id)a5
+- (void)getPassesAndCatalogOfPassTypes:(unint64_t)types limitResults:(BOOL)results withHandler:(id)handler
 {
-  v7 = a5;
-  v8 = [(NPDCompanionPassLibrary *)self companionPaymentPassDatabase];
-  v9 = [v8 catalog];
+  handlerCopy = handler;
+  companionPaymentPassDatabase = [(NPDCompanionPassLibrary *)self companionPaymentPassDatabase];
+  catalog = [companionPaymentPassDatabase catalog];
 
-  if (!a3 || (a3 & 1) != 0)
+  if (!types || (types & 1) != 0)
   {
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10003D3D4;
     v11[3] = &unk_100072980;
-    v13 = v7;
-    v12 = v9;
+    v13 = handlerCopy;
+    v12 = catalog;
     [(NPDCompanionPassLibrary *)self getPassesWithHandler:v11];
   }
 
   else
   {
     v10 = +[NSSet set];
-    (*(v7 + 2))(v7, v10, v9);
+    (*(handlerCopy + 2))(handlerCopy, v10, catalog);
   }
 }
 
-- (void)sendUserEditedCatalog:(id)a3
+- (void)sendUserEditedCatalog:(id)catalog
 {
-  v4 = a3;
+  catalogCopy = catalog;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -502,46 +502,46 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412290;
-      v13 = v4;
+      v13 = catalogCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Notice: Companion pass library received user edited catalog: %@", &v12, 0xCu);
     }
   }
 
-  v8 = [(NPDPassLibrary *)self filter];
-  v9 = [v8 allowlist];
-  v10 = [v9 passesAllAccess];
+  filter = [(NPDPassLibrary *)self filter];
+  allowlist = [filter allowlist];
+  passesAllAccess = [allowlist passesAllAccess];
 
-  if (v10)
+  if (passesAllAccess)
   {
-    v11 = [(NPDCompanionPassLibrary *)self companionPaymentPassDatabase];
-    [v11 setCatalog:v4 fromWatch:0];
+    companionPaymentPassDatabase = [(NPDCompanionPassLibrary *)self companionPaymentPassDatabase];
+    [companionPaymentPassDatabase setCatalog:catalogCopy fromWatch:0];
   }
 }
 
-- (void)peerPaymentPassUniqueIDWithHandler:(id)a3
+- (void)peerPaymentPassUniqueIDWithHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
-- (void)canAddFelicaPassWithHandler:(id)a3
+- (void)canAddFelicaPassWithHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    v3 = a3;
+    handlerCopy = handler;
     v5 = NPKPairedOrPairingDevice();
     v4 = [[NSUUID alloc] initWithUUIDString:@"6C4614A2-1ECC-4405-9FEE-B5F0A5666961"];
-    v3[2](v3, [v5 supportsCapability:v4]);
+    handlerCopy[2](handlerCopy, [v5 supportsCapability:v4]);
   }
 }
 
-- (void)getManifestHashAndSettingsForPassTypeID:(id)a3 serialNumber:(id)a4 handler:(id)a5
+- (void)getManifestHashAndSettingsForPassTypeID:(id)d serialNumber:(id)number handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  numberCopy = number;
+  handlerCopy = handler;
   v11 = pk_General_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -551,9 +551,9 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v18 = v8;
+      v18 = dCopy;
       v19 = 2112;
-      v20 = v9;
+      v20 = numberCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Notice: Companion pass library get manifest hash and settings: %@ %@", buf, 0x16u);
     }
   }
@@ -562,16 +562,16 @@
   v15[1] = 3221225472;
   v15[2] = sub_10003D744;
   v15[3] = &unk_1000729A8;
-  v16 = v10;
-  v14 = v10;
-  [(NPDCompanionPassLibrary *)self getPassWithPassTypeID:v8 serialNumber:v9 handler:v15];
+  v16 = handlerCopy;
+  v14 = handlerCopy;
+  [(NPDCompanionPassLibrary *)self getPassWithPassTypeID:dCopy serialNumber:numberCopy handler:v15];
 }
 
-- (void)getPassWithPassTypeID:(id)a3 serialNumber:(id)a4 handler:(id)a5
+- (void)getPassWithPassTypeID:(id)d serialNumber:(id)number handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  numberCopy = number;
+  handlerCopy = handler;
   v11 = pk_General_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -581,9 +581,9 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v23 = v8;
+      v23 = dCopy;
       v24 = 2112;
-      v25 = v9;
+      v25 = numberCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Notice: Companion pass library get pass: %@ %@", buf, 0x16u);
     }
   }
@@ -592,20 +592,20 @@
   v17[1] = 3221225472;
   v17[2] = sub_10003D974;
   v17[3] = &unk_1000729D0;
-  v18 = v8;
-  v19 = v9;
-  v20 = self;
-  v21 = v10;
-  v14 = v10;
-  v15 = v9;
-  v16 = v8;
+  v18 = dCopy;
+  v19 = numberCopy;
+  selfCopy = self;
+  v21 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = numberCopy;
+  v16 = dCopy;
   [(NPDCompanionPassLibrary *)self getPassesWithHandler:v17];
 }
 
-- (void)getPassWithUniqueID:(id)a3 handler:(id)a4
+- (void)getPassWithUniqueID:(id)d handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = pk_General_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -615,23 +615,23 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138412290;
-      v16 = v6;
+      v16 = dCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Notice: Companion pass library get pass with unique ID %@", &v15, 0xCu);
     }
   }
 
-  v11 = [(NPDCompanionPassLibrary *)self _deviceName];
-  v12 = [(NPDCompanionPassLibrary *)self companionPaymentPassDatabase];
-  v13 = [v12 paymentPassWithUniqueID:v6];
+  _deviceName = [(NPDCompanionPassLibrary *)self _deviceName];
+  companionPaymentPassDatabase = [(NPDCompanionPassLibrary *)self companionPaymentPassDatabase];
+  v13 = [companionPaymentPassDatabase paymentPassWithUniqueID:dCopy];
 
-  v14 = [(NPDCompanionPassLibrary *)self _filteredAndConfiguredPassForPaymentPass:v13 deviceName:v11];
-  v7[2](v7, v14);
+  v14 = [(NPDCompanionPassLibrary *)self _filteredAndConfiguredPassForPaymentPass:v13 deviceName:_deviceName];
+  handlerCopy[2](handlerCopy, v14);
 }
 
-- (void)getContentForUniqueID:(id)a3 handler:(id)a4
+- (void)getContentForUniqueID:(id)d handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = pk_General_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -641,7 +641,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v15 = v6;
+      v15 = dCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Notice: Companion pass library get content for unique ID %@", buf, 0xCu);
     }
   }
@@ -650,17 +650,17 @@
   v12[1] = 3221225472;
   v12[2] = sub_10003DDC4;
   v12[3] = &unk_1000729A8;
-  v13 = v7;
-  v11 = v7;
-  [(NPDCompanionPassLibrary *)self getPassWithUniqueID:v6 handler:v12];
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  [(NPDCompanionPassLibrary *)self getPassWithUniqueID:dCopy handler:v12];
 }
 
-- (void)getImageSetForUniqueID:(id)a3 ofType:(int64_t)a4 displayProfile:(id)a5 suffix:(id)a6 handler:(id)a7
+- (void)getImageSetForUniqueID:(id)d ofType:(int64_t)type displayProfile:(id)profile suffix:(id)suffix handler:(id)handler
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  dCopy = d;
+  profileCopy = profile;
+  suffixCopy = suffix;
+  handlerCopy = handler;
   v16 = pk_General_log();
   v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
 
@@ -670,11 +670,11 @@
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v28 = v12;
+      v28 = dCopy;
       v29 = 2048;
-      v30 = a4;
+      typeCopy = type;
       v31 = 2112;
-      v32 = v13;
+      v32 = profileCopy;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Notice: Companion pass library get image set for unique ID %@ %llu %@", buf, 0x20u);
     }
   }
@@ -683,23 +683,23 @@
   v22[1] = 3221225472;
   v22[2] = sub_10003E0A0;
   v22[3] = &unk_100072A20;
-  v23 = v14;
-  v24 = v13;
-  v25 = v15;
-  v26 = a4;
-  v19 = v15;
-  v20 = v13;
-  v21 = v14;
-  [(NPDCompanionPassLibrary *)self getPassWithUniqueID:v12 handler:v22];
+  v23 = suffixCopy;
+  v24 = profileCopy;
+  v25 = handlerCopy;
+  typeCopy2 = type;
+  v19 = handlerCopy;
+  v20 = profileCopy;
+  v21 = suffixCopy;
+  [(NPDCompanionPassLibrary *)self getPassWithUniqueID:dCopy handler:v22];
 }
 
-- (void)getDataForBundleResourceNamed:(id)a3 withExtension:(id)a4 objectUniqueIdentifier:(id)a5 handler:(id)a6
+- (void)getDataForBundleResourceNamed:(id)named withExtension:(id)extension objectUniqueIdentifier:(id)identifier handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v13)
+  namedCopy = named;
+  extensionCopy = extension;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v14 = pk_General_log();
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
@@ -710,11 +710,11 @@
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v22 = v10;
+        v22 = namedCopy;
         v23 = 2112;
-        v24 = v11;
+        v24 = extensionCopy;
         v25 = 2112;
-        v26 = v12;
+        v26 = identifierCopy;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Notice: Companion pass library get getDataForBundleResourceNamed %@.%@ for unique ID %@", buf, 0x20u);
       }
     }
@@ -723,18 +723,18 @@
     v17[1] = 3221225472;
     v17[2] = sub_10003E374;
     v17[3] = &unk_100072908;
-    v18 = v10;
-    v19 = v11;
-    v20 = v13;
-    [(NPDCompanionPassLibrary *)self getPassWithUniqueID:v12 handler:v17];
+    v18 = namedCopy;
+    v19 = extensionCopy;
+    v20 = handlerCopy;
+    [(NPDCompanionPassLibrary *)self getPassWithUniqueID:identifierCopy handler:v17];
   }
 }
 
-- (void)getArchivedObjectWithUniqueID:(id)a3 handler:(id)a4
+- (void)getArchivedObjectWithUniqueID:(id)d handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dCopy = d;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v8 = pk_General_log();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
@@ -745,7 +745,7 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v14 = v6;
+        v14 = dCopy;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Notice: Companion pass library get getArchivedObjectWithUniqueID for unique ID %@", buf, 0xCu);
       }
     }
@@ -754,14 +754,14 @@
     v11[1] = 3221225472;
     v11[2] = sub_10003E570;
     v11[3] = &unk_1000729A8;
-    v12 = v7;
-    [(NPDCompanionPassLibrary *)self getPassWithUniqueID:v6 handler:v11];
+    v12 = handlerCopy;
+    [(NPDCompanionPassLibrary *)self getPassWithUniqueID:dCopy handler:v11];
   }
 }
 
-- (void)isPaymentPassActivationAvailableWithHandler:(id)a3
+- (void)isPaymentPassActivationAvailableWithHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = pk_General_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
 
@@ -775,15 +775,15 @@
     }
   }
 
-  v3[2](v3, 1);
+  handlerCopy[2](handlerCopy, 1);
 }
 
-- (void)submitVerificationCode:(id)a3 verificationData:(id)a4 forPassWithUniqueID:(id)a5 handler:(id)a6
+- (void)submitVerificationCode:(id)code verificationData:(id)data forPassWithUniqueID:(id)d handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  codeCopy = code;
+  dataCopy = data;
+  dCopy = d;
+  handlerCopy = handler;
   v14 = pk_General_log();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
 
@@ -793,11 +793,11 @@
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v25 = v10;
+      v25 = codeCopy;
       v26 = 2112;
-      v27 = v11;
+      v27 = dataCopy;
       v28 = 2112;
-      v29 = v12;
+      v29 = dCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Notice: Companion pass library submit verification code %@ %@ %@", buf, 0x20u);
     }
   }
@@ -807,18 +807,18 @@
   v20[2] = sub_10003E868;
   v20[3] = &unk_100072A70;
   v20[4] = self;
-  v21 = v10;
-  v22 = v11;
-  v23 = v13;
-  v17 = v11;
-  v18 = v10;
-  v19 = v13;
-  [(NPDCompanionPassLibrary *)self getPassWithUniqueID:v12 handler:v20];
+  v21 = codeCopy;
+  v22 = dataCopy;
+  v23 = handlerCopy;
+  v17 = dataCopy;
+  v18 = codeCopy;
+  v19 = handlerCopy;
+  [(NPDCompanionPassLibrary *)self getPassWithUniqueID:dCopy handler:v20];
 }
 
-- (void)hasPassesOfType:(unint64_t)a3 handler:(id)a4
+- (void)hasPassesOfType:(unint64_t)type handler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = pk_General_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
 
@@ -828,30 +828,30 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v13 = a3;
+      typeCopy = type;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Notice: %llu", buf, 0xCu);
     }
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10003EB98;
     v10[3] = &unk_100072A98;
-    v11 = v6;
+    v11 = handlerCopy;
     [(NPDCompanionPassLibrary *)self getPassesOfType:1 handler:v10];
   }
 
   else
   {
-    (*(v6 + 2))(v6, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (void)canAddPassesOfType:(unint64_t)a3 handler:(id)a4
+- (void)canAddPassesOfType:(unint64_t)type handler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = pk_General_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -861,17 +861,17 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 134217984;
-      v10 = a3;
+      typeCopy = type;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Notice: Can add passes of type %llu", &v9, 0xCu);
     }
   }
 
-  v5[2](v5, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)countPassesOfType:(unint64_t)a3 handler:(id)a4
+- (void)countPassesOfType:(unint64_t)type handler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = pk_General_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
 
@@ -881,30 +881,30 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v13 = a3;
+      typeCopy = type;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Notice: Count passes of type %llu", buf, 0xCu);
     }
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10003EE38;
     v10[3] = &unk_100072A98;
-    v11 = v6;
+    v11 = handlerCopy;
     [(NPDCompanionPassLibrary *)self getPassesOfType:1 handler:v10];
   }
 
   else
   {
-    (*(v6 + 2))(v6, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (void)defaultPaymentPassWithHandler:(id)a3
+- (void)defaultPaymentPassWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [NPSDomainAccessor alloc];
   v6 = [v5 initWithDomain:NPKDefaultsDomain];
   v7 = [v6 objectForKey:NPKDefaultPaymentPassDefault];
@@ -914,19 +914,19 @@
     v8[1] = 3221225472;
     v8[2] = sub_10003EF7C;
     v8[3] = &unk_1000729A8;
-    v9 = v4;
+    v9 = handlerCopy;
     [(NPDCompanionPassLibrary *)self getPassWithUniqueID:v7 handler:v8];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (void)expressTransitPassWithHandler:(id)a3
+- (void)expressTransitPassWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [NPSDomainAccessor alloc];
   v6 = [v5 initWithDomain:NPKDefaultsDomain];
   v7 = [v6 objectForKey:NPKExpressFelicaTransitPaymentPassUniqueIDDefault];
@@ -936,58 +936,58 @@
     v8[1] = 3221225472;
     v8[2] = sub_10003F0D8;
     v8[3] = &unk_1000729A8;
-    v9 = v4;
+    v9 = handlerCopy;
     [(NPDCompanionPassLibrary *)self getPassWithUniqueID:v7 handler:v8];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (void)passWithDPANIdentifier:(id)a3 handler:(id)a4
+- (void)passWithDPANIdentifier:(id)identifier handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = sub_10003F2D4;
   v21 = sub_10003F2E4;
   v22 = 0;
-  v8 = [(NPDPassLibrary *)self filter];
-  v9 = [v8 allowlist];
-  v10 = [v9 passesAllAccess];
+  filter = [(NPDPassLibrary *)self filter];
+  allowlist = [filter allowlist];
+  passesAllAccess = [allowlist passesAllAccess];
 
-  if (v10)
+  if (passesAllAccess)
   {
     v11 = +[NPKGizmoDatabase sharedDatabase];
-    v12 = [v11 passDescriptions];
+    passDescriptions = [v11 passDescriptions];
 
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_10003F2EC;
     v13[3] = &unk_100072AE8;
-    v15 = self;
+    selfCopy = self;
     v16 = &v17;
-    v14 = v6;
-    [v12 enumerateObjectsUsingBlock:v13];
+    v14 = identifierCopy;
+    [passDescriptions enumerateObjectsUsingBlock:v13];
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7, v18[5]);
+    handlerCopy[2](handlerCopy, v18[5]);
   }
 
   _Block_object_dispose(&v17, 8);
 }
 
-- (void)passWithFPANIdentifier:(id)a3 handler:(id)a4
+- (void)passWithFPANIdentifier:(id)identifier handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v15 = 0;
     v16 = &v15;
@@ -1000,7 +1000,7 @@
     v12[1] = 3221225472;
     v12[2] = sub_10003F634;
     v12[3] = &unk_100072B10;
-    v13 = v6;
+    v13 = identifierCopy;
     v14 = &v15;
     [v8 enumerateAllPassesWithBlock:v12 includeImageSets:0];
 
@@ -1011,24 +1011,24 @@
       v10[1] = 3221225472;
       v10[2] = sub_10003F6EC;
       v10[3] = &unk_1000729A8;
-      v11 = v7;
+      v11 = handlerCopy;
       [(NPDCompanionPassLibrary *)self getPassWithUniqueID:v9 handler:v10];
     }
 
     else
     {
-      (*(v7 + 2))(v7, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
 
     _Block_object_dispose(&v15, 8);
   }
 }
 
-- (void)supportedTransitPartnersForDigitalIssuance:(id)a3
+- (void)supportedTransitPartnersForDigitalIssuance:(id)issuance
 {
-  v4 = a3;
+  issuanceCopy = issuance;
   v5 = +[NSArray array];
-  (*(a3 + 2))(v4, v5);
+  (*(issuance + 2))(issuanceCopy, v5);
 }
 
 - (void)checkForTransitNotification
@@ -1048,7 +1048,7 @@
   }
 }
 
-- (void)postUpgradedPassNotificationForMarket:(id)a3 passUniqueID:(id)a4
+- (void)postUpgradedPassNotificationForMarket:(id)market passUniqueID:(id)d
 {
   v4 = pk_General_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
@@ -1065,7 +1065,7 @@
   }
 }
 
-- (void)usingSynchronousProxy:(BOOL)a3 postUpgradesAvailableNotificationForMarket:(id)a4 passUniqueID:(id)a5
+- (void)usingSynchronousProxy:(BOOL)proxy postUpgradesAvailableNotificationForMarket:(id)market passUniqueID:(id)d
 {
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
@@ -1082,9 +1082,9 @@
   }
 }
 
-- (void)sortedTransitPassesForTransitNetworkIdentifiers:(id)a3
+- (void)sortedTransitPassesForTransitNetworkIdentifiers:(id)identifiers
 {
-  v3 = a3;
+  identifiersCopy = identifiers;
   v4 = pk_General_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
 
@@ -1099,24 +1099,24 @@
     }
   }
 
-  v3[2](v3, &__NSDictionary0__struct);
+  identifiersCopy[2](identifiersCopy, &__NSDictionary0__struct);
 }
 
-- (void)canAddSecureElementPassWithConfiguration:(id)a3 completion:(id)a4
+- (void)canAddSecureElementPassWithConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NPDPassLibrary *)self filter];
-  v9 = [v8 allowlist];
+  completionCopy = completion;
+  configurationCopy = configuration;
+  filter = [(NPDPassLibrary *)self filter];
+  allowlist = [filter allowlist];
 
-  v10 = [v7 configurationType];
+  configurationType = [configurationCopy configurationType];
   v11 = 0;
   v12 = 0;
-  if (v10 <= 2)
+  if (configurationType <= 2)
   {
-    if (v10 != 1)
+    if (configurationType != 1)
     {
-      if (v10 != 2)
+      if (configurationType != 2)
       {
         goto LABEL_19;
       }
@@ -1124,7 +1124,7 @@
       goto LABEL_8;
     }
 
-    if (([v9 paymentAllAccess] & 1) == 0 && !objc_msgSend(v9, "secureElementPassProvisioning"))
+    if (([allowlist paymentAllAccess] & 1) == 0 && !objc_msgSend(allowlist, "secureElementPassProvisioning"))
     {
       v14 = PKLogFacilityTypeGetObject();
       if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -1144,10 +1144,10 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  switch(v10)
+  switch(configurationType)
   {
     case 3:
-      if (([v9 passesAddUnsigned] & 1) == 0 && !objc_msgSend(v9, "passesAllAccess"))
+      if (([allowlist passesAddUnsigned] & 1) == 0 && !objc_msgSend(allowlist, "passesAllAccess"))
       {
         v14 = PKLogFacilityTypeGetObject();
         if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -1166,12 +1166,12 @@ LABEL_18:
       goto LABEL_10;
     case 4:
 LABEL_8:
-      if ([v9 paymentAllAccess] & 1) != 0 || (objc_msgSend(v9, "shareableCredentialProvisioning"))
+      if ([allowlist paymentAllAccess] & 1) != 0 || (objc_msgSend(allowlist, "shareableCredentialProvisioning"))
       {
 LABEL_10:
         v12 = 0;
         v11 = 1;
-        if (!v6)
+        if (!completionCopy)
         {
           goto LABEL_21;
         }
@@ -1186,7 +1186,7 @@ LABEL_29:
 
         v12 = [NSError errorWithDomain:PKPassKitErrorDomain code:4 userInfo:0];
         v11 = 0;
-        if (!v6)
+        if (!completionCopy)
         {
           goto LABEL_21;
         }
@@ -1202,18 +1202,18 @@ LABEL_28:
   }
 
 LABEL_19:
-  if (v6)
+  if (completionCopy)
   {
 LABEL_20:
-    v6[2](v6, v11, v12);
+    completionCopy[2](completionCopy, v11, v12);
   }
 
 LABEL_21:
 }
 
-- (void)backupMetadataWithHandler:(id)a3
+- (void)backupMetadataWithHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = pk_General_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
 
@@ -1228,15 +1228,15 @@ LABEL_21:
     }
   }
 
-  if (v3)
+  if (handlerCopy)
   {
-    v3[2](v3, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)setBackupMetadata:(id)a3 handler:(id)a4
+- (void)setBackupMetadata:(id)metadata handler:(id)handler
 {
-  v4 = a4;
+  handlerCopy = handler;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1251,15 +1251,15 @@ LABEL_21:
     }
   }
 
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)signData:(id)a3 forPassUniqueID:(id)a4 completion:(id)a5
+- (void)signData:(id)data forPassUniqueID:(id)d completion:(id)completion
 {
-  v5 = a5;
+  completionCopy = completion;
   v6 = pk_General_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -1274,16 +1274,16 @@ LABEL_21:
     }
   }
 
-  if (v5)
+  if (completionCopy)
   {
     v9 = [NSError errorWithDomain:NPKErrorDomain code:-1006 userInfo:0];
-    (*(v5 + 2))(v5, 0, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v9);
   }
 }
 
-- (void)generateIssuerBindingDataForIssuerData:(id)a3 completion:(id)a4
+- (void)generateIssuerBindingDataForIssuerData:(id)data completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1298,54 +1298,54 @@ LABEL_21:
     }
   }
 
-  if (v4)
+  if (completionCopy)
   {
     v8 = [NSError errorWithDomain:NPKErrorDomain code:-1006 userInfo:0];
-    v4[2](v4, 0, v8);
+    completionCopy[2](completionCopy, 0, v8);
   }
 }
 
-- (void)supportsSearchForPassUniqueID:(id)a3 completion:(id)a4
+- (void)supportsSearchForPassUniqueID:(id)d completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, 0);
+    (*(completion + 2))(completion, 0);
   }
 }
 
-- (void)usingSynchronousProxy:(BOOL)a3 passLocalizedStringForKey:(id)a4 uniqueID:(id)a5 completion:(id)a6
+- (void)usingSynchronousProxy:(BOOL)proxy passLocalizedStringForKey:(id)key uniqueID:(id)d completion:(id)completion
 {
-  v16 = a4;
-  v9 = a6;
-  v10 = a5;
-  v11 = [(NPDCompanionPassLibrary *)self companionPaymentPassDatabase];
-  v12 = [v11 paymentPassWithUniqueID:v10];
+  keyCopy = key;
+  completionCopy = completion;
+  dCopy = d;
+  companionPaymentPassDatabase = [(NPDCompanionPassLibrary *)self companionPaymentPassDatabase];
+  v12 = [companionPaymentPassDatabase paymentPassWithUniqueID:dCopy];
 
-  v13 = [(NPDPassLibrary *)self filter];
-  LODWORD(v10) = [v13 allowAccessToPass:v12];
+  filter = [(NPDPassLibrary *)self filter];
+  LODWORD(dCopy) = [filter allowAccessToPass:v12];
 
-  if (v10)
+  if (dCopy)
   {
-    v14 = [v12 dataAccessor];
-    v15 = [v14 passLocalizedStringForKey:v16];
-    v9[2](v9, v15);
+    dataAccessor = [v12 dataAccessor];
+    v15 = [dataAccessor passLocalizedStringForKey:keyCopy];
+    completionCopy[2](completionCopy, v15);
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
-    v9[2](v9, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)usingSynchronousProxy:(BOOL)a3 getServiceProviderDataForUniqueID:(id)a4 completion:(id)a5
+- (void)usingSynchronousProxy:(BOOL)proxy getServiceProviderDataForUniqueID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v6)
+  proxyCopy = proxy;
+  dCopy = d;
+  completionCopy = completion;
+  if (!proxyCopy)
   {
-    v13 = [(NPDCompanionPassLibrary *)self dataSource];
-    [v13 serviceProviderDataForPassWithUniqueIdentifier:v8 completion:v9];
+    dataSource = [(NPDCompanionPassLibrary *)self dataSource];
+    [dataSource serviceProviderDataForPassWithUniqueIdentifier:dCopy completion:completionCopy];
     goto LABEL_9;
   }
 
@@ -1363,23 +1363,23 @@ LABEL_21:
     }
   }
 
-  if (v9)
+  if (completionCopy)
   {
-    v13 = [NSError errorWithDomain:NPKErrorDomain code:-1006 userInfo:0];
-    v9[2](v9, 0, v13);
+    dataSource = [NSError errorWithDomain:NPKErrorDomain code:-1006 userInfo:0];
+    completionCopy[2](completionCopy, 0, dataSource);
 LABEL_9:
   }
 }
 
-- (void)usingSynchronousProxy:(BOOL)a3 getEncryptedServiceProviderDataForUniqueID:(id)a4 completion:(id)a5
+- (void)usingSynchronousProxy:(BOOL)proxy getEncryptedServiceProviderDataForUniqueID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v6)
+  proxyCopy = proxy;
+  dCopy = d;
+  completionCopy = completion;
+  if (!proxyCopy)
   {
-    v13 = [(NPDCompanionPassLibrary *)self dataSource];
-    [v13 encryptedServiceProviderDataForPassWithUniqueIdentifier:v8 completion:v9];
+    dataSource = [(NPDCompanionPassLibrary *)self dataSource];
+    [dataSource encryptedServiceProviderDataForPassWithUniqueIdentifier:dCopy completion:completionCopy];
     goto LABEL_9;
   }
 
@@ -1397,33 +1397,33 @@ LABEL_9:
     }
   }
 
-  if (v9)
+  if (completionCopy)
   {
-    v13 = [NSError errorWithDomain:NPKErrorDomain code:-1006 userInfo:0];
-    v9[2](v9, 0, v13);
+    dataSource = [NSError errorWithDomain:NPKErrorDomain code:-1006 userInfo:0];
+    completionCopy[2](completionCopy, 0, dataSource);
 LABEL_9:
   }
 }
 
-- (void)getGroupsControllerSnapshotWithOptions:(id)a3 handler:(id)a4
+- (void)getGroupsControllerSnapshotWithOptions:(id)options handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 allowedPassType];
-  v9 = [v7 limitResults];
+  handlerCopy = handler;
+  optionsCopy = options;
+  allowedPassType = [optionsCopy allowedPassType];
+  limitResults = [optionsCopy limitResults];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000406D0;
   v11[3] = &unk_100072B38;
-  v12 = v6;
-  v10 = v6;
-  [(NPDCompanionPassLibrary *)self getPassesAndCatalogOfPassTypes:v8 limitResults:v9 withHandler:v11];
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  [(NPDCompanionPassLibrary *)self getPassesAndCatalogOfPassTypes:allowedPassType limitResults:limitResults withHandler:v11];
 }
 
-- (void)usingSynchronousProxy:(BOOL)a3 getPassForProvisioningCredentialHash:(id)a4 handler:(id)a5
+- (void)usingSynchronousProxy:(BOOL)proxy getPassForProvisioningCredentialHash:(id)hash handler:(id)handler
 {
-  v5 = a5;
+  handlerCopy = handler;
   v6 = pk_General_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -1438,15 +1438,15 @@ LABEL_9:
     }
   }
 
-  if (v5)
+  if (handlerCopy)
   {
-    v5[2](v5, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)recoverPassWithUniqueID:(id)a3 handler:(id)a4
+- (void)recoverPassWithUniqueID:(id)d handler:(id)handler
 {
-  v4 = a4;
+  handlerCopy = handler;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1461,15 +1461,15 @@ LABEL_9:
     }
   }
 
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)sendRKEPassThroughMessage:(id)a3 forSessionIdentifier:(id)a4 withCompletion:(id)a5
+- (void)sendRKEPassThroughMessage:(id)message forSessionIdentifier:(id)identifier withCompletion:(id)completion
 {
-  v5 = a5;
+  completionCopy = completion;
   v6 = pk_General_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -1484,7 +1484,7 @@ LABEL_9:
     }
   }
 
-  if (v5)
+  if (completionCopy)
   {
     v9 = NPKErrorDomain;
     v12 = NSLocalizedDescriptionKey;
@@ -1492,13 +1492,13 @@ LABEL_9:
     v10 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
     v11 = [NSError errorWithDomain:v9 code:-1000 userInfo:v10];
 
-    v5[2](v5, 0, v11);
+    completionCopy[2](completionCopy, 0, v11);
   }
 }
 
-- (void)startVehicleConnectionSessionWithPassUniqueIdentifier:(id)a3 completion:(id)a4
+- (void)startVehicleConnectionSessionWithPassUniqueIdentifier:(id)identifier completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1513,13 +1513,13 @@ LABEL_9:
     }
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)invalidateVehicleConnectionSessionIdentifier:(id)a3
+- (void)invalidateVehicleConnectionSessionIdentifier:(id)identifier
 {
   v3 = pk_General_log();
   v4 = os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT);
@@ -1536,25 +1536,25 @@ LABEL_9:
   }
 }
 
-- (void)paymentSetupFeaturesForConfiguration:(id)a3 completion:(id)a4
+- (void)paymentSetupFeaturesForConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NPDCompanionPassLibrary *)self dataSource];
-  [v8 paymentSetupFeaturesForConfiguration:v7 completion:v6];
+  completionCopy = completion;
+  configurationCopy = configuration;
+  dataSource = [(NPDCompanionPassLibrary *)self dataSource];
+  [dataSource paymentSetupFeaturesForConfiguration:configurationCopy completion:completionCopy];
 }
 
-- (void)hasRemoteLibraryWithHandler:(id)a3
+- (void)hasRemoteLibraryWithHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    (*(a3 + 2))(a3, 1);
+    (*(handler + 2))(handler, 1);
   }
 }
 
-- (void)prepareForBackupRestoreWithExistingPreferencesData:(id)a3 handler:(id)a4
+- (void)prepareForBackupRestoreWithExistingPreferencesData:(id)data handler:(id)handler
 {
-  v4 = a4;
+  handlerCopy = handler;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1569,15 +1569,15 @@ LABEL_9:
     }
   }
 
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)prepareForBackupRestoreWithRequiredFileURLs:(id)a3 destinationFileHandles:(id)a4 handler:(id)a5
+- (void)prepareForBackupRestoreWithRequiredFileURLs:(id)ls destinationFileHandles:(id)handles handler:(id)handler
 {
-  v5 = a5;
+  handlerCopy = handler;
   v6 = pk_General_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -1592,15 +1592,15 @@ LABEL_9:
     }
   }
 
-  if (v5)
+  if (handlerCopy)
   {
-    v5[2](v5);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)requestIssuerBindingDataForIssuerData:(id)a3 completion:(id)a4
+- (void)requestIssuerBindingDataForIssuerData:(id)data completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1615,7 +1615,7 @@ LABEL_9:
     }
   }
 
-  if (v4)
+  if (completionCopy)
   {
     v8 = NPKErrorDomain;
     v11 = NSLocalizedDescriptionKey;
@@ -1623,13 +1623,13 @@ LABEL_9:
     v9 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
     v10 = [NSError errorWithDomain:v8 code:-1000 userInfo:v9];
 
-    v4[2](v4, 0, v10);
+    completionCopy[2](completionCopy, 0, v10);
   }
 }
 
-- (void)usingSynchronousProxy:(BOOL)a3 canAddCarKeyPassWithConfiguration:(id)a4 completion:(id)a5
+- (void)usingSynchronousProxy:(BOOL)proxy canAddCarKeyPassWithConfiguration:(id)configuration completion:(id)completion
 {
-  v5 = a5;
+  completionCopy = completion;
   v6 = pk_General_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -1644,7 +1644,7 @@ LABEL_9:
     }
   }
 
-  if (v5)
+  if (completionCopy)
   {
     v9 = NPKErrorDomain;
     v12 = NSLocalizedDescriptionKey;
@@ -1652,13 +1652,13 @@ LABEL_9:
     v10 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
     v11 = [NSError errorWithDomain:v9 code:-1000 userInfo:v10];
 
-    (*(v5 + 2))(v5, 0, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v11);
   }
 }
 
-- (void)usingSynchronousProxy:(BOOL)a3 meetsProvisioningRequirements:(id)a4 completion:(id)a5
+- (void)usingSynchronousProxy:(BOOL)proxy meetsProvisioningRequirements:(id)requirements completion:(id)completion
 {
-  v5 = a5;
+  completionCopy = completion;
   v6 = pk_General_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -1673,15 +1673,15 @@ LABEL_9:
     }
   }
 
-  if (v5)
+  if (completionCopy)
   {
-    (*(v5 + 2))(v5, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)isIssuerAppProvisioningSupportedWithHandler:(id)a3
+- (void)isIssuerAppProvisioningSupportedWithHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = pk_General_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
 
@@ -1696,15 +1696,15 @@ LABEL_9:
     }
   }
 
-  if (v3)
+  if (handlerCopy)
   {
-    v3[2](v3, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)usingSynchronousProxy:(BOOL)a3 dynamicStateForPassUniqueID:(id)a4 handler:(id)a5
+- (void)usingSynchronousProxy:(BOOL)proxy dynamicStateForPassUniqueID:(id)d handler:(id)handler
 {
-  v5 = a5;
+  handlerCopy = handler;
   v6 = pk_General_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -1719,15 +1719,15 @@ LABEL_9:
     }
   }
 
-  if (v5)
+  if (handlerCopy)
   {
-    v5[2](v5, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)usingSynchronousProxy:(BOOL)a3 setLiveRenderingEnabled:(BOOL)a4 forPassUniqueID:(id)a5 handler:(id)a6
+- (void)usingSynchronousProxy:(BOOL)proxy setLiveRenderingEnabled:(BOOL)enabled forPassUniqueID:(id)d handler:(id)handler
 {
-  v6 = a6;
+  handlerCopy = handler;
   v7 = pk_General_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
 
@@ -1742,15 +1742,15 @@ LABEL_9:
     }
   }
 
-  if (v6)
+  if (handlerCopy)
   {
-    v6[2](v6, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)getPassesWithSearchableTransactions:(id)a3
+- (void)getPassesWithSearchableTransactions:(id)transactions
 {
-  v3 = a3;
+  transactionsCopy = transactions;
   v4 = pk_General_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
 
@@ -1765,12 +1765,12 @@ LABEL_9:
     }
   }
 
-  v3[2](v3, 0);
+  transactionsCopy[2](transactionsCopy, 0);
 }
 
-- (void)hasPassesInExpiredSectionWithHandler:(id)a3
+- (void)hasPassesInExpiredSectionWithHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = pk_General_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
 
@@ -1785,12 +1785,12 @@ LABEL_9:
     }
   }
 
-  v3[2](v3, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)isWatchIssuerAppProvisioningSupportedWithHandler:(id)a3
+- (void)isWatchIssuerAppProvisioningSupportedWithHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = pk_General_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
 
@@ -1805,15 +1805,15 @@ LABEL_9:
     }
   }
 
-  if (v3)
+  if (handlerCopy)
   {
-    v3[2](v3, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)unexpiredPassesOrderedByGroup:(id)a3
+- (void)unexpiredPassesOrderedByGroup:(id)group
 {
-  v3 = a3;
+  groupCopy = group;
   v4 = pk_General_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
 
@@ -1828,15 +1828,15 @@ LABEL_9:
     }
   }
 
-  if (v3)
+  if (groupCopy)
   {
-    v3[2](v3, 0);
+    groupCopy[2](groupCopy, 0);
   }
 }
 
-- (void)archivePassWithUniqueID:(id)a3 handler:(id)a4
+- (void)archivePassWithUniqueID:(id)d handler:(id)handler
 {
-  v4 = a4;
+  handlerCopy = handler;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1851,15 +1851,15 @@ LABEL_9:
     }
   }
 
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)getPassesWithReaderIdentifier:(id)a3 handler:(id)a4
+- (void)getPassesWithReaderIdentifier:(id)identifier handler:(id)handler
 {
-  v4 = a4;
+  handlerCopy = handler;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1874,15 +1874,15 @@ LABEL_9:
     }
   }
 
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)passUniqueIDsMatchingSearchTerm:(id)a3 completion:(id)a4
+- (void)passUniqueIDsMatchingSearchTerm:(id)term completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1897,15 +1897,15 @@ LABEL_9:
     }
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)authorizationStatusForCapability:(int64_t)a3 handler:(id)a4
+- (void)authorizationStatusForCapability:(int64_t)capability handler:(id)handler
 {
-  v4 = a4;
+  handlerCopy = handler;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1920,15 +1920,15 @@ LABEL_9:
     }
   }
 
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4, -1);
+    handlerCopy[2](handlerCopy, -1);
   }
 }
 
-- (void)requestAuthorizationForCapability:(int64_t)a3 handler:(id)a4
+- (void)requestAuthorizationForCapability:(int64_t)capability handler:(id)handler
 {
-  v4 = a4;
+  handlerCopy = handler;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1943,15 +1943,15 @@ LABEL_9:
     }
   }
 
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4, -1);
+    handlerCopy[2](handlerCopy, -1);
   }
 }
 
-- (void)resetAuthorizationForCapability:(int64_t)a3 handler:(id)a4
+- (void)resetAuthorizationForCapability:(int64_t)capability handler:(id)handler
 {
-  v4 = a4;
+  handlerCopy = handler;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1966,15 +1966,15 @@ LABEL_9:
     }
   }
 
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)hasPassWithUniqueID:(id)a3 handler:(id)a4
+- (void)hasPassWithUniqueID:(id)d handler:(id)handler
 {
-  v4 = a4;
+  handlerCopy = handler;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1989,15 +1989,15 @@ LABEL_9:
     }
   }
 
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)simulateFlightUpdate:(id)a3 forPassUniqueID:(id)a4 handler:(id)a5
+- (void)simulateFlightUpdate:(id)update forPassUniqueID:(id)d handler:(id)handler
 {
-  v5 = a5;
+  handlerCopy = handler;
   v6 = pk_General_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -2012,9 +2012,9 @@ LABEL_9:
     }
   }
 
-  if (v5)
+  if (handlerCopy)
   {
-    v5[2](v5, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
@@ -2035,9 +2035,9 @@ LABEL_9:
   }
 }
 
-- (void)passesWithPrimaryPaymentApplicationStates:(id)a3 handler:(id)a4
+- (void)passesWithPrimaryPaymentApplicationStates:(id)states handler:(id)handler
 {
-  v4 = a4;
+  handlerCopy = handler;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -2052,15 +2052,15 @@ LABEL_9:
     }
   }
 
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)addSharedFlight:(id)a3 fromSenderAddress:(id)a4 handler:(id)a5
+- (void)addSharedFlight:(id)flight fromSenderAddress:(id)address handler:(id)handler
 {
-  v5 = a5;
+  handlerCopy = handler;
   v6 = pk_General_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -2075,112 +2075,112 @@ LABEL_9:
     }
   }
 
-  if (v5)
+  if (handlerCopy)
   {
-    v5[2](v5, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
 - (id)_deviceName
 {
   v2 = +[NRPairedDeviceRegistry sharedInstance];
-  v3 = [v2 getActivePairedDevice];
-  v4 = [v3 valueForProperty:NRDevicePropertyName];
+  getActivePairedDevice = [v2 getActivePairedDevice];
+  v4 = [getActivePairedDevice valueForProperty:NRDevicePropertyName];
 
   return v4;
 }
 
-- (id)_filteredAndConfiguredPassForPaymentPass:(id)a3 deviceName:(id)a4
+- (id)_filteredAndConfiguredPassForPaymentPass:(id)pass deviceName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NPDCompanionPassLibrary *)self dataSource];
-  v9 = [v8 secureElementIdentifiers];
+  passCopy = pass;
+  nameCopy = name;
+  dataSource = [(NPDCompanionPassLibrary *)self dataSource];
+  secureElementIdentifiers = [dataSource secureElementIdentifiers];
 
-  if (v9)
+  if (secureElementIdentifiers)
   {
     NPKIdentifyDevicePaymentApplicationsForPass();
   }
 
   v10 = +[NPKGizmoDatabase sharedDatabase];
-  v11 = [v6 uniqueID];
-  v12 = [v10 transitAppletStateForPassWithUniqueID:v11];
+  uniqueID = [passCopy uniqueID];
+  v12 = [v10 transitAppletStateForPassWithUniqueID:uniqueID];
 
   NPKUpdateTransitPassPropertiesForPass();
   v13 = +[NPKGizmoDatabase sharedDatabase];
-  v14 = [v6 uniqueID];
-  v15 = [v13 transactionSourceIdentifierForPassWithUniqueID:v14];
+  uniqueID2 = [passCopy uniqueID];
+  v15 = [v13 transactionSourceIdentifierForPassWithUniqueID:uniqueID2];
 
   NPKUpdateTransactionSourceIdentifierForPass();
   v16 = +[NPKGizmoDatabase sharedDatabase];
-  v17 = [v6 uniqueID];
-  v18 = [v16 passForUniqueID:v17 includeImageSets:0];
+  uniqueID3 = [passCopy uniqueID];
+  v18 = [v16 passForUniqueID:uniqueID3 includeImageSets:0];
 
-  [v6 setSettings:{objc_msgSend(v18, "settings")}];
-  v19 = [(NPDPassLibrary *)self filter];
-  v20 = [v19 allowlist];
+  [passCopy setSettings:{objc_msgSend(v18, "settings")}];
+  filter = [(NPDPassLibrary *)self filter];
+  allowlist = [filter allowlist];
 
-  if (([v20 passesAllAccess] & 1) == 0 && (objc_msgSend(v20, "paymentAllAccess") & 1) == 0)
+  if (([allowlist passesAllAccess] & 1) == 0 && (objc_msgSend(allowlist, "paymentAllAccess") & 1) == 0)
   {
-    [v6 sanitizePaymentApplications];
+    [passCopy sanitizePaymentApplications];
   }
 
-  [v6 setRemotePass:1];
-  [v6 setDeviceName:v7];
+  [passCopy setRemotePass:1];
+  [passCopy setDeviceName:nameCopy];
 
-  [v6 setPassLibraryMachServiceName:PKCompanionWatchPassLibraryMachServiceName];
-  v21 = [(NPDPassLibrary *)self filter];
-  v22 = [v21 filterPassIfNeeded:v6];
+  [passCopy setPassLibraryMachServiceName:PKCompanionWatchPassLibraryMachServiceName];
+  filter2 = [(NPDPassLibrary *)self filter];
+  v22 = [filter2 filterPassIfNeeded:passCopy];
 
   return v22;
 }
 
-- (void)_handleCompanionPassDatabaseNotification:(id)a3
+- (void)_handleCompanionPassDatabaseNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [(NPDCompanionPassLibrary *)self companionPaymentPassDatabase];
+  notificationCopy = notification;
+  object = [notificationCopy object];
+  companionPaymentPassDatabase = [(NPDCompanionPassLibrary *)self companionPaymentPassDatabase];
 
-  if (v5 == v6)
+  if (object == companionPaymentPassDatabase)
   {
-    v7 = [v4 name];
-    v8 = [v7 isEqualToString:@"com.apple.NanoPassKit.NPDCompanionPaymentPassDatabase.CatalogChanged"];
+    name = [notificationCopy name];
+    v8 = [name isEqualToString:@"com.apple.NanoPassKit.NPDCompanionPaymentPassDatabase.CatalogChanged"];
 
     if (v8)
     {
-      v9 = [v4 userInfo];
-      v10 = [v9 objectForKeyedSubscript:@"Catalog"];
+      userInfo = [notificationCopy userInfo];
+      v10 = [userInfo objectForKeyedSubscript:@"Catalog"];
 
       if (v10)
       {
-        v11 = [(NPDPassLibrary *)self filter];
-        v12 = [v11 allowlist];
-        v13 = [v12 passesAllAccess];
+        filter = [(NPDPassLibrary *)self filter];
+        allowlist = [filter allowlist];
+        passesAllAccess = [allowlist passesAllAccess];
 
-        if (v13)
+        if (passesAllAccess)
         {
           v25 = _NSConcreteStackBlock;
           v26 = 3221225472;
           v27 = sub_1000428DC;
           v28 = &unk_100072B60;
-          v29 = self;
+          selfCopy = self;
           v30 = v10;
           [(NPDCompanionPassLibrary *)self getPassesWithHandler:&v25];
         }
       }
     }
 
-    v14 = [v4 userInfo];
-    v15 = [v14 objectForKeyedSubscript:@"Pass"];
+    userInfo2 = [notificationCopy userInfo];
+    v15 = [userInfo2 objectForKeyedSubscript:@"Pass"];
 
-    v16 = [v15 paymentPass];
-    v17 = [(NPDCompanionPassLibrary *)self _deviceName];
-    v18 = [(NPDCompanionPassLibrary *)self _filteredAndConfiguredPassForPaymentPass:v16 deviceName:v17];
+    paymentPass = [v15 paymentPass];
+    _deviceName = [(NPDCompanionPassLibrary *)self _deviceName];
+    v18 = [(NPDCompanionPassLibrary *)self _filteredAndConfiguredPassForPaymentPass:paymentPass deviceName:_deviceName];
 
     if (v18)
     {
-      v19 = [v4 name];
-      v20 = [v19 isEqualToString:@"com.apple.NanoPassKit.NPDCompanionPaymentPassDatabase.PassAdded"];
+      name2 = [notificationCopy name];
+      v20 = [name2 isEqualToString:@"com.apple.NanoPassKit.NPDCompanionPaymentPassDatabase.PassAdded"];
 
       if (v20)
       {
@@ -2189,8 +2189,8 @@ LABEL_9:
 
       else
       {
-        v21 = [v4 name];
-        v22 = [v21 isEqualToString:@"com.apple.NanoPassKit.NPDCompanionPaymentPassDatabase.PassUpdated"];
+        name3 = [notificationCopy name];
+        v22 = [name3 isEqualToString:@"com.apple.NanoPassKit.NPDCompanionPaymentPassDatabase.PassUpdated"];
 
         if (v22)
         {
@@ -2199,8 +2199,8 @@ LABEL_9:
 
         else
         {
-          v23 = [v4 name];
-          v24 = [v23 isEqualToString:@"com.apple.NanoPassKit.NPDCompanionPaymentPassDatabase.PassRemoved"];
+          name4 = [notificationCopy name];
+          v24 = [name4 isEqualToString:@"com.apple.NanoPassKit.NPDCompanionPaymentPassDatabase.PassRemoved"];
 
           if (v24)
           {

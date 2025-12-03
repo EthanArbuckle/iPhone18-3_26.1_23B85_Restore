@@ -1,27 +1,27 @@
 @interface WiFiPickerManager
-- (WiFiPickerManager)initWithConfiguration:(id)a3 context:(id)a4;
+- (WiFiPickerManager)initWithConfiguration:(id)configuration context:(id)context;
 - (id)presentingViewController;
 - (void)beginScan;
 - (void)dealloc;
 - (void)endScan;
-- (void)updateCurrentNetwork:(id)a3;
-- (void)updateScannedNetworks:(id)a3;
-- (void)updateScannedNetworksWithInfo:(id)a3;
+- (void)updateCurrentNetwork:(id)network;
+- (void)updateScannedNetworks:(id)networks;
+- (void)updateScannedNetworksWithInfo:(id)info;
 @end
 
 @implementation WiFiPickerManager
 
-- (WiFiPickerManager)initWithConfiguration:(id)a3 context:(id)a4
+- (WiFiPickerManager)initWithConfiguration:(id)configuration context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = WiFiPickerManager;
   v8 = [(WiFiPickerManager *)&v13 init];
   if (v8)
   {
-    v9 = [v6 pickerConfigurationSwift];
-    v10 = [[WiFiPickerManager_Swift alloc] initWithConfiguration:v9 context:v7];
+    pickerConfigurationSwift = [configurationCopy pickerConfigurationSwift];
+    v10 = [[WiFiPickerManager_Swift alloc] initWithConfiguration:pickerConfigurationSwift context:contextCopy];
     pickerManagerSwift = v8->_pickerManagerSwift;
     v8->_pickerManagerSwift = v10;
   }
@@ -41,48 +41,48 @@
 
 - (id)presentingViewController
 {
-  v2 = [(WiFiPickerManager *)self pickerManagerSwift];
-  v3 = [v2 presentingViewController];
+  pickerManagerSwift = [(WiFiPickerManager *)self pickerManagerSwift];
+  presentingViewController = [pickerManagerSwift presentingViewController];
 
-  return v3;
+  return presentingViewController;
 }
 
 - (void)beginScan
 {
-  v2 = [(WiFiPickerManager *)self pickerManagerSwift];
-  [v2 beginScan];
+  pickerManagerSwift = [(WiFiPickerManager *)self pickerManagerSwift];
+  [pickerManagerSwift beginScan];
 }
 
 - (void)endScan
 {
-  v2 = [(WiFiPickerManager *)self pickerManagerSwift];
-  [v2 endScan];
+  pickerManagerSwift = [(WiFiPickerManager *)self pickerManagerSwift];
+  [pickerManagerSwift endScan];
 }
 
-- (void)updateCurrentNetwork:(id)a3
+- (void)updateCurrentNetwork:(id)network
 {
-  v6 = a3;
+  networkCopy = network;
   objc_opt_class();
-  v4 = v6;
+  wifiNetworkSwift = networkCopy;
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v6 wifiNetworkSwift];
+    wifiNetworkSwift = [networkCopy wifiNetworkSwift];
   }
 
-  v5 = [(WiFiPickerManager *)self pickerManagerSwift];
-  [v5 updateCurrentNetwork:v4];
+  pickerManagerSwift = [(WiFiPickerManager *)self pickerManagerSwift];
+  [pickerManagerSwift updateCurrentNetwork:wifiNetworkSwift];
 }
 
-- (void)updateScannedNetworks:(id)a3
+- (void)updateScannedNetworks:(id)networks
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  networksCopy = networks;
   v5 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = networksCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -102,9 +102,9 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [v11 wifiNetworkSwift];
+          wifiNetworkSwift = [v11 wifiNetworkSwift];
 
-          v11 = v12;
+          v11 = wifiNetworkSwift;
         }
 
         [v5 addObject:{v11, v15}];
@@ -119,17 +119,17 @@
     while (v8);
   }
 
-  v13 = [(WiFiPickerManager *)self pickerManagerSwift];
-  [v13 updateScannedNetworks:v5];
+  pickerManagerSwift = [(WiFiPickerManager *)self pickerManagerSwift];
+  [pickerManagerSwift updateScannedNetworks:v5];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateScannedNetworksWithInfo:(id)a3
+- (void)updateScannedNetworksWithInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(WiFiPickerManager *)self pickerManagerSwift];
-  [v5 updateScannedNetworksWithInfo:v4];
+  infoCopy = info;
+  pickerManagerSwift = [(WiFiPickerManager *)self pickerManagerSwift];
+  [pickerManagerSwift updateScannedNetworksWithInfo:infoCopy];
 }
 
 @end

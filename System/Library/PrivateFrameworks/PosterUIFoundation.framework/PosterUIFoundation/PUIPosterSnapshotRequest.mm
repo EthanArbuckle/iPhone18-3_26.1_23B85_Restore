@@ -1,25 +1,25 @@
 @interface PUIPosterSnapshotRequest
-- (PUIPosterSnapshotRequest)initWithPath:(id)a3 sceneSettingsApplicator:(id)a4 priority:(int64_t)a5 snapshotDescriptor:(id)a6 retryCount:(unint64_t)a7 timeout:(double)a8;
+- (PUIPosterSnapshotRequest)initWithPath:(id)path sceneSettingsApplicator:(id)applicator priority:(int64_t)priority snapshotDescriptor:(id)descriptor retryCount:(unint64_t)count timeout:(double)timeout;
 @end
 
 @implementation PUIPosterSnapshotRequest
 
-- (PUIPosterSnapshotRequest)initWithPath:(id)a3 sceneSettingsApplicator:(id)a4 priority:(int64_t)a5 snapshotDescriptor:(id)a6 retryCount:(unint64_t)a7 timeout:(double)a8
+- (PUIPosterSnapshotRequest)initWithPath:(id)path sceneSettingsApplicator:(id)applicator priority:(int64_t)priority snapshotDescriptor:(id)descriptor retryCount:(unint64_t)count timeout:(double)timeout
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a6;
-  if (!v16)
+  pathCopy = path;
+  applicatorCopy = applicator;
+  descriptorCopy = descriptor;
+  if (!pathCopy)
   {
     [PUIPosterSnapshotRequest initWithPath:a2 sceneSettingsApplicator:? priority:? snapshotDescriptor:? retryCount:? timeout:?];
   }
 
-  if (!v17)
+  if (!applicatorCopy)
   {
     [PUIPosterSnapshotRequest initWithPath:a2 sceneSettingsApplicator:? priority:? snapshotDescriptor:? retryCount:? timeout:?];
   }
 
-  v19 = v18;
+  v19 = descriptorCopy;
   NSClassFromString(&cfstr_Puipostersnaps_11.isa);
   if (!v19)
   {
@@ -36,30 +36,30 @@
   v20 = [(PUIPosterSnapshotRequest *)&v33 init];
   if (v20)
   {
-    v21 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     date = v20->_date;
-    v20->_date = v21;
+    v20->_date = date;
 
-    objc_storeStrong(&v20->_path, a3);
-    v23 = [v16 serverIdentity];
-    v24 = [v23 provider];
+    objc_storeStrong(&v20->_path, path);
+    serverIdentity = [pathCopy serverIdentity];
+    provider = [serverIdentity provider];
     provider = v20->_provider;
-    v20->_provider = v24;
+    v20->_provider = provider;
 
-    v26 = [v17 copy];
+    v26 = [applicatorCopy copy];
     sceneSettingsApplicator = v20->_sceneSettingsApplicator;
     v20->_sceneSettingsApplicator = v26;
 
-    v20->_priority = a5;
-    v20->_retryCount = a7;
+    v20->_priority = priority;
+    v20->_retryCount = count;
     v28 = [v19 copy];
     snapshotDescriptor = v20->_snapshotDescriptor;
     v20->_snapshotDescriptor = v28;
 
-    v20->_timeoutInterval = a8;
-    v30 = [MEMORY[0x1E696AFB0] UUID];
+    v20->_timeoutInterval = timeout;
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     uniqueIdentifier = v20->_uniqueIdentifier;
-    v20->_uniqueIdentifier = v30;
+    v20->_uniqueIdentifier = uUID;
   }
 
   return v20;

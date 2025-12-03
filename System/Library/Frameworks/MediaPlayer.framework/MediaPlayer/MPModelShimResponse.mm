@@ -1,21 +1,21 @@
 @interface MPModelShimResponse
-- (MPModelShimResponse)initWithRequest:(id)a3 middleware:(id)a4;
+- (MPModelShimResponse)initWithRequest:(id)request middleware:(id)middleware;
 @end
 
 @implementation MPModelShimResponse
 
-- (MPModelShimResponse)initWithRequest:(id)a3 middleware:(id)a4
+- (MPModelShimResponse)initWithRequest:(id)request middleware:(id)middleware
 {
-  v6 = a4;
+  middlewareCopy = middleware;
   v12.receiver = self;
   v12.super_class = MPModelShimResponse;
-  v7 = [(MPResponse *)&v12 initWithRequest:a3 middleware:v6];
+  v7 = [(MPResponse *)&v12 initWithRequest:request middleware:middlewareCopy];
   if (v7)
   {
-    v8 = [v6 firstObject];
-    v9 = [v8 modelResponse];
+    firstObject = [middlewareCopy firstObject];
+    modelResponse = [firstObject modelResponse];
     modelResponse = v7->_modelResponse;
-    v7->_modelResponse = v9;
+    v7->_modelResponse = modelResponse;
   }
 
   return v7;

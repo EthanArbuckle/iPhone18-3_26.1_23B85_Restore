@@ -1,7 +1,7 @@
 @interface FCAVAssetFactory
 - (FCAVAssetFactory)init;
-- (id)assetWithIdentifier:(id)a3 remoteURL:(id)a4 overrideMIMEType:(id)a5;
-- (id)initWithAssetCache:(void *)a3 assetKeyCache:(void *)a4 assetKeyManager:(void *)a5 assetResourceLoader:;
+- (id)assetWithIdentifier:(id)identifier remoteURL:(id)l overrideMIMEType:(id)type;
+- (id)initWithAssetCache:(void *)cache assetKeyCache:(void *)keyCache assetKeyManager:(void *)manager assetResourceLoader:;
 @end
 
 @implementation FCAVAssetFactory
@@ -32,42 +32,42 @@
   objc_exception_throw(v6);
 }
 
-- (id)initWithAssetCache:(void *)a3 assetKeyCache:(void *)a4 assetKeyManager:(void *)a5 assetResourceLoader:
+- (id)initWithAssetCache:(void *)cache assetKeyCache:(void *)keyCache assetKeyManager:(void *)manager assetResourceLoader:
 {
   v10 = a2;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (a1)
+  cacheCopy = cache;
+  keyCacheCopy = keyCache;
+  managerCopy = manager;
+  if (self)
   {
-    v20.receiver = a1;
+    v20.receiver = self;
     v20.super_class = FCAVAssetFactory;
     v14 = objc_msgSendSuper2(&v20, sel_init);
-    a1 = v14;
+    self = v14;
     if (v14)
     {
       objc_storeStrong(v14 + 1, a2);
-      objc_storeStrong(a1 + 2, a3);
-      objc_storeStrong(a1 + 3, a4);
-      objc_storeStrong(a1 + 4, a5);
+      objc_storeStrong(self + 2, cache);
+      objc_storeStrong(self + 3, keyCache);
+      objc_storeStrong(self + 4, manager);
       v15 = +[FCMapTable strongToWeakObjectsMapTable];
-      v16 = a1[5];
-      a1[5] = v15;
+      v16 = self[5];
+      self[5] = v15;
 
       v17 = [objc_alloc(MEMORY[0x1E69B6920]) initWithOptions:1];
-      v18 = a1[6];
-      a1[6] = v17;
+      v18 = self[6];
+      self[6] = v17;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (id)assetWithIdentifier:(id)a3 remoteURL:(id)a4 overrideMIMEType:(id)a5
+- (id)assetWithIdentifier:(id)identifier remoteURL:(id)l overrideMIMEType:(id)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  lCopy = l;
+  typeCopy = type;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -90,12 +90,12 @@
   v18[2] = __67__FCAVAssetFactory_assetWithIdentifier_remoteURL_overrideMIMEType___block_invoke;
   v18[3] = &unk_1E7C47998;
   v18[4] = self;
-  v13 = v8;
+  v13 = identifierCopy;
   v19 = v13;
   v22 = &v23;
-  v14 = v9;
+  v14 = lCopy;
   v20 = v14;
-  v15 = v10;
+  v15 = typeCopy;
   v21 = v15;
   [(NFUnfairLock *)v12 performWithLockSync:v18];
 

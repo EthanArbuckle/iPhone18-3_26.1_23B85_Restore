@@ -1,16 +1,16 @@
 @interface APRotationRequestor
 - (void)connectionInterrupted;
 - (void)connectionInvalidated;
-- (void)rotate:(id)a3;
+- (void)rotate:(id)rotate;
 @end
 
 @implementation APRotationRequestor
 
-- (void)rotate:(id)a3
+- (void)rotate:(id)rotate
 {
-  v4 = a3;
+  rotateCopy = rotate;
   v12 = objc_msgSend_synchronousRemoteObjectProxyWithErrorHandler_(self, v5, &unk_1F38F47A0, v6);
-  objc_msgSend_rotate_(v12, v7, v4, v8);
+  objc_msgSend_rotate_(v12, v7, rotateCopy, v8);
 
   objc_msgSend_finished(self, v9, v10, v11);
 }

@@ -1,23 +1,23 @@
 @interface CNXPCDataMapperProgressiveHandler
-- (CNXPCDataMapperProgressiveHandler)initWithProgressBlock:(id)a3 completionBlock:(id)a4;
+- (CNXPCDataMapperProgressiveHandler)initWithProgressBlock:(id)block completionBlock:(id)completionBlock;
 @end
 
 @implementation CNXPCDataMapperProgressiveHandler
 
-- (CNXPCDataMapperProgressiveHandler)initWithProgressBlock:(id)a3 completionBlock:(id)a4
+- (CNXPCDataMapperProgressiveHandler)initWithProgressBlock:(id)block completionBlock:(id)completionBlock
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   v15.receiver = self;
   v15.super_class = CNXPCDataMapperProgressiveHandler;
   v8 = [(CNXPCDataMapperProgressiveHandler *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [blockCopy copy];
     progressBlock = v8->_progressBlock;
     v8->_progressBlock = v9;
 
-    v11 = [v7 copy];
+    v11 = [completionBlockCopy copy];
     completionBlock = v8->_completionBlock;
     v8->_completionBlock = v11;
 

@@ -1,14 +1,14 @@
 @interface AVVideoCompositionTimeWindow
-- (AVVideoCompositionTimeWindow)initWithDurationBefore:(id *)a3 durationAfter:(id *)a4;
-- (AVVideoCompositionTimeWindow)initWithDurationBefore:(id *)a3 durationAfter:(id *)a4 durationBeforeWhenSeeking:(id *)a5 durationAfterWhenSeeking:(id *)a6;
-- (BOOL)isEqual:(id)a3;
+- (AVVideoCompositionTimeWindow)initWithDurationBefore:(id *)before durationAfter:(id *)after;
+- (AVVideoCompositionTimeWindow)initWithDurationBefore:(id *)before durationAfter:(id *)after durationBeforeWhenSeeking:(id *)seeking durationAfterWhenSeeking:(id *)whenSeeking;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation AVVideoCompositionTimeWindow
 
-- (AVVideoCompositionTimeWindow)initWithDurationBefore:(id *)a3 durationAfter:(id *)a4 durationBeforeWhenSeeking:(id *)a5 durationAfterWhenSeeking:(id *)a6
+- (AVVideoCompositionTimeWindow)initWithDurationBefore:(id *)before durationAfter:(id *)after durationBeforeWhenSeeking:(id *)seeking durationAfterWhenSeeking:(id *)whenSeeking
 {
   v42.receiver = self;
   v42.super_class = AVVideoCompositionTimeWindow;
@@ -17,41 +17,41 @@
   if (v11)
   {
     v13 = MEMORY[0x1E6960CC0];
-    if ((a3->var2 & 1) == 0)
+    if ((before->var2 & 1) == 0)
     {
-      *&a3->var0 = *MEMORY[0x1E6960CC0];
-      a3->var3 = *(v13 + 2);
+      *&before->var0 = *MEMORY[0x1E6960CC0];
+      before->var3 = *(v13 + 2);
     }
 
-    if ((a4->var2 & 1) == 0)
+    if ((after->var2 & 1) == 0)
     {
-      *&a4->var0 = *v13;
-      a4->var3 = *(v13 + 2);
+      *&after->var0 = *v13;
+      after->var3 = *(v13 + 2);
     }
 
-    if ((a5->var2 & 1) == 0)
+    if ((seeking->var2 & 1) == 0)
     {
-      v14 = *&a3->var0;
-      a5->var3 = a3->var3;
-      *&a5->var0 = v14;
+      v14 = *&before->var0;
+      seeking->var3 = before->var3;
+      *&seeking->var0 = v14;
     }
 
-    if ((a6->var2 & 1) == 0)
+    if ((whenSeeking->var2 & 1) == 0)
     {
-      v15 = *&a4->var0;
-      a6->var3 = a4->var3;
-      *&a6->var0 = v15;
+      v15 = *&after->var0;
+      whenSeeking->var3 = after->var3;
+      *&whenSeeking->var0 = v15;
     }
 
-    if ((a3->var2 & 0x1D) == 1)
+    if ((before->var2 & 0x1D) == 1)
     {
-      if ((a4->var2 & 0x1D) == 1)
+      if ((after->var2 & 0x1D) == 1)
       {
-        if ((a5->var2 & 0x1D) == 1)
+        if ((seeking->var2 & 0x1D) == 1)
         {
-          if ((a6->var2 & 0x1D) == 1)
+          if ((whenSeeking->var2 & 0x1D) == 1)
           {
-            time1 = *a3;
+            time1 = *before;
             v39 = *v13;
             *&time2.value = *v13;
             v16 = *(v13 + 2);
@@ -66,7 +66,7 @@
 
             else
             {
-              time1 = *a4;
+              time1 = *after;
               *&time2.value = v39;
               time2.epoch = v16;
               if (CMTimeCompare(&time1, &time2) < 0)
@@ -79,7 +79,7 @@
 
               else
               {
-                time1 = *a5;
+                time1 = *seeking;
                 *&time2.value = v39;
                 time2.epoch = v16;
                 if (CMTimeCompare(&time1, &time2) < 0)
@@ -92,22 +92,22 @@
 
                 else
                 {
-                  time1 = *a6;
+                  time1 = *whenSeeking;
                   *&time2.value = v39;
                   time2.epoch = v16;
                   if ((CMTimeCompare(&time1, &time2) & 0x80000000) == 0)
                   {
-                    v17 = *&a3->var0;
-                    v12->_durationBefore.epoch = a3->var3;
+                    v17 = *&before->var0;
+                    v12->_durationBefore.epoch = before->var3;
                     *&v12->_durationBefore.value = v17;
-                    v18 = *&a4->var0;
-                    v12->_durationAfter.epoch = a4->var3;
+                    v18 = *&after->var0;
+                    v12->_durationAfter.epoch = after->var3;
                     *&v12->_durationAfter.value = v18;
-                    v19 = *&a5->var0;
-                    v12->_durationBeforeWhenSeeking.epoch = a5->var3;
+                    v19 = *&seeking->var0;
+                    v12->_durationBeforeWhenSeeking.epoch = seeking->var3;
                     *&v12->_durationBeforeWhenSeeking.value = v19;
-                    v20 = *&a6->var0;
-                    v12->_durationAfterWhenSeeking.epoch = a6->var3;
+                    v20 = *&whenSeeking->var0;
+                    v12->_durationAfterWhenSeeking.epoch = whenSeeking->var3;
                     *&v12->_durationAfterWhenSeeking.value = v20;
                     return v12;
                   }
@@ -163,18 +163,18 @@
   return v12;
 }
 
-- (AVVideoCompositionTimeWindow)initWithDurationBefore:(id *)a3 durationAfter:(id *)a4
+- (AVVideoCompositionTimeWindow)initWithDurationBefore:(id *)before durationAfter:(id *)after
 {
-  v8 = *a3;
-  v7 = *a4;
-  v6 = *a3;
-  v5 = *a4;
+  v8 = *before;
+  v7 = *after;
+  v6 = *before;
+  v5 = *after;
   return [(AVVideoCompositionTimeWindow *)self initWithDurationBefore:&v8 durationAfter:&v7 durationBeforeWhenSeeking:&v6 durationAfterWhenSeeking:&v5];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -207,15 +207,15 @@
   }
 
   memset(&v12[1], 0, sizeof(CMTime));
-  if (a3)
+  if (equal)
   {
-    [a3 durationBefore];
+    [equal durationBefore];
     memset(v12, 0, 24);
-    [a3 durationAfter];
+    [equal durationAfter];
     memset(&v11, 0, sizeof(v11));
-    [a3 durationBeforeWhenSeeking];
+    [equal durationBeforeWhenSeeking];
     memset(&v10, 0, sizeof(v10));
-    [a3 durationAfterWhenSeeking];
+    [equal durationAfterWhenSeeking];
   }
 
   else

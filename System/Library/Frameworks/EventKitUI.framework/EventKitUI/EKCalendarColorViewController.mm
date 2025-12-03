@@ -1,13 +1,13 @@
 @interface EKCalendarColorViewController
 - (CGSize)preferredContentSize;
 - (EKCalendarColorViewController)init;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)contentSizeCategoryDidChangeNotification:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)contentSizeCategoryDidChangeNotification:(id)notification;
 - (void)resetBackgroundColor;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation EKCalendarColorViewController
@@ -55,40 +55,40 @@ void __37__EKCalendarColorViewController_init__block_invoke(uint64_t a1)
   [(EKCalendarColorViewController *)&v3 viewDidLoad];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 addObserver:self selector:sel_contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x1E69DDC48] object:0];
+  appearCopy = appear;
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x1E69DDC48] object:0];
 
   v6.receiver = self;
   v6.super_class = EKCalendarColorViewController;
-  [(EKCalendarColorViewController *)&v6 viewDidAppear:v3];
+  [(EKCalendarColorViewController *)&v6 viewDidAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self];
+  disappearCopy = disappear;
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v6.receiver = self;
   v6.super_class = EKCalendarColorViewController;
-  [(EKCalendarColorViewController *)&v6 viewWillDisappear:v3];
+  [(EKCalendarColorViewController *)&v6 viewWillDisappear:disappearCopy];
 }
 
-- (void)contentSizeCategoryDidChangeNotification:(id)a3
+- (void)contentSizeCategoryDidChangeNotification:(id)notification
 {
   [(EKCalendarColorEditItem *)self->_editItem reset];
-  v4 = [(EKCalendarColorViewController *)self tableView];
-  [v4 reloadData];
+  tableView = [(EKCalendarColorViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)resetBackgroundColor
 {
-  v3 = [(UIViewController *)self isPresentedInsidePopover];
-  v5 = [(EKCalendarColorViewController *)self tableView];
-  if (v3)
+  isPresentedInsidePopover = [(UIViewController *)self isPresentedInsidePopover];
+  tableView = [(EKCalendarColorViewController *)self tableView];
+  if (isPresentedInsidePopover)
   {
     [MEMORY[0x1E69DC888] clearColor];
   }
@@ -98,35 +98,35 @@ void __37__EKCalendarColorViewController_init__block_invoke(uint64_t a1)
     [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
   }
   v4 = ;
-  [v5 setBackgroundColor:v4];
+  [tableView setBackgroundColor:v4];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   editItem = self->_editItem;
-  v5 = [a4 row];
+  v5 = [path row];
 
   return [(EKCalendarColorEditItem *)editItem cellForSubitemAtIndex:v5];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [v8 cellForRowAtIndexPath:v6];
+  viewCopy = view;
+  pathCopy = path;
+  v7 = [viewCopy cellForRowAtIndexPath:pathCopy];
   if ([v7 selectionStyle])
   {
-    [v8 selectRowAtIndexPath:0 animated:1 scrollPosition:0];
+    [viewCopy selectRowAtIndexPath:0 animated:1 scrollPosition:0];
   }
 
-  -[EKCalendarColorEditItem calendarEditor:didSelectSubitem:](self->_editItem, "calendarEditor:didSelectSubitem:", 0, [v6 row]);
+  -[EKCalendarColorEditItem calendarEditor:didSelectSubitem:](self->_editItem, "calendarEditor:didSelectSubitem:", 0, [pathCopy row]);
 }
 
 - (CGSize)preferredContentSize
 {
   v3 = EKUIContainedControllerIdealWidth();
-  v4 = [(EKCalendarColorViewController *)self tableView];
-  [v4 sizeThatFits:{v3, 1100.0}];
+  tableView = [(EKCalendarColorViewController *)self tableView];
+  [tableView sizeThatFits:{v3, 1100.0}];
   v6 = v5;
 
   v7 = v3;

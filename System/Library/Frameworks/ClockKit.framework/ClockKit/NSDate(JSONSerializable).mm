@@ -15,7 +15,7 @@
   }
 
   [v4 doubleValue];
-  v5 = [a1 initWithTimeIntervalSinceReferenceDate:?];
+  v5 = [self initWithTimeIntervalSinceReferenceDate:?];
 
   return v5;
 }
@@ -23,7 +23,7 @@
 - (uint64_t)JSONObjectRepresentation
 {
   v1 = MEMORY[0x277CCABB0];
-  [a1 timeIntervalSinceReferenceDate];
+  [self timeIntervalSinceReferenceDate];
 
   return [v1 numberWithDouble:?];
 }

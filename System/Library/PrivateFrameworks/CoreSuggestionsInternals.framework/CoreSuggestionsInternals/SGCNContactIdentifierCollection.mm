@@ -1,8 +1,8 @@
 @interface SGCNContactIdentifierCollection
-- (BOOL)_optimizeAndAddCNContactIdentifier:(id)a3;
+- (BOOL)_optimizeAndAddCNContactIdentifier:(id)identifier;
 - (SGCNContactIdentifierCollection)init;
 - (id)proxyArray;
-- (void)addCNContactIdentifier:(id)a3;
+- (void)addCNContactIdentifier:(id)identifier;
 @end
 
 @implementation SGCNContactIdentifierCollection
@@ -48,15 +48,15 @@ id __45__SGCNContactIdentifierCollection_proxyArray__block_invoke(uint64_t a1, u
   return v5;
 }
 
-- (BOOL)_optimizeAndAddCNContactIdentifier:(id)a3
+- (BOOL)_optimizeAndAddCNContactIdentifier:(id)identifier
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length] == 45)
+  identifierCopy = identifier;
+  if ([identifierCopy length] == 45)
   {
     *in = 0u;
     memset(v13, 0, 30);
-    if ([v4 getCString:in maxLength:46 encoding:1])
+    if ([identifierCopy getCString:in maxLength:46 encoding:1])
     {
       if (*&v13[5] == 0x6F7372655042413ALL && LOBYTE(v13[7]) == 110)
       {
@@ -89,12 +89,12 @@ LABEL_8:
   return v6;
 }
 
-- (void)addCNContactIdentifier:(id)a3
+- (void)addCNContactIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (![(SGCNContactIdentifierCollection *)self _optimizeAndAddCNContactIdentifier:?])
   {
-    [(NSMutableArray *)self->_unoptimizedIdentifiers addObject:v4];
+    [(NSMutableArray *)self->_unoptimizedIdentifiers addObject:identifierCopy];
   }
 }
 

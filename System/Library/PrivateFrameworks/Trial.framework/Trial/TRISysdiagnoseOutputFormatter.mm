@@ -1,17 +1,17 @@
 @interface TRISysdiagnoseOutputFormatter
-+ (id)formatRecords:(id)a3;
++ (id)formatRecords:(id)records;
 @end
 
 @implementation TRISysdiagnoseOutputFormatter
 
-+ (id)formatRecords:(id)a3
++ (id)formatRecords:(id)records
 {
   v48 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  recordsCopy = records;
+  if ([recordsCopy count])
   {
-    v34 = v3;
-    v4 = [v3 sortedArrayUsingComparator:&__block_literal_global_8];
+    v34 = recordsCopy;
+    v4 = [recordsCopy sortedArrayUsingComparator:&__block_literal_global_8];
     v5 = objc_opt_new();
     v6 = [MEMORY[0x277CBEBB0] timeZoneWithAbbreviation:@"UTC"];
     [v5 setTimeZone:v6];
@@ -27,10 +27,10 @@
     v38 = [obj countByEnumeratingWithState:&v43 objects:v47 count:16];
     if (v38)
     {
-      v8 = -1;
+      deploymentId = -1;
       v36 = *v44;
-      v9 = &stru_28435FC98;
-      v10 = &stru_28435FC98;
+      treatmentId2 = &stru_28435FC98;
+      experimentId2 = &stru_28435FC98;
       do
       {
         for (i = 0; i != v38; ++i)
@@ -46,23 +46,23 @@
           v39[2] = __47__TRISysdiagnoseOutputFormatter_formatRecords___block_invoke_2;
           v39[3] = &unk_27885EBC8;
           v39[4] = v12;
-          v13 = v10;
+          v13 = experimentId2;
           v40 = v13;
-          v42 = v8;
-          v14 = v9;
+          v42 = deploymentId;
+          v14 = treatmentId2;
           v41 = v14;
           if (__47__TRISysdiagnoseOutputFormatter_formatRecords___block_invoke_2(v39))
           {
             v15 = objc_alloc(MEMORY[0x277CCACA8]);
-            v16 = [v12 experimentId];
-            v17 = [v15 initWithFormat:@"    - experiment: %@.%d", v16, objc_msgSend(v12, "deploymentId")];
+            experimentId = [v12 experimentId];
+            v17 = [v15 initWithFormat:@"    - experiment: %@.%d", experimentId, objc_msgSend(v12, "deploymentId")];
 
             v18 = objc_alloc(MEMORY[0x277CCACA8]);
-            v19 = [v12 treatmentId];
-            v20 = [v18 initWithFormat:@"      treatment : %@", v19];
+            treatmentId = [v12 treatmentId];
+            v20 = [v18 initWithFormat:@"      treatment : %@", treatmentId];
 
-            v21 = [v12 namespaces];
-            v22 = [v21 _pas_mappedArrayWithTransform:&__block_literal_global_59];
+            namespaces = [v12 namespaces];
+            v22 = [namespaces _pas_mappedArrayWithTransform:&__block_literal_global_59];
 
             v23 = [v22 componentsJoinedByString:{@", "}];
 
@@ -82,16 +82,16 @@
             v28 = off_27885EC08[v27];
           }
 
-          v29 = [v12 eventDate];
-          v30 = [v37 stringFromDate:v29];
+          eventDate = [v12 eventDate];
+          v30 = [v37 stringFromDate:eventDate];
           v31 = [v26 initWithFormat:@"        - %@ -> %@", v28, v30];
 
           [v7 addObject:v31];
           objc_autoreleasePoolPop(v25);
-          v10 = [v12 experimentId];
+          experimentId2 = [v12 experimentId];
 
-          v8 = [v12 deploymentId];
-          v9 = [v12 treatmentId];
+          deploymentId = [v12 deploymentId];
+          treatmentId2 = [v12 treatmentId];
         }
 
         v38 = [obj countByEnumeratingWithState:&v43 objects:v47 count:16];
@@ -102,11 +102,11 @@
 
     else
     {
-      v9 = &stru_28435FC98;
-      v10 = &stru_28435FC98;
+      treatmentId2 = &stru_28435FC98;
+      experimentId2 = &stru_28435FC98;
     }
 
-    v3 = v34;
+    recordsCopy = v34;
   }
 
   else

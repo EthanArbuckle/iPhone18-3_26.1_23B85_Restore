@@ -1,10 +1,10 @@
 @interface MRDAVHostedRoutingService
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (MRDAVHostedRoutingService)init;
-- (id)endpointForDeviceUID:(id)a3;
-- (id)endpointForOrigin:(id)a3;
-- (void)collectDiagnostic:(id)a3;
-- (void)hostedDiscoverySessionDidInvalidate:(id)a3;
+- (id)endpointForDeviceUID:(id)d;
+- (id)endpointForOrigin:(id)origin;
+- (void)collectDiagnostic:(id)diagnostic;
+- (void)hostedDiscoverySessionDidInvalidate:(id)invalidate;
 @end
 
 @implementation MRDAVHostedRoutingService
@@ -42,9 +42,9 @@
   return v2;
 }
 
-- (id)endpointForOrigin:(id)a3
+- (id)endpointForOrigin:(id)origin
 {
-  v4 = a3;
+  originCopy = origin;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -57,9 +57,9 @@
   block[2] = sub_1000A8E28;
   block[3] = &unk_1004B78D8;
   block[4] = self;
-  v10 = v4;
+  v10 = originCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = originCopy;
   dispatch_sync(serialQueue, block);
   v7 = v13[5];
 
@@ -68,9 +68,9 @@
   return v7;
 }
 
-- (id)endpointForDeviceUID:(id)a3
+- (id)endpointForDeviceUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -83,9 +83,9 @@
   block[2] = sub_1000A9114;
   block[3] = &unk_1004B78D8;
   block[4] = self;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(serialQueue, block);
   v7 = v13[5];
 
@@ -94,24 +94,24 @@
   return v7;
 }
 
-- (void)hostedDiscoverySessionDidInvalidate:(id)a3
+- (void)hostedDiscoverySessionDidInvalidate:(id)invalidate
 {
-  v4 = a3;
+  invalidateCopy = invalidate;
   serialQueue = self->_serialQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000A92D8;
   v7[3] = &unk_1004B68F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = invalidateCopy;
+  v6 = invalidateCopy;
   dispatch_sync(serialQueue, v7);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [[MRDAVHostedDiscoverySession alloc] initWithConnection:v5 hostedRoutingController:self->_hostedRoutingController];
+  connectionCopy = connection;
+  v6 = [[MRDAVHostedDiscoverySession alloc] initWithConnection:connectionCopy hostedRoutingController:self->_hostedRoutingController];
 
   [(MRDAVHostedDiscoverySession *)v6 setDelegate:self];
   serialQueue = self->_serialQueue;
@@ -127,17 +127,17 @@
   return 1;
 }
 
-- (void)collectDiagnostic:(id)a3
+- (void)collectDiagnostic:(id)diagnostic
 {
-  v4 = a3;
+  diagnosticCopy = diagnostic;
   serialQueue = self->_serialQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000A9460;
   v7[3] = &unk_1004B68F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = diagnosticCopy;
+  selfCopy = self;
+  v6 = diagnosticCopy;
   dispatch_sync(serialQueue, v7);
 }
 

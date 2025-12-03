@@ -6,14 +6,14 @@
 
 - (Class)dataObjectClass
 {
-  v2 = [(HKObjectType *)self code];
-  if (v2 == 102)
+  code = [(HKObjectType *)self code];
+  if (code == 102)
   {
     v3 = off_1E73757C8;
     goto LABEL_5;
   }
 
-  if (v2 == 119)
+  if (code == 119)
   {
     v3 = off_1E73750D0;
 LABEL_5:

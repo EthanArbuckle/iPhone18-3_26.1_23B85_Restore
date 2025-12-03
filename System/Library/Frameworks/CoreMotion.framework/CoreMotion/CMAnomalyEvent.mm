@@ -1,91 +1,91 @@
 @interface CMAnomalyEvent
-- (CMAnomalyEvent)initWithCoder:(id)a3;
-- (CMAnomalyEvent)initWithIdentifier:(unint64_t)a3 absoluteTimestamp:(double)a4 updateTimestamp:(double)a5 state:(int64_t)a6 response:(int64_t)a7 resolution:(int64_t)a8 sosState:(int64_t)a9 operatingMode:(int64_t)a10;
-- (CMAnomalyEvent)initWithIdentifier:(unint64_t)a3 absoluteTimestamp:(double)a4 updateTimestamp:(double)a5 state:(int64_t)a6 response:(int64_t)a7 resolution:(int64_t)a8 sosState:(int64_t)a9 operatingMode:(int64_t)a10 acknowledgement:(BOOL)a11;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CMAnomalyEvent)initWithCoder:(id)coder;
+- (CMAnomalyEvent)initWithIdentifier:(unint64_t)identifier absoluteTimestamp:(double)timestamp updateTimestamp:(double)updateTimestamp state:(int64_t)state response:(int64_t)response resolution:(int64_t)resolution sosState:(int64_t)sosState operatingMode:(int64_t)self0;
+- (CMAnomalyEvent)initWithIdentifier:(unint64_t)identifier absoluteTimestamp:(double)timestamp updateTimestamp:(double)updateTimestamp state:(int64_t)state response:(int64_t)response resolution:(int64_t)resolution sosState:(int64_t)sosState operatingMode:(int64_t)self0 acknowledgement:(BOOL)self1;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMAnomalyEvent
 
-- (CMAnomalyEvent)initWithIdentifier:(unint64_t)a3 absoluteTimestamp:(double)a4 updateTimestamp:(double)a5 state:(int64_t)a6 response:(int64_t)a7 resolution:(int64_t)a8 sosState:(int64_t)a9 operatingMode:(int64_t)a10
+- (CMAnomalyEvent)initWithIdentifier:(unint64_t)identifier absoluteTimestamp:(double)timestamp updateTimestamp:(double)updateTimestamp state:(int64_t)state response:(int64_t)response resolution:(int64_t)resolution sosState:(int64_t)sosState operatingMode:(int64_t)self0
 {
   v19.receiver = self;
   v19.super_class = CMAnomalyEvent;
   result = [(CMAnomalyEvent *)&v19 init];
   if (result)
   {
-    result->_absoluteTimestamp = a4;
-    result->_updateTimestamp = a5;
-    result->_state = a6;
-    result->_response = a7;
-    result->_resolution = a8;
+    result->_absoluteTimestamp = timestamp;
+    result->_updateTimestamp = updateTimestamp;
+    result->_state = state;
+    result->_response = response;
+    result->_resolution = resolution;
     result->_acknowledgement = 0;
-    result->_identifier = a3;
-    result->_sosState = a9;
-    result->_operatingMode = a10;
+    result->_identifier = identifier;
+    result->_sosState = sosState;
+    result->_operatingMode = mode;
   }
 
   return result;
 }
 
-- (CMAnomalyEvent)initWithIdentifier:(unint64_t)a3 absoluteTimestamp:(double)a4 updateTimestamp:(double)a5 state:(int64_t)a6 response:(int64_t)a7 resolution:(int64_t)a8 sosState:(int64_t)a9 operatingMode:(int64_t)a10 acknowledgement:(BOOL)a11
+- (CMAnomalyEvent)initWithIdentifier:(unint64_t)identifier absoluteTimestamp:(double)timestamp updateTimestamp:(double)updateTimestamp state:(int64_t)state response:(int64_t)response resolution:(int64_t)resolution sosState:(int64_t)sosState operatingMode:(int64_t)self0 acknowledgement:(BOOL)self1
 {
-  result = objc_msgSend_initWithIdentifier_absoluteTimestamp_updateTimestamp_state_response_resolution_sosState_operatingMode_(self, a2, a3, a6, a7, a8, a9, a10, a4, a5);
+  result = objc_msgSend_initWithIdentifier_absoluteTimestamp_updateTimestamp_state_response_resolution_sosState_operatingMode_(self, a2, identifier, state, response, resolution, sosState, mode, timestamp, updateTimestamp);
   if (result)
   {
-    result->_acknowledgement = a11;
+    result->_acknowledgement = acknowledgement;
   }
 
   return result;
 }
 
-- (CMAnomalyEvent)initWithCoder:(id)a3
+- (CMAnomalyEvent)initWithCoder:(id)coder
 {
   v17.receiver = self;
   v17.super_class = CMAnomalyEvent;
   v5 = [(CMAnomalyEvent *)&v17 init];
   if (v5)
   {
-    v5->_identifier = objc_msgSend_decodeInt64ForKey_(a3, v4, @"kCMAnomalyEventAopTimestamp");
-    objc_msgSend_decodeDoubleForKey_(a3, v6, @"kCMAnomalyEventAbsTimestamp");
+    v5->_identifier = objc_msgSend_decodeInt64ForKey_(coder, v4, @"kCMAnomalyEventAopTimestamp");
+    objc_msgSend_decodeDoubleForKey_(coder, v6, @"kCMAnomalyEventAbsTimestamp");
     v5->_absoluteTimestamp = v7;
-    objc_msgSend_decodeDoubleForKey_(a3, v8, @"kCMAnomalyEventUpdTimestamp");
+    objc_msgSend_decodeDoubleForKey_(coder, v8, @"kCMAnomalyEventUpdTimestamp");
     v5->_updateTimestamp = v9;
-    v5->_state = objc_msgSend_decodeIntegerForKey_(a3, v10, @"kCMAnomalyEventState");
-    v5->_response = objc_msgSend_decodeIntegerForKey_(a3, v11, @"kCMAnomalyEventResponse");
-    v5->_resolution = objc_msgSend_decodeIntegerForKey_(a3, v12, @"kCMAnomalyEventResolution");
-    v5->_acknowledgement = objc_msgSend_decodeBoolForKey_(a3, v13, @"kCMAnomalyEventIsAcknowledged");
-    v5->_sosState = objc_msgSend_decodeIntegerForKey_(a3, v14, @"kCMAnomalyEventSOSState");
-    v5->_operatingMode = objc_msgSend_decodeIntegerForKey_(a3, v15, @"kCMAnomalyEventOperatingMode");
+    v5->_state = objc_msgSend_decodeIntegerForKey_(coder, v10, @"kCMAnomalyEventState");
+    v5->_response = objc_msgSend_decodeIntegerForKey_(coder, v11, @"kCMAnomalyEventResponse");
+    v5->_resolution = objc_msgSend_decodeIntegerForKey_(coder, v12, @"kCMAnomalyEventResolution");
+    v5->_acknowledgement = objc_msgSend_decodeBoolForKey_(coder, v13, @"kCMAnomalyEventIsAcknowledged");
+    v5->_sosState = objc_msgSend_decodeIntegerForKey_(coder, v14, @"kCMAnomalyEventSOSState");
+    v5->_operatingMode = objc_msgSend_decodeIntegerForKey_(coder, v15, @"kCMAnomalyEventOperatingMode");
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   acknowledgement = self->_acknowledgement;
   return objc_msgSend_initWithIdentifier_absoluteTimestamp_updateTimestamp_state_response_resolution_sosState_operatingMode_acknowledgement_(v7, v8, self->_identifier, self->_state, self->_response, self->_resolution, self->_sosState, self->_operatingMode, self->_absoluteTimestamp, self->_updateTimestamp, acknowledgement);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeInt64_forKey_(a3, a2, self->_identifier, @"kCMAnomalyEventAopTimestamp");
-  objc_msgSend_encodeDouble_forKey_(a3, v5, @"kCMAnomalyEventAbsTimestamp", self->_absoluteTimestamp);
-  objc_msgSend_encodeDouble_forKey_(a3, v6, @"kCMAnomalyEventUpdTimestamp", self->_updateTimestamp);
-  objc_msgSend_encodeInteger_forKey_(a3, v7, self->_state, @"kCMAnomalyEventState");
-  objc_msgSend_encodeInteger_forKey_(a3, v8, self->_response, @"kCMAnomalyEventResponse");
-  objc_msgSend_encodeInteger_forKey_(a3, v9, self->_resolution, @"kCMAnomalyEventResolution");
-  objc_msgSend_encodeBool_forKey_(a3, v10, self->_acknowledgement, @"kCMAnomalyEventIsAcknowledged");
-  objc_msgSend_encodeInteger_forKey_(a3, v11, self->_sosState, @"kCMAnomalyEventSOSState");
+  objc_msgSend_encodeInt64_forKey_(coder, a2, self->_identifier, @"kCMAnomalyEventAopTimestamp");
+  objc_msgSend_encodeDouble_forKey_(coder, v5, @"kCMAnomalyEventAbsTimestamp", self->_absoluteTimestamp);
+  objc_msgSend_encodeDouble_forKey_(coder, v6, @"kCMAnomalyEventUpdTimestamp", self->_updateTimestamp);
+  objc_msgSend_encodeInteger_forKey_(coder, v7, self->_state, @"kCMAnomalyEventState");
+  objc_msgSend_encodeInteger_forKey_(coder, v8, self->_response, @"kCMAnomalyEventResponse");
+  objc_msgSend_encodeInteger_forKey_(coder, v9, self->_resolution, @"kCMAnomalyEventResolution");
+  objc_msgSend_encodeBool_forKey_(coder, v10, self->_acknowledgement, @"kCMAnomalyEventIsAcknowledged");
+  objc_msgSend_encodeInteger_forKey_(coder, v11, self->_sosState, @"kCMAnomalyEventSOSState");
   operatingMode = self->_operatingMode;
 
-  objc_msgSend_encodeInteger_forKey_(a3, v12, operatingMode, @"kCMAnomalyEventOperatingMode");
+  objc_msgSend_encodeInteger_forKey_(coder, v12, operatingMode, @"kCMAnomalyEventOperatingMode");
 }
 
 - (id)debugDescription

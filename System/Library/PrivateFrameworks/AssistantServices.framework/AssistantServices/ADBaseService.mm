@@ -1,31 +1,31 @@
 @interface ADBaseService
 - (ADBaseService)init;
-- (SEL)_selectorForCommandClass:(id)a3 andDomain:(id)a4;
-- (id)commandsForDomain:(id)a3;
-- (void)_registerCommandClass:(id)a3 forDomain:(id)a4 withSelector:(SEL)a5 forRegistry:(id)a6;
-- (void)_unhandledCommand:(id)a3 forDomain:(id)a4 completion:(id)a5;
-- (void)handleCommand:(id)a3 forDomain:(id)a4 executionContext:(id)a5 reply:(id)a6;
+- (SEL)_selectorForCommandClass:(id)class andDomain:(id)domain;
+- (id)commandsForDomain:(id)domain;
+- (void)_registerCommandClass:(id)class forDomain:(id)domain withSelector:(SEL)selector forRegistry:(id)registry;
+- (void)_unhandledCommand:(id)command forDomain:(id)domain completion:(id)completion;
+- (void)handleCommand:(id)command forDomain:(id)domain executionContext:(id)context reply:(id)reply;
 @end
 
 @implementation ADBaseService
 
-- (void)_unhandledCommand:(id)a3 forDomain:(id)a4 completion:(id)a5
+- (void)_unhandledCommand:(id)command forDomain:(id)domain completion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
-    v6 = a5;
+    completionCopy = completion;
     v7 = [[SACommandFailed alloc] initWithReason:@"Command not supported"];
-    (*(a5 + 2))(v6, v7, 0);
+    (*(completion + 2))(completionCopy, v7, 0);
   }
 }
 
-- (void)handleCommand:(id)a3 forDomain:(id)a4 executionContext:(id)a5 reply:(id)a6
+- (void)handleCommand:(id)command forDomain:(id)domain executionContext:(id)context reply:(id)reply
 {
-  v13 = a4;
-  v9 = a6;
-  v10 = a3;
-  v11 = [v10 encodedClassName];
-  v12 = [(ADBaseService *)self _selectorForCommandClass:v11 andDomain:v13];
+  domainCopy = domain;
+  replyCopy = reply;
+  commandCopy = command;
+  encodedClassName = [commandCopy encodedClassName];
+  v12 = [(ADBaseService *)self _selectorForCommandClass:encodedClassName andDomain:domainCopy];
 
   if (v12)
   {
@@ -34,62 +34,62 @@
 
   else
   {
-    [(ADBaseService *)self _unhandledCommand:v10 forDomain:v13 completion:v9];
+    [(ADBaseService *)self _unhandledCommand:commandCopy forDomain:domainCopy completion:replyCopy];
   }
 }
 
-- (id)commandsForDomain:(id)a3
+- (id)commandsForDomain:(id)domain
 {
-  v3 = [(NSDictionary *)self->_commandRegistry objectForKey:a3];
-  v4 = [v3 allKeys];
+  v3 = [(NSDictionary *)self->_commandRegistry objectForKey:domain];
+  allKeys = [v3 allKeys];
 
-  return v4;
+  return allKeys;
 }
 
-- (SEL)_selectorForCommandClass:(id)a3 andDomain:(id)a4
+- (SEL)_selectorForCommandClass:(id)class andDomain:(id)domain
 {
-  v6 = a3;
-  v7 = [(NSDictionary *)self->_commandRegistry objectForKey:a4];
+  classCopy = class;
+  v7 = [(NSDictionary *)self->_commandRegistry objectForKey:domain];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 objectForKey:v6];
+    v9 = [v7 objectForKey:classCopy];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 pointerValue];
+      pointerValue = [v9 pointerValue];
     }
 
     else
     {
-      v11 = 0;
+      pointerValue = 0;
     }
   }
 
   else
   {
-    v11 = 0;
+    pointerValue = 0;
   }
 
-  return v11;
+  return pointerValue;
 }
 
-- (void)_registerCommandClass:(id)a3 forDomain:(id)a4 withSelector:(SEL)a5 forRegistry:(id)a6
+- (void)_registerCommandClass:(id)class forDomain:(id)domain withSelector:(SEL)selector forRegistry:(id)registry
 {
-  v13 = a4;
-  v9 = a6;
-  if (v9)
+  domainCopy = domain;
+  registryCopy = registry;
+  if (registryCopy)
   {
-    v10 = a3;
-    v11 = [v9 objectForKey:v13];
+    classCopy = class;
+    v11 = [registryCopy objectForKey:domainCopy];
     if (!v11)
     {
       v11 = +[NSMutableDictionary dictionary];
-      [v9 setObject:v11 forKey:v13];
+      [registryCopy setObject:v11 forKey:domainCopy];
     }
 
-    v12 = [NSValue valueWithPointer:a5];
-    [v11 setObject:v12 forKey:v10];
+    v12 = [NSValue valueWithPointer:selector];
+    [v11 setObject:v12 forKey:classCopy];
   }
 }
 

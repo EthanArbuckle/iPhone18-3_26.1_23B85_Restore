@@ -35,28 +35,28 @@
 
 + (uint64_t)checklistAutoAlertShown
 {
-  v0 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v1 = [v0 BOOLForKey:@"AutoSortChecklistAlertShown"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v1 = [standardUserDefaults BOOLForKey:@"AutoSortChecklistAlertShown"];
 
   return v1;
 }
 
 + (void)setChecklistAutoAlertShown:()Checklist
 {
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v4 setBool:a3 forKey:@"AutoSortChecklistAlertShown"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setBool:a3 forKey:@"AutoSortChecklistAlertShown"];
 }
 
 - (void)sendTextDidChangeNotificationForTextView:()Checklist
 {
   v6 = a3;
-  v3 = [v6 delegate];
+  delegate = [v6 delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [v6 delegate];
-    [v5 textViewDidChange:v6];
+    delegate2 = [v6 delegate];
+    [delegate2 textViewDidChange:v6];
   }
 }
 
@@ -84,11 +84,11 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v20 + 1) + 8 * v13) rangeValue];
-        v16 = [a1 expandedRangeForContiguousTodosForRange:v14 textView:{v15, v8}];
+        rangeValue = [*(*(&v20 + 1) + 8 * v13) rangeValue];
+        v16 = [self expandedRangeForContiguousTodosForRange:rangeValue textView:{v15, v8}];
         v18 = v17;
-        v19 = [v8 textStorage];
-        [a1 setDone:a3 range:v16 inTextStorage:{v18, v19}];
+        textStorage = [v8 textStorage];
+        [self setDone:a3 range:v16 inTextStorage:{v18, textStorage}];
 
         ++v13;
       }
@@ -100,7 +100,7 @@
     while (v11);
   }
 
-  [a1 sendTextDidChangeNotificationForTextView:v8];
+  [self sendTextDidChangeNotificationForTextView:v8];
 }
 
 - (uint64_t)checklistItemExistsMarkedCompleted:()Checklist inTextView:forRanges:
@@ -108,17 +108,17 @@
   v31 = *MEMORY[0x277D85DE8];
   v8 = a4;
   v9 = a5;
-  v10 = [v8 textStorage];
+  textStorage = [v8 textStorage];
   v11 = v9;
-  v12 = [v11 firstObject];
-  v13 = [a1 todoForRange:objc_msgSend(v12 inTextStorage:{"rangeValue"), 0, v10}];
+  firstObject = [v11 firstObject];
+  v13 = [self todoForRange:objc_msgSend(firstObject inTextStorage:{"rangeValue"), 0, textStorage}];
 
   if (v13)
   {
-    v14 = [v13 done];
+    done = [v13 done];
     if (a3)
     {
-      if (v14)
+      if (done)
       {
 LABEL_4:
         v15 = 1;
@@ -126,7 +126,7 @@ LABEL_4:
       }
     }
 
-    else if (!v14)
+    else if (!done)
     {
       goto LABEL_4;
     }
@@ -152,9 +152,9 @@ LABEL_4:
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v26 + 1) + 8 * v20) rangeValue];
-        v23 = [a1 expandedRangeForContiguousTodosForRange:v21 textView:{v22, v8}];
-        if ([a1 containsAnyTodoItemMarkedCompleted:a3 inRange:v23 textStorage:{v24, v10}])
+        rangeValue = [*(*(&v26 + 1) + 8 * v20) rangeValue];
+        v23 = [self expandedRangeForContiguousTodosForRange:rangeValue textView:{v22, v8}];
+        if ([self containsAnyTodoItemMarkedCompleted:a3 inRange:v23 textStorage:{v24, textStorage}])
         {
           v15 = 1;
           goto LABEL_16;
@@ -206,21 +206,21 @@ LABEL_3:
       }
 
       v12 = *(*(&v26 + 1) + 8 * v11);
-      v13 = [v12 rangeValue];
+      rangeValue = [v12 rangeValue];
       v15 = v14;
-      v16 = [v6 textStorage];
-      v17 = [a1 todoForRange:v13 inTextStorage:{v15, v16}];
+      textStorage = [v6 textStorage];
+      v17 = [self todoForRange:rangeValue inTextStorage:{v15, textStorage}];
 
       if (v17)
       {
-        v18 = [v12 rangeValue];
+        rangeValue2 = [v12 rangeValue];
         v20 = v19;
-        v21 = [v6 textStorage];
-        LODWORD(v18) = [a1 isTodoDoneRange:v18 inTextStorage:{v20, v21}];
+        textStorage2 = [v6 textStorage];
+        LODWORD(rangeValue2) = [self isTodoDoneRange:rangeValue2 inTextStorage:{v20, textStorage2}];
 
         v9 = 1;
         v22 = 1;
-        if (!v18)
+        if (!rangeValue2)
         {
           break;
         }
@@ -261,11 +261,11 @@ LABEL_3:
 {
   v8 = a3;
   objc_opt_class();
-  v9 = [v8 textStorage];
+  textStorage = [v8 textStorage];
 
   v10 = ICCheckedDynamicCast();
 
-  v11 = [a1 containsOnlyStyle:103 inRange:a4 inTextStorage:{a5, v10}];
+  v11 = [self containsOnlyStyle:103 inRange:a4 inTextStorage:{a5, v10}];
   return v11;
 }
 
@@ -276,7 +276,7 @@ LABEL_3:
   v8 = a5;
   objc_opt_class();
   v50 = v7;
-  v9 = [v7 textStorage];
+  textStorage = [v7 textStorage];
   v10 = ICCheckedDynamicCast();
 
   v52 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -301,11 +301,11 @@ LABEL_3:
           objc_enumerationMutation(obj);
         }
 
-        v16 = [*(*(&v61 + 1) + 8 * i) rangeValue];
-        v18 = [a1 expandedRangeForContiguousTodosForRange:v16 textView:{v17, v50}];
+        rangeValue = [*(*(&v61 + 1) + 8 * i) rangeValue];
+        v18 = [self expandedRangeForContiguousTodosForRange:rangeValue textView:{v17, v50}];
         v20 = v19;
         [v51 addIndexesInRange:{v18, v19}];
-        v21 = [a1 rangesForTodosInRange:v18 markedCompleted:v20 textStorage:{a3, v10}];
+        v21 = [self rangesForTodosInRange:v18 markedCompleted:v20 textStorage:{a3, v10}];
         v57 = 0u;
         v58 = 0u;
         v59 = 0u;
@@ -324,8 +324,8 @@ LABEL_3:
                 objc_enumerationMutation(v21);
               }
 
-              v26 = [*(*(&v57 + 1) + 8 * j) rangeValue];
-              [v11 addIndexesInRange:{v26, v27}];
+              rangeValue2 = [*(*(&v57 + 1) + 8 * j) rangeValue];
+              [v11 addIndexesInRange:{rangeValue2, v27}];
             }
 
             v23 = [v21 countByEnumeratingWithState:&v57 objects:v66 count:16];
@@ -343,8 +343,8 @@ LABEL_3:
     while (v13);
   }
 
-  v28 = [v52 allObjects];
-  v29 = [v28 sortedArrayUsingComparator:&__block_literal_global_19];
+  allObjects = [v52 allObjects];
+  v29 = [allObjects sortedArrayUsingComparator:&__block_literal_global_19];
 
   v55 = 0u;
   v56 = 0u;
@@ -365,8 +365,8 @@ LABEL_3:
           objc_enumerationMutation(v30);
         }
 
-        v35 = [*(*(&v53 + 1) + 8 * k) rangeValue];
-        [v10 deleteCharactersInRange:{v35, v36}];
+        rangeValue3 = [*(*(&v53 + 1) + 8 * k) rangeValue];
+        [v10 deleteCharactersInRange:{rangeValue3, v36}];
       }
 
       v32 = [v30 countByEnumeratingWithState:&v53 objects:v65 count:16];
@@ -377,73 +377,73 @@ LABEL_3:
 
   if ([v30 count] && objc_msgSend(v11, "isEqualToIndexSet:", v51))
   {
-    v37 = [v30 lastObject];
-    v38 = [v37 rangeValue];
+    lastObject = [v30 lastObject];
+    rangeValue4 = [lastObject rangeValue];
 
-    v39 = [a1 todoForRange:v38 inTextStorage:{0, v10}];
+    v39 = [self todoForRange:rangeValue4 inTextStorage:{0, v10}];
     if (!v39)
     {
-      v40 = [v10 string];
-      [v40 lineRangeForRange:{v38, 0}];
+      string = [v10 string];
+      [string lineRangeForRange:{rangeValue4, 0}];
       v42 = v41;
 
       if (v42)
       {
-        [v10 replaceCharactersInRange:v38 withString:{0, @"\n"}];
+        [v10 replaceCharactersInRange:rangeValue4 withString:{0, @"\n"}];
       }
 
-      [a1 setTextStyle:103 range:v38 inTextStorage:{0, v10}];
+      [self setTextStyle:103 range:rangeValue4 inTextStorage:{0, v10}];
     }
 
     objc_opt_class();
-    v43 = [v50 textStorage];
+    textStorage2 = [v50 textStorage];
     v44 = ICCheckedDynamicCast();
-    v45 = [v44 safeCharacterRangeForRange:{v38, 0}];
+    v45 = [v44 safeCharacterRangeForRange:{rangeValue4, 0}];
     v47 = v46;
 
     [v50 setSelectedRange:{v45, v47}];
   }
 
-  [a1 sendTextDidChangeNotificationForTextView:v50];
+  [self sendTextDidChangeNotificationForTextView:v50];
 }
 
 - (uint64_t)moveListItemInDirection:()Checklist inTextView:forRange:
 {
   v8 = a4;
-  v9 = [v8 textStorage];
-  v10 = [a1 paragraphInfoForCharacterAtIndex:a5 includeChildren:1 textStorage:v9];
+  textStorage = [v8 textStorage];
+  v10 = [self paragraphInfoForCharacterAtIndex:a5 includeChildren:1 textStorage:textStorage];
 
-  v11 = [a1 validAdjacentParagraphInfoFromParagraphInfo:v10 inDirection:a3 inTextView:v8];
+  v11 = [self validAdjacentParagraphInfoFromParagraphInfo:v10 inDirection:a3 inTextView:v8];
   v12 = v11;
   v13 = 0;
   if (v10 && v11)
   {
-    v14 = [v10 indent];
-    if (v14 < [v12 indent])
+    indent = [v10 indent];
+    if (indent < [v12 indent])
     {
       v13 = 0;
       goto LABEL_15;
     }
 
-    v15 = [v10 rangeIncludingChildren];
+    rangeIncludingChildren = [v10 rangeIncludingChildren];
     v17 = v16;
-    v18 = [v12 rangeIncludingChildren];
+    rangeIncludingChildren2 = [v12 rangeIncludingChildren];
     v13 = 0;
-    if (v15 != 0x7FFFFFFFFFFFFFFFLL && v18 != 0x7FFFFFFFFFFFFFFFLL)
+    if (rangeIncludingChildren != 0x7FFFFFFFFFFFFFFFLL && rangeIncludingChildren2 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v31 = v19;
-      v32 = v18;
-      v20 = [v8 textStorage];
-      v21 = [v20 attributedSubstringFromRange:{v15, v17}];
+      v32 = rangeIncludingChildren2;
+      textStorage2 = [v8 textStorage];
+      v21 = [textStorage2 attributedSubstringFromRange:{rangeIncludingChildren, v17}];
 
-      v22 = [v10 paragraphStyle];
+      paragraphStyle = [v10 paragraphStyle];
       v33 = v21;
-      if (([v22 isList] & 1) == 0)
+      if (([paragraphStyle isList] & 1) == 0)
       {
-        v23 = [v21 string];
-        v24 = [v23 ic_isLastCharacterANewline];
+        string = [v21 string];
+        ic_isLastCharacterANewline = [string ic_isLastCharacterANewline];
 
-        if (v24)
+        if (ic_isLastCharacterANewline)
         {
 LABEL_11:
           if (a3)
@@ -456,24 +456,24 @@ LABEL_11:
             v27 = 0;
           }
 
-          v28 = [v8 textStorage];
-          [v28 deleteCharactersInRange:{v15, v17}];
+          textStorage3 = [v8 textStorage];
+          [textStorage3 deleteCharactersInRange:{rangeIncludingChildren, v17}];
 
-          v29 = [v8 textStorage];
-          [v29 insertAttributedString:v33 atIndex:v32 + v27];
+          textStorage4 = [v8 textStorage];
+          [textStorage4 insertAttributedString:v33 atIndex:v32 + v27];
 
           [v8 setSelectedRange:{v32 + v27, 0}];
-          [a1 sendTextDidChangeNotificationForTextView:v8];
+          [self sendTextDidChangeNotificationForTextView:v8];
 
           v13 = 1;
           goto LABEL_15;
         }
 
-        v22 = [objc_alloc(MEMORY[0x277CCAB48]) initWithAttributedString:v33];
+        paragraphStyle = [objc_alloc(MEMORY[0x277CCAB48]) initWithAttributedString:v33];
         v25 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:@"\n"];
-        [v22 appendAttributedString:v25];
+        [paragraphStyle appendAttributedString:v25];
 
-        v26 = [v22 copy];
+        v26 = [paragraphStyle copy];
         v33 = v26;
       }
 
@@ -489,12 +489,12 @@ LABEL_15:
 - (BOOL)canMoveListItemInDirection:()Checklist inTextView:forRange:
 {
   v8 = a4;
-  v9 = [v8 textStorage];
-  v10 = [a1 paragraphInfoForCharacterAtIndex:a5 includeChildren:1 textStorage:v9];
+  textStorage = [v8 textStorage];
+  v10 = [self paragraphInfoForCharacterAtIndex:a5 includeChildren:1 textStorage:textStorage];
 
   if (v10)
   {
-    v11 = [a1 validAdjacentParagraphInfoFromParagraphInfo:v10 inDirection:a3 inTextView:v8];
+    v11 = [self validAdjacentParagraphInfoFromParagraphInfo:v10 inDirection:a3 inTextView:v8];
     v12 = v11 != 0;
   }
 
@@ -509,8 +509,8 @@ LABEL_15:
 - (void)expandedChecklistTrackedParagraphsInTextView:()Checklist forIndex:
 {
   v6 = a3;
-  v7 = [v6 textStorage];
-  v8 = [v7 length];
+  textStorage = [v6 textStorage];
+  v8 = [textStorage length];
 
   if (v8 <= a4)
   {
@@ -519,10 +519,10 @@ LABEL_15:
 
   else
   {
-    v9 = [a1 expandedRangeForContiguousTodosForRange:a4 textView:{0, v6}];
+    v9 = [self expandedRangeForContiguousTodosForRange:a4 textView:{0, v6}];
     v11 = v10;
-    v12 = [v6 textStorage];
-    v13 = [a1 trackedParagraphsForTodosInRange:v9 textStorage:{v11, v12}];
+    textStorage2 = [v6 textStorage];
+    v13 = [self trackedParagraphsForTodosInRange:v9 textStorage:{v11, textStorage2}];
   }
 
   if (v13)
@@ -543,7 +543,7 @@ LABEL_15:
 - (id)adjacentTrackedParagraphFromTrackedParagraph:()Checklist inDirection:inTextView:
 {
   v8 = a5;
-  v10 = [a3 characterRange];
+  characterRange = [a3 characterRange];
   if (a4)
   {
     v11 = v9;
@@ -554,13 +554,13 @@ LABEL_15:
     v11 = -1;
   }
 
-  v12 = [v8 textStorage];
+  textStorage = [v8 textStorage];
 
-  v13 = [a1 todoForRange:v10 + v11 inTextStorage:{0, v12}];
+  v13 = [self todoForRange:characterRange + v11 inTextStorage:{0, textStorage}];
 
-  v14 = [a1 trackedToDoParagraphs];
-  v15 = [v13 uuid];
-  v16 = [v14 ic_objectForNonNilKey:v15];
+  trackedToDoParagraphs = [self trackedToDoParagraphs];
+  uuid = [v13 uuid];
+  v16 = [trackedToDoParagraphs ic_objectForNonNilKey:uuid];
 
   return v16;
 }
@@ -575,15 +575,15 @@ LABEL_15:
   {
     while (1)
     {
-      v12 = [v10 paragraphStyle];
-      v13 = [v12 isList];
+      paragraphStyle = [v10 paragraphStyle];
+      isList = [paragraphStyle isList];
 
-      if (!v13)
+      if (!isList)
       {
         break;
       }
 
-      v15 = [v11 characterRange];
+      characterRange = [v11 characterRange];
       if (a4)
       {
         v16 = v14;
@@ -594,23 +594,23 @@ LABEL_15:
         v16 = -1;
       }
 
-      v17 = [v9 textStorage];
-      v18 = [a1 paragraphInfoForCharacterAtIndex:v15 + v16 includeChildren:0 textStorage:v17];
+      textStorage = [v9 textStorage];
+      v18 = [self paragraphInfoForCharacterAtIndex:characterRange + v16 includeChildren:0 textStorage:textStorage];
 
-      v19 = [v10 style];
-      if (v19 != [v18 style])
+      style = [v10 style];
+      if (style != [v18 style])
       {
         v31 = 0;
         goto LABEL_21;
       }
 
-      v20 = [v10 indent];
-      v21 = [v18 indent];
-      v22 = v20 < v21;
-      if (v20 == v21)
+      indent = [v10 indent];
+      indent2 = [v18 indent];
+      v22 = indent < indent2;
+      if (indent == indent2)
       {
-        v32 = [v9 textStorage];
-        v33 = [a1 paragraphInfoForCharacterAtIndex:v15 + v16 includeChildren:1 textStorage:v32];
+        textStorage2 = [v9 textStorage];
+        v33 = [self paragraphInfoForCharacterAtIndex:characterRange + v16 includeChildren:1 textStorage:textStorage2];
 
         v34 = v33;
         goto LABEL_19;
@@ -627,7 +627,7 @@ LABEL_19:
       }
     }
 
-    v24 = [v11 rangeIncludingChildren];
+    rangeIncludingChildren = [v11 rangeIncludingChildren];
     if (a4)
     {
       v25 = v23;
@@ -638,20 +638,20 @@ LABEL_19:
       v25 = -1;
     }
 
-    v26 = [v9 textStorage];
-    v27 = [a1 paragraphInfoForCharacterAtIndex:v24 + v25 includeChildren:0 textStorage:v26];
+    textStorage3 = [v9 textStorage];
+    v27 = [self paragraphInfoForCharacterAtIndex:rangeIncludingChildren + v25 includeChildren:0 textStorage:textStorage3];
 
-    LODWORD(v26) = [v27 style];
+    LODWORD(textStorage3) = [v27 style];
     v11 = v27;
   }
 
-  while (v26 > [v10 style]);
+  while (textStorage3 > [v10 style]);
   v28 = v27;
   v18 = v28;
   if (a4 && (v29 = [v28 style], v29 == objc_msgSend(v10, "style")))
   {
-    v30 = [v9 textStorage];
-    v31 = [a1 paragraphInfoForCharacterAtIndex:v24 + v25 includeChildren:1 textStorage:v30];
+    textStorage4 = [v9 textStorage];
+    v31 = [self paragraphInfoForCharacterAtIndex:rangeIncludingChildren + v25 includeChildren:1 textStorage:textStorage4];
   }
 
   else
@@ -667,16 +667,16 @@ LABEL_21:
 - (uint64_t)canMoveCheckedChecklistsToBottomInTextView:()Checklist forRange:
 {
   v8 = a3;
-  v9 = [a1 expandedRangeForContiguousTodosForRange:a4 textView:{a5, v8}];
+  v9 = [self expandedRangeForContiguousTodosForRange:a4 textView:{a5, v8}];
   v11 = v10;
-  v12 = [v8 textStorage];
-  v13 = [a1 trackedParagraphsForTodosInRange:v9 textStorage:{v11, v12}];
+  textStorage = [v8 textStorage];
+  v13 = [self trackedParagraphsForTodosInRange:v9 textStorage:{v11, textStorage}];
 
-  v14 = [a1 createTreeFromTrackedParagraphs:v13 textView:v8];
+  v14 = [self createTreeFromTrackedParagraphs:v13 textView:v8];
 
   [v14 recursivlySortCheckedItemsToBottom];
-  v15 = [v14 linerizedRepresentation];
-  LODWORD(v8) = [v13 isEqualToArray:v15];
+  linerizedRepresentation = [v14 linerizedRepresentation];
+  LODWORD(v8) = [v13 isEqualToArray:linerizedRepresentation];
 
   return v8 ^ 1;
 }
@@ -686,20 +686,20 @@ LABEL_21:
   v55 = *MEMORY[0x277D85DE8];
   v10 = a3;
   [v10 icaxClearCaches];
-  v11 = [v10 TTTextStorage];
-  v12 = [v10 TTTextStorage];
-  v13 = [v12 ic_range];
-  [a1 updateTrackedAttributesInTextStorage:v11 range:v13 changeInLength:{v14, 0}];
+  tTTextStorage = [v10 TTTextStorage];
+  tTTextStorage2 = [v10 TTTextStorage];
+  ic_range = [tTTextStorage2 ic_range];
+  [self updateTrackedAttributesInTextStorage:tTTextStorage range:ic_range changeInLength:{v14, 0}];
 
-  v15 = [a1 expandedRangeForContiguousTodosForRange:a4 textView:{a5, v10}];
+  v15 = [self expandedRangeForContiguousTodosForRange:a4 textView:{a5, v10}];
   v17 = v16;
-  v18 = [v10 textStorage];
-  v19 = [a1 trackedParagraphsForTodosInRange:v15 textStorage:{v17, v18}];
+  textStorage = [v10 textStorage];
+  v19 = [self trackedParagraphsForTodosInRange:v15 textStorage:{v17, textStorage}];
 
-  v20 = [a1 createTreeFromTrackedParagraphs:v19 textView:v10];
+  v20 = [self createTreeFromTrackedParagraphs:v19 textView:v10];
   [v20 recursivlySortCheckedItemsToBottom];
-  v21 = [v20 linerizedRepresentation];
-  v22 = [v19 isEqualToArray:v21];
+  linerizedRepresentation = [v20 linerizedRepresentation];
+  v22 = [v19 isEqualToArray:linerizedRepresentation];
   if (v22)
   {
     goto LABEL_20;
@@ -715,14 +715,14 @@ LABEL_21:
 
   if (ICInternalSettingsIsTextKit2Enabled())
   {
-    v35 = [[ICTextElementAnimator alloc] initWithTextView:v10 originTrackedParagraphs:v19 destinationTrackedParagraphs:v21];
+    v35 = [[ICTextElementAnimator alloc] initWithTextView:v10 originTrackedParagraphs:v19 destinationTrackedParagraphs:linerizedRepresentation];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __89__ICTextController_Checklist__moveCheckedChecklistsToBottomInTextView_forRange_animated___block_invoke;
     aBlock[3] = &unk_2781AED38;
-    aBlock[4] = a1;
+    aBlock[4] = self;
     v48 = v19;
-    v49 = v21;
+    v49 = linerizedRepresentation;
     v24 = v10;
     v50 = v24;
     v51 = v15;
@@ -777,10 +777,10 @@ LABEL_16:
   v38[1] = 3221225472;
   v38[2] = __89__ICTextController_Checklist__moveCheckedChecklistsToBottomInTextView_forRange_animated___block_invoke_76;
   v38[3] = &unk_2781AED38;
-  v38[4] = a1;
+  v38[4] = self;
   v30 = v19;
   v39 = v30;
-  v40 = v21;
+  v40 = linerizedRepresentation;
   v31 = v10;
   v41 = v31;
   v42 = v15;
@@ -789,7 +789,7 @@ LABEL_16:
   v33 = v32;
   if (v36)
   {
-    [a1 performAnimatedSortForTrackedParagraphs:v30 expandedRange:v15 textView:v17 sortChecklistsBlock:{v31, v32}];
+    [self performAnimatedSortForTrackedParagraphs:v30 expandedRange:v15 textView:v17 sortChecklistsBlock:{v31, v32}];
   }
 
   else
@@ -809,12 +809,12 @@ LABEL_20:
   v35 = a3;
   v9 = a4;
   v10 = a5;
-  v11 = [v10 TTTextStorage];
-  v12 = [v11 undoManager];
-  [v12 beginUndoGrouping];
+  tTTextStorage = [v10 TTTextStorage];
+  undoManager = [tTTextStorage undoManager];
+  [undoManager beginUndoGrouping];
 
-  [v11 beginSkippingTimestampUpdates];
-  [v11 beginEditing];
+  [tTTextStorage beginSkippingTimestampUpdates];
+  [tTTextStorage beginEditing];
   v47[0] = 0;
   v47[1] = v47;
   v47[2] = 0x2020000000;
@@ -826,24 +826,24 @@ LABEL_20:
   v46[4] = v47;
   v13 = [v9 ic_map:v46];
   v14 = [v9 differenceFromArray:v35];
-  v15 = [v14 removals];
+  removals = [v14 removals];
   v16 = objc_alloc(MEMORY[0x277CBEB38]);
-  v17 = [v14 removals];
-  v18 = [v16 initWithCapacity:{objc_msgSend(v17, "count")}];
+  removals2 = [v14 removals];
+  v18 = [v16 initWithCapacity:{objc_msgSend(removals2, "count")}];
 
   v43[0] = MEMORY[0x277D85DD0];
   v43[1] = 3221225472;
   v43[2] = __114__ICTextController_Checklist__applySortFromOriginalParagraphs_sortedTrackedParagraphs_forTextView_checklistRange___block_invoke_2;
   v43[3] = &unk_2781AEF10;
-  v19 = v11;
+  v19 = tTTextStorage;
   v44 = v19;
   v20 = v18;
   v45 = v20;
-  [v15 enumerateObjectsUsingBlock:v43];
+  [removals enumerateObjectsUsingBlock:v43];
   v21 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
-    v22 = [v15 count];
+    v22 = [removals count];
     v23 = [v35 count];
     *buf = 67109376;
     v49 = v22;
@@ -860,8 +860,8 @@ LABEL_20:
   v41 = v24;
   v25 = v19;
   v42 = v25;
-  [v15 enumerateObjectsWithOptions:2 usingBlock:v40];
-  v26 = [v14 insertions];
+  [removals enumerateObjectsWithOptions:2 usingBlock:v40];
+  insertions = [v14 insertions];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __114__ICTextController_Checklist__applySortFromOriginalParagraphs_sortedTrackedParagraphs_forTextView_checklistRange___block_invoke_2_83;
@@ -872,15 +872,15 @@ LABEL_20:
   v38 = v28;
   v29 = v25;
   v39 = v29;
-  [v26 enumerateObjectsUsingBlock:v36];
+  [insertions enumerateObjectsUsingBlock:v36];
   [v29 endEditing];
   [v29 endSkippingTimestampUpdates];
-  v30 = [v29 undoManager];
-  [v30 endUndoGrouping];
+  undoManager2 = [v29 undoManager];
+  [undoManager2 endUndoGrouping];
 
-  [a1 sendTextDidChangeNotificationForTextView:v10];
-  v31 = [v10 textStorage];
-  [a1 updateTrackedAttributesInTextStorage:v31 range:a6 changeInLength:{a7, 0}];
+  [self sendTextDidChangeNotificationForTextView:v10];
+  textStorage = [v10 textStorage];
+  [self updateTrackedAttributesInTextStorage:textStorage range:a6 changeInLength:{a7, 0}];
 
   _Block_object_dispose(v47, 8);
 }
@@ -914,35 +914,35 @@ LABEL_20:
         }
 
         v13 = *(*(&v30 + 1) + 8 * i);
-        v14 = [v13 paragraph];
-        v15 = [v14 indent];
+        paragraph = [v13 paragraph];
+        indent = [paragraph indent];
 
-        if (v15)
+        if (indent)
         {
-          v16 = [(ICTrackedParagraphTreeNode *)v8 indent];
-          v17 = [v13 paragraph];
-          v18 = [v17 indent];
+          indent2 = [(ICTrackedParagraphTreeNode *)v8 indent];
+          paragraph2 = [v13 paragraph];
+          indent3 = [paragraph2 indent];
 
-          if (v18 <= v16 + 1)
+          if (indent3 <= indent2 + 1)
           {
-            if (v18 > v16 || v16 < 1)
+            if (indent3 > indent2 || indent2 < 1)
             {
-              v20 = v8;
+              parent = v8;
             }
 
             else
             {
-              v20 = v8;
+              parent = v8;
               do
               {
-                v24 = v20;
-                v20 = [(ICTrackedParagraphTreeNode *)v20 parent];
+                v24 = parent;
+                parent = [(ICTrackedParagraphTreeNode *)parent parent];
 
-                v25 = [(ICTrackedParagraphTreeNode *)v20 indent];
-                v8 = v20;
+                indent4 = [(ICTrackedParagraphTreeNode *)parent indent];
+                v8 = parent;
               }
 
-              while (v18 <= v25 && v25 > 0);
+              while (indent3 <= indent4 && indent4 > 0);
             }
           }
 
@@ -952,25 +952,25 @@ LABEL_20:
             {
               v19 = [ICTrackedParagraphTreeNode placeholderNodeWithIndentation:?];
               [(ICTrackedParagraphTreeNode *)v8 addChild:v19];
-              v20 = v19;
+              parent = v19;
 
-              v21 = [(ICTrackedParagraphTreeNode *)v20 indent];
-              v22 = v21 + 1;
-              v8 = v20;
+              indent5 = [(ICTrackedParagraphTreeNode *)parent indent];
+              v22 = indent5 + 1;
+              v8 = parent;
             }
 
-            while (v18 > v22);
+            while (indent3 > v22);
           }
         }
 
         else
         {
-          v20 = v28;
+          parent = v28;
         }
 
         v26 = v8;
         v8 = [ICTrackedParagraphTreeNode nodeFromTrackedParagraph:v13 textView:v6];
-        [(ICTrackedParagraphTreeNode *)v20 addChild:v8];
+        [(ICTrackedParagraphTreeNode *)parent addChild:v8];
       }
 
       v10 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
@@ -999,16 +999,16 @@ LABEL_20:
 {
   v8 = a5;
   objc_opt_class();
-  v9 = [v8 textStorage];
+  textStorage = [v8 textStorage];
   v10 = ICCheckedDynamicCast();
 
-  if ([a1 containsOnlyStyle:103 inRange:a3 inTextStorage:{a4, v10}])
+  if ([self containsOnlyStyle:103 inRange:a3 inTextStorage:{a4, v10}])
   {
     v11 = a3 + a4;
     if ((a3 & 0x8000000000000000) == 0)
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = [a1 rangeForChecklistItemInRange:a3 textStorage:{0, v10}];
+      v13 = [self rangeForChecklistItemInRange:a3 textStorage:{0, v10}];
       if (v13)
       {
         v14 = a3;
@@ -1020,16 +1020,16 @@ LABEL_20:
             break;
           }
 
-          v16 = [v13 rangeValue];
-          v14 = v16;
-          if (v16 - 1 >= a3 - 1)
+          rangeValue = [v13 rangeValue];
+          v14 = rangeValue;
+          if (rangeValue - 1 >= a3 - 1)
           {
             --a3;
           }
 
           else
           {
-            a3 = v16 - 1;
+            a3 = rangeValue - 1;
           }
 
           objc_autoreleasePoolPop(v12);
@@ -1039,7 +1039,7 @@ LABEL_20:
           }
 
           v12 = objc_autoreleasePoolPush();
-          v13 = [a1 rangeForChecklistItemInRange:a3 textStorage:{0, v10}];
+          v13 = [self rangeForChecklistItemInRange:a3 textStorage:{0, v10}];
         }
 
         while (v13);
@@ -1058,7 +1058,7 @@ LABEL_14:
     if (v11 < [v10 length])
     {
       v17 = objc_autoreleasePoolPush();
-      for (i = [a1 rangeForChecklistItemInRange:v11 textStorage:{0, v10}];
+      for (i = [self rangeForChecklistItemInRange:v11 textStorage:{0, v10}];
       {
         [i rangeValue];
         if (!v19)
@@ -1066,15 +1066,15 @@ LABEL_14:
           break;
         }
 
-        v20 = [i rangeValue];
-        if (v20 + v21 <= (v11 + 1))
+        rangeValue2 = [i rangeValue];
+        if (rangeValue2 + v21 <= (v11 + 1))
         {
           ++v11;
         }
 
         else
         {
-          v11 = v20 + v21;
+          v11 = rangeValue2 + v21;
         }
 
         objc_autoreleasePoolPop(v17);
@@ -1084,7 +1084,7 @@ LABEL_14:
         }
 
         v17 = objc_autoreleasePoolPush();
-        [a1 rangeForChecklistItemInRange:v11 textStorage:{0, v10}];
+        [self rangeForChecklistItemInRange:v11 textStorage:{0, v10}];
       }
 
       objc_autoreleasePoolPop(v17);
@@ -1133,7 +1133,7 @@ LABEL_24:
   v12[1] = 3221225472;
   v12[2] = __76__ICTextController_Checklist__trackedParagraphsForTodosInRange_textStorage___block_invoke;
   v12[3] = &unk_2781AC9B8;
-  v12[4] = a1;
+  v12[4] = self;
   v12[5] = &v13;
   [v8 enumerateAttribute:v9 inRange:a3 options:a4 usingBlock:{0, v12}];
   v10 = v14[5];
@@ -1144,28 +1144,28 @@ LABEL_24:
 
 - (id)rangeForChecklistItemInRange:()Checklist textStorage:
 {
-  v2 = [a1 todoForRange:? inTextStorage:?];
-  v3 = [v2 uuid];
+  v2 = [self todoForRange:? inTextStorage:?];
+  uuid = [v2 uuid];
 
-  if (v3)
+  if (uuid)
   {
-    v4 = [a1 trackedToDoParagraphs];
-    v5 = [v2 uuid];
-    v6 = [v4 objectForKeyedSubscript:v5];
+    trackedToDoParagraphs = [self trackedToDoParagraphs];
+    uuid2 = [v2 uuid];
+    v6 = [trackedToDoParagraphs objectForKeyedSubscript:uuid2];
 
     if (v6)
     {
-      v7 = [v6 characterRange];
-      v3 = [MEMORY[0x277CCAE60] valueWithRange:{v7, v8}];
+      characterRange = [v6 characterRange];
+      uuid = [MEMORY[0x277CCAE60] valueWithRange:{characterRange, v8}];
     }
 
     else
     {
-      v3 = 0;
+      uuid = 0;
     }
   }
 
-  return v3;
+  return uuid;
 }
 
 - (uint64_t)containsAnyTodoItemMarkedCompleted:()Checklist inRange:textStorage:
@@ -1193,7 +1193,7 @@ LABEL_24:
 {
   v68 = *MEMORY[0x277D85DE8];
   v7 = a5;
-  v8 = [v7 string];
+  string = [v7 string];
   v61 = v7;
   v9 = [v7 attribute:*MEMORY[0x277D35DA8] atIndex:a3 effectiveRange:0];
   v60 = v9;
@@ -1204,33 +1204,33 @@ LABEL_24:
     [(ICParagraphInfo *)v11 setParagraphStyle:v10];
     if ([v10 isList])
     {
-      v12 = [v8 ic_lineRangeIgnoringLineBreakCharactersForIndex:a3];
+      v12 = [string ic_lineRangeIgnoringLineBreakCharactersForIndex:a3];
       [(ICParagraphInfo *)v11 setCharacterRange:v12, v13];
       v14 = v11;
-      v15 = [v10 indent];
+      indent = [v10 indent];
       if (v14)
       {
-        v16 = v15;
-        v17 = v14;
+        v16 = indent;
+        outlineController = v14;
         do
         {
           v66[0] = 0;
           v66[1] = 0;
-          v18 = [v17 characterRange];
+          characterRange = [outlineController characterRange];
           if (!a4)
           {
-            v17 = v14;
+            outlineController = v14;
             goto LABEL_29;
           }
 
-          v20 = v18;
+          v20 = characterRange;
           v21 = v19;
           if ([v10 isList])
           {
             v22 = v21 + v20;
             v23 = [v61 attribute:*MEMORY[0x277D35DA8] atIndex:v21 + v20 + 1 effectiveRange:v66];
-            v24 = [v23 style];
-            if (v24 != [v10 style] || objc_msgSend(v23, "indent") <= v16)
+            style = [v23 style];
+            if (style != [v10 style] || objc_msgSend(v23, "indent") <= v16)
             {
 
               goto LABEL_29;
@@ -1238,25 +1238,25 @@ LABEL_24:
 
             v25 = objc_alloc_init(ICParagraphInfo);
             [(ICParagraphInfo *)v25 setParagraphStyle:v23];
-            v26 = [v8 ic_lineRangeIgnoringLineBreakCharactersForIndex:v22 + 1];
+            v26 = [string ic_lineRangeIgnoringLineBreakCharactersForIndex:v22 + 1];
             [(ICParagraphInfo *)v25 setCharacterRange:v26, v27];
-            v28 = [(ICParagraphInfo *)v14 children];
+            children = [(ICParagraphInfo *)v14 children];
 
-            if (!v28)
+            if (!children)
             {
               v29 = objc_alloc_init(MEMORY[0x277CBEB18]);
               [(ICParagraphInfo *)v14 setChildren:v29];
             }
 
-            v30 = [(ICParagraphInfo *)v14 children];
-            [v30 addObject:v25];
+            children2 = [(ICParagraphInfo *)v14 children];
+            [children2 addObject:v25];
 
-            v17 = v25;
+            outlineController = v25;
             v10 = v60;
           }
         }
 
-        while (v17);
+        while (outlineController);
       }
 
       v11 = v14;
@@ -1264,25 +1264,25 @@ LABEL_24:
 
     else
     {
-      v31 = [v10 uuid];
+      uuid = [v10 uuid];
 
-      if (v31)
+      if (uuid)
       {
-        v32 = [v8 paragraphRangeForRange:{a3, 0}];
+        v32 = [string paragraphRangeForRange:{a3, 0}];
         [(ICParagraphInfo *)v11 setCharacterRange:v32, v33];
         if (a4)
         {
-          v59 = v8;
+          v59 = string;
           objc_opt_class();
           v34 = ICDynamicCast();
-          v17 = [v34 outlineController];
+          outlineController = [v34 outlineController];
 
           v64 = 0u;
           v65 = 0u;
           v62 = 0u;
           v63 = 0u;
-          v35 = [v60 uuid];
-          v36 = [v17 descendantsForUUID:v35];
+          uuid2 = [v60 uuid];
+          v36 = [outlineController descendantsForUUID:uuid2];
 
           v37 = [v36 countByEnumeratingWithState:&v62 objects:v67 count:16];
           if (v37)
@@ -1298,22 +1298,22 @@ LABEL_24:
                   objc_enumerationMutation(v36);
                 }
 
-                v41 = [v17 rangeForUUID:*(*(&v62 + 1) + 8 * i)];
+                v41 = [outlineController rangeForUUID:*(*(&v62 + 1) + 8 * i)];
                 v43 = v42;
                 v44 = [v61 attribute:*MEMORY[0x277D35DA8] atIndex:v41 effectiveRange:0];
                 v45 = objc_alloc_init(ICParagraphInfo);
                 [(ICParagraphInfo *)v45 setParagraphStyle:v44];
                 [(ICParagraphInfo *)v45 setCharacterRange:v41, v43];
-                v46 = [(ICParagraphInfo *)v11 children];
+                children3 = [(ICParagraphInfo *)v11 children];
 
-                if (!v46)
+                if (!children3)
                 {
                   v47 = objc_alloc_init(MEMORY[0x277CBEB18]);
                   [(ICParagraphInfo *)v11 setChildren:v47];
                 }
 
-                v48 = [(ICParagraphInfo *)v11 children];
-                [v48 addObject:v45];
+                children4 = [(ICParagraphInfo *)v11 children];
+                [children4 addObject:v45];
               }
 
               v38 = [v36 countByEnumeratingWithState:&v62 objects:v67 count:16];
@@ -1322,7 +1322,7 @@ LABEL_24:
             while (v38);
           }
 
-          v8 = v59;
+          string = v59;
 LABEL_29:
         }
       }
@@ -1334,21 +1334,21 @@ LABEL_29:
     v11 = 0;
   }
 
-  v49 = [(ICParagraphInfo *)v11 children];
-  v50 = [v49 count];
+  children5 = [(ICParagraphInfo *)v11 children];
+  v50 = [children5 count];
 
-  v52 = [(ICParagraphInfo *)v11 characterRange];
+  characterRange2 = [(ICParagraphInfo *)v11 characterRange];
   if (v50)
   {
-    v53 = [(ICParagraphInfo *)v11 children];
-    v54 = [v53 lastObject];
-    v55 = [v54 characterRange];
+    children6 = [(ICParagraphInfo *)v11 children];
+    lastObject = [children6 lastObject];
+    characterRange3 = [lastObject characterRange];
     v57 = v56;
 
-    v51 = v57 - v52 + v55;
+    v51 = v57 - characterRange2 + characterRange3;
   }
 
-  [(ICParagraphInfo *)v11 setRangeIncludingChildren:v52, v51];
+  [(ICParagraphInfo *)v11 setRangeIncludingChildren:characterRange2, v51];
 
   return v11;
 }
@@ -1364,18 +1364,18 @@ LABEL_29:
     v11[1] = 3221225472;
     v11[2] = __105__ICTextController_Checklist__autoSortChecklistIfNecessaryForTrackedParagraph_textView_analyticsHandler___block_invoke;
     v11[3] = &unk_2781AC5B0;
-    v11[4] = a1;
+    v11[4] = self;
     v12 = v9;
     v13 = v8;
-    [a1 showFirstTimeAutoSortEnabledAlertIfNecessaryWithTextView:v12 completionHandler:v11 analyticsHandler:a5];
+    [self showFirstTimeAutoSortEnabledAlertIfNecessaryWithTextView:v12 completionHandler:v11 analyticsHandler:a5];
   }
 }
 
 - (void)autoSortChecklistForUnitTestAtIndex:()Checklist textView:
 {
   v8 = a4;
-  v6 = [a1 expandedRangeForContiguousTodosForRange:a3 textView:{0, v8}];
-  [a1 moveCheckedChecklistsToBottomInTextView:v8 forRange:v6 animated:{v7, 0}];
+  v6 = [self expandedRangeForContiguousTodosForRange:a3 textView:{0, v8}];
+  [self moveCheckedChecklistsToBottomInTextView:v8 forRange:v6 animated:{v7, 0}];
 }
 
 - (void)showFirstTimeAutoSortEnabledAlertIfNecessaryWithTextView:()Checklist completionHandler:analyticsHandler:
@@ -1390,7 +1390,7 @@ LABEL_29:
 
   else
   {
-    [a1 showFirstTimeAutoSortEnabledAlertWithTextView:v10 completionHandler:v8 analyticsHandler:v9];
+    [self showFirstTimeAutoSortEnabledAlertWithTextView:v10 completionHandler:v8 analyticsHandler:v9];
   }
 }
 
@@ -1400,21 +1400,21 @@ LABEL_29:
   v9 = a5;
   v10 = MEMORY[0x277CCA8D8];
   v28 = a3;
-  v11 = [v10 mainBundle];
-  v30 = [v11 localizedStringForKey:@"Enable Automatic Sorting?" value:&stru_282757698 table:0];
+  mainBundle = [v10 mainBundle];
+  v30 = [mainBundle localizedStringForKey:@"Enable Automatic Sorting?" value:&stru_282757698 table:0];
 
-  v12 = [MEMORY[0x277CCA8D8] mainBundle];
-  v29 = [v12 localizedStringForKey:@"Would you like checked items to automatically move to the bottom of your lists? You can change this later in Notes Settings." value:&stru_282757698 table:0];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v29 = [mainBundle2 localizedStringForKey:@"Would you like checked items to automatically move to the bottom of your lists? You can change this later in Notes Settings." value:&stru_282757698 table:0];
 
   v13 = [MEMORY[0x277D75110] alertControllerWithTitle:v30 message:v29 preferredStyle:1];
   v14 = MEMORY[0x277D750F8];
-  v15 = [MEMORY[0x277CCA8D8] mainBundle];
-  v16 = [v15 localizedStringForKey:@"Not Now" value:&stru_282757698 table:0];
+  mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+  v16 = [mainBundle3 localizedStringForKey:@"Not Now" value:&stru_282757698 table:0];
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __112__ICTextController_Checklist__showFirstTimeAutoSortEnabledAlertWithTextView_completionHandler_analyticsHandler___block_invoke;
   v34[3] = &unk_2781AEFA8;
-  v34[4] = a1;
+  v34[4] = self;
   v17 = v9;
   v35 = v17;
   v18 = v8;
@@ -1423,13 +1423,13 @@ LABEL_29:
   [v13 addAction:v19];
 
   v20 = MEMORY[0x277D750F8];
-  v21 = [MEMORY[0x277CCA8D8] mainBundle];
-  v22 = [v21 localizedStringForKey:@"Enable Sorting" value:&stru_282757698 table:0];
+  mainBundle4 = [MEMORY[0x277CCA8D8] mainBundle];
+  v22 = [mainBundle4 localizedStringForKey:@"Enable Sorting" value:&stru_282757698 table:0];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __112__ICTextController_Checklist__showFirstTimeAutoSortEnabledAlertWithTextView_completionHandler_analyticsHandler___block_invoke_2;
   v31[3] = &unk_2781AEFA8;
-  v31[4] = a1;
+  v31[4] = self;
   v32 = v17;
   v33 = v18;
   v23 = v18;
@@ -1439,7 +1439,7 @@ LABEL_29:
   [v13 addAction:v25];
   [v13 setPreferredAction:v25];
   objc_opt_class();
-  v26 = [v28 editorContainer];
+  editorContainer = [v28 editorContainer];
 
   v27 = ICDynamicCast();
   [v27 presentViewController:v13 animated:1 completion:0];
@@ -1447,8 +1447,8 @@ LABEL_29:
 
 + (uint64_t)needsToShowFirstTimeAutoSortChecklistAlert
 {
-  v0 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v1 = [v0 BOOLForKey:@"AutoSortChecklistAlertShown"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v1 = [standardUserDefaults BOOLForKey:@"AutoSortChecklistAlertShown"];
 
   return v1;
 }
@@ -1457,15 +1457,15 @@ LABEL_29:
 {
   v6 = a4;
   v7 = objc_alloc_init(ICChecklistInfo);
-  v8 = [v6 textStorage];
-  v9 = [v8 length];
+  textStorage = [v6 textStorage];
+  v9 = [textStorage length];
 
   if (v9 > a3)
   {
-    v10 = [v6 TTTextStorage];
-    v11 = [v6 TTTextStorage];
-    v12 = [v11 ic_range];
-    [a1 updateTrackedAttributesInTextStorage:v10 range:v12 changeInLength:{v13, 0}];
+    tTTextStorage = [v6 TTTextStorage];
+    tTTextStorage2 = [v6 TTTextStorage];
+    ic_range = [tTTextStorage2 ic_range];
+    [self updateTrackedAttributesInTextStorage:tTTextStorage range:ic_range changeInLength:{v13, 0}];
 
     [v6 visibleBounds];
     v15 = v14;
@@ -1474,27 +1474,27 @@ LABEL_29:
     v21 = v20;
     if (ICInternalSettingsIsTextKit2Enabled())
     {
-      v22 = [v6 icTextLayoutManager];
-      v23 = [v22 characterRangeForBoundingRect:{v15, v17, v19, v21}];
+      icTextLayoutManager = [v6 icTextLayoutManager];
+      v23 = [icTextLayoutManager characterRangeForBoundingRect:{v15, v17, v19, v21}];
       v25 = v24;
 
-      v26 = [v6 icTextLayoutManager];
-      v27 = [v6 icTextLayoutManager];
-      v28 = [v27 ic_textRangeForRange:{v23, v25}];
-      [v26 ensureLayoutForRange:v28];
+      icTextLayoutManager2 = [v6 icTextLayoutManager];
+      icTextLayoutManager3 = [v6 icTextLayoutManager];
+      v28 = [icTextLayoutManager3 ic_textRangeForRange:{v23, v25}];
+      [icTextLayoutManager2 ensureLayoutForRange:v28];
     }
 
     else
     {
-      v26 = [v6 layoutManager];
-      v27 = [v6 textContainer];
-      [v26 ensureLayoutForBoundingRect:v27 inTextContainer:{v15, v17, v19, v21}];
+      icTextLayoutManager2 = [v6 layoutManager];
+      icTextLayoutManager3 = [v6 textContainer];
+      [icTextLayoutManager2 ensureLayoutForBoundingRect:icTextLayoutManager3 inTextContainer:{v15, v17, v19, v21}];
     }
 
-    v29 = [a1 expandedRangeForContiguousTodosForRange:a3 textView:{0, v6}];
+    v29 = [self expandedRangeForContiguousTodosForRange:a3 textView:{0, v6}];
     v31 = v30;
-    v32 = [v6 textStorage];
-    v33 = [a1 trackedParagraphsForTodosInRange:v29 textStorage:{v31, v32}];
+    textStorage2 = [v6 textStorage];
+    v33 = [self trackedParagraphsForTodosInRange:v29 textStorage:{v31, textStorage2}];
 
     v34 = [v33 ic_objectsPassingTest:&__block_literal_global_119];
     -[ICChecklistInfo setNumberOfItems:](v7, "setNumberOfItems:", [v33 count]);

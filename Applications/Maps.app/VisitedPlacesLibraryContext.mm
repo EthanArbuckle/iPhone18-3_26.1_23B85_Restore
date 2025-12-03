@@ -1,28 +1,28 @@
 @interface VisitedPlacesLibraryContext
-- (BOOL)chromeDidSelectClusteredFeatureAnnotationsMarker:(id)a3;
-- (BOOL)chromeDidSelectCustomPOIAnnotation:(id)a3;
-- (BOOL)chromeDidSelectMarkerForMapItem:(id)a3;
+- (BOOL)chromeDidSelectClusteredFeatureAnnotationsMarker:(id)marker;
+- (BOOL)chromeDidSelectCustomPOIAnnotation:(id)annotation;
+- (BOOL)chromeDidSelectMarkerForMapItem:(id)item;
 - (ChromeViewController)chromeViewController;
 - (ShareDelegate)shareDelegate;
 - (_TtC4Maps27VisitedPlacesLibraryContext)init;
 - (_TtP4Maps42VisitedPlacesCommonActionsHandlingDelegate_)actionDelegate;
 - (id)desiredCards;
 - (id)personalizedItemSources;
-- (id)searchResultsForViewController:(id)a3;
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)containeeViewControllerDidDismissExternally:(id)a3;
-- (void)containeeViewControllerGoToPreviousState:(id)a3 withSender:(id)a4;
-- (void)injectSearchPinsFromSearchInfo:(id)a3;
-- (void)leaveStackInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)viewControllerClearInjectedSearchPins:(id)a3;
+- (id)searchResultsForViewController:(id)controller;
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)containeeViewControllerDidDismissExternally:(id)externally;
+- (void)containeeViewControllerGoToPreviousState:(id)state withSender:(id)sender;
+- (void)injectSearchPinsFromSearchInfo:(id)info;
+- (void)leaveStackInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)viewControllerClearInjectedSearchPins:(id)pins;
 @end
 
 @implementation VisitedPlacesLibraryContext
 
-- (id)searchResultsForViewController:(id)a3
+- (id)searchResultsForViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   _s4Maps27VisitedPlacesLibraryContextC13searchResults3forSaySo12SearchResultCGSo16UIViewControllerC_tF_0();
 
   sub_10019152C();
@@ -31,51 +31,51 @@
   return v6.super.isa;
 }
 
-- (void)viewControllerClearInjectedSearchPins:(id)a3
+- (void)viewControllerClearInjectedSearchPins:(id)pins
 {
   swift_beginAccess();
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v5 = Strong;
-    v6 = self;
-    v7 = [v5 searchPinsManager];
+    selfCopy = self;
+    searchPinsManager = [v5 searchPinsManager];
 
-    [v7 clearSearchPins];
+    [searchPinsManager clearSearchPins];
   }
 }
 
-- (void)injectSearchPinsFromSearchInfo:(id)a3
+- (void)injectSearchPinsFromSearchInfo:(id)info
 {
-  v4 = a3;
-  v5 = self;
-  VisitedPlacesLibraryContext.injectSearchPins(from:)(v4);
+  infoCopy = info;
+  selfCopy = self;
+  VisitedPlacesLibraryContext.injectSearchPins(from:)(infoCopy);
 }
 
-- (BOOL)chromeDidSelectMarkerForMapItem:(id)a3
+- (BOOL)chromeDidSelectMarkerForMapItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  VisitedPlacesLibraryContext.chromeDidSelectMarker(for:)(v4);
+  itemCopy = item;
+  selfCopy = self;
+  VisitedPlacesLibraryContext.chromeDidSelectMarker(for:)(itemCopy);
 
   return 1;
 }
 
-- (BOOL)chromeDidSelectCustomPOIAnnotation:(id)a3
+- (BOOL)chromeDidSelectCustomPOIAnnotation:(id)annotation
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = VisitedPlacesLibraryContext.chromeDidSelect(_:)(a3);
+  selfCopy = self;
+  v6 = VisitedPlacesLibraryContext.chromeDidSelect(_:)(annotation);
   swift_unknownObjectRelease();
 
   return v6 & 1;
 }
 
-- (BOOL)chromeDidSelectClusteredFeatureAnnotationsMarker:(id)a3
+- (BOOL)chromeDidSelectClusteredFeatureAnnotationsMarker:(id)marker
 {
-  v4 = a3;
-  v5 = self;
-  VisitedPlacesLibraryContext.chromeDidSelectClusteredFeatureAnnotationsMarker(_:)(v4);
+  markerCopy = marker;
+  selfCopy = self;
+  VisitedPlacesLibraryContext.chromeDidSelectClusteredFeatureAnnotationsMarker(_:)(markerCopy);
 
   return 1;
 }
@@ -109,12 +109,12 @@
   return result;
 }
 
-- (void)containeeViewControllerGoToPreviousState:(id)a3 withSender:(id)a4
+- (void)containeeViewControllerGoToPreviousState:(id)state withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = a3;
-    v7 = self;
+    stateCopy = state;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -123,8 +123,8 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v8 = a3;
-    v9 = self;
+    stateCopy2 = state;
+    selfCopy2 = self;
   }
 
   _s4Maps27VisitedPlacesLibraryContextC43containeeViewControllerDidDismissExternallyyySo09ContaineegH0CSgF_0();
@@ -132,10 +132,10 @@
   sub_1000DB2F4(v10);
 }
 
-- (void)containeeViewControllerDidDismissExternally:(id)a3
+- (void)containeeViewControllerDidDismissExternally:(id)externally
 {
-  v4 = a3;
-  v5 = self;
+  externallyCopy = externally;
+  selfCopy = self;
   _s4Maps27VisitedPlacesLibraryContextC43containeeViewControllerDidDismissExternallyyySo09ContaineegH0CSgF_0();
 }
 
@@ -151,7 +151,7 @@
 
 - (id)personalizedItemSources
 {
-  v2 = self;
+  selfCopy = self;
   VisitedPlacesLibraryContext.personalizedItemSources()();
 
   sub_1000E2690();
@@ -160,20 +160,20 @@
   return v3.super.isa;
 }
 
-- (void)leaveStackInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)leaveStackInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100469F40(v7);
+  controllerCopy = controller;
+  animationCopy = animation;
+  selfCopy = self;
+  sub_100469F40(animationCopy);
 }
 
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10046A06C(v7);
+  controllerCopy = controller;
+  animationCopy = animation;
+  selfCopy = self;
+  sub_10046A06C(animationCopy);
 }
 
 @end

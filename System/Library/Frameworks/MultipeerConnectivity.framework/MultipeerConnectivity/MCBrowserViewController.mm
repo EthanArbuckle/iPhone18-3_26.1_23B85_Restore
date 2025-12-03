@@ -2,40 +2,40 @@
 - (BOOL)isVisible;
 - (BOOL)maximumNumberOfPeersReached;
 - (BOOL)minimumNumberOfPeersReached;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
 - (MCBrowserViewController)initWithBrowser:(MCNearbyServiceBrowser *)browser session:(MCSession *)session;
-- (MCBrowserViewController)initWithCoder:(id)a3;
-- (MCBrowserViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (MCBrowserViewController)initWithCoder:(id)coder;
+- (MCBrowserViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (MCBrowserViewController)initWithServiceType:(NSString *)serviceType session:(MCSession *)session;
 - (NSString)description;
-- (id)detailStringForPeerState:(int)a3;
+- (id)detailStringForPeerState:(int)state;
 - (id)nearbySectionTitle;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)applicationDidEnterBackgroundNotification:(id)a3;
-- (void)applicationWillEnterForegroundNotification:(id)a3;
-- (void)browser:(id)a3 foundPeer:(id)a4 withDiscoveryInfo:(id)a5;
-- (void)browser:(id)a3 lostPeer:(id)a4;
-- (void)cancelTapped:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)applicationDidEnterBackgroundNotification:(id)notification;
+- (void)applicationWillEnterForegroundNotification:(id)notification;
+- (void)browser:(id)browser foundPeer:(id)peer withDiscoveryInfo:(id)info;
+- (void)browser:(id)browser lostPeer:(id)peer;
+- (void)cancelTapped:(id)tapped;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
-- (void)doneTapped:(id)a3;
+- (void)doneTapped:(id)tapped;
 - (void)handleViewDidDisappear;
 - (void)handleViewWillAppear;
-- (void)peer:(id)a3 changedStateTo:(int)a4;
+- (void)peer:(id)peer changedStateTo:(int)to;
 - (void)peerJoinedSession;
-- (void)session:(id)a3 didFinishReceivingResourceWithName:(id)a4 fromPeer:(id)a5 atURL:(id)a6 withError:(id)a7 propagate:(BOOL *)a8;
-- (void)session:(id)a3 didReceiveData:(id)a4 fromPeer:(id)a5 propagate:(BOOL *)a6;
-- (void)session:(id)a3 didReceiveStream:(id)a4 withName:(id)a5 fromPeer:(id)a6 propagate:(BOOL *)a7;
-- (void)session:(id)a3 didStartReceivingResourceWithName:(id)a4 fromPeer:(id)a5 withProgress:(id)a6 propagate:(BOOL *)a7;
-- (void)session:(id)a3 peer:(id)a4 didChangeState:(int64_t)a5 propagate:(BOOL *)a6;
+- (void)session:(id)session didFinishReceivingResourceWithName:(id)name fromPeer:(id)peer atURL:(id)l withError:(id)error propagate:(BOOL *)propagate;
+- (void)session:(id)session didReceiveData:(id)data fromPeer:(id)peer propagate:(BOOL *)propagate;
+- (void)session:(id)session didReceiveStream:(id)stream withName:(id)name fromPeer:(id)peer propagate:(BOOL *)propagate;
+- (void)session:(id)session didStartReceivingResourceWithName:(id)name fromPeer:(id)peer withProgress:(id)progress propagate:(BOOL *)propagate;
+- (void)session:(id)session peer:(id)peer didChangeState:(int64_t)state propagate:(BOOL *)propagate;
 - (void)setMaximumNumberOfPeers:(NSUInteger)maximumNumberOfPeers;
 - (void)setMinimumNumberOfPeers:(NSUInteger)minimumNumberOfPeers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)verifyPeerIsAccountedFor:(id)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)verifyPeerIsAccountedFor:(id)for;
 - (void)viewDidLoad;
 @end
 
@@ -106,9 +106,9 @@ LABEL_4:
 
   [(MCSession *)v8->_session setPrivateDelegate:v8];
   v8->_callbackQueue = dispatch_queue_create("com.apple.MCBrowserViewController.callbackQueue", 0);
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v10 addObserver:v8 selector:sel_applicationWillEnterForegroundNotification_ name:*MEMORY[0x277D76758] object:0];
-  [v10 addObserver:v8 selector:sel_applicationDidEnterBackgroundNotification_ name:*MEMORY[0x277D76660] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:v8 selector:sel_applicationWillEnterForegroundNotification_ name:*MEMORY[0x277D76758] object:0];
+  [defaultCenter addObserver:v8 selector:sel_applicationDidEnterBackgroundNotification_ name:*MEMORY[0x277D76660] object:0];
   return v8;
 }
 
@@ -119,15 +119,15 @@ LABEL_4:
   return [(MCBrowserViewController *)self initWithBrowser:v6 session:session];
 }
 
-- (MCBrowserViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (MCBrowserViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5.receiver = self;
   v5.super_class = MCBrowserViewController;
-  [(MCBrowserViewController *)&v5 doesNotRecognizeSelector:a2, a4];
+  [(MCBrowserViewController *)&v5 doesNotRecognizeSelector:a2, bundle];
   return 0;
 }
 
-- (MCBrowserViewController)initWithCoder:(id)a3
+- (MCBrowserViewController)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = MCBrowserViewController;
@@ -150,24 +150,24 @@ LABEL_4:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MCBrowserViewController *)self browser];
-  v7 = [(MCBrowserViewController *)self session];
-  v8 = [(MCBrowserViewController *)self minimumNumberOfPeers];
-  v9 = [(MCBrowserViewController *)self maximumNumberOfPeers];
+  browser = [(MCBrowserViewController *)self browser];
+  session = [(MCBrowserViewController *)self session];
+  minimumNumberOfPeers = [(MCBrowserViewController *)self minimumNumberOfPeers];
+  maximumNumberOfPeers = [(MCBrowserViewController *)self maximumNumberOfPeers];
   [(MCBrowserViewController *)self delegate];
   v10 = objc_opt_class();
-  return [v3 stringWithFormat:@"<%@: %p Browser = %@ Session = %@ MinimumNumberOfPeers = %ld MaximumNumberOfPeers = %ld Delegate = <%@: %p>>", v5, self, v6, v7, v8, v9, NSStringFromClass(v10), -[MCBrowserViewController delegate](self, "delegate")];
+  return [v3 stringWithFormat:@"<%@: %p Browser = %@ Session = %@ MinimumNumberOfPeers = %ld MaximumNumberOfPeers = %ld Delegate = <%@: %p>>", v5, self, browser, session, minimumNumberOfPeers, maximumNumberOfPeers, NSStringFromClass(v10), -[MCBrowserViewController delegate](self, "delegate")];
 }
 
 - (BOOL)isVisible
 {
-  v3 = [(MCBrowserViewController *)self isViewLoaded];
-  if (v3)
+  isViewLoaded = [(MCBrowserViewController *)self isViewLoaded];
+  if (isViewLoaded)
   {
-    LOBYTE(v3) = [-[MCBrowserViewController view](self "view")] != 0;
+    LOBYTE(isViewLoaded) = [-[MCBrowserViewController view](self "view")] != 0;
   }
 
-  return v3;
+  return isViewLoaded;
 }
 
 - (void)viewDidLoad
@@ -177,8 +177,8 @@ LABEL_4:
   [(MCBrowserViewController *)&v5 viewDidLoad];
   [(UITableView *)[(MCBrowserViewController *)self tableView] registerClass:objc_opt_class() forCellReuseIdentifier:@"Peer Cell"];
   v3 = _NSDictionaryOfVariableBindings(&cfstr_TopguideNaviga.isa, [(MCBrowserViewController *)self topLayoutGuide], [(MCBrowserViewController *)self navigationBar], 0);
-  v4 = [(MCBrowserViewController *)self view];
-  [v4 addConstraints:{objc_msgSend(MEMORY[0x277CCAAD0], "constraintsWithVisualFormat:options:metrics:views:", @"V:[topGuide]-0-[navigationBar]", 0, 0, v3)}];
+  view = [(MCBrowserViewController *)self view];
+  [view addConstraints:{objc_msgSend(MEMORY[0x277CCAAD0], "constraintsWithVisualFormat:options:metrics:views:", @"V:[topGuide]-0-[navigationBar]", 0, 0, v3)}];
   [(UINavigationBar *)[(MCBrowserViewController *)self navigationBar] setDelegate:self];
 }
 
@@ -195,8 +195,8 @@ LABEL_4:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(MCSession *)self->_session connectedPeers];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  connectedPeers = [(MCSession *)self->_session connectedPeers];
+  v4 = [(NSArray *)connectedPeers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -208,7 +208,7 @@ LABEL_4:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(connectedPeers);
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
@@ -218,7 +218,7 @@ LABEL_4:
       }
 
       while (v5 != v7);
-      v5 = [(NSArray *)v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [(NSArray *)connectedPeers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -231,9 +231,9 @@ LABEL_4:
 
 - (void)handleViewDidDisappear
 {
-  v2 = [(MCBrowserViewController *)self browser];
+  browser = [(MCBrowserViewController *)self browser];
 
-  [(MCNearbyServiceBrowser *)v2 stopBrowsingForPeers];
+  [(MCNearbyServiceBrowser *)browser stopBrowsingForPeers];
 }
 
 - (void)didReceiveMemoryWarning
@@ -271,44 +271,44 @@ LABEL_4:
   }
 }
 
-- (void)doneTapped:(id)a3
+- (void)doneTapped:(id)tapped
 {
-  v4 = [(MCBrowserViewController *)self delegate];
+  delegate = [(MCBrowserViewController *)self delegate];
 
-  [v4 browserViewControllerDidFinish:self];
+  [delegate browserViewControllerDidFinish:self];
 }
 
 - (void)peerJoinedSession
 {
   v3 = [(NSArray *)[(MCSession *)[(MCBrowserViewController *)self session] connectedPeers] count]+ 1;
   v4 = v3 >= [(MCBrowserViewController *)self minimumNumberOfPeers];
-  v5 = [(MCBrowserViewController *)self doneButton];
+  doneButton = [(MCBrowserViewController *)self doneButton];
 
-  [(UIBarButtonItem *)v5 setEnabled:v4];
+  [(UIBarButtonItem *)doneButton setEnabled:v4];
 }
 
-- (void)peer:(id)a3 changedStateTo:(int)a4
+- (void)peer:(id)peer changedStateTo:(int)to
 {
   v22 = *MEMORY[0x277D85DE8];
-  if (a4 <= 1)
+  if (to <= 1)
   {
-    if (a4)
+    if (to)
     {
-      if (a4 != 1)
+      if (to != 1)
       {
         goto LABEL_22;
       }
 
-      v9 = [(MCBrowserViewController *)self invitedPeersState];
+      invitedPeersState = [(MCBrowserViewController *)self invitedPeersState];
       v10 = MEMORY[0x277CCABB0];
       v11 = 1;
     }
 
     else
     {
-      [(NSMutableArray *)[(MCBrowserViewController *)self nearbyPeersSection] removeObject:a3];
-      [(NSMutableArray *)[(MCBrowserViewController *)self invitedPeersSection] addObject:a3];
-      v9 = [(MCBrowserViewController *)self invitedPeersState];
+      [(NSMutableArray *)[(MCBrowserViewController *)self nearbyPeersSection] removeObject:peer];
+      [(NSMutableArray *)[(MCBrowserViewController *)self invitedPeersSection] addObject:peer];
+      invitedPeersState = [(MCBrowserViewController *)self invitedPeersState];
       v10 = MEMORY[0x277CCABB0];
       v11 = 0;
     }
@@ -316,37 +316,37 @@ LABEL_4:
     v17 = [v10 numberWithInteger:v11];
     v18 = *MEMORY[0x277D85DE8];
 
-    [(NSMutableDictionary *)v9 setObject:v17 forKey:a3];
+    [(NSMutableDictionary *)invitedPeersState setObject:v17 forKey:peer];
   }
 
   else
   {
-    switch(a4)
+    switch(to)
     {
       case 2:
-        v12 = [(MCBrowserViewController *)self invitedPeersState];
-        -[NSMutableDictionary setObject:forKey:](v12, "setObject:forKey:", [MEMORY[0x277CCABB0] numberWithInteger:2], a3);
+        invitedPeersState2 = [(MCBrowserViewController *)self invitedPeersState];
+        -[NSMutableDictionary setObject:forKey:](invitedPeersState2, "setObject:forKey:", [MEMORY[0x277CCABB0] numberWithInteger:2], peer);
         v13 = *MEMORY[0x277D85DE8];
 
         [(MCBrowserViewController *)self peerJoinedSession];
         break;
       case 3:
-        v14 = [(MCBrowserViewController *)self invitedPeersState];
-        -[NSMutableDictionary setObject:forKey:](v14, "setObject:forKey:", [MEMORY[0x277CCABB0] numberWithInteger:3], a3);
-        v15 = [(MCBrowserViewController *)self declinedPeersCount];
+        invitedPeersState3 = [(MCBrowserViewController *)self invitedPeersState];
+        -[NSMutableDictionary setObject:forKey:](invitedPeersState3, "setObject:forKey:", [MEMORY[0x277CCABB0] numberWithInteger:3], peer);
+        declinedPeersCount = [(MCBrowserViewController *)self declinedPeersCount];
         v16 = *MEMORY[0x277D85DE8];
 
-        [(MCBrowserViewController *)self setDeclinedPeersCount:v15 + 1];
+        [(MCBrowserViewController *)self setDeclinedPeersCount:declinedPeersCount + 1];
         break;
       case 4:
-        [(NSMutableArray *)[(MCBrowserViewController *)self invitedPeersSection] removeObject:a3];
-        [(NSMutableDictionary *)[(MCBrowserViewController *)self invitedPeersState] removeObjectForKey:a3];
-        if ([(NSMutableArray *)[(MCBrowserViewController *)self foundPeers] containsObject:a3])
+        [(NSMutableArray *)[(MCBrowserViewController *)self invitedPeersSection] removeObject:peer];
+        [(NSMutableDictionary *)[(MCBrowserViewController *)self invitedPeersState] removeObjectForKey:peer];
+        if ([(NSMutableArray *)[(MCBrowserViewController *)self foundPeers] containsObject:peer])
         {
-          v7 = [(MCBrowserViewController *)self nearbyPeersSection];
+          nearbyPeersSection = [(MCBrowserViewController *)self nearbyPeersSection];
           v8 = *MEMORY[0x277D85DE8];
 
-          [(NSMutableArray *)v7 addObject:a3];
+          [(NSMutableArray *)nearbyPeersSection addObject:peer];
           return;
         }
 
@@ -359,7 +359,7 @@ LABEL_22:
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
           v21[0] = 67109120;
-          v21[1] = a4;
+          v21[1] = to;
           _os_log_impl(&dword_239FB7000, v19, OS_LOG_TYPE_DEFAULT, "Unknown peer state [%d].", v21, 8u);
         }
 
@@ -368,31 +368,31 @@ LABEL_22:
   }
 }
 
-- (void)cancelTapped:(id)a3
+- (void)cancelTapped:(id)tapped
 {
-  v4 = [(MCBrowserViewController *)self delegate];
+  delegate = [(MCBrowserViewController *)self delegate];
 
-  [v4 browserViewControllerWasCancelled:self];
+  [delegate browserViewControllerWasCancelled:self];
 }
 
-- (id)detailStringForPeerState:(int)a3
+- (id)detailStringForPeerState:(int)state
 {
-  if (a3 <= 4)
+  if (state <= 4)
   {
-    return [*(self + 138) localizedStringForKey:off_278B44280[a3] value:&stru_284D24468 table:0];
+    return [*(self + 138) localizedStringForKey:off_278B44280[state] value:&stru_284D24468 table:0];
   }
 
   return self;
 }
 
-- (void)verifyPeerIsAccountedFor:(id)a3
+- (void)verifyPeerIsAccountedFor:(id)for
 {
-  [(NSMutableArray *)[(MCBrowserViewController *)self nearbyPeersSection] removeObject:a3];
-  if (([(NSMutableArray *)[(MCBrowserViewController *)self invitedPeersSection] containsObject:a3]& 1) == 0)
+  [(NSMutableArray *)[(MCBrowserViewController *)self nearbyPeersSection] removeObject:for];
+  if (([(NSMutableArray *)[(MCBrowserViewController *)self invitedPeersSection] containsObject:for]& 1) == 0)
   {
-    v5 = [(MCBrowserViewController *)self invitedPeersSection];
+    invitedPeersSection = [(MCBrowserViewController *)self invitedPeersSection];
 
-    [(NSMutableArray *)v5 addObject:a3];
+    [(NSMutableArray *)invitedPeersSection addObject:for];
   }
 }
 
@@ -412,14 +412,14 @@ LABEL_22:
 
 - (id)nearbySectionTitle
 {
-  v3 = [(MCBrowserViewController *)self minimumNumberOfPeersReached];
-  v4 = [(MCBrowserViewController *)self maximumNumberOfPeersReached];
-  v5 = v4;
-  if (!v3)
+  minimumNumberOfPeersReached = [(MCBrowserViewController *)self minimumNumberOfPeersReached];
+  maximumNumberOfPeersReached = [(MCBrowserViewController *)self maximumNumberOfPeersReached];
+  v5 = maximumNumberOfPeersReached;
+  if (!minimumNumberOfPeersReached)
   {
-    v15 = [(MCBrowserViewController *)self minimumNumberOfPeers];
+    minimumNumberOfPeers = [(MCBrowserViewController *)self minimumNumberOfPeers];
     v16 = ~[(NSMutableArray *)[(MCBrowserViewController *)self invitedPeersSection] count];
-    v6 = v15 + [(MCBrowserViewController *)self declinedPeersCount]+ v16;
+    v6 = minimumNumberOfPeers + [(MCBrowserViewController *)self declinedPeersCount]+ v16;
     if (!v5)
     {
       goto LABEL_3;
@@ -429,16 +429,16 @@ LABEL_22:
   }
 
   v6 = 0;
-  if (v4)
+  if (maximumNumberOfPeersReached)
   {
     return 0;
   }
 
 LABEL_3:
-  v7 = [(MCBrowserViewController *)self maximumNumberOfPeers];
+  maximumNumberOfPeers = [(MCBrowserViewController *)self maximumNumberOfPeers];
   v8 = ~[(NSMutableArray *)[(MCBrowserViewController *)self invitedPeersSection] count];
-  v9 = v7 + [(MCBrowserViewController *)self declinedPeersCount]+ v8;
-  if (v9 == 1 && v3)
+  v9 = maximumNumberOfPeers + [(MCBrowserViewController *)self declinedPeersCount]+ v8;
+  if (v9 == 1 && minimumNumberOfPeersReached)
   {
     frameworkBundle = self->_frameworkBundle;
     v12 = @"Choose up to %lu more invitee";
@@ -447,7 +447,7 @@ LABEL_8:
     return [MEMORY[0x277CCACA8] localizedStringWithFormat:v13, 1, v20];
   }
 
-  if (v3)
+  if (minimumNumberOfPeersReached)
   {
     v17 = [(NSBundle *)self->_frameworkBundle localizedStringForKey:@"Choose up to %lu more invitees" value:&stru_284D24468 table:0];
     return [MEMORY[0x277CCACA8] localizedStringWithFormat:v17, v9, v20];
@@ -479,7 +479,7 @@ LABEL_8:
   }
 }
 
-- (void)applicationDidEnterBackgroundNotification:(id)a3
+- (void)applicationDidEnterBackgroundNotification:(id)notification
 {
   if ([(MCBrowserViewController *)self isVisible])
   {
@@ -488,7 +488,7 @@ LABEL_8:
   }
 }
 
-- (void)applicationWillEnterForegroundNotification:(id)a3
+- (void)applicationWillEnterForegroundNotification:(id)notification
 {
   if ([(MCBrowserViewController *)self isVisible])
   {
@@ -497,7 +497,7 @@ LABEL_8:
   }
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if ([(NSMutableArray *)[(MCBrowserViewController *)self invitedPeersSection] count]&& ![(MCBrowserViewController *)self maximumNumberOfPeersReached])
   {
@@ -510,10 +510,10 @@ LABEL_8:
   }
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
   v6 = [(NSMutableArray *)[(MCBrowserViewController *)self invitedPeersSection] count];
-  if (a4 || !v6)
+  if (section || !v6)
   {
 
     return [(MCBrowserViewController *)self nearbySectionTitle];
@@ -527,10 +527,10 @@ LABEL_8:
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   v6 = [(NSMutableArray *)[(MCBrowserViewController *)self invitedPeersSection] count];
-  if (a4 || !v6)
+  if (section || !v6)
   {
     result = [(NSMutableArray *)[(MCBrowserViewController *)self nearbyPeersSection] count];
     if (result <= 1)
@@ -541,22 +541,22 @@ LABEL_8:
 
   else
   {
-    v7 = [(MCBrowserViewController *)self invitedPeersSection];
+    invitedPeersSection = [(MCBrowserViewController *)self invitedPeersSection];
 
-    return [(NSMutableArray *)v7 count];
+    return [(NSMutableArray *)invitedPeersSection count];
   }
 
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = [a3 dequeueReusableCellWithIdentifier:@"Peer Cell" forIndexPath:?];
+  v6 = [view dequeueReusableCellWithIdentifier:@"Peer Cell" forIndexPath:?];
   [v6 setAccessoryType:0];
   [v6 setAccessoryView:0];
-  if (-[NSMutableArray count](-[MCBrowserViewController invitedPeersSection](self, "invitedPeersSection"), "count") && ![a4 section])
+  if (-[NSMutableArray count](-[MCBrowserViewController invitedPeersSection](self, "invitedPeersSection"), "count") && ![path section])
   {
-    v9 = -[NSMutableArray objectAtIndex:](-[MCBrowserViewController invitedPeersSection](self, "invitedPeersSection"), "objectAtIndex:", [a4 row]);
+    v9 = -[NSMutableArray objectAtIndex:](-[MCBrowserViewController invitedPeersSection](self, "invitedPeersSection"), "objectAtIndex:", [path row]);
     v10 = [(NSMutableDictionary *)[(MCBrowserViewController *)self invitedPeersState] objectForKey:v9];
     [objc_msgSend(v6 "textLabel")];
     [objc_msgSend(v6 "textLabel")];
@@ -586,19 +586,19 @@ LABEL_7:
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = -[NSMutableArray objectAtIndex:](-[MCBrowserViewController nearbyPeersSection](self, "nearbyPeersSection", a3), "objectAtIndex:", [a4 row]);
+  v5 = -[NSMutableArray objectAtIndex:](-[MCBrowserViewController nearbyPeersSection](self, "nearbyPeersSection", view), "objectAtIndex:", [path row]);
   [(MCNearbyServiceBrowser *)[(MCBrowserViewController *)self browser] invitePeer:v5 toSession:[(MCBrowserViewController *)self session] withContext:0 timeout:0.0];
   [(MCBrowserViewController *)self peer:v5 changedStateTo:0];
-  v6 = [(MCBrowserViewController *)self tableView];
+  tableView = [(MCBrowserViewController *)self tableView];
 
-  [(UITableView *)v6 reloadData];
+  [(UITableView *)tableView reloadData];
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  if (!-[NSMutableArray count](-[MCBrowserViewController invitedPeersSection](self, "invitedPeersSection", a3), "count") || (v6 = [a4 section]) != 0)
+  if (!-[NSMutableArray count](-[MCBrowserViewController invitedPeersSection](self, "invitedPeersSection", view), "count") || (v6 = [path section]) != 0)
   {
     LOBYTE(v6) = [(NSMutableArray *)[(MCBrowserViewController *)self nearbyPeersSection] count]!= 0;
   }
@@ -606,10 +606,10 @@ LABEL_7:
   return v6;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
   v6 = [(NSMutableArray *)[(MCBrowserViewController *)self invitedPeersSection] count];
-  if (!a4 && v6 || ![(NSMutableArray *)[(MCBrowserViewController *)self nearbyPeersSection] count])
+  if (!section && v6 || ![(NSMutableArray *)[(MCBrowserViewController *)self nearbyPeersSection] count])
   {
     return 0;
   }
@@ -619,15 +619,15 @@ LABEL_7:
   return v7;
 }
 
-- (void)browser:(id)a3 foundPeer:(id)a4 withDiscoveryInfo:(id)a5
+- (void)browser:(id)browser foundPeer:(id)peer withDiscoveryInfo:(id)info
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__MCBrowserViewController_browser_foundPeer_withDiscoveryInfo___block_invoke;
   block[3] = &unk_278B43C88;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a5;
+  block[5] = peer;
+  block[6] = info;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -713,14 +713,14 @@ uint64_t __63__MCBrowserViewController_browser_foundPeer_withDiscoveryInfo___blo
   return [v2 reloadData];
 }
 
-- (void)browser:(id)a3 lostPeer:(id)a4
+- (void)browser:(id)browser lostPeer:(id)peer
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __44__MCBrowserViewController_browser_lostPeer___block_invoke;
   v4[3] = &unk_278B43C60;
   v4[4] = self;
-  v4[5] = a4;
+  v4[5] = peer;
   dispatch_async(MEMORY[0x277D85CD0], v4);
 }
 
@@ -755,7 +755,7 @@ void __44__MCBrowserViewController_browser_lostPeer___block_invoke(uint64_t a1)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)session:(id)a3 didReceiveData:(id)a4 fromPeer:(id)a5 propagate:(BOOL *)a6
+- (void)session:(id)session didReceiveData:(id)data fromPeer:(id)peer propagate:(BOOL *)propagate
 {
   v6 = mcbrowser_ui_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -764,16 +764,16 @@ void __44__MCBrowserViewController_browser_lostPeer___block_invoke(uint64_t a1)
   }
 }
 
-- (void)session:(id)a3 peer:(id)a4 didChangeState:(int64_t)a5 propagate:(BOOL *)a6
+- (void)session:(id)session peer:(id)peer didChangeState:(int64_t)state propagate:(BOOL *)propagate
 {
   v16 = *MEMORY[0x277D85DE8];
   v9 = mcbrowser_ui_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v13 = [a4 displayName];
+    displayName = [peer displayName];
     v14 = 2112;
-    v15 = [MCSession stringForSessionState:a5];
+    v15 = [MCSession stringForSessionState:state];
     _os_log_impl(&dword_239FB7000, v9, OS_LOG_TYPE_DEFAULT, "Peer [%@] changed state to [%@].", buf, 0x16u);
   }
 
@@ -781,8 +781,8 @@ void __44__MCBrowserViewController_browser_lostPeer___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __65__MCBrowserViewController_session_peer_didChangeState_propagate___block_invoke;
   block[3] = &unk_278B43E68;
-  block[5] = a4;
-  block[6] = a5;
+  block[5] = peer;
+  block[6] = state;
   block[4] = self;
   dispatch_async(MEMORY[0x277D85CD0], block);
   v10 = *MEMORY[0x277D85DE8];
@@ -850,7 +850,7 @@ LABEL_12:
   return result;
 }
 
-- (void)session:(id)a3 didReceiveStream:(id)a4 withName:(id)a5 fromPeer:(id)a6 propagate:(BOOL *)a7
+- (void)session:(id)session didReceiveStream:(id)stream withName:(id)name fromPeer:(id)peer propagate:(BOOL *)propagate
 {
   v7 = mcbrowser_ui_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -859,7 +859,7 @@ LABEL_12:
   }
 }
 
-- (void)session:(id)a3 didStartReceivingResourceWithName:(id)a4 fromPeer:(id)a5 withProgress:(id)a6 propagate:(BOOL *)a7
+- (void)session:(id)session didStartReceivingResourceWithName:(id)name fromPeer:(id)peer withProgress:(id)progress propagate:(BOOL *)propagate
 {
   v7 = mcbrowser_ui_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -868,7 +868,7 @@ LABEL_12:
   }
 }
 
-- (void)session:(id)a3 didFinishReceivingResourceWithName:(id)a4 fromPeer:(id)a5 atURL:(id)a6 withError:(id)a7 propagate:(BOOL *)a8
+- (void)session:(id)session didFinishReceivingResourceWithName:(id)name fromPeer:(id)peer atURL:(id)l withError:(id)error propagate:(BOOL *)propagate
 {
   v8 = mcbrowser_ui_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))

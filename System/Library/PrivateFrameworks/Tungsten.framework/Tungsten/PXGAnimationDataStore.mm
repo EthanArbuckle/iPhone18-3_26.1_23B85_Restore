@@ -2,15 +2,15 @@
 - (NSIndexSet)activeGroupIndexes;
 - (NSString)diagnosticDescription;
 - (PXGAnimationDataStore)init;
-- (id)spriteIndexesExpiringAtTime:(double)a3;
+- (id)spriteIndexesExpiringAtTime:(double)time;
 - (unsigned)checkOutGroup;
-- (void)_resizeStorageToGroupIndex:(unsigned __int16)a3;
-- (void)applySpriteChangeDetails:(id)a3;
+- (void)_resizeStorageToGroupIndex:(unsigned __int16)index;
+- (void)applySpriteChangeDetails:(id)details;
 - (void)dealloc;
-- (void)increaseMappedSpriteCountBy:(unsigned int)a3 usingAnimationIndex:(unsigned __int16)a4;
-- (void)setMappedAnimationCount:(unsigned __int16)a3;
-- (void)setMappedSpriteCount:(unsigned int)a3;
-- (void)setSpriteCount:(unsigned int)a3;
+- (void)increaseMappedSpriteCountBy:(unsigned int)by usingAnimationIndex:(unsigned __int16)index;
+- (void)setMappedAnimationCount:(unsigned __int16)count;
+- (void)setMappedSpriteCount:(unsigned int)count;
+- (void)setSpriteCount:(unsigned int)count;
 @end
 
 @implementation PXGAnimationDataStore
@@ -52,14 +52,14 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"<%@: %p\n", v5, self];
 
-  v7 = [(PXGAnimationDataStore *)self spriteCount];
-  v8 = v7;
-  [v6 appendFormat:@"%li sprites:\n", v7];
-  v9 = [(PXGAnimationDataStore *)self spriteInfos];
-  if (v7)
+  spriteCount = [(PXGAnimationDataStore *)self spriteCount];
+  v8 = spriteCount;
+  [v6 appendFormat:@"%li sprites:\n", spriteCount];
+  spriteInfos = [(PXGAnimationDataStore *)self spriteInfos];
+  if (spriteCount)
   {
-    v10 = v9;
-    for (i = 0; i != v7; ++i)
+    v10 = spriteInfos;
+    for (i = 0; i != spriteCount; ++i)
     {
       memcpy(__dst, v10, sizeof(__dst));
       v12 = PXGAnimationSpriteInfoDescription(__dst);
@@ -92,7 +92,7 @@
   v18[3] = &unk_2782AAF40;
   v15 = v6;
   v19 = v15;
-  v20 = self;
+  selfCopy = self;
   [(NSMutableIndexSet *)activeGroupIndexes enumerateIndexesUsingBlock:v18];
   [v15 appendString:@">"];
   v16 = v15;
@@ -115,13 +115,13 @@ void __46__PXGAnimationDataStore_diagnosticDescription__block_invoke(uint64_t a1
   [v3 appendFormat:@"\t%li\t%@\n", a2, v7];
 }
 
-- (void)setMappedAnimationCount:(unsigned __int16)a3
+- (void)setMappedAnimationCount:(unsigned __int16)count
 {
-  v3 = a3;
+  countCopy = count;
   mappedAnimationCount = self->_mappedAnimationCount;
-  self->_mappedAnimationCount = a3;
+  self->_mappedAnimationCount = count;
   mappedAnimationCapacity = self->_mappedAnimationCapacity;
-  if (mappedAnimationCapacity < a3)
+  if (mappedAnimationCapacity < count)
   {
     if (self->_mappedAnimationCapacity)
     {
@@ -130,73 +130,73 @@ void __46__PXGAnimationDataStore_diagnosticDescription__block_invoke(uint64_t a1
         LOWORD(mappedAnimationCapacity) = 2 * mappedAnimationCapacity;
       }
 
-      while ((mappedAnimationCapacity & 0xFFFE) < a3);
+      while ((mappedAnimationCapacity & 0xFFFE) < count);
     }
 
     else
     {
-      LOWORD(mappedAnimationCapacity) = a3;
+      LOWORD(mappedAnimationCapacity) = count;
     }
 
     self->_mappedAnimationCapacity = mappedAnimationCapacity;
     self->_groupIndexByAnimationIndex = malloc_type_realloc(self->_groupIndexByAnimationIndex, 2 * mappedAnimationCapacity, 0x42760281uLL);
   }
 
-  if (mappedAnimationCount < v3)
+  if (mappedAnimationCount < countCopy)
   {
     v7 = &self->_groupIndexByAnimationIndex[mappedAnimationCount];
 
-    bzero(v7, 2 * (v3 - mappedAnimationCount));
+    bzero(v7, 2 * (countCopy - mappedAnimationCount));
   }
 }
 
-- (void)increaseMappedSpriteCountBy:(unsigned int)a3 usingAnimationIndex:(unsigned __int16)a4
+- (void)increaseMappedSpriteCountBy:(unsigned int)by usingAnimationIndex:(unsigned __int16)index
 {
-  v7 = [(PXGAnimationDataStore *)self mappedSpriteCount];
-  v8 = v7 + a3;
+  mappedSpriteCount = [(PXGAnimationDataStore *)self mappedSpriteCount];
+  v8 = mappedSpriteCount + by;
   [(PXGAnimationDataStore *)self setMappedSpriteCount:v8];
-  if (v7 < v8)
+  if (mappedSpriteCount < v8)
   {
     v9 = 0;
-    v10 = v8 - v7;
+    v10 = v8 - mappedSpriteCount;
     v11 = vdupq_n_s64(v10 - 1);
     v12 = (v10 + 7) & 0xFFFFFFFFFFFFFFF8;
-    v13 = &self->_animationIndexBySpriteIndex[v7 + 4];
+    v13 = &self->_animationIndexBySpriteIndex[mappedSpriteCount + 4];
     do
     {
       v14 = vdupq_n_s64(v9);
       v15 = vmovn_s64(vcgeq_u64(v11, vorrq_s8(v14, xmmword_21AE2D360)));
       if (vuzp1_s8(vuzp1_s16(v15, *v11.i8), *v11.i8).u8[0])
       {
-        *(v13 - 4) = a4;
+        *(v13 - 4) = index;
       }
 
       if (vuzp1_s8(vuzp1_s16(v15, *&v11), *&v11).i8[1])
       {
-        *(v13 - 3) = a4;
+        *(v13 - 3) = index;
       }
 
       if (vuzp1_s8(vuzp1_s16(*&v11, vmovn_s64(vcgeq_u64(v11, vorrq_s8(v14, xmmword_21AE2D350)))), *&v11).i8[2])
       {
-        *(v13 - 2) = a4;
-        *(v13 - 1) = a4;
+        *(v13 - 2) = index;
+        *(v13 - 1) = index;
       }
 
       v16 = vmovn_s64(vcgeq_u64(v11, vorrq_s8(v14, xmmword_21AE2D340)));
       if (vuzp1_s8(*&v11, vuzp1_s16(v16, *&v11)).i32[1])
       {
-        *v13 = a4;
+        *v13 = index;
       }
 
       if (vuzp1_s8(*&v11, vuzp1_s16(v16, *&v11)).i8[5])
       {
-        v13[1] = a4;
+        v13[1] = index;
       }
 
       if (vuzp1_s8(*&v11, vuzp1_s16(*&v11, vmovn_s64(vcgeq_u64(v11, vorrq_s8(v14, xmmword_21AE2D330))))).i8[6])
       {
-        v13[2] = a4;
-        v13[3] = a4;
+        v13[2] = index;
+        v13[3] = index;
       }
 
       v9 += 8;
@@ -207,11 +207,11 @@ void __46__PXGAnimationDataStore_diagnosticDescription__block_invoke(uint64_t a1
   }
 }
 
-- (void)setMappedSpriteCount:(unsigned int)a3
+- (void)setMappedSpriteCount:(unsigned int)count
 {
-  self->_mappedSpriteCount = a3;
+  self->_mappedSpriteCount = count;
   mappedSpriteCapacity = self->_mappedSpriteCapacity;
-  if (mappedSpriteCapacity < a3)
+  if (mappedSpriteCapacity < count)
   {
     if (mappedSpriteCapacity)
     {
@@ -220,12 +220,12 @@ void __46__PXGAnimationDataStore_diagnosticDescription__block_invoke(uint64_t a1
         mappedSpriteCapacity *= 2;
       }
 
-      while (mappedSpriteCapacity < a3);
+      while (mappedSpriteCapacity < count);
     }
 
     else
     {
-      mappedSpriteCapacity = a3;
+      mappedSpriteCapacity = count;
     }
 
     self->_mappedSpriteCapacity = mappedSpriteCapacity;
@@ -233,11 +233,11 @@ void __46__PXGAnimationDataStore_diagnosticDescription__block_invoke(uint64_t a1
   }
 }
 
-- (void)_resizeStorageToGroupIndex:(unsigned __int16)a3
+- (void)_resizeStorageToGroupIndex:(unsigned __int16)index
 {
-  v3 = a3 + 1;
+  v3 = index + 1;
   groupCapacity = self->_groupCapacity;
-  if (groupCapacity < (a3 + 1))
+  if (groupCapacity < (index + 1))
   {
     if (!self->_groupCapacity)
     {
@@ -275,30 +275,30 @@ void __46__PXGAnimationDataStore_diagnosticDescription__block_invoke(uint64_t a1
   return v4;
 }
 
-- (id)spriteIndexesExpiringAtTime:(double)a3
+- (id)spriteIndexesExpiringAtTime:(double)time
 {
-  v5 = [(PXGAnimationDataStore *)self spriteCount];
-  v6 = [(PXGAnimationDataStore *)self spriteInfos];
-  v7 = [(PXGAnimationDataStore *)self groupInfos];
-  if (v5)
+  spriteCount = [(PXGAnimationDataStore *)self spriteCount];
+  spriteInfos = [(PXGAnimationDataStore *)self spriteInfos];
+  groupInfos = [(PXGAnimationDataStore *)self groupInfos];
+  if (spriteCount)
   {
-    v8 = v7;
+    v8 = groupInfos;
     v9 = 0;
-    v10 = 0;
-    v11 = &v6->var23.var1 + 2;
+    indexSet = 0;
+    v11 = &spriteInfos->var23.var1 + 2;
     do
     {
       if (*v11)
       {
         v12 = v8 + 76 * *(v11 - 1);
-        if (*(v12 + 2) <= a3 && !*(v12 + 52))
+        if (*(v12 + 2) <= time && !*(v12 + 52))
         {
-          if (!v10)
+          if (!indexSet)
           {
-            v10 = [MEMORY[0x277CCAB58] indexSet];
+            indexSet = [MEMORY[0x277CCAB58] indexSet];
           }
 
-          [v10 addIndex:v9];
+          [indexSet addIndex:v9];
         }
       }
 
@@ -306,29 +306,29 @@ void __46__PXGAnimationDataStore_diagnosticDescription__block_invoke(uint64_t a1
       v11 += 307;
     }
 
-    while (v5 != v9);
+    while (spriteCount != v9);
   }
 
   else
   {
-    v10 = 0;
+    indexSet = 0;
   }
 
-  return v10;
+  return indexSet;
 }
 
-- (void)applySpriteChangeDetails:(id)a3
+- (void)applySpriteChangeDetails:(id)details
 {
-  v4 = a3;
-  -[PXGAnimationDataStore setSpriteCount:](self, "setSpriteCount:", [v4 numberOfSpritesAfterChange] - objc_msgSend(v4, "numberOfSpritesBeforeChange") + -[PXGAnimationDataStore spriteCount](self, "spriteCount"));
+  detailsCopy = details;
+  -[PXGAnimationDataStore setSpriteCount:](self, "setSpriteCount:", [detailsCopy numberOfSpritesAfterChange] - objc_msgSend(detailsCopy, "numberOfSpritesBeforeChange") + -[PXGAnimationDataStore spriteCount](self, "spriteCount"));
   spriteInfos = self->_spriteInfos;
-  v6 = [(PXGAnimationDataStore *)self spriteCount];
+  spriteCount = [(PXGAnimationDataStore *)self spriteCount];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__PXGAnimationDataStore_applySpriteChangeDetails___block_invoke;
   v7[3] = &unk_2782A7EA8;
   v7[4] = self;
-  [v4 applyToArray:spriteInfos elementSize:307 countAfterChanges:v6 insertionHandler:v7 modifiedHandler:0];
+  [detailsCopy applyToArray:spriteInfos elementSize:307 countAfterChanges:spriteCount insertionHandler:v7 modifiedHandler:0];
 }
 
 uint64_t __50__PXGAnimationDataStore_applySpriteChangeDetails___block_invoke(uint64_t result, uint64_t a2)
@@ -371,11 +371,11 @@ uint64_t __50__PXGAnimationDataStore_applySpriteChangeDetails___block_invoke(uin
   return result;
 }
 
-- (void)setSpriteCount:(unsigned int)a3
+- (void)setSpriteCount:(unsigned int)count
 {
-  self->_spriteCount = a3;
+  self->_spriteCount = count;
   spriteCapacity = self->_spriteCapacity;
-  if (spriteCapacity < a3)
+  if (spriteCapacity < count)
   {
     if (spriteCapacity)
     {
@@ -384,12 +384,12 @@ uint64_t __50__PXGAnimationDataStore_applySpriteChangeDetails___block_invoke(uin
         spriteCapacity *= 2;
       }
 
-      while (spriteCapacity < a3);
+      while (spriteCapacity < count);
     }
 
     else
     {
-      spriteCapacity = a3;
+      spriteCapacity = count;
     }
 
     self->_spriteCapacity = spriteCapacity;

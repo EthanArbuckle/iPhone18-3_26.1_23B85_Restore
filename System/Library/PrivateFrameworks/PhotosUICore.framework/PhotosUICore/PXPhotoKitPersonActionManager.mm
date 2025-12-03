@@ -1,39 +1,39 @@
 @interface PXPhotoKitPersonActionManager
-- (BOOL)canPerformActionType:(id)a3;
-- (BOOL)isDestructiveActionType:(id)a3;
-- (Class)_validatedPerformerClassForActionType:(id)a3 checkIfCanPerformAction:(BOOL)a4;
+- (BOOL)canPerformActionType:(id)type;
+- (BOOL)isDestructiveActionType:(id)type;
+- (Class)_validatedPerformerClassForActionType:(id)type checkIfCanPerformAction:(BOOL)action;
 - (PXPhotoKitPersonActionManager)init;
-- (PXPhotoKitPersonActionManager)initWithPeople:(id)a3;
-- (PXPhotoKitPersonActionManager)initWithPerson:(id)a3;
-- (id)_actionPerformerForActionType:(id)a3 checkIfCanPerformAction:(BOOL)a4;
-- (id)actionPerformerForActionType:(id)a3 parameters:(id)a4;
-- (id)actionTypeForGenericType:(id)a3;
-- (id)contextMenuElementsWithHandler:(id)a3;
-- (id)localizedTitleForActionType:(id)a3 useCase:(unint64_t)a4;
-- (id)systemImageNameForActionType:(id)a3;
+- (PXPhotoKitPersonActionManager)initWithPeople:(id)people;
+- (PXPhotoKitPersonActionManager)initWithPerson:(id)person;
+- (id)_actionPerformerForActionType:(id)type checkIfCanPerformAction:(BOOL)action;
+- (id)actionPerformerForActionType:(id)type parameters:(id)parameters;
+- (id)actionTypeForGenericType:(id)type;
+- (id)contextMenuElementsWithHandler:(id)handler;
+- (id)localizedTitleForActionType:(id)type useCase:(unint64_t)case;
+- (id)systemImageNameForActionType:(id)type;
 @end
 
 @implementation PXPhotoKitPersonActionManager
 
-- (id)contextMenuElementsWithHandler:(id)a3
+- (id)contextMenuElementsWithHandler:(id)handler
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  handlerCopy = handler;
+  array = [MEMORY[0x1E695DF70] array];
   v19[0] = @"PXPhotoKitPersonActionTypeFavorite";
   v19[1] = @"PXPhotoKitPersonActionTypeCustomize";
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
-  v7 = [(PXActionManager *)self actionItemsForActionTypes:v6 handler:v4];
-  [v5 addObjectsFromArray:v7];
+  v7 = [(PXActionManager *)self actionItemsForActionTypes:v6 handler:handlerCopy];
+  [array addObjectsFromArray:v7];
 
   v8 = objc_opt_new();
-  [v5 addObject:v8];
+  [array addObject:v8];
 
   v18[0] = @"PXPhotoKitPersonActionTypeBlock";
   v18[1] = @"PXPhotoKitPersonActionTypeRemove";
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
-  v10 = [(PXActionManager *)self actionItemsForActionTypes:v9 handler:v4];
-  [v5 addObjectsFromArray:v10];
+  v10 = [(PXActionManager *)self actionItemsForActionTypes:v9 handler:handlerCopy];
+  [array addObjectsFromArray:v10];
 
   v11 = +[PXRootSettings sharedInstance];
   LODWORD(v10) = [v11 canShowInternalUI];
@@ -41,25 +41,25 @@
   if (v10)
   {
     v12 = objc_opt_new();
-    [v5 addObject:v12];
+    [array addObject:v12];
 
     v17[0] = @"PXPhotoKitPersonActionTypeCopyInternalURL";
     v17[1] = @"PXPhotoKitPersonInternalActionTypeMagic";
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
-    v14 = [(PXActionManager *)self actionItemsForActionTypes:v13 handler:v4];
+    v14 = [(PXActionManager *)self actionItemsForActionTypes:v13 handler:handlerCopy];
     v15 = [off_1E7721420 menuWithTitle:@" Internal" childElements:v14];
-    [v5 addObject:v15];
+    [array addObject:v15];
   }
 
-  return v5;
+  return array;
 }
 
-- (BOOL)canPerformActionType:(id)a3
+- (BOOL)canPerformActionType:(id)type
 {
-  v4 = a3;
-  if ([(PXActionManager *)self isActionTypeAllowed:v4])
+  typeCopy = type;
+  if ([(PXActionManager *)self isActionTypeAllowed:typeCopy])
   {
-    v5 = [(PXPhotoKitPersonActionManager *)self _validatedPerformerClassForActionType:v4 checkIfCanPerformAction:1]!= 0;
+    v5 = [(PXPhotoKitPersonActionManager *)self _validatedPerformerClassForActionType:typeCopy checkIfCanPerformAction:1]!= 0;
   }
 
   else
@@ -70,92 +70,92 @@
   return v5;
 }
 
-- (BOOL)isDestructiveActionType:(id)a3
+- (BOOL)isDestructiveActionType:(id)type
 {
-  v3 = [(PXPhotoKitPersonActionManager *)self _validatedPerformerClassForActionType:a3 checkIfCanPerformAction:0];
+  v3 = [(PXPhotoKitPersonActionManager *)self _validatedPerformerClassForActionType:type checkIfCanPerformAction:0];
 
   return [(objc_class *)v3 isActionDestructive];
 }
 
-- (id)systemImageNameForActionType:(id)a3
+- (id)systemImageNameForActionType:(id)type
 {
-  v4 = [(PXPhotoKitPersonActionManager *)self _validatedPerformerClassForActionType:a3 checkIfCanPerformAction:0];
-  v5 = [(PXPhotoKitPersonActionManager *)self people];
-  v6 = [v5 firstObject];
-  v7 = [(objc_class *)v4 systemImageNameForPerson:v6];
+  v4 = [(PXPhotoKitPersonActionManager *)self _validatedPerformerClassForActionType:type checkIfCanPerformAction:0];
+  people = [(PXPhotoKitPersonActionManager *)self people];
+  firstObject = [people firstObject];
+  v7 = [(objc_class *)v4 systemImageNameForPerson:firstObject];
 
   return v7;
 }
 
-- (id)localizedTitleForActionType:(id)a3 useCase:(unint64_t)a4
+- (id)localizedTitleForActionType:(id)type useCase:(unint64_t)case
 {
-  v5 = [(PXPhotoKitPersonActionManager *)self _validatedPerformerClassForActionType:a3 checkIfCanPerformAction:0];
-  v6 = [(PXPhotoKitPersonActionManager *)self people];
-  v7 = [v6 firstObject];
-  v8 = [(objc_class *)v5 localizedTitleForPerson:v7];
+  v5 = [(PXPhotoKitPersonActionManager *)self _validatedPerformerClassForActionType:type checkIfCanPerformAction:0];
+  people = [(PXPhotoKitPersonActionManager *)self people];
+  firstObject = [people firstObject];
+  v8 = [(objc_class *)v5 localizedTitleForPerson:firstObject];
 
   return v8;
 }
 
-- (id)actionPerformerForActionType:(id)a3 parameters:(id)a4
+- (id)actionPerformerForActionType:(id)type parameters:(id)parameters
 {
   v64 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (![v7 isEqualToString:@"PXPhotoKitPersonActionTypeMove"])
+  typeCopy = type;
+  parametersCopy = parameters;
+  if (![typeCopy isEqualToString:@"PXPhotoKitPersonActionTypeMove"])
   {
-    if (![v7 isEqualToString:@"PXPhotoKitPersonActionTypeAddContent"])
+    if (![typeCopy isEqualToString:@"PXPhotoKitPersonActionTypeAddContent"])
     {
-      v16 = [(PXPhotoKitPersonActionManager *)self actionPerformerForActionType:v7];
+      v16 = [(PXPhotoKitPersonActionManager *)self actionPerformerForActionType:typeCopy];
       goto LABEL_33;
     }
 
-    v17 = [v8 objectForKeyedSubscript:*off_1E77219C0];
+    v17 = [parametersCopy objectForKeyedSubscript:*off_1E77219C0];
     if (v17)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
 LABEL_14:
-        v18 = [(PXPhotoKitPersonActionManager *)self people];
-        v19 = [v18 fetchedObjects];
-        v20 = [v19 arrayByAddingObjectsFromArray:v17];
+        people = [(PXPhotoKitPersonActionManager *)self people];
+        fetchedObjects = [people fetchedObjects];
+        v20 = [fetchedObjects arrayByAddingObjectsFromArray:v17];
 
         v21 = [(PXPhotoKitPersonActionManager *)self _actionPerformerForActionType:@"PXPhotoKitPersonActionTypeMerge" checkIfCanPerformAction:0];
-        v22 = self;
+        selfCopy = self;
         v16 = v21;
-        v23 = [(PXPhotoKitPersonActionManager *)v22 photoLibrary];
-        v24 = [PXPeopleUtilities peopleFetchResultFromFastEnumeration:v20 photoLibrary:v23];
+        photoLibrary = [(PXPhotoKitPersonActionManager *)selfCopy photoLibrary];
+        v24 = [PXPeopleUtilities peopleFetchResultFromFastEnumeration:v20 photoLibrary:photoLibrary];
         [v16 setPeople:v24];
 
         goto LABEL_33;
       }
 
-      v44 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v49 = objc_opt_class();
       v46 = NSStringFromClass(v49);
-      v50 = [v17 px_descriptionForAssertionMessage];
-      [v44 handleFailureInMethod:a2 object:self file:@"PXPhotoKitPersonActionManager.m" lineNumber:164 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"parameters[PXActionParameterKeyContent]", v46, v50}];
+      px_descriptionForAssertionMessage = [v17 px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitPersonActionManager.m" lineNumber:164 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"parameters[PXActionParameterKeyContent]", v46, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v44 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v45 = objc_opt_class();
       v46 = NSStringFromClass(v45);
-      [v44 handleFailureInMethod:a2 object:self file:@"PXPhotoKitPersonActionManager.m" lineNumber:164 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"parameters[PXActionParameterKeyContent]", v46}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitPersonActionManager.m" lineNumber:164 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"parameters[PXActionParameterKeyContent]", v46}];
     }
 
     goto LABEL_14;
   }
 
-  v9 = [v8 objectForKeyedSubscript:*off_1E77219C8];
+  v9 = [parametersCopy objectForKeyedSubscript:*off_1E77219C8];
   if (!v9)
   {
-    v35 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v36 = objc_opt_class();
     v37 = NSStringFromClass(v36);
-    [v35 handleFailureInMethod:a2 object:self file:@"PXPhotoKitPersonActionManager.m" lineNumber:117 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"parameters[PXActionParameterKeySourceObjects]", v37}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPhotoKitPersonActionManager.m" lineNumber:117 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"parameters[PXActionParameterKeySourceObjects]", v37}];
 LABEL_39:
 
     goto LABEL_4;
@@ -164,46 +164,46 @@ LABEL_39:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v35 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v38 = objc_opt_class();
     v37 = NSStringFromClass(v38);
-    v39 = [v9 px_descriptionForAssertionMessage];
-    [v35 handleFailureInMethod:a2 object:self file:@"PXPhotoKitPersonActionManager.m" lineNumber:117 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"parameters[PXActionParameterKeySourceObjects]", v37, v39}];
+    px_descriptionForAssertionMessage2 = [v9 px_descriptionForAssertionMessage];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPhotoKitPersonActionManager.m" lineNumber:117 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"parameters[PXActionParameterKeySourceObjects]", v37, px_descriptionForAssertionMessage2}];
 
     goto LABEL_39;
   }
 
 LABEL_4:
-  v10 = [v8 objectForKeyedSubscript:*off_1E77219D0];
+  v10 = [parametersCopy objectForKeyedSubscript:*off_1E77219D0];
   if (v10)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v40 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v41 = objc_opt_class();
       v42 = NSStringFromClass(v41);
-      v43 = [v10 px_descriptionForAssertionMessage];
-      [v40 handleFailureInMethod:a2 object:self file:@"PXPhotoKitPersonActionManager.m" lineNumber:118 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"parameters[PXActionParameterKeyTargetObject]", v42, v43}];
+      px_descriptionForAssertionMessage3 = [v10 px_descriptionForAssertionMessage];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXPhotoKitPersonActionManager.m" lineNumber:118 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"parameters[PXActionParameterKeyTargetObject]", v42, px_descriptionForAssertionMessage3}];
     }
   }
 
   v61 = a2;
-  v11 = [v9 firstObject];
-  v12 = [v10 localIdentifier];
-  v13 = [v11 localIdentifier];
-  v14 = [v13 isEqualToString:v12];
+  firstObject = [v9 firstObject];
+  localIdentifier = [v10 localIdentifier];
+  localIdentifier2 = [firstObject localIdentifier];
+  v14 = [localIdentifier2 isEqualToString:localIdentifier];
 
   if (!v14)
   {
-    v58 = self;
+    selfCopy2 = self;
     if (v10)
     {
-      v25 = [v11 type];
-      if (v25 == [v10 type])
+      type = [firstObject type];
+      if (type == [v10 type])
       {
-        v26 = [v11 manualOrder];
-        if (v26 >= [v10 manualOrder])
+        manualOrder = [firstObject manualOrder];
+        if (manualOrder >= [v10 manualOrder])
         {
           v27 = 0;
         }
@@ -220,8 +220,8 @@ LABEL_4:
       }
 
       v60 = [v10 manualOrder] + v27;
-      v59 = [v10 type];
-      v31 = [v10 localIdentifier];
+      type2 = [v10 type];
+      localIdentifier3 = [v10 localIdentifier];
     }
 
     else
@@ -237,31 +237,31 @@ LABEL_4:
 
       else
       {
-        v32 = [(PXPhotoKitPersonActionManager *)v28 photoLibrary];
-        v30 = [PXPeopleUtilities lastManuallySortedPersonInSectionOfType:1 photoLibrary:v32];
+        photoLibrary2 = [(PXPhotoKitPersonActionManager *)v28 photoLibrary];
+        v30 = [PXPeopleUtilities lastManuallySortedPersonInSectionOfType:1 photoLibrary:photoLibrary2];
 
         if (v30)
         {
-          self = v58;
+          self = selfCopy2;
         }
 
         else
         {
-          v53 = [MEMORY[0x1E696AAA8] currentHandler];
-          self = v58;
-          [v53 handleFailureInMethod:v61 object:v58 file:@"PXPhotoKitPersonActionManager.m" lineNumber:151 description:{@"Invalid parameter not satisfying: %@", @"lastPerson"}];
+          currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+          self = selfCopy2;
+          [currentHandler4 handleFailureInMethod:v61 object:selfCopy2 file:@"PXPhotoKitPersonActionManager.m" lineNumber:151 description:{@"Invalid parameter not satisfying: %@", @"lastPerson"}];
 
           v30 = 0;
         }
       }
 
       v60 = [v30 manualOrder] + 1;
-      v59 = [v30 type];
+      type2 = [v30 type];
 
-      v31 = 0;
+      localIdentifier3 = 0;
     }
 
-    v16 = [(PXPhotoKitPersonActionManager *)self actionPerformerForActionType:v7];
+    v16 = [(PXPhotoKitPersonActionManager *)self actionPerformerForActionType:typeCopy];
     if (v16)
     {
       objc_opt_class();
@@ -269,30 +269,30 @@ LABEL_4:
       {
 LABEL_30:
         [v16 setSourcePeople:v9];
-        [v16 setSourceType:{objc_msgSend(v11, "type")}];
+        [v16 setSourceType:{objc_msgSend(firstObject, "type")}];
         [v16 setDestinationManualOrder:v60];
-        [v16 setDestinationType:v59];
-        [v16 setTargetLocalIdentifier:v31];
+        [v16 setDestinationType:type2];
+        [v16 setTargetLocalIdentifier:localIdentifier3];
 
         goto LABEL_31;
       }
 
-      v56 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
       v51 = objc_opt_class();
       v52 = NSStringFromClass(v51);
-      v55 = [v16 px_descriptionForAssertionMessage];
+      px_descriptionForAssertionMessage4 = [v16 px_descriptionForAssertionMessage];
       v57 = v52;
       v54 = v52;
-      v47 = v56;
-      [v56 handleFailureInMethod:v61 object:v58 file:@"PXPhotoKitPersonActionManager.m" lineNumber:156 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"[self actionPerformerForActionType:actionType]", v54, v55}];
+      currentHandler6 = currentHandler5;
+      [currentHandler5 handleFailureInMethod:v61 object:selfCopy2 file:@"PXPhotoKitPersonActionManager.m" lineNumber:156 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"[self actionPerformerForActionType:actionType]", v54, px_descriptionForAssertionMessage4}];
     }
 
     else
     {
-      v47 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
       v48 = objc_opt_class();
       v57 = NSStringFromClass(v48);
-      [v47 handleFailureInMethod:v61 object:v58 file:@"PXPhotoKitPersonActionManager.m" lineNumber:156 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"[self actionPerformerForActionType:actionType]", v57}];
+      [currentHandler6 handleFailureInMethod:v61 object:selfCopy2 file:@"PXPhotoKitPersonActionManager.m" lineNumber:156 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"[self actionPerformerForActionType:actionType]", v57}];
     }
 
     goto LABEL_30;
@@ -302,7 +302,7 @@ LABEL_30:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v63 = v12;
+    v63 = localIdentifier;
     _os_log_impl(&dword_1A3C1C000, v15, OS_LOG_TYPE_DEFAULT, "Not performing person reorder because the source and target people are the same: %@", buf, 0xCu);
   }
 
@@ -323,23 +323,23 @@ LABEL_34:
   return v33;
 }
 
-- (id)actionTypeForGenericType:(id)a3
+- (id)actionTypeForGenericType:(id)type
 {
-  v4 = a3;
-  v5 = [(PXPhotoKitPersonActionManager *)self personActionTypeByGenericType];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  typeCopy = type;
+  personActionTypeByGenericType = [(PXPhotoKitPersonActionManager *)self personActionTypeByGenericType];
+  v6 = [personActionTypeByGenericType objectForKeyedSubscript:typeCopy];
 
   return v6;
 }
 
-- (id)_actionPerformerForActionType:(id)a3 checkIfCanPerformAction:(BOOL)a4
+- (id)_actionPerformerForActionType:(id)type checkIfCanPerformAction:(BOOL)action
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PXPhotoKitPersonActionManager *)self _validatedPerformerClassForActionType:v6 checkIfCanPerformAction:v4];
+  actionCopy = action;
+  typeCopy = type;
+  v7 = [(PXPhotoKitPersonActionManager *)self _validatedPerformerClassForActionType:typeCopy checkIfCanPerformAction:actionCopy];
   v8 = MEMORY[0x1E6978650];
-  v9 = [(PXPhotoKitPersonActionManager *)self photoLibrary];
-  v10 = [v8 transientAssetCollectionWithAssets:MEMORY[0x1E695E0F0] title:0 identifier:0 photoLibrary:v9];
+  photoLibrary = [(PXPhotoKitPersonActionManager *)self photoLibrary];
+  v10 = [v8 transientAssetCollectionWithAssets:MEMORY[0x1E695E0F0] title:0 identifier:0 photoLibrary:photoLibrary];
 
   v11 = [off_1E7721488 alloc];
   v12 = *(off_1E7722228 + 1);
@@ -347,38 +347,38 @@ LABEL_34:
   v19[1] = v12;
   v13 = [v11 initWithAssetCollection:v10 keyAssetReference:0 indexPath:v19];
   v14 = [v7 alloc];
-  v15 = [v14 initWithActionType:v6 assetCollectionReference:v13 parameters:MEMORY[0x1E695E0F8]];
+  v15 = [v14 initWithActionType:typeCopy assetCollectionReference:v13 parameters:MEMORY[0x1E695E0F8]];
 
-  v16 = [(PXActionManager *)self performerDelegate];
-  [v15 setDelegate:v16];
+  performerDelegate = [(PXActionManager *)self performerDelegate];
+  [v15 setDelegate:performerDelegate];
 
-  v17 = [(PXPhotoKitPersonActionManager *)self people];
-  [v15 setPeople:v17];
+  people = [(PXPhotoKitPersonActionManager *)self people];
+  [v15 setPeople:people];
 
   return v15;
 }
 
-- (Class)_validatedPerformerClassForActionType:(id)a3 checkIfCanPerformAction:(BOOL)a4
+- (Class)_validatedPerformerClassForActionType:(id)type checkIfCanPerformAction:(BOOL)action
 {
-  v4 = a4;
-  v7 = a3;
-  if (!v7)
+  actionCopy = action;
+  typeCopy = type;
+  if (!typeCopy)
   {
     goto LABEL_7;
   }
 
-  v8 = [(PXPhotoKitPersonActionManager *)self performerClassByType];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  performerClassByType = [(PXPhotoKitPersonActionManager *)self performerClassByType];
+  v9 = [performerClassByType objectForKeyedSubscript:typeCopy];
 
   if (([v9 isSubclassOfClass:objc_opt_class()] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXPhotoKitPersonActionManager.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"[performerClass isSubclassOfClass:PXAssetCollectionActionPerformer.class]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitPersonActionManager.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"[performerClass isSubclassOfClass:PXAssetCollectionActionPerformer.class]"}];
   }
 
   if ([v9 conformsToProtocol:&unk_1F1928C60])
   {
-    if (!v4)
+    if (!actionCopy)
     {
       goto LABEL_8;
     }
@@ -386,17 +386,17 @@ LABEL_34:
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXPhotoKitPersonActionManager.m" lineNumber:85 description:{@"Invalid parameter not satisfying: %@", @"[performerClass conformsToProtocol:@protocol(PXPhotoKitPersonActionPerformer)]"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPhotoKitPersonActionManager.m" lineNumber:85 description:{@"Invalid parameter not satisfying: %@", @"[performerClass conformsToProtocol:@protocol(PXPhotoKitPersonActionPerformer)]"}];
 
-    if (!v4)
+    if (!actionCopy)
     {
       goto LABEL_8;
     }
   }
 
-  v10 = [(PXPhotoKitPersonActionManager *)self people];
-  v11 = [v9 canPerformOn:v10];
+  people = [(PXPhotoKitPersonActionManager *)self people];
+  v11 = [v9 canPerformOn:people];
 
   if (!v11)
   {
@@ -412,44 +412,44 @@ LABEL_8:
 
 - (PXPhotoKitPersonActionManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXPhotoKitPersonActionManager.m" lineNumber:75 description:{@"%s is not available as initializer", "-[PXPhotoKitPersonActionManager init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitPersonActionManager.m" lineNumber:75 description:{@"%s is not available as initializer", "-[PXPhotoKitPersonActionManager init]"}];
 
   abort();
 }
 
-- (PXPhotoKitPersonActionManager)initWithPerson:(id)a3
+- (PXPhotoKitPersonActionManager)initWithPerson:(id)person
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  personCopy = person;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v9 count:1];
+  personCopy2 = person;
+  v6 = [v4 arrayWithObjects:&personCopy count:1];
 
-  v7 = [(PXPhotoKitPersonActionManager *)self initWithPeople:v6, v9, v10];
+  v7 = [(PXPhotoKitPersonActionManager *)self initWithPeople:v6, personCopy, v10];
   return v7;
 }
 
-- (PXPhotoKitPersonActionManager)initWithPeople:(id)a3
+- (PXPhotoKitPersonActionManager)initWithPeople:(id)people
 {
   v24[8] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  peopleCopy = people;
   v20.receiver = self;
   v20.super_class = PXPhotoKitPersonActionManager;
   v5 = [(PXPhotoKitPersonActionManager *)&v20 init];
   if (v5)
   {
-    v6 = [v4 firstObject];
-    v7 = [v6 photoLibrary];
+    firstObject = [peopleCopy firstObject];
+    photoLibrary = [firstObject photoLibrary];
 
-    v8 = [v4 copy];
-    v9 = [PXPeopleUtilities peopleFetchResultFromFastEnumeration:v8 photoLibrary:v7];
+    v8 = [peopleCopy copy];
+    v9 = [PXPeopleUtilities peopleFetchResultFromFastEnumeration:v8 photoLibrary:photoLibrary];
     people = v5->_people;
     v5->_people = v9;
 
     photoLibrary = v5->_photoLibrary;
-    v5->_photoLibrary = v7;
-    v12 = v7;
+    v5->_photoLibrary = photoLibrary;
+    v12 = photoLibrary;
 
     v23[0] = @"PXPhotoKitPersonActionTypeFavorite";
     v24[0] = objc_opt_class();

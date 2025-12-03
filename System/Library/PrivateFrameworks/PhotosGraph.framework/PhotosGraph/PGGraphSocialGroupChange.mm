@@ -1,7 +1,7 @@
 @interface PGGraphSocialGroupChange
-- (PGGraphSocialGroupChange)initWithSocialGroupUUID:(id)a3 propertyNames:(id)a4;
+- (PGGraphSocialGroupChange)initWithSocialGroupUUID:(id)d propertyNames:(id)names;
 - (id)description;
-- (void)mergeChange:(id)a3;
+- (void)mergeChange:(id)change;
 @end
 
 @implementation PGGraphSocialGroupChange
@@ -12,39 +12,39 @@
   v9.receiver = self;
   v9.super_class = PGGraphSocialGroupChange;
   v4 = [(PGGraphChange *)&v9 description];
-  v5 = [(PGGraphSocialGroupChange *)self socialGroupUUID];
-  v6 = [(PGGraphSocialGroupChange *)self propertyNames];
-  v7 = [v3 stringWithFormat:@"%@ social group uuid: %@, propertyNames: %@", v4, v5, v6];
+  socialGroupUUID = [(PGGraphSocialGroupChange *)self socialGroupUUID];
+  propertyNames = [(PGGraphSocialGroupChange *)self propertyNames];
+  v7 = [v3 stringWithFormat:@"%@ social group uuid: %@, propertyNames: %@", v4, socialGroupUUID, propertyNames];
 
   return v7;
 }
 
-- (void)mergeChange:(id)a3
+- (void)mergeChange:(id)change
 {
-  v4 = a3;
-  v9 = [v4 socialGroupUUID];
-  [v9 length];
+  changeCopy = change;
+  socialGroupUUID = [changeCopy socialGroupUUID];
+  [socialGroupUUID length];
   v5 = [(NSSet *)self->_propertyNames mutableCopy];
-  v6 = [v4 propertyNames];
+  propertyNames = [changeCopy propertyNames];
 
-  [v5 unionSet:v6];
+  [v5 unionSet:propertyNames];
   v7 = [MEMORY[0x277CBEB98] setWithSet:v5];
   propertyNames = self->_propertyNames;
   self->_propertyNames = v7;
 }
 
-- (PGGraphSocialGroupChange)initWithSocialGroupUUID:(id)a3 propertyNames:(id)a4
+- (PGGraphSocialGroupChange)initWithSocialGroupUUID:(id)d propertyNames:(id)names
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  namesCopy = names;
   v12.receiver = self;
   v12.super_class = PGGraphSocialGroupChange;
   v9 = [(PGGraphSocialGroupChange *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_socialGroupUUID, a3);
-    objc_storeStrong(&v10->_propertyNames, a4);
+    objc_storeStrong(&v9->_socialGroupUUID, d);
+    objc_storeStrong(&v10->_propertyNames, names);
   }
 
   return v10;

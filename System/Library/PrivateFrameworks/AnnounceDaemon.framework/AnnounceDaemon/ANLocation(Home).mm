@@ -9,14 +9,14 @@
 {
   v53 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 homeUUID];
-  v6 = [v4 home];
-  v7 = [v6 uniqueIdentifier];
-  v8 = [v5 isEqual:v7];
+  homeUUID = [self homeUUID];
+  home = [v4 home];
+  uniqueIdentifier = [home uniqueIdentifier];
+  v8 = [homeUUID isEqual:uniqueIdentifier];
 
   if (v8)
   {
-    if ([a1 flags])
+    if ([self flags])
     {
       v31 = 1;
     }
@@ -27,8 +27,8 @@
       v49 = 0u;
       v46 = 0u;
       v47 = 0u;
-      v9 = [a1 roomUUIDs];
-      v10 = [v9 countByEnumeratingWithState:&v46 objects:v52 count:16];
+      roomUUIDs = [self roomUUIDs];
+      v10 = [roomUUIDs countByEnumeratingWithState:&v46 objects:v52 count:16];
       if (v10)
       {
         v11 = v10;
@@ -40,13 +40,13 @@
           {
             if (*v47 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(roomUUIDs);
             }
 
             v14 = *(*(&v46 + 1) + 8 * v13);
-            v15 = [v4 room];
-            v16 = [v15 uniqueIdentifier];
-            LOBYTE(v14) = [v14 isEqual:v16];
+            room = [v4 room];
+            uniqueIdentifier2 = [room uniqueIdentifier];
+            LOBYTE(v14) = [v14 isEqual:uniqueIdentifier2];
 
             if (v14)
             {
@@ -59,7 +59,7 @@ LABEL_30:
           }
 
           while (v11 != v13);
-          v11 = [v9 countByEnumeratingWithState:&v46 objects:v52 count:16];
+          v11 = [roomUUIDs countByEnumeratingWithState:&v46 objects:v52 count:16];
           if (v11)
           {
             continue;
@@ -73,8 +73,8 @@ LABEL_30:
       v45 = 0u;
       v42 = 0u;
       v43 = 0u;
-      v9 = [a1 zoneUUIDs];
-      v35 = [v9 countByEnumeratingWithState:&v42 objects:v51 count:16];
+      roomUUIDs = [self zoneUUIDs];
+      v35 = [roomUUIDs countByEnumeratingWithState:&v42 objects:v51 count:16];
       if (v35)
       {
         v17 = *v43;
@@ -86,21 +86,21 @@ LABEL_30:
           {
             if (*v43 != v17)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(roomUUIDs);
             }
 
             v36 = v18;
             v19 = *(*(&v42 + 1) + 8 * v18);
-            v20 = [v4 home];
-            v21 = [v20 hmu_zoneWithUniqueIdentifier:v19];
+            home2 = [v4 home];
+            v21 = [home2 hmu_zoneWithUniqueIdentifier:v19];
 
             v40 = 0u;
             v41 = 0u;
             v38 = 0u;
             v39 = 0u;
             v37 = v21;
-            v22 = [v21 rooms];
-            v23 = [v22 countByEnumeratingWithState:&v38 objects:v50 count:16];
+            rooms = [v21 rooms];
+            v23 = [rooms countByEnumeratingWithState:&v38 objects:v50 count:16];
             if (v23)
             {
               v24 = v23;
@@ -112,13 +112,13 @@ LABEL_30:
                 {
                   if (*v39 != v25)
                   {
-                    objc_enumerationMutation(v22);
+                    objc_enumerationMutation(rooms);
                   }
 
-                  v27 = [*(*(&v38 + 1) + 8 * v26) uniqueIdentifier];
-                  v28 = [v4 room];
-                  v29 = [v28 uniqueIdentifier];
-                  v30 = [v27 isEqual:v29];
+                  uniqueIdentifier3 = [*(*(&v38 + 1) + 8 * v26) uniqueIdentifier];
+                  room2 = [v4 room];
+                  uniqueIdentifier4 = [room2 uniqueIdentifier];
+                  v30 = [uniqueIdentifier3 isEqual:uniqueIdentifier4];
 
                   if (v30)
                   {
@@ -130,7 +130,7 @@ LABEL_30:
                 }
 
                 while (v24 != v26);
-                v24 = [v22 countByEnumeratingWithState:&v38 objects:v50 count:16];
+                v24 = [rooms countByEnumeratingWithState:&v38 objects:v50 count:16];
                 if (v24)
                 {
                   continue;
@@ -145,7 +145,7 @@ LABEL_30:
           }
 
           while (v36 + 1 != v35);
-          v35 = [v9 countByEnumeratingWithState:&v42 objects:v51 count:16];
+          v35 = [roomUUIDs countByEnumeratingWithState:&v42 objects:v51 count:16];
         }
 
         while (v35);
@@ -168,11 +168,11 @@ LABEL_31:
 - (id)allRoomsInHome:()Home
 {
   v4 = a3;
-  v5 = [a1 roomUUIDs];
-  if (v5)
+  roomUUIDs = [self roomUUIDs];
+  if (roomUUIDs)
   {
-    v6 = [a1 roomUUIDs];
-    v7 = [v4 hmu_roomsWithUniqueIdentifiers:v6];
+    roomUUIDs2 = [self roomUUIDs];
+    v7 = [v4 hmu_roomsWithUniqueIdentifiers:roomUUIDs2];
   }
 
   else
@@ -180,11 +180,11 @@ LABEL_31:
     v7 = MEMORY[0x277CBEBF8];
   }
 
-  v8 = [a1 zoneUUIDs];
-  if (v8)
+  zoneUUIDs = [self zoneUUIDs];
+  if (zoneUUIDs)
   {
-    v9 = [a1 zoneUUIDs];
-    v10 = [v4 hmu_zonesWithUniqueIdentifiers:v9];
+    zoneUUIDs2 = [self zoneUUIDs];
+    v10 = [v4 hmu_zonesWithUniqueIdentifiers:zoneUUIDs2];
   }
 
   else

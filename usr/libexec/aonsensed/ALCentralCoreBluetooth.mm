@@ -1,25 +1,25 @@
 @interface ALCentralCoreBluetooth
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6;
-- (void)centralManagerDidUpdateState:(id)a3;
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i;
+- (void)centralManagerDidUpdateState:(id)state;
 @end
 
 @implementation ALCentralCoreBluetooth
 
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i
 {
   v10 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = self;
-  sub_100349BE0(v12, v10, v13);
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  iCopy = i;
+  selfCopy = self;
+  sub_100349BE0(peripheralCopy, v10, iCopy);
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  sub_100346E94(v4);
+  stateCopy = state;
+  selfCopy = self;
+  sub_100346E94(stateCopy);
 }
 
 @end

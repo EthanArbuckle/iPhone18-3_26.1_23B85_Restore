@@ -1,6 +1,6 @@
 @interface TSDBitmapRenderingQualityImageMapValue
-- (CGImage)degradedImageRefForForProvider:(id)a3 quality:(int)a4 canvasScale:(float)a5;
-- (void)addSize:(CGSize)a3;
+- (CGImage)degradedImageRefForForProvider:(id)provider quality:(int)quality canvasScale:(float)scale;
+- (void)addSize:(CGSize)size;
 - (void)dealloc;
 @end
 
@@ -14,9 +14,9 @@
   [(TSDBitmapRenderingQualityImageMapValue *)&v3 dealloc];
 }
 
-- (void)addSize:(CGSize)a3
+- (void)addSize:(CGSize)size
 {
-  v4 = TSDCeilSize(a3.width);
+  v4 = TSDCeilSize(size.width);
   width = self->mMaxSize.width;
   height = self->mMaxSize.height;
   if (v4 > width || v5 > height)
@@ -42,12 +42,12 @@
   }
 }
 
-- (CGImage)degradedImageRefForForProvider:(id)a3 quality:(int)a4 canvasScale:(float)a5
+- (CGImage)degradedImageRefForForProvider:(id)provider quality:(int)quality canvasScale:(float)scale
 {
   result = self->mDegradedImageRef;
   if (!result)
   {
-    if (a4 == 1)
+    if (quality == 1)
     {
       v11 = 0;
       v12 = 150.0;
@@ -55,19 +55,19 @@
 
     else
     {
-      if (a4 == 2)
+      if (quality == 2)
       {
-        v9 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDBitmapRenderingQualityImageMapValue degradedImageRefForForProvider:quality:canvasScale:]"];
-        [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBitmapRenderingQualityInfo.m"), 116, @"Shouldn't be called for high DPI"}];
+        [currentHandler handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBitmapRenderingQualityInfo.m"), 116, @"Shouldn't be called for high DPI"}];
       }
 
       v11 = 1;
       v12 = 72.0;
     }
 
-    v13 = TSDMultiplySizeScalar(self->mMaxSize.width, self->mMaxSize.height, ((v12 / 72.0) * a5));
-    v14 = [a3 CGImageForSize:v11 lowQuality:TSDCeilSize(v13)];
+    v13 = TSDMultiplySizeScalar(self->mMaxSize.width, self->mMaxSize.height, ((v12 / 72.0) * scale));
+    v14 = [provider CGImageForSize:v11 lowQuality:TSDCeilSize(v13)];
     self->mDegradedImageRef = v14;
     CGImageRetain(v14);
     return self->mDegradedImageRef;

@@ -1,55 +1,55 @@
 @interface _INPBUpdateEventIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBUpdateEventIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBUpdateEventIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsConfirmationReason:(id)a3;
+- (int)StringAsConfirmationReason:(id)reason;
 - (unint64_t)hash;
-- (void)addConflictingEventIdentifiers:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setConfirmationReason:(int)a3;
-- (void)setConflictingEventIdentifiers:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addConflictingEventIdentifiers:(id)identifiers;
+- (void)encodeWithCoder:(id)coder;
+- (void)setConfirmationReason:(int)reason;
+- (void)setConflictingEventIdentifiers:(id)identifiers;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBUpdateEventIntentResponse
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBUpdateEventIntentResponse *)self hasConfirmationReason])
   {
-    v4 = [(_INPBUpdateEventIntentResponse *)self confirmationReason];
-    if (v4 == 1)
+    confirmationReason = [(_INPBUpdateEventIntentResponse *)self confirmationReason];
+    if (confirmationReason == 1)
     {
       v5 = @"SCHEDULE_CONFLICT";
     }
 
-    else if (v4 == 2)
+    else if (confirmationReason == 2)
     {
       v5 = @"UPDATE_ALL_RECURRENCES";
     }
 
     else
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", confirmationReason];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"confirmationReason"];
+    [dictionary setObject:v5 forKeyedSubscript:@"confirmationReason"];
   }
 
   if (self->_conflictingEventIdentifiers)
   {
-    v6 = [(_INPBUpdateEventIntentResponse *)self conflictingEventIdentifiers];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"conflictingEventIdentifiers"];
+    conflictingEventIdentifiers = [(_INPBUpdateEventIntentResponse *)self conflictingEventIdentifiers];
+    v7 = [conflictingEventIdentifiers copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"conflictingEventIdentifiers"];
   }
 
-  v8 = [(_INPBUpdateEventIntentResponse *)self updatedEvent];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"updatedEvent"];
+  updatedEvent = [(_INPBUpdateEventIntentResponse *)self updatedEvent];
+  dictionaryRepresentation = [updatedEvent dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"updatedEvent"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -68,46 +68,46 @@
   return v4 ^ [(_INPBCalendarEvent *)self->_updatedEvent hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
-  v5 = [(_INPBUpdateEventIntentResponse *)self hasConfirmationReason];
-  if (v5 != [v4 hasConfirmationReason])
+  hasConfirmationReason = [(_INPBUpdateEventIntentResponse *)self hasConfirmationReason];
+  if (hasConfirmationReason != [equalCopy hasConfirmationReason])
   {
     goto LABEL_16;
   }
 
   if ([(_INPBUpdateEventIntentResponse *)self hasConfirmationReason])
   {
-    if ([v4 hasConfirmationReason])
+    if ([equalCopy hasConfirmationReason])
     {
       confirmationReason = self->_confirmationReason;
-      if (confirmationReason != [v4 confirmationReason])
+      if (confirmationReason != [equalCopy confirmationReason])
       {
         goto LABEL_16;
       }
     }
   }
 
-  v7 = [(_INPBUpdateEventIntentResponse *)self conflictingEventIdentifiers];
-  v8 = [v4 conflictingEventIdentifiers];
-  if ((v7 != 0) == (v8 == 0))
+  conflictingEventIdentifiers = [(_INPBUpdateEventIntentResponse *)self conflictingEventIdentifiers];
+  conflictingEventIdentifiers2 = [equalCopy conflictingEventIdentifiers];
+  if ((conflictingEventIdentifiers != 0) == (conflictingEventIdentifiers2 == 0))
   {
     goto LABEL_15;
   }
 
-  v9 = [(_INPBUpdateEventIntentResponse *)self conflictingEventIdentifiers];
-  if (v9)
+  conflictingEventIdentifiers3 = [(_INPBUpdateEventIntentResponse *)self conflictingEventIdentifiers];
+  if (conflictingEventIdentifiers3)
   {
-    v10 = v9;
-    v11 = [(_INPBUpdateEventIntentResponse *)self conflictingEventIdentifiers];
-    v12 = [v4 conflictingEventIdentifiers];
-    v13 = [v11 isEqual:v12];
+    v10 = conflictingEventIdentifiers3;
+    conflictingEventIdentifiers4 = [(_INPBUpdateEventIntentResponse *)self conflictingEventIdentifiers];
+    conflictingEventIdentifiers5 = [equalCopy conflictingEventIdentifiers];
+    v13 = [conflictingEventIdentifiers4 isEqual:conflictingEventIdentifiers5];
 
     if (!v13)
     {
@@ -119,12 +119,12 @@
   {
   }
 
-  v7 = [(_INPBUpdateEventIntentResponse *)self updatedEvent];
-  v8 = [v4 updatedEvent];
-  if ((v7 != 0) != (v8 == 0))
+  conflictingEventIdentifiers = [(_INPBUpdateEventIntentResponse *)self updatedEvent];
+  conflictingEventIdentifiers2 = [equalCopy updatedEvent];
+  if ((conflictingEventIdentifiers != 0) != (conflictingEventIdentifiers2 == 0))
   {
-    v14 = [(_INPBUpdateEventIntentResponse *)self updatedEvent];
-    if (!v14)
+    updatedEvent = [(_INPBUpdateEventIntentResponse *)self updatedEvent];
+    if (!updatedEvent)
     {
 
 LABEL_19:
@@ -132,10 +132,10 @@ LABEL_19:
       goto LABEL_17;
     }
 
-    v15 = v14;
-    v16 = [(_INPBUpdateEventIntentResponse *)self updatedEvent];
-    v17 = [v4 updatedEvent];
-    v18 = [v16 isEqual:v17];
+    v15 = updatedEvent;
+    updatedEvent2 = [(_INPBUpdateEventIntentResponse *)self updatedEvent];
+    updatedEvent3 = [equalCopy updatedEvent];
+    v18 = [updatedEvent2 isEqual:updatedEvent3];
 
     if (v18)
     {
@@ -155,7 +155,7 @@ LABEL_17:
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBUpdateEventIntentResponse allocWithZone:](_INPBUpdateEventIntentResponse init];
   if ([(_INPBUpdateEventIntentResponse *)self hasConfirmationReason])
@@ -163,43 +163,43 @@ LABEL_17:
     [(_INPBUpdateEventIntentResponse *)v5 setConfirmationReason:[(_INPBUpdateEventIntentResponse *)self confirmationReason]];
   }
 
-  v6 = [(NSArray *)self->_conflictingEventIdentifiers copyWithZone:a3];
+  v6 = [(NSArray *)self->_conflictingEventIdentifiers copyWithZone:zone];
   [(_INPBUpdateEventIntentResponse *)v5 setConflictingEventIdentifiers:v6];
 
-  v7 = [(_INPBCalendarEvent *)self->_updatedEvent copyWithZone:a3];
+  v7 = [(_INPBCalendarEvent *)self->_updatedEvent copyWithZone:zone];
   [(_INPBUpdateEventIntentResponse *)v5 setUpdatedEvent:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBUpdateEventIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBUpdateEventIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBUpdateEventIntentResponse)initWithCoder:(id)a3
+- (_INPBUpdateEventIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBUpdateEventIntentResponse *)self initWithData:v6];
+    self = [(_INPBUpdateEventIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if ([(_INPBUpdateEventIntentResponse *)self hasConfirmationReason])
   {
     confirmationReason = self->_confirmationReason;
@@ -238,51 +238,51 @@ LABEL_17:
     while (v8);
   }
 
-  v12 = [(_INPBUpdateEventIntentResponse *)self updatedEvent];
+  updatedEvent = [(_INPBUpdateEventIntentResponse *)self updatedEvent];
 
-  if (v12)
+  if (updatedEvent)
   {
-    v13 = [(_INPBUpdateEventIntentResponse *)self updatedEvent];
+    updatedEvent2 = [(_INPBUpdateEventIntentResponse *)self updatedEvent];
     PBDataWriterWriteSubmessage();
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addConflictingEventIdentifiers:(id)a3
+- (void)addConflictingEventIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   conflictingEventIdentifiers = self->_conflictingEventIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!conflictingEventIdentifiers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_conflictingEventIdentifiers;
-    self->_conflictingEventIdentifiers = v6;
+    self->_conflictingEventIdentifiers = array;
 
-    v4 = v8;
+    identifiersCopy = v8;
     conflictingEventIdentifiers = self->_conflictingEventIdentifiers;
   }
 
-  [(NSArray *)conflictingEventIdentifiers addObject:v4];
+  [(NSArray *)conflictingEventIdentifiers addObject:identifiersCopy];
 }
 
-- (void)setConflictingEventIdentifiers:(id)a3
+- (void)setConflictingEventIdentifiers:(id)identifiers
 {
-  v4 = [a3 mutableCopy];
+  v4 = [identifiers mutableCopy];
   conflictingEventIdentifiers = self->_conflictingEventIdentifiers;
   self->_conflictingEventIdentifiers = v4;
 
   MEMORY[0x1EEE66BB8](v4, conflictingEventIdentifiers);
 }
 
-- (int)StringAsConfirmationReason:(id)a3
+- (int)StringAsConfirmationReason:(id)reason
 {
-  v3 = a3;
+  reasonCopy = reason;
   v4 = 1;
-  if (([v3 isEqualToString:@"SCHEDULE_CONFLICT"] & 1) == 0)
+  if (([reasonCopy isEqualToString:@"SCHEDULE_CONFLICT"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"UPDATE_ALL_RECURRENCES"])
+    if ([reasonCopy isEqualToString:@"UPDATE_ALL_RECURRENCES"])
     {
       v4 = 2;
     }
@@ -296,10 +296,10 @@ LABEL_17:
   return v4;
 }
 
-- (void)setConfirmationReason:(int)a3
+- (void)setConfirmationReason:(int)reason
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (reason == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -307,7 +307,7 @@ LABEL_17:
   else
   {
     *&self->_has = has | 1;
-    self->_confirmationReason = a3;
+    self->_confirmationReason = reason;
   }
 }
 

@@ -1,5 +1,5 @@
 @interface NCNotificationCommunicationsSummaryContentProvider
-- (id)_summaryStringForNotificationRequest:(id)a3;
+- (id)_summaryStringForNotificationRequest:(id)request;
 - (id)summaryTitle;
 @end
 
@@ -7,11 +7,11 @@
 
 - (id)summaryTitle
 {
-  v3 = [(NCNotificationSummaryContentProvider *)self notificationRequests];
-  v4 = [v3 indexOfObjectPassingTest:&__block_literal_global_35];
+  notificationRequests = [(NCNotificationSummaryContentProvider *)self notificationRequests];
+  v4 = [notificationRequests indexOfObjectPassingTest:&__block_literal_global_35];
 
-  v5 = [(NCNotificationSummaryContentProvider *)self notificationRequests];
-  v6 = [v5 indexOfObjectPassingTest:&__block_literal_global_164];
+  notificationRequests2 = [(NCNotificationSummaryContentProvider *)self notificationRequests];
+  v6 = [notificationRequests2 indexOfObjectPassingTest:&__block_literal_global_164];
 
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -64,22 +64,22 @@ uint64_t __66__NCNotificationCommunicationsSummaryContentProvider_summaryTitle__
   return v3;
 }
 
-- (id)_summaryStringForNotificationRequest:(id)a3
+- (id)_summaryStringForNotificationRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(NCNotificationSummaryContentProvider *)self _summaryStringForCommunicationNotificationRequest:v4];
-  if ([(NCNotificationSummaryContentProvider *)self _shouldShowContentForNotificationRequest:v4]&& v5)
+  requestCopy = request;
+  v5 = [(NCNotificationSummaryContentProvider *)self _summaryStringForCommunicationNotificationRequest:requestCopy];
+  if ([(NCNotificationSummaryContentProvider *)self _shouldShowContentForNotificationRequest:requestCopy]&& v5)
   {
-    v6 = v5;
+    defaultHeader = v5;
   }
 
   else
   {
-    v7 = [v4 content];
-    v6 = [v7 defaultHeader];
+    content = [requestCopy content];
+    defaultHeader = [content defaultHeader];
   }
 
-  return v6;
+  return defaultHeader;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface MTRCameraAVSettingsUserLevelManagementClusterDPTZStruct
 - (MTRCameraAVSettingsUserLevelManagementClusterDPTZStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -25,14 +25,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCameraAVSettingsUserLevelManagementClusterDPTZStruct);
-  v5 = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZStruct *)self videoStreamID];
-  [(MTRCameraAVSettingsUserLevelManagementClusterDPTZStruct *)v4 setVideoStreamID:v5];
+  videoStreamID = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZStruct *)self videoStreamID];
+  [(MTRCameraAVSettingsUserLevelManagementClusterDPTZStruct *)v4 setVideoStreamID:videoStreamID];
 
-  v6 = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZStruct *)self viewport];
-  [(MTRCameraAVSettingsUserLevelManagementClusterDPTZStruct *)v4 setViewport:v6];
+  viewport = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZStruct *)self viewport];
+  [(MTRCameraAVSettingsUserLevelManagementClusterDPTZStruct *)v4 setViewport:viewport];
 
   return v4;
 }

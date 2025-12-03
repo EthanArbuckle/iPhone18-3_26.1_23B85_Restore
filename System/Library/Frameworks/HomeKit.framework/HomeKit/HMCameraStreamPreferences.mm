@@ -1,36 +1,36 @@
 @interface HMCameraStreamPreferences
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMCameraStreamPreferences)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMCameraStreamPreferences)initWithCoder:(id)coder;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMCameraStreamPreferences
 
 - (NSArray)attributeDescriptions
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(HMCameraStreamPreferences *)self videoPreferences];
+  array = [MEMORY[0x1E695DF70] array];
+  videoPreferences = [(HMCameraStreamPreferences *)self videoPreferences];
 
-  if (v4)
+  if (videoPreferences)
   {
     v5 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v6 = [(HMCameraStreamPreferences *)self videoPreferences];
-    v7 = [v5 initWithName:@"Video" value:v6];
-    [v3 addObject:v7];
+    videoPreferences2 = [(HMCameraStreamPreferences *)self videoPreferences];
+    v7 = [v5 initWithName:@"Video" value:videoPreferences2];
+    [array addObject:v7];
   }
 
-  v8 = [(HMCameraStreamPreferences *)self audioPreferences];
+  audioPreferences = [(HMCameraStreamPreferences *)self audioPreferences];
 
-  if (v8)
+  if (audioPreferences)
   {
     v9 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v10 = [(HMCameraStreamPreferences *)self audioPreferences];
-    v11 = [v9 initWithName:@"Audio" value:v10];
-    [v3 addObject:v11];
+    audioPreferences2 = [(HMCameraStreamPreferences *)self audioPreferences];
+    v11 = [v9 initWithName:@"Audio" value:audioPreferences2];
+    [array addObject:v11];
   }
 
   if ([(HMCameraStreamPreferences *)self minimumRequiredAvailableOrInUseStreams]>= 1)
@@ -38,7 +38,7 @@
     v12 = objc_alloc(MEMORY[0x1E69A29C8]);
     v13 = [MEMORY[0x1E696AD98] numberWithInteger:{-[HMCameraStreamPreferences minimumRequiredAvailableOrInUseStreams](self, "minimumRequiredAvailableOrInUseStreams")}];
     v14 = [v12 initWithName:@"Minimum Required" value:v13];
-    [v3 addObject:v14];
+    [array addObject:v14];
   }
 
   if ([(HMCameraStreamPreferences *)self shouldTakeOwnershipOfExistingStream])
@@ -46,10 +46,10 @@
     v15 = objc_alloc(MEMORY[0x1E69A29C8]);
     v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[HMCameraStreamPreferences shouldTakeOwnershipOfExistingStream](self, "shouldTakeOwnershipOfExistingStream")}];
     v17 = [v15 initWithName:@"Take Ownership" value:v16];
-    [v3 addObject:v17];
+    [array addObject:v17];
   }
 
-  v18 = [v3 copy];
+  v18 = [array copy];
 
   return v18;
 }
@@ -63,23 +63,23 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HMCameraStreamPreferences *)self audioPreferences];
-  v4 = [v3 hash];
+  audioPreferences = [(HMCameraStreamPreferences *)self audioPreferences];
+  v4 = [audioPreferences hash];
 
-  v5 = [(HMCameraStreamPreferences *)self videoPreferences];
-  v6 = [v5 hash] ^ v4;
+  videoPreferences = [(HMCameraStreamPreferences *)self videoPreferences];
+  v6 = [videoPreferences hash] ^ v4;
 
   v7 = v6 ^ [(HMCameraStreamPreferences *)self minimumRequiredAvailableOrInUseStreams];
   return v7 ^ [(HMCameraStreamPreferences *)self shouldTakeOwnershipOfExistingStream];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -93,8 +93,8 @@
     goto LABEL_9;
   }
 
-  v7 = [(HMCameraStreamPreferences *)self audioPreferences];
-  v8 = [v6 audioPreferences];
+  audioPreferences = [(HMCameraStreamPreferences *)self audioPreferences];
+  audioPreferences2 = [v6 audioPreferences];
   v9 = HMFEqualObjects();
 
   if (!v9)
@@ -102,8 +102,8 @@
     goto LABEL_9;
   }
 
-  v10 = [(HMCameraStreamPreferences *)self videoPreferences];
-  v11 = [v6 videoPreferences];
+  videoPreferences = [(HMCameraStreamPreferences *)self videoPreferences];
+  videoPreferences2 = [v6 videoPreferences];
   v12 = HMFEqualObjects();
 
   if (!v12)
@@ -111,11 +111,11 @@
     goto LABEL_9;
   }
 
-  v13 = [(HMCameraStreamPreferences *)self minimumRequiredAvailableOrInUseStreams];
-  if (v13 == [v6 minimumRequiredAvailableOrInUseStreams])
+  minimumRequiredAvailableOrInUseStreams = [(HMCameraStreamPreferences *)self minimumRequiredAvailableOrInUseStreams];
+  if (minimumRequiredAvailableOrInUseStreams == [v6 minimumRequiredAvailableOrInUseStreams])
   {
-    v14 = [(HMCameraStreamPreferences *)self shouldTakeOwnershipOfExistingStream];
-    v15 = v14 ^ [v6 shouldTakeOwnershipOfExistingStream] ^ 1;
+    shouldTakeOwnershipOfExistingStream = [(HMCameraStreamPreferences *)self shouldTakeOwnershipOfExistingStream];
+    v15 = shouldTakeOwnershipOfExistingStream ^ [v6 shouldTakeOwnershipOfExistingStream] ^ 1;
   }
 
   else
@@ -127,33 +127,33 @@ LABEL_9:
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(HMCameraStreamPreferences *)self audioPreferences];
-  [v6 encodeObject:v4 forKey:@"HM.CameraStreamAudioPreferences"];
+  coderCopy = coder;
+  audioPreferences = [(HMCameraStreamPreferences *)self audioPreferences];
+  [coderCopy encodeObject:audioPreferences forKey:@"HM.CameraStreamAudioPreferences"];
 
-  v5 = [(HMCameraStreamPreferences *)self videoPreferences];
-  [v6 encodeObject:v5 forKey:@"HM.CameraStreamVideoPreferences"];
+  videoPreferences = [(HMCameraStreamPreferences *)self videoPreferences];
+  [coderCopy encodeObject:videoPreferences forKey:@"HM.CameraStreamVideoPreferences"];
 
-  [v6 encodeInteger:-[HMCameraStreamPreferences minimumRequiredAvailableOrInUseStreams](self forKey:{"minimumRequiredAvailableOrInUseStreams"), @"HMCameraStreamMinimumRequiredAvailableOrInUseStreams"}];
-  [v6 encodeBool:-[HMCameraStreamPreferences shouldTakeOwnershipOfExistingStream](self forKey:{"shouldTakeOwnershipOfExistingStream"), @"HM.CameraStreamShouldTakeOwnershipOfExistingStream"}];
+  [coderCopy encodeInteger:-[HMCameraStreamPreferences minimumRequiredAvailableOrInUseStreams](self forKey:{"minimumRequiredAvailableOrInUseStreams"), @"HMCameraStreamMinimumRequiredAvailableOrInUseStreams"}];
+  [coderCopy encodeBool:-[HMCameraStreamPreferences shouldTakeOwnershipOfExistingStream](self forKey:{"shouldTakeOwnershipOfExistingStream"), @"HM.CameraStreamShouldTakeOwnershipOfExistingStream"}];
 }
 
-- (HMCameraStreamPreferences)initWithCoder:(id)a3
+- (HMCameraStreamPreferences)initWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = HMCameraStreamPreferences;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(HMCameraStreamPreferences *)&v9 init];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:{@"HM.CameraStreamAudioPreferences", v9.receiver, v9.super_class}];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:{@"HM.CameraStreamAudioPreferences", v9.receiver, v9.super_class}];
   [(HMCameraStreamPreferences *)v4 setAudioPreferences:v5];
 
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"HM.CameraStreamVideoPreferences"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.CameraStreamVideoPreferences"];
   [(HMCameraStreamPreferences *)v4 setVideoPreferences:v6];
 
-  -[HMCameraStreamPreferences setMinimumRequiredAvailableOrInUseStreams:](v4, "setMinimumRequiredAvailableOrInUseStreams:", [v3 decodeIntegerForKey:@"HMCameraStreamMinimumRequiredAvailableOrInUseStreams"]);
-  v7 = [v3 decodeBoolForKey:@"HM.CameraStreamShouldTakeOwnershipOfExistingStream"];
+  -[HMCameraStreamPreferences setMinimumRequiredAvailableOrInUseStreams:](v4, "setMinimumRequiredAvailableOrInUseStreams:", [coderCopy decodeIntegerForKey:@"HMCameraStreamMinimumRequiredAvailableOrInUseStreams"]);
+  v7 = [coderCopy decodeBoolForKey:@"HM.CameraStreamShouldTakeOwnershipOfExistingStream"];
 
   [(HMCameraStreamPreferences *)v4 setShouldTakeOwnershipOfExistingStream:v7];
   return v4;

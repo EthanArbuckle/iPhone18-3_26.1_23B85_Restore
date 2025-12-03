@@ -1,41 +1,41 @@
 @interface PCNativeButtonStyle
-- (id)initWithButtonStyle:(id)a3;
+- (id)initWithButtonStyle:(id)style;
 @end
 
 @implementation PCNativeButtonStyle
 
-- (id)initWithButtonStyle:(id)a3
+- (id)initWithButtonStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   v5 = [(PCNativeButtonStyle *)self init];
   v6 = v5;
-  if (v4 && v5)
+  if (styleCopy && v5)
   {
     v7 = [PCNativeColor alloc];
-    v8 = [v4 color];
-    v9 = [v7 initWithColor:v8];
+    color = [styleCopy color];
+    v9 = [v7 initWithColor:color];
     [(PCNativeButtonStyle *)v6 setColor:v9];
 
     v10 = [PCNativeColor alloc];
-    v11 = [v4 highlightedColor];
-    v12 = [v10 initWithColor:v11];
+    highlightedColor = [styleCopy highlightedColor];
+    v12 = [v10 initWithColor:highlightedColor];
     [(PCNativeButtonStyle *)v6 setHighlightColor:v12];
 
     v13 = [PCNativeColor alloc];
-    v14 = [v4 disabledColor];
-    v15 = [v13 initWithColor:v14];
+    disabledColor = [styleCopy disabledColor];
+    v15 = [v13 initWithColor:disabledColor];
     [(PCNativeButtonStyle *)v6 setDisabledColor:v15];
 
     v16 = [PCNativeColor alloc];
-    v17 = [v4 textColor];
-    v18 = [v16 initWithColor:v17];
+    textColor = [styleCopy textColor];
+    v18 = [v16 initWithColor:textColor];
     [(PCNativeButtonStyle *)v6 setTextColor:v18];
 
-    [v4 cornerRadius];
+    [styleCopy cornerRadius];
     [(PCNativeButtonStyle *)v6 setCornerRadius:v19];
     v20 = [PCNativeBorderStyle alloc];
-    v21 = [v4 borderStyle];
-    v22 = [v20 initWithBorderStyle:v21];
+    borderStyle = [styleCopy borderStyle];
+    v22 = [v20 initWithBorderStyle:borderStyle];
     [(PCNativeButtonStyle *)v6 setBorderStyle:v22];
   }
 

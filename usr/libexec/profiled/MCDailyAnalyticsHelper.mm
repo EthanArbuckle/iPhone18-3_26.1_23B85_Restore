@@ -4,54 +4,54 @@
 + (id)_allTrueSettingsKeys;
 + (id)_falseRestrictionsDictionary;
 + (id)_falseSettingsDictionary;
-+ (id)_getCounterDictionaryFromKeySet:(id)a3;
++ (id)_getCounterDictionaryFromKeySet:(id)set;
 + (id)_intersectionRestrictionsDictionary;
 + (id)_objectRestrictionsDictionary;
 + (id)_payloadCountDictionary;
 + (id)_trueRestrictionsDictionary;
 + (id)_trueSettingsDictionary;
 + (id)_valueRestrictionsDictionary;
-+ (void)addCloudConfigInfoWithEventPayload:(id)a3;
-+ (void)addMDMConfigInfoWithEventPayload:(id)a3;
-+ (void)addPasscodeInfoWithEventPayload:(id)a3;
-+ (void)addProfileAndPayloadInfoWithEventPayload:(id)a3;
-+ (void)addRestrictionInfoWithEventPayload:(id)a3;
-+ (void)addSettingsInfoWithEventPayload:(id)a3;
-+ (void)addSharediPadInfoWithEventPayload:(id)a3;
++ (void)addCloudConfigInfoWithEventPayload:(id)payload;
++ (void)addMDMConfigInfoWithEventPayload:(id)payload;
++ (void)addPasscodeInfoWithEventPayload:(id)payload;
++ (void)addProfileAndPayloadInfoWithEventPayload:(id)payload;
++ (void)addRestrictionInfoWithEventPayload:(id)payload;
++ (void)addSettingsInfoWithEventPayload:(id)payload;
++ (void)addSharediPadInfoWithEventPayload:(id)payload;
 @end
 
 @implementation MCDailyAnalyticsHelper
 
-+ (void)addCloudConfigInfoWithEventPayload:(id)a3
++ (void)addCloudConfigInfoWithEventPayload:(id)payload
 {
-  v3 = a3;
+  payloadCopy = payload;
   v6 = +[MDMCloudConfiguration sharedConfiguration];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 isSupervised]);
-  [v3 setObject:v4 forKeyedSubscript:@"isSupervised"];
+  [payloadCopy setObject:v4 forKeyedSubscript:@"isSupervised"];
 
   v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 isTeslaEnrolled]);
-  [v3 setObject:v5 forKeyedSubscript:@"isDEP"];
+  [payloadCopy setObject:v5 forKeyedSubscript:@"isDEP"];
 }
 
-+ (void)addMDMConfigInfoWithEventPayload:(id)a3
++ (void)addMDMConfigInfoWithEventPayload:(id)payload
 {
-  v15 = a3;
+  payloadCopy = payload;
   v4 = +[MDMConfiguration sharedConfiguration];
-  v5 = [v4 managingProfileIdentifier];
-  v6 = v5 != 0;
+  managingProfileIdentifier = [v4 managingProfileIdentifier];
+  v6 = managingProfileIdentifier != 0;
 
   v7 = [NSNumber numberWithBool:v6];
-  [v15 setObject:v7 forKeyedSubscript:@"isMDMEnrolled"];
+  [payloadCopy setObject:v7 forKeyedSubscript:@"isMDMEnrolled"];
 
   v8 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 isUserEnrollment]);
-  [v15 setObject:v8 forKeyedSubscript:@"isUserEnrollment"];
+  [payloadCopy setObject:v8 forKeyedSubscript:@"isUserEnrollment"];
 
-  v9 = [v4 personaID];
-  v10 = [NSNumber numberWithBool:v9 != 0];
-  [v15 setObject:v10 forKeyedSubscript:@"isDataSeparated"];
+  personaID = [v4 personaID];
+  v10 = [NSNumber numberWithBool:personaID != 0];
+  [payloadCopy setObject:v10 forKeyedSubscript:@"isDataSeparated"];
 
-  v11 = [v4 enrollmentMode];
-  v12 = [v11 isEqualToString:kMDMEnrollmentModeBYOD];
+  enrollmentMode = [v4 enrollmentMode];
+  v12 = [enrollmentMode isEqualToString:kMDMEnrollmentModeBYOD];
   if (v12)
   {
     v13 = 1;
@@ -59,28 +59,28 @@
 
   else
   {
-    v3 = [v4 enrollmentMode];
-    v13 = [v3 isEqualToString:kMDMEnrollmentModeADDE];
+    enrollmentMode2 = [v4 enrollmentMode];
+    v13 = [enrollmentMode2 isEqualToString:kMDMEnrollmentModeADDE];
   }
 
   v14 = [NSNumber numberWithBool:v13];
-  [v15 setObject:v14 forKeyedSubscript:@"isAccountDrivenEnrollment"];
+  [payloadCopy setObject:v14 forKeyedSubscript:@"isAccountDrivenEnrollment"];
 
   if ((v12 & 1) == 0)
   {
   }
 }
 
-+ (void)addSharediPadInfoWithEventPayload:(id)a3
++ (void)addSharediPadInfoWithEventPayload:(id)payload
 {
-  v3 = a3;
+  payloadCopy = payload;
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", +[DMCMultiUserModeUtilities isSharediPad]);
-  [v3 setObject:v4 forKeyedSubscript:@"isSharediPad"];
+  [payloadCopy setObject:v4 forKeyedSubscript:@"isSharediPad"];
 }
 
-+ (void)addProfileAndPayloadInfoWithEventPayload:(id)a3
++ (void)addProfileAndPayloadInfoWithEventPayload:(id)payload
 {
-  v33 = a3;
+  payloadCopy = payload;
   v4 = +[MCManifest sharedManifest];
   v34 = objc_alloc_init(MCProfileTrustEvaluator);
   v5 = [NSSet alloc];
@@ -88,8 +88,8 @@
   v37 = [v5 initWithArray:v6];
 
   v7 = +[MCDailyAnalyticsHelper _payloadCountDictionary];
-  v8 = [a1 _allPayloadCountKeys];
-  v9 = [a1 _getCounterDictionaryFromKeySet:v8];
+  _allPayloadCountKeys = [self _allPayloadCountKeys];
+  v9 = [self _getCounterDictionaryFromKeySet:_allPayloadCountKeys];
 
   v54 = 0u;
   v55 = 0u;
@@ -125,20 +125,20 @@
           v42 = [v37 containsObject:v14];
           if ([v15 isSigned])
           {
-            v16 = [v15 signerCertificates];
-            v17 = [v34 sanitizedProfileSignerCertificateChainIsAllowedToWriteDefaults:v16];
+            signerCertificates = [v15 signerCertificates];
+            v17 = [v34 sanitizedProfileSignerCertificateChainIsAllowedToWriteDefaults:signerCertificates];
 
             v36 += v17;
           }
 
-          v41 = [v15 isEncrypted];
+          isEncrypted = [v15 isEncrypted];
           v48 = 0u;
           v49 = 0u;
           v50 = 0u;
           v51 = 0u;
           v43 = v15;
-          v18 = [v15 payloads];
-          v19 = [v18 countByEnumeratingWithState:&v48 objects:v56 count:16];
+          payloads = [v15 payloads];
+          v19 = [payloads countByEnumeratingWithState:&v48 objects:v56 count:16];
           if (v19)
           {
             v20 = v19;
@@ -149,11 +149,11 @@
               {
                 if (*v49 != v21)
                 {
-                  objc_enumerationMutation(v18);
+                  objc_enumerationMutation(payloads);
                 }
 
-                v23 = [*(*(&v48 + 1) + 8 * j) type];
-                v24 = [v7 objectForKeyedSubscript:v23];
+                type = [*(*(&v48 + 1) + 8 * j) type];
+                v24 = [v7 objectForKeyedSubscript:type];
 
                 if (v24)
                 {
@@ -168,7 +168,7 @@
                 }
               }
 
-              v20 = [v18 countByEnumeratingWithState:&v48 objects:v56 count:16];
+              v20 = [payloads countByEnumeratingWithState:&v48 objects:v56 count:16];
             }
 
             while (v20);
@@ -176,7 +176,7 @@
 
           v12 = (v45 + 1);
           v11 = v46 + v42;
-          v10 = v47 + v41;
+          v10 = v47 + isEncrypted;
 
           v15 = v43;
           i = v44;
@@ -197,37 +197,37 @@
   }
 
   v28 = [NSNumber numberWithUnsignedInt:v12];
-  [v33 setObject:v28 forKeyedSubscript:@"profile_count"];
+  [payloadCopy setObject:v28 forKeyedSubscript:@"profile_count"];
 
   v29 = [NSNumber numberWithUnsignedInt:v11];
-  [v33 setObject:v29 forKeyedSubscript:@"profile_count_carrier"];
+  [payloadCopy setObject:v29 forKeyedSubscript:@"profile_count_carrier"];
 
   v30 = [NSNumber numberWithUnsignedInt:v10];
-  [v33 setObject:v30 forKeyedSubscript:@"profile_count_encrypted"];
+  [payloadCopy setObject:v30 forKeyedSubscript:@"profile_count_encrypted"];
 
   v31 = [NSNumber numberWithUnsignedInt:v36];
-  [v33 setObject:v31 forKeyedSubscript:@"profile_count_signed"];
+  [payloadCopy setObject:v31 forKeyedSubscript:@"profile_count_signed"];
 
   v32 = [NSNumber numberWithUnsignedInt:v36];
-  [v33 setObject:v32 forKeyedSubscript:@"profile_count_signedByApple"];
+  [payloadCopy setObject:v32 forKeyedSubscript:@"profile_count_signedByApple"];
 
-  [v33 addEntriesFromDictionary:v9];
+  [payloadCopy addEntriesFromDictionary:v9];
 }
 
-+ (void)addRestrictionInfoWithEventPayload:(id)a3
++ (void)addRestrictionInfoWithEventPayload:(id)payload
 {
-  v3 = a3;
+  payloadCopy = payload;
   v4 = +[MCRestrictionManager sharedManager];
-  v5 = [v4 combinedProfileRestrictions];
+  combinedProfileRestrictions = [v4 combinedProfileRestrictions];
 
   v6 = +[MCDailyAnalyticsHelper _falseRestrictionsDictionary];
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
   v33[2] = sub_100042234;
   v33[3] = &unk_10011C430;
-  v7 = v5;
+  v7 = combinedProfileRestrictions;
   v34 = v7;
-  v8 = v3;
+  v8 = payloadCopy;
   v35 = v8;
   [v6 enumerateKeysAndObjectsUsingBlock:v33];
   v9 = +[MCDailyAnalyticsHelper _trueRestrictionsDictionary];
@@ -272,11 +272,11 @@
   [v18 enumerateKeysAndObjectsUsingBlock:v21];
 }
 
-+ (void)addSettingsInfoWithEventPayload:(id)a3
++ (void)addSettingsInfoWithEventPayload:(id)payload
 {
-  v3 = a3;
+  payloadCopy = payload;
   v4 = +[MCRestrictionManager sharedManager];
-  v5 = [v4 userSettings];
+  userSettings = [v4 userSettings];
 
   v23 = +[MCDailyAnalyticsHelper _falseSettingsDictionary];
   +[MCDailyAnalyticsHelper _allFalseSettingsKeys];
@@ -300,7 +300,7 @@
 
         v10 = *(*(&v28 + 1) + 8 * i);
         v11 = [v23 objectForKeyedSubscript:v10];
-        if ([MCRestrictionManager BOOLSettingForFeature:v11 withUserSettingDictionary:v5]== 2)
+        if ([MCRestrictionManager BOOLSettingForFeature:v11 withUserSettingDictionary:userSettings]== 2)
         {
           v12 = &__kCFBooleanTrue;
         }
@@ -310,7 +310,7 @@
           v12 = &__kCFBooleanFalse;
         }
 
-        [v3 setObject:v12 forKeyedSubscript:v10];
+        [payloadCopy setObject:v12 forKeyedSubscript:v10];
       }
 
       v7 = [obj countByEnumeratingWithState:&v28 objects:v33 count:16];
@@ -341,7 +341,7 @@
 
         v19 = *(*(&v24 + 1) + 8 * j);
         v20 = [v13 objectForKeyedSubscript:v19];
-        if ([MCRestrictionManager BOOLSettingForFeature:v20 withUserSettingDictionary:v5]== 1)
+        if ([MCRestrictionManager BOOLSettingForFeature:v20 withUserSettingDictionary:userSettings]== 1)
         {
           v21 = &__kCFBooleanTrue;
         }
@@ -351,7 +351,7 @@
           v21 = &__kCFBooleanFalse;
         }
 
-        [v3 setObject:v21 forKeyedSubscript:v19];
+        [payloadCopy setObject:v21 forKeyedSubscript:v19];
       }
 
       v16 = [v14 countByEnumeratingWithState:&v24 objects:v32 count:16];
@@ -361,29 +361,29 @@
   }
 }
 
-+ (void)addPasscodeInfoWithEventPayload:(id)a3
++ (void)addPasscodeInfoWithEventPayload:(id)payload
 {
-  v3 = a3;
+  payloadCopy = payload;
   v12 = +[MCPasscodeManager sharedManager];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v12 isPasscodeSet]);
-  [v3 setObject:v4 forKeyedSubscript:@"passcode_hasPasscode"];
+  [payloadCopy setObject:v4 forKeyedSubscript:@"passcode_hasPasscode"];
 
   v5 = +[MCRestrictionManager sharedManager];
-  v6 = [v5 currentRestrictions];
-  v7 = [NSNumber numberWithBool:[MCPasscodeManager restrictionsEnforcePasscodePolicy:v6]];
-  [v3 setObject:v7 forKeyedSubscript:@"passcode_hasPasscodePolicy"];
+  currentRestrictions = [v5 currentRestrictions];
+  v7 = [NSNumber numberWithBool:[MCPasscodeManager restrictionsEnforcePasscodePolicy:currentRestrictions]];
+  [payloadCopy setObject:v7 forKeyedSubscript:@"passcode_hasPasscodePolicy"];
 
   v8 = [NSNumber numberWithBool:MCKeybagMementoBlobExists()];
-  [v3 setObject:v8 forKeyedSubscript:@"passcode_hasRecoveryPasscode"];
+  [payloadCopy setObject:v8 forKeyedSubscript:@"passcode_hasRecoveryPasscode"];
 
   v9 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v12 currentUnlockScreenType]);
-  [v3 setObject:v9 forKeyedSubscript:@"passcode_unlockScreenType"];
+  [payloadCopy setObject:v9 forKeyedSubscript:@"passcode_unlockScreenType"];
 
   v10 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v12 currentUnlockSimplePasscodeType]);
-  [v3 setObject:v10 forKeyedSubscript:@"passcode_simpleType"];
+  [payloadCopy setObject:v10 forKeyedSubscript:@"passcode_simpleType"];
 
   v11 = [NSNumber numberWithBool:MCKeybagMementoSupported()];
-  [v3 setObject:v11 forKeyedSubscript:@"passcode_supportsPasscodeRecovery"];
+  [payloadCopy setObject:v11 forKeyedSubscript:@"passcode_supportsPasscodeRecovery"];
 }
 
 + (id)_allPayloadCountKeys
@@ -518,15 +518,15 @@
   return v3;
 }
 
-+ (id)_getCounterDictionaryFromKeySet:(id)a3
++ (id)_getCounterDictionaryFromKeySet:(id)set
 {
-  v3 = a3;
+  setCopy = set;
   v4 = objc_alloc_init(NSMutableDictionary);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v3;
+  v5 = setCopy;
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

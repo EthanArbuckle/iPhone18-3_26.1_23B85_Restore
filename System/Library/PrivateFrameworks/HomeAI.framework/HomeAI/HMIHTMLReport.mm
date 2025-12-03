@@ -1,42 +1,42 @@
 @interface HMIHTMLReport
-+ (id)boxForRegionOfInterest:(CGRect)a3;
-+ (id)boxesForEvent:(id)a3 isTruth:(BOOL)a4;
-- (HMIHTMLReport)initWithTitle:(id)a3 outputPath:(id)a4;
-- (id)_loadResource:(id)a3 withExtension:(id)a4;
-- (void)appendFaceCrop:(id)a3 imageBorder:(int)a4 imageColor:(id)a5 outlineBorder:(int)a6 outlineColor:(id)a7;
-- (void)appendFragmentResult:(id)a3;
-- (void)appendFragmentResult:(id)a3 assetPath:(id)a4;
-- (void)appendFrame:(id)a3 text:(id)a4 boxes:(id)a5 imageBorder:(int)a6 imageColor:(id)a7 outlineBorder:(int)a8 outlineColor:(id)a9;
-- (void)appendFrameResult:(id)a3 frameTruth:(id)a4 description:(id)a5;
-- (void)appendHeaderWithTitle:(id)a3 textColor:(id)a4 backgroundColor:(id)a5;
-- (void)appendJPEG:(id)a3 imageBorder:(int)a4 imageColor:(id)a5 outlineBorder:(int)a6 outlineColor:(id)a7;
-- (void)appendString:(id)a3;
-- (void)appendText:(id)a3;
++ (id)boxForRegionOfInterest:(CGRect)interest;
++ (id)boxesForEvent:(id)event isTruth:(BOOL)truth;
+- (HMIHTMLReport)initWithTitle:(id)title outputPath:(id)path;
+- (id)_loadResource:(id)resource withExtension:(id)extension;
+- (void)appendFaceCrop:(id)crop imageBorder:(int)border imageColor:(id)color outlineBorder:(int)outlineBorder outlineColor:(id)outlineColor;
+- (void)appendFragmentResult:(id)result;
+- (void)appendFragmentResult:(id)result assetPath:(id)path;
+- (void)appendFrame:(id)frame text:(id)text boxes:(id)boxes imageBorder:(int)border imageColor:(id)color outlineBorder:(int)outlineBorder outlineColor:(id)outlineColor;
+- (void)appendFrameResult:(id)result frameTruth:(id)truth description:(id)description;
+- (void)appendHeaderWithTitle:(id)title textColor:(id)color backgroundColor:(id)backgroundColor;
+- (void)appendJPEG:(id)g imageBorder:(int)border imageColor:(id)color outlineBorder:(int)outlineBorder outlineColor:(id)outlineColor;
+- (void)appendString:(id)string;
+- (void)appendText:(id)text;
 - (void)dealloc;
 - (void)flush;
 @end
 
 @implementation HMIHTMLReport
 
-- (HMIHTMLReport)initWithTitle:(id)a3 outputPath:(id)a4
+- (HMIHTMLReport)initWithTitle:(id)title outputPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  pathCopy = path;
   v14.receiver = self;
   v14.super_class = HMIHTMLReport;
   v8 = [(HMIHTMLReport *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_outputPath, a4);
-    v10 = [objc_alloc(MEMORY[0x277CBEB78]) initToFileAtPath:v7 append:0];
+    objc_storeStrong(&v8->_outputPath, path);
+    v10 = [objc_alloc(MEMORY[0x277CBEB78]) initToFileAtPath:pathCopy append:0];
     stream = v9->_stream;
     v9->_stream = v10;
 
-    v12 = [(HMIHTMLReport *)v9 stream];
-    [v12 open];
+    stream = [(HMIHTMLReport *)v9 stream];
+    [stream open];
 
-    [(HMIHTMLReport *)v9 appendHeaderWithTitle:v6 textColor:@"#ffffff" backgroundColor:@"#000000"];
+    [(HMIHTMLReport *)v9 appendHeaderWithTitle:titleCopy textColor:@"#ffffff" backgroundColor:@"#000000"];
   }
 
   return v9;
@@ -45,24 +45,24 @@
 - (void)dealloc
 {
   [(HMIHTMLReport *)self appendString:@"</body>\n</html>"];
-  v3 = [(HMIHTMLReport *)self stream];
-  [v3 close];
+  stream = [(HMIHTMLReport *)self stream];
+  [stream close];
 
-  v4 = [(HMIHTMLReport *)self outputPath];
-  NSLog(&cfstr_VisualizerSave.isa, v4);
+  outputPath = [(HMIHTMLReport *)self outputPath];
+  NSLog(&cfstr_VisualizerSave.isa, outputPath);
 
   v5.receiver = self;
   v5.super_class = HMIHTMLReport;
   [(HMIHTMLReport *)&v5 dealloc];
 }
 
-- (id)_loadResource:(id)a3 withExtension:(id)a4
+- (id)_loadResource:(id)resource withExtension:(id)extension
 {
   v5 = MEMORY[0x277CCA8D8];
-  v6 = a4;
-  v7 = a3;
+  extensionCopy = extension;
+  resourceCopy = resource;
   v8 = [v5 bundleForClass:objc_opt_class()];
-  v9 = [v8 URLForResource:v7 withExtension:v6];
+  v9 = [v8 URLForResource:resourceCopy withExtension:extensionCopy];
 
   v10 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v9];
   v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v10 encoding:4];
@@ -70,44 +70,44 @@
   return v11;
 }
 
-- (void)appendHeaderWithTitle:(id)a3 textColor:(id)a4 backgroundColor:(id)a5
+- (void)appendHeaderWithTitle:(id)title textColor:(id)color backgroundColor:(id)backgroundColor
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  backgroundColorCopy = backgroundColor;
+  colorCopy = color;
+  titleCopy = title;
   v13 = [(HMIHTMLReport *)self _loadResource:@"HMIHTMLReport" withExtension:@"css"];
   v11 = [(HMIHTMLReport *)self _loadResource:@"HMIHTMLReport" withExtension:@"js"];
-  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"<html>\n<head><title>%@</title></head>\n<style>\n%@\n</style>\n<body text='%@' bgcolor='%@'>\n<script>\n%@\n</script>\n", v10, v13, v9, v8, v11];
+  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"<html>\n<head><title>%@</title></head>\n<style>\n%@\n</style>\n<body text='%@' bgcolor='%@'>\n<script>\n%@\n</script>\n", titleCopy, v13, colorCopy, backgroundColorCopy, v11];
 
   [(HMIHTMLReport *)self appendString:v12];
 }
 
-- (void)appendString:(id)a3
+- (void)appendString:(id)string
 {
-  v6 = [a3 dataUsingEncoding:4];
-  v4 = [(HMIHTMLReport *)self stream];
+  v6 = [string dataUsingEncoding:4];
+  stream = [(HMIHTMLReport *)self stream];
   v5 = v6;
-  [v4 write:objc_msgSend(v6 maxLength:{"bytes"), objc_msgSend(v6, "length")}];
+  [stream write:objc_msgSend(v6 maxLength:{"bytes"), objc_msgSend(v6, "length")}];
 }
 
-- (void)appendText:(id)a3
+- (void)appendText:(id)text
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@<br>\n", a3];
-  [(HMIHTMLReport *)self appendString:v4];
+  text = [MEMORY[0x277CCACA8] stringWithFormat:@"%@<br>\n", text];
+  [(HMIHTMLReport *)self appendString:text];
 }
 
-- (void)appendFrame:(id)a3 text:(id)a4 boxes:(id)a5 imageBorder:(int)a6 imageColor:(id)a7 outlineBorder:(int)a8 outlineColor:(id)a9
+- (void)appendFrame:(id)frame text:(id)text boxes:(id)boxes imageBorder:(int)border imageColor:(id)color outlineBorder:(int)outlineBorder outlineColor:(id)outlineColor
 {
-  v9 = *&a8;
-  v11 = *&a6;
-  v43 = a4;
-  v15 = a7;
-  v16 = a9;
-  v17 = a5;
-  v18 = a3;
-  [v18 size];
+  v9 = *&outlineBorder;
+  v11 = *&border;
+  textCopy = text;
+  colorCopy = color;
+  outlineColorCopy = outlineColor;
+  boxesCopy = boxes;
+  frameCopy = frame;
+  [frameCopy size];
   v20 = v19;
-  [v18 size];
+  [frameCopy size];
   if (v20 >= v21)
   {
     v22 = v20;
@@ -126,25 +126,25 @@
 
   v24 = fmax(v23, 0.0);
   v25 = v24;
-  [v18 size];
+  [frameCopy size];
   v27 = v26 * v25;
-  [v18 size];
+  [frameCopy size];
   v29 = v28 * v25;
   v47 = 0;
-  v30 = [v18 compressedFrameWithScale:&v47 quality:v25 error:1.0];
+  v30 = [frameCopy compressedFrameWithScale:&v47 quality:v25 error:1.0];
 
   v42 = v47;
-  v31 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (v11 >= 1)
   {
-    if ([v15 length])
+    if ([colorCopy length])
     {
-      if (![v15 length])
+      if (![colorCopy length])
       {
         goto LABEL_12;
       }
 
-      [MEMORY[0x277CCACA8] stringWithFormat:@"border:%dpx solid %@;", v11, v15];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"border:%dpx solid %@;", v11, colorCopy];
     }
 
     else
@@ -152,7 +152,7 @@
       [MEMORY[0x277CCACA8] stringWithFormat:@"border:%dpx;", v11, v41];
     }
     v32 = ;
-    [v31 addObject:v32];
+    [array addObject:v32];
   }
 
 LABEL_12:
@@ -162,14 +162,14 @@ LABEL_12:
     goto LABEL_18;
   }
 
-  if ([v16 length])
+  if ([outlineColorCopy length])
   {
-    if (![v16 length])
+    if (![outlineColorCopy length])
     {
       goto LABEL_18;
     }
 
-    [MEMORY[0x277CCACA8] stringWithFormat:@"outline:%dpx solid %@;", v9, v16];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"outline:%dpx solid %@;", v9, outlineColorCopy];
   }
 
   else
@@ -177,14 +177,14 @@ LABEL_12:
     [MEMORY[0x277CCACA8] stringWithFormat:@"outline:%dpx;", v9, v41];
   }
   v35 = ;
-  [v31 addObject:v35];
+  [array addObject:v35];
 
 LABEL_18:
   v36 = MEMORY[0x277CCACA8];
-  v37 = [v30 base64Encoded];
-  v38 = [v31 componentsJoinedByString:@" "];
+  base64Encoded = [v30 base64Encoded];
+  v38 = [array componentsJoinedByString:@" "];
   v34 = v29;
-  v39 = [v36 stringWithFormat:@"<div class='image'>\n<img width='%d' height='%d' src='data:image/jpegbase64, %@' style='%@'/>\n", v33, v34, v37, v38];;
+  v39 = [v36 stringWithFormat:@"<div class='image'>\n<img width='%d' height='%d' src='data:image/jpegbase64, %@' style='%@'/>\n", v33, v34, base64Encoded, v38];;
   [(HMIHTMLReport *)self appendString:v39];
 
   v44[0] = MEMORY[0x277D85DD0];
@@ -194,12 +194,12 @@ LABEL_18:
   v44[4] = self;
   v45 = v29;
   v46 = v33;
-  [v17 enumerateObjectsUsingBlock:v44];
+  [boxesCopy enumerateObjectsUsingBlock:v44];
 
-  if ([v43 length])
+  if ([textCopy length])
   {
-    v40 = [MEMORY[0x277CCACA8] stringWithFormat:@"<div class=text>%@</div>\n", v43];
-    [(HMIHTMLReport *)self appendString:v40];
+    textCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"<div class=text>%@</div>\n", textCopy];
+    [(HMIHTMLReport *)self appendString:textCopy];
   }
 
   [(HMIHTMLReport *)self appendString:@"</div>\n"];
@@ -229,41 +229,41 @@ void __90__HMIHTMLReport_appendFrame_text_boxes_imageBorder_imageColor_outlineBo
   [v3 appendString:v19];
 }
 
-- (void)appendFaceCrop:(id)a3 imageBorder:(int)a4 imageColor:(id)a5 outlineBorder:(int)a6 outlineColor:(id)a7
+- (void)appendFaceCrop:(id)crop imageBorder:(int)border imageColor:(id)color outlineBorder:(int)outlineBorder outlineColor:(id)outlineColor
 {
-  v7 = *&a6;
-  v9 = *&a4;
-  v12 = a7;
-  v13 = a5;
-  v14 = [a3 dataRepresentation];
-  [(HMIHTMLReport *)self appendJPEG:v14 imageBorder:v9 imageColor:v13 outlineBorder:v7 outlineColor:v12];
+  v7 = *&outlineBorder;
+  v9 = *&border;
+  outlineColorCopy = outlineColor;
+  colorCopy = color;
+  dataRepresentation = [crop dataRepresentation];
+  [(HMIHTMLReport *)self appendJPEG:dataRepresentation imageBorder:v9 imageColor:colorCopy outlineBorder:v7 outlineColor:outlineColorCopy];
 }
 
-- (void)appendJPEG:(id)a3 imageBorder:(int)a4 imageColor:(id)a5 outlineBorder:(int)a6 outlineColor:(id)a7
+- (void)appendJPEG:(id)g imageBorder:(int)border imageColor:(id)color outlineBorder:(int)outlineBorder outlineColor:(id)outlineColor
 {
-  v8 = *&a6;
-  v9 = *&a4;
-  v12 = a5;
-  v13 = a7;
+  v8 = *&outlineBorder;
+  v9 = *&border;
+  colorCopy = color;
+  outlineColorCopy = outlineColor;
   v31 = 0;
-  v14 = a3;
-  v15 = [HMIVisionUtilities createPixelBufferFromJPEGData:v14 error:&v31];
+  gCopy = g;
+  v15 = [HMIVisionUtilities createPixelBufferFromJPEGData:gCopy error:&v31];
   Size = HMICVPixelBufferGetSize(v15);
   v18 = v17;
   CVPixelBufferRelease(v15);
-  v19 = [v14 base64EncodedStringWithOptions:32];
+  v19 = [gCopy base64EncodedStringWithOptions:32];
 
-  v20 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (v9 >= 1)
   {
-    if ([v12 length])
+    if ([colorCopy length])
     {
-      if (![v12 length])
+      if (![colorCopy length])
       {
         goto LABEL_7;
       }
 
-      [MEMORY[0x277CCACA8] stringWithFormat:@"border:%dpx solid %@;", v9, v12];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"border:%dpx solid %@;", v9, colorCopy];
     }
 
     else
@@ -271,23 +271,23 @@ void __90__HMIHTMLReport_appendFrame_text_boxes_imageBorder_imageColor_outlineBo
       [MEMORY[0x277CCACA8] stringWithFormat:@"border:%dpx;", v9, v30];
     }
     v21 = ;
-    [v20 addObject:v21];
+    [array addObject:v21];
   }
 
 LABEL_7:
   if (v8 >= 1)
   {
-    if (![v13 length])
+    if (![outlineColorCopy length])
     {
       [MEMORY[0x277CCACA8] stringWithFormat:@"outline:%dpx;", v8, v30];
       goto LABEL_12;
     }
 
-    if ([v13 length])
+    if ([outlineColorCopy length])
     {
-      [MEMORY[0x277CCACA8] stringWithFormat:@"outline:%dpx solid %@;", v8, v13];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"outline:%dpx solid %@;", v8, outlineColorCopy];
       v22 = LABEL_12:;
-      [v20 addObject:v22];
+      [array addObject:v22];
     }
   }
 
@@ -296,22 +296,22 @@ LABEL_7:
   v25 = MEMORY[0x277CCACA8];
   v26 = v24;
   v27 = v23;
-  v28 = [v20 componentsJoinedByString:@" "];
+  v28 = [array componentsJoinedByString:@" "];
   v29 = [v25 stringWithFormat:@"<div class='image'>\n<img width='%d' height='%d' src='data:image/jpegbase64, %@' style='%@'/>\n", v26, v27, v19, v28];;
   [(HMIHTMLReport *)self appendString:v29];
 
   [(HMIHTMLReport *)self appendString:@"</div>\n"];
 }
 
-- (void)appendFragmentResult:(id)a3
+- (void)appendFragmentResult:(id)result
 {
-  v4 = [a3 frameResults];
+  frameResults = [result frameResults];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __38__HMIHTMLReport_appendFragmentResult___block_invoke;
   v5[3] = &unk_278752710;
   v5[4] = self;
-  [v4 na_each:v5];
+  [frameResults na_each:v5];
 }
 
 void __38__HMIHTMLReport_appendFragmentResult___block_invoke(uint64_t a1, void *a2)
@@ -335,27 +335,27 @@ void __38__HMIHTMLReport_appendFragmentResult___block_invoke(uint64_t a1, void *
   [*(a1 + 32) appendFrameResult:v3 frameTruth:0 description:v7];
 }
 
-- (void)appendFragmentResult:(id)a3 assetPath:(id)a4
+- (void)appendFragmentResult:(id)result assetPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v7];
+  resultCopy = result;
+  pathCopy = path;
+  v8 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:pathCopy];
   v9 = [[HMIVideoFragment alloc] initWithData:v8];
   v10 = [[HMIVideoFrameGenerator alloc] initWithVideoFragment:v9];
-  v11 = [v6 frameResults];
-  v12 = [v11 na_map:&__block_literal_global];
+  frameResults = [resultCopy frameResults];
+  v12 = [frameResults na_map:&__block_literal_global];
 
   v17 = MEMORY[0x277D85DD0];
   v18 = 3221225472;
   v19 = __48__HMIHTMLReport_appendFragmentResult_assetPath___block_invoke_2;
   v20 = &unk_278752780;
-  v21 = v6;
+  v21 = resultCopy;
   v22 = v12;
-  v23 = v7;
-  v24 = self;
-  v13 = v7;
+  v23 = pathCopy;
+  selfCopy = self;
+  v13 = pathCopy;
   v14 = v12;
-  v15 = v6;
+  v15 = resultCopy;
   v16 = MEMORY[0x2318CB8E0](&v17);
   [(HMIVideoFrameGenerator *)v10 generateVideoFramesForTimes:v14 completionHandler:v16, v17, v18, v19, v20];
 }
@@ -428,49 +428,49 @@ void __48__HMIHTMLReport_appendFragmentResult_assetPath___block_invoke_3(id *a1,
   [a1[7] appendFrameResult:v12 frameTruth:0 description:v16];
 }
 
-- (void)appendFrameResult:(id)a3 frameTruth:(id)a4 description:(id)a5
+- (void)appendFrameResult:(id)result frameTruth:(id)truth description:(id)description
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  resultCopy = result;
+  truthCopy = truth;
   v10 = MEMORY[0x277CBEB18];
-  v11 = a5;
-  v12 = [v10 array];
-  if (v9)
+  descriptionCopy = description;
+  array = [v10 array];
+  if (truthCopy)
   {
-    v13 = [v9 events];
+    events = [truthCopy events];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __58__HMIHTMLReport_appendFrameResult_frameTruth_description___block_invoke;
     v24[3] = &unk_2787527A8;
-    v25 = v12;
-    [v13 enumerateObjectsUsingBlock:v24];
+    v25 = array;
+    [events enumerateObjectsUsingBlock:v24];
   }
 
-  [v8 regionOfInterest];
+  [resultCopy regionOfInterest];
   if (!CGRectIsEmpty(v27))
   {
-    [v8 regionOfInterest];
+    [resultCopy regionOfInterest];
     v14 = [HMIHTMLReport boxForRegionOfInterest:?];
-    [v12 addObject:v14];
+    [array addObject:v14];
   }
 
   v15 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"confidence.value" ascending:1];
-  v16 = [v8 events];
-  v17 = [v16 allObjects];
+  events2 = [resultCopy events];
+  allObjects = [events2 allObjects];
   v26[0] = v15;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
-  v19 = [v17 sortedArrayUsingDescriptors:v18];
+  v19 = [allObjects sortedArrayUsingDescriptors:v18];
 
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __58__HMIHTMLReport_appendFrameResult_frameTruth_description___block_invoke_2;
   v22[3] = &unk_2787527D0;
-  v23 = v12;
-  v20 = v12;
+  v23 = array;
+  v20 = array;
   [v19 na_each:v22];
-  v21 = [v8 frame];
-  [HMIHTMLReport appendFrame:"appendFrame:text:boxes:imageBorder:imageColor:outlineBorder:outlineColor:" text:v21 boxes:v11 imageBorder:v20 imageColor:0 outlineBorder:&stru_284057FB8 outlineColor:?];
+  frame = [resultCopy frame];
+  [HMIHTMLReport appendFrame:"appendFrame:text:boxes:imageBorder:imageColor:outlineBorder:outlineColor:" text:frame boxes:descriptionCopy imageBorder:v20 imageColor:0 outlineBorder:&stru_284057FB8 outlineColor:?];
 }
 
 void __58__HMIHTMLReport_appendFrameResult_frameTruth_description___block_invoke(uint64_t a1, uint64_t a2)
@@ -487,11 +487,11 @@ void __58__HMIHTMLReport_appendFrameResult_frameTruth_description___block_invoke
   [v2 addObjectsFromArray:v3];
 }
 
-+ (id)boxesForEvent:(id)a3 isTruth:(BOOL)a4
++ (id)boxesForEvent:(id)event isTruth:(BOOL)truth
 {
-  v7 = a4;
-  v8 = a3;
-  if (v7)
+  truthCopy = truth;
+  eventCopy = event;
+  if (truthCopy)
   {
     v9 = 0.4;
   }
@@ -501,8 +501,8 @@ void __58__HMIHTMLReport_appendFrameResult_frameTruth_description___block_invoke
     v9 = 1.0;
   }
 
-  v10 = [MEMORY[0x277CBEB18] array];
-  v11 = v8;
+  array = [MEMORY[0x277CBEB18] array];
+  v11 = eventCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -519,7 +519,7 @@ void __58__HMIHTMLReport_appendFrameResult_frameTruth_description___block_invoke
   [v11 boundingBox];
   if (!CGRectIsEmpty(v98))
   {
-    if (v7)
+    if (truthCopy)
     {
       v14 = &stru_284057FB8;
     }
@@ -529,8 +529,8 @@ void __58__HMIHTMLReport_appendFrameResult_frameTruth_description___block_invoke
       if (v13 && ([v13 sessionEntityUUID], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v16 = v15;
-        v17 = [v15 UUIDString];
-        v18 = [v17 substringToIndex:3];
+        uUIDString = [v15 UUIDString];
+        v18 = [uUIDString substringToIndex:3];
       }
 
       else
@@ -539,8 +539,8 @@ void __58__HMIHTMLReport_appendFrameResult_frameTruth_description___block_invoke
       }
 
       v19 = MEMORY[0x277CCACA8];
-      v20 = [v11 confidence];
-      [v20 value];
+      confidence = [v11 confidence];
+      [confidence value];
       v14 = [v19 stringWithFormat:@"%.3f %@", v21, v18];
     }
 
@@ -551,72 +551,72 @@ void __58__HMIHTMLReport_appendFrameResult_frameTruth_description___block_invoke
     v28 = v27;
     v30 = v29;
     v31 = [HMIVideoAnalyzerEvent rgbColorCodeForEventClass:objc_opt_class()];
-    if (v7)
+    if (truthCopy)
     {
       LODWORD(v33) = 1.0;
     }
 
     else
     {
-      v4 = [v11 confidence];
-      [v4 value];
+      confidence2 = [v11 confidence];
+      [confidence2 value];
       *&v33 = v34;
     }
 
     *&v32 = v9;
     v35 = [(HMIHTMLReportBox *)v22 initWithBoundingBox:v14 text:v31 color:v24 opacity:v26 value:v28, v30, v32, v33];
-    [v10 addObject:v35];
+    [array addObject:v35];
 
-    if (!v7)
+    if (!truthCopy)
     {
     }
   }
 
   if (v13)
   {
-    v36 = [v13 face];
-    if (v36)
+    face = [v13 face];
+    if (face)
     {
-      v37 = v36;
-      v38 = [v13 face];
-      [v38 boundingBox];
+      v37 = face;
+      face2 = [v13 face];
+      [face2 boundingBox];
       IsEmpty = CGRectIsEmpty(v99);
 
       if (!IsEmpty)
       {
-        v40 = [v13 face];
-        if (v7)
+        face3 = [v13 face];
+        if (truthCopy)
         {
           v41 = &stru_284057FB8;
         }
 
         else
         {
-          v42 = [v13 face];
-          v43 = [v42 faceRecognition];
-          v44 = [v43 classifications];
-          v5 = [v44 hmf_isEmpty];
+          face4 = [v13 face];
+          faceRecognition = [face4 faceRecognition];
+          classifications = [faceRecognition classifications];
+          hmf_isEmpty = [classifications hmf_isEmpty];
 
-          if (v5)
+          if (hmf_isEmpty)
           {
             v45 = MEMORY[0x277CCACA8];
-            v46 = [v40 confidence];
-            [v46 value];
+            confidence3 = [face3 confidence];
+            [confidence3 value];
             v41 = [v45 stringWithFormat:@"%.3f", v47];
           }
 
           else
           {
-            v48 = [v13 face];
-            v49 = [v48 faceRecognition];
-            v50 = [v49 classifications];
-            v46 = [v50 anyObject];
+            face5 = [v13 face];
+            faceRecognition2 = [face5 faceRecognition];
+            classifications2 = [faceRecognition2 classifications];
+            confidence3 = [classifications2 anyObject];
 
             v95 = MEMORY[0x277CCACA8];
-            v96 = [v40 confidence];
-            [v96 value];
+            confidence4 = [face3 confidence];
+            [confidence4 value];
             v52 = v51;
-            if ([v46 fromTorsoClassification])
+            if ([confidence3 fromTorsoClassification])
             {
               v53 = @"T";
             }
@@ -626,62 +626,62 @@ void __58__HMIHTMLReport_appendFrameResult_frameTruth_description___block_invoke
               v53 = @"F";
             }
 
-            [v46 confidence];
+            [confidence3 confidence];
             v55 = v54;
-            v5 = [v46 personUUID];
-            v6 = [v5 UUIDString];
-            v56 = [v6 substringToIndex:2];
+            hmf_isEmpty = [confidence3 personUUID];
+            uUIDString2 = [hmf_isEmpty UUIDString];
+            v56 = [uUIDString2 substringToIndex:2];
             v41 = [v95 stringWithFormat:@"%.3f %@ %.2f %@", v52, v53, v55, v56];
           }
         }
 
         v57 = [HMIHTMLReportBox alloc];
-        [v40 boundingBox];
+        [face3 boundingBox];
         v59 = v58;
         v61 = v60;
         v63 = v62;
         v65 = v64;
         v66 = [HMIVideoAnalyzerEvent rgbColorCodeForEventClass:objc_opt_class()];
-        if (v7)
+        if (truthCopy)
         {
           LODWORD(v68) = 1.0;
         }
 
         else
         {
-          v5 = [v40 confidence];
-          [v5 value];
+          hmf_isEmpty = [face3 confidence];
+          [hmf_isEmpty value];
           *&v68 = v69;
         }
 
         *&v67 = v9;
         v70 = [(HMIHTMLReportBox *)v57 initWithBoundingBox:v41 text:v66 color:v59 opacity:v61 value:v63, v65, v67, v68];
-        [v10 addObject:v70];
+        [array addObject:v70];
 
-        if (!v7)
+        if (!truthCopy)
         {
         }
       }
     }
 
-    v71 = [v13 torso];
-    if (v71)
+    torso = [v13 torso];
+    if (torso)
     {
-      v72 = v71;
-      v73 = [v13 torso];
-      [v73 boundingBox];
+      v72 = torso;
+      torso2 = [v13 torso];
+      [torso2 boundingBox];
       v74 = CGRectIsEmpty(v100);
 
       if (!v74)
       {
-        v75 = [v13 torso];
+        torso3 = [v13 torso];
         v76 = [HMIHTMLReportBox alloc];
-        [v75 boundingBox];
+        [torso3 boundingBox];
         v78 = v77;
         v80 = v79;
         v82 = v81;
         v84 = v83;
-        if (v7)
+        if (truthCopy)
         {
           v85 = &stru_284057FB8;
         }
@@ -689,31 +689,31 @@ void __58__HMIHTMLReport_appendFrameResult_frameTruth_description___block_invoke
         else
         {
           v86 = MEMORY[0x277CCACA8];
-          v73 = [v75 confidence];
-          [v73 value];
+          torso2 = [torso3 confidence];
+          [torso2 value];
           v85 = [v86 stringWithFormat:@"%.3f", v87];
         }
 
         v88 = [HMIVideoAnalyzerEvent rgbColorCodeForEventClass:objc_opt_class()];
-        if (v7)
+        if (truthCopy)
         {
           LODWORD(v90) = 1.0;
         }
 
         else
         {
-          v6 = [v75 confidence];
-          [v6 value];
+          uUIDString2 = [torso3 confidence];
+          [uUIDString2 value];
           *&v90 = v91;
         }
 
         *&v89 = v9;
         v92 = [(HMIHTMLReportBox *)v76 initWithBoundingBox:v85 text:v88 color:v78 opacity:v80 value:v82, v84, v89, v90];
-        [v10 addObject:v92];
+        [array addObject:v92];
 
-        if (v7)
+        if (truthCopy)
         {
-          v73 = v88;
+          torso2 = v88;
         }
 
         else
@@ -723,17 +723,17 @@ void __58__HMIHTMLReport_appendFrameResult_frameTruth_description___block_invoke
     }
   }
 
-  v93 = [v10 copy];
+  v93 = [array copy];
 
   return v93;
 }
 
-+ (id)boxForRegionOfInterest:(CGRect)a3
++ (id)boxForRegionOfInterest:(CGRect)interest
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
   v7 = [HMIHTMLReportBox alloc];
   LODWORD(v8) = 1.0;
   LODWORD(v9) = 1.0;
@@ -745,11 +745,11 @@ void __58__HMIHTMLReport_appendFrameResult_frameTruth_description___block_invoke
 - (void)flush
 {
   [(HMIHTMLReport *)self appendString:@"</body>\n</html>"];
-  v3 = [(HMIHTMLReport *)self stream];
-  [v3 close];
+  stream = [(HMIHTMLReport *)self stream];
+  [stream close];
 
-  v4 = [(HMIHTMLReport *)self outputPath];
-  NSLog(&cfstr_VisualizerSave.isa, v4);
+  outputPath = [(HMIHTMLReport *)self outputPath];
+  NSLog(&cfstr_VisualizerSave.isa, outputPath);
 }
 
 @end

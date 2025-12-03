@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __64__NSCompoundPredicate_EDSearchableIndexExpressionGenerator__log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_12 != -1)
   {
     dispatch_once(&log_onceToken_12, block);
@@ -26,16 +26,16 @@
 
 - (uint64_t)ed_hasOnlySpotlightKeypaths
 {
-  v1 = [a1 subpredicates];
-  v2 = [v1 ef_all:&__block_literal_global_15_0];
+  subpredicates = [self subpredicates];
+  v2 = [subpredicates ef_all:&__block_literal_global_15_0];
 
   return v2;
 }
 
 - (uint64_t)ed_hasOnlyNonSpotlightKeypaths
 {
-  v1 = [a1 subpredicates];
-  v2 = [v1 ef_all:&__block_literal_global_17_0];
+  subpredicates = [self subpredicates];
+  v2 = [subpredicates ef_all:&__block_literal_global_17_0];
 
   return v2;
 }
@@ -43,24 +43,24 @@
 - (id)ed_searchableIndexQueryStringForQueryWithSuggestion:()EDSearchableIndexExpressionGenerator originalSearchString:nonSpotlightPredicates:
 {
   v40 = *MEMORY[0x1E69E9840];
-  if ([a1 ed_hasOnlySpotlightKeypaths])
+  if ([self ed_hasOnlySpotlightKeypaths])
   {
-    v7 = [a1 subpredicates];
+    subpredicates = [self subpredicates];
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
     v35[2] = __157__NSCompoundPredicate_EDSearchableIndexExpressionGenerator__ed_searchableIndexQueryStringForQueryWithSuggestion_originalSearchString_nonSpotlightPredicates___block_invoke;
     v35[3] = &__block_descriptor_41_e31___NSString_16__0__NSPredicate_8l;
     v36 = a3;
     v35[4] = a4;
-    v8 = [v7 ef_compactMap:v35];
+    v8 = [subpredicates ef_compactMap:v35];
 
-    v9 = +[EDSearchableIndexExpressionGenerator queryStringByJoiningQueries:withPredicateType:](EDSearchableIndexExpressionGenerator, "queryStringByJoiningQueries:withPredicateType:", v8, [a1 compoundPredicateType]);
+    v9 = +[EDSearchableIndexExpressionGenerator queryStringByJoiningQueries:withPredicateType:](EDSearchableIndexExpressionGenerator, "queryStringByJoiningQueries:withPredicateType:", v8, [self compoundPredicateType]);
 
     v10 = v9;
     goto LABEL_26;
   }
 
-  if (![a1 ed_hasOnlyNonSpotlightKeypaths])
+  if (![self ed_hasOnlyNonSpotlightKeypaths])
   {
     v26 = a5;
     v12 = objc_opt_new();
@@ -68,9 +68,9 @@
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v13 = [a1 subpredicates];
+    subpredicates2 = [self subpredicates];
     v10 = 0;
-    v14 = [v13 countByEnumeratingWithState:&v31 objects:v39 count:16];
+    v14 = [subpredicates2 countByEnumeratingWithState:&v31 objects:v39 count:16];
     if (v14)
     {
       v15 = 0;
@@ -81,7 +81,7 @@
         {
           if (*v32 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(subpredicates2);
           }
 
           v18 = *(*(&v31 + 1) + 8 * i);
@@ -92,8 +92,8 @@
               v19 = +[EDSearchableIndexExpressionGenerator log];
               if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
               {
-                v20 = [a1 ef_publicDescription];
-                [(NSCompoundPredicate(EDSearchableIndexExpressionGenerator) *)v20 ed_searchableIndexQueryStringForQueryWithSuggestion:buf originalSearchString:&v38 nonSpotlightPredicates:v19];
+                ef_publicDescription = [self ef_publicDescription];
+                [(NSCompoundPredicate(EDSearchableIndexExpressionGenerator) *)ef_publicDescription ed_searchableIndexQueryStringForQueryWithSuggestion:buf originalSearchString:&v38 nonSpotlightPredicates:v19];
               }
 
               v15 = 1;
@@ -112,7 +112,7 @@
           }
         }
 
-        v14 = [v13 countByEnumeratingWithState:&v31 objects:v39 count:16];
+        v14 = [subpredicates2 countByEnumeratingWithState:&v31 objects:v39 count:16];
       }
 
       while (v14);
@@ -122,10 +122,10 @@
         goto LABEL_22;
       }
 
-      v13 = [MEMORY[0x1E699B780] sharedReporter];
+      subpredicates2 = [MEMORY[0x1E699B780] sharedReporter];
       v21 = objc_opt_class();
       v22 = NSStringFromClass(v21);
-      [v13 reportIssueType:v22 description:@"Malformed spotlight predicate"];
+      [subpredicates2 reportIssueType:v22 description:@"Malformed spotlight predicate"];
     }
 
 LABEL_22:
@@ -144,9 +144,9 @@ LABEL_22:
     goto LABEL_26;
   }
 
-  v11 = a1;
+  selfCopy = self;
   v10 = 0;
-  *a5 = a1;
+  *a5 = self;
 LABEL_26:
   v24 = *MEMORY[0x1E69E9840];
 

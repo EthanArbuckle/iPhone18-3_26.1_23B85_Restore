@@ -1,36 +1,36 @@
 @interface AXVoiceOverFeedbackController
-+ (id)descriptionForOption:(id)a3;
++ (id)descriptionForOption:(id)option;
 - (VOFeedbackExtraOnOffSwitch)extraOnOffSwitchBlock;
-- (id)_extraGetter:(id)a3;
+- (id)_extraGetter:(id)getter;
 - (id)getValueSelectedBlock;
 - (id)setValueSelectedBlock;
 - (id)specifiers;
-- (void)_extraSetter:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)_extraSetter:(id)setter specifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation AXVoiceOverFeedbackController
 
-+ (id)descriptionForOption:(id)a3
++ (id)descriptionForOption:(id)option
 {
-  if (!a3)
+  if (!option)
   {
     v7 = settingsLocString(@"DEFAULT", @"Accessibility");
     goto LABEL_15;
   }
 
-  v3 = [a3 integerValue];
+  integerValue = [option integerValue];
   v4 = objc_opt_new();
-  if ((v3 & 2) != 0)
+  if ((integerValue & 2) != 0)
   {
     v11 = settingsLocString(@"FEEDBACK_SPEAK", @"VoiceOverSettings");
     [v4 addObject:v11];
 
-    if ((v3 & 4) == 0)
+    if ((integerValue & 4) == 0)
     {
 LABEL_4:
-      if ((v3 & 8) == 0)
+      if ((integerValue & 8) == 0)
       {
         goto LABEL_5;
       }
@@ -39,7 +39,7 @@ LABEL_20:
       v13 = settingsLocString(@"FEEDBACK_CHANGE_PITCH", @"VoiceOverSettings");
       [v4 addObject:v13];
 
-      if ((v3 & 0x10) == 0)
+      if ((integerValue & 0x10) == 0)
       {
         goto LABEL_7;
       }
@@ -48,7 +48,7 @@ LABEL_20:
     }
   }
 
-  else if ((v3 & 4) == 0)
+  else if ((integerValue & 4) == 0)
   {
     goto LABEL_4;
   }
@@ -56,13 +56,13 @@ LABEL_20:
   v12 = settingsLocString(@"FEEDBACK_PLAY_TONE", @"VoiceOverSettings");
   [v4 addObject:v12];
 
-  if ((v3 & 8) != 0)
+  if ((integerValue & 8) != 0)
   {
     goto LABEL_20;
   }
 
 LABEL_5:
-  if ((v3 & 0x10) != 0)
+  if ((integerValue & 0x10) != 0)
   {
 LABEL_6:
     v5 = settingsLocString(@"FEEDBACK_CHANGE_BRAILLE", @"VoiceOverSettings");
@@ -72,7 +72,7 @@ LABEL_6:
 LABEL_7:
   v6 = [NSListFormatter localizedStringByJoiningStrings:v4];
   v7 = v6;
-  if (v3)
+  if (integerValue)
   {
     if ([v6 length])
     {
@@ -95,24 +95,24 @@ LABEL_15:
 
 - (id)getValueSelectedBlock
 {
-  v2 = [(AXVoiceOverFeedbackController *)self specifier];
-  v3 = [v2 propertyForKey:@"getValueSelectedBlock"];
+  specifier = [(AXVoiceOverFeedbackController *)self specifier];
+  v3 = [specifier propertyForKey:@"getValueSelectedBlock"];
 
   return v3;
 }
 
 - (VOFeedbackExtraOnOffSwitch)extraOnOffSwitchBlock
 {
-  v2 = [(AXVoiceOverFeedbackController *)self specifier];
-  v3 = [v2 propertyForKey:@"extraOnOffSwitchBlock"];
+  specifier = [(AXVoiceOverFeedbackController *)self specifier];
+  v3 = [specifier propertyForKey:@"extraOnOffSwitchBlock"];
 
   return v3;
 }
 
 - (id)setValueSelectedBlock
 {
-  v2 = [(AXVoiceOverFeedbackController *)self specifier];
-  v3 = [v2 propertyForKey:@"setValueSelectedBlock"];
+  specifier = [(AXVoiceOverFeedbackController *)self specifier];
+  v3 = [specifier propertyForKey:@"setValueSelectedBlock"];
 
   return v3;
 }
@@ -128,11 +128,11 @@ LABEL_15:
     *&self->AXUISettingsBaseListController_opaque[v3] = v5;
 
     v7 = +[NSMutableArray array];
-    v8 = [(AXVoiceOverFeedbackController *)self specifier];
-    v9 = [v8 propertyForKey:@"showDefaultOption"];
-    v10 = [v9 BOOLValue];
+    specifier = [(AXVoiceOverFeedbackController *)self specifier];
+    v9 = [specifier propertyForKey:@"showDefaultOption"];
+    bOOLValue = [v9 BOOLValue];
 
-    if (v10)
+    if (bOOLValue)
     {
       v11 = settingsLocString(@"DEFAULT", @"Accessibility");
       v12 = [PSSpecifier preferenceSpecifierNamed:v11 target:self set:0 get:0 detail:0 cell:3 edit:0];
@@ -146,11 +146,11 @@ LABEL_15:
 
     [v14 setProperty:&off_279E88 forKey:@"AXSVOFeedbackKey"];
     [v7 addObject:v14];
-    v15 = [(AXVoiceOverFeedbackController *)self specifier];
-    v16 = [v15 propertyForKey:@"ignoreSoundOption"];
-    v17 = [v16 BOOLValue];
+    specifier2 = [(AXVoiceOverFeedbackController *)self specifier];
+    v16 = [specifier2 propertyForKey:@"ignoreSoundOption"];
+    bOOLValue2 = [v16 BOOLValue];
 
-    if ((v17 & 1) == 0)
+    if ((bOOLValue2 & 1) == 0)
     {
       v18 = settingsLocString(@"FEEDBACK_PLAY_TONE", @"VoiceOverSettings");
       v19 = [PSSpecifier preferenceSpecifierNamed:v18 target:self set:0 get:0 detail:0 cell:3 edit:0];
@@ -160,11 +160,11 @@ LABEL_15:
       v14 = v19;
     }
 
-    v20 = [(AXVoiceOverFeedbackController *)self specifier];
-    v21 = [v20 propertyForKey:@"ignorePitchOption"];
-    v22 = [v21 BOOLValue];
+    specifier3 = [(AXVoiceOverFeedbackController *)self specifier];
+    v21 = [specifier3 propertyForKey:@"ignorePitchOption"];
+    bOOLValue3 = [v21 BOOLValue];
 
-    if ((v22 & 1) == 0)
+    if ((bOOLValue3 & 1) == 0)
     {
       v23 = settingsLocString(@"FEEDBACK_CHANGE_PITCH", @"VoiceOverSettings");
       v24 = [PSSpecifier preferenceSpecifierNamed:v23 target:self set:0 get:0 detail:0 cell:3 edit:0];
@@ -174,11 +174,11 @@ LABEL_15:
       v14 = v24;
     }
 
-    v25 = [(AXVoiceOverFeedbackController *)self specifier];
-    v26 = [v25 propertyForKey:@"ignoreBrailleOption"];
-    v27 = [v26 BOOLValue];
+    specifier4 = [(AXVoiceOverFeedbackController *)self specifier];
+    v26 = [specifier4 propertyForKey:@"ignoreBrailleOption"];
+    bOOLValue4 = [v26 BOOLValue];
 
-    if ((v27 & 1) == 0)
+    if ((bOOLValue4 & 1) == 0)
     {
       v28 = settingsLocString(@"FEEDBACK_CHANGE_BRAILLE", @"VoiceOverSettings");
       v29 = [PSSpecifier preferenceSpecifierNamed:v28 target:self set:0 get:0 detail:0 cell:3 edit:0];
@@ -193,17 +193,17 @@ LABEL_15:
 
     [v31 setProperty:&off_279EE8 forKey:@"AXSVOFeedbackKey"];
     [v7 addObject:v31];
-    v32 = [(AXVoiceOverFeedbackController *)self extraOnOffSwitchBlock];
-    v33 = [v32 title];
+    extraOnOffSwitchBlock = [(AXVoiceOverFeedbackController *)self extraOnOffSwitchBlock];
+    title = [extraOnOffSwitchBlock title];
 
-    if (v33)
+    if (title)
     {
       v34 = +[PSSpecifier emptyGroupSpecifier];
       [v7 addObject:v34];
 
-      v35 = [(AXVoiceOverFeedbackController *)self extraOnOffSwitchBlock];
-      v36 = [v35 title];
-      v37 = v36[2]();
+      extraOnOffSwitchBlock2 = [(AXVoiceOverFeedbackController *)self extraOnOffSwitchBlock];
+      title2 = [extraOnOffSwitchBlock2 title];
+      v37 = title2[2]();
       v38 = [PSSpecifier preferenceSpecifierNamed:v37 target:self set:"_extraSetter:specifier:" get:"_extraGetter:" detail:0 cell:6 edit:0];
 
       [v7 addObject:v38];
@@ -220,30 +220,30 @@ LABEL_15:
   return v4;
 }
 
-- (void)_extraSetter:(id)a3 specifier:(id)a4
+- (void)_extraSetter:(id)setter specifier:(id)specifier
 {
-  v9 = a3;
-  v5 = [(AXVoiceOverFeedbackController *)self extraOnOffSwitchBlock];
-  v6 = [v5 setter];
+  setterCopy = setter;
+  extraOnOffSwitchBlock = [(AXVoiceOverFeedbackController *)self extraOnOffSwitchBlock];
+  setter = [extraOnOffSwitchBlock setter];
 
-  if (v6)
+  if (setter)
   {
-    v7 = [(AXVoiceOverFeedbackController *)self extraOnOffSwitchBlock];
-    v8 = [v7 setter];
-    (v8)[2](v8, [v9 BOOLValue]);
+    extraOnOffSwitchBlock2 = [(AXVoiceOverFeedbackController *)self extraOnOffSwitchBlock];
+    setter2 = [extraOnOffSwitchBlock2 setter];
+    (setter2)[2](setter2, [setterCopy BOOLValue]);
   }
 }
 
-- (id)_extraGetter:(id)a3
+- (id)_extraGetter:(id)getter
 {
-  v4 = [(AXVoiceOverFeedbackController *)self extraOnOffSwitchBlock];
-  v5 = [v4 getter];
+  extraOnOffSwitchBlock = [(AXVoiceOverFeedbackController *)self extraOnOffSwitchBlock];
+  getter = [extraOnOffSwitchBlock getter];
 
-  if (v5)
+  if (getter)
   {
-    v6 = [(AXVoiceOverFeedbackController *)self extraOnOffSwitchBlock];
-    v7 = [v6 getter];
-    v8 = [NSNumber numberWithBool:v7[2]()];
+    extraOnOffSwitchBlock2 = [(AXVoiceOverFeedbackController *)self extraOnOffSwitchBlock];
+    getter2 = [extraOnOffSwitchBlock2 getter];
+    v8 = [NSNumber numberWithBool:getter2[2]()];
   }
 
   else
@@ -254,19 +254,19 @@ LABEL_15:
   return v8;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v13 = a4;
-  v6 = [(AXVoiceOverFeedbackController *)self getValueSelectedBlock];
-  v7 = v6[2]();
+  cellCopy = cell;
+  getValueSelectedBlock = [(AXVoiceOverFeedbackController *)self getValueSelectedBlock];
+  v7 = getValueSelectedBlock[2]();
 
-  v8 = [v13 specifier];
-  v9 = [v8 propertyForKey:@"AXSVOFeedbackKey"];
-  v10 = [v9 integerValue];
+  specifier = [cellCopy specifier];
+  v9 = [specifier propertyForKey:@"AXSVOFeedbackKey"];
+  integerValue = [v9 integerValue];
 
-  if (((v10 & v7 & 0x8000000000000000) != 0) ^ v11 | ((v10 & v7) == 0))
+  if (((integerValue & v7 & 0x8000000000000000) != 0) ^ v11 | ((integerValue & v7) == 0))
   {
-    v12 = (v10 | v7) == 0;
+    v12 = (integerValue | v7) == 0;
   }
 
   else
@@ -274,76 +274,76 @@ LABEL_15:
     v12 = 1;
   }
 
-  [v13 setChecked:v12];
+  [cellCopy setChecked:v12];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v20.receiver = self;
   v20.super_class = AXVoiceOverFeedbackController;
-  v6 = a4;
-  [(AXVoiceOverFeedbackController *)&v20 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(AXVoiceOverFeedbackController *)self specifierForIndexPath:v6, v20.receiver, v20.super_class];
+  pathCopy = path;
+  [(AXVoiceOverFeedbackController *)&v20 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(AXVoiceOverFeedbackController *)self specifierForIndexPath:pathCopy, v20.receiver, v20.super_class];
 
   v8 = [v7 propertyForKey:@"AXSVOFeedbackKey"];
-  v9 = [v8 integerValue];
+  integerValue = [v8 integerValue];
 
-  v10 = [(AXVoiceOverFeedbackController *)self getValueSelectedBlock];
-  v11 = v10[2]();
+  getValueSelectedBlock = [(AXVoiceOverFeedbackController *)self getValueSelectedBlock];
+  v11 = getValueSelectedBlock[2]();
 
-  if (v9 >= 2)
+  if (integerValue >= 2)
   {
-    if ((v9 & ~v11) != 0)
+    if ((integerValue & ~v11) != 0)
     {
       v15 = v11 & 0xFFFFFFFFFFFFFFFELL;
-      if (v9 == 8)
+      if (integerValue == 8)
       {
-        v16 = [(AXVoiceOverFeedbackController *)self specifier];
-        v17 = [v16 propertyForKey:@"supportsPitchWithoutSpeak"];
-        v18 = [v17 BOOLValue];
+        specifier = [(AXVoiceOverFeedbackController *)self specifier];
+        v17 = [specifier propertyForKey:@"supportsPitchWithoutSpeak"];
+        bOOLValue = [v17 BOOLValue];
 
-        if (v18)
+        if (bOOLValue)
         {
-          v9 = 8;
+          integerValue = 8;
         }
 
         else
         {
-          v9 = 10;
+          integerValue = 10;
         }
       }
 
-      v9 |= v15;
+      integerValue |= v15;
     }
 
-    else if (v11 != v9)
+    else if (v11 != integerValue)
     {
-      if ((v9 & 2) != 0)
+      if ((integerValue & 2) != 0)
       {
-        v12 = [(AXVoiceOverFeedbackController *)self specifier];
-        v13 = [v12 propertyForKey:@"supportsPitchWithoutSpeak"];
-        v14 = [v13 BOOLValue];
+        specifier2 = [(AXVoiceOverFeedbackController *)self specifier];
+        v13 = [specifier2 propertyForKey:@"supportsPitchWithoutSpeak"];
+        bOOLValue2 = [v13 BOOLValue];
 
-        if (!v14)
+        if (!bOOLValue2)
         {
           v11 &= ~8uLL;
         }
       }
 
-      if ((v11 & ~v9) <= 1)
+      if ((v11 & ~integerValue) <= 1)
       {
-        v9 = 1;
+        integerValue = 1;
       }
 
       else
       {
-        v9 = v11 & ~v9;
+        integerValue = v11 & ~integerValue;
       }
     }
   }
 
-  v19 = [(AXVoiceOverFeedbackController *)self setValueSelectedBlock];
-  v19[2](v19, v9);
+  setValueSelectedBlock = [(AXVoiceOverFeedbackController *)self setValueSelectedBlock];
+  setValueSelectedBlock[2](setValueSelectedBlock, integerValue);
 
   [(AXVoiceOverFeedbackController *)self beginUpdates];
   [(AXVoiceOverFeedbackController *)self reloadSpecifiers];

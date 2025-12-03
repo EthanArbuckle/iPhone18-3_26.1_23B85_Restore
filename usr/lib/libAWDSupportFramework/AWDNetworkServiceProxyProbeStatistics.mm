@@ -1,22 +1,22 @@
 @interface AWDNetworkServiceProxyProbeStatistics
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsInterfaceType:(id)a3;
-- (int)StringAsProtocolType:(id)a3;
+- (int)StringAsInterfaceType:(id)type;
+- (int)StringAsProtocolType:(id)type;
 - (int)interfaceType;
 - (int)protocolType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasGenericDNSProbeTimeMsecs:(BOOL)a3;
-- (void)setHasGenericProbeTimeMsecs:(BOOL)a3;
-- (void)setHasInterfaceType:(BOOL)a3;
-- (void)setHasProtocolType:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasGenericDNSProbeTimeMsecs:(BOOL)msecs;
+- (void)setHasGenericProbeTimeMsecs:(BOOL)msecs;
+- (void)setHasInterfaceType:(BOOL)type;
+- (void)setHasProtocolType:(BOOL)type;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDNetworkServiceProxyProbeStatistics
@@ -29,9 +29,9 @@
   [(AWDNetworkServiceProxyProbeStatistics *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 8;
   }
@@ -57,9 +57,9 @@
   }
 }
 
-- (void)setHasInterfaceType:(BOOL)a3
+- (void)setHasInterfaceType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -72,24 +72,24 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (int)StringAsInterfaceType:(id)a3
+- (int)StringAsInterfaceType:(id)type
 {
-  if ([a3 isEqualToString:@"NetworkServiceProxyInterfaceType_WIFI"])
+  if ([type isEqualToString:@"NetworkServiceProxyInterfaceType_WIFI"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"NetworkServiceProxyInterfaceType_CELLULAR"])
+  if ([type isEqualToString:@"NetworkServiceProxyInterfaceType_CELLULAR"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"NetworkServiceProxyInterfaceType_WIRED"])
+  if ([type isEqualToString:@"NetworkServiceProxyInterfaceType_WIRED"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"NetworkServiceProxyInterfaceType_VIRTUAL"])
+  if ([type isEqualToString:@"NetworkServiceProxyInterfaceType_VIRTUAL"])
   {
     return 4;
   }
@@ -97,9 +97,9 @@
   return 1;
 }
 
-- (void)setHasGenericProbeTimeMsecs:(BOOL)a3
+- (void)setHasGenericProbeTimeMsecs:(BOOL)msecs
 {
-  if (a3)
+  if (msecs)
   {
     v3 = 4;
   }
@@ -112,9 +112,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasGenericDNSProbeTimeMsecs:(BOOL)a3
+- (void)setHasGenericDNSProbeTimeMsecs:(BOOL)msecs
 {
-  if (a3)
+  if (msecs)
   {
     v3 = 2;
   }
@@ -140,9 +140,9 @@
   }
 }
 
-- (void)setHasProtocolType:(BOOL)a3
+- (void)setHasProtocolType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 32;
   }
@@ -155,19 +155,19 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (int)StringAsProtocolType:(id)a3
+- (int)StringAsProtocolType:(id)type
 {
-  if ([a3 isEqualToString:@"NetworkServiceProxyProtocolType_IPv4"])
+  if ([type isEqualToString:@"NetworkServiceProxyProtocolType_IPv4"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"NetworkServiceProxyProtocolType_IPv6"])
+  if ([type isEqualToString:@"NetworkServiceProxyProtocolType_IPv6"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"NetworkServiceProxyProtocolType_NAT64"])
+  if ([type isEqualToString:@"NetworkServiceProxyProtocolType_NAT64"])
   {
     return 3;
   }
@@ -184,11 +184,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
   }
 
@@ -205,19 +205,19 @@
       v6 = off_29EE32AB8[v5];
     }
 
-    [v3 setObject:v6 forKey:@"interface_type"];
+    [dictionary setObject:v6 forKey:@"interface_type"];
   }
 
   label = self->_label;
   if (label)
   {
-    [v3 setObject:label forKey:@"label"];
+    [dictionary setObject:label forKey:@"label"];
   }
 
   v8 = self->_has;
   if (v8)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_alternateProbeTimeMsecs), @"alternate_probe_time_msecs"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_alternateProbeTimeMsecs), @"alternate_probe_time_msecs"}];
     v8 = self->_has;
     if ((v8 & 4) == 0)
     {
@@ -228,10 +228,10 @@ LABEL_12:
       }
 
 LABEL_17:
-      [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_genericDNSProbeTimeMsecs), @"generic_DNS_probe_time_msecs"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_genericDNSProbeTimeMsecs), @"generic_DNS_probe_time_msecs"}];
       if ((*&self->_has & 0x20) == 0)
       {
-        return v3;
+        return dictionary;
       }
 
       goto LABEL_18;
@@ -243,7 +243,7 @@ LABEL_17:
     goto LABEL_12;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_genericProbeTimeMsecs), @"generic_probe_time_msecs"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_genericProbeTimeMsecs), @"generic_probe_time_msecs"}];
   v8 = self->_has;
   if ((v8 & 2) != 0)
   {
@@ -253,7 +253,7 @@ LABEL_17:
 LABEL_13:
   if ((v8 & 0x20) == 0)
   {
-    return v3;
+    return dictionary;
   }
 
 LABEL_18:
@@ -268,11 +268,11 @@ LABEL_18:
     v10 = off_29EE32AD8[v9];
   }
 
-  [v3 setObject:v10 forKey:@"protocol_type"];
-  return v3;
+  [dictionary setObject:v10 forKey:@"protocol_type"];
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 8) != 0)
@@ -344,32 +344,32 @@ LABEL_15:
   PBDataWriterWriteInt32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(a3 + 4) = self->_timestamp;
-    *(a3 + 60) |= 8u;
+    *(to + 4) = self->_timestamp;
+    *(to + 60) |= 8u;
     has = self->_has;
   }
 
   if ((has & 0x10) != 0)
   {
-    *(a3 + 10) = self->_interfaceType;
-    *(a3 + 60) |= 0x10u;
+    *(to + 10) = self->_interfaceType;
+    *(to + 60) |= 0x10u;
   }
 
   if (self->_label)
   {
-    [a3 setLabel:?];
+    [to setLabel:?];
   }
 
   v6 = self->_has;
   if (v6)
   {
-    *(a3 + 1) = self->_alternateProbeTimeMsecs;
-    *(a3 + 60) |= 1u;
+    *(to + 1) = self->_alternateProbeTimeMsecs;
+    *(to + 60) |= 1u;
     v6 = self->_has;
     if ((v6 & 4) == 0)
     {
@@ -388,8 +388,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(a3 + 3) = self->_genericProbeTimeMsecs;
-  *(a3 + 60) |= 4u;
+  *(to + 3) = self->_genericProbeTimeMsecs;
+  *(to + 60) |= 4u;
   v6 = self->_has;
   if ((v6 & 2) == 0)
   {
@@ -403,21 +403,21 @@ LABEL_10:
   }
 
 LABEL_15:
-  *(a3 + 2) = self->_genericDNSProbeTimeMsecs;
-  *(a3 + 60) |= 2u;
+  *(to + 2) = self->_genericDNSProbeTimeMsecs;
+  *(to + 60) |= 2u;
   if ((*&self->_has & 0x20) == 0)
   {
     return;
   }
 
 LABEL_11:
-  *(a3 + 14) = self->_protocolType;
-  *(a3 + 60) |= 0x20u;
+  *(to + 14) = self->_protocolType;
+  *(to + 60) |= 0x20u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 8) != 0)
@@ -433,7 +433,7 @@ LABEL_11:
     *(v5 + 60) |= 0x10u;
   }
 
-  *(v6 + 48) = [(NSString *)self->_label copyWithZone:a3];
+  *(v6 + 48) = [(NSString *)self->_label copyWithZone:zone];
   v8 = self->_has;
   if (v8)
   {
@@ -484,22 +484,22 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 60);
+    v7 = *(equal + 60);
     if ((has & 8) != 0)
     {
-      if ((*(a3 + 60) & 8) == 0 || self->_timestamp != *(a3 + 4))
+      if ((*(equal + 60) & 8) == 0 || self->_timestamp != *(equal + 4))
       {
         goto LABEL_34;
       }
     }
 
-    else if ((*(a3 + 60) & 8) != 0)
+    else if ((*(equal + 60) & 8) != 0)
     {
 LABEL_34:
       LOBYTE(v5) = 0;
@@ -508,19 +508,19 @@ LABEL_34:
 
     if ((*&self->_has & 0x10) != 0)
     {
-      if ((*(a3 + 60) & 0x10) == 0 || self->_interfaceType != *(a3 + 10))
+      if ((*(equal + 60) & 0x10) == 0 || self->_interfaceType != *(equal + 10))
       {
         goto LABEL_34;
       }
     }
 
-    else if ((*(a3 + 60) & 0x10) != 0)
+    else if ((*(equal + 60) & 0x10) != 0)
     {
       goto LABEL_34;
     }
 
     label = self->_label;
-    if (label | *(a3 + 6))
+    if (label | *(equal + 6))
     {
       v5 = [(NSString *)label isEqual:?];
       if (!v5)
@@ -533,47 +533,47 @@ LABEL_34:
 
     if (has)
     {
-      if ((*(a3 + 60) & 1) == 0 || self->_alternateProbeTimeMsecs != *(a3 + 1))
+      if ((*(equal + 60) & 1) == 0 || self->_alternateProbeTimeMsecs != *(equal + 1))
       {
         goto LABEL_34;
       }
     }
 
-    else if (*(a3 + 60))
+    else if (*(equal + 60))
     {
       goto LABEL_34;
     }
 
     if ((has & 4) != 0)
     {
-      if ((*(a3 + 60) & 4) == 0 || self->_genericProbeTimeMsecs != *(a3 + 3))
+      if ((*(equal + 60) & 4) == 0 || self->_genericProbeTimeMsecs != *(equal + 3))
       {
         goto LABEL_34;
       }
     }
 
-    else if ((*(a3 + 60) & 4) != 0)
+    else if ((*(equal + 60) & 4) != 0)
     {
       goto LABEL_34;
     }
 
     if ((has & 2) != 0)
     {
-      if ((*(a3 + 60) & 2) == 0 || self->_genericDNSProbeTimeMsecs != *(a3 + 2))
+      if ((*(equal + 60) & 2) == 0 || self->_genericDNSProbeTimeMsecs != *(equal + 2))
       {
         goto LABEL_34;
       }
     }
 
-    else if ((*(a3 + 60) & 2) != 0)
+    else if ((*(equal + 60) & 2) != 0)
     {
       goto LABEL_34;
     }
 
-    LOBYTE(v5) = (*(a3 + 60) & 0x20) == 0;
+    LOBYTE(v5) = (*(equal + 60) & 0x20) == 0;
     if ((has & 0x20) != 0)
     {
-      if ((*(a3 + 60) & 0x20) == 0 || self->_protocolType != *(a3 + 14))
+      if ((*(equal + 60) & 0x20) == 0 || self->_protocolType != *(equal + 14))
       {
         goto LABEL_34;
       }
@@ -662,33 +662,33 @@ LABEL_10:
   return v4 ^ v3 ^ v6 ^ v7 ^ v8 ^ v9 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 60);
+  v5 = *(from + 60);
   if ((v5 & 8) != 0)
   {
-    self->_timestamp = *(a3 + 4);
+    self->_timestamp = *(from + 4);
     *&self->_has |= 8u;
-    v5 = *(a3 + 60);
+    v5 = *(from + 60);
   }
 
   if ((v5 & 0x10) != 0)
   {
-    self->_interfaceType = *(a3 + 10);
+    self->_interfaceType = *(from + 10);
     *&self->_has |= 0x10u;
   }
 
-  if (*(a3 + 6))
+  if (*(from + 6))
   {
     [(AWDNetworkServiceProxyProbeStatistics *)self setLabel:?];
   }
 
-  v6 = *(a3 + 60);
+  v6 = *(from + 60);
   if (v6)
   {
-    self->_alternateProbeTimeMsecs = *(a3 + 1);
+    self->_alternateProbeTimeMsecs = *(from + 1);
     *&self->_has |= 1u;
-    v6 = *(a3 + 60);
+    v6 = *(from + 60);
     if ((v6 & 4) == 0)
     {
 LABEL_9:
@@ -701,14 +701,14 @@ LABEL_9:
     }
   }
 
-  else if ((*(a3 + 60) & 4) == 0)
+  else if ((*(from + 60) & 4) == 0)
   {
     goto LABEL_9;
   }
 
-  self->_genericProbeTimeMsecs = *(a3 + 3);
+  self->_genericProbeTimeMsecs = *(from + 3);
   *&self->_has |= 4u;
-  v6 = *(a3 + 60);
+  v6 = *(from + 60);
   if ((v6 & 2) == 0)
   {
 LABEL_10:
@@ -721,15 +721,15 @@ LABEL_10:
   }
 
 LABEL_15:
-  self->_genericDNSProbeTimeMsecs = *(a3 + 2);
+  self->_genericDNSProbeTimeMsecs = *(from + 2);
   *&self->_has |= 2u;
-  if ((*(a3 + 60) & 0x20) == 0)
+  if ((*(from + 60) & 0x20) == 0)
   {
     return;
   }
 
 LABEL_11:
-  self->_protocolType = *(a3 + 14);
+  self->_protocolType = *(from + 14);
   *&self->_has |= 0x20u;
 }
 

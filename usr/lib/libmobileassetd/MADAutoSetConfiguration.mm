@@ -1,75 +1,75 @@
 @interface MADAutoSetConfiguration
-- (BOOL)isEqual:(id)a3;
-- (BOOL)managesAssetSelector:(id)a3;
-- (BOOL)refererncesAssetType:(id)a3;
-- (MADAutoSetConfiguration)initWithCoder:(id)a3;
-- (id)assetSetEntryForAssetType:(id)a3 forAssetSpecifier:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)managesAssetSelector:(id)selector;
+- (BOOL)refererncesAssetType:(id)type;
+- (MADAutoSetConfiguration)initWithCoder:(id)coder;
+- (id)assetSetEntryForAssetType:(id)type forAssetSpecifier:(id)specifier;
 - (id)copy;
 - (id)firstEntryAssetType;
-- (id)initForClientDomainName:(id)a3 forSetClientName:(id)a4 forAssetSetIdentifier:(id)a5 withAutoAssetEntries:(id)a6 withDiscoveredInFlightAtomicInstance:(id)a7 withNewerAtomicInstanceOncePersonalized:(id)a8 withLatestAtomicInstanceToVend:(id)a9 withLatestAtomicInstanceToVendFromPreSUStaging:(BOOL)a10 withPreviouslyVendedLockedAtomicInstances:(id)a11 withTicksUntilPreviousForceUnlocked:(int64_t)a12 withMostRecentlyReceivedCachedAssetSetID:(id)a13 withMostRecentlyReceivedDownloadedFromLive:(id)a14 withMostRecentlyReceivedLastTimeChecked:(id)a15 withMostRecentlyReceivedPostedDate:(id)a16 withLatestToVendCachedAssetSetID:(id)a17 withLatestToVendDownloadedFromLive:(id)a18 withLatestToVendLastTimeChecked:(id)a19 withLatestToVendPostedDate:(id)a20 withAavailableForUseError:(id)a21 withNewerVersionError:(id)a22 havingEverProvidedLatestToVend:(BOOL)a23 inhibitingImpliedScheduling:(BOOL)a24 havingReceivedLookupResponse:(BOOL)a25 vendingAtomicInstanceForConfiguredEntries:(BOOL)a26;
+- (id)initForClientDomainName:(id)name forSetClientName:(id)clientName forAssetSetIdentifier:(id)identifier withAutoAssetEntries:(id)entries withDiscoveredInFlightAtomicInstance:(id)instance withNewerAtomicInstanceOncePersonalized:(id)personalized withLatestAtomicInstanceToVend:(id)vend withLatestAtomicInstanceToVendFromPreSUStaging:(BOOL)self0 withPreviouslyVendedLockedAtomicInstances:(id)self1 withTicksUntilPreviousForceUnlocked:(int64_t)self2 withMostRecentlyReceivedCachedAssetSetID:(id)self3 withMostRecentlyReceivedDownloadedFromLive:(id)self4 withMostRecentlyReceivedLastTimeChecked:(id)self5 withMostRecentlyReceivedPostedDate:(id)self6 withLatestToVendCachedAssetSetID:(id)self7 withLatestToVendDownloadedFromLive:(id)self8 withLatestToVendLastTimeChecked:(id)self9 withLatestToVendPostedDate:(id)postedDate withAavailableForUseError:(id)error withNewerVersionError:(id)versionError havingEverProvidedLatestToVend:(BOOL)toVend inhibitingImpliedScheduling:(BOOL)scheduling havingReceivedLookupResponse:(BOOL)response vendingAtomicInstanceForConfiguredEntries:(BOOL)configuredEntries;
 - (id)newSummaryWithoutEntryID;
 - (id)persistedEntryID;
 - (id)previouslyVendedLockedSummary;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADAutoSetConfiguration
 
-- (id)initForClientDomainName:(id)a3 forSetClientName:(id)a4 forAssetSetIdentifier:(id)a5 withAutoAssetEntries:(id)a6 withDiscoveredInFlightAtomicInstance:(id)a7 withNewerAtomicInstanceOncePersonalized:(id)a8 withLatestAtomicInstanceToVend:(id)a9 withLatestAtomicInstanceToVendFromPreSUStaging:(BOOL)a10 withPreviouslyVendedLockedAtomicInstances:(id)a11 withTicksUntilPreviousForceUnlocked:(int64_t)a12 withMostRecentlyReceivedCachedAssetSetID:(id)a13 withMostRecentlyReceivedDownloadedFromLive:(id)a14 withMostRecentlyReceivedLastTimeChecked:(id)a15 withMostRecentlyReceivedPostedDate:(id)a16 withLatestToVendCachedAssetSetID:(id)a17 withLatestToVendDownloadedFromLive:(id)a18 withLatestToVendLastTimeChecked:(id)a19 withLatestToVendPostedDate:(id)a20 withAavailableForUseError:(id)a21 withNewerVersionError:(id)a22 havingEverProvidedLatestToVend:(BOOL)a23 inhibitingImpliedScheduling:(BOOL)a24 havingReceivedLookupResponse:(BOOL)a25 vendingAtomicInstanceForConfiguredEntries:(BOOL)a26
+- (id)initForClientDomainName:(id)name forSetClientName:(id)clientName forAssetSetIdentifier:(id)identifier withAutoAssetEntries:(id)entries withDiscoveredInFlightAtomicInstance:(id)instance withNewerAtomicInstanceOncePersonalized:(id)personalized withLatestAtomicInstanceToVend:(id)vend withLatestAtomicInstanceToVendFromPreSUStaging:(BOOL)self0 withPreviouslyVendedLockedAtomicInstances:(id)self1 withTicksUntilPreviousForceUnlocked:(int64_t)self2 withMostRecentlyReceivedCachedAssetSetID:(id)self3 withMostRecentlyReceivedDownloadedFromLive:(id)self4 withMostRecentlyReceivedLastTimeChecked:(id)self5 withMostRecentlyReceivedPostedDate:(id)self6 withLatestToVendCachedAssetSetID:(id)self7 withLatestToVendDownloadedFromLive:(id)self8 withLatestToVendLastTimeChecked:(id)self9 withLatestToVendPostedDate:(id)postedDate withAavailableForUseError:(id)error withNewerVersionError:(id)versionError havingEverProvidedLatestToVend:(BOOL)toVend inhibitingImpliedScheduling:(BOOL)scheduling havingReceivedLookupResponse:(BOOL)response vendingAtomicInstanceForConfiguredEntries:(BOOL)configuredEntries
 {
-  v57 = a3;
-  v43 = a4;
-  v56 = a4;
-  v44 = a5;
-  v54 = a5;
-  v45 = a6;
-  v53 = a6;
-  v46 = a7;
-  v51 = a7;
-  v49 = a8;
-  v48 = a9;
-  v59 = a11;
-  v58 = a13;
-  v55 = a14;
-  v52 = a15;
-  v50 = a16;
-  v31 = a17;
-  v32 = a18;
-  v33 = a19;
-  v34 = a20;
-  v35 = a21;
-  v36 = a22;
+  nameCopy = name;
+  clientNameCopy = clientName;
+  clientNameCopy2 = clientName;
+  identifierCopy = identifier;
+  identifierCopy2 = identifier;
+  entriesCopy = entries;
+  entriesCopy2 = entries;
+  instanceCopy = instance;
+  instanceCopy2 = instance;
+  personalizedCopy = personalized;
+  vendCopy = vend;
+  instancesCopy = instances;
+  dCopy = d;
+  liveCopy = live;
+  checkedCopy = checked;
+  dateCopy = date;
+  iDCopy = iD;
+  fromLiveCopy = fromLive;
+  timeCheckedCopy = timeChecked;
+  postedDateCopy = postedDate;
+  errorCopy = error;
+  versionErrorCopy = versionError;
   v60.receiver = self;
   v60.super_class = MADAutoSetConfiguration;
   v37 = [(MADAutoSetConfiguration *)&v60 init];
   v38 = v37;
   if (v37)
   {
-    objc_storeStrong(&v37->_clientDomainName, a3);
-    objc_storeStrong(&v38->_autoAssetSetClientName, v43);
-    objc_storeStrong(&v38->_assetSetIdentifier, v44);
-    objc_storeStrong(&v38->_autoAssetEntries, v45);
-    objc_storeStrong(&v38->_discoveredInFlightAtomicInstance, v46);
-    objc_storeStrong(&v38->_newerAtomicInstanceOncePersonalized, a8);
-    objc_storeStrong(&v38->_latestAtomicInstanceToVend, a9);
-    v38->_latestAtomicInstanceToVendFromPreSUStaging = a10;
-    objc_storeStrong(&v38->_previouslyVendedLockedAtomicInstances, a11);
-    v38->_ticksUntilPreviousForceUnlocked = a12;
-    objc_storeStrong(&v38->_mostRecentlyReceivedCachedAssetSetID, a13);
-    objc_storeStrong(&v38->_mostRecentlyReceivedDownloadedFromLive, a14);
-    objc_storeStrong(&v38->_mostRecentlyReceivedLastTimeChecked, a15);
-    objc_storeStrong(&v38->_mostRecentlyReceivedPostedDate, a16);
-    objc_storeStrong(&v38->_latestToVendCachedAssetSetID, a17);
-    objc_storeStrong(&v38->_latestToVendDownloadedFromLive, a18);
-    objc_storeStrong(&v38->_latestToVendLastTimeChecked, a19);
-    objc_storeStrong(&v38->_latestToVendPostedDate, a20);
-    objc_storeStrong(&v38->_availableForUseError, a21);
-    objc_storeStrong(&v38->_newerVersionError, a22);
-    v38->_everProvidedLatestToVend = a23;
-    v38->_inhibitImpliedScheduling = a24;
-    v38->_haveReceivedLookupResponse = a25;
-    v38->_vendingAtomicInstanceForConfiguredEntries = a26;
+    objc_storeStrong(&v37->_clientDomainName, name);
+    objc_storeStrong(&v38->_autoAssetSetClientName, clientNameCopy);
+    objc_storeStrong(&v38->_assetSetIdentifier, identifierCopy);
+    objc_storeStrong(&v38->_autoAssetEntries, entriesCopy);
+    objc_storeStrong(&v38->_discoveredInFlightAtomicInstance, instanceCopy);
+    objc_storeStrong(&v38->_newerAtomicInstanceOncePersonalized, personalized);
+    objc_storeStrong(&v38->_latestAtomicInstanceToVend, vend);
+    v38->_latestAtomicInstanceToVendFromPreSUStaging = staging;
+    objc_storeStrong(&v38->_previouslyVendedLockedAtomicInstances, instances);
+    v38->_ticksUntilPreviousForceUnlocked = unlocked;
+    objc_storeStrong(&v38->_mostRecentlyReceivedCachedAssetSetID, d);
+    objc_storeStrong(&v38->_mostRecentlyReceivedDownloadedFromLive, live);
+    objc_storeStrong(&v38->_mostRecentlyReceivedLastTimeChecked, checked);
+    objc_storeStrong(&v38->_mostRecentlyReceivedPostedDate, date);
+    objc_storeStrong(&v38->_latestToVendCachedAssetSetID, iD);
+    objc_storeStrong(&v38->_latestToVendDownloadedFromLive, fromLive);
+    objc_storeStrong(&v38->_latestToVendLastTimeChecked, timeChecked);
+    objc_storeStrong(&v38->_latestToVendPostedDate, postedDate);
+    objc_storeStrong(&v38->_availableForUseError, error);
+    objc_storeStrong(&v38->_newerVersionError, versionError);
+    v38->_everProvidedLatestToVend = toVend;
+    v38->_inhibitImpliedScheduling = scheduling;
+    v38->_haveReceivedLookupResponse = response;
+    v38->_vendingAtomicInstanceForConfiguredEntries = configuredEntries;
     v39 = +[NSDate now];
     configurationChangedDate = v38->_configurationChangedDate;
     v38->_configurationChangedDate = v39;
@@ -78,9 +78,9 @@
   return v38;
 }
 
-- (MADAutoSetConfiguration)initWithCoder:(id)a3
+- (MADAutoSetConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v55.receiver = self;
   v55.super_class = MADAutoSetConfiguration;
   v5 = [(MADAutoSetConfiguration *)&v55 init];
@@ -111,88 +111,88 @@
     v10 = [NSArray arrayWithObjects:v56 count:2];
     v11 = [NSSet setWithArray:v10];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientDomainName"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientDomainName"];
     clientDomainName = v5->_clientDomainName;
     v5->_clientDomainName = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"autoAssetSetClientName"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"autoAssetSetClientName"];
     autoAssetSetClientName = v5->_autoAssetSetClientName;
     v5->_autoAssetSetClientName = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetSetIdentifier"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetSetIdentifier"];
     assetSetIdentifier = v5->_assetSetIdentifier;
     v5->_assetSetIdentifier = v16;
 
-    v18 = [v4 decodeObjectOfClasses:v7 forKey:@"autoAssetEntries"];
+    v18 = [coderCopy decodeObjectOfClasses:v7 forKey:@"autoAssetEntries"];
     autoAssetEntries = v5->_autoAssetEntries;
     v5->_autoAssetEntries = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"discoveredInFlightAtomicInstance"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"discoveredInFlightAtomicInstance"];
     discoveredInFlightAtomicInstance = v5->_discoveredInFlightAtomicInstance;
     v5->_discoveredInFlightAtomicInstance = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"newerAtomicInstanceOncePersonalized"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"newerAtomicInstanceOncePersonalized"];
     newerAtomicInstanceOncePersonalized = v5->_newerAtomicInstanceOncePersonalized;
     v5->_newerAtomicInstanceOncePersonalized = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"latestAtomicInstanceToVend"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"latestAtomicInstanceToVend"];
     latestAtomicInstanceToVend = v5->_latestAtomicInstanceToVend;
     v5->_latestAtomicInstanceToVend = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"latestAtomicInstanceToVendFromPreSUStagingKey"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"latestAtomicInstanceToVendFromPreSUStagingKey"];
     v5->_latestAtomicInstanceToVendFromPreSUStaging = [v26 BOOLValue];
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"previouslyVendedLockedAtomicInstance"];
-    v28 = [v4 decodeObjectOfClasses:v11 forKey:@"previouslyVendedLockedAtomicInstances"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"previouslyVendedLockedAtomicInstance"];
+    v28 = [coderCopy decodeObjectOfClasses:v11 forKey:@"previouslyVendedLockedAtomicInstances"];
     previouslyVendedLockedAtomicInstances = v5->_previouslyVendedLockedAtomicInstances;
     v5->_previouslyVendedLockedAtomicInstances = v28;
 
-    v5->_ticksUntilPreviousForceUnlocked = [v4 decodeIntegerForKey:@"ticksUntilPreviousForceUnlocked"];
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mostRecentlyReceivedCachedAssetSetID"];
+    v5->_ticksUntilPreviousForceUnlocked = [coderCopy decodeIntegerForKey:@"ticksUntilPreviousForceUnlocked"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mostRecentlyReceivedCachedAssetSetID"];
     mostRecentlyReceivedCachedAssetSetID = v5->_mostRecentlyReceivedCachedAssetSetID;
     v5->_mostRecentlyReceivedCachedAssetSetID = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mostRecentlyReceivedDownloadedFromLive"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mostRecentlyReceivedDownloadedFromLive"];
     mostRecentlyReceivedDownloadedFromLive = v5->_mostRecentlyReceivedDownloadedFromLive;
     v5->_mostRecentlyReceivedDownloadedFromLive = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mostRecentlyReceivedLastTimeChecked"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mostRecentlyReceivedLastTimeChecked"];
     mostRecentlyReceivedLastTimeChecked = v5->_mostRecentlyReceivedLastTimeChecked;
     v5->_mostRecentlyReceivedLastTimeChecked = v34;
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mostRecentlyReceivedPostedDate"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mostRecentlyReceivedPostedDate"];
     mostRecentlyReceivedPostedDate = v5->_mostRecentlyReceivedPostedDate;
     v5->_mostRecentlyReceivedPostedDate = v36;
 
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"latestToVendCachedAssetSetID"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"latestToVendCachedAssetSetID"];
     latestToVendCachedAssetSetID = v5->_latestToVendCachedAssetSetID;
     v5->_latestToVendCachedAssetSetID = v38;
 
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"latestToVendDownloadedFromLive"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"latestToVendDownloadedFromLive"];
     latestToVendDownloadedFromLive = v5->_latestToVendDownloadedFromLive;
     v5->_latestToVendDownloadedFromLive = v40;
 
-    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"latestToVendLastTimeChecked"];
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"latestToVendLastTimeChecked"];
     latestToVendLastTimeChecked = v5->_latestToVendLastTimeChecked;
     v5->_latestToVendLastTimeChecked = v42;
 
-    v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"latestToVendPostedDate"];
+    v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"latestToVendPostedDate"];
     latestToVendPostedDate = v5->_latestToVendPostedDate;
     v5->_latestToVendPostedDate = v44;
 
-    v46 = [v4 decodeObjectOfClasses:v9 forKey:@"availableForUseError"];
+    v46 = [coderCopy decodeObjectOfClasses:v9 forKey:@"availableForUseError"];
     availableForUseError = v5->_availableForUseError;
     v5->_availableForUseError = v46;
 
-    v48 = [v4 decodeObjectOfClasses:v9 forKey:@"newerVersionError"];
+    v48 = [coderCopy decodeObjectOfClasses:v9 forKey:@"newerVersionError"];
     newerVersionError = v5->_newerVersionError;
     v5->_newerVersionError = v48;
 
-    v5->_everProvidedLatestToVend = [v4 decodeBoolForKey:@"everProvidedLatestToVend"];
-    v5->_inhibitImpliedScheduling = [v4 decodeBoolForKey:@"inhibitImpliedScheduling"];
-    v5->_haveReceivedLookupResponse = [v4 decodeBoolForKey:@"haveReceivedLookupResponse"];
-    v5->_vendingAtomicInstanceForConfiguredEntries = [v4 decodeBoolForKey:@"vendingAtomicInstanceForConfiguredEntries"];
-    v50 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"configurationChangedDate"];
+    v5->_everProvidedLatestToVend = [coderCopy decodeBoolForKey:@"everProvidedLatestToVend"];
+    v5->_inhibitImpliedScheduling = [coderCopy decodeBoolForKey:@"inhibitImpliedScheduling"];
+    v5->_haveReceivedLookupResponse = [coderCopy decodeBoolForKey:@"haveReceivedLookupResponse"];
+    v5->_vendingAtomicInstanceForConfiguredEntries = [coderCopy decodeBoolForKey:@"vendingAtomicInstanceForConfiguredEntries"];
+    v50 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"configurationChangedDate"];
     configurationChangedDate = v5->_configurationChangedDate;
     v5->_configurationChangedDate = v50;
 
@@ -209,79 +209,79 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MADAutoSetConfiguration *)self clientDomainName];
-  [v4 encodeObject:v5 forKey:@"clientDomainName"];
+  coderCopy = coder;
+  clientDomainName = [(MADAutoSetConfiguration *)self clientDomainName];
+  [coderCopy encodeObject:clientDomainName forKey:@"clientDomainName"];
 
-  v6 = [(MADAutoSetConfiguration *)self autoAssetSetClientName];
-  [v4 encodeObject:v6 forKey:@"autoAssetSetClientName"];
+  autoAssetSetClientName = [(MADAutoSetConfiguration *)self autoAssetSetClientName];
+  [coderCopy encodeObject:autoAssetSetClientName forKey:@"autoAssetSetClientName"];
 
-  v7 = [(MADAutoSetConfiguration *)self assetSetIdentifier];
-  [v4 encodeObject:v7 forKey:@"assetSetIdentifier"];
+  assetSetIdentifier = [(MADAutoSetConfiguration *)self assetSetIdentifier];
+  [coderCopy encodeObject:assetSetIdentifier forKey:@"assetSetIdentifier"];
 
-  v8 = [(MADAutoSetConfiguration *)self autoAssetEntries];
-  [v4 encodeObject:v8 forKey:@"autoAssetEntries"];
+  autoAssetEntries = [(MADAutoSetConfiguration *)self autoAssetEntries];
+  [coderCopy encodeObject:autoAssetEntries forKey:@"autoAssetEntries"];
 
-  v9 = [(MADAutoSetConfiguration *)self discoveredInFlightAtomicInstance];
-  [v4 encodeObject:v9 forKey:@"discoveredInFlightAtomicInstance"];
+  discoveredInFlightAtomicInstance = [(MADAutoSetConfiguration *)self discoveredInFlightAtomicInstance];
+  [coderCopy encodeObject:discoveredInFlightAtomicInstance forKey:@"discoveredInFlightAtomicInstance"];
 
-  v10 = [(MADAutoSetConfiguration *)self newerAtomicInstanceOncePersonalized];
-  [v4 encodeObject:v10 forKey:@"newerAtomicInstanceOncePersonalized"];
+  newerAtomicInstanceOncePersonalized = [(MADAutoSetConfiguration *)self newerAtomicInstanceOncePersonalized];
+  [coderCopy encodeObject:newerAtomicInstanceOncePersonalized forKey:@"newerAtomicInstanceOncePersonalized"];
 
-  v11 = [(MADAutoSetConfiguration *)self latestAtomicInstanceToVend];
-  [v4 encodeObject:v11 forKey:@"latestAtomicInstanceToVend"];
+  latestAtomicInstanceToVend = [(MADAutoSetConfiguration *)self latestAtomicInstanceToVend];
+  [coderCopy encodeObject:latestAtomicInstanceToVend forKey:@"latestAtomicInstanceToVend"];
 
   v12 = [NSNumber numberWithBool:[(MADAutoSetConfiguration *)self latestAtomicInstanceToVendFromPreSUStaging]];
-  [v4 encodeObject:v12 forKey:@"latestAtomicInstanceToVendFromPreSUStagingKey"];
+  [coderCopy encodeObject:v12 forKey:@"latestAtomicInstanceToVendFromPreSUStagingKey"];
 
-  v13 = [(MADAutoSetConfiguration *)self previouslyVendedLockedAtomicInstances];
-  [v4 encodeObject:v13 forKey:@"previouslyVendedLockedAtomicInstances"];
+  previouslyVendedLockedAtomicInstances = [(MADAutoSetConfiguration *)self previouslyVendedLockedAtomicInstances];
+  [coderCopy encodeObject:previouslyVendedLockedAtomicInstances forKey:@"previouslyVendedLockedAtomicInstances"];
 
-  [v4 encodeInteger:-[MADAutoSetConfiguration ticksUntilPreviousForceUnlocked](self forKey:{"ticksUntilPreviousForceUnlocked"), @"ticksUntilPreviousForceUnlocked"}];
-  v14 = [(MADAutoSetConfiguration *)self mostRecentlyReceivedCachedAssetSetID];
-  [v4 encodeObject:v14 forKey:@"mostRecentlyReceivedCachedAssetSetID"];
+  [coderCopy encodeInteger:-[MADAutoSetConfiguration ticksUntilPreviousForceUnlocked](self forKey:{"ticksUntilPreviousForceUnlocked"), @"ticksUntilPreviousForceUnlocked"}];
+  mostRecentlyReceivedCachedAssetSetID = [(MADAutoSetConfiguration *)self mostRecentlyReceivedCachedAssetSetID];
+  [coderCopy encodeObject:mostRecentlyReceivedCachedAssetSetID forKey:@"mostRecentlyReceivedCachedAssetSetID"];
 
-  v15 = [(MADAutoSetConfiguration *)self mostRecentlyReceivedDownloadedFromLive];
-  [v4 encodeObject:v15 forKey:@"mostRecentlyReceivedDownloadedFromLive"];
+  mostRecentlyReceivedDownloadedFromLive = [(MADAutoSetConfiguration *)self mostRecentlyReceivedDownloadedFromLive];
+  [coderCopy encodeObject:mostRecentlyReceivedDownloadedFromLive forKey:@"mostRecentlyReceivedDownloadedFromLive"];
 
-  v16 = [(MADAutoSetConfiguration *)self mostRecentlyReceivedLastTimeChecked];
-  [v4 encodeObject:v16 forKey:@"mostRecentlyReceivedLastTimeChecked"];
+  mostRecentlyReceivedLastTimeChecked = [(MADAutoSetConfiguration *)self mostRecentlyReceivedLastTimeChecked];
+  [coderCopy encodeObject:mostRecentlyReceivedLastTimeChecked forKey:@"mostRecentlyReceivedLastTimeChecked"];
 
-  v17 = [(MADAutoSetConfiguration *)self mostRecentlyReceivedPostedDate];
-  [v4 encodeObject:v17 forKey:@"mostRecentlyReceivedPostedDate"];
+  mostRecentlyReceivedPostedDate = [(MADAutoSetConfiguration *)self mostRecentlyReceivedPostedDate];
+  [coderCopy encodeObject:mostRecentlyReceivedPostedDate forKey:@"mostRecentlyReceivedPostedDate"];
 
-  v18 = [(MADAutoSetConfiguration *)self latestToVendCachedAssetSetID];
-  [v4 encodeObject:v18 forKey:@"latestToVendCachedAssetSetID"];
+  latestToVendCachedAssetSetID = [(MADAutoSetConfiguration *)self latestToVendCachedAssetSetID];
+  [coderCopy encodeObject:latestToVendCachedAssetSetID forKey:@"latestToVendCachedAssetSetID"];
 
-  v19 = [(MADAutoSetConfiguration *)self latestToVendDownloadedFromLive];
-  [v4 encodeObject:v19 forKey:@"latestToVendDownloadedFromLive"];
+  latestToVendDownloadedFromLive = [(MADAutoSetConfiguration *)self latestToVendDownloadedFromLive];
+  [coderCopy encodeObject:latestToVendDownloadedFromLive forKey:@"latestToVendDownloadedFromLive"];
 
-  v20 = [(MADAutoSetConfiguration *)self latestToVendLastTimeChecked];
-  [v4 encodeObject:v20 forKey:@"latestToVendLastTimeChecked"];
+  latestToVendLastTimeChecked = [(MADAutoSetConfiguration *)self latestToVendLastTimeChecked];
+  [coderCopy encodeObject:latestToVendLastTimeChecked forKey:@"latestToVendLastTimeChecked"];
 
-  v21 = [(MADAutoSetConfiguration *)self latestToVendPostedDate];
-  [v4 encodeObject:v21 forKey:@"latestToVendPostedDate"];
+  latestToVendPostedDate = [(MADAutoSetConfiguration *)self latestToVendPostedDate];
+  [coderCopy encodeObject:latestToVendPostedDate forKey:@"latestToVendPostedDate"];
 
-  v22 = [(MADAutoSetConfiguration *)self availableForUseError];
-  [v4 encodeObject:v22 forKey:@"availableForUseError"];
+  availableForUseError = [(MADAutoSetConfiguration *)self availableForUseError];
+  [coderCopy encodeObject:availableForUseError forKey:@"availableForUseError"];
 
-  v23 = [(MADAutoSetConfiguration *)self newerVersionError];
-  [v4 encodeObject:v23 forKey:@"newerVersionError"];
+  newerVersionError = [(MADAutoSetConfiguration *)self newerVersionError];
+  [coderCopy encodeObject:newerVersionError forKey:@"newerVersionError"];
 
-  [v4 encodeBool:-[MADAutoSetConfiguration everProvidedLatestToVend](self forKey:{"everProvidedLatestToVend"), @"everProvidedLatestToVend"}];
-  [v4 encodeBool:-[MADAutoSetConfiguration inhibitImpliedScheduling](self forKey:{"inhibitImpliedScheduling"), @"inhibitImpliedScheduling"}];
-  [v4 encodeBool:-[MADAutoSetConfiguration haveReceivedLookupResponse](self forKey:{"haveReceivedLookupResponse"), @"haveReceivedLookupResponse"}];
-  [v4 encodeBool:-[MADAutoSetConfiguration vendingAtomicInstanceForConfiguredEntries](self forKey:{"vendingAtomicInstanceForConfiguredEntries"), @"vendingAtomicInstanceForConfiguredEntries"}];
-  v24 = [(MADAutoSetConfiguration *)self configurationChangedDate];
-  [v4 encodeObject:v24 forKey:@"configurationChangedDate"];
+  [coderCopy encodeBool:-[MADAutoSetConfiguration everProvidedLatestToVend](self forKey:{"everProvidedLatestToVend"), @"everProvidedLatestToVend"}];
+  [coderCopy encodeBool:-[MADAutoSetConfiguration inhibitImpliedScheduling](self forKey:{"inhibitImpliedScheduling"), @"inhibitImpliedScheduling"}];
+  [coderCopy encodeBool:-[MADAutoSetConfiguration haveReceivedLookupResponse](self forKey:{"haveReceivedLookupResponse"), @"haveReceivedLookupResponse"}];
+  [coderCopy encodeBool:-[MADAutoSetConfiguration vendingAtomicInstanceForConfiguredEntries](self forKey:{"vendingAtomicInstanceForConfiguredEntries"), @"vendingAtomicInstanceForConfiguredEntries"}];
+  configurationChangedDate = [(MADAutoSetConfiguration *)self configurationChangedDate];
+  [coderCopy encodeObject:configurationChangedDate forKey:@"configurationChangedDate"];
 }
 
-- (id)assetSetEntryForAssetType:(id)a3 forAssetSpecifier:(id)a4
+- (id)assetSetEntryForAssetType:(id)type forAssetSpecifier:(id)specifier
 {
-  v6 = a3;
-  v23 = a4;
+  typeCopy = type;
+  specifierCopy = specifier;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -305,19 +305,19 @@
 
         v11 = *(*(&v25 + 1) + 8 * v10);
         v12 = p_weak_ivar_lyt[223];
-        v13 = [v11 assetSelector];
-        v14 = [v13 assetType];
-        if ([v12 stringIsEqual:v14 to:v6])
+        assetSelector = [v11 assetSelector];
+        assetType = [assetSelector assetType];
+        if ([v12 stringIsEqual:assetType to:typeCopy])
         {
           v15 = p_weak_ivar_lyt[223];
           [v11 assetSelector];
           v16 = v8;
           v17 = p_weak_ivar_lyt;
-          v19 = v18 = v6;
-          v20 = [v19 assetSpecifier];
-          LODWORD(v15) = [v15 stringIsEqual:v20 to:v23];
+          v19 = v18 = typeCopy;
+          assetSpecifier = [v19 assetSpecifier];
+          LODWORD(v15) = [v15 stringIsEqual:assetSpecifier to:specifierCopy];
 
-          v6 = v18;
+          typeCopy = v18;
           p_weak_ivar_lyt = v17;
           v8 = v16;
           v7 = v22;
@@ -348,15 +348,15 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)refererncesAssetType:(id)a3
+- (BOOL)refererncesAssetType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(MADAutoSetConfiguration *)self autoAssetEntries];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  autoAssetEntries = [(MADAutoSetConfiguration *)self autoAssetEntries];
+  v6 = [autoAssetEntries countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -366,12 +366,12 @@ LABEL_12:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(autoAssetEntries);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) assetSelector];
-        v10 = [v9 assetType];
-        v11 = [SUCore stringIsEqual:v10 to:v4];
+        assetSelector = [*(*(&v13 + 1) + 8 * i) assetSelector];
+        assetType = [assetSelector assetType];
+        v11 = [SUCore stringIsEqual:assetType to:typeCopy];
 
         if (v11)
         {
@@ -380,7 +380,7 @@ LABEL_12:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [autoAssetEntries countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -395,9 +395,9 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)managesAssetSelector:(id)a3
+- (BOOL)managesAssetSelector:(id)selector
 {
-  v4 = a3;
+  selectorCopy = selector;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -420,20 +420,20 @@ LABEL_11:
 
         v9 = *(*(&v23 + 1) + 8 * i);
         v10 = p_weak_ivar_lyt[223];
-        v11 = [v9 assetSelector];
-        v12 = [v11 assetType];
-        v13 = [v4 assetType];
-        if ([v10 stringIsEqual:v12 to:v13])
+        assetSelector = [v9 assetSelector];
+        assetType = [assetSelector assetType];
+        assetType2 = [selectorCopy assetType];
+        if ([v10 stringIsEqual:assetType to:assetType2])
         {
           v14 = p_weak_ivar_lyt[223];
-          v15 = [v9 assetSelector];
-          v16 = [v15 assetSpecifier];
-          [v4 assetSpecifier];
+          assetSelector2 = [v9 assetSelector];
+          assetSpecifier = [assetSelector2 assetSpecifier];
+          [selectorCopy assetSpecifier];
           v17 = v5;
-          v19 = v18 = v4;
-          LOBYTE(v14) = [v14 stringIsEqual:v16 to:v19];
+          v19 = v18 = selectorCopy;
+          LOBYTE(v14) = [v14 stringIsEqual:assetSpecifier to:v19];
 
-          v4 = v18;
+          selectorCopy = v18;
           v5 = v17;
 
           v6 = v21;
@@ -468,35 +468,35 @@ LABEL_12:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(MADAutoSetConfiguration *)self autoAssetEntries];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
-  if (v3)
+  autoAssetEntries = [(MADAutoSetConfiguration *)self autoAssetEntries];
+  assetType2 = [autoAssetEntries countByEnumeratingWithState:&v11 objects:v15 count:16];
+  if (assetType2)
   {
     v4 = *v12;
     while (2)
     {
-      for (i = 0; i != v3; i = i + 1)
+      for (i = 0; i != assetType2; i = i + 1)
       {
         if (*v12 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(autoAssetEntries);
         }
 
         v6 = *(*(&v11 + 1) + 8 * i);
-        v7 = [v6 assetSelector];
-        v8 = [v7 assetType];
+        assetSelector = [v6 assetSelector];
+        assetType = [assetSelector assetType];
 
-        if (v8)
+        if (assetType)
         {
-          v9 = [v6 assetSelector];
-          v3 = [v9 assetType];
+          assetSelector2 = [v6 assetSelector];
+          assetType2 = [assetSelector2 assetType];
 
           goto LABEL_11;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
-      if (v3)
+      assetType2 = [autoAssetEntries countByEnumeratingWithState:&v11 objects:v15 count:16];
+      if (assetType2)
       {
         continue;
       }
@@ -507,50 +507,50 @@ LABEL_12:
 
 LABEL_11:
 
-  return v3;
+  return assetType2;
 }
 
 - (id)copy
 {
   v23 = [MADAutoSetConfiguration alloc];
-  v31 = [(MADAutoSetConfiguration *)self clientDomainName];
-  v30 = [(MADAutoSetConfiguration *)self autoAssetSetClientName];
-  v29 = [(MADAutoSetConfiguration *)self assetSetIdentifier];
-  v25 = [(MADAutoSetConfiguration *)self autoAssetEntries];
-  v28 = [v25 copy];
-  v22 = [(MADAutoSetConfiguration *)self discoveredInFlightAtomicInstance];
-  v21 = [(MADAutoSetConfiguration *)self newerAtomicInstanceOncePersonalized];
-  v27 = [(MADAutoSetConfiguration *)self latestAtomicInstanceToVend];
-  v20 = [(MADAutoSetConfiguration *)self latestAtomicInstanceToVendFromPreSUStaging];
-  v26 = [(MADAutoSetConfiguration *)self previouslyVendedLockedAtomicInstances];
-  v19 = [(MADAutoSetConfiguration *)self ticksUntilPreviousForceUnlocked];
-  v18 = [(MADAutoSetConfiguration *)self mostRecentlyReceivedCachedAssetSetID];
-  v17 = [(MADAutoSetConfiguration *)self mostRecentlyReceivedDownloadedFromLive];
-  v14 = [(MADAutoSetConfiguration *)self mostRecentlyReceivedLastTimeChecked];
-  v16 = [(MADAutoSetConfiguration *)self mostRecentlyReceivedPostedDate];
-  v15 = [(MADAutoSetConfiguration *)self latestToVendCachedAssetSetID];
-  v13 = [(MADAutoSetConfiguration *)self latestToVendDownloadedFromLive];
-  v3 = [(MADAutoSetConfiguration *)self latestToVendLastTimeChecked];
-  v4 = [(MADAutoSetConfiguration *)self latestToVendPostedDate];
-  v5 = [(MADAutoSetConfiguration *)self availableForUseError];
-  v6 = [(MADAutoSetConfiguration *)self newerVersionError];
-  v7 = [(MADAutoSetConfiguration *)self everProvidedLatestToVend];
-  v8 = [(MADAutoSetConfiguration *)self inhibitImpliedScheduling];
-  v9 = [(MADAutoSetConfiguration *)self haveReceivedLookupResponse];
+  clientDomainName = [(MADAutoSetConfiguration *)self clientDomainName];
+  autoAssetSetClientName = [(MADAutoSetConfiguration *)self autoAssetSetClientName];
+  assetSetIdentifier = [(MADAutoSetConfiguration *)self assetSetIdentifier];
+  autoAssetEntries = [(MADAutoSetConfiguration *)self autoAssetEntries];
+  v28 = [autoAssetEntries copy];
+  discoveredInFlightAtomicInstance = [(MADAutoSetConfiguration *)self discoveredInFlightAtomicInstance];
+  newerAtomicInstanceOncePersonalized = [(MADAutoSetConfiguration *)self newerAtomicInstanceOncePersonalized];
+  latestAtomicInstanceToVend = [(MADAutoSetConfiguration *)self latestAtomicInstanceToVend];
+  latestAtomicInstanceToVendFromPreSUStaging = [(MADAutoSetConfiguration *)self latestAtomicInstanceToVendFromPreSUStaging];
+  previouslyVendedLockedAtomicInstances = [(MADAutoSetConfiguration *)self previouslyVendedLockedAtomicInstances];
+  ticksUntilPreviousForceUnlocked = [(MADAutoSetConfiguration *)self ticksUntilPreviousForceUnlocked];
+  mostRecentlyReceivedCachedAssetSetID = [(MADAutoSetConfiguration *)self mostRecentlyReceivedCachedAssetSetID];
+  mostRecentlyReceivedDownloadedFromLive = [(MADAutoSetConfiguration *)self mostRecentlyReceivedDownloadedFromLive];
+  mostRecentlyReceivedLastTimeChecked = [(MADAutoSetConfiguration *)self mostRecentlyReceivedLastTimeChecked];
+  mostRecentlyReceivedPostedDate = [(MADAutoSetConfiguration *)self mostRecentlyReceivedPostedDate];
+  latestToVendCachedAssetSetID = [(MADAutoSetConfiguration *)self latestToVendCachedAssetSetID];
+  latestToVendDownloadedFromLive = [(MADAutoSetConfiguration *)self latestToVendDownloadedFromLive];
+  latestToVendLastTimeChecked = [(MADAutoSetConfiguration *)self latestToVendLastTimeChecked];
+  latestToVendPostedDate = [(MADAutoSetConfiguration *)self latestToVendPostedDate];
+  availableForUseError = [(MADAutoSetConfiguration *)self availableForUseError];
+  newerVersionError = [(MADAutoSetConfiguration *)self newerVersionError];
+  everProvidedLatestToVend = [(MADAutoSetConfiguration *)self everProvidedLatestToVend];
+  inhibitImpliedScheduling = [(MADAutoSetConfiguration *)self inhibitImpliedScheduling];
+  haveReceivedLookupResponse = [(MADAutoSetConfiguration *)self haveReceivedLookupResponse];
   BYTE3(v12) = [(MADAutoSetConfiguration *)self vendingAtomicInstanceForConfiguredEntries];
-  BYTE2(v12) = v9;
-  BYTE1(v12) = v8;
-  LOBYTE(v12) = v7;
-  LOBYTE(v11) = v20;
-  v24 = [MADAutoSetConfiguration initForClientDomainName:v23 forSetClientName:"initForClientDomainName:forSetClientName:forAssetSetIdentifier:withAutoAssetEntries:withDiscoveredInFlightAtomicInstance:withNewerAtomicInstanceOncePersonalized:withLatestAtomicInstanceToVend:withLatestAtomicInstanceToVendFromPreSUStaging:withPreviouslyVendedLockedAtomicInstances:withTicksUntilPreviousForceUnlocked:withMostRecentlyReceivedCachedAssetSetID:withMostRecentlyReceivedDownloadedFromLive:withMostRecentlyReceivedLastTimeChecked:withMostRecentlyReceivedPostedDate:withLatestToVendCachedAssetSetID:withLatestToVendDownloadedFromLive:withLatestToVendLastTimeChecked:withLatestToVendPostedDate:withAavailableForUseError:withNewerVersionError:havingEverProvidedLatestToVend:inhibitingImpliedScheduling:havingReceivedLookupResponse:vendingAtomicInstanceForConfiguredEntries:" forAssetSetIdentifier:v31 withAutoAssetEntries:v30 withDiscoveredInFlightAtomicInstance:v29 withNewerAtomicInstanceOncePersonalized:v28 withLatestAtomicInstanceToVend:v22 withLatestAtomicInstanceToVendFromPreSUStaging:v21 withPreviouslyVendedLockedAtomicInstances:v27 withTicksUntilPreviousForceUnlocked:v11 withMostRecentlyReceivedCachedAssetSetID:v26 withMostRecentlyReceivedDownloadedFromLive:v19 withMostRecentlyReceivedLastTimeChecked:v18 withMostRecentlyReceivedPostedDate:v17 withLatestToVendCachedAssetSetID:v14 withLatestToVendDownloadedFromLive:v16 withLatestToVendLastTimeChecked:v15 withLatestToVendPostedDate:v13 withAavailableForUseError:v3 withNewerVersionError:v4 havingEverProvidedLatestToVend:v5 inhibitingImpliedScheduling:v6 havingReceivedLookupResponse:v12 vendingAtomicInstanceForConfiguredEntries:?];
+  BYTE2(v12) = haveReceivedLookupResponse;
+  BYTE1(v12) = inhibitImpliedScheduling;
+  LOBYTE(v12) = everProvidedLatestToVend;
+  LOBYTE(v11) = latestAtomicInstanceToVendFromPreSUStaging;
+  v24 = [MADAutoSetConfiguration initForClientDomainName:v23 forSetClientName:"initForClientDomainName:forSetClientName:forAssetSetIdentifier:withAutoAssetEntries:withDiscoveredInFlightAtomicInstance:withNewerAtomicInstanceOncePersonalized:withLatestAtomicInstanceToVend:withLatestAtomicInstanceToVendFromPreSUStaging:withPreviouslyVendedLockedAtomicInstances:withTicksUntilPreviousForceUnlocked:withMostRecentlyReceivedCachedAssetSetID:withMostRecentlyReceivedDownloadedFromLive:withMostRecentlyReceivedLastTimeChecked:withMostRecentlyReceivedPostedDate:withLatestToVendCachedAssetSetID:withLatestToVendDownloadedFromLive:withLatestToVendLastTimeChecked:withLatestToVendPostedDate:withAavailableForUseError:withNewerVersionError:havingEverProvidedLatestToVend:inhibitingImpliedScheduling:havingReceivedLookupResponse:vendingAtomicInstanceForConfiguredEntries:" forAssetSetIdentifier:clientDomainName withAutoAssetEntries:autoAssetSetClientName withDiscoveredInFlightAtomicInstance:assetSetIdentifier withNewerAtomicInstanceOncePersonalized:v28 withLatestAtomicInstanceToVend:discoveredInFlightAtomicInstance withLatestAtomicInstanceToVendFromPreSUStaging:newerAtomicInstanceOncePersonalized withPreviouslyVendedLockedAtomicInstances:latestAtomicInstanceToVend withTicksUntilPreviousForceUnlocked:v11 withMostRecentlyReceivedCachedAssetSetID:previouslyVendedLockedAtomicInstances withMostRecentlyReceivedDownloadedFromLive:ticksUntilPreviousForceUnlocked withMostRecentlyReceivedLastTimeChecked:mostRecentlyReceivedCachedAssetSetID withMostRecentlyReceivedPostedDate:mostRecentlyReceivedDownloadedFromLive withLatestToVendCachedAssetSetID:mostRecentlyReceivedLastTimeChecked withLatestToVendDownloadedFromLive:mostRecentlyReceivedPostedDate withLatestToVendLastTimeChecked:latestToVendCachedAssetSetID withLatestToVendPostedDate:latestToVendDownloadedFromLive withAavailableForUseError:latestToVendLastTimeChecked withNewerVersionError:latestToVendPostedDate havingEverProvidedLatestToVend:availableForUseError inhibitingImpliedScheduling:newerVersionError havingReceivedLookupResponse:v12 vendingAtomicInstanceForConfiguredEntries:?];
 
   return v24;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v23) = 1;
   }
@@ -560,22 +560,22 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MADAutoSetConfiguration *)self clientDomainName];
-      v7 = [(MADAutoSetConfiguration *)v5 clientDomainName];
-      if (([SUCore stringIsEqual:v6 to:v7]& 1) != 0)
+      v5 = equalCopy;
+      clientDomainName = [(MADAutoSetConfiguration *)self clientDomainName];
+      clientDomainName2 = [(MADAutoSetConfiguration *)v5 clientDomainName];
+      if (([SUCore stringIsEqual:clientDomainName to:clientDomainName2]& 1) != 0)
       {
-        v8 = [(MADAutoSetConfiguration *)self assetSetIdentifier];
-        v9 = [(MADAutoSetConfiguration *)v5 assetSetIdentifier];
-        v10 = [SUCore stringIsEqual:v8 to:v9];
+        assetSetIdentifier = [(MADAutoSetConfiguration *)self assetSetIdentifier];
+        assetSetIdentifier2 = [(MADAutoSetConfiguration *)v5 assetSetIdentifier];
+        v10 = [SUCore stringIsEqual:assetSetIdentifier to:assetSetIdentifier2];
 
         if (v10)
         {
-          v11 = [(MADAutoSetConfiguration *)self autoAssetEntries];
-          v12 = [v11 count];
+          autoAssetEntries = [(MADAutoSetConfiguration *)self autoAssetEntries];
+          v12 = [autoAssetEntries count];
 
-          v13 = [(MADAutoSetConfiguration *)v5 autoAssetEntries];
-          v14 = [v13 count];
+          autoAssetEntries2 = [(MADAutoSetConfiguration *)v5 autoAssetEntries];
+          v14 = [autoAssetEntries2 count];
 
           if (v12 == v14)
           {
@@ -590,15 +590,15 @@ LABEL_11:
               v16 = 0;
               do
               {
-                v17 = [(MADAutoSetConfiguration *)self autoAssetEntries];
-                v18 = [v17 objectAtIndex:v16];
+                autoAssetEntries3 = [(MADAutoSetConfiguration *)self autoAssetEntries];
+                v18 = [autoAssetEntries3 objectAtIndex:v16];
 
-                v19 = [(MADAutoSetConfiguration *)v5 autoAssetEntries];
-                v20 = [v19 objectAtIndex:v16];
+                autoAssetEntries4 = [(MADAutoSetConfiguration *)v5 autoAssetEntries];
+                v20 = [autoAssetEntries4 objectAtIndex:v16];
 
-                v21 = [v18 assetSelector];
-                v22 = [v20 assetSelector];
-                v23 = [v21 isEqual:v22];
+                assetSelector = [v18 assetSelector];
+                assetSelector2 = [v20 assetSelector];
+                v23 = [assetSelector isEqual:assetSelector2];
 
                 if (!v23)
                 {
@@ -634,97 +634,97 @@ LABEL_17:
 
 - (id)summary
 {
-  v3 = [(MADAutoSetConfiguration *)self clientDomainName];
-  v4 = [(MADAutoSetConfiguration *)self autoAssetSetClientName];
-  v37 = [(MADAutoSetConfiguration *)self assetSetIdentifier];
-  v36 = [(MADAutoSetConfiguration *)self autoAssetEntries];
-  v31 = [v36 count];
-  v5 = [(MADAutoSetConfiguration *)self discoveredInFlightAtomicInstance];
-  if (v5)
+  clientDomainName = [(MADAutoSetConfiguration *)self clientDomainName];
+  autoAssetSetClientName = [(MADAutoSetConfiguration *)self autoAssetSetClientName];
+  assetSetIdentifier = [(MADAutoSetConfiguration *)self assetSetIdentifier];
+  autoAssetEntries = [(MADAutoSetConfiguration *)self autoAssetEntries];
+  v31 = [autoAssetEntries count];
+  discoveredInFlightAtomicInstance = [(MADAutoSetConfiguration *)self discoveredInFlightAtomicInstance];
+  if (discoveredInFlightAtomicInstance)
   {
-    v34 = [(MADAutoSetConfiguration *)self discoveredInFlightAtomicInstance];
+    discoveredInFlightAtomicInstance2 = [(MADAutoSetConfiguration *)self discoveredInFlightAtomicInstance];
   }
 
   else
   {
-    v34 = @"N";
+    discoveredInFlightAtomicInstance2 = @"N";
   }
 
-  v6 = [(MADAutoSetConfiguration *)self mostRecentlyReceivedCachedAssetSetID];
-  if (v6)
+  mostRecentlyReceivedCachedAssetSetID = [(MADAutoSetConfiguration *)self mostRecentlyReceivedCachedAssetSetID];
+  if (mostRecentlyReceivedCachedAssetSetID)
   {
-    v7 = [(MADAutoSetConfiguration *)self mostRecentlyReceivedCachedAssetSetID];
-  }
-
-  else
-  {
-    v7 = @"N";
-  }
-
-  v8 = [(MADAutoSetConfiguration *)self newerAtomicInstanceOncePersonalized];
-  if (v8)
-  {
-    v41 = [(MADAutoSetConfiguration *)self newerAtomicInstanceOncePersonalized];
+    mostRecentlyReceivedCachedAssetSetID2 = [(MADAutoSetConfiguration *)self mostRecentlyReceivedCachedAssetSetID];
   }
 
   else
   {
-    v41 = @"N";
+    mostRecentlyReceivedCachedAssetSetID2 = @"N";
   }
 
-  v9 = [(MADAutoSetConfiguration *)self latestAtomicInstanceToVend];
-  v33 = v6;
-  if (v9)
+  newerAtomicInstanceOncePersonalized = [(MADAutoSetConfiguration *)self newerAtomicInstanceOncePersonalized];
+  if (newerAtomicInstanceOncePersonalized)
   {
-    v40 = [(MADAutoSetConfiguration *)self latestAtomicInstanceToVend];
+    newerAtomicInstanceOncePersonalized2 = [(MADAutoSetConfiguration *)self newerAtomicInstanceOncePersonalized];
   }
 
   else
   {
-    v40 = @"N";
+    newerAtomicInstanceOncePersonalized2 = @"N";
+  }
+
+  latestAtomicInstanceToVend = [(MADAutoSetConfiguration *)self latestAtomicInstanceToVend];
+  v33 = mostRecentlyReceivedCachedAssetSetID;
+  if (latestAtomicInstanceToVend)
+  {
+    latestAtomicInstanceToVend2 = [(MADAutoSetConfiguration *)self latestAtomicInstanceToVend];
+  }
+
+  else
+  {
+    latestAtomicInstanceToVend2 = @"N";
   }
 
   [(MADAutoSetConfiguration *)self latestToVendCachedAssetSetID];
   v29 = v10 = @"N";
-  v35 = v5;
+  v35 = discoveredInFlightAtomicInstance;
   if (v29)
   {
-    v39 = [(MADAutoSetConfiguration *)self latestToVendCachedAssetSetID];
+    latestToVendCachedAssetSetID = [(MADAutoSetConfiguration *)self latestToVendCachedAssetSetID];
   }
 
   else
   {
-    v39 = @"N";
+    latestToVendCachedAssetSetID = @"N";
   }
 
-  v11 = [(MADAutoSetConfiguration *)self latestAtomicInstanceToVendFromPreSUStaging];
+  latestAtomicInstanceToVendFromPreSUStaging = [(MADAutoSetConfiguration *)self latestAtomicInstanceToVendFromPreSUStaging];
   v12 = @"Y";
-  if (!v11)
+  if (!latestAtomicInstanceToVendFromPreSUStaging)
   {
     v12 = @"N";
   }
 
   v28 = v12;
-  v42 = [(MADAutoSetConfiguration *)self previouslyVendedLockedSummary];
-  v26 = [(MADAutoSetConfiguration *)self ticksUntilPreviousForceUnlocked];
-  v13 = [(MADAutoSetConfiguration *)self availableForUseError];
-  v30 = v9;
-  if (v13)
+  previouslyVendedLockedSummary = [(MADAutoSetConfiguration *)self previouslyVendedLockedSummary];
+  ticksUntilPreviousForceUnlocked = [(MADAutoSetConfiguration *)self ticksUntilPreviousForceUnlocked];
+  availableForUseError = [(MADAutoSetConfiguration *)self availableForUseError];
+  v30 = latestAtomicInstanceToVend;
+  if (availableForUseError)
   {
     v14 = [NSString alloc];
-    v25 = [(MADAutoSetConfiguration *)self availableForUseError];
-    v10 = [v14 initWithFormat:@"%ld", objc_msgSend(v25, "code")];
+    availableForUseError2 = [(MADAutoSetConfiguration *)self availableForUseError];
+    v10 = [v14 initWithFormat:@"%ld", objc_msgSend(availableForUseError2, "code")];
   }
 
-  v32 = v8;
-  v15 = [(MADAutoSetConfiguration *)self newerVersionError];
-  v38 = v4;
-  v27 = v7;
-  if (v15)
+  v32 = newerAtomicInstanceOncePersonalized;
+  newerVersionError = [(MADAutoSetConfiguration *)self newerVersionError];
+  v38 = autoAssetSetClientName;
+  v27 = mostRecentlyReceivedCachedAssetSetID2;
+  if (newerVersionError)
   {
     v16 = [NSString alloc];
-    v24 = [(MADAutoSetConfiguration *)self newerVersionError];
-    v17 = [v16 initWithFormat:@"%ld", objc_msgSend(v24, "code")];
+    newerVersionError2 = [(MADAutoSetConfiguration *)self newerVersionError];
+    v17 = [v16 initWithFormat:@"%ld", objc_msgSend(newerVersionError2, "code")];
   }
 
   else
@@ -772,12 +772,12 @@ LABEL_17:
     v21 = @"N";
   }
 
-  v22 = [NSString stringWithFormat:@"[(client)Domain:%@, Name:%@|(set)Identifier:%@, Entries:%ld|inFlightAI:%@(setID:%@)|oncePersonalized:%@|latestToVend:%@(setID:%@)(fromPSUS:%@)|previousAI:%@(ticks:%ld)|(error)available:%@, newer:%@|everVended:%@|inhibitScheduling:%@|lookupRsp:%@|vendingForConfig:%@]", v3, v38, v37, v31, v34, v27, v41, v40, v39, v28, v42, v26, v10, v17, v18, v19, v20, v21];
-  if (v15)
+  v22 = [NSString stringWithFormat:@"[(client)Domain:%@, Name:%@|(set)Identifier:%@, Entries:%ld|inFlightAI:%@(setID:%@)|oncePersonalized:%@|latestToVend:%@(setID:%@)(fromPSUS:%@)|previousAI:%@(ticks:%ld)|(error)available:%@, newer:%@|everVended:%@|inhibitScheduling:%@|lookupRsp:%@|vendingForConfig:%@]", clientDomainName, v38, assetSetIdentifier, v31, discoveredInFlightAtomicInstance2, v27, newerAtomicInstanceOncePersonalized2, latestAtomicInstanceToVend2, latestToVendCachedAssetSetID, v28, previouslyVendedLockedSummary, ticksUntilPreviousForceUnlocked, v10, v17, v18, v19, v20, v21];
+  if (newerVersionError)
   {
   }
 
-  if (v13)
+  if (availableForUseError)
   {
   }
 
@@ -806,74 +806,74 @@ LABEL_17:
 
 - (id)newSummaryWithoutEntryID
 {
-  v3 = [(MADAutoSetConfiguration *)self autoAssetSetClientName];
-  v34 = [(MADAutoSetConfiguration *)self autoAssetEntries];
-  v28 = [v34 count];
-  v4 = [(MADAutoSetConfiguration *)self discoveredInFlightAtomicInstance];
-  if (v4)
+  autoAssetSetClientName = [(MADAutoSetConfiguration *)self autoAssetSetClientName];
+  autoAssetEntries = [(MADAutoSetConfiguration *)self autoAssetEntries];
+  v28 = [autoAssetEntries count];
+  discoveredInFlightAtomicInstance = [(MADAutoSetConfiguration *)self discoveredInFlightAtomicInstance];
+  if (discoveredInFlightAtomicInstance)
   {
-    v32 = [(MADAutoSetConfiguration *)self discoveredInFlightAtomicInstance];
+    discoveredInFlightAtomicInstance2 = [(MADAutoSetConfiguration *)self discoveredInFlightAtomicInstance];
   }
 
   else
   {
-    v32 = @"N";
+    discoveredInFlightAtomicInstance2 = @"N";
   }
 
-  v5 = [(MADAutoSetConfiguration *)self mostRecentlyReceivedCachedAssetSetID];
-  if (v5)
+  mostRecentlyReceivedCachedAssetSetID = [(MADAutoSetConfiguration *)self mostRecentlyReceivedCachedAssetSetID];
+  if (mostRecentlyReceivedCachedAssetSetID)
   {
-    v6 = [(MADAutoSetConfiguration *)self mostRecentlyReceivedCachedAssetSetID];
-  }
-
-  else
-  {
-    v6 = @"N";
-  }
-
-  v7 = [(MADAutoSetConfiguration *)self newerAtomicInstanceOncePersonalized];
-  if (v7)
-  {
-    v29 = [(MADAutoSetConfiguration *)self newerAtomicInstanceOncePersonalized];
+    mostRecentlyReceivedCachedAssetSetID2 = [(MADAutoSetConfiguration *)self mostRecentlyReceivedCachedAssetSetID];
   }
 
   else
   {
-    v29 = @"N";
+    mostRecentlyReceivedCachedAssetSetID2 = @"N";
   }
 
-  v8 = [(MADAutoSetConfiguration *)self latestAtomicInstanceToVend];
-  if (v8)
+  newerAtomicInstanceOncePersonalized = [(MADAutoSetConfiguration *)self newerAtomicInstanceOncePersonalized];
+  if (newerAtomicInstanceOncePersonalized)
   {
-    v9 = [(MADAutoSetConfiguration *)self latestAtomicInstanceToVend];
+    newerAtomicInstanceOncePersonalized2 = [(MADAutoSetConfiguration *)self newerAtomicInstanceOncePersonalized];
   }
 
   else
   {
-    v9 = @"N";
+    newerAtomicInstanceOncePersonalized2 = @"N";
+  }
+
+  latestAtomicInstanceToVend = [(MADAutoSetConfiguration *)self latestAtomicInstanceToVend];
+  if (latestAtomicInstanceToVend)
+  {
+    latestAtomicInstanceToVend2 = [(MADAutoSetConfiguration *)self latestAtomicInstanceToVend];
+  }
+
+  else
+  {
+    latestAtomicInstanceToVend2 = @"N";
   }
 
   [(MADAutoSetConfiguration *)self latestToVendCachedAssetSetID];
-  v25 = v27 = v8;
+  v25 = v27 = latestAtomicInstanceToVend;
   if (v25)
   {
-    v36 = [(MADAutoSetConfiguration *)self latestToVendCachedAssetSetID];
+    latestToVendCachedAssetSetID = [(MADAutoSetConfiguration *)self latestToVendCachedAssetSetID];
   }
 
   else
   {
-    v36 = @"N";
+    latestToVendCachedAssetSetID = @"N";
   }
 
-  v33 = v4;
-  v37 = [(MADAutoSetConfiguration *)self previouslyVendedLockedSummary];
-  v24 = [(MADAutoSetConfiguration *)self ticksUntilPreviousForceUnlocked];
-  v10 = [(MADAutoSetConfiguration *)self availableForUseError];
-  if (v10)
+  v33 = discoveredInFlightAtomicInstance;
+  previouslyVendedLockedSummary = [(MADAutoSetConfiguration *)self previouslyVendedLockedSummary];
+  ticksUntilPreviousForceUnlocked = [(MADAutoSetConfiguration *)self ticksUntilPreviousForceUnlocked];
+  availableForUseError = [(MADAutoSetConfiguration *)self availableForUseError];
+  if (availableForUseError)
   {
     v11 = [NSString alloc];
-    v23 = [(MADAutoSetConfiguration *)self availableForUseError];
-    v35 = [v11 initWithFormat:@"%ld", objc_msgSend(v23, "code")];
+    availableForUseError2 = [(MADAutoSetConfiguration *)self availableForUseError];
+    v35 = [v11 initWithFormat:@"%ld", objc_msgSend(availableForUseError2, "code")];
   }
 
   else
@@ -881,16 +881,16 @@ LABEL_17:
     v35 = @"N";
   }
 
-  v31 = v5;
-  v12 = [(MADAutoSetConfiguration *)self newerVersionError];
-  v30 = v3;
-  v26 = v6;
-  v13 = v9;
-  if (v12)
+  v31 = mostRecentlyReceivedCachedAssetSetID;
+  newerVersionError = [(MADAutoSetConfiguration *)self newerVersionError];
+  v30 = autoAssetSetClientName;
+  v26 = mostRecentlyReceivedCachedAssetSetID2;
+  v13 = latestAtomicInstanceToVend2;
+  if (newerVersionError)
   {
     v14 = [NSString alloc];
-    v22 = [(MADAutoSetConfiguration *)self newerVersionError];
-    v15 = [v14 initWithFormat:@"%ld", objc_msgSend(v22, "code")];
+    newerVersionError2 = [(MADAutoSetConfiguration *)self newerVersionError];
+    v15 = [v14 initWithFormat:@"%ld", objc_msgSend(newerVersionError2, "code")];
   }
 
   else
@@ -938,12 +938,12 @@ LABEL_17:
     v19 = @"N";
   }
 
-  v20 = [NSString stringWithFormat:@"[clientName:%@|setEntries:%ld|inFlightAI:%@(setID:%@)|oncePersonalized:%@|latestToVend:%@(setID:%@)|previousAI:%@(ticks:%ld)|(error)available:%@, newer:%@|everVended:%@|inhibitScheduling:%@|lookupRsp:%@|vendingForConfig:%@]", v30, v28, v32, v26, v29, v13, v36, v37, v24, v35, v15, v16, v17, v18, v19];
-  if (v12)
+  v20 = [NSString stringWithFormat:@"[clientName:%@|setEntries:%ld|inFlightAI:%@(setID:%@)|oncePersonalized:%@|latestToVend:%@(setID:%@)|previousAI:%@(ticks:%ld)|(error)available:%@, newer:%@|everVended:%@|inhibitScheduling:%@|lookupRsp:%@|vendingForConfig:%@]", v30, v28, discoveredInFlightAtomicInstance2, v26, newerAtomicInstanceOncePersonalized2, v13, latestToVendCachedAssetSetID, previouslyVendedLockedSummary, ticksUntilPreviousForceUnlocked, v35, v15, v16, v17, v18, v19];
+  if (newerVersionError)
   {
   }
 
-  if (v10)
+  if (availableForUseError)
   {
   }
 
@@ -955,7 +955,7 @@ LABEL_17:
   {
   }
 
-  if (v7)
+  if (newerAtomicInstanceOncePersonalized)
   {
   }
 
@@ -973,8 +973,8 @@ LABEL_17:
 - (id)previouslyVendedLockedSummary
 {
   v3 = [[NSMutableString alloc] initWithString:@"N"];
-  v4 = [(MADAutoSetConfiguration *)self previouslyVendedLockedAtomicInstances];
-  v5 = [v4 count];
+  previouslyVendedLockedAtomicInstances = [(MADAutoSetConfiguration *)self previouslyVendedLockedAtomicInstances];
+  v5 = [previouslyVendedLockedAtomicInstances count];
 
   if (v5 >= 1)
   {
@@ -982,8 +982,8 @@ LABEL_17:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [(MADAutoSetConfiguration *)self previouslyVendedLockedAtomicInstances];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    previouslyVendedLockedAtomicInstances2 = [(MADAutoSetConfiguration *)self previouslyVendedLockedAtomicInstances];
+    v7 = [previouslyVendedLockedAtomicInstances2 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -995,7 +995,7 @@ LABEL_17:
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(previouslyVendedLockedAtomicInstances2);
           }
 
           if (v10)
@@ -1013,7 +1013,7 @@ LABEL_17:
           v10 = 0;
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [previouslyVendedLockedAtomicInstances2 countByEnumeratingWithState:&v14 objects:v18 count:16];
         v10 = 0;
       }
 
@@ -1029,9 +1029,9 @@ LABEL_17:
 - (id)persistedEntryID
 {
   v3 = [NSString alloc];
-  v4 = [(MADAutoSetConfiguration *)self clientDomainName];
-  v5 = [(MADAutoSetConfiguration *)self assetSetIdentifier];
-  v6 = [v3 initWithFormat:@"%@_%@", v4, v5];
+  clientDomainName = [(MADAutoSetConfiguration *)self clientDomainName];
+  assetSetIdentifier = [(MADAutoSetConfiguration *)self assetSetIdentifier];
+  v6 = [v3 initWithFormat:@"%@_%@", clientDomainName, assetSetIdentifier];
 
   return v6;
 }

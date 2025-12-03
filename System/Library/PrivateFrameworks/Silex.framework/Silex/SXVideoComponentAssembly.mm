@@ -1,38 +1,38 @@
 @interface SXVideoComponentAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation SXVideoComponentAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 callback];
+  registryCopy = registry;
+  callback = [registryCopy callback];
   v5 = TFCallbackScopeAny();
-  [v4 whenResolvingProtocol:&unk_1F53E41E0 scope:v5 callbackBlock:&__block_literal_global_45];
+  [callback whenResolvingProtocol:&unk_1F53E41E0 scope:v5 callbackBlock:&__block_literal_global_45];
 
-  v6 = [v3 callback];
+  callback2 = [registryCopy callback];
   v7 = TFCallbackScopeAny();
-  [v6 whenResolvingProtocol:&unk_1F5415A30 scope:v7 callbackBlock:&__block_literal_global_55_7];
+  [callback2 whenResolvingProtocol:&unk_1F5415A30 scope:v7 callbackBlock:&__block_literal_global_55_7];
 
-  v8 = [v3 publicContainer];
-  v9 = [v8 registerClass:objc_opt_class() factory:&__block_literal_global_59_5];
+  publicContainer = [registryCopy publicContainer];
+  v9 = [publicContainer registerClass:objc_opt_class() factory:&__block_literal_global_59_5];
 
-  v10 = [v3 publicContainer];
-  v11 = [v10 registerProtocol:&unk_1F53C1008 factory:&__block_literal_global_140];
+  publicContainer2 = [registryCopy publicContainer];
+  v11 = [publicContainer2 registerProtocol:&unk_1F53C1008 factory:&__block_literal_global_140];
 
-  v12 = [v3 publicContainer];
-  v13 = [v12 registerClass:objc_opt_class() factory:&__block_literal_global_144];
+  publicContainer3 = [registryCopy publicContainer];
+  v13 = [publicContainer3 registerClass:objc_opt_class() factory:&__block_literal_global_144];
 
-  v14 = [v3 publicContainer];
-  v15 = [v14 registerClass:objc_opt_class() factory:&__block_literal_global_147];
+  publicContainer4 = [registryCopy publicContainer];
+  v15 = [publicContainer4 registerClass:objc_opt_class() factory:&__block_literal_global_147];
 
-  v16 = [v3 publicContainer];
-  v17 = [v16 registerProtocol:&unk_1F53F9528 factory:&__block_literal_global_149];
+  publicContainer5 = [registryCopy publicContainer];
+  v17 = [publicContainer5 registerProtocol:&unk_1F53F9528 factory:&__block_literal_global_149];
 
-  v19 = [v3 publicContainer];
+  publicContainer6 = [registryCopy publicContainer];
 
-  v18 = [v19 registerClass:objc_opt_class() factory:&__block_literal_global_152];
+  v18 = [publicContainer6 registerClass:objc_opt_class() factory:&__block_literal_global_152];
 }
 
 void __43__SXVideoComponentAssembly_loadInRegistry___block_invoke(uint64_t a1, void *a2, void *a3)

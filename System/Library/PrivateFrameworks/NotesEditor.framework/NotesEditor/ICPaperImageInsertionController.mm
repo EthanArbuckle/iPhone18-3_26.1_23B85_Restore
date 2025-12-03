@@ -1,22 +1,22 @@
 @interface ICPaperImageInsertionController
 - (BOOL)shouldAddImagesToPaper;
 - (ICNoteEditorViewController)noteEditor;
-- (ICPaperImageInsertionController)initWithNoteEditorViewController:(id)a3;
-- (void)addImagesToPaperWithItemProviders:(id)a3;
+- (ICPaperImageInsertionController)initWithNoteEditorViewController:(id)controller;
+- (void)addImagesToPaperWithItemProviders:(id)providers;
 @end
 
 @implementation ICPaperImageInsertionController
 
-- (ICPaperImageInsertionController)initWithNoteEditorViewController:(id)a3
+- (ICPaperImageInsertionController)initWithNoteEditorViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = ICPaperImageInsertionController;
   v5 = [(ICPaperImageInsertionController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ICPaperImageInsertionController *)v5 setNoteEditor:v4];
+    [(ICPaperImageInsertionController *)v5 setNoteEditor:controllerCopy];
   }
 
   return v6;
@@ -29,17 +29,17 @@
     return 0;
   }
 
-  v3 = [(ICPaperImageInsertionController *)self noteEditor];
-  v4 = [v3 note];
-  v5 = [v4 textStorage];
-  v6 = [v5 ic_range];
+  noteEditor = [(ICPaperImageInsertionController *)self noteEditor];
+  note = [noteEditor note];
+  textStorage = [note textStorage];
+  ic_range = [textStorage ic_range];
   v8 = v7;
 
-  v9 = [(ICPaperImageInsertionController *)self noteEditor];
-  v10 = [v9 textViewVisibleRange];
+  noteEditor2 = [(ICPaperImageInsertionController *)self noteEditor];
+  textViewVisibleRange = [noteEditor2 textViewVisibleRange];
   v12 = v11;
 
-  if (v10 == v6 + v8 && v12 == 0)
+  if (textViewVisibleRange == ic_range + v8 && v12 == 0)
   {
     v13.length = 2;
   }
@@ -49,13 +49,13 @@
     v13.length = v12 + 1;
   }
 
-  v13.location = v10 - ((v10 == v6 + v8) & (v12 == 0));
-  v40.location = v6;
+  v13.location = textViewVisibleRange - ((textViewVisibleRange == ic_range + v8) & (v12 == 0));
+  v40.location = ic_range;
   v40.length = v8;
   v14 = NSIntersectionRange(v13, v40);
-  v15 = [(ICPaperImageInsertionController *)self noteEditor];
-  v16 = [v15 textView];
-  [v16 bounds];
+  noteEditor3 = [(ICPaperImageInsertionController *)self noteEditor];
+  textView = [noteEditor3 textView];
+  [textView bounds];
   v18 = v17;
   v20 = v19;
   v22 = v21;
@@ -69,15 +69,15 @@
   v33 = &v32;
   v34 = 0x2020000000;
   v35 = v24;
-  v25 = [(ICPaperImageInsertionController *)self noteEditor];
-  v26 = [v25 note];
-  v27 = [v26 textStorage];
+  noteEditor4 = [(ICPaperImageInsertionController *)self noteEditor];
+  note2 = [noteEditor4 note];
+  textStorage2 = [note2 textStorage];
   v28 = *MEMORY[0x277D74060];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __57__ICPaperImageInsertionController_shouldAddImagesToPaper__block_invoke;
   v31[3] = &unk_2781AF1C8;
-  v31[6] = v6;
+  v31[6] = ic_range;
   v31[7] = v8;
   v31[4] = &v36;
   v31[5] = &v32;
@@ -85,7 +85,7 @@
   v31[9] = v20;
   v31[10] = v22;
   v31[11] = v24;
-  [v27 enumerateAttribute:v28 inRange:v14.location options:v14.length usingBlock:{0, v31}];
+  [textStorage2 enumerateAttribute:v28 inRange:v14.location options:v14.length usingBlock:{0, v31}];
 
   v29 = v37[3] / v33[3] > 0.7;
   _Block_object_dispose(&v32, 8);
@@ -122,23 +122,23 @@ void __57__ICPaperImageInsertionController_shouldAddImagesToPaper__block_invoke(
   }
 }
 
-- (void)addImagesToPaperWithItemProviders:(id)a3
+- (void)addImagesToPaperWithItemProviders:(id)providers
 {
   v61 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  providersCopy = providers;
+  if ([providersCopy count])
   {
-    v5 = [(ICPaperImageInsertionController *)self noteEditor];
-    v6 = [v5 note];
-    v7 = [v6 textStorage];
-    v8 = [v7 ic_range];
+    noteEditor = [(ICPaperImageInsertionController *)self noteEditor];
+    note = [noteEditor note];
+    textStorage = [note textStorage];
+    ic_range = [textStorage ic_range];
     v10 = v9;
 
-    v11 = [(ICPaperImageInsertionController *)self noteEditor];
-    v12 = [v11 textViewVisibleRange];
+    noteEditor2 = [(ICPaperImageInsertionController *)self noteEditor];
+    textViewVisibleRange = [noteEditor2 textViewVisibleRange];
     v14 = v13;
 
-    if (v12 == v8 + v10 && v14 == 0)
+    if (textViewVisibleRange == ic_range + v10 && v14 == 0)
     {
       v15.length = 2;
     }
@@ -148,13 +148,13 @@ void __57__ICPaperImageInsertionController_shouldAddImagesToPaper__block_invoke(
       v15.length = v14 + 1;
     }
 
-    v15.location = v12 - ((v12 == v8 + v10) & (v14 == 0));
-    v62.location = v8;
+    v15.location = textViewVisibleRange - ((textViewVisibleRange == ic_range + v10) & (v14 == 0));
+    v62.location = ic_range;
     v62.length = v10;
     v16 = NSIntersectionRange(v15, v62);
-    v17 = [(ICPaperImageInsertionController *)self noteEditor];
-    v18 = [v17 textView];
-    [v18 bounds];
+    noteEditor3 = [(ICPaperImageInsertionController *)self noteEditor];
+    textView = [noteEditor3 textView];
+    [textView bounds];
     v20 = v19;
     v22 = v21;
     v24 = v23;
@@ -166,9 +166,9 @@ void __57__ICPaperImageInsertionController_shouldAddImagesToPaper__block_invoke(
     v58[2] = __Block_byref_object_copy__18;
     v58[3] = __Block_byref_object_dispose__18;
     v59 = 0;
-    v27 = [(ICPaperImageInsertionController *)self noteEditor];
-    v28 = [v27 note];
-    v29 = [v28 textStorage];
+    noteEditor4 = [(ICPaperImageInsertionController *)self noteEditor];
+    note2 = [noteEditor4 note];
+    textStorage2 = [note2 textStorage];
     v30 = *MEMORY[0x277D74060];
     v56[0] = MEMORY[0x277D85DD0];
     v56[1] = 3221225472;
@@ -178,28 +178,28 @@ void __57__ICPaperImageInsertionController_shouldAddImagesToPaper__block_invoke(
     v56[5] = &v57;
     *&v56[6] = v20 + v24 * 0.5;
     *&v56[7] = v22 + v26 * 0.5;
-    [v29 enumerateAttribute:v30 inRange:v16.location options:v16.length usingBlock:{0, v56}];
+    [textStorage2 enumerateAttribute:v30 inRange:v16.location options:v16.length usingBlock:{0, v56}];
 
     if (*(v58[0] + 40))
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v31 = [(ICPaperImageInsertionController *)self noteEditor];
-        v32 = [v31 note];
-        v33 = [v32 managedObjectContext];
+        noteEditor5 = [(ICPaperImageInsertionController *)self noteEditor];
+        note3 = [noteEditor5 note];
+        managedObjectContext = [note3 managedObjectContext];
 
-        if (v33)
+        if (managedObjectContext)
         {
           v34 = [_TtC11NotesEditor28ICInlineDrawingUpgradeHelper alloc];
-          v35 = [(ICPaperImageInsertionController *)self noteEditor];
-          v36 = [v35 note];
-          v37 = [(ICPaperImageInsertionController *)self noteEditor];
-          v38 = [v37 textView];
-          v39 = [(ICInlineDrawingUpgradeHelper *)v34 initWithNote:v36 managedObjectContext:v33 textView:v38];
+          noteEditor6 = [(ICPaperImageInsertionController *)self noteEditor];
+          note4 = [noteEditor6 note];
+          noteEditor7 = [(ICPaperImageInsertionController *)self noteEditor];
+          textView2 = [noteEditor7 textView];
+          v39 = [(ICInlineDrawingUpgradeHelper *)v34 initWithNote:note4 managedObjectContext:managedObjectContext textView:textView2];
 
-          v40 = [*(v58[0] + 40) attachment];
-          v41 = [(ICInlineDrawingUpgradeHelper *)v39 upgradeWithAttachment:v40 itemProviders:v4 itemsAnchor:4];
+          attachment = [*(v58[0] + 40) attachment];
+          v41 = [(ICInlineDrawingUpgradeHelper *)v39 upgradeWithAttachment:attachment itemProviders:providersCopy itemsAnchor:4];
 
           if (v41)
           {
@@ -209,7 +209,7 @@ void __57__ICPaperImageInsertionController_shouldAddImagesToPaper__block_invoke(
             v51 = 3221225472;
             v52 = __69__ICPaperImageInsertionController_addImagesToPaperWithItemProviders___block_invoke_17;
             v53 = &unk_2781ABEB8;
-            v54 = self;
+            selfCopy = self;
             v55 = v39;
             [v42 setCompletionBlock:&v50];
             [MEMORY[0x277CD9FF0] commit];
@@ -220,19 +220,19 @@ void __57__ICPaperImageInsertionController_shouldAddImagesToPaper__block_invoke(
             v47 = os_log_create("com.apple.notes", "SystemPaper");
             if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
             {
-              v48 = [*(v58[0] + 40) attachment];
-              v49 = [v48 loggingDescription];
-              [(ICPaperImageInsertionController *)v49 addImagesToPaperWithItemProviders:buf, v47, v48];
+              attachment2 = [*(v58[0] + 40) attachment];
+              loggingDescription = [attachment2 loggingDescription];
+              [(ICPaperImageInsertionController *)loggingDescription addImagesToPaperWithItemProviders:buf, v47, attachment2];
             }
           }
         }
 
         else
         {
-          v33 = os_log_create("com.apple.notes", "SystemPaper");
-          if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
+          managedObjectContext = os_log_create("com.apple.notes", "SystemPaper");
+          if (os_log_type_enabled(managedObjectContext, OS_LOG_TYPE_ERROR))
           {
-            [ICPaperImageInsertionController addImagesToPaperWithItemProviders:v33];
+            [ICPaperImageInsertionController addImagesToPaperWithItemProviders:managedObjectContext];
           }
         }
       }
@@ -243,20 +243,20 @@ void __57__ICPaperImageInsertionController_shouldAddImagesToPaper__block_invoke(
         if (objc_opt_isKindOfClass())
         {
           v43 = [ICSystemPaperDocumentHelper alloc];
-          v44 = [*(v58[0] + 40) attachment];
-          v45 = [(ICPaperImageInsertionController *)self noteEditor];
-          v46 = [v45 textView];
-          v33 = [(ICSystemPaperDocumentHelper *)v43 initWithPaperAttachment:v44 textView:v46];
+          attachment3 = [*(v58[0] + 40) attachment];
+          noteEditor8 = [(ICPaperImageInsertionController *)self noteEditor];
+          textView3 = [noteEditor8 textView];
+          managedObjectContext = [(ICSystemPaperDocumentHelper *)v43 initWithPaperAttachment:attachment3 textView:textView3];
 
-          [v33 addWithItemProviders:v4 itemsAnchor:4];
+          [managedObjectContext addWithItemProviders:providersCopy itemsAnchor:4];
         }
 
         else
         {
-          v33 = os_log_create("com.apple.notes", "SystemPaper");
-          if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
+          managedObjectContext = os_log_create("com.apple.notes", "SystemPaper");
+          if (os_log_type_enabled(managedObjectContext, OS_LOG_TYPE_ERROR))
           {
-            [(ICPaperImageInsertionController *)v58 addImagesToPaperWithItemProviders:v33];
+            [(ICPaperImageInsertionController *)v58 addImagesToPaperWithItemProviders:managedObjectContext];
           }
         }
       }
@@ -264,11 +264,11 @@ void __57__ICPaperImageInsertionController_shouldAddImagesToPaper__block_invoke(
 
     else
     {
-      v33 = os_log_create("com.apple.notes", "SystemPaper");
-      if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
+      managedObjectContext = os_log_create("com.apple.notes", "SystemPaper");
+      if (os_log_type_enabled(managedObjectContext, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_2151A1000, v33, OS_LOG_TYPE_DEFAULT, "Unable to find paper attachment to add image to", buf, 2u);
+        _os_log_impl(&dword_2151A1000, managedObjectContext, OS_LOG_TYPE_DEFAULT, "Unable to find paper attachment to add image to", buf, 2u);
       }
     }
 

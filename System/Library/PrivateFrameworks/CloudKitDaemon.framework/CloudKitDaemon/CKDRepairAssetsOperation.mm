@@ -1,12 +1,12 @@
 @interface CKDRepairAssetsOperation
-+ (id)nameForState:(unint64_t)a3;
++ (id)nameForState:(unint64_t)state;
 - (BOOL)makeStateTransition;
-- (CKDRepairAssetsOperation)initWithOperationInfo:(id)a3 container:(id)a4;
+- (CKDRepairAssetsOperation)initWithOperationInfo:(id)info container:(id)container;
 - (id)activityCreate;
-- (id)assetOrPackageForMetadata:(id)a3 inRecord:(id)a4;
+- (id)assetOrPackageForMetadata:(id)metadata inRecord:(id)record;
 - (id)repairContainer;
 - (void)_fetchAssetMetadata;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
 - (void)_updateMissingAssetServerStatus;
 - (void)_uploadAssetsModify;
 - (void)main;
@@ -14,17 +14,17 @@
 
 @implementation CKDRepairAssetsOperation
 
-- (CKDRepairAssetsOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDRepairAssetsOperation)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a3;
+  infoCopy = info;
   v121.receiver = self;
   v121.super_class = CKDRepairAssetsOperation;
-  v9 = [(CKDDatabaseOperation *)&v121 initWithOperationInfo:v6 container:a4];
+  v9 = [(CKDDatabaseOperation *)&v121 initWithOperationInfo:infoCopy container:container];
   if (v9)
   {
     v10 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v7, v8);
     v13 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v11, v12);
-    v16 = objc_msgSend_assets(v6, v14, v15);
+    v16 = objc_msgSend_assets(infoCopy, v14, v15);
     v19 = objc_msgSend_count(v16, v17, v18);
 
     if (v19)
@@ -32,29 +32,29 @@
       v22 = 0;
       do
       {
-        v23 = objc_msgSend_assetMetadata(v6, v20, v21);
+        v23 = objc_msgSend_assetMetadata(infoCopy, v20, v21);
         v25 = objc_msgSend_objectAtIndexedSubscript_(v23, v24, v22);
-        v28 = objc_msgSend_assets(v6, v26, v27);
+        v28 = objc_msgSend_assets(infoCopy, v26, v27);
         v30 = objc_msgSend_objectAtIndexedSubscript_(v28, v29, v22);
         v33 = objc_msgSend_UUID(v30, v31, v32);
         objc_msgSend_setObject_forKeyedSubscript_(v13, v34, v25, v33);
 
-        v37 = objc_msgSend_assets(v6, v35, v36);
+        v37 = objc_msgSend_assets(infoCopy, v35, v36);
         v39 = objc_msgSend_objectAtIndexedSubscript_(v37, v38, v22);
-        v42 = objc_msgSend_assets(v6, v40, v41);
+        v42 = objc_msgSend_assets(infoCopy, v40, v41);
         v44 = objc_msgSend_objectAtIndexedSubscript_(v42, v43, v22);
         v47 = objc_msgSend_UUID(v44, v45, v46);
         objc_msgSend_setObject_forKeyedSubscript_(v10, v48, v39, v47);
 
         ++v22;
-        v51 = objc_msgSend_assets(v6, v49, v50);
+        v51 = objc_msgSend_assets(infoCopy, v49, v50);
         v54 = objc_msgSend_count(v51, v52, v53);
       }
 
       while (v22 < v54);
     }
 
-    v55 = objc_msgSend_packages(v6, v20, v21);
+    v55 = objc_msgSend_packages(infoCopy, v20, v21);
     v58 = objc_msgSend_count(v55, v56, v57);
 
     if (v58)
@@ -62,22 +62,22 @@
       v61 = 0;
       do
       {
-        v62 = objc_msgSend_packageMetadata(v6, v59, v60);
+        v62 = objc_msgSend_packageMetadata(infoCopy, v59, v60);
         v64 = objc_msgSend_objectAtIndexedSubscript_(v62, v63, v61);
-        v67 = objc_msgSend_packages(v6, v65, v66);
+        v67 = objc_msgSend_packages(infoCopy, v65, v66);
         v69 = objc_msgSend_objectAtIndexedSubscript_(v67, v68, v61);
         v72 = objc_msgSend_UUID(v69, v70, v71);
         objc_msgSend_setObject_forKeyedSubscript_(v13, v73, v64, v72);
 
-        v76 = objc_msgSend_packages(v6, v74, v75);
+        v76 = objc_msgSend_packages(infoCopy, v74, v75);
         v78 = objc_msgSend_objectAtIndexedSubscript_(v76, v77, v61);
-        v81 = objc_msgSend_packages(v6, v79, v80);
+        v81 = objc_msgSend_packages(infoCopy, v79, v80);
         v83 = objc_msgSend_objectAtIndexedSubscript_(v81, v82, v61);
         v86 = objc_msgSend_UUID(v83, v84, v85);
         objc_msgSend_setObject_forKeyedSubscript_(v10, v87, v78, v86);
 
         ++v61;
-        v90 = objc_msgSend_packages(v6, v88, v89);
+        v90 = objc_msgSend_packages(infoCopy, v88, v89);
         v93 = objc_msgSend_count(v90, v91, v92);
       }
 
@@ -92,15 +92,15 @@
     v9->_UUIDToAssetOrPackage = v10;
     v97 = v10;
 
-    v100 = objc_msgSend_unavailableAssets(v6, v98, v99);
-    v103 = objc_msgSend_unavailablePackages(v6, v101, v102);
+    v100 = objc_msgSend_unavailableAssets(infoCopy, v98, v99);
+    v103 = objc_msgSend_unavailablePackages(infoCopy, v101, v102);
     v105 = objc_msgSend_arrayByAddingObjectsFromArray_(v100, v104, v103);
 
     unavailableAssetsAndPackages = v9->_unavailableAssetsAndPackages;
     v9->_unavailableAssetsAndPackages = v105;
     v107 = v105;
 
-    v110 = objc_msgSend_uploadRequestConfiguration(v6, v108, v109);
+    v110 = objc_msgSend_uploadRequestConfiguration(infoCopy, v108, v109);
     uploadRequestConfiguration = v9->_uploadRequestConfiguration;
     v9->_uploadRequestConfiguration = v110;
 
@@ -157,20 +157,20 @@
   return 1;
 }
 
-+ (id)nameForState:(unint64_t)a3
++ (id)nameForState:(unint64_t)state
 {
-  if (a3 - 2 >= 3)
+  if (state - 2 >= 3)
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CKDRepairAssetsOperation;
     v5 = objc_msgSendSuper2(&v7, sel_nameForState_);
   }
 
   else
   {
-    v5 = off_278548DC0[a3 - 2];
+    v5 = off_278548DC0[state - 2];
   }
 
   return v5;
@@ -267,7 +267,7 @@
     v17 = *v149;
     v18 = MEMORY[0x277CBC838];
     v137 = *v149;
-    v138 = self;
+    selfCopy = self;
     do
     {
       v19 = 0;
@@ -312,7 +312,7 @@
 
               v52 = objc_msgSend_initWithFileSignature_referenceSignature_assetKey_(v40, v51, v43, v47, v50);
               v35 = v46;
-              self = v138;
+              self = selfCopy;
 
               v15 = v140;
               v55 = objc_msgSend_UUID(v39, v53, v54);
@@ -393,7 +393,7 @@
                 objc_msgSend_addObject_(v139, v118, v116);
 
                 v17 = v137;
-                self = v138;
+                self = selfCopy;
                 v16 = MEMORY[0x277CBC880];
                 v18 = MEMORY[0x277CBC838];
                 v15 = v140;
@@ -771,7 +771,7 @@ LABEL_59:
       *buf = 138544130;
       v207 = v177;
       v208 = 2048;
-      v209 = self;
+      selfCopy = self;
       v210 = 2114;
       v211 = v180;
       v212 = 2112;
@@ -840,17 +840,17 @@ LABEL_4:
   return v65;
 }
 
-- (id)assetOrPackageForMetadata:(id)a3 inRecord:(id)a4
+- (id)assetOrPackageForMetadata:(id)metadata inRecord:(id)record
 {
-  v5 = a3;
-  v6 = a4;
-  v9 = objc_msgSend_fieldName(v5, v7, v8);
-  v11 = objc_msgSend_objectForKeyedSubscript_(v6, v10, v9);
+  metadataCopy = metadata;
+  recordCopy = record;
+  v9 = objc_msgSend_fieldName(metadataCopy, v7, v8);
+  v11 = objc_msgSend_objectForKeyedSubscript_(recordCopy, v10, v9);
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = objc_msgSend_listIndex(v5, v12, v13);
+    v14 = objc_msgSend_listIndex(metadataCopy, v12, v13);
     if (v14 < 0)
     {
       objc_opt_class();
@@ -893,8 +893,8 @@ LABEL_11:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v19 = objc_msgSend_fieldName(v5, v21, v22);
-        v20 = objc_msgSend_objectForKeyedSubscript_(v6, v23, v19);
+        v19 = objc_msgSend_fieldName(metadataCopy, v21, v22);
+        v20 = objc_msgSend_objectForKeyedSubscript_(recordCopy, v23, v19);
         goto LABEL_10;
       }
     }
@@ -922,13 +922,13 @@ LABEL_15:
   objc_msgSend_makeStateTransition_(self, v14, v13 != 1);
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   objc_msgSend_setAssetOrPackageRepairedBlock_(self, v5, 0);
   v6.receiver = self;
   v6.super_class = CKDRepairAssetsOperation;
-  [(CKDOperation *)&v6 _finishOnCallbackQueueWithError:v4];
+  [(CKDOperation *)&v6 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 @end

@@ -1,42 +1,42 @@
 @interface WFVariableString
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)representsSingleContentVariable;
 - (NSString)description;
 - (NSString)stringByRemovingVariables;
 - (NSString)stringByReplacingVariablesWithNames;
 - (WFPropertyListObject)serializedRepresentation;
-- (WFVariableString)initWithAttachmentCharacterString:(id)a3 variableGetter:(id)a4;
-- (WFVariableString)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
-- (WFVariableString)initWithString:(id)a3;
-- (WFVariableString)initWithStringsAndVariables:(id)a3;
-- (WFVariableString)initWithVariable:(id)a3;
+- (WFVariableString)initWithAttachmentCharacterString:(id)string variableGetter:(id)getter;
+- (WFVariableString)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
+- (WFVariableString)initWithString:(id)string;
+- (WFVariableString)initWithStringsAndVariables:(id)variables;
+- (WFVariableString)initWithVariable:(id)variable;
 - (id)computeUserVisibleString;
-- (id)rewrittenWithStrings:(id)a3;
-- (id)userVisibleStringsForUseCase:(unint64_t)a3;
-- (id)variablesOfType:(id)a3;
+- (id)rewrittenWithStrings:(id)strings;
+- (id)userVisibleStringsForUseCase:(unint64_t)case;
+- (id)variablesOfType:(id)type;
 - (unint64_t)hash;
-- (void)addVariableDelegate:(id)a3;
-- (void)processIntoContentItemsWithContext:(id)a3 completionHandler:(id)a4;
-- (void)processIntoStringsAndAttachmentsWithContext:(id)a3 options:(id)a4 completionHandler:(id)a5;
-- (void)processWithContext:(id)a3 completionHandler:(id)a4;
-- (void)removeVariableDelegate:(id)a3;
+- (void)addVariableDelegate:(id)delegate;
+- (void)processIntoContentItemsWithContext:(id)context completionHandler:(id)handler;
+- (void)processIntoStringsAndAttachmentsWithContext:(id)context options:(id)options completionHandler:(id)handler;
+- (void)processWithContext:(id)context completionHandler:(id)handler;
+- (void)removeVariableDelegate:(id)delegate;
 @end
 
 @implementation WFVariableString
 
 - (id)computeUserVisibleString
 {
-  v2 = self;
+  selfCopy = self;
   v3 = WFVariableString.computeUserVisibleString()();
 
   return v3;
 }
 
-- (id)userVisibleStringsForUseCase:(unint64_t)a3
+- (id)userVisibleStringsForUseCase:(unint64_t)case
 {
-  v4 = self;
-  WFVariableString.userVisibleStrings(for:)(a3);
+  selfCopy = self;
+  WFVariableString.userVisibleStrings(for:)(case);
 
   type metadata accessor for WFUserVisibleString();
   sub_1CA3434EC();
@@ -45,12 +45,12 @@
   return v5;
 }
 
-- (id)rewrittenWithStrings:(id)a3
+- (id)rewrittenWithStrings:(id)strings
 {
   type metadata accessor for WFUserVisibleString();
   sub_1CA3434EC();
   v4 = sub_1CA94C1C8();
-  v5 = self;
+  selfCopy = self;
   isa = WFVariableString.rewritten(withStrings:)(v4).super.isa;
 
   return isa;
@@ -69,8 +69,8 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(WFVariableString *)self stringsAndVariables];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v23 count:16];
+  stringsAndVariables = [(WFVariableString *)self stringsAndVariables];
+  v7 = [stringsAndVariables countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -81,7 +81,7 @@
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(stringsAndVariables);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
@@ -96,12 +96,12 @@
           v12 = v11;
           v13 = objc_opt_class();
           v14 = NSStringFromClass(v13);
-          v15 = [v12 name];
-          [v5 appendFormat:@"<%@: %p, name: %@>", v14, v12, v15];
+          name = [v12 name];
+          [v5 appendFormat:@"<%@: %p, name: %@>", v14, v12, name];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v23 count:16];
+      v8 = [stringsAndVariables countByEnumeratingWithState:&v18 objects:v23 count:16];
     }
 
     while (v8);
@@ -114,8 +114,8 @@
 
 - (NSString)stringByReplacingVariablesWithNames
 {
-  v2 = [(WFVariableString *)self stringsAndVariables];
-  v3 = [v2 if_map:&__block_literal_global_216];
+  stringsAndVariables = [(WFVariableString *)self stringsAndVariables];
+  v3 = [stringsAndVariables if_map:&__block_literal_global_216];
   v4 = [v3 componentsJoinedByString:&stru_1F4A1C408];
 
   return v4;
@@ -142,8 +142,8 @@ id __55__WFVariableString_stringByReplacingVariablesWithNames__block_invoke(uint
 
 - (NSString)stringByRemovingVariables
 {
-  v2 = [(WFVariableString *)self stringsAndVariables];
-  v3 = [v2 if_objectsPassingTest:&__block_literal_global_2979];
+  stringsAndVariables = [(WFVariableString *)self stringsAndVariables];
+  v3 = [stringsAndVariables if_objectsPassingTest:&__block_literal_global_2979];
   v4 = [v3 componentsJoinedByString:&stru_1F4A1C408];
 
   return v4;
@@ -158,35 +158,35 @@ uint64_t __45__WFVariableString_stringByRemovingVariables__block_invoke(uint64_t
   return isKindOfClass & 1;
 }
 
-- (void)processIntoStringsAndAttachmentsWithContext:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)processIntoStringsAndAttachmentsWithContext:(id)context options:(id)options completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  optionsCopy = options;
+  handlerCopy = handler;
   v11 = objc_opt_new();
   v12 = objc_opt_new();
-  v13 = [(WFVariableString *)self stringsAndVariables];
+  stringsAndVariables = [(WFVariableString *)self stringsAndVariables];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __90__WFVariableString_processIntoStringsAndAttachmentsWithContext_options_completionHandler___block_invoke;
   v23[3] = &unk_1E8373B40;
-  v24 = v8;
+  v24 = contextCopy;
   v25 = v11;
   v26 = v12;
-  v27 = v9;
+  v27 = optionsCopy;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __90__WFVariableString_processIntoStringsAndAttachmentsWithContext_options_completionHandler___block_invoke_5;
   v19[3] = &unk_1E837ECB8;
   v21 = v25;
-  v22 = v10;
+  v22 = handlerCopy;
   v20 = v26;
   v14 = v25;
   v15 = v26;
-  v16 = v10;
-  v17 = v9;
-  v18 = v8;
-  [v13 if_enumerateAsynchronouslyInSequence:v23 completionHandler:v19];
+  v16 = handlerCopy;
+  v17 = optionsCopy;
+  v18 = contextCopy;
+  [stringsAndVariables if_enumerateAsynchronouslyInSequence:v23 completionHandler:v19];
 }
 
 void __90__WFVariableString_processIntoStringsAndAttachmentsWithContext_options_completionHandler___block_invoke(id *a1, void *a2, uint64_t a3, void *a4)
@@ -457,24 +457,24 @@ void __90__WFVariableString_processIntoStringsAndAttachmentsWithContext_options_
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)processIntoContentItemsWithContext:(id)a3 completionHandler:(id)a4
+- (void)processIntoContentItemsWithContext:(id)context completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFVariableString *)self stringsAndVariables];
+  contextCopy = context;
+  handlerCopy = handler;
+  stringsAndVariables = [(WFVariableString *)self stringsAndVariables];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __73__WFVariableString_processIntoContentItemsWithContext_completionHandler___block_invoke;
   v13[3] = &unk_1E8373AC8;
-  v14 = v6;
+  v14 = contextCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __73__WFVariableString_processIntoContentItemsWithContext_completionHandler___block_invoke_2;
   v11[3] = &unk_1E837F588;
-  v12 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 if_flatMapAsynchronously:v13 completionHandler:v11];
+  v12 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = contextCopy;
+  [stringsAndVariables if_flatMapAsynchronously:v13 completionHandler:v11];
 }
 
 void __73__WFVariableString_processIntoContentItemsWithContext_completionHandler___block_invoke_2(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -494,10 +494,10 @@ void __73__WFVariableString_processIntoContentItemsWithContext_completionHandler
   }
 }
 
-- (void)processWithContext:(id)a3 completionHandler:(id)a4
+- (void)processWithContext:(id)context completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  handlerCopy = handler;
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x2020000000;
@@ -508,25 +508,25 @@ void __73__WFVariableString_processIntoContentItemsWithContext_completionHandler
   v20[3] = __Block_byref_object_copy__2997;
   v20[4] = __Block_byref_object_dispose__2998;
   v21 = 0;
-  v8 = [(WFVariableString *)self stringsAndVariables];
+  stringsAndVariables = [(WFVariableString *)self stringsAndVariables];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __57__WFVariableString_processWithContext_completionHandler___block_invoke;
   v16[3] = &unk_1E8373A78;
   v18 = v22;
   v19 = v20;
-  v17 = v6;
+  v17 = contextCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __57__WFVariableString_processWithContext_completionHandler___block_invoke_3;
   v11[3] = &unk_1E8373AA0;
-  v9 = v7;
+  v9 = handlerCopy;
   v13 = v9;
   v14 = v22;
   v10 = v17;
   v12 = v10;
   v15 = v20;
-  [v8 if_mapAsynchronously:v16 completionHandler:v11];
+  [stringsAndVariables if_mapAsynchronously:v16 completionHandler:v11];
 
   _Block_object_dispose(v20, 8);
   _Block_object_dispose(v22, 8);
@@ -654,8 +654,8 @@ void __57__WFVariableString_processWithContext_completionHandler___block_invoke_
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [(WFVariableString *)self stringsAndVariables];
-  v6 = [v5 countByEnumeratingWithState:&v22 objects:v30 count:16];
+  stringsAndVariables = [(WFVariableString *)self stringsAndVariables];
+  v6 = [stringsAndVariables countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v6)
   {
     v7 = v6;
@@ -666,7 +666,7 @@ void __57__WFVariableString_processWithContext_completionHandler___block_invoke_
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(stringsAndVariables);
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
@@ -681,11 +681,11 @@ void __57__WFVariableString_processWithContext_completionHandler___block_invoke_
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v11 = [v10 serializedRepresentation];
+            serializedRepresentation = [v10 serializedRepresentation];
             v33.location = [v4 length];
             v33.length = 1;
             v12 = NSStringFromRange(v33);
-            [v3 setObject:v11 forKey:v12];
+            [v3 setObject:serializedRepresentation forKey:v12];
 
             v21 = -4;
             v13 = [MEMORY[0x1E696AEC0] stringWithCharacters:&v21 length:1];
@@ -694,7 +694,7 @@ void __57__WFVariableString_processWithContext_completionHandler___block_invoke_
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      v7 = [stringsAndVariables countByEnumeratingWithState:&v22 objects:v30 count:16];
     }
 
     while (v7);
@@ -729,13 +729,13 @@ void __57__WFVariableString_processWithContext_completionHandler___block_invoke_
   return v18;
 }
 
-- (WFVariableString)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
+- (WFVariableString)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [v10 objectForKey:@"string"];
-  v12 = [v10 objectForKey:@"attachmentsByRange"];
+  providerCopy = provider;
+  parameterCopy = parameter;
+  representationCopy = representation;
+  v11 = [representationCopy objectForKey:@"string"];
+  v12 = [representationCopy objectForKey:@"attachmentsByRange"];
 
   if (v11)
   {
@@ -744,19 +744,19 @@ void __57__WFVariableString_processWithContext_completionHandler___block_invoke_
     v15[2] = __80__WFVariableString_initWithSerializedRepresentation_variableProvider_parameter___block_invoke;
     v15[3] = &unk_1E8373A50;
     v16 = v12;
-    v17 = v8;
-    v18 = v9;
+    v17 = providerCopy;
+    v18 = parameterCopy;
     self = [(WFVariableString *)self initWithAttachmentCharacterString:v11 variableGetter:v15];
 
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 WFVariable *__80__WFVariableString_initWithSerializedRepresentation_variableProvider_parameter___block_invoke(void *a1, NSRange range)
@@ -780,13 +780,13 @@ WFVariable *__80__WFVariableString_initWithSerializedRepresentation_variableProv
   return v6;
 }
 
-- (WFVariableString)initWithAttachmentCharacterString:(id)a3 variableGetter:(id)a4
+- (WFVariableString)initWithAttachmentCharacterString:(id)string variableGetter:(id)getter
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  getterCopy = getter;
   v22 = -4;
   v8 = [MEMORY[0x1E696AEC0] stringWithCharacters:&v22 length:1];
-  v9 = [v6 componentsSeparatedByString:v8];
+  v9 = [stringCopy componentsSeparatedByString:v8];
   v10 = [v9 count];
   v11 = objc_opt_new();
   v21[0] = 0;
@@ -801,7 +801,7 @@ WFVariable *__80__WFVariableString_initWithSerializedRepresentation_variableProv
   v17 = v12;
   v19 = v21;
   v20 = v10;
-  v13 = v7;
+  v13 = getterCopy;
   v18 = v13;
   [v9 enumerateObjectsUsingBlock:v16];
   v14 = [(WFVariableString *)self initWithStringsAndVariables:v12];
@@ -836,16 +836,16 @@ void __69__WFVariableString_initWithAttachmentCharacterString_variableGetter___b
 
 - (unint64_t)hash
 {
-  v2 = [(WFVariableString *)self stringsAndVariables];
-  v3 = [v2 hash];
+  stringsAndVariables = [(WFVariableString *)self stringsAndVariables];
+  v3 = [stringsAndVariables hash];
 
   return v3 ^ 0xD1DEFC;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -855,9 +855,9 @@ void __69__WFVariableString_initWithAttachmentCharacterString_variableGetter___b
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(WFVariableString *)self stringsAndVariables];
-      v6 = [(WFVariableString *)v4 stringsAndVariables];
-      v7 = [v5 isEqual:v6];
+      stringsAndVariables = [(WFVariableString *)self stringsAndVariables];
+      stringsAndVariables2 = [(WFVariableString *)equalCopy stringsAndVariables];
+      v7 = [stringsAndVariables isEqual:stringsAndVariables2];
     }
 
     else
@@ -869,14 +869,14 @@ void __69__WFVariableString_initWithAttachmentCharacterString_variableGetter___b
   return v7;
 }
 
-- (WFVariableString)initWithStringsAndVariables:(id)a3
+- (WFVariableString)initWithStringsAndVariables:(id)variables
 {
-  v5 = a3;
+  variablesCopy = variables;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFVariableString.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"[stringsAndVariables isKindOfClass:[NSArray class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFVariableString.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"[stringsAndVariables isKindOfClass:[NSArray class]]"}];
   }
 
   v12.receiver = self;
@@ -884,7 +884,7 @@ void __69__WFVariableString_initWithAttachmentCharacterString_variableGetter___b
   v6 = [(WFVariableString *)&v12 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [variablesCopy copy];
     stringsAndVariables = v6->_stringsAndVariables;
     v6->_stringsAndVariables = v7;
 
@@ -894,18 +894,18 @@ void __69__WFVariableString_initWithAttachmentCharacterString_variableGetter___b
   return v6;
 }
 
-- (WFVariableString)initWithString:(id)a3
+- (WFVariableString)initWithString:(id)string
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  stringCopy = string;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"WFVariableString.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"[string isKindOfClass:[NSString class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFVariableString.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"[string isKindOfClass:[NSString class]]"}];
   }
 
-  v11[0] = v5;
+  v11[0] = stringCopy;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
   v7 = [(WFVariableString *)self initWithStringsAndVariables:v6];
 
@@ -913,18 +913,18 @@ void __69__WFVariableString_initWithAttachmentCharacterString_variableGetter___b
   return v7;
 }
 
-- (WFVariableString)initWithVariable:(id)a3
+- (WFVariableString)initWithVariable:(id)variable
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  variableCopy = variable;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"WFVariableString.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"[variable isKindOfClass:[WFVariable class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFVariableString.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"[variable isKindOfClass:[WFVariable class]]"}];
   }
 
-  v11[0] = v5;
+  v11[0] = variableCopy;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
   v7 = [(WFVariableString *)self initWithStringsAndVariables:v6];
 
@@ -932,16 +932,16 @@ void __69__WFVariableString_initWithAttachmentCharacterString_variableGetter___b
   return v7;
 }
 
-- (void)removeVariableDelegate:(id)a3
+- (void)removeVariableDelegate:(id)delegate
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  delegateCopy = delegate;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(WFVariableString *)self variables];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  variables = [(WFVariableString *)self variables];
+  v6 = [variables countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -953,14 +953,14 @@ void __69__WFVariableString_initWithAttachmentCharacterString_variableGetter___b
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(variables);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) removeDelegate:v4];
+        [*(*(&v11 + 1) + 8 * v9++) removeDelegate:delegateCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [variables countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -969,16 +969,16 @@ void __69__WFVariableString_initWithAttachmentCharacterString_variableGetter___b
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addVariableDelegate:(id)a3
+- (void)addVariableDelegate:(id)delegate
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  delegateCopy = delegate;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(WFVariableString *)self variables];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  variables = [(WFVariableString *)self variables];
+  v6 = [variables countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -990,14 +990,14 @@ void __69__WFVariableString_initWithAttachmentCharacterString_variableGetter___b
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(variables);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) addDelegate:v4];
+        [*(*(&v11 + 1) + 8 * v9++) addDelegate:delegateCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [variables countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -1008,16 +1008,16 @@ void __69__WFVariableString_initWithAttachmentCharacterString_variableGetter___b
 
 - (BOOL)isEmpty
 {
-  v3 = [(WFVariableString *)self variables];
-  if ([v3 count])
+  variables = [(WFVariableString *)self variables];
+  if ([variables count])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(WFVariableString *)self stringByRemovingVariables];
-    v4 = [v5 length] == 0;
+    stringByRemovingVariables = [(WFVariableString *)self stringByRemovingVariables];
+    v4 = [stringByRemovingVariables length] == 0;
   }
 
   return v4;
@@ -1025,16 +1025,16 @@ void __69__WFVariableString_initWithAttachmentCharacterString_variableGetter___b
 
 - (BOOL)representsSingleContentVariable
 {
-  v3 = [(WFVariableString *)self variables];
-  v4 = [v3 firstObject];
+  variables = [(WFVariableString *)self variables];
+  firstObject = [variables firstObject];
 
-  if (v4)
+  if (firstObject)
   {
-    v5 = [(WFVariableString *)self stringsAndVariables];
-    if ([v5 count] == 1)
+    stringsAndVariables = [(WFVariableString *)self stringsAndVariables];
+    if ([stringsAndVariables count] == 1)
     {
-      v6 = [v4 type];
-      v7 = [v6 isEqualToString:@"Ask"] ^ 1;
+      type = [firstObject type];
+      v7 = [type isEqualToString:@"Ask"] ^ 1;
     }
 
     else
@@ -1051,17 +1051,17 @@ void __69__WFVariableString_initWithAttachmentCharacterString_variableGetter___b
   return v7;
 }
 
-- (id)variablesOfType:(id)a3
+- (id)variablesOfType:(id)type
 {
-  v4 = a3;
-  v5 = [(WFVariableString *)self stringsAndVariables];
+  typeCopy = type;
+  stringsAndVariables = [(WFVariableString *)self stringsAndVariables];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __49__WFVariableString_Convenience__variablesOfType___block_invoke;
   v9[3] = &unk_1E8373BA8;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 if_objectsPassingTest:v9];
+  v10 = typeCopy;
+  v6 = typeCopy;
+  v7 = [stringsAndVariables if_objectsPassingTest:v9];
 
   return v7;
 }

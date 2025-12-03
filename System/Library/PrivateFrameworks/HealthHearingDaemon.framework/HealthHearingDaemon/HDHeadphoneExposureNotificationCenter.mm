@@ -1,34 +1,34 @@
 @interface HDHeadphoneExposureNotificationCenter
-- (HDHeadphoneExposureNotificationCenter)initWithProfile:(id)a3 syncManager:(id)a4;
-- (id)postSevenDayDoseNotification:(id)a3 nowDate:(id)a4 analyticsInfo:(id)a5 error:(id *)a6;
-- (void)_reportHeadphoneNotificationWithNowDate:(id)a3 eventDuration:(double)a4 exposureLevel:(double)a5 exposureDuration:(double)a6 hasPrunableData:(BOOL)a7 isDeviceLocked:(BOOL)a8 analyticsInfo:(id)a9;
+- (HDHeadphoneExposureNotificationCenter)initWithProfile:(id)profile syncManager:(id)manager;
+- (id)postSevenDayDoseNotification:(id)notification nowDate:(id)date analyticsInfo:(id)info error:(id *)error;
+- (void)_reportHeadphoneNotificationWithNowDate:(id)date eventDuration:(double)duration exposureLevel:(double)level exposureDuration:(double)exposureDuration hasPrunableData:(BOOL)data isDeviceLocked:(BOOL)locked analyticsInfo:(id)info;
 @end
 
 @implementation HDHeadphoneExposureNotificationCenter
 
-- (HDHeadphoneExposureNotificationCenter)initWithProfile:(id)a3 syncManager:(id)a4
+- (HDHeadphoneExposureNotificationCenter)initWithProfile:(id)profile syncManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  profileCopy = profile;
+  managerCopy = manager;
   v19.receiver = self;
   v19.super_class = HDHeadphoneExposureNotificationCenter;
   v8 = [(HDHeadphoneExposureNotificationCenter *)&v19 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_profile, v6);
-    v10 = [MEMORY[0x277CCA8D8] mainBundle];
-    v11 = [v10 bundleIdentifier];
+    objc_storeWeak(&v8->_profile, profileCopy);
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    v12 = [objc_alloc(MEMORY[0x277D0EEE0]) initWithBundleIdentifier:v11];
+    v12 = [objc_alloc(MEMORY[0x277D0EEE0]) initWithBundleIdentifier:bundleIdentifier];
     notificationCenter = v9->_notificationCenter;
     v9->_notificationCenter = v12;
 
-    objc_storeStrong(&v9->_notificationSyncManager, a4);
+    objc_storeStrong(&v9->_notificationSyncManager, manager);
     WeakRetained = objc_loadWeakRetained(&v9->_profile);
-    v15 = [WeakRetained cloudSyncManager];
+    cloudSyncManager = [WeakRetained cloudSyncManager];
     cloudSyncManager = v9->_cloudSyncManager;
-    v9->_cloudSyncManager = v15;
+    v9->_cloudSyncManager = cloudSyncManager;
 
     v17 = v9;
   }
@@ -36,32 +36,32 @@
   return v9;
 }
 
-- (id)postSevenDayDoseNotification:(id)a3 nowDate:(id)a4 analyticsInfo:(id)a5 error:(id *)a6
+- (id)postSevenDayDoseNotification:(id)notification nowDate:(id)date analyticsInfo:(id)info error:(id *)error
 {
   v75[3] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  notificationCopy = notification;
+  dateCopy = date;
+  infoCopy = info;
   if (([MEMORY[0x277D11268] isHeadphoneExposureNotificationsEnabled] & 1) == 0)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a6 code:111 description:@"Cannot Send 7-Day HAEN: Feature Disabled."];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:111 description:@"Cannot Send 7-Day HAEN: Feature Disabled."];
     v56 = 0;
     goto LABEL_23;
   }
 
-  v13 = [v10 statistics];
+  statistics = [notificationCopy statistics];
   v70 = 0;
-  v14 = [v13 hk_hearingSevenDayDosePercentageWithError:&v70];
+  v14 = [statistics hk_hearingSevenDayDosePercentageWithError:&v70];
   v15 = v70;
   if (v14)
   {
     v69 = 0;
-    v16 = [v13 hk_hearingSevenDayDoseDateIntervalEndingBeforeDate:v11 error:&v69];
+    v16 = [statistics hk_hearingSevenDayDoseDateIntervalEndingBeforeDate:dateCopy error:&v69];
     v17 = v69;
     v18 = v17;
     if (!v16)
     {
-      [MEMORY[0x277CCA9B8] hk_assignError:a6 code:100 description:@"invalid statistics interval" underlyingError:v17];
+      [MEMORY[0x277CCA9B8] hk_assignError:error code:100 description:@"invalid statistics interval" underlyingError:v17];
       v56 = 0;
 LABEL_21:
 
@@ -70,15 +70,15 @@ LABEL_21:
 
     v63 = v17;
     v64 = v15;
-    [v13 averageQuantity];
+    [statistics averageQuantity];
     v19 = v65 = v16;
-    v20 = [MEMORY[0x277CCDAB0] decibelAWeightedSoundPressureLevelUnit];
-    [v19 doubleValueForUnit:v20];
+    decibelAWeightedSoundPressureLevelUnit = [MEMORY[0x277CCDAB0] decibelAWeightedSoundPressureLevelUnit];
+    [v19 doubleValueForUnit:decibelAWeightedSoundPressureLevelUnit];
     v22 = v21;
 
-    v23 = [v13 duration];
-    v24 = [MEMORY[0x277CCDAB0] secondUnit];
-    [v23 doubleValueForUnit:v24];
+    duration = [statistics duration];
+    secondUnit = [MEMORY[0x277CCDAB0] secondUnit];
+    [duration doubleValueForUnit:secondUnit];
     v26 = v25;
 
     v27 = *MEMORY[0x277D0EEC8];
@@ -89,7 +89,7 @@ LABEL_21:
     v29 = [MEMORY[0x277CCABB0] numberWithDouble:v26];
     v75[1] = v29;
     v74[2] = *MEMORY[0x277D0EED8];
-    v30 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v10, "includesPrunableData")}];
+    v30 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(notificationCopy, "includesPrunableData")}];
     v75[2] = v30;
     v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v75 forKeys:v74 count:3];
 
@@ -101,11 +101,11 @@ LABEL_21:
     {
       v33 = v32;
       WeakRetained = objc_loadWeakRetained(&self->_profile);
-      v35 = [WeakRetained dataManager];
+      dataManager = [WeakRetained dataManager];
       v60 = v33;
       v73 = v33;
       v36 = [MEMORY[0x277CBEA60] arrayWithObjects:&v73 count:1];
-      v37 = [v35 insertDataObjects:v36 error:a6];
+      v37 = [dataManager insertDataObjects:v36 error:error];
 
       if (!v37)
       {
@@ -130,13 +130,13 @@ LABEL_21:
       }
 
       v42 = objc_loadWeakRetained(&self->_profile);
-      v43 = [v42 nanoSyncManager];
+      nanoSyncManager = [v42 nanoSyncManager];
       v68[0] = MEMORY[0x277D85DD0];
       v68[1] = 3221225472;
       v68[2] = __98__HDHeadphoneExposureNotificationCenter_postSevenDayDoseNotification_nowDate_analyticsInfo_error___block_invoke;
       v68[3] = &unk_2796C67D8;
       v68[4] = self;
-      [v43 syncHealthDataWithOptions:0 reason:@"HAEN HKCategorySample Inserted" completion:v68];
+      [nanoSyncManager syncHealthDataWithOptions:0 reason:@"HAEN HKCategorySample Inserted" completion:v68];
 
       _HKInitializeLogging();
       v44 = *MEMORY[0x277CCC2C8];
@@ -160,16 +160,16 @@ LABEL_21:
       v16 = v65;
       [v65 duration];
       v49 = v48;
-      v50 = [v10 includesPrunableData];
+      includesPrunableData = [notificationCopy includesPrunableData];
       v51 = objc_loadWeakRetained(&self->_profile);
-      v52 = [v51 database];
-      -[HDHeadphoneExposureNotificationCenter _reportHeadphoneNotificationWithNowDate:eventDuration:exposureLevel:exposureDuration:hasPrunableData:isDeviceLocked:analyticsInfo:](self, "_reportHeadphoneNotificationWithNowDate:eventDuration:exposureLevel:exposureDuration:hasPrunableData:isDeviceLocked:analyticsInfo:", v11, v50, [v52 isProtectedDataAvailable] ^ 1, v12, v49, v22, v26);
+      database = [v51 database];
+      -[HDHeadphoneExposureNotificationCenter _reportHeadphoneNotificationWithNowDate:eventDuration:exposureLevel:exposureDuration:hasPrunableData:isDeviceLocked:analyticsInfo:](self, "_reportHeadphoneNotificationWithNowDate:eventDuration:exposureLevel:exposureDuration:hasPrunableData:isDeviceLocked:analyticsInfo:", dateCopy, includesPrunableData, [database isProtectedDataAvailable] ^ 1, infoCopy, v49, v22, v26);
 
       notificationSyncManager = self->_notificationSyncManager;
       v66 = 0;
-      LOBYTE(v50) = [(HDHeadphoneExposureNotificationSyncManager *)notificationSyncManager notifyHAENotificationAddedWithSample:v60 error:&v66];
+      LOBYTE(includesPrunableData) = [(HDHeadphoneExposureNotificationSyncManager *)notificationSyncManager notifyHAENotificationAddedWithSample:v60 error:&v66];
       v54 = v66;
-      if ((v50 & 1) == 0)
+      if ((includesPrunableData & 1) == 0)
       {
         _HKInitializeLogging();
         v55 = *MEMORY[0x277CCC2C8];
@@ -196,7 +196,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  [MEMORY[0x277CCA9B8] hk_assignError:a6 code:100 description:@"invalid statistics dose" underlyingError:v15];
+  [MEMORY[0x277CCA9B8] hk_assignError:error code:100 description:@"invalid statistics dose" underlyingError:v15];
   v56 = 0;
 LABEL_22:
 
@@ -262,21 +262,21 @@ void __98__HDHeadphoneExposureNotificationCenter_postSevenDayDoseNotification_no
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reportHeadphoneNotificationWithNowDate:(id)a3 eventDuration:(double)a4 exposureLevel:(double)a5 exposureDuration:(double)a6 hasPrunableData:(BOOL)a7 isDeviceLocked:(BOOL)a8 analyticsInfo:(id)a9
+- (void)_reportHeadphoneNotificationWithNowDate:(id)date eventDuration:(double)duration exposureLevel:(double)level exposureDuration:(double)exposureDuration hasPrunableData:(BOOL)data isDeviceLocked:(BOOL)locked analyticsInfo:(id)info
 {
-  v11 = a3;
-  v12 = a9;
-  if (v12)
+  dateCopy = date;
+  infoCopy = info;
+  if (infoCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v14 = [WeakRetained profileType];
+    profileType = [WeakRetained profileType];
 
-    if (v14 == 1)
+    if (profileType == 1)
     {
       if (HKImproveHealthAndActivityAnalyticsAllowed())
       {
-        v17 = v11;
-        v18 = v12;
+        v17 = dateCopy;
+        v18 = infoCopy;
         AnalyticsSendEventLazy();
       }
     }

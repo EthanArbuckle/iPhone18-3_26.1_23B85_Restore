@@ -10,10 +10,10 @@
 - (double)vibrationRecorderProgressViewHeight;
 - (double)vibrationRecorderRippleRingLineWidth;
 - (id)_bundle;
-- (id)_cachedImageWithName:(id)a3 forPropertyWithSelector:(SEL)a4;
-- (id)_cachedStyleObjectForPropertyWithSelector:(SEL)a3;
-- (void)_didReceiveMemoryWarning:(id)a3;
-- (void)_setCachedStyleObject:(id)a3 forPropertyWithSelector:(SEL)a4;
+- (id)_cachedImageWithName:(id)name forPropertyWithSelector:(SEL)selector;
+- (id)_cachedStyleObjectForPropertyWithSelector:(SEL)selector;
+- (void)_didReceiveMemoryWarning:(id)warning;
+- (void)_setCachedStyleObject:(id)object forPropertyWithSelector:(SEL)selector;
 - (void)dealloc;
 @end
 
@@ -26,11 +26,11 @@
   v2 = [(TKStyleProvider *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D759A0] mainScreen];
-    [(TKStyleProvider *)v2 setScreen:v3];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [(TKStyleProvider *)v2 setScreen:mainScreen];
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v2 selector:sel__didReceiveMemoryWarning_ name:*MEMORY[0x277D76670] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__didReceiveMemoryWarning_ name:*MEMORY[0x277D76670] object:0];
   }
 
   return v2;
@@ -38,8 +38,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76670] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76670] object:0];
 
   v4.receiver = self;
   v4.super_class = TKStyleProvider;
@@ -61,11 +61,11 @@
   return bundle;
 }
 
-- (id)_cachedStyleObjectForPropertyWithSelector:(SEL)a3
+- (id)_cachedStyleObjectForPropertyWithSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v4 = NSStringFromSelector(a3);
+    v4 = NSStringFromSelector(selector);
     if (v4)
     {
       v5 = [(NSMutableDictionary *)self->_cachedStyleProperties objectForKey:v4];
@@ -85,13 +85,13 @@
   return v5;
 }
 
-- (void)_setCachedStyleObject:(id)a3 forPropertyWithSelector:(SEL)a4
+- (void)_setCachedStyleObject:(id)object forPropertyWithSelector:(SEL)selector
 {
-  v6 = a3;
-  if (v6 && a4)
+  objectCopy = object;
+  if (objectCopy && selector)
   {
-    v11 = v6;
-    v7 = NSStringFromSelector(a4);
+    v11 = objectCopy;
+    v7 = NSStringFromSelector(selector);
     if (v7)
     {
       cachedStyleProperties = self->_cachedStyleProperties;
@@ -107,23 +107,23 @@
       [(NSMutableDictionary *)cachedStyleProperties setObject:v11 forKey:v7];
     }
 
-    v6 = v11;
+    objectCopy = v11;
   }
 }
 
-- (id)_cachedImageWithName:(id)a3 forPropertyWithSelector:(SEL)a4
+- (id)_cachedImageWithName:(id)name forPropertyWithSelector:(SEL)selector
 {
-  v6 = a3;
-  v7 = [(TKStyleProvider *)self _cachedStyleObjectForPropertyWithSelector:a4];
+  nameCopy = name;
+  v7 = [(TKStyleProvider *)self _cachedStyleObjectForPropertyWithSelector:selector];
   if (!v7)
   {
-    if ([v6 length])
+    if ([nameCopy length])
     {
       v8 = MEMORY[0x277D755B8];
-      v9 = [(TKStyleProvider *)self _bundle];
-      v7 = [v8 imageNamed:v6 inBundle:v9];
+      _bundle = [(TKStyleProvider *)self _bundle];
+      v7 = [v8 imageNamed:nameCopy inBundle:_bundle];
 
-      [(TKStyleProvider *)self _setCachedStyleObject:v7 forPropertyWithSelector:a4];
+      [(TKStyleProvider *)self _setCachedStyleObject:v7 forPropertyWithSelector:selector];
     }
 
     else
@@ -135,7 +135,7 @@
   return v7;
 }
 
-- (void)_didReceiveMemoryWarning:(id)a3
+- (void)_didReceiveMemoryWarning:(id)warning
 {
   cachedStyleProperties = self->_cachedStyleProperties;
   self->_cachedStyleProperties = 0;
@@ -201,8 +201,8 @@ id __62__TKStyleProvider_vibrationRecorderInstructionsLabelTextColor__block_invo
 
 - (double)vibrationRecorderControlsToolbarVerticalOffset
 {
-  v2 = [(TKStyleProvider *)self screen];
-  [v2 scale];
+  screen = [(TKStyleProvider *)self screen];
+  [screen scale];
   v4 = -1.0 / v3;
 
   return v4;
@@ -210,8 +210,8 @@ id __62__TKStyleProvider_vibrationRecorderInstructionsLabelTextColor__block_invo
 
 - (double)vibrationRecorderProgressToolbarVerticalOffset
 {
-  v2 = [(TKStyleProvider *)self screen];
-  [v2 scale];
+  screen = [(TKStyleProvider *)self screen];
+  [screen scale];
   v4 = -1.0 / v3;
 
   return v4;
@@ -219,8 +219,8 @@ id __62__TKStyleProvider_vibrationRecorderInstructionsLabelTextColor__block_invo
 
 - (double)vibrationRecorderProgressToolbarAdditionalHeight
 {
-  v2 = [(TKStyleProvider *)self screen];
-  [v2 scale];
+  screen = [(TKStyleProvider *)self screen];
+  [screen scale];
   v4 = 1.0 / v3;
 
   return v4;
@@ -228,8 +228,8 @@ id __62__TKStyleProvider_vibrationRecorderInstructionsLabelTextColor__block_invo
 
 - (double)vibrationRecorderProgressViewHeight
 {
-  v2 = [(TKStyleProvider *)self vibrationRecorderProgressViewResizableDotImage];
-  [v2 size];
+  vibrationRecorderProgressViewResizableDotImage = [(TKStyleProvider *)self vibrationRecorderProgressViewResizableDotImage];
+  [vibrationRecorderProgressViewResizableDotImage size];
   v4 = v3 + 2.0;
 
   return v4;
@@ -245,8 +245,8 @@ uint64_t __58__TKStyleProvider_vibrationRecorderProgressViewTrackColor__block_in
 
 - (double)vibrationRecorderProgressViewDotHorizontalInset
 {
-  v2 = [(TKStyleProvider *)self screen];
-  [v2 scale];
+  screen = [(TKStyleProvider *)self screen];
+  [screen scale];
   v4 = 1.0 / v3;
 
   return v4;
@@ -310,8 +310,8 @@ uint64_t __61__TKStyleProvider_vibrationRecorderRippleViewBackgroundColor__block
 
 - (double)vibrationRecorderRippleRingLineWidth
 {
-  v2 = [(TKStyleProvider *)self screen];
-  [v2 scale];
+  screen = [(TKStyleProvider *)self screen];
+  [screen scale];
   v4 = 1.0 / v3;
 
   return v4;

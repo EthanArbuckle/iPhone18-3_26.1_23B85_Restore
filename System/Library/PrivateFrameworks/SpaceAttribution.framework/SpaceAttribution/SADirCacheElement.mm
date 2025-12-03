@@ -1,21 +1,21 @@
 @interface SADirCacheElement
-- (SADirCacheElement)initWithBundleIDs:(id)a3 purgeable:(BOOL)a4 cacheFolder:(BOOL)a5;
+- (SADirCacheElement)initWithBundleIDs:(id)ds purgeable:(BOOL)purgeable cacheFolder:(BOOL)folder;
 @end
 
 @implementation SADirCacheElement
 
-- (SADirCacheElement)initWithBundleIDs:(id)a3 purgeable:(BOOL)a4 cacheFolder:(BOOL)a5
+- (SADirCacheElement)initWithBundleIDs:(id)ds purgeable:(BOOL)purgeable cacheFolder:(BOOL)folder
 {
-  v9 = a3;
+  dsCopy = ds;
   v13.receiver = self;
   v13.super_class = SADirCacheElement;
   v10 = [(SADirCacheElement *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_bundleIDs, a3);
-    v11->_purgeable = a4;
-    v11->_cacheFolder = a5;
+    objc_storeStrong(&v10->_bundleIDs, ds);
+    v11->_purgeable = purgeable;
+    v11->_cacheFolder = folder;
   }
 
   return v11;

@@ -1,21 +1,21 @@
 @interface HostRemoteViewController
 + (id)exportedInterface;
 + (id)serviceViewControllerInterface;
-- (HostRemoteViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)sidecarServiceDisableDisplaySleep:(BOOL)a3;
+- (HostRemoteViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)sidecarServiceDisableDisplaySleep:(BOOL)sleep;
 - (void)sidecarServiceOrientationChanged;
-- (void)sidecarServiceViewControllerAnimate:(int64_t)a3 completion:(id)a4;
-- (void)sidecarServiceViewControllerBackgroundStyle:(int64_t)a3;
-- (void)sidecarServiceViewControllerWantsVolumeButtonEvents:(BOOL)a3;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)sidecarServiceViewControllerAnimate:(int64_t)animate completion:(id)completion;
+- (void)sidecarServiceViewControllerBackgroundStyle:(int64_t)style;
+- (void)sidecarServiceViewControllerWantsVolumeButtonEvents:(BOOL)events;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation HostRemoteViewController
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v4 = self;
-  v5 = a3;
+  selfCopy = self;
+  errorCopy = error;
   sub_100004620();
 }
 
@@ -33,9 +33,9 @@
   return v2;
 }
 
-- (HostRemoteViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (HostRemoteViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -47,41 +47,41 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1000047C8(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1000047C8(v5, v7, bundle);
 }
 
-- (void)sidecarServiceViewControllerAnimate:(int64_t)a3 completion:(id)a4
+- (void)sidecarServiceViewControllerAnimate:(int64_t)animate completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = self;
-  sub_1000049D4(a3, v7, v6);
+  selfCopy = self;
+  sub_1000049D4(animate, selfCopy, v6);
   _Block_release(v6);
 }
 
-- (void)sidecarServiceViewControllerWantsVolumeButtonEvents:(BOOL)a3
+- (void)sidecarServiceViewControllerWantsVolumeButtonEvents:(BOOL)events
 {
-  v4 = self;
-  sub_100004B30(a3);
+  selfCopy = self;
+  sub_100004B30(events);
 }
 
-- (void)sidecarServiceViewControllerBackgroundStyle:(int64_t)a3
+- (void)sidecarServiceViewControllerBackgroundStyle:(int64_t)style
 {
-  v4 = self;
-  sub_100004C1C(a3);
+  selfCopy = self;
+  sub_100004C1C(style);
 }
 
 - (void)sidecarServiceOrientationChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_100004D04();
 }
 
-- (void)sidecarServiceDisableDisplaySleep:(BOOL)a3
+- (void)sidecarServiceDisableDisplaySleep:(BOOL)sleep
 {
-  v4 = self;
-  sub_100004DD0(a3);
+  selfCopy = self;
+  sub_100004DD0(sleep);
 }
 
 @end

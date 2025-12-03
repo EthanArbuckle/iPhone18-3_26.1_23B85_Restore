@@ -1,13 +1,13 @@
 @interface SASProximitySession
 - (CUMessageSession)sharingMessageSession;
 - (SASProximitySession)init;
-- (id)actionFromData:(id)a3;
-- (id)sendAction:(id)a3;
+- (id)actionFromData:(id)data;
+- (id)sendAction:(id)action;
 - (void)activate;
-- (void)handleAction:(id)a3;
+- (void)handleAction:(id)action;
 - (void)invalidate;
-- (void)receivedAction:(id)a3 response:(id)a4;
-- (void)setSharingMessageSession:(id)a3;
+- (void)receivedAction:(id)action response:(id)response;
+- (void)setSharingMessageSession:(id)session;
 @end
 
 @implementation SASProximitySession
@@ -34,8 +34,8 @@
   v3 = [(SASProximitySession *)self transport:v5];
   [v3 setReceivedDataBlock:&v5];
 
-  v4 = [(SASProximitySession *)self transport];
-  [v4 activate];
+  transport = [(SASProximitySession *)self transport];
+  [transport activate];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -51,48 +51,48 @@ void __31__SASProximitySession_activate__block_invoke(uint64_t a1, void *a2, voi
 
 - (void)invalidate
 {
-  v2 = [(SASProximitySession *)self transport];
-  [v2 invalidate];
+  transport = [(SASProximitySession *)self transport];
+  [transport invalidate];
 }
 
-- (void)setSharingMessageSession:(id)a3
+- (void)setSharingMessageSession:(id)session
 {
-  v4 = a3;
-  v5 = [[SASProximitySessionSharingTransport alloc] initWithMessageSession:v4];
+  sessionCopy = session;
+  v5 = [[SASProximitySessionSharingTransport alloc] initWithMessageSession:sessionCopy];
 
   [(SASProximitySession *)self setTransport:v5];
 }
 
 - (CUMessageSession)sharingMessageSession
 {
-  v3 = [(SASProximitySession *)self transport];
+  transport = [(SASProximitySession *)self transport];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(SASProximitySession *)self transport];
-    v6 = [v5 messageSession];
+    transport2 = [(SASProximitySession *)self transport];
+    messageSession = [transport2 messageSession];
   }
 
   else
   {
-    v6 = 0;
+    messageSession = 0;
   }
 
-  return v6;
+  return messageSession;
 }
 
-- (void)receivedAction:(id)a3 response:(id)a4
+- (void)receivedAction:(id)action response:(id)response
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(SASProximitySession *)self actionFromData:a3];
+  responseCopy = response;
+  v7 = [(SASProximitySession *)self actionFromData:action];
   v8 = +[SASLogging facility];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v25 = [objc_opt_class() actionID];
+    actionID = [objc_opt_class() actionID];
     _os_log_impl(&dword_22E4D7000, v8, OS_LOG_TYPE_DEFAULT, "Received action from remote device (type %ld)", buf, 0xCu);
   }
 
@@ -101,19 +101,19 @@ void __31__SASProximitySession_activate__block_invoke(uint64_t a1, void *a2, voi
   v17 = 3221225472;
   v18 = __47__SASProximitySession_receivedAction_response___block_invoke;
   v19 = &unk_278846070;
-  v20 = self;
+  selfCopy = self;
   v10 = v7;
   v21 = v10;
   dispatch_async(v9, &v16);
 
   if ([v10 hasResponse])
   {
-    if (v6)
+    if (responseCopy)
     {
-      v11 = [v10 responsePayload];
-      if (!v11)
+      responsePayload = [v10 responsePayload];
+      if (!responsePayload)
       {
-        v11 = [MEMORY[0x277CBEA90] data];
+        responsePayload = [MEMORY[0x277CBEA90] data];
       }
 
       v12 = +[SASLogging facility];
@@ -124,23 +124,23 @@ void __31__SASProximitySession_activate__block_invoke(uint64_t a1, void *a2, voi
       }
 
       v22 = @"data";
-      v23 = v11;
+      v23 = responsePayload;
       v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
-      v6[2](v6, v13);
+      responseCopy[2](responseCopy, v13);
     }
 
     else
     {
-      v11 = +[SASLogging facility];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+      responsePayload = +[SASLogging facility];
+      if (os_log_type_enabled(responsePayload, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_22E4D7000, v11, OS_LOG_TYPE_DEFAULT, "Unable to send response for action; no response handler!", buf, 2u);
+        _os_log_impl(&dword_22E4D7000, responsePayload, OS_LOG_TYPE_DEFAULT, "Unable to send response for action; no response handler!", buf, 2u);
       }
     }
   }
 
-  else if (v6)
+  else if (responseCopy)
   {
     v14 = +[SASLogging facility];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -149,15 +149,15 @@ void __31__SASProximitySession_activate__block_invoke(uint64_t a1, void *a2, voi
       _os_log_impl(&dword_22E4D7000, v14, OS_LOG_TYPE_DEFAULT, "Sending empty response to remote device...", buf, 2u);
     }
 
-    v6[2](v6, MEMORY[0x277CBEC10]);
+    responseCopy[2](responseCopy, MEMORY[0x277CBEC10]);
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)sendAction:(id)a3
+- (id)sendAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -166,15 +166,15 @@ void __31__SASProximitySession_activate__block_invoke(uint64_t a1, void *a2, voi
   v17 = 0;
   if ([(SASProximitySession *)self isConnected])
   {
-    v5 = [(SASProximitySession *)self actionQueue];
+    actionQueue = [(SASProximitySession *)self actionQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __34__SASProximitySession_sendAction___block_invoke;
     block[3] = &unk_2788460C0;
-    v9 = v4;
-    v10 = self;
+    v9 = actionCopy;
+    selfCopy = self;
     v11 = &v12;
-    dispatch_sync(v5, block);
+    dispatch_sync(actionQueue, block);
 
     v6 = v13[5];
   }
@@ -307,20 +307,20 @@ void __34__SASProximitySession_sendAction___block_invoke_22(uint64_t a1, void *a
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)actionFromData:(id)a3
+- (id)actionFromData:(id)data
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"Action"];
-  v5 = [v4 unsignedIntegerValue];
+  dataCopy = data;
+  v4 = [dataCopy objectForKeyedSubscript:@"Action"];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  v6 = [v3 objectForKeyedSubscript:@"Payload"];
+  v6 = [dataCopy objectForKeyedSubscript:@"Payload"];
 
-  if (v5 > 5)
+  if (unsignedIntegerValue > 5)
   {
-    if (v5 <= 7)
+    if (unsignedIntegerValue <= 7)
     {
-      if (v5 == 6)
+      if (unsignedIntegerValue == 6)
       {
         v7 = SASProximityBackupAction;
       }
@@ -333,7 +333,7 @@ void __34__SASProximitySession_sendAction___block_invoke_22(uint64_t a1, void *a
       goto LABEL_22;
     }
 
-    switch(v5)
+    switch(unsignedIntegerValue)
     {
       case 8:
         v7 = SASProximityFinishedAction;
@@ -351,14 +351,14 @@ LABEL_22:
 
   else
   {
-    if (v5 > 2)
+    if (unsignedIntegerValue > 2)
     {
-      if (v5 == 3)
+      if (unsignedIntegerValue == 3)
       {
         v7 = SASProximityInformationAction;
       }
 
-      else if (v5 == 4)
+      else if (unsignedIntegerValue == 4)
       {
         v7 = SASProximityCompanionAuthRequestAction;
       }
@@ -371,13 +371,13 @@ LABEL_22:
       goto LABEL_22;
     }
 
-    if (v5 == 1)
+    if (unsignedIntegerValue == 1)
     {
       v7 = SASProximityReadyAction;
       goto LABEL_22;
     }
 
-    if (v5 == 2)
+    if (unsignedIntegerValue == 2)
     {
       v7 = SASProximityHandshakeAction;
       goto LABEL_22;
@@ -388,7 +388,7 @@ LABEL_22:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 134217984;
-    v13 = v5;
+    v13 = unsignedIntegerValue;
     _os_log_impl(&dword_22E4D7000, v11, OS_LOG_TYPE_DEFAULT, "Received unknown action of type: %lu", &v12, 0xCu);
   }
 
@@ -400,68 +400,68 @@ LABEL_23:
   return v8;
 }
 
-- (void)handleAction:(id)a3
+- (void)handleAction:(id)action
 {
-  v21 = a3;
+  actionCopy = action;
   if ([objc_opt_class() actionID] == 1)
   {
-    v4 = [(SASProximitySession *)self delegate];
+    delegate = [(SASProximitySession *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(SASProximitySession *)self delegate];
-      [v6 ready];
+      delegate2 = [(SASProximitySession *)self delegate];
+      [delegate2 ready];
     }
   }
 
   if ([objc_opt_class() actionID] == 6)
   {
-    v7 = [(SASProximitySession *)self delegate];
+    delegate3 = [(SASProximitySession *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(SASProximitySession *)self delegate];
-      [v9 receivedBackupAction:v21];
+      delegate4 = [(SASProximitySession *)self delegate];
+      [delegate4 receivedBackupAction:actionCopy];
     }
   }
 
   if ([objc_opt_class() actionID] == 8)
   {
-    v10 = [(SASProximitySession *)self delegate];
+    delegate5 = [(SASProximitySession *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [(SASProximitySession *)self delegate];
-      [v12 finishedWithError:0];
+      delegate6 = [(SASProximitySession *)self delegate];
+      [delegate6 finishedWithError:0];
     }
   }
 
   if ([objc_opt_class() actionID] == 9)
   {
-    v13 = v21;
-    v14 = [(SASProximitySession *)self delegate];
+    v13 = actionCopy;
+    delegate7 = [(SASProximitySession *)self delegate];
     v15 = objc_opt_respondsToSelector();
 
     if (v15)
     {
-      v16 = [(SASProximitySession *)self delegate];
-      v17 = [v13 deviceName];
-      [v16 prepareForMigrationToDevice:v17];
+      delegate8 = [(SASProximitySession *)self delegate];
+      deviceName = [v13 deviceName];
+      [delegate8 prepareForMigrationToDevice:deviceName];
     }
   }
 
   if ([objc_opt_class() actionID] == 10)
   {
-    v18 = [(SASProximitySession *)self delegate];
+    delegate9 = [(SASProximitySession *)self delegate];
     v19 = objc_opt_respondsToSelector();
 
     if (v19)
     {
-      v20 = [(SASProximitySession *)self delegate];
-      [v20 startMigration];
+      delegate10 = [(SASProximitySession *)self delegate];
+      [delegate10 startMigration];
     }
   }
 }

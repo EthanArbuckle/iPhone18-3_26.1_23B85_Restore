@@ -1,36 +1,36 @@
 @interface CSDCallProviderManager
-+ (id)_providersByIdentifierByFilteringForRemoteClientsFromProvidersByIdentifier:(id)a3;
-- (BOOL)appShouldUseDeprecatedCallingIntents:(id)a3;
-- (BOOL)validateBackgroundCallIntentForCallSource:(id)a3;
-- (BOOL)validateUserIntentForCallSource:(id)a3;
++ (id)_providersByIdentifierByFilteringForRemoteClientsFromProvidersByIdentifier:(id)identifier;
+- (BOOL)appShouldUseDeprecatedCallingIntents:(id)intents;
+- (BOOL)validateBackgroundCallIntentForCallSource:(id)source;
+- (BOOL)validateUserIntentForCallSource:(id)source;
 - (CSDCallProviderManager)init;
-- (CSDCallProviderManager)initWithDataSource:(id)a3 serialQueue:(id)a4;
-- (CSDCallProviderManager)initWithDataSource:(id)a3 serialQueue:(id)a4 configurationProvider:(id)a5 featureFlags:(id)a6;
-- (CSDCallProviderManager)initWithDataSource:(id)a3 serialQueue:(id)a4 featureFlags:(id)a5;
-- (id)_providersByIdentifierForRemoteClients:(BOOL)a3;
-- (id)defaultAppProviderForRemoteClients:(BOOL)a3;
+- (CSDCallProviderManager)initWithDataSource:(id)source serialQueue:(id)queue;
+- (CSDCallProviderManager)initWithDataSource:(id)source serialQueue:(id)queue configurationProvider:(id)provider featureFlags:(id)flags;
+- (CSDCallProviderManager)initWithDataSource:(id)source serialQueue:(id)queue featureFlags:(id)flags;
+- (id)_providersByIdentifierForRemoteClients:(BOOL)clients;
+- (id)defaultAppProviderForRemoteClients:(BOOL)clients;
 - (id)defaultAppRelayProviderToUse;
-- (id)localProvidersByIdentifierForRemoteClients:(BOOL)a3;
-- (id)pairedHostDeviceProvidersByIdentifierForRemoteClients:(BOOL)a3;
-- (id)providersByIdentifierForRemoteClients:(BOOL)a3;
-- (id)sortedProvidersForRemoteClients:(BOOL)a3;
-- (id)uniqueRingtoneSoundLinkFilenameWithOriginalFilename:(id)a3;
-- (void)_donateBackgroundCallIntentForProviderWithIdentifier:(id)a3;
-- (void)_donateUserIntentForProviderWithIdentifier:(id)a3;
-- (void)_unregisterUninstalledProvidersAndNotify:(BOOL)a3;
-- (void)_updateProvidersByIdentifierAndNotifyIfCanAccessKeychain:(BOOL)a3;
-- (void)addDelegate:(id)a3 queue:(id)a4;
-- (void)donateBackgroundCallIntentForProviderWithIdentifier:(id)a3;
-- (void)donateUserIntentForProviderWithIdentifier:(id)a3;
-- (void)installedProvidersChangedForDataSource:(id)a3;
-- (void)launchAppForDialRequest:(id)a3 completion:(id)a4;
-- (void)registerLocalProvider:(id)a3;
-- (void)registerPairedHostDeviceProviders:(id)a3;
-- (void)registerRelayHostDeviceProviders:(id)a3;
-- (void)relayCallProvidersChangedForDataSource:(id)a3 updatedCallProviders:(id)a4;
-- (void)relayCallingStateChangedForDataSource:(id)a3;
-- (void)removeDelegate:(id)a3;
-- (void)retrieveSavedProvidersByIdentifierAndNotify:(BOOL)a3 unregister:(BOOL)a4;
+- (id)localProvidersByIdentifierForRemoteClients:(BOOL)clients;
+- (id)pairedHostDeviceProvidersByIdentifierForRemoteClients:(BOOL)clients;
+- (id)providersByIdentifierForRemoteClients:(BOOL)clients;
+- (id)sortedProvidersForRemoteClients:(BOOL)clients;
+- (id)uniqueRingtoneSoundLinkFilenameWithOriginalFilename:(id)filename;
+- (void)_donateBackgroundCallIntentForProviderWithIdentifier:(id)identifier;
+- (void)_donateUserIntentForProviderWithIdentifier:(id)identifier;
+- (void)_unregisterUninstalledProvidersAndNotify:(BOOL)notify;
+- (void)_updateProvidersByIdentifierAndNotifyIfCanAccessKeychain:(BOOL)keychain;
+- (void)addDelegate:(id)delegate queue:(id)queue;
+- (void)donateBackgroundCallIntentForProviderWithIdentifier:(id)identifier;
+- (void)donateUserIntentForProviderWithIdentifier:(id)identifier;
+- (void)installedProvidersChangedForDataSource:(id)source;
+- (void)launchAppForDialRequest:(id)request completion:(id)completion;
+- (void)registerLocalProvider:(id)provider;
+- (void)registerPairedHostDeviceProviders:(id)providers;
+- (void)registerRelayHostDeviceProviders:(id)providers;
+- (void)relayCallProvidersChangedForDataSource:(id)source updatedCallProviders:(id)providers;
+- (void)relayCallingStateChangedForDataSource:(id)source;
+- (void)removeDelegate:(id)delegate;
+- (void)retrieveSavedProvidersByIdentifierAndNotify:(BOOL)notify unregister:(BOOL)unregister;
 @end
 
 @implementation CSDCallProviderManager
@@ -44,41 +44,41 @@
   return v5;
 }
 
-- (CSDCallProviderManager)initWithDataSource:(id)a3 serialQueue:(id)a4
+- (CSDCallProviderManager)initWithDataSource:(id)source serialQueue:(id)queue
 {
-  v6 = a4;
-  v7 = a3;
+  queueCopy = queue;
+  sourceCopy = source;
   v8 = objc_alloc_init(TUFeatureFlags);
-  v9 = [(CSDCallProviderManager *)self initWithDataSource:v7 serialQueue:v6 featureFlags:v8];
+  v9 = [(CSDCallProviderManager *)self initWithDataSource:sourceCopy serialQueue:queueCopy featureFlags:v8];
 
   return v9;
 }
 
-- (CSDCallProviderManager)initWithDataSource:(id)a3 serialQueue:(id)a4 featureFlags:(id)a5
+- (CSDCallProviderManager)initWithDataSource:(id)source serialQueue:(id)queue featureFlags:(id)flags
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  flagsCopy = flags;
+  queueCopy = queue;
+  sourceCopy = source;
   v11 = objc_alloc_init(TUConfigurationProvider);
-  v12 = [(CSDCallProviderManager *)self initWithDataSource:v10 serialQueue:v9 configurationProvider:v11 featureFlags:v8];
+  v12 = [(CSDCallProviderManager *)self initWithDataSource:sourceCopy serialQueue:queueCopy configurationProvider:v11 featureFlags:flagsCopy];
 
   return v12;
 }
 
-- (CSDCallProviderManager)initWithDataSource:(id)a3 serialQueue:(id)a4 configurationProvider:(id)a5 featureFlags:(id)a6
+- (CSDCallProviderManager)initWithDataSource:(id)source serialQueue:(id)queue configurationProvider:(id)provider featureFlags:(id)flags
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  sourceCopy = source;
+  queueCopy = queue;
+  providerCopy = provider;
+  flagsCopy = flags;
   v39.receiver = self;
   v39.super_class = CSDCallProviderManager;
   v15 = [(CSDCallProviderManager *)&v39 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_queue, a4);
-    objc_storeStrong(&v16->_dataSource, a3);
+    objc_storeStrong(&v15->_queue, queue);
+    objc_storeStrong(&v16->_dataSource, source);
     [(CSDCallProviderManagerDataSource *)v16->_dataSource setDelegate:v16];
     v17 = +[NSMapTable weakToStrongObjectsMapTable];
     delegateToQueue = v16->_delegateToQueue;
@@ -95,18 +95,18 @@
     providersByIdentifier = v16->_providersByIdentifier;
     v16->_providersByIdentifier = &__NSDictionary0__struct;
 
-    v24 = [[CSDUserIntentManager alloc] initWithQueue:v12];
+    v24 = [[CSDUserIntentManager alloc] initWithQueue:queueCopy];
     userIntentManager = v16->_userIntentManager;
     v16->_userIntentManager = v24;
 
-    objc_storeStrong(&v16->_featureFlags, a6);
+    objc_storeStrong(&v16->_featureFlags, flags);
     if ([(TUFeatureFlags *)v16->_featureFlags isDualSimParityEnabled])
     {
       v26 = +[NSMutableDictionary dictionary];
       relayHostDeviceProvidersByIdentifier = v16->_relayHostDeviceProvidersByIdentifier;
       v16->_relayHostDeviceProvidersByIdentifier = v26;
 
-      v28 = [[CSDRelayCallProviderManagerDataSource alloc] initWithSerialQueue:v12];
+      v28 = [[CSDRelayCallProviderManagerDataSource alloc] initWithSerialQueue:queueCopy];
       relayCallProviderDataSource = v16->_relayCallProviderDataSource;
       v16->_relayCallProviderDataSource = v28;
 
@@ -127,7 +127,7 @@
     v36 = v33;
     objc_copyWeak(&v37, &location);
     dispatch_sync(queue, block);
-    objc_storeStrong(v33 + 13, a5);
+    objc_storeStrong(v33 + 13, provider);
     [v33 retrieveSavedProvidersByIdentifierAndNotify:0 unregister:1];
     objc_destroyWeak(&v37);
 
@@ -137,48 +137,48 @@
   return v16;
 }
 
-- (void)retrieveSavedProvidersByIdentifierAndNotify:(BOOL)a3 unregister:(BOOL)a4
+- (void)retrieveSavedProvidersByIdentifierAndNotify:(BOOL)notify unregister:(BOOL)unregister
 {
-  v7 = [(CSDCallProviderManager *)self queue];
+  queue = [(CSDCallProviderManager *)self queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001F1854;
   v8[3] = &unk_10061E520;
   v8[4] = self;
-  v9 = a4;
-  v10 = a3;
-  dispatch_async(v7, v8);
+  unregisterCopy = unregister;
+  notifyCopy = notify;
+  dispatch_async(queue, v8);
 }
 
-- (void)_updateProvidersByIdentifierAndNotifyIfCanAccessKeychain:(BOOL)a3
+- (void)_updateProvidersByIdentifierAndNotifyIfCanAccessKeychain:(BOOL)keychain
 {
-  v3 = a3;
-  v4 = self;
-  v5 = [(CSDCallProviderManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  keychainCopy = keychain;
+  selfCopy = self;
+  queue = [(CSDCallProviderManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDCallProviderManager *)v4 localProvidersByIdentifier];
-  v7 = [(CSDCallProviderManager *)v4 dataSource];
-  if (![v7 isRelayCallingGuaranteed])
+  localProvidersByIdentifier = [(CSDCallProviderManager *)selfCopy localProvidersByIdentifier];
+  dataSource = [(CSDCallProviderManager *)selfCopy dataSource];
+  if (![dataSource isRelayCallingGuaranteed])
   {
     goto LABEL_4;
   }
 
-  v8 = [(CSDCallProviderManager *)v4 pairedHostDeviceProvidersByIdentifier];
-  v9 = [v8 count];
+  pairedHostDeviceProvidersByIdentifier = [(CSDCallProviderManager *)selfCopy pairedHostDeviceProvidersByIdentifier];
+  v9 = [pairedHostDeviceProvidersByIdentifier count];
 
   if (v9)
   {
-    [(CSDCallProviderManager *)v4 pairedHostDeviceProvidersByIdentifier];
-    v6 = v7 = v6;
+    [(CSDCallProviderManager *)selfCopy pairedHostDeviceProvidersByIdentifier];
+    localProvidersByIdentifier = dataSource = localProvidersByIdentifier;
 LABEL_4:
   }
 
-  v10 = [(CSDCallProviderManager *)v4 relayHostDeviceProvidersByIdentifier];
-  v11 = [v10 objectForKeyedSubscript:@"com.apple.coretelephony"];
+  relayHostDeviceProvidersByIdentifier = [(CSDCallProviderManager *)selfCopy relayHostDeviceProvidersByIdentifier];
+  v11 = [relayHostDeviceProvidersByIdentifier objectForKeyedSubscript:@"com.apple.coretelephony"];
 
-  v12 = [(CSDCallProviderManager *)v4 featureFlags];
-  if (![v12 isDualSimParityEnabled] || (+[TUCallCapabilities supportsPrimaryCalling](TUCallCapabilities, "supportsPrimaryCalling") & 1) != 0 || (+[TUCallCapabilities isThumperCallingEnabled](TUCallCapabilities, "isThumperCallingEnabled") & 1) != 0)
+  featureFlags = [(CSDCallProviderManager *)selfCopy featureFlags];
+  if (![featureFlags isDualSimParityEnabled] || (+[TUCallCapabilities supportsPrimaryCalling](TUCallCapabilities, "supportsPrimaryCalling") & 1) != 0 || (+[TUCallCapabilities isThumperCallingEnabled](TUCallCapabilities, "isThumperCallingEnabled") & 1) != 0)
   {
   }
 
@@ -190,9 +190,9 @@ LABEL_4:
       v27 = sub_100004778();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
-        v28 = [v6 objectForKeyedSubscript:@"com.apple.coretelephony"];
-        v29 = [(CSDCallProviderManager *)v4 relayHostDeviceProvidersByIdentifier];
-        v30 = [v29 objectForKeyedSubscript:@"com.apple.coretelephony"];
+        v28 = [localProvidersByIdentifier objectForKeyedSubscript:@"com.apple.coretelephony"];
+        relayHostDeviceProvidersByIdentifier2 = [(CSDCallProviderManager *)selfCopy relayHostDeviceProvidersByIdentifier];
+        v30 = [relayHostDeviceProvidersByIdentifier2 objectForKeyedSubscript:@"com.apple.coretelephony"];
         *buf = 138412546;
         v41 = v28;
         v42 = 2112;
@@ -200,9 +200,9 @@ LABEL_4:
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Updating current telephony provider from %@ to %@", buf, 0x16u);
       }
 
-      v31 = [(CSDCallProviderManager *)v4 relayHostDeviceProvidersByIdentifier];
-      v32 = [v31 objectForKeyedSubscript:@"com.apple.coretelephony"];
-      [v6 setObject:v32 forKeyedSubscript:@"com.apple.coretelephony"];
+      relayHostDeviceProvidersByIdentifier3 = [(CSDCallProviderManager *)selfCopy relayHostDeviceProvidersByIdentifier];
+      v32 = [relayHostDeviceProvidersByIdentifier3 objectForKeyedSubscript:@"com.apple.coretelephony"];
+      [localProvidersByIdentifier setObject:v32 forKeyedSubscript:@"com.apple.coretelephony"];
     }
   }
 
@@ -210,19 +210,19 @@ LABEL_4:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v41 = v6;
+    v41 = localProvidersByIdentifier;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Updating current providers to %@", buf, 0xCu);
   }
 
-  [(CSDCallProviderManager *)v4 setProvidersByIdentifier:v6];
-  if (v3)
+  [(CSDCallProviderManager *)selfCopy setProvidersByIdentifier:localProvidersByIdentifier];
+  if (keychainCopy)
   {
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v14 = v4;
-    obj = [(CSDCallProviderManager *)v4 delegateToQueue];
+    v14 = selfCopy;
+    obj = [(CSDCallProviderManager *)selfCopy delegateToQueue];
     v15 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
     if (v15)
     {
@@ -238,8 +238,8 @@ LABEL_4:
           }
 
           v19 = *(*(&v35 + 1) + 8 * i);
-          v20 = [(CSDCallProviderManager *)v14 delegateToQueue];
-          v21 = [v20 objectForKey:v19];
+          delegateToQueue = [(CSDCallProviderManager *)v14 delegateToQueue];
+          v21 = [delegateToQueue objectForKey:v19];
 
           block[0] = _NSConcreteStackBlock;
           block[1] = 3221225472;
@@ -256,11 +256,11 @@ LABEL_4:
       while (v16);
     }
 
-    v4 = v14;
+    selfCopy = v14;
   }
 
-  v22 = [(CSDCallProviderManager *)v4 featureFlags];
-  if (![v22 isDualSimParityEnabled])
+  featureFlags2 = [(CSDCallProviderManager *)selfCopy featureFlags];
+  if (![featureFlags2 isDualSimParityEnabled])
   {
     goto LABEL_26;
   }
@@ -269,10 +269,10 @@ LABEL_4:
 
   if (v23)
   {
-    v24 = [(CSDCallProviderManager *)v4 providersByIdentifier];
-    v22 = [v24 objectForKeyedSubscript:@"com.apple.coretelephony"];
+    providersByIdentifier = [(CSDCallProviderManager *)selfCopy providersByIdentifier];
+    featureFlags2 = [providersByIdentifier objectForKeyedSubscript:@"com.apple.coretelephony"];
 
-    if (v22)
+    if (featureFlags2)
     {
       v25 = sub_100004778();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -281,23 +281,23 @@ LABEL_4:
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Updating telephony provider in iCluod KVS", buf, 2u);
       }
 
-      v26 = [(CSDCallProviderManager *)v4 relayCallProviderDataSource];
-      [v26 updateCallProvider:v22 forIdentifier:@"com.apple.coretelephony"];
+      relayCallProviderDataSource = [(CSDCallProviderManager *)selfCopy relayCallProviderDataSource];
+      [relayCallProviderDataSource updateCallProvider:featureFlags2 forIdentifier:@"com.apple.coretelephony"];
     }
 
 LABEL_26:
   }
 }
 
-- (void)_unregisterUninstalledProvidersAndNotify:(BOOL)a3
+- (void)_unregisterUninstalledProvidersAndNotify:(BOOL)notify
 {
-  v3 = a3;
-  v5 = [(CSDCallProviderManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  notifyCopy = notify;
+  queue = [(CSDCallProviderManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDCallProviderManager *)self localProvidersByIdentifier];
-  v7 = [v6 allValues];
-  v8 = [NSMutableSet setWithArray:v7];
+  localProvidersByIdentifier = [(CSDCallProviderManager *)self localProvidersByIdentifier];
+  allValues = [localProvidersByIdentifier allValues];
+  v8 = [NSMutableSet setWithArray:allValues];
 
   v35 = 0u;
   v36 = 0u;
@@ -321,8 +321,8 @@ LABEL_26:
         v14 = *(*(&v33 + 1) + 8 * i);
         if (([v14 isSystemProvider] & 1) == 0)
         {
-          v15 = [(CSDCallProviderManager *)self dataSource];
-          v16 = [v15 isProviderInstalled:v14];
+          dataSource = [(CSDCallProviderManager *)self dataSource];
+          v16 = [dataSource isProviderInstalled:v14];
 
           if (!v16)
           {
@@ -341,7 +341,7 @@ LABEL_26:
 
   if ([v8 count])
   {
-    v28 = v3;
+    v28 = notifyCopy;
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
@@ -370,9 +370,9 @@ LABEL_26:
             _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Unregistering provider because its application is no longer installed: %@", buf, 0xCu);
           }
 
-          v24 = [(CSDCallProviderManager *)self localProvidersByIdentifier];
-          v25 = [v22 identifier];
-          [v24 setObject:0 forKeyedSubscript:v25];
+          localProvidersByIdentifier2 = [(CSDCallProviderManager *)self localProvidersByIdentifier];
+          identifier = [v22 identifier];
+          [localProvidersByIdentifier2 setObject:0 forKeyedSubscript:identifier];
         }
 
         v19 = [v17 countByEnumeratingWithState:&v29 objects:v39 count:16];
@@ -381,34 +381,34 @@ LABEL_26:
       while (v19);
     }
 
-    v26 = [(CSDCallProviderManager *)self localProvidersByIdentifier];
-    v27 = [(CSDCallProviderManager *)self dataSource];
-    [v27 setRegisteredLocalProvidersByIdentifier:v26];
+    localProvidersByIdentifier3 = [(CSDCallProviderManager *)self localProvidersByIdentifier];
+    dataSource2 = [(CSDCallProviderManager *)self dataSource];
+    [dataSource2 setRegisteredLocalProvidersByIdentifier:localProvidersByIdentifier3];
 
     [(CSDCallProviderManager *)self _updateProvidersByIdentifierAndNotifyIfCanAccessKeychain:v28];
   }
 }
 
-- (id)uniqueRingtoneSoundLinkFilenameWithOriginalFilename:(id)a3
+- (id)uniqueRingtoneSoundLinkFilenameWithOriginalFilename:(id)filename
 {
-  v3 = a3;
+  filenameCopy = filename;
   v4 = +[NSUUID UUID];
-  v5 = [v4 UUIDString];
-  v6 = [NSString stringWithFormat:@"%@-%@", v5, v3];
+  uUIDString = [v4 UUIDString];
+  filenameCopy = [NSString stringWithFormat:@"%@-%@", uUIDString, filenameCopy];
 
-  return v6;
+  return filenameCopy;
 }
 
-+ (id)_providersByIdentifierByFilteringForRemoteClientsFromProvidersByIdentifier:(id)a3
++ (id)_providersByIdentifierByFilteringForRemoteClientsFromProvidersByIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[NSMutableDictionary dictionary];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v3 allValues];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allValues = [identifierCopy allValues];
+  v6 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -419,18 +419,18 @@ LABEL_26:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
         if ([v10 supportsCurrentPlatform])
         {
-          v11 = [v10 identifier];
-          [v4 setObject:v10 forKeyedSubscript:v11];
+          identifier = [v10 identifier];
+          [v4 setObject:v10 forKeyedSubscript:identifier];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -441,74 +441,74 @@ LABEL_26:
   return v12;
 }
 
-- (void)_donateUserIntentForProviderWithIdentifier:(id)a3
+- (void)_donateUserIntentForProviderWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CSDCallProviderManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  queue = [(CSDCallProviderManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Donating user intent to call provider with identifier: %@", &v8, 0xCu);
   }
 
-  v7 = [(CSDCallProviderManager *)self userIntentManager];
-  [v7 donateUserIntentForCallProviderIdentifier:v4];
+  userIntentManager = [(CSDCallProviderManager *)self userIntentManager];
+  [userIntentManager donateUserIntentForCallProviderIdentifier:identifierCopy];
 }
 
-- (void)_donateBackgroundCallIntentForProviderWithIdentifier:(id)a3
+- (void)_donateBackgroundCallIntentForProviderWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CSDCallProviderManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  queue = [(CSDCallProviderManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Donating background call intent to call provider with identifier: %@", &v8, 0xCu);
   }
 
-  v7 = [(CSDCallProviderManager *)self userIntentManager];
-  [v7 donateBackgroundCallIntentForCallProviderIdentifier:v4];
+  userIntentManager = [(CSDCallProviderManager *)self userIntentManager];
+  [userIntentManager donateBackgroundCallIntentForCallProviderIdentifier:identifierCopy];
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4
+- (void)addDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDCallProviderManager *)self queue];
+  delegateCopy = delegate;
+  queueCopy = queue;
+  queue = [(CSDCallProviderManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001F2828;
   block[3] = &unk_100619E58;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = queueCopy;
+  v13 = delegateCopy;
+  v9 = delegateCopy;
+  v10 = queueCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(CSDCallProviderManager *)self queue];
+  delegateCopy = delegate;
+  queue = [(CSDCallProviderManager *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001F2930;
   v7[3] = &unk_100619D88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = delegateCopy;
+  v6 = delegateCopy;
+  dispatch_sync(queue, v7);
 }
 
-- (id)providersByIdentifierForRemoteClients:(BOOL)a3
+- (id)providersByIdentifierForRemoteClients:(BOOL)clients
 {
   v10 = 0;
   v11 = &v10;
@@ -516,15 +516,15 @@ LABEL_26:
   v13 = sub_1000286E4;
   v14 = sub_1000328FC;
   v15 = 0;
-  v5 = [(CSDCallProviderManager *)self queue];
+  queue = [(CSDCallProviderManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001F2AA8;
   block[3] = &unk_10061CE30;
   block[4] = self;
   block[5] = &v10;
-  v9 = a3;
-  dispatch_sync(v5, block);
+  clientsCopy = clients;
+  dispatch_sync(queue, block);
 
   v6 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -532,23 +532,23 @@ LABEL_26:
   return v6;
 }
 
-- (id)_providersByIdentifierForRemoteClients:(BOOL)a3
+- (id)_providersByIdentifierForRemoteClients:(BOOL)clients
 {
-  v3 = a3;
-  v5 = [(CSDCallProviderManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  clientsCopy = clients;
+  queue = [(CSDCallProviderManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (v3)
+  if (clientsCopy)
   {
     v6 = objc_opt_class();
-    v7 = [(CSDCallProviderManager *)self providersByIdentifier];
-    v8 = [v6 _providersByIdentifierByFilteringForRemoteClientsFromProvidersByIdentifier:v7];
+    providersByIdentifier = [(CSDCallProviderManager *)self providersByIdentifier];
+    v8 = [v6 _providersByIdentifierByFilteringForRemoteClientsFromProvidersByIdentifier:providersByIdentifier];
   }
 
   else
   {
-    v7 = [(CSDCallProviderManager *)self providersByIdentifier];
-    v8 = [v7 copy];
+    providersByIdentifier = [(CSDCallProviderManager *)self providersByIdentifier];
+    v8 = [providersByIdentifier copy];
   }
 
   v9 = v8;
@@ -556,7 +556,7 @@ LABEL_26:
   return v9;
 }
 
-- (id)localProvidersByIdentifierForRemoteClients:(BOOL)a3
+- (id)localProvidersByIdentifierForRemoteClients:(BOOL)clients
 {
   v10 = 0;
   v11 = &v10;
@@ -564,15 +564,15 @@ LABEL_26:
   v13 = sub_1000286E4;
   v14 = sub_1000328FC;
   v15 = 0;
-  v5 = [(CSDCallProviderManager *)self queue];
+  queue = [(CSDCallProviderManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001F2CC0;
   block[3] = &unk_10061CE30;
-  v9 = a3;
+  clientsCopy = clients;
   block[4] = self;
   block[5] = &v10;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
 
   v6 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -580,7 +580,7 @@ LABEL_26:
   return v6;
 }
 
-- (id)pairedHostDeviceProvidersByIdentifierForRemoteClients:(BOOL)a3
+- (id)pairedHostDeviceProvidersByIdentifierForRemoteClients:(BOOL)clients
 {
   v10 = 0;
   v11 = &v10;
@@ -588,15 +588,15 @@ LABEL_26:
   v13 = sub_1000286E4;
   v14 = sub_1000328FC;
   v15 = 0;
-  v5 = [(CSDCallProviderManager *)self queue];
+  queue = [(CSDCallProviderManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001F2E80;
   block[3] = &unk_10061CE30;
-  v9 = a3;
+  clientsCopy = clients;
   block[4] = self;
   block[5] = &v10;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
 
   v6 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -604,7 +604,7 @@ LABEL_26:
   return v6;
 }
 
-- (id)sortedProvidersForRemoteClients:(BOOL)a3
+- (id)sortedProvidersForRemoteClients:(BOOL)clients
 {
   v10 = 0;
   v11 = &v10;
@@ -612,15 +612,15 @@ LABEL_26:
   v13 = sub_1000286E4;
   v14 = sub_1000328FC;
   v15 = 0;
-  v5 = [(CSDCallProviderManager *)self queue];
+  queue = [(CSDCallProviderManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001F3040;
   block[3] = &unk_10061CE30;
   block[4] = self;
   block[5] = &v10;
-  v9 = a3;
-  dispatch_sync(v5, block);
+  clientsCopy = clients;
+  dispatch_sync(queue, block);
 
   v6 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -628,31 +628,31 @@ LABEL_26:
   return v6;
 }
 
-- (id)defaultAppProviderForRemoteClients:(BOOL)a3
+- (id)defaultAppProviderForRemoteClients:(BOOL)clients
 {
-  v3 = a3;
+  clientsCopy = clients;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_1000286E4;
   v16 = sub_1000328FC;
   v17 = 0;
-  v5 = [(CSDCallProviderManager *)self queue];
+  queue = [(CSDCallProviderManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001F3424;
   block[3] = &unk_10061CE30;
   block[4] = self;
   block[5] = &v12;
-  v11 = v3;
-  dispatch_sync(v5, block);
+  v11 = clientsCopy;
+  dispatch_sync(queue, block);
 
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v13[5];
     *buf = 67109378;
-    v19 = v3;
+    v19 = clientsCopy;
     v20 = 2112;
     v21 = v7;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Fetched default app provider forRemoteClient %d %@", buf, 0x12u);
@@ -664,153 +664,153 @@ LABEL_26:
   return v8;
 }
 
-- (void)registerLocalProvider:(id)a3
+- (void)registerLocalProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(CSDCallProviderManager *)self queue];
+  providerCopy = provider;
+  queue = [(CSDCallProviderManager *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001F3A88;
   v7[3] = &unk_100619D88;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = providerCopy;
+  selfCopy = self;
+  v6 = providerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)registerPairedHostDeviceProviders:(id)a3
+- (void)registerPairedHostDeviceProviders:(id)providers
 {
-  v4 = a3;
-  v5 = [(CSDCallProviderManager *)self queue];
+  providersCopy = providers;
+  queue = [(CSDCallProviderManager *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001F3FD8;
   v7[3] = &unk_100619D88;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = providersCopy;
+  selfCopy = self;
+  v6 = providersCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)registerRelayHostDeviceProviders:(id)a3
+- (void)registerRelayHostDeviceProviders:(id)providers
 {
-  v4 = a3;
-  v5 = [(CSDCallProviderManager *)self featureFlags];
-  v6 = [v5 isDualSimParityEnabled];
+  providersCopy = providers;
+  featureFlags = [(CSDCallProviderManager *)self featureFlags];
+  isDualSimParityEnabled = [featureFlags isDualSimParityEnabled];
 
-  if (v6)
+  if (isDualSimParityEnabled)
   {
-    v7 = [(CSDCallProviderManager *)self queue];
+    queue = [(CSDCallProviderManager *)self queue];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_1001F4328;
     v8[3] = &unk_100619D88;
-    v9 = v4;
-    v10 = self;
-    dispatch_async(v7, v8);
+    v9 = providersCopy;
+    selfCopy = self;
+    dispatch_async(queue, v8);
   }
 }
 
-- (void)donateUserIntentForProviderWithIdentifier:(id)a3
+- (void)donateUserIntentForProviderWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CSDCallProviderManager *)self queue];
+  identifierCopy = identifier;
+  queue = [(CSDCallProviderManager *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001F462C;
   v7[3] = &unk_100619D88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_sync(queue, v7);
 }
 
-- (BOOL)validateUserIntentForCallSource:(id)a3
+- (BOOL)validateUserIntentForCallSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(CSDCallProviderManager *)self queue];
+  queue = [(CSDCallProviderManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001F4738;
   block[3] = &unk_10061C678;
-  v9 = v4;
+  v9 = sourceCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = sourceCopy;
+  dispatch_sync(queue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(sourceCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return sourceCopy;
 }
 
-- (void)donateBackgroundCallIntentForProviderWithIdentifier:(id)a3
+- (void)donateBackgroundCallIntentForProviderWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CSDCallProviderManager *)self queue];
+  identifierCopy = identifier;
+  queue = [(CSDCallProviderManager *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001F484C;
   v7[3] = &unk_100619D88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_sync(queue, v7);
 }
 
-- (BOOL)validateBackgroundCallIntentForCallSource:(id)a3
+- (BOOL)validateBackgroundCallIntentForCallSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(CSDCallProviderManager *)self queue];
+  queue = [(CSDCallProviderManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001F4958;
   block[3] = &unk_10061C678;
-  v9 = v4;
+  v9 = sourceCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = sourceCopy;
+  dispatch_sync(queue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(sourceCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return sourceCopy;
 }
 
-- (void)launchAppForDialRequest:(id)a3 completion:(id)a4
+- (void)launchAppForDialRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDCallProviderManager *)self queue];
+  requestCopy = request;
+  completionCopy = completion;
+  queue = [(CSDCallProviderManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001F4A90;
   block[3] = &unk_10061D128;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = requestCopy;
+  v9 = completionCopy;
+  v10 = requestCopy;
+  dispatch_async(queue, block);
 }
 
-- (BOOL)appShouldUseDeprecatedCallingIntents:(id)a3
+- (BOOL)appShouldUseDeprecatedCallingIntents:(id)intents
 {
-  v3 = a3;
-  v4 = [LSApplicationRecord csd_applicationRecordForBundleIdentifier:v3];
+  intentsCopy = intents;
+  v4 = [LSApplicationRecord csd_applicationRecordForBundleIdentifier:intentsCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 compatibilityObject];
-    v7 = [v6 plugInKitPlugins];
+    compatibilityObject = [v4 compatibilityObject];
+    plugInKitPlugins = [compatibilityObject plugInKitPlugins];
     v8 = INSupportedIntentsByExtensions();
     v9 = 0;
 
@@ -822,7 +822,7 @@ LABEL_26:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v21 = v3;
+        v21 = intentsCopy;
         v22 = 2114;
         v23 = v10;
         v13 = "App %{public}@ supports %{public}@.";
@@ -845,7 +845,7 @@ LABEL_12:
           if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
           {
             *buf = 138544130;
-            v21 = v3;
+            v21 = intentsCopy;
             v22 = 2114;
             v23 = v17;
             v24 = 2114;
@@ -863,7 +863,7 @@ LABEL_12:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138544130;
-        v21 = v3;
+        v21 = intentsCopy;
         v22 = 2114;
         v23 = v10;
         v24 = 2114;
@@ -897,11 +897,11 @@ LABEL_16:
 
 - (id)defaultAppRelayProviderToUse
 {
-  v3 = [(CSDCallProviderManager *)self localProvidersByIdentifier];
-  v4 = [v3 objectForKeyedSubscript:@"com.apple.coretelephony"];
+  localProvidersByIdentifier = [(CSDCallProviderManager *)self localProvidersByIdentifier];
+  v4 = [localProvidersByIdentifier objectForKeyedSubscript:@"com.apple.coretelephony"];
 
-  v5 = [(CSDCallProviderManager *)self localProvidersByIdentifier];
-  v6 = [v5 objectForKeyedSubscript:@"com.apple.telephonyutilities.callservicesd.FaceTimeProvider"];
+  localProvidersByIdentifier2 = [(CSDCallProviderManager *)self localProvidersByIdentifier];
+  v6 = [localProvidersByIdentifier2 objectForKeyedSubscript:@"com.apple.telephonyutilities.callservicesd.FaceTimeProvider"];
 
   v7 = defaultAppRelayTelephonySetting();
   v8 = v4;
@@ -912,10 +912,10 @@ LABEL_16:
 
   if (v7 == 1)
   {
-    v9 = [(CSDCallProviderManager *)self configurationProvider];
-    v10 = [v9 isUplevelFTAEnabled];
+    configurationProvider = [(CSDCallProviderManager *)self configurationProvider];
+    isUplevelFTAEnabled = [configurationProvider isUplevelFTAEnabled];
 
-    if (v10)
+    if (isUplevelFTAEnabled)
     {
       v8 = v6;
     }
@@ -936,34 +936,34 @@ LABEL_8:
   return v11;
 }
 
-- (void)relayCallingStateChangedForDataSource:(id)a3
+- (void)relayCallingStateChangedForDataSource:(id)source
 {
-  v4 = [(CSDCallProviderManager *)self queue];
-  dispatch_assert_queue_V2(v4);
+  queue = [(CSDCallProviderManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(CSDCallProviderManager *)self _updateProvidersByIdentifierAndNotifyIfCanAccessKeychain:1];
 }
 
-- (void)installedProvidersChangedForDataSource:(id)a3
+- (void)installedProvidersChangedForDataSource:(id)source
 {
-  v4 = [(CSDCallProviderManager *)self queue];
-  dispatch_assert_queue_V2(v4);
+  queue = [(CSDCallProviderManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(CSDCallProviderManager *)self _unregisterUninstalledProvidersAndNotify:1];
 }
 
-- (void)relayCallProvidersChangedForDataSource:(id)a3 updatedCallProviders:(id)a4
+- (void)relayCallProvidersChangedForDataSource:(id)source updatedCallProviders:(id)providers
 {
-  v5 = a4;
-  v6 = [(CSDCallProviderManager *)self queue];
-  dispatch_assert_queue_V2(v6);
+  providersCopy = providers;
+  queue = [(CSDCallProviderManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [v5 objectForKeyedSubscript:@"com.apple.coretelephony"];
+  v7 = [providersCopy objectForKeyedSubscript:@"com.apple.coretelephony"];
 
   if (v7)
   {
-    v8 = [(CSDCallProviderManager *)self relayHostDeviceProvidersByIdentifier];
-    v9 = [v8 objectForKeyedSubscript:@"com.apple.coretelephony"];
+    relayHostDeviceProvidersByIdentifier = [(CSDCallProviderManager *)self relayHostDeviceProvidersByIdentifier];
+    v9 = [relayHostDeviceProvidersByIdentifier objectForKeyedSubscript:@"com.apple.coretelephony"];
     v10 = [v7 isEqualToCallProvider:v9];
 
     if ((v10 & 1) == 0)

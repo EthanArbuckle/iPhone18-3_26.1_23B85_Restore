@@ -1,26 +1,26 @@
 @interface CWFPrivateMACManager
 - (BOOL)__calloutToAllowRotation;
-- (BOOL)allowUserJoinFailureUIForNetworkProfile:(id)a3;
+- (BOOL)allowUserJoinFailureUIForNetworkProfile:(id)profile;
 - (CWFPrivateMACManager)init;
-- (CWFPrivateMACManager)initWithInterfaceName:(id)a3 hardwareMACAddress:(id)a4;
+- (CWFPrivateMACManager)initWithInterfaceName:(id)name hardwareMACAddress:(id)address;
 - (NSData)deviceKey;
 - (NSData)rotationKey;
 - (NSDate)rotationKeyUpdatedAt;
 - (id)__calloutToGetEffectiveHardwareMACAddress;
-- (id)privateMACAddressForNetworkProfile:(id)a3;
-- (id)setNetworkIDForAssociationWithMACAddress:(id)a3 networkProfile:(id)a4;
-- (int64_t)privateMACAddressModeForNetworkProfile:(id)a3;
+- (id)privateMACAddressForNetworkProfile:(id)profile;
+- (id)setNetworkIDForAssociationWithMACAddress:(id)address networkProfile:(id)profile;
+- (int64_t)privateMACAddressModeForNetworkProfile:(id)profile;
 - (int64_t)systemSetting;
-- (int64_t)temporaryUserSettingForNetworkProfile:(id)a3;
+- (int64_t)temporaryUserSettingForNetworkProfile:(id)profile;
 - (void)clearTemporaryUserSettings;
 - (void)invalidate;
-- (void)setDeviceKey:(id)a3;
-- (void)setRotationKey:(id)a3;
-- (void)setRotationKeyUpdatedAt:(id)a3;
-- (void)setSystemSetting:(int64_t)a3;
-- (void)setTemporaryUserSetting:(int64_t)a3 networkProfile:(id)a4;
-- (void)setUserJoinFailureUIState:(BOOL)a3 networkProfile:(id)a4;
-- (void)submitPrivateMACStatsMetricWithEventType:(id)a3 networkProfile:(id)a4;
+- (void)setDeviceKey:(id)key;
+- (void)setRotationKey:(id)key;
+- (void)setRotationKeyUpdatedAt:(id)at;
+- (void)setSystemSetting:(int64_t)setting;
+- (void)setTemporaryUserSetting:(int64_t)setting networkProfile:(id)profile;
+- (void)setUserJoinFailureUIState:(BOOL)state networkProfile:(id)profile;
+- (void)submitPrivateMACStatsMetricWithEventType:(id)type networkProfile:(id)profile;
 @end
 
 @implementation CWFPrivateMACManager
@@ -31,15 +31,15 @@
   objc_exception_throw(v2);
 }
 
-- (CWFPrivateMACManager)initWithInterfaceName:(id)a3 hardwareMACAddress:(id)a4
+- (CWFPrivateMACManager)initWithInterfaceName:(id)name hardwareMACAddress:(id)address
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  addressCopy = address;
   v31.receiver = self;
   v31.super_class = CWFPrivateMACManager;
   v9 = [(CWFPrivateMACManager *)&v31 init];
   v10 = v9;
-  if (!v7)
+  if (!nameCopy)
   {
     goto LABEL_15;
   }
@@ -50,13 +50,13 @@
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v9->_interfaceName, a3);
-  if (!v8)
+  objc_storeStrong(&v9->_interfaceName, name);
+  if (!addressCopy)
   {
     goto LABEL_15;
   }
 
-  objc_storeStrong(&v10->_hardwareMACAddress, a4);
+  objc_storeStrong(&v10->_hardwareMACAddress, address);
   v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v12 = dispatch_queue_create("com.apple.corewifi.private-mac.target", v11);
   targetQueue = v10->_targetQueue;
@@ -123,9 +123,9 @@
     rotationKey = v10->_rotationKey;
     v10->_rotationKey = v26;
 
-    v28 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     rotationKeyUpdatedAt = v10->_rotationKeyUpdatedAt;
-    v10->_rotationKeyUpdatedAt = v28;
+    v10->_rotationKeyUpdatedAt = date;
   }
 
   else
@@ -151,32 +151,32 @@ LABEL_14:
 
 - (NSData)rotationKey
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_rotationKey;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_rotationKey;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setRotationKey:(id)a3
+- (void)setRotationKey:(id)key
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  rotationKey = v6->_rotationKey;
-  if (rotationKey == v5 || v5 && rotationKey && ([(NSData *)rotationKey isEqual:v5]& 1) != 0)
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  rotationKey = selfCopy->_rotationKey;
+  if (rotationKey == keyCopy || keyCopy && rotationKey && ([(NSData *)rotationKey isEqual:keyCopy]& 1) != 0)
   {
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    objc_storeStrong(&v6->_rotationKey, a3);
-    [(NSMutableDictionary *)v6->_privateMACAddressCache removeAllObjects];
-    [(NSMutableArray *)v6->_privateMACAddressCacheIDList removeAllObjects];
-    objc_sync_exit(v6);
+    objc_storeStrong(&selfCopy->_rotationKey, key);
+    [(NSMutableDictionary *)selfCopy->_privateMACAddressCache removeAllObjects];
+    [(NSMutableArray *)selfCopy->_privateMACAddressCacheIDList removeAllObjects];
+    objc_sync_exit(selfCopy);
 
     v8 = CWFGetOSLog();
     if (v8)
@@ -192,23 +192,23 @@ LABEL_14:
 
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = CWFHexadecimalStringFromData(v5);
-      v12 = [v11 redactedForWiFi];
-      rotationInterval = v6->_rotationInterval;
+      v11 = CWFHexadecimalStringFromData(keyCopy);
+      redactedForWiFi = [v11 redactedForWiFi];
+      rotationInterval = selfCopy->_rotationInterval;
       v17 = 138543618;
-      v18 = v12;
+      v18 = redactedForWiFi;
       v19 = 2048;
       v20 = rotationInterval;
       _os_log_send_and_compose_impl();
     }
 
-    v14 = [(CWFPrivateMACManager *)v6 targetQueue];
+    targetQueue = [(CWFPrivateMACManager *)selfCopy targetQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_1E0C10D9C;
     block[3] = &unk_1E86E6010;
-    block[4] = v6;
-    dispatch_async(v14, block);
+    block[4] = selfCopy;
+    dispatch_async(targetQueue, block);
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -216,32 +216,32 @@ LABEL_14:
 
 - (NSDate)rotationKeyUpdatedAt
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_rotationKeyUpdatedAt;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_rotationKeyUpdatedAt;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setRotationKeyUpdatedAt:(id)a3
+- (void)setRotationKeyUpdatedAt:(id)at
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  rotationKeyUpdatedAt = v6->_rotationKeyUpdatedAt;
-  if (rotationKeyUpdatedAt == v5 || v5 && rotationKeyUpdatedAt && ([(NSDate *)rotationKeyUpdatedAt isEqual:v5]& 1) != 0)
+  atCopy = at;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  rotationKeyUpdatedAt = selfCopy->_rotationKeyUpdatedAt;
+  if (rotationKeyUpdatedAt == atCopy || atCopy && rotationKeyUpdatedAt && ([(NSDate *)rotationKeyUpdatedAt isEqual:atCopy]& 1) != 0)
   {
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    objc_storeStrong(&v6->_rotationKeyUpdatedAt, a3);
-    [(NSMutableDictionary *)v6->_privateMACAddressCache removeAllObjects];
-    [(NSMutableArray *)v6->_privateMACAddressCacheIDList removeAllObjects];
-    objc_sync_exit(v6);
+    objc_storeStrong(&selfCopy->_rotationKeyUpdatedAt, at);
+    [(NSMutableDictionary *)selfCopy->_privateMACAddressCache removeAllObjects];
+    [(NSMutableArray *)selfCopy->_privateMACAddressCacheIDList removeAllObjects];
+    objc_sync_exit(selfCopy);
 
     v8 = CWFGetOSLog();
     if (v8)
@@ -257,19 +257,19 @@ LABEL_14:
 
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      rotationInterval = v6->_rotationInterval;
+      rotationInterval = selfCopy->_rotationInterval;
       v15 = 134217984;
       v16 = rotationInterval;
       _os_log_send_and_compose_impl();
     }
 
-    v12 = [(CWFPrivateMACManager *)v6 targetQueue];
+    targetQueue = [(CWFPrivateMACManager *)selfCopy targetQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_1E0C11088;
     block[3] = &unk_1E86E6010;
-    block[4] = v6;
-    dispatch_async(v12, block);
+    block[4] = selfCopy;
+    dispatch_async(targetQueue, block);
   }
 
   v13 = *MEMORY[0x1E69E9840];
@@ -277,32 +277,32 @@ LABEL_14:
 
 - (NSData)deviceKey
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_deviceKey;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_deviceKey;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setDeviceKey:(id)a3
+- (void)setDeviceKey:(id)key
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  deviceKey = v6->_deviceKey;
-  if (deviceKey == v5 || v5 && deviceKey && ([(NSData *)deviceKey isEqual:v5]& 1) != 0)
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  deviceKey = selfCopy->_deviceKey;
+  if (deviceKey == keyCopy || keyCopy && deviceKey && ([(NSData *)deviceKey isEqual:keyCopy]& 1) != 0)
   {
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    objc_storeStrong(&v6->_deviceKey, a3);
-    [(NSMutableDictionary *)v6->_privateMACAddressCache removeAllObjects];
-    [(NSMutableArray *)v6->_privateMACAddressCacheIDList removeAllObjects];
-    objc_sync_exit(v6);
+    objc_storeStrong(&selfCopy->_deviceKey, key);
+    [(NSMutableDictionary *)selfCopy->_privateMACAddressCache removeAllObjects];
+    [(NSMutableArray *)selfCopy->_privateMACAddressCacheIDList removeAllObjects];
+    objc_sync_exit(selfCopy);
 
     v8 = CWFGetOSLog();
     if (v8)
@@ -318,19 +318,19 @@ LABEL_14:
 
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = CWFHexadecimalStringFromData(v5);
+      v11 = CWFHexadecimalStringFromData(keyCopy);
       [v11 redactedForWiFi];
       v16 = v15 = 138543362;
       _os_log_send_and_compose_impl();
     }
 
-    v12 = [(CWFPrivateMACManager *)v6 targetQueue];
+    targetQueue = [(CWFPrivateMACManager *)selfCopy targetQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_1E0C1139C;
     block[3] = &unk_1E86E6010;
-    block[4] = v6;
-    dispatch_async(v12, block);
+    block[4] = selfCopy;
+    dispatch_async(targetQueue, block);
   }
 
   v13 = *MEMORY[0x1E69E9840];
@@ -338,20 +338,20 @@ LABEL_14:
 
 - (int64_t)systemSetting
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  systemSetting = v2->_systemSetting;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  systemSetting = selfCopy->_systemSetting;
+  objc_sync_exit(selfCopy);
 
   return systemSetting;
 }
 
-- (void)setSystemSetting:(int64_t)a3
+- (void)setSystemSetting:(int64_t)setting
 {
   v14 = *MEMORY[0x1E69E9840];
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_systemSetting == a3)
+  if (obj->_systemSetting == setting)
   {
     objc_sync_exit(obj);
     v4 = *MEMORY[0x1E69E9840];
@@ -359,7 +359,7 @@ LABEL_14:
 
   else
   {
-    obj->_systemSetting = a3;
+    obj->_systemSetting = setting;
     [(NSMutableDictionary *)obj->_privateMACAddressCache removeAllObjects];
     [(NSMutableArray *)obj->_privateMACAddressCacheIDList removeAllObjects];
     objc_sync_exit(obj);
@@ -378,18 +378,18 @@ LABEL_14:
 
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      sub_1E0BEF2F4(a3);
+      sub_1E0BEF2F4(setting);
       v13 = v12 = 138543362;
       _os_log_send_and_compose_impl();
     }
 
-    v8 = [(CWFPrivateMACManager *)obj targetQueue];
+    targetQueue = [(CWFPrivateMACManager *)obj targetQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_1E0C11680;
     block[3] = &unk_1E86E6010;
     block[4] = obj;
-    dispatch_async(v8, block);
+    dispatch_async(targetQueue, block);
 
     v9 = *MEMORY[0x1E69E9840];
   }
@@ -406,7 +406,7 @@ LABEL_14:
   v11[2] = 0x2020000000;
   v12 = 0;
   v3 = dispatch_block_create(0, &unk_1F5B89A70);
-  v4 = [(CWFPrivateMACManager *)self targetQueue];
+  targetQueue = [(CWFPrivateMACManager *)self targetQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1E0C11858;
@@ -416,23 +416,23 @@ LABEL_14:
   v7[4] = self;
   v8 = v3;
   v5 = v3;
-  dispatch_async(v4, v7);
+  dispatch_async(targetQueue, v7);
 
   dispatch_block_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
-  LOBYTE(v4) = *(v14 + 24);
+  LOBYTE(targetQueue) = *(v14 + 24);
 
   _Block_object_dispose(v11, 8);
   _Block_object_dispose(&v13, 8);
-  return v4;
+  return targetQueue;
 }
 
-- (id)privateMACAddressForNetworkProfile:(id)a3
+- (id)privateMACAddressForNetworkProfile:(id)profile
 {
   v79 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 identifier];
+  profileCopy = profile;
+  identifier = [profileCopy identifier];
 
-  if (!v5)
+  if (!identifier)
   {
     v62 = *MEMORY[0x1E696A798];
     v63 = CWFErrorDescription(*MEMORY[0x1E696A798], 0x16uLL);
@@ -440,14 +440,14 @@ LABEL_14:
 LABEL_49:
     v26 = v64;
 
-    v14 = 0;
-    v13 = 0;
+    rotationKey = 0;
+    deviceKey = 0;
 LABEL_51:
-    v25 = 0;
+    cachedPrivateMACAddress3 = 0;
     goto LABEL_34;
   }
 
-  if ([(CWFPrivateMACManager *)self privateMACAddressModeForNetworkProfile:v4]== 1)
+  if ([(CWFPrivateMACManager *)self privateMACAddressModeForNetworkProfile:profileCopy]== 1)
   {
     v65 = *MEMORY[0x1E696A798];
     v63 = CWFErrorDescription(*MEMORY[0x1E696A798], 0x2DuLL);
@@ -457,26 +457,26 @@ LABEL_51:
 
   if ([(CWFPrivateMACManager *)self __calloutToAllowRotation])
   {
-    v6 = self;
-    objc_sync_enter(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     v8 = v7;
-    rotationInterval = v6->_rotationInterval;
-    [(NSDate *)v6->_rotationKeyUpdatedAt timeIntervalSinceReferenceDate];
-    if (ceil(v8 / rotationInterval) != ceil(v10 / v6->_rotationInterval))
+    rotationInterval = selfCopy->_rotationInterval;
+    [(NSDate *)selfCopy->_rotationKeyUpdatedAt timeIntervalSinceReferenceDate];
+    if (ceil(v8 / rotationInterval) != ceil(v10 / selfCopy->_rotationInterval))
     {
       v11 = sub_1E0BEF1AC(0x100uLL);
-      [(CWFPrivateMACManager *)v6 setRotationKey:v11];
+      [(CWFPrivateMACManager *)selfCopy setRotationKey:v11];
 
       v12 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:v8];
-      [(CWFPrivateMACManager *)v6 setRotationKeyUpdatedAt:v12];
+      [(CWFPrivateMACManager *)selfCopy setRotationKeyUpdatedAt:v12];
     }
 
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
   }
 
-  v13 = [(CWFPrivateMACManager *)self deviceKey];
-  if (!v13)
+  deviceKey = [(CWFPrivateMACManager *)self deviceKey];
+  if (!deviceKey)
   {
     v66 = *MEMORY[0x1E696A798];
     v63 = CWFErrorDescription(*MEMORY[0x1E696A798], 6uLL);
@@ -484,30 +484,30 @@ LABEL_51:
     goto LABEL_49;
   }
 
-  v14 = [(CWFPrivateMACManager *)self rotationKey];
-  if (!v14)
+  rotationKey = [(CWFPrivateMACManager *)self rotationKey];
+  if (!rotationKey)
   {
     v67 = *MEMORY[0x1E696A798];
     v68 = CWFErrorDescription(*MEMORY[0x1E696A798], 6uLL);
     v26 = CWFErrorWithDescription(v67, 6, v68);
 
-    v14 = 0;
+    rotationKey = 0;
     goto LABEL_51;
   }
 
-  if ([v4 isPublicAirPlayNetwork])
+  if ([profileCopy isPublicAirPlayNetwork])
   {
-    v15 = [v4 cachedPrivateMACAddress];
-    if (!v15)
+    cachedPrivateMACAddress = [profileCopy cachedPrivateMACAddress];
+    if (!cachedPrivateMACAddress)
     {
       goto LABEL_17;
     }
 
-    v16 = [v4 lastJoinedAt];
-    [v16 timeIntervalSinceReferenceDate];
+    lastJoinedAt = [profileCopy lastJoinedAt];
+    [lastJoinedAt timeIntervalSinceReferenceDate];
     v18 = v17;
-    v19 = [v4 lastDisconnectTimestamp];
-    [v19 timeIntervalSinceReferenceDate];
+    lastDisconnectTimestamp = [profileCopy lastDisconnectTimestamp];
+    [lastDisconnectTimestamp timeIntervalSinceReferenceDate];
     v21 = v20;
 
     if (v18 <= v21)
@@ -515,12 +515,12 @@ LABEL_51:
 LABEL_17:
       v23 = sub_1E0BEF1AC(0x100uLL);
 
-      v24 = [(CWFPrivateMACManager *)self hardwareMACAddress];
+      hardwareMACAddress = [(CWFPrivateMACManager *)self hardwareMACAddress];
       v70 = 0;
-      v25 = sub_1E0BEF394(v4, v24, v13, v23, &v70);
+      cachedPrivateMACAddress3 = sub_1E0BEF394(profileCopy, hardwareMACAddress, deviceKey, v23, &v70);
       v26 = v70;
 
-      v14 = v23;
+      rotationKey = v23;
       goto LABEL_34;
     }
 
@@ -545,27 +545,27 @@ LABEL_17:
     v22 = 1209600.0;
   }
 
-  v27 = [v4 cachedPrivateMACAddress];
-  if (v27 && [(CWFPrivateMACManager *)self privateMACAddressModeForNetworkProfile:v4]== 2)
+  cachedPrivateMACAddress2 = [profileCopy cachedPrivateMACAddress];
+  if (cachedPrivateMACAddress2 && [(CWFPrivateMACManager *)self privateMACAddressModeForNetworkProfile:profileCopy]== 2)
   {
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     v29 = v28;
-    v30 = [v4 cachedPrivateMACAddressUpdatedAt];
-    [v30 timeIntervalSinceReferenceDate];
+    cachedPrivateMACAddressUpdatedAt = [profileCopy cachedPrivateMACAddressUpdatedAt];
+    [cachedPrivateMACAddressUpdatedAt timeIntervalSinceReferenceDate];
     if (v29 - v31 < v22)
     {
 
 LABEL_33:
-      v25 = [v4 cachedPrivateMACAddress];
+      cachedPrivateMACAddress3 = [profileCopy cachedPrivateMACAddress];
       v26 = 0;
       goto LABEL_34;
     }
 
-    v47 = [v4 lastJoinedAt];
-    [v47 timeIntervalSinceReferenceDate];
+    lastJoinedAt2 = [profileCopy lastJoinedAt];
+    [lastJoinedAt2 timeIntervalSinceReferenceDate];
     v49 = v48;
-    v50 = [v4 lastDisconnectTimestamp];
-    [v50 timeIntervalSinceReferenceDate];
+    lastDisconnectTimestamp2 = [profileCopy lastDisconnectTimestamp];
+    [lastDisconnectTimestamp2 timeIntervalSinceReferenceDate];
     v52 = v51;
 
     if (v49 > v52)
@@ -578,10 +578,10 @@ LABEL_33:
   {
   }
 
-  v32 = [v4 cachedPrivateMACAddress];
-  if (v32)
+  cachedPrivateMACAddress4 = [profileCopy cachedPrivateMACAddress];
+  if (cachedPrivateMACAddress4)
   {
-    v33 = [(CWFPrivateMACManager *)self privateMACAddressModeForNetworkProfile:v4];
+    v33 = [(CWFPrivateMACManager *)self privateMACAddressModeForNetworkProfile:profileCopy];
 
     if (v33 == 3)
     {
@@ -589,51 +589,51 @@ LABEL_33:
     }
   }
 
-  v34 = self;
-  objc_sync_enter(v34);
-  privateMACAddressCache = v34->_privateMACAddressCache;
-  v36 = [v4 identifier];
-  v37 = [(NSMutableDictionary *)privateMACAddressCache objectForKeyedSubscript:v36];
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  privateMACAddressCache = selfCopy2->_privateMACAddressCache;
+  identifier2 = [profileCopy identifier];
+  v37 = [(NSMutableDictionary *)privateMACAddressCache objectForKeyedSubscript:identifier2];
 
   if (v37)
   {
-    v25 = v37;
+    cachedPrivateMACAddress3 = v37;
     v26 = 0;
   }
 
   else
   {
-    v38 = [(CWFPrivateMACManager *)v34 hardwareMACAddress];
+    hardwareMACAddress2 = [(CWFPrivateMACManager *)selfCopy2 hardwareMACAddress];
     v69 = 0;
-    v25 = sub_1E0BEF394(v4, v38, v13, v14, &v69);
+    cachedPrivateMACAddress3 = sub_1E0BEF394(profileCopy, hardwareMACAddress2, deviceKey, rotationKey, &v69);
     v26 = v69;
 
-    if (v25)
+    if (cachedPrivateMACAddress3)
     {
-      v39 = v34->_privateMACAddressCache;
-      v40 = [v4 identifier];
-      [(NSMutableDictionary *)v39 setObject:v25 forKeyedSubscript:v40];
+      v39 = selfCopy2->_privateMACAddressCache;
+      identifier3 = [profileCopy identifier];
+      [(NSMutableDictionary *)v39 setObject:cachedPrivateMACAddress3 forKeyedSubscript:identifier3];
 
-      privateMACAddressCacheIDList = v34->_privateMACAddressCacheIDList;
-      v42 = [v4 identifier];
-      [(NSMutableArray *)privateMACAddressCacheIDList removeObject:v42];
+      privateMACAddressCacheIDList = selfCopy2->_privateMACAddressCacheIDList;
+      identifier4 = [profileCopy identifier];
+      [(NSMutableArray *)privateMACAddressCacheIDList removeObject:identifier4];
 
-      v43 = v34->_privateMACAddressCacheIDList;
-      v44 = [v4 identifier];
-      [(NSMutableArray *)v43 insertObject:v44 atIndex:0];
+      v43 = selfCopy2->_privateMACAddressCacheIDList;
+      identifier5 = [profileCopy identifier];
+      [(NSMutableArray *)v43 insertObject:identifier5 atIndex:0];
 
-      if ([(NSMutableArray *)v34->_privateMACAddressCacheIDList count]== 10)
+      if ([(NSMutableArray *)selfCopy2->_privateMACAddressCacheIDList count]== 10)
       {
-        v45 = v34->_privateMACAddressCache;
-        v46 = [(NSMutableArray *)v34->_privateMACAddressCacheIDList lastObject];
-        [(NSMutableDictionary *)v45 setObject:0 forKeyedSubscript:v46];
+        v45 = selfCopy2->_privateMACAddressCache;
+        lastObject = [(NSMutableArray *)selfCopy2->_privateMACAddressCacheIDList lastObject];
+        [(NSMutableDictionary *)v45 setObject:0 forKeyedSubscript:lastObject];
 
-        [(NSMutableArray *)v34->_privateMACAddressCacheIDList removeLastObject];
+        [(NSMutableArray *)selfCopy2->_privateMACAddressCacheIDList removeLastObject];
       }
     }
   }
 
-  objc_sync_exit(v34);
+  objc_sync_exit(selfCopy2);
 LABEL_34:
   v53 = CWFGetOSLog();
   if (v53)
@@ -649,7 +649,7 @@ LABEL_34:
 
   if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
   {
-    if (v25)
+    if (cachedPrivateMACAddress3)
     {
       v56 = "Successfully created";
     }
@@ -659,13 +659,13 @@ LABEL_34:
       v56 = "FAILED to create";
     }
 
-    v57 = [v25 redactedForWiFi];
+    redactedForWiFi = [cachedPrivateMACAddress3 redactedForWiFi];
     v71 = 136446978;
     v72 = v56;
     v73 = 2114;
-    v74 = v57;
+    v74 = redactedForWiFi;
     v75 = 2114;
-    v76 = v4;
+    v76 = profileCopy;
     v77 = 2114;
     v78 = v26;
     _os_log_send_and_compose_impl();
@@ -678,7 +678,7 @@ LABEL_34:
 
   else
   {
-    v58 = v25;
+    v58 = cachedPrivateMACAddress3;
   }
 
   v59 = v58;
@@ -700,7 +700,7 @@ LABEL_34:
   v12[2] = 0x2020000000;
   v13 = 0;
   v3 = dispatch_block_create(0, &unk_1F5B899D0);
-  v4 = [(CWFPrivateMACManager *)self targetQueue];
+  targetQueue = [(CWFPrivateMACManager *)self targetQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_1E0C12268;
@@ -710,7 +710,7 @@ LABEL_34:
   v8[4] = self;
   v9 = v3;
   v5 = v3;
-  dispatch_async(v4, v8);
+  dispatch_async(targetQueue, v8);
 
   dispatch_block_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
   v6 = v15[5];
@@ -721,15 +721,15 @@ LABEL_34:
   return v6;
 }
 
-- (int64_t)privateMACAddressModeForNetworkProfile:(id)a3
+- (int64_t)privateMACAddressModeForNetworkProfile:(id)profile
 {
-  v4 = a3;
-  v5 = [v4 effectivePrivateMACModeWithSystemSetting:{-[CWFPrivateMACManager systemSetting](self, "systemSetting")}];
-  v6 = [v4 addedAt];
+  profileCopy = profile;
+  v5 = [profileCopy effectivePrivateMACModeWithSystemSetting:{-[CWFPrivateMACManager systemSetting](self, "systemSetting")}];
+  addedAt = [profileCopy addedAt];
 
-  if (!v6)
+  if (!addedAt)
   {
-    v7 = [(CWFPrivateMACManager *)self temporaryUserSettingForNetworkProfile:v4];
+    v7 = [(CWFPrivateMACManager *)self temporaryUserSettingForNetworkProfile:profileCopy];
     if (v7)
     {
       v5 = v7;
@@ -739,31 +739,31 @@ LABEL_34:
   return v5;
 }
 
-- (void)submitPrivateMACStatsMetricWithEventType:(id)a3 networkProfile:(id)a4
+- (void)submitPrivateMACStatsMetricWithEventType:(id)type networkProfile:(id)profile
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  profileCopy = profile;
   if (!objc_opt_class())
   {
     goto LABEL_55;
   }
 
-  v8 = [MEMORY[0x1E695DF90] dictionary];
-  [v8 setObject:v6 forKeyedSubscript:@"privateMacEvent"];
-  v9 = [(CWFPrivateMACManager *)self privateMACAddressModeForNetworkProfile:v7];
-  v10 = [(CWFPrivateMACManager *)self privateMACAddressForNetworkProfile:v7];
-  v11 = [(CWFPrivateMACManager *)self hardwareMACAddress];
-  v12 = [(CWFPrivateMACManager *)self __calloutToGetEffectiveHardwareMACAddress];
-  v13 = v12;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:typeCopy forKeyedSubscript:@"privateMacEvent"];
+  v9 = [(CWFPrivateMACManager *)self privateMACAddressModeForNetworkProfile:profileCopy];
+  v10 = [(CWFPrivateMACManager *)self privateMACAddressForNetworkProfile:profileCopy];
+  hardwareMACAddress = [(CWFPrivateMACManager *)self hardwareMACAddress];
+  __calloutToGetEffectiveHardwareMACAddress = [(CWFPrivateMACManager *)self __calloutToGetEffectiveHardwareMACAddress];
+  v13 = __calloutToGetEffectiveHardwareMACAddress;
   switch(v9)
   {
     case 3:
-      if (v12 != v10 && (!v12 || !v10 || ([v12 isEqual:v10] & 1) == 0))
+      if (__calloutToGetEffectiveHardwareMACAddress != v10 && (!__calloutToGetEffectiveHardwareMACAddress || !v10 || ([__calloutToGetEffectiveHardwareMACAddress isEqual:v10] & 1) == 0))
       {
-        v21 = [v7 cachedPrivateMACAddress];
-        v16 = v21;
-        if (v13 == v21)
+        cachedPrivateMACAddress = [profileCopy cachedPrivateMACAddress];
+        v16 = cachedPrivateMACAddress;
+        if (v13 == cachedPrivateMACAddress)
         {
         }
 
@@ -774,15 +774,15 @@ LABEL_34:
             goto LABEL_28;
           }
 
-          v22 = [v7 cachedPrivateMACAddress];
-          if (!v22)
+          cachedPrivateMACAddress2 = [profileCopy cachedPrivateMACAddress];
+          if (!cachedPrivateMACAddress2)
           {
             goto LABEL_28;
           }
 
-          v23 = v22;
-          v24 = [v7 cachedPrivateMACAddress];
-          v25 = [v13 isEqual:v24];
+          v23 = cachedPrivateMACAddress2;
+          cachedPrivateMACAddress3 = [profileCopy cachedPrivateMACAddress];
+          v25 = [v13 isEqual:cachedPrivateMACAddress3];
 
           if ((v25 & 1) == 0)
           {
@@ -794,14 +794,14 @@ LABEL_34:
       v14 = @"Static";
       goto LABEL_34;
     case 2:
-      if (v12 == v10 || v12 && v10 && ([v12 isEqual:v10] & 1) != 0)
+      if (__calloutToGetEffectiveHardwareMACAddress == v10 || __calloutToGetEffectiveHardwareMACAddress && v10 && ([__calloutToGetEffectiveHardwareMACAddress isEqual:v10] & 1) != 0)
       {
         goto LABEL_31;
       }
 
-      v15 = [v7 cachedPrivateMACAddress];
-      v16 = v15;
-      if (v13 == v15)
+      cachedPrivateMACAddress4 = [profileCopy cachedPrivateMACAddress];
+      v16 = cachedPrivateMACAddress4;
+      if (v13 == cachedPrivateMACAddress4)
       {
 
         goto LABEL_31;
@@ -809,12 +809,12 @@ LABEL_34:
 
       if (v13)
       {
-        v17 = [v7 cachedPrivateMACAddress];
-        if (v17)
+        cachedPrivateMACAddress5 = [profileCopy cachedPrivateMACAddress];
+        if (cachedPrivateMACAddress5)
         {
-          v18 = v17;
-          v19 = [v7 cachedPrivateMACAddress];
-          v20 = [v13 isEqual:v19];
+          v18 = cachedPrivateMACAddress5;
+          cachedPrivateMACAddress6 = [profileCopy cachedPrivateMACAddress];
+          v20 = [v13 isEqual:cachedPrivateMACAddress6];
 
           if ((v20 & 1) == 0)
           {
@@ -831,23 +831,23 @@ LABEL_28:
 
       goto LABEL_29;
     case 1:
-      if (v12 == v11)
+      if (__calloutToGetEffectiveHardwareMACAddress == hardwareMACAddress)
       {
         goto LABEL_9;
       }
 
       v14 = @"Configured";
-      if (!v12 || !v11)
+      if (!__calloutToGetEffectiveHardwareMACAddress || !hardwareMACAddress)
       {
         goto LABEL_34;
       }
 
-      if ([v12 isEqual:v11])
+      if ([__calloutToGetEffectiveHardwareMACAddress isEqual:hardwareMACAddress])
       {
 LABEL_9:
         v14 = @"Physical";
 LABEL_34:
-        [v8 setObject:v14 forKeyedSubscript:@"privateMacType"];
+        [dictionary setObject:v14 forKeyedSubscript:@"privateMacType"];
         break;
       }
 
@@ -856,10 +856,10 @@ LABEL_29:
       goto LABEL_34;
   }
 
-  v26 = [v7 privateMACAddressModeUserSetting];
+  privateMACAddressModeUserSetting = [profileCopy privateMACAddressModeUserSetting];
   v27 = MEMORY[0x1E695E118];
   v28 = MEMORY[0x1E695E110];
-  if (v26)
+  if (privateMACAddressModeUserSetting)
   {
     v29 = MEMORY[0x1E695E118];
   }
@@ -869,8 +869,8 @@ LABEL_29:
     v29 = MEMORY[0x1E695E110];
   }
 
-  [v8 setObject:v29 forKeyedSubscript:@"privateMacToggled"];
-  if ([v7 privateMACAddressModeConfigurationProfileSetting] == 1)
+  [dictionary setObject:v29 forKeyedSubscript:@"privateMacToggled"];
+  if ([profileCopy privateMACAddressModeConfigurationProfileSetting] == 1)
   {
     v30 = v27;
   }
@@ -880,8 +880,8 @@ LABEL_29:
     v30 = v28;
   }
 
-  [v8 setObject:v30 forKeyedSubscript:@"privateMacDisabledByProfile"];
-  if ([v7 privateMACAddressEvaluationState])
+  [dictionary setObject:v30 forKeyedSubscript:@"privateMacDisabledByProfile"];
+  if ([profileCopy privateMACAddressEvaluationState])
   {
     v31 = v27;
   }
@@ -891,15 +891,15 @@ LABEL_29:
     v31 = v28;
   }
 
-  [v8 setObject:v31 forKeyedSubscript:@"privateMacClassification"];
-  if ([v7 networkOfInterestHomeState])
+  [dictionary setObject:v31 forKeyedSubscript:@"privateMacClassification"];
+  if ([profileCopy networkOfInterestHomeState])
   {
-    if ([v7 networkOfInterestHomeState] != 1 && objc_msgSend(v7, "networkOfInterestHomeState") != 3)
+    if ([profileCopy networkOfInterestHomeState] != 1 && objc_msgSend(profileCopy, "networkOfInterestHomeState") != 3)
     {
       v27 = v28;
     }
 
-    [v8 setObject:v27 forKeyedSubscript:@"privateMacNetworkTypeIsHome"];
+    [dictionary setObject:v27 forKeyedSubscript:@"privateMacNetworkTypeIsHome"];
   }
 
   v32 = CWFGetOSLog();
@@ -919,40 +919,40 @@ LABEL_29:
     _os_log_send_and_compose_impl();
   }
 
-  v37 = v8;
-  v35 = v8;
+  v37 = dictionary;
+  v35 = dictionary;
   AnalyticsSendEventLazy();
 
 LABEL_55:
   v36 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setUserJoinFailureUIState:(BOOL)a3 networkProfile:(id)a4
+- (void)setUserJoinFailureUIState:(BOOL)state networkProfile:(id)profile
 {
-  v4 = a3;
+  stateCopy = state;
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [v6 identifier];
+  profileCopy = profile;
+  identifier = [profileCopy identifier];
 
-  if (!v7)
+  if (!identifier)
   {
     goto LABEL_16;
   }
 
-  v8 = self;
-  objc_sync_enter(v8);
-  userJoinFailureTimestampMap = v8->_userJoinFailureTimestampMap;
-  v10 = [v6 identifier];
-  v11 = [(NSMutableDictionary *)userJoinFailureTimestampMap objectForKeyedSubscript:v10];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  userJoinFailureTimestampMap = selfCopy->_userJoinFailureTimestampMap;
+  identifier2 = [profileCopy identifier];
+  v11 = [(NSMutableDictionary *)userJoinFailureTimestampMap objectForKeyedSubscript:identifier2];
 
-  userJoinFailureCountMap = v8->_userJoinFailureCountMap;
-  v13 = [v6 identifier];
-  v14 = [(NSMutableDictionary *)userJoinFailureCountMap objectForKeyedSubscript:v13];
-  v15 = [v14 unsignedIntegerValue];
+  userJoinFailureCountMap = selfCopy->_userJoinFailureCountMap;
+  identifier3 = [profileCopy identifier];
+  v14 = [(NSMutableDictionary *)userJoinFailureCountMap objectForKeyedSubscript:identifier3];
+  unsignedIntegerValue = [v14 unsignedIntegerValue];
 
-  v16 = [MEMORY[0x1E695DF00] date];
-  v17 = v16;
-  if (v4)
+  date = [MEMORY[0x1E695DF00] date];
+  v17 = date;
+  if (stateCopy)
   {
     if (_os_feature_enabled_impl())
     {
@@ -965,32 +965,32 @@ LABEL_55:
       [v25 setHour:5];
       [v25 setMinute:0];
       [v25 setSecond:0];
-      v26 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v18 = [v26 nextDateAfterDate:v17 matchingComponents:v25 options:1024];
+      currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+      v18 = [currentCalendar nextDateAfterDate:v17 matchingComponents:v25 options:1024];
 
       v11 = v25;
     }
 
-    v27 = v8->_userJoinFailureCountMap;
-    v28 = [v6 identifier];
-    [(NSMutableDictionary *)v27 setObject:0 forKeyedSubscript:v28];
+    v27 = selfCopy->_userJoinFailureCountMap;
+    identifier4 = [profileCopy identifier];
+    [(NSMutableDictionary *)v27 setObject:0 forKeyedSubscript:identifier4];
 
-    v29 = v8->_userJoinFailureTimestampMap;
-    v22 = [v6 identifier];
-    [(NSMutableDictionary *)v29 setObject:v18 forKeyedSubscript:v22];
+    v29 = selfCopy->_userJoinFailureTimestampMap;
+    identifier5 = [profileCopy identifier];
+    [(NSMutableDictionary *)v29 setObject:v18 forKeyedSubscript:identifier5];
     v11 = v18;
     goto LABEL_9;
   }
 
-  [v16 timeIntervalSinceReferenceDate];
+  [date timeIntervalSinceReferenceDate];
   v20 = v19;
   [v11 timeIntervalSinceReferenceDate];
   if (v20 >= v21)
   {
-    v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v15 + 1];
-    v23 = v8->_userJoinFailureCountMap;
-    v24 = [v6 identifier];
-    [(NSMutableDictionary *)v23 setObject:v22 forKeyedSubscript:v24];
+    identifier5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue + 1];
+    v23 = selfCopy->_userJoinFailureCountMap;
+    identifier6 = [profileCopy identifier];
+    [(NSMutableDictionary *)v23 setObject:identifier5 forKeyedSubscript:identifier6];
 
 LABEL_9:
   }
@@ -1013,32 +1013,32 @@ LABEL_9:
     _os_log_send_and_compose_impl();
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 LABEL_16:
 
   v33 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)allowUserJoinFailureUIForNetworkProfile:(id)a3
+- (BOOL)allowUserJoinFailureUIForNetworkProfile:(id)profile
 {
-  v4 = a3;
-  v5 = [v4 identifier];
+  profileCopy = profile;
+  identifier = [profileCopy identifier];
 
-  if (v5)
+  if (identifier)
   {
-    v6 = self;
-    objc_sync_enter(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     v8 = v7;
-    userJoinFailureTimestampMap = v6->_userJoinFailureTimestampMap;
-    v10 = [v4 identifier];
-    v11 = [(NSMutableDictionary *)userJoinFailureTimestampMap objectForKeyedSubscript:v10];
+    userJoinFailureTimestampMap = selfCopy->_userJoinFailureTimestampMap;
+    identifier2 = [profileCopy identifier];
+    v11 = [(NSMutableDictionary *)userJoinFailureTimestampMap objectForKeyedSubscript:identifier2];
     [v11 timeIntervalSinceReferenceDate];
     if (v8 >= v12)
     {
-      userJoinFailureCountMap = v6->_userJoinFailureCountMap;
-      v15 = [v4 identifier];
-      v16 = [(NSMutableDictionary *)userJoinFailureCountMap objectForKeyedSubscript:v15];
+      userJoinFailureCountMap = selfCopy->_userJoinFailureCountMap;
+      identifier3 = [profileCopy identifier];
+      v16 = [(NSMutableDictionary *)userJoinFailureCountMap objectForKeyedSubscript:identifier3];
       v13 = [v16 unsignedIntegerValue] > 1;
     }
 
@@ -1047,7 +1047,7 @@ LABEL_16:
       v13 = 0;
     }
 
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -1058,47 +1058,47 @@ LABEL_16:
   return v13;
 }
 
-- (int64_t)temporaryUserSettingForNetworkProfile:(id)a3
+- (int64_t)temporaryUserSettingForNetworkProfile:(id)profile
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [v4 identifier];
+  profileCopy = profile;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  identifier = [profileCopy identifier];
 
-  if (v6)
+  if (identifier)
   {
-    tempUserSettingMap = v5->_tempUserSettingMap;
-    v8 = [v4 identifier];
-    v9 = [(NSMutableDictionary *)tempUserSettingMap objectForKeyedSubscript:v8];
-    v10 = [v9 integerValue];
+    tempUserSettingMap = selfCopy->_tempUserSettingMap;
+    identifier2 = [profileCopy identifier];
+    v9 = [(NSMutableDictionary *)tempUserSettingMap objectForKeyedSubscript:identifier2];
+    integerValue = [v9 integerValue];
   }
 
   else
   {
-    v10 = 0;
+    integerValue = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  return v10;
+  return integerValue;
 }
 
-- (void)setTemporaryUserSetting:(int64_t)a3 networkProfile:(id)a4
+- (void)setTemporaryUserSetting:(int64_t)setting networkProfile:(id)profile
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [v6 identifier];
+  profileCopy = profile;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  identifier = [profileCopy identifier];
 
-  if (v8)
+  if (identifier)
   {
-    if (a3)
+    if (setting)
     {
-      v9 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-      tempUserSettingMap = v7->_tempUserSettingMap;
-      v11 = [v6 identifier];
-      [(NSMutableDictionary *)tempUserSettingMap setObject:v9 forKeyedSubscript:v11];
+      v9 = [MEMORY[0x1E696AD98] numberWithInteger:setting];
+      tempUserSettingMap = selfCopy->_tempUserSettingMap;
+      identifier2 = [profileCopy identifier];
+      [(NSMutableDictionary *)tempUserSettingMap setObject:v9 forKeyedSubscript:identifier2];
 
       v12 = CWFGetOSLog();
       if (v12)
@@ -1114,16 +1114,16 @@ LABEL_16:
 
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = sub_1E0BEF2F4(a3);
+        v20 = sub_1E0BEF2F4(setting);
         _os_log_send_and_compose_impl();
       }
     }
 
     else
     {
-      v14 = v7->_tempUserSettingMap;
-      v15 = [v6 identifier];
-      [(NSMutableDictionary *)v14 setObject:0 forKeyedSubscript:v15];
+      v14 = selfCopy->_tempUserSettingMap;
+      identifier3 = [profileCopy identifier];
+      [(NSMutableDictionary *)v14 setObject:0 forKeyedSubscript:identifier3];
 
       v16 = CWFGetOSLog();
       if (v16)
@@ -1144,16 +1144,16 @@ LABEL_16:
     }
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
 - (void)clearTemporaryUserSettings
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(NSMutableDictionary *)v2->_tempUserSettingMap removeAllObjects];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableDictionary *)selfCopy->_tempUserSettingMap removeAllObjects];
   v3 = CWFGetOSLog();
   if (v3)
   {
@@ -1171,47 +1171,47 @@ LABEL_16:
     _os_log_send_and_compose_impl();
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)setNetworkIDForAssociationWithMACAddress:(id)a3 networkProfile:(id)a4
+- (id)setNetworkIDForAssociationWithMACAddress:(id)address networkProfile:(id)profile
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  if (!v6)
+  addressCopy = address;
+  profileCopy = profile;
+  hardwareMACAddress = addressCopy;
+  if (!addressCopy)
   {
-    v8 = [(CWFPrivateMACManager *)self hardwareMACAddress];
+    hardwareMACAddress = [(CWFPrivateMACManager *)self hardwareMACAddress];
   }
 
   v47 = 0;
-  v9 = sub_1E0BEF670(v7, v8, &v47);
+  v9 = sub_1E0BEF670(profileCopy, hardwareMACAddress, &v47);
   v10 = v47;
-  if (!v6)
+  if (!addressCopy)
   {
   }
 
   if (v9)
   {
-    v11 = [v7 identifier];
+    identifier = [profileCopy identifier];
 
-    if (v11)
+    if (identifier)
     {
-      v12 = [v7 cachedNetworkID];
-      v13 = v12;
-      if (v12 == v9)
+      cachedNetworkID = [profileCopy cachedNetworkID];
+      v13 = cachedNetworkID;
+      if (cachedNetworkID == v9)
       {
       }
 
       else
       {
-        v14 = [v7 cachedNetworkID];
-        if (v14)
+        cachedNetworkID2 = [profileCopy cachedNetworkID];
+        if (cachedNetworkID2)
         {
-          v15 = v14;
-          v16 = [v7 cachedNetworkID];
-          v17 = [v16 isEqual:v9];
+          v15 = cachedNetworkID2;
+          cachedNetworkID3 = [profileCopy cachedNetworkID];
+          v17 = [cachedNetworkID3 isEqual:v9];
 
           if (v17)
           {
@@ -1223,20 +1223,20 @@ LABEL_16:
         {
         }
 
-        v18 = [(CWFPrivateMACManager *)self targetQueue];
+        targetQueue = [(CWFPrivateMACManager *)self targetQueue];
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = sub_1E0C13698;
         block[3] = &unk_1E86E6420;
         block[4] = self;
-        v46 = v7;
-        dispatch_async(v18, block);
+        v46 = profileCopy;
+        dispatch_async(targetQueue, block);
       }
 
 LABEL_14:
 
-      v19 = [(CWFPrivateMACManager *)self interfaceName];
-      v20 = sub_1E0BEF890(v9, v19);
+      interfaceName = [(CWFPrivateMACManager *)self interfaceName];
+      v20 = sub_1E0BEF890(v9, interfaceName);
       v10 = 0;
       goto LABEL_15;
     }
@@ -1248,21 +1248,21 @@ LABEL_14:
     v39 = CWFGetOSLog();
     if (v39)
     {
-      v19 = CWFGetOSLog();
+      interfaceName = CWFGetOSLog();
     }
 
     else
     {
-      v19 = MEMORY[0x1E69E9C10];
+      interfaceName = MEMORY[0x1E69E9C10];
       v41 = MEMORY[0x1E69E9C10];
     }
 
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(interfaceName, OS_LOG_TYPE_ERROR))
     {
       v48 = 138412546;
       v49 = v38;
       v50 = 2114;
-      v51 = v7;
+      v51 = profileCopy;
       LODWORD(v43) = 22;
       v42 = &v48;
       _os_log_send_and_compose_impl();
@@ -1277,21 +1277,21 @@ LABEL_14:
     v35 = CWFGetOSLog();
     if (v35)
     {
-      v19 = CWFGetOSLog();
+      interfaceName = CWFGetOSLog();
     }
 
     else
     {
-      v19 = MEMORY[0x1E69E9C10];
+      interfaceName = MEMORY[0x1E69E9C10];
       v40 = MEMORY[0x1E69E9C10];
     }
 
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(interfaceName, OS_LOG_TYPE_ERROR))
     {
       v48 = 138412546;
       v49 = v10;
       v50 = 2114;
-      v51 = v7;
+      v51 = profileCopy;
       LODWORD(v43) = 22;
       v42 = &v48;
       _os_log_send_and_compose_impl();
@@ -1316,9 +1316,9 @@ LABEL_15:
 
   if (os_log_type_enabled(v22, (16 * (v10 != 0))))
   {
-    v24 = v7;
+    v24 = profileCopy;
     v25 = v20;
-    v26 = v6;
+    v26 = addressCopy;
     if (v10)
     {
       v27 = "FAILED to";
@@ -1335,9 +1335,9 @@ LABEL_15:
     v30 = v44 = v9;
     v48 = 136446722;
     v49 = v27;
-    v6 = v26;
+    addressCopy = v26;
     v20 = v25;
-    v7 = v24;
+    profileCopy = v24;
     v50 = 2114;
     v51 = v30;
     v52 = 2114;

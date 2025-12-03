@@ -1,34 +1,34 @@
 @interface PBUIWallpaperView
-+ (Class)wallpaperViewClassForConfiguration:(id)a3;
-+ (Class)wallpaperViewClassForWallpaperType:(int64_t)a3;
++ (Class)wallpaperViewClassForConfiguration:(id)configuration;
++ (Class)wallpaperViewClassForWallpaperType:(int64_t)type;
 - (BOOL)_dontUseShadow;
 - (BOOL)_isParallaxEnabled;
 - (BOOL)_isParallaxMotionEnabled;
 - (BOOL)_isVisible;
-- (BOOL)_needsFallbackImageForBackdropGeneratedImage:(id)a3;
+- (BOOL)_needsFallbackImageForBackdropGeneratedImage:(id)image;
 - (CGRect)cropRect;
 - (NSString)variantCacheIdentifier;
 - (PBUILegibilitySettingsProviderDelegate)delegate;
-- (PBUIWallpaperView)initWithFrame:(CGRect)a3 configuration:(id)a4 variant:(int64_t)a5 cacheGroup:(id)a6 delegate:(id)a7 options:(unint64_t)a8;
+- (PBUIWallpaperView)initWithFrame:(CGRect)frame configuration:(id)configuration variant:(int64_t)variant cacheGroup:(id)group delegate:(id)delegate options:(unint64_t)options;
 - (PBUIWallpaperViewDelegate)wallpaperDelegate;
 - (PBUIWallpaperViewInternalObserver)internalObserver;
 - (PLKLegibilityEnvironment)legibilityEnvironment;
 - (_UILegibilitySettings)legibilitySettings;
-- (double)_contrastInContentViewRect:(CGRect)a3 contrastWithinBoxes:(double *)a4 contrastBetweenBoxes:(double *)a5;
-- (double)contrastInRect:(CGRect)a3 contrastWithinBoxes:(double *)a4 contrastBetweenBoxes:(double *)a5;
-- (id)_backdrop_generateImageFromImage:(id)a3 forBackdropParameters:(id *)a4 includeTint:(BOOL)a5 traitCollection:(id)a6;
+- (double)_contrastInContentViewRect:(CGRect)rect contrastWithinBoxes:(double *)boxes contrastBetweenBoxes:(double *)betweenBoxes;
+- (double)contrastInRect:(CGRect)rect contrastWithinBoxes:(double *)boxes contrastBetweenBoxes:(double *)betweenBoxes;
+- (id)_backdrop_generateImageFromImage:(id)image forBackdropParameters:(id *)parameters includeTint:(BOOL)tint traitCollection:(id)collection;
 - (id)_blurredImage;
 - (id)_blurredImageURL;
-- (id)_cacheKeyForParameters:(id *)a3 includingTint:(BOOL)a4 downsampleFactor:(double)a5 traitCollection:(id)a6;
-- (id)_fallbackImageWithOriginalSize:(CGSize)a3;
-- (id)_generateImageFromImage:(id)a3 forBackdropParameters:(id *)a4 includeTint:(BOOL)a5 traitCollection:(id)a6;
-- (id)_imageForBackdropParameters:(id *)a3 includeTint:(BOOL)a4 overrideTraitCollection:(id)a5;
-- (id)_imageURLForBackdropParameters:(id *)a3 includeTint:(BOOL)a4 overrideTraitCollection:(id)a5;
-- (id)_material_generateImageFromImage:(id)a3 forBackdropParameters:(id *)a4 traitCollection:(id)a5;
+- (id)_cacheKeyForParameters:(id *)parameters includingTint:(BOOL)tint downsampleFactor:(double)factor traitCollection:(id)collection;
+- (id)_fallbackImageWithOriginalSize:(CGSize)size;
+- (id)_generateImageFromImage:(id)image forBackdropParameters:(id *)parameters includeTint:(BOOL)tint traitCollection:(id)collection;
+- (id)_imageForBackdropParameters:(id *)parameters includeTint:(BOOL)tint overrideTraitCollection:(id)collection;
+- (id)_imageURLForBackdropParameters:(id *)parameters includeTint:(BOOL)tint overrideTraitCollection:(id)collection;
+- (id)_material_generateImageFromImage:(id)image forBackdropParameters:(id *)parameters traitCollection:(id)collection;
 - (id)_primaryColorOverride;
-- (id)averageColorInRect:(CGRect)a3 withSmudgeRadius:(double)a4;
-- (id)imageForBackdropParameters:(id *)a3 includeTint:(BOOL)a4 overrideTraitCollection:(id)a5;
-- (id)imageURLForBackdropParameters:(id *)a3 includeTint:(BOOL)a4 overrideTraitCollection:(id)a5;
+- (id)averageColorInRect:(CGRect)rect withSmudgeRadius:(double)radius;
+- (id)imageForBackdropParameters:(id *)parameters includeTint:(BOOL)tint overrideTraitCollection:(id)collection;
+- (id)imageURLForBackdropParameters:(id *)parameters includeTint:(BOOL)tint overrideTraitCollection:(id)collection;
 - (id)snapshotImage;
 - (void)_addParallax;
 - (void)_applyParallaxSettings;
@@ -36,10 +36,10 @@
 - (void)_endDisallowRasterizationBlock;
 - (void)_notifyBlursInvalidated;
 - (void)_removeParallax;
-- (void)_setLegibilitySettings:(id)a3 notify:(BOOL)a4;
+- (void)_setLegibilitySettings:(id)settings notify:(BOOL)notify;
 - (void)_updateContentViewScale;
 - (void)_updateGeneratingBlurs;
-- (void)_updateLegibilitySettingsForAverageColor:(id)a3 force:(BOOL)a4 notify:(BOOL)a5;
+- (void)_updateLegibilitySettingsForAverageColor:(id)color force:(BOOL)force notify:(BOOL)notify;
 - (void)_updateParallax;
 - (void)_updateRasterizationState;
 - (void)_updateScaleFactor;
@@ -47,15 +47,15 @@
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
 - (void)legibilitySettingsDidChange;
-- (void)resetLegibilitySettingsForAverageColor:(id)a3;
-- (void)setContentView:(id)a3;
-- (void)setGeneratesBlurredImages:(BOOL)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setParallaxEnabled:(BOOL)a3;
-- (void)setTransformOptions:(unint64_t)a3;
-- (void)setVariant:(int64_t)a3 withAnimationFactory:(id)a4;
-- (void)setZoomFactor:(double)a3 withAnimationFactory:(id)a4;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)resetLegibilitySettingsForAverageColor:(id)color;
+- (void)setContentView:(id)view;
+- (void)setGeneratesBlurredImages:(BOOL)images;
+- (void)setHidden:(BOOL)hidden;
+- (void)setParallaxEnabled:(BOOL)enabled;
+- (void)setTransformOptions:(unint64_t)options;
+- (void)setVariant:(int64_t)variant withAnimationFactory:(id)factory;
+- (void)setZoomFactor:(double)factor withAnimationFactory:(id)factory;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 @end
 
 @implementation PBUIWallpaperView
@@ -131,13 +131,13 @@
 
 - (BOOL)_isParallaxEnabled
 {
-  v3 = [objc_opt_class() allowsParallax];
-  if (v3)
+  allowsParallax = [objc_opt_class() allowsParallax];
+  if (allowsParallax)
   {
-    LOBYTE(v3) = self->_parallaxEnabled && self->_parallaxSettings != 0;
+    LOBYTE(allowsParallax) = self->_parallaxEnabled && self->_parallaxSettings != 0;
   }
 
-  return v3;
+  return allowsParallax;
 }
 
 - (void)_updateRasterizationState
@@ -168,15 +168,15 @@
 
 - (BOOL)_dontUseShadow
 {
-  v2 = [(PBUIWallpaperView *)self wallpaperName];
-  if ([v2 hasPrefix:@"1331"] & 1) != 0 || (objc_msgSend(v2, "hasPrefix:", @"1336"))
+  wallpaperName = [(PBUIWallpaperView *)self wallpaperName];
+  if ([wallpaperName hasPrefix:@"1331"] & 1) != 0 || (objc_msgSend(wallpaperName, "hasPrefix:", @"1336"))
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = [v2 hasPrefix:@"1316"];
+    v3 = [wallpaperName hasPrefix:@"1316"];
   }
 
   return v3;
@@ -184,10 +184,10 @@
 
 - (void)legibilitySettingsDidChange
 {
-  v3 = [(PBUIWallpaperView *)self delegate];
+  delegate = [(PBUIWallpaperView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 providerLegibilitySettingsChanged:self];
+    [delegate providerLegibilitySettingsChanged:self];
   }
 }
 
@@ -261,18 +261,18 @@ void __36__PBUIWallpaperView__removeParallax__block_invoke(uint64_t a1)
 
 - (id)_primaryColorOverride
 {
-  v2 = [(PBUIWallpaperView *)self wallpaperName];
-  if ([v2 hasSuffix:@".Purple_Dahlia"] || objc_msgSend(v2, "hasSuffix:", @".RedSpider") || objc_msgSend(v2, "hasSuffix:", @".Leaf"))
+  wallpaperName = [(PBUIWallpaperView *)self wallpaperName];
+  if ([wallpaperName hasSuffix:@".Purple_Dahlia"] || objc_msgSend(wallpaperName, "hasSuffix:", @".RedSpider") || objc_msgSend(wallpaperName, "hasSuffix:", @".Leaf"))
   {
-    v3 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
 LABEL_5:
-    v4 = v3;
+    v4 = blackColor;
     goto LABEL_6;
   }
 
-  if ([v2 hasPrefix:@"1336"] || objc_msgSend(v2, "hasPrefix:", @"1337"))
+  if ([wallpaperName hasPrefix:@"1336"] || objc_msgSend(wallpaperName, "hasPrefix:", @"1337"))
   {
-    v3 = [MEMORY[0x277D75348] whiteColor];
+    blackColor = [MEMORY[0x277D75348] whiteColor];
     goto LABEL_5;
   }
 
@@ -336,16 +336,16 @@ uint64_t __36__PBUIWallpaperView__removeParallax__block_invoke_2(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-+ (Class)wallpaperViewClassForConfiguration:(id)a3
++ (Class)wallpaperViewClassForConfiguration:(id)configuration
 {
-  v4 = [a3 wallpaperType];
+  wallpaperType = [configuration wallpaperType];
 
-  return [a1 wallpaperViewClassForWallpaperType:v4];
+  return [self wallpaperViewClassForWallpaperType:wallpaperType];
 }
 
-+ (Class)wallpaperViewClassForWallpaperType:(int64_t)a3
++ (Class)wallpaperViewClassForWallpaperType:(int64_t)type
 {
-  if (a3 > 5)
+  if (type > 5)
   {
     v4 = 0;
   }
@@ -358,53 +358,53 @@ uint64_t __36__PBUIWallpaperView__removeParallax__block_invoke_2(uint64_t a1)
   return v4;
 }
 
-- (PBUIWallpaperView)initWithFrame:(CGRect)a3 configuration:(id)a4 variant:(int64_t)a5 cacheGroup:(id)a6 delegate:(id)a7 options:(unint64_t)a8
+- (PBUIWallpaperView)initWithFrame:(CGRect)frame configuration:(id)configuration variant:(int64_t)variant cacheGroup:(id)group delegate:(id)delegate options:(unint64_t)options
 {
-  v8 = a8;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v17 = a4;
-  v18 = a6;
-  v19 = a7;
+  optionsCopy = options;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  configurationCopy = configuration;
+  groupCopy = group;
+  delegateCopy = delegate;
   v39.receiver = self;
   v39.super_class = PBUIWallpaperView;
-  v20 = [(PBUIWallpaperView *)&v39 initWithFrame:x, y, width, height];
-  v21 = v20;
-  if (v20)
+  height = [(PBUIWallpaperView *)&v39 initWithFrame:x, y, width, height];
+  v21 = height;
+  if (height)
   {
-    v20->_zoomFactor = 1.0;
-    v20->_contentScaleFactor = 1.0;
-    v20->_variant = a5;
-    v20->_sharesContentsAcrossVariants = v8 & 1;
-    v22 = [v18 copy];
+    height->_zoomFactor = 1.0;
+    height->_contentScaleFactor = 1.0;
+    height->_variant = variant;
+    height->_sharesContentsAcrossVariants = optionsCopy & 1;
+    v22 = [groupCopy copy];
     cacheGroup = v21->_cacheGroup;
     v21->_cacheGroup = v22;
 
-    objc_storeWeak(&v21->_wallpaperDelegate, v19);
-    v24 = [v17 wallpaperOptions];
-    v25 = [v24 name];
+    objc_storeWeak(&v21->_wallpaperDelegate, delegateCopy);
+    wallpaperOptions = [configurationCopy wallpaperOptions];
+    name = [wallpaperOptions name];
     wallpaperName = v21->_wallpaperName;
-    v21->_wallpaperName = v25;
+    v21->_wallpaperName = name;
 
-    if (v24)
+    if (wallpaperOptions)
     {
-      [v24 parallaxFactor];
+      [wallpaperOptions parallaxFactor];
       v21->_parallaxFactor = v27;
-      v28 = [v24 parallaxEnabled];
+      parallaxEnabled = [wallpaperOptions parallaxEnabled];
     }
 
     else
     {
       v21->_parallaxFactor = 1.0;
-      v28 = 1;
+      parallaxEnabled = 1;
     }
 
-    v21->_parallaxEnabled = v28;
-    v21->_wallpaperMode = [v24 wallpaperMode];
-    v21->_hasVideo = [v24 hasVideo];
-    v21->_needsWallpaperDimmingTreatment = [v17 needsWallpaperDimmingTreatment];
+    v21->_parallaxEnabled = parallaxEnabled;
+    v21->_wallpaperMode = [wallpaperOptions wallpaperMode];
+    v21->_hasVideo = [wallpaperOptions hasVideo];
+    v21->_needsWallpaperDimmingTreatment = [configurationCopy needsWallpaperDimmingTreatment];
     v29 = +[PBUIWallpaperDomain rootSettings];
     wallpaperSettings = v21->_wallpaperSettings;
     v21->_wallpaperSettings = v29;
@@ -420,14 +420,14 @@ uint64_t __36__PBUIWallpaperView__removeParallax__block_invoke_2(uint64_t a1)
     legibilitySettingsProvider = v21->_legibilitySettingsProvider;
     v21->_legibilitySettingsProvider = v33;
 
-    v35 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v35 addObserver:v21 selector:sel__updateParallax name:*MEMORY[0x277D77508] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v21 selector:sel__updateParallax name:*MEMORY[0x277D77508] object:0];
 
-    v36 = [(PBUIWallpaperView *)v21 layer];
-    [v36 setOpaque:1];
+    layer = [(PBUIWallpaperView *)v21 layer];
+    [layer setOpaque:1];
 
-    v37 = [(PBUIWallpaperView *)v21 layer];
-    [v37 setSortsSublayers:0];
+    layer2 = [(PBUIWallpaperView *)v21 layer];
+    [layer2 setSortsSublayers:0];
 
     [(PBUIWallpaperView *)v21 _updateRasterizationState];
   }
@@ -437,8 +437,8 @@ uint64_t __36__PBUIWallpaperView__removeParallax__block_invoke_2(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D77508] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D77508] object:0];
 
   [(PTSettings *)self->_wallpaperSettings removeKeyObserver:self];
   [(PTSettings *)self->_parallaxSettings removeKeyObserver:self];
@@ -464,8 +464,8 @@ uint64_t __36__PBUIWallpaperView__removeParallax__block_invoke_2(uint64_t a1)
 - (PLKLegibilityEnvironment)legibilityEnvironment
 {
   PLKLegibilityEnvironmentClass = getPLKLegibilityEnvironmentClass();
-  v4 = [(PBUIWallpaperView *)self legibilitySettings];
-  v5 = [PLKLegibilityEnvironmentClass legibilityEnvironmentForUILegibilitySettings:v4];
+  legibilitySettings = [(PBUIWallpaperView *)self legibilitySettings];
+  v5 = [PLKLegibilityEnvironmentClass legibilityEnvironmentForUILegibilitySettings:legibilitySettings];
 
   return v5;
 }
@@ -475,8 +475,8 @@ uint64_t __36__PBUIWallpaperView__removeParallax__block_invoke_2(uint64_t a1)
   legibilitySettings = self->_legibilitySettings;
   if (!legibilitySettings)
   {
-    v4 = [(PBUIWallpaperView *)self _computeAverageColor];
-    [(PBUIWallpaperView *)self _updateLegibilitySettingsForAverageColor:v4 force:0 notify:0];
+    _computeAverageColor = [(PBUIWallpaperView *)self _computeAverageColor];
+    [(PBUIWallpaperView *)self _updateLegibilitySettingsForAverageColor:_computeAverageColor force:0 notify:0];
 
     legibilitySettings = self->_legibilitySettings;
   }
@@ -484,22 +484,22 @@ uint64_t __36__PBUIWallpaperView__removeParallax__block_invoke_2(uint64_t a1)
   return legibilitySettings;
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v13 = a3;
-  v5 = [(UIView *)v13 superview];
+  viewCopy = view;
+  superview = [(UIView *)viewCopy superview];
   contentView = self->_contentView;
-  if (contentView != v13 || v5 != self && v5 != self->_parallaxView)
+  if (contentView != viewCopy || superview != self && superview != self->_parallaxView)
   {
     PBUIApplyParallaxSettingsToView(0, contentView);
-    v7 = [(UIView *)self->_contentView superview];
-    v8 = v7;
-    if (v7 == self || v7 == self->_parallaxView)
+    superview2 = [(UIView *)self->_contentView superview];
+    v8 = superview2;
+    if (superview2 == self || superview2 == self->_parallaxView)
     {
       [(UIView *)self->_contentView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_contentView, a3);
+    objc_storeStrong(&self->_contentView, view);
     parallaxView = self->_parallaxView;
     v11 = self->_contentView;
     if (parallaxView)
@@ -516,27 +516,27 @@ uint64_t __36__PBUIWallpaperView__removeParallax__block_invoke_2(uint64_t a1)
     [(PBUIWallpaperView *)self _updateScaleFactor];
     if (self->_contentView)
     {
-      v12 = [(PBUIWallpaperView *)self _computeAverageColor];
+      _computeAverageColor = [(PBUIWallpaperView *)self _computeAverageColor];
     }
 
     else
     {
-      v12 = 0;
+      _computeAverageColor = 0;
     }
 
     [(_UILegibilitySettingsProvider *)self->_legibilitySettingsProvider clearContentColorAccumulator];
-    [(PBUIWallpaperView *)self _updateLegibilitySettingsForAverageColor:v12 force:1 notify:1];
+    [(PBUIWallpaperView *)self _updateLegibilitySettingsForAverageColor:_computeAverageColor force:1 notify:1];
   }
 }
 
-- (void)setZoomFactor:(double)a3 withAnimationFactory:(id)a4
+- (void)setZoomFactor:(double)factor withAnimationFactory:(id)factory
 {
-  v6 = a4;
-  v7 = v6;
-  if (self->_zoomFactor != a3)
+  factoryCopy = factory;
+  v7 = factoryCopy;
+  if (self->_zoomFactor != factor)
   {
-    self->_zoomFactor = a3;
-    if (v6)
+    self->_zoomFactor = factor;
+    if (factoryCopy)
     {
       objc_initWeak(&location, self);
       v8 = MEMORY[0x277CF0D38];
@@ -579,12 +579,12 @@ void __56__PBUIWallpaperView_setZoomFactor_withAnimationFactory___block_invoke(u
   }
 }
 
-- (void)setVariant:(int64_t)a3 withAnimationFactory:(id)a4
+- (void)setVariant:(int64_t)variant withAnimationFactory:(id)factory
 {
-  v6 = a4;
-  if (self->_variant != a3)
+  factoryCopy = factory;
+  if (self->_variant != variant)
   {
-    self->_variant = a3;
+    self->_variant = variant;
     v7 = [(PBUIWallpaperPrototypeSettings *)self->_wallpaperSettings parallaxSettingsForVariant:[(PBUIWallpaperView *)self variant]];
     parallaxSettings = self->_parallaxSettings;
     if (parallaxSettings != v7)
@@ -603,56 +603,56 @@ void __56__PBUIWallpaperView_setZoomFactor_withAnimationFactory___block_invoke(u
       v9[2] = __53__PBUIWallpaperView_setVariant_withAnimationFactory___block_invoke_2;
       v9[3] = &unk_2783620F8;
       v9[4] = self;
-      [MEMORY[0x277CF0D38] animateWithFactory:v6 actions:v10 completion:v9];
+      [MEMORY[0x277CF0D38] animateWithFactory:factoryCopy actions:v10 completion:v9];
     }
   }
 }
 
-- (void)setTransformOptions:(unint64_t)a3
+- (void)setTransformOptions:(unint64_t)options
 {
-  if (self->_transformOptions != a3)
+  if (self->_transformOptions != options)
   {
-    self->_transformOptions = a3;
+    self->_transformOptions = options;
     [(PBUIWallpaperView *)self _updateContentViewScale];
   }
 }
 
-- (void)_setLegibilitySettings:(id)a3 notify:(BOOL)a4
+- (void)_setLegibilitySettings:(id)settings notify:(BOOL)notify
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PBUIWallpaperView *)self _primaryColorOverride];
-  v8 = [(PBUIWallpaperView *)self _dontUseShadow];
-  v9 = v6;
+  notifyCopy = notify;
+  settingsCopy = settings;
+  _primaryColorOverride = [(PBUIWallpaperView *)self _primaryColorOverride];
+  _dontUseShadow = [(PBUIWallpaperView *)self _dontUseShadow];
+  v9 = settingsCopy;
   v18 = v9;
-  if (v7 || (v10 = v9, v8))
+  if (_primaryColorOverride || (v10 = v9, _dontUseShadow))
   {
-    v11 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
 
-    if (v7 == v11)
+    if (_primaryColorOverride == blackColor)
     {
-      v12 = 2;
+      style = 2;
     }
 
     else
     {
-      v12 = 1;
+      style = 1;
     }
 
     v13 = objc_alloc(MEMORY[0x277D760A8]);
-    if (v7)
+    if (_primaryColorOverride)
     {
-      v14 = v7;
+      primaryColor = _primaryColorOverride;
     }
 
     else
     {
-      v12 = [v18 style];
-      v14 = [v18 primaryColor];
+      style = [v18 style];
+      primaryColor = [v18 primaryColor];
     }
 
-    v15 = [v18 secondaryColor];
-    if (v8)
+    secondaryColor = [v18 secondaryColor];
+    if (_dontUseShadow)
     {
       [MEMORY[0x277D75348] whiteColor];
     }
@@ -662,12 +662,12 @@ void __56__PBUIWallpaperView_setZoomFactor_withAnimationFactory___block_invoke(u
       [v18 shadowColor];
     }
     v16 = ;
-    v10 = [v13 initWithStyle:v12 primaryColor:v14 secondaryColor:v15 shadowColor:v16];
+    v10 = [v13 initWithStyle:style primaryColor:primaryColor secondaryColor:secondaryColor shadowColor:v16];
 
-    if (!v7)
+    if (!_primaryColorOverride)
     {
 
-      if (v8)
+      if (_dontUseShadow)
       {
         goto LABEL_15;
       }
@@ -675,11 +675,11 @@ void __56__PBUIWallpaperView_setZoomFactor_withAnimationFactory___block_invoke(u
       goto LABEL_14;
     }
 
-    if (!v8)
+    if (!_dontUseShadow)
     {
 LABEL_14:
-      v17 = [v18 contentColor];
-      [(_UILegibilitySettings *)v10 setContentColor:v17];
+      contentColor = [v18 contentColor];
+      [(_UILegibilitySettings *)v10 setContentColor:contentColor];
     }
   }
 
@@ -687,30 +687,30 @@ LABEL_15:
   if (v10 != self->_legibilitySettings)
   {
     objc_storeStrong(&self->_legibilitySettings, v10);
-    if (v4)
+    if (notifyCopy)
     {
       [(PBUIWallpaperView *)self legibilitySettingsDidChange];
     }
   }
 }
 
-- (void)resetLegibilitySettingsForAverageColor:(id)a3
+- (void)resetLegibilitySettingsForAverageColor:(id)color
 {
   legibilitySettingsProvider = self->_legibilitySettingsProvider;
-  v5 = a3;
+  colorCopy = color;
   [(_UILegibilitySettingsProvider *)legibilitySettingsProvider clearContentColorAccumulator];
-  [(PBUIWallpaperView *)self _updateLegibilitySettingsForAverageColor:v5 force:1 notify:1];
+  [(PBUIWallpaperView *)self _updateLegibilitySettingsForAverageColor:colorCopy force:1 notify:1];
 }
 
-- (void)_updateLegibilitySettingsForAverageColor:(id)a3 force:(BOOL)a4 notify:(BOOL)a5
+- (void)_updateLegibilitySettingsForAverageColor:(id)color force:(BOOL)force notify:(BOOL)notify
 {
-  v5 = a5;
-  v6 = a4;
-  v9 = a3;
-  v10 = v9;
+  notifyCopy = notify;
+  forceCopy = force;
+  colorCopy = color;
+  v10 = colorCopy;
   if (self->_legibilitySettings)
   {
-    v11 = !v6;
+    v11 = !forceCopy;
   }
 
   else
@@ -718,63 +718,63 @@ LABEL_15:
     v11 = 0;
   }
 
-  if (!v11 || v9 && ([(UIColor *)self->_lastAverageColor isEqual:v9]& 1) == 0)
+  if (!v11 || colorCopy && ([(UIColor *)self->_lastAverageColor isEqual:colorCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_lastAverageColor, a3);
+    objc_storeStrong(&self->_lastAverageColor, color);
     v13 = 0.0;
     [(PBUIWallpaperView *)self bounds];
     [(PBUIWallpaperView *)self contrastInRect:0 contrastWithinBoxes:&v13 contrastBetweenBoxes:?];
     [(_UILegibilitySettingsProvider *)self->_legibilitySettingsProvider accumulateChangesToContentColor:v10 contrast:v13];
-    v12 = [(_UILegibilitySettingsProvider *)self->_legibilitySettingsProvider settings];
-    [(PBUIWallpaperView *)self _setLegibilitySettings:v12 notify:v5];
+    settings = [(_UILegibilitySettingsProvider *)self->_legibilitySettingsProvider settings];
+    [(PBUIWallpaperView *)self _setLegibilitySettings:settings notify:notifyCopy];
   }
 }
 
-- (id)averageColorInRect:(CGRect)a3 withSmudgeRadius:(double)a4
+- (id)averageColorInRect:(CGRect)rect withSmudgeRadius:(double)radius
 {
   contentView = self->_contentView;
   if (contentView)
   {
-    [contentView convertRect:self fromView:{a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+    [contentView convertRect:self fromView:{rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
     contentView = [PBUIWallpaperView _averageColorInContentViewRect:"_averageColorInContentViewRect:smudgeRadius:" smudgeRadius:?];
   }
 
   return contentView;
 }
 
-- (double)contrastInRect:(CGRect)a3 contrastWithinBoxes:(double *)a4 contrastBetweenBoxes:(double *)a5
+- (double)contrastInRect:(CGRect)rect contrastWithinBoxes:(double *)boxes contrastBetweenBoxes:(double *)betweenBoxes
 {
   contentView = self->_contentView;
   if (contentView)
   {
-    [(UIView *)contentView convertRect:self fromView:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+    [(UIView *)contentView convertRect:self fromView:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
 
-    [(PBUIWallpaperView *)self _contrastInContentViewRect:a4 contrastWithinBoxes:a5 contrastBetweenBoxes:?];
+    [(PBUIWallpaperView *)self _contrastInContentViewRect:boxes contrastWithinBoxes:betweenBoxes contrastBetweenBoxes:?];
   }
 
   else
   {
     result = *&PBUIWallpaperViewUnknownContrast;
-    if (a4)
+    if (boxes)
     {
-      *a4 = PBUIWallpaperViewUnknownContrast;
+      *boxes = PBUIWallpaperViewUnknownContrast;
     }
 
-    if (a5)
+    if (betweenBoxes)
     {
-      *a5 = result;
+      *betweenBoxes = result;
     }
   }
 
   return result;
 }
 
-- (void)setParallaxEnabled:(BOOL)a3
+- (void)setParallaxEnabled:(BOOL)enabled
 {
-  if (self->_parallaxEnabled != a3)
+  if (self->_parallaxEnabled != enabled)
   {
     [(PBUIWallpaperView *)self willChangeValueForKey:@"parallaxEnabled"];
-    self->_parallaxEnabled = a3;
+    self->_parallaxEnabled = enabled;
     [(PBUIWallpaperView *)self didChangeValueForKey:@"parallaxEnabled"];
     v3 = 0.0;
     if (!self->_parallaxEnabled || (v3 = 1.0, fabs(self->_parallaxFactor) < 2.22044605e-16))
@@ -786,11 +786,11 @@ LABEL_15:
   [(PBUIWallpaperView *)self _updateParallax];
 }
 
-- (void)setGeneratesBlurredImages:(BOOL)a3
+- (void)setGeneratesBlurredImages:(BOOL)images
 {
-  if (self->_shouldGenerateBlurredImagesWhenVisible != a3)
+  if (self->_shouldGenerateBlurredImagesWhenVisible != images)
   {
-    self->_shouldGenerateBlurredImagesWhenVisible = a3;
+    self->_shouldGenerateBlurredImagesWhenVisible = images;
     [(PBUIWallpaperView *)self _updateGeneratingBlurs];
   }
 }
@@ -802,51 +802,51 @@ LABEL_15:
   return [(PBUIWallpaperView *)self _imageFromRect:?];
 }
 
-- (id)imageForBackdropParameters:(id *)a3 includeTint:(BOOL)a4 overrideTraitCollection:(id)a5
+- (id)imageForBackdropParameters:(id *)parameters includeTint:(BOOL)tint overrideTraitCollection:(id)collection
 {
-  v5 = *&a3->var2;
-  v9[0] = *&a3->var0;
+  v5 = *&parameters->var2;
+  v9[0] = *&parameters->var0;
   v9[1] = v5;
-  v6 = *&a3->var6;
-  v9[2] = *&a3->var4;
+  v6 = *&parameters->var6;
+  v9[2] = *&parameters->var4;
   v9[3] = v6;
-  v7 = [(PBUIWallpaperView *)self _imageForBackdropParameters:v9 includeTint:a4 overrideTraitCollection:a5];
+  v7 = [(PBUIWallpaperView *)self _imageForBackdropParameters:v9 includeTint:tint overrideTraitCollection:collection];
 
   return v7;
 }
 
-- (id)imageURLForBackdropParameters:(id *)a3 includeTint:(BOOL)a4 overrideTraitCollection:(id)a5
+- (id)imageURLForBackdropParameters:(id *)parameters includeTint:(BOOL)tint overrideTraitCollection:(id)collection
 {
-  v5 = *&a3->var2;
-  v9[0] = *&a3->var0;
+  v5 = *&parameters->var2;
+  v9[0] = *&parameters->var0;
   v9[1] = v5;
-  v6 = *&a3->var6;
-  v9[2] = *&a3->var4;
+  v6 = *&parameters->var6;
+  v9[2] = *&parameters->var4;
   v9[3] = v6;
-  v7 = [(PBUIWallpaperView *)self _imageURLForBackdropParameters:v9 includeTint:a4 overrideTraitCollection:a5];
+  v7 = [(PBUIWallpaperView *)self _imageURLForBackdropParameters:v9 includeTint:tint overrideTraitCollection:collection];
 
   return v7;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
   v4.receiver = self;
   v4.super_class = PBUIWallpaperView;
-  [(PBUIWallpaperView *)&v4 setHidden:a3];
+  [(PBUIWallpaperView *)&v4 setHidden:hidden];
   [(PBUIWallpaperView *)self _handleVisibilityChange];
 }
 
-- (double)_contrastInContentViewRect:(CGRect)a3 contrastWithinBoxes:(double *)a4 contrastBetweenBoxes:(double *)a5
+- (double)_contrastInContentViewRect:(CGRect)rect contrastWithinBoxes:(double *)boxes contrastBetweenBoxes:(double *)betweenBoxes
 {
   result = *&PBUIWallpaperViewUnknownContrast;
-  if (a4)
+  if (boxes)
   {
-    *a4 = PBUIWallpaperViewUnknownContrast;
+    *boxes = PBUIWallpaperViewUnknownContrast;
   }
 
-  if (a5)
+  if (betweenBoxes)
   {
-    *a5 = result;
+    *betweenBoxes = result;
   }
 
   return result;
@@ -884,48 +884,48 @@ LABEL_15:
   return v3;
 }
 
-- (id)_imageURLForBackdropParameters:(id *)a3 includeTint:(BOOL)a4 overrideTraitCollection:(id)a5
+- (id)_imageURLForBackdropParameters:(id *)parameters includeTint:(BOOL)tint overrideTraitCollection:(id)collection
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (v8)
+  tintCopy = tint;
+  collectionCopy = collection;
+  v9 = collectionCopy;
+  if (collectionCopy)
   {
-    v10 = v8;
+    traitCollection = collectionCopy;
   }
 
   else
   {
-    v10 = [(PBUIWallpaperView *)self traitCollection];
+    traitCollection = [(PBUIWallpaperView *)self traitCollection];
   }
 
-  v11 = v10;
-  v12 = *&a3->var2;
-  v18[0] = *&a3->var0;
+  v11 = traitCollection;
+  v12 = *&parameters->var2;
+  v18[0] = *&parameters->var0;
   v18[1] = v12;
-  v13 = *&a3->var6;
-  v18[2] = *&a3->var4;
+  v13 = *&parameters->var6;
+  v18[2] = *&parameters->var4;
   v18[3] = v13;
-  v14 = [(PBUIWallpaperView *)self _cacheKeyForParameters:v18 includingTint:v5 downsampleFactor:v10 traitCollection:1.0];
+  v14 = [(PBUIWallpaperView *)self _cacheKeyForParameters:v18 includingTint:tintCopy downsampleFactor:traitCollection traitCollection:1.0];
   v15 = +[PBUIWallpaperCache wallpaperCache];
   v16 = [v15 imageURLForKey:v14];
 
   return v16;
 }
 
-- (id)_imageForBackdropParameters:(id *)a3 includeTint:(BOOL)a4 overrideTraitCollection:(id)a5
+- (id)_imageForBackdropParameters:(id *)parameters includeTint:(BOOL)tint overrideTraitCollection:(id)collection
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (v8)
+  tintCopy = tint;
+  collectionCopy = collection;
+  v9 = collectionCopy;
+  if (collectionCopy)
   {
-    v10 = v8;
+    traitCollection = collectionCopy;
   }
 
   else
   {
-    v10 = [(PBUIWallpaperView *)self traitCollection];
+    traitCollection = [(PBUIWallpaperView *)self traitCollection];
   }
 
   v35[0] = MEMORY[0x277D85DD0];
@@ -933,23 +933,23 @@ LABEL_15:
   v35[2] = __85__PBUIWallpaperView__imageForBackdropParameters_includeTint_overrideTraitCollection___block_invoke;
   v35[3] = &unk_278363068;
   v35[4] = self;
-  v11 = *&a3->var2;
-  v37 = *&a3->var0;
+  v11 = *&parameters->var2;
+  v37 = *&parameters->var0;
   v38 = v11;
-  v12 = *&a3->var6;
-  v39 = *&a3->var4;
+  v12 = *&parameters->var6;
+  v39 = *&parameters->var4;
   v40 = v12;
-  v41 = v5;
-  v13 = v10;
+  v41 = tintCopy;
+  v13 = traitCollection;
   v36 = v13;
   v14 = MEMORY[0x223D62EE0](v35);
-  v15 = *&a3->var2;
-  v34[0] = *&a3->var0;
+  v15 = *&parameters->var2;
+  v34[0] = *&parameters->var0;
   v34[1] = v15;
-  v16 = *&a3->var6;
-  v34[2] = *&a3->var4;
+  v16 = *&parameters->var6;
+  v34[2] = *&parameters->var4;
   v34[3] = v16;
-  v17 = [(PBUIWallpaperView *)self _cacheKeyForParameters:v34 includingTint:v5 downsampleFactor:v13 traitCollection:1.0];
+  v17 = [(PBUIWallpaperView *)self _cacheKeyForParameters:v34 includingTint:tintCopy downsampleFactor:v13 traitCollection:1.0];
   if (v17)
   {
     v18 = +[PBUIWallpaperCache wallpaperCache];
@@ -975,8 +975,8 @@ LABEL_15:
     }
   }
 
-  v20 = [(PBUIWallpaperView *)self snapshotImage];
-  [v20 size];
+  snapshotImage = [(PBUIWallpaperView *)self snapshotImage];
+  [snapshotImage size];
   v22 = v21;
 
   [v19 size];
@@ -986,10 +986,10 @@ LABEL_15:
   {
     [v19 scale];
     v28 = v24 / v22 * v27;
-    v29 = [v19 ioSurface];
-    if (v29)
+    ioSurface = [v19 ioSurface];
+    if (ioSurface)
     {
-      [MEMORY[0x277D755B8] pui_imageWithIOSurface:v29 scale:objc_msgSend(v19 orientation:{"imageOrientation"), v28}];
+      [MEMORY[0x277D755B8] pui_imageWithIOSurface:ioSurface scale:objc_msgSend(v19 orientation:{"imageOrientation"), v28}];
     }
 
     else
@@ -1043,21 +1043,21 @@ uint64_t __85__PBUIWallpaperView__imageForBackdropParameters_includeTint_overrid
   return v6();
 }
 
-- (id)_generateImageFromImage:(id)a3 forBackdropParameters:(id *)a4 includeTint:(BOOL)a5 traitCollection:(id)a6
+- (id)_generateImageFromImage:(id)image forBackdropParameters:(id *)parameters includeTint:(BOOL)tint traitCollection:(id)collection
 {
-  v7 = a5;
-  v11 = a3;
-  v12 = a6;
-  var7 = a4->var7;
+  tintCopy = tint;
+  imageCopy = image;
+  collectionCopy = collection;
+  var7 = parameters->var7;
   if ((var7 - 1) < 2)
   {
-    v15 = *&a4->var2;
-    v21 = *&a4->var0;
+    v15 = *&parameters->var2;
+    v21 = *&parameters->var0;
     v22 = v15;
-    v16 = *&a4->var6;
-    v23 = *&a4->var4;
+    v16 = *&parameters->var6;
+    v23 = *&parameters->var4;
     v24 = v16;
-    v17 = [(PBUIWallpaperView *)self _material_generateImageFromImage:v11 forBackdropParameters:&v21 traitCollection:v12];
+    v17 = [(PBUIWallpaperView *)self _material_generateImageFromImage:imageCopy forBackdropParameters:&v21 traitCollection:collectionCopy];
 LABEL_7:
     v14 = v17;
     goto LABEL_8;
@@ -1065,13 +1065,13 @@ LABEL_7:
 
   if (!var7)
   {
-    v18 = *&a4->var2;
-    v21 = *&a4->var0;
+    v18 = *&parameters->var2;
+    v21 = *&parameters->var0;
     v22 = v18;
-    v19 = *&a4->var6;
-    v23 = *&a4->var4;
+    v19 = *&parameters->var6;
+    v23 = *&parameters->var4;
     v24 = v19;
-    v17 = [(PBUIWallpaperView *)self _backdrop_generateImageFromImage:v11 forBackdropParameters:&v21 includeTint:v7 traitCollection:v12];
+    v17 = [(PBUIWallpaperView *)self _backdrop_generateImageFromImage:imageCopy forBackdropParameters:&v21 includeTint:tintCopy traitCollection:collectionCopy];
     goto LABEL_7;
   }
 
@@ -1093,19 +1093,19 @@ LABEL_8:
   return result;
 }
 
-- (id)_backdrop_generateImageFromImage:(id)a3 forBackdropParameters:(id *)a4 includeTint:(BOOL)a5 traitCollection:(id)a6
+- (id)_backdrop_generateImageFromImage:(id)image forBackdropParameters:(id *)parameters includeTint:(BOOL)tint traitCollection:(id)collection
 {
-  v6 = a5;
+  tintCopy = tint;
   v44 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  imageCopy = image;
   v10 = PBUILogCommon();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v28 = *&a4->var2;
-    *buf = *&a4->var0;
+    v28 = *&parameters->var2;
+    *buf = *&parameters->var0;
     *&buf[16] = v28;
-    v29 = *&a4->var6;
-    v42 = *&a4->var4;
+    v29 = *&parameters->var6;
+    v42 = *&parameters->var4;
     v43 = v29;
     v30 = PBUIStringForWallpaperBackdropParameters(buf);
     *buf = 138543874;
@@ -1113,36 +1113,36 @@ LABEL_8:
     *&buf[12] = 2114;
     *&buf[14] = v30;
     *&buf[22] = 1024;
-    *&buf[24] = v6;
+    *&buf[24] = tintCopy;
     _os_log_debug_impl(&dword_21E67D000, v10, OS_LOG_TYPE_DEBUG, "Generating new image via backdrop view for view: %{public}@, backdrop parameters: %{public}@, tint: %{BOOL}u", buf, 0x1Cu);
   }
 
-  v11 = [v9 pui_CGImageBackedImage];
+  pui_CGImageBackedImage = [imageCopy pui_CGImageBackedImage];
 
-  v12 = [v11 CGImage];
-  v13 = *&a4->var2;
-  *buf = *&a4->var0;
+  cGImage = [pui_CGImageBackedImage CGImage];
+  v13 = *&parameters->var2;
+  *buf = *&parameters->var0;
   *&buf[16] = v13;
-  v14 = *&a4->var6;
-  v42 = *&a4->var4;
+  v14 = *&parameters->var6;
+  v42 = *&parameters->var4;
   v43 = v14;
   v15 = PBUIBackdropInputSettingsForWallpaperBackdropParameters(buf);
   v16 = v15;
-  if (v12)
+  if (cGImage)
   {
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
-    v17 = *&a4->var2;
-    v36 = *&a4->var0;
+    v17 = *&parameters->var2;
+    v36 = *&parameters->var0;
     v37 = v17;
-    v18 = *&a4->var6;
-    v38 = *&a4->var4;
+    v18 = *&parameters->var6;
+    v38 = *&parameters->var4;
     v34[2] = __104__PBUIWallpaperView__backdrop_generateImageFromImage_forBackdropParameters_includeTint_traitCollection___block_invoke;
     v34[3] = &unk_2783630B8;
-    v40 = v6;
+    v40 = tintCopy;
     v39 = v18;
     v35 = v15;
-    v19 = [v11 pui_imageByManipulatingInDeviceColorSpaceWithBlock:v34];
+    v19 = [pui_CGImageBackedImage pui_imageByManipulatingInDeviceColorSpaceWithBlock:v34];
 
     if (![(PBUIWallpaperView *)self _needsFallbackImageForBackdropGeneratedImage:v19])
     {
@@ -1179,7 +1179,7 @@ LABEL_9:
     v31[2] = __104__PBUIWallpaperView__backdrop_generateImageFromImage_forBackdropParameters_includeTint_traitCollection___block_invoke_2;
     v31[3] = &unk_2783630E0;
     v32 = v16;
-    v33 = v6;
+    v33 = tintCopy;
     v24 = [v19 pui_imageByManipulatingInDeviceColorSpaceWithBlock:v31];
     v25 = v24;
     if (v24)
@@ -1222,19 +1222,19 @@ id __104__PBUIWallpaperView__backdrop_generateImageFromImage_forBackdropParamete
   return v8;
 }
 
-- (id)_material_generateImageFromImage:(id)a3 forBackdropParameters:(id *)a4 traitCollection:(id)a5
+- (id)_material_generateImageFromImage:(id)image forBackdropParameters:(id *)parameters traitCollection:(id)collection
 {
   v32 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  imageCopy = image;
+  collectionCopy = collection;
   v11 = PBUILogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v26 = *&a4->var2;
-    *v29 = *&a4->var0;
+    v26 = *&parameters->var2;
+    *v29 = *&parameters->var0;
     *&v29[16] = v26;
-    v27 = *&a4->var6;
-    v30 = *&a4->var4;
+    v27 = *&parameters->var6;
+    v30 = *&parameters->var4;
     v31 = v27;
     v28 = PBUIStringForWallpaperBackdropParameters(v29);
     *v29 = 138543618;
@@ -1244,20 +1244,20 @@ id __104__PBUIWallpaperView__backdrop_generateImageFromImage_forBackdropParamete
     _os_log_debug_impl(&dword_21E67D000, v11, OS_LOG_TYPE_DEBUG, "Generating new image via material view for view: %{public}@, backdrop parameters: %{public}@", v29, 0x16u);
   }
 
-  var7 = a4->var7;
+  var7 = parameters->var7;
   if ((var7 - 1) < 2)
   {
-    v15 = [v10 userInterfaceStyle];
+    userInterfaceStyle = [collectionCopy userInterfaceStyle];
     v13 = 8.0;
 LABEL_9:
-    v14 = soft_MTCoreMaterialRecipeNameForMaterialRecipeAndUserInterfaceStyle_0(v15);
+    v14 = soft_MTCoreMaterialRecipeNameForMaterialRecipeAndUserInterfaceStyle_0(userInterfaceStyle);
     goto LABEL_10;
   }
 
   v13 = 1.0;
   if (!var7)
   {
-    v15 = 1;
+    userInterfaceStyle = 1;
     goto LABEL_9;
   }
 
@@ -1266,14 +1266,14 @@ LABEL_9:
     v14 = 0;
 LABEL_10:
     v16 = [objc_alloc(getPUIMaterialTreatmentClass()) initWithRecipeName:v14 fromBundle:0];
-    v17 = [objc_alloc(getPUICodableImageClass()) initWithUIImage:v9 error:0];
+    v17 = [objc_alloc(getPUICodableImageClass()) initWithUIImage:imageCopy error:0];
     v18 = [objc_alloc(getPUITreatImageRequestClass()) initWithImage:v17 downscaleFactor:v16 treatment:v13];
-    v19 = [getPUICARemoteRendererClass() remoteRendererIfPossible];
-    v20 = [v19 renderRequest:v18 error:0];
+    remoteRendererIfPossible = [getPUICARemoteRendererClass() remoteRendererIfPossible];
+    v20 = [remoteRendererIfPossible renderRequest:v18 error:0];
 
     v21 = MEMORY[0x277D755B8];
-    [v9 scale];
-    v23 = [v21 pui_imageWithIOSurface:v20 scale:objc_msgSend(v9 orientation:{"imageOrientation"), v22}];
+    [imageCopy scale];
+    v23 = [v21 pui_imageWithIOSurface:v20 scale:objc_msgSend(imageCopy orientation:{"imageOrientation"), v22}];
     v24 = [v23 pui_CGImageBackedImageWithMaximumBitsPerComponent:8 skipCIF10FitsInSRGBCheck:1];
 
     return v24;
@@ -1289,21 +1289,21 @@ LABEL_10:
   return result;
 }
 
-- (id)_cacheKeyForParameters:(id *)a3 includingTint:(BOOL)a4 downsampleFactor:(double)a5 traitCollection:(id)a6
+- (id)_cacheKeyForParameters:(id *)parameters includingTint:(BOOL)tint downsampleFactor:(double)factor traitCollection:(id)collection
 {
-  v7 = a4;
+  tintCopy = tint;
   v44 = *MEMORY[0x277D85DE8];
-  v11 = a6;
-  v12 = [(PBUIWallpaperView *)self cacheGroup];
-  v13 = [(PBUIWallpaperView *)self cacheUniqueIdentifier];
-  if (![v12 length])
+  collectionCopy = collection;
+  cacheGroup = [(PBUIWallpaperView *)self cacheGroup];
+  cacheUniqueIdentifier = [(PBUIWallpaperView *)self cacheUniqueIdentifier];
+  if (![cacheGroup length])
   {
     v18 = 0;
     goto LABEL_38;
   }
 
   v14 = 0;
-  var7 = a3->var7;
+  var7 = parameters->var7;
   if (var7 > 1)
   {
     if (var7 != 2)
@@ -1322,9 +1322,9 @@ LABEL_10:
       goto LABEL_25;
     }
 
-    v19 = [v11 userInterfaceStyle];
+    userInterfaceStyle = [collectionCopy userInterfaceStyle];
     v20 = @"light";
-    if (v19 == 2)
+    if (userInterfaceStyle == 2)
     {
       v20 = @"dark";
     }
@@ -1335,49 +1335,49 @@ LABEL_10:
 
   if (!var7)
   {
-    if (!v7)
+    if (!tintCopy)
     {
-      a3->var1 = 0;
-      a3->var2 = 0;
+      parameters->var1 = 0;
+      parameters->var2 = 0;
     }
 
-    var3 = a3->var3;
+    var3 = parameters->var3;
     if (var3 == 1.79769313e308)
     {
-      a3->var3 = 0.0;
+      parameters->var3 = 0.0;
       var3 = 0.0;
     }
 
-    var4 = a3->var4;
+    var4 = parameters->var4;
     if (var4 == 1.79769313e308)
     {
-      a3->var4 = 0.0;
+      parameters->var4 = 0.0;
       var4 = 0.0;
     }
 
-    var5 = a3->var5;
+    var5 = parameters->var5;
     if (var5 == 1.79769313e308)
     {
-      a3->var5 = 0.0;
+      parameters->var5 = 0.0;
       var5 = 0.0;
     }
 
-    var6 = a3->var6;
+    var6 = parameters->var6;
     if (var6 == 1.79769313e308)
     {
-      a3->var6 = 0.0;
+      parameters->var6 = 0.0;
       var6 = 0.0;
     }
 
-    [MEMORY[0x277CCACA8] stringWithFormat:@"%d:%d:%d:%1.1f:%d:%1.1f:%1.1f", a3->var0, a3->var1, a3->var2, *&var4, var3, *&var5, *&var6];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"%d:%d:%d:%1.1f:%d:%1.1f:%1.1f", parameters->var0, parameters->var1, parameters->var2, *&var4, var3, *&var5, *&var6];
     goto LABEL_24;
   }
 
   if (var7 == 1)
   {
-    v16 = [v11 userInterfaceStyle];
+    userInterfaceStyle2 = [collectionCopy userInterfaceStyle];
     v17 = @"light";
-    if (v16 == 2)
+    if (userInterfaceStyle2 == 2)
     {
       v17 = @"dark";
     }
@@ -1400,28 +1400,28 @@ LABEL_25:
   v26 = PBUIStringForWallpaperMode(wallpaperMode);
   CC_SHA1("Oct 22 2025 21:33:39", 0x14u, md);
   v27 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:md length:20 freeWhenDone:0];
-  v28 = [v27 pf_hexadecimalEncodedString];
+  pf_hexadecimalEncodedString = [v27 pf_hexadecimalEncodedString];
 
-  if ([v28 length] >= 9)
+  if ([pf_hexadecimalEncodedString length] >= 9)
   {
-    v29 = [v28 substringToIndex:8];
+    v29 = [pf_hexadecimalEncodedString substringToIndex:8];
 
-    v28 = v29;
+    pf_hexadecimalEncodedString = v29;
   }
 
   v30 = MEMORY[0x277CCACA8];
-  v31 = [(PBUIWallpaperView *)self variantCacheIdentifier];
-  v32 = v31;
+  variantCacheIdentifier = [(PBUIWallpaperView *)self variantCacheIdentifier];
+  v32 = variantCacheIdentifier;
   v33 = @"untinted";
-  if (v7)
+  if (tintCopy)
   {
     v33 = @"tinted";
   }
 
   v34 = @"#";
-  if (v13)
+  if (cacheUniqueIdentifier)
   {
-    v34 = v13;
+    v34 = cacheUniqueIdentifier;
   }
 
   if (self->_needsWallpaperDimmingTreatment)
@@ -1434,7 +1434,7 @@ LABEL_25:
     v35 = @"undimmed";
   }
 
-  v18 = [v30 stringWithFormat:@"%@-%@-(%@)-%@-%.0f-%@-%@-%@-%@", v31, v12, v14, v33, *&a5, v34, v26, v35, v28];
+  v18 = [v30 stringWithFormat:@"%@-%@-(%@)-%@-%.0f-%@-%@-%@-%@", variantCacheIdentifier, cacheGroup, v14, v33, *&factor, v34, v26, v35, pf_hexadecimalEncodedString];
 
 LABEL_38:
 
@@ -1456,27 +1456,27 @@ LABEL_38:
   return v3;
 }
 
-- (BOOL)_needsFallbackImageForBackdropGeneratedImage:(id)a3
+- (BOOL)_needsFallbackImageForBackdropGeneratedImage:(id)image
 {
-  if (!a3)
+  if (!image)
   {
     return 1;
   }
 
-  [a3 size];
+  [image size];
   return fmin(v3, v4) < 40.0;
 }
 
-- (id)_fallbackImageWithOriginalSize:(CGSize)a3
+- (id)_fallbackImageWithOriginalSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(PBUIWallpaperView *)self legibilitySettings];
-  v6 = [v5 contentColor];
+  height = size.height;
+  width = size.width;
+  legibilitySettings = [(PBUIWallpaperView *)self legibilitySettings];
+  contentColor = [legibilitySettings contentColor];
 
-  if (!v6)
+  if (!contentColor)
   {
-    v6 = [MEMORY[0x277D75348] blackColor];
+    contentColor = [MEMORY[0x277D75348] blackColor];
   }
 
   v7 = height / width;
@@ -1495,17 +1495,17 @@ LABEL_38:
     v8 = v7 * 40.0;
   }
 
-  v9 = [MEMORY[0x277D75568] defaultFormat];
-  [v9 setOpaque:1];
-  v10 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:v9 format:{v8, 40.0}];
+  defaultFormat = [MEMORY[0x277D75568] defaultFormat];
+  [defaultFormat setOpaque:1];
+  v10 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:defaultFormat format:{v8, 40.0}];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __52__PBUIWallpaperView__fallbackImageWithOriginalSize___block_invoke;
   v14[3] = &unk_278363108;
-  v15 = v6;
+  v15 = contentColor;
   v16 = v8;
   v17 = 0x4044000000000000;
-  v11 = v6;
+  v11 = contentColor;
   v12 = [v10 imageWithActions:v14];
 
   return v12;
@@ -1522,16 +1522,16 @@ void __52__PBUIWallpaperView__fallbackImageWithOriginalSize___block_invoke(uint6
   UIRectFill(*&v4);
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v7 = a3;
-  v6 = a4;
-  if (self->_parallaxSettings == v7)
+  settingsCopy = settings;
+  keyCopy = key;
+  if (self->_parallaxSettings == settingsCopy)
   {
     [(PBUIWallpaperView *)self _applyParallaxSettings];
   }
 
-  else if (self->_wallpaperSettings == v7 && (([v6 isEqualToString:@"replaceBlurs"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"blurReplacementMode")))
+  else if (self->_wallpaperSettings == settingsCopy && (([keyCopy isEqualToString:@"replaceBlurs"] & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"blurReplacementMode")))
   {
     [(PBUIWallpaperView *)self _notifyBlursInvalidated];
   }
@@ -1544,8 +1544,8 @@ void __52__PBUIWallpaperView__fallbackImageWithOriginalSize___block_invoke(uint6
     return 0;
   }
 
-  v4 = [(PBUIWallpaperView *)self window];
-  v3 = v4 != 0;
+  window = [(PBUIWallpaperView *)self window];
+  v3 = window != 0;
 
   return v3;
 }
@@ -1568,16 +1568,16 @@ void __52__PBUIWallpaperView__fallbackImageWithOriginalSize___block_invoke(uint6
 
 - (void)_endDisallowRasterizationBlock
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
-  [v8 handleFailureInMethod:a1 object:a2 file:@"PBUIWallpaperView.m" lineNumber:896 description:@"unpaired disallowRastrizationBlock decrement"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"PBUIWallpaperView.m" lineNumber:896 description:@"unpaired disallowRastrizationBlock decrement"];
 
   *a4 = *a3;
 }
 
 - (BOOL)_isParallaxMotionEnabled
 {
-  v2 = [MEMORY[0x277CF0CA8] sharedInstance];
-  v3 = [v2 deviceClass] == 2;
+  mEMORY[0x277CF0CA8] = [MEMORY[0x277CF0CA8] sharedInstance];
+  v3 = [mEMORY[0x277CF0CA8] deviceClass] == 2;
 
   return v3;
 }
@@ -1593,10 +1593,10 @@ void __52__PBUIWallpaperView__fallbackImageWithOriginalSize___block_invoke(uint6
     [(PBUIWallpaperView *)self insertSubview:self->_parallaxView atIndex:0];
   }
 
-  v5 = [(UIView *)self->_contentView superview];
+  superview = [(UIView *)self->_contentView superview];
   v6 = self->_parallaxView;
 
-  if (v5 != v6)
+  if (superview != v6)
   {
     [(UIView *)self->_parallaxView insertSubview:self->_contentView atIndex:0];
   }
@@ -1616,9 +1616,9 @@ void __52__PBUIWallpaperView__fallbackImageWithOriginalSize___block_invoke(uint6
     v24 = v9;
     [(PBUIWallpaperParallaxSettings *)self->_parallaxSettings perspectiveTransform];
     v11 = v10 * -0.01;
-    v12 = [(UIView *)self->_parallaxView layer];
+    layer = [(UIView *)self->_parallaxView layer];
     v22 = v11;
-    [v12 setTransform:location];
+    [layer setTransform:location];
 
     objc_initWeak(location, self);
     v13 = MEMORY[0x277D75D18];

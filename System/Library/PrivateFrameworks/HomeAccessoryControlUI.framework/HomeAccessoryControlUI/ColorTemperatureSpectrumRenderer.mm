@@ -1,19 +1,19 @@
 @interface ColorTemperatureSpectrumRenderer
-+ (CGPoint)positionForColor:(float)a3;
-+ (float)colorAtLocation:(CGPoint)a3;
-- (CGPoint)positionForColor:(float)a3;
-- (ColorTemperatureSpectrumRenderer)initWithMetal:(id)a3 startColor:(unsigned __int16)a4 endColor:(unsigned __int16)a5;
-- (float)colorAtLocation:(CGPoint)a3;
-- (void)drawInMTKView:(id)a3;
++ (CGPoint)positionForColor:(float)color;
++ (float)colorAtLocation:(CGPoint)location;
+- (CGPoint)positionForColor:(float)color;
+- (ColorTemperatureSpectrumRenderer)initWithMetal:(id)metal startColor:(unsigned __int16)color endColor:(unsigned __int16)endColor;
+- (float)colorAtLocation:(CGPoint)location;
+- (void)drawInMTKView:(id)view;
 - (void)initializeVertexBuffer;
 - (void)setupRenderPipeline;
 @end
 
 @implementation ColorTemperatureSpectrumRenderer
 
-- (ColorTemperatureSpectrumRenderer)initWithMetal:(id)a3 startColor:(unsigned __int16)a4 endColor:(unsigned __int16)a5
+- (ColorTemperatureSpectrumRenderer)initWithMetal:(id)metal startColor:(unsigned __int16)color endColor:(unsigned __int16)endColor
 {
-  v9 = a3;
+  metalCopy = metal;
   v18.receiver = self;
   v18.super_class = ColorTemperatureSpectrumRenderer;
   v10 = [(ColorTemperatureSpectrumRenderer *)&v18 init];
@@ -23,20 +23,20 @@
     device = v10->_device;
     v10->_device = v11;
 
-    v13 = [(MTLDevice *)v10->_device newCommandQueue];
+    newCommandQueue = [(MTLDevice *)v10->_device newCommandQueue];
     commandQueue = v10->_commandQueue;
-    v10->_commandQueue = v13;
+    v10->_commandQueue = newCommandQueue;
 
-    objc_storeStrong(&v10->_metalView, a3);
+    objc_storeStrong(&v10->_metalView, metal);
     [(MTKView *)v10->_metalView setDevice:v10->_device];
     [(MTKView *)v10->_metalView setDelegate:v10];
-    v10->_startColor = a4;
-    v10->_endColor = a5;
+    v10->_startColor = color;
+    v10->_endColor = endColor;
     [(ColorTemperatureSpectrumRenderer *)v10 initializeVertexBuffer];
     [(ColorTemperatureSpectrumRenderer *)v10 setupRenderPipeline];
-    v15 = [MEMORY[0x277CCACC8] currentThread];
-    v16 = [v15 threadDictionary];
-    [v16 setObject:v10 forKey:@"SpectrumRendererThreadLocal"];
+    currentThread = [MEMORY[0x277CCACC8] currentThread];
+    threadDictionary = [currentThread threadDictionary];
+    [threadDictionary setObject:v10 forKey:@"SpectrumRendererThreadLocal"];
   }
 
   return v10;
@@ -58,10 +58,10 @@
     v9 = [v5 newFunctionWithName:@"fragmentShader"];
     [v7 setFragmentFunction:v9];
 
-    v10 = [(MTKView *)self->_metalView colorPixelFormat];
-    v11 = [v7 colorAttachments];
-    v12 = [v11 objectAtIndexedSubscript:0];
-    [v12 setPixelFormat:v10];
+    colorPixelFormat = [(MTKView *)self->_metalView colorPixelFormat];
+    colorAttachments = [v7 colorAttachments];
+    v12 = [colorAttachments objectAtIndexedSubscript:0];
+    [v12 setPixelFormat:colorPixelFormat];
 
     v13 = self->_device;
     v17 = v6;
@@ -89,49 +89,49 @@
   fragmentShaderArgumentBuffer = self->_fragmentShaderArgumentBuffer;
   self->_fragmentShaderArgumentBuffer = v5;
 
-  v7 = [(MTLBuffer *)self->_fragmentShaderArgumentBuffer contents];
-  *v7 = [(ColorTemperatureSpectrumRenderer *)self startColor];
-  v7[1] = [(ColorTemperatureSpectrumRenderer *)self endColor];
+  contents = [(MTLBuffer *)self->_fragmentShaderArgumentBuffer contents];
+  *contents = [(ColorTemperatureSpectrumRenderer *)self startColor];
+  contents[1] = [(ColorTemperatureSpectrumRenderer *)self endColor];
 }
 
-- (void)drawInMTKView:(id)a3
+- (void)drawInMTKView:(id)view
 {
-  v9 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  v4 = [(MTKView *)self->_metalView currentRenderPassDescriptor];
-  v5 = [v4 colorAttachments];
-  v6 = [v5 objectAtIndexedSubscript:0];
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  currentRenderPassDescriptor = [(MTKView *)self->_metalView currentRenderPassDescriptor];
+  colorAttachments = [currentRenderPassDescriptor colorAttachments];
+  v6 = [colorAttachments objectAtIndexedSubscript:0];
   [v6 setClearColor:{0.0, 0.0, 0.0, 0.0}];
 
-  v7 = [v9 renderCommandEncoderWithDescriptor:v4];
+  v7 = [commandBuffer renderCommandEncoderWithDescriptor:currentRenderPassDescriptor];
   [v7 setRenderPipelineState:self->_pipelineState];
   [v7 setVertexBuffer:self->_vertexBuffer offset:0 atIndex:0];
   [v7 setFragmentBuffer:self->_fragmentShaderArgumentBuffer offset:0 atIndex:0];
   [v7 drawPrimitives:3 vertexStart:0 vertexCount:6];
   [v7 endEncoding];
-  v8 = [(MTKView *)self->_metalView currentDrawable];
-  [v9 presentDrawable:v8];
+  currentDrawable = [(MTKView *)self->_metalView currentDrawable];
+  [commandBuffer presentDrawable:currentDrawable];
 
-  [v9 commit];
+  [commandBuffer commit];
 }
 
-- (float)colorAtLocation:(CGPoint)a3
+- (float)colorAtLocation:(CGPoint)location
 {
-  x = a3.x;
-  v4 = [(ColorTemperatureSpectrumRenderer *)self fragmentShaderArgumentBuffer:a3.x];
-  v5 = [v4 contents];
+  x = location.x;
+  v4 = [(ColorTemperatureSpectrumRenderer *)self fragmentShaderArgumentBuffer:location.x];
+  contents = [v4 contents];
 
   *&x = x;
   v6 = (*&x + 1.0) * 0.5;
-  return fminf(fmaxf(*v5 + (v6 * (HIWORD(*v5) - *v5)), 0.0), 1000.0);
+  return fminf(fmaxf(*contents + (v6 * (HIWORD(*contents) - *contents)), 0.0), 1000.0);
 }
 
-+ (float)colorAtLocation:(CGPoint)a3
++ (float)colorAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [MEMORY[0x277CCACC8] currentThread];
-  v6 = [v5 threadDictionary];
-  v7 = [v6 objectForKey:@"SpectrumRendererThreadLocal"];
+  y = location.y;
+  x = location.x;
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v7 = [threadDictionary objectForKey:@"SpectrumRendererThreadLocal"];
 
   [v7 colorAtLocation:{x, y}];
   LODWORD(y) = v8;
@@ -139,12 +139,12 @@
   return *&y;
 }
 
-- (CGPoint)positionForColor:(float)a3
+- (CGPoint)positionForColor:(float)color
 {
-  v4 = [(ColorTemperatureSpectrumRenderer *)self fragmentShaderArgumentBuffer];
-  v5 = [v4 contents];
+  fragmentShaderArgumentBuffer = [(ColorTemperatureSpectrumRenderer *)self fragmentShaderArgumentBuffer];
+  contents = [fragmentShaderArgumentBuffer contents];
 
-  v6 = ((a3 - *v5) / (HIWORD(*v5) - *v5)) * 2.0 + -1.0;
+  v6 = ((color - *contents) / (HIWORD(*contents) - *contents)) * 2.0 + -1.0;
   v7 = v6;
   v8 = 0.0;
   result.y = v8;
@@ -152,13 +152,13 @@
   return result;
 }
 
-+ (CGPoint)positionForColor:(float)a3
++ (CGPoint)positionForColor:(float)color
 {
-  v4 = [MEMORY[0x277CCACC8] currentThread];
-  v5 = [v4 threadDictionary];
-  v6 = [v5 objectForKey:@"SpectrumRendererThreadLocal"];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v6 = [threadDictionary objectForKey:@"SpectrumRendererThreadLocal"];
 
-  *&v7 = a3;
+  *&v7 = color;
   [v6 positionForColor:v7];
   v9 = v8;
   v11 = v10;

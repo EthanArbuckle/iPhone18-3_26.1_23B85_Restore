@@ -2,10 +2,10 @@
 + (id)sharedEventAgentMaintainer;
 - (void)cancelFileHandleReaderSources;
 - (void)checkDeviceFirstUnlock;
-- (void)handleProviderAction:(int64_t)a3 token:(unint64_t)a4 event:(id)a5;
+- (void)handleProviderAction:(int64_t)action token:(unint64_t)token event:(id)event;
 - (void)launchOwner;
 - (void)setupReadabilityHandlers;
-- (void)startFileHandleReader:(id)a3;
+- (void)startFileHandleReader:(id)reader;
 - (void)startFileHandleReaderSettingTimer;
 - (void)stopFileHandleReaderSettingTimer;
 @end
@@ -37,41 +37,41 @@
   return v3;
 }
 
-- (void)handleProviderAction:(int64_t)a3 token:(unint64_t)a4 event:(id)a5
+- (void)handleProviderAction:(int64_t)action token:(unint64_t)token event:(id)event
 {
-  v8 = a5;
-  v9 = self;
-  objc_sync_enter(v9);
+  eventCopy = event;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v10 = nplog_obj();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    sub_ACCC(a3, a4, v10);
+    sub_ACCC(action, token, v10);
   }
 
-  if (a3 == 1)
+  if (action == 1)
   {
-    [(NSPUserEventAgentFileHandleMaintainer *)v9 setEventToken:a4];
-    if (xpc_dictionary_get_int64(v8, "PID") >= 1)
+    [(NSPUserEventAgentFileHandleMaintainer *)selfCopy setEventToken:token];
+    if (xpc_dictionary_get_int64(eventCopy, "PID") >= 1)
     {
-      [(NSPUserEventAgentFileHandleMaintainer *)v9 launchOwner];
+      [(NSPUserEventAgentFileHandleMaintainer *)selfCopy launchOwner];
     }
 
-    [(NSPUserEventAgentFileHandleMaintainer *)v9 stopFileHandleReaderSettingTimer];
-    [(NSPUserEventAgentFileHandleMaintainer *)v9 resetFileHandlesFromEvent:v8];
-    [(NSPUserEventAgentFileHandleMaintainer *)v9 cancelFileHandleReaderSources];
-    [(NSPUserEventAgentFileHandleMaintainer *)v9 setupReadabilityHandlers];
-    [(NSPUserEventAgentFileHandleMaintainer *)v9 checkDeviceFirstUnlock];
-    [(NSPUserEventAgentFileHandleMaintainer *)v9 setReceivedEventToken:1];
+    [(NSPUserEventAgentFileHandleMaintainer *)selfCopy stopFileHandleReaderSettingTimer];
+    [(NSPUserEventAgentFileHandleMaintainer *)selfCopy resetFileHandlesFromEvent:eventCopy];
+    [(NSPUserEventAgentFileHandleMaintainer *)selfCopy cancelFileHandleReaderSources];
+    [(NSPUserEventAgentFileHandleMaintainer *)selfCopy setupReadabilityHandlers];
+    [(NSPUserEventAgentFileHandleMaintainer *)selfCopy checkDeviceFirstUnlock];
+    [(NSPUserEventAgentFileHandleMaintainer *)selfCopy setReceivedEventToken:1];
   }
 
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)startFileHandleReaderSettingTimer
 {
-  v3 = [(NSPUserEventAgentFileHandleMaintainer *)self fileHandleReaderSettingTimer];
+  fileHandleReaderSettingTimer = [(NSPUserEventAgentFileHandleMaintainer *)self fileHandleReaderSettingTimer];
 
-  if (!v3)
+  if (!fileHandleReaderSettingTimer)
   {
     [(NSPUserEventAgentFileHandleMaintainer *)self provider];
     xpc_event_provider_get_queue();
@@ -80,12 +80,12 @@
 
 - (void)stopFileHandleReaderSettingTimer
 {
-  v3 = [(NSPUserEventAgentFileHandleMaintainer *)self fileHandleReaderSettingTimer];
+  fileHandleReaderSettingTimer = [(NSPUserEventAgentFileHandleMaintainer *)self fileHandleReaderSettingTimer];
 
-  if (v3)
+  if (fileHandleReaderSettingTimer)
   {
-    v4 = [(NSPUserEventAgentFileHandleMaintainer *)self fileHandleReaderSettingTimer];
-    dispatch_source_cancel(v4);
+    fileHandleReaderSettingTimer2 = [(NSPUserEventAgentFileHandleMaintainer *)self fileHandleReaderSettingTimer];
+    dispatch_source_cancel(fileHandleReaderSettingTimer2);
 
     [(NSPUserEventAgentFileHandleMaintainer *)self setFileHandleReaderSettingTimer:0];
   }
@@ -93,16 +93,16 @@
 
 - (void)cancelFileHandleReaderSources
 {
-  v3 = [(NSPUserEventAgentFileHandleMaintainer *)self fileHandleReaderSources];
+  fileHandleReaderSources = [(NSPUserEventAgentFileHandleMaintainer *)self fileHandleReaderSources];
 
-  if (v3)
+  if (fileHandleReaderSources)
   {
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v4 = [(NSPUserEventAgentFileHandleMaintainer *)self fileHandleReaderSources];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    fileHandleReaderSources2 = [(NSPUserEventAgentFileHandleMaintainer *)self fileHandleReaderSources];
+    v5 = [fileHandleReaderSources2 countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -114,7 +114,7 @@
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(fileHandleReaderSources2);
           }
 
           dispatch_source_cancel(*(*(&v10 + 1) + 8 * v8));
@@ -122,20 +122,20 @@
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [fileHandleReaderSources2 countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
     }
 
-    v9 = [(NSPUserEventAgentFileHandleMaintainer *)self fileHandleReaderSources];
-    [v9 removeAllObjects];
+    fileHandleReaderSources3 = [(NSPUserEventAgentFileHandleMaintainer *)self fileHandleReaderSources];
+    [fileHandleReaderSources3 removeAllObjects];
   }
 }
 
-- (void)startFileHandleReader:(id)a3
+- (void)startFileHandleReader:(id)reader
 {
-  [a3 handle];
+  [reader handle];
   [objc_claimAutoreleasedReturnValue() fileDescriptor];
   [(NSPUserEventAgentFileHandleMaintainer *)self provider];
   xpc_event_provider_get_queue();
@@ -143,15 +143,15 @@
 
 - (void)setupReadabilityHandlers
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_6CA0;
   v3[3] = &unk_149B0;
-  v3[4] = v2;
-  [(NSPUserEventAgentFileHandleMaintainer *)v2 iterateFileHandlesWithBlock:v3];
-  objc_sync_exit(v2);
+  v3[4] = selfCopy;
+  [(NSPUserEventAgentFileHandleMaintainer *)selfCopy iterateFileHandlesWithBlock:v3];
+  objc_sync_exit(selfCopy);
 }
 
 - (void)launchOwner

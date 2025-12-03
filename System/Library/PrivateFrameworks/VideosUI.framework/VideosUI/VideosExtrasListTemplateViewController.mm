@@ -1,53 +1,53 @@
 @interface VideosExtrasListTemplateViewController
-+ (id)relatedContentViewControllerForElement:(id)a3;
-- (BOOL)shouldUpdateByReplacingViewControllerWithTemplate:(id)a3;
-- (VideosExtrasListTemplateViewController)initWithDocument:(id)a3 options:(id)a4 context:(id)a5;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
++ (id)relatedContentViewControllerForElement:(id)element;
+- (BOOL)shouldUpdateByReplacingViewControllerWithTemplate:(id)template;
+- (VideosExtrasListTemplateViewController)initWithDocument:(id)document options:(id)options context:(id)context;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
 - (id)templateElement;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_addConstraintsToTableView:(id)a3;
-- (void)_configureBannerWithElement:(id)a3;
-- (void)_configureVignette:(BOOL)a3;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_addConstraintsToTableView:(id)view;
+- (void)_configureBannerWithElement:(id)element;
+- (void)_configureVignette:(BOOL)vignette;
 - (void)_embedRelatedContentViewController;
 - (void)_prepareLayout;
-- (void)_pushRelatedViewController:(id)a3 animated:(BOOL)a4;
+- (void)_pushRelatedViewController:(id)controller animated:(BOOL)animated;
 - (void)_setDetailContraints;
-- (void)_setRelatedContentEmbedded:(BOOL)a3;
+- (void)_setRelatedContentEmbedded:(BOOL)embedded;
 - (void)_unembedRelatedContent;
-- (void)_updateForTemplate:(id)a3;
-- (void)_updateRelatedContent:(id)a3 forListItem:(id)a4;
+- (void)_updateForTemplate:(id)template;
+- (void)_updateRelatedContent:(id)content forListItem:(id)item;
 - (void)dealloc;
-- (void)setRelatedContentViewController:(id)a3;
-- (void)tableView:(id)a3 didHighlightRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setRelatedContentViewController:(id)controller;
+- (void)tableView:(id)view didHighlightRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation VideosExtrasListTemplateViewController
 
-- (VideosExtrasListTemplateViewController)initWithDocument:(id)a3 options:(id)a4 context:(id)a5
+- (VideosExtrasListTemplateViewController)initWithDocument:(id)document options:(id)options context:(id)context
 {
   v14.receiver = self;
   v14.super_class = VideosExtrasListTemplateViewController;
-  v5 = [(VideosExtrasTemplateViewController *)&v14 initWithDocument:a3 options:a4 context:a5];
+  v5 = [(VideosExtrasTemplateViewController *)&v14 initWithDocument:document options:options context:context];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     relatedContentViewControllerMap = v5->_relatedContentViewControllerMap;
-    v5->_relatedContentViewControllerMap = v6;
+    v5->_relatedContentViewControllerMap = strongToStrongObjectsMapTable;
 
-    v8 = [(VideosExtrasListTemplateViewController *)v5 templateElement];
-    v9 = [v8 list];
-    v10 = [v9 sections];
+    templateElement = [(VideosExtrasListTemplateViewController *)v5 templateElement];
+    list = [templateElement list];
+    sections = [list sections];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __75__VideosExtrasListTemplateViewController_initWithDocument_options_context___block_invoke;
     v12[3] = &unk_1E87362E0;
     v13 = v5;
-    [v10 enumerateObjectsUsingBlock:v12];
+    [sections enumerateObjectsUsingBlock:v12];
   }
 
   return v5;
@@ -93,10 +93,10 @@ void __75__VideosExtrasListTemplateViewController_initWithDocument_options_conte
 
 - (id)templateElement
 {
-  v2 = [(VideosExtrasTemplateViewController *)self document];
-  v3 = [v2 templateElement];
+  document = [(VideosExtrasTemplateViewController *)self document];
+  templateElement = [document templateElement];
 
-  return v3;
+  return templateElement;
 }
 
 - (void)viewDidLoad
@@ -104,35 +104,35 @@ void __75__VideosExtrasListTemplateViewController_initWithDocument_options_conte
   v33.receiver = self;
   v33.super_class = VideosExtrasListTemplateViewController;
   [(VideosExtrasTemplateViewController *)&v33 viewDidLoad];
-  v3 = [(VideosExtrasListTemplateViewController *)self view];
-  v4 = [(VideosExtrasListTemplateViewController *)self templateElement];
-  v5 = [v4 style];
-  v6 = [v5 elementAlignment];
+  view = [(VideosExtrasListTemplateViewController *)self view];
+  templateElement = [(VideosExtrasListTemplateViewController *)self templateElement];
+  style = [templateElement style];
+  elementAlignment = [style elementAlignment];
 
-  self->_tableViewLeft = v6 == 1;
-  v7 = [(VideosExtrasListTemplateViewController *)self templateElement];
-  v8 = [v7 background];
+  self->_tableViewLeft = elementAlignment == 1;
+  templateElement2 = [(VideosExtrasListTemplateViewController *)self templateElement];
+  background = [templateElement2 background];
 
-  v9 = [(VideosExtrasListTemplateViewController *)self templateElement];
-  v10 = [v9 documentBanner];
+  templateElement3 = [(VideosExtrasListTemplateViewController *)self templateElement];
+  documentBanner = [templateElement3 documentBanner];
 
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v12 = v11;
-  if (v8)
+  if (background)
   {
-    [v11 addObject:v8];
+    [v11 addObject:background];
   }
 
-  v13 = [v10 background];
+  background2 = [documentBanner background];
 
-  if (v13)
+  if (background2)
   {
-    v14 = [v10 background];
-    [v12 addObject:v14];
+    background3 = [documentBanner background];
+    [v12 addObject:background3];
   }
 
   [(VideosExtrasTemplateViewController *)self configureBackgroundWithElements:v12];
-  [(VideosExtrasListTemplateViewController *)self _configureBannerWithElement:v10];
+  [(VideosExtrasListTemplateViewController *)self _configureBannerWithElement:documentBanner];
   v15 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
   vignetteView = self->_vignetteView;
   self->_vignetteView = v15;
@@ -140,14 +140,14 @@ void __75__VideosExtrasListTemplateViewController_initWithDocument_options_conte
   [(UIImageView *)self->_vignetteView setTranslatesAutoresizingMaskIntoConstraints:0];
   v17 = MEMORY[0x1E696ACD8];
   v18 = self->_vignetteView;
-  v19 = [(VideosExtrasListTemplateViewController *)self view];
-  v20 = [v17 constraintsByAttachingView:v18 toView:v19 alongEdges:15 insets:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
+  view2 = [(VideosExtrasListTemplateViewController *)self view];
+  v20 = [v17 constraintsByAttachingView:v18 toView:view2 alongEdges:15 insets:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
 
-  v21 = [(VideosExtrasListTemplateViewController *)self view];
-  [v21 addSubview:self->_vignetteView];
+  view3 = [(VideosExtrasListTemplateViewController *)self view];
+  [view3 addSubview:self->_vignetteView];
 
-  v22 = [(VideosExtrasListTemplateViewController *)self view];
-  [v22 addConstraints:v20];
+  view4 = [(VideosExtrasListTemplateViewController *)self view];
+  [view4 addConstraints:v20];
 
   v23 = [VideosExtrasTableView alloc];
   v24 = [(VideosExtrasTableView *)v23 initWithFrame:0 style:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -165,8 +165,8 @@ void __75__VideosExtrasListTemplateViewController_initWithDocument_options_conte
   [(UITableView *)self->_tableView setDataSource:self];
   [(UITableView *)self->_tableView setDelegate:self];
   v28 = self->_tableView;
-  v29 = [MEMORY[0x1E69DC888] clearColor];
-  [(UITableView *)v28 setBackgroundColor:v29];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UITableView *)v28 setBackgroundColor:clearColor];
 
   [(UITableView *)self->_tableView setShowsHorizontalScrollIndicator:0];
   [(UITableView *)self->_tableView setShowsVerticalScrollIndicator:0];
@@ -179,22 +179,22 @@ void __75__VideosExtrasListTemplateViewController_initWithDocument_options_conte
   v32 = [objc_alloc(MEMORY[0x1E69DD370]) initWithPrivateStyle:2030];
   [v32 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UITableView *)self->_tableView setBackgroundView:v32];
-  [v3 addSubview:self->_tableView];
+  [view addSubview:self->_tableView];
 }
 
-- (void)_addConstraintsToTableView:(id)a3
+- (void)_addConstraintsToTableView:(id)view
 {
-  v32 = a3;
-  v4 = [(VideosExtrasListTemplateViewController *)self view];
-  v5 = v4;
+  viewCopy = view;
+  view = [(VideosExtrasListTemplateViewController *)self view];
+  v5 = view;
   if (self->_masterViewConstraints)
   {
-    [v4 removeConstraints:?];
+    [view removeConstraints:?];
   }
 
   if ([(VideosExtrasElementViewController *)self isWide])
   {
-    v6 = [MEMORY[0x1E696ACD8] constraintsBySizingView:v32 toSize:{305.0, 500.0}];
+    v6 = [MEMORY[0x1E696ACD8] constraintsBySizingView:viewCopy toSize:{305.0, 500.0}];
     if (self->_tableViewLeft)
     {
       v7 = 4;
@@ -207,22 +207,22 @@ void __75__VideosExtrasListTemplateViewController_initWithDocument_options_conte
 
     v8 = MEMORY[0x1E69A8958];
     UIEdgeInsetsMakeWithEdges();
-    v9 = [v8 positionConstraintsForView:v32 insets:v7 position:?];
-    v10 = [MEMORY[0x1E696ACD8] constraintWithItem:v32 attribute:10 relatedBy:0 toItem:v5 attribute:10 multiplier:1.0 constant:0.0];
+    v9 = [v8 positionConstraintsForView:viewCopy insets:v7 position:?];
+    v10 = [MEMORY[0x1E696ACD8] constraintWithItem:viewCopy attribute:10 relatedBy:0 toItem:v5 attribute:10 multiplier:1.0 constant:0.0];
     v11 = [v9 arrayByAddingObject:v10];
 
     v12 = [v6 arrayByAddingObjectsFromArray:v11];
     masterViewConstraints = self->_masterViewConstraints;
     self->_masterViewConstraints = v12;
 
-    [v32 setContentInset:{0.0, 0.0, 60.0, 0.0}];
+    [viewCopy setContentInset:{0.0, 0.0, 60.0, 0.0}];
   }
 
   else
   {
     if (MEMORY[0x1E6913230]() && [MEMORY[0x1E69DF6F0] isPhone])
     {
-      v6 = [MEMORY[0x1E696ACD8] constraintsByAttachingView:v32 toView:v5 alongEdges:13 insets:{10.0, 0.0, 0.0, 0.0}];
+      v6 = [MEMORY[0x1E696ACD8] constraintsByAttachingView:viewCopy toView:v5 alongEdges:13 insets:{10.0, 0.0, 0.0, 0.0}];
       v14 = *MEMORY[0x1E69DDCE0];
       v15 = *(MEMORY[0x1E69DDCE0] + 8);
       v17 = *(MEMORY[0x1E69DDCE0] + 16);
@@ -235,34 +235,34 @@ void __75__VideosExtrasListTemplateViewController_initWithDocument_options_conte
       v15 = *(MEMORY[0x1E69DDCE0] + 8);
       v17 = *(MEMORY[0x1E69DDCE0] + 16);
       v16 = *(MEMORY[0x1E69DDCE0] + 24);
-      v6 = [MEMORY[0x1E696ACD8] constraintsByAttachingView:v32 toView:v5 alongEdges:13 insets:{*MEMORY[0x1E69DDCE0], v15, v17, v16}];
+      v6 = [MEMORY[0x1E696ACD8] constraintsByAttachingView:viewCopy toView:v5 alongEdges:13 insets:{*MEMORY[0x1E69DDCE0], v15, v17, v16}];
     }
 
-    v18 = [(VideosExtrasListTemplateViewController *)self navigationController];
+    navigationController = [(VideosExtrasListTemplateViewController *)self navigationController];
     v19 = objc_opt_respondsToSelector();
 
     if (v19)
     {
-      v20 = [(VideosExtrasListTemplateViewController *)self navigationController];
-      v21 = [v20 mainTemplateViewController];
-      v22 = [v21 view];
-      [v22 bounds];
+      navigationController2 = [(VideosExtrasListTemplateViewController *)self navigationController];
+      mainTemplateViewController = [navigationController2 mainTemplateViewController];
+      view2 = [mainTemplateViewController view];
+      [view2 bounds];
       v24 = v23;
 
       v17 = 60.0;
       if (v24 > 60.0)
       {
-        v25 = [v21 menuBarView];
-        [v25 bounds];
+        menuBarView = [mainTemplateViewController menuBarView];
+        [menuBarView bounds];
         v27 = v26;
 
         v17 = fmax(v27, 60.0);
       }
     }
 
-    [v32 setContentInset:{v14, v15, v17, v16}];
-    v28 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v28 bounds];
+    [viewCopy setContentInset:{v14, v15, v17, v16}];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen bounds];
     if (v29 > 480.0)
     {
       v30 = 0.4;
@@ -273,7 +273,7 @@ void __75__VideosExtrasListTemplateViewController_initWithDocument_options_conte
       v30 = 0.5;
     }
 
-    v11 = [MEMORY[0x1E696ACD8] constraintWithItem:v32 attribute:7 relatedBy:0 toItem:v5 attribute:7 multiplier:v30 constant:0.0];
+    v11 = [MEMORY[0x1E696ACD8] constraintWithItem:viewCopy attribute:7 relatedBy:0 toItem:v5 attribute:7 multiplier:v30 constant:0.0];
     v31 = [v6 arrayByAddingObject:v11];
     v10 = self->_masterViewConstraints;
     self->_masterViewConstraints = v31;
@@ -282,53 +282,53 @@ void __75__VideosExtrasListTemplateViewController_initWithDocument_options_conte
   [v5 addConstraints:self->_masterViewConstraints];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(VideosExtrasListTemplateViewController *)self templateElement];
-  v4 = [v3 list];
-  v5 = [v4 sections];
-  v6 = [v5 count];
+  templateElement = [(VideosExtrasListTemplateViewController *)self templateElement];
+  list = [templateElement list];
+  sections = [list sections];
+  v6 = [sections count];
 
   return v6;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(VideosExtrasListTemplateViewController *)self templateElement];
-  v6 = [v5 list];
-  v7 = [v6 sections];
-  v8 = [v7 objectAtIndex:a4];
-  v9 = [v8 items];
-  v10 = [v9 count];
+  templateElement = [(VideosExtrasListTemplateViewController *)self templateElement];
+  list = [templateElement list];
+  sections = [list sections];
+  v8 = [sections objectAtIndex:section];
+  items = [v8 items];
+  v10 = [items count];
 
   return v10;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 dequeueReusableCellWithIdentifier:@"ListTableViewCell" forIndexPath:v7];
-  v9 = [v7 section];
-  v10 = [v7 row];
-  v11 = [(VideosExtrasListTemplateViewController *)self templateElement];
-  v12 = [v11 list];
-  v13 = [v12 sections];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [viewCopy dequeueReusableCellWithIdentifier:@"ListTableViewCell" forIndexPath:pathCopy];
+  section = [pathCopy section];
+  v10 = [pathCopy row];
+  templateElement = [(VideosExtrasListTemplateViewController *)self templateElement];
+  list = [templateElement list];
+  sections = [list sections];
 
-  if (v9 >= [v13 count])
+  if (section >= [sections count])
   {
     v14 = 0;
   }
 
   else
   {
-    v14 = [v13 objectAtIndex:v9];
+    v14 = [sections objectAtIndex:section];
   }
 
-  v15 = [v14 items];
-  if (v10 < [v15 count])
+  items = [v14 items];
+  if (v10 < [items count])
   {
-    v16 = [v15 objectAtIndex:v10];
+    v16 = [items objectAtIndex:v10];
     if (v16)
     {
       v17 = v16;
@@ -336,44 +336,44 @@ void __75__VideosExtrasListTemplateViewController_initWithDocument_options_conte
     }
   }
 
-  v18 = [v6 indexPathForSelectedRow];
-  v19 = [v7 isEqual:v18];
+  indexPathForSelectedRow = [viewCopy indexPathForSelectedRow];
+  v19 = [pathCopy isEqual:indexPathForSelectedRow];
 
   [v8 setSelected:v19 animated:0];
 
   return v8;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   if (tableView_heightForHeaderInSection__onceToken != -1)
   {
     [VideosExtrasListTemplateViewController tableView:heightForHeaderInSection:];
   }
 
-  v7 = [(VideosExtrasListTemplateViewController *)self templateElement];
-  v8 = [v7 list];
-  v9 = [v8 sections];
+  templateElement = [(VideosExtrasListTemplateViewController *)self templateElement];
+  list = [templateElement list];
+  sections = [list sections];
 
-  if ([v9 count] <= a4)
+  if ([sections count] <= section)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = [v9 objectAtIndex:a4];
+    v10 = [sections objectAtIndex:section];
   }
 
-  v11 = [v10 header];
-  v12 = [v11 title];
-  v13 = [v12 text];
-  v14 = [v13 length];
+  header = [v10 header];
+  title = [header title];
+  text = [title text];
+  v14 = [text length];
 
   if (v14)
   {
-    [tableView_heightForHeaderInSection__headerView configureForHeaderElement:v11];
+    [tableView_heightForHeaderInSection__headerView configureForHeaderElement:header];
     [tableView_heightForHeaderInSection__headerView intrinsicContentSize];
     v16 = v15;
   }
@@ -393,33 +393,33 @@ void __77__VideosExtrasListTemplateViewController_tableView_heightForHeaderInSec
   tableView_heightForHeaderInSection__headerView = v0;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(VideosExtrasListTemplateViewController *)self templateElement];
-  v8 = [v7 list];
-  v9 = [v8 sections];
+  viewCopy = view;
+  templateElement = [(VideosExtrasListTemplateViewController *)self templateElement];
+  list = [templateElement list];
+  sections = [list sections];
 
-  if ([v9 count] <= a4)
+  if ([sections count] <= section)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = [v9 objectAtIndex:a4];
+    v10 = [sections objectAtIndex:section];
   }
 
-  v11 = [v10 header];
-  if (v11)
+  header = [v10 header];
+  if (header)
   {
-    v12 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:@"ListTableViewHeader"];
+    v12 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:@"ListTableViewHeader"];
     if (!v12)
     {
       v12 = [[VideosExtrasTableViewHeaderView alloc] initWithReuseIdentifier:@"ListTableViewHeader"];
     }
 
-    [(VideosExtrasTableViewHeaderView *)v12 configureForHeaderElement:v11];
+    [(VideosExtrasTableViewHeaderView *)v12 configureForHeaderElement:header];
   }
 
   else
@@ -430,69 +430,69 @@ void __77__VideosExtrasListTemplateViewController_tableView_heightForHeaderInSec
   return v12;
 }
 
-- (void)tableView:(id)a3 didHighlightRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didHighlightRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [v5 section];
-  v7 = [v5 row];
+  pathCopy = path;
+  section = [pathCopy section];
+  v7 = [pathCopy row];
 
-  v8 = [(VideosExtrasListTemplateViewController *)self templateElement];
-  v9 = [v8 list];
-  v13 = [v9 sections];
+  templateElement = [(VideosExtrasListTemplateViewController *)self templateElement];
+  list = [templateElement list];
+  sections = [list sections];
 
-  if (v6 >= [v13 count])
+  if (section >= [sections count])
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = [v13 objectAtIndex:v6];
+    v10 = [sections objectAtIndex:section];
   }
 
-  v11 = [v10 items];
-  if (v7 < [v11 count])
+  items = [v10 items];
+  if (v7 < [items count])
   {
-    v12 = [v11 objectAtIndex:v7];
+    v12 = [items objectAtIndex:v7];
     [v12 dispatchEventOfType:4 canBubble:1 isCancelable:0 extraInfo:0 completionBlock:0];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v16 = a4;
-  v5 = [v16 section];
-  v6 = [v16 row];
-  v7 = [(VideosExtrasListTemplateViewController *)self templateElement];
-  v8 = [v7 list];
-  v9 = [v8 sections];
+  pathCopy = path;
+  section = [pathCopy section];
+  v6 = [pathCopy row];
+  templateElement = [(VideosExtrasListTemplateViewController *)self templateElement];
+  list = [templateElement list];
+  sections = [list sections];
 
-  if (v5 >= [v9 count])
+  if (section >= [sections count])
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = [v9 objectAtIndex:v5];
+    v10 = [sections objectAtIndex:section];
   }
 
-  v11 = [v10 items];
-  if (v6 >= [v11 count])
+  items = [v10 items];
+  if (v6 >= [items count])
   {
-    v13 = 0;
+    relatedContent = 0;
     v12 = 0;
   }
 
   else
   {
-    v12 = [v11 objectAtIndex:v6];
-    v13 = [v12 relatedContent];
-    if (v13)
+    v12 = [items objectAtIndex:v6];
+    relatedContent = [v12 relatedContent];
+    if (relatedContent)
     {
       if ([(VideosExtrasElementViewController *)self isWide])
       {
-        v14 = v16;
+        v14 = pathCopy;
       }
 
       else
@@ -501,7 +501,7 @@ void __77__VideosExtrasListTemplateViewController_tableView_heightForHeaderInSec
       }
 
       objc_storeStrong(&self->_autohighlightIndexPath, v14);
-      v15 = [objc_opt_class() relatedContentViewControllerForElement:v13];
+      v15 = [objc_opt_class() relatedContentViewControllerForElement:relatedContent];
       [(NSMapTable *)self->_relatedContentViewControllerMap setObject:v15 forKey:v12];
       [(VideosExtrasListTemplateViewController *)self setRelatedContentViewController:v15];
     }
@@ -510,16 +510,16 @@ void __77__VideosExtrasListTemplateViewController_tableView_heightForHeaderInSec
   [v12 dispatchEventOfType:2 canBubble:1 isCancelable:0 extraInfo:0 completionBlock:0];
 }
 
-- (BOOL)shouldUpdateByReplacingViewControllerWithTemplate:(id)a3
+- (BOOL)shouldUpdateByReplacingViewControllerWithTemplate:(id)template
 {
-  v4 = a3;
+  templateCopy = template;
   v5 = objc_opt_class();
-  v6 = [(VideosExtrasListTemplateViewController *)self templateElement];
+  templateElement = [(VideosExtrasListTemplateViewController *)self templateElement];
   v7 = objc_opt_class();
 
   if (v5 == v7)
   {
-    [(VideosExtrasListTemplateViewController *)self _updateForTemplate:v4];
+    [(VideosExtrasListTemplateViewController *)self _updateForTemplate:templateCopy];
     v8 = 0;
   }
 
@@ -527,20 +527,20 @@ void __77__VideosExtrasListTemplateViewController_tableView_heightForHeaderInSec
   {
     v10.receiver = self;
     v10.super_class = VideosExtrasListTemplateViewController;
-    v8 = [(VideosExtrasListTemplateViewController *)&v10 shouldReplaceViewControllerWithNewTemplate:v4];
+    v8 = [(VideosExtrasListTemplateViewController *)&v10 shouldReplaceViewControllerWithNewTemplate:templateCopy];
   }
 
   return v8;
 }
 
-- (void)_updateForTemplate:(id)a3
+- (void)_updateForTemplate:(id)template
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 updateType] == 1)
+  templateCopy = template;
+  if ([templateCopy updateType] == 1)
   {
-    v20 = v4;
-    [v4 list];
+    v20 = templateCopy;
+    [templateCopy list];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
@@ -567,8 +567,8 @@ void __77__VideosExtrasListTemplateViewController_tableView_heightForHeaderInSec
             v25 = 0u;
             v22 = 0u;
             v23 = 0u;
-            v10 = [v9 items];
-            v11 = [v10 countByEnumeratingWithState:&v22 objects:v30 count:16];
+            items = [v9 items];
+            v11 = [items countByEnumeratingWithState:&v22 objects:v30 count:16];
             if (v11)
             {
               v12 = v11;
@@ -579,19 +579,19 @@ void __77__VideosExtrasListTemplateViewController_tableView_heightForHeaderInSec
                 {
                   if (*v23 != v13)
                   {
-                    objc_enumerationMutation(v10);
+                    objc_enumerationMutation(items);
                   }
 
                   v15 = *(*(&v22 + 1) + 8 * j);
-                  v16 = [v15 updateType];
-                  if (v16 == 4 || v16 == 1)
+                  updateType = [v15 updateType];
+                  if (updateType == 4 || updateType == 1)
                   {
-                    v18 = [v15 relatedContent];
-                    [(VideosExtrasListTemplateViewController *)self _updateRelatedContent:v18 forListItem:v15];
+                    relatedContent = [v15 relatedContent];
+                    [(VideosExtrasListTemplateViewController *)self _updateRelatedContent:relatedContent forListItem:v15];
                   }
                 }
 
-                v12 = [v10 countByEnumeratingWithState:&v22 objects:v30 count:16];
+                v12 = [items countByEnumeratingWithState:&v22 objects:v30 count:16];
               }
 
               while (v12);
@@ -605,22 +605,22 @@ void __77__VideosExtrasListTemplateViewController_tableView_heightForHeaderInSec
       while (v6);
     }
 
-    v4 = v20;
+    templateCopy = v20;
   }
 }
 
-- (void)_updateRelatedContent:(id)a3 forListItem:(id)a4
+- (void)_updateRelatedContent:(id)content forListItem:(id)item
 {
   relatedContentViewControllerMap = self->_relatedContentViewControllerMap;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(NSMapTable *)relatedContentViewControllerMap objectForKey:v7];
-  v10 = [(VideosExtrasListTemplateViewController *)self relatedContentViewController];
+  itemCopy = item;
+  contentCopy = content;
+  v9 = [(NSMapTable *)relatedContentViewControllerMap objectForKey:itemCopy];
+  relatedContentViewController = [(VideosExtrasListTemplateViewController *)self relatedContentViewController];
 
-  v11 = [objc_opt_class() relatedContentViewControllerForElement:v8];
+  v11 = [objc_opt_class() relatedContentViewControllerForElement:contentCopy];
 
-  [(NSMapTable *)self->_relatedContentViewControllerMap setObject:v11 forKey:v7];
-  if (v9 == v10)
+  [(NSMapTable *)self->_relatedContentViewControllerMap setObject:v11 forKey:itemCopy];
+  if (v9 == relatedContentViewController)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
@@ -632,34 +632,34 @@ void __77__VideosExtrasListTemplateViewController_tableView_heightForHeaderInSec
   }
 }
 
-- (void)_configureBannerWithElement:(id)a3
+- (void)_configureBannerWithElement:(id)element
 {
   v11.receiver = self;
   v11.super_class = VideosExtrasListTemplateViewController;
-  [(VideosExtrasElementViewController *)&v11 _configureBannerWithElement:a3];
-  v4 = [(VideosExtrasListTemplateViewController *)self title];
+  [(VideosExtrasElementViewController *)&v11 _configureBannerWithElement:element];
+  title = [(VideosExtrasListTemplateViewController *)self title];
 
-  if (!v4)
+  if (!title)
   {
-    v5 = [(VideosExtrasListTemplateViewController *)self templateElement];
-    v6 = [v5 list];
+    templateElement = [(VideosExtrasListTemplateViewController *)self templateElement];
+    list = [templateElement list];
 
-    v7 = [v6 header];
-    v8 = [v7 title];
-    v9 = [v8 text];
-    v10 = [v9 string];
+    header = [list header];
+    title2 = [header title];
+    text = [title2 text];
+    string = [text string];
 
-    [(VideosExtrasListTemplateViewController *)self setTitle:v10];
+    [(VideosExtrasListTemplateViewController *)self setTitle:string];
   }
 }
 
-- (void)_setRelatedContentEmbedded:(BOOL)a3
+- (void)_setRelatedContentEmbedded:(BOOL)embedded
 {
-  if (self->_relatedContentEmbedded != a3)
+  if (self->_relatedContentEmbedded != embedded)
   {
     if (self->_relatedContentViewController)
     {
-      if (a3)
+      if (embedded)
       {
         [(VideosExtrasListTemplateViewController *)self _embedRelatedContentViewController];
       }
@@ -671,16 +671,16 @@ void __77__VideosExtrasListTemplateViewController_tableView_heightForHeaderInSec
       }
     }
 
-    self->_relatedContentEmbedded = a3;
+    self->_relatedContentEmbedded = embedded;
   }
 }
 
-- (void)setRelatedContentViewController:(id)a3
+- (void)setRelatedContentViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   relatedContentViewController = self->_relatedContentViewController;
-  v19 = v5;
-  if (relatedContentViewController != v5)
+  v19 = controllerCopy;
+  if (relatedContentViewController != controllerCopy)
   {
     if (relatedContentViewController)
     {
@@ -689,14 +689,14 @@ void __77__VideosExtrasListTemplateViewController_tableView_heightForHeaderInSec
         [(VideosExtrasListTemplateViewController *)self _unembedRelatedContent];
       }
 
-      else if (v5)
+      else if (controllerCopy)
       {
-        v7 = [(VideosExtrasListTemplateViewController *)self navigationController];
-        v8 = [v7 popViewControllerAnimated:0];
+        navigationController = [(VideosExtrasListTemplateViewController *)self navigationController];
+        v8 = [navigationController popViewControllerAnimated:0];
       }
     }
 
-    objc_storeStrong(&self->_relatedContentViewController, a3);
+    objc_storeStrong(&self->_relatedContentViewController, controller);
     v9 = self->_relatedContentViewController;
     if (self->_relatedContentEmbedded)
     {
@@ -711,25 +711,25 @@ void __77__VideosExtrasListTemplateViewController_tableView_heightForHeaderInSec
       v10 = v19;
       if (objc_opt_respondsToSelector())
       {
-        v11 = [(VideosExtrasListTemplateViewController *)self templateElement];
-        v12 = [v11 background];
+        templateElement = [(VideosExtrasListTemplateViewController *)self templateElement];
+        background = [templateElement background];
 
-        v13 = [(VideosExtrasListTemplateViewController *)self templateElement];
-        v14 = [v13 documentBanner];
+        templateElement2 = [(VideosExtrasListTemplateViewController *)self templateElement];
+        documentBanner = [templateElement2 documentBanner];
 
         v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v16 = v15;
-        if (v12)
+        if (background)
         {
-          [v15 addObject:v12];
+          [v15 addObject:background];
         }
 
-        v17 = [v14 background];
+        background2 = [documentBanner background];
 
-        if (v17)
+        if (background2)
         {
-          v18 = [v14 background];
-          [v16 addObject:v18];
+          background3 = [documentBanner background];
+          [v16 addObject:background3];
         }
 
         [(VideosExtrasElementViewController *)v10 configureBackgroundWithElements:v16];
@@ -744,47 +744,47 @@ void __77__VideosExtrasListTemplateViewController_tableView_heightForHeaderInSec
 {
   [(VideosExtrasViewElementViewController *)self->_relatedContentViewController setEmbedded:1];
   [(VideosExtrasListTemplateViewController *)self addChildViewController:self->_relatedContentViewController];
-  v5 = [(VideosExtrasListTemplateViewController *)self view];
-  v3 = [(VideosExtrasViewElementViewController *)self->_relatedContentViewController view];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v5 addSubview:v3];
+  view = [(VideosExtrasListTemplateViewController *)self view];
+  view2 = [(VideosExtrasViewElementViewController *)self->_relatedContentViewController view];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [view addSubview:view2];
   [(VideosExtrasListTemplateViewController *)self _setDetailContraints];
   [(VideosExtrasViewElementViewController *)self->_relatedContentViewController didMoveToParentViewController:self];
-  v4 = [(VideosExtrasElementViewController *)self backgroundViewController];
-  [v4 setVignetteType:3];
+  backgroundViewController = [(VideosExtrasElementViewController *)self backgroundViewController];
+  [backgroundViewController setVignetteType:3];
 }
 
-- (void)_pushRelatedViewController:(id)a3 animated:(BOOL)a4
+- (void)_pushRelatedViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v6 = MEMORY[0x1E69DD258];
-  v7 = a3;
+  controllerCopy = controller;
   v14 = [[v6 alloc] initWithNibName:0 bundle:0];
-  v8 = [v14 view];
-  v9 = [v7 view];
-  [v14 addChildViewController:v7];
-  [v8 addSubview:v9];
-  v10 = [MEMORY[0x1E696ACD8] constraintsByAttachingView:v9 toView:v8 alongEdges:15 insets:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
+  view = [v14 view];
+  view2 = [controllerCopy view];
+  [v14 addChildViewController:controllerCopy];
+  [view addSubview:view2];
+  v10 = [MEMORY[0x1E696ACD8] constraintsByAttachingView:view2 toView:view alongEdges:15 insets:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
   detailViewConstraints = self->_detailViewConstraints;
   self->_detailViewConstraints = v10;
 
-  [v8 addConstraints:self->_detailViewConstraints];
-  [v7 didMoveToParentViewController:v14];
-  v12 = [v7 title];
+  [view addConstraints:self->_detailViewConstraints];
+  [controllerCopy didMoveToParentViewController:v14];
+  title = [controllerCopy title];
 
-  [v14 setTitle:v12];
-  v13 = [(VideosExtrasListTemplateViewController *)self navigationController];
-  [v13 pushViewController:v14 animated:v4];
+  [v14 setTitle:title];
+  navigationController = [(VideosExtrasListTemplateViewController *)self navigationController];
+  [navigationController pushViewController:v14 animated:animatedCopy];
 }
 
 - (void)_unembedRelatedContent
 {
-  v5 = [(VideosExtrasViewElementViewController *)self->_relatedContentViewController view];
+  view = [(VideosExtrasViewElementViewController *)self->_relatedContentViewController view];
   [(VideosExtrasViewElementViewController *)self->_relatedContentViewController willMoveToParentViewController:0];
-  v3 = [(VideosExtrasListTemplateViewController *)self view];
-  [v3 removeConstraints:self->_detailViewConstraints];
+  view2 = [(VideosExtrasListTemplateViewController *)self view];
+  [view2 removeConstraints:self->_detailViewConstraints];
 
-  [v5 removeFromSuperview];
+  [view removeFromSuperview];
   detailViewConstraints = self->_detailViewConstraints;
   self->_detailViewConstraints = 0;
 
@@ -795,12 +795,12 @@ void __77__VideosExtrasListTemplateViewController_tableView_heightForHeaderInSec
 - (void)_setDetailContraints
 {
   v24[3] = *MEMORY[0x1E69E9840];
-  v3 = [(VideosExtrasViewElementViewController *)self->_relatedContentViewController view];
+  view = [(VideosExtrasViewElementViewController *)self->_relatedContentViewController view];
   v4 = self->_tableView;
   if (self->_detailViewConstraints)
   {
-    v5 = [(VideosExtrasListTemplateViewController *)self view];
-    [v5 removeConstraints:self->_detailViewConstraints];
+    view2 = [(VideosExtrasListTemplateViewController *)self view];
+    [view2 removeConstraints:self->_detailViewConstraints];
   }
 
   if (self->_tableViewLeft)
@@ -815,10 +815,10 @@ void __77__VideosExtrasListTemplateViewController_tableView_heightForHeaderInSec
 
   v7 = MEMORY[0x1E69A8958];
   UIEdgeInsetsMakeWithEdges();
-  v23 = [v7 positionConstraintsForView:v3 insets:v6 position:?];
+  v23 = [v7 positionConstraintsForView:view insets:v6 position:?];
   if ([(VideosExtrasViewElementViewController *)self->_relatedContentViewController matchParentHeight])
   {
-    v8 = v4;
+    safeAreaLayoutGuide = v4;
     v9 = v4;
   }
 
@@ -826,13 +826,13 @@ void __77__VideosExtrasListTemplateViewController_tableView_heightForHeaderInSec
   {
     [(VideosExtrasListTemplateViewController *)self view];
     v10 = v9 = v4;
-    v8 = [v10 safeAreaLayoutGuide];
+    safeAreaLayoutGuide = [v10 safeAreaLayoutGuide];
   }
 
-  v11 = [MEMORY[0x1E696ACD8] constraintWithItem:v3 attribute:4 relatedBy:0 toItem:v8 attribute:4 multiplier:1.0 constant:0.0];
-  v22 = [(VideosExtrasViewElementViewController *)self->_relatedContentViewController preferredLayoutGuide];
-  v12 = [(VideosExtrasViewElementViewController *)self->_relatedContentViewController preferredLayoutAttribute];
-  v13 = [MEMORY[0x1E696ACD8] constraintWithItem:v22 attribute:v12 relatedBy:0 toItem:v9 attribute:3 multiplier:1.0 constant:0.0];
+  v11 = [MEMORY[0x1E696ACD8] constraintWithItem:view attribute:4 relatedBy:0 toItem:safeAreaLayoutGuide attribute:4 multiplier:1.0 constant:0.0];
+  preferredLayoutGuide = [(VideosExtrasViewElementViewController *)self->_relatedContentViewController preferredLayoutGuide];
+  preferredLayoutAttribute = [(VideosExtrasViewElementViewController *)self->_relatedContentViewController preferredLayoutAttribute];
+  v13 = [MEMORY[0x1E696ACD8] constraintWithItem:preferredLayoutGuide attribute:preferredLayoutAttribute relatedBy:0 toItem:v9 attribute:3 multiplier:1.0 constant:0.0];
   if (self->_tableViewLeft)
   {
     v14 = 1;
@@ -863,7 +863,7 @@ void __77__VideosExtrasListTemplateViewController_tableView_heightForHeaderInSec
     v16 = -67.0;
   }
 
-  v17 = [MEMORY[0x1E696ACD8] constraintWithItem:v3 attribute:v14 relatedBy:0 toItem:v9 attribute:v15 multiplier:1.0 constant:v16];
+  v17 = [MEMORY[0x1E696ACD8] constraintWithItem:view attribute:v14 relatedBy:0 toItem:v9 attribute:v15 multiplier:1.0 constant:v16];
   v24[0] = v11;
   v24[1] = v13;
   v24[2] = v17;
@@ -872,8 +872,8 @@ void __77__VideosExtrasListTemplateViewController_tableView_heightForHeaderInSec
   detailViewConstraints = self->_detailViewConstraints;
   self->_detailViewConstraints = v19;
 
-  v21 = [(VideosExtrasListTemplateViewController *)self view];
-  [v21 addConstraints:self->_detailViewConstraints];
+  view3 = [(VideosExtrasListTemplateViewController *)self view];
+  [view3 addConstraints:self->_detailViewConstraints];
 }
 
 - (void)_prepareLayout
@@ -899,24 +899,24 @@ void __77__VideosExtrasListTemplateViewController_tableView_heightForHeaderInSec
 
   if (self->_autohighlightIndexPath)
   {
-    v5 = [(VideosExtrasListTemplateViewController *)self templateElement];
-    v6 = [v5 list];
-    v7 = [v6 sections];
+    templateElement = [(VideosExtrasListTemplateViewController *)self templateElement];
+    list = [templateElement list];
+    sections = [list sections];
 
-    v8 = [(NSIndexPath *)self->_autohighlightIndexPath section];
-    if (v8 < [v7 count])
+    section = [(NSIndexPath *)self->_autohighlightIndexPath section];
+    if (section < [sections count])
     {
-      v9 = [v7 objectAtIndex:{-[NSIndexPath section](self->_autohighlightIndexPath, "section")}];
-      v10 = [v9 items];
+      v9 = [sections objectAtIndex:{-[NSIndexPath section](self->_autohighlightIndexPath, "section")}];
+      items = [v9 items];
 
       v11 = [(NSIndexPath *)self->_autohighlightIndexPath row];
-      if (v11 < [v10 count])
+      if (v11 < [items count])
       {
-        v12 = [v10 objectAtIndex:{-[NSIndexPath row](self->_autohighlightIndexPath, "row")}];
-        v13 = [v12 relatedContent];
-        if (v13)
+        v12 = [items objectAtIndex:{-[NSIndexPath row](self->_autohighlightIndexPath, "row")}];
+        relatedContent = [v12 relatedContent];
+        if (relatedContent)
         {
-          v14 = [objc_opt_class() relatedContentViewControllerForElement:v13];
+          v14 = [objc_opt_class() relatedContentViewControllerForElement:relatedContent];
           [(NSMapTable *)self->_relatedContentViewControllerMap setObject:v14 forKey:v12];
           [(VideosExtrasListTemplateViewController *)self setRelatedContentViewController:v14];
         }
@@ -927,7 +927,7 @@ void __77__VideosExtrasListTemplateViewController_tableView_heightForHeaderInSec
   }
 }
 
-- (void)_configureVignette:(BOOL)a3
+- (void)_configureVignette:(BOOL)vignette
 {
   if (self->_relatedContentEmbedded)
   {
@@ -947,13 +947,13 @@ void __77__VideosExtrasListTemplateViewController_tableView_heightForHeaderInSec
     v3 = 1;
   }
 
-  v4 = [(VideosExtrasElementViewController *)self backgroundViewController];
-  [v4 setVignetteType:v3];
+  backgroundViewController = [(VideosExtrasElementViewController *)self backgroundViewController];
+  [backgroundViewController setVignetteType:v3];
 }
 
-+ (id)relatedContentViewControllerForElement:(id)a3
++ (id)relatedContentViewControllerForElement:(id)element
 {
-  v3 = a3;
+  elementCopy = element;
   if (relatedContentViewControllerForElement__onceToken != -1)
   {
     +[VideosExtrasListTemplateViewController relatedContentViewControllerForElement:];
@@ -966,7 +966,7 @@ void __77__VideosExtrasListTemplateViewController_tableView_heightForHeaderInSec
 
   if (v7)
   {
-    v7 = [[v7 alloc] initWithViewElement:v3];
+    v7 = [[v7 alloc] initWithViewElement:elementCopy];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {

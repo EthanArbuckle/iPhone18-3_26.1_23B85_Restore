@@ -1,8 +1,8 @@
 @interface TSPCryptoTranscodeReadChannel
 - (TSPCryptoTranscodeReadChannel)init;
-- (TSPCryptoTranscodeReadChannel)initWithReadChannel:(id)a3 decryptionInfo:(id)a4 encryptionInfo:(id)a5;
+- (TSPCryptoTranscodeReadChannel)initWithReadChannel:(id)channel decryptionInfo:(id)info encryptionInfo:(id)encryptionInfo;
 - (void)close;
-- (void)readWithHandler:(id)a3;
+- (void)readWithHandler:(id)handler;
 @end
 
 @implementation TSPCryptoTranscodeReadChannel
@@ -23,34 +23,34 @@
   objc_exception_throw(v13);
 }
 
-- (TSPCryptoTranscodeReadChannel)initWithReadChannel:(id)a3 decryptionInfo:(id)a4 encryptionInfo:(id)a5
+- (TSPCryptoTranscodeReadChannel)initWithReadChannel:(id)channel decryptionInfo:(id)info encryptionInfo:(id)encryptionInfo
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  channelCopy = channel;
+  infoCopy = info;
+  encryptionInfoCopy = encryptionInfo;
   v24.receiver = self;
   v24.super_class = TSPCryptoTranscodeReadChannel;
   v11 = [(TSPCryptoTranscodeReadChannel *)&v24 init];
   if (v11)
   {
-    if (v9)
+    if (infoCopy)
     {
       v12 = [TSPCryptoReadChannel alloc];
-      v15 = objc_msgSend_cryptoKey(v9, v13, v14);
-      v18 = objc_msgSend_blockInfos(v9, v16, v17);
-      Channel_decryptionKey_blockInfos = objc_msgSend_initWithReadChannel_decryptionKey_blockInfos_(v12, v19, v8, v15, v18);
+      v15 = objc_msgSend_cryptoKey(infoCopy, v13, v14);
+      v18 = objc_msgSend_blockInfos(infoCopy, v16, v17);
+      Channel_decryptionKey_blockInfos = objc_msgSend_initWithReadChannel_decryptionKey_blockInfos_(v12, v19, channelCopy, v15, v18);
       readChannel = v11->_readChannel;
       v11->_readChannel = Channel_decryptionKey_blockInfos;
     }
 
     else
     {
-      v22 = v8;
+      v22 = channelCopy;
       v15 = v11->_readChannel;
       v11->_readChannel = v22;
     }
 
-    objc_storeStrong(&v11->_encryptionInfo, a5);
+    objc_storeStrong(&v11->_encryptionInfo, encryptionInfo);
     if (!v11->_readChannel)
     {
 
@@ -61,10 +61,10 @@
   return v11;
 }
 
-- (void)readWithHandler:(id)a3
+- (void)readWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   if (self->_encryptionInfo)
   {
     v6 = [TSPIOHandlerWriteChannelAdapter alloc];
@@ -97,7 +97,7 @@
     v18[1] = 3221225472;
     v18[2] = sub_276B004F8;
     v18[3] = &unk_27A6E7738;
-    v19 = v4;
+    v19 = handlerCopy;
     objc_msgSend_readWithHandler_(v16, v17, v18);
     v13 = v19;
   }

@@ -1,16 +1,16 @@
 @interface NEIPv6Settings
 + (NEIPv6Settings)settingsWithAutomaticAddressing;
 + (NEIPv6Settings)settingsWithLinkLocalAddressing;
-- (BOOL)checkValidityAndCollectErrors:(id)a3;
+- (BOOL)checkValidityAndCollectErrors:(id)errors;
 - (BOOL)hasDefaultRoute;
 - (NEIPv6Settings)init;
 - (NEIPv6Settings)initWithAddresses:(NSArray *)addresses networkPrefixLengths:(NSArray *)networkPrefixLengths;
-- (NEIPv6Settings)initWithCoder:(id)a3;
-- (NEIPv6Settings)initWithConfigMethod:(int64_t)a3;
+- (NEIPv6Settings)initWithCoder:(id)coder;
+- (NEIPv6Settings)initWithConfigMethod:(int64_t)method;
 - (id)copyLegacyDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initFromLegacyDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initFromLegacyDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEIPv6Settings
@@ -59,17 +59,17 @@ LABEL_11:
   return v3;
 }
 
-- (id)initFromLegacyDictionary:(id)a3
+- (id)initFromLegacyDictionary:(id)dictionary
 {
   v75 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v6 = [(NEIPv6Settings *)self initWithConfigMethod:1];
   if (!v6)
   {
     goto LABEL_55;
   }
 
-  v7 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69824E0]];
+  v7 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E69824E0]];
   if (isa_nsstring(v7))
   {
     if ([v7 isEqualToString:*MEMORY[0x1E69828D0]])
@@ -97,12 +97,12 @@ LABEL_11:
 
 LABEL_10:
   v9 = *MEMORY[0x1E69824D8];
-  v10 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69824D8]];
+  v10 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E69824D8]];
   v11 = isa_nsarray(v10);
 
   if (v11)
   {
-    v12 = [v5 objectForKeyedSubscript:v9];
+    v12 = [dictionaryCopy objectForKeyedSubscript:v9];
     if ([v12 count])
     {
       v13 = [v12 objectAtIndexedSubscript:0];
@@ -118,12 +118,12 @@ LABEL_10:
   }
 
   v17 = *MEMORY[0x1E6982500];
-  v18 = [v5 objectForKeyedSubscript:*MEMORY[0x1E6982500]];
+  v18 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E6982500]];
   v19 = isa_nsarray(v18);
 
   if (v19)
   {
-    v20 = [v5 objectForKeyedSubscript:v17];
+    v20 = [dictionaryCopy objectForKeyedSubscript:v17];
     if ([v20 count])
     {
       v21 = [v20 objectAtIndexedSubscript:0];
@@ -139,24 +139,24 @@ LABEL_10:
   }
 
   v25 = *MEMORY[0x1E6982528];
-  v26 = [v5 objectForKeyedSubscript:*MEMORY[0x1E6982528]];
+  v26 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E6982528]];
   v27 = isa_nsstring(v26);
 
   if (v27)
   {
-    v28 = [v5 objectForKeyedSubscript:v25];
+    v28 = [dictionaryCopy objectForKeyedSubscript:v25];
     v29 = [v28 copy];
     router = v6->_router;
     v6->_router = v29;
   }
 
   v31 = *MEMORY[0x1E6982558];
-  v32 = [v5 objectForKeyedSubscript:*MEMORY[0x1E6982558]];
+  v32 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E6982558]];
   v33 = isa_nsnumber(v32);
   v34 = MEMORY[0x1E69824F8];
-  if (!v33 || ([v5 objectForKeyedSubscript:v31], v3 = objc_claimAutoreleasedReturnValue(), !objc_msgSend(v3, "BOOLValue")))
+  if (!v33 || ([dictionaryCopy objectForKeyedSubscript:v31], v3 = objc_claimAutoreleasedReturnValue(), !objc_msgSend(v3, "BOOLValue")))
   {
-    v35 = [v5 objectForKeyedSubscript:*v34];
+    v35 = [dictionaryCopy objectForKeyedSubscript:*v34];
     v36 = isa_nsarray(v35);
 
     if (v33)
@@ -184,7 +184,7 @@ LABEL_10:
 LABEL_29:
   v37 = objc_alloc_init(MEMORY[0x1E695DF70]);
 LABEL_30:
-  v38 = [v5 objectForKeyedSubscript:v31];
+  v38 = [dictionaryCopy objectForKeyedSubscript:v31];
   if (!isa_nsnumber(v38))
   {
 LABEL_33:
@@ -192,10 +192,10 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  v39 = [v5 objectForKeyedSubscript:v31];
-  v40 = [v39 BOOLValue];
+  v39 = [dictionaryCopy objectForKeyedSubscript:v31];
+  bOOLValue = [v39 BOOLValue];
 
-  if (v40)
+  if (bOOLValue)
   {
     v38 = +[NEIPv6Route defaultRoute];
     [v37 addObject:v38];
@@ -204,12 +204,12 @@ LABEL_33:
 
 LABEL_34:
   v41 = *v34;
-  v42 = [v5 objectForKeyedSubscript:*v34];
+  v42 = [dictionaryCopy objectForKeyedSubscript:*v34];
   v43 = isa_nsarray(v42);
 
   if (v43)
   {
-    v44 = [v5 objectForKeyedSubscript:v41];
+    v44 = [dictionaryCopy objectForKeyedSubscript:v41];
     v69 = 0u;
     v70 = 0u;
     v71 = 0u;
@@ -249,13 +249,13 @@ LABEL_34:
   }
 
   v50 = *MEMORY[0x1E69824E8];
-  v51 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69824E8]];
+  v51 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E69824E8]];
   v52 = isa_nsarray(v51);
 
   if (v52)
   {
     v64 = v7;
-    v53 = [v5 objectForKeyedSubscript:v50];
+    v53 = [dictionaryCopy objectForKeyedSubscript:v50];
     v54 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v65 = 0u;
     v66 = 0u;
@@ -322,45 +322,45 @@ LABEL_5:
   if ([(NEIPv6Settings *)self configMethod]== 2)
   {
     [v3 setObject:*MEMORY[0x1E69828D8] forKeyedSubscript:*MEMORY[0x1E69824E0]];
-    v26 = [(NEIPv6Settings *)self addresses];
-    v27 = [v26 count];
+    addresses = [(NEIPv6Settings *)self addresses];
+    v27 = [addresses count];
 
     if (v27)
     {
-      v28 = [(NEIPv6Settings *)self addresses];
-      [v3 setObject:v28 forKeyedSubscript:*MEMORY[0x1E69824D8]];
+      addresses2 = [(NEIPv6Settings *)self addresses];
+      [v3 setObject:addresses2 forKeyedSubscript:*MEMORY[0x1E69824D8]];
     }
 
-    v29 = [(NEIPv6Settings *)self networkPrefixLengths];
-    v30 = [v29 count];
+    networkPrefixLengths = [(NEIPv6Settings *)self networkPrefixLengths];
+    v30 = [networkPrefixLengths count];
 
     if (v30)
     {
-      v31 = [(NEIPv6Settings *)self networkPrefixLengths];
-      [v3 setObject:v31 forKeyedSubscript:*MEMORY[0x1E6982500]];
+      networkPrefixLengths2 = [(NEIPv6Settings *)self networkPrefixLengths];
+      [v3 setObject:networkPrefixLengths2 forKeyedSubscript:*MEMORY[0x1E6982500]];
     }
 
-    v32 = [(NEIPv6Settings *)self router];
+    router = [(NEIPv6Settings *)self router];
 
-    if (v32)
+    if (router)
     {
-      v33 = [(NEIPv6Settings *)self router];
-      [v3 setObject:v33 forKeyedSubscript:*MEMORY[0x1E6982528]];
+      router2 = [(NEIPv6Settings *)self router];
+      [v3 setObject:router2 forKeyedSubscript:*MEMORY[0x1E6982528]];
     }
   }
 
 LABEL_6:
-  v5 = [(NEIPv6Settings *)self includedRoutes];
+  includedRoutes = [(NEIPv6Settings *)self includedRoutes];
 
-  if (v5)
+  if (includedRoutes)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v7 = [(NEIPv6Settings *)self includedRoutes];
-    v8 = [v7 countByEnumeratingWithState:&v38 objects:v43 count:16];
+    includedRoutes2 = [(NEIPv6Settings *)self includedRoutes];
+    v8 = [includedRoutes2 countByEnumeratingWithState:&v38 objects:v43 count:16];
     if (v8)
     {
       v9 = v8;
@@ -372,7 +372,7 @@ LABEL_6:
         {
           if (*v39 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(includedRoutes2);
           }
 
           v13 = *(*(&v38 + 1) + 8 * i);
@@ -383,29 +383,29 @@ LABEL_6:
 
           else
           {
-            v14 = [v13 copyLegacyDictionary];
-            [v6 addObject:v14];
+            copyLegacyDictionary = [v13 copyLegacyDictionary];
+            [v6 addObject:copyLegacyDictionary];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v38 objects:v43 count:16];
+        v9 = [includedRoutes2 countByEnumeratingWithState:&v38 objects:v43 count:16];
       }
 
       while (v9);
     }
   }
 
-  v15 = [(NEIPv6Settings *)self excludedRoutes];
+  excludedRoutes = [(NEIPv6Settings *)self excludedRoutes];
 
-  if (v15)
+  if (excludedRoutes)
   {
     v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v17 = [(NEIPv6Settings *)self excludedRoutes];
-    v18 = [v17 countByEnumeratingWithState:&v34 objects:v42 count:16];
+    excludedRoutes2 = [(NEIPv6Settings *)self excludedRoutes];
+    v18 = [excludedRoutes2 countByEnumeratingWithState:&v34 objects:v42 count:16];
     if (v18)
     {
       v19 = v18;
@@ -416,18 +416,18 @@ LABEL_6:
         {
           if (*v35 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(excludedRoutes2);
           }
 
           v22 = *(*(&v34 + 1) + 8 * j);
           if (([v22 isDefaultRoute] & 1) == 0)
           {
-            v23 = [v22 copyLegacyDictionary];
-            [v16 addObject:v23];
+            copyLegacyDictionary2 = [v22 copyLegacyDictionary];
+            [v16 addObject:copyLegacyDictionary2];
           }
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v34 objects:v42 count:16];
+        v19 = [excludedRoutes2 countByEnumeratingWithState:&v34 objects:v42 count:16];
       }
 
       while (v19);
@@ -438,7 +438,7 @@ LABEL_6:
   return v3;
 }
 
-- (BOOL)checkValidityAndCollectErrors:(id)a3
+- (BOOL)checkValidityAndCollectErrors:(id)errors
 {
   v58 = *MEMORY[0x1E69E9840];
   if ([(NEIPv6Settings *)self configMethod]!= 2)
@@ -448,8 +448,8 @@ LABEL_6:
 
   v51[0] = 0;
   v51[1] = 0;
-  v4 = [(NEIPv6Settings *)self addresses];
-  v5 = [v4 count];
+  addresses = [(NEIPv6Settings *)self addresses];
+  v5 = [addresses count];
 
   if (!v5)
   {
@@ -466,8 +466,8 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v6 = [(NEIPv6Settings *)self addresses];
-  v7 = [v6 objectAtIndexedSubscript:0];
+  addresses2 = [(NEIPv6Settings *)self addresses];
+  v7 = [addresses2 objectAtIndexedSubscript:0];
   v8 = inet_pton(30, [v7 UTF8String], v51);
 
   if (!v8)
@@ -486,12 +486,12 @@ LABEL_43:
   }
 
 LABEL_8:
-  v11 = [(NEIPv6Settings *)self router];
-  if (v11)
+  router = [(NEIPv6Settings *)self router];
+  if (router)
   {
-    v12 = v11;
-    v13 = [(NEIPv6Settings *)self router];
-    v14 = inet_pton(30, [v13 UTF8String], v51);
+    v12 = router;
+    router2 = [(NEIPv6Settings *)self router];
+    v14 = inet_pton(30, [router2 UTF8String], v51);
 
     if (!v14)
     {
@@ -504,20 +504,20 @@ LABEL_8:
     }
   }
 
-  v16 = [(NEIPv6Settings *)self networkPrefixLengths];
-  v17 = [v16 count];
-  v18 = [(NEIPv6Settings *)self addresses];
-  v19 = [v18 count];
+  networkPrefixLengths = [(NEIPv6Settings *)self networkPrefixLengths];
+  v17 = [networkPrefixLengths count];
+  addresses3 = [(NEIPv6Settings *)self addresses];
+  v19 = [addresses3 count];
 
   if (v17 != v19)
   {
     v20 = ne_log_obj();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v39 = [(NEIPv6Settings *)self addresses];
-      v40 = [v39 count];
-      v41 = [(NEIPv6Settings *)self networkPrefixLengths];
-      v42 = [v41 count];
+      addresses4 = [(NEIPv6Settings *)self addresses];
+      v40 = [addresses4 count];
+      networkPrefixLengths2 = [(NEIPv6Settings *)self networkPrefixLengths];
+      v42 = [networkPrefixLengths2 count];
       *buf = 134218240;
       v55 = v40;
       v56 = 2048;
@@ -526,23 +526,23 @@ LABEL_8:
     }
   }
 
-  v21 = [(NEIPv6Settings *)self networkPrefixLengths];
-  if (![v21 count])
+  networkPrefixLengths3 = [(NEIPv6Settings *)self networkPrefixLengths];
+  if (![networkPrefixLengths3 count])
   {
     goto LABEL_21;
   }
 
-  v22 = [(NEIPv6Settings *)self networkPrefixLengths];
-  v23 = [v22 objectAtIndex:0];
-  v24 = [v23 intValue];
+  networkPrefixLengths4 = [(NEIPv6Settings *)self networkPrefixLengths];
+  v23 = [networkPrefixLengths4 objectAtIndex:0];
+  intValue = [v23 intValue];
 
-  if (v24 >= 129)
+  if (intValue >= 129)
   {
-    v21 = ne_log_obj();
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    networkPrefixLengths3 = ne_log_obj();
+    if (os_log_type_enabled(networkPrefixLengths3, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_1BA83C000, v21, OS_LOG_TYPE_ERROR, "Invalid IPv6 prefix length", buf, 2u);
+      _os_log_error_impl(&dword_1BA83C000, networkPrefixLengths3, OS_LOG_TYPE_ERROR, "Invalid IPv6 prefix length", buf, 2u);
     }
 
 LABEL_21:
@@ -553,8 +553,8 @@ LABEL_21:
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v26 = [(NEIPv6Settings *)self includedRoutes];
-  v27 = [v26 countByEnumeratingWithState:&v47 objects:v53 count:16];
+  includedRoutes = [(NEIPv6Settings *)self includedRoutes];
+  v27 = [includedRoutes countByEnumeratingWithState:&v47 objects:v53 count:16];
   if (v27)
   {
     v28 = v27;
@@ -565,13 +565,13 @@ LABEL_21:
       {
         if (*v48 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(includedRoutes);
         }
 
         [*(*(&v47 + 1) + 8 * i) checkValidityAndCollectErrors:v25];
       }
 
-      v28 = [v26 countByEnumeratingWithState:&v47 objects:v53 count:16];
+      v28 = [includedRoutes countByEnumeratingWithState:&v47 objects:v53 count:16];
     }
 
     while (v28);
@@ -581,8 +581,8 @@ LABEL_21:
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v31 = [(NEIPv6Settings *)self excludedRoutes];
-  v32 = [v31 countByEnumeratingWithState:&v43 objects:v52 count:16];
+  excludedRoutes = [(NEIPv6Settings *)self excludedRoutes];
+  v32 = [excludedRoutes countByEnumeratingWithState:&v43 objects:v52 count:16];
   if (v32)
   {
     v33 = v32;
@@ -593,13 +593,13 @@ LABEL_21:
       {
         if (*v44 != v34)
         {
-          objc_enumerationMutation(v31);
+          objc_enumerationMutation(excludedRoutes);
         }
 
         [*(*(&v43 + 1) + 8 * j) checkValidityAndCollectErrors:v25];
       }
 
-      v33 = [v31 countByEnumeratingWithState:&v43 objects:v52 count:16];
+      v33 = [excludedRoutes countByEnumeratingWithState:&v43 objects:v52 count:16];
     }
 
     while (v33);
@@ -621,66 +621,66 @@ LABEL_41:
   return 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [NEIPv6Settings allocWithZone:a3];
-  v5 = [(NEIPv6Settings *)self addresses];
-  v6 = [(NEIPv6Settings *)self networkPrefixLengths];
-  v7 = [(NEIPv6Settings *)v4 initWithAddresses:v5 networkPrefixLengths:v6];
+  v4 = [NEIPv6Settings allocWithZone:zone];
+  addresses = [(NEIPv6Settings *)self addresses];
+  networkPrefixLengths = [(NEIPv6Settings *)self networkPrefixLengths];
+  v7 = [(NEIPv6Settings *)v4 initWithAddresses:addresses networkPrefixLengths:networkPrefixLengths];
 
   [(NEIPv6Settings *)v7 setConfigMethod:[(NEIPv6Settings *)self configMethod]];
-  v8 = [(NEIPv6Settings *)self router];
-  [(NEIPv6Settings *)v7 setRouter:v8];
+  router = [(NEIPv6Settings *)self router];
+  [(NEIPv6Settings *)v7 setRouter:router];
 
-  v9 = [(NEIPv6Settings *)self includedRoutes];
-  [(NEIPv6Settings *)v7 setIncludedRoutes:v9];
+  includedRoutes = [(NEIPv6Settings *)self includedRoutes];
+  [(NEIPv6Settings *)v7 setIncludedRoutes:includedRoutes];
 
-  v10 = [(NEIPv6Settings *)self excludedRoutes];
-  [(NEIPv6Settings *)v7 setExcludedRoutes:v10];
+  excludedRoutes = [(NEIPv6Settings *)self excludedRoutes];
+  [(NEIPv6Settings *)v7 setExcludedRoutes:excludedRoutes];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt32:-[NEIPv6Settings configMethod](self forKey:{"configMethod"), @"ConfigMethod"}];
-  v5 = [(NEIPv6Settings *)self addresses];
-  [v4 encodeObject:v5 forKey:@"AddressArray"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:-[NEIPv6Settings configMethod](self forKey:{"configMethod"), @"ConfigMethod"}];
+  addresses = [(NEIPv6Settings *)self addresses];
+  [coderCopy encodeObject:addresses forKey:@"AddressArray"];
 
-  v6 = [(NEIPv6Settings *)self router];
-  [v4 encodeObject:v6 forKey:@"Router"];
+  router = [(NEIPv6Settings *)self router];
+  [coderCopy encodeObject:router forKey:@"Router"];
 
-  v7 = [(NEIPv6Settings *)self networkPrefixLengths];
-  [v4 encodeObject:v7 forKey:@"PrefixLengthArray"];
+  networkPrefixLengths = [(NEIPv6Settings *)self networkPrefixLengths];
+  [coderCopy encodeObject:networkPrefixLengths forKey:@"PrefixLengthArray"];
 
-  v8 = [(NEIPv6Settings *)self includedRoutes];
-  [v4 encodeObject:v8 forKey:@"IncludeRoutes"];
+  includedRoutes = [(NEIPv6Settings *)self includedRoutes];
+  [coderCopy encodeObject:includedRoutes forKey:@"IncludeRoutes"];
 
-  v9 = [(NEIPv6Settings *)self excludedRoutes];
-  [v4 encodeObject:v9 forKey:@"ExcludeRoutes"];
+  excludedRoutes = [(NEIPv6Settings *)self excludedRoutes];
+  [coderCopy encodeObject:excludedRoutes forKey:@"ExcludeRoutes"];
 }
 
-- (NEIPv6Settings)initWithCoder:(id)a3
+- (NEIPv6Settings)initWithCoder:(id)coder
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v42.receiver = self;
   v42.super_class = NEIPv6Settings;
   v5 = [(NEIPv6Settings *)&v42 init];
   if (v5)
   {
-    v5->_configMethod = [v4 decodeInt32ForKey:@"ConfigMethod"];
+    v5->_configMethod = [coderCopy decodeInt32ForKey:@"ConfigMethod"];
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"AddressArray"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"AddressArray"];
     addresses = v5->_addresses;
     v5->_addresses = v9;
 
     if (!v5->_addresses)
     {
-      v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Address"];
+      v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Address"];
       if (v11)
       {
         v12 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v11, 0}];
@@ -701,13 +701,13 @@ LABEL_41:
     v15 = MEMORY[0x1E695DFD8];
     v16 = objc_opt_class();
     v17 = [v15 setWithObjects:{v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"PrefixLengthArray"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"PrefixLengthArray"];
     networkPrefixLengths = v5->_networkPrefixLengths;
     v5->_networkPrefixLengths = v18;
 
     if (!v5->_networkPrefixLengths)
     {
-      v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrefixLength"];
+      v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrefixLength"];
 
       if (v20)
       {
@@ -728,21 +728,21 @@ LABEL_41:
       }
     }
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Router"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Router"];
     router = v5->_router;
     v5->_router = v26;
 
     v28 = MEMORY[0x1E695DFD8];
     v29 = objc_opt_class();
     v30 = [v28 setWithObjects:{v29, objc_opt_class(), 0}];
-    v31 = [v4 decodeObjectOfClasses:v30 forKey:@"IncludeRoutes"];
+    v31 = [coderCopy decodeObjectOfClasses:v30 forKey:@"IncludeRoutes"];
     includedRoutes = v5->_includedRoutes;
     v5->_includedRoutes = v31;
 
     v33 = MEMORY[0x1E695DFD8];
     v34 = objc_opt_class();
     v35 = [v33 setWithObjects:{v34, objc_opt_class(), 0}];
-    v36 = [v4 decodeObjectOfClasses:v35 forKey:@"ExcludeRoutes"];
+    v36 = [coderCopy decodeObjectOfClasses:v35 forKey:@"ExcludeRoutes"];
     excludedRoutes = v5->_excludedRoutes;
     v5->_excludedRoutes = v36;
   }
@@ -751,12 +751,12 @@ LABEL_41:
   return v5;
 }
 
-- (NEIPv6Settings)initWithConfigMethod:(int64_t)a3
+- (NEIPv6Settings)initWithConfigMethod:(int64_t)method
 {
   result = [(NEIPv6Settings *)self init];
   if (result)
   {
-    result->_configMethod = a3;
+    result->_configMethod = method;
   }
 
   return result;

@@ -1,12 +1,12 @@
 @interface BTShareAudioErrorViewController
-- (void)eventDismiss:(id)a3;
+- (void)eventDismiss:(id)dismiss;
 @end
 
 @implementation BTShareAudioErrorViewController
 
-- (void)eventDismiss:(id)a3
+- (void)eventDismiss:(id)dismiss
 {
-  v4 = a3;
+  dismissCopy = dismiss;
   if (gLogCategory_BTShareAudioViewController <= 30 && (gLogCategory_BTShareAudioViewController != -1 || _LogCategory_Initialize()))
   {
     [BTShareAudioErrorViewController eventDismiss:];

@@ -1,34 +1,34 @@
 @interface FBSApplicationDataStore
 + (id)applicationIdentifiersWithAvailableStores;
-+ (id)applicationIdentifiersWithAvailableStoresForBundleID:(id)a3;
++ (id)applicationIdentifiersWithAvailableStoresForBundleID:(id)d;
 + (id)applicationIdentitiesWithAvailableStores;
 + (id)applicationsWithAvailableStores;
-+ (id)storeForApplication:(id)a3;
-+ (id)storeForApplicationIdentifier:(id)a3;
-+ (id)storeForApplicationIdentity:(id)a3;
-+ (void)_doWithClassClient:(id)a3;
-+ (void)_setClassClient:(id)a3;
-+ (void)setPrefetchedKeys:(id)a3;
-+ (void)synchronizeWithCompletion:(id)a3;
-- (BOOL)migrateToIdentity:(id)a3 error:(id *)a4;
-- (BOOL)migrateWithError:(id *)a3;
++ (id)storeForApplication:(id)application;
++ (id)storeForApplicationIdentifier:(id)identifier;
++ (id)storeForApplicationIdentity:(id)identity;
++ (void)_doWithClassClient:(id)client;
++ (void)_setClassClient:(id)client;
++ (void)setPrefetchedKeys:(id)keys;
++ (void)synchronizeWithCompletion:(id)completion;
+- (BOOL)migrateToIdentity:(id)identity error:(id *)error;
+- (BOOL)migrateWithError:(id *)error;
 - (BOOL)needsMigration;
 - (FBSApplicationDataStore)init;
-- (id)_initWithBundleId:(id)a3 identity:(id)a4 client:(id)a5;
-- (id)archivedObjectForKey:(id)a3;
+- (id)_initWithBundleId:(id)id identity:(id)identity client:(id)client;
+- (id)archivedObjectForKey:(id)key;
 - (id)description;
-- (id)deserializeObjectForKey:(id)a3 ofType:(Class)a4;
-- (id)safeArchivedObjectForKey:(id)a3 ofType:(Class)a4;
-- (id)safeObjectForKey:(id)a3 ofType:(Class)a4;
-- (void)archivedObjectForKey:(id)a3 withResult:(id)a4;
+- (id)deserializeObjectForKey:(id)key ofType:(Class)type;
+- (id)safeArchivedObjectForKey:(id)key ofType:(Class)type;
+- (id)safeObjectForKey:(id)key ofType:(Class)type;
+- (void)archivedObjectForKey:(id)key withResult:(id)result;
 - (void)dealloc;
-- (void)deserializeObjectForKey:(id)a3 ofType:(Class)a4 withResult:(id)a5;
-- (void)objectForKey:(id)a3 withResult:(id)a4;
-- (void)safeArchivedObjectForKey:(id)a3 ofType:(Class)a4 withResult:(id)a5;
-- (void)safeObjectForKey:(id)a3 ofType:(Class)a4 withResult:(id)a5;
-- (void)serializeObject:(id)a3 forKey:(id)a4;
-- (void)setArchivedObject:(id)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)deserializeObjectForKey:(id)key ofType:(Class)type withResult:(id)result;
+- (void)objectForKey:(id)key withResult:(id)result;
+- (void)safeArchivedObjectForKey:(id)key ofType:(Class)type withResult:(id)result;
+- (void)safeObjectForKey:(id)key ofType:(Class)type withResult:(id)result;
+- (void)serializeObject:(id)object forKey:(id)key;
+- (void)setArchivedObject:(id)object forKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation FBSApplicationDataStore
@@ -53,26 +53,26 @@
   return 0;
 }
 
-- (id)_initWithBundleId:(id)a3 identity:(id)a4 client:(id)a5
+- (id)_initWithBundleId:(id)id identity:(id)identity client:(id)client
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9 && v10)
+  idCopy = id;
+  identityCopy = identity;
+  clientCopy = client;
+  if (!idCopy && identityCopy)
   {
     v12 = MEMORY[0x1E69635D8];
-    v13 = [v10 identityString];
-    v9 = [v12 bundleIdentifierForIdentityString:v13 error:0];
+    identityString = [identityCopy identityString];
+    idCopy = [v12 bundleIdentifierForIdentityString:identityString error:0];
 
-    if (!v9)
+    if (!idCopy)
     {
-      [FBSApplicationDataStore _initWithBundleId:v10 identity:a2 client:?];
+      [FBSApplicationDataStore _initWithBundleId:identityCopy identity:a2 client:?];
     }
 
     goto LABEL_6;
   }
 
-  if (v9)
+  if (idCopy)
   {
 LABEL_6:
     v23.receiver = self;
@@ -81,59 +81,59 @@ LABEL_6:
     v15 = v14;
     if (v14)
     {
-      objc_storeStrong(&v14->_bundleId, v9);
-      objc_storeStrong(&v15->_identity, a4);
-      if (v10)
+      objc_storeStrong(&v14->_bundleId, idCopy);
+      objc_storeStrong(&v15->_identity, identity);
+      if (identityCopy)
       {
-        v16 = [v10 identityString];
+        identityString2 = [identityCopy identityString];
       }
 
       else
       {
-        v16 = v9;
+        identityString2 = idCopy;
       }
 
       identifier = v15->_identifier;
-      v15->_identifier = &v16->isa;
+      v15->_identifier = &identityString2->isa;
 
-      if (v11)
+      if (clientCopy)
       {
-        objc_storeStrong(&v15->_client, a5);
+        objc_storeStrong(&v15->_client, client);
       }
 
       else
       {
         v18 = +[FBSApplicationDataStoreClientFactory sharedInstance];
-        v19 = [v18 checkout];
+        checkout = [v18 checkout];
         client = v15->_client;
-        v15->_client = v19;
+        v15->_client = checkout;
 
         v15->_clientNeedsCheckin = 1;
       }
     }
 
     self = v15;
-    v21 = self;
+    selfCopy = self;
     goto LABEL_14;
   }
 
-  v9 = FBLogCommon();
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
+  idCopy = FBLogCommon();
+  if (os_log_type_enabled(idCopy, OS_LOG_TYPE_FAULT))
   {
-    [FBSApplicationDataStore _initWithBundleId:v9 identity:? client:?];
+    [FBSApplicationDataStore _initWithBundleId:idCopy identity:? client:?];
   }
 
-  v21 = 0;
+  selfCopy = 0;
 LABEL_14:
 
-  return v21;
+  return selfCopy;
 }
 
-+ (id)storeForApplicationIdentity:(id)a3
++ (id)storeForApplicationIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   NSClassFromString(&cfstr_Lsapplicationi.isa);
-  if (!v4)
+  if (!identityCopy)
   {
     [FBSApplicationDataStore storeForApplicationIdentity:a2];
   }
@@ -143,16 +143,16 @@ LABEL_14:
     [FBSApplicationDataStore storeForApplicationIdentity:a2];
   }
 
-  v5 = [[FBSApplicationDataStore alloc] _initWithBundleId:0 identity:v4 client:0];
+  v5 = [[FBSApplicationDataStore alloc] _initWithBundleId:0 identity:identityCopy client:0];
 
   return v5;
 }
 
-+ (id)storeForApplicationIdentifier:(id)a3
++ (id)storeForApplicationIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v5)
+  if (!identifierCopy)
   {
     [FBSApplicationDataStore storeForApplicationIdentifier:a2];
   }
@@ -162,24 +162,24 @@ LABEL_14:
     [FBSApplicationDataStore storeForApplicationIdentifier:a2];
   }
 
-  if ([v5 fbs_looksLikeAnIdentityString])
+  if ([identifierCopy fbs_looksLikeAnIdentityString])
   {
-    v6 = [objc_alloc(MEMORY[0x1E69635D8]) initWithIdentityString:v5];
-    v7 = [a1 storeForApplicationIdentity:v6];
+    v6 = [objc_alloc(MEMORY[0x1E69635D8]) initWithIdentityString:identifierCopy];
+    v7 = [self storeForApplicationIdentity:v6];
   }
 
   else
   {
-    v7 = [a1 storeForApplication:v5];
+    v7 = [self storeForApplication:identifierCopy];
   }
 
   return v7;
 }
 
-+ (id)storeForApplication:(id)a3
++ (id)storeForApplication:(id)application
 {
-  v3 = a3;
-  v4 = [[FBSApplicationDataStore alloc] _initWithBundleId:v3 identity:0 client:0];
+  applicationCopy = application;
+  v4 = [[FBSApplicationDataStore alloc] _initWithBundleId:applicationCopy identity:0 client:0];
 
   return v4;
 }
@@ -187,13 +187,13 @@ LABEL_14:
 + (id)applicationsWithAvailableStores
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [a1 applicationIdentifiersWithAvailableStores];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  applicationIdentifiersWithAvailableStores = [self applicationIdentifiersWithAvailableStores];
+  v5 = [applicationIdentifiersWithAvailableStores countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -204,35 +204,35 @@ LABEL_14:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(applicationIdentifiersWithAvailableStores);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
         if (([v9 fbs_looksLikeAnIdentityString] & 1) == 0)
         {
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [applicationIdentifiersWithAvailableStores countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 + (id)applicationIdentitiesWithAvailableStores
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [a1 applicationIdentifiersWithAvailableStores];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  applicationIdentifiersWithAvailableStores = [self applicationIdentifiersWithAvailableStores];
+  v5 = [applicationIdentifiersWithAvailableStores countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -243,24 +243,24 @@ LABEL_14:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(applicationIdentifiersWithAvailableStores);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
         if ([v9 fbs_looksLikeAnIdentityString])
         {
           v10 = [objc_alloc(MEMORY[0x1E69635D8]) initWithIdentityString:v9];
-          [v3 addObject:v10];
+          [array addObject:v10];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [applicationIdentifiersWithAvailableStores countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 + (id)applicationIdentifiersWithAvailableStores
@@ -293,17 +293,17 @@ uint64_t __68__FBSApplicationDataStore_applicationIdentifiersWithAvailableStores
   return MEMORY[0x1EEE66BB8](v3, v5);
 }
 
-+ (id)applicationIdentifiersWithAvailableStoresForBundleID:(id)a3
++ (id)applicationIdentifiersWithAvailableStoresForBundleID:(id)d
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  dCopy = d;
+  array = [MEMORY[0x1E695DF70] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [a1 applicationIdentifiersWithAvailableStores];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  applicationIdentifiersWithAvailableStores = [self applicationIdentifiersWithAvailableStores];
+  v7 = [applicationIdentifiersWithAvailableStores countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -314,11 +314,11 @@ uint64_t __68__FBSApplicationDataStore_applicationIdentifiersWithAvailableStores
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(applicationIdentifiersWithAvailableStores);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        if (([v11 isEqualToString:v4] & 1) == 0)
+        if (([v11 isEqualToString:dCopy] & 1) == 0)
         {
           if (![v11 fbs_looksLikeAnIdentityString])
           {
@@ -326,7 +326,7 @@ uint64_t __68__FBSApplicationDataStore_applicationIdentifiersWithAvailableStores
           }
 
           v12 = [MEMORY[0x1E69635D8] bundleIdentifierForIdentityString:v11 error:0];
-          v13 = [v12 isEqualToString:v4];
+          v13 = [v12 isEqualToString:dCopy];
 
           if (!v13)
           {
@@ -334,16 +334,16 @@ uint64_t __68__FBSApplicationDataStore_applicationIdentifiersWithAvailableStores
           }
         }
 
-        [v5 addObject:v11];
+        [array addObject:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [applicationIdentifiersWithAvailableStores countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
 - (BOOL)needsMigration
@@ -360,14 +360,14 @@ uint64_t __68__FBSApplicationDataStore_applicationIdentifiersWithAvailableStores
   }
 }
 
-- (BOOL)migrateWithError:(id *)a3
+- (BOOL)migrateWithError:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
   if (![(FBSApplicationDataStore *)self needsMigration])
   {
     v8 = 0;
     v18 = 1;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_32;
     }
@@ -388,12 +388,12 @@ uint64_t __68__FBSApplicationDataStore_applicationIdentifiersWithAvailableStores
       v38 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v9 = [v6 identities];
-      v10 = [v9 countByEnumeratingWithState:&v35 objects:v40 count:16];
+      identities = [v6 identities];
+      v10 = [identities countByEnumeratingWithState:&v35 objects:v40 count:16];
       if (v10)
       {
         v11 = v10;
-        v28 = a3;
+        errorCopy = error;
         v12 = 0;
         v13 = *v36;
         do
@@ -402,12 +402,12 @@ uint64_t __68__FBSApplicationDataStore_applicationIdentifiersWithAvailableStores
           {
             if (*v36 != v13)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(identities);
             }
 
             v15 = *(*(&v35 + 1) + 8 * i);
-            v16 = [(LSApplicationIdentity *)self->_identity personaType];
-            if (v16 == [v15 personaType])
+            personaType = [(LSApplicationIdentity *)self->_identity personaType];
+            if (personaType == [v15 personaType])
             {
               if (v12)
               {
@@ -425,11 +425,11 @@ uint64_t __68__FBSApplicationDataStore_applicationIdentifiersWithAvailableStores
             }
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v35 objects:v40 count:16];
+          v11 = [identities countByEnumeratingWithState:&v35 objects:v40 count:16];
         }
 
         while (v11);
-        a3 = v28;
+        error = errorCopy;
       }
 
       else
@@ -450,7 +450,7 @@ uint64_t __68__FBSApplicationDataStore_applicationIdentifiersWithAvailableStores
       v8 = [v21 bs_errorWithDomain:@"FBSApplicationDataStore" code:1 configuration:v33];
 
       v12 = 0;
-      v9 = v34;
+      identities = v34;
     }
 
     goto LABEL_22;
@@ -463,8 +463,8 @@ uint64_t __68__FBSApplicationDataStore_applicationIdentifiersWithAvailableStores
   if ([v6 count])
   {
     v20 = objc_alloc(MEMORY[0x1E69635D8]);
-    v9 = [v6 firstObject];
-    v12 = [v20 initWithIdentityString:v9];
+    identities = [v6 firstObject];
+    v12 = [v20 initWithIdentityString:identities];
 LABEL_22:
 
     goto LABEL_23;
@@ -495,7 +495,7 @@ LABEL_23:
     v8 = v29;
   }
 
-  if (a3)
+  if (error)
   {
     if (v8)
     {
@@ -508,7 +508,7 @@ LABEL_23:
 
 LABEL_31:
     v24 = v8;
-    *a3 = v8;
+    *error = v8;
   }
 
 LABEL_32:
@@ -539,12 +539,12 @@ void __44__FBSApplicationDataStore_migrateWithError___block_invoke_3(uint64_t a1
   [v3 setUnderlyingError:*(a1 + 40)];
 }
 
-- (BOOL)migrateToIdentity:(id)a3 error:(id *)a4
+- (BOOL)migrateToIdentity:(id)identity error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  identityCopy = identity;
   NSClassFromString(&cfstr_Lsapplicationi.isa);
-  if (!v7)
+  if (!identityCopy)
   {
     [FBSApplicationDataStore migrateToIdentity:a2 error:?];
   }
@@ -554,14 +554,14 @@ void __44__FBSApplicationDataStore_migrateWithError___block_invoke_3(uint64_t a1
     [FBSApplicationDataStore migrateToIdentity:a2 error:?];
   }
 
-  if ([v7 needsMigration])
+  if ([identityCopy needsMigration])
   {
     [FBSApplicationDataStore migrateToIdentity:a2 error:self];
   }
 
   v8 = MEMORY[0x1E69635D8];
-  v9 = [v7 identityString];
-  v10 = [v8 bundleIdentifierForIdentityString:v9 error:0];
+  identityString = [identityCopy identityString];
+  v10 = [v8 bundleIdentifierForIdentityString:identityString error:0];
 
   if (![(NSString *)self->_bundleId isEqualToString:v10])
   {
@@ -579,14 +579,14 @@ void __44__FBSApplicationDataStore_migrateWithError___block_invoke_3(uint64_t a1
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v23 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A2DBB000, v11, OS_LOG_TYPE_DEFAULT, "Migrating %{public}@ to latest identity...", buf, 0xCu);
   }
 
   identifier = self->_identifier;
   client = self->_client;
-  v14 = [v7 identityString];
-  v15 = [(FBSApplicationDataStoreRepositoryClient *)client migrateIdentifier:identifier toIdentifier:v14];
+  identityString2 = [identityCopy identityString];
+  v15 = [(FBSApplicationDataStoreRepositoryClient *)client migrateIdentifier:identifier toIdentifier:identityString2];
 
   if (v15)
   {
@@ -597,7 +597,7 @@ void __44__FBSApplicationDataStore_migrateWithError___block_invoke_3(uint64_t a1
     }
   }
 
-  if (a4)
+  if (error)
   {
     v17 = MEMORY[0x1E696ABC0];
     v20[0] = MEMORY[0x1E69E9820];
@@ -605,7 +605,7 @@ void __44__FBSApplicationDataStore_migrateWithError___block_invoke_3(uint64_t a1
     v20[2] = __51__FBSApplicationDataStore_migrateToIdentity_error___block_invoke;
     v20[3] = &unk_1E76BE348;
     v21 = v15;
-    *a4 = [v17 bs_errorWithDomain:@"FBSApplicationDataStore" code:1 configuration:v20];
+    *error = [v17 bs_errorWithDomain:@"FBSApplicationDataStore" code:1 configuration:v20];
   }
 
   return v15 == 0;
@@ -618,11 +618,11 @@ void __51__FBSApplicationDataStore_migrateToIdentity_error___block_invoke(uint64
   [v3 setUnderlyingError:*(a1 + 32)];
 }
 
-- (void)objectForKey:(id)a3 withResult:(id)a4
+- (void)objectForKey:(id)key withResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  keyCopy = key;
+  resultCopy = result;
+  if (resultCopy)
   {
     if (objectForKey_withResult__onceToken != -1)
     {
@@ -634,9 +634,9 @@ void __51__FBSApplicationDataStore_migrateToIdentity_error___block_invoke(uint64
     block[1] = 3221225472;
     block[2] = __51__FBSApplicationDataStore_objectForKey_withResult___block_invoke_2;
     block[3] = &unk_1E76BD4E0;
-    v11 = v7;
+    v11 = resultCopy;
     block[4] = self;
-    v10 = v6;
+    v10 = keyCopy;
     dispatch_async(v8, block);
   }
 }
@@ -648,40 +648,40 @@ void __51__FBSApplicationDataStore_objectForKey_withResult___block_invoke_2(uint
   (*(v1 + 16))(v1, v2);
 }
 
-- (id)safeObjectForKey:(id)a3 ofType:(Class)a4
+- (id)safeObjectForKey:(id)key ofType:(Class)type
 {
-  v5 = [(FBSApplicationDataStore *)self objectForKey:a3];
-  if (a4)
+  v5 = [(FBSApplicationDataStore *)self objectForKey:key];
+  if (type)
   {
     if (objc_opt_isKindOfClass())
     {
-      a4 = v5;
+      type = v5;
     }
 
     else
     {
-      a4 = 0;
+      type = 0;
     }
   }
 
-  v6 = a4;
+  typeCopy = type;
 
-  return a4;
+  return type;
 }
 
-- (void)safeObjectForKey:(id)a3 ofType:(Class)a4 withResult:(id)a5
+- (void)safeObjectForKey:(id)key ofType:(Class)type withResult:(id)result
 {
-  v8 = a5;
-  v9 = v8;
-  if (v8)
+  resultCopy = result;
+  v9 = resultCopy;
+  if (resultCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __62__FBSApplicationDataStore_safeObjectForKey_ofType_withResult___block_invoke;
     v10[3] = &unk_1E76BE478;
-    v11 = v8;
-    v12 = a4;
-    [(FBSApplicationDataStore *)self objectForKey:a3 withResult:v10];
+    v11 = resultCopy;
+    typeCopy = type;
+    [(FBSApplicationDataStore *)self objectForKey:key withResult:v10];
   }
 }
 
@@ -712,11 +712,11 @@ void __62__FBSApplicationDataStore_safeObjectForKey_ofType_withResult___block_in
   (*(v4 + 16))(v4, v6);
 }
 
-- (id)deserializeObjectForKey:(id)a3 ofType:(Class)a4
+- (id)deserializeObjectForKey:(id)key ofType:(Class)type
 {
-  v7 = a3;
+  keyCopy = key;
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v7)
+  if (!keyCopy)
   {
     [FBSApplicationDataStore deserializeObjectForKey:a2 ofType:?];
   }
@@ -726,16 +726,16 @@ void __62__FBSApplicationDataStore_safeObjectForKey_ofType_withResult___block_in
     [FBSApplicationDataStore deserializeObjectForKey:a2 ofType:?];
   }
 
-  if (!a4)
+  if (!type)
   {
     [FBSApplicationDataStore deserializeObjectForKey:a2 ofType:?];
   }
 
   v8 = objc_autoreleasePoolPush();
-  v9 = [(FBSApplicationDataStore *)self safeObjectForKey:v7 ofType:objc_opt_class()];
+  v9 = [(FBSApplicationDataStore *)self safeObjectForKey:keyCopy ofType:objc_opt_class()];
   if (v9)
   {
-    v10 = [MEMORY[0x1E69E58C0] bs_secureObjectFromData:v9 ofClass:a4];
+    v10 = [MEMORY[0x1E69E58C0] bs_secureObjectFromData:v9 ofClass:type];
   }
 
   else
@@ -760,11 +760,11 @@ void __62__FBSApplicationDataStore_safeObjectForKey_ofType_withResult___block_in
   return v12;
 }
 
-- (void)deserializeObjectForKey:(id)a3 ofType:(Class)a4 withResult:(id)a5
+- (void)deserializeObjectForKey:(id)key ofType:(Class)type withResult:(id)result
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = v9;
+  keyCopy = key;
+  resultCopy = result;
+  v11 = keyCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v11)
   {
@@ -776,12 +776,12 @@ void __62__FBSApplicationDataStore_safeObjectForKey_ofType_withResult___block_in
     [FBSApplicationDataStore deserializeObjectForKey:a2 ofType:? withResult:?];
   }
 
-  if (!a4)
+  if (!type)
   {
     [FBSApplicationDataStore deserializeObjectForKey:a2 ofType:? withResult:?];
   }
 
-  if (!v10)
+  if (!resultCopy)
   {
     [FBSApplicationDataStore deserializeObjectForKey:a2 ofType:? withResult:?];
   }
@@ -791,9 +791,9 @@ void __62__FBSApplicationDataStore_safeObjectForKey_ofType_withResult___block_in
   v14[1] = 3221225472;
   v14[2] = __69__FBSApplicationDataStore_deserializeObjectForKey_ofType_withResult___block_invoke;
   v14[3] = &unk_1E76BE4A0;
-  v15 = v10;
-  v16 = a4;
-  v13 = v10;
+  v15 = resultCopy;
+  typeCopy = type;
+  v13 = resultCopy;
   [(FBSApplicationDataStore *)self safeObjectForKey:v11 ofType:v12 withResult:v14];
 }
 
@@ -829,16 +829,16 @@ void __69__FBSApplicationDataStore_deserializeObjectForKey_ofType_withResult___b
   (*(v5 + 16))(v5, v9);
 }
 
-- (void)serializeObject:(id)a3 forKey:(id)a4
+- (void)serializeObject:(id)object forKey:(id)key
 {
-  v10 = a3;
-  v7 = a4;
-  if (!v10)
+  objectCopy = object;
+  keyCopy = key;
+  if (!objectCopy)
   {
     [FBSApplicationDataStore serializeObject:a2 forKey:?];
   }
 
-  v8 = v7;
+  v8 = keyCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v8)
   {
@@ -850,40 +850,40 @@ void __69__FBSApplicationDataStore_deserializeObjectForKey_ofType_withResult___b
     [FBSApplicationDataStore serializeObject:a2 forKey:?];
   }
 
-  v9 = [MEMORY[0x1E69E58C0] bs_secureDataFromObject:v10];
+  v9 = [MEMORY[0x1E69E58C0] bs_secureDataFromObject:objectCopy];
   [(FBSApplicationDataStore *)self setObject:v9 forKey:v8];
 }
 
-- (id)archivedObjectForKey:(id)a3
+- (id)archivedObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(FBSApplicationDataStore *)self safeObjectForKey:v4 ofType:objc_opt_class()];
+  keyCopy = key;
+  v5 = [(FBSApplicationDataStore *)self safeObjectForKey:keyCopy ofType:objc_opt_class()];
 
   v6 = _FBSCreateUnsafeObjectFromData(v5);
 
   return v6;
 }
 
-- (void)archivedObjectForKey:(id)a3 withResult:(id)a4
+- (void)archivedObjectForKey:(id)key withResult:(id)result
 {
-  v6 = a4;
-  v7 = a3;
+  resultCopy = result;
+  keyCopy = key;
   v8 = objc_opt_class();
-  if (v6)
+  if (resultCopy)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __59__FBSApplicationDataStore_archivedObjectForKey_withResult___block_invoke;
     v9[3] = &unk_1E76BE4C8;
-    v10 = v6;
-    [(FBSApplicationDataStore *)self safeObjectForKey:v7 ofType:v8 withResult:v9];
+    v10 = resultCopy;
+    [(FBSApplicationDataStore *)self safeObjectForKey:keyCopy ofType:v8 withResult:v9];
 
-    v7 = v10;
+    keyCopy = v10;
   }
 
   else
   {
-    [(FBSApplicationDataStore *)self safeObjectForKey:v7 ofType:v8 withResult:0];
+    [(FBSApplicationDataStore *)self safeObjectForKey:keyCopy ofType:v8 withResult:0];
   }
 }
 
@@ -901,40 +901,40 @@ uint64_t __59__FBSApplicationDataStore_archivedObjectForKey_withResult___block_i
   return MEMORY[0x1EEE66BB8](v4, v3);
 }
 
-- (id)safeArchivedObjectForKey:(id)a3 ofType:(Class)a4
+- (id)safeArchivedObjectForKey:(id)key ofType:(Class)type
 {
-  v5 = [(FBSApplicationDataStore *)self archivedObjectForKey:a3];
-  if (a4)
+  v5 = [(FBSApplicationDataStore *)self archivedObjectForKey:key];
+  if (type)
   {
     if (objc_opt_isKindOfClass())
     {
-      a4 = v5;
+      type = v5;
     }
 
     else
     {
-      a4 = 0;
+      type = 0;
     }
   }
 
-  v6 = a4;
+  typeCopy = type;
 
-  return a4;
+  return type;
 }
 
-- (void)safeArchivedObjectForKey:(id)a3 ofType:(Class)a4 withResult:(id)a5
+- (void)safeArchivedObjectForKey:(id)key ofType:(Class)type withResult:(id)result
 {
-  v8 = a5;
-  v9 = v8;
-  if (v8)
+  resultCopy = result;
+  v9 = resultCopy;
+  if (resultCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __70__FBSApplicationDataStore_safeArchivedObjectForKey_ofType_withResult___block_invoke;
     v10[3] = &unk_1E76BE478;
-    v11 = v8;
-    v12 = a4;
-    [(FBSApplicationDataStore *)self archivedObjectForKey:a3 withResult:v10];
+    v11 = resultCopy;
+    typeCopy = type;
+    [(FBSApplicationDataStore *)self archivedObjectForKey:key withResult:v10];
   }
 }
 
@@ -965,20 +965,20 @@ void __70__FBSApplicationDataStore_safeArchivedObjectForKey_ofType_withResult___
   (*(v4 + 16))(v4, v6);
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = [a4 copy];
+  objectCopy = object;
+  v7 = [key copy];
   if (v7)
   {
-    if (v6)
+    if (objectCopy)
     {
-      DeepCopy = CFPropertyListCreateDeepCopy(*MEMORY[0x1E695E480], v6, 0);
+      DeepCopy = CFPropertyListCreateDeepCopy(*MEMORY[0x1E695E480], objectCopy, 0);
 
       if (!DeepCopy)
       {
-        v6 = FBLogAppDataStore();
-        if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+        objectCopy = FBLogAppDataStore();
+        if (os_log_type_enabled(objectCopy, OS_LOG_TYPE_ERROR))
         {
           [FBSApplicationDataStore setObject:forKey:];
         }
@@ -993,7 +993,7 @@ void __70__FBSApplicationDataStore_safeArchivedObjectForKey_ofType_withResult___
     }
 
     [(FBSApplicationDataStoreRepositoryClient *)self->_client setObject:DeepCopy forKey:v7 forApplication:self->_identifier withCompletion:0];
-    v6 = DeepCopy;
+    objectCopy = DeepCopy;
     goto LABEL_11;
   }
 
@@ -1006,15 +1006,15 @@ void __70__FBSApplicationDataStore_safeArchivedObjectForKey_ofType_withResult___
 LABEL_11:
 }
 
-- (void)setArchivedObject:(id)a3 forKey:(id)a4
+- (void)setArchivedObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  objectCopy = object;
+  keyCopy = key;
+  if (objectCopy)
   {
     v8 = objc_autoreleasePoolPush();
     v12 = 0;
-    v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v6 requiringSecureCoding:0 error:&v12];
+    v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:objectCopy requiringSecureCoding:0 error:&v12];
     v10 = v12;
     if (v10)
     {
@@ -1038,18 +1038,18 @@ LABEL_11:
     v9 = 0;
   }
 
-  [(FBSApplicationDataStore *)self setObject:v9 forKey:v7];
+  [(FBSApplicationDataStore *)self setObject:v9 forKey:keyCopy];
 }
 
-+ (void)synchronizeWithCompletion:(id)a3
++ (void)synchronizeWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __53__FBSApplicationDataStore_synchronizeWithCompletion___block_invoke;
   v5[3] = &unk_1E76BE4F0;
-  v6 = v3;
-  v4 = v3;
+  v6 = completionCopy;
+  v4 = completionCopy;
   [FBSApplicationDataStore _doWithClassClient:v5];
 }
 
@@ -1084,10 +1084,10 @@ uint64_t __53__FBSApplicationDataStore_synchronizeWithCompletion___block_invoke_
   return result;
 }
 
-+ (void)setPrefetchedKeys:(id)a3
++ (void)setPrefetchedKeys:(id)keys
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [a3 copy];
+  v3 = [keys copy];
   v4 = FBLogAppDataStore();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1114,31 +1114,31 @@ uint64_t __53__FBSApplicationDataStore_synchronizeWithCompletion___block_invoke_
   }
 }
 
-+ (void)_setClassClient:(id)a3
++ (void)_setClassClient:(id)client
 {
-  v4 = a3;
-  if (__classClient != v4)
+  clientCopy = client;
+  if (__classClient != clientCopy)
   {
-    v5 = v4;
-    objc_storeStrong(&__classClient, a3);
-    v4 = v5;
+    v5 = clientCopy;
+    objc_storeStrong(&__classClient, client);
+    clientCopy = v5;
   }
 }
 
-+ (void)_doWithClassClient:(id)a3
++ (void)_doWithClassClient:(id)client
 {
-  v7 = a3;
+  clientCopy = client;
   v3 = __classClient;
-  v4 = v3;
+  checkout = v3;
   if (!v3)
   {
     v5 = +[FBSApplicationDataStoreClientFactory sharedInstance];
-    v4 = [v5 checkout];
+    checkout = [v5 checkout];
   }
 
-  if (v7)
+  if (clientCopy)
   {
-    v7[2](v7, v4);
+    clientCopy[2](clientCopy, checkout);
   }
 
   if (!v3)

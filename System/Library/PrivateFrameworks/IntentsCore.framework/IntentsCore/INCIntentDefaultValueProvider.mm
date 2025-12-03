@@ -1,19 +1,19 @@
 @interface INCIntentDefaultValueProvider
-- (BOOL)isExpectedDefaultValueError:(id)a3;
-- (INCIntentDefaultValueProvider)initWithIntent:(id)a3;
-- (void)loadDefaultValuesWithAttributes:(id)a3 extensionProxy:(id)a4 completionHandler:(id)a5;
-- (void)loadDefaultValuesWithCompletionHandler:(id)a3;
+- (BOOL)isExpectedDefaultValueError:(id)error;
+- (INCIntentDefaultValueProvider)initWithIntent:(id)intent;
+- (void)loadDefaultValuesWithAttributes:(id)attributes extensionProxy:(id)proxy completionHandler:(id)handler;
+- (void)loadDefaultValuesWithCompletionHandler:(id)handler;
 @end
 
 @implementation INCIntentDefaultValueProvider
 
-- (BOOL)isExpectedDefaultValueError:(id)a3
+- (BOOL)isExpectedDefaultValueError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:*MEMORY[0x277CD4450]])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x277CD4450]])
   {
-    v5 = [v3 code] == 1003;
+    v5 = [errorCopy code] == 1003;
   }
 
   else
@@ -24,14 +24,14 @@
   return v5;
 }
 
-- (void)loadDefaultValuesWithAttributes:(id)a3 extensionProxy:(id)a4 completionHandler:(id)a5
+- (void)loadDefaultValuesWithAttributes:(id)attributes extensionProxy:(id)proxy completionHandler:(id)handler
 {
   v54 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v35 = a4;
-  v33 = a5;
-  v34 = self;
-  v9 = [(INCIntentDefaultValueProvider *)self intent];
+  attributesCopy = attributes;
+  proxyCopy = proxy;
+  handlerCopy = handler;
+  selfCopy = self;
+  intent = [(INCIntentDefaultValueProvider *)self intent];
   group = dispatch_group_create();
   v51[0] = 0;
   v51[1] = v51;
@@ -43,7 +43,7 @@
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  obj = v8;
+  obj = attributesCopy;
   v10 = [obj countByEnumeratingWithState:&v47 objects:v53 count:16];
   if (v10)
   {
@@ -58,54 +58,54 @@
         }
 
         v13 = *(*(&v47 + 1) + 8 * i);
-        v14 = [v13 relationship];
-        v15 = [v14 parentCodableAttribute];
+        relationship = [v13 relationship];
+        parentCodableAttribute = [relationship parentCodableAttribute];
 
-        if (!v15)
+        if (!parentCodableAttribute)
         {
           goto LABEL_27;
         }
 
-        v16 = [v13 relationship];
-        v17 = [v16 relation] == 0;
+        relationship2 = [v13 relationship];
+        v17 = [relationship2 relation] == 0;
 
         if (v17)
         {
           goto LABEL_27;
         }
 
-        v18 = [v15 propertyName];
-        v19 = [v9 valueForKey:v18];
+        propertyName = [parentCodableAttribute propertyName];
+        v19 = [intent valueForKey:propertyName];
 
-        v20 = [v13 relationship];
-        LOBYTE(v18) = [v20 compareValue:v19];
+        relationship3 = [v13 relationship];
+        LOBYTE(propertyName) = [relationship3 compareValue:v19];
 
-        if (v18)
+        if (propertyName)
         {
 LABEL_27:
           if ([v13 supportsDynamicEnumeration])
           {
             dispatch_group_enter(group);
-            v21 = [v13 propertyName];
+            propertyName2 = [v13 propertyName];
             v42[0] = MEMORY[0x277D85DD0];
             v42[1] = 3221225472;
             v42[2] = __98__INCIntentDefaultValueProvider_loadDefaultValuesWithAttributes_extensionProxy_completionHandler___block_invoke;
             v42[3] = &unk_2797E7C58;
-            v42[4] = v34;
+            v42[4] = selfCopy;
             v46 = v51;
             v43 = group;
-            v44 = v9;
+            v44 = intent;
             v45 = v13;
-            [v35 getDefaultValueForParameterNamed:v21 completionHandler:v42];
+            [proxyCopy getDefaultValueForParameterNamed:propertyName2 completionHandler:v42];
           }
 
           else
           {
-            v22 = [v13 metadata];
-            v23 = v22;
-            if (v22)
+            metadata = [v13 metadata];
+            v23 = metadata;
+            if (metadata)
             {
-              if ([v22 conformsToProtocol:&unk_2867761D0])
+              if ([metadata conformsToProtocol:&unk_2867761D0])
               {
                 v24 = v23;
               }
@@ -123,22 +123,22 @@ LABEL_27:
 
             v25 = v24;
 
-            v26 = [v25 defaultValueForIntentDefaultValueProvider];
-            if (v26)
+            defaultValueForIntentDefaultValueProvider = [v25 defaultValueForIntentDefaultValueProvider];
+            if (defaultValueForIntentDefaultValueProvider)
             {
               if (![v13 modifier])
               {
                 objc_opt_class();
                 if ((objc_opt_isKindOfClass() & 1) == 0)
                 {
-                  v27 = [MEMORY[0x277CBEA60] arrayWithObject:v26];
+                  v27 = [MEMORY[0x277CBEA60] arrayWithObject:defaultValueForIntentDefaultValueProvider];
 
-                  v26 = v27;
+                  defaultValueForIntentDefaultValueProvider = v27;
                 }
               }
 
-              v28 = [v13 propertyName];
-              [v9 setValue:v26 forKey:v28];
+              propertyName3 = [v13 propertyName];
+              [intent setValue:defaultValueForIntentDefaultValueProvider forKey:propertyName3];
             }
           }
         }
@@ -155,11 +155,11 @@ LABEL_27:
   block[1] = 3221225472;
   block[2] = __98__INCIntentDefaultValueProvider_loadDefaultValuesWithAttributes_extensionProxy_completionHandler___block_invoke_2;
   block[3] = &unk_2797E7C80;
-  v40 = v33;
+  v40 = handlerCopy;
   v41 = v51;
-  v39 = v9;
-  v30 = v9;
-  v31 = v33;
+  v39 = intent;
+  v30 = intent;
+  v31 = handlerCopy;
   dispatch_group_notify(group, v29, block);
 
   _Block_object_dispose(v51, 8);
@@ -209,21 +209,21 @@ uint64_t __98__INCIntentDefaultValueProvider_loadDefaultValuesWithAttributes_ext
   }
 }
 
-- (void)loadDefaultValuesWithCompletionHandler:(id)a3
+- (void)loadDefaultValuesWithCompletionHandler:(id)handler
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(INCIntentDefaultValueProvider *)self intent];
-  v6 = [(INCIntentDefaultValueProvider *)self intent];
-  v7 = [v6 _codableDescription];
-  v8 = [v7 displayOrderedAttributes];
-  v9 = [v8 array];
+  handlerCopy = handler;
+  intent = [(INCIntentDefaultValueProvider *)self intent];
+  intent2 = [(INCIntentDefaultValueProvider *)self intent];
+  _codableDescription = [intent2 _codableDescription];
+  displayOrderedAttributes = [_codableDescription displayOrderedAttributes];
+  array = [displayOrderedAttributes array];
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v10 = v9;
+  v10 = array;
   v11 = [v10 countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v11)
   {
@@ -243,7 +243,7 @@ uint64_t __98__INCIntentDefaultValueProvider_loadDefaultValuesWithAttributes_ext
 
           if (MKBDeviceUnlockedSinceBoot())
           {
-            v14 = [[INCExtensionConnection alloc] initWithIntent:v5];
+            v14 = [[INCExtensionConnection alloc] initWithIntent:intent];
             [(INCExtensionConnection *)v14 setRequiresTCC:0];
             v32[0] = 0;
             v32[1] = v32;
@@ -257,7 +257,7 @@ uint64_t __98__INCIntentDefaultValueProvider_loadDefaultValuesWithAttributes_ext
             v27[4] = self;
             v29 = v32;
             objc_copyWeak(&v30, &location);
-            v28 = v4;
+            v28 = handlerCopy;
             v15 = MEMORY[0x259C36E60](v27);
             v25[0] = MEMORY[0x277D85DD0];
             v25[1] = 3221225472;
@@ -288,7 +288,7 @@ uint64_t __98__INCIntentDefaultValueProvider_loadDefaultValuesWithAttributes_ext
             v39 = @"Loading default values from an intent handler requires that the device be unlocked at least once";
             v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
             v20 = [v18 errorWithDomain:@"INCExtensionErrorDomain" code:1310 userInfo:v19];
-            (*(v4 + 2))(v4, 0, v20);
+            (*(handlerCopy + 2))(handlerCopy, 0, v20);
           }
 
           goto LABEL_13;
@@ -308,7 +308,7 @@ uint64_t __98__INCIntentDefaultValueProvider_loadDefaultValuesWithAttributes_ext
     }
   }
 
-  [(INCIntentDefaultValueProvider *)self loadDefaultValuesWithAttributes:v10 extensionProxy:0 completionHandler:v4];
+  [(INCIntentDefaultValueProvider *)self loadDefaultValuesWithAttributes:v10 extensionProxy:0 completionHandler:handlerCopy];
 LABEL_13:
 
   v21 = *MEMORY[0x277D85DE8];
@@ -371,15 +371,15 @@ void __72__INCIntentDefaultValueProvider_loadDefaultValuesWithCompletionHandler_
   }
 }
 
-- (INCIntentDefaultValueProvider)initWithIntent:(id)a3
+- (INCIntentDefaultValueProvider)initWithIntent:(id)intent
 {
-  v4 = a3;
+  intentCopy = intent;
   v14.receiver = self;
   v14.super_class = INCIntentDefaultValueProvider;
   v5 = [(INCIntentDefaultValueProvider *)&v14 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [intentCopy copy];
     intent = v5->_intent;
     v5->_intent = v6;
 

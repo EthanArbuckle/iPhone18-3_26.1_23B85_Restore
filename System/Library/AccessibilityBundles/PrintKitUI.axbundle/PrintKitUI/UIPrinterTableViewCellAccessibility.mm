@@ -1,16 +1,16 @@
 @interface UIPrinterTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation UIPrinterTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UIPrinterTableViewCell" hasInstanceMethod:@"printerSelected" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"UIPrinterTableViewCell" hasInstanceMethod:@"printerState" withFullSignature:{"i", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UIPrinterTableViewCell" hasInstanceMethod:@"printerSelected" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"UIPrinterTableViewCell" hasInstanceMethod:@"printerState" withFullSignature:{"i", 0}];
 }
 
 - (id)accessibilityValue
@@ -34,7 +34,7 @@
 {
   v7.receiver = self;
   v7.super_class = UIPrinterTableViewCellAccessibility;
-  v3 = [(UIPrinterTableViewCellAccessibility *)&v7 accessibilityTraits];
+  accessibilityTraits = [(UIPrinterTableViewCellAccessibility *)&v7 accessibilityTraits];
   v4 = [(UIPrinterTableViewCellAccessibility *)self safeBoolForKey:@"printerSelected"];
   v5 = *MEMORY[0x29EDC7FC0];
   if (!v4)
@@ -42,7 +42,7 @@
     v5 = 0;
   }
 
-  return v5 | v3;
+  return v5 | accessibilityTraits;
 }
 
 @end

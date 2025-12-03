@@ -1,24 +1,24 @@
 @interface SBSAIndicatorAppearanceStateContext
-+ (id)instanceWithBlock:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)instanceWithBlock:(id)block;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)copyWithBlock:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithBlock:(id)block;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation SBSAIndicatorAppearanceStateContext
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   activeIndicatorElementContext = self->_activeIndicatorElementContext;
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __47__SBSAIndicatorAppearanceStateContext_isEqual___block_invoke;
   v28[3] = &unk_2783ACDB8;
-  v7 = v4;
+  v7 = equalCopy;
   v29 = v7;
   v8 = [v5 appendObject:activeIndicatorElementContext counterpart:v28];
   interSensorIndicatorPhase = self->_interSensorIndicatorPhase;
@@ -52,8 +52,8 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendObject:self->_activeIndicatorElementContext];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendObject:self->_activeIndicatorElementContext];
   v5 = [v4 appendUnsignedInteger:self->_interSensorIndicatorPhase];
   v6 = [v5 appendUnsignedInteger:self->_microIndicatorPhase];
   v7 = [v6 appendUnsignedInteger:self->_microIndicatorEjectionPhase];
@@ -102,7 +102,7 @@
   return [v3 stringWithFormat:@"<%@: %p; indicatorElementContext: %@; interSensorIndicatorPhase: %@; microIndicatorEjectionPhase: %@; microIndicatorPhase: %@>", v4, self, self->_activeIndicatorElementContext, v6, v8, v10];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = [(SBSAIndicatorElementContext *)self->_activeIndicatorElementContext copy];
@@ -115,23 +115,23 @@
   return v4;
 }
 
-+ (id)instanceWithBlock:(id)a3
++ (id)instanceWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [v4 copyWithBlock:v3];
+  v5 = [v4 copyWithBlock:blockCopy];
 
   return v5;
 }
 
-- (id)copyWithBlock:(id)a3
+- (id)copyWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(SBSAIndicatorAppearanceStateContext *)self copy];
-  if (v4)
+  if (blockCopy)
   {
     v6 = [objc_alloc(objc_msgSend(objc_opt_class() "mutatorClass"))];
-    v4[2](v4, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   return v5;

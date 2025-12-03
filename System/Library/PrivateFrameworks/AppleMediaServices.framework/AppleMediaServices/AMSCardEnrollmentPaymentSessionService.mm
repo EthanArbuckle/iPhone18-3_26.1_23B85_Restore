@@ -1,13 +1,13 @@
 @interface AMSCardEnrollmentPaymentSessionService
-+ (id)performSilentEnrollmentWithRequest:(id)a3 logKey:(id)a4;
++ (id)performSilentEnrollmentWithRequest:(id)request logKey:(id)key;
 @end
 
 @implementation AMSCardEnrollmentPaymentSessionService
 
-+ (id)performSilentEnrollmentWithRequest:(id)a3 logKey:(id)a4
++ (id)performSilentEnrollmentWithRequest:(id)request logKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  keyCopy = key;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -19,11 +19,11 @@
   v13[1] = 3221225472;
   v13[2] = __84__AMSCardEnrollmentPaymentSessionService_performSilentEnrollmentWithRequest_logKey___block_invoke;
   v13[3] = &unk_1E73B5170;
-  v9 = v6;
+  v9 = requestCopy;
   v14 = v9;
-  v10 = v7;
+  v10 = keyCopy;
   v16 = &v18;
-  v17 = a1;
+  selfCopy = self;
   v15 = v10;
   v11 = [v8 thenWithBlock:v13];
 

@@ -1,15 +1,15 @@
 @interface BRDownloadProgressProxy
-- (BRDownloadProgressProxy)initWithURL:(id)a3;
-- (void)_queryDidReceiveUpdate:(id)a3;
+- (BRDownloadProgressProxy)initWithURL:(id)l;
+- (void)_queryDidReceiveUpdate:(id)update;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation BRDownloadProgressProxy
 
-- (BRDownloadProgressProxy)initWithURL:(id)a3
+- (BRDownloadProgressProxy)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v21.receiver = self;
   v21.super_class = BRDownloadProgressProxy;
   v5 = [(BRDownloadProgressProxy *)&v21 init];
@@ -19,7 +19,7 @@
     query = v5->_query;
     v5->_query = v6;
 
-    [(NSMetadataQuery *)v5->_query br_setupForMonitoringItemAtURL:v4];
+    [(NSMetadataQuery *)v5->_query br_setupForMonitoringItemAtURL:lCopy];
     [(NSMetadataQuery *)v5->_query setNotificationBatchingInterval:0.1];
     v8 = objc_alloc_init(MEMORY[0x1E696ADC8]);
     queue = v5->_queue;
@@ -30,15 +30,15 @@
     [(NSMetadataQuery *)v5->_query setOperationQueue:v5->_queue];
     [(BRDownloadProgressProxy *)v5 setKind:*MEMORY[0x1E696A888]];
     [(BRDownloadProgressProxy *)v5 setUserInfoObject:*MEMORY[0x1E696A848] forKey:*MEMORY[0x1E696A858]];
-    [(BRDownloadProgressProxy *)v5 setUserInfoObject:v4 forKey:*MEMORY[0x1E696A880]];
+    [(BRDownloadProgressProxy *)v5 setUserInfoObject:lCopy forKey:*MEMORY[0x1E696A880]];
     v20 = 0;
-    v10 = [v4 getPromisedItemResourceValue:&v20 forKey:*MEMORY[0x1E695DC10] error:0];
+    v10 = [lCopy getPromisedItemResourceValue:&v20 forKey:*MEMORY[0x1E695DC10] error:0];
     v11 = v20;
     if ((v10 & 1) == 0)
     {
-      v12 = [v4 lastPathComponent];
+      lastPathComponent = [lCopy lastPathComponent];
 
-      v11 = v12;
+      v11 = lastPathComponent;
     }
 
     objc_initWeak(&location, v5);
@@ -53,10 +53,10 @@
       [(BRDownloadProgressProxy *)v5 setUserInfoObject:v11 forKey:*MEMORY[0x1E696A818]];
     }
 
-    v13 = [MEMORY[0x1E69DF068] sharedManager];
-    v14 = [v13 br_currentPersonaID];
+    mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+    br_currentPersonaID = [mEMORY[0x1E69DF068] br_currentPersonaID];
     personaID = v5->_personaID;
-    v5->_personaID = v14;
+    v5->_personaID = br_currentPersonaID;
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(&location);
@@ -71,10 +71,10 @@ void __39__BRDownloadProgressProxy_initWithURL___block_invoke(uint64_t a1)
   [WeakRetained _queryDidReceiveUpdate:0];
 }
 
-- (void)_queryDidReceiveUpdate:(id)a3
+- (void)_queryDidReceiveUpdate:(id)update
 {
   v52 = *MEMORY[0x1E69E9840];
-  v41 = a3;
+  updateCopy = update;
   if ([(NSString *)self->_personaID isEqualToString:@"__defaultPersonaID__"]|| (v4 = self->_personaID) == 0)
   {
     if (_queryDidReceiveUpdate____personaOnceToken != -1)
@@ -92,13 +92,13 @@ void __39__BRDownloadProgressProxy_initWithURL___block_invoke(uint64_t a1)
     v6 = 0;
   }
 
-  v7 = [MEMORY[0x1E69DF068] sharedManager];
-  v43 = [v7 currentPersona];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
 
   v45 = 0;
-  v8 = [v43 userPersonaUniqueString];
-  v9 = v8;
-  if (v8 == v5 || [(NSString *)v8 isEqualToString:v5])
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+  v9 = userPersonaUniqueString;
+  if (userPersonaUniqueString == v5 || [(NSString *)userPersonaUniqueString isEqualToString:v5])
   {
     goto LABEL_9;
   }
@@ -106,7 +106,7 @@ void __39__BRDownloadProgressProxy_initWithURL___block_invoke(uint64_t a1)
   if (voucher_process_can_use_arbitrary_personas())
   {
     v44 = 0;
-    v23 = [v43 copyCurrentPersonaContextWithError:&v44];
+    v23 = [currentPersona copyCurrentPersonaContextWithError:&v44];
     v24 = v44;
     v25 = v45;
     v45 = v23;
@@ -121,7 +121,7 @@ void __39__BRDownloadProgressProxy_initWithURL___block_invoke(uint64_t a1)
       }
     }
 
-    v42 = [v43 br_generateAndRestorePersonaContextWithPersonaUniqueString:v5];
+    v42 = [currentPersona br_generateAndRestorePersonaContextWithPersonaUniqueString:v5];
 
     if (!v42)
     {
@@ -147,7 +147,7 @@ LABEL_9:
     goto LABEL_41;
   }
 
-  if (v6 && ([v43 isDataSeparatedPersona] & 1) == 0)
+  if (v6 && ([currentPersona isDataSeparatedPersona] & 1) == 0)
   {
     v28 = brc_bread_crumbs("[BRDownloadProgressProxy _queryDidReceiveUpdate:]", 54);
     v29 = brc_default_log(1, 0);
@@ -171,16 +171,16 @@ LABEL_41:
 
   v42 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:0];
 LABEL_10:
-  v10 = [(NSMetadataQuery *)self->_query results];
-  if ([v10 count])
+  results = [(NSMetadataQuery *)self->_query results];
+  if ([results count])
   {
-    v11 = [v10 objectAtIndexedSubscript:0];
+    v11 = [results objectAtIndexedSubscript:0];
     v40 = [v11 valueForKey:*MEMORY[0x1E696A6D0]];
     v12 = [v11 valueForKey:@"BRMetadataUbiquitousItemDownloadingSizeKey"];
-    v13 = [(BRDownloadProgressProxy *)self userInfo];
-    v14 = [v13 objectForKeyedSubscript:*MEMORY[0x1E696A818]];
+    userInfo = [(BRDownloadProgressProxy *)self userInfo];
+    v14 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696A818]];
 
-    v15 = [(BRDownloadProgressProxy *)self isCancelled];
+    isCancelled = [(BRDownloadProgressProxy *)self isCancelled];
     if ([(BRDownloadProgressProxy *)self isCancelled])
     {
       v21 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -211,7 +211,7 @@ LABEL_10:
     v22 = ;
     [(BRDownloadProgressProxy *)self setLocalizedDescription:v22];
 
-    if (v15)
+    if (isCancelled)
     {
       [(BRDownloadProgressProxy *)self setTotalUnitCount:-1];
     }
@@ -237,9 +237,9 @@ void __50__BRDownloadProgressProxy__queryDidReceiveUpdate___block_invoke()
 
 - (void)start
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__queryDidReceiveUpdate_ name:*MEMORY[0x1E696A620] object:self->_query];
-  [v3 addObserver:self selector:sel__queryDidReceiveUpdate_ name:*MEMORY[0x1E696A618] object:self->_query];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__queryDidReceiveUpdate_ name:*MEMORY[0x1E696A620] object:self->_query];
+  [defaultCenter addObserver:self selector:sel__queryDidReceiveUpdate_ name:*MEMORY[0x1E696A618] object:self->_query];
   [(NSMetadataQuery *)self->_query startQuery];
 }
 

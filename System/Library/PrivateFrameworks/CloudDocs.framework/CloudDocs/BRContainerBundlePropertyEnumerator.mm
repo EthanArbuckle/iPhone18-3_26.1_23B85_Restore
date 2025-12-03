@@ -1,27 +1,27 @@
 @interface BRContainerBundlePropertyEnumerator
-- (BRContainerBundlePropertyEnumerator)initWithContainerPlist:(id)a3 propertyKey:(id)a4 valuesOfClass:(Class)a5;
+- (BRContainerBundlePropertyEnumerator)initWithContainerPlist:(id)plist propertyKey:(id)key valuesOfClass:(Class)class;
 - (id)nextObject;
 @end
 
 @implementation BRContainerBundlePropertyEnumerator
 
-- (BRContainerBundlePropertyEnumerator)initWithContainerPlist:(id)a3 propertyKey:(id)a4 valuesOfClass:(Class)a5
+- (BRContainerBundlePropertyEnumerator)initWithContainerPlist:(id)plist propertyKey:(id)key valuesOfClass:(Class)class
 {
-  v9 = a3;
-  v10 = a4;
+  plistCopy = plist;
+  keyCopy = key;
   v16.receiver = self;
   v16.super_class = BRContainerBundlePropertyEnumerator;
   v11 = [(BRContainerBundlePropertyEnumerator *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_plist, a3);
-    v13 = [[BRContainerBundleIdentifiersEnumerator alloc] initWithContainerPlist:v9];
+    objc_storeStrong(&v11->_plist, plist);
+    v13 = [[BRContainerBundleIdentifiersEnumerator alloc] initWithContainerPlist:plistCopy];
     enumerator = v12->_enumerator;
     v12->_enumerator = &v13->super;
 
-    objc_storeStrong(&v12->_propertyKey, a4);
-    v12->_valueClass = a5;
+    objc_storeStrong(&v12->_propertyKey, key);
+    v12->_valueClass = class;
   }
 
   return v12;
@@ -29,8 +29,8 @@
 
 - (id)nextObject
 {
-  v3 = [(NSEnumerator *)self->_enumerator nextObject];
-  if (!v3)
+  nextObject = [(NSEnumerator *)self->_enumerator nextObject];
+  if (!nextObject)
   {
 LABEL_6:
     v5 = 0;
@@ -39,7 +39,7 @@ LABEL_6:
 
   while (1)
   {
-    v4 = [(NSDictionary *)self->_plist objectForKey:v3];
+    v4 = [(NSDictionary *)self->_plist objectForKey:nextObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,10 +48,10 @@ LABEL_6:
 
 LABEL_5:
 
-    v7 = [(NSEnumerator *)self->_enumerator nextObject];
+    nextObject2 = [(NSEnumerator *)self->_enumerator nextObject];
 
-    v3 = v7;
-    if (!v7)
+    nextObject = nextObject2;
+    if (!nextObject2)
     {
       goto LABEL_6;
     }

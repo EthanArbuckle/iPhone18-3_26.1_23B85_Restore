@@ -1,11 +1,11 @@
 @interface SUICKPEntryPoint
 - (SUICKPEntryPoint)init;
-- (SUICKPEntryPoint)initWithCATExecutor:(id)a3;
-- (void)mutateResponseSections:(id)a3 completion:(id)a4;
-- (void)presentation:(id)a3 didApplyCardSectionViewSource:(id)a4 toCardViewController:(id)a5;
-- (void)requestCardSectionViewProviderForCard:(id)a3 delegate:(id)a4 reply:(id)a5;
-- (void)requestIdentifiedCardSectionViewProviderForCard:(id)a3 delegate:(id)a4 reply:(id)a5;
-- (void)unregisterCardViewController:(id)a3;
+- (SUICKPEntryPoint)initWithCATExecutor:(id)executor;
+- (void)mutateResponseSections:(id)sections completion:(id)completion;
+- (void)presentation:(id)presentation didApplyCardSectionViewSource:(id)source toCardViewController:(id)controller;
+- (void)requestCardSectionViewProviderForCard:(id)card delegate:(id)delegate reply:(id)reply;
+- (void)requestIdentifiedCardSectionViewProviderForCard:(id)card delegate:(id)delegate reply:(id)reply;
+- (void)unregisterCardViewController:(id)controller;
 @end
 
 @implementation SUICKPEntryPoint
@@ -37,9 +37,9 @@
   return v2;
 }
 
-- (SUICKPEntryPoint)initWithCATExecutor:(id)a3
+- (SUICKPEntryPoint)initWithCATExecutor:(id)executor
 {
-  v5 = a3;
+  executorCopy = executor;
   v10.receiver = self;
   v10.super_class = SUICKPEntryPoint;
   v6 = [(SUICKPEntryPoint *)&v10 init];
@@ -49,7 +49,7 @@
     cardViewControllerProvider = v6->_cardViewControllerProvider;
     v6->_cardViewControllerProvider = v7;
 
-    objc_storeStrong(&v6->_catExecutor, a3);
+    objc_storeStrong(&v6->_catExecutor, executor);
     +[(CRKCardSectionViewController *)SUICKPActivityIndicatorCardSectionViewController];
     +[(CRKCardSectionViewController *)SUICKPAudioPlaybackCardSectionViewController];
     +[(CRKCardSectionViewController *)SUICKPInteractiveCardSectionViewController];
@@ -62,38 +62,38 @@
   return v6;
 }
 
-- (void)unregisterCardViewController:(id)a3
+- (void)unregisterCardViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   cardViewControllerProvider = self->_cardViewControllerProvider;
   if (objc_opt_respondsToSelector())
   {
-    [(SUICKPCardViewControllerProvider *)self->_cardViewControllerProvider unregisterCardViewController:v5];
+    [(SUICKPCardViewControllerProvider *)self->_cardViewControllerProvider unregisterCardViewController:controllerCopy];
   }
 }
 
-- (void)presentation:(id)a3 didApplyCardSectionViewSource:(id)a4 toCardViewController:(id)a5
+- (void)presentation:(id)presentation didApplyCardSectionViewSource:(id)source toCardViewController:(id)controller
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  presentationCopy = presentation;
+  sourceCopy = source;
+  controllerCopy = controller;
   cardViewControllerProvider = self->_cardViewControllerProvider;
   if (objc_opt_respondsToSelector())
   {
-    [(SUICKPCardViewControllerProvider *)self->_cardViewControllerProvider presentation:v11 didApplyCardSectionViewSource:v8 toCardViewController:v9];
+    [(SUICKPCardViewControllerProvider *)self->_cardViewControllerProvider presentation:presentationCopy didApplyCardSectionViewSource:sourceCopy toCardViewController:controllerCopy];
   }
 }
 
-- (void)requestCardSectionViewProviderForCard:(id)a3 delegate:(id)a4 reply:(id)a5
+- (void)requestCardSectionViewProviderForCard:(id)card delegate:(id)delegate reply:(id)reply
 {
-  v8 = a5;
+  replyCopy = reply;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __73__SUICKPEntryPoint_requestCardSectionViewProviderForCard_delegate_reply___block_invoke;
   v10[3] = &unk_279B8EF68;
-  v11 = v8;
-  v9 = v8;
-  [(SUICKPEntryPoint *)self requestIdentifiedCardSectionViewProviderForCard:a3 delegate:a4 reply:v10];
+  v11 = replyCopy;
+  v9 = replyCopy;
+  [(SUICKPEntryPoint *)self requestIdentifiedCardSectionViewProviderForCard:card delegate:delegate reply:v10];
 }
 
 uint64_t __73__SUICKPEntryPoint_requestCardSectionViewProviderForCard_delegate_reply___block_invoke(uint64_t a1)
@@ -107,22 +107,22 @@ uint64_t __73__SUICKPEntryPoint_requestCardSectionViewProviderForCard_delegate_r
   return result;
 }
 
-- (void)requestIdentifiedCardSectionViewProviderForCard:(id)a3 delegate:(id)a4 reply:(id)a5
+- (void)requestIdentifiedCardSectionViewProviderForCard:(id)card delegate:(id)delegate reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  cardCopy = card;
+  delegateCopy = delegate;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v11 = [v8 resolvedCardSections];
+    resolvedCardSections = [cardCopy resolvedCardSections];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __83__SUICKPEntryPoint_requestIdentifiedCardSectionViewProviderForCard_delegate_reply___block_invoke;
     v12[3] = &unk_279B8EF90;
-    v13 = v8;
-    v14 = v9;
-    v15 = v10;
-    [(SUICKPEntryPoint *)self mutateResponseSections:v11 completion:v12];
+    v13 = cardCopy;
+    v14 = delegateCopy;
+    v15 = replyCopy;
+    [(SUICKPEntryPoint *)self mutateResponseSections:resolvedCardSections completion:v12];
   }
 }
 
@@ -133,18 +133,18 @@ void __83__SUICKPEntryPoint_requestIdentifiedCardSectionViewProviderForCard_dele
   (*(a1[6] + 16))();
 }
 
-- (void)mutateResponseSections:(id)a3 completion:(id)a4
+- (void)mutateResponseSections:(id)sections completion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v17 = a4;
+  sectionsCopy = sections;
+  completionCopy = completion;
   group = dispatch_group_create();
   queue = dispatch_queue_create("com.apple.siri.cardKit.visualCatExecution", MEMORY[0x277D85CD8]);
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v7 = v6;
+  v7 = sectionsCopy;
   v8 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v8)
   {
@@ -163,24 +163,24 @@ void __83__SUICKPEntryPoint_requestIdentifiedCardSectionViewProviderForCard_dele
         v12 = *(*(&v26 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          v13 = [v12 backingCardSection];
+          backingCardSection = [v12 backingCardSection];
         }
 
         else
         {
-          v13 = 0;
+          backingCardSection = 0;
         }
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v14 = v13;
+          v14 = backingCardSection;
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
           block[2] = __54__SUICKPEntryPoint_mutateResponseSections_completion___block_invoke;
           block[3] = &unk_279B8EFE0;
           v23 = group;
-          v24 = self;
+          selfCopy = self;
           v25 = v14;
           dispatch_group_async(v23, queue, block);
         }
@@ -199,8 +199,8 @@ void __83__SUICKPEntryPoint_requestIdentifiedCardSectionViewProviderForCard_dele
   v20[1] = 3221225472;
   v20[2] = __54__SUICKPEntryPoint_mutateResponseSections_completion___block_invoke_21;
   v20[3] = &unk_279B8F008;
-  v21 = v17;
-  v15 = v17;
+  v21 = completionCopy;
+  v15 = completionCopy;
   dispatch_group_notify(group, MEMORY[0x277D85CD0], v20);
 
   v16 = *MEMORY[0x277D85DE8];

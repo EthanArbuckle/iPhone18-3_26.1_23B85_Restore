@@ -1,16 +1,16 @@
 @interface SummaryContentSummaryViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)bookmarkButtonTapped;
 @end
 
 @implementation SummaryContentSummaryViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SeymourUI.SummaryContentSummaryView" hasSwiftField:@"bookmarkButton" withSwiftType:"UIButton"];
-  [v3 validateClass:@"SeymourUI.SummaryContentSummaryView" hasInstanceMethod:@"bookmarkButtonTapped" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SeymourUI.SummaryContentSummaryView" hasSwiftField:@"bookmarkButton" withSwiftType:"UIButton"];
+  [validationsCopy validateClass:@"SeymourUI.SummaryContentSummaryView" hasInstanceMethod:@"bookmarkButtonTapped" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -19,8 +19,8 @@
   v7.super_class = SummaryContentSummaryViewAccessibility;
   [(SummaryContentSummaryViewAccessibility *)&v7 _accessibilityLoadAccessibilityInformation];
   v3 = [(SummaryContentSummaryViewAccessibility *)self safeSwiftValueForKey:@"bookmarkButton"];
-  v4 = [v3 accessibilityTraits];
-  if ((*MEMORY[0x29EDC7FA8] & ~v4) != 0)
+  accessibilityTraits = [v3 accessibilityTraits];
+  if ((*MEMORY[0x29EDC7FA8] & ~accessibilityTraits) != 0)
   {
     v5 = @"add.button";
   }

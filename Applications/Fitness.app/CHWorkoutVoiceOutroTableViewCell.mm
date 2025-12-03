@@ -1,16 +1,16 @@
 @interface CHWorkoutVoiceOutroTableViewCell
-- (CHWorkoutVoiceOutroTableViewCell)initWithCoder:(id)a3;
-- (CHWorkoutVoiceOutroTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)configureWithSupplementaryDataSource:(id)a3 parent:(id)a4;
+- (CHWorkoutVoiceOutroTableViewCell)initWithCoder:(id)coder;
+- (CHWorkoutVoiceOutroTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)configureWithSupplementaryDataSource:(id)source parent:(id)parent;
 @end
 
 @implementation CHWorkoutVoiceOutroTableViewCell
 
-- (CHWorkoutVoiceOutroTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CHWorkoutVoiceOutroTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -19,10 +19,10 @@
     v6 = 0;
   }
 
-  return sub_10039F28C(a3, a4, v6);
+  return sub_10039F28C(style, identifier, v6);
 }
 
-- (CHWorkoutVoiceOutroTableViewCell)initWithCoder:(id)a3
+- (CHWorkoutVoiceOutroTableViewCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR___CHWorkoutVoiceOutroTableViewCell_hostingController) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR___CHWorkoutVoiceOutroTableViewCell_cellPadding) = 0x4028000000000000;
@@ -32,12 +32,12 @@
   return result;
 }
 
-- (void)configureWithSupplementaryDataSource:(id)a3 parent:(id)a4
+- (void)configureWithSupplementaryDataSource:(id)source parent:(id)parent
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10039F4FC(v6, v7);
+  sourceCopy = source;
+  parentCopy = parent;
+  selfCopy = self;
+  sub_10039F4FC(sourceCopy, parentCopy);
 }
 
 @end

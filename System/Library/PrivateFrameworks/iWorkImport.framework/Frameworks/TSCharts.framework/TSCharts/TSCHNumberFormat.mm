@@ -1,34 +1,34 @@
 @interface TSCHNumberFormat
-+ (TSCHNumberFormat)numberFormatWithFormatType:(unsigned int)a3 decimalPlaces:(unsigned int)a4 showThousandsSeparator:(BOOL)a5;
-+ (TSCHNumberFormat)numberFormatWithTSKFormat:(id)a3 prefixString:(id)a4 suffixString:(id)a5;
-+ (id)customFormatForKey:(id)a3 documentRoot:(id)a4 fromPasteboardCustomFormatList:(id)a5;
++ (TSCHNumberFormat)numberFormatWithFormatType:(unsigned int)type decimalPlaces:(unsigned int)places showThousandsSeparator:(BOOL)separator;
++ (TSCHNumberFormat)numberFormatWithTSKFormat:(id)format prefixString:(id)string suffixString:(id)suffixString;
++ (id)customFormatForKey:(id)key documentRoot:(id)root fromPasteboardCustomFormatList:(id)list;
 + (id)defaultDecimalNumberFormat;
-+ (id)defaultDecimalNumberFormatWithPrefixString:(id)a3 suffixString:(id)a4;
-+ (id)defaultNumberFormatWithFormatType:(unsigned int)a3 locale:(id)a4;
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4;
-+ (int)labelFormatTypeFromTSUFormatType:(unsigned int)a3;
-+ (unsigned)TSUFormatTypeFromLabelFormatType:(int)a3;
++ (id)defaultDecimalNumberFormatWithPrefixString:(id)string suffixString:(id)suffixString;
++ (id)defaultNumberFormatWithFormatType:(unsigned int)type locale:(id)locale;
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver;
++ (int)labelFormatTypeFromTSUFormatType:(unsigned int)type;
++ (unsigned)TSUFormatTypeFromLabelFormatType:(int)type;
 - (BOOL)baseUseMinusSign;
-- (BOOL)isCompatibleWithDataFormatter:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isCompatibleWithDataFormatter:(id)formatter;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)showThousandsSeparator;
 - (BOOL)supportsNumericProperties;
 - (BOOL)useAccountingStyle;
 - (NSString)currencyCode;
-- (TSCHNumberFormat)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (TSCHNumberFormat)initWithNullableTSKFormat:(id)a3 prefixString:(id)a4 suffixString:(id)a5;
-- (TSCHNumberFormat)initWithTSKFormat:(id)a3 prefixString:(id)a4 suffixString:(id)a5;
+- (TSCHNumberFormat)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (TSCHNumberFormat)initWithNullableTSKFormat:(id)format prefixString:(id)string suffixString:(id)suffixString;
+- (TSCHNumberFormat)initWithTSKFormat:(id)format prefixString:(id)string suffixString:(id)suffixString;
 - (char)fractionAccuracy;
-- (id)chartFormattedInspectorStringForValue:(id)a3 locale:(id)a4;
-- (id)chartFormattedStringForValue:(id)a3 locale:(id)a4;
-- (id)convertToSupportedClientFormatObjectWithLocale:(id)a3;
+- (id)chartFormattedInspectorStringForValue:(id)value locale:(id)locale;
+- (id)chartFormattedStringForValue:(id)value locale:(id)locale;
+- (id)convertToSupportedClientFormatObjectWithLocale:(id)locale;
 - (id)customFormat;
 - (id)customFormatKey;
-- (id)dataFormatterForDocumentRoot:(id)a3 pasteboardCustomFormatList:(id)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)dataFormatterForDocumentRoot:(id)root pasteboardCustomFormatList:(id)list;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)numberFormatByResettingToDefaultNegativeStyleIfAvailable;
 - (id)p_formatTypeDescription;
-- (id)p_formattedBodyStringForDouble:(double)a3 locale:(id)a4;
+- (id)p_formattedBodyStringForDouble:(double)double locale:(id)locale;
 - (id)upgradedNumberFormatFromPreUFFOrUnity1_0;
 - (int)valueType;
 - (unint64_t)hash;
@@ -38,18 +38,18 @@
 - (unsigned)decimalPlacesForNumberFormatter;
 - (unsigned)negativeStyle;
 - (unsigned)negativeStyleForNumberFormatter;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TSCHNumberFormat
 
-+ (id)defaultDecimalNumberFormatWithPrefixString:(id)a3 suffixString:(id)a4
++ (id)defaultDecimalNumberFormatWithPrefixString:(id)string suffixString:(id)suffixString
 {
-  v5 = a3;
-  v6 = a4;
+  stringCopy = string;
+  suffixStringCopy = suffixString;
   v11 = objc_msgSend_defaultDecimalNumberFormat(TSCHMutableNumberFormat, v7, v8, v9, v10);
-  objc_msgSend_setPrefixString_(v11, v12, v13, v14, v15, v5);
-  objc_msgSend_setSuffixString_(v11, v16, v17, v18, v19, v6);
+  objc_msgSend_setPrefixString_(v11, v12, v13, v14, v15, stringCopy);
+  objc_msgSend_setSuffixString_(v11, v16, v17, v18, v19, suffixStringCopy);
   v24 = objc_msgSend_copy(v11, v20, v21, v22, v23);
 
   return v24;
@@ -57,10 +57,10 @@
 
 - (id)upgradedNumberFormatFromPreUFFOrUnity1_0
 {
-  v2 = self;
-  if (objc_msgSend_isCustom(v2, v3, v4, v5, v6))
+  selfCopy = self;
+  if (objc_msgSend_isCustom(selfCopy, v3, v4, v5, v6))
   {
-    v11 = objc_msgSend_format(v2, v7, v8, v9, v10);
+    v11 = objc_msgSend_format(selfCopy, v7, v8, v9, v10);
     v16 = objc_msgSend_asLegacyCustomFormat(v11, v12, v13, v14, v15);
     if (objc_msgSend_legacyID(v16, v17, v18, v19, v20) == -1)
     {
@@ -68,7 +68,7 @@
 
     else
     {
-      v25 = objc_msgSend_format(v2, v21, v22, v23, v24);
+      v25 = objc_msgSend_format(selfCopy, v21, v22, v23, v24);
       v30 = objc_msgSend_asCustomFormatWrapper(v25, v26, v27, v28, v29);
       v35 = objc_msgSend_customFormatKey(v30, v31, v32, v33, v34);
       isEqual = objc_msgSend_isEqual_(v35, v36, v37, v38, v39, @"66EB3F49-371A-4378-BDB5-5AE724B24066");
@@ -84,34 +84,34 @@
       }
     }
 
-    v60 = objc_msgSend_prefixString(v2, v41, v42, v43, v44);
-    v65 = objc_msgSend_suffixString(v2, v61, v62, v63, v64);
+    v60 = objc_msgSend_prefixString(selfCopy, v41, v42, v43, v44);
+    v65 = objc_msgSend_suffixString(selfCopy, v61, v62, v63, v64);
     v70 = objc_msgSend_defaultDecimalNumberFormatWithPrefixString_suffixString_(TSCHNumberFormat, v66, v67, v68, v69, v60, v65);
 
-    v2 = v70;
+    selfCopy = v70;
   }
 
-  return v2;
+  return selfCopy;
 }
 
-+ (id)customFormatForKey:(id)a3 documentRoot:(id)a4 fromPasteboardCustomFormatList:(id)a5
++ (id)customFormatForKey:(id)key documentRoot:(id)root fromPasteboardCustomFormatList:(id)list
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v15 = objc_msgSend_customFormatForKey_(v9, v10, v11, v12, v13, v7);
+  keyCopy = key;
+  rootCopy = root;
+  listCopy = list;
+  v15 = objc_msgSend_customFormatForKey_(listCopy, v10, v11, v12, v13, keyCopy);
   if (!v15)
   {
-    v19 = objc_msgSend_customFormatList(v8, v14, v16, v17, v18);
-    v24 = objc_msgSend_customFormatForKey_(v19, v20, v21, v22, v23, v7);
+    v19 = objc_msgSend_customFormatList(rootCopy, v14, v16, v17, v18);
+    v24 = objc_msgSend_customFormatForKey_(v19, v20, v21, v22, v23, keyCopy);
 
     if (!v24)
     {
       v29 = MEMORY[0x277D81150];
       v30 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v25, v26, v27, v28, "+[TSCHNumberFormat customFormatForKey:documentRoot:fromPasteboardCustomFormatList:]");
       v35 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v31, v32, v33, v34, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHNumberFormat.mm");
-      v40 = objc_msgSend_customFormatList(v8, v36, v37, v38, v39);
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v29, v41, v42, v43, v44, v30, v35, 321, 0, "Custom format %@ not found in paste list %@ document list %@", v7, v9, v40);
+      v40 = objc_msgSend_customFormatList(rootCopy, v36, v37, v38, v39);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v29, v41, v42, v43, v44, v30, v35, 321, 0, "Custom format %@ not found in paste list %@ document list %@", keyCopy, listCopy, v40);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v45, v46, v47, v48);
     }
@@ -120,12 +120,12 @@
   return v15;
 }
 
-+ (int)labelFormatTypeFromTSUFormatType:(unsigned int)a3
++ (int)labelFormatTypeFromTSUFormatType:(unsigned int)type
 {
-  v6 = *&a3;
-  if (a3 - 256 < 0x13 && ((0x5506Fu >> a3) & 1) != 0)
+  v6 = *&type;
+  if (type - 256 < 0x13 && ((0x5506Fu >> type) & 1) != 0)
   {
-    return dword_2764D6D44[a3 - 256];
+    return dword_2764D6D44[type - 256];
   }
 
   v8 = MEMORY[0x277D81150];
@@ -139,36 +139,36 @@
 
 + (id)defaultDecimalNumberFormat
 {
-  v7 = objc_msgSend_defaultDecimalPlaces(a1, a2, v2, v3, v4);
+  v7 = objc_msgSend_defaultDecimalPlaces(self, a2, v2, v3, v4);
 
-  return objc_msgSend_numberFormatWithFormatType_decimalPlaces_showThousandsSeparator_(a1, v6, v8, v9, v10, 256, v7, 1);
+  return objc_msgSend_numberFormatWithFormatType_decimalPlaces_showThousandsSeparator_(self, v6, v8, v9, v10, 256, v7, 1);
 }
 
-+ (id)defaultNumberFormatWithFormatType:(unsigned int)a3 locale:(id)a4
++ (id)defaultNumberFormatWithFormatType:(unsigned int)type locale:(id)locale
 {
-  v8 = objc_msgSend_defaultFormatWithFormatType_locale_(MEMORY[0x277D80680], a2, v4, v5, v6, *&a3, a4);
-  v13 = objc_msgSend_numberFormatWithTSKFormat_prefixString_suffixString_(a1, v9, v10, v11, v12, v8, 0, 0);
+  v8 = objc_msgSend_defaultFormatWithFormatType_locale_(MEMORY[0x277D80680], a2, v4, v5, v6, *&type, locale);
+  v13 = objc_msgSend_numberFormatWithTSKFormat_prefixString_suffixString_(self, v9, v10, v11, v12, v8, 0, 0);
 
   return v13;
 }
 
-+ (TSCHNumberFormat)numberFormatWithFormatType:(unsigned int)a3 decimalPlaces:(unsigned int)a4 showThousandsSeparator:(BOOL)a5
++ (TSCHNumberFormat)numberFormatWithFormatType:(unsigned int)type decimalPlaces:(unsigned int)places showThousandsSeparator:(BOOL)separator
 {
-  v5 = a5;
-  v6 = *&a4;
-  v7 = *&a3;
+  separatorCopy = separator;
+  v6 = *&places;
+  v7 = *&type;
   v9 = [TSCHMutableNumberFormat alloc];
   v14 = objc_msgSend_initWithNullableTSKFormat_prefixString_suffixString_(v9, v10, v11, v12, v13, 0, 0, 0);
   objc_msgSend_setFormatType_(v14, v15, v16, v17, v18, v7);
   if (objc_msgSend_supportsNumericProperties(v14, v19, v20, v21, v22))
   {
     objc_msgSend_setDecimalPlaces_(v14, v23, v24, v25, v26, v6);
-    objc_msgSend_setShowThousandsSeparator_(v14, v27, v28, v29, v30, v5);
+    objc_msgSend_setShowThousandsSeparator_(v14, v27, v28, v29, v30, separatorCopy);
   }
 
   else if (objc_msgSend_isFraction(v14, v23, v24, v25, v26))
   {
-    v39 = objc_msgSend_defaultFractionAccuracy(a1, v35, v36, v37, v38);
+    v39 = objc_msgSend_defaultFractionAccuracy(self, v35, v36, v37, v38);
     objc_msgSend_setFractionAccuracy_(v14, v40, v41, v42, v43, v39);
   }
 
@@ -186,35 +186,35 @@
   v60 = objc_msgSend_format(v14, v31, v32, v33, v34);
   v65 = objc_msgSend_prefixString(v14, v61, v62, v63, v64);
   v70 = objc_msgSend_suffixString(v14, v66, v67, v68, v69);
-  v75 = objc_msgSend_numberFormatWithTSKFormat_prefixString_suffixString_(a1, v71, v72, v73, v74, v60, v65, v70);
+  v75 = objc_msgSend_numberFormatWithTSKFormat_prefixString_suffixString_(self, v71, v72, v73, v74, v60, v65, v70);
 
   return v75;
 }
 
-+ (TSCHNumberFormat)numberFormatWithTSKFormat:(id)a3 prefixString:(id)a4 suffixString:(id)a5
++ (TSCHNumberFormat)numberFormatWithTSKFormat:(id)format prefixString:(id)string suffixString:(id)suffixString
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [a1 alloc];
-  v16 = objc_msgSend_initWithTSKFormat_prefixString_suffixString_(v11, v12, v13, v14, v15, v8, v9, v10);
+  formatCopy = format;
+  stringCopy = string;
+  suffixStringCopy = suffixString;
+  v11 = [self alloc];
+  v16 = objc_msgSend_initWithTSKFormat_prefixString_suffixString_(v11, v12, v13, v14, v15, formatCopy, stringCopy, suffixStringCopy);
 
   return v16;
 }
 
-- (TSCHNumberFormat)initWithNullableTSKFormat:(id)a3 prefixString:(id)a4 suffixString:(id)a5
+- (TSCHNumberFormat)initWithNullableTSKFormat:(id)format prefixString:(id)string suffixString:(id)suffixString
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  formatCopy = format;
+  stringCopy = string;
+  suffixStringCopy = suffixString;
   v64.receiver = self;
   v64.super_class = TSCHNumberFormat;
   v12 = [(TSCHNumberFormat *)&v64 init];
   if (v12)
   {
-    if (v8)
+    if (formatCopy)
     {
-      v16 = objc_msgSend_formatType(v8, v11, v13, v14, v15);
+      v16 = objc_msgSend_formatType(formatCopy, v11, v13, v14, v15);
       if ((v16 - 261) <= 0xB && ((1 << (v16 - 5)) & 0x881) != 0)
       {
         v17 = MEMORY[0x277D81150];
@@ -240,7 +240,7 @@ LABEL_9:
     v62[2] = sub_2762F56F4;
     v62[3] = &unk_27A6B9688;
     v63 = v16;
-    v33 = objc_msgSend_formatByUpdatingIfTSCHNumericFormatWithBlock_(v8, v11, v13, v14, v15, v62);
+    v33 = objc_msgSend_formatByUpdatingIfTSCHNumericFormatWithBlock_(formatCopy, v11, v13, v14, v15, v62);
     v57 = MEMORY[0x277D85DD0];
     v58 = 3221225472;
     v59 = sub_2762F5720;
@@ -253,11 +253,11 @@ LABEL_9:
     format = v32->_format;
     v32->_format = v42;
 
-    v48 = objc_msgSend_copy(v9, v44, v45, v46, v47);
+    v48 = objc_msgSend_copy(stringCopy, v44, v45, v46, v47);
     prefixString = v32->_prefixString;
     v32->_prefixString = v48;
 
-    v54 = objc_msgSend_copy(v10, v50, v51, v52, v53);
+    v54 = objc_msgSend_copy(suffixStringCopy, v50, v51, v52, v53);
     suffixString = v32->_suffixString;
     v32->_suffixString = v54;
 
@@ -270,12 +270,12 @@ LABEL_10:
   return v32;
 }
 
-- (TSCHNumberFormat)initWithTSKFormat:(id)a3 prefixString:(id)a4 suffixString:(id)a5
+- (TSCHNumberFormat)initWithTSKFormat:(id)format prefixString:(id)string suffixString:(id)suffixString
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = a5;
-  if (!v8)
+  formatCopy = format;
+  stringCopy = string;
+  suffixStringCopy = suffixString;
+  if (!formatCopy)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v12, v13, v14, "[TSCHNumberFormat initWithTSKFormat:prefixString:suffixString:]");
@@ -285,12 +285,12 @@ LABEL_10:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v26, v27, v28, v29);
   }
 
-  v30 = objc_msgSend_initWithNullableTSKFormat_prefixString_suffixString_(self, v10, v12, v13, v14, v8, v9, v11);
+  v30 = objc_msgSend_initWithNullableTSKFormat_prefixString_suffixString_(self, v10, v12, v13, v14, formatCopy, stringCopy, suffixStringCopy);
 
   return v30;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [TSCHMutableNumberFormat alloc];
   suffixString = self->_suffixString;
@@ -307,9 +307,9 @@ LABEL_10:
   return v11 + objc_msgSend_hash(self->_suffixString, v12, v13, v14, v15);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v6 = TSUSpecificCast();
   if (!v6)
@@ -412,19 +412,19 @@ LABEL_17:
 
 - (id)numberFormatByResettingToDefaultNegativeStyleIfAvailable
 {
-  v2 = self;
+  selfCopy = self;
   v3 = objc_opt_class();
   v8 = objc_msgSend_defaultNegativeNumberStyle(v3, v4, v5, v6, v7);
-  if (objc_msgSend_supportsNumericProperties(v2, v9, v10, v11, v12) && objc_msgSend_negativeStyle(v2, v13, v14, v15, v16) == 1)
+  if (objc_msgSend_supportsNumericProperties(selfCopy, v9, v10, v11, v12) && objc_msgSend_negativeStyle(selfCopy, v13, v14, v15, v16) == 1)
   {
-    v21 = objc_msgSend_mutableCopy(v2, v17, v18, v19, v20);
+    v21 = objc_msgSend_mutableCopy(selfCopy, v17, v18, v19, v20);
     objc_msgSend_setNegativeStyle_(v21, v22, v23, v24, v25, v8);
     v30 = objc_msgSend_copy(v21, v26, v27, v28, v29);
 
-    v2 = v30;
+    selfCopy = v30;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)supportsNumericProperties
@@ -713,11 +713,11 @@ LABEL_17:
   return v37;
 }
 
-+ (unsigned)TSUFormatTypeFromLabelFormatType:(int)a3
++ (unsigned)TSUFormatTypeFromLabelFormatType:(int)type
 {
-  v6 = *&a3;
-  v7 = a3 - 2;
-  if (a3 - 2) < 9 && ((0x1EFu >> v7))
+  v6 = *&type;
+  v7 = type - 2;
+  if (type - 2) < 9 && ((0x1EFu >> v7))
   {
     return dword_2764D6D90[v7];
   }
@@ -739,14 +739,14 @@ LABEL_17:
   return v10;
 }
 
-- (id)dataFormatterForDocumentRoot:(id)a3 pasteboardCustomFormatList:(id)a4
+- (id)dataFormatterForDocumentRoot:(id)root pasteboardCustomFormatList:(id)list
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  if (objc_msgSend_isCustom(v8, v9, v10, v11, v12))
+  rootCopy = root;
+  listCopy = list;
+  selfCopy = self;
+  if (objc_msgSend_isCustom(selfCopy, v9, v10, v11, v12))
   {
-    if (!v6)
+    if (!rootCopy)
     {
       v17 = MEMORY[0x277D81150];
       v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, v14, v15, v16, "[TSCHNumberFormat dataFormatterForDocumentRoot:pasteboardCustomFormatList:]");
@@ -756,14 +756,14 @@ LABEL_17:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v28, v29, v30, v31);
     }
 
-    v33 = objc_msgSend_customFormatListKey(v8, v13, v14, v15, v16);
+    v33 = objc_msgSend_customFormatListKey(selfCopy, v13, v14, v15, v16);
     if (v33)
     {
-      v37 = objc_msgSend_customFormatList(v6, v32, v34, v35, v36);
+      v37 = objc_msgSend_customFormatList(rootCopy, v32, v34, v35, v36);
       v43 = objc_msgSend_customFormatForKey_(v37, v38, v39, v40, v41, v33);
       if (!v43)
       {
-        v43 = objc_msgSend_customFormatForKey_(v7, v42, v44, v45, v46, v33);
+        v43 = objc_msgSend_customFormatForKey_(listCopy, v42, v44, v45, v46, v33);
       }
 
       if (objc_msgSend_formatType(v43, v42, v44, v45, v46) != 274 && objc_msgSend_formatType(v43, v47, v48, v49, v50) != 270)
@@ -779,18 +779,18 @@ LABEL_17:
       }
 
       v71 = objc_msgSend_formatType(v43, v47, v48, v49, v50);
-      v76 = objc_msgSend_dataFormatterWithCustomFormat_customFormatListKey_formatType_prefixString_suffixString_(TSCHPrefixSuffixCustomDataFormatter, v72, v73, v74, v75, v43, v33, v71, v8->_prefixString, v8->_suffixString);
+      v76 = objc_msgSend_dataFormatterWithCustomFormat_customFormatListKey_formatType_prefixString_suffixString_(TSCHPrefixSuffixCustomDataFormatter, v72, v73, v74, v75, v43, v33, v71, selfCopy->_prefixString, selfCopy->_suffixString);
 
-      v8 = v76;
+      selfCopy = v76;
     }
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)p_formattedBodyStringForDouble:(double)a3 locale:(id)a4
+- (id)p_formattedBodyStringForDouble:(double)double locale:(id)locale
 {
-  v6 = a4;
+  localeCopy = locale;
   if (!objc_msgSend_isCustom(self, v7, v8, v9, v10))
   {
     if (objc_msgSend_isDate(self, v11, v12, v13, v14))
@@ -801,9 +801,9 @@ LABEL_17:
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v39, v46, v47, v48, v49, v40, v45, 788, 0, "This is a TSCHNumberFormat, which really shouldn't format dates");
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v50, v51, v52, v53);
-      v57 = objc_msgSend_dateValueWithDouble_(TSCHChartGridValue, v54, a3, v55, v56);
+      v57 = objc_msgSend_dateValueWithDouble_(TSCHChartGridValue, v54, double, v55, v56);
       v62 = objc_msgSend_NSDateFromGridValue_(TSCHChartGridValue, v58, v59, v60, v61, v57);
-      v34 = objc_msgSend_stringFromDate_locale_(self->_format, v63, v64, v65, v66, v62, v6);
+      v34 = objc_msgSend_stringFromDate_locale_(self->_format, v63, v64, v65, v66, v62, localeCopy);
     }
 
     else
@@ -816,7 +816,7 @@ LABEL_17:
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v71, v78, v79, v80, v81, v72, v77, 793, 0, "This is a TSCHNumberFormat, which really shouldn't format durations");
 
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v82, v83, v84, v85);
-        v34 = objc_msgSend_stringFromDurationTimeInterval_locale_(self->_format, v86, a3, v87, v88, v6);
+        v34 = objc_msgSend_stringFromDurationTimeInterval_locale_(self->_format, v86, double, v87, v88, localeCopy);
         goto LABEL_9;
       }
 
@@ -827,7 +827,7 @@ LABEL_17:
       v106[3] = &unk_27A6B96D8;
       v106[4] = self;
       v57 = objc_msgSend_formatByUpdatingIfTSCHNumericFormatWithBlock_(format, v67, COERCE_DOUBLE(3221225472), v69, v70, v106);
-      v34 = objc_msgSend_stringFromDouble_locale_(v57, v90, a3, v91, v92, v6);
+      v34 = objc_msgSend_stringFromDouble_locale_(v57, v90, double, v91, v92, localeCopy);
     }
 
     goto LABEL_9;
@@ -845,7 +845,7 @@ LABEL_9:
   v94 = TSWPGetDefaultParagraphDirectionForFormattedText();
   if (v94 != -1)
   {
-    v98 = objc_msgSend_languageCode(v6, v93, v95, v96, v97);
+    v98 = objc_msgSend_languageCode(localeCopy, v93, v95, v96, v97);
     v99 = TSUHasBiDiLanguage();
 
     if ((v94 == 1) != v99)
@@ -868,10 +868,10 @@ LABEL_9:
   return v34;
 }
 
-- (id)chartFormattedStringForValue:(id)a3 locale:(id)a4
+- (id)chartFormattedStringForValue:(id)value locale:(id)locale
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  localeCopy = locale;
   if (objc_msgSend_isCustom(self, v8, v9, v10, v11))
   {
     v16 = MEMORY[0x277D81150];
@@ -882,10 +882,10 @@ LABEL_9:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v27, v28, v29, v30);
   }
 
-  if (v6)
+  if (valueCopy)
   {
-    objc_msgSend_doubleValue(v6, v12, v13, v14, v15);
-    v36 = objc_msgSend_p_formattedBodyStringForDouble_locale_(self, v31, v32, v33, v34, v7);
+    objc_msgSend_doubleValue(valueCopy, v12, v13, v14, v15);
+    v36 = objc_msgSend_p_formattedBodyStringForDouble_locale_(self, v31, v32, v33, v34, localeCopy);
     if (!v36)
     {
       v40 = MEMORY[0x277D81150];
@@ -924,11 +924,11 @@ LABEL_9:
   return v61;
 }
 
-- (id)chartFormattedInspectorStringForValue:(id)a3 locale:(id)a4
+- (id)chartFormattedInspectorStringForValue:(id)value locale:(id)locale
 {
-  v6 = a3;
-  v8 = a4;
-  if (!v6)
+  valueCopy = value;
+  localeCopy = locale;
+  if (!valueCopy)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, v9, v10, v11, "[TSCHNumberFormat chartFormattedInspectorStringForValue:locale:]");
@@ -948,15 +948,15 @@ LABEL_9:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v42, v43, v44, v45);
   }
 
-  objc_msgSend_doubleValue(v6, v27, v28, v29, v30);
-  v50 = objc_msgSend_p_formattedBodyStringForDouble_locale_(self, v46, v47, v48, v49, v8);
+  objc_msgSend_doubleValue(valueCopy, v27, v28, v29, v30);
+  v50 = objc_msgSend_p_formattedBodyStringForDouble_locale_(self, v46, v47, v48, v49, localeCopy);
 
   return v50;
 }
 
-- (BOOL)isCompatibleWithDataFormatter:(id)a3
+- (BOOL)isCompatibleWithDataFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   objc_opt_class();
   v6 = TSUDynamicCast();
   if (v6)
@@ -973,9 +973,9 @@ LABEL_9:
   return v15;
 }
 
-- (id)convertToSupportedClientFormatObjectWithLocale:(id)a3
+- (id)convertToSupportedClientFormatObjectWithLocale:(id)locale
 {
-  if (objc_msgSend_isCustom(self, a2, v3, v4, v5, a3))
+  if (objc_msgSend_isCustom(self, a2, v3, v4, v5, locale))
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, v8, v9, v10, "[TSCHNumberFormat convertToSupportedClientFormatObjectWithLocale:]");
@@ -988,23 +988,23 @@ LABEL_9:
   return self;
 }
 
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  v7 = [a1 alloc];
-  v12 = objc_msgSend_initWithArchive_unarchiver_(v7, v8, v9, v10, v11, a3, v6);
+  unarchiverCopy = unarchiver;
+  v7 = [self alloc];
+  v12 = objc_msgSend_initWithArchive_unarchiver_(v7, v8, v9, v10, v11, archive, unarchiverCopy);
 
   return v12;
 }
 
-- (TSCHNumberFormat)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSCHNumberFormat)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
   v66.receiver = self;
   v66.super_class = TSCHNumberFormat;
-  v6 = [(TSCHNumberFormat *)&v66 init:a3];
+  v6 = [(TSCHNumberFormat *)&v66 init:archive];
   if (v6)
   {
-    v10 = objc_msgSend_formatFromArchive_(MEMORY[0x277D80680], v5, v7, v8, v9, a3);
+    v10 = objc_msgSend_formatFromArchive_(MEMORY[0x277D80680], v5, v7, v8, v9, archive);
     format = v6->_format;
     v6->_format = v10;
 
@@ -1018,7 +1018,7 @@ LABEL_9:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v27, v28, v29, v30);
     }
 
-    if (google::protobuf::internal::ExtensionSet::Has((a3 + 16)))
+    if (google::protobuf::internal::ExtensionSet::Has((archive + 16)))
     {
       v31 = MEMORY[0x277CCACA8];
       String = google::protobuf::internal::ExtensionSet::GetString();
@@ -1031,7 +1031,7 @@ LABEL_9:
       }
     }
 
-    if (google::protobuf::internal::ExtensionSet::Has((a3 + 16)))
+    if (google::protobuf::internal::ExtensionSet::Has((archive + 16)))
     {
       v48 = MEMORY[0x277CCACA8];
       v49 = google::protobuf::internal::ExtensionSet::GetString();
@@ -1048,9 +1048,9 @@ LABEL_9:
   return v6;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  sub_2762A7F8C(self->_format, a3);
+  sub_2762A7F8C(self->_format, archive);
   if (objc_msgSend_length(self->_prefixString, v6, v7, v8, v9))
   {
     v14 = objc_msgSend_tsp_protobufString(self->_prefixString, v10, *&v11, v12, v13);
@@ -1067,7 +1067,7 @@ LABEL_9:
       v30 = v28;
     }
 
-    v16 = google::protobuf::internal::ExtensionSet::MutableString((a3 + 16), v15, 9, 0);
+    v16 = google::protobuf::internal::ExtensionSet::MutableString((archive + 16), v15, 9, 0);
     v17 = v16;
     if (*(v16 + 23) < 0)
     {
@@ -1099,7 +1099,7 @@ LABEL_9:
       v30 = v28;
     }
 
-    v24 = google::protobuf::internal::ExtensionSet::MutableString((a3 + 16), v23, 9, 0);
+    v24 = google::protobuf::internal::ExtensionSet::MutableString((archive + 16), v23, 9, 0);
     v25 = v24;
     if (*(v24 + 23) < 0)
     {

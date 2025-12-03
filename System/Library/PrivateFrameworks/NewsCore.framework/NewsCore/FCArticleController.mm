@@ -1,10 +1,10 @@
 @interface FCArticleController
 - (FCArticleController)init;
-- (FCArticleController)initWithContext:(id)a3;
-- (id)articleWithHeadline:(id)a3;
-- (id)articleWithID:(id)a3 relativePriority:(int64_t)a4;
-- (id)headlinesFetchOperationForArticleIDs:(id)a3;
-- (id)headlinesFetchOperationForArticleIDs:(id)a3 ignoreCacheForArticleIDs:(id)a4;
+- (FCArticleController)initWithContext:(id)context;
+- (id)articleWithHeadline:(id)headline;
+- (id)articleWithID:(id)d relativePriority:(int64_t)priority;
+- (id)headlinesFetchOperationForArticleIDs:(id)ds;
+- (id)headlinesFetchOperationForArticleIDs:(id)ds ignoreCacheForArticleIDs:(id)iDs;
 @end
 
 @implementation FCArticleController
@@ -35,11 +35,11 @@
   objc_exception_throw(v6);
 }
 
-- (FCArticleController)initWithContext:(id)a3
+- (FCArticleController)initWithContext:(id)context
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  contextCopy = context;
+  if (!contextCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "context != nil"];
     *buf = 136315906;
@@ -59,9 +59,9 @@
   v7 = v6;
   if (v6)
   {
-    if (v5)
+    if (contextCopy)
     {
-      objc_storeStrong(&v6->_context, a3);
+      objc_storeStrong(&v6->_context, context);
     }
 
     else
@@ -75,16 +75,16 @@
   return v7;
 }
 
-- (id)articleWithID:(id)a3 relativePriority:(int64_t)a4
+- (id)articleWithID:(id)d relativePriority:(int64_t)priority
 {
-  v6 = a3;
+  dCopy = d;
   v7 = 25;
-  if (!a4)
+  if (!priority)
   {
     v7 = 17;
   }
 
-  if (a4 == -1)
+  if (priority == -1)
   {
     v8 = 9;
   }
@@ -94,20 +94,20 @@
     v8 = v7;
   }
 
-  v9 = [(FCArticleController *)self articleWithID:v6 forceArticleUpdate:0 qualityOfService:v8 relativePriority:a4];
+  v9 = [(FCArticleController *)self articleWithID:dCopy forceArticleUpdate:0 qualityOfService:v8 relativePriority:priority];
 
   return v9;
 }
 
-- (id)articleWithHeadline:(id)a3
+- (id)articleWithHeadline:(id)headline
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  headlineCopy = headline;
+  if (headlineCopy)
   {
     v5 = [FCArticle alloc];
-    v6 = [(FCArticleController *)self context];
-    v7 = [(FCArticle *)v5 initWithContext:v6 headline:v4];
+    context = [(FCArticleController *)self context];
+    v7 = [(FCArticle *)v5 initWithContext:context headline:headlineCopy];
   }
 
   else
@@ -134,23 +134,23 @@
   return v7;
 }
 
-- (id)headlinesFetchOperationForArticleIDs:(id)a3
+- (id)headlinesFetchOperationForArticleIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = [FCArticleHeadlinesFetchOperation alloc];
-  v6 = [(FCArticleController *)self context];
-  v7 = [(FCArticleHeadlinesFetchOperation *)v5 initWithContext:v6 articleIDs:v4 ignoreCacheForArticleIDs:0];
+  context = [(FCArticleController *)self context];
+  v7 = [(FCArticleHeadlinesFetchOperation *)v5 initWithContext:context articleIDs:dsCopy ignoreCacheForArticleIDs:0];
 
   return v7;
 }
 
-- (id)headlinesFetchOperationForArticleIDs:(id)a3 ignoreCacheForArticleIDs:(id)a4
+- (id)headlinesFetchOperationForArticleIDs:(id)ds ignoreCacheForArticleIDs:(id)iDs
 {
-  v6 = a4;
-  v7 = a3;
+  iDsCopy = iDs;
+  dsCopy = ds;
   v8 = [FCArticleHeadlinesFetchOperation alloc];
-  v9 = [(FCArticleController *)self context];
-  v10 = [(FCArticleHeadlinesFetchOperation *)v8 initWithContext:v9 articleIDs:v7 ignoreCacheForArticleIDs:v6];
+  context = [(FCArticleController *)self context];
+  v10 = [(FCArticleHeadlinesFetchOperation *)v8 initWithContext:context articleIDs:dsCopy ignoreCacheForArticleIDs:iDsCopy];
 
   return v10;
 }

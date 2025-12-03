@@ -1,49 +1,49 @@
 @interface PRSPosterUpdate
-+ (id)posterUpdateAmbientConfigurationForCreation:(id)a3 deletion:(id)a4 editingBehavior:(id)a5 supportedDataLayout:(id)a6;
-+ (id)posterUpdateAmbientWidgets:(id)a3;
-+ (id)posterUpdateAssociateWithChargerIdentifier:(id)a3;
-+ (id)posterUpdateComplications:(id)a3;
-+ (id)posterUpdateDisassociateFromChargerIdentifier:(id)a3;
-+ (id)posterUpdateHomeScreenAppearance:(unint64_t)a3;
-+ (id)posterUpdateHomeScreenColor:(id)a3;
-+ (id)posterUpdateHomeScreenGradient:(id)a3;
-+ (id)posterUpdateHomeScreenIconTintSource:(id)a3;
-+ (id)posterUpdateHomeScreenIconUserInterfaceStyle:(id)a3;
-+ (id)posterUpdateHomeScreenIconUserInterfaceStyleVariant:(id)a3;
-+ (id)posterUpdateHomeScreenPosterProvider:(id)a3 sessionInfo:(id)a4;
-+ (id)posterUpdateHomeScreenPosterWithImageAtURL:(id)a3;
-+ (id)posterUpdateHomeScreenSuggestedTintColor:(id)a3;
-+ (id)posterUpdateHomeScreenTintForColor:(id)a3;
-+ (id)posterUpdateHomeScreenTintWithVariation:(id)a3 saturation:(id)a4 luminance:(id)a5 alpha:(id)a6;
-+ (id)posterUpdateInlineComplication:(id)a3;
-+ (id)posterUpdateLockScreenPosterWithImageAtURL:(id)a3;
-+ (id)posterUpdatePosterWithSessionInfo:(id)a3;
-+ (id)posterUpdateShouldUseLargeHomeScreenIcons:(id)a3;
-+ (id)posterUpdateSidebarComplications:(id)a3;
-+ (id)posterUpdateUserInfo:(id)a3;
-+ (id)posterUpdateUserSelectedHomeScreenIconStyleVariantsForTypes:(id)a3;
-+ (id)posterUpdatesForDecoratedSessionInfo:(id)a3;
-+ (id)posterUpdatesForWFWallpaperConfiguration:(id)a3;
-+ (id)posterUpdatesForWFWallpaperConfiguration:(id)a3 sessionInfo:(id)a4;
-- (PRSPosterUpdate)initWithCoder:(id)a3;
-- (id)_initWithUpdateType:(unint64_t)a3 payload:(id)a4;
++ (id)posterUpdateAmbientConfigurationForCreation:(id)creation deletion:(id)deletion editingBehavior:(id)behavior supportedDataLayout:(id)layout;
++ (id)posterUpdateAmbientWidgets:(id)widgets;
++ (id)posterUpdateAssociateWithChargerIdentifier:(id)identifier;
++ (id)posterUpdateComplications:(id)complications;
++ (id)posterUpdateDisassociateFromChargerIdentifier:(id)identifier;
++ (id)posterUpdateHomeScreenAppearance:(unint64_t)appearance;
++ (id)posterUpdateHomeScreenColor:(id)color;
++ (id)posterUpdateHomeScreenGradient:(id)gradient;
++ (id)posterUpdateHomeScreenIconTintSource:(id)source;
++ (id)posterUpdateHomeScreenIconUserInterfaceStyle:(id)style;
++ (id)posterUpdateHomeScreenIconUserInterfaceStyleVariant:(id)variant;
++ (id)posterUpdateHomeScreenPosterProvider:(id)provider sessionInfo:(id)info;
++ (id)posterUpdateHomeScreenPosterWithImageAtURL:(id)l;
++ (id)posterUpdateHomeScreenSuggestedTintColor:(id)color;
++ (id)posterUpdateHomeScreenTintForColor:(id)color;
++ (id)posterUpdateHomeScreenTintWithVariation:(id)variation saturation:(id)saturation luminance:(id)luminance alpha:(id)alpha;
++ (id)posterUpdateInlineComplication:(id)complication;
++ (id)posterUpdateLockScreenPosterWithImageAtURL:(id)l;
++ (id)posterUpdatePosterWithSessionInfo:(id)info;
++ (id)posterUpdateShouldUseLargeHomeScreenIcons:(id)icons;
++ (id)posterUpdateSidebarComplications:(id)complications;
++ (id)posterUpdateUserInfo:(id)info;
++ (id)posterUpdateUserSelectedHomeScreenIconStyleVariantsForTypes:(id)types;
++ (id)posterUpdatesForDecoratedSessionInfo:(id)info;
++ (id)posterUpdatesForWFWallpaperConfiguration:(id)configuration;
++ (id)posterUpdatesForWFWallpaperConfiguration:(id)configuration sessionInfo:(id)info;
+- (PRSPosterUpdate)initWithCoder:(id)coder;
+- (id)_initWithUpdateType:(unint64_t)type payload:(id)payload;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRSPosterUpdate
 
-- (id)_initWithUpdateType:(unint64_t)a3 payload:(id)a4
+- (id)_initWithUpdateType:(unint64_t)type payload:(id)payload
 {
-  v6 = a4;
+  payloadCopy = payload;
   v12.receiver = self;
   v12.super_class = PRSPosterUpdate;
   v7 = [(PRSPosterUpdate *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_type = a3;
-    v9 = [v6 copy];
+    v7->_type = type;
+    v9 = [payloadCopy copy];
     payload = v8->_payload;
     v8->_payload = v9;
   }
@@ -51,23 +51,23 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   payload = self->_payload;
-  v5 = a3;
-  [v5 encodeObject:payload forKey:@"_payload"];
-  [v5 encodeInteger:self->_type forKey:@"_type"];
+  coderCopy = coder;
+  [coderCopy encodeObject:payload forKey:@"_payload"];
+  [coderCopy encodeInteger:self->_type forKey:@"_type"];
 }
 
-- (PRSPosterUpdate)initWithCoder:(id)a3
+- (PRSPosterUpdate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = PRSPosterUpdate;
   v5 = [(PRSPosterUpdate *)&v17 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"_type"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"_type"];
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_self();
     v8 = objc_opt_self();
@@ -77,7 +77,7 @@
     v12 = objc_opt_self();
     v13 = [v6 setWithObjects:{v7, v8, v9, v10, v11, v12, 0}];
 
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"_payload"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"_payload"];
     payload = v5->_payload;
     v5->_payload = v14;
   }
@@ -134,9 +134,9 @@
     }
   }
 
-  v11 = [v3 build];
+  build = [v3 build];
 
-  return v11;
+  return build;
 }
 
 void __30__PRSPosterUpdate_description__block_invoke(uint64_t a1)
@@ -147,10 +147,10 @@ void __30__PRSPosterUpdate_description__block_invoke(uint64_t a1)
   v3 = [v1 appendObject:v2 withName:@"ambientWidgetDebugInfo"];
 }
 
-+ (id)posterUpdateUserInfo:(id)a3
++ (id)posterUpdateUserInfo:(id)info
 {
-  v4 = a3;
-  if (v4)
+  infoCopy = info;
+  if (infoCopy)
   {
     NSClassFromString(&cfstr_Nsdictionary.isa);
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -159,17 +159,17 @@ void __30__PRSPosterUpdate_description__block_invoke(uint64_t a1)
     }
   }
 
-  v5 = [[PRSPosterUpdatePropertyListPayload alloc] initWithPropertyList:v4];
+  v5 = [[PRSPosterUpdatePropertyListPayload alloc] initWithPropertyList:infoCopy];
   v6 = [[PRSPosterUpdate alloc] _initWithUpdateType:18 payload:v5];
 
   return v6;
 }
 
-+ (id)posterUpdateInlineComplication:(id)a3
++ (id)posterUpdateInlineComplication:(id)complication
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  complicationCopy = complication;
+  if (complicationCopy)
   {
     NSClassFromString(&cfstr_Prswidget.isa);
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -180,9 +180,9 @@ void __30__PRSPosterUpdate_description__block_invoke(uint64_t a1)
 
   v5 = [PRSPosterUpdateComplicationPayload alloc];
   v6 = v5;
-  if (v4)
+  if (complicationCopy)
   {
-    v12[0] = v4;
+    v12[0] = complicationCopy;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
     v8 = [(PRSPosterUpdateComplicationPayload *)v6 initWithComplications:v7];
   }
@@ -199,13 +199,13 @@ void __30__PRSPosterUpdate_description__block_invoke(uint64_t a1)
   return v9;
 }
 
-+ (id)posterUpdateComplications:(id)a3
++ (id)posterUpdateComplications:(id)complications
 {
-  v4 = a3;
-  if (v4)
+  complicationsCopy = complications;
+  if (complicationsCopy)
   {
     NSClassFromString(&cfstr_Nsarray.isa);
-    v5 = v4;
+    v5 = complicationsCopy;
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       [PRSPosterUpdate posterUpdateComplications:a2];
@@ -223,13 +223,13 @@ void __30__PRSPosterUpdate_description__block_invoke(uint64_t a1)
   return v7;
 }
 
-+ (id)posterUpdateSidebarComplications:(id)a3
++ (id)posterUpdateSidebarComplications:(id)complications
 {
-  v4 = a3;
-  if (v4)
+  complicationsCopy = complications;
+  if (complicationsCopy)
   {
     NSClassFromString(&cfstr_Nsarray.isa);
-    v5 = v4;
+    v5 = complicationsCopy;
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       [PRSPosterUpdate posterUpdateSidebarComplications:a2];
@@ -247,10 +247,10 @@ void __30__PRSPosterUpdate_description__block_invoke(uint64_t a1)
   return v7;
 }
 
-+ (id)posterUpdateAmbientWidgets:(id)a3
++ (id)posterUpdateAmbientWidgets:(id)widgets
 {
-  v4 = a3;
-  if (v4)
+  widgetsCopy = widgets;
+  if (widgetsCopy)
   {
     NSClassFromString(&cfstr_Nsdictionary.isa);
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -259,11 +259,11 @@ void __30__PRSPosterUpdate_description__block_invoke(uint64_t a1)
     }
   }
 
-  v5 = [[PRSPosterUpdatePropertyListPayload alloc] initWithPropertyList:v4];
+  v5 = [[PRSPosterUpdatePropertyListPayload alloc] initWithPropertyList:widgetsCopy];
   v6 = PRSLogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    [(PRSPosterUpdate *)v4 posterUpdateAmbientWidgets:v6];
+    [(PRSPosterUpdate *)widgetsCopy posterUpdateAmbientWidgets:v6];
   }
 
   v7 = [[PRSPosterUpdate alloc] _initWithUpdateType:9 payload:v5];
@@ -271,11 +271,11 @@ void __30__PRSPosterUpdate_description__block_invoke(uint64_t a1)
   return v7;
 }
 
-+ (id)posterUpdateHomeScreenPosterProvider:(id)a3 sessionInfo:(id)a4
++ (id)posterUpdateHomeScreenPosterProvider:(id)provider sessionInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  providerCopy = provider;
+  infoCopy = info;
+  v8 = providerCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v8)
   {
@@ -287,7 +287,7 @@ void __30__PRSPosterUpdate_description__block_invoke(uint64_t a1)
     [PRSPosterUpdate posterUpdateHomeScreenPosterProvider:a2 sessionInfo:?];
   }
 
-  v9 = v7;
+  v9 = infoCopy;
   NSClassFromString(&cfstr_Prsposterupdat_23.isa);
   if (!v9)
   {
@@ -305,11 +305,11 @@ void __30__PRSPosterUpdate_description__block_invoke(uint64_t a1)
   return v11;
 }
 
-+ (id)posterUpdatePosterWithSessionInfo:(id)a3
++ (id)posterUpdatePosterWithSessionInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   NSClassFromString(&cfstr_Prsposterupdat_23.isa);
-  if (!v4)
+  if (!infoCopy)
   {
     [PRSPosterUpdate posterUpdatePosterWithSessionInfo:a2];
   }
@@ -319,18 +319,18 @@ void __30__PRSPosterUpdate_description__block_invoke(uint64_t a1)
     [PRSPosterUpdate posterUpdatePosterWithSessionInfo:a2];
   }
 
-  v5 = [[PRSPosterUpdateHomeScreenAppearancePayload alloc] initWithUpdatedAppearanceType:0 updateSwitcherPoster:v4];
+  v5 = [[PRSPosterUpdateHomeScreenAppearancePayload alloc] initWithUpdatedAppearanceType:0 updateSwitcherPoster:infoCopy];
   v6 = [[PRSPosterUpdate alloc] _initWithUpdateType:7 payload:v5];
 
   return v6;
 }
 
-+ (id)posterUpdatesForDecoratedSessionInfo:(id)a3
++ (id)posterUpdatesForDecoratedSessionInfo:(id)info
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  infoCopy = info;
   NSClassFromString(&cfstr_Prsposterupdat_23.isa);
-  if (!v5)
+  if (!infoCopy)
   {
     [PRSPosterUpdate posterUpdatesForDecoratedSessionInfo:a2];
   }
@@ -341,12 +341,12 @@ void __30__PRSPosterUpdate_description__block_invoke(uint64_t a1)
   }
 
   v6 = objc_opt_new();
-  v7 = [v5 shortcutsWallpaperConfiguration];
+  shortcutsWallpaperConfiguration = [infoCopy shortcutsWallpaperConfiguration];
 
-  if (v7)
+  if (shortcutsWallpaperConfiguration)
   {
-    v8 = [v5 shortcutsWallpaperConfiguration];
-    v9 = [a1 posterUpdatesForWFWallpaperConfiguration:v8 sessionInfo:v5];
+    shortcutsWallpaperConfiguration2 = [infoCopy shortcutsWallpaperConfiguration];
+    v9 = [self posterUpdatesForWFWallpaperConfiguration:shortcutsWallpaperConfiguration2 sessionInfo:infoCopy];
     [v6 addObjectsFromArray:v9];
 
     v10 = v6;
@@ -354,7 +354,7 @@ void __30__PRSPosterUpdate_description__block_invoke(uint64_t a1)
 
   else
   {
-    v11 = [PRSPosterUpdate posterUpdatePosterWithSessionInfo:v5];
+    v11 = [PRSPosterUpdate posterUpdatePosterWithSessionInfo:infoCopy];
     v14[0] = v11;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
   }
@@ -364,11 +364,11 @@ void __30__PRSPosterUpdate_description__block_invoke(uint64_t a1)
   return v10;
 }
 
-+ (id)posterUpdatesForWFWallpaperConfiguration:(id)a3 sessionInfo:(id)a4
++ (id)posterUpdatesForWFWallpaperConfiguration:(id)configuration sessionInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  configurationCopy = configuration;
+  infoCopy = info;
+  v8 = configurationCopy;
   NSClassFromString(&cfstr_Wfwallpapercon.isa);
   if (!v8)
   {
@@ -380,7 +380,7 @@ void __30__PRSPosterUpdate_description__block_invoke(uint64_t a1)
     [PRSPosterUpdate posterUpdatesForWFWallpaperConfiguration:a2 sessionInfo:?];
   }
 
-  v9 = v7;
+  v9 = infoCopy;
   NSClassFromString(&cfstr_Prsposterupdat_23.isa);
   if (!v9)
   {
@@ -392,28 +392,28 @@ void __30__PRSPosterUpdate_description__block_invoke(uint64_t a1)
     [PRSPosterUpdate posterUpdatesForWFWallpaperConfiguration:a2 sessionInfo:?];
   }
 
-  v10 = [v9 shortcutsWallpaperConfiguration];
-  v11 = [v10 isEqual:v8];
+  shortcutsWallpaperConfiguration = [v9 shortcutsWallpaperConfiguration];
+  v11 = [shortcutsWallpaperConfiguration isEqual:v8];
 
   if (v11)
   {
-    v12 = [v8 location];
+    location = [v8 location];
     v13 = objc_opt_new();
     v14 = objc_alloc_init(PRSPosterUpdateSessionInfo);
     [(PRSPosterUpdateSessionInfo *)v14 setShortcutsWallpaperConfiguration:v8];
-    if (!v12 || v12 == 2)
+    if (!location || location == 2)
     {
       v17 = [PRSPosterUpdate posterUpdatePosterWithSessionInfo:v14];
       [v13 addObject:v17];
 
-      if (v12 == 2)
+      if (location == 2)
       {
         v16 = 1;
         goto LABEL_12;
       }
     }
 
-    else if (v12 == 1)
+    else if (location == 1)
     {
       v15 = [PRSPosterUpdate posterUpdateHomeScreenPosterProvider:@"com.apple.PhotosUIPrivate.PhotosPosterProvider" sessionInfo:v14];
       [v13 addObject:v15];
@@ -424,21 +424,21 @@ LABEL_12:
       [v13 addObject:v18];
     }
 
-    v19 = [v8 legibilityBlur];
+    legibilityBlur = [v8 legibilityBlur];
 
-    if (v19)
+    if (legibilityBlur)
     {
-      if ((v12 & 0xFFFFFFFFFFFFFFFDLL) == 0)
+      if ((location & 0xFFFFFFFFFFFFFFFDLL) == 0)
       {
-        v20 = [v8 legibilityBlur];
-        v21 = +[PRSPosterUpdate posterUpdateMirroredHomeScreenLegibilityBlurWithValue:](PRSPosterUpdate, "posterUpdateMirroredHomeScreenLegibilityBlurWithValue:", [v20 BOOLValue]);
+        legibilityBlur2 = [v8 legibilityBlur];
+        v21 = +[PRSPosterUpdate posterUpdateMirroredHomeScreenLegibilityBlurWithValue:](PRSPosterUpdate, "posterUpdateMirroredHomeScreenLegibilityBlurWithValue:", [legibilityBlur2 BOOLValue]);
         [v13 addObject:v21];
       }
 
-      if (v12 == 1)
+      if (location == 1)
       {
-        v22 = [v8 legibilityBlur];
-        v23 = +[PRSPosterUpdate posterUpdateHomeScreenPosterLegibilityBlurWithValue:](PRSPosterUpdate, "posterUpdateHomeScreenPosterLegibilityBlurWithValue:", [v22 BOOLValue]);
+        legibilityBlur3 = [v8 legibilityBlur];
+        v23 = +[PRSPosterUpdate posterUpdateHomeScreenPosterLegibilityBlurWithValue:](PRSPosterUpdate, "posterUpdateHomeScreenPosterLegibilityBlurWithValue:", [legibilityBlur3 BOOLValue]);
         [v13 addObject:v23];
       }
     }
@@ -458,11 +458,11 @@ LABEL_12:
   return result;
 }
 
-+ (id)posterUpdatesForWFWallpaperConfiguration:(id)a3
++ (id)posterUpdatesForWFWallpaperConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   NSClassFromString(&cfstr_Wfwallpapercon.isa);
-  if (!v5)
+  if (!configurationCopy)
   {
     [PRSPosterUpdate posterUpdatesForWFWallpaperConfiguration:a2];
   }
@@ -473,17 +473,17 @@ LABEL_12:
   }
 
   v6 = objc_alloc_init(PRSPosterUpdateSessionInfo);
-  [(PRSPosterUpdateSessionInfo *)v6 setShortcutsWallpaperConfiguration:v5];
-  v7 = [a1 posterUpdatesForWFWallpaperConfiguration:v5 sessionInfo:v6];
+  [(PRSPosterUpdateSessionInfo *)v6 setShortcutsWallpaperConfiguration:configurationCopy];
+  v7 = [self posterUpdatesForWFWallpaperConfiguration:configurationCopy sessionInfo:v6];
 
   return v7;
 }
 
-+ (id)posterUpdateHomeScreenGradient:(id)a3
++ (id)posterUpdateHomeScreenGradient:(id)gradient
 {
-  v4 = a3;
+  gradientCopy = gradient;
   NSClassFromString(&cfstr_Bscolor.isa);
-  if (!v4)
+  if (!gradientCopy)
   {
     [PRSPosterUpdate posterUpdateHomeScreenGradient:a2];
   }
@@ -494,7 +494,7 @@ LABEL_12:
   }
 
   v5 = [PRSPosterUpdateHomeScreenAppearancePayload alloc];
-  v6 = [[PRSPosterUpdateColorPayload alloc] initWithColor:v4];
+  v6 = [[PRSPosterUpdateColorPayload alloc] initWithColor:gradientCopy];
   v7 = [(PRSPosterUpdateHomeScreenAppearancePayload *)v5 initWithUpdatedAppearanceType:0 gradientColorAppearance:v6];
 
   v8 = [[PRSPosterUpdate alloc] _initWithUpdateType:6 payload:v7];
@@ -502,11 +502,11 @@ LABEL_12:
   return v8;
 }
 
-+ (id)posterUpdateHomeScreenColor:(id)a3
++ (id)posterUpdateHomeScreenColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   NSClassFromString(&cfstr_Bscolor.isa);
-  if (!v4)
+  if (!colorCopy)
   {
     [PRSPosterUpdate posterUpdateHomeScreenColor:a2];
   }
@@ -517,7 +517,7 @@ LABEL_12:
   }
 
   v5 = [PRSPosterUpdateHomeScreenAppearancePayload alloc];
-  v6 = [[PRSPosterUpdateColorPayload alloc] initWithColor:v4];
+  v6 = [[PRSPosterUpdateColorPayload alloc] initWithColor:colorCopy];
   v7 = [(PRSPosterUpdateHomeScreenAppearancePayload *)v5 initWithUpdatedAppearanceType:0 solidColorAppearance:v6];
 
   v8 = [[PRSPosterUpdate alloc] _initWithUpdateType:6 payload:v7];
@@ -525,20 +525,20 @@ LABEL_12:
   return v8;
 }
 
-+ (id)posterUpdateHomeScreenAppearance:(unint64_t)a3
++ (id)posterUpdateHomeScreenAppearance:(unint64_t)appearance
 {
-  v3 = [[PRSPosterUpdateHomeScreenAppearancePayload alloc] initWithUpdatedAppearanceType:a3];
+  v3 = [[PRSPosterUpdateHomeScreenAppearancePayload alloc] initWithUpdatedAppearanceType:appearance];
   v4 = [[PRSPosterUpdate alloc] _initWithUpdateType:6 payload:v3];
 
   return v4;
 }
 
-+ (id)posterUpdateHomeScreenPosterWithImageAtURL:(id)a3
++ (id)posterUpdateHomeScreenPosterWithImageAtURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = objc_alloc_init(PRSPosterUpdateSessionInfo);
   v5 = objc_alloc(MEMORY[0x1E69E0DC8]);
-  v6 = [v5 initWithURL:v3 location:1 legibilityBlur:MEMORY[0x1E695E110] smartCrop:MEMORY[0x1E695E110] usePreview:MEMORY[0x1E695E110]];
+  v6 = [v5 initWithURL:lCopy location:1 legibilityBlur:MEMORY[0x1E695E110] smartCrop:MEMORY[0x1E695E110] usePreview:MEMORY[0x1E695E110]];
 
   [(PRSPosterUpdateSessionInfo *)v4 setShortcutsWallpaperConfiguration:v6];
   v7 = [[PRSPosterUpdateHomeScreenAppearancePayload alloc] initWithUpdatedAppearanceType:4 updateHomePoster:v4 homeProviderIdentifier:@"com.apple.PhotosUIPrivate.PhotosPosterProvider"];
@@ -547,12 +547,12 @@ LABEL_12:
   return v8;
 }
 
-+ (id)posterUpdateLockScreenPosterWithImageAtURL:(id)a3
++ (id)posterUpdateLockScreenPosterWithImageAtURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = objc_alloc_init(PRSPosterUpdateSessionInfo);
   v5 = objc_alloc(MEMORY[0x1E69E0DC8]);
-  v6 = [v5 initWithURL:v3 location:0 legibilityBlur:MEMORY[0x1E695E110] smartCrop:MEMORY[0x1E695E110] usePreview:MEMORY[0x1E695E110]];
+  v6 = [v5 initWithURL:lCopy location:0 legibilityBlur:MEMORY[0x1E695E110] smartCrop:MEMORY[0x1E695E110] usePreview:MEMORY[0x1E695E110]];
 
   [(PRSPosterUpdateSessionInfo *)v4 setShortcutsWallpaperConfiguration:v6];
   v7 = [[PRSPosterUpdateHomeScreenAppearancePayload alloc] initWithUpdatedAppearanceType:0 updateSwitcherPoster:v4];
@@ -561,67 +561,67 @@ LABEL_12:
   return v8;
 }
 
-+ (id)posterUpdateHomeScreenTintWithVariation:(id)a3 saturation:(id)a4 luminance:(id)a5 alpha:(id)a6
++ (id)posterUpdateHomeScreenTintWithVariation:(id)variation saturation:(id)saturation luminance:(id)luminance alpha:(id)alpha
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  alphaCopy = alpha;
+  luminanceCopy = luminance;
+  saturationCopy = saturation;
+  variationCopy = variation;
   v13 = [PRSPosterUpdate alloc];
-  v14 = [[PRSPosterUpdateDiscreteStylePayload alloc] initWithVariation:v12 saturation:v11 luminance:v10 alpha:v9];
+  v14 = [[PRSPosterUpdateDiscreteStylePayload alloc] initWithVariation:variationCopy saturation:saturationCopy luminance:luminanceCopy alpha:alphaCopy];
 
   v15 = [(PRSPosterUpdate *)v13 _initWithUpdateType:14 payload:v14];
 
   return v15;
 }
 
-+ (id)posterUpdateHomeScreenTintForColor:(id)a3
++ (id)posterUpdateHomeScreenTintForColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v4 = [PRSPosterUpdate alloc];
-  v5 = [[PRSPosterUpdateColorPayload alloc] initWithColor:v3];
+  v5 = [[PRSPosterUpdateColorPayload alloc] initWithColor:colorCopy];
 
   v6 = [(PRSPosterUpdate *)v4 _initWithUpdateType:14 payload:v5];
 
   return v6;
 }
 
-+ (id)posterUpdateHomeScreenSuggestedTintColor:(id)a3
++ (id)posterUpdateHomeScreenSuggestedTintColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v4 = [PRSPosterUpdate alloc];
-  v5 = [[PRSPosterUpdateColorPayload alloc] initWithColor:v3];
+  v5 = [[PRSPosterUpdateColorPayload alloc] initWithColor:colorCopy];
 
   v6 = [(PRSPosterUpdate *)v4 _initWithUpdateType:15 payload:v5];
 
   return v6;
 }
 
-+ (id)posterUpdateShouldUseLargeHomeScreenIcons:(id)a3
++ (id)posterUpdateShouldUseLargeHomeScreenIcons:(id)icons
 {
-  v3 = a3;
+  iconsCopy = icons;
   v4 = [PRSPosterUpdate alloc];
-  v5 = [[PRSPosterUpdateTristatePayload alloc] initWithState:v3];
+  v5 = [[PRSPosterUpdateTristatePayload alloc] initWithState:iconsCopy];
 
   v6 = [(PRSPosterUpdate *)v4 _initWithUpdateType:16 payload:v5];
 
   return v6;
 }
 
-+ (id)posterUpdateHomeScreenIconUserInterfaceStyle:(id)a3
++ (id)posterUpdateHomeScreenIconUserInterfaceStyle:(id)style
 {
-  v3 = a3;
+  styleCopy = style;
   v4 = [PRSPosterUpdate alloc];
   v5 = [PRSPosterUpdatePropertyListPayload alloc];
-  v6 = [v3 dataUsingEncoding:4];
+  v6 = [styleCopy dataUsingEncoding:4];
 
-  v7 = v6;
+  data = v6;
   if (!v6)
   {
-    v7 = [MEMORY[0x1E695DEF0] data];
+    data = [MEMORY[0x1E695DEF0] data];
   }
 
-  v8 = [(PRSPosterUpdatePropertyListPayload *)v5 initWithPropertyListData:v7];
+  v8 = [(PRSPosterUpdatePropertyListPayload *)v5 initWithPropertyListData:data];
   v9 = [(PRSPosterUpdate *)v4 _initWithUpdateType:17 payload:v8];
 
   if (!v6)
@@ -631,20 +631,20 @@ LABEL_12:
   return v9;
 }
 
-+ (id)posterUpdateHomeScreenIconUserInterfaceStyleVariant:(id)a3
++ (id)posterUpdateHomeScreenIconUserInterfaceStyleVariant:(id)variant
 {
-  v3 = a3;
+  variantCopy = variant;
   v4 = [PRSPosterUpdate alloc];
   v5 = [PRSPosterUpdatePropertyListPayload alloc];
-  v6 = [v3 dataUsingEncoding:4];
+  v6 = [variantCopy dataUsingEncoding:4];
 
-  v7 = v6;
+  data = v6;
   if (!v6)
   {
-    v7 = [MEMORY[0x1E695DEF0] data];
+    data = [MEMORY[0x1E695DEF0] data];
   }
 
-  v8 = [(PRSPosterUpdatePropertyListPayload *)v5 initWithPropertyListData:v7];
+  v8 = [(PRSPosterUpdatePropertyListPayload *)v5 initWithPropertyListData:data];
   v9 = [(PRSPosterUpdate *)v4 _initWithUpdateType:19 payload:v8];
 
   if (!v6)
@@ -654,31 +654,31 @@ LABEL_12:
   return v9;
 }
 
-+ (id)posterUpdateUserSelectedHomeScreenIconStyleVariantsForTypes:(id)a3
++ (id)posterUpdateUserSelectedHomeScreenIconStyleVariantsForTypes:(id)types
 {
-  v3 = a3;
+  typesCopy = types;
   v4 = [PRSPosterUpdate alloc];
-  v5 = [[PRSPosterUpdatePropertyListPayload alloc] initWithPropertyList:v3];
+  v5 = [[PRSPosterUpdatePropertyListPayload alloc] initWithPropertyList:typesCopy];
 
   v6 = [(PRSPosterUpdate *)v4 _initWithUpdateType:20 payload:v5];
 
   return v6;
 }
 
-+ (id)posterUpdateHomeScreenIconTintSource:(id)a3
++ (id)posterUpdateHomeScreenIconTintSource:(id)source
 {
-  v3 = a3;
+  sourceCopy = source;
   v4 = [PRSPosterUpdate alloc];
   v5 = [PRSPosterUpdatePropertyListPayload alloc];
-  v6 = [v3 dataUsingEncoding:4];
+  v6 = [sourceCopy dataUsingEncoding:4];
 
-  v7 = v6;
+  data = v6;
   if (!v6)
   {
-    v7 = [MEMORY[0x1E695DEF0] data];
+    data = [MEMORY[0x1E695DEF0] data];
   }
 
-  v8 = [(PRSPosterUpdatePropertyListPayload *)v5 initWithPropertyListData:v7];
+  v8 = [(PRSPosterUpdatePropertyListPayload *)v5 initWithPropertyListData:data];
   v9 = [(PRSPosterUpdate *)v4 _initWithUpdateType:21 payload:v8];
 
   if (!v6)
@@ -688,16 +688,16 @@ LABEL_12:
   return v9;
 }
 
-+ (id)posterUpdateAssociateWithChargerIdentifier:(id)a3
++ (id)posterUpdateAssociateWithChargerIdentifier:(id)identifier
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = [PRSPosterUpdatePropertyListPayload alloc];
   v5 = v4;
-  if (v3)
+  if (identifierCopy)
   {
     v12 = @"chargerIdentifier";
-    v13[0] = v3;
+    v13[0] = identifierCopy;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
     v7 = [(PRSPosterUpdatePropertyListPayload *)v5 initWithPropertyList:v6];
   }
@@ -715,16 +715,16 @@ LABEL_12:
   return v9;
 }
 
-+ (id)posterUpdateDisassociateFromChargerIdentifier:(id)a3
++ (id)posterUpdateDisassociateFromChargerIdentifier:(id)identifier
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = [PRSPosterUpdatePropertyListPayload alloc];
   v5 = v4;
-  if (v3)
+  if (identifierCopy)
   {
     v12 = @"chargerIdentifier";
-    v13[0] = v3;
+    v13[0] = identifierCopy;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
     v7 = [(PRSPosterUpdatePropertyListPayload *)v5 initWithPropertyList:v6];
   }
@@ -742,32 +742,32 @@ LABEL_12:
   return v9;
 }
 
-+ (id)posterUpdateAmbientConfigurationForCreation:(id)a3 deletion:(id)a4 editingBehavior:(id)a5 supportedDataLayout:(id)a6
++ (id)posterUpdateAmbientConfigurationForCreation:(id)creation deletion:(id)deletion editingBehavior:(id)behavior supportedDataLayout:(id)layout
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  creationCopy = creation;
+  deletionCopy = deletion;
+  behaviorCopy = behavior;
+  layoutCopy = layout;
   v13 = objc_opt_new();
   v14 = v13;
-  if (v9)
+  if (creationCopy)
   {
-    [v13 setObject:v9 forKeyedSubscript:@"creationBehavior"];
+    [v13 setObject:creationCopy forKeyedSubscript:@"creationBehavior"];
   }
 
-  if (v10)
+  if (deletionCopy)
   {
-    [v14 setObject:v10 forKeyedSubscript:@"deletionBehavior"];
+    [v14 setObject:deletionCopy forKeyedSubscript:@"deletionBehavior"];
   }
 
-  if (v11)
+  if (behaviorCopy)
   {
-    [v14 setObject:v11 forKeyedSubscript:@"editingBehavior"];
+    [v14 setObject:behaviorCopy forKeyedSubscript:@"editingBehavior"];
   }
 
-  if (v12)
+  if (layoutCopy)
   {
-    [v14 setObject:v12 forKeyedSubscript:@"supportedDataLayout"];
+    [v14 setObject:layoutCopy forKeyedSubscript:@"supportedDataLayout"];
   }
 
   v15 = [PRSPosterUpdatePropertyListPayload alloc];

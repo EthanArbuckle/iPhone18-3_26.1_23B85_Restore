@@ -1,30 +1,30 @@
 @interface RMModelClasses
-+ (Class)classForCommandType:(id)a3;
-+ (Class)classForDeclarationType:(id)a3;
-+ (Class)classForStatusItemType:(id)a3;
++ (Class)classForCommandType:(id)type;
++ (Class)classForDeclarationType:(id)type;
++ (Class)classForStatusItemType:(id)type;
 + (id)allActivationClasses;
 + (id)allAssetClasses;
 + (id)allConfigurationClasses;
 + (id)allManagementClasses;
 + (id)allStatusItemClasses;
-+ (void)addClass:(Class)a3 declarationType:(id)a4;
-+ (void)ensureClassForDeclarations:(id)a3;
-+ (void)ensureClassForStatusItems:(id)a3;
-+ (void)hideDeclarationsWithTypes:(id)a3;
++ (void)addClass:(Class)class declarationType:(id)type;
++ (void)ensureClassForDeclarations:(id)declarations;
++ (void)ensureClassForStatusItems:(id)items;
++ (void)hideDeclarationsWithTypes:(id)types;
 @end
 
 @implementation RMModelClasses
 
-+ (Class)classForCommandType:(id)a3
++ (Class)classForCommandType:(id)type
 {
   v3 = classForCommandType__onceToken;
-  v4 = a3;
+  typeCopy = type;
   if (v3 != -1)
   {
     +[RMModelClasses classForCommandType:];
   }
 
-  v5 = [classForCommandType__commandClassByCommandType objectForKeyedSubscript:v4];
+  v5 = [classForCommandType__commandClassByCommandType objectForKeyedSubscript:typeCopy];
 
   return v5;
 }
@@ -41,16 +41,16 @@ void __38__RMModelClasses_classForCommandType___block_invoke()
   classForCommandType__commandClassByCommandType = v2;
 }
 
-+ (Class)classForDeclarationType:(id)a3
++ (Class)classForDeclarationType:(id)type
 {
   v3 = classForDeclarationType__onceToken;
-  v4 = a3;
+  typeCopy = type;
   if (v3 != -1)
   {
     +[RMModelClasses classForDeclarationType:];
   }
 
-  v5 = [declarationClassByDeclarationType objectForKeyedSubscript:v4];
+  v5 = [declarationClassByDeclarationType objectForKeyedSubscript:typeCopy];
 
   return v5;
 }
@@ -227,17 +227,17 @@ void __42__RMModelClasses_classForDeclarationType___block_invoke()
   declarationClassByDeclarationType = v82;
 }
 
-+ (void)ensureClassForDeclarations:(id)a3
++ (void)ensureClassForDeclarations:(id)declarations
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [a1 classForDeclarationType:&stru_287451740];
+  declarationsCopy = declarations;
+  [self classForDeclarationType:&stru_287451740];
   v5 = [declarationClassByDeclarationType mutableCopy];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = v4;
+  v6 = declarationsCopy;
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v27 count:16];
   v9 = v6;
   if (!v7)
@@ -263,8 +263,8 @@ void __42__RMModelClasses_classForDeclarationType___block_invoke()
       v15 = *(*(&v21 + 1) + 8 * i);
       if ([v15 isSubclassOfClass:objc_opt_class()])
       {
-        v16 = [v15 registeredIdentifier];
-        if (![v5 objectForKeyedSubscript:v16])
+        registeredIdentifier = [v15 registeredIdentifier];
+        if (![v5 objectForKeyedSubscript:registeredIdentifier])
         {
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
@@ -274,7 +274,7 @@ void __42__RMModelClasses_classForDeclarationType___block_invoke()
             _os_log_impl(&dword_261DAE000, v13, OS_LOG_TYPE_DEFAULT, "Registering declaration model class: %{public}@", buf, 0xCu);
           }
 
-          [v5 setObject:v15 forKeyedSubscript:{v16, v20, v21}];
+          [v5 setObject:v15 forKeyedSubscript:{registeredIdentifier, v20, v21}];
           v11 = 1;
         }
       }
@@ -296,29 +296,29 @@ LABEL_16:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)addClass:(Class)a3 declarationType:(id)a4
++ (void)addClass:(Class)class declarationType:(id)type
 {
-  v6 = a4;
-  [a1 classForDeclarationType:&stru_287451740];
+  typeCopy = type;
+  [self classForDeclarationType:&stru_287451740];
   v9 = [declarationClassByDeclarationType mutableCopy];
-  [v9 setObject:a3 forKeyedSubscript:v6];
+  [v9 setObject:class forKeyedSubscript:typeCopy];
 
   v7 = [v9 copy];
   v8 = declarationClassByDeclarationType;
   declarationClassByDeclarationType = v7;
 }
 
-+ (void)hideDeclarationsWithTypes:(id)a3
++ (void)hideDeclarationsWithTypes:(id)types
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [a1 classForDeclarationType:&stru_287451740];
+  typesCopy = types;
+  [self classForDeclarationType:&stru_287451740];
   v5 = [declarationClassByDeclarationType mutableCopy];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = typesCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -351,16 +351,16 @@ LABEL_16:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (Class)classForStatusItemType:(id)a3
++ (Class)classForStatusItemType:(id)type
 {
   v3 = classForStatusItemType__onceToken;
-  v4 = a3;
+  typeCopy = type;
   if (v3 != -1)
   {
     +[RMModelClasses classForStatusItemType:];
   }
 
-  v5 = [statusItemClassByStatusItemType objectForKeyedSubscript:v4];
+  v5 = [statusItemClassByStatusItemType objectForKeyedSubscript:typeCopy];
 
   return v5;
 }
@@ -549,17 +549,17 @@ void __41__RMModelClasses_classForStatusItemType___block_invoke()
   statusItemClassByStatusItemType = v88;
 }
 
-+ (void)ensureClassForStatusItems:(id)a3
++ (void)ensureClassForStatusItems:(id)items
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [a1 classForStatusItemType:&stru_287451740];
+  itemsCopy = items;
+  [self classForStatusItemType:&stru_287451740];
   v5 = [statusItemClassByStatusItemType mutableCopy];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = v4;
+  v6 = itemsCopy;
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v27 count:16];
   v9 = v6;
   if (!v7)
@@ -585,8 +585,8 @@ void __41__RMModelClasses_classForStatusItemType___block_invoke()
       v15 = *(*(&v21 + 1) + 8 * i);
       if ([v15 isSubclassOfClass:objc_opt_class()])
       {
-        v16 = [v15 statusItemType];
-        if (![v5 objectForKeyedSubscript:v16])
+        statusItemType = [v15 statusItemType];
+        if (![v5 objectForKeyedSubscript:statusItemType])
         {
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
@@ -596,7 +596,7 @@ void __41__RMModelClasses_classForStatusItemType___block_invoke()
             _os_log_impl(&dword_261DAE000, v13, OS_LOG_TYPE_DEFAULT, "Registering status item model class: %{public}@", buf, 0xCu);
           }
 
-          [v5 setObject:v15 forKeyedSubscript:{v16, v20, v21}];
+          [v5 setObject:v15 forKeyedSubscript:{statusItemType, v20, v21}];
           v11 = 1;
         }
       }

@@ -1,20 +1,20 @@
 @interface AVTToolBar
-- (AVTToolBar)initWithButtons:(id)a3;
+- (AVTToolBar)initWithButtons:(id)buttons;
 - (AVTToolBarDelegate)delegate;
-- (id)buttonWithTitle:(id)a3 isDefault:(BOOL)a4;
-- (void)buttonPressed:(id)a3;
+- (id)buttonWithTitle:(id)title isDefault:(BOOL)default;
+- (void)buttonPressed:(id)pressed;
 - (void)layoutSubviews;
-- (void)setEnabled:(BOOL)a3 forButtonAtIndex:(unint64_t)a4;
-- (void)setIsAnimating:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled forButtonAtIndex:(unint64_t)index;
+- (void)setIsAnimating:(BOOL)animating;
 - (void)setupBorder;
 - (void)setupView;
 @end
 
 @implementation AVTToolBar
 
-- (AVTToolBar)initWithButtons:(id)a3
+- (AVTToolBar)initWithButtons:(id)buttons
 {
-  v4 = a3;
+  buttonsCopy = buttons;
   v13.receiver = self;
   v13.super_class = AVTToolBar;
   v5 = [(AVTToolBar *)&v13 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -27,7 +27,7 @@
     v11[3] = &unk_1E7F3C720;
     v7 = v5;
     v12 = v7;
-    v8 = [v4 avt_map:v11];
+    v8 = [buttonsCopy avt_map:v11];
     buttons = v7->_buttons;
     v7->_buttons = v8;
 
@@ -50,22 +50,22 @@ id __30__AVTToolBar_initWithButtons___block_invoke(uint64_t a1, void *a2)
   return v6;
 }
 
-- (id)buttonWithTitle:(id)a3 isDefault:(BOOL)a4
+- (id)buttonWithTitle:(id)title isDefault:(BOOL)default
 {
-  v4 = a4;
-  v6 = a3;
+  defaultCopy = default;
+  titleCopy = title;
   v7 = [MEMORY[0x1E69DC738] buttonWithType:1];
   v8 = v7;
-  if (v4)
+  if (defaultCopy)
   {
     [v7 setRole:1];
   }
 
-  [v8 setTitle:v6 forState:0];
+  [v8 setTitle:titleCopy forState:0];
   [v8 addTarget:self action:sel_buttonPressed_ forControlEvents:64];
   [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v9 = [v8 widthAnchor];
-  v10 = [v9 constraintGreaterThanOrEqualToConstant:90.0];
+  widthAnchor = [v8 widthAnchor];
+  v10 = [widthAnchor constraintGreaterThanOrEqualToConstant:90.0];
   [v10 setActive:1];
 
   return v8;
@@ -99,30 +99,30 @@ id __30__AVTToolBar_initWithButtons___block_invoke(uint64_t a1, void *a2)
   [(AVTToolBar *)self addSubview:v18];
   [(AVTToolBar *)self setVisualEffectView:v18];
   v3 = MEMORY[0x1E69DCF90];
-  v4 = self;
+  selfCopy = self;
   v5 = [v3 alloc];
-  v6 = [(AVTToolBar *)v4 buttons];
-  v7 = [v5 initWithArrangedSubviews:v6];
+  buttons = [(AVTToolBar *)selfCopy buttons];
+  v7 = [v5 initWithArrangedSubviews:buttons];
 
   [v7 setAlignment:3];
   [v7 setDistribution:1];
   [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v7 setSpacing:8.0];
-  [(AVTToolBar *)v4 addSubview:v7];
-  v17 = [v7 topAnchor];
-  v16 = [(AVTToolBar *)v4 topAnchor];
-  v8 = [v17 constraintEqualToAnchor:v16];
+  [(AVTToolBar *)selfCopy addSubview:v7];
+  topAnchor = [v7 topAnchor];
+  topAnchor2 = [(AVTToolBar *)selfCopy topAnchor];
+  v8 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v20[0] = v8;
-  v9 = [v7 bottomAnchor];
-  v10 = [(AVTToolBar *)v4 bottomAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  bottomAnchor = [v7 bottomAnchor];
+  bottomAnchor2 = [(AVTToolBar *)selfCopy bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v20[1] = v11;
-  v12 = [v7 trailingAnchor];
-  v13 = [(AVTToolBar *)v4 trailingAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13 constant:-20.0];
+  trailingAnchor = [v7 trailingAnchor];
+  trailingAnchor2 = [(AVTToolBar *)selfCopy trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-20.0];
   v20[2] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:3];
-  [(AVTToolBar *)v4 addConstraints:v15];
+  [(AVTToolBar *)selfCopy addConstraints:v15];
 }
 
 - (void)layoutSubviews
@@ -134,20 +134,20 @@ id __30__AVTToolBar_initWithButtons___block_invoke(uint64_t a1, void *a2)
   v4 = v3;
   [(AVTToolBar *)self borderWidth];
   v6 = v5;
-  v7 = [(AVTToolBar *)self border];
-  [v7 setFrame:{0.0, 0.0, v4, v6}];
+  border = [(AVTToolBar *)self border];
+  [border setFrame:{0.0, 0.0, v4, v6}];
 }
 
-- (void)setIsAnimating:(BOOL)a3
+- (void)setIsAnimating:(BOOL)animating
 {
-  if (self->_isAnimating != a3)
+  if (self->_isAnimating != animating)
   {
-    v4 = a3;
-    self->_isAnimating = a3;
-    v6 = [(AVTToolBar *)self visualEffectView];
-    [v6 setHidden:v4];
+    animatingCopy = animating;
+    self->_isAnimating = animating;
+    visualEffectView = [(AVTToolBar *)self visualEffectView];
+    [visualEffectView setHidden:animatingCopy];
 
-    if (v4)
+    if (animatingCopy)
     {
       [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
     }
@@ -161,20 +161,20 @@ id __30__AVTToolBar_initWithButtons___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)setEnabled:(BOOL)a3 forButtonAtIndex:(unint64_t)a4
+- (void)setEnabled:(BOOL)enabled forButtonAtIndex:(unint64_t)index
 {
-  v5 = a3;
-  v7 = [(AVTToolBar *)self buttons];
-  v8 = [v7 count];
+  enabledCopy = enabled;
+  buttons = [(AVTToolBar *)self buttons];
+  v8 = [buttons count];
 
-  if (v8 > a4)
+  if (v8 > index)
   {
-    v9 = [(AVTToolBar *)self buttons];
-    v11 = [v9 objectAtIndexedSubscript:a4];
+    buttons2 = [(AVTToolBar *)self buttons];
+    v11 = [buttons2 objectAtIndexedSubscript:index];
 
-    [v11 setEnabled:v5];
+    [v11 setEnabled:enabledCopy];
     v10 = 0.7;
-    if (v5)
+    if (enabledCopy)
     {
       v10 = 1.0;
     }
@@ -183,14 +183,14 @@ id __30__AVTToolBar_initWithButtons___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)buttonPressed:(id)a3
+- (void)buttonPressed:(id)pressed
 {
-  v4 = a3;
-  v5 = [(AVTToolBar *)self buttons];
-  v6 = [v5 indexOfObject:v4];
+  pressedCopy = pressed;
+  buttons = [(AVTToolBar *)self buttons];
+  v6 = [buttons indexOfObject:pressedCopy];
 
-  v7 = [(AVTToolBar *)self delegate];
-  [v7 toolbar:self didSelectButton:v4 atIndex:v6];
+  delegate = [(AVTToolBar *)self delegate];
+  [delegate toolbar:self didSelectButton:pressedCopy atIndex:v6];
 }
 
 - (AVTToolBarDelegate)delegate

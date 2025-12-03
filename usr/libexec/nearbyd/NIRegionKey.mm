@@ -1,44 +1,44 @@
 @interface NIRegionKey
-- (BOOL)isEqual:(id)a3;
-- (NIRegionKey)initWithName:(id)a3 regionSizeCategory:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (NIRegionKey)initWithName:(id)name regionSizeCategory:(int64_t)category;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation NIRegionKey
 
-- (NIRegionKey)initWithName:(id)a3 regionSizeCategory:(int64_t)a4
+- (NIRegionKey)initWithName:(id)name regionSizeCategory:(int64_t)category
 {
-  v7 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = NIRegionKey;
   v8 = [(NIRegionKey *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_regionName, a3);
-    v9->_regionSizeCategory = a4;
+    objc_storeStrong(&v8->_regionName, name);
+    v9->_regionSizeCategory = category;
   }
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   regionName = self->_regionName;
   regionSizeCategory = self->_regionSizeCategory;
 
   return [v4 initWithName:regionName regionSizeCategory:regionSizeCategory];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (v5 == self)
     {
@@ -50,8 +50,8 @@
       regionSizeCategory = self->_regionSizeCategory;
       if (regionSizeCategory == [(NIRegionKey *)v5 regionSizeCategory])
       {
-        v8 = [(NIRegionKey *)v6 regionName];
-        v9 = [v8 isEqualToString:self->_regionName];
+        regionName = [(NIRegionKey *)v6 regionName];
+        v9 = [regionName isEqualToString:self->_regionName];
       }
 
       else

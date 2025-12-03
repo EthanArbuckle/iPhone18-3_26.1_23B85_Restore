@@ -1,25 +1,25 @@
 @interface IDSServicePseudonymChange
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPseudonymChange:(id)a3;
-- (IDSServicePseudonymChange)initWithPseudonym:(id)a3 changeType:(unint64_t)a4 updateFlags:(int64_t)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPseudonymChange:(id)change;
+- (IDSServicePseudonymChange)initWithPseudonym:(id)pseudonym changeType:(unint64_t)type updateFlags:(int64_t)flags;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation IDSServicePseudonymChange
 
-- (IDSServicePseudonymChange)initWithPseudonym:(id)a3 changeType:(unint64_t)a4 updateFlags:(int64_t)a5
+- (IDSServicePseudonymChange)initWithPseudonym:(id)pseudonym changeType:(unint64_t)type updateFlags:(int64_t)flags
 {
-  v9 = a3;
+  pseudonymCopy = pseudonym;
   v13.receiver = self;
   v13.super_class = IDSServicePseudonymChange;
   v10 = [(IDSServicePseudonymChange *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_pseudonym, a3);
-    v11->_changeType = a4;
-    v11->_updateFlags = a5;
+    objc_storeStrong(&v10->_pseudonym, pseudonym);
+    v11->_changeType = type;
+    v11->_updateFlags = flags;
   }
 
   return v11;
@@ -48,34 +48,34 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IDSServicePseudonymChange *)self isEqualToPseudonymChange:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IDSServicePseudonymChange *)self isEqualToPseudonymChange:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToPseudonymChange:(id)a3
+- (BOOL)isEqualToPseudonymChange:(id)change
 {
-  v4 = a3;
-  if (self == v4)
+  changeCopy = change;
+  if (self == changeCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    v5 = [(IDSServicePseudonymChange *)self changeType];
-    if (v5 == [(IDSServicePseudonymChange *)v4 changeType])
+    changeType = [(IDSServicePseudonymChange *)self changeType];
+    if (changeType == [(IDSServicePseudonymChange *)changeCopy changeType])
     {
-      v6 = [(IDSServicePseudonymChange *)self pseudonym];
-      v7 = [(IDSServicePseudonymChange *)v4 pseudonym];
-      if ([v6 isEqualToPseudonym:v7])
+      pseudonym = [(IDSServicePseudonymChange *)self pseudonym];
+      pseudonym2 = [(IDSServicePseudonymChange *)changeCopy pseudonym];
+      if ([pseudonym isEqualToPseudonym:pseudonym2])
       {
-        v8 = [(IDSServicePseudonymChange *)self updateFlags];
-        v9 = v8 == [(IDSServicePseudonymChange *)v4 updateFlags];
+        updateFlags = [(IDSServicePseudonymChange *)self updateFlags];
+        v9 = updateFlags == [(IDSServicePseudonymChange *)changeCopy updateFlags];
       }
 
       else
@@ -95,9 +95,9 @@
 
 - (unint64_t)hash
 {
-  v3 = [(IDSServicePseudonymChange *)self changeType];
-  v4 = [(IDSServicePseudonymChange *)self pseudonym];
-  v5 = [v4 hash] - v3 + 32 * v3;
+  changeType = [(IDSServicePseudonymChange *)self changeType];
+  pseudonym = [(IDSServicePseudonymChange *)self pseudonym];
+  v5 = [pseudonym hash] - changeType + 32 * changeType;
 
   return [(IDSServicePseudonymChange *)self updateFlags]- v5 + 32 * v5 + 29791;
 }

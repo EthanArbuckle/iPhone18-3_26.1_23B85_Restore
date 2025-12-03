@@ -1,17 +1,17 @@
 @interface HUAnnounceTitleViewController
-- (HUAnnounceTitleViewController)initWithHome:(id)a3;
+- (HUAnnounceTitleViewController)initWithHome:(id)home;
 - (HUConfigurationViewControllerDelegate)delegate;
-- (void)continuePressed:(id)a3;
+- (void)continuePressed:(id)pressed;
 - (void)viewDidLoad;
 @end
 
 @implementation HUAnnounceTitleViewController
 
-- (HUAnnounceTitleViewController)initWithHome:(id)a3
+- (HUAnnounceTitleViewController)initWithHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v5 = _HULocalizedStringWithDefaultValue(@"HUOnboardingAnnounce_Title", @"HUOnboardingAnnounce_Title", 1);
-  v6 = HULocalizedSiriTriggerPhrase(v4);
+  v6 = HULocalizedSiriTriggerPhrase(homeCopy);
 
   v13 = HULocalizedStringWithFormat(@"HUOnboardingAnnounce_Detail", @"%@", v7, v8, v9, v10, v11, v12, v6);
 
@@ -36,19 +36,19 @@
   v11.receiver = self;
   v11.super_class = HUAnnounceTitleViewController;
   [(HUTopContentOBWelcomeController *)&v11 viewDidLoad];
-  v4 = [(HUAnnounceTitleViewController *)self headerView];
-  v5 = [v4 subviews];
-  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:v5 withIDDictionary:&unk_2824930D0];
+  headerView = [(HUAnnounceTitleViewController *)self headerView];
+  subviews = [headerView subviews];
+  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:subviews withIDDictionary:&unk_2824930D0];
 
-  v6 = [MEMORY[0x277D37618] boldButton];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  boldButton = [MEMORY[0x277D37618] boldButton];
+  [boldButton setTranslatesAutoresizingMaskIntoConstraints:0];
   v7 = _HULocalizedStringWithDefaultValue(@"HUOnboardingAnnounce_ContinueButton", @"HUOnboardingAnnounce_ContinueButton", 1);
-  [v6 setTitle:v7 forState:0];
+  [boldButton setTitle:v7 forState:0];
 
-  [v6 setAccessibilityIdentifier:@"Home.OnboardingView.Announce.ContinueButton"];
-  [v6 addTarget:self action:sel_continuePressed_ forControlEvents:64];
-  v8 = [(HUAnnounceTitleViewController *)self buttonTray];
-  [v8 addButton:v6];
+  [boldButton setAccessibilityIdentifier:@"Home.OnboardingView.Announce.ContinueButton"];
+  [boldButton addTarget:self action:sel_continuePressed_ forControlEvents:64];
+  buttonTray = [(HUAnnounceTitleViewController *)self buttonTray];
+  [buttonTray addButton:boldButton];
 
   [(HUAnnounceTitleViewController *)self setModalInPresentation:1];
   [(HUAnnounceTitleViewController *)self updateViewConstraints];
@@ -57,21 +57,21 @@
   {
     v10 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
     v15 = v10;
     _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "%@:%@: presented: ATVC", buf, 0x16u);
   }
 }
 
-- (void)continuePressed:(id)a3
+- (void)continuePressed:(id)pressed
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v4 = [(HUAnnounceTitleViewController *)self delegate];
+  delegate = [(HUAnnounceTitleViewController *)self delegate];
   v6 = @"announceSetupStep";
   v7[0] = &unk_282491D18;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
-  [v4 viewController:self didFinishWithConfigurationResults:v5];
+  [delegate viewController:self didFinishWithConfigurationResults:v5];
 }
 
 - (HUConfigurationViewControllerDelegate)delegate

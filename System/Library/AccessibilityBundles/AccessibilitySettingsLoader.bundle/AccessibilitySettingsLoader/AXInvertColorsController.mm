@@ -75,10 +75,10 @@ LABEL_12:
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterAddObserver(DarwinNotifyCenter, 0, _handleInvertColorsPreload, *MEMORY[0x29EDC84C8], 0, CFNotificationSuspensionBehaviorDeliverImmediately);
-  v4 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v4 addObserver:a1 selector:sel__updateStatus name:*MEMORY[0x29EDC7ED0] object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__updateStatus name:*MEMORY[0x29EDC7ED0] object:0];
 
-  [a1 _updateStatus];
+  [self _updateStatus];
 }
 
 + (void)_updateStatus
@@ -86,7 +86,7 @@ LABEL_12:
   if (UIAccessibilityIsInvertColorsEnabled() || _AXSShouldLoadInvertBundles())
   {
 
-    [a1 loadInvertColorsBundle];
+    [self loadInvertColorsBundle];
   }
 }
 

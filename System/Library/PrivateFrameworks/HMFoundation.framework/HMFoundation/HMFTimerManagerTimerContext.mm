@@ -1,6 +1,6 @@
 @interface HMFTimerManagerTimerContext
 + (id)comparator;
-- (HMFTimerManagerTimerContext)initWithObject:(id)a3 expirationTime:(double)a4;
+- (HMFTimerManagerTimerContext)initWithObject:(id)object expirationTime:(double)time;
 @end
 
 @implementation HMFTimerManagerTimerContext
@@ -46,17 +46,17 @@ uint64_t __41__HMFTimerManagerTimerContext_comparator__block_invoke_2(uint64_t a
   return v9;
 }
 
-- (HMFTimerManagerTimerContext)initWithObject:(id)a3 expirationTime:(double)a4
+- (HMFTimerManagerTimerContext)initWithObject:(id)object expirationTime:(double)time
 {
-  v7 = a3;
+  objectCopy = object;
   v11.receiver = self;
   v11.super_class = HMFTimerManagerTimerContext;
   v8 = [(HMFTimerManagerTimerContext *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_object, a3);
-    v9->_expirationTime = a4;
+    objc_storeStrong(&v8->_object, object);
+    v9->_expirationTime = time;
   }
 
   return v9;

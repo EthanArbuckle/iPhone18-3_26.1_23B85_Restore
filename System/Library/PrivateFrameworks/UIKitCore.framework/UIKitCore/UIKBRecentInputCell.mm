@@ -1,19 +1,19 @@
 @interface UIKBRecentInputCell
-+ (id)textColorForRenderConfig:(id)a3 isSelected:(BOOL)a4;
-+ (id)titleAttributesForRenderConfig:(id)a3;
-- (UIKBRecentInputCell)initWithFrame:(CGRect)a3;
++ (id)textColorForRenderConfig:(id)config isSelected:(BOOL)selected;
++ (id)titleAttributesForRenderConfig:(id)config;
+- (UIKBRecentInputCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setInputText:(id)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setInputText:(id)text;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation UIKBRecentInputCell
 
-- (UIKBRecentInputCell)initWithFrame:(CGRect)a3
+- (UIKBRecentInputCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UIKBRecentInputCell;
-  v3 = [(UICollectionViewCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UICollectionViewCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -23,16 +23,16 @@
   return v4;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v8.receiver = self;
   v8.super_class = UIKBRecentInputCell;
-  [(UICollectionViewCell *)&v8 setSelected:a3];
+  [(UICollectionViewCell *)&v8 setSelected:selected];
   v4 = objc_opt_class();
-  v5 = [(UIView *)self _inheritedRenderConfig];
-  v6 = [v4 textColorForRenderConfig:v5 isSelected:{-[UICollectionViewCell isSelected](self, "isSelected")}];
-  v7 = [(UIKBRecentInputCell *)self label];
-  [v7 setTextColor:v6];
+  _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+  v6 = [v4 textColorForRenderConfig:_inheritedRenderConfig isSelected:{-[UICollectionViewCell isSelected](self, "isSelected")}];
+  label = [(UIKBRecentInputCell *)self label];
+  [label setTextColor:v6];
 }
 
 - (void)layoutSubviews
@@ -45,47 +45,47 @@
   v6 = v5 + -20.0;
   v8 = v7 + 9.0;
   v10 = v9 + -9.0;
-  v11 = [(UIKBRecentInputCell *)self label];
-  [v11 setFrame:{v4, v8, v6, v10}];
+  label = [(UIKBRecentInputCell *)self label];
+  [label setFrame:{v4, v8, v6, v10}];
 }
 
-- (void)setInputText:(id)a3
+- (void)setInputText:(id)text
 {
-  v4 = a3;
-  v5 = [(UIKBRecentInputCell *)self label];
+  textCopy = text;
+  label = [(UIKBRecentInputCell *)self label];
 
-  if (!v5)
+  if (!label)
   {
     v6 = [UILabel alloc];
     [(UIView *)self bounds];
     v7 = [(UILabel *)v6 initWithFrame:?];
-    v8 = [(UICollectionViewCell *)self contentView];
-    [v8 addSubview:v7];
+    contentView = [(UICollectionViewCell *)self contentView];
+    [contentView addSubview:v7];
 
     [(UIKBRecentInputCell *)self setLabel:v7];
   }
 
   v9 = objc_alloc(MEMORY[0x1E696AAB0]);
   v10 = objc_opt_class();
-  v14 = [(UIView *)self _inheritedRenderConfig];
-  v11 = [v10 titleAttributesForRenderConfig:v14];
-  v12 = [v9 initWithString:v4 attributes:v11];
+  _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+  v11 = [v10 titleAttributesForRenderConfig:_inheritedRenderConfig];
+  v12 = [v9 initWithString:textCopy attributes:v11];
 
-  v13 = [(UIKBRecentInputCell *)self label];
-  [v13 setAttributedText:v12];
+  label2 = [(UIKBRecentInputCell *)self label];
+  [label2 setAttributedText:v12];
 }
 
-+ (id)textColorForRenderConfig:(id)a3 isSelected:(BOOL)a4
++ (id)textColorForRenderConfig:(id)config isSelected:(BOOL)selected
 {
-  v4 = a4;
-  if ([a3 lightKeyboard])
+  selectedCopy = selected;
+  if ([config lightKeyboard])
   {
     v5 = 0.0;
   }
 
   else
   {
-    if (v4)
+    if (selectedCopy)
     {
       v6 = +[UIColor blackColor];
       goto LABEL_7;
@@ -100,17 +100,17 @@ LABEL_7:
   return v6;
 }
 
-+ (id)titleAttributesForRenderConfig:(id)a3
++ (id)titleAttributesForRenderConfig:(id)config
 {
   v4 = qword_1ED49A760;
-  v5 = a3;
+  configCopy = config;
   if (v4 != -1)
   {
     dispatch_once(&qword_1ED49A760, &__block_literal_global_354);
   }
 
   v6 = [_MergedGlobals_5_16 mutableCopy];
-  v7 = [a1 textColorForRenderConfig:v5 isSelected:0];
+  v7 = [self textColorForRenderConfig:configCopy isSelected:0];
 
   [v6 setObject:v7 forKey:*off_1E70EC920];
 

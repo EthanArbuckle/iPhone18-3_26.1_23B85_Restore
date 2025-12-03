@@ -1,42 +1,42 @@
 @interface HMMediaGroupProtoMediaDestination
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMMediaGroupProtoMediaDestination
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[3])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[3])
   {
     [(HMMediaGroupProtoMediaDestination *)self setIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(HMMediaGroupProtoMediaDestination *)self setParentIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
-    self->_supportedOptions = v4[1];
+    self->_supportedOptions = fromCopy[1];
     *&self->_has |= 1u;
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(HMMediaGroupProtoMediaDestination *)self setAudioGroupIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
@@ -57,16 +57,16 @@
   return v4 ^ v3 ^ v5 ^ [(NSString *)self->_audioGroupIdentifier hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 3))
+  if (identifier | *(equalCopy + 3))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -75,7 +75,7 @@
   }
 
   parentIdentifier = self->_parentIdentifier;
-  if (parentIdentifier | *(v4 + 4))
+  if (parentIdentifier | *(equalCopy + 4))
   {
     if (![(NSString *)parentIdentifier isEqual:?])
     {
@@ -83,16 +83,16 @@
     }
   }
 
-  v7 = *(v4 + 40);
+  v7 = *(equalCopy + 40);
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_supportedOptions != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_supportedOptions != *(equalCopy + 1))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_13:
     v9 = 0;
@@ -100,7 +100,7 @@ LABEL_13:
   }
 
   audioGroupIdentifier = self->_audioGroupIdentifier;
-  if (audioGroupIdentifier | *(v4 + 2))
+  if (audioGroupIdentifier | *(equalCopy + 2))
   {
     v9 = [(NSString *)audioGroupIdentifier isEqual:?];
   }
@@ -115,14 +115,14 @@ LABEL_14:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSString *)self->_parentIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_parentIdentifier copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
@@ -132,80 +132,80 @@ LABEL_14:
     *(v5 + 40) |= 1u;
   }
 
-  v10 = [(NSString *)self->_audioGroupIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_audioGroupIdentifier copyWithZone:zone];
   v11 = *(v5 + 16);
   *(v5 + 16) = v10;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_identifier)
   {
-    [v4 setIdentifier:?];
-    v4 = v5;
+    [toCopy setIdentifier:?];
+    toCopy = v5;
   }
 
   if (self->_parentIdentifier)
   {
     [v5 setParentIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_supportedOptions;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 1) = self->_supportedOptions;
+    *(toCopy + 40) |= 1u;
   }
 
   if (self->_audioGroupIdentifier)
   {
     [v5 setAudioGroupIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_parentIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     supportedOptions = self->_supportedOptions;
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_audioGroupIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   parentIdentifier = self->_parentIdentifier;
@@ -235,8 +235,8 @@ LABEL_14:
   v8.receiver = self;
   v8.super_class = HMMediaGroupProtoMediaDestination;
   v4 = [(HMMediaGroupProtoMediaDestination *)&v8 description];
-  v5 = [(HMMediaGroupProtoMediaDestination *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMMediaGroupProtoMediaDestination *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

@@ -1,46 +1,46 @@
 @interface NTKGreenfieldCompanionContentViewController
-- (CGPoint)_watchScreenInsetForDeviceSize:(unint64_t)a3 screenScale:(double)a4;
-- (CGSize)_watchScreenSizeForDeviceSize:(unint64_t)a3 screenScale:(double)a4;
-- (NTKGreenfieldCompanionContentViewController)initWithError:(id)a3 decodedRecipe:(id)a4;
+- (CGPoint)_watchScreenInsetForDeviceSize:(unint64_t)size screenScale:(double)scale;
+- (CGSize)_watchScreenSizeForDeviceSize:(unint64_t)size screenScale:(double)scale;
+- (NTKGreenfieldCompanionContentViewController)initWithError:(id)error decodedRecipe:(id)recipe;
 - (NTKGreenfieldCompanionContentViewControllerDelegate)greenfieldDelegate;
-- (id)_errorSubtitleForError:(id)a3;
-- (id)_errorTitleForError:(id)a3;
+- (id)_errorSubtitleForError:(id)error;
+- (id)_errorTitleForError:(id)error;
 - (id)alternateButtonTitle;
 - (id)detailString;
-- (id)initAddComplicationStateWithDecodedRecipe:(id)a3 complicationItemId:(id)a4 installMode:(int64_t)a5 skippedComplicationSlots:(id)a6;
-- (id)initCompletedStateWithDecodedRecipe:(id)a3 skippedComplicationSlots:(id)a4 canRevisit:(BOOL)a5;
-- (id)initComplicationNotAvailableStateWithDecodedRecipe:(id)a3 unavailableSlots:(id)a4 unavailableTitle:(id)a5 unavailableDescription:(id)a6;
-- (id)initStartStateWithDecodedRecipe:(id)a3 canAddFaceDirectly:(BOOL)a4 addFaceDescription:(id)a5;
+- (id)initAddComplicationStateWithDecodedRecipe:(id)recipe complicationItemId:(id)id installMode:(int64_t)mode skippedComplicationSlots:(id)slots;
+- (id)initCompletedStateWithDecodedRecipe:(id)recipe skippedComplicationSlots:(id)slots canRevisit:(BOOL)revisit;
+- (id)initComplicationNotAvailableStateWithDecodedRecipe:(id)recipe unavailableSlots:(id)slots unavailableTitle:(id)title unavailableDescription:(id)description;
+- (id)initStartStateWithDecodedRecipe:(id)recipe canAddFaceDirectly:(BOOL)directly addFaceDescription:(id)description;
 - (id)suggestedButtonTitle;
 - (id)titleString;
-- (unint64_t)_deviceSizeForCLKDeviceSizeClass:(unint64_t)a3;
+- (unint64_t)_deviceSizeForCLKDeviceSizeClass:(unint64_t)class;
 - (void)_didTapAddToMyFacesButton;
 - (void)_didTapShowInternalErrorButton;
 - (void)_installLocallyAvailableApp;
-- (void)_overrideLockup:(id)a3 withButtonTitle:(id)a4 buttonAction:(id)a5;
+- (void)_overrideLockup:(id)lockup withButtonTitle:(id)title buttonAction:(id)action;
 - (void)_presentErrorUIAlert;
-- (void)_reinstallAppWithAdamId:(id)a3;
-- (void)_reinstallSystemAppWithBundleId:(id)a3;
+- (void)_reinstallAppWithAdamId:(id)id;
+- (void)_reinstallSystemAppWithBundleId:(id)id;
 - (void)_setupContentView;
 - (void)_setupContentViewForWatchFaceNotAvailableError;
-- (void)_setupWatchFaceViewContainerWithView:(id)a3 deviceSize:(unint64_t)a4 deviceMaterial:(unint64_t)a5;
+- (void)_setupWatchFaceViewContainerWithView:(id)view deviceSize:(unint64_t)size deviceMaterial:(unint64_t)material;
 - (void)_updateComplicationDisplayStates;
-- (void)alternateButtonPressed:(id)a3;
-- (void)lockupView:(id)a3 appStateDidChange:(id)a4;
-- (void)lockupViewDidFinishRequest:(id)a3;
+- (void)alternateButtonPressed:(id)pressed;
+- (void)lockupView:(id)view appStateDidChange:(id)change;
+- (void)lockupViewDidFinishRequest:(id)request;
 - (void)refreshViews;
-- (void)suggestedButtonPressed:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)suggestedButtonPressed:(id)pressed;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation NTKGreenfieldCompanionContentViewController
 
-- (id)initStartStateWithDecodedRecipe:(id)a3 canAddFaceDirectly:(BOOL)a4 addFaceDescription:(id)a5
+- (id)initStartStateWithDecodedRecipe:(id)recipe canAddFaceDirectly:(BOOL)directly addFaceDescription:(id)description
 {
-  v9 = a3;
-  v10 = a5;
+  recipeCopy = recipe;
+  descriptionCopy = description;
   v14.receiver = self;
   v14.super_class = NTKGreenfieldCompanionContentViewController;
   v11 = [(BPSWelcomeOptinViewController *)&v14 init];
@@ -49,67 +49,67 @@
   {
     [(BPSWelcomeOptinViewController *)v11 setStyle:2];
     v12->_state = 0;
-    objc_storeStrong(&v12->_decodedRecipe, a3);
-    v12->_canAddFaceDirectly = a4;
-    objc_storeStrong(&v12->_addFaceDescription, a5);
+    objc_storeStrong(&v12->_decodedRecipe, recipe);
+    v12->_canAddFaceDirectly = directly;
+    objc_storeStrong(&v12->_addFaceDescription, description);
   }
 
   return v12;
 }
 
-- (id)initAddComplicationStateWithDecodedRecipe:(id)a3 complicationItemId:(id)a4 installMode:(int64_t)a5 skippedComplicationSlots:(id)a6
+- (id)initAddComplicationStateWithDecodedRecipe:(id)recipe complicationItemId:(id)id installMode:(int64_t)mode skippedComplicationSlots:(id)slots
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  recipeCopy = recipe;
+  idCopy = id;
+  slotsCopy = slots;
   v14 = [(BPSWelcomeOptinViewController *)self init];
   v15 = v14;
   if (v14)
   {
     [(BPSWelcomeOptinViewController *)v14 setStyle:10];
     v15->_state = 2;
-    objc_storeStrong(&v15->_decodedRecipe, a3);
-    objc_storeStrong(&v15->_complicationItemId, a4);
-    objc_storeStrong(&v15->_skippedComplicationSlots, a6);
-    v15->_installMode = a5;
+    objc_storeStrong(&v15->_decodedRecipe, recipe);
+    objc_storeStrong(&v15->_complicationItemId, id);
+    objc_storeStrong(&v15->_skippedComplicationSlots, slots);
+    v15->_installMode = mode;
   }
 
   return v15;
 }
 
-- (id)initComplicationNotAvailableStateWithDecodedRecipe:(id)a3 unavailableSlots:(id)a4 unavailableTitle:(id)a5 unavailableDescription:(id)a6
+- (id)initComplicationNotAvailableStateWithDecodedRecipe:(id)recipe unavailableSlots:(id)slots unavailableTitle:(id)title unavailableDescription:(id)description
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  recipeCopy = recipe;
+  slotsCopy = slots;
+  titleCopy = title;
+  descriptionCopy = description;
   v15 = [(BPSWelcomeOptinViewController *)self init];
   v16 = v15;
   if (v15)
   {
     [(BPSWelcomeOptinViewController *)v15 setStyle:2];
     v16->_state = 1;
-    objc_storeStrong(&v16->_decodedRecipe, a3);
-    objc_storeStrong(&v16->_unavailableSlots, a4);
-    objc_storeStrong(&v16->_unavailableTitle, a5);
-    objc_storeStrong(&v16->_unavailableDescription, a6);
+    objc_storeStrong(&v16->_decodedRecipe, recipe);
+    objc_storeStrong(&v16->_unavailableSlots, slots);
+    objc_storeStrong(&v16->_unavailableTitle, title);
+    objc_storeStrong(&v16->_unavailableDescription, description);
   }
 
   return v16;
 }
 
-- (id)initCompletedStateWithDecodedRecipe:(id)a3 skippedComplicationSlots:(id)a4 canRevisit:(BOOL)a5
+- (id)initCompletedStateWithDecodedRecipe:(id)recipe skippedComplicationSlots:(id)slots canRevisit:(BOOL)revisit
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = a4;
+  revisitCopy = revisit;
+  recipeCopy = recipe;
+  slotsCopy = slots;
   v15.receiver = self;
   v15.super_class = NTKGreenfieldCompanionContentViewController;
   v11 = [(BPSWelcomeOptinViewController *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    if (v5)
+    if (revisitCopy)
     {
       v13 = 10;
     }
@@ -121,25 +121,25 @@
 
     [(BPSWelcomeOptinViewController *)v11 setStyle:v13];
     v12->_state = 3;
-    objc_storeStrong(&v12->_decodedRecipe, a3);
-    objc_storeStrong(&v12->_skippedComplicationSlots, a4);
+    objc_storeStrong(&v12->_decodedRecipe, recipe);
+    objc_storeStrong(&v12->_skippedComplicationSlots, slots);
   }
 
   return v12;
 }
 
-- (NTKGreenfieldCompanionContentViewController)initWithError:(id)a3 decodedRecipe:(id)a4
+- (NTKGreenfieldCompanionContentViewController)initWithError:(id)error decodedRecipe:(id)recipe
 {
-  v7 = a3;
-  v8 = a4;
+  errorCopy = error;
+  recipeCopy = recipe;
   v16.receiver = self;
   v16.super_class = NTKGreenfieldCompanionContentViewController;
   v9 = [(BPSWelcomeOptinViewController *)&v16 init];
   if (v9)
   {
-    v10 = [v8 noBorderFacePreviewImagePath];
+    noBorderFacePreviewImagePath = [recipeCopy noBorderFacePreviewImagePath];
 
-    if (v10)
+    if (noBorderFacePreviewImagePath)
     {
       v9->_state = 4;
       if (NTKInternalBuild(v11, v12))
@@ -147,7 +147,7 @@
         [(BPSWelcomeOptinViewController *)v9 setStyle:2];
       }
 
-      objc_storeStrong(&v9->_decodedRecipe, a4);
+      objc_storeStrong(&v9->_decodedRecipe, recipe);
       v13 = dispatch_queue_create("com.apple.NanoTimeKit.GreenfieldViewControllerDecodeImage.queue", 0);
       workQueue = v9->_workQueue;
       v9->_workQueue = v13;
@@ -158,7 +158,7 @@
       v9->_state = 5;
     }
 
-    objc_storeStrong(&v9->_error, a3);
+    objc_storeStrong(&v9->_error, error);
   }
 
   return v9;
@@ -171,18 +171,18 @@
   [(BPSWelcomeOptinViewController *)&v9 viewDidLoad];
   if (self->_state != 5)
   {
-    v3 = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
+    alternateChoiceButton = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
     v4 = BPSSetupTintColor();
-    [v3 setTitleColor:v4 forState:0];
+    [alternateChoiceButton setTitleColor:v4 forState:0];
 
-    v5 = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
-    v6 = [MEMORY[0x277D75348] systemGrayColor];
-    [v5 setTitleColor:v6 forState:2];
+    alternateChoiceButton2 = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [alternateChoiceButton2 setTitleColor:systemGrayColor forState:2];
 
     if (self->_state == 4)
     {
-      v7 = [(NSError *)self->_error domain];
-      if ([v7 isEqualToString:@"com.apple.nanotimekit.NTKGreenfieldAddWatchFaceManager"])
+      domain = [(NSError *)self->_error domain];
+      if ([domain isEqualToString:@"com.apple.nanotimekit.NTKGreenfieldAddWatchFaceManager"])
       {
         if ([(NSError *)self->_error code]== 11)
         {
@@ -192,9 +192,9 @@ LABEL_10:
           return;
         }
 
-        v8 = [(NSError *)self->_error code];
+        code = [(NSError *)self->_error code];
 
-        if (v8 == 13)
+        if (code == 13)
         {
           goto LABEL_10;
         }
@@ -209,11 +209,11 @@ LABEL_10:
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = NTKGreenfieldCompanionContentViewController;
-  [(BPSWelcomeOptinViewController *)&v4 viewDidAppear:a3];
+  [(BPSWelcomeOptinViewController *)&v4 viewDidAppear:appear];
   if (self->_state == 5)
   {
     [(NTKGreenfieldCompanionContentViewController *)self _presentErrorUIAlert];
@@ -225,27 +225,27 @@ LABEL_10:
   v24.receiver = self;
   v24.super_class = NTKGreenfieldCompanionContentViewController;
   [(OBBaseWelcomeController *)&v24 viewDidLayoutSubviews];
-  v3 = [(NTKGreenfieldCompanionContentViewController *)self view];
-  [v3 bounds];
+  view = [(NTKGreenfieldCompanionContentViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(NTKGreenfieldCompanionContentViewController *)self scrollView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  scrollView = [(NTKGreenfieldCompanionContentViewController *)self scrollView];
+  [scrollView setFrame:{v5, v7, v9, v11}];
 
-  v13 = [(NTKGreenfieldCompanionContentViewController *)self scrollView];
-  [v13 verticalScrollIndicatorInsets];
+  scrollView2 = [(NTKGreenfieldCompanionContentViewController *)self scrollView];
+  [scrollView2 verticalScrollIndicatorInsets];
   v15 = v14;
   v17 = v16;
   v19 = v18;
 
-  v20 = [(NTKGreenfieldCompanionContentViewController *)self view];
-  [v20 safeAreaInsets];
+  view2 = [(NTKGreenfieldCompanionContentViewController *)self view];
+  [view2 safeAreaInsets];
   v22 = v21;
 
-  v23 = [(NTKGreenfieldCompanionContentViewController *)self scrollView];
-  [v23 setVerticalScrollIndicatorInsets:{v22, v15, v17, v19}];
+  scrollView3 = [(NTKGreenfieldCompanionContentViewController *)self scrollView];
+  [scrollView3 setVerticalScrollIndicatorInsets:{v22, v15, v17, v19}];
 }
 
 - (id)titleString
@@ -279,13 +279,13 @@ LABEL_12:
 
   if (!state)
   {
-    v8 = [(NTKGreenfieldDecodedRecipe *)self->_decodedRecipe watchFace];
-    v9 = [v8 faceSharingName];
+    watchFace = [(NTKGreenfieldDecodedRecipe *)self->_decodedRecipe watchFace];
+    faceSharingName = [watchFace faceSharingName];
 
-    if (v9)
+    if (faceSharingName)
     {
       v10 = NTKClockFaceLocalizedString(@"GREENFIELD_ADD_WATCH_FACE_TITLE_MAIN_SCREEN", @"Add %@ Watch Face");
-      v2 = [MEMORY[0x277CCACA8] stringWithFormat:v10, v9];
+      v2 = [MEMORY[0x277CCACA8] stringWithFormat:v10, faceSharingName];
     }
 
     else
@@ -442,10 +442,10 @@ LABEL_7:
   return v5;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
-  v4 = a3;
-  v5 = v4;
+  pressedCopy = pressed;
+  v5 = pressedCopy;
   state = self->_state;
   if (state <= 2)
   {
@@ -456,47 +456,47 @@ LABEL_7:
         goto LABEL_15;
       }
 
-      v13 = v4;
+      v13 = pressedCopy;
       WeakRetained = objc_loadWeakRetained(&self->_greenfieldDelegate);
       v8 = WeakRetained;
     }
 
     else
     {
-      v13 = v4;
+      v13 = pressedCopy;
       canAddFaceDirectly = self->_canAddFaceDirectly;
       WeakRetained = objc_loadWeakRetained(&self->_greenfieldDelegate);
       v8 = WeakRetained;
       if (canAddFaceDirectly)
       {
-        v11 = self;
+        selfCopy3 = self;
         v12 = 0;
 LABEL_13:
-        [WeakRetained companionContentViewController:v11 handleButtonEvent:v12];
+        [WeakRetained companionContentViewController:selfCopy3 handleButtonEvent:v12];
 
         goto LABEL_14;
       }
     }
 
-    v11 = self;
+    selfCopy3 = self;
     v12 = 1;
     goto LABEL_13;
   }
 
   if (state == 3)
   {
-    v13 = v4;
+    v13 = pressedCopy;
     WeakRetained = objc_loadWeakRetained(&self->_greenfieldDelegate);
     v8 = WeakRetained;
-    v11 = self;
+    selfCopy3 = self;
     v12 = 2;
     goto LABEL_13;
   }
 
   if (state == 4)
   {
-    v13 = v4;
-    v9 = NTKInternalBuild(v4, v4);
+    v13 = pressedCopy;
+    v9 = NTKInternalBuild(pressedCopy, pressedCopy);
     v5 = v13;
     if (v9)
     {
@@ -509,13 +509,13 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)alternateButtonPressed:(id)a3
+- (void)alternateButtonPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   state = self->_state;
   if (state == 2)
   {
-    v9 = v4;
+    v9 = pressedCopy;
     v7 = 4;
   }
 
@@ -526,9 +526,9 @@ LABEL_15:
       goto LABEL_6;
     }
 
-    v9 = v4;
-    v6 = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
-    [v6 setEnabled:0];
+    v9 = pressedCopy;
+    alternateChoiceButton = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
+    [alternateChoiceButton setEnabled:0];
 
     v7 = 3;
   }
@@ -536,7 +536,7 @@ LABEL_15:
   WeakRetained = objc_loadWeakRetained(&self->_greenfieldDelegate);
   [WeakRetained companionContentViewController:self handleButtonEvent:v7];
 
-  v4 = v9;
+  pressedCopy = v9;
 LABEL_6:
 }
 
@@ -557,8 +557,8 @@ LABEL_6:
       v5 = BPSForegroundColor();
       [(ASCLockupView *)self->_appStoreView setBackgroundColor:v5];
 
-      v6 = [(ASCLockupView *)self->_appStoreView layer];
-      [v6 setCornerRadius:15.0];
+      layer = [(ASCLockupView *)self->_appStoreView layer];
+      [layer setCornerRadius:15.0];
 
       [(ASCLockupView *)self->_appStoreView setLayoutMargins:10.0, 16.0, 10.0, 16.0];
       v7 = [objc_alloc(MEMORY[0x277CEC258]) initWithNumberValue:self->_complicationItemId];
@@ -569,20 +569,20 @@ LABEL_6:
       self->_lockupViewStateDidChange = 0;
     }
 
-    v10 = [(BPSWelcomeOptinViewController *)self suggestedChoiceButton];
-    v11 = [v10 superview];
+    suggestedChoiceButton = [(BPSWelcomeOptinViewController *)self suggestedChoiceButton];
+    superview = [suggestedChoiceButton superview];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v13 = [(BPSWelcomeOptinViewController *)self suggestedChoiceButton];
-      v14 = [v13 superview];
+      suggestedChoiceButton2 = [(BPSWelcomeOptinViewController *)self suggestedChoiceButton];
+      superview2 = [suggestedChoiceButton2 superview];
 
-      v15 = [(BPSWelcomeOptinViewController *)self suggestedChoiceButton];
-      [v15 removeFromSuperview];
+      suggestedChoiceButton3 = [(BPSWelcomeOptinViewController *)self suggestedChoiceButton];
+      [suggestedChoiceButton3 removeFromSuperview];
 
-      [v14 insertArrangedSubview:self->_appStoreView atIndex:0];
+      [superview2 insertArrangedSubview:self->_appStoreView atIndex:0];
     }
   }
 }
@@ -590,20 +590,20 @@ LABEL_6:
 - (void)_setupContentView
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(NTKGreenfieldDecodedRecipe *)self->_decodedRecipe watchFace];
-  if (v3)
+  watchFace = [(NTKGreenfieldDecodedRecipe *)self->_decodedRecipe watchFace];
+  if (watchFace)
   {
-    v4 = [[NTKGreenfieldHighlightableFaceContainerView alloc] initWithFace:v3];
+    v4 = [[NTKGreenfieldHighlightableFaceContainerView alloc] initWithFace:watchFace];
     faceView = self->_faceView;
     self->_faceView = v4;
 
-    v6 = [(NTKGreenfieldDecodedRecipe *)self->_decodedRecipe complicationSlotToTemplateMapping];
+    complicationSlotToTemplateMapping = [(NTKGreenfieldDecodedRecipe *)self->_decodedRecipe complicationSlotToTemplateMapping];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v7 = [v6 allKeys];
-    v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    allKeys = [complicationSlotToTemplateMapping allKeys];
+    v8 = [allKeys countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v8)
     {
       v9 = v8;
@@ -614,28 +614,28 @@ LABEL_6:
         {
           if (*v22 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allKeys);
           }
 
           v12 = *(*(&v21 + 1) + 8 * i);
-          v13 = [v6 objectForKey:v12];
+          v13 = [complicationSlotToTemplateMapping objectForKey:v12];
           [(NTKGreenfieldHighlightableFaceContainerView *)self->_faceView setTemplate:v13 forSlot:v12];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v9 = [allKeys countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v9);
     }
 
-    v14 = [MEMORY[0x277CBBAE8] currentDevice];
-    v15 = [v14 pdrDevice];
+    currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+    pdrDevice = [currentDevice pdrDevice];
 
-    v16 = [MEMORY[0x277D37A78] sizeFromPdrDevice:v15];
-    v17 = [MEMORY[0x277D37A78] materialFromPdrDevice:v15];
+    v16 = [MEMORY[0x277D37A78] sizeFromPdrDevice:pdrDevice];
+    v17 = [MEMORY[0x277D37A78] materialFromPdrDevice:pdrDevice];
     v18 = [NTKRoundedCornerMaskView alloc];
-    v19 = [MEMORY[0x277CBBAE8] currentDevice];
-    v20 = [(NTKRoundedCornerMaskView *)v18 initWithDevice:v19];
+    currentDevice2 = [MEMORY[0x277CBBAE8] currentDevice];
+    v20 = [(NTKRoundedCornerMaskView *)v18 initWithDevice:currentDevice2];
 
     [(NTKRoundedCornerMaskView *)v20 addSubview:self->_faceView];
     [(NTKGreenfieldCompanionContentViewController *)self _setupWatchFaceViewContainerWithView:v20 deviceSize:v16 deviceMaterial:v17];
@@ -643,14 +643,14 @@ LABEL_6:
   }
 }
 
-- (void)_setupWatchFaceViewContainerWithView:(id)a3 deviceSize:(unint64_t)a4 deviceMaterial:(unint64_t)a5
+- (void)_setupWatchFaceViewContainerWithView:(id)view deviceSize:(unint64_t)size deviceMaterial:(unint64_t)material
 {
   v60[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (a4 <= 8 && ((1 << a4) & 0x186) != 0)
+  viewCopy = view;
+  if (size <= 8 && ((1 << size) & 0x186) != 0)
   {
     v9 = [objc_alloc(MEMORY[0x277CF3478]) initWithStyle:2];
-    [v9 overrideMaterial:a5 size:a4];
+    [v9 overrideMaterial:material size:size];
     v10 = 0;
   }
 
@@ -664,15 +664,15 @@ LABEL_6:
   self->_watchView = v9;
 
   [(BPSWatchViewProtocol *)self->_watchView setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(BPSWatchViewProtocol *)self->_watchView addSubview:v8];
-  if (v8)
+  [(BPSWatchViewProtocol *)self->_watchView addSubview:viewCopy];
+  if (viewCopy)
   {
     if (v10)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v8 setContentMode:2];
+        [viewCopy setContentMode:2];
       }
 
       [(BPSWatchViewProtocol *)self->_watchView watchScreenInsetGuide];
@@ -680,30 +680,30 @@ LABEL_6:
       v15 = v14;
       v17 = v16;
       v19 = v18;
-      [v8 bounds];
+      [viewCopy bounds];
       CGAffineTransformMakeScale(&v58, v17 / v20, v17 / v20);
       v57 = v58;
-      [v8 setTransform:&v57];
-      [v8 setFrame:{v13, v15, v17, v19}];
+      [viewCopy setTransform:&v57];
+      [viewCopy setFrame:{v13, v15, v17, v19}];
     }
 
     else
     {
-      v21 = [MEMORY[0x277D759A0] mainScreen];
-      [v21 scale];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen scale];
       v23 = v22;
 
-      [(NTKGreenfieldCompanionContentViewController *)self _watchScreenSizeForDeviceSize:a4 screenScale:v23];
+      [(NTKGreenfieldCompanionContentViewController *)self _watchScreenSizeForDeviceSize:size screenScale:v23];
       v25 = v24;
       v27 = v26;
-      [(NTKGreenfieldCompanionContentViewController *)self _watchScreenInsetForDeviceSize:a4 screenScale:v23];
-      [v8 setCenter:{v28 + v25 * 0.5, v29 + v27 * 0.5}];
-      [v8 bounds];
+      [(NTKGreenfieldCompanionContentViewController *)self _watchScreenInsetForDeviceSize:size screenScale:v23];
+      [viewCopy setCenter:{v28 + v25 * 0.5, v29 + v27 * 0.5}];
+      [viewCopy bounds];
       v31 = v25 / v30;
-      [v8 bounds];
+      [viewCopy bounds];
       CGAffineTransformMakeScale(&v56, v31, v27 / v32);
       v57 = v56;
-      [v8 setTransform:&v57];
+      [viewCopy setTransform:&v57];
     }
   }
 
@@ -717,30 +717,30 @@ LABEL_6:
   [v35 setBaselineRelativeArrangement:1];
   [v35 setSpacing:8.0];
   [v35 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v36 = [(NTKGreenfieldCompanionContentViewController *)self contentView];
-  [v36 addSubview:v35];
+  contentView = [(NTKGreenfieldCompanionContentViewController *)self contentView];
+  [contentView addSubview:v35];
 
   v47 = MEMORY[0x277CCAAD0];
-  v55 = [(NTKGreenfieldCompanionContentViewController *)self contentView];
-  v54 = [v55 topAnchor];
-  v53 = [v35 topAnchor];
-  v52 = [v54 constraintEqualToAnchor:v53];
+  contentView2 = [(NTKGreenfieldCompanionContentViewController *)self contentView];
+  topAnchor = [contentView2 topAnchor];
+  topAnchor2 = [v35 topAnchor];
+  v52 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v59[0] = v52;
-  v51 = [(NTKGreenfieldCompanionContentViewController *)self contentView];
-  v49 = [v51 leadingAnchor];
-  v48 = [v35 leadingAnchor];
-  v46 = [v49 constraintEqualToAnchor:v48];
+  contentView3 = [(NTKGreenfieldCompanionContentViewController *)self contentView];
+  leadingAnchor = [contentView3 leadingAnchor];
+  leadingAnchor2 = [v35 leadingAnchor];
+  v46 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v59[1] = v46;
-  v37 = [(NTKGreenfieldCompanionContentViewController *)self contentView];
-  v38 = [v37 trailingAnchor];
+  contentView4 = [(NTKGreenfieldCompanionContentViewController *)self contentView];
+  trailingAnchor = [contentView4 trailingAnchor];
   [v35 trailingAnchor];
-  v39 = v50 = v8;
-  v40 = [v38 constraintEqualToAnchor:v39];
+  v39 = v50 = viewCopy;
+  v40 = [trailingAnchor constraintEqualToAnchor:v39];
   v59[2] = v40;
-  v41 = [(NTKGreenfieldCompanionContentViewController *)self contentView];
-  v42 = [v41 bottomAnchor];
-  v43 = [v35 bottomAnchor];
-  v44 = [v42 constraintEqualToAnchor:v43];
+  contentView5 = [(NTKGreenfieldCompanionContentViewController *)self contentView];
+  bottomAnchor = [contentView5 bottomAnchor];
+  bottomAnchor2 = [v35 bottomAnchor];
+  v44 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v59[3] = v44;
   v45 = [MEMORY[0x277CBEA60] arrayWithObjects:v59 count:4];
   [v47 activateConstraints:v45];
@@ -748,17 +748,17 @@ LABEL_6:
 
 - (void)_setupContentViewForWatchFaceNotAvailableError
 {
-  v3 = [MEMORY[0x277CBBAE8] currentDevice];
-  v4 = [v3 pdrDevice];
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  pdrDevice = [currentDevice pdrDevice];
 
-  v5 = [MEMORY[0x277D37A78] materialFromPdrDevice:v4];
-  v6 = [(NTKGreenfieldDecodedRecipe *)self->_decodedRecipe noBorderFacePreviewImagePath];
-  if (v6)
+  v5 = [MEMORY[0x277D37A78] materialFromPdrDevice:pdrDevice];
+  noBorderFacePreviewImagePath = [(NTKGreenfieldDecodedRecipe *)self->_decodedRecipe noBorderFacePreviewImagePath];
+  if (noBorderFacePreviewImagePath)
   {
-    v7 = v6;
-    v8 = [(NTKGreenfieldDecodedRecipe *)self->_decodedRecipe senderBoxedDeviceSize];
+    v7 = noBorderFacePreviewImagePath;
+    senderBoxedDeviceSize = [(NTKGreenfieldDecodedRecipe *)self->_decodedRecipe senderBoxedDeviceSize];
 
-    if (v8)
+    if (senderBoxedDeviceSize)
     {
       workQueue = self->_workQueue;
       v10[0] = MEMORY[0x277D85DD0];
@@ -844,38 +844,38 @@ void __67__NTKGreenfieldCompanionContentViewController__presentErrorUIAlert__blo
   [WeakRetained companionContentViewController:*(a1 + 32) handleButtonEvent:5];
 }
 
-- (unint64_t)_deviceSizeForCLKDeviceSizeClass:(unint64_t)a3
+- (unint64_t)_deviceSizeForCLKDeviceSizeClass:(unint64_t)class
 {
-  if (a3 > 9)
+  if (class > 9)
   {
     return 7;
   }
 
   else
   {
-    return qword_22DCE84A0[a3];
+    return qword_22DCE84A0[class];
   }
 }
 
-- (CGPoint)_watchScreenInsetForDeviceSize:(unint64_t)a3 screenScale:(double)a4
+- (CGPoint)_watchScreenInsetForDeviceSize:(unint64_t)size screenScale:(double)scale
 {
-  if (a4 <= 2.0)
+  if (scale <= 2.0)
   {
-    if (a3 == 2)
+    if (size == 2)
     {
       v5 = 56.0;
       v4 = 25.5;
       goto LABEL_17;
     }
 
-    if (a3 == 7)
+    if (size == 7)
     {
       v5 = 50.5;
       v4 = 19.5;
       goto LABEL_17;
     }
 
-    if (a3 != 8)
+    if (size != 8)
     {
       v5 = 54.0;
       v4 = 24.5;
@@ -886,7 +886,7 @@ void __67__NTKGreenfieldCompanionContentViewController__presentErrorUIAlert__blo
     goto LABEL_11;
   }
 
-  switch(a3)
+  switch(size)
   {
     case 2uLL:
       v5 = 74.0;
@@ -913,11 +913,11 @@ LABEL_17:
   return result;
 }
 
-- (CGSize)_watchScreenSizeForDeviceSize:(unint64_t)a3 screenScale:(double)a4
+- (CGSize)_watchScreenSizeForDeviceSize:(unint64_t)size screenScale:(double)scale
 {
-  if (a4 <= 2.0)
+  if (scale <= 2.0)
   {
-    switch(a3)
+    switch(size)
     {
       case 2uLL:
         v4 = 85.0;
@@ -941,7 +941,7 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  switch(a3)
+  switch(size)
   {
     case 2uLL:
       v4 = 108.0;
@@ -975,8 +975,8 @@ LABEL_17:
   v21 = 0u;
   v22 = 0u;
   v19 = v23 = 0u;
-  v3 = [v19 allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  allKeys = [v19 allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v4)
   {
     v5 = v4;
@@ -990,7 +990,7 @@ LABEL_17:
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
@@ -1005,12 +1005,12 @@ LABEL_17:
           if (v13 == 2)
           {
             v14 = v6;
-            v15 = v3;
+            v15 = allKeys;
             v16 = v9;
             if (self->_complicationItemId)
             {
-              v17 = [(NTKGreenfieldDecodedRecipe *)self->_decodedRecipe complicationSlotToItemIdMapping];
-              v18 = [v17 allKeysForObject:self->_complicationItemId];
+              complicationSlotToItemIdMapping = [(NTKGreenfieldDecodedRecipe *)self->_decodedRecipe complicationSlotToItemIdMapping];
+              v18 = [complicationSlotToItemIdMapping allKeysForObject:self->_complicationItemId];
 
               if ([v18 containsObject:v11])
               {
@@ -1029,7 +1029,7 @@ LABEL_17:
             }
 
             v9 = v16;
-            v3 = v15;
+            allKeys = v15;
             v6 = v14;
             v7 = &OBJC_IVAR____NTKPhotosPhotoFaceUpgradeContext__bottomComplication;
           }
@@ -1056,7 +1056,7 @@ LABEL_17:
         [*(&self->super.super.super.super.super.super.isa + v7[827]) setComplicationDisplayViewState:v12 forSlot:v11];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v5);
@@ -1066,7 +1066,7 @@ LABEL_17:
 - (void)_installLocallyAvailableApp
 {
   v5 = *MEMORY[0x277D85DE8];
-  v2 = *a1;
+  v2 = *self;
   v3 = 138412290;
   v4 = v2;
   _os_log_error_impl(&dword_22D9C5000, a2, OS_LOG_TYPE_ERROR, "Failed to find the watchId from %@", &v3, 0xCu);
@@ -1096,44 +1096,44 @@ void __74__NTKGreenfieldCompanionContentViewController__installLocallyAvailableA
   [v7 postNotificationName:@"GreenfieldApplicationInstallBeganNotification" object:0 userInfo:v10];
 }
 
-- (void)_overrideLockup:(id)a3 withButtonTitle:(id)a4 buttonAction:(id)a5
+- (void)_overrideLockup:(id)lockup withButtonTitle:(id)title buttonAction:(id)action
 {
-  v24 = a3;
+  lockupCopy = lockup;
   v7 = MEMORY[0x277CEC2B0];
-  v8 = a5;
-  v25 = [v7 textMetadataWithTitle:a4 subtitle:0];
-  v23 = [objc_alloc(MEMORY[0x277CEC278]) initWithMetadata:v25 action:v8];
+  actionCopy = action;
+  v25 = [v7 textMetadataWithTitle:title subtitle:0];
+  v23 = [objc_alloc(MEMORY[0x277CEC278]) initWithMetadata:v25 action:actionCopy];
 
-  v9 = [v24 lockup];
+  lockup = [lockupCopy lockup];
   v22 = objc_alloc(MEMORY[0x277CEC280]);
-  v10 = [v9 id];
-  v11 = [v9 kind];
-  v12 = [v9 metrics];
-  v13 = [v9 icon];
-  v14 = [v9 heading];
-  v15 = [v9 title];
-  v16 = [v9 subtitle];
-  v17 = [v9 ageRating];
-  v18 = [v22 initWithID:v10 kind:v11 metrics:v12 icon:v13 heading:v14 title:v15 subtitle:v16 ageRating:v17 offer:v23];
+  v10 = [lockup id];
+  kind = [lockup kind];
+  metrics = [lockup metrics];
+  icon = [lockup icon];
+  heading = [lockup heading];
+  title = [lockup title];
+  subtitle = [lockup subtitle];
+  ageRating = [lockup ageRating];
+  v18 = [v22 initWithID:v10 kind:kind metrics:metrics icon:icon heading:heading title:title subtitle:subtitle ageRating:ageRating offer:v23];
 
   v19 = MEMORY[0x277D75D18];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __92__NTKGreenfieldCompanionContentViewController__overrideLockup_withButtonTitle_buttonAction___block_invoke;
   v26[3] = &unk_27877E438;
-  v27 = v24;
+  v27 = lockupCopy;
   v28 = v18;
   v20 = v18;
-  v21 = v24;
+  v21 = lockupCopy;
   [v19 performWithoutAnimation:v26];
 }
 
-- (void)_reinstallAppWithAdamId:(id)a3
+- (void)_reinstallAppWithAdamId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   objc_initWeak(&location, self);
-  v5 = [MEMORY[0x277CEC2C0] sharedWatchApps];
-  v6 = [v5 reinstallAppWithID:v4];
+  mEMORY[0x277CEC2C0] = [MEMORY[0x277CEC2C0] sharedWatchApps];
+  v6 = [mEMORY[0x277CEC2C0] reinstallAppWithID:idCopy];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -1204,12 +1204,12 @@ void __71__NTKGreenfieldCompanionContentViewController__reinstallAppWithAdamId__
   }
 }
 
-- (void)_reinstallSystemAppWithBundleId:(id)a3
+- (void)_reinstallSystemAppWithBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   objc_initWeak(&location, self);
-  v5 = [MEMORY[0x277CEC2C0] sharedWatchApps];
-  v6 = [v5 reinstallSystemAppWithBundleID:v4];
+  mEMORY[0x277CEC2C0] = [MEMORY[0x277CEC2C0] sharedWatchApps];
+  v6 = [mEMORY[0x277CEC2C0] reinstallSystemAppWithBundleID:idCopy];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -1286,10 +1286,10 @@ void __79__NTKGreenfieldCompanionContentViewController__reinstallSystemAppWithBu
   [WeakRetained companionContentViewController:self handleButtonEvent:0];
 }
 
-- (void)lockupViewDidFinishRequest:(id)a3
+- (void)lockupViewDidFinishRequest:(id)request
 {
-  v4 = a3;
-  v5 = v4;
+  requestCopy = request;
+  v5 = requestCopy;
   installMode = self->_installMode;
   if (installMode)
   {
@@ -1303,10 +1303,10 @@ void __79__NTKGreenfieldCompanionContentViewController__reinstallSystemAppWithBu
 
   if (v7)
   {
-    v8 = [v4 lockup];
-    v9 = [v8 offer];
+    lockup = [requestCopy lockup];
+    offer = [lockup offer];
 
-    if (([v9 flags] & 0x10) != 0 && (objc_msgSend(v9, "flags") & 0x40) != 0)
+    if (([offer flags] & 0x10) != 0 && (objc_msgSend(offer, "flags") & 0x40) != 0)
     {
       [v5 setAutomaticallyPresentsProductDetails:0];
       v10 = NTKClockFaceLocalizedString(@"GREENFIELD_ADD_WATCH_FACE_INSTALL_BUTTON_TITLE", @"INSTALL");
@@ -1323,14 +1323,14 @@ void __79__NTKGreenfieldCompanionContentViewController__reinstallSystemAppWithBu
 
   if (installMode == 1)
   {
-    v9 = NTKClockFaceLocalizedString(@"GREENFIELD_ADD_WATCH_FACE_INSTALL_BUTTON_TITLE", @"INSTALL");
+    offer = NTKClockFaceLocalizedString(@"GREENFIELD_ADD_WATCH_FACE_INSTALL_BUTTON_TITLE", @"INSTALL");
     objc_initWeak(&location, self);
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __74__NTKGreenfieldCompanionContentViewController_lockupViewDidFinishRequest___block_invoke;
     v12[3] = &unk_27877DC58;
     objc_copyWeak(&v13, &location);
-    [(NTKGreenfieldCompanionContentViewController *)self _overrideLockup:v5 withButtonTitle:v9 buttonAction:v12];
+    [(NTKGreenfieldCompanionContentViewController *)self _overrideLockup:v5 withButtonTitle:offer buttonAction:v12];
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
 LABEL_11:
@@ -1355,13 +1355,13 @@ void __74__NTKGreenfieldCompanionContentViewController_lockupViewDidFinishReques
   [*(a1 + 32) _reinstallSystemAppWithBundleId:v5];
 }
 
-- (void)lockupView:(id)a3 appStateDidChange:(id)a4
+- (void)lockupView:(id)view appStateDidChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v7 isEqualToString:*MEMORY[0x277CEC1B8]])
+  viewCopy = view;
+  changeCopy = change;
+  if (![changeCopy isEqualToString:*MEMORY[0x277CEC1B8]])
   {
-    if (([v7 isEqualToString:*MEMORY[0x277CEC198]] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", *MEMORY[0x277CEC1A0]))
+    if (([changeCopy isEqualToString:*MEMORY[0x277CEC198]] & 1) != 0 || objc_msgSend(changeCopy, "isEqualToString:", *MEMORY[0x277CEC1A0]))
     {
       if (self->_lockupViewDidUpdateStateForInstallingOrOpenable)
       {
@@ -1378,10 +1378,10 @@ void __74__NTKGreenfieldCompanionContentViewController_lockupViewDidFinishReques
 
     else
     {
-      if (![v7 isEqualToString:*MEMORY[0x277CEC1A8]])
+      if (![changeCopy isEqualToString:*MEMORY[0x277CEC1A8]])
       {
-        v8 = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
-        WeakRetained = v8;
+        alternateChoiceButton = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
+        WeakRetained = alternateChoiceButton;
         v10 = 1;
         goto LABEL_3;
       }
@@ -1394,26 +1394,26 @@ void __74__NTKGreenfieldCompanionContentViewController_lockupViewDidFinishReques
         v12[2] = __76__NTKGreenfieldCompanionContentViewController_lockupView_appStateDidChange___block_invoke;
         v12[3] = &unk_27877E438;
         v12[4] = self;
-        v13 = v6;
+        v13 = viewCopy;
         [(NTKGreenfieldCompanionContentViewController *)self _overrideLockup:v13 withButtonTitle:WeakRetained buttonAction:v12];
 
         goto LABEL_4;
       }
     }
 
-    v11 = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
-    [v11 setEnabled:1];
+    alternateChoiceButton2 = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
+    [alternateChoiceButton2 setEnabled:1];
 
     WeakRetained = objc_loadWeakRetained(&self->_greenfieldDelegate);
     [WeakRetained companionContentViewController:self didStartInstallingAppWithItemId:self->_complicationItemId];
     goto LABEL_4;
   }
 
-  v8 = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
-  WeakRetained = v8;
+  alternateChoiceButton = [(BPSWelcomeOptinViewController *)self alternateChoiceButton];
+  WeakRetained = alternateChoiceButton;
   v10 = 0;
 LABEL_3:
-  [v8 setEnabled:v10];
+  [alternateChoiceButton setEnabled:v10];
 LABEL_4:
 
 LABEL_5:
@@ -1429,15 +1429,15 @@ void __76__NTKGreenfieldCompanionContentViewController_lockupView_appStateDidCha
   [v1 _reinstallAppWithAdamId:v2];
 }
 
-- (id)_errorSubtitleForError:(id)a3
+- (id)_errorSubtitleForError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:@"com.apple.nanotimekit.NTKGreenfieldAddWatchFaceManager"];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:@"com.apple.nanotimekit.NTKGreenfieldAddWatchFaceManager"];
 
   if (v5)
   {
-    switch([v3 code])
+    switch([errorCopy code])
     {
       case 1:
       case 8:
@@ -1457,8 +1457,8 @@ void __76__NTKGreenfieldCompanionContentViewController_lockupView_appStateDidCha
       case 5:
         v10 = MEMORY[0x277CCACA8];
         v11 = NTKClockFaceLocalizedString(@"GREENFIELD_ADD_WATCH_FACE_ERROR_FACE_LIMIT", @"too many faces");
-        v12 = [MEMORY[0x277CBBAE8] currentDevice];
-        v8 = [v10 localizedStringWithFormat:v11, NTKFaceLibraryMaxFaceCountForDevice(v12)];
+        currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+        v8 = [v10 localizedStringWithFormat:v11, NTKFaceLibraryMaxFaceCountForDevice(currentDevice)];
 
         break;
       case 6:
@@ -1482,9 +1482,9 @@ void __76__NTKGreenfieldCompanionContentViewController_lockupView_appStateDidCha
         v7 = @"Watch face sharing is not available with your current version of watchOS.";
         goto LABEL_5;
       case 13:
-        v13 = [MEMORY[0x277CBBAE8] currentDevice];
-        v14 = [v13 pdrDevice];
-        v15 = [v14 valueForProperty:*MEMORY[0x277D37BD8]];
+        currentDevice2 = [MEMORY[0x277CBBAE8] currentDevice];
+        pdrDevice = [currentDevice2 pdrDevice];
+        v15 = [pdrDevice valueForProperty:*MEMORY[0x277D37BD8]];
 
         v16 = MEMORY[0x277CCACA8];
         v17 = NTKClockFaceLocalizedString(@"GREENFIELD_ADD_WATCH_FACE_ERROR_PAIRED_DEVICE_IS_TINKER", @"This face can be added on Apple Watch. Message it to %@ to get started.");
@@ -1508,23 +1508,23 @@ LABEL_5:
   return v8;
 }
 
-- (id)_errorTitleForError:(id)a3
+- (id)_errorTitleForError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 domain];
-  v6 = [v5 isEqualToString:@"com.apple.nanotimekit.NTKGreenfieldAddWatchFaceManager"];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v6 = [domain isEqualToString:@"com.apple.nanotimekit.NTKGreenfieldAddWatchFaceManager"];
 
   if (!v6)
   {
     goto LABEL_14;
   }
 
-  v7 = [v4 code];
-  if (v7 <= 5)
+  code = [errorCopy code];
+  if (code <= 5)
   {
-    if (v7 && v7 != 2)
+    if (code && code != 2)
     {
-      if (v7 == 4)
+      if (code == 4)
       {
         v8 = @"GREENFIELD_ADD_WATCH_FACE_ERROR_FAILED_TO_DOWNLOAD_WATCH_FACE_DATA_TITLE";
         v9 = @"This Watch Face is Not Available at This Time";
@@ -1537,11 +1537,11 @@ LABEL_5:
     goto LABEL_14;
   }
 
-  if (v7 > 10)
+  if (code > 10)
   {
-    if (v7 != 11)
+    if (code != 11)
     {
-      if (v7 == 12)
+      if (code == 12)
       {
 LABEL_13:
         v8 = @"GREENFIELD_ADD_WATCH_FACE_ERROR_NOT_AVAIALBLE_ON_DEVICE_ALERT_TITLE";
@@ -1556,9 +1556,9 @@ LABEL_15:
     }
 
 LABEL_14:
-    v10 = [(NTKGreenfieldDecodedRecipe *)self->_decodedRecipe watchFace];
+    watchFace = [(NTKGreenfieldDecodedRecipe *)self->_decodedRecipe watchFace];
 
-    if (!v10)
+    if (!watchFace)
     {
       goto LABEL_13;
     }
@@ -1566,9 +1566,9 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (v7 != 6)
+  if (code != 6)
   {
-    if (v7 == 10)
+    if (code == 10)
     {
       v8 = @"GREENFIELD_ADD_WATCH_FACE_ERROR_NO_NETWORK_CONNECTION_OR_INVALID_URL_TITLE";
       v9 = @"Unable to Download the Watch Face";

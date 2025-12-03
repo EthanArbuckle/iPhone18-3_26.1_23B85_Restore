@@ -1,16 +1,16 @@
 @interface SRBudswapDevice
-- (void)cacheInfo:(id)a3 andAddress:(id)a4 andName:(id)a5 andVersion:(id)a6;
+- (void)cacheInfo:(id)info andAddress:(id)address andName:(id)name andVersion:(id)version;
 @end
 
 @implementation SRBudswapDevice
 
-- (void)cacheInfo:(id)a3 andAddress:(id)a4 andName:(id)a5 andVersion:(id)a6
+- (void)cacheInfo:(id)info andAddress:(id)address andName:(id)name andVersion:(id)version
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v10;
+  infoCopy = info;
+  addressCopy = address;
+  nameCopy = name;
+  versionCopy = version;
+  v14 = infoCopy;
   cachedBudswapAddress = self->cachedBudswapAddress;
   if (v14 | cachedBudswapAddress && ![(NSString *)cachedBudswapAddress isEqualToString:v14]&& dword_1002F70D8 <= 30 && (dword_1002F70D8 != -1 || _LogCategory_Initialize()))
   {
@@ -24,15 +24,15 @@
   v24 = v14;
 
   v17 = self->otherTipiDeviceBTAddress;
-  self->otherTipiDeviceBTAddress = v11;
-  v18 = v11;
+  self->otherTipiDeviceBTAddress = addressCopy;
+  v18 = addressCopy;
 
   otherTipiDeviceBTName = self->otherTipiDeviceBTName;
-  self->otherTipiDeviceBTName = v12;
-  v20 = v12;
+  self->otherTipiDeviceBTName = nameCopy;
+  v20 = nameCopy;
 
   otherTipiDeviceVersion = self->otherTipiDeviceVersion;
-  self->otherTipiDeviceVersion = v13;
+  self->otherTipiDeviceVersion = versionCopy;
 }
 
 @end

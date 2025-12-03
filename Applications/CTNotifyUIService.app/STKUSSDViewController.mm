@@ -1,28 +1,28 @@
 @interface STKUSSDViewController
-- (BOOL)textField:(id)a3 shouldInsertText:(id)a4 replacingRange:(_NSRange)a5;
+- (BOOL)textField:(id)field shouldInsertText:(id)text replacingRange:(_NSRange)range;
 - (id)_replyView;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_cancelClicked:(id)a3;
+- (void)_cancelClicked:(id)clicked;
 - (void)_displayDidTimeout;
-- (void)_keyboardWillChangeFrame:(id)a3;
-- (void)_noteDidReceiveContent:(id)a3;
-- (void)_okayClicked:(id)a3;
-- (void)_replyClicked:(id)a3;
+- (void)_keyboardWillChangeFrame:(id)frame;
+- (void)_noteDidReceiveContent:(id)content;
+- (void)_okayClicked:(id)clicked;
+- (void)_replyClicked:(id)clicked;
 - (void)_setupResponseBar;
 - (void)_updateCharsRemaining;
-- (void)_updateNotifyText:(id)a3;
+- (void)_updateNotifyText:(id)text;
 - (void)_willAppearInRemoteViewController;
 - (void)clearTimeoutTimer;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (void)configureWithContext:(id)context completion:(id)completion;
 - (void)dealloc;
 - (void)dismiss;
 - (void)dismissCoalescingSession;
-- (void)sessionDidReceiveErrorCode:(int64_t)a3 string:(id)a4;
-- (void)sessionDidReceiveString:(id)a3;
-- (void)sessionDidReceiveSupplementaryServicesEvent:(id)a3;
+- (void)sessionDidReceiveErrorCode:(int64_t)code string:(id)string;
+- (void)sessionDidReceiveString:(id)string;
+- (void)sessionDidReceiveSupplementaryServicesEvent:(id)event;
 - (void)sessionDidTerminate;
-- (void)sessionWantsResponse:(BOOL)a3;
-- (void)setAllowsResponse:(BOOL)a3;
+- (void)sessionWantsResponse:(BOOL)response;
+- (void)setAllowsResponse:(BOOL)response;
 - (void)startTimeoutTimerIfNecessary;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -45,9 +45,9 @@
 - (unint64_t)supportedInterfaceOrientations
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  if ((v3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     return 30;
   }
@@ -76,9 +76,9 @@
   [(NSNumberFormatter *)v7 setLocale:v8];
 
   [(NSNumberFormatter *)self->_decimalFormatter setNumberStyle:1];
-  v9 = [(STKUSSDViewController *)self view];
+  view = [(STKUSSDViewController *)self view];
   v10 = [UIColor colorWithRed:0.349019608 green:0.349019608 blue:0.349019608 alpha:1.0];
-  [v9 setBackgroundColor:v10];
+  [view setBackgroundColor:v10];
 
   v81 = +[NSNotificationCenter defaultCenter];
   [v81 addObserver:self selector:"_keyboardWillChangeFrame:" name:UIKeyboardWillChangeFrameNotification object:0];
@@ -86,23 +86,23 @@
   keyboardGuide = self->_keyboardGuide;
   self->_keyboardGuide = v11;
 
-  [v9 addLayoutGuide:self->_keyboardGuide];
-  v13 = [(UILayoutGuide *)self->_keyboardGuide topAnchor];
-  v14 = [v9 safeAreaLayoutGuide];
-  v15 = [v14 bottomAnchor];
+  [view addLayoutGuide:self->_keyboardGuide];
+  topAnchor = [(UILayoutGuide *)self->_keyboardGuide topAnchor];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  bottomAnchor = [safeAreaLayoutGuide bottomAnchor];
   +[TPButton defaultHeight];
-  v17 = [v13 constraintEqualToAnchor:v15 constant:-v16];
+  v17 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:-v16];
   keyboardTopConstraint = self->_keyboardTopConstraint;
   self->_keyboardTopConstraint = v17;
 
   v19 = [UIView alloc];
-  [v9 frame];
+  [view frame];
   v20 = [v19 initWithFrame:?];
   notifyView = self->_notifyView;
   self->_notifyView = v20;
 
   [(UIView *)self->_notifyView setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v9 addSubview:self->_notifyView];
+  [view addSubview:self->_notifyView];
   v22 = [[UITextView alloc] initWithFrame:0 textContainer:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   textView = self->_textView;
   self->_textView = v22;
@@ -119,85 +119,85 @@
   [(UITextView *)self->_textView setBackgroundColor:0];
   [(UITextView *)self->_textView setTextAlignment:1];
   [(UITextView *)self->_textView setSelectable:0];
-  [v9 addSubview:self->_textView];
+  [view addSubview:self->_textView];
   v26 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:1];
   activityIndicator = self->_activityIndicator;
   self->_activityIndicator = v26;
 
   [(UIActivityIndicatorView *)self->_activityIndicator setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)self->_notifyView addSubview:self->_activityIndicator];
-  v28 = [(UITextView *)self->_textView heightAnchor];
-  v29 = [v28 constraintEqualToConstant:0.0];
+  heightAnchor = [(UITextView *)self->_textView heightAnchor];
+  v29 = [heightAnchor constraintEqualToConstant:0.0];
   textViewHeightConstraint = self->_textViewHeightConstraint;
   self->_textViewHeightConstraint = v29;
 
   LODWORD(v31) = 1144750080;
   [(NSLayoutConstraint *)self->_textViewHeightConstraint setPriority:v31];
-  v32 = [(UITextView *)self->_textView bottomAnchor];
-  v33 = [(UILayoutGuide *)self->_keyboardGuide topAnchor];
-  v34 = [v32 constraintEqualToAnchor:v33 constant:-50.0];
+  bottomAnchor2 = [(UITextView *)self->_textView bottomAnchor];
+  topAnchor2 = [(UILayoutGuide *)self->_keyboardGuide topAnchor];
+  v34 = [bottomAnchor2 constraintEqualToAnchor:topAnchor2 constant:-50.0];
   textViewBottomConstraint = self->_textViewBottomConstraint;
   self->_textViewBottomConstraint = v34;
 
   LODWORD(v36) = 1144766464;
   [(NSLayoutConstraint *)self->_textViewBottomConstraint setPriority:v36];
   v83[0] = self->_keyboardTopConstraint;
-  v79 = [(UILayoutGuide *)self->_keyboardGuide widthAnchor];
-  v80 = [v9 safeAreaLayoutGuide];
-  v78 = [v80 widthAnchor];
-  v77 = [v79 constraintEqualToAnchor:v78];
+  widthAnchor = [(UILayoutGuide *)self->_keyboardGuide widthAnchor];
+  safeAreaLayoutGuide2 = [view safeAreaLayoutGuide];
+  widthAnchor2 = [safeAreaLayoutGuide2 widthAnchor];
+  v77 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v83[1] = v77;
-  v76 = [(UILayoutGuide *)self->_keyboardGuide bottomAnchor];
-  v37 = v9;
-  v75 = [v9 bottomAnchor];
-  v74 = [v76 constraintEqualToAnchor:v75];
+  bottomAnchor3 = [(UILayoutGuide *)self->_keyboardGuide bottomAnchor];
+  v37 = view;
+  bottomAnchor4 = [view bottomAnchor];
+  v74 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v83[2] = v74;
-  v72 = [(UILayoutGuide *)self->_keyboardGuide centerXAnchor];
-  v73 = [v9 safeAreaLayoutGuide];
-  v71 = [v73 centerXAnchor];
-  v70 = [v72 constraintEqualToAnchor:v71];
+  centerXAnchor = [(UILayoutGuide *)self->_keyboardGuide centerXAnchor];
+  safeAreaLayoutGuide3 = [view safeAreaLayoutGuide];
+  centerXAnchor2 = [safeAreaLayoutGuide3 centerXAnchor];
+  v70 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v83[3] = v70;
-  v69 = [(UIView *)self->_notifyView widthAnchor];
-  v68 = [v9 widthAnchor];
-  v67 = [v69 constraintEqualToAnchor:v68];
+  widthAnchor3 = [(UIView *)self->_notifyView widthAnchor];
+  widthAnchor4 = [view widthAnchor];
+  v67 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
   v83[4] = v67;
-  v66 = [(UIView *)self->_notifyView heightAnchor];
-  v65 = [v9 heightAnchor];
-  v64 = [v66 constraintEqualToAnchor:v65];
+  heightAnchor2 = [(UIView *)self->_notifyView heightAnchor];
+  heightAnchor3 = [view heightAnchor];
+  v64 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
   v83[5] = v64;
-  v63 = [(UIView *)self->_notifyView centerXAnchor];
-  v62 = [v9 centerXAnchor];
-  v61 = [v63 constraintEqualToAnchor:v62];
+  centerXAnchor3 = [(UIView *)self->_notifyView centerXAnchor];
+  centerXAnchor4 = [view centerXAnchor];
+  v61 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v83[6] = v61;
-  v60 = [(UIView *)self->_notifyView centerYAnchor];
-  v59 = [v9 centerYAnchor];
-  v58 = [v60 constraintEqualToAnchor:v59];
+  centerYAnchor = [(UIView *)self->_notifyView centerYAnchor];
+  centerYAnchor2 = [view centerYAnchor];
+  v58 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v83[7] = v58;
-  v56 = [(UITextView *)self->_textView topAnchor];
-  v57 = [v9 safeAreaLayoutGuide];
-  v55 = [v57 topAnchor];
-  v54 = [v56 constraintEqualToAnchor:v55 constant:50.0];
+  topAnchor3 = [(UITextView *)self->_textView topAnchor];
+  safeAreaLayoutGuide4 = [view safeAreaLayoutGuide];
+  topAnchor4 = [safeAreaLayoutGuide4 topAnchor];
+  v54 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:50.0];
   v38 = self->_textViewHeightConstraint;
   v83[8] = v54;
   v83[9] = v38;
   v83[10] = self->_textViewBottomConstraint;
-  v52 = [(UITextView *)self->_textView widthAnchor];
-  v53 = [v9 safeAreaLayoutGuide];
-  v51 = [v53 widthAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51 constant:-8.0];
+  widthAnchor5 = [(UITextView *)self->_textView widthAnchor];
+  safeAreaLayoutGuide5 = [view safeAreaLayoutGuide];
+  widthAnchor6 = [safeAreaLayoutGuide5 widthAnchor];
+  v50 = [widthAnchor5 constraintEqualToAnchor:widthAnchor6 constant:-8.0];
   v83[11] = v50;
-  v48 = [(UITextView *)self->_textView centerXAnchor];
-  v49 = [v9 safeAreaLayoutGuide];
-  v39 = [v49 centerXAnchor];
-  v40 = [v48 constraintEqualToAnchor:v39];
+  centerXAnchor5 = [(UITextView *)self->_textView centerXAnchor];
+  safeAreaLayoutGuide6 = [view safeAreaLayoutGuide];
+  centerXAnchor6 = [safeAreaLayoutGuide6 centerXAnchor];
+  v40 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
   v83[12] = v40;
-  v41 = [(UIActivityIndicatorView *)self->_activityIndicator centerXAnchor];
-  v42 = [(UIView *)self->_notifyView centerXAnchor];
-  v43 = [v41 constraintEqualToAnchor:v42];
+  centerXAnchor7 = [(UIActivityIndicatorView *)self->_activityIndicator centerXAnchor];
+  centerXAnchor8 = [(UIView *)self->_notifyView centerXAnchor];
+  v43 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
   v83[13] = v43;
-  v44 = [(UIActivityIndicatorView *)self->_activityIndicator centerYAnchor];
-  v45 = [(UIView *)self->_notifyView centerYAnchor];
-  v46 = [v44 constraintEqualToAnchor:v45 constant:-35.0];
+  centerYAnchor3 = [(UIActivityIndicatorView *)self->_activityIndicator centerYAnchor];
+  centerYAnchor4 = [(UIView *)self->_notifyView centerYAnchor];
+  v46 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4 constant:-35.0];
   v83[14] = v46;
   v47 = [NSArray arrayWithObjects:v83 count:15];
   [NSLayoutConstraint activateConstraints:v47];
@@ -208,20 +208,20 @@
   v5.receiver = self;
   v5.super_class = STKUSSDViewController;
   [(STKUSSDViewController *)&v5 _willAppearInRemoteViewController];
-  v3 = [(STKUSSDViewController *)self _remoteViewControllerProxy];
-  [v3 setAllowsMenuButtonDismissal:1];
+  _remoteViewControllerProxy = [(STKUSSDViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setAllowsMenuButtonDismissal:1];
 
-  v4 = [(STKUSSDViewController *)self _remoteViewControllerProxy];
-  [v4 setAllowsAlertStacking:1];
+  _remoteViewControllerProxy2 = [(STKUSSDViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy2 setAllowsAlertStacking:1];
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = objc_alloc_init(NSXPCListenerEndpoint);
-  v9 = [v6 xpcEndpoint];
-  [v8 _setEndpoint:v9];
+  xpcEndpoint = [contextCopy xpcEndpoint];
+  [v8 _setEndpoint:xpcEndpoint];
 
   v10 = [[NSXPCConnection alloc] initWithListenerEndpoint:v8];
   connection = self->_connection;
@@ -245,12 +245,12 @@
   objc_copyWeak(&v26, &location);
   [(NSXPCConnection *)v16 setInvalidationHandler:v25];
   [(NSXPCConnection *)self->_connection resume];
-  v17 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-  [v17 wakeup];
+  remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+  [remoteObjectProxy wakeup];
 
   memset(v24, 0, sizeof(v24));
-  v18 = [v6 actions];
-  if ([v18 countByEnumeratingWithState:v24 objects:v30 count:16])
+  actions = [contextCopy actions];
+  if ([actions countByEnumeratingWithState:v24 objects:v30 count:16])
   {
     v19 = [STKSessionAction _sessionActionFromBSAction:**(&v24[0] + 1)];
     objc_opt_class();
@@ -261,9 +261,9 @@
   }
 
   v20 = +[BSPlatform sharedInstance];
-  v21 = [v20 isInternalInstall];
+  isInternalInstall = [v20 isInternalInstall];
 
-  if (v21)
+  if (isInternalInstall)
   {
     v22 = STKCommonLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -275,9 +275,9 @@
     }
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
   objc_destroyWeak(&v26);
@@ -319,56 +319,56 @@
   }
 }
 
-- (void)setAllowsResponse:(BOOL)a3
+- (void)setAllowsResponse:(BOOL)response
 {
-  if (self->_allowsResponse != a3)
+  if (self->_allowsResponse != response)
   {
-    self->_allowsResponse = a3;
+    self->_allowsResponse = response;
     [(STKUSSDViewController *)self _setupResponseBar];
   }
 }
 
-- (void)_cancelClicked:(id)a3
+- (void)_cancelClicked:(id)clicked
 {
-  v4 = [(STKUSSDViewController *)self sessionAction];
-  [v4 sendResponse:1];
+  sessionAction = [(STKUSSDViewController *)self sessionAction];
+  [sessionAction sendResponse:1];
 
   [(STKUSSDViewController *)self dismiss];
 }
 
-- (void)_okayClicked:(id)a3
+- (void)_okayClicked:(id)clicked
 {
   if (self->_allowsResponse)
   {
     [(USSDReplyField *)self->_responseField endEditing:1];
-    v4 = [(STKUSSDViewController *)self sessionAction];
-    v5 = [(USSDReplyField *)self->_responseField text];
-    [v4 sendSuccessWithResponse:v5];
+    sessionAction = [(STKUSSDViewController *)self sessionAction];
+    text = [(USSDReplyField *)self->_responseField text];
+    [sessionAction sendSuccessWithResponse:text];
   }
 
   [(STKUSSDViewController *)self dismiss];
 }
 
-- (void)_replyClicked:(id)a3
+- (void)_replyClicked:(id)clicked
 {
   v17 = +[NSNotificationCenter defaultCenter];
   [v17 addObserver:self selector:"_textDidChangeNotification:" name:UITextFieldTextDidChangeNotification object:self->_responseField];
   [(UIView *)self->_notifyView removeFromSuperview];
-  v4 = [(STKUSSDViewController *)self view];
-  v5 = [(STKUSSDViewController *)self _replyView];
-  [v4 addSubview:v5];
-  v15 = [v5 topAnchor];
-  v16 = [v4 safeAreaLayoutGuide];
-  v14 = [v16 topAnchor];
-  v13 = [v15 constraintEqualToAnchor:v14];
+  view = [(STKUSSDViewController *)self view];
+  _replyView = [(STKUSSDViewController *)self _replyView];
+  [view addSubview:_replyView];
+  topAnchor = [_replyView topAnchor];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v18[0] = v13;
-  v6 = [v5 bottomAnchor];
-  v7 = [(UILayoutGuide *)self->_keyboardGuide topAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  bottomAnchor = [_replyView bottomAnchor];
+  topAnchor3 = [(UILayoutGuide *)self->_keyboardGuide topAnchor];
+  v8 = [bottomAnchor constraintEqualToAnchor:topAnchor3];
   v18[1] = v8;
-  v9 = [v5 widthAnchor];
-  v10 = [v4 widthAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  widthAnchor = [_replyView widthAnchor];
+  widthAnchor2 = [view widthAnchor];
+  v11 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v18[2] = v11;
   v12 = [NSArray arrayWithObjects:v18 count:3];
   [NSLayoutConstraint activateConstraints:v12];
@@ -376,10 +376,10 @@
   [(USSDReplyField *)self->_responseField becomeFirstResponder];
 }
 
-- (void)_keyboardWillChangeFrame:(id)a3
+- (void)_keyboardWillChangeFrame:(id)frame
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:UIKeyboardFrameEndUserInfoKey];
+  userInfo = [frame userInfo];
+  v5 = [userInfo objectForKeyedSubscript:UIKeyboardFrameEndUserInfoKey];
   [v5 CGRectValue];
   v7 = v6;
   v9 = v8;
@@ -391,9 +391,9 @@
   v21.size.width = v11;
   v21.size.height = v13;
   MinY = CGRectGetMinY(v21);
-  v15 = [(STKUSSDViewController *)self view];
-  v16 = [v15 safeAreaLayoutGuide];
-  [v16 layoutFrame];
+  view = [(STKUSSDViewController *)self view];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  [safeAreaLayoutGuide layoutFrame];
   MaxY = CGRectGetMaxY(v22);
 
   [(NSLayoutConstraint *)self->_keyboardTopConstraint setConstant:-(MaxY - MinY)];
@@ -430,9 +430,9 @@
 - (void)dismissCoalescingSession
 {
   v3 = +[BSPlatform sharedInstance];
-  v4 = [v3 isInternalInstall];
+  isInternalInstall = [v3 isInternalInstall];
 
-  if (v4)
+  if (isInternalInstall)
   {
     v5 = STKCommonLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -445,28 +445,28 @@
   [(STKUSSDViewController *)self dismiss];
 }
 
-- (void)sessionDidReceiveString:(id)a3
+- (void)sessionDidReceiveString:(id)string
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100008670;
   v5[3] = &unk_1000184B0;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  stringCopy = string;
+  selfCopy = self;
+  v4 = stringCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 
-- (void)sessionDidReceiveErrorCode:(int64_t)a3 string:(id)a4
+- (void)sessionDidReceiveErrorCode:(int64_t)code string:(id)string
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000087EC;
   block[3] = &unk_1000184D8;
-  v7 = self;
-  v8 = a3;
-  v6 = a4;
-  v4 = v6;
+  selfCopy = self;
+  codeCopy = code;
+  stringCopy = string;
+  v4 = stringCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
@@ -480,37 +480,37 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)sessionWantsResponse:(BOOL)a3
+- (void)sessionWantsResponse:(BOOL)response
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100008B30;
   v3[3] = &unk_100018500;
   v3[4] = self;
-  v4 = a3;
+  responseCopy = response;
   dispatch_async(&_dispatch_main_q, v3);
 }
 
-- (void)sessionDidReceiveSupplementaryServicesEvent:(id)a3
+- (void)sessionDidReceiveSupplementaryServicesEvent:(id)event
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100008C08;
   v4[3] = &unk_1000184B0;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  eventCopy = event;
+  v3 = eventCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (BOOL)textField:(id)a3 shouldInsertText:(id)a4 replacingRange:(_NSRange)a5
+- (BOOL)textField:(id)field shouldInsertText:(id)text replacingRange:(_NSRange)range
 {
-  length = a5.length;
-  v7 = a4;
-  v8 = [a3 text];
-  v9 = [v8 length];
+  length = range.length;
+  textCopy = text;
+  text = [field text];
+  v9 = [text length];
 
-  v10 = v9 < 0xB6 || length >= [v7 length];
+  v10 = v9 < 0xB6 || length >= [textCopy length];
   return v10;
 }
 
@@ -519,8 +519,8 @@
   replyView = self->_replyView;
   if (!replyView)
   {
-    v4 = [(STKUSSDViewController *)self view];
-    [v4 bounds];
+    view = [(STKUSSDViewController *)self view];
+    [view bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -565,9 +565,9 @@
     y = CGRectZero.origin.y;
     width = CGRectZero.size.width;
     height = CGRectZero.size.height;
-    v32 = [(USSDReplyField *)v28 initWithFrame:CGRectZero.origin.x, y, width, height];
+    height = [(USSDReplyField *)v28 initWithFrame:CGRectZero.origin.x, y, width, height];
     responseField = self->_responseField;
-    self->_responseField = v32;
+    self->_responseField = height;
 
     [(USSDReplyField *)self->_responseField _setLayoutDebuggingIdentifier:@"_responseField"];
     [(USSDReplyField *)self->_responseField setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -586,30 +586,30 @@
 
     [(USSDReplyField *)self->_responseField setDelegate:self];
     [(USSDReplyField *)self->_responseField setKeyboardAppearance:1];
-    v40 = [(USSDReplyField *)self->_responseField layer];
-    [v40 setCornerRadius:8.0];
+    layer = [(USSDReplyField *)self->_responseField layer];
+    [layer setCornerRadius:8.0];
 
-    v41 = [(USSDReplyField *)self->_responseField layer];
-    [v41 setMasksToBounds:1];
+    layer2 = [(USSDReplyField *)self->_responseField layer];
+    [layer2 setMasksToBounds:1];
 
     v42 = +[UIColor whiteColor];
-    v43 = [v42 CGColor];
-    v44 = [(USSDReplyField *)self->_responseField layer];
-    [v44 setBorderColor:v43];
+    cGColor = [v42 CGColor];
+    layer3 = [(USSDReplyField *)self->_responseField layer];
+    [layer3 setBorderColor:cGColor];
 
-    v45 = [(USSDReplyField *)self->_responseField layer];
-    [v45 setBorderWidth:1.0];
+    layer4 = [(USSDReplyField *)self->_responseField layer];
+    [layer4 setBorderWidth:1.0];
 
-    v87 = [(USSDReplyField *)self->_responseField textInputTraits];
-    [v87 setAcceptsFloatingKeyboard:0];
-    [v87 setAcceptsSplitKeyboard:0];
+    textInputTraits = [(USSDReplyField *)self->_responseField textInputTraits];
+    [textInputTraits setAcceptsFloatingKeyboard:0];
+    [textInputTraits setAcceptsSplitKeyboard:0];
     v46 = +[UIColor whiteColor];
-    [v87 setInsertionPointColor:v46];
+    [textInputTraits setInsertionPointColor:v46];
 
-    [v87 setKeyboardAppearance:1];
-    [v87 setAutocorrectionType:1];
-    [v87 setTextLoupeVisibility:1];
-    [v87 setLearnsCorrections:0];
+    [textInputTraits setKeyboardAppearance:1];
+    [textInputTraits setAutocorrectionType:1];
+    [textInputTraits setTextLoupeVisibility:1];
+    [textInputTraits setLearnsCorrections:0];
     [(UIView *)self->_replyView addSubview:self->_responseField];
     v47 = [[UITextView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     charsRemainingView = self->_charsRemainingView;
@@ -629,49 +629,49 @@
     [(UITextView *)self->_charsRemainingView setTextAlignment:1];
     [(UITextView *)self->_charsRemainingView setUserInteractionEnabled:0];
     [(UIView *)self->_replyView addSubview:self->_charsRemainingView];
-    v85 = [v27 topAnchor];
-    v86 = [(UIView *)self->_replyView safeAreaLayoutGuide];
-    v84 = [v86 topAnchor];
-    v83 = [v85 constraintEqualToAnchor:v84];
+    topAnchor = [v27 topAnchor];
+    safeAreaLayoutGuide = [(UIView *)self->_replyView safeAreaLayoutGuide];
+    topAnchor2 = [safeAreaLayoutGuide topAnchor];
+    v83 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v92[0] = v83;
-    v82 = [v27 widthAnchor];
-    v81 = [(UIView *)self->_replyView widthAnchor];
-    v80 = [v82 constraintEqualToAnchor:v81];
+    widthAnchor = [v27 widthAnchor];
+    widthAnchor2 = [(UIView *)self->_replyView widthAnchor];
+    v80 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v92[1] = v80;
-    v79 = [v27 centerXAnchor];
-    v78 = [(UIView *)self->_replyView centerXAnchor];
-    v77 = [v79 constraintEqualToAnchor:v78];
+    centerXAnchor = [v27 centerXAnchor];
+    centerXAnchor2 = [(UIView *)self->_replyView centerXAnchor];
+    v77 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v92[2] = v77;
-    v76 = [(USSDReplyField *)self->_responseField leadingAnchor];
-    v75 = [(UIView *)self->_replyView leadingAnchor];
-    v74 = [v76 constraintEqualToAnchor:v75 constant:4.0];
+    leadingAnchor = [(USSDReplyField *)self->_responseField leadingAnchor];
+    leadingAnchor2 = [(UIView *)self->_replyView leadingAnchor];
+    v74 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:4.0];
     v92[3] = v74;
-    v72 = [(USSDReplyField *)self->_responseField bottomAnchor];
-    v73 = [(UIView *)self->_replyView safeAreaLayoutGuide];
-    v71 = [v73 bottomAnchor];
-    v70 = [v72 constraintEqualToAnchor:v71 constant:-30.0];
+    bottomAnchor = [(USSDReplyField *)self->_responseField bottomAnchor];
+    safeAreaLayoutGuide2 = [(UIView *)self->_replyView safeAreaLayoutGuide];
+    bottomAnchor2 = [safeAreaLayoutGuide2 bottomAnchor];
+    v70 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-30.0];
     v92[4] = v70;
-    v69 = [(USSDReplyField *)self->_responseField widthAnchor];
-    v68 = [(UIView *)self->_replyView widthAnchor];
-    v67 = [v69 constraintEqualToAnchor:v68 constant:-8.0];
+    widthAnchor3 = [(USSDReplyField *)self->_responseField widthAnchor];
+    widthAnchor4 = [(UIView *)self->_replyView widthAnchor];
+    v67 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4 constant:-8.0];
     v92[5] = v67;
-    v66 = [(USSDReplyField *)self->_responseField heightAnchor];
-    v65 = [v66 constraintEqualToConstant:38.0];
+    heightAnchor = [(USSDReplyField *)self->_responseField heightAnchor];
+    v65 = [heightAnchor constraintEqualToConstant:38.0];
     v92[6] = v65;
-    v64 = [(UITextView *)self->_charsRemainingView leadingAnchor];
-    v63 = [(UIView *)self->_replyView leadingAnchor];
-    v62 = [v64 constraintEqualToAnchor:v63 constant:4.0];
+    leadingAnchor3 = [(UITextView *)self->_charsRemainingView leadingAnchor];
+    leadingAnchor4 = [(UIView *)self->_replyView leadingAnchor];
+    v62 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:4.0];
     v92[7] = v62;
-    v52 = [(UITextView *)self->_charsRemainingView topAnchor];
-    v53 = [(USSDReplyField *)self->_responseField bottomAnchor];
-    v54 = [v52 constraintEqualToAnchor:v53];
+    topAnchor3 = [(UITextView *)self->_charsRemainingView topAnchor];
+    bottomAnchor3 = [(USSDReplyField *)self->_responseField bottomAnchor];
+    v54 = [topAnchor3 constraintEqualToAnchor:bottomAnchor3];
     v92[8] = v54;
-    v55 = [(UITextView *)self->_charsRemainingView heightAnchor];
-    v56 = [v55 constraintEqualToConstant:28.0];
+    heightAnchor2 = [(UITextView *)self->_charsRemainingView heightAnchor];
+    v56 = [heightAnchor2 constraintEqualToConstant:28.0];
     v92[9] = v56;
-    v57 = [(UITextView *)self->_charsRemainingView widthAnchor];
-    v58 = [(UIView *)self->_replyView widthAnchor];
-    v59 = [v57 constraintEqualToAnchor:v58 constant:-8.0];
+    widthAnchor5 = [(UITextView *)self->_charsRemainingView widthAnchor];
+    widthAnchor6 = [(UIView *)self->_replyView widthAnchor];
+    v59 = [widthAnchor5 constraintEqualToAnchor:widthAnchor6 constant:-8.0];
     v92[10] = v59;
     v60 = [NSArray arrayWithObjects:v92 count:11];
     [NSLayoutConstraint activateConstraints:v60];
@@ -683,13 +683,13 @@
   return replyView;
 }
 
-- (void)_noteDidReceiveContent:(id)a3
+- (void)_noteDidReceiveContent:(id)content
 {
   self->_hasReceivedContent = 1;
   activityIndicator = self->_activityIndicator;
-  v5 = a3;
+  contentCopy = content;
   [(UIActivityIndicatorView *)activityIndicator stopAnimating];
-  [(STKUSSDViewController *)self _updateNotifyText:v5];
+  [(STKUSSDViewController *)self _updateNotifyText:contentCopy];
 
   [(STKUSSDViewController *)self _setupResponseBar];
 }
@@ -728,9 +728,9 @@
   [(TPButton *)v14 setTitleColor:v15 forState:4];
 
   [(UIView *)self->_notifyView addSubview:self->_dismissButton];
-  v16 = [(STKUSSDViewController *)self allowsResponse];
+  allowsResponse = [(STKUSSDViewController *)self allowsResponse];
   v17 = &selRef__cancelClicked_;
-  if (!v16)
+  if (!allowsResponse)
   {
     v17 = &selRef__okayClicked_;
   }
@@ -760,17 +760,17 @@
 
   +[TPButton defaultHeight];
   v28 = v27;
-  v58 = [(TPButton *)self->_dismissButton heightAnchor];
-  v29 = [v58 constraintEqualToConstant:v28];
+  heightAnchor = [(TPButton *)self->_dismissButton heightAnchor];
+  v29 = [heightAnchor constraintEqualToConstant:v28];
   v62[0] = v29;
-  v30 = [(TPButton *)self->_dismissButton bottomAnchor];
-  v31 = [(UIView *)self->_notifyView safeAreaLayoutGuide];
-  v32 = [v31 bottomAnchor];
-  v33 = [v30 constraintEqualToAnchor:v32 constant:-8.0];
+  bottomAnchor = [(TPButton *)self->_dismissButton bottomAnchor];
+  safeAreaLayoutGuide = [(UIView *)self->_notifyView safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
+  v33 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-8.0];
   v62[1] = v33;
-  v34 = [(TPButton *)self->_dismissButton leadingAnchor];
-  v35 = [(UIView *)self->_notifyView leadingAnchor];
-  v36 = [v34 constraintEqualToAnchor:v35 constant:16.0];
+  leadingAnchor = [(TPButton *)self->_dismissButton leadingAnchor];
+  leadingAnchor2 = [(UIView *)self->_notifyView leadingAnchor];
+  v36 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v62[2] = v36;
   v37 = [NSArray arrayWithObjects:v62 count:3];
   [NSLayoutConstraint activateConstraints:v37];
@@ -779,49 +779,49 @@
   {
     +[TPSuperBottomBar defaultInterButtonSpacing];
     v39 = v38;
-    v55 = [(TPButton *)self->_dismissButton widthAnchor];
-    v56 = [(UIView *)self->_notifyView widthAnchor];
-    v40 = [v55 constraintEqualToAnchor:v56 multiplier:0.5 constant:-16.0 - v39 * 0.5];
+    widthAnchor = [(TPButton *)self->_dismissButton widthAnchor];
+    widthAnchor2 = [(UIView *)self->_notifyView widthAnchor];
+    v40 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:0.5 constant:-16.0 - v39 * 0.5];
     v61[0] = v40;
-    v41 = [(TPButton *)self->_replyButton widthAnchor];
-    v59 = [(TPButton *)self->_dismissButton widthAnchor];
-    v57 = [v41 constraintEqualToAnchor:v59];
+    widthAnchor3 = [(TPButton *)self->_replyButton widthAnchor];
+    widthAnchor4 = [(TPButton *)self->_dismissButton widthAnchor];
+    v57 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
     v61[1] = v57;
-    v54 = [(TPButton *)self->_replyButton heightAnchor];
-    v42 = [v54 constraintEqualToConstant:v28];
+    heightAnchor2 = [(TPButton *)self->_replyButton heightAnchor];
+    v42 = [heightAnchor2 constraintEqualToConstant:v28];
     v61[2] = v42;
-    v43 = [(TPButton *)self->_replyButton centerYAnchor];
-    v44 = [(TPButton *)self->_dismissButton centerYAnchor];
-    v45 = [v43 constraintEqualToAnchor:v44];
+    centerYAnchor = [(TPButton *)self->_replyButton centerYAnchor];
+    centerYAnchor2 = [(TPButton *)self->_dismissButton centerYAnchor];
+    v45 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v61[3] = v45;
-    v46 = [(TPButton *)self->_replyButton leadingAnchor];
-    v47 = [(TPButton *)self->_dismissButton trailingAnchor];
-    v48 = [v46 constraintEqualToAnchor:v47 constant:v39];
+    leadingAnchor3 = [(TPButton *)self->_replyButton leadingAnchor];
+    trailingAnchor = [(TPButton *)self->_dismissButton trailingAnchor];
+    v48 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:v39];
     v61[4] = v48;
     v49 = [NSArray arrayWithObjects:v61 count:5];
     [NSLayoutConstraint activateConstraints:v49];
 
-    v50 = v55;
-    v51 = v56;
+    widthAnchor5 = widthAnchor;
+    widthAnchor6 = widthAnchor2;
   }
 
   else
   {
     +[TPSuperBottomBar defaultSideMarginForSingleButton];
     v53 = v52;
-    v50 = [(TPButton *)self->_dismissButton widthAnchor];
-    v51 = [(UIView *)self->_notifyView widthAnchor];
-    v40 = [v50 constraintEqualToAnchor:v51 constant:v53 * -2.0];
+    widthAnchor5 = [(TPButton *)self->_dismissButton widthAnchor];
+    widthAnchor6 = [(UIView *)self->_notifyView widthAnchor];
+    v40 = [widthAnchor5 constraintEqualToAnchor:widthAnchor6 constant:v53 * -2.0];
     v60 = v40;
-    v41 = [NSArray arrayWithObjects:&v60 count:1];
-    [NSLayoutConstraint activateConstraints:v41];
+    widthAnchor3 = [NSArray arrayWithObjects:&v60 count:1];
+    [NSLayoutConstraint activateConstraints:widthAnchor3];
   }
 }
 
 - (void)_updateCharsRemaining
 {
-  v3 = [(USSDReplyField *)self->_responseField text];
-  v4 = (182 - [v3 length]);
+  text = [(USSDReplyField *)self->_responseField text];
+  v4 = (182 - [text length]);
 
   v5 = v4 & ~(v4 >> 63);
   charsRemainingView = self->_charsRemainingView;
@@ -831,24 +831,24 @@
   [(UITextView *)charsRemainingView setText:v8];
 }
 
-- (void)_updateNotifyText:(id)a3
+- (void)_updateNotifyText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   v6 = +[BSPlatform sharedInstance];
-  v7 = [v6 isInternalInstall];
+  isInternalInstall = [v6 isInternalInstall];
 
-  if (v7)
+  if (isInternalInstall)
   {
     v8 = STKCommonLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v28 = v5;
+      v28 = textCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Update text: %{public}@", buf, 0xCu);
     }
   }
 
-  objc_storeStrong(&self->_displayText, a3);
+  objc_storeStrong(&self->_displayText, text);
   if (self->_displayText)
   {
     displayText = self->_displayText;

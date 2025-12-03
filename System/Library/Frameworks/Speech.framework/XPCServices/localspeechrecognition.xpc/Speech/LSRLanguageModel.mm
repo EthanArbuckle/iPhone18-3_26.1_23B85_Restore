@@ -1,34 +1,34 @@
 @interface LSRLanguageModel
-+ (BOOL)createAppLmLmeProfileWithLanguage:(id)a3 modelRoot:(id)a4 customPronsData:(id)a5 newOovs:(id)a6 writeToVocabFile:(id)a7;
-+ (id)_userProfileWithModelRoot:(id)a3 language:(id)a4;
++ (BOOL)createAppLmLmeProfileWithLanguage:(id)language modelRoot:(id)root customPronsData:(id)data newOovs:(id)oovs writeToVocabFile:(id)file;
++ (id)_userProfileWithModelRoot:(id)root language:(id)language;
 + (void)initialize;
-- (BOOL)appLmNeedsRebuild:(id)a3 language:(id)a4 error:(id *)a5;
-- (LSRLanguageModel)initWithAssetPath:(id)a3;
-- (LSRLanguageModel)initWithLocale:(id)a3 clientID:(id)a4;
-- (id)createSpeechProfileFromOovs:(id)a3 customProns:(id)a4 language:(id)a5;
+- (BOOL)appLmNeedsRebuild:(id)rebuild language:(id)language error:(id *)error;
+- (LSRLanguageModel)initWithAssetPath:(id)path;
+- (LSRLanguageModel)initWithLocale:(id)locale clientID:(id)d;
+- (id)createSpeechProfileFromOovs:(id)oovs customProns:(id)prons language:(id)language;
 - (id)ngramCountsSerializeData;
 - (id)oovWordsAndFrequenciesInNgramCount;
-- (void)addSentenceToNgramCounts:(id)a3;
-- (void)createNgramCountsArtifactFromPhraseCountArtifact:(id)a3 saveTo:(id)a4;
-- (void)createPhraseCountArtifactWithIdentifier:(id)a3 rawPhraseCountsPath:(id)a4 customPronunciationsPath:(id)a5 saveTo:(id)a6;
-- (void)trainAppLmFromNgramCountsArtifact:(id)a3 forApp:(id)a4 language:(id)a5 appLmArtifact:(id *)a6 vocabFile:(id *)a7;
-- (void)trainAppLmFromNgramsSerializedData:(id)a3 customPronsData:(id)a4 language:(id)a5 writeToAppLmDir:(id *)a6 vocabFile:(id *)a7;
-- (void)trainAppLmFromPlainTextAndWriteToAppDirectory:(id *)a3 vocabFile:(id *)a4;
+- (void)addSentenceToNgramCounts:(id)counts;
+- (void)createNgramCountsArtifactFromPhraseCountArtifact:(id)artifact saveTo:(id)to;
+- (void)createPhraseCountArtifactWithIdentifier:(id)identifier rawPhraseCountsPath:(id)path customPronunciationsPath:(id)pronunciationsPath saveTo:(id)to;
+- (void)trainAppLmFromNgramCountsArtifact:(id)artifact forApp:(id)app language:(id)language appLmArtifact:(id *)lmArtifact vocabFile:(id *)file;
+- (void)trainAppLmFromNgramsSerializedData:(id)data customPronsData:(id)pronsData language:(id)language writeToAppLmDir:(id *)dir vocabFile:(id *)file;
+- (void)trainAppLmFromPlainTextAndWriteToAppDirectory:(id *)directory vocabFile:(id *)file;
 @end
 
 @implementation LSRLanguageModel
 
-- (BOOL)appLmNeedsRebuild:(id)a3 language:(id)a4 error:(id *)a5
+- (BOOL)appLmNeedsRebuild:(id)rebuild language:(id)language error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 path];
-  v8 = [_EARArtifact isValid:v7];
+  rebuildCopy = rebuild;
+  path = [rebuildCopy path];
+  v8 = [_EARArtifact isValid:path];
 
   if (v8)
   {
     v9 = [_EARAppLmArtifact alloc];
-    v10 = [v6 path];
-    v11 = [v9 initWithPath:v10];
+    path2 = [rebuildCopy path];
+    v11 = [v9 initWithPath:path2];
 
     if (v11)
     {
@@ -49,17 +49,17 @@
   return v12;
 }
 
-- (void)trainAppLmFromNgramCountsArtifact:(id)a3 forApp:(id)a4 language:(id)a5 appLmArtifact:(id *)a6 vocabFile:(id *)a7
+- (void)trainAppLmFromNgramCountsArtifact:(id)artifact forApp:(id)app language:(id)language appLmArtifact:(id *)lmArtifact vocabFile:(id *)file
 {
-  v67 = a3;
-  v11 = a4;
-  v12 = a5;
+  artifactCopy = artifact;
+  appCopy = app;
+  languageCopy = language;
   v102[0] = kSFCoreAnalyticsLanguageKey;
   v102[1] = kSFCoreAnalyticsAppnameKey;
   modelVersion = @"<unknown>";
-  if (v11)
+  if (appCopy)
   {
-    v14 = v11;
+    v14 = appCopy;
   }
 
   else
@@ -67,8 +67,8 @@
     v14 = @"<unknown>";
   }
 
-  v66 = v12;
-  v103[0] = v12;
+  v66 = languageCopy;
+  v103[0] = languageCopy;
   v103[1] = v14;
   v102[2] = kSFCoreAnalyticsModelVersionKey;
   if (self->_modelVersion)
@@ -91,10 +91,10 @@
   [v18 systemUptime];
   v20 = v19;
 
-  v21 = [v67 path];
+  path = [artifactCopy path];
   recognizerConfigFilePath = self->_recognizerConfigFilePath;
-  v23 = [*a6 path];
-  LOBYTE(recognizerConfigFilePath) = [_EARAppLmArtifact transitionArtifactAt:v21 toStage:5 configPath:recognizerConfigFilePath dataRoot:0 estimationRoot:0 minimize:1 saveTo:v23];
+  path2 = [*lmArtifact path];
+  LOBYTE(recognizerConfigFilePath) = [_EARAppLmArtifact transitionArtifactAt:path toStage:5 configPath:recognizerConfigFilePath dataRoot:0 estimationRoot:0 minimize:1 saveTo:path2];
 
   v24 = +[NSProcessInfo processInfo];
   [v24 systemUptime];
@@ -104,8 +104,8 @@
   if (recognizerConfigFilePath)
   {
     v28 = [_EARAppLmArtifact alloc];
-    v29 = [v67 path];
-    v30 = [v28 initWithPath:v29];
+    path3 = [artifactCopy path];
+    v30 = [v28 initWithPath:path3];
 
     if (v30)
     {
@@ -128,37 +128,37 @@
         v101 = objc_alloc_init(NSMutableDictionary);
         if ([v34 isValid])
         {
-          v38 = [v34 getProns];
+          getProns = [v34 getProns];
           v73[0] = _NSConcreteStackBlock;
           v73[1] = 3221225472;
           v73[2] = sub_100036234;
           v73[3] = &unk_1000662B0;
           v73[4] = buf;
-          [v38 enumerateObjectsUsingBlock:v73];
+          [getProns enumerateObjectsUsingBlock:v73];
         }
 
         else
         {
-          v38 = SFLogConnection;
-          if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
+          getProns = SFLogConnection;
+          if (os_log_type_enabled(getProns, OS_LOG_TYPE_INFO))
           {
-            v45 = [v34 validationError];
+            validationError = [v34 validationError];
             *v94 = 136315394;
             v95 = "[LSRLanguageModel trainAppLmFromNgramCountsArtifact:forApp:language:appLmArtifact:vocabFile:]";
             v96 = 2112;
-            v97 = v45;
-            _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_INFO, "%s Artifact contained invalid custom prons; skipping. %@", v94, 0x16u);
+            v97 = validationError;
+            _os_log_impl(&_mh_execute_header, getProns, OS_LOG_TYPE_INFO, "%s Artifact contained invalid custom prons; skipping. %@", v94, 0x16u);
           }
         }
 
         v46 = [_EARAppLmArtifact alloc];
-        v47 = [*a6 path];
-        v64 = [v46 initWithPath:v47];
+        path4 = [*lmArtifact path];
+        v64 = [v46 initWithPath:path4];
 
         if (v64)
         {
-          v48 = [v64 loadOovs];
-          if (!v48)
+          loadOovs = [v64 loadOovs];
+          if (!loadOovs)
           {
             v49 = SFLogConnection;
             if (os_log_type_enabled(SFLogConnection, OS_LOG_TYPE_INFO))
@@ -168,29 +168,29 @@
               _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_INFO, "%s Could not get OOVs from artifact", v94, 0xCu);
             }
 
-            v48 = &__NSArray0__struct;
+            loadOovs = &__NSArray0__struct;
           }
 
           v50 = +[NSProcessInfo processInfo];
           [v50 systemUptime];
           v52 = v51;
 
-          v53 = [(LSRLanguageModel *)self createSpeechProfileFromOovs:v48 customProns:*(*&buf[8] + 40) language:v66];
+          v53 = [(LSRLanguageModel *)self createSpeechProfileFromOovs:loadOovs customProns:*(*&buf[8] + 40) language:v66];
           v54 = +[NSProcessInfo processInfo];
           [v54 systemUptime];
           v56 = v55;
 
           if (v53)
           {
-            [v53 writeToURL:*a7 atomically:0];
+            [v53 writeToURL:*file atomically:0];
             v57 = SFLogConnection;
             if (os_log_type_enabled(v57, OS_LOG_TYPE_INFO))
             {
-              v58 = [*a7 path];
+              path5 = [*file path];
               *v94 = 136315394;
               v95 = "[LSRLanguageModel trainAppLmFromNgramCountsArtifact:forApp:language:appLmArtifact:vocabFile:]";
               v96 = 2112;
-              v97 = v58;
+              v97 = path5;
               _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_INFO, "%s Wrote profile data to file:%@", v94, 0x16u);
             }
 
@@ -211,7 +211,7 @@
 
           else
           {
-            *a7 = 0;
+            *file = 0;
             v59 = SFAnalyticsEventTypeGetName();
             v60 = v69;
             v69[0] = _NSConcreteStackBlock;
@@ -230,7 +230,7 @@
           v61 = SFLogConnection;
           if (os_log_type_enabled(SFLogConnection, OS_LOG_TYPE_INFO))
           {
-            v62 = *a6;
+            v62 = *lmArtifact;
             *v94 = 136315394;
             v95 = "[LSRLanguageModel trainAppLmFromNgramCountsArtifact:forApp:language:appLmArtifact:vocabFile:]";
             v96 = 2112;
@@ -238,7 +238,7 @@
             _os_log_impl(&_mh_execute_header, v61, OS_LOG_TYPE_INFO, "%s Failed to load language model artifact at: %@", v94, 0x16u);
           }
 
-          *a7 = 0;
+          *file = 0;
           v63 = SFAnalyticsEventTypeGetName();
           v69[7] = _NSConcreteStackBlock;
           v69[8] = 3221225472;
@@ -249,7 +249,7 @@
           v72 = v20;
           AnalyticsSendEventLazy();
 
-          v48 = v70;
+          loadOovs = v70;
         }
 
         _Block_object_dispose(buf, 8);
@@ -265,7 +265,7 @@
           _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_INFO, "%s Failed to load custom prons from artifact", buf, 0xCu);
         }
 
-        *a7 = 0;
+        *file = 0;
         v44 = SFAnalyticsEventTypeGetName();
         v73[5] = _NSConcreteStackBlock;
         v73[6] = 3221225472;
@@ -288,11 +288,11 @@
         *buf = 136315394;
         *&buf[4] = "[LSRLanguageModel trainAppLmFromNgramCountsArtifact:forApp:language:appLmArtifact:vocabFile:]";
         *&buf[12] = 2112;
-        *&buf[14] = v67;
+        *&buf[14] = artifactCopy;
         _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_INFO, "%s Failed to read ngram counts artifact at: %@", buf, 0x16u);
       }
 
-      *a7 = 0;
+      *file = 0;
       v42 = SFAnalyticsEventTypeGetName();
       v77 = _NSConcreteStackBlock;
       v78 = 3221225472;
@@ -316,8 +316,8 @@
       _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_INFO, "%s Failed to train app-specific LM", buf, 0xCu);
     }
 
-    *a7 = 0;
-    *a6 = 0;
+    *file = 0;
+    *lmArtifact = 0;
     v40 = SFAnalyticsEventTypeGetName();
     v83 = _NSConcreteStackBlock;
     v84 = 3221225472;
@@ -329,14 +329,14 @@
   }
 }
 
-- (id)createSpeechProfileFromOovs:(id)a3 customProns:(id)a4 language:(id)a5
+- (id)createSpeechProfileFromOovs:(id)oovs customProns:(id)prons language:(id)language
 {
-  v8 = a3;
-  v9 = a4;
+  oovsCopy = oovs;
+  pronsCopy = prons;
   recognizerConfigFilePath = self->_recognizerConfigFilePath;
-  v11 = a5;
-  v12 = [(NSString *)recognizerConfigFilePath stringByDeletingLastPathComponent];
-  v13 = [LSRLanguageModel _userProfileWithModelRoot:v12 language:v11];
+  languageCopy = language;
+  stringByDeletingLastPathComponent = [(NSString *)recognizerConfigFilePath stringByDeletingLastPathComponent];
+  v13 = [LSRLanguageModel _userProfileWithModelRoot:stringByDeletingLastPathComponent language:languageCopy];
 
   if (v13)
   {
@@ -346,14 +346,14 @@
     v27[3] = &unk_1000661C0;
     v14 = objc_alloc_init(NSMutableDictionary);
     v28 = v14;
-    [v8 enumerateObjectsUsingBlock:v27];
+    [oovsCopy enumerateObjectsUsingBlock:v27];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_100036BC8;
     v25[3] = &unk_100066238;
     v15 = v14;
     v26 = v15;
-    [v9 enumerateKeysAndObjectsUsingBlock:v25];
+    [pronsCopy enumerateKeysAndObjectsUsingBlock:v25];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_100036BD4;
@@ -361,11 +361,11 @@
     v16 = v13;
     v24 = v16;
     [v15 enumerateKeysAndObjectsUsingBlock:v23];
-    v17 = [v16 dataProfile];
-    v18 = v17;
-    if (v17)
+    dataProfile = [v16 dataProfile];
+    v18 = dataProfile;
+    if (dataProfile)
     {
-      v19 = v17;
+      v19 = dataProfile;
     }
 
     else
@@ -396,42 +396,42 @@
   return v18;
 }
 
-- (void)createNgramCountsArtifactFromPhraseCountArtifact:(id)a3 saveTo:(id)a4
+- (void)createNgramCountsArtifactFromPhraseCountArtifact:(id)artifact saveTo:(id)to
 {
-  v6 = a4;
-  v9 = [a3 path];
+  toCopy = to;
+  path = [artifact path];
   recognizerConfigFilePath = self->_recognizerConfigFilePath;
-  v8 = [v6 path];
+  path2 = [toCopy path];
 
-  [_EARAppLmArtifact transitionArtifactAt:v9 toStage:4 configPath:recognizerConfigFilePath dataRoot:0 estimationRoot:0 minimize:1 saveTo:v8];
+  [_EARAppLmArtifact transitionArtifactAt:path toStage:4 configPath:recognizerConfigFilePath dataRoot:0 estimationRoot:0 minimize:1 saveTo:path2];
 }
 
-- (void)createPhraseCountArtifactWithIdentifier:(id)a3 rawPhraseCountsPath:(id)a4 customPronunciationsPath:(id)a5 saveTo:(id)a6
+- (void)createPhraseCountArtifactWithIdentifier:(id)identifier rawPhraseCountsPath:(id)path customPronunciationsPath:(id)pronunciationsPath saveTo:(id)to
 {
   localeCode = self->_localeCode;
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v15 = [a4 path];
-  v13 = [v11 path];
+  toCopy = to;
+  pronunciationsPathCopy = pronunciationsPath;
+  identifierCopy = identifier;
+  path = [path path];
+  path2 = [pronunciationsPathCopy path];
 
-  v14 = [v10 path];
+  path3 = [toCopy path];
 
-  [_EARAppLmArtifact createPhraseCountsArtifact:v12 version:@"1.0" locale:localeCode rawPhraseCountsPath:v15 customPronunciationsPath:v13 saveTo:v14];
+  [_EARAppLmArtifact createPhraseCountsArtifact:identifierCopy version:@"1.0" locale:localeCode rawPhraseCountsPath:path customPronunciationsPath:path2 saveTo:path3];
 }
 
-- (void)trainAppLmFromNgramsSerializedData:(id)a3 customPronsData:(id)a4 language:(id)a5 writeToAppLmDir:(id *)a6 vocabFile:(id *)a7
+- (void)trainAppLmFromNgramsSerializedData:(id)data customPronsData:(id)pronsData language:(id)language writeToAppLmDir:(id *)dir vocabFile:(id *)file
 {
-  v12 = a3;
-  v13 = a4;
-  v39 = a5;
-  v14 = [_EARLmModel2 deserializeModelData:v12];
+  dataCopy = data;
+  pronsDataCopy = pronsData;
+  languageCopy = language;
+  v14 = [_EARLmModel2 deserializeModelData:dataCopy];
   v15 = [v14 objectForKeyedSubscript:EARModelOovsKey];
   v16 = [v14 objectForKeyedSubscript:EARModelTrainingDataKey];
   v17 = +[NSCharacterSet newlineCharacterSet];
   v18 = [v16 componentsSeparatedByCharactersInSet:v17];
 
-  if (!a7)
+  if (!file)
   {
 LABEL_5:
     v20 = SFLogConnection;
@@ -446,15 +446,15 @@ LABEL_5:
   }
 
   v19 = [v15 count];
-  if (!v13 && !v19)
+  if (!pronsDataCopy && !v19)
   {
-    *a7 = 0;
+    *file = 0;
     goto LABEL_5;
   }
 
-  v21 = *a7;
-  v22 = [(NSString *)self->_recognizerConfigFilePath stringByDeletingLastPathComponent];
-  v23 = [LSRLanguageModel createAppLmLmeProfileWithLanguage:v39 modelRoot:v22 customPronsData:v13 newOovs:v15 writeToVocabFile:v21];
+  v21 = *file;
+  stringByDeletingLastPathComponent = [(NSString *)self->_recognizerConfigFilePath stringByDeletingLastPathComponent];
+  v23 = [LSRLanguageModel createAppLmLmeProfileWithLanguage:languageCopy modelRoot:stringByDeletingLastPathComponent customPronsData:pronsDataCopy newOovs:v15 writeToVocabFile:v21];
 
   if ((v23 & 1) == 0)
   {
@@ -473,11 +473,11 @@ LABEL_5:
   v24 = SFLogConnection;
   if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
   {
-    v25 = [v21 path];
+    path = [v21 path];
     *buf = 136315394;
     v46 = "[LSRLanguageModel trainAppLmFromNgramsSerializedData:customPronsData:language:writeToAppLmDir:vocabFile:]";
     v47 = 2112;
-    v48 = v25;
+    v48 = path;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "%s Successfully wrote LME: %@", buf, 0x16u);
   }
 
@@ -513,7 +513,7 @@ LABEL_11:
   v30 = [_EARLmBuilder buildLmWithConfig:self->_recognizerConfigFilePath root:@"app-lm.NGRAM" data:self->_appLmData dir:&stru_100066A98 shouldStop:0];
   if (v30)
   {
-    if (!a6)
+    if (!dir)
     {
 LABEL_24:
 
@@ -523,9 +523,9 @@ LABEL_24:
       goto LABEL_33;
     }
 
-    v31 = *a6;
-    v32 = [v31 path];
-    v33 = [v30 writeToDirectory:v32];
+    v31 = *dir;
+    path2 = [v31 path];
+    v33 = [v30 writeToDirectory:path2];
 
     if (v33)
     {
@@ -571,10 +571,10 @@ LABEL_33:
   [(_EARAppLmData *)self->_appLmData setInputFormat:1];
   v4 = [_EARLmBuilder generateNgramCountsWithConfig:self->_recognizerConfigFilePath root:@"app-lm.NGRAM" data:self->_appLmData];
   v5 = [[_EARNgramLmModel alloc] initWithConfiguration:self->_recognizerConfigFilePath root:@"app-lm.NGRAM"];
-  v6 = [v3 language];
-  v7 = [(LSRLanguageModel *)self oovWordsAndFrequenciesInNgramCount];
-  v8 = [v7 allKeys];
-  v9 = [v5 serializedModelWithLanguage:v6 modelData:v4 oovs:v8];
+  language = [v3 language];
+  oovWordsAndFrequenciesInNgramCount = [(LSRLanguageModel *)self oovWordsAndFrequenciesInNgramCount];
+  allKeys = [oovWordsAndFrequenciesInNgramCount allKeys];
+  v9 = [v5 serializedModelWithLanguage:language modelData:v4 oovs:allKeys];
 
   v10 = SFLogConnection;
   if (v9)
@@ -597,7 +597,7 @@ LABEL_33:
   return v9;
 }
 
-- (void)trainAppLmFromPlainTextAndWriteToAppDirectory:(id *)a3 vocabFile:(id *)a4
+- (void)trainAppLmFromPlainTextAndWriteToAppDirectory:(id *)directory vocabFile:(id *)file
 {
   [(_EARAppLmData *)self->_appLmData setInputFormat:1];
   v7 = [_EARLmBuilder buildLmWithConfig:self->_recognizerConfigFilePath root:@"app-lm.NGRAM" data:self->_appLmData dir:&stru_100066A98 shouldStop:0];
@@ -609,18 +609,18 @@ LABEL_33:
       v15 = 136315138;
       v16 = "[LSRLanguageModel trainAppLmFromPlainTextAndWriteToAppDirectory:vocabFile:]";
       _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "%s Failed to train model successfully", &v15, 0xCu);
-      if (!a3)
+      if (!directory)
       {
         goto LABEL_13;
       }
     }
 
-    else if (!a3)
+    else if (!directory)
     {
       goto LABEL_13;
     }
 
-    *a3 = 0;
+    *directory = 0;
     goto LABEL_13;
   }
 
@@ -634,18 +634,18 @@ LABEL_33:
 
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v12 = *a3;
+    v12 = *directory;
     v13 = v8;
-    v14 = [v12 path];
+    path = [v12 path];
     v15 = 136315394;
     v16 = "[LSRLanguageModel trainAppLmFromPlainTextAndWriteToAppDirectory:vocabFile:]";
     v17 = 2112;
-    v18 = v14;
+    v18 = path;
     _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "%s Writing to: %@", &v15, 0x16u);
   }
 
-  v9 = [*a3 path];
-  v10 = [v7 writeToDirectory:v9];
+  path2 = [*directory path];
+  v10 = [v7 writeToDirectory:path2];
 
   if ((v10 & 1) == 0)
   {
@@ -657,15 +657,15 @@ LABEL_33:
       _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "%s Write process failed", &v15, 0xCu);
     }
 
-    a4 = a3;
+    file = directory;
     goto LABEL_14;
   }
 
 LABEL_13:
-  if (a4)
+  if (file)
   {
 LABEL_14:
-    *a4 = 0;
+    *file = 0;
   }
 }
 
@@ -676,8 +676,8 @@ LABEL_14:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(_EARAppLmData *)self->_appLmData orderedOovs];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  orderedOovs = [(_EARAppLmData *)self->_appLmData orderedOovs];
+  v5 = [orderedOovs countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -688,16 +688,16 @@ LABEL_14:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(orderedOovs);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
         v10 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v9 frequency]);
-        v11 = [v9 orthography];
-        [v3 setObject:v10 forKey:v11];
+        orthography = [v9 orthography];
+        [v3 setObject:v10 forKey:orthography];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [orderedOovs countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -708,18 +708,18 @@ LABEL_14:
   return v12;
 }
 
-- (void)addSentenceToNgramCounts:(id)a3
+- (void)addSentenceToNgramCounts:(id)counts
 {
-  v4 = a3;
+  countsCopy = counts;
   v5 = +[NSUUID UUID];
-  v6 = [v5 UUIDString];
+  uUIDString = [v5 UUIDString];
 
-  [(_EARAppLmData *)self->_appLmData addSentenceWithType:0 uuid:v6 content:v4];
+  [(_EARAppLmData *)self->_appLmData addSentenceWithType:0 uuid:uUIDString content:countsCopy];
 }
 
-- (LSRLanguageModel)initWithAssetPath:(id)a3
+- (LSRLanguageModel)initWithAssetPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v30.receiver = self;
   v30.super_class = LSRLanguageModel;
   v5 = [(LSRLanguageModel *)&v30 init];
@@ -728,7 +728,7 @@ LABEL_14:
     goto LABEL_5;
   }
 
-  v6 = [v4 stringByAppendingPathComponent:@"mini.json"];
+  v6 = [pathCopy stringByAppendingPathComponent:@"mini.json"];
   recognizerConfigFilePath = v5->_recognizerConfigFilePath;
   v5->_recognizerConfigFilePath = v6;
 
@@ -783,16 +783,16 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v15 = [v13 modelInfo];
-  v16 = [v15 language];
-  v17 = [SFUtilities stringByReplacingHyphensWithUnderscores:v16];
+  modelInfo = [v13 modelInfo];
+  language = [modelInfo language];
+  v17 = [SFUtilities stringByReplacingHyphensWithUnderscores:language];
   localeCode = v5->_localeCode;
   v5->_localeCode = v17;
 
-  v19 = [v13 modelInfo];
-  v20 = [v19 version];
+  modelInfo2 = [v13 modelInfo];
+  version = [modelInfo2 version];
   modelVersion = v5->_modelVersion;
-  v5->_modelVersion = v20;
+  v5->_modelVersion = version;
 
 LABEL_5:
   v22 = v5;
@@ -801,23 +801,23 @@ LABEL_9:
   return v22;
 }
 
-- (LSRLanguageModel)initWithLocale:(id)a3 clientID:(id)a4
+- (LSRLanguageModel)initWithLocale:(id)locale clientID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  localeCopy = locale;
+  dCopy = d;
   v16.receiver = self;
   v16.super_class = LSRLanguageModel;
   v8 = [(LSRLanguageModel *)&v16 init];
   if (v8)
   {
-    v9 = [SFUtilities localeCodeForLocale:v6];
+    v9 = [SFUtilities localeCodeForLocale:localeCopy];
     v10 = [SFUtilities stringByReplacingHyphensWithUnderscores:v9];
     localeCode = v8->_localeCode;
     v8->_localeCode = v10;
 
     v12 = [[SFEntitledAssetConfig alloc] initWithLanguage:v8->_localeCode assetType:3];
     v13 = +[SFEntitledAssetManager sharedInstance];
-    v14 = [v13 installedAssetWithConfig:v12 regionId:0 shouldSubscribe:1 subscriberId:v7 expiration:0];
+    v14 = [v13 installedAssetWithConfig:v12 regionId:0 shouldSubscribe:1 subscriberId:dCopy expiration:0];
 
     if (v14)
     {
@@ -828,13 +828,13 @@ LABEL_9:
   return v8;
 }
 
-+ (BOOL)createAppLmLmeProfileWithLanguage:(id)a3 modelRoot:(id)a4 customPronsData:(id)a5 newOovs:(id)a6 writeToVocabFile:(id)a7
++ (BOOL)createAppLmLmeProfileWithLanguage:(id)language modelRoot:(id)root customPronsData:(id)data newOovs:(id)oovs writeToVocabFile:(id)file
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [LSRLanguageModel _userProfileWithModelRoot:a4 language:v11];
+  languageCopy = language;
+  dataCopy = data;
+  oovsCopy = oovs;
+  fileCopy = file;
+  v15 = [LSRLanguageModel _userProfileWithModelRoot:root language:languageCopy];
   if (v15)
   {
     v40[0] = _NSConcreteStackBlock;
@@ -843,15 +843,15 @@ LABEL_9:
     v40[3] = &unk_1000661C0;
     v16 = objc_alloc_init(NSMutableDictionary);
     v41 = v16;
-    [v13 enumerateObjectsUsingBlock:v40];
-    if (v12)
+    [oovsCopy enumerateObjectsUsingBlock:v40];
+    if (dataCopy)
     {
-      v17 = [[_EARPlsParser alloc] initWithData:v12];
-      v18 = [v17 lexemes];
-      v19 = [NSDictionary dictionaryWithDictionary:v18];
+      v17 = [[_EARPlsParser alloc] initWithData:dataCopy];
+      lexemes = [v17 lexemes];
+      v19 = [NSDictionary dictionaryWithDictionary:lexemes];
 
       v20 = [_EARPhonesetMapping alloc];
-      v21 = [SFUtilities stringByReplacingHyphensWithUnderscores:v11];
+      v21 = [SFUtilities stringByReplacingHyphensWithUnderscores:languageCopy];
       v22 = [v20 initWithLanguage:v21];
 
       v37[0] = _NSConcreteStackBlock;
@@ -871,19 +871,19 @@ LABEL_9:
     v24 = v15;
     v36 = v24;
     [v16 enumerateKeysAndObjectsUsingBlock:&v32];
-    v25 = [v24 dataProfile];
-    v26 = v25;
-    v27 = v25 != 0;
-    if (v25)
+    dataProfile = [v24 dataProfile];
+    v26 = dataProfile;
+    v27 = dataProfile != 0;
+    if (dataProfile)
     {
-      [v25 writeToURL:v14 atomically:0];
+      [dataProfile writeToURL:fileCopy atomically:0];
       v28 = SFLogConnection;
       if (os_log_type_enabled(SFLogConnection, OS_LOG_TYPE_INFO))
       {
         *buf = 136315394;
         v43 = "+[LSRLanguageModel createAppLmLmeProfileWithLanguage:modelRoot:customPronsData:newOovs:writeToVocabFile:]";
         v44 = 2112;
-        v45 = v14;
+        v45 = fileCopy;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "%s Wrote profile data to file:%@", buf, 0x16u);
       }
     }
@@ -916,25 +916,25 @@ LABEL_9:
   return v27;
 }
 
-+ (id)_userProfileWithModelRoot:(id)a3 language:(id)a4
++ (id)_userProfileWithModelRoot:(id)root language:(id)language
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 stringByAppendingPathComponent:@"mini.json"];
-  v8 = [v6 stringByAppendingPathComponent:@"ncs"];
+  languageCopy = language;
+  rootCopy = root;
+  v7 = [rootCopy stringByAppendingPathComponent:@"mini.json"];
+  v8 = [rootCopy stringByAppendingPathComponent:@"ncs"];
 
   v9 = [v8 stringByAppendingPathComponent:@"en_US_napg.json"];
   v10 = [v8 stringByAppendingPathComponent:@"vocdelta.voc"];
   v11 = [v8 stringByAppendingPathComponent:@"pg.voc"];
   v12 = [v8 stringByAppendingPathComponent:@"mrec.psh"];
-  v13 = [[_EARUserProfile alloc] initWithConfiguration:v7 language:v5 overrides:0 sdapiOverrides:v9 emptyVoc:v10 pgVoc:v11 paramsetHolder:v12];
+  v13 = [[_EARUserProfile alloc] initWithConfiguration:v7 language:languageCopy overrides:0 sdapiOverrides:v9 emptyVoc:v10 pgVoc:v11 paramsetHolder:v12];
 
   return v13;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     SFLogInitIfNeeded();

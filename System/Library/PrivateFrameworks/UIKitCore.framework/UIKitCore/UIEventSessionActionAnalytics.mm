@@ -3,26 +3,26 @@
 - (BOOL)getAIDState;
 - (BOOL)shouldEnableTouchHeatMapAnalyzer;
 - (UIEventSessionActionAnalytics)init;
-- (id)_instanceOfActionClass:(Class)a3 source:(int64_t)a4;
+- (id)_instanceOfActionClass:(Class)class source:(int64_t)source;
 - (id)allAccumulatorNames;
-- (void)_setPencilIsHoveringTo:(BOOL)a3;
-- (void)addAccumulator:(id)a3;
-- (void)checkForUIEventSessionActionAnalytics:(id)a3 forWindow:(id)a4 isFrontBoard:(BOOL)a5 isFrontBoardTransitioningToForeground:(BOOL)a6;
-- (void)didHardwareConfigurationChange:(id)a3;
-- (void)didKeyboardShortcut:(id)a3;
-- (void)didPencilHover:(id)a3 withPhase:(int64_t)a4;
-- (void)didPencilSqueezeWithPhase:(unint64_t)a3;
-- (void)didPointerClick:(id)a3 withLocationInWindow:(CGPoint)a4 withWindowBounds:(CGRect)a5;
-- (void)didPointerHover:(id)a3 withLocationInWindow:(CGPoint)a4 withWindowBounds:(CGRect)a5;
-- (void)didScroll:(id)a3 withSource:(int64_t)a4;
-- (void)didShowContextualMenuFromLocation:(CGPoint)a3 withSource:(int64_t)a4;
-- (void)didTap:(id)a3 withSource:(int64_t)a4;
-- (void)didTextSelectionWithSource:(int64_t)a3;
-- (void)didTouch:(id)a3 withLocationInWindow:(CGPoint)a4 withWindowBounds:(CGRect)a5 withWindowFrame:(CGRect)a6 withTrackpadFingerDownCount:(int64_t)a7;
-- (void)didTypingWithSource:(int64_t)a3;
-- (void)q_addAccumulator:(id)a3;
-- (void)q_addActionAndUpdate:(id)a3;
-- (void)q_enumerateAnalytics:(id)a3;
+- (void)_setPencilIsHoveringTo:(BOOL)to;
+- (void)addAccumulator:(id)accumulator;
+- (void)checkForUIEventSessionActionAnalytics:(id)analytics forWindow:(id)window isFrontBoard:(BOOL)board isFrontBoardTransitioningToForeground:(BOOL)foreground;
+- (void)didHardwareConfigurationChange:(id)change;
+- (void)didKeyboardShortcut:(id)shortcut;
+- (void)didPencilHover:(id)hover withPhase:(int64_t)phase;
+- (void)didPencilSqueezeWithPhase:(unint64_t)phase;
+- (void)didPointerClick:(id)click withLocationInWindow:(CGPoint)window withWindowBounds:(CGRect)bounds;
+- (void)didPointerHover:(id)hover withLocationInWindow:(CGPoint)window withWindowBounds:(CGRect)bounds;
+- (void)didScroll:(id)scroll withSource:(int64_t)source;
+- (void)didShowContextualMenuFromLocation:(CGPoint)location withSource:(int64_t)source;
+- (void)didTap:(id)tap withSource:(int64_t)source;
+- (void)didTextSelectionWithSource:(int64_t)source;
+- (void)didTouch:(id)touch withLocationInWindow:(CGPoint)window withWindowBounds:(CGRect)bounds withWindowFrame:(CGRect)frame withTrackpadFingerDownCount:(int64_t)count;
+- (void)didTypingWithSource:(int64_t)source;
+- (void)q_addAccumulator:(id)accumulator;
+- (void)q_addActionAndUpdate:(id)update;
+- (void)q_enumerateAnalytics:(id)analytics;
 - (void)q_flushRecentActions;
 - (void)q_setupDefaultAnalytics;
 - (void)q_updateAnalyticsFromAccumulators;
@@ -34,7 +34,7 @@
 - (void)updateHardwareKeyboardState;
 - (void)updateUIInterfaceOrientation;
 - (void)writeAnalytics;
-- (void)writeEventWithFields:(id)a3 andName:(id)a4;
+- (void)writeEventWithFields:(id)fields andName:(id)name;
 @end
 
 @implementation UIEventSessionActionAnalytics
@@ -45,7 +45,7 @@
   block[1] = 3221225472;
   block[2] = __47__UIEventSessionActionAnalytics_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED4A0708 != -1)
   {
     dispatch_once(&qword_1ED4A0708, block);
@@ -173,24 +173,24 @@ LABEL_16:
   }
 
   [(UIEventSessionActionAnalytics *)v3 resetSessionID];
-  v17 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v17 addObserver:v3 selector:sel_writeAnalytics name:@"UIApplicationDidEnterBackgroundNotification" object:0];
-  [v17 addObserver:v3 selector:sel_writeAnalytics name:0x1EFBB4890 object:0];
-  [v17 addObserver:v3 selector:sel_writeAnalytics name:0x1EFBB47B0 object:0];
-  v18 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v18 addObserver:v3 selector:sel_didHardwareConfigurationChange_ name:@"_UIDeviceHardwareKeyboardAvailabilityDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:v3 selector:sel_writeAnalytics name:@"UIApplicationDidEnterBackgroundNotification" object:0];
+  [defaultCenter addObserver:v3 selector:sel_writeAnalytics name:0x1EFBB4890 object:0];
+  [defaultCenter addObserver:v3 selector:sel_writeAnalytics name:0x1EFBB47B0 object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:v3 selector:sel_didHardwareConfigurationChange_ name:@"_UIDeviceHardwareKeyboardAvailabilityDidChangeNotification" object:0];
 
   if (_UIIsPrivateMainBundle())
   {
-    v19 = [MEMORY[0x1E696AAE8] mainBundle];
-    v20 = [v19 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
     bundleID = v3->_bundleID;
-    v3->_bundleID = v20;
+    v3->_bundleID = bundleIdentifier;
   }
 
   else
   {
-    v19 = v3->_bundleID;
+    mainBundle = v3->_bundleID;
     v3->_bundleID = @"other";
   }
 
@@ -208,10 +208,10 @@ LABEL_16:
   self->_sessionID = v3;
 }
 
-- (void)q_enumerateAnalytics:(id)a3
+- (void)q_enumerateAnalytics:(id)analytics
 {
-  v4 = a3;
-  if (v4)
+  analyticsCopy = analytics;
+  if (analyticsCopy)
   {
     [(UIEventSessionActionAnalytics *)self q_flushRecentActions];
     accumulators = self->_accumulators;
@@ -219,7 +219,7 @@ LABEL_16:
     v6[1] = 3221225472;
     v6[2] = __54__UIEventSessionActionAnalytics_q_enumerateAnalytics___block_invoke;
     v6[3] = &unk_1E711F180;
-    v7 = v4;
+    v7 = analyticsCopy;
     [(NSMutableSet *)accumulators enumerateObjectsUsingBlock:v6];
   }
 }
@@ -449,10 +449,10 @@ uint64_t __47__UIEventSessionActionAnalytics_writeAnalytics__block_invoke_51(uin
   return result;
 }
 
-- (void)writeEventWithFields:(id)a3 andName:(id)a4
+- (void)writeEventWithFields:(id)fields andName:(id)name
 {
-  v5 = a3;
-  v4 = v5;
+  fieldsCopy = fields;
+  v4 = fieldsCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -481,40 +481,40 @@ id __62__UIEventSessionActionAnalytics_writeEventWithFields_andName___block_invo
   return v2;
 }
 
-- (void)addAccumulator:(id)a3
+- (void)addAccumulator:(id)accumulator
 {
-  v4 = a3;
+  accumulatorCopy = accumulator;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__UIEventSessionActionAnalytics_addAccumulator___block_invoke;
   v7[3] = &unk_1E70F35B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = accumulatorCopy;
+  v6 = accumulatorCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)q_addAccumulator:(id)a3
+- (void)q_addAccumulator:(id)accumulator
 {
   maxDepth = self->_maxDepth;
-  v8 = a3;
-  v5 = [v8 depthRange];
-  v7 = v5 + v6;
-  if (maxDepth > v5 + v6)
+  accumulatorCopy = accumulator;
+  depthRange = [accumulatorCopy depthRange];
+  v7 = depthRange + v6;
+  if (maxDepth > depthRange + v6)
   {
     v7 = maxDepth;
   }
 
   self->_maxDepth = v7;
-  [(NSMutableSet *)self->_accumulators addObject:v8];
+  [(NSMutableSet *)self->_accumulators addObject:accumulatorCopy];
 }
 
-- (void)q_addActionAndUpdate:(id)a3
+- (void)q_addActionAndUpdate:(id)update
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  updateCopy = update;
+  if (updateCopy)
   {
     if (!self->_magicKeyboardState || !self->_hardwareKeyboardState)
     {
@@ -522,16 +522,16 @@ id __62__UIEventSessionActionAnalytics_writeEventWithFields_andName___block_invo
     }
 
     [(UIEventSessionActionAnalytics *)self q_updateUIInterfaceOrientation];
-    [v5 setSessionID:self->_sessionID];
-    [v5 setUiInterfaceOrientation:self->_uiInterfaceOrientation];
-    [v5 setHardwareKeyboardState:self->_hardwareKeyboardState];
-    [v5 setMagicKeyboardState:self->_magicKeyboardState];
-    v6 = [(UIEventSessionActionAnalytics *)self bundleID];
-    if ([v6 isEqualToString:@"com.apple.springboard"])
+    [updateCopy setSessionID:self->_sessionID];
+    [updateCopy setUiInterfaceOrientation:self->_uiInterfaceOrientation];
+    [updateCopy setHardwareKeyboardState:self->_hardwareKeyboardState];
+    [updateCopy setMagicKeyboardState:self->_magicKeyboardState];
+    bundleID = [(UIEventSessionActionAnalytics *)self bundleID];
+    if ([bundleID isEqualToString:@"com.apple.springboard"])
     {
-      v7 = [v5 source];
+      source = [updateCopy source];
 
-      if (v7 == 2)
+      if (source == 2)
       {
         goto LABEL_14;
       }
@@ -542,7 +542,7 @@ id __62__UIEventSessionActionAnalytics_writeEventWithFields_andName___block_invo
     }
 
     p_lastAction = &self->_lastAction;
-    v9 = [(_UIEventSessionAction *)self->_lastAction mergeActionIfPossible:v5];
+    v9 = [(_UIEventSessionAction *)self->_lastAction mergeActionIfPossible:updateCopy];
     if (os_variant_has_internal_diagnostics())
     {
       CategoryCachedImpl = __UILogGetCategoryCachedImpl("UIEventSessionActionAnalytics", &q_addActionAndUpdate____s_category);
@@ -557,7 +557,7 @@ id __62__UIEventSessionActionAnalytics_writeEventWithFields_andName___block_invo
           v15 = 2112;
           v16 = v12;
           v17 = 2112;
-          v18 = v5;
+          v18 = updateCopy;
           _os_log_impl(&dword_188A29000, v11, OS_LOG_TYPE_ERROR, "q_addActionAndUpdate: Merge result %lu lastAction:%@ newAction:%@", &v13, 0x20u);
         }
       }
@@ -572,7 +572,7 @@ id __62__UIEventSessionActionAnalytics_writeEventWithFields_andName___block_invo
     {
       [(UIEventSessionActionAnalytics *)self q_updateAnalyticsFromAccumulators];
 LABEL_13:
-      objc_storeStrong(&self->_lastAction, a3);
+      objc_storeStrong(&self->_lastAction, update);
     }
   }
 
@@ -654,12 +654,12 @@ LABEL_14:
   }
 }
 
-- (id)_instanceOfActionClass:(Class)a3 source:(int64_t)a4
+- (id)_instanceOfActionClass:(Class)class source:(int64_t)source
 {
-  if ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
-    v6 = objc_alloc_init(a3);
-    [v6 setSource:a4];
+    v6 = objc_alloc_init(class);
+    [v6 setSource:source];
   }
 
   else
@@ -837,9 +837,9 @@ LABEL_27:
 - (void)updateAIDState
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [(UIEventSessionActionAnalytics *)self getAIDState];
+  getAIDState = [(UIEventSessionActionAnalytics *)self getAIDState];
   v4 = 1;
-  if (v3)
+  if (getAIDState)
   {
     v4 = 2;
   }
@@ -869,9 +869,9 @@ LABEL_27:
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 _isHardwareKeyboardAvailable];
+    _isHardwareKeyboardAvailable = [v3 _isHardwareKeyboardAvailable];
     v6 = 1;
-    if (v5)
+    if (_isHardwareKeyboardAvailable)
     {
       v6 = 2;
     }
@@ -921,17 +921,17 @@ LABEL_27:
   }
 }
 
-- (void)checkForUIEventSessionActionAnalytics:(id)a3 forWindow:(id)a4 isFrontBoard:(BOOL)a5 isFrontBoardTransitioningToForeground:(BOOL)a6
+- (void)checkForUIEventSessionActionAnalytics:(id)analytics forWindow:(id)window isFrontBoard:(BOOL)board isFrontBoardTransitioningToForeground:(BOOL)foreground
 {
-  v6 = a6;
-  v7 = a5;
+  foregroundCopy = foreground;
+  boardCopy = board;
   v73 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
-  if (v7)
+  analyticsCopy = analytics;
+  windowCopy = window;
+  v12 = windowCopy;
+  if (boardCopy)
   {
-    if (v6)
+    if (foregroundCopy)
     {
       if (self->_needToFlushUIEventSessionActionAnalytics)
       {
@@ -946,7 +946,7 @@ LABEL_27:
     self->_needToFlushUIEventSessionActionAnalytics = 1;
   }
 
-  if (([v11 _isSystemGestureWindow] & 1) == 0)
+  if (([windowCopy _isSystemGestureWindow] & 1) == 0)
   {
     v14 = objc_opt_class();
     if (v14 == objc_opt_class())
@@ -955,8 +955,8 @@ LABEL_27:
       v70 = 0u;
       v67 = 0u;
       v68 = 0u;
-      v15 = [v10 allTouches];
-      v16 = [v15 countByEnumeratingWithState:&v67 objects:v72 count:16];
+      allTouches = [analyticsCopy allTouches];
+      v16 = [allTouches countByEnumeratingWithState:&v67 objects:v72 count:16];
       if (v16)
       {
         v17 = v16;
@@ -967,7 +967,7 @@ LABEL_27:
           {
             if (*v68 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(allTouches);
             }
 
             v20 = *(*(&v67 + 1) + 8 * i);
@@ -983,11 +983,11 @@ LABEL_27:
               v23 = [(UITouch *)v20 _locationInWindow:v12];
               v25 = v24;
               [v12 bounds];
-              [v22 didPointerHover:v10 withLocationInWindow:v23 withWindowBounds:{v25, v26, v27, v28, v29}];
+              [v22 didPointerHover:analyticsCopy withLocationInWindow:v23 withWindowBounds:{v25, v26, v27, v28, v29}];
             }
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v67 objects:v72 count:16];
+          v17 = [allTouches countByEnumeratingWithState:&v67 objects:v72 count:16];
         }
 
         while (v17);
@@ -1001,8 +1001,8 @@ LABEL_27:
       v66 = 0u;
       v63 = 0u;
       v64 = 0u;
-      v31 = [v10 allTouches];
-      v32 = [v31 countByEnumeratingWithState:&v63 objects:v71 count:16];
+      allTouches2 = [analyticsCopy allTouches];
+      v32 = [allTouches2 countByEnumeratingWithState:&v63 objects:v71 count:16];
       if (!v32)
       {
         goto LABEL_38;
@@ -1016,15 +1016,15 @@ LABEL_27:
         {
           if (*v64 != v34)
           {
-            objc_enumerationMutation(v31);
+            objc_enumerationMutation(allTouches2);
           }
 
           v36 = *(*(&v63 + 1) + 8 * j);
-          v37 = [v36 _isPointerTouch];
-          v38 = [v36 phase];
-          if (v37)
+          _isPointerTouch = [v36 _isPointerTouch];
+          phase = [v36 phase];
+          if (_isPointerTouch)
           {
-            if (v38 != 3)
+            if (phase != 3)
             {
               continue;
             }
@@ -1033,13 +1033,13 @@ LABEL_27:
             v40 = [(UITouch *)v36 _locationInWindow:v12];
             v42 = v41;
             [v12 bounds];
-            [v39 didPointerClick:v10 withLocationInWindow:v40 withWindowBounds:{v42, v43, v44, v45, v46}];
+            [v39 didPointerClick:analyticsCopy withLocationInWindow:v40 withWindowBounds:{v42, v43, v44, v45, v46}];
             goto LABEL_35;
           }
 
-          if (!v38 || [v36 phase] == 1 || objc_msgSend(v36, "phase") == 3 || objc_msgSend(v36, "phase") == 4)
+          if (!phase || [v36 phase] == 1 || objc_msgSend(v36, "phase") == 3 || objc_msgSend(v36, "phase") == 4)
           {
-            v47 = [v10 _trackpadFingerDownCount];
+            _trackpadFingerDownCount = [analyticsCopy _trackpadFingerDownCount];
             v39 = +[UIEventSessionActionAnalytics sharedInstance];
             v48 = [(UITouch *)v36 _locationInWindow:v12];
             v50 = v49;
@@ -1049,14 +1049,14 @@ LABEL_27:
             v56 = v55;
             v58 = v57;
             [v12 frame];
-            [v39 didTouch:v36 withLocationInWindow:v47 withWindowBounds:v48 withWindowFrame:v50 withTrackpadFingerDownCount:{v52, v54, v56, v58, v59, v60, v61, v62}];
+            [v39 didTouch:v36 withLocationInWindow:_trackpadFingerDownCount withWindowBounds:v48 withWindowFrame:v50 withTrackpadFingerDownCount:{v52, v54, v56, v58, v59, v60, v61, v62}];
 LABEL_35:
 
             continue;
           }
         }
 
-        v33 = [v31 countByEnumeratingWithState:&v63 objects:v71 count:16];
+        v33 = [allTouches2 countByEnumeratingWithState:&v63 objects:v71 count:16];
         if (!v33)
         {
 LABEL_38:
@@ -1147,16 +1147,16 @@ LABEL_39:
   }
 }
 
-- (void)didPencilSqueezeWithPhase:(unint64_t)a3
+- (void)didPencilSqueezeWithPhase:(unint64_t)phase
 {
-  if (a3 == 1)
+  if (phase == 1)
   {
     v3 = @"SqueezeBegan";
   }
 
   else
   {
-    if (a3 != 3)
+    if (phase != 3)
     {
       return;
     }
@@ -1167,13 +1167,13 @@ LABEL_39:
   [_UISignalAnalytics asyncSendPencilSignal:v3 payload:0];
 }
 
-- (void)_setPencilIsHoveringTo:(BOOL)a3
+- (void)_setPencilIsHoveringTo:(BOOL)to
 {
-  if (self->_pencilIsHovering != a3)
+  if (self->_pencilIsHovering != to)
   {
     v10 = v4;
     v11 = v3;
-    if (a3)
+    if (to)
     {
       v9 = @"HoverBegan";
     }
@@ -1184,45 +1184,45 @@ LABEL_39:
     }
 
     [_UISignalAnalytics asyncSendPencilSignal:v9 payload:0, v10, v11, v5, v6];
-    self->_pencilIsHovering = a3;
+    self->_pencilIsHovering = to;
   }
 }
 
-- (void)didPencilHover:(id)a3 withPhase:(int64_t)a4
+- (void)didPencilHover:(id)hover withPhase:(int64_t)phase
 {
-  v6 = a3;
-  if ((a4 - 5) <= 2)
+  hoverCopy = hover;
+  if ((phase - 5) <= 2)
   {
-    v7 = v6;
-    [(UIEventSessionActionAnalytics *)self _setPencilIsHoveringTo:a4 != 7];
-    v6 = v7;
+    v7 = hoverCopy;
+    [(UIEventSessionActionAnalytics *)self _setPencilIsHoveringTo:phase != 7];
+    hoverCopy = v7;
   }
 }
 
-- (void)didTouch:(id)a3 withLocationInWindow:(CGPoint)a4 withWindowBounds:(CGRect)a5 withWindowFrame:(CGRect)a6 withTrackpadFingerDownCount:(int64_t)a7
+- (void)didTouch:(id)touch withLocationInWindow:(CGPoint)window withWindowBounds:(CGRect)bounds withWindowFrame:(CGRect)frame withTrackpadFingerDownCount:(int64_t)count
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4.y;
-  v12 = a4.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v11 = window.y;
+  v12 = window.x;
   v14 = MEMORY[0x1E696AD98];
-  v15 = a3;
-  v16 = [v14 numberWithInt:{objc_msgSend(v15, "_touchIdentifier")}];
-  v17 = [v15 phase];
-  v18 = [v15 type];
+  touchCopy = touch;
+  v16 = [v14 numberWithInt:{objc_msgSend(touchCopy, "_touchIdentifier")}];
+  phase = [touchCopy phase];
+  type = [touchCopy type];
 
-  if (v18 == 2)
+  if (type == 2)
   {
-    if (!v17)
+    if (!phase)
     {
       [(UIEventSessionActionAnalytics *)self _setPencilIsHoveringTo:0];
       v19 = @"TouchBegan";
       goto LABEL_6;
     }
 
-    if ((v17 - 3) <= 1)
+    if ((phase - 3) <= 1)
     {
       v19 = @"TouchEnded";
 LABEL_6:
@@ -1237,16 +1237,16 @@ LABEL_6:
   block[3] = &unk_1E711F218;
   block[4] = self;
   v24 = v16;
-  v25 = v17;
-  v26 = v18;
+  v25 = phase;
+  v26 = type;
   v27 = v12;
   v28 = v11;
   v29 = x;
   v30 = y;
   v31 = width;
   v32 = height;
-  v33 = a7;
-  v34 = a6;
+  countCopy = count;
+  frameCopy = frame;
   v21 = v16;
   dispatch_async(queue, block);
 }
@@ -1294,24 +1294,24 @@ void __124__UIEventSessionActionAnalytics_didTouch_withLocationInWindow_withWind
   }
 }
 
-- (void)didPointerHover:(id)a3 withLocationInWindow:(CGPoint)a4 withWindowBounds:(CGRect)a5
+- (void)didPointerHover:(id)hover withLocationInWindow:(CGPoint)window withWindowBounds:(CGRect)bounds
 {
-  if (a3)
+  if (hover)
   {
-    height = a5.size.height;
-    width = a5.size.width;
-    y = a5.origin.y;
-    x = a5.origin.x;
-    v9 = a4.y;
-    v10 = a4.x;
-    v12 = [a3 _trackpadFingerDownCount];
+    height = bounds.size.height;
+    width = bounds.size.width;
+    y = bounds.origin.y;
+    x = bounds.origin.x;
+    v9 = window.y;
+    v10 = window.x;
+    _trackpadFingerDownCount = [hover _trackpadFingerDownCount];
     queue = self->_queue;
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __87__UIEventSessionActionAnalytics_didPointerHover_withLocationInWindow_withWindowBounds___block_invoke;
     v14[3] = &unk_1E711F240;
     v14[4] = self;
-    v14[5] = v12;
+    v14[5] = _trackpadFingerDownCount;
     *&v14[6] = v10;
     *&v14[7] = v9;
     *&v14[8] = x;
@@ -1356,24 +1356,24 @@ void __87__UIEventSessionActionAnalytics_didPointerHover_withLocationInWindow_wi
   }
 }
 
-- (void)didPointerClick:(id)a3 withLocationInWindow:(CGPoint)a4 withWindowBounds:(CGRect)a5
+- (void)didPointerClick:(id)click withLocationInWindow:(CGPoint)window withWindowBounds:(CGRect)bounds
 {
-  if (a3)
+  if (click)
   {
-    height = a5.size.height;
-    width = a5.size.width;
-    y = a5.origin.y;
-    x = a5.origin.x;
-    v9 = a4.y;
-    v10 = a4.x;
-    v12 = [a3 _trackpadFingerDownCount];
+    height = bounds.size.height;
+    width = bounds.size.width;
+    y = bounds.origin.y;
+    x = bounds.origin.x;
+    v9 = window.y;
+    v10 = window.x;
+    _trackpadFingerDownCount = [click _trackpadFingerDownCount];
     queue = self->_queue;
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __87__UIEventSessionActionAnalytics_didPointerClick_withLocationInWindow_withWindowBounds___block_invoke;
     v14[3] = &unk_1E711F240;
     v14[4] = self;
-    v14[5] = v12;
+    v14[5] = _trackpadFingerDownCount;
     *&v14[6] = v10;
     *&v14[7] = v9;
     *&v14[8] = x;
@@ -1418,19 +1418,19 @@ void __87__UIEventSessionActionAnalytics_didPointerClick_withLocationInWindow_wi
   }
 }
 
-- (void)didTap:(id)a3 withSource:(int64_t)a4
+- (void)didTap:(id)tap withSource:(int64_t)source
 {
-  v5 = [(UIEventSessionActionAnalytics *)self _instanceOfActionClass:objc_opt_class() source:a4];
-  v6 = [v5 asTap];
+  v5 = [(UIEventSessionActionAnalytics *)self _instanceOfActionClass:objc_opt_class() source:source];
+  asTap = [v5 asTap];
 
   queue = self->_queue;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __51__UIEventSessionActionAnalytics_didTap_withSource___block_invoke;
   v9[3] = &unk_1E70F35B8;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
+  v10 = asTap;
+  selfCopy = self;
+  v8 = asTap;
   dispatch_async(queue, v9);
 }
 
@@ -1461,19 +1461,19 @@ uint64_t __51__UIEventSessionActionAnalytics_didTap_withSource___block_invoke(ui
   return [*(a1 + 40) q_addActionAndUpdate:*(a1 + 32)];
 }
 
-- (void)didScroll:(id)a3 withSource:(int64_t)a4
+- (void)didScroll:(id)scroll withSource:(int64_t)source
 {
-  v5 = [(UIEventSessionActionAnalytics *)self _instanceOfActionClass:objc_opt_class() source:a4];
-  v6 = [v5 asScroll];
+  v5 = [(UIEventSessionActionAnalytics *)self _instanceOfActionClass:objc_opt_class() source:source];
+  asScroll = [v5 asScroll];
 
   queue = self->_queue;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __54__UIEventSessionActionAnalytics_didScroll_withSource___block_invoke;
   v9[3] = &unk_1E70F35B8;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
+  v10 = asScroll;
+  selfCopy = self;
+  v8 = asScroll;
   dispatch_async(queue, v9);
 }
 
@@ -1514,19 +1514,19 @@ void __54__UIEventSessionActionAnalytics_didScroll_withSource___block_invoke(uin
   [*(a1 + 40) q_addActionAndUpdate:*(a1 + 32)];
 }
 
-- (void)didShowContextualMenuFromLocation:(CGPoint)a3 withSource:(int64_t)a4
+- (void)didShowContextualMenuFromLocation:(CGPoint)location withSource:(int64_t)source
 {
-  v5 = [(UIEventSessionActionAnalytics *)self _instanceOfActionClass:objc_opt_class() source:a4];
-  v6 = [v5 asContextualPress];
+  v5 = [(UIEventSessionActionAnalytics *)self _instanceOfActionClass:objc_opt_class() source:source];
+  asContextualPress = [v5 asContextualPress];
 
   queue = self->_queue;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __78__UIEventSessionActionAnalytics_didShowContextualMenuFromLocation_withSource___block_invoke;
   v9[3] = &unk_1E70F35B8;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
+  v10 = asContextualPress;
+  selfCopy = self;
+  v8 = asContextualPress;
   dispatch_async(queue, v9);
 }
 
@@ -1557,25 +1557,25 @@ uint64_t __78__UIEventSessionActionAnalytics_didShowContextualMenuFromLocation_w
   return [*(a1 + 40) q_addActionAndUpdate:*(a1 + 32)];
 }
 
-- (void)didTypingWithSource:(int64_t)a3
+- (void)didTypingWithSource:(int64_t)source
 {
-  if (a3 == 1)
+  if (source == 1)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"UIEventSessionActionAnalytics.m" lineNumber:738 description:@"didTypingWithSource called with direct touch source. This should be accounted for in didTouch:"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIEventSessionActionAnalytics.m" lineNumber:738 description:@"didTypingWithSource called with direct touch source. This should be accounted for in didTouch:"];
   }
 
-  v5 = [(UIEventSessionActionAnalytics *)self _instanceOfActionClass:objc_opt_class() source:a3];
-  v6 = [v5 asTyping];
+  v5 = [(UIEventSessionActionAnalytics *)self _instanceOfActionClass:objc_opt_class() source:source];
+  asTyping = [v5 asTyping];
 
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __53__UIEventSessionActionAnalytics_didTypingWithSource___block_invoke;
   v11[3] = &unk_1E70F35B8;
-  v12 = v6;
-  v13 = self;
-  v8 = v6;
+  v12 = asTyping;
+  selfCopy = self;
+  v8 = asTyping;
   dispatch_async(queue, v11);
 }
 
@@ -1606,19 +1606,19 @@ uint64_t __53__UIEventSessionActionAnalytics_didTypingWithSource___block_invoke(
   return [*(a1 + 40) q_addActionAndUpdate:*(a1 + 32)];
 }
 
-- (void)didTextSelectionWithSource:(int64_t)a3
+- (void)didTextSelectionWithSource:(int64_t)source
 {
-  v4 = [(UIEventSessionActionAnalytics *)self _instanceOfActionClass:objc_opt_class() source:a3];
-  v5 = [v4 asTextSelection];
+  v4 = [(UIEventSessionActionAnalytics *)self _instanceOfActionClass:objc_opt_class() source:source];
+  asTextSelection = [v4 asTextSelection];
 
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __60__UIEventSessionActionAnalytics_didTextSelectionWithSource___block_invoke;
   v8[3] = &unk_1E70F35B8;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = asTextSelection;
+  selfCopy = self;
+  v7 = asTextSelection;
   dispatch_async(queue, v8);
 }
 
@@ -1649,19 +1649,19 @@ uint64_t __60__UIEventSessionActionAnalytics_didTextSelectionWithSource___block_
   return [*(a1 + 40) q_addActionAndUpdate:*(a1 + 32)];
 }
 
-- (void)didKeyboardShortcut:(id)a3
+- (void)didKeyboardShortcut:(id)shortcut
 {
   v4 = [(UIEventSessionActionAnalytics *)self _instanceOfActionClass:objc_opt_class() source:6];
-  v5 = [v4 asKeyCommand];
+  asKeyCommand = [v4 asKeyCommand];
 
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __53__UIEventSessionActionAnalytics_didKeyboardShortcut___block_invoke;
   v8[3] = &unk_1E70F35B8;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = asKeyCommand;
+  selfCopy = self;
+  v7 = asKeyCommand;
   dispatch_async(queue, v8);
 }
 
@@ -1692,7 +1692,7 @@ uint64_t __53__UIEventSessionActionAnalytics_didKeyboardShortcut___block_invoke(
   return [*(a1 + 40) q_addActionAndUpdate:*(a1 + 32)];
 }
 
-- (void)didHardwareConfigurationChange:(id)a3
+- (void)didHardwareConfigurationChange:(id)change
 {
   if (os_variant_has_internal_diagnostics())
   {
@@ -1742,8 +1742,8 @@ uint64_t __53__UIEventSessionActionAnalytics_didKeyboardShortcut___block_invoke(
 
   if (v5 != 7)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"UIEventSessionActionDefaultAnalytics.m" lineNumber:76 description:@"rawEventsAllowedActionSourcePairs has incorrect length. Make sure it aligns with _UIEventSourceCount"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIEventSessionActionDefaultAnalytics.m" lineNumber:76 description:@"rawEventsAllowedActionSourcePairs has incorrect length. Make sure it aligns with _UIEventSourceCount"];
   }
 
   v14[0] = objc_opt_class();
@@ -1768,8 +1768,8 @@ uint64_t __53__UIEventSessionActionAnalytics_didKeyboardShortcut___block_invoke(
 
   if (v8 != 7)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"UIEventSessionActionDefaultAnalytics.m" lineNumber:91 description:@"rawEventsAllowedActionSourcePairs has incorrect length. Make sure it aligns with _UIEventSourceCount"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIEventSessionActionDefaultAnalytics.m" lineNumber:91 description:@"rawEventsAllowedActionSourcePairs has incorrect length. Make sure it aligns with _UIEventSourceCount"];
   }
 
   v9 = [_UIEventSessionDynamicAllEventAccumulator accumulatorWithName:@"com.apple.inputAnalytics.eventSessionActionRawEvents" depth:1 block:&__block_literal_global_628 delegate:self allowedActionSourceTypes:v3];

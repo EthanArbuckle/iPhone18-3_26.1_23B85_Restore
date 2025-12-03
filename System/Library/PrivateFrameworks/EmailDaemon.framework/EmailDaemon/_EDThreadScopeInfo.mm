@@ -1,22 +1,22 @@
 @interface _EDThreadScopeInfo
-- (_EDThreadScopeInfo)initWithDatabaseID:(int64_t)a3 needsUpdate:(BOOL)a4 lastViewedDate:(id)a5;
+- (_EDThreadScopeInfo)initWithDatabaseID:(int64_t)d needsUpdate:(BOOL)update lastViewedDate:(id)date;
 - (id)description;
 @end
 
 @implementation _EDThreadScopeInfo
 
-- (_EDThreadScopeInfo)initWithDatabaseID:(int64_t)a3 needsUpdate:(BOOL)a4 lastViewedDate:(id)a5
+- (_EDThreadScopeInfo)initWithDatabaseID:(int64_t)d needsUpdate:(BOOL)update lastViewedDate:(id)date
 {
-  v9 = a5;
+  dateCopy = date;
   v13.receiver = self;
   v13.super_class = _EDThreadScopeInfo;
   v10 = [(_EDThreadScopeInfo *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_databaseID = a3;
-    v10->_needsUpdate = a4;
-    objc_storeStrong(&v10->_lastViewedDate, a5);
+    v10->_databaseID = d;
+    v10->_needsUpdate = update;
+    objc_storeStrong(&v10->_lastViewedDate, date);
   }
 
   return v11;
@@ -25,7 +25,7 @@
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(_EDThreadScopeInfo *)self databaseID];
+  databaseID = [(_EDThreadScopeInfo *)self databaseID];
   if ([(_EDThreadScopeInfo *)self needsUpdate])
   {
     v5 = @", needs update";
@@ -36,8 +36,8 @@
     v5 = &stru_1F45B4608;
   }
 
-  v6 = [(_EDThreadScopeInfo *)self lastViewedDate];
-  v7 = [v3 initWithFormat:@"%lld%@, last viewed: %@", v4, v5, v6];
+  lastViewedDate = [(_EDThreadScopeInfo *)self lastViewedDate];
+  v7 = [v3 initWithFormat:@"%lld%@, last viewed: %@", databaseID, v5, lastViewedDate];
 
   return v7;
 }

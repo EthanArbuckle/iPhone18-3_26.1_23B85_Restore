@@ -1,34 +1,34 @@
 @interface MOPersonalizedSensingUtils
-+ (BOOL)_shouldRemoveBundle:(id)a3 checkVisibilityCategoryForUI:(BOOL)a4;
-+ (id)getPersonalizedSensingAllowedBundles:(id)a3 allowVisits:(BOOL)a4;
++ (BOOL)_shouldRemoveBundle:(id)bundle checkVisibilityCategoryForUI:(BOOL)i;
++ (id)getPersonalizedSensingAllowedBundles:(id)bundles allowVisits:(BOOL)visits;
 @end
 
 @implementation MOPersonalizedSensingUtils
 
-+ (BOOL)_shouldRemoveBundle:(id)a3 checkVisibilityCategoryForUI:(BOOL)a4
++ (BOOL)_shouldRemoveBundle:(id)bundle checkVisibilityCategoryForUI:(BOOL)i
 {
-  LODWORD(v4) = a4;
-  v5 = a3;
+  LODWORD(v4) = i;
+  bundleCopy = bundle;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    if ([v5 interfaceType] == 15 && (objc_msgSend(v5, "bundleSubType") == 902 || objc_msgSend(v5, "bundleSubType") == 906))
+    if ([bundleCopy interfaceType] == 15 && (objc_msgSend(bundleCopy, "bundleSubType") == 902 || objc_msgSend(bundleCopy, "bundleSubType") == 906))
     {
       v4 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
       {
-        v6 = [v5 bundleIdentifier];
-        v7 = [v5 suggestionID];
-        v8 = [v5 bundleSubType];
-        v9 = [v5 labels];
-        v10 = [v9 firstObject];
+        bundleIdentifier = [bundleCopy bundleIdentifier];
+        suggestionID = [bundleCopy suggestionID];
+        bundleSubType = [bundleCopy bundleSubType];
+        labels = [bundleCopy labels];
+        firstObject = [labels firstObject];
         v30 = 138413058;
-        v31 = v6;
+        v31 = bundleIdentifier;
         v32 = 2112;
-        v33 = v7;
+        v33 = suggestionID;
         v34 = 2048;
-        v35 = v8;
+        v35 = bundleSubType;
         v36 = 2112;
-        v37 = v10;
+        v37 = firstObject;
         v11 = "#bundlecuration, filtered cluster bundle, reason shouldAllowActivityBundles=False & activity cluster, bundleId %@, suggestionId %@, bundleSubType %lu, label, %@";
 LABEL_25:
         _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, v11, &v30, 0x2Au);
@@ -39,24 +39,24 @@ LABEL_25:
       goto LABEL_27;
     }
 
-    if ([v5 interfaceType] == 12 && objc_msgSend(v5, "bundleSuperType") == 2)
+    if ([bundleCopy interfaceType] == 12 && objc_msgSend(bundleCopy, "bundleSuperType") == 2)
     {
       v4 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
       {
-        v6 = [v5 bundleIdentifier];
-        v7 = [v5 suggestionID];
-        v12 = [v5 bundleSubType];
-        v9 = [v5 labels];
-        v10 = [v9 firstObject];
+        bundleIdentifier = [bundleCopy bundleIdentifier];
+        suggestionID = [bundleCopy suggestionID];
+        bundleSubType2 = [bundleCopy bundleSubType];
+        labels = [bundleCopy labels];
+        firstObject = [labels firstObject];
         v30 = 138413058;
-        v31 = v6;
+        v31 = bundleIdentifier;
         v32 = 2112;
-        v33 = v7;
+        v33 = suggestionID;
         v34 = 2048;
-        v35 = v12;
+        v35 = bundleSubType2;
         v36 = 2112;
-        v37 = v10;
+        v37 = firstObject;
         v11 = "#bundlecuration, filtered activity summary bundle, reason shouldAllowActivityBundles=False & activity bundle, bundleId %@, suggestionId %@, bundleSubType %lu, label, %@";
         goto LABEL_25;
       }
@@ -68,13 +68,13 @@ LABEL_27:
     }
   }
 
-  if ([v5 interfaceType] == 13)
+  if ([bundleCopy interfaceType] == 13)
   {
-    v13 = [v5 rankingDictionary];
-    v14 = [v13 objectForKeyedSubscript:@"visibilityCategoryForUI"];
-    v15 = [v14 intValue];
+    rankingDictionary = [bundleCopy rankingDictionary];
+    v14 = [rankingDictionary objectForKeyedSubscript:@"visibilityCategoryForUI"];
+    intValue = [v14 intValue];
 
-    if (v15 != 4)
+    if (intValue != 4)
     {
 LABEL_29:
       LOBYTE(v4) = 0;
@@ -82,29 +82,29 @@ LABEL_29:
     }
   }
 
-  if ([v5 bundleSuperType] == 9)
+  if ([bundleCopy bundleSuperType] == 9)
   {
-    v16 = [v5 clusterMetadata];
-    v17 = [v16 isFiltered];
+    clusterMetadata = [bundleCopy clusterMetadata];
+    isFiltered = [clusterMetadata isFiltered];
 
-    if (v17)
+    if (isFiltered)
     {
       v4 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
       {
-        v6 = [v5 bundleIdentifier];
-        v7 = [v5 suggestionID];
-        v18 = [v5 bundleSubType];
-        v9 = [v5 labels];
-        v10 = [v9 firstObject];
+        bundleIdentifier = [bundleCopy bundleIdentifier];
+        suggestionID = [bundleCopy suggestionID];
+        bundleSubType3 = [bundleCopy bundleSubType];
+        labels = [bundleCopy labels];
+        firstObject = [labels firstObject];
         v30 = 138413058;
-        v31 = v6;
+        v31 = bundleIdentifier;
         v32 = 2112;
-        v33 = v7;
+        v33 = suggestionID;
         v34 = 2048;
-        v35 = v18;
+        v35 = bundleSubType3;
         v36 = 2112;
-        v37 = v10;
+        v37 = firstObject;
         v11 = "#bundlecuration, filtered cluster bundle, reason clusterMetadata.isFiltered, bundleId %@, suggestionId %@, bundleSubType %lu, label, %@";
         goto LABEL_25;
       }
@@ -112,7 +112,7 @@ LABEL_29:
       goto LABEL_27;
     }
 
-    v26 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v5 bundleSubType]);
+    v26 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [bundleCopy bundleSubType]);
     v27 = [&off_10036D8C0 containsObject:v26];
 
     if ((v27 & 1) == 0)
@@ -120,19 +120,19 @@ LABEL_29:
       v4 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
       {
-        v6 = [v5 bundleIdentifier];
-        v7 = [v5 suggestionID];
-        v28 = [v5 bundleSubType];
-        v9 = [v5 labels];
-        v10 = [v9 firstObject];
+        bundleIdentifier = [bundleCopy bundleIdentifier];
+        suggestionID = [bundleCopy suggestionID];
+        bundleSubType4 = [bundleCopy bundleSubType];
+        labels = [bundleCopy labels];
+        firstObject = [labels firstObject];
         v30 = 138413058;
-        v31 = v6;
+        v31 = bundleIdentifier;
         v32 = 2112;
-        v33 = v7;
+        v33 = suggestionID;
         v34 = 2048;
-        v35 = v28;
+        v35 = bundleSubType4;
         v36 = 2112;
-        v37 = v10;
+        v37 = firstObject;
         v11 = "#bundlecuration, filtered cluster bundle, reason unsupported subtype, bundleId %@, suggestionId %@, bundleSubType %lu, label, %@";
         goto LABEL_25;
       }
@@ -145,29 +145,29 @@ LABEL_29:
 
   if (v4)
   {
-    v19 = [v5 rankingDictionary];
-    v20 = [v19 objectForKeyedSubscript:@"visibilityCategoryForUI"];
+    rankingDictionary2 = [bundleCopy rankingDictionary];
+    v20 = [rankingDictionary2 objectForKeyedSubscript:@"visibilityCategoryForUI"];
     if ([v20 intValue] == 4)
     {
-      v21 = [v5 rankingDictionary];
-      v22 = [v21 objectForKeyedSubscript:@"isBundleOrSubBundlesSelectedOrQuickAdded"];
-      v23 = [v22 BOOLValue];
+      rankingDictionary3 = [bundleCopy rankingDictionary];
+      v22 = [rankingDictionary3 objectForKeyedSubscript:@"isBundleOrSubBundlesSelectedOrQuickAdded"];
+      bOOLValue = [v22 BOOLValue];
 
-      if ((v23 & 1) == 0)
+      if ((bOOLValue & 1) == 0)
       {
         v4 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
         if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
         {
-          v6 = [v5 bundleIdentifier];
-          v7 = [v5 suggestionID];
-          v24 = [v5 labels];
-          v25 = [v24 firstObject];
+          bundleIdentifier = [bundleCopy bundleIdentifier];
+          suggestionID = [bundleCopy suggestionID];
+          labels2 = [bundleCopy labels];
+          firstObject2 = [labels2 firstObject];
           v30 = 138412802;
-          v31 = v6;
+          v31 = bundleIdentifier;
           v32 = 2112;
-          v33 = v7;
+          v33 = suggestionID;
           v34 = 2112;
-          v35 = v25;
+          v35 = firstObject2;
           _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "#bundlecuration, filtered bundle, reason UIrejected, id, %@, suggestion id, %@, label, %@", &v30, 0x20u);
 
 LABEL_26:
@@ -190,10 +190,10 @@ LABEL_30:
   return v4;
 }
 
-+ (id)getPersonalizedSensingAllowedBundles:(id)a3 allowVisits:(BOOL)a4
++ (id)getPersonalizedSensingAllowedBundles:(id)bundles allowVisits:(BOOL)visits
 {
-  v6 = a3;
-  v7 = [v6 count];
+  bundlesCopy = bundles;
+  v7 = [bundlesCopy count];
   v8 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
   v9 = v8;
   if (v7)
@@ -201,7 +201,7 @@ LABEL_30:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v37 = [v6 count];
+      v37 = [bundlesCopy count];
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "total count of fetched bundles %lu", buf, 0xCu);
     }
 
@@ -216,7 +216,7 @@ LABEL_30:
     else
     {
       v14 = [NSPredicate predicateWithFormat:@"interfaceType == %luu AND bundleSuperType == %luu", 12, 2];
-      v15 = [v6 filteredArrayUsingPredicate:v14];
+      v15 = [bundlesCopy filteredArrayUsingPredicate:v14];
       v33[0] = _NSConcreteStackBlock;
       v33[1] = 3221225472;
       v33[2] = __79__MOPersonalizedSensingUtils_getPersonalizedSensingAllowedBundles_allowVisits___block_invoke;
@@ -251,17 +251,17 @@ LABEL_30:
     v26[1] = 3221225472;
     v26[2] = __79__MOPersonalizedSensingUtils_getPersonalizedSensingAllowedBundles_allowVisits___block_invoke_126;
     v26[3] = &unk_100335BA8;
-    v32 = a4;
+    visitsCopy = visits;
     v27 = v10;
     v28 = v11;
     v29 = v12;
-    v31 = a1;
+    selfCopy = self;
     v21 = objc_opt_new();
     v30 = v21;
     v22 = v12;
     v23 = v11;
     v9 = v10;
-    [v6 enumerateObjectsUsingBlock:v26];
+    [bundlesCopy enumerateObjectsUsingBlock:v26];
     v24 = v30;
     v13 = v21;
   }

@@ -1,19 +1,19 @@
 @interface ConversationUtils
-+ (id)conversationTurnTypeToStringWithTurnType:(int64_t)a3;
-+ (int64_t)stringToConversationTurnTypeWithTypeString:(id)a3;
++ (id)conversationTurnTypeToStringWithTurnType:(int64_t)type;
++ (int64_t)stringToConversationTurnTypeWithTypeString:(id)string;
 - (_TtC26DeepThoughtBiomeFoundation17ConversationUtils)init;
 @end
 
 @implementation ConversationUtils
 
-+ (id)conversationTurnTypeToStringWithTurnType:(int64_t)a3
++ (id)conversationTurnTypeToStringWithTurnType:(int64_t)type
 {
   v3 = sub_248730FC0();
 
   return v3;
 }
 
-+ (int64_t)stringToConversationTurnTypeWithTypeString:(id)a3
++ (int64_t)stringToConversationTurnTypeWithTypeString:(id)string
 {
   v3 = sub_248730FF0();
   v5 = v4;

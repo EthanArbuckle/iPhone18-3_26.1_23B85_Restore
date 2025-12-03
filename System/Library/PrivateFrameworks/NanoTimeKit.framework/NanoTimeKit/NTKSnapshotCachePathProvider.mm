@@ -17,16 +17,16 @@
 
 - (NSURL)libraryPath
 {
-  v2 = [(NTKSnapshotCachePathProvider *)self defaultPath];
-  v3 = [v2 URLByAppendingPathComponent:@"Library"];
+  defaultPath = [(NTKSnapshotCachePathProvider *)self defaultPath];
+  v3 = [defaultPath URLByAppendingPathComponent:@"Library"];
 
   return v3;
 }
 
 - (NSURL)cachesPath
 {
-  v2 = [(NTKSnapshotCachePathProvider *)self libraryPath];
-  v3 = [v2 URLByAppendingPathComponent:@"Caches"];
+  libraryPath = [(NTKSnapshotCachePathProvider *)self libraryPath];
+  v3 = [libraryPath URLByAppendingPathComponent:@"Caches"];
 
   return v3;
 }

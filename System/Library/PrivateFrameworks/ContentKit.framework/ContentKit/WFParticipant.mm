@@ -1,9 +1,9 @@
 @interface WFParticipant
-+ (id)objectWithWFSerializedRepresentation:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEquivalentToParticipant:(id)a3;
-- (WFParticipant)initWithEKParticipant:(id)a3;
-- (WFParticipant)initWithURL:(id)a3 name:(id)a4 emailAddress:(id)a5 status:(int64_t)a6 role:(int64_t)a7 type:(int64_t)a8 sourceIdentifier:(id)a9 isManaged:(BOOL)a10 isCurrentUser:(BOOL)a11 contactPredicate:(id)a12;
++ (id)objectWithWFSerializedRepresentation:(id)representation;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEquivalentToParticipant:(id)participant;
+- (WFParticipant)initWithEKParticipant:(id)participant;
+- (WFParticipant)initWithURL:(id)l name:(id)name emailAddress:(id)address status:(int64_t)status role:(int64_t)role type:(int64_t)type sourceIdentifier:(id)identifier isManaged:(BOOL)self0 isCurrentUser:(BOOL)self1 contactPredicate:(id)self2;
 - (id)wfSerializedRepresentation;
 - (unint64_t)hash;
 @end
@@ -19,24 +19,24 @@
   if (v4)
   {
     v5 = [(WFParticipant *)self URL];
-    v6 = [v5 absoluteString];
-    [v3 setObject:v6 forKey:@"URL"];
+    absoluteString = [v5 absoluteString];
+    [v3 setObject:absoluteString forKey:@"URL"];
   }
 
-  v7 = [(WFParticipant *)self name];
+  name = [(WFParticipant *)self name];
 
-  if (v7)
+  if (name)
   {
-    v8 = [(WFParticipant *)self name];
-    [v3 setObject:v8 forKey:@"name"];
+    name2 = [(WFParticipant *)self name];
+    [v3 setObject:name2 forKey:@"name"];
   }
 
-  v9 = [(WFParticipant *)self emailAddress];
+  emailAddress = [(WFParticipant *)self emailAddress];
 
-  if (v9)
+  if (emailAddress)
   {
-    v10 = [(WFParticipant *)self emailAddress];
-    [v3 setObject:v10 forKey:@"emailAddress"];
+    emailAddress2 = [(WFParticipant *)self emailAddress];
+    [v3 setObject:emailAddress2 forKey:@"emailAddress"];
   }
 
   v11 = [MEMORY[0x277CCABB0] numberWithInteger:{-[WFParticipant status](self, "status")}];
@@ -54,12 +54,12 @@
   v15 = [MEMORY[0x277CCABB0] numberWithBool:{-[WFParticipant isManaged](self, "isManaged")}];
   [v3 setObject:v15 forKey:@"isManaged"];
 
-  v16 = [(WFParticipant *)self sourceIdentifier];
+  sourceIdentifier = [(WFParticipant *)self sourceIdentifier];
 
-  if (v16)
+  if (sourceIdentifier)
   {
-    v17 = [(WFParticipant *)self sourceIdentifier];
-    [v3 setObject:v17 forKey:@"sourceIdentifier"];
+    sourceIdentifier2 = [(WFParticipant *)self sourceIdentifier];
+    [v3 setObject:sourceIdentifier2 forKey:@"sourceIdentifier"];
   }
 
   v20 = @"link.contentkit.ekparticipant";
@@ -69,10 +69,10 @@
   return v18;
 }
 
-- (BOOL)isEquivalentToParticipant:(id)a3
+- (BOOL)isEquivalentToParticipant:(id)participant
 {
-  v4 = a3;
-  if (v4 == self)
+  participantCopy = participant;
+  if (participantCopy == self)
   {
     LOBYTE(v10) = 1;
   }
@@ -83,15 +83,15 @@
     if (objc_opt_isKindOfClass())
     {
       v5 = [(WFParticipant *)self URL];
-      v6 = [(WFParticipant *)v4 URL];
+      v6 = [(WFParticipant *)participantCopy URL];
       if ([v5 isEqual:v6])
       {
-        v7 = [(WFParticipant *)self emailAddress];
-        v8 = [(WFParticipant *)v4 emailAddress];
-        if ([v7 isEqualToString:v8])
+        emailAddress = [(WFParticipant *)self emailAddress];
+        emailAddress2 = [(WFParticipant *)participantCopy emailAddress];
+        if ([emailAddress isEqualToString:emailAddress2])
         {
-          v9 = [(WFParticipant *)self isCurrentUser];
-          v10 = v9 ^ [(WFParticipant *)v4 isCurrentUser]^ 1;
+          isCurrentUser = [(WFParticipant *)self isCurrentUser];
+          v10 = isCurrentUser ^ [(WFParticipant *)participantCopy isCurrentUser]^ 1;
         }
 
         else
@@ -115,10 +115,10 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v10) = 1;
   }
@@ -129,7 +129,7 @@
     if (objc_opt_isKindOfClass())
     {
       v5 = [(WFParticipant *)self URL];
-      v6 = [(WFParticipant *)v4 URL];
+      v6 = [(WFParticipant *)equalCopy URL];
       v7 = v5;
       v8 = v6;
       v9 = v8;
@@ -158,10 +158,10 @@ LABEL_48:
         }
       }
 
-      v14 = [(WFParticipant *)self name];
-      v15 = [(WFParticipant *)v4 name];
-      v12 = v14;
-      v16 = v15;
+      name = [(WFParticipant *)self name];
+      name2 = [(WFParticipant *)equalCopy name];
+      v12 = name;
+      v16 = name2;
       v11 = v16;
       if (v12 == v16)
       {
@@ -188,10 +188,10 @@ LABEL_47:
         }
       }
 
-      v20 = [(WFParticipant *)self emailAddress];
-      v21 = [(WFParticipant *)v4 emailAddress];
-      v18 = v20;
-      v22 = v21;
+      emailAddress = [(WFParticipant *)self emailAddress];
+      emailAddress2 = [(WFParticipant *)equalCopy emailAddress];
+      v18 = emailAddress;
+      v22 = emailAddress2;
       v17 = v22;
       if (v18 == v22)
       {
@@ -215,8 +215,8 @@ LABEL_47:
         }
       }
 
-      v25 = [(WFParticipant *)self status];
-      if (v25 != [(WFParticipant *)v4 status]|| (v26 = [(WFParticipant *)self role], v26 != [(WFParticipant *)v4 role]) || (v27 = [(WFParticipant *)self type], v27 != [(WFParticipant *)v4 type]))
+      status = [(WFParticipant *)self status];
+      if (status != [(WFParticipant *)equalCopy status]|| (v26 = [(WFParticipant *)self role], v26 != [(WFParticipant *)equalCopy role]) || (v27 = [(WFParticipant *)self type], v27 != [(WFParticipant *)equalCopy type]))
       {
         LOBYTE(v10) = 0;
 LABEL_46:
@@ -224,10 +224,10 @@ LABEL_46:
         goto LABEL_47;
       }
 
-      v28 = [(WFParticipant *)self sourceIdentifier];
-      v29 = [(WFParticipant *)v4 sourceIdentifier];
-      v30 = v28;
-      v31 = v29;
+      sourceIdentifier = [(WFParticipant *)self sourceIdentifier];
+      sourceIdentifier2 = [(WFParticipant *)equalCopy sourceIdentifier];
+      v30 = sourceIdentifier;
+      v31 = sourceIdentifier2;
       v23 = v31;
       v32 = v30;
       v47 = v30;
@@ -270,22 +270,22 @@ LABEL_45:
         }
       }
 
-      v36 = [(WFParticipant *)self isManaged];
-      if (v36 != [(WFParticipant *)v4 isManaged])
+      isManaged = [(WFParticipant *)self isManaged];
+      if (isManaged != [(WFParticipant *)equalCopy isManaged])
       {
         goto LABEL_35;
       }
 
-      v37 = [(WFParticipant *)self isCurrentUser];
-      if (v37 != [(WFParticipant *)v4 isCurrentUser])
+      isCurrentUser = [(WFParticipant *)self isCurrentUser];
+      if (isCurrentUser != [(WFParticipant *)equalCopy isCurrentUser])
       {
         goto LABEL_35;
       }
 
-      v38 = [(WFParticipant *)self contactPredicate];
-      v39 = [(WFParticipant *)v4 contactPredicate];
-      v40 = v38;
-      v41 = v39;
+      contactPredicate = [(WFParticipant *)self contactPredicate];
+      contactPredicate2 = [(WFParticipant *)equalCopy contactPredicate];
+      v40 = contactPredicate;
+      v41 = contactPredicate2;
       v46 = v41;
       if (v40 == v41)
       {
@@ -318,56 +318,56 @@ LABEL_49:
 {
   v3 = [(WFParticipant *)self URL];
   v4 = [v3 hash];
-  v5 = [(WFParticipant *)self name];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(WFParticipant *)self emailAddress];
-  v8 = [v7 hash];
+  name = [(WFParticipant *)self name];
+  v6 = [name hash] ^ v4;
+  emailAddress = [(WFParticipant *)self emailAddress];
+  v8 = [emailAddress hash];
   v9 = v6 ^ v8 ^ [(WFParticipant *)self status];
-  v10 = [(WFParticipant *)self role];
-  v11 = v10 ^ [(WFParticipant *)self type];
-  v12 = [(WFParticipant *)self sourceIdentifier];
-  v13 = v11 ^ [v12 hash];
+  role = [(WFParticipant *)self role];
+  v11 = role ^ [(WFParticipant *)self type];
+  sourceIdentifier = [(WFParticipant *)self sourceIdentifier];
+  v13 = v11 ^ [sourceIdentifier hash];
   v14 = v9 ^ v13 ^ [(WFParticipant *)self isManaged];
-  v15 = [(WFParticipant *)self isCurrentUser];
-  v16 = [(WFParticipant *)self contactPredicate];
-  v17 = v15 ^ [v16 hash];
+  isCurrentUser = [(WFParticipant *)self isCurrentUser];
+  contactPredicate = [(WFParticipant *)self contactPredicate];
+  v17 = isCurrentUser ^ [contactPredicate hash];
 
   return v14 ^ v17;
 }
 
-- (WFParticipant)initWithEKParticipant:(id)a3
+- (WFParticipant)initWithEKParticipant:(id)participant
 {
-  v3 = a3;
-  v4 = [v3 owner];
-  v5 = [v4 calendar];
+  participantCopy = participant;
+  owner = [participantCopy owner];
+  calendar = [owner calendar];
 
-  v18 = [v5 isManaged];
-  v17 = [v3 URL];
-  v6 = [v3 name];
-  v7 = [v3 emailAddress];
-  v16 = [v3 participantStatus];
-  v8 = [v3 participantRole];
-  v9 = [v3 participantType];
-  v10 = [v5 source];
-  v11 = [v10 sourceIdentifier];
-  LOBYTE(v4) = [v3 isCurrentUser];
-  v12 = [v3 contactPredicate];
+  isManaged = [calendar isManaged];
+  v17 = [participantCopy URL];
+  name = [participantCopy name];
+  emailAddress = [participantCopy emailAddress];
+  participantStatus = [participantCopy participantStatus];
+  participantRole = [participantCopy participantRole];
+  participantType = [participantCopy participantType];
+  source = [calendar source];
+  sourceIdentifier = [source sourceIdentifier];
+  LOBYTE(owner) = [participantCopy isCurrentUser];
+  contactPredicate = [participantCopy contactPredicate];
 
-  BYTE1(v15) = v4;
-  LOBYTE(v15) = v18;
-  v13 = [(WFParticipant *)self initWithURL:v17 name:v6 emailAddress:v7 status:v16 role:v8 type:v9 sourceIdentifier:v11 isManaged:v15 isCurrentUser:v12 contactPredicate:?];
+  BYTE1(v15) = owner;
+  LOBYTE(v15) = isManaged;
+  v13 = [(WFParticipant *)self initWithURL:v17 name:name emailAddress:emailAddress status:participantStatus role:participantRole type:participantType sourceIdentifier:sourceIdentifier isManaged:v15 isCurrentUser:contactPredicate contactPredicate:?];
 
   return v13;
 }
 
-- (WFParticipant)initWithURL:(id)a3 name:(id)a4 emailAddress:(id)a5 status:(int64_t)a6 role:(int64_t)a7 type:(int64_t)a8 sourceIdentifier:(id)a9 isManaged:(BOOL)a10 isCurrentUser:(BOOL)a11 contactPredicate:(id)a12
+- (WFParticipant)initWithURL:(id)l name:(id)name emailAddress:(id)address status:(int64_t)status role:(int64_t)role type:(int64_t)type sourceIdentifier:(id)identifier isManaged:(BOOL)self0 isCurrentUser:(BOOL)self1 contactPredicate:(id)self2
 {
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a9;
-  v35 = a12;
-  if (!v19)
+  lCopy = l;
+  nameCopy = name;
+  addressCopy = address;
+  identifierCopy = identifier;
+  predicateCopy = predicate;
+  if (!lCopy)
   {
     obj = [MEMORY[0x277CCA890] currentHandler];
     [obj handleFailureInMethod:a2 object:self file:@"WFParticipant.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"URL"}];
@@ -379,35 +379,35 @@ LABEL_49:
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_URL, a3);
-    v25 = [v20 copy];
+    objc_storeStrong(&v23->_URL, l);
+    v25 = [nameCopy copy];
     name = v24->_name;
     v24->_name = v25;
 
-    v27 = [v21 copy];
+    v27 = [addressCopy copy];
     emailAddress = v24->_emailAddress;
     v24->_emailAddress = v27;
 
-    v24->_status = a6;
-    v24->_role = a7;
-    v24->_type = a8;
-    v29 = [v22 copy];
+    v24->_status = status;
+    v24->_role = role;
+    v24->_type = type;
+    v29 = [identifierCopy copy];
     sourceIdentifier = v24->_sourceIdentifier;
     v24->_sourceIdentifier = v29;
 
-    v24->_managed = a10;
-    v24->_currentUser = a11;
-    objc_storeStrong(&v24->_contactPredicate, a12);
+    v24->_managed = managed;
+    v24->_currentUser = user;
+    objc_storeStrong(&v24->_contactPredicate, predicate);
     v31 = v24;
   }
 
   return v24;
 }
 
-+ (id)objectWithWFSerializedRepresentation:(id)a3
++ (id)objectWithWFSerializedRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.ekparticipant"];
+  representationCopy = representation;
+  v5 = [representationCopy wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.ekparticipant"];
 
   v6 = MEMORY[0x277CBEBC0];
   v7 = [v5 wfObjectOfClass:objc_opt_class() forKey:@"URL"];
@@ -417,26 +417,26 @@ LABEL_49:
   {
     v9 = [v5 wfObjectOfClass:objc_opt_class() forKey:@"name"];
     v10 = [v5 wfObjectOfClass:objc_opt_class() forKey:@"emailAddress"];
-    v25 = a1;
+    selfCopy = self;
     v11 = [v5 wfObjectOfClass:objc_opt_class() forKey:@"participantStatus"];
-    v24 = [v11 integerValue];
+    integerValue = [v11 integerValue];
 
     v12 = [v5 wfObjectOfClass:objc_opt_class() forKey:@"participantRole"];
-    v13 = [v12 integerValue];
+    integerValue2 = [v12 integerValue];
 
     v14 = [v5 wfObjectOfClass:objc_opt_class() forKey:@"participantType"];
-    v15 = [v14 integerValue];
+    integerValue3 = [v14 integerValue];
 
     v16 = [v5 wfObjectOfClass:objc_opt_class() forKey:@"isCurrentUser"];
-    v17 = [v16 BOOLValue];
+    bOOLValue = [v16 BOOLValue];
 
     v18 = [v5 wfObjectOfClass:objc_opt_class() forKey:@"isManaged"];
-    v19 = [v18 BOOLValue];
+    bOOLValue2 = [v18 BOOLValue];
 
     v20 = [v5 wfObjectOfClass:objc_opt_class() forKey:@"sourceIdentifier"];
-    BYTE1(v23) = v17;
-    LOBYTE(v23) = v19;
-    v21 = [[v25 alloc] initWithURL:v8 name:v9 emailAddress:v10 status:v24 role:v13 type:v15 sourceIdentifier:v20 isManaged:v23 isCurrentUser:0 contactPredicate:?];
+    BYTE1(v23) = bOOLValue;
+    LOBYTE(v23) = bOOLValue2;
+    v21 = [[selfCopy alloc] initWithURL:v8 name:v9 emailAddress:v10 status:integerValue role:integerValue2 type:integerValue3 sourceIdentifier:v20 isManaged:v23 isCurrentUser:0 contactPredicate:?];
   }
 
   else

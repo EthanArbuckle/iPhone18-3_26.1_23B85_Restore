@@ -1,10 +1,10 @@
 @interface NRLinkPreferences
-+ (id)createFromEncodedXPCDict:(id)a3;
-- (NRLinkPreferences)initWithLinkType:(unsigned __int8)a3;
++ (id)createFromEncodedXPCDict:(id)dict;
+- (NRLinkPreferences)initWithLinkType:(unsigned __int8)type;
 - (id)copyEncodedXPCDict;
 - (id)copyLongDescription;
 - (id)copyShortDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -14,25 +14,25 @@
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
   StringFromNRLinkType = createStringFromNRLinkType([(NRLinkPreferences *)self linkType]);
-  v5 = [v3 initWithFormat:@"LinkPref[%@]", StringFromNRLinkType];
+  stringFromNRLinkType = [v3 initWithFormat:@"LinkPref[%@]", StringFromNRLinkType];
 
-  return v5;
+  return stringFromNRLinkType;
 }
 
 - (id)copyLongDescription
 {
   v3 = objc_alloc(MEMORY[0x277CCAB68]);
   StringFromNRLinkType = createStringFromNRLinkType([(NRLinkPreferences *)self linkType]);
-  v5 = [v3 initWithFormat:@"Link Type: %@", StringFromNRLinkType];
+  stringFromNRLinkType = [v3 initWithFormat:@"Link Type: %@", StringFromNRLinkType];
 
-  return v5;
+  return stringFromNRLinkType;
 }
 
 - (id)description
 {
-  v2 = [(NRLinkPreferences *)self copyShortDescription];
+  copyShortDescription = [(NRLinkPreferences *)self copyShortDescription];
 
-  return v2;
+  return copyShortDescription;
 }
 
 - (id)copyEncodedXPCDict
@@ -76,7 +76,7 @@ LABEL_7:
   return v4;
 }
 
-- (NRLinkPreferences)initWithLinkType:(unsigned __int8)a3
+- (NRLinkPreferences)initWithLinkType:(unsigned __int8)type
 {
   v19 = *MEMORY[0x277D85DE8];
   v18.receiver = self;
@@ -114,24 +114,24 @@ LABEL_7:
     _NRLogAbortWithPack(v17);
   }
 
-  result->_linkType = a3;
+  result->_linkType = type;
   v5 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(NRLinkPreferences *)self linkType];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  linkType = [(NRLinkPreferences *)self linkType];
 
-  return [v4 initWithLinkType:v5];
+  return [v4 initWithLinkType:linkType];
 }
 
-+ (id)createFromEncodedXPCDict:(id)a3
++ (id)createFromEncodedXPCDict:(id)dict
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  dictCopy = dict;
+  v4 = dictCopy;
+  if (!dictCopy)
   {
     v9 = nrCopyLogObj_461();
     if (sNRCopyLogToStdErr == 1)
@@ -156,7 +156,7 @@ LABEL_14:
     goto LABEL_5;
   }
 
-  if (MEMORY[0x25F8746E0](v3) != MEMORY[0x277D86468])
+  if (MEMORY[0x25F8746E0](dictCopy) != MEMORY[0x277D86468])
   {
     v10 = nrCopyLogObj_461();
     if (sNRCopyLogToStdErr == 1)

@@ -1,14 +1,14 @@
 @interface ContextMenuIdentity
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (_TtC7SwiftUI19ContextMenuIdentity)init;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
 @end
 
 @implementation ContextMenuIdentity
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   ObjectType = swift_getObjectType();
   v5 = *(&self->super.isa + OBJC_IVAR____TtC7SwiftUI19ContextMenuIdentity_base);
@@ -23,11 +23,11 @@
   return [(ContextMenuIdentity *)&v10 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -36,7 +36,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = ContextMenuIdentity.isEqual(_:)(v8);
@@ -54,7 +54,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ContextMenuIdentity.description.getter();
   v5 = v4;
 

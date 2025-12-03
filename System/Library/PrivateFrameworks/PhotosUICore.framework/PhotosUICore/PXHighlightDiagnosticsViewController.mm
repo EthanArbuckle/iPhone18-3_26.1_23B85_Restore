@@ -1,10 +1,10 @@
 @interface PXHighlightDiagnosticsViewController
-- (BOOL)generateSectionTitles:(id *)a3 andTableContent:(id *)a4 forIndex:(int64_t)a5;
-- (PXHighlightDiagnosticsViewController)initWithHighlight:(id)a3;
-- (id)assetsForCurationType:(int64_t)a3;
-- (id)curationDebugInformationWithOptions:(id)a3;
+- (BOOL)generateSectionTitles:(id *)titles andTableContent:(id *)content forIndex:(int64_t)index;
+- (PXHighlightDiagnosticsViewController)initWithHighlight:(id)highlight;
+- (id)assetsForCurationType:(int64_t)type;
+- (id)curationDebugInformationWithOptions:(id)options;
 - (id)radarAttachmentURLs;
-- (id)radarComponentInfoForRoute:(id)a3;
+- (id)radarComponentInfoForRoute:(id)route;
 - (id)radarTitleTemplate;
 - (id)sourceDictionary;
 @end
@@ -14,15 +14,15 @@
 - (id)radarTitleTemplate
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(PHPhotosHighlight *)self->_sourceHighlight localizedTitle];
-  v4 = [v2 stringWithFormat:@"[CURATED LIBRARY] '%@'", v3];
+  localizedTitle = [(PHPhotosHighlight *)self->_sourceHighlight localizedTitle];
+  v4 = [v2 stringWithFormat:@"[CURATED LIBRARY] '%@'", localizedTitle];
 
   return v4;
 }
 
-- (id)radarComponentInfoForRoute:(id)a3
+- (id)radarComponentInfoForRoute:(id)route
 {
-  v3 = [a3 isEqualToString:@"Backend"];
+  v3 = [route isEqualToString:@"Backend"];
   v4 = [PXCuratedAssetCollectionDiagnosticsRadarComponentInformation alloc];
   if (v3)
   {
@@ -43,36 +43,36 @@
   return v8;
 }
 
-- (BOOL)generateSectionTitles:(id *)a3 andTableContent:(id *)a4 forIndex:(int64_t)a5
+- (BOOL)generateSectionTitles:(id *)titles andTableContent:(id *)content forIndex:(int64_t)index
 {
   sourceHighlight = self->_sourceHighlight;
-  v9 = [(PXHighlightDiagnosticsViewController *)self sourceDictionary];
-  LOBYTE(a5) = [PXHighlightDiagnosticsHelper generateSectionTitles:a3 andTableContent:a4 forIndex:a5 sourceHighlight:sourceHighlight sourceDictionary:v9];
+  sourceDictionary = [(PXHighlightDiagnosticsViewController *)self sourceDictionary];
+  LOBYTE(index) = [PXHighlightDiagnosticsHelper generateSectionTitles:titles andTableContent:content forIndex:index sourceHighlight:sourceHighlight sourceDictionary:sourceDictionary];
 
-  return a5;
+  return index;
 }
 
-- (id)curationDebugInformationWithOptions:(id)a3
+- (id)curationDebugInformationWithOptions:(id)options
 {
   v44[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-  v6 = [(PHPhotosHighlight *)self->_sourceHighlight localIdentifier];
+  optionsCopy = options;
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  localIdentifier = [(PHPhotosHighlight *)self->_sourceHighlight localIdentifier];
   v42 = 0;
-  v34 = v4;
-  v7 = [v5 curationDebugInformationForAssetCollectionWithLocalIdentifier:v6 options:v4 error:&v42];
+  v34 = optionsCopy;
+  v7 = [px_deprecated_appPhotoLibrary curationDebugInformationForAssetCollectionWithLocalIdentifier:localIdentifier options:optionsCopy error:&v42];
   v8 = v42;
 
   if ([(PHPhotosHighlight *)self->_sourceHighlight kind]== 3)
   {
-    v9 = [v5 librarySpecificFetchOptions];
+    librarySpecificFetchOptions = [px_deprecated_appPhotoLibrary librarySpecificFetchOptions];
     v10 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"startDate" ascending:1];
     v44[0] = v10;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:1];
-    [v9 setSortDescriptors:v11];
+    [librarySpecificFetchOptions setSortDescriptors:v11];
 
-    v30 = v9;
-    v12 = [MEMORY[0x1E69789F0] fetchChildDayGroupHighlightsForHighlight:self->_sourceHighlight options:v9];
+    v30 = librarySpecificFetchOptions;
+    v12 = [MEMORY[0x1E69789F0] fetchChildDayGroupHighlightsForHighlight:self->_sourceHighlight options:librarySpecificFetchOptions];
     v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
     if ([v7 count])
     {
@@ -108,12 +108,12 @@
           }
 
           v20 = *(*(&v38 + 1) + 8 * v18);
-          v21 = [PXHighlightDiagnosticsHelper preprocessDictionaryForHighlight:v20 inPhotoLibrary:v5];
+          v21 = [PXHighlightDiagnosticsHelper preprocessDictionaryForHighlight:v20 inPhotoLibrary:px_deprecated_appPhotoLibrary];
           v22 = [v21 mutableCopy];
 
-          v23 = [v20 localIdentifier];
+          localIdentifier2 = [v20 localIdentifier];
           v37 = v19;
-          v24 = [v5 curationDebugInformationForAssetCollectionWithLocalIdentifier:v23 options:v34 error:&v37];
+          v24 = [px_deprecated_appPhotoLibrary curationDebugInformationForAssetCollectionWithLocalIdentifier:localIdentifier2 options:v34 error:&v37];
           v8 = v37;
 
           [v22 addEntriesFromDictionary:v24];
@@ -232,8 +232,8 @@ void __76__PXHighlightDiagnosticsViewController_curationDebugInformationWithOpti
 - (id)sourceDictionary
 {
   sourceHighlight = self->_sourceHighlight;
-  v3 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-  v4 = [PXHighlightDiagnosticsHelper preprocessDictionaryForHighlight:sourceHighlight inPhotoLibrary:v3];
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  v4 = [PXHighlightDiagnosticsHelper preprocessDictionaryForHighlight:sourceHighlight inPhotoLibrary:px_deprecated_appPhotoLibrary];
 
   return v4;
 }
@@ -241,13 +241,13 @@ void __76__PXHighlightDiagnosticsViewController_curationDebugInformationWithOpti
 - (id)radarAttachmentURLs
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PXHighlightDiagnosticsViewController *)self sourceDictionary];
-  v5 = [v4 mutableCopy];
+  sourceDictionary = [(PXHighlightDiagnosticsViewController *)self sourceDictionary];
+  v5 = [sourceDictionary mutableCopy];
 
-  v6 = [(PXCuratedAssetCollectionDiagnosticsViewController *)self fullCurationDebugInformation];
-  if (v6)
+  fullCurationDebugInformation = [(PXCuratedAssetCollectionDiagnosticsViewController *)self fullCurationDebugInformation];
+  if (fullCurationDebugInformation)
   {
-    [v5 addEntriesFromDictionary:v6];
+    [v5 addEntriesFromDictionary:fullCurationDebugInformation];
   }
 
   v7 = PXFeedbackTapToRadarUtilitiesWriteDictionaryToPlistFile(v5, @"Photos-Highlight-Debug-Curation");
@@ -256,15 +256,15 @@ void __76__PXHighlightDiagnosticsViewController_curationDebugInformationWithOpti
     [v3 addObject:v7];
   }
 
-  v8 = [(PXCuratedAssetCollectionDiagnosticsViewController *)self hostLayoutDiagnosticDescription];
-  v9 = PXFeedbackTapToRadarUtilitiesWriteStringToFileWithExtension(v8, @"Photos-Highlight-Debug-Layout", @"txt");
+  hostLayoutDiagnosticDescription = [(PXCuratedAssetCollectionDiagnosticsViewController *)self hostLayoutDiagnosticDescription];
+  v9 = PXFeedbackTapToRadarUtilitiesWriteStringToFileWithExtension(hostLayoutDiagnosticDescription, @"Photos-Highlight-Debug-Layout", @"txt");
   if (v9)
   {
     [v3 addObject:v9];
   }
 
-  v10 = [(PXCuratedAssetCollectionDiagnosticsViewController *)self hostViewDiagnosticDescription];
-  v11 = PXFeedbackTapToRadarUtilitiesWriteStringToFileWithExtension(v10, @"Photos-Highlight-Debug-View", @"txt");
+  hostViewDiagnosticDescription = [(PXCuratedAssetCollectionDiagnosticsViewController *)self hostViewDiagnosticDescription];
+  v11 = PXFeedbackTapToRadarUtilitiesWriteStringToFileWithExtension(hostViewDiagnosticDescription, @"Photos-Highlight-Debug-View", @"txt");
   if (v11)
   {
     [v3 addObject:v11];
@@ -273,53 +273,53 @@ void __76__PXHighlightDiagnosticsViewController_curationDebugInformationWithOpti
   return v3;
 }
 
-- (id)assetsForCurationType:(int64_t)a3
+- (id)assetsForCurationType:(int64_t)type
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v5 = [(PHPhotosHighlight *)self->_sourceHighlight photoLibrary];
-  v6 = [v5 librarySpecificFetchOptions];
+  photoLibrary = [(PHPhotosHighlight *)self->_sourceHighlight photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   v7 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:1];
   v15[0] = v7;
   v8 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"uuid" ascending:1];
   v15[1] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
-  [v6 setSortDescriptors:v9];
+  [librarySpecificFetchOptions setSortDescriptors:v9];
 
-  [v6 setHighlightCurationType:0];
-  if ((a3 - 1) < 2)
+  [librarySpecificFetchOptions setHighlightCurationType:0];
+  if ((type - 1) < 2)
   {
-    v11 = v6;
+    v11 = librarySpecificFetchOptions;
     v12 = 1;
 LABEL_7:
     [v11 setHighlightCurationType:v12];
     goto LABEL_8;
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
-    v11 = v6;
+    v11 = librarySpecificFetchOptions;
     v12 = 2;
     goto LABEL_7;
   }
 
-  if (!a3)
+  if (!type)
   {
     v10 = [MEMORY[0x1E6978630] fetchKeyCuratedAssetInAssetCollection:self->_sourceHighlight referenceAsset:0];
     goto LABEL_9;
   }
 
 LABEL_8:
-  v10 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:self->_sourceHighlight options:v6];
+  v10 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:self->_sourceHighlight options:librarySpecificFetchOptions];
 LABEL_9:
   v13 = v10;
 
   return v13;
 }
 
-- (PXHighlightDiagnosticsViewController)initWithHighlight:(id)a3
+- (PXHighlightDiagnosticsViewController)initWithHighlight:(id)highlight
 {
-  v5 = a3;
+  highlightCopy = highlight;
   v9.receiver = self;
   v9.super_class = PXHighlightDiagnosticsViewController;
   v6 = [(PXCuratedAssetCollectionDiagnosticsViewController *)&v9 init];
@@ -327,7 +327,7 @@ LABEL_9:
   if (v6)
   {
     [(PXHighlightDiagnosticsViewController *)v6 setTitle:@"Highlight Debug"];
-    objc_storeStrong(&v7->_sourceHighlight, a3);
+    objc_storeStrong(&v7->_sourceHighlight, highlight);
   }
 
   return v7;

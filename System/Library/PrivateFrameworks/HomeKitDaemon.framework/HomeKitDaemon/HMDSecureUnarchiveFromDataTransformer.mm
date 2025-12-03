@@ -1,14 +1,14 @@
 @interface HMDSecureUnarchiveFromDataTransformer
-+ (BOOL)isEncodedNilValue:(id)a3;
++ (BOOL)isEncodedNilValue:(id)value;
 + (id)allowedTopLevelClasses;
-- (id)transformedValue:(id)a3;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation HMDSecureUnarchiveFromDataTransformer
 
 + (id)allowedTopLevelClasses
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (allowedTopLevelClasses__hmf_once_t0 != -1)
     {
@@ -20,7 +20,7 @@
 
   else
   {
-    v5.receiver = a1;
+    v5.receiver = self;
     v5.super_class = &OBJC_METACLASS___HMDSecureUnarchiveFromDataTransformer;
     v3 = objc_msgSendSuper2(&v5, sel_allowedTopLevelClasses);
   }
@@ -28,10 +28,10 @@
   return v3;
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v4 = a3;
-  if ([HMDSecureUnarchiveFromDataTransformer isEncodedNilValue:v4])
+  valueCopy = value;
+  if ([HMDSecureUnarchiveFromDataTransformer isEncodedNilValue:valueCopy])
   {
     v5 = 0;
   }
@@ -40,24 +40,24 @@
   {
     v7.receiver = self;
     v7.super_class = HMDSecureUnarchiveFromDataTransformer;
-    v5 = [(NSSecureUnarchiveFromDataTransformer *)&v7 transformedValue:v4];
+    v5 = [(NSSecureUnarchiveFromDataTransformer *)&v7 transformedValue:valueCopy];
   }
 
   return v5;
 }
 
-+ (BOOL)isEncodedNilValue:(id)a3
++ (BOOL)isEncodedNilValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   if (isEncodedNilValue__once != -1)
   {
     dispatch_once(&isEncodedNilValue__once, &__block_literal_global_29_221596);
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v4 = [v3 length], v4 == isEncodedNilValue__encodedNilSize))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v4 = [valueCopy length], v4 == isEncodedNilValue__encodedNilSize))
   {
-    v5 = [MEMORY[0x277CCAC58] propertyListWithData:v3 options:0 format:0 error:0];
+    v5 = [MEMORY[0x277CCAC58] propertyListWithData:valueCopy options:0 format:0 error:0];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && (v6 = [v5 count], v6 == objc_msgSend(isEncodedNilValue__encodedNilPList, "count")))
     {

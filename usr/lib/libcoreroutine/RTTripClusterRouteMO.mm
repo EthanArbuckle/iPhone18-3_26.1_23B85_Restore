@@ -1,15 +1,15 @@
 @interface RTTripClusterRouteMO
-+ (id)managedObjectWithTripClusterLocations:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithTripClusterLocations:(id)locations inManagedObjectContext:(id)context;
 @end
 
 @implementation RTTripClusterRouteMO
 
-+ (id)managedObjectWithTripClusterLocations:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithTripClusterLocations:(id)locations inManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  locationsCopy = locations;
+  contextCopy = context;
+  v7 = contextCopy;
+  if (!locationsCopy)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -25,21 +25,21 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  if (v6)
+  if (contextCopy)
   {
-    v8 = [[RTTripClusterRouteMO alloc] initWithContext:v6];
-    -[RTTripClusterRouteMO setClRoadID:](v8, "setClRoadID:", [v5 clRoadID]);
-    v9 = [v5 clusterID];
-    [(RTTripClusterRouteMO *)v8 setClusterID:v9];
+    v8 = [[RTTripClusterRouteMO alloc] initWithContext:contextCopy];
+    -[RTTripClusterRouteMO setClRoadID:](v8, "setClRoadID:", [locationsCopy clRoadID]);
+    clusterID = [locationsCopy clusterID];
+    [(RTTripClusterRouteMO *)v8 setClusterID:clusterID];
 
-    [v5 latitude];
+    [locationsCopy latitude];
     [(RTTripClusterRouteMO *)v8 setLatitude:?];
-    [v5 longitude];
+    [locationsCopy longitude];
     [(RTTripClusterRouteMO *)v8 setLongitude:?];
-    [v5 course];
+    [locationsCopy course];
     [(RTTripClusterRouteMO *)v8 setCourse:?];
-    -[RTTripClusterRouteMO setSequence:](v8, "setSequence:", [v5 sequence]);
-    -[RTTripClusterRouteMO setFollowedByUTurn:](v8, "setFollowedByUTurn:", [v5 followedByUTurn]);
+    -[RTTripClusterRouteMO setSequence:](v8, "setSequence:", [locationsCopy sequence]);
+    -[RTTripClusterRouteMO setFollowedByUTurn:](v8, "setFollowedByUTurn:", [locationsCopy followedByUTurn]);
     goto LABEL_8;
   }
 

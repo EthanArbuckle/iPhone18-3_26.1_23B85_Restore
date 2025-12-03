@@ -1,25 +1,25 @@
 @interface SFCollectionViewLayout
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
 - (BOOL)shouldReverseLayoutDirection;
-- (CGPoint)firstItemCenterForContainerWidth:(double)a3;
-- (CGSize)_evaluatePreferredItemSizeForItemsAtIndexPaths:(id)a3;
+- (CGPoint)firstItemCenterForContainerWidth:(double)width;
+- (CGSize)_evaluatePreferredItemSizeForItemsAtIndexPaths:(id)paths;
 - (CGSize)evaluatedContentSize;
 - (CGSize)evaluatedItemSize;
 - (SFCollectionViewDelegateLayout)fallbackDelegate;
 - (SFCollectionViewLayout)init;
-- (UIEdgeInsets)_evaluateInsetForSectionAtIndex:(int64_t)a3;
+- (UIEdgeInsets)_evaluateInsetForSectionAtIndex:(int64_t)index;
 - (UIEdgeInsets)evaluatedInset;
-- (double)_evaluateHorizontalItemOffsetForItemSize:(CGSize)a3 inset:(UIEdgeInsets)a4 containerWidth:(double)a5 offscreenPeekInFactor:(float)a6;
-- (id)_indexPathsForItemsInSection:(int64_t)a3;
-- (id)_layoutAttributesForItemAtIndexPath:(id)a3 numberOfItemsInSection:(unint64_t)a4;
-- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)a3;
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (void)calculateLayoutValuesForIndexPaths:(id)a3 containerWidth:(double)a4;
+- (double)_evaluateHorizontalItemOffsetForItemSize:(CGSize)size inset:(UIEdgeInsets)inset containerWidth:(double)width offscreenPeekInFactor:(float)factor;
+- (id)_indexPathsForItemsInSection:(int64_t)section;
+- (id)_layoutAttributesForItemAtIndexPath:(id)path numberOfItemsInSection:(unint64_t)section;
+- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)path;
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (void)calculateLayoutValuesForIndexPaths:(id)paths containerWidth:(double)width;
 - (void)finalizeCollectionViewUpdates;
-- (void)invalidateGroupViewLayoutAnimated:(BOOL)a3;
-- (void)prepareForCollectionViewUpdates:(id)a3;
+- (void)invalidateGroupViewLayoutAnimated:(BOOL)animated;
+- (void)prepareForCollectionViewUpdates:(id)updates;
 - (void)prepareLayout;
 @end
 
@@ -39,13 +39,13 @@
   return v3;
 }
 
-- (CGPoint)firstItemCenterForContainerWidth:(double)a3
+- (CGPoint)firstItemCenterForContainerWidth:(double)width
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v5 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:0];
   v14[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  [(SFCollectionViewLayout *)self calculateLayoutValuesForIndexPaths:v6 containerWidth:a3];
+  [(SFCollectionViewLayout *)self calculateLayoutValuesForIndexPaths:v6 containerWidth:width];
 
   v7 = [(SFCollectionViewLayout *)self _layoutAttributesForItemAtIndexPath:v5 numberOfItemsInSection:1];
   [v7 center];
@@ -59,9 +59,9 @@
   return result;
 }
 
-- (void)calculateLayoutValuesForIndexPaths:(id)a3 containerWidth:(double)a4
+- (void)calculateLayoutValuesForIndexPaths:(id)paths containerWidth:(double)width
 {
-  v24 = a3;
+  pathsCopy = paths;
   [(SFCollectionViewLayout *)self _evaluatePreferredItemSizeForItemsAtIndexPaths:?];
   v29 = v7;
   v30 = v6;
@@ -80,12 +80,12 @@
     v16 = v15;
     v18 = v17;
     *&v19 = v10;
-    [(SFCollectionViewLayout *)self _evaluateHorizontalItemOffsetForItemSize:v30 inset:v29 containerWidth:v11 offscreenPeekInFactor:v13, v15, v17, a4, v19];
+    [(SFCollectionViewLayout *)self _evaluateHorizontalItemOffsetForItemSize:v30 inset:v29 containerWidth:v11 offscreenPeekInFactor:v13, v15, v17, width, v19];
     if (v20 > 0.0)
     {
       v18 = 9.0;
       *&v21 = v8 / 100.0;
-      [(SFCollectionViewLayout *)self _evaluateHorizontalItemOffsetForItemSize:v30 inset:v29 containerWidth:v12 offscreenPeekInFactor:9.0, v16, 9.0, a4, v21];
+      [(SFCollectionViewLayout *)self _evaluateHorizontalItemOffsetForItemSize:v30 inset:v29 containerWidth:v12 offscreenPeekInFactor:9.0, v16, 9.0, width, v21];
       v14 = 9.0;
     }
 
@@ -117,8 +117,8 @@
   }
 
   while (!v22);
-  v23 = v28 + v26 + [v24 count] * v30;
-  v31 = v23 + ([v24 count] - 1) * v9;
+  v23 = v28 + v26 + [pathsCopy count] * v30;
+  v31 = v23 + ([pathsCopy count] - 1) * v9;
   [(SFCollectionViewLayout *)self setEvaluatedHorizontalItemOffset:v9];
   [(SFCollectionViewLayout *)self setEvaluatedInset:v25, v26, v27, v28];
   [(SFCollectionViewLayout *)self setEvaluatedItemSize:v30, v29];
@@ -132,8 +132,8 @@
   v28.super_class = SFCollectionViewLayout;
   [(SFCollectionViewLayout *)&v28 prepareLayout];
   v3 = [(SFCollectionViewLayout *)self _indexPathsForItemsInSection:0];
-  v4 = [(SFCollectionViewLayout *)self collectionView];
-  [v4 frame];
+  collectionView = [(SFCollectionViewLayout *)self collectionView];
+  [collectionView frame];
   [(SFCollectionViewLayout *)self calculateLayoutValuesForIndexPaths:v3 containerWidth:CGRectGetWidth(v31)];
 
   v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
@@ -172,8 +172,8 @@
   [(SFCollectionViewLayout *)self setPreparedLayoutAttributes:v5];
   if ([(SFCollectionViewLayout *)self shouldReverseLayoutDirection])
   {
-    v12 = [(SFCollectionViewLayout *)self collectionView];
-    [v12 frame];
+    collectionView2 = [(SFCollectionViewLayout *)self collectionView];
+    [collectionView2 frame];
     Width = CGRectGetWidth(v32);
     [(SFCollectionViewLayout *)self evaluatedContentSize];
     v15 = Width - v14;
@@ -183,21 +183,21 @@
       v15 = 0.0;
     }
 
-    v16 = [(SFCollectionViewLayout *)self collectionView];
-    [v16 contentInset];
+    collectionView3 = [(SFCollectionViewLayout *)self collectionView];
+    [collectionView3 contentInset];
     v18 = v17;
     v20 = v19;
     v22 = v21;
 
-    v23 = [(SFCollectionViewLayout *)self collectionView];
-    [v23 setContentInset:{v18, v15, v20, v22}];
+    collectionView4 = [(SFCollectionViewLayout *)self collectionView];
+    [collectionView4 setContentInset:{v18, v15, v20, v22}];
   }
 }
 
 - (BOOL)shouldReverseLayoutDirection
 {
-  v3 = [(SFCollectionViewLayout *)self collectionView];
-  if ([v3 _shouldReverseLayoutDirection])
+  collectionView = [(SFCollectionViewLayout *)self collectionView];
+  if ([collectionView _shouldReverseLayoutDirection])
   {
     v4 = [(SFCollectionViewLayout *)self _wantsRightToLeftHorizontalMirroringIfNeeded]^ 1;
   }
@@ -210,21 +210,21 @@
   return v4;
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  Width = CGRectGetWidth(a3);
+  Width = CGRectGetWidth(change);
   [(SFCollectionViewLayout *)self collectionViewContentSize];
   return Width != v5;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [MEMORY[0x1E695DF70] array];
-  v9 = [(SFCollectionViewLayout *)self preparedLayoutAttributes];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  array = [MEMORY[0x1E695DF70] array];
+  preparedLayoutAttributes = [(SFCollectionViewLayout *)self preparedLayoutAttributes];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __60__SFCollectionViewLayout_layoutAttributesForElementsInRect___block_invoke;
@@ -233,9 +233,9 @@
   v15 = y;
   v16 = width;
   v17 = height;
-  v10 = v8;
+  v10 = array;
   v13 = v10;
-  [v9 enumerateObjectsUsingBlock:v12];
+  [preparedLayoutAttributes enumerateObjectsUsingBlock:v12];
 
   return v10;
 }
@@ -250,30 +250,30 @@ void __60__SFCollectionViewLayout_layoutAttributesForElementsInRect___block_invo
   }
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SFCollectionViewLayout *)self preparedLayoutAttributes];
-  v6 = [v4 item];
+  pathCopy = path;
+  preparedLayoutAttributes = [(SFCollectionViewLayout *)self preparedLayoutAttributes];
+  item = [pathCopy item];
 
-  v7 = [v5 objectAtIndexedSubscript:v6];
+  v7 = [preparedLayoutAttributes objectAtIndexedSubscript:item];
 
   return v7;
 }
 
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   v21.receiver = self;
   v21.super_class = SFCollectionViewLayout;
-  v5 = [(SFCollectionViewLayout *)&v21 initialLayoutAttributesForAppearingItemAtIndexPath:v4];
+  v5 = [(SFCollectionViewLayout *)&v21 initialLayoutAttributesForAppearingItemAtIndexPath:pathCopy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [(SFCollectionViewLayout *)self preparedUpdateItems];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v22 count:16];
+  preparedUpdateItems = [(SFCollectionViewLayout *)self preparedUpdateItems];
+  v7 = [preparedUpdateItems countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -284,14 +284,14 @@ void __60__SFCollectionViewLayout_layoutAttributesForElementsInRect___block_invo
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(preparedUpdateItems);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
         if (![v11 updateAction])
         {
-          v12 = [v11 indexPathAfterUpdate];
-          v13 = [v12 isEqual:v4];
+          indexPathAfterUpdate = [v11 indexPathAfterUpdate];
+          v13 = [indexPathAfterUpdate isEqual:pathCopy];
 
           if (v13)
           {
@@ -305,7 +305,7 @@ void __60__SFCollectionViewLayout_layoutAttributesForElementsInRect___block_invo
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      v8 = [preparedUpdateItems countByEnumeratingWithState:&v17 objects:v22 count:16];
       if (v8)
       {
         continue;
@@ -321,19 +321,19 @@ LABEL_12:
   return v5;
 }
 
-- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)a3
+- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)path
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   v21.receiver = self;
   v21.super_class = SFCollectionViewLayout;
-  v5 = [(SFCollectionViewLayout *)&v21 finalLayoutAttributesForDisappearingItemAtIndexPath:v4];
+  v5 = [(SFCollectionViewLayout *)&v21 finalLayoutAttributesForDisappearingItemAtIndexPath:pathCopy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [(SFCollectionViewLayout *)self preparedUpdateItems];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v22 count:16];
+  preparedUpdateItems = [(SFCollectionViewLayout *)self preparedUpdateItems];
+  v7 = [preparedUpdateItems countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -344,14 +344,14 @@ LABEL_12:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(preparedUpdateItems);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
         if ([v11 updateAction] == 1)
         {
-          v12 = [v11 indexPathBeforeUpdate];
-          v13 = [v12 isEqual:v4];
+          indexPathBeforeUpdate = [v11 indexPathBeforeUpdate];
+          v13 = [indexPathBeforeUpdate isEqual:pathCopy];
 
           if (v13)
           {
@@ -365,7 +365,7 @@ LABEL_12:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      v8 = [preparedUpdateItems countByEnumeratingWithState:&v17 objects:v22 count:16];
       if (v8)
       {
         continue;
@@ -381,13 +381,13 @@ LABEL_12:
   return v5;
 }
 
-- (void)prepareForCollectionViewUpdates:(id)a3
+- (void)prepareForCollectionViewUpdates:(id)updates
 {
   v5.receiver = self;
   v5.super_class = SFCollectionViewLayout;
-  v4 = a3;
-  [(SFCollectionViewLayout *)&v5 prepareForCollectionViewUpdates:v4];
-  [(SFCollectionViewLayout *)self setPreparedUpdateItems:v4, v5.receiver, v5.super_class];
+  updatesCopy = updates;
+  [(SFCollectionViewLayout *)&v5 prepareForCollectionViewUpdates:updatesCopy];
+  [(SFCollectionViewLayout *)self setPreparedUpdateItems:updatesCopy, v5.receiver, v5.super_class];
 }
 
 - (void)finalizeCollectionViewUpdates
@@ -398,14 +398,14 @@ LABEL_12:
   [(SFCollectionViewLayout *)&v3 finalizeCollectionViewUpdates];
 }
 
-- (CGSize)_evaluatePreferredItemSizeForItemsAtIndexPaths:(id)a3
+- (CGSize)_evaluatePreferredItemSizeForItemsAtIndexPaths:(id)paths
 {
-  v4 = a3;
-  v5 = [(SFCollectionViewLayout *)self collectionView];
-  v6 = [v5 delegate];
-  if (!v6)
+  pathsCopy = paths;
+  collectionView = [(SFCollectionViewLayout *)self collectionView];
+  delegate = [collectionView delegate];
+  if (!delegate)
   {
-    v6 = [(SFCollectionViewLayout *)self fallbackDelegate];
+    delegate = [(SFCollectionViewLayout *)self fallbackDelegate];
   }
 
   v18 = 0;
@@ -417,13 +417,13 @@ LABEL_12:
   v13[1] = 3221225472;
   v13[2] = __73__SFCollectionViewLayout__evaluatePreferredItemSizeForItemsAtIndexPaths___block_invoke;
   v13[3] = &unk_1E7EE3D30;
-  v7 = v6;
+  v7 = delegate;
   v14 = v7;
-  v8 = v5;
+  v8 = collectionView;
   v15 = v8;
-  v16 = self;
+  selfCopy = self;
   v17 = &v18;
-  [v4 enumerateObjectsUsingBlock:v13];
+  [pathsCopy enumerateObjectsUsingBlock:v13];
   v9 = v19[4];
   v10 = v19[5];
 
@@ -455,7 +455,7 @@ uint64_t __73__SFCollectionViewLayout__evaluatePreferredItemSizeForItemsAtIndexP
   return result;
 }
 
-- (UIEdgeInsets)_evaluateInsetForSectionAtIndex:(int64_t)a3
+- (UIEdgeInsets)_evaluateInsetForSectionAtIndex:(int64_t)index
 {
   v3 = 0.0;
   v4 = 2.0;
@@ -468,23 +468,23 @@ uint64_t __73__SFCollectionViewLayout__evaluatePreferredItemSizeForItemsAtIndexP
   return result;
 }
 
-- (id)_indexPathsForItemsInSection:(int64_t)a3
+- (id)_indexPathsForItemsInSection:(int64_t)section
 {
-  v4 = [(SFCollectionViewLayout *)self collectionView];
-  if ([v4 numberOfSections] <= a3)
+  collectionView = [(SFCollectionViewLayout *)self collectionView];
+  if ([collectionView numberOfSections] <= section)
   {
     v6 = 0;
   }
 
   else
   {
-    v5 = [v4 numberOfItemsInSection:a3];
+    v5 = [collectionView numberOfItemsInSection:section];
     v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:v5];
     if (v5 >= 1)
     {
       for (i = 0; i != v5; ++i)
       {
-        v8 = [MEMORY[0x1E696AC88] indexPathForItem:i inSection:a3];
+        v8 = [MEMORY[0x1E696AC88] indexPathForItem:i inSection:section];
         [v6 addObject:v8];
       }
     }
@@ -493,13 +493,13 @@ uint64_t __73__SFCollectionViewLayout__evaluatePreferredItemSizeForItemsAtIndexP
   return v6;
 }
 
-- (double)_evaluateHorizontalItemOffsetForItemSize:(CGSize)a3 inset:(UIEdgeInsets)a4 containerWidth:(double)a5 offscreenPeekInFactor:(float)a6
+- (double)_evaluateHorizontalItemOffsetForItemSize:(CGSize)size inset:(UIEdgeInsets)inset containerWidth:(double)width offscreenPeekInFactor:(float)factor
 {
-  v6 = a5 - a3.width * a6 - a4.left;
-  v7 = vcvtmd_u64_f64(v6 / a3.width);
+  v6 = width - size.width * factor - inset.left;
+  v7 = vcvtmd_u64_f64(v6 / size.width);
   if (v7)
   {
-    return floor((v6 - v7 * a3.width) / v7);
+    return floor((v6 - v7 * size.width) / v7);
   }
 
   else
@@ -508,21 +508,21 @@ uint64_t __73__SFCollectionViewLayout__evaluatePreferredItemSizeForItemsAtIndexP
   }
 }
 
-- (id)_layoutAttributesForItemAtIndexPath:(id)a3 numberOfItemsInSection:(unint64_t)a4
+- (id)_layoutAttributesForItemAtIndexPath:(id)path numberOfItemsInSection:(unint64_t)section
 {
   v6 = MEMORY[0x1E69DC858];
-  v7 = a3;
-  v8 = [v6 layoutAttributesForCellWithIndexPath:v7];
-  v9 = [v7 item];
+  pathCopy = path;
+  v8 = [v6 layoutAttributesForCellWithIndexPath:pathCopy];
+  item = [pathCopy item];
 
   if ([(SFCollectionViewLayout *)self shouldReverseLayoutDirection])
   {
-    v10 = ~v9 + a4;
+    v10 = ~item + section;
   }
 
   else
   {
-    v10 = v9;
+    v10 = item;
   }
 
   [(SFCollectionViewLayout *)self evaluatedItemSize];
@@ -540,17 +540,17 @@ uint64_t __73__SFCollectionViewLayout__evaluatePreferredItemSizeForItemsAtIndexP
   return v8;
 }
 
-- (void)invalidateGroupViewLayoutAnimated:(BOOL)a3
+- (void)invalidateGroupViewLayoutAnimated:(BOOL)animated
 {
-  if (a3)
+  if (animated)
   {
-    v4 = [(SFCollectionViewLayout *)self collectionView];
+    collectionView = [(SFCollectionViewLayout *)self collectionView];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __60__SFCollectionViewLayout_invalidateGroupViewLayoutAnimated___block_invoke;
     v5[3] = &unk_1E7EE3720;
     v5[4] = self;
-    [v4 performBatchUpdates:v5 completion:0];
+    [collectionView performBatchUpdates:v5 completion:0];
   }
 
   else

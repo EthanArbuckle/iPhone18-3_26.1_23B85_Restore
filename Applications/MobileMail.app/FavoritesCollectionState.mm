@@ -1,29 +1,29 @@
 @interface FavoritesCollectionState
 + (OS_os_log)log;
 + (id)displayOrder;
-- (BOOL)addExpandedItem:(id)a3;
-- (BOOL)addItem:(id)a3 ordered:(BOOL)a4;
-- (FavoritesCollectionState)initWithType:(unint64_t)a3;
+- (BOOL)addExpandedItem:(id)item;
+- (BOOL)addItem:(id)item ordered:(BOOL)ordered;
+- (FavoritesCollectionState)initWithType:(unint64_t)type;
 - (NSArray)selectedItems;
 - (NSArray)visibleItems;
-- (id)addOrUpdateExpandedItem:(id)a3 didAdd:(BOOL *)a4 didReplace:(BOOL *)a5;
-- (id)addOrUpdateItem:(id)a3 didAdd:(BOOL *)a4 didReplace:(BOOL *)a5;
+- (id)addOrUpdateExpandedItem:(id)item didAdd:(BOOL *)add didReplace:(BOOL *)replace;
+- (id)addOrUpdateItem:(id)item didAdd:(BOOL *)add didReplace:(BOOL *)replace;
 - (id)dictionaryRepresentations;
-- (id)expandedItemWithSyncKey:(id)a3;
-- (id)itemWithSyncKey:(id)a3;
+- (id)expandedItemWithSyncKey:(id)key;
+- (id)itemWithSyncKey:(id)key;
 - (id)orderedAccountIds;
-- (id)removeExpandedItem:(id)a3;
-- (id)removeItem:(id)a3;
-- (id)removeItemWithSyncKey:(id)a3;
-- (int64_t)_indexForNewItem:(id)a3;
+- (id)removeExpandedItem:(id)item;
+- (id)removeItem:(id)item;
+- (id)removeItemWithSyncKey:(id)key;
+- (int64_t)_indexForNewItem:(id)item;
 - (unint64_t)countOfVisibleItems;
-- (void)_addAccountsCollectionVisibleItemsToArray:(id)a3;
-- (void)_addMailboxCollectionVisibleItemsToArray:(id)a3;
-- (void)_addSubitems:(id)a3 toArray:(id)a4;
-- (void)_addVisibleItem:(id)a3 toArray:(id)a4;
+- (void)_addAccountsCollectionVisibleItemsToArray:(id)array;
+- (void)_addMailboxCollectionVisibleItemsToArray:(id)array;
+- (void)_addSubitems:(id)subitems toArray:(id)array;
+- (void)_addVisibleItem:(id)item toArray:(id)array;
 - (void)invalidateVisibleItems;
-- (void)setExpandedItems:(id)a3;
-- (void)setItems:(id)a3;
+- (void)setExpandedItems:(id)items;
+- (void)setItems:(id)items;
 @end
 
 @implementation FavoritesCollectionState
@@ -49,7 +49,7 @@
   block[1] = 3221225472;
   block[2] = sub_100007B64;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DCEE0 != -1)
   {
     dispatch_once(&qword_1006DCEE0, block);
@@ -82,8 +82,8 @@
       v16 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v5 = [(FavoritesCollectionState *)self items];
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      items = [(FavoritesCollectionState *)self items];
+      v6 = [items countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         v7 = *v14;
@@ -94,7 +94,7 @@
           {
             if (*v14 != v7)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(items);
             }
 
             [(FavoritesCollectionState *)self _addVisibleItem:*(*(&v13 + 1) + 8 * v8) toArray:v4];
@@ -102,7 +102,7 @@
           }
 
           while (v6 != v8);
-          v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+          v6 = [items countByEnumeratingWithState:&v13 objects:v17 count:16];
         }
 
         while (v6);
@@ -124,13 +124,13 @@
 {
   v3 = objc_alloc_init(NSMutableArray);
   v4 = objc_alloc_init(NSMutableArray);
-  v5 = [(FavoritesCollectionState *)self items];
-  v6 = [(FavoritesCollectionState *)self expandedItems];
+  items = [(FavoritesCollectionState *)self items];
+  expandedItems = [(FavoritesCollectionState *)self expandedItems];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = v5;
+  v7 = items;
   v8 = [v7 countByEnumeratingWithState:&v23 objects:v30 count:16];
   if (v8)
   {
@@ -144,10 +144,10 @@
           objc_enumerationMutation(v7);
         }
 
-        v11 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
-        if (v11)
+        dictionaryRepresentation = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
+        if (dictionaryRepresentation)
         {
-          [v3 addObject:v11];
+          [v3 addObject:dictionaryRepresentation];
         }
       }
 
@@ -161,7 +161,7 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v12 = v6;
+  v12 = expandedItems;
   v13 = [v12 countByEnumeratingWithState:&v19 objects:v29 count:16];
   if (v13)
   {
@@ -175,10 +175,10 @@
           objc_enumerationMutation(v12);
         }
 
-        v16 = [*(*(&v19 + 1) + 8 * j) dictionaryRepresentationRemovingSyncKeys];
-        if (v16)
+        dictionaryRepresentationRemovingSyncKeys = [*(*(&v19 + 1) + 8 * j) dictionaryRepresentationRemovingSyncKeys];
+        if (dictionaryRepresentationRemovingSyncKeys)
         {
-          [v4 addObject:v16];
+          [v4 addObject:dictionaryRepresentationRemovingSyncKeys];
         }
       }
 
@@ -204,8 +204,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(FavoritesCollectionState *)self items];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  items = [(FavoritesCollectionState *)self items];
+  v5 = [items countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = *v12;
@@ -215,19 +215,19 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(items);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) account];
-        v9 = [v8 uniqueID];
+        account = [*(*(&v11 + 1) + 8 * i) account];
+        uniqueID = [account uniqueID];
 
-        if (v9)
+        if (uniqueID)
         {
-          [v3 addObject:v9];
+          [v3 addObject:uniqueID];
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [items countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -236,7 +236,7 @@
   return v3;
 }
 
-- (FavoritesCollectionState)initWithType:(unint64_t)a3
+- (FavoritesCollectionState)initWithType:(unint64_t)type
 {
   v12.receiver = self;
   v12.super_class = FavoritesCollectionState;
@@ -255,52 +255,52 @@
     expandedItemBySyncKey = v4->_expandedItemBySyncKey;
     v4->_expandedItemBySyncKey = v9;
 
-    v4->_type = a3;
+    v4->_type = type;
   }
 
   return v4;
 }
 
-- (BOOL)addItem:(id)a3 ordered:(BOOL)a4
+- (BOOL)addItem:(id)item ordered:(BOOL)ordered
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(FavoritesCollectionState *)self mutableItems];
-  v8 = [v7 containsObject:v6];
+  orderedCopy = ordered;
+  itemCopy = item;
+  mutableItems = [(FavoritesCollectionState *)self mutableItems];
+  v8 = [mutableItems containsObject:itemCopy];
   if ((v8 & 1) == 0)
   {
-    if (v4 && (v9 = [(FavoritesCollectionState *)self _indexForNewItem:v6], v9 != 0x7FFFFFFFFFFFFFFFLL))
+    if (orderedCopy && (v9 = [(FavoritesCollectionState *)self _indexForNewItem:itemCopy], v9 != 0x7FFFFFFFFFFFFFFFLL))
     {
-      [v7 insertObject:v6 atIndex:v9];
+      [mutableItems insertObject:itemCopy atIndex:v9];
     }
 
     else
     {
-      [v7 addObject:v6];
+      [mutableItems addObject:itemCopy];
     }
   }
 
   return v8 ^ 1;
 }
 
-- (BOOL)addExpandedItem:(id)a3
+- (BOOL)addExpandedItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 syncKey];
+  itemCopy = item;
+  syncKey = [itemCopy syncKey];
 
-  if (v5)
+  if (syncKey)
   {
-    v6 = [(FavoritesCollectionState *)self mutableExpandedItems];
-    v7 = [(FavoritesCollectionState *)self mutableExpandedItemBySyncKey];
-    v8 = [v4 syncKey];
-    v9 = [v7 objectForKeyedSubscript:v8];
+    mutableExpandedItems = [(FavoritesCollectionState *)self mutableExpandedItems];
+    mutableExpandedItemBySyncKey = [(FavoritesCollectionState *)self mutableExpandedItemBySyncKey];
+    syncKey2 = [itemCopy syncKey];
+    v9 = [mutableExpandedItemBySyncKey objectForKeyedSubscript:syncKey2];
     v10 = v9 == 0;
 
     if (!v9)
     {
-      [v6 addObject:v4];
-      v11 = [v4 syncKey];
-      [v7 setObject:v4 forKeyedSubscript:v11];
+      [mutableExpandedItems addObject:itemCopy];
+      syncKey3 = [itemCopy syncKey];
+      [mutableExpandedItemBySyncKey setObject:itemCopy forKeyedSubscript:syncKey3];
     }
   }
 
@@ -310,13 +310,13 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v14 = objc_opt_class();
-      v15 = [v4 ef_publicDescription];
+      ef_publicDescription = [itemCopy ef_publicDescription];
       v16 = 138412802;
       v17 = v14;
       v18 = 2048;
-      v19 = self;
+      selfCopy = self;
       v20 = 2114;
-      v21 = v15;
+      v21 = ef_publicDescription;
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "<%@: %p> Attempting to add an expanded item without a sync key: %{public}@", &v16, 0x20u);
     }
 
@@ -326,24 +326,24 @@
   return v10;
 }
 
-- (id)addOrUpdateItem:(id)a3 didAdd:(BOOL *)a4 didReplace:(BOOL *)a5
+- (id)addOrUpdateItem:(id)item didAdd:(BOOL *)add didReplace:(BOOL *)replace
 {
-  v8 = a3;
-  v9 = [(FavoritesCollectionState *)self mutableItems];
-  v10 = [v8 syncKey];
-  v11 = [(FavoritesCollectionState *)self itemWithSyncKey:v10];
+  itemCopy = item;
+  mutableItems = [(FavoritesCollectionState *)self mutableItems];
+  syncKey = [itemCopy syncKey];
+  v11 = [(FavoritesCollectionState *)self itemWithSyncKey:syncKey];
 
   if (v11)
   {
-    v12 = [v9 indexOfObject:v11];
+    v12 = [mutableItems indexOfObject:v11];
     if (v12 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v13 = 0;
 LABEL_8:
-      if (([v8 isEqual:v11] & 1) == 0)
+      if (([itemCopy isEqual:v11] & 1) == 0)
       {
-        [v9 replaceObjectAtIndex:v12 withObject:v8];
-        if (a5)
+        [mutableItems replaceObjectAtIndex:v12 withObject:itemCopy];
+        if (replace)
         {
           goto LABEL_10;
         }
@@ -355,21 +355,21 @@ LABEL_8:
 
   else
   {
-    v12 = [v9 indexOfObject:v8];
+    v12 = [mutableItems indexOfObject:itemCopy];
     if (v12 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v13 = [v9 objectAtIndexedSubscript:v12];
+      v13 = [mutableItems objectAtIndexedSubscript:v12];
       goto LABEL_8;
     }
   }
 
-  [(FavoritesCollectionState *)self addItem:v8 ordered:1];
+  [(FavoritesCollectionState *)self addItem:itemCopy ordered:1];
   v13 = 0;
-  a5 = a4;
-  if (a4)
+  replace = add;
+  if (add)
   {
 LABEL_10:
-    *a5 = 1;
+    *replace = 1;
   }
 
 LABEL_11:
@@ -377,36 +377,36 @@ LABEL_11:
   return v13;
 }
 
-- (id)addOrUpdateExpandedItem:(id)a3 didAdd:(BOOL *)a4 didReplace:(BOOL *)a5
+- (id)addOrUpdateExpandedItem:(id)item didAdd:(BOOL *)add didReplace:(BOOL *)replace
 {
-  v8 = a3;
-  v9 = [v8 syncKey];
+  itemCopy = item;
+  syncKey = [itemCopy syncKey];
 
-  if (v9)
+  if (syncKey)
   {
-    v10 = [(FavoritesCollectionState *)self mutableExpandedItems];
-    v11 = [(FavoritesCollectionState *)self mutableExpandedItemBySyncKey];
-    v12 = [v8 syncKey];
-    v13 = [(FavoritesCollectionState *)self expandedItemWithSyncKey:v12];
+    mutableExpandedItems = [(FavoritesCollectionState *)self mutableExpandedItems];
+    mutableExpandedItemBySyncKey = [(FavoritesCollectionState *)self mutableExpandedItemBySyncKey];
+    syncKey2 = [itemCopy syncKey];
+    v13 = [(FavoritesCollectionState *)self expandedItemWithSyncKey:syncKey2];
 
     if (v13)
     {
-      v14 = [v10 indexOfObject:v13];
+      v14 = [mutableExpandedItems indexOfObject:v13];
       if (v14 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v15 = 0;
 LABEL_12:
-        v17 = [v10 objectAtIndex:v14];
-        v18 = [v17 syncKey];
+        v17 = [mutableExpandedItems objectAtIndex:v14];
+        syncKey3 = [v17 syncKey];
 
-        [v10 replaceObjectAtIndex:v14 withObject:v8];
-        [v11 setObject:0 forKeyedSubscript:v18];
-        v19 = [v8 syncKey];
-        [v11 setObject:v8 forKeyedSubscript:v19];
+        [mutableExpandedItems replaceObjectAtIndex:v14 withObject:itemCopy];
+        [mutableExpandedItemBySyncKey setObject:0 forKeyedSubscript:syncKey3];
+        syncKey4 = [itemCopy syncKey];
+        [mutableExpandedItemBySyncKey setObject:itemCopy forKeyedSubscript:syncKey4];
 
-        if (a5)
+        if (replace)
         {
-          *a5 = 1;
+          *replace = 1;
         }
 
 LABEL_15:
@@ -416,19 +416,19 @@ LABEL_15:
 
     else
     {
-      v14 = [v10 indexOfObject:v8];
+      v14 = [mutableExpandedItems indexOfObject:itemCopy];
       if (v14 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v15 = [v10 objectAtIndexedSubscript:v14];
+        v15 = [mutableExpandedItems objectAtIndexedSubscript:v14];
         goto LABEL_12;
       }
     }
 
-    [(FavoritesCollectionState *)self addExpandedItem:v8];
+    [(FavoritesCollectionState *)self addExpandedItem:itemCopy];
     v15 = 0;
-    if (a4)
+    if (add)
     {
-      *a4 = 1;
+      *add = 1;
     }
 
     goto LABEL_15;
@@ -438,13 +438,13 @@ LABEL_15:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
   {
     v21 = objc_opt_class();
-    v22 = [v8 ef_publicDescription];
+    ef_publicDescription = [itemCopy ef_publicDescription];
     v23 = 138412802;
     v24 = v21;
     v25 = 2048;
-    v26 = self;
+    selfCopy = self;
     v27 = 2114;
-    v28 = v22;
+    v28 = ef_publicDescription;
     _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "<%@: %p> Attempting to add/update an expanded item without a sync key: %{public}@", &v23, 0x20u);
   }
 
@@ -466,28 +466,28 @@ LABEL_16:
   return v3;
 }
 
-- (int64_t)_indexForNewItem:(id)a3
+- (int64_t)_indexForNewItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if (qword_1006DCF00 != -1)
   {
     sub_100486F04();
   }
 
-  v5 = [(FavoritesCollectionState *)self items];
-  if ([v5 count])
+  items = [(FavoritesCollectionState *)self items];
+  if ([items count])
   {
     v6 = +[FavoritesCollectionState displayOrder];
     v7 = [v6 indexOfObject:objc_opt_class()];
     for (i = 0; ; ++i)
     {
-      if (i >= [v5 count])
+      if (i >= [items count])
       {
         i = 0x7FFFFFFFFFFFFFFFLL;
         goto LABEL_12;
       }
 
-      v9 = [v5 objectAtIndexedSubscript:i];
+      v9 = [items objectAtIndexedSubscript:i];
       if (([v9 isEqual:qword_1006DCEF8] & 1) == 0 && v7 < objc_msgSend(v6, "indexOfObject:", objc_opt_class()))
       {
         break;
@@ -505,17 +505,17 @@ LABEL_12:
   return i;
 }
 
-- (id)itemWithSyncKey:(id)a3
+- (id)itemWithSyncKey:(id)key
 {
-  v4 = a3;
-  v5 = [(FavoritesCollectionState *)self items];
+  keyCopy = key;
+  items = [(FavoritesCollectionState *)self items];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000AF6BC;
   v10[3] = &unk_10064ED38;
-  v6 = v4;
+  v6 = keyCopy;
   v11 = v6;
-  v7 = [v5 indexOfObjectPassingTest:v10];
+  v7 = [items indexOfObjectPassingTest:v10];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = 0;
@@ -523,43 +523,43 @@ LABEL_12:
 
   else
   {
-    v8 = [v5 objectAtIndex:v7];
+    v8 = [items objectAtIndex:v7];
   }
 
   return v8;
 }
 
-- (id)expandedItemWithSyncKey:(id)a3
+- (id)expandedItemWithSyncKey:(id)key
 {
-  v4 = a3;
-  v5 = [(FavoritesCollectionState *)self expandedItemBySyncKey];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  expandedItemBySyncKey = [(FavoritesCollectionState *)self expandedItemBySyncKey];
+  v6 = [expandedItemBySyncKey objectForKeyedSubscript:keyCopy];
 
   return v6;
 }
 
-- (id)removeItemWithSyncKey:(id)a3
+- (id)removeItemWithSyncKey:(id)key
 {
-  v4 = a3;
-  v5 = [(FavoritesCollectionState *)self mutableItems];
-  v6 = [(FavoritesCollectionState *)self itemWithSyncKey:v4];
+  keyCopy = key;
+  mutableItems = [(FavoritesCollectionState *)self mutableItems];
+  v6 = [(FavoritesCollectionState *)self itemWithSyncKey:keyCopy];
   if (v6)
   {
-    [v5 removeObject:v6];
+    [mutableItems removeObject:v6];
   }
 
   return v6;
 }
 
-- (void)_addSubitems:(id)a3 toArray:(id)a4
+- (void)_addSubitems:(id)subitems toArray:(id)array
 {
-  v6 = a3;
-  v7 = a4;
+  subitemsCopy = subitems;
+  arrayCopy = array;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = v6;
+  v8 = subitemsCopy;
   v9 = [v8 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v9)
   {
@@ -574,7 +574,7 @@ LABEL_12:
           objc_enumerationMutation(v8);
         }
 
-        [(FavoritesCollectionState *)self _addVisibleItem:*(*(&v12 + 1) + 8 * v11) toArray:v7, v12];
+        [(FavoritesCollectionState *)self _addVisibleItem:*(*(&v12 + 1) + 8 * v11) toArray:arrayCopy, v12];
         v11 = v11 + 1;
       }
 
@@ -586,50 +586,50 @@ LABEL_12:
   }
 }
 
-- (void)_addVisibleItem:(id)a3 toArray:(id)a4
+- (void)_addVisibleItem:(id)item toArray:(id)array
 {
-  v11 = a3;
-  v6 = a4;
-  if ([v11 isVisible])
+  itemCopy = item;
+  arrayCopy = array;
+  if ([itemCopy isVisible])
   {
-    [v6 addObject:v11];
-    v7 = [v11 subItems];
-    v8 = [v7 count];
+    [arrayCopy addObject:itemCopy];
+    subItems = [itemCopy subItems];
+    v8 = [subItems count];
 
-    if (-[FavoritesCollectionState isEditing](self, "isEditing") || ([v11 isExpandable] & 1) == 0)
+    if (-[FavoritesCollectionState isEditing](self, "isEditing") || ([itemCopy isExpandable] & 1) == 0)
     {
       if (![(FavoritesCollectionState *)self isEditing])
       {
         goto LABEL_11;
       }
 
-      v9 = [v11 isExpandableInEditMode];
+      isExpandableInEditMode = [itemCopy isExpandableInEditMode];
     }
 
     else
     {
-      v9 = 1;
+      isExpandableInEditMode = 1;
     }
 
-    if (v8 && v9 && [v11 isExpanded])
+    if (v8 && isExpandableInEditMode && [itemCopy isExpanded])
     {
-      v10 = [v11 subItems];
-      [(FavoritesCollectionState *)self _addSubitems:v10 toArray:v6];
+      subItems2 = [itemCopy subItems];
+      [(FavoritesCollectionState *)self _addSubitems:subItems2 toArray:arrayCopy];
     }
   }
 
 LABEL_11:
 }
 
-- (void)_addMailboxCollectionVisibleItemsToArray:(id)a3
+- (void)_addMailboxCollectionVisibleItemsToArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(FavoritesCollectionState *)self items];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  items = [(FavoritesCollectionState *)self items];
+  v6 = [items countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -640,29 +640,29 @@ LABEL_11:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(items);
         }
 
         v9 = *(*(&v10 + 1) + 8 * v8);
         if (-[FavoritesCollectionState isEditing](self, "isEditing") || [v9 isSelected])
         {
-          [(FavoritesCollectionState *)self _addVisibleItem:v9 toArray:v4];
+          [(FavoritesCollectionState *)self _addVisibleItem:v9 toArray:arrayCopy];
         }
 
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [items countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_addAccountsCollectionVisibleItemsToArray:(id)a3
+- (void)_addAccountsCollectionVisibleItemsToArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   [(FavoritesCollectionState *)self items];
   v23 = 0u;
   v24 = 0u;
@@ -709,8 +709,8 @@ LABEL_11:
   {
     [v8 setExpanded:1];
 LABEL_15:
-    v13 = [v8 subItems];
-    [(FavoritesCollectionState *)self _addSubitems:v13 toArray:v4];
+    subItems = [v8 subItems];
+    [(FavoritesCollectionState *)self _addSubitems:subItems toArray:arrayCopy];
     goto LABEL_16;
   }
 
@@ -723,8 +723,8 @@ LABEL_15:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v13 = v5;
-  v14 = [v13 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  subItems = v5;
+  v14 = [subItems countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v14)
   {
     v15 = *v18;
@@ -734,13 +734,13 @@ LABEL_15:
       {
         if (*v18 != v15)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(subItems);
         }
 
-        [(FavoritesCollectionState *)self _addVisibleItem:*(*(&v17 + 1) + 8 * j) toArray:v4, v17];
+        [(FavoritesCollectionState *)self _addVisibleItem:*(*(&v17 + 1) + 8 * j) toArray:arrayCopy, v17];
       }
 
-      v14 = [v13 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      v14 = [subItems countByEnumeratingWithState:&v17 objects:v25 count:16];
     }
 
     while (v14);
@@ -749,14 +749,14 @@ LABEL_15:
 LABEL_16:
 }
 
-- (id)removeItem:(id)a3
+- (id)removeItem:(id)item
 {
-  v4 = a3;
-  v5 = [(FavoritesCollectionState *)self mutableItems];
-  if ([v5 containsObject:v4])
+  itemCopy = item;
+  mutableItems = [(FavoritesCollectionState *)self mutableItems];
+  if ([mutableItems containsObject:itemCopy])
   {
-    [v5 removeObject:v4];
-    v6 = v4;
+    [mutableItems removeObject:itemCopy];
+    v6 = itemCopy;
   }
 
   else
@@ -767,25 +767,25 @@ LABEL_16:
   return v6;
 }
 
-- (id)removeExpandedItem:(id)a3
+- (id)removeExpandedItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 syncKey];
+  itemCopy = item;
+  syncKey = [itemCopy syncKey];
 
-  if (v5)
+  if (syncKey)
   {
-    v6 = [(FavoritesCollectionState *)self mutableExpandedItems];
-    v7 = [(FavoritesCollectionState *)self mutableExpandedItemBySyncKey];
-    v8 = [v4 syncKey];
-    v9 = [v7 objectForKeyedSubscript:v8];
+    mutableExpandedItems = [(FavoritesCollectionState *)self mutableExpandedItems];
+    mutableExpandedItemBySyncKey = [(FavoritesCollectionState *)self mutableExpandedItemBySyncKey];
+    syncKey2 = [itemCopy syncKey];
+    v9 = [mutableExpandedItemBySyncKey objectForKeyedSubscript:syncKey2];
 
     if (v9)
     {
-      [v6 removeObject:v4];
-      v10 = [v4 syncKey];
-      [v7 setObject:0 forKeyedSubscript:v10];
+      [mutableExpandedItems removeObject:itemCopy];
+      syncKey3 = [itemCopy syncKey];
+      [mutableExpandedItemBySyncKey setObject:0 forKeyedSubscript:syncKey3];
 
-      v9 = v4;
+      v9 = itemCopy;
     }
   }
 
@@ -795,13 +795,13 @@ LABEL_16:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v13 = objc_opt_class();
-      v14 = [v4 ef_publicDescription];
+      ef_publicDescription = [itemCopy ef_publicDescription];
       v15 = 138412802;
       v16 = v13;
       v17 = 2048;
-      v18 = self;
+      selfCopy = self;
       v19 = 2114;
-      v20 = v14;
+      v20 = ef_publicDescription;
       _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "<%@: %p> Attempting to remove an expanded item without a sync key: %{public}@", &v15, 0x20u);
     }
 
@@ -816,8 +816,8 @@ LABEL_16:
   selectedItems = self->_selectedItems;
   if (!selectedItems)
   {
-    v4 = [(FavoritesCollectionState *)self items];
-    v5 = [v4 ef_filter:&stru_10064ED78];
+    items = [(FavoritesCollectionState *)self items];
+    v5 = [items ef_filter:&stru_10064ED78];
     v6 = self->_selectedItems;
     self->_selectedItems = v5;
 
@@ -829,29 +829,29 @@ LABEL_16:
   return v7;
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
-  v5 = a3;
-  v4 = [(FavoritesCollectionState *)self mutableItems];
-  [v4 setArray:v5];
+  itemsCopy = items;
+  mutableItems = [(FavoritesCollectionState *)self mutableItems];
+  [mutableItems setArray:itemsCopy];
 }
 
-- (void)setExpandedItems:(id)a3
+- (void)setExpandedItems:(id)items
 {
-  v8 = a3;
-  v4 = [(FavoritesCollectionState *)self mutableExpandedItems];
-  [v4 setArray:v8];
+  itemsCopy = items;
+  mutableExpandedItems = [(FavoritesCollectionState *)self mutableExpandedItems];
+  [mutableExpandedItems setArray:itemsCopy];
 
-  v5 = [(FavoritesCollectionState *)self mutableExpandedItemBySyncKey];
-  v6 = [v8 valueForKey:@"syncKey"];
-  v7 = [NSDictionary dictionaryWithObjects:v8 forKeys:v6];
-  [v5 setDictionary:v7];
+  mutableExpandedItemBySyncKey = [(FavoritesCollectionState *)self mutableExpandedItemBySyncKey];
+  v6 = [itemsCopy valueForKey:@"syncKey"];
+  v7 = [NSDictionary dictionaryWithObjects:itemsCopy forKeys:v6];
+  [mutableExpandedItemBySyncKey setDictionary:v7];
 }
 
 - (unint64_t)countOfVisibleItems
 {
-  v2 = [(FavoritesCollectionState *)self items];
-  v3 = [v2 ef_countObjectsPassingTest:&stru_10064ED98];
+  items = [(FavoritesCollectionState *)self items];
+  v3 = [items ef_countObjectsPassingTest:&stru_10064ED98];
 
   return v3;
 }

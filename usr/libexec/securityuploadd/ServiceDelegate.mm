@@ -1,29 +1,29 @@
 @interface ServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation ServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
-  v5 = [v4 valueForEntitlement:@"com.apple.private.securityuploadd"];
+  connectionCopy = connection;
+  v5 = [connectionCopy valueForEntitlement:@"com.apple.private.securityuploadd"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
-  v7 = [v4 valueForEntitlement:@"com.apple.private.trustd.FileHelp"];
+  v7 = [connectionCopy valueForEntitlement:@"com.apple.private.trustd.FileHelp"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (!v6)
+    if (!bOOLValue)
     {
       goto LABEL_15;
     }
@@ -33,7 +33,7 @@ LABEL_11:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       v15 = 67109120;
-      v16 = [v4 processIdentifier];
+      processIdentifier = [connectionCopy processIdentifier];
       _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "Client (pid: %d) properly entitled for supd interface, let's go", &v15, 8u);
     }
 
@@ -41,19 +41,19 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v8 = [v7 BOOLValue];
-  if (v6)
+  bOOLValue2 = [v7 BOOLValue];
+  if (bOOLValue)
   {
     goto LABEL_11;
   }
 
-  if (v8)
+  if (bOOLValue2)
   {
     v9 = sub_1000146E4("xpc");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       v15 = 67109120;
-      v16 = [v4 processIdentifier];
+      processIdentifier = [connectionCopy processIdentifier];
       _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "Client (pid: %d) properly entitled for trustd file helper interface, let's go", &v15, 8u);
     }
 
@@ -61,11 +61,11 @@ LABEL_11:
 LABEL_14:
 
     v11 = [NSXPCInterface interfaceWithProtocol:*v10];
-    [v4 setExportedInterface:v11];
+    [connectionCopy setExportedInterface:v11];
 
-    v12 = [[supd alloc] initWithConnection:v4];
-    [v4 setExportedObject:v12];
-    [v4 resume];
+    v12 = [[supd alloc] initWithConnection:connectionCopy];
+    [connectionCopy setExportedObject:v12];
+    [connectionCopy resume];
     v13 = 1;
     goto LABEL_18;
   }
@@ -75,7 +75,7 @@ LABEL_15:
   if (os_log_type_enabled(&v12->super, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 67109120;
-    v16 = [v4 processIdentifier];
+    processIdentifier = [connectionCopy processIdentifier];
     _os_log_impl(&_mh_execute_header, &v12->super, OS_LOG_TYPE_DEFAULT, "xpc: Client (pid: %d) doesn't have entitlement", &v15, 8u);
   }
 

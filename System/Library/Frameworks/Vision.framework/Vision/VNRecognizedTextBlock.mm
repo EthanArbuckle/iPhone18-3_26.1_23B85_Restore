@@ -1,12 +1,12 @@
 @interface VNRecognizedTextBlock
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)getRecognizedLanguages;
-- (VNRecognizedTextBlock)initWithCoder:(id)a3;
-- (VNRecognizedTextBlock)initWithRequestRevision:(unint64_t)a3 crOutputRegion:(id)a4;
-- (id)boundingBoxForRange:(_NSRange)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VNRecognizedTextBlock)initWithCoder:(id)coder;
+- (VNRecognizedTextBlock)initWithRequestRevision:(unint64_t)revision crOutputRegion:(id)region;
+- (id)boundingBoxForRange:(_NSRange)range error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNRecognizedTextBlock
@@ -14,13 +14,13 @@
 - (NSArray)getRecognizedLanguages
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v2 = [(VNRecognizedTextBlock *)self getCROutputRegion];
-  v3 = [v2 recognizedLocale];
+  getCROutputRegion = [(VNRecognizedTextBlock *)self getCROutputRegion];
+  recognizedLocale = [getCROutputRegion recognizedLocale];
 
-  if (v3)
+  if (recognizedLocale)
   {
-    v4 = [v2 recognizedLocale];
-    v5 = [v4 copy];
+    recognizedLocale2 = [getCROutputRegion recognizedLocale];
+    v5 = [recognizedLocale2 copy];
     v8[0] = v5;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   }
@@ -33,13 +33,13 @@
   return v6;
 }
 
-- (id)boundingBoxForRange:(_NSRange)a3 error:(id *)a4
+- (id)boundingBoxForRange:(_NSRange)range error:(id *)error
 {
-  v5 = [(CROutputRegion *)self->_crOutputRegion quadForTextInCharacterRange:a3.location, a3.length, a4];
-  v6 = v5;
-  if (v5)
+  error = [(CROutputRegion *)self->_crOutputRegion quadForTextInCharacterRange:range.location, range.length, error];
+  v6 = error;
+  if (error)
   {
-    [v5 topLeft];
+    [error topLeft];
     v8 = v7;
     v10 = 1.0 - v9;
     [v6 topRight];
@@ -60,10 +60,10 @@
   return v21;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -73,7 +73,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(CROutputRegion *)self->_crOutputRegion isEqual:v4->_crOutputRegion];
+      v5 = [(CROutputRegion *)self->_crOutputRegion isEqual:equalCopy->_crOutputRegion];
     }
 
     else
@@ -92,7 +92,7 @@
   return [(CROutputRegion *)self->_crOutputRegion hash]^ __ROR8__([(VNRecognizedText *)&v3 hash], 51);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [VNRecognizedTextBlock alloc];
   requestRevision = self->_requestRevision;
@@ -102,56 +102,56 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   crOutputRegion = self->_crOutputRegion;
-  v5 = a3;
-  [v5 encodeObject:crOutputRegion forKey:@"crOutputRegion"];
+  coderCopy = coder;
+  [coderCopy encodeObject:crOutputRegion forKey:@"crOutputRegion"];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_requestRevision];
-  [v5 encodeObject:v6 forKey:@"requestRevision"];
+  [coderCopy encodeObject:v6 forKey:@"requestRevision"];
 }
 
-- (VNRecognizedTextBlock)initWithCoder:(id)a3
+- (VNRecognizedTextBlock)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"crOutputRegion"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"crOutputRegion"];
   v6 = [v5 copy];
 
   if (v6)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestRevision"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestRevision"];
     v8 = v7;
     if (v7)
     {
       self = -[VNRecognizedTextBlock initWithRequestRevision:crOutputRegion:](self, "initWithRequestRevision:crOutputRegion:", [v7 unsignedIntegerValue], v6);
-      v9 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v9 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (VNRecognizedTextBlock)initWithRequestRevision:(unint64_t)a3 crOutputRegion:(id)a4
+- (VNRecognizedTextBlock)initWithRequestRevision:(unint64_t)revision crOutputRegion:(id)region
 {
-  v7 = a4;
+  regionCopy = region;
   v11.receiver = self;
   v11.super_class = VNRecognizedTextBlock;
   v8 = [(VNRecognizedTextBlock *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_crOutputRegion, a4);
-    v9->_requestRevision = a3;
+    objc_storeStrong(&v8->_crOutputRegion, region);
+    v9->_requestRevision = revision;
   }
 
   return v9;

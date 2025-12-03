@@ -1,36 +1,36 @@
 @interface AKApplicationMetadataRequestProvider
 - (AKApplicationMetadataRequestProvider)init;
-- (AKApplicationMetadataRequestProvider)initWithContext:(id)a3 url:(id)a4;
-- (AKApplicationMetadataRequestProvider)initWithContext:(id)a3 urlBagKey:(id)a4;
-- (AKApplicationMetadataRequestProvider)initWithUrlBagKey:(id)a3;
-- (BOOL)signRequest:(id)a3 error:(id *)a4;
-- (BOOL)validateResponseData:(id)a3 error:(id *)a4;
+- (AKApplicationMetadataRequestProvider)initWithContext:(id)context url:(id)url;
+- (AKApplicationMetadataRequestProvider)initWithContext:(id)context urlBagKey:(id)key;
+- (AKApplicationMetadataRequestProvider)initWithUrlBagKey:(id)key;
+- (BOOL)signRequest:(id)request error:(id *)error;
+- (BOOL)validateResponseData:(id)data error:(id *)error;
 @end
 
 @implementation AKApplicationMetadataRequestProvider
 
-- (BOOL)signRequest:(id)a3 error:(id *)a4
+- (BOOL)signRequest:(id)request error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
-  sub_100200B74(v5);
+  requestCopy = request;
+  selfCopy = self;
+  sub_100200B74(requestCopy);
 
   return 1;
 }
 
-- (BOOL)validateResponseData:(id)a3 error:(id *)a4
+- (BOOL)validateResponseData:(id)data error:(id *)error
 {
-  if (a3)
+  if (data)
   {
-    v6 = self;
-    v7 = a3;
+    selfCopy = self;
+    dataCopy = data;
     v8 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v10 = v9;
   }
 
   else
   {
-    v11 = self;
+    selfCopy2 = self;
     v8 = 0;
     v10 = 0xF000000000000000;
   }
@@ -41,7 +41,7 @@
   return 1;
 }
 
-- (AKApplicationMetadataRequestProvider)initWithUrlBagKey:(id)a3
+- (AKApplicationMetadataRequestProvider)initWithUrlBagKey:(id)key
 {
   v5 = (&self->super.super.super.isa + OBJC_IVAR___AKApplicationMetadataRequestProvider_clientID);
   v6 = type metadata accessor for ApplicationMetadataRequestProvider();
@@ -49,10 +49,10 @@
   v5[1] = 0;
   v8.receiver = self;
   v8.super_class = v6;
-  return [(AKURLRequestProviderImpl *)&v8 initWithUrlBagKey:a3];
+  return [(AKURLRequestProviderImpl *)&v8 initWithUrlBagKey:key];
 }
 
-- (AKApplicationMetadataRequestProvider)initWithContext:(id)a3 urlBagKey:(id)a4
+- (AKApplicationMetadataRequestProvider)initWithContext:(id)context urlBagKey:(id)key
 {
   v7 = (&self->super.super.super.isa + OBJC_IVAR___AKApplicationMetadataRequestProvider_clientID);
   v8 = type metadata accessor for ApplicationMetadataRequestProvider();
@@ -60,10 +60,10 @@
   v7[1] = 0;
   v10.receiver = self;
   v10.super_class = v8;
-  return [(AKURLRequestProviderImpl *)&v10 initWithContext:a3 urlBagKey:a4];
+  return [(AKURLRequestProviderImpl *)&v10 initWithContext:context urlBagKey:key];
 }
 
-- (AKApplicationMetadataRequestProvider)initWithContext:(id)a3 url:(id)a4
+- (AKApplicationMetadataRequestProvider)initWithContext:(id)context url:(id)url
 {
   v6 = type metadata accessor for URL();
   v7 = *(v6 - 8);
@@ -80,7 +80,7 @@
   v15 = type metadata accessor for ApplicationMetadataRequestProvider();
   v18.receiver = self;
   v18.super_class = v15;
-  v16 = [(AKURLRequestProviderImpl *)&v18 initWithContext:a3 url:v14];
+  v16 = [(AKURLRequestProviderImpl *)&v18 initWithContext:context url:v14];
   swift_unknownObjectRelease();
 
   (*(v7 + 8))(v10, v6);

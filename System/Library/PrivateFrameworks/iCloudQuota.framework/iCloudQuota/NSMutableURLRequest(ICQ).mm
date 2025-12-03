@@ -10,14 +10,14 @@
 - (id)icq_sanitizedHeadersForDynamicUI
 {
   v2 = objc_opt_new();
-  v3 = [a1 allHTTPHeaderFields];
+  allHTTPHeaderFields = [self allHTTPHeaderFields];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __60__NSMutableURLRequest_ICQ__icq_sanitizedHeadersForDynamicUI__block_invoke;
   v6[3] = &unk_27A652FB0;
   v4 = v2;
   v7 = v4;
-  [v3 enumerateKeysAndObjectsUsingBlock:v6];
+  [allHTTPHeaderFields enumerateKeysAndObjectsUsingBlock:v6];
 
   return v4;
 }
@@ -48,10 +48,10 @@
   v9[1] = 3221225472;
   v9[2] = __67__NSMutableURLRequest_ICQ__icq_addHeadersForUpgradeWithCompletion___block_invoke;
   v9[3] = &unk_27A652FD8;
-  v9[4] = a1;
+  v9[4] = self;
   v10 = v4;
   v8 = v4;
-  [v7 commonHeadersForRequest:a1 withCompletion:v9];
+  [v7 commonHeadersForRequest:self withCompletion:v9];
 }
 
 - (void)icq_renewAuthorizationHeadersForAccount:()ICQ store:completion:
@@ -60,19 +60,19 @@
   v8 = a3;
   v9 = a4;
   v10 = a5;
-  v11 = [v9 aa_primaryAppleAccount];
-  v12 = v11;
+  aa_primaryAppleAccount = [v9 aa_primaryAppleAccount];
+  v12 = aa_primaryAppleAccount;
   if (v8)
   {
-    v13 = [v11 aa_altDSID];
-    v14 = [v8 aa_altDSID];
+    aa_altDSID = [aa_primaryAppleAccount aa_altDSID];
+    aa_altDSID2 = [v8 aa_altDSID];
 
-    if (v13 != v14)
+    if (aa_altDSID != aa_altDSID2)
     {
       v15 = _ICQGetLogSystem();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        [NSMutableURLRequest(ICQ) icq_renewAuthorizationHeadersForAccount:a1 store:v15 completion:?];
+        [NSMutableURLRequest(ICQ) icq_renewAuthorizationHeadersForAccount:self store:v15 completion:?];
       }
 
 LABEL_5:
@@ -92,13 +92,13 @@ LABEL_5:
     }
   }
 
-  if ([a1 icq_hasAuthHeaders])
+  if ([self icq_hasAuthHeaders])
   {
     v17 = _ICQGetLogSystem();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v28 = a1;
+      selfCopy2 = self;
       _os_log_impl(&dword_275572000, v17, OS_LOG_TYPE_DEFAULT, "request already has auth headers. request: %@", buf, 0xCu);
     }
 
@@ -123,7 +123,7 @@ LABEL_5:
     if (v19)
     {
       *buf = 138412290;
-      v28 = a1;
+      selfCopy2 = self;
       _os_log_impl(&dword_275572000, v15, OS_LOG_TYPE_DEFAULT, "Missing auth header or client info header, attempting to renew credentials. request: %@", buf, 0xCu);
     }
 
@@ -137,7 +137,7 @@ LABEL_5:
     v22[1] = 3221225472;
     v22[2] = __85__NSMutableURLRequest_ICQ__icq_renewAuthorizationHeadersForAccount_store_completion___block_invoke;
     v22[3] = &unk_27A653000;
-    v22[4] = a1;
+    v22[4] = self;
     v23 = v12;
     v24 = v10;
     [v9 renewCredentialsForAccount:v23 options:v21 completion:v22];
@@ -150,10 +150,10 @@ LABEL_13:
 
 - (BOOL)icq_hasAuthHeaders
 {
-  v2 = [a1 valueForHTTPHeaderField:@"Authorization"];
+  v2 = [self valueForHTTPHeaderField:@"Authorization"];
   if (v2)
   {
-    v3 = [a1 valueForHTTPHeaderField:@"X-MMe-Client-Info"];
+    v3 = [self valueForHTTPHeaderField:@"X-MMe-Client-Info"];
     v4 = v3 != 0;
   }
 

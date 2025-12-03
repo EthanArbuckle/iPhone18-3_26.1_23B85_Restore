@@ -1,42 +1,42 @@
 @interface MTRDeviceClusterData
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToClusterData:(id)a3;
-- (MTRDeviceClusterData)initWithCoder:(id)a3;
-- (MTRDeviceClusterData)initWithDataVersion:(id)a3 attributes:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToClusterData:(id)data;
+- (MTRDeviceClusterData)initWithCoder:(id)coder;
+- (MTRDeviceClusterData)initWithDataVersion:(id)version attributes:(id)attributes;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MTRDeviceClusterData
 
-- (MTRDeviceClusterData)initWithDataVersion:(id)a3 attributes:(id)a4
+- (MTRDeviceClusterData)initWithDataVersion:(id)version attributes:(id)attributes
 {
-  v6 = a3;
-  v7 = a4;
+  versionCopy = version;
+  attributesCopy = attributes;
   v15.receiver = self;
   v15.super_class = MTRDeviceClusterData;
   v8 = [(MTRDeviceClusterData *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [versionCopy copy];
     dataVersion = v8->_dataVersion;
     v8->_dataVersion = v9;
 
-    v11 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v7, "count")}];
+    v11 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(attributesCopy, "count")}];
     attributes = v8->_attributes;
     v8->_attributes = v11;
 
-    [(NSMutableDictionary *)v8->_attributes addEntriesFromDictionary:v7];
+    [(NSMutableDictionary *)v8->_attributes addEntriesFromDictionary:attributesCopy];
     v13 = v8;
   }
 
   return v8;
 }
 
-- (MTRDeviceClusterData)initWithCoder:(id)a3
+- (MTRDeviceClusterData)initWithCoder:(id)coder
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = MTRDeviceClusterData;
   v5 = [(MTRDeviceClusterData *)&v24 init];
@@ -45,7 +45,7 @@
     goto LABEL_16;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dataVersion"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dataVersion"];
   p_dataVersion = &v5->_dataVersion;
   dataVersion = v5->_dataVersion;
   v5->_dataVersion = v6;
@@ -89,7 +89,7 @@ LABEL_16:
     __cxa_guard_release(&qword_27DF775E0);
   }
 
-  v9 = [v4 decodeObjectOfClasses:qword_27DF775D8 forKey:@"attributes"];
+  v9 = [coderCopy decodeObjectOfClasses:qword_27DF775D8 forKey:@"attributes"];
   p_dataVersion = &v5->_attributes;
   attributes = v5->_attributes;
   v5->_attributes = v9;
@@ -124,17 +124,17 @@ LABEL_17:
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(MTRDeviceClusterData *)self dataVersion];
-  [v6 encodeObject:v4 forKey:@"dataVersion"];
+  coderCopy = coder;
+  dataVersion = [(MTRDeviceClusterData *)self dataVersion];
+  [coderCopy encodeObject:dataVersion forKey:@"dataVersion"];
 
-  v5 = [(MTRDeviceClusterData *)self attributes];
-  [v6 encodeObject:v5 forKey:@"attributes"];
+  attributes = [(MTRDeviceClusterData *)self attributes];
+  [coderCopy encodeObject:attributes forKey:@"attributes"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MTRDeviceClusterData alloc];
   attributes = self->_attributes;
@@ -143,16 +143,16 @@ LABEL_17:
   return MEMORY[0x2821F9670](v4, sel_initWithDataVersion_attributes_);
 }
 
-- (BOOL)isEqualToClusterData:(id)a3
+- (BOOL)isEqualToClusterData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   dataVersion = self->_dataVersion;
-  v6 = [v4 dataVersion];
-  if (sub_238DB32F8(dataVersion, v6))
+  dataVersion = [dataCopy dataVersion];
+  if (sub_238DB32F8(dataVersion, dataVersion))
   {
     attributes = self->_attributes;
-    v8 = [v4 attributes];
-    v9 = sub_238DB32F8(attributes, v8);
+    attributes = [dataCopy attributes];
+    v9 = sub_238DB32F8(attributes, attributes);
   }
 
   else
@@ -163,11 +163,11 @@ LABEL_17:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v5 == objc_opt_class() && [(MTRDeviceClusterData *)self isEqualToClusterData:v4];
+  v6 = v5 == objc_opt_class() && [(MTRDeviceClusterData *)self isEqualToClusterData:equalCopy];
 
   return v6;
 }

@@ -1,6 +1,6 @@
 @interface RUIHalfSheetDetent
-+ (BOOL)shouldUsePadHeightForTraitCollection:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)shouldUsePadHeightForTraitCollection:(id)collection;
+- (BOOL)isEqual:(id)equal;
 - (RUIHalfSheetDetent)init;
 @end
 
@@ -33,19 +33,19 @@ double __26__RUIHalfSheetDetent_init__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-+ (BOOL)shouldUsePadHeightForTraitCollection:(id)a3
++ (BOOL)shouldUsePadHeightForTraitCollection:(id)collection
 {
-  v3 = a3;
-  v4 = [v3 horizontalSizeClass] == 2 && objc_msgSend(v3, "userInterfaceIdiom") == 1;
+  collectionCopy = collection;
+  v4 = [collectionCopy horizontalSizeClass] == 2 && objc_msgSend(collectionCopy, "userInterfaceIdiom") == 1;
 
   return v4;
 }

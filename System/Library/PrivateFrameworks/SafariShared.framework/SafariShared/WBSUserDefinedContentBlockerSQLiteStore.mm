@@ -2,42 +2,42 @@
 + (id)defaultDatabaseURL;
 + (id)sharedStore;
 - (BOOL)_deleteFromAllTables;
-- (BOOL)_migrateToSchemaVersion:(int)a3;
-- (WBSUserDefinedContentBlockerSQLiteStore)initWithDatabaseURL:(id)a3;
+- (BOOL)_migrateToSchemaVersion:(int)version;
+- (WBSUserDefinedContentBlockerSQLiteStore)initWithDatabaseURL:(id)l;
 - (int)_createFreshDatabaseSchema;
-- (int)_insertContentBlockerWithType:(int64_t)a3 host:(id)a4 excludeGlobal:(BOOL)a5;
+- (int)_insertContentBlockerWithType:(int64_t)type host:(id)host excludeGlobal:(BOOL)global;
 - (int)_migrateToCurrentSchemaVersionIfNecessary;
 - (int)_migrateToSchemaVersion_2;
-- (int)_setDatabaseSchemaVersion:(int)a3;
-- (int64_t)_insertAction:(id)a3 forContentBlockerID:(int64_t)a4;
+- (int)_setDatabaseSchemaVersion:(int)version;
+- (int64_t)_insertAction:(id)action forContentBlockerID:(int64_t)d;
 - (void)_closeDatabase;
 - (void)_createFreshDatabaseSchema;
-- (void)_deleteActions:(id)a3;
-- (void)_deleteActionsForContentBlockerID:(int64_t)a3;
+- (void)_deleteActions:(id)actions;
+- (void)_deleteActionsForContentBlockerID:(int64_t)d;
 - (void)_deleteFromAllTables;
-- (void)_getActionsForContentBlockerID:(int64_t)a3 isGlobal:(BOOL)a4 completionHandler:(id)a5;
-- (void)_getAllContentBlockerActionsWithType:(id)a3 excludeHost:(id)a4 isGlobal:(BOOL)a5 completion:(id)a6;
-- (void)_getAllContentBlockerHostsWithCompletionHandler:(id)a3;
-- (void)_getContentBlockerWithType:(int64_t)a3 host:(id)a4 completionHandler:(id)a5;
-- (void)_getNumberOfContentBlockersThatContainActionsWithCompletionHandler:(id)a3;
-- (void)_insertActions:(id)a3 forContentBlockerID:(int64_t)a4;
+- (void)_getActionsForContentBlockerID:(int64_t)d isGlobal:(BOOL)global completionHandler:(id)handler;
+- (void)_getAllContentBlockerActionsWithType:(id)type excludeHost:(id)host isGlobal:(BOOL)global completion:(id)completion;
+- (void)_getAllContentBlockerHostsWithCompletionHandler:(id)handler;
+- (void)_getContentBlockerWithType:(int64_t)type host:(id)host completionHandler:(id)handler;
+- (void)_getNumberOfContentBlockersThatContainActionsWithCompletionHandler:(id)handler;
+- (void)_insertActions:(id)actions forContentBlockerID:(int64_t)d;
 - (void)_migrateToSchemaVersion_2;
 - (void)_openDatabase;
 - (void)_openDatabaseIfNecessary;
-- (void)_updateExtraAttributes:(id)a3 forContentBlockerID:(int64_t)a4;
+- (void)_updateExtraAttributes:(id)attributes forContentBlockerID:(int64_t)d;
 - (void)closeDatabase;
-- (void)createPerSiteContentBlockerForHost:(id)a3;
+- (void)createPerSiteContentBlockerForHost:(id)host;
 - (void)dealloc;
-- (void)deleteActions:(id)a3;
-- (void)deleteActionsForContentBlockerID:(int64_t)a3;
-- (void)getAllContentBlockerActionsWithType:(id)a3 excludeHost:(id)a4 isGlobal:(BOOL)a5 completion:(id)a6;
-- (void)getAllContentBlockerHostsWithCompletionHandler:(id)a3;
-- (void)getGlobalContentBlockerWithCompletionHandler:(id)a3;
-- (void)getNumberOfContentBlockersThatContainActionsWithCompletionHandler:(id)a3;
-- (void)getPerSiteContentBlockerForHost:(id)a3 createIfNeeded:(BOOL)a4 completionHandler:(id)a5;
-- (void)insertActions:(id)a3 forContentBlockerID:(int64_t)a4;
-- (void)resetDatabaseWithCompletionHandler:(id)a3;
-- (void)updateContentBlockerActionExtraAttributes:(id)a3;
+- (void)deleteActions:(id)actions;
+- (void)deleteActionsForContentBlockerID:(int64_t)d;
+- (void)getAllContentBlockerActionsWithType:(id)type excludeHost:(id)host isGlobal:(BOOL)global completion:(id)completion;
+- (void)getAllContentBlockerHostsWithCompletionHandler:(id)handler;
+- (void)getGlobalContentBlockerWithCompletionHandler:(id)handler;
+- (void)getNumberOfContentBlockersThatContainActionsWithCompletionHandler:(id)handler;
+- (void)getPerSiteContentBlockerForHost:(id)host createIfNeeded:(BOOL)needed completionHandler:(id)handler;
+- (void)insertActions:(id)actions forContentBlockerID:(int64_t)d;
+- (void)resetDatabaseWithCompletionHandler:(id)handler;
+- (void)updateContentBlockerActionExtraAttributes:(id)attributes;
 @end
 
 @implementation WBSUserDefinedContentBlockerSQLiteStore
@@ -54,7 +54,7 @@
 - (void)_openDatabase
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = *a1;
+  v3 = *self;
   v4[0] = 67109634;
   v4[1] = a2;
   v5 = 1024;
@@ -79,7 +79,7 @@ void __54__WBSUserDefinedContentBlockerSQLiteStore_sharedStore__block_invoke(uin
   block[1] = 3221225472;
   block[2] = __54__WBSUserDefinedContentBlockerSQLiteStore_sharedStore__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[WBSUserDefinedContentBlockerSQLiteStore sharedStore]::onceToken[0] != -1)
   {
     dispatch_once(+[WBSUserDefinedContentBlockerSQLiteStore sharedStore]::onceToken, block);
@@ -92,9 +92,9 @@ void __54__WBSUserDefinedContentBlockerSQLiteStore_sharedStore__block_invoke(uin
 
 + (id)defaultDatabaseURL
 {
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  v3 = [v2 safari_settingsDirectoryURL];
-  v4 = [v3 URLByAppendingPathComponent:@"UserDefinedContentBlockers.db" isDirectory:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  safari_settingsDirectoryURL = [defaultManager safari_settingsDirectoryURL];
+  v4 = [safari_settingsDirectoryURL URLByAppendingPathComponent:@"UserDefinedContentBlockers.db" isDirectory:0];
 
   return v4;
 }
@@ -102,11 +102,11 @@ void __54__WBSUserDefinedContentBlockerSQLiteStore_sharedStore__block_invoke(uin
 - (int)_migrateToCurrentSchemaVersionIfNecessary
 {
   v3 = SafariShared::WBSSQLiteDatabaseFetch<>(self->_database, @"PRAGMA user_version");
-  v4 = [v3 nextObject];
-  v5 = [v4 intAtIndex:0];
+  nextObject = [v3 nextObject];
+  v5 = [nextObject intAtIndex:0];
 
-  v6 = [v3 statement];
-  [v6 invalidate];
+  statement = [v3 statement];
+  [statement invalidate];
 
   if (v5 <= 1)
   {
@@ -200,26 +200,26 @@ LABEL_10:
   return v5;
 }
 
-- (WBSUserDefinedContentBlockerSQLiteStore)initWithDatabaseURL:(id)a3
+- (WBSUserDefinedContentBlockerSQLiteStore)initWithDatabaseURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v17.receiver = self;
   v17.super_class = WBSUserDefinedContentBlockerSQLiteStore;
   v5 = [(WBSUserDefinedContentBlockerSQLiteStore *)&v17 init];
   if (v5)
   {
-    if (v4)
+    if (lCopy)
     {
-      v6 = v4;
+      inMemoryDatabaseURL = lCopy;
     }
 
     else
     {
-      v6 = [MEMORY[0x1E69C89E8] inMemoryDatabaseURL];
+      inMemoryDatabaseURL = [MEMORY[0x1E69C89E8] inMemoryDatabaseURL];
     }
 
     databaseURL = v5->_databaseURL;
-    v5->_databaseURL = v6;
+    v5->_databaseURL = inMemoryDatabaseURL;
 
     v8 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
     v9 = dispatch_queue_create("com.apple.SafariShared.WBSUserDefinedContentBlockerSQLiteStore", v8);
@@ -258,17 +258,17 @@ LABEL_10:
   dispatch_sync(databaseQueue, block);
 }
 
-- (void)resetDatabaseWithCompletionHandler:(id)a3
+- (void)resetDatabaseWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __78__WBSUserDefinedContentBlockerSQLiteStore_resetDatabaseWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7FB6F08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(databaseQueue, v7);
 }
 
@@ -280,35 +280,35 @@ uint64_t __78__WBSUserDefinedContentBlockerSQLiteStore_resetDatabaseWithCompleti
   return v2();
 }
 
-- (void)createPerSiteContentBlockerForHost:(id)a3
+- (void)createPerSiteContentBlockerForHost:(id)host
 {
-  v4 = a3;
+  hostCopy = host;
   databaseQueue = self->_databaseQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __78__WBSUserDefinedContentBlockerSQLiteStore_createPerSiteContentBlockerForHost___block_invoke;
   v7[3] = &unk_1E7FB7F10;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = hostCopy;
+  v6 = hostCopy;
   dispatch_async(databaseQueue, v7);
 }
 
-- (void)getPerSiteContentBlockerForHost:(id)a3 createIfNeeded:(BOOL)a4 completionHandler:(id)a5
+- (void)getPerSiteContentBlockerForHost:(id)host createIfNeeded:(BOOL)needed completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  hostCopy = host;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __108__WBSUserDefinedContentBlockerSQLiteStore_getPerSiteContentBlockerForHost_createIfNeeded_completionHandler___block_invoke;
   v13[3] = &unk_1E7FC7058;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
+  v14 = hostCopy;
+  v15 = handlerCopy;
+  neededCopy = needed;
+  v11 = handlerCopy;
+  v12 = hostCopy;
   dispatch_async(databaseQueue, v13);
 }
 
@@ -345,77 +345,77 @@ void __108__WBSUserDefinedContentBlockerSQLiteStore_getPerSiteContentBlockerForH
   }
 }
 
-- (void)getGlobalContentBlockerWithCompletionHandler:(id)a3
+- (void)getGlobalContentBlockerWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __88__WBSUserDefinedContentBlockerSQLiteStore_getGlobalContentBlockerWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7FB6F08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(databaseQueue, v7);
 }
 
-- (void)getAllContentBlockerHostsWithCompletionHandler:(id)a3
+- (void)getAllContentBlockerHostsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __90__WBSUserDefinedContentBlockerSQLiteStore_getAllContentBlockerHostsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7FB6F08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(databaseQueue, v7);
 }
 
-- (void)getNumberOfContentBlockersThatContainActionsWithCompletionHandler:(id)a3
+- (void)getNumberOfContentBlockersThatContainActionsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __109__WBSUserDefinedContentBlockerSQLiteStore_getNumberOfContentBlockersThatContainActionsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7FB6F08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(databaseQueue, v7);
 }
 
-- (void)getAllContentBlockerActionsWithType:(id)a3 excludeHost:(id)a4 isGlobal:(BOOL)a5 completion:(id)a6
+- (void)getAllContentBlockerActionsWithType:(id)type excludeHost:(id)host isGlobal:(BOOL)global completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  typeCopy = type;
+  hostCopy = host;
+  completionCopy = completion;
   databaseQueue = self->_databaseQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __111__WBSUserDefinedContentBlockerSQLiteStore_getAllContentBlockerActionsWithType_excludeHost_isGlobal_completion___block_invoke;
   block[3] = &unk_1E7FC6938;
   block[4] = self;
-  v18 = v10;
-  v21 = a5;
-  v19 = v11;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = typeCopy;
+  globalCopy = global;
+  v19 = hostCopy;
+  v20 = completionCopy;
+  v14 = completionCopy;
+  v15 = hostCopy;
+  v16 = typeCopy;
   dispatch_async(databaseQueue, block);
 }
 
-- (void)updateContentBlockerActionExtraAttributes:(id)a3
+- (void)updateContentBlockerActionExtraAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [v4 databaseID];
-  if (v5)
+  attributesCopy = attributes;
+  databaseID = [attributesCopy databaseID];
+  if (databaseID)
   {
-    v7 = [v4 extraAttributesData];
-    if ([v7 length])
+    extraAttributesData = [attributesCopy extraAttributesData];
+    if ([extraAttributesData length])
     {
       databaseQueue = self->_databaseQueue;
       block[0] = MEMORY[0x1E69E9820];
@@ -423,8 +423,8 @@ void __108__WBSUserDefinedContentBlockerSQLiteStore_getPerSiteContentBlockerForH
       block[2] = __85__WBSUserDefinedContentBlockerSQLiteStore_updateContentBlockerActionExtraAttributes___block_invoke;
       block[3] = &unk_1E7FB7C70;
       block[4] = self;
-      v11 = v7;
-      v12 = v5;
+      v11 = extraAttributesData;
+      v12 = databaseID;
       dispatch_async(databaseQueue, block);
     }
 
@@ -448,22 +448,22 @@ void __108__WBSUserDefinedContentBlockerSQLiteStore_getPerSiteContentBlockerForH
   }
 }
 
-- (void)insertActions:(id)a3 forContentBlockerID:(int64_t)a4
+- (void)insertActions:(id)actions forContentBlockerID:(int64_t)d
 {
-  v6 = a3;
+  actionsCopy = actions;
   databaseQueue = self->_databaseQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77__WBSUserDefinedContentBlockerSQLiteStore_insertActions_forContentBlockerID___block_invoke;
   block[3] = &unk_1E7FB7C70;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = actionsCopy;
+  dCopy = d;
+  v8 = actionsCopy;
   dispatch_async(databaseQueue, block);
 }
 
-- (void)deleteActionsForContentBlockerID:(int64_t)a3
+- (void)deleteActionsForContentBlockerID:(int64_t)d
 {
   databaseQueue = self->_databaseQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -471,27 +471,27 @@ void __108__WBSUserDefinedContentBlockerSQLiteStore_getPerSiteContentBlockerForH
   v4[2] = __76__WBSUserDefinedContentBlockerSQLiteStore_deleteActionsForContentBlockerID___block_invoke;
   v4[3] = &unk_1E7FB7610;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = d;
   dispatch_async(databaseQueue, v4);
 }
 
-- (void)deleteActions:(id)a3
+- (void)deleteActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   databaseQueue = self->_databaseQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__WBSUserDefinedContentBlockerSQLiteStore_deleteActions___block_invoke;
   v7[3] = &unk_1E7FB7F10;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = actionsCopy;
+  v6 = actionsCopy;
   dispatch_async(databaseQueue, v7);
 }
 
-- (BOOL)_migrateToSchemaVersion:(int)a3
+- (BOOL)_migrateToSchemaVersion:(int)version
 {
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"_migrateToSchemaVersion_%d", *&a3];
+  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"_migrateToSchemaVersion_%d", *&version];
   v6 = NSSelectorFromString(v5);
 
   v8[0] = MEMORY[0x1E69E9820];
@@ -500,7 +500,7 @@ void __108__WBSUserDefinedContentBlockerSQLiteStore_getPerSiteContentBlockerForH
   v8[3] = &unk_1E7FC9620;
   v8[4] = self;
   v8[5] = v6;
-  v9 = a3;
+  versionCopy = version;
   return [(WBSUserDefinedContentBlockerSQLiteStore *)self _tryToPerformTransactionInBlock:v8];
 }
 
@@ -534,11 +534,11 @@ BOOL __67__WBSUserDefinedContentBlockerSQLiteStore__migrateToSchemaVersion___blo
   return v3;
 }
 
-- (int)_setDatabaseSchemaVersion:(int)a3
+- (int)_setDatabaseSchemaVersion:(int)version
 {
   v17 = *MEMORY[0x1E69E9840];
   database = self->_database;
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PRAGMA user_version = %d", *&a3];
+  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PRAGMA user_version = %d", *&version];
   v7 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(database, 0, v6);
 
   if (v7 != 101)
@@ -546,11 +546,11 @@ BOOL __67__WBSUserDefinedContentBlockerSQLiteStore__migrateToSchemaVersion___blo
     v8 = WBS_LOG_CHANNEL_PREFIXUserDefinedContentBlocker();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(WBSSQLiteDatabase *)self->_database lastErrorMessage];
+      lastErrorMessage = [(WBSSQLiteDatabase *)self->_database lastErrorMessage];
       *buf = 67109634;
-      v12 = a3;
+      versionCopy = version;
       v13 = 2114;
-      v14 = v10;
+      v14 = lastErrorMessage;
       v15 = 1024;
       v16 = v7;
       _os_log_error_impl(&dword_1BB6F3000, v8, OS_LOG_TYPE_ERROR, "Failed to set the User Defined Content Blocker store database schema version to %d: %{public}@ (%d)", buf, 0x18u);
@@ -584,9 +584,9 @@ BOOL __67__WBSUserDefinedContentBlockerSQLiteStore__migrateToSchemaVersion___blo
 
   v6 = [objc_alloc(MEMORY[0x1E69C89F0]) initWithDatabase:self->_database query:@"DELETE FROM content_blocker WHERE type != ?"];
   [v6 bindInt:1 atParameterIndex:1];
-  v7 = [v6 execute];
+  execute = [v6 execute];
   [v6 reset];
-  if (v7 != 101)
+  if (execute != 101)
   {
     v8 = WBS_LOG_CHANNEL_PREFIXUserDefinedContentBlocker();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -615,69 +615,69 @@ BOOL __67__WBSUserDefinedContentBlockerSQLiteStore__migrateToSchemaVersion___blo
   return v4;
 }
 
-- (int)_insertContentBlockerWithType:(int64_t)a3 host:(id)a4 excludeGlobal:(BOOL)a5
+- (int)_insertContentBlockerWithType:(int64_t)type host:(id)host excludeGlobal:(BOOL)global
 {
   v25 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v15 = a4;
-  v14 = a5;
+  typeCopy = type;
+  hostCopy = host;
+  globalCopy = global;
   v7 = [objc_alloc(MEMORY[0x1E69C89F0]) initWithDatabase:self->_database query:{@"INSERT INTO content_blocker (type, host, exclude_global, version)VALUES (?, ?, ?, ?)"}];
-  SafariShared::_WBSSQLiteStatementBindAllParameters<1,WBSUserDefinedContentBlockerType &,NSString * {__strong}&,BOOL &,int const&>(v7, &v16, &v15, &v14, &WBSUserDefinedContentBlockerSupportedVersion);
-  v8 = [v7 execute];
+  SafariShared::_WBSSQLiteStatementBindAllParameters<1,WBSUserDefinedContentBlockerType &,NSString * {__strong}&,BOOL &,int const&>(v7, &typeCopy, &hostCopy, &globalCopy, &WBSUserDefinedContentBlockerSupportedVersion);
+  execute = [v7 execute];
   [v7 reset];
-  if (v8 != 101)
+  if (execute != 101)
   {
     v9 = WBS_LOG_CHANNEL_PREFIXUserDefinedContentBlocker();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v11 = v15;
-      v12 = v16;
-      v13 = [(WBSSQLiteDatabase *)self->_database lastErrorMessage];
+      v11 = hostCopy;
+      v12 = typeCopy;
+      lastErrorMessage = [(WBSSQLiteDatabase *)self->_database lastErrorMessage];
       *buf = 134218755;
       v18 = v12;
       v19 = 2113;
       v20 = v11;
       v21 = 2114;
-      v22 = v13;
+      v22 = lastErrorMessage;
       v23 = 1024;
-      v24 = v8;
+      v24 = execute;
       _os_log_error_impl(&dword_1BB6F3000, v9, OS_LOG_TYPE_ERROR, "Failed to create content blocker(type %lu) for %{private}@: %{public}@ (%d)", buf, 0x26u);
     }
   }
 
-  return v8;
+  return execute;
 }
 
-- (void)_getContentBlockerWithType:(int64_t)a3 host:(id)a4 completionHandler:(id)a5
+- (void)_getContentBlockerWithType:(int64_t)type host:(id)host completionHandler:(id)handler
 {
-  v20 = a4;
-  v8 = a5;
+  hostCopy = host;
+  handlerCopy = handler;
   database = self->_database;
-  v19 = a3;
-  v10 = SafariShared::WBSSQLiteDatabaseFetch<int,NSString * {__strong}&>(database, @"SELECT id, exclude_global FROM content_blocker WHERE type = ? AND host = ?", &v19, &v20);
-  v11 = [v10 nextObject];
-  if (v11)
+  typeCopy = type;
+  v10 = SafariShared::WBSSQLiteDatabaseFetch<int,NSString * {__strong}&>(database, @"SELECT id, exclude_global FROM content_blocker WHERE type = ? AND host = ?", &typeCopy, &hostCopy);
+  nextObject = [v10 nextObject];
+  if (nextObject)
   {
     v12 = objc_alloc_init(WBSUserDefinedContentBlocker);
-    -[WBSUserDefinedContentBlocker setDatabaseID:](v12, "setDatabaseID:", [v11 intAtIndex:0]);
-    [(WBSUserDefinedContentBlocker *)v12 setType:a3];
-    [(WBSUserDefinedContentBlocker *)v12 setHost:v20];
-    -[WBSUserDefinedContentBlocker setExcludeGlobalContentBlockers:](v12, "setExcludeGlobalContentBlockers:", [v11 BOOLAtIndex:1]);
-    v13 = [(WBSUserDefinedContentBlocker *)v12 databaseID];
-    v14 = a3 == 1;
+    -[WBSUserDefinedContentBlocker setDatabaseID:](v12, "setDatabaseID:", [nextObject intAtIndex:0]);
+    [(WBSUserDefinedContentBlocker *)v12 setType:type];
+    [(WBSUserDefinedContentBlocker *)v12 setHost:hostCopy];
+    -[WBSUserDefinedContentBlocker setExcludeGlobalContentBlockers:](v12, "setExcludeGlobalContentBlockers:", [nextObject BOOLAtIndex:1]);
+    databaseID = [(WBSUserDefinedContentBlocker *)v12 databaseID];
+    v14 = type == 1;
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __93__WBSUserDefinedContentBlockerSQLiteStore__getContentBlockerWithType_host_completionHandler___block_invoke;
     v16[3] = &unk_1E7FCB370;
     v15 = v12;
     v17 = v15;
-    v18 = v8;
-    [(WBSUserDefinedContentBlockerSQLiteStore *)self _getActionsForContentBlockerID:v13 isGlobal:v14 completionHandler:v16];
+    v18 = handlerCopy;
+    [(WBSUserDefinedContentBlockerSQLiteStore *)self _getActionsForContentBlockerID:databaseID isGlobal:v14 completionHandler:v16];
   }
 
   else
   {
-    (*(v8 + 2))(v8, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -688,88 +688,88 @@ void __93__WBSUserDefinedContentBlockerSQLiteStore__getContentBlockerWithType_ho
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_getAllContentBlockerHostsWithCompletionHandler:(id)a3
+- (void)_getAllContentBlockerHostsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   database = self->_database;
   v12 = 0;
   v6 = SafariShared::WBSSQLiteDatabaseFetch<int>(database, @"SELECT host FROM content_blocker WHERE type = ?", &v12);
-  v7 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   while (1)
   {
-    v8 = [v6 nextObject];
-    v9 = v8;
-    if (!v8)
+    nextObject = [v6 nextObject];
+    v9 = nextObject;
+    if (!nextObject)
     {
       break;
     }
 
-    v10 = [v8 stringAtIndex:0];
-    [v7 addObject:v10];
+    v10 = [nextObject stringAtIndex:0];
+    [array addObject:v10];
   }
 
-  v11 = [v7 copy];
-  v4[2](v4, v11);
+  v11 = [array copy];
+  handlerCopy[2](handlerCopy, v11);
 }
 
-- (void)_getNumberOfContentBlockersThatContainActionsWithCompletionHandler:(id)a3
+- (void)_getNumberOfContentBlockersThatContainActionsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   database = self->_database;
   v9 = 0;
   v6 = SafariShared::WBSSQLiteDatabaseFetch<int>(database, @"SELECT COUNT(DISTINCT content_blocker_id) FROM action", &v9);
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 nextObject];
-    v4[2](v4, [v8 intAtIndex:0]);
+    nextObject = [v6 nextObject];
+    handlerCopy[2](handlerCopy, [nextObject intAtIndex:0]);
   }
 
   else
   {
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)_getAllContentBlockerActionsWithType:(id)a3 excludeHost:(id)a4 isGlobal:(BOOL)a5 completion:(id)a6
+- (void)_getAllContentBlockerActionsWithType:(id)type excludeHost:(id)host isGlobal:(BOOL)global completion:(id)completion
 {
-  v7 = a5;
-  v22 = a3;
-  v21 = a4;
-  v10 = a6;
-  v11 = [MEMORY[0x1E695DF70] array];
-  v12 = SafariShared::WBSSQLiteDatabaseFetch<NSString * {__strong}&,NSString * {__strong}&>(self->_database, @"SELECT action.id, action.selector, action.type, action.extra_attributes FROM action, content_blocker WHERE action.type = ? AND content_blocker.id = action.content_blocker_id AND content_blocker.host != ?", &v22, &v21);
+  globalCopy = global;
+  typeCopy = type;
+  hostCopy = host;
+  completionCopy = completion;
+  array = [MEMORY[0x1E695DF70] array];
+  v12 = SafariShared::WBSSQLiteDatabaseFetch<NSString * {__strong}&,NSString * {__strong}&>(self->_database, @"SELECT action.id, action.selector, action.type, action.extra_attributes FROM action, content_blocker WHERE action.type = ? AND content_blocker.id = action.content_blocker_id AND content_blocker.host != ?", &typeCopy, &hostCopy);
   while (1)
   {
-    v13 = [v12 nextObject];
-    if (!v13)
+    nextObject = [v12 nextObject];
+    if (!nextObject)
     {
       break;
     }
 
     v14 = [WBSUserDefinedContentBlockerAction alloc];
-    v15 = [v13 intAtIndex:0];
-    v16 = [v13 stringAtIndex:1];
-    v17 = [v13 stringAtIndex:2];
-    v18 = [v13 dataAtIndex:3];
-    v19 = [(WBSUserDefinedContentBlockerAction *)v14 initWithDatabaseID:v15 selector:v16 type:v17 extraAttributesData:v18 isGlobal:v7];
+    v15 = [nextObject intAtIndex:0];
+    v16 = [nextObject stringAtIndex:1];
+    v17 = [nextObject stringAtIndex:2];
+    v18 = [nextObject dataAtIndex:3];
+    v19 = [(WBSUserDefinedContentBlockerAction *)v14 initWithDatabaseID:v15 selector:v16 type:v17 extraAttributesData:v18 isGlobal:globalCopy];
 
-    [v11 addObject:v19];
+    [array addObject:v19];
   }
 
-  v20 = [v11 copy];
-  v10[2](v10, v20);
+  v20 = [array copy];
+  completionCopy[2](completionCopy, v20);
 }
 
-- (void)_insertActions:(id)a3 forContentBlockerID:(int64_t)a4
+- (void)_insertActions:(id)actions forContentBlockerID:(int64_t)d
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = a3;
-  v7 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  actionsCopy = actions;
+  v7 = [actionsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v7)
   {
     v8 = *v11;
@@ -780,73 +780,73 @@ void __93__WBSUserDefinedContentBlockerSQLiteStore__getContentBlockerWithType_ho
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(actionsCopy);
         }
 
-        [(WBSUserDefinedContentBlockerSQLiteStore *)self _insertAction:*(*(&v10 + 1) + 8 * v9++) forContentBlockerID:a4, v10];
+        [(WBSUserDefinedContentBlockerSQLiteStore *)self _insertAction:*(*(&v10 + 1) + 8 * v9++) forContentBlockerID:d, v10];
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [actionsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (int64_t)_insertAction:(id)a3 forContentBlockerID:(int64_t)a4
+- (int64_t)_insertAction:(id)action forContentBlockerID:(int64_t)d
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 databaseID];
-  if (v7)
+  actionCopy = action;
+  databaseID = [actionCopy databaseID];
+  if (databaseID)
   {
     v9 = WBS_LOG_CHANNEL_PREFIXUserDefinedContentBlocker();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      -[WBSUserDefinedContentBlockerSQLiteStore _insertAction:forContentBlockerID:].cold.1(buf, [v6 databaseID], v9);
+      -[WBSUserDefinedContentBlockerSQLiteStore _insertAction:forContentBlockerID:].cold.1(buf, [actionCopy databaseID], v9);
     }
 
-    v7 = 0;
+    databaseID = 0;
   }
 
-  else if (a4)
+  else if (d)
   {
     database = self->_database;
-    v23 = [v6 selector];
-    v22 = [v6 typeString];
-    *buf = a4;
-    v21 = [v6 extraAttributesData];
-    v11 = SafariShared::WBSSQLiteDatabaseFetch<NSString * {__strong},NSString * {__strong},int,int const&,NSData * {__strong}>(database, @"INSERT INTO action (selector, type, content_blocker_id, version, extra_attributes)VALUES (?, ?, ?, ?, ?)RETURNING id", &v23, &v22, buf, &WBSUserDefinedContentBlockerActionSupportedVersion, &v21);
+    selector = [actionCopy selector];
+    typeString = [actionCopy typeString];
+    *buf = d;
+    extraAttributesData = [actionCopy extraAttributesData];
+    v11 = SafariShared::WBSSQLiteDatabaseFetch<NSString * {__strong},NSString * {__strong},int,int const&,NSData * {__strong}>(database, @"INSERT INTO action (selector, type, content_blocker_id, version, extra_attributes)VALUES (?, ?, ?, ?, ?)RETURNING id", &selector, &typeString, buf, &WBSUserDefinedContentBlockerActionSupportedVersion, &extraAttributesData);
 
-    v12 = [v11 lastResultCode];
-    v13 = [v11 nextObject];
-    v14 = v13;
-    if (!v13 || (v15 = [v13 int64AtIndex:0], v14, !v15))
+    lastResultCode = [v11 lastResultCode];
+    nextObject = [v11 nextObject];
+    v14 = nextObject;
+    if (!nextObject || (v15 = [nextObject int64AtIndex:0], v14, !v15))
     {
       v16 = WBS_LOG_CHANNEL_PREFIXUserDefinedContentBlocker();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        v18 = [v6 typeString];
-        v19 = [v6 selector];
-        v20 = [(WBSSQLiteDatabase *)self->_database lastErrorMessage];
+        typeString2 = [actionCopy typeString];
+        selector2 = [actionCopy selector];
+        lastErrorMessage = [(WBSSQLiteDatabase *)self->_database lastErrorMessage];
         *buf = 138413314;
-        v25 = v18;
+        v25 = typeString2;
         v26 = 2112;
-        v27 = v19;
+        v27 = selector2;
         v28 = 2048;
-        v29 = a4;
+        dCopy = d;
         v30 = 2114;
-        v31 = v20;
+        v31 = lastErrorMessage;
         v32 = 1024;
-        v33 = v12;
+        v33 = lastResultCode;
         _os_log_error_impl(&dword_1BB6F3000, v16, OS_LOG_TYPE_ERROR, "Failed to create action(%@) with selector(%@) for contentBlockerID(%ld): %{public}@ (%d)", buf, 0x30u);
       }
 
       v15 = 0;
     }
 
-    v7 = v15;
+    databaseID = v15;
   }
 
   else
@@ -858,62 +858,62 @@ void __93__WBSUserDefinedContentBlockerSQLiteStore__getContentBlockerWithType_ho
     }
   }
 
-  return v7;
+  return databaseID;
 }
 
-- (void)_getActionsForContentBlockerID:(int64_t)a3 isGlobal:(BOOL)a4 completionHandler:(id)a5
+- (void)_getActionsForContentBlockerID:(int64_t)d isGlobal:(BOOL)global completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  v9 = [MEMORY[0x1E695DF70] array];
-  v20 = v8;
+  globalCopy = global;
+  dCopy = d;
+  handlerCopy = handler;
+  array = [MEMORY[0x1E695DF70] array];
+  v20 = handlerCopy;
   database = self->_database;
-  v21 = v6;
+  v21 = dCopy;
   v11 = SafariShared::WBSSQLiteDatabaseFetch<int>(database, @"SELECT id, selector, type, extra_attributes FROM action WHERE content_blocker_id = ?", &v21);
   while (1)
   {
-    v12 = [v11 nextObject];
-    if (!v12)
+    nextObject = [v11 nextObject];
+    if (!nextObject)
     {
       break;
     }
 
     v13 = [WBSUserDefinedContentBlockerAction alloc];
-    v14 = [v12 intAtIndex:0];
-    v15 = [v12 stringAtIndex:1];
-    v16 = [v12 stringAtIndex:2];
-    v17 = [v12 dataAtIndex:3];
-    v18 = [(WBSUserDefinedContentBlockerAction *)v13 initWithDatabaseID:v14 selector:v15 type:v16 extraAttributesData:v17 isGlobal:v5];
+    v14 = [nextObject intAtIndex:0];
+    v15 = [nextObject stringAtIndex:1];
+    v16 = [nextObject stringAtIndex:2];
+    v17 = [nextObject dataAtIndex:3];
+    v18 = [(WBSUserDefinedContentBlockerAction *)v13 initWithDatabaseID:v14 selector:v15 type:v16 extraAttributesData:v17 isGlobal:globalCopy];
 
-    [v9 addObject:v18];
+    [array addObject:v18];
   }
 
-  v19 = [v9 copy];
+  v19 = [array copy];
   (v20)[2](v20, v19);
 }
 
-- (void)_deleteActionsForContentBlockerID:(int64_t)a3
+- (void)_deleteActionsForContentBlockerID:(int64_t)d
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (d)
   {
     v6 = [objc_alloc(MEMORY[0x1E69C89F0]) initWithDatabase:self->_database query:@"DELETE FROM action WHERE content_blocker_id = ?"];
-    [v6 bindInt:a3 atParameterIndex:1];
-    v7 = [v6 execute];
+    [v6 bindInt:d atParameterIndex:1];
+    execute = [v6 execute];
     [v6 reset];
-    if (v7 != 101)
+    if (execute != 101)
     {
       v8 = WBS_LOG_CHANNEL_PREFIXUserDefinedContentBlocker();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v9 = [(WBSSQLiteDatabase *)self->_database lastErrorMessage];
+        lastErrorMessage = [(WBSSQLiteDatabase *)self->_database lastErrorMessage];
         v10 = 134218498;
-        v11 = a3;
+        dCopy = d;
         v12 = 2114;
-        v13 = v9;
+        v13 = lastErrorMessage;
         v14 = 1024;
-        v15 = v7;
+        v15 = execute;
         _os_log_error_impl(&dword_1BB6F3000, v8, OS_LOG_TYPE_ERROR, "Failed to delete actions for contentBlockerID(%ld): %{public}@ (%d)", &v10, 0x1Cu);
       }
     }
@@ -929,30 +929,30 @@ void __93__WBSUserDefinedContentBlockerSQLiteStore__getContentBlockerWithType_ho
   }
 }
 
-- (void)_deleteActions:(id)a3
+- (void)_deleteActions:(id)actions
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_114];
+  actionsCopy = actions;
+  v5 = [actionsCopy safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_114];
   if ([v5 count])
   {
     v6 = [v5 componentsJoinedByString:{@", "}];
     v7 = [objc_alloc(MEMORY[0x1E69C89F0]) initWithDatabase:self->_database query:@"DELETE FROM action WHERE id IN (?)"];
     [v7 bindString:v6 atParameterIndex:1];
-    v8 = [v7 execute];
+    execute = [v7 execute];
     [v7 reset];
-    if (v8 != 101)
+    if (execute != 101)
     {
       v9 = WBS_LOG_CHANNEL_PREFIXUserDefinedContentBlocker();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v10 = [(WBSSQLiteDatabase *)self->_database lastErrorMessage];
+        lastErrorMessage = [(WBSSQLiteDatabase *)self->_database lastErrorMessage];
         v11 = 138412802;
         v12 = v6;
         v13 = 2114;
-        v14 = v10;
+        v14 = lastErrorMessage;
         v15 = 1024;
-        v16 = v8;
+        v16 = execute;
         _os_log_error_impl(&dword_1BB6F3000, v9, OS_LOG_TYPE_ERROR, "Failed to delete action(s) - (%@): %{public}@ (%d)", &v11, 0x1Cu);
       }
     }
@@ -981,13 +981,13 @@ id __58__WBSUserDefinedContentBlockerSQLiteStore__deleteActions___block_invoke(u
   return v4;
 }
 
-- (void)_updateExtraAttributes:(id)a3 forContentBlockerID:(int64_t)a4
+- (void)_updateExtraAttributes:(id)attributes forContentBlockerID:(int64_t)d
 {
-  v4 = a4;
-  v9 = a3;
+  dCopy = d;
+  attributesCopy = attributes;
   database = self->_database;
-  v8 = v4;
-  if (SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSData * {__strong}&,int>(database, 0, @"UPDATE action SET extra_attributes = ? WHERE id = ?", &v9, &v8) != 101)
+  v8 = dCopy;
+  if (SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<NSData * {__strong}&,int>(database, 0, @"UPDATE action SET extra_attributes = ? WHERE id = ?", &attributesCopy, &v8) != 101)
   {
     v7 = WBS_LOG_CHANNEL_PREFIXUserDefinedContentBlocker();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))

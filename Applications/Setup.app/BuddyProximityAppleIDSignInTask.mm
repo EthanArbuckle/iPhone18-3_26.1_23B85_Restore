@@ -1,11 +1,11 @@
 @interface BuddyProximityAppleIDSignInTask
 - (BYPasscodeCacheManager)cacheManager;
 - (BuddyProximityAppleIDSignInTask)init;
-- (BuddyProximityAppleIDSignInTask)initWithSession:(id)a3 analyticsManager:(id)a4 featureFlags:(id)a5;
-- (void)_authenticateWithUsername:(id)a3 companionDevice:(id)a4 anisetteDataProvider:(id)a5 completion:(id)a6;
-- (void)_createAccountWithCompletion:(id)a3;
-- (void)_saveAccount:(id)a3 completion:(id)a4;
-- (void)authenticateThenSignInWithCompletion:(id)a3;
+- (BuddyProximityAppleIDSignInTask)initWithSession:(id)session analyticsManager:(id)manager featureFlags:(id)flags;
+- (void)_authenticateWithUsername:(id)username companionDevice:(id)device anisetteDataProvider:(id)provider completion:(id)completion;
+- (void)_createAccountWithCompletion:(id)completion;
+- (void)_saveAccount:(id)account completion:(id)completion;
+- (void)authenticateThenSignInWithCompletion:(id)completion;
 @end
 
 @implementation BuddyProximityAppleIDSignInTask
@@ -28,41 +28,41 @@
   return v2;
 }
 
-- (BuddyProximityAppleIDSignInTask)initWithSession:(id)a3 analyticsManager:(id)a4 featureFlags:(id)a5
+- (BuddyProximityAppleIDSignInTask)initWithSession:(id)session analyticsManager:(id)manager featureFlags:(id)flags
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   obj = 0;
-  objc_storeStrong(&obj, a4);
+  objc_storeStrong(&obj, manager);
   v10 = 0;
-  objc_storeStrong(&v10, a5);
-  v7 = v13;
-  v13 = 0;
-  v13 = [v7 init];
-  objc_storeStrong(&v13, v13);
-  if (v13)
+  objc_storeStrong(&v10, flags);
+  v7 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [v7 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(v13 + 6, location[0]);
-    objc_storeStrong(v13 + 8, obj);
-    objc_storeStrong(v13 + 4, v10);
+    objc_storeStrong(selfCopy + 6, location[0]);
+    objc_storeStrong(selfCopy + 8, obj);
+    objc_storeStrong(selfCopy + 4, v10);
   }
 
-  v8 = v13;
+  v8 = selfCopy;
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&obj, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
-- (void)authenticateThenSignInWithCompletion:(id)a3
+- (void)authenticateThenSignInWithCompletion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   oslog = _BYLoggingFacility();
   v14 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -74,29 +74,29 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  v5 = v17;
+  v5 = selfCopy;
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
   v8 = 0;
   v9 = sub_1001BB758;
   v10 = &unk_10032E5C0;
   v12 = location[0];
-  v11 = v17;
+  v11 = selfCopy;
   [(BuddyProximityAppleIDSignInTask *)v5 _createAccountWithCompletion:&v6];
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_createAccountWithCompletion:(id)a3
+- (void)_createAccountWithCompletion:(id)completion
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v23 = objc_alloc_init(SASProximityCompanionAuthRequestAction);
-  v3 = [(BuddyProximityAppleIDSignInTask *)v25 proximitySession];
-  v22 = [(SASProximitySession *)v3 sendAction:v23];
+  proximitySession = [(BuddyProximityAppleIDSignInTask *)selfCopy proximitySession];
+  v22 = [(SASProximitySession *)proximitySession sendAction:v23];
 
   if (v22)
   {
@@ -113,9 +113,9 @@
 
       else
       {
-        v19 = [v22 domain];
+        domain = [v22 domain];
         v18 = 1;
-        v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v19, [v22 code]);
+        v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [v22 code]);
         v17 = v4;
         v16 = 1;
       }
@@ -138,21 +138,21 @@
 
   else
   {
-    v14 = [v23 account];
-    v5 = v25;
+    account = [v23 account];
+    v5 = selfCopy;
     v6 = _NSConcreteStackBlock;
     v7 = -1073741824;
     v8 = 0;
     v9 = sub_1001BC6F0;
     v10 = &unk_10032E5E8;
     v13 = location[0];
-    v11 = v14;
+    v11 = account;
     v12 = v23;
-    [(BuddyProximityAppleIDSignInTask *)v5 _saveAccount:v14 completion:&v6];
+    [(BuddyProximityAppleIDSignInTask *)v5 _saveAccount:account completion:&v6];
     objc_storeStrong(&v12, 0);
     objc_storeStrong(&v11, 0);
     objc_storeStrong(&v13, 0);
-    objc_storeStrong(&v14, 0);
+    objc_storeStrong(&account, 0);
     v15 = 0;
   }
 
@@ -161,19 +161,19 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_authenticateWithUsername:(id)a3 companionDevice:(id)a4 anisetteDataProvider:(id)a5 completion:(id)a6
+- (void)_authenticateWithUsername:(id)username companionDevice:(id)device anisetteDataProvider:(id)provider completion:(id)completion
 {
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, username);
   v25 = 0;
-  objc_storeStrong(&v25, a4);
+  objc_storeStrong(&v25, device);
   v24 = 0;
-  objc_storeStrong(&v24, a5);
+  objc_storeStrong(&v24, provider);
   v23 = 0;
-  objc_storeStrong(&v23, a6);
-  v9 = [(BuddyProximityAppleIDSignInTask *)v27 signInTask];
+  objc_storeStrong(&v23, completion);
+  signInTask = [(BuddyProximityAppleIDSignInTask *)selfCopy signInTask];
   v10 = location[0];
   v11 = v25;
   v12 = v24;
@@ -182,12 +182,12 @@
   v15 = 0;
   v16 = sub_1001BCAF4;
   v17 = &unk_10032E610;
-  v18 = v27;
+  v18 = selfCopy;
   v19 = location[0];
   v20 = v25;
   v21 = v24;
   v22 = v23;
-  [(BuddyAppleIDSignInTask *)v9 authenticateWithUsername:v10 companionDevice:v11 anisetteDataProvider:v12 completion:&v13];
+  [(BuddyAppleIDSignInTask *)signInTask authenticateWithUsername:v10 companionDevice:v11 anisetteDataProvider:v12 completion:&v13];
 
   objc_storeStrong(&v22, 0);
   objc_storeStrong(&v21, 0);
@@ -200,18 +200,18 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_saveAccount:(id)a3 completion:(id)a4
+- (void)_saveAccount:(id)account completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, completion);
   v5 = +[ACAccountStore defaultStore];
-  v6 = [location[0] accountType];
-  v7 = [v6 identifier];
-  v9 = [v5 accountTypeWithAccountTypeIdentifier:v7];
+  accountType = [location[0] accountType];
+  identifier = [accountType identifier];
+  v9 = [v5 accountTypeWithAccountTypeIdentifier:identifier];
 
   [location[0] setAccountType:v9];
   [location[0] _setObjectID:0];

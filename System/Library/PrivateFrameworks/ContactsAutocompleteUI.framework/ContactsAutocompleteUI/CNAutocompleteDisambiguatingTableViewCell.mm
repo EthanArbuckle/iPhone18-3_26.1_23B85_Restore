@@ -1,9 +1,9 @@
 @interface CNAutocompleteDisambiguatingTableViewCell
 + (id)createCheckmarkView;
-- (CNAutocompleteDisambiguatingTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (double)leadingInsetsFromCurrentMargins:(NSDirectionalEdgeInsets)a3;
-- (void)setCheckmarkVisible:(BOOL)a3;
-- (void)setRecipient:(id)a3;
+- (CNAutocompleteDisambiguatingTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (double)leadingInsetsFromCurrentMargins:(NSDirectionalEdgeInsets)margins;
+- (void)setCheckmarkVisible:(BOOL)visible;
+- (void)setRecipient:(id)recipient;
 @end
 
 @implementation CNAutocompleteDisambiguatingTableViewCell
@@ -21,63 +21,63 @@
   return v6;
 }
 
-- (CNAutocompleteDisambiguatingTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CNAutocompleteDisambiguatingTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v12.receiver = self;
   v12.super_class = CNAutocompleteDisambiguatingTableViewCell;
-  v4 = [(CNComposeTableViewCell *)&v12 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CNComposeTableViewCell *)&v12 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
-    v5 = [objc_opt_class() createCheckmarkView];
-    [(CNAutocompleteDisambiguatingTableViewCell *)v4 setCheckmarkImageView:v5];
+    createCheckmarkView = [objc_opt_class() createCheckmarkView];
+    [(CNAutocompleteDisambiguatingTableViewCell *)v4 setCheckmarkImageView:createCheckmarkView];
 
     v6 = objc_opt_class();
-    v7 = [(CNAutocompleteDisambiguatingTableViewCell *)v4 checkmarkImageView];
-    [v6 requireIntrinsicSizeForView:v7];
+    checkmarkImageView = [(CNAutocompleteDisambiguatingTableViewCell *)v4 checkmarkImageView];
+    [v6 requireIntrinsicSizeForView:checkmarkImageView];
 
-    v8 = [(NUITableViewContainerCell *)v4 containerView];
-    v9 = [(CNAutocompleteDisambiguatingTableViewCell *)v4 checkmarkImageView];
-    [v8 addArrangedSubview:v9];
+    containerView = [(NUITableViewContainerCell *)v4 containerView];
+    checkmarkImageView2 = [(CNAutocompleteDisambiguatingTableViewCell *)v4 checkmarkImageView];
+    [containerView addArrangedSubview:checkmarkImageView2];
 
-    v10 = [(CNComposeTableViewCell *)v4 titleLabel];
-    [v10 setNumberOfLines:0];
+    titleLabel = [(CNComposeTableViewCell *)v4 titleLabel];
+    [titleLabel setNumberOfLines:0];
   }
 
   return v4;
 }
 
-- (void)setRecipient:(id)a3
+- (void)setRecipient:(id)recipient
 {
-  v4 = a3;
-  v5 = [(CNComposeTableViewCell *)self recipient];
+  recipientCopy = recipient;
+  recipient = [(CNComposeTableViewCell *)self recipient];
 
-  if (v5 != v4)
+  if (recipient != recipientCopy)
   {
     v10.receiver = self;
     v10.super_class = CNAutocompleteDisambiguatingTableViewCell;
-    [(CNComposeTableViewCell *)&v10 setRecipient:v4];
-    v6 = [v4 address];
-    v7 = [(CNComposeTableViewCell *)self titleLabel];
-    [v7 setText:v6];
+    [(CNComposeTableViewCell *)&v10 setRecipient:recipientCopy];
+    address = [recipientCopy address];
+    titleLabel = [(CNComposeTableViewCell *)self titleLabel];
+    [titleLabel setText:address];
 
-    v8 = [v4 label];
-    v9 = [(CNComposeTableViewCell *)self detailLabel];
-    [v9 setText:v8];
+    label = [recipientCopy label];
+    detailLabel = [(CNComposeTableViewCell *)self detailLabel];
+    [detailLabel setText:label];
   }
 }
 
-- (void)setCheckmarkVisible:(BOOL)a3
+- (void)setCheckmarkVisible:(BOOL)visible
 {
-  self->_checkmarkVisible = a3;
-  v3 = a3;
-  v4 = [(CNAutocompleteDisambiguatingTableViewCell *)self checkmarkImageView];
-  [v4 setAlpha:v3];
+  self->_checkmarkVisible = visible;
+  visibleCopy = visible;
+  checkmarkImageView = [(CNAutocompleteDisambiguatingTableViewCell *)self checkmarkImageView];
+  [checkmarkImageView setAlpha:visibleCopy];
 }
 
-- (double)leadingInsetsFromCurrentMargins:(NSDirectionalEdgeInsets)a3
+- (double)leadingInsetsFromCurrentMargins:(NSDirectionalEdgeInsets)margins
 {
-  leading = a3.leading;
-  v5 = [CNAutocompleteResultsTableViewController avatarsAreHidden:a3.top];
+  leading = margins.leading;
+  v5 = [CNAutocompleteResultsTableViewController avatarsAreHidden:margins.top];
   result = 0.0;
   if (!v5)
   {

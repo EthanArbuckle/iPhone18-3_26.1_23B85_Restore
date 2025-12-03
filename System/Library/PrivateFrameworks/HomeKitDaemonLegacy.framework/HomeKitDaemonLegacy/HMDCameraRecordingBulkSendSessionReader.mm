@@ -1,12 +1,12 @@
 @interface HMDCameraRecordingBulkSendSessionReader
 + (id)logCategory;
-- (HMDCameraRecordingBulkSendSessionReader)initWithWorkQueue:(id)a3 session:(id)a4 readCallbackTimer:(id)a5 logIdentifier:(id)a6;
-- (HMDCameraRecordingBulkSendSessionReader)initWithWorkQueue:(id)a3 session:(id)a4 readTimeout:(double)a5 logIdentifier:(id)a6;
+- (HMDCameraRecordingBulkSendSessionReader)initWithWorkQueue:(id)queue session:(id)session readCallbackTimer:(id)timer logIdentifier:(id)identifier;
+- (HMDCameraRecordingBulkSendSessionReader)initWithWorkQueue:(id)queue session:(id)session readTimeout:(double)timeout logIdentifier:(id)identifier;
 - (HMDCameraRecordingBulkSendSessionReaderDelegate)delegate;
 - (void)_readNextDataChunk;
-- (void)_stopWithReason:(void *)a1;
+- (void)_stopWithReason:(void *)reason;
 - (void)start;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDCameraRecordingBulkSendSessionReader
@@ -18,10 +18,10 @@
   return WeakRetained;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  fireCopy = fire;
   if (self)
   {
     Property = objc_getProperty(self, v4, 32, 1);
@@ -35,10 +35,10 @@
     v8 = 0;
   }
 
-  if (v8 == v5)
+  if (v8 == fireCopy)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -49,21 +49,21 @@
     }
 
     objc_autoreleasePoolPop(v9);
-    [(HMDCameraRecordingBulkSendSessionReader *)v10 _stopWithReason:?];
+    [(HMDCameraRecordingBulkSendSessionReader *)selfCopy _stopWithReason:?];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_stopWithReason:(void *)a1
+- (void)_stopWithReason:(void *)reason
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (reason)
   {
-    Property = objc_getProperty(a1, a2, 32, 1);
+    Property = objc_getProperty(reason, a2, 32, 1);
     dispatch_assert_queue_V2(Property);
     v5 = objc_autoreleasePoolPush();
-    v6 = a1;
+    reasonCopy = reason;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -76,13 +76,13 @@
     }
 
     objc_autoreleasePoolPop(v5);
-    v9 = [v6 session];
-    [v9 cancelWithReason:a2];
+    session = [reasonCopy session];
+    [session cancelWithReason:a2];
 
-    v10 = [v6 delegate];
-    [v10 bulkSendSessionReader:v6 didFinishWithReason:a2];
+    delegate = [reasonCopy delegate];
+    [delegate bulkSendSessionReader:reasonCopy didFinishWithReason:a2];
 
-    objc_setProperty_atomic(v6, v11, 0, 40);
+    objc_setProperty_atomic(reasonCopy, v11, 0, 40);
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -90,7 +90,7 @@
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   v15 = *MEMORY[0x277D85DE8];
   if (self)
   {
@@ -99,7 +99,7 @@
 
   dispatch_assert_queue_V2(&self->super.super);
   v3 = objc_autoreleasePoolPush();
-  v4 = v2;
+  v4 = selfCopy;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -110,10 +110,10 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  if (v2)
+  if (selfCopy)
   {
     [objc_getProperty(v4 v7];
-    v2 = objc_getProperty(v4, v8, 32, 1);
+    selfCopy = objc_getProperty(v4, v8, 32, 1);
     Property = objc_getProperty(v4, v9, 40, 1);
   }
 
@@ -123,7 +123,7 @@
     Property = 0;
   }
 
-  [Property setDelegateQueue:v2];
+  [Property setDelegateQueue:selfCopy];
 
   [(HMDCameraRecordingBulkSendSessionReader *)v4 _readNextDataChunk];
   v12 = *MEMORY[0x277D85DE8];
@@ -131,18 +131,18 @@
 
 - (void)_readNextDataChunk
 {
-  if (a1)
+  if (self)
   {
-    Property = objc_getProperty(a1, a2, 32, 1);
+    Property = objc_getProperty(self, a2, 32, 1);
     dispatch_assert_queue_V2(Property);
-    [objc_getProperty(a1 v4];
-    v5 = [a1 session];
+    [objc_getProperty(self v4];
+    session = [self session];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __61__HMDCameraRecordingBulkSendSessionReader__readNextDataChunk__block_invoke;
     v6[3] = &unk_279734EB8;
-    v6[4] = a1;
-    [v5 read:v6];
+    v6[4] = self;
+    [session read:v6];
   }
 }
 
@@ -339,22 +339,22 @@ LABEL_35:
   v59 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDCameraRecordingBulkSendSessionReader)initWithWorkQueue:(id)a3 session:(id)a4 readCallbackTimer:(id)a5 logIdentifier:(id)a6
+- (HMDCameraRecordingBulkSendSessionReader)initWithWorkQueue:(id)queue session:(id)session readCallbackTimer:(id)timer logIdentifier:(id)identifier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  queueCopy = queue;
+  sessionCopy = session;
+  timerCopy = timer;
+  identifierCopy = identifier;
   v20.receiver = self;
   v20.super_class = HMDCameraRecordingBulkSendSessionReader;
   v15 = [(HMDCameraRecordingBulkSendSessionReader *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_workQueue, a3);
-    objc_storeStrong(&v16->_session, a4);
-    objc_storeStrong(&v16->_readCallbackTimer, a5);
-    v17 = [v14 copy];
+    objc_storeStrong(&v15->_workQueue, queue);
+    objc_storeStrong(&v16->_session, session);
+    objc_storeStrong(&v16->_readCallbackTimer, timer);
+    v17 = [identifierCopy copy];
     logIdentifier = v16->_logIdentifier;
     v16->_logIdentifier = v17;
   }
@@ -362,14 +362,14 @@ LABEL_35:
   return v16;
 }
 
-- (HMDCameraRecordingBulkSendSessionReader)initWithWorkQueue:(id)a3 session:(id)a4 readTimeout:(double)a5 logIdentifier:(id)a6
+- (HMDCameraRecordingBulkSendSessionReader)initWithWorkQueue:(id)queue session:(id)session readTimeout:(double)timeout logIdentifier:(id)identifier
 {
   v10 = MEMORY[0x277D0F920];
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[v10 alloc] initWithTimeInterval:0 options:a5];
-  v15 = [(HMDCameraRecordingBulkSendSessionReader *)self initWithWorkQueue:v13 session:v12 readCallbackTimer:v14 logIdentifier:v11];
+  identifierCopy = identifier;
+  sessionCopy = session;
+  queueCopy = queue;
+  v14 = [[v10 alloc] initWithTimeInterval:0 options:timeout];
+  v15 = [(HMDCameraRecordingBulkSendSessionReader *)self initWithWorkQueue:queueCopy session:sessionCopy readCallbackTimer:v14 logIdentifier:identifierCopy];
 
   return v15;
 }

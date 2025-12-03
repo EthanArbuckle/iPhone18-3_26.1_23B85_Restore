@@ -1,34 +1,34 @@
 @interface VCPTextEncoder
-+ (id)convertToCSEmbedding:(id)a3 isFP16:(BOOL)a4;
-+ (id)sharedModel:(id)a3 identifier:(id)a4 outputNames:(id)a5 inputNames:(id)a6 functionName:(id)a7;
++ (id)convertToCSEmbedding:(id)embedding isFP16:(BOOL)p16;
++ (id)sharedModel:(id)model identifier:(id)identifier outputNames:(id)names inputNames:(id)inputNames functionName:(id)name;
 - (VCPTextEncoder)init;
-- (id)textEmbeddingForQuery:(id)a3 useFP16:(BOOL)a4;
+- (id)textEmbeddingForQuery:(id)query useFP16:(BOOL)p16;
 - (void)dealloc;
 @end
 
 @implementation VCPTextEncoder
 
-+ (id)sharedModel:(id)a3 identifier:(id)a4 outputNames:(id)a5 inputNames:(id)a6 functionName:(id)a7
++ (id)sharedModel:(id)model identifier:(id)identifier outputNames:(id)names inputNames:(id)inputNames functionName:(id)name
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  modelCopy = model;
+  identifierCopy = identifier;
+  namesCopy = names;
+  inputNamesCopy = inputNames;
+  nameCopy = name;
   v16 = +[VCPSharedInstanceManager sharedManager];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __77__VCPTextEncoder_sharedModel_identifier_outputNames_inputNames_functionName___block_invoke;
   v23[3] = &unk_1E834CE00;
-  v17 = v11;
+  v17 = modelCopy;
   v24 = v17;
-  v18 = v13;
+  v18 = namesCopy;
   v25 = v18;
-  v19 = v14;
+  v19 = inputNamesCopy;
   v26 = v19;
-  v20 = v15;
+  v20 = nameCopy;
   v27 = v20;
-  v21 = [v16 sharedInstanceWithIdentifier:v12 andCreationBlock:v23];
+  v21 = [v16 sharedInstanceWithIdentifier:identifierCopy andCreationBlock:v23];
 
   return v21;
 }
@@ -124,25 +124,25 @@ VCPCNNModelEspressoV2 *__77__VCPTextEncoder_sharedModel_identifier_outputNames_i
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:{+[VCPVideoTransformerBackbone revision](VCPVideoTransformerBackbone, "revision")}];
-  v9 = [v8 stringValue];
-  v10 = [v6 stringWithFormat:@"%@_%@", @"token_model", v9];
+  stringValue = [v8 stringValue];
+  v10 = [v6 stringWithFormat:@"%@_%@", @"token_model", stringValue];
 
-  v11 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-  v12 = [v11 resourceURL];
+  vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+  resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
-  v13 = [MEMORY[0x1E695DFF8] URLWithString:v5 relativeToURL:v12];
+  v13 = [MEMORY[0x1E695DFF8] URLWithString:v5 relativeToURL:resourceURL];
   v14 = [objc_opt_class() sharedModel:v13 identifier:v10 outputNames:&unk_1F49BE8A8 inputNames:&unk_1F49BE8C0 functionName:@"main"];
   tokenModel = v2->_tokenModel;
   v2->_tokenModel = v14;
 
   if (v2->_tokenModel)
   {
-    v16 = [MEMORY[0x1E695DFF8] URLWithString:v7 relativeToURL:v12];
+    v16 = [MEMORY[0x1E695DFF8] URLWithString:v7 relativeToURL:resourceURL];
 
     v17 = MEMORY[0x1E696AEC0];
     v18 = [MEMORY[0x1E696AD98] numberWithInteger:{+[VCPVideoTransformerBackbone revision](VCPVideoTransformerBackbone, "revision")}];
-    v19 = [v18 stringValue];
-    v20 = [v17 stringWithFormat:@"%@_%@", @"text_model", v19];
+    stringValue2 = [v18 stringValue];
+    v20 = [v17 stringWithFormat:@"%@_%@", @"text_model", stringValue2];
 
     v21 = [objc_opt_class() sharedModel:v16 identifier:v20 outputNames:&unk_1F49BE8D8 inputNames:&unk_1F49BE8F0 functionName:@"main"];
     textModel = v2->_textModel;
@@ -212,18 +212,18 @@ LABEL_37:
   [(VCPTextEncoder *)&v2 dealloc];
 }
 
-+ (id)convertToCSEmbedding:(id)a3 isFP16:(BOOL)a4
++ (id)convertToCSEmbedding:(id)embedding isFP16:(BOOL)p16
 {
-  v4 = a4;
+  p16Copy = p16;
   v18[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (!v4)
+  embeddingCopy = embedding;
+  v6 = embeddingCopy;
+  if (!p16Copy)
   {
     goto LABEL_18;
   }
 
-  if ([v5 length] == 1024)
+  if ([embeddingCopy length] == 1024)
   {
     v7 = _os_feature_enabled_impl();
     v8 = objc_alloc(MEMORY[0x1E6964EE8]);
@@ -270,12 +270,12 @@ LABEL_13:
   return v11;
 }
 
-- (id)textEmbeddingForQuery:(id)a3 useFP16:(BOOL)a4
+- (id)textEmbeddingForQuery:(id)query useFP16:(BOOL)p16
 {
-  v67 = a4;
+  p16Copy = p16;
   v89 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
+  queryCopy = query;
+  v6 = queryCopy;
   v81 = 0;
   v82 = &v81;
   v83 = 0x3032000000;
@@ -296,7 +296,7 @@ LABEL_13:
     block[2] = __48__VCPTextEncoder_textEmbeddingForQuery_useFP16___block_invoke;
     block[3] = &unk_1E834CE28;
     block[4] = self;
-    v73 = v5;
+    v73 = queryCopy;
     v74 = &v75;
     dispatch_sync(embeddingGenerationQueue, block);
     if (v76[5])
@@ -314,26 +314,26 @@ LABEL_13:
       goto LABEL_24;
     }
 
-    v22 = [(CSUTextEncoder *)self->_csuTextEncoder inferenceOutputs];
-    v23 = [v22 CSUTextEmbedding];
-    if ([v23 dataType] == 65552)
+    inferenceOutputs = [(CSUTextEncoder *)self->_csuTextEncoder inferenceOutputs];
+    cSUTextEmbedding = [inferenceOutputs CSUTextEmbedding];
+    if ([cSUTextEmbedding dataType] == 65552)
     {
-      v24 = [(CSUTextEncoder *)self->_csuTextEncoder inferenceOutputs];
-      v25 = [v24 CSUTextEmbedding];
-      v26 = [v25 count] == self->_embeddingDim;
+      inferenceOutputs2 = [(CSUTextEncoder *)self->_csuTextEncoder inferenceOutputs];
+      cSUTextEmbedding2 = [inferenceOutputs2 CSUTextEmbedding];
+      v26 = [cSUTextEmbedding2 count] == self->_embeddingDim;
 
       if (v26)
       {
-        v27 = [(CSUTextEncoder *)self->_csuTextEncoder inferenceOutputs];
-        v28 = [v27 CSUTextEmbedding];
+        inferenceOutputs3 = [(CSUTextEncoder *)self->_csuTextEncoder inferenceOutputs];
+        cSUTextEmbedding3 = [inferenceOutputs3 CSUTextEmbedding];
         v71[0] = MEMORY[0x1E69E9820];
         v71[1] = 3221225472;
         v71[2] = __48__VCPTextEncoder_textEmbeddingForQuery_useFP16___block_invoke_257;
         v71[3] = &unk_1E834CE50;
         v71[4] = &v81;
-        [v28 getBytesWithHandler:v71];
+        [cSUTextEmbedding3 getBytesWithHandler:v71];
 
-        if (!v67)
+        if (!p16Copy)
         {
           v29 = MediaAnalysisConvertFloat16ToFloat32(v82[5]);
           v30 = v82[5];
@@ -352,14 +352,14 @@ LABEL_13:
 
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v34 = [(CSUTextEncoder *)self->_csuTextEncoder inferenceOutputs];
-      v35 = [v34 CSUTextEmbedding];
-      v36 = [v35 dataType];
-      v37 = [(CSUTextEncoder *)self->_csuTextEncoder inferenceOutputs];
-      v38 = [v37 CSUTextEmbedding];
-      v39 = [v38 count];
+      inferenceOutputs4 = [(CSUTextEncoder *)self->_csuTextEncoder inferenceOutputs];
+      cSUTextEmbedding4 = [inferenceOutputs4 CSUTextEmbedding];
+      dataType = [cSUTextEmbedding4 dataType];
+      inferenceOutputs5 = [(CSUTextEncoder *)self->_csuTextEncoder inferenceOutputs];
+      cSUTextEmbedding5 = [inferenceOutputs5 CSUTextEmbedding];
+      v39 = [cSUTextEmbedding5 count];
       *buf = 67109376;
-      *&buf[4] = v36;
+      *&buf[4] = dataType;
       *&buf[8] = 1024;
       *&buf[10] = v39;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "CSU unexpected output embedding with type %d, size %d", buf, 0xEu);
@@ -376,14 +376,14 @@ LABEL_24:
     }
 
 LABEL_46:
-    v55 = MediaAnalysisApplyL2Norm(v82[5], v67);
+    v55 = MediaAnalysisApplyL2Norm(v82[5], p16Copy);
     v56 = v82[5];
     v82[5] = v55;
 
     goto LABEL_47;
   }
 
-  v64 = [(VCPTextTokenizer *)self->_textTokenizer encode:v5];
+  v64 = [(VCPTextTokenizer *)self->_textTokenizer encode:queryCopy];
   v65 = [MEMORY[0x1E695DF70] arrayWithArray:v64];
   v11 = [v64 count];
   if (v11 >= 0x100)
@@ -400,20 +400,20 @@ LABEL_46:
   v75 = 0;
   v76 = 0;
   v77 = 0;
-  v13 = [(VCPCNNModelEspressoV2 *)self->_tokenModel inputsSize];
-  v14 = [v13 objectAtIndexedSubscript:0];
-  v15 = [v14 unsignedIntValue];
+  inputsSize = [(VCPCNNModelEspressoV2 *)self->_tokenModel inputsSize];
+  v14 = [inputsSize objectAtIndexedSubscript:0];
+  unsignedIntValue = [v14 unsignedIntValue];
 
-  v16 = [(VCPCNNModelEspressoV2 *)self->_tokenModel inputsType];
-  v17 = [v16 objectAtIndexedSubscript:0];
-  v18 = [v17 unsignedIntValue];
+  inputsType = [(VCPCNNModelEspressoV2 *)self->_tokenModel inputsType];
+  v17 = [inputsType objectAtIndexedSubscript:0];
+  unsignedIntValue2 = [v17 unsignedIntValue];
 
-  v19 = [[VCPEspressoV2Data alloc] initWithTensorType:v18 size:v15];
+  v19 = [[VCPEspressoV2Data alloc] initWithTensorType:unsignedIntValue2 size:unsignedIntValue];
   v20 = v19;
   if (!v19)
   {
     v31 = 0;
-    v32 = 0;
+    inputsType2 = 0;
     v33 = 0;
     v9 = -108;
 LABEL_42:
@@ -432,32 +432,32 @@ LABEL_42:
     v21 = 0.0;
   }
 
-  v9 = [(VCPCNNModelEspressoV2 *)self->_tokenModel espressoForward:[(VCPEspressoV2Data *)v20 getData:v18]];
+  v9 = [(VCPCNNModelEspressoV2 *)self->_tokenModel espressoForward:[(VCPEspressoV2Data *)v20 getData:unsignedIntValue2]];
   if (v9)
   {
     v31 = 0;
-    v32 = 0;
+    inputsType2 = 0;
     v33 = 0;
     goto LABEL_42;
   }
 
   std::vector<void *>::resize(&v75, 2uLL);
-  v32 = [(VCPCNNModelEspressoV2 *)self->_textModel inputsType];
-  v40 = [v32 objectAtIndexedSubscript:0];
-  v41 = [v40 intValue];
+  inputsType2 = [(VCPCNNModelEspressoV2 *)self->_textModel inputsType];
+  v40 = [inputsType2 objectAtIndexedSubscript:0];
+  intValue = [v40 intValue];
 
   [(VCPCNNModelEspressoV2 *)self->_tokenModel outputs];
-  v42 = [**buf getData:v41];
+  v42 = [**buf getData:intValue];
   *v75 = v42;
   v87 = buf;
   std::vector<VCPEspressoV2Data * {__strong}>::__destroy_vector::operator()[abi:ne200100](&v87);
-  v43 = [v32 objectAtIndexedSubscript:1];
-  v44 = [v43 unsignedIntValue];
+  v43 = [inputsType2 objectAtIndexedSubscript:1];
+  unsignedIntValue3 = [v43 unsignedIntValue];
 
-  v33 = [[VCPEspressoV2Data alloc] initWithTensorType:v44 size:1];
+  v33 = [[VCPEspressoV2Data alloc] initWithTensorType:unsignedIntValue3 size:1];
   *&v45 = v21;
   [(VCPEspressoV2Data *)v33 setValueFP:0 atIndex:v45];
-  v46 = [(VCPEspressoV2Data *)v33 getData:v44];
+  v46 = [(VCPEspressoV2Data *)v33 getData:unsignedIntValue3];
   v47 = v75;
   *(v75 + 1) = v46;
   textModel = self->_textModel;
@@ -508,7 +508,7 @@ LABEL_41:
     v50 = v82[5];
     v82[5] = v49;
 
-    if (v67)
+    if (p16Copy)
     {
       v51 = MediaAnalysisConvertFloat32ToFloat16(v82[5]);
       v52 = v82[5];
@@ -522,7 +522,7 @@ LABEL_41:
     v61 = v82[5];
     v82[5] = v60;
 
-    if (!v67)
+    if (!p16Copy)
     {
       v62 = MediaAnalysisConvertFloat16ToFloat32(v82[5]);
       v63 = v82[5];

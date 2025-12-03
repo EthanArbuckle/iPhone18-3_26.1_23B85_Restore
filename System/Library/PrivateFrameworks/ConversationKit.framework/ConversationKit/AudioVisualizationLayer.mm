@@ -1,13 +1,13 @@
 @interface AudioVisualizationLayer
 - (CGRect)bounds;
-- (_TtC15ConversationKit23AudioVisualizationLayer)initWithLayer:(id)a3;
-- (void)addAnimation:(id)a3 forKey:(id)a4;
-- (void)setBounds:(CGRect)a3;
+- (_TtC15ConversationKit23AudioVisualizationLayer)initWithLayer:(id)layer;
+- (void)addAnimation:(id)animation forKey:(id)key;
+- (void)setBounds:(CGRect)bounds;
 @end
 
 @implementation AudioVisualizationLayer
 
-- (_TtC15ConversationKit23AudioVisualizationLayer)initWithLayer:(id)a3
+- (_TtC15ConversationKit23AudioVisualizationLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();
@@ -17,7 +17,7 @@
 
 - (CGRect)bounds
 {
-  v2 = self;
+  selfCopy = self;
   AudioVisualizationLayer.bounds.getter();
   v4 = v3;
   v6 = v5;
@@ -35,19 +35,19 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  selfCopy = self;
   AudioVisualizationLayer.bounds.setter(x, y, width, height);
 }
 
-- (void)addAnimation:(id)a3 forKey:(id)a4
+- (void)addAnimation:(id)animation forKey:(id)key
 {
-  if (a4)
+  if (key)
   {
     v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = v7;
@@ -59,9 +59,9 @@
     v8 = 0;
   }
 
-  v9 = a3;
-  v10 = self;
-  v13.super.isa = v9;
+  animationCopy = animation;
+  selfCopy = self;
+  v13.super.isa = animationCopy;
   v13._attr = v6;
   v13._flags = v8;
   AudioVisualizationLayer.add(_:forKey:)(v13, v11);

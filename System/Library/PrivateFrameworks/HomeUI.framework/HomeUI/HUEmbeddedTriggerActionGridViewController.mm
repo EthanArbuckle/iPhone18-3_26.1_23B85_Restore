@@ -2,7 +2,7 @@
 - (HUEmbeddedTriggerActionGridViewControllerDelegate)triggerActionGridDelegate;
 - (id)triggerBuilder;
 - (void)reloadActions;
-- (void)setTriggerBuilder:(id)a3;
+- (void)setTriggerBuilder:(id)builder;
 @end
 
 @implementation HUEmbeddedTriggerActionGridViewController
@@ -14,13 +14,13 @@
   return *(self + v3);
 }
 
-- (void)setTriggerBuilder:(id)a3
+- (void)setTriggerBuilder:(id)builder
 {
   v5 = OBJC_IVAR___HUEmbeddedTriggerActionGridViewController_triggerBuilder;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = builder;
+  builderCopy = builder;
 }
 
 - (HUEmbeddedTriggerActionGridViewControllerDelegate)triggerActionGridDelegate
@@ -33,8 +33,8 @@
 
 - (void)reloadActions
 {
-  v3 = self;
-  v2 = [(HUItemCollectionViewController *)v3 itemManager];
+  selfCopy = self;
+  itemManager = [(HUItemCollectionViewController *)selfCopy itemManager];
 }
 
 @end

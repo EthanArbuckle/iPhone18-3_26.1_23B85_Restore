@@ -13,24 +13,24 @@
 - (double)horizontalInset;
 - (double)topInset;
 - (id)contentViewSnapshot;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)addComposeView:(id)a3;
-- (void)animationContext:(id)a3;
-- (void)contentSizeCategoryDidChange:(id)a3;
-- (void)didTapContentView:(id)a3;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)addComposeView:(id)view;
+- (void)animationContext:(id)context;
+- (void)contentSizeCategoryDidChange:(id)change;
+- (void)didTapContentView:(id)view;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 - (void)removeSnapshotIfNeeded;
-- (void)resetWithReason:(int64_t)a3;
-- (void)setBottomInset:(double)a3;
-- (void)setContentView:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setHorizontalInset:(double)a3;
-- (void)setQuickReplyPlaceholderLabelState:(BOOL)a3;
-- (void)setTopInset:(double)a3;
+- (void)resetWithReason:(int64_t)reason;
+- (void)setBottomInset:(double)inset;
+- (void)setContentView:(id)view;
+- (void)setDelegate:(id)delegate;
+- (void)setHorizontalInset:(double)inset;
+- (void)setQuickReplyPlaceholderLabelState:(BOOL)state;
+- (void)setTopInset:(double)inset;
 - (void)showSnapshot;
-- (void)updatePlaceholderWithMessage:(id)a3;
-- (void)updateQuickReplySendButtonTopOffset:(double)a3;
+- (void)updatePlaceholderWithMessage:(id)message;
+- (void)updateQuickReplySendButtonTopOffset:(double)offset;
 @end
 
 @implementation QuickReplyView
@@ -72,7 +72,7 @@
   return v4;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
   _objc_retain(self);
@@ -88,10 +88,10 @@
   return v4;
 }
 
-- (void)setHorizontalInset:(double)a3
+- (void)setHorizontalInset:(double)inset
 {
   _objc_retain(self);
-  QuickReplyView.horizontalInset.setter(a3);
+  QuickReplyView.horizontalInset.setter(inset);
   _objc_release(self);
 }
 
@@ -103,10 +103,10 @@
   return v4;
 }
 
-- (void)setTopInset:(double)a3
+- (void)setTopInset:(double)inset
 {
   _objc_retain(self);
-  QuickReplyView.topInset.setter(a3);
+  QuickReplyView.topInset.setter(inset);
   _objc_release(self);
 }
 
@@ -118,10 +118,10 @@
   return v4;
 }
 
-- (void)setBottomInset:(double)a3
+- (void)setBottomInset:(double)inset
 {
   _objc_retain(self);
-  QuickReplyView.bottomInset.setter(a3);
+  QuickReplyView.bottomInset.setter(inset);
   _objc_release(self);
 }
 
@@ -151,11 +151,11 @@
   return v4;
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  _objc_retain(a3);
+  _objc_retain(view);
   _objc_retain(self);
-  QuickReplyView.contentView.setter(a3);
+  QuickReplyView.contentView.setter(view);
   _objc_release(self);
 }
 
@@ -173,32 +173,32 @@
   _objc_release(self);
 }
 
-- (void)resetWithReason:(int64_t)a3
+- (void)resetWithReason:(int64_t)reason
 {
   _objc_retain(self);
-  QuickReplyView.resetWithReason(_:)(a3);
+  QuickReplyView.resetWithReason(_:)(reason);
   _objc_release(self);
 }
 
-- (void)updatePlaceholderWithMessage:(id)a3
+- (void)updatePlaceholderWithMessage:(id)message
 {
-  _objc_retain(a3);
+  _objc_retain(message);
   _objc_retain(self);
-  QuickReplyView.updatePlaceholder(message:)(a3);
+  QuickReplyView.updatePlaceholder(message:)(message);
   _objc_release(self);
-  _objc_release(a3);
+  _objc_release(message);
 }
 
-- (void)addComposeView:(id)a3
+- (void)addComposeView:(id)view
 {
-  _objc_retain(a3);
+  _objc_retain(view);
   _objc_retain(self);
-  QuickReplyView.addComposeView(_:)(a3);
+  QuickReplyView.addComposeView(_:)(view);
   _objc_release(self);
-  _objc_release(a3);
+  _objc_release(view);
 }
 
-- (void)setQuickReplyPlaceholderLabelState:(BOOL)a3
+- (void)setQuickReplyPlaceholderLabelState:(BOOL)state
 {
   _objc_retain(self);
   v3 = _convertObjCBoolToBool(_:)();
@@ -206,16 +206,16 @@
   _objc_release(self);
 }
 
-- (void)updateQuickReplySendButtonTopOffset:(double)a3
+- (void)updateQuickReplySendButtonTopOffset:(double)offset
 {
   _objc_retain(self);
-  QuickReplyView.updateQuickReplySendButtonTopOffset(_:)(a3);
+  QuickReplyView.updateQuickReplySendButtonTopOffset(_:)(offset);
   _objc_release(self);
 }
 
-- (void)animationContext:(id)a3
+- (void)animationContext:(id)context
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(context);
   _objc_retain(self);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
@@ -247,32 +247,32 @@
   _objc_release(self);
 }
 
-- (void)didTapContentView:(id)a3
+- (void)didTapContentView:(id)view
 {
-  _objc_retain(a3);
+  _objc_retain(view);
   _objc_retain(self);
-  sub_1003F6090(a3);
+  sub_1003F6090(view);
   _objc_release(self);
-  _objc_release(a3);
+  _objc_release(view);
 }
 
-- (void)contentSizeCategoryDidChange:(id)a3
+- (void)contentSizeCategoryDidChange:(id)change
 {
-  v12 = self;
-  v11 = a3;
+  selfCopy = self;
+  changeCopy = change;
   v10 = type metadata accessor for Notification();
   v7 = *(v10 - 8);
   v8 = v10 - 8;
   v6 = (*(v7 + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
-  v4 = __chkstk_darwin(v11);
+  v4 = __chkstk_darwin(changeCopy);
   v9 = &v5 - v6;
   _objc_retain(v4);
   _objc_retain(self);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
   sub_1003F6CE8();
   (*(v7 + 8))(v9, v10);
-  _objc_release(v11);
-  _objc_release(v12);
+  _objc_release(changeCopy);
+  _objc_release(selfCopy);
 }
 
 - (UIButton)quickReplySendButton
@@ -293,15 +293,15 @@
   return v4;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  _objc_retain(a3);
-  _objc_retain(a4);
+  _objc_retain(interaction);
+  _objc_retain(region);
   _objc_retain(self);
-  v9 = QuickReplyView.pointerInteraction(_:styleFor:)(a3, a4);
+  v9 = QuickReplyView.pointerInteraction(_:styleFor:)(interaction, region);
   _objc_release(self);
-  _objc_release(a4);
-  _objc_release(a3);
+  _objc_release(region);
+  _objc_release(interaction);
 
   return v9;
 }

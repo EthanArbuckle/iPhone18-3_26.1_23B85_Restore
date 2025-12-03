@@ -1,16 +1,16 @@
 @interface RTTRemoteCall
-- (BOOL)_rapportDevice:(id)a3 matchesID:(id)a4 orAlternateID:(id)a5;
-- (RTTRemoteCall)initWithCall:(id)a3;
-- (id)newRapportClientWithDestinationDevice:(id)a3;
-- (id)rapportClientForDevice:(id)a3;
-- (id)responseForRequest:(id)a3 options:(id)a4;
-- (void)addDevice:(id)a3;
-- (void)callDidReceiveText:(id)a3 forUtterance:(id)a4;
-- (void)removeDevice:(id)a3;
-- (void)resetRapportClientForDevice:(id)a3 invalidate:(BOOL)a4;
-- (void)sendCallIDChallengeToDevice:(id)a3;
-- (void)sendCallIDChallengeToDeviceId:(id)a3 orAlternateId:(id)a4;
-- (void)sendString:(id)a3;
+- (BOOL)_rapportDevice:(id)device matchesID:(id)d orAlternateID:(id)iD;
+- (RTTRemoteCall)initWithCall:(id)call;
+- (id)newRapportClientWithDestinationDevice:(id)device;
+- (id)rapportClientForDevice:(id)device;
+- (id)responseForRequest:(id)request options:(id)options;
+- (void)addDevice:(id)device;
+- (void)callDidReceiveText:(id)text forUtterance:(id)utterance;
+- (void)removeDevice:(id)device;
+- (void)resetRapportClientForDevice:(id)device invalidate:(BOOL)invalidate;
+- (void)sendCallIDChallengeToDevice:(id)device;
+- (void)sendCallIDChallengeToDeviceId:(id)id orAlternateId:(id)alternateId;
+- (void)sendString:(id)string;
 - (void)start;
 - (void)stop;
 - (void)updateCallWithRemoteFailure;
@@ -18,11 +18,11 @@
 
 @implementation RTTRemoteCall
 
-- (RTTRemoteCall)initWithCall:(id)a3
+- (RTTRemoteCall)initWithCall:(id)call
 {
   v14.receiver = self;
   v14.super_class = RTTRemoteCall;
-  v3 = [(RTTCall *)&v14 initWithCall:a3];
+  v3 = [(RTTCall *)&v14 initWithCall:call];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -53,14 +53,14 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_261754000, v3, OS_LOG_TYPE_INFO, "Starting call: %@", buf, 0xCu);
   }
 
-  v4 = [(RTTCall *)self call];
-  v5 = [v4 isHostedOnCurrentDevice];
+  call = [(RTTCall *)self call];
+  isHostedOnCurrentDevice = [call isHostedOnCurrentDevice];
 
-  if (v5)
+  if (isHostedOnCurrentDevice)
   {
     v9.receiver = self;
     v9.super_class = RTTRemoteCall;
@@ -80,10 +80,10 @@
 - (void)stop
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(RTTCall *)self call];
-  v4 = [v3 isHostedOnCurrentDevice];
+  call = [(RTTCall *)self call];
+  isHostedOnCurrentDevice = [call isHostedOnCurrentDevice];
 
-  if (v4)
+  if (isHostedOnCurrentDevice)
   {
     v11.receiver = self;
     v11.super_class = RTTRemoteCall;
@@ -94,7 +94,7 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&dword_261754000, v5, OS_LOG_TYPE_INFO, "Stopping call: %@", buf, 0xCu);
   }
 
@@ -102,8 +102,8 @@
   discoveryClient = self->_discoveryClient;
   self->_discoveryClient = 0;
 
-  v7 = [(NSMutableDictionary *)self->_messagingClients allValues];
-  [v7 enumerateObjectsUsingBlock:&__block_literal_global_580];
+  allValues = [(NSMutableDictionary *)self->_messagingClients allValues];
+  [allValues enumerateObjectsUsingBlock:&__block_literal_global_580];
 
   v8 = objc_opt_new();
   messagingClients = self->_messagingClients;
@@ -114,30 +114,30 @@
 
 - (void)updateCallWithRemoteFailure
 {
-  v3 = [(RTTCall *)self delegate];
-  [v3 ttyCall:self setVisible:1 serviceUpdate:RTTServiceUpdateTypeRemoteInterrupt];
+  delegate = [(RTTCall *)self delegate];
+  [delegate ttyCall:self setVisible:1 serviceUpdate:RTTServiceUpdateTypeRemoteInterrupt];
 }
 
-- (void)sendString:(id)a3
+- (void)sendString:(id)string
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringCopy = string;
   v5 = AXLogRTT();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v16 = v4;
+    v16 = stringCopy;
     _os_log_impl(&dword_261754000, v5, OS_LOG_TYPE_INFO, "Send string for remote call: %@", buf, 0xCu);
   }
 
-  v6 = [(RTTCall *)self call];
-  v7 = [v6 isHostedOnCurrentDevice];
+  call = [(RTTCall *)self call];
+  isHostedOnCurrentDevice = [call isHostedOnCurrentDevice];
 
-  if (v7)
+  if (isHostedOnCurrentDevice)
   {
     v14.receiver = self;
     v14.super_class = RTTRemoteCall;
-    [(RTTCall *)&v14 sendString:v4];
+    [(RTTCall *)&v14 sendString:stringCopy];
   }
 
   else
@@ -149,8 +149,8 @@
     block[2] = __28__RTTRemoteCall_sendString___block_invoke;
     block[3] = &unk_279AE7DF8;
     objc_copyWeak(&v13, buf);
-    v11 = v4;
-    v12 = self;
+    v11 = stringCopy;
+    selfCopy = self;
     dispatch_async(connectionQueue, block);
 
     objc_destroyWeak(&v13);
@@ -265,19 +265,19 @@ void __28__RTTRemoteCall_sendString___block_invoke_595(uint64_t a1, void *a2, ui
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)callDidReceiveText:(id)a3 forUtterance:(id)a4
+- (void)callDidReceiveText:(id)text forUtterance:(id)utterance
 {
   v31[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTTCall *)self call];
-  if (([v8 isEndpointOnCurrentDevice] & 1) != 0 || !objc_msgSend(v6, "length"))
+  textCopy = text;
+  utteranceCopy = utterance;
+  call = [(RTTCall *)self call];
+  if (([call isEndpointOnCurrentDevice] & 1) != 0 || !objc_msgSend(textCopy, "length"))
   {
   }
 
   else
   {
-    v9 = [v7 length];
+    v9 = [utteranceCopy length];
 
     if (v9)
     {
@@ -285,38 +285,38 @@ void __28__RTTRemoteCall_sendString___block_invoke_595(uint64_t a1, void *a2, ui
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v25 = v6;
+        v25 = textCopy;
         _os_log_impl(&dword_261754000, v10, OS_LOG_TYPE_INFO, "Sending remote device received text %@", buf, 0xCu);
       }
 
       objc_initWeak(buf, self);
-      v11 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v30[0] = @"RTTActiveCallKey";
-      v12 = [(RTTCall *)self call];
-      v13 = [v12 callUUID];
-      v31[0] = v13;
+      call2 = [(RTTCall *)self call];
+      callUUID = [call2 callUUID];
+      v31[0] = callUUID;
       v30[1] = @"com.apple.accessibility.RTT";
       v14 = IDSCopyLocalDeviceUniqueID();
       v31[1] = v14;
       v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:2];
-      [v11 setObject:v15 forKey:@"RTTActiveCallResponseKey"];
+      [dictionary setObject:v15 forKey:@"RTTActiveCallResponseKey"];
 
       v28[0] = @"RTTTextKey";
       v28[1] = @"RTTUtteranceKey";
-      v29[0] = v6;
-      v29[1] = v7;
+      v29[0] = textCopy;
+      v29[1] = utteranceCopy;
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:2];
-      [v11 setObject:v16 forKey:@"RTTReceiveKey"];
+      [dictionary setObject:v16 forKey:@"RTTReceiveKey"];
 
       v17 = objc_loadWeakRetained(buf);
-      v18 = [v17 pairedCallDevice];
-      v19 = [v17 rapportClientForDevice:v18];
+      pairedCallDevice = [v17 pairedCallDevice];
+      v19 = [v17 rapportClientForDevice:pairedCallDevice];
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = __49__RTTRemoteCall_callDidReceiveText_forUtterance___block_invoke;
       v23[3] = &unk_279AE7DD0;
       v23[4] = self;
-      [v19 sendRequestID:@"com.apple.accessibility.RTT" request:v11 options:MEMORY[0x277CBEC10] responseHandler:v23];
+      [v19 sendRequestID:@"com.apple.accessibility.RTT" request:dictionary options:MEMORY[0x277CBEC10] responseHandler:v23];
 
       objc_destroyWeak(buf);
       goto LABEL_11;
@@ -327,16 +327,16 @@ void __28__RTTRemoteCall_sendString___block_invoke_595(uint64_t a1, void *a2, ui
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v25 = v6;
+    v25 = textCopy;
     v26 = 2112;
-    v27 = v7;
+    v27 = utteranceCopy;
     _os_log_impl(&dword_261754000, v20, OS_LOG_TYPE_INFO, "Not sending remote device received text %@, %@", buf, 0x16u);
   }
 
 LABEL_11:
   v22.receiver = self;
   v22.super_class = RTTRemoteCall;
-  [(RTTCall *)&v22 callDidReceiveText:v6 forUtterance:v7];
+  [(RTTCall *)&v22 callDidReceiveText:textCopy forUtterance:utteranceCopy];
 
   v21 = *MEMORY[0x277D85DE8];
 }
@@ -402,38 +402,38 @@ void __49__RTTRemoteCall_callDidReceiveText_forUtterance___block_invoke_612(uint
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resetRapportClientForDevice:(id)a3 invalidate:(BOOL)a4
+- (void)resetRapportClientForDevice:(id)device invalidate:(BOOL)invalidate
 {
-  v4 = a4;
+  invalidateCopy = invalidate;
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  deviceCopy = device;
   v7 = AXLogRTT();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v16 = 138412290;
-    v17 = v6;
+    v17 = deviceCopy;
     _os_log_impl(&dword_261754000, v7, OS_LOG_TYPE_INFO, "Invalidate Rapport client for device %@ and setup again", &v16, 0xCu);
   }
 
-  if (v6)
+  if (deviceCopy)
   {
-    if (v4)
+    if (invalidateCopy)
     {
       messagingClients = self->_messagingClients;
-      v9 = [v6 identifier];
-      v10 = [(NSMutableDictionary *)messagingClients objectForKey:v9];
+      identifier = [deviceCopy identifier];
+      v10 = [(NSMutableDictionary *)messagingClients objectForKey:identifier];
       [v10 invalidate];
     }
 
     v11 = self->_messagingClients;
-    discoveryClient = [(RTTRemoteCall *)self newRapportClientWithDestinationDevice:v6];
-    v13 = [v6 identifier];
-    [(NSMutableDictionary *)v11 setObject:discoveryClient forKey:v13];
+    discoveryClient = [(RTTRemoteCall *)self newRapportClientWithDestinationDevice:deviceCopy];
+    identifier2 = [deviceCopy identifier];
+    [(NSMutableDictionary *)v11 setObject:discoveryClient forKey:identifier2];
   }
 
   else
   {
-    if (v4)
+    if (invalidateCopy)
     {
       [(RPCompanionLinkClient *)self->_discoveryClient invalidate];
     }
@@ -446,13 +446,13 @@ void __49__RTTRemoteCall_callDidReceiveText_forUtterance___block_invoke_612(uint
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)rapportClientForDevice:(id)a3
+- (id)rapportClientForDevice:(id)device
 {
-  if (a3)
+  if (device)
   {
     messagingClients = self->_messagingClients;
-    v4 = [a3 identifier];
-    v5 = [(NSMutableDictionary *)messagingClients objectForKey:v4];
+    identifier = [device identifier];
+    v5 = [(NSMutableDictionary *)messagingClients objectForKey:identifier];
   }
 
   else
@@ -463,19 +463,19 @@ void __49__RTTRemoteCall_callDidReceiveText_forUtterance___block_invoke_612(uint
   return v5;
 }
 
-- (id)newRapportClientWithDestinationDevice:(id)a3
+- (id)newRapportClientWithDestinationDevice:(id)device
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   v5 = objc_alloc_init(MEMORY[0x277D44160]);
   [v5 setDispatchQueue:self->_connectionQueue];
   [v5 setControlFlags:{objc_msgSend(v5, "controlFlags") | 0x20001000ALL}];
-  [v5 setDestinationDevice:v4];
+  [v5 setDestinationDevice:deviceCopy];
   v6 = AXLogRTT();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v25 = v4;
+    v25 = deviceCopy;
     _os_log_impl(&dword_261754000, v6, OS_LOG_TYPE_INFO, "Creating rapport client for destination device %@", buf, 0xCu);
   }
 
@@ -483,7 +483,7 @@ void __49__RTTRemoteCall_callDidReceiveText_forUtterance___block_invoke_612(uint
   v22[1] = 3221225472;
   v22[2] = __55__RTTRemoteCall_newRapportClientWithDestinationDevice___block_invoke;
   v22[3] = &unk_279AE7738;
-  v7 = v4;
+  v7 = deviceCopy;
   v23 = v7;
   [v5 setInvalidationHandler:v22];
   if (!v7)
@@ -522,7 +522,7 @@ void __49__RTTRemoteCall_callDidReceiveText_forUtterance___block_invoke_612(uint
   v13[2] = __55__RTTRemoteCall_newRapportClientWithDestinationDevice___block_invoke_629;
   v13[3] = &unk_279AE7E98;
   v14 = v9;
-  v15 = self;
+  selfCopy = self;
   v10 = v9;
   [v5 activateWithCompletion:v13];
 
@@ -645,39 +645,39 @@ void __55__RTTRemoteCall_newRapportClientWithDestinationDevice___block_invoke_62
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendCallIDChallengeToDevice:(id)a3
+- (void)sendCallIDChallengeToDevice:(id)device
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [v4 identifier];
-  [v5 setObject:v6 forKey:@"RTTActiveCallKey"];
+  deviceCopy = device;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  identifier = [deviceCopy identifier];
+  [dictionary setObject:identifier forKey:@"RTTActiveCallKey"];
 
   v17[0] = @"RTTActiveCallKey";
-  v7 = [(RTTCall *)self call];
-  v8 = [v7 callUUID];
+  call = [(RTTCall *)self call];
+  callUUID = [call callUUID];
   v17[1] = @"com.apple.accessibility.RTT";
-  v18[0] = v8;
+  v18[0] = callUUID;
   v9 = IDSCopyLocalDeviceUniqueID();
   v18[1] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
-  [v5 setObject:v10 forKey:@"RTTActiveCallResponseKey"];
+  [dictionary setObject:v10 forKey:@"RTTActiveCallResponseKey"];
 
   v11 = AXLogRTT();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v16 = v5;
+    v16 = dictionary;
     _os_log_impl(&dword_261754000, v11, OS_LOG_TYPE_INFO, "Sending challenge request %@", buf, 0xCu);
   }
 
-  v12 = [(RTTRemoteCall *)self rapportClientForDevice:v4];
+  v12 = [(RTTRemoteCall *)self rapportClientForDevice:deviceCopy];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __45__RTTRemoteCall_sendCallIDChallengeToDevice___block_invoke;
   v14[3] = &unk_279AE7DD0;
   v14[4] = self;
-  [v12 sendRequestID:@"com.apple.accessibility.RTT" request:v5 options:MEMORY[0x277CBEC10] responseHandler:v14];
+  [v12 sendRequestID:@"com.apple.accessibility.RTT" request:dictionary options:MEMORY[0x277CBEC10] responseHandler:v14];
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -702,20 +702,20 @@ void __45__RTTRemoteCall_sendCallIDChallengeToDevice___block_invoke(uint64_t a1,
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendCallIDChallengeToDeviceId:(id)a3 orAlternateId:(id)a4
+- (void)sendCallIDChallengeToDeviceId:(id)id orAlternateId:(id)alternateId
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  alternateIdCopy = alternateId;
   connectionQueue = self->_connectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__RTTRemoteCall_sendCallIDChallengeToDeviceId_orAlternateId___block_invoke;
   block[3] = &unk_279AE7D88;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = idCopy;
+  v13 = alternateIdCopy;
+  v9 = alternateIdCopy;
+  v10 = idCopy;
   dispatch_async(connectionQueue, block);
 }
 
@@ -777,17 +777,17 @@ void __61__RTTRemoteCall_sendCallIDChallengeToDeviceId_orAlternateId___block_inv
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addDevice:(id)a3
+- (void)addDevice:(id)device
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  deviceCopy = device;
+  if (deviceCopy)
   {
     v5 = AXLogRTT();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v15 = v4;
+      v15 = deviceCopy;
       _os_log_impl(&dword_261754000, v5, OS_LOG_TYPE_INFO, "Found device %@", buf, 0xCu);
     }
 
@@ -796,14 +796,14 @@ void __61__RTTRemoteCall_sendCallIDChallengeToDeviceId_orAlternateId___block_inv
     v12[1] = 3221225472;
     v12[2] = __27__RTTRemoteCall_addDevice___block_invoke;
     v12[3] = &unk_279AE7EE8;
-    v7 = v4;
+    v7 = deviceCopy;
     v13 = v7;
     [(NSMutableArray *)devices ax_removeObjectsFromArrayUsingBlock:v12];
     [(NSMutableArray *)self->_devices addObject:v7];
     v8 = [(RTTRemoteCall *)self newRapportClientWithDestinationDevice:v7];
     messagingClients = self->_messagingClients;
-    v10 = [v7 identifier];
-    [(NSMutableDictionary *)messagingClients setObject:v8 forKey:v10];
+    identifier = [v7 identifier];
+    [(NSMutableDictionary *)messagingClients setObject:v8 forKey:identifier];
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -818,59 +818,59 @@ uint64_t __27__RTTRemoteCall_addDevice___block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (void)removeDevice:(id)a3
+- (void)removeDevice:(id)device
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  deviceCopy = device;
+  if (deviceCopy)
   {
     v5 = AXLogRTT();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v12 = 138412290;
-      v13 = v4;
+      v13 = deviceCopy;
       _os_log_impl(&dword_261754000, v5, OS_LOG_TYPE_INFO, "Lost device %@", &v12, 0xCu);
     }
 
-    [(NSMutableArray *)self->_devices removeObject:v4];
+    [(NSMutableArray *)self->_devices removeObject:deviceCopy];
     messagingClients = self->_messagingClients;
-    v7 = [v4 identifier];
-    v8 = [(NSMutableDictionary *)messagingClients objectForKey:v7];
+    identifier = [deviceCopy identifier];
+    v8 = [(NSMutableDictionary *)messagingClients objectForKey:identifier];
     [v8 invalidate];
 
     v9 = self->_messagingClients;
-    v10 = [v4 identifier];
-    [(NSMutableDictionary *)v9 removeObjectForKey:v10];
+    identifier2 = [deviceCopy identifier];
+    [(NSMutableDictionary *)v9 removeObjectForKey:identifier2];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)responseForRequest:(id)a3 options:(id)a4
+- (id)responseForRequest:(id)request options:(id)options
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  optionsCopy = options;
   v8 = AXLogRTT();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v34 = v6;
+    v34 = requestCopy;
     _os_log_impl(&dword_261754000, v8, OS_LOG_TYPE_INFO, "Received request %@", buf, 0xCu);
   }
 
-  v9 = [MEMORY[0x277CBEB38] dictionary];
-  v10 = [(RTTCall *)self call];
-  v11 = [v10 status];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  call = [(RTTCall *)self call];
+  status = [call status];
 
-  v12 = [v6 objectForKey:@"RTTActiveCallResponseKey"];
+  v12 = [requestCopy objectForKey:@"RTTActiveCallResponseKey"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v13 = [v12 objectForKey:@"RTTActiveCallKey"];
-    v14 = [(RTTCall *)self call];
-    v15 = [v14 callUUID];
-    v16 = [v13 isEqualToString:v15];
+    call2 = [(RTTCall *)self call];
+    callUUID = [call2 callUUID];
+    v16 = [v13 isEqualToString:callUUID];
 
     if ((v16 & 1) == 0)
     {
@@ -880,8 +880,8 @@ uint64_t __27__RTTRemoteCall_addDevice___block_invoke(uint64_t a1, void *a2)
         [(RTTRemoteCall *)self responseForRequest:v13 options:v17];
       }
 
-      v18 = [(RTTCall *)self delegate];
-      v19 = [v18 responseFromCallWithID:v13 forRequest:v6 options:v7];
+      delegate = [(RTTCall *)self delegate];
+      v19 = [delegate responseFromCallWithID:v13 forRequest:requestCopy options:optionsCopy];
 
       if (v19)
       {
@@ -891,22 +891,22 @@ uint64_t __27__RTTRemoteCall_addDevice___block_invoke(uint64_t a1, void *a2)
     }
   }
 
-  if ((v11 - 3) > 0xFFFFFFFD)
+  if ((status - 3) > 0xFFFFFFFD)
   {
-    v22 = [v7 objectForKey:@"senderID"];
-    v23 = [v7 safeStringForKey:@"senderIDS"];
+    v22 = [optionsCopy objectForKey:@"senderID"];
+    v23 = [optionsCopy safeStringForKey:@"senderIDS"];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __44__RTTRemoteCall_responseForRequest_options___block_invoke;
     v29[3] = &unk_279AE7F38;
     v29[4] = self;
-    v24 = v9;
+    v24 = dictionary;
     v30 = v24;
     v31 = v22;
     v32 = v23;
     v25 = v23;
     v26 = v22;
-    [v6 enumerateKeysAndObjectsUsingBlock:v29];
+    [requestCopy enumerateKeysAndObjectsUsingBlock:v29];
     v19 = v24;
   }
 
@@ -915,15 +915,15 @@ uint64_t __27__RTTRemoteCall_addDevice___block_invoke(uint64_t a1, void *a2)
     v20 = AXLogRTT();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
-      v21 = [(RTTCall *)self call];
+      call3 = [(RTTCall *)self call];
       *buf = 138412546;
-      v34 = v21;
+      v34 = call3;
       v35 = 1024;
-      v36 = v11;
+      v36 = status;
       _os_log_impl(&dword_261754000, v20, OS_LOG_TYPE_INFO, "Call not yet connected. Ignoring request for call %@ in status %d", buf, 0x12u);
     }
 
-    v19 = v9;
+    v19 = dictionary;
   }
 
 LABEL_15:
@@ -1289,37 +1289,37 @@ void __44__RTTRemoteCall_responseForRequest_options___block_invoke_638(uint64_t 
   }
 }
 
-- (BOOL)_rapportDevice:(id)a3 matchesID:(id)a4 orAlternateID:(id)a5
+- (BOOL)_rapportDevice:(id)device matchesID:(id)d orAlternateID:(id)iD
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 identifier];
-  if ([v8 isEqualToString:v10])
+  deviceCopy = device;
+  dCopy = d;
+  iDCopy = iD;
+  identifier = [deviceCopy identifier];
+  if ([dCopy isEqualToString:identifier])
   {
     v11 = 1;
   }
 
   else
   {
-    v12 = [v7 idsDeviceIdentifier];
-    if ([v8 isEqualToString:v12])
+    idsDeviceIdentifier = [deviceCopy idsDeviceIdentifier];
+    if ([dCopy isEqualToString:idsDeviceIdentifier])
     {
       v11 = 1;
     }
 
     else
     {
-      v13 = [v7 identifier];
-      if ([v9 isEqualToString:v13])
+      identifier2 = [deviceCopy identifier];
+      if ([iDCopy isEqualToString:identifier2])
       {
         v11 = 1;
       }
 
       else
       {
-        v14 = [v7 idsDeviceIdentifier];
-        v11 = [v9 isEqualToString:v14];
+        idsDeviceIdentifier2 = [deviceCopy idsDeviceIdentifier];
+        v11 = [iDCopy isEqualToString:idsDeviceIdentifier2];
       }
     }
   }

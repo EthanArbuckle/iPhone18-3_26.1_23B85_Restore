@@ -1,7 +1,7 @@
 @interface BRCFetchSubResourceRecord
 - (BOOL)isWaitingOnShareIDFetch;
-- (BRCFetchSubResourceRecord)initWithChangedRecord:(id)a3 recordIDNeedingFetch:(id)a4 xattrSignatureNeedingFetch:(id)a5 recordIDBlockingSave:(id)a6;
-- (BRCFetchSubResourceRecord)initWithRecordIDNeedingFetch:(id)a3 recordType:(int64_t)a4;
+- (BRCFetchSubResourceRecord)initWithChangedRecord:(id)record recordIDNeedingFetch:(id)fetch xattrSignatureNeedingFetch:(id)needingFetch recordIDBlockingSave:(id)save;
+- (BRCFetchSubResourceRecord)initWithRecordIDNeedingFetch:(id)fetch recordType:(int64_t)type;
 - (id)description;
 - (int64_t)resolveRecordType;
 @end
@@ -10,21 +10,21 @@
 
 - (int64_t)resolveRecordType
 {
-  v3 = [(CKRecordID *)self->_recordID recordName];
-  if ([v3 hasPrefix:@"documentContent/"])
+  recordName = [(CKRecordID *)self->_recordID recordName];
+  if ([recordName hasPrefix:@"documentContent/"])
   {
     v4 = 2;
   }
 
-  else if ([v3 hasPrefix:@"documentStructure/"] & 1) != 0 || (objc_msgSend(v3, "hasPrefix:", @"directory/"))
+  else if ([recordName hasPrefix:@"documentStructure/"] & 1) != 0 || (objc_msgSend(recordName, "hasPrefix:", @"directory/"))
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(CKRecord *)self->_record recordType];
-    v6 = [v5 isEqualToString:*MEMORY[0x277CBC050]];
+    recordType = [(CKRecord *)self->_record recordType];
+    v6 = [recordType isEqualToString:*MEMORY[0x277CBC050]];
 
     if ((v6 & 1) == 0)
     {
@@ -67,48 +67,48 @@
   return recordIDNeedingFetch;
 }
 
-- (BRCFetchSubResourceRecord)initWithChangedRecord:(id)a3 recordIDNeedingFetch:(id)a4 xattrSignatureNeedingFetch:(id)a5 recordIDBlockingSave:(id)a6
+- (BRCFetchSubResourceRecord)initWithChangedRecord:(id)record recordIDNeedingFetch:(id)fetch xattrSignatureNeedingFetch:(id)needingFetch recordIDBlockingSave:(id)save
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  recordCopy = record;
+  fetchCopy = fetch;
+  needingFetchCopy = needingFetch;
+  saveCopy = save;
   v19.receiver = self;
   v19.super_class = BRCFetchSubResourceRecord;
   v15 = [(BRCFetchSubResourceRecord *)&v19 init];
   if (v15)
   {
-    v16 = [v11 recordID];
+    recordID = [recordCopy recordID];
     recordID = v15->_recordID;
-    v15->_recordID = v16;
+    v15->_recordID = recordID;
 
-    objc_storeStrong(&v15->_record, a3);
+    objc_storeStrong(&v15->_record, record);
     v15->_recordType = [(BRCFetchSubResourceRecord *)v15 resolveRecordType];
-    objc_storeStrong(&v15->_recordIDNeedingFetch, a4);
-    objc_storeStrong(&v15->_xattrSignature, a5);
-    objc_storeStrong(&v15->_recordIDBlockingSave, a6);
+    objc_storeStrong(&v15->_recordIDNeedingFetch, fetch);
+    objc_storeStrong(&v15->_xattrSignature, needingFetch);
+    objc_storeStrong(&v15->_recordIDBlockingSave, save);
   }
 
   return v15;
 }
 
-- (BRCFetchSubResourceRecord)initWithRecordIDNeedingFetch:(id)a3 recordType:(int64_t)a4
+- (BRCFetchSubResourceRecord)initWithRecordIDNeedingFetch:(id)fetch recordType:(int64_t)type
 {
-  v7 = a3;
+  fetchCopy = fetch;
   v13.receiver = self;
   v13.super_class = BRCFetchSubResourceRecord;
   v8 = [(BRCFetchSubResourceRecord *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_recordIDNeedingFetch, a3);
-    objc_storeStrong(&v9->_recordID, a3);
-    if (!a4)
+    objc_storeStrong(&v8->_recordIDNeedingFetch, fetch);
+    objc_storeStrong(&v9->_recordID, fetch);
+    if (!type)
     {
-      a4 = [(BRCFetchSubResourceRecord *)v9 resolveRecordType];
+      type = [(BRCFetchSubResourceRecord *)v9 resolveRecordType];
     }
 
-    v9->_recordType = a4;
+    v9->_recordType = type;
     v10 = brc_bread_crumbs();
     v11 = brc_default_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))

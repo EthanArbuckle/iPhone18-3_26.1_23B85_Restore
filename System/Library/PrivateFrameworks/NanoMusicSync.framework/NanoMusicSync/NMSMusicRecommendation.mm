@@ -1,12 +1,12 @@
 @interface NMSMusicRecommendation
 + (id)_missingArtImage;
-+ (void)_fillArtworkMutableArray:(id)a3 toCount:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
++ (void)_fillArtworkMutableArray:(id)array toCount:(unint64_t)count;
+- (BOOL)isEqual:(id)equal;
 - (MPArtworkCatalog)artworkCatalog;
-- (NMSMusicRecommendation)initWithIdentifier:(id)a3 title:(id)a4 items:(id)a5;
+- (NMSMusicRecommendation)initWithIdentifier:(id)identifier title:(id)title items:(id)items;
 - (NSDate)lastModifiedDate;
-- (id)_tiledArtworkRequestWithPersistentIDs:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_tiledArtworkRequestWithPersistentIDs:(id)ds;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -34,20 +34,20 @@
   return v9;
 }
 
-- (NMSMusicRecommendation)initWithIdentifier:(id)a3 title:(id)a4 items:(id)a5
+- (NMSMusicRecommendation)initWithIdentifier:(id)identifier title:(id)title items:(id)items
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  titleCopy = title;
+  itemsCopy = items;
   v17.receiver = self;
   v17.super_class = NMSMusicRecommendation;
   v12 = [(NMSMusicRecommendation *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_identifier, a3);
-    objc_storeStrong(&v13->_title, a4);
-    objc_storeStrong(&v13->_items, a5);
+    objc_storeStrong(&v12->_identifier, identifier);
+    objc_storeStrong(&v13->_title, title);
+    objc_storeStrong(&v13->_items, items);
     v13->_selected = 1;
     v14 = dispatch_queue_create("com.apple.NanoMusicSync.NMSMusicRecommendation", 0);
     serializerQueue = v13->_serializerQueue;
@@ -57,19 +57,19 @@
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    if (v4 == self)
+    if (equalCopy == self)
     {
       v8 = 1;
     }
 
     else
     {
-      v5 = v4;
+      v5 = equalCopy;
       if ([(NSString *)self->_identifier isEqual:v5->_identifier])
       {
         v6 = [(NSOrderedSet *)self->_items valueForKey:@"identifiers"];
@@ -526,10 +526,10 @@ LABEL_43:
   return v24;
 }
 
-- (id)_tiledArtworkRequestWithPersistentIDs:(id)a3
+- (id)_tiledArtworkRequestWithPersistentIDs:(id)ds
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dsCopy = ds;
   v5 = objc_alloc_init(MEMORY[0x277CD60E8]);
   [v5 setNumberOfRows:2];
   [v5 setNumberOfColumns:2];
@@ -540,7 +540,7 @@ LABEL_43:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = dsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -580,11 +580,11 @@ LABEL_43:
 
 + (id)_missingArtImage
 {
-  v2 = [MEMORY[0x277D75348] systemGrayColor];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
   v6.width = 1.0;
   v6.height = 1.0;
   UIGraphicsBeginImageContextWithOptions(v6, 1, 0.0);
-  [v2 setFill];
+  [systemGrayColor setFill];
   v7.origin.x = 0.0;
   v7.origin.y = 0.0;
   v7.size.width = 1.0;
@@ -596,38 +596,38 @@ LABEL_43:
   return v3;
 }
 
-+ (void)_fillArtworkMutableArray:(id)a3 toCount:(unint64_t)a4
++ (void)_fillArtworkMutableArray:(id)array toCount:(unint64_t)count
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([v5 count] < a4)
+  arrayCopy = array;
+  if ([arrayCopy count] < count)
   {
     v6 = MEMORY[0x277CD5D50];
-    v7 = [objc_opt_class() _missingArtImage];
-    v8 = [v6 staticArtworkCatalogWithImage:v7];
+    _missingArtImage = [objc_opt_class() _missingArtImage];
+    v8 = [v6 staticArtworkCatalogWithImage:_missingArtImage];
 
     v9 = NMLogForCategory(5);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v11 = 134218240;
-      v12 = [v5 count];
+      v12 = [arrayCopy count];
       v13 = 2048;
-      v14 = a4;
+      countCopy = count;
       _os_log_impl(&dword_25B27B000, v9, OS_LOG_TYPE_INFO, "Filling tiled artwork catalog %tu -> %tu", &v11, 0x16u);
     }
 
-    while ([v5 count] < a4)
+    while ([arrayCopy count] < count)
     {
-      [v5 addObject:v8];
+      [arrayCopy addObject:v8];
     }
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {

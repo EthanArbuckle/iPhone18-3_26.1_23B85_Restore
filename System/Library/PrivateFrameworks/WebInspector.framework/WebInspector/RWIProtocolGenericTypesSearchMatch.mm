@@ -1,39 +1,39 @@
 @interface RWIProtocolGenericTypesSearchMatch
 - (NSString)lineContent;
-- (RWIProtocolGenericTypesSearchMatch)initWithLineNumber:(double)a3 lineContent:(id)a4;
+- (RWIProtocolGenericTypesSearchMatch)initWithLineNumber:(double)number lineContent:(id)content;
 - (double)lineNumber;
-- (void)setLineContent:(id)a3;
-- (void)setLineNumber:(double)a3;
+- (void)setLineContent:(id)content;
+- (void)setLineNumber:(double)number;
 @end
 
 @implementation RWIProtocolGenericTypesSearchMatch
 
-- (RWIProtocolGenericTypesSearchMatch)initWithLineNumber:(double)a3 lineContent:(id)a4
+- (RWIProtocolGenericTypesSearchMatch)initWithLineNumber:(double)number lineContent:(id)content
 {
-  v6 = a4;
+  contentCopy = content;
   v10.receiver = self;
   v10.super_class = RWIProtocolGenericTypesSearchMatch;
   v7 = [(RWIProtocolJSONObject *)&v10 init];
   if (v7)
   {
-    if (!v6)
+    if (!contentCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"lineContent"}];
     }
 
-    [(RWIProtocolGenericTypesSearchMatch *)v7 setLineNumber:a3];
-    [(RWIProtocolGenericTypesSearchMatch *)v7 setLineContent:v6];
+    [(RWIProtocolGenericTypesSearchMatch *)v7 setLineNumber:number];
+    [(RWIProtocolGenericTypesSearchMatch *)v7 setLineContent:contentCopy];
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)setLineNumber:(double)a3
+- (void)setLineNumber:(double)number
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolGenericTypesSearchMatch;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"lineNumber" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"lineNumber" forKey:number];
 }
 
 - (double)lineNumber
@@ -44,11 +44,11 @@
   return result;
 }
 
-- (void)setLineContent:(id)a3
+- (void)setLineContent:(id)content
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolGenericTypesSearchMatch;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"lineContent"];
+  [(RWIProtocolJSONObject *)&v3 setString:content forKey:@"lineContent"];
 }
 
 - (NSString)lineContent

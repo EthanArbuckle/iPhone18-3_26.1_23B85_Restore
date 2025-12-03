@@ -6,7 +6,7 @@
 - (void)_updateSockPuppetComplications;
 - (void)dealloc;
 - (void)loadSettings;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation NCSSettingsManager
@@ -45,8 +45,8 @@ uint64_t __43__NCSSettingsManager_sharedSettingsManager__block_invoke()
     CFNotificationCenterAddObserver(v5, v2, ApplicationsChanged, *MEMORY[0x277CC1DE0], 0, 0);
     v6 = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(v6, v2, SPApplicationsChanged, *MEMORY[0x277CEAF60], 0, 0);
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v2 selector:sel__handleLocaleChange_ name:*MEMORY[0x277CBE620] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleLocaleChange_ name:*MEMORY[0x277CBE620] object:0];
 
     [(NCSSettingsManager *)v2 loadSettings];
   }
@@ -62,17 +62,17 @@ uint64_t __43__NCSSettingsManager_sharedSettingsManager__block_invoke()
   CFNotificationCenterRemoveObserver(v4, self, *MEMORY[0x277CC1DE0], 0);
   v5 = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(v5, self, *MEMORY[0x277CEAF60], 0);
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v7.receiver = self;
   v7.super_class = NCSSettingsManager;
   [(NCSSettingsManager *)&v7 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -80,8 +80,8 @@ uint64_t __43__NCSSettingsManager_sharedSettingsManager__block_invoke()
     objc_storeWeak(&self->_delegate, obj);
     if ([(NCSInternalSettingsManager *)self hasSettings])
     {
-      v5 = [(NCSSettingsManager *)self delegate];
-      [v5 settingsManagerReloadedComplications:self];
+      delegate = [(NCSSettingsManager *)self delegate];
+      [delegate settingsManagerReloadedComplications:self];
     }
   }
 
@@ -96,25 +96,25 @@ uint64_t __43__NCSSettingsManager_sharedSettingsManager__block_invoke()
   [(NCSSettingsManager *)self _updateSockPuppetComplications];
   if ([(NCSInternalSettingsManager *)self hasSettings])
   {
-    v3 = [(NCSSettingsManager *)self delegate];
-    [v3 settingsManagerReloadedComplications:self];
+    delegate = [(NCSSettingsManager *)self delegate];
+    [delegate settingsManagerReloadedComplications:self];
   }
 }
 
 - (void)_updateSockPuppetComplications
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(NCSSettingsManager *)self _fetchSockPuppetComplications];
-  v4 = [v3 mutableCopy];
+  _fetchSockPuppetComplications = [(NCSSettingsManager *)self _fetchSockPuppetComplications];
+  v4 = [_fetchSockPuppetComplications mutableCopy];
 
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __52__NCSSettingsManager__updateSockPuppetComplications__block_invoke;
   v18[3] = &unk_27992E1B0;
   v6 = v4;
   v19 = v6;
-  v7 = v5;
+  v7 = array;
   v20 = v7;
   [(NCSInternalSettingsManager *)self enumerateAllComplicationDefinitionsUsingBlock:v18];
   [(NCSInternalSettingsManager *)self removeComplicationDefinitionsInArray:v7];
@@ -122,8 +122,8 @@ uint64_t __43__NCSSettingsManager_sharedSettingsManager__block_invoke()
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [v6 allValues];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v21 count:16];
+  allValues = [v6 allValues];
+  v9 = [allValues countByEnumeratingWithState:&v14 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -135,14 +135,14 @@ uint64_t __43__NCSSettingsManager_sharedSettingsManager__block_invoke()
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
         [(NCSInternalSettingsManager *)self addComplicationDefinition:*(*(&v14 + 1) + 8 * v12++)];
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v21 count:16];
+      v10 = [allValues countByEnumeratingWithState:&v14 objects:v21 count:16];
     }
 
     while (v10);
@@ -210,7 +210,7 @@ void __52__NCSSettingsManager__updateSockPuppetComplications__block_invoke(uint6
 
 - (id)_fetchSockPuppetComplications
 {
-  v2 = [MEMORY[0x277CEAF80] sharedDeviceConnection];
+  mEMORY[0x277CEAF80] = [MEMORY[0x277CEAF80] sharedDeviceConnection];
   v35[0] = 0;
   v35[1] = v35;
   v35[2] = 0x3032000000;
@@ -231,7 +231,7 @@ void __52__NCSSettingsManager__updateSockPuppetComplications__block_invoke(uint6
   block[3] = &unk_27992E200;
   v5 = v4;
   v26 = v5;
-  v6 = v2;
+  v6 = mEMORY[0x277CEAF80];
   v27 = v6;
   v28 = v35;
   dispatch_sync(v3, block);

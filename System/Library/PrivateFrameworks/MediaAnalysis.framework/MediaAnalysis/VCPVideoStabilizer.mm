@@ -1,12 +1,12 @@
 @interface VCPVideoStabilizer
-+ (id)videoStabilizerforAnalysisType:(unint64_t)a3 withMetadata:(id)a4 sourceSize:(CGSize)a5 cropRect:(CGRect)a6;
++ (id)videoStabilizerforAnalysisType:(unint64_t)type withMetadata:(id)metadata sourceSize:(CGSize)size cropRect:(CGRect)rect;
 - ($AFC8CF76A46F37F9FB23C20884F4FD99)timeRange;
 - (CGRect)cropRect;
 - (CGSize)sourceSize;
 - (VCPVideoStabilizer)init;
-- (int)finishAnalysisPass:(id *)a3;
+- (int)finishAnalysisPass:(id *)pass;
 - (void)dealloc;
-- (void)setTimeRange:(id *)a3;
+- (void)setTimeRange:(id *)range;
 @end
 
 @implementation VCPVideoStabilizer
@@ -20,9 +20,9 @@
   if (v2)
   {
     v2->_cropFraction = 0.1;
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     motionBlurVector = v3->_motionBlurVector;
-    v3->_motionBlurVector = v4;
+    v3->_motionBlurVector = array;
 
     v3->_analysisConfidence = -1.0;
     v3->_validStabilization = 1;
@@ -33,33 +33,33 @@
   return v3;
 }
 
-+ (id)videoStabilizerforAnalysisType:(unint64_t)a3 withMetadata:(id)a4 sourceSize:(CGSize)a5 cropRect:(CGRect)a6
++ (id)videoStabilizerforAnalysisType:(unint64_t)type withMetadata:(id)metadata sourceSize:(CGSize)size cropRect:(CGRect)rect
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v10 = a5.height;
-  v11 = a5.width;
-  v12 = a3;
-  v13 = a4;
-  v14 = [v13 count];
-  if ((v12 & 0x10000000) != 0 && v14)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v10 = size.height;
+  v11 = size.width;
+  typeCopy = type;
+  metadataCopy = metadata;
+  v14 = [metadataCopy count];
+  if ((typeCopy & 0x10000000) != 0 && v14)
   {
     v15 = [VCPVideoGyroStabilizer alloc];
     v16 = *(MEMORY[0x1E6960C98] + 16);
     v20[0] = *MEMORY[0x1E6960C98];
     v20[1] = v16;
     v20[2] = *(MEMORY[0x1E6960C98] + 32);
-    v17 = [(VCPVideoGyroStabilizer *)v15 initWithMetadata:v13 sourceSize:0 cropRect:v20 stillImageMetadata:v11 timeRange:v10, x, y, width, height];
+    height = [(VCPVideoGyroStabilizer *)v15 initWithMetadata:metadataCopy sourceSize:0 cropRect:v20 stillImageMetadata:v11 timeRange:v10, x, y, width, height];
   }
 
   else
   {
-    v17 = objc_alloc_init(VCPVideoPixelStabilizer);
+    height = objc_alloc_init(VCPVideoPixelStabilizer);
   }
 
-  v18 = v17;
+  v18 = height;
 
   return v18;
 }
@@ -83,7 +83,7 @@
   [(VCPVideoStabilizer *)&v3 dealloc];
 }
 
-- (int)finishAnalysisPass:(id *)a3
+- (int)finishAnalysisPass:(id *)pass
 {
   v111[1] = *MEMORY[0x1E69E9840];
   if (!+[VCPVideoStabilizer saveStabilizationRecipe]&& !self->_validStabilization)
@@ -94,17 +94,17 @@
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "    Pixel Stabilization confidence doesn't pass the threshold", &rect, 2u);
     }
 
-    v79 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v62 = [MEMORY[0x1E696AD98] numberWithBool:self->_gyroStabilization];
-    [v79 setObject:v62 forKeyedSubscript:@"gyroStabilization"];
+    [dictionary setObject:v62 forKeyedSubscript:@"gyroStabilization"];
 
     *&v63 = self->_analysisConfidence;
     v64 = [MEMORY[0x1E696AD98] numberWithFloat:v63];
-    [v79 setObject:v64 forKeyedSubscript:@"analysisConfidence"];
+    [dictionary setObject:v64 forKeyedSubscript:@"analysisConfidence"];
 
     v110 = @"VideoStabilizationResults";
     v107 = @"attributes";
-    v108 = v79;
+    v108 = dictionary;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v108 forKeys:&v107 count:1];
     v109 = v6;
     v65 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v109 count:1];
@@ -117,21 +117,21 @@
   }
 
   ICGetResultConfidence();
-  v79 = ICGetResultStats();
-  v4 = [v79 objectForKeyedSubscript:*MEMORY[0x1E69A8BB0]];
-  v5 = [v4 intValue];
+  dictionary = ICGetResultStats();
+  v4 = [dictionary objectForKeyedSubscript:*MEMORY[0x1E69A8BB0]];
+  intValue = [v4 intValue];
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v7 = [MEMORY[0x1E696AD98] numberWithInt:0];
   [v6 setObject:v7 forKeyedSubscript:*MEMORY[0x1E69A8BD8]];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithInt:(v5 - 1)];
+  v8 = [MEMORY[0x1E696AD98] numberWithInt:(intValue - 1)];
   [v6 setObject:v8 forKeyedSubscript:*MEMORY[0x1E69A8C08]];
 
   if ([(VCPVideoStabilizer *)self isPathConstraintsStabilization])
   {
-    v9 = [(VCPVideoStabilizer *)self stillImageMetadata];
-    v10 = [v9 objectAtIndexedSubscript:0];
+    stillImageMetadata = [(VCPVideoStabilizer *)self stillImageMetadata];
+    v10 = [stillImageMetadata objectAtIndexedSubscript:0];
 
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v12 = [v10 objectForKeyedSubscript:@"attributes"];
@@ -231,10 +231,10 @@
     v83[2] = MEMORY[0x1E695E118];
     v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v83 forKeys:v82 count:3];
     v85 = v24;
-    v78 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v85 forKeys:&v84 count:1];
-    v87 = v78;
-    v77 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v87 forKeys:&v86 count:1];
-    v88 = v77;
+    dictionary2 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v85 forKeys:&v84 count:1];
+    v87 = dictionary2;
+    dictionary3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v87 forKeys:&v86 count:1];
+    v88 = dictionary3;
     v76 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v88 count:1];
     v90 = v76;
     v70 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v90 forKeys:&v89 count:1];
@@ -270,19 +270,19 @@ LABEL_19:
     goto LABEL_32;
   }
 
-  v78 = [MEMORY[0x1E695DF90] dictionary];
-  v77 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary3 = [MEMORY[0x1E695DF90] dictionary];
   v25 = [MEMORY[0x1E696AD98] numberWithBool:self->_gyroStabilization];
-  [v78 setObject:v25 forKeyedSubscript:@"gyroStabilization"];
+  [dictionary2 setObject:v25 forKeyedSubscript:@"gyroStabilization"];
 
   *&v26 = self->_analysisConfidence;
   v27 = [MEMORY[0x1E696AD98] numberWithFloat:v26];
-  [v78 setObject:v27 forKeyedSubscript:@"analysisConfidence"];
+  [dictionary2 setObject:v27 forKeyedSubscript:@"analysisConfidence"];
 
   v76 = [VCPProtoMovieStabilizationRecipe resultFromLegacyDictionary:v24];
-  v74 = [v76 data];
-  [v78 setObject:v74 forKeyedSubscript:@"stabilizationRecipe"];
-  if (v74)
+  data = [v76 data];
+  [dictionary2 setObject:data forKeyedSubscript:@"stabilizationRecipe"];
+  if (data)
   {
     v28 = [v24 objectForKeyedSubscript:*MEMORY[0x1E69A8B58]];
     CGRectMakeWithDictionaryRepresentation(v28, &rect);
@@ -315,15 +315,15 @@ LABEL_19:
     v115.size.height = height * v47 / v48;
     v115.origin.x = x * v31 / v42;
     v49 = CGRectCreateDictionaryRepresentation(v115);
-    [v77 setObject:v49 forKeyedSubscript:@"StabilizationCrop"];
+    [dictionary3 setObject:v49 forKeyedSubscript:@"StabilizationCrop"];
 
     [(VCPVideoStabilizer *)self cropRect];
     v50 = CGRectCreateDictionaryRepresentation(v116);
-    [v77 setObject:v50 forKeyedSubscript:@"CleanApertureCrop"];
+    [dictionary3 setObject:v50 forKeyedSubscript:@"CleanApertureCrop"];
 
     [(VCPVideoStabilizer *)self sourceSize];
     v51 = CGSizeCreateDictionaryRepresentation(v112);
-    [v77 setObject:v51 forKeyedSubscript:@"SourceSize"];
+    [dictionary3 setObject:v51 forKeyedSubscript:@"SourceSize"];
 
     v104[0] = @"settlingEffectMissingMetadata";
     v104[1] = @"settlingEffectInvalidTimeRange";
@@ -332,20 +332,20 @@ LABEL_19:
     v104[2] = @"settlingEffectStabilizationFailure";
     v105[2] = MEMORY[0x1E695E110];
     v52 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v105 forKeys:v104 count:3];
-    [v77 setObject:v52 forKeyedSubscript:@"settlingEffectStatus"];
+    [dictionary3 setObject:v52 forKeyedSubscript:@"settlingEffectStatus"];
 
     if ([(VCPVideoStabilizer *)self isPathConstraintsStabilization])
     {
       v102[0] = @"VideoStabilizationResults";
       v99 = @"attributes";
-      v100 = v78;
+      v100 = dictionary2;
       v53 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v100 forKeys:&v99 count:1];
       v101 = v53;
       v54 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v101 count:1];
       v102[1] = @"PathConstraintsStabilizationResults";
       v103[0] = v54;
       v96 = @"attributes";
-      v97 = v77;
+      v97 = dictionary3;
       v55 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v97 forKeys:&v96 count:1];
       v98 = v55;
       v56 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v98 count:1];
@@ -359,7 +359,7 @@ LABEL_19:
     {
       v94 = @"VideoStabilizationResults";
       v91 = @"attributes";
-      v92 = v78;
+      v92 = dictionary2;
       v53 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v92 forKeys:&v91 count:1];
       v93 = v53;
       v54 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v93 count:1];
@@ -409,11 +409,11 @@ LABEL_32:
   return self;
 }
 
-- (void)setTimeRange:(id *)a3
+- (void)setTimeRange:(id *)range
 {
-  v4 = *&a3->var0.var3;
-  v3 = *&a3->var1.var1;
-  *&self->_timeRange.start.value = *&a3->var0.var0;
+  v4 = *&range->var0.var3;
+  v3 = *&range->var1.var1;
+  *&self->_timeRange.start.value = *&range->var0.var0;
   *&self->_timeRange.start.epoch = v4;
   *&self->_timeRange.duration.timescale = v3;
 }

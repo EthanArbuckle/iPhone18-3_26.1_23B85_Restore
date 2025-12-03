@@ -1,34 +1,34 @@
 @interface _NTKCFaceDetailPhotoCropViewController
-- (_NTKCFaceDetailPhotoCropViewController)initWithIndex:(unint64_t)a3 inPhotosEditor:(id)a4 forFace:(id)a5 timeStyle:(id)a6 completionHandler:(id)a7;
+- (_NTKCFaceDetailPhotoCropViewController)initWithIndex:(unint64_t)index inPhotosEditor:(id)editor forFace:(id)face timeStyle:(id)style completionHandler:(id)handler;
 - (void)_cancelPressed;
 - (void)_deletePressed;
-- (void)dismissWithSaving:(BOOL)a3;
+- (void)dismissWithSaving:(BOOL)saving;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation _NTKCFaceDetailPhotoCropViewController
 
-- (_NTKCFaceDetailPhotoCropViewController)initWithIndex:(unint64_t)a3 inPhotosEditor:(id)a4 forFace:(id)a5 timeStyle:(id)a6 completionHandler:(id)a7
+- (_NTKCFaceDetailPhotoCropViewController)initWithIndex:(unint64_t)index inPhotosEditor:(id)editor forFace:(id)face timeStyle:(id)style completionHandler:(id)handler
 {
   v33[5] = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  editorCopy = editor;
+  faceCopy = face;
+  styleCopy = style;
+  handlerCopy = handler;
   v32.receiver = self;
   v32.super_class = _NTKCFaceDetailPhotoCropViewController;
   v16 = [(_NTKCFaceDetailPhotoCropViewController *)&v32 initWithNibName:0 bundle:0];
   v17 = v16;
   if (v16)
   {
-    [(_NTKCFaceDetailPhotoCropViewController *)v16 setIndex:a3];
-    [(_NTKCFaceDetailPhotoCropViewController *)v17 setEditor:v12];
-    [(_NTKCFaceDetailPhotoCropViewController *)v17 setFace:v13];
-    [(_NTKCFaceDetailPhotoCropViewController *)v17 setTimeStyle:v14];
-    v18 = [(_NTKCFaceDetailPhotoCropViewController *)v17 navigationItem];
-    [v18 setHidesBackButton:1];
+    [(_NTKCFaceDetailPhotoCropViewController *)v16 setIndex:index];
+    [(_NTKCFaceDetailPhotoCropViewController *)v17 setEditor:editorCopy];
+    [(_NTKCFaceDetailPhotoCropViewController *)v17 setFace:faceCopy];
+    [(_NTKCFaceDetailPhotoCropViewController *)v17 setTimeStyle:styleCopy];
+    navigationItem = [(_NTKCFaceDetailPhotoCropViewController *)v17 navigationItem];
+    [navigationItem setHidesBackButton:1];
 
     v19 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:16 target:v17 action:sel__deletePressed];
     deleteButton = v17->_deleteButton;
@@ -53,7 +53,7 @@
     v28 = NTKCCustomizationLocalizedString(@"PHOTOS_CROP_TITLE", @"Move and Scale", v27);
     [(_NTKCFaceDetailPhotoCropViewController *)v17 setTitle:v28];
 
-    v29 = _Block_copy(v15);
+    v29 = _Block_copy(handlerCopy);
     completionHandler = v17->_completionHandler;
     v17->_completionHandler = v29;
   }
@@ -66,30 +66,30 @@
   v41.receiver = self;
   v41.super_class = _NTKCFaceDetailPhotoCropViewController;
   [(_NTKCFaceDetailPhotoCropViewController *)&v41 viewDidLoad];
-  v3 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v4 = [(_NTKCFaceDetailPhotoCropViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  view = [(_NTKCFaceDetailPhotoCropViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
-  v5 = [MEMORY[0x277CD9F90] layer];
+  layer = [MEMORY[0x277CD9F90] layer];
   reverseMask = self->_reverseMask;
-  self->_reverseMask = v5;
+  self->_reverseMask = layer;
 
   v7 = [MEMORY[0x277D75348] colorWithWhite:0.2 alpha:1.0];
   -[CAShapeLayer setFillColor:](self->_reverseMask, "setFillColor:", [v7 CGColor]);
 
-  v8 = [(_NTKCFaceDetailPhotoCropViewController *)self view];
-  v9 = [v8 layer];
-  [v9 addSublayer:self->_reverseMask];
+  view2 = [(_NTKCFaceDetailPhotoCropViewController *)self view];
+  layer2 = [view2 layer];
+  [layer2 addSublayer:self->_reverseMask];
 
   v10 = [NTKCCenteringScrollView alloc];
-  v11 = [(_NTKCFaceDetailPhotoCropViewController *)self view];
-  [v11 bounds];
+  view3 = [(_NTKCFaceDetailPhotoCropViewController *)self view];
+  [view3 bounds];
   v12 = [(NTKCCenteringScrollView *)v10 initWithFrame:?];
   scrollView = self->_scrollView;
   self->_scrollView = v12;
 
-  v14 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [(NTKCCenteringScrollView *)self->_scrollView setBackgroundColor:v14];
+  systemBackgroundColor2 = [MEMORY[0x277D75348] systemBackgroundColor];
+  [(NTKCCenteringScrollView *)self->_scrollView setBackgroundColor:systemBackgroundColor2];
 
   [(NTKCCenteringScrollView *)self->_scrollView setMinimumZoomScale:0.1];
   if ([(NTKCompanionCustomPhotosEditor *)self->_editor canChangeOriginalCropOfPhotoAtIndex:self->_index])
@@ -112,8 +112,8 @@
     [(UIBarButtonItem *)self->_cancelButton setEnabled:0];
   }
 
-  v19 = [(_NTKCFaceDetailPhotoCropViewController *)self view];
-  [v19 addSubview:self->_scrollView];
+  view4 = [(_NTKCFaceDetailPhotoCropViewController *)self view];
+  [view4 addSubview:self->_scrollView];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -131,28 +131,28 @@
   v39 = v20;
   v23 = v20;
   [(NTKCompanionCustomPhotosEditor *)editor imageInPhotoLibraryForPhotoAtIndex:index completion:v38];
-  v24 = [MEMORY[0x277CD9F90] layer];
+  layer3 = [MEMORY[0x277CD9F90] layer];
   mask = self->_mask;
-  self->_mask = v24;
+  self->_mask = layer3;
 
   [(CAShapeLayer *)self->_mask setFillRule:*MEMORY[0x277CDA248]];
   v26 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.6];
   -[CAShapeLayer setFillColor:](self->_mask, "setFillColor:", [v26 CGColor]);
 
-  v27 = [(_NTKCFaceDetailPhotoCropViewController *)self view];
-  v28 = [v27 layer];
-  [v28 addSublayer:self->_mask];
+  view5 = [(_NTKCFaceDetailPhotoCropViewController *)self view];
+  layer4 = [view5 layer];
+  [layer4 addSublayer:self->_mask];
 
   v29 = objc_opt_new();
   timeContainer = self->_timeContainer;
   self->_timeContainer = v29;
 
   [(UIView *)self->_timeContainer setUserInteractionEnabled:0];
-  v31 = [(_NTKCFaceDetailPhotoCropViewController *)self view];
-  [v31 addSubview:self->_timeContainer];
+  view6 = [(_NTKCFaceDetailPhotoCropViewController *)self view];
+  [view6 addSubview:self->_timeContainer];
 
-  v32 = [MEMORY[0x277CBBAE8] currentDevice];
-  v33 = [(CLKUITimeLabel *)NTKDigitalTimeLabel labelWithOptions:0 forDevice:v32];
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  v33 = [(CLKUITimeLabel *)NTKDigitalTimeLabel labelWithOptions:0 forDevice:currentDevice];
   time = self->_time;
   self->_time = v33;
 
@@ -161,8 +161,8 @@
   [(NTKDigitalTimeLabel *)self->_time setTextColor:v35];
 
   v36 = +[NTKDate faceDate];
-  v37 = [(CLKUITimeLabel *)self->_time timeFormatter];
-  [v37 setOverrideDate:v36];
+  timeFormatter = [(CLKUITimeLabel *)self->_time timeFormatter];
+  [timeFormatter setOverrideDate:v36];
 
   [(NTKDigitalTimeLabel *)self->_time setStyle:self->_timeStyle];
   [(UIView *)self->_timeContainer addSubview:self->_time];
@@ -173,24 +173,24 @@
   v55.receiver = self;
   v55.super_class = _NTKCFaceDetailPhotoCropViewController;
   [(_NTKCFaceDetailPhotoCropViewController *)&v55 viewDidLayoutSubviews];
-  v3 = [(_NTKCFaceDetailPhotoCropViewController *)self view];
-  [v3 bounds];
+  view = [(_NTKCFaceDetailPhotoCropViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(_NTKCFaceDetailPhotoCropViewController *)self face];
-  v13 = [v12 device];
-  [v13 screenBounds];
+  face = [(_NTKCFaceDetailPhotoCropViewController *)self face];
+  device = [face device];
+  [device screenBounds];
   v49 = v15;
   v50 = v14;
   v51 = v17;
   v52 = v16;
 
-  v18 = [(_NTKCFaceDetailPhotoCropViewController *)self face];
-  v19 = [v18 device];
-  [v19 screenCornerRadius];
+  face2 = [(_NTKCFaceDetailPhotoCropViewController *)self face];
+  device2 = [face2 device];
+  [device2 screenCornerRadius];
   v48 = v20;
 
   v47 = v5;
@@ -259,11 +259,11 @@
   [(NTKCCenteringScrollView *)self->_scrollView setMinimumDisplaySize:width, height];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = _NTKCFaceDetailPhotoCropViewController;
-  [(_NTKCFaceDetailPhotoCropViewController *)&v5 viewWillDisappear:a3];
+  [(_NTKCFaceDetailPhotoCropViewController *)&v5 viewWillDisappear:disappear];
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
@@ -310,8 +310,8 @@
     v23 = [v20 actionWithTitle:v22 style:1 handler:0];
     [v15 addAction:v23];
 
-    v24 = [(_NTKCFaceDetailPhotoCropViewController *)self parentViewController];
-    [v24 presentViewController:v15 animated:1 completion:0];
+    parentViewController = [(_NTKCFaceDetailPhotoCropViewController *)self parentViewController];
+    [parentViewController presentViewController:v15 animated:1 completion:0];
 
     return;
   }
@@ -353,9 +353,9 @@
   }
 }
 
-- (void)dismissWithSaving:(BOOL)a3
+- (void)dismissWithSaving:(BOOL)saving
 {
-  if (a3)
+  if (saving)
   {
     [(NTKCCenteringScrollView *)self->_scrollView cropRect];
     if (!CGRectIsEmpty(v14))

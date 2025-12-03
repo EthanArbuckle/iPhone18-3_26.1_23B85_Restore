@@ -1,45 +1,45 @@
 @interface _IDSIDQueryController
-+ (id)_createXPCConnectionOnQueue:(id)a3;
++ (id)_createXPCConnectionOnQueue:(id)queue;
 + (void)initialize;
-- (BOOL)_flushQueryCacheForService:(id)a3;
-- (BOOL)_sync_refreshIDStatusForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 completionBlock:(id)a7;
-- (BOOL)_warmupQueryCacheForService:(id)a3;
-- (BOOL)idInfoForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 infoTypes:(unint64_t)a6 options:(id)a7 listenerID:(id)a8 queue:(id)a9 completionBlock:(id)a10;
-- (BOOL)refreshIDStatusForDestination:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 completionBlock:(id)a8;
-- (BOOL)refreshIDStatusForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 forceRefresh:(BOOL)a7 queue:(id)a8 completionBlock:(id)a9;
-- (BOOL)removeListenerID:(id)a3 forService:(id)a4;
-- (BOOL)requiredIDStatusForDestination:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 completionBlock:(id)a8;
-- (BOOL)requiredIDStatusForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 completionBlock:(id)a8;
+- (BOOL)_flushQueryCacheForService:(id)service;
+- (BOOL)_sync_refreshIDStatusForDestinations:(id)destinations service:(id)service preferredFromID:(id)d listenerID:(id)iD completionBlock:(id)block;
+- (BOOL)_warmupQueryCacheForService:(id)service;
+- (BOOL)idInfoForDestinations:(id)destinations service:(id)service preferredFromID:(id)d infoTypes:(unint64_t)types options:(id)options listenerID:(id)iD queue:(id)queue completionBlock:(id)self0;
+- (BOOL)refreshIDStatusForDestination:(id)destination service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue completionBlock:(id)block;
+- (BOOL)refreshIDStatusForDestinations:(id)destinations service:(id)service preferredFromID:(id)d listenerID:(id)iD forceRefresh:(BOOL)refresh queue:(id)queue completionBlock:(id)block;
+- (BOOL)removeListenerID:(id)d forService:(id)service;
+- (BOOL)requiredIDStatusForDestination:(id)destination service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue completionBlock:(id)block;
+- (BOOL)requiredIDStatusForDestinations:(id)destinations service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue completionBlock:(id)block;
 - (_IDSIDQueryController)init;
-- (_IDSIDQueryController)initWithDelegateContext:(id)a3 queueController:(id)a4;
-- (id)__sendMessage:(id)a3 queue:(id)a4 reply:(id)a5 failBlock:(id)a6 waitForReply:(BOOL)a7;
-- (id)_cachedStatusForDestination:(id)a3 service:(id)a4;
-- (id)_delegateMapForListenerID:(id)a3 service:(id)a4;
-- (int64_t)_currentCachedIDStatusForDestination:(id)a3 service:(id)a4 listenerID:(id)a5;
-- (void)IDQueryCompletedWithFromURI:(id)a3 idStatusUpdates:(id)a4 service:(id)a5 success:(BOOL)a6 error:(id)a7;
+- (_IDSIDQueryController)initWithDelegateContext:(id)context queueController:(id)controller;
+- (id)__sendMessage:(id)message queue:(id)queue reply:(id)reply failBlock:(id)block waitForReply:(BOOL)forReply;
+- (id)_cachedStatusForDestination:(id)destination service:(id)service;
+- (id)_delegateMapForListenerID:(id)d service:(id)service;
+- (int64_t)_currentCachedIDStatusForDestination:(id)destination service:(id)service listenerID:(id)d;
+- (void)IDQueryCompletedWithFromURI:(id)i idStatusUpdates:(id)updates service:(id)service success:(BOOL)success error:(id)error;
 - (void)___oldDealloc;
-- (void)_callDelegatesForService:(id)a3 destinationToVerifierResult:(id)a4;
-- (void)_callDelegatesWithBlock:(id)a3;
-- (void)_callDelegatesWithBlock:(id)a3 delegateMap:(id)a4;
+- (void)_callDelegatesForService:(id)service destinationToVerifierResult:(id)result;
+- (void)_callDelegatesWithBlock:(id)block;
+- (void)_callDelegatesWithBlock:(id)block delegateMap:(id)map;
 - (void)_connect;
 - (void)_disconnectFromQueryService;
 - (void)_purgeIDStatusCache;
-- (void)_purgeIDStatusCacheAfter:(double)a3;
-- (void)_requestCacheForService:(id)a3 completionBlock:(id)a4;
-- (void)_requestCachedStatusForDestinations:(id)a3 fromID:(id)a4 service:(id)a5 waitForReply:(BOOL)a6 respectExpiry:(BOOL)a7 listenerID:(id)a8 completionBlock:(id)a9;
-- (void)_requestIDInfoForDestinations:(id)a3 fromID:(id)a4 service:(id)a5 infoTypes:(unint64_t)a6 options:(id)a7 listenerID:(id)a8 queue:(id)a9 completionBlock:(id)a10;
-- (void)_requestRemoteDevicesForDestination:(id)a3 fromID:(id)a4 service:(id)a5 listenerID:(id)a6 waitForReply:(BOOL)a7 completionBlock:(id)a8;
-- (void)_requestStatusForDestinations:(id)a3 fromID:(id)a4 service:(id)a5 waitForReply:(BOOL)a6 forceRefresh:(BOOL)a7 bypassLimit:(BOOL)a8 listenerID:(id)a9 completionBlock:(id)a10;
-- (void)_setCurrentIDStatus:(int64_t)a3 forDestination:(id)a4 service:(id)a5;
-- (void)_updateCacheWithDictionary:(id)a3 service:(id)a4;
-- (void)addDelegate:(id)a3 forService:(id)a4 listenerID:(id)a5 queue:(id)a6;
-- (void)addDelegate:(id)a3 queue:(id)a4;
-- (void)addListenerID:(id)a3 forService:(id)a4;
+- (void)_purgeIDStatusCacheAfter:(double)after;
+- (void)_requestCacheForService:(id)service completionBlock:(id)block;
+- (void)_requestCachedStatusForDestinations:(id)destinations fromID:(id)d service:(id)service waitForReply:(BOOL)reply respectExpiry:(BOOL)expiry listenerID:(id)iD completionBlock:(id)block;
+- (void)_requestIDInfoForDestinations:(id)destinations fromID:(id)d service:(id)service infoTypes:(unint64_t)types options:(id)options listenerID:(id)iD queue:(id)queue completionBlock:(id)self0;
+- (void)_requestRemoteDevicesForDestination:(id)destination fromID:(id)d service:(id)service listenerID:(id)iD waitForReply:(BOOL)reply completionBlock:(id)block;
+- (void)_requestStatusForDestinations:(id)destinations fromID:(id)d service:(id)service waitForReply:(BOOL)reply forceRefresh:(BOOL)refresh bypassLimit:(BOOL)limit listenerID:(id)iD completionBlock:(id)self0;
+- (void)_setCurrentIDStatus:(int64_t)status forDestination:(id)destination service:(id)service;
+- (void)_updateCacheWithDictionary:(id)dictionary service:(id)service;
+- (void)addDelegate:(id)delegate forService:(id)service listenerID:(id)d queue:(id)queue;
+- (void)addDelegate:(id)delegate queue:(id)queue;
+- (void)addListenerID:(id)d forService:(id)service;
 - (void)dealloc;
 - (void)flushQueryCache;
-- (void)removeDelegate:(id)a3;
-- (void)removeDelegate:(id)a3 forService:(id)a4 listenerID:(id)a5;
-- (void)setFromID:(id)a3;
+- (void)removeDelegate:(id)delegate;
+- (void)removeDelegate:(id)delegate forService:(id)service listenerID:(id)d;
+- (void)setFromID:(id)d;
 @end
 
 @implementation _IDSIDQueryController
@@ -108,39 +108,39 @@
   self->_delegateToInfo = 0;
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4
+- (void)addDelegate:(id)delegate queue:(id)queue
 {
-  v11 = a3;
-  v6 = a4;
-  if (v11)
+  delegateCopy = delegate;
+  queueCopy = queue;
+  if (delegateCopy)
   {
-    if (v6)
+    if (queueCopy)
     {
-      v7 = [(NSMapTable *)self->_delegateToInfo objectForKey:v11];
+      v7 = [(NSMapTable *)self->_delegateToInfo objectForKey:delegateCopy];
 
       if (!v7)
       {
         if (!self->_delegateToInfo)
         {
-          v8 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+          weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
           delegateToInfo = self->_delegateToInfo;
-          self->_delegateToInfo = v8;
+          self->_delegateToInfo = weakToStrongObjectsMapTable;
         }
 
         v10 = objc_alloc_init(MEMORY[0x1E69A5228]);
-        [v10 setQueue:v6];
-        [(NSMapTable *)self->_delegateToInfo setObject:v10 forKey:v11];
+        [v10 setQueue:queueCopy];
+        [(NSMapTable *)self->_delegateToInfo setObject:v10 forKey:delegateCopy];
       }
     }
   }
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
-  if (v4)
+  delegateCopy = delegate;
+  if (delegateCopy)
   {
-    [(NSMapTable *)self->_delegateToInfo removeObjectForKey:v4];
+    [(NSMapTable *)self->_delegateToInfo removeObjectForKey:delegateCopy];
     if (![(NSMapTable *)self->_delegateToInfo count])
     {
       delegateToInfo = self->_delegateToInfo;
@@ -151,11 +151,11 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_callDelegatesWithBlock:(id)a3
+- (void)_callDelegatesWithBlock:(id)block
 {
   v22 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  if (v14)
+  blockCopy = block;
+  if (blockCopy)
   {
     v19 = 0u;
     v20 = 0u;
@@ -178,17 +178,17 @@
 
           v9 = *(*(&v17 + 1) + 8 * i);
           v10 = [(NSMapTable *)self->_delegateToInfo objectForKey:v9];
-          v11 = [v10 queue];
-          if (v11)
+          queue = [v10 queue];
+          if (queue)
           {
             block[0] = MEMORY[0x1E69E9820];
             block[1] = 3221225472;
             block[2] = sub_195A4AB90;
             block[3] = &unk_1E743F110;
-            v12 = v14;
+            v12 = blockCopy;
             block[4] = v9;
             v16 = v12;
-            dispatch_async(v11, block);
+            dispatch_async(queue, block);
           }
         }
 
@@ -206,22 +206,22 @@
 {
   if (!self->_serviceToken)
   {
-    v3 = [MEMORY[0x1E696AEC0] stringGUID];
+    stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
     serviceToken = self->_serviceToken;
-    self->_serviceToken = v3;
+    self->_serviceToken = stringGUID;
 
     MEMORY[0x1EEE66BB8]();
   }
 }
 
-- (void)IDQueryCompletedWithFromURI:(id)a3 idStatusUpdates:(id)a4 service:(id)a5 success:(BOOL)a6 error:(id)a7
+- (void)IDQueryCompletedWithFromURI:(id)i idStatusUpdates:(id)updates service:(id)service success:(BOOL)success error:(id)error
 {
-  v30 = a6;
+  successCopy = success;
   v48 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a7;
+  iCopy = i;
+  updatesCopy = updates;
+  serviceCopy = service;
+  errorCopy = error;
   context = objc_autoreleasePoolPush();
   v14 = MEMORY[0x1E696ACD0];
   v15 = MEMORY[0x1E695DFD8];
@@ -230,10 +230,10 @@
   v18 = objc_opt_class();
   v19 = objc_opt_class();
   v29 = v18;
-  v20 = v10;
+  v20 = iCopy;
   v21 = [v15 setWithObjects:{v16, v17, v29, v19, objc_opt_class(), 0}];
   v35 = 0;
-  v22 = [v14 _strictlyUnarchivedObjectOfClasses:v21 fromData:v11 error:&v35];
+  v22 = [v14 _strictlyUnarchivedObjectOfClasses:v21 fromData:updatesCopy error:&v35];
   v23 = v35;
 
   v24 = +[IDSLogging IDQuery];
@@ -241,20 +241,20 @@
   {
     v25 = @"NO";
     *buf = 138413570;
-    v37 = v10;
+    v37 = iCopy;
     v38 = 2112;
-    if (v30)
+    if (successCopy)
     {
       v25 = @"YES";
     }
 
     v39 = v22;
     v40 = 2112;
-    v41 = v12;
+    v41 = serviceCopy;
     v42 = 2112;
     v43 = v25;
     v44 = 2112;
-    v45 = v13;
+    v45 = errorCopy;
     v46 = 2112;
     v47 = v23;
     _os_log_impl(&dword_1959FF000, v24, OS_LOG_TYPE_DEFAULT, "Received IDQueryCompletedWithFromURI %@ idStatusUpdates %@ service %@ success %@ error %@ decodeError %@", buf, 0x3Eu);
@@ -274,11 +274,11 @@
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addListenerID:(id)a3 forService:(id)a4
+- (void)addListenerID:(id)d forService:(id)service
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  serviceCopy = service;
   v8 = +[IDSLogging IDQuery];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -286,7 +286,7 @@
     _os_log_impl(&dword_1959FF000, v8, OS_LOG_TYPE_DEFAULT, "addListener:forService:", &v19, 2u);
   }
 
-  if (![(NSMutableDictionary *)v6 length])
+  if (![(NSMutableDictionary *)dCopy length])
   {
     v13 = +[IDSLogging IDQuery];
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -301,7 +301,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (![v7 length])
+  if (![serviceCopy length])
   {
     v13 = +[IDSLogging IDQuery];
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -324,7 +324,7 @@ LABEL_20:
     listenerIDToServicesMap = self->_listenerIDToServicesMap;
   }
 
-  v12 = [(NSMutableDictionary *)listenerIDToServicesMap objectForKey:v6];
+  v12 = [(NSMutableDictionary *)listenerIDToServicesMap objectForKey:dCopy];
   v13 = [v12 mutableCopy];
 
   if (!v13)
@@ -332,21 +332,21 @@ LABEL_20:
     v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
 
-  if (([v13 containsObject:v7]& 1) == 0)
+  if (([v13 containsObject:serviceCopy]& 1) == 0)
   {
-    [v13 addObject:v7];
+    [v13 addObject:serviceCopy];
     v14 = +[IDSLogging IDQuery];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138412546;
-      v20 = v6;
+      v20 = dCopy;
       v21 = 2112;
       v22 = v13;
       _os_log_impl(&dword_1959FF000, v14, OS_LOG_TYPE_DEFAULT, "%@ -> %@", &v19, 0x16u);
     }
   }
 
-  [(NSMutableDictionary *)self->_listenerIDToServicesMap setObject:v13 forKey:v6];
+  [(NSMutableDictionary *)self->_listenerIDToServicesMap setObject:v13 forKey:dCopy];
   v15 = +[IDSLogging IDQuery];
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
@@ -360,11 +360,11 @@ LABEL_21:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)removeListenerID:(id)a3 forService:(id)a4
+- (BOOL)removeListenerID:(id)d forService:(id)service
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  serviceCopy = service;
   v8 = +[IDSLogging IDQuery];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -372,7 +372,7 @@ LABEL_21:
     _os_log_impl(&dword_1959FF000, v8, OS_LOG_TYPE_DEFAULT, "removeListenerID:forService:", &v21, 2u);
   }
 
-  if (![(NSMutableDictionary *)v6 length])
+  if (![(NSMutableDictionary *)dCopy length])
   {
     v10 = +[IDSLogging IDQuery];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -388,7 +388,7 @@ LABEL_15:
     goto LABEL_22;
   }
 
-  if (![v7 length])
+  if (![serviceCopy length])
   {
     v10 = +[IDSLogging IDQuery];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -401,17 +401,17 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v9 = [(NSMutableDictionary *)self->_listenerIDToServicesMap objectForKey:v6];
+  v9 = [(NSMutableDictionary *)self->_listenerIDToServicesMap objectForKey:dCopy];
   v10 = [v9 mutableCopy];
 
   if (v10)
   {
-    [v10 removeObject:v7];
+    [v10 removeObject:serviceCopy];
     v11 = +[IDSLogging IDQuery];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 138412546;
-      v22 = v6;
+      v22 = dCopy;
       v23 = 2112;
       v24 = v10;
       _os_log_impl(&dword_1959FF000, v11, OS_LOG_TYPE_DEFAULT, "%@ -> %@", &v21, 0x16u);
@@ -421,12 +421,12 @@ LABEL_15:
     listenerIDToServicesMap = self->_listenerIDToServicesMap;
     if (v12)
     {
-      [(NSMutableDictionary *)listenerIDToServicesMap setObject:v10 forKey:v6];
+      [(NSMutableDictionary *)listenerIDToServicesMap setObject:v10 forKey:dCopy];
     }
 
     else
     {
-      [(NSMutableDictionary *)listenerIDToServicesMap removeObjectForKey:v6];
+      [(NSMutableDictionary *)listenerIDToServicesMap removeObjectForKey:dCopy];
     }
   }
 
@@ -476,26 +476,26 @@ LABEL_22:
   }
 }
 
-- (void)_requestCacheForService:(id)a3 completionBlock:(id)a4
+- (void)_requestCacheForService:(id)service completionBlock:(id)block
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([(NSMutableDictionary *)v6 length])
+  serviceCopy = service;
+  blockCopy = block;
+  if ([(NSMutableDictionary *)serviceCopy length])
   {
     v8 = +[IDSLogging IDQuery];
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-    if (v7)
+    if (blockCopy)
     {
       if (v9)
       {
         *buf = 138412290;
-        v43 = v6;
+        v43 = serviceCopy;
         _os_log_impl(&dword_1959FF000, v8, OS_LOG_TYPE_DEFAULT, "Cache request for service %@", buf, 0xCu);
       }
 
-      v10 = [MEMORY[0x1E696AEC0] stringGUID];
-      v11 = [v7 copy];
+      stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
+      v11 = [blockCopy copy];
       transactionIDToBlockMap = self->_transactionIDToBlockMap;
       if (!transactionIDToBlockMap)
       {
@@ -507,7 +507,7 @@ LABEL_22:
       }
 
       v15 = MEMORY[0x19A8BBEF0](v11);
-      [(NSMutableDictionary *)transactionIDToBlockMap setObject:v15 forKey:v10];
+      [(NSMutableDictionary *)transactionIDToBlockMap setObject:v15 forKey:stringGUID];
 
       v16 = +[IDSLogging IDQuery];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -523,9 +523,9 @@ LABEL_22:
       v39[2] = sub_195AD7A00;
       v39[3] = &unk_1E7442400;
       v39[4] = self;
-      v8 = v10;
+      v8 = stringGUID;
       v40 = v8;
-      v18 = v6;
+      v18 = serviceCopy;
       v41 = v18;
       v19 = MEMORY[0x19A8BBEF0](v39);
       v20 = xpc_dictionary_create(0, 0, 0);
@@ -558,7 +558,7 @@ LABEL_22:
 
         v24 = v23;
         v36 = v19;
-        v37 = v7;
+        v37 = blockCopy;
         v25 = IMGetXPCStringFromDictionary();
         v38 = IMGetXPCDictionaryFromDictionary();
         v26 = IMGetXPCStringFromDictionary();
@@ -589,7 +589,7 @@ LABEL_22:
         }
 
         v19 = v36;
-        v7 = v37;
+        blockCopy = v37;
       }
 
       else
@@ -624,7 +624,7 @@ LABEL_31:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v43 = v6;
+      v43 = serviceCopy;
       v33 = "No service %@, bailing...";
 LABEL_26:
       _os_log_impl(&dword_1959FF000, v8, OS_LOG_TYPE_DEFAULT, v33, buf, 0xCu);
@@ -636,17 +636,17 @@ LABEL_32:
   v35 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_requestCachedStatusForDestinations:(id)a3 fromID:(id)a4 service:(id)a5 waitForReply:(BOOL)a6 respectExpiry:(BOOL)a7 listenerID:(id)a8 completionBlock:(id)a9
+- (void)_requestCachedStatusForDestinations:(id)destinations fromID:(id)d service:(id)service waitForReply:(BOOL)reply respectExpiry:(BOOL)expiry listenerID:(id)iD completionBlock:(id)block
 {
-  v10 = a7;
-  v11 = a6;
+  expiryCopy = expiry;
+  replyCopy = reply;
   v58 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
-  v19 = a9;
-  if (![v17 length])
+  destinationsCopy = destinations;
+  dCopy = d;
+  serviceCopy = service;
+  iDCopy = iD;
+  blockCopy = block;
+  if (![serviceCopy length])
   {
     v27 = +[IDSLogging IDQuery];
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -655,14 +655,14 @@ LABEL_32:
     }
 
     *buf = 138412290;
-    v51 = v17;
+    v51 = serviceCopy;
     v36 = "No service %@, bailing...";
 LABEL_23:
     _os_log_impl(&dword_1959FF000, v27, OS_LOG_TYPE_DEFAULT, v36, buf, 0xCu);
     goto LABEL_31;
   }
 
-  if (![v18 length])
+  if (![iDCopy length])
   {
     v27 = +[IDSLogging IDQuery];
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -671,31 +671,31 @@ LABEL_23:
     }
 
     *buf = 138412290;
-    v51 = v18;
+    v51 = iDCopy;
     v36 = "No listenerID %@, bailing...";
     goto LABEL_23;
   }
 
-  if (v19)
+  if (blockCopy)
   {
-    v40 = v10;
-    v41 = v11;
-    v20 = [MEMORY[0x1E696AEC0] stringGUID];
+    v40 = expiryCopy;
+    v41 = replyCopy;
+    stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
     v21 = +[IDSLogging IDQuery];
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413058;
-      v51 = v15;
+      v51 = destinationsCopy;
       v52 = 2112;
-      v53 = v17;
+      v53 = serviceCopy;
       v54 = 2112;
-      v55 = v18;
+      v55 = iDCopy;
       v56 = 2112;
-      v57 = v20;
+      v57 = stringGUID;
       _os_log_impl(&dword_1959FF000, v21, OS_LOG_TYPE_DEFAULT, "Cached ID status request (destinations: %@)  (service: %@)  (listenerID: %@)  (transactionID: %@)", buf, 0x2Au);
     }
 
-    v22 = [v19 copy];
+    v22 = [blockCopy copy];
     transactionIDToBlockMap = self->_transactionIDToBlockMap;
     if (!transactionIDToBlockMap)
     {
@@ -707,21 +707,21 @@ LABEL_23:
     }
 
     v26 = MEMORY[0x19A8BBEF0](v22);
-    [(NSMutableDictionary *)transactionIDToBlockMap setObject:v26 forKey:v20];
+    [(NSMutableDictionary *)transactionIDToBlockMap setObject:v26 forKey:stringGUID];
 
     v46[0] = MEMORY[0x1E69E9820];
     v46[1] = 3221225472;
     v46[2] = sub_195AD8040;
     v46[3] = &unk_1E7442428;
     v46[4] = self;
-    v27 = v20;
+    v27 = stringGUID;
     v47 = v27;
-    v28 = v17;
+    v28 = serviceCopy;
     v48 = v28;
-    v29 = v18;
+    v29 = iDCopy;
     v49 = v29;
     v42 = MEMORY[0x19A8BBEF0](v46);
-    if ([v15 count])
+    if ([destinationsCopy count])
     {
       v30 = xpc_dictionary_create(0, 0, 0);
       v31 = v30;
@@ -731,9 +731,9 @@ LABEL_23:
         IMInsertNSStringsToXPCDictionary();
         IMInsertArraysToXPCDictionary();
         IMInsertNSStringsToXPCDictionary();
-        if (v16)
+        if (dCopy)
         {
-          v39 = [v16 unprefixedURI];
+          unprefixedURI = [dCopy unprefixedURI];
           IMInsertNSStringsToXPCDictionary();
         }
 
@@ -755,9 +755,9 @@ LABEL_23:
         v43[4] = self;
         v44 = v27;
         v45 = v29;
-        v33 = self;
+        selfCopy = self;
         v34 = v42;
-        v35 = [(_IDSIDQueryController *)v33 __sendMessage:v31 queue:queue reply:v43 failBlock:v42 waitForReply:v41];
+        v35 = [(_IDSIDQueryController *)selfCopy __sendMessage:v31 queue:queue reply:v43 failBlock:v42 waitForReply:v41];
       }
 
       else
@@ -803,18 +803,18 @@ LABEL_31:
   v38 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_requestStatusForDestinations:(id)a3 fromID:(id)a4 service:(id)a5 waitForReply:(BOOL)a6 forceRefresh:(BOOL)a7 bypassLimit:(BOOL)a8 listenerID:(id)a9 completionBlock:(id)a10
+- (void)_requestStatusForDestinations:(id)destinations fromID:(id)d service:(id)service waitForReply:(BOOL)reply forceRefresh:(BOOL)refresh bypassLimit:(BOOL)limit listenerID:(id)iD completionBlock:(id)self0
 {
-  v10 = a8;
-  v49 = a7;
-  v11 = a6;
+  limitCopy = limit;
+  refreshCopy = refresh;
+  replyCopy = reply;
   v67 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a9;
-  v19 = a10;
-  if (![(NSMutableDictionary *)v17 length])
+  destinationsCopy = destinations;
+  dCopy = d;
+  serviceCopy = service;
+  iDCopy = iD;
+  blockCopy = block;
+  if (![(NSMutableDictionary *)serviceCopy length])
   {
     v31 = +[IDSLogging IDQuery];
     if (!os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -823,14 +823,14 @@ LABEL_31:
     }
 
     *buf = 138412290;
-    v60 = v17;
+    v60 = serviceCopy;
     v39 = "No service %@, bailing...";
 LABEL_27:
     _os_log_impl(&dword_1959FF000, v31, OS_LOG_TYPE_DEFAULT, v39, buf, 0xCu);
     goto LABEL_35;
   }
 
-  if (![(NSMutableDictionary *)v18 length])
+  if (![(NSMutableDictionary *)iDCopy length])
   {
     v31 = +[IDSLogging IDQuery];
     if (!os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -839,25 +839,25 @@ LABEL_27:
     }
 
     *buf = 138412290;
-    v60 = v18;
+    v60 = iDCopy;
     v39 = "No listenerID %@, bailing...";
     goto LABEL_27;
   }
 
-  if (v19)
+  if (blockCopy)
   {
-    v44 = v10;
-    v45 = v11;
-    v46 = v16;
-    v20 = [MEMORY[0x1E696AEC0] stringGUID];
+    v44 = limitCopy;
+    v45 = replyCopy;
+    v46 = dCopy;
+    stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
     v57[0] = MEMORY[0x1E69E9820];
     v57[1] = 3221225472;
     v57[2] = sub_195AD8994;
     v57[3] = &unk_1E7441850;
-    v21 = v17;
+    v21 = serviceCopy;
     v58 = v21;
-    v48 = v15;
-    v22 = [v15 __imArrayByApplyingBlock:v57];
+    v48 = destinationsCopy;
+    v22 = [destinationsCopy __imArrayByApplyingBlock:v57];
     v23 = +[IDSLogging IDQuery];
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
@@ -866,14 +866,14 @@ LABEL_27:
       v61 = 2112;
       v62 = v21;
       v63 = 2112;
-      v64 = v18;
+      v64 = iDCopy;
       v65 = 2112;
-      v66 = v20;
+      v66 = stringGUID;
       _os_log_impl(&dword_1959FF000, v23, OS_LOG_TYPE_DEFAULT, "ID status renewal request (destinations: %@)  (service: %@)  (listenerID: %@)  (transactionID: %@)", buf, 0x2Au);
     }
 
-    v47 = v19;
-    v24 = [v19 copy];
+    v47 = blockCopy;
+    v24 = [blockCopy copy];
     transactionIDToBlockMap = self->_transactionIDToBlockMap;
     if (!transactionIDToBlockMap)
     {
@@ -885,7 +885,7 @@ LABEL_27:
     }
 
     v28 = MEMORY[0x19A8BBEF0](v24);
-    [(NSMutableDictionary *)transactionIDToBlockMap setObject:v28 forKey:v20];
+    [(NSMutableDictionary *)transactionIDToBlockMap setObject:v28 forKey:stringGUID];
 
     v29 = +[IDSLogging IDQuery];
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -901,18 +901,18 @@ LABEL_27:
     v53[2] = sub_195AD89AC;
     v53[3] = &unk_1E7442428;
     v53[4] = self;
-    v31 = v20;
+    v31 = stringGUID;
     v54 = v31;
     v32 = v21;
     v55 = v32;
-    v33 = v18;
+    v33 = iDCopy;
     v56 = v33;
     v34 = MEMORY[0x19A8BBEF0](v53);
     if ([v48 count])
     {
       v35 = xpc_dictionary_create(0, 0, 0);
       v36 = v35;
-      v19 = v47;
+      blockCopy = v47;
       if (v35)
       {
         xpc_dictionary_set_BOOL(v35, "id-status-query", 1);
@@ -920,14 +920,14 @@ LABEL_27:
         IMInsertArraysToXPCDictionary();
         v42 = v32;
         IMInsertNSStringsToXPCDictionary();
-        v16 = v46;
+        dCopy = v46;
         if (v46)
         {
-          v43 = [v46 unprefixedURI];
+          unprefixedURI = [v46 unprefixedURI];
           IMInsertNSStringsToXPCDictionary();
         }
 
-        if (v49)
+        if (refreshCopy)
         {
           xpc_dictionary_set_BOOL(v36, "force", 1);
         }
@@ -952,29 +952,29 @@ LABEL_27:
         v52 = v33;
         v38 = [(_IDSIDQueryController *)self __sendMessage:v36 queue:queue reply:v50 failBlock:v34 waitForReply:v45];
 
-        v19 = v47;
-        v15 = v48;
+        blockCopy = v47;
+        destinationsCopy = v48;
       }
 
       else
       {
-        v15 = v48;
-        v16 = v46;
+        destinationsCopy = v48;
+        dCopy = v46;
       }
     }
 
     else
     {
       v40 = +[IDSLogging IDQuery];
-      v19 = v47;
+      blockCopy = v47;
       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
         _os_log_impl(&dword_1959FF000, v40, OS_LOG_TYPE_DEFAULT, "No destinations, not issuing query...", buf, 2u);
       }
 
-      v15 = v48;
-      v16 = v46;
+      destinationsCopy = v48;
+      dCopy = v46;
       if (!v34)
       {
         goto LABEL_34;
@@ -1002,16 +1002,16 @@ LABEL_35:
   v41 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_requestRemoteDevicesForDestination:(id)a3 fromID:(id)a4 service:(id)a5 listenerID:(id)a6 waitForReply:(BOOL)a7 completionBlock:(id)a8
+- (void)_requestRemoteDevicesForDestination:(id)destination fromID:(id)d service:(id)service listenerID:(id)iD waitForReply:(BOOL)reply completionBlock:(id)block
 {
-  v9 = a7;
+  replyCopy = reply;
   v62 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  if (![(NSMutableDictionary *)v16 length])
+  destinationCopy = destination;
+  dCopy = d;
+  serviceCopy = service;
+  iDCopy = iD;
+  blockCopy = block;
+  if (![(NSMutableDictionary *)serviceCopy length])
   {
     v28 = +[IDSLogging IDQuery];
     if (!os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -1020,14 +1020,14 @@ LABEL_35:
     }
 
     *buf = 138412290;
-    v55 = v16;
+    v55 = serviceCopy;
     v39 = "No service %@, bailing...";
 LABEL_25:
     _os_log_impl(&dword_1959FF000, v28, OS_LOG_TYPE_DEFAULT, v39, buf, 0xCu);
     goto LABEL_33;
   }
 
-  if (![(NSMutableDictionary *)v17 length])
+  if (![(NSMutableDictionary *)iDCopy length])
   {
     v28 = +[IDSLogging IDQuery];
     if (!os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -1036,31 +1036,31 @@ LABEL_25:
     }
 
     *buf = 138412290;
-    v55 = v17;
+    v55 = iDCopy;
     v39 = "No listenerID %@, bailing...";
     goto LABEL_25;
   }
 
-  if (v18)
+  if (blockCopy)
   {
-    v44 = v9;
-    v46 = v15;
-    v19 = [MEMORY[0x1E696AEC0] stringGUID];
+    v44 = replyCopy;
+    v46 = dCopy;
+    stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
     v20 = +[IDSLogging IDQuery];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413058;
-      v55 = v14;
+      v55 = destinationCopy;
       v56 = 2112;
-      v57 = v16;
+      v57 = serviceCopy;
       v58 = 2112;
-      v59 = v17;
+      v59 = iDCopy;
       v60 = 2112;
-      v61 = v19;
+      v61 = stringGUID;
       _os_log_impl(&dword_1959FF000, v20, OS_LOG_TYPE_DEFAULT, "ID remote device request (destination: %@)  (service: %@)  (listenerID: %@)  (transactionID: %@)", buf, 0x2Au);
     }
 
-    v21 = [v18 copy];
+    v21 = [blockCopy copy];
     transactionIDToBlockMap = self->_transactionIDToBlockMap;
     if (!transactionIDToBlockMap)
     {
@@ -1072,7 +1072,7 @@ LABEL_25:
     }
 
     v25 = MEMORY[0x19A8BBEF0](v21);
-    [(NSMutableDictionary *)transactionIDToBlockMap setObject:v25 forKey:v19];
+    [(NSMutableDictionary *)transactionIDToBlockMap setObject:v25 forKey:stringGUID];
 
     v26 = +[IDSLogging IDQuery];
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -1088,15 +1088,15 @@ LABEL_25:
     v50[2] = sub_195AD9308;
     v50[3] = &unk_1E7442428;
     v50[4] = self;
-    v28 = v19;
+    v28 = stringGUID;
     v51 = v28;
-    v29 = v16;
+    v29 = serviceCopy;
     v52 = v29;
-    v30 = v17;
+    v30 = iDCopy;
     v53 = v30;
     v45 = MEMORY[0x19A8BBEF0](v50);
-    v31 = [(NSMutableDictionary *)v14 destinationURIs];
-    v32 = [v31 count];
+    destinationURIs = [(NSMutableDictionary *)destinationCopy destinationURIs];
+    v32 = [destinationURIs count];
 
     if (v32)
     {
@@ -1109,10 +1109,10 @@ LABEL_25:
         IMInsertKeyedCodableObjectsToXPCDictionary();
         v42 = v29;
         IMInsertNSStringsToXPCDictionary();
-        v15 = v46;
+        dCopy = v46;
         if (v46)
         {
-          v43 = [v46 unprefixedURI];
+          unprefixedURI = [v46 unprefixedURI];
           IMInsertNSStringsToXPCDictionary();
         }
 
@@ -1142,7 +1142,7 @@ LABEL_25:
       else
       {
         v37 = v45;
-        v15 = v46;
+        dCopy = v46;
       }
     }
 
@@ -1156,7 +1156,7 @@ LABEL_25:
       }
 
       v37 = v45;
-      v15 = v46;
+      dCopy = v46;
       if (!v45)
       {
         goto LABEL_32;
@@ -1184,16 +1184,16 @@ LABEL_33:
   v41 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_requestIDInfoForDestinations:(id)a3 fromID:(id)a4 service:(id)a5 infoTypes:(unint64_t)a6 options:(id)a7 listenerID:(id)a8 queue:(id)a9 completionBlock:(id)a10
+- (void)_requestIDInfoForDestinations:(id)destinations fromID:(id)d service:(id)service infoTypes:(unint64_t)types options:(id)options listenerID:(id)iD queue:(id)queue completionBlock:(id)self0
 {
   v63 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
-  v20 = a10;
-  if (![(NSMutableDictionary *)v17 length])
+  destinationsCopy = destinations;
+  dCopy = d;
+  serviceCopy = service;
+  optionsCopy = options;
+  iDCopy = iD;
+  blockCopy = block;
+  if (![(NSMutableDictionary *)serviceCopy length])
   {
     v30 = +[IDSLogging IDQuery];
     if (!os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -1202,14 +1202,14 @@ LABEL_33:
     }
 
     *buf = 138412290;
-    v56 = v17;
+    v56 = serviceCopy;
     v41 = "No service %@, bailing...";
 LABEL_23:
     _os_log_impl(&dword_1959FF000, v30, OS_LOG_TYPE_DEFAULT, v41, buf, 0xCu);
     goto LABEL_31;
   }
 
-  if (![(NSMutableDictionary *)v19 length])
+  if (![(NSMutableDictionary *)iDCopy length])
   {
     v30 = +[IDSLogging IDQuery];
     if (!os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -1218,31 +1218,31 @@ LABEL_23:
     }
 
     *buf = 138412290;
-    v56 = v19;
+    v56 = iDCopy;
     v41 = "No listenerID %@, bailing...";
     goto LABEL_23;
   }
 
-  if (v20)
+  if (blockCopy)
   {
-    v46 = v16;
-    v47 = v18;
-    v21 = [MEMORY[0x1E696AEC0] stringGUID];
+    v46 = dCopy;
+    v47 = optionsCopy;
+    stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
     v22 = +[IDSLogging IDQuery];
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413058;
-      v56 = v15;
+      v56 = destinationsCopy;
       v57 = 2112;
-      v58 = v17;
+      v58 = serviceCopy;
       v59 = 2112;
-      v60 = v19;
+      v60 = iDCopy;
       v61 = 2112;
-      v62 = v21;
+      v62 = stringGUID;
       _os_log_impl(&dword_1959FF000, v22, OS_LOG_TYPE_DEFAULT, "ID remote device request (destination: %@)  (service: %@)  (listenerID: %@)  (transactionID: %@)", buf, 0x2Au);
     }
 
-    v23 = [v20 copy];
+    v23 = [blockCopy copy];
     transactionIDToBlockMap = self->_transactionIDToBlockMap;
     if (!transactionIDToBlockMap)
     {
@@ -1254,7 +1254,7 @@ LABEL_23:
     }
 
     v27 = MEMORY[0x19A8BBEF0](v23);
-    [(NSMutableDictionary *)transactionIDToBlockMap setObject:v27 forKey:v21];
+    [(NSMutableDictionary *)transactionIDToBlockMap setObject:v27 forKey:stringGUID];
 
     v28 = +[IDSLogging IDQuery];
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -1270,14 +1270,14 @@ LABEL_23:
     v51[2] = sub_195AD9CA0;
     v51[3] = &unk_1E7442428;
     v51[4] = self;
-    v30 = v21;
+    v30 = stringGUID;
     v52 = v30;
-    v53 = v17;
-    v31 = v19;
+    v53 = serviceCopy;
+    v31 = iDCopy;
     v54 = v31;
     v45 = MEMORY[0x19A8BBEF0](v51);
-    v32 = [(NSMutableDictionary *)v15 destinationURIs];
-    v33 = [v32 count];
+    destinationURIs = [(NSMutableDictionary *)destinationsCopy destinationURIs];
+    v33 = [destinationURIs count];
 
     if (v33)
     {
@@ -1291,10 +1291,10 @@ LABEL_23:
         IMInsertNSStringsToXPCDictionary();
         IMInsertIntsToXPCDictionary();
         IMInsertKeyedCodableObjectsToXPCDictionary();
-        v16 = v46;
+        dCopy = v46;
         if (v46)
         {
-          v44 = [v46 unprefixedURI];
+          unprefixedURI = [v46 unprefixedURI];
           IMInsertNSStringsToXPCDictionary();
         }
 
@@ -1311,17 +1311,17 @@ LABEL_23:
         v48[4] = self;
         v49 = v30;
         v50 = v31;
-        v37 = [v47 waitForReply];
-        v38 = queue;
-        v18 = v47;
+        waitForReply = [v47 waitForReply];
+        queueCopy = queue;
+        optionsCopy = v47;
         v39 = v45;
-        v40 = [(_IDSIDQueryController *)self __sendMessage:v35 queue:v38 reply:v48 failBlock:v45 waitForReply:v37];
+        v40 = [(_IDSIDQueryController *)self __sendMessage:v35 queue:queueCopy reply:v48 failBlock:v45 waitForReply:waitForReply];
       }
 
       else
       {
-        v16 = v46;
-        v18 = v47;
+        dCopy = v46;
+        optionsCopy = v47;
         v39 = v45;
       }
     }
@@ -1335,8 +1335,8 @@ LABEL_23:
         _os_log_impl(&dword_1959FF000, v42, OS_LOG_TYPE_DEFAULT, "No destinations, not issuing query...", buf, 2u);
       }
 
-      v16 = v46;
-      v18 = v47;
+      dCopy = v46;
+      optionsCopy = v47;
       v39 = v45;
       if (!v45)
       {
@@ -1365,18 +1365,18 @@ LABEL_31:
   v43 = *MEMORY[0x1E69E9840];
 }
 
-- (id)__sendMessage:(id)a3 queue:(id)a4 reply:(id)a5 failBlock:(id)a6 waitForReply:(BOOL)a7
+- (id)__sendMessage:(id)message queue:(id)queue reply:(id)reply failBlock:(id)block waitForReply:(BOOL)forReply
 {
   v39 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (v12)
+  messageCopy = message;
+  queueCopy = queue;
+  replyCopy = reply;
+  blockCopy = block;
+  if (messageCopy)
   {
-    if (!v13)
+    if (!queueCopy)
     {
-      v13 = dispatch_get_global_queue(0, 0);
+      queueCopy = dispatch_get_global_queue(0, 0);
     }
 
     connection = self->_connection;
@@ -1412,7 +1412,7 @@ LABEL_31:
       v33 = 3221225472;
       v34 = sub_195ADA39C;
       v35 = &unk_1E743E878;
-      v36 = self;
+      selfCopy = self;
       IMXPCConfigureConnection();
     }
 
@@ -1420,16 +1420,16 @@ LABEL_31:
     v29[1] = 3221225472;
     v29[2] = sub_195ADA490;
     v29[3] = &unk_1E7442478;
-    v30 = v15;
-    v31 = v14;
+    v30 = blockCopy;
+    v31 = replyCopy;
     v23 = MEMORY[0x19A8BBEF0](v29);
-    v24 = [MEMORY[0x1E696AE30] processInfo];
-    v28 = [v24 processName];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    processName = [processInfo processName];
     IMInsertNSStringsToXPCDictionary();
 
-    if (a7)
+    if (forReply)
     {
-      v18 = xpc_connection_send_message_with_reply_sync(v17, v12);
+      v18 = xpc_connection_send_message_with_reply_sync(v17, messageCopy);
       if (v23)
       {
         (v23)[2](v23, v18);
@@ -1438,7 +1438,7 @@ LABEL_31:
 
     else
     {
-      xpc_connection_send_message_with_reply(v17, v12, v13, v23);
+      xpc_connection_send_message_with_reply(v17, messageCopy, queueCopy, v23);
       v18 = 0;
     }
 
@@ -1464,19 +1464,19 @@ LABEL_17:
   return v18;
 }
 
-+ (id)_createXPCConnectionOnQueue:(id)a3
++ (id)_createXPCConnectionOnQueue:(id)queue
 {
   v3 = *MEMORY[0x1E69A5440];
-  v4 = a3;
+  queueCopy = queue;
   [v3 UTF8String];
   v5 = IMXPCCreateConnectionForServiceWithQueue();
 
   return v5;
 }
 
-- (_IDSIDQueryController)initWithDelegateContext:(id)a3 queueController:(id)a4
+- (_IDSIDQueryController)initWithDelegateContext:(id)context queueController:(id)controller
 {
-  v5 = a4;
+  controllerCopy = controller;
   v6 = [(_IDSIDQueryController *)self init];
   if (v6)
   {
@@ -1487,9 +1487,9 @@ LABEL_17:
     connection = v6->_connection;
     v6->_connection = 0;
 
-    v10 = [v5 queue];
+    queue = [controllerCopy queue];
     queue = v6->_queue;
-    v6->_queue = v10;
+    v6->_queue = queue;
 
     if (!v6->_queue)
     {
@@ -1499,13 +1499,13 @@ LABEL_17:
       v6->_queue = v13;
     }
 
-    v15 = [MEMORY[0x1E696AEC0] stringGUID];
+    stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
     serviceToken = v6->_serviceToken;
-    v6->_serviceToken = v15;
+    v6->_serviceToken = stringGUID;
 
-    v17 = [MEMORY[0x1E696AEC0] stringGUID];
+    stringGUID2 = [MEMORY[0x1E696AEC0] stringGUID];
     listenerGUID = v6->_listenerGUID;
-    v6->_listenerGUID = v17;
+    v6->_listenerGUID = stringGUID2;
   }
 
   return v6;
@@ -1523,7 +1523,7 @@ LABEL_17:
   [(_IDSIDQueryController *)&v4 dealloc];
 }
 
-- (void)setFromID:(id)a3
+- (void)setFromID:(id)d
 {
   v3 = +[IDSLogging IDQuery];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -1533,14 +1533,14 @@ LABEL_17:
   }
 }
 
-- (id)_cachedStatusForDestination:(id)a3 service:(id)a4
+- (id)_cachedStatusForDestination:(id)destination service:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_idStatusCache && [v6 length] && objc_msgSend(v7, "length"))
+  destinationCopy = destination;
+  serviceCopy = service;
+  if (self->_idStatusCache && [destinationCopy length] && objc_msgSend(serviceCopy, "length"))
   {
-    v8 = [(_IDSIDQueryController *)self _cacheForService:v7];
-    v9 = [v8 objectForKey:v6];
+    v8 = [(_IDSIDQueryController *)self _cacheForService:serviceCopy];
+    v9 = [v8 objectForKey:destinationCopy];
   }
 
   else
@@ -1551,10 +1551,10 @@ LABEL_17:
   return v9;
 }
 
-- (void)_updateCacheWithDictionary:(id)a3 service:(id)a4
+- (void)_updateCacheWithDictionary:(id)dictionary service:(id)service
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  serviceCopy = service;
   if (!self->_idStatusCache)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
@@ -1564,28 +1564,28 @@ LABEL_17:
     [(_IDSIDQueryController *)self _purgeIDStatusCacheAfter:5.0];
   }
 
-  if ([v6 count])
+  if ([dictionaryCopy count])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_195AE6E9C;
     v12[3] = &unk_1E743FD20;
     v12[4] = self;
-    [v6 enumerateKeysAndObjectsUsingBlock:v12];
+    [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v12];
   }
 
-  else if ([v7 length])
+  else if ([serviceCopy length])
   {
     v10 = self->_idStatusCache;
-    v11 = [MEMORY[0x1E695DF20] dictionary];
-    [(NSMutableDictionary *)v10 setObject:v11 forKey:v7];
+    dictionary = [MEMORY[0x1E695DF20] dictionary];
+    [(NSMutableDictionary *)v10 setObject:dictionary forKey:serviceCopy];
   }
 }
 
-- (void)_purgeIDStatusCacheAfter:(double)a3
+- (void)_purgeIDStatusCacheAfter:(double)after
 {
   objc_initWeak(&location, self->_idStatusCache);
-  v5 = dispatch_time(0, (a3 * 1000000000.0));
+  v5 = dispatch_time(0, (after * 1000000000.0));
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1598,21 +1598,21 @@ LABEL_17:
   objc_destroyWeak(&location);
 }
 
-- (void)_callDelegatesWithBlock:(id)a3 delegateMap:(id)a4
+- (void)_callDelegatesWithBlock:(id)block delegateMap:(id)map
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  blockCopy = block;
+  mapCopy = map;
+  v7 = mapCopy;
+  if (blockCopy)
   {
-    if (v6)
+    if (mapCopy)
     {
       v21 = 0u;
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [mapCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v8)
       {
         v9 = v8;
@@ -1628,17 +1628,17 @@ LABEL_17:
 
             v12 = *(*(&v19 + 1) + 8 * i);
             v13 = [v7 objectForKey:v12];
-            v14 = [v13 queue];
-            if (v14)
+            queue = [v13 queue];
+            if (queue)
             {
               v17[0] = MEMORY[0x1E69E9820];
               v17[1] = 3221225472;
               v17[2] = sub_195AE7288;
               v17[3] = &unk_1E743F110;
-              v15 = v5;
+              v15 = blockCopy;
               v17[4] = v12;
               v18 = v15;
-              dispatch_async(v14, v17);
+              dispatch_async(queue, v17);
             }
           }
 
@@ -1653,14 +1653,14 @@ LABEL_17:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_delegateMapForListenerID:(id)a3 service:(id)a4
+- (id)_delegateMapForListenerID:(id)d service:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && [v7 length])
+  dCopy = d;
+  serviceCopy = service;
+  v8 = serviceCopy;
+  if (dCopy && [serviceCopy length])
   {
-    v9 = [(NSMutableDictionary *)self->_listeners objectForKey:v6];
+    v9 = [(NSMutableDictionary *)self->_listeners objectForKey:dCopy];
     v10 = v9;
     if (v9)
     {
@@ -1681,19 +1681,19 @@ LABEL_17:
   return v11;
 }
 
-- (void)_callDelegatesForService:(id)a3 destinationToVerifierResult:(id)a4
+- (void)_callDelegatesForService:(id)service destinationToVerifierResult:(id)result
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length] && objc_msgSend(v7, "count"))
+  serviceCopy = service;
+  resultCopy = result;
+  if ([serviceCopy length] && objc_msgSend(resultCopy, "count"))
   {
-    v8 = [(NSMutableDictionary *)self->_listeners allValues];
+    allValues = [(NSMutableDictionary *)self->_listeners allValues];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v9 = [allValues countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1705,18 +1705,18 @@ LABEL_17:
         {
           if (*v19 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allValues);
           }
 
-          v13 = [*(*(&v18 + 1) + 8 * v12) objectForKey:v6];
+          v13 = [*(*(&v18 + 1) + 8 * v12) objectForKey:serviceCopy];
           if (v13)
           {
             v15[0] = MEMORY[0x1E69E9820];
             v15[1] = 3221225472;
             v15[2] = sub_195AE7510;
             v15[3] = &unk_1E74428E0;
-            v16 = v6;
-            v17 = v7;
+            v16 = serviceCopy;
+            v17 = resultCopy;
             [(_IDSIDQueryController *)self _callDelegatesWithBlock:v15 delegateMap:v13];
           }
 
@@ -1724,7 +1724,7 @@ LABEL_17:
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v10 = [allValues countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v10);
@@ -1734,13 +1734,13 @@ LABEL_17:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setCurrentIDStatus:(int64_t)a3 forDestination:(id)a4 service:(id)a5
+- (void)_setCurrentIDStatus:(int64_t)status forDestination:(id)destination service:(id)service
 {
-  v6 = a3;
+  statusCopy = status;
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  if ([v8 length] && objc_msgSend(v9, "length"))
+  destinationCopy = destination;
+  serviceCopy = service;
+  if ([destinationCopy length] && objc_msgSend(serviceCopy, "length"))
   {
     v10 = xpc_dictionary_create(0, 0, 0);
     v11 = v10;
@@ -1750,15 +1750,15 @@ LABEL_17:
       IMInsertIntsToXPCDictionary();
       IMInsertNSStringsToXPCDictionary();
       IMInsertNSStringsToXPCDictionary();
-      v12 = [IDSLogging IDQuery:v8];
+      v12 = [IDSLogging IDQuery:destinationCopy];
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109634;
-        v16 = v6;
+        v16 = statusCopy;
         v17 = 2112;
-        v18 = v9;
+        v18 = serviceCopy;
         v19 = 2112;
-        v20 = v8;
+        v20 = destinationCopy;
         _os_log_impl(&dword_1959FF000, v12, OS_LOG_TYPE_DEFAULT, "Sending ID status update (%d) for service %@ destination %@", buf, 0x1Cu);
       }
 
@@ -1787,127 +1787,127 @@ LABEL_17:
   }
 }
 
-- (BOOL)_sync_refreshIDStatusForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 completionBlock:(id)a7
+- (BOOL)_sync_refreshIDStatusForDestinations:(id)destinations service:(id)service preferredFromID:(id)d listenerID:(id)iD completionBlock:(id)block
 {
   BYTE2(v8) = 0;
   LOWORD(v8) = 1;
-  return [_IDSIDQueryController _refreshIDStatusForDestinations:"_refreshIDStatusForDestinations:service:preferredFromID:listenerID:allowRefresh:respectExpiry:waitForReply:forceRefresh:bypassLimit:queue:completionBlock:" service:a3 preferredFromID:a4 listenerID:a5 allowRefresh:a6 respectExpiry:1 waitForReply:1 forceRefresh:v8 bypassLimit:0 queue:a7 completionBlock:?];
+  return [_IDSIDQueryController _refreshIDStatusForDestinations:"_refreshIDStatusForDestinations:service:preferredFromID:listenerID:allowRefresh:respectExpiry:waitForReply:forceRefresh:bypassLimit:queue:completionBlock:" service:destinations preferredFromID:service listenerID:d allowRefresh:iD respectExpiry:1 waitForReply:1 forceRefresh:v8 bypassLimit:0 queue:block completionBlock:?];
 }
 
-- (BOOL)refreshIDStatusForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 forceRefresh:(BOOL)a7 queue:(id)a8 completionBlock:(id)a9
+- (BOOL)refreshIDStatusForDestinations:(id)destinations service:(id)service preferredFromID:(id)d listenerID:(id)iD forceRefresh:(BOOL)refresh queue:(id)queue completionBlock:(id)block
 {
   BYTE2(v10) = 0;
-  BYTE1(v10) = a7;
+  BYTE1(v10) = refresh;
   LOBYTE(v10) = 0;
-  return [_IDSIDQueryController _refreshIDStatusForDestinations:"_refreshIDStatusForDestinations:service:preferredFromID:listenerID:allowRefresh:respectExpiry:waitForReply:forceRefresh:bypassLimit:queue:completionBlock:" service:a3 preferredFromID:a4 listenerID:a5 allowRefresh:a6 respectExpiry:1 waitForReply:1 forceRefresh:v10 bypassLimit:a8 queue:a9 completionBlock:?];
+  return [_IDSIDQueryController _refreshIDStatusForDestinations:"_refreshIDStatusForDestinations:service:preferredFromID:listenerID:allowRefresh:respectExpiry:waitForReply:forceRefresh:bypassLimit:queue:completionBlock:" service:destinations preferredFromID:service listenerID:d allowRefresh:iD respectExpiry:1 waitForReply:1 forceRefresh:v10 bypassLimit:queue queue:block completionBlock:?];
 }
 
-- (BOOL)refreshIDStatusForDestination:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 completionBlock:(id)a8
+- (BOOL)refreshIDStatusForDestination:(id)destination service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue completionBlock:(id)block
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a8;
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
+  destinationCopy = destination;
+  serviceCopy = service;
+  blockCopy = block;
+  queueCopy = queue;
+  iDCopy = iD;
+  dCopy = d;
   v20 = IMSingleObjectArray();
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = sub_195AE8B00;
   v25[3] = &unk_1E7442980;
-  v27 = v15;
-  v28 = v16;
-  v26 = v14;
-  v21 = v15;
-  v22 = v14;
-  v23 = v16;
-  LOBYTE(self) = [(_IDSIDQueryController *)self refreshIDStatusForDestinations:v20 service:v21 preferredFromID:v19 listenerID:v18 forceRefresh:0 queue:v17 completionBlock:v25];
+  v27 = serviceCopy;
+  v28 = blockCopy;
+  v26 = destinationCopy;
+  v21 = serviceCopy;
+  v22 = destinationCopy;
+  v23 = blockCopy;
+  LOBYTE(self) = [(_IDSIDQueryController *)self refreshIDStatusForDestinations:v20 service:v21 preferredFromID:dCopy listenerID:iDCopy forceRefresh:0 queue:queueCopy completionBlock:v25];
 
   return self;
 }
 
-- (BOOL)requiredIDStatusForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 completionBlock:(id)a8
+- (BOOL)requiredIDStatusForDestinations:(id)destinations service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue completionBlock:(id)block
 {
   BYTE2(v9) = 1;
   LOWORD(v9) = 0;
-  return [_IDSIDQueryController _refreshIDStatusForDestinations:"_refreshIDStatusForDestinations:service:preferredFromID:listenerID:allowRefresh:respectExpiry:waitForReply:forceRefresh:bypassLimit:queue:completionBlock:" service:a3 preferredFromID:a4 listenerID:a5 allowRefresh:a6 respectExpiry:1 waitForReply:1 forceRefresh:v9 bypassLimit:a7 queue:a8 completionBlock:?];
+  return [_IDSIDQueryController _refreshIDStatusForDestinations:"_refreshIDStatusForDestinations:service:preferredFromID:listenerID:allowRefresh:respectExpiry:waitForReply:forceRefresh:bypassLimit:queue:completionBlock:" service:destinations preferredFromID:service listenerID:d allowRefresh:iD respectExpiry:1 waitForReply:1 forceRefresh:v9 bypassLimit:queue queue:block completionBlock:?];
 }
 
-- (BOOL)requiredIDStatusForDestination:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 completionBlock:(id)a8
+- (BOOL)requiredIDStatusForDestination:(id)destination service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue completionBlock:(id)block
 {
-  v14 = a3;
-  v15 = a8;
-  v16 = a7;
-  v17 = a6;
-  v18 = a5;
-  v19 = a4;
+  destinationCopy = destination;
+  blockCopy = block;
+  queueCopy = queue;
+  iDCopy = iD;
+  dCopy = d;
+  serviceCopy = service;
   v20 = IMSingleObjectArray();
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = sub_195AE8DE8;
   v24[3] = &unk_1E74429A8;
-  v25 = v14;
-  v26 = v15;
-  v21 = v14;
-  v22 = v15;
-  LOBYTE(self) = [(_IDSIDQueryController *)self requiredIDStatusForDestinations:v20 service:v19 preferredFromID:v18 listenerID:v17 queue:v16 completionBlock:v24];
+  v25 = destinationCopy;
+  v26 = blockCopy;
+  v21 = destinationCopy;
+  v22 = blockCopy;
+  LOBYTE(self) = [(_IDSIDQueryController *)self requiredIDStatusForDestinations:v20 service:serviceCopy preferredFromID:dCopy listenerID:iDCopy queue:queueCopy completionBlock:v24];
 
   return self;
 }
 
-- (BOOL)idInfoForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 infoTypes:(unint64_t)a6 options:(id)a7 listenerID:(id)a8 queue:(id)a9 completionBlock:(id)a10
+- (BOOL)idInfoForDestinations:(id)destinations service:(id)service preferredFromID:(id)d infoTypes:(unint64_t)types options:(id)options listenerID:(id)iD queue:(id)queue completionBlock:(id)self0
 {
-  v15 = a7;
-  v16 = a8;
-  v17 = a9;
-  v18 = a10;
+  optionsCopy = options;
+  iDCopy = iD;
+  queueCopy = queue;
+  blockCopy = block;
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = sub_195AE9E40;
   v32[3] = &unk_1E7442A98;
   v32[4] = self;
-  v33 = v16;
-  v35 = v17;
-  v36 = v18;
-  v34 = v15;
-  v19 = v17;
-  v20 = v15;
-  v30 = v18;
-  v21 = v16;
-  v22 = a5;
-  v23 = a4;
-  v24 = a3;
+  v33 = iDCopy;
+  v35 = queueCopy;
+  v36 = blockCopy;
+  v34 = optionsCopy;
+  v19 = queueCopy;
+  v20 = optionsCopy;
+  v30 = blockCopy;
+  v21 = iDCopy;
+  dCopy = d;
+  serviceCopy = service;
+  destinationsCopy = destinations;
   v25 = MEMORY[0x19A8BBEF0](v32);
   v26 = MEMORY[0x1E69A5240];
-  v27 = [MEMORY[0x1E695DFD8] setWithArray:v24];
+  v27 = [MEMORY[0x1E695DFD8] setWithArray:destinationsCopy];
 
   v28 = [v26 destinationWithDestinations:v27];
 
-  [(_IDSIDQueryController *)self _requestIDInfoForDestinations:v28 fromID:v22 service:v23 infoTypes:a6 options:v20 listenerID:v21 queue:v19 completionBlock:v25];
+  [(_IDSIDQueryController *)self _requestIDInfoForDestinations:v28 fromID:dCopy service:serviceCopy infoTypes:types options:v20 listenerID:v21 queue:v19 completionBlock:v25];
   return 1;
 }
 
-- (int64_t)_currentCachedIDStatusForDestination:(id)a3 service:(id)a4 listenerID:(id)a5
+- (int64_t)_currentCachedIDStatusForDestination:(id)destination service:(id)service listenerID:(id)d
 {
-  v5 = [(_IDSIDQueryController *)self _cachedStatusForDestination:a3 service:a4, a5];
-  v6 = [v5 integerValue];
+  v5 = [(_IDSIDQueryController *)self _cachedStatusForDestination:destination service:service, d];
+  integerValue = [v5 integerValue];
 
-  return v6;
+  return integerValue;
 }
 
-- (BOOL)_warmupQueryCacheForService:(id)a3
+- (BOOL)_warmupQueryCacheForService:(id)service
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  serviceCopy = service;
   v5 = +[IDSLogging IDQuery];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v4;
+    v13 = serviceCopy;
     _os_log_impl(&dword_1959FF000, v5, OS_LOG_TYPE_DEFAULT, "_warmupQueryCacheForService:  (service: %@)", buf, 0xCu);
   }
 
-  v6 = [v4 length];
+  v6 = [serviceCopy length];
   if (v6)
   {
     v10[0] = MEMORY[0x1E69E9820];
@@ -1915,7 +1915,7 @@ LABEL_17:
     v10[2] = sub_195AEA5F8;
     v10[3] = &unk_1E7442AC0;
     v10[4] = self;
-    v11 = v4;
+    v11 = serviceCopy;
     [(_IDSIDQueryController *)self _requestCacheForService:v11 completionBlock:v10];
   }
 
@@ -1933,19 +1933,19 @@ LABEL_17:
   return v6 != 0;
 }
 
-- (BOOL)_flushQueryCacheForService:(id)a3
+- (BOOL)_flushQueryCacheForService:(id)service
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  serviceCopy = service;
   v5 = +[IDSLogging IDQuery];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = serviceCopy;
     _os_log_impl(&dword_1959FF000, v5, OS_LOG_TYPE_DEFAULT, "_flushQueryCacheForService:  (service: %@)", &v10, 0xCu);
   }
 
-  v6 = [v4 length];
+  v6 = [serviceCopy length];
   if (v6)
   {
     p_super = &self->_idStatusCache->super.super;
@@ -1966,28 +1966,28 @@ LABEL_17:
   return v6 != 0;
 }
 
-- (void)addDelegate:(id)a3 forService:(id)a4 listenerID:(id)a5 queue:(id)a6
+- (void)addDelegate:(id)delegate forService:(id)service listenerID:(id)d queue:(id)queue
 {
   v48 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  delegateCopy = delegate;
+  serviceCopy = service;
+  dCopy = d;
+  queueCopy = queue;
   v14 = +[IDSLogging IDQuery];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218754;
-    v41 = v10;
+    v41 = delegateCopy;
     v42 = 2112;
-    v43 = v11;
+    v43 = serviceCopy;
     v44 = 2112;
-    v45 = v12;
+    v45 = dCopy;
     v46 = 2048;
-    v47 = v13;
+    v47 = queueCopy;
     _os_log_impl(&dword_1959FF000, v14, OS_LOG_TYPE_DEFAULT, "addDelegate:forService:listenerID:queue:  (delegate: %p)   (service: %@)   (listenerID: %@)   (queue: %p)", buf, 0x2Au);
   }
 
-  if (v10 && v13 && [v11 length] && objc_msgSend(v12, "length"))
+  if (delegateCopy && queueCopy && [serviceCopy length] && objc_msgSend(dCopy, "length"))
   {
     listeners = self->_listeners;
     if (!listeners)
@@ -1999,7 +1999,7 @@ LABEL_17:
       listeners = self->_listeners;
     }
 
-    v18 = [(NSMutableDictionary *)listeners objectForKey:v12];
+    v18 = [(NSMutableDictionary *)listeners objectForKey:dCopy];
     v19 = [v18 mutableCopy];
     v20 = v19;
     if (v19)
@@ -2014,21 +2014,21 @@ LABEL_17:
 
     v22 = v21;
 
-    v23 = [v22 objectForKey:v11];
+    v23 = [v22 objectForKey:serviceCopy];
     v24 = v23;
     if (v23)
     {
-      v25 = v23;
+      weakToStrongObjectsMapTable = v23;
     }
 
     else
     {
-      v25 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+      weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     }
 
-    v26 = v25;
+    v26 = weakToStrongObjectsMapTable;
 
-    v27 = [v26 objectForKey:v10];
+    v27 = [v26 objectForKey:delegateCopy];
     v28 = v27;
     if (v27)
     {
@@ -2042,16 +2042,16 @@ LABEL_17:
 
     v30 = v29;
 
-    [v30 setQueue:v13];
-    [v26 setObject:v30 forKey:v10];
-    [v22 setObject:v26 forKey:v11];
-    [(NSMutableDictionary *)self->_listeners setObject:v22 forKey:v12];
+    [v30 setQueue:queueCopy];
+    [v26 setObject:v30 forKey:delegateCopy];
+    [v22 setObject:v26 forKey:serviceCopy];
+    [(NSMutableDictionary *)self->_listeners setObject:v22 forKey:dCopy];
     v31 = +[IDSLogging IDQuery];
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
-      v32 = [(NSMutableDictionary *)self->_listeners allKeys];
+      allKeys = [(NSMutableDictionary *)self->_listeners allKeys];
       *buf = 138412290;
-      v41 = v32;
+      v41 = allKeys;
       _os_log_impl(&dword_1959FF000, v31, OS_LOG_TYPE_DEFAULT, "Listeners after ADD %@", buf, 0xCu);
     }
 
@@ -2060,7 +2060,7 @@ LABEL_17:
       v39 = v30;
       v33 = +[IDSDaemonController sharedInstance];
       listenerGUID = self->_listenerGUID;
-      v35 = [MEMORY[0x1E695DFD8] setWithObject:v11];
+      v35 = [MEMORY[0x1E695DFD8] setWithObject:serviceCopy];
       [v33 addListenerID:listenerGUID services:v35];
 
       v36 = +[IDSLogging IDQuery];
@@ -2089,42 +2089,42 @@ LABEL_17:
   v38 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeDelegate:(id)a3 forService:(id)a4 listenerID:(id)a5
+- (void)removeDelegate:(id)delegate forService:(id)service listenerID:(id)d
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  serviceCopy = service;
+  dCopy = d;
   v11 = +[IDSLogging IDQuery];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 134218498;
-    v21 = v8;
+    v21 = delegateCopy;
     v22 = 2112;
-    v23 = v9;
+    v23 = serviceCopy;
     v24 = 2112;
-    v25 = v10;
+    v25 = dCopy;
     _os_log_impl(&dword_1959FF000, v11, OS_LOG_TYPE_DEFAULT, "removeDelegate:forService:listenerID:  (delegate: %p)   (service: %@)   (listenerID: %@)", &v20, 0x20u);
   }
 
-  if (v8 && [v9 length] && objc_msgSend(v10, "length"))
+  if (delegateCopy && [serviceCopy length] && objc_msgSend(dCopy, "length"))
   {
-    v12 = [(NSMutableDictionary *)self->_listeners objectForKey:v10];
+    v12 = [(NSMutableDictionary *)self->_listeners objectForKey:dCopy];
     v13 = [v12 mutableCopy];
 
-    v14 = [v13 objectForKey:v9];
+    v14 = [v13 objectForKey:serviceCopy];
     v15 = v14;
     if (v13 && v14)
     {
-      [v14 removeObjectForKey:v8];
+      [v14 removeObjectForKey:delegateCopy];
       if (![v15 count])
       {
-        [v13 removeObjectForKey:v9];
+        [v13 removeObjectForKey:serviceCopy];
       }
 
       if (![v13 count])
       {
-        [(NSMutableDictionary *)self->_listeners removeObjectForKey:v10];
+        [(NSMutableDictionary *)self->_listeners removeObjectForKey:dCopy];
       }
 
       if (![(NSMutableDictionary *)self->_listeners count])
@@ -2136,9 +2136,9 @@ LABEL_17:
       v17 = +[IDSLogging IDQuery];
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [(NSMutableDictionary *)self->_listeners allKeys];
+        allKeys = [(NSMutableDictionary *)self->_listeners allKeys];
         v20 = 138412290;
-        v21 = v18;
+        v21 = allKeys;
         _os_log_impl(&dword_1959FF000, v17, OS_LOG_TYPE_DEFAULT, "Listeners after REMOVE %@", &v20, 0xCu);
       }
     }

@@ -1,25 +1,25 @@
 @interface PGPictureInPictureViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)setHostedWindowHostingHandle:(id)a3;
+- (void)setHostedWindowHostingHandle:(id)handle;
 - (void)viewDidLoad;
 @end
 
 @implementation PGPictureInPictureViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PGPictureInPictureViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"PGControlsContainerView"];
-  [v3 validateClass:@"PGLayerHostView"];
-  [v3 validateClass:@"_UIRemoteView"];
-  [v3 validateClass:@"PGPictureInPictureViewController" hasInstanceVariable:@"_controlsContainerView" withType:"PGControlsContainerView"];
-  [v3 validateClass:@"PGPictureInPictureViewController" hasInstanceVariable:@"_contentView" withType:"PGLayerHostView"];
-  [v3 validateClass:@"PGLayerHostView" hasInstanceVariable:@"_remoteView" withType:"_UIRemoteView"];
-  [v3 validateClass:@"_UIHostedWindowHostingHandle" hasInstanceVariable:@"_pid" withType:"i"];
-  [v3 validateClass:@"PGPictureInPictureViewController" hasInstanceMethod:@"setStashed:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"PGPictureInPictureViewController" hasInstanceMethod:@"setHostedWindowHostingHandle:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PGPictureInPictureViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"PGControlsContainerView"];
+  [validationsCopy validateClass:@"PGLayerHostView"];
+  [validationsCopy validateClass:@"_UIRemoteView"];
+  [validationsCopy validateClass:@"PGPictureInPictureViewController" hasInstanceVariable:@"_controlsContainerView" withType:"PGControlsContainerView"];
+  [validationsCopy validateClass:@"PGPictureInPictureViewController" hasInstanceVariable:@"_contentView" withType:"PGLayerHostView"];
+  [validationsCopy validateClass:@"PGLayerHostView" hasInstanceVariable:@"_remoteView" withType:"_UIRemoteView"];
+  [validationsCopy validateClass:@"_UIHostedWindowHostingHandle" hasInstanceVariable:@"_pid" withType:"i"];
+  [validationsCopy validateClass:@"PGPictureInPictureViewController" hasInstanceMethod:@"setStashed:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"PGPictureInPictureViewController" hasInstanceMethod:@"setHostedWindowHostingHandle:" withFullSignature:{"v", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -39,12 +39,12 @@
   [(PGPictureInPictureViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)setHostedWindowHostingHandle:(id)a3
+- (void)setHostedWindowHostingHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   v10.receiver = self;
   v10.super_class = PGPictureInPictureViewControllerAccessibility;
-  [(PGPictureInPictureViewControllerAccessibility *)&v10 setHostedWindowHostingHandle:v4];
+  [(PGPictureInPictureViewControllerAccessibility *)&v10 setHostedWindowHostingHandle:handleCopy];
   objc_opt_class();
   v5 = __UIAccessibilityCastAsClass();
 

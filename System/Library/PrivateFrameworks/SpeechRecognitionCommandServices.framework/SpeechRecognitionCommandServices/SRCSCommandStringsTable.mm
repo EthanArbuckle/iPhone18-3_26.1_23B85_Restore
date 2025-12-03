@@ -1,46 +1,46 @@
 @interface SRCSCommandStringsTable
-+ (BOOL)isLocaleIdentifier:(id)a3 containedInLocaleIdentifiers:(id)a4;
-+ (BOOL)isSameLocaleIdentifier:(id)a3 secondLocaleIdentifier:(id)a4;
++ (BOOL)isLocaleIdentifier:(id)identifier containedInLocaleIdentifiers:(id)identifiers;
++ (BOOL)isSameLocaleIdentifier:(id)identifier secondLocaleIdentifier:(id)localeIdentifier;
 + (NSArray)activeTargetTypes;
 + (NSArray)supportedTargetTypes;
 + (NSString)deviceName;
 + (id)commandStringsLoader;
-+ (id)componentsFromLocaleIdentifier:(id)a3;
-+ (id)formattedBuiltInCommandString:(id)a3;
-+ (id)languageModelDictionaryFromCommandText:(id)a3 parsingErrorString:(id *)a4;
-+ (void)setCommandStringsLoader:(id)a3;
-- (BOOL)isSupportedCommandIdentifier:(id)a3 forLocaleIdentifier:(id)a4;
-- (BOOL)isSupportedCommandIdentifier:(id)a3 forTargetTypes:(id)a4;
-- (SRCSCommandStringsTable)initWithLocaleIdentifier:(id)a3;
++ (id)componentsFromLocaleIdentifier:(id)identifier;
++ (id)formattedBuiltInCommandString:(id)string;
++ (id)languageModelDictionaryFromCommandText:(id)text parsingErrorString:(id *)string;
++ (void)setCommandStringsLoader:(id)loader;
+- (BOOL)isSupportedCommandIdentifier:(id)identifier forLocaleIdentifier:(id)localeIdentifier;
+- (BOOL)isSupportedCommandIdentifier:(id)identifier forTargetTypes:(id)types;
+- (SRCSCommandStringsTable)initWithLocaleIdentifier:(id)identifier;
 - (id)_commandDescriptionsTable;
-- (id)_commandStringsDictionaryForLocaleIdentifier:(id)a3;
+- (id)_commandStringsDictionaryForLocaleIdentifier:(id)identifier;
 - (id)_commandStringsTable;
-- (id)_descriptionTypeForParameterIdentifier:(id)a3 commandIdentifier:(id)a4;
-- (id)_exampleStringPermutationsFromCommandIdentifier:(id)a3;
+- (id)_descriptionTypeForParameterIdentifier:(id)identifier commandIdentifier:(id)commandIdentifier;
+- (id)_exampleStringPermutationsFromCommandIdentifier:(id)identifier;
 - (id)_keyboardKeyNamesTable;
 - (id)_modifierKeyNamesTable;
 - (id)_phoneticKeyNamesTable;
-- (id)_rootCommandIdentifierFrom:(id)a3 foundTargetType:(id *)a4;
-- (id)_spokenStringPermutationOfLanguageModelDictionary:(id)a3 givenPermutation:(unsigned __int16 *)a4 stringsTable:(id)a5 segmentOffsets:(id)a6;
-- (id)_warningsOfIncorrectTokenizationAcrossSegmentBoundariesInLanguageModelDictionary:(id)a3 stringsTable:(id)a4;
-- (id)descriptionStringForCommandIdentifier:(id)a3 descriptionType:(id)a4 targetTypes:(id)a5;
+- (id)_rootCommandIdentifierFrom:(id)from foundTargetType:(id *)type;
+- (id)_spokenStringPermutationOfLanguageModelDictionary:(id)dictionary givenPermutation:(unsigned __int16 *)permutation stringsTable:(id)table segmentOffsets:(id)offsets;
+- (id)_warningsOfIncorrectTokenizationAcrossSegmentBoundariesInLanguageModelDictionary:(id)dictionary stringsTable:(id)table;
+- (id)descriptionStringForCommandIdentifier:(id)identifier descriptionType:(id)type targetTypes:(id)types;
 - (id)exampleParameterStringsTable;
-- (id)languageModelDictionaryForCommandIdentifier:(id)a3 targetTypes:(id)a4 parsingErrorString:(id *)a5;
-- (id)mutableAttributedStringByReplacingPlaceholderAttribute:(id)a3 withAttributeName:(id)a4 inAttributedString:(id)a5 withValueTable:(id)a6;
-- (id)mutableAttributedStringCommandDescriptionForCommandIdentifier:(id)a3 calculateDisplayedAttributedStringWidthBlock:(id)a4;
-- (id)parameterIdentifiersFromCommandIdentifier:(id)a3;
-- (id)phrasesForCommandIdentifier:(id)a3 targetTypes:(id)a4 parameterStrings:(id)a5;
-- (id)rowDataForTargetTypes:(id)a3;
-- (id)setOfBuiltInIdentifiersFromLanguageModelDictionary:(id)a3;
-- (id)spokenStringPermutationsOfLanguageModelDictionary:(id)a3 stringsTable:(id)a4 restrictPermutationsToShortestAndLongest:(BOOL)a5;
-- (id)supportedCommandIdentifiersForTargetTypes:(id)a3;
-- (id)unparsedCommandTextForCommandIdentifier:(id)a3 targetTypes:(id)a4;
-- (id)warningStringForText:(id)a3 identifier:(id)a4 textTable:(id)a5;
-- (unint64_t)countOptionalNodesOfLanguageModelDictionary:(id)a3;
+- (id)languageModelDictionaryForCommandIdentifier:(id)identifier targetTypes:(id)types parsingErrorString:(id *)string;
+- (id)mutableAttributedStringByReplacingPlaceholderAttribute:(id)attribute withAttributeName:(id)name inAttributedString:(id)string withValueTable:(id)table;
+- (id)mutableAttributedStringCommandDescriptionForCommandIdentifier:(id)identifier calculateDisplayedAttributedStringWidthBlock:(id)block;
+- (id)parameterIdentifiersFromCommandIdentifier:(id)identifier;
+- (id)phrasesForCommandIdentifier:(id)identifier targetTypes:(id)types parameterStrings:(id)strings;
+- (id)rowDataForTargetTypes:(id)types;
+- (id)setOfBuiltInIdentifiersFromLanguageModelDictionary:(id)dictionary;
+- (id)spokenStringPermutationsOfLanguageModelDictionary:(id)dictionary stringsTable:(id)table restrictPermutationsToShortestAndLongest:(BOOL)longest;
+- (id)supportedCommandIdentifiersForTargetTypes:(id)types;
+- (id)unparsedCommandTextForCommandIdentifier:(id)identifier targetTypes:(id)types;
+- (id)warningStringForText:(id)text identifier:(id)identifier textTable:(id)table;
+- (unint64_t)countOptionalNodesOfLanguageModelDictionary:(id)dictionary;
 - (void)_flushCommandStringsTable;
-- (void)_removeDuplicateSpacesFromMutableString:(id)a3;
+- (void)_removeDuplicateSpacesFromMutableString:(id)string;
 - (void)dealloc;
-- (void)resolveReferencesInMutableAttributedString:(id)a3 stringsTable:(id)a4;
+- (void)resolveReferencesInMutableAttributedString:(id)string stringsTable:(id)table;
 @end
 
 @implementation SRCSCommandStringsTable
@@ -135,10 +135,10 @@ void __44__SRCSCommandStringsTable_activeTargetTypes__block_invoke()
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)componentsFromLocaleIdentifier:(id)a3
++ (id)componentsFromLocaleIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (v3)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     if (componentsFromLocaleIdentifier__staticLocaleComponentsCacheSetup != -1)
     {
@@ -147,13 +147,13 @@ void __44__SRCSCommandStringsTable_activeTargetTypes__block_invoke()
 
     v4 = sLocaleComponentsCache;
     objc_sync_enter(v4);
-    v5 = [sLocaleComponentsCache objectForKey:v3];
+    v5 = [sLocaleComponentsCache objectForKey:identifierCopy];
     if (!v5)
     {
-      v5 = [MEMORY[0x277CBEAF8] componentsFromLocaleIdentifier:v3];
+      v5 = [MEMORY[0x277CBEAF8] componentsFromLocaleIdentifier:identifierCopy];
       if (v5)
       {
-        [sLocaleComponentsCache setObject:v5 forKey:v3];
+        [sLocaleComponentsCache setObject:v5 forKey:identifierCopy];
       }
     }
 
@@ -175,11 +175,11 @@ uint64_t __58__SRCSCommandStringsTable_componentsFromLocaleIdentifier___block_in
   return MEMORY[0x2821F96F8]();
 }
 
-+ (BOOL)isSameLocaleIdentifier:(id)a3 secondLocaleIdentifier:(id)a4
++ (BOOL)isSameLocaleIdentifier:(id)identifier secondLocaleIdentifier:(id)localeIdentifier
 {
-  v5 = a4;
-  v6 = [SRCSCommandStringsTable componentsFromLocaleIdentifier:a3];
-  v7 = [SRCSCommandStringsTable componentsFromLocaleIdentifier:v5];
+  localeIdentifierCopy = localeIdentifier;
+  v6 = [SRCSCommandStringsTable componentsFromLocaleIdentifier:identifier];
+  v7 = [SRCSCommandStringsTable componentsFromLocaleIdentifier:localeIdentifierCopy];
 
   v8 = *MEMORY[0x277CBE6C8];
   v9 = [v6 objectForKey:*MEMORY[0x277CBE6C8]];
@@ -256,16 +256,16 @@ LABEL_18:
   return v16;
 }
 
-+ (BOOL)isLocaleIdentifier:(id)a3 containedInLocaleIdentifiers:(id)a4
++ (BOOL)isLocaleIdentifier:(id)identifier containedInLocaleIdentifiers:(id)identifiers
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  identifierCopy = identifier;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  identifiersCopy = identifiers;
+  v7 = [identifiersCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = *v13;
@@ -275,17 +275,17 @@ LABEL_18:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(identifiersCopy);
         }
 
-        if ([SRCSCommandStringsTable isSameLocaleIdentifier:v5 secondLocaleIdentifier:*(*(&v12 + 1) + 8 * i), v12])
+        if ([SRCSCommandStringsTable isSameLocaleIdentifier:identifierCopy secondLocaleIdentifier:*(*(&v12 + 1) + 8 * i), v12])
         {
           LOBYTE(v7) = 1;
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [identifiersCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         continue;
@@ -301,21 +301,21 @@ LABEL_11:
   return v7;
 }
 
-+ (id)languageModelDictionaryFromCommandText:(id)a3 parsingErrorString:(id *)a4
++ (id)languageModelDictionaryFromCommandText:(id)text parsingErrorString:(id *)string
 {
-  v5 = a3;
+  textCopy = text;
   v6 = objc_opt_class();
   objc_sync_enter(v6);
-  if (a4)
+  if (string)
   {
-    *a4 = 0;
+    *string = 0;
   }
 
   v9 = 0;
-  v7 = CreateMutableDictionaryFromSpokenCommandString(v5, &v9);
-  if (a4 && v9)
+  v7 = CreateMutableDictionaryFromSpokenCommandString(textCopy, &v9);
+  if (string && v9)
   {
-    *a4 = v9;
+    *string = v9;
   }
 
   objc_sync_exit(v6);
@@ -323,16 +323,16 @@ LABEL_11:
   return v7;
 }
 
-- (SRCSCommandStringsTable)initWithLocaleIdentifier:(id)a3
+- (SRCSCommandStringsTable)initWithLocaleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = SRCSCommandStringsTable;
   v6 = [(SRCSCommandStringsTable *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_localeIdentifier, a3);
+    objc_storeStrong(&v6->_localeIdentifier, identifier);
     v8 = CFLocaleCreate(0, v7->_localeIdentifier);
     if (v8)
     {
@@ -343,9 +343,9 @@ LABEL_11:
       CFRelease(v9);
     }
 
-    v10 = [(SRCSCommandStringsTable *)v7 _commandStringsTable];
+    _commandStringsTable = [(SRCSCommandStringsTable *)v7 _commandStringsTable];
 
-    if (!v10)
+    if (!_commandStringsTable)
     {
 
       v7 = 0;
@@ -370,26 +370,26 @@ LABEL_11:
 
 - (id)_commandStringsTable
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  commandStringsCache = v2->_commandStringsCache;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  commandStringsCache = selfCopy->_commandStringsCache;
   if (!commandStringsCache)
   {
-    v4 = [(SRCSCommandStringsTable *)v2 _commandStringsDictionaryForLocaleIdentifier:v2->_localeIdentifier];
-    v5 = v2->_commandStringsCache;
-    v2->_commandStringsCache = v4;
+    v4 = [(SRCSCommandStringsTable *)selfCopy _commandStringsDictionaryForLocaleIdentifier:selfCopy->_localeIdentifier];
+    v5 = selfCopy->_commandStringsCache;
+    selfCopy->_commandStringsCache = v4;
 
-    commandStringsCache = v2->_commandStringsCache;
+    commandStringsCache = selfCopy->_commandStringsCache;
   }
 
   v6 = commandStringsCache;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__SRCSCommandStringsTable__commandStringsTable__block_invoke;
   block[3] = &unk_279CF53B0;
-  block[4] = v2;
+  block[4] = selfCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   return v6;
@@ -415,21 +415,21 @@ uint64_t __47__SRCSCommandStringsTable__commandStringsTable__block_invoke(uint64
 
 - (id)_commandDescriptionsTable
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  commandDescriptionsCache = v2->_commandDescriptionsCache;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  commandDescriptionsCache = selfCopy->_commandDescriptionsCache;
   if (!commandDescriptionsCache)
   {
     v4 = +[SRCSSpokenCommandUtilities sharedSpokenCommandUtilities];
-    v5 = [v4 dictionaryForLocaleIdentifier:v2->_localeIdentifier resourceFileName:@"CommandDescriptions" resourceFileExtension:@"strings"];
-    v6 = v2->_commandDescriptionsCache;
-    v2->_commandDescriptionsCache = v5;
+    v5 = [v4 dictionaryForLocaleIdentifier:selfCopy->_localeIdentifier resourceFileName:@"CommandDescriptions" resourceFileExtension:@"strings"];
+    v6 = selfCopy->_commandDescriptionsCache;
+    selfCopy->_commandDescriptionsCache = v5;
 
-    commandDescriptionsCache = v2->_commandDescriptionsCache;
+    commandDescriptionsCache = selfCopy->_commandDescriptionsCache;
   }
 
   v7 = commandDescriptionsCache;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
@@ -437,29 +437,29 @@ uint64_t __47__SRCSCommandStringsTable__commandStringsTable__block_invoke(uint64
 - (id)_keyboardKeyNamesTable
 {
   v28 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  keyboardKeyNamesCache = v2->_keyboardKeyNamesCache;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  keyboardKeyNamesCache = selfCopy->_keyboardKeyNamesCache;
   if (!keyboardKeyNamesCache)
   {
     v4 = objc_opt_new();
-    v5 = v2->_keyboardKeyNamesCache;
-    v2->_keyboardKeyNamesCache = v4;
+    v5 = selfCopy->_keyboardKeyNamesCache;
+    selfCopy->_keyboardKeyNamesCache = v4;
 
     v6 = +[SRCSSpokenCommandUtilities sharedSpokenCommandUtilities];
-    v7 = [v6 dictionaryForLocaleIdentifier:v2->_localeIdentifier resourceFileName:@"KeyboardKeyNames" resourceFileExtension:@"strings"];
+    v7 = [v6 dictionaryForLocaleIdentifier:selfCopy->_localeIdentifier resourceFileName:@"KeyboardKeyNames" resourceFileExtension:@"strings"];
 
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v8 = [v7 allKeys];
-    v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
-    p_isa = &v2->super.isa;
+    allKeys = [v7 allKeys];
+    v9 = [allKeys countByEnumeratingWithState:&v23 objects:v27 count:16];
+    p_isa = &selfCopy->super.isa;
     if (v9)
     {
       v11 = *v24;
-      obj = v8;
+      obj = allKeys;
       do
       {
         for (i = 0; i != v9; ++i)
@@ -487,19 +487,19 @@ uint64_t __47__SRCSCommandStringsTable__commandStringsTable__block_invoke(uint64
           }
         }
 
-        v8 = obj;
+        allKeys = obj;
         v9 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v9);
     }
 
-    v2 = p_isa;
+    selfCopy = p_isa;
     keyboardKeyNamesCache = p_isa[5];
   }
 
   v18 = keyboardKeyNamesCache;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v19 = *MEMORY[0x277D85DE8];
 
@@ -509,17 +509,17 @@ uint64_t __47__SRCSCommandStringsTable__commandStringsTable__block_invoke(uint64
 - (id)_phoneticKeyNamesTable
 {
   v31 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  phoneticKeyNamesCache = v2->_phoneticKeyNamesCache;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  phoneticKeyNamesCache = selfCopy->_phoneticKeyNamesCache;
   if (!phoneticKeyNamesCache)
   {
     v4 = objc_opt_new();
-    v5 = v2->_phoneticKeyNamesCache;
-    v2->_phoneticKeyNamesCache = v4;
+    v5 = selfCopy->_phoneticKeyNamesCache;
+    selfCopy->_phoneticKeyNamesCache = v4;
 
     v6 = +[SRCSSpokenCommandUtilities sharedSpokenCommandUtilities];
-    localeIdentifier = v2->_localeIdentifier;
+    localeIdentifier = selfCopy->_localeIdentifier;
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v9 = [v6 dictionaryForLocaleIdentifier:localeIdentifier bundle:v8 subDirectory:@"LocalizedPhoneticAlphabet" rootFileName:@"PhoneticAlphabet" rootFileExtension:@"plist"];
     v10 = [v9 objectForKey:@"PhoneticPronunciationMapping"];
@@ -528,13 +528,13 @@ uint64_t __47__SRCSCommandStringsTable__commandStringsTable__block_invoke(uint64
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v11 = [v10 allKeys];
-    v12 = [v11 countByEnumeratingWithState:&v26 objects:v30 count:16];
-    p_isa = &v2->super.isa;
+    allKeys = [v10 allKeys];
+    v12 = [allKeys countByEnumeratingWithState:&v26 objects:v30 count:16];
+    p_isa = &selfCopy->super.isa;
     if (v12)
     {
       v14 = *v27;
-      obj = v11;
+      obj = allKeys;
       do
       {
         for (i = 0; i != v12; ++i)
@@ -562,19 +562,19 @@ uint64_t __47__SRCSCommandStringsTable__commandStringsTable__block_invoke(uint64
           }
         }
 
-        v11 = obj;
+        allKeys = obj;
         v12 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
       while (v12);
     }
 
-    v2 = p_isa;
+    selfCopy = p_isa;
     phoneticKeyNamesCache = p_isa[7];
   }
 
   v21 = phoneticKeyNamesCache;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v22 = *MEMORY[0x277D85DE8];
 
@@ -584,29 +584,29 @@ uint64_t __47__SRCSCommandStringsTable__commandStringsTable__block_invoke(uint64
 - (id)_modifierKeyNamesTable
 {
   v28 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  modifierKeyNamesCache = v2->_modifierKeyNamesCache;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  modifierKeyNamesCache = selfCopy->_modifierKeyNamesCache;
   if (!modifierKeyNamesCache)
   {
     v4 = objc_opt_new();
-    v5 = v2->_modifierKeyNamesCache;
-    v2->_modifierKeyNamesCache = v4;
+    v5 = selfCopy->_modifierKeyNamesCache;
+    selfCopy->_modifierKeyNamesCache = v4;
 
     v6 = +[SRCSSpokenCommandUtilities sharedSpokenCommandUtilities];
-    v7 = [v6 dictionaryForLocaleIdentifier:v2->_localeIdentifier resourceFileName:@"ModifierKeyNames" resourceFileExtension:@"strings"];
+    v7 = [v6 dictionaryForLocaleIdentifier:selfCopy->_localeIdentifier resourceFileName:@"ModifierKeyNames" resourceFileExtension:@"strings"];
 
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v8 = [v7 allKeys];
-    v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
-    p_isa = &v2->super.isa;
+    allKeys = [v7 allKeys];
+    v9 = [allKeys countByEnumeratingWithState:&v23 objects:v27 count:16];
+    p_isa = &selfCopy->super.isa;
     if (v9)
     {
       v11 = *v24;
-      obj = v8;
+      obj = allKeys;
       do
       {
         for (i = 0; i != v9; ++i)
@@ -634,19 +634,19 @@ uint64_t __47__SRCSCommandStringsTable__commandStringsTable__block_invoke(uint64
           }
         }
 
-        v8 = obj;
+        allKeys = obj;
         v9 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v9);
     }
 
-    v2 = p_isa;
+    selfCopy = p_isa;
     modifierKeyNamesCache = p_isa[6];
   }
 
   v18 = modifierKeyNamesCache;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v19 = *MEMORY[0x277D85DE8];
 
@@ -661,8 +661,8 @@ uint64_t __47__SRCSCommandStringsTable__commandStringsTable__block_invoke(uint64
   {
     localeIdentifier = self->_localeIdentifier;
     v52 = RXEngineTypeForLocaleIdentifier();
-    v5 = [MEMORY[0x277CBEB38] dictionary];
-    v45 = self;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    selfCopy = self;
     [(SRCSCommandStringsTable *)self _commandDescriptionsTable];
     v68 = 0u;
     v69 = 0u;
@@ -691,17 +691,17 @@ uint64_t __47__SRCSCommandStringsTable__commandStringsTable__block_invoke(uint64
               v13 = v11;
               v14 = v12;
               v15 = [v10 substringToIndex:v11];
-              v16 = [v5 objectForKey:v15];
-              if (!v16)
+              array = [dictionary objectForKey:v15];
+              if (!array)
               {
-                v16 = [MEMORY[0x277CBEB18] array];
-                [v5 setObject:v16 forKey:v15];
+                array = [MEMORY[0x277CBEB18] array];
+                [dictionary setObject:array forKey:v15];
               }
 
               if (v52 == 1 || ![v10 hasPrefix:@"ExampleParameter.IntegerValue"])
               {
                 v17 = [obj objectForKey:v10];
-                [v16 addObject:v17];
+                [array addObject:v17];
               }
 
               else
@@ -710,7 +710,7 @@ uint64_t __47__SRCSCommandStringsTable__commandStringsTable__block_invoke(uint64
                 if ([v17 integerValue] <= 9)
                 {
                   v18 = [obj objectForKey:v10];
-                  [v16 addObject:v18];
+                  [array addObject:v18];
                 }
               }
             }
@@ -724,16 +724,16 @@ uint64_t __47__SRCSCommandStringsTable__commandStringsTable__block_invoke(uint64
     }
 
     v19 = objc_opt_new();
-    p_isa = &v45->super.isa;
-    v21 = v45->_parameterIdentifiersToExamplesTable;
-    v45->_parameterIdentifiersToExamplesTable = v19;
+    p_isa = &selfCopy->super.isa;
+    v21 = selfCopy->_parameterIdentifiersToExamplesTable;
+    selfCopy->_parameterIdentifiersToExamplesTable = v19;
 
     v66 = 0u;
     v67 = 0u;
     v64 = 0u;
     v65 = 0u;
-    v22 = [AllValidCommandParameterIdentifiers() allObjects];
-    v23 = [v22 countByEnumeratingWithState:&v64 objects:v74 count:16];
+    allObjects = [AllValidCommandParameterIdentifiers() allObjects];
+    v23 = [allObjects countByEnumeratingWithState:&v64 objects:v74 count:16];
     if (v23)
     {
       v24 = v23;
@@ -745,34 +745,34 @@ uint64_t __47__SRCSCommandStringsTable__commandStringsTable__block_invoke(uint64
         {
           if (*v65 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(allObjects);
           }
 
           v27 = *(*(&v64 + 1) + 8 * v26);
           if (([v27 isEqualToString:kSRCSCommandParameterSwitchableApplication[0]] & 1) != 0 || objc_msgSend(v27, "isEqualToString:", kSRCSCommandParameterRunningApplication[0]))
           {
-            v28 = v5;
+            v28 = dictionary;
             v29 = @"ExampleParameter.AppName";
             goto LABEL_35;
           }
 
           if (([v27 isEqualToString:kSRCSCommandParameterTextSegmentCardinalNumber[0]] & 1) != 0 || (objc_msgSend(v27, "isEqualToString:", kSRCSCommandParameterScreenDistanceCardinalNumber[0]) & 1) != 0 || (objc_msgSend(v27, "isEqualToString:", kSRCSCommandParameterNumberZeroThroughOneHundred[0]) & 1) != 0 || (objc_msgSend(v27, "isEqualToString:", kSRCSCommandParameterNumberTwoThroughNinetyNine[0]) & 1) != 0 || (objc_msgSend(v27, "isEqualToString:", kSRCSCommandParameterNumberTwoThroughNinetyNine2[0]) & 1) != 0 || (objc_msgSend(v27, "isEqualToString:", kSRCSCommandParameterOverlayLabel[0]) & 1) != 0 || objc_msgSend(v27, "isEqualToString:", kSRCSCommandParameterOverlayLabel2[0]))
           {
-            v28 = v5;
+            v28 = dictionary;
             v29 = @"ExampleParameter.IntegerValue";
             goto LABEL_35;
           }
 
           if (([v27 isEqualToString:kSRCSCommandParameterMenuItem[0]] & 1) != 0 || (objc_msgSend(v27, "isEqualToString:", kSRCSCommandParameterWindowItem[0]) & 1) != 0 || objc_msgSend(v27, "isEqualToString:", kSRCSCommandParameterWindowItem2[0]))
           {
-            v28 = v5;
+            v28 = dictionary;
             v29 = @"ExampleParameter.ElementName";
             goto LABEL_35;
           }
 
           if ([v27 isEqualToString:kSRCSCommandParameterMenuBarItem[0]])
           {
-            v28 = v5;
+            v28 = dictionary;
             v29 = @"ExampleParameter.MenuBarName";
 LABEL_35:
             v30 = [v28 objectForKey:v29];
@@ -786,7 +786,7 @@ LABEL_35:
 
           if (([v27 isEqualToString:kSRCSCommandParameterDictation[0]] & 1) != 0 || objc_msgSend(v27, "isEqualToString:", kSRCSCommandParameterDictation2[0]))
           {
-            v28 = v5;
+            v28 = dictionary;
             v29 = @"ExampleParameter.DictatedPhrase";
             goto LABEL_35;
           }
@@ -794,15 +794,15 @@ LABEL_35:
           if ([v27 isEqualToString:kSRCSCommandParameterKeyboardKeyName[0]])
           {
             v30 = objc_opt_new();
-            v50 = [p_isa _phoneticKeyNamesTable];
-            v31 = [p_isa _keyboardKeyNamesTable];
+            _phoneticKeyNamesTable = [p_isa _phoneticKeyNamesTable];
+            _keyboardKeyNamesTable = [p_isa _keyboardKeyNamesTable];
             v60 = 0u;
             v61 = 0u;
             v62 = 0u;
             v63 = 0u;
-            v48 = v31;
-            v46 = [v31 allKeys];
-            v53 = [v46 countByEnumeratingWithState:&v60 objects:v73 count:16];
+            v48 = _keyboardKeyNamesTable;
+            allKeys = [_keyboardKeyNamesTable allKeys];
+            v53 = [allKeys countByEnumeratingWithState:&v60 objects:v73 count:16];
             if (v53)
             {
               v47 = *v61;
@@ -812,44 +812,44 @@ LABEL_35:
                 {
                   if (*v61 != v47)
                   {
-                    objc_enumerationMutation(v46);
+                    objc_enumerationMutation(allKeys);
                   }
 
                   v33 = *(*(&v60 + 1) + 8 * j);
                   v34 = [v48 objectForKey:v33];
                   [v30 addObjectsFromArray:v34];
 
-                  v35 = [v50 objectForKey:v33];
+                  v35 = [_phoneticKeyNamesTable objectForKey:v33];
                   if (v35)
                   {
                     [v30 addObjectsFromArray:v35];
                   }
                 }
 
-                v53 = [v46 countByEnumeratingWithState:&v60 objects:v73 count:16];
+                v53 = [allKeys countByEnumeratingWithState:&v60 objects:v73 count:16];
               }
 
               while (v53);
             }
 
-            p_isa = &v45->super.isa;
-            [(NSMutableDictionary *)v45->_parameterIdentifiersToExamplesTable setObject:v30 forKey:v27];
+            p_isa = &selfCopy->super.isa;
+            [(NSMutableDictionary *)selfCopy->_parameterIdentifiersToExamplesTable setObject:v30 forKey:v27];
 
-            v36 = v50;
+            v36 = _phoneticKeyNamesTable;
             goto LABEL_69;
           }
 
           if ([v27 isEqualToString:kSRCSCommandParameterModifierKeys[0]])
           {
             v30 = objc_opt_new();
-            v37 = [p_isa _modifierKeyNamesTable];
+            _modifierKeyNamesTable = [p_isa _modifierKeyNamesTable];
             v56 = 0u;
             v57 = 0u;
             v58 = 0u;
             v59 = 0u;
-            v54 = v37;
-            v49 = [v37 allKeys];
-            v38 = [v49 countByEnumeratingWithState:&v56 objects:v72 count:16];
+            v54 = _modifierKeyNamesTable;
+            allKeys2 = [_modifierKeyNamesTable allKeys];
+            v38 = [allKeys2 countByEnumeratingWithState:&v56 objects:v72 count:16];
             if (v38)
             {
               v39 = v38;
@@ -860,21 +860,21 @@ LABEL_35:
                 {
                   if (*v57 != v51)
                   {
-                    objc_enumerationMutation(v49);
+                    objc_enumerationMutation(allKeys2);
                   }
 
                   v41 = [v54 objectForKey:*(*(&v56 + 1) + 8 * k)];
                   [v30 addObjectsFromArray:v41];
                 }
 
-                v39 = [v49 countByEnumeratingWithState:&v56 objects:v72 count:16];
+                v39 = [allKeys2 countByEnumeratingWithState:&v56 objects:v72 count:16];
               }
 
               while (v39);
             }
 
-            p_isa = &v45->super.isa;
-            [(NSMutableDictionary *)v45->_parameterIdentifiersToExamplesTable setObject:v30 forKey:v27];
+            p_isa = &selfCopy->super.isa;
+            [(NSMutableDictionary *)selfCopy->_parameterIdentifiersToExamplesTable setObject:v30 forKey:v27];
             v36 = v54;
 LABEL_69:
 
@@ -885,7 +885,7 @@ LABEL_37:
         }
 
         while (v26 != v24);
-        v42 = [v22 countByEnumeratingWithState:&v64 objects:v74 count:16];
+        v42 = [allObjects countByEnumeratingWithState:&v64 objects:v74 count:16];
         v24 = v42;
       }
 
@@ -900,20 +900,20 @@ LABEL_37:
   return parameterIdentifiersToExamplesTable;
 }
 
-- (id)supportedCommandIdentifiersForTargetTypes:(id)a3
+- (id)supportedCommandIdentifiersForTargetTypes:(id)types
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [v4 count];
+  typesCopy = types;
+  array = [MEMORY[0x277CBEB18] array];
+  v6 = [typesCopy count];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [(SRCSCommandStringsTable *)self _commandStringsTable];
-  v8 = [v7 allKeys];
+  _commandStringsTable = [(SRCSCommandStringsTable *)self _commandStringsTable];
+  allKeys = [_commandStringsTable allKeys];
 
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v9 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
     v10 = v9;
@@ -924,20 +924,20 @@ LABEL_37:
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allKeys);
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
         v18 = 0;
         v14 = [(SRCSCommandStringsTable *)self _rootCommandIdentifierFrom:v13 foundTargetType:&v18];
         v15 = v18;
-        if ([v14 length] && (objc_msgSend(v5, "containsObject:", v14) & 1) == 0 && (!v6 || objc_msgSend(v4, "containsObject:", v15)) && -[SRCSCommandStringsTable isSupportedCommandIdentifier:forLocaleIdentifier:](self, "isSupportedCommandIdentifier:forLocaleIdentifier:", v14, self->_localeIdentifier))
+        if ([v14 length] && (objc_msgSend(array, "containsObject:", v14) & 1) == 0 && (!v6 || objc_msgSend(typesCopy, "containsObject:", v15)) && -[SRCSCommandStringsTable isSupportedCommandIdentifier:forLocaleIdentifier:](self, "isSupportedCommandIdentifier:forLocaleIdentifier:", v14, self->_localeIdentifier))
         {
-          [v5 addObject:v14];
+          [array addObject:v14];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v10 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v10);
@@ -945,18 +945,18 @@ LABEL_37:
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return array;
 }
 
-- (BOOL)isSupportedCommandIdentifier:(id)a3 forTargetTypes:(id)a4
+- (BOOL)isSupportedCommandIdentifier:(id)identifier forTargetTypes:(id)types
 {
-  v6 = a4;
+  typesCopy = types;
   v11 = 0;
-  v7 = [(SRCSCommandStringsTable *)self _rootCommandIdentifierFrom:a3 foundTargetType:&v11];
+  v7 = [(SRCSCommandStringsTable *)self _rootCommandIdentifierFrom:identifier foundTargetType:&v11];
   v8 = v11;
   if (v7)
   {
-    v9 = [v6 containsObject:v8];
+    v9 = [typesCopy containsObject:v8];
   }
 
   else
@@ -967,16 +967,16 @@ LABEL_37:
   return v9;
 }
 
-- (BOOL)isSupportedCommandIdentifier:(id)a3 forLocaleIdentifier:(id)a4
+- (BOOL)isSupportedCommandIdentifier:(id)identifier forLocaleIdentifier:(id)localeIdentifier
 {
-  v5 = a4;
-  v6 = a3;
+  localeIdentifierCopy = localeIdentifier;
+  identifierCopy = identifier;
   v7 = +[SRCSSpokenCommandUtilities sharedSpokenCommandUtilities];
-  v8 = [v7 commandAttributes];
-  v9 = [v8 objectForKey:v6];
+  commandAttributes = [v7 commandAttributes];
+  v9 = [commandAttributes objectForKey:identifierCopy];
 
   v10 = [v9 objectForKey:kSRCSCommandAttributeIncludeOnlyForLocales];
-  if (v10 && ![SRCSCommandStringsTable isLocaleIdentifier:v5 containedInLocaleIdentifiers:v10])
+  if (v10 && ![SRCSCommandStringsTable isLocaleIdentifier:localeIdentifierCopy containedInLocaleIdentifiers:v10])
   {
     LOBYTE(v12) = 0;
   }
@@ -986,7 +986,7 @@ LABEL_37:
     v11 = [v9 objectForKey:kSRCSCommandAttributeExcludeAlwaysForLocales];
     if (v11)
     {
-      v12 = ![SRCSCommandStringsTable isLocaleIdentifier:v5 containedInLocaleIdentifiers:v11];
+      v12 = ![SRCSCommandStringsTable isLocaleIdentifier:localeIdentifierCopy containedInLocaleIdentifiers:v11];
     }
 
     else
@@ -998,17 +998,17 @@ LABEL_37:
   return v12;
 }
 
-- (id)_rootCommandIdentifierFrom:(id)a3 foundTargetType:(id *)a4
+- (id)_rootCommandIdentifierFrom:(id)from foundTargetType:(id *)type
 {
-  v5 = a3;
+  fromCopy = from;
   v6 = kSRCSCommandTargetTypeNone;
-  v7 = [v5 rangeOfString:@"_" options:4];
-  if (v8 == 1 && (v9 = v7, v7 < [v5 length] - 1))
+  v7 = [fromCopy rangeOfString:@"_" options:4];
+  if (v8 == 1 && (v9 = v7, v7 < [fromCopy length] - 1))
   {
-    v10 = [v5 substringFromIndex:v9 + 1];
+    v10 = [fromCopy substringFromIndex:v9 + 1];
     if ([v10 length])
     {
-      v11 = [v5 substringToIndex:v9];
+      v11 = [fromCopy substringToIndex:v9];
 
       v12 = v10;
     }
@@ -1025,28 +1025,28 @@ LABEL_37:
 
   else
   {
-    v11 = v5;
+    v11 = fromCopy;
   }
 
   v13 = v6;
-  *a4 = v6;
+  *type = v6;
 
   return v11;
 }
 
-- (unint64_t)countOptionalNodesOfLanguageModelDictionary:(id)a3
+- (unint64_t)countOptionalNodesOfLanguageModelDictionary:(id)dictionary
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKey:kSRCSCommandParseDictionaryKeyAttributes[0]];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:kSRCSCommandParseDictionaryKeyAttributes[0]];
   v6 = [v5 objectForKey:kSRCSCommandParseAttributeOptional[0]];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [v4 objectForKey:{kSRCSCommandParseDictionaryKeyChildren[0], 0}];
+  v8 = [dictionaryCopy objectForKey:{kSRCSCommandParseDictionaryKeyChildren[0], 0}];
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
@@ -1062,7 +1062,7 @@ LABEL_37:
           objc_enumerationMutation(v8);
         }
 
-        v7 += [(SRCSCommandStringsTable *)self countOptionalNodesOfLanguageModelDictionary:*(*(&v15 + 1) + 8 * v12++)];
+        bOOLValue += [(SRCSCommandStringsTable *)self countOptionalNodesOfLanguageModelDictionary:*(*(&v15 + 1) + 8 * v12++)];
       }
 
       while (v10 != v12);
@@ -1073,25 +1073,25 @@ LABEL_37:
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return v7;
+  return bOOLValue;
 }
 
-- (id)_spokenStringPermutationOfLanguageModelDictionary:(id)a3 givenPermutation:(unsigned __int16 *)a4 stringsTable:(id)a5 segmentOffsets:(id)a6
+- (id)_spokenStringPermutationOfLanguageModelDictionary:(id)dictionary givenPermutation:(unsigned __int16 *)permutation stringsTable:(id)table segmentOffsets:(id)offsets
 {
   v58 = *MEMORY[0x277D85DE8];
-  v45 = a3;
-  v50 = a5;
-  v51 = a6;
+  dictionaryCopy = dictionary;
+  tableCopy = table;
+  offsetsCopy = offsets;
   v52 = [MEMORY[0x277CCAB68] stringWithString:&stru_287C0A5E8];
-  v8 = [v45 objectForKey:kSRCSCommandParseDictionaryKeyAttributes[0]];
+  v8 = [dictionaryCopy objectForKey:kSRCSCommandParseDictionaryKeyAttributes[0]];
   v9 = [v8 objectForKey:kSRCSCommandParseAttributeOptional[0]];
-  LODWORD(a5) = [v9 BOOLValue];
+  LODWORD(table) = [v9 BOOLValue];
 
-  v44 = a5;
-  if (a5)
+  tableCopy2 = table;
+  if (table)
   {
-    v49 = *a4 & 1;
-    *a4 >>= 1;
+    v49 = *permutation & 1;
+    *permutation >>= 1;
   }
 
   else
@@ -1103,7 +1103,7 @@ LABEL_37:
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  obj = [v45 objectForKey:kSRCSCommandParseDictionaryKeyChildren[0]];
+  obj = [dictionaryCopy objectForKey:kSRCSCommandParseDictionaryKeyChildren[0]];
   v10 = [obj countByEnumeratingWithState:&v53 objects:v57 count:16];
   if (v10)
   {
@@ -1118,7 +1118,7 @@ LABEL_37:
         }
 
         v13 = *(*(&v53 + 1) + 8 * i);
-        if (v51)
+        if (offsetsCopy)
         {
           v14 = objc_opt_new();
         }
@@ -1128,11 +1128,11 @@ LABEL_37:
           v14 = 0;
         }
 
-        v15 = [(SRCSCommandStringsTable *)self _spokenStringPermutationOfLanguageModelDictionary:v13 givenPermutation:a4 stringsTable:v50 segmentOffsets:v14];
+        v15 = [(SRCSCommandStringsTable *)self _spokenStringPermutationOfLanguageModelDictionary:v13 givenPermutation:permutation stringsTable:tableCopy segmentOffsets:v14];
         v16 = v15;
         if (v49 && [v15 length])
         {
-          if (v51 && [v14 count])
+          if (offsetsCopy && [v14 count])
           {
             if ([v52 length])
             {
@@ -1142,15 +1142,15 @@ LABEL_37:
                 for (j = 0; j != v17; ++j)
                 {
                   v19 = [v14 objectAtIndex:j];
-                  v20 = [v19 range];
+                  range = [v19 range];
                   v21 = [v52 length];
                   [v19 range];
-                  [v19 setRange:{v20 + v21, v22}];
+                  [v19 setRange:{range + v21, v22}];
                 }
               }
             }
 
-            [v51 addObjectsFromArray:v14];
+            [offsetsCopy addObjectsFromArray:v14];
           }
 
           [v52 appendString:v16];
@@ -1165,40 +1165,40 @@ LABEL_37:
 
   if (v49)
   {
-    v23 = [v45 objectForKey:kSRCSCommandParseDictionaryKeyIsBuiltInIdentifier[0]];
-    v24 = [v23 BOOLValue];
+    v23 = [dictionaryCopy objectForKey:kSRCSCommandParseDictionaryKeyIsBuiltInIdentifier[0]];
+    bOOLValue = [v23 BOOLValue];
 
-    if (!v24)
+    if (!bOOLValue)
     {
-      v25 = [v45 objectForKey:kSRCSCommandParseDictionaryKeyText[0]];
+      v25 = [dictionaryCopy objectForKey:kSRCSCommandParseDictionaryKeyText[0]];
       if ([(__CFString *)v25 length])
       {
-        if (v51)
+        if (offsetsCopy)
         {
-          v35 = self;
-          objc_sync_enter(v35);
-          wordUnitStringTokenizer = v35->_wordUnitStringTokenizer;
+          selfCopy = self;
+          objc_sync_enter(selfCopy);
+          wordUnitStringTokenizer = selfCopy->_wordUnitStringTokenizer;
           v60.length = [(__CFString *)v25 length];
           v60.location = 0;
           CFStringTokenizerSetString(wordUnitStringTokenizer, v25, v60);
-          if (CFStringTokenizerAdvanceToNextToken(v35->_wordUnitStringTokenizer))
+          if (CFStringTokenizerAdvanceToNextToken(selfCopy->_wordUnitStringTokenizer))
           {
-            CurrentTokenRange = CFStringTokenizerGetCurrentTokenRange(v35->_wordUnitStringTokenizer);
+            CurrentTokenRange = CFStringTokenizerGetCurrentTokenRange(selfCopy->_wordUnitStringTokenizer);
             v38 = v25;
-            if ((v44 & 1) == 0)
+            if ((tableCopy2 & 1) == 0)
             {
               v38 = [(__CFString *)v25 substringWithRange:CurrentTokenRange.location, CurrentTokenRange.length];
             }
 
             v39 = [SRCSCommandSegmentInfo segmentInfoWith:CurrentTokenRange.location text:CurrentTokenRange.length, v38];
-            [v51 addObject:v39];
+            [offsetsCopy addObject:v39];
 
-            if ((v44 & 1) == 0)
+            if ((tableCopy2 & 1) == 0)
             {
             }
           }
 
-          objc_sync_exit(v35);
+          objc_sync_exit(selfCopy);
         }
 
         [v52 appendString:v25];
@@ -1207,8 +1207,8 @@ LABEL_37:
       goto LABEL_56;
     }
 
-    v25 = [v45 objectForKeyedSubscript:kSRCSCommandParseDictionaryKeyIdentifier[0]];
-    v26 = [v50 objectForKey:v25];
+    v25 = [dictionaryCopy objectForKeyedSubscript:kSRCSCommandParseDictionaryKeyIdentifier[0]];
+    v26 = [tableCopy objectForKey:v25];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1284,7 +1284,7 @@ LABEL_56:
 
     else
     {
-      v33 = [v45 objectForKey:kSRCSCommandParseDictionaryKeyIdentifier[0]];
+      v33 = [dictionaryCopy objectForKey:kSRCSCommandParseDictionaryKeyIdentifier[0]];
       [v52 appendFormat:@"{%@}", v33];
     }
 
@@ -1298,19 +1298,19 @@ LABEL_57:
   return v52;
 }
 
-- (id)setOfBuiltInIdentifiersFromLanguageModelDictionary:(id)a3
+- (id)setOfBuiltInIdentifiersFromLanguageModelDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [MEMORY[0x277CBEB58] set];
-  v6 = [v4 objectForKey:kSRCSCommandParseDictionaryKeyChildren[0]];
+  v6 = [dictionaryCopy objectForKey:kSRCSCommandParseDictionaryKeyChildren[0]];
   if ([v6 count])
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v7 = [v4 objectForKey:{kSRCSCommandParseDictionaryKeyChildren[0], 0}];
+    v7 = [dictionaryCopy objectForKey:{kSRCSCommandParseDictionaryKeyChildren[0], 0}];
     v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v8)
     {
@@ -1326,8 +1326,8 @@ LABEL_57:
           }
 
           v12 = [(SRCSCommandStringsTable *)self setOfBuiltInIdentifiersFromLanguageModelDictionary:*(*(&v19 + 1) + 8 * i)];
-          v13 = [v12 allObjects];
-          [v5 addObjectsFromArray:v13];
+          allObjects = [v12 allObjects];
+          [v5 addObjectsFromArray:allObjects];
         }
 
         v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -1339,12 +1339,12 @@ LABEL_57:
 
   else
   {
-    v14 = [v4 objectForKey:kSRCSCommandParseDictionaryKeyIsBuiltInIdentifier[0]];
-    v15 = [v14 BOOLValue];
+    v14 = [dictionaryCopy objectForKey:kSRCSCommandParseDictionaryKeyIsBuiltInIdentifier[0]];
+    bOOLValue = [v14 BOOLValue];
 
-    if (v15)
+    if (bOOLValue)
     {
-      v16 = [v4 objectForKeyedSubscript:kSRCSCommandParseDictionaryKeyIdentifier[0]];
+      v16 = [dictionaryCopy objectForKeyedSubscript:kSRCSCommandParseDictionaryKeyIdentifier[0]];
       if (v16)
       {
         [v5 addObject:v16];
@@ -1357,32 +1357,32 @@ LABEL_57:
   return v5;
 }
 
-- (void)_removeDuplicateSpacesFromMutableString:(id)a3
+- (void)_removeDuplicateSpacesFromMutableString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
     ;
   }
 }
 
-- (id)unparsedCommandTextForCommandIdentifier:(id)a3 targetTypes:(id)a4
+- (id)unparsedCommandTextForCommandIdentifier:(id)identifier targetTypes:(id)types
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = v6;
-  if (a3 && v6)
+  typesCopy = types;
+  v7 = typesCopy;
+  if (identifier && typesCopy)
   {
     v27 = 0;
-    v8 = [(SRCSCommandStringsTable *)self _rootCommandIdentifierFrom:a3 foundTargetType:&v27];
+    v8 = [(SRCSCommandStringsTable *)self _rootCommandIdentifierFrom:identifier foundTargetType:&v27];
     v9 = v27;
-    v10 = [(SRCSCommandStringsTable *)self _commandStringsTable];
+    _commandStringsTable = [(SRCSCommandStringsTable *)self _commandStringsTable];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v11 = [objc_opt_class() supportedTargetTypes];
-    v12 = [v11 reverseObjectEnumerator];
+    supportedTargetTypes = [objc_opt_class() supportedTargetTypes];
+    reverseObjectEnumerator = [supportedTargetTypes reverseObjectEnumerator];
 
-    v13 = [v12 countByEnumeratingWithState:&v23 objects:v28 count:16];
+    v13 = [reverseObjectEnumerator countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v13)
     {
       v14 = v13;
@@ -1393,7 +1393,7 @@ LABEL_57:
         {
           if (*v24 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v17 = *(*(&v23 + 1) + 8 * i);
@@ -1410,7 +1410,7 @@ LABEL_57:
             }
 
             v19 = v18;
-            v20 = [v10 objectForKeyedSubscript:v18];
+            v20 = [_commandStringsTable objectForKeyedSubscript:v18];
             if ([(__CFString *)v20 length])
             {
 
@@ -1419,7 +1419,7 @@ LABEL_57:
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v23 objects:v28 count:16];
+        v14 = [reverseObjectEnumerator countByEnumeratingWithState:&v23 objects:v28 count:16];
         if (v14)
         {
           continue;
@@ -1450,23 +1450,23 @@ LABEL_20:
   return v20;
 }
 
-- (id)languageModelDictionaryForCommandIdentifier:(id)a3 targetTypes:(id)a4 parsingErrorString:(id *)a5
+- (id)languageModelDictionaryForCommandIdentifier:(id)identifier targetTypes:(id)types parsingErrorString:(id *)string
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SRCSCommandStringsTable *)self unparsedCommandTextForCommandIdentifier:v8 targetTypes:v9];
+  identifierCopy = identifier;
+  typesCopy = types;
+  v10 = [(SRCSCommandStringsTable *)self unparsedCommandTextForCommandIdentifier:identifierCopy targetTypes:typesCopy];
   v11 = objc_opt_class();
   objc_sync_enter(v11);
-  if (a5)
+  if (string)
   {
-    *a5 = 0;
+    *string = 0;
   }
 
   v14 = 0;
   v12 = CreateMutableDictionaryFromSpokenCommandString(v10, &v14);
-  if (a5 && v14)
+  if (string && v14)
   {
-    *a5 = v14;
+    *string = v14;
   }
 
   objc_sync_exit(v11);
@@ -1474,15 +1474,15 @@ LABEL_20:
   return v12;
 }
 
-- (id)spokenStringPermutationsOfLanguageModelDictionary:(id)a3 stringsTable:(id)a4 restrictPermutationsToShortestAndLongest:(BOOL)a5
+- (id)spokenStringPermutationsOfLanguageModelDictionary:(id)dictionary stringsTable:(id)table restrictPermutationsToShortestAndLongest:(BOOL)longest
 {
-  v5 = a5;
+  longestCopy = longest;
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v32 = [MEMORY[0x277CBEB18] array];
-  v10 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v11 = [v8 objectForKey:kSRCSCommandParseDictionaryKeyAttributes[0]];
+  dictionaryCopy = dictionary;
+  tableCopy = table;
+  array = [MEMORY[0x277CBEB18] array];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v11 = [dictionaryCopy objectForKey:kSRCSCommandParseDictionaryKeyAttributes[0]];
   v12 = [v11 objectForKey:kSRCSCommandParseAttributePath[0]];
 
   if (v12)
@@ -1491,7 +1491,7 @@ LABEL_20:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v39 = v8;
+      v39 = dictionaryCopy;
       _os_log_impl(&dword_26B44D000, v13, OS_LOG_TYPE_DEFAULT, "Malformed LM dictionary in spokenStringPermutationsOfLanguageModelDictionary:stringsTable:, should not have a path at the top level: %@.", buf, 0xCu);
     }
   }
@@ -1502,14 +1502,14 @@ LABEL_20:
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v13 = [v8 objectForKey:kSRCSCommandParseDictionaryKeyChildren[0]];
+    v13 = [dictionaryCopy objectForKey:kSRCSCommandParseDictionaryKeyChildren[0]];
     v33 = [v13 countByEnumeratingWithState:&v34 objects:v40 count:16];
     if (v33)
     {
-      v28 = v8;
+      v28 = dictionaryCopy;
       obj = v13;
       v30 = *v35;
-      v31 = v5;
+      v31 = longestCopy;
       do
       {
         for (i = 0; i != v33; ++i)
@@ -1529,9 +1529,9 @@ LABEL_20:
             do
             {
               *buf = v18;
-              v20 = [(SRCSCommandStringsTable *)self spokenStringPermutationOfLanguageModelDictionary:v15 givenPermutation:buf stringsTable:v9];
+              v20 = [(SRCSCommandStringsTable *)self spokenStringPermutationOfLanguageModelDictionary:v15 givenPermutation:buf stringsTable:tableCopy];
               [(SRCSCommandStringsTable *)self _removeDuplicateSpacesFromMutableString:v20];
-              v21 = [v20 stringByTrimmingCharactersInSet:v10];
+              v21 = [v20 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
               [v17 addObject:v21];
 
               ++v18;
@@ -1541,8 +1541,8 @@ LABEL_20:
           }
 
           v22 = objc_alloc(MEMORY[0x277CBEB18]);
-          v23 = [v17 allObjects];
-          v24 = [v23 sortedArrayUsingComparator:&__block_literal_global_228];
+          allObjects = [v17 allObjects];
+          v24 = [allObjects sortedArrayUsingComparator:&__block_literal_global_228];
           v25 = [v22 initWithArray:v24];
 
           if (v31 && [v25 count] >= 3)
@@ -1550,7 +1550,7 @@ LABEL_20:
             [v25 removeObjectsInRange:{1, objc_msgSend(v25, "count") - 2}];
           }
 
-          [v32 addObjectsFromArray:v25];
+          [array addObjectsFromArray:v25];
         }
 
         v13 = obj;
@@ -1558,13 +1558,13 @@ LABEL_20:
       }
 
       while (v33);
-      v8 = v28;
+      dictionaryCopy = v28;
     }
   }
 
   v26 = *MEMORY[0x277D85DE8];
 
-  return v32;
+  return array;
 }
 
 uint64_t __131__SRCSCommandStringsTable_spokenStringPermutationsOfLanguageModelDictionary_stringsTable_restrictPermutationsToShortestAndLongest___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1594,13 +1594,13 @@ uint64_t __131__SRCSCommandStringsTable_spokenStringPermutationsOfLanguageModelD
   return v7;
 }
 
-- (id)_warningsOfIncorrectTokenizationAcrossSegmentBoundariesInLanguageModelDictionary:(id)a3 stringsTable:(id)a4
+- (id)_warningsOfIncorrectTokenizationAcrossSegmentBoundariesInLanguageModelDictionary:(id)dictionary stringsTable:(id)table
 {
   v43 = *MEMORY[0x277D85DE8];
-  v27 = a3;
-  v33 = a4;
-  v32 = [MEMORY[0x277CBEB18] array];
-  v6 = [v27 objectForKey:kSRCSCommandParseDictionaryKeyAttributes[0]];
+  dictionaryCopy = dictionary;
+  tableCopy = table;
+  array = [MEMORY[0x277CBEB18] array];
+  v6 = [dictionaryCopy objectForKey:kSRCSCommandParseDictionaryKeyAttributes[0]];
   v7 = [v6 objectForKey:kSRCSCommandParseAttributePath[0]];
 
   if (v7)
@@ -1609,7 +1609,7 @@ uint64_t __131__SRCSCommandStringsTable_spokenStringPermutationsOfLanguageModelD
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v41 = v27;
+      v41 = dictionaryCopy;
       _os_log_impl(&dword_26B44D000, v8, OS_LOG_TYPE_DEFAULT, "Malformed LM dictionary in _warningsOfIncorrectTokenizationAcrossSegmentBoundariesInLanguageModelDictionary:stringsTable:, should not have a path at the top level: %@.", buf, 0xCu);
     }
   }
@@ -1620,7 +1620,7 @@ uint64_t __131__SRCSCommandStringsTable_spokenStringPermutationsOfLanguageModelD
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    obj = [v27 objectForKey:kSRCSCommandParseDictionaryKeyChildren[0]];
+    obj = [dictionaryCopy objectForKey:kSRCSCommandParseDictionaryKeyChildren[0]];
     v30 = [obj countByEnumeratingWithState:&v36 objects:v42 count:16];
     if (v30)
     {
@@ -1646,11 +1646,11 @@ uint64_t __131__SRCSCommandStringsTable_spokenStringPermutationsOfLanguageModelD
             v34 = (1 << v11);
             do
             {
-              v13 = [MEMORY[0x277CBEB18] array];
+              array2 = [MEMORY[0x277CBEB18] array];
               *buf = v12;
-              v14 = [(SRCSCommandStringsTable *)self _spokenStringPermutationOfLanguageModelDictionary:v35 givenPermutation:buf stringsTable:v33 segmentOffsets:v13];
-              v15 = self;
-              objc_sync_enter(v15);
+              v14 = [(SRCSCommandStringsTable *)self _spokenStringPermutationOfLanguageModelDictionary:v35 givenPermutation:buf stringsTable:tableCopy segmentOffsets:array2];
+              selfCopy = self;
+              objc_sync_enter(selfCopy);
               wordUnitStringTokenizer = self->_wordUnitStringTokenizer;
               v45.length = [(__CFString *)v14 length];
               v45.location = 0;
@@ -1659,13 +1659,13 @@ LABEL_12:
               while (CFStringTokenizerAdvanceToNextToken(self->_wordUnitStringTokenizer))
               {
                 location = CFStringTokenizerGetCurrentTokenRange(self->_wordUnitStringTokenizer).location;
-                v18 = [v13 count];
+                v18 = [array2 count];
                 if (v18 >= 1)
                 {
                   v19 = 0;
                   while (1)
                   {
-                    v20 = [v13 objectAtIndex:v19];
+                    v20 = [array2 objectAtIndex:v19];
                     v21 = [v20 range] == location;
 
                     if (v21)
@@ -1679,18 +1679,18 @@ LABEL_12:
                     }
                   }
 
-                  [v13 removeObjectAtIndex:v19];
+                  [array2 removeObjectAtIndex:v19];
                 }
               }
 
-              objc_sync_exit(v15);
+              objc_sync_exit(selfCopy);
 
-              if ([v13 count])
+              if ([array2 count])
               {
                 v22 = MEMORY[0x277CCACA8];
-                v23 = [v13 componentsJoinedByString:{@", "}];
+                v23 = [array2 componentsJoinedByString:{@", "}];
                 v24 = [v22 stringWithFormat:@"%@ in “%@”", v23, v14];
-                [v32 addObject:v24];
+                [array addObject:v24];
               }
 
               ++v12;
@@ -1714,21 +1714,21 @@ LABEL_12:
 
   v25 = *MEMORY[0x277D85DE8];
 
-  return v32;
+  return array;
 }
 
-- (id)descriptionStringForCommandIdentifier:(id)a3 descriptionType:(id)a4 targetTypes:(id)a5
+- (id)descriptionStringForCommandIdentifier:(id)identifier descriptionType:(id)type targetTypes:(id)types
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SRCSCommandStringsTable *)self _commandDescriptionsTable];
+  identifierCopy = identifier;
+  typeCopy = type;
+  typesCopy = types;
+  _commandDescriptionsTable = [(SRCSCommandStringsTable *)self _commandDescriptionsTable];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v12 = v10;
+  v12 = typesCopy;
   v13 = [v12 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v13)
   {
@@ -1748,15 +1748,15 @@ LABEL_3:
       v19 = *(*(&v24 + 1) + 8 * v17);
       if ([v19 isEqualToString:@"None"])
       {
-        [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", v8, v9, v23];
+        [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", identifierCopy, typeCopy, v23];
       }
 
       else
       {
-        [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@_%@", v8, v9, v19];
+        [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@_%@", identifierCopy, typeCopy, v19];
       }
       v20 = ;
-      v15 = [v11 objectForKey:v20];
+      v15 = [_commandDescriptionsTable objectForKey:v20];
 
       if ([v15 length])
       {
@@ -1788,28 +1788,28 @@ LABEL_3:
   return v15;
 }
 
-- (id)mutableAttributedStringByReplacingPlaceholderAttribute:(id)a3 withAttributeName:(id)a4 inAttributedString:(id)a5 withValueTable:(id)a6
+- (id)mutableAttributedStringByReplacingPlaceholderAttribute:(id)attribute withAttributeName:(id)name inAttributedString:(id)string withValueTable:(id)table
 {
-  v9 = a4;
-  v10 = a6;
+  nameCopy = name;
+  tableCopy = table;
   v11 = MEMORY[0x277CCAB48];
-  v12 = a5;
-  v13 = a3;
-  v14 = [[v11 alloc] initWithAttributedString:v12];
-  v15 = [v12 length];
+  stringCopy = string;
+  attributeCopy = attribute;
+  v14 = [[v11 alloc] initWithAttributedString:stringCopy];
+  v15 = [stringCopy length];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __134__SRCSCommandStringsTable_mutableAttributedStringByReplacingPlaceholderAttribute_withAttributeName_inAttributedString_withValueTable___block_invoke;
   v22[3] = &unk_279CF5490;
-  v23 = v10;
+  v23 = tableCopy;
   v16 = v14;
   v24 = v16;
-  v25 = v9;
-  v17 = v9;
-  v18 = v10;
-  [v12 enumerateAttribute:v13 inRange:0 options:v15 usingBlock:{0, v22}];
+  v25 = nameCopy;
+  v17 = nameCopy;
+  v18 = tableCopy;
+  [stringCopy enumerateAttribute:attributeCopy inRange:0 options:v15 usingBlock:{0, v22}];
 
-  [v16 removeAttribute:v13 range:{0, objc_msgSend(v16, "length")}];
+  [v16 removeAttribute:attributeCopy range:{0, objc_msgSend(v16, "length")}];
   v19 = v25;
   v20 = v16;
 
@@ -1827,14 +1827,14 @@ uint64_t __134__SRCSCommandStringsTable_mutableAttributedStringByReplacingPlaceh
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)phrasesForCommandIdentifier:(id)a3 targetTypes:(id)a4 parameterStrings:(id)a5
+- (id)phrasesForCommandIdentifier:(id)identifier targetTypes:(id)types parameterStrings:(id)strings
 {
-  v8 = a5;
+  stringsCopy = strings;
   v12 = 0;
-  v9 = [(SRCSCommandStringsTable *)self languageModelDictionaryForCommandIdentifier:a3 targetTypes:a4 parsingErrorString:&v12];
+  v9 = [(SRCSCommandStringsTable *)self languageModelDictionaryForCommandIdentifier:identifier targetTypes:types parsingErrorString:&v12];
   if (v9)
   {
-    v10 = [(SRCSCommandStringsTable *)self spokenStringPermutationsOfLanguageModelDictionary:v9 stringsTable:v8 restrictPermutationsToShortestAndLongest:1];
+    v10 = [(SRCSCommandStringsTable *)self spokenStringPermutationsOfLanguageModelDictionary:v9 stringsTable:stringsCopy restrictPermutationsToShortestAndLongest:1];
   }
 
   else
@@ -1845,9 +1845,9 @@ uint64_t __134__SRCSCommandStringsTable_mutableAttributedStringByReplacingPlaceh
   return v10;
 }
 
-- (id)mutableAttributedStringCommandDescriptionForCommandIdentifier:(id)a3 calculateDisplayedAttributedStringWidthBlock:(id)a4
+- (id)mutableAttributedStringCommandDescriptionForCommandIdentifier:(id)identifier calculateDisplayedAttributedStringWidthBlock:(id)block
 {
-  v4 = MEMORY[0x28223BE20](self, a2, a3, a4);
+  v4 = MEMORY[0x28223BE20](self, a2, identifier, block);
   v6 = v5;
   v7 = v4;
   v433 = *MEMORY[0x277D85DE8];
@@ -1863,8 +1863,8 @@ uint64_t __134__SRCSCommandStringsTable_mutableAttributedStringByReplacingPlaceh
   v366 = 0u;
   v367 = 0u;
   v368 = 0u;
-  v11 = [AllValidCommandParameterIdentifiers() allObjects];
-  v12 = [v11 countByEnumeratingWithState:&v365 objects:v432 count:16];
+  allObjects = [AllValidCommandParameterIdentifiers() allObjects];
+  v12 = [allObjects countByEnumeratingWithState:&v365 objects:v432 count:16];
   if (v12)
   {
     v13 = v12;
@@ -1875,7 +1875,7 @@ uint64_t __134__SRCSCommandStringsTable_mutableAttributedStringByReplacingPlaceh
       {
         if (*v366 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allObjects);
         }
 
         v16 = *(*(&v365 + 1) + 8 * i);
@@ -1888,7 +1888,7 @@ uint64_t __134__SRCSCommandStringsTable_mutableAttributedStringByReplacingPlaceh
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v365 objects:v432 count:16];
+      v13 = [allObjects countByEnumeratingWithState:&v365 objects:v432 count:16];
     }
 
     while (v13);
@@ -1934,7 +1934,7 @@ uint64_t __134__SRCSCommandStringsTable_mutableAttributedStringByReplacingPlaceh
   v30 = +[SRCSCommandStringsTable activeTargetTypes];
   v31 = [v285 phrasesForCommandIdentifier:v278 targetTypes:v30 parameterStrings:v271];
 
-  v268 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v361 = 0u;
   v362 = 0u;
   v363 = 0u;
@@ -1954,7 +1954,7 @@ uint64_t __134__SRCSCommandStringsTable_mutableAttributedStringByReplacingPlaceh
           objc_enumerationMutation(obj);
         }
 
-        [v268 appendFormat:v274, *(*(&v361 + 1) + 8 * j)];
+        [string appendFormat:v274, *(*(&v361 + 1) + 8 * j)];
       }
 
       v33 = [obj countByEnumeratingWithState:&v361 objects:v429 count:16];
@@ -1971,7 +1971,7 @@ uint64_t __134__SRCSCommandStringsTable_mutableAttributedStringByReplacingPlaceh
   v427[2] = kSRCSCommandDescriptionsColorPlaceholderAttributeName;
   v428[2] = kSRCSCommandDescriptionsSectionDescValue;
   v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v428 forKeys:v427 count:3];
-  v38 = [v36 initWithString:v268 attributes:v37];
+  v38 = [v36 initWithString:string attributes:v37];
 
   v260 = v38;
   [v9 appendAttributedString:v38];
@@ -2011,8 +2011,8 @@ uint64_t __134__SRCSCommandStringsTable_mutableAttributedStringByReplacingPlaceh
     if ([v263 length])
     {
       v46 = objc_alloc(MEMORY[0x277CCAB48]);
-      v47 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n", v263];
-      v48 = [v46 initWithString:v47];
+      v263 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n", v263];
+      v48 = [v46 initWithString:v263];
 
       [v281 resolveReferencesInMutableAttributedString:v48 stringsTable:v271];
       v423[0] = kSRCSCommandDescriptionsParagraphPlaceholderAttributeName;
@@ -2027,7 +2027,7 @@ uint64_t __134__SRCSCommandStringsTable_mutableAttributedStringByReplacingPlaceh
       [v9 appendAttributedString:v48];
     }
 
-    v306 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v357 = 0u;
     v358 = 0u;
     v359 = 0u;
@@ -2089,7 +2089,7 @@ uint64_t __134__SRCSCommandStringsTable_mutableAttributedStringByReplacingPlaceh
               v66 = &stru_287C0A5E8;
             }
 
-            [v306 setObject:v66 forKey:v59];
+            [dictionary setObject:v66 forKey:v59];
             if (v296)
             {
               v67 = v296[2]();
@@ -2127,8 +2127,8 @@ uint64_t __134__SRCSCommandStringsTable_mutableAttributedStringByReplacingPlaceh
     v354 = 0u;
     v355 = 0u;
     v356 = 0u;
-    v294 = [v306 allKeys];
-    v303 = [(__CFString *)v294 countByEnumeratingWithState:&v353 objects:v417 count:16];
+    allKeys = [dictionary allKeys];
+    v303 = [(__CFString *)allKeys countByEnumeratingWithState:&v353 objects:v417 count:16];
     if (v303)
     {
       v298 = *v354;
@@ -2139,7 +2139,7 @@ uint64_t __134__SRCSCommandStringsTable_mutableAttributedStringByReplacingPlaceh
         {
           if (*v354 != v298)
           {
-            objc_enumerationMutation(v294);
+            objc_enumerationMutation(allKeys);
           }
 
           v72 = *(*(&v353 + 1) + 8 * m);
@@ -2153,7 +2153,7 @@ uint64_t __134__SRCSCommandStringsTable_mutableAttributedStringByReplacingPlaceh
           v75 = [v73 initWithString:@"\t" attributes:v74];
           [v70 appendAttributedString:v75];
 
-          v76 = [v306 objectForKey:v72];
+          v76 = [dictionary objectForKey:v72];
           [v70 appendAttributedString:v76];
 
           v77 = objc_alloc(MEMORY[0x277CCAB48]);
@@ -2166,7 +2166,7 @@ uint64_t __134__SRCSCommandStringsTable_mutableAttributedStringByReplacingPlaceh
           [v70 appendAttributedString:v79];
         }
 
-        v303 = [(__CFString *)v294 countByEnumeratingWithState:&v353 objects:v417 count:16];
+        v303 = [(__CFString *)allKeys countByEnumeratingWithState:&v353 objects:v417 count:16];
       }
 
       while (v303);
@@ -2248,7 +2248,7 @@ uint64_t __134__SRCSCommandStringsTable_mutableAttributedStringByReplacingPlaceh
       }
 
       [v9 appendAttributedString:v97];
-      v98 = [MEMORY[0x277CCAB68] string];
+      string2 = [MEMORY[0x277CCAB68] string];
       v349 = 0u;
       v350 = 0u;
       v351 = 0u;
@@ -2268,7 +2268,7 @@ uint64_t __134__SRCSCommandStringsTable_mutableAttributedStringByReplacingPlaceh
               objc_enumerationMutation(v99);
             }
 
-            [v98 appendFormat:v274, *(*(&v349 + 1) + 8 * n)];
+            [string2 appendFormat:v274, *(*(&v349 + 1) + 8 * n)];
           }
 
           v101 = [v99 countByEnumeratingWithState:&v349 objects:v406 count:16];
@@ -2286,7 +2286,7 @@ uint64_t __134__SRCSCommandStringsTable_mutableAttributedStringByReplacingPlaceh
       v404[2] = kSRCSCommandDescriptionsColorPlaceholderAttributeName;
       v405[2] = kSRCSCommandDescriptionsSectionDescValue;
       v105 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v405 forKeys:v404 count:3];
-      v106 = [v104 initWithString:v98 attributes:v105];
+      v106 = [v104 initWithString:string2 attributes:v105];
 
       [v9 appendAttributedString:v106];
       v22 = 0x277CCA000uLL;
@@ -2320,8 +2320,8 @@ uint64_t __134__SRCSCommandStringsTable_mutableAttributedStringByReplacingPlaceh
         v111 = *(*(&v345 + 1) + 8 * ii);
         if ([v269 containsObject:v111])
         {
-          v112 = [v20 exampleParameterStringsTable];
-          v113 = [v112 objectForKey:v111];
+          exampleParameterStringsTable = [v20 exampleParameterStringsTable];
+          v113 = [exampleParameterStringsTable objectForKey:v111];
 
           if ([v113 count])
           {
@@ -2352,7 +2352,7 @@ uint64_t __134__SRCSCommandStringsTable_mutableAttributedStringByReplacingPlaceh
             v122 = [v119 initWithString:v120 attributes:v121];
 
             [v117 appendAttributedString:v122];
-            v123 = [MEMORY[0x277CCAB68] string];
+            string3 = [MEMORY[0x277CCAB68] string];
             v341 = 0u;
             v342 = 0u;
             v343 = 0u;
@@ -2372,7 +2372,7 @@ uint64_t __134__SRCSCommandStringsTable_mutableAttributedStringByReplacingPlaceh
                     objc_enumerationMutation(v124);
                   }
 
-                  [v123 appendFormat:v274, *(*(&v341 + 1) + 8 * jj)];
+                  [string3 appendFormat:v274, *(*(&v341 + 1) + 8 * jj)];
                 }
 
                 v126 = [v124 countByEnumeratingWithState:&v341 objects:v399 count:16];
@@ -2391,7 +2391,7 @@ uint64_t __134__SRCSCommandStringsTable_mutableAttributedStringByReplacingPlaceh
             v397[2] = kSRCSCommandDescriptionsColorPlaceholderAttributeName;
             v398[2] = kSRCSCommandDescriptionsSectionDescValue;
             v130 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v398 forKeys:v397 count:3];
-            v131 = [v129 initWithString:v123 attributes:v130];
+            v131 = [v129 initWithString:string3 attributes:v130];
 
             [v290 appendAttributedString:v131];
             v9 = v290;
@@ -2442,9 +2442,9 @@ uint64_t __134__SRCSCommandStringsTable_mutableAttributedStringByReplacingPlaceh
               objc_enumerationMutation(v283);
             }
 
-            v294 = v140;
+            allKeys = v140;
             v141 = *(*(&v337 + 1) + 8 * v140);
-            v142 = [MEMORY[0x277CBEB18] array];
+            array = [MEMORY[0x277CBEB18] array];
             v333 = 0u;
             v334 = 0u;
             v335 = 0u;
@@ -2481,7 +2481,7 @@ uint64_t __134__SRCSCommandStringsTable_mutableAttributedStringByReplacingPlaceh
                   if ([v149 isEqualToString:*v151])
                   {
 LABEL_114:
-                    [v142 addObject:v148];
+                    [array addObject:v148];
                   }
                 }
 
@@ -2495,7 +2495,7 @@ LABEL_114:
             v332 = 0u;
             v329 = 0u;
             v330 = 0u;
-            v300 = v142;
+            v300 = array;
             v152 = [v300 countByEnumeratingWithState:&v329 objects:v394 count:16];
             if (v152)
             {
@@ -2570,11 +2570,11 @@ LABEL_114:
               while (v153);
             }
 
-            v140 = (&v294->isa + 1);
+            v140 = (&allKeys->isa + 1);
             v22 = 0x277CCA000;
           }
 
-          while (&v294->isa + 1 != v291);
+          while (&allKeys->isa + 1 != v291);
           v291 = [v283 countByEnumeratingWithState:&v337 objects:v396 count:16];
         }
 
@@ -2597,12 +2597,12 @@ LABEL_114:
       v168 = objc_alloc(*(v22 + 2888));
       if (v167)
       {
-        v169 = [*(v84 + 3240) stringWithFormat:@"%@\n", v167];
+        v167 = [*(v84 + 3240) stringWithFormat:@"%@\n", v167];
       }
 
       else
       {
-        v169 = &stru_287C0A5E8;
+        v167 = &stru_287C0A5E8;
       }
 
       v389[0] = *(v26 + 2632);
@@ -2612,7 +2612,7 @@ LABEL_114:
       v389[2] = kSRCSCommandDescriptionsColorPlaceholderAttributeName;
       v390[2] = kSRCSCommandDescriptionsSectionTitleValue;
       v170 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v390 forKeys:v389 count:3];
-      v258 = [v168 initWithString:v169 attributes:v170];
+      v258 = [v168 initWithString:v167 attributes:v170];
 
       if (v167)
       {
@@ -2635,12 +2635,12 @@ LABEL_114:
       v174 = objc_alloc(*(v22 + 2888));
       if (v173)
       {
-        v175 = [*(v84 + 3240) stringWithFormat:@"%@\n", v173];
+        v173 = [*(v84 + 3240) stringWithFormat:@"%@\n", v173];
       }
 
       else
       {
-        v175 = &stru_287C0A5E8;
+        v173 = &stru_287C0A5E8;
       }
 
       v257 = v167;
@@ -2651,7 +2651,7 @@ LABEL_114:
       v387[2] = kSRCSCommandDescriptionsColorPlaceholderAttributeName;
       v388[2] = kSRCSCommandDescriptionsSectionDescValue;
       v176 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v388 forKeys:v387 count:3];
-      v177 = [v174 initWithString:v175 attributes:v176];
+      v177 = [v174 initWithString:v173 attributes:v176];
 
       v256 = v173;
       if (v173)
@@ -2684,7 +2684,7 @@ LABEL_114:
 
             v270 = v179;
             v180 = *(*(&v321 + 1) + 8 * v179);
-            v181 = [MEMORY[0x277CBEB18] array];
+            array2 = [MEMORY[0x277CBEB18] array];
             v317 = 0u;
             v318 = 0u;
             v319 = 0u;
@@ -2722,7 +2722,7 @@ LABEL_114:
                   if ([v188 isEqualToString:*v190])
                   {
 LABEL_168:
-                    [v181 addObject:v187];
+                    [array2 addObject:v187];
                   }
                 }
 
@@ -2732,12 +2732,12 @@ LABEL_168:
               while (v184);
             }
 
-            v191 = [v181 count];
+            v191 = [array2 count];
             v313 = 0u;
             v314 = 0u;
             v315 = 0u;
             v316 = 0u;
-            v273 = v181;
+            v273 = array2;
             v279 = [v273 countByEnumeratingWithState:&v313 objects:v384 count:16];
             if (v279)
             {
@@ -2765,20 +2765,20 @@ LABEL_168:
                   {
                     v197 = *(v84 + 3240);
                     v198 = [v272 objectForKey:kSRCSEmbeddedCommandsKeyTitle];
-                    v199 = [v197 stringWithFormat:@"PunctuationGroup.%@", v198];
+                    v198 = [v197 stringWithFormat:@"PunctuationGroup.%@", v198];
                     v200 = +[SRCSCommandStringsTable activeTargetTypes];
-                    v201 = [v20 descriptionStringForCommandIdentifier:v199 descriptionType:@"TITL" targetTypes:v200];
+                    v201 = [v20 descriptionStringForCommandIdentifier:v198 descriptionType:@"TITL" targetTypes:v200];
 
                     v202 = objc_alloc(*(v194 + 2888));
                     if (v201)
                     {
-                      v203 = [*(v84 + 3240) stringWithFormat:@"%@\n", v201];
-                      v275 = v203;
+                      v201 = [*(v84 + 3240) stringWithFormat:@"%@\n", v201];
+                      v275 = v201;
                     }
 
                     else
                     {
-                      v203 = &stru_287C0A5E8;
+                      v201 = &stru_287C0A5E8;
                     }
 
                     v382[0] = kSRCSCommandDescriptionsParagraphPlaceholderAttributeName;
@@ -2788,7 +2788,7 @@ LABEL_168:
                     v382[2] = kSRCSCommandDescriptionsColorPlaceholderAttributeName;
                     v383[2] = kSRCSCommandDescriptionsSectionSubTitleValue;
                     v204 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v383 forKeys:v382 count:3];
-                    v205 = [v202 initWithString:v203 attributes:v204];
+                    v205 = [v202 initWithString:v201 attributes:v204];
 
                     if (v201)
                     {
@@ -2796,7 +2796,7 @@ LABEL_168:
 
                     [v9 appendAttributedString:v205];
                     v206 = objc_alloc(*(v194 + 2888));
-                    v207 = [*(v84 + 3240) stringWithFormat:@"%@\n", v280];
+                    v280 = [*(v84 + 3240) stringWithFormat:@"%@\n", v280];
                     v380[0] = kSRCSCommandDescriptionsParagraphPlaceholderAttributeName;
                     v380[1] = kSRCSCommandDescriptionsFontPlaceholderAttributeName;
                     v381[0] = kSRCSCommandDescriptionsPuncDividerValue;
@@ -2806,7 +2806,7 @@ LABEL_168:
                     v381[2] = kSRCSCommandDescriptionsSectionDescValue;
                     v381[3] = kSRCSCommandDescriptionsSectionDescValue;
                     v208 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v381 forKeys:v380 count:4];
-                    v209 = [v206 initWithString:v207 attributes:v208];
+                    v209 = [v206 initWithString:v280 attributes:v208];
 
                     [v9 appendAttributedString:v209];
                     v292 = v205;
@@ -2817,7 +2817,7 @@ LABEL_168:
                     v213 = [v281 descriptionStringForCommandIdentifier:@"PunctuationColumnHeader.Result" descriptionType:@"TITL" targetTypes:v212];
 
                     v214 = objc_alloc(*(v194 + 2888));
-                    v215 = [*(v84 + 3240) stringWithFormat:@"%@\t%@\n", v211, v213];
+                    v213 = [*(v84 + 3240) stringWithFormat:@"%@\t%@\n", v211, v213];
                     v378[0] = kSRCSCommandDescriptionsParagraphPlaceholderAttributeName;
                     v378[1] = kSRCSCommandDescriptionsFontPlaceholderAttributeName;
                     v379[0] = kSRCSCommandDescriptionsHeaderValue;
@@ -2825,7 +2825,7 @@ LABEL_168:
                     v378[2] = kSRCSCommandDescriptionsColorPlaceholderAttributeName;
                     v379[2] = kSRCSCommandDescriptionsSectionDescValue;
                     v216 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v379 forKeys:v378 count:3];
-                    v217 = [v214 initWithString:v215 attributes:v216];
+                    v217 = [v214 initWithString:v213 attributes:v216];
 
                     v194 = 0x277CCA000uLL;
                     [v9 appendAttributedString:v217];
@@ -2862,11 +2862,11 @@ LABEL_168:
                         v227 = &stru_287C0A5E8;
                         if (v223 == v222)
                         {
-                          v294 = [v305 objectForKey:kSRCSEmbeddedCommandsKeyResult];
-                          v227 = v294;
+                          allKeys = [v305 objectForKey:kSRCSEmbeddedCommandsKeyResult];
+                          v227 = allKeys;
                         }
 
-                        v228 = [v226 stringWithFormat:@"%@\t%@", v224, v227];
+                        v227 = [v226 stringWithFormat:@"%@\t%@", v224, v227];
                         v375[0] = kSRCSCommandDescriptionsParagraphPlaceholderAttributeName;
                         v375[1] = kSRCSCommandDescriptionsFontPlaceholderAttributeName;
                         v376[0] = kSRCSCommandDescriptionsItemValue;
@@ -2874,7 +2874,7 @@ LABEL_168:
                         v375[2] = kSRCSCommandDescriptionsColorPlaceholderAttributeName;
                         v376[2] = kSRCSCommandDescriptionsSectionDescValue;
                         v229 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v376 forKeys:v375 count:3];
-                        v230 = [v225 initWithString:v228 attributes:v229];
+                        v230 = [v225 initWithString:v227 attributes:v229];
 
                         if (v223 != v222)
                         {
@@ -2917,7 +2917,7 @@ LABEL_197:
                         }
 
                         v237 = [v305 objectForKey:kSRCSEmbeddedCommandsKeyComment];
-                        v238 = [v234 stringWithFormat:@"%@%@\n", v236, v237];
+                        v237 = [v234 stringWithFormat:@"%@%@\n", v236, v237];
                         v373[0] = kSRCSCommandDescriptionsParagraphPlaceholderAttributeName;
                         v373[1] = kSRCSCommandDescriptionsFontPlaceholderAttributeName;
                         v374[0] = kSRCSCommandDescriptionsItemValue;
@@ -2925,7 +2925,7 @@ LABEL_197:
                         v373[2] = kSRCSCommandDescriptionsColorPlaceholderAttributeName;
                         v374[2] = kSRCSCommandDescriptionsPuncCommentValue;
                         v239 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v374 forKeys:v373 count:3];
-                        v240 = [v233 initWithString:v238 attributes:v239];
+                        v240 = [v233 initWithString:v237 attributes:v239];
 
                         v194 = 0x277CCA000;
                         v84 = 0x277CCA000;
@@ -2952,7 +2952,7 @@ LABEL_198:
                     v243 = v280;
                   }
 
-                  v244 = [*(v84 + 3240) stringWithFormat:@"%@\n", v243];
+                  v243 = [*(v84 + 3240) stringWithFormat:@"%@\n", v243];
                   v369[0] = kSRCSCommandDescriptionsParagraphPlaceholderAttributeName;
                   v369[1] = kSRCSCommandDescriptionsFontPlaceholderAttributeName;
                   v370[0] = kSRCSCommandDescriptionsPuncDividerValue;
@@ -2962,7 +2962,7 @@ LABEL_198:
                   v370[2] = kSRCSCommandDescriptionsPuncDividerValue;
                   v370[3] = kSRCSCommandDescriptionsPuncDividerValue;
                   v245 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v370 forKeys:v369 count:4];
-                  v246 = [v242 initWithString:v244 attributes:v245];
+                  v246 = [v242 initWithString:v243 attributes:v245];
 
                   [v9 appendAttributedString:v246];
                   v192 = v286 + 1;
@@ -3013,12 +3013,12 @@ LABEL_198:
   return v9;
 }
 
-- (id)_exampleStringPermutationsFromCommandIdentifier:(id)a3
+- (id)_exampleStringPermutationsFromCommandIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[SRCSCommandStringsTable activeTargetTypes];
   v12 = 0;
-  v6 = [(SRCSCommandStringsTable *)self languageModelDictionaryForCommandIdentifier:v4 targetTypes:v5 parsingErrorString:&v12];
+  v6 = [(SRCSCommandStringsTable *)self languageModelDictionaryForCommandIdentifier:identifierCopy targetTypes:v5 parsingErrorString:&v12];
 
   v7 = v12;
   v8 = [v7 length];
@@ -3026,32 +3026,32 @@ LABEL_198:
   v9 = 0;
   if (!v8)
   {
-    v10 = [(SRCSCommandStringsTable *)self exampleParameterStringsTable];
-    v9 = [(SRCSCommandStringsTable *)self spokenStringPermutationsOfLanguageModelDictionary:v6 stringsTable:v10 restrictPermutationsToShortestAndLongest:0];
+    exampleParameterStringsTable = [(SRCSCommandStringsTable *)self exampleParameterStringsTable];
+    v9 = [(SRCSCommandStringsTable *)self spokenStringPermutationsOfLanguageModelDictionary:v6 stringsTable:exampleParameterStringsTable restrictPermutationsToShortestAndLongest:0];
   }
 
   return v9;
 }
 
-- (id)_descriptionTypeForParameterIdentifier:(id)a3 commandIdentifier:(id)a4
+- (id)_descriptionTypeForParameterIdentifier:(id)identifier commandIdentifier:(id)commandIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  commandIdentifierCopy = commandIdentifier;
   if (_descriptionTypeForParameterIdentifier_commandIdentifier__staticAlternateParameterDescriptionTypeTableSetUp != -1)
   {
     [SRCSCommandStringsTable _descriptionTypeForParameterIdentifier:commandIdentifier:];
   }
 
   localeIdentifier = self->_localeIdentifier;
-  if (RXEngineTypeForLocaleIdentifier() != 1 && (([v6 isEqualToString:@"BuiltInLM.TextSegmentCardinalNumber"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"BuiltInLM.ScreenDistanceCardinalNumber") & 1) != 0) || objc_msgSend(v6, "hasPrefix:", @"BuiltInLM.Dictation") && +[SRCSCommandStringsTable isLocaleIdentifier:containedInLocaleIdentifiers:](SRCSCommandStringsTable, "isLocaleIdentifier:containedInLocaleIdentifiers:", self->_localeIdentifier, RXLocalesSupportingSpellingMode()))
+  if (RXEngineTypeForLocaleIdentifier() != 1 && (([identifierCopy isEqualToString:@"BuiltInLM.TextSegmentCardinalNumber"] & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", @"BuiltInLM.ScreenDistanceCardinalNumber") & 1) != 0) || objc_msgSend(identifierCopy, "hasPrefix:", @"BuiltInLM.Dictation") && +[SRCSCommandStringsTable isLocaleIdentifier:containedInLocaleIdentifiers:](SRCSCommandStringsTable, "isLocaleIdentifier:containedInLocaleIdentifiers:", self->_localeIdentifier, RXLocalesSupportingSpellingMode()))
   {
     v11 = @"DSC2";
   }
 
   else
   {
-    v9 = [_descriptionTypeForParameterIdentifier_commandIdentifier__sAlternateParameterDescriptionTypeTable objectForKey:v6];
-    v10 = [v9 containsObject:v7];
+    v9 = [_descriptionTypeForParameterIdentifier_commandIdentifier__sAlternateParameterDescriptionTypeTable objectForKey:identifierCopy];
+    v10 = [v9 containsObject:commandIdentifierCopy];
 
     if (v10)
     {
@@ -3077,54 +3077,54 @@ void __84__SRCSCommandStringsTable__descriptionTypeForParameterIdentifier_comman
   [_descriptionTypeForParameterIdentifier_commandIdentifier__sAlternateParameterDescriptionTypeTable setObject:v2 forKey:kSRCSCommandParameterOverlayLabel[0]];
 }
 
-- (id)parameterIdentifiersFromCommandIdentifier:(id)a3
+- (id)parameterIdentifiersFromCommandIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[SRCSCommandStringsTable activeTargetTypes];
   v10 = 0;
-  v6 = [(SRCSCommandStringsTable *)self languageModelDictionaryForCommandIdentifier:v4 targetTypes:v5 parsingErrorString:&v10];
+  v6 = [(SRCSCommandStringsTable *)self languageModelDictionaryForCommandIdentifier:identifierCopy targetTypes:v5 parsingErrorString:&v10];
 
   v7 = [(SRCSCommandStringsTable *)self setOfBuiltInIdentifiersFromLanguageModelDictionary:v6];
-  v8 = [v7 allObjects];
+  allObjects = [v7 allObjects];
 
-  return v8;
+  return allObjects;
 }
 
-- (void)resolveReferencesInMutableAttributedString:(id)a3 stringsTable:(id)a4
+- (void)resolveReferencesInMutableAttributedString:(id)string stringsTable:(id)table
 {
-  v43 = self;
+  selfCopy = self;
   v47[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 string];
-  v8 = [v7 rangeOfString:@"{"];
+  stringCopy = string;
+  tableCopy = table;
+  string = [stringCopy string];
+  v8 = [string rangeOfString:@"{"];
   v10 = v9;
 
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v44 = v6;
+    v44 = tableCopy;
     do
     {
       v11 = v8 + v10;
-      v12 = [v5 string];
-      v13 = [v12 rangeOfString:@"}" options:0 range:{v8 + v10, objc_msgSend(v5, "length") - (v8 + v10)}];
+      string2 = [stringCopy string];
+      v13 = [string2 rangeOfString:@"}" options:0 range:{v8 + v10, objc_msgSend(stringCopy, "length") - (v8 + v10)}];
       v15 = v14;
 
-      v16 = [v5 string];
-      v17 = [v16 substringWithRange:{v11, v13 - v11}];
+      string3 = [stringCopy string];
+      v17 = [string3 substringWithRange:{v11, v13 - v11}];
 
       if ([v17 hasPrefix:@"BuiltInLM."])
       {
-        v18 = [v6 objectForKey:v17];
+        v18 = [tableCopy objectForKey:v17];
 
         if (v18)
         {
           v19 = objc_alloc(MEMORY[0x277CCAB48]);
-          v20 = [v6 objectForKey:v17];
+          v20 = [tableCopy objectForKey:v17];
           v21 = [SRCSCommandStringsTable formattedBuiltInCommandString:v20];
           v18 = [v19 initWithString:v21];
 
-          v6 = v44;
+          tableCopy = v44;
         }
       }
 
@@ -3137,21 +3137,21 @@ void __84__SRCSCommandStringsTable__descriptionTypeForParameterIdentifier_comman
       {
         v22 = objc_alloc(MEMORY[0x277CCAB48]);
         v23 = +[SRCSCommandStringsTable activeTargetTypes];
-        v24 = [(SRCSCommandStringsTable *)v43 descriptionStringForCommandIdentifier:v17 descriptionType:@"DESC" targetTypes:v23];
+        v24 = [(SRCSCommandStringsTable *)selfCopy descriptionStringForCommandIdentifier:v17 descriptionType:@"DESC" targetTypes:v23];
         v25 = [v22 initWithString:v24];
 
-        v6 = v44;
-        [(SRCSCommandStringsTable *)v43 resolveReferencesInMutableAttributedString:v25 stringsTable:v44];
+        tableCopy = v44;
+        [(SRCSCommandStringsTable *)selfCopy resolveReferencesInMutableAttributedString:v25 stringsTable:v44];
         v18 = v25;
       }
 
       if ([v17 hasPrefix:@"RemoteURLRef."])
       {
         v26 = +[SRCSCommandStringsTable activeTargetTypes];
-        v27 = [(SRCSCommandStringsTable *)v43 descriptionStringForCommandIdentifier:v17 descriptionType:@"URLD" targetTypes:v26];
+        v27 = [(SRCSCommandStringsTable *)selfCopy descriptionStringForCommandIdentifier:v17 descriptionType:@"URLD" targetTypes:v26];
 
         v28 = +[SRCSCommandStringsTable activeTargetTypes];
-        v29 = [(SRCSCommandStringsTable *)v43 descriptionStringForCommandIdentifier:v17 descriptionType:@"URLS" targetTypes:v28];
+        v29 = [(SRCSCommandStringsTable *)selfCopy descriptionStringForCommandIdentifier:v17 descriptionType:@"URLS" targetTypes:v28];
 
         if ([v27 length] && objc_msgSend(v29, "length"))
         {
@@ -3164,7 +3164,7 @@ void __84__SRCSCommandStringsTable__descriptionTypeForParameterIdentifier_comman
           v18 = v32;
         }
 
-        v6 = v44;
+        tableCopy = v44;
       }
 
       if (v18)
@@ -3174,7 +3174,7 @@ void __84__SRCSCommandStringsTable__descriptionTypeForParameterIdentifier_comman
 
       v33 = +[SRCSCommandStringsTable activeTargetTypes];
       v45 = 0;
-      v34 = [(SRCSCommandStringsTable *)v43 languageModelDictionaryForCommandIdentifier:v17 targetTypes:v33 parsingErrorString:&v45];
+      v34 = [(SRCSCommandStringsTable *)selfCopy languageModelDictionaryForCommandIdentifier:v17 targetTypes:v33 parsingErrorString:&v45];
       v35 = v45;
 
       v36 = [v35 length];
@@ -3184,12 +3184,12 @@ void __84__SRCSCommandStringsTable__descriptionTypeForParameterIdentifier_comman
 
       else
       {
-        v37 = [(SRCSCommandStringsTable *)v43 spokenStringPermutationsOfLanguageModelDictionary:v34 stringsTable:v6 restrictPermutationsToShortestAndLongest:1];
+        v37 = [(SRCSCommandStringsTable *)selfCopy spokenStringPermutationsOfLanguageModelDictionary:v34 stringsTable:tableCopy restrictPermutationsToShortestAndLongest:1];
         if ([v37 count])
         {
           v38 = objc_alloc(MEMORY[0x277CCAB48]);
-          v39 = [v37 firstObject];
-          v18 = [v38 initWithString:v39];
+          firstObject = [v37 firstObject];
+          v18 = [v38 initWithString:firstObject];
         }
 
         else
@@ -3197,7 +3197,7 @@ void __84__SRCSCommandStringsTable__descriptionTypeForParameterIdentifier_comman
           v18 = 0;
         }
 
-        v6 = v44;
+        tableCopy = v44;
         if (v18)
         {
           goto LABEL_22;
@@ -3206,10 +3206,10 @@ void __84__SRCSCommandStringsTable__descriptionTypeForParameterIdentifier_comman
 
       v18 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:@"<unknown>"];
 LABEL_22:
-      [v5 replaceCharactersInRange:v8 withAttributedString:{v15 - v8 + v13, v18}];
+      [stringCopy replaceCharactersInRange:v8 withAttributedString:{v15 - v8 + v13, v18}];
 
-      v40 = [v5 string];
-      v8 = [v40 rangeOfString:@"{"];
+      string4 = [stringCopy string];
+      v8 = [string4 rangeOfString:@"{"];
       v10 = v41;
     }
 
@@ -3238,22 +3238,22 @@ LABEL_22:
   return &v4->isa;
 }
 
-- (id)rowDataForTargetTypes:(id)a3
+- (id)rowDataForTargetTypes:(id)types
 {
   v104 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v68 = [MEMORY[0x277CBEB18] array];
+  typesCopy = types;
+  array = [MEMORY[0x277CBEB18] array];
   v4 = objc_opt_new();
   v5 = objc_opt_new();
-  v66 = v3;
-  if ([v3 containsObject:kSRCSCommandTargetTypeOSX])
+  v66 = typesCopy;
+  if ([typesCopy containsObject:kSRCSCommandTargetTypeOSX])
   {
-    v6 = [MEMORY[0x277D79890] shared];
-    v7 = [v6 bestSupportedLocaleFor:self->_localeIdentifier];
+    mEMORY[0x277D79890] = [MEMORY[0x277D79890] shared];
+    v7 = [mEMORY[0x277D79890] bestSupportedLocaleFor:self->_localeIdentifier];
 
-    v8 = [MEMORY[0x277D79890] shared];
-    v9 = [v7 localeIdentifier];
-    v10 = [v8 engineForLocale:v9];
+    mEMORY[0x277D79890]2 = [MEMORY[0x277D79890] shared];
+    localeIdentifier = [v7 localeIdentifier];
+    v10 = [mEMORY[0x277D79890]2 engineForLocale:localeIdentifier];
 
     if ([v10 isEqualToString:@"s2"])
     {
@@ -3268,45 +3268,45 @@ LABEL_22:
     [v5 addObjectsFromArray:v11];
   }
 
-  if ([v3 containsObject:kSRCSCommandTargetTypeiPhone])
+  if ([typesCopy containsObject:kSRCSCommandTargetTypeiPhone])
   {
     v12 = +[VCCommandObjC allCommandIdentifiersForIPhoneDevice];
     [v5 addObjectsFromArray:v12];
   }
 
-  if ([v3 containsObject:kSRCSCommandTargetTypeCarPlay])
+  if ([typesCopy containsObject:kSRCSCommandTargetTypeCarPlay])
   {
     v13 = +[VCCommandObjC allCommandIdentifiersForCarPlayDevice];
     [v5 addObjectsFromArray:v13];
   }
 
-  if ([v3 containsObject:kSRCSCommandTargetTypeiPad])
+  if ([typesCopy containsObject:kSRCSCommandTargetTypeiPad])
   {
     v14 = +[VCCommandObjC allCommandIdentifiersForIPadDevice];
     [v5 addObjectsFromArray:v14];
   }
 
-  if ([v3 containsObject:kSRCSCommandTargetTypeRealityDevice])
+  if ([typesCopy containsObject:kSRCSCommandTargetTypeRealityDevice])
   {
     v15 = +[VCCommandObjC allCommandIdentifiersForVisionDevice];
     [v5 addObjectsFromArray:v15];
   }
 
-  if ([v3 containsObject:kSRCSCommandTargetTypetvOS])
+  if ([typesCopy containsObject:kSRCSCommandTargetTypetvOS])
   {
     v16 = +[VCCommandObjC allCommandIdentifiersForIPodDevice];
     [v5 addObjectsFromArray:v16];
   }
 
   v71 = v5;
-  v17 = [(SRCSCommandStringsTable *)self _commandStringsTable];
-  v18 = [v17 allKeys];
+  _commandStringsTable = [(SRCSCommandStringsTable *)self _commandStringsTable];
+  allKeys = [_commandStringsTable allKeys];
   v99[0] = MEMORY[0x277D85DD0];
   v99[1] = 3221225472;
   v99[2] = __49__SRCSCommandStringsTable_rowDataForTargetTypes___block_invoke;
   v99[3] = &unk_279CF54B8;
   v99[4] = self;
-  v19 = [v18 sortedArrayUsingComparator:v99];
+  v19 = [allKeys sortedArrayUsingComparator:v99];
 
   v65 = objc_opt_new();
   v95 = 0u;
@@ -3332,7 +3332,7 @@ LABEL_22:
         v94 = 0;
         v25 = [(SRCSCommandStringsTable *)self _rootCommandIdentifierFrom:v24 foundTargetType:&v94];
         v26 = v94;
-        if (v26 && [v3 containsObject:v26])
+        if (v26 && [typesCopy containsObject:v26])
         {
           [v65 setObject:v24 forKeyedSubscript:v25];
         }
@@ -3352,8 +3352,8 @@ LABEL_22:
     v93 = 0u;
     v90 = 0u;
     v91 = 0u;
-    v28 = [v65 allValues];
-    v29 = [v28 sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
+    allValues = [v65 allValues];
+    v29 = [allValues sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
 
     v30 = [v29 countByEnumeratingWithState:&v90 objects:v102 count:16];
     if (!v30)
@@ -3377,7 +3377,7 @@ LABEL_22:
         }
 
         v34 = *(*(&v90 + 1) + 8 * v33);
-        if (![v3 count])
+        if (![typesCopy count])
         {
           v35 = v34;
           v36 = 0;
@@ -3387,16 +3387,16 @@ LABEL_22:
         v89 = 0;
         v35 = [(SRCSCommandStringsTable *)self _rootCommandIdentifierFrom:v34 foundTargetType:&v89];
         v36 = v89;
-        if (v36 && [v27 containsObject:v35] && objc_msgSend(v3, "containsObject:", v36))
+        if (v36 && [v27 containsObject:v35] && objc_msgSend(typesCopy, "containsObject:", v36))
         {
           v76 = v36;
           [MEMORY[0x277CCAB68] string];
           v38 = v37 = v35;
-          v39 = [MEMORY[0x277CBEA60] array];
+          array2 = [MEMORY[0x277CBEA60] array];
           v88 = 0;
           v78 = v37;
-          v40 = v3;
-          v41 = [(SRCSCommandStringsTable *)self languageModelDictionaryForCommandIdentifier:v37 targetTypes:v3 parsingErrorString:&v88];
+          v40 = typesCopy;
+          v41 = [(SRCSCommandStringsTable *)self languageModelDictionaryForCommandIdentifier:v37 targetTypes:typesCopy parsingErrorString:&v88];
           v42 = v88;
           if ([v42 length])
           {
@@ -3408,7 +3408,7 @@ LABEL_22:
           if ([v38 length])
           {
             v36 = v76;
-            v3 = v40;
+            typesCopy = v40;
             v29 = v74;
           }
 
@@ -3416,7 +3416,7 @@ LABEL_22:
           {
             v43 = [(SRCSCommandStringsTable *)self spokenStringPermutationsOfLanguageModelDictionary:v41 stringsTable:0];
 
-            v3 = v40;
+            typesCopy = v40;
             v69 = v43;
             if (v73 == 1)
             {
@@ -3439,22 +3439,22 @@ LABEL_22:
                       objc_enumerationMutation(v44);
                     }
 
-                    v49 = [*(*(&v84 + 1) + 8 * j) lowercaseString];
-                    v50 = [v4 objectForKey:v49];
-                    if (!v50)
+                    lowercaseString = [*(*(&v84 + 1) + 8 * j) lowercaseString];
+                    array3 = [v4 objectForKey:lowercaseString];
+                    if (!array3)
                     {
-                      v50 = [MEMORY[0x277CBEB18] array];
-                      [v4 setObject:v50 forKey:v49];
+                      array3 = [MEMORY[0x277CBEB18] array];
+                      [v4 setObject:array3 forKey:lowercaseString];
                     }
 
-                    [v50 addObject:v34];
+                    [array3 addObject:v34];
                   }
 
                   v46 = [v44 countByEnumeratingWithState:&v84 objects:v101 count:16];
                 }
 
                 while (v46);
-                v3 = v66;
+                typesCopy = v66;
                 v29 = v74;
                 v32 = v70;
                 v31 = v72;
@@ -3475,8 +3475,8 @@ LABEL_22:
               v83 = 0uLL;
               v80 = 0uLL;
               v81 = 0uLL;
-              v39 = v43;
-              v51 = [v39 countByEnumeratingWithState:&v80 objects:v100 count:16];
+              array2 = v43;
+              v51 = [array2 countByEnumeratingWithState:&v80 objects:v100 count:16];
               if (v51)
               {
                 v52 = v51;
@@ -3487,7 +3487,7 @@ LABEL_22:
                   {
                     if (*v81 != v53)
                     {
-                      objc_enumerationMutation(v39);
+                      objc_enumerationMutation(array2);
                     }
 
                     v55 = [(SRCSCommandStringsTable *)self warningStringForText:*(*(&v80 + 1) + 8 * k) identifier:v34 textTable:v4];
@@ -3502,7 +3502,7 @@ LABEL_22:
                     }
                   }
 
-                  v52 = [v39 countByEnumeratingWithState:&v80 objects:v100 count:16];
+                  v52 = [array2 countByEnumeratingWithState:&v80 objects:v100 count:16];
                 }
 
                 while (v52);
@@ -3530,17 +3530,17 @@ LABEL_22:
               }
             }
 
-            v39 = v69;
+            array2 = v69;
           }
 
 LABEL_69:
           if (v73 == 2)
           {
             v59 = MEMORY[0x277CBEB38];
-            v60 = [(SRCSCommandStringsTable *)self _commandStringsTable];
-            v61 = [v60 objectForKey:v34];
-            v62 = [v59 dictionaryWithObjectsAndKeys:{v78, @"Identifier", v61, @"Text", v34, @"DatabaseKey", v36, @"TargetType", v39, @"Permutations", v38, @"Warning", 0}];
-            [v68 addObject:v62];
+            _commandStringsTable2 = [(SRCSCommandStringsTable *)self _commandStringsTable];
+            v61 = [_commandStringsTable2 objectForKey:v34];
+            v62 = [v59 dictionaryWithObjectsAndKeys:{v78, @"Identifier", v61, @"Text", v34, @"DatabaseKey", v36, @"TargetType", array2, @"Permutations", v38, @"Warning", 0}];
+            [array addObject:v62];
 
             v31 = v72;
             v29 = v74;
@@ -3571,7 +3571,7 @@ LABEL_74:
 
   v63 = *MEMORY[0x277D85DE8];
 
-  return v68;
+  return array;
 }
 
 uint64_t __49__SRCSCommandStringsTable_rowDataForTargetTypes___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -3641,13 +3641,13 @@ uint64_t __49__SRCSCommandStringsTable_rowDataForTargetTypes___block_invoke(uint
   return v17;
 }
 
-- (id)warningStringForText:(id)a3 identifier:(id)a4 textTable:(id)a5
+- (id)warningStringForText:(id)text identifier:(id)identifier textTable:(id)table
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 lowercaseString];
-  v11 = [v9 objectForKey:v10];
+  textCopy = text;
+  identifierCopy = identifier;
+  tableCopy = table;
+  lowercaseString = [textCopy lowercaseString];
+  v11 = [tableCopy objectForKey:lowercaseString];
 
   if (v11)
   {
@@ -3659,16 +3659,16 @@ uint64_t __49__SRCSCommandStringsTable_rowDataForTargetTypes___block_invoke(uint
     v12 = 0;
   }
 
-  if ([v7 length] && objc_msgSend(v11, "count") >= 2)
+  if ([textCopy length] && objc_msgSend(v11, "count") >= 2)
   {
-    v13 = [v12 countForObject:v8];
+    v13 = [v12 countForObject:identifierCopy];
     v14 = MEMORY[0x277CCACA8];
     if (v13 < 2)
     {
       v16 = [v11 componentsJoinedByString:{@", "}];
-      v15 = [v14 stringWithFormat:@"Redundant permutation (\"%@\"", v7, v16];
+      identifierCopy = [v14 stringWithFormat:@"Redundant permutation (\"%@\"", textCopy, v16];
 
-      if (v15)
+      if (identifierCopy)
       {
         goto LABEL_28;
       }
@@ -3676,51 +3676,51 @@ uint64_t __49__SRCSCommandStringsTable_rowDataForTargetTypes___block_invoke(uint
 
     else
     {
-      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Redundant permutation (\"%@\"", v7, v8];
-      if (v15)
+      identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Redundant permutation (\"%@\"", textCopy, identifierCopy];
+      if (identifierCopy)
       {
         goto LABEL_28;
       }
     }
   }
 
-  if ([v7 length] || (objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"Empty permutation found in %@. Check if any optional phrases causes a permutation to be reduced to an empty string.", v8), (v18 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ([textCopy length] || (objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"Empty permutation found in %@. Check if any optional phrases causes a permutation to be reduced to an empty string.", identifierCopy), (textCopy = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    if ([v7 length] && objc_msgSend(v7, "rangeOfString:", @"(") != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v7, "rangeOfString:", @"")) != 0x7FFFFFFFFFFFFFFFLL)
+    if ([textCopy length] && objc_msgSend(textCopy, "rangeOfString:", @"(") != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(textCopy, "rangeOfString:", @"")) != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v15 = @"Alternative words cannot be indicated using parentheses. Please use two separate command strings, adding another command string entry if necessary.";
+      identifierCopy = @"Alternative words cannot be indicated using parentheses. Please use two separate command strings, adding another command string entry if necessary.";
       goto LABEL_28;
     }
 
-    v17 = [v7 stringByReplacingOccurrencesOfString:@" " withString:&stru_287C0A5E8];
+    v17 = [textCopy stringByReplacingOccurrencesOfString:@" " withString:&stru_287C0A5E8];
     if ([v17 rangeOfString:@"{BuiltInLM.NumberTwoThroughNinetyNine}{BuiltInLM.NumberTwoThroughNinetyNine.2}"] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v17, "rangeOfString:", @"{BuiltInLM.KeyboardKeyName}{BuiltInLM.NumberTwoThroughNinetyNine}") == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v17, "rangeOfString:", @"{BuiltInLM.OverlayLabel}{BuiltInLM.NumberTwoThroughNinetyNine}") == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v17, "rangeOfString:", @"{BuiltInLM.OverlayLabel}{BuiltInLM.NumberZeroThroughOneHundred}") == 0x7FFFFFFFFFFFFFFFLL)
     {
     }
 
     else
     {
-      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Two numbered parameters appear consecutively without an intervening word or phrase which may cause the following permutation to fail: %@", v7];
+      identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Two numbered parameters appear consecutively without an intervening word or phrase which may cause the following permutation to fail: %@", textCopy];
 
-      if (v15)
+      if (identifierCopy)
       {
         goto LABEL_28;
       }
     }
 
-    if (![v7 length] || objc_msgSend(v7, "rangeOfString:", @"’") == 0x7FFFFFFFFFFFFFFFLL)
+    if (![textCopy length] || objc_msgSend(textCopy, "rangeOfString:", @"’") == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v15 = 0;
+      identifierCopy = 0;
       goto LABEL_28;
     }
 
-    v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"Instead of using right single quotation mark (’)(U+2019) in translations e.g. in %@, please use apostrophe(')(U+0027).", v7];
+    textCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Instead of using right single quotation mark (’)(U+2019) in translations e.g. in %@, please use apostrophe(')(U+0027).", textCopy];
   }
 
-  v15 = v18;
+  identifierCopy = textCopy;
 LABEL_28:
-  if (v15)
+  if (identifierCopy)
   {
-    v19 = v15;
+    v19 = identifierCopy;
   }
 
   else
@@ -3733,14 +3733,14 @@ LABEL_28:
   return v19;
 }
 
-- (id)_commandStringsDictionaryForLocaleIdentifier:(id)a3
+- (id)_commandStringsDictionaryForLocaleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[SRCSCommandStringsTable commandStringsLoader];
 
   if (v4)
   {
-    v5 = [SRCSCommandStringsTable componentsFromLocaleIdentifier:v3];
+    v5 = [SRCSCommandStringsTable componentsFromLocaleIdentifier:identifierCopy];
     v6 = [v5 objectForKey:*MEMORY[0x277CBE6C8]];
 
     if ([(__CFString *)v6 isEqualToString:@"nb"])
@@ -3750,13 +3750,13 @@ LABEL_28:
     }
 
     v7 = +[SRCSCommandStringsTable commandStringsLoader];
-    v8 = (v7)[2](v7, v3, v6);
+    v8 = (v7)[2](v7, identifierCopy, v6);
   }
 
   else
   {
     v6 = +[SRCSSpokenCommandUtilities sharedSpokenCommandUtilities];
-    v8 = [(__CFString *)v6 dictionaryForLocaleIdentifier:v3 resourceFileName:@"CommandStrings" resourceFileExtension:@"strings"];
+    v8 = [(__CFString *)v6 dictionaryForLocaleIdentifier:identifierCopy resourceFileName:@"CommandStrings" resourceFileExtension:@"strings"];
   }
 
   return v8;
@@ -3769,31 +3769,31 @@ LABEL_28:
   return v2;
 }
 
-+ (void)setCommandStringsLoader:(id)a3
++ (void)setCommandStringsLoader:(id)loader
 {
-  sCommandStringsLoader = _Block_copy(a3);
+  sCommandStringsLoader = _Block_copy(loader);
 
   MEMORY[0x2821F96F8]();
 }
 
-+ (id)formattedBuiltInCommandString:(id)a3
++ (id)formattedBuiltInCommandString:(id)string
 {
-  if (a3)
+  if (string)
   {
     v3 = MEMORY[0x277CCACA8];
     v4 = MEMORY[0x277CCA8D8];
-    v5 = a3;
+    stringCopy = string;
     v6 = [v4 bundleForClass:objc_opt_class()];
     v7 = [v6 localizedStringForKey:@"CommandParameter.GenericFormatString" value:&stru_287C0A5E8 table:0];
-    v8 = [v3 stringWithFormat:v7, v5];
+    stringCopy = [v3 stringWithFormat:v7, stringCopy];
   }
 
   else
   {
-    v8 = 0;
+    stringCopy = 0;
   }
 
-  return v8;
+  return stringCopy;
 }
 
 @end

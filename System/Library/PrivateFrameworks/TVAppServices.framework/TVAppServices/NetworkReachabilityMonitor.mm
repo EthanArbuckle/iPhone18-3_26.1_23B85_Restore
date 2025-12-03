@@ -1,10 +1,10 @@
 @interface NetworkReachabilityMonitor
-- (void)handleNetworkReachabilityDidChange:(id)a3;
+- (void)handleNetworkReachabilityDidChange:(id)change;
 @end
 
 @implementation NetworkReachabilityMonitor
 
-- (void)handleNetworkReachabilityDidChange:(id)a3
+- (void)handleNetworkReachabilityDidChange:(id)change
 {
   v3 = sub_26CD39DEC();
   v4 = *(v3 - 8);

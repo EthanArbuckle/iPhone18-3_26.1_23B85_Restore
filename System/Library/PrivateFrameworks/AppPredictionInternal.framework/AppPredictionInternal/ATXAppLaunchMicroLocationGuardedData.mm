@@ -1,42 +1,42 @@
 @interface ATXAppLaunchMicroLocationGuardedData
-- (ATXAppLaunchMicroLocationGuardedData)initWithCurrentMicroLocation:(id)a3;
-- (BOOL)microLocationExpired:(id)a3;
+- (ATXAppLaunchMicroLocationGuardedData)initWithCurrentMicroLocation:(id)location;
+- (BOOL)microLocationExpired:(id)expired;
 - (id)getCurrentMicroLocation;
-- (void)setCurrentMicroLocation:(id)a3;
+- (void)setCurrentMicroLocation:(id)location;
 @end
 
 @implementation ATXAppLaunchMicroLocationGuardedData
 
-- (ATXAppLaunchMicroLocationGuardedData)initWithCurrentMicroLocation:(id)a3
+- (ATXAppLaunchMicroLocationGuardedData)initWithCurrentMicroLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v8.receiver = self;
   v8.super_class = ATXAppLaunchMicroLocationGuardedData;
   v5 = [(ATXAppLaunchMicroLocationGuardedData *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ATXAppLaunchMicroLocationGuardedData *)v5 setCurrentMicroLocation:v4];
+    [(ATXAppLaunchMicroLocationGuardedData *)v5 setCurrentMicroLocation:locationCopy];
   }
 
   return v6;
 }
 
-- (void)setCurrentMicroLocation:(id)a3
+- (void)setCurrentMicroLocation:(id)location
 {
-  v17 = a3;
+  locationCopy = location;
   v4 = MEMORY[0x277CBEAA8];
-  v5 = [v17 startDate];
-  [v5 timeIntervalSinceReferenceDate];
+  startDate = [locationCopy startDate];
+  [startDate timeIntervalSinceReferenceDate];
   v7 = v6;
-  v8 = [v17 endDate];
-  [v8 timeIntervalSinceReferenceDate];
+  endDate = [locationCopy endDate];
+  [endDate timeIntervalSinceReferenceDate];
   v10 = [v4 dateWithTimeIntervalSinceReferenceDate:v9 * 0.5 + v7 * 0.5];
 
-  if (v17 && ![(ATXAppLaunchMicroLocationGuardedData *)self microLocationExpired:v10])
+  if (locationCopy && ![(ATXAppLaunchMicroLocationGuardedData *)self microLocationExpired:v10])
   {
-    v13 = [v17 event];
-    v14 = [v13 copy];
+    event = [locationCopy event];
+    v14 = [event copy];
     currentMicroLocation = self->_currentMicroLocation;
     self->_currentMicroLocation = v14;
 
@@ -71,16 +71,16 @@
   return v5;
 }
 
-- (BOOL)microLocationExpired:(id)a3
+- (BOOL)microLocationExpired:(id)expired
 {
-  [a3 timeIntervalSinceNow];
+  [expired timeIntervalSinceNow];
   v5 = v4 > 0.0;
   if (v4 <= -300.0)
   {
     v5 = 1;
   }
 
-  return !a3 || v5;
+  return !expired || v5;
 }
 
 @end

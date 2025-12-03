@@ -1,35 +1,35 @@
 @interface AURemoteExtensionContext
-+ (BOOL)conformsToProtocol:(id)a3;
-+ (BOOL)instancesRespondToSelector:(SEL)a3;
++ (BOOL)conformsToProtocol:(id)protocol;
++ (BOOL)instancesRespondToSelector:(SEL)selector;
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
-- (AURemoteExtensionContext)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5;
-- (id)forwardingTargetForSelector:(SEL)a3;
+- (AURemoteExtensionContext)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d;
+- (id)forwardingTargetForSelector:(SEL)selector;
 - (id)iOSViewController;
-- (void)open:(AudioComponentDescription *)a3 instanceUUID:(id)a4 reply:(id)a5;
+- (void)open:(AudioComponentDescription *)open instanceUUID:(id)d reply:(id)reply;
 - (void)open:instanceUUID:reply:;
-- (void)requestViewControllerWithCompletionHandler:(id)a3;
+- (void)requestViewControllerWithCompletionHandler:(id)handler;
 @end
 
 @implementation AURemoteExtensionContext
 
-- (void)open:(AudioComponentDescription *)a3 instanceUUID:(id)a4 reply:(id)a5
+- (void)open:(AudioComponentDescription *)open instanceUUID:(id)d reply:(id)reply
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = _Block_copy(v9);
+  dCopy = d;
+  replyCopy = reply;
+  v10 = _Block_copy(replyCopy);
   v30 = v10;
   objc_initWeak(&location, self);
   v11 = [AURemoteHost alloc];
-  v12 = [(AURemoteExtensionContext *)self _auxiliaryConnection];
+  _auxiliaryConnection = [(AURemoteExtensionContext *)self _auxiliaryConnection];
   objc_copyWeak(&to, &location);
   v40 = 0;
   v38 = &unk_1F0326FC0;
   objc_moveWeak(&v39, &to);
   v40 = &v38;
   objc_destroyWeak(&to);
-  v13 = [(AURemoteHost *)v11 initWithConnection:v12 config:MEMORY[0x1E695E0F8] timeOutHandler:&v38];
+  v13 = [(AURemoteHost *)v11 initWithConnection:_auxiliaryConnection config:MEMORY[0x1E695E0F8] timeOutHandler:&v38];
   host = self->_host;
   self->_host = v13;
 
@@ -80,17 +80,17 @@
 LABEL_10:
       if ([v15 conformsToProtocol:&unk_1F03563F0])
       {
-        v31 = *&a3->componentType;
-        LODWORD(v32) = a3->componentFlagsMask;
+        v31 = *&open->componentType;
+        LODWORD(v32) = open->componentFlagsMask;
         v27 = 0;
         v18 = [v15 createAudioUnitWithComponentDescription:&v31 error:&v27];
         v19 = v27;
         if (v18)
         {
-          componentType = a3->componentType;
+          componentType = open->componentType;
           if (((componentType != 1635087216) ^ [v18 isSpeechSynthesisProvider]))
           {
-            if (a3->componentType == 1635087216 && [v18 conformsToProtocol:&unk_1F0356450])
+            if (open->componentType == 1635087216 && [v18 conformsToProtocol:&unk_1F0356450])
             {
               v21 = v18;
               v22 = self->_host;
@@ -110,7 +110,7 @@ LABEL_10:
               [v21 set_hostAuditToken:&v31];
             }
 
-            [(AURemoteHost *)self->_host openImpl:v18 reply:v9];
+            [(AURemoteHost *)self->_host openImpl:v18 reply:replyCopy];
             goto LABEL_25;
           }
 
@@ -147,51 +147,51 @@ LABEL_27:
 
 - (void)open:instanceUUID:reply:
 {
-  objc_destroyWeak((a1 + 8));
+  objc_destroyWeak((self + 8));
 
   JUMPOUT(0x193ADF220);
 }
 
-- (void)requestViewControllerWithCompletionHandler:(id)a3
+- (void)requestViewControllerWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = v4;
+  handlerCopy = handler;
+  v6 = handlerCopy;
   if (self->_isUIExtension)
   {
-    v5 = [(AURemoteExtensionContext *)self iOSViewController];
-    v6[2](v6, v5);
+    iOSViewController = [(AURemoteExtensionContext *)self iOSViewController];
+    v6[2](v6, iOSViewController);
   }
 
   else
   {
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
 - (id)iOSViewController
 {
-  v2 = [(AURemoteExtensionContext *)self viewService];
-  v3 = [v2 childViewControllers];
-  v4 = [v3 lastObject];
+  viewService = [(AURemoteExtensionContext *)self viewService];
+  childViewControllers = [viewService childViewControllers];
+  lastObject = [childViewControllers lastObject];
 
-  return v4;
+  return lastObject;
 }
 
-- (AURemoteExtensionContext)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5
+- (AURemoteExtensionContext)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E696AAE8] mainBundle];
-  v12 = [v11 objectForInfoDictionaryKey:@"NSExtension"];
+  itemsCopy = items;
+  endpointCopy = endpoint;
+  dCopy = d;
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  v12 = [mainBundle objectForInfoDictionaryKey:@"NSExtension"];
   v13 = [v12 objectForKeyedSubscript:@"NSExtensionAttributes"];
   +[AURemoteHost _staticInit];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __76__AURemoteExtensionContext_initWithInputItems_listenerEndpoint_contextUUID___block_invoke;
   block[3] = &unk_1E72BA940;
-  block[4] = v11;
+  block[4] = mainBundle;
   v14 = v13;
   v24 = v14;
   if ([AURemoteExtensionContext initWithInputItems:listenerEndpoint:contextUUID:]::once != -1)
@@ -201,7 +201,7 @@ LABEL_27:
 
   v22.receiver = self;
   v22.super_class = AURemoteExtensionContext;
-  v15 = [(AURemoteExtensionContext *)&v22 initWithInputItems:v8 listenerEndpoint:v9 contextUUID:v10];
+  v15 = [(AURemoteExtensionContext *)&v22 initWithInputItems:itemsCopy listenerEndpoint:endpointCopy contextUUID:dCopy];
   if (!v15)
   {
     v18 = 0;
@@ -330,7 +330,7 @@ LABEL_12:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   host = self->_host;
   if (host)
@@ -391,29 +391,29 @@ void __59__AURemoteExtensionContext__extensionAuxiliaryHostProtocol__block_invok
   SetAllowedClassesForAUAudioUnitHostXPCInterface(v2);
 }
 
-+ (BOOL)instancesRespondToSelector:(SEL)a3
++ (BOOL)instancesRespondToSelector:(SEL)selector
 {
   if (([AURemoteHost instancesRespondToSelector:?]& 1) != 0)
   {
     return 1;
   }
 
-  v6 = [a1 superclass];
+  v6 = [self superclass];
 
-  return [v6 instancesRespondToSelector:a3];
+  return [v6 instancesRespondToSelector:selector];
 }
 
-+ (BOOL)conformsToProtocol:(id)a3
++ (BOOL)conformsToProtocol:(id)protocol
 {
-  v4 = a3;
-  if (([AURemoteHost conformsToProtocol:v4]& 1) != 0)
+  protocolCopy = protocol;
+  if (([AURemoteHost conformsToProtocol:protocolCopy]& 1) != 0)
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [objc_msgSend(a1 "superclass")];
+    v5 = [objc_msgSend(self "superclass")];
   }
 
   return v5;

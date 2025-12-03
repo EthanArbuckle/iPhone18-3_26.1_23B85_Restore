@@ -1,53 +1,53 @@
 @interface _UIUnflockItemAnimation
-+ (id)animationWithPlatterView:(id)a3 destination:(id)a4 positionReferenceView:(id)a5 type:(int64_t)a6;
++ (id)animationWithPlatterView:(id)view destination:(id)destination positionReferenceView:(id)referenceView type:(int64_t)type;
 - (void)complete;
 - (void)play;
 @end
 
 @implementation _UIUnflockItemAnimation
 
-+ (id)animationWithPlatterView:(id)a3 destination:(id)a4 positionReferenceView:(id)a5 type:(int64_t)a6
++ (id)animationWithPlatterView:(id)view destination:(id)destination positionReferenceView:(id)referenceView type:(int64_t)type
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a3;
+  destinationCopy = destination;
+  referenceViewCopy = referenceView;
+  viewCopy = view;
   v12 = objc_opt_new();
-  [v12 setPlatterView:v11];
+  [v12 setPlatterView:viewCopy];
 
-  [v12 setDestination:v9];
-  if (v10)
+  [v12 setDestination:destinationCopy];
+  if (referenceViewCopy)
   {
-    [v12 setPositionReferenceView:v10];
+    [v12 setPositionReferenceView:referenceViewCopy];
   }
 
   else
   {
-    v13 = [v9 view];
-    v14 = [v9 target];
-    v15 = [v14 container];
-    v16 = [v15 superview];
+    view = [destinationCopy view];
+    target = [destinationCopy target];
+    container = [target container];
+    superview = [container superview];
 
-    if (v13 == v16)
+    if (view == superview)
     {
-      v17 = [v9 view];
-      [v12 setPositionReferenceView:v17];
+      view2 = [destinationCopy view];
+      [v12 setPositionReferenceView:view2];
     }
   }
 
-  [v12 setType:a6];
+  [v12 setType:type];
 
   return v12;
 }
 
 - (void)play
 {
-  v3 = [(_UIUnflockItemAnimation *)self platterView];
-  v4 = [(_UIUnflockItemAnimation *)self destination];
-  v5 = [(_UIUnflockItemAnimation *)self platterView];
-  v6 = [v5 superview];
+  platterView = [(_UIUnflockItemAnimation *)self platterView];
+  destination = [(_UIUnflockItemAnimation *)self destination];
+  platterView2 = [(_UIUnflockItemAnimation *)self platterView];
+  superview = [platterView2 superview];
 
-  v7 = [v4 target];
-  v8 = [v7 container];
+  target = [destination target];
+  container = [target container];
 
   v49 = 0;
   v50 = &v49;
@@ -71,7 +71,7 @@
   v42 = 0u;
   if ([(_UIUnflockItemAnimation *)self type]== 1 || [(_UIUnflockItemAnimation *)self type]== 2)
   {
-    _UIContextMenuGetFromPreview_0(v4, v44 + 4, v50 + 4, v37 + 2, v6);
+    _UIContextMenuGetFromPreview_0(destination, v44 + 4, v50 + 4, v37 + 2, superview);
   }
 
   else
@@ -91,19 +91,19 @@
     v19[2] = __31___UIUnflockItemAnimation_play__block_invoke;
     v19[3] = &unk_1E7124E58;
     v19[4] = self;
-    v20 = v3;
-    v21 = v6;
+    v20 = platterView;
+    v21 = superview;
     v24 = &v33;
-    v22 = v8;
-    v23 = v4;
+    v22 = container;
+    v23 = destination;
     v25 = &v43;
     v26 = &v49;
     v27 = &v36;
     v28 = &v29;
     [UIView performWithoutAnimation:v19];
     v9 = v30[3];
-    v10 = [(_UIUnflockItemAnimation *)self positionTrackingProperty];
-    [v10 setValue:v9];
+    positionTrackingProperty = [(_UIUnflockItemAnimation *)self positionTrackingProperty];
+    [positionTrackingProperty setValue:v9];
 
     _Block_object_dispose(&v29, 8);
     _Block_object_dispose(&v33, 8);
@@ -115,36 +115,36 @@
     v17[1] = 3221225472;
     v17[2] = __31___UIUnflockItemAnimation_play__block_invoke_3;
     v17[3] = &unk_1E70F3590;
-    v18 = v3;
+    v18 = platterView;
     [UIView performWithoutAnimation:v17];
   }
 
   else
   {
-    [v3 setCenter:{v50[4], v50[5]}];
+    [platterView setCenter:{v50[4], v50[5]}];
     v11 = v50[6];
-    v12 = [v3 layer];
-    [v12 setZPosition:v11];
+    layer = [platterView layer];
+    [layer setZPosition:v11];
 
-    [v3 setBounds:{v44[4], v44[5], v44[6], v44[7]}];
-    v13 = [(_UIUnflockItemAnimation *)self type];
+    [platterView setBounds:{v44[4], v44[5], v44[6], v44[7]}];
+    type = [(_UIUnflockItemAnimation *)self type];
     v14 = 1.0;
-    if (v13 == 1)
+    if (type == 1)
     {
       v14 = 0.0;
     }
 
-    [v3 setAlpha:v14];
+    [platterView setAlpha:v14];
     v15 = *(v37 + 3);
     v16 = *(v37 + 4);
     v33 = *(v37 + 2);
     v34 = v15;
     v35 = v16;
-    [v3 setTransform:{&v33, v33, v15, v16}];
+    [platterView setTransform:{&v33, v33, v15, v16}];
   }
 
-  [v3 setExpanded:0];
-  [v3 layoutIfNeeded];
+  [platterView setExpanded:0];
+  [platterView layoutIfNeeded];
   _Block_object_dispose(&v36, 8);
   _Block_object_dispose(&v43, 8);
   _Block_object_dispose(&v49, 8);
@@ -152,11 +152,11 @@
 
 - (void)complete
 {
-  v3 = [(_UIUnflockItemAnimation *)self reparentingPortalView];
-  [v3 removeFromSuperview];
+  reparentingPortalView = [(_UIUnflockItemAnimation *)self reparentingPortalView];
+  [reparentingPortalView removeFromSuperview];
 
-  v4 = [(_UIUnflockItemAnimation *)self reparentingContainerView];
-  [v4 removeFromSuperview];
+  reparentingContainerView = [(_UIUnflockItemAnimation *)self reparentingContainerView];
+  [reparentingContainerView removeFromSuperview];
 }
 
 @end

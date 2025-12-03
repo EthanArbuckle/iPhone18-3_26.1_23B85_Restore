@@ -1,74 +1,74 @@
 @interface SFScribbleClickGestureRecognizer
-- (SFScribbleClickGestureRecognizer)initWithOverlay:(id)a3;
-- (void)_cancelClickIfNeeded:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (SFScribbleClickGestureRecognizer)initWithOverlay:(id)overlay;
+- (void)_cancelClickIfNeeded:(id)needed;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation SFScribbleClickGestureRecognizer
 
-- (SFScribbleClickGestureRecognizer)initWithOverlay:(id)a3
+- (SFScribbleClickGestureRecognizer)initWithOverlay:(id)overlay
 {
-  v4 = a3;
+  overlayCopy = overlay;
   v9.receiver = self;
   v9.super_class = SFScribbleClickGestureRecognizer;
   v5 = [(SFScribbleClickGestureRecognizer *)&v9 initWithTarget:0 action:0];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_overlay, v4);
+    objc_storeWeak(&v5->_overlay, overlayCopy);
     v7 = v6;
   }
 
   return v6;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v12.receiver = self;
   v12.super_class = SFScribbleClickGestureRecognizer;
-  v6 = a3;
-  [(SFScribbleClickGestureRecognizer *)&v12 touchesBegan:v6 withEvent:a4];
+  beganCopy = began;
+  [(SFScribbleClickGestureRecognizer *)&v12 touchesBegan:beganCopy withEvent:event];
   self->_canDispatchClick = 1;
   p_touchStartLocation = &self->_touchStartLocation;
-  v8 = [v6 anyObject];
+  anyObject = [beganCopy anyObject];
 
-  v9 = [(SFScribbleClickGestureRecognizer *)self view];
-  [v8 locationInView:v9];
+  view = [(SFScribbleClickGestureRecognizer *)self view];
+  [anyObject locationInView:view];
   p_touchStartLocation->x = v10;
   p_touchStartLocation->y = v11;
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = SFScribbleClickGestureRecognizer;
-  v6 = a3;
-  [(SFScribbleClickGestureRecognizer *)&v8 touchesMoved:v6 withEvent:a4];
-  v7 = [v6 anyObject];
+  movedCopy = moved;
+  [(SFScribbleClickGestureRecognizer *)&v8 touchesMoved:movedCopy withEvent:event];
+  anyObject = [movedCopy anyObject];
 
-  [(SFScribbleClickGestureRecognizer *)self _cancelClickIfNeeded:v7];
+  [(SFScribbleClickGestureRecognizer *)self _cancelClickIfNeeded:anyObject];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = SFScribbleClickGestureRecognizer;
-  [(SFScribbleClickGestureRecognizer *)&v5 touchesCancelled:a3 withEvent:a4];
+  [(SFScribbleClickGestureRecognizer *)&v5 touchesCancelled:cancelled withEvent:event];
   self->_canDispatchClick = 0;
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = SFScribbleClickGestureRecognizer;
-  v6 = a3;
-  [(SFScribbleClickGestureRecognizer *)&v9 touchesEnded:v6 withEvent:a4];
-  v7 = [v6 anyObject];
+  endedCopy = ended;
+  [(SFScribbleClickGestureRecognizer *)&v9 touchesEnded:endedCopy withEvent:event];
+  anyObject = [endedCopy anyObject];
 
-  [(SFScribbleClickGestureRecognizer *)self _cancelClickIfNeeded:v7];
+  [(SFScribbleClickGestureRecognizer *)self _cancelClickIfNeeded:anyObject];
   if (self->_canDispatchClick)
   {
     WeakRetained = objc_loadWeakRetained(&self->_overlay);
@@ -76,13 +76,13 @@
   }
 }
 
-- (void)_cancelClickIfNeeded:(id)a3
+- (void)_cancelClickIfNeeded:(id)needed
 {
   if (self->_canDispatchClick)
   {
-    v4 = a3;
-    v5 = [(SFScribbleClickGestureRecognizer *)self view];
-    [v4 locationInView:v5];
+    neededCopy = needed;
+    view = [(SFScribbleClickGestureRecognizer *)self view];
+    [neededCopy locationInView:view];
     v7 = v6;
     v9 = v8;
 

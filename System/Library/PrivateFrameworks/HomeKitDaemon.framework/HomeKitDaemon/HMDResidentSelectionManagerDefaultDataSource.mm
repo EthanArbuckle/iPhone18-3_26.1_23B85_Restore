@@ -1,19 +1,19 @@
 @interface HMDResidentSelectionManagerDefaultDataSource
 - (HMDResidentSelectionManagerDefaultDataSource)init;
 - (NSBackgroundActivityScheduler)autoModeEvaluationScheduler;
-- (id)createCoordinationElectionModeWithContext:(id)a3;
-- (id)createResidentSelectionModeWithType:(unint64_t)a3 context:(id)a4;
-- (id)idsServerBagForHome:(id)a3;
+- (id)createCoordinationElectionModeWithContext:(id)context;
+- (id)createResidentSelectionModeWithType:(unint64_t)type context:(id)context;
+- (id)idsServerBagForHome:(id)home;
 @end
 
 @implementation HMDResidentSelectionManagerDefaultDataSource
 
-- (id)idsServerBagForHome:(id)a3
+- (id)idsServerBagForHome:(id)home
 {
-  v3 = [a3 homeManager];
-  v4 = [v3 idsServerBag];
+  homeManager = [home homeManager];
+  idsServerBag = [homeManager idsServerBag];
 
-  return v4;
+  return idsServerBag;
 }
 
 - (NSBackgroundActivityScheduler)autoModeEvaluationScheduler
@@ -23,12 +23,12 @@
   return v2;
 }
 
-- (id)createCoordinationElectionModeWithContext:(id)a3
+- (id)createCoordinationElectionModeWithContext:(id)context
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -36,16 +36,16 @@
     v12 = 138543874;
     v13 = v8;
     v14 = 1024;
-    v15 = [v4 residentCapable];
+    residentCapable = [contextCopy residentCapable];
     v16 = 1024;
-    v17 = [v4 isActingAsResident];
+    isActingAsResident = [contextCopy isActingAsResident];
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Current Device resident capable: %d, acting as a resident: %d", &v12, 0x18u);
   }
 
   objc_autoreleasePoolPop(v5);
-  if ([v4 residentCapable] && objc_msgSend(v4, "isActingAsResident"))
+  if ([contextCopy residentCapable] && objc_msgSend(contextCopy, "isActingAsResident"))
   {
-    v9 = [[HMDResidentSelectionCoordinationElection alloc] initWithContext:v4];
+    v9 = [[HMDResidentSelectionCoordinationElection alloc] initWithContext:contextCopy];
   }
 
   else
@@ -58,21 +58,21 @@
   return v9;
 }
 
-- (id)createResidentSelectionModeWithType:(unint64_t)a3 context:(id)a4
+- (id)createResidentSelectionModeWithType:(unint64_t)type context:(id)context
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  contextCopy = context;
   v7 = 0;
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 == 3)
+    if (type == 3)
     {
       v9 = HMDResidentSelectionAutoMode;
     }
 
     else
     {
-      if (a3 != 2)
+      if (type != 2)
       {
         goto LABEL_14;
       }
@@ -80,25 +80,25 @@
       v9 = HMDResidentSelectionManualMode;
     }
 
-    v8 = [[v9 alloc] initWithContext:v6];
+    v8 = [[v9 alloc] initWithContext:contextCopy];
     goto LABEL_13;
   }
 
-  if (a3)
+  if (type)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       goto LABEL_14;
     }
 
-    v8 = [(HMDResidentSelectionManagerDefaultDataSource *)self createCoordinationElectionModeWithContext:v6];
+    v8 = [(HMDResidentSelectionManagerDefaultDataSource *)self createCoordinationElectionModeWithContext:contextCopy];
 LABEL_13:
     v7 = v8;
     goto LABEL_14;
   }
 
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {

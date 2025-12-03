@@ -1,6 +1,6 @@
 @interface AMSRequestBagConsumer
 - (_TtC15SeymourServices21AMSRequestBagConsumer)init;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6;
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion;
 @end
 
 @implementation AMSRequestBagConsumer
@@ -12,16 +12,16 @@
   return result;
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = self;
-  sub_2273D1898(v14, sub_2273D1890, v11);
+  sessionCopy = session;
+  taskCopy = task;
+  requestCopy = request;
+  selfCopy = self;
+  sub_2273D1898(requestCopy, sub_2273D1890, v11);
 }
 
 @end

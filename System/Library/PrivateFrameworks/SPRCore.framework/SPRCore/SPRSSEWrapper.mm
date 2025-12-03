@@ -1,10 +1,10 @@
 @interface SPRSSEWrapper
-+ (id)getSignedDeviceData:(id)a3;
++ (id)getSignedDeviceData:(id)data;
 @end
 
 @implementation SPRSSEWrapper
 
-+ (id)getSignedDeviceData:(id)a3
++ (id)getSignedDeviceData:(id)data
 {
   SSEGetSignedDeviceData();
 

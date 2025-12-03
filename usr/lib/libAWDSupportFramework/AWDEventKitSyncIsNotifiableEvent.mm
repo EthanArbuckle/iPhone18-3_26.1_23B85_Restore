@@ -1,16 +1,16 @@
 @interface AWDEventKitSyncIsNotifiableEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDeltaTransitTime:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasWillTriggerNotification:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasDeltaTransitTime:(BOOL)time;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasWillTriggerNotification:(BOOL)notification;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDEventKitSyncIsNotifiableEvent
@@ -23,9 +23,9 @@
   [(AWDEventKitSyncIsNotifiableEvent *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 4;
   }
@@ -38,9 +38,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasDeltaTransitTime:(BOOL)a3
+- (void)setHasDeltaTransitTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 2;
   }
@@ -53,9 +53,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasWillTriggerNotification:(BOOL)a3
+- (void)setHasWillTriggerNotification:(BOOL)notification
 {
-  if (a3)
+  if (notification)
   {
     v3 = 8;
   }
@@ -77,11 +77,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -100,7 +100,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_deltaTransitTime), @"deltaTransitTime"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_deltaTransitTime), @"deltaTransitTime"}];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -114,24 +114,24 @@ LABEL_4:
   }
 
 LABEL_11:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_deltaProcessingTime), @"deltaProcessingTime"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_deltaProcessingTime), @"deltaProcessingTime"}];
   if ((*&self->_has & 8) != 0)
   {
 LABEL_5:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_willTriggerNotification), @"willTriggerNotification"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_willTriggerNotification), @"willTriggerNotification"}];
   }
 
 LABEL_6:
   reason = self->_reason;
   if (reason)
   {
-    [v3 setObject:reason forKey:@"reason"];
+    [dictionary setObject:reason forKey:@"reason"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 4) != 0)
@@ -188,13 +188,13 @@ LABEL_6:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(a3 + 3) = self->_timestamp;
-    *(a3 + 44) |= 4u;
+    *(to + 3) = self->_timestamp;
+    *(to + 44) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -213,8 +213,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 2) = self->_deltaTransitTime;
-  *(a3 + 44) |= 2u;
+  *(to + 2) = self->_deltaTransitTime;
+  *(to + 44) |= 2u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -228,26 +228,26 @@ LABEL_4:
   }
 
 LABEL_10:
-  *(a3 + 1) = self->_deltaProcessingTime;
-  *(a3 + 44) |= 1u;
+  *(to + 1) = self->_deltaProcessingTime;
+  *(to + 44) |= 1u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_5:
-    *(a3 + 40) = self->_willTriggerNotification;
-    *(a3 + 44) |= 8u;
+    *(to + 40) = self->_willTriggerNotification;
+    *(to + 44) |= 8u;
   }
 
 LABEL_6:
   reason = self->_reason;
   if (reason)
   {
-    [a3 setReason:reason];
+    [to setReason:reason];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) != 0)
@@ -298,72 +298,72 @@ LABEL_5:
 
 LABEL_6:
 
-  v6[4] = [(NSString *)self->_reason copyWithZone:a3];
+  v6[4] = [(NSString *)self->_reason copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
   }
 
-  v6 = *(a3 + 44);
+  v6 = *(equal + 44);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(a3 + 44) & 4) == 0 || self->_timestamp != *(a3 + 3))
+    if ((*(equal + 44) & 4) == 0 || self->_timestamp != *(equal + 3))
     {
       goto LABEL_22;
     }
   }
 
-  else if ((*(a3 + 44) & 4) != 0)
+  else if ((*(equal + 44) & 4) != 0)
   {
     goto LABEL_22;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(a3 + 44) & 2) == 0 || self->_deltaTransitTime != *(a3 + 2))
+    if ((*(equal + 44) & 2) == 0 || self->_deltaTransitTime != *(equal + 2))
     {
       goto LABEL_22;
     }
   }
 
-  else if ((*(a3 + 44) & 2) != 0)
+  else if ((*(equal + 44) & 2) != 0)
   {
     goto LABEL_22;
   }
 
   if (*&self->_has)
   {
-    if ((*(a3 + 44) & 1) == 0 || self->_deltaProcessingTime != *(a3 + 1))
+    if ((*(equal + 44) & 1) == 0 || self->_deltaProcessingTime != *(equal + 1))
     {
       goto LABEL_22;
     }
   }
 
-  else if (*(a3 + 44))
+  else if (*(equal + 44))
   {
     goto LABEL_22;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(a3 + 44) & 8) != 0)
+    if ((*(equal + 44) & 8) != 0)
     {
-      v8 = *(a3 + 40);
+      v8 = *(equal + 40);
       if (self->_willTriggerNotification)
       {
-        if ((*(a3 + 40) & 1) == 0)
+        if ((*(equal + 40) & 1) == 0)
         {
           goto LABEL_22;
         }
       }
 
-      else if (*(a3 + 40))
+      else if (*(equal + 40))
       {
         goto LABEL_22;
       }
@@ -376,14 +376,14 @@ LABEL_22:
     return v5;
   }
 
-  if ((*(a3 + 44) & 8) != 0)
+  if ((*(equal + 44) & 8) != 0)
   {
     goto LABEL_22;
   }
 
 LABEL_19:
   reason = self->_reason;
-  if (reason | *(a3 + 4))
+  if (reason | *(equal + 4))
   {
 
     LOBYTE(v5) = [(NSString *)reason isEqual:?];
@@ -451,14 +451,14 @@ LABEL_5:
   return v7 ^ v6 ^ v8 ^ v9 ^ [(NSString *)self->_reason hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 44);
+  v3 = *(from + 44);
   if ((v3 & 4) != 0)
   {
-    self->_timestamp = *(a3 + 3);
+    self->_timestamp = *(from + 3);
     *&self->_has |= 4u;
-    v3 = *(a3 + 44);
+    v3 = *(from + 44);
     if ((v3 & 2) == 0)
     {
 LABEL_3:
@@ -471,14 +471,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 44) & 2) == 0)
+  else if ((*(from + 44) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_deltaTransitTime = *(a3 + 2);
+  self->_deltaTransitTime = *(from + 2);
   *&self->_has |= 2u;
-  v3 = *(a3 + 44);
+  v3 = *(from + 44);
   if ((v3 & 1) == 0)
   {
 LABEL_4:
@@ -491,17 +491,17 @@ LABEL_4:
   }
 
 LABEL_10:
-  self->_deltaProcessingTime = *(a3 + 1);
+  self->_deltaProcessingTime = *(from + 1);
   *&self->_has |= 1u;
-  if ((*(a3 + 44) & 8) != 0)
+  if ((*(from + 44) & 8) != 0)
   {
 LABEL_5:
-    self->_willTriggerNotification = *(a3 + 40);
+    self->_willTriggerNotification = *(from + 40);
     *&self->_has |= 8u;
   }
 
 LABEL_6:
-  if (*(a3 + 4))
+  if (*(from + 4))
   {
     [(AWDEventKitSyncIsNotifiableEvent *)self setReason:?];
   }

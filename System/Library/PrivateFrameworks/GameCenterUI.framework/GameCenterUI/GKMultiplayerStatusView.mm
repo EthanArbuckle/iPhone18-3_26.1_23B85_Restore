@@ -1,15 +1,15 @@
 @interface GKMultiplayerStatusView
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (_TtC12GameCenterUI16DynamicTypeLabel)accessibilityStatusLabel;
 - (void)layoutSubviews;
 @end
 
 @implementation GKMultiplayerStatusView
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   GKMultiplayerStatusView.measurements(fitting:in:)();
   v7 = v6;
   v9 = v8;
@@ -30,7 +30,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   GKMultiplayerStatusView.layoutSubviews()();
 }
 

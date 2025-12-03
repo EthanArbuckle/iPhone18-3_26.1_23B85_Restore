@@ -1,101 +1,101 @@
 @interface SFPeopleSuggestion
 + (id)TTRPeopleSuggestion;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isGroup;
 - (BOOL)isTapToRadar;
 - (NSString)description;
-- (SFPeopleSuggestion)initWithCoder:(id)a3;
-- (SFPeopleSuggestion)initWithIdentifier:(id)a3 displayName:(id)a4 transportBundleIdentifier:(id)a5 contact:(id)a6 deviceModelIdentifier:(id)a7;
-- (SFPeopleSuggestion)initWithIdentifier:(id)a3 displayName:(id)a4 transportBundleIdentifier:(id)a5 contacts:(id)a6 formattedHandles:(id)a7 donatedImage:(id)a8 placeholder:(BOOL)a9;
+- (SFPeopleSuggestion)initWithCoder:(id)coder;
+- (SFPeopleSuggestion)initWithIdentifier:(id)identifier displayName:(id)name transportBundleIdentifier:(id)bundleIdentifier contact:(id)contact deviceModelIdentifier:(id)modelIdentifier;
+- (SFPeopleSuggestion)initWithIdentifier:(id)identifier displayName:(id)name transportBundleIdentifier:(id)bundleIdentifier contacts:(id)contacts formattedHandles:(id)handles donatedImage:(id)image placeholder:(BOOL)placeholder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFPeopleSuggestion
 
 + (id)TTRPeopleSuggestion
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [a1 alloc];
-  v5 = [v3 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v4 = [self alloc];
+  uUIDString = [uUID UUIDString];
   LOBYTE(v8) = 0;
-  v6 = [v4 initWithIdentifier:v5 displayName:@"File radar" transportBundleIdentifier:@"com.apple.TapToRadar.shareextension" contacts:MEMORY[0x1E695E0F0] formattedHandles:MEMORY[0x1E695E0F0] donatedImage:0 placeholder:v8];
+  v6 = [v4 initWithIdentifier:uUIDString displayName:@"File radar" transportBundleIdentifier:@"com.apple.TapToRadar.shareextension" contacts:MEMORY[0x1E695E0F0] formattedHandles:MEMORY[0x1E695E0F0] donatedImage:0 placeholder:v8];
 
   return v6;
 }
 
-- (SFPeopleSuggestion)initWithIdentifier:(id)a3 displayName:(id)a4 transportBundleIdentifier:(id)a5 contacts:(id)a6 formattedHandles:(id)a7 donatedImage:(id)a8 placeholder:(BOOL)a9
+- (SFPeopleSuggestion)initWithIdentifier:(id)identifier displayName:(id)name transportBundleIdentifier:(id)bundleIdentifier contacts:(id)contacts formattedHandles:(id)handles donatedImage:(id)image placeholder:(BOOL)placeholder
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  identifierCopy = identifier;
+  nameCopy = name;
+  bundleIdentifierCopy = bundleIdentifier;
+  contactsCopy = contacts;
+  handlesCopy = handles;
+  imageCopy = image;
   v33.receiver = self;
   v33.super_class = SFPeopleSuggestion;
   v21 = [(SFPeopleSuggestion *)&v33 init];
   if (v21)
   {
-    v22 = [v15 copy];
+    v22 = [identifierCopy copy];
     identifier = v21->_identifier;
     v21->_identifier = v22;
 
-    v24 = [v16 copy];
+    v24 = [nameCopy copy];
     displayName = v21->_displayName;
     v21->_displayName = v24;
 
-    v26 = [v17 copy];
+    v26 = [bundleIdentifierCopy copy];
     transportBundleIdentifier = v21->_transportBundleIdentifier;
     v21->_transportBundleIdentifier = v26;
 
-    v28 = [v18 copy];
+    v28 = [contactsCopy copy];
     contacts = v21->_contacts;
     v21->_contacts = v28;
 
-    v30 = [v19 copy];
+    v30 = [handlesCopy copy];
     formattedHandles = v21->_formattedHandles;
     v21->_formattedHandles = v30;
 
-    objc_storeStrong(&v21->_donatedImage, a8);
-    v21->_isPlaceholder = a9;
+    objc_storeStrong(&v21->_donatedImage, image);
+    v21->_isPlaceholder = placeholder;
   }
 
   return v21;
 }
 
-- (SFPeopleSuggestion)initWithIdentifier:(id)a3 displayName:(id)a4 transportBundleIdentifier:(id)a5 contact:(id)a6 deviceModelIdentifier:(id)a7
+- (SFPeopleSuggestion)initWithIdentifier:(id)identifier displayName:(id)name transportBundleIdentifier:(id)bundleIdentifier contact:(id)contact deviceModelIdentifier:(id)modelIdentifier
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  nameCopy = name;
+  bundleIdentifierCopy = bundleIdentifier;
+  contactCopy = contact;
+  modelIdentifierCopy = modelIdentifier;
   v30.receiver = self;
   v30.super_class = SFPeopleSuggestion;
   v17 = [(SFPeopleSuggestion *)&v30 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [identifierCopy copy];
     identifier = v17->_identifier;
     v17->_identifier = v18;
 
-    v20 = [v13 copy];
+    v20 = [nameCopy copy];
     displayName = v17->_displayName;
     v17->_displayName = v20;
 
-    v22 = [v14 copy];
+    v22 = [bundleIdentifierCopy copy];
     transportBundleIdentifier = v17->_transportBundleIdentifier;
     v17->_transportBundleIdentifier = v22;
 
-    v24 = [v16 copy];
+    v24 = [modelIdentifierCopy copy];
     deviceModelIdentifier = v17->_deviceModelIdentifier;
     v17->_deviceModelIdentifier = v24;
 
-    if (v15)
+    if (contactCopy)
     {
-      v31[0] = v15;
+      v31[0] = contactCopy;
       v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:1];
     }
 
@@ -114,17 +114,17 @@
   return v17;
 }
 
-- (SFPeopleSuggestion)initWithCoder:(id)a3
+- (SFPeopleSuggestion)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-  v6 = [v4 decodeObjectOfClasses:v5 forKey:@"displayName"];
+  v6 = [coderCopy decodeObjectOfClasses:v5 forKey:@"displayName"];
 
   v7 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-  v31 = [v4 decodeObjectOfClasses:v7 forKey:@"identifier"];
+  v31 = [coderCopy decodeObjectOfClasses:v7 forKey:@"identifier"];
 
   v8 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"transportBundleIdentifier"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"transportBundleIdentifier"];
 
   v10 = MEMORY[0x1E695DFD8];
   v11 = objc_opt_class();
@@ -144,7 +144,7 @@
     v12 = v38[3];
   }
 
-  v13 = self;
+  selfCopy = self;
   v14 = v12;
   _Block_object_dispose(&v37, 8);
   v37 = 0;
@@ -166,12 +166,12 @@
   v16 = v15;
   _Block_object_dispose(&v37, 8);
   v17 = [v10 setWithObjects:{v11, v12, v15, 0}];
-  v18 = [v4 decodeObjectOfClasses:v17 forKey:@"contacts"];
+  v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"contacts"];
 
   v19 = MEMORY[0x1E695DFD8];
   v20 = objc_opt_class();
   v21 = [v19 setWithObjects:{v20, objc_opt_class(), 0}];
-  v22 = [v4 decodeObjectOfClasses:v21 forKey:@"formattedHandles"];
+  v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"formattedHandles"];
 
   v37 = 0;
   v38 = &v37;
@@ -191,13 +191,13 @@
 
   v24 = v23;
   _Block_object_dispose(&v37, 8);
-  v25 = [v4 decodeObjectOfClass:v23 forKey:@"donatedImage"];
-  LOBYTE(v30) = [v4 decodeBoolForKey:@"isPlaceholder"];
-  v26 = [(SFPeopleSuggestion *)v13 initWithIdentifier:v31 displayName:v6 transportBundleIdentifier:v9 contacts:v18 formattedHandles:v22 donatedImage:v25 placeholder:v30];
+  v25 = [coderCopy decodeObjectOfClass:v23 forKey:@"donatedImage"];
+  LOBYTE(v30) = [coderCopy decodeBoolForKey:@"isPlaceholder"];
+  v26 = [(SFPeopleSuggestion *)selfCopy initWithIdentifier:v31 displayName:v6 transportBundleIdentifier:v9 contacts:v18 formattedHandles:v22 donatedImage:v25 placeholder:v30];
   if (v26)
   {
-    v26->_isRestricted = [v4 decodeBoolForKey:@"isRestricted"];
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceModelIdentifier"];
+    v26->_isRestricted = [coderCopy decodeBoolForKey:@"isRestricted"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceModelIdentifier"];
     deviceModelIdentifier = v26->_deviceModelIdentifier;
     v26->_deviceModelIdentifier = v27;
   }
@@ -205,25 +205,25 @@
   return v26;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   displayName = self->_displayName;
-  v5 = a3;
-  [v5 encodeObject:displayName forKey:@"displayName"];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_transportBundleIdentifier forKey:@"transportBundleIdentifier"];
-  [v5 encodeObject:self->_deviceModelIdentifier forKey:@"deviceModelIdentifier"];
-  [v5 encodeObject:self->_contacts forKey:@"contacts"];
-  [v5 encodeObject:self->_formattedHandles forKey:@"formattedHandles"];
-  [v5 encodeObject:self->_donatedImage forKey:@"donatedImage"];
-  [v5 encodeBool:self->_isRestricted forKey:@"isRestricted"];
-  [v5 encodeBool:self->_isPlaceholder forKey:@"isPlaceholder"];
+  coderCopy = coder;
+  [coderCopy encodeObject:displayName forKey:@"displayName"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_transportBundleIdentifier forKey:@"transportBundleIdentifier"];
+  [coderCopy encodeObject:self->_deviceModelIdentifier forKey:@"deviceModelIdentifier"];
+  [coderCopy encodeObject:self->_contacts forKey:@"contacts"];
+  [coderCopy encodeObject:self->_formattedHandles forKey:@"formattedHandles"];
+  [coderCopy encodeObject:self->_donatedImage forKey:@"donatedImage"];
+  [coderCopy encodeBool:self->_isRestricted forKey:@"isRestricted"];
+  [coderCopy encodeBool:self->_isPlaceholder forKey:@"isPlaceholder"];
 }
 
 - (BOOL)isTapToRadar
 {
-  v2 = [(SFPeopleSuggestion *)self transportBundleIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.TapToRadar.shareextension"];
+  transportBundleIdentifier = [(SFPeopleSuggestion *)self transportBundleIdentifier];
+  v3 = [transportBundleIdentifier isEqualToString:@"com.apple.TapToRadar.shareextension"];
 
   return v3;
 }
@@ -234,27 +234,27 @@
   v16.receiver = self;
   v16.super_class = SFPeopleSuggestion;
   v15 = [(SFPeopleSuggestion *)&v16 description];
-  v4 = [(SFPeopleSuggestion *)self displayName];
-  v5 = [(SFPeopleSuggestion *)self identifier];
-  v6 = [(SFPeopleSuggestion *)self transportBundleIdentifier];
+  displayName = [(SFPeopleSuggestion *)self displayName];
+  identifier = [(SFPeopleSuggestion *)self identifier];
+  transportBundleIdentifier = [(SFPeopleSuggestion *)self transportBundleIdentifier];
   v7 = IsAppleInternalBuild();
   if (v7)
   {
-    v8 = [(SFPeopleSuggestion *)self deviceModelIdentifier];
+    deviceModelIdentifier = [(SFPeopleSuggestion *)self deviceModelIdentifier];
   }
 
   else
   {
-    v8 = @"<private>";
+    deviceModelIdentifier = @"<private>";
   }
 
-  v9 = [(SFPeopleSuggestion *)self contacts];
-  v10 = [(SFPeopleSuggestion *)self donatedImage];
+  contacts = [(SFPeopleSuggestion *)self contacts];
+  donatedImage = [(SFPeopleSuggestion *)self donatedImage];
   [(SFPeopleSuggestion *)self isRestricted];
   v11 = NSStringFromBOOL();
   [(SFPeopleSuggestion *)self isPlaceholder];
   v12 = NSStringFromBOOL();
-  v13 = [v3 stringWithFormat:@"<%@ displayName:%@ identifier:%@ transportBundleIdentifier:%@ deviceModelIdentifier:%@ contacts:%@ donatedImage:%@ isRestricted:%@ isPlaceholder:%@>", v15, v4, v5, v6, v8, v9, v10, v11, v12];
+  v13 = [v3 stringWithFormat:@"<%@ displayName:%@ identifier:%@ transportBundleIdentifier:%@ deviceModelIdentifier:%@ contacts:%@ donatedImage:%@ isRestricted:%@ isPlaceholder:%@>", v15, displayName, identifier, transportBundleIdentifier, deviceModelIdentifier, contacts, donatedImage, v11, v12];
 
   if (v7)
   {
@@ -269,16 +269,16 @@
   v4 = NSStringFromClass(v3);
   v5 = [v4 hash];
 
-  v6 = [(SFPeopleSuggestion *)self identifier];
-  v7 = [v6 hash];
+  identifier = [(SFPeopleSuggestion *)self identifier];
+  v7 = [identifier hash];
 
   return v7 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(self) = 1;
   }
@@ -288,11 +288,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SFPeopleSuggestion *)self identifier];
-      v7 = [(SFPeopleSuggestion *)v5 identifier];
-      v8 = v6;
-      v9 = v7;
+      v5 = equalCopy;
+      identifier = [(SFPeopleSuggestion *)self identifier];
+      identifier2 = [(SFPeopleSuggestion *)v5 identifier];
+      v8 = identifier;
+      v9 = identifier2;
       v10 = v9;
       if (v8 == v9)
       {
@@ -319,10 +319,10 @@ LABEL_53:
         }
       }
 
-      v12 = [(SFPeopleSuggestion *)self displayName];
-      v13 = [(SFPeopleSuggestion *)v5 displayName];
-      v14 = v12;
-      v15 = v13;
+      displayName = [(SFPeopleSuggestion *)self displayName];
+      displayName2 = [(SFPeopleSuggestion *)v5 displayName];
+      v14 = displayName;
+      v15 = displayName2;
       v16 = v15;
       if (v14 == v15)
       {
@@ -349,10 +349,10 @@ LABEL_52:
         }
       }
 
-      v18 = [(SFPeopleSuggestion *)self transportBundleIdentifier];
-      v19 = [(SFPeopleSuggestion *)v5 transportBundleIdentifier];
-      v20 = v18;
-      v21 = v19;
+      transportBundleIdentifier = [(SFPeopleSuggestion *)self transportBundleIdentifier];
+      transportBundleIdentifier2 = [(SFPeopleSuggestion *)v5 transportBundleIdentifier];
+      v20 = transportBundleIdentifier;
+      v21 = transportBundleIdentifier2;
       v22 = v21;
       if (v20 == v21)
       {
@@ -385,10 +385,10 @@ LABEL_51:
 
       v58 = v22;
       v56 = v20;
-      v24 = [(SFPeopleSuggestion *)self deviceModelIdentifier];
-      v25 = [(SFPeopleSuggestion *)v5 deviceModelIdentifier];
-      v26 = v24;
-      v27 = v25;
+      deviceModelIdentifier = [(SFPeopleSuggestion *)self deviceModelIdentifier];
+      deviceModelIdentifier2 = [(SFPeopleSuggestion *)v5 deviceModelIdentifier];
+      v26 = deviceModelIdentifier;
+      v27 = deviceModelIdentifier2;
       v28 = v27;
       v57 = v27;
       if (v26 == v27)
@@ -421,11 +421,11 @@ LABEL_49:
       }
 
       v55 = v26;
-      v32 = [(SFPeopleSuggestion *)self contacts];
-      v33 = [(SFPeopleSuggestion *)v5 contacts];
-      v34 = v32;
-      v35 = v33;
-      v36 = v35;
+      contacts = [(SFPeopleSuggestion *)self contacts];
+      contacts2 = [(SFPeopleSuggestion *)v5 contacts];
+      v34 = contacts;
+      v35 = contacts2;
+      selfCopy = v35;
       v53 = v35;
       v54 = v34;
       if (v34 == v35)
@@ -457,10 +457,10 @@ LABEL_47:
         }
       }
 
-      v41 = [(SFPeopleSuggestion *)self donatedImage];
-      v42 = [(SFPeopleSuggestion *)v5 donatedImage];
-      v43 = v41;
-      v44 = v42;
+      donatedImage = [(SFPeopleSuggestion *)self donatedImage];
+      donatedImage2 = [(SFPeopleSuggestion *)v5 donatedImage];
+      v43 = donatedImage;
+      v44 = donatedImage2;
       v45 = v43;
       if (v43 == v44)
       {
@@ -468,14 +468,14 @@ LABEL_47:
 
         v26 = v55;
 LABEL_40:
-        v48 = [(SFPeopleSuggestion *)self isRestricted];
-        if (v48 == [(SFPeopleSuggestion *)v5 isRestricted])
+        isRestricted = [(SFPeopleSuggestion *)self isRestricted];
+        if (isRestricted == [(SFPeopleSuggestion *)v5 isRestricted])
         {
-          v49 = [(SFPeopleSuggestion *)self isPlaceholder];
-          if (v49 == [(SFPeopleSuggestion *)v5 isPlaceholder])
+          isPlaceholder = [(SFPeopleSuggestion *)self isPlaceholder];
+          if (isPlaceholder == [(SFPeopleSuggestion *)v5 isPlaceholder])
           {
-            v51 = [(SFPeopleSuggestion *)self isTapToRadar];
-            LODWORD(self) = v51 ^ [(SFPeopleSuggestion *)v5 isTapToRadar]^ 1;
+            isTapToRadar = [(SFPeopleSuggestion *)self isTapToRadar];
+            LODWORD(self) = isTapToRadar ^ [(SFPeopleSuggestion *)v5 isTapToRadar]^ 1;
             goto LABEL_43;
           }
         }
@@ -484,7 +484,7 @@ LABEL_42:
         LOBYTE(self) = 0;
 LABEL_43:
         v20 = v56;
-        v36 = v52;
+        selfCopy = v52;
 LABEL_46:
 
         goto LABEL_47;
@@ -507,7 +507,7 @@ LABEL_46:
 
       self = v44;
 
-      v36 = self;
+      selfCopy = self;
       LOBYTE(self) = 0;
 LABEL_45:
       v26 = v55;
@@ -525,8 +525,8 @@ LABEL_54:
 
 - (BOOL)isGroup
 {
-  v2 = [(SFPeopleSuggestion *)self contacts];
-  v3 = [v2 count] > 1;
+  contacts = [(SFPeopleSuggestion *)self contacts];
+  v3 = [contacts count] > 1;
 
   return v3;
 }

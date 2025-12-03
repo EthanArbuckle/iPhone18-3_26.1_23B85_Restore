@@ -1,32 +1,32 @@
 @interface TBCoreDataStoreDescriptor
 + (id)clientStoreDescriptor;
 + (id)defaultModelURL;
-+ (id)defaultPersistentStoreURLWithDirectory:(id)a3;
++ (id)defaultPersistentStoreURLWithDirectory:(id)directory;
 + (id)defaultStoresDirectoryURL;
 + (id)directStoreDescriptor;
 + (id)serverStoreDescriptor;
 + (id)tempStoreDescriptor;
 + (id)tempStoresDirectoryURL;
-- (TBCoreDataStoreDescriptor)initWithType:(unint64_t)a3 storeURL:(id)a4 modelURL:(id)a5;
+- (TBCoreDataStoreDescriptor)initWithType:(unint64_t)type storeURL:(id)l modelURL:(id)rL;
 @end
 
 @implementation TBCoreDataStoreDescriptor
 
 + (id)directStoreDescriptor
 {
-  v3 = [objc_opt_class() defaultStoresDirectoryURL];
-  v4 = [objc_opt_class() defaultPersistentStoreURLWithDirectory:v3];
-  v5 = [a1 alloc];
-  v6 = [objc_opt_class() defaultModelURL];
-  v7 = [v5 initWithType:1 storeURL:v4 modelURL:v6];
+  defaultStoresDirectoryURL = [objc_opt_class() defaultStoresDirectoryURL];
+  v4 = [objc_opt_class() defaultPersistentStoreURLWithDirectory:defaultStoresDirectoryURL];
+  v5 = [self alloc];
+  defaultModelURL = [objc_opt_class() defaultModelURL];
+  v7 = [v5 initWithType:1 storeURL:v4 modelURL:defaultModelURL];
 
   return v7;
 }
 
 + (id)defaultStoresDirectoryURL
 {
-  v2 = [MEMORY[0x277CCAA00] wifiCacheDirectoryPath];
-  v3 = [MEMORY[0x277CBEBC0] fileURLWithPath:v2 isDirectory:1];
+  wifiCacheDirectoryPath = [MEMORY[0x277CCAA00] wifiCacheDirectoryPath];
+  v3 = [MEMORY[0x277CBEBC0] fileURLWithPath:wifiCacheDirectoryPath isDirectory:1];
 
   return v3;
 }
@@ -41,47 +41,47 @@
 
 + (id)clientStoreDescriptor
 {
-  v3 = [objc_opt_class() defaultStoresDirectoryURL];
-  v4 = [objc_opt_class() defaultPersistentStoreURLWithDirectory:v3];
-  v5 = [a1 alloc];
-  v6 = [objc_opt_class() defaultModelURL];
-  v7 = [v5 initWithType:2 storeURL:v4 modelURL:v6];
+  defaultStoresDirectoryURL = [objc_opt_class() defaultStoresDirectoryURL];
+  v4 = [objc_opt_class() defaultPersistentStoreURLWithDirectory:defaultStoresDirectoryURL];
+  v5 = [self alloc];
+  defaultModelURL = [objc_opt_class() defaultModelURL];
+  v7 = [v5 initWithType:2 storeURL:v4 modelURL:defaultModelURL];
 
   return v7;
 }
 
 + (id)serverStoreDescriptor
 {
-  v3 = [objc_opt_class() defaultStoresDirectoryURL];
-  v4 = [objc_opt_class() defaultPersistentStoreURLWithDirectory:v3];
-  v5 = [a1 alloc];
-  v6 = [objc_opt_class() defaultModelURL];
-  v7 = [v5 initWithType:0 storeURL:v4 modelURL:v6];
+  defaultStoresDirectoryURL = [objc_opt_class() defaultStoresDirectoryURL];
+  v4 = [objc_opt_class() defaultPersistentStoreURLWithDirectory:defaultStoresDirectoryURL];
+  v5 = [self alloc];
+  defaultModelURL = [objc_opt_class() defaultModelURL];
+  v7 = [v5 initWithType:0 storeURL:v4 modelURL:defaultModelURL];
 
   return v7;
 }
 
 + (id)tempStoreDescriptor
 {
-  v3 = [objc_opt_class() tempStoresDirectoryURL];
-  v4 = [objc_opt_class() defaultPersistentStoreURLWithDirectory:v3];
-  v5 = [a1 alloc];
-  v6 = [objc_opt_class() defaultModelURL];
-  v7 = [v5 initWithType:3 storeURL:v4 modelURL:v6];
+  tempStoresDirectoryURL = [objc_opt_class() tempStoresDirectoryURL];
+  v4 = [objc_opt_class() defaultPersistentStoreURLWithDirectory:tempStoresDirectoryURL];
+  v5 = [self alloc];
+  defaultModelURL = [objc_opt_class() defaultModelURL];
+  v7 = [v5 initWithType:3 storeURL:v4 modelURL:defaultModelURL];
 
   return v7;
 }
 
-- (TBCoreDataStoreDescriptor)initWithType:(unint64_t)a3 storeURL:(id)a4 modelURL:(id)a5
+- (TBCoreDataStoreDescriptor)initWithType:(unint64_t)type storeURL:(id)l modelURL:(id)rL
 {
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  rLCopy = rL;
   v21.receiver = self;
   v21.super_class = TBCoreDataStoreDescriptor;
   v11 = [(TBCoreDataStoreDescriptor *)&v21 init];
-  v11->_type = a3;
-  objc_storeStrong(&v11->_storeURL, a4);
-  objc_storeStrong(&v11->_modelURL, a5);
+  v11->_type = type;
+  objc_storeStrong(&v11->_storeURL, l);
+  objc_storeStrong(&v11->_modelURL, rL);
   v12 = [MEMORY[0x277CBE4E0] persistentStoreDescriptionWithURL:v11->_storeURL];
   v13 = v12;
   type = v11->_type;
@@ -115,9 +115,9 @@
   return v11;
 }
 
-+ (id)defaultPersistentStoreURLWithDirectory:(id)a3
++ (id)defaultPersistentStoreURLWithDirectory:(id)directory
 {
-  v3 = [a3 URLByAppendingPathComponent:@"ThreeBars"];
+  v3 = [directory URLByAppendingPathComponent:@"ThreeBars"];
   v4 = [v3 URLByAppendingPathExtension:@"sqlite"];
 
   return v4;

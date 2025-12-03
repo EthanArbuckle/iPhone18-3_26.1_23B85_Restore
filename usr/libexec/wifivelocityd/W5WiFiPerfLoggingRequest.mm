@@ -1,8 +1,8 @@
 @interface W5WiFiPerfLoggingRequest
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToWiFiPerfLoggingRequest:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToWiFiPerfLoggingRequest:(id)request;
 - (W5WiFiPerfLoggingRequest)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
 @end
@@ -44,22 +44,22 @@
   return v4;
 }
 
-- (BOOL)isEqualToWiFiPerfLoggingRequest:(id)a3
+- (BOOL)isEqualToWiFiPerfLoggingRequest:(id)request
 {
   uuid = self->_uuid;
-  v4 = [a3 uuid];
+  uuid = [request uuid];
 
-  return [(NSUUID *)uuid isEqual:v4];
+  return [(NSUUID *)uuid isEqual:uuid];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -70,10 +70,10 @@
     return 0;
   }
 
-  return [(W5WiFiPerfLoggingRequest *)self isEqualToWiFiPerfLoggingRequest:a3];
+  return [(W5WiFiPerfLoggingRequest *)self isEqualToWiFiPerfLoggingRequest:equal];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[W5WiFiPerfLoggingRequest allocWithZone:?]];
   [(W5WiFiPerfLoggingRequest *)v4 setUuid:self->_uuid];

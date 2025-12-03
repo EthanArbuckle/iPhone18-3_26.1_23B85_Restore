@@ -1,9 +1,9 @@
 @interface SVXPowerLevelListener
-- (BOOL)getAveragePower:(float *)a3 andPeakPower:(float *)a4;
+- (BOOL)getAveragePower:(float *)power andPeakPower:(float *)peakPower;
 - (SVXAudioPowerProviding)audioPowerProvider;
 - (SVXPowerLevelListener)init;
-- (SVXPowerLevelListener)initWithAudioPowerUpdaterProvider:(id)a3;
-- (void)beginListeningToAudioPowerProvider:(id)a3 completion:(id)a4;
+- (SVXPowerLevelListener)initWithAudioPowerUpdaterProvider:(id)provider;
+- (void)beginListeningToAudioPowerProvider:(id)provider completion:(id)completion;
 - (void)dealloc;
 - (void)endListening;
 @end
@@ -17,7 +17,7 @@
   return WeakRetained;
 }
 
-- (BOOL)getAveragePower:(float *)a3 andPeakPower:(float *)a4
+- (BOOL)getAveragePower:(float *)power andPeakPower:(float *)peakPower
 {
   v21 = 0;
   v22 = &v21;
@@ -41,13 +41,13 @@
 
   v10 = dispatch_time(0, 500000000);
   v11 = dispatch_semaphore_wait(v9, v10);
-  *a3 = v22[6];
-  *a4 = v18[6];
-  LOBYTE(a4) = v11 == 0;
+  *power = v22[6];
+  *peakPower = v18[6];
+  LOBYTE(peakPower) = v11 == 0;
 
   _Block_object_dispose(&v17, 8);
   _Block_object_dispose(&v21, 8);
-  return a4;
+  return peakPower;
 }
 
 intptr_t __54__SVXPowerLevelListener_getAveragePower_andPeakPower___block_invoke(uint64_t a1, float a2, float a3)
@@ -77,12 +77,12 @@ intptr_t __54__SVXPowerLevelListener_getAveragePower_andPeakPower___block_invoke
   self->_outputAudioPowerUpdaterQueue = 0;
 }
 
-- (void)beginListeningToAudioPowerProvider:(id)a3 completion:(id)a4
+- (void)beginListeningToAudioPowerProvider:(id)provider completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  providerCopy = provider;
   [(SVXPowerLevelListener *)self endListening];
-  objc_storeWeak(&self->_audioPowerProvider, v7);
+  objc_storeWeak(&self->_audioPowerProvider, providerCopy);
 
   v12 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0);
   v8 = dispatch_queue_create("TTSPowerUpdateQueue", v12);
@@ -93,20 +93,20 @@ intptr_t __54__SVXPowerLevelListener_getAveragePower_andPeakPower___block_invoke
   outputAudioPowerUpdater = self->_outputAudioPowerUpdater;
   self->_outputAudioPowerUpdater = v10;
 
-  [(AFAudioPowerUpdater *)self->_outputAudioPowerUpdater createNewXPCWrapperWithCompletion:v6];
+  [(AFAudioPowerUpdater *)self->_outputAudioPowerUpdater createNewXPCWrapperWithCompletion:completionCopy];
   [(AFAudioPowerUpdater *)self->_outputAudioPowerUpdater beginUpdate];
 }
 
-- (SVXPowerLevelListener)initWithAudioPowerUpdaterProvider:(id)a3
+- (SVXPowerLevelListener)initWithAudioPowerUpdaterProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = SVXPowerLevelListener;
   v6 = [(SVXPowerLevelListener *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_audioPowerUpdaterProvider, a3);
+    objc_storeStrong(&v6->_audioPowerUpdaterProvider, provider);
   }
 
   return v7;

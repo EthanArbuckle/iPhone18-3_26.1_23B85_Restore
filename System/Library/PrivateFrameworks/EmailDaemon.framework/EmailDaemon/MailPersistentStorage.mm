@@ -3,16 +3,16 @@
 + (id)sharedStorage;
 + (void)wipePersistentStorage;
 - (MailPersistentStorage)init;
-- (MailPersistentStorage)initWithFilePath:(id)a3;
-- (id)_objectForKey:(id)a3 inGroup:(id)a4;
-- (id)bodyBackfillDateForSource:(id)a3;
-- (id)fetchDateForSource:(id)a3;
-- (void)_setObject:(id)a3 forKey:(id)a4 inGroup:(id)a5;
-- (void)removeAllDataBelongingToAccount:(id)a3;
+- (MailPersistentStorage)initWithFilePath:(id)path;
+- (id)_objectForKey:(id)key inGroup:(id)group;
+- (id)bodyBackfillDateForSource:(id)source;
+- (id)fetchDateForSource:(id)source;
+- (void)_setObject:(id)object forKey:(id)key inGroup:(id)group;
+- (void)removeAllDataBelongingToAccount:(id)account;
 - (void)save;
 - (void)searchedServer;
-- (void)setBodyBackfillDate:(id)a3 forSource:(id)a4;
-- (void)setFetchDate:(id)a3 forSource:(id)a4;
+- (void)setBodyBackfillDate:(id)date forSource:(id)source;
+- (void)setFetchDate:(id)date forSource:(id)source;
 - (void)touchLastLoadOlder;
 @end
 
@@ -42,9 +42,9 @@
   sub_10003346C();
 }
 
-- (MailPersistentStorage)initWithFilePath:(id)a3
+- (MailPersistentStorage)initWithFilePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v15.receiver = self;
   v15.super_class = MailPersistentStorage;
   v5 = [(MailPersistentStorage *)&v15 init];
@@ -56,11 +56,11 @@
 
     [(NSOperationQueue *)v5->_saveOperationQueue setQualityOfService:17];
     [(NSOperationQueue *)v5->_saveOperationQueue setMaxConcurrentOperationCount:1];
-    v8 = [v4 copy];
+    v8 = [pathCopy copy];
     filePath = v5->_filePath;
     v5->_filePath = v8;
 
-    v10 = [[NSMutableDictionary alloc] initWithContentsOfFile:v4];
+    v10 = [[NSMutableDictionary alloc] initWithContentsOfFile:pathCopy];
     groups = v5->_groups;
     v5->_groups = v10;
 
@@ -77,8 +77,8 @@
 
 - (MailPersistentStorage)init
 {
-  v3 = [objc_opt_class() defaultFilePath];
-  v4 = [(MailPersistentStorage *)self initWithFilePath:v3];
+  defaultFilePath = [objc_opt_class() defaultFilePath];
+  v4 = [(MailPersistentStorage *)self initWithFilePath:defaultFilePath];
 
   return v4;
 }
@@ -88,58 +88,58 @@
   [(MailPersistentStorage *)self mf_lock];
   v4 = [[MailPersistentStorageSaveOperation alloc] initWithDestinationPath:self->_filePath groupDictionary:self->_groups];
   [(MailPersistentStorage *)self mf_unlock];
-  v3 = [(MailPersistentStorage *)self saveOperationQueue];
-  [v3 addOperation:v4];
+  saveOperationQueue = [(MailPersistentStorage *)self saveOperationQueue];
+  [saveOperationQueue addOperation:v4];
 }
 
-- (void)_setObject:(id)a3 forKey:(id)a4 inGroup:(id)a5
+- (void)_setObject:(id)object forKey:(id)key inGroup:(id)group
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v8)
+  objectCopy = object;
+  keyCopy = key;
+  groupCopy = group;
+  if (!keyCopy)
   {
     __assert_rtn("[MailPersistentStorage _setObject:forKey:inGroup:]", "MailPersistentStorage.m", 165, "key");
   }
 
   [(MailPersistentStorage *)self mf_lock];
-  if (!v9)
+  if (!groupCopy)
   {
-    v9 = @"GenericData";
+    groupCopy = @"GenericData";
   }
 
-  v10 = [(NSMutableDictionary *)self->_groups objectForKey:v9];
+  v10 = [(NSMutableDictionary *)self->_groups objectForKey:groupCopy];
   if (!v10)
   {
     v10 = +[NSMutableDictionary dictionary];
   }
 
-  if (v11)
+  if (objectCopy)
   {
-    [v10 setObject:v11 forKey:v8];
+    [v10 setObject:objectCopy forKey:keyCopy];
   }
 
   else
   {
-    [v10 removeObjectForKey:v8];
+    [v10 removeObjectForKey:keyCopy];
   }
 
-  [(NSMutableDictionary *)self->_groups setObject:v10 forKey:v9];
+  [(NSMutableDictionary *)self->_groups setObject:v10 forKey:groupCopy];
   [(MailPersistentStorage *)self mf_unlock];
 }
 
-- (id)_objectForKey:(id)a3 inGroup:(id)a4
+- (id)_objectForKey:(id)key inGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  keyCopy = key;
+  groupCopy = group;
+  if (!groupCopy)
   {
     v11 = "group";
     v12 = 185;
     goto LABEL_8;
   }
 
-  if (!v6)
+  if (!keyCopy)
   {
     v11 = "key";
     v12 = 186;
@@ -148,29 +148,29 @@ LABEL_8:
   }
 
   [(MailPersistentStorage *)self mf_lock];
-  v8 = [(NSMutableDictionary *)self->_groups objectForKeyedSubscript:v7];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  v8 = [(NSMutableDictionary *)self->_groups objectForKeyedSubscript:groupCopy];
+  v9 = [v8 objectForKeyedSubscript:keyCopy];
   [(MailPersistentStorage *)self mf_unlock];
 
   return v9;
 }
 
-- (void)setFetchDate:(id)a3 forSource:(id)a4
+- (void)setFetchDate:(id)date forSource:(id)source
 {
-  v7 = a3;
-  v6 = a4;
-  if (v6)
+  dateCopy = date;
+  sourceCopy = source;
+  if (sourceCopy)
   {
-    [(MailPersistentStorage *)self _setObject:v7 forKey:v6 inGroup:@"FetchingData"];
+    [(MailPersistentStorage *)self _setObject:dateCopy forKey:sourceCopy inGroup:@"FetchingData"];
   }
 }
 
-- (id)fetchDateForSource:(id)a3
+- (id)fetchDateForSource:(id)source
 {
-  v4 = a3;
-  if (v4)
+  sourceCopy = source;
+  if (sourceCopy)
   {
-    v5 = [(MailPersistentStorage *)self _objectForKey:v4 inGroup:@"FetchingData"];
+    v5 = [(MailPersistentStorage *)self _objectForKey:sourceCopy inGroup:@"FetchingData"];
   }
 
   else
@@ -181,22 +181,22 @@ LABEL_8:
   return v5;
 }
 
-- (void)setBodyBackfillDate:(id)a3 forSource:(id)a4
+- (void)setBodyBackfillDate:(id)date forSource:(id)source
 {
-  v7 = a3;
-  v6 = a4;
-  if (v6)
+  dateCopy = date;
+  sourceCopy = source;
+  if (sourceCopy)
   {
-    [(MailPersistentStorage *)self _setObject:v7 forKey:v6 inGroup:@"BodyBackfillData"];
+    [(MailPersistentStorage *)self _setObject:dateCopy forKey:sourceCopy inGroup:@"BodyBackfillData"];
   }
 }
 
-- (id)bodyBackfillDateForSource:(id)a3
+- (id)bodyBackfillDateForSource:(id)source
 {
-  v4 = a3;
-  if (v4)
+  sourceCopy = source;
+  if (sourceCopy)
   {
-    v5 = [(MailPersistentStorage *)self _objectForKey:v4 inGroup:@"BodyBackfillData"];
+    v5 = [(MailPersistentStorage *)self _objectForKey:sourceCopy inGroup:@"BodyBackfillData"];
   }
 
   else
@@ -219,9 +219,9 @@ LABEL_8:
   [MailPersistentStorage _setObject:"_setObject:forKey:inGroup:" forKey:? inGroup:?];
 }
 
-- (void)removeAllDataBelongingToAccount:(id)a3
+- (void)removeAllDataBelongingToAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -250,8 +250,8 @@ LABEL_8:
           v28 = 0u;
           v25 = 0u;
           v26 = 0u;
-          v9 = [v20 allKeys];
-          v10 = [v9 countByEnumeratingWithState:&v25 objects:v34 count:16];
+          allKeys = [v20 allKeys];
+          v10 = [allKeys countByEnumeratingWithState:&v25 objects:v34 count:16];
           if (v10)
           {
             v11 = *v26;
@@ -261,17 +261,17 @@ LABEL_8:
               {
                 if (*v26 != v11)
                 {
-                  objc_enumerationMutation(v9);
+                  objc_enumerationMutation(allKeys);
                 }
 
                 v13 = *(*(&v25 + 1) + 8 * j);
-                if ([v4 ownsMailboxUidWithURL:v13])
+                if ([accountCopy ownsMailboxUidWithURL:v13])
                 {
                   [v8 addObject:v13];
                 }
               }
 
-              v10 = [v9 countByEnumeratingWithState:&v25 objects:v34 count:16];
+              v10 = [allKeys countByEnumeratingWithState:&v25 objects:v34 count:16];
             }
 
             while (v10);

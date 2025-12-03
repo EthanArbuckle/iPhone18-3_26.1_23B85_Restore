@@ -1,13 +1,13 @@
 @interface _INPBCallGroupConversationFilter
-- (BOOL)isEqual:(id)a3;
-- (_INPBCallGroupConversationFilter)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBCallGroupConversationFilter)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addParticipants:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setParticipants:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addParticipants:(id)participants;
+- (void)encodeWithCoder:(id)coder;
+- (void)setParticipants:(id)participants;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBCallGroupConversationFilter
@@ -15,24 +15,24 @@
 - (id)dictionaryRepresentation
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBCallGroupConversationFilter *)self callGroup];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"callGroup"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  callGroup = [(_INPBCallGroupConversationFilter *)self callGroup];
+  dictionaryRepresentation = [callGroup dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"callGroup"];
 
-  v6 = [(_INPBCallGroupConversationFilter *)self caller];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"caller"];
+  caller = [(_INPBCallGroupConversationFilter *)self caller];
+  dictionaryRepresentation2 = [caller dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"caller"];
 
   if ([(_INPBCallGroupConversationFilter *)self hasMatchCallerAndParticipantsExactly])
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBCallGroupConversationFilter matchCallerAndParticipantsExactly](self, "matchCallerAndParticipantsExactly")}];
-    [v3 setObject:v8 forKeyedSubscript:@"matchCallerAndParticipantsExactly"];
+    [dictionary setObject:v8 forKeyedSubscript:@"matchCallerAndParticipantsExactly"];
   }
 
   if ([(NSArray *)self->_participants count])
   {
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
@@ -52,8 +52,8 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          [v9 addObject:v15];
+          dictionaryRepresentation3 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation3];
         }
 
         v12 = [(NSArray *)v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -62,12 +62,12 @@
       while (v12);
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"participants"];
+    [dictionary setObject:array forKeyedSubscript:@"participants"];
   }
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -87,28 +87,28 @@
   return v4 ^ v3 ^ v5 ^ [(NSArray *)self->_participants hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
-  v5 = [(_INPBCallGroupConversationFilter *)self callGroup];
-  v6 = [v4 callGroup];
-  if ((v5 != 0) == (v6 == 0))
+  callGroup = [(_INPBCallGroupConversationFilter *)self callGroup];
+  callGroup2 = [equalCopy callGroup];
+  if ((callGroup != 0) == (callGroup2 == 0))
   {
     goto LABEL_20;
   }
 
-  v7 = [(_INPBCallGroupConversationFilter *)self callGroup];
-  if (v7)
+  callGroup3 = [(_INPBCallGroupConversationFilter *)self callGroup];
+  if (callGroup3)
   {
-    v8 = v7;
-    v9 = [(_INPBCallGroupConversationFilter *)self callGroup];
-    v10 = [v4 callGroup];
-    v11 = [v9 isEqual:v10];
+    v8 = callGroup3;
+    callGroup4 = [(_INPBCallGroupConversationFilter *)self callGroup];
+    callGroup5 = [equalCopy callGroup];
+    v11 = [callGroup4 isEqual:callGroup5];
 
     if (!v11)
     {
@@ -120,20 +120,20 @@
   {
   }
 
-  v5 = [(_INPBCallGroupConversationFilter *)self caller];
-  v6 = [v4 caller];
-  if ((v5 != 0) == (v6 == 0))
+  callGroup = [(_INPBCallGroupConversationFilter *)self caller];
+  callGroup2 = [equalCopy caller];
+  if ((callGroup != 0) == (callGroup2 == 0))
   {
     goto LABEL_20;
   }
 
-  v12 = [(_INPBCallGroupConversationFilter *)self caller];
-  if (v12)
+  caller = [(_INPBCallGroupConversationFilter *)self caller];
+  if (caller)
   {
-    v13 = v12;
-    v14 = [(_INPBCallGroupConversationFilter *)self caller];
-    v15 = [v4 caller];
-    v16 = [v14 isEqual:v15];
+    v13 = caller;
+    caller2 = [(_INPBCallGroupConversationFilter *)self caller];
+    caller3 = [equalCopy caller];
+    v16 = [caller2 isEqual:caller3];
 
     if (!v16)
     {
@@ -145,30 +145,30 @@
   {
   }
 
-  v17 = [(_INPBCallGroupConversationFilter *)self hasMatchCallerAndParticipantsExactly];
-  if (v17 != [v4 hasMatchCallerAndParticipantsExactly])
+  hasMatchCallerAndParticipantsExactly = [(_INPBCallGroupConversationFilter *)self hasMatchCallerAndParticipantsExactly];
+  if (hasMatchCallerAndParticipantsExactly != [equalCopy hasMatchCallerAndParticipantsExactly])
   {
     goto LABEL_21;
   }
 
   if ([(_INPBCallGroupConversationFilter *)self hasMatchCallerAndParticipantsExactly])
   {
-    if ([v4 hasMatchCallerAndParticipantsExactly])
+    if ([equalCopy hasMatchCallerAndParticipantsExactly])
     {
       matchCallerAndParticipantsExactly = self->_matchCallerAndParticipantsExactly;
-      if (matchCallerAndParticipantsExactly != [v4 matchCallerAndParticipantsExactly])
+      if (matchCallerAndParticipantsExactly != [equalCopy matchCallerAndParticipantsExactly])
       {
         goto LABEL_21;
       }
     }
   }
 
-  v5 = [(_INPBCallGroupConversationFilter *)self participants];
-  v6 = [v4 participants];
-  if ((v5 != 0) != (v6 == 0))
+  callGroup = [(_INPBCallGroupConversationFilter *)self participants];
+  callGroup2 = [equalCopy participants];
+  if ((callGroup != 0) != (callGroup2 == 0))
   {
-    v19 = [(_INPBCallGroupConversationFilter *)self participants];
-    if (!v19)
+    participants = [(_INPBCallGroupConversationFilter *)self participants];
+    if (!participants)
     {
 
 LABEL_24:
@@ -176,10 +176,10 @@ LABEL_24:
       goto LABEL_22;
     }
 
-    v20 = v19;
-    v21 = [(_INPBCallGroupConversationFilter *)self participants];
-    v22 = [v4 participants];
-    v23 = [v21 isEqual:v22];
+    v20 = participants;
+    participants2 = [(_INPBCallGroupConversationFilter *)self participants];
+    participants3 = [equalCopy participants];
+    v23 = [participants2 isEqual:participants3];
 
     if (v23)
     {
@@ -199,13 +199,13 @@ LABEL_22:
   return v24;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBCallGroupConversationFilter allocWithZone:](_INPBCallGroupConversationFilter init];
-  v6 = [(_INPBCallGroup *)self->_callGroup copyWithZone:a3];
+  v6 = [(_INPBCallGroup *)self->_callGroup copyWithZone:zone];
   [(_INPBCallGroupConversationFilter *)v5 setCallGroup:v6];
 
-  v7 = [(_INPBContact *)self->_caller copyWithZone:a3];
+  v7 = [(_INPBContact *)self->_caller copyWithZone:zone];
   [(_INPBCallGroupConversationFilter *)v5 setCaller:v7];
 
   if ([(_INPBCallGroupConversationFilter *)self hasMatchCallerAndParticipantsExactly])
@@ -213,53 +213,53 @@ LABEL_22:
     [(_INPBCallGroupConversationFilter *)v5 setMatchCallerAndParticipantsExactly:[(_INPBCallGroupConversationFilter *)self matchCallerAndParticipantsExactly]];
   }
 
-  v8 = [(NSArray *)self->_participants copyWithZone:a3];
+  v8 = [(NSArray *)self->_participants copyWithZone:zone];
   [(_INPBCallGroupConversationFilter *)v5 setParticipants:v8];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBCallGroupConversationFilter *)self data];
+  coderCopy = coder;
+  data = [(_INPBCallGroupConversationFilter *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBCallGroupConversationFilter)initWithCoder:(id)a3
+- (_INPBCallGroupConversationFilter)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBCallGroupConversationFilter *)self initWithData:v6];
+    self = [(_INPBCallGroupConversationFilter *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_INPBCallGroupConversationFilter *)self callGroup];
+  toCopy = to;
+  callGroup = [(_INPBCallGroupConversationFilter *)self callGroup];
 
-  if (v5)
+  if (callGroup)
   {
-    v6 = [(_INPBCallGroupConversationFilter *)self callGroup];
+    callGroup2 = [(_INPBCallGroupConversationFilter *)self callGroup];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_INPBCallGroupConversationFilter *)self caller];
+  caller = [(_INPBCallGroupConversationFilter *)self caller];
 
-  if (v7)
+  if (caller)
   {
-    v8 = [(_INPBCallGroupConversationFilter *)self caller];
+    caller2 = [(_INPBCallGroupConversationFilter *)self caller];
     PBDataWriterWriteSubmessage();
   }
 
@@ -304,27 +304,27 @@ LABEL_22:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addParticipants:(id)a3
+- (void)addParticipants:(id)participants
 {
-  v4 = a3;
+  participantsCopy = participants;
   participants = self->_participants;
-  v8 = v4;
+  v8 = participantsCopy;
   if (!participants)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_participants;
-    self->_participants = v6;
+    self->_participants = array;
 
-    v4 = v8;
+    participantsCopy = v8;
     participants = self->_participants;
   }
 
-  [(NSArray *)participants addObject:v4];
+  [(NSArray *)participants addObject:participantsCopy];
 }
 
-- (void)setParticipants:(id)a3
+- (void)setParticipants:(id)participants
 {
-  v4 = [a3 mutableCopy];
+  v4 = [participants mutableCopy];
   participants = self->_participants;
   self->_participants = v4;
 

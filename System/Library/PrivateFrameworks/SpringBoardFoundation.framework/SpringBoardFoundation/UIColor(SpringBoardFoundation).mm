@@ -7,14 +7,14 @@
 + (id)sbf_siriIntelligenceLightColors
 {
   v8[4] = *MEMORY[0x1E69E9840];
-  v2 = [a1 sbf_siriIntelligenceLightBlueColor];
-  v8[0] = v2;
-  v3 = [a1 sbf_siriIntelligenceLightPurpleColor];
-  v8[1] = v3;
-  v4 = [a1 sbf_siriIntelligenceLightRedColor];
-  v8[2] = v4;
-  v5 = [a1 sbf_siriIntelligenceLightOrangeColor];
-  v8[3] = v5;
+  sbf_siriIntelligenceLightBlueColor = [self sbf_siriIntelligenceLightBlueColor];
+  v8[0] = sbf_siriIntelligenceLightBlueColor;
+  sbf_siriIntelligenceLightPurpleColor = [self sbf_siriIntelligenceLightPurpleColor];
+  v8[1] = sbf_siriIntelligenceLightPurpleColor;
+  sbf_siriIntelligenceLightRedColor = [self sbf_siriIntelligenceLightRedColor];
+  v8[2] = sbf_siriIntelligenceLightRedColor;
+  sbf_siriIntelligenceLightOrangeColor = [self sbf_siriIntelligenceLightOrangeColor];
+  v8[3] = sbf_siriIntelligenceLightOrangeColor;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:4];
 
   return v6;

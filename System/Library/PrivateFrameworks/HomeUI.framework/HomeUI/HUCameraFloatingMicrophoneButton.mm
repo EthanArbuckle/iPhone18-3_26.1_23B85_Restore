@@ -1,27 +1,27 @@
 @interface HUCameraFloatingMicrophoneButton
 + (id)_createBackgroundEffect;
-- (HUCameraFloatingMicrophoneButton)initWithFrame:(CGRect)a3;
+- (HUCameraFloatingMicrophoneButton)initWithFrame:(CGRect)frame;
 - (void)_setupConstraintSet;
 - (void)_updateAlpha;
 - (void)_updateSelectionState;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
 - (void)updateConstraints;
 @end
 
 @implementation HUCameraFloatingMicrophoneButton
 
-- (HUCameraFloatingMicrophoneButton)initWithFrame:(CGRect)a3
+- (HUCameraFloatingMicrophoneButton)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = HUCameraFloatingMicrophoneButton;
-  v3 = [(HUCameraFloatingMicrophoneButton *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUCameraFloatingMicrophoneButton *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D75D68]);
-    v5 = [objc_opt_class() _createBackgroundEffect];
-    v6 = [v4 initWithEffect:v5];
+    _createBackgroundEffect = [objc_opt_class() _createBackgroundEffect];
+    v6 = [v4 initWithEffect:_createBackgroundEffect];
     backgroundView = v3->_backgroundView;
     v3->_backgroundView = v6;
 
@@ -53,31 +53,31 @@
   return v3;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  if ([(HUCameraFloatingMicrophoneButton *)self isSelected]!= a3)
+  selectedCopy = selected;
+  if ([(HUCameraFloatingMicrophoneButton *)self isSelected]!= selected)
   {
     v5.receiver = self;
     v5.super_class = HUCameraFloatingMicrophoneButton;
-    [(HUCameraFloatingMicrophoneButton *)&v5 setSelected:v3];
+    [(HUCameraFloatingMicrophoneButton *)&v5 setSelected:selectedCopy];
     [(HUCameraFloatingMicrophoneButton *)self _updateSelectionState];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = HUCameraFloatingMicrophoneButton;
-  [(HUCameraFloatingMicrophoneButton *)&v4 setHighlighted:a3];
+  [(HUCameraFloatingMicrophoneButton *)&v4 setHighlighted:highlighted];
   [(HUCameraFloatingMicrophoneButton *)self _updateAlpha];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v4.receiver = self;
   v4.super_class = HUCameraFloatingMicrophoneButton;
-  [(HUCameraFloatingMicrophoneButton *)&v4 setEnabled:a3];
+  [(HUCameraFloatingMicrophoneButton *)&v4 setEnabled:enabled];
   [(HUCameraFloatingMicrophoneButton *)self _updateAlpha];
 }
 
@@ -125,10 +125,10 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(HUCameraFloatingMicrophoneButton *)self microphoneLabel];
-  v15[0] = v4;
-  v5 = [(HUCameraFloatingMicrophoneButton *)self microphoneImageView];
-  v15[1] = v5;
+  microphoneLabel = [(HUCameraFloatingMicrophoneButton *)self microphoneLabel];
+  v15[0] = microphoneLabel;
+  microphoneImageView = [(HUCameraFloatingMicrophoneButton *)self microphoneImageView];
+  v15[1] = microphoneImageView;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
 
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v16 count:16];
@@ -183,8 +183,8 @@
 
   v7 = HUImageNamed(v4);
   v5 = [v7 imageWithRenderingMode:2];
-  v6 = [(HUCameraFloatingMicrophoneButton *)self microphoneImageView];
-  [v6 setImage:v5];
+  microphoneImageView = [(HUCameraFloatingMicrophoneButton *)self microphoneImageView];
+  [microphoneImageView setImage:v5];
 }
 
 - (void)_setupConstraintSet
@@ -243,8 +243,8 @@ id __55__HUCameraFloatingMicrophoneButton__setupConstraintSet__block_invoke(uint
   v4.receiver = self;
   v4.super_class = HUCameraFloatingMicrophoneButton;
   [(HUCameraFloatingMicrophoneButton *)&v4 updateConstraints];
-  v3 = [(HUCameraFloatingMicrophoneButton *)self constraintSet];
-  [v3 activateIfNeeded];
+  constraintSet = [(HUCameraFloatingMicrophoneButton *)self constraintSet];
+  [constraintSet activateIfNeeded];
 }
 
 @end

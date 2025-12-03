@@ -1,46 +1,46 @@
 @interface MOFSMMO
-+ (id)managedObjectWithObject:(id)a3 inManagedObjectContext:(id)a4;
-+ (void)setPropertiesOfFSMMO:(id)a3 withFSM:(id)a4;
++ (id)managedObjectWithObject:(id)object inManagedObjectContext:(id)context;
++ (void)setPropertiesOfFSMMO:(id)o withFSM:(id)m;
 @end
 
 @implementation MOFSMMO
 
-+ (id)managedObjectWithObject:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithObject:(id)object inManagedObjectContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MOFSMMO alloc] initWithContext:v5];
+  contextCopy = context;
+  objectCopy = object;
+  v7 = [[MOFSMMO alloc] initWithContext:contextCopy];
 
-  [MOFSMMO setPropertiesOfFSMMO:v7 withFSM:v6];
+  [MOFSMMO setPropertiesOfFSMMO:v7 withFSM:objectCopy];
 
   return v7;
 }
 
-+ (void)setPropertiesOfFSMMO:(id)a3 withFSM:(id)a4
++ (void)setPropertiesOfFSMMO:(id)o withFSM:(id)m
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 name];
-  [v6 setName:v7];
+  mCopy = m;
+  oCopy = o;
+  name = [mCopy name];
+  [oCopy setName:name];
 
-  [v6 setMode:{objc_msgSend(v5, "mode")}];
-  [v6 setState:{objc_msgSend(v5, "state")}];
-  v8 = [v5 substate];
-  [v6 setSubstate:v8];
+  [oCopy setMode:{objc_msgSend(mCopy, "mode")}];
+  [oCopy setState:{objc_msgSend(mCopy, "state")}];
+  substate = [mCopy substate];
+  [oCopy setSubstate:substate];
 
-  v9 = [v5 timeRangeStartDate];
-  [v6 setTimeRangeStartDate:v9];
+  timeRangeStartDate = [mCopy timeRangeStartDate];
+  [oCopy setTimeRangeStartDate:timeRangeStartDate];
 
-  v10 = [v5 timeRangeEndDate];
-  [v6 setTimeRangeEndDate:v10];
+  timeRangeEndDate = [mCopy timeRangeEndDate];
+  [oCopy setTimeRangeEndDate:timeRangeEndDate];
 
-  v11 = [v5 lastProcessedDate];
-  [v6 setLastProcessedDate:v11];
+  lastProcessedDate = [mCopy lastProcessedDate];
+  [oCopy setLastProcessedDate:lastProcessedDate];
 
-  v13 = [v5 metaData];
+  metaData = [mCopy metaData];
 
-  v12 = [MODictionaryEncoder encodeDictionary:v13];
-  [v6 setMetaData:v12];
+  v12 = [MODictionaryEncoder encodeDictionary:metaData];
+  [oCopy setMetaData:v12];
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface ASCodableMigrationAvailableItemContainer
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASCodableMigrationAvailableItemContainer
@@ -16,86 +16,86 @@
   v8.receiver = self;
   v8.super_class = ASCodableMigrationAvailableItemContainer;
   v4 = [(ASCodableMigrationAvailableItemContainer *)&v8 description];
-  v5 = [(ASCodableMigrationAvailableItemContainer *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ASCodableMigrationAvailableItemContainer *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   migrationAvailableItem = self->_migrationAvailableItem;
   if (migrationAvailableItem)
   {
-    v5 = [(ASCodableCloudKitMigrationAvailableItem *)migrationAvailableItem dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"migrationAvailableItem"];
+    dictionaryRepresentation = [(ASCodableCloudKitMigrationAvailableItem *)migrationAvailableItem dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"migrationAvailableItem"];
   }
 
   systemFieldsOnlyRecord = self->_systemFieldsOnlyRecord;
   if (systemFieldsOnlyRecord)
   {
-    [v3 setObject:systemFieldsOnlyRecord forKey:@"systemFieldsOnlyRecord"];
+    [dictionary setObject:systemFieldsOnlyRecord forKey:@"systemFieldsOnlyRecord"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_migrationAvailableItem)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_systemFieldsOnlyRecord)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_migrationAvailableItem)
   {
-    [v4 setMigrationAvailableItem:?];
-    v4 = v5;
+    [toCopy setMigrationAvailableItem:?];
+    toCopy = v5;
   }
 
   if (self->_systemFieldsOnlyRecord)
   {
     [v5 setSystemFieldsOnlyRecord:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(ASCodableCloudKitMigrationAvailableItem *)self->_migrationAvailableItem copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(ASCodableCloudKitMigrationAvailableItem *)self->_migrationAvailableItem copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSData *)self->_systemFieldsOnlyRecord copyWithZone:a3];
+  v8 = [(NSData *)self->_systemFieldsOnlyRecord copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((migrationAvailableItem = self->_migrationAvailableItem, !(migrationAvailableItem | v4[1])) || -[ASCodableCloudKitMigrationAvailableItem isEqual:](migrationAvailableItem, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((migrationAvailableItem = self->_migrationAvailableItem, !(migrationAvailableItem | equalCopy[1])) || -[ASCodableCloudKitMigrationAvailableItem isEqual:](migrationAvailableItem, "isEqual:")))
   {
     systemFieldsOnlyRecord = self->_systemFieldsOnlyRecord;
-    if (systemFieldsOnlyRecord | v4[2])
+    if (systemFieldsOnlyRecord | equalCopy[2])
     {
       v7 = [(NSData *)systemFieldsOnlyRecord isEqual:?];
     }
@@ -114,12 +114,12 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   migrationAvailableItem = self->_migrationAvailableItem;
-  v6 = v4[1];
-  v7 = v4;
+  v6 = fromCopy[1];
+  v7 = fromCopy;
   if (migrationAvailableItem)
   {
     if (!v6)
@@ -140,9 +140,9 @@
     [(ASCodableMigrationAvailableItemContainer *)self setMigrationAvailableItem:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(ASCodableMigrationAvailableItemContainer *)self setSystemFieldsOnlyRecord:?];
   }

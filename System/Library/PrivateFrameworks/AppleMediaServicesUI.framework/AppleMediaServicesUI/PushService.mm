@@ -1,26 +1,26 @@
 @interface PushService
-- (void)connection:(id)a3 didChangeConnectedStatus:(BOOL)a4;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
+- (void)connection:(id)connection didChangeConnectedStatus:(BOOL)status;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
 @end
 
 @implementation PushService
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  if (a4)
+  if (token)
   {
-    v6 = a3;
-    v7 = self;
-    v8 = a4;
+    connectionCopy = connection;
+    selfCopy = self;
+    tokenCopy = token;
     v9 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v11 = v10;
   }
 
   else
   {
-    v12 = a3;
-    v13 = self;
+    connectionCopy2 = connection;
+    selfCopy2 = self;
     v9 = 0;
     v11 = 0xF000000000000000;
   }
@@ -29,18 +29,18 @@
   sub_10003AE18(v9, v11);
 }
 
-- (void)connection:(id)a3 didChangeConnectedStatus:(BOOL)a4
+- (void)connection:(id)connection didChangeConnectedStatus:(BOOL)status
 {
-  v6 = a3;
-  v7 = self;
-  sub_100045C48(v7, a4);
+  connectionCopy = connection;
+  selfCopy = self;
+  sub_100045C48(selfCopy, status);
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  connectionCopy = connection;
+  messageCopy = message;
+  selfCopy = self;
   sub_10018C130();
 }
 

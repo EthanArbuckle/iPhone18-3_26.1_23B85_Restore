@@ -1,73 +1,73 @@
 @interface SidecarDevice
 + (id)allDevices;
-+ (id)allDevicesByForcingFetchFromRelay:(BOOL)a3;
-+ (id)imageURLForDeviceTypeIdentifier:(id)a3;
++ (id)allDevicesByForcingFetchFromRelay:(BOOL)relay;
++ (id)imageURLForDeviceTypeIdentifier:(id)identifier;
 - (BOOL)hasHomeButton;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isRealityDevice;
 - (NSString)deviceTypeIdentifier;
 - (NSString)localizedDeviceType;
 - (NSURL)imageURL;
-- (SidecarDevice)initWithCoder:(id)a3;
-- (SidecarDevice)initWithIdentifier:(id)a3 model:(id)a4 name:(id)a5 version:(id)a6;
+- (SidecarDevice)initWithCoder:(id)coder;
+- (SidecarDevice)initWithIdentifier:(id)identifier model:(id)model name:(id)name version:(id)version;
 - (UTType)deviceType;
 - (id)description;
 - (int64_t)rapportVersion;
 - (unint64_t)hash;
-- (void)_updateFromDevice:(id)a3 generation:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCameraCapabilities:(id)a3;
-- (void)setMediaRouteIdentifier:(id)a3;
+- (void)_updateFromDevice:(id)device generation:(unint64_t)generation;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCameraCapabilities:(id)capabilities;
+- (void)setMediaRouteIdentifier:(id)identifier;
 @end
 
 @implementation SidecarDevice
 
 - (NSURL)imageURL
 {
-  v2 = [(SidecarDevice *)self deviceTypeIdentifier];
-  v3 = [SidecarDevice imageURLForDeviceTypeIdentifier:v2];
+  deviceTypeIdentifier = [(SidecarDevice *)self deviceTypeIdentifier];
+  v3 = [SidecarDevice imageURLForDeviceTypeIdentifier:deviceTypeIdentifier];
 
   return v3;
 }
 
 - (BOOL)isRealityDevice
 {
-  v3 = [(SidecarDevice *)self deviceType];
-  v4 = [v3 conformsToType:*MEMORY[0x277CE1F00]];
+  deviceType = [(SidecarDevice *)self deviceType];
+  v4 = [deviceType conformsToType:*MEMORY[0x277CE1F00]];
 
   if (v4)
   {
     return 1;
   }
 
-  v6 = [(SidecarDevice *)self model];
-  v7 = [v6 hasPrefix:@"RealityDevice"];
+  model = [(SidecarDevice *)self model];
+  v7 = [model hasPrefix:@"RealityDevice"];
 
   return v7;
 }
 
 - (NSString)localizedDeviceType
 {
-  v2 = [(SidecarDevice *)self deviceType];
+  deviceType = [(SidecarDevice *)self deviceType];
   v3 = [MEMORY[0x277CE1CB8] typeWithIdentifier:@"com.apple.iphone"];
-  if ([v2 conformsToType:v3])
+  if ([deviceType conformsToType:v3])
   {
-    v4 = [v3 localizedDescription];
+    localizedDescription = [v3 localizedDescription];
   }
 
   else
   {
     v5 = [MEMORY[0x277CE1CB8] typeWithIdentifier:@"com.apple.ipad"];
-    if ([v2 conformsToType:v5])
+    if ([deviceType conformsToType:v5])
     {
-      v4 = [v5 localizedDescription];
+      localizedDescription = [v5 localizedDescription];
     }
 
     else
     {
       v6 = [MEMORY[0x277CE1CB8] typeWithIdentifier:@"com.apple.ipod"];
       v7 = [MEMORY[0x277CE1CB8] typeWithIdentifier:@"com.apple.ipod"];
-      v8 = [v2 conformsToType:v7];
+      v8 = [deviceType conformsToType:v7];
 
       if (v8)
       {
@@ -76,22 +76,22 @@
 
       else
       {
-        v9 = v2;
+        v9 = deviceType;
       }
 
-      v4 = [v9 localizedDescription];
+      localizedDescription = [v9 localizedDescription];
     }
   }
 
-  return v4;
+  return localizedDescription;
 }
 
 - (NSString)deviceTypeIdentifier
 {
-  v2 = [(SidecarDevice *)self deviceType];
-  v3 = [v2 identifier];
+  deviceType = [(SidecarDevice *)self deviceType];
+  identifier = [deviceType identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (UTType)deviceType
@@ -109,18 +109,18 @@
   return deviceType;
 }
 
-- (void)setMediaRouteIdentifier:(id)a3
+- (void)setMediaRouteIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   mediaRouteIdentifier = self->_mediaRouteIdentifier;
   self->_mediaRouteIdentifier = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setCameraCapabilities:(id)a3
+- (void)setCameraCapabilities:(id)capabilities
 {
-  v4 = [a3 copy];
+  v4 = [capabilities copy];
   cameraCapabilities = self->_cameraCapabilities;
   self->_cameraCapabilities = v4;
 
@@ -129,9 +129,9 @@
 
 - (BOOL)hasHomeButton
 {
-  v2 = [(SidecarDevice *)self deviceType];
+  deviceType = [(SidecarDevice *)self deviceType];
   v3 = [MEMORY[0x277CE1CB8] typeWithIdentifier:@"com.apple.homebuttonless-device"];
-  v4 = [v2 conformsToType:v3];
+  v4 = [deviceType conformsToType:v3];
 
   return v4 ^ 1;
 }
@@ -141,8 +141,8 @@
   result = self->_rapportVersion;
   if (!result)
   {
-    v4 = [(SidecarDevice *)self version];
-    v5 = [v4 componentsSeparatedByString:@"."];
+    version = [(SidecarDevice *)self version];
+    v5 = [version componentsSeparatedByString:@"."];
 
     v6 = [v5 count];
     if (v6 < 1)
@@ -175,54 +175,54 @@ LABEL_6:
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(NSUUID *)self->_identifier UUIDString];
-  v4 = [v3 substringToIndex:8];
+  uUIDString = [(NSUUID *)self->_identifier UUIDString];
+  v4 = [uUIDString substringToIndex:8];
   v5 = [v2 stringWithFormat:@"IDS %@", v4];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  encodeObject(v5, @"identifier", identifier);
-  encodeObject(v5, @"model", self->_model);
-  encodeObject(v5, @"name", self->_name);
-  encodeInteger(v5, @"status", self->_status);
-  encodeObject(v5, @"version", self->_version);
-  encodeInteger(v5, @"cameraState", self->_cameraState);
-  encodeObject(v5, @"cameraCapabilities", self->_cameraCapabilities);
-  encodeObject(v5, @"mediaRouteIdentifier", self->_mediaRouteIdentifier);
+  coderCopy = coder;
+  encodeObject(coderCopy, @"identifier", identifier);
+  encodeObject(coderCopy, @"model", self->_model);
+  encodeObject(coderCopy, @"name", self->_name);
+  encodeInteger(coderCopy, @"status", self->_status);
+  encodeObject(coderCopy, @"version", self->_version);
+  encodeInteger(coderCopy, @"cameraState", self->_cameraState);
+  encodeObject(coderCopy, @"cameraCapabilities", self->_cameraCapabilities);
+  encodeObject(coderCopy, @"mediaRouteIdentifier", self->_mediaRouteIdentifier);
 }
 
-- (SidecarDevice)initWithCoder:(id)a3
+- (SidecarDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = objc_opt_class();
-  v7 = decodeObject(v4, @"identifier", v6);
-  v8 = decodeObject(v4, @"model", v5);
-  v9 = decodeObject(v4, @"name", v5);
-  v25 = decodeInteger(v4, @"status");
-  v10 = decodeObject(v4, @"version", v5);
-  v11 = decodeInteger(v4, @"cameraState");
+  v7 = decodeObject(coderCopy, @"identifier", v6);
+  v8 = decodeObject(coderCopy, @"model", v5);
+  v9 = decodeObject(coderCopy, @"name", v5);
+  v25 = decodeInteger(coderCopy, @"status");
+  v10 = decodeObject(coderCopy, @"version", v5);
+  v11 = decodeInteger(coderCopy, @"cameraState");
   v12 = @"cameraCapabilities";
-  v13 = v4;
+  v13 = coderCopy;
   if ([v13 allowsKeyedCoding])
   {
     v14 = [v13 decodePropertyListForKey:@"cameraCapabilities"];
-    v15 = v13;
+    decodeObject = v13;
   }
 
   else
   {
-    v15 = [v13 decodeObject];
+    decodeObject = [v13 decodeObject];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 = v15;
+      v16 = decodeObject;
     }
 
     else
@@ -288,48 +288,48 @@ LABEL_6:
 
 - (unint64_t)hash
 {
-  v2 = [(SidecarDevice *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(SidecarDevice *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v17 = 1;
   }
 
-  else if ([(SidecarDevice *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(SidecarDevice *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(SidecarDevice *)v5 status];
-    if (v6 == [(SidecarDevice *)self status])
+    v5 = equalCopy;
+    status = [(SidecarDevice *)v5 status];
+    if (status == [(SidecarDevice *)self status])
     {
-      v7 = [(SidecarDevice *)v5 identifier];
-      v8 = [(SidecarDevice *)self identifier];
-      if ([v7 isEqual:v8])
+      identifier = [(SidecarDevice *)v5 identifier];
+      identifier2 = [(SidecarDevice *)self identifier];
+      if ([identifier isEqual:identifier2])
       {
-        v9 = [(SidecarDevice *)v5 model];
-        v10 = [(SidecarDevice *)self model];
-        if ([v9 isEqual:v10])
+        model = [(SidecarDevice *)v5 model];
+        model2 = [(SidecarDevice *)self model];
+        if ([model isEqual:model2])
         {
-          v11 = [(SidecarDevice *)v5 name];
-          v12 = [(SidecarDevice *)self name];
-          if ([v11 isEqual:v12])
+          name = [(SidecarDevice *)v5 name];
+          name2 = [(SidecarDevice *)self name];
+          if ([name isEqual:name2])
           {
-            v13 = [(SidecarDevice *)v5 version];
-            v14 = [(SidecarDevice *)self version];
-            v21 = v13;
-            v15 = v13;
-            v16 = v14;
-            if ([v15 isEqual:v14])
+            version = [(SidecarDevice *)v5 version];
+            version2 = [(SidecarDevice *)self version];
+            v21 = version;
+            v15 = version;
+            v16 = version2;
+            if ([v15 isEqual:version2])
             {
-              v20 = [(SidecarDevice *)v5 mediaRouteIdentifier];
-              v19 = [(SidecarDevice *)self mediaRouteIdentifier];
-              v17 = [v20 isEqual:v19];
+              mediaRouteIdentifier = [(SidecarDevice *)v5 mediaRouteIdentifier];
+              mediaRouteIdentifier2 = [(SidecarDevice *)self mediaRouteIdentifier];
+              v17 = [mediaRouteIdentifier isEqual:mediaRouteIdentifier2];
             }
 
             else
@@ -370,81 +370,81 @@ LABEL_6:
   return v17;
 }
 
-- (void)_updateFromDevice:(id)a3 generation:(unint64_t)a4
+- (void)_updateFromDevice:(id)device generation:(unint64_t)generation
 {
-  v22 = a3;
-  v6 = [v22 identifier];
-  if (([v6 isEqual:self->_identifier] & 1) == 0)
+  deviceCopy = device;
+  identifier = [deviceCopy identifier];
+  if (([identifier isEqual:self->_identifier] & 1) == 0)
   {
     __assert_rtn("[SidecarDevice _updateFromDevice:generation:]", "SidecarDevice.m", 73, "[device.identifier isEqual:_identifier]");
   }
 
-  if (self->_generation != a4)
+  if (self->_generation != generation)
   {
-    self->_generation = a4;
-    v7 = [v22 model];
-    v8 = [v7 isEqualToString:self->_model];
+    self->_generation = generation;
+    model = [deviceCopy model];
+    v8 = [model isEqualToString:self->_model];
 
     if ((v8 & 1) == 0)
     {
-      v9 = [v22 model];
+      model2 = [deviceCopy model];
       model = self->_model;
-      self->_model = v9;
+      self->_model = model2;
 
       deviceType = self->_deviceType;
       self->_deviceType = 0;
     }
 
-    v12 = [v22 name];
-    v13 = [v12 isEqualToString:self->_name];
+    name = [deviceCopy name];
+    v13 = [name isEqualToString:self->_name];
 
     if ((v13 & 1) == 0)
     {
-      v14 = [v22 name];
+      name2 = [deviceCopy name];
       name = self->_name;
-      self->_name = v14;
+      self->_name = name2;
     }
 
-    self->_status = [v22 status];
-    v16 = [v22 version];
+    self->_status = [deviceCopy status];
+    version = [deviceCopy version];
     version = self->_version;
-    self->_version = v16;
+    self->_version = version;
 
-    self->_cameraState = [v22 cameraState];
-    v18 = [v22 cameraCapabilities];
+    self->_cameraState = [deviceCopy cameraState];
+    cameraCapabilities = [deviceCopy cameraCapabilities];
     cameraCapabilities = self->_cameraCapabilities;
-    self->_cameraCapabilities = v18;
+    self->_cameraCapabilities = cameraCapabilities;
 
-    v20 = [v22 mediaRouteIdentifier];
+    mediaRouteIdentifier = [deviceCopy mediaRouteIdentifier];
     mediaRouteIdentifier = self->_mediaRouteIdentifier;
-    self->_mediaRouteIdentifier = v20;
+    self->_mediaRouteIdentifier = mediaRouteIdentifier;
   }
 }
 
-- (SidecarDevice)initWithIdentifier:(id)a3 model:(id)a4 name:(id)a5 version:(id)a6
+- (SidecarDevice)initWithIdentifier:(id)identifier model:(id)model name:(id)name version:(id)version
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  modelCopy = model;
+  nameCopy = name;
+  versionCopy = version;
   v18.receiver = self;
   v18.super_class = SidecarDevice;
   v15 = [(SidecarDevice *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_identifier, a3);
-    objc_storeStrong(&v16->_model, a4);
-    objc_storeStrong(&v16->_name, a5);
-    objc_storeStrong(&v16->_version, a6);
+    objc_storeStrong(&v15->_identifier, identifier);
+    objc_storeStrong(&v16->_model, model);
+    objc_storeStrong(&v16->_name, name);
+    objc_storeStrong(&v16->_version, version);
   }
 
   return v16;
 }
 
-+ (id)imageURLForDeviceTypeIdentifier:(id)a3
++ (id)imageURLForDeviceTypeIdentifier:(id)identifier
 {
-  v3 = [MEMORY[0x277CE1CB8] typeWithIdentifier:a3];
+  v3 = [MEMORY[0x277CE1CB8] typeWithIdentifier:identifier];
   v4 = [MEMORY[0x277CE1CB8] typeWithIdentifier:@"com.apple.homebuttonless-device"];
   v5 = [v3 conformsToType:v4];
 
@@ -487,9 +487,9 @@ LABEL_6:
   return v14;
 }
 
-+ (id)allDevicesByForcingFetchFromRelay:(BOOL)a3
++ (id)allDevicesByForcingFetchFromRelay:(BOOL)relay
 {
-  v3 = a3;
+  relayCopy = relay;
   v58 = *MEMORY[0x277D85DE8];
   SidecarRegisterStateNotification();
   v4 = atomic_load(&SidecarDeviceState);
@@ -500,7 +500,7 @@ LABEL_6:
   v51 = __Block_byref_object_copy__493;
   v52 = __Block_byref_object_dispose__494;
   v53 = 0;
-  if (v5 != v4 || v3)
+  if (v5 != v4 || relayCopy)
   {
     v42 = 0;
     v43 = &v42;
@@ -516,10 +516,10 @@ LABEL_6:
     block[4] = &v42;
     dispatch_sync(v7, block);
 
-    if (v4 || v3)
+    if (v4 || relayCopy)
     {
       v8 = SidecarDevicesForService(@"*");
-      if (v3)
+      if (relayCopy)
       {
         v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v8, "count")}];
         v39 = 0u;
@@ -540,8 +540,8 @@ LABEL_6:
                 objc_enumerationMutation(v10);
               }
 
-              v14 = [*(*(&v37 + 1) + 8 * i) identifier];
-              [v9 addObject:v14];
+              identifier = [*(*(&v37 + 1) + 8 * i) identifier];
+              [v9 addObject:identifier];
             }
 
             v11 = [v10 countByEnumeratingWithState:&v37 objects:v57 count:16];
@@ -589,8 +589,8 @@ LABEL_6:
           }
 
           v23 = *(*(&v33 + 1) + 8 * j);
-          v24 = [v23 identifier];
-          v25 = [v43[5] objectForKeyedSubscript:v24];
+          identifier2 = [v23 identifier];
+          v25 = [v43[5] objectForKeyedSubscript:identifier2];
           v26 = v25;
           if (v25)
           {
@@ -603,7 +603,7 @@ LABEL_6:
             v23[8] = v4;
           }
 
-          [v49[5] setObject:v23 forKeyedSubscript:v24];
+          [v49[5] setObject:v23 forKeyedSubscript:identifier2];
         }
 
         v20 = [v19 countByEnumeratingWithState:&v33 objects:v54 count:16];

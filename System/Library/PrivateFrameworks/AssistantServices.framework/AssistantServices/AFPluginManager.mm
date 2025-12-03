@@ -1,10 +1,10 @@
 @interface AFPluginManager
-+ (id)pluginManagerForPath:(id)a3 domainKeys:(id)a4 factoryInitializationBlock:(id)a5;
-- (AFPluginManager)initWithPath:(id)a3 domainKeys:(id)a4 factoryInitializationBlock:(id)a5;
++ (id)pluginManagerForPath:(id)path domainKeys:(id)keys factoryInitializationBlock:(id)block;
+- (AFPluginManager)initWithPath:(id)path domainKeys:(id)keys factoryInitializationBlock:(id)block;
 - (id)description;
 - (void)_loadBundlesIfNeeded;
-- (void)_registerBundle:(id)a3;
-- (void)enumerateFactoryInstancesForDomainKey:(id)a3 groupIdentifier:(id)a4 classIdentifier:(id)a5 usingBlock:(id)a6;
+- (void)_registerBundle:(id)bundle;
+- (void)enumerateFactoryInstancesForDomainKey:(id)key groupIdentifier:(id)identifier classIdentifier:(id)classIdentifier usingBlock:(id)block;
 - (void)preloadBundles;
 @end
 
@@ -20,17 +20,17 @@
   return v4;
 }
 
-- (void)_registerBundle:(id)a3
+- (void)_registerBundle:(id)bundle
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  bundleCopy = bundle;
+  v5 = bundleCopy;
+  if (bundleCopy)
   {
-    v6 = [v4 principalClass];
-    if (v6)
+    principalClass = [bundleCopy principalClass];
+    if (principalClass)
     {
-      v7 = v6;
+      v7 = principalClass;
       v8 = objc_alloc_init(AFPluginBundle);
       [(AFPluginBundle *)v8 setFactoryClass:v7];
       v40 = 0u;
@@ -59,8 +59,8 @@
             v35 = 0u;
             v36 = 0u;
             v37 = 0u;
-            v11 = [v5 infoDictionary];
-            v12 = [v11 objectForKey:v10];
+            infoDictionary = [v5 infoDictionary];
+            v12 = [infoDictionary objectForKey:v10];
 
             v33 = v12;
             v13 = [v12 countByEnumeratingWithState:&v34 objects:v42 count:16];
@@ -79,19 +79,19 @@
                   }
 
                   v17 = [*(*(&v34 + 1) + 8 * v16) componentsSeparatedByString:@"#"];
-                  v18 = [v17 firstObject];
+                  firstObject = [v17 firstObject];
                   if ([v17 count] >= 2)
                   {
                     v19 = [v17 objectAtIndex:1];
                     if (v19)
                     {
                       v20 = v19;
-                      [(AFPluginBundle *)v8 registerClassIdentifier:v19 forDomain:v10 inGroup:v18];
+                      [(AFPluginBundle *)v8 registerClassIdentifier:v19 forDomain:v10 inGroup:firstObject];
                     }
                   }
 
                   v21 = [(NSMutableDictionary *)self->_domainKeyDictionary objectForKeyedSubscript:v10];
-                  v22 = [v21 objectForKeyedSubscript:v18];
+                  v22 = [v21 objectForKeyedSubscript:firstObject];
 
                   if (!v22)
                   {
@@ -104,7 +104,7 @@
                       {
                         v22 = objc_alloc_init(MEMORY[0x1E695DF70]);
                         v24 = [(NSMutableDictionary *)self->_domainKeyDictionary objectForKeyedSubscript:v10];
-                        [v24 setObject:v22 forKeyedSubscript:v18];
+                        [v24 setObject:v22 forKeyedSubscript:firstObject];
                       }
                     }
 
@@ -162,15 +162,15 @@
   if (!self->_hasLoadedBundles)
   {
     self->_hasLoadedBundles = 1;
-    v3 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     path = self->_path;
     v17 = 0;
-    v16 = v3;
-    v5 = [v3 contentsOfDirectoryAtPath:path error:&v17];
+    v16 = defaultManager;
+    v5 = [defaultManager contentsOfDirectoryAtPath:path error:&v17];
     v6 = v17;
     v7 = [v5 countByEnumeratingWithState:&v18 objects:v28 count:16];
     if (v7)
@@ -244,20 +244,20 @@
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enumerateFactoryInstancesForDomainKey:(id)a3 groupIdentifier:(id)a4 classIdentifier:(id)a5 usingBlock:(id)a6
+- (void)enumerateFactoryInstancesForDomainKey:(id)key groupIdentifier:(id)identifier classIdentifier:(id)classIdentifier usingBlock:(id)block
 {
   v55 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (v10 && v9 && v12)
+  keyCopy = key;
+  identifierCopy = identifier;
+  classIdentifierCopy = classIdentifier;
+  blockCopy = block;
+  v13 = blockCopy;
+  if (identifierCopy && keyCopy && blockCopy)
   {
     [(AFPluginManager *)self _loadBundlesIfNeeded];
-    v14 = [MEMORY[0x1E695DFA0] orderedSet];
-    v15 = [(NSMutableDictionary *)self->_domainKeyDictionary objectForKeyedSubscript:v9];
-    v16 = [v15 objectForKeyedSubscript:v10];
+    orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+    v15 = [(NSMutableDictionary *)self->_domainKeyDictionary objectForKeyedSubscript:keyCopy];
+    v16 = [v15 objectForKeyedSubscript:identifierCopy];
 
     v47 = 0u;
     v48 = 0u;
@@ -279,9 +279,9 @@
           }
 
           v22 = *(*(&v45 + 1) + 8 * i);
-          if ([v22 supportsClassIdentifier:v11 forDomainKey:v9 groupIdentifier:v10])
+          if ([v22 supportsClassIdentifier:classIdentifierCopy forDomainKey:keyCopy groupIdentifier:identifierCopy])
           {
-            [v14 addObject:v22];
+            [orderedSet addObject:v22];
           }
         }
 
@@ -291,13 +291,13 @@
       while (v19);
     }
 
-    [v14 addObjectsFromArray:v17];
+    [orderedSet addObjectsFromArray:v17];
     v44 = 0;
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    obj = v14;
+    obj = orderedSet;
     v23 = [obj countByEnumeratingWithState:&v40 objects:v53 count:16];
     if (v23)
     {
@@ -316,10 +316,10 @@
           }
 
           v28 = *(*(&v40 + 1) + 8 * v27);
-          v29 = [v28 factoryInstance];
-          if (v29)
+          factoryInstance = [v28 factoryInstance];
+          if (factoryInstance)
           {
-            v30 = v29;
+            v30 = factoryInstance;
           }
 
           else
@@ -332,12 +332,12 @@
               if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
               {
                 v32 = v31;
-                v33 = [v28 factoryClass];
+                factoryClass = [v28 factoryClass];
                 *buf = v37;
                 v50 = "[AFPluginManager enumerateFactoryInstancesForDomainKey:groupIdentifier:classIdentifier:usingBlock:]";
                 v51 = 2114;
-                v52 = v33;
-                v34 = v33;
+                v52 = factoryClass;
+                v34 = factoryClass;
                 _os_log_error_impl(&dword_1912FE000, v32, OS_LOG_TYPE_ERROR, "%s Unable to create an instance of plugin NSPrincipalClass %{public}@", buf, 0x16u);
               }
 
@@ -372,29 +372,29 @@ LABEL_30:
   v36 = *MEMORY[0x1E69E9840];
 }
 
-- (AFPluginManager)initWithPath:(id)a3 domainKeys:(id)a4 factoryInitializationBlock:(id)a5
+- (AFPluginManager)initWithPath:(id)path domainKeys:(id)keys factoryInitializationBlock:(id)block
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  keysCopy = keys;
+  blockCopy = block;
   v34.receiver = self;
   v34.super_class = AFPluginManager;
   v11 = [(AFPluginManager *)&v34 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [pathCopy copy];
     path = v11->_path;
     v11->_path = v12;
 
-    v14 = [v9 copy];
+    v14 = [keysCopy copy];
     domainKeys = v11->_domainKeys;
     v11->_domainKeys = v14;
 
-    v29 = v8;
-    if (v10)
+    v29 = pathCopy;
+    if (blockCopy)
     {
-      v16 = MEMORY[0x193AFB7B0](v10);
+      v16 = MEMORY[0x193AFB7B0](blockCopy);
     }
 
     else
@@ -405,9 +405,9 @@ LABEL_30:
     factoryInitializationBlock = v11->_factoryInitializationBlock;
     v11->_factoryInitializationBlock = v16;
 
-    v18 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     domainKeyDictionary = v11->_domainKeyDictionary;
-    v11->_domainKeyDictionary = v18;
+    v11->_domainKeyDictionary = dictionary;
 
     v32 = 0u;
     v33 = 0u;
@@ -430,8 +430,8 @@ LABEL_30:
           }
 
           v25 = *(*(&v30 + 1) + 8 * v24);
-          v26 = [MEMORY[0x1E695DF90] dictionary];
-          [(NSMutableDictionary *)v11->_domainKeyDictionary setObject:v26 forKeyedSubscript:v25];
+          dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+          [(NSMutableDictionary *)v11->_domainKeyDictionary setObject:dictionary2 forKeyedSubscript:v25];
 
           ++v24;
         }
@@ -443,7 +443,7 @@ LABEL_30:
       while (v22);
     }
 
-    v8 = v29;
+    pathCopy = v29;
   }
 
   v27 = *MEMORY[0x1E69E9840];
@@ -457,12 +457,12 @@ id __70__AFPluginManager_initWithPath_domainKeys_factoryInitializationBlock___bl
   return v2;
 }
 
-+ (id)pluginManagerForPath:(id)a3 domainKeys:(id)a4 factoryInitializationBlock:(id)a5
++ (id)pluginManagerForPath:(id)path domainKeys:(id)keys factoryInitializationBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithPath:v10 domainKeys:v9 factoryInitializationBlock:v8];
+  blockCopy = block;
+  keysCopy = keys;
+  pathCopy = path;
+  v11 = [[self alloc] initWithPath:pathCopy domainKeys:keysCopy factoryInitializationBlock:blockCopy];
 
   return v11;
 }

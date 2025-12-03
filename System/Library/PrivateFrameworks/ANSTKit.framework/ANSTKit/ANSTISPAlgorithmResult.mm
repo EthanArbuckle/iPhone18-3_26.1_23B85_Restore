@@ -1,11 +1,11 @@
 @interface ANSTISPAlgorithmResult
-+ (id)_objectsOfCategory:(int)a3 fromAcResult:(id *)a4;
-+ (id)detectedObjectsForCategory:(id)a3 fromAcResult:(id *)a4;
++ (id)_objectsOfCategory:(int)category fromAcResult:(id *)result;
++ (id)detectedObjectsForCategory:(id)category fromAcResult:(id *)result;
 + (id)new;
 - (ANSTISPAlgorithmResult)init;
-- (ANSTISPAlgorithmResult)initWithAcResult:(id *)a3 personMask:(__CVBuffer *)a4 salientPersonMask:(__CVBuffer *)a5 skinMask:(__CVBuffer *)a6 hairMask:(__CVBuffer *)a7 skyMask:(__CVBuffer *)a8 saliencyMask:(__CVBuffer *)a9;
-- (__CVBuffer)maskForSemanticCategory:(id)a3;
-- (id)detectedObjectsForCategory:(id)a3;
+- (ANSTISPAlgorithmResult)initWithAcResult:(id *)result personMask:(__CVBuffer *)mask salientPersonMask:(__CVBuffer *)personMask skinMask:(__CVBuffer *)skinMask hairMask:(__CVBuffer *)hairMask skyMask:(__CVBuffer *)skyMask saliencyMask:(__CVBuffer *)saliencyMask;
+- (__CVBuffer)maskForSemanticCategory:(id)category;
+- (id)detectedObjectsForCategory:(id)category;
 - (int)smudgeConfidence;
 - (void)dealloc;
 @end
@@ -14,7 +14,7 @@
 
 + (id)new
 {
-  result = objc_msgSend_doesNotRecognizeSelector_(a1, a2, a2);
+  result = objc_msgSend_doesNotRecognizeSelector_(self, a2, a2);
   __break(1u);
   return result;
 }
@@ -26,29 +26,29 @@
   return result;
 }
 
-- (ANSTISPAlgorithmResult)initWithAcResult:(id *)a3 personMask:(__CVBuffer *)a4 salientPersonMask:(__CVBuffer *)a5 skinMask:(__CVBuffer *)a6 hairMask:(__CVBuffer *)a7 skyMask:(__CVBuffer *)a8 saliencyMask:(__CVBuffer *)a9
+- (ANSTISPAlgorithmResult)initWithAcResult:(id *)result personMask:(__CVBuffer *)mask salientPersonMask:(__CVBuffer *)personMask skinMask:(__CVBuffer *)skinMask hairMask:(__CVBuffer *)hairMask skyMask:(__CVBuffer *)skyMask saliencyMask:(__CVBuffer *)saliencyMask
 {
   v18.receiver = self;
   v18.super_class = ANSTISPAlgorithmResult;
-  v15 = [(ANSTResult *)&v18 _init];
-  if (v15)
+  _init = [(ANSTResult *)&v18 _init];
+  if (_init)
   {
-    if (a3)
+    if (result)
     {
       v16 = malloc_type_malloc(0x8110uLL, 0x10000402F34CA73uLL);
-      v15->_acResult = v16;
-      memcpy(v16, a3, sizeof($A8D24B83268BAEB1FAC85F8F830F736F));
+      _init->_acResult = v16;
+      memcpy(v16, result, sizeof($A8D24B83268BAEB1FAC85F8F830F736F));
     }
 
-    v15->_personMask = CVPixelBufferRetain(a4);
-    v15->_salientPersonMask = CVPixelBufferRetain(a5);
-    v15->_skinMask = CVPixelBufferRetain(a6);
-    v15->_hairMask = CVPixelBufferRetain(a7);
-    v15->_skyMask = CVPixelBufferRetain(a8);
-    v15->_saliencyMask = CVPixelBufferRetain(a9);
+    _init->_personMask = CVPixelBufferRetain(mask);
+    _init->_salientPersonMask = CVPixelBufferRetain(personMask);
+    _init->_skinMask = CVPixelBufferRetain(skinMask);
+    _init->_hairMask = CVPixelBufferRetain(hairMask);
+    _init->_skyMask = CVPixelBufferRetain(skyMask);
+    _init->_saliencyMask = CVPixelBufferRetain(saliencyMask);
   }
 
-  return v15;
+  return _init;
 }
 
 - (void)dealloc
@@ -84,11 +84,11 @@
   }
 }
 
-- (id)detectedObjectsForCategory:(id)a3
+- (id)detectedObjectsForCategory:(id)category
 {
   if (self->_acResult)
   {
-    v4 = objc_msgSend_detectedObjectsForCategory_fromAcResult_(ANSTISPAlgorithmResult, a2, a3);
+    v4 = objc_msgSend_detectedObjectsForCategory_fromAcResult_(ANSTISPAlgorithmResult, a2, category);
   }
 
   else
@@ -99,11 +99,11 @@
   return v4;
 }
 
-- (__CVBuffer)maskForSemanticCategory:(id)a3
+- (__CVBuffer)maskForSemanticCategory:(id)category
 {
-  v4 = a3;
-  v6 = v4;
-  if (@"Person" == v4 || objc_msgSend_isEqualToString_(v4, v5, @"Person"))
+  categoryCopy = category;
+  v6 = categoryCopy;
+  if (@"Person" == categoryCopy || objc_msgSend_isEqualToString_(categoryCopy, v5, @"Person"))
   {
     v8 = 16;
 LABEL_19:
@@ -153,17 +153,17 @@ LABEL_20:
   return v13;
 }
 
-+ (id)detectedObjectsForCategory:(id)a3 fromAcResult:(id *)a4
++ (id)detectedObjectsForCategory:(id)category fromAcResult:(id *)result
 {
-  v6 = a3;
-  v8 = v6;
-  if (@"Face" == v6 || objc_msgSend_isEqualToString_(v6, v7, @"Face"))
+  categoryCopy = category;
+  v8 = categoryCopy;
+  if (@"Face" == categoryCopy || objc_msgSend_isEqualToString_(categoryCopy, v7, @"Face"))
   {
-    v11 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v7, a4->var2);
-    if (a4->var2)
+    v11 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v7, result->var2);
+    if (result->var2)
     {
       v12 = 0;
-      var3 = a4->var3;
+      var3 = result->var3;
       do
       {
         v14 = [ANSTFace alloc];
@@ -174,7 +174,7 @@ LABEL_20:
         ++var3;
       }
 
-      while (v12 < a4->var2);
+      while (v12 < result->var2);
     }
 
 LABEL_20:
@@ -183,7 +183,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  p_var4 = &a4->var4;
+  p_var4 = &result->var4;
   if (@"Hand" == v8 || objc_msgSend_isEqualToString_(v8, v7, @"Hand"))
   {
     v11 = objc_opt_new();
@@ -191,7 +191,7 @@ LABEL_20:
     if (v20)
     {
       v21 = 0;
-      var5 = a4->var5;
+      var5 = result->var5;
       do
       {
         if ((var5->var2 & 0xFFFFFFFE) == 0xA)
@@ -215,11 +215,11 @@ LABEL_20:
 
   if (@"Saliency" == v8 || objc_msgSend_isEqualToString_(v8, v19, @"Saliency"))
   {
-    v11 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v19, a4->var7);
-    if (a4->var7)
+    v11 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v19, result->var7);
+    if (result->var7)
     {
       v27 = 0;
-      var8 = a4->var8;
+      var8 = result->var8;
       do
       {
         v29 = [ANSTObject alloc];
@@ -238,50 +238,50 @@ LABEL_20:
 
   if (@"Body" == v8 || objc_msgSend_isEqualToString_(v8, v19, @"Body"))
   {
-    objc_msgSend__objectsOfCategory_fromAcResult_(a1, v19, 1, a4);
+    objc_msgSend__objectsOfCategory_fromAcResult_(self, v19, 1, result);
     v33 = LABEL_48:;
     goto LABEL_21;
   }
 
   if (@"FullBody" == v8 || objc_msgSend_isEqualToString_(v8, v19, @"FullBody"))
   {
-    objc_msgSend__objectsOfCategory_fromAcResult_(a1, v19, 9, a4);
+    objc_msgSend__objectsOfCategory_fromAcResult_(self, v19, 9, result);
     goto LABEL_48;
   }
 
   if (@"CatBody" == v8 || objc_msgSend_isEqualToString_(v8, v19, @"CatBody"))
   {
-    objc_msgSend__objectsOfCategory_fromAcResult_(a1, v19, 2, a4);
+    objc_msgSend__objectsOfCategory_fromAcResult_(self, v19, 2, result);
     goto LABEL_48;
   }
 
   if (@"CatHead" == v8 || objc_msgSend_isEqualToString_(v8, v19, @"CatHead"))
   {
-    objc_msgSend__objectsOfCategory_fromAcResult_(a1, v19, 3, a4);
+    objc_msgSend__objectsOfCategory_fromAcResult_(self, v19, 3, result);
     goto LABEL_48;
   }
 
   if (@"DogBody" == v8 || objc_msgSend_isEqualToString_(v8, v19, @"DogBody"))
   {
-    objc_msgSend__objectsOfCategory_fromAcResult_(a1, v19, 4, a4);
+    objc_msgSend__objectsOfCategory_fromAcResult_(self, v19, 4, result);
     goto LABEL_48;
   }
 
   if (@"DogHead" == v8 || objc_msgSend_isEqualToString_(v8, v19, @"DogHead"))
   {
-    objc_msgSend__objectsOfCategory_fromAcResult_(a1, v19, 5, a4);
+    objc_msgSend__objectsOfCategory_fromAcResult_(self, v19, 5, result);
     goto LABEL_48;
   }
 
   if (@"OtherAnimal" == v8 || objc_msgSend_isEqualToString_(v8, v19, @"OtherAnimal"))
   {
-    objc_msgSend__objectsOfCategory_fromAcResult_(a1, v19, 7, a4);
+    objc_msgSend__objectsOfCategory_fromAcResult_(self, v19, 7, result);
     goto LABEL_48;
   }
 
   if (@"Sportsball" == v8 || objc_msgSend_isEqualToString_(v8, v19, @"Sportsball"))
   {
-    objc_msgSend__objectsOfCategory_fromAcResult_(a1, v19, 8, a4);
+    objc_msgSend__objectsOfCategory_fromAcResult_(self, v19, 8, result);
     goto LABEL_48;
   }
 
@@ -297,27 +297,27 @@ LABEL_21:
   return v33;
 }
 
-+ (id)_objectsOfCategory:(int)a3 fromAcResult:(id *)a4
++ (id)_objectsOfCategory:(int)category fromAcResult:(id *)result
 {
   v8 = objc_opt_new();
-  var4 = a4->var4;
+  var4 = result->var4;
   if (var4)
   {
     v10 = 0;
-    var5 = a4->var5;
+    var5 = result->var5;
     do
     {
       v12 = *&var5->var3.var1;
       v19[0] = *&var5->var0;
       v19[1] = v12;
       v20 = *&var5->var5;
-      if (DWORD2(v19[0]) == a3)
+      if (DWORD2(v19[0]) == category)
       {
         v13 = [ANSTObject alloc];
         v15 = objc_msgSend_initWithAcObject_(v13, v14, v19);
         objc_msgSend_addObject_(v8, v16, v15, *&v19[0]);
 
-        var4 = a4->var4;
+        var4 = result->var4;
       }
 
       ++v10;

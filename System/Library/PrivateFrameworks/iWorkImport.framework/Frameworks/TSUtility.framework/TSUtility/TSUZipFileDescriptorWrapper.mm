@@ -1,6 +1,6 @@
 @interface TSUZipFileDescriptorWrapper
 - (TSUZipFileDescriptorWrapper)init;
-- (TSUZipFileDescriptorWrapper)initWithFileDescriptor:(int)a3;
+- (TSUZipFileDescriptorWrapper)initWithFileDescriptor:(int)descriptor;
 - (void)dealloc;
 @end
 
@@ -22,16 +22,16 @@
   objc_exception_throw(v7);
 }
 
-- (TSUZipFileDescriptorWrapper)initWithFileDescriptor:(int)a3
+- (TSUZipFileDescriptorWrapper)initWithFileDescriptor:(int)descriptor
 {
-  v3 = self;
-  if ((a3 & 0x80000000) == 0)
+  selfCopy = self;
+  if ((descriptor & 0x80000000) == 0)
   {
-    v4 = *&a3;
+    v4 = *&descriptor;
     v15.receiver = self;
     v15.super_class = TSUZipFileDescriptorWrapper;
     v5 = [(TSUZipFileDescriptorWrapper *)&v15 init];
-    v3 = v5;
+    selfCopy = v5;
     if (!v5)
     {
       close(v4);
@@ -46,18 +46,18 @@
     v13[3] = &unk_27A703048;
     v14 = v4;
     v7 = [(TSUFileIOChannel *)v6 initForReadingDescriptor:v4 cleanupHandler:v13];
-    readChannel = v3->_readChannel;
-    v3->_readChannel = v7;
+    readChannel = selfCopy->_readChannel;
+    selfCopy->_readChannel = v7;
 
-    if (v3->_readChannel)
+    if (selfCopy->_readChannel)
     {
       v9 = dispatch_group_create();
-      accessGroup = v3->_accessGroup;
-      v3->_accessGroup = v9;
+      accessGroup = selfCopy->_accessGroup;
+      selfCopy->_accessGroup = v9;
 
 LABEL_7:
-      v3 = v3;
-      v11 = v3;
+      selfCopy = selfCopy;
+      v11 = selfCopy;
       goto LABEL_8;
     }
   }

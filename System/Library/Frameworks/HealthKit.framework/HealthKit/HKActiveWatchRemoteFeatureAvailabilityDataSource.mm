@@ -1,5 +1,5 @@
 @interface HKActiveWatchRemoteFeatureAvailabilityDataSource
-- ($9FE6E10C8CE45DBC9A88DFDEA39A390D)_operatingSystemVersionForOSVersion:(SEL)a3;
+- ($9FE6E10C8CE45DBC9A88DFDEA39A390D)_operatingSystemVersionForOSVersion:(SEL)version;
 - ($9FE6E10C8CE45DBC9A88DFDEA39A390D)iOSVersion;
 - ($9FE6E10C8CE45DBC9A88DFDEA39A390D)watchAtrialFibrillationDetectionVersion;
 - ($9FE6E10C8CE45DBC9A88DFDEA39A390D)watchOSVersion;
@@ -50,9 +50,9 @@
 
     v4 = v3;
     _Block_object_dispose(&v10, 8);
-    v5 = [v3 sharedInstance];
+    sharedInstance = [v3 sharedInstance];
     pairedDeviceRegistry = v2->_pairedDeviceRegistry;
-    v2->_pairedDeviceRegistry = v5;
+    v2->_pairedDeviceRegistry = sharedInstance;
   }
 
   return v2;
@@ -60,18 +60,18 @@
 
 - (id)_activeWatch
 {
-  v2 = [(HKActiveWatchRemoteFeatureAvailabilityDataSource *)self pairedDeviceRegistry];
-  v3 = [v2 getActivePairedDevice];
+  pairedDeviceRegistry = [(HKActiveWatchRemoteFeatureAvailabilityDataSource *)self pairedDeviceRegistry];
+  getActivePairedDevice = [pairedDeviceRegistry getActivePairedDevice];
 
-  return v3;
+  return getActivePairedDevice;
 }
 
 - ($9FE6E10C8CE45DBC9A88DFDEA39A390D)iOSVersion
 {
   v5 = +[_HKBehavior sharedBehavior];
-  v6 = [v5 isCompanionCapable];
+  isCompanionCapable = [v5 isCompanionCapable];
 
-  if (v6)
+  if (isCompanionCapable)
   {
 
     return +[_HKBehavior currentOSVersionStruct];
@@ -80,11 +80,11 @@
   else
   {
     v8 = +[_HKBehavior sharedBehavior];
-    v9 = [v8 isAppleWatch];
+    isAppleWatch = [v8 isAppleWatch];
 
-    if (v9 && ([(HKActiveWatchRemoteFeatureAvailabilityDataSource *)self _activeWatch], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
+    if (isAppleWatch && ([(HKActiveWatchRemoteFeatureAvailabilityDataSource *)self _activeWatch], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
     {
-      v11 = [(HKActiveWatchRemoteFeatureAvailabilityDataSource *)self _activeWatch];
+      _activeWatch = [(HKActiveWatchRemoteFeatureAvailabilityDataSource *)self _activeWatch];
       v19 = 0;
       v20 = &v19;
       v21 = 0x2020000000;
@@ -105,7 +105,7 @@
       }
 
       v14 = *v12;
-      v15 = [v11 valueForProperty:v14];
+      v15 = [_activeWatch valueForProperty:v14];
       v19 = 0;
       v20 = &v19;
       v21 = 0x2020000000;
@@ -143,9 +143,9 @@
 - (id)iOSBuildVersion
 {
   v3 = +[_HKBehavior sharedBehavior];
-  v4 = [v3 isCompanionCapable];
+  isCompanionCapable = [v3 isCompanionCapable];
 
-  if (v4)
+  if (isCompanionCapable)
   {
     v5 = +[_HKBehavior currentOSBuild];
   }
@@ -153,13 +153,13 @@
   else
   {
     v6 = +[_HKBehavior sharedBehavior];
-    v7 = [v6 isAppleWatch];
+    isAppleWatch = [v6 isAppleWatch];
 
-    if (v7 && ([(HKActiveWatchRemoteFeatureAvailabilityDataSource *)self _activeWatch], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+    if (isAppleWatch && ([(HKActiveWatchRemoteFeatureAvailabilityDataSource *)self _activeWatch], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
     {
-      v9 = [(HKActiveWatchRemoteFeatureAvailabilityDataSource *)self _activeWatch];
+      _activeWatch = [(HKActiveWatchRemoteFeatureAvailabilityDataSource *)self _activeWatch];
       v10 = getNRDevicePropertySystemBuildVersion();
-      v5 = [v9 valueForProperty:v10];
+      v5 = [_activeWatch valueForProperty:v10];
     }
 
     else
@@ -173,11 +173,11 @@
 
 - ($9FE6E10C8CE45DBC9A88DFDEA39A390D)watchOSVersion
 {
-  v5 = [(HKActiveWatchRemoteFeatureAvailabilityDataSource *)self _activeWatch];
-  v6 = v5;
-  if (v5)
+  _activeWatch = [(HKActiveWatchRemoteFeatureAvailabilityDataSource *)self _activeWatch];
+  v6 = _activeWatch;
+  if (_activeWatch)
   {
-    v7 = v5;
+    v7 = _activeWatch;
     v12 = 0;
     v13 = &v12;
     v14 = 0x2020000000;
@@ -216,8 +216,8 @@
 
 - (id)watchRegion
 {
-  v2 = [(HKActiveWatchRemoteFeatureAvailabilityDataSource *)self _activeWatch];
-  if (v2)
+  _activeWatch = [(HKActiveWatchRemoteFeatureAvailabilityDataSource *)self _activeWatch];
+  if (_activeWatch)
   {
     v7 = 0;
     v8 = &v7;
@@ -238,7 +238,7 @@
       [HKActiveWatchRemoteFeatureAvailabilityDataSource watchRegion];
     }
 
-    v5 = [v2 valueForProperty:*v3];
+    v5 = [_activeWatch valueForProperty:*v3];
   }
 
   else
@@ -251,8 +251,8 @@
 
 - (id)watchRegionInfo
 {
-  v2 = [(HKActiveWatchRemoteFeatureAvailabilityDataSource *)self _activeWatch];
-  if (v2)
+  _activeWatch = [(HKActiveWatchRemoteFeatureAvailabilityDataSource *)self _activeWatch];
+  if (_activeWatch)
   {
     v7 = 0;
     v8 = &v7;
@@ -273,7 +273,7 @@
       [HKActiveWatchRemoteFeatureAvailabilityDataSource watchRegionInfo];
     }
 
-    v5 = [v2 valueForProperty:*v3];
+    v5 = [_activeWatch valueForProperty:*v3];
   }
 
   else
@@ -286,7 +286,7 @@
 
 - (id)watchModelNumber
 {
-  v2 = [(HKActiveWatchRemoteFeatureAvailabilityDataSource *)self _activeWatch];
+  _activeWatch = [(HKActiveWatchRemoteFeatureAvailabilityDataSource *)self _activeWatch];
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -306,14 +306,14 @@
     [HKActiveWatchRemoteFeatureAvailabilityDataSource watchModelNumber];
   }
 
-  v5 = [v2 valueForProperty:*v3];
+  v5 = [_activeWatch valueForProperty:*v3];
 
   return v5;
 }
 
 - (id)watchBuildType
 {
-  v2 = [(HKActiveWatchRemoteFeatureAvailabilityDataSource *)self _activeWatch];
+  _activeWatch = [(HKActiveWatchRemoteFeatureAvailabilityDataSource *)self _activeWatch];
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -333,14 +333,14 @@
     [HKActiveWatchRemoteFeatureAvailabilityDataSource watchBuildType];
   }
 
-  v5 = [v2 valueForProperty:*v3];
+  v5 = [_activeWatch valueForProperty:*v3];
 
   return v5;
 }
 
 - (id)watchProductType
 {
-  v2 = [(HKActiveWatchRemoteFeatureAvailabilityDataSource *)self _activeWatch];
+  _activeWatch = [(HKActiveWatchRemoteFeatureAvailabilityDataSource *)self _activeWatch];
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -360,26 +360,26 @@
     [HKActiveWatchRemoteFeatureAvailabilityDataSource watchProductType];
   }
 
-  v5 = [v2 valueForProperty:*v3];
+  v5 = [_activeWatch valueForProperty:*v3];
 
   return v5;
 }
 
 - (id)watchOSBuildVersion
 {
-  v2 = [(HKActiveWatchRemoteFeatureAvailabilityDataSource *)self _activeWatch];
+  _activeWatch = [(HKActiveWatchRemoteFeatureAvailabilityDataSource *)self _activeWatch];
   v3 = getNRDevicePropertySystemBuildVersion();
-  v4 = [v2 valueForProperty:v3];
+  v4 = [_activeWatch valueForProperty:v3];
 
   return v4;
 }
 
 - ($9FE6E10C8CE45DBC9A88DFDEA39A390D)watchAtrialFibrillationDetectionVersion
 {
-  v5 = [(HKActiveWatchRemoteFeatureAvailabilityDataSource *)self _activeWatch];
-  if (v5)
+  _activeWatch = [(HKActiveWatchRemoteFeatureAvailabilityDataSource *)self _activeWatch];
+  if (_activeWatch)
   {
-    v6 = [(HKActiveWatchRemoteFeatureAvailabilityDataSource *)self _activeWatch];
+    _activeWatch2 = [(HKActiveWatchRemoteFeatureAvailabilityDataSource *)self _activeWatch];
     v11 = 0;
     v12 = &v11;
     v13 = 0x2020000000;
@@ -399,7 +399,7 @@
       [HKActiveWatchRemoteFeatureAvailabilityDataSource watchAtrialFibrillationDetectionVersion];
     }
 
-    v9 = [v6 valueForProperty:*v7];
+    v9 = [_activeWatch2 valueForProperty:*v7];
 
     HKSemanticVersionFromString(retstr, v9);
   }
@@ -416,12 +416,12 @@
 - (id)currentDeviceClass
 {
   v2 = +[_HKBehavior sharedBehavior];
-  v3 = [v2 currentDeviceClass];
+  currentDeviceClass = [v2 currentDeviceClass];
 
-  return v3;
+  return currentDeviceClass;
 }
 
-- ($9FE6E10C8CE45DBC9A88DFDEA39A390D)_operatingSystemVersionForOSVersion:(SEL)a3
+- ($9FE6E10C8CE45DBC9A88DFDEA39A390D)_operatingSystemVersionForOSVersion:(SEL)version
 {
   retstr->var0 = HIWORD(a4);
   retstr->var1 = BYTE1(a4);
@@ -431,72 +431,72 @@
 
 - (void)iOSVersion
 {
-  v0 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v1 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getNRDevicePropertySystemVersion(void)"];
-  [v0 handleFailureInFunction:v1 file:@"HKActiveWatchRemoteFeatureAvailabilityDataSource.m" lineNumber:35 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"HKActiveWatchRemoteFeatureAvailabilityDataSource.m" lineNumber:35 description:{@"%s", dlerror()}];
 
   __break(1u);
 }
 
 - (void)watchOSVersion
 {
-  v0 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v1 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"uint32_t getNRWatchOSVersionForRemoteDevice(NRDevice *__strong)"];
-  [v0 handleFailureInFunction:v1 file:@"HKActiveWatchRemoteFeatureAvailabilityDataSource.m" lineNumber:39 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"HKActiveWatchRemoteFeatureAvailabilityDataSource.m" lineNumber:39 description:{@"%s", dlerror()}];
 
   __break(1u);
 }
 
 - (void)watchRegion
 {
-  v0 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v1 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getNRDevicePropertyRegionCode(void)"];
-  [v0 handleFailureInFunction:v1 file:@"HKActiveWatchRemoteFeatureAvailabilityDataSource.m" lineNumber:32 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"HKActiveWatchRemoteFeatureAvailabilityDataSource.m" lineNumber:32 description:{@"%s", dlerror()}];
 
   __break(1u);
 }
 
 - (void)watchRegionInfo
 {
-  v0 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v1 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getNRDevicePropertyRegionInfo(void)"];
-  [v0 handleFailureInFunction:v1 file:@"HKActiveWatchRemoteFeatureAvailabilityDataSource.m" lineNumber:33 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"HKActiveWatchRemoteFeatureAvailabilityDataSource.m" lineNumber:33 description:{@"%s", dlerror()}];
 
   __break(1u);
 }
 
 - (void)watchModelNumber
 {
-  v0 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v1 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getNRDevicePropertyModelNumber(void)"];
-  [v0 handleFailureInFunction:v1 file:@"HKActiveWatchRemoteFeatureAvailabilityDataSource.m" lineNumber:30 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"HKActiveWatchRemoteFeatureAvailabilityDataSource.m" lineNumber:30 description:{@"%s", dlerror()}];
 
   __break(1u);
 }
 
 - (void)watchBuildType
 {
-  v0 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v1 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getNRDevicePropertyBuildType(void)"];
-  [v0 handleFailureInFunction:v1 file:@"HKActiveWatchRemoteFeatureAvailabilityDataSource.m" lineNumber:29 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"HKActiveWatchRemoteFeatureAvailabilityDataSource.m" lineNumber:29 description:{@"%s", dlerror()}];
 
   __break(1u);
 }
 
 - (void)watchProductType
 {
-  v0 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v1 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getNRDevicePropertyProductType(void)"];
-  [v0 handleFailureInFunction:v1 file:@"HKActiveWatchRemoteFeatureAvailabilityDataSource.m" lineNumber:31 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"HKActiveWatchRemoteFeatureAvailabilityDataSource.m" lineNumber:31 description:{@"%s", dlerror()}];
 
   __break(1u);
 }
 
 - (void)watchAtrialFibrillationDetectionVersion
 {
-  v0 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v1 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getNRDevicePropertyBackgroundAtrialFibrillationVersion(void)"];
-  [v0 handleFailureInFunction:v1 file:@"HKActiveWatchRemoteFeatureAvailabilityDataSource.m" lineNumber:36 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"HKActiveWatchRemoteFeatureAvailabilityDataSource.m" lineNumber:36 description:{@"%s", dlerror()}];
 
   __break(1u);
 }

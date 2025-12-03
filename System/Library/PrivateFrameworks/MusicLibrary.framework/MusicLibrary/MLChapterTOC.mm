@@ -1,27 +1,27 @@
 @interface MLChapterTOC
-- (unsigned)chapterIndexAtTimeLocationInMS:(unsigned int)a3;
+- (unsigned)chapterIndexAtTimeLocationInMS:(unsigned int)s;
 @end
 
 @implementation MLChapterTOC
 
-- (unsigned)chapterIndexAtTimeLocationInMS:(unsigned int)a3
+- (unsigned)chapterIndexAtTimeLocationInMS:(unsigned int)s
 {
-  v5 = [(MLChapterTOC *)self countOfChapters];
-  if (v5)
+  countOfChapters = [(MLChapterTOC *)self countOfChapters];
+  if (countOfChapters)
   {
     v6 = 0;
     v7 = 0;
     while (1)
     {
       v8 = [(MLChapterTOC *)self timeLocationInMSOfChapterAtIndex:v6];
-      if (v7 <= a3 && v8 > a3)
+      if (v7 <= s && v8 > s)
       {
         break;
       }
 
       v6 = (v6 + 1);
       v7 = v8;
-      if (v5 == v6)
+      if (countOfChapters == v6)
       {
         goto LABEL_6;
       }
@@ -41,9 +41,9 @@
   else
   {
 LABEL_6:
-    if (a3 != 0 && v5 != 0)
+    if (s != 0 && countOfChapters != 0)
     {
-      return v5 - 1;
+      return countOfChapters - 1;
     }
 
     else

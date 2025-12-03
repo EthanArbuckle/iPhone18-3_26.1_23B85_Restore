@@ -1,12 +1,12 @@
 @interface SPStackshotProvider
 + (id)sharedInstanceLock;
-+ (id)snapshotWithSamplingIntervalUs:(unsigned int)a3 andOccasionalDataIntervalSec:(unsigned int)a4 andOnlySampleProcesses:(id)a5 andOnlySampleMainThreads:(BOOL)a6 andOmitSensitiveStrings:(BOOL)a7;
++ (id)snapshotWithSamplingIntervalUs:(unsigned int)us andOccasionalDataIntervalSec:(unsigned int)sec andOnlySampleProcesses:(id)processes andOnlySampleMainThreads:(BOOL)threads andOmitSensitiveStrings:(BOOL)strings;
 - (SPStackshotProvider)init;
 - (void)dealloc;
-- (void)gatherLoadInfoForPid:(int)a3;
-- (void)performSampleStoreWork:(id)a3;
+- (void)gatherLoadInfoForPid:(int)pid;
+- (void)performSampleStoreWork:(id)work;
 - (void)startSamplingThread;
-- (void)stopAndWaitForAllSamplingToComplete:(BOOL)a3 withCompletionCallbackOnQueue:(id)a4 withBlock:(id)a5;
+- (void)stopAndWaitForAllSamplingToComplete:(BOOL)complete withCompletionCallbackOnQueue:(id)queue withBlock:(id)block;
 - (void)stopSamplingThread;
 @end
 
@@ -45,9 +45,9 @@
     pidsSem = v3->_pidsSem;
     v3->_pidsSem = v15;
 
-    v17 = [[SASampleStore alloc] initForLiveSampling];
+    initForLiveSampling = [[SASampleStore alloc] initForLiveSampling];
     sampleStore = v3->_sampleStore;
-    v3->_sampleStore = v17;
+    v3->_sampleStore = initForLiveSampling;
 
     sub_100077DF8(v3->_sampleStore, (byte_100117E94 >> 3) & 1, (byte_100117E94 >> 2) & 1, (byte_100117E94 & 0x10) == 0);
     if ((byte_100117E94 & 2) != 0 && sub_10002B3E4())
@@ -230,9 +230,9 @@
 
 - (void)startSamplingThread
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_samplingThread)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_samplingThread)
   {
     if (byte_100117E80 == 1)
     {
@@ -313,8 +313,8 @@
   else
   {
     v11 = dispatch_semaphore_create(0);
-    samplingStoppedSem = v2->_samplingStoppedSem;
-    v2->_samplingStoppedSem = v11;
+    samplingStoppedSem = selfCopy->_samplingStoppedSem;
+    selfCopy->_samplingStoppedSem = v11;
 
     if (byte_100117E80 == 1)
     {
@@ -392,7 +392,7 @@
       *__error() = v16;
     }
 
-    v27 = pthread_create(&v2->_samplingThread, 0, sub_100089AD0, v2);
+    v27 = pthread_create(&selfCopy->_samplingThread, 0, sub_100089AD0, selfCopy);
     if (v27)
     {
       *__errnum = v27;
@@ -480,16 +480,16 @@
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)stopSamplingThread
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_samplingThread)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_samplingThread)
   {
-    dispatch_semaphore_signal(v2->_samplingStoppedSem);
+    dispatch_semaphore_signal(selfCopy->_samplingStoppedSem);
     if (byte_100117E81 == 1)
     {
       if (qword_100117ED0 && dispatch_group_wait(qword_100117ED0, 0))
@@ -819,8 +819,8 @@ LABEL_112:
       }
     }
 
-    pthread_join(v2->_samplingThread, 0);
-    v2->_samplingThread = 0;
+    pthread_join(selfCopy->_samplingThread, 0);
+    selfCopy->_samplingThread = 0;
     goto LABEL_135;
   }
 
@@ -900,7 +900,7 @@ LABEL_112:
   }
 
 LABEL_135:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 + (id)sharedInstanceLock
@@ -915,10 +915,10 @@ LABEL_135:
   return v3;
 }
 
-+ (id)snapshotWithSamplingIntervalUs:(unsigned int)a3 andOccasionalDataIntervalSec:(unsigned int)a4 andOnlySampleProcesses:(id)a5 andOnlySampleMainThreads:(BOOL)a6 andOmitSensitiveStrings:(BOOL)a7
++ (id)snapshotWithSamplingIntervalUs:(unsigned int)us andOccasionalDataIntervalSec:(unsigned int)sec andOnlySampleProcesses:(id)processes andOnlySampleMainThreads:(BOOL)threads andOmitSensitiveStrings:(BOOL)strings
 {
-  v11 = a5;
-  if (a3)
+  processesCopy = processes;
+  if (us)
   {
     v22 = 0;
     v23 = &v22;
@@ -931,11 +931,11 @@ LABEL_135:
     v15[1] = 3221225472;
     v15[2] = sub_10008B828;
     v15[3] = &unk_100109D58;
-    v18 = a3;
-    v19 = a4;
-    v20 = a6;
-    v21 = a7;
-    v16 = v11;
+    usCopy = us;
+    secCopy = sec;
+    threadsCopy = threads;
+    stringsCopy = strings;
+    v16 = processesCopy;
     v17 = &v22;
     dispatch_sync(v12, v15);
 
@@ -951,10 +951,10 @@ LABEL_135:
   return v13;
 }
 
-- (void)stopAndWaitForAllSamplingToComplete:(BOOL)a3 withCompletionCallbackOnQueue:(id)a4 withBlock:(id)a5
+- (void)stopAndWaitForAllSamplingToComplete:(BOOL)complete withCompletionCallbackOnQueue:(id)queue withBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
+  queueCopy = queue;
+  blockCopy = block;
   v10 = +[SPStackshotProvider sharedInstanceLock];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -963,24 +963,24 @@ LABEL_135:
   block[4] = self;
   dispatch_sync(v10, block);
 
-  v11 = self;
-  objc_sync_enter(v11);
-  if (v11->_numClientsSampling)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_numClientsSampling)
   {
     v12 = +[SATimestamp timestamp];
-    v13 = *&v11->_numSamples;
-    v14 = v11->_numClientsSampling - 1;
-    v11->_numClientsSampling = v14;
+    v13 = *&selfCopy->_numSamples;
+    v14 = selfCopy->_numClientsSampling - 1;
+    selfCopy->_numClientsSampling = v14;
     if (!v14)
     {
-      [(SPStackshotProvider *)v11 stopSamplingThread];
-      dispatch_group_leave(v11->_samplingGroup);
-      dispatch_semaphore_wait(v11->_pidsSem, 0xFFFFFFFFFFFFFFFFLL);
-      v11->_sampleOnlyPidsHasUpdate = 1;
-      sampleOnlyPids = v11->_sampleOnlyPids;
-      v11->_sampleOnlyPids = 0;
+      [(SPStackshotProvider *)selfCopy stopSamplingThread];
+      dispatch_group_leave(selfCopy->_samplingGroup);
+      dispatch_semaphore_wait(selfCopy->_pidsSem, 0xFFFFFFFFFFFFFFFFLL);
+      selfCopy->_sampleOnlyPidsHasUpdate = 1;
+      sampleOnlyPids = selfCopy->_sampleOnlyPids;
+      selfCopy->_sampleOnlyPids = 0;
 
-      dispatch_semaphore_signal(v11->_pidsSem);
+      dispatch_semaphore_signal(selfCopy->_pidsSem);
     }
 
     v16 = dispatch_get_global_queue(25, 0);
@@ -989,47 +989,47 @@ LABEL_135:
     v18[2] = sub_10008DBF0;
     v18[3] = &unk_100109DD0;
     v19 = v12;
-    v20 = v11;
-    v21 = v8;
-    v22 = v9;
+    v20 = selfCopy;
+    v21 = queueCopy;
+    v22 = blockCopy;
     v23 = v13;
-    v24 = a3;
+    completeCopy = complete;
     v17 = v12;
     dispatch_async(v16, v18);
 
     goto LABEL_8;
   }
 
-  if (v8 && v9)
+  if (queueCopy && blockCopy)
   {
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_10008DBDC;
     v25[3] = &unk_100109CC0;
-    v26 = v9;
-    dispatch_async(v8, v25);
+    v26 = blockCopy;
+    dispatch_async(queueCopy, v25);
     v17 = v26;
 LABEL_8:
   }
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)performSampleStoreWork:(id)a3
+- (void)performSampleStoreWork:(id)work
 {
-  v4 = a3;
+  workCopy = work;
   storeReportingQueue = self->_storeReportingQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10008DEC0;
   v7[3] = &unk_100109960;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = workCopy;
+  v6 = workCopy;
   dispatch_sync(storeReportingQueue, v7);
 }
 
-- (void)gatherLoadInfoForPid:(int)a3
+- (void)gatherLoadInfoForPid:(int)pid
 {
   stackshotParsingQueue = self->_stackshotParsingQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -1037,7 +1037,7 @@ LABEL_8:
   v4[2] = sub_10008DF50;
   v4[3] = &unk_100109AC0;
   v4[4] = self;
-  v5 = a3;
+  pidCopy = pid;
   dispatch_async(stackshotParsingQueue, v4);
 }
 

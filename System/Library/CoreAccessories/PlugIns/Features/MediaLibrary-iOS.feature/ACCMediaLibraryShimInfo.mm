@@ -1,47 +1,47 @@
 @interface ACCMediaLibraryShimInfo
-+ (BOOL)isItemAd:(id)a3;
-+ (id)getMediaItemForContentItem:(id)a3 propertyList:(id)a4 playlistContent:(id)a5;
-- (ACCMediaLibraryShimInfo)initWithMediaLibrary:(id)a3 accessory:(id)a4 Context:(id)a5 LibraryType:(int)a6;
-- (BOOL)_isVisibleUpdate:(id)a3;
++ (BOOL)isItemAd:(id)ad;
++ (id)getMediaItemForContentItem:(id)item propertyList:(id)list playlistContent:(id)content;
+- (ACCMediaLibraryShimInfo)initWithMediaLibrary:(id)library accessory:(id)accessory Context:(id)context LibraryType:(int)type;
+- (BOOL)_isVisibleUpdate:(id)update;
 - (NSString)name;
-- (id)_beginMediaLibraryUpdatesWithAnchor:(id)a3 validity:(id)a4;
-- (id)_getMediaItemForPersistentID:(unint64_t)a3;
+- (id)_beginMediaLibraryUpdatesWithAnchor:(id)anchor validity:(id)validity;
+- (id)_getMediaItemForPersistentID:(unint64_t)d;
 - (id)_getUIDString;
-- (id)_handleMediaLibraryItemUpdate:(id)a3 forLibrary:(id)a4 forProperties:(id)a5 success:(BOOL *)a6 forceDelete:(BOOL)a7;
-- (id)_handleMediaLibraryPlaylistUpdate:(id)a3 forLibrary:(id)a4 forProperties:(id)a5 success:(BOOL *)a6;
-- (id)_handlePlaylistContentForEntify:(id)a3 style:(int)a4 revision:(id)a5;
+- (id)_handleMediaLibraryItemUpdate:(id)update forLibrary:(id)library forProperties:(id)properties success:(BOOL *)success forceDelete:(BOOL)delete;
+- (id)_handleMediaLibraryPlaylistUpdate:(id)update forLibrary:(id)library forProperties:(id)properties success:(BOOL *)success;
+- (id)_handlePlaylistContentForEntify:(id)entify style:(int)style revision:(id)revision;
 - (id)description;
-- (id)getPlaylistItems:(id)a3;
-- (int64_t)_attemptUpdate:(id)a3;
-- (int64_t)_checkAndWaitForWindowOk:(int64_t)a3;
+- (id)getPlaylistItems:(id)items;
+- (int64_t)_attemptUpdate:(id)update;
+- (int64_t)_checkAndWaitForWindowOk:(int64_t)ok;
 - (void)_beginRadioLibraryUpdates;
-- (void)_canShowCloudTracksDidChangeNotification:(id)a3;
+- (void)_canShowCloudTracksDidChangeNotification:(id)notification;
 - (void)_getUIDString;
-- (void)_mediaLibraryChanged:(id)a3;
-- (void)_radioLibraryChanged:(id)a3;
+- (void)_mediaLibraryChanged:(id)changed;
+- (void)_radioLibraryChanged:(id)changed;
 - (void)_registerForMPNotifications;
 - (void)_sendRadioLibraryUpdates;
-- (void)_startMLPlaybackOfAllSongsStartItem:(id)a3;
-- (void)_startPlaybackOfCollection:(unint64_t)a3 ofType:(int)a4 withFirst:(id)a5 orIndex:(unsigned int)a6;
-- (void)_startPlaybackOfRadioStation:(unint64_t)a3;
-- (void)confirmMediaLibraryUpdateLastRevision:(id)a3 updateCount:(unsigned int)a4;
+- (void)_startMLPlaybackOfAllSongsStartItem:(id)item;
+- (void)_startPlaybackOfCollection:(unint64_t)collection ofType:(int)type withFirst:(id)first orIndex:(unsigned int)index;
+- (void)_startPlaybackOfRadioStation:(unint64_t)station;
+- (void)confirmMediaLibraryUpdateLastRevision:(id)revision updateCount:(unsigned int)count;
 - (void)dealloc;
-- (void)playWithQuery:(id)a3 andFirstItem:(id)a4;
+- (void)playWithQuery:(id)query andFirstItem:(id)item;
 - (void)shuttingDown;
-- (void)startMLPlaybackOfAllSongsStartPersistentID:(unint64_t)a3;
-- (void)startMLPlaybackWithResume:(BOOL)a3;
-- (void)startPlaybackOfItems:(id)a3 withFirst:(unsigned int)a4;
-- (void)startSendingMediaLibraryUpdates:(id)a3 lastRevision:(id)a4 requestedTransferID:(BOOL)a5 requestedMetaList:(BOOL)a6 requestedMetaProperties:(BOOL)a7;
+- (void)startMLPlaybackOfAllSongsStartPersistentID:(unint64_t)d;
+- (void)startMLPlaybackWithResume:(BOOL)resume;
+- (void)startPlaybackOfItems:(id)items withFirst:(unsigned int)first;
+- (void)startSendingMediaLibraryUpdates:(id)updates lastRevision:(id)revision requestedTransferID:(BOOL)d requestedMetaList:(BOOL)list requestedMetaProperties:(BOOL)properties;
 - (void)stopSendingMediaLibraryUpdates;
 @end
 
 @implementation ACCMediaLibraryShimInfo
 
-+ (BOOL)isItemAd:(id)a3
++ (BOOL)isItemAd:(id)ad
 {
-  v3 = a3;
+  adCopy = ad;
   v4 = objc_autoreleasePoolPush();
-  v5 = [v3 valueForProperty:*MEMORY[0x277CD5850]];
+  v5 = [adCopy valueForProperty:*MEMORY[0x277CD5850]];
   v6 = v5;
   if (v5)
   {
@@ -57,26 +57,26 @@
   return v7;
 }
 
-+ (id)getMediaItemForContentItem:(id)a3 propertyList:(id)a4 playlistContent:(id)a5
++ (id)getMediaItemForContentItem:(id)item propertyList:(id)list playlistContent:(id)content
 {
   v36 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  itemCopy = item;
+  listCopy = list;
+  contentCopy = content;
   v10 = 0;
-  if (v7 && v8)
+  if (itemCopy && listCopy)
   {
     v11 = objc_alloc(MEMORY[0x277CE82C8]);
-    v12 = [v9 mediaLibraryUID];
-    v26 = v9;
-    v10 = [v11 initWithMediaLibrary:v12 persistentID:objc_msgSend(v7 playlistPersistentID:{"persistentID"), objc_msgSend(v9, "persistentID")}];
+    mediaLibraryUID = [contentCopy mediaLibraryUID];
+    v26 = contentCopy;
+    v10 = [v11 initWithMediaLibrary:mediaLibraryUID persistentID:objc_msgSend(itemCopy playlistPersistentID:{"persistentID"), objc_msgSend(contentCopy, "persistentID")}];
 
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v27 = v8;
-    v13 = v8;
+    v27 = listCopy;
+    v13 = listCopy;
     v14 = [v13 countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (!v14)
     {
@@ -100,14 +100,14 @@
           objc_enumerationMutation(v13);
         }
 
-        v21 = [*(*(&v31 + 1) + 8 * i) unsignedIntValue];
-        if (v21 > 11)
+        unsignedIntValue = [*(*(&v31 + 1) + 8 * i) unsignedIntValue];
+        if (unsignedIntValue > 11)
         {
-          if (v21 > 15)
+          if (unsignedIntValue > 15)
           {
-            if (v21 == 16)
+            if (unsignedIntValue == 16)
             {
-              v22 = [v7 valueForProperty:v29];
+              v22 = [itemCopy valueForProperty:v29];
               if (v22)
               {
                 [v10 setGenre:v22];
@@ -116,12 +116,12 @@
 
             else
             {
-              if (v21 != 18)
+              if (unsignedIntValue != 18)
               {
                 continue;
               }
 
-              v22 = [v7 valueForProperty:v30];
+              v22 = [itemCopy valueForProperty:v30];
               if (v22)
               {
                 [v10 setComposer:v22];
@@ -129,9 +129,9 @@
             }
           }
 
-          else if (v21 == 12)
+          else if (unsignedIntValue == 12)
           {
-            v22 = [v7 valueForProperty:v17];
+            v22 = [itemCopy valueForProperty:v17];
             if (v22)
             {
               [v10 setArtist:v22];
@@ -140,12 +140,12 @@
 
           else
           {
-            if (v21 != 14)
+            if (unsignedIntValue != 14)
             {
               continue;
             }
 
-            v22 = [v7 valueForProperty:v28];
+            v22 = [itemCopy valueForProperty:v28];
             if (v22)
             {
               [v10 setAlbumArtist:v22];
@@ -155,11 +155,11 @@
           goto LABEL_31;
         }
 
-        if (v21)
+        if (unsignedIntValue)
         {
-          if (v21 == 1)
+          if (unsignedIntValue == 1)
           {
-            v22 = [v7 valueForProperty:v19];
+            v22 = [itemCopy valueForProperty:v19];
             if (v22)
             {
               [v10 setTitle:v22];
@@ -168,12 +168,12 @@
 
           else
           {
-            if (v21 != 6)
+            if (unsignedIntValue != 6)
             {
               continue;
             }
 
-            v22 = [v7 valueForProperty:v18];
+            v22 = [itemCopy valueForProperty:v18];
             if (v22)
             {
               [v10 setAlbumTitle:v22];
@@ -185,10 +185,10 @@ LABEL_31:
           continue;
         }
 
-        v23 = [v7 persistentID];
-        if (v23)
+        persistentID = [itemCopy persistentID];
+        if (persistentID)
         {
-          [v10 setPersistentID:v23];
+          [v10 setPersistentID:persistentID];
         }
       }
 
@@ -197,8 +197,8 @@ LABEL_31:
       {
 LABEL_34:
 
-        v9 = v26;
-        v8 = v27;
+        contentCopy = v26;
+        listCopy = v27;
         break;
       }
     }
@@ -279,34 +279,34 @@ LABEL_34:
   return v4;
 }
 
-- (id)getPlaylistItems:(id)a3
+- (id)getPlaylistItems:(id)items
 {
   v4 = MEMORY[0x277CD5E10];
-  v5 = a3;
-  v6 = [v4 defaultMediaLibrary];
+  itemsCopy = items;
+  defaultMediaLibrary = [v4 defaultMediaLibrary];
   [MEMORY[0x277CD5E10] setDefaultMediaLibrary:self->_mpMediaLibrary];
   v7 = [MEMORY[0x277CCABB0] numberWithInteger:3319];
   v8 = [MEMORY[0x277CD5E30] predicateWithValue:v7 forProperty:*MEMORY[0x277CD57C8]];
   v9 = MEMORY[0x277CCABB0];
-  v10 = [v5 persistentID];
+  persistentID = [itemsCopy persistentID];
 
-  v11 = [v9 numberWithUnsignedLongLong:v10];
+  v11 = [v9 numberWithUnsignedLongLong:persistentID];
   v12 = [MEMORY[0x277CD5E30] predicateWithValue:v11 forProperty:*MEMORY[0x277CD5940]];
   v13 = [MEMORY[0x277CBEB98] setWithObjects:{v12, v8, 0}];
   v14 = [objc_alloc(MEMORY[0x277CD5E38]) initWithFilterPredicates:v13];
   [v14 setGroupingType:6];
-  v15 = [v14 items];
-  v16 = [MEMORY[0x277CBEB18] arrayWithArray:v15];
-  [MEMORY[0x277CD5E10] setDefaultMediaLibrary:v6];
+  items = [v14 items];
+  v16 = [MEMORY[0x277CBEB18] arrayWithArray:items];
+  [MEMORY[0x277CD5E10] setDefaultMediaLibrary:defaultMediaLibrary];
 
   return v16;
 }
 
-- (id)_handlePlaylistContentForEntify:(id)a3 style:(int)a4 revision:(id)a5
+- (id)_handlePlaylistContentForEntify:(id)entify style:(int)style revision:(id)revision
 {
   v82 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  entifyCopy = entify;
+  revisionCopy = revision;
   if (gLogObjects)
   {
     v10 = gNumLogObjects < 1;
@@ -336,11 +336,11 @@ LABEL_34:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v77 = v8;
+    v77 = entifyCopy;
     v78 = 1024;
-    v79 = a4;
+    styleCopy6 = style;
     v80 = 2112;
-    v81 = v9;
+    v81 = revisionCopy;
     _os_log_impl(&dword_2335D3000, v12, OS_LOG_TYPE_INFO, "_handlePlaylistContentForEntify: entify=%@ contentStyle=%d revision=%@", buf, 0x1Cu);
   }
 
@@ -352,14 +352,14 @@ LABEL_34:
   }
 
   v13 = dispatch_semaphore_create(0);
-  v14 = v8;
-  if (a4 == 1)
+  v14 = entifyCopy;
+  if (style == 1)
   {
     v58 = 1;
     [0 setContentStyle:1];
     v60 = 0;
 LABEL_19:
-    v15 = [objc_alloc(MEMORY[0x277CE82C0]) initWithMediaLibrary:self->_UIDString persistentID:objc_msgSend(v14 revision:{"persistentID"), v9}];
+    v15 = [objc_alloc(MEMORY[0x277CE82C0]) initWithMediaLibrary:self->_UIDString persistentID:objc_msgSend(v14 revision:{"persistentID"), revisionCopy}];
     v16 = [(ACCMediaLibraryShimInfo *)self getPlaylistItems:v14];
     if (v16)
     {
@@ -390,9 +390,9 @@ LABEL_19:
           *buf = 138412802;
           v77 = v59;
           v78 = 1024;
-          v79 = a4;
+          styleCopy6 = style;
           v80 = 2112;
-          v81 = v9;
+          v81 = revisionCopy;
           _os_log_impl(&dword_2335D3000, v19, OS_LOG_TYPE_INFO, "_handlePlaylistContentForEntify: entify=%@ contentStyle=%d revision=%@, cannot find ACC_ML_PLAYLIST_CONTENT_ITEM_PROPERTIES", buf, 0x1Cu);
         }
       }
@@ -487,9 +487,9 @@ LABEL_55:
           *buf = 138412802;
           v77 = v59;
           v78 = 1024;
-          v79 = a4;
+          styleCopy6 = style;
           v80 = 2112;
-          v81 = v9;
+          v81 = revisionCopy;
           _os_log_impl(&dword_2335D3000, v34, OS_LOG_TYPE_INFO, "_handlePlaylistContentForEntify: entify=%@ contentStyle=%d revision=%@, PlaylistContentStylePersistentIDs", buf, 0x1Cu);
         }
 
@@ -550,9 +550,9 @@ LABEL_55:
           *buf = 138412802;
           v77 = v59;
           v78 = 1024;
-          v79 = a4;
+          styleCopy6 = style;
           v80 = 2112;
-          v81 = v9;
+          v81 = revisionCopy;
           _os_log_impl(&dword_2335D3000, v35, OS_LOG_TYPE_INFO, "_handlePlaylistContentForEntify: entify=%@ contentStyle=%d revision=%@, PlaylistContentStyleRecords", buf, 0x1Cu);
         }
 
@@ -627,9 +627,9 @@ LABEL_55:
           *buf = 138412802;
           v77 = v14;
           v78 = 1024;
-          v79 = a4;
+          styleCopy6 = style;
           v80 = 2112;
-          v81 = v9;
+          v81 = revisionCopy;
           _os_log_impl(&dword_2335D3000, v22, OS_LOG_TYPE_INFO, "_handlePlaylistContentForEntify: EMPTY! entify=%@ contentStyle=%d revision=%@, PlaylistContentStyleRecords", buf, 0x1Cu);
         }
 
@@ -660,9 +660,9 @@ LABEL_55:
           *buf = 138412802;
           v77 = v14;
           v78 = 1024;
-          v79 = a4;
+          styleCopy6 = style;
           v80 = 2112;
-          v81 = v9;
+          v81 = revisionCopy;
           _os_log_impl(&dword_2335D3000, v23, OS_LOG_TYPE_INFO, "_handlePlaylistContentForEntify: EMPTY! entify=%@ contentStyle=%d revision=%@, PlaylistContentStylePersistentIDs", buf, 0x1Cu);
         }
 
@@ -676,7 +676,7 @@ LABEL_55:
     goto LABEL_111;
   }
 
-  if (a4 == 3)
+  if (style == 3)
   {
     v60 = 0;
     v58 = 0;
@@ -684,7 +684,7 @@ LABEL_55:
   }
 
   v15 = 0;
-  if (a4 == 2)
+  if (style == 2)
   {
     v58 = 0;
     v60 = 1;
@@ -699,20 +699,20 @@ LABEL_112:
   return v15;
 }
 
-- (id)_handleMediaLibraryPlaylistUpdate:(id)a3 forLibrary:(id)a4 forProperties:(id)a5 success:(BOOL *)a6
+- (id)_handleMediaLibraryPlaylistUpdate:(id)update forLibrary:(id)library forProperties:(id)properties success:(BOOL *)success
 {
   v76 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!a6)
+  updateCopy = update;
+  libraryCopy = library;
+  propertiesCopy = properties;
+  if (!success)
   {
     ACCMediaLibraryShimUIDString_cold_1();
   }
 
-  v12 = v11;
-  *a6 = 1;
-  v13 = [v9 entity];
+  v12 = propertiesCopy;
+  *success = 1;
+  entity = [updateCopy entity];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -735,7 +735,7 @@ LABEL_112:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v74 = v13;
+      v74 = entity;
       _os_log_impl(&dword_2335D3000, v18, OS_LOG_TYPE_DEFAULT, "_handleMediaLibraryPlaylistUpdate: NOT playlist entity=%@", buf, 0xCu);
     }
 
@@ -745,12 +745,12 @@ LABEL_112:
   }
 
   v14 = *MEMORY[0x277CD5918];
-  v15 = [v13 valueForProperty:*MEMORY[0x277CD5918]];
+  v15 = [entity valueForProperty:*MEMORY[0x277CD5918]];
   if ([v15 BOOLValue])
   {
-    v16 = [(ACCMediaLibraryShim *)self->_context isGeniusMixesSupported];
+    isGeniusMixesSupported = [(ACCMediaLibraryShim *)self->_context isGeniusMixesSupported];
 
-    if (!v16)
+    if (!isGeniusMixesSupported)
     {
       if (gLogObjects && gNumLogObjects >= 1)
       {
@@ -792,17 +792,17 @@ LABEL_82:
   }
 
   v64 = v14;
-  v21 = [v13 valueForProperty:v14];
+  v21 = [entity valueForProperty:v14];
   if ([v21 BOOLValue])
   {
   }
 
   else
   {
-    v22 = [v13 valueForProperty:*MEMORY[0x277CD5920]];
-    v23 = [v22 BOOLValue];
+    v22 = [entity valueForProperty:*MEMORY[0x277CD5920]];
+    bOOLValue = [v22 BOOLValue];
 
-    if (v23)
+    if (bOOLValue)
     {
       if (gLogObjects && gNumLogObjects >= 1)
       {
@@ -831,10 +831,10 @@ LABEL_82:
     }
   }
 
-  if ([v9 deletionType])
+  if ([updateCopy deletionType])
   {
-    v24 = [v13 persistentID];
-    v20 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v24];
+    persistentID = [entity persistentID];
+    v20 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:persistentID];
     v66 = 0;
 LABEL_26:
     v25 = 0;
@@ -843,23 +843,23 @@ LABEL_26:
 
   v28 = objc_alloc(MEMORY[0x277CE82B8]);
   UIDString = self->_UIDString;
-  v30 = [v13 persistentID];
-  v31 = [v9 anchor];
-  v25 = [v28 initWithMediaLibrary:UIDString persistentID:v30 revision:v31];
+  persistentID2 = [entity persistentID];
+  anchor = [updateCopy anchor];
+  v25 = [v28 initWithMediaLibrary:UIDString persistentID:persistentID2 revision:anchor];
 
   if (self->_requestedTransferID)
   {
     [v25 setContentStyle:{objc_msgSend(v25, "contentStyle") | 1}];
   }
 
-  v61 = v10;
+  v61 = libraryCopy;
   v32 = v64;
   if (self->_requestedMetaList && self->_requestedMetaProperties)
   {
     [v25 setContentStyle:{objc_msgSend(v25, "contentStyle") | 2}];
   }
 
-  v63 = v9;
+  v63 = updateCopy;
   v71 = 0u;
   v72 = 0u;
   v69 = 0u;
@@ -879,7 +879,7 @@ LABEL_26:
   v37 = *MEMORY[0x277CD5910];
   v68 = *MEMORY[0x277CD5938];
   v67 = *MEMORY[0x277CD5930];
-  v62 = v13;
+  v62 = entity;
   do
   {
     for (i = 0; i != v35; ++i)
@@ -889,13 +889,13 @@ LABEL_26:
         objc_enumerationMutation(v33);
       }
 
-      v39 = [*(*(&v69 + 1) + 8 * i) unsignedIntValue];
-      if (v39 > 3)
+      unsignedIntValue = [*(*(&v69 + 1) + 8 * i) unsignedIntValue];
+      if (unsignedIntValue > 3)
       {
-        switch(v39)
+        switch(unsignedIntValue)
         {
           case 4:
-            v44 = [v13 valueForProperty:v37];
+            v44 = [entity valueForProperty:v37];
             v41 = v44;
             if (v44)
             {
@@ -909,47 +909,47 @@ LABEL_26:
               continue;
             }
 
-            v41 = [v13 valueForProperty:v32];
+            v41 = [entity valueForProperty:v32];
             v46 = v37;
-            v47 = [v13 valueForProperty:v37];
+            v47 = [entity valueForProperty:v37];
             if ([v41 BOOLValue] & 1) != 0 || (objc_msgSend(v47, "BOOLValue"))
             {
-              v48 = 0;
+              contentStyle2 = 0;
             }
 
             else
             {
-              v49 = [v25 contentStyle];
-              v50 = [v63 anchor];
-              v51 = v13;
-              v52 = v50;
-              v53 = [(ACCMediaLibraryShimInfo *)self _handlePlaylistContentForEntify:v51 style:v49 revision:v50];
+              contentStyle = [v25 contentStyle];
+              anchor2 = [v63 anchor];
+              v51 = entity;
+              v52 = anchor2;
+              v53 = [(ACCMediaLibraryShimInfo *)self _handlePlaylistContentForEntify:v51 style:contentStyle revision:anchor2];
 
               [v25 setContent:v53];
-              v54 = [v25 content];
+              content = [v25 content];
 
-              if (v54)
+              if (content)
               {
-                v48 = [v53 contentStyle];
+                contentStyle2 = [v53 contentStyle];
               }
 
               else
               {
-                v48 = 0;
+                contentStyle2 = 0;
               }
 
               v66 = v53;
               v32 = v64;
-              v13 = v62;
+              entity = v62;
             }
 
-            [v25 setContentStyle:v48];
+            [v25 setContentStyle:contentStyle2];
 
             v37 = v46;
             break;
           case 8:
-            v42 = [v13 playlistAttributes];
-            v43 = [MEMORY[0x277CCABB0] numberWithBool:(v42 >> 1) & 1];
+            playlistAttributes = [entity playlistAttributes];
+            v43 = [MEMORY[0x277CCABB0] numberWithBool:(playlistAttributes >> 1) & 1];
             v41 = v43;
             if (v43)
             {
@@ -964,10 +964,10 @@ LABEL_26:
 
       else
       {
-        switch(v39)
+        switch(unsignedIntValue)
         {
           case 1:
-            v41 = [v13 valueForProperty:v67];
+            v41 = [entity valueForProperty:v67];
             if (v41)
             {
               [v25 setName:v41];
@@ -975,7 +975,7 @@ LABEL_26:
 
             break;
           case 2:
-            v45 = [v13 valueForProperty:v68];
+            v45 = [entity valueForProperty:v68];
             v41 = v45;
             if (v45)
             {
@@ -984,7 +984,7 @@ LABEL_26:
 
             break;
           case 3:
-            v40 = [v13 valueForProperty:v32];
+            v40 = [entity valueForProperty:v32];
             v41 = v40;
             if (v40)
             {
@@ -1005,9 +1005,9 @@ LABEL_26:
 LABEL_87:
 
   v20 = 0;
-  v9 = v63;
+  updateCopy = v63;
   v12 = v60;
-  v10 = v61;
+  libraryCopy = v61;
 LABEL_27:
   if (v25)
   {
@@ -1027,13 +1027,13 @@ LABEL_83:
   return v27;
 }
 
-- (id)_handleMediaLibraryItemUpdate:(id)a3 forLibrary:(id)a4 forProperties:(id)a5 success:(BOOL *)a6 forceDelete:(BOOL)a7
+- (id)_handleMediaLibraryItemUpdate:(id)update forLibrary:(id)library forProperties:(id)properties success:(BOOL *)success forceDelete:(BOOL)delete
 {
   v76 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = [v11 entity];
-  *a6 = 1;
+  updateCopy = update;
+  propertiesCopy = properties;
+  entity = [updateCopy entity];
+  *success = 1;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1056,27 +1056,27 @@ LABEL_83:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v74 = v13;
+      v74 = entity;
       _os_log_impl(&dword_2335D3000, v16, OS_LOG_TYPE_DEFAULT, "_handleMediaLibraryItemUpdate: NOT mediaItem entity=%@", buf, 0xCu);
     }
 
     goto LABEL_14;
   }
 
-  if (a7 || [v11 deletionType])
+  if (delete || [updateCopy deletionType])
   {
-    v14 = [v13 persistentID];
-    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v14];
+    persistentID = [entity persistentID];
+    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:persistentID];
 LABEL_15:
     v18 = 0;
     goto LABEL_16;
   }
 
-  v23 = [v13 valueForProperty:*MEMORY[0x277CD57C8]];
-  v24 = [v23 integerValue];
+  v23 = [entity valueForProperty:*MEMORY[0x277CD57C8]];
+  integerValue = [v23 integerValue];
 
-  v68 = v24;
-  if ((v24 & 0xCF7) == 0)
+  v68 = integerValue;
+  if ((integerValue & 0xCF7) == 0)
   {
 LABEL_14:
     v15 = 0;
@@ -1085,16 +1085,16 @@ LABEL_14:
 
   v25 = objc_alloc(MEMORY[0x277CE82A8]);
   UIDString = self->_UIDString;
-  v27 = [v13 persistentID];
-  v28 = [v11 anchor];
-  v18 = [v25 initWithMediaLibrary:UIDString persistentID:v27 revision:v28];
+  persistentID2 = [entity persistentID];
+  anchor = [updateCopy anchor];
+  v18 = [v25 initWithMediaLibrary:UIDString persistentID:persistentID2 revision:anchor];
 
   v71 = 0u;
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v49 = v12;
-  v29 = v12;
+  v49 = propertiesCopy;
+  v29 = propertiesCopy;
   v30 = [v29 countByEnumeratingWithState:&v69 objects:v75 count:16];
   if (v30)
   {
@@ -1131,7 +1131,7 @@ LABEL_14:
         switch([*(*(&v69 + 1) + 8 * i) unsignedIntValue])
         {
           case 1u:
-            v35 = [v13 valueForProperty:v33];
+            v35 = [entity valueForProperty:v33];
             if (v35)
             {
               [v18 setTitle:v35];
@@ -1156,7 +1156,7 @@ LABEL_14:
 
             continue;
           case 3u:
-            v39 = [v13 valueForProperty:v50];
+            v39 = [entity valueForProperty:v50];
             v35 = v39;
             if (v39)
             {
@@ -1165,7 +1165,7 @@ LABEL_14:
 
             goto LABEL_71;
           case 4u:
-            v43 = [v13 valueForProperty:v51];
+            v43 = [entity valueForProperty:v51];
             v35 = v43;
             if (v43)
             {
@@ -1175,7 +1175,7 @@ LABEL_14:
 
             goto LABEL_71;
           case 5u:
-            v45 = [v13 valueForProperty:v52];
+            v45 = [entity valueForProperty:v52];
             v35 = v45;
             if (v45)
             {
@@ -1184,7 +1184,7 @@ LABEL_14:
 
             goto LABEL_71;
           case 6u:
-            v35 = [v13 valueForProperty:v53];
+            v35 = [entity valueForProperty:v53];
             if (v35)
             {
               [v18 setAlbumTitle:v35];
@@ -1192,7 +1192,7 @@ LABEL_14:
 
             goto LABEL_71;
           case 7u:
-            v40 = [v13 valueForProperty:v54];
+            v40 = [entity valueForProperty:v54];
             v35 = v40;
             if (v40)
             {
@@ -1201,7 +1201,7 @@ LABEL_14:
 
             goto LABEL_71;
           case 8u:
-            v41 = [v13 valueForProperty:v55];
+            v41 = [entity valueForProperty:v55];
             v35 = v41;
             if (v41)
             {
@@ -1210,7 +1210,7 @@ LABEL_14:
 
             goto LABEL_71;
           case 9u:
-            v47 = [v13 valueForProperty:v56];
+            v47 = [entity valueForProperty:v56];
             v35 = v47;
             if (v47)
             {
@@ -1219,7 +1219,7 @@ LABEL_14:
 
             goto LABEL_71;
           case 0xAu:
-            v46 = [v13 valueForProperty:v57];
+            v46 = [entity valueForProperty:v57];
             v35 = v46;
             if (v46)
             {
@@ -1228,7 +1228,7 @@ LABEL_14:
 
             goto LABEL_71;
           case 0xBu:
-            v37 = [v13 valueForProperty:v58];
+            v37 = [entity valueForProperty:v58];
             v35 = v37;
             if (v37)
             {
@@ -1237,7 +1237,7 @@ LABEL_14:
 
             goto LABEL_71;
           case 0xCu:
-            v35 = [v13 valueForProperty:v59];
+            v35 = [entity valueForProperty:v59];
             if (v35)
             {
               [v18 setArtist:v35];
@@ -1245,7 +1245,7 @@ LABEL_14:
 
             goto LABEL_71;
           case 0xDu:
-            v38 = [v13 valueForProperty:v60];
+            v38 = [entity valueForProperty:v60];
             v35 = v38;
             if (v38)
             {
@@ -1254,7 +1254,7 @@ LABEL_14:
 
             goto LABEL_71;
           case 0xEu:
-            v35 = [v13 valueForProperty:v61];
+            v35 = [entity valueForProperty:v61];
             if (v35)
             {
               [v18 setAlbumArtist:v35];
@@ -1262,7 +1262,7 @@ LABEL_14:
 
             goto LABEL_71;
           case 0xFu:
-            v42 = [v13 valueForProperty:v62];
+            v42 = [entity valueForProperty:v62];
             v35 = v42;
             if (v42)
             {
@@ -1271,7 +1271,7 @@ LABEL_14:
 
             goto LABEL_71;
           case 0x10u:
-            v35 = [v13 valueForProperty:v63];
+            v35 = [entity valueForProperty:v63];
             if (v35)
             {
               [v18 setGenre:v35];
@@ -1279,7 +1279,7 @@ LABEL_14:
 
             goto LABEL_71;
           case 0x11u:
-            v48 = [v13 valueForProperty:v64];
+            v48 = [entity valueForProperty:v64];
             v35 = v48;
             if (v48)
             {
@@ -1288,7 +1288,7 @@ LABEL_14:
 
             goto LABEL_71;
           case 0x12u:
-            v35 = [v13 valueForProperty:v65];
+            v35 = [entity valueForProperty:v65];
             if (v35)
             {
               [v18 setComposer:v35];
@@ -1296,7 +1296,7 @@ LABEL_14:
 
             goto LABEL_71;
           case 0x13u:
-            v36 = [v13 valueForProperty:v66];
+            v36 = [entity valueForProperty:v66];
             v35 = v36;
             if (v36)
             {
@@ -1305,11 +1305,11 @@ LABEL_14:
 
             goto LABEL_71;
           case 0x19u:
-            v35 = [v13 valueForProperty:v67];
+            v35 = [entity valueForProperty:v67];
             [v18 setLocal:{objc_msgSend(v35, "BOOLValue")}];
             goto LABEL_71;
           case 0x1Bu:
-            v35 = [v13 chaptersOfType:1];
+            v35 = [entity chaptersOfType:1];
             [v18 setChapterCount:{objc_msgSend(v35, "count")}];
 LABEL_71:
 
@@ -1326,7 +1326,7 @@ LABEL_71:
   }
 
   v15 = 0;
-  v12 = v49;
+  propertiesCopy = v49;
 LABEL_16:
   if (v18)
   {
@@ -1344,24 +1344,24 @@ LABEL_16:
   return v19;
 }
 
-- (BOOL)_isVisibleUpdate:(id)a3
+- (BOOL)_isVisibleUpdate:(id)update
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  updateCopy = update;
+  v4 = updateCopy;
+  if (updateCopy)
   {
-    if ([v3 deletionType])
+    if ([updateCopy deletionType])
     {
       v5 = 1;
     }
 
     else
     {
-      v6 = [v4 entity];
+      entity = [v4 entity];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [v6 valueForProperty:*MEMORY[0x277CD5918]];
+        v7 = [entity valueForProperty:*MEMORY[0x277CD5918]];
         if ([v7 BOOLValue])
         {
 
@@ -1370,10 +1370,10 @@ LABEL_16:
 
         else
         {
-          v10 = [v6 valueForProperty:*MEMORY[0x277CD5920]];
-          v11 = [v10 BOOLValue];
+          v10 = [entity valueForProperty:*MEMORY[0x277CD5920]];
+          bOOLValue = [v10 BOOLValue];
 
-          v5 = v11 ^ 1;
+          v5 = bOOLValue ^ 1;
         }
       }
 
@@ -1382,10 +1382,10 @@ LABEL_16:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v8 = [v6 valueForProperty:*MEMORY[0x277CD57C8]];
-          v9 = [v8 integerValue];
+          v8 = [entity valueForProperty:*MEMORY[0x277CD57C8]];
+          integerValue = [v8 integerValue];
 
-          v5 = (v9 & 0x1CFF) != 0;
+          v5 = (integerValue & 0x1CFF) != 0;
         }
 
         else
@@ -1404,11 +1404,11 @@ LABEL_16:
   return v5 & 1;
 }
 
-- (int64_t)_checkAndWaitForWindowOk:(int64_t)a3
+- (int64_t)_checkAndWaitForWindowOk:(int64_t)ok
 {
-  v3 = a3;
+  okCopy = ok;
   v16 = *MEMORY[0x277D85DE8];
-  if (a3 == 2)
+  if (ok == 2)
   {
     waitForWindowSem = self->_waitForWindowSem;
     v6 = dispatch_time(0, 5000000000);
@@ -1448,14 +1448,14 @@ LABEL_16:
         _os_log_impl(&dword_2335D3000, v8, OS_LOG_TYPE_INFO, "_checkAndWaitForWindowOk: lastUpdateResult=%ld, not _enableLibraryUpdate after waiting on _waitForWindowSem", &v14, 0xCu);
       }
 
-      v3 = 3;
+      okCopy = 3;
     }
 
     else
     {
       if (!v7)
       {
-        v3 = 2;
+        okCopy = 2;
         goto LABEL_20;
       }
 
@@ -1478,26 +1478,26 @@ LABEL_16:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         v14 = 134217984;
-        v3 = 2;
+        okCopy = 2;
         v15 = 2;
         _os_log_impl(&dword_2335D3000, v8, OS_LOG_TYPE_INFO, "_checkAndWaitForWindowOk: lastUpdateResult=%ld, timeout waiting on _waitForWindowSem", &v14, 0xCu);
       }
 
       else
       {
-        v3 = 2;
+        okCopy = 2;
       }
     }
   }
 
 LABEL_20:
   v11 = *MEMORY[0x277D85DE8];
-  return v3;
+  return okCopy;
 }
 
-- (int64_t)_attemptUpdate:(id)a3
+- (int64_t)_attemptUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = 0;
   isShuttingDown = self->_isShuttingDown;
   while (!isShuttingDown)
@@ -1505,7 +1505,7 @@ LABEL_20:
     v7 = v5;
     if (self->_enableLibraryUpdate)
     {
-      v8 = [(ACCMediaLibraryShimInfo *)self _checkAndWaitForWindowOk:v4[2](v4)];
+      v8 = [(ACCMediaLibraryShimInfo *)self _checkAndWaitForWindowOk:updateCopy[2](updateCopy)];
       if (self->_isShuttingDown)
       {
         break;
@@ -1535,15 +1535,15 @@ LABEL_12:
   return v7;
 }
 
-- (id)_beginMediaLibraryUpdatesWithAnchor:(id)a3 validity:(id)a4
+- (id)_beginMediaLibraryUpdatesWithAnchor:(id)anchor validity:(id)validity
 {
   v369 = *MEMORY[0x277D85DE8];
-  v279 = a3;
-  v277 = a4;
-  v290 = self;
+  anchorCopy = anchor;
+  validityCopy = validity;
+  selfCopy = self;
   obj = [self->_mpMediaLibrary _syncValidity];
-  v8 = [(ACCMediaLibraryShim *)self->_context measureMemoryUsage];
-  v9 = [v8 BOOLValue];
+  measureMemoryUsage = [(ACCMediaLibraryShim *)self->_context measureMemoryUsage];
+  bOOLValue = [measureMemoryUsage BOOLValue];
 
   if (gLogObjects && gNumLogObjects >= 1)
   {
@@ -1564,17 +1564,17 @@ LABEL_12:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 67109890;
-    *v355 = v9 ^ 1;
+    *v355 = bOOLValue ^ 1;
     *&v355[4] = 2112;
-    *&v355[6] = v279;
+    *&v355[6] = anchorCopy;
     *&v355[14] = 2112;
-    *&v355[16] = v277;
+    *&v355[16] = validityCopy;
     *&v355[24] = 2112;
-    *&v355[26] = v290;
+    *&v355[26] = selfCopy;
     _os_log_impl(&dword_2335D3000, v10, OS_LOG_TYPE_INFO, "_beginMediaLibraryUpdatesWithAnchor: bMeasureMemoryUsage=%d anchorTo=%@ validity=%@  %@", buf, 0x26u);
   }
 
-  if (v290->_isShuttingDown)
+  if (selfCopy->_isShuttingDown)
   {
     if (gLogObjects && gNumLogObjects >= 1)
     {
@@ -1596,9 +1596,9 @@ LABEL_12:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      *v355 = v279;
+      *v355 = anchorCopy;
       *&v355[8] = 2112;
-      *&v355[10] = v277;
+      *&v355[10] = validityCopy;
       _os_log_impl(&dword_2335D3000, v12, OS_LOG_TYPE_INFO, "_beginMediaLibraryUpdatesWithAnchor: anchorTo=%@ validity=%@ ShuttingDown, ignore", buf, 0x16u);
     }
 
@@ -1606,11 +1606,11 @@ LABEL_12:
     goto LABEL_372;
   }
 
-  v290->_processingDiffUpdate = 1;
+  selfCopy->_processingDiffUpdate = 1;
   v278 = GetMediaLibraryHelper();
   v272 = [v278 getFilteredMediaTypesMask:7423];
-  v13 = v279 == 0;
-  if (!v279)
+  v13 = anchorCopy == 0;
+  if (!anchorCopy)
   {
     if (gLogObjects && gNumLogObjects >= 1)
     {
@@ -1633,19 +1633,19 @@ LABEL_12:
       *buf = 138412546;
       *v355 = 0;
       *&v355[8] = 2112;
-      *&v355[10] = v277;
+      *&v355[10] = validityCopy;
       _os_log_impl(&dword_2335D3000, v14, OS_LOG_TYPE_INFO, "_beginMediaLibraryUpdatesWithAnchor: Begin Full Database Update. anchorTo=%@ validity=%@", buf, 0x16u);
     }
   }
 
-  if ([obj isEqualToString:v277])
+  if ([obj isEqualToString:validityCopy])
   {
-    v18 = v279;
+    v18 = anchorCopy;
   }
 
   else
   {
-    v19 = v279;
+    v19 = anchorCopy;
     if (gLogObjects && gNumLogObjects >= 1)
     {
       v20 = *gLogObjects;
@@ -1656,7 +1656,7 @@ LABEL_12:
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         [ACCMediaLibraryShimInfo _getUIDString];
-        v19 = v279;
+        v19 = anchorCopy;
       }
 
       v20 = MEMORY[0x277D86220];
@@ -1668,18 +1668,18 @@ LABEL_12:
       *buf = 138412802;
       *v355 = v19;
       *&v355[8] = 2112;
-      *&v355[10] = v277;
+      *&v355[10] = validityCopy;
       *&v355[18] = 2112;
       *&v355[20] = obj;
       _os_log_impl(&dword_2335D3000, v20, OS_LOG_TYPE_INFO, "_beginMediaLibraryUpdatesWithAnchor: Begin Full Database Update. anchorTo=%@ validity=%@ libraryValidity=%@", buf, 0x20u);
     }
 
-    objc_storeStrong(&v290->_syncValidityPersistentID, obj);
+    objc_storeStrong(&selfCopy->_syncValidityPersistentID, obj);
     v18 = @"0";
     v13 = 1;
   }
 
-  v279 = v18;
+  anchorCopy = v18;
   if (gLogObjects && gNumLogObjects >= 1)
   {
     v22 = *gLogObjects;
@@ -1727,8 +1727,8 @@ LABEL_12:
   v329 = &v328;
   v330 = 0x2020000000;
   v331 = 0;
-  v24 = [(ACCMediaLibraryShim *)v290->_context measureMemoryUsage];
-  if (![v24 BOOLValue])
+  measureMemoryUsage2 = [(ACCMediaLibraryShim *)selfCopy->_context measureMemoryUsage];
+  if (![measureMemoryUsage2 BOOLValue])
   {
     v282 = 0;
 LABEL_60:
@@ -1736,20 +1736,20 @@ LABEL_60:
     goto LABEL_61;
   }
 
-  v25 = [(ACCMediaLibraryShim *)v290->_context memUse];
-  v26 = v25 == 0;
+  memUse = [(ACCMediaLibraryShim *)selfCopy->_context memUse];
+  v26 = memUse == 0;
 
   if (!v26)
   {
-    v27 = [(ACCMediaLibraryShim *)v290->_context memUse];
-    [v27 mark:@"mlUpdateMark"];
+    memUse2 = [(ACCMediaLibraryShim *)selfCopy->_context memUse];
+    [memUse2 mark:@"mlUpdateMark"];
 
-    v28 = [(ACCMediaLibraryShim *)v290->_context memUse];
-    v282 = [v28 getMark:@"mlUpdateMark"];
+    memUse3 = [(ACCMediaLibraryShim *)selfCopy->_context memUse];
+    v282 = [memUse3 getMark:@"mlUpdateMark"];
 
     if (gLogObjects && gNumLogObjects >= 1)
     {
-      v24 = *gLogObjects;
+      measureMemoryUsage2 = *gLogObjects;
     }
 
     else
@@ -1759,27 +1759,27 @@ LABEL_60:
         [ACCMediaLibraryShimInfo _getUIDString];
       }
 
-      v24 = MEMORY[0x277D86220];
+      measureMemoryUsage2 = MEMORY[0x277D86220];
       v29 = MEMORY[0x277D86220];
     }
 
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(measureMemoryUsage2, OS_LOG_TYPE_INFO))
     {
-      v30 = [v282 residentMem];
-      v31 = [v30 start];
-      v32 = [v282 virtualMem];
-      v5 = [v32 start];
-      v4 = [v282 physFootprintMem];
-      v33 = [v4 start];
+      residentMem = [v282 residentMem];
+      start = [residentMem start];
+      virtualMem = [v282 virtualMem];
+      start2 = [virtualMem start];
+      physFootprintMem = [v282 physFootprintMem];
+      start3 = [physFootprintMem start];
       *buf = 138413058;
-      *v355 = v279;
+      *v355 = anchorCopy;
       *&v355[8] = 2048;
-      *&v355[10] = v31;
+      *&v355[10] = start;
       *&v355[18] = 2048;
-      *&v355[20] = v5;
+      *&v355[20] = start2;
       *&v355[28] = 2048;
-      *&v355[30] = v33;
-      _os_log_impl(&dword_2335D3000, v24, OS_LOG_TYPE_INFO, "_beginMediaLibraryUpdatesWithAnchor: anchorTo=%@ memUse:[residentStart=%llu virtualStart=%llu physFootprintStart=%llu]", buf, 0x2Au);
+      *&v355[30] = start3;
+      _os_log_impl(&dword_2335D3000, measureMemoryUsage2, OS_LOG_TYPE_INFO, "_beginMediaLibraryUpdatesWithAnchor: anchorTo=%@ memUse:[residentStart=%llu virtualStart=%llu physFootprintStart=%llu]", buf, 0x2Au);
     }
 
     goto LABEL_60;
@@ -1789,22 +1789,22 @@ LABEL_60:
 LABEL_61:
   v34 = objc_alloc_init(MEMORY[0x277CBEB18]);
   *(v337 + 24) = 1;
-  mpMediaLibrary = v290->_mpMediaLibrary;
+  mpMediaLibrary = selfCopy->_mpMediaLibrary;
   v323[0] = MEMORY[0x277D85DD0];
   v323[1] = 3221225472;
   v323[2] = __72__ACCMediaLibraryShimInfo__beginMediaLibraryUpdatesWithAnchor_validity___block_invoke;
   v323[3] = &unk_2789E3338;
-  v323[4] = v290;
+  v323[4] = selfCopy;
   v36 = v34;
   v324 = v36;
   v325 = &v346;
   v326 = &v340;
   v327 = &v336;
-  [mpMediaLibrary enumerateEntityChangesAfterSyncAnchor:v279 maximumRevisionType:1 usingBlock:v323];
+  [mpMediaLibrary enumerateEntityChangesAfterSyncAnchor:anchorCopy maximumRevisionType:1 usingBlock:v323];
   v37 = @"0";
-  if (v279)
+  if (anchorCopy)
   {
-    v37 = v279;
+    v37 = anchorCopy;
   }
 
   v288 = v37;
@@ -1843,7 +1843,7 @@ LABEL_61:
 
   if (v13)
   {
-    v42 = v290;
+    v42 = selfCopy;
     if (gLogObjects && gNumLogObjects >= 1)
     {
       v43 = *gLogObjects;
@@ -1854,7 +1854,7 @@ LABEL_61:
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         [ACCMediaLibraryShimInfo _getUIDString];
-        v42 = v290;
+        v42 = selfCopy;
       }
 
       v43 = MEMORY[0x277D86220];
@@ -1869,13 +1869,13 @@ LABEL_61:
       _os_log_impl(&dword_2335D3000, v43, OS_LOG_TYPE_INFO, "Full Updates! resetUpdate: %@", buf, 0xCu);
     }
 
-    v46 = [(ACCMediaLibraryShim *)v290->_context delegate];
-    v47 = [v46 provider];
-    [v47 resetUpdate:v290->_UIDString accessory:v290->_accessory];
+    delegate = [(ACCMediaLibraryShim *)selfCopy->_context delegate];
+    provider = [delegate provider];
+    [provider resetUpdate:selfCopy->_UIDString accessory:selfCopy->_accessory];
   }
 
-  v48 = v290;
-  if (v290->_sendPlayAllSongsCapable)
+  v48 = selfCopy;
+  if (selfCopy->_sendPlayAllSongsCapable)
   {
     if (gLogObjects)
     {
@@ -1888,7 +1888,7 @@ LABEL_61:
     }
 
     v50 = !v49;
-    if (v290->_libraryType)
+    if (selfCopy->_libraryType)
     {
       if (v50)
       {
@@ -1900,7 +1900,7 @@ LABEL_61:
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
           [ACCMediaLibraryShimInfo _getUIDString];
-          v48 = v290;
+          v48 = selfCopy;
         }
 
         v51 = MEMORY[0x277D86220];
@@ -1918,8 +1918,8 @@ LABEL_61:
         _os_log_impl(&dword_2335D3000, v51, OS_LOG_TYPE_INFO, "send type=%d PlayAllSongsCapable:NO UIDString=%@", buf, 0x12u);
       }
 
-      v56 = [(ACCMediaLibraryShim *)v290->_context delegate];
-      [v56 notify:v290->_UIDString stateChange:1 enabled:0];
+      delegate2 = [(ACCMediaLibraryShim *)selfCopy->_context delegate];
+      [delegate2 notify:selfCopy->_UIDString stateChange:1 enabled:0];
     }
 
     else
@@ -1934,7 +1934,7 @@ LABEL_61:
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
           [ACCMediaLibraryShimInfo _getUIDString];
-          v48 = v290;
+          v48 = selfCopy;
         }
 
         v52 = MEMORY[0x277D86220];
@@ -1952,12 +1952,12 @@ LABEL_61:
         _os_log_impl(&dword_2335D3000, v52, OS_LOG_TYPE_INFO, "send type=%d PlayAllSongsCapable:YES UIDString=%@", buf, 0x12u);
       }
 
-      v56 = [(ACCMediaLibraryShim *)v290->_context delegate];
-      [v56 notify:v290->_UIDString stateChange:1 enabled:1];
+      delegate2 = [(ACCMediaLibraryShim *)selfCopy->_context delegate];
+      [delegate2 notify:selfCopy->_UIDString stateChange:1 enabled:1];
     }
 
-    v48 = v290;
-    v290->_sendPlayAllSongsCapable = 0;
+    v48 = selfCopy;
+    selfCopy->_sendPlayAllSongsCapable = 0;
   }
 
   v281 = [(NSDictionary *)v48->_dbUpdateList objectForKey:@"PlaylistProperty"];
@@ -2033,7 +2033,7 @@ LABEL_61:
           objc_enumerationMutation(v283);
         }
 
-        if (!v290->_enableLibraryUpdate || v290->_isShuttingDown)
+        if (!selfCopy->_enableLibraryUpdate || selfCopy->_isShuttingDown)
         {
           v61 = v280 + v68;
           v62 = v286 + v68;
@@ -2049,17 +2049,17 @@ LABEL_61:
         }
 
         context = objc_autoreleasePoolPush();
-        v72 = [v70 deletionType];
-        v73 = v72;
-        if (v13 && (v72 || ![(ACCMediaLibraryShimInfo *)v290 _isVisibleUpdate:v70]))
+        deletionType = [v70 deletionType];
+        v73 = deletionType;
+        if (v13 && (deletionType || ![(ACCMediaLibraryShimInfo *)selfCopy _isVisibleUpdate:v70]))
         {
           [v70 anchor];
           LOBYTE(v13) = 1;
-          v288 = v5 = v288;
+          v288 = start2 = v288;
           goto LABEL_296;
         }
 
-        v5 = [v70 entity];
+        start2 = [v70 entity];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -2088,21 +2088,21 @@ LABEL_61:
 
           if (os_log_type_enabled(v76, OS_LOG_TYPE_DEBUG))
           {
-            v119 = v290->_UIDString;
-            v120 = [v70 anchor];
-            v121 = [v70 deletionType];
-            v122 = [v5 persistentID];
-            v4 = [v5 name];
+            v119 = selfCopy->_UIDString;
+            anchor = [v70 anchor];
+            deletionType2 = [v70 deletionType];
+            persistentID = [start2 persistentID];
+            physFootprintMem = [start2 name];
             *buf = 138413314;
             *v355 = v119;
             *&v355[8] = 2112;
-            *&v355[10] = v120;
+            *&v355[10] = anchor;
             *&v355[18] = 2048;
-            *&v355[20] = v121;
+            *&v355[20] = deletionType2;
             *&v355[28] = 2048;
-            *&v355[30] = v122;
+            *&v355[30] = persistentID;
             *&v355[38] = 2112;
-            *&v355[40] = v4;
+            *&v355[40] = physFootprintMem;
             _os_log_debug_impl(&dword_2335D3000, v76, OS_LOG_TYPE_DEBUG, "_beginMediaLibraryUpdatesWithAnchor: %@ revision=%@ deletionType=%ld playlist: %llu '%@'", buf, 0x34u);
           }
 
@@ -2138,17 +2138,17 @@ LABEL_61:
 
                 if (os_log_type_enabled(v84, OS_LOG_TYPE_DEBUG))
                 {
-                  v171 = v290->_UIDString;
-                  v172 = [v70 anchor];
-                  v173 = [v5 persistentID];
+                  v171 = selfCopy->_UIDString;
+                  anchor2 = [v70 anchor];
+                  persistentID2 = [start2 persistentID];
                   v174 = *(v333 + 24);
-                  accessory = v290->_accessory;
+                  accessory = selfCopy->_accessory;
                   *buf = 138413314;
                   *v355 = v171;
                   *&v355[8] = 2112;
-                  *&v355[10] = v172;
+                  *&v355[10] = anchor2;
                   *&v355[18] = 2048;
-                  *&v355[20] = v173;
+                  *&v355[20] = persistentID2;
                   *&v355[28] = 1024;
                   *&v355[30] = v174;
                   *&v355[34] = 2112;
@@ -2160,45 +2160,45 @@ LABEL_61:
                 v310[1] = 3221225472;
                 v310[2] = __72__ACCMediaLibraryShimInfo__beginMediaLibraryUpdatesWithAnchor_validity___block_invoke_92;
                 v310[3] = &unk_2789E3360;
-                v310[4] = v290;
+                v310[4] = selfCopy;
                 v310[5] = v70;
-                v311 = v5;
+                v311 = start2;
                 v312 = &v332;
                 v313 = &v328;
-                v114 = [(ACCMediaLibraryShimInfo *)v290 _attemptUpdate:v310];
+                v114 = [(ACCMediaLibraryShimInfo *)selfCopy _attemptUpdate:v310];
                 v115 = gLogObjects;
                 v116 = gNumLogObjects;
                 if (gLogObjects && gNumLogObjects >= 1)
                 {
-                  v4 = *gLogObjects;
+                  physFootprintMem = *gLogObjects;
                 }
 
                 else
                 {
-                  v4 = MEMORY[0x277D86220];
+                  physFootprintMem = MEMORY[0x277D86220];
                   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
                   {
                     *buf = 134218240;
                     *v355 = v115;
                     *&v355[8] = 1024;
                     *&v355[10] = v116;
-                    _os_log_error_impl(&dword_2335D3000, v4, OS_LOG_TYPE_ERROR, "Make sure you have called init_logging()!\ngLogObjects: %p, gNumLogObjects: %d", buf, 0x12u);
+                    _os_log_error_impl(&dword_2335D3000, physFootprintMem, OS_LOG_TYPE_ERROR, "Make sure you have called init_logging()!\ngLogObjects: %p, gNumLogObjects: %d", buf, 0x12u);
                   }
 
-                  v117 = v4;
+                  v117 = physFootprintMem;
                 }
 
-                if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+                if (os_log_type_enabled(physFootprintMem, OS_LOG_TYPE_DEBUG))
                 {
                   *buf = 134217984;
                   *v355 = v114;
-                  _os_log_debug_impl(&dword_2335D3000, v4, OS_LOG_TYPE_DEBUG, "_attemptUpdate result %ld", buf, 0xCu);
+                  _os_log_debug_impl(&dword_2335D3000, physFootprintMem, OS_LOG_TYPE_DEBUG, "_attemptUpdate result %ld", buf, 0xCu);
                 }
               }
 
               else
               {
-                v108 = [(ACCMediaLibraryShimInfo *)v290 _handleMediaLibraryPlaylistUpdate:v70 forLibrary:v277 forProperties:v281 success:&v350];
+                v108 = [(ACCMediaLibraryShimInfo *)selfCopy _handleMediaLibraryPlaylistUpdate:v70 forLibrary:validityCopy forProperties:v281 success:&v350];
                 v109 = gLogObjects;
                 v110 = gNumLogObjects;
                 if (gLogObjects && gNumLogObjects >= 1)
@@ -2224,14 +2224,14 @@ LABEL_61:
 
                 if (os_log_type_enabled(v111, OS_LOG_TYPE_DEBUG))
                 {
-                  v196 = v290->_UIDString;
-                  v197 = [v108 revision];
+                  v196 = selfCopy->_UIDString;
+                  revision = [v108 revision];
                   v198 = *(v333 + 24);
-                  v199 = v290->_accessory;
+                  v199 = selfCopy->_accessory;
                   *buf = 138413314;
                   *v355 = v196;
                   *&v355[8] = 2112;
-                  *&v355[10] = v197;
+                  *&v355[10] = revision;
                   *&v355[18] = 2112;
                   *&v355[20] = v108;
                   *&v355[28] = 1024;
@@ -2245,12 +2245,12 @@ LABEL_61:
                 v306[1] = 3221225472;
                 v306[2] = __72__ACCMediaLibraryShimInfo__beginMediaLibraryUpdatesWithAnchor_validity___block_invoke_94;
                 v306[3] = &unk_2789E3388;
-                v306[4] = v290;
-                v4 = v108;
-                v307 = v4;
+                v306[4] = selfCopy;
+                physFootprintMem = v108;
+                v307 = physFootprintMem;
                 v308 = &v332;
                 v309 = &v328;
-                v125 = [(ACCMediaLibraryShimInfo *)v290 _attemptUpdate:v306];
+                v125 = [(ACCMediaLibraryShimInfo *)selfCopy _attemptUpdate:v306];
                 v126 = gLogObjects;
                 v127 = gNumLogObjects;
                 if (gLogObjects && gNumLogObjects >= 1)
@@ -2280,7 +2280,7 @@ LABEL_61:
                   _os_log_debug_impl(&dword_2335D3000, v128, OS_LOG_TYPE_DEBUG, "_attemptUpdate result %ld", buf, 0xCu);
                 }
 
-                if (![v4 contentStyle]|| ([v4 content], v130 = objc_claimAutoreleasedReturnValue(), v131 = v130 == 0, v130, v131))
+                if (![physFootprintMem contentStyle]|| ([physFootprintMem content], v130 = objc_claimAutoreleasedReturnValue(), v131 = v130 == 0, v130, v131))
                 {
                   v135 = gLogObjects;
                   v136 = gNumLogObjects;
@@ -2307,23 +2307,23 @@ LABEL_61:
 
                   if (os_log_type_enabled(v137, OS_LOG_TYPE_INFO))
                   {
-                    v140 = v290->_UIDString;
-                    v141 = [v4 revision];
-                    if (v290->_requestedTransferID)
+                    v140 = selfCopy->_UIDString;
+                    revision2 = [physFootprintMem revision];
+                    if (selfCopy->_requestedTransferID)
                     {
                       v142 = 1;
                     }
 
                     else
                     {
-                      v142 = v290->_requestedMetaList && v290->_requestedMetaProperties;
+                      v142 = selfCopy->_requestedMetaList && selfCopy->_requestedMetaProperties;
                     }
 
-                    v176 = [v4 contentStyle];
-                    if (v176)
+                    contentStyle = [physFootprintMem contentStyle];
+                    if (contentStyle)
                     {
-                      v244 = [v4 content];
-                      v177 = v244 != 0;
+                      content = [physFootprintMem content];
+                      v177 = content != 0;
                     }
 
                     else
@@ -2334,13 +2334,13 @@ LABEL_61:
                     *buf = 138413058;
                     *v355 = v140;
                     *&v355[8] = 2112;
-                    *&v355[10] = v141;
+                    *&v355[10] = revision2;
                     *&v355[18] = 1024;
                     *&v355[20] = v142;
                     *&v355[24] = 1024;
                     *&v355[26] = v177;
                     _os_log_impl(&dword_2335D3000, v137, OS_LOG_TYPE_INFO, "update:%@ revision:%@ playlist content not requested(%d) or not available(%d)", buf, 0x22u);
-                    if (v176)
+                    if (contentStyle)
                     {
                     }
                   }
@@ -2373,17 +2373,17 @@ LABEL_61:
 
                   if (os_log_type_enabled(v134, OS_LOG_TYPE_DEBUG))
                   {
-                    v204 = v290->_UIDString;
-                    v205 = [v4 revision];
-                    v206 = [v4 content];
+                    v204 = selfCopy->_UIDString;
+                    revision3 = [physFootprintMem revision];
+                    content2 = [physFootprintMem content];
                     v207 = *(v333 + 24);
-                    v208 = v290->_accessory;
+                    v208 = selfCopy->_accessory;
                     *buf = 138413314;
                     *v355 = v204;
                     *&v355[8] = 2112;
-                    *&v355[10] = v205;
+                    *&v355[10] = revision3;
                     *&v355[18] = 2112;
-                    *&v355[20] = v206;
+                    *&v355[20] = content2;
                     *&v355[28] = 1024;
                     *&v355[30] = v207;
                     *&v355[34] = 2112;
@@ -2395,10 +2395,10 @@ LABEL_61:
                   v303[1] = 3221225472;
                   v303[2] = __72__ACCMediaLibraryShimInfo__beginMediaLibraryUpdatesWithAnchor_validity___block_invoke_95;
                   v303[3] = &unk_2789E33B0;
-                  v303[4] = v290;
-                  v304 = v4;
+                  v303[4] = selfCopy;
+                  v304 = physFootprintMem;
                   v305 = &v332;
-                  v156 = [(ACCMediaLibraryShimInfo *)v290 _attemptUpdate:v303];
+                  v156 = [(ACCMediaLibraryShimInfo *)selfCopy _attemptUpdate:v303];
                   v157 = gLogObjects;
                   v158 = gNumLogObjects;
                   if (gLogObjects && gNumLogObjects >= 1)
@@ -2463,29 +2463,29 @@ LABEL_61:
 
             if (os_log_type_enabled(v79, OS_LOG_TYPE_DEBUG))
             {
-              v267 = v290->_UIDString;
-              v143 = [v70 anchor];
-              v144 = [v70 deletionType];
-              v145 = [v5 persistentID];
-              v4 = [v5 title];
+              v267 = selfCopy->_UIDString;
+              anchor3 = [v70 anchor];
+              deletionType3 = [v70 deletionType];
+              persistentID3 = [start2 persistentID];
+              physFootprintMem = [start2 title];
               *buf = 138413314;
               *v355 = v267;
               *&v355[8] = 2112;
-              *&v355[10] = v143;
+              *&v355[10] = anchor3;
               *&v355[18] = 2048;
-              *&v355[20] = v144;
+              *&v355[20] = deletionType3;
               *&v355[28] = 2048;
-              *&v355[30] = v145;
+              *&v355[30] = persistentID3;
               *&v355[38] = 2112;
-              *&v355[40] = v4;
+              *&v355[40] = physFootprintMem;
               _os_log_debug_impl(&dword_2335D3000, v79, OS_LOG_TYPE_DEBUG, "_beginMediaLibraryUpdatesWithAnchor: %@ revision=%@ deletionType=%ld item: %llu '%@'", buf, 0x34u);
             }
 
             if ([v275 count])
             {
               LOBYTE(v350) = 1;
-              v4 = v5;
-              if ([v70 deletionType] || (-[NSObject existsInLibrary](v4, "existsInLibrary") & 1) == 0)
+              physFootprintMem = start2;
+              if ([v70 deletionType] || (-[NSObject existsInLibrary](physFootprintMem, "existsInLibrary") & 1) == 0)
               {
                 v94 = gLogObjects;
                 v95 = gNumLogObjects;
@@ -2512,17 +2512,17 @@ LABEL_61:
 
                 if (os_log_type_enabled(v96, OS_LOG_TYPE_DEBUG))
                 {
-                  v161 = v290->_UIDString;
-                  v162 = [v70 anchor];
-                  v163 = [v4 persistentID];
+                  v161 = selfCopy->_UIDString;
+                  anchor4 = [v70 anchor];
+                  persistentID4 = [physFootprintMem persistentID];
                   v164 = *(v333 + 24);
-                  v165 = v290->_accessory;
+                  v165 = selfCopy->_accessory;
                   *buf = 138413314;
                   *v355 = v161;
                   *&v355[8] = 2112;
-                  *&v355[10] = v162;
+                  *&v355[10] = anchor4;
                   *&v355[18] = 2048;
-                  *&v355[20] = v163;
+                  *&v355[20] = persistentID4;
                   *&v355[28] = 1024;
                   *&v355[30] = v164;
                   *&v355[34] = 2112;
@@ -2534,12 +2534,12 @@ LABEL_61:
                 v299[1] = 3221225472;
                 v299[2] = __72__ACCMediaLibraryShimInfo__beginMediaLibraryUpdatesWithAnchor_validity___block_invoke_96;
                 v299[3] = &unk_2789E3360;
-                v299[4] = v290;
+                v299[4] = selfCopy;
                 v299[5] = v70;
-                v300 = v4;
+                v300 = physFootprintMem;
                 v301 = &v332;
                 v302 = &v328;
-                v99 = [(ACCMediaLibraryShimInfo *)v290 _attemptUpdate:v299];
+                v99 = [(ACCMediaLibraryShimInfo *)selfCopy _attemptUpdate:v299];
                 v100 = gLogObjects;
                 v101 = gNumLogObjects;
                 if (gLogObjects && gNumLogObjects >= 1)
@@ -2572,7 +2572,7 @@ LABEL_61:
 
               else
               {
-                v90 = [(ACCMediaLibraryShimInfo *)v290 _handleMediaLibraryItemUpdate:v70 forLibrary:v277 forProperties:v275 success:&v350 forceDelete:v73 != 0];
+                v90 = [(ACCMediaLibraryShimInfo *)selfCopy _handleMediaLibraryItemUpdate:v70 forLibrary:validityCopy forProperties:v275 success:&v350 forceDelete:v73 != 0];
                 v91 = gLogObjects;
                 v92 = gNumLogObjects;
                 if (gLogObjects && gNumLogObjects >= 1)
@@ -2598,14 +2598,14 @@ LABEL_61:
 
                 if (os_log_type_enabled(v93, OS_LOG_TYPE_DEBUG))
                 {
-                  v200 = v290->_UIDString;
-                  v201 = [v90 revision];
+                  v200 = selfCopy->_UIDString;
+                  revision4 = [v90 revision];
                   v202 = *(v333 + 24);
-                  v203 = v290->_accessory;
+                  v203 = selfCopy->_accessory;
                   *buf = 138413314;
                   *v355 = v200;
                   *&v355[8] = 2112;
-                  *&v355[10] = v201;
+                  *&v355[10] = revision4;
                   *&v355[18] = 2112;
                   *&v355[20] = v90;
                   *&v355[28] = 1024;
@@ -2619,12 +2619,12 @@ LABEL_61:
                 v295[1] = 3221225472;
                 v295[2] = __72__ACCMediaLibraryShimInfo__beginMediaLibraryUpdatesWithAnchor_validity___block_invoke_97;
                 v295[3] = &unk_2789E3388;
-                v295[4] = v290;
+                v295[4] = selfCopy;
                 v148 = v90;
                 v296 = v148;
                 v297 = &v332;
                 v298 = &v328;
-                v149 = [(ACCMediaLibraryShimInfo *)v290 _attemptUpdate:v295];
+                v149 = [(ACCMediaLibraryShimInfo *)selfCopy _attemptUpdate:v295];
                 v150 = gLogObjects;
                 v151 = gNumLogObjects;
                 if (gLogObjects && gNumLogObjects >= 1)
@@ -2655,7 +2655,7 @@ LABEL_61:
                 }
               }
 
-              if ([v4 mediaType]&& (([v4 mediaType]& v272) == 0 || ([v4 mediaType]& 6) != 0))
+              if ([physFootprintMem mediaType]&& (([physFootprintMem mediaType]& v272) == 0 || ([physFootprintMem mediaType]& 6) != 0))
               {
                 v104 = gLogObjects;
                 v105 = gNumLogObjects;
@@ -2681,36 +2681,36 @@ LABEL_61:
 
                 if (os_log_type_enabled(v106, OS_LOG_TYPE_DEBUG))
                 {
-                  v270 = [ACCMediaLibraryShimInfo isItemAd:v4];
-                  v266 = [v4 existsInLibrary];
-                  v263 = [(ACCMediaLibraryShim *)v290->_context subscribedToAppleMusic];
-                  requestedMetaProperties = v290->_requestedMetaProperties;
-                  requestedMetaList = v290->_requestedMetaList;
-                  v191 = [v4 persistentID];
-                  v192 = [v4 title];
-                  v193 = [v4 artist];
-                  v194 = [v4 albumTitle];
-                  v195 = [v4 mediaType];
+                  v270 = [ACCMediaLibraryShimInfo isItemAd:physFootprintMem];
+                  existsInLibrary = [physFootprintMem existsInLibrary];
+                  subscribedToAppleMusic = [(ACCMediaLibraryShim *)selfCopy->_context subscribedToAppleMusic];
+                  requestedMetaProperties = selfCopy->_requestedMetaProperties;
+                  requestedMetaList = selfCopy->_requestedMetaList;
+                  persistentID5 = [physFootprintMem persistentID];
+                  title = [physFootprintMem title];
+                  artist = [physFootprintMem artist];
+                  albumTitle = [physFootprintMem albumTitle];
+                  mediaType = [physFootprintMem mediaType];
                   *buf = v241;
                   *v355 = v270;
                   *&v355[4] = 1024;
-                  *&v355[6] = v266;
+                  *&v355[6] = existsInLibrary;
                   *&v355[10] = 1024;
-                  *&v355[12] = v263;
+                  *&v355[12] = subscribedToAppleMusic;
                   *&v355[16] = 1024;
                   *&v355[18] = requestedMetaProperties;
                   *&v355[22] = 1024;
                   *&v355[24] = requestedMetaList;
                   *&v355[28] = 2048;
-                  *&v355[30] = v191;
+                  *&v355[30] = persistentID5;
                   *&v355[38] = 2112;
-                  *&v355[40] = v192;
+                  *&v355[40] = title;
                   *&v355[48] = 2112;
-                  *v356 = v193;
+                  *v356 = artist;
                   *&v356[8] = 2112;
-                  *&v356[10] = v194;
+                  *&v356[10] = albumTitle;
                   *&v356[18] = 2048;
-                  *&v356[20] = v195;
+                  *&v356[20] = mediaType;
                   *&v356[28] = 1024;
                   *&v356[30] = v272;
                   _os_log_debug_impl(&dword_2335D3000, v106, OS_LOG_TYPE_DEBUG, "_beginMediaLibraryUpdatesWithAnchor: skip item update: isItemAd=%d existsInLibrary=%d subscribedToAppleMusic=%d _requestedMetaProperties=%d _requestedMetaList=%d mpItem=(persistentID=%llu title='%@' artist='%@' album='%@' type=%lxh) validMediaTypeMask=%xh", buf, 0x58u);
@@ -2748,20 +2748,20 @@ LABEL_61:
 
               if (os_log_type_enabled(v87, OS_LOG_TYPE_DEBUG))
               {
-                v268 = [v70 anchor];
+                anchor5 = [v70 anchor];
                 v264 = objc_opt_class();
                 objc_opt_class();
                 isKindOfClass = objc_opt_isKindOfClass();
                 objc_opt_class();
                 v167 = objc_opt_isKindOfClass();
-                v4 = [v5 persistentID];
-                v168 = [v5 valueForProperty:v243];
-                [v5 valueForProperty:v242];
+                physFootprintMem = [start2 persistentID];
+                v168 = [start2 valueForProperty:v243];
+                [start2 valueForProperty:v242];
                 v170 = v169 = isKindOfClass & 1;
                 *buf = 138414082;
-                *v355 = v268;
+                *v355 = anchor5;
                 *&v355[8] = 2112;
-                *&v355[10] = v5;
+                *&v355[10] = start2;
                 *&v355[18] = 2112;
                 *&v355[20] = v264;
                 *&v355[28] = 1024;
@@ -2769,7 +2769,7 @@ LABEL_61:
                 *&v355[34] = 1024;
                 *&v355[36] = v167 & 1;
                 *&v355[40] = 2048;
-                *&v355[42] = v4;
+                *&v355[42] = physFootprintMem;
                 *v356 = 2112;
                 *&v356[2] = v168;
                 *&v356[10] = 2112;
@@ -2780,21 +2780,21 @@ LABEL_61:
           }
         }
 
-        v178 = [v70 anchor];
+        anchor6 = [v70 anchor];
 
-        v179 = [(ACCMediaLibraryShim *)v290->_context measureMemoryUsage];
-        if ([v179 BOOLValue])
+        measureMemoryUsage3 = [(ACCMediaLibraryShim *)selfCopy->_context measureMemoryUsage];
+        if ([measureMemoryUsage3 BOOLValue])
         {
-          v180 = [(ACCMediaLibraryShim *)v290->_context memUse];
-          v181 = v180 == 0;
+          memUse4 = [(ACCMediaLibraryShim *)selfCopy->_context memUse];
+          v181 = memUse4 == 0;
 
           if (v181 || ((v280 + v68 + 1) & 0x7F) != 0 && v276 + v68)
           {
             goto LABEL_295;
           }
 
-          v182 = [(ACCMediaLibraryShim *)v290->_context memUse];
-          [v182 update];
+          memUse5 = [(ACCMediaLibraryShim *)selfCopy->_context memUse];
+          [memUse5 update];
 
           if (!v282)
           {
@@ -2811,90 +2811,90 @@ LABEL_61:
           v185 = gNumLogObjects;
           if (gLogObjects && gNumLogObjects >= 1)
           {
-            v179 = *gLogObjects;
+            measureMemoryUsage3 = *gLogObjects;
           }
 
           else
           {
-            v4 = MEMORY[0x277D86220];
+            physFootprintMem = MEMORY[0x277D86220];
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
             {
               *buf = 134218240;
               *v355 = v184;
               *&v355[8] = 1024;
               *&v355[10] = v185;
-              _os_log_error_impl(&dword_2335D3000, v4, OS_LOG_TYPE_ERROR, "Make sure you have called init_logging()!\ngLogObjects: %p, gNumLogObjects: %d", buf, 0x12u);
+              _os_log_error_impl(&dword_2335D3000, physFootprintMem, OS_LOG_TYPE_ERROR, "Make sure you have called init_logging()!\ngLogObjects: %p, gNumLogObjects: %d", buf, 0x12u);
             }
 
-            v186 = v4;
-            v179 = v4;
+            v186 = physFootprintMem;
+            measureMemoryUsage3 = physFootprintMem;
           }
 
-          if (os_log_type_enabled(v179, OS_LOG_TYPE_INFO))
+          if (os_log_type_enabled(measureMemoryUsage3, OS_LOG_TYPE_INFO))
           {
-            v289 = [v282 residentMem];
-            v253 = [v289 last];
-            v269 = [v282 residentMem];
-            v252 = [v269 last];
-            v265 = [v282 residentMem];
-            v251 = [v265 max];
-            v262 = [v282 residentMem];
-            v250 = [v262 max];
-            v260 = [v282 virtualMem];
-            v249 = [v260 last];
-            v258 = [v282 virtualMem];
-            v248 = [v258 last];
-            v257 = [v282 virtualMem];
-            v247 = [v257 max];
-            v256 = [v282 virtualMem];
-            v246 = [v256 max];
-            v255 = [v282 physFootprintMem];
-            v245 = [v255 last];
-            v254 = [v282 physFootprintMem];
-            v187 = [v254 last];
-            v188 = [v282 physFootprintMem];
-            v4 = [v188 max];
-            v189 = [v282 physFootprintMem];
-            v190 = [v189 max];
+            residentMem2 = [v282 residentMem];
+            last = [residentMem2 last];
+            residentMem3 = [v282 residentMem];
+            last2 = [residentMem3 last];
+            residentMem4 = [v282 residentMem];
+            v251 = [residentMem4 max];
+            residentMem5 = [v282 residentMem];
+            v250 = [residentMem5 max];
+            virtualMem2 = [v282 virtualMem];
+            last3 = [virtualMem2 last];
+            virtualMem3 = [v282 virtualMem];
+            last4 = [virtualMem3 last];
+            virtualMem4 = [v282 virtualMem];
+            v247 = [virtualMem4 max];
+            virtualMem5 = [v282 virtualMem];
+            v246 = [virtualMem5 max];
+            physFootprintMem2 = [v282 physFootprintMem];
+            last5 = [physFootprintMem2 last];
+            physFootprintMem3 = [v282 physFootprintMem];
+            last6 = [physFootprintMem3 last];
+            physFootprintMem4 = [v282 physFootprintMem];
+            physFootprintMem = [physFootprintMem4 max];
+            physFootprintMem5 = [v282 physFootprintMem];
+            v190 = [physFootprintMem5 max];
             *buf = 67112962;
             *v355 = v280 + v68 + 1;
             *&v355[4] = 1024;
             *&v355[6] = v274;
             *&v355[10] = 2112;
-            *&v355[12] = v279;
+            *&v355[12] = anchorCopy;
             *&v355[20] = 2112;
-            *&v355[22] = v178;
+            *&v355[22] = anchor6;
             *&v355[30] = 2048;
-            *&v355[32] = v253;
+            *&v355[32] = last;
             *&v355[40] = 2048;
-            *&v355[42] = v252 / 1000000.0;
+            *&v355[42] = last2 / 1000000.0;
             *v356 = 2048;
             *&v356[2] = v251;
             *&v356[10] = 2048;
             *&v356[12] = v250 / 1000000.0;
             *&v356[20] = 2048;
-            *&v356[22] = v249;
+            *&v356[22] = last3;
             *&v356[30] = 2048;
-            *&v356[32] = v248 / 1000000.0;
+            *&v356[32] = last4 / 1000000.0;
             *&v356[40] = 2048;
             v357 = v247;
             v358 = 2048;
             v359 = v246 / 1000000.0;
             v360 = 2048;
-            v361 = v245;
+            v361 = last5;
             v362 = 2048;
-            v363 = v187 / 1000000.0;
+            v363 = last6 / 1000000.0;
             v364 = 2048;
-            v365 = v4;
+            v365 = physFootprintMem;
             v366 = 2048;
             v367 = v190 / 1000000.0;
-            _os_log_impl(&dword_2335D3000, v179, OS_LOG_TYPE_INFO, "_beginMediaLibraryUpdatesWithAnchor: %d / %d, anchorTo=%@ nextAnchor=%@ memUse:[resident=%llu(%.3fM)/%llu(%.3fM) virtual=%llu(%.3fM)/%llu(%.3fM) physFootprint=%llu(%.3fM)/%llu(%.3fM)]", buf, 0x9Au);
+            _os_log_impl(&dword_2335D3000, measureMemoryUsage3, OS_LOG_TYPE_INFO, "_beginMediaLibraryUpdatesWithAnchor: %d / %d, anchorTo=%@ nextAnchor=%@ memUse:[resident=%llu(%.3fM)/%llu(%.3fM) virtual=%llu(%.3fM)/%llu(%.3fM) physFootprint=%llu(%.3fM)/%llu(%.3fM)]", buf, 0x9Au);
           }
         }
 
 LABEL_295:
         LOBYTE(v13) = 0;
-        v288 = v178;
+        v288 = anchor6;
 LABEL_296:
 
         objc_autoreleasePoolPop(context);
@@ -2921,7 +2921,7 @@ LABEL_300:
 
     v63 = 0;
     v36 = 0;
-    v48 = v290;
+    v48 = selfCopy;
   }
 
   while (*(v333 + 24) < 0x64u);
@@ -2968,8 +2968,8 @@ LABEL_304:
     _os_log_debug_impl(&dword_2335D3000, v211, OS_LOG_TYPE_DEBUG, "_beginMediaLibraryUpdatesWithAnchor: lastAnchor=%@ nextAnchor=%@ count=%d lastSentProgress=%d total=%d", buf, 0x28u);
   }
 
-  v212 = v290;
-  v213 = [(NSDictionary *)v290->_dbUpdateList objectForKey:@"Progress"];
+  v212 = selfCopy;
+  v213 = [(NSDictionary *)selfCopy->_dbUpdateList objectForKey:@"Progress"];
   if (v213)
   {
     if (v61)
@@ -3017,12 +3017,12 @@ LABEL_304:
     v291[3] = &unk_2789E33B0;
     v215 = v216;
     v292 = v215;
-    v293 = v290;
+    v293 = selfCopy;
     v294 = &v328;
-    v219 = [(ACCMediaLibraryShimInfo *)v290 _attemptUpdate:v291];
+    v219 = [(ACCMediaLibraryShimInfo *)selfCopy _attemptUpdate:v291];
     if (gLogObjects && gNumLogObjects >= 1)
     {
-      v4 = *gLogObjects;
+      physFootprintMem = *gLogObjects;
     }
 
     else
@@ -3032,17 +3032,17 @@ LABEL_304:
         [ACCMediaLibraryShimInfo _getUIDString];
       }
 
-      v4 = MEMORY[0x277D86220];
+      physFootprintMem = MEMORY[0x277D86220];
       v220 = MEMORY[0x277D86220];
     }
 
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+    if (os_log_type_enabled(physFootprintMem, OS_LOG_TYPE_DEBUG))
     {
-      [ACCMediaLibraryShimInfo _beginMediaLibraryUpdatesWithAnchor:v219 validity:v4];
+      [ACCMediaLibraryShimInfo _beginMediaLibraryUpdatesWithAnchor:v219 validity:physFootprintMem];
     }
 
 LABEL_337:
-    v212 = v290;
+    v212 = selfCopy;
   }
 
   else
@@ -3050,16 +3050,16 @@ LABEL_337:
     v215 = 0;
   }
 
-  v221 = [(ACCMediaLibraryShim *)v212->_context measureMemoryUsage];
-  if ([v221 BOOLValue])
+  measureMemoryUsage4 = [(ACCMediaLibraryShim *)v212->_context measureMemoryUsage];
+  if ([measureMemoryUsage4 BOOLValue])
   {
-    v222 = [(ACCMediaLibraryShim *)v212->_context memUse];
-    v223 = v222 == 0;
+    memUse6 = [(ACCMediaLibraryShim *)v212->_context memUse];
+    v223 = memUse6 == 0;
 
     if (!v223)
     {
-      v224 = [(ACCMediaLibraryShim *)v290->_context memUse];
-      [v224 update];
+      memUse7 = [(ACCMediaLibraryShim *)selfCopy->_context memUse];
+      [memUse7 update];
 
       if (gLogObjects && gNumLogObjects >= 1)
       {
@@ -3081,9 +3081,9 @@ LABEL_337:
       {
         if (v282)
         {
-          v4 = [MEMORY[0x277CBEAA8] date];
-          v5 = [v282 startTime];
-          [v4 timeIntervalSinceDate:v5];
+          physFootprintMem = [MEMORY[0x277CBEAA8] date];
+          start2 = [v282 startTime];
+          [physFootprintMem timeIntervalSinceDate:start2];
           v228 = v227;
         }
 
@@ -3094,15 +3094,15 @@ LABEL_337:
 
         v230 = v347[6];
         v231 = v341[5];
-        v232 = [(ACCMediaLibraryShim *)v290->_context memUse];
+        memUse8 = [(ACCMediaLibraryShim *)selfCopy->_context memUse];
         *buf = 134220546;
         *v355 = v228;
         *&v355[8] = 2112;
-        *&v355[10] = v279;
+        *&v355[10] = anchorCopy;
         *&v355[18] = 2112;
         *&v355[20] = v288;
         *&v355[28] = 2112;
-        *&v355[30] = v277;
+        *&v355[30] = validityCopy;
         *&v355[38] = 1024;
         *&v355[40] = v61;
         *&v355[44] = 1024;
@@ -3116,7 +3116,7 @@ LABEL_337:
         *&v356[22] = 2112;
         *&v356[24] = v288;
         *&v356[32] = 2112;
-        *&v356[34] = v232;
+        *&v356[34] = memUse8;
         _os_log_impl(&dword_2335D3000, v225, OS_LOG_TYPE_DEFAULT, "_beginMediaLibraryUpdatesWithAnchor: Finished in %f sec, anchorTo=%@ nextAnchor=%@, validity=%@, count=%d / %d, numChanges=%d, kMaxChangesPerIteration=%d, lastAccumulatedRevision=%@, nextAnchor=%@, memUse: \n%@ \n", buf, 0x60u);
 
         if (v282)
@@ -3147,8 +3147,8 @@ LABEL_337:
         _os_log_impl(&dword_2335D3000, v233, OS_LOG_TYPE_DEFAULT, "_beginMediaLibraryUpdatesWithAnchor: statMark: \nmark: \n%@ ", buf, 0xCu);
       }
 
-      v221 = [(ACCMediaLibraryShim *)v290->_context memUse];
-      [v221 removeMark:@"mlUpdateMark"];
+      measureMemoryUsage4 = [(ACCMediaLibraryShim *)selfCopy->_context memUse];
+      [measureMemoryUsage4 removeMark:@"mlUpdateMark"];
       v282 = 0;
       goto LABEL_361;
     }
@@ -3191,7 +3191,7 @@ LABEL_361:
     [v235 removeAllObjects];
   }
 
-  v290->_processingDiffUpdate = 0;
+  selfCopy->_processingDiffUpdate = 0;
   v16 = v288;
 
   _Block_object_dispose(&v328, 8);
@@ -3592,7 +3592,7 @@ uint64_t __72__ACCMediaLibraryShimInfo__beginMediaLibraryUpdatesWithAnchor_valid
 
 - (void)_sendRadioLibraryUpdates
 {
-  v2 = self;
+  selfCopy = self;
   v111 = *MEMORY[0x277D85DE8];
   v95 = 0u;
   v96 = 0u;
@@ -3614,8 +3614,8 @@ uint64_t __72__ACCMediaLibraryShimInfo__beginMediaLibraryUpdatesWithAnchor_valid
           objc_enumerationMutation(v3);
         }
 
-        v9 = [*(*(&v95 + 1) + 8 * i) stations];
-        v6 += [v9 count];
+        stations = [*(*(&v95 + 1) + 8 * i) stations];
+        v6 += [stations count];
       }
 
       v5 = [(NSArray *)v3 countByEnumeratingWithState:&v95 objects:v110 count:16];
@@ -3654,7 +3654,7 @@ uint64_t __72__ACCMediaLibraryShimInfo__beginMediaLibraryUpdatesWithAnchor_valid
 
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    stationsGroupList = v2->_stationsGroupList;
+    stationsGroupList = selfCopy->_stationsGroupList;
     *buf = 67109634;
     *v101 = v66;
     *&v101[4] = 1024;
@@ -3664,23 +3664,23 @@ uint64_t __72__ACCMediaLibraryShimInfo__beginMediaLibraryUpdatesWithAnchor_valid
     _os_log_impl(&dword_2335D3000, v11, OS_LOG_TYPE_INFO, "_sendRadioLibraryUpdates total=%d maxPckSize=%d _stationsGroupList=%@", buf, 0x18u);
   }
 
-  v14 = [(ACCMediaLibraryShim *)v2->_context delegate];
-  v15 = [v14 provider];
-  [v15 resetUpdate:v2->_UIDString accessory:v2->_accessory];
+  delegate = [(ACCMediaLibraryShim *)selfCopy->_context delegate];
+  provider = [delegate provider];
+  [provider resetUpdate:selfCopy->_UIDString accessory:selfCopy->_accessory];
 
-  if (v2->_sendPlayAllSongsCapable)
+  if (selfCopy->_sendPlayAllSongsCapable)
   {
-    v16 = [(ACCMediaLibraryShim *)v2->_context delegate];
-    [v16 notify:v2->_UIDString stateChange:1 enabled:0];
+    delegate2 = [(ACCMediaLibraryShim *)selfCopy->_context delegate];
+    [delegate2 notify:selfCopy->_UIDString stateChange:1 enabled:0];
 
-    v2->_sendPlayAllSongsCapable = 0;
+    selfCopy->_sendPlayAllSongsCapable = 0;
   }
 
   v93 = 0u;
   v94 = 0u;
   v91 = 0u;
   v92 = 0u;
-  v17 = v2->_stationsGroupList;
+  v17 = selfCopy->_stationsGroupList;
   v63 = [(NSArray *)v17 countByEnumeratingWithState:&v91 objects:v109 count:16];
   if (!v63)
   {
@@ -3690,8 +3690,8 @@ LABEL_77:
     v78[1] = 3221225472;
     v78[2] = __51__ACCMediaLibraryShimInfo__sendRadioLibraryUpdates__block_invoke_112;
     v78[3] = &unk_2789E3400;
-    v78[4] = v2;
-    v58 = [(ACCMediaLibraryShimInfo *)v2 _attemptUpdate:v78];
+    v78[4] = selfCopy;
+    v58 = [(ACCMediaLibraryShimInfo *)selfCopy _attemptUpdate:v78];
     if (gLogObjects && gNumLogObjects >= 1)
     {
       v59 = *gLogObjects;
@@ -3719,7 +3719,7 @@ LABEL_77:
   v18 = 0;
   LODWORD(v77) = 0;
   v62 = *v92;
-  v65 = v2;
+  v65 = selfCopy;
   v68 = v17;
 LABEL_24:
   v19 = 0;
@@ -3740,12 +3740,12 @@ LABEL_24:
     v64 = v19;
     ++v18;
     v76 = *(*(&v91 + 1) + 8 * v19);
-    v21 = [v76 stations];
+    stations2 = [v76 stations];
     v87 = 0u;
     v88 = 0u;
     v89 = 0u;
     v90 = 0u;
-    obj = v21;
+    obj = stations2;
     v71 = [obj countByEnumeratingWithState:&v87 objects:v108 count:16];
     if (v71)
     {
@@ -3769,11 +3769,11 @@ LABEL_30:
 
         v74 = v22;
         v23 = *(*(&v87 + 1) + 8 * v22);
-        v24 = [v23 uniqueIdentifier];
-        v25 = [v23 localizedName];
+        uniqueIdentifier = [v23 uniqueIdentifier];
+        localizedName = [v23 localizedName];
         v26 = MEMORY[0x277CCACA8];
-        v27 = [v76 localizedTitle];
-        v28 = [v26 stringWithFormat:@"%@ - %@", v25, v27];
+        localizedTitle = [v76 localizedTitle];
+        v28 = [v26 stringWithFormat:@"%@ - %@", localizedName, localizedTitle];
 
         v29 = gLogObjects;
         v30 = gNumLogObjects;
@@ -3808,7 +3808,7 @@ LABEL_30:
           *&v101[14] = 2112;
           *&v101[16] = v28;
           v102 = 2048;
-          v103 = v24;
+          v103 = uniqueIdentifier;
           v104 = 2048;
           v105 = v75 + 1 + v70;
           v106 = 2048;
@@ -3816,7 +3816,7 @@ LABEL_30:
           _os_log_impl(&dword_2335D3000, v31, OS_LOG_TYPE_INFO, "_sendRadioLibraryUpdates: count=%d station=%@ name=%@ uniqueIdentifier=%lld uid=%lld (%llxh)", buf, 0x3Au);
         }
 
-        if (!v2->_enableLibraryUpdate || v2->_isShuttingDown)
+        if (!selfCopy->_enableLibraryUpdate || selfCopy->_isShuttingDown)
         {
           v17 = v68;
           v18 = v69;
@@ -3824,13 +3824,13 @@ LABEL_30:
         }
 
         ++v75;
-        v34 = [(NSDictionary *)v2->_dbUpdateList objectForKey:@"PlaylistProperty"];
+        v34 = [(NSDictionary *)selfCopy->_dbUpdateList objectForKey:@"PlaylistProperty"];
         if ([v34 count])
         {
           v73 = v34;
-          v35 = [(NSDictionary *)v2->_dbUpdateList objectForKey:@"PlaylistProperty"];
+          v35 = [(NSDictionary *)selfCopy->_dbUpdateList objectForKey:@"PlaylistProperty"];
           v36 = objc_alloc(MEMORY[0x277CE82B8]);
-          UIDString = v2->_UIDString;
+          UIDString = selfCopy->_UIDString;
           v38 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", v77];
           v39 = [v36 initWithMediaLibrary:UIDString persistentID:v33 revision:v38];
 
@@ -3856,11 +3856,11 @@ LABEL_30:
 
                 if ([*(*(&v83 + 1) + 8 * j) unsignedIntValue] == 1)
                 {
-                  v45 = [v23 localizedName];
+                  localizedName2 = [v23 localizedName];
                   v46 = __MaxTiltStations;
                   v47 = MEMORY[0x277CCACA8];
-                  v48 = [v76 localizedTitle];
-                  v49 = v48;
+                  localizedTitle2 = [v76 localizedTitle];
+                  v49 = localizedTitle2;
                   if (v46 >= 100)
                   {
                     v50 = @"%03u %@ - %@";
@@ -3871,7 +3871,7 @@ LABEL_30:
                     v50 = @"%02u %@ - %@";
                   }
 
-                  v51 = [v47 stringWithFormat:v50, v77, v45, v48];
+                  v51 = [v47 stringWithFormat:v50, v77, localizedName2, localizedTitle2];
 
                   if (v51)
                   {
@@ -3888,7 +3888,7 @@ LABEL_30:
 
           v79[0] = MEMORY[0x277D85DD0];
           v79[1] = 3221225472;
-          v2 = v65;
+          selfCopy = v65;
           v79[2] = __51__ACCMediaLibraryShimInfo__sendRadioLibraryUpdates__block_invoke;
           v79[3] = &unk_2789E33D8;
           v79[4] = v65;
@@ -4198,10 +4198,10 @@ _BYTE *__52__ACCMediaLibraryShimInfo__beginRadioLibraryUpdates__block_invoke_116
   return result;
 }
 
-- (void)_radioLibraryChanged:(id)a3
+- (void)_radioLibraryChanged:(id)changed
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 1;
@@ -4231,7 +4231,7 @@ _BYTE *__52__ACCMediaLibraryShimInfo__beginRadioLibraryUpdates__block_invoke_116
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = changedCopy;
     _os_log_impl(&dword_2335D3000, v7, OS_LOG_TYPE_DEFAULT, "_radioLibraryChanged: notification=%@", buf, 0xCu);
   }
 
@@ -4306,10 +4306,10 @@ LABEL_18:
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)_mediaLibraryChanged:(id)a3
+- (void)_mediaLibraryChanged:(id)changed
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 1;
@@ -4339,7 +4339,7 @@ LABEL_18:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = changedCopy;
     _os_log_impl(&dword_2335D3000, v7, OS_LOG_TYPE_DEFAULT, "_mediaLibraryChanged: notification=%@", buf, 0xCu);
   }
 
@@ -4418,10 +4418,10 @@ LABEL_18:
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)_canShowCloudTracksDidChangeNotification:(id)a3
+- (void)_canShowCloudTracksDidChangeNotification:(id)notification
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 1;
@@ -4451,7 +4451,7 @@ LABEL_18:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *v43 = v4;
+    *v43 = notificationCopy;
     _os_log_impl(&dword_2335D3000, v7, OS_LOG_TYPE_DEFAULT, "_canShowCloudTracksDidChangeNotification: notification=%@", buf, 0xCu);
   }
 
@@ -4511,28 +4511,28 @@ LABEL_18:
 
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v39 = [MEMORY[0x277CD5D78] sharedCloudController];
-      v40 = v4;
-      v14 = [v39 canShowCloudMusic];
-      v15 = [MEMORY[0x277CD5D78] sharedCloudController];
-      v16 = [v15 hasProperNetworkConditionsToPlayMedia];
-      v17 = [MEMORY[0x277CD5D78] sharedCloudController];
-      v18 = [v17 isCloudEnabled];
-      v19 = [MEMORY[0x277CD5D78] sharedCloudController];
-      v20 = [v19 canShowCloudMusic];
-      v21 = [MEMORY[0x277CD5D78] sharedCloudController];
-      v22 = [v21 canShowCloudVideo];
+      mEMORY[0x277CD5D78] = [MEMORY[0x277CD5D78] sharedCloudController];
+      v40 = notificationCopy;
+      canShowCloudMusic = [mEMORY[0x277CD5D78] canShowCloudMusic];
+      mEMORY[0x277CD5D78]2 = [MEMORY[0x277CD5D78] sharedCloudController];
+      hasProperNetworkConditionsToPlayMedia = [mEMORY[0x277CD5D78]2 hasProperNetworkConditionsToPlayMedia];
+      mEMORY[0x277CD5D78]3 = [MEMORY[0x277CD5D78] sharedCloudController];
+      isCloudEnabled = [mEMORY[0x277CD5D78]3 isCloudEnabled];
+      mEMORY[0x277CD5D78]4 = [MEMORY[0x277CD5D78] sharedCloudController];
+      canShowCloudMusic2 = [mEMORY[0x277CD5D78]4 canShowCloudMusic];
+      mEMORY[0x277CD5D78]5 = [MEMORY[0x277CD5D78] sharedCloudController];
+      canShowCloudVideo = [mEMORY[0x277CD5D78]5 canShowCloudVideo];
       *buf = 67110144;
-      *v43 = v14;
-      v4 = v40;
+      *v43 = canShowCloudMusic;
+      notificationCopy = v40;
       *&v43[4] = 1024;
-      *&v43[6] = v16;
+      *&v43[6] = hasProperNetworkConditionsToPlayMedia;
       v44 = 1024;
-      v45 = v18;
+      v45 = isCloudEnabled;
       v46 = 1024;
-      v47 = v20;
+      v47 = canShowCloudMusic2;
       v48 = 1024;
-      v49 = v22;
+      v49 = canShowCloudVideo;
       _os_log_impl(&dword_2335D3000, v11, OS_LOG_TYPE_DEFAULT, "_canShowCloudTracksDidChangeNotification: canShowCloudMusic=%d hasProperNetworkConditionsToPlayMedia=%d isCloudEnabled=%d canShowCloudMusic=%d canShowCloudVideo=%d", buf, 0x20u);
     }
 
@@ -4554,18 +4554,18 @@ LABEL_18:
 
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [MEMORY[0x277CD5D78] sharedCloudController];
-      v26 = [v25 hasCloudLockerAccount];
-      v27 = [MEMORY[0x277CD5D78] sharedCloudController];
-      v28 = [v27 isUpdateInProgress];
-      v29 = [MEMORY[0x277CD5D78] sharedCloudController];
-      v30 = [v29 isInitialImport];
+      mEMORY[0x277CD5D78]6 = [MEMORY[0x277CD5D78] sharedCloudController];
+      hasCloudLockerAccount = [mEMORY[0x277CD5D78]6 hasCloudLockerAccount];
+      mEMORY[0x277CD5D78]7 = [MEMORY[0x277CD5D78] sharedCloudController];
+      isUpdateInProgress = [mEMORY[0x277CD5D78]7 isUpdateInProgress];
+      mEMORY[0x277CD5D78]8 = [MEMORY[0x277CD5D78] sharedCloudController];
+      isInitialImport = [mEMORY[0x277CD5D78]8 isInitialImport];
       *buf = 67109632;
-      *v43 = v26;
+      *v43 = hasCloudLockerAccount;
       *&v43[4] = 1024;
-      *&v43[6] = v28;
+      *&v43[6] = isUpdateInProgress;
       v44 = 1024;
-      v45 = v30;
+      v45 = isInitialImport;
       _os_log_impl(&dword_2335D3000, v23, OS_LOG_TYPE_DEFAULT, "_canShowCloudTracksDidChangeNotification: hasCloudLockerAccount=%d isUpdateInProgress=%d isInitialImport=%d", buf, 0x14u);
     }
 
@@ -4590,17 +4590,17 @@ LABEL_18:
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
       {
         showCloudTracks = self->_showCloudTracks;
-        v34 = [MEMORY[0x277CD5D78] sharedCloudController];
-        v35 = [v34 canShowCloudMusic];
+        mEMORY[0x277CD5D78]9 = [MEMORY[0x277CD5D78] sharedCloudController];
+        canShowCloudMusic3 = [mEMORY[0x277CD5D78]9 canShowCloudMusic];
         *buf = 67109376;
         *v43 = showCloudTracks;
         *&v43[4] = 1024;
-        *&v43[6] = v35;
+        *&v43[6] = canShowCloudMusic3;
         _os_log_impl(&dword_2335D3000, v31, OS_LOG_TYPE_DEFAULT, "_canShowCloudTracksDidChangeNotification: _showCloudTracks=%d->%d", buf, 0xEu);
       }
 
-      v36 = [MEMORY[0x277CD5D78] sharedCloudController];
-      self->_showCloudTracks = [v36 canShowCloudMusic];
+      mEMORY[0x277CD5D78]10 = [MEMORY[0x277CD5D78] sharedCloudController];
+      self->_showCloudTracks = [mEMORY[0x277CD5D78]10 canShowCloudMusic];
     }
 
     if (self->_enableLibraryUpdate && !self->_isShuttingDown && self->_showCloudTracksLastSent != self->_showCloudTracks)
@@ -4634,8 +4634,8 @@ void __68__ACCMediaLibraryShimInfo__canShowCloudTracksDidChangeNotification___bl
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(ACCMediaLibraryShim *)self->_context accessory];
-  v5 = [v3 stringWithFormat:@"<ACCMediaLibraryShimInfo>[\n    _context.accessory=%@\n    _mpMediaLibrary=%@\n    _anchor=%@\n    _UIDString=%@\n    _libraryUpdateQ=%@\n    _isShuttingDown=%d\n    _enableLibraryUpdate=%d\n    _showCloudTracks=%d\n    _showCloudTracksLastSent=%d\n    _waitForWindowSem=%@]", v4, self->_mpMediaLibrary, self->_anchor, self->_UIDString, self->_libraryUpdateQ, self->_isShuttingDown, self->_enableLibraryUpdate, self->_showCloudTracks, self->_showCloudTracksLastSent, self->_waitForWindowSem];
+  accessory = [(ACCMediaLibraryShim *)self->_context accessory];
+  v5 = [v3 stringWithFormat:@"<ACCMediaLibraryShimInfo>[\n    _context.accessory=%@\n    _mpMediaLibrary=%@\n    _anchor=%@\n    _UIDString=%@\n    _libraryUpdateQ=%@\n    _isShuttingDown=%d\n    _enableLibraryUpdate=%d\n    _showCloudTracks=%d\n    _showCloudTracksLastSent=%d\n    _waitForWindowSem=%@]", accessory, self->_mpMediaLibrary, self->_anchor, self->_UIDString, self->_libraryUpdateQ, self->_isShuttingDown, self->_enableLibraryUpdate, self->_showCloudTracks, self->_showCloudTracksLastSent, self->_waitForWindowSem];
 
   return v5;
 }
@@ -4643,12 +4643,12 @@ void __68__ACCMediaLibraryShimInfo__canShowCloudTracksDidChangeNotification___bl
 - (void)_registerForMPNotifications
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  v4 = v3;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v4 = defaultCenter;
   libraryType = self->_libraryType;
   if (libraryType == 2)
   {
-    [v3 addObserver:self selector:sel__radioLibraryChanged_ name:*MEMORY[0x277CD5CE8] object:0];
+    [defaultCenter addObserver:self selector:sel__radioLibraryChanged_ name:*MEMORY[0x277CD5CE8] object:0];
     if (gLogObjects)
     {
       v6 = gNumLogObjects < 1;
@@ -4690,7 +4690,7 @@ void __68__ACCMediaLibraryShimInfo__canShowCloudTracksDidChangeNotification___bl
 
   else if (!libraryType)
   {
-    [v3 addObserver:self selector:sel__mediaLibraryChanged_ name:*MEMORY[0x277CD58D8] object:0];
+    [defaultCenter addObserver:self selector:sel__mediaLibraryChanged_ name:*MEMORY[0x277CD58D8] object:0];
     [v4 addObserver:self selector:sel__mediaLibraryChanged_ name:*MEMORY[0x277CD58E8] object:0];
     [v4 addObserver:self selector:sel__canShowCloudTracksDidChangeNotification_ name:*MEMORY[0x277CD5658] object:0];
   }
@@ -4698,12 +4698,12 @@ void __68__ACCMediaLibraryShimInfo__canShowCloudTracksDidChangeNotification___bl
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (ACCMediaLibraryShimInfo)initWithMediaLibrary:(id)a3 accessory:(id)a4 Context:(id)a5 LibraryType:(int)a6
+- (ACCMediaLibraryShimInfo)initWithMediaLibrary:(id)library accessory:(id)accessory Context:(id)context LibraryType:(int)type
 {
   v50 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  libraryCopy = library;
+  accessoryCopy = accessory;
+  contextCopy = context;
   if (gLogObjects)
   {
     v14 = gNumLogObjects < 1;
@@ -4733,13 +4733,13 @@ void __68__ACCMediaLibraryShimInfo__canShowCloudTracksDidChangeNotification___bl
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v43 = v11;
+    v43 = libraryCopy;
     v44 = 2112;
-    v45 = v12;
+    v45 = accessoryCopy;
     v46 = 2112;
-    v47 = v13;
+    v47 = contextCopy;
     v48 = 1024;
-    v49 = a6;
+    typeCopy = type;
     _os_log_impl(&dword_2335D3000, v16, OS_LOG_TYPE_DEFAULT, "initWithMediaLibrary: %@ accessory: %@ Context: %@ LibraryType: %d", buf, 0x26u);
   }
 
@@ -4769,8 +4769,8 @@ void __68__ACCMediaLibraryShimInfo__canShowCloudTracksDidChangeNotification___bl
       __MaxTiltStations = v19;
     }
 
-    *(v17 + 9) = a6;
-    objc_storeStrong(v17 + 6, a4);
+    *(v17 + 9) = type;
+    objc_storeStrong(v17 + 6, accessory);
     v20 = dispatch_queue_create("com.apple.accml.mediaLibraryUpdateQ", 0);
     v21 = *(v17 + 9);
     *(v17 + 9) = v20;
@@ -4789,8 +4789,8 @@ void __68__ACCMediaLibraryShimInfo__canShowCloudTracksDidChangeNotification___bl
     *(v17 + 12) = 0;
     *(v17 + 27) = 0;
     v17[31] = 0;
-    objc_storeStrong(v17 + 5, a5);
-    objc_storeStrong(v17 + 7, a3);
+    objc_storeStrong(v17 + 5, context);
+    objc_storeStrong(v17 + 7, library);
     v26 = dispatch_queue_create("com.apple.accessoryd.MediaLibraryMPQ", 0);
     v27 = *(v17 + 12);
     *(v17 + 12) = v26;
@@ -4802,9 +4802,9 @@ void __68__ACCMediaLibraryShimInfo__canShowCloudTracksDidChangeNotification___bl
     v30 = *(v17 + 14);
     *(v17 + 14) = 0;
 
-    v31 = [v17 _getUIDString];
+    _getUIDString = [v17 _getUIDString];
     v32 = *(v17 + 10);
-    *(v17 + 10) = v31;
+    *(v17 + 10) = _getUIDString;
 
     [v17 _canShowCloudTracksDidChangeNotification:0];
     v17[26] = v17[25] ^ 1;
@@ -4843,9 +4843,9 @@ void __68__ACCMediaLibraryShimInfo__canShowCloudTracksDidChangeNotification___bl
 
     else
     {
-      v34 = [*(v17 + 7) _syncValidity];
+      _syncValidity = [*(v17 + 7) _syncValidity];
       v35 = *(v17 + 2);
-      *(v17 + 2) = v34;
+      *(v17 + 2) = _syncValidity;
 
       [v17 _registerForMPNotifications];
       [*(v17 + 7) beginGeneratingLibraryChangeNotifications];
@@ -4901,8 +4901,8 @@ void __68__ACCMediaLibraryShimInfo__canShowCloudTracksDidChangeNotification___bl
   }
 
   *&self->_isShuttingDown = 1;
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
   libraryType = self->_libraryType;
   if (libraryType != 2)
   {
@@ -4998,14 +4998,14 @@ void __34__ACCMediaLibraryShimInfo_dealloc__block_invoke(uint64_t a1)
   }
 }
 
-- (void)startSendingMediaLibraryUpdates:(id)a3 lastRevision:(id)a4 requestedTransferID:(BOOL)a5 requestedMetaList:(BOOL)a6 requestedMetaProperties:(BOOL)a7
+- (void)startSendingMediaLibraryUpdates:(id)updates lastRevision:(id)revision requestedTransferID:(BOOL)d requestedMetaList:(BOOL)list requestedMetaProperties:(BOOL)properties
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
+  propertiesCopy = properties;
+  listCopy = list;
+  dCopy = d;
   v39 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
+  updatesCopy = updates;
+  revisionCopy = revision;
   if (gLogObjects)
   {
     v14 = gNumLogObjects < 1;
@@ -5034,17 +5034,17 @@ void __34__ACCMediaLibraryShimInfo_dealloc__block_invoke(uint64_t a1)
 
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [(ACCMediaLibraryShimInfo *)self UIDString];
+    uIDString = [(ACCMediaLibraryShimInfo *)self UIDString];
     *buf = 138413314;
-    v30 = v17;
+    v30 = uIDString;
     v31 = 2112;
-    v32 = v13;
+    v32 = revisionCopy;
     v33 = 1024;
-    v34 = v9;
+    v34 = dCopy;
     v35 = 1024;
-    v36 = v8;
+    v36 = listCopy;
     v37 = 1024;
-    v38 = v7;
+    v38 = propertiesCopy;
     _os_log_impl(&dword_2335D3000, v16, OS_LOG_TYPE_DEFAULT, "startSendingMediaLibraryUpdates: %@ lastRevision=%@ requestedTransferID=%d requestedMetaList=%d requestedMetaProperties=%d\n", buf, 0x28u);
   }
 
@@ -5068,9 +5068,9 @@ void __34__ACCMediaLibraryShimInfo_dealloc__block_invoke(uint64_t a1)
 
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
-      v21 = [(ACCMediaLibraryShimInfo *)self UIDString];
+      uIDString2 = [(ACCMediaLibraryShimInfo *)self UIDString];
       *buf = 138412290;
-      v30 = v21;
+      v30 = uIDString2;
       _os_log_impl(&dword_2335D3000, v18, OS_LOG_TYPE_INFO, "WARNING: MediaLibraryUpdate already running for library %@\n", buf, 0xCu);
     }
   }
@@ -5084,11 +5084,11 @@ void __34__ACCMediaLibraryShimInfo_dealloc__block_invoke(uint64_t a1)
     v23[2] = __134__ACCMediaLibraryShimInfo_startSendingMediaLibraryUpdates_lastRevision_requestedTransferID_requestedMetaList_requestedMetaProperties___block_invoke;
     v23[3] = &unk_2789E34A0;
     v23[4] = self;
-    v24 = v12;
-    v26 = v9;
-    v27 = v8;
-    v28 = v7;
-    v25 = v13;
+    v24 = updatesCopy;
+    v26 = dCopy;
+    v27 = listCopy;
+    v28 = propertiesCopy;
+    v25 = revisionCopy;
     dispatch_async(libraryUpdateQ, v23);
   }
 
@@ -5363,8 +5363,8 @@ void __57__ACCMediaLibraryShimInfo_stopSendingMediaLibraryUpdates__block_invoke(
   }
 
   *&self->_isShuttingDown = 1;
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
   v8 = self->_libraryType;
   if (v8 != 2)
   {
@@ -5414,11 +5414,11 @@ void __57__ACCMediaLibraryShimInfo_stopSendingMediaLibraryUpdates__block_invoke(
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startPlaybackOfRadioStation:(unint64_t)a3
+- (void)_startPlaybackOfRadioStation:(unint64_t)station
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = HIDWORD(a3);
-  if (!HIDWORD(a3))
+  v5 = HIDWORD(station);
+  if (!HIDWORD(station))
   {
 LABEL_2:
     v6 = 0;
@@ -5430,21 +5430,21 @@ LABEL_2:
     v15 = [(NSArray *)self->_stationsGroupList objectAtIndex:v5 - 1];
     v5 = v15;
     v6 = 0;
-    if (!a3 || !v15)
+    if (!station || !v15)
     {
       goto LABEL_5;
     }
 
-    v16 = [v15 stations];
-    v17 = [v16 count];
+    stations = [v15 stations];
+    v17 = [stations count];
 
-    if (a3 > v17)
+    if (station > v17)
     {
       goto LABEL_2;
     }
 
-    v18 = [v5 stations];
-    v6 = [v18 objectAtIndex:a3 - 1];
+    stations2 = [v5 stations];
+    v6 = [stations2 objectAtIndex:station - 1];
   }
 
   else
@@ -5483,9 +5483,9 @@ LABEL_5:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 134218498;
-    v24 = a3;
+    stationCopy3 = station;
     v25 = 2048;
-    v26 = a3;
+    stationCopy4 = station;
     v27 = 2112;
     v28 = v6;
     _os_log_impl(&dword_2335D3000, v9, OS_LOG_TYPE_INFO, "_startPlaybackOfRadioStation: collectionPersistentID=%llu(%llxh) station=%@", buf, 0x20u);
@@ -5509,12 +5509,12 @@ LABEL_5:
 
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    v12 = [v6 localizedName];
-    v13 = [v6 localizedDescription];
+    localizedName = [v6 localizedName];
+    localizedDescription = [v6 localizedDescription];
     *buf = 138412546;
-    v24 = v12;
+    stationCopy3 = localizedName;
     v25 = 2112;
-    v26 = v13;
+    stationCopy4 = localizedDescription;
     _os_log_impl(&dword_2335D3000, v10, OS_LOG_TYPE_INFO, "_startPlaybackOfRadioStation: station name='%@'; desc='%@'", buf, 0x16u);
   }
 
@@ -5550,9 +5550,9 @@ LABEL_5:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v24 = a3;
+      stationCopy3 = station;
       v25 = 2048;
-      v26 = a3;
+      stationCopy4 = station;
       _os_log_impl(&dword_2335D3000, v14, OS_LOG_TYPE_DEFAULT, "_startPlaybackOfRadioStation: Couldn't find station for persistentID=0x%llx(%llu)", buf, 0x16u);
     }
   }
@@ -5663,11 +5663,11 @@ void __56__ACCMediaLibraryShimInfo__startPlaybackOfRadioStation___block_invoke_2
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)playWithQuery:(id)a3 andFirstItem:(id)a4
+- (void)playWithQuery:(id)query andFirstItem:(id)item
 {
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  itemCopy = item;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 1;
@@ -5696,13 +5696,13 @@ void __56__ACCMediaLibraryShimInfo__startPlaybackOfRadioStation___block_invoke_2
 
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v7 title];
+    title = [itemCopy title];
     *buf = 138412802;
-    v45 = v7;
+    v45 = itemCopy;
     v46 = 2112;
-    v47 = v11;
+    v47 = title;
     v48 = 2112;
-    v49 = v6;
+    v49 = queryCopy;
     _os_log_impl(&dword_2335D3000, v10, OS_LOG_TYPE_DEFAULT, "playWithQuery:andFirstItem=%@[%@] query=%@", buf, 0x20u);
   }
 
@@ -5712,7 +5712,7 @@ void __56__ACCMediaLibraryShimInfo__startPlaybackOfRadioStation___block_invoke_2
     goto LABEL_13;
   }
 
-  [v6 items];
+  [queryCopy items];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
@@ -5721,7 +5721,7 @@ void __56__ACCMediaLibraryShimInfo__startPlaybackOfRadioStation___block_invoke_2
   if (v15)
   {
     v16 = v15;
-    v35 = self;
+    selfCopy = self;
     v17 = *v40;
     LOBYTE(v18) = 1;
     v19 = 1;
@@ -5761,12 +5761,12 @@ LABEL_39:
 
     if (v19)
     {
-      self = v35;
+      self = selfCopy;
     }
 
     else
     {
-      self = v35;
+      self = selfCopy;
       if (!v18)
       {
 
@@ -5784,7 +5784,7 @@ LABEL_39:
     v18 = 1;
   }
 
-  v25 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v6];
+  v25 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:queryCopy];
   v26 = *MEMORY[0x277CBECE8];
   v12 = MRSystemAppPlaybackQueueCreate();
   MRSystemAppPlaybackQueueSetLocalQueryData();
@@ -5818,9 +5818,9 @@ LABEL_13:
       }
 
       MRSystemAppPlaybackQueueInternalPrepareBundleIDForPlayback();
-      if (v7)
+      if (itemCopy)
       {
-        [v7 persistentID];
+        [itemCopy persistentID];
         MRSystemAppPlaybackQueueSetLocalQueryFirstItemPID();
       }
 
@@ -5860,8 +5860,8 @@ LABEL_49:
       block[2] = __54__ACCMediaLibraryShimInfo_playWithQuery_andFirstItem___block_invoke;
       block[3] = &unk_2789E34E8;
       block[4] = self;
-      v37 = v7;
-      v38 = v6;
+      v37 = itemCopy;
+      v38 = queryCopy;
       dispatch_sync(mpMusicPlayerControllerQueue, block);
     }
 
@@ -5921,9 +5921,9 @@ LABEL_49:
   }
 
   MRSystemAppPlaybackQueueInternalPrepareBundleIDForPlayback();
-  if (v7)
+  if (itemCopy)
   {
-    [v7 persistentID];
+    [itemCopy persistentID];
     MRSystemAppPlaybackQueueSetLocalQueryFirstItemPID();
   }
 
@@ -5990,10 +5990,10 @@ void __54__ACCMediaLibraryShimInfo_playWithQuery_andFirstItem___block_invoke(voi
   [v2 play];
 }
 
-- (id)_getMediaItemForPersistentID:(unint64_t)a3
+- (id)_getMediaItemForPersistentID:(unint64_t)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:d];
   v4 = [MEMORY[0x277CD5E30] predicateWithValue:v3 forProperty:*MEMORY[0x277CD57D8]];
   v5 = [MEMORY[0x277CBEB98] setWithObject:v4];
   v6 = [objc_alloc(MEMORY[0x277CD5E38]) initWithFilterPredicates:v5];
@@ -6002,7 +6002,7 @@ void __54__ACCMediaLibraryShimInfo_playWithQuery_andFirstItem___block_invoke(voi
   {
     if (gLogObjects && gNumLogObjects >= 1)
     {
-      v7 = *gLogObjects;
+      items = *gLogObjects;
     }
 
     else
@@ -6012,30 +6012,30 @@ void __54__ACCMediaLibraryShimInfo_playWithQuery_andFirstItem___block_invoke(voi
         [ACCMediaLibraryShimInfo _getUIDString];
       }
 
-      v7 = MEMORY[0x277D86220];
+      items = MEMORY[0x277D86220];
       v14 = MEMORY[0x277D86220];
     }
 
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(items, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 138412290;
       v21 = v3;
-      _os_log_impl(&dword_2335D3000, v7, OS_LOG_TYPE_DEFAULT, "_getMediaItemForPersistentID: Failed to create query for persistentIDObj=%@", &v20, 0xCu);
+      _os_log_impl(&dword_2335D3000, items, OS_LOG_TYPE_DEFAULT, "_getMediaItemForPersistentID: Failed to create query for persistentIDObj=%@", &v20, 0xCu);
     }
 
     goto LABEL_35;
   }
 
-  v7 = [v6 items];
-  if ([v7 count]== 1)
+  items = [v6 items];
+  if ([items count]== 1)
   {
-    v8 = [v6 items];
-    v9 = [v8 objectAtIndex:0];
+    items2 = [v6 items];
+    v9 = [items2 objectAtIndex:0];
 
     goto LABEL_36;
   }
 
-  v10 = [v7 count];
+  v10 = [items count];
   if (gLogObjects)
   {
     v11 = gNumLogObjects <= 0;
@@ -6115,10 +6115,10 @@ LABEL_36:
   return v9;
 }
 
-- (void)startPlaybackOfItems:(id)a3 withFirst:(unsigned int)a4
+- (void)startPlaybackOfItems:(id)items withFirst:(unsigned int)first
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  itemsCopy = items;
   if (gLogObjects)
   {
     v7 = gNumLogObjects < 1;
@@ -6148,9 +6148,9 @@ LABEL_36:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109378;
-    v34 = a4;
+    firstCopy = first;
     v35 = 2112;
-    v36 = v6;
+    v36 = itemsCopy;
     _os_log_impl(&dword_2335D3000, v9, OS_LOG_TYPE_DEFAULT, "startPlaybackOfItems:withFirst: firstItemIndex=%d items=%@", buf, 0x12u);
   }
 
@@ -6158,7 +6158,7 @@ LABEL_36:
   {
     if (gLogObjects && gNumLogObjects >= 1)
     {
-      v10 = *gLogObjects;
+      defaultMediaLibrary = *gLogObjects;
     }
 
     else
@@ -6168,30 +6168,30 @@ LABEL_36:
         [ACCMediaLibraryShimInfo _getUIDString];
       }
 
-      v10 = MEMORY[0x277D86220];
+      defaultMediaLibrary = MEMORY[0x277D86220];
       v23 = MEMORY[0x277D86220];
     }
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(defaultMediaLibrary, OS_LOG_TYPE_DEFAULT))
     {
       libraryType = self->_libraryType;
       *buf = 67109120;
-      v34 = libraryType;
-      _os_log_impl(&dword_2335D3000, v10, OS_LOG_TYPE_DEFAULT, "WARNING: PlaybackOfItems: Not supported for type=%u!", buf, 8u);
+      firstCopy = libraryType;
+      _os_log_impl(&dword_2335D3000, defaultMediaLibrary, OS_LOG_TYPE_DEFAULT, "WARNING: PlaybackOfItems: Not supported for type=%u!", buf, 8u);
     }
   }
 
   else
   {
-    v27 = a4;
-    v10 = [MEMORY[0x277CD5E10] defaultMediaLibrary];
+    firstCopy2 = first;
+    defaultMediaLibrary = [MEMORY[0x277CD5E10] defaultMediaLibrary];
     [MEMORY[0x277CD5E10] setDefaultMediaLibrary:self->_mpMediaLibrary];
     v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v12 = v6;
+    v12 = itemsCopy;
     v13 = [v12 countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v13)
     {
@@ -6206,8 +6206,8 @@ LABEL_36:
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v28 + 1) + 8 * i) unsignedLongLongValue];
-          v18 = [objc_alloc(MEMORY[0x277CD5DE0]) initWithPersistentID:v17];
+          unsignedLongLongValue = [*(*(&v28 + 1) + 8 * i) unsignedLongLongValue];
+          v18 = [objc_alloc(MEMORY[0x277CD5DE0]) initWithPersistentID:unsignedLongLongValue];
           if (v18)
           {
             [v11 addObject:v18];
@@ -6215,7 +6215,7 @@ LABEL_36:
 
           else
           {
-            v19 = [(ACCMediaLibraryShimInfo *)self _getMediaItemForPersistentID:v17];
+            v19 = [(ACCMediaLibraryShimInfo *)self _getMediaItemForPersistentID:unsignedLongLongValue];
             if (v19)
             {
               [v11 addObject:v19];
@@ -6231,14 +6231,14 @@ LABEL_36:
 
     if ([v11 count])
     {
-      if ([v11 count] <= v27)
+      if ([v11 count] <= firstCopy2)
       {
         v20 = 0;
       }
 
       else
       {
-        v20 = v27;
+        v20 = firstCopy2;
       }
 
       v21 = [v11 objectAtIndex:v20];
@@ -6273,24 +6273,24 @@ LABEL_36:
       }
     }
 
-    [MEMORY[0x277CD5E10] setDefaultMediaLibrary:v10];
+    [MEMORY[0x277CD5E10] setDefaultMediaLibrary:defaultMediaLibrary];
   }
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startPlaybackOfCollection:(unint64_t)a3 ofType:(int)a4 withFirst:(id)a5 orIndex:(unsigned int)a6
+- (void)_startPlaybackOfCollection:(unint64_t)collection ofType:(int)type withFirst:(id)first orIndex:(unsigned int)index
 {
   v69 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  if (a4 > 7)
+  firstCopy = first;
+  if (type > 7)
   {
     v11 = -1;
   }
 
   else
   {
-    v11 = qword_2335ED370[a4];
+    v11 = qword_2335ED370[type];
   }
 
   if (gLogObjects)
@@ -6321,20 +6321,20 @@ LABEL_36:
 
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
-    v15 = [v10 title];
+    title = [firstCopy title];
     libraryType = self->_libraryType;
     *buf = 134219522;
-    *v58 = a3;
+    *v58 = collection;
     *&v58[8] = 2048;
-    *&v58[10] = a4;
+    *&v58[10] = type;
     v59 = 2048;
     v60 = v11;
     v61 = 2112;
-    v62 = v10;
+    v62 = firstCopy;
     v63 = 2112;
-    v64 = v15;
+    v64 = title;
     v65 = 1024;
-    v66 = a6;
+    indexCopy = index;
     v67 = 1024;
     v68 = libraryType;
     _os_log_impl(&dword_2335D3000, v14, OS_LOG_TYPE_INFO, "_startPlaybackOfCollection: collectionPersistentID=%llu connectionType=%lld(mp:%lld) firstItem=%@(%@) firstItemIndex=%u _libraryType=%d", buf, 0x40u);
@@ -6343,9 +6343,9 @@ LABEL_36:
   if (self->_libraryType != 2)
   {
     v53 = objc_autoreleasePoolPush();
-    v17 = [MEMORY[0x277CD5E10] defaultMediaLibrary];
+    defaultMediaLibrary = [MEMORY[0x277CD5E10] defaultMediaLibrary];
     [MEMORY[0x277CD5E10] setDefaultMediaLibrary:self->_mpMediaLibrary];
-    v18 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+    v18 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:collection];
     v19 = [MEMORY[0x277CCABB0] numberWithInteger:7423];
     v54 = [MEMORY[0x277CD5E30] predicateWithValue:v19 forProperty:*MEMORY[0x277CD57C8]];
     v52 = v18;
@@ -6415,26 +6415,26 @@ LABEL_36:
           goto LABEL_80;
         }
 
-        if (a4 == 6)
+        if (type == 6)
         {
           goto LABEL_25;
         }
 
         v23 = 0x277CD5000uLL;
-        if (!a4)
+        if (!type)
         {
           v24 = [objc_alloc(MEMORY[0x277CD5E38]) initWithFilterPredicates:v22];
           [v24 setGroupingType:6];
-          v49 = [v24 collections];
-          if ([v49 count])
+          collections = [v24 collections];
+          if ([collections count])
           {
-            v25 = [v49 objectAtIndex:0];
+            v25 = [collections objectAtIndex:0];
             [v25 valueForProperty:*MEMORY[0x277CD5918]];
             v26 = v46 = v24;
-            v47 = [v26 BOOLValue];
+            bOOLValue = [v26 BOOLValue];
 
             v23 = 0x277CD5000;
-            if (v47)
+            if (bOOLValue)
             {
 LABEL_25:
               mpMusicPlayerControllerQueue = self->_mpMusicPlayerControllerQueue;
@@ -6452,7 +6452,7 @@ LABEL_25:
 LABEL_80:
 
 LABEL_81:
-              [*(v29 + 3600) setDefaultMediaLibrary:v17];
+              [*(v29 + 3600) setDefaultMediaLibrary:defaultMediaLibrary];
 
               objc_autoreleasePoolPop(v28);
               goto LABEL_82;
@@ -6467,24 +6467,24 @@ LABEL_81:
         v38 = [objc_alloc(*(v23 + 3640)) initWithFilterPredicates:v22];
         [v38 setGroupingType:0];
         v48 = v38;
-        v39 = [v38 items];
-        v40 = v10;
-        v50 = v39;
-        if ([v39 count])
+        items = [v38 items];
+        v40 = firstCopy;
+        v50 = items;
+        if ([items count])
         {
           if (!v40)
           {
-            if ([v39 count] <= a6)
+            if ([items count] <= index)
             {
-              v41 = 0;
+              indexCopy2 = 0;
             }
 
             else
             {
-              v41 = a6;
+              indexCopy2 = index;
             }
 
-            v40 = [v39 objectAtIndex:v41];
+            v40 = [items objectAtIndex:indexCopy2];
           }
 
           v42 = v48;
@@ -6558,7 +6558,7 @@ LABEL_81:
     goto LABEL_81;
   }
 
-  if (a4 != 7 && a4)
+  if (type != 7 && type)
   {
     if (gLogObjects && gNumLogObjects >= 1)
     {
@@ -6579,16 +6579,16 @@ LABEL_81:
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109376;
-      *v58 = a4;
+      *v58 = type;
       *&v58[4] = 2048;
-      *&v58[6] = a3;
+      *&v58[6] = collection;
       _os_log_impl(&dword_2335D3000, v32, OS_LOG_TYPE_DEFAULT, "WARNINGL: PlaybackOfCollection: Invalid type(%d) for collectionPersistentID=%lld", buf, 0x12u);
     }
   }
 
   else
   {
-    [(ACCMediaLibraryShimInfo *)self _startPlaybackOfRadioStation:a3];
+    [(ACCMediaLibraryShimInfo *)self _startPlaybackOfRadioStation:collection];
   }
 
 LABEL_82:
@@ -6635,9 +6635,9 @@ void __79__ACCMediaLibraryShimInfo__startPlaybackOfCollection_ofType_withFirst_o
   }
 }
 
-- (void)startMLPlaybackWithResume:(BOOL)a3
+- (void)startMLPlaybackWithResume:(BOOL)resume
 {
-  v3 = a3;
+  resumeCopy = resume;
   v18 = *MEMORY[0x277D85DE8];
   if (gLogObjects)
   {
@@ -6668,7 +6668,7 @@ void __79__ACCMediaLibraryShimInfo__startPlaybackOfCollection_ofType_withFirst_o
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v17 = v3;
+    v17 = resumeCopy;
     _os_log_impl(&dword_2335D3000, v7, OS_LOG_TYPE_DEFAULT, "startMLPlaybackWithResume: resume=%d", buf, 8u);
   }
 
@@ -6701,7 +6701,7 @@ void __79__ACCMediaLibraryShimInfo__startPlaybackOfCollection_ofType_withFirst_o
     goto LABEL_32;
   }
 
-  if (v3)
+  if (resumeCopy)
   {
     v8 = GetMediaLibraryHelper();
     if ([v8 showMusic])
@@ -6847,10 +6847,10 @@ void __53__ACCMediaLibraryShimInfo_startMLPlaybackWithResume___block_invoke(uint
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startMLPlaybackOfAllSongsStartItem:(id)a3
+- (void)_startMLPlaybackOfAllSongsStartItem:(id)item
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   if (gLogObjects)
   {
     v5 = gNumLogObjects <= 0;
@@ -6882,10 +6882,10 @@ void __53__ACCMediaLibraryShimInfo_startMLPlaybackWithResume___block_invoke(uint
 
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(ACCMediaLibraryShimInfo *)self UIDString];
+      uIDString = [(ACCMediaLibraryShimInfo *)self UIDString];
       libraryType = self->_libraryType;
       *buf = 138412546;
-      v21 = v10;
+      v21 = uIDString;
       v22 = 1024;
       v23 = libraryType;
       _os_log_impl(&dword_2335D3000, v7, OS_LOG_TYPE_DEFAULT, "startMLPlaybackOfAllSongs Not supported for, libraryUID=%@ _libraryType=%u", buf, 0x12u);
@@ -6912,9 +6912,9 @@ void __53__ACCMediaLibraryShimInfo_startMLPlaybackWithResume___block_invoke(uint
 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v13 = [(ACCMediaLibraryShimInfo *)self UIDString];
+      uIDString2 = [(ACCMediaLibraryShimInfo *)self UIDString];
       *buf = 138412290;
-      v21 = v13;
+      v21 = uIDString2;
       _os_log_impl(&dword_2335D3000, v8, OS_LOG_TYPE_INFO, "startMLPlaybackOfAllSongs prepare and play all songs, libraryUID=%@", buf, 0xCu);
     }
 
@@ -6927,7 +6927,7 @@ void __53__ACCMediaLibraryShimInfo_startMLPlaybackWithResume___block_invoke(uint
       v18[2] = __63__ACCMediaLibraryShimInfo__startMLPlaybackOfAllSongsStartItem___block_invoke;
       v18[3] = &unk_2789E3428;
       v18[4] = self;
-      v19 = v4;
+      v19 = itemCopy;
       dispatch_sync(mpMusicPlayerControllerQueue, v18);
     }
 
@@ -6980,7 +6980,7 @@ void __63__ACCMediaLibraryShimInfo__startMLPlaybackOfAllSongsStartItem___block_i
   [v4 play];
 }
 
-- (void)startMLPlaybackOfAllSongsStartPersistentID:(unint64_t)a3
+- (void)startMLPlaybackOfAllSongsStartPersistentID:(unint64_t)d
 {
   v17 = *MEMORY[0x277D85DE8];
   if (gLogObjects)
@@ -7012,7 +7012,7 @@ void __63__ACCMediaLibraryShimInfo__startMLPlaybackOfAllSongsStartItem___block_i
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 134217984;
-    v14 = a3;
+    dCopy = d;
     _os_log_impl(&dword_2335D3000, v7, OS_LOG_TYPE_DEFAULT, "startMLPlaybackOfAllSongsStartPersistentID: startingPersistentID=%llu", &v13, 0xCu);
   }
 
@@ -7036,10 +7036,10 @@ void __63__ACCMediaLibraryShimInfo__startMLPlaybackOfAllSongsStartItem___block_i
 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(ACCMediaLibraryShimInfo *)self UIDString];
+      uIDString = [(ACCMediaLibraryShimInfo *)self UIDString];
       libraryType = self->_libraryType;
       v13 = 138412546;
-      v14 = v10;
+      dCopy = uIDString;
       v15 = 1024;
       v16 = libraryType;
       _os_log_impl(&dword_2335D3000, v8, OS_LOG_TYPE_DEFAULT, "startMLPlaybackOfAllSongs Not supported for, libraryUID=%@ _libraryType=%u", &v13, 0x12u);
@@ -7048,17 +7048,17 @@ void __63__ACCMediaLibraryShimInfo__startMLPlaybackOfAllSongsStartItem___block_i
 
   else
   {
-    v8 = [(ACCMediaLibraryShimInfo *)self _getMediaItemForPersistentID:a3];
+    v8 = [(ACCMediaLibraryShimInfo *)self _getMediaItemForPersistentID:d];
     [(ACCMediaLibraryShimInfo *)self _startMLPlaybackOfAllSongsStartItem:v8];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)confirmMediaLibraryUpdateLastRevision:(id)a3 updateCount:(unsigned int)a4
+- (void)confirmMediaLibraryUpdateLastRevision:(id)revision updateCount:(unsigned int)count
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  revisionCopy = revision;
   if (gLogObjects)
   {
     v7 = gNumLogObjects < 1;
@@ -7088,9 +7088,9 @@ void __63__ACCMediaLibraryShimInfo__startMLPlaybackOfAllSongsStartItem___block_i
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v11 = 138412546;
-    v12 = v6;
+    v12 = revisionCopy;
     v13 = 1024;
-    v14 = a4;
+    countCopy = count;
     _os_log_impl(&dword_2335D3000, v9, OS_LOG_TYPE_INFO, "confirmMediaLibraryUpdateLastRevision: lastRevision=%@ count=%u", &v11, 0x12u);
   }
 

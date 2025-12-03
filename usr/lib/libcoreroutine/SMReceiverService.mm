@@ -1,55 +1,55 @@
 @interface SMReceiverService
-+ (void)_submitSentinelZoneMaintenanceMetricForSuccess:(BOOL)a3 error:(id)a4;
-- (SMReceiverService)initWithDefaultsManager:(id)a3 platform:(id)a4 messagingService:(id)a5 safetyCacheStore:(id)a6 xpcActivityManager:(id)a7;
-- (id)createReceiverCacheManagerForSessionID:(id)a3 initiatorHandle:(id)a4;
-- (id)getReceiverCacheManagerForSessionID:(id)a3;
++ (void)_submitSentinelZoneMaintenanceMetricForSuccess:(BOOL)success error:(id)error;
+- (SMReceiverService)initWithDefaultsManager:(id)manager platform:(id)platform messagingService:(id)service safetyCacheStore:(id)store xpcActivityManager:(id)activityManager;
+- (id)createReceiverCacheManagerForSessionID:(id)d initiatorHandle:(id)handle;
+- (id)getReceiverCacheManagerForSessionID:(id)d;
 - (id)invocationError;
-- (void)_fetchAllReceiverSessionStatusWithCompletion:(id)a3;
-- (void)_fetchReceiverSafetyCacheForSessionID:(id)a3 completion:(id)a4;
-- (void)_fetchReceiverSessionStatusForSessionID:(id)a3 completion:(id)a4;
-- (void)_initializeSentinelZoneWithCompletion:(id)a3;
+- (void)_fetchAllReceiverSessionStatusWithCompletion:(id)completion;
+- (void)_fetchReceiverSafetyCacheForSessionID:(id)d completion:(id)completion;
+- (void)_fetchReceiverSessionStatusForSessionID:(id)d completion:(id)completion;
+- (void)_initializeSentinelZoneWithCompletion:(id)completion;
 - (void)_onCKAccountChangedNotification;
-- (void)_onMessageReceived:(id)a3;
-- (void)_onSafetyCacheStoreNotification:(id)a3;
-- (void)_receivedLowPowerModeWarningStateUpdateMessage:(id)a3 fromHandle:(id)a4 fromMe:(BOOL)a5;
+- (void)_onMessageReceived:(id)received;
+- (void)_onSafetyCacheStoreNotification:(id)notification;
+- (void)_receivedLowPowerModeWarningStateUpdateMessage:(id)message fromHandle:(id)handle fromMe:(BOOL)me;
 - (void)_registerForCKAccountChangedNotification;
 - (void)_registerInitializeSentinelZoneActivity;
 - (void)_setup;
-- (void)_setupCacheManagers:(id)a3;
+- (void)_setupCacheManagers:(id)managers;
 - (void)_setupOnceDiskAvailable;
-- (void)_userRequestedCacheDownloadForSessionID:(id)a3 completion:(id)a4;
-- (void)addObserver:(id)a3;
+- (void)_userRequestedCacheDownloadForSessionID:(id)d completion:(id)completion;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)detailsViewOpenedForSessionID:(id)a3;
-- (void)fetchAllReceiverSessionStatusWithCompletion:(id)a3;
-- (void)fetchReceiverSafetyCacheForSessionID:(id)a3 completion:(id)a4;
-- (void)fetchReceiverSessionStatusForSessionID:(id)a3 completion:(id)a4;
-- (void)notifyObserversOfReceiverSafetyCacheChangeWithSessionID:(id)a3 phoneCache:(id)a4 watchCache:(id)a5;
-- (void)notifyObserversOfReceiverSessionStatusChangeWithSessionID:(id)a3 sessionStatus:(id)a4;
-- (void)onMessageReceived:(id)a3;
-- (void)onSafetyCacheStoreNotification:(id)a3;
-- (void)receivedCacheUpdatedMessage:(id)a3 fromHandle:(id)a4 fromMe:(BOOL)a5;
-- (void)receivedEstimatedEndTimeUpdateMessage:(id)a3 fromHandle:(id)a4 fromMe:(BOOL)a5;
-- (void)receivedKeyReleaseInfoMessage:(id)a3 fromHandle:(id)a4 fromMe:(BOOL)a5;
-- (void)receivedKeyReleaseMessage:(id)a3 fromHandle:(id)a4 fromMe:(BOOL)a5;
-- (void)receivedSessionEndMessage:(id)a3 fromHandle:(id)a4 fromMe:(BOOL)a5;
-- (void)receivedSessionStartInfoMessage:(id)a3 fromHandle:(id)a4 fromMe:(BOOL)a5;
-- (void)receivedSessionStartMessage:(id)a3 fromHandle:(id)a4 fromMe:(BOOL)a5;
-- (void)removeObserver:(id)a3;
-- (void)removeReceiverCacheManagerForSessionID:(id)a3;
-- (void)userRequestedCacheDownloadForSessionID:(id)a3 completion:(id)a4;
+- (void)detailsViewOpenedForSessionID:(id)d;
+- (void)fetchAllReceiverSessionStatusWithCompletion:(id)completion;
+- (void)fetchReceiverSafetyCacheForSessionID:(id)d completion:(id)completion;
+- (void)fetchReceiverSessionStatusForSessionID:(id)d completion:(id)completion;
+- (void)notifyObserversOfReceiverSafetyCacheChangeWithSessionID:(id)d phoneCache:(id)cache watchCache:(id)watchCache;
+- (void)notifyObserversOfReceiverSessionStatusChangeWithSessionID:(id)d sessionStatus:(id)status;
+- (void)onMessageReceived:(id)received;
+- (void)onSafetyCacheStoreNotification:(id)notification;
+- (void)receivedCacheUpdatedMessage:(id)message fromHandle:(id)handle fromMe:(BOOL)me;
+- (void)receivedEstimatedEndTimeUpdateMessage:(id)message fromHandle:(id)handle fromMe:(BOOL)me;
+- (void)receivedKeyReleaseInfoMessage:(id)message fromHandle:(id)handle fromMe:(BOOL)me;
+- (void)receivedKeyReleaseMessage:(id)message fromHandle:(id)handle fromMe:(BOOL)me;
+- (void)receivedSessionEndMessage:(id)message fromHandle:(id)handle fromMe:(BOOL)me;
+- (void)receivedSessionStartInfoMessage:(id)message fromHandle:(id)handle fromMe:(BOOL)me;
+- (void)receivedSessionStartMessage:(id)message fromHandle:(id)handle fromMe:(BOOL)me;
+- (void)removeObserver:(id)observer;
+- (void)removeReceiverCacheManagerForSessionID:(id)d;
+- (void)userRequestedCacheDownloadForSessionID:(id)d completion:(id)completion;
 @end
 
 @implementation SMReceiverService
 
-- (SMReceiverService)initWithDefaultsManager:(id)a3 platform:(id)a4 messagingService:(id)a5 safetyCacheStore:(id)a6 xpcActivityManager:(id)a7
+- (SMReceiverService)initWithDefaultsManager:(id)manager platform:(id)platform messagingService:(id)service safetyCacheStore:(id)store xpcActivityManager:(id)activityManager
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v31 = a7;
-  if (!v13)
+  managerCopy = manager;
+  platformCopy = platform;
+  serviceCopy = service;
+  storeCopy = store;
+  activityManagerCopy = activityManager;
+  if (!managerCopy)
   {
     v28 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -64,7 +64,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (!v14)
+  if (!platformCopy)
   {
     v28 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -77,7 +77,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (!v15)
+  if (!serviceCopy)
   {
     v28 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -90,7 +90,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (!v16)
+  if (!storeCopy)
   {
     v28 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -102,7 +102,7 @@ LABEL_16:
 
 LABEL_17:
 
-    v27 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
@@ -112,11 +112,11 @@ LABEL_17:
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_defaultsManager, a3);
-    objc_storeStrong(&v18->_platform, a4);
-    objc_storeStrong(&v18->_messagingService, a5);
-    objc_storeStrong(&v18->_safetyCacheStore, a6);
-    objc_storeStrong(&v18->_xpcActivityManager, a7);
+    objc_storeStrong(&v17->_defaultsManager, manager);
+    objc_storeStrong(&v18->_platform, platform);
+    objc_storeStrong(&v18->_messagingService, service);
+    objc_storeStrong(&v18->_safetyCacheStore, store);
+    objc_storeStrong(&v18->_xpcActivityManager, activityManager);
     v19 = [MEMORY[0x277CCAA50] hashTableWithOptions:517];
     observers = v18->_observers;
     v18->_observers = v19;
@@ -127,8 +127,8 @@ LABEL_17:
 
     v18->_attemptedToLoadFromDisk = 0;
     v23 = [RTInvocationDispatcher alloc];
-    v24 = [(RTNotifier *)v18 queue];
-    v25 = [(RTInvocationDispatcher *)v23 initWithQueue:v24];
+    queue = [(RTNotifier *)v18 queue];
+    v25 = [(RTInvocationDispatcher *)v23 initWithQueue:queue];
     dispatcher = v18->_dispatcher;
     v18->_dispatcher = v25;
 
@@ -137,16 +137,16 @@ LABEL_17:
   }
 
   self = v18;
-  v27 = self;
+  selfCopy = self;
 LABEL_18:
 
-  return v27;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v3 = [(SMReceiverService *)self messagingService];
-  [v3 removeObserver:self];
+  messagingService = [(SMReceiverService *)self messagingService];
+  [messagingService removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SMReceiverService;
@@ -173,13 +173,13 @@ LABEL_18:
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_DEFAULT, "#SafetyCache,Receiver,%@,%@", &v17, 0x16u);
     }
 
-    v10 = [(SMReceiverService *)self safetyCacheStore];
+    safetyCacheStore = [(SMReceiverService *)self safetyCacheStore];
     v11 = +[(RTNotification *)RTStoreNotificationAvailabilityDidChange];
-    [v10 addObserver:self selector:sel_onSafetyCacheStoreNotification_ name:v11];
+    [safetyCacheStore addObserver:self selector:sel_onSafetyCacheStoreNotification_ name:v11];
 
-    v12 = [(SMReceiverService *)self messagingService];
+    messagingService = [(SMReceiverService *)self messagingService];
     v13 = +[(RTNotification *)SMMessageReceivedNotification];
-    [v12 addObserver:self selector:sel_onMessageReceived_ name:v13];
+    [messagingService addObserver:self selector:sel_onMessageReceived_ name:v13];
 
     [(SMReceiverService *)self _registerForCKAccountChangedNotification];
     [(SMReceiverService *)self _registerInitializeSentinelZoneActivity];
@@ -201,11 +201,11 @@ LABEL_18:
   }
 }
 
-- (void)_setupCacheManagers:(id)a3
+- (void)_setupCacheManagers:(id)managers
 {
-  v5 = a3;
+  managersCopy = managers;
   objc_initWeak(&location, self);
-  v6 = [(SMReceiverService *)self safetyCacheStore];
+  safetyCacheStore = [(SMReceiverService *)self safetyCacheStore];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __41__SMReceiverService__setupCacheManagers___block_invoke;
@@ -213,9 +213,9 @@ LABEL_18:
   objc_copyWeak(v10, &location);
   v8[4] = self;
   v10[1] = a2;
-  v7 = v5;
+  v7 = managersCopy;
   v9 = v7;
-  [v6 fetchReceiverContactsWithHandler:v8];
+  [safetyCacheStore fetchReceiverContactsWithHandler:v8];
 
   objc_destroyWeak(v10);
   objc_destroyWeak(&location);
@@ -509,32 +509,32 @@ void __44__SMReceiverService__setupOnceDiskAvailable__block_invoke(uint64_t a1, 
   }
 }
 
-- (void)onSafetyCacheStoreNotification:(id)a3
+- (void)onSafetyCacheStoreNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__SMReceiverService_onSafetyCacheStoreNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onSafetyCacheStoreNotification:(id)a3
+- (void)_onSafetyCacheStoreNotification:(id)notification
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v7 = +[(RTNotification *)RTStoreNotificationAvailabilityDidChange];
-  v8 = [v6 isEqualToString:v7];
+  v8 = [name isEqualToString:v7];
 
   if (v8)
   {
-    v9 = [v5 availability];
-    if ([(SMReceiverService *)self safetyCacheStoreAvailability]!= v9)
+    availability = [notificationCopy availability];
+    if ([(SMReceiverService *)self safetyCacheStoreAvailability]!= availability)
     {
       v10 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -543,7 +543,7 @@ void __44__SMReceiverService__setupOnceDiskAvailable__block_invoke(uint64_t a1, 
         v12 = NSStringFromClass(v11);
         v13 = NSStringFromSelector(a2);
         v14 = [RTStore availabilityToString:self->_safetyCacheStoreAvailability];
-        v15 = [RTStore availabilityToString:v9];
+        v15 = [RTStore availabilityToString:availability];
         v16 = 138413058;
         v17 = v12;
         v18 = 2112;
@@ -555,7 +555,7 @@ void __44__SMReceiverService__setupOnceDiskAvailable__block_invoke(uint64_t a1, 
         _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_DEFAULT, "#SafetyCache,Receiver,%@,%@,safetyCacheStoreAvailability availability change from,%@,to,%@", &v16, 0x2Au);
       }
 
-      [(SMReceiverService *)self setSafetyCacheStoreAvailability:v9];
+      [(SMReceiverService *)self setSafetyCacheStoreAvailability:availability];
       if ([(SMReceiverService *)self safetyCacheStoreAvailability]== 2)
       {
         [(SMReceiverService *)self _setupOnceDiskAvailable];
@@ -591,19 +591,19 @@ void __44__SMReceiverService__setupOnceDiskAvailable__block_invoke(uint64_t a1, 
   return v12;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v5 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __33__SMReceiverService_addObserver___block_invoke;
     v7[3] = &unk_2788C4A70;
     v7[4] = self;
-    v8 = v4;
-    dispatch_async(v5, v7);
+    v8 = observerCopy;
+    dispatch_async(queue, v7);
   }
 
   else
@@ -623,19 +623,19 @@ void __33__SMReceiverService_addObserver___block_invoke(uint64_t a1)
   [v2 addObject:*(a1 + 40)];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v5 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __36__SMReceiverService_removeObserver___block_invoke;
     v7[3] = &unk_2788C4A70;
     v7[4] = self;
-    v8 = v4;
-    dispatch_async(v5, v7);
+    v8 = observerCopy;
+    dispatch_async(queue, v7);
   }
 
   else
@@ -655,16 +655,16 @@ void __36__SMReceiverService_removeObserver___block_invoke(uint64_t a1)
   [v2 removeObject:*(a1 + 40)];
 }
 
-- (void)notifyObserversOfReceiverSessionStatusChangeWithSessionID:(id)a3 sessionStatus:(id)a4
+- (void)notifyObserversOfReceiverSessionStatusChangeWithSessionID:(id)d sessionStatus:(id)status
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  dCopy = d;
+  statusCopy = status;
+  v9 = statusCopy;
+  if (!dCopy)
   {
-    v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    observers = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(observers, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_20;
     }
@@ -672,14 +672,14 @@ void __36__SMReceiverService_removeObserver___block_invoke(uint64_t a1)
     *buf = 0;
     v20 = "Invalid parameter not satisfying: sessionID";
 LABEL_22:
-    _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, v20, buf, 2u);
+    _os_log_error_impl(&dword_2304B3000, observers, OS_LOG_TYPE_ERROR, v20, buf, 2u);
     goto LABEL_20;
   }
 
-  if (!v8)
+  if (!statusCopy)
   {
-    v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    observers = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(observers, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_20;
     }
@@ -698,7 +698,7 @@ LABEL_22:
       v12 = NSStringFromClass(v11);
       v13 = NSStringFromSelector(a2);
       *buf = 138412802;
-      v27 = v7;
+      v27 = dCopy;
       v28 = 2112;
       v29 = v12;
       v30 = 2112;
@@ -711,8 +711,8 @@ LABEL_22:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v14 = [(SMReceiverService *)self observers];
-  v15 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  observers = [(SMReceiverService *)self observers];
+  v15 = [observers countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v15)
   {
     v16 = v15;
@@ -723,17 +723,17 @@ LABEL_22:
       {
         if (*v22 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(observers);
         }
 
         v19 = *(*(&v21 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          [v19 onReceiverSessionStatusChangeForSessionID:v7 sessionStatus:v9];
+          [v19 onReceiverSessionStatusChangeForSessionID:dCopy sessionStatus:v9];
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v16 = [observers countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v16);
@@ -742,13 +742,13 @@ LABEL_22:
 LABEL_20:
 }
 
-- (void)notifyObserversOfReceiverSafetyCacheChangeWithSessionID:(id)a3 phoneCache:(id)a4 watchCache:(id)a5
+- (void)notifyObserversOfReceiverSafetyCacheChangeWithSessionID:(id)d phoneCache:(id)cache watchCache:(id)watchCache
 {
   v33 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  dCopy = d;
+  cacheCopy = cache;
+  watchCacheCopy = watchCache;
+  if (dCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -759,7 +759,7 @@ LABEL_20:
         v14 = NSStringFromClass(v13);
         v15 = NSStringFromSelector(a2);
         *buf = 138412802;
-        v28 = v9;
+        v28 = dCopy;
         v29 = 2112;
         v30 = v14;
         v31 = 2112;
@@ -772,8 +772,8 @@ LABEL_20:
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v16 = [(SMReceiverService *)self observers];
-    v17 = [v16 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    observers = [(SMReceiverService *)self observers];
+    v17 = [observers countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v17)
     {
       v18 = v17;
@@ -784,17 +784,17 @@ LABEL_20:
         {
           if (*v23 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(observers);
           }
 
           v21 = *(*(&v22 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            [v21 onReceiverSafetyCacheChangeForSessionID:v9 phoneCache:v10 watchCache:v11];
+            [v21 onReceiverSafetyCacheChangeForSessionID:dCopy phoneCache:cacheCopy watchCache:watchCacheCopy];
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v18 = [observers countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v18);
@@ -803,34 +803,34 @@ LABEL_20:
 
   else
   {
-    v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    observers = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(observers, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_2304B3000, v16, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: sessionID", buf, 2u);
+      _os_log_error_impl(&dword_2304B3000, observers, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: sessionID", buf, 2u);
     }
   }
 }
 
-- (void)fetchAllReceiverSessionStatusWithCompletion:(id)a3
+- (void)fetchAllReceiverSessionStatusWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  completionCopy = completion;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__SMReceiverService_fetchAllReceiverSessionStatusWithCompletion___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_fetchAllReceiverSessionStatusWithCompletion:(id)a3
+- (void)_fetchAllReceiverSessionStatusWithCompletion:(id)completion
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  completionCopy = completion;
+  if (completionCopy)
   {
     if ([(SMReceiverService *)self attemptedToLoadFromDisk])
     {
@@ -839,14 +839,14 @@ LABEL_20:
       v20 = 0x3032000000;
       v21 = __Block_byref_object_copy__4;
       v22 = __Block_byref_object_dispose__4;
-      v23 = [MEMORY[0x277CBEB18] array];
-      v6 = [(SMReceiverService *)self cacheManagerArray];
+      array = [MEMORY[0x277CBEB18] array];
+      cacheManagerArray = [(SMReceiverService *)self cacheManagerArray];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __66__SMReceiverService__fetchAllReceiverSessionStatusWithCompletion___block_invoke_35;
       v17[3] = &unk_2788C4D60;
       v17[4] = v18;
-      [v6 enumerateObjectsUsingBlock:v17];
+      [cacheManagerArray enumerateObjectsUsingBlock:v17];
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -867,19 +867,19 @@ LABEL_20:
         }
       }
 
-      (*(v5 + 2))(v5, *(v19 + 5), 0);
+      (*(completionCopy + 2))(completionCopy, *(v19 + 5), 0);
       _Block_object_dispose(v18, 8);
     }
 
     else
     {
-      v13 = [(SMReceiverService *)self dispatcher];
+      dispatcher = [(SMReceiverService *)self dispatcher];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __66__SMReceiverService__fetchAllReceiverSessionStatusWithCompletion___block_invoke;
       v26[3] = &unk_2788C4938;
       v26[4] = self;
-      v27 = v5;
+      v27 = completionCopy;
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __66__SMReceiverService__fetchAllReceiverSessionStatusWithCompletion___block_invoke_2;
@@ -889,7 +889,7 @@ LABEL_20:
       v14 = objc_opt_class();
       v15 = NSStringFromClass(v14);
       v16 = NSStringFromSelector(a2);
-      [v13 enqueueBlock:v26 failureBlock:v24 description:{@"%@-%@", v15, v16}];
+      [dispatcher enqueueBlock:v26 failureBlock:v24 description:{@"%@-%@", v15, v16}];
     }
   }
 
@@ -918,30 +918,30 @@ void __66__SMReceiverService__fetchAllReceiverSessionStatusWithCompletion___bloc
   [v2 addObject:v3];
 }
 
-- (void)fetchReceiverSessionStatusForSessionID:(id)a3 completion:(id)a4
+- (void)fetchReceiverSessionStatusForSessionID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  dCopy = d;
+  completionCopy = completion;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__SMReceiverService_fetchReceiverSessionStatusForSessionID_completion___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchReceiverSessionStatusForSessionID:(id)a3 completion:(id)a4
+- (void)_fetchReceiverSessionStatusForSessionID:(id)d completion:(id)completion
 {
   v43[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  dCopy = d;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (!dCopy)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -957,7 +957,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (!v8)
+  if (!completionCopy)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -972,7 +972,7 @@ LABEL_22:
 
   if ([(SMReceiverService *)self attemptedToLoadFromDisk])
   {
-    v10 = [(SMReceiverService *)self getReceiverCacheManagerForSessionID:v7];
+    v10 = [(SMReceiverService *)self getReceiverCacheManagerForSessionID:dCopy];
     v11 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
     if (v10)
     {
@@ -984,21 +984,21 @@ LABEL_22:
           v13 = objc_opt_class();
           v14 = NSStringFromClass(v13);
           v15 = NSStringFromSelector(a2);
-          v16 = [v10 sessionStatus];
+          sessionStatus = [v10 sessionStatus];
           *buf = 138413058;
-          v35 = v7;
+          v35 = dCopy;
           v36 = 2112;
           v37 = v14;
           v38 = 2112;
           v39 = v15;
           v40 = 2112;
-          v41 = v16;
+          v41 = sessionStatus;
           _os_log_impl(&dword_2304B3000, v12, OS_LOG_TYPE_INFO, "#SafetyCache,Receiver,sessionID:%@,%@,%@,returning session status %@", buf, 0x2Au);
         }
       }
 
-      v17 = [v10 sessionStatus];
-      (v9)[2](v9, v17, 0);
+      sessionStatus2 = [v10 sessionStatus];
+      (v9)[2](v9, sessionStatus2, 0);
     }
 
     else
@@ -1012,7 +1012,7 @@ LABEL_22:
           v25 = NSStringFromClass(v24);
           v26 = NSStringFromSelector(a2);
           *buf = 138412802;
-          v35 = v7;
+          v35 = dCopy;
           v36 = 2112;
           v37 = v25;
           v38 = 2112;
@@ -1022,24 +1022,24 @@ LABEL_22:
       }
 
       v42 = *MEMORY[0x277CCA450];
-      v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"no cache manager found for sessionID %@", v7];
-      v43[0] = v27;
-      v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v43 forKeys:&v42 count:1];
+      dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"no cache manager found for sessionID %@", dCopy];
+      v43[0] = dCopy;
+      sessionStatus2 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v43 forKeys:&v42 count:1];
 
-      v28 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v17];
+      v28 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:sessionStatus2];
       (v9)[2](v9, 0, v28);
     }
 
     goto LABEL_22;
   }
 
-  v19 = [(SMReceiverService *)self dispatcher];
+  dispatcher = [(SMReceiverService *)self dispatcher];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __72__SMReceiverService__fetchReceiverSessionStatusForSessionID_completion___block_invoke;
   v31[3] = &unk_2788C4500;
   v31[4] = self;
-  v32 = v7;
+  v32 = dCopy;
   v33 = v9;
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
@@ -1050,7 +1050,7 @@ LABEL_22:
   v20 = objc_opt_class();
   v21 = NSStringFromClass(v20);
   v22 = NSStringFromSelector(a2);
-  [v19 enqueueBlock:v31 failureBlock:v29 description:{@"%@-%@", v21, v22}];
+  [dispatcher enqueueBlock:v31 failureBlock:v29 description:{@"%@-%@", v21, v22}];
 
 LABEL_23:
 }
@@ -1062,30 +1062,30 @@ void __72__SMReceiverService__fetchReceiverSessionStatusForSessionID_completion_
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)userRequestedCacheDownloadForSessionID:(id)a3 completion:(id)a4
+- (void)userRequestedCacheDownloadForSessionID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  dCopy = d;
+  completionCopy = completion;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__SMReceiverService_userRequestedCacheDownloadForSessionID_completion___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_userRequestedCacheDownloadForSessionID:(id)a3 completion:(id)a4
+- (void)_userRequestedCacheDownloadForSessionID:(id)d completion:(id)completion
 {
   v40 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  dCopy = d;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (!dCopy)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -1101,7 +1101,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (!v8)
+  if (!completionCopy)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -1116,7 +1116,7 @@ LABEL_17:
 
   if ([(SMReceiverService *)self attemptedToLoadFromDisk])
   {
-    v10 = [(SMReceiverService *)self getReceiverCacheManagerForSessionID:v7];
+    v10 = [(SMReceiverService *)self getReceiverCacheManagerForSessionID:dCopy];
     v11 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     v12 = v11;
     if (v10)
@@ -1127,7 +1127,7 @@ LABEL_17:
         v14 = NSStringFromClass(v13);
         v15 = NSStringFromSelector(a2);
         *buf = 138412802;
-        v35 = v7;
+        v35 = dCopy;
         v36 = 2112;
         v37 = v14;
         v38 = 2112;
@@ -1147,7 +1147,7 @@ LABEL_17:
         v25 = NSStringFromClass(v24);
         v26 = NSStringFromSelector(a2);
         *buf = 138412802;
-        v35 = v7;
+        v35 = dCopy;
         v36 = 2112;
         v37 = v25;
         v38 = 2112;
@@ -1156,8 +1156,8 @@ LABEL_17:
       }
 
       v32 = *MEMORY[0x277CCA450];
-      v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"no cache manager found for sessionID %@", v7];
-      v33 = v21;
+      dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"no cache manager found for sessionID %@", dCopy];
+      v33 = dCopy;
       v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
 
       v23 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v22];
@@ -1167,13 +1167,13 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v17 = [(SMReceiverService *)self dispatcher];
+  dispatcher = [(SMReceiverService *)self dispatcher];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __72__SMReceiverService__userRequestedCacheDownloadForSessionID_completion___block_invoke;
   v29[3] = &unk_2788C4500;
   v29[4] = self;
-  v30 = v7;
+  v30 = dCopy;
   v31 = v9;
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
@@ -1184,7 +1184,7 @@ LABEL_17:
   v18 = objc_opt_class();
   v19 = NSStringFromClass(v18);
   v20 = NSStringFromSelector(a2);
-  [v17 enqueueBlock:v29 failureBlock:v27 description:{@"%@-%@", v19, v20}];
+  [dispatcher enqueueBlock:v29 failureBlock:v27 description:{@"%@-%@", v19, v20}];
 
 LABEL_18:
 }
@@ -1196,30 +1196,30 @@ void __72__SMReceiverService__userRequestedCacheDownloadForSessionID_completion_
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)fetchReceiverSafetyCacheForSessionID:(id)a3 completion:(id)a4
+- (void)fetchReceiverSafetyCacheForSessionID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  dCopy = d;
+  completionCopy = completion;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__SMReceiverService_fetchReceiverSafetyCacheForSessionID_completion___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchReceiverSafetyCacheForSessionID:(id)a3 completion:(id)a4
+- (void)_fetchReceiverSafetyCacheForSessionID:(id)d completion:(id)completion
 {
   v66[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  dCopy = d;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (!dCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1235,7 +1235,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (!v8)
+  if (!completionCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1250,42 +1250,42 @@ LABEL_20:
 
   if ([(SMReceiverService *)self attemptedToLoadFromDisk])
   {
-    v10 = [(SMReceiverService *)self getReceiverCacheManagerForSessionID:v7];
+    v10 = [(SMReceiverService *)self getReceiverCacheManagerForSessionID:dCopy];
     v11 = v10;
     if (v10)
     {
-      v12 = [v10 sessionStatus];
-      v13 = [v12 sessionState];
+      sessionStatus = [v10 sessionStatus];
+      sessionState = [sessionStatus sessionState];
 
-      if (v13 != 6)
+      if (sessionState != 6)
       {
-        v31 = [v11 phoneCache];
-        v32 = [v11 watchCache];
+        phoneCache = [v11 phoneCache];
+        watchCache = [v11 watchCache];
         v33 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
         v34 = os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT);
-        if (v31 | v32)
+        if (phoneCache | watchCache)
         {
           if (v34)
           {
             v41 = objc_opt_class();
             v42 = NSStringFromClass(v41);
             v43 = NSStringFromSelector(a2);
-            v44 = [v31 identifier];
-            v45 = [v32 identifier];
+            identifier = [phoneCache identifier];
+            identifier2 = [watchCache identifier];
             *buf = 138413314;
-            v52 = v7;
+            v52 = dCopy;
             v53 = 2112;
             v54 = v42;
             v55 = 2112;
             v56 = v43;
             v57 = 2112;
-            v58 = v44;
+            v58 = identifier;
             v59 = 2112;
-            v60 = v45;
+            v60 = identifier2;
             _os_log_impl(&dword_2304B3000, v33, OS_LOG_TYPE_DEFAULT, "#SafetyCache,Receiver,sessionID:%@,%@,%@,successfully fetched safety cache info,phoneCacheIdentifier,%@,watchCacheIdentifier,%@", buf, 0x34u);
           }
 
-          v9[2](v9, v31, v32, 0);
+          v9[2](v9, phoneCache, watchCache, 0);
         }
 
         else
@@ -1296,7 +1296,7 @@ LABEL_20:
             v36 = NSStringFromClass(v35);
             v37 = NSStringFromSelector(a2);
             *buf = 138412802;
-            v52 = v7;
+            v52 = dCopy;
             v53 = 2112;
             v54 = v36;
             v55 = 2112;
@@ -1305,15 +1305,15 @@ LABEL_20:
           }
 
           v61 = *MEMORY[0x277CCA450];
-          v38 = [MEMORY[0x277CCACA8] stringWithFormat:@"cache info not available for sessionID %@", v7];
-          v62 = v38;
+          dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"cache info not available for sessionID %@", dCopy];
+          v62 = dCopy;
           v39 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v62 forKeys:&v61 count:1];
 
           v40 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v39];
           (v9)[2](v9, 0, 0, v40);
 
-          v32 = 0;
-          v31 = 0;
+          watchCache = 0;
+          phoneCache = 0;
         }
 
         goto LABEL_19;
@@ -1326,7 +1326,7 @@ LABEL_20:
         v16 = NSStringFromClass(v15);
         v17 = NSStringFromSelector(a2);
         *buf = 138412802;
-        v52 = v7;
+        v52 = dCopy;
         v53 = 2112;
         v54 = v16;
         v55 = 2112;
@@ -1335,8 +1335,8 @@ LABEL_20:
       }
 
       v63 = *MEMORY[0x277CCA450];
-      v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"session is being cleaned up"];
-      v64 = v18;
+      dCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"session is being cleaned up"];
+      v64 = dCopy2;
       v19 = MEMORY[0x277CBEAC0];
       v20 = &v64;
       v21 = &v63;
@@ -1351,7 +1351,7 @@ LABEL_20:
         v29 = NSStringFromClass(v28);
         v30 = NSStringFromSelector(a2);
         *buf = 138412802;
-        v52 = v7;
+        v52 = dCopy;
         v53 = 2112;
         v54 = v29;
         v55 = 2112;
@@ -1360,29 +1360,29 @@ LABEL_20:
       }
 
       v65 = *MEMORY[0x277CCA450];
-      v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"no cache manager found for sessionID %@", v7];
-      v66[0] = v18;
+      dCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"no cache manager found for sessionID %@", dCopy];
+      v66[0] = dCopy2;
       v19 = MEMORY[0x277CBEAC0];
       v20 = v66;
       v21 = &v65;
     }
 
-    v31 = [v19 dictionaryWithObjects:v20 forKeys:v21 count:1];
+    phoneCache = [v19 dictionaryWithObjects:v20 forKeys:v21 count:1];
 
-    v32 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v31];
-    v9[2](v9, 0, 0, v32);
+    watchCache = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:phoneCache];
+    v9[2](v9, 0, 0, watchCache);
 LABEL_19:
 
     goto LABEL_20;
   }
 
-  v23 = [(SMReceiverService *)self dispatcher];
+  dispatcher = [(SMReceiverService *)self dispatcher];
   v48[0] = MEMORY[0x277D85DD0];
   v48[1] = 3221225472;
   v48[2] = __70__SMReceiverService__fetchReceiverSafetyCacheForSessionID_completion___block_invoke;
   v48[3] = &unk_2788C4500;
   v48[4] = self;
-  v49 = v7;
+  v49 = dCopy;
   v50 = v9;
   v46[0] = MEMORY[0x277D85DD0];
   v46[1] = 3221225472;
@@ -1393,7 +1393,7 @@ LABEL_19:
   v24 = objc_opt_class();
   v25 = NSStringFromClass(v24);
   v26 = NSStringFromSelector(a2);
-  [v23 enqueueBlock:v48 failureBlock:v46 description:{@"%@-%@", v25, v26}];
+  [dispatcher enqueueBlock:v48 failureBlock:v46 description:{@"%@-%@", v25, v26}];
 
 LABEL_21:
 }
@@ -1405,11 +1405,11 @@ void __70__SMReceiverService__fetchReceiverSafetyCacheForSessionID_completion___
   (*(v1 + 16))(v1, 0, 0, v2);
 }
 
-- (void)detailsViewOpenedForSessionID:(id)a3
+- (void)detailsViewOpenedForSessionID:(id)d
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  dCopy = d;
+  if (!dCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1423,7 +1423,7 @@ void __70__SMReceiverService__fetchReceiverSafetyCacheForSessionID_completion___
 
   if ([(SMReceiverService *)self attemptedToLoadFromDisk])
   {
-    v6 = [(SMReceiverService *)self getReceiverCacheManagerForSessionID:v5];
+    v6 = [(SMReceiverService *)self getReceiverCacheManagerForSessionID:dCopy];
     v7 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     v8 = v7;
     if (v6)
@@ -1434,7 +1434,7 @@ void __70__SMReceiverService__fetchReceiverSafetyCacheForSessionID_completion___
         v10 = NSStringFromClass(v9);
         v11 = NSStringFromSelector(a2);
         *buf = 138412802;
-        v22 = v5;
+        v22 = dCopy;
         v23 = 2112;
         v24 = v10;
         v25 = 2112;
@@ -1453,7 +1453,7 @@ void __70__SMReceiverService__fetchReceiverSafetyCacheForSessionID_completion___
         v17 = NSStringFromClass(v16);
         v18 = NSStringFromSelector(a2);
         *buf = 138412802;
-        v22 = v5;
+        v22 = dCopy;
         v23 = 2112;
         v24 = v17;
         v25 = 2112;
@@ -1467,25 +1467,25 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v12 = [(SMReceiverService *)self dispatcher];
+  dispatcher = [(SMReceiverService *)self dispatcher];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __51__SMReceiverService_detailsViewOpenedForSessionID___block_invoke;
   v19[3] = &unk_2788C4A70;
   v19[4] = self;
-  v20 = v5;
+  v20 = dCopy;
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
   v15 = NSStringFromSelector(a2);
-  [v12 enqueueBlock:v19 description:{@"%@-%@", v14, v15}];
+  [dispatcher enqueueBlock:v19 description:{@"%@-%@", v14, v15}];
 
 LABEL_14:
 }
 
-- (id)getReceiverCacheManagerForSessionID:(id)a3
+- (id)getReceiverCacheManagerForSessionID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     *buf = 0;
     v13 = buf;
@@ -1493,14 +1493,14 @@ LABEL_14:
     v15 = __Block_byref_object_copy__4;
     v16 = __Block_byref_object_dispose__4;
     v17 = 0;
-    v5 = [(SMReceiverService *)self cacheManagerArray];
+    cacheManagerArray = [(SMReceiverService *)self cacheManagerArray];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __57__SMReceiverService_getReceiverCacheManagerForSessionID___block_invoke;
     v9[3] = &unk_2788C4D88;
-    v10 = v4;
+    v10 = dCopy;
     v11 = buf;
-    [v5 enumerateObjectsUsingBlock:v9];
+    [cacheManagerArray enumerateObjectsUsingBlock:v9];
 
     v6 = *(v13 + 5);
     _Block_object_dispose(buf, 8);
@@ -1534,14 +1534,14 @@ void __57__SMReceiverService_getReceiverCacheManagerForSessionID___block_invoke(
   }
 }
 
-- (id)createReceiverCacheManagerForSessionID:(id)a3 initiatorHandle:(id)a4
+- (id)createReceiverCacheManagerForSessionID:(id)d initiatorHandle:(id)handle
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  dCopy = d;
+  handleCopy = handle;
+  if (dCopy)
   {
-    v9 = [(SMReceiverService *)self getReceiverCacheManagerForSessionID:v7];
+    v9 = [(SMReceiverService *)self getReceiverCacheManagerForSessionID:dCopy];
     if (v9)
     {
       v10 = v9;
@@ -1552,7 +1552,7 @@ void __57__SMReceiverService_getReceiverCacheManagerForSessionID___block_invoke(
         v13 = NSStringFromClass(v12);
         v14 = NSStringFromSelector(a2);
         v25 = 138412802;
-        v26 = v7;
+        v26 = dCopy;
         v27 = 2112;
         v28 = v13;
         v29 = 2112;
@@ -1565,15 +1565,15 @@ LABEL_10:
     else
     {
       v17 = [SMReceiverCacheManager alloc];
-      v18 = [(SMReceiverService *)self safetyCacheStore];
-      v19 = [(SMReceiverService *)self defaultsManager];
-      v20 = [(RTNotifier *)self queue];
-      v21 = [(SMReceiverService *)self messagingService];
-      v10 = [(SMReceiverCacheManager *)v17 initWithSessionID:v7 initiatorHandle:v8 safetyCacheStore:v18 defaultsManager:v19 queue:v20 messagingService:v21];
+      safetyCacheStore = [(SMReceiverService *)self safetyCacheStore];
+      defaultsManager = [(SMReceiverService *)self defaultsManager];
+      queue = [(RTNotifier *)self queue];
+      messagingService = [(SMReceiverService *)self messagingService];
+      v10 = [(SMReceiverCacheManager *)v17 initWithSessionID:dCopy initiatorHandle:handleCopy safetyCacheStore:safetyCacheStore defaultsManager:defaultsManager queue:queue messagingService:messagingService];
 
       [(SMReceiverCacheManager *)v10 setDelegate:self];
-      v22 = [(SMReceiverService *)self cacheManagerArray];
-      [v22 addObject:v10];
+      cacheManagerArray = [(SMReceiverService *)self cacheManagerArray];
+      [cacheManagerArray addObject:v10];
 
       v11 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1582,7 +1582,7 @@ LABEL_10:
         v13 = NSStringFromClass(v23);
         v14 = NSStringFromSelector(a2);
         v25 = 138412802;
-        v26 = v7;
+        v26 = dCopy;
         v27 = 2112;
         v28 = v13;
         v29 = 2112;
@@ -1610,27 +1610,27 @@ LABEL_12:
   return v16;
 }
 
-- (void)removeReceiverCacheManagerForSessionID:(id)a3
+- (void)removeReceiverCacheManagerForSessionID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  dCopy = d;
+  if (dCopy)
   {
-    v6 = [(SMReceiverService *)self getReceiverCacheManagerForSessionID:v5];
+    v6 = [(SMReceiverService *)self getReceiverCacheManagerForSessionID:dCopy];
     if (v6)
     {
-      v7 = [(SMReceiverService *)self cacheManagerArray];
-      [v7 removeObject:v6];
+      cacheManagerArray = [(SMReceiverService *)self cacheManagerArray];
+      [cacheManagerArray removeObject:v6];
 
       v8 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [v6 sessionID];
+        sessionID = [v6 sessionID];
         v10 = objc_opt_class();
         v11 = NSStringFromClass(v10);
         v12 = NSStringFromSelector(a2);
         v14 = 138412802;
-        v15 = v9;
+        v15 = sessionID;
         v16 = 2112;
         v17 = v11;
         v18 = 2112;
@@ -1650,7 +1650,7 @@ LABEL_9:
         v11 = NSStringFromClass(v13);
         v12 = NSStringFromSelector(a2);
         v14 = 138412802;
-        v15 = v5;
+        v15 = dCopy;
         v16 = 2112;
         v17 = v11;
         v18 = 2112;
@@ -1673,11 +1673,11 @@ LABEL_9:
 LABEL_11:
 }
 
-- (void)onMessageReceived:(id)a3
+- (void)onMessageReceived:(id)received
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  receivedCopy = received;
+  if (!receivedCopy)
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1698,22 +1698,22 @@ LABEL_11:
       v9 = objc_opt_class();
       v10 = NSStringFromClass(v9);
       v11 = NSStringFromSelector(a2);
-      v12 = [v5 name];
+      name = [receivedCopy name];
       *buf = 138412802;
       v17 = v10;
       v18 = 2112;
       v19 = v11;
       v20 = 2112;
-      v21 = v12;
+      v21 = name;
       _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, "#SafetyCache,Receiver,%@,%@,unrecognized notification,%@", buf, 0x20u);
     }
 
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v5 name];
+      name2 = [receivedCopy name];
       *buf = 138412802;
-      v17 = v13;
+      v17 = name2;
       v18 = 2080;
       v19 = "[SMReceiverService onMessageReceived:]";
       v20 = 1024;
@@ -1726,57 +1726,57 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v6 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __39__SMReceiverService_onMessageReceived___block_invoke;
   v14[3] = &unk_2788C4A70;
   v14[4] = self;
-  v15 = v5;
-  dispatch_async(v6, v14);
+  v15 = receivedCopy;
+  dispatch_async(queue, v14);
 
 LABEL_11:
 }
 
-- (void)_onMessageReceived:(id)a3
+- (void)_onMessageReceived:(id)received
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  receivedCopy = received;
+  if (receivedCopy)
   {
     if ([(SMReceiverService *)self attemptedToLoadFromDisk])
     {
-      v6 = [v5 message];
-      v7 = [objc_opt_class() messageType];
+      message = [receivedCopy message];
+      messageType = [objc_opt_class() messageType];
 
-      if (v7 > 12)
+      if (messageType > 12)
       {
-        if (v7 <= 15)
+        if (messageType <= 15)
         {
-          if (v7 == 13)
+          if (messageType == 13)
           {
-            v8 = [v5 message];
-            v9 = [v5 from];
-            -[SMReceiverService receivedSessionStartInfoMessage:fromHandle:fromMe:](self, "receivedSessionStartInfoMessage:fromHandle:fromMe:", v8, v9, [v5 fromMe]);
+            message2 = [receivedCopy message];
+            from = [receivedCopy from];
+            -[SMReceiverService receivedSessionStartInfoMessage:fromHandle:fromMe:](self, "receivedSessionStartInfoMessage:fromHandle:fromMe:", message2, from, [receivedCopy fromMe]);
             goto LABEL_34;
           }
 
-          if (v7 != 14)
+          if (messageType != 14)
           {
-            v8 = [v5 message];
-            v9 = [v5 from];
-            -[SMReceiverService receivedKeyReleaseInfoMessage:fromHandle:fromMe:](self, "receivedKeyReleaseInfoMessage:fromHandle:fromMe:", v8, v9, [v5 fromMe]);
+            message2 = [receivedCopy message];
+            from = [receivedCopy from];
+            -[SMReceiverService receivedKeyReleaseInfoMessage:fromHandle:fromMe:](self, "receivedKeyReleaseInfoMessage:fromHandle:fromMe:", message2, from, [receivedCopy fromMe]);
             goto LABEL_34;
           }
         }
 
-        else if ((v7 - 16) >= 4)
+        else if ((messageType - 16) >= 4)
         {
-          if (v7 == 20)
+          if (messageType == 20)
           {
-            v8 = [v5 message];
-            v9 = [v5 from];
-            -[SMReceiverService _receivedLowPowerModeWarningStateUpdateMessage:fromHandle:fromMe:](self, "_receivedLowPowerModeWarningStateUpdateMessage:fromHandle:fromMe:", v8, v9, [v5 fromMe]);
+            message2 = [receivedCopy message];
+            from = [receivedCopy from];
+            -[SMReceiverService _receivedLowPowerModeWarningStateUpdateMessage:fromHandle:fromMe:](self, "_receivedLowPowerModeWarningStateUpdateMessage:fromHandle:fromMe:", message2, from, [receivedCopy fromMe]);
             goto LABEL_34;
           }
 
@@ -1790,13 +1790,13 @@ LABEL_35:
           v20 = objc_opt_class();
           v17 = NSStringFromClass(v20);
           v18 = NSStringFromSelector(a2);
-          v19 = [v5 message];
+          message3 = [receivedCopy message];
           *buf = 138412802;
           v24 = v17;
           v25 = 2112;
           v26 = v18;
           v27 = 1024;
-          v28 = [objc_opt_class() messageType];
+          messageType2 = [objc_opt_class() messageType];
           _os_log_error_impl(&dword_2304B3000, v15, OS_LOG_TYPE_ERROR, "#SafetyCache,Receiver,%@,%@,unrecognized message type,%d", buf, 0x1Cu);
           goto LABEL_18;
         }
@@ -1804,42 +1804,42 @@ LABEL_35:
 
       else
       {
-        if (v7 <= 6)
+        if (messageType <= 6)
         {
-          if (v7 > 2)
+          if (messageType > 2)
           {
-            if (v7 == 3)
+            if (messageType == 3)
             {
-              v8 = [v5 message];
-              v9 = [v5 from];
-              -[SMReceiverService receivedKeyReleaseMessage:fromHandle:fromMe:](self, "receivedKeyReleaseMessage:fromHandle:fromMe:", v8, v9, [v5 fromMe]);
+              message2 = [receivedCopy message];
+              from = [receivedCopy from];
+              -[SMReceiverService receivedKeyReleaseMessage:fromHandle:fromMe:](self, "receivedKeyReleaseMessage:fromHandle:fromMe:", message2, from, [receivedCopy fromMe]);
               goto LABEL_34;
             }
 
-            if (v7 == 6)
+            if (messageType == 6)
             {
-              v8 = [v5 message];
-              v9 = [v5 from];
-              -[SMReceiverService receivedCacheUpdatedMessage:fromHandle:fromMe:](self, "receivedCacheUpdatedMessage:fromHandle:fromMe:", v8, v9, [v5 fromMe]);
+              message2 = [receivedCopy message];
+              from = [receivedCopy from];
+              -[SMReceiverService receivedCacheUpdatedMessage:fromHandle:fromMe:](self, "receivedCacheUpdatedMessage:fromHandle:fromMe:", message2, from, [receivedCopy fromMe]);
               goto LABEL_34;
             }
           }
 
           else
           {
-            if (v7 == 1)
+            if (messageType == 1)
             {
-              v8 = [v5 message];
-              v9 = [v5 from];
-              -[SMReceiverService receivedSessionStartMessage:fromHandle:fromMe:](self, "receivedSessionStartMessage:fromHandle:fromMe:", v8, v9, [v5 fromMe]);
+              message2 = [receivedCopy message];
+              from = [receivedCopy from];
+              -[SMReceiverService receivedSessionStartMessage:fromHandle:fromMe:](self, "receivedSessionStartMessage:fromHandle:fromMe:", message2, from, [receivedCopy fromMe]);
               goto LABEL_34;
             }
 
-            if (v7 == 2)
+            if (messageType == 2)
             {
-              v8 = [v5 message];
-              v9 = [v5 from];
-              -[SMReceiverService receivedSessionEndMessage:fromHandle:fromMe:](self, "receivedSessionEndMessage:fromHandle:fromMe:", v8, v9, [v5 fromMe]);
+              message2 = [receivedCopy message];
+              from = [receivedCopy from];
+              -[SMReceiverService receivedSessionEndMessage:fromHandle:fromMe:](self, "receivedSessionEndMessage:fromHandle:fromMe:", message2, from, [receivedCopy fromMe]);
               goto LABEL_34;
             }
           }
@@ -1847,13 +1847,13 @@ LABEL_35:
           goto LABEL_35;
         }
 
-        if ((v7 - 7) >= 3 && (v7 - 11) >= 2)
+        if ((messageType - 7) >= 3 && (messageType - 11) >= 2)
         {
-          if (v7 == 10)
+          if (messageType == 10)
           {
-            v8 = [v5 message];
-            v9 = [v5 from];
-            -[SMReceiverService receivedEstimatedEndTimeUpdateMessage:fromHandle:fromMe:](self, "receivedEstimatedEndTimeUpdateMessage:fromHandle:fromMe:", v8, v9, [v5 fromMe]);
+            message2 = [receivedCopy message];
+            from = [receivedCopy from];
+            -[SMReceiverService receivedEstimatedEndTimeUpdateMessage:fromHandle:fromMe:](self, "receivedEstimatedEndTimeUpdateMessage:fromHandle:fromMe:", message2, from, [receivedCopy fromMe]);
 LABEL_34:
 
             goto LABEL_37;
@@ -1876,13 +1876,13 @@ LABEL_36:
         v16 = objc_opt_class();
         v17 = NSStringFromClass(v16);
         v18 = NSStringFromSelector(a2);
-        v19 = [v5 message];
+        message3 = [receivedCopy message];
         *buf = 138412802;
         v24 = v17;
         v25 = 2112;
         v26 = v18;
         v27 = 1024;
-        v28 = [objc_opt_class() messageType];
+        messageType2 = [objc_opt_class() messageType];
         _os_log_impl(&dword_2304B3000, v15, OS_LOG_TYPE_INFO, "#SafetyCache,Receiver,%@,%@,ignore message type,%d", buf, 0x1Cu);
 LABEL_18:
 
@@ -1892,17 +1892,17 @@ LABEL_18:
 
     else
     {
-      v11 = [(SMReceiverService *)self dispatcher];
+      dispatcher = [(SMReceiverService *)self dispatcher];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __40__SMReceiverService__onMessageReceived___block_invoke;
       v21[3] = &unk_2788C4A70;
       v21[4] = self;
-      v22 = v5;
+      v22 = receivedCopy;
       v12 = objc_opt_class();
       v13 = NSStringFromClass(v12);
       v14 = NSStringFromSelector(a2);
-      [v11 enqueueBlock:v21 description:{@"%@-%@", v13, v14}];
+      [dispatcher enqueueBlock:v21 description:{@"%@-%@", v13, v14}];
     }
   }
 
@@ -1919,14 +1919,14 @@ LABEL_18:
 LABEL_37:
 }
 
-- (void)receivedSessionStartMessage:(id)a3 fromHandle:(id)a4 fromMe:(BOOL)a5
+- (void)receivedSessionStartMessage:(id)message fromHandle:(id)handle fromMe:(BOOL)me
 {
-  v5 = a5;
+  meCopy = me;
   v40 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (!v9)
+  messageCopy = message;
+  handleCopy = handle;
+  v11 = handleCopy;
+  if (!messageCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1941,7 +1941,7 @@ LABEL_10:
     goto LABEL_18;
   }
 
-  if (!v10)
+  if (!handleCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1956,7 +1956,7 @@ LABEL_10:
 
   v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
   v13 = v12;
-  if (v5)
+  if (meCopy)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -1975,12 +1975,12 @@ LABEL_10:
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v9 sessionID];
+      sessionID = [messageCopy sessionID];
       v19 = objc_opt_class();
       v20 = NSStringFromClass(v19);
       v21 = NSStringFromSelector(a2);
       v28 = 138413571;
-      v29 = v18;
+      v29 = sessionID;
       v30 = 2112;
       v31 = v20;
       v32 = 2112;
@@ -1990,7 +1990,7 @@ LABEL_10:
       v36 = 1024;
       v37 = 0;
       v38 = 2117;
-      v39 = v9;
+      v39 = messageCopy;
       _os_log_impl(&dword_2304B3000, v13, OS_LOG_TYPE_DEFAULT, "#SafetyCache,Receiver,sessionID:%@,%@,%@,from,%@,fromMe,%d,message,%{sensitive}@", &v28, 0x3Au);
     }
 
@@ -2002,34 +2002,34 @@ LABEL_10:
         v24 = objc_opt_class();
         v25 = NSStringFromClass(v24);
         v26 = NSStringFromSelector(a2);
-        v27 = [v9 lowPowerModeWarningState];
+        lowPowerModeWarningState = [messageCopy lowPowerModeWarningState];
         v28 = 138412802;
         v29 = v25;
         v30 = 2112;
         v31 = v26;
         v32 = 2048;
-        v33 = v27;
+        v33 = lowPowerModeWarningState;
         _os_log_debug_impl(&dword_2304B3000, v22, OS_LOG_TYPE_DEBUG, "%@,%@ message.lowPowerModeWarningState %ld", &v28, 0x20u);
       }
     }
 
-    v23 = [v9 sessionID];
-    v13 = [(SMReceiverService *)self createReceiverCacheManagerForSessionID:v23 initiatorHandle:v11];
+    sessionID2 = [messageCopy sessionID];
+    v13 = [(SMReceiverService *)self createReceiverCacheManagerForSessionID:sessionID2 initiatorHandle:v11];
 
-    [v13 onSessionStartMessageReceived:v9];
+    [v13 onSessionStartMessageReceived:messageCopy];
   }
 
 LABEL_18:
 }
 
-- (void)receivedSessionStartInfoMessage:(id)a3 fromHandle:(id)a4 fromMe:(BOOL)a5
+- (void)receivedSessionStartInfoMessage:(id)message fromHandle:(id)handle fromMe:(BOOL)me
 {
-  v5 = a5;
+  meCopy = me;
   v40 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (!v9)
+  messageCopy = message;
+  handleCopy = handle;
+  v11 = handleCopy;
+  if (!messageCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2044,7 +2044,7 @@ LABEL_10:
     goto LABEL_18;
   }
 
-  if (!v10)
+  if (!handleCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2057,7 +2057,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if (v5)
+  if (meCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2075,8 +2075,8 @@ LABEL_10:
 
   else
   {
-    v17 = [v9 sessionID];
-    v12 = [(SMReceiverService *)self getReceiverCacheManagerForSessionID:v17];
+    sessionID = [messageCopy sessionID];
+    v12 = [(SMReceiverService *)self getReceiverCacheManagerForSessionID:sessionID];
 
     v18 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     v19 = v18;
@@ -2084,12 +2084,12 @@ LABEL_10:
     {
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v9 sessionID];
+        sessionID2 = [messageCopy sessionID];
         v21 = objc_opt_class();
         v22 = NSStringFromClass(v21);
         v23 = NSStringFromSelector(a2);
         v28 = 138413571;
-        v29 = v20;
+        v29 = sessionID2;
         v30 = 2112;
         v31 = v22;
         v32 = 2112;
@@ -2099,23 +2099,23 @@ LABEL_10:
         v36 = 1024;
         v37 = 0;
         v38 = 2117;
-        v39 = v9;
+        v39 = messageCopy;
         _os_log_impl(&dword_2304B3000, v19, OS_LOG_TYPE_DEFAULT, "#SafetyCache,Receiver,sessionID:%@,%@,%@,from,%@,fromMe,%d,message,%{sensitive}@", &v28, 0x3Au);
       }
 
-      [v12 onSessionStartInfoMessageReceived:v9];
+      [v12 onSessionStartInfoMessageReceived:messageCopy];
     }
 
     else
     {
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        v24 = [v9 sessionID];
+        sessionID3 = [messageCopy sessionID];
         v25 = objc_opt_class();
         v26 = NSStringFromClass(v25);
         v27 = NSStringFromSelector(a2);
         v28 = 138412802;
-        v29 = v24;
+        v29 = sessionID3;
         v30 = 2112;
         v31 = v26;
         v32 = 2112;
@@ -2130,14 +2130,14 @@ LABEL_10:
 LABEL_18:
 }
 
-- (void)receivedEstimatedEndTimeUpdateMessage:(id)a3 fromHandle:(id)a4 fromMe:(BOOL)a5
+- (void)receivedEstimatedEndTimeUpdateMessage:(id)message fromHandle:(id)handle fromMe:(BOOL)me
 {
-  v5 = a5;
+  meCopy = me;
   v40 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (!v9)
+  messageCopy = message;
+  handleCopy = handle;
+  v11 = handleCopy;
+  if (!messageCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2152,7 +2152,7 @@ LABEL_10:
     goto LABEL_18;
   }
 
-  if (!v10)
+  if (!handleCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2165,7 +2165,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if (v5)
+  if (meCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2183,8 +2183,8 @@ LABEL_10:
 
   else
   {
-    v17 = [v9 sessionID];
-    v12 = [(SMReceiverService *)self getReceiverCacheManagerForSessionID:v17];
+    sessionID = [messageCopy sessionID];
+    v12 = [(SMReceiverService *)self getReceiverCacheManagerForSessionID:sessionID];
 
     v18 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     v19 = v18;
@@ -2192,12 +2192,12 @@ LABEL_10:
     {
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v9 sessionID];
+        sessionID2 = [messageCopy sessionID];
         v21 = objc_opt_class();
         v22 = NSStringFromClass(v21);
         v23 = NSStringFromSelector(a2);
         v28 = 138413571;
-        v29 = v20;
+        v29 = sessionID2;
         v30 = 2112;
         v31 = v22;
         v32 = 2112;
@@ -2207,23 +2207,23 @@ LABEL_10:
         v36 = 1024;
         v37 = 0;
         v38 = 2117;
-        v39 = v9;
+        v39 = messageCopy;
         _os_log_impl(&dword_2304B3000, v19, OS_LOG_TYPE_DEFAULT, "#SafetyCache,Receiver,sessionID:%@,%@,%@,from,%@,fromMe,%d,message,%{sensitive}@", &v28, 0x3Au);
       }
 
-      [v12 onEstimatedEndTimeUpdateMessageReceived:v9];
+      [v12 onEstimatedEndTimeUpdateMessageReceived:messageCopy];
     }
 
     else
     {
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        v24 = [v9 sessionID];
+        sessionID3 = [messageCopy sessionID];
         v25 = objc_opt_class();
         v26 = NSStringFromClass(v25);
         v27 = NSStringFromSelector(a2);
         v28 = 138412802;
-        v29 = v24;
+        v29 = sessionID3;
         v30 = 2112;
         v31 = v26;
         v32 = 2112;
@@ -2238,14 +2238,14 @@ LABEL_10:
 LABEL_18:
 }
 
-- (void)_receivedLowPowerModeWarningStateUpdateMessage:(id)a3 fromHandle:(id)a4 fromMe:(BOOL)a5
+- (void)_receivedLowPowerModeWarningStateUpdateMessage:(id)message fromHandle:(id)handle fromMe:(BOOL)me
 {
-  v5 = a5;
+  meCopy = me;
   v40 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (!v9)
+  messageCopy = message;
+  handleCopy = handle;
+  v11 = handleCopy;
+  if (!messageCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2260,7 +2260,7 @@ LABEL_10:
     goto LABEL_18;
   }
 
-  if (!v10)
+  if (!handleCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2273,7 +2273,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if (v5)
+  if (meCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2291,8 +2291,8 @@ LABEL_10:
 
   else
   {
-    v17 = [v9 sessionID];
-    v12 = [(SMReceiverService *)self getReceiverCacheManagerForSessionID:v17];
+    sessionID = [messageCopy sessionID];
+    v12 = [(SMReceiverService *)self getReceiverCacheManagerForSessionID:sessionID];
 
     v18 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     v19 = v18;
@@ -2300,12 +2300,12 @@ LABEL_10:
     {
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v9 sessionID];
+        sessionID2 = [messageCopy sessionID];
         v21 = objc_opt_class();
         v22 = NSStringFromClass(v21);
         v23 = NSStringFromSelector(a2);
         v28 = 138413571;
-        v29 = v20;
+        v29 = sessionID2;
         v30 = 2112;
         v31 = v22;
         v32 = 2112;
@@ -2315,23 +2315,23 @@ LABEL_10:
         v36 = 1024;
         v37 = 0;
         v38 = 2117;
-        v39 = v9;
+        v39 = messageCopy;
         _os_log_impl(&dword_2304B3000, v19, OS_LOG_TYPE_DEFAULT, "#SafetyCache,Receiver,sessionID:%@,%@,%@,from,%@,fromMe,%d,message,%{sensitive}@", &v28, 0x3Au);
       }
 
-      [v12 onLowPowerModeWarningStateUpdateMessageReceived:v9];
+      [v12 onLowPowerModeWarningStateUpdateMessageReceived:messageCopy];
     }
 
     else
     {
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        v24 = [v9 sessionID];
+        sessionID3 = [messageCopy sessionID];
         v25 = objc_opt_class();
         v26 = NSStringFromClass(v25);
         v27 = NSStringFromSelector(a2);
         v28 = 138412802;
-        v29 = v24;
+        v29 = sessionID3;
         v30 = 2112;
         v31 = v26;
         v32 = 2112;
@@ -2346,14 +2346,14 @@ LABEL_10:
 LABEL_18:
 }
 
-- (void)receivedSessionEndMessage:(id)a3 fromHandle:(id)a4 fromMe:(BOOL)a5
+- (void)receivedSessionEndMessage:(id)message fromHandle:(id)handle fromMe:(BOOL)me
 {
-  v5 = a5;
+  meCopy = me;
   v35 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (!v9)
+  messageCopy = message;
+  handleCopy = handle;
+  v11 = handleCopy;
+  if (!messageCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -2368,7 +2368,7 @@ LABEL_10:
     goto LABEL_15;
   }
 
-  if (!v10)
+  if (!handleCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -2383,7 +2383,7 @@ LABEL_10:
 
   v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
   v13 = v12;
-  if (v5)
+  if (meCopy)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -2402,12 +2402,12 @@ LABEL_10:
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v9 sessionID];
+      sessionID = [messageCopy sessionID];
       v19 = objc_opt_class();
       v20 = NSStringFromClass(v19);
       v21 = NSStringFromSelector(a2);
       v23 = 138413571;
-      v24 = v18;
+      v24 = sessionID;
       v25 = 2112;
       v26 = v20;
       v27 = 2112;
@@ -2417,30 +2417,30 @@ LABEL_10:
       v31 = 1024;
       v32 = 0;
       v33 = 2117;
-      v34 = v9;
+      v34 = messageCopy;
       _os_log_impl(&dword_2304B3000, v13, OS_LOG_TYPE_DEFAULT, "#SafetyCache,Receiver,sessionID:%@,%@,%@,from,%@,fromMe,%d,message,%{sensitive}@", &v23, 0x3Au);
     }
 
-    v22 = [v9 sessionID];
-    v13 = [(SMReceiverService *)self getReceiverCacheManagerForSessionID:v22];
+    sessionID2 = [messageCopy sessionID];
+    v13 = [(SMReceiverService *)self getReceiverCacheManagerForSessionID:sessionID2];
 
     if (v13)
     {
-      [v13 onSessionEndMessageReceived:v9];
+      [v13 onSessionEndMessageReceived:messageCopy];
     }
   }
 
 LABEL_15:
 }
 
-- (void)receivedKeyReleaseMessage:(id)a3 fromHandle:(id)a4 fromMe:(BOOL)a5
+- (void)receivedKeyReleaseMessage:(id)message fromHandle:(id)handle fromMe:(BOOL)me
 {
-  v5 = a5;
+  meCopy = me;
   v41 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (!v9)
+  messageCopy = message;
+  handleCopy = handle;
+  v11 = handleCopy;
+  if (!messageCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -2455,7 +2455,7 @@ LABEL_10:
     goto LABEL_18;
   }
 
-  if (!v10)
+  if (!handleCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -2470,7 +2470,7 @@ LABEL_10:
 
   v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
   v13 = v12;
-  if (v5)
+  if (meCopy)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -2489,12 +2489,12 @@ LABEL_10:
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v9 sessionID];
+      sessionID = [messageCopy sessionID];
       v19 = objc_opt_class();
       v20 = NSStringFromClass(v19);
       v21 = NSStringFromSelector(a2);
       v29 = 138413571;
-      v30 = v18;
+      v30 = sessionID;
       v31 = 2112;
       v32 = v20;
       v33 = 2112;
@@ -2504,24 +2504,24 @@ LABEL_10:
       v37 = 1024;
       v38 = 0;
       v39 = 2117;
-      v40 = v9;
+      v40 = messageCopy;
       _os_log_impl(&dword_2304B3000, v13, OS_LOG_TYPE_DEFAULT, "#SafetyCache,Receiver,sessionID:%@,%@,%@,from,%@,fromMe,%d,message,%{sensitive}@", &v29, 0x3Au);
     }
 
-    v22 = [v9 sessionID];
-    v13 = [(SMReceiverService *)self getReceiverCacheManagerForSessionID:v22];
+    sessionID2 = [messageCopy sessionID];
+    v13 = [(SMReceiverService *)self getReceiverCacheManagerForSessionID:sessionID2];
 
     if (!v13)
     {
       v23 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = [v9 sessionID];
+        sessionID3 = [messageCopy sessionID];
         v25 = objc_opt_class();
         v26 = NSStringFromClass(v25);
         v27 = NSStringFromSelector(a2);
         v29 = 138412802;
-        v30 = v24;
+        v30 = sessionID3;
         v31 = 2112;
         v32 = v26;
         v33 = 2112;
@@ -2529,24 +2529,24 @@ LABEL_10:
         _os_log_impl(&dword_2304B3000, v23, OS_LOG_TYPE_DEFAULT, "#SafetyCache,Receiver,sessionID:%@,%@,%@,missing cache manager", &v29, 0x20u);
       }
 
-      v28 = [v9 sessionID];
-      v13 = [(SMReceiverService *)self createReceiverCacheManagerForSessionID:v28 initiatorHandle:v11];
+      sessionID4 = [messageCopy sessionID];
+      v13 = [(SMReceiverService *)self createReceiverCacheManagerForSessionID:sessionID4 initiatorHandle:v11];
     }
 
-    [v13 onKeyReleaseMessageReceived:v9];
+    [v13 onKeyReleaseMessageReceived:messageCopy];
   }
 
 LABEL_18:
 }
 
-- (void)receivedKeyReleaseInfoMessage:(id)a3 fromHandle:(id)a4 fromMe:(BOOL)a5
+- (void)receivedKeyReleaseInfoMessage:(id)message fromHandle:(id)handle fromMe:(BOOL)me
 {
-  v5 = a5;
+  meCopy = me;
   v40 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (!v9)
+  messageCopy = message;
+  handleCopy = handle;
+  v11 = handleCopy;
+  if (!messageCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2561,7 +2561,7 @@ LABEL_10:
     goto LABEL_18;
   }
 
-  if (!v10)
+  if (!handleCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2574,7 +2574,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if (v5)
+  if (meCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2592,8 +2592,8 @@ LABEL_10:
 
   else
   {
-    v17 = [v9 sessionID];
-    v12 = [(SMReceiverService *)self getReceiverCacheManagerForSessionID:v17];
+    sessionID = [messageCopy sessionID];
+    v12 = [(SMReceiverService *)self getReceiverCacheManagerForSessionID:sessionID];
 
     v18 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     v19 = v18;
@@ -2601,12 +2601,12 @@ LABEL_10:
     {
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v9 sessionID];
+        sessionID2 = [messageCopy sessionID];
         v21 = objc_opt_class();
         v22 = NSStringFromClass(v21);
         v23 = NSStringFromSelector(a2);
         v28 = 138413571;
-        v29 = v20;
+        v29 = sessionID2;
         v30 = 2112;
         v31 = v22;
         v32 = 2112;
@@ -2616,23 +2616,23 @@ LABEL_10:
         v36 = 1024;
         v37 = 0;
         v38 = 2117;
-        v39 = v9;
+        v39 = messageCopy;
         _os_log_impl(&dword_2304B3000, v19, OS_LOG_TYPE_DEFAULT, "#SafetyCache,Receiver,sessionID:%@,%@,%@,from,%@,fromMe,%d,message,%{sensitive}@", &v28, 0x3Au);
       }
 
-      [v12 onKeyReleaseInfoMessageReceived:v9];
+      [v12 onKeyReleaseInfoMessageReceived:messageCopy];
     }
 
     else
     {
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        v24 = [v9 sessionID];
+        sessionID3 = [messageCopy sessionID];
         v25 = objc_opt_class();
         v26 = NSStringFromClass(v25);
         v27 = NSStringFromSelector(a2);
         v28 = 138412802;
-        v29 = v24;
+        v29 = sessionID3;
         v30 = 2112;
         v31 = v26;
         v32 = 2112;
@@ -2647,14 +2647,14 @@ LABEL_10:
 LABEL_18:
 }
 
-- (void)receivedCacheUpdatedMessage:(id)a3 fromHandle:(id)a4 fromMe:(BOOL)a5
+- (void)receivedCacheUpdatedMessage:(id)message fromHandle:(id)handle fromMe:(BOOL)me
 {
-  v5 = a5;
+  meCopy = me;
   v40 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (!v9)
+  messageCopy = message;
+  handleCopy = handle;
+  v11 = handleCopy;
+  if (!messageCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2669,7 +2669,7 @@ LABEL_10:
     goto LABEL_18;
   }
 
-  if (!v10)
+  if (!handleCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2682,7 +2682,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if (v5)
+  if (meCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2700,8 +2700,8 @@ LABEL_10:
 
   else
   {
-    v17 = [v9 sessionID];
-    v12 = [(SMReceiverService *)self getReceiverCacheManagerForSessionID:v17];
+    sessionID = [messageCopy sessionID];
+    v12 = [(SMReceiverService *)self getReceiverCacheManagerForSessionID:sessionID];
 
     v18 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     v19 = v18;
@@ -2709,12 +2709,12 @@ LABEL_10:
     {
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v9 sessionID];
+        sessionID2 = [messageCopy sessionID];
         v21 = objc_opt_class();
         v22 = NSStringFromClass(v21);
         v23 = NSStringFromSelector(a2);
         v28 = 138413571;
-        v29 = v20;
+        v29 = sessionID2;
         v30 = 2112;
         v31 = v22;
         v32 = 2112;
@@ -2724,23 +2724,23 @@ LABEL_10:
         v36 = 1024;
         v37 = 0;
         v38 = 2117;
-        v39 = v9;
+        v39 = messageCopy;
         _os_log_impl(&dword_2304B3000, v19, OS_LOG_TYPE_DEFAULT, "#SafetyCache,Receiver,sessionID:%@,%@,%@,from,%@,fromMe,%d,message,%{sensitive}@", &v28, 0x3Au);
       }
 
-      [v12 onCacheUpdatedMessageReceived:v9];
+      [v12 onCacheUpdatedMessageReceived:messageCopy];
     }
 
     else
     {
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        v24 = [v9 sessionID];
+        sessionID3 = [messageCopy sessionID];
         v25 = objc_opt_class();
         v26 = NSStringFromClass(v25);
         v27 = NSStringFromSelector(a2);
         v28 = 138412802;
-        v29 = v24;
+        v29 = sessionID3;
         v30 = 2112;
         v31 = v26;
         v32 = 2112;
@@ -2757,8 +2757,8 @@ LABEL_18:
 
 - (void)_registerForCKAccountChangedNotification
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__onCKAccountChangedNotification name:*MEMORY[0x277CBBF00] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__onCKAccountChangedNotification name:*MEMORY[0x277CBBF00] object:0];
 }
 
 - (void)_onCKAccountChangedNotification
@@ -2908,30 +2908,30 @@ void __52__SMReceiverService__onCKAccountChangedNotification__block_invoke_54(ui
   [SMReceiverService _submitSentinelZoneMaintenanceMetricForSuccess:a2 error:v5];
 }
 
-- (void)_initializeSentinelZoneWithCompletion:(id)a3
+- (void)_initializeSentinelZoneWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (v5)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v6 = [SMSentinelZone alloc];
-    v7 = [(RTNotifier *)self queue];
-    v8 = [(SMSentinelZone *)v6 initWithQueue:v7];
+    queue = [(RTNotifier *)self queue];
+    v8 = [(SMSentinelZone *)v6 initWithQueue:queue];
 
-    v9 = [(SMReceiverService *)self xpcActivityManager];
-    v10 = [v9 runningTask];
-    v11 = [v10 identifier];
-    v12 = [v11 isEqualToString:@"com.apple.routined.cloudkit.initializeSentinelZone"];
+    xpcActivityManager = [(SMReceiverService *)self xpcActivityManager];
+    runningTask = [xpcActivityManager runningTask];
+    identifier = [runningTask identifier];
+    v12 = [identifier isEqualToString:@"com.apple.routined.cloudkit.initializeSentinelZone"];
 
     if (v12)
     {
-      v13 = [(SMReceiverService *)self xpcActivityManager];
-      v14 = [v13 runningTask];
-      v15 = [v14 activity];
+      xpcActivityManager2 = [(SMReceiverService *)self xpcActivityManager];
+      runningTask2 = [xpcActivityManager2 runningTask];
+      activity = [runningTask2 activity];
     }
 
     else
     {
-      v15 = 0;
+      activity = 0;
     }
 
     v16[0] = MEMORY[0x277D85DD0];
@@ -2940,8 +2940,8 @@ void __52__SMReceiverService__onCKAccountChangedNotification__block_invoke_54(ui
     v16[3] = &unk_2788C4E00;
     v16[4] = self;
     v18 = a2;
-    v17 = v5;
-    [v8 saveZoneWithXPCActivity:v15 completion:v16];
+    v17 = completionCopy;
+    [v8 saveZoneWithXPCActivity:activity completion:v16];
   }
 
   else
@@ -2981,24 +2981,24 @@ void __59__SMReceiverService__initializeSentinelZoneWithCompletion___block_invok
 
 - (void)_registerInitializeSentinelZoneActivity
 {
-  v4 = [(SMReceiverService *)self defaultsManager];
-  v5 = [v4 objectForKey:@"RTDefaultsInitializeSentinelZoneInterval" value:&unk_2845A18D8];
+  defaultsManager = [(SMReceiverService *)self defaultsManager];
+  v5 = [defaultsManager objectForKey:@"RTDefaultsInitializeSentinelZoneInterval" value:&unk_2845A18D8];
   [v5 doubleValue];
   v7 = v6;
 
-  v8 = [(SMReceiverService *)self defaultsManager];
-  v9 = [v8 objectForKey:@"RTDefaultsInitializeSentinelZoneGracePeriod" value:&unk_2845A18E8];
+  defaultsManager2 = [(SMReceiverService *)self defaultsManager];
+  v9 = [defaultsManager2 objectForKey:@"RTDefaultsInitializeSentinelZoneGracePeriod" value:&unk_2845A18E8];
   [v9 doubleValue];
   v11 = v10;
 
-  v12 = [(SMReceiverService *)self defaultsManager];
-  v13 = [v12 objectForKey:@"RTDefaultsInitializeSentinelZoneIgnoreNetworkConnectivity" value:&unk_28459C690];
-  v14 = [v13 BOOLValue];
+  defaultsManager3 = [(SMReceiverService *)self defaultsManager];
+  v13 = [defaultsManager3 objectForKey:@"RTDefaultsInitializeSentinelZoneIgnoreNetworkConnectivity" value:&unk_28459C690];
+  bOOLValue = [v13 BOOLValue];
 
   LOBYTE(v17) = 1;
-  v15 = [[RTXPCActivityCriteria alloc] initWithInterval:2 gracePeriod:v14 ^ 1u priority:0 requireNetworkConnectivity:0 requireInexpensiveNetworkConnectivity:0 networkTransferUploadSize:1 networkTransferDownloadSize:v7 allowBattery:v11 powerNap:0.0 delay:v17 requireBatteryLevel:0];
+  v15 = [[RTXPCActivityCriteria alloc] initWithInterval:2 gracePeriod:bOOLValue ^ 1u priority:0 requireNetworkConnectivity:0 requireInexpensiveNetworkConnectivity:0 networkTransferUploadSize:1 networkTransferDownloadSize:v7 allowBattery:v11 powerNap:0.0 delay:v17 requireBatteryLevel:0];
   objc_initWeak(&location, self);
-  v16 = [(SMReceiverService *)self xpcActivityManager];
+  xpcActivityManager = [(SMReceiverService *)self xpcActivityManager];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __60__SMReceiverService__registerInitializeSentinelZoneActivity__block_invoke;
@@ -3006,7 +3006,7 @@ void __59__SMReceiverService__initializeSentinelZoneWithCompletion___block_invok
   v18[4] = self;
   objc_copyWeak(v19, &location);
   v19[1] = a2;
-  [v16 registerActivityWithIdentifier:@"com.apple.routined.cloudkit.initializeSentinelZone" criteria:v15 handler:v18];
+  [xpcActivityManager registerActivityWithIdentifier:@"com.apple.routined.cloudkit.initializeSentinelZone" criteria:v15 handler:v18];
 
   objc_destroyWeak(v19);
   objc_destroyWeak(&location);
@@ -3144,21 +3144,21 @@ void __60__SMReceiverService__registerInitializeSentinelZoneActivity__block_invo
   }
 }
 
-+ (void)_submitSentinelZoneMaintenanceMetricForSuccess:(BOOL)a3 error:(id)a4
++ (void)_submitSentinelZoneMaintenanceMetricForSuccess:(BOOL)success error:(id)error
 {
-  v4 = a3;
-  v12 = a4;
+  successCopy = success;
+  errorCopy = error;
   v5 = objc_opt_new();
-  v6 = [MEMORY[0x277CCABB0] numberWithBool:v4];
+  v6 = [MEMORY[0x277CCABB0] numberWithBool:successCopy];
   [v5 setObject:v6 forKeyedSubscript:@"success"];
 
   [v5 setObject:&unk_28459C6A8 forKeyedSubscript:@"attempt"];
-  if (v12)
+  if (errorCopy)
   {
-    v7 = [v12 domain];
-    [v5 setObject:v7 forKeyedSubscript:@"errorDomain"];
+    domain = [errorCopy domain];
+    [v5 setObject:domain forKeyedSubscript:@"errorDomain"];
 
-    v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v12, "code")}];
+    v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
     [v5 setObject:v8 forKeyedSubscript:@"errorCode"];
   }
 

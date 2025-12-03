@@ -1,38 +1,38 @@
 @interface IMButtonAndRadialProgress
-- (CGRect)_centeredProgressFrameWithBounds:(CGRect)a3;
-- (IMButtonAndRadialProgress)initWithCoder:(id)a3;
-- (IMButtonAndRadialProgress)initWithFrame:(CGRect)a3;
+- (CGRect)_centeredProgressFrameWithBounds:(CGRect)bounds;
+- (IMButtonAndRadialProgress)initWithCoder:(id)coder;
+- (IMButtonAndRadialProgress)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentEdgeInsets;
 - (UILabel)titleLabel;
 - (float)progress;
 - (int)modeState;
-- (void)_commonInitWithFrame:(CGRect)a3;
+- (void)_commonInitWithFrame:(CGRect)frame;
 - (void)_updateButtonColorsForCurrentState;
 - (void)_updateButtonEnabledState;
 - (void)_updateNetworkReachability;
-- (void)addTarget:(id)a3 action:(SEL)a4 forControlEvents:(unint64_t)a5;
+- (void)addTarget:(id)target action:(SEL)action forControlEvents:(unint64_t)events;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)removeTarget:(id)a3 action:(SEL)a4 forControlEvents:(unint64_t)a5;
-- (void)setBackgroundImage:(id)a3 forState:(unint64_t)a4;
-- (void)setContentEdgeInsets:(UIEdgeInsets)a3;
-- (void)setDisableInteraction:(BOOL)a3;
-- (void)setModeState:(int)a3;
-- (void)setProgress:(float)a3;
-- (void)setProgressColor:(id)a3;
-- (void)setTitle:(id)a3 forState:(unint64_t)a4;
-- (void)setTitleColor:(id)a3 forState:(unint64_t)a4;
+- (void)removeTarget:(id)target action:(SEL)action forControlEvents:(unint64_t)events;
+- (void)setBackgroundImage:(id)image forState:(unint64_t)state;
+- (void)setContentEdgeInsets:(UIEdgeInsets)insets;
+- (void)setDisableInteraction:(BOOL)interaction;
+- (void)setModeState:(int)state;
+- (void)setProgress:(float)progress;
+- (void)setProgressColor:(id)color;
+- (void)setTitle:(id)title forState:(unint64_t)state;
+- (void)setTitleColor:(id)color forState:(unint64_t)state;
 - (void)sizeToFit;
 - (void)tintColorDidChange;
 @end
 
 @implementation IMButtonAndRadialProgress
 
-- (IMButtonAndRadialProgress)initWithCoder:(id)a3
+- (IMButtonAndRadialProgress)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = IMButtonAndRadialProgress;
-  v3 = [(IMButtonAndRadialProgress *)&v6 initWithCoder:a3];
+  v3 = [(IMButtonAndRadialProgress *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -43,12 +43,12 @@
   return v4;
 }
 
-- (IMButtonAndRadialProgress)initWithFrame:(CGRect)a3
+- (IMButtonAndRadialProgress)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = IMButtonAndRadialProgress;
   v7 = [(IMButtonAndRadialProgress *)&v10 initWithFrame:?];
@@ -87,8 +87,8 @@
 
 - (UIEdgeInsets)contentEdgeInsets
 {
-  v2 = [(IMButtonAndRadialProgress *)self button];
-  [v2 contentEdgeInsets];
+  button = [(IMButtonAndRadialProgress *)self button];
+  [button contentEdgeInsets];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -105,54 +105,54 @@
   return result;
 }
 
-- (void)setContentEdgeInsets:(UIEdgeInsets)a3
+- (void)setContentEdgeInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v7 = [(IMButtonAndRadialProgress *)self button];
-  [v7 setContentEdgeInsets:{top, left, bottom, right}];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  button = [(IMButtonAndRadialProgress *)self button];
+  [button setContentEdgeInsets:{top, left, bottom, right}];
 }
 
-- (void)setTitle:(id)a3 forState:(unint64_t)a4
+- (void)setTitle:(id)title forState:(unint64_t)state
 {
-  v6 = a3;
-  v7 = [(IMButtonAndRadialProgress *)self button];
-  [v7 setTitle:v6 forState:a4];
+  titleCopy = title;
+  button = [(IMButtonAndRadialProgress *)self button];
+  [button setTitle:titleCopy forState:state];
 }
 
-- (void)setTitleColor:(id)a3 forState:(unint64_t)a4
+- (void)setTitleColor:(id)color forState:(unint64_t)state
 {
-  v7 = a3;
-  v6 = [(IMButtonAndRadialProgress *)self button];
-  [v6 setTitleColor:v7 forState:a4];
+  colorCopy = color;
+  button = [(IMButtonAndRadialProgress *)self button];
+  [button setTitleColor:colorCopy forState:state];
 
-  [(IMButtonAndRadialProgress *)self setProgressColor:v7];
+  [(IMButtonAndRadialProgress *)self setProgressColor:colorCopy];
 }
 
-- (void)setBackgroundImage:(id)a3 forState:(unint64_t)a4
+- (void)setBackgroundImage:(id)image forState:(unint64_t)state
 {
-  v6 = a3;
-  v7 = [(IMButtonAndRadialProgress *)self button];
-  [v7 setBackgroundImage:v6 forState:a4];
+  imageCopy = image;
+  button = [(IMButtonAndRadialProgress *)self button];
+  [button setBackgroundImage:imageCopy forState:state];
 }
 
 - (UILabel)titleLabel
 {
-  v2 = [(IMButtonAndRadialProgress *)self button];
-  v3 = [v2 titleLabel];
+  button = [(IMButtonAndRadialProgress *)self button];
+  titleLabel = [button titleLabel];
 
-  return v3;
+  return titleLabel;
 }
 
 - (void)sizeToFit
 {
-  v3 = [(IMButtonAndRadialProgress *)self button];
-  [v3 sizeToFit];
+  button = [(IMButtonAndRadialProgress *)self button];
+  [button sizeToFit];
 
-  v4 = [(IMButtonAndRadialProgress *)self button];
-  [v4 bounds];
+  button2 = [(IMButtonAndRadialProgress *)self button];
+  [button2 bounds];
   [(IMButtonAndRadialProgress *)self setBounds:?];
 
   [(IMButtonAndRadialProgress *)self bounds];
@@ -161,48 +161,48 @@
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(IMButtonAndRadialProgress *)self radialProgress];
-  [v13 setFrame:{v6, v8, v10, v12}];
+  radialProgress = [(IMButtonAndRadialProgress *)self radialProgress];
+  [radialProgress setFrame:{v6, v8, v10, v12}];
 }
 
-- (void)addTarget:(id)a3 action:(SEL)a4 forControlEvents:(unint64_t)a5
+- (void)addTarget:(id)target action:(SEL)action forControlEvents:(unint64_t)events
 {
-  v8 = a3;
-  v9 = [(IMButtonAndRadialProgress *)self button];
-  [v9 addTarget:v8 action:a4 forControlEvents:a5];
+  targetCopy = target;
+  button = [(IMButtonAndRadialProgress *)self button];
+  [button addTarget:targetCopy action:action forControlEvents:events];
 }
 
-- (void)removeTarget:(id)a3 action:(SEL)a4 forControlEvents:(unint64_t)a5
+- (void)removeTarget:(id)target action:(SEL)action forControlEvents:(unint64_t)events
 {
-  v8 = a3;
-  v9 = [(IMButtonAndRadialProgress *)self button];
-  [v9 removeTarget:v8 action:a4 forControlEvents:a5];
+  targetCopy = target;
+  button = [(IMButtonAndRadialProgress *)self button];
+  [button removeTarget:targetCopy action:action forControlEvents:events];
 }
 
 - (float)progress
 {
-  v2 = [(IMButtonAndRadialProgress *)self radialProgress];
-  [v2 progress];
+  radialProgress = [(IMButtonAndRadialProgress *)self radialProgress];
+  [radialProgress progress];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setProgress:(float)a3
+- (void)setProgress:(float)progress
 {
-  v5 = [(IMButtonAndRadialProgress *)self radialProgress];
-  *&v4 = a3;
-  [v5 setProgress:v4];
+  radialProgress = [(IMButtonAndRadialProgress *)self radialProgress];
+  *&v4 = progress;
+  [radialProgress setProgress:v4];
 }
 
-- (void)setDisableInteraction:(BOOL)a3
+- (void)setDisableInteraction:(BOOL)interaction
 {
-  if (self->_disableInteraction != a3)
+  if (self->_disableInteraction != interaction)
   {
-    v3 = a3;
-    self->_disableInteraction = a3;
-    v5 = [(IMButtonAndRadialProgress *)self radialProgress];
-    [v5 setShowImages:!v3];
+    interactionCopy = interaction;
+    self->_disableInteraction = interaction;
+    radialProgress = [(IMButtonAndRadialProgress *)self radialProgress];
+    [radialProgress setShowImages:!interactionCopy];
 
     v6 = !self->_disableInteraction;
 
@@ -210,12 +210,12 @@
   }
 }
 
-- (void)setProgressColor:(id)a3
+- (void)setProgressColor:(id)color
 {
-  objc_storeStrong(&self->_progressColor, a3);
-  v5 = a3;
-  v6 = [(IMButtonAndRadialProgress *)self radialProgress];
-  [v6 setProgressColor:v5];
+  objc_storeStrong(&self->_progressColor, color);
+  colorCopy = color;
+  radialProgress = [(IMButtonAndRadialProgress *)self radialProgress];
+  [radialProgress setProgressColor:colorCopy];
 }
 
 - (void)tintColorDidChange
@@ -225,41 +225,41 @@
   [(IMButtonAndRadialProgress *)&v5 tintColorDidChange];
   if (!self->_progressColor)
   {
-    v3 = [(IMButtonAndRadialProgress *)self tintColor];
-    v4 = [(IMButtonAndRadialProgress *)self radialProgress];
-    [v4 setProgressColor:v3];
+    tintColor = [(IMButtonAndRadialProgress *)self tintColor];
+    radialProgress = [(IMButtonAndRadialProgress *)self radialProgress];
+    [radialProgress setProgressColor:tintColor];
   }
 }
 
-- (void)setModeState:(int)a3
+- (void)setModeState:(int)state
 {
-  v5 = [(IMButtonAndRadialProgress *)self button];
-  v6 = a3 < 4;
-  v7 = 2u >> (a3 & 0xF);
-  v8 = (a3 > 3) | (0xBu >> (a3 & 0xF));
-  [v5 setHidden:(a3 > 3) | ((a3 & 1) == 0)];
+  button = [(IMButtonAndRadialProgress *)self button];
+  v6 = state < 4;
+  v7 = 2u >> (state & 0xF);
+  v8 = (state > 3) | (0xBu >> (state & 0xF));
+  [button setHidden:(state > 3) | ((state & 1) == 0)];
 
-  v9 = [(IMButtonAndRadialProgress *)self button];
-  [v9 setEnabled:v6 & v7];
+  button2 = [(IMButtonAndRadialProgress *)self button];
+  [button2 setEnabled:v6 & v7];
 
-  v10 = [(IMButtonAndRadialProgress *)self radialProgress];
-  [v10 setHidden:v8 & 1];
+  radialProgress = [(IMButtonAndRadialProgress *)self radialProgress];
+  [radialProgress setHidden:v8 & 1];
 
-  v11 = [(IMButtonAndRadialProgress *)self radialProgress];
-  [v11 setEnabled:0];
+  radialProgress2 = [(IMButtonAndRadialProgress *)self radialProgress];
+  [radialProgress2 setEnabled:0];
 
   [(IMButtonAndRadialProgress *)self _updateButtonColorsForCurrentState];
 }
 
 - (int)modeState
 {
-  v3 = [(IMButtonAndRadialProgress *)self button];
-  if ([v3 isHidden])
+  button = [(IMButtonAndRadialProgress *)self button];
+  if ([button isHidden])
   {
-    v4 = [(IMButtonAndRadialProgress *)self radialProgress];
-    v5 = [v4 isHidden];
+    radialProgress = [(IMButtonAndRadialProgress *)self radialProgress];
+    isHidden = [radialProgress isHidden];
 
-    if (v5)
+    if (isHidden)
     {
       return 0;
     }
@@ -269,18 +269,18 @@
   {
   }
 
-  v7 = [(IMButtonAndRadialProgress *)self button];
-  v8 = [v7 isHidden];
+  button2 = [(IMButtonAndRadialProgress *)self button];
+  isHidden2 = [button2 isHidden];
 
-  if (v8)
+  if (isHidden2)
   {
     return 2;
   }
 
-  v9 = [(IMButtonAndRadialProgress *)self button];
-  v10 = [v9 isEnabled];
+  button3 = [(IMButtonAndRadialProgress *)self button];
+  isEnabled = [button3 isEnabled];
 
-  if (v10)
+  if (isEnabled)
   {
     return 1;
   }
@@ -291,12 +291,12 @@
   }
 }
 
-- (void)_commonInitWithFrame:(CGRect)a3
+- (void)_commonInitWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = [UIButton alloc];
   [(IMButtonAndRadialProgress *)self frame];
   v9 = [v8 initWithFrame:?];
@@ -320,12 +320,12 @@
   [(IMButtonAndRadialProgress *)self _updateNetworkReachability];
 }
 
-- (CGRect)_centeredProgressFrameWithBounds:(CGRect)a3
+- (CGRect)_centeredProgressFrameWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   +[IMRadialProgressButton minimumBoundingBox];
   v12.origin.x = x;
   v12.origin.y = y;
@@ -376,44 +376,44 @@
 - (void)_updateButtonEnabledState
 {
   networkReachable = self->_networkReachable;
-  v3 = [(IMButtonAndRadialProgress *)self button];
-  [v3 setEnabled:networkReachable];
+  button = [(IMButtonAndRadialProgress *)self button];
+  [button setEnabled:networkReachable];
 }
 
 - (void)_updateButtonColorsForCurrentState
 {
-  v3 = [(IMButtonAndRadialProgress *)self modeState];
+  modeState = [(IMButtonAndRadialProgress *)self modeState];
   v4 = 0;
   v5 = 1;
-  if (v3 <= 1)
+  if (modeState <= 1)
   {
-    if (!v3)
+    if (!modeState)
     {
       v5 = 0;
       v4 = 0;
       goto LABEL_14;
     }
 
-    if (v3 != 1)
+    if (modeState != 1)
     {
       goto LABEL_14;
     }
 
-    v6 = [(IMButtonAndRadialProgress *)self isPreorder];
+    isPreorder = [(IMButtonAndRadialProgress *)self isPreorder];
     goto LABEL_8;
   }
 
-  if (v3 != 2)
+  if (modeState != 2)
   {
-    if (v3 != 3)
+    if (modeState != 3)
     {
       goto LABEL_14;
     }
 
-    v6 = [(IMButtonAndRadialProgress *)self isPreorder];
+    isPreorder = [(IMButtonAndRadialProgress *)self isPreorder];
     v5 = 0;
 LABEL_8:
-    v7 = v6 == 0;
+    v7 = isPreorder == 0;
     v8 = 2;
     v9 = 4;
     goto LABEL_11;
@@ -436,13 +436,13 @@ LABEL_11:
 
 LABEL_14:
   v13 = [BCBuyButtonColorProvider colorsForButtonState:v4 isDark:[(IMButtonAndRadialProgress *)self overrideUserInterfaceStyle]== &dword_0 + 2 isEnabled:v5];
-  v10 = [v13 foregroundColor];
+  foregroundColor = [v13 foregroundColor];
 
-  if (v10)
+  if (foregroundColor)
   {
-    v11 = [(IMButtonAndRadialProgress *)self button];
-    v12 = [v13 foregroundColor];
-    [v11 setTitleColor:v12 forState:0];
+    button = [(IMButtonAndRadialProgress *)self button];
+    foregroundColor2 = [v13 foregroundColor];
+    [button setTitleColor:foregroundColor2 forState:0];
   }
 }
 

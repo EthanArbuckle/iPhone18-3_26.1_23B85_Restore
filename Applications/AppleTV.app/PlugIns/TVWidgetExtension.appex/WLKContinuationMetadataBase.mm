@@ -12,10 +12,10 @@
     sub_1000D129C();
   }
 
-  v3 = [(WLKContinuationMetadataBase *)self localizedContext];
+  localizedContext = [(WLKContinuationMetadataBase *)self localizedContext];
   v4 = qword_1001283B8;
-  v5 = [(WLKContinuationMetadataBase *)self context];
-  v6 = [v4 objectForKey:v5];
+  context = [(WLKContinuationMetadataBase *)self context];
+  v6 = [v4 objectForKey:context];
 
   if (v6)
   {
@@ -24,7 +24,7 @@
 
   else
   {
-    v7 = v3;
+    v7 = localizedContext;
   }
 
   v8 = v7;
@@ -34,10 +34,10 @@
 
 - (id)tvun_identifier
 {
-  v2 = [(WLKContinuationMetadataBase *)self movieOrShowContent];
-  v3 = [v2 canonicalID];
+  movieOrShowContent = [(WLKContinuationMetadataBase *)self movieOrShowContent];
+  canonicalID = [movieOrShowContent canonicalID];
 
-  return v3;
+  return canonicalID;
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface DNDSModeRepository
-- (id)modeDetailsForIdentifiers:(id)a3;
+- (id)modeDetailsForIdentifiers:(id)identifiers;
 @end
 
 @implementation DNDSModeRepository
 
-- (id)modeDetailsForIdentifiers:(id)a3
+- (id)modeDetailsForIdentifiers:(id)identifiers
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  identifiersCopy = identifiers;
   v4 = [MEMORY[0x277CBEB58] set];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v3;
+  v5 = identifiersCopy;
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
@@ -55,11 +55,11 @@ LABEL_12:
     while (v7);
   }
 
-  v15 = [v4 allObjects];
+  allObjects = [v4 allObjects];
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return allObjects;
 }
 
 @end

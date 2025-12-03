@@ -1,41 +1,41 @@
 @interface RUIFooterElement
 - (id)linkURL;
 - (int64_t)labelAlignment;
-- (void)configureView:(id)a3;
-- (void)setEnabled:(BOOL)a3;
+- (void)configureView:(id)view;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation RUIFooterElement
 
 - (int64_t)labelAlignment
 {
-  v3 = [(RUIElement *)self attributes];
-  v4 = [v3 objectForKeyedSubscript:@"align"];
+  attributes = [(RUIElement *)self attributes];
+  v4 = [attributes objectForKeyedSubscript:@"align"];
 
   if (v4)
   {
-    v5 = [(RUIElement *)self attributes];
-    v6 = [v5 objectForKeyedSubscript:@"align"];
+    attributes2 = [(RUIElement *)self attributes];
+    v6 = [attributes2 objectForKeyedSubscript:@"align"];
     v7 = [RUIParser textAlignmentForString:v6];
   }
 
   else
   {
-    v8 = [(RUIFooterElement *)self linkURL];
+    linkURL = [(RUIFooterElement *)self linkURL];
 
-    v9 = [(RUIElement *)self style];
-    v5 = v9;
-    if (v8)
+    style = [(RUIElement *)self style];
+    attributes2 = style;
+    if (linkURL)
     {
-      v10 = [v9 footerLinkAlignment];
+      footerLinkAlignment = [style footerLinkAlignment];
     }
 
     else
     {
-      v10 = [v9 footerLabelAlignment];
+      footerLinkAlignment = [style footerLabelAlignment];
     }
 
-    v7 = v10;
+    v7 = footerLinkAlignment;
   }
 
   return v7;
@@ -44,62 +44,62 @@
 - (id)linkURL
 {
   v2 = MEMORY[0x277CBEBC0];
-  v3 = [(RUIElement *)self attributes];
-  v4 = [v3 objectForKeyedSubscript:@"url"];
+  attributes = [(RUIElement *)self attributes];
+  v4 = [attributes objectForKeyedSubscript:@"url"];
   v5 = [v2 URLWithString:v4];
 
   return v5;
 }
 
-- (void)configureView:(id)a3
+- (void)configureView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(RUIElement *)self body];
-    v7 = [(RUIElement *)self attributes];
-    [v5 setText:v6 attributes:v7];
+    body = [(RUIElement *)self body];
+    attributes = [(RUIElement *)self attributes];
+    [viewCopy setText:body attributes:attributes];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    objc_storeStrong(&self->_footerView, a3);
+    objc_storeStrong(&self->_footerView, view);
     v8 = MEMORY[0x277D75348];
-    v9 = [(RUIElement *)self attributes];
-    v10 = [v9 objectForKeyedSubscript:@"color"];
+    attributes2 = [(RUIElement *)self attributes];
+    v10 = [attributes2 objectForKeyedSubscript:@"color"];
     v11 = [v8 _remoteUI_colorWithString:v10 defaultColor:0];
     v12 = v11;
     if (v11)
     {
-      v13 = v11;
+      footerLabelTextColor = v11;
     }
 
     else
     {
-      v14 = [(RUIElement *)self style];
-      v13 = [v14 footerLabelTextColor];
+      style = [(RUIElement *)self style];
+      footerLabelTextColor = [style footerLabelTextColor];
     }
 
-    [(RemoteUISectionFooter *)self->_footerView setTextColor:v13];
+    [(RemoteUISectionFooter *)self->_footerView setTextColor:footerLabelTextColor];
     [(RemoteUISectionFooter *)self->_footerView setTextAlignment:[(RUIFooterElement *)self labelAlignment]];
-    v15 = [(RUIElement *)self style];
+    style2 = [(RUIElement *)self style];
 
-    if (v15)
+    if (style2)
     {
       footerView = self->_footerView;
-      v17 = [(RUIElement *)self style];
-      [v17 footerTopMargin];
+      style3 = [(RUIElement *)self style];
+      [style3 footerTopMargin];
       [(RemoteUISectionFooter *)footerView setTopMargin:?];
 
       v18 = self->_footerView;
-      v19 = [(RUIElement *)self style];
-      v20 = [v19 footerFont];
-      [(RemoteUISectionFooter *)v18 setFont:v20];
+      style4 = [(RUIElement *)self style];
+      footerFont = [style4 footerFont];
+      [(RemoteUISectionFooter *)v18 setFont:footerFont];
     }
 
-    v21 = [(RUIElement *)self attributes];
-    v22 = [v21 objectForKeyedSubscript:@"activationFunction"];
+    attributes3 = [(RUIElement *)self attributes];
+    v22 = [attributes3 objectForKeyedSubscript:@"activationFunction"];
 
     if (v22)
     {
@@ -117,22 +117,22 @@
 
     else
     {
-      v24 = [(RUIFooterElement *)self linkURL];
+      linkURL = [(RUIFooterElement *)self linkURL];
 
-      if (v24)
+      if (linkURL)
       {
         v25 = self->_footerView;
-        v26 = [(RUIFooterElement *)self linkURL];
-        [(RemoteUISectionFooter *)v25 setLinkURL:v26];
+        linkURL2 = [(RUIFooterElement *)self linkURL];
+        [(RemoteUISectionFooter *)v25 setLinkURL:linkURL2];
       }
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v27 = [(RUIElement *)self pageElement];
-    v28 = [v27 page];
-    [v5 configureInPage:v28];
+    pageElement = [(RUIElement *)self pageElement];
+    page = [pageElement page];
+    [viewCopy configureInPage:page];
   }
 }
 
@@ -142,14 +142,14 @@ void __34__RUIFooterElement_configureView___block_invoke(uint64_t a1)
   [WeakRetained performAction:2 completion:0];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v6.receiver = self;
   v6.super_class = RUIFooterElement;
   [(RUIElement *)&v6 setEnabled:?];
-  v5 = [(RemoteUISectionFooter *)self->_footerView linkLabel];
-  [v5 setEnabled:v3];
+  linkLabel = [(RemoteUISectionFooter *)self->_footerView linkLabel];
+  [linkLabel setEnabled:enabledCopy];
 }
 
 @end

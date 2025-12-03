@@ -1,13 +1,13 @@
 @interface NLGuidedActivityTypesMigrator
-+ (void)migrateGuidedActivityTypesIfNeededWith:(id)a3;
++ (void)migrateGuidedActivityTypesIfNeededWith:(id)with;
 - (NLGuidedActivityTypesMigrator)init;
 @end
 
 @implementation NLGuidedActivityTypesMigrator
 
-+ (void)migrateGuidedActivityTypesIfNeededWith:(id)a3
++ (void)migrateGuidedActivityTypesIfNeededWith:(id)with
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(with);
   specialized static GuidedActivityTypesMigrator.migrateGuidedActivityTypesIfNeeded(with:)(partial apply for thunk for @callee_unowned @convention(block) (@unowned FIUIWorkoutActivityType) -> ());
   _Block_release(v3);
 }

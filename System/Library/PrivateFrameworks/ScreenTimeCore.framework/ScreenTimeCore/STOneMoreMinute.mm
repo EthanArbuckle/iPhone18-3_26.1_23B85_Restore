@@ -1,66 +1,66 @@
 @interface STOneMoreMinute
-+ (BOOL)_checkIfAnyBlueprintInArray:(id)a3 matchesPredicate:(id)a4;
-+ (BOOL)_isBundleIdentifier:(id)a3 presentInPayloadForConfiguration:(id)a4;
-+ (BOOL)_isWebDomain:(id)a3 presentInPayloadForConfiguration:(id)a4;
-+ (BOOL)shouldAllowOneMoreMinuteForBundleIdentifier:(id)a3 oneMoreMinuteBlueprints:(id)a4;
-+ (BOOL)shouldAllowOneMoreMinuteForCategoryIdentifier:(id)a3 oneMoreMinuteBlueprints:(id)a4;
-+ (BOOL)shouldAllowOneMoreMinuteForWebDomain:(id)a3 oneMoreMinuteBlueprints:(id)a4;
-+ (id)fetchCategoryForBundleIdentifier:(id)a3 error:(id *)a4;
-+ (id)fetchCategoryForWebDomain:(id)a3 error:(id *)a4;
++ (BOOL)_checkIfAnyBlueprintInArray:(id)array matchesPredicate:(id)predicate;
++ (BOOL)_isBundleIdentifier:(id)identifier presentInPayloadForConfiguration:(id)configuration;
++ (BOOL)_isWebDomain:(id)domain presentInPayloadForConfiguration:(id)configuration;
++ (BOOL)shouldAllowOneMoreMinuteForBundleIdentifier:(id)identifier oneMoreMinuteBlueprints:(id)blueprints;
++ (BOOL)shouldAllowOneMoreMinuteForCategoryIdentifier:(id)identifier oneMoreMinuteBlueprints:(id)blueprints;
++ (BOOL)shouldAllowOneMoreMinuteForWebDomain:(id)domain oneMoreMinuteBlueprints:(id)blueprints;
++ (id)fetchCategoryForBundleIdentifier:(id)identifier error:(id *)error;
++ (id)fetchCategoryForWebDomain:(id)domain error:(id *)error;
 @end
 
 @implementation STOneMoreMinute
 
-+ (BOOL)shouldAllowOneMoreMinuteForBundleIdentifier:(id)a3 oneMoreMinuteBlueprints:(id)a4
++ (BOOL)shouldAllowOneMoreMinuteForBundleIdentifier:(id)identifier oneMoreMinuteBlueprints:(id)blueprints
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10006D740;
   v8[3] = &unk_1001A56C0;
-  v9 = a3;
-  v10 = a1;
-  v6 = v9;
-  LOBYTE(a4) = [a1 _checkIfAnyBlueprintInArray:a4 matchesPredicate:v8];
+  identifierCopy = identifier;
+  selfCopy = self;
+  v6 = identifierCopy;
+  LOBYTE(blueprints) = [self _checkIfAnyBlueprintInArray:blueprints matchesPredicate:v8];
 
-  return a4 ^ 1;
+  return blueprints ^ 1;
 }
 
-+ (BOOL)shouldAllowOneMoreMinuteForWebDomain:(id)a3 oneMoreMinuteBlueprints:(id)a4
++ (BOOL)shouldAllowOneMoreMinuteForWebDomain:(id)domain oneMoreMinuteBlueprints:(id)blueprints
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10006D7FC;
   v8[3] = &unk_1001A56C0;
-  v9 = a3;
-  v10 = a1;
-  v6 = v9;
-  LOBYTE(a4) = [a1 _checkIfAnyBlueprintInArray:a4 matchesPredicate:v8];
+  domainCopy = domain;
+  selfCopy = self;
+  v6 = domainCopy;
+  LOBYTE(blueprints) = [self _checkIfAnyBlueprintInArray:blueprints matchesPredicate:v8];
 
-  return a4 ^ 1;
+  return blueprints ^ 1;
 }
 
-+ (BOOL)shouldAllowOneMoreMinuteForCategoryIdentifier:(id)a3 oneMoreMinuteBlueprints:(id)a4
++ (BOOL)shouldAllowOneMoreMinuteForCategoryIdentifier:(id)identifier oneMoreMinuteBlueprints:(id)blueprints
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10006D8B8;
   v8[3] = &unk_1001A56E8;
-  v9 = a3;
-  v6 = v9;
-  LOBYTE(a4) = [a1 _checkIfAnyBlueprintInArray:a4 matchesPredicate:v8];
+  identifierCopy = identifier;
+  v6 = identifierCopy;
+  LOBYTE(blueprints) = [self _checkIfAnyBlueprintInArray:blueprints matchesPredicate:v8];
 
-  return a4 ^ 1;
+  return blueprints ^ 1;
 }
 
-+ (BOOL)_checkIfAnyBlueprintInArray:(id)a3 matchesPredicate:(id)a4
++ (BOOL)_checkIfAnyBlueprintInArray:(id)array matchesPredicate:(id)predicate
 {
-  v5 = a3;
-  v6 = a4;
+  arrayCopy = array;
+  predicateCopy = predicate;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v7 = v5;
+  v7 = arrayCopy;
   v21 = [v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v21)
   {
@@ -80,8 +80,8 @@
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v11 = [v10 configurations];
-        v12 = [v11 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        configurations = [v10 configurations];
+        v12 = [configurations countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v12)
         {
           v13 = v12;
@@ -92,11 +92,11 @@
             {
               if (*v23 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(configurations);
               }
 
-              v16 = [*(*(&v22 + 1) + 8 * j) cemConfiguration];
-              v17 = v6[2](v6, v16);
+              cemConfiguration = [*(*(&v22 + 1) + 8 * j) cemConfiguration];
+              v17 = predicateCopy[2](predicateCopy, cemConfiguration);
 
               if (v17)
               {
@@ -106,7 +106,7 @@
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v22 objects:v30 count:16];
+            v13 = [configurations countByEnumeratingWithState:&v22 objects:v30 count:16];
             if (v13)
             {
               continue;
@@ -136,11 +136,11 @@ LABEL_19:
   return v18;
 }
 
-+ (BOOL)_isBundleIdentifier:(id)a3 presentInPayloadForConfiguration:(id)a4
++ (BOOL)_isBundleIdentifier:(id)identifier presentInPayloadForConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 st_containsBundleIdentifier:v6])
+  identifierCopy = identifier;
+  configurationCopy = configuration;
+  if ([configurationCopy st_containsBundleIdentifier:identifierCopy])
   {
     LOBYTE(v8) = 1;
   }
@@ -148,15 +148,15 @@ LABEL_19:
   else
   {
     v32 = 0;
-    v9 = [a1 fetchCategoryForBundleIdentifier:v6 error:&v32];
+    v9 = [self fetchCategoryForBundleIdentifier:identifierCopy error:&v32];
     v10 = v32;
     if (v9)
     {
       v11 = objc_opt_new();
-      v12 = [v9 equivalentBundleIdentifiers];
-      if ([v12 count])
+      equivalentBundleIdentifiers = [v9 equivalentBundleIdentifiers];
+      if ([equivalentBundleIdentifiers count])
       {
-        [v11 addObjectsFromArray:v12];
+        [v11 addObjectsFromArray:equivalentBundleIdentifiers];
       }
 
       v30 = 0u;
@@ -178,7 +178,7 @@ LABEL_19:
               objc_enumerationMutation(v13);
             }
 
-            if ([v7 st_containsBundleIdentifier:*(*(&v28 + 1) + 8 * i)])
+            if ([configurationCopy st_containsBundleIdentifier:*(*(&v28 + 1) + 8 * i)])
             {
               LOBYTE(v8) = 1;
               v20 = v13;
@@ -196,8 +196,8 @@ LABEL_19:
         }
       }
 
-      v18 = [v9 identifier];
-      v19 = [v7 st_containsCategoryIdentifer:v18];
+      identifier = [v9 identifier];
+      v19 = [configurationCopy st_containsCategoryIdentifer:identifier];
 
       if (v19)
       {
@@ -224,7 +224,7 @@ LABEL_19:
                 objc_enumerationMutation(v20);
               }
 
-              if ([v7 st_containsWebDomain:{*(*(&v24 + 1) + 8 * j), v24}])
+              if ([configurationCopy st_containsWebDomain:{*(*(&v24 + 1) + 8 * j), v24}])
               {
                 LOBYTE(v8) = 1;
                 goto LABEL_30;
@@ -262,19 +262,19 @@ LABEL_31:
   return v8;
 }
 
-+ (BOOL)_isWebDomain:(id)a3 presentInPayloadForConfiguration:(id)a4
++ (BOOL)_isWebDomain:(id)domain presentInPayloadForConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v7 st_containsWebDomain:v6] & 1) == 0)
+  domainCopy = domain;
+  configurationCopy = configuration;
+  if (([configurationCopy st_containsWebDomain:domainCopy] & 1) == 0)
   {
     v15 = 0;
-    v9 = [a1 fetchCategoryForWebDomain:v6 error:&v15];
+    v9 = [self fetchCategoryForWebDomain:domainCopy error:&v15];
     v10 = v15;
     if (v9)
     {
-      v11 = [v9 canonicalBundleIdentifier];
-      v12 = [v7 st_containsBundleIdentifier:v11];
+      canonicalBundleIdentifier = [v9 canonicalBundleIdentifier];
+      v12 = [configurationCopy st_containsBundleIdentifier:canonicalBundleIdentifier];
 
       if (v12)
       {
@@ -284,14 +284,14 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v13 = [v9 identifier];
-      v8 = [v7 st_containsCategoryIdentifer:v13];
+      identifier = [v9 identifier];
+      v8 = [configurationCopy st_containsCategoryIdentifer:identifier];
     }
 
     else
     {
-      v13 = +[STLog oneMoreMinuteManager];
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      identifier = +[STLog oneMoreMinuteManager];
+      if (os_log_type_enabled(identifier, OS_LOG_TYPE_ERROR))
       {
         sub_10011C208();
       }
@@ -308,10 +308,10 @@ LABEL_12:
   return v8;
 }
 
-+ (id)fetchCategoryForBundleIdentifier:(id)a3 error:(id *)a4
++ (id)fetchCategoryForBundleIdentifier:(id)identifier error:(id *)error
 {
-  v5 = a3;
-  if (v5)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v6 = [[NSConditionLock alloc] initWithCondition:0];
     v28 = 0;
@@ -336,7 +336,7 @@ LABEL_12:
     v8 = v6;
     v18 = v8;
     v21 = 1;
-    [v7 categoryForBundleID:v5 completionHandler:&v14];
+    [v7 categoryForBundleID:identifierCopy completionHandler:&v14];
 
     v9 = [NSDate dateWithTimeIntervalSinceNow:2.0, v14, v15, v16, v17];
     v10 = [v8 lockWhenCondition:1 beforeDate:v9];
@@ -344,22 +344,22 @@ LABEL_12:
     if (v10)
     {
       [v8 unlock];
-      if (a4)
+      if (error)
       {
         v11 = v29[5];
         if (v11)
         {
-          *a4 = v11;
+          *error = v11;
         }
       }
 
       v12 = v23[5];
     }
 
-    else if (a4)
+    else if (error)
     {
       [NSError errorWithDomain:STErrorDomain code:570 userInfo:0];
-      *a4 = v12 = 0;
+      *error = v12 = 0;
     }
 
     else
@@ -379,10 +379,10 @@ LABEL_12:
   return v12;
 }
 
-+ (id)fetchCategoryForWebDomain:(id)a3 error:(id *)a4
++ (id)fetchCategoryForWebDomain:(id)domain error:(id *)error
 {
-  v5 = a3;
-  if (v5)
+  domainCopy = domain;
+  if (domainCopy)
   {
     v6 = [[NSConditionLock alloc] initWithCondition:0];
     v28 = 0;
@@ -407,7 +407,7 @@ LABEL_12:
     v8 = v6;
     v18 = v8;
     v21 = 1;
-    [v7 categoryForDomainName:v5 completionHandler:&v14];
+    [v7 categoryForDomainName:domainCopy completionHandler:&v14];
 
     v9 = [NSDate dateWithTimeIntervalSinceNow:2.0, v14, v15, v16, v17];
     v10 = [v8 lockWhenCondition:1 beforeDate:v9];
@@ -415,22 +415,22 @@ LABEL_12:
     if (v10)
     {
       [v8 unlock];
-      if (a4)
+      if (error)
       {
         v11 = v29[5];
         if (v11)
         {
-          *a4 = v11;
+          *error = v11;
         }
       }
 
       v12 = v23[5];
     }
 
-    else if (a4)
+    else if (error)
     {
       [NSError errorWithDomain:STErrorDomain code:570 userInfo:0];
-      *a4 = v12 = 0;
+      *error = v12 = 0;
     }
 
     else

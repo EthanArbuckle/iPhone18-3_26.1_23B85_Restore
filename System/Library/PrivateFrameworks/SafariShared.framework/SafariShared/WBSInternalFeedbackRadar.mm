@@ -1,15 +1,15 @@
 @interface WBSInternalFeedbackRadar
 - (NSURL)continueInTapToRadarURL;
-- (WBSInternalFeedbackRadar)initWithComponent:(id)a3 title:(id)a4 descriptionTemplate:(id)a5;
+- (WBSInternalFeedbackRadar)initWithComponent:(id)component title:(id)title descriptionTemplate:(id)template;
 @end
 
 @implementation WBSInternalFeedbackRadar
 
-- (WBSInternalFeedbackRadar)initWithComponent:(id)a3 title:(id)a4 descriptionTemplate:(id)a5
+- (WBSInternalFeedbackRadar)initWithComponent:(id)component title:(id)title descriptionTemplate:(id)template
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  componentCopy = component;
+  titleCopy = title;
+  templateCopy = template;
   result = [MEMORY[0x1E69C8880] isInternalInstall];
   if (result)
   {
@@ -18,15 +18,15 @@
     v12 = [(WBSInternalFeedbackRadar *)&v20 init];
     if (v12)
     {
-      v13 = [v8 copy];
+      v13 = [componentCopy copy];
       component = v12->_component;
       v12->_component = v13;
 
-      v15 = [v9 copy];
+      v15 = [titleCopy copy];
       title = v12->_title;
       v12->_title = v15;
 
-      v17 = [v10 copy];
+      v17 = [templateCopy copy];
       descriptionTemplate = v12->_descriptionTemplate;
       v12->_descriptionTemplate = v17;
 
@@ -49,27 +49,27 @@
   v3 = objc_alloc_init(MEMORY[0x1E696AF20]);
   [v3 setScheme:@"tap-to-radar"];
   [v3 setHost:@"new"];
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [(WBSInternalFeedbackRadarComponent *)self->_component identifier];
-  appendToQueryItems(v4, @"ComponentID", v5);
+  array = [MEMORY[0x1E695DF70] array];
+  identifier = [(WBSInternalFeedbackRadarComponent *)self->_component identifier];
+  appendToQueryItems(array, @"ComponentID", identifier);
 
-  v6 = [(WBSInternalFeedbackRadarComponent *)self->_component name];
-  appendToQueryItems(v4, @"ComponentName", v6);
+  name = [(WBSInternalFeedbackRadarComponent *)self->_component name];
+  appendToQueryItems(array, @"ComponentName", name);
 
-  v7 = [(WBSInternalFeedbackRadarComponent *)self->_component version];
-  appendToQueryItems(v4, @"ComponentVersion", v7);
+  version = [(WBSInternalFeedbackRadarComponent *)self->_component version];
+  appendToQueryItems(array, @"ComponentVersion", version);
 
-  appendToQueryItems(v4, @"Title", self->_title);
-  appendToQueryItems(v4, @"Description", self->_descriptionTemplate);
-  appendToQueryItems(v4, @"Classification", self->_classification);
-  appendToQueryItems(v4, @"Reproducibility", self->_reproducibility);
+  appendToQueryItems(array, @"Title", self->_title);
+  appendToQueryItems(array, @"Description", self->_descriptionTemplate);
+  appendToQueryItems(array, @"Classification", self->_classification);
+  appendToQueryItems(array, @"Reproducibility", self->_reproducibility);
   v8 = [(NSArray *)self->_keywords componentsJoinedByString:@", "];
-  appendToQueryItems(v4, @"Keywords", v8);
+  appendToQueryItems(array, @"Keywords", v8);
 
   v9 = [(NSArray *)self->_attachmentPaths componentsJoinedByString:@", "];
-  appendToQueryItems(v4, @"Attachments", v9);
+  appendToQueryItems(array, @"Attachments", v9);
 
-  [v3 setQueryItems:v4];
+  [v3 setQueryItems:array];
   v10 = [v3 URL];
 
   return v10;

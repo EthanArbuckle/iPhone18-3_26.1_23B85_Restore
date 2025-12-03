@@ -1,38 +1,38 @@
 @interface MessagingError
-- (_TtC25keychainsharingmessagingd14MessagingError)initWithCoder:(id)a3;
-- (_TtC25keychainsharingmessagingd14MessagingError)initWithDomain:(id)a3 code:(int64_t)a4 userInfo:(id)a5;
+- (_TtC25keychainsharingmessagingd14MessagingError)initWithCoder:(id)coder;
+- (_TtC25keychainsharingmessagingd14MessagingError)initWithDomain:(id)domain code:(int64_t)code userInfo:(id)info;
 @end
 
 @implementation MessagingError
 
-- (_TtC25keychainsharingmessagingd14MessagingError)initWithDomain:(id)a3 code:(int64_t)a4 userInfo:(id)a5
+- (_TtC25keychainsharingmessagingd14MessagingError)initWithDomain:(id)domain code:(int64_t)code userInfo:(id)info
 {
-  if (a5)
+  if (info)
   {
     static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-    v8 = a3;
+    domainCopy = domain;
     v9.super.isa = Dictionary._bridgeToObjectiveC()().super.isa;
   }
 
   else
   {
-    v10 = a3;
+    domainCopy2 = domain;
     v9.super.isa = 0;
   }
 
   v13.receiver = self;
   v13.super_class = type metadata accessor for MessagingError();
-  v11 = [(MessagingError *)&v13 initWithDomain:a3 code:a4 userInfo:v9.super.isa];
+  v11 = [(MessagingError *)&v13 initWithDomain:domain code:code userInfo:v9.super.isa];
 
   return v11;
 }
 
-- (_TtC25keychainsharingmessagingd14MessagingError)initWithCoder:(id)a3
+- (_TtC25keychainsharingmessagingd14MessagingError)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for MessagingError();
-  v4 = a3;
-  v5 = [(MessagingError *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(MessagingError *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

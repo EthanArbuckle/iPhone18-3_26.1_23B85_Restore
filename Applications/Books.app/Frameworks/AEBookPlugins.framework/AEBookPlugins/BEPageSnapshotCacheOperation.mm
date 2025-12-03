@@ -1,41 +1,41 @@
 @interface BEPageSnapshotCacheOperation
 - (BEPageSnapshotCacheDataSource)dataSource;
-- (BEPageSnapshotCacheOperation)initWithDataSource:(id)a3;
+- (BEPageSnapshotCacheOperation)initWithDataSource:(id)source;
 - (CGSize)snapshotSize;
-- (id)callbackInvocationWithImage:(id)a3;
-- (id)generateImage:(CGSize)a3;
-- (void)addExtraCompletion:(id)a3;
+- (id)callbackInvocationWithImage:(id)image;
+- (id)generateImage:(CGSize)image;
+- (void)addExtraCompletion:(id)completion;
 @end
 
 @implementation BEPageSnapshotCacheOperation
 
-- (BEPageSnapshotCacheOperation)initWithDataSource:(id)a3
+- (BEPageSnapshotCacheOperation)initWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v8.receiver = self;
   v8.super_class = BEPageSnapshotCacheOperation;
   v5 = [(BEPageSnapshotCacheOperation *)&v8 initWithOptions:0];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_dataSource, v4);
+    objc_storeWeak(&v5->_dataSource, sourceCopy);
     v6->_extraCompletionsAccessLock._os_unfair_lock_opaque = 0;
   }
 
   return v6;
 }
 
-- (id)callbackInvocationWithImage:(id)a3
+- (id)callbackInvocationWithImage:(id)image
 {
-  v4 = a3;
-  v5 = [(BEPageSnapshotCacheOperation *)self renderingCacheCallbackInvocationWithImage:v4 pageNumber:[(BEPageSnapshotCacheOperation *)self pageNumber]];
+  imageCopy = image;
+  v5 = [(BEPageSnapshotCacheOperation *)self renderingCacheCallbackInvocationWithImage:imageCopy pageNumber:[(BEPageSnapshotCacheOperation *)self pageNumber]];
 
   return v5;
 }
 
-- (id)generateImage:(CGSize)a3
+- (id)generateImage:(CGSize)image
 {
-  if (([(BEPageSnapshotCacheOperation *)self isCancelled:a3.width]& 1) != 0)
+  if (([(BEPageSnapshotCacheOperation *)self isCancelled:image.width]& 1) != 0)
   {
     v4 = 0;
   }
@@ -58,8 +58,8 @@
     block[4] = self;
     block[5] = &v15;
     dispatch_async(&_dispatch_main_q, block);
-    v6 = [(BEPageSnapshotCacheOperation *)self dispatchSemaphore];
-    dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
+    dispatchSemaphore = [(BEPageSnapshotCacheOperation *)self dispatchSemaphore];
+    dispatch_semaphore_wait(dispatchSemaphore, 0xFFFFFFFFFFFFFFFFLL);
 
     if (([(BEPageSnapshotCacheOperation *)self isCancelled]& 1) != 0)
     {
@@ -72,7 +72,7 @@
       v9[1] = 3221225472;
       v10 = sub_A5B58;
       v11 = &unk_1E5030;
-      v12 = self;
+      selfCopy = self;
       v13 = &v15;
       v7 = v9;
       os_unfair_lock_lock(&self->_extraCompletionsAccessLock);
@@ -88,16 +88,16 @@
   return v4;
 }
 
-- (void)addExtraCompletion:(id)a3
+- (void)addExtraCompletion:(id)completion
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_A5DD8;
   v5[3] = &unk_1E3F50;
-  v6 = self;
-  v7 = a3;
-  v4 = v7;
-  os_unfair_lock_lock(&v6->_extraCompletionsAccessLock);
+  selfCopy = self;
+  completionCopy = completion;
+  v4 = completionCopy;
+  os_unfair_lock_lock(&selfCopy->_extraCompletionsAccessLock);
   sub_A5DD8(v5);
   os_unfair_lock_unlock(&self->_extraCompletionsAccessLock);
 }

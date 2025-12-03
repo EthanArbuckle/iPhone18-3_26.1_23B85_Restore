@@ -1,10 +1,10 @@
 @interface OrgApacheLuceneIndexSegmentCoreReaders
 - (int)getRefCount;
-- (void)addCoreClosedListenerWithOrgApacheLuceneIndexLeafReader_CoreClosedListener:(id)a3;
+- (void)addCoreClosedListenerWithOrgApacheLuceneIndexLeafReader_CoreClosedListener:(id)listener;
 - (void)dealloc;
 - (void)decRef;
 - (void)incRef;
-- (void)removeCoreClosedListenerWithOrgApacheLuceneIndexLeafReader_CoreClosedListener:(id)a3;
+- (void)removeCoreClosedListenerWithOrgApacheLuceneIndexLeafReader_CoreClosedListener:(id)listener;
 @end
 
 @implementation OrgApacheLuceneIndexSegmentCoreReaders
@@ -63,7 +63,7 @@
   }
 }
 
-- (void)addCoreClosedListenerWithOrgApacheLuceneIndexLeafReader_CoreClosedListener:(id)a3
+- (void)addCoreClosedListenerWithOrgApacheLuceneIndexLeafReader_CoreClosedListener:(id)listener
 {
   coreClosedListeners = self->coreClosedListeners_;
   if (!coreClosedListeners)
@@ -71,10 +71,10 @@
     JreThrowNullPointerException();
   }
 
-  [(JavaUtilSet *)coreClosedListeners addWithId:a3];
+  [(JavaUtilSet *)coreClosedListeners addWithId:listener];
 }
 
-- (void)removeCoreClosedListenerWithOrgApacheLuceneIndexLeafReader_CoreClosedListener:(id)a3
+- (void)removeCoreClosedListenerWithOrgApacheLuceneIndexLeafReader_CoreClosedListener:(id)listener
 {
   coreClosedListeners = self->coreClosedListeners_;
   if (!coreClosedListeners)
@@ -82,7 +82,7 @@
     JreThrowNullPointerException();
   }
 
-  [(JavaUtilSet *)coreClosedListeners removeWithId:a3];
+  [(JavaUtilSet *)coreClosedListeners removeWithId:listener];
 }
 
 - (void)dealloc

@@ -1,50 +1,50 @@
 @interface HUTriggerConditionEditorItemModuleController
-- (BOOL)_canEditConditionOptionItem:(id)a3;
-- (Class)cellClassForItem:(id)a3;
-- (HUTriggerConditionEditorItemModuleController)initWithModule:(id)a3 delegate:(id)a4;
+- (BOOL)_canEditConditionOptionItem:(id)item;
+- (Class)cellClassForItem:(id)item;
+- (HUTriggerConditionEditorItemModuleController)initWithModule:(id)module delegate:(id)delegate;
 - (HUTriggerConditionEditorItemModuleControllerDelegate)delegate;
-- (unint64_t)didSelectItem:(id)a3;
-- (void)_dismissDetailEditor:(id)a3;
-- (void)_presentDetailEditorForConditionOptionItem:(id)a3;
-- (void)accessoryButtonTappedForItem:(id)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4;
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4;
-- (void)timeConditionEditor:(id)a3 didFinishWithCondition:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5;
+- (unint64_t)didSelectItem:(id)item;
+- (void)_dismissDetailEditor:(id)editor;
+- (void)_presentDetailEditorForConditionOptionItem:(id)item;
+- (void)accessoryButtonTappedForItem:(id)item;
+- (void)setupCell:(id)cell forItem:(id)item;
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on;
+- (void)timeConditionEditor:(id)editor didFinishWithCondition:(id)condition;
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated;
 @end
 
 @implementation HUTriggerConditionEditorItemModuleController
 
-- (HUTriggerConditionEditorItemModuleController)initWithModule:(id)a3 delegate:(id)a4
+- (HUTriggerConditionEditorItemModuleController)initWithModule:(id)module delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = HUTriggerConditionEditorItemModuleController;
-  v7 = [(HUItemModuleController *)&v10 initWithModule:a3];
+  v7 = [(HUItemModuleController *)&v10 initWithModule:module];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_delegate, v6);
+    objc_storeWeak(&v7->_delegate, delegateCopy);
   }
 
   return v8;
 }
 
-- (Class)cellClassForItem:(id)a3
+- (Class)cellClassForItem:(id)item
 {
-  v5 = a3;
-  v6 = [(HUItemModuleController *)self module];
-  v7 = [v6 isShowConditionOptionsItem:v5];
+  itemCopy = item;
+  module = [(HUItemModuleController *)self module];
+  v7 = [module isShowConditionOptionsItem:itemCopy];
 
-  if (v7 || (-[HUItemModuleController module](self, "module"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isCustomConditionSwitchItem:v5], v8, v9) || (-[HUItemModuleController module](self, "module"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isConditionOptionItem:", v5), v10, v11))
+  if (v7 || (-[HUItemModuleController module](self, "module"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isCustomConditionSwitchItem:itemCopy], v8, v9) || (-[HUItemModuleController module](self, "module"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isConditionOptionItem:", itemCopy), v10, v11))
   {
     v12 = objc_opt_class();
   }
 
   else
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"HUTriggerConditionEditorItemModuleController.m" lineNumber:57 description:{@"Unknown item %@", v5}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUTriggerConditionEditorItemModuleController.m" lineNumber:57 description:{@"Unknown item %@", itemCopy}];
 
     v12 = 0;
   }
@@ -52,17 +52,17 @@
   return v12;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4
+- (void)setupCell:(id)cell forItem:(id)item
 {
-  v22 = a3;
-  v6 = a4;
-  v7 = [(HUItemModuleController *)self module];
-  v8 = [v7 isShowConditionOptionsItem:v6];
+  cellCopy = cell;
+  itemCopy = item;
+  module = [(HUItemModuleController *)self module];
+  v8 = [module isShowConditionOptionsItem:itemCopy];
 
   if (!v8)
   {
-    v15 = [(HUItemModuleController *)self module];
-    v16 = [v15 isCustomConditionSwitchItem:v6];
+    module2 = [(HUItemModuleController *)self module];
+    v16 = [module2 isCustomConditionSwitchItem:itemCopy];
 
     if (!v16)
     {
@@ -70,7 +70,7 @@
     }
 
     v17 = objc_opt_class();
-    v18 = v22;
+    v18 = cellCopy;
     if (v18)
     {
       if (objc_opt_isKindOfClass())
@@ -89,9 +89,9 @@
         goto LABEL_18;
       }
 
-      v20 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-      [v20 handleFailureInFunction:v21 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v17, objc_opt_class()}];
+      [currentHandler handleFailureInFunction:v21 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v17, objc_opt_class()}];
     }
 
     v12 = 0;
@@ -102,7 +102,7 @@ LABEL_18:
   }
 
   v9 = objc_opt_class();
-  v10 = v22;
+  v10 = cellCopy;
   if (v10)
   {
     if (objc_opt_isKindOfClass())
@@ -121,9 +121,9 @@ LABEL_18:
       goto LABEL_9;
     }
 
-    v13 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v13 handleFailureInFunction:v14 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v9, objc_opt_class()}];
+    [currentHandler2 handleFailureInFunction:v14 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v9, objc_opt_class()}];
   }
 
   v12 = 0;
@@ -137,17 +137,17 @@ LABEL_19:
 LABEL_20:
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated
 {
-  v24 = a3;
-  v7 = a4;
-  v8 = [(HUItemModuleController *)self module];
-  v9 = [v8 isConditionOptionItem:v7];
+  cellCopy = cell;
+  itemCopy = item;
+  module = [(HUItemModuleController *)self module];
+  v9 = [module isConditionOptionItem:itemCopy];
 
   if (v9)
   {
     v10 = objc_opt_class();
-    v11 = v24;
+    v11 = cellCopy;
     if (v11)
     {
       if (objc_opt_isKindOfClass())
@@ -166,30 +166,30 @@ LABEL_20:
         goto LABEL_9;
       }
 
-      v14 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-      [v14 handleFailureInFunction:v15 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v10, objc_opt_class()}];
+      [currentHandler handleFailureInFunction:v15 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v10, objc_opt_class()}];
     }
 
     v13 = 0;
 LABEL_9:
 
-    v16 = [v7 latestResults];
-    v17 = [v16 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+    latestResults = [itemCopy latestResults];
+    v17 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
     [v13 setTitleText:v17];
 
-    v18 = [v7 latestResults];
-    v19 = [v18 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
+    latestResults2 = [itemCopy latestResults];
+    v19 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
     [v13 setDescriptionText:v19];
 
-    v20 = [v7 latestResults];
-    v21 = [v20 objectForKeyedSubscript:*MEMORY[0x277D14068]];
-    v22 = [v21 unsignedIntegerValue];
+    latestResults3 = [itemCopy latestResults];
+    v21 = [latestResults3 objectForKeyedSubscript:*MEMORY[0x277D14068]];
+    unsignedIntegerValue = [v21 unsignedIntegerValue];
 
-    [v13 setChecked:v22 == 2];
-    if (v22 == 2)
+    [v13 setChecked:unsignedIntegerValue == 2];
+    if (unsignedIntegerValue == 2)
     {
-      if ([(HUTriggerConditionEditorItemModuleController *)self _canEditConditionOptionItem:v7])
+      if ([(HUTriggerConditionEditorItemModuleController *)self _canEditConditionOptionItem:itemCopy])
       {
         v23 = 4;
       }
@@ -209,58 +209,58 @@ LABEL_9:
   }
 }
 
-- (unint64_t)didSelectItem:(id)a3
+- (unint64_t)didSelectItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUItemModuleController *)self module];
-  v6 = [v5 isShowConditionOptionsItem:v4];
+  itemCopy = item;
+  module = [(HUItemModuleController *)self module];
+  v6 = [module isShowConditionOptionsItem:itemCopy];
 
-  v7 = [(HUItemModuleController *)self module];
-  v8 = v7;
+  module2 = [(HUItemModuleController *)self module];
+  v8 = module2;
   if (v6)
   {
-    v9 = [v7 conditionTypeForItem:v4];
+    v9 = [module2 conditionTypeForItem:itemCopy];
 
-    v10 = [(HUItemModuleController *)self module];
-    v11 = [v10 shouldShowConditionOptionsForType:v9];
+    module3 = [(HUItemModuleController *)self module];
+    v11 = [module3 shouldShowConditionOptionsForType:v9];
 
-    v12 = [(HUItemModuleController *)self module];
-    [v12 setShowConditionOptions:v11 ^ 1u forType:v9];
+    module4 = [(HUItemModuleController *)self module];
+    [module4 setShowConditionOptions:v11 ^ 1u forType:v9];
 LABEL_3:
 
     goto LABEL_10;
   }
 
-  v13 = [v7 isConditionOptionItem:v4];
+  v13 = [module2 isConditionOptionItem:itemCopy];
 
   if (v13)
   {
-    v14 = [(HUItemModuleController *)self module];
-    v15 = [v14 doesConditionOptionItemRequireInitialConfiguration:v4];
+    module5 = [(HUItemModuleController *)self module];
+    v15 = [module5 doesConditionOptionItemRequireInitialConfiguration:itemCopy];
 
     if (v15)
     {
-      [(HUTriggerConditionEditorItemModuleController *)self _presentDetailEditorForConditionOptionItem:v4];
+      [(HUTriggerConditionEditorItemModuleController *)self _presentDetailEditorForConditionOptionItem:itemCopy];
     }
 
     else
     {
-      v16 = [(HUItemModuleController *)self module];
-      v17 = [v16 conditionTypeForItem:v4];
+      module6 = [(HUItemModuleController *)self module];
+      v17 = [module6 conditionTypeForItem:itemCopy];
 
-      v18 = [(HUItemModuleController *)self module];
-      [v18 setSelectedConditionOptionItem:v4 forType:v17];
+      module7 = [(HUItemModuleController *)self module];
+      [module7 setSelectedConditionOptionItem:itemCopy forType:v17];
     }
 
-    v19 = [(HUTriggerConditionEditorItemModuleController *)self delegate];
+    delegate = [(HUTriggerConditionEditorItemModuleController *)self delegate];
     v20 = objc_opt_respondsToSelector();
 
     if (v20)
     {
-      v12 = [(HUTriggerConditionEditorItemModuleController *)self delegate];
-      v21 = [(HUItemModuleController *)self module];
-      v22 = [v21 conditionCollection];
-      [v12 conditionEditorModuleController:self didUpdateConditionCollection:v22];
+      module4 = [(HUTriggerConditionEditorItemModuleController *)self delegate];
+      module8 = [(HUItemModuleController *)self module];
+      conditionCollection = [module8 conditionCollection];
+      [module4 conditionEditorModuleController:self didUpdateConditionCollection:conditionCollection];
 
       goto LABEL_3;
     }
@@ -271,105 +271,105 @@ LABEL_10:
   return 0;
 }
 
-- (void)accessoryButtonTappedForItem:(id)a3
+- (void)accessoryButtonTappedForItem:(id)item
 {
-  v6 = a3;
-  v4 = [(HUItemModuleController *)self module];
-  v5 = [v4 isConditionOptionItem:v6];
+  itemCopy = item;
+  module = [(HUItemModuleController *)self module];
+  v5 = [module isConditionOptionItem:itemCopy];
 
   if (v5)
   {
-    [(HUTriggerConditionEditorItemModuleController *)self _presentDetailEditorForConditionOptionItem:v6];
+    [(HUTriggerConditionEditorItemModuleController *)self _presentDetailEditorForConditionOptionItem:itemCopy];
   }
 }
 
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on
 {
-  v4 = a4;
-  v15 = a3;
-  v6 = [(HUItemModuleController *)self module];
-  v7 = [v15 item];
-  v8 = [v6 isCustomConditionSwitchItem:v7];
+  onCopy = on;
+  cellCopy = cell;
+  module = [(HUItemModuleController *)self module];
+  item = [cellCopy item];
+  v8 = [module isCustomConditionSwitchItem:item];
 
   if (v8)
   {
-    v9 = [(HUItemModuleController *)self module];
-    v10 = [v15 item];
-    [v9 setCustomConditionEnabled:v4 forItem:v10];
+    module2 = [(HUItemModuleController *)self module];
+    item2 = [cellCopy item];
+    [module2 setCustomConditionEnabled:onCopy forItem:item2];
 
-    v11 = [(HUTriggerConditionEditorItemModuleController *)self delegate];
-    LOBYTE(v9) = objc_opt_respondsToSelector();
+    delegate = [(HUTriggerConditionEditorItemModuleController *)self delegate];
+    LOBYTE(module2) = objc_opt_respondsToSelector();
 
-    if (v9)
+    if (module2)
     {
-      v12 = [(HUTriggerConditionEditorItemModuleController *)self delegate];
-      v13 = [(HUItemModuleController *)self module];
-      v14 = [v13 conditionCollection];
-      [v12 conditionEditorModuleController:self didUpdateConditionCollection:v14];
+      delegate2 = [(HUTriggerConditionEditorItemModuleController *)self delegate];
+      module3 = [(HUItemModuleController *)self module];
+      conditionCollection = [module3 conditionCollection];
+      [delegate2 conditionEditorModuleController:self didUpdateConditionCollection:conditionCollection];
     }
   }
 }
 
-- (void)timeConditionEditor:(id)a3 didFinishWithCondition:(id)a4
+- (void)timeConditionEditor:(id)editor didFinishWithCondition:(id)condition
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [(HUItemModuleController *)self module];
-  v8 = [(HUTriggerConditionEditorItemModuleController *)self detailEditingContext];
-  v9 = [v8 optionItem];
-  [v7 updateCondition:v6 forOptionItem:v9];
+  editorCopy = editor;
+  conditionCopy = condition;
+  module = [(HUItemModuleController *)self module];
+  detailEditingContext = [(HUTriggerConditionEditorItemModuleController *)self detailEditingContext];
+  optionItem = [detailEditingContext optionItem];
+  [module updateCondition:conditionCopy forOptionItem:optionItem];
 
-  v10 = [(HUTriggerConditionEditorItemModuleController *)self delegate];
-  LOBYTE(v7) = objc_opt_respondsToSelector();
+  delegate = [(HUTriggerConditionEditorItemModuleController *)self delegate];
+  LOBYTE(module) = objc_opt_respondsToSelector();
 
-  if (v7)
+  if (module)
   {
-    v11 = [(HUTriggerConditionEditorItemModuleController *)self delegate];
-    v12 = [(HUItemModuleController *)self module];
-    v13 = [v12 conditionCollection];
-    [v11 conditionEditorModuleController:self didUpdateConditionCollection:v13];
+    delegate2 = [(HUTriggerConditionEditorItemModuleController *)self delegate];
+    module2 = [(HUItemModuleController *)self module];
+    conditionCollection = [module2 conditionCollection];
+    [delegate2 conditionEditorModuleController:self didUpdateConditionCollection:conditionCollection];
   }
 
-  [(HUTriggerConditionEditorItemModuleController *)self _dismissDetailEditor:v14];
+  [(HUTriggerConditionEditorItemModuleController *)self _dismissDetailEditor:editorCopy];
 }
 
-- (BOOL)_canEditConditionOptionItem:(id)a3
+- (BOOL)_canEditConditionOptionItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUItemModuleController *)self module];
-  v6 = [v5 conditionForOptionItem:v4];
+  itemCopy = item;
+  module = [(HUItemModuleController *)self module];
+  v6 = [module conditionForOptionItem:itemCopy];
 
   objc_opt_class();
-  LOBYTE(v5) = objc_opt_isKindOfClass();
+  LOBYTE(module) = objc_opt_isKindOfClass();
 
-  return v5 & 1;
+  return module & 1;
 }
 
-- (void)_dismissDetailEditor:(id)a3
+- (void)_dismissDetailEditor:(id)editor
 {
-  v10 = a3;
-  v4 = [(HUTriggerConditionEditorItemModuleController *)self detailEditingContext];
-  v5 = [v4 viewController];
+  editorCopy = editor;
+  detailEditingContext = [(HUTriggerConditionEditorItemModuleController *)self detailEditingContext];
+  viewController = [detailEditingContext viewController];
 
-  if (v5 != v10)
+  if (viewController != editorCopy)
   {
-    v6 = [(HUTriggerConditionEditorItemModuleController *)self detailEditingContext];
-    NSLog(&cfstr_UnrecognizedEd.isa, v10, v6);
+    detailEditingContext2 = [(HUTriggerConditionEditorItemModuleController *)self detailEditingContext];
+    NSLog(&cfstr_UnrecognizedEd.isa, editorCopy, detailEditingContext2);
   }
 
-  v7 = [(HUTriggerConditionEditorItemModuleController *)self delegate];
-  v8 = [(HUTriggerConditionEditorItemModuleController *)self detailEditingContext];
-  v9 = [v8 navigationController];
-  [v7 conditionEditorModuleController:self dismissDetailViewController:v9];
+  delegate = [(HUTriggerConditionEditorItemModuleController *)self delegate];
+  detailEditingContext3 = [(HUTriggerConditionEditorItemModuleController *)self detailEditingContext];
+  navigationController = [detailEditingContext3 navigationController];
+  [delegate conditionEditorModuleController:self dismissDetailViewController:navigationController];
 
   [(HUTriggerConditionEditorItemModuleController *)self setDetailEditingContext:0];
 }
 
-- (void)_presentDetailEditorForConditionOptionItem:(id)a3
+- (void)_presentDetailEditorForConditionOptionItem:(id)item
 {
-  v14 = a3;
-  v4 = [(HUItemModuleController *)self module];
-  v5 = [v4 conditionForOptionItem:v14];
+  itemCopy = item;
+  module = [(HUItemModuleController *)self module];
+  v5 = [module conditionForOptionItem:itemCopy];
 
   objc_opt_class();
   v6 = v5;
@@ -391,19 +391,19 @@ LABEL_10:
     v10 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v9];
     [v10 setModalPresentationStyle:2];
     v11 = objc_alloc_init(HUTriggerConditionDetailEditingContext);
-    [(HUTriggerConditionDetailEditingContext *)v11 setOptionItem:v14];
+    [(HUTriggerConditionDetailEditingContext *)v11 setOptionItem:itemCopy];
     [(HUTriggerConditionDetailEditingContext *)v11 setViewController:v9];
     [(HUTriggerConditionDetailEditingContext *)v11 setNavigationController:v10];
-    v12 = [(HUTriggerConditionEditorItemModuleController *)self detailEditingContext];
+    detailEditingContext = [(HUTriggerConditionEditorItemModuleController *)self detailEditingContext];
 
-    if (v12)
+    if (detailEditingContext)
     {
       NSLog(&cfstr_AlreadyHaveADe.isa);
     }
 
     [(HUTriggerConditionEditorItemModuleController *)self setDetailEditingContext:v11];
-    v13 = [(HUTriggerConditionEditorItemModuleController *)self delegate];
-    [v13 conditionEditorModuleController:self presentDetailViewController:v10];
+    delegate = [(HUTriggerConditionEditorItemModuleController *)self delegate];
+    [delegate conditionEditorModuleController:self presentDetailViewController:v10];
   }
 
   else

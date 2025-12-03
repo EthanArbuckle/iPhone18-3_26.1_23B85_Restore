@@ -1,25 +1,25 @@
 @interface KMMapper_PortraitEntity
 - (KMMapper_PortraitEntity)init;
-- (id)itemsFromExternalObject:(id)a3 additionalFields:(id)a4 error:(id *)a5;
+- (id)itemsFromExternalObject:(id)object additionalFields:(id)fields error:(id *)error;
 @end
 
 @implementation KMMapper_PortraitEntity
 
-- (id)itemsFromExternalObject:(id)a3 additionalFields:(id)a4 error:(id *)a5
+- (id)itemsFromExternalObject:(id)object additionalFields:(id)fields error:(id *)error
 {
   v27[1] = *MEMORY[0x277D85DE8];
   alternativeItemIdKey = self->_alternativeItemIdKey;
-  v9 = a3;
-  v10 = [a4 objectForKey:alternativeItemIdKey];
+  objectCopy = object;
+  v10 = [fields objectForKey:alternativeItemIdKey];
   builder = self->_builder;
   v26 = 0;
   v12 = [(KVItemBuilder *)builder setItemType:13 itemId:v10 error:&v26];
   v13 = v26;
-  v14 = [v9 item];
+  item = [objectCopy item];
 
-  v15 = [v14 name];
+  name = [item name];
 
-  if (![v15 length])
+  if (![name length])
   {
 LABEL_4:
     v19 = self->_builder;
@@ -35,7 +35,7 @@ LABEL_4:
 
     else
     {
-      KMMapperSetBuilderError(a5, v18);
+      KMMapperSetBuilderError(error, v18);
       v21 = 0;
     }
 
@@ -44,7 +44,7 @@ LABEL_4:
 
   v16 = self->_builder;
   v25 = v13;
-  v17 = [(KVItemBuilder *)v16 addFieldWithType:553 value:v15 error:&v25];
+  v17 = [(KVItemBuilder *)v16 addFieldWithType:553 value:name error:&v25];
   v18 = v25;
 
   if (v17)
@@ -53,7 +53,7 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  KMMapperSetBuilderError(a5, v18);
+  KMMapperSetBuilderError(error, v18);
   v21 = 0;
 LABEL_9:
 

@@ -1,42 +1,42 @@
 @interface PLSharedAssetsContainerIncrementalChangeContainer
-- (PLSharedAssetsContainerIncrementalChangeContainer)initWithAsset:(id)a3 change:(id)a4;
+- (PLSharedAssetsContainerIncrementalChangeContainer)initWithAsset:(id)asset change:(id)change;
 @end
 
 @implementation PLSharedAssetsContainerIncrementalChangeContainer
 
-- (PLSharedAssetsContainerIncrementalChangeContainer)initWithAsset:(id)a3 change:(id)a4
+- (PLSharedAssetsContainerIncrementalChangeContainer)initWithAsset:(id)asset change:(id)change
 {
-  v8 = a3;
-  v9 = a4;
+  assetCopy = asset;
+  changeCopy = change;
   v14.receiver = self;
   v14.super_class = PLSharedAssetsContainerIncrementalChangeContainer;
   v10 = [(PLSharedAssetsContainerIncrementalChangeContainer *)&v14 init];
   if (v10)
   {
-    if (v8)
+    if (assetCopy)
     {
-      if (v9)
+      if (changeCopy)
       {
 LABEL_4:
-        objc_storeStrong(&v10->_asset, a3);
-        objc_storeStrong(&v10->_change, a4);
+        objc_storeStrong(&v10->_asset, asset);
+        objc_storeStrong(&v10->_change, change);
         goto LABEL_5;
       }
     }
 
     else
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:v10 file:@"PLSharedAssetsContainer.m" lineNumber:352 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v10 file:@"PLSharedAssetsContainer.m" lineNumber:352 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
 
-      if (v9)
+      if (changeCopy)
       {
         goto LABEL_4;
       }
     }
 
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:v10 file:@"PLSharedAssetsContainer.m" lineNumber:353 description:{@"Invalid parameter not satisfying: %@", @"change"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:v10 file:@"PLSharedAssetsContainer.m" lineNumber:353 description:{@"Invalid parameter not satisfying: %@", @"change"}];
 
     goto LABEL_4;
   }

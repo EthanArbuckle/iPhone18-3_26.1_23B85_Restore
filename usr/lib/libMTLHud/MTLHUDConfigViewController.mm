@@ -1,16 +1,16 @@
 @interface MTLHUDConfigViewController
-- (void)addDescription:(id)a3;
-- (void)addEntry:(id)a3;
-- (void)addLink:(id)a3 andURL:(id)a4;
-- (void)addPanel:(id)a3;
-- (void)addSection:(id)a3;
+- (void)addDescription:(id)description;
+- (void)addEntry:(id)entry;
+- (void)addLink:(id)link andURL:(id)l;
+- (void)addPanel:(id)panel;
+- (void)addSection:(id)section;
 @end
 
 @implementation MTLHUDConfigViewController
 
-- (void)addPanel:(id)a3
+- (void)addPanel:(id)panel
 {
-  v7 = a3;
+  panelCopy = panel;
   if (!self->_panels)
   {
     v4 = objc_opt_new();
@@ -19,13 +19,13 @@
   }
 
   v6 = objc_opt_new();
-  [v6 setName:v7];
+  [v6 setName:panelCopy];
   [(NSMutableArray *)self->_panels addObject:v6];
 }
 
-- (void)addEntry:(id)a3
+- (void)addEntry:(id)entry
 {
-  v10 = a3;
+  entryCopy = entry;
   panels = self->_panels;
   if (!panels)
   {
@@ -39,32 +39,32 @@
     panels = self->_panels;
   }
 
-  v8 = [(NSMutableArray *)panels lastObject];
-  v9 = [v8 entries];
-  [v9 addObject:v10];
+  lastObject = [(NSMutableArray *)panels lastObject];
+  entries = [lastObject entries];
+  [entries addObject:entryCopy];
 }
 
-- (void)addSection:(id)a3
+- (void)addSection:(id)section
 {
-  v4 = a3;
-  v5 = [[MTLHUDConfigViewControllerSectionEntry alloc] initWithTitle:v4];
+  sectionCopy = section;
+  v5 = [[MTLHUDConfigViewControllerSectionEntry alloc] initWithTitle:sectionCopy];
 
   [(MTLHUDConfigViewController *)self addEntry:v5];
 }
 
-- (void)addDescription:(id)a3
+- (void)addDescription:(id)description
 {
-  v4 = a3;
-  v5 = [[MTLHUDConfigViewControllerMessageEntry alloc] initWithMessage:v4 color:1];
+  descriptionCopy = description;
+  v5 = [[MTLHUDConfigViewControllerMessageEntry alloc] initWithMessage:descriptionCopy color:1];
 
   [(MTLHUDConfigViewController *)self addEntry:v5];
 }
 
-- (void)addLink:(id)a3 andURL:(id)a4
+- (void)addLink:(id)link andURL:(id)l
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[MTLHUDConfigViewControllerLinkEntry alloc] initWithTitle:v7 andURL:v6];
+  lCopy = l;
+  linkCopy = link;
+  v8 = [[MTLHUDConfigViewControllerLinkEntry alloc] initWithTitle:linkCopy andURL:lCopy];
 
   [(MTLHUDConfigViewController *)self addEntry:v8];
 }

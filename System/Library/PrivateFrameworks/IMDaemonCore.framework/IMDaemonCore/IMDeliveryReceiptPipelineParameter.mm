@@ -1,58 +1,58 @@
 @interface IMDeliveryReceiptPipelineParameter
-- (IMDeliveryReceiptPipelineParameter)initWithBD:(id)a3 idsTrustedData:(id)a4;
+- (IMDeliveryReceiptPipelineParameter)initWithBD:(id)d idsTrustedData:(id)data;
 - (id)description;
 @end
 
 @implementation IMDeliveryReceiptPipelineParameter
 
-- (IMDeliveryReceiptPipelineParameter)initWithBD:(id)a3 idsTrustedData:(id)a4
+- (IMDeliveryReceiptPipelineParameter)initWithBD:(id)d idsTrustedData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  dataCopy = data;
   v26.receiver = self;
   v26.super_class = IMDeliveryReceiptPipelineParameter;
   v8 = [(IMDeliveryReceiptPipelineParameter *)&v26 init];
   if (v8)
   {
-    v9 = [v6 metadata];
-    v10 = [v9 messageGUID];
-    v11 = [v10 UUIDString];
+    metadata = [dCopy metadata];
+    messageGUID = [metadata messageGUID];
+    uUIDString = [messageGUID UUIDString];
 
-    v12 = [v9 timestamp];
-    [(IMDeliveryReceiptPipelineParameter *)v8 setGUID:v11];
-    v13 = [v9 has_timestamp];
+    timestamp = [metadata timestamp];
+    [(IMDeliveryReceiptPipelineParameter *)v8 setGUID:uUIDString];
+    has_timestamp = [metadata has_timestamp];
     v14 = MEMORY[0x277CCABB0];
-    if (v13)
+    if (has_timestamp)
     {
-      v15 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v12];
-      [(IMDeliveryReceiptPipelineParameter *)v8 setTimestamp:v15];
+      date = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:timestamp];
+      [(IMDeliveryReceiptPipelineParameter *)v8 setTimestamp:date];
     }
 
     else
     {
-      v15 = [MEMORY[0x277CBEAA8] date];
-      [v15 timeIntervalSince1970];
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSince1970];
       v16 = [v14 numberWithDouble:?];
       [(IMDeliveryReceiptPipelineParameter *)v8 setTimestamp:v16];
     }
 
-    v17 = [v9 storageContext];
-    -[IMDeliveryReceiptPipelineParameter setIsFromStorage:](v8, "setIsFromStorage:", [v17 isFromStorage]);
+    storageContext = [metadata storageContext];
+    -[IMDeliveryReceiptPipelineParameter setIsFromStorage:](v8, "setIsFromStorage:", [storageContext isFromStorage]);
 
-    v18 = [v9 storageContext];
-    -[IMDeliveryReceiptPipelineParameter setIsLastFromStorage:](v8, "setIsLastFromStorage:", [v18 isLastFromStorage]);
+    storageContext2 = [metadata storageContext];
+    -[IMDeliveryReceiptPipelineParameter setIsLastFromStorage:](v8, "setIsLastFromStorage:", [storageContext2 isLastFromStorage]);
 
-    v19 = [v7 batchContext];
+    batchContext = [dataCopy batchContext];
     batchContext = v8->_batchContext;
-    v8->_batchContext = v19;
+    v8->_batchContext = batchContext;
 
-    v21 = [v7 fromIdentifier];
+    fromIdentifier = [dataCopy fromIdentifier];
     fromIdentifier = v8->_fromIdentifier;
-    v8->_fromIdentifier = v21;
+    v8->_fromIdentifier = fromIdentifier;
 
-    v23 = [v7 toIdentifier];
+    toIdentifier = [dataCopy toIdentifier];
     toIdentifier = v8->_toIdentifier;
-    v8->_toIdentifier = v23;
+    v8->_toIdentifier = toIdentifier;
   }
 
   return v8;
@@ -61,12 +61,12 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(IMDeliveryReceiptPipelineParameter *)self GUID];
-  v5 = [(IMDeliveryReceiptPipelineParameter *)self timestamp];
+  gUID = [(IMDeliveryReceiptPipelineParameter *)self GUID];
+  timestamp = [(IMDeliveryReceiptPipelineParameter *)self timestamp];
   v6 = [MEMORY[0x277CCABB0] numberWithBool:{-[IMDeliveryReceiptPipelineParameter isFromStorage](self, "isFromStorage")}];
   v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[IMDeliveryReceiptPipelineParameter isLastFromStorage](self, "isLastFromStorage")}];
-  v8 = [(IMDeliveryReceiptPipelineParameter *)self messageItems];
-  v9 = [v3 stringWithFormat:@"<IMDeliveryReceiptPipelineParameter %p> { guid: %@, timestamp: %@, isFromStorage: %@, isLastFromStorage: %@, output messageItems: %lu}", self, v4, v5, v6, v7, objc_msgSend(v8, "count")];
+  messageItems = [(IMDeliveryReceiptPipelineParameter *)self messageItems];
+  v9 = [v3 stringWithFormat:@"<IMDeliveryReceiptPipelineParameter %p> { guid: %@, timestamp: %@, isFromStorage: %@, isLastFromStorage: %@, output messageItems: %lu}", self, gUID, timestamp, v6, v7, objc_msgSend(messageItems, "count")];
 
   return v9;
 }

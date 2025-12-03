@@ -1,37 +1,37 @@
 @interface WFLoggerFile
-- (WFLoggerFile)initWithDirectoryPath:(id)a3 dirPath:(__CFString *)a4 fileNamePrefix:(__CFString *)a5 runLoopRef:(__CFRunLoop *)a6 runLoopMode:(__CFString *)a7 classC:(unsigned __int8)a8 dateFormatter:(__CFDateFormatter *)a9 maxFileSizeInMB:(unint64_t)a10 logLifespanInDays:(unint64_t)a11 dispatchQueue:(id)a12;
+- (WFLoggerFile)initWithDirectoryPath:(id)path dirPath:(__CFString *)dirPath fileNamePrefix:(__CFString *)prefix runLoopRef:(__CFRunLoop *)ref runLoopMode:(__CFString *)mode classC:(unsigned __int8)c dateFormatter:(__CFDateFormatter *)formatter maxFileSizeInMB:(unint64_t)self0 logLifespanInDays:(unint64_t)self1 dispatchQueue:(id)self2;
 - (__CFString)createDateString;
 - (__CFString)generateLogFileName;
-- (id)mapLogLevelEnum:(unint64_t)a3;
+- (id)mapLogLevelEnum:(unint64_t)enum;
 - (unint64_t)getLogLevelPersist;
-- (unsigned)checkLogFileUpdate:(__CFString *)a3;
-- (unsigned)doesLogFileExist:(__CFString *)a3;
-- (void)WFLog:(unint64_t)a3 privacy:(unint64_t)a4 message:(const char *)a5 valist:(char *)a6;
+- (unsigned)checkLogFileUpdate:(__CFString *)update;
+- (unsigned)doesLogFileExist:(__CFString *)exist;
+- (void)WFLog:(unint64_t)log privacy:(unint64_t)privacy message:(const char *)message valist:(char *)valist;
 - (void)cleanStaleLogs;
 - (void)createDateString;
-- (void)createLogFile:(__CFString *)a3 fileClassC:(unsigned __int8)a4;
+- (void)createLogFile:(__CFString *)file fileClassC:(unsigned __int8)c;
 - (void)dealloc;
 - (void)generateLogFileName;
-- (void)init:(id)a3 runLoopRef:(__CFRunLoop *)a4 runLoopMode:(__CFString *)a5 classC:(unsigned __int8)a6 dateFormatter:(__CFDateFormatter *)a7 maxFileSizeInMB:(unint64_t)a8 logLifespanInDays:(unint64_t)a9;
-- (void)removeLogFile:(const char *)a3 maxAge:(double)a4;
-- (void)removeLogFilesFromDir:(const char *)a3;
-- (void)rotateLogFile:(__CFString *)a3;
-- (void)schedule:(unsigned __int8)a3;
-- (void)setLogLevelEnable:(unint64_t)a3;
-- (void)setLogLevelPersist:(unint64_t)a3;
-- (void)setLogLifespanInDays:(id)a3;
-- (void)setLogPrivacy:(unint64_t)a3;
-- (void)setMaxFileSizeInMB:(unint64_t)a3;
+- (void)init:(id)init runLoopRef:(__CFRunLoop *)ref runLoopMode:(__CFString *)mode classC:(unsigned __int8)c dateFormatter:(__CFDateFormatter *)formatter maxFileSizeInMB:(unint64_t)b logLifespanInDays:(unint64_t)days;
+- (void)removeLogFile:(const char *)file maxAge:(double)age;
+- (void)removeLogFilesFromDir:(const char *)dir;
+- (void)rotateLogFile:(__CFString *)file;
+- (void)schedule:(unsigned __int8)schedule;
+- (void)setLogLevelEnable:(unint64_t)enable;
+- (void)setLogLevelPersist:(unint64_t)persist;
+- (void)setLogLifespanInDays:(id)days;
+- (void)setLogPrivacy:(unint64_t)privacy;
+- (void)setMaxFileSizeInMB:(unint64_t)b;
 - (void)startWatchingLogFile;
 - (void)stopWatchingLogFile;
-- (void)writeToFile:(unint64_t)a3 cfStrMsg:(__CFString *)a4;
+- (void)writeToFile:(unint64_t)file cfStrMsg:(__CFString *)msg;
 @end
 
 @implementation WFLoggerFile
 
-- (id)mapLogLevelEnum:(unint64_t)a3
+- (id)mapLogLevelEnum:(unint64_t)enum
 {
-  if (a3 == 4)
+  if (enum == 4)
   {
     return @"ERROR";
   }
@@ -42,14 +42,14 @@
   }
 }
 
-- (void)WFLog:(unint64_t)a3 privacy:(unint64_t)a4 message:(const char *)a5 valist:(char *)a6
+- (void)WFLog:(unint64_t)log privacy:(unint64_t)privacy message:(const char *)message valist:(char *)valist
 {
-  v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:a5];
-  v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v9 arguments:a6];
-  [(WFLoggerFile *)self writeToFile:a3 cfStrMsg:v10];
+  v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:message];
+  v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v9 arguments:valist];
+  [(WFLoggerFile *)self writeToFile:log cfStrMsg:v10];
 }
 
-- (void)writeToFile:(unint64_t)a3 cfStrMsg:(__CFString *)a4
+- (void)writeToFile:(unint64_t)file cfStrMsg:(__CFString *)msg
 {
   v10 = *MEMORY[0x277D85DE8];
   if (self->_filePtr)
@@ -65,7 +65,7 @@
     }
 
     v5 = objc_autoreleasePoolPush();
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", a4];
+    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", msg];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
@@ -153,32 +153,32 @@ void __37__WFLoggerFile_writeToFile_cfStrMsg___block_invoke()
   [(WFLoggerFile *)&v10 dealloc];
 }
 
-- (WFLoggerFile)initWithDirectoryPath:(id)a3 dirPath:(__CFString *)a4 fileNamePrefix:(__CFString *)a5 runLoopRef:(__CFRunLoop *)a6 runLoopMode:(__CFString *)a7 classC:(unsigned __int8)a8 dateFormatter:(__CFDateFormatter *)a9 maxFileSizeInMB:(unint64_t)a10 logLifespanInDays:(unint64_t)a11 dispatchQueue:(id)a12
+- (WFLoggerFile)initWithDirectoryPath:(id)path dirPath:(__CFString *)dirPath fileNamePrefix:(__CFString *)prefix runLoopRef:(__CFRunLoop *)ref runLoopMode:(__CFString *)mode classC:(unsigned __int8)c dateFormatter:(__CFDateFormatter *)formatter maxFileSizeInMB:(unint64_t)self0 logLifespanInDays:(unint64_t)self1 dispatchQueue:(id)self2
 {
-  v12 = a8;
+  cCopy = c;
   v28 = *MEMORY[0x277D85DE8];
   v25.receiver = self;
   v25.super_class = WFLoggerFile;
   v18 = [(WFLoggerFile *)&v25 init];
   v19 = v18;
-  if (a9 && a7 && a6 && a5 && a4 && a3 && v18)
+  if (formatter && mode && ref && prefix && dirPath && path && v18)
   {
     v18->_presetFilePath = 0;
     v20 = *MEMORY[0x277CBECE8];
-    v18->_directoryPath = CFStringCreateCopy(*MEMORY[0x277CBECE8], a4);
-    v19->_fileNamePrefix = CFStringCreateCopy(v20, a5);
-    v19->super._dispatchQueue = a12;
-    [(WFLoggerFile *)v19 init:a3 runLoopRef:a6 runLoopMode:a7 classC:v12 dateFormatter:a9 maxFileSizeInMB:a10 logLifespanInDays:a11];
+    v18->_directoryPath = CFStringCreateCopy(*MEMORY[0x277CBECE8], dirPath);
+    v19->_fileNamePrefix = CFStringCreateCopy(v20, prefix);
+    v19->super._dispatchQueue = queue;
+    [(WFLoggerFile *)v19 init:path runLoopRef:ref runLoopMode:mode classC:cCopy dateFormatter:formatter maxFileSizeInMB:b logLifespanInDays:days];
   }
 
   else
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s: Failed to init: %p %p %p %p %p %p %p", "-[WFLoggerFile initWithDirectoryPath:dirPath:fileNamePrefix:runLoopRef:runLoopMode:classC:dateFormatter:maxFileSizeInMB:logLifespanInDays:dispatchQueue:]", v19, a3, a4, a5, a6, a7, a9];
+    formatter = [MEMORY[0x277CCACA8] stringWithFormat:@"%s: Failed to init: %p %p %p %p %p %p %p", "-[WFLoggerFile initWithDirectoryPath:dirPath:fileNamePrefix:runLoopRef:runLoopMode:classC:dateFormatter:maxFileSizeInMB:logLifespanInDays:dispatchQueue:]", v19, path, dirPath, prefix, ref, mode, formatter];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v27 = v22;
+      v27 = formatter;
       _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@", buf, 0xCu);
     }
 
@@ -191,29 +191,29 @@ void __37__WFLoggerFile_writeToFile_cfStrMsg___block_invoke()
   return v19;
 }
 
-- (void)init:(id)a3 runLoopRef:(__CFRunLoop *)a4 runLoopMode:(__CFString *)a5 classC:(unsigned __int8)a6 dateFormatter:(__CFDateFormatter *)a7 maxFileSizeInMB:(unint64_t)a8 logLifespanInDays:(unint64_t)a9
+- (void)init:(id)init runLoopRef:(__CFRunLoop *)ref runLoopMode:(__CFString *)mode classC:(unsigned __int8)c dateFormatter:(__CFDateFormatter *)formatter maxFileSizeInMB:(unint64_t)b logLifespanInDays:(unint64_t)days
 {
   v23 = *MEMORY[0x277D85DE8];
-  self->super._ctxt = a3;
-  self->_runLoopRef = a4;
-  self->_runLoopMode = a5;
-  self->_classC = a6;
+  self->super._ctxt = init;
+  self->_runLoopRef = ref;
+  self->_runLoopMode = mode;
+  self->_classC = c;
   self->_privacy = 2;
   self->_level = 3;
   self->_fileCreationDate = 0;
-  self->_dateFormatter = a7;
-  self->_logLifespanInDays = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a9];
+  self->_dateFormatter = formatter;
+  self->_logLifespanInDays = [MEMORY[0x277CCABB0] numberWithUnsignedLong:days];
   v11 = 5000000;
-  if (a8 - 6 >= 0xFFFFFFFFFFFFFFFBLL)
+  if (b - 6 >= 0xFFFFFFFFFFFFFFFBLL)
   {
-    v11 = 1000000 * a8;
+    v11 = 1000000 * b;
   }
 
   self->_maxFileSizeInBytes = v11;
   self->_timerInterval = 600;
-  v12 = [(NSNumber *)self->_logLifespanInDays unsignedLongValue];
-  self->_fileAgeOutInterval = 86400 * v12;
-  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s: _timerInterval %lu  _fileAgeOutInterval %lu", "-[WFLoggerFile init:runLoopRef:runLoopMode:classC:dateFormatter:maxFileSizeInMB:logLifespanInDays:]", self->_timerInterval, 86400 * v12];
+  unsignedLongValue = [(NSNumber *)self->_logLifespanInDays unsignedLongValue];
+  self->_fileAgeOutInterval = 86400 * unsignedLongValue;
+  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s: _timerInterval %lu  _fileAgeOutInterval %lu", "-[WFLoggerFile init:runLoopRef:runLoopMode:classC:dateFormatter:maxFileSizeInMB:logLifespanInDays:]", self->_timerInterval, 86400 * unsignedLongValue];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446210;
@@ -260,10 +260,10 @@ void __37__WFLoggerFile_writeToFile_cfStrMsg___block_invoke()
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)schedule:(unsigned __int8)a3
+- (void)schedule:(unsigned __int8)schedule
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (schedule)
   {
     if (!self->_loggingTimerStarted)
     {
@@ -317,11 +317,11 @@ void __37__WFLoggerFile_writeToFile_cfStrMsg___block_invoke()
 
 - (__CFString)generateLogFileName
 {
-  v3 = [(WFLoggerFile *)self createDateString];
-  v4 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%s/%s-%@%s", [(__CFString *)self->_directoryPath UTF8String], [(__CFString *)self->_fileNamePrefix UTF8String], v3, ".log");
-  if (v3)
+  createDateString = [(WFLoggerFile *)self createDateString];
+  v4 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%s/%s-%@%s", [(__CFString *)self->_directoryPath UTF8String], [(__CFString *)self->_fileNamePrefix UTF8String], createDateString, ".log");
+  if (createDateString)
   {
-    CFRelease(v3);
+    CFRelease(createDateString);
   }
 
   if (!v4)
@@ -396,33 +396,33 @@ void __36__WFLoggerFile_startWatchingLogFile__block_invoke(uint64_t a1)
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (unsigned)checkLogFileUpdate:(__CFString *)a3
+- (unsigned)checkLogFileUpdate:(__CFString *)update
 {
   v19 = *MEMORY[0x277D85DE8];
   v5 = objc_autoreleasePoolPush();
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v7 = 1;
-  if (a3)
+  if (update)
   {
     if (self->_fileCreationDate)
     {
-      v8 = v6;
-      if ([(WFLoggerFile *)self doesLogFileExist:a3])
+      v8 = defaultManager;
+      if ([(WFLoggerFile *)self doesLogFileExist:update])
       {
-        v9 = [objc_msgSend(v8 attributesOfItemAtPath:a3 error:{0), "fileSize"}];
+        v9 = [objc_msgSend(v8 attributesOfItemAtPath:update error:{0), "fileSize"}];
         if (v9 >= 0x4C4B41)
         {
-          v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s File Size: %llu File path is %@", "-[WFLoggerFile checkLogFileUpdate:]", v9, a3];
+          update = [MEMORY[0x277CCACA8] stringWithFormat:@"%s File Size: %llu File path is %@", "-[WFLoggerFile checkLogFileUpdate:]", v9, update];
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
           {
             *buf = 136446210;
-            v18 = [objc_msgSend(MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v10, "UTF8String")), "UTF8String"];
+            v18 = [objc_msgSend(MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(update, "UTF8String")), "UTF8String"];
             _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}s", buf, 0xCu);
           }
         }
 
         v11 = objc_autoreleasePoolPush();
-        v12 = [objc_msgSend(v8 attributesOfItemAtPath:a3 error:{0), "fileCreationDate"}];
+        v12 = [objc_msgSend(v8 attributesOfItemAtPath:update error:{0), "fileCreationDate"}];
         [objc_msgSend(MEMORY[0x277CBEAA8] "date")];
         v7 = v13 >= (86400 * [(NSNumber *)self->_logLifespanInDays unsignedIntValue]) || v9 > 0x4C4B40;
         objc_autoreleasePoolPop(v11);
@@ -437,21 +437,21 @@ void __36__WFLoggerFile_startWatchingLogFile__block_invoke(uint64_t a1)
 
 - (void)cleanStaleLogs
 {
-  v3 = [(__CFString *)self->_directoryPath UTF8String];
+  uTF8String = [(__CFString *)self->_directoryPath UTF8String];
 
-  [(WFLoggerFile *)self removeLogFilesFromDir:v3];
+  [(WFLoggerFile *)self removeLogFilesFromDir:uTF8String];
 }
 
-- (void)removeLogFilesFromDir:(const char *)a3
+- (void)removeLogFilesFromDir:(const char *)dir
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = opendir(a3);
+  v5 = opendir(dir);
   if (v5)
   {
     v6 = v5;
     for (i = readdir(v5); i; i = readdir(v6))
     {
-      snprintf(__str, 0x100uLL, "%s/%s", a3, i->d_name);
+      snprintf(__str, 0x100uLL, "%s/%s", dir, i->d_name);
       if (strstr(__str, ".log"))
       {
         [(WFLoggerFile *)self removeLogFile:__str maxAge:self->_fileAgeOutInterval];
@@ -463,7 +463,7 @@ void __36__WFLoggerFile_startWatchingLogFile__block_invoke(uint64_t a1)
 
   else
   {
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s: Can't open %s", "-[WFLoggerFile removeLogFilesFromDir:]", a3];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s: Can't open %s", "-[WFLoggerFile removeLogFilesFromDir:]", dir];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       *__str = 136446210;
@@ -475,9 +475,9 @@ void __36__WFLoggerFile_startWatchingLogFile__block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createLogFile:(__CFString *)a3 fileClassC:(unsigned __int8)a4
+- (void)createLogFile:(__CFString *)file fileClassC:(unsigned __int8)c
 {
-  v4 = a4;
+  cCopy = c;
   v41 = *MEMORY[0x277D85DE8];
   memset(&v30, 0, sizeof(v30));
   v39 = 0u;
@@ -489,10 +489,10 @@ void __36__WFLoggerFile_startWatchingLogFile__block_invoke(uint64_t a1)
   *v33 = 0u;
   v34 = 0u;
   v7 = objc_autoreleasePoolPush();
-  v8 = [(__CFString *)a3 stringByDeletingLastPathComponent];
-  if ([(__CFString *)v8 UTF8String])
+  stringByDeletingLastPathComponent = [(__CFString *)file stringByDeletingLastPathComponent];
+  if ([(__CFString *)stringByDeletingLastPathComponent UTF8String])
   {
-    [(__CFString *)v8 UTF8String];
+    [(__CFString *)stringByDeletingLastPathComponent UTF8String];
     __strlcpy_chk();
   }
 
@@ -504,7 +504,7 @@ void __36__WFLoggerFile_startWatchingLogFile__block_invoke(uint64_t a1)
   }
 
   v10 = *MEMORY[0x277CBECE8];
-  self->_directoryPath = CFStringCreateCopy(*MEMORY[0x277CBECE8], v8);
+  self->_directoryPath = CFStringCreateCopy(*MEMORY[0x277CBECE8], stringByDeletingLastPathComponent);
   objc_autoreleasePoolPop(v7);
   if (!v33[0] || stat(v33, &v30) != -1)
   {
@@ -525,15 +525,15 @@ void __36__WFLoggerFile_startWatchingLogFile__block_invoke(uint64_t a1)
 
     v11 = 1;
 LABEL_8:
-    MaximumSizeOfFileSystemRepresentation = CFStringGetMaximumSizeOfFileSystemRepresentation(a3);
+    MaximumSizeOfFileSystemRepresentation = CFStringGetMaximumSizeOfFileSystemRepresentation(file);
     v13 = malloc_type_calloc(1uLL, MaximumSizeOfFileSystemRepresentation, 0x100004077774924uLL);
-    CFStringGetFileSystemRepresentation(a3, v13, MaximumSizeOfFileSystemRepresentation);
-    if (!v4 || !self->_isFileLoggingEnabled && MKBUserUnlockedSinceBoot())
+    CFStringGetFileSystemRepresentation(file, v13, MaximumSizeOfFileSystemRepresentation);
+    if (!cCopy || !self->_isFileLoggingEnabled && MKBUserUnlockedSinceBoot())
     {
       logFilePath = self->_logFilePath;
-      if (!logFilePath || (!CFEqual(a3, logFilePath) ? (v15 = 1) : (v15 = v11), (v15 & 1) != 0 || !self->_filePtr))
+      if (!logFilePath || (!CFEqual(file, logFilePath) ? (v15 = 1) : (v15 = v11), (v15 & 1) != 0 || !self->_filePtr))
       {
-        if (v4)
+        if (cCopy)
         {
           v16 = open_dprotected_np(v13, 514, 3, 0, 384);
           if (v16 < 0)
@@ -593,7 +593,7 @@ LABEL_28:
               self->_logFilePath = 0;
             }
 
-            self->_logFilePath = CFStringCreateCopy(v10, a3);
+            self->_logFilePath = CFStringCreateCopy(v10, file);
             [(WFLoggerFile *)self stopWatchingLogFile];
             [(WFLoggerFile *)self startWatchingLogFile];
             v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s: fileCreationDate %@", "-[WFLoggerFile createLogFile:fileClassC:]", self->_fileCreationDate];
@@ -636,22 +636,22 @@ LABEL_36:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeLogFile:(const char *)a3 maxAge:(double)a4
+- (void)removeLogFile:(const char *)file maxAge:(double)age
 {
   memset(&v8, 0, sizeof(v8));
-  if (!stat(a3, &v8))
+  if (!stat(file, &v8))
   {
     v6 = time(0);
-    if (difftime(v6, v8.st_mtimespec.tv_sec) > a4)
+    if (difftime(v6, v8.st_mtimespec.tv_sec) > age)
     {
-      remove(a3, v7);
+      remove(file, v7);
     }
   }
 }
 
-- (unsigned)doesLogFileExist:(__CFString *)a3
+- (unsigned)doesLogFileExist:(__CFString *)exist
 {
-  MaximumSizeOfFileSystemRepresentation = CFStringGetMaximumSizeOfFileSystemRepresentation(a3);
+  MaximumSizeOfFileSystemRepresentation = CFStringGetMaximumSizeOfFileSystemRepresentation(exist);
   v5 = malloc_type_calloc(1uLL, MaximumSizeOfFileSystemRepresentation, 0x100004077774924uLL);
   if (!v5)
   {
@@ -659,25 +659,25 @@ LABEL_36:
   }
 
   v6 = v5;
-  CFStringGetFileSystemRepresentation(a3, v5, MaximumSizeOfFileSystemRepresentation);
+  CFStringGetFileSystemRepresentation(exist, v5, MaximumSizeOfFileSystemRepresentation);
   memset(&v9, 0, sizeof(v9));
   v7 = stat(v6, &v9) == 0;
   free(v6);
   return v7;
 }
 
-- (void)rotateLogFile:(__CFString *)a3
+- (void)rotateLogFile:(__CFString *)file
 {
   v38 = *MEMORY[0x277D85DE8];
   maxFileSizeInBytes = self->_maxFileSizeInBytes;
   memset(&v35, 0, sizeof(v35));
   isFileLoggingEnabled = self->_isFileLoggingEnabled;
-  MaximumSizeOfFileSystemRepresentation = CFStringGetMaximumSizeOfFileSystemRepresentation(a3);
+  MaximumSizeOfFileSystemRepresentation = CFStringGetMaximumSizeOfFileSystemRepresentation(file);
   v8 = malloc_type_calloc(1uLL, MaximumSizeOfFileSystemRepresentation, 0x100004077774924uLL);
   if (v8)
   {
     v9 = v8;
-    CFStringGetFileSystemRepresentation(a3, v8, MaximumSizeOfFileSystemRepresentation);
+    CFStringGetFileSystemRepresentation(file, v8, MaximumSizeOfFileSystemRepresentation);
     if (stat(v9, &v35))
     {
       v10 = MEMORY[0x277CCACA8];
@@ -816,7 +816,7 @@ LABEL_8:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setMaxFileSizeInMB:(unint64_t)a3
+- (void)setMaxFileSizeInMB:(unint64_t)b
 {
   v7 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s not applicable", "-[WFLoggerFile setMaxFileSizeInMB:]"];
@@ -830,7 +830,7 @@ LABEL_8:
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLogLifespanInDays:(id)a3
+- (void)setLogLifespanInDays:(id)days
 {
   v7 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s not applicable", "-[WFLoggerFile setLogLifespanInDays:]"];
@@ -844,7 +844,7 @@ LABEL_8:
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLogPrivacy:(unint64_t)a3
+- (void)setLogPrivacy:(unint64_t)privacy
 {
   v7 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s not applicable", "-[WFLoggerFile setLogPrivacy:]"];
@@ -858,7 +858,7 @@ LABEL_8:
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLogLevelEnable:(unint64_t)a3
+- (void)setLogLevelEnable:(unint64_t)enable
 {
   v7 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s not applicable", "-[WFLoggerFile setLogLevelEnable:]"];
@@ -872,7 +872,7 @@ LABEL_8:
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLogLevelPersist:(unint64_t)a3
+- (void)setLogLevelPersist:(unint64_t)persist
 {
   v7 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s not applicable", "-[WFLoggerFile setLogLevelPersist:]"];
@@ -908,13 +908,13 @@ LABEL_8:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v3 = MEMORY[0x277CCACA8];
-    v10 = [v2 UTF8String];
+    uTF8String = [v2 UTF8String];
     [objc_msgSend(v3 stringWithFormat:@"[WiFiPolicy] %s", "UTF8String"];
     OUTLINED_FUNCTION_2_0();
-    OUTLINED_FUNCTION_1_1(&dword_2332D7000, MEMORY[0x277D86220], v4, "%{public}s", v5, v6, v7, v8, v10, v11, v12);
+    OUTLINED_FUNCTION_1_1(&dword_2332D7000, MEMORY[0x277D86220], v4, "%{public}s", v5, v6, v7, v8, uTF8String, v11, v12);
   }
 
-  *a1 = 0;
+  *self = 0;
   v9 = *MEMORY[0x277D85DE8];
 }
 

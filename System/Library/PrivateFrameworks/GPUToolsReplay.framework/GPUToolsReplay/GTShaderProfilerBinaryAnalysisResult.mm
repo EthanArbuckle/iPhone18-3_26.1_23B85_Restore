@@ -1,8 +1,8 @@
 @interface GTShaderProfilerBinaryAnalysisResult
-+ (id)createWithAnalysisResult:(const void *)a3;
-+ (id)dataFromArchivedDataURL:(id)a3;
++ (id)createWithAnalysisResult:(const void *)result;
++ (id)dataFromArchivedDataURL:(id)l;
 - (GTShaderProfilerBinaryAnalysisResult)init;
-- (GTShaderProfilerBinaryAnalysisResult)initWithCoder:(id)a3;
+- (GTShaderProfilerBinaryAnalysisResult)initWithCoder:(id)coder;
 - (const)binaryLocations;
 - (const)binaryRanges;
 - (const)branchTargets;
@@ -16,7 +16,7 @@
 - (const)lastRegisterInfo;
 - (const)registerInfo;
 - (id).cxx_construct;
-- (id)stringAtIndex:(unint64_t)a3;
+- (id)stringAtIndex:(unint64_t)index;
 - (unint64_t)binaryLocationCount;
 - (unint64_t)binaryRangeCount;
 - (unint64_t)branchTargetCount;
@@ -24,10 +24,10 @@
 - (unint64_t)instructionCount;
 - (unint64_t)maxOffset;
 - (unint64_t)registerInfoCount;
-- (unint64_t)registerInfoOffsetForInstructionIndex:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setInstructionData:(id)a3;
-- (void)setRegisterInfoData:(id)a3;
+- (unint64_t)registerInfoOffsetForInstructionIndex:(unint64_t)index;
+- (void)encodeWithCoder:(id)coder;
+- (void)setInstructionData:(id)data;
+- (void)setRegisterInfoData:(id)data;
 @end
 
 @implementation GTShaderProfilerBinaryAnalysisResult
@@ -56,22 +56,22 @@
   return self;
 }
 
-- (unint64_t)registerInfoOffsetForInstructionIndex:(unint64_t)a3
+- (unint64_t)registerInfoOffsetForInstructionIndex:(unint64_t)index
 {
-  if ([(GTShaderProfilerBinaryAnalysisResult *)self instructionCount]<= a3)
+  if ([(GTShaderProfilerBinaryAnalysisResult *)self instructionCount]<= index)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
   begin = self->_registerOffsets.__begin_;
-  if (a3 >= self->_registerOffsets.__end_ - begin)
+  if (index >= self->_registerOffsets.__end_ - begin)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    return begin[a3];
+    return begin[index];
   }
 }
 
@@ -87,52 +87,52 @@
   return result;
 }
 
-- (void)setRegisterInfoData:(id)a3
+- (void)setRegisterInfoData:(id)data
 {
-  v7 = a3;
-  objc_storeStrong(&self->_registerInfoData, a3);
+  dataCopy = data;
+  objc_storeStrong(&self->_registerInfoData, data);
   if (self->_instructionData)
   {
     self->_registerOffsets.__end_ = self->_registerOffsets.__begin_;
     v8 = 0;
-    v5 = [(GTShaderProfilerBinaryAnalysisResult *)self instructions];
-    if (v5 < [(GTShaderProfilerBinaryAnalysisResult *)self lastInstruction])
+    instructions = [(GTShaderProfilerBinaryAnalysisResult *)self instructions];
+    if (instructions < [(GTShaderProfilerBinaryAnalysisResult *)self lastInstruction])
     {
       v6 = 0;
       do
       {
         std::vector<unsigned long>::push_back[abi:nn200100](&self->_registerOffsets, &v8);
-        v6 += v5->var7;
+        v6 += instructions->var7;
         v8 = v6;
-        v5 = (v5 + 36);
+        instructions = (instructions + 36);
       }
 
-      while (v5 < [(GTShaderProfilerBinaryAnalysisResult *)self lastInstruction]);
+      while (instructions < [(GTShaderProfilerBinaryAnalysisResult *)self lastInstruction]);
     }
   }
 }
 
-- (void)setInstructionData:(id)a3
+- (void)setInstructionData:(id)data
 {
-  v7 = a3;
-  objc_storeStrong(&self->_instructionData, a3);
+  dataCopy = data;
+  objc_storeStrong(&self->_instructionData, data);
   if (self->_registerInfoData)
   {
     self->_registerOffsets.__end_ = self->_registerOffsets.__begin_;
     v8 = 0;
-    v5 = [(GTShaderProfilerBinaryAnalysisResult *)self instructions];
-    if (v5 < [(GTShaderProfilerBinaryAnalysisResult *)self lastInstruction])
+    instructions = [(GTShaderProfilerBinaryAnalysisResult *)self instructions];
+    if (instructions < [(GTShaderProfilerBinaryAnalysisResult *)self lastInstruction])
     {
       v6 = 0;
       do
       {
         std::vector<unsigned long>::push_back[abi:nn200100](&self->_registerOffsets, &v8);
-        v6 += v5->var7;
+        v6 += instructions->var7;
         v8 = v6;
-        v5 = (v5 + 36);
+        instructions = (instructions + 36);
       }
 
-      while (v5 < [(GTShaderProfilerBinaryAnalysisResult *)self lastInstruction]);
+      while (instructions < [(GTShaderProfilerBinaryAnalysisResult *)self lastInstruction]);
     }
   }
 }
@@ -158,8 +158,8 @@
       return result;
     }
 
-    v7 = [(NSData *)self->_registerInfoData bytes];
-    v3 = &v7[8 * [(GTShaderProfilerBinaryAnalysisResult *)self registerInfoCount]];
+    bytes = [(NSData *)self->_registerInfoData bytes];
+    v3 = &bytes[8 * [(GTShaderProfilerBinaryAnalysisResult *)self registerInfoCount]];
   }
 
   return (v3 - 8);
@@ -186,8 +186,8 @@
       return result;
     }
 
-    v7 = [(NSData *)self->_branchTargetData bytes];
-    v3 = &v7[8 * [(GTShaderProfilerBinaryAnalysisResult *)self branchTargetCount]];
+    bytes = [(NSData *)self->_branchTargetData bytes];
+    v3 = &bytes[8 * [(GTShaderProfilerBinaryAnalysisResult *)self branchTargetCount]];
   }
 
   return (v3 - 8);
@@ -214,8 +214,8 @@
       return result;
     }
 
-    v7 = [(NSData *)self->_binaryLocationData bytes];
-    v3 = &v7[16 * [(GTShaderProfilerBinaryAnalysisResult *)self binaryLocationCount]];
+    bytes = [(NSData *)self->_binaryLocationData bytes];
+    v3 = &bytes[16 * [(GTShaderProfilerBinaryAnalysisResult *)self binaryLocationCount]];
   }
 
   return (v3 - 16);
@@ -242,8 +242,8 @@
       return result;
     }
 
-    v7 = [(NSData *)self->_binaryRangeData bytes];
-    v3 = &v7[28 * [(GTShaderProfilerBinaryAnalysisResult *)self binaryRangeCount]];
+    bytes = [(NSData *)self->_binaryRangeData bytes];
+    v3 = &bytes[28 * [(GTShaderProfilerBinaryAnalysisResult *)self binaryRangeCount]];
   }
 
   return (v3 - 28);
@@ -270,8 +270,8 @@
       return result;
     }
 
-    v7 = [(NSData *)self->_clauseData bytes];
-    v3 = &v7[32 * [(GTShaderProfilerBinaryAnalysisResult *)self clauseCount]];
+    bytes = [(NSData *)self->_clauseData bytes];
+    v3 = &bytes[32 * [(GTShaderProfilerBinaryAnalysisResult *)self clauseCount]];
   }
 
   return (v3 - 32);
@@ -298,8 +298,8 @@
       return result;
     }
 
-    v7 = [(NSData *)self->_instructionData bytes];
-    v3 = &v7[36 * [(GTShaderProfilerBinaryAnalysisResult *)self instructionCount]];
+    bytes = [(NSData *)self->_instructionData bytes];
+    v3 = &bytes[36 * [(GTShaderProfilerBinaryAnalysisResult *)self instructionCount]];
   }
 
   return (v3 - 36);
@@ -473,12 +473,12 @@
   }
 }
 
-- (id)stringAtIndex:(unint64_t)a3
+- (id)stringAtIndex:(unint64_t)index
 {
   pBinaryInfo = self->_pBinaryInfo;
-  if (pBinaryInfo && (v5 = (pBinaryInfo + 7), v4 = pBinaryInfo[7], 0xAAAAAAAAAAAAAAABLL * ((*(v5 + 1) - v4) >> 3) > a3))
+  if (pBinaryInfo && (v5 = (pBinaryInfo + 7), v4 = pBinaryInfo[7], 0xAAAAAAAAAAAAAAABLL * ((*(v5 + 1) - v4) >> 3) > index))
   {
-    v6 = (v4 + 24 * a3);
+    v6 = (v4 + 24 * index);
     if (*(v6 + 23) < 0)
     {
       v6 = *v6;
@@ -489,48 +489,48 @@
 
   else
   {
-    v7 = [(NSArray *)self->_strings objectAtIndexedSubscript:a3];
+    v7 = [(NSArray *)self->_strings objectAtIndexedSubscript:index];
   }
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   version = self->_version;
-  v11 = a3;
-  [v11 encodeInteger:version forKey:@"version"];
-  [v11 encodeInteger:36 forKey:@"instructionSize"];
-  [v11 encodeInteger:32 forKey:@"clauseSize"];
-  [v11 encodeInteger:8 forKey:@"branchTargetSize"];
-  [v11 encodeInteger:28 forKey:@"binaryRangeSize"];
-  [v11 encodeInteger:16 forKey:@"binaryLocationSize"];
-  [v11 encodeInteger:8 forKey:@"registerInfoSize"];
-  v5 = [(GTShaderProfilerBinaryAnalysisResult *)self instructionData];
-  [v11 encodeObject:v5 forKey:@"instructionData"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:version forKey:@"version"];
+  [coderCopy encodeInteger:36 forKey:@"instructionSize"];
+  [coderCopy encodeInteger:32 forKey:@"clauseSize"];
+  [coderCopy encodeInteger:8 forKey:@"branchTargetSize"];
+  [coderCopy encodeInteger:28 forKey:@"binaryRangeSize"];
+  [coderCopy encodeInteger:16 forKey:@"binaryLocationSize"];
+  [coderCopy encodeInteger:8 forKey:@"registerInfoSize"];
+  instructionData = [(GTShaderProfilerBinaryAnalysisResult *)self instructionData];
+  [coderCopy encodeObject:instructionData forKey:@"instructionData"];
 
-  v6 = [(GTShaderProfilerBinaryAnalysisResult *)self clauseData];
-  [v11 encodeObject:v6 forKey:@"clauseData"];
+  clauseData = [(GTShaderProfilerBinaryAnalysisResult *)self clauseData];
+  [coderCopy encodeObject:clauseData forKey:@"clauseData"];
 
-  v7 = [(GTShaderProfilerBinaryAnalysisResult *)self branchTargetData];
-  [v11 encodeObject:v7 forKey:@"branchTargetData"];
+  branchTargetData = [(GTShaderProfilerBinaryAnalysisResult *)self branchTargetData];
+  [coderCopy encodeObject:branchTargetData forKey:@"branchTargetData"];
 
-  v8 = [(GTShaderProfilerBinaryAnalysisResult *)self binaryRangeData];
-  [v11 encodeObject:v8 forKey:@"binaryRangeData"];
+  binaryRangeData = [(GTShaderProfilerBinaryAnalysisResult *)self binaryRangeData];
+  [coderCopy encodeObject:binaryRangeData forKey:@"binaryRangeData"];
 
-  v9 = [(GTShaderProfilerBinaryAnalysisResult *)self binaryLocationData];
-  [v11 encodeObject:v9 forKey:@"binaryLocationData"];
+  binaryLocationData = [(GTShaderProfilerBinaryAnalysisResult *)self binaryLocationData];
+  [coderCopy encodeObject:binaryLocationData forKey:@"binaryLocationData"];
 
-  v10 = [(GTShaderProfilerBinaryAnalysisResult *)self registerInfoData];
-  [v11 encodeObject:v10 forKey:@"registerInfoData"];
+  registerInfoData = [(GTShaderProfilerBinaryAnalysisResult *)self registerInfoData];
+  [coderCopy encodeObject:registerInfoData forKey:@"registerInfoData"];
 
-  [v11 encodeObject:self->_strings forKey:@"strings"];
+  [coderCopy encodeObject:self->_strings forKey:@"strings"];
 }
 
-- (GTShaderProfilerBinaryAnalysisResult)initWithCoder:(id)a3
+- (GTShaderProfilerBinaryAnalysisResult)initWithCoder:(id)coder
 {
   v49[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v47.receiver = self;
   v47.super_class = GTShaderProfilerBinaryAnalysisResult;
   v5 = [(GTShaderProfilerBinaryAnalysisResult *)&v47 init];
@@ -541,7 +541,7 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v6 = [v4 decodeIntForKey:@"version"];
+  v6 = [coderCopy decodeIntForKey:@"version"];
   if (v6 > 3)
   {
 LABEL_3:
@@ -559,33 +559,33 @@ LABEL_14:
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v49 count:2];
     v17 = [v15 setWithArray:v16];
 
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"instructionData"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"instructionData"];
     instructionData = v5->_instructionData;
     v5->_instructionData = v18;
 
-    v20 = [v4 decodeObjectOfClasses:v17 forKey:@"clauseData"];
+    v20 = [coderCopy decodeObjectOfClasses:v17 forKey:@"clauseData"];
     clauseData = v5->_clauseData;
     v5->_clauseData = v20;
 
-    v22 = [v4 decodeObjectOfClasses:v17 forKey:@"branchTargetData"];
+    v22 = [coderCopy decodeObjectOfClasses:v17 forKey:@"branchTargetData"];
     branchTargetData = v5->_branchTargetData;
     v5->_branchTargetData = v22;
 
-    v24 = [v4 decodeObjectOfClasses:v17 forKey:@"binaryLocationData"];
+    v24 = [coderCopy decodeObjectOfClasses:v17 forKey:@"binaryLocationData"];
     binaryLocationData = v5->_binaryLocationData;
     v5->_binaryLocationData = v24;
 
-    v26 = [v4 decodeObjectOfClasses:v17 forKey:@"binaryRangeData"];
+    v26 = [coderCopy decodeObjectOfClasses:v17 forKey:@"binaryRangeData"];
     v27 = v26;
     if (v8 != 3)
     {
-      v28 = [v26 bytes];
+      bytes = [v26 bytes];
       v29 = [v27 length];
       v30 = v29 / 0x18;
       v31 = [MEMORY[0x277CBEB28] dataWithCapacity:28 * (v29 / 0x18)];
       if (v29 >= 0x18)
       {
-        v32 = (v28 + 16);
+        v32 = (bytes + 16);
         do
         {
           LODWORD(v46[0]) = 0;
@@ -606,7 +606,7 @@ LABEL_14:
     }
 
     objc_storeStrong(&v5->_binaryRangeData, v27);
-    v35 = [v4 decodeObjectOfClasses:v17 forKey:@"registerInfoData"];
+    v35 = [coderCopy decodeObjectOfClasses:v17 forKey:@"registerInfoData"];
     registerInfoData = v5->_registerInfoData;
     v5->_registerInfoData = v35;
 
@@ -616,7 +616,7 @@ LABEL_14:
     v48[2] = objc_opt_class();
     v38 = [MEMORY[0x277CBEA60] arrayWithObjects:v48 count:3];
     v39 = [v37 setWithArray:v38];
-    v40 = [v4 decodeObjectOfClasses:v39 forKey:@"strings"];
+    v40 = [coderCopy decodeObjectOfClasses:v39 forKey:@"strings"];
     strings = v5->_strings;
     v5->_strings = v40;
 
@@ -624,18 +624,18 @@ LABEL_14:
     {
       if (v5->_registerInfoData)
       {
-        v42 = [(GTShaderProfilerBinaryAnalysisResult *)v5 instructions];
-        if (v42 < [(GTShaderProfilerBinaryAnalysisResult *)v5 lastInstruction])
+        instructions = [(GTShaderProfilerBinaryAnalysisResult *)v5 instructions];
+        if (instructions < [(GTShaderProfilerBinaryAnalysisResult *)v5 lastInstruction])
         {
           v43 = 0;
           do
           {
             std::vector<unsigned long>::push_back[abi:nn200100](&v5->_registerOffsets, v46);
-            v43 += *(v42 + 33);
-            v42 += 36;
+            v43 += *(instructions + 33);
+            instructions += 36;
           }
 
-          while (v42 < [(GTShaderProfilerBinaryAnalysisResult *)v5 lastInstruction]);
+          while (instructions < [(GTShaderProfilerBinaryAnalysisResult *)v5 lastInstruction]);
         }
       }
     }
@@ -645,11 +645,11 @@ LABEL_14:
     goto LABEL_25;
   }
 
-  v9 = [v4 decodeIntegerForKey:@"instructionSize"];
-  v10 = [v4 decodeIntegerForKey:@"clauseSize"];
-  v11 = [v4 decodeIntegerForKey:@"branchTargetSize"];
-  v12 = [v4 decodeIntegerForKey:@"binaryRangeSize"];
-  v13 = [v4 decodeIntegerForKey:@"binaryLocationSize"];
+  v9 = [coderCopy decodeIntegerForKey:@"instructionSize"];
+  v10 = [coderCopy decodeIntegerForKey:@"clauseSize"];
+  v11 = [coderCopy decodeIntegerForKey:@"branchTargetSize"];
+  v12 = [coderCopy decodeIntegerForKey:@"binaryRangeSize"];
+  v13 = [coderCopy decodeIntegerForKey:@"binaryLocationSize"];
   v7 = 0;
   if (v9 == 36 && v10 == 32 && v11 == 8)
   {
@@ -662,7 +662,7 @@ LABEL_14:
 
     if (v12 == v14 && v13 == 16)
     {
-      if (v8 == 2 && [v4 decodeIntegerForKey:@"registerInfoSize"] != 8)
+      if (v8 == 2 && [coderCopy decodeIntegerForKey:@"registerInfoSize"] != 8)
       {
         goto LABEL_3;
       }
@@ -691,10 +691,10 @@ LABEL_26:
   return result;
 }
 
-+ (id)dataFromArchivedDataURL:(id)a3
++ (id)dataFromArchivedDataURL:(id)l
 {
   v9 = 0;
-  v3 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:a3 options:0 error:&v9];
+  v3 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:l options:0 error:&v9];
   v4 = v9;
   if (v4)
   {
@@ -712,21 +712,21 @@ LABEL_26:
   return v6;
 }
 
-+ (id)createWithAnalysisResult:(const void *)a3
++ (id)createWithAnalysisResult:(const void *)result
 {
   v4 = objc_opt_new();
   v5 = v4;
   v6 = v4 + 8;
-  if ((v4 + 8) == a3)
+  if ((v4 + 8) == result)
   {
-    *(v4 + 32) = *(a3 + 6);
+    *(v4 + 32) = *(result + 6);
   }
 
   else
   {
-    v8 = *a3;
-    v7 = *(a3 + 1);
-    v9 = v7 - *a3;
+    v8 = *result;
+    v7 = *(result + 1);
+    v9 = v7 - *result;
     v10 = *(v4 + 24);
     v11 = *(v4 + 8);
     if (v10 - v11 < v9)
@@ -787,7 +787,7 @@ LABEL_26:
     v18 = *(v4 + 16) - v11;
     if (v18 >= v9)
     {
-      v19 = std::__copy_impl::operator()[abi:nn200100]<GTWaitInstructionInfo *,GTWaitInstructionInfo *,GTWaitInstructionInfo *>(*a3, *(a3 + 1), *(v4 + 8));
+      v19 = std::__copy_impl::operator()[abi:nn200100]<GTWaitInstructionInfo *,GTWaitInstructionInfo *,GTWaitInstructionInfo *>(*result, *(result + 1), *(v4 + 8));
       for (i = *(v5 + 16); i != v19; std::allocator<GTWaitInstructionInfo>::destroy[abi:nn200100](i))
       {
         i -= 7;
@@ -798,15 +798,15 @@ LABEL_26:
 
     else
     {
-      std::__copy_impl::operator()[abi:nn200100]<GTWaitInstructionInfo *,GTWaitInstructionInfo *,GTWaitInstructionInfo *>(*a3, v8 + v18, *(v4 + 8));
+      std::__copy_impl::operator()[abi:nn200100]<GTWaitInstructionInfo *,GTWaitInstructionInfo *,GTWaitInstructionInfo *>(*result, v8 + v18, *(v4 + 8));
       *(v5 + 16) = std::__uninitialized_allocator_copy_impl[abi:nn200100]<std::allocator<GTWaitInstructionInfo>,GTWaitInstructionInfo*,GTWaitInstructionInfo*,GTWaitInstructionInfo*>((v8 + v18), v7, *(v5 + 16));
     }
 
     v22 = (v5 + 40);
     v21 = *(v5 + 40);
-    *(v5 + 32) = *(a3 + 6);
-    v24 = *(a3 + 4);
-    v23 = *(a3 + 5);
+    *(v5 + 32) = *(result + 6);
+    v24 = *(result + 4);
+    v23 = *(result + 5);
     v25 = v23 - v24;
     v26 = *(v5 + 56);
     if (v26 - v21 < (v23 - v24))
@@ -853,19 +853,19 @@ LABEL_26:
     v31 = *(v5 + 48) - v21;
     if (v31 >= v25)
     {
-      v32 = std::__copy_move_unwrap_iters[abi:nn200100]<std::__copy_impl,GTRegisterPressureInstructionInfo *,GTRegisterPressureInstructionInfo *,GTRegisterPressureInstructionInfo *,0>(*(a3 + 4), *(a3 + 5), v21);
+      v32 = std::__copy_move_unwrap_iters[abi:nn200100]<std::__copy_impl,GTRegisterPressureInstructionInfo *,GTRegisterPressureInstructionInfo *,GTRegisterPressureInstructionInfo *,0>(*(result + 4), *(result + 5), v21);
       std::vector<GTRegisterPressureInstructionInfo>::__base_destruct_at_end[abi:nn200100](v5 + 40, v32);
     }
 
     else
     {
-      std::__copy_move_unwrap_iters[abi:nn200100]<std::__copy_impl,GTRegisterPressureInstructionInfo *,GTRegisterPressureInstructionInfo *,GTRegisterPressureInstructionInfo *,0>(*(a3 + 4), v24 + v31, v21);
+      std::__copy_move_unwrap_iters[abi:nn200100]<std::__copy_impl,GTRegisterPressureInstructionInfo *,GTRegisterPressureInstructionInfo *,GTRegisterPressureInstructionInfo *,0>(*(result + 4), v24 + v31, v21);
       std::vector<GTRegisterPressureInstructionInfo>::__construct_at_end<GTRegisterPressureInstructionInfo*,GTRegisterPressureInstructionInfo*>((v5 + 40), v24 + v31, v23);
     }
 
     v33 = *(v5 + 64);
-    v34 = *(a3 + 7);
-    v35 = *(a3 + 8);
+    v34 = *(result + 7);
+    v35 = *(result + 8);
     v36 = v35 - v34;
     if (*(v5 + 80) - v33 < (v35 - v34))
     {
@@ -928,7 +928,7 @@ LABEL_26:
       if (v40 != v33)
       {
         v42 = v40 - v33;
-        v43 = *(a3 + 7);
+        v43 = *(result + 7);
         do
         {
           std::string::operator=(v33++, v43++);
@@ -943,8 +943,8 @@ LABEL_26:
     }
 
     v45 = *(v5 + 88);
-    v46 = *(a3 + 10);
-    v47 = *(a3 + 11);
+    v46 = *(result + 10);
+    v47 = *(result + 11);
     v48 = v47 - v46;
     v49 = *(v5 + 104);
     if (v49 - v45 < (v47 - v46))
@@ -994,7 +994,7 @@ LABEL_26:
     {
       if (v47 != v46)
       {
-        memmove(*(v5 + 88), *(a3 + 10), v47 - v46);
+        memmove(*(v5 + 88), *(result + 10), v47 - v46);
       }
 
       *(v5 + 96) = &v45[v48];
@@ -1005,7 +1005,7 @@ LABEL_26:
       v56 = &v46[v55];
       if (v54 != v45)
       {
-        memmove(*(v5 + 88), *(a3 + 10), v55);
+        memmove(*(v5 + 88), *(result + 10), v55);
         v54 = *(v5 + 96);
       }
 
@@ -1018,8 +1018,8 @@ LABEL_26:
     }
 
     v57 = *(v5 + 112);
-    v58 = *(a3 + 13);
-    v59 = *(a3 + 14);
+    v58 = *(result + 13);
+    v59 = *(result + 14);
     v60 = v59 - v58;
     v61 = *(v5 + 128);
     if (v61 - v57 < (v59 - v58))
@@ -1079,7 +1079,7 @@ LABEL_26:
       v67 = &v58[v66];
       if (v65 != v57)
       {
-        memmove(*(v5 + 112), *(a3 + 13), v66);
+        memmove(*(v5 + 112), *(result + 13), v66);
         v65 = *(v5 + 120);
       }
 
@@ -1093,8 +1093,8 @@ LABEL_26:
 
     *(v5 + 120) = v68;
     v69 = *(v5 + 136);
-    v70 = *(a3 + 16);
-    v71 = *(a3 + 17);
+    v70 = *(result + 16);
+    v71 = *(result + 17);
     v72 = v71 - v70;
     v73 = *(v5 + 152);
     if (v73 - v69 < (v71 - v70))
@@ -1154,7 +1154,7 @@ LABEL_26:
       v79 = &v70[v78];
       if (v77 != v69)
       {
-        memmove(*(v5 + 136), *(a3 + 16), v78);
+        memmove(*(v5 + 136), *(result + 16), v78);
         v77 = *(v5 + 144);
       }
 
@@ -1168,8 +1168,8 @@ LABEL_26:
 
     *(v5 + 144) = v80;
     v81 = *(v5 + 160);
-    v82 = *(a3 + 19);
-    v83 = *(a3 + 20);
+    v82 = *(result + 19);
+    v83 = *(result + 20);
     v84 = v83 - v82;
     v85 = *(v5 + 176);
     if (v85 - v81 < (v83 - v82))
@@ -1229,7 +1229,7 @@ LABEL_26:
       v91 = &v82[v90];
       if (v89 != v81)
       {
-        memmove(*(v5 + 160), *(a3 + 19), v90);
+        memmove(*(v5 + 160), *(result + 19), v90);
         v89 = *(v5 + 168);
       }
 
@@ -1243,8 +1243,8 @@ LABEL_26:
 
     *(v5 + 168) = v92;
     v93 = *(v5 + 184);
-    v94 = *(a3 + 22);
-    v95 = *(a3 + 23);
+    v94 = *(result + 22);
+    v95 = *(result + 23);
     v96 = v95 - v94;
     v97 = *(v5 + 200);
     if (v97 - v93 < (v95 - v94))
@@ -1305,7 +1305,7 @@ LABEL_26:
       v104 = &v94[v103];
       if (v102 != v93)
       {
-        memmove(*(v5 + 184), *(a3 + 22), v103);
+        memmove(*(v5 + 184), *(result + 22), v103);
         v102 = *(v5 + 192);
       }
 
@@ -1319,8 +1319,8 @@ LABEL_26:
 
     *(v5 + 192) = v105;
     v106 = *(v5 + 208);
-    v107 = *(a3 + 25);
-    v108 = *(a3 + 26);
+    v107 = *(result + 25);
+    v108 = *(result + 26);
     v109 = v108 - v107;
     v110 = *(v5 + 224);
     if (v110 - v106 < (v108 - v107))

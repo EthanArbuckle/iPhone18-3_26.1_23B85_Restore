@@ -1,7 +1,7 @@
 @interface SiriUISnippetBridgeViewManager
 + (id)sharedInstance;
-- (void)insertBridgeViewIfNecessaryForCell:(id)a3 controller:(id)a4 currentSnippet:(id)a5 previousSnippet:(id)a6 bridgeSize:(CGSize)a7;
-- (void)removeBridgeViewsFromView:(id)a3;
+- (void)insertBridgeViewIfNecessaryForCell:(id)cell controller:(id)controller currentSnippet:(id)snippet previousSnippet:(id)previousSnippet bridgeSize:(CGSize)size;
+- (void)removeBridgeViewsFromView:(id)view;
 @end
 
 @implementation SiriUISnippetBridgeViewManager
@@ -27,14 +27,14 @@ uint64_t __48__SiriUISnippetBridgeViewManager_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (void)insertBridgeViewIfNecessaryForCell:(id)a3 controller:(id)a4 currentSnippet:(id)a5 previousSnippet:(id)a6 bridgeSize:(CGSize)a7
+- (void)insertBridgeViewIfNecessaryForCell:(id)cell controller:(id)controller currentSnippet:(id)snippet previousSnippet:(id)previousSnippet bridgeSize:(CGSize)size
 {
-  height = a7.height;
-  width = a7.width;
-  v21 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  height = size.height;
+  width = size.width;
+  cellCopy = cell;
+  controllerCopy = controller;
+  snippetCopy = snippet;
+  previousSnippetCopy = previousSnippet;
   if ((SiriUIIsWhitePlatterSnippetBackgroundEnabledForAllSnippets() & 1) == 0)
   {
     objc_opt_class();
@@ -43,34 +43,34 @@ uint64_t __48__SiriUISnippetBridgeViewManager_sharedInstance__block_invoke()
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v15 = [[SiriUISnippetBridgeView alloc] initWithFrame:0.0, -height, width, height];
-        v16 = [MEMORY[0x277D75348] siriui_snippetBackgroundColor];
-        [(SiriUISnippetBridgeView *)v15 setBackgroundColor:v16];
+        height = [[SiriUISnippetBridgeView alloc] initWithFrame:0.0, -height, width, height];
+        siriui_snippetBackgroundColor = [MEMORY[0x277D75348] siriui_snippetBackgroundColor];
+        [(SiriUISnippetBridgeView *)height setBackgroundColor:siriui_snippetBackgroundColor];
 
         v17 = [SiriUIKeyline keylineWithKeylineType:2];
-        v18 = [MEMORY[0x277D759A0] mainScreen];
-        [v18 scale];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen scale];
         [v17 setFrame:{0.0, 0.0, width, 1.0 / v19}];
 
-        [(SiriUISnippetBridgeView *)v15 addSubview:v17];
-        v20 = [v21 contentView];
-        [v20 addSubview:v15];
-        [v21 setShowBackgroundView:0];
-        [v12 setManageBackgroundColor:1];
+        [(SiriUISnippetBridgeView *)height addSubview:v17];
+        contentView = [cellCopy contentView];
+        [contentView addSubview:height];
+        [cellCopy setShowBackgroundView:0];
+        [controllerCopy setManageBackgroundColor:1];
       }
     }
   }
 }
 
-- (void)removeBridgeViewsFromView:(id)a3
+- (void)removeBridgeViewsFromView:(id)view
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [a3 subviews];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  subviews = [view subviews];
+  v4 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -82,7 +82,7 @@ uint64_t __48__SiriUISnippetBridgeViewManager_sharedInstance__block_invoke()
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviews);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -96,7 +96,7 @@ uint64_t __48__SiriUISnippetBridgeViewManager_sharedInstance__block_invoke()
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);

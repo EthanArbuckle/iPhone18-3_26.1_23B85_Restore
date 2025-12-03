@@ -1,17 +1,17 @@
 @interface WKDateTimeInputControl
 - (BOOL)dismissWithAnimationForTesting;
 - (NSString)dateTimePickerCalendarType;
-- (WKDateTimeInputControl)initWithView:(id)a3;
+- (WKDateTimeInputControl)initWithView:(id)view;
 - (double)timePickerValueHour;
 - (double)timePickerValueMinute;
-- (void)setTimePickerHour:(int64_t)a3 minute:(int64_t)a4;
+- (void)setTimePickerHour:(int64_t)hour minute:(int64_t)minute;
 @end
 
 @implementation WKDateTimeInputControl
 
-- (WKDateTimeInputControl)initWithView:(id)a3
+- (WKDateTimeInputControl)initWithView:(id)view
 {
-  v5 = *([a3 focusedElementInformation] + 185);
+  v5 = *([view focusedElementInformation] + 185);
   if ((v5 - 11) > 4)
   {
 
@@ -22,8 +22,8 @@
   {
     v9.receiver = self;
     v9.super_class = WKDateTimeInputControl;
-    v10 = [[WKDateTimePicker alloc] initWithView:a3 inputType:v5];
-    v6 = [(WKFormPeripheralBase *)&v9 initWithView:a3 control:&v10];
+    v10 = [[WKDateTimePicker alloc] initWithView:view inputType:v5];
+    v6 = [(WKFormPeripheralBase *)&v9 initWithView:view control:&v10];
     v7 = v10;
     v10 = 0;
     if (v7)
@@ -34,13 +34,13 @@
   return v6;
 }
 
-- (void)setTimePickerHour:(int64_t)a3 minute:(int64_t)a4
+- (void)setTimePickerHour:(int64_t)hour minute:(int64_t)minute
 {
   v6 = WTF::dynamic_objc_cast<WKDateTimePicker>([(WKFormPeripheralBase *)self control]);
   if (v6)
   {
 
-    [v6 setHour:a3 minute:a4];
+    [v6 setHour:hour minute:minute];
   }
 }
 

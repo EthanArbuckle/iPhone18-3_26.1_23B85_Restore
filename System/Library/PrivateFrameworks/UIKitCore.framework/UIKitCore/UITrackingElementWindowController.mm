@@ -5,7 +5,7 @@
 - (BOOL)customTrackingElementsShouldUseActualFrame;
 - (BOOL)hasInputOrAssistantViewsOnScreen;
 - (BOOL)isDragging;
-- (BOOL)isHostingView:(id)a3;
+- (BOOL)isHostingView:(id)view;
 - (BOOL)isOnScreen;
 - (BOOL)isOnScreenRotating;
 - (BOOL)isRotating;
@@ -17,32 +17,32 @@
 - (BOOL)isTranslating;
 - (BOOL)isUndocked;
 - (BOOL)isViewLandscape;
-- (BOOL)mergeTransitionIfNecessaryWithTransition:(id)a3;
-- (BOOL)shouldBeginTransitionForController:(id)a3;
-- (BOOL)shouldPostNotification:(unint64_t)a3 withInfo:(id)a4;
+- (BOOL)mergeTransitionIfNecessaryWithTransition:(id)transition;
+- (BOOL)shouldBeginTransitionForController:(id)controller;
+- (BOOL)shouldPostNotification:(unint64_t)notification withInfo:(id)info;
 - (BOOL)sizesWindowToScene;
-- (BOOL)updateGuideBackdropRenderConfig:(id)a3 animated:(BOOL)a4;
-- (CGPoint)_centerForOrientation:(int64_t)a3;
-- (CGRect)_boundsForOrientation:(int64_t)a3;
+- (BOOL)updateGuideBackdropRenderConfig:(id)config animated:(BOOL)animated;
+- (CGPoint)_centerForOrientation:(int64_t)orientation;
+- (CGRect)_boundsForOrientation:(int64_t)orientation;
 - (CGRect)_defaultInitialViewFrame;
 - (CGRect)_viewFrameInWindowForContentOverlayInsetsCalculation;
 - (CGRect)_visibleFrame;
-- (CGRect)_visibleFrameInRemoteKeyboardWindow:(BOOL)a3;
+- (CGRect)_visibleFrameInRemoteKeyboardWindow:(BOOL)window;
 - (CGRect)_visibleInputViewFrame;
-- (CGRect)convertRectFromContainerCoordinateSpaceToScreenSpace:(CGRect)a3;
-- (CGRect)convertRectFromContainerCoordinateSpaceToScreenSpace:(CGRect)a3 viewInRemoteKeyboardWindow:(BOOL)a4;
+- (CGRect)convertRectFromContainerCoordinateSpaceToScreenSpace:(CGRect)space;
+- (CGRect)convertRectFromContainerCoordinateSpaceToScreenSpace:(CGRect)space viewInRemoteKeyboardWindow:(BOOL)window;
 - (CGRect)transitioningFrame;
 - (CGRect)visibleFrame;
 - (CGRect)visibleInputViewFrame;
 - (CGSize)keyboardSizeFromExternalUpdate;
-- (CGSize)sizeForInputViewController:(id)a3 inputView:(id)a4;
-- (CGSize)sizeForInputViewController:(id)a3 inputView:(id)a4 includeAssistantBar:(BOOL)a5;
+- (CGSize)sizeForInputViewController:(id)controller inputView:(id)view;
+- (CGSize)sizeForInputViewController:(id)controller inputView:(id)view includeAssistantBar:(BOOL)bar;
 - (UIEdgeInsets)_inputViewPadding;
 - (UIEdgeInsets)_viewSafeAreaInsetsFromScene;
 - (UIInputViewSetPlacement)placementIgnoringRotation;
-- (UITrackingElementWindowController)initWithNibName:(id)a3 bundle:(id)a4;
+- (UITrackingElementWindowController)initWithNibName:(id)name bundle:(id)bundle;
 - (UIView)bottomEdgeView;
-- (id)_infoForBackdropMatchMoveForLayer:(id)a3;
+- (id)_infoForBackdropMatchMoveForLayer:(id)layer;
 - (id)_inputAccessoryView;
 - (id)_inputAssistantView;
 - (id)_inputViewPlaceholder;
@@ -51,119 +51,119 @@
 - (id)currentPresentationPlacement;
 - (id)expectedPlacement;
 - (id)initialNotificationInfo;
-- (id)inputViewSnapshotOfView:(id)a3 afterScreenUpdates:(BOOL)a4;
+- (id)inputViewSnapshotOfView:(id)view afterScreenUpdates:(BOOL)updates;
 - (id)nextAnimationStyle;
 - (id)notificationsFromPlacement;
 - (id)notificationsToPlacement;
-- (id)transitionGuideBackdrop:(BOOL)a3;
+- (id)transitionGuideBackdrop:(BOOL)backdrop;
 - (id)viewForTransitionScreenSnapshot;
-- (int)appearStateForChild:(unint64_t)a3 placement:(id)a4 start:(BOOL)a5;
+- (int)appearStateForChild:(unint64_t)child placement:(id)placement start:(BOOL)start;
 - (int64_t)animationTypeForCurrentTransition;
 - (int64_t)overrideUserInterfaceStyle;
-- (int64_t)visualStateFromPlacement:(id)a3;
-- (unint64_t)_clipCornersOfView:(id)a3;
-- (unint64_t)changeToInputViewSet:(id)a3;
+- (int64_t)visualStateFromPlacement:(id)placement;
+- (unint64_t)_clipCornersOfView:(id)view;
+- (unint64_t)changeToInputViewSet:(id)set;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_collectTransitionTimeStatistics:(unint64_t)a3 withStart:(id)a4;
+- (void)_collectTransitionTimeStatistics:(unint64_t)statistics withStart:(id)start;
 - (void)_forcePreLayoutHostViewFrame;
 - (void)_updateContentOverlayInsetsForSelfAndChildren;
-- (void)_updatePlacementWithPlacement:(id)a3;
-- (void)addPendingActivity:(id)a3;
-- (void)animateAccessoryViewVisibility:(BOOL)a3 withDuration:(double)a4;
-- (void)animateKeyboardTrackingElementsWithNotificationInfo:(id)a3 notificationType:(unint64_t)a4 updateForStart:(BOOL)a5 updateForEnd:(BOOL)a6;
+- (void)_updatePlacementWithPlacement:(id)placement;
+- (void)addPendingActivity:(id)activity;
+- (void)animateAccessoryViewVisibility:(BOOL)visibility withDuration:(double)duration;
+- (void)animateKeyboardTrackingElementsWithNotificationInfo:(id)info notificationType:(unint64_t)type updateForStart:(BOOL)start updateForEnd:(BOOL)end;
 - (void)cancelCurrentTransition;
-- (void)candidateBarWillChangeHeight:(double)a3 withDuration:(double)a4;
-- (void)changeChild:(unint64_t)a3 toAppearState:(int)a4 animated:(BOOL)a5;
-- (void)changeGuideAnimationOptions:(unint64_t)a3 duration:(double)a4;
-- (void)changeGuideAnimationState:(BOOL)a3;
-- (void)checkPlaceholdersForRemoteKeyboardsAndForceConstraintsUpdate:(BOOL)a3 layoutSubviews:(BOOL)a4;
+- (void)candidateBarWillChangeHeight:(double)height withDuration:(double)duration;
+- (void)changeChild:(unint64_t)child toAppearState:(int)state animated:(BOOL)animated;
+- (void)changeGuideAnimationOptions:(unint64_t)options duration:(double)duration;
+- (void)changeGuideAnimationState:(BOOL)state;
+- (void)checkPlaceholdersForRemoteKeyboardsAndForceConstraintsUpdate:(BOOL)update layoutSubviews:(BOOL)subviews;
 - (void)clearKeyboardSnapshot;
 - (void)clearRotationState;
-- (void)didEndTransitionWithController:(id)a3;
+- (void)didEndTransitionWithController:(id)controller;
 - (void)didReceiveMemoryWarning;
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3;
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation;
 - (void)didSnapshot;
-- (void)dismissViewController:(id)a3;
+- (void)dismissViewController:(id)controller;
 - (void)flushPendingActivities;
-- (void)generateNotificationsForCompactAssistantFlickGestureCompletion:(id)a3;
-- (void)generateNotificationsForStart:(BOOL)a3;
-- (void)hideGuideBackdrop:(BOOL)a3;
+- (void)generateNotificationsForCompactAssistantFlickGestureCompletion:(id)completion;
+- (void)generateNotificationsForStart:(BOOL)start;
+- (void)hideGuideBackdrop:(BOOL)backdrop;
 - (void)hostAppSceneBoundsChanged;
 - (void)hostViewWillDisappear;
 - (void)hostedOriginDidUpdate;
-- (void)ignoreLayoutNotifications:(id)a3;
+- (void)ignoreLayoutNotifications:(id)notifications;
 - (void)invalidateInputAccessoryView;
 - (void)invalidateInputAssistantView;
 - (void)invalidateInputView;
-- (void)keyboardDismissWithInfo:(id)a3;
-- (void)keyboardIsDocking:(BOOL)a3;
-- (void)keyboardMoveOfType:(unint64_t)a3 info:(id)a4;
-- (void)keyboardMoveWithInfo:(id)a3;
-- (void)keyboardMovedToScreenPosition:(CGRect)a3 animated:(BOOL)a4;
+- (void)keyboardDismissWithInfo:(id)info;
+- (void)keyboardIsDocking:(BOOL)docking;
+- (void)keyboardMoveOfType:(unint64_t)type info:(id)info;
+- (void)keyboardMoveWithInfo:(id)info;
+- (void)keyboardMovedToScreenPosition:(CGRect)position animated:(BOOL)animated;
 - (void)layoutFromCoordinatorIfNeeded;
 - (void)loadView;
-- (void)moveFromPlacement:(id)a3 toPlacement:(id)a4 starting:(id)a5 completion:(id)a6;
+- (void)moveFromPlacement:(id)placement toPlacement:(id)toPlacement starting:(id)starting completion:(id)completion;
 - (void)moveKeyboardLayoutGuideOffscreen;
-- (void)performOperations:(id)a3 withAnimationStyle:(id)a4;
-- (void)performOperations:(id)a3 withTemplateNotificationInfo:(id)a4;
-- (void)performWithSafeTransitionFrames:(id)a3;
-- (void)performWithoutAppearanceCallbacks:(id)a3;
-- (void)performWithoutCallbacksOrNotifications:(id)a3;
+- (void)performOperations:(id)operations withAnimationStyle:(id)style;
+- (void)performOperations:(id)operations withTemplateNotificationInfo:(id)info;
+- (void)performWithSafeTransitionFrames:(id)frames;
+- (void)performWithoutAppearanceCallbacks:(id)callbacks;
+- (void)performWithoutCallbacksOrNotifications:(id)notifications;
 - (void)popAnimationStyle;
-- (void)postEndNotifications:(unint64_t)a3 withInfo:(id)a4;
-- (void)postStartNotifications:(unint64_t)a3 withInfo:(id)a4;
+- (void)postEndNotifications:(unint64_t)notifications withInfo:(id)info;
+- (void)postStartNotifications:(unint64_t)notifications withInfo:(id)info;
 - (void)postTransitionEndNotification;
-- (void)postValidatedEndNotifications:(unint64_t)a3 withInfo:(id)a4;
-- (void)postValidatedStartNotifications:(unint64_t)a3 withInfo:(id)a4;
-- (void)prepareForInputAssistant:(id)a3 animated:(BOOL)a4;
-- (void)presentViewController:(id)a3;
-- (void)pushAnimationStyle:(id)a3;
+- (void)postValidatedEndNotifications:(unint64_t)notifications withInfo:(id)info;
+- (void)postValidatedStartNotifications:(unint64_t)notifications withInfo:(id)info;
+- (void)prepareForInputAssistant:(id)assistant animated:(BOOL)animated;
+- (void)presentViewController:(id)controller;
+- (void)pushAnimationStyle:(id)style;
 - (void)refreshKeyboardLayoutGuide;
-- (void)registerPowerLogEvent:(BOOL)a3;
-- (void)setDisableUpdateMaskForSecureTextEntry:(BOOL)a3;
-- (void)setExclusiveTouch:(BOOL)a3;
-- (void)setHiddenCount:(int)a3;
-- (void)setInputView:(id)a3 accessoryView:(id)a4 assistantView:(id)a5;
-- (void)setInputViewSet:(id)a3;
-- (void)setInputViewsHidden:(BOOL)a3;
-- (void)setInterfaceAutorotationDisabled:(BOOL)a3;
-- (void)setKeyboardWindowSnapshotOn:(BOOL)a3;
-- (void)setPlacement:(id)a3;
-- (void)setPlacement:(id)a3 quietly:(BOOL)a4 animated:(BOOL)a5 generateSplitNotification:(BOOL)a6;
-- (void)setPlacementChangeDisabled:(BOOL)a3 withPlacement:(id)a4;
-- (void)setRotationAwarePlacement:(id)a3;
+- (void)registerPowerLogEvent:(BOOL)event;
+- (void)setDisableUpdateMaskForSecureTextEntry:(BOOL)entry;
+- (void)setExclusiveTouch:(BOOL)touch;
+- (void)setHiddenCount:(int)count;
+- (void)setInputView:(id)view accessoryView:(id)accessoryView assistantView:(id)assistantView;
+- (void)setInputViewSet:(id)set;
+- (void)setInputViewsHidden:(BOOL)hidden;
+- (void)setInterfaceAutorotationDisabled:(BOOL)disabled;
+- (void)setKeyboardWindowSnapshotOn:(BOOL)on;
+- (void)setPlacement:(id)placement;
+- (void)setPlacement:(id)placement quietly:(BOOL)quietly animated:(BOOL)animated generateSplitNotification:(BOOL)notification;
+- (void)setPlacementChangeDisabled:(BOOL)disabled withPlacement:(id)placement;
+- (void)setRotationAwarePlacement:(id)placement;
 - (void)syncToExistingAnimations;
-- (void)takeKeyboardSnapshotIgnoringSpotlightCheck:(BOOL)a3;
-- (void)transferActiveNotificationInfoToInfo:(id)a3;
-- (void)transferPlacementStateToInputWindowController:(id)a3;
-- (void)updateAmbiguousControlCenterActivationMargin:(unint64_t)a3 withInfo:(id)a4;
-- (void)updateAppearStatesForPlacement:(id)a3 start:(BOOL)a4 animated:(BOOL)a5;
-- (void)updateForKeyplaneChangeWithContext:(id)a3;
+- (void)takeKeyboardSnapshotIgnoringSpotlightCheck:(BOOL)check;
+- (void)transferActiveNotificationInfoToInfo:(id)info;
+- (void)transferPlacementStateToInputWindowController:(id)controller;
+- (void)updateAmbiguousControlCenterActivationMargin:(unint64_t)margin withInfo:(id)info;
+- (void)updateAppearStatesForPlacement:(id)placement start:(BOOL)start animated:(BOOL)animated;
+- (void)updateForKeyplaneChangeWithContext:(id)context;
 - (void)updateGestureRecognizers;
-- (void)updateGuideForOffscreenRotationWithDuration:(double)a3;
+- (void)updateGuideForOffscreenRotationWithDuration:(double)duration;
 - (void)updateHostingConstraints;
 - (void)updateHostingItemsForConstraintChanges;
-- (void)updateInputAssistantView:(id)a3;
+- (void)updateInputAssistantView:(id)view;
 - (void)updateKeyboardDockViewVisibility;
-- (void)updateKeyboardLayoutGuideForRotationOrientation:(int64_t)a3;
-- (void)updateKeyboardLayoutGuideWithFrame:(CGRect)a3 layoutViews:(BOOL)a4;
-- (void)updateKeyboardPlacementForGuide:(id)a3;
+- (void)updateKeyboardLayoutGuideForRotationOrientation:(int64_t)orientation;
+- (void)updateKeyboardLayoutGuideWithFrame:(CGRect)frame layoutViews:(BOOL)views;
+- (void)updateKeyboardPlacementForGuide:(id)guide;
 - (void)updateKeyboardSizeClass;
 - (void)updateOffscreenKeyboardLayoutGuide;
 - (void)updateSizingFromRemoteChange;
 - (void)updateSupportsDockViewController;
-- (void)updateToPlacement:(id)a3 withNormalAnimationsAndNotifications:(BOOL)a4;
-- (void)updateTrackingCoordinatorForAccessoryBounds:(CGRect)a3;
-- (void)updateTrackingCoordinatorForRotationOrientation:(int64_t)a3;
-- (void)updateTrackingElementsWithOffset:(UIOffset)a3;
-- (void)updateTrackingElementsWithSize:(CGSize)a3;
-- (void)updateVisibilityConstraintsForPlacement:(id)a3;
+- (void)updateToPlacement:(id)placement withNormalAnimationsAndNotifications:(BOOL)notifications;
+- (void)updateTrackingCoordinatorForAccessoryBounds:(CGRect)bounds;
+- (void)updateTrackingCoordinatorForRotationOrientation:(int64_t)orientation;
+- (void)updateTrackingElementsWithOffset:(UIOffset)offset;
+- (void)updateTrackingElementsWithSize:(CGSize)size;
+- (void)updateVisibilityConstraintsForPlacement:(id)placement;
 - (void)validateInputView;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
-- (void)willRotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
+- (void)willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
 - (void)willSnapshot;
 @end
 
@@ -188,10 +188,10 @@
 
 - (BOOL)isOnScreen
 {
-  v2 = [(UITrackingElementWindowController *)self placement];
-  v3 = [v2 showsInputViews];
+  placement = [(UITrackingElementWindowController *)self placement];
+  showsInputViews = [placement showsInputViews];
 
-  return v3;
+  return showsInputViews;
 }
 
 - (void)updateKeyboardSizeClass
@@ -208,11 +208,11 @@
       v3 = 0;
     }
 
-    v4 = [(UITrackingElementWindowController *)self _inputViewController];
-    [(UIViewController *)self setOverrideTraitCollection:v3 forChildViewController:v4];
+    _inputViewController = [(UITrackingElementWindowController *)self _inputViewController];
+    [(UIViewController *)self setOverrideTraitCollection:v3 forChildViewController:_inputViewController];
 
-    v5 = [(UITrackingElementWindowController *)self _inputAssistantViewController];
-    [(UIViewController *)self setOverrideTraitCollection:v3 forChildViewController:v5];
+    _inputAssistantViewController = [(UITrackingElementWindowController *)self _inputAssistantViewController];
+    [(UIViewController *)self setOverrideTraitCollection:v3 forChildViewController:_inputAssistantViewController];
 
     sizeClassCollectionOverride = self->_sizeClassCollectionOverride;
     self->_sizeClassCollectionOverride = v3;
@@ -221,10 +221,10 @@
 
 - (BOOL)isUndocked
 {
-  v2 = [(UITrackingElementWindowController *)self placement];
-  v3 = [v2 isUndocked];
+  placement = [(UITrackingElementWindowController *)self placement];
+  isUndocked = [placement isUndocked];
 
-  return v3;
+  return isUndocked;
 }
 
 - (void)loadView
@@ -233,11 +233,11 @@
   v4 = [(UITrackingWindowView *)v3 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   [(UIViewController *)self setView:v4];
 
-  v5 = [(UIViewController *)self view];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [(UIViewController *)self view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(UIViewController *)self view];
-  [v6 setClipsToBounds:1];
+  view2 = [(UIViewController *)self view];
+  [view2 setClipsToBounds:1];
 }
 
 - (unint64_t)supportedInterfaceOrientations
@@ -249,22 +249,22 @@
 
 - (void)invalidateInputAssistantView
 {
-  v3 = [(UITrackingElementWindowController *)self _inputAssistantViewController];
-  v4 = [v3 view];
+  _inputAssistantViewController = [(UITrackingElementWindowController *)self _inputAssistantViewController];
+  view = [_inputAssistantViewController view];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __65__UITrackingElementWindowController_invalidateInputAssistantView__block_invoke;
   v5[3] = &unk_1E70F3590;
   v5[4] = self;
-  [v4 _preserveResponderOverridesWhilePerforming:v5];
+  [view _preserveResponderOverridesWhilePerforming:v5];
 }
 
 - (UIEdgeInsets)_viewSafeAreaInsetsFromScene
 {
-  v3 = [(UIViewController *)self _window];
-  if ([v3 _isTextEffectsWindow] && objc_msgSend(v3, "_isHostedInAnotherProcess"))
+  _window = [(UIViewController *)self _window];
+  if ([_window _isTextEffectsWindow] && objc_msgSend(_window, "_isHostedInAnotherProcess"))
   {
-    [v3 hostedSafeInsets];
+    [_window hostedSafeInsets];
   }
 
   else
@@ -297,19 +297,19 @@
     return;
   }
 
-  v3 = [(UITrackingElementWindowController *)self inputViewSet];
-  v4 = [v3 inputView];
-  if (!v4)
+  inputViewSet = [(UITrackingElementWindowController *)self inputViewSet];
+  inputView = [inputViewSet inputView];
+  if (!inputView)
   {
 
     goto LABEL_8;
   }
 
-  v5 = v4;
-  v6 = [(UITrackingElementWindowController *)self inputViewSet];
-  v7 = [v6 isInputViewPlaceholder];
+  v5 = inputView;
+  inputViewSet2 = [(UITrackingElementWindowController *)self inputViewSet];
+  isInputViewPlaceholder = [inputViewSet2 isInputViewPlaceholder];
 
-  if (v7)
+  if (isInputViewPlaceholder)
   {
 LABEL_8:
     floatingTransitionController = self->_floatingTransitionController;
@@ -337,9 +337,9 @@ LABEL_8:
 
   [(UIKeyboardFloatingTransitionController *)v8 setDelegate:self];
   v11 = self->_floatingTransitionController;
-  v14 = [(UIViewController *)self view];
-  [(UIKeyboardFloatingTransitionController *)v11 addGestureRecognizersToView:v14];
-  v12 = v14;
+  view = [(UIViewController *)self view];
+  [(UIKeyboardFloatingTransitionController *)v11 addGestureRecognizersToView:view];
+  v12 = view;
 LABEL_10:
 }
 
@@ -351,16 +351,16 @@ LABEL_10:
   }
 
   v3 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v4 = [v3 visualModeManager];
-  v5 = [v4 windowingModeEnabled];
+  visualModeManager = [v3 visualModeManager];
+  windowingModeEnabled = [visualModeManager windowingModeEnabled];
 
-  return v5;
+  return windowingModeEnabled;
 }
 
 - (BOOL)isRotating
 {
-  v2 = [(UITrackingElementWindowController *)self postRotationPlacement];
-  v3 = v2 != 0;
+  postRotationPlacement = [(UITrackingElementWindowController *)self postRotationPlacement];
+  v3 = postRotationPlacement != 0;
 
   return v3;
 }
@@ -385,13 +385,13 @@ LABEL_10:
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(UITrackingElementWindowController *)self currentTransition];
-  v4 = v3 != 0;
+  currentTransition = [(UITrackingElementWindowController *)self currentTransition];
+  v4 = currentTransition != 0;
 
-  if (v3)
+  if (currentTransition)
   {
-    v5 = [(UITrackingElementWindowController *)self currentTransition];
-    v6 = [v5 notifications] == 0;
+    currentTransition2 = [(UITrackingElementWindowController *)self currentTransition];
+    v6 = [currentTransition2 notifications] == 0;
   }
 
   else
@@ -399,18 +399,18 @@ LABEL_10:
     v6 = 0;
   }
 
-  v7 = [(UIViewController *)self _screen];
-  v8 = [(UIKeyboardMotionSupport *)UIFlickingAssistantViewSupport supportForScreen:v7];
+  _screen = [(UIViewController *)self _screen];
+  v8 = [(UIKeyboardMotionSupport *)UIFlickingAssistantViewSupport supportForScreen:_screen];
 
   if (!-[UITrackingElementWindowController isOnScreen](self, "isOnScreen") || -[UITrackingElementWindowController isDragging](self, "isDragging") || ([v8 handlingFlickGesture] & 1) != 0)
   {
     if (([v8 handlingFlickGesture] & 1) == 0)
     {
-      v9 = [(UITrackingElementWindowController *)self currentTransition];
-      v10 = [v9 notifications];
-      v11 = [(UITrackingElementWindowController *)self currentTransition];
-      v12 = [v11 notificationInfo];
-      [(UITrackingElementWindowController *)self updateAmbiguousControlCenterActivationMargin:v10 withInfo:v12];
+      currentTransition3 = [(UITrackingElementWindowController *)self currentTransition];
+      notifications = [currentTransition3 notifications];
+      currentTransition4 = [(UITrackingElementWindowController *)self currentTransition];
+      notificationInfo = [currentTransition4 notificationInfo];
+      [(UITrackingElementWindowController *)self updateAmbiguousControlCenterActivationMargin:notifications withInfo:notificationInfo];
     }
   }
 
@@ -436,18 +436,18 @@ LABEL_10:
   supportsDockViewController = self->_supportsDockViewController;
   self->_supportsDockViewController = +[UIKeyboardImpl showsGlobeAndDictationKeysExternally];
   v8 = +[UIKeyboardImpl activeInstance];
-  v4 = [v8 window];
-  if (v4)
+  window = [v8 window];
+  if (window)
   {
   }
 
   else
   {
     v5 = +[UIKeyboardInputModeController sharedInputModeController];
-    v6 = [v5 currentInputMode];
-    v7 = [v6 isExtensionInputMode];
+    currentInputMode = [v5 currentInputMode];
+    isExtensionInputMode = [currentInputMode isExtensionInputMode];
 
-    if (!v7)
+    if (!isExtensionInputMode)
     {
       goto LABEL_6;
     }
@@ -464,22 +464,22 @@ LABEL_6:
 - (UIView)bottomEdgeView
 {
   v2 = [(UIInputWindowControllerHosting *)self->_hosting itemForPurpose:4];
-  v3 = [v2 hostView];
+  hostView = [v2 hostView];
 
-  return v3;
+  return hostView;
 }
 
 - (void)viewDidLoad
 {
   if (!self->_hosting)
   {
-    v3 = [(UIViewController *)self _window];
+    _window = [(UIViewController *)self _window];
     if (objc_opt_respondsToSelector())
     {
-      v4 = [(UIViewController *)self _window];
-      v5 = [v4 isForViewService];
+      _window2 = [(UIViewController *)self _window];
+      isForViewService = [_window2 isForViewService];
 
-      if (v5)
+      if (isForViewService)
       {
         goto LABEL_7;
       }
@@ -510,19 +510,19 @@ LABEL_7:
 
 - (void)updateKeyboardDockViewVisibility
 {
-  v2 = [(UIInputWindowControllerHosting *)self->_hosting allHostingItems];
-  [v2 enumerateObjectsUsingBlock:&__block_literal_global_410_0];
+  allHostingItems = [(UIInputWindowControllerHosting *)self->_hosting allHostingItems];
+  [allHostingItems enumerateObjectsUsingBlock:&__block_literal_global_410_0];
 }
 
 - (CGRect)_defaultInitialViewFrame
 {
-  v2 = [(UIViewController *)self _screen];
+  _screen = [(UIViewController *)self _screen];
   if (!__SplashBoardOverrideStatusBarOrientation)
   {
     [UIApp _safeInterfaceOrientationForNoWindow];
   }
 
-  [v2 _boundsForInterfaceOrientation:?];
+  [_screen _boundsForInterfaceOrientation:?];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -549,12 +549,12 @@ LABEL_7:
 
 - (CGRect)_viewFrameInWindowForContentOverlayInsetsCalculation
 {
-  v3 = [(UIViewController *)self _existingView];
-  v4 = [v3 window];
+  _existingView = [(UIViewController *)self _existingView];
+  window = [_existingView window];
 
-  if (v4 && [(UIInputViewSetPlacement *)self->_placement requiresWindowBasedSafeAreaInsets])
+  if (window && [(UIInputViewSetPlacement *)self->_placement requiresWindowBasedSafeAreaInsets])
   {
-    [v4 bounds];
+    [window bounds];
   }
 
   else
@@ -591,9 +591,9 @@ LABEL_7:
 
   else
   {
-    v4 = [(UIViewController *)self view];
-    v5 = [v4 _inheritedRenderConfig];
-    if ([v5 lightKeyboard])
+    view = [(UIViewController *)self view];
+    _inheritedRenderConfig = [view _inheritedRenderConfig];
+    if ([_inheritedRenderConfig lightKeyboard])
     {
       v3 = 1;
     }
@@ -609,27 +609,27 @@ LABEL_7:
 
 - (BOOL)isOnScreenRotating
 {
-  v3 = [(UITrackingElementWindowController *)self postRotationPlacement];
-  if (v3)
+  postRotationPlacement = [(UITrackingElementWindowController *)self postRotationPlacement];
+  if (postRotationPlacement)
   {
-    v4 = [(UITrackingElementWindowController *)self postRotationPlacement];
-    v5 = [v4 showsInputViews];
+    postRotationPlacement2 = [(UITrackingElementWindowController *)self postRotationPlacement];
+    showsInputViews = [postRotationPlacement2 showsInputViews];
   }
 
   else
   {
-    v5 = 0;
+    showsInputViews = 0;
   }
 
-  return v5;
+  return showsInputViews;
 }
 
 - (CGRect)visibleFrame
 {
   v3 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v4 = [v3 containerRootController];
+  containerRootController = [v3 containerRootController];
 
-  if (v4 == self)
+  if (containerRootController == self)
   {
     [(UITrackingElementWindowController *)self _visibleFrame];
     v8 = v15;
@@ -641,8 +641,8 @@ LABEL_7:
   else
   {
     v5 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v6 = [v5 containerRootController];
-    [v6 visibleFrame];
+    containerRootController2 = [v5 containerRootController];
+    [containerRootController2 visibleFrame];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -679,11 +679,11 @@ LABEL_7:
 
 - (BOOL)isTransitionStarted
 {
-  v3 = [(UITrackingElementWindowController *)self currentTransition];
-  if (v3)
+  currentTransition = [(UITrackingElementWindowController *)self currentTransition];
+  if (currentTransition)
   {
-    v4 = [(UITrackingElementWindowController *)self currentTransition];
-    v5 = [v4 animationState] > 2;
+    currentTransition2 = [(UITrackingElementWindowController *)self currentTransition];
+    v5 = [currentTransition2 animationState] > 2;
   }
 
   else
@@ -696,8 +696,8 @@ LABEL_7:
 
 - (BOOL)isTransitioning
 {
-  v2 = [(UITrackingElementWindowController *)self currentTransition];
-  v3 = v2 != 0;
+  currentTransition = [(UITrackingElementWindowController *)self currentTransition];
+  v3 = currentTransition != 0;
 
   return v3;
 }
@@ -720,28 +720,28 @@ LABEL_7:
 
 - (id)currentPresentationPlacement
 {
-  v3 = [(UITrackingElementWindowController *)self currentTransition];
-  v4 = [v3 animationState];
+  currentTransition = [(UITrackingElementWindowController *)self currentTransition];
+  animationState = [currentTransition animationState];
 
-  if (v4 < 3)
+  if (animationState < 3)
   {
-    v6 = [(UITrackingElementWindowController *)self currentTransition];
-    v5 = [v6 fromPlacement];
+    currentTransition2 = [(UITrackingElementWindowController *)self currentTransition];
+    fromPlacement = [currentTransition2 fromPlacement];
 
-    if (!v5 || [v5 showsInputViews])
+    if (!fromPlacement || [fromPlacement showsInputViews])
     {
-      v7 = [(UITrackingElementWindowController *)self placement];
+      placement = [(UITrackingElementWindowController *)self placement];
 
-      v5 = v7;
+      fromPlacement = placement;
     }
   }
 
   else
   {
-    v5 = [(UITrackingElementWindowController *)self placement];
+    fromPlacement = [(UITrackingElementWindowController *)self placement];
   }
 
-  return v5;
+  return fromPlacement;
 }
 
 - (void)flushPendingActivities
@@ -760,14 +760,14 @@ LABEL_7:
 
 - (void)invalidateInputView
 {
-  v3 = [(UITrackingElementWindowController *)self _inputViewController];
-  v4 = [v3 view];
+  _inputViewController = [(UITrackingElementWindowController *)self _inputViewController];
+  view = [_inputViewController view];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __56__UITrackingElementWindowController_invalidateInputView__block_invoke;
   v5[3] = &unk_1E70F3590;
   v5[4] = self;
-  [v4 _preserveResponderOverridesWhilePerforming:v5];
+  [view _preserveResponderOverridesWhilePerforming:v5];
 }
 
 - (UIEdgeInsets)_inputViewPadding
@@ -782,28 +782,28 @@ LABEL_7:
 
 - (id)expectedPlacement
 {
-  v3 = [(UITrackingElementWindowController *)self currentTransition];
-  if (v3)
+  currentTransition = [(UITrackingElementWindowController *)self currentTransition];
+  if (currentTransition)
   {
-    v4 = [(UITrackingElementWindowController *)self currentTransition];
-    v5 = [v4 toPlacement];
+    currentTransition2 = [(UITrackingElementWindowController *)self currentTransition];
+    toPlacement = [currentTransition2 toPlacement];
   }
 
   else
   {
-    v5 = [(UITrackingElementWindowController *)self placement];
+    toPlacement = [(UITrackingElementWindowController *)self placement];
   }
 
-  return v5;
+  return toPlacement;
 }
 
 - (id)initialNotificationInfo
 {
-  v2 = [(UITrackingElementWindowController *)self templateNotificationInfo];
-  v3 = v2;
-  if (v2)
+  templateNotificationInfo = [(UITrackingElementWindowController *)self templateNotificationInfo];
+  v3 = templateNotificationInfo;
+  if (templateNotificationInfo)
   {
-    v4 = v2;
+    v4 = templateNotificationInfo;
   }
 
   else
@@ -818,20 +818,20 @@ LABEL_7:
 
 - (int64_t)animationTypeForCurrentTransition
 {
-  v5 = [(UITrackingElementWindowController *)self currentTransition];
-  v6 = [v5 fromPlacement];
-  v7 = [v6 isFloatingAssistantView];
-  if ((v7 & 1) != 0 || (-[UITrackingElementWindowController currentTransition](self, "currentTransition"), v2 = objc_claimAutoreleasedReturnValue(), [v2 fromPlacement], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isCompactAssistantView")))
+  currentTransition = [(UITrackingElementWindowController *)self currentTransition];
+  fromPlacement = [currentTransition fromPlacement];
+  isFloatingAssistantView = [fromPlacement isFloatingAssistantView];
+  if ((isFloatingAssistantView & 1) != 0 || (-[UITrackingElementWindowController currentTransition](self, "currentTransition"), v2 = objc_claimAutoreleasedReturnValue(), [v2 fromPlacement], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isCompactAssistantView")))
   {
-    v8 = [(UITrackingElementWindowController *)self currentTransition];
-    v9 = [v8 toPlacement];
-    v10 = [v9 showsKeyboard];
+    currentTransition2 = [(UITrackingElementWindowController *)self currentTransition];
+    toPlacement = [currentTransition2 toPlacement];
+    showsKeyboard = [toPlacement showsKeyboard];
 
-    if ((v7 & 1) == 0)
+    if ((isFloatingAssistantView & 1) == 0)
     {
     }
 
-    if (v10)
+    if (showsKeyboard)
     {
       return 7;
     }
@@ -841,19 +841,19 @@ LABEL_7:
   {
   }
 
-  v12 = [(UITrackingElementWindowController *)self currentTransition];
-  v13 = [v12 toPlacement];
-  if ([v13 isFloatingAssistantView])
+  currentTransition3 = [(UITrackingElementWindowController *)self currentTransition];
+  toPlacement2 = [currentTransition3 toPlacement];
+  if ([toPlacement2 isFloatingAssistantView])
   {
 
     return 14;
   }
 
-  v14 = [(UITrackingElementWindowController *)self currentTransition];
-  v15 = [v14 toPlacement];
-  v16 = [v15 isCompactAssistantView];
+  currentTransition4 = [(UITrackingElementWindowController *)self currentTransition];
+  toPlacement3 = [currentTransition4 toPlacement];
+  isCompactAssistantView = [toPlacement3 isCompactAssistantView];
 
-  if (v16)
+  if (isCompactAssistantView)
   {
     return 14;
   }
@@ -864,12 +864,12 @@ LABEL_7:
 - (void)syncToExistingAnimations
 {
   v7 = +[UIWindow _applicationKeyWindow];
-  v3 = [(UIViewController *)self view];
-  v4 = [v3 window];
+  view = [(UIViewController *)self view];
+  window = [view window];
 
   if (v7)
   {
-    v5 = v4 == 0;
+    v5 = window == 0;
   }
 
   else
@@ -877,7 +877,7 @@ LABEL_7:
     v5 = 1;
   }
 
-  v6 = v5 || v7 == v4;
+  v6 = v5 || v7 == window;
   if (!v6 && [v7 _requiresKeyboardPresentationFence])
   {
     +[UIWindow _synchronizeDrawing];
@@ -908,33 +908,33 @@ LABEL_7:
   {
     if ([(UITrackingElementWindowController *)self currentControllerShouldUpdateKeyboardLayoutGuide])
     {
-      v3 = [(UITrackingElementWindowController *)self postRotationPlacement];
+      postRotationPlacement = [(UITrackingElementWindowController *)self postRotationPlacement];
 
-      if (!v3)
+      if (!postRotationPlacement)
       {
-        v4 = [(UITrackingElementWindowController *)self currentTransition];
+        currentTransition = [(UITrackingElementWindowController *)self currentTransition];
 
-        if (!v4 || (-[UITrackingElementWindowController currentTransition](self, "currentTransition"), v5 = objc_claimAutoreleasedReturnValue(), [v5 fromPlacement], v6 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v6, v5, (isKindOfClass & 1) != 0))
+        if (!currentTransition || (-[UITrackingElementWindowController currentTransition](self, "currentTransition"), v5 = objc_claimAutoreleasedReturnValue(), [v5 fromPlacement], v6 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v6, v5, (isKindOfClass & 1) != 0))
         {
-          v8 = [(UITrackingElementWindowController *)self placement];
-          if ([v8 showsInputOrAssistantViews])
+          placement = [(UITrackingElementWindowController *)self placement];
+          if ([placement showsInputOrAssistantViews])
           {
 LABEL_12:
 
             goto LABEL_13;
           }
 
-          v9 = [(UITrackingElementWindowController *)self placement];
-          if ([v9 isFloatingAssistantView])
+          placement2 = [(UITrackingElementWindowController *)self placement];
+          if ([placement2 isFloatingAssistantView])
           {
 
             goto LABEL_12;
           }
 
-          v25 = [(UITrackingElementWindowController *)self inputViewSet];
-          v26 = [v25 inputAccessoryView];
+          inputViewSet = [(UITrackingElementWindowController *)self inputViewSet];
+          inputAccessoryView = [inputViewSet inputAccessoryView];
 
-          if (v26)
+          if (inputAccessoryView)
           {
 LABEL_13:
             v10 = [(UIInputWindowControllerHosting *)self->_hosting itemForPurpose:0];
@@ -947,9 +947,9 @@ LABEL_13:
             if ((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) == 1)
             {
               v19 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-              v20 = [v19 hasActiveKeyboardResponder];
+              hasActiveKeyboardResponder = [v19 hasActiveKeyboardResponder];
 
-              if (v20)
+              if (hasActiveKeyboardResponder)
               {
                 [(UITrackingElementWindowController *)self convertRectFromContainerCoordinateSpaceToScreenSpace:v12, v14, v16, v18];
                 v12 = v21;
@@ -978,8 +978,8 @@ LABEL_13:
     dispatch_once(&TIGetEnableMetronomeValue_onceToken_0, &__block_literal_global_833);
   }
 
-  v3 = [MEMORY[0x1E69D9680] sharedPreferencesController];
-  v4 = [v3 valueForPreferenceKey:@"EnableMetronome"];
+  mEMORY[0x1E69D9680] = [MEMORY[0x1E69D9680] sharedPreferencesController];
+  v4 = [mEMORY[0x1E69D9680] valueForPreferenceKey:@"EnableMetronome"];
 
   if (v4)
   {
@@ -1018,10 +1018,10 @@ void __58__UITrackingElementWindowController_addWindowsForTracking__block_invoke
 
   else
   {
-    v4 = [(UIViewController *)self _window];
-    if ([v4 _isTextEffectsWindowNotificationOwner])
+    _window = [(UIViewController *)self _window];
+    if ([_window _isTextEffectsWindowNotificationOwner])
     {
-      v3 = [v4 isForViewService] ^ 1;
+      v3 = [_window isForViewService] ^ 1;
     }
 
     else
@@ -1248,7 +1248,7 @@ void __58__UITrackingElementWindowController_viewDidLayoutSubviews__block_invoke
 
 - (BOOL)isTransitioningBetweenFloatingStates
 {
-  v3 = [(UIKeyboardFloatingTransitionController *)self->_floatingTransitionController isTransitioning];
+  isTransitioning = [(UIKeyboardFloatingTransitionController *)self->_floatingTransitionController isTransitioning];
   if (!self->_floatingTransitionController)
   {
     if (+[_UIRemoteKeyboards enabled])
@@ -1276,11 +1276,11 @@ void __58__UITrackingElementWindowController_viewDidLayoutSubviews__block_invoke
 
     if (!v6)
     {
-      v3 = [(UITrackingElementWindowController *)v5 isTransitioningBetweenFloatingStates];
+      isTransitioning = [(UITrackingElementWindowController *)v5 isTransitioningBetweenFloatingStates];
     }
   }
 
-  return v3;
+  return isTransitioning;
 }
 
 uint64_t __56__UITrackingElementWindowController_invalidateInputView__block_invoke(uint64_t a1)
@@ -1318,29 +1318,29 @@ uint64_t __56__UITrackingElementWindowController_invalidateInputView__block_invo
 
 - (void)invalidateInputAccessoryView
 {
-  v3 = [(UITrackingElementWindowController *)self _inputAccessoryViewController];
-  v4 = [v3 view];
+  _inputAccessoryViewController = [(UITrackingElementWindowController *)self _inputAccessoryViewController];
+  view = [_inputAccessoryViewController view];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __65__UITrackingElementWindowController_invalidateInputAccessoryView__block_invoke;
   v5[3] = &unk_1E70F3590;
   v5[4] = self;
-  [v4 _preserveResponderOverridesWhilePerforming:v5];
+  [view _preserveResponderOverridesWhilePerforming:v5];
 }
 
 - (id)_inputAccessoryView
 {
-  v2 = [(UITrackingElementWindowController *)self inputViewSet];
-  v3 = [v2 inputAccessoryView];
+  inputViewSet = [(UITrackingElementWindowController *)self inputViewSet];
+  inputAccessoryView = [inputViewSet inputAccessoryView];
 
-  return v3;
+  return inputAccessoryView;
 }
 
-- (UITrackingElementWindowController)initWithNibName:(id)a3 bundle:(id)a4
+- (UITrackingElementWindowController)initWithNibName:(id)name bundle:(id)bundle
 {
   v10.receiver = self;
   v10.super_class = UITrackingElementWindowController;
-  v4 = [(UIInputWindowController *)&v10 initWithNibName:a3 bundle:a4];
+  v4 = [(UIInputWindowController *)&v10 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -1355,15 +1355,15 @@ uint64_t __56__UITrackingElementWindowController_invalidateInputView__block_invo
   return v4;
 }
 
-- (void)_updatePlacementWithPlacement:(id)a3
+- (void)_updatePlacementWithPlacement:(id)placement
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  placementCopy = placement;
   v6 = _UITrackingElementWindowControllerLogger();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v5;
+    v17 = placementCopy;
     _os_log_impl(&dword_188A29000, v6, OS_LOG_TYPE_DEFAULT, "updatePlacementWithPlacement: %@", buf, 0xCu);
   }
 
@@ -1382,18 +1382,18 @@ uint64_t __56__UITrackingElementWindowController_invalidateInputView__block_invo
   }
 
   [(UIInputWindowControllerHosting *)self->_hosting unloadForPlacement];
-  objc_storeStrong(&self->_placement, a3);
+  objc_storeStrong(&self->_placement, placement);
   hosting = self->_hosting;
-  v9 = [(UITrackingElementWindowController *)self transientInputViewSet];
-  if (v9)
+  transientInputViewSet = [(UITrackingElementWindowController *)self transientInputViewSet];
+  if (transientInputViewSet)
   {
-    [(UIInputWindowControllerHosting *)hosting reloadForPlacementForInputViewSet:v9];
+    [(UIInputWindowControllerHosting *)hosting reloadForPlacementForInputViewSet:transientInputViewSet];
   }
 
   else
   {
-    v10 = [(UITrackingElementWindowController *)self inputViewSet];
-    [(UIInputWindowControllerHosting *)hosting reloadForPlacementForInputViewSet:v10];
+    inputViewSet = [(UITrackingElementWindowController *)self inputViewSet];
+    [(UIInputWindowControllerHosting *)hosting reloadForPlacementForInputViewSet:inputViewSet];
   }
 
   if (v7)
@@ -1406,14 +1406,14 @@ uint64_t __56__UITrackingElementWindowController_invalidateInputView__block_invo
     [UIView performWithoutAnimation:v15];
   }
 
-  v11 = [(UITrackingElementWindowController *)self inputViewSet];
-  v12 = [v11 assistantViewController];
-  v13 = [v12 assistantBarStyle];
+  inputViewSet2 = [(UITrackingElementWindowController *)self inputViewSet];
+  assistantViewController = [inputViewSet2 assistantViewController];
+  assistantBarStyle = [assistantViewController assistantBarStyle];
 
-  if (v13 == 1 && ([v5 isFloatingAssistantView] & 1) == 0)
+  if (assistantBarStyle == 1 && ([placementCopy isFloatingAssistantView] & 1) == 0)
   {
-    v14 = [(UITrackingElementWindowController *)self inputViewSet];
-    [(UIInputWindowController *)self updateInputAssistantViewForInputViewSet:v14];
+    inputViewSet3 = [(UITrackingElementWindowController *)self inputViewSet];
+    [(UIInputWindowController *)self updateInputAssistantViewForInputViewSet:inputViewSet3];
   }
 }
 
@@ -1423,16 +1423,16 @@ void __67__UITrackingElementWindowController__updatePlacementWithPlacement___blo
   [v1 layoutIfNeeded];
 }
 
-- (void)setExclusiveTouch:(BOOL)a3
+- (void)setExclusiveTouch:(BOOL)touch
 {
-  v3 = a3;
+  touchCopy = touch;
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(UIInputWindowControllerHosting *)self->_hosting allHostingItems];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allHostingItems = [(UIInputWindowControllerHosting *)self->_hosting allHostingItems];
+  v5 = [allHostingItems countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1444,89 +1444,89 @@ void __67__UITrackingElementWindowController__updatePlacementWithPlacement___blo
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allHostingItems);
         }
 
-        v9 = [*(*(&v10 + 1) + 8 * v8) hostView];
-        [v9 setExclusiveTouch:v3];
+        hostView = [*(*(&v10 + 1) + 8 * v8) hostView];
+        [hostView setExclusiveTouch:touchCopy];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [allHostingItems countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)registerPowerLogEvent:(BOOL)a3
+- (void)registerPowerLogEvent:(BOOL)event
 {
-  v3 = a3;
+  eventCopy = event;
   v12[4] = *MEMORY[0x1E69E9840];
-  if (a3 || self->_wasOnScreen)
+  if (event || self->_wasOnScreen)
   {
     v5 = +[UIKeyboardInputModeController sharedInputModeController];
-    v6 = [v5 currentInputMode];
+    currentInputMode = [v5 currentInputMode];
 
-    if ([v6 isExtensionInputMode])
+    if ([currentInputMode isExtensionInputMode])
     {
-      v7 = [v6 identifier];
+      identifier = [currentInputMode identifier];
     }
 
     else
     {
-      v7 = @"System";
+      identifier = @"System";
     }
 
-    if (v7 != self->_lastKeyboardID || self->_wasOnScreen != v3)
+    if (identifier != self->_lastKeyboardID || self->_wasOnScreen != eventCopy)
     {
       v11[0] = @"Process-ID";
       v8 = [MEMORY[0x1E696AD98] numberWithInt:getpid()];
       v12[0] = v8;
-      v12[1] = v7;
+      v12[1] = identifier;
       v11[1] = @"Keyboard-ID";
       v11[2] = @"Status";
-      v9 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+      v9 = [MEMORY[0x1E696AD98] numberWithBool:eventCopy];
       v12[2] = v9;
       v11[3] = @"Timestamp";
-      v10 = [MEMORY[0x1E695DF00] date];
-      v12[3] = v10;
+      date = [MEMORY[0x1E695DF00] date];
+      v12[3] = date;
       [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:4];
       PLLogRegisteredEvent();
 
-      self->_wasOnScreen = v3;
-      objc_storeStrong(&self->_lastKeyboardID, v7);
+      self->_wasOnScreen = eventCopy;
+      objc_storeStrong(&self->_lastKeyboardID, identifier);
     }
   }
 }
 
-- (void)prepareForInputAssistant:(id)a3 animated:(BOOL)a4
+- (void)prepareForInputAssistant:(id)assistant animated:(BOOL)animated
 {
-  v4 = a4;
-  v11 = a3;
-  v6 = [(UITrackingElementWindowController *)self inputViewSet];
-  v7 = [v6 inputAssistantView];
+  animatedCopy = animated;
+  assistantCopy = assistant;
+  inputViewSet = [(UITrackingElementWindowController *)self inputViewSet];
+  inputAssistantView = [inputViewSet inputAssistantView];
 
-  if (v7)
+  if (inputAssistantView)
   {
-    v8 = [v6 assistantViewController];
+    assistantViewController = [inputViewSet assistantViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v10 = [v6 assistantViewController];
-      [v10 prepareTransition:v11 animated:v4];
+      assistantViewController2 = [inputViewSet assistantViewController];
+      [assistantViewController2 prepareTransition:assistantCopy animated:animatedCopy];
     }
   }
 }
 
 - (void)hostViewWillDisappear
 {
-  v3 = [(UITrackingElementWindowController *)self postRotationInputViewSet];
-  if (v3 || ([(UITrackingElementWindowController *)self postRotationPlacement], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  postRotationInputViewSet = [(UITrackingElementWindowController *)self postRotationInputViewSet];
+  if (postRotationInputViewSet || ([(UITrackingElementWindowController *)self postRotationPlacement], (postRotationInputViewSet = objc_claimAutoreleasedReturnValue()) != 0))
   {
 
 LABEL_4:
@@ -1539,9 +1539,9 @@ LABEL_4:
     return;
   }
 
-  v4 = [(UITrackingElementWindowController *)self postRotationPendingBlock];
+  postRotationPendingBlock = [(UITrackingElementWindowController *)self postRotationPendingBlock];
 
-  if (v4)
+  if (postRotationPendingBlock)
   {
     goto LABEL_4;
   }
@@ -1558,95 +1558,95 @@ uint64_t __58__UITrackingElementWindowController_hostViewWillDisappear__block_in
 - (id)_inputViewPlaceholder
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(UITrackingElementWindowController *)self inputViewSet];
-  v4 = [v3 isInputViewPlaceholder];
+  inputViewSet = [(UITrackingElementWindowController *)self inputViewSet];
+  isInputViewPlaceholder = [inputViewSet isInputViewPlaceholder];
 
-  if ((v4 & 1) == 0)
+  if ((isInputViewPlaceholder & 1) == 0)
   {
     v5 = _UITrackingElementWindowControllerLogger();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v9 = [(UITrackingElementWindowController *)self inputViewSet];
-      v10 = [v9 inputView];
+      inputViewSet2 = [(UITrackingElementWindowController *)self inputViewSet];
+      inputView = [inputViewSet2 inputView];
       v11 = 138412290;
-      v12 = v10;
+      v12 = inputView;
       _os_log_error_impl(&dword_188A29000, v5, OS_LOG_TYPE_ERROR, "Tracking element window has a non-placeholder input view: %@", &v11, 0xCu);
     }
   }
 
-  v6 = [(UITrackingElementWindowController *)self inputViewSet];
-  v7 = [v6 inputView];
+  inputViewSet3 = [(UITrackingElementWindowController *)self inputViewSet];
+  inputView2 = [inputViewSet3 inputView];
 
-  return v7;
+  return inputView2;
 }
 
 - (id)_inputAssistantView
 {
-  v2 = [(UITrackingElementWindowController *)self inputViewSet];
-  v3 = [v2 inputAssistantView];
+  inputViewSet = [(UITrackingElementWindowController *)self inputViewSet];
+  inputAssistantView = [inputViewSet inputAssistantView];
 
-  return v3;
+  return inputAssistantView;
 }
 
-- (void)performWithoutAppearanceCallbacks:(id)a3
+- (void)performWithoutAppearanceCallbacks:(id)callbacks
 {
   ++self->_suppressedCallbacks;
-  (*(a3 + 2))(a3, a2);
+  (*(callbacks + 2))(callbacks, a2);
   --self->_suppressedCallbacks;
 }
 
-- (void)performWithoutCallbacksOrNotifications:(id)a3
+- (void)performWithoutCallbacksOrNotifications:(id)notifications
 {
   ++self->_suppressedNotifications;
-  [(UITrackingElementWindowController *)self performWithoutAppearanceCallbacks:a3];
+  [(UITrackingElementWindowController *)self performWithoutAppearanceCallbacks:notifications];
   --self->_suppressedNotifications;
 }
 
-- (void)performOperations:(id)a3 withTemplateNotificationInfo:(id)a4
+- (void)performOperations:(id)operations withTemplateNotificationInfo:(id)info
 {
-  v6 = a3;
-  [(UITrackingElementWindowController *)self setTemplateNotificationInfo:a4];
-  v6[2](v6);
+  operationsCopy = operations;
+  [(UITrackingElementWindowController *)self setTemplateNotificationInfo:info];
+  operationsCopy[2](operationsCopy);
 
   [(UITrackingElementWindowController *)self setTemplateNotificationInfo:0];
 }
 
-- (void)performWithSafeTransitionFrames:(id)a3
+- (void)performWithSafeTransitionFrames:(id)frames
 {
   if (self->_inhibitingHiding)
   {
-    v3 = *(a3 + 2);
-    v9 = a3;
+    v3 = *(frames + 2);
+    framesCopy = frames;
     v3();
   }
 
   else
   {
     hiddenCount = self->_hiddenCount;
-    v6 = a3;
-    v7 = [(UITrackingElementWindowController *)self inputSetContainerView];
+    framesCopy2 = frames;
+    inputSetContainerView = [(UITrackingElementWindowController *)self inputSetContainerView];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __69__UITrackingElementWindowController_performWithSafeTransitionFrames___block_invoke;
     v12[3] = &unk_1E7102030;
     v13 = hiddenCount;
     v12[4] = self;
-    [v7 performWithoutGeometryObserverNotifications:v12];
+    [inputSetContainerView performWithoutGeometryObserverNotifications:v12];
 
     self->_inhibitingHiding = 1;
-    v6[2](v6);
+    framesCopy2[2](framesCopy2);
 
-    LODWORD(v7) = self->_hiddenCount + hiddenCount;
+    LODWORD(inputSetContainerView) = self->_hiddenCount + hiddenCount;
     self->_hiddenCount = 0;
     self->_inhibitingHiding = 0;
-    v8 = [(UITrackingElementWindowController *)self inputSetContainerView];
+    inputSetContainerView2 = [(UITrackingElementWindowController *)self inputSetContainerView];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __69__UITrackingElementWindowController_performWithSafeTransitionFrames___block_invoke_2;
     v10[3] = &unk_1E7102030;
-    v11 = v7;
+    v11 = inputSetContainerView;
     v10[4] = self;
-    [v8 performWithoutGeometryObserverNotifications:v10];
+    [inputSetContainerView2 performWithoutGeometryObserverNotifications:v10];
   }
 }
 
@@ -1694,10 +1694,10 @@ uint64_t __69__UITrackingElementWindowController_performWithSafeTransitionFrames
   return result;
 }
 
-- (CGPoint)_centerForOrientation:(int64_t)a3
+- (CGPoint)_centerForOrientation:(int64_t)orientation
 {
-  v5 = [(UIViewController *)self _screen];
-  [v5 _boundsForInterfaceOrientation:a3];
+  _screen = [(UIViewController *)self _screen];
+  [_screen _boundsForInterfaceOrientation:orientation];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -1713,7 +1713,7 @@ uint64_t __69__UITrackingElementWindowController_performWithSafeTransitionFrames
   v22.size.width = v11;
   v22.size.height = v13;
   MidY = CGRectGetMidY(v22);
-  v16 = [(UIViewController *)self _window];
+  _window = [(UIViewController *)self _window];
   if ([objc_opt_class() _transformLayerRotationsAreEnabled])
   {
 
@@ -1722,7 +1722,7 @@ uint64_t __69__UITrackingElementWindowController_performWithSafeTransitionFrames
 
   else
   {
-    v18 = a3 - 3;
+    v18 = orientation - 3;
 
     if (v18 >= 2)
     {
@@ -1746,10 +1746,10 @@ uint64_t __69__UITrackingElementWindowController_performWithSafeTransitionFrames
   return result;
 }
 
-- (CGRect)_boundsForOrientation:(int64_t)a3
+- (CGRect)_boundsForOrientation:(int64_t)orientation
 {
-  v4 = [(UIViewController *)self _screen];
-  [v4 _boundsForInterfaceOrientation:a3];
+  _screen = [(UIViewController *)self _screen];
+  [_screen _boundsForInterfaceOrientation:orientation];
   v6 = v5;
   v8 = v7;
 
@@ -1764,78 +1764,78 @@ uint64_t __69__UITrackingElementWindowController_performWithSafeTransitionFrames
   return result;
 }
 
-- (void)ignoreLayoutNotifications:(id)a3
+- (void)ignoreLayoutNotifications:(id)notifications
 {
-  v4 = a3;
+  notificationsCopy = notifications;
   if (+[_UIRemoteKeyboards enabled])
   {
     v3 = +[UIKeyboardSceneDelegate automaticKeyboardArbiterClient];
-    [v3 ignoreLayoutNotifications:v4];
+    [v3 ignoreLayoutNotifications:notificationsCopy];
   }
 
   else
   {
-    v4[2]();
+    notificationsCopy[2]();
   }
 }
 
-- (void)presentViewController:(id)a3
+- (void)presentViewController:(id)controller
 {
-  v19 = a3;
-  v4 = [(UITrackingElementWindowController *)self inputViewSet];
+  controllerCopy = controller;
+  inputViewSet = [(UITrackingElementWindowController *)self inputViewSet];
 
-  if (!v4)
+  if (!inputViewSet)
   {
     [(UIViewController *)self updateViewConstraints];
   }
 
-  v5 = [(UIViewController *)self childViewControllers];
-  v6 = [v5 containsObject:v19];
+  childViewControllers = [(UIViewController *)self childViewControllers];
+  v6 = [childViewControllers containsObject:controllerCopy];
 
   if (v6)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ already contains %@", self, v19}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ already contains %@", self, controllerCopy}];
   }
 
-  [(UIViewController *)self addChildViewController:v19];
-  v7 = [(UIViewController *)self view];
-  [v7 bounds];
+  [(UIViewController *)self addChildViewController:controllerCopy];
+  view = [(UIViewController *)self view];
+  [view bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [v19 view];
-  [v16 setFrame:{v9, v11, v13, v15}];
+  view2 = [controllerCopy view];
+  [view2 setFrame:{v9, v11, v13, v15}];
 
-  v17 = [(UIViewController *)self view];
-  v18 = [v19 view];
-  [v17 addSubview:v18];
+  view3 = [(UIViewController *)self view];
+  view4 = [controllerCopy view];
+  [view3 addSubview:view4];
 
-  [v19 didMoveToParentViewController:self];
+  [controllerCopy didMoveToParentViewController:self];
 }
 
-- (void)dismissViewController:(id)a3
+- (void)dismissViewController:(id)controller
 {
-  v7 = a3;
-  v4 = [(UIViewController *)self childViewControllers];
-  v5 = [v4 containsObject:v7];
+  controllerCopy = controller;
+  childViewControllers = [(UIViewController *)self childViewControllers];
+  v5 = [childViewControllers containsObject:controllerCopy];
 
   if ((v5 & 1) == 0)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ does not contain %@", self, v7}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ does not contain %@", self, controllerCopy}];
   }
 
-  [v7 willMoveToParentViewController:0];
-  v6 = [v7 view];
-  [v6 removeFromSuperview];
+  [controllerCopy willMoveToParentViewController:0];
+  view = [controllerCopy view];
+  [view removeFromSuperview];
 
-  [v7 removeFromParentViewController];
+  [controllerCopy removeFromParentViewController];
 }
 
-- (void)didEndTransitionWithController:(id)a3
+- (void)didEndTransitionWithController:(id)controller
 {
   [(UITrackingElementWindowController *)self setInterfaceAutorotationDisabled:0];
-  v14 = [(UITrackingElementWindowController *)self initialNotificationInfo];
+  initialNotificationInfo = [(UITrackingElementWindowController *)self initialNotificationInfo];
   v4 = [(UIInputWindowControllerHosting *)self->_hosting itemForPurpose:0];
   [v4 notificationsFrame];
   v6 = v5;
@@ -1844,8 +1844,8 @@ uint64_t __69__UITrackingElementWindowController_performWithSafeTransitionFrames
   v12 = v11;
 
   [(UITrackingElementWindowController *)self convertRectFromContainerCoordinateSpaceToScreenSpace:v6, v8, v10, v12];
-  [v14 populateEndInfoWithFrame:?];
-  [v14 addKeyboardNotificationDebuggingInfo:@"TEWC didEndTransitionWithController:"];
+  [initialNotificationInfo populateEndInfoWithFrame:?];
+  [initialNotificationInfo addKeyboardNotificationDebuggingInfo:@"TEWC didEndTransitionWithController:"];
   if (+[UIKeyboardImpl isFloating])
   {
     v13 = 3;
@@ -1856,14 +1856,14 @@ uint64_t __69__UITrackingElementWindowController_performWithSafeTransitionFrames
     v13 = 2;
   }
 
-  [(UITrackingElementWindowController *)self postValidatedStartNotifications:v13 withInfo:v14];
-  [(UITrackingElementWindowController *)self postValidatedEndNotifications:v13 withInfo:v14];
-  [(UITrackingElementWindowController *)self keyboardMoveOfType:1 info:v14];
+  [(UITrackingElementWindowController *)self postValidatedStartNotifications:v13 withInfo:initialNotificationInfo];
+  [(UITrackingElementWindowController *)self postValidatedEndNotifications:v13 withInfo:initialNotificationInfo];
+  [(UITrackingElementWindowController *)self keyboardMoveOfType:1 info:initialNotificationInfo];
   [(UIInputWindowControllerHosting *)self->_hosting updateCombinedBackdropViewAnimated:0 forKeyboardUp:1];
   [(UITrackingElementWindowController *)self updateKeyboardSizeClass];
 }
 
-- (BOOL)shouldBeginTransitionForController:(id)a3
+- (BOOL)shouldBeginTransitionForController:(id)controller
 {
   v4 = +[UIKeyboardImpl activeInstance];
   if (!+[UIKeyboardImpl supportsFloating](UIKeyboardImpl, "supportsFloating") || ([v4 isMinimized] & 1) != 0 || (objc_msgSend(v4, "isTrackpadMode") & 1) != 0)
@@ -1873,8 +1873,8 @@ uint64_t __69__UITrackingElementWindowController_performWithSafeTransitionFrames
 
   else
   {
-    v7 = [(UITrackingElementWindowController *)self inputViewSet];
-    v5 = [v7 isCustomInputView] ^ 1;
+    inputViewSet = [(UITrackingElementWindowController *)self inputViewSet];
+    v5 = [inputViewSet isCustomInputView] ^ 1;
   }
 
   return v5;
@@ -1882,8 +1882,8 @@ uint64_t __69__UITrackingElementWindowController_performWithSafeTransitionFrames
 
 - (BOOL)isViewLandscape
 {
-  v2 = [(UIViewController *)self view];
-  [v2 bounds];
+  view = [(UIViewController *)self view];
+  [view bounds];
   v4 = v3;
   v6 = v5;
 
@@ -1894,17 +1894,17 @@ uint64_t __69__UITrackingElementWindowController_performWithSafeTransitionFrames
 {
   self->_suppressUpdateVisibilityConstraints = 1;
   self->_animatedLayoutFromCoordinator = +[UIView _isInAnimationBlock];
-  v3 = [(UIViewController *)self view];
-  [v3 layoutIfNeeded];
+  view = [(UIViewController *)self view];
+  [view layoutIfNeeded];
 
   self->_animatedLayoutFromCoordinator = 0;
   self->_suppressUpdateVisibilityConstraints = 0;
 }
 
-- (void)updateVisibilityConstraintsForPlacement:(id)a3
+- (void)updateVisibilityConstraintsForPlacement:(id)placement
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  placementCopy = placement;
   if (self->_suppressUpdateVisibilityConstraints)
   {
     goto LABEL_19;
@@ -1914,13 +1914,13 @@ uint64_t __69__UITrackingElementWindowController_performWithSafeTransitionFrames
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [(UIInputWindowControllerHosting *)self->_hosting allHostingItems];
-  v6 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  allHostingItems = [(UIInputWindowControllerHosting *)self->_hosting allHostingItems];
+  v6 = [allHostingItems countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v6)
   {
     v7 = v6;
-    v20 = self;
-    obj = v5;
+    selfCopy = self;
+    obj = allHostingItems;
     LODWORD(v8) = 0;
     v9 = 0;
     v10 = *v23;
@@ -1936,11 +1936,11 @@ uint64_t __69__UITrackingElementWindowController_performWithSafeTransitionFrames
         }
 
         v12 = *(*(&v22 + 1) + 8 * v11);
-        v13 = [v4 accessoryViewWillAppear];
+        accessoryViewWillAppear = [placementCopy accessoryViewWillAppear];
         if (v8)
         {
-          v14 = [v4 subPlacements];
-          v15 = [v14 objectAtIndexedSubscript:v8 - 1];
+          subPlacements = [placementCopy subPlacements];
+          v15 = [subPlacements objectAtIndexedSubscript:v8 - 1];
 
           if (!v15)
           {
@@ -1952,14 +1952,14 @@ LABEL_9:
           goto LABEL_10;
         }
 
-        v15 = v4;
+        v15 = placementCopy;
         if (v15)
         {
           goto LABEL_9;
         }
 
 LABEL_10:
-        v9 |= v13;
+        v9 |= accessoryViewWillAppear;
         ++v8;
 
         ++v11;
@@ -1971,12 +1971,12 @@ LABEL_10:
       if (!v16)
       {
 
-        v17 = [(UIViewController *)v20 view];
-        [v17 setNeedsLayout];
+        view = [(UIViewController *)selfCopy view];
+        [view setNeedsLayout];
 
         if (v9)
         {
-          v18 = [(UITrackingElementWindowController *)v20 _inputAccessoryView];
+          _inputAccessoryView = [(UITrackingElementWindowController *)selfCopy _inputAccessoryView];
           goto LABEL_18;
         }
 
@@ -1985,10 +1985,10 @@ LABEL_10:
     }
   }
 
-  v18 = [(UIViewController *)self view];
+  _inputAccessoryView = [(UIViewController *)self view];
 LABEL_18:
-  v19 = v18;
-  [v18 setNeedsLayout];
+  v19 = _inputAccessoryView;
+  [_inputAccessoryView setNeedsLayout];
 
 LABEL_19:
 }
@@ -1997,13 +1997,13 @@ LABEL_19:
 {
   if ([objc_opt_class() useMetronomeTracking])
   {
-    v3 = [(UITrackingElementWindowController *)self postRotationPlacement];
+    postRotationPlacement = [(UITrackingElementWindowController *)self postRotationPlacement];
 
-    if (!v3)
+    if (!postRotationPlacement)
     {
       v4 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-      v5 = [v4 trackingElementCoordinator];
-      [v5 sendUpdateCompleteWithExistingInfo];
+      trackingElementCoordinator = [v4 trackingElementCoordinator];
+      [trackingElementCoordinator sendUpdateCompleteWithExistingInfo];
     }
   }
 
@@ -2014,20 +2014,20 @@ LABEL_19:
     [v6 sceneUpdated];
   }
 
-  v7 = [(UIViewController *)self _window];
-  v8 = [v7 _isHostedInAnotherProcess];
+  _window = [(UIViewController *)self _window];
+  _isHostedInAnotherProcess = [_window _isHostedInAnotherProcess];
 
   v9 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v10 = [v9 visualModeManager];
-  v11 = [v10 windowingModeEnabled];
+  visualModeManager = [v9 visualModeManager];
+  windowingModeEnabled = [visualModeManager windowingModeEnabled];
 
-  if ((v11 & 1) != 0 || v8)
+  if ((windowingModeEnabled & 1) != 0 || _isHostedInAnotherProcess)
   {
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __62__UITrackingElementWindowController_hostAppSceneBoundsChanged__block_invoke;
     v27[3] = &unk_1E70F35E0;
-    v28 = v8;
+    v28 = _isHostedInAnotherProcess;
     v27[4] = self;
     [(UITrackingElementWindowController *)self performWithoutCallbacksOrNotifications:v27];
   }
@@ -2035,16 +2035,16 @@ LABEL_19:
   if (+[UIKeyboardImpl isFloating])
   {
     v12 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v13 = [v12 visualModeManager];
-    v14 = [v13 windowingModeEnabled];
+    visualModeManager2 = [v12 visualModeManager];
+    windowingModeEnabled2 = [visualModeManager2 windowingModeEnabled];
 
-    if (v14)
+    if (windowingModeEnabled2)
     {
       +[UIKeyboardImpl floatingPersistentOffset];
       v16 = v15;
       v18 = v17;
-      v19 = [(UITrackingElementWindowController *)self inputViewSet];
-      [v19 inputViewBounds];
+      inputViewSet = [(UITrackingElementWindowController *)self inputViewSet];
+      [inputViewSet inputViewBounds];
       [UIPeripheralHost adjustedFloatingOffsetForKeyboardSize:v20, v21];
       v23 = v22;
       v25 = v24;
@@ -2070,11 +2070,11 @@ uint64_t __62__UITrackingElementWindowController_hostAppSceneBoundsChanged__bloc
   return [v2 refreshKeyboardLayoutGuide];
 }
 
-- (void)takeKeyboardSnapshotIgnoringSpotlightCheck:(BOOL)a3
+- (void)takeKeyboardSnapshotIgnoringSpotlightCheck:(BOOL)check
 {
   v3.receiver = self;
   v3.super_class = UITrackingElementWindowController;
-  [(UIInputWindowController *)&v3 takeKeyboardSnapshotIgnoringSpotlightCheck:a3];
+  [(UIInputWindowController *)&v3 takeKeyboardSnapshotIgnoringSpotlightCheck:check];
 }
 
 - (void)willSnapshot
@@ -2100,34 +2100,34 @@ uint64_t __62__UITrackingElementWindowController_hostAppSceneBoundsChanged__bloc
 
 - (BOOL)customTrackingElementsShouldUseActualFrame
 {
-  v3 = [(UITrackingElementWindowController *)self placement];
-  if ([v3 isUndocked])
+  placement = [(UITrackingElementWindowController *)self placement];
+  if ([placement isUndocked])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(UITrackingElementWindowController *)self placement];
-    if ([v5 isFloating])
+    placement2 = [(UITrackingElementWindowController *)self placement];
+    if ([placement2 isFloating])
     {
       v4 = 0;
     }
 
     else
     {
-      v6 = [(UITrackingElementWindowController *)self placement];
-      if ([v6 isFloatingAssistantView])
+      placement3 = [(UITrackingElementWindowController *)self placement];
+      if ([placement3 isFloatingAssistantView])
       {
         v4 = 0;
       }
 
       else
       {
-        v7 = [(UITrackingElementWindowController *)self placement];
-        v8 = [v7 isHiddenForFloatingTransition];
+        placement4 = [(UITrackingElementWindowController *)self placement];
+        isHiddenForFloatingTransition = [placement4 isHiddenForFloatingTransition];
 
-        v4 = v8 ^ 1;
+        v4 = isHiddenForFloatingTransition ^ 1;
       }
     }
   }
@@ -2135,14 +2135,14 @@ uint64_t __62__UITrackingElementWindowController_hostAppSceneBoundsChanged__bloc
   return v4;
 }
 
-- (void)updateTrackingElementsWithSize:(CGSize)a3
+- (void)updateTrackingElementsWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (![(UITrackingElementWindowController *)self customTrackingElementsShouldUseActualFrame])
   {
-    v6 = [(UIViewController *)self _window];
-    [v6 bounds];
+    _window = [(UIViewController *)self _window];
+    [_window bounds];
     width = v7;
 
     height = 0.0;
@@ -2157,10 +2157,10 @@ uint64_t __62__UITrackingElementWindowController_hostAppSceneBoundsChanged__bloc
   [UIKeyboardSceneDelegate performOnControllers:v8];
 }
 
-- (void)updateTrackingElementsWithOffset:(UIOffset)a3
+- (void)updateTrackingElementsWithOffset:(UIOffset)offset
 {
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
+  vertical = offset.vertical;
+  horizontal = offset.horizontal;
   v5 = ![(UITrackingElementWindowController *)self customTrackingElementsShouldUseActualFrame];
   v8[1] = 3221225472;
   v6 = 0.0;
@@ -2190,13 +2190,13 @@ uint64_t __62__UITrackingElementWindowController_hostAppSceneBoundsChanged__bloc
 - (void)hostedOriginDidUpdate
 {
   v5 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v3 = [v5 trackingElementCoordinator];
-  v4 = [(UIViewController *)self _window];
-  [v4 hostedViewOrigin];
-  [v3 updateTEWHostingOrigin:?];
+  trackingElementCoordinator = [v5 trackingElementCoordinator];
+  _window = [(UIViewController *)self _window];
+  [_window hostedViewOrigin];
+  [trackingElementCoordinator updateTEWHostingOrigin:?];
 }
 
-- (void)changeGuideAnimationOptions:(unint64_t)a3 duration:(double)a4
+- (void)changeGuideAnimationOptions:(unint64_t)options duration:(double)duration
 {
   if ([(UITrackingElementWindowController *)self currentControllerShouldUpdateKeyboardLayoutGuide])
   {
@@ -2204,8 +2204,8 @@ uint64_t __62__UITrackingElementWindowController_hostAppSceneBoundsChanged__bloc
     v6[1] = 3221225472;
     v6[2] = __74__UITrackingElementWindowController_changeGuideAnimationOptions_duration___block_invoke;
     v6[3] = &__block_descriptor_48_e22_v24__0__UIWindow_8_B16l;
-    *&v6[4] = a4;
-    v6[5] = a3;
+    *&v6[4] = duration;
+    v6[5] = options;
     [UIWindow _enumerateWindowsIncludingInternalWindows:1 onlyVisibleWindows:1 allowMutation:0 withBlock:v6];
   }
 }
@@ -2220,7 +2220,7 @@ void __74__UITrackingElementWindowController_changeGuideAnimationOptions_duratio
   }
 }
 
-- (void)changeGuideAnimationState:(BOOL)a3
+- (void)changeGuideAnimationState:(BOOL)state
 {
   if ([(UITrackingElementWindowController *)self currentControllerShouldUpdateKeyboardLayoutGuide])
   {
@@ -2228,7 +2228,7 @@ void __74__UITrackingElementWindowController_changeGuideAnimationOptions_duratio
     v4[1] = 3221225472;
     v4[2] = __63__UITrackingElementWindowController_changeGuideAnimationState___block_invoke;
     v4[3] = &__block_descriptor_33_e22_v24__0__UIWindow_8_B16l;
-    v5 = a3;
+    stateCopy = state;
     [UIWindow _enumerateWindowsIncludingInternalWindows:1 onlyVisibleWindows:1 allowMutation:0 withBlock:v4];
   }
 }
@@ -2243,13 +2243,13 @@ void __63__UITrackingElementWindowController_changeGuideAnimationState___block_i
   }
 }
 
-- (void)hideGuideBackdrop:(BOOL)a3
+- (void)hideGuideBackdrop:(BOOL)backdrop
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __55__UITrackingElementWindowController_hideGuideBackdrop___block_invoke;
   v3[3] = &__block_descriptor_33_e22_v24__0__UIWindow_8_B16l;
-  v4 = a3;
+  backdropCopy = backdrop;
   [UIWindow _enumerateWindowsIncludingInternalWindows:1 onlyVisibleWindows:1 allowMutation:0 withBlock:v3];
 }
 
@@ -2263,7 +2263,7 @@ void __55__UITrackingElementWindowController_hideGuideBackdrop___block_invoke(ui
   }
 }
 
-- (id)transitionGuideBackdrop:(BOOL)a3
+- (id)transitionGuideBackdrop:(BOOL)backdrop
 {
   v9 = 0;
   v10 = &v9;
@@ -2275,7 +2275,7 @@ void __55__UITrackingElementWindowController_hideGuideBackdrop___block_invoke(ui
   v7[1] = 3221225472;
   v7[2] = __61__UITrackingElementWindowController_transitionGuideBackdrop___block_invoke;
   v7[3] = &unk_1E71163B8;
-  v8 = a3;
+  backdropCopy = backdrop;
   v7[4] = self;
   v7[5] = &v9;
   [UIWindow _enumerateWindowsIncludingInternalWindows:1 onlyVisibleWindows:1 allowMutation:0 withBlock:v7];
@@ -2320,9 +2320,9 @@ void __61__UITrackingElementWindowController_transitionGuideBackdrop___block_inv
   }
 }
 
-- (BOOL)updateGuideBackdropRenderConfig:(id)a3 animated:(BOOL)a4
+- (BOOL)updateGuideBackdropRenderConfig:(id)config animated:(BOOL)animated
 {
-  v5 = a3;
+  configCopy = config;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -2332,9 +2332,9 @@ void __61__UITrackingElementWindowController_transitionGuideBackdrop___block_inv
   v9[2] = __78__UITrackingElementWindowController_updateGuideBackdropRenderConfig_animated___block_invoke;
   v9[3] = &unk_1E71163B8;
   v11 = &v13;
-  v6 = v5;
+  v6 = configCopy;
   v10 = v6;
-  v12 = a4;
+  animatedCopy = animated;
   [UIWindow _enumerateWindowsIncludingInternalWindows:1 onlyVisibleWindows:1 allowMutation:0 withBlock:v9];
   v7 = *(v14 + 24);
 
@@ -2352,7 +2352,7 @@ void __78__UITrackingElementWindowController_updateGuideBackdropRenderConfig_ani
   }
 }
 
-- (void)keyboardIsDocking:(BOOL)a3
+- (void)keyboardIsDocking:(BOOL)docking
 {
   if ([(UITrackingElementWindowController *)self currentControllerShouldUpdateKeyboardLayoutGuide])
   {
@@ -2360,7 +2360,7 @@ void __78__UITrackingElementWindowController_updateGuideBackdropRenderConfig_ani
     v4[1] = 3221225472;
     v4[2] = __55__UITrackingElementWindowController_keyboardIsDocking___block_invoke;
     v4[3] = &__block_descriptor_33_e22_v24__0__UIWindow_8_B16l;
-    v5 = a3;
+    dockingCopy = docking;
     [UIWindow _enumerateWindowsIncludingInternalWindows:1 onlyVisibleWindows:1 allowMutation:0 withBlock:v4];
   }
 }
@@ -2375,16 +2375,16 @@ void __55__UITrackingElementWindowController_keyboardIsDocking___block_invoke(ui
   }
 }
 
-- (void)updateKeyboardPlacementForGuide:(id)a3
+- (void)updateKeyboardPlacementForGuide:(id)guide
 {
-  v4 = a3;
+  guideCopy = guide;
   if ([(UITrackingElementWindowController *)self currentControllerShouldUpdateKeyboardLayoutGuide])
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __69__UITrackingElementWindowController_updateKeyboardPlacementForGuide___block_invoke;
     v5[3] = &unk_1E70F4440;
-    v6 = v4;
+    v6 = guideCopy;
     [UIWindow _enumerateWindowsIncludingInternalWindows:1 onlyVisibleWindows:1 allowMutation:0 withBlock:v5];
   }
 }
@@ -2398,31 +2398,31 @@ void __69__UITrackingElementWindowController_updateKeyboardPlacementForGuide___b
   }
 }
 
-- (void)keyboardMoveOfType:(unint64_t)a3 info:(id)a4
+- (void)keyboardMoveOfType:(unint64_t)type info:(id)info
 {
-  v12 = a4;
-  if (([v12 dueToRotation] & 1) == 0)
+  infoCopy = info;
+  if (([infoCopy dueToRotation] & 1) == 0)
   {
-    v6 = [(UITrackingElementWindowController *)self postRotationPlacement];
+    postRotationPlacement = [(UITrackingElementWindowController *)self postRotationPlacement];
 
-    if (a3 != 4 && !v6 && !+[UIKeyboard isInputSystemUI])
+    if (type != 4 && !postRotationPlacement && !+[UIKeyboard isInputSystemUI])
     {
-      if (a3 <= 1)
+      if (type <= 1)
       {
-        if (a3)
+        if (type)
         {
-          if (a3 != 1)
+          if (type != 1)
           {
             goto LABEL_2;
           }
 
-          v7 = [(UITrackingElementWindowController *)self placement];
-          if (![v7 isFloating])
+          placement = [(UITrackingElementWindowController *)self placement];
+          if (![placement isFloating])
           {
-            v8 = [(UITrackingElementWindowController *)self placement];
-            v9 = [v8 isFloatingAssistantView];
+            placement2 = [(UITrackingElementWindowController *)self placement];
+            isFloatingAssistantView = [placement2 isFloatingAssistantView];
 
-            if (v9)
+            if (isFloatingAssistantView)
             {
               goto LABEL_2;
             }
@@ -2433,38 +2433,38 @@ void __69__UITrackingElementWindowController_updateKeyboardPlacementForGuide___b
           goto LABEL_23;
         }
 
-        v7 = [(UITrackingElementWindowController *)self placement];
-        if (![v7 isFloating])
+        placement = [(UITrackingElementWindowController *)self placement];
+        if (![placement isFloating])
         {
 LABEL_23:
 
           goto LABEL_2;
         }
 
-        v11 = [v12 wasCausedRemotely];
+        wasCausedRemotely = [infoCopy wasCausedRemotely];
 
-        if (!v11)
+        if (!wasCausedRemotely)
         {
           goto LABEL_2;
         }
 
 LABEL_22:
-        [(UITrackingElementWindowController *)self keyboardDismissWithInfo:v12];
+        [(UITrackingElementWindowController *)self keyboardDismissWithInfo:infoCopy];
         goto LABEL_2;
       }
 
-      if (a3 == 2)
+      if (type == 2)
       {
 LABEL_19:
-        [(UITrackingElementWindowController *)self keyboardMoveWithInfo:v12];
+        [(UITrackingElementWindowController *)self keyboardMoveWithInfo:infoCopy];
         goto LABEL_2;
       }
 
-      if (a3 == 3 && ([v12 dueToRotation] & 1) == 0)
+      if (type == 3 && ([infoCopy dueToRotation] & 1) == 0)
       {
-        v10 = [(UITrackingElementWindowController *)self postRotationPlacement];
+        postRotationPlacement2 = [(UITrackingElementWindowController *)self postRotationPlacement];
 
-        if (!v10)
+        if (!postRotationPlacement2)
         {
           goto LABEL_22;
         }
@@ -2475,26 +2475,26 @@ LABEL_19:
 LABEL_2:
 }
 
-- (void)keyboardDismissWithInfo:(id)a3
+- (void)keyboardDismissWithInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if ([(UITrackingElementWindowController *)self currentControllerShouldUpdateKeyboardLayoutGuide])
   {
-    if (([v4 dueToRotation] & 1) == 0)
+    if (([infoCopy dueToRotation] & 1) == 0)
     {
-      v5 = [(UITrackingElementWindowController *)self postRotationPlacement];
+      postRotationPlacement = [(UITrackingElementWindowController *)self postRotationPlacement];
 
-      if (!v5)
+      if (!postRotationPlacement)
       {
-        v6 = [(UIViewController *)self _window];
-        [v6 bounds];
+        _window = [(UIViewController *)self _window];
+        [_window bounds];
         [(UITrackingElementWindowController *)self updateTrackingElementsWithSize:v7, 0.0];
 
         v8[0] = MEMORY[0x1E69E9820];
         v8[1] = 3221225472;
         v8[2] = __61__UITrackingElementWindowController_keyboardDismissWithInfo___block_invoke;
         v8[3] = &unk_1E70F4440;
-        v9 = v4;
+        v9 = infoCopy;
         [UIWindow _enumerateWindowsIncludingInternalWindows:1 onlyVisibleWindows:1 allowMutation:0 withBlock:v8];
       }
     }
@@ -2555,29 +2555,29 @@ void __61__UITrackingElementWindowController_keyboardDismissWithInfo___block_inv
 
 - (void)updateOffscreenKeyboardLayoutGuide
 {
-  v3 = [(UIViewController *)self _window];
-  [v3 bounds];
+  _window = [(UIViewController *)self _window];
+  [_window bounds];
   [(UITrackingElementWindowController *)self updateTrackingElementsWithSize:v4, 0.0];
 
   if ([(UITrackingElementWindowController *)self currentControllerShouldUpdateKeyboardLayoutGuide])
   {
-    v5 = [(UIViewController *)self _window];
-    v6 = [v5 _primaryKeyboardTrackingGuide];
-    v7 = [(UIViewController *)self _window];
-    [v7 bounds];
+    _window2 = [(UIViewController *)self _window];
+    _primaryKeyboardTrackingGuide = [_window2 _primaryKeyboardTrackingGuide];
+    _window3 = [(UIViewController *)self _window];
+    [_window3 bounds];
     v9 = v8;
-    v10 = [(UIViewController *)self _window];
-    [v10 insetForDismissedKeyboardGuide];
-    v12 = [v6 changeSizingConstants:{v9, v11}];
+    _window4 = [(UIViewController *)self _window];
+    [_window4 insetForDismissedKeyboardGuide];
+    v12 = [_primaryKeyboardTrackingGuide changeSizingConstants:{v9, v11}];
 
-    v13 = [(UIViewController *)self _window];
-    v14 = [v13 _primaryKeyboardTrackingGuide];
-    v15 = [v14 changeOffsetConstants:{0.0, 0.0}];
+    _window5 = [(UIViewController *)self _window];
+    _primaryKeyboardTrackingGuide2 = [_window5 _primaryKeyboardTrackingGuide];
+    v15 = [_primaryKeyboardTrackingGuide2 changeOffsetConstants:{0.0, 0.0}];
 
     if ((v12 & 1) != 0 || v15)
     {
-      v16 = [(UIViewController *)self _window];
-      [v16 layoutIfNeeded];
+      _window6 = [(UIViewController *)self _window];
+      [_window6 layoutIfNeeded];
     }
 
     [UIWindow _enumerateWindowsIncludingInternalWindows:1 onlyVisibleWindows:1 allowMutation:0 withBlock:&__block_literal_global_263_2];
@@ -2602,7 +2602,7 @@ void __71__UITrackingElementWindowController_updateOffscreenKeyboardLayoutGuide_
   }
 }
 
-- (void)updateGuideForOffscreenRotationWithDuration:(double)a3
+- (void)updateGuideForOffscreenRotationWithDuration:(double)duration
 {
   if (([objc_opt_class() useMetronomeTracking] & 1) == 0)
   {
@@ -2611,14 +2611,14 @@ void __71__UITrackingElementWindowController_updateOffscreenKeyboardLayoutGuide_
   }
 }
 
-- (void)updateKeyboardLayoutGuideWithFrame:(CGRect)a3 layoutViews:(BOOL)a4
+- (void)updateKeyboardLayoutGuideWithFrame:(CGRect)frame layoutViews:(BOOL)views
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v35 = *MEMORY[0x1E69E9840];
-  if ((*&a3.origin.x & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL && (*&a3.origin.y & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000 && (*&a3.size.width & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000 && (*&a3.size.height & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000 && !CGRectIsNull(a3))
+  if ((*&frame.origin.x & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL && (*&frame.origin.y & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000 && (*&frame.size.width & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000 && (*&frame.size.height & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000 && !CGRectIsNull(frame))
   {
     [(UITrackingElementWindowController *)self updateTrackingElementsWithSize:width, height];
     v36.origin.x = x;
@@ -2626,8 +2626,8 @@ void __71__UITrackingElementWindowController_updateOffscreenKeyboardLayoutGuide_
     v36.size.width = width;
     v36.size.height = height;
     MaxY = CGRectGetMaxY(v36);
-    v11 = [(UIViewController *)self _window];
-    [v11 frame];
+    _window = [(UIViewController *)self _window];
+    [_window frame];
     v12 = CGRectGetMaxY(v37);
 
     if (MaxY < v12)
@@ -2637,8 +2637,8 @@ void __71__UITrackingElementWindowController_updateOffscreenKeyboardLayoutGuide_
       v38.size.width = width;
       v38.size.height = height;
       MinX = CGRectGetMinX(v38);
-      v14 = [(UIViewController *)self _window];
-      [v14 frame];
+      _window2 = [(UIViewController *)self _window];
+      [_window2 frame];
       v15 = CGRectGetMaxY(v39);
       v40.origin.x = x;
       v40.origin.y = y;
@@ -2656,12 +2656,12 @@ void __71__UITrackingElementWindowController_updateOffscreenKeyboardLayoutGuide_
     *&aBlock[7] = width;
     *&aBlock[8] = height;
     aBlock[4] = self;
-    v33 = a4;
+    viewsCopy = views;
     v16 = _Block_copy(aBlock);
-    v17 = [(UIViewController *)self _window];
-    v18 = [v17 _isHostedInAnotherProcess];
+    _window3 = [(UIViewController *)self _window];
+    _isHostedInAnotherProcess = [_window3 _isHostedInAnotherProcess];
 
-    if (v18)
+    if (_isHostedInAnotherProcess)
     {
       v30[0] = MEMORY[0x1E69E9820];
       v30[1] = 3221225472;
@@ -2669,7 +2669,7 @@ void __71__UITrackingElementWindowController_updateOffscreenKeyboardLayoutGuide_
       v30[3] = &unk_1E7116408;
       v31 = v16;
       [UIWindow _enumerateWindowsIncludingInternalWindows:1 onlyVisibleWindows:1 allowMutation:0 withBlock:v30];
-      v19 = v31;
+      windows = v31;
     }
 
     else
@@ -2678,11 +2678,11 @@ void __71__UITrackingElementWindowController_updateOffscreenKeyboardLayoutGuide_
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v20 = [(UIViewController *)self _window];
-      v21 = [v20 windowScene];
-      v19 = [v21 windows];
+      _window4 = [(UIViewController *)self _window];
+      windowScene = [_window4 windowScene];
+      windows = [windowScene windows];
 
-      v22 = [v19 countByEnumeratingWithState:&v26 objects:v34 count:16];
+      v22 = [windows countByEnumeratingWithState:&v26 objects:v34 count:16];
       if (v22)
       {
         v23 = v22;
@@ -2693,13 +2693,13 @@ void __71__UITrackingElementWindowController_updateOffscreenKeyboardLayoutGuide_
           {
             if (*v27 != v24)
             {
-              objc_enumerationMutation(v19);
+              objc_enumerationMutation(windows);
             }
 
             (*(v16 + 2))(v16, *(*(&v26 + 1) + 8 * i));
           }
 
-          v23 = [v19 countByEnumeratingWithState:&v26 objects:v34 count:16];
+          v23 = [windows countByEnumeratingWithState:&v26 objects:v34 count:16];
         }
 
         while (v23);
@@ -2810,23 +2810,23 @@ void __84__UITrackingElementWindowController_updateKeyboardLayoutGuideWithFrame_
   }
 }
 
-- (void)keyboardMoveWithInfo:(id)a3
+- (void)keyboardMoveWithInfo:(id)info
 {
-  v28 = a3;
-  v4 = [(UITrackingElementWindowController *)self currentControllerShouldUpdateKeyboardLayoutGuide];
-  v5 = v28;
-  if (v4)
+  infoCopy = info;
+  currentControllerShouldUpdateKeyboardLayoutGuide = [(UITrackingElementWindowController *)self currentControllerShouldUpdateKeyboardLayoutGuide];
+  v5 = infoCopy;
+  if (currentControllerShouldUpdateKeyboardLayoutGuide)
   {
-    [v28 endFrame];
+    [infoCopy endFrame];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(UIViewController *)self _window];
-    v15 = [v14 _isHostedInAnotherProcess];
+    _window = [(UIViewController *)self _window];
+    _isHostedInAnotherProcess = [_window _isHostedInAnotherProcess];
 
     v16 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v17 = [v16 hasActiveKeyboardResponder];
+    hasActiveKeyboardResponder = [v16 hasActiveKeyboardResponder];
 
     v30.origin.x = v7;
     v30.origin.y = v9;
@@ -2834,7 +2834,7 @@ void __84__UITrackingElementWindowController_updateKeyboardLayoutGuideWithFrame_
     v30.size.height = v13;
     if (!CGRectIsEmpty(v30))
     {
-      if (v15 & 1 | ((v17 & 1) == 0))
+      if (_isHostedInAnotherProcess & 1 | ((hasActiveKeyboardResponder & 1) == 0))
       {
         v23 = 1;
       }
@@ -2844,101 +2844,101 @@ void __84__UITrackingElementWindowController_updateKeyboardLayoutGuideWithFrame_
         v23 = +[UIKeyboard usesInputSystemUI];
       }
 
-      v24 = [(UITrackingElementWindowController *)self inputViewSet];
-      v25 = [v24 isInputViewPlaceholder];
+      inputViewSet = [(UITrackingElementWindowController *)self inputViewSet];
+      isInputViewPlaceholder = [inputViewSet isInputViewPlaceholder];
 
-      v26 = [v28 forWritingToolsSheet];
-      v5 = v28;
-      if ((v26 & 1) == 0 && v25 && !v23)
+      forWritingToolsSheet = [infoCopy forWritingToolsSheet];
+      v5 = infoCopy;
+      if ((forWritingToolsSheet & 1) == 0 && isInputViewPlaceholder && !v23)
       {
         goto LABEL_14;
       }
 
-      [v28 duration];
+      [infoCopy duration];
       [(UITrackingElementWindowController *)self keyboardMovedToScreenPosition:v27 > 0.0 animated:v7, v9, v11, v13];
       goto LABEL_13;
     }
 
-    v18 = [(UITrackingElementWindowController *)self currentTransition];
-    if (!v18 || (v19 = v18, -[UITrackingElementWindowController currentTransition](self, "currentTransition"), v20 = objc_claimAutoreleasedReturnValue(), [v20 toPlacement], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "showsInputOrAssistantViews"), v21, v20, v19, v5 = v28, (v22 & 1) == 0))
+    currentTransition = [(UITrackingElementWindowController *)self currentTransition];
+    if (!currentTransition || (v19 = currentTransition, -[UITrackingElementWindowController currentTransition](self, "currentTransition"), v20 = objc_claimAutoreleasedReturnValue(), [v20 toPlacement], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "showsInputOrAssistantViews"), v21, v20, v19, v5 = infoCopy, (v22 & 1) == 0))
     {
-      [(UITrackingElementWindowController *)self keyboardDismissWithInfo:v28];
+      [(UITrackingElementWindowController *)self keyboardDismissWithInfo:infoCopy];
 LABEL_13:
-      v5 = v28;
+      v5 = infoCopy;
     }
   }
 
 LABEL_14:
 }
 
-- (void)keyboardMovedToScreenPosition:(CGRect)a3 animated:(BOOL)a4
+- (void)keyboardMovedToScreenPosition:(CGRect)position animated:(BOOL)animated
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = position.size.height;
+  width = position.size.width;
+  y = position.origin.y;
+  x = position.origin.x;
   v82 = *MEMORY[0x1E69E9840];
   if ([(UITrackingElementWindowController *)self currentControllerShouldUpdateKeyboardLayoutGuide])
   {
-    v10 = [(UIViewController *)self _window];
-    v11 = [v10 _isHostedInAnotherProcess];
+    _window = [(UIViewController *)self _window];
+    _isHostedInAnotherProcess = [_window _isHostedInAnotherProcess];
 
-    v12 = [(UIViewController *)self _window];
-    v13 = [v12 screen];
-    v14 = [v13 coordinateSpace];
+    _window2 = [(UIViewController *)self _window];
+    screen = [_window2 screen];
+    coordinateSpace = [screen coordinateSpace];
 
-    v15 = [(UIViewController *)self _window];
-    [v15 hostedViewOrigin];
+    _window3 = [(UIViewController *)self _window];
+    [_window3 hostedViewOrigin];
 
     v16 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v17 = [v16 hasActiveKeyboardResponder];
+    hasActiveKeyboardResponder = [v16 hasActiveKeyboardResponder];
 
-    v18 = [(UITrackingElementWindowController *)self placement];
-    if ([v18 isUndocked])
+    placement = [(UITrackingElementWindowController *)self placement];
+    if ([placement isUndocked])
     {
-      v19 = 1;
+      isHiddenForFloatingTransition = 1;
     }
 
     else
     {
-      v20 = [(UITrackingElementWindowController *)self placement];
-      if ([v20 isFloating])
+      placement2 = [(UITrackingElementWindowController *)self placement];
+      if ([placement2 isFloating])
       {
-        v19 = 1;
+        isHiddenForFloatingTransition = 1;
       }
 
       else
       {
-        v21 = [(UITrackingElementWindowController *)self placement];
-        if ([v21 isFloatingAssistantView])
+        placement3 = [(UITrackingElementWindowController *)self placement];
+        if ([placement3 isFloatingAssistantView])
         {
-          v19 = 1;
+          isHiddenForFloatingTransition = 1;
         }
 
         else
         {
-          v22 = [(UITrackingElementWindowController *)self placement];
-          v19 = [v22 isHiddenForFloatingTransition];
+          placement4 = [(UITrackingElementWindowController *)self placement];
+          isHiddenForFloatingTransition = [placement4 isHiddenForFloatingTransition];
         }
       }
     }
 
     if (width > 0.0)
     {
-      v23 = [(UIViewController *)self _window];
-      v24 = [v23 windowScene];
-      v25 = [v24 _coordinateSpace];
+      _window4 = [(UIViewController *)self _window];
+      windowScene = [_window4 windowScene];
+      _coordinateSpace = [windowScene _coordinateSpace];
       v63 = x;
       v64 = y;
       v65 = height;
-      [v14 convertRect:v25 toCoordinateSpace:{x, y, width, height}];
+      [coordinateSpace convertRect:_coordinateSpace toCoordinateSpace:{x, y, width, height}];
       v27 = v26;
       v29 = v28;
       v31 = v30;
       v33 = v32;
 
-      v34 = [(UIViewController *)self _window];
-      [v34 bounds];
+      _window5 = [(UIViewController *)self _window];
+      [_window5 bounds];
       v90.origin.x = v27;
       v90.origin.y = v29;
       v90.size.width = v31;
@@ -2955,8 +2955,8 @@ LABEL_14:
       v85.size.width = v37;
       v85.size.height = v38;
       MaxY = CGRectGetMaxY(v85);
-      v40 = [(UIViewController *)self _window];
-      [v40 frame];
+      _window6 = [(UIViewController *)self _window];
+      [_window6 frame];
       v41 = CGRectGetMaxY(v86);
 
       MinX = 0.0;
@@ -2969,8 +2969,8 @@ LABEL_14:
         v87.size.width = v37;
         v87.size.height = v38;
         MinX = CGRectGetMinX(v87);
-        v45 = [(UIViewController *)self _window];
-        [v45 frame];
+        _window7 = [(UIViewController *)self _window];
+        [_window7 frame];
         v46 = CGRectGetMaxY(v88);
         v89.origin.x = v35;
         v89.origin.y = v36;
@@ -2981,36 +2981,36 @@ LABEL_14:
         [(UITrackingElementWindowController *)self updateTrackingElementsWithOffset:MinX, v44];
       }
 
-      v47 = [(UIViewController *)self _window];
-      v48 = [v47 _primaryKeyboardTrackingGuide];
-      v49 = [v48 changeSizingConstants:{v37, v38}];
+      _window8 = [(UIViewController *)self _window];
+      _primaryKeyboardTrackingGuide = [_window8 _primaryKeyboardTrackingGuide];
+      v49 = [_primaryKeyboardTrackingGuide changeSizingConstants:{v37, v38}];
 
-      v50 = [(UIViewController *)self _window];
-      v51 = [v50 _primaryKeyboardTrackingGuide];
-      v52 = [v51 changeOffsetConstants:{MinX, v44}];
+      _window9 = [(UIViewController *)self _window];
+      _primaryKeyboardTrackingGuide2 = [_window9 _primaryKeyboardTrackingGuide];
+      v52 = [_primaryKeyboardTrackingGuide2 changeOffsetConstants:{MinX, v44}];
 
       if ((v49 & 1) != 0 || v52)
       {
-        v53 = [(UIViewController *)self _window];
-        [v53 layoutIfNeeded];
+        _window10 = [(UIViewController *)self _window];
+        [_window10 layoutIfNeeded];
       }
 
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __76__UITrackingElementWindowController_keyboardMovedToScreenPosition_animated___block_invoke;
       aBlock[3] = &unk_1E7120250;
-      v78 = v19;
+      v78 = isHiddenForFloatingTransition;
       v74 = v63;
       v75 = v64;
       v76 = width;
       v77 = v65;
-      v79 = v11;
+      v79 = _isHostedInAnotherProcess;
       aBlock[4] = self;
-      v73 = v14;
-      v80 = a4;
+      v73 = coordinateSpace;
+      animatedCopy = animated;
       v54 = _Block_copy(aBlock);
       v55 = v54;
-      if ((v17 | v11))
+      if ((hasActiveKeyboardResponder | _isHostedInAnotherProcess))
       {
         v70[0] = MEMORY[0x1E69E9820];
         v70[1] = 3221225472;
@@ -3018,7 +3018,7 @@ LABEL_14:
         v70[3] = &unk_1E7116408;
         v71 = v54;
         [UIWindow _enumerateWindowsIncludingInternalWindows:1 onlyVisibleWindows:1 allowMutation:0 withBlock:v70];
-        v56 = v71;
+        windows = v71;
       }
 
       else
@@ -3027,11 +3027,11 @@ LABEL_14:
         v69 = 0u;
         v66 = 0u;
         v67 = 0u;
-        v57 = [(UIViewController *)self _window];
-        v58 = [v57 windowScene];
-        v56 = [v58 windows];
+        _window11 = [(UIViewController *)self _window];
+        windowScene2 = [_window11 windowScene];
+        windows = [windowScene2 windows];
 
-        v59 = [v56 countByEnumeratingWithState:&v66 objects:v81 count:16];
+        v59 = [windows countByEnumeratingWithState:&v66 objects:v81 count:16];
         if (v59)
         {
           v60 = v59;
@@ -3043,14 +3043,14 @@ LABEL_14:
             {
               if (*v67 != v61)
               {
-                objc_enumerationMutation(v56);
+                objc_enumerationMutation(windows);
               }
 
               v55[2](v55, *(*(&v66 + 1) + 8 * v62++));
             }
 
             while (v60 != v62);
-            v60 = [v56 countByEnumeratingWithState:&v66 objects:v81 count:16];
+            v60 = [windows countByEnumeratingWithState:&v66 objects:v81 count:16];
           }
 
           while (v60);
@@ -3203,56 +3203,56 @@ LABEL_11:
 LABEL_23:
 }
 
-- (id)_infoForBackdropMatchMoveForLayer:(id)a3
+- (id)_infoForBackdropMatchMoveForLayer:(id)layer
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF20] dictionary];
-  if (v3)
+  layerCopy = layer;
+  dictionary = [MEMORY[0x1E695DF20] dictionary];
+  if (layerCopy)
   {
-    v5 = [v3 context];
-    v6 = [v5 contextId];
+    context = [layerCopy context];
+    contextId = [context contextId];
 
     RenderId = CALayerGetRenderId();
     v12[0] = 0x1EFB7AD70;
-    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v6];
+    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:contextId];
     v12[1] = 0x1EFB7AD90;
     v13[0] = v8;
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:RenderId];
     v13[1] = v9;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
-    v4 = v10;
+    dictionary = v10;
   }
 
-  return v4;
+  return dictionary;
 }
 
-- (BOOL)shouldPostNotification:(unint64_t)a3 withInfo:(id)a4
+- (BOOL)shouldPostNotification:(unint64_t)notification withInfo:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   if (![(UIInputWindowController *)self shouldNotifyRemoteKeyboards])
   {
     goto LABEL_14;
   }
 
   v7 = 1;
-  if (!a3 || self->_suppressedNotifications || ![v6 containsChange])
+  if (!notification || self->_suppressedNotifications || ![infoCopy containsChange])
   {
     goto LABEL_15;
   }
 
-  v8 = [(UIViewController *)self _window];
-  if (![v8 _isTextEffectsWindowNotificationOwner] || objc_msgSend(UIApp, "isSuspended") && self->_isSnapshotting || -[UITrackingElementWindowController isTransitioningBetweenFloatingStates](self, "isTransitioningBetweenFloatingStates"))
+  _window = [(UIViewController *)self _window];
+  if (![_window _isTextEffectsWindowNotificationOwner] || objc_msgSend(UIApp, "isSuspended") && self->_isSnapshotting || -[UITrackingElementWindowController isTransitioningBetweenFloatingStates](self, "isTransitioningBetweenFloatingStates"))
   {
     goto LABEL_13;
   }
 
-  v9 = [(UITrackingElementWindowController *)self inputViewSet];
-  v10 = [v9 isCustomInputView];
-  if (a3 == 2 && (v10 & 1) == 0)
+  inputViewSet = [(UITrackingElementWindowController *)self inputViewSet];
+  isCustomInputView = [inputViewSet isCustomInputView];
+  if (notification == 2 && (isCustomInputView & 1) == 0)
   {
-    [v6 endFrame];
+    [infoCopy endFrame];
     if (v11 == 0.0)
     {
 
@@ -3260,7 +3260,7 @@ LABEL_13:
 LABEL_14:
       v7 = 1;
 LABEL_15:
-      v12 = v7 & ([v6 nonKeyboardOverride] ^ 1);
+      v12 = v7 & ([infoCopy nonKeyboardOverride] ^ 1);
       goto LABEL_16;
     }
   }
@@ -3278,36 +3278,36 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v12 = [v6 nonKeyboardOverride] ^ 1;
+  v12 = [infoCopy nonKeyboardOverride] ^ 1;
 LABEL_16:
-  if ([v6 waitingForInputUI])
+  if ([infoCopy waitingForInputUI])
   {
-    [(UITrackingElementWindowController *)self setNotificationInfoWaitingForInputUI:v6];
+    [(UITrackingElementWindowController *)self setNotificationInfoWaitingForInputUI:infoCopy];
     LOBYTE(v12) = 1;
   }
 
   return v12 ^ 1;
 }
 
-- (void)postStartNotifications:(unint64_t)a3 withInfo:(id)a4
+- (void)postStartNotifications:(unint64_t)notifications withInfo:(id)info
 {
-  v6 = a4;
-  if ([(UITrackingElementWindowController *)self shouldPostNotification:a3 withInfo:?])
+  infoCopy = info;
+  if ([(UITrackingElementWindowController *)self shouldPostNotification:notifications withInfo:?])
   {
-    [(UITrackingElementWindowController *)self postValidatedStartNotifications:a3 withInfo:v6];
+    [(UITrackingElementWindowController *)self postValidatedStartNotifications:notifications withInfo:infoCopy];
   }
 }
 
-- (void)postValidatedStartNotifications:(unint64_t)a3 withInfo:(id)a4
+- (void)postValidatedStartNotifications:(unint64_t)notifications withInfo:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __78__UITrackingElementWindowController_postValidatedStartNotifications_withInfo___block_invoke;
   aBlock[3] = &unk_1E70F36D0;
-  v13 = a3;
+  notificationsCopy = notifications;
   aBlock[4] = self;
-  v7 = v6;
+  v7 = infoCopy;
   v12 = v7;
   v8 = _Block_copy(aBlock);
   v9 = +[UIKeyboardImpl activeInstance];
@@ -3317,9 +3317,9 @@ LABEL_16:
 
   else
   {
-    v10 = [(UITrackingElementWindowController *)self isTransitioningBetweenFloatingStates];
+    isTransitioningBetweenFloatingStates = [(UITrackingElementWindowController *)self isTransitioningBetweenFloatingStates];
 
-    if (!v10)
+    if (!isTransitioningBetweenFloatingStates)
     {
       v8[2](v8);
       goto LABEL_6;
@@ -3625,25 +3625,25 @@ LABEL_61:
 LABEL_65:
 }
 
-- (void)postEndNotifications:(unint64_t)a3 withInfo:(id)a4
+- (void)postEndNotifications:(unint64_t)notifications withInfo:(id)info
 {
-  v6 = a4;
-  if ([(UITrackingElementWindowController *)self shouldPostNotification:a3 withInfo:?])
+  infoCopy = info;
+  if ([(UITrackingElementWindowController *)self shouldPostNotification:notifications withInfo:?])
   {
-    [(UITrackingElementWindowController *)self postValidatedEndNotifications:a3 withInfo:v6];
+    [(UITrackingElementWindowController *)self postValidatedEndNotifications:notifications withInfo:infoCopy];
   }
 }
 
-- (void)postValidatedEndNotifications:(unint64_t)a3 withInfo:(id)a4
+- (void)postValidatedEndNotifications:(unint64_t)notifications withInfo:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __76__UITrackingElementWindowController_postValidatedEndNotifications_withInfo___block_invoke;
   aBlock[3] = &unk_1E70F36D0;
-  v13 = a3;
+  notificationsCopy = notifications;
   aBlock[4] = self;
-  v7 = v6;
+  v7 = infoCopy;
   v12 = v7;
   v8 = _Block_copy(aBlock);
   v9 = +[UIKeyboardImpl activeInstance];
@@ -3653,9 +3653,9 @@ LABEL_65:
 
   else
   {
-    v10 = [(UITrackingElementWindowController *)self isTransitioningBetweenFloatingStates];
+    isTransitioningBetweenFloatingStates = [(UITrackingElementWindowController *)self isTransitioningBetweenFloatingStates];
 
-    if (!v10)
+    if (!isTransitioningBetweenFloatingStates)
     {
       v8[2](v8);
       goto LABEL_6;
@@ -3999,20 +3999,20 @@ LABEL_72:
 LABEL_76:
 }
 
-- (int)appearStateForChild:(unint64_t)a3 placement:(id)a4 start:(BOOL)a5
+- (int)appearStateForChild:(unint64_t)child placement:(id)placement start:(BOOL)start
 {
-  v5 = a5;
-  if (a3 == 4)
+  startCopy = start;
+  if (child == 4)
   {
-    v6 = [a4 accessoryViewWillAppear];
+    accessoryViewWillAppear = [placement accessoryViewWillAppear];
   }
 
   else
   {
-    v6 = [a4 inputViewWillAppear];
+    accessoryViewWillAppear = [placement inputViewWillAppear];
   }
 
-  if (v5)
+  if (startCopy)
   {
     v7 = 1;
   }
@@ -4022,7 +4022,7 @@ LABEL_76:
     v7 = 2;
   }
 
-  if (v5)
+  if (startCopy)
   {
     v8 = 3;
   }
@@ -4032,7 +4032,7 @@ LABEL_76:
     v8 = 0;
   }
 
-  if (v6)
+  if (accessoryViewWillAppear)
   {
     return v7;
   }
@@ -4043,22 +4043,22 @@ LABEL_76:
   }
 }
 
-- (void)changeChild:(unint64_t)a3 toAppearState:(int)a4 animated:(BOOL)a5
+- (void)changeChild:(unint64_t)child toAppearState:(int)state animated:(BOOL)animated
 {
   if (self->_suppressedCallbacks)
   {
     return;
   }
 
-  v6 = a5;
-  if (a3 == 2)
+  animatedCopy = animated;
+  if (child == 2)
   {
-    v8 = [(UITrackingElementWindowController *)self _inputAssistantViewController];
+    _inputAssistantViewController = [(UITrackingElementWindowController *)self _inputAssistantViewController];
   }
 
   else
   {
-    if (a3 == 4)
+    if (child == 4)
     {
       [(UITrackingElementWindowController *)self _inputAccessoryViewController];
     }
@@ -4067,11 +4067,11 @@ LABEL_76:
     {
       [(UITrackingElementWindowController *)self _inputViewController];
     }
-    v8 = ;
+    _inputAssistantViewController = ;
   }
 
-  v11 = v8;
-  v9 = a4 | (16 * [v8 _appearState]);
+  v11 = _inputAssistantViewController;
+  v9 = state | (16 * [_inputAssistantViewController _appearState]);
   if (v9 > 31)
   {
     if (v9 > 47)
@@ -4084,9 +4084,9 @@ LABEL_76:
           goto LABEL_29;
         }
 
-        [(UIViewController *)v11 __viewDidDisappear:v6];
+        [(UIViewController *)v11 __viewDidDisappear:animatedCopy];
 LABEL_24:
-        [v11 __viewWillAppear:v6];
+        [v11 __viewWillAppear:animatedCopy];
         goto LABEL_28;
       }
     }
@@ -4104,10 +4104,10 @@ LABEL_24:
         goto LABEL_20;
       }
 
-      [(UIViewController *)v11 __viewWillDisappear:v6];
+      [(UIViewController *)v11 __viewWillDisappear:animatedCopy];
     }
 
-    [(UIViewController *)v11 __viewDidDisappear:v6];
+    [(UIViewController *)v11 __viewDidDisappear:animatedCopy];
     goto LABEL_28;
   }
 
@@ -4118,9 +4118,9 @@ LABEL_24:
     {
       if (v9 == 2)
       {
-        [v11 __viewWillAppear:v6];
+        [v11 __viewWillAppear:animatedCopy];
 LABEL_25:
-        [v11 __viewDidAppear:v6];
+        [v11 __viewDidAppear:animatedCopy];
         goto LABEL_28;
       }
 
@@ -4138,9 +4138,9 @@ LABEL_25:
 
   if (v9 == 19)
   {
-    [v11 __viewDidAppear:v6];
+    [v11 __viewDidAppear:animatedCopy];
 LABEL_20:
-    [(UIViewController *)v11 __viewWillDisappear:v6];
+    [(UIViewController *)v11 __viewWillDisappear:animatedCopy];
 LABEL_28:
     v10 = v11;
   }
@@ -4148,43 +4148,43 @@ LABEL_28:
 LABEL_29:
 }
 
-- (void)updateAppearStatesForPlacement:(id)a3 start:(BOOL)a4 animated:(BOOL)a5
+- (void)updateAppearStatesForPlacement:(id)placement start:(BOOL)start animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
+  animatedCopy = animated;
+  startCopy = start;
   for (i = 0; i != 3; ++i)
   {
-    [(UITrackingElementWindowController *)self changeChild:(1 << i) toAppearState:[(UITrackingElementWindowController *)self appearStateForChild:(1 << i) placement:a3 start:v6] animated:v5];
+    [(UITrackingElementWindowController *)self changeChild:(1 << i) toAppearState:[(UITrackingElementWindowController *)self appearStateForChild:(1 << i) placement:placement start:startCopy] animated:animatedCopy];
   }
 }
 
-- (void)updateAmbiguousControlCenterActivationMargin:(unint64_t)a3 withInfo:(id)a4
+- (void)updateAmbiguousControlCenterActivationMargin:(unint64_t)margin withInfo:(id)info
 {
-  v14 = a4;
+  infoCopy = info;
   v7 = +[UIDevice _hasHomeButton];
   if (v7 || (+[UIDevice currentDevice](UIDevice, "currentDevice"), v4 = objc_claimAutoreleasedReturnValue(), ([v4 orientation] - 3) < 2))
   {
-    v8 = [(UITrackingElementWindowController *)self placement];
-    v9 = [v8 isUndocked];
+    placement = [(UITrackingElementWindowController *)self placement];
+    isUndocked = [placement isUndocked];
 
     if (!v7)
     {
     }
 
-    if (a3 == 3)
+    if (margin == 3)
     {
       v10 = 1;
     }
 
     else
     {
-      v10 = v9;
+      v10 = isUndocked;
     }
 
     v11 = 0.0;
     if ((v10 & 1) == 0)
     {
-      [v14 endFrame];
+      [infoCopy endFrame];
       v11 = v12;
     }
   }
@@ -4199,20 +4199,20 @@ LABEL_29:
   [v13 setAmbiguousControlCenterActivationMargin:v11];
 }
 
-- (void)updateTrackingCoordinatorForAccessoryBounds:(CGRect)a3
+- (void)updateTrackingCoordinatorForAccessoryBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v25 = *MEMORY[0x1E69E9840];
-  v8 = [(UITrackingElementWindowController *)self inputViewSet];
-  v9 = [v8 isInputAccessoryViewPlaceholder];
+  inputViewSet = [(UITrackingElementWindowController *)self inputViewSet];
+  isInputAccessoryViewPlaceholder = [inputViewSet isInputAccessoryViewPlaceholder];
 
-  if (!v9 || (-[UIViewController view](self, "view"), v10 = objc_claimAutoreleasedReturnValue(), [v10 bounds], v12 = v11, v10, height < v12))
+  if (!isInputAccessoryViewPlaceholder || (-[UIViewController view](self, "view"), v10 = objc_claimAutoreleasedReturnValue(), [v10 bounds], v12 = v11, v10, height < v12))
   {
     v13 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v14 = [v13 trackingElementCoordinator];
+    trackingElementCoordinator = [v13 trackingElementCoordinator];
 
     v15 = _UITrackingElementWindowControllerLogger();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -4226,25 +4226,25 @@ LABEL_29:
       v19 = 138412802;
       v20 = v17;
       v21 = 2048;
-      v22 = v14;
+      v22 = trackingElementCoordinator;
       v23 = 2112;
       v24 = v18;
       _os_log_debug_impl(&dword_188A29000, v15, OS_LOG_TYPE_DEBUG, "Tracking coordinator: Updating <%@:%p> for IAV bounds change to %@", &v19, 0x20u);
     }
 
-    v16 = [(UIViewController *)self _window];
-    [v14 updateAccessoryViewBounds:v16 forWindow:{x, y, width, height}];
+    _window = [(UIViewController *)self _window];
+    [trackingElementCoordinator updateAccessoryViewBounds:_window forWindow:{x, y, width, height}];
   }
 }
 
-- (void)transferActiveNotificationInfoToInfo:(id)a3
+- (void)transferActiveNotificationInfoToInfo:(id)info
 {
-  v7 = a3;
-  v4 = [(UITrackingElementWindowController *)self templateNotificationInfo];
+  infoCopy = info;
+  templateNotificationInfo = [(UITrackingElementWindowController *)self templateNotificationInfo];
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"TEWC transferActiveNotificationInfoToInfo:"];
-  [v7 addKeyboardNotificationDebuggingInfo:v5];
+  [infoCopy addKeyboardNotificationDebuggingInfo:v5];
 
-  if (!v4)
+  if (!templateNotificationInfo)
   {
     if (![(UITrackingElementWindowController *)self isRotating])
     {
@@ -4252,19 +4252,19 @@ LABEL_29:
     }
 
     v6 = +[UIKeyboardSceneDelegate automaticKeyboardArbiterClient];
-    [v7 setWasCausedRemotely:{objc_msgSend(v6, "keyboardActive") ^ 1}];
+    [infoCopy setWasCausedRemotely:{objc_msgSend(v6, "keyboardActive") ^ 1}];
 
-    [v7 setDueToRotation:1];
+    [infoCopy setDueToRotation:1];
     goto LABEL_6;
   }
 
-  [v7 setWasCausedRemotely:{objc_msgSend(v4, "wasCausedRemotely")}];
-  [v7 setDueToRotation:{objc_msgSend(v4, "dueToRotation")}];
-  [v7 setWaitingForInputUI:{objc_msgSend(v4, "waitingForInputUI")}];
-  if ([v7 dueToRotation])
+  [infoCopy setWasCausedRemotely:{objc_msgSend(templateNotificationInfo, "wasCausedRemotely")}];
+  [infoCopy setDueToRotation:{objc_msgSend(templateNotificationInfo, "dueToRotation")}];
+  [infoCopy setWaitingForInputUI:{objc_msgSend(templateNotificationInfo, "waitingForInputUI")}];
+  if ([infoCopy dueToRotation])
   {
 LABEL_6:
-    [v7 setShouldSendInClient:1];
+    [infoCopy setShouldSendInClient:1];
   }
 
 LABEL_7:
@@ -4272,16 +4272,16 @@ LABEL_7:
 
 - (id)_screenCoordinateSpace
 {
-  v2 = [(UIViewController *)self _window];
-  v3 = [v2 screen];
-  v4 = [v3 coordinateSpace];
+  _window = [(UIViewController *)self _window];
+  screen = [_window screen];
+  coordinateSpace = [screen coordinateSpace];
 
-  return v4;
+  return coordinateSpace;
 }
 
-- (CGRect)convertRectFromContainerCoordinateSpaceToScreenSpace:(CGRect)a3
+- (CGRect)convertRectFromContainerCoordinateSpaceToScreenSpace:(CGRect)space
 {
-  [(UITrackingElementWindowController *)self convertRectFromContainerCoordinateSpaceToScreenSpace:0 viewInRemoteKeyboardWindow:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UITrackingElementWindowController *)self convertRectFromContainerCoordinateSpaceToScreenSpace:0 viewInRemoteKeyboardWindow:space.origin.x, space.origin.y, space.size.width, space.size.height];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -4289,14 +4289,14 @@ LABEL_7:
   return result;
 }
 
-- (CGRect)convertRectFromContainerCoordinateSpaceToScreenSpace:(CGRect)a3 viewInRemoteKeyboardWindow:(BOOL)a4
+- (CGRect)convertRectFromContainerCoordinateSpaceToScreenSpace:(CGRect)space viewInRemoteKeyboardWindow:(BOOL)window
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [(UIViewController *)self view];
-  [v9 convertRect:0 toView:{x, y, width, height}];
+  height = space.size.height;
+  width = space.size.width;
+  y = space.origin.y;
+  x = space.origin.x;
+  view = [(UIViewController *)self view];
+  [view convertRect:0 toView:{x, y, width, height}];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -4308,19 +4308,19 @@ LABEL_7:
   }
 
   v27 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v28 = [v27 visualModeManager];
-  v29 = [v28 windowingModeEnabled];
+  visualModeManager = [v27 visualModeManager];
+  windowingModeEnabled = [visualModeManager windowingModeEnabled];
 
-  if (v29)
+  if (windowingModeEnabled)
   {
 LABEL_8:
-    v18 = [(UIViewController *)self _window];
-    v33 = [v18 windowScene];
-    v34 = [v33 _coordinateSpace];
-    v35 = [(UIViewController *)self _window];
-    v36 = [v35 screen];
-    v37 = [v36 coordinateSpace];
-    [v34 convertRect:v37 toCoordinateSpace:{v11, v13, v15, v17}];
+    _window = [(UIViewController *)self _window];
+    windowScene = [_window windowScene];
+    _coordinateSpace = [windowScene _coordinateSpace];
+    _window2 = [(UIViewController *)self _window];
+    screen = [_window2 screen];
+    coordinateSpace = [screen coordinateSpace];
+    [_coordinateSpace convertRect:coordinateSpace toCoordinateSpace:{v11, v13, v15, v17}];
     v20 = v38;
     v22 = v39;
     v24 = v40;
@@ -4329,24 +4329,24 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v30 = [(UIViewController *)self _window];
-  if (([v30 _isTextEffectsWindow] & 1) == 0)
+  _window3 = [(UIViewController *)self _window];
+  if (([_window3 _isTextEffectsWindow] & 1) == 0)
   {
 
     goto LABEL_8;
   }
 
-  v31 = [(UIViewController *)self _window];
-  v32 = [v31 _isHostedInAnotherProcess];
+  _window4 = [(UIViewController *)self _window];
+  _isHostedInAnotherProcess = [_window4 _isHostedInAnotherProcess];
 
-  if (!v32)
+  if (!_isHostedInAnotherProcess)
   {
     goto LABEL_8;
   }
 
 LABEL_2:
-  v18 = [(UIViewController *)self _window];
-  [v18 convertRect:0 toWindow:{v11, v13, v15, v17}];
+  _window = [(UIViewController *)self _window];
+  [_window convertRect:0 toWindow:{v11, v13, v15, v17}];
   v20 = v19;
   v22 = v21;
   v24 = v23;
@@ -4366,26 +4366,26 @@ LABEL_9:
 
 - (void)updateHostingItemsForConstraintChanges
 {
-  v3 = [(UITrackingElementWindowController *)self inputViewSet];
-  v4 = [v3 inputAccessoryView];
-  if (v4)
+  inputViewSet = [(UITrackingElementWindowController *)self inputViewSet];
+  inputAccessoryView = [inputViewSet inputAccessoryView];
+  if (inputAccessoryView)
   {
   }
 
   else
   {
     v5 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v6 = [v5 visualModeManager];
-    v7 = [v6 shouldShowWithinAppWindow];
+    visualModeManager = [v5 visualModeManager];
+    shouldShowWithinAppWindow = [visualModeManager shouldShowWithinAppWindow];
 
-    if (!v7)
+    if (!shouldShowWithinAppWindow)
     {
       return;
     }
   }
 
-  v8 = [(UIViewController *)self view];
-  [v8 layoutIfNeeded];
+  view = [(UIViewController *)self view];
+  [view layoutIfNeeded];
 }
 
 void __58__UITrackingElementWindowController_viewDidLayoutSubviews__block_invoke_2(void *a1)
@@ -4406,27 +4406,27 @@ void __58__UITrackingElementWindowController_viewDidLayoutSubviews__block_invoke
   }
 }
 
-- (void)checkPlaceholdersForRemoteKeyboardsAndForceConstraintsUpdate:(BOOL)a3 layoutSubviews:(BOOL)a4
+- (void)checkPlaceholdersForRemoteKeyboardsAndForceConstraintsUpdate:(BOOL)update layoutSubviews:(BOOL)subviews
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(UITrackingElementWindowController *)self inputViewSet];
-  v8 = [v7 isInputViewPlaceholder];
+  subviewsCopy = subviews;
+  updateCopy = update;
+  inputViewSet = [(UITrackingElementWindowController *)self inputViewSet];
+  isInputViewPlaceholder = [inputViewSet isInputViewPlaceholder];
 
-  if (v8)
+  if (isInputViewPlaceholder)
   {
     externalTrackingUpdateInProgress = self->_externalTrackingUpdateInProgress;
-    v10 = [(UITrackingElementWindowController *)self inputViewSet];
-    v11 = [v10 inputView];
-    v12 = v11;
+    inputViewSet2 = [(UITrackingElementWindowController *)self inputViewSet];
+    inputView = [inputViewSet2 inputView];
+    v12 = inputView;
     if (externalTrackingUpdateInProgress == 1)
     {
-      [v11 invalidateIntrinsicContentSize];
+      [inputView invalidateIntrinsicContentSize];
     }
 
     else
     {
-      externalTrackingUpdateInProgress = [v11 refreshPlaceholder];
+      externalTrackingUpdateInProgress = [inputView refreshPlaceholder];
     }
   }
 
@@ -4435,24 +4435,24 @@ void __58__UITrackingElementWindowController_viewDidLayoutSubviews__block_invoke
     externalTrackingUpdateInProgress = 0;
   }
 
-  v13 = [(UITrackingElementWindowController *)self inputViewSet];
-  v14 = [v13 isInputAssistantViewPlaceholder];
+  inputViewSet3 = [(UITrackingElementWindowController *)self inputViewSet];
+  isInputAssistantViewPlaceholder = [inputViewSet3 isInputAssistantViewPlaceholder];
 
-  if (v14)
+  if (isInputAssistantViewPlaceholder)
   {
-    v15 = [(UITrackingElementWindowController *)self inputViewSet];
-    v16 = [v15 inputAssistantView];
-    externalTrackingUpdateInProgress = externalTrackingUpdateInProgress | [v16 refreshPlaceholder];
+    inputViewSet4 = [(UITrackingElementWindowController *)self inputViewSet];
+    inputAssistantView = [inputViewSet4 inputAssistantView];
+    externalTrackingUpdateInProgress = externalTrackingUpdateInProgress | [inputAssistantView refreshPlaceholder];
   }
 
-  v17 = [(UITrackingElementWindowController *)self inputViewSet];
-  v18 = [v17 isInputAccessoryViewPlaceholder];
+  inputViewSet5 = [(UITrackingElementWindowController *)self inputViewSet];
+  isInputAccessoryViewPlaceholder = [inputViewSet5 isInputAccessoryViewPlaceholder];
 
-  if (v18)
+  if (isInputAccessoryViewPlaceholder)
   {
-    v19 = [(UITrackingElementWindowController *)self inputViewSet];
-    v20 = [v19 inputAccessoryView];
-    externalTrackingUpdateInProgress = externalTrackingUpdateInProgress | [v20 refreshPlaceholder];
+    inputViewSet6 = [(UITrackingElementWindowController *)self inputViewSet];
+    inputAccessoryView = [inputViewSet6 inputAccessoryView];
+    externalTrackingUpdateInProgress = externalTrackingUpdateInProgress | [inputAccessoryView refreshPlaceholder];
 
     if ((externalTrackingUpdateInProgress & 1) == 0)
     {
@@ -4465,14 +4465,14 @@ void __58__UITrackingElementWindowController_viewDidLayoutSubviews__block_invoke
     return;
   }
 
-  if (v5 || v4 || ([(UITrackingElementWindowController *)self postRotationPlacement], (externalTrackingUpdateInProgress = objc_claimAutoreleasedReturnValue()) != 0))
+  if (updateCopy || subviewsCopy || ([(UITrackingElementWindowController *)self postRotationPlacement], (externalTrackingUpdateInProgress = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v21 = [(UITrackingElementWindowController *)self inputViewSet];
-    if ([v21 isInputViewPlaceholder])
+    inputViewSet7 = [(UITrackingElementWindowController *)self inputViewSet];
+    if ([inputViewSet7 isInputViewPlaceholder])
     {
       v22 = self->_externalTrackingUpdateInProgress;
 
-      if (!v5 && !v4)
+      if (!updateCopy && !subviewsCopy)
       {
       }
 
@@ -4485,18 +4485,18 @@ void __58__UITrackingElementWindowController_viewDidLayoutSubviews__block_invoke
     else
     {
 
-      if (!v5 && !v4)
+      if (!updateCopy && !subviewsCopy)
       {
       }
     }
   }
 
-  if (v5)
+  if (updateCopy)
   {
     [(UITrackingElementWindowController *)self updateHostingConstraints];
   }
 
-  if (v4)
+  if (subviewsCopy)
   {
 
     [(UITrackingElementWindowController *)self updateHostingItemsForConstraintChanges];
@@ -4504,27 +4504,27 @@ void __58__UITrackingElementWindowController_viewDidLayoutSubviews__block_invoke
 
   else
   {
-    v23 = [(UIViewController *)self view];
-    [v23 setNeedsLayout];
+    view = [(UIViewController *)self view];
+    [view setNeedsLayout];
   }
 }
 
-- (void)setDisableUpdateMaskForSecureTextEntry:(BOOL)a3
+- (void)setDisableUpdateMaskForSecureTextEntry:(BOOL)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   v5 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v6 = [v5 preferencesActions];
-  v7 = [v6 BOOLForPreferenceKey:@"ShowPasswordKeyboardInVideo"];
+  preferencesActions = [v5 preferencesActions];
+  v7 = [preferencesActions BOOLForPreferenceKey:@"ShowPasswordKeyboardInVideo"];
 
   if ((v7 & 1) == 0)
   {
     v14 = [(UIInputWindowControllerHosting *)self->_hosting itemForPurpose:100];
-    v8 = [v14 hostView];
-    v9 = v8;
-    if (v8)
+    hostView = [v14 hostView];
+    v9 = hostView;
+    if (hostView)
     {
       passcodeObscuringInteraction = self->_passcodeObscuringInteraction;
-      if (v3)
+      if (entryCopy)
       {
         if (!passcodeObscuringInteraction)
         {
@@ -4540,7 +4540,7 @@ void __58__UITrackingElementWindowController_viewDidLayoutSubviews__block_invoke
 
       else if (passcodeObscuringInteraction)
       {
-        [v8 removeInteraction:?];
+        [hostView removeInteraction:?];
         v13 = self->_passcodeObscuringInteraction;
         self->_passcodeObscuringInteraction = 0;
       }
@@ -4548,45 +4548,45 @@ void __58__UITrackingElementWindowController_viewDidLayoutSubviews__block_invoke
   }
 }
 
-- (void)updateForKeyplaneChangeWithContext:(id)a3
+- (void)updateForKeyplaneChangeWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (!self->_isChangingInputViews)
   {
-    v22 = v4;
+    v22 = contextCopy;
     v5 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v6 = [v5 transientInputViews];
-    v7 = [v6 isEmpty];
+    transientInputViews = [v5 transientInputViews];
+    isEmpty = [transientInputViews isEmpty];
 
-    v4 = v22;
-    if ((v7 & 1) == 0)
+    contextCopy = v22;
+    if ((isEmpty & 1) == 0)
     {
       if ([v22 updateAssistantView])
       {
         v8 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-        v9 = [v8 hardwareKeyboardExclusivityIdentifier];
+        hardwareKeyboardExclusivityIdentifier = [v8 hardwareKeyboardExclusivityIdentifier];
 
-        if (v9)
+        if (hardwareKeyboardExclusivityIdentifier)
         {
-          v10 = [v8 systemInputAssistantViewController];
-          v11 = [(UITrackingElementWindowController *)self inputViewSet];
-          v12 = [v10 shouldBeShownForInputDelegate:0 inputViews:v11];
+          systemInputAssistantViewController = [v8 systemInputAssistantViewController];
+          inputViewSet = [(UITrackingElementWindowController *)self inputViewSet];
+          v12 = [systemInputAssistantViewController shouldBeShownForInputDelegate:0 inputViews:inputViewSet];
 
-          v13 = [(UITrackingElementWindowController *)self placement];
+          placement = [(UITrackingElementWindowController *)self placement];
           objc_opt_class();
-          LODWORD(v11) = objc_opt_isKindOfClass() & 1;
+          LODWORD(inputViewSet) = objc_opt_isKindOfClass() & 1;
 
-          if (v12 != v11)
+          if (v12 != inputViewSet)
           {
-            v14 = [(UITrackingElementWindowController *)self inputViewSet];
-            v15 = [(UIViewController *)self _window];
-            v16 = [v15 windowScene];
-            v17 = [UIPeripheralHost endPlacementForInputViewSet:v14 windowScene:v16];
+            inputViewSet2 = [(UITrackingElementWindowController *)self inputViewSet];
+            _window = [(UIViewController *)self _window];
+            windowScene = [_window windowScene];
+            v17 = [UIPeripheralHost endPlacementForInputViewSet:inputViewSet2 windowScene:windowScene];
 
-            v18 = [(UITrackingElementWindowController *)self placement];
-            LOBYTE(v15) = [v18 isEqual:v17];
+            placement2 = [(UITrackingElementWindowController *)self placement];
+            LOBYTE(_window) = [placement2 isEqual:v17];
 
-            if ((v15 & 1) == 0)
+            if ((_window & 1) == 0)
             {
               [(UITrackingElementWindowController *)self setPlacement:v17];
             }
@@ -4618,9 +4618,9 @@ void __58__UITrackingElementWindowController_viewDidLayoutSubviews__block_invoke
       {
         if (([v22 sizeDidChange] & 1) == 0)
         {
-          v19 = [v22 updateAssistantView];
-          v4 = v22;
-          if (!v19)
+          updateAssistantView = [v22 updateAssistantView];
+          contextCopy = v22;
+          if (!updateAssistantView)
           {
             goto LABEL_22;
           }
@@ -4628,40 +4628,40 @@ void __58__UITrackingElementWindowController_viewDidLayoutSubviews__block_invoke
 
         [(UITrackingElementWindowController *)self resetBackdropHeight];
         [(UITrackingElementWindowController *)self updateHostingConstraints];
-        v20 = [v22 splitWidthsChanged];
-        v4 = v22;
-        if (!v20)
+        splitWidthsChanged = [v22 splitWidthsChanged];
+        contextCopy = v22;
+        if (!splitWidthsChanged)
         {
           goto LABEL_22;
         }
 
-        v21 = [(UITrackingElementWindowController *)self inputViewSet];
-        [v21 refreshPresentation];
+        inputViewSet3 = [(UITrackingElementWindowController *)self inputViewSet];
+        [inputViewSet3 refreshPresentation];
 
         [(UIInputWindowControllerHosting *)self->_hosting _updateBackdropViews];
       }
 
-      v4 = v22;
+      contextCopy = v22;
     }
   }
 
 LABEL_22:
 }
 
-- (void)_collectTransitionTimeStatistics:(unint64_t)a3 withStart:(id)a4
+- (void)_collectTransitionTimeStatistics:(unint64_t)statistics withStart:(id)start
 {
-  v6 = a4;
-  if (v6 && !-[UIInputWindowController shouldNotifyRemoteKeyboards](self, "shouldNotifyRemoteKeyboards") && ([UIApp launchedToTest] & 1) == 0)
+  startCopy = start;
+  if (startCopy && !-[UIInputWindowController shouldNotifyRemoteKeyboards](self, "shouldNotifyRemoteKeyboards") && ([UIApp launchedToTest] & 1) == 0)
   {
-    v7 = [MEMORY[0x1E695DF00] date];
-    [v7 timeIntervalSinceDate:v6];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceDate:startCopy];
     v9 = v8;
     v10 = +[UIKeyboard activeKeyboard];
-    v11 = [(UIViewController *)self view];
-    if ([v10 isDescendantOfView:v11])
+    view = [(UIViewController *)self view];
+    if ([v10 isDescendantOfView:view])
     {
 
-      if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+      if ((statistics & 0xFFFFFFFFFFFFFFFELL) == 2)
       {
         kdebug_trace();
         v12 = dispatch_get_global_queue(-2, 0);
@@ -4669,7 +4669,7 @@ LABEL_22:
         v13[1] = 3221225472;
         v13[2] = __80__UITrackingElementWindowController__collectTransitionTimeStatistics_withStart___block_invoke;
         v13[3] = &__block_descriptor_48_e5_v8__0l;
-        v13[4] = a3;
+        v13[4] = statistics;
         v13[5] = v9;
         dispatch_async(v12, v13);
       }
@@ -4718,40 +4718,40 @@ void __80__UITrackingElementWindowController__collectTransitionTimeStatistics_wi
 LABEL_9:
 }
 
-- (void)pushAnimationStyle:(id)a3
+- (void)pushAnimationStyle:(id)style
 {
-  if (a3)
+  if (style)
   {
     [(NSMutableArray *)self->_animationStyleStack addObject:?];
   }
 }
 
-- (void)performOperations:(id)a3 withAnimationStyle:(id)a4
+- (void)performOperations:(id)operations withAnimationStyle:(id)style
 {
-  if (a3)
+  if (operations)
   {
-    v6 = a3;
-    [(UITrackingElementWindowController *)self pushAnimationStyle:a4];
-    v6[2](v6);
+    operationsCopy = operations;
+    [(UITrackingElementWindowController *)self pushAnimationStyle:style];
+    operationsCopy[2](operationsCopy);
 
     [(UITrackingElementWindowController *)self popAnimationStyle];
   }
 }
 
-- (BOOL)mergeTransitionIfNecessaryWithTransition:(id)a3
+- (BOOL)mergeTransitionIfNecessaryWithTransition:(id)transition
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UITrackingElementWindowController *)self currentTransition];
-  v6 = v5;
-  if (!v5 || ([v5 cancelled] & 1) != 0)
+  transitionCopy = transition;
+  currentTransition = [(UITrackingElementWindowController *)self currentTransition];
+  v6 = currentTransition;
+  if (!currentTransition || ([currentTransition cancelled] & 1) != 0)
   {
     goto LABEL_15;
   }
 
-  v7 = [v6 toPlacement];
-  v8 = [v4 toPlacement];
-  if (([v7 isEqual:v8] & 1) == 0)
+  toPlacement = [v6 toPlacement];
+  toPlacement2 = [transitionCopy toPlacement];
+  if (([toPlacement isEqual:toPlacement2] & 1) == 0)
   {
 
 LABEL_7:
@@ -4761,20 +4761,20 @@ LABEL_7:
       v29 = 138412546;
       v30 = v6;
       v31 = 2112;
-      v32 = v4;
+      v32 = transitionCopy;
       _os_log_impl(&dword_188A29000, v13, OS_LOG_TYPE_DEFAULT, "Merging transitions: %@ into %@", &v29, 0x16u);
     }
 
     [v6 setCancelled:1];
-    v14 = [v6 animationStyle];
-    [v14 cancelInterruptibleAnimations];
+    animationStyle = [v6 animationStyle];
+    [animationStyle cancelInterruptibleAnimations];
 
-    v15 = [v6 notifications];
-    v16 = [v6 notificationInfo];
-    [(UITrackingElementWindowController *)self postEndNotifications:v15 withInfo:v16];
+    notifications = [v6 notifications];
+    notificationInfo = [v6 notificationInfo];
+    [(UITrackingElementWindowController *)self postEndNotifications:notifications withInfo:notificationInfo];
 
-    v17 = [(UIInputWindowControllerHosting *)self->_hosting allHostingItems];
-    [v17 enumerateObjectsUsingBlock:&__block_literal_global_311_0];
+    allHostingItems = [(UIInputWindowControllerHosting *)self->_hosting allHostingItems];
+    [allHostingItems enumerateObjectsUsingBlock:&__block_literal_global_311_0];
 
     if ([v6 animationState] > 2)
     {
@@ -4782,32 +4782,32 @@ LABEL_7:
     }
 
     [(UIInputWindowControllerHosting *)self->_hosting removeAllAnimations];
-    v18 = [v6 fromPlacement];
-    [v4 setFromPlacement:v18];
+    fromPlacement = [v6 fromPlacement];
+    [transitionCopy setFromPlacement:fromPlacement];
 
-    v19 = [v4 fromPlacement];
-    v20 = [v19 showsInputViews];
-    v21 = [v4 toPlacement];
-    if (v20 == [v21 showsInputViews])
+    fromPlacement2 = [transitionCopy fromPlacement];
+    showsInputViews = [fromPlacement2 showsInputViews];
+    toPlacement3 = [transitionCopy toPlacement];
+    if (showsInputViews == [toPlacement3 showsInputViews])
     {
-      v22 = [v4 fromPlacement];
-      v23 = [v22 showsKeyboard];
-      v24 = [v4 toPlacement];
-      if (v23 == [v24 showsKeyboard])
+      fromPlacement3 = [transitionCopy fromPlacement];
+      showsKeyboard = [fromPlacement3 showsKeyboard];
+      toPlacement4 = [transitionCopy toPlacement];
+      if (showsKeyboard == [toPlacement4 showsKeyboard])
       {
-        v26 = [v4 animationStyle];
-        v27 = [v26 dontMerge];
+        animationStyle2 = [transitionCopy animationStyle];
+        dontMerge = [animationStyle2 dontMerge];
 
-        if (v27)
+        if (dontMerge)
         {
           goto LABEL_15;
         }
 
-        v28 = [v4 animationStyle];
-        v19 = [v28 copy];
+        animationStyle3 = [transitionCopy animationStyle];
+        fromPlacement2 = [animationStyle3 copy];
 
-        [v19 setAnimated:0];
-        [v4 setAnimationStyle:v19];
+        [fromPlacement2 setAnimated:0];
+        [transitionCopy setAnimationStyle:fromPlacement2];
 LABEL_14:
 
 LABEL_15:
@@ -4819,9 +4819,9 @@ LABEL_15:
     goto LABEL_14;
   }
 
-  v9 = [v6 animationStyle];
-  v10 = [v4 animationStyle];
-  v11 = [v9 isEqual:v10];
+  animationStyle4 = [v6 animationStyle];
+  animationStyle5 = [transitionCopy animationStyle];
+  v11 = [animationStyle4 isEqual:animationStyle5];
 
   if ((v11 & 1) == 0)
   {
@@ -4834,9 +4834,9 @@ LABEL_16:
   return v12;
 }
 
-- (void)addPendingActivity:(id)a3
+- (void)addPendingActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = _Block_copy(self->_pendingTransitionActivity);
   v6 = v5;
   if (v5)
@@ -4846,7 +4846,7 @@ LABEL_16:
     v11[2] = __56__UITrackingElementWindowController_addPendingActivity___block_invoke;
     v11[3] = &unk_1E70F77D0;
     v12 = v5;
-    v13 = v4;
+    v13 = activityCopy;
     v7 = [v11 copy];
     pendingTransitionActivity = self->_pendingTransitionActivity;
     self->_pendingTransitionActivity = v7;
@@ -4856,7 +4856,7 @@ LABEL_16:
 
   else
   {
-    v10 = [v4 copy];
+    v10 = [activityCopy copy];
     v9 = self->_pendingTransitionActivity;
     self->_pendingTransitionActivity = v10;
   }
@@ -4870,25 +4870,25 @@ uint64_t __56__UITrackingElementWindowController_addPendingActivity___block_invo
   return v2();
 }
 
-- (int64_t)visualStateFromPlacement:(id)a3
+- (int64_t)visualStateFromPlacement:(id)placement
 {
-  v3 = a3;
-  if ([v3 isCompactAssistantView])
+  placementCopy = placement;
+  if ([placementCopy isCompactAssistantView])
   {
     v4 = 6;
   }
 
-  else if ([v3 isFloatingAssistantView])
+  else if ([placementCopy isFloatingAssistantView])
   {
     v4 = 5;
   }
 
-  else if ([v3 isFloating])
+  else if ([placementCopy isFloating])
   {
     v4 = 3;
   }
 
-  else if ([v3 showsKeyboard])
+  else if ([placementCopy showsKeyboard])
   {
     v4 = 2;
   }
@@ -4901,22 +4901,22 @@ uint64_t __56__UITrackingElementWindowController_addPendingActivity___block_invo
   return v4;
 }
 
-- (void)animateKeyboardTrackingElementsWithNotificationInfo:(id)a3 notificationType:(unint64_t)a4 updateForStart:(BOOL)a5 updateForEnd:(BOOL)a6
+- (void)animateKeyboardTrackingElementsWithNotificationInfo:(id)info notificationType:(unint64_t)type updateForStart:(BOOL)start updateForEnd:(BOOL)end
 {
-  v6 = a6;
-  v7 = a5;
+  endCopy = end;
+  startCopy = start;
   v65 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  infoCopy = info;
   v11 = _UITrackingElementWindowControllerLogger();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = @"for start";
-    if (v6)
+    if (endCopy)
     {
       v12 = @"using keyboard animation";
     }
 
-    if (!v7)
+    if (!startCopy)
     {
       v12 = @"for end";
     }
@@ -4924,27 +4924,27 @@ uint64_t __56__UITrackingElementWindowController_addPendingActivity___block_invo
     *buf = 138412546;
     v62 = v12;
     v63 = 2112;
-    v64 = v10;
+    v64 = infoCopy;
     _os_log_impl(&dword_188A29000, v11, OS_LOG_TYPE_DEFAULT, "Updating keyboard tracking elements %@ with notificationInfo:\n%@", buf, 0x16u);
   }
 
-  v13 = [(UITrackingElementWindowController *)self currentTransition];
+  currentTransition = [(UITrackingElementWindowController *)self currentTransition];
 
-  if (v13)
+  if (currentTransition)
   {
-    v14 = [(UITrackingElementWindowController *)self currentTransition];
-    [v14 setCancelled:1];
+    currentTransition2 = [(UITrackingElementWindowController *)self currentTransition];
+    [currentTransition2 setCancelled:1];
 
-    v15 = [(UITrackingElementWindowController *)self currentTransition];
-    v16 = [v15 animationStyle];
-    [v16 cancelInterruptibleAnimations];
+    currentTransition3 = [(UITrackingElementWindowController *)self currentTransition];
+    animationStyle = [currentTransition3 animationStyle];
+    [animationStyle cancelInterruptibleAnimations];
 
     [(UITrackingElementWindowController *)self setCurrentTransition:0];
     [(UIInputWindowControllerHosting *)self->_hosting removeAllAnimations];
   }
 
   self->_externalTrackingUpdateInProgress = 1;
-  [v10 duration];
+  [infoCopy duration];
   if (v17 <= 0.0)
   {
     +[UIInputViewAnimationStyle animationStyleImmediate];
@@ -4952,36 +4952,36 @@ uint64_t __56__UITrackingElementWindowController_addPendingActivity___block_invo
 
   else
   {
-    [v10 duration];
+    [infoCopy duration];
     [UIInputViewAnimationStyle animationStyleAnimated:1 duration:?];
   }
   v18 = ;
-  [v10 setNonKeyboardOverride:1];
-  [v10 endFrame];
+  [infoCopy setNonKeyboardOverride:1];
+  [infoCopy endFrame];
   v20 = v19;
   v22 = v21;
   v24 = v23;
   v26 = v25;
-  v27 = [(UITrackingElementWindowController *)self inputViewSet];
-  v28 = [v27 inputAccessoryView];
-  if (v28)
+  inputViewSet = [(UITrackingElementWindowController *)self inputViewSet];
+  inputAccessoryView = [inputViewSet inputAccessoryView];
+  if (inputAccessoryView)
   {
-    v29 = v28;
+    v29 = inputAccessoryView;
     v43 = v18;
-    v30 = v7;
-    v31 = a4;
-    v32 = v6;
-    v33 = [(UITrackingElementWindowController *)self inputViewSet];
-    v34 = [v33 isInputViewPlaceholder];
+    v30 = startCopy;
+    typeCopy = type;
+    v32 = endCopy;
+    inputViewSet2 = [(UITrackingElementWindowController *)self inputViewSet];
+    isInputViewPlaceholder = [inputViewSet2 isInputViewPlaceholder];
 
-    if (v34)
+    if (isInputViewPlaceholder)
     {
       v35 = +[UIInputViewSetNotificationInfo info];
       externalTrackingInfo = self->_externalTrackingInfo;
       self->_externalTrackingInfo = v35;
 
       v37 = self->_externalTrackingInfo;
-      [v10 endFrame];
+      [infoCopy endFrame];
       [(UIInputViewSetNotificationInfo *)v37 populateEndInfoWithFrame:?];
       v38 = 1;
     }
@@ -4991,9 +4991,9 @@ uint64_t __56__UITrackingElementWindowController_addPendingActivity___block_invo
       v38 = 0;
     }
 
-    v6 = v32;
-    a4 = v31;
-    v7 = v30;
+    endCopy = v32;
+    type = typeCopy;
+    startCopy = v30;
     v18 = v43;
   }
 
@@ -5020,11 +5020,11 @@ uint64_t __56__UITrackingElementWindowController_addPendingActivity___block_invo
     v57 = v24;
     v58 = v26;
     v60 = v38;
-    v39 = v10;
+    v39 = infoCopy;
     v53 = v39;
     v40 = v18;
     v54 = v40;
-    v59 = a4;
+    typeCopy2 = type;
     v41 = _Block_copy(aBlock);
     v44[0] = MEMORY[0x1E69E9820];
     v44[1] = 3221225472;
@@ -5035,23 +5035,23 @@ uint64_t __56__UITrackingElementWindowController_addPendingActivity___block_invo
     v47 = v22;
     v48 = v24;
     v49 = v26;
-    v51 = v7;
+    v51 = startCopy;
     v45 = v39;
-    v50 = a4;
+    typeCopy3 = type;
     v42 = _Block_copy(v44);
-    if (v7 && v6)
+    if (startCopy && endCopy)
     {
       [v40 launchAnimation:v41 afterStarted:0 completion:v42 forHost:self fromCurrentPosition:0];
     }
 
     else
     {
-      if (v7)
+      if (startCopy)
       {
         v41[2](v41);
       }
 
-      if (v6)
+      if (endCopy)
       {
         v42[2](v42, 1);
       }
@@ -5258,50 +5258,50 @@ uint64_t __134__UITrackingElementWindowController_animateKeyboardTrackingElement
       _os_log_impl(&dword_188A29000, v3, OS_LOG_TYPE_DEFAULT, "Updating sizing for existing placement %@", &buf, 0xCu);
     }
 
-    v5 = [(UITrackingElementWindowController *)self currentTransition];
-    v6 = [v5 animationStyle];
-    v7 = v6;
-    if (v6)
+    currentTransition = [(UITrackingElementWindowController *)self currentTransition];
+    animationStyle = [currentTransition animationStyle];
+    v7 = animationStyle;
+    if (animationStyle)
     {
-      v8 = v6;
+      nextAnimationStyle = animationStyle;
     }
 
     else
     {
-      v8 = [(UITrackingElementWindowController *)self nextAnimationStyle];
+      nextAnimationStyle = [(UITrackingElementWindowController *)self nextAnimationStyle];
     }
 
-    v9 = v8;
+    v9 = nextAnimationStyle;
 
     *&buf = 0;
     *(&buf + 1) = &buf;
     v49 = 0x3032000000;
     v50 = __Block_byref_object_copy__178;
     v51 = __Block_byref_object_dispose__178;
-    v10 = [(UITrackingElementWindowController *)self placement];
-    v52 = [UITrackingElementPlacementTransition transitionForExistingPlacement:v10 animationStyle:v9];
+    placement = [(UITrackingElementWindowController *)self placement];
+    v52 = [UITrackingElementPlacementTransition transitionForExistingPlacement:placement animationStyle:v9];
 
-    v11 = [(UITrackingElementWindowController *)self currentTransition];
-    v12 = v11;
+    currentTransition2 = [(UITrackingElementWindowController *)self currentTransition];
+    v12 = currentTransition2;
     v42 = 0;
     v43 = &v42;
     v44 = 0x3032000000;
     v45 = __Block_byref_object_copy__178;
     v46 = __Block_byref_object_dispose__178;
     v47 = 0;
-    if (v11 && ([v11 cancelled] & 1) == 0)
+    if (currentTransition2 && ([currentTransition2 cancelled] & 1) == 0)
     {
-      v13 = [(UITrackingElementWindowController *)self currentTransition];
-      v14 = [v13 notificationInfo];
+      currentTransition3 = [(UITrackingElementWindowController *)self currentTransition];
+      notificationInfo = [currentTransition3 notificationInfo];
       v15 = v43[5];
-      v43[5] = v14;
+      v43[5] = notificationInfo;
 
-      v16 = [v12 fromPlacement];
-      [*(*(&buf + 1) + 40) setFromPlacement:v16];
+      fromPlacement = [v12 fromPlacement];
+      [*(*(&buf + 1) + 40) setFromPlacement:fromPlacement];
 
       [v12 setCancelled:1];
-      v17 = [v12 animationStyle];
-      [v17 cancelInterruptibleAnimations];
+      animationStyle2 = [v12 animationStyle];
+      [animationStyle2 cancelInterruptibleAnimations];
 
       [(UIInputWindowControllerHosting *)self->_hosting removeAllAnimations];
     }
@@ -5309,26 +5309,26 @@ uint64_t __134__UITrackingElementWindowController_animateKeyboardTrackingElement
     v18 = v43[5];
     if (!v18)
     {
-      v19 = [(UITrackingElementWindowController *)self notificationInfoWaitingForInputUI];
+      notificationInfoWaitingForInputUI = [(UITrackingElementWindowController *)self notificationInfoWaitingForInputUI];
 
-      if (v19)
+      if (notificationInfoWaitingForInputUI)
       {
-        v20 = [(UITrackingElementWindowController *)self notificationInfoWaitingForInputUI];
+        notificationInfoWaitingForInputUI2 = [(UITrackingElementWindowController *)self notificationInfoWaitingForInputUI];
         v21 = v43[5];
-        v43[5] = v20;
+        v43[5] = notificationInfoWaitingForInputUI2;
 
         [(UITrackingElementWindowController *)self setNotificationInfoWaitingForInputUI:0];
       }
 
       else
       {
-        v22 = [(UITrackingElementWindowController *)self initialNotificationInfo];
+        initialNotificationInfo = [(UITrackingElementWindowController *)self initialNotificationInfo];
         v23 = v43[5];
-        v43[5] = v22;
+        v43[5] = initialNotificationInfo;
 
         v24 = v43[5];
-        v25 = [*(*(&buf + 1) + 40) animationStyle];
-        [v24 populateWithAnimationStyle:v25];
+        animationStyle3 = [*(*(&buf + 1) + 40) animationStyle];
+        [v24 populateWithAnimationStyle:animationStyle3];
       }
 
       v41[0] = MEMORY[0x1E69E9820];
@@ -5342,8 +5342,8 @@ uint64_t __134__UITrackingElementWindowController_animateKeyboardTrackingElement
     }
 
     [*(*(&buf + 1) + 40) setNotificationInfo:v18];
-    v26 = [*(*(&buf + 1) + 40) animationStyle];
-    [v26 setExtraOptions:{objc_msgSend(v26, "extraOptions") & 0xFFFFFFFFFFFFFFFDLL}];
+    animationStyle4 = [*(*(&buf + 1) + 40) animationStyle];
+    [animationStyle4 setExtraOptions:{objc_msgSend(animationStyle4, "extraOptions") & 0xFFFFFFFFFFFFFFFDLL}];
 
     [(UITrackingElementWindowController *)self setCurrentTransition:*(*(&buf + 1) + 40)];
     v40[0] = 0;
@@ -5351,23 +5351,23 @@ uint64_t __134__UITrackingElementWindowController_animateKeyboardTrackingElement
     v40[2] = 0x2020000000;
     v40[3] = 2;
     [*(*(&buf + 1) + 40) didAdvanceAnimationToState:1];
-    v27 = [*(*(&buf + 1) + 40) notificationInfo];
-    [v27 setWaitingForInputUI:0];
+    notificationInfo2 = [*(*(&buf + 1) + 40) notificationInfo];
+    [notificationInfo2 setWaitingForInputUI:0];
 
     v28 = +[UIKeyboard usesInputSystemUI];
     v29 = *(*(&buf + 1) + 40);
     if (v28)
     {
-      v30 = [v29 notificationInfo];
+      notificationInfo3 = [v29 notificationInfo];
       v31 = +[_UIKeyboardArbiterClient automaticSharedArbiterClient];
-      v32 = [v31 currentUIState];
-      [v30 setWasCausedRemotely:{objc_msgSend(v30, "wasCausedRemotely") | objc_msgSend(v32, "isLocal") ^ 1}];
+      currentUIState = [v31 currentUIState];
+      [notificationInfo3 setWasCausedRemotely:{objc_msgSend(notificationInfo3, "wasCausedRemotely") | objc_msgSend(currentUIState, "isLocal") ^ 1}];
     }
 
     else
     {
-      v30 = [v29 notificationInfo];
-      [v30 setWasCausedRemotely:1];
+      notificationInfo3 = [v29 notificationInfo];
+      [notificationInfo3 setWasCausedRemotely:1];
     }
 
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -5392,8 +5392,8 @@ uint64_t __134__UITrackingElementWindowController_animateKeyboardTrackingElement
     v37[5] = &buf;
     v37[6] = v40;
     v35 = _Block_copy(v37);
-    v36 = [*(*(&buf + 1) + 40) animationStyle];
-    [v36 launchAnimation:v33 afterStarted:v34 completion:v35 forHost:self fromCurrentPosition:0];
+    animationStyle5 = [*(*(&buf + 1) + 40) animationStyle];
+    [animationStyle5 launchAnimation:v33 afterStarted:v34 completion:v35 forHost:self fromCurrentPosition:0];
 
     _Block_object_dispose(v40, 8);
     _Block_object_dispose(&v42, 8);
@@ -5577,23 +5577,23 @@ void __65__UITrackingElementWindowController_updateSizingFromRemoteChange__block
   [v1 postEndNotifications:v2 withInfo:v3];
 }
 
-- (void)moveFromPlacement:(id)a3 toPlacement:(id)a4 starting:(id)a5 completion:(id)a6
+- (void)moveFromPlacement:(id)placement toPlacement:(id)toPlacement starting:(id)starting completion:(id)completion
 {
   v168 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v117 = a5;
-  v115 = a6;
+  placementCopy = placement;
+  toPlacementCopy = toPlacement;
+  startingCopy = starting;
+  completionCopy = completion;
   v12 = _UITrackingElementWindowControllerLogger();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     placement = self->_placement;
     *buf = 138412802;
-    *&buf[4] = v10;
+    *&buf[4] = placementCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v11;
+    *&buf[14] = toPlacementCopy;
     *&buf[22] = 2112;
-    v165 = placement;
+    placementCopy2 = placement;
     _os_log_impl(&dword_188A29000, v12, OS_LOG_TYPE_DEFAULT, "Moving from placement: %@ to placement: %@ (currentPlacement: %@)", buf, 0x20u);
   }
 
@@ -5612,42 +5612,42 @@ void __65__UITrackingElementWindowController_updateSizingFromRemoteChange__block
 
   if (self->_disablePlacementChanges)
   {
-    if ([v11 showsKeyboard])
+    if ([toPlacementCopy showsKeyboard])
     {
-      v17 = [(UITrackingElementWindowController *)self inputViewSet];
-      v18 = [v17 inputAccessoryView];
+      inputViewSet = [(UITrackingElementWindowController *)self inputViewSet];
+      inputAccessoryView = [inputViewSet inputAccessoryView];
       v19 = off_1E70E9B28;
-      if (v18)
+      if (inputAccessoryView)
       {
         v19 = off_1E70E9AF8;
       }
 
-      v20 = [(__objc2_class *)*v19 placement];
+      placement = [(__objc2_class *)*v19 placement];
     }
 
     else
     {
-      v20 = v11;
+      placement = toPlacementCopy;
     }
 
     v22 = _UITrackingElementWindowControllerLogger();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [(UITrackingElementWindowController *)self inputViewSet];
-      v24 = [v23 inputAccessoryView];
+      inputViewSet2 = [(UITrackingElementWindowController *)self inputViewSet];
+      inputAccessoryView2 = [inputViewSet2 inputAccessoryView];
       *buf = 67109378;
-      *&buf[4] = v24 != 0;
+      *&buf[4] = inputAccessoryView2 != 0;
       *&buf[8] = 2112;
-      *&buf[10] = v20;
+      *&buf[10] = placement;
       _os_log_impl(&dword_188A29000, v22, OS_LOG_TYPE_DEFAULT, "_disablePlacementChanges = YES, (iav: %d) new placement: %@", buf, 0x12u);
     }
 
-    v21 = v20;
+    v21 = placement;
   }
 
   else
   {
-    v21 = v11;
+    v21 = toPlacementCopy;
   }
 
   v118 = v21;
@@ -5658,16 +5658,16 @@ void __65__UITrackingElementWindowController_updateSizingFromRemoteChange__block
     self->_externalTrackingInfo = 0;
   }
 
-  v116 = [(UITrackingElementWindowController *)self nextAnimationStyle];
-  v119 = [UITrackingElementPlacementTransition transitionFromPlacement:v10 toPlacement:v118 withAnimationStyle:v116];
+  nextAnimationStyle = [(UITrackingElementWindowController *)self nextAnimationStyle];
+  v119 = [UITrackingElementPlacementTransition transitionFromPlacement:placementCopy toPlacement:v118 withAnimationStyle:nextAnimationStyle];
   if ([(UITrackingElementWindowController *)self mergeTransitionIfNecessaryWithTransition:v119])
   {
-    if (v117)
+    if (startingCopy)
     {
-      [(UITrackingElementWindowController *)self addPendingActivity:v117];
+      [(UITrackingElementWindowController *)self addPendingActivity:startingCopy];
     }
 
-    if (v115)
+    if (completionCopy)
     {
       [(UITrackingElementWindowController *)self addPendingActivity:?];
     }
@@ -5676,18 +5676,18 @@ void __65__UITrackingElementWindowController_updateSizingFromRemoteChange__block
   }
 
   [(UITrackingElementWindowController *)self flushPendingActivities];
-  v26 = v10;
-  v27 = [(UITrackingElementWindowController *)self currentTransition];
-  v114 = v26;
-  if (v27)
+  v26 = placementCopy;
+  currentTransition = [(UITrackingElementWindowController *)self currentTransition];
+  fromPlacement = v26;
+  if (currentTransition)
   {
     if ([(UITrackingElementWindowController *)self isRotating])
     {
-      v28 = [(UITrackingElementWindowController *)self currentTransition];
-      v29 = [v28 cancelled];
+      currentTransition2 = [(UITrackingElementWindowController *)self currentTransition];
+      cancelled = [currentTransition2 cancelled];
 
-      v114 = v26;
-      if (v29)
+      fromPlacement = v26;
+      if (cancelled)
       {
         goto LABEL_30;
       }
@@ -5697,28 +5697,28 @@ void __65__UITrackingElementWindowController_updateSizingFromRemoteChange__block
     {
     }
 
-    v114 = [v119 fromPlacement];
+    fromPlacement = [v119 fromPlacement];
   }
 
 LABEL_30:
-  v30 = [v119 fromPlacement];
+  fromPlacement2 = [v119 fromPlacement];
 
-  v31 = [v30 isEqual:v118];
-  v32 = [v119 animationStyle];
-  v33 = [v32 extraOptions] & 0xFFFFFFFFFFFFFFFDLL;
+  v31 = [fromPlacement2 isEqual:v118];
+  animationStyle = [v119 animationStyle];
+  v33 = [animationStyle extraOptions] & 0xFFFFFFFFFFFFFFFDLL;
   v34 = 2;
   if (!v31)
   {
     v34 = 0;
   }
 
-  [v32 setExtraOptions:v33 | v34];
+  [animationStyle setExtraOptions:v33 | v34];
 
-  v35 = [(UITrackingElementWindowController *)self currentTransition];
-  if (v35)
+  currentTransition3 = [(UITrackingElementWindowController *)self currentTransition];
+  if (currentTransition3)
   {
-    v36 = [(UITrackingElementWindowController *)self currentTransition];
-    [v36 lastKnownKeyboardFrame];
+    currentTransition4 = [(UITrackingElementWindowController *)self currentTransition];
+    [currentTransition4 lastKnownKeyboardFrame];
     v38 = v37;
     v40 = v39;
     v42 = v41;
@@ -5734,12 +5734,12 @@ LABEL_30:
   }
 
   [(UITrackingElementWindowController *)self setCurrentTransition:v119];
-  if (v117)
+  if (startingCopy)
   {
-    v117[2]();
+    startingCopy[2]();
   }
 
-  if ([v30 isEqual:v118])
+  if ([fromPlacement2 isEqual:v118])
   {
     v45 = +[UIInputViewAnimationStyle animationStyleImmediate];
     [v119 setAnimationStyle:v45];
@@ -5747,7 +5747,7 @@ LABEL_30:
 
   if ([v118 accessoryViewWillAppear] && (objc_msgSend(v118, "inputViewWillAppear") & 1) == 0)
   {
-    v46 = [v30 isEqual:v118] ^ 1;
+    v46 = [fromPlacement2 isEqual:v118] ^ 1;
   }
 
   else
@@ -5755,7 +5755,7 @@ LABEL_30:
     v46 = 0;
   }
 
-  if ([v30 accessoryViewWillAppear] && (objc_msgSend(v30, "inputViewWillAppear") & 1) == 0)
+  if ([fromPlacement2 accessoryViewWillAppear] && (objc_msgSend(fromPlacement2, "inputViewWillAppear") & 1) == 0)
   {
     v47 = [v118 accessoryViewWillAppear] ^ 1;
   }
@@ -5767,50 +5767,50 @@ LABEL_30:
 
   if ((v46 | v47))
   {
-    v112 = 1;
+    handlingRemoteEvent = 1;
   }
 
   else
   {
     v48 = +[UIKeyboardSceneDelegate automaticKeyboardArbiterClient];
-    v112 = [v48 handlingRemoteEvent];
+    handlingRemoteEvent = [v48 handlingRemoteEvent];
   }
 
-  if ([v30 showsInputOrAssistantViews] && !objc_msgSend(v30, "isInteractive") || (objc_msgSend(v118, "showsInputOrAssistantViews") & 1) != 0)
+  if ([fromPlacement2 showsInputOrAssistantViews] && !objc_msgSend(fromPlacement2, "isInteractive") || (objc_msgSend(v118, "showsInputOrAssistantViews") & 1) != 0)
   {
     LOBYTE(v113) = 0;
   }
 
   else
   {
-    v113 = [v30 isEqual:v118] ^ 1;
+    v113 = [fromPlacement2 isEqual:v118] ^ 1;
   }
 
-  v49 = [(UITrackingElementWindowController *)self initialNotificationInfo];
-  [v119 setNotificationInfo:v49];
+  initialNotificationInfo = [(UITrackingElementWindowController *)self initialNotificationInfo];
+  [v119 setNotificationInfo:initialNotificationInfo];
 
-  v50 = [v119 notificationInfo];
-  v51 = [v119 animationStyle];
-  [v50 populateWithAnimationStyle:v51];
+  notificationInfo = [v119 notificationInfo];
+  animationStyle2 = [v119 animationStyle];
+  [notificationInfo populateWithAnimationStyle:animationStyle2];
 
-  [v119 setNotifications:{objc_msgSend(v114, "notificationsForTransitionToPlacement:", v118)}];
+  [v119 setNotifications:{objc_msgSend(fromPlacement, "notificationsForTransitionToPlacement:", v118)}];
   if ([v119 notifications])
   {
     if ([v119 notifications] != 1)
     {
-      v52 = [v119 notificationInfo];
-      [v52 setForceNotification:1];
+      notificationInfo2 = [v119 notificationInfo];
+      [notificationInfo2 setForceNotification:1];
     }
   }
 
   else
   {
-    v53 = [v119 notificationInfo];
-    v54 = [v53 forceNotification];
-    if (v54 & 1 | ((v113 & 1) == 0))
+    notificationInfo3 = [v119 notificationInfo];
+    forceNotification = [notificationInfo3 forceNotification];
+    if (forceNotification & 1 | ((v113 & 1) == 0))
     {
 
-      if (!v54)
+      if (!forceNotification)
       {
         goto LABEL_68;
       }
@@ -5818,8 +5818,8 @@ LABEL_30:
 
     else
     {
-      v55 = [(UITrackingElementWindowController *)self postRotationPlacement];
-      v56 = v55 == 0;
+      postRotationPlacement = [(UITrackingElementWindowController *)self postRotationPlacement];
+      v56 = postRotationPlacement == 0;
 
       if (!v56)
       {
@@ -5849,7 +5849,7 @@ LABEL_68:
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x4010000000;
-  v165 = "";
+  placementCopy2 = "";
   v166 = 0u;
   v167 = 0u;
   v156[0] = MEMORY[0x1E69E9820];
@@ -5863,21 +5863,21 @@ LABEL_68:
   v163 = v44;
   v159 = buf;
   v157 = v58;
-  v158 = self;
+  selfCopy = self;
   [(UITrackingElementWindowController *)self performWithSafeTransitionFrames:v156];
   [v58 didAdvanceAnimationToState:1];
   [(UITrackingElementWindowController *)self updateAppearStatesForPlacement:v118 start:1 animated:1];
-  if (([v30 isEqual:self->_placement] & 1) == 0)
+  if (([fromPlacement2 isEqual:self->_placement] & 1) == 0)
   {
-    v59 = [(UIViewController *)self view];
-    [v59 frame];
+    view = [(UIViewController *)self view];
+    [view frame];
     v61 = v60;
     v63 = v62;
     v65 = v64;
     v67 = v66;
-    v68 = [(UIViewController *)self view];
-    v69 = [v68 window];
-    [v69 bounds];
+    view2 = [(UIViewController *)self view];
+    window = [view2 window];
+    [window bounds];
     v170.origin.x = v70;
     v170.origin.y = v71;
     v170.size.width = v72;
@@ -5892,18 +5892,18 @@ LABEL_68:
 
     else
     {
-      v74 = [v30 requiresWindowBasedSafeAreaInsets];
-      v75 = [v118 requiresWindowBasedSafeAreaInsets];
+      requiresWindowBasedSafeAreaInsets = [fromPlacement2 requiresWindowBasedSafeAreaInsets];
+      requiresWindowBasedSafeAreaInsets2 = [v118 requiresWindowBasedSafeAreaInsets];
 
-      if (v74 != v75)
+      if (requiresWindowBasedSafeAreaInsets != requiresWindowBasedSafeAreaInsets2)
       {
         [(UIViewController *)self _recursiveUpdateContentOverlayInsetsFromParentIfNecessary];
       }
     }
   }
 
-  v76 = [v58 animationStyle];
-  v77 = [v76 controllerForStartPlacement:v30 endPlacement:v118];
+  animationStyle3 = [v58 animationStyle];
+  v77 = [animationStyle3 controllerForStartPlacement:fromPlacement2 endPlacement:v118];
   [v58 setAnimationController:v77];
 
   v151[0] = MEMORY[0x1E69E9820];
@@ -5911,7 +5911,7 @@ LABEL_68:
   v151[2] = __87__UITrackingElementWindowController_moveFromPlacement_toPlacement_starting_completion___block_invoke_2;
   v151[3] = &unk_1E7106908;
   v151[4] = self;
-  v78 = v30;
+  v78 = fromPlacement2;
   v152 = v78;
   v79 = v118;
   v153 = v79;
@@ -5924,8 +5924,8 @@ LABEL_68:
     goto LABEL_78;
   }
 
-  v81 = [v80 animationStyle];
-  if ([v81 animationType])
+  animationStyle4 = [v80 animationStyle];
+  if ([animationStyle4 animationType])
   {
 
 LABEL_78:
@@ -5934,28 +5934,28 @@ LABEL_78:
     v146[2] = __87__UITrackingElementWindowController_moveFromPlacement_toPlacement_starting_completion___block_invoke_3;
     v146[3] = &unk_1E70F6B40;
     v147 = v80;
-    v148 = self;
+    selfCopy2 = self;
     v149 = v78;
     v150 = v79;
     [(UITrackingElementWindowController *)self ignoreLayoutNotifications:v146];
 
-    v83 = v147;
+    animationStyle5 = v147;
     goto LABEL_79;
   }
 
-  v82 = [v116 animationType] == 0;
+  v82 = [nextAnimationStyle animationType] == 0;
 
   if (!v82)
   {
     goto LABEL_78;
   }
 
-  v83 = [v80 animationStyle];
-  if (![v83 animationType])
+  animationStyle5 = [v80 animationStyle];
+  if (![animationStyle5 animationType])
   {
-    v110 = [v78 isInteractive];
+    isInteractive = [v78 isInteractive];
 
-    if (v110)
+    if (isInteractive)
     {
       goto LABEL_80;
     }
@@ -5968,14 +5968,14 @@ LABEL_78:
     v145 = v79;
     [(UITrackingElementWindowController *)self ignoreLayoutNotifications:v143];
 
-    v83 = v144;
+    animationStyle5 = v144;
   }
 
 LABEL_79:
 
 LABEL_80:
-  v84 = [v80 animationStyle];
-  if ([v84 animated])
+  animationStyle6 = [v80 animationStyle];
+  if ([animationStyle6 animated])
   {
     v85 = +[UIViewPropertyAnimator _trackedAnimationsStartPaused];
 
@@ -5992,19 +5992,19 @@ LABEL_80:
   if ((([v79 isFloatingAssistantView] & 1) != 0 || objc_msgSend(v79, "isCompactAssistantView")) && (objc_msgSend(v78, "isEqual:", v79) & 1) == 0)
   {
     v86 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v87 = [v86 visualModeManager];
-    v111 = [v87 shouldShowWithinAppWindow];
+    visualModeManager = [v86 visualModeManager];
+    shouldShowWithinAppWindow = [visualModeManager shouldShowWithinAppWindow];
   }
 
   else
   {
-    v111 = 0;
+    shouldShowWithinAppWindow = 0;
   }
 
   if (([v78 isFloatingAssistantView] & 1) != 0 || objc_msgSend(v79, "isFloatingAssistantView"))
   {
-    v88 = [v78 isCompactAssistantView];
-    v89 = v88 ^ [v79 isCompactAssistantView];
+    isCompactAssistantView = [v78 isCompactAssistantView];
+    v89 = isCompactAssistantView ^ [v79 isCompactAssistantView];
   }
 
   else
@@ -6014,11 +6014,11 @@ LABEL_80:
 
   v90 = [(UITrackingElementWindowController *)self visualStateFromPlacement:v78];
   v91 = [(UITrackingElementWindowController *)self visualStateFromPlacement:v79];
-  v92 = [(UITrackingElementWindowController *)self animationTypeForCurrentTransition];
+  animationTypeForCurrentTransition = [(UITrackingElementWindowController *)self animationTypeForCurrentTransition];
   if (([v78 isInteractive] & 1) == 0 && (objc_msgSend(v79, "isInteractive") & 1) == 0)
   {
     v93 = [(UIInputWindowControllerHosting *)self->_hosting itemForPurpose:0];
-    [v93 prepareForTransitionToState:v91 animationType:v92 interactiveTransition:0];
+    [v93 prepareForTransitionToState:v91 animationType:animationTypeForCurrentTransition interactiveTransition:0];
   }
 
   [(UITrackingElementWindowController *)self setPlacementBeforeAnimation:v78];
@@ -6036,9 +6036,9 @@ LABEL_80:
   v136 = v96;
   v137 = v90;
   v138 = v91;
-  v139 = v92;
-  v140 = v111;
-  v141 = v112;
+  v139 = animationTypeForCurrentTransition;
+  v140 = shouldShowWithinAppWindow;
+  v141 = handlingRemoteEvent;
   v142 = v113;
   v97 = _Block_copy(aBlock);
   v129[0] = MEMORY[0x1E69E9820];
@@ -6053,7 +6053,7 @@ LABEL_80:
   v131 = v99;
   v100 = _Block_copy(v129);
   v101 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v102 = [v101 _transitionStartTime];
+  _transitionStartTime = [v101 _transitionStartTime];
 
   v121[0] = MEMORY[0x1E69E9820];
   v121[1] = 3221225472;
@@ -6063,16 +6063,16 @@ LABEL_80:
   v103 = v98;
   v122 = v103;
   v123 = v99;
-  v104 = v102;
+  v104 = _transitionStartTime;
   v124 = v104;
-  v10 = v95;
-  v125 = v10;
+  placementCopy = v95;
+  v125 = placementCopy;
   v127 = v91;
-  v128 = v92;
-  v126 = v115;
+  v128 = animationTypeForCurrentTransition;
+  v126 = completionCopy;
   v105 = _Block_copy(v121);
-  v106 = [v103 animationStyle];
-  [v106 launchAnimation:v97 afterStarted:v100 completion:v105 forHost:self fromCurrentPosition:0];
+  animationStyle7 = [v103 animationStyle];
+  [animationStyle7 launchAnimation:v97 afterStarted:v100 completion:v105 forHost:self fromCurrentPosition:0];
 
   kdebug_trace();
   v107 = kac_get_log();
@@ -6773,15 +6773,15 @@ void __87__UITrackingElementWindowController_moveFromPlacement_toPlacement_start
 - (id)viewForTransitionScreenSnapshot
 {
   v2 = [(UIInputWindowControllerHosting *)self->_hosting itemForPurpose:1];
-  v3 = [v2 hostView];
+  hostView = [v2 hostView];
 
-  return v3;
+  return hostView;
 }
 
 - (CGRect)transitioningFrame
 {
-  v2 = [(UIViewController *)self view];
-  [v2 frame];
+  view = [(UIViewController *)self view];
+  [view frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -6798,20 +6798,20 @@ void __87__UITrackingElementWindowController_moveFromPlacement_toPlacement_start
   return result;
 }
 
-- (void)updateToPlacement:(id)a3 withNormalAnimationsAndNotifications:(BOOL)a4
+- (void)updateToPlacement:(id)placement withNormalAnimationsAndNotifications:(BOOL)notifications
 {
-  v4 = a4;
-  v6 = a3;
+  notificationsCopy = notifications;
+  placementCopy = placement;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __92__UITrackingElementWindowController_updateToPlacement_withNormalAnimationsAndNotifications___block_invoke;
   aBlock[3] = &unk_1E70F35B8;
   aBlock[4] = self;
-  v7 = v6;
+  v7 = placementCopy;
   v13 = v7;
   v8 = _Block_copy(aBlock);
   v9 = v8;
-  if (v4)
+  if (notificationsCopy)
   {
     v8[2](v8);
   }
@@ -6853,7 +6853,7 @@ LABEL_4:
   *(*(a1 + 32) + 1650) = 0;
 }
 
-- (void)setKeyboardWindowSnapshotOn:(BOOL)a3
+- (void)setKeyboardWindowSnapshotOn:(BOOL)on
 {
   if (self->_keyboardWindowSnapshotOn)
   {
@@ -6866,28 +6866,28 @@ LABEL_4:
     }
   }
 
-  self->_keyboardWindowSnapshotOn = a3;
+  self->_keyboardWindowSnapshotOn = on;
 }
 
-- (void)setInputViewsHidden:(BOOL)a3
+- (void)setInputViewsHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v14[1] = *MEMORY[0x1E69E9840];
   if (+[UIKeyboard usesInputSystemUI])
   {
     v5 = +[UIKeyboardImpl activeInstance];
-    v6 = [v5 remoteTextInputPartner];
+    remoteTextInputPartner = [v5 remoteTextInputPartner];
     v13 = @"hidden";
-    v7 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+    v7 = [MEMORY[0x1E696AD98] numberWithBool:hiddenCopy];
     v14[0] = v7;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-    [v6 forwardApplicationOperation:sel_setInputViewsHidden_ object:v8];
+    [remoteTextInputPartner forwardApplicationOperation:sel_setInputViewsHidden_ object:v8];
   }
 
   if (self->_inhibitingHiding)
   {
     hiddenCount = self->_hiddenCount;
-    if (v3)
+    if (hiddenCopy)
     {
       v10 = hiddenCount + 1;
     }
@@ -6908,7 +6908,7 @@ LABEL_4:
     v11[2] = __57__UITrackingElementWindowController_setInputViewsHidden___block_invoke;
     v11[3] = &unk_1E70F35E0;
     v11[4] = self;
-    v12 = v3;
+    v12 = hiddenCopy;
     [UIView performWithoutAnimation:v11];
   }
 }
@@ -6966,9 +6966,9 @@ LABEL_11:
   return result;
 }
 
-- (void)setHiddenCount:(int)a3
+- (void)setHiddenCount:(int)count
 {
-  if (a3)
+  if (count)
   {
     v5 = 4000;
   }
@@ -6979,13 +6979,13 @@ LABEL_11:
   }
 
   v6 = v5;
-  v7 = [(UIViewController *)self view];
-  [v7 setOffsetOrigin:{0.0, v6}];
+  view = [(UIViewController *)self view];
+  [view setOffsetOrigin:{0.0, v6}];
 
-  self->_hiddenCount = a3;
+  self->_hiddenCount = count;
 }
 
-- (void)updateTrackingCoordinatorForRotationOrientation:(int64_t)a3
+- (void)updateTrackingCoordinatorForRotationOrientation:(int64_t)orientation
 {
   v6 = *MEMORY[0x1E695F058];
   v5 = *(MEMORY[0x1E695F058] + 8);
@@ -6994,21 +6994,21 @@ LABEL_11:
   if (+[UIKeyboard usesInputSystemUI])
   {
     v9 = +[_UIKeyboardArbiterClient automaticSharedArbiterClient];
-    v10 = [v9 currentUIState];
+    currentUIState = [v9 currentUIState];
 
     v77 = v7;
     v79 = v5;
-    if ([v10 assistantBarVisible])
+    if ([currentUIState assistantBarVisible])
     {
-      v11 = 1;
+      requiresHeightForIntegratedAssistantBar = 1;
     }
 
     else
     {
-      v11 = [v10 requiresHeightForIntegratedAssistantBar];
+      requiresHeightForIntegratedAssistantBar = [currentUIState requiresHeightForIntegratedAssistantBar];
     }
 
-    if ((a3 - 3) >= 2)
+    if ((orientation - 3) >= 2)
     {
       v23 = 1;
     }
@@ -7018,7 +7018,7 @@ LABEL_11:
       v23 = 4;
     }
 
-    [UIKeyboard sizeForInterfaceOrientation:v23 includingAssistantBar:v11 ignoreInputView:0];
+    [UIKeyboard sizeForInterfaceOrientation:v23 includingAssistantBar:requiresHeightForIntegratedAssistantBar ignoreInputView:0];
     v17 = v24;
     v22 = v25;
   }
@@ -7045,7 +7045,7 @@ LABEL_11:
 
     v77 = v7;
     v79 = v5;
-    [UIKeyboard sizeForInterfaceOrientation:a3 ignoreInputView:0];
+    [UIKeyboard sizeForInterfaceOrientation:orientation ignoreInputView:0];
     v17 = v26;
     v22 = v27;
   }
@@ -7060,47 +7060,47 @@ LABEL_13:
     return;
   }
 
-  v28 = [(UITrackingElementWindowController *)self postRotationPlacement];
+  postRotationPlacement = [(UITrackingElementWindowController *)self postRotationPlacement];
   v76 = v6;
-  if (v28)
+  if (postRotationPlacement)
   {
-    v29 = v28;
-    v30 = [(UITrackingElementWindowController *)self postRotationPlacement];
-    v31 = [v30 showsInputOrAssistantViews];
+    v29 = postRotationPlacement;
+    postRotationPlacement2 = [(UITrackingElementWindowController *)self postRotationPlacement];
+    showsInputOrAssistantViews = [postRotationPlacement2 showsInputOrAssistantViews];
 
-    if ((v31 & 1) == 0)
+    if ((showsInputOrAssistantViews & 1) == 0)
     {
       v22 = 0.0;
     }
   }
 
-  v81 = [(UIViewController *)self _window];
-  v32 = [v81 screen];
-  [v32 bounds];
+  _window = [(UIViewController *)self _window];
+  screen = [_window screen];
+  [screen bounds];
   v74 = v33;
   v35 = v34;
 
-  if (![v81 interfaceOrientation])
+  if (![_window interfaceOrientation])
   {
     goto LABEL_24;
   }
 
   v36 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v37 = [v36 keyboardWindow];
-  if (![v37 interfaceOrientation])
+  keyboardWindow = [v36 keyboardWindow];
+  if (![keyboardWindow interfaceOrientation])
   {
 
 LABEL_24:
-    v42 = v81;
+    v42 = _window;
     goto LABEL_25;
   }
 
-  v38 = ([v81 interfaceOrientation] - 3) < 2;
+  v38 = ([_window interfaceOrientation] - 3) < 2;
   v39 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v40 = [v39 keyboardWindow];
-  v41 = v38 ^ (([v40 interfaceOrientation] - 3) < 2);
+  keyboardWindow2 = [v39 keyboardWindow];
+  v41 = v38 ^ (([keyboardWindow2 interfaceOrientation] - 3) < 2);
 
-  v42 = v81;
+  v42 = _window;
   if (v41)
   {
     v35 = v74;
@@ -7188,36 +7188,36 @@ LABEL_25:
     v52 = 0.0;
   }
 
-  v53 = [v42 screen];
-  v54 = [v53 coordinateSpace];
-  v55 = [v81 windowScene];
-  v56 = [v55 _coordinateSpace];
-  [v54 convertRect:v56 toCoordinateSpace:{v52, v51, v50, v49}];
+  screen2 = [v42 screen];
+  coordinateSpace = [screen2 coordinateSpace];
+  windowScene = [_window windowScene];
+  _coordinateSpace = [windowScene _coordinateSpace];
+  [coordinateSpace convertRect:_coordinateSpace toCoordinateSpace:{v52, v51, v50, v49}];
   v58 = v57;
   v60 = v59;
   v62 = v61;
   v64 = v63;
 
-  v65 = [getTUIKeyboardAnimationInfoClass_0() defaultInfo];
-  [v65 setIsRotating:1];
-  [v65 setIsLocalKeyboard:1];
-  [v65 setDuration:0.0];
+  defaultInfo = [getTUIKeyboardAnimationInfoClass_0() defaultInfo];
+  [defaultInfo setIsRotating:1];
+  [defaultInfo setIsLocalKeyboard:1];
+  [defaultInfo setDuration:0.0];
   v66 = 1872;
-  v67 = [(UIInputViewSetNotificationInfo *)self->_rotationInfo userInfo];
+  userInfo = [(UIInputViewSetNotificationInfo *)self->_rotationInfo userInfo];
 
-  if (v67)
+  if (userInfo)
   {
     [(UIInputViewSetNotificationInfo *)self->_rotationInfo populateEndInfoWithFrame:v48, v80, v78, v75];
-    v68 = [(UIInputViewSetNotificationInfo *)self->_rotationInfo userInfo];
-    [v65 setNotificationInfo:v68];
+    userInfo2 = [(UIInputViewSetNotificationInfo *)self->_rotationInfo userInfo];
+    [defaultInfo setNotificationInfo:userInfo2];
   }
 
-  v69 = [(UITrackingElementWindowController *)self postRotationPlacement];
-  v70 = [v69 showsInputOrAssistantViews];
-  if (v70 & 1) != 0 || (-[UITrackingElementWindowController placement](self, "placement"), v66 = objc_claimAutoreleasedReturnValue(), ([v66 showsInputOrAssistantViews]))
+  postRotationPlacement3 = [(UITrackingElementWindowController *)self postRotationPlacement];
+  showsInputOrAssistantViews2 = [postRotationPlacement3 showsInputOrAssistantViews];
+  if (showsInputOrAssistantViews2 & 1) != 0 || (-[UITrackingElementWindowController placement](self, "placement"), v66 = objc_claimAutoreleasedReturnValue(), ([v66 showsInputOrAssistantViews]))
   {
-    v71 = [getTUIKeyboardStateClass_1() onscreenState];
-    if (v70)
+    onscreenState = [getTUIKeyboardStateClass_1() onscreenState];
+    if (showsInputOrAssistantViews2)
     {
       goto LABEL_56;
     }
@@ -7225,17 +7225,17 @@ LABEL_25:
 
   else
   {
-    v71 = [getTUIKeyboardStateClass_1() offscreenState];
+    onscreenState = [getTUIKeyboardStateClass_1() offscreenState];
   }
 
 LABEL_56:
-  [v71 setIsRotating:1];
+  [onscreenState setIsRotating:1];
   v72 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v73 = [v72 trackingElementCoordinator];
-  [v73 updateClientsForState:v71 finalFrame:v65 animationInfo:1 forStart:{v58, v60, v62, v64}];
+  trackingElementCoordinator = [v72 trackingElementCoordinator];
+  [trackingElementCoordinator updateClientsForState:onscreenState finalFrame:defaultInfo animationInfo:1 forStart:{v58, v60, v62, v64}];
 }
 
-- (void)updateKeyboardLayoutGuideForRotationOrientation:(int64_t)a3
+- (void)updateKeyboardLayoutGuideForRotationOrientation:(int64_t)orientation
 {
   v40 = *MEMORY[0x1E69E9840];
   if ([objc_opt_class() useMetronomeTracking])
@@ -7243,17 +7243,17 @@ LABEL_56:
     return;
   }
 
-  v31 = [(UITrackingElementWindowController *)self placementIgnoringRotation];
-  if ([v31 isFloating])
+  placementIgnoringRotation = [(UITrackingElementWindowController *)self placementIgnoringRotation];
+  if ([placementIgnoringRotation isFloating])
   {
 
     return;
   }
 
-  v5 = [(UITrackingElementWindowController *)self placement];
-  v6 = [v5 isFloatingAssistantView];
+  placement = [(UITrackingElementWindowController *)self placement];
+  isFloatingAssistantView = [placement isFloatingAssistantView];
 
-  if (v6)
+  if (isFloatingAssistantView)
   {
     return;
   }
@@ -7261,19 +7261,19 @@ LABEL_56:
   if (+[UIKeyboard usesInputSystemUI])
   {
     v7 = +[_UIKeyboardArbiterClient automaticSharedArbiterClient];
-    v8 = [v7 currentUIState];
+    currentUIState = [v7 currentUIState];
 
-    if ([v8 assistantBarVisible])
+    if ([currentUIState assistantBarVisible])
     {
-      v9 = 1;
+      requiresHeightForIntegratedAssistantBar = 1;
     }
 
     else
     {
-      v9 = [v8 requiresHeightForIntegratedAssistantBar];
+      requiresHeightForIntegratedAssistantBar = [currentUIState requiresHeightForIntegratedAssistantBar];
     }
 
-    if ((a3 - 3) >= 2)
+    if ((orientation - 3) >= 2)
     {
       v12 = 1;
     }
@@ -7283,7 +7283,7 @@ LABEL_56:
       v12 = 4;
     }
 
-    [UIKeyboard sizeForInterfaceOrientation:v12 includingAssistantBar:v9 ignoreInputView:0];
+    [UIKeyboard sizeForInterfaceOrientation:v12 includingAssistantBar:requiresHeightForIntegratedAssistantBar ignoreInputView:0];
     v14 = v13;
     v16 = v15;
 
@@ -7292,7 +7292,7 @@ LABEL_56:
 
   if ((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
-    [UIKeyboard sizeForInterfaceOrientation:a3 ignoreInputView:0];
+    [UIKeyboard sizeForInterfaceOrientation:orientation ignoreInputView:0];
     v14 = v17;
     v16 = v18;
 LABEL_22:
@@ -7304,13 +7304,13 @@ LABEL_22:
     *&aBlock[4] = v14;
     *&aBlock[5] = v16;
     v19 = _Block_copy(aBlock);
-    v20 = [(UIViewController *)self _window];
-    v21 = [v20 _isHostedInAnotherProcess];
+    _window = [(UIViewController *)self _window];
+    _isHostedInAnotherProcess = [_window _isHostedInAnotherProcess];
 
     v22 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v23 = [v22 hasActiveKeyboardResponder];
+    hasActiveKeyboardResponder = [v22 hasActiveKeyboardResponder];
 
-    if ((v23 & 1) != 0 || v21)
+    if ((hasActiveKeyboardResponder & 1) != 0 || _isHostedInAnotherProcess)
     {
       v36[0] = MEMORY[0x1E69E9820];
       v36[1] = 3221225472;
@@ -7318,7 +7318,7 @@ LABEL_22:
       v36[3] = &unk_1E7116408;
       v37 = v19;
       [UIWindow _enumerateWindowsIncludingInternalWindows:1 onlyVisibleWindows:1 allowMutation:0 withBlock:v36];
-      v26 = v37;
+      windows = v37;
     }
 
     else
@@ -7327,11 +7327,11 @@ LABEL_22:
       v35 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v24 = [(UIViewController *)self _window];
-      v25 = [v24 windowScene];
-      v26 = [v25 windows];
+      _window2 = [(UIViewController *)self _window];
+      windowScene = [_window2 windowScene];
+      windows = [windowScene windows];
 
-      v27 = [v26 countByEnumeratingWithState:&v32 objects:v39 count:16];
+      v27 = [windows countByEnumeratingWithState:&v32 objects:v39 count:16];
       if (v27)
       {
         v28 = v27;
@@ -7342,13 +7342,13 @@ LABEL_22:
           {
             if (*v33 != v29)
             {
-              objc_enumerationMutation(v26);
+              objc_enumerationMutation(windows);
             }
 
             (*(v19 + 2))(v19, *(*(&v32 + 1) + 8 * i));
           }
 
-          v28 = [v26 countByEnumeratingWithState:&v32 objects:v39 count:16];
+          v28 = [windows countByEnumeratingWithState:&v32 objects:v39 count:16];
         }
 
         while (v28);
@@ -7358,10 +7358,10 @@ LABEL_22:
     return;
   }
 
-  v10 = [(UITrackingElementWindowController *)self inputViewSet];
-  v11 = [v10 isInputViewPlaceholder];
+  inputViewSet = [(UITrackingElementWindowController *)self inputViewSet];
+  isInputViewPlaceholder = [inputViewSet isInputViewPlaceholder];
 
-  if (v11)
+  if (isInputViewPlaceholder)
   {
 
     [(UITrackingElementWindowController *)self updateKeyboardLayoutGuideForRefreshedPlaceholder];
@@ -7394,19 +7394,19 @@ void __85__UITrackingElementWindowController_updateKeyboardLayoutGuideForRotatio
 
 - (BOOL)_useLiveRotation
 {
-  v2 = [(UITrackingElementWindowController *)self inputViewSet];
-  v3 = [v2 isSplit];
+  inputViewSet = [(UITrackingElementWindowController *)self inputViewSet];
+  isSplit = [inputViewSet isSplit];
 
-  return v3 ^ 1;
+  return isSplit ^ 1;
 }
 
-- (void)willRotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
   if (+[_UIRemoteKeyboards enabled]&& !self->_rotationState)
   {
     self->_rotationState = 1;
-    v6 = [(UIInputWindowController *)self shouldNotifyRemoteKeyboards];
-    if (v6)
+    shouldNotifyRemoteKeyboards = [(UIInputWindowController *)self shouldNotifyRemoteKeyboards];
+    if (shouldNotifyRemoteKeyboards)
     {
       v7 = +[UIInputViewSetNotificationInfo info];
     }
@@ -7417,7 +7417,7 @@ void __85__UITrackingElementWindowController_updateKeyboardLayoutGuideForRotatio
     }
 
     objc_storeStrong(&self->_rotationInfo, v7);
-    if (v6)
+    if (shouldNotifyRemoteKeyboards)
     {
     }
 
@@ -7446,24 +7446,24 @@ void __85__UITrackingElementWindowController_updateKeyboardLayoutGuideForRotatio
     hosting = self->_hosting;
     if (v11)
     {
-      v13 = [(UIInputWindowControllerHosting *)hosting itemForPurpose:2];
-      v14 = [v13 splitKeyboardController];
-      [v14 cancelGestureRecognizers];
+      _inputAssistantView6 = [(UIInputWindowControllerHosting *)hosting itemForPurpose:2];
+      splitKeyboardController = [_inputAssistantView6 splitKeyboardController];
+      [splitKeyboardController cancelGestureRecognizers];
     }
 
     else
     {
       v15 = [(UIInputWindowControllerHosting *)hosting itemForPurpose:1];
-      v16 = [v15 hostView];
-      [v16 bounds];
+      hostView = [v15 hostView];
+      [hostView bounds];
       v18 = v17;
       v20 = v19;
 
       if (v18 > 0.0 && v20 > 0.0)
       {
         v21 = [(UIInputWindowControllerHosting *)self->_hosting itemForPurpose:1];
-        v22 = [v21 hostView];
-        v23 = [v22 snapshotViewAfterScreenUpdates:0];
+        hostView2 = [v21 hostView];
+        v23 = [hostView2 snapshotViewAfterScreenUpdates:0];
         v24 = self->_preRotationSnapshot;
         self->_preRotationSnapshot = v23;
 
@@ -7474,10 +7474,10 @@ void __85__UITrackingElementWindowController_updateKeyboardLayoutGuideForRotatio
         v79[3] = &unk_1E70F3590;
         v79[4] = self;
         [UIView performWithoutAnimation:v79];
-        v25 = [(UITrackingElementWindowController *)self inputViewSet];
-        LODWORD(v22) = [v25 isSplit];
+        inputViewSet = [(UITrackingElementWindowController *)self inputViewSet];
+        LODWORD(hostView2) = [inputViewSet isSplit];
 
-        if (v22)
+        if (hostView2)
         {
           [(UIView *)self->_preRotationSnapshot bounds];
           if (v26 <= 0.0)
@@ -7489,47 +7489,47 @@ void __85__UITrackingElementWindowController_updateKeyboardLayoutGuideForRotatio
           else
           {
             v27 = v26;
-            v28 = [(UITrackingElementWindowController *)self inputViewSet];
-            [v28 _rightInputViewSetFrame];
+            inputViewSet2 = [(UITrackingElementWindowController *)self inputViewSet];
+            [inputViewSet2 _rightInputViewSetFrame];
             v30 = v29;
 
-            v31 = [(UITrackingElementWindowController *)self inputViewSet];
-            [v31 _leftInputViewSetFrame];
+            inputViewSet3 = [(UITrackingElementWindowController *)self inputViewSet];
+            [inputViewSet3 _leftInputViewSetFrame];
             v33 = v32;
 
             v34 = v33 / v27;
             v35 = (v27 - v33 - v30) / v27;
           }
 
-          v36 = [(UIView *)self->_preRotationSnapshot layer];
-          [v36 setContentsCenter:{v34, 0.0, v35, 1.0}];
+          layer = [(UIView *)self->_preRotationSnapshot layer];
+          [layer setContentsCenter:{v34, 0.0, v35, 1.0}];
         }
       }
 
-      v37 = [(UITrackingElementWindowController *)self currentTransition];
-      if (v37)
+      currentTransition = [(UITrackingElementWindowController *)self currentTransition];
+      if (currentTransition)
       {
-        v38 = v37;
-        v39 = [(UITrackingElementWindowController *)self transientInputViewSet];
+        v38 = currentTransition;
+        transientInputViewSet = [(UITrackingElementWindowController *)self transientInputViewSet];
 
-        if (v39)
+        if (transientInputViewSet)
         {
-          v40 = [(UITrackingElementWindowController *)self transientInputViewSet];
-          [(UITrackingElementWindowController *)self changeToInputViewSet:v40];
+          transientInputViewSet2 = [(UITrackingElementWindowController *)self transientInputViewSet];
+          [(UITrackingElementWindowController *)self changeToInputViewSet:transientInputViewSet2];
         }
       }
 
-      v41 = [(UITrackingElementWindowController *)self currentTransition];
-      v42 = [v41 toPlacement];
-      if (v42)
+      currentTransition2 = [(UITrackingElementWindowController *)self currentTransition];
+      toPlacement = [currentTransition2 toPlacement];
+      if (toPlacement)
       {
-        [(UITrackingElementWindowController *)self setPostRotationPlacement:v42];
+        [(UITrackingElementWindowController *)self setPostRotationPlacement:toPlacement];
       }
 
       else
       {
-        v43 = [(UITrackingElementWindowController *)self placement];
-        [(UITrackingElementWindowController *)self setPostRotationPlacement:v43];
+        placement = [(UITrackingElementWindowController *)self placement];
+        [(UITrackingElementWindowController *)self setPostRotationPlacement:placement];
       }
 
       [(UITrackingElementWindowController *)self setPostRotationPendingBlock:0];
@@ -7541,25 +7541,25 @@ void __85__UITrackingElementWindowController_updateKeyboardLayoutGuideForRotatio
       v78[2] = __79__UITrackingElementWindowController_willRotateToInterfaceOrientation_duration___block_invoke_3;
       v78[3] = &unk_1E70F32F0;
       v78[4] = self;
-      v78[5] = a3;
+      v78[5] = orientation;
       [(UITrackingElementWindowController *)self performWithoutAppearanceCallbacks:v78];
       if (self->_preRotationSnapshot)
       {
-        v45 = [(UIViewController *)self view];
-        [v45 addSubview:self->_preRotationSnapshot];
+        view = [(UIViewController *)self view];
+        [view addSubview:self->_preRotationSnapshot];
       }
 
-      v46 = [(UITrackingElementWindowController *)self _inputViewPlaceholder];
-      [v46 bounds];
+      _inputViewPlaceholder = [(UITrackingElementWindowController *)self _inputViewPlaceholder];
+      [_inputViewPlaceholder bounds];
       self->_preRotationInputViewSize.width = v47;
       self->_preRotationInputViewSize.height = v48;
 
       p_preRotationInputAssistantViewSize = &self->_preRotationInputAssistantViewSize;
-      v50 = [(UITrackingElementWindowController *)self _inputAssistantView];
-      if (v50)
+      _inputAssistantView = [(UITrackingElementWindowController *)self _inputAssistantView];
+      if (_inputAssistantView)
       {
-        v51 = [(UITrackingElementWindowController *)self _inputAssistantView];
-        [v51 bounds];
+        _inputAssistantView2 = [(UITrackingElementWindowController *)self _inputAssistantView];
+        [_inputAssistantView2 bounds];
         p_preRotationInputAssistantViewSize->width = v52;
         self->_preRotationInputAssistantViewSize.height = v53;
       }
@@ -7570,11 +7570,11 @@ void __85__UITrackingElementWindowController_updateKeyboardLayoutGuideForRotatio
       }
 
       p_preRotationInputAccessoryViewSize = &self->_preRotationInputAccessoryViewSize;
-      v55 = [(UITrackingElementWindowController *)self _inputAccessoryView];
-      if (v55)
+      _inputAccessoryView = [(UITrackingElementWindowController *)self _inputAccessoryView];
+      if (_inputAccessoryView)
       {
-        v56 = [(UITrackingElementWindowController *)self _inputAccessoryView];
-        [v56 bounds];
+        _inputAccessoryView2 = [(UITrackingElementWindowController *)self _inputAccessoryView];
+        [_inputAccessoryView2 bounds];
         p_preRotationInputAccessoryViewSize->width = v57;
         self->_preRotationInputAccessoryViewSize.height = v58;
       }
@@ -7584,11 +7584,11 @@ void __85__UITrackingElementWindowController_updateKeyboardLayoutGuideForRotatio
         *p_preRotationInputAccessoryViewSize = *MEMORY[0x1E695F060];
       }
 
-      v59 = [(UITrackingElementWindowController *)self _inputViewPlaceholder];
-      v60 = v59;
-      if (v59)
+      _inputViewPlaceholder2 = [(UITrackingElementWindowController *)self _inputViewPlaceholder];
+      v60 = _inputViewPlaceholder2;
+      if (_inputViewPlaceholder2)
       {
-        [v59 transform];
+        [_inputViewPlaceholder2 transform];
       }
 
       else
@@ -7603,14 +7603,14 @@ void __85__UITrackingElementWindowController_updateKeyboardLayoutGuideForRotatio
       *&self->_preRotationInputViewTransform.tx = v77;
 
       p_preRotationInputAssistantViewTransform = &self->_preRotationInputAssistantViewTransform;
-      v62 = [(UITrackingElementWindowController *)self _inputAssistantView];
-      if (v62)
+      _inputAssistantView3 = [(UITrackingElementWindowController *)self _inputAssistantView];
+      if (_inputAssistantView3)
       {
-        v63 = [(UITrackingElementWindowController *)self _inputAssistantView];
-        v64 = v63;
-        if (v63)
+        _inputAssistantView4 = [(UITrackingElementWindowController *)self _inputAssistantView];
+        v64 = _inputAssistantView4;
+        if (_inputAssistantView4)
         {
-          [v63 transform];
+          [_inputAssistantView4 transform];
         }
 
         else
@@ -7633,14 +7633,14 @@ void __85__UITrackingElementWindowController_updateKeyboardLayoutGuideForRotatio
       }
 
       p_preRotationInputAccessoryViewTransform = &self->_preRotationInputAccessoryViewTransform;
-      v66 = [(UITrackingElementWindowController *)self _inputAccessoryView];
-      if (v66)
+      _inputAccessoryView3 = [(UITrackingElementWindowController *)self _inputAccessoryView];
+      if (_inputAccessoryView3)
       {
-        v67 = [(UITrackingElementWindowController *)self _inputAccessoryView];
-        v68 = v67;
-        if (v67)
+        _inputAccessoryView4 = [(UITrackingElementWindowController *)self _inputAccessoryView];
+        v68 = _inputAccessoryView4;
+        if (_inputAccessoryView4)
         {
-          [v67 transform];
+          [_inputAccessoryView4 transform];
         }
 
         else
@@ -7662,22 +7662,22 @@ void __85__UITrackingElementWindowController_updateKeyboardLayoutGuideForRotatio
         *&p_preRotationInputAccessoryViewTransform->a = 0u;
       }
 
-      v69 = [(UITrackingElementWindowController *)self _inputViewPlaceholder];
-      [v69 setAlpha:0.0];
+      _inputViewPlaceholder3 = [(UITrackingElementWindowController *)self _inputViewPlaceholder];
+      [_inputViewPlaceholder3 setAlpha:0.0];
 
-      v70 = [(UITrackingElementWindowController *)self _inputViewPlaceholder];
-      v71 = [v70 layer];
-      [v71 setAllowsGroupOpacity:0];
+      _inputViewPlaceholder4 = [(UITrackingElementWindowController *)self _inputViewPlaceholder];
+      layer2 = [_inputViewPlaceholder4 layer];
+      [layer2 setAllowsGroupOpacity:0];
 
-      v72 = [(UITrackingElementWindowController *)self _inputAssistantView];
-      v73 = [v72 layer];
-      [v73 setAllowsGroupOpacity:0];
+      _inputAssistantView5 = [(UITrackingElementWindowController *)self _inputAssistantView];
+      layer3 = [_inputAssistantView5 layer];
+      [layer3 setAllowsGroupOpacity:0];
 
-      v74 = [(UITrackingElementWindowController *)self _inputAccessoryView];
-      [v74 setAlpha:0.0];
+      _inputAccessoryView5 = [(UITrackingElementWindowController *)self _inputAccessoryView];
+      [_inputAccessoryView5 setAlpha:0.0];
 
-      v13 = [(UITrackingElementWindowController *)self _inputAssistantView];
-      [v13 setAlpha:0.0];
+      _inputAssistantView6 = [(UITrackingElementWindowController *)self _inputAssistantView];
+      [_inputAssistantView6 setAlpha:0.0];
     }
   }
 }
@@ -7748,7 +7748,7 @@ void __79__UITrackingElementWindowController_willRotateToInterfaceOrientation_du
   [*(a1 + 32) setPlacement:v2];
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
   v41[1] = *MEMORY[0x1E69E9840];
   if (self->_rotationState == 1)
@@ -7763,12 +7763,12 @@ void __79__UITrackingElementWindowController_willRotateToInterfaceOrientation_du
       v37[3] = &unk_1E70F3590;
       v37[4] = self;
       [UIView conditionallyAnimate:v7 withAnimation:&__block_literal_global_375_4 layout:v37 completion:0];
-      v8 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
       v40 = @"UITextEffectsWindow_toOrientation";
-      v9 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+      v9 = [MEMORY[0x1E696AD98] numberWithInteger:orientation];
       v41[0] = v9;
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:&v40 count:1];
-      [v8 postNotificationName:@"UITextEffectsWindowViewControllerWillRotateNotification" object:self userInfo:v10];
+      [defaultCenter postNotificationName:@"UITextEffectsWindowViewControllerWillRotateNotification" object:self userInfo:v10];
     }
 
     else
@@ -7779,25 +7779,25 @@ void __79__UITrackingElementWindowController_willRotateToInterfaceOrientation_du
       v36[3] = &unk_1E70F3590;
       v36[4] = self;
       [(UITrackingElementWindowController *)self performWithoutCallbacksOrNotifications:v36];
-      v11 = [(UIViewController *)self view];
-      [v11 setNeedsUpdateConstraints];
+      view = [(UIViewController *)self view];
+      [view setNeedsUpdateConstraints];
 
-      v12 = [(UITrackingElementWindowController *)self _inputViewPlaceholder];
-      v13 = [(UITrackingElementWindowController *)self _inputAssistantView];
-      v14 = [(UITrackingElementWindowController *)self _inputAccessoryView];
+      _inputViewPlaceholder = [(UITrackingElementWindowController *)self _inputViewPlaceholder];
+      _inputAssistantView = [(UITrackingElementWindowController *)self _inputAssistantView];
+      _inputAccessoryView = [(UITrackingElementWindowController *)self _inputAccessoryView];
       if ([(UITrackingElementWindowController *)self _useLiveRotation])
       {
         v31[0] = MEMORY[0x1E69E9820];
         v31[1] = 3221225472;
         v31[2] = __88__UITrackingElementWindowController_willAnimateRotationToInterfaceOrientation_duration___block_invoke_5;
         v31[3] = &unk_1E70F6B40;
-        v15 = v12;
+        v15 = _inputViewPlaceholder;
         v32 = v15;
-        v16 = v13;
+        v16 = _inputAssistantView;
         v33 = v16;
-        v17 = v14;
+        v17 = _inputAccessoryView;
         v34 = v17;
-        v35 = self;
+        selfCopy = self;
         [UIView performWithoutAnimation:v31];
         [v15 setAlpha:1.0];
         [v16 setAlpha:1.0];
@@ -7806,13 +7806,13 @@ void __79__UITrackingElementWindowController_willRotateToInterfaceOrientation_du
       }
 
       v18 = [(UIInputWindowControllerHosting *)self->_hosting itemForPurpose:1];
-      v19 = [v18 hostView];
-      [v19 bounds];
+      hostView = [v18 hostView];
+      [hostView bounds];
       [(UIView *)self->_preRotationSnapshot setBounds:?];
 
       v20 = [(UIInputWindowControllerHosting *)self->_hosting itemForPurpose:1];
-      v21 = [v20 hostView];
-      [v21 center];
+      hostView2 = [v20 hostView];
+      [hostView2 center];
       [(UIView *)self->_preRotationSnapshot setCenter:?];
 
       v22 = +[UIView _isInAnimationBlockWithAnimationsEnabled];
@@ -7821,23 +7821,23 @@ void __79__UITrackingElementWindowController_willRotateToInterfaceOrientation_du
       v26[2] = __88__UITrackingElementWindowController_willAnimateRotationToInterfaceOrientation_duration___block_invoke_7;
       v26[3] = &unk_1E70F4378;
       v26[4] = self;
-      v27 = v12;
-      v28 = v13;
-      v29 = v14;
-      v30 = a3;
-      v10 = v14;
-      v9 = v13;
-      v8 = v12;
+      v27 = _inputViewPlaceholder;
+      v28 = _inputAssistantView;
+      v29 = _inputAccessoryView;
+      orientationCopy = orientation;
+      v10 = _inputAccessoryView;
+      v9 = _inputAssistantView;
+      defaultCenter = _inputViewPlaceholder;
       [UIView conditionallyAnimate:v22 withAnimation:&__block_literal_global_381_3 layout:v26 completion:0];
       +[UIAssistantBarButtonItemProvider updateFloatingAssistantBarIfNeeded];
-      v23 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
       v38 = @"UITextEffectsWindow_toOrientation";
-      v24 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+      v24 = [MEMORY[0x1E696AD98] numberWithInteger:orientation];
       v39 = v24;
       v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
-      [v23 postNotificationName:@"UITextEffectsWindowViewControllerWillRotateNotification" object:self userInfo:v25];
+      [defaultCenter2 postNotificationName:@"UITextEffectsWindowViewControllerWillRotateNotification" object:self userInfo:v25];
 
-      [(UIInputViewSetNotificationInfo *)self->_rotationInfo setDuration:a4];
+      [(UIInputViewSetNotificationInfo *)self->_rotationInfo setDuration:duration];
       [(UIInputViewSetNotificationInfo *)self->_rotationInfo setForceNotification:1];
       [(UIInputViewSetNotificationInfo *)self->_rotationInfo setShouldSendInClient:1];
     }
@@ -8039,42 +8039,42 @@ uint64_t __88__UITrackingElementWindowController_willAnimateRotationToInterfaceO
   return [v2 updateTrackingCoordinatorForRotationOrientation:a1[8]];
 }
 
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation
 {
   v52[1] = *MEMORY[0x1E69E9840];
   if (self->_rotationState == 2)
   {
     self->_rotationState = 0;
     [(UITrackingElementWindowController *)self _updateContentOverlayInsetsForSelfAndChildren];
-    v5 = [(UITrackingElementWindowController *)self inputViewSet];
-    v6 = [v5 inputView];
-    [v6 setAlpha:1.0];
+    inputViewSet = [(UITrackingElementWindowController *)self inputViewSet];
+    inputView = [inputViewSet inputView];
+    [inputView setAlpha:1.0];
 
-    v7 = [(UITrackingElementWindowController *)self inputViewSet];
-    v8 = [v7 inputView];
-    v9 = [v8 layer];
-    [v9 setAllowsGroupOpacity:1];
+    inputViewSet2 = [(UITrackingElementWindowController *)self inputViewSet];
+    inputView2 = [inputViewSet2 inputView];
+    layer = [inputView2 layer];
+    [layer setAllowsGroupOpacity:1];
 
-    v10 = [(UITrackingElementWindowController *)self inputViewSet];
-    v11 = [v10 inputAssistantView];
-    v12 = [v11 layer];
-    [v12 setAllowsGroupOpacity:1];
+    inputViewSet3 = [(UITrackingElementWindowController *)self inputViewSet];
+    inputAssistantView = [inputViewSet3 inputAssistantView];
+    layer2 = [inputAssistantView layer];
+    [layer2 setAllowsGroupOpacity:1];
 
-    v13 = [(UITrackingElementWindowController *)self inputViewSet];
-    v14 = [v13 inputAssistantView];
-    [v14 setAlpha:1.0];
+    inputViewSet4 = [(UITrackingElementWindowController *)self inputViewSet];
+    inputAssistantView2 = [inputViewSet4 inputAssistantView];
+    [inputAssistantView2 setAlpha:1.0];
 
-    v15 = [(UITrackingElementWindowController *)self inputViewSet];
-    v16 = [v15 inputAccessoryView];
-    [v16 setAlpha:1.0];
+    inputViewSet5 = [(UITrackingElementWindowController *)self inputViewSet];
+    inputAccessoryView = [inputViewSet5 inputAccessoryView];
+    [inputAccessoryView setAlpha:1.0];
 
     [(UIView *)self->_preRotationSnapshot removeFromSuperview];
     preRotationSnapshot = self->_preRotationSnapshot;
     self->_preRotationSnapshot = 0;
 
-    v18 = [(UITrackingElementWindowController *)self postRotationPlacement];
+    postRotationPlacement = [(UITrackingElementWindowController *)self postRotationPlacement];
 
-    if (v18)
+    if (postRotationPlacement)
     {
       v46[0] = MEMORY[0x1E69E9820];
       v46[1] = 3221225472;
@@ -8087,70 +8087,70 @@ uint64_t __88__UITrackingElementWindowController_willAnimateRotationToInterfaceO
       v45[2] = __71__UITrackingElementWindowController_didRotateFromInterfaceOrientation___block_invoke_3;
       v45[3] = &unk_1E70F32F0;
       v45[4] = self;
-      v45[5] = a3;
+      v45[5] = orientation;
       [(UITrackingElementWindowController *)self performWithoutAppearanceCallbacks:v45];
       [(UITrackingElementWindowController *)self popAnimationStyle];
-      v19 = [(UITrackingElementWindowController *)self postRotationInputViewSet];
-      v20 = [(UITrackingElementWindowController *)self postRotationInputViewNotificationInfo];
-      [v20 setDueToRotation:1];
-      [v20 setShouldSendInClient:1];
+      postRotationInputViewSet = [(UITrackingElementWindowController *)self postRotationInputViewSet];
+      postRotationInputViewNotificationInfo = [(UITrackingElementWindowController *)self postRotationInputViewNotificationInfo];
+      [postRotationInputViewNotificationInfo setDueToRotation:1];
+      [postRotationInputViewNotificationInfo setShouldSendInClient:1];
       if (+[UIKeyboard usesInputSystemUI])
       {
-        [v20 setWaitingForInputUI:1];
+        [postRotationInputViewNotificationInfo setWaitingForInputUI:1];
       }
 
       [(UITrackingElementWindowController *)self setPostRotationPlacement:0];
       [(UITrackingElementWindowController *)self setPostRotationInputViewSet:0];
       [(UITrackingElementWindowController *)self setPostRotationInputViewNotificationInfo:0];
-      v21 = [(UITrackingElementWindowController *)self postRotationPendingBlock];
+      postRotationPendingBlock = [(UITrackingElementWindowController *)self postRotationPendingBlock];
 
-      if (v21)
+      if (postRotationPendingBlock)
       {
 
         v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"TEWC didRotateFromInterfaceOrientation: has postRotationPendingBlock"];
-        [v20 addKeyboardNotificationDebuggingInfo:v22];
+        [postRotationInputViewNotificationInfo addKeyboardNotificationDebuggingInfo:v22];
 
         v44[0] = MEMORY[0x1E69E9820];
         v44[1] = 3221225472;
         v44[2] = __71__UITrackingElementWindowController_didRotateFromInterfaceOrientation___block_invoke_6;
         v44[3] = &unk_1E70F3590;
         v44[4] = self;
-        [(UITrackingElementWindowController *)self performOperations:v44 withTemplateNotificationInfo:v20];
-        v19 = 0;
+        [(UITrackingElementWindowController *)self performOperations:v44 withTemplateNotificationInfo:postRotationInputViewNotificationInfo];
+        postRotationInputViewSet = 0;
       }
 
       v23 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-      v24 = [(UIViewController *)self _window];
-      [v23 completeMoveKeyboardForWindow:v24];
+      _window = [(UIViewController *)self _window];
+      [v23 completeMoveKeyboardForWindow:_window];
 
-      if (v19)
+      if (postRotationInputViewSet)
       {
         v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"TEWC didRotateFromInterfaceOrientation: has pending inputViewSet"];
-        [v20 addKeyboardNotificationDebuggingInfo:v25];
+        [postRotationInputViewNotificationInfo addKeyboardNotificationDebuggingInfo:v25];
 
         v42[0] = MEMORY[0x1E69E9820];
         v42[1] = 3221225472;
         v42[2] = __71__UITrackingElementWindowController_didRotateFromInterfaceOrientation___block_invoke_7;
         v42[3] = &unk_1E70F35B8;
         v42[4] = self;
-        v43 = v19;
-        [(UITrackingElementWindowController *)self performOperations:v42 withTemplateNotificationInfo:v20];
+        v43 = postRotationInputViewSet;
+        [(UITrackingElementWindowController *)self performOperations:v42 withTemplateNotificationInfo:postRotationInputViewNotificationInfo];
       }
 
-      v26 = [(UITrackingElementWindowController *)self inputViewSet];
-      if (![v26 isInputViewPlaceholder])
+      inputViewSet6 = [(UITrackingElementWindowController *)self inputViewSet];
+      if (![inputViewSet6 isInputViewPlaceholder])
       {
         v27 = +[UIKeyboardInputModeController sharedInputModeController];
-        v28 = [v27 currentInputMode];
-        if ([v28 isExtensionInputMode])
+        currentInputMode = [v27 currentInputMode];
+        if ([currentInputMode isExtensionInputMode])
         {
-          v29 = [(UITrackingElementWindowController *)self _inputViewController];
+          _inputViewController = [(UITrackingElementWindowController *)self _inputViewController];
           v30 = objc_opt_respondsToSelector();
 
           if (v30)
           {
-            v31 = [(UITrackingElementWindowController *)self _inputViewController];
-            [v31 takeSnapshotView];
+            _inputViewController2 = [(UITrackingElementWindowController *)self _inputViewController];
+            [_inputViewController2 takeSnapshotView];
 
             [(UITrackingElementWindowController *)self updateTrackingCoordinatorForRotationOrientation:[(UIViewController *)self interfaceOrientation]];
           }
@@ -8161,12 +8161,12 @@ uint64_t __88__UITrackingElementWindowController_willAnimateRotationToInterfaceO
 
 LABEL_21:
       +[UIAssistantBarButtonItemProvider updateFloatingAssistantBarIfNeeded];
-      v39 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
       v47 = @"UITextEffectsWindow_fromOrientation";
-      v40 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+      v40 = [MEMORY[0x1E696AD98] numberWithInteger:orientation];
       v48 = v40;
       v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
-      [v39 postNotificationName:@"UITextEffectsWindowViewControllerDidRotateNotification" object:self userInfo:v41];
+      [defaultCenter postNotificationName:@"UITextEffectsWindowViewControllerDidRotateNotification" object:self userInfo:v41];
 
       return;
     }
@@ -8175,13 +8175,13 @@ LABEL_21:
     {
       if (self->_isChangingPlacement)
       {
-        v32 = [(UITrackingElementWindowController *)self placement];
-        [(UITrackingElementWindowController *)self updateVisibilityConstraintsForPlacement:v32];
+        placement = [(UITrackingElementWindowController *)self placement];
+        [(UITrackingElementWindowController *)self updateVisibilityConstraintsForPlacement:placement];
       }
 
-      v33 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
       v51 = @"UITextEffectsWindow_fromOrientation";
-      v34 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+      v34 = [MEMORY[0x1E696AD98] numberWithInteger:orientation];
       v52[0] = v34;
       v35 = MEMORY[0x1E695DF20];
       v36 = v52;
@@ -8190,9 +8190,9 @@ LABEL_21:
 
     else
     {
-      v33 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
       v49 = @"UITextEffectsWindow_fromOrientation";
-      v34 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+      v34 = [MEMORY[0x1E696AD98] numberWithInteger:orientation];
       v50 = v34;
       v35 = MEMORY[0x1E695DF20];
       v36 = &v50;
@@ -8200,7 +8200,7 @@ LABEL_21:
     }
 
     v38 = [v35 dictionaryWithObjects:v36 forKeys:v37 count:1];
-    [v33 postNotificationName:@"UITextEffectsWindowViewControllerDidRotateNotification" object:self userInfo:v38];
+    [defaultCenter2 postNotificationName:@"UITextEffectsWindowViewControllerDidRotateNotification" object:self userInfo:v38];
   }
 }
 
@@ -8307,9 +8307,9 @@ uint64_t __71__UITrackingElementWindowController_didRotateFromInterfaceOrientati
   return v3;
 }
 
-- (CGSize)sizeForInputViewController:(id)a3 inputView:(id)a4 includeAssistantBar:(BOOL)a5
+- (CGSize)sizeForInputViewController:(id)controller inputView:(id)view includeAssistantBar:(BOOL)bar
 {
-  [UIKeyboard sizeForInterfaceOrientation:[(UIInputWindowController *)self keyboardOrientation:a3] includingAssistantBar:a5 ignoreInputView:1];
+  [UIKeyboard sizeForInterfaceOrientation:[(UIInputWindowController *)self keyboardOrientation:controller] includingAssistantBar:bar ignoreInputView:1];
   v7 = v6;
   v9 = v8;
   [(UITrackingElementWindowController *)self _inputViewPadding];
@@ -8320,12 +8320,12 @@ uint64_t __71__UITrackingElementWindowController_didRotateFromInterfaceOrientati
   return result;
 }
 
-- (CGSize)sizeForInputViewController:(id)a3 inputView:(id)a4
+- (CGSize)sizeForInputViewController:(id)controller inputView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = ([v6 _autosizeToCurrentKeyboard] & 1) != 0 || (dyld_program_sdk_at_least() & 1) != 0 || SubviewAutoSizesWithPredictionBar(v7);
-  [(UITrackingElementWindowController *)self sizeForInputViewController:v6 inputView:v7 includeAssistantBar:v8];
+  controllerCopy = controller;
+  viewCopy = view;
+  v8 = ([controllerCopy _autosizeToCurrentKeyboard] & 1) != 0 || (dyld_program_sdk_at_least() & 1) != 0 || SubviewAutoSizesWithPredictionBar(viewCopy);
+  [(UITrackingElementWindowController *)self sizeForInputViewController:controllerCopy inputView:viewCopy includeAssistantBar:v8];
   v10 = v9;
   v12 = v11;
 
@@ -8336,16 +8336,16 @@ uint64_t __71__UITrackingElementWindowController_didRotateFromInterfaceOrientati
   return result;
 }
 
-- (BOOL)isHostingView:(id)a3
+- (BOOL)isHostingView:(id)view
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(UIInputWindowControllerHosting *)self->_hosting allHostingItems];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allHostingItems = [(UIInputWindowControllerHosting *)self->_hosting allHostingItems];
+  v6 = [allHostingItems countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -8355,11 +8355,11 @@ uint64_t __71__UITrackingElementWindowController_didRotateFromInterfaceOrientati
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allHostingItems);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) hostView];
-        v10 = [v4 isEqual:v9];
+        hostView = [*(*(&v12 + 1) + 8 * i) hostView];
+        v10 = [viewCopy isEqual:hostView];
 
         if (v10)
         {
@@ -8368,7 +8368,7 @@ uint64_t __71__UITrackingElementWindowController_didRotateFromInterfaceOrientati
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allHostingItems countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -8383,16 +8383,16 @@ LABEL_11:
   return v6;
 }
 
-- (unint64_t)_clipCornersOfView:(id)a3
+- (unint64_t)_clipCornersOfView:(id)view
 {
-  v4 = [(UIInputViewSet *)self->_inputViewSet _splittableInputAccessoryView];
-  v5 = [(UIInputViewSet *)self->_inputViewSet inputAccessoryView];
+  _splittableInputAccessoryView = [(UIInputViewSet *)self->_inputViewSet _splittableInputAccessoryView];
+  inputAccessoryView = [(UIInputViewSet *)self->_inputViewSet inputAccessoryView];
 
-  if (v5)
+  if (inputAccessoryView)
   {
-    if (v4)
+    if (_splittableInputAccessoryView)
     {
-      [v4 leftContentViewSize];
+      [_splittableInputAccessoryView leftContentViewSize];
       if (v6 == 0.0)
       {
         v7 = 14;
@@ -8403,7 +8403,7 @@ LABEL_11:
         v7 = 12;
       }
 
-      [v4 rightContentViewSize];
+      [_splittableInputAccessoryView rightContentViewSize];
       if (v8 == 0.0)
       {
         v7 |= 1uLL;
@@ -8435,11 +8435,11 @@ LABEL_11:
     v9 = v8;
     v11 = v10;
 
-    v17 = [(UITrackingElementWindowController *)self initialNotificationInfo];
+    initialNotificationInfo = [(UITrackingElementWindowController *)self initialNotificationInfo];
     if ([(UITrackingElementWindowController *)self isOnScreen])
     {
-      v12 = [(UIViewController *)self view];
-      [v12 frame];
+      view = [(UIViewController *)self view];
+      [view frame];
       v14 = v13 - v11;
 
       v15 = @"TEWC postTransitionEndNotification (isOnScreen)";
@@ -8454,34 +8454,34 @@ LABEL_11:
     }
 
     [(UITrackingElementWindowController *)self convertRectFromContainerCoordinateSpaceToScreenSpace:v5, v14, v9, v11];
-    [v17 populateEndInfoWithFrame:?];
-    [v17 addKeyboardNotificationDebuggingInfo:v15];
-    [(UITrackingElementWindowController *)self postStartNotifications:v16 withInfo:v17];
-    [(UITrackingElementWindowController *)self postEndNotifications:v16 withInfo:v17];
+    [initialNotificationInfo populateEndInfoWithFrame:?];
+    [initialNotificationInfo addKeyboardNotificationDebuggingInfo:v15];
+    [(UITrackingElementWindowController *)self postStartNotifications:v16 withInfo:initialNotificationInfo];
+    [(UITrackingElementWindowController *)self postEndNotifications:v16 withInfo:initialNotificationInfo];
   }
 }
 
-- (void)generateNotificationsForStart:(BOOL)a3
+- (void)generateNotificationsForStart:(BOOL)start
 {
-  v3 = a3;
+  startCopy = start;
   if ([(UIInputWindowController *)self shouldNotifyRemoteKeyboards])
   {
-    v5 = [(UITrackingElementWindowController *)self initialNotificationInfo];
-    if (v3)
+    initialNotificationInfo = [(UITrackingElementWindowController *)self initialNotificationInfo];
+    if (startCopy)
     {
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __67__UITrackingElementWindowController_generateNotificationsForStart___block_invoke;
       v17[3] = &unk_1E70F35B8;
       v17[4] = self;
-      v18 = v5;
-      v6 = v5;
+      v18 = initialNotificationInfo;
+      v6 = initialNotificationInfo;
       [(UITrackingElementWindowController *)self performWithSafeTransitionFrames:v17];
     }
 
     else
     {
-      v16 = v5;
+      v16 = initialNotificationInfo;
       v7 = [(UIInputWindowControllerHosting *)self->_hosting itemForPurpose:1];
       [v7 notificationsFrame];
       v9 = v8;
@@ -8515,11 +8515,11 @@ uint64_t __67__UITrackingElementWindowController_generateNotificationsForStart__
   return [v11 postStartNotifications:1 withInfo:v12];
 }
 
-- (void)generateNotificationsForCompactAssistantFlickGestureCompletion:(id)a3
+- (void)generateNotificationsForCompactAssistantFlickGestureCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v21 = objc_alloc_init(UIInputViewSetNotificationInfo);
-  v5 = [v4 objectForKeyedSubscript:0x1EFB7ADF0];
+  v5 = [completionCopy objectForKeyedSubscript:0x1EFB7ADF0];
   [v5 CGRectValue];
   [(UITrackingElementWindowController *)self convertRectFromContainerCoordinateSpaceToScreenSpace:?];
   v7 = v6;
@@ -8527,50 +8527,50 @@ uint64_t __67__UITrackingElementWindowController_generateNotificationsForStart__
   v11 = v10;
   v13 = v12;
 
-  v14 = [v4 objectForKeyedSubscript:0x1EFB7AE10];
+  v14 = [completionCopy objectForKeyedSubscript:0x1EFB7AE10];
 
   -[UIInputViewSetNotificationInfo setAssistantPosition:](v21, "setAssistantPosition:", [v14 intValue]);
   [(UIInputViewSetNotificationInfo *)v21 setAssistantFrame:v7, v9, v11, v13];
   [(UIInputViewSetNotificationInfo *)v21 setForceNotification:1];
   v15 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v16 = [v15 visualModeManager];
-  v17 = [v16 windowingModeEnabled];
+  visualModeManager = [v15 visualModeManager];
+  windowingModeEnabled = [visualModeManager windowingModeEnabled];
 
-  if (v17)
+  if (windowingModeEnabled)
   {
-    v18 = [(UITrackingElementWindowController *)self inputViewSet];
-    v19 = [v18 inputAccessoryView];
+    inputViewSet = [(UITrackingElementWindowController *)self inputViewSet];
+    inputAccessoryView = [inputViewSet inputAccessoryView];
 
-    if (!v19)
+    if (!inputAccessoryView)
     {
       [(UIInputViewSetNotificationInfo *)v21 populateStartInfoWithFrame:v7, v9, v11, v13];
       [(UIInputViewSetNotificationInfo *)v21 populateEndInfoWithFrame:v7, v9, v11, v13];
     }
   }
 
-  v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"TEWC generateNotificationsForCompactAssistantFlickGestureCompletion (stageManager active: %d)", v17];
+  v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"TEWC generateNotificationsForCompactAssistantFlickGestureCompletion (stageManager active: %d)", windowingModeEnabled];
   [(UIInputViewSetNotificationInfo *)v21 addKeyboardNotificationDebuggingInfo:v20];
 
   [(UITrackingElementWindowController *)self postStartNotifications:2 withInfo:v21];
   [(UITrackingElementWindowController *)self postEndNotifications:2 withInfo:v21];
 }
 
-- (void)setPlacement:(id)a3 quietly:(BOOL)a4 animated:(BOOL)a5 generateSplitNotification:(BOOL)a6
+- (void)setPlacement:(id)placement quietly:(BOOL)quietly animated:(BOOL)animated generateSplitNotification:(BOOL)notification
 {
-  v6 = a6;
-  v8 = a4;
-  v10 = a3;
-  v11 = [(UIViewController *)self _window];
+  notificationCopy = notification;
+  quietlyCopy = quietly;
+  placementCopy = placement;
+  _window = [(UIViewController *)self _window];
 
-  if (v11)
+  if (_window)
   {
-    if (a5)
+    if (animated)
     {
-      if (v8)
+      if (quietlyCopy)
       {
-        [(UITrackingElementWindowController *)self _updatePlacementWithPlacement:v10];
-        [(UITrackingElementWindowController *)self updateToPlacement:v10 withNormalAnimationsAndNotifications:0];
-        if (!v6)
+        [(UITrackingElementWindowController *)self _updatePlacementWithPlacement:placementCopy];
+        [(UITrackingElementWindowController *)self updateToPlacement:placementCopy withNormalAnimationsAndNotifications:0];
+        if (!notificationCopy)
         {
           goto LABEL_9;
         }
@@ -8578,8 +8578,8 @@ uint64_t __67__UITrackingElementWindowController_generateNotificationsForStart__
         goto LABEL_8;
       }
 
-      [(UITrackingElementWindowController *)self setPlacement:v10];
-      if (v6)
+      [(UITrackingElementWindowController *)self setPlacement:placementCopy];
+      if (notificationCopy)
       {
 LABEL_8:
         [(UITrackingElementWindowController *)self postTransitionEndNotification];
@@ -8593,9 +8593,9 @@ LABEL_8:
       v12[2] = __93__UITrackingElementWindowController_setPlacement_quietly_animated_generateSplitNotification___block_invoke;
       v12[3] = &unk_1E70F67F8;
       v12[4] = self;
-      v13 = v10;
-      v14 = v8;
-      v15 = v6;
+      v13 = placementCopy;
+      v14 = quietlyCopy;
+      v15 = notificationCopy;
       [UIView performWithoutAnimation:v12];
     }
   }
@@ -8605,14 +8605,14 @@ LABEL_9:
 
 - (void)validateInputView
 {
-  v3 = [(UITrackingElementWindowController *)self _inputViewController];
+  _inputViewController = [(UITrackingElementWindowController *)self _inputViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(UITrackingElementWindowController *)self _inputViewController];
-    [v5 validateInputModeIsDisplayed];
+    _inputViewController2 = [(UITrackingElementWindowController *)self _inputViewController];
+    [_inputViewController2 validateInputModeIsDisplayed];
   }
 }
 
@@ -8657,32 +8657,32 @@ LABEL_5:
   return [v13 set_inputAssistantViewController:0];
 }
 
-- (void)updateInputAssistantView:(id)a3
+- (void)updateInputAssistantView:(id)view
 {
-  v36 = a3;
+  viewCopy = view;
   if (+[UIKeyboard usesInputSystemUI](UIKeyboard, "usesInputSystemUI") && !+[UIKeyboard usesLocalKeyboard])
   {
     goto LABEL_17;
   }
 
-  v4 = [(UIViewController *)self _window];
-  if (!v4)
+  _window = [(UIViewController *)self _window];
+  if (!_window)
   {
     goto LABEL_17;
   }
 
-  v5 = v4;
-  v6 = [(UITrackingElementWindowController *)self _inputAssistantViewController];
-  v7 = [v6 view];
-  v8 = [v36 inputAssistantView];
-  v9 = v8;
-  if (v7 == v8)
+  v5 = _window;
+  _inputAssistantViewController = [(UITrackingElementWindowController *)self _inputAssistantViewController];
+  view = [_inputAssistantViewController view];
+  inputAssistantView = [viewCopy inputAssistantView];
+  v9 = inputAssistantView;
+  if (view == inputAssistantView)
   {
-    v10 = [(UIViewController *)self _window];
-    v11 = [v36 inputAssistantView];
-    v12 = [v11 window];
+    _window2 = [(UIViewController *)self _window];
+    inputAssistantView2 = [viewCopy inputAssistantView];
+    window = [inputAssistantView2 window];
 
-    if (v10 == v12)
+    if (_window2 == window)
     {
       goto LABEL_17;
     }
@@ -8692,70 +8692,70 @@ LABEL_5:
   {
   }
 
-  v13 = [(UITrackingElementWindowController *)self _inputAssistantViewController];
-  v14 = v13;
-  if (!v13)
+  selfCopy = [(UITrackingElementWindowController *)self _inputAssistantViewController];
+  v14 = selfCopy;
+  if (!selfCopy)
   {
-    v13 = self;
+    selfCopy = self;
   }
 
-  v15 = [v13 _appearState];
+  _appearState = [selfCopy _appearState];
 
   hosting = self->_hosting;
-  v17 = [(UIInputViewSet *)self->_inputViewSet inputAssistantView];
-  [(UIInputWindowControllerHosting *)hosting disableViewSizingConstraints:2 forNewView:v17];
+  inputAssistantView3 = [(UIInputViewSet *)self->_inputViewSet inputAssistantView];
+  [(UIInputWindowControllerHosting *)hosting disableViewSizingConstraints:2 forNewView:inputAssistantView3];
 
   [(UITrackingElementWindowController *)self invalidateInputAssistantView];
-  v18 = [v36 inputAssistantView];
+  inputAssistantView4 = [viewCopy inputAssistantView];
 
-  if (v18)
+  if (inputAssistantView4)
   {
     *&self->super.super.super.super._viewControllerFlags |= 0x100000uLL;
-    v19 = [(UIInputViewSet *)self->_inputViewSet assistantViewController];
-    [(UITrackingElementWindowController *)self set_inputAssistantViewController:v19];
+    assistantViewController = [(UIInputViewSet *)self->_inputViewSet assistantViewController];
+    [(UITrackingElementWindowController *)self set_inputAssistantViewController:assistantViewController];
 
-    v20 = [(UITrackingElementWindowController *)self _inputAssistantViewController];
-    v21 = [v20 parentViewController];
-    if (v21)
+    _inputAssistantViewController2 = [(UITrackingElementWindowController *)self _inputAssistantViewController];
+    parentViewController = [_inputAssistantViewController2 parentViewController];
+    if (parentViewController)
     {
-      v22 = v21;
+      v22 = parentViewController;
       v23 = +[UIKeyboard usesLocalKeyboard];
 
       if (v23)
       {
 LABEL_14:
-        v25 = [(UITrackingElementWindowController *)self _inputAssistantViewController];
-        [(UIViewController *)self _addChildViewController:v25 performHierarchyCheck:dyld_program_sdk_at_least() notifyWillMove:1];
+        _inputAssistantViewController3 = [(UITrackingElementWindowController *)self _inputAssistantViewController];
+        [(UIViewController *)self _addChildViewController:_inputAssistantViewController3 performHierarchyCheck:dyld_program_sdk_at_least() notifyWillMove:1];
 
         sizeClassCollectionOverride = self->_sizeClassCollectionOverride;
         if (sizeClassCollectionOverride)
         {
-          v27 = [(UITrackingElementWindowController *)self _inputAssistantViewController];
-          [(UIViewController *)self setOverrideTraitCollection:sizeClassCollectionOverride forChildViewController:v27];
+          _inputAssistantViewController4 = [(UITrackingElementWindowController *)self _inputAssistantViewController];
+          [(UIViewController *)self setOverrideTraitCollection:sizeClassCollectionOverride forChildViewController:_inputAssistantViewController4];
         }
 
         v28 = self->_hosting;
-        v29 = [(UITrackingElementWindowController *)self _inputAssistantViewController];
-        v30 = [v29 view];
-        [(UIInputWindowControllerHosting *)v28 setInputSetView:v30 forType:102];
+        _inputAssistantViewController5 = [(UITrackingElementWindowController *)self _inputAssistantViewController];
+        view2 = [_inputAssistantViewController5 view];
+        [(UIInputWindowControllerHosting *)v28 setInputSetView:view2 forType:102];
 
-        v31 = [(UITrackingElementWindowController *)self _inputAssistantViewController];
-        [v31 didMoveToParentViewController:self];
+        _inputAssistantViewController6 = [(UITrackingElementWindowController *)self _inputAssistantViewController];
+        [_inputAssistantViewController6 didMoveToParentViewController:self];
 
-        [(UITrackingElementWindowController *)self changeChild:2 toAppearState:v15 animated:0];
+        [(UITrackingElementWindowController *)self changeChild:2 toAppearState:_appearState animated:0];
         *&self->super.super.super.super._viewControllerFlags &= ~0x100000uLL;
-        v32 = [(UITrackingElementWindowController *)self _inputAssistantViewController];
-        v33 = [v32 view];
-        v34 = [(UIViewController *)self view];
-        v35 = [v34 _inheritedRenderConfig];
-        [v33 _setRenderConfig:v35];
+        _inputAssistantViewController7 = [(UITrackingElementWindowController *)self _inputAssistantViewController];
+        view3 = [_inputAssistantViewController7 view];
+        view4 = [(UIViewController *)self view];
+        _inheritedRenderConfig = [view4 _inheritedRenderConfig];
+        [view3 _setRenderConfig:_inheritedRenderConfig];
 
         goto LABEL_17;
       }
 
-      v20 = [(UITrackingElementWindowController *)self _inputAssistantViewController];
-      v24 = [v20 parentViewController];
-      [v24 invalidateInputAssistantView];
+      _inputAssistantViewController2 = [(UITrackingElementWindowController *)self _inputAssistantViewController];
+      parentViewController2 = [_inputAssistantViewController2 parentViewController];
+      [parentViewController2 invalidateInputAssistantView];
     }
 
     goto LABEL_14;
@@ -8815,10 +8815,10 @@ LABEL_5:
   return [v17 set_inputAccessoryViewController:0];
 }
 
-- (unint64_t)changeToInputViewSet:(id)a3
+- (unint64_t)changeToInputViewSet:(id)set
 {
   v125 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  setCopy = set;
   v6 = _UITrackingElementWindowControllerLogger();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -8832,19 +8832,19 @@ LABEL_5:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v124 = v5;
+    v124 = setCopy;
     _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEFAULT, "Change to input view set: %@", buf, 0xCu);
   }
 
   v9 = self->_inputViewSet;
-  objc_storeStrong(&self->_inputViewSet, a3);
+  objc_storeStrong(&self->_inputViewSet, set);
   [(UITrackingElementWindowController *)self setTransientInputViewSet:0];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __58__UITrackingElementWindowController_changeToInputViewSet___block_invoke;
   aBlock[3] = &unk_1E7116620;
   aBlock[4] = self;
-  v10 = v5;
+  v10 = setCopy;
   v121 = v10;
   v11 = _Block_copy(aBlock);
   [(UIInputWindowControllerHosting *)self->_hosting initializeTranslateGestureRecognizerIfNecessary];
@@ -8852,10 +8852,10 @@ LABEL_5:
   v119 = 0u;
   v117 = 0u;
   v116 = 0u;
-  v12 = [(UITrackingElementWindowController *)self hosting];
-  v13 = [v12 allHostingItems];
+  hosting = [(UITrackingElementWindowController *)self hosting];
+  allHostingItems = [hosting allHostingItems];
 
-  v14 = [v13 countByEnumeratingWithState:&v116 objects:v122 count:16];
+  v14 = [allHostingItems countByEnumeratingWithState:&v116 objects:v122 count:16];
   if (v14)
   {
     v15 = v14;
@@ -8866,13 +8866,13 @@ LABEL_5:
       {
         if (*v117 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allHostingItems);
         }
 
         [*(*(&v116 + 1) + 8 * i) updateInputViewSet:v10];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v116 objects:v122 count:16];
+      v15 = [allHostingItems countByEnumeratingWithState:&v116 objects:v122 count:16];
     }
 
     while (v15);
@@ -8881,12 +8881,12 @@ LABEL_5:
   v112 = v11;
 
   self->_isChangingInputViews = 1;
-  v18 = [(UITrackingElementWindowController *)self _inputViewController];
-  v19 = [v18 view];
-  v20 = [(UIInputViewSet *)v10 inputView];
+  _inputViewController = [(UITrackingElementWindowController *)self _inputViewController];
+  view = [_inputViewController view];
+  inputView = [(UIInputViewSet *)v10 inputView];
 
   hosting = self->_hosting;
-  if (v19 == v20)
+  if (view == inputView)
   {
     v44 = [(UIInputWindowControllerHosting *)hosting itemForPurpose:100];
     [v44 updateInputBackdropViewVisibility];
@@ -8896,65 +8896,65 @@ LABEL_5:
 
   else
   {
-    v22 = [(UIInputViewSet *)v10 inputView];
-    [(UIInputWindowControllerHosting *)hosting disableViewSizingConstraints:1 forNewView:v22];
+    inputView2 = [(UIInputViewSet *)v10 inputView];
+    [(UIInputWindowControllerHosting *)hosting disableViewSizingConstraints:1 forNewView:inputView2];
 
-    v23 = [(UITrackingElementWindowController *)self _inputViewController];
-    v24 = v23;
-    if (!v23)
+    selfCopy = [(UITrackingElementWindowController *)self _inputViewController];
+    v24 = selfCopy;
+    if (!selfCopy)
     {
-      v23 = self;
+      selfCopy = self;
     }
 
-    v25 = [v23 _appearState];
+    _appearState = [selfCopy _appearState];
 
     [(UITrackingElementWindowController *)self invalidateInputView];
-    v26 = [(UIInputViewSet *)self->_inputViewSet inputView];
+    inputView3 = [(UIInputViewSet *)self->_inputViewSet inputView];
 
-    if (v26)
+    if (inputView3)
     {
       if ([(UIInputViewSet *)self->_inputViewSet isInputViewPlaceholder])
       {
-        v27 = [(UIInputViewSet *)self->_inputViewSet inputView];
-        [v27 refreshPlaceholder];
+        inputView4 = [(UIInputViewSet *)self->_inputViewSet inputView];
+        [inputView4 refreshPlaceholder];
 
         [(UITrackingElementWindowController *)self updateKeyboardLayoutGuideForRefreshedPlaceholder];
       }
 
       *&self->super.super.super.super._viewControllerFlags |= 0x100000uLL;
-      v28 = [(UIInputViewSet *)self->_inputViewSet inputViewController];
-      [(UITrackingElementWindowController *)self set_inputViewController:v28];
+      inputViewController = [(UIInputViewSet *)self->_inputViewSet inputViewController];
+      [(UITrackingElementWindowController *)self set_inputViewController:inputViewController];
 
-      v29 = [(UITrackingElementWindowController *)self _inputViewController];
-      v30 = [v29 parentViewController];
+      _inputViewController2 = [(UITrackingElementWindowController *)self _inputViewController];
+      parentViewController = [_inputViewController2 parentViewController];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v32 = [(UITrackingElementWindowController *)self _inputViewController];
-        v33 = [v32 parentViewController];
-        [v33 invalidateInputView];
+        _inputViewController3 = [(UITrackingElementWindowController *)self _inputViewController];
+        parentViewController2 = [_inputViewController3 parentViewController];
+        [parentViewController2 invalidateInputView];
       }
 
-      v34 = [(UITrackingElementWindowController *)self _inputViewController];
-      [(UIViewController *)self _addChildViewController:v34 performHierarchyCheck:dyld_program_sdk_at_least() notifyWillMove:1];
+      _inputViewController4 = [(UITrackingElementWindowController *)self _inputViewController];
+      [(UIViewController *)self _addChildViewController:_inputViewController4 performHierarchyCheck:dyld_program_sdk_at_least() notifyWillMove:1];
 
       v35 = self->_hosting;
-      v36 = [(UITrackingElementWindowController *)self _inputViewController];
-      v37 = [v36 view];
-      [(UIInputWindowControllerHosting *)v35 setInputSetView:v37 forType:100];
+      _inputViewController5 = [(UITrackingElementWindowController *)self _inputViewController];
+      view2 = [_inputViewController5 view];
+      [(UIInputWindowControllerHosting *)v35 setInputSetView:view2 forType:100];
 
-      v38 = [(UITrackingElementWindowController *)self _inputViewController];
-      [v38 didMoveToParentViewController:self];
+      _inputViewController6 = [(UITrackingElementWindowController *)self _inputViewController];
+      [_inputViewController6 didMoveToParentViewController:self];
 
-      [(UITrackingElementWindowController *)self changeChild:1 toAppearState:v25 animated:0];
+      [(UITrackingElementWindowController *)self changeChild:1 toAppearState:_appearState animated:0];
       *&self->super.super.super.super._viewControllerFlags &= ~0x100000uLL;
-      v39 = [(UITrackingElementWindowController *)self _inputViewController];
-      v40 = [v39 view];
-      v41 = [(UIViewController *)self view];
-      v42 = [v41 _inheritedRenderConfig];
-      [v40 _setRenderConfig:v42];
+      _inputViewController7 = [(UITrackingElementWindowController *)self _inputViewController];
+      view3 = [_inputViewController7 view];
+      view4 = [(UIViewController *)self view];
+      _inheritedRenderConfig = [view4 _inheritedRenderConfig];
+      [view3 _setRenderConfig:_inheritedRenderConfig];
     }
 
     v115[0] = MEMORY[0x1E69E9820];
@@ -8966,16 +8966,16 @@ LABEL_5:
     v43 = 1;
   }
 
-  v45 = [(UITrackingElementWindowController *)self _inputAssistantViewController];
-  v46 = [v45 view];
-  v47 = [(UIInputViewSet *)v10 inputAssistantView];
-  v48 = v47;
-  if (v46 == v47)
+  _inputAssistantViewController = [(UITrackingElementWindowController *)self _inputAssistantViewController];
+  view5 = [_inputAssistantViewController view];
+  inputAssistantView = [(UIInputViewSet *)v10 inputAssistantView];
+  v48 = inputAssistantView;
+  if (view5 == inputAssistantView)
   {
     [(UIViewController *)self _window];
     v50 = v49 = v9;
-    v51 = [(UIInputViewSet *)v10 inputAssistantView];
-    [v51 window];
+    inputAssistantView2 = [(UIInputViewSet *)v10 inputAssistantView];
+    [inputAssistantView2 window];
     v52 = v111 = v43;
 
     v53 = v50 == v52;
@@ -8994,30 +8994,30 @@ LABEL_5:
   [(UITrackingElementWindowController *)self updateInputAssistantView:v10];
   v111 = v43 | 2;
 LABEL_27:
-  v54 = [(UITrackingElementWindowController *)self _inputAccessoryViewController];
-  v55 = [v54 view];
-  v56 = [(UIInputViewSet *)v10 inputAccessoryView];
+  _inputAccessoryViewController = [(UITrackingElementWindowController *)self _inputAccessoryViewController];
+  view6 = [_inputAccessoryViewController view];
+  inputAccessoryView = [(UIInputViewSet *)v10 inputAccessoryView];
 
-  if (v55 == v56)
+  if (view6 == inputAccessoryView)
   {
-    v88 = [(UITrackingElementWindowController *)self _inputAccessoryViewController];
-    v89 = [v88 view];
-    if (v89)
+    _inputAccessoryViewController2 = [(UITrackingElementWindowController *)self _inputAccessoryViewController];
+    view7 = [_inputAccessoryViewController2 view];
+    if (view7)
     {
-      v90 = v89;
+      v90 = view7;
       v110 = v9;
-      v91 = [(UITrackingElementWindowController *)self _inputAccessoryViewController];
-      v92 = [v91 view];
+      _inputAccessoryViewController3 = [(UITrackingElementWindowController *)self _inputAccessoryViewController];
+      view8 = [_inputAccessoryViewController3 view];
       v93 = [(UIInputWindowControllerHosting *)self->_hosting itemForPurpose:101];
-      v94 = [v93 hostView];
-      v95 = [v92 isDescendantOfView:v94];
+      hostView = [v93 hostView];
+      v95 = [view8 isDescendantOfView:hostView];
 
       if ((v95 & 1) == 0)
       {
         v96 = self->_hosting;
-        v97 = [(UITrackingElementWindowController *)self _inputAccessoryViewController];
-        v98 = [v97 view];
-        [(UIInputWindowControllerHosting *)v96 setInputSetView:v98 forType:101];
+        _inputAccessoryViewController4 = [(UITrackingElementWindowController *)self _inputAccessoryViewController];
+        view9 = [_inputAccessoryViewController4 view];
+        [(UIInputWindowControllerHosting *)v96 setInputSetView:view9 forType:101];
 
         v113[0] = MEMORY[0x1E69E9820];
         v113[1] = 3221225472;
@@ -9043,17 +9043,17 @@ LABEL_27:
   else
   {
     v57 = self->_hosting;
-    v58 = [(UIInputViewSet *)v10 inputAccessoryView];
-    [(UIInputWindowControllerHosting *)v57 disableViewSizingConstraints:4 forNewView:v58];
+    inputAccessoryView2 = [(UIInputViewSet *)v10 inputAccessoryView];
+    [(UIInputWindowControllerHosting *)v57 disableViewSizingConstraints:4 forNewView:inputAccessoryView2];
 
-    v59 = [(UITrackingElementWindowController *)self _inputAccessoryViewController];
-    v60 = v59;
-    if (!v59)
+    selfCopy2 = [(UITrackingElementWindowController *)self _inputAccessoryViewController];
+    v60 = selfCopy2;
+    if (!selfCopy2)
     {
-      v59 = self;
+      selfCopy2 = self;
     }
 
-    v61 = [v59 _appearState];
+    _appearState2 = [selfCopy2 _appearState];
 
     [(UITrackingElementWindowController *)self invalidateInputAccessoryView];
     v62 = v112;
@@ -9063,43 +9063,43 @@ LABEL_27:
       goto LABEL_58;
     }
 
-    v63 = [(UIInputViewSet *)self->_inputViewSet inputAccessoryView];
+    inputAccessoryView3 = [(UIInputViewSet *)self->_inputViewSet inputAccessoryView];
 
-    if (v63)
+    if (inputAccessoryView3)
     {
       *&self->super.super.super.super._viewControllerFlags |= 0x100000uLL;
-      v64 = [(UIInputViewSet *)self->_inputViewSet accessoryViewController];
-      [(UITrackingElementWindowController *)self set_inputAccessoryViewController:v64];
+      accessoryViewController = [(UIInputViewSet *)self->_inputViewSet accessoryViewController];
+      [(UITrackingElementWindowController *)self set_inputAccessoryViewController:accessoryViewController];
 
-      v65 = [(UITrackingElementWindowController *)self _inputAccessoryViewController];
-      v66 = [v65 parentViewController];
+      _inputAccessoryViewController5 = [(UITrackingElementWindowController *)self _inputAccessoryViewController];
+      parentViewController3 = [_inputAccessoryViewController5 parentViewController];
 
-      if (v66)
+      if (parentViewController3)
       {
         v109 = v9;
-        v67 = [(UITrackingElementWindowController *)self _inputAccessoryViewController];
-        v68 = [v67 view];
-        v69 = [v68 _responderWindow];
-        v70 = [v69 _firstResponder];
+        _inputAccessoryViewController6 = [(UITrackingElementWindowController *)self _inputAccessoryViewController];
+        view10 = [_inputAccessoryViewController6 view];
+        _responderWindow = [view10 _responderWindow];
+        _firstResponder = [_responderWindow _firstResponder];
 
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) == 0 || (-[UITrackingElementWindowController _inputAccessoryViewController](self, "_inputAccessoryViewController"), v71 = objc_claimAutoreleasedReturnValue(), [v71 view], v72 = objc_claimAutoreleasedReturnValue(), v73 = objc_msgSend(v72, "containsView:", v70), v72, v71, (v73 & 1) == 0))
+        if ((objc_opt_isKindOfClass() & 1) == 0 || (-[UITrackingElementWindowController _inputAccessoryViewController](self, "_inputAccessoryViewController"), v71 = objc_claimAutoreleasedReturnValue(), [v71 view], v72 = objc_claimAutoreleasedReturnValue(), v73 = objc_msgSend(v72, "containsView:", _firstResponder), v72, v71, (v73 & 1) == 0))
         {
 
-          v70 = 0;
+          _firstResponder = 0;
         }
 
-        v74 = [(UITrackingElementWindowController *)self _inputAccessoryViewController];
-        v75 = [v74 parentViewController];
+        _inputAccessoryViewController7 = [(UITrackingElementWindowController *)self _inputAccessoryViewController];
+        parentViewController4 = [_inputAccessoryViewController7 parentViewController];
 
         objc_opt_class();
         v9 = v109;
         if (objc_opt_isKindOfClass())
         {
-          [v75 invalidateInputAccessoryView];
+          [parentViewController4 invalidateInputAccessoryView];
         }
 
-        [v70 _becomeFirstResponderWhenPossible];
+        [_firstResponder _becomeFirstResponderWhenPossible];
         v76 = (v112[2])();
 
         if (!v76)
@@ -9110,27 +9110,27 @@ LABEL_27:
         }
       }
 
-      v77 = [(UITrackingElementWindowController *)self _inputAccessoryViewController];
-      [(UIViewController *)self _addChildViewController:v77 performHierarchyCheck:dyld_program_sdk_at_least() notifyWillMove:1];
+      _inputAccessoryViewController8 = [(UITrackingElementWindowController *)self _inputAccessoryViewController];
+      [(UIViewController *)self _addChildViewController:_inputAccessoryViewController8 performHierarchyCheck:dyld_program_sdk_at_least() notifyWillMove:1];
 
       v78 = self->_hosting;
-      v79 = [(UITrackingElementWindowController *)self _inputAccessoryViewController];
-      v80 = [v79 view];
-      [(UIInputWindowControllerHosting *)v78 setInputSetView:v80 forType:101];
+      _inputAccessoryViewController9 = [(UITrackingElementWindowController *)self _inputAccessoryViewController];
+      view11 = [_inputAccessoryViewController9 view];
+      [(UIInputWindowControllerHosting *)v78 setInputSetView:view11 forType:101];
 
-      v81 = [(UITrackingElementWindowController *)self _inputAccessoryViewController];
-      [v81 didMoveToParentViewController:self];
+      _inputAccessoryViewController10 = [(UITrackingElementWindowController *)self _inputAccessoryViewController];
+      [_inputAccessoryViewController10 didMoveToParentViewController:self];
 
-      [(UITrackingElementWindowController *)self changeChild:4 toAppearState:v61 animated:0];
+      [(UITrackingElementWindowController *)self changeChild:4 toAppearState:_appearState2 animated:0];
       *&self->super.super.super.super._viewControllerFlags &= ~0x100000uLL;
-      v82 = [(UITrackingElementWindowController *)self _inputAccessoryViewController];
-      v83 = [v82 view];
-      v84 = [(UIViewController *)self view];
-      v85 = [v84 _inheritedRenderConfig];
-      [v83 _setRenderConfig:v85];
+      _inputAccessoryViewController11 = [(UITrackingElementWindowController *)self _inputAccessoryViewController];
+      view12 = [_inputAccessoryViewController11 view];
+      view13 = [(UIViewController *)self view];
+      _inheritedRenderConfig2 = [view13 _inheritedRenderConfig];
+      [view12 _setRenderConfig:_inheritedRenderConfig2];
 
-      v86 = [(UIInputViewSet *)self->_inputViewSet inputAccessoryView];
-      [v86 bounds];
+      inputAccessoryView4 = [(UIInputViewSet *)self->_inputViewSet inputAccessoryView];
+      [inputAccessoryView4 bounds];
       [(UITrackingElementWindowController *)self updateTrackingCoordinatorForAccessoryBounds:?];
 
       v62 = v112;
@@ -9154,31 +9154,31 @@ LABEL_27:
   }
 
   [(UITrackingElementWindowController *)self updateGestureRecognizers];
-  v99 = [(UIInputViewSet *)v9 inputView];
-  v100 = [v99 superview];
+  inputView5 = [(UIInputViewSet *)v9 inputView];
+  superview = [inputView5 superview];
 
-  if (!v100)
+  if (!superview)
   {
-    v101 = [(UIInputViewSet *)v9 inputView];
-    [v101 _clearOverrideNextResponder];
+    inputView6 = [(UIInputViewSet *)v9 inputView];
+    [inputView6 _clearOverrideNextResponder];
   }
 
-  v102 = [(UIInputViewSet *)v9 inputAssistantView];
-  v103 = [v102 superview];
+  inputAssistantView3 = [(UIInputViewSet *)v9 inputAssistantView];
+  superview2 = [inputAssistantView3 superview];
 
-  if (!v103)
+  if (!superview2)
   {
-    v104 = [(UIInputViewSet *)v9 inputAssistantView];
-    [v104 _clearOverrideNextResponder];
+    inputAssistantView4 = [(UIInputViewSet *)v9 inputAssistantView];
+    [inputAssistantView4 _clearOverrideNextResponder];
   }
 
-  v105 = [(UIInputViewSet *)v9 inputAccessoryView];
-  v106 = [v105 superview];
+  inputAccessoryView5 = [(UIInputViewSet *)v9 inputAccessoryView];
+  superview3 = [inputAccessoryView5 superview];
 
-  if (!v106)
+  if (!superview3)
   {
-    v107 = [(UIInputViewSet *)v9 inputAccessoryView];
-    [v107 _clearOverrideNextResponder];
+    inputAccessoryView6 = [(UIInputViewSet *)v9 inputAccessoryView];
+    [inputAccessoryView6 _clearOverrideNextResponder];
   }
 
 LABEL_58:
@@ -9225,21 +9225,21 @@ void __58__UITrackingElementWindowController_changeToInputViewSet___block_invoke
   [v1 updateInputAccessoryBackdropView];
 }
 
-- (void)setInputViewSet:(id)a3
+- (void)setInputViewSet:(id)set
 {
   v74 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  setCopy = set;
   [(UITrackingElementWindowController *)self updateKeyboardSizeClass];
-  v5 = [(UITrackingElementWindowController *)self postRotationPlacement];
+  postRotationPlacement = [(UITrackingElementWindowController *)self postRotationPlacement];
 
-  if (v5)
+  if (postRotationPlacement)
   {
-    [(UITrackingElementWindowController *)self setPostRotationInputViewSet:v4];
-    v6 = [(UITrackingElementWindowController *)self initialNotificationInfo];
-    [(UITrackingElementWindowController *)self setPostRotationInputViewNotificationInfo:v6];
+    [(UITrackingElementWindowController *)self setPostRotationInputViewSet:setCopy];
+    initialNotificationInfo = [(UITrackingElementWindowController *)self initialNotificationInfo];
+    [(UITrackingElementWindowController *)self setPostRotationInputViewNotificationInfo:initialNotificationInfo];
 
-    v7 = [(UITrackingElementWindowController *)self postRotationInputViewNotificationInfo];
-    [v7 setShouldSendInClient:1];
+    postRotationInputViewNotificationInfo = [(UITrackingElementWindowController *)self postRotationInputViewNotificationInfo];
+    [postRotationInputViewNotificationInfo setShouldSendInClient:1];
 
     goto LABEL_73;
   }
@@ -9247,8 +9247,8 @@ void __58__UITrackingElementWindowController_changeToInputViewSet___block_invoke
   v8 = +[UIKeyboardSceneDelegate automaticKeyboardArbiterClient];
   if ([v8 handlingRemoteEvent])
   {
-    v9 = [(UITrackingElementWindowController *)self currentTransition];
-    v10 = [v9 fromPlacement];
+    currentTransition = [(UITrackingElementWindowController *)self currentTransition];
+    fromPlacement = [currentTransition fromPlacement];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -9262,18 +9262,18 @@ void __58__UITrackingElementWindowController_changeToInputViewSet___block_invoke
   {
   }
 
-  if (![v4 isEmpty] || self->_inputViewSet || objc_msgSend(UIApp, "_isSpringBoard") && (+[UIKeyboardSceneDelegate activeKeyboardSceneDelegate](UIKeyboardSceneDelegate, "activeKeyboardSceneDelegate"), v34 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v34, "existingContainerRootController"), v35 = objc_claimAutoreleasedReturnValue(), v35, v34, v35 == self))
+  if (![setCopy isEmpty] || self->_inputViewSet || objc_msgSend(UIApp, "_isSpringBoard") && (+[UIKeyboardSceneDelegate activeKeyboardSceneDelegate](UIKeyboardSceneDelegate, "activeKeyboardSceneDelegate"), v34 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v34, "existingContainerRootController"), v35 = objc_claimAutoreleasedReturnValue(), v35, v34, v35 == self))
   {
     v12 = _UITrackingElementWindowControllerLogger();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *&buf[4] = v4;
+      *&buf[4] = setCopy;
       _os_log_impl(&dword_188A29000, v12, OS_LOG_TYPE_DEFAULT, "Setting tracking element input views: %@", buf, 0xCu);
     }
 
-    [(UIInputWindowController *)self updateInputAssistantViewForInputViewSet:v4];
-    v13 = [(UIInputViewSet *)self->_inputViewSet isEqual:v4];
+    [(UIInputWindowController *)self updateInputAssistantViewForInputViewSet:setCopy];
+    v13 = [(UIInputViewSet *)self->_inputViewSet isEqual:setCopy];
     if (v13)
     {
       v47 = 0;
@@ -9281,8 +9281,8 @@ void __58__UITrackingElementWindowController_changeToInputViewSet___block_invoke
 
     else
     {
-      LODWORD(v47) = ([v4 isInputViewPlaceholder] & 1) != 0 || -[UIInputViewSet isInputViewPlaceholder](self->_inputViewSet, "isInputViewPlaceholder");
-      if ([v4 isInputViewPlaceholder])
+      LODWORD(v47) = ([setCopy isInputViewPlaceholder] & 1) != 0 || -[UIInputViewSet isInputViewPlaceholder](self->_inputViewSet, "isInputViewPlaceholder");
+      if ([setCopy isInputViewPlaceholder])
       {
         HIDWORD(v47) = ![(UIInputWindowController *)self shouldNotifyRemoteKeyboards];
       }
@@ -9294,7 +9294,7 @@ void __58__UITrackingElementWindowController_changeToInputViewSet___block_invoke
 
       if ([(UIInputViewSet *)self->_inputViewSet isCustomInputView])
       {
-        v46 = [v4 isCustomInputView] ^ 1;
+        v46 = [setCopy isCustomInputView] ^ 1;
         goto LABEL_22;
       }
     }
@@ -9304,11 +9304,11 @@ LABEL_22:
     v14 = !v13;
     if ([(UIInputViewSet *)self->_inputViewSet isInputViewPlaceholder])
     {
-      v15 = [(UIInputViewSet *)self->_inputViewSet inputView];
-      [v15 fixedSize];
+      inputView = [(UIInputViewSet *)self->_inputViewSet inputView];
+      [inputView fixedSize];
       v17 = v16;
-      [v15 refreshPlaceholder];
-      [v15 fixedSize];
+      [inputView refreshPlaceholder];
+      [inputView fixedSize];
       v19 = v18;
       if (v17 != v18)
       {
@@ -9326,30 +9326,30 @@ LABEL_22:
       }
     }
 
-    v21 = [(UITrackingElementWindowController *)self nextAnimationStyle];
+    nextAnimationStyle = [(UITrackingElementWindowController *)self nextAnimationStyle];
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
     v71 = __Block_byref_object_copy__178;
     v72 = __Block_byref_object_dispose__178;
-    v73 = [(UITrackingElementWindowController *)self currentPresentationPlacement];
-    v22 = [(UIViewController *)self _window];
-    v48 = [v22 windowScene];
+    currentPresentationPlacement = [(UITrackingElementWindowController *)self currentPresentationPlacement];
+    _window = [(UIViewController *)self _window];
+    windowScene = [_window windowScene];
 
-    v23 = [v21 startPlacementForInputViewSet:v4 currentPlacement:*(*&buf[8] + 40) windowScene:v48];
-    v24 = [v21 endPlacementForInputViewSet:v4 windowScene:v48];
+    v23 = [nextAnimationStyle startPlacementForInputViewSet:setCopy currentPlacement:*(*&buf[8] + 40) windowScene:windowScene];
+    v24 = [nextAnimationStyle endPlacementForInputViewSet:setCopy windowScene:windowScene];
     [v23 setOtherPlacement:v24];
     [v24 setOtherPlacement:v23];
-    v25 = [(UITrackingElementWindowController *)self currentTransition];
-    v26 = [v25 toPlacement];
-    v27 = [v24 isEqual:v26];
+    currentTransition2 = [(UITrackingElementWindowController *)self currentTransition];
+    toPlacement = [currentTransition2 toPlacement];
+    v27 = [v24 isEqual:toPlacement];
 
     v28 = v14 | v27 ^ 1;
     if ((v28 & 1) == 0)
     {
-      v29 = [(UITrackingElementWindowController *)self currentTransition];
-      v30 = [v29 animationStyle];
-      v31 = [v21 isEqual:v30];
+      currentTransition3 = [(UITrackingElementWindowController *)self currentTransition];
+      animationStyle = [currentTransition3 animationStyle];
+      v31 = [nextAnimationStyle isEqual:animationStyle];
 
       if (v31)
       {
@@ -9374,7 +9374,7 @@ LABEL_22:
       v33 = 0;
     }
 
-    if (!-[UIInputViewSet isEqual:](self->_inputViewSet, "isEqual:", v4) && ([*(*&buf[8] + 40) isEqual:v23] & 1) == 0)
+    if (!-[UIInputViewSet isEqual:](self->_inputViewSet, "isEqual:", setCopy) && ([*(*&buf[8] + 40) isEqual:v23] & 1) == 0)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -9384,7 +9384,7 @@ LABEL_22:
         v66[2] = __53__UITrackingElementWindowController_setInputViewSet___block_invoke;
         v66[3] = &unk_1E70FF0C8;
         v66[4] = self;
-        v67 = v4;
+        v67 = setCopy;
         v69 = buf;
         v68 = v23;
         [UIView performWithoutAnimation:v66];
@@ -9407,7 +9407,7 @@ LABEL_22:
     }
 
     objc_initWeak(v65, self);
-    [(UITrackingElementWindowController *)self setTransientInputViewSet:v4];
+    [(UITrackingElementWindowController *)self setTransientInputViewSet:setCopy];
     v37 = [*(*&buf[8] + 40) notificationsForTransitionToPlacement:v24];
     if ((v37 == 3) | (HIDWORD(v47) | v33 | v36) & 1)
     {
@@ -9427,7 +9427,7 @@ LABEL_22:
       v62[2] = __53__UITrackingElementWindowController_setInputViewSet___block_invoke_3;
       v62[3] = &unk_1E70F2F80;
       objc_copyWeak(&v64, v65);
-      v63 = v4;
+      v63 = setCopy;
       [(UITrackingElementWindowController *)self setPlacement:v24 starting:0 completion:v62];
       if (v36)
       {
@@ -9442,11 +9442,11 @@ LABEL_22:
     {
       if (v37 == 2)
       {
-        if ((-[UIInputViewSet isCustomInputView](self->_inputViewSet, "isCustomInputView") || ([*(*&buf[8] + 40) isFloating] & 1) != 0 || objc_msgSend(v23, "showsInputOrAssistantViews")) && (objc_msgSend(v4, "isNullInputView") & 1) == 0 && (objc_msgSend(v24, "showsKeyboard") & 1) == 0)
+        if ((-[UIInputViewSet isCustomInputView](self->_inputViewSet, "isCustomInputView") || ([*(*&buf[8] + 40) isFloating] & 1) != 0 || objc_msgSend(v23, "showsInputOrAssistantViews")) && (objc_msgSend(setCopy, "isNullInputView") & 1) == 0 && (objc_msgSend(v24, "showsKeyboard") & 1) == 0)
         {
-          v42 = [(UITrackingElementWindowController *)self currentTransition];
-          v43 = [v42 toPlacement];
-          v44 = [v43 isEqual:v24];
+          currentTransition4 = [(UITrackingElementWindowController *)self currentTransition];
+          toPlacement2 = [currentTransition4 toPlacement];
+          v44 = [toPlacement2 isEqual:v24];
 
           v39 = (v44 | v46) & 1;
         }
@@ -9462,7 +9462,7 @@ LABEL_22:
         v58[3] = &unk_1E7108F18;
         v61 = v39;
         objc_copyWeak(&v60, v65);
-        v45 = v4;
+        v45 = setCopy;
         v59 = v45;
         v54[0] = MEMORY[0x1E69E9820];
         v54[1] = 3221225472;
@@ -9505,7 +9505,7 @@ LABEL_72:
     v49[3] = &unk_1E7116670;
     objc_copyWeak(&v53, v65);
     v50 = v24;
-    v51 = v4;
+    v51 = setCopy;
     v41 = v40;
     v52 = v41;
     [(UITrackingElementWindowController *)self performOperations:v49 withTemplateNotificationInfo:v41];
@@ -9643,16 +9643,16 @@ uint64_t __53__UITrackingElementWindowController_setInputViewSet___block_invoke_
   return result;
 }
 
-- (void)setPlacement:(id)a3
+- (void)setPlacement:(id)placement
 {
-  v4 = a3;
+  placementCopy = placement;
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __50__UITrackingElementWindowController_setPlacement___block_invoke;
   v5[3] = &unk_1E70F5A28;
   objc_copyWeak(&v6, &location);
-  [(UITrackingElementWindowController *)self setPlacement:v4 starting:v5 completion:0];
+  [(UITrackingElementWindowController *)self setPlacement:placementCopy starting:v5 completion:0];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
@@ -9683,56 +9683,56 @@ void __50__UITrackingElementWindowController_setPlacement___block_invoke_2(uint6
   }
 }
 
-- (void)setRotationAwarePlacement:(id)a3
+- (void)setRotationAwarePlacement:(id)placement
 {
-  v5 = a3;
-  v4 = [(UITrackingElementWindowController *)self postRotationPlacement];
+  placementCopy = placement;
+  postRotationPlacement = [(UITrackingElementWindowController *)self postRotationPlacement];
 
-  if (v4)
+  if (postRotationPlacement)
   {
-    [(UITrackingElementWindowController *)self setPostRotationPlacement:v5];
+    [(UITrackingElementWindowController *)self setPostRotationPlacement:placementCopy];
   }
 
   else
   {
-    [(UITrackingElementWindowController *)self setPlacement:v5];
+    [(UITrackingElementWindowController *)self setPlacement:placementCopy];
   }
 }
 
-- (void)setInputView:(id)a3 accessoryView:(id)a4 assistantView:(id)a5
+- (void)setInputView:(id)view accessoryView:(id)accessoryView assistantView:(id)assistantView
 {
-  v6 = [UIInputViewSet inputSetWithInputView:a3 accessoryView:a4 assistantView:a5];
+  v6 = [UIInputViewSet inputSetWithInputView:view accessoryView:accessoryView assistantView:assistantView];
   [(UITrackingElementWindowController *)self setInputViewSet:v6];
 }
 
-- (id)inputViewSnapshotOfView:(id)a3 afterScreenUpdates:(BOOL)a4
+- (id)inputViewSnapshotOfView:(id)view afterScreenUpdates:(BOOL)updates
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(UIViewController *)self view];
-  [v6 bounds];
-  [v7 convertRect:v6 fromView:?];
+  updatesCopy = updates;
+  viewCopy = view;
+  view = [(UIViewController *)self view];
+  [viewCopy bounds];
+  [view convertRect:viewCopy fromView:?];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  v16 = [(UIViewController *)self view];
-  v17 = [v16 resizableSnapshotViewFromRect:v4 afterScreenUpdates:v9 withCapInsets:{v11, v13, v15, 0.0, 0.0, 0.0, 0.0}];
+  view2 = [(UIViewController *)self view];
+  v17 = [view2 resizableSnapshotViewFromRect:updatesCopy afterScreenUpdates:v9 withCapInsets:{v11, v13, v15, 0.0, 0.0, 0.0, 0.0}];
 
   [v17 setUserInteractionEnabled:0];
-  v18 = [(UIViewController *)self view];
-  v19 = [v18 window];
-  v20 = [v19 screen];
-  [v20 scale];
+  view3 = [(UIViewController *)self view];
+  window = [view3 window];
+  screen = [window screen];
+  [screen scale];
   [v17 setContentScaleFactor:?];
 
   return v17;
 }
 
-- (CGRect)_visibleFrameInRemoteKeyboardWindow:(BOOL)a3
+- (CGRect)_visibleFrameInRemoteKeyboardWindow:(BOOL)window
 {
-  v3 = a3;
+  windowCopy = window;
   v5 = [(UIInputWindowControllerHosting *)self->_hosting itemForPurpose:1];
   [v5 notificationsFrame];
   x = v72.origin.x;
@@ -9741,18 +9741,18 @@ void __50__UITrackingElementWindowController_setPlacement___block_invoke_2(uint6
   height = v72.size.height;
   if (CGRectGetHeight(v72) == 0.0 && +[UIKeyboard isInputUIProcess](UIKeyboard, "isInputUIProcess") && !+[UIKeyboard inputUIOOP])
   {
-    v10 = +[_UIRemoteKeyboards sharedRemoteKeyboards];
-    if ([v10 keyboardVisible] && (objc_msgSend(v10, "remoteKeyboardUndocked") & 1) == 0 && !objc_msgSend(v10, "isFloating"))
+    trackingElementCoordinator = +[_UIRemoteKeyboards sharedRemoteKeyboards];
+    if ([trackingElementCoordinator keyboardVisible] && (objc_msgSend(trackingElementCoordinator, "remoteKeyboardUndocked") & 1) == 0 && !objc_msgSend(trackingElementCoordinator, "isFloating"))
     {
-      [v10 keyboardPosition];
+      [trackingElementCoordinator keyboardPosition];
       v60 = v59;
       v62 = v61;
       v64 = v63;
       v66 = v65;
-      v67 = [(UIViewController *)self _window];
-      [v67 frame];
+      _window = [(UIViewController *)self _window];
+      [_window frame];
       v69 = v68;
-      [v10 keyboardPosition];
+      [trackingElementCoordinator keyboardPosition];
       v71 = v69 - v70;
       v76.origin.x = v60;
       v76.origin.y = v62;
@@ -9769,23 +9769,23 @@ void __50__UITrackingElementWindowController_setPlacement___block_invoke_2(uint6
   }
 
   v11 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v10 = [v11 trackingElementCoordinator];
+  trackingElementCoordinator = [v11 trackingElementCoordinator];
 
   if ([UIApp _isSpringBoard])
   {
-    v12 = self;
+    selfCopy2 = self;
     v13 = x;
     v14 = y;
     v15 = width;
     v16 = height;
-    v17 = v3;
+    v17 = windowCopy;
   }
 
   else
   {
-    if (v10 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (trackingElementCoordinator && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v10 incomingKeyboardFrame];
+      [trackingElementCoordinator incomingKeyboardFrame];
       v18 = v73.origin.x;
       v19 = v73.origin.y;
       v20 = v73.size.width;
@@ -9798,13 +9798,13 @@ void __50__UITrackingElementWindowController_setPlacement___block_invoke_2(uint6
         height = v21;
       }
 
-      v22 = [(UIViewController *)self _window];
-      v23 = [v22 windowScene];
-      v24 = [v23 _coordinateSpace];
-      v25 = [(UIViewController *)self _window];
-      v26 = [v25 screen];
-      v27 = [v26 coordinateSpace];
-      [v24 convertRect:v27 toCoordinateSpace:{x, y, width, height}];
+      _window2 = [(UIViewController *)self _window];
+      windowScene = [_window2 windowScene];
+      _coordinateSpace = [windowScene _coordinateSpace];
+      _window3 = [(UIViewController *)self _window];
+      screen = [_window3 screen];
+      coordinateSpace = [screen coordinateSpace];
+      [_coordinateSpace convertRect:coordinateSpace toCoordinateSpace:{x, y, width, height}];
       v29 = v28;
       v31 = v30;
       v33 = v32;
@@ -9813,7 +9813,7 @@ void __50__UITrackingElementWindowController_setPlacement___block_invoke_2(uint6
       goto LABEL_17;
     }
 
-    v12 = self;
+    selfCopy2 = self;
     v13 = x;
     v14 = y;
     v15 = width;
@@ -9821,16 +9821,16 @@ void __50__UITrackingElementWindowController_setPlacement___block_invoke_2(uint6
     v17 = 0;
   }
 
-  [(UITrackingElementWindowController *)v12 convertRectFromContainerCoordinateSpaceToScreenSpace:v17 viewInRemoteKeyboardWindow:v13, v14, v15, v16];
+  [(UITrackingElementWindowController *)selfCopy2 convertRectFromContainerCoordinateSpaceToScreenSpace:v17 viewInRemoteKeyboardWindow:v13, v14, v15, v16];
   v29 = v36;
   v31 = v37;
   v33 = v38;
   v35 = v39;
 LABEL_17:
-  v40 = [(UIViewController *)self view];
-  v41 = [v40 window];
-  v42 = [v41 screen];
-  [v42 bounds];
+  view = [(UIViewController *)self view];
+  window = [view window];
+  screen2 = [window screen];
+  [screen2 bounds];
   v44 = v43;
   v46 = v45;
   v48 = v47;
@@ -9884,10 +9884,10 @@ LABEL_19:
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(UIViewController *)self view];
-  v21 = [v20 window];
-  v22 = [v21 screen];
-  [v22 bounds];
+  view = [(UIViewController *)self view];
+  window = [view window];
+  screen = [window screen];
+  [screen bounds];
   v24 = v23;
   v26 = v25;
   width = v27;
@@ -9932,9 +9932,9 @@ LABEL_19:
 - (CGRect)visibleInputViewFrame
 {
   v3 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v4 = [v3 containerRootController];
+  containerRootController = [v3 containerRootController];
 
-  if (v4 == self)
+  if (containerRootController == self)
   {
     [(UITrackingElementWindowController *)self _visibleInputViewFrame];
     v8 = v15;
@@ -9946,8 +9946,8 @@ LABEL_19:
   else
   {
     v5 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v6 = [v5 containerRootController];
-    [v6 visibleInputViewFrame];
+    containerRootController2 = [v5 containerRootController];
+    [containerRootController2 visibleInputViewFrame];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -9967,25 +9967,25 @@ LABEL_19:
 
 - (BOOL)hasInputOrAssistantViewsOnScreen
 {
-  v3 = [(UITrackingElementWindowController *)self inputViewSet];
-  v4 = [v3 inputView];
-  [v4 bounds];
+  inputViewSet = [(UITrackingElementWindowController *)self inputViewSet];
+  inputView = [inputViewSet inputView];
+  [inputView bounds];
   if (v5 <= 0.0)
   {
 
-    v8 = 0;
+    showsInputOrAssistantViews = 0;
 LABEL_6:
 
-    return v8;
+    return showsInputOrAssistantViews;
   }
 
-  v6 = [(UITrackingElementWindowController *)self inputViewSet];
-  v7 = [v6 isLocalMinimumHeightInputView];
+  inputViewSet2 = [(UITrackingElementWindowController *)self inputViewSet];
+  isLocalMinimumHeightInputView = [inputViewSet2 isLocalMinimumHeightInputView];
 
-  if ((v7 & 1) == 0)
+  if ((isLocalMinimumHeightInputView & 1) == 0)
   {
-    v3 = [(UITrackingElementWindowController *)self placement];
-    v8 = [v3 showsInputOrAssistantViews];
+    inputViewSet = [(UITrackingElementWindowController *)self placement];
+    showsInputOrAssistantViews = [inputViewSet showsInputOrAssistantViews];
     goto LABEL_6;
   }
 
@@ -9995,37 +9995,37 @@ LABEL_6:
 - (BOOL)isTranslating
 {
   v2 = [(UIInputWindowControllerHosting *)self->_hosting itemForPurpose:2];
-  v3 = [v2 splitKeyboardController];
-  v4 = [v3 isTranslating];
+  splitKeyboardController = [v2 splitKeyboardController];
+  isTranslating = [splitKeyboardController isTranslating];
 
-  return v4;
+  return isTranslating;
 }
 
 - (BOOL)isSplitting
 {
   v2 = [(UIInputWindowControllerHosting *)self->_hosting itemForPurpose:2];
-  v3 = [v2 splitKeyboardController];
-  v4 = [v3 isSplitting];
+  splitKeyboardController = [v2 splitKeyboardController];
+  isSplitting = [splitKeyboardController isSplitting];
 
-  return v4;
+  return isSplitting;
 }
 
 - (BOOL)isDragging
 {
   v2 = [(UIInputWindowControllerHosting *)self->_hosting itemForPurpose:3];
-  v3 = [v2 scrollKeyboardActive];
+  scrollKeyboardActive = [v2 scrollKeyboardActive];
 
-  return v3;
+  return scrollKeyboardActive;
 }
 
-- (void)animateAccessoryViewVisibility:(BOOL)a3 withDuration:(double)a4
+- (void)animateAccessoryViewVisibility:(BOOL)visibility withDuration:(double)duration
 {
-  v5 = a3;
-  v7 = [(UITrackingElementWindowController *)self _inputAccessoryView];
-  v8 = v7;
-  if (v7)
+  visibilityCopy = visibility;
+  _inputAccessoryView = [(UITrackingElementWindowController *)self _inputAccessoryView];
+  v8 = _inputAccessoryView;
+  if (_inputAccessoryView)
   {
-    if (v5)
+    if (visibilityCopy)
     {
       v9 = 1.0;
     }
@@ -10040,9 +10040,9 @@ LABEL_6:
     v10[2] = __81__UITrackingElementWindowController_animateAccessoryViewVisibility_withDuration___block_invoke;
     v10[3] = &unk_1E70F36D0;
     v13 = v9;
-    v11 = v7;
-    v12 = self;
-    [UIView animateWithDuration:50331648 delay:v10 options:0 animations:a4 completion:0.0];
+    v11 = _inputAccessoryView;
+    selfCopy = self;
+    [UIView animateWithDuration:50331648 delay:v10 options:0 animations:duration completion:0.0];
   }
 }
 
@@ -10058,44 +10058,44 @@ uint64_t __81__UITrackingElementWindowController_animateAccessoryViewVisibility_
   return [v2 performForInputAccessoryBackdropViews:v4];
 }
 
-- (void)setInterfaceAutorotationDisabled:(BOOL)a3
+- (void)setInterfaceAutorotationDisabled:(BOOL)disabled
 {
-  v3 = a3;
-  v5 = [(UIViewController *)self view];
-  v6 = [v5 window];
-  v7 = v6;
-  if (v3)
+  disabledCopy = disabled;
+  view = [(UIViewController *)self view];
+  window = [view window];
+  v7 = window;
+  if (disabledCopy)
   {
-    [v6 beginDisablingInterfaceAutorotation];
+    [window beginDisablingInterfaceAutorotation];
   }
 
   else
   {
-    [v6 endDisablingInterfaceAutorotation];
+    [window endDisablingInterfaceAutorotation];
   }
 
   v8 = [(UIInputWindowControllerHosting *)self->_hosting itemForPurpose:3];
-  [v8 setInterfaceAutorotationDisabled:v3];
+  [v8 setInterfaceAutorotationDisabled:disabledCopy];
 }
 
-- (void)setPlacementChangeDisabled:(BOOL)a3 withPlacement:(id)a4
+- (void)setPlacementChangeDisabled:(BOOL)disabled withPlacement:(id)placement
 {
-  v4 = a3;
+  disabledCopy = disabled;
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  placementCopy = placement;
   v7 = _UITrackingElementWindowControllerLogger();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109634;
-    v15 = v4;
+    v15 = disabledCopy;
     v16 = 2112;
-    v17 = v6;
+    v17 = placementCopy;
     v18 = 2112;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_DEFAULT, "setPlacementChangeDisabled: %d, placement: %@ (self: %@)", buf, 0x1Cu);
   }
 
-  if (!v4)
+  if (!disabledCopy)
   {
     self->_disablePlacementChanges = 0;
   }
@@ -10108,11 +10108,11 @@ uint64_t __81__UITrackingElementWindowController_animateAccessoryViewVisibility_
       v9 = 3221225472;
       v10 = __78__UITrackingElementWindowController_setPlacementChangeDisabled_withPlacement___block_invoke;
       v11 = &unk_1E70F35B8;
-      v12 = self;
-      v13 = v6;
+      selfCopy2 = self;
+      v13 = placementCopy;
       [UIView performWithoutAnimation:&v8];
 
-      if (!v4)
+      if (!disabledCopy)
       {
         goto LABEL_10;
       }
@@ -10120,8 +10120,8 @@ uint64_t __81__UITrackingElementWindowController_animateAccessoryViewVisibility_
 
     else
     {
-      [(UITrackingElementWindowController *)self setPlacement:v6];
-      if (!v4)
+      [(UITrackingElementWindowController *)self setPlacement:placementCopy];
+      if (!disabledCopy)
       {
         goto LABEL_10;
       }
@@ -10133,8 +10133,8 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  [(UITrackingElementWindowController *)self setPostRotationPlacement:v6];
-  if (v4)
+  [(UITrackingElementWindowController *)self setPostRotationPlacement:placementCopy];
+  if (disabledCopy)
   {
     goto LABEL_12;
   }
@@ -10144,62 +10144,62 @@ LABEL_10:
 LABEL_13:
 }
 
-- (void)transferPlacementStateToInputWindowController:(id)a3
+- (void)transferPlacementStateToInputWindowController:(id)controller
 {
-  v20 = a3;
+  controllerCopy = controller;
   v4 = self->_inputViewSet;
   v5 = self->_placement;
   if ([(UITrackingElementWindowController *)self isTransitioning])
   {
-    v6 = [(UITrackingElementWindowController *)self transientInputViewSet];
+    transientInputViewSet = [(UITrackingElementWindowController *)self transientInputViewSet];
 
-    v7 = [(UITrackingElementWindowController *)self currentTransition];
-    v8 = [v7 fromPlacement];
+    currentTransition = [(UITrackingElementWindowController *)self currentTransition];
+    fromPlacement = [currentTransition fromPlacement];
 
-    v5 = v8;
-    v4 = v6;
+    v5 = fromPlacement;
+    v4 = transientInputViewSet;
   }
 
   if ([(UIInputViewSet *)v4 isInputViewPlaceholder])
   {
-    v9 = [(UIInputViewSet *)v4 inputView];
-    v10 = [v9 fallbackView];
-    v11 = [(UIInputViewSet *)v4 inputAccessoryView];
-    v12 = [_UIRemoteKeyboardPlaceholderView placeholderForView:v11];
-    v13 = [v9 fallbackView];
-    if (v13)
+    inputView = [(UIInputViewSet *)v4 inputView];
+    fallbackView = [inputView fallbackView];
+    inputAccessoryView = [(UIInputViewSet *)v4 inputAccessoryView];
+    v12 = [_UIRemoteKeyboardPlaceholderView placeholderForView:inputAccessoryView];
+    fallbackView2 = [inputView fallbackView];
+    if (fallbackView2)
     {
-      v14 = [v9 associatedView];
+      associatedView = [inputView associatedView];
     }
 
     else
     {
-      v14 = 0;
+      associatedView = 0;
     }
 
-    v18 = [UIInputViewSet inputSetWithInputView:v10 accessoryView:v12 assistantView:v14];
+    v18 = [UIInputViewSet inputSetWithInputView:fallbackView accessoryView:v12 assistantView:associatedView];
 
-    if (v13)
+    if (fallbackView2)
     {
     }
 
-    v15 = [(UIViewController *)self _window];
-    v16 = [v15 windowScene];
-    [UIPeripheralHost endPlacementForInputViewSet:v18 windowScene:v16];
+    _window = [(UIViewController *)self _window];
+    windowScene = [_window windowScene];
+    [UIPeripheralHost endPlacementForInputViewSet:v18 windowScene:windowScene];
     v5 = v17 = v5;
   }
 
   else
   {
-    v9 = [(UIInputViewSet *)v4 inputView];
-    v15 = [_UIRemoteKeyboardPlaceholderView placeholderForView:v9];
-    v16 = [(UIInputViewSet *)v4 inputAccessoryView];
-    v17 = [_UIRemoteKeyboardPlaceholderView placeholderForView:v16];
-    v18 = [UIInputViewSet inputSetWithInputView:v15 accessoryView:v17];
+    inputView = [(UIInputViewSet *)v4 inputView];
+    _window = [_UIRemoteKeyboardPlaceholderView placeholderForView:inputView];
+    windowScene = [(UIInputViewSet *)v4 inputAccessoryView];
+    v17 = [_UIRemoteKeyboardPlaceholderView placeholderForView:windowScene];
+    v18 = [UIInputViewSet inputSetWithInputView:_window accessoryView:v17];
   }
 
-  [v20 changeToInputViewSet:v18];
-  [v20 setPlacement:v5 quietly:1 animated:0 generateSplitNotification:0];
+  [controllerCopy changeToInputViewSet:v18];
+  [controllerCopy setPlacement:v5 quietly:1 animated:0 generateSplitNotification:0];
   if (self->_disablePlacementChanges)
   {
     if ([(UITrackingElementWindowController *)self isRotating])
@@ -10212,24 +10212,24 @@ LABEL_13:
       [(UITrackingElementWindowController *)self placement];
     }
     v19 = ;
-    [v20 setPlacementChangeDisabled:1 withPlacement:v19];
+    [controllerCopy setPlacementChangeDisabled:1 withPlacement:v19];
   }
 }
 
-- (void)candidateBarWillChangeHeight:(double)a3 withDuration:(double)a4
+- (void)candidateBarWillChangeHeight:(double)height withDuration:(double)duration
 {
-  v7 = [(UITrackingElementWindowController *)self placement];
-  v8 = [v7 isUndocked];
+  placement = [(UITrackingElementWindowController *)self placement];
+  isUndocked = [placement isUndocked];
 
-  if (v8)
+  if (isUndocked)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __79__UITrackingElementWindowController_candidateBarWillChangeHeight_withDuration___block_invoke;
     v9[3] = &unk_1E70F32F0;
     v9[4] = self;
-    *&v9[5] = a3;
-    [UIView animateWithDuration:50331648 delay:v9 options:&__block_literal_global_428_0 animations:a4 completion:0.0];
+    *&v9[5] = height;
+    [UIView animateWithDuration:50331648 delay:v9 options:&__block_literal_global_428_0 animations:duration completion:0.0];
   }
 }
 
@@ -10250,21 +10250,21 @@ uint64_t __79__UITrackingElementWindowController_candidateBarWillChangeHeight_wi
 
 - (void)cancelCurrentTransition
 {
-  v3 = [(UITrackingElementWindowController *)self currentTransition];
+  currentTransition = [(UITrackingElementWindowController *)self currentTransition];
 
-  if (v3)
+  if (currentTransition)
   {
     [(UITrackingElementWindowController *)self setInputViewsHidden:1];
-    v4 = [(UITrackingElementWindowController *)self currentTransition];
-    [v4 setCancelled:1];
+    currentTransition2 = [(UITrackingElementWindowController *)self currentTransition];
+    [currentTransition2 setCancelled:1];
 
-    v5 = [(UITrackingElementWindowController *)self currentTransition];
-    v6 = [v5 animationStyle];
-    [v6 cancelInterruptibleAnimations];
+    currentTransition3 = [(UITrackingElementWindowController *)self currentTransition];
+    animationStyle = [currentTransition3 animationStyle];
+    [animationStyle cancelInterruptibleAnimations];
 
-    v7 = [(UITrackingElementWindowController *)self currentTransition];
-    v8 = [v7 fromPlacement];
-    [(UITrackingElementWindowController *)self updateToPlacement:v8 withNormalAnimationsAndNotifications:0];
+    currentTransition4 = [(UITrackingElementWindowController *)self currentTransition];
+    fromPlacement = [currentTransition4 fromPlacement];
+    [(UITrackingElementWindowController *)self updateToPlacement:fromPlacement withNormalAnimationsAndNotifications:0];
 
     [(UITrackingElementWindowController *)self setInputViewsHidden:0];
   }
@@ -10272,44 +10272,44 @@ uint64_t __79__UITrackingElementWindowController_candidateBarWillChangeHeight_wi
 
 - (BOOL)isTransitioningBetweenKeyboardStates
 {
-  v2 = [(UITrackingElementWindowController *)self currentTransition];
-  v3 = [v2 fromPlacement];
-  v4 = [v3 showsKeyboard];
-  v5 = [v2 toPlacement];
-  v6 = [v5 showsKeyboard];
+  currentTransition = [(UITrackingElementWindowController *)self currentTransition];
+  fromPlacement = [currentTransition fromPlacement];
+  showsKeyboard = [fromPlacement showsKeyboard];
+  toPlacement = [currentTransition toPlacement];
+  showsKeyboard2 = [toPlacement showsKeyboard];
 
-  return v4 ^ v6;
+  return showsKeyboard ^ showsKeyboard2;
 }
 
 - (id)animationAwarePlacement
 {
-  v3 = [(UITrackingElementWindowController *)self placementDuringAnimation];
-  v4 = v3;
-  if (v3)
+  placementDuringAnimation = [(UITrackingElementWindowController *)self placementDuringAnimation];
+  v4 = placementDuringAnimation;
+  if (placementDuringAnimation)
   {
-    v5 = v3;
+    placementIgnoringRotation = placementDuringAnimation;
   }
 
   else
   {
-    v5 = [(UITrackingElementWindowController *)self placementIgnoringRotation];
+    placementIgnoringRotation = [(UITrackingElementWindowController *)self placementIgnoringRotation];
   }
 
-  v6 = v5;
+  v6 = placementIgnoringRotation;
 
   return v6;
 }
 
 - (id)notificationsFromPlacement
 {
-  v3 = [(UITrackingElementWindowController *)self postRotationPlacement];
+  postRotationPlacement = [(UITrackingElementWindowController *)self postRotationPlacement];
 
-  if (v3)
+  if (postRotationPlacement)
   {
-    v4 = [(UITrackingElementWindowController *)self placementDuringAnimation];
-    v5 = [v4 showsInputOrAssistantViews];
+    placementDuringAnimation = [(UITrackingElementWindowController *)self placementDuringAnimation];
+    showsInputOrAssistantViews = [placementDuringAnimation showsInputOrAssistantViews];
 
-    if (v5)
+    if (showsInputOrAssistantViews)
     {
       +[UIInputViewSetPlacementOffScreenDown placement];
     }
@@ -10318,62 +10318,62 @@ uint64_t __79__UITrackingElementWindowController_candidateBarWillChangeHeight_wi
     {
       [(UITrackingElementWindowController *)self placementIgnoringRotation];
     }
-    v8 = ;
+    fromPlacement = ;
   }
 
   else
   {
-    v6 = [(UITrackingElementWindowController *)self placementBeforeAnimation];
-    v7 = v6;
-    if (v6)
+    placementBeforeAnimation = [(UITrackingElementWindowController *)self placementBeforeAnimation];
+    v7 = placementBeforeAnimation;
+    if (placementBeforeAnimation)
     {
-      v8 = v6;
+      fromPlacement = placementBeforeAnimation;
     }
 
     else
     {
-      v9 = [(UITrackingElementWindowController *)self currentTransition];
-      if (v9)
+      currentTransition = [(UITrackingElementWindowController *)self currentTransition];
+      if (currentTransition)
       {
-        v10 = [(UITrackingElementWindowController *)self currentTransition];
-        v8 = [v10 fromPlacement];
+        currentTransition2 = [(UITrackingElementWindowController *)self currentTransition];
+        fromPlacement = [currentTransition2 fromPlacement];
       }
 
       else
       {
-        v8 = [(UITrackingElementWindowController *)self placement];
+        fromPlacement = [(UITrackingElementWindowController *)self placement];
       }
     }
   }
 
-  return v8;
+  return fromPlacement;
 }
 
 - (id)notificationsToPlacement
 {
-  v3 = [(UITrackingElementWindowController *)self postRotationPlacement];
+  postRotationPlacement = [(UITrackingElementWindowController *)self postRotationPlacement];
 
-  if (v3)
+  if (postRotationPlacement)
   {
-    v4 = [(UITrackingElementWindowController *)self animationAwarePlacement];
+    animationAwarePlacement = [(UITrackingElementWindowController *)self animationAwarePlacement];
   }
 
   else
   {
-    v5 = [(UITrackingElementWindowController *)self currentTransition];
-    if (v5)
+    currentTransition = [(UITrackingElementWindowController *)self currentTransition];
+    if (currentTransition)
     {
-      v6 = [(UITrackingElementWindowController *)self currentTransition];
-      v4 = [v6 toPlacement];
+      currentTransition2 = [(UITrackingElementWindowController *)self currentTransition];
+      animationAwarePlacement = [currentTransition2 toPlacement];
     }
 
     else
     {
-      v4 = [(UITrackingElementWindowController *)self animationAwarePlacement];
+      animationAwarePlacement = [(UITrackingElementWindowController *)self animationAwarePlacement];
     }
   }
 
-  return v4;
+  return animationAwarePlacement;
 }
 
 @end

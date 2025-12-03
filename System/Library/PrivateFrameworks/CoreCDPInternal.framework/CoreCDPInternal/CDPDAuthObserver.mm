@@ -1,6 +1,6 @@
 @interface CDPDAuthObserver
 - (CDPDAuthObserver)init;
-- (void)eventReceived:(const char *)a3 eventInfo:(id)a4;
+- (void)eventReceived:(const char *)received eventInfo:(id)info;
 @end
 
 @implementation CDPDAuthObserver
@@ -12,32 +12,32 @@
   v2 = [(CDPDAuthObserver *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     authListeners = v2->_authListeners;
-    v2->_authListeners = v3;
+    v2->_authListeners = array;
   }
 
   return v2;
 }
 
-- (void)eventReceived:(const char *)a3 eventInfo:(id)a4
+- (void)eventReceived:(const char *)received eventInfo:(id)info
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  infoCopy = info;
   v7 = _CDPLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
-    v18 = a3;
+    receivedCopy = received;
     v19 = 2112;
-    v20 = v6;
+    v20 = infoCopy;
     _os_log_impl(&dword_24510B000, v7, OS_LOG_TYPE_DEFAULT, "Received Auth Notification %s, with userInfo %@", buf, 0x16u);
   }
 
-  if (!strcmp([*MEMORY[0x277CF0120] UTF8String], a3))
+  if (!strcmp([*MEMORY[0x277CF0120] UTF8String], received))
   {
-    v8 = [v6 objectForKeyedSubscript:*MEMORY[0x277CF0118]];
-    v9 = [v6 objectForKeyedSubscript:*MEMORY[0x277CF0128]];
+    v8 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CF0118]];
+    v9 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CF0128]];
     v10 = _CDPLogSystem();
     v11 = v10;
     if (v9)
@@ -45,7 +45,7 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 141558274;
-        v18 = 1752392040;
+        receivedCopy = 1752392040;
         v19 = 2112;
         v20 = v8;
         _os_log_impl(&dword_24510B000, v11, OS_LOG_TYPE_DEFAULT, "Detected security level change for %{mask.hash}@", buf, 0x16u);
@@ -64,7 +64,7 @@
 
     else if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      [CDPDAuthObserver eventReceived:a3 eventInfo:v11];
+      [CDPDAuthObserver eventReceived:received eventInfo:v11];
     }
   }
 
@@ -73,7 +73,7 @@
     v8 = _CDPLogSystem();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      [CDPDAuthObserver eventReceived:a3 eventInfo:v8];
+      [CDPDAuthObserver eventReceived:received eventInfo:v8];
     }
   }
 

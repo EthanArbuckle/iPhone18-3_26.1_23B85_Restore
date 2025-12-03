@@ -1,12 +1,12 @@
 @interface TirePressureViewController
-- (_TtC12TirePressure26TirePressureViewController)initWithCoder:(id)a3;
-- (_TtC12TirePressure26TirePressureViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC12TirePressure26TirePressureViewController)initWithCoder:(id)coder;
+- (_TtC12TirePressure26TirePressureViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation TirePressureViewController
 
-- (_TtC12TirePressure26TirePressureViewController)initWithCoder:(id)a3
+- (_TtC12TirePressure26TirePressureViewController)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -15,11 +15,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100001ACC();
 }
 
-- (_TtC12TirePressure26TirePressureViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12TirePressure26TirePressureViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

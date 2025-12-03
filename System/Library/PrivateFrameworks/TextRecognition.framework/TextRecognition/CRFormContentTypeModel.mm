@@ -1,12 +1,12 @@
 @interface CRFormContentTypeModel
 + (id)defaultURLOfModelInThisBundle;
 - (CRFormContentTypeModel)init;
-- (CRFormContentTypeModel)initWithConfiguration:(id)a3 error:(id *)a4;
-- (CRFormContentTypeModel)initWithContentsOfURL:(id)a3 configuration:(id)a4 error:(id *)a5;
-- (CRFormContentTypeModel)initWithContentsOfURL:(id)a3 error:(id *)a4;
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4;
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)predictionsFromInputs:(id)a3 options:(id)a4 error:(id *)a5;
+- (CRFormContentTypeModel)initWithConfiguration:(id)configuration error:(id *)error;
+- (CRFormContentTypeModel)initWithContentsOfURL:(id)l configuration:(id)configuration error:(id *)error;
+- (CRFormContentTypeModel)initWithContentsOfURL:(id)l error:(id *)error;
+- (id)predictionFromFeatures:(id)features error:(id *)error;
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error;
+- (id)predictionsFromInputs:(id)inputs options:(id)options error:(id *)error;
 @end
 
 @implementation CRFormContentTypeModel
@@ -22,19 +22,19 @@
 
 - (CRFormContentTypeModel)init
 {
-  v3 = [objc_opt_class() defaultURLOfModelInThisBundle];
-  v4 = [(CRFormContentTypeModel *)self initWithContentsOfURL:v3 error:0];
+  defaultURLOfModelInThisBundle = [objc_opt_class() defaultURLOfModelInThisBundle];
+  v4 = [(CRFormContentTypeModel *)self initWithContentsOfURL:defaultURLOfModelInThisBundle error:0];
 
   return v4;
 }
 
-- (CRFormContentTypeModel)initWithContentsOfURL:(id)a3 error:(id *)a4
+- (CRFormContentTypeModel)initWithContentsOfURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = CRFormContentTypeModel;
   v7 = [(CRFormContentTypeModel *)&v12 init];
-  if (v7 && ([MEMORY[0x1E695FE90] modelWithContentsOfURL:v6 error:a4], v8 = objc_claimAutoreleasedReturnValue(), model = v7->_model, v7->_model = v8, model, !v7->_model))
+  if (v7 && ([MEMORY[0x1E695FE90] modelWithContentsOfURL:lCopy error:error], v8 = objc_claimAutoreleasedReturnValue(), model = v7->_model, v7->_model = v8, model, !v7->_model))
   {
     v10 = 0;
   }
@@ -47,28 +47,28 @@
   return v10;
 }
 
-- (CRFormContentTypeModel)initWithConfiguration:(id)a3 error:(id *)a4
+- (CRFormContentTypeModel)initWithConfiguration:(id)configuration error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_opt_class() defaultURLOfModelInThisBundle];
-  v8 = [v6 customModelURL];
+  configurationCopy = configuration;
+  defaultURLOfModelInThisBundle = [objc_opt_class() defaultURLOfModelInThisBundle];
+  customModelURL = [configurationCopy customModelURL];
 
-  if (v8)
+  if (customModelURL)
   {
-    v9 = [v6 customModelURL];
+    customModelURL2 = [configurationCopy customModelURL];
 
-    v7 = v9;
+    defaultURLOfModelInThisBundle = customModelURL2;
   }
 
-  v10 = [(CRFormContentTypeModel *)self initWithContentsOfURL:v7 configuration:v6 error:a4];
+  v10 = [(CRFormContentTypeModel *)self initWithContentsOfURL:defaultURLOfModelInThisBundle configuration:configurationCopy error:error];
 
   return v10;
 }
 
-- (CRFormContentTypeModel)initWithContentsOfURL:(id)a3 configuration:(id)a4 error:(id *)a5
+- (CRFormContentTypeModel)initWithContentsOfURL:(id)l configuration:(id)configuration error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  configurationCopy = configuration;
   v16.receiver = self;
   v16.super_class = CRFormContentTypeModel;
   v10 = [(CRFormContentTypeModel *)&v16 init];
@@ -76,13 +76,13 @@
   {
     v11 = objc_alloc_init(MEMORY[0x1E695FEB0]);
     [v11 setAllowLowPrecisionAccumulationOnGPU:1];
-    [v11 setComputeUnits:{+[CRComputeDeviceUtilities mlComputeUnitFromComputeDeviceType:](CRComputeDeviceUtilities, "mlComputeUnitFromComputeDeviceType:", objc_msgSend(v9, "computeDeviceType"))}];
+    [v11 setComputeUnits:{+[CRComputeDeviceUtilities mlComputeUnitFromComputeDeviceType:](CRComputeDeviceUtilities, "mlComputeUnitFromComputeDeviceType:", objc_msgSend(configurationCopy, "computeDeviceType"))}];
     if ([v11 computeUnits] == 1 || (deviceHasAppleNeuralEngine() & 1) == 0 && objc_msgSend(v11, "computeUnits"))
     {
       [v11 setAllowBackgroundGPUCompute:1];
     }
 
-    v12 = [MEMORY[0x1E695FE90] modelWithContentsOfURL:v8 configuration:v11 error:a5];
+    v12 = [MEMORY[0x1E695FE90] modelWithContentsOfURL:lCopy configuration:v11 error:error];
     model = v10->_model;
     v10->_model = v12;
 
@@ -105,33 +105,33 @@
   return v14;
 }
 
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4
+- (id)predictionFromFeatures:(id)features error:(id *)error
 {
   v6 = MEMORY[0x1E695FF08];
-  v7 = a3;
+  featuresCopy = features;
   v8 = objc_alloc_init(v6);
-  v9 = [(CRFormContentTypeModel *)self predictionFromFeatures:v7 options:v8 error:a4];
+  v9 = [(CRFormContentTypeModel *)self predictionFromFeatures:featuresCopy options:v8 error:error];
 
   return v9;
 }
 
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error
 {
-  v5 = [(MLModel *)self->_model predictionFromFeatures:a3 options:a4 error:a5];
+  v5 = [(MLModel *)self->_model predictionFromFeatures:features options:options error:error];
   v6 = [CRFormContentTypeModelOutput alloc];
   v7 = [v5 featureValueForName:@"score"];
-  v8 = [v7 multiArrayValue];
-  v9 = [(CRFormContentTypeModelOutput *)v6 initWithScore:v8];
+  multiArrayValue = [v7 multiArrayValue];
+  v9 = [(CRFormContentTypeModelOutput *)v6 initWithScore:multiArrayValue];
 
   return v9;
 }
 
-- (id)predictionsFromInputs:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionsFromInputs:(id)inputs options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [objc_alloc(MEMORY[0x1E695FE30]) initWithFeatureProviderArray:v8];
-  v11 = [(MLModel *)self->_model predictionsFromBatch:v10 options:v9 error:a5];
+  inputsCopy = inputs;
+  optionsCopy = options;
+  v10 = [objc_alloc(MEMORY[0x1E695FE30]) initWithFeatureProviderArray:inputsCopy];
+  v11 = [(MLModel *)self->_model predictionsFromBatch:v10 options:optionsCopy error:error];
   v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v11, "count")}];
   if ([v11 count] >= 1)
   {
@@ -140,9 +140,9 @@
     {
       v14 = [v11 featuresAtIndex:v13];
       v15 = [v14 featureValueForName:@"score"];
-      v16 = [v15 multiArrayValue];
+      multiArrayValue = [v15 multiArrayValue];
 
-      v17 = [[CRFormContentTypeModelOutput alloc] initWithScore:v16];
+      v17 = [[CRFormContentTypeModelOutput alloc] initWithScore:multiArrayValue];
       [v12 addObject:v17];
 
       ++v13;

@@ -1,27 +1,27 @@
 @interface UIAccessibilityLoader
-+ (id)_accessibilityBundlesForBundle:(id)a3;
++ (id)_accessibilityBundlesForBundle:(id)bundle;
 + (void)_accessibilityInitializeRuntimeOverrides;
 + (void)_accessibilityReenabled;
 + (void)_accessibilityStartMiniServer;
 + (void)_accessibilityStartServer;
 + (void)_accessibilityStopServer;
 + (void)_accessibilityUpdateSafeCategoryThread;
-+ (void)_performInitialAccessibilityBundleLoad:(BOOL)a3 monitorForFutureLoadEvents:(BOOL)a4 trackingMode:(int64_t)a5;
-+ (void)_stringLocalizationStarted:(id)a3;
-+ (void)loadAccessibilityBundle:(id)a3 didLoadCallback:(id)a4 loadSubbundles:(BOOL)a5;
-+ (void)loadAccessibilityBundleForBundle:(id)a3 didLoadCallback:(id)a4 forceLoad:(BOOL)a5 loadSubbundles:(BOOL)a6 loadAllAccessibilityInfo:(BOOL)a7;
++ (void)_performInitialAccessibilityBundleLoad:(BOOL)load monitorForFutureLoadEvents:(BOOL)events trackingMode:(int64_t)mode;
++ (void)_stringLocalizationStarted:(id)started;
++ (void)loadAccessibilityBundle:(id)bundle didLoadCallback:(id)callback loadSubbundles:(BOOL)subbundles;
++ (void)loadAccessibilityBundleForBundle:(id)bundle didLoadCallback:(id)callback forceLoad:(BOOL)load loadSubbundles:(BOOL)subbundles loadAllAccessibilityInfo:(BOOL)info;
 @end
 
 @implementation UIAccessibilityLoader
 
-+ (void)_performInitialAccessibilityBundleLoad:(BOOL)a3 monitorForFutureLoadEvents:(BOOL)a4 trackingMode:(int64_t)a5
++ (void)_performInitialAccessibilityBundleLoad:(BOOL)load monitorForFutureLoadEvents:(BOOL)events trackingMode:(int64_t)mode
 {
-  v6 = a4;
-  if (a3 || a4)
+  eventsCopy = events;
+  if (load || events)
   {
-    v8 = [MEMORY[0x1E6988770] defaultLoader];
-    v9 = v8;
-    if (!v6 || ([v8 shouldAutoloadAccessibilityCodeItems] & 1) == 0)
+    defaultLoader = [MEMORY[0x1E6988770] defaultLoader];
+    v9 = defaultLoader;
+    if (!eventsCopy || ([defaultLoader shouldAutoloadAccessibilityCodeItems] & 1) == 0)
     {
       [v9 setLoadEventWillOccurBlock:&__block_literal_global];
       [v9 setShouldLoadAccessibilityCodeItemBlock:&__block_literal_global_284];
@@ -32,9 +32,9 @@
       v10[2] = __104__UIAccessibilityLoader__performInitialAccessibilityBundleLoad_monitorForFutureLoadEvents_trackingMode___block_invoke_301;
       v10[3] = &unk_1E78AA5B8;
       v11 = v9;
-      v12 = v6;
-      v13 = a3;
-      [v11 beginTrackingLoadedCodeItemsWithMode:a5 completion:v10 targetQueue:0];
+      v12 = eventsCopy;
+      loadCopy = load;
+      [v11 beginTrackingLoadedCodeItemsWithMode:mode completion:v10 targetQueue:0];
     }
   }
 }
@@ -200,10 +200,10 @@ uint64_t __104__UIAccessibilityLoader__performInitialAccessibilityBundleLoad_mon
     _os_log_impl(&dword_1A9B83000, v2, OS_LOG_TYPE_INFO, "AX Start server", buf, 2u);
   }
 
-  v3 = [MEMORY[0x1E6988D88] sharedManager];
-  v4 = [v3 started];
+  mEMORY[0x1E6988D88] = [MEMORY[0x1E6988D88] sharedManager];
+  started = [mEMORY[0x1E6988D88] started];
 
-  if (v4)
+  if (started)
   {
     v5 = AXLogLoading();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -268,14 +268,14 @@ uint64_t __50__UIAccessibilityLoader__accessibilityStartServer__block_invoke(uin
 + (void)_accessibilityUpdateSafeCategoryThread
 {
   v8 = *MEMORY[0x1E69E9840];
-  v2 = [*MEMORY[0x1E69DDA98] applicationState];
-  v3 = [MEMORY[0x1E6988808] sharedInstance];
-  [v3 setInstallSafeCategoriesOffMainThread:v2 != 0];
+  applicationState = [*MEMORY[0x1E69DDA98] applicationState];
+  mEMORY[0x1E6988808] = [MEMORY[0x1E6988808] sharedInstance];
+  [mEMORY[0x1E6988808] setInstallSafeCategoriesOffMainThread:applicationState != 0];
 
   v4 = AXLogValidations();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    v5 = [MEMORY[0x1E696AD98] numberWithBool:v2 != 0];
+    v5 = [MEMORY[0x1E696AD98] numberWithBool:applicationState != 0];
     v6 = 138412290;
     v7 = v5;
     _os_log_impl(&dword_1A9B83000, v4, OS_LOG_TYPE_DEBUG, "Safe categories installing on background thread %@", &v6, 0xCu);
@@ -318,14 +318,14 @@ uint64_t __50__UIAccessibilityLoader__accessibilityStartServer__block_invoke(uin
           }
 
           v8 = *(*(&v17 + 1) + 8 * i);
-          v9 = [MEMORY[0x1E696AD88] defaultCenter];
-          v10 = [MEMORY[0x1E696ADC8] mainQueue];
+          defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+          mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
           v16[0] = MEMORY[0x1E69E9820];
           v16[1] = 3221225472;
           v16[2] = __54__UIAccessibilityLoader__accessibilityStartMiniServer__block_invoke;
           v16[3] = &__block_descriptor_40_e24_v16__0__NSNotification_8l;
-          v16[4] = a1;
-          v11 = [v9 addObserverForName:v8 object:0 queue:v10 usingBlock:v16];
+          v16[4] = self;
+          v11 = [defaultCenter addObserverForName:v8 object:0 queue:mainQueue usingBlock:v16];
         }
 
         v5 = [obj countByEnumeratingWithState:&v17 objects:v23 count:16];
@@ -335,10 +335,10 @@ uint64_t __50__UIAccessibilityLoader__accessibilityStartServer__block_invoke(uin
     }
 
     v12 = objc_autoreleasePoolPush();
-    [a1 accessibilityShouldEnumerateContainerElementsArrayDirectly];
+    [self accessibilityShouldEnumerateContainerElementsArrayDirectly];
     v13 = objc_opt_self();
-    [a1 _accessibilityInitializeRuntimeOverrides];
-    [a1 _accessibilityUpdateSafeCategoryThread];
+    [self _accessibilityInitializeRuntimeOverrides];
+    [self _accessibilityUpdateSafeCategoryThread];
     _UIAccessibilityStart();
     if (AXProcessIsSystemApplication())
     {
@@ -354,7 +354,7 @@ uint64_t __50__UIAccessibilityLoader__accessibilityStartServer__block_invoke(uin
 
       else
       {
-        [a1 _performInitialAccessibilityBundleLoad:1 monitorForFutureLoadEvents:1 trackingMode:2];
+        [self _performInitialAccessibilityBundleLoad:1 monitorForFutureLoadEvents:1 trackingMode:2];
       }
     }
 
@@ -371,9 +371,9 @@ uint64_t __50__UIAccessibilityLoader__accessibilityStartServer__block_invoke(uin
   v4 = MEMORY[0x1E69DDA98];
   if (v3)
   {
-    v5 = [*MEMORY[0x1E69DDA98] _accessibilityIsSystemAppServer];
+    _accessibilityIsSystemAppServer = [*MEMORY[0x1E69DDA98] _accessibilityIsSystemAppServer];
     v8[0] = 67109376;
-    v8[1] = v5;
+    v8[1] = _accessibilityIsSystemAppServer;
     v9 = 1024;
     v10 = _AXSApplicationAccessibilityEnabled();
     _os_log_impl(&dword_1A9B83000, v2, OS_LOG_TYPE_INFO, "Accessibility Reenabled [system server: %d] [app ax enabled: %d], ", v8, 0xEu);
@@ -386,8 +386,8 @@ uint64_t __50__UIAccessibilityLoader__accessibilityStartServer__block_invoke(uin
 
   if (_AXSApplicationAccessibilityEnabled())
   {
-    v6 = [*v4 _accessibilityBundleIdentifier];
-    UIAccessibilityPostNotification(0xBD7u, v6);
+    _accessibilityBundleIdentifier = [*v4 _accessibilityBundleIdentifier];
+    UIAccessibilityPostNotification(0xBD7u, _accessibilityBundleIdentifier);
   }
 
   if (_AXSApplicationAccessibilityEnabled())
@@ -435,16 +435,16 @@ uint64_t __50__UIAccessibilityLoader__accessibilityStartServer__block_invoke(uin
 
   if (_AXSAutomationLocalizedStringLookupInfoEnabled() || _AXSAutomationPreferredLocalization())
   {
-    [a1 _stringLocalizationStarted:0];
+    [self _stringLocalizationStarted:0];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:a1 selector:sel__stringLocalizationStarted_ name:*MEMORY[0x1E69E4B78] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__stringLocalizationStarted_ name:*MEMORY[0x1E69E4B78] object:0];
   }
 
-  [a1 _accessibilityInitializeSubclassRuntimeOverrides];
+  [self _accessibilityInitializeSubclassRuntimeOverrides];
 }
 
 void __65__UIAccessibilityLoader__accessibilityInitializeRuntimeOverrides__block_invoke()
@@ -494,13 +494,13 @@ void __65__UIAccessibilityLoader__accessibilityInitializeRuntimeOverrides__block
   [v2 installSafeCategory:@"UITouchesEventAccessibility" canInteractWithTargetClass:1];
 }
 
-+ (void)loadAccessibilityBundleForBundle:(id)a3 didLoadCallback:(id)a4 forceLoad:(BOOL)a5 loadSubbundles:(BOOL)a6 loadAllAccessibilityInfo:(BOOL)a7
++ (void)loadAccessibilityBundleForBundle:(id)bundle didLoadCallback:(id)callback forceLoad:(BOOL)load loadSubbundles:(BOOL)subbundles loadAllAccessibilityInfo:(BOOL)info
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
-  v12 = a3;
-  v11 = a4;
+  infoCopy = info;
+  subbundlesCopy = subbundles;
+  loadCopy = load;
+  bundleCopy = bundle;
+  callbackCopy = callback;
   if (AX_USING_LEGACY_LOADER_onceToken != -1)
   {
     +[UIAccessibilityLoader loadAccessibilityBundleForBundle:didLoadCallback:forceLoad:loadSubbundles:loadAllAccessibilityInfo:];
@@ -508,15 +508,15 @@ void __65__UIAccessibilityLoader__accessibilityInitializeRuntimeOverrides__block
 
   if (AX_USING_LEGACY_LOADER__UsesLegacyLoader == 1)
   {
-    [UIAccessibilityLegacyLoader loadAccessibilityBundleForBundle:v12 didLoadCallback:v11 forceLoad:v9 loadSubbundles:v8 loadAllAccessibilityInfo:v7];
+    [UIAccessibilityLegacyLoader loadAccessibilityBundleForBundle:bundleCopy didLoadCallback:callbackCopy forceLoad:loadCopy loadSubbundles:subbundlesCopy loadAllAccessibilityInfo:infoCopy];
   }
 }
 
-+ (void)loadAccessibilityBundle:(id)a3 didLoadCallback:(id)a4 loadSubbundles:(BOOL)a5
++ (void)loadAccessibilityBundle:(id)bundle didLoadCallback:(id)callback loadSubbundles:(BOOL)subbundles
 {
-  v5 = a5;
-  v8 = a3;
-  v7 = a4;
+  subbundlesCopy = subbundles;
+  bundleCopy = bundle;
+  callbackCopy = callback;
   if (AX_USING_LEGACY_LOADER_onceToken != -1)
   {
     +[UIAccessibilityLoader loadAccessibilityBundleForBundle:didLoadCallback:forceLoad:loadSubbundles:loadAllAccessibilityInfo:];
@@ -524,13 +524,13 @@ void __65__UIAccessibilityLoader__accessibilityInitializeRuntimeOverrides__block
 
   if (AX_USING_LEGACY_LOADER__UsesLegacyLoader == 1)
   {
-    [UIAccessibilityLegacyLoader loadAccessibilityBundle:v8 didLoadCallback:v7 loadSubbundles:v5];
+    [UIAccessibilityLegacyLoader loadAccessibilityBundle:bundleCopy didLoadCallback:callbackCopy loadSubbundles:subbundlesCopy];
   }
 }
 
-+ (id)_accessibilityBundlesForBundle:(id)a3
++ (id)_accessibilityBundlesForBundle:(id)bundle
 {
-  v3 = a3;
+  bundleCopy = bundle;
   if (AX_USING_LEGACY_LOADER_onceToken != -1)
   {
     +[UIAccessibilityLoader loadAccessibilityBundleForBundle:didLoadCallback:forceLoad:loadSubbundles:loadAllAccessibilityInfo:];
@@ -538,7 +538,7 @@ void __65__UIAccessibilityLoader__accessibilityInitializeRuntimeOverrides__block
 
   if (AX_USING_LEGACY_LOADER__UsesLegacyLoader == 1)
   {
-    v4 = [UIAccessibilityLegacyLoader _accessibilityBundlesForBundle:v3];
+    v4 = [UIAccessibilityLegacyLoader _accessibilityBundlesForBundle:bundleCopy];
   }
 
   else
@@ -549,7 +549,7 @@ void __65__UIAccessibilityLoader__accessibilityInitializeRuntimeOverrides__block
   return v4;
 }
 
-+ (void)_stringLocalizationStarted:(id)a3
++ (void)_stringLocalizationStarted:(id)started
 {
   if ((_AXSAutomationLocalizedStringLookupInfoEnabled() || _AXSAutomationPreferredLocalization()) && _stringLocalizationStarted__onceToken != -1)
   {

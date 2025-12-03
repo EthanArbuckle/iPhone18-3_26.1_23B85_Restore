@@ -1,13 +1,13 @@
 @interface ATVModel
-+ (unint64_t)atvStateFromState:(BTStatus *)a3;
-+ (void)addTuple:(id)a3 ToLUT:(id)a4;
++ (unint64_t)atvStateFromState:(BTStatus *)state;
++ (void)addTuple:(id)tuple ToLUT:(id)t;
 - (ATVModel)init;
-- (id)findTupleForATVState:(unint64_t)a3;
+- (id)findTupleForATVState:(unint64_t)state;
 @end
 
 @implementation ATVModel
 
-- (id)findTupleForATVState:(unint64_t)a3
+- (id)findTupleForATVState:(unint64_t)state
 {
   v18 = *MEMORY[0x277D85DE8];
   v5 = objc_autoreleasePoolPush();
@@ -15,7 +15,7 @@
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = HMFGetLogIdentifier();
-    v8 = [HAPBTLETuple atvState2String:a3];
+    v8 = [HAPBTLETuple atvState2String:state];
     v14 = 138543618;
     v15 = v7;
     v16 = 2112;
@@ -24,9 +24,9 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(ATVModel *)self atvLUT];
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v11 = [v9 objectForKey:v10];
+  atvLUT = [(ATVModel *)self atvLUT];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:state];
+  v11 = [atvLUT objectForKey:v10];
 
   v12 = *MEMORY[0x277D85DE8];
 
@@ -167,10 +167,10 @@
   return v3;
 }
 
-+ (unint64_t)atvStateFromState:(BTStatus *)a3
++ (unint64_t)atvStateFromState:(BTStatus *)state
 {
-  leRemote = a3->leRemote;
-  if (a3->leRemote)
+  leRemote = state->leRemote;
+  if (state->leRemote)
   {
     if (leRemote == 2)
     {
@@ -186,18 +186,18 @@
 
   else
   {
-    if (!a3->connectedDevices && a3->lowEnergyConnections == a3->hk)
+    if (!state->connectedDevices && state->lowEnergyConnections == state->hk)
     {
       v4 = 0;
       goto LABEL_11;
     }
 
-    a3->leRemote = 1;
+    state->leRemote = 1;
   }
 
   v4 = 2;
 LABEL_11:
-  a2dp = a3->a2dp;
+  a2dp = state->a2dp;
   if (a2dp)
   {
     if (a2dp != 1)
@@ -208,7 +208,7 @@ LABEL_11:
     v4 |= 0x80uLL;
   }
 
-  btGC = a3->btGC;
+  btGC = state->btGC;
   if (btGC <= 1)
   {
     if (btGC)
@@ -240,7 +240,7 @@ LABEL_11:
     }
   }
 
-  btKB = a3->btKB;
+  btKB = state->btKB;
   if (btKB)
   {
     if (btKB != 1)
@@ -251,7 +251,7 @@ LABEL_11:
     v4 |= 0x40uLL;
   }
 
-  hk = a3->hk;
+  hk = state->hk;
   if (hk > 2)
   {
     switch(hk)
@@ -288,7 +288,7 @@ LABEL_11:
     }
   }
 
-  leAcc = a3->leAcc;
+  leAcc = state->leAcc;
   if (leAcc > 1)
   {
     if (leAcc == 2)
@@ -317,7 +317,7 @@ LABEL_11:
     v4 |= 8uLL;
   }
 
-  eAcc = a3->eAcc;
+  eAcc = state->eAcc;
   if (eAcc <= 1)
   {
     if (!eAcc)
@@ -361,30 +361,30 @@ LABEL_56:
   }
 }
 
-+ (void)addTuple:(id)a3 ToLUT:(id)a4
++ (void)addTuple:(id)tuple ToLUT:(id)t
 {
-  v10 = a3;
-  v5 = a4;
-  if (v10)
+  tupleCopy = tuple;
+  tCopy = t;
+  if (tupleCopy)
   {
-    if ([v10 atvState])
+    if ([tupleCopy atvState])
     {
-      v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v10, "atvState")}];
-      [v5 setObject:v10 forKey:v6];
+      v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(tupleCopy, "atvState")}];
+      [tCopy setObject:tupleCopy forKey:v6];
 
-      if ([v10 maxHAPConnections] >= 1)
+      if ([tupleCopy maxHAPConnections] >= 1)
       {
         v7 = 0;
         do
         {
-          v8 = +[HAPBTLETuple makeTupleWithATVState:MaxHAPConnections:](HAPBTLETuple, "makeTupleWithATVState:MaxHAPConnections:", hkConfig_21606[v7] | [v10 atvState], objc_msgSend(v10, "maxHAPConnections"));
+          v8 = +[HAPBTLETuple makeTupleWithATVState:MaxHAPConnections:](HAPBTLETuple, "makeTupleWithATVState:MaxHAPConnections:", hkConfig_21606[v7] | [tupleCopy atvState], objc_msgSend(tupleCopy, "maxHAPConnections"));
           v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v8, "atvState")}];
-          [v5 setObject:v8 forKey:v9];
+          [tCopy setObject:v8 forKey:v9];
 
           ++v7;
         }
 
-        while (v7 < [v10 maxHAPConnections]);
+        while (v7 < [tupleCopy maxHAPConnections]);
       }
     }
   }

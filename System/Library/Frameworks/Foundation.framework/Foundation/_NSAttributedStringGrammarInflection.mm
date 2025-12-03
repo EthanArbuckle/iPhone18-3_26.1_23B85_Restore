@@ -1,5 +1,5 @@
 @interface _NSAttributedStringGrammarInflection
-+ (BOOL)_canSelectUserInflectionWithPreferredLanguages:(id)a3;
++ (BOOL)_canSelectUserInflectionWithPreferredLanguages:(id)languages;
 + (BOOL)_thirdPartyApplicationsCanAccessUserInflection;
 + (BOOL)canSelectUserInflection;
 + (NSArray)presetInflections;
@@ -8,29 +8,29 @@
 + (_NSAttributedStringGrammarInflection)_currentGlobalUserInflection;
 + (_NSAttributedStringGrammarInflection)_currentGlobalUserInflectionIfAvailable;
 + (_NSAttributedStringGrammarInflection)userInflection;
-+ (void)_addGlobalUserInflectionObserver:(id)a3 options:(unint64_t)a4 context:(void *)a5;
-+ (void)_removeGlobalUserInflectionObserver:(id)a3 context:(void *)a4;
-+ (void)_setThirdPartyApplicationsCanAccessUserInflection:(BOOL)a3;
-+ (void)_usePreferencesDomainForFirstParty:(id)a3 thirdParty:(id)a4 simulateLockedDevice:(BOOL)a5 simulateThirdPartyProcess:(BOOL)a6 withinBlock:(id)a7;
-- (BOOL)isEqual:(id)a3;
++ (void)_addGlobalUserInflectionObserver:(id)observer options:(unint64_t)options context:(void *)context;
++ (void)_removeGlobalUserInflectionObserver:(id)observer context:(void *)context;
++ (void)_setThirdPartyApplicationsCanAccessUserInflection:(BOOL)inflection;
++ (void)_usePreferencesDomainForFirstParty:(id)party thirdParty:(id)thirdParty simulateLockedDevice:(BOOL)device simulateThirdPartyProcess:(BOOL)process withinBlock:(id)block;
+- (BOOL)isEqual:(id)equal;
 - (NSData)externalRepresentation;
 - (NSDictionary)externalRepresentationDictionary;
 - (NSMorphologyCustomPronoun)englishCustomPronoun;
 - (NSString)localizedShortDescription;
 - (_NSAttributedStringGrammarInflection)init;
-- (_NSAttributedStringGrammarInflection)initWithCoder:(id)a3;
-- (_NSAttributedStringGrammarInflection)initWithExternalRepresentation:(id)a3 error:(id *)a4;
-- (_NSAttributedStringGrammarInflection)initWithExternalRepresentationDictionary:(id)a3 error:(id *)a4;
-- (_NSAttributedStringGrammarInflection)initWithInflectionRule:(id)a3;
-- (_NSAttributedStringGrammarInflection)initWithMorphology:(id)a3;
-- (id)_initWithGender:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_NSAttributedStringGrammarInflection)initWithCoder:(id)coder;
+- (_NSAttributedStringGrammarInflection)initWithExternalRepresentation:(id)representation error:(id *)error;
+- (_NSAttributedStringGrammarInflection)initWithExternalRepresentationDictionary:(id)dictionary error:(id *)error;
+- (_NSAttributedStringGrammarInflection)initWithInflectionRule:(id)rule;
+- (_NSAttributedStringGrammarInflection)initWithMorphology:(id)morphology;
+- (id)_initWithGender:(int64_t)gender;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (void)_setAsGlobalUserInflection;
-- (void)_useInsteadOfUserInflectionInBlock:(id)a3;
+- (void)_useInsteadOfUserInflectionInBlock:(id)block;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _NSAttributedStringGrammarInflection
@@ -39,7 +39,7 @@
 {
   v7 = *MEMORY[0x1E69E9840];
   getpid();
-  v4 = [@"com.apple.morphology.internal" UTF8String];
+  uTF8String = [@"com.apple.morphology.internal" UTF8String];
   if (sandbox_check())
   {
     if (_NSInflectionLog_onceToken != -1)
@@ -51,7 +51,7 @@
     if (os_log_type_enabled(_NSInflectionLog_log, OS_LOG_TYPE_DEBUG))
     {
       *buf = 136315138;
-      v6 = [@"com.apple.morphology.internal" UTF8String];
+      uTF8String2 = [@"com.apple.morphology.internal" UTF8String];
       _os_log_debug_impl(&dword_18075C000, v2, OS_LOG_TYPE_DEBUG, "Could not read values in %s: accessing these preferences requires user-preference-read or file-read-data sandbox access", buf, 0xCu);
     }
 
@@ -89,24 +89,24 @@
   return [(_NSAttributedStringGrammarInflection *)&v3 init];
 }
 
-- (_NSAttributedStringGrammarInflection)initWithCoder:(id)a3
+- (_NSAttributedStringGrammarInflection)initWithCoder:(id)coder
 {
   v6[1] = *MEMORY[0x1E69E9840];
   v6[0] = 0;
-  v4 = -[_NSAttributedStringGrammarInflection initWithExternalRepresentation:error:](self, "initWithExternalRepresentation:error:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"externalRepresentation"], v6);
+  v4 = -[_NSAttributedStringGrammarInflection initWithExternalRepresentation:error:](self, "initWithExternalRepresentation:error:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"externalRepresentation"], v6);
   if (!v4)
   {
-    [a3 failWithError:v6[0]];
+    [coder failWithError:v6[0]];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = [(_NSAttributedStringGrammarInflection *)self externalRepresentation];
+  externalRepresentation = [(_NSAttributedStringGrammarInflection *)self externalRepresentation];
 
-  [a3 encodeObject:v4 forKey:@"externalRepresentation"];
+  [coder encodeObject:externalRepresentation forKey:@"externalRepresentation"];
 }
 
 - (void)dealloc
@@ -118,7 +118,7 @@
   [(_NSAttributedStringGrammarInflection *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(_NSAttributedStringGrammarInflection);
   v4->_grammaticalCase = [(_NSAttributedStringGrammarInflection *)self grammaticalCase];
@@ -133,12 +133,12 @@
 
 - (unint64_t)hash
 {
-  v3 = [(_NSAttributedStringGrammarInflection *)self context];
-  v4 = [(_NSAttributedStringGrammarInflection *)self gender]^ v3;
-  v5 = [(_NSAttributedStringGrammarInflection *)self grammaticalCase];
-  v6 = v4 ^ v5 ^ [(_NSAttributedStringGrammarInflection *)self number];
-  v7 = [(_NSAttributedStringGrammarInflection *)self person];
-  v8 = v6 ^ v7 ^ [(_NSAttributedStringGrammarInflection *)self determinationType];
+  context = [(_NSAttributedStringGrammarInflection *)self context];
+  v4 = [(_NSAttributedStringGrammarInflection *)self gender]^ context;
+  grammaticalCase = [(_NSAttributedStringGrammarInflection *)self grammaticalCase];
+  v6 = v4 ^ grammaticalCase ^ [(_NSAttributedStringGrammarInflection *)self number];
+  person = [(_NSAttributedStringGrammarInflection *)self person];
+  v8 = v6 ^ person ^ [(_NSAttributedStringGrammarInflection *)self determinationType];
   if ([(_NSAttributedStringGrammarInflection *)self englishCustomPronoun])
   {
     v8 ^= [(NSMorphologyCustomPronoun *)[(_NSAttributedStringGrammarInflection *)self englishCustomPronoun] hash];
@@ -147,7 +147,7 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -155,52 +155,52 @@
     return 0;
   }
 
-  v5 = [(_NSAttributedStringGrammarInflection *)self context];
-  if (v5 != [a3 context])
+  context = [(_NSAttributedStringGrammarInflection *)self context];
+  if (context != [equal context])
   {
     return 0;
   }
 
-  v6 = [(_NSAttributedStringGrammarInflection *)self gender];
-  if (v6 != [a3 gender])
+  gender = [(_NSAttributedStringGrammarInflection *)self gender];
+  if (gender != [equal gender])
   {
     return 0;
   }
 
-  v7 = [(_NSAttributedStringGrammarInflection *)self grammaticalCase];
-  if (v7 != [a3 grammaticalCase])
+  grammaticalCase = [(_NSAttributedStringGrammarInflection *)self grammaticalCase];
+  if (grammaticalCase != [equal grammaticalCase])
   {
     return 0;
   }
 
-  v8 = [(_NSAttributedStringGrammarInflection *)self number];
-  if (v8 != [a3 number])
+  number = [(_NSAttributedStringGrammarInflection *)self number];
+  if (number != [equal number])
   {
     return 0;
   }
 
-  v9 = [(_NSAttributedStringGrammarInflection *)self person];
-  if (v9 != [a3 person])
+  person = [(_NSAttributedStringGrammarInflection *)self person];
+  if (person != [equal person])
   {
     return 0;
   }
 
-  v10 = [(_NSAttributedStringGrammarInflection *)self determinationType];
-  if (v10 != [a3 determinationType])
+  determinationType = [(_NSAttributedStringGrammarInflection *)self determinationType];
+  if (determinationType != [equal determinationType])
   {
     return 0;
   }
 
-  v11 = [(_NSAttributedStringGrammarInflection *)self englishCustomPronoun];
-  if (v11 == [a3 englishCustomPronoun])
+  englishCustomPronoun = [(_NSAttributedStringGrammarInflection *)self englishCustomPronoun];
+  if (englishCustomPronoun == [equal englishCustomPronoun])
   {
     return 1;
   }
 
-  v12 = [(_NSAttributedStringGrammarInflection *)self englishCustomPronoun];
-  v13 = [a3 englishCustomPronoun];
+  englishCustomPronoun2 = [(_NSAttributedStringGrammarInflection *)self englishCustomPronoun];
+  englishCustomPronoun3 = [equal englishCustomPronoun];
 
-  return [(NSMorphologyCustomPronoun *)v12 isEqual:v13];
+  return [(NSMorphologyCustomPronoun *)englishCustomPronoun2 isEqual:englishCustomPronoun3];
 }
 
 - (NSMorphologyCustomPronoun)englishCustomPronoun
@@ -210,7 +210,7 @@
   return v2;
 }
 
-- (_NSAttributedStringGrammarInflection)initWithMorphology:(id)a3
+- (_NSAttributedStringGrammarInflection)initWithMorphology:(id)morphology
 {
   v15 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
@@ -218,19 +218,19 @@
   v4 = [(_NSAttributedStringGrammarInflection *)&v14 init];
   if (v4)
   {
-    v5 = [a3 grammaticalGender];
-    if (v5 <= 3)
+    grammaticalGender = [morphology grammaticalGender];
+    if (grammaticalGender <= 3)
     {
-      [(_NSAttributedStringGrammarInflection *)v4 setGender:qword_1814462E0[v5]];
+      [(_NSAttributedStringGrammarInflection *)v4 setGender:qword_1814462E0[grammaticalGender]];
     }
 
-    v6 = [a3 number];
-    if (v6 <= 6)
+    number = [morphology number];
+    if (number <= 6)
     {
-      [(_NSAttributedStringGrammarInflection *)v4 setNumber:qword_181446300[v6]];
+      [(_NSAttributedStringGrammarInflection *)v4 setNumber:qword_181446300[number]];
     }
 
-    v7 = [a3 grammaticalCase] - 1;
+    v7 = [morphology grammaticalCase] - 1;
     if (v7 > 0xC)
     {
       v8 = 0;
@@ -242,14 +242,14 @@
     }
 
     [(_NSAttributedStringGrammarInflection *)v4 setGrammaticalCase:v8];
-    v9 = [a3 definiteness];
+    definiteness = [morphology definiteness];
     v10 = 3;
-    if (v9 != 1)
+    if (definiteness != 1)
     {
       v10 = 0;
     }
 
-    if (v9 == 2)
+    if (definiteness == 2)
     {
       v11 = 2;
     }
@@ -260,7 +260,7 @@
     }
 
     [(_NSAttributedStringGrammarInflection *)v4 setDeterminationType:v11];
-    v12 = [objc_msgSend(a3 "_customPronouns")];
+    v12 = [objc_msgSend(morphology "_customPronouns")];
     if ([v12 count] == 1)
     {
       v4->_englishCustomPronoun = [objc_msgSend(v12 objectAtIndexedSubscript:{0), "copy"}];
@@ -270,9 +270,9 @@
   return v4;
 }
 
-- (_NSAttributedStringGrammarInflection)initWithInflectionRule:(id)a3
+- (_NSAttributedStringGrammarInflection)initWithInflectionRule:(id)rule
 {
-  if (+[NSInflectionRule automaticRule]== a3)
+  if (+[NSInflectionRule automaticRule]== rule)
   {
 
     return [(_NSAttributedStringGrammarInflection *)self init];
@@ -286,9 +286,9 @@
       __assert_rtn("[_NSAttributedStringGrammarInflection initWithInflectionRule:]", "NSAttributedString_Grammar.m", 450, "[inflectionRule isKindOfClass:NSInflectionRuleExplicit.class]");
     }
 
-    v5 = [a3 morphology];
+    morphology = [rule morphology];
 
-    return [(_NSAttributedStringGrammarInflection *)self initWithMorphology:v5];
+    return [(_NSAttributedStringGrammarInflection *)self initWithMorphology:morphology];
   }
 }
 
@@ -331,9 +331,9 @@
   return v4;
 }
 
-- (_NSAttributedStringGrammarInflection)initWithExternalRepresentation:(id)a3 error:(id *)a4
+- (_NSAttributedStringGrammarInflection)initWithExternalRepresentation:(id)representation error:(id *)error
 {
-  v6 = [NSJSONSerialization JSONObjectWithData:a3 options:0 error:a4];
+  v6 = [NSJSONSerialization JSONObjectWithData:representation options:0 error:error];
   if (!v6)
   {
 LABEL_8:
@@ -344,18 +344,18 @@ LABEL_8:
   v7 = v6;
   if ((_NSIsNSDictionary() & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [NSError errorWithDomain:@"NSCocoaErrorDomain" code:3840 userInfo:0];
+      *error = [NSError errorWithDomain:@"NSCocoaErrorDomain" code:3840 userInfo:0];
     }
 
     goto LABEL_8;
   }
 
-  return [(_NSAttributedStringGrammarInflection *)self initWithExternalRepresentationDictionary:v7 error:a4];
+  return [(_NSAttributedStringGrammarInflection *)self initWithExternalRepresentationDictionary:v7 error:error];
 }
 
-- (_NSAttributedStringGrammarInflection)initWithExternalRepresentationDictionary:(id)a3 error:(id *)a4
+- (_NSAttributedStringGrammarInflection)initWithExternalRepresentationDictionary:(id)dictionary error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
   v32.receiver = self;
@@ -366,7 +366,7 @@ LABEL_8:
     return v6;
   }
 
-  v7 = [a3 objectForKeyedSubscript:@"context"];
+  v7 = [dictionary objectForKeyedSubscript:@"context"];
   if (v7 && (v8 = v7, ([v7 isEqual:@"none"] & 1) == 0))
   {
     if (([v8 isEqual:@"technicalTerm"] & 1) == 0)
@@ -383,7 +383,7 @@ LABEL_8:
   }
 
   [(_NSAttributedStringGrammarInflection *)v6 setContext:v9];
-  v10 = [a3 objectForKeyedSubscript:@"grammaticalGender"];
+  v10 = [dictionary objectForKeyedSubscript:@"grammaticalGender"];
   if (v10 && (v11 = v10, ([v10 isEqual:@"none"] & 1) == 0))
   {
     if ([v11 isEqual:@"masculine"])
@@ -418,7 +418,7 @@ LABEL_8:
   }
 
   [(_NSAttributedStringGrammarInflection *)v6 setGender:v12];
-  v13 = [a3 objectForKeyedSubscript:@"grammaticalCase"];
+  v13 = [dictionary objectForKeyedSubscript:@"grammaticalCase"];
   if (v13 && (v14 = v13, ([v13 isEqual:@"none"] & 1) == 0))
   {
     if ([v14 isEqual:@"accusative"])
@@ -488,7 +488,7 @@ LABEL_8:
   }
 
   [(_NSAttributedStringGrammarInflection *)v6 setGrammaticalCase:v15];
-  v16 = [a3 objectForKeyedSubscript:@"number"];
+  v16 = [dictionary objectForKeyedSubscript:@"number"];
   if (v16 && (v17 = v16, ([v16 isEqual:@"none"] & 1) == 0))
   {
     if ([v17 isEqual:@"one"])
@@ -533,13 +533,13 @@ LABEL_8:
   }
 
   [(_NSAttributedStringGrammarInflection *)v6 setNumber:v18];
-  v19 = [a3 objectForKeyedSubscript:@"person"];
+  v19 = [dictionary objectForKeyedSubscript:@"person"];
   if (!v19 || (v20 = v19, ([v19 isEqual:@"none"] & 1) != 0))
   {
     v21 = 0;
 LABEL_17:
     [(_NSAttributedStringGrammarInflection *)v6 setPerson:v21];
-    v22 = [a3 objectForKeyedSubscript:@"customPronouns"];
+    v22 = [dictionary objectForKeyedSubscript:@"customPronouns"];
     if (_NSIsNSDictionary() && [v22 count])
     {
       v23 = [v22 objectForKeyedSubscript:@"en"];
@@ -624,9 +624,9 @@ LABEL_17:
   }
 
 LABEL_80:
-  if (a4)
+  if (error)
   {
-    *a4 = [NSError errorWithDomain:@"NSCocoaErrorDomain" code:3840 userInfo:0];
+    *error = [NSError errorWithDomain:@"NSCocoaErrorDomain" code:3840 userInfo:0];
   }
 
   return 0;
@@ -647,11 +647,11 @@ LABEL_80:
   }
 
   [(NSDictionary *)v3 setObject:v4 forKeyedSubscript:@"context"];
-  v5 = [(_NSAttributedStringGrammarInflection *)self gender];
+  gender = [(_NSAttributedStringGrammarInflection *)self gender];
   v6 = 0;
-  if ((v5 - 1) <= 3)
+  if ((gender - 1) <= 3)
   {
-    v6 = off_1E69F6DE8[v5 - 1];
+    v6 = off_1E69F6DE8[gender - 1];
   }
 
   [(NSDictionary *)v3 setObject:v6 forKeyedSubscript:@"grammaticalGender"];
@@ -691,28 +691,28 @@ LABEL_80:
   }
 
   [(NSDictionary *)v3 setObject:v12 forKeyedSubscript:@"person"];
-  v13 = [(_NSAttributedStringGrammarInflection *)self englishCustomPronoun];
-  if ([(NSMorphologyCustomPronoun *)v13 subjectForm])
+  englishCustomPronoun = [(_NSAttributedStringGrammarInflection *)self englishCustomPronoun];
+  if ([(NSMorphologyCustomPronoun *)englishCustomPronoun subjectForm])
   {
-    if ([(NSMorphologyCustomPronoun *)v13 objectForm])
+    if ([(NSMorphologyCustomPronoun *)englishCustomPronoun objectForm])
     {
-      if ([(NSMorphologyCustomPronoun *)v13 possessiveForm])
+      if ([(NSMorphologyCustomPronoun *)englishCustomPronoun possessiveForm])
       {
-        if ([(NSMorphologyCustomPronoun *)v13 possessiveAdjectiveForm])
+        if ([(NSMorphologyCustomPronoun *)englishCustomPronoun possessiveAdjectiveForm])
         {
-          if ([(NSMorphologyCustomPronoun *)v13 reflexiveForm])
+          if ([(NSMorphologyCustomPronoun *)englishCustomPronoun reflexiveForm])
           {
             v18 = @"en";
             v16[0] = @"subjectForm";
-            v17[0] = [(NSMorphologyCustomPronoun *)v13 subjectForm];
+            v17[0] = [(NSMorphologyCustomPronoun *)englishCustomPronoun subjectForm];
             v16[1] = @"objectForm";
-            v17[1] = [(NSMorphologyCustomPronoun *)v13 objectForm];
+            v17[1] = [(NSMorphologyCustomPronoun *)englishCustomPronoun objectForm];
             v16[2] = @"possessiveForm";
-            v17[2] = [(NSMorphologyCustomPronoun *)v13 possessiveForm];
+            v17[2] = [(NSMorphologyCustomPronoun *)englishCustomPronoun possessiveForm];
             v16[3] = @"possessiveAdjectiveForm";
-            v17[3] = [(NSMorphologyCustomPronoun *)v13 possessiveAdjectiveForm];
+            v17[3] = [(NSMorphologyCustomPronoun *)englishCustomPronoun possessiveAdjectiveForm];
             v16[4] = @"reflexiveForm";
-            v17[4] = [(NSMorphologyCustomPronoun *)v13 reflexiveForm];
+            v17[4] = [(NSMorphologyCustomPronoun *)englishCustomPronoun reflexiveForm];
             v19[0] = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:5];
             v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
             if (v14)
@@ -730,9 +730,9 @@ LABEL_80:
 
 - (NSData)externalRepresentation
 {
-  v2 = [(_NSAttributedStringGrammarInflection *)self externalRepresentationDictionary];
+  externalRepresentationDictionary = [(_NSAttributedStringGrammarInflection *)self externalRepresentationDictionary];
 
-  return [NSJSONSerialization dataWithJSONObject:v2 options:2 error:0];
+  return [NSJSONSerialization dataWithJSONObject:externalRepresentationDictionary options:2 error:0];
 }
 
 + (_NSAttributedStringGrammarInflection)userInflection
@@ -742,23 +742,23 @@ LABEL_80:
   return v2;
 }
 
-+ (void)_addGlobalUserInflectionObserver:(id)a3 options:(unint64_t)a4 context:(void *)a5
++ (void)_addGlobalUserInflectionObserver:(id)observer options:(unint64_t)options context:(void *)context
 {
-  v8 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
 
-  [v8 addObserver:a3 forKeyPath:@"AppleUserMorphology" options:a4 context:a5];
+  [standardUserDefaults addObserver:observer forKeyPath:@"AppleUserMorphology" options:options context:context];
 }
 
-+ (void)_removeGlobalUserInflectionObserver:(id)a3 context:(void *)a4
++ (void)_removeGlobalUserInflectionObserver:(id)observer context:(void *)context
 {
-  v6 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
 
-  [v6 removeObserver:a3 forKeyPath:@"AppleUserMorphology" context:a4];
+  [standardUserDefaults removeObserver:observer forKeyPath:@"AppleUserMorphology" context:context];
 }
 
 - (void)_setAsGlobalUserInflection
 {
-  v2 = [(_NSAttributedStringGrammarInflection *)self _markupDictionary];
+  _markupDictionary = [(_NSAttributedStringGrammarInflection *)self _markupDictionary];
   v3 = *MEMORY[0x1E695E8B8];
   v4 = *MEMORY[0x1E695E898];
   _CFPreferencesSetFileProtectionClass();
@@ -773,7 +773,7 @@ LABEL_80:
     v5 = @"com.apple.morphology.internal";
   }
 
-  CFPreferencesSetValue(@"AppleUserMorphology", v2, v5, v3, v4);
+  CFPreferencesSetValue(@"AppleUserMorphology", _markupDictionary, v5, v3, v4);
   if (qword_1ED43FE00)
   {
     v6 = qword_1ED43FE00;
@@ -800,7 +800,7 @@ LABEL_80:
         v9 = @"com.apple.morphology";
       }
 
-      CFPreferencesSetValue(@"AppleUserMorphology", v2, v9, v3, v4);
+      CFPreferencesSetValue(@"AppleUserMorphology", _markupDictionary, v9, v3, v4);
     }
 
     CFRelease(v8);
@@ -827,14 +827,14 @@ LABEL_80:
   return v4;
 }
 
-+ (void)_setThirdPartyApplicationsCanAccessUserInflection:(BOOL)a3
++ (void)_setThirdPartyApplicationsCanAccessUserInflection:(BOOL)inflection
 {
-  v3 = a3;
+  inflectionCopy = inflection;
   v4 = *MEMORY[0x1E695E8B8];
   v5 = *MEMORY[0x1E695E898];
   _CFPreferencesSetFileProtectionClass();
   _CFPreferencesSetFileProtectionClass();
-  v6 = [NSNumber numberWithBool:v3];
+  v6 = [NSNumber numberWithBool:inflectionCopy];
   if (qword_1ED43FE00)
   {
     v7 = qword_1ED43FE00;
@@ -846,7 +846,7 @@ LABEL_80:
   }
 
   CFPreferencesSetValue(@"AppleUserMorphologyAllowThirdPartyAccess", v6, v7, v4, v5);
-  if (v3)
+  if (inflectionCopy)
   {
     if (qword_1ED43FE00)
     {
@@ -894,23 +894,23 @@ LABEL_80:
   }
 }
 
-- (void)_useInsteadOfUserInflectionInBlock:(id)a3
+- (void)_useInsteadOfUserInflectionInBlock:(id)block
 {
   v4 = [[NSMorphology alloc] initWithInflection:self];
-  [(NSMorphology *)v4 _overrideUserInflectionInBlock:a3];
+  [(NSMorphology *)v4 _overrideUserInflectionInBlock:block];
 }
 
-+ (void)_usePreferencesDomainForFirstParty:(id)a3 thirdParty:(id)a4 simulateLockedDevice:(BOOL)a5 simulateThirdPartyProcess:(BOOL)a6 withinBlock:(id)a7
++ (void)_usePreferencesDomainForFirstParty:(id)party thirdParty:(id)thirdParty simulateLockedDevice:(BOOL)device simulateThirdPartyProcess:(BOOL)process withinBlock:(id)block
 {
   v8 = qword_1ED43FE00;
   v9 = qword_1ED43FE08;
   v10 = _MergedGlobals_139;
-  qword_1ED43FE00 = a3;
-  qword_1ED43FE08 = a4;
-  LOBYTE(_MergedGlobals_139) = a5;
-  HIBYTE(_MergedGlobals_139) = a6;
+  qword_1ED43FE00 = party;
+  qword_1ED43FE08 = thirdParty;
+  LOBYTE(_MergedGlobals_139) = device;
+  HIBYTE(_MergedGlobals_139) = process;
   +[NSMorphology _clearCachedUserMorphology];
-  (*(a7 + 2))(a7);
+  (*(block + 2))(block);
   qword_1ED43FE00 = v8;
   qword_1ED43FE08 = v9;
   _MergedGlobals_139 = v10;
@@ -944,7 +944,7 @@ LABEL_80:
   }
 }
 
-- (id)_initWithGender:(int64_t)a3
+- (id)_initWithGender:(int64_t)gender
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -953,7 +953,7 @@ LABEL_80:
   v5 = v4;
   if (v4)
   {
-    [(_NSAttributedStringGrammarInflection *)v4 setGender:a3];
+    [(_NSAttributedStringGrammarInflection *)v4 setGender:gender];
   }
 
   return v5;
@@ -971,17 +971,17 @@ LABEL_80:
 
 - (NSString)localizedShortDescription
 {
-  v3 = [(_NSAttributedStringGrammarInflection *)self englishCustomPronoun];
-  v4 = [(NSMorphologyCustomPronoun *)v3 subjectForm];
-  v5 = [(NSMorphologyCustomPronoun *)v3 objectForm];
-  if (v4 && v5)
+  englishCustomPronoun = [(_NSAttributedStringGrammarInflection *)self englishCustomPronoun];
+  subjectForm = [(NSMorphologyCustomPronoun *)englishCustomPronoun subjectForm];
+  objectForm = [(NSMorphologyCustomPronoun *)englishCustomPronoun objectForm];
+  if (subjectForm && objectForm)
   {
-    return +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", [_NSFoundationBundle() localizedStringForKey:@"[CUSTOM PRONOUN] %@/%@" value:&stru_1EEEFDF90 table:@"Morphology"], v4, v5);
+    return +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", [_NSFoundationBundle() localizedStringForKey:@"[CUSTOM PRONOUN] %@/%@" value:&stru_1EEEFDF90 table:@"Morphology"], subjectForm, objectForm);
   }
 
-  v7 = [(_NSAttributedStringGrammarInflection *)self gender];
+  gender = [(_NSAttributedStringGrammarInflection *)self gender];
   v8 = _NSFoundationBundle();
-  switch(v7)
+  switch(gender)
   {
     case 1:
       v9 = @"Masculine";
@@ -1000,23 +1000,23 @@ LABEL_80:
   return [v8 localizedStringForKey:v9 value:&stru_1EEEFDF90 table:@"Morphology"];
 }
 
-+ (BOOL)_canSelectUserInflectionWithPreferredLanguages:(id)a3
++ (BOOL)_canSelectUserInflectionWithPreferredLanguages:(id)languages
 {
-  if ([objc_msgSend(a3 "firstObject")] < 2 || !objc_msgSend(&unk_1EEF59FA8, "containsObject:", objc_msgSend(objc_msgSend(objc_msgSend(a3, "firstObject"), "substringToIndex:", 2), "lowercaseString")))
+  if ([objc_msgSend(languages "firstObject")] < 2 || !objc_msgSend(&unk_1EEF59FA8, "containsObject:", objc_msgSend(objc_msgSend(objc_msgSend(languages, "firstObject"), "substringToIndex:", 2), "lowercaseString")))
   {
     return 0;
   }
 
-  v4 = [a3 firstObject];
+  firstObject = [languages firstObject];
 
-  return _NSRequiresMorphunInflectionForLanguageIdentifier(v4);
+  return _NSRequiresMorphunInflectionForLanguageIdentifier(firstObject);
 }
 
 + (BOOL)canSelectUserInflection
 {
-  v3 = [MEMORY[0x1E695DF58] preferredLanguages];
+  preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
 
-  return [a1 _canSelectUserInflectionWithPreferredLanguages:v3];
+  return [self _canSelectUserInflectionWithPreferredLanguages:preferredLanguages];
 }
 
 @end

@@ -1,45 +1,45 @@
 @interface BLTPingSubscriber
 - (BLTPingSubscriber)init;
-- (BLTPingSubscriber)initWithService:(id)a3;
+- (BLTPingSubscriber)initWithService:(id)service;
 - (id)sectionIDs;
 - (id)subscriptionInfos;
 - (void)dealloc;
-- (void)getWillNanoPresentNotificationForSectionID:(id)a3 completion:(id)a4;
-- (void)getWillNanoPresentNotificationForSectionID:(id)a3 subsectionIDs:(id)a4 completion:(id)a5;
-- (void)pingWithBulletin:(id)a3 ack:(id)a4;
-- (void)pingWithRecordID:(id)a3 forSectionID:(id)a4 ack:(id)a5;
-- (void)sendBulletinSummary:(id)a3 forBulletin:(id)a4 destinations:(unint64_t)a5;
-- (void)subscribeToSectionID:(id)a3 withBulletinAckForwardForAnyConnectionHandler:(id)a4;
-- (void)subscribeToSectionID:(id)a3 withBulletinAckForwardHandler:(id)a4;
-- (void)subscribeToSectionID:(id)a3 withBulletinAckHandler:(id)a4;
-- (void)subscribeToSectionID:(id)a3 withBulletinHandler:(id)a4;
-- (void)subscribeToSectionID:(id)a3 withNotificationAckForwardForAnyConnectionHandler:(id)a4;
-- (void)subscribeToSectionID:(id)a3 withNotificationAckForwardHandler:(id)a4;
-- (void)subscribeToSectionID:(id)a3 withNotificationAckHandler:(id)a4;
-- (void)subscribeToSectionID:(id)a3 withNotificationHandler:(id)a4;
-- (void)subscribeToSectionID:(id)a3 withPingAckForwardHandler:(id)a4;
-- (void)subscribeToSectionID:(id)a3 withPingAckHandler:(id)a4;
-- (void)subscribeToSectionID:(id)a3 withPingHandler:(id)a4;
-- (void)subscribeWithMachServiceName:(id)a3;
-- (void)unsubscribeFromSectionID:(id)a3;
+- (void)getWillNanoPresentNotificationForSectionID:(id)d completion:(id)completion;
+- (void)getWillNanoPresentNotificationForSectionID:(id)d subsectionIDs:(id)ds completion:(id)completion;
+- (void)pingWithBulletin:(id)bulletin ack:(id)ack;
+- (void)pingWithRecordID:(id)d forSectionID:(id)iD ack:(id)ack;
+- (void)sendBulletinSummary:(id)summary forBulletin:(id)bulletin destinations:(unint64_t)destinations;
+- (void)subscribeToSectionID:(id)d withBulletinAckForwardForAnyConnectionHandler:(id)handler;
+- (void)subscribeToSectionID:(id)d withBulletinAckForwardHandler:(id)handler;
+- (void)subscribeToSectionID:(id)d withBulletinAckHandler:(id)handler;
+- (void)subscribeToSectionID:(id)d withBulletinHandler:(id)handler;
+- (void)subscribeToSectionID:(id)d withNotificationAckForwardForAnyConnectionHandler:(id)handler;
+- (void)subscribeToSectionID:(id)d withNotificationAckForwardHandler:(id)handler;
+- (void)subscribeToSectionID:(id)d withNotificationAckHandler:(id)handler;
+- (void)subscribeToSectionID:(id)d withNotificationHandler:(id)handler;
+- (void)subscribeToSectionID:(id)d withPingAckForwardHandler:(id)handler;
+- (void)subscribeToSectionID:(id)d withPingAckHandler:(id)handler;
+- (void)subscribeToSectionID:(id)d withPingHandler:(id)handler;
+- (void)subscribeWithMachServiceName:(id)name;
+- (void)unsubscribeFromSectionID:(id)d;
 @end
 
 @implementation BLTPingSubscriber
 
-- (BLTPingSubscriber)initWithService:(id)a3
+- (BLTPingSubscriber)initWithService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v11.receiver = self;
   v11.super_class = BLTPingSubscriber;
   v6 = [(BLTPingSubscriber *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_service, a3);
+    objc_storeStrong(&v6->_service, service);
     pthread_mutex_init(&v7->_lock, 0);
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     pingHandlers = v7->_pingHandlers;
-    v7->_pingHandlers = v8;
+    v7->_pingHandlers = dictionary;
   }
 
   return v7;
@@ -69,8 +69,8 @@
 {
   pthread_mutex_lock(&self->_lock);
   v3 = MEMORY[0x277CBEB58];
-  v4 = [(NSMutableDictionary *)self->_pingHandlers allKeys];
-  v5 = [v3 setWithArray:v4];
+  allKeys = [(NSMutableDictionary *)self->_pingHandlers allKeys];
+  v5 = [v3 setWithArray:allKeys];
 
   pthread_mutex_unlock(&self->_lock);
 
@@ -80,157 +80,157 @@
 - (id)subscriptionInfos
 {
   pthread_mutex_lock(&self->_lock);
-  v3 = [(NSMutableDictionary *)self->_pingHandlers allValues];
+  allValues = [(NSMutableDictionary *)self->_pingHandlers allValues];
   pthread_mutex_unlock(&self->_lock);
 
-  return v3;
+  return allValues;
 }
 
-- (void)unsubscribeFromSectionID:(id)a3
+- (void)unsubscribeFromSectionID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   pthread_mutex_lock(&self->_lock);
-  v4 = [(NSMutableDictionary *)self->_pingHandlers objectForKeyedSubscript:v5];
+  v4 = [(NSMutableDictionary *)self->_pingHandlers objectForKeyedSubscript:dCopy];
 
   if (v4)
   {
-    [(NSMutableDictionary *)self->_pingHandlers removeObjectForKey:v5];
-    [(BLTPingService *)self->_service unsubscribeFromSectionID:v5];
+    [(NSMutableDictionary *)self->_pingHandlers removeObjectForKey:dCopy];
+    [(BLTPingService *)self->_service unsubscribeFromSectionID:dCopy];
   }
 
   pthread_mutex_unlock(&self->_lock);
 }
 
-- (void)subscribeToSectionID:(id)a3 withPingHandler:(id)a4
+- (void)subscribeToSectionID:(id)d withPingHandler:(id)handler
 {
-  v6 = a3;
-  v7 = MEMORY[0x245D067A0](a4);
-  [(BLTPingSubscriber *)self _subscribeToSectionID:v6 pingHandler:v7 ackType:0 forFullBulletins:0];
+  dCopy = d;
+  v7 = MEMORY[0x245D067A0](handler);
+  [(BLTPingSubscriber *)self _subscribeToSectionID:dCopy pingHandler:v7 ackType:0 forFullBulletins:0];
 }
 
-- (void)subscribeToSectionID:(id)a3 withPingAckHandler:(id)a4
+- (void)subscribeToSectionID:(id)d withPingAckHandler:(id)handler
 {
-  v6 = a3;
-  v7 = MEMORY[0x245D067A0](a4);
-  [(BLTPingSubscriber *)self _subscribeToSectionID:v6 pingHandler:v7 ackType:1 forFullBulletins:0];
+  dCopy = d;
+  v7 = MEMORY[0x245D067A0](handler);
+  [(BLTPingSubscriber *)self _subscribeToSectionID:dCopy pingHandler:v7 ackType:1 forFullBulletins:0];
 }
 
-- (void)subscribeToSectionID:(id)a3 withPingAckForwardHandler:(id)a4
+- (void)subscribeToSectionID:(id)d withPingAckForwardHandler:(id)handler
 {
-  v6 = a3;
-  v7 = MEMORY[0x245D067A0](a4);
-  [(BLTPingSubscriber *)self _subscribeToSectionID:v6 pingHandler:v7 ackType:2 forFullBulletins:0];
+  dCopy = d;
+  v7 = MEMORY[0x245D067A0](handler);
+  [(BLTPingSubscriber *)self _subscribeToSectionID:dCopy pingHandler:v7 ackType:2 forFullBulletins:0];
 }
 
-- (void)subscribeToSectionID:(id)a3 withBulletinHandler:(id)a4
+- (void)subscribeToSectionID:(id)d withBulletinHandler:(id)handler
 {
-  v6 = a3;
-  v7 = MEMORY[0x245D067A0](a4);
-  [(BLTPingSubscriber *)self _subscribeToSectionID:v6 pingHandler:v7 ackType:0 forFullBulletins:1];
+  dCopy = d;
+  v7 = MEMORY[0x245D067A0](handler);
+  [(BLTPingSubscriber *)self _subscribeToSectionID:dCopy pingHandler:v7 ackType:0 forFullBulletins:1];
 }
 
-- (void)subscribeToSectionID:(id)a3 withBulletinAckHandler:(id)a4
+- (void)subscribeToSectionID:(id)d withBulletinAckHandler:(id)handler
 {
-  v6 = a3;
-  v7 = MEMORY[0x245D067A0](a4);
-  [(BLTPingSubscriber *)self _subscribeToSectionID:v6 pingHandler:v7 ackType:1 forFullBulletins:1];
+  dCopy = d;
+  v7 = MEMORY[0x245D067A0](handler);
+  [(BLTPingSubscriber *)self _subscribeToSectionID:dCopy pingHandler:v7 ackType:1 forFullBulletins:1];
 }
 
-- (void)subscribeToSectionID:(id)a3 withBulletinAckForwardHandler:(id)a4
+- (void)subscribeToSectionID:(id)d withBulletinAckForwardHandler:(id)handler
 {
-  v6 = a3;
-  v7 = MEMORY[0x245D067A0](a4);
-  [(BLTPingSubscriber *)self _subscribeToSectionID:v6 pingHandler:v7 ackType:2 forFullBulletins:1];
+  dCopy = d;
+  v7 = MEMORY[0x245D067A0](handler);
+  [(BLTPingSubscriber *)self _subscribeToSectionID:dCopy pingHandler:v7 ackType:2 forFullBulletins:1];
 }
 
-- (void)subscribeToSectionID:(id)a3 withBulletinAckForwardForAnyConnectionHandler:(id)a4
+- (void)subscribeToSectionID:(id)d withBulletinAckForwardForAnyConnectionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = MEMORY[0x245D067A0](a4);
-  [(BLTPingSubscriber *)self _subscribeToSectionID:v6 pingHandler:v7 ackType:3 forFullBulletins:1];
+  dCopy = d;
+  v7 = MEMORY[0x245D067A0](handler);
+  [(BLTPingSubscriber *)self _subscribeToSectionID:dCopy pingHandler:v7 ackType:3 forFullBulletins:1];
 }
 
-- (void)subscribeToSectionID:(id)a3 withNotificationHandler:(id)a4
+- (void)subscribeToSectionID:(id)d withNotificationHandler:(id)handler
 {
-  v6 = a3;
-  v7 = MEMORY[0x245D067A0](a4);
-  [(BLTPingSubscriber *)self _subscribeToSectionID:v6 pingHandler:v7 ackType:0 forFullBulletins:1 forNotifications:1];
+  dCopy = d;
+  v7 = MEMORY[0x245D067A0](handler);
+  [(BLTPingSubscriber *)self _subscribeToSectionID:dCopy pingHandler:v7 ackType:0 forFullBulletins:1 forNotifications:1];
 }
 
-- (void)subscribeToSectionID:(id)a3 withNotificationAckHandler:(id)a4
+- (void)subscribeToSectionID:(id)d withNotificationAckHandler:(id)handler
 {
-  v6 = a3;
-  v7 = MEMORY[0x245D067A0](a4);
-  [(BLTPingSubscriber *)self _subscribeToSectionID:v6 pingHandler:v7 ackType:1 forFullBulletins:1 forNotifications:1];
+  dCopy = d;
+  v7 = MEMORY[0x245D067A0](handler);
+  [(BLTPingSubscriber *)self _subscribeToSectionID:dCopy pingHandler:v7 ackType:1 forFullBulletins:1 forNotifications:1];
 }
 
-- (void)subscribeToSectionID:(id)a3 withNotificationAckForwardHandler:(id)a4
+- (void)subscribeToSectionID:(id)d withNotificationAckForwardHandler:(id)handler
 {
-  v6 = a3;
-  v7 = MEMORY[0x245D067A0](a4);
-  [(BLTPingSubscriber *)self _subscribeToSectionID:v6 pingHandler:v7 ackType:2 forFullBulletins:1 forNotifications:1];
+  dCopy = d;
+  v7 = MEMORY[0x245D067A0](handler);
+  [(BLTPingSubscriber *)self _subscribeToSectionID:dCopy pingHandler:v7 ackType:2 forFullBulletins:1 forNotifications:1];
 }
 
-- (void)subscribeToSectionID:(id)a3 withNotificationAckForwardForAnyConnectionHandler:(id)a4
+- (void)subscribeToSectionID:(id)d withNotificationAckForwardForAnyConnectionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = MEMORY[0x245D067A0](a4);
-  [(BLTPingSubscriber *)self _subscribeToSectionID:v6 pingHandler:v7 ackType:3 forFullBulletins:1 forNotifications:1];
+  dCopy = d;
+  v7 = MEMORY[0x245D067A0](handler);
+  [(BLTPingSubscriber *)self _subscribeToSectionID:dCopy pingHandler:v7 ackType:3 forFullBulletins:1 forNotifications:1];
 }
 
-- (void)pingWithBulletin:(id)a3 ack:(id)a4
+- (void)pingWithBulletin:(id)bulletin ack:(id)ack
 {
-  v10 = a3;
-  v6 = a4;
+  bulletinCopy = bulletin;
+  ackCopy = ack;
   pthread_mutex_lock(&self->_lock);
   pingHandlers = self->_pingHandlers;
-  v8 = [v10 sectionID];
-  v9 = [(NSMutableDictionary *)pingHandlers objectForKeyedSubscript:v8];
+  sectionID = [bulletinCopy sectionID];
+  v9 = [(NSMutableDictionary *)pingHandlers objectForKeyedSubscript:sectionID];
 
   pthread_mutex_unlock(&self->_lock);
   if (v9)
   {
-    [v9 pingWithBulletin:v10 ack:v6];
+    [v9 pingWithBulletin:bulletinCopy ack:ackCopy];
   }
 }
 
-- (void)pingWithRecordID:(id)a3 forSectionID:(id)a4 ack:(id)a5
+- (void)pingWithRecordID:(id)d forSectionID:(id)iD ack:(id)ack
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  ackCopy = ack;
   pthread_mutex_lock(&self->_lock);
-  v10 = [(NSMutableDictionary *)self->_pingHandlers objectForKeyedSubscript:v8];
+  v10 = [(NSMutableDictionary *)self->_pingHandlers objectForKeyedSubscript:iDCopy];
   pthread_mutex_unlock(&self->_lock);
   if (v10)
   {
-    [v10 pingWithRecordID:v11 forSectionID:v8 ack:v9];
+    [v10 pingWithRecordID:dCopy forSectionID:iDCopy ack:ackCopy];
   }
 }
 
-- (void)sendBulletinSummary:(id)a3 forBulletin:(id)a4 destinations:(unint64_t)a5
+- (void)sendBulletinSummary:(id)summary forBulletin:(id)bulletin destinations:(unint64_t)destinations
 {
   v38 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  summaryCopy = summary;
+  bulletinCopy = bulletin;
   v9 = objc_alloc_init(BLTPBBulletinSummary);
-  v10 = [v8 recordID];
-  [(BLTPBBulletinSummary *)v9 setRecordID:v10];
+  recordID = [bulletinCopy recordID];
+  [(BLTPBBulletinSummary *)v9 setRecordID:recordID];
 
-  v11 = [v8 publisherBulletinID];
-  [(BLTPBBulletinSummary *)v9 setPublisherBulletinID:v11];
+  publisherBulletinID = [bulletinCopy publisherBulletinID];
+  [(BLTPBBulletinSummary *)v9 setPublisherBulletinID:publisherBulletinID];
 
-  v28 = v8;
-  v12 = [v8 sectionID];
-  [(BLTPBBulletinSummary *)v9 setSectionID:v12];
+  v28 = bulletinCopy;
+  sectionID = [bulletinCopy sectionID];
+  [(BLTPBBulletinSummary *)v9 setSectionID:sectionID];
 
   v30 = v9;
-  [(BLTPBBulletinSummary *)v9 setDestinations:a5];
+  [(BLTPBBulletinSummary *)v9 setDestinations:destinations];
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v13 = v7;
+  v13 = summaryCopy;
   v14 = [v13 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v14)
   {
@@ -249,9 +249,9 @@
         v19 = objc_alloc_init(BLTPBBulletinSummaryKey);
         [(BLTPBBulletinSummaryKey *)v19 setKey:v18];
         v20 = [v13 objectForKeyedSubscript:v18];
-        v21 = [MEMORY[0x277D2BCC8] activePairedDeviceSupportsNSNullPListExtenion];
-        v22 = v21;
-        if (v21)
+        activePairedDeviceSupportsNSNullPListExtenion = [MEMORY[0x277D2BCC8] activePairedDeviceSupportsNSNullPListExtenion];
+        v22 = activePairedDeviceSupportsNSNullPListExtenion;
+        if (activePairedDeviceSupportsNSNullPListExtenion)
         {
           v23 = &v32;
         }
@@ -261,7 +261,7 @@
           v23 = 0;
         }
 
-        if (v21)
+        if (activePairedDeviceSupportsNSNullPListExtenion)
         {
           v32 = 0;
         }
@@ -297,32 +297,32 @@
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getWillNanoPresentNotificationForSectionID:(id)a3 completion:(id)a4
+- (void)getWillNanoPresentNotificationForSectionID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dCopy = d;
   pthread_mutex_lock(&self->_lock);
-  [(BLTPingService *)self->_service getWillNanoPresentNotificationForSectionID:v7 subsectionIDs:0 completion:v6];
+  [(BLTPingService *)self->_service getWillNanoPresentNotificationForSectionID:dCopy subsectionIDs:0 completion:completionCopy];
 
   pthread_mutex_unlock(&self->_lock);
 }
 
-- (void)getWillNanoPresentNotificationForSectionID:(id)a3 subsectionIDs:(id)a4 completion:(id)a5
+- (void)getWillNanoPresentNotificationForSectionID:(id)d subsectionIDs:(id)ds completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  dsCopy = ds;
+  dCopy = d;
   pthread_mutex_lock(&self->_lock);
-  [(BLTPingService *)self->_service getWillNanoPresentNotificationForSectionID:v10 subsectionIDs:v9 completion:v8];
+  [(BLTPingService *)self->_service getWillNanoPresentNotificationForSectionID:dCopy subsectionIDs:dsCopy completion:completionCopy];
 
   pthread_mutex_unlock(&self->_lock);
 }
 
-- (void)subscribeWithMachServiceName:(id)a3
+- (void)subscribeWithMachServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   pthread_mutex_lock(&self->_lock);
-  [(BLTPingService *)self->_service subscribeWithMachServiceName:v4];
+  [(BLTPingService *)self->_service subscribeWithMachServiceName:nameCopy];
 
   pthread_mutex_unlock(&self->_lock);
 }

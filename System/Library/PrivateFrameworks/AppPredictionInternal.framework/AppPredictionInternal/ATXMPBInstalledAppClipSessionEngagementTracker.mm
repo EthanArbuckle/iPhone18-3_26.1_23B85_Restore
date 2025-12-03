@@ -1,15 +1,15 @@
 @interface ATXMPBInstalledAppClipSessionEngagementTracker
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsEngagementType:(id)a3;
+- (int)StringAsEngagementType:(id)type;
 - (int)engagementType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNumSuggestionsShown:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasNumSuggestionsShown:(BOOL)shown;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXMPBInstalledAppClipSessionEngagementTracker
@@ -27,20 +27,20 @@
   }
 }
 
-- (int)StringAsEngagementType:(id)a3
+- (int)StringAsEngagementType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Shown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Shown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Engaged"])
+  else if ([typeCopy isEqualToString:@"Engaged"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Rejected"])
+  else if ([typeCopy isEqualToString:@"Rejected"])
   {
     v4 = 2;
   }
@@ -53,9 +53,9 @@
   return v4;
 }
 
-- (void)setHasNumSuggestionsShown:(BOOL)a3
+- (void)setHasNumSuggestionsShown:(BOOL)shown
 {
-  if (a3)
+  if (shown)
   {
     v3 = 2;
   }
@@ -74,15 +74,15 @@
   v8.receiver = self;
   v8.super_class = ATXMPBInstalledAppClipSessionEngagementTracker;
   v4 = [(ATXMPBInstalledAppClipSessionEngagementTracker *)&v8 description];
-  v5 = [(ATXMPBInstalledAppClipSessionEngagementTracker *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXMPBInstalledAppClipSessionEngagementTracker *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     engagementType = self->_engagementType;
@@ -96,93 +96,93 @@
       v5 = off_27859DEA0[engagementType];
     }
 
-    [v3 setObject:v5 forKey:@"engagementType"];
+    [dictionary setObject:v5 forKey:@"engagementType"];
   }
 
   consumerSubType = self->_consumerSubType;
   if (consumerSubType)
   {
-    [v3 setObject:consumerSubType forKey:@"consumerSubType"];
+    [dictionary setObject:consumerSubType forKey:@"consumerSubType"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_numSuggestionsShown];
-    [v3 setObject:v7 forKey:@"numSuggestionsShown"];
+    [dictionary setObject:v7 forKey:@"numSuggestionsShown"];
   }
 
   abGroup = self->_abGroup;
   if (abGroup)
   {
-    [v3 setObject:abGroup forKey:@"abGroup"];
+    [dictionary setObject:abGroup forKey:@"abGroup"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (*&self->_has)
   {
     engagementType = self->_engagementType;
     PBDataWriterWriteInt32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_consumerSubType)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     numSuggestionsShown = self->_numSuggestionsShown;
     PBDataWriterWriteUint32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_abGroup)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[6] = self->_engagementType;
-    *(v4 + 32) |= 1u;
+    toCopy[6] = self->_engagementType;
+    *(toCopy + 32) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_consumerSubType)
   {
-    [v4 setConsumerSubType:?];
-    v4 = v5;
+    [toCopy setConsumerSubType:?];
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    v4[7] = self->_numSuggestionsShown;
-    *(v4 + 32) |= 2u;
+    toCopy[7] = self->_numSuggestionsShown;
+    *(toCopy + 32) |= 2u;
   }
 
   if (self->_abGroup)
   {
     [v5 setAbGroup:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -190,7 +190,7 @@
     *(v5 + 32) |= 1u;
   }
 
-  v7 = [(NSString *)self->_consumerSubType copyWithZone:a3];
+  v7 = [(NSString *)self->_consumerSubType copyWithZone:zone];
   v8 = *(v6 + 16);
   *(v6 + 16) = v7;
 
@@ -200,38 +200,38 @@
     *(v6 + 32) |= 2u;
   }
 
-  v9 = [(NSString *)self->_abGroup copyWithZone:a3];
+  v9 = [(NSString *)self->_abGroup copyWithZone:zone];
   v10 = *(v6 + 8);
   *(v6 + 8) = v9;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
   has = self->_has;
-  v6 = *(v4 + 32);
+  v6 = *(equalCopy + 32);
   if (has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_engagementType != *(v4 + 6))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_engagementType != *(equalCopy + 6))
     {
       goto LABEL_17;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
     goto LABEL_17;
   }
 
   consumerSubType = self->_consumerSubType;
-  if (consumerSubType | *(v4 + 2))
+  if (consumerSubType | *(equalCopy + 2))
   {
     if (![(NSString *)consumerSubType isEqual:?])
     {
@@ -243,22 +243,22 @@ LABEL_17:
     has = self->_has;
   }
 
-  v8 = *(v4 + 32);
+  v8 = *(equalCopy + 32);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_numSuggestionsShown != *(v4 + 7))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_numSuggestionsShown != *(equalCopy + 7))
     {
       goto LABEL_17;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
     goto LABEL_17;
   }
 
   abGroup = self->_abGroup;
-  if (abGroup | *(v4 + 1))
+  if (abGroup | *(equalCopy + 1))
   {
     v10 = [(NSString *)abGroup isEqual:?];
   }
@@ -299,32 +299,32 @@ LABEL_18:
   return v4 ^ v3 ^ v5 ^ [(NSString *)self->_abGroup hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[8])
+  fromCopy = from;
+  if (fromCopy[8])
   {
-    self->_engagementType = v4[6];
+    self->_engagementType = fromCopy[6];
     *&self->_has |= 1u;
   }
 
-  v5 = v4;
-  if (*(v4 + 2))
+  v5 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(ATXMPBInstalledAppClipSessionEngagementTracker *)self setConsumerSubType:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if ((v4[8] & 2) != 0)
+  if ((fromCopy[8] & 2) != 0)
   {
-    self->_numSuggestionsShown = v4[7];
+    self->_numSuggestionsShown = fromCopy[7];
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(ATXMPBInstalledAppClipSessionEngagementTracker *)self setAbGroup:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

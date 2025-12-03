@@ -1,18 +1,18 @@
 @interface PUCropToolController
-- (BOOL)_hasConstraintsForKey:(id)a3;
+- (BOOL)_hasConstraintsForKey:(id)key;
 - (BOOL)_hasPerspectiveSuggestion;
 - (BOOL)_needsRecomposeCropRect;
 - (BOOL)canResetToDefaultValue;
-- (BOOL)setLockedCropAspectIfNeededIgnoringCurrentLock:(BOOL)a3;
-- (CGPoint)_pointForHandle:(unint64_t)a3;
-- (CGPoint)_pointForHandle:(unint64_t)a3 onCropRect:(CGRect)a4;
-- (CGRect)_addHeight:(double)a3 toRect:(CGRect)a4 anchorTop:(BOOL)a5;
-- (CGRect)_addWidth:(double)a3 toRect:(CGRect)a4 anchorLeft:(BOOL)a5;
+- (BOOL)setLockedCropAspectIfNeededIgnoringCurrentLock:(BOOL)lock;
+- (CGPoint)_pointForHandle:(unint64_t)handle;
+- (CGPoint)_pointForHandle:(unint64_t)handle onCropRect:(CGRect)rect;
+- (CGRect)_addHeight:(double)height toRect:(CGRect)rect anchorTop:(BOOL)top;
+- (CGRect)_addWidth:(double)width toRect:(CGRect)rect anchorLeft:(BOOL)left;
 - (CGRect)_cropCanvasFrame;
-- (CGRect)_cropRectFromPanningHandle:(unint64_t)a3 byAmount:(CGVector)a4;
+- (CGRect)_cropRectFromPanningHandle:(unint64_t)handle byAmount:(CGVector)amount;
 - (CGRect)_defaultImageCropRect;
 - (CGRect)_defaultViewCropRect;
-- (CGRect)_suggestedCropRectForImageRect:(CGRect)a3;
+- (CGRect)_suggestedCropRectForImageRect:(CGRect)rect;
 - (CGRect)cropViewFrameForLastModelLoad;
 - (CGRect)initialHandlePanCropRect;
 - (CGRect)inputExtent;
@@ -20,83 +20,83 @@
 - (CGRect)viewCropRect;
 - (CGSize)minimumViewCropRectSizeForHandleGesture;
 - (CGSize)screenSize;
-- (CGVector)_applyAspectOfCropRect:(CGRect)a3 toHandleMovement:(CGVector)a4;
-- (CGVector)_correctInputVector:(CGVector)a3 forHandle:(unint64_t)a4 onCropRect:(CGRect)a5 lockDirection:(BOOL)a6;
-- (CGVector)_deltaMaskForHandle:(unint64_t)a3;
+- (CGVector)_applyAspectOfCropRect:(CGRect)rect toHandleMovement:(CGVector)movement;
+- (CGVector)_correctInputVector:(CGVector)vector forHandle:(unint64_t)handle onCropRect:(CGRect)rect lockDirection:(BOOL)direction;
+- (CGVector)_deltaMaskForHandle:(unint64_t)handle;
 - (NSDictionary)cropHandleViewsByHandle;
 - (NSMutableDictionary)animationTargetsByKeyPath;
 - (NSMutableDictionary)animationsByKeyPath;
 - (NSMutableDictionary)initialLocationsInHandlesByHandle;
 - (PUCropOverlayView)cropOverlayView;
 - (PUCropPerspectiveView)cropView;
-- (PUCropToolController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PUCropToolController)initWithNibName:(id)name bundle:(id)bundle;
 - (UIEdgeInsets)previewViewInsets;
 - (UIView)cropCanvasView;
-- (id)_animateValueFromValue:(double)a3 toValue:(double)a4 interpolation:(id)a5 completion:(id)a6;
-- (id)_animationForKeyPath:(id)a3;
-- (id)_animationTargetForKeyPath:(id)a3;
-- (id)adjustmentsRenderer:(id)a3;
+- (id)_animateValueFromValue:(double)value toValue:(double)toValue interpolation:(id)interpolation completion:(id)completion;
+- (id)_animationForKeyPath:(id)path;
+- (id)_animationTargetForKeyPath:(id)path;
+- (id)adjustmentsRenderer:(id)renderer;
 - (id)adjustmentsViewControllerMainContainerView;
-- (id)bestAspectRatioForWidth:(unint64_t)a3 height:(unint64_t)a4;
+- (id)bestAspectRatioForWidth:(unint64_t)width height:(unint64_t)height;
 - (id)leadingToolbarViews;
 - (id)toolActionsForMenu;
 - (id)trailingToolbarViews;
-- (void)_accessibilityLongPressChanged:(id)a3;
+- (void)_accessibilityLongPressChanged:(id)changed;
 - (void)_applyCropAndPerspectiveSuggestion;
-- (void)_applyCropRect:(CGRect)a3 straightenAngle:(double)a4 pitchAngle:(double)a5 yawAngle:(double)a6 isAutoCrop:(BOOL)a7;
-- (void)_aspectButtonTapped:(id)a3;
+- (void)_applyCropRect:(CGRect)rect straightenAngle:(double)angle pitchAngle:(double)pitchAngle yawAngle:(double)yawAngle isAutoCrop:(BOOL)crop;
+- (void)_aspectButtonTapped:(id)tapped;
 - (void)_aspectLockButtonTapped;
 - (void)_autoApplyCropAndPerspectiveSuggestionIfNeeded;
 - (void)_autoRecomposeCropRect;
 - (void)_beginObservingVideoPlayer;
-- (void)_cancelAnimationForKeyPath:(id)a3;
+- (void)_cancelAnimationForKeyPath:(id)path;
 - (void)_closeAspectRatioPicker;
 - (void)_createRendererIfNeeded;
-- (void)_cropToggleTapped:(id)a3;
-- (void)_flipButtonTapped:(id)a3;
-- (void)_gridButtonTapped:(id)a3;
-- (void)_handleCropHandlePan:(id)a3;
-- (void)_handleDidCreateEditedImage:(id)a3 inputExtent:(CGRect)a4;
-- (void)_handleTouchingGesture:(id)a3;
+- (void)_cropToggleTapped:(id)tapped;
+- (void)_flipButtonTapped:(id)tapped;
+- (void)_gridButtonTapped:(id)tapped;
+- (void)_handleCropHandlePan:(id)pan;
+- (void)_handleDidCreateEditedImage:(id)image inputExtent:(CGRect)extent;
+- (void)_handleTouchingGesture:(id)gesture;
 - (void)_hideGrid;
 - (void)_hideGridDelayed;
 - (void)_hideMaskedContent;
 - (void)_hideMaskedContentDelayed;
 - (void)_installRenderedImageAndDisplayIfNeeded;
-- (void)_invalidateConstraintsForKey:(id)a3;
+- (void)_invalidateConstraintsForKey:(id)key;
 - (void)_layoutAdjustmentTools;
 - (void)_loadCropSuggestionIfNeeded;
-- (void)_loadImageIfNeededWithCompletion:(id)a3;
+- (void)_loadImageIfNeededWithCompletion:(id)completion;
 - (void)_loadMediaIfNeeded;
 - (void)_loadPerspectiveSuggestionIfNeeded;
-- (void)_loadStateFromModelAnimated:(BOOL)a3;
-- (void)_performGeometryChange:(id)a3 animated:(BOOL)a4;
+- (void)_loadStateFromModelAnimated:(BOOL)animated;
+- (void)_performGeometryChange:(id)change animated:(BOOL)animated;
 - (void)_performInitialAction;
-- (void)_performLocalCropModelChanges:(id)a3;
-- (void)_performLocalModelChanges:(id)a3;
+- (void)_performLocalCropModelChanges:(id)changes;
+- (void)_performLocalModelChanges:(id)changes;
 - (void)_playPauseButtonTapped;
 - (void)_preferredContentSizeCategoryChanged;
-- (void)_recomposeCropRectAnimated:(BOOL)a3;
+- (void)_recomposeCropRectAnimated:(BOOL)animated;
 - (void)_recomposeCropRectDelayed;
-- (void)_removeSnapshotView:(id)a3;
-- (void)_resetAllValuesAnimated:(BOOL)a3 skipLayerTransformUpdate:(BOOL)a4;
-- (void)_rotateButtonTapped:(id)a3;
-- (void)_rotateByApplyingOrientation:(int64_t)a3;
-- (void)_setAnimation:(id)a3 forKeyPath:(id)a4;
-- (void)_setAnimationTarget:(id)a3 forKeyPath:(id)a4;
-- (void)_setContentViewsHidden:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)_setCropAspect:(id)a3 animated:(BOOL)a4;
-- (void)_setPitchAngle:(double)a3 animated:(BOOL)a4;
-- (void)_setStraightenAngle:(double)a3 animated:(BOOL)a4;
-- (void)_setViewCropRect:(CGRect)a3 animated:(BOOL)a4;
-- (void)_setYawAngle:(double)a3 animated:(BOOL)a4;
-- (void)_setupCropModelFromCompositionController:(id)a3;
+- (void)_removeSnapshotView:(id)view;
+- (void)_resetAllValuesAnimated:(BOOL)animated skipLayerTransformUpdate:(BOOL)update;
+- (void)_rotateButtonTapped:(id)tapped;
+- (void)_rotateByApplyingOrientation:(int64_t)orientation;
+- (void)_setAnimation:(id)animation forKeyPath:(id)path;
+- (void)_setAnimationTarget:(id)target forKeyPath:(id)path;
+- (void)_setContentViewsHidden:(BOOL)hidden animated:(BOOL)animated completion:(id)completion;
+- (void)_setCropAspect:(id)aspect animated:(BOOL)animated;
+- (void)_setPitchAngle:(double)angle animated:(BOOL)animated;
+- (void)_setStraightenAngle:(double)angle animated:(BOOL)animated;
+- (void)_setViewCropRect:(CGRect)rect animated:(BOOL)animated;
+- (void)_setYawAngle:(double)angle animated:(BOOL)animated;
+- (void)_setupCropModelFromCompositionController:(id)controller;
 - (void)_showGridAndCancelDelayedHide;
 - (void)_showMaskedContentAndCancelDelayedHide;
 - (void)_toggleCropAndPerspective;
 - (void)_updateAspectRatioControls;
 - (void)_updateAspectRatioLayout;
-- (void)_updateBadgeTextWithInfo:(id)a3;
+- (void)_updateBadgeTextWithInfo:(id)info;
 - (void)_updateCropActionButtons;
 - (void)_updateCropCanvasConstraintsIfNeeded;
 - (void)_updateCropToggleButton;
@@ -106,54 +106,54 @@
 - (void)_updatePreviewViewInsets;
 - (void)_updateToolLabelAppearanceIfNeeded;
 - (void)_updateVideoScrubber;
-- (void)_userChangedAspectRatioLocked:(BOOL)a3;
-- (void)adjustmentsViewControllerDidUpdateSelectedControl:(id)a3;
-- (void)adjustmentsViewControllerSliderDidEndScrubbing:(id)a3;
-- (void)adjustmentsViewControllerSliderWillBeginScrubbing:(id)a3;
-- (void)adjustmentsViewControllerToolDidEndScrubbing:(id)a3;
-- (void)adjustmentsViewControllerToolWillBeginScrubbing:(id)a3;
+- (void)_userChangedAspectRatioLocked:(BOOL)locked;
+- (void)adjustmentsViewControllerDidUpdateSelectedControl:(id)control;
+- (void)adjustmentsViewControllerSliderDidEndScrubbing:(id)scrubbing;
+- (void)adjustmentsViewControllerSliderWillBeginScrubbing:(id)scrubbing;
+- (void)adjustmentsViewControllerToolDidEndScrubbing:(id)scrubbing;
+- (void)adjustmentsViewControllerToolWillBeginScrubbing:(id)scrubbing;
 - (void)baseMediaInvalidated;
 - (void)basePhotoInvalidated;
-- (void)compositionControllerDidChangeForAdjustments:(id)a3;
-- (void)configureForAdjustmentCategory:(int64_t)a3;
+- (void)compositionControllerDidChangeForAdjustments:(id)adjustments;
+- (void)configureForAdjustmentCategory:(int64_t)category;
 - (void)createVideoScrubber;
-- (void)cropAspectController:(id)a3 cropAspectSelected:(id)a4;
-- (void)cropAspectFlipperView:(id)a3 cropOrientationSelected:(int64_t)a4;
-- (void)cropTransformedImageViewDidEndTracking:(id)a3;
-- (void)cropTransformedImageViewDidTrack:(id)a3;
-- (void)cropTransformedImageViewWillBeginTracking:(id)a3;
+- (void)cropAspectController:(id)controller cropAspectSelected:(id)selected;
+- (void)cropAspectFlipperView:(id)view cropOrientationSelected:(int64_t)selected;
+- (void)cropTransformedImageViewDidEndTracking:(id)tracking;
+- (void)cropTransformedImageViewDidTrack:(id)track;
+- (void)cropTransformedImageViewWillBeginTracking:(id)tracking;
 - (void)dealloc;
 - (void)didBecomeActiveTool;
 - (void)didResignActiveTool;
-- (void)editValuesCalculatorHasChangedGeometricValues:(id)a3;
+- (void)editValuesCalculatorHasChangedGeometricValues:(id)values;
 - (void)handleResigningCropTool;
-- (void)mediaTimelineControlViewDidChangeValue:(id)a3;
-- (void)mediaTimelineControlViewDidEndChanging:(id)a3;
-- (void)mediaTimelineControlViewWillBeginChanging:(id)a3;
-- (void)prepareForSave:(BOOL)a3;
-- (void)prepareForToolTransitionWithCompletion:(id)a3;
+- (void)mediaTimelineControlViewDidChangeValue:(id)value;
+- (void)mediaTimelineControlViewDidEndChanging:(id)changing;
+- (void)mediaTimelineControlViewWillBeginChanging:(id)changing;
+- (void)prepareForSave:(BOOL)save;
+- (void)prepareForToolTransitionWithCompletion:(id)completion;
 - (void)reactivate;
 - (void)resetToolLabelHidingTimer;
-- (void)setAspectRatioLocked:(BOOL)a3;
-- (void)setAutoButtonMode:(int64_t)a3;
-- (void)setDelegate:(id)a3;
-- (void)setFocusingViewForInteraction:(BOOL)a3;
-- (void)setGainMapImage:(CGImage *)a3;
-- (void)setGainMapValue:(float)a3;
-- (void)setGridVisible:(BOOL)a3;
-- (void)setHasAppliedCropSuggestion:(BOOL)a3;
-- (void)setLayoutOrientation:(int64_t)a3 withTransitionCoordinator:(id)a4;
-- (void)setupWithAsset:(id)a3 compositionController:(id)a4 editSource:(id)a5 valuesCalculator:(id)a6;
-- (void)showBadgeView:(BOOL)a3 animated:(BOOL)a4;
-- (void)showVideoScrubber:(BOOL)a3;
+- (void)setAspectRatioLocked:(BOOL)locked;
+- (void)setAutoButtonMode:(int64_t)mode;
+- (void)setDelegate:(id)delegate;
+- (void)setFocusingViewForInteraction:(BOOL)interaction;
+- (void)setGainMapImage:(CGImage *)image;
+- (void)setGainMapValue:(float)value;
+- (void)setGridVisible:(BOOL)visible;
+- (void)setHasAppliedCropSuggestion:(BOOL)suggestion;
+- (void)setLayoutOrientation:(int64_t)orientation withTransitionCoordinator:(id)coordinator;
+- (void)setupWithAsset:(id)asset compositionController:(id)controller editSource:(id)source valuesCalculator:(id)calculator;
+- (void)showBadgeView:(BOOL)view animated:(BOOL)animated;
+- (void)showVideoScrubber:(BOOL)scrubber;
 - (void)updateAspectRatioLockButton;
-- (void)updateCropAspectRatioOrientation:(int64_t)a3;
+- (void)updateCropAspectRatioOrientation:(int64_t)orientation;
 - (void)updateViewConstraints;
 - (void)updateViewOrdering;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)willBecomeActiveTool;
 - (void)willResignActiveTool;
 @end
@@ -256,56 +256,56 @@
   return result;
 }
 
-- (void)_accessibilityLongPressChanged:(id)a3
+- (void)_accessibilityLongPressChanged:(id)changed
 {
-  v21 = a3;
-  v4 = [(PUCropToolController *)self view];
-  v5 = [(PUCropToolController *)self view];
-  [v21 locationInView:v5];
-  v6 = [v4 hitTest:0 withEvent:?];
+  changedCopy = changed;
+  view = [(PUCropToolController *)self view];
+  view2 = [(PUCropToolController *)self view];
+  [changedCopy locationInView:view2];
+  v6 = [view hitTest:0 withEvent:?];
 
-  v7 = [(PUCropToolController *)self rotateButton];
-  LODWORD(v5) = [v6 isEqual:v7];
+  rotateButton = [(PUCropToolController *)self rotateButton];
+  LODWORD(view2) = [v6 isEqual:rotateButton];
 
-  if (v5)
+  if (view2)
   {
-    v8 = [(PUCropToolController *)self rotateButton];
+    rotateButton2 = [(PUCropToolController *)self rotateButton];
 LABEL_7:
-    v13 = v8;
+    v13 = rotateButton2;
     goto LABEL_8;
   }
 
-  v9 = [(PUCropToolController *)self aspectButton];
-  v10 = [v6 isEqual:v9];
+  aspectButton = [(PUCropToolController *)self aspectButton];
+  v10 = [v6 isEqual:aspectButton];
 
   if (v10)
   {
-    v8 = [(PUCropToolController *)self aspectButton];
+    rotateButton2 = [(PUCropToolController *)self aspectButton];
     goto LABEL_7;
   }
 
-  v11 = [(PUCropToolController *)self autoButton];
-  v12 = [v6 isEqual:v11];
+  autoButton = [(PUCropToolController *)self autoButton];
+  v12 = [v6 isEqual:autoButton];
 
   if (v12)
   {
-    v8 = [(PUCropToolController *)self autoButton];
+    rotateButton2 = [(PUCropToolController *)self autoButton];
     goto LABEL_7;
   }
 
   v13 = 0;
 LABEL_8:
-  v14 = [v21 state];
-  if ((v14 - 1) < 2)
+  state = [changedCopy state];
+  if ((state - 1) < 2)
   {
     if (v13)
     {
       v15 = objc_alloc(MEMORY[0x1E69DC618]);
-      v16 = [v13 titleLabel];
-      v17 = [v16 text];
-      v18 = [v13 imageView];
-      v19 = [v18 image];
-      v20 = [v15 initWithTitle:v17 image:v19 imageInsets:1 scaleImage:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
+      titleLabel = [v13 titleLabel];
+      text = [titleLabel text];
+      imageView = [v13 imageView];
+      image = [imageView image];
+      v20 = [v15 initWithTitle:text image:image imageInsets:1 scaleImage:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
 
       if (v20)
       {
@@ -323,7 +323,7 @@ LABEL_8:
     goto LABEL_15;
   }
 
-  if (v14 != 3)
+  if (state != 3)
   {
 LABEL_15:
     [(PUCropToolController *)self _dismissAccessibilityHUD];
@@ -341,49 +341,49 @@ LABEL_19:
 
 - (void)_preferredContentSizeCategoryChanged
 {
-  v4 = [(PUCropToolController *)self accessibilityLongPressGestureRecognizer];
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
-  v3 = [v2 preferredContentSizeCategory];
-  [v4 setEnabled:UIContentSizeCategoryIsAccessibilityCategory(v3)];
+  accessibilityLongPressGestureRecognizer = [(PUCropToolController *)self accessibilityLongPressGestureRecognizer];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+  [accessibilityLongPressGestureRecognizer setEnabled:UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory)];
 }
 
-- (id)adjustmentsRenderer:(id)a3
+- (id)adjustmentsRenderer:(id)renderer
 {
-  v4 = [(PUPhotoEditToolController *)self delegate];
-  v5 = [v4 toolControllerMainRenderer:self];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  v5 = [delegate toolControllerMainRenderer:self];
 
   return v5;
 }
 
-- (void)cropAspectFlipperView:(id)a3 cropOrientationSelected:(int64_t)a4
+- (void)cropAspectFlipperView:(id)view cropOrientationSelected:(int64_t)selected
 {
-  v6 = [(PUCropToolController *)self cropAspect];
+  cropAspect = [(PUCropToolController *)self cropAspect];
 
-  if (v6)
+  if (cropAspect)
   {
     [(PUPhotoEditToolController *)self willModifyAdjustment];
-    v7 = [(PUCropToolController *)self cropAspect];
-    v8 = [v7 inverseAspect];
-    [(PUCropToolController *)self _setCropAspect:v8 animated:1];
+    cropAspect2 = [(PUCropToolController *)self cropAspect];
+    inverseAspect = [cropAspect2 inverseAspect];
+    [(PUCropToolController *)self _setCropAspect:inverseAspect animated:1];
 
     v9 = PULocalizedString(@"PHOTOEDIT_CROP_ORIENTATION_ACTION_TITLE");
     [(PUPhotoEditToolController *)self didModifyAdjustmentWithLocalizedName:v9];
   }
 
-  [(PUCropToolController *)self updateCropAspectRatioOrientation:a4];
+  [(PUCropToolController *)self updateCropAspectRatioOrientation:selected];
 }
 
-- (void)cropAspectController:(id)a3 cropAspectSelected:(id)a4
+- (void)cropAspectController:(id)controller cropAspectSelected:(id)selected
 {
-  v7 = a4;
+  selectedCopy = selected;
   [(PUPhotoEditToolController *)self willModifyAdjustment];
-  [(PUCropToolController *)self _setCropAspect:v7 animated:1];
+  [(PUCropToolController *)self _setCropAspect:selectedCopy animated:1];
   v5 = PULocalizedString(@"PHOTOEDIT_CROP_ASPECT_ACTION_TITLE");
   [(PUPhotoEditToolController *)self didModifyAdjustmentWithLocalizedName:v5];
 
-  if (v7)
+  if (selectedCopy)
   {
-    v6 = [v7 isFreeformCrop] ^ 1;
+    v6 = [selectedCopy isFreeformCrop] ^ 1;
   }
 
   else
@@ -395,16 +395,16 @@ LABEL_19:
   [(PUCropToolController *)self setHasAppliedCropSuggestion:0];
 }
 
-- (void)_cropToggleTapped:(id)a3
+- (void)_cropToggleTapped:(id)tapped
 {
-  v5 = a3;
+  tappedCopy = tapped;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PUCropToolController.m" lineNumber:3371 description:{@"Invalid parameter not satisfying: %@", @"[sender isKindOfClass:[UIButton class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUCropToolController.m" lineNumber:3371 description:{@"Invalid parameter not satisfying: %@", @"[sender isKindOfClass:[UIButton class]]"}];
   }
 
   [(PUCropToolController *)self _toggleCropAndPerspective];
@@ -412,41 +412,41 @@ LABEL_19:
 
 - (void)_updateAspectRatioLayout
 {
-  v3 = [(PUPhotoEditToolController *)self photoEditSpec];
-  v4 = [v3 currentLayoutStyle];
+  photoEditSpec = [(PUPhotoEditToolController *)self photoEditSpec];
+  currentLayoutStyle = [photoEditSpec currentLayoutStyle];
 
   [(PUCropAspectFlipperView *)self->_cropAspectFlipperView removeFromSuperview];
-  if (v4 == 4)
+  if (currentLayoutStyle == 4)
   {
     cropAspectFlipperView = self->_cropAspectFlipperView;
   }
 
   else
   {
-    v6 = [(PUCropToolController *)self view];
-    [v6 addSubview:self->_cropAspectFlipperView];
+    view = [(PUCropToolController *)self view];
+    [view addSubview:self->_cropAspectFlipperView];
 
     cropAspectFlipperView = 0;
   }
 
-  v7 = [(PUCropToolController *)self cropAspectViewController];
-  [v7 setScrollExtraLeftView:cropAspectFlipperView];
+  cropAspectViewController = [(PUCropToolController *)self cropAspectViewController];
+  [cropAspectViewController setScrollExtraLeftView:cropAspectFlipperView];
 }
 
-- (void)_aspectButtonTapped:(id)a3
+- (void)_aspectButtonTapped:(id)tapped
 {
-  v5 = a3;
+  tappedCopy = tapped;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v32 handleFailureInMethod:a2 object:self file:@"PUCropToolController.m" lineNumber:3319 description:{@"Invalid parameter not satisfying: %@", @"[sender isKindOfClass:[UIButton class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUCropToolController.m" lineNumber:3319 description:{@"Invalid parameter not satisfying: %@", @"[sender isKindOfClass:[UIButton class]]"}];
   }
 
-  v7 = [(PUPhotoEditToolController *)self delegate];
-  [v7 toolControllerOriginalOrientedImageSize:self];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  [delegate toolControllerOriginalOrientedImageSize:self];
   v9 = v8;
   v11 = v10;
 
@@ -460,37 +460,37 @@ LABEL_19:
   {
     v14 = v12;
     v15 = v13;
-    v16 = [(PUPhotoEditToolController *)self photoEditSpec];
-    v17 = [v16 currentLayoutStyle];
+    photoEditSpec = [(PUPhotoEditToolController *)self photoEditSpec];
+    currentLayoutStyle = [photoEditSpec currentLayoutStyle];
 
-    v18 = [(PUPhotoEditToolController *)self layoutOrientation];
-    v19 = v17 != 4 && v18 != 1;
+    layoutOrientation = [(PUPhotoEditToolController *)self layoutOrientation];
+    v19 = currentLayoutStyle != 4 && layoutOrientation != 1;
     v20 = [PUCropAspectViewController alloc];
-    v21 = [(PUCropToolController *)self cropAspect];
-    v22 = [(PUPhotoEditToolController *)self toolControllerSpec];
-    v23 = [(PUCropAspectViewController *)v20 initWithLayoutOrientation:v19 originalSize:v21 currentSize:v22 currentCropAspect:v9 spec:v11, v14, v15];
+    cropAspect = [(PUCropToolController *)self cropAspect];
+    toolControllerSpec = [(PUPhotoEditToolController *)self toolControllerSpec];
+    v23 = [(PUCropAspectViewController *)v20 initWithLayoutOrientation:v19 originalSize:cropAspect currentSize:toolControllerSpec currentCropAspect:v9 spec:v11, v14, v15];
     cropAspectViewController = self->_cropAspectViewController;
     self->_cropAspectViewController = v23;
 
     [(PUCropAspectViewController *)self->_cropAspectViewController setDelegate:self];
     [(PUCropToolController *)self addChildViewController:self->_cropAspectViewController];
-    v25 = [(PUCropToolController *)self view];
-    v26 = [(PUCropAspectViewController *)self->_cropAspectViewController view];
-    [v25 addSubview:v26];
+    view = [(PUCropToolController *)self view];
+    view2 = [(PUCropAspectViewController *)self->_cropAspectViewController view];
+    [view addSubview:view2];
 
-    if (v17 == 4)
+    if (currentLayoutStyle == 4)
     {
       v27 = 0;
     }
 
     else
     {
-      v27 = v18 != 1;
-      v28 = [(PUCropToolController *)self adjustmentPickerView];
-      [v28 setHidden:1];
+      v27 = layoutOrientation != 1;
+      adjustmentPickerView = [(PUCropToolController *)self adjustmentPickerView];
+      [adjustmentPickerView setHidden:1];
 
-      v29 = [(PUCropToolController *)self badgeView];
-      [v29 setHidden:1];
+      badgeView = [(PUCropToolController *)self badgeView];
+      [badgeView setHidden:1];
     }
 
     v30 = [[PUCropAspectFlipperView alloc] initWithLayoutOrientation:v27];
@@ -513,18 +513,18 @@ LABEL_19:
   if (cropAspectViewController)
   {
     [(PUCropAspectViewController *)cropAspectViewController removeFromParentViewController];
-    v4 = [(PUCropAspectViewController *)self->_cropAspectViewController view];
-    [v4 removeFromSuperview];
+    view = [(PUCropAspectViewController *)self->_cropAspectViewController view];
+    [view removeFromSuperview];
 
     v5 = self->_cropAspectViewController;
     self->_cropAspectViewController = 0;
 
     [(PUCropToolController *)self _invalidateConstraintsForKey:@"PUCropToggleConstraints"];
-    v6 = [(PUCropToolController *)self adjustmentPickerView];
-    [v6 setHidden:0];
+    adjustmentPickerView = [(PUCropToolController *)self adjustmentPickerView];
+    [adjustmentPickerView setHidden:0];
 
-    v7 = [(PUCropToolController *)self badgeView];
-    [v7 setHidden:0];
+    badgeView = [(PUCropToolController *)self badgeView];
+    [badgeView setHidden:0];
 
     [(PUCropAspectFlipperView *)self->_cropAspectFlipperView removeFromSuperview];
     cropAspectFlipperView = self->_cropAspectFlipperView;
@@ -532,33 +532,33 @@ LABEL_19:
   }
 }
 
-- (void)_gridButtonTapped:(id)a3
+- (void)_gridButtonTapped:(id)tapped
 {
-  v5 = a3;
+  tappedCopy = tapped;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PUCropToolController.m" lineNumber:3296 description:{@"Invalid parameter not satisfying: %@", @"[sender isKindOfClass:[UIButton class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUCropToolController.m" lineNumber:3296 description:{@"Invalid parameter not satisfying: %@", @"[sender isKindOfClass:[UIButton class]]"}];
   }
 
   [(PUCropToolController *)self setGridVisible:[(PUCropToolController *)self gridVisible]^ 1];
-  v8 = [(PUCropToolController *)self cropOverlayView];
-  [v8 setCropGridVisible:-[PUCropToolController gridVisible](self animated:{"gridVisible"), 1}];
+  cropOverlayView = [(PUCropToolController *)self cropOverlayView];
+  [cropOverlayView setCropGridVisible:-[PUCropToolController gridVisible](self animated:{"gridVisible"), 1}];
 }
 
-- (void)_flipButtonTapped:(id)a3
+- (void)_flipButtonTapped:(id)tapped
 {
-  v5 = a3;
+  tappedCopy = tapped;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PUCropToolController.m" lineNumber:3286 description:{@"Invalid parameter not satisfying: %@", @"[sender isKindOfClass:[UIButton class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUCropToolController.m" lineNumber:3286 description:{@"Invalid parameter not satisfying: %@", @"[sender isKindOfClass:[UIButton class]]"}];
   }
 
   [(PUCropToolController *)self _performGeometryChange:&__block_literal_global_501 animated:1];
@@ -566,34 +566,34 @@ LABEL_19:
   [(PUCropToolController *)self setHasAppliedCropSuggestion:0];
 }
 
-- (void)_rotateButtonTapped:(id)a3
+- (void)_rotateButtonTapped:(id)tapped
 {
-  v5 = a3;
+  tappedCopy = tapped;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PUCropToolController.m" lineNumber:3281 description:{@"Invalid parameter not satisfying: %@", @"[sender isKindOfClass:[UIButton class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUCropToolController.m" lineNumber:3281 description:{@"Invalid parameter not satisfying: %@", @"[sender isKindOfClass:[UIButton class]]"}];
   }
 
   [(PUCropToolController *)self _rotateByApplyingOrientation:8];
 }
 
-- (void)_rotateByApplyingOrientation:(int64_t)a3
+- (void)_rotateByApplyingOrientation:(int64_t)orientation
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __53__PUCropToolController__rotateByApplyingOrientation___block_invoke;
   v4[3] = &__block_descriptor_40_e25_v16__0__PLImageGeometry_8l;
-  v4[4] = a3;
+  v4[4] = orientation;
   [(PUCropToolController *)self _performGeometryChange:v4 animated:1];
   [(PUCropToolController *)self setHasAppliedCropSuggestion:0];
   [(PUCropToolController *)self _updateAspectRatioControls];
 }
 
-- (void)editValuesCalculatorHasChangedGeometricValues:(id)a3
+- (void)editValuesCalculatorHasChangedGeometricValues:(id)values
 {
   [(PUCropToolController *)self _loadCropSuggestionIfNeeded];
   [(PUCropToolController *)self _loadPerspectiveSuggestionIfNeeded];
@@ -605,11 +605,11 @@ LABEL_19:
 - (id)toolActionsForMenu
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PUCropToolController *)self cropAspect];
-  v4 = v3;
+  cropAspect = [(PUCropToolController *)self cropAspect];
+  v4 = cropAspect;
   v5 = @"lock.fill";
   v6 = @"PHOTOEDIT_CROP_MENU_LOCK_ASPECT_RATIO";
-  if (v3 && ![v3 isFreeformCrop])
+  if (cropAspect && ![cropAspect isFreeformCrop])
   {
     v6 = @"PHOTOEDIT_CROP_MENU_UNLOCK_ASPECT_RATIO";
     v5 = @"lock.open.fill";
@@ -632,8 +632,8 @@ LABEL_19:
 - (id)trailingToolbarViews
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v2 = [(PUCropToolController *)self aspectButton];
-  v5[0] = v2;
+  aspectButton = [(PUCropToolController *)self aspectButton];
+  v5[0] = aspectButton;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
 
   return v3;
@@ -642,10 +642,10 @@ LABEL_19:
 - (id)leadingToolbarViews
 {
   v7[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PUCropToolController *)self flipButton];
-  v7[0] = v3;
-  v4 = [(PUCropToolController *)self rotateButton];
-  v7[1] = v4;
+  flipButton = [(PUCropToolController *)self flipButton];
+  v7[0] = flipButton;
+  rotateButton = [(PUCropToolController *)self rotateButton];
+  v7[1] = rotateButton;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:2];
 
   return v5;
@@ -655,8 +655,8 @@ LABEL_19:
 {
   [(PUCropToolController *)self setModelLoadingSuspended:0];
   [(PUCropToolController *)self setContentViewsHidden:0];
-  v3 = [(PUCropToolController *)self cropView];
-  [v3 setAutoloopComposition:0];
+  cropView = [(PUCropToolController *)self cropView];
+  [cropView setAutoloopComposition:0];
 
   v4.receiver = self;
   v4.super_class = PUCropToolController;
@@ -667,9 +667,9 @@ LABEL_19:
 {
   if ([(PUCropToolController *)self _needsRecomposeCropRect])
   {
-    v3 = [(PUCropToolController *)self cropView];
+    cropView = [(PUCropToolController *)self cropView];
     [(PUCropToolController *)self viewCropRect];
-    [v3 setImageCropRectFromViewCropRect:0 animated:?];
+    [cropView setImageCropRectFromViewCropRect:0 animated:?];
 
     [(NUCropModel *)self->_cropModel cropRect];
     x = v23.origin.x;
@@ -700,29 +700,29 @@ LABEL_19:
     }
   }
 
-  v9 = [(PUPhotoEditToolController *)self compositionController];
-  v10 = [v9 cropAdjustmentController];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  cropAdjustmentController = [compositionController cropAdjustmentController];
 
-  [v10 cropRect];
+  [cropAdjustmentController cropRect];
   if (v12 < 1.0 || v11 < 1.0)
   {
-    v14 = [(PUPhotoEditToolController *)self compositionController];
-    v15 = [MEMORY[0x1E69BE360] adjustmentConstants];
-    v16 = [v15 PICropAdjustmentKey];
-    [v14 removeAdjustmentWithKey:v16];
+    compositionController2 = [(PUPhotoEditToolController *)self compositionController];
+    adjustmentConstants = [MEMORY[0x1E69BE360] adjustmentConstants];
+    pICropAdjustmentKey = [adjustmentConstants PICropAdjustmentKey];
+    [compositionController2 removeAdjustmentWithKey:pICropAdjustmentKey];
   }
 
-  else if ([v10 enabled])
+  else if ([cropAdjustmentController enabled])
   {
-    v17 = [(PUPhotoEditToolController *)self compositionController];
-    v18 = [MEMORY[0x1E69BE360] adjustmentConstants];
-    v19 = [v18 PICropAdjustmentKey];
+    compositionController3 = [(PUPhotoEditToolController *)self compositionController];
+    adjustmentConstants2 = [MEMORY[0x1E69BE360] adjustmentConstants];
+    pICropAdjustmentKey2 = [adjustmentConstants2 PICropAdjustmentKey];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __47__PUCropToolController_handleResigningCropTool__block_invoke_483;
     v20[3] = &unk_1E7B7AF80;
     v20[4] = self;
-    [v17 modifyAdjustmentWithKey:v19 modificationBlock:v20];
+    [compositionController3 modifyAdjustmentWithKey:pICropAdjustmentKey2 modificationBlock:v20];
   }
 }
 
@@ -734,9 +734,9 @@ void __47__PUCropToolController_handleResigningCropTool__block_invoke_483(uint64
   [v3 setCropRect:?];
 }
 
-- (void)prepareForSave:(BOOL)a3
+- (void)prepareForSave:(BOOL)save
 {
-  if (a3)
+  if (save)
   {
     [(PUCropToolController *)self handleResigningCropTool];
   }
@@ -748,44 +748,44 @@ void __47__PUCropToolController_handleResigningCropTool__block_invoke_483(uint64
   [(PUCropToolController *)self setActiveTool:0];
   [(PUCropToolController *)self _updatePreviewViewInsets];
   [(PUCropToolController *)self _closeAspectRatioPicker];
-  v3 = [(PUPhotoEditToolController *)self compositionController];
-  v4 = [v3 composition];
-  v5 = [v4 copy];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  composition = [compositionController composition];
+  v5 = [composition copy];
   [(PUCropToolController *)self setLastKnownComposition:v5];
 
   [(PUCropToolController *)self setContentViewsHidden:1];
-  v6 = [(PUCropToolController *)self rotateSnapshotView];
-  [v6 removeFromSuperview];
+  rotateSnapshotView = [(PUCropToolController *)self rotateSnapshotView];
+  [rotateSnapshotView removeFromSuperview];
 
   [(PUCropToolController *)self setRotateSnapshotView:0];
   [(PUCropToolController *)self _cancelDelayedRecomposeCropRect];
   [(PUCropToolController *)self handleResigningCropTool];
-  v7 = [(PUCropToolController *)self cropView];
-  v8 = [v7 videoMediaView];
-  v9 = [v8 player];
+  cropView = [(PUCropToolController *)self cropView];
+  videoMediaView = [cropView videoMediaView];
+  player = [videoMediaView player];
 
-  [v9 pause];
+  [player pause];
   v17 = 0uLL;
   v18 = 0;
-  if (v9)
+  if (player)
   {
-    [v9 currentTime];
+    [player currentTime];
     if (BYTE12(v17))
     {
-      v10 = [(PUPhotoEditToolController *)self delegate];
-      v11 = [v10 mediaView];
-      v12 = [v11 player];
+      delegate = [(PUPhotoEditToolController *)self delegate];
+      mediaView = [delegate mediaView];
+      player2 = [mediaView player];
       v15 = v17;
       v16 = v18;
-      [v12 seekToTime:&v15 exact:1 forceSeek:1];
+      [player2 seekToTime:&v15 exact:1 forceSeek:1];
     }
   }
 
-  v13 = [(PUCropToolController *)self cropView];
-  [v13 tearDownMediaViewAndLayers];
+  cropView2 = [(PUCropToolController *)self cropView];
+  [cropView2 tearDownMediaViewAndLayers];
 
-  v14 = [(PUCropToolController *)self badgeView];
-  [v14 setAlpha:0.0];
+  badgeView = [(PUCropToolController *)self badgeView];
+  [badgeView setAlpha:0.0];
 }
 
 - (void)didBecomeActiveTool
@@ -808,8 +808,8 @@ void __47__PUCropToolController_handleResigningCropTool__block_invoke_483(uint64
 
 - (void)_installRenderedImageAndDisplayIfNeeded
 {
-  v3 = [(PUCropToolController *)self image];
-  if (v3)
+  image = [(PUCropToolController *)self image];
+  if (image)
   {
     if (![(PUCropToolController *)self isActiveTool]|| [(PUCropToolController *)self needsMediaLoad])
     {
@@ -817,8 +817,8 @@ void __47__PUCropToolController_handleResigningCropTool__block_invoke_483(uint64
     }
 
 LABEL_8:
-    v6 = [(PUCropToolController *)self cropOverlayView];
-    [v6 setMaskedContentVisible:0];
+    cropOverlayView = [(PUCropToolController *)self cropOverlayView];
+    [cropOverlayView setMaskedContentVisible:0];
 
     objc_initWeak(&location, self);
     v7[0] = MEMORY[0x1E69E9820];
@@ -832,16 +832,16 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  v4 = [(PUPhotoEditToolController *)self delegate];
-  if (![v4 isStandardVideo] || !-[PUCropToolController isActiveTool](self, "isActiveTool"))
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  if (![delegate isStandardVideo] || !-[PUCropToolController isActiveTool](self, "isActiveTool"))
   {
 
     goto LABEL_10;
   }
 
-  v5 = [(PUCropToolController *)self needsMediaLoad];
+  needsMediaLoad = [(PUCropToolController *)self needsMediaLoad];
 
-  if (!v5)
+  if (!needsMediaLoad)
   {
     goto LABEL_8;
   }
@@ -890,12 +890,12 @@ void __63__PUCropToolController__installRenderedImageAndDisplayIfNeeded__block_i
   v13.super_class = PUCropToolController;
   [(PUPhotoEditToolController *)&v13 willBecomeActiveTool];
   [(PUCropToolController *)self setNeedsModelLoad:1];
-  v3 = [(PUCropToolController *)self lastKnownComposition];
-  if (v3)
+  lastKnownComposition = [(PUCropToolController *)self lastKnownComposition];
+  if (lastKnownComposition)
   {
-    v4 = [(PUPhotoEditToolController *)self compositionController];
-    v5 = [(PUCropToolController *)self lastKnownComposition];
-    v6 = [v4 isEqual:v5 visualChangesOnly:1] ^ 1;
+    compositionController = [(PUPhotoEditToolController *)self compositionController];
+    lastKnownComposition2 = [(PUCropToolController *)self lastKnownComposition];
+    v6 = [compositionController isEqual:lastKnownComposition2 visualChangesOnly:1] ^ 1;
   }
 
   else
@@ -903,22 +903,22 @@ void __63__PUCropToolController__installRenderedImageAndDisplayIfNeeded__block_i
     v6 = 0;
   }
 
-  v7 = [(PUPhotoEditToolController *)self compositionController];
-  v8 = [v7 adjustmentControllerForKey:*MEMORY[0x1E69BE048]];
+  compositionController2 = [(PUPhotoEditToolController *)self compositionController];
+  v8 = [compositionController2 adjustmentControllerForKey:*MEMORY[0x1E69BE048]];
 
   if (v8)
   {
-    v9 = [v8 enabled];
+    enabled = [v8 enabled];
   }
 
   else
   {
-    v10 = [(PUPhotoEditToolController *)self delegate];
-    v9 = [v10 hasLoopingVideoAdjustment];
+    delegate = [(PUPhotoEditToolController *)self delegate];
+    enabled = [delegate hasLoopingVideoAdjustment];
   }
 
-  v11 = [(PUCropToolController *)self cropView];
-  [v11 setMuted:v9];
+  cropView = [(PUCropToolController *)self cropView];
+  [cropView setMuted:enabled];
 
   if (v6)
   {
@@ -927,79 +927,79 @@ void __63__PUCropToolController__installRenderedImageAndDisplayIfNeeded__block_i
 
   [(PUCropToolController *)self setNeedsMediaLoad:1];
   [(PUCropToolController *)self _loadImageIfNeededWithCompletion:0];
-  v12 = [(PUPhotoEditToolController *)self valuesCalculator];
-  [v12 precomputeGeometricValues];
+  valuesCalculator = [(PUPhotoEditToolController *)self valuesCalculator];
+  [valuesCalculator precomputeGeometricValues];
 
   [(PUCropToolController *)self setWantsPreviewViewHidden:0];
   [(PUCropToolController *)self setContentViewsHidden:1];
 }
 
-- (void)setLayoutOrientation:(int64_t)a3 withTransitionCoordinator:(id)a4
+- (void)setLayoutOrientation:(int64_t)orientation withTransitionCoordinator:(id)coordinator
 {
-  v6 = a4;
-  v7 = [(PUPhotoEditToolController *)self layoutOrientation];
+  coordinatorCopy = coordinator;
+  layoutOrientation = [(PUPhotoEditToolController *)self layoutOrientation];
   v27.receiver = self;
   v27.super_class = PUCropToolController;
-  [(PUPhotoEditToolController *)&v27 setLayoutOrientation:a3 withTransitionCoordinator:v6];
-  if (v7 != a3)
+  [(PUPhotoEditToolController *)&v27 setLayoutOrientation:orientation withTransitionCoordinator:coordinatorCopy];
+  if (layoutOrientation != orientation)
   {
     if ([(PUCropToolController *)self isViewLoaded])
     {
-      v8 = [(PUCropToolController *)self view];
+      view = [(PUCropToolController *)self view];
     }
 
     else
     {
-      v8 = 0;
+      view = 0;
     }
 
-    v9 = [(PUCropToolController *)self rotateButton];
-    v10 = [(PUCropToolController *)self aspectButton];
-    if (v8 && [(PUCropToolController *)self isActiveTool]&& v9 | v10)
+    rotateButton = [(PUCropToolController *)self rotateButton];
+    aspectButton = [(PUCropToolController *)self aspectButton];
+    if (view && [(PUCropToolController *)self isActiveTool]&& rotateButton | aspectButton)
     {
       [(PUCropToolController *)self setRotateButton:0];
       [(PUCropToolController *)self setAspectButton:0];
       [(PUCropToolController *)self _invalidateConstraintsForKey:@"PUCropActionButtonConstraints"];
       [(PUCropToolController *)self _updateCropActionButtons];
-      if (v6)
+      if (coordinatorCopy)
       {
-        [v8 layoutIfNeeded];
-        v11 = [(PUCropToolController *)self rotateButton];
-        [v11 setAlpha:0.0];
+        [view layoutIfNeeded];
+        rotateButton2 = [(PUCropToolController *)self rotateButton];
+        [rotateButton2 setAlpha:0.0];
 
-        v12 = [(PUCropToolController *)self aspectButton];
-        [v12 setAlpha:0.0];
+        aspectButton2 = [(PUCropToolController *)self aspectButton];
+        [aspectButton2 setAlpha:0.0];
 
         v23[0] = MEMORY[0x1E69E9820];
         v23[1] = 3221225472;
         v23[2] = __71__PUCropToolController_setLayoutOrientation_withTransitionCoordinator___block_invoke;
         v23[3] = &unk_1E7B76570;
-        v24 = v9;
-        v25 = v10;
-        v26 = self;
+        v24 = rotateButton;
+        v25 = aspectButton;
+        selfCopy = self;
         v20[0] = MEMORY[0x1E69E9820];
         v20[1] = 3221225472;
         v20[2] = __71__PUCropToolController_setLayoutOrientation_withTransitionCoordinator___block_invoke_2;
         v20[3] = &unk_1E7B7AC08;
         v21 = v24;
         v22 = v25;
-        [v6 animateAlongsideTransition:v23 completion:v20];
+        [coordinatorCopy animateAlongsideTransition:v23 completion:v20];
       }
 
       else
       {
-        [v9 removeFromSuperview];
-        [v10 removeFromSuperview];
+        [rotateButton removeFromSuperview];
+        [aspectButton removeFromSuperview];
       }
     }
 
-    v13 = [(PUPhotoEditToolController *)self photoEditSpec];
-    v14 = [v13 currentLayoutStyle];
+    photoEditSpec = [(PUPhotoEditToolController *)self photoEditSpec];
+    currentLayoutStyle = [photoEditSpec currentLayoutStyle];
 
-    v15 = [(PUCropToolController *)self cropAspectViewController];
-    if (v15)
+    cropAspectViewController = [(PUCropToolController *)self cropAspectViewController];
+    if (cropAspectViewController)
     {
-      v16 = v14 == 4;
+      v16 = currentLayoutStyle == 4;
     }
 
     else
@@ -1009,17 +1009,17 @@ void __63__PUCropToolController__installRenderedImageAndDisplayIfNeeded__block_i
 
     v17 = !v16;
 
-    v18 = [(PUCropToolController *)self adjustmentPickerView];
-    [v18 setHidden:v17];
+    adjustmentPickerView = [(PUCropToolController *)self adjustmentPickerView];
+    [adjustmentPickerView setHidden:v17];
 
-    v19 = [(PUCropToolController *)self badgeView];
-    [v19 setHidden:v17];
+    badgeView = [(PUCropToolController *)self badgeView];
+    [badgeView setHidden:v17];
 
     [(PUCropToolController *)self _invalidateConstraintsForKey:@"PUCropCanvasConstraints"];
     [(PUCropToolController *)self _invalidateConstraintsForKey:@"PUCropTiltControlConstraints"];
     [(PUCropToolController *)self _invalidateConstraintsForKey:@"PUCropToggleConstraints"];
     [(PUCropToolController *)self setNeedsModelLoad:1];
-    [v8 setNeedsUpdateConstraints];
+    [view setNeedsUpdateConstraints];
   }
 }
 
@@ -1042,18 +1042,18 @@ uint64_t __71__PUCropToolController_setLayoutOrientation_withTransitionCoordinat
   return [v2 removeFromSuperview];
 }
 
-- (void)_setContentViewsHidden:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_setContentViewsHidden:(BOOL)hidden animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  if (self->_contentViewsHidden != v6)
+  animatedCopy = animated;
+  hiddenCopy = hidden;
+  completionCopy = completion;
+  if (self->_contentViewsHidden != hiddenCopy)
   {
-    self->_contentViewsHidden = v6;
+    self->_contentViewsHidden = hiddenCopy;
     [(PUCropToolController *)self setContentViewsHiddenAnimationCount:[(PUCropToolController *)self contentViewsHiddenAnimationCount]+ 1];
-    v9 = !v6;
+    v9 = !hiddenCopy;
     v10 = 0.0;
-    if (v5)
+    if (animatedCopy)
     {
       v11 = 0.3;
     }
@@ -1063,23 +1063,23 @@ uint64_t __71__PUCropToolController_setLayoutOrientation_withTransitionCoordinat
       v11 = 0.0;
     }
 
-    v12 = [(PUCropToolController *)self cropAspect];
-    v13 = v12;
-    if (v12)
+    cropAspect = [(PUCropToolController *)self cropAspect];
+    v13 = cropAspect;
+    if (cropAspect)
     {
-      if ([v12 isFreeformCrop])
+      if ([cropAspect isFreeformCrop])
       {
         v10 = 0.0;
       }
 
       else
       {
-        v10 = !v6;
+        v10 = !hiddenCopy;
       }
     }
 
-    v14 = [(PUCropToolController *)self cropOverlayView];
-    [v14 setAlpha:v9];
+    cropOverlayView = [(PUCropToolController *)self cropOverlayView];
+    [cropOverlayView setAlpha:v9];
 
     v15 = MEMORY[0x1E69DD250];
     v18[0] = MEMORY[0x1E69E9820];
@@ -1094,7 +1094,7 @@ uint64_t __71__PUCropToolController_setLayoutOrientation_withTransitionCoordinat
     v16[2] = __67__PUCropToolController__setContentViewsHidden_animated_completion___block_invoke_2;
     v16[3] = &unk_1E7B80A18;
     v16[4] = self;
-    v17 = v8;
+    v17 = completionCopy;
     [v15 animateWithDuration:6 delay:v18 options:v16 animations:v11 completion:0.0];
   }
 }
@@ -1171,12 +1171,12 @@ uint64_t __67__PUCropToolController__setContentViewsHidden_animated_completion__
   return result;
 }
 
-- (void)configureForAdjustmentCategory:(int64_t)a3
+- (void)configureForAdjustmentCategory:(int64_t)category
 {
   if (self->_aspectButton)
   {
     cropAspectViewController = self->_cropAspectViewController;
-    v4 = a3 != 7;
+    v4 = category != 7;
     v5 = cropAspectViewController == 0;
     if (cropAspectViewController)
     {
@@ -1185,7 +1185,7 @@ uint64_t __67__PUCropToolController__setContentViewsHidden_animated_completion__
 
     else
     {
-      v6 = a3 == 6;
+      v6 = category == 6;
     }
 
     if (v5)
@@ -1200,12 +1200,12 @@ uint64_t __67__PUCropToolController__setContentViewsHidden_animated_completion__
   }
 }
 
-- (void)setFocusingViewForInteraction:(BOOL)a3
+- (void)setFocusingViewForInteraction:(BOOL)interaction
 {
-  v3 = a3;
-  v5 = [(PUCropToolController *)self adjustmentsViewController];
-  v19 = v5;
-  if (v3)
+  interactionCopy = interaction;
+  adjustmentsViewController = [(PUCropToolController *)self adjustmentsViewController];
+  v19 = adjustmentsViewController;
+  if (interactionCopy)
   {
     v6 = 0.0;
     v7 = 0.0;
@@ -1215,19 +1215,19 @@ uint64_t __67__PUCropToolController__setContentViewsHidden_animated_completion__
       v7 = 1.0;
     }
 
-    v8 = [v19 view];
-    [v8 setAlpha:v7];
+    view = [v19 view];
+    [view setAlpha:v7];
   }
 
   else
   {
-    [v5 hideUnselectedAdjustments:0];
-    v9 = [v19 view];
+    [adjustmentsViewController hideUnselectedAdjustments:0];
+    view2 = [v19 view];
     v6 = 1.0;
-    [v9 setAlpha:1.0];
+    [view2 setAlpha:1.0];
 
-    v10 = [(PUCropToolController *)self videoScrubberView];
-    [v10 alpha];
+    videoScrubberView = [(PUCropToolController *)self videoScrubberView];
+    [videoScrubberView alpha];
     v12 = v11;
 
     if (v12 <= 0.0)
@@ -1236,84 +1236,84 @@ uint64_t __67__PUCropToolController__setContentViewsHidden_animated_completion__
     }
   }
 
-  v13 = [(PUCropToolController *)self playPauseButton];
-  [v13 setAlpha:v6];
+  playPauseButton = [(PUCropToolController *)self playPauseButton];
+  [playPauseButton setAlpha:v6];
 
 LABEL_7:
-  v14 = [(PUCropToolController *)self cropAspect];
-  v15 = v14;
-  if (v14)
+  cropAspect = [(PUCropToolController *)self cropAspect];
+  v15 = cropAspect;
+  if (cropAspect)
   {
-    v16 = [v14 isFreeformCrop];
+    isFreeformCrop = [cropAspect isFreeformCrop];
   }
 
   else
   {
-    v16 = 1;
+    isFreeformCrop = 1;
   }
 
-  v17 = (((v3 | v16) & 1) == 0);
-  v18 = [(PUCropToolController *)self aspectRatioLockButton];
-  [v18 setAlpha:v17];
+  v17 = (((interactionCopy | isFreeformCrop) & 1) == 0);
+  aspectRatioLockButton = [(PUCropToolController *)self aspectRatioLockButton];
+  [aspectRatioLockButton setAlpha:v17];
 }
 
 - (BOOL)canResetToDefaultValue
 {
-  v3 = [(PUPhotoEditToolController *)self compositionController];
-  v4 = [v3 cropAdjustmentController];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  cropAdjustmentController = [compositionController cropAdjustmentController];
 
-  if (v4)
+  if (cropAdjustmentController)
   {
-    v5 = [(PUCropToolController *)self cropModel];
-    [v5 masterImageSize];
-    if ([v4 isCropIdentityForImageSize:?])
+    cropModel = [(PUCropToolController *)self cropModel];
+    [cropModel masterImageSize];
+    if ([cropAdjustmentController isCropIdentityForImageSize:?])
     {
-      v6 = 0;
+      enabled = 0;
     }
 
     else
     {
-      v6 = [v4 enabled];
+      enabled = [cropAdjustmentController enabled];
     }
   }
 
   else
   {
-    v6 = 0;
+    enabled = 0;
   }
 
-  return v6;
+  return enabled;
 }
 
-- (void)prepareForToolTransitionWithCompletion:(id)a3
+- (void)prepareForToolTransitionWithCompletion:(id)completion
 {
-  v6 = a3;
-  v4 = [(PUPhotoEditToolController *)self delegate];
-  v5 = [v4 isStandardVideo];
+  completionCopy = completion;
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  isStandardVideo = [delegate isStandardVideo];
 
-  if (v5)
+  if (isStandardVideo)
   {
     [(PUCropToolController *)self basePhotoInvalidated];
   }
 
-  [(PUCropToolController *)self _loadImageIfNeededWithCompletion:v6];
+  [(PUCropToolController *)self _loadImageIfNeededWithCompletion:completionCopy];
 }
 
-- (void)cropTransformedImageViewDidEndTracking:(id)a3
+- (void)cropTransformedImageViewDidEndTracking:(id)tracking
 {
   [(PUPhotoEditToolController *)self setActivelyAdjusting:0];
-  v4 = [(PUCropToolController *)self cropOverlayView];
+  cropOverlayView = [(PUCropToolController *)self cropOverlayView];
   [(PUCropToolController *)self viewCropRect];
-  [v4 setCropRect:?];
+  [cropOverlayView setCropRect:?];
 
-  v5 = [(PUCropToolController *)self cropView];
+  cropView = [(PUCropToolController *)self cropView];
   [(NUCropModel *)self->_cropModel cropRect];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
   [(PUCropToolController *)self viewCropRect];
-  [v5 setModelCropRect:v7 viewCropRect:{v9, v11, v13, v14, v15, v16, v17}];
+  [cropView setModelCropRect:v7 viewCropRect:{v9, v11, v13, v14, v15, v16, v17}];
 
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
@@ -1344,14 +1344,14 @@ void __63__PUCropToolController_cropTransformedImageViewDidEndTracking___block_i
   [v3 setCropRect:?];
 }
 
-- (void)cropTransformedImageViewDidTrack:(id)a3
+- (void)cropTransformedImageViewDidTrack:(id)track
 {
-  v5 = [(PUPhotoEditToolController *)self compositionController];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
 
-  if (!v5)
+  if (!compositionController)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PUCropToolController.m" lineNumber:2775 description:@"Need a composition to perform this operation"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUCropToolController.m" lineNumber:2775 description:@"Need a composition to perform this operation"];
   }
 
   if (![(PUCropToolController *)self ignoreTrackingUpdates])
@@ -1378,7 +1378,7 @@ void __57__PUCropToolController_cropTransformedImageViewDidTrack___block_invoke(
   [v3 setCropRect:?];
 }
 
-- (void)cropTransformedImageViewWillBeginTracking:(id)a3
+- (void)cropTransformedImageViewWillBeginTracking:(id)tracking
 {
   [(PUCropToolController *)self viewCropRect];
   v8 = v7;
@@ -1389,12 +1389,12 @@ void __57__PUCropToolController_cropTransformedImageViewDidTrack___block_invoke(
     v12 = v6;
     if ([(PUCropToolController *)self _needsRecomposeCropRect])
     {
-      v13 = [(PUCropToolController *)self cropView];
-      [v13 setImageCropRectFromViewCropRect:1 animated:{v8, v10, v11, v12}];
+      cropView = [(PUCropToolController *)self cropView];
+      [cropView setImageCropRectFromViewCropRect:1 animated:{v8, v10, v11, v12}];
 
-      v14 = [(PUCropToolController *)self cropView];
+      cropView2 = [(PUCropToolController *)self cropView];
       [(NUCropModel *)self->_cropModel cropRect];
-      [v14 setModelCropRect:? viewCropRect:?];
+      [cropView2 setModelCropRect:? viewCropRect:?];
     }
   }
 
@@ -1416,37 +1416,37 @@ void __57__PUCropToolController_cropTransformedImageViewDidTrack___block_invoke(
   [(PUPhotoEditToolController *)self setActivelyAdjusting:1];
 }
 
-- (void)mediaTimelineControlViewDidEndChanging:(id)a3
+- (void)mediaTimelineControlViewDidEndChanging:(id)changing
 {
   [(PUCropToolController *)self setIsScrubbingVideo:0];
   if ([(PUCropToolController *)self wasPlayingBeforeBeginningToScrubVideo])
   {
     v4 = +[PUPhotoEditProtoSettings sharedInstance];
-    v5 = [v4 pauseAfterMovingPlayhead];
+    pauseAfterMovingPlayhead = [v4 pauseAfterMovingPlayhead];
 
-    if ((v5 & 1) == 0)
+    if ((pauseAfterMovingPlayhead & 1) == 0)
     {
-      v6 = [(PUCropToolController *)self cropView];
-      v7 = [v6 videoMediaView];
-      v8 = [v7 player];
-      [v8 play];
+      cropView = [(PUCropToolController *)self cropView];
+      videoMediaView = [cropView videoMediaView];
+      player = [videoMediaView player];
+      [player play];
     }
 
-    v9 = [(PUCropToolController *)self playPauseButton];
-    [v9 setSelected:v5 ^ 1u];
+    playPauseButton = [(PUCropToolController *)self playPauseButton];
+    [playPauseButton setSelected:pauseAfterMovingPlayhead ^ 1u];
   }
 
   [(PUPhotoEditToolController *)self setPerformingLiveInteraction:0];
 }
 
-- (void)mediaTimelineControlViewDidChangeValue:(id)a3
+- (void)mediaTimelineControlViewDidChangeValue:(id)value
 {
-  v4 = a3;
-  v5 = [(PUCropToolController *)self cropView];
-  v6 = [v5 videoMediaView];
-  v7 = [v6 player];
+  valueCopy = value;
+  cropView = [(PUCropToolController *)self cropView];
+  videoMediaView = [cropView videoMediaView];
+  player = [videoMediaView player];
 
-  if (!v7)
+  if (!player)
   {
     v17 = 0;
     v18 = 0;
@@ -1456,7 +1456,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  [v7 currentTime];
+  [player currentTime];
   v8 = v18;
   if (!v18)
   {
@@ -1465,10 +1465,10 @@ LABEL_5:
 
 LABEL_6:
   memset(&v16, 0, sizeof(v16));
-  [v4 currentValue];
+  [valueCopy currentValue];
   CMTimeMakeWithSeconds(&v16, v9, v8);
   memset(&v15, 0, sizeof(v15));
-  [v4 minValue];
+  [valueCopy minValue];
   v11 = v10;
 
   CMTimeMakeWithSeconds(&v15, v11, v8);
@@ -1479,51 +1479,51 @@ LABEL_6:
     v12 = v15;
     CMTimeSubtract(&v14, &lhs, &v12);
     lhs = v14;
-    [v7 seekToTime:&lhs exact:0];
+    [player seekToTime:&lhs exact:0];
   }
 }
 
-- (void)mediaTimelineControlViewWillBeginChanging:(id)a3
+- (void)mediaTimelineControlViewWillBeginChanging:(id)changing
 {
   [(PUCropToolController *)self setIsScrubbingVideo:1];
-  v4 = [(PUCropToolController *)self cropView];
-  v5 = [v4 videoMediaView];
-  v7 = [v5 player];
+  cropView = [(PUCropToolController *)self cropView];
+  videoMediaView = [cropView videoMediaView];
+  player = [videoMediaView player];
 
-  [v7 playbackRate];
+  [player playbackRate];
   [(PUCropToolController *)self setWasPlayingBeforeBeginningToScrubVideo:v6 == 1.0];
-  [v7 pause];
+  [player pause];
   [(PUPhotoEditToolController *)self setPerformingLiveInteraction:1];
 }
 
-- (void)showBadgeView:(BOOL)a3 animated:(BOOL)a4
+- (void)showBadgeView:(BOOL)view animated:(BOOL)animated
 {
-  v4 = a3;
-  if (a4)
+  viewCopy = view;
+  if (animated)
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __47__PUCropToolController_showBadgeView_animated___block_invoke;
     v13[3] = &unk_1E7B7FF98;
     v13[4] = self;
-    v14 = a3;
+    viewCopy2 = view;
     [MEMORY[0x1E69DD250] animateWithDuration:4 delay:v13 options:&__block_literal_global_462 animations:0.25 completion:0.0];
   }
 
   else
   {
-    v6 = [(PUCropToolController *)self badgeView];
-    [v6 setAlpha:v4];
+    badgeView = [(PUCropToolController *)self badgeView];
+    [badgeView setAlpha:viewCopy];
 
-    v7 = !v4;
-    v8 = [(PUCropToolController *)self videoScrubberView];
-    [v8 setAlpha:v7];
+    v7 = !viewCopy;
+    videoScrubberView = [(PUCropToolController *)self videoScrubberView];
+    [videoScrubberView setAlpha:v7];
 
-    v12 = [(PUCropToolController *)self videoScrubberView];
-    [v12 alpha];
+    videoScrubberView2 = [(PUCropToolController *)self videoScrubberView];
+    [videoScrubberView2 alpha];
     v10 = v9;
-    v11 = [(PUCropToolController *)self playPauseButton];
-    [v11 setAlpha:v10];
+    playPauseButton = [(PUCropToolController *)self playPauseButton];
+    [playPauseButton setAlpha:v10];
   }
 }
 
@@ -1547,34 +1547,34 @@ void __47__PUCropToolController_showBadgeView_animated___block_invoke(uint64_t a
 
 - (void)_updateVideoScrubber
 {
-  v3 = [(PUCropToolController *)self videoScrubberView];
-  if (v3)
+  videoScrubberView = [(PUCropToolController *)self videoScrubberView];
+  if (videoScrubberView)
   {
-    v4 = v3;
-    v5 = [(PUCropToolController *)self isScrubbingVideo];
+    v4 = videoScrubberView;
+    isScrubbingVideo = [(PUCropToolController *)self isScrubbingVideo];
 
-    if (!v5)
+    if (!isScrubbingVideo)
     {
-      v6 = [(PUCropToolController *)self cropView];
-      v7 = [v6 videoMediaView];
-      v8 = v7;
-      if (v7)
+      cropView = [(PUCropToolController *)self cropView];
+      videoMediaView = [cropView videoMediaView];
+      v8 = videoMediaView;
+      if (videoMediaView)
       {
-        v9 = v7;
+        mediaView = videoMediaView;
       }
 
       else
       {
-        v10 = [(PUPhotoEditToolController *)self delegate];
-        v9 = [v10 mediaView];
+        delegate = [(PUPhotoEditToolController *)self delegate];
+        mediaView = [delegate mediaView];
       }
 
       memset(&v36, 0, sizeof(v36));
-      v11 = [v9 player];
-      v12 = v11;
-      if (v11)
+      player = [mediaView player];
+      v12 = player;
+      if (player)
       {
-        [v11 mediaDuration];
+        [player mediaDuration];
       }
 
       else
@@ -1585,11 +1585,11 @@ void __47__PUCropToolController_showBadgeView_animated___block_invoke(uint64_t a
       memset(&v35, 0, sizeof(v35));
       CMTimeMake(&v35, 0, v36.timescale);
       memset(&v34, 0, sizeof(v34));
-      v13 = [v9 player];
-      v14 = v13;
-      if (v13)
+      player2 = [mediaView player];
+      v14 = player2;
+      if (player2)
       {
-        [v13 currentTime];
+        [player2 currentTime];
       }
 
       else
@@ -1597,20 +1597,20 @@ void __47__PUCropToolController_showBadgeView_animated___block_invoke(uint64_t a
         memset(&v34, 0, sizeof(v34));
       }
 
-      v15 = [(PUPhotoEditToolController *)self compositionController];
-      v16 = [v15 trimAdjustmentController];
+      compositionController = [(PUPhotoEditToolController *)self compositionController];
+      trimAdjustmentController = [compositionController trimAdjustmentController];
 
-      if (v16)
+      if (trimAdjustmentController)
       {
-        [v16 startTime];
+        [trimAdjustmentController startTime];
         if (v33)
         {
-          [v16 endTime];
+          [trimAdjustmentController endTime];
           if (v32)
           {
-            [v16 startTime];
+            [trimAdjustmentController startTime];
             v35 = time;
-            [v16 endTime];
+            [trimAdjustmentController endTime];
             v36 = time;
             lhs = v35;
             [(PUPhotoEditToolController *)self displayedTimeForOriginalAssetTime:&lhs];
@@ -1630,24 +1630,24 @@ void __47__PUCropToolController_showBadgeView_animated___block_invoke(uint64_t a
         v34 = time;
         time = v35;
         Seconds = CMTimeGetSeconds(&time);
-        v18 = [(PUCropToolController *)self videoScrubberView];
+        videoScrubberView2 = [(PUCropToolController *)self videoScrubberView];
         *&v19 = Seconds;
-        [v18 setMinValue:v19];
+        [videoScrubberView2 setMinValue:v19];
 
         time = v36;
         v20 = CMTimeGetSeconds(&time);
-        v21 = [(PUCropToolController *)self videoScrubberView];
+        videoScrubberView3 = [(PUCropToolController *)self videoScrubberView];
         *&v22 = v20;
-        [v21 setMaxValue:v22];
+        [videoScrubberView3 setMaxValue:v22];
 
         time = v34;
         v23 = CMTimeGetSeconds(&time);
-        v24 = [(PUCropToolController *)self videoScrubberView];
+        videoScrubberView4 = [(PUCropToolController *)self videoScrubberView];
         *&v25 = v23;
-        [v24 setCurrentValue:v25];
+        [videoScrubberView4 setCurrentValue:v25];
 
-        v26 = [v9 player];
-        if ([v26 playbackState] == 3)
+        player3 = [mediaView player];
+        if ([player3 playbackState] == 3)
         {
           time = v34;
           lhs = v36;
@@ -1659,8 +1659,8 @@ void __47__PUCropToolController_showBadgeView_animated___block_invoke(uint64_t a
           v27 = 0;
         }
 
-        v28 = [(PUCropToolController *)self playPauseButton];
-        [v28 setSelected:v27];
+        playPauseButton = [(PUCropToolController *)self playPauseButton];
+        [playPauseButton setSelected:v27];
       }
     }
   }
@@ -1668,20 +1668,20 @@ void __47__PUCropToolController_showBadgeView_animated___block_invoke(uint64_t a
 
 - (void)_beginObservingVideoPlayer
 {
-  v3 = [(PUCropToolController *)self cropView];
-  v4 = [v3 videoMediaView];
-  v5 = [v4 player];
+  cropView = [(PUCropToolController *)self cropView];
+  videoMediaView = [cropView videoMediaView];
+  player = [videoMediaView player];
 
-  v6 = [(PUCropToolController *)self videoScrubberTimeObserver];
-  if (!v6 || (v7 = v6, [(PUCropToolController *)self videoScrubberObservedPlayer], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v5 != v8))
+  videoScrubberTimeObserver = [(PUCropToolController *)self videoScrubberTimeObserver];
+  if (!videoScrubberTimeObserver || (v7 = videoScrubberTimeObserver, [(PUCropToolController *)self videoScrubberObservedPlayer], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, player != v8))
   {
-    v9 = [(PUCropToolController *)self videoScrubberTimeObserver];
+    videoScrubberTimeObserver2 = [(PUCropToolController *)self videoScrubberTimeObserver];
 
-    if (v9)
+    if (videoScrubberTimeObserver2)
     {
-      v10 = [(PUCropToolController *)self videoScrubberObservedPlayer];
-      v11 = [(PUCropToolController *)self videoScrubberTimeObserver];
-      [v10 removeObserver:v11];
+      videoScrubberObservedPlayer = [(PUCropToolController *)self videoScrubberObservedPlayer];
+      videoScrubberTimeObserver3 = [(PUCropToolController *)self videoScrubberTimeObserver];
+      [videoScrubberObservedPlayer removeObserver:videoScrubberTimeObserver3];
     }
 
     objc_initWeak(&location, self);
@@ -1690,10 +1690,10 @@ void __47__PUCropToolController_showBadgeView_animated___block_invoke(uint64_t a
     v15 = __50__PUCropToolController__beginObservingVideoPlayer__block_invoke;
     v16 = &unk_1E7B7B568;
     objc_copyWeak(&v17, &location);
-    v12 = [v5 addPlaybackTimeObserver:&v13];
+    v12 = [player addPlaybackTimeObserver:&v13];
     [(PUCropToolController *)self setVideoScrubberTimeObserver:v12, v13, v14, v15, v16];
 
-    [(PUCropToolController *)self setVideoScrubberObservedPlayer:v5];
+    [(PUCropToolController *)self setVideoScrubberObservedPlayer:player];
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
   }
@@ -1708,41 +1708,41 @@ void __50__PUCropToolController__beginObservingVideoPlayer__block_invoke(uint64_
 - (void)_playPauseButtonTapped
 {
   [(PUCropToolController *)self _beginObservingVideoPlayer];
-  v3 = [(PUCropToolController *)self cropView];
-  v4 = [v3 videoMediaView];
-  v5 = [v4 player];
+  cropView = [(PUCropToolController *)self cropView];
+  videoMediaView = [cropView videoMediaView];
+  player = [videoMediaView player];
 
-  if ([v5 playbackState] == 3)
+  if ([player playbackState] == 3)
   {
-    [v5 pause];
+    [player pause];
   }
 
   else
   {
-    [v5 play];
+    [player play];
   }
 }
 
 - (void)createVideoScrubber
 {
-  v3 = [(PUPhotoEditToolController *)self delegate];
-  v4 = [v3 isStandardVideo];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  isStandardVideo = [delegate isStandardVideo];
 
-  if (v4)
+  if (isStandardVideo)
   {
-    v5 = [(PUCropToolController *)self videoScrubberView];
+    videoScrubberView = [(PUCropToolController *)self videoScrubberView];
 
-    if (!v5)
+    if (!videoScrubberView)
     {
       v6 = objc_alloc_init(PUAVKitMediaTimelineView);
       videoScrubberView = self->_videoScrubberView;
       self->_videoScrubberView = v6;
 
-      v8 = [(PUPhotoEditToolController *)self asset];
-      v9 = [v8 mediaSubtypes];
+      asset = [(PUPhotoEditToolController *)self asset];
+      mediaSubtypes = [asset mediaSubtypes];
 
       v10 = 4.0;
-      if ((*&v9 & 0x100000) == 0)
+      if ((*&mediaSubtypes & 0x100000) == 0)
       {
         v10 = 1.0;
       }
@@ -1753,8 +1753,8 @@ void __50__PUCropToolController__beginObservingVideoPlayer__block_invoke(uint64_
       [(PUAVKitMediaTimelineView *)self->_videoScrubberView setShowsTimeLabels:1];
       [(PUAVKitMediaTimelineView *)self->_videoScrubberView setPlaying:1];
       [(PUAVKitMediaTimelineView *)self->_videoScrubberView setAlpha:0.0];
-      v11 = [(PUCropToolController *)self view];
-      [v11 addSubview:self->_videoScrubberView];
+      view = [(PUCropToolController *)self view];
+      [view addSubview:self->_videoScrubberView];
 
       v12 = +[PUPhotoEditSupport createPlayPauseButton];
       playPauseButton = self->_playPauseButton;
@@ -1776,8 +1776,8 @@ void __50__PUCropToolController__beginObservingVideoPlayer__block_invoke(uint64_
       v18 = [v17 colorWithWhite:? alpha:?];
       [(UIButton *)self->_playPauseButton setTintColor:v18];
 
-      v19 = [(PUCropToolController *)self view];
-      [v19 addSubview:self->_playPauseButton];
+      view2 = [(PUCropToolController *)self view];
+      [view2 addSubview:self->_playPauseButton];
 
       objc_destroyWeak(&v24);
       objc_destroyWeak(&location);
@@ -1793,9 +1793,9 @@ void __43__PUCropToolController_createVideoScrubber__block_invoke(uint64_t a1)
   [WeakRetained _playPauseButtonTapped];
 }
 
-- (void)setAspectRatioLocked:(BOOL)a3
+- (void)setAspectRatioLocked:(BOOL)locked
 {
-  if (a3)
+  if (locked)
   {
     [(PUCropToolController *)self viewCropRect];
     v6 = [(PUCropToolController *)self bestAspectRatioForWidth:v4 height:v5];
@@ -1809,9 +1809,9 @@ void __43__PUCropToolController_createVideoScrubber__block_invoke(uint64_t a1)
   }
 }
 
-- (id)bestAspectRatioForWidth:(unint64_t)a3 height:(unint64_t)a4
+- (id)bestAspectRatioForWidth:(unint64_t)width height:(unint64_t)height
 {
-  v5 = [[PUCropAspect alloc] initWithWidth:a3 height:a4];
+  v5 = [[PUCropAspect alloc] initWithWidth:width height:height];
   v6 = [(PUCropAspectViewController *)self->_cropAspectViewController matchingCropAspectTo:v5 ignoreFreeform:1];
   v7 = v6;
   if (v6)
@@ -1829,26 +1829,26 @@ void __43__PUCropToolController_createVideoScrubber__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)_userChangedAspectRatioLocked:(BOOL)a3
+- (void)_userChangedAspectRatioLocked:(BOOL)locked
 {
-  v3 = a3;
-  v5 = [(PUCropToolController *)self aspectRatioLockButton];
-  [v5 frame];
+  lockedCopy = locked;
+  aspectRatioLockButton = [(PUCropToolController *)self aspectRatioLockButton];
+  [aspectRatioLockButton frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(PUCropToolController *)self view];
-  v15 = [(PUCropToolController *)self aspectRatioLockButton];
-  v16 = [v15 superview];
-  [v14 convertRect:v16 fromView:{v7, v9, v11, v13}];
+  view = [(PUCropToolController *)self view];
+  aspectRatioLockButton2 = [(PUCropToolController *)self aspectRatioLockButton];
+  superview = [aspectRatioLockButton2 superview];
+  [view convertRect:superview fromView:{v7, v9, v11, v13}];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
 
-  if (v3)
+  if (lockedCopy)
   {
     v25 = @"PHOTOEDIT_CROP_ASPECT_RATIO_LOCKED";
   }
@@ -1859,8 +1859,8 @@ void __43__PUCropToolController_createVideoScrubber__block_invoke(uint64_t a1)
   }
 
   v26 = PULocalizedString(v25);
-  v27 = [(PUPhotoEditToolController *)self delegate];
-  [v27 transientBadgeWidthForText:v26];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  [delegate transientBadgeWidthForText:v26];
   v29 = v28;
 
   v45.origin.x = v18;
@@ -1868,8 +1868,8 @@ void __43__PUCropToolController_createVideoScrubber__block_invoke(uint64_t a1)
   v45.size.width = v22;
   v45.size.height = v24;
   MinX = CGRectGetMinX(v45);
-  v31 = [(PUCropToolController *)self view];
-  [v31 bounds];
+  view2 = [(PUCropToolController *)self view];
+  [view2 bounds];
   v32 = (v29 + CGRectGetWidth(v46)) * 0.5;
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -1881,7 +1881,7 @@ void __43__PUCropToolController_createVideoScrubber__block_invoke(uint64_t a1)
   v44 = v33;
   v34 = _Block_copy(aBlock);
   v35 = v34;
-  if (MinX >= v32 || !v3)
+  if (MinX >= v32 || !lockedCopy)
   {
     v34[2](v34);
   }
@@ -1903,9 +1903,9 @@ void __43__PUCropToolController_createVideoScrubber__block_invoke(uint64_t a1)
     [v37 animateWithDuration:v42 animations:v40 completion:0.2];
   }
 
-  v38 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v39 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v38 setObject:v39 forKey:@"PUPhotoEditCropAspectRatioLocked2"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v39 = [MEMORY[0x1E696AD98] numberWithBool:lockedCopy];
+  [standardUserDefaults setObject:v39 forKey:@"PUPhotoEditCropAspectRatioLocked2"];
 }
 
 void __54__PUCropToolController__userChangedAspectRatioLocked___block_invoke(uint64_t a1)
@@ -1939,20 +1939,20 @@ void __54__PUCropToolController__userChangedAspectRatioLocked___block_invoke_4(u
 
 - (void)_aspectLockButtonTapped
 {
-  v3 = [(PUCropToolController *)self cropAspect];
-  v6 = v3;
-  if (v3)
+  cropAspect = [(PUCropToolController *)self cropAspect];
+  v6 = cropAspect;
+  if (cropAspect)
   {
-    v4 = [v3 isFreeformCrop];
+    isFreeformCrop = [cropAspect isFreeformCrop];
   }
 
   else
   {
-    v4 = 1;
+    isFreeformCrop = 1;
   }
 
-  [(PUCropToolController *)self _userChangedAspectRatioLocked:v4];
-  [(PUCropToolController *)self setAspectRatioLocked:v4];
+  [(PUCropToolController *)self _userChangedAspectRatioLocked:isFreeformCrop];
+  [(PUCropToolController *)self setAspectRatioLocked:isFreeformCrop];
   v5 = [objc_alloc(MEMORY[0x1E69DCAE8]) initWithStyle:1];
   [v5 impactOccurred];
 }
@@ -1960,15 +1960,15 @@ void __54__PUCropToolController__userChangedAspectRatioLocked___block_invoke_4(u
 - (void)updateAspectRatioLockButton
 {
   v3 = +[PUPhotoEditProtoSettings sharedInstance];
-  v4 = [v3 maintainCropAspectLockState];
+  maintainCropAspectLockState = [v3 maintainCropAspectLockState];
 
-  if (v4)
+  if (maintainCropAspectLockState)
   {
-    v5 = [(PUCropToolController *)self cropAspect];
-    v21 = v5;
-    if (v5)
+    cropAspect = [(PUCropToolController *)self cropAspect];
+    v21 = cropAspect;
+    if (cropAspect)
     {
-      v6 = ([v5 isFreeformCrop] ^ 1);
+      v6 = ([cropAspect isFreeformCrop] ^ 1);
     }
 
     else
@@ -1980,88 +1980,88 @@ void __54__PUCropToolController__userChangedAspectRatioLocked___block_invoke_4(u
     v8 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:17.0];
     v9 = [v7 systemImageNamed:@"lock.fill" withConfiguration:v8];
 
-    v10 = [(PUCropToolController *)self aspectRatioLockButton];
-    [v10 setImage:v9 forState:0];
+    aspectRatioLockButton = [(PUCropToolController *)self aspectRatioLockButton];
+    [aspectRatioLockButton setImage:v9 forState:0];
 
-    v11 = [(PUCropToolController *)self aspectRatioLockButton];
+    aspectRatioLockButton2 = [(PUCropToolController *)self aspectRatioLockButton];
     v12 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.95];
-    [v11 setTintColor:v12];
+    [aspectRatioLockButton2 setTintColor:v12];
 
-    v13 = [(PUCropToolController *)self aspectRatioLockButton];
-    v14 = [v13 layer];
+    aspectRatioLockButton3 = [(PUCropToolController *)self aspectRatioLockButton];
+    layer = [aspectRatioLockButton3 layer];
     LODWORD(v15) = 1063675494;
-    [v14 setShadowOpacity:v15];
+    [layer setShadowOpacity:v15];
 
-    v16 = [(PUCropToolController *)self aspectRatioLockButton];
-    v17 = [v16 layer];
-    [v17 setShadowOffset:{2.0, 2.0}];
+    aspectRatioLockButton4 = [(PUCropToolController *)self aspectRatioLockButton];
+    layer2 = [aspectRatioLockButton4 layer];
+    [layer2 setShadowOffset:{2.0, 2.0}];
 
-    v18 = [(PUCropToolController *)self aspectRatioLockButton];
-    v19 = [v18 layer];
-    [v19 setShadowRadius:6.0];
+    aspectRatioLockButton5 = [(PUCropToolController *)self aspectRatioLockButton];
+    layer3 = [aspectRatioLockButton5 layer];
+    [layer3 setShadowRadius:6.0];
 
     if (![(PUCropToolController *)self rotatingAnimationCount])
     {
-      v20 = [(PUCropToolController *)self aspectRatioLockButton];
-      [v20 setAlpha:v6];
+      aspectRatioLockButton6 = [(PUCropToolController *)self aspectRatioLockButton];
+      [aspectRatioLockButton6 setAlpha:v6];
     }
   }
 }
 
-- (void)updateCropAspectRatioOrientation:(int64_t)a3
+- (void)updateCropAspectRatioOrientation:(int64_t)orientation
 {
-  v5 = [(PUCropToolController *)self cropAspect];
+  cropAspect = [(PUCropToolController *)self cropAspect];
 
-  if (v5)
+  if (cropAspect)
   {
-    v6 = [(PUCropToolController *)self cropAspect];
-    [v6 width];
+    cropAspect2 = [(PUCropToolController *)self cropAspect];
+    [cropAspect2 width];
     v8 = v7;
-    v9 = [(PUCropToolController *)self cropAspect];
-    [v9 height];
+    cropAspect3 = [(PUCropToolController *)self cropAspect];
+    [cropAspect3 height];
     v11 = v10;
-    v12 = [(PUCropToolController *)self cropAspectViewController];
-    [v12 setCurrentCropSize:{v8, v11}];
+    cropAspectViewController = [(PUCropToolController *)self cropAspectViewController];
+    [cropAspectViewController setCurrentCropSize:{v8, v11}];
   }
 
-  v13 = [(PUCropToolController *)self cropAspectViewController];
-  [v13 setAspectOrientation:a3];
+  cropAspectViewController2 = [(PUCropToolController *)self cropAspectViewController];
+  [cropAspectViewController2 setAspectOrientation:orientation];
 
-  v14 = [(PUCropToolController *)self cropAspect];
-  v15 = [(PUCropToolController *)self cropAspectViewController];
-  [v15 setCurrentCropAspect:v14];
+  cropAspect4 = [(PUCropToolController *)self cropAspect];
+  cropAspectViewController3 = [(PUCropToolController *)self cropAspectViewController];
+  [cropAspectViewController3 setCurrentCropAspect:cropAspect4];
 
   cropAspectFlipperView = self->_cropAspectFlipperView;
 
-  [(PUCropAspectFlipperView *)cropAspectFlipperView setAspectRatioOrientation:a3];
+  [(PUCropAspectFlipperView *)cropAspectFlipperView setAspectRatioOrientation:orientation];
 }
 
-- (void)_recomposeCropRectAnimated:(BOOL)a3
+- (void)_recomposeCropRectAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(NUCropModel *)self->_cropModel cropRect];
   [(PUCropToolController *)self _suggestedCropRectForImageRect:?];
   PURoundRectToPixel(v5, v6, v7, v8);
-  [(PUCropToolController *)self _setViewCropRect:v3 animated:?];
-  v9 = [(PUCropToolController *)self cropView];
+  [(PUCropToolController *)self _setViewCropRect:animatedCopy animated:?];
+  cropView = [(PUCropToolController *)self cropView];
   [(NUCropModel *)self->_cropModel cropRect];
-  [v9 setModelCropRect:? viewCropRect:?];
+  [cropView setModelCropRect:? viewCropRect:?];
 
   [(PUCropToolController *)self _cancelDelayedRecomposeCropRect];
 }
 
-- (CGRect)_suggestedCropRectForImageRect:(CGRect)a3
+- (CGRect)_suggestedCropRectForImageRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  [(PUCropToolController *)self _cropCanvasFrame:a3.origin.x];
+  height = rect.size.height;
+  width = rect.size.width;
+  [(PUCropToolController *)self _cropCanvasFrame:rect.origin.x];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(PUCropToolController *)self geometry];
-  v15 = [v14 isSizeInverted];
-  if (v15)
+  geometry = [(PUCropToolController *)self geometry];
+  isSizeInverted = [geometry isSizeInverted];
+  if (isSizeInverted)
   {
     v16 = height;
   }
@@ -2071,7 +2071,7 @@ void __54__PUCropToolController__userChangedAspectRatioLocked___block_invoke_4(u
     v16 = width;
   }
 
-  if (v15)
+  if (isSizeInverted)
   {
     height = width;
   }
@@ -2086,8 +2086,8 @@ void __54__PUCropToolController__userChangedAspectRatioLocked___block_invoke_4(u
 
 - (CGRect)_cropCanvasFrame
 {
-  v2 = [(PUCropToolController *)self cropCanvasView];
-  [v2 frame];
+  cropCanvasView = [(PUCropToolController *)self cropCanvasView];
+  [cropCanvasView frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -2104,35 +2104,35 @@ void __54__PUCropToolController__userChangedAspectRatioLocked___block_invoke_4(u
   return result;
 }
 
-- (CGPoint)_pointForHandle:(unint64_t)a3 onCropRect:(CGRect)a4
+- (CGPoint)_pointForHandle:(unint64_t)handle onCropRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  if (a3 <= 5 && ((1 << a3) & 0x31) != 0)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (handle <= 5 && ((1 << handle) & 0x31) != 0)
   {
-    v9 = a4.origin.y;
+    v9 = rect.origin.y;
   }
 
   else
   {
-    if (a3 <= 7 && ((0xC8u >> a3) & 1) != 0)
+    if (handle <= 7 && ((0xC8u >> handle) & 1) != 0)
     {
-      MaxY = CGRectGetMaxY(a4);
+      MaxY = CGRectGetMaxY(rect);
     }
 
     else
     {
-      MaxY = CGRectGetMidY(a4);
+      MaxY = CGRectGetMidY(rect);
     }
 
     v9 = MaxY;
   }
 
-  if (a3 > 6 || ((0x52u >> a3) & 1) == 0)
+  if (handle > 6 || ((0x52u >> handle) & 1) == 0)
   {
-    if (a3 <= 7 && ((0xA4u >> a3) & 1) != 0)
+    if (handle <= 7 && ((0xA4u >> handle) & 1) != 0)
     {
       v15.origin.x = x;
       v15.origin.y = y;
@@ -2160,20 +2160,20 @@ void __54__PUCropToolController__userChangedAspectRatioLocked___block_invoke_4(u
   return result;
 }
 
-- (CGPoint)_pointForHandle:(unint64_t)a3
+- (CGPoint)_pointForHandle:(unint64_t)handle
 {
   [(PUCropToolController *)self viewCropRect];
 
-  [(PUCropToolController *)self _pointForHandle:a3 onCropRect:?];
+  [(PUCropToolController *)self _pointForHandle:handle onCropRect:?];
   result.y = v6;
   result.x = v5;
   return result;
 }
 
-- (CGVector)_deltaMaskForHandle:(unint64_t)a3
+- (CGVector)_deltaMaskForHandle:(unint64_t)handle
 {
-  v3 = a3 - 1;
-  if (a3 - 1 > 6)
+  v3 = handle - 1;
+  if (handle - 1 > 6)
   {
     v5 = 1.0;
     v4 = 0.0;
@@ -2190,14 +2190,14 @@ void __54__PUCropToolController__userChangedAspectRatioLocked___block_invoke_4(u
   return result;
 }
 
-- (CGVector)_correctInputVector:(CGVector)a3 forHandle:(unint64_t)a4 onCropRect:(CGRect)a5 lockDirection:(BOOL)a6
+- (CGVector)_correctInputVector:(CGVector)vector forHandle:(unint64_t)handle onCropRect:(CGRect)rect lockDirection:(BOOL)direction
 {
-  v6 = a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  [(PUCropToolController *)self _pointForHandle:a5.origin.x onCropRect:a5.origin.y, a5.size.width, a5.size.height];
+  directionCopy = direction;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  [(PUCropToolController *)self _pointForHandle:rect.origin.x onCropRect:rect.origin.y, rect.size.width, rect.size.height];
   v42 = v13;
   v43 = v14;
   [(PUCropToolController *)self _cropCanvasFrame];
@@ -2205,12 +2205,12 @@ void __54__PUCropToolController__userChangedAspectRatioLocked___block_invoke_4(u
   v18 = v17;
   rect = v19;
   v21 = v20;
-  v22 = [(PUPhotoEditToolController *)self toolControllerSpec];
-  [v22 minimumCropSize];
+  toolControllerSpec = [(PUPhotoEditToolController *)self toolControllerSpec];
+  [toolControllerSpec minimumCropSize];
   v24 = v23;
   v45 = v25;
 
-  if (a4 <= 6 && ((0x52u >> a4) & 1) != 0)
+  if (handle <= 6 && ((0x52u >> handle) & 1) != 0)
   {
     v48.origin.x = x;
     v48.origin.y = y;
@@ -2229,7 +2229,7 @@ void __54__PUCropToolController__userChangedAspectRatioLocked___block_invoke_4(u
   }
 
   v41 = MaxX;
-  if (a4 <= 7 && ((0xA4u >> a4) & 1) != 0)
+  if (handle <= 7 && ((0xA4u >> handle) & 1) != 0)
   {
     v50.origin.x = x;
     v50.origin.y = y;
@@ -2248,7 +2248,7 @@ void __54__PUCropToolController__userChangedAspectRatioLocked___block_invoke_4(u
   }
 
   v40 = MinX;
-  if (a4 <= 5 && ((1 << a4) & 0x31) != 0)
+  if (handle <= 5 && ((1 << handle) & 0x31) != 0)
   {
     v52.origin.x = x;
     v52.origin.y = y;
@@ -2266,7 +2266,7 @@ void __54__PUCropToolController__userChangedAspectRatioLocked___block_invoke_4(u
     MaxY = CGRectGetMaxY(v53);
   }
 
-  if (a4 <= 7 && ((0xC8u >> a4) & 1) != 0)
+  if (handle <= 7 && ((0xC8u >> handle) & 1) != 0)
   {
     v54.origin.x = x;
     v54.origin.y = y;
@@ -2284,24 +2284,24 @@ void __54__PUCropToolController__userChangedAspectRatioLocked___block_invoke_4(u
     MinY = CGRectGetMinY(v55);
   }
 
-  dx = a3.dx;
-  dy = a3.dy;
-  if (v6)
+  dx = vector.dx;
+  dy = vector.dy;
+  if (directionCopy)
   {
     v32 = 1.0;
     v33 = 1.0;
     v34 = 1.0;
-    if (a3.dx != 0.0)
+    if (vector.dx != 0.0)
     {
-      v33 = (v41 - v42) / a3.dx;
-      v34 = (v40 - v42) / a3.dx;
+      v33 = (v41 - v42) / vector.dx;
+      v34 = (v40 - v42) / vector.dx;
     }
 
     v35 = 1.0;
-    if (a3.dy != 0.0)
+    if (vector.dy != 0.0)
     {
-      v32 = (MaxY - v43) / a3.dy;
-      v35 = (MinY - v43) / a3.dy;
+      v32 = (MaxY - v43) / vector.dy;
+      v35 = (MinY - v43) / vector.dy;
     }
 
     v36 = fmax(v33, v34);
@@ -2309,15 +2309,15 @@ void __54__PUCropToolController__userChangedAspectRatioLocked___block_invoke_4(u
     if (v36 < 1.0 || v37 < 1.0)
     {
       v38 = fmin(v36, v37);
-      dx = a3.dx * v38;
-      dy = a3.dy * v38;
+      dx = vector.dx * v38;
+      dy = vector.dy * v38;
     }
   }
 
   else
   {
-    dx = fmax(v40, fmin(v41, a3.dx + v42)) - v42;
-    dy = fmax(MinY, fmin(MaxY, a3.dy + v43)) - v43;
+    dx = fmax(v40, fmin(v41, vector.dx + v42)) - v42;
+    dy = fmax(MinY, fmin(MaxY, vector.dy + v43)) - v43;
   }
 
   v39 = dx;
@@ -2326,25 +2326,25 @@ void __54__PUCropToolController__userChangedAspectRatioLocked___block_invoke_4(u
   return result;
 }
 
-- (CGRect)_addHeight:(double)a3 toRect:(CGRect)a4 anchorTop:(BOOL)a5
+- (CGRect)_addHeight:(double)height toRect:(CGRect)rect anchorTop:(BOOL)top
 {
-  v5 = a5;
-  height = a4.size.height;
-  y = a4.origin.y;
-  MidX = CGRectGetMidX(a4);
-  v11 = height + a3;
-  v12 = [(PUCropToolController *)self cropAspect];
-  [v12 widthForHeight:v11];
+  topCopy = top;
+  height = rect.size.height;
+  y = rect.origin.y;
+  MidX = CGRectGetMidX(rect);
+  v11 = height + height;
+  cropAspect = [(PUCropToolController *)self cropAspect];
+  [cropAspect widthForHeight:v11];
   v14 = v13;
 
-  if (v5)
+  if (topCopy)
   {
     v15 = y;
   }
 
   else
   {
-    v15 = y - a3;
+    v15 = y - height;
   }
 
   v16 = MidX + v14 * -0.5;
@@ -2357,19 +2357,19 @@ void __54__PUCropToolController__userChangedAspectRatioLocked___block_invoke_4(u
   return result;
 }
 
-- (CGRect)_addWidth:(double)a3 toRect:(CGRect)a4 anchorLeft:(BOOL)a5
+- (CGRect)_addWidth:(double)width toRect:(CGRect)rect anchorLeft:(BOOL)left
 {
-  v5 = a5;
-  width = a4.size.width;
-  x = a4.origin.x;
-  MidY = CGRectGetMidY(a4);
-  v11 = width + a3;
-  v12 = [(PUCropToolController *)self cropAspect];
-  [v12 heightForWidth:v11];
+  leftCopy = left;
+  width = rect.size.width;
+  x = rect.origin.x;
+  MidY = CGRectGetMidY(rect);
+  v11 = width + width;
+  cropAspect = [(PUCropToolController *)self cropAspect];
+  [cropAspect heightForWidth:v11];
   v14 = v13;
 
-  v15 = x - a3;
-  if (v5)
+  v15 = x - width;
+  if (leftCopy)
   {
     v15 = x;
   }
@@ -2384,7 +2384,7 @@ void __54__PUCropToolController__userChangedAspectRatioLocked___block_invoke_4(u
   return result;
 }
 
-- (CGRect)_cropRectFromPanningHandle:(unint64_t)a3 byAmount:(CGVector)a4
+- (CGRect)_cropRectFromPanningHandle:(unint64_t)handle byAmount:(CGVector)amount
 {
   v99 = *MEMORY[0x1E69E9840];
   [(PUCropToolController *)self initialHandlePanCropRect];
@@ -2392,45 +2392,45 @@ void __54__PUCropToolController__userChangedAspectRatioLocked___block_invoke_4(u
   v11 = v7;
   v12 = v8;
   v13 = v9;
-  if (a3 - 1 > 6)
+  if (handle - 1 > 6)
   {
     v14 = 3;
   }
 
   else
   {
-    v14 = qword_1B3D0D1D8[a3 - 1];
+    v14 = qword_1B3D0D1D8[handle - 1];
   }
 
-  [(PUCropToolController *)self _pointForHandle:a3 onCropRect:v6, v7, v8, v9];
+  [(PUCropToolController *)self _pointForHandle:handle onCropRect:v6, v7, v8, v9];
   v16 = v15;
   v18 = v17;
   [(PUCropToolController *)self _pointForHandle:v14 onCropRect:v10, v11, v12, v13];
   v20 = v19;
   v22 = v21;
-  v23 = [(PUCropToolController *)self cropAspect];
-  [(PUCropToolController *)self _deltaMaskForHandle:a3];
+  cropAspect = [(PUCropToolController *)self cropAspect];
+  [(PUCropToolController *)self _deltaMaskForHandle:handle];
   v25 = v12;
   v26 = v13;
-  v28 = a4.dx * v27;
-  v29 = a4.dy * v24;
-  if (v23)
+  v28 = amount.dx * v27;
+  v29 = amount.dy * v24;
+  if (cropAspect)
   {
     v90 = v25;
     v91 = v26;
     v88 = v10;
-    [v23 ratio];
-    if ((a3 & 0xFFFFFFFFFFFFFFFCLL) == 4)
+    [cropAspect ratio];
+    if ((handle & 0xFFFFFFFFFFFFFFFCLL) == 4)
     {
       v31 = v30 * v30 + 1.0;
       v32 = 1.0 / sqrtf(v31);
       v33 = v30 * v32;
-      if (a3 - 5 < 2)
+      if (handle - 5 < 2)
       {
         v32 = -v32;
       }
 
-      [(PUCropToolController *)self _correctInputVector:a3 forHandle:1 onCropRect:v33 * (v29 * v32 + v28 * v33) lockDirection:v32 * (v29 * v32 + v28 * v33), v10, v11, v90, v91];
+      [(PUCropToolController *)self _correctInputVector:handle forHandle:1 onCropRect:v33 * (v29 * v32 + v28 * v33) lockDirection:v32 * (v29 * v32 + v28 * v33), v10, v11, v90, v91];
       v35 = v34 + v16;
       v37 = v36 + v18;
       x = fmin(v20, v35);
@@ -2446,40 +2446,40 @@ void __54__PUCropToolController__userChangedAspectRatioLocked___block_invoke_4(u
       height = v91;
       y = v11;
       x = v10;
-      if (a3 <= 3)
+      if (handle <= 3)
       {
-        [(PUCropToolController *)self _correctInputVector:a3 forHandle:1 onCropRect:v28 lockDirection:v29, v10, v11, v90, v91];
+        [(PUCropToolController *)self _correctInputVector:handle forHandle:1 onCropRect:v28 lockDirection:v29, v10, v11, v90, v91];
         v52 = v51;
         v54 = v53;
         [(PUCropToolController *)self _cropCanvasFrame];
-        v55 = [(PUPhotoEditToolController *)self toolControllerSpec];
-        [v55 minimumCropSize];
+        toolControllerSpec = [(PUPhotoEditToolController *)self toolControllerSpec];
+        [toolControllerSpec minimumCropSize];
         v57 = v56;
         v59 = v58;
 
-        if (!a3 || ((0xC8u >> a3) & 1) != 0)
+        if (!handle || ((0xC8u >> handle) & 1) != 0)
         {
           v68 = -v54;
-          if (a3)
+          if (handle)
           {
             v68 = v54;
           }
 
-          [(PUCropToolController *)self _addHeight:a3 != 0 toRect:v68 anchorTop:v88, v11, v90, v91];
+          [(PUCropToolController *)self _addHeight:handle != 0 toRect:v68 anchorTop:v88, v11, v90, v91];
         }
 
         else
         {
           v60 = -v52;
-          if (((0x52u >> a3) & 1) == 0)
+          if (((0x52u >> handle) & 1) == 0)
           {
             v60 = v52;
           }
 
-          [(PUCropToolController *)self _addWidth:((0x52u >> a3) & 1) == 0 toRect:v60 anchorLeft:v88, v11, v90, v91];
+          [(PUCropToolController *)self _addWidth:((0x52u >> handle) & 1) == 0 toRect:v60 anchorLeft:v88, v11, v90, v91];
         }
 
-        [v23 constrainRect:0 boundingRect:v57 boundingAngle:v59 minSize:?];
+        [cropAspect constrainRect:0 boundingRect:v57 boundingAngle:v59 minSize:?];
         x = v69;
         y = v70;
         width = v71;
@@ -2507,7 +2507,7 @@ void __54__PUCropToolController__userChangedAspectRatioLocked___block_invoke_4(u
 
   else
   {
-    [(PUCropToolController *)self _correctInputVector:a3 forHandle:0 onCropRect:v28 lockDirection:a4.dy * v24, v10, v11, v25, v26];
+    [(PUCropToolController *)self _correctInputVector:handle forHandle:0 onCropRect:v28 lockDirection:amount.dy * v24, v10, v11, v25, v26];
     v44 = v43 + v16;
     v46 = v45 + v18;
     [(PUCropToolController *)self minimumViewCropRectSizeForHandleGesture];
@@ -2516,7 +2516,7 @@ void __54__PUCropToolController__userChangedAspectRatioLocked___block_invoke_4(u
     height = vabdd_f64(v22, v46);
     if (width < v47)
     {
-      if (((a3 < 7) & (0x52u >> a3)) != 0)
+      if (((handle < 7) & (0x52u >> handle)) != 0)
       {
         x = x - (v47 - width);
       }
@@ -2527,7 +2527,7 @@ void __54__PUCropToolController__userChangedAspectRatioLocked___block_invoke_4(u
     y = fmin(v22, v46);
     if (height < v48)
     {
-      if ((a3 & 0xFFFFFFFFFFFFFFFBLL) == 0 || a3 == 5)
+      if ((handle & 0xFFFFFFFFFFFFFFFBLL) == 0 || handle == 5)
       {
         y = y - (v48 - height);
       }
@@ -2535,7 +2535,7 @@ void __54__PUCropToolController__userChangedAspectRatioLocked___block_invoke_4(u
       height = v48;
     }
 
-    if (a3 <= 3)
+    if (handle <= 3)
     {
       v94 = 0u;
       v95 = 0u;
@@ -2601,8 +2601,8 @@ void __54__PUCropToolController__userChangedAspectRatioLocked___block_invoke_4(u
     _os_log_impl(&dword_1B36F3000, v77, OS_LOG_TYPE_DEBUG, "_cropRectFromPanningHandle: panning rect size: %@", buf, 0xCu);
   }
 
-  v79 = [(PUCropToolController *)self cropView];
-  [v79 validateViewCropRectAgainstModelCropRect:{x, y, width, height}];
+  cropView = [(PUCropToolController *)self cropView];
+  [cropView validateViewCropRectAgainstModelCropRect:{x, y, width, height}];
   v10 = v80;
   v11 = v81;
   v74 = v82;
@@ -2622,12 +2622,12 @@ LABEL_48:
 
 - (void)resetToolLabelHidingTimer
 {
-  v3 = [(PUCropToolController *)self badgeShowingExpirationTimer];
+  badgeShowingExpirationTimer = [(PUCropToolController *)self badgeShowingExpirationTimer];
 
-  if (v3)
+  if (badgeShowingExpirationTimer)
   {
-    v4 = [(PUCropToolController *)self badgeShowingExpirationTimer];
-    [v4 invalidate];
+    badgeShowingExpirationTimer2 = [(PUCropToolController *)self badgeShowingExpirationTimer];
+    [badgeShowingExpirationTimer2 invalidate];
 
     [(PUCropToolController *)self setBadgeShowingExpirationTimer:0];
   }
@@ -2666,14 +2666,14 @@ void __49__PUCropToolController_resetToolLabelHidingTimer__block_invoke(uint64_t
   }
 }
 
-- (void)showVideoScrubber:(BOOL)a3
+- (void)showVideoScrubber:(BOOL)scrubber
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __42__PUCropToolController_showVideoScrubber___block_invoke;
   v3[3] = &unk_1E7B7FF98;
   v3[4] = self;
-  v4 = a3;
+  scrubberCopy = scrubber;
   [MEMORY[0x1E69DD250] animateWithDuration:v3 animations:0.25];
 }
 
@@ -2709,13 +2709,13 @@ void __42__PUCropToolController_showVideoScrubber___block_invoke(uint64_t a1, do
   return v8;
 }
 
-- (CGVector)_applyAspectOfCropRect:(CGRect)a3 toHandleMovement:(CGVector)a4
+- (CGVector)_applyAspectOfCropRect:(CGRect)rect toHandleMovement:(CGVector)movement
 {
-  v4 = a3.size.height * a3.size.height + a3.size.width * a3.size.width;
+  v4 = rect.size.height * rect.size.height + rect.size.width * rect.size.width;
   v5 = 1.0 / sqrtf(v4);
-  v6 = a3.size.width * v5;
-  v7 = a3.size.height * v5;
-  v8 = a4.dy * (a3.size.height * v5) + a4.dx * v6;
+  v6 = rect.size.width * v5;
+  v7 = rect.size.height * v5;
+  v8 = movement.dy * (rect.size.height * v5) + movement.dx * v6;
   v9 = v6 * v8;
   v10 = v7 * v8;
   result.dy = v10;
@@ -2723,45 +2723,45 @@ void __42__PUCropToolController_showVideoScrubber___block_invoke(uint64_t a1, do
   return result;
 }
 
-- (void)_handleCropHandlePan:(id)a3
+- (void)_handleCropHandlePan:(id)pan
 {
-  v21 = a3;
-  v4 = [v21 state];
-  v5 = [(PUCropToolController *)self initialLocationsInHandlesByHandle];
-  v6 = [v21 view];
-  if ((v4 - 3) <= 1)
+  panCopy = pan;
+  state = [panCopy state];
+  initialLocationsInHandlesByHandle = [(PUCropToolController *)self initialLocationsInHandlesByHandle];
+  view = [panCopy view];
+  if ((state - 3) <= 1)
   {
     [(PUCropToolController *)self resetToolLabelHidingTimer];
   }
 
-  v7 = [(PUCropToolController *)self selectedCropHandleView];
+  selectedCropHandleView = [(PUCropToolController *)self selectedCropHandleView];
 
-  if (v6 == v7)
+  if (view == selectedCropHandleView)
   {
-    v8 = [v6 handle];
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v8];
-    v10 = [(PUCropToolController *)self view];
-    [v21 locationInView:v10];
+    handle = [view handle];
+    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:handle];
+    view2 = [(PUCropToolController *)self view];
+    [panCopy locationInView:view2];
     v12 = v11;
     v14 = v13;
 
-    if (v4 == 2)
+    if (state == 2)
     {
-      v16 = [v5 objectForKeyedSubscript:v9];
+      v16 = [initialLocationsInHandlesByHandle objectForKeyedSubscript:v9];
       [v16 CGPointValue];
       v18 = v17;
       v20 = v19;
 
-      [(PUCropToolController *)self _cropRectFromPanningHandle:v8 byAmount:v12 - v18, v14 - v20];
+      [(PUCropToolController *)self _cropRectFromPanningHandle:handle byAmount:v12 - v18, v14 - v20];
       [(PUCropToolController *)self setViewCropRect:?];
     }
 
-    else if (v4 == 1)
+    else if (state == 1)
     {
       [(PUCropToolController *)self viewCropRect];
       [(PUCropToolController *)self setInitialHandlePanCropRect:?];
       v15 = [MEMORY[0x1E696B098] valueWithCGPoint:{v12, v14}];
-      [v5 setObject:v15 forKeyedSubscript:v9];
+      [initialLocationsInHandlesByHandle setObject:v15 forKeyedSubscript:v9];
 
       [(PUCropToolController *)self showVideoScrubber:0];
     }
@@ -2772,29 +2772,29 @@ void __42__PUCropToolController_showVideoScrubber___block_invoke(uint64_t a1, do
   }
 }
 
-- (void)_handleTouchingGesture:(id)a3
+- (void)_handleTouchingGesture:(id)gesture
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 state];
-  if ([v4 state] == 3)
+  gestureCopy = gesture;
+  state = [gestureCopy state];
+  if ([gestureCopy state] == 3)
   {
-    if (v5 != 1)
+    if (state != 1)
     {
       goto LABEL_11;
     }
 
 LABEL_5:
-    v7 = [v4 view];
+    view = [gestureCopy view];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v9 = [v4 view];
-      [(PUCropToolController *)self setSelectedCropHandleView:v9];
-      v10 = [(PUCropToolController *)self cropModel];
-      [v10 cropRect];
+      view2 = [gestureCopy view];
+      [(PUCropToolController *)self setSelectedCropHandleView:view2];
+      cropModel = [(PUCropToolController *)self cropModel];
+      [cropModel cropRect];
       v12 = v11;
       v14 = v13;
 
@@ -2814,33 +2814,33 @@ LABEL_5:
     }
 
     [(PUPhotoEditToolController *)self setActivelyAdjusting:1];
-    v20 = self;
+    selfCopy2 = self;
     v21 = 1;
     goto LABEL_14;
   }
 
-  v6 = [v4 state];
-  if (v5 == 1)
+  state2 = [gestureCopy state];
+  if (state == 1)
   {
     goto LABEL_5;
   }
 
-  if (v6 == 4)
+  if (state2 == 4)
   {
 LABEL_11:
-    v22 = [v4 view];
-    v23 = [(PUCropToolController *)self selectedCropHandleView];
+    view3 = [gestureCopy view];
+    selectedCropHandleView = [(PUCropToolController *)self selectedCropHandleView];
 
-    if (v22 == v23)
+    if (view3 == selectedCropHandleView)
     {
       [(PUCropToolController *)self setSelectedCropHandleView:0];
     }
 
     [(PUPhotoEditToolController *)self setActivelyAdjusting:0];
-    v20 = self;
+    selfCopy2 = self;
     v21 = 0;
 LABEL_14:
-    [(PUPhotoEditToolController *)v20 setPerformingLiveInteraction:v21];
+    [(PUPhotoEditToolController *)selfCopy2 setPerformingLiveInteraction:v21];
     [(PUCropToolController *)self _updateCropViewsForInteraction];
   }
 }
@@ -2863,17 +2863,17 @@ LABEL_14:
       [(PUCropToolController *)self viewCropRect];
       if (v4 >= 1.0)
       {
-        v5 = [(PUCropToolController *)self cropView];
+        cropView = [(PUCropToolController *)self cropView];
         [(PUCropToolController *)self viewCropRect];
-        [v5 setImageCropRectFromViewCropRect:1 animated:?];
+        [cropView setImageCropRectFromViewCropRect:1 animated:?];
 
         [(PUPhotoEditToolController *)self willModifyAdjustment];
         [(PUCropToolController *)self _recomposeCropRectAnimated:1];
         v6 = PULocalizedString(@"PHOTOEDIT_CROP_GENERIC_ACTION_TITLE");
         [(PUPhotoEditToolController *)self didModifyAdjustmentWithLocalizedName:v6];
 
-        v7 = [(PUCropToolController *)self cropView];
-        [v7 updateLayerTransformsAnimated:1];
+        cropView2 = [(PUCropToolController *)self cropView];
+        [cropView2 updateLayerTransformsAnimated:1];
 
         [(PUCropToolController *)self _updateCropToggleButton];
       }
@@ -2913,8 +2913,8 @@ LABEL_14:
 - (void)_showMaskedContentAndCancelDelayedHide
 {
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__hideMaskedContent object:0];
-  v3 = [(PUCropToolController *)self cropOverlayView];
-  [v3 setMaskedContentVisible:1 animated:1];
+  cropOverlayView = [(PUCropToolController *)self cropOverlayView];
+  [cropOverlayView setMaskedContentVisible:1 animated:1];
 }
 
 - (void)_hideMaskedContentDelayed
@@ -2927,15 +2927,15 @@ LABEL_14:
 
 - (void)_hideMaskedContent
 {
-  v2 = [(PUCropToolController *)self cropOverlayView];
-  [v2 setMaskedContentVisible:0 animated:1];
+  cropOverlayView = [(PUCropToolController *)self cropOverlayView];
+  [cropOverlayView setMaskedContentVisible:0 animated:1];
 }
 
 - (void)_showGridAndCancelDelayedHide
 {
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__hideGrid object:0];
-  v3 = [(PUCropToolController *)self cropOverlayView];
-  [v3 setCropGridVisible:1 animated:1];
+  cropOverlayView = [(PUCropToolController *)self cropOverlayView];
+  [cropOverlayView setCropGridVisible:1 animated:1];
 }
 
 - (void)_hideGridDelayed
@@ -2950,8 +2950,8 @@ LABEL_14:
 {
   if (![(PUCropToolController *)self gridVisible])
   {
-    v3 = [(PUCropToolController *)self cropOverlayView];
-    [v3 setCropGridVisible:0 animated:1];
+    cropOverlayView = [(PUCropToolController *)self cropOverlayView];
+    [cropOverlayView setCropGridVisible:0 animated:1];
   }
 }
 
@@ -2962,10 +2962,10 @@ LABEL_14:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(PUCropToolController *)self cropHandleViewsByHandle];
-  v4 = [v3 allValues];
+  cropHandleViewsByHandle = [(PUCropToolController *)self cropHandleViewsByHandle];
+  allValues = [cropHandleViewsByHandle allValues];
 
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2977,26 +2977,26 @@ LABEL_14:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
-        v10 = [(PUCropToolController *)self view];
-        [v10 bringSubviewToFront:v9];
+        view = [(PUCropToolController *)self view];
+        [view bringSubviewToFront:v9];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 
-  v11 = [(PUCropToolController *)self view];
-  v12 = [(PUCropToolController *)self badgeView];
-  [v11 bringSubviewToFront:v12];
+  view2 = [(PUCropToolController *)self view];
+  badgeView = [(PUCropToolController *)self badgeView];
+  [view2 bringSubviewToFront:badgeView];
 }
 
 - (void)_updateAspectRatioControls
@@ -3007,28 +3007,28 @@ LABEL_14:
     [(PUCropToolController *)self updateCropAspectRatioOrientation:v3 < v4];
   }
 
-  v6 = [(PUCropToolController *)self cropAspect];
-  v5 = [(PUCropToolController *)self cropAspectViewController];
-  [v5 setCurrentCropAspect:v6];
+  cropAspect = [(PUCropToolController *)self cropAspect];
+  cropAspectViewController = [(PUCropToolController *)self cropAspectViewController];
+  [cropAspectViewController setCurrentCropAspect:cropAspect];
 }
 
 - (void)_updateCropViewsForInteraction
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = [(PUCropToolController *)self isTrackingAdjustmentControl];
-  v4 = [(PUCropToolController *)self cropOverlayView];
-  [v4 setStraightenGridVisible:v3 animated:1];
+  isTrackingAdjustmentControl = [(PUCropToolController *)self isTrackingAdjustmentControl];
+  cropOverlayView = [(PUCropToolController *)self cropOverlayView];
+  [cropOverlayView setStraightenGridVisible:isTrackingAdjustmentControl animated:1];
 
-  v5 = [(PUCropToolController *)self cropView];
-  if ([v5 isTracking])
+  cropView = [(PUCropToolController *)self cropView];
+  if ([cropView isTracking])
   {
   }
 
   else
   {
-    v6 = [(PUCropToolController *)self selectedCropHandleView];
+    selectedCropHandleView = [(PUCropToolController *)self selectedCropHandleView];
 
-    if (!v6)
+    if (!selectedCropHandleView)
     {
       goto LABEL_5;
     }
@@ -3037,8 +3037,8 @@ LABEL_14:
   [(PUCropToolController *)self _showGridAndCancelDelayedHide];
   [(PUCropToolController *)self _cancelDelayedRecomposeCropRect];
 LABEL_5:
-  v7 = [(PUCropToolController *)self cropView];
-  if ([v7 isTracking])
+  cropView2 = [(PUCropToolController *)self cropView];
+  if ([cropView2 isTracking])
   {
 LABEL_8:
 
@@ -3047,28 +3047,28 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v8 = [(PUCropToolController *)self selectedCropHandleView];
-  if (v8)
+  selectedCropHandleView2 = [(PUCropToolController *)self selectedCropHandleView];
+  if (selectedCropHandleView2)
   {
 
     goto LABEL_8;
   }
 
-  v27 = [(PUCropToolController *)self isTrackingAdjustmentControl];
+  isTrackingAdjustmentControl2 = [(PUCropToolController *)self isTrackingAdjustmentControl];
 
-  if (v27)
+  if (isTrackingAdjustmentControl2)
   {
     goto LABEL_9;
   }
 
-  v28 = [(PUCropToolController *)self canResetToDefaultValue];
+  canResetToDefaultValue = [(PUCropToolController *)self canResetToDefaultValue];
   if ([(PUCropToolController *)self rotatingAnimationCount])
   {
     [(PUCropToolController *)self _hideGrid];
     [(PUCropToolController *)self _hideMaskedContent];
   }
 
-  else if (!v28 && (-[PUCropToolController animationsByKeyPath](self, "animationsByKeyPath"), v29 = objc_claimAutoreleasedReturnValue(), v30 = [v29 count], v29, v30) || -[PUCropToolController hasAppliedCropSuggestion](self, "hasAppliedCropSuggestion") && (-[PUCropToolController animationsByKeyPath](self, "animationsByKeyPath"), v31 = objc_claimAutoreleasedReturnValue(), v32 = objc_msgSend(v31, "count"), v31, v32))
+  else if (!canResetToDefaultValue && (-[PUCropToolController animationsByKeyPath](self, "animationsByKeyPath"), v29 = objc_claimAutoreleasedReturnValue(), v30 = [v29 count], v29, v30) || -[PUCropToolController hasAppliedCropSuggestion](self, "hasAppliedCropSuggestion") && (-[PUCropToolController animationsByKeyPath](self, "animationsByKeyPath"), v31 = objc_claimAutoreleasedReturnValue(), v32 = objc_msgSend(v31, "count"), v31, v32))
   {
     [(PUCropToolController *)self _showGridAndCancelDelayedHide];
     [(PUCropToolController *)self _showMaskedContentAndCancelDelayedHide];
@@ -3077,7 +3077,7 @@ LABEL_9:
 
   else
   {
-    if (v28 || [(PUCropToolController *)self hasAppliedCropSuggestion])
+    if (canResetToDefaultValue || [(PUCropToolController *)self hasAppliedCropSuggestion])
     {
       [(PUCropToolController *)self _hideGridDelayed];
       [(PUCropToolController *)self _hideMaskedContentDelayed];
@@ -3093,13 +3093,13 @@ LABEL_9:
   }
 
 LABEL_10:
-  v9 = [(PUCropToolController *)self cropView];
-  if ([v9 isTracking])
+  cropView3 = [(PUCropToolController *)self cropView];
+  if ([cropView3 isTracking])
   {
-    v10 = [(PUCropToolController *)self cropView];
-    v11 = [v10 isDecelerating];
+    cropView4 = [(PUCropToolController *)self cropView];
+    isDecelerating = [cropView4 isDecelerating];
 
-    if (!v11)
+    if (!isDecelerating)
     {
       v12 = 0;
       goto LABEL_15;
@@ -3119,21 +3119,21 @@ LABEL_15:
 
   else
   {
-    v14 = [(PUCropToolController *)self selectedCropHandleView];
-    v13 = v14 == 0;
+    selectedCropHandleView3 = [(PUCropToolController *)self selectedCropHandleView];
+    v13 = selectedCropHandleView3 == 0;
   }
 
-  v15 = [(PUCropToolController *)self cropView];
-  [v15 setUserInteractionEnabled:v13];
+  cropView5 = [(PUCropToolController *)self cropView];
+  [cropView5 setUserInteractionEnabled:v13];
 
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v16 = [(PUCropToolController *)self cropHandleViewsByHandle];
-  v17 = [v16 allValues];
+  cropHandleViewsByHandle = [(PUCropToolController *)self cropHandleViewsByHandle];
+  allValues = [cropHandleViewsByHandle allValues];
 
-  v18 = [v17 countByEnumeratingWithState:&v33 objects:v37 count:16];
+  v18 = [allValues countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v18)
   {
     v19 = v18;
@@ -3145,16 +3145,16 @@ LABEL_15:
       {
         if (*v34 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(allValues);
         }
 
         v22 = *(*(&v33 + 1) + 8 * v21);
-        v23 = [(PUCropToolController *)self selectedCropHandleView];
+        selectedCropHandleView4 = [(PUCropToolController *)self selectedCropHandleView];
         v24 = v12;
-        if (v22 != v23)
+        if (v22 != selectedCropHandleView4)
         {
-          v25 = [(PUCropToolController *)self selectedCropHandleView];
-          v26 = v25 == 0;
+          selectedCropHandleView5 = [(PUCropToolController *)self selectedCropHandleView];
+          v26 = selectedCropHandleView5 == 0;
 
           v24 = v26 & v12;
         }
@@ -3164,7 +3164,7 @@ LABEL_15:
       }
 
       while (v19 != v21);
-      v19 = [v17 countByEnumeratingWithState:&v33 objects:v37 count:16];
+      v19 = [allValues countByEnumeratingWithState:&v33 objects:v37 count:16];
     }
 
     while (v19);
@@ -3177,22 +3177,22 @@ LABEL_15:
 {
   if ([(PUCropToolController *)self _hasCropSuggestion])
   {
-    v3 = [(PUCropToolController *)self hasAppliedCropSuggestion];
+    hasAppliedCropSuggestion = [(PUCropToolController *)self hasAppliedCropSuggestion];
   }
 
   else
   {
-    v3 = 0;
+    hasAppliedCropSuggestion = 0;
   }
 
   if ([(PUCropToolController *)self _hasPerspectiveSuggestion])
   {
-    v4 = [(PUCropToolController *)self hasAppliedPerspectiveSuggestion];
+    hasAppliedPerspectiveSuggestion = [(PUCropToolController *)self hasAppliedPerspectiveSuggestion];
   }
 
   else
   {
-    v4 = 0;
+    hasAppliedPerspectiveSuggestion = 0;
   }
 
   if ([(PUCropToolController *)self _hasCropSuggestion])
@@ -3233,14 +3233,14 @@ LABEL_15:
     v7 = 0;
   }
 
-  v8 = [(PUCropToolController *)self autoButtonMode];
-  v9 = [(PUCropToolController *)self autoButton];
-  v10 = v9;
-  v11 = v8 == 3;
-  v12 = v8 == 3;
+  autoButtonMode = [(PUCropToolController *)self autoButtonMode];
+  autoButton = [(PUCropToolController *)self autoButton];
+  v10 = autoButton;
+  v11 = autoButtonMode == 3;
+  v12 = autoButtonMode == 3;
   if (v11)
   {
-    [v9 setSelected:1];
+    [autoButton setSelected:1];
 
     if (v7)
     {
@@ -3254,7 +3254,7 @@ LABEL_23:
 
   else
   {
-    [v9 setSelected:v3 || v4];
+    [autoButton setSelected:hasAppliedCropSuggestion || hasAppliedPerspectiveSuggestion];
   }
 
   if (([(PUCropToolController *)self autoButtonMode]!= 3) | v7 & 1)
@@ -3264,15 +3264,15 @@ LABEL_23:
 
   v13 = 0;
 LABEL_25:
-  v14 = [(PUCropToolController *)self autoButton];
-  [v14 setEnabled:v13];
+  autoButton2 = [(PUCropToolController *)self autoButton];
+  [autoButton2 setEnabled:v13];
 
-  v15 = [(PUCropToolController *)self autoButton];
-  [v15 setHidden:v12];
+  autoButton3 = [(PUCropToolController *)self autoButton];
+  [autoButton3 setHidden:v12];
 
   v16 = MEMORY[0x1E69C3BF0];
-  v20 = [(PUCropToolController *)self autoButton];
-  if ([v20 isSelected])
+  autoButton4 = [(PUCropToolController *)self autoButton];
+  if ([autoButton4 isSelected])
   {
     v17 = 2;
   }
@@ -3283,8 +3283,8 @@ LABEL_25:
   }
 
   v18 = [v16 configurationWithCursorEffect:v17];
-  v19 = [(PUCropToolController *)self autoButton];
-  [v19 setPx_configuration:v18];
+  autoButton5 = [(PUCropToolController *)self autoButton];
+  [autoButton5 setPx_configuration:v18];
 }
 
 - (void)_updateCropToggleButtonMode
@@ -3307,12 +3307,12 @@ LABEL_25:
   [(PUCropToolController *)self setAutoButtonMode:v3];
 }
 
-- (void)setAutoButtonMode:(int64_t)a3
+- (void)setAutoButtonMode:(int64_t)mode
 {
-  if (self->_autoButtonMode != a3)
+  if (self->_autoButtonMode != mode)
   {
-    self->_autoButtonMode = a3;
-    if (a3 == 3)
+    self->_autoButtonMode = mode;
+    if (mode == 3)
     {
       v4 = @"PHOTOEDIT_CROP_AUTO_RESET";
     }
@@ -3323,35 +3323,35 @@ LABEL_25:
     }
 
     v5 = PULocalizedString(v4);
-    v6 = [v5 localizedUppercaseString];
-    v7 = [(PUCropToolController *)self autoButton];
-    [v7 setTitle:v6];
+    localizedUppercaseString = [v5 localizedUppercaseString];
+    autoButton = [(PUCropToolController *)self autoButton];
+    [autoButton setTitle:localizedUppercaseString];
 
     autoButtonMode = self->_autoButtonMode;
-    v9 = [(PUCropToolController *)self autoButton];
-    v16 = v9;
+    autoButton2 = [(PUCropToolController *)self autoButton];
+    v16 = autoButton2;
     if (autoButtonMode == 3)
     {
-      v10 = [v9 unselectedConfiguration];
+      unselectedConfiguration = [autoButton2 unselectedConfiguration];
 
-      v11 = [MEMORY[0x1E69DC6E8] clearConfiguration];
-      [v10 setBackground:v11];
+      clearConfiguration = [MEMORY[0x1E69DC6E8] clearConfiguration];
+      [unselectedConfiguration setBackground:clearConfiguration];
 
-      v12 = [MEMORY[0x1E69DC888] clearColor];
-      v13 = [v10 background];
-      [v13 setBackgroundColor:v12];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      background = [unselectedConfiguration background];
+      [background setBackgroundColor:clearColor];
 
-      [v10 setTitleTextAttributesTransformer:&__block_literal_global_20488];
-      [v10 setImage:0];
-      v14 = [(PUCropToolController *)self autoButton];
-      [v14 setOverrideButtonConfiguration:v10];
+      [unselectedConfiguration setTitleTextAttributesTransformer:&__block_literal_global_20488];
+      [unselectedConfiguration setImage:0];
+      autoButton3 = [(PUCropToolController *)self autoButton];
+      [autoButton3 setOverrideButtonConfiguration:unselectedConfiguration];
 
-      v15 = v10;
+      v15 = unselectedConfiguration;
     }
 
     else
     {
-      [v9 setOverrideButtonConfiguration:0];
+      [autoButton2 setOverrideButtonConfiguration:0];
       v15 = v16;
     }
   }
@@ -3377,8 +3377,8 @@ id __42__PUCropToolController_setAutoButtonMode___block_invoke(uint64_t a1, void
   if (!self->_rotateButton)
   {
     v4 = PULocalizedString(@"PHOTOEDIT_CROP_ROTATE_ACCESSIBILITY_LABEL");
-    v5 = [(PUPhotoEditToolController *)self photoEditSpec];
-    v6 = [PUPhotoEditToolbarButton buttonWithImageNamed:@"rotate.left" selectedImageNamed:@"rotate.left.fill" accessibilityLabel:v4 spec:v5];
+    photoEditSpec = [(PUPhotoEditToolController *)self photoEditSpec];
+    v6 = [PUPhotoEditToolbarButton buttonWithImageNamed:@"rotate.left" selectedImageNamed:@"rotate.left.fill" accessibilityLabel:v4 spec:photoEditSpec];
 
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
@@ -3393,8 +3393,8 @@ id __42__PUCropToolController_setAutoButtonMode___block_invoke(uint64_t a1, void
   if (!self->_flipButton)
   {
     v7 = PULocalizedString(@"PHOTOEDIT_CROP_FLIP_ACCESSIBILITY_LABEL");
-    v8 = [(PUPhotoEditToolController *)self photoEditSpec];
-    v9 = [PUPhotoEditToolbarButton buttonWithImageNamed:@"arrow.left.and.right.righttriangle.left.righttriangle.right" selectedImageNamed:@"arrow.left.and.right.righttriangle.left.righttriangle.right.fill" accessibilityLabel:v7 spec:v8];
+    photoEditSpec2 = [(PUPhotoEditToolController *)self photoEditSpec];
+    v9 = [PUPhotoEditToolbarButton buttonWithImageNamed:@"arrow.left.and.right.righttriangle.left.righttriangle.right" selectedImageNamed:@"arrow.left.and.right.righttriangle.left.righttriangle.right.fill" accessibilityLabel:v7 spec:photoEditSpec2];
 
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
@@ -3409,8 +3409,8 @@ id __42__PUCropToolController_setAutoButtonMode___block_invoke(uint64_t a1, void
   if (!self->_aspectButton)
   {
     v10 = PULocalizedString(@"PHOTOEDIT_CROP_ASPECT_RATIO_ACCESSIBILITY_LABEL");
-    v11 = [(PUPhotoEditToolController *)self photoEditSpec];
-    v12 = [PUPhotoEditToolbarButton buttonWithImageNamed:@"aspectratio" selectedImageNamed:@"aspectratio.fill" accessibilityLabel:v10 spec:v11];
+    photoEditSpec3 = [(PUPhotoEditToolController *)self photoEditSpec];
+    v12 = [PUPhotoEditToolbarButton buttonWithImageNamed:@"aspectratio" selectedImageNamed:@"aspectratio.fill" accessibilityLabel:v10 spec:photoEditSpec3];
 
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
@@ -3442,16 +3442,16 @@ id __42__PUCropToolController_setAutoButtonMode___block_invoke(uint64_t a1, void
 
   [(PUCropToolController *)self _updateCropToggleButtonMode];
   cropAspectViewController = self->_cropAspectViewController;
-  v15 = [(PUCropToolController *)self aspectButton];
-  [v15 setSelected:cropAspectViewController != 0];
+  aspectButton = [(PUCropToolController *)self aspectButton];
+  [aspectButton setSelected:cropAspectViewController != 0];
 
-  v16 = [(PUCropToolController *)self cropAspect];
-  v17 = [v16 allowOrientationChange];
-  v18 = [(PUCropToolController *)self cropAspectFlipperView];
-  [v18 setEnabled:v17];
+  cropAspect = [(PUCropToolController *)self cropAspect];
+  allowOrientationChange = [cropAspect allowOrientationChange];
+  cropAspectFlipperView = [(PUCropToolController *)self cropAspectFlipperView];
+  [cropAspectFlipperView setEnabled:allowOrientationChange];
 
-  v19 = [(PUCropToolController *)self aspectButton];
-  if ([v19 isSelected])
+  aspectButton2 = [(PUCropToolController *)self aspectButton];
+  if ([aspectButton2 isSelected])
   {
     [v3 photoEditingToolbarButtonSelectedColor];
   }
@@ -3462,8 +3462,8 @@ id __42__PUCropToolController_setAutoButtonMode___block_invoke(uint64_t a1, void
   }
   v20 = ;
 
-  v21 = [(PUCropToolController *)self aspectButton];
-  [v21 setTintColor:v20];
+  aspectButton3 = [(PUCropToolController *)self aspectButton];
+  [aspectButton3 setTintColor:v20];
 
   objc_destroyWeak(&location);
 }
@@ -3592,8 +3592,8 @@ void __48__PUCropToolController__updateCropActionButtons__block_invoke_4(uint64_
   {
     v5 = objc_alloc_init(PUCropOverlayView);
     [(PUCropOverlayView *)v5 setUserInteractionEnabled:0];
-    v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-    self->_gridVisible = [v6 BOOLForKey:@"PUCropGridVisible"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    self->_gridVisible = [standardUserDefaults BOOLForKey:@"PUCropGridVisible"];
 
     [(PUCropOverlayView *)v5 setCropGridVisible:self->_gridVisible animated:0];
     v7 = self->_cropOverlayView;
@@ -3683,26 +3683,26 @@ void __58__PUCropToolController__loadPerspectiveSuggestionIfNeeded__block_invoke
   }
 }
 
-- (void)setHasAppliedCropSuggestion:(BOOL)a3
+- (void)setHasAppliedCropSuggestion:(BOOL)suggestion
 {
-  v3 = a3;
-  self->_hasAppliedCropSuggestion = a3;
+  suggestionCopy = suggestion;
+  self->_hasAppliedCropSuggestion = suggestion;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__PUCropToolController_setHasAppliedCropSuggestion___block_invoke;
   v7[3] = &__block_descriptor_33_e36_v16__0__PICropAdjustmentController_8l;
-  v8 = a3;
+  suggestionCopy2 = suggestion;
   [(PUCropToolController *)self _performLocalCropModelChanges:v7];
-  v5 = [(PUPhotoEditToolController *)self aggregateSession];
-  v6 = v5;
-  if (v3)
+  aggregateSession = [(PUPhotoEditToolController *)self aggregateSession];
+  v6 = aggregateSession;
+  if (suggestionCopy)
   {
-    [v5 notifyDidApplyAutoCrop];
+    [aggregateSession notifyDidApplyAutoCrop];
   }
 
   else
   {
-    [v5 notifyDidAdjustCrop];
+    [aggregateSession notifyDidAdjustCrop];
   }
 
   [(PUCropToolController *)self _updateCropToggleButton];
@@ -3710,23 +3710,23 @@ void __58__PUCropToolController__loadPerspectiveSuggestionIfNeeded__block_invoke
 
 - (void)_toggleCropAndPerspective
 {
-  v3 = [(PUCropToolController *)self _hasCropSuggestion];
-  v4 = [(PUCropToolController *)self _hasPerspectiveSuggestion];
-  if (v4)
+  _hasCropSuggestion = [(PUCropToolController *)self _hasCropSuggestion];
+  _hasPerspectiveSuggestion = [(PUCropToolController *)self _hasPerspectiveSuggestion];
+  if (_hasPerspectiveSuggestion)
   {
-    v5 = [(PUCropToolController *)self hasAppliedPerspectiveSuggestion];
+    hasAppliedPerspectiveSuggestion = [(PUCropToolController *)self hasAppliedPerspectiveSuggestion];
     v6 = ![(PUCropToolController *)self hasAppliedPerspectiveSuggestion];
   }
 
   else
   {
-    v5 = 0;
+    hasAppliedPerspectiveSuggestion = 0;
     v6 = 0;
   }
 
   if ([(PUCropToolController *)self canResetToDefaultValue])
   {
-    v7 = v6 | !v4;
+    v7 = v6 | !_hasPerspectiveSuggestion;
   }
 
   else
@@ -3734,26 +3734,26 @@ void __58__PUCropToolController__loadPerspectiveSuggestionIfNeeded__block_invoke
     v7 = 0;
   }
 
-  if (v3)
+  if (_hasCropSuggestion)
   {
-    v8 = [(PUCropToolController *)self hasAppliedCropSuggestion];
+    hasAppliedCropSuggestion = [(PUCropToolController *)self hasAppliedCropSuggestion];
     v9 = ![(PUCropToolController *)self hasAppliedCropSuggestion];
   }
 
   else
   {
-    v8 = 0;
+    hasAppliedCropSuggestion = 0;
     v9 = 0;
   }
 
-  v10 = [(PUCropToolController *)self canResetToDefaultValue];
-  v11 = v9 | !v3;
-  if (!v10)
+  canResetToDefaultValue = [(PUCropToolController *)self canResetToDefaultValue];
+  v11 = v9 | !_hasCropSuggestion;
+  if (!canResetToDefaultValue)
   {
     v11 = 0;
   }
 
-  if (v8 || v5 || !v3 && !v4 && ((v11 | v7) & 1) != 0)
+  if (hasAppliedCropSuggestion || hasAppliedPerspectiveSuggestion || !_hasCropSuggestion && !_hasPerspectiveSuggestion && ((v11 | v7) & 1) != 0)
   {
 
     [(PUCropToolController *)self _resetAllValuesAnimated:1];
@@ -3782,14 +3782,14 @@ void __58__PUCropToolController__loadPerspectiveSuggestionIfNeeded__block_invoke
   [(PUCropToolController *)self _applyCropRect:1 straightenAngle:v4 pitchAngle:v6 yawAngle:v8 isAutoCrop:v10, v12, v14, v15];
 }
 
-- (void)_applyCropRect:(CGRect)a3 straightenAngle:(double)a4 pitchAngle:(double)a5 yawAngle:(double)a6 isAutoCrop:(BOOL)a7
+- (void)_applyCropRect:(CGRect)rect straightenAngle:(double)angle pitchAngle:(double)pitchAngle yawAngle:(double)yawAngle isAutoCrop:(BOOL)crop
 {
-  v7 = a7;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (CGRectIsEmpty(a3))
+  cropCopy = crop;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (CGRectIsEmpty(rect))
   {
     v37 = *(MEMORY[0x1E695F058] + 8);
     v38 = *MEMORY[0x1E695F058];
@@ -3806,9 +3806,9 @@ void __58__PUCropToolController__loadPerspectiveSuggestionIfNeeded__block_invoke
   }
 
   v35 = v16;
-  self->_straightenAngle = a4;
-  self->_yawAngle = a6;
-  self->_pitchAngle = a5;
+  self->_straightenAngle = angle;
+  self->_yawAngle = yawAngle;
+  self->_pitchAngle = pitchAngle;
   v41.origin.x = x;
   v41.origin.y = y;
   v41.size.width = width;
@@ -3829,18 +3829,18 @@ void __58__PUCropToolController__loadPerspectiveSuggestionIfNeeded__block_invoke
   v43.size.width = v22;
   v43.size.height = v23;
   v25 = v24 * CGRectGetHeight(v43);
-  [(NUCropModel *)self->_cropModel setRollAngle:a4 constrainCropRectWithTargetArea:v25];
-  [(NUCropModel *)self->_cropModel setYawAngle:a6 constrainCropRectWithTargetArea:v25];
-  [(NUCropModel *)self->_cropModel setPitchAngle:a5 constrainCropRectWithTargetArea:v25];
+  [(NUCropModel *)self->_cropModel setRollAngle:angle constrainCropRectWithTargetArea:v25];
+  [(NUCropModel *)self->_cropModel setYawAngle:yawAngle constrainCropRectWithTargetArea:v25];
+  [(NUCropModel *)self->_cropModel setPitchAngle:pitchAngle constrainCropRectWithTargetArea:v25];
   [(PUPhotoEditToolController *)self willModifyAdjustment];
-  v26 = [(PUCropToolController *)self cropView];
-  [v26 setStraightenAngle:a4];
+  cropView = [(PUCropToolController *)self cropView];
+  [cropView setStraightenAngle:angle];
 
-  v27 = [(PUCropToolController *)self cropView];
-  [v27 setYawAngle:a6];
+  cropView2 = [(PUCropToolController *)self cropView];
+  [cropView2 setYawAngle:yawAngle];
 
-  v28 = [(PUCropToolController *)self cropView];
-  [v28 setPitchAngle:a5];
+  cropView3 = [(PUCropToolController *)self cropView];
+  [cropView3 setPitchAngle:pitchAngle];
 
   v44.origin.x = v38;
   v44.origin.y = v37;
@@ -3849,45 +3849,45 @@ void __58__PUCropToolController__loadPerspectiveSuggestionIfNeeded__block_invoke
   if (!CGRectIsEmpty(v44))
   {
     [(PUCropToolController *)self _setViewCropRect:1 animated:v38, v37, v36, v35];
-    v29 = [(PUCropToolController *)self cropView];
+    cropView4 = [(PUCropToolController *)self cropView];
     [(NUCropModel *)self->_cropModel cropRect];
-    [v29 setModelCropRect:? viewCropRect:?];
+    [cropView4 setModelCropRect:? viewCropRect:?];
   }
 
-  v30 = [(PUCropToolController *)self cropView];
-  [v30 updateLayerTransformsAnimated:1];
+  cropView5 = [(PUCropToolController *)self cropView];
+  [cropView5 updateLayerTransformsAnimated:1];
 
   v39[0] = MEMORY[0x1E69E9820];
   v39[1] = 3221225472;
   v39[2] = __86__PUCropToolController__applyCropRect_straightenAngle_pitchAngle_yawAngle_isAutoCrop___block_invoke;
   v39[3] = &unk_1E7B76508;
-  *&v39[5] = a4;
-  *&v39[6] = a5;
-  *&v39[7] = a6;
+  *&v39[5] = angle;
+  *&v39[6] = pitchAngle;
+  *&v39[7] = yawAngle;
   v39[4] = self;
-  v40 = v7;
+  v40 = cropCopy;
   [(PUCropToolController *)self _performLocalCropModelChanges:v39];
   v31 = PULocalizedString(@"PHOTOEDIT_CROP_GENERIC_ACTION_TITLE");
   [(PUPhotoEditToolController *)self didModifyAdjustmentWithLocalizedName:v31];
 
-  if (v7)
+  if (cropCopy)
   {
-    v32 = [(PUPhotoEditToolController *)self aggregateSession];
-    [v32 notifyDidApplyAutoCrop];
+    aggregateSession = [(PUPhotoEditToolController *)self aggregateSession];
+    [aggregateSession notifyDidApplyAutoCrop];
 
-    if (a5 != 0.0 || a6 != 0.0)
+    if (pitchAngle != 0.0 || yawAngle != 0.0)
     {
-      v33 = [(PUPhotoEditToolController *)self aggregateSession];
-      [v33 notifyDidApplyPerspectiveAutoCrop];
+      aggregateSession2 = [(PUPhotoEditToolController *)self aggregateSession];
+      [aggregateSession2 notifyDidApplyPerspectiveAutoCrop];
     }
   }
 
-  self->_hasAppliedPerspectiveSuggestion = v7;
-  self->_hasAppliedCropSuggestion = v7;
+  self->_hasAppliedPerspectiveSuggestion = cropCopy;
+  self->_hasAppliedCropSuggestion = cropCopy;
   [(PUCropToolController *)self _updateCropToggleButton];
   [(PUCropToolController *)self _updatePreviewViewInsets];
-  v34 = [(PUCropToolController *)self adjustmentsViewController];
-  [v34 resetControls];
+  adjustmentsViewController = [(PUCropToolController *)self adjustmentsViewController];
+  [adjustmentsViewController resetControls];
 }
 
 void __86__PUCropToolController__applyCropRect_straightenAngle_pitchAngle_yawAngle_isAutoCrop___block_invoke(uint64_t a1, void *a2)
@@ -3919,9 +3919,9 @@ void __86__PUCropToolController__applyCropRect_straightenAngle_pitchAngle_yawAng
   if (![(PUCropToolController *)self hasAutoAppliedCropSuggestion]&& ![(PUCropToolController *)self hasRequestedCropSuggestion])
   {
     v3 = +[PUPhotoEditProtoSettings sharedInstance];
-    v4 = [v3 autoCropEnabled];
+    autoCropEnabled = [v3 autoCropEnabled];
 
-    if (v4)
+    if (autoCropEnabled)
     {
       v5[0] = MEMORY[0x1E69E9820];
       v5[1] = 3221225472;
@@ -3986,17 +3986,17 @@ void __51__PUCropToolController__loadCropSuggestionIfNeeded__block_invoke(uint64
   }
 }
 
-- (void)_resetAllValuesAnimated:(BOOL)a3 skipLayerTransformUpdate:(BOOL)a4
+- (void)_resetAllValuesAnimated:(BOOL)animated skipLayerTransformUpdate:(BOOL)update
 {
-  v5 = a3;
-  v7 = [(PUCropToolController *)self _defaultOrientation];
-  v8 = [(PUCropToolController *)self geometry];
-  v9 = v7 == [v8 appliedOrientation];
+  animatedCopy = animated;
+  _defaultOrientation = [(PUCropToolController *)self _defaultOrientation];
+  geometry = [(PUCropToolController *)self geometry];
+  v9 = _defaultOrientation == [geometry appliedOrientation];
 
   [(PUCropToolController *)self _defaultStraightenAngle];
   v11 = v10;
   [(PUCropToolController *)self straightenAngle];
-  LODWORD(v8) = v11 != v12;
+  LODWORD(geometry) = v11 != v12;
   [(PUCropToolController *)self _defaultPitchAngle];
   v14 = v13;
   [(PUCropToolController *)self pitchAngle];
@@ -4019,7 +4019,7 @@ void __51__PUCropToolController__loadCropSuggestionIfNeeded__block_invoke(uint64
   v54.origin.y = v24;
   v54.size.width = v26;
   v54.size.height = v28;
-  if (v9 | !CGRectEqualToRect(v54, v55) | (v8 | v16) & 1)
+  if (v9 | !CGRectEqualToRect(v54, v55) | (geometry | v16) & 1)
   {
     v33 = v9;
   }
@@ -4029,34 +4029,34 @@ void __51__PUCropToolController__loadCropSuggestionIfNeeded__block_invoke(uint64
     v33 = v20;
   }
 
-  v34 = [(PUCropToolController *)self cropView];
-  [v34 _resetCropRect];
+  cropView = [(PUCropToolController *)self cropView];
+  [cropView _resetCropRect];
 
   self->_straightenAngle = v11;
   self->_pitchAngle = v14;
   self->_yawAngle = v18;
   [(PUCropToolController *)self _defaultViewCropRect];
-  [(PUCropToolController *)self _setViewCropRect:v5 & v33 animated:?];
-  v35 = [(PUCropToolController *)self cropView];
+  [(PUCropToolController *)self _setViewCropRect:animatedCopy & v33 animated:?];
+  cropView2 = [(PUCropToolController *)self cropView];
   [(NUCropModel *)self->_cropModel cropRect];
   v37 = v36;
   v39 = v38;
   v41 = v40;
   v43 = v42;
   [(PUCropToolController *)self viewCropRect];
-  [v35 setModelCropRect:v37 viewCropRect:{v39, v41, v43, v44, v45, v46, v47}];
+  [cropView2 setModelCropRect:v37 viewCropRect:{v39, v41, v43, v44, v45, v46, v47}];
 
-  if (!a4)
+  if (!update)
   {
-    v48 = [(PUCropToolController *)self cropView];
-    [v48 updateLayerTransformsAnimated:v5 & v33];
+    cropView3 = [(PUCropToolController *)self cropView];
+    [cropView3 updateLayerTransformsAnimated:animatedCopy & v33];
   }
 
   [(PUCropToolController *)self setHasAppliedCropSuggestion:0];
   [(PUCropToolController *)self setHasAppliedPerspectiveSuggestion:0];
   [(PUCropToolController *)self _updateCropViewsForInteraction];
-  v49 = [(PUCropToolController *)self cropModel];
-  [v49 makeCurrentAspectRatioFreeForm];
+  cropModel = [(PUCropToolController *)self cropModel];
+  [cropModel makeCurrentAspectRatioFreeForm];
 
   v53[0] = MEMORY[0x1E69E9820];
   v53[1] = 3221225472;
@@ -4070,15 +4070,15 @@ void __51__PUCropToolController__loadCropSuggestionIfNeeded__block_invoke(uint64
   if (![(PUCropToolController *)self setLockedCropAspectIfNeededIgnoringCurrentLock:1])
   {
     [(PUCropToolController *)self setCropAspect:0];
-    v50 = [(PUCropToolController *)self cropAspectViewController];
-    [v50 setCurrentCropAspect:0];
+    cropAspectViewController = [(PUCropToolController *)self cropAspectViewController];
+    [cropAspectViewController setCurrentCropAspect:0];
   }
 
-  v51 = [(PUCropToolController *)self adjustmentsViewController];
-  [v51 resetControls];
+  adjustmentsViewController = [(PUCropToolController *)self adjustmentsViewController];
+  [adjustmentsViewController resetControls];
 
-  v52 = [(PUPhotoEditToolController *)self aggregateSession];
-  [v52 notifyDidResetCrop];
+  aggregateSession = [(PUPhotoEditToolController *)self aggregateSession];
+  [aggregateSession notifyDidResetCrop];
 
   [(PUCropToolController *)self _updateCropToggleButton];
 }
@@ -4108,8 +4108,8 @@ void __73__PUCropToolController__resetAllValuesAnimated_skipLayerTransformUpdate
 
 - (CGRect)_defaultImageCropRect
 {
-  v2 = [(PUCropToolController *)self cropModel];
-  [v2 masterImageRect];
+  cropModel = [(PUCropToolController *)self cropModel];
+  [cropModel masterImageRect];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -4126,22 +4126,22 @@ void __73__PUCropToolController__resetAllValuesAnimated_skipLayerTransformUpdate
   return result;
 }
 
-- (BOOL)setLockedCropAspectIfNeededIgnoringCurrentLock:(BOOL)a3
+- (BOOL)setLockedCropAspectIfNeededIgnoringCurrentLock:(BOOL)lock
 {
-  v3 = a3;
+  lockCopy = lock;
   v5 = +[PUPhotoEditProtoSettings sharedInstance];
-  v6 = [v5 maintainCropAspectLockState];
+  maintainCropAspectLockState = [v5 maintainCropAspectLockState];
 
-  if (v6)
+  if (maintainCropAspectLockState)
   {
-    v7 = [(PUPhotoEditToolController *)self compositionController];
-    v8 = [v7 cropAdjustmentController];
+    compositionController = [(PUPhotoEditToolController *)self compositionController];
+    cropAdjustmentController = [compositionController cropAdjustmentController];
 
-    [v8 cropRect];
+    [cropAdjustmentController cropRect];
     v10 = v9;
     v12 = v11;
-    v13 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v14 = [v13 BOOLForKey:@"PUPhotoEditCropAspectRatioLocked2"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v14 = [standardUserDefaults BOOLForKey:@"PUPhotoEditCropAspectRatioLocked2"];
 
     [(NUCropModel *)self->_cropModel masterImageRect];
     if (v10 == v15)
@@ -4155,12 +4155,12 @@ void __73__PUCropToolController__resetAllValuesAnimated_skipLayerTransformUpdate
       v17 = 0;
     }
 
-    v19 = [v8 constraintWidth] < 1 || objc_msgSend(v8, "constraintHeight") < 1;
-    v18 = v14 & (v17 && (v19 || v3));
+    v19 = [cropAdjustmentController constraintWidth] < 1 || objc_msgSend(cropAdjustmentController, "constraintHeight") < 1;
+    v18 = v14 & (v17 && (v19 || lockCopy));
     if (v18 == 1)
     {
-      v20 = [(PUPhotoEditToolController *)self delegate];
-      [v20 toolControllerOriginalOrientedImageSize:self];
+      delegate = [(PUPhotoEditToolController *)self delegate];
+      [delegate toolControllerOriginalOrientedImageSize:self];
       v22 = v21;
       v24 = v23;
 
@@ -4177,7 +4177,7 @@ void __73__PUCropToolController__resetAllValuesAnimated_skipLayerTransformUpdate
   return v18;
 }
 
-- (void)_loadStateFromModelAnimated:(BOOL)a3
+- (void)_loadStateFromModelAnimated:(BOOL)animated
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -4185,7 +4185,7 @@ void __73__PUCropToolController__resetAllValuesAnimated_skipLayerTransformUpdate
   v3[3] = &unk_1E7B7FA58;
   v3[4] = self;
   v3[5] = a2;
-  v4 = a3;
+  animatedCopy = animated;
   [(PUCropToolController *)self _loadImageIfNeededWithCompletion:v3];
 }
 
@@ -4343,34 +4343,34 @@ void __52__PUCropToolController__loadStateFromModelAnimated___block_invoke_353(u
   *(v7 + 40) = v6;
 }
 
-- (void)compositionControllerDidChangeForAdjustments:(id)a3
+- (void)compositionControllerDidChangeForAdjustments:(id)adjustments
 {
-  v4 = a3;
+  adjustmentsCopy = adjustments;
   v10.receiver = self;
   v10.super_class = PUCropToolController;
-  [(PUPhotoEditToolController *)&v10 compositionControllerDidChangeForAdjustments:v4];
+  [(PUPhotoEditToolController *)&v10 compositionControllerDidChangeForAdjustments:adjustmentsCopy];
   [(PUCropPerspectiveAdjustmentsDataSource *)self->_dataSource compositionControllerDidChange];
   if (![(PUCropToolController *)self isModelChangeLocal]&& [(PUCropToolController *)self isActiveTool])
   {
     [(PUCropToolController *)self _loadStateFromModelAnimated:1];
   }
 
-  if (([v4 containsObject:*MEMORY[0x1E69BDFC0]] & 1) == 0 && (objc_msgSend(v4, "containsObject:", *MEMORY[0x1E69BE058]) & 1) == 0)
+  if (([adjustmentsCopy containsObject:*MEMORY[0x1E69BDFC0]] & 1) == 0 && (objc_msgSend(adjustmentsCopy, "containsObject:", *MEMORY[0x1E69BE058]) & 1) == 0)
   {
     [(PUCropToolController *)self basePhotoInvalidated];
     [(PUCropToolController *)self baseMediaInvalidated];
   }
 
-  v5 = [(PUPhotoEditToolController *)self delegate];
-  v6 = [v5 isStandardVideo];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  isStandardVideo = [delegate isStandardVideo];
 
-  if (v6)
+  if (isStandardVideo)
   {
     [(PUCropToolController *)self _beginObservingVideoPlayer];
-    v7 = [(PUCropToolController *)self cropView];
-    v8 = [v7 videoMediaView];
-    v9 = [v8 player];
-    [v9 pause];
+    cropView = [(PUCropToolController *)self cropView];
+    videoMediaView = [cropView videoMediaView];
+    player = [videoMediaView player];
+    [player pause];
 
     [(PUCropToolController *)self _updateVideoScrubber];
   }
@@ -4378,8 +4378,8 @@ void __52__PUCropToolController__loadStateFromModelAnimated___block_invoke_353(u
 
 - (void)_updatePreviewViewInsets
 {
-  v3 = [(PUCropToolController *)self view];
-  [v3 bounds];
+  view = [(PUCropToolController *)self view];
+  [view bounds];
   v49 = v5;
   v50 = v4;
   v7 = v6;
@@ -4390,9 +4390,9 @@ void __52__PUCropToolController__loadStateFromModelAnimated___block_invoke_353(u
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [(PUCropToolController *)self view];
-  v18 = [(PUCropToolController *)self cropView];
-  [v17 convertRect:v18 fromView:{v10, v12, v14, v16}];
+  view2 = [(PUCropToolController *)self view];
+  cropView = [(PUCropToolController *)self cropView];
+  [view2 convertRect:cropView fromView:{v10, v12, v14, v16}];
   v20 = v19;
   v22 = v21;
   v24 = v23;
@@ -4410,8 +4410,8 @@ void __52__PUCropToolController__loadStateFromModelAnimated___block_invoke_353(u
     v54.size.height = v26;
     if (CGRectIsEmpty(v54))
     {
-      v31 = [(PUPhotoEditToolController *)self toolControllerSpec];
-      [v31 standardBottomBarHeight];
+      toolControllerSpec = [(PUPhotoEditToolController *)self toolControllerSpec];
+      [toolControllerSpec standardBottomBarHeight];
       v33 = v32;
 
       v34 = 0.0;
@@ -4470,22 +4470,22 @@ void __52__PUCropToolController__loadStateFromModelAnimated___block_invoke_353(u
     if (v35 != v42 || v36 != v39 || v34 != v41 || v33 != v40)
     {
       [(PUCropToolController *)self setPreviewViewInsets:v36, v35, v33, v34];
-      v51 = [(PUPhotoEditToolController *)self delegate];
-      [v51 toolController:self didChangePreferredPreviewViewInsetsAnimated:0];
+      delegate = [(PUPhotoEditToolController *)self delegate];
+      [delegate toolController:self didChangePreferredPreviewViewInsetsAnimated:0];
     }
   }
 }
 
-- (id)_animateValueFromValue:(double)a3 toValue:(double)a4 interpolation:(id)a5 completion:(id)a6
+- (id)_animateValueFromValue:(double)value toValue:(double)toValue interpolation:(id)interpolation completion:(id)completion
 {
-  v10 = a5;
-  v11 = a6;
-  if (a3 == a4)
+  interpolationCopy = interpolation;
+  completionCopy = completion;
+  if (value == toValue)
   {
-    v10[2](v10, a4);
-    if (v11)
+    interpolationCopy[2](interpolationCopy, toValue);
+    if (completionCopy)
     {
-      v11[2](v11, 1);
+      completionCopy[2](completionCopy, 1);
     }
 
     v12 = 0;
@@ -4493,22 +4493,22 @@ void __52__PUCropToolController__loadStateFromModelAnimated___block_invoke_353(u
 
   else
   {
-    v12 = [MEMORY[0x1E69DD4A0] pu_dynamicValueAnimationWithInitialValue:a3 initialVelocity:0.0 targetValue:a4 stiffness:300.0 dampingFactor:1.0 epsilon:0.01];
-    v13 = [(PUCropToolController *)self view];
-    [v13 setUserInteractionEnabled:0];
+    v12 = [MEMORY[0x1E69DD4A0] pu_dynamicValueAnimationWithInitialValue:value initialVelocity:0.0 targetValue:toValue stiffness:300.0 dampingFactor:1.0 epsilon:0.01];
+    view = [(PUCropToolController *)self view];
+    [view setUserInteractionEnabled:0];
 
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __80__PUCropToolController__animateValueFromValue_toValue_interpolation_completion___block_invoke;
     v19[3] = &unk_1E7B76D68;
-    v20 = v10;
+    v20 = interpolationCopy;
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __80__PUCropToolController__animateValueFromValue_toValue_interpolation_completion___block_invoke_2;
     v15[3] = &unk_1E7B76498;
     v16 = v20;
-    v18 = a4;
-    v17 = v11;
+    toValueCopy = toValue;
+    v17 = completionCopy;
     v15[4] = self;
     [v12 runWithValueApplier:v19 completion:v15];
   }
@@ -4538,9 +4538,9 @@ void __80__PUCropToolController__animateValueFromValue_toValue_interpolation_com
   animationTargetsByKeyPath = self->_animationTargetsByKeyPath;
   if (!animationTargetsByKeyPath)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v5 = self->_animationTargetsByKeyPath;
-    self->_animationTargetsByKeyPath = v4;
+    self->_animationTargetsByKeyPath = dictionary;
 
     animationTargetsByKeyPath = self->_animationTargetsByKeyPath;
   }
@@ -4555,9 +4555,9 @@ void __80__PUCropToolController__animateValueFromValue_toValue_interpolation_com
   animationsByKeyPath = self->_animationsByKeyPath;
   if (!animationsByKeyPath)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v5 = self->_animationsByKeyPath;
-    self->_animationsByKeyPath = v4;
+    self->_animationsByKeyPath = dictionary;
 
     animationsByKeyPath = self->_animationsByKeyPath;
   }
@@ -4567,88 +4567,88 @@ void __80__PUCropToolController__animateValueFromValue_toValue_interpolation_com
   return v6;
 }
 
-- (void)setGridVisible:(BOOL)a3
+- (void)setGridVisible:(BOOL)visible
 {
-  v3 = a3;
-  self->_gridVisible = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PUCropGridVisible"];
+  visibleCopy = visible;
+  self->_gridVisible = visible;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:visibleCopy forKey:@"PUCropGridVisible"];
 }
 
-- (void)_setAnimationTarget:(id)a3 forKeyPath:(id)a4
+- (void)_setAnimationTarget:(id)target forKeyPath:(id)path
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(PUCropToolController *)self animationTargetsByKeyPath];
-  v8 = v7;
-  if (v9)
+  targetCopy = target;
+  pathCopy = path;
+  animationTargetsByKeyPath = [(PUCropToolController *)self animationTargetsByKeyPath];
+  v8 = animationTargetsByKeyPath;
+  if (targetCopy)
   {
-    [v7 setObject:v9 forKeyedSubscript:v6];
+    [animationTargetsByKeyPath setObject:targetCopy forKeyedSubscript:pathCopy];
   }
 
   else
   {
-    [v7 removeObjectForKey:v6];
+    [animationTargetsByKeyPath removeObjectForKey:pathCopy];
   }
 }
 
-- (id)_animationTargetForKeyPath:(id)a3
+- (id)_animationTargetForKeyPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PUCropToolController *)self animationTargetsByKeyPath];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  pathCopy = path;
+  animationTargetsByKeyPath = [(PUCropToolController *)self animationTargetsByKeyPath];
+  v6 = [animationTargetsByKeyPath objectForKeyedSubscript:pathCopy];
 
   return v6;
 }
 
-- (void)_setAnimation:(id)a3 forKeyPath:(id)a4
+- (void)_setAnimation:(id)animation forKeyPath:(id)path
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(PUCropToolController *)self animationsByKeyPath];
-  v8 = v7;
-  if (v9)
+  animationCopy = animation;
+  pathCopy = path;
+  animationsByKeyPath = [(PUCropToolController *)self animationsByKeyPath];
+  v8 = animationsByKeyPath;
+  if (animationCopy)
   {
-    [v7 setObject:v9 forKeyedSubscript:v6];
+    [animationsByKeyPath setObject:animationCopy forKeyedSubscript:pathCopy];
   }
 
   else
   {
-    [v7 removeObjectForKey:v6];
+    [animationsByKeyPath removeObjectForKey:pathCopy];
   }
 }
 
-- (id)_animationForKeyPath:(id)a3
+- (id)_animationForKeyPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PUCropToolController *)self animationsByKeyPath];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  pathCopy = path;
+  animationsByKeyPath = [(PUCropToolController *)self animationsByKeyPath];
+  v6 = [animationsByKeyPath objectForKeyedSubscript:pathCopy];
 
   return v6;
 }
 
-- (void)_cancelAnimationForKeyPath:(id)a3
+- (void)_cancelAnimationForKeyPath:(id)path
 {
-  v5 = a3;
-  v4 = [(PUCropToolController *)self _animationForKeyPath:v5];
+  pathCopy = path;
+  v4 = [(PUCropToolController *)self _animationForKeyPath:pathCopy];
   [v4 stop];
 
-  [(PUCropToolController *)self _setAnimation:0 forKeyPath:v5];
+  [(PUCropToolController *)self _setAnimation:0 forKeyPath:pathCopy];
 }
 
-- (void)_setYawAngle:(double)a3 animated:(BOOL)a4
+- (void)_setYawAngle:(double)angle animated:(BOOL)animated
 {
-  if (vabdd_f64(a3, self->_yawAngle) >= *MEMORY[0x1E69B3DA0])
+  if (vabdd_f64(angle, self->_yawAngle) >= *MEMORY[0x1E69B3DA0])
   {
-    self->_yawAngle = a3;
+    self->_yawAngle = angle;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __46__PUCropToolController__setYawAngle_animated___block_invoke;
     v7[3] = &__block_descriptor_40_e36_v16__0__PICropAdjustmentController_8l;
-    *&v7[4] = a3;
+    *&v7[4] = angle;
     [(PUCropToolController *)self _performLocalCropModelChanges:v7];
-    v6 = [(PUCropToolController *)self cropView];
-    [v6 setYawAngle:a3];
+    cropView = [(PUCropToolController *)self cropView];
+    [cropView setYawAngle:angle];
 
     [(PUAdjustmentsViewController *)self->_adjustmentsViewController updateControls];
     [(PUCropToolController *)self _updatePreviewViewInsets];
@@ -4656,19 +4656,19 @@ void __80__PUCropToolController__animateValueFromValue_toValue_interpolation_com
   }
 }
 
-- (void)_setPitchAngle:(double)a3 animated:(BOOL)a4
+- (void)_setPitchAngle:(double)angle animated:(BOOL)animated
 {
-  if (vabdd_f64(a3, self->_pitchAngle) >= *MEMORY[0x1E69B3DA0])
+  if (vabdd_f64(angle, self->_pitchAngle) >= *MEMORY[0x1E69B3DA0])
   {
-    self->_pitchAngle = a3;
+    self->_pitchAngle = angle;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __48__PUCropToolController__setPitchAngle_animated___block_invoke;
     v7[3] = &__block_descriptor_40_e36_v16__0__PICropAdjustmentController_8l;
-    *&v7[4] = a3;
+    *&v7[4] = angle;
     [(PUCropToolController *)self _performLocalCropModelChanges:v7];
-    v6 = [(PUCropToolController *)self cropView];
-    [v6 setPitchAngle:a3];
+    cropView = [(PUCropToolController *)self cropView];
+    [cropView setPitchAngle:angle];
 
     [(PUAdjustmentsViewController *)self->_adjustmentsViewController updateControls];
     [(PUCropToolController *)self _updatePreviewViewInsets];
@@ -4676,19 +4676,19 @@ void __80__PUCropToolController__animateValueFromValue_toValue_interpolation_com
   }
 }
 
-- (void)_setStraightenAngle:(double)a3 animated:(BOOL)a4
+- (void)_setStraightenAngle:(double)angle animated:(BOOL)animated
 {
-  if (vabdd_f64(a3, self->_straightenAngle) >= *MEMORY[0x1E69B3DA0])
+  if (vabdd_f64(angle, self->_straightenAngle) >= *MEMORY[0x1E69B3DA0])
   {
-    self->_straightenAngle = a3;
+    self->_straightenAngle = angle;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __53__PUCropToolController__setStraightenAngle_animated___block_invoke;
     v7[3] = &__block_descriptor_40_e36_v16__0__PICropAdjustmentController_8l;
-    *&v7[4] = a3;
+    *&v7[4] = angle;
     [(PUCropToolController *)self _performLocalCropModelChanges:v7];
-    v6 = [(PUCropToolController *)self cropView];
-    [v6 setStraightenAngle:a3];
+    cropView = [(PUCropToolController *)self cropView];
+    [cropView setStraightenAngle:angle];
 
     [(PUAdjustmentsViewController *)self->_adjustmentsViewController updateControls];
     [(PUCropToolController *)self _updatePreviewViewInsets];
@@ -4696,13 +4696,13 @@ void __80__PUCropToolController__animateValueFromValue_toValue_interpolation_com
   }
 }
 
-- (void)_setViewCropRect:(CGRect)a3 animated:(BOOL)a4
+- (void)_setViewCropRect:(CGRect)rect animated:(BOOL)animated
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  animatedCopy = animated;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_viewCropRect = &self->_viewCropRect;
   if ((PURectIsApproximatelyEqualToRect() & 1) == 0)
   {
@@ -4743,7 +4743,7 @@ void __80__PUCropToolController__animateValueFromValue_toValue_interpolation_com
     v14[2] = __50__PUCropToolController__setViewCropRect_animated___block_invoke_3;
     v14[3] = &unk_1E7B7F020;
     v14[4] = self;
-    v13 = [(PUCropToolController *)self _animateValueFromValue:v15 toValue:v14 interpolation:!v4 completion:1.0];
+    v13 = [(PUCropToolController *)self _animateValueFromValue:v15 toValue:v14 interpolation:!animatedCopy completion:1.0];
     [(PUCropToolController *)self _setAnimation:v13 forKeyPath:@"_imageCropRect"];
     [(PUCropToolController *)self _updatePreviewViewInsets];
     [(PUCropToolController *)self _updateCropViewsForInteraction];
@@ -4781,21 +4781,21 @@ uint64_t __50__PUCropToolController__setViewCropRect_animated___block_invoke_3(u
   return [v2 _updateCropViewsForInteraction];
 }
 
-- (void)_setCropAspect:(id)a3 animated:(BOOL)a4
+- (void)_setCropAspect:(id)aspect animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  if (([v7 isEqual:self->_cropAspect] & 1) == 0)
+  animatedCopy = animated;
+  aspectCopy = aspect;
+  if (([aspectCopy isEqual:self->_cropAspect] & 1) == 0)
   {
-    objc_storeStrong(&self->_cropAspect, a3);
+    objc_storeStrong(&self->_cropAspect, aspect);
     v39 = MEMORY[0x1E69E9820];
     v40 = 3221225472;
     v41 = __48__PUCropToolController__setCropAspect_animated___block_invoke;
     v42 = &unk_1E7B7AF80;
-    v7 = v7;
-    v43 = v7;
+    aspectCopy = aspectCopy;
+    v43 = aspectCopy;
     [(PUCropToolController *)self _performLocalCropModelChanges:&v39];
-    if (v7 && [(PUCropToolController *)self isActiveTool])
+    if (aspectCopy && [(PUCropToolController *)self isActiveTool])
     {
       [(NUCropModel *)self->_cropModel cropRect];
       v9 = v8;
@@ -4807,33 +4807,33 @@ uint64_t __50__PUCropToolController__setViewCropRect_animated___block_invoke_3(u
       v19 = v18;
       v21 = v20;
       v23 = v22;
-      v24 = [(PUCropToolController *)self geometry];
-      v25 = [v24 isSizeInverted];
+      geometry = [(PUCropToolController *)self geometry];
+      isSizeInverted = [geometry isSizeInverted];
 
-      if (v25)
+      if (isSizeInverted)
       {
-        v26 = [v7 inverseAspect];
+        inverseAspect = [aspectCopy inverseAspect];
 
-        v7 = v26;
+        aspectCopy = inverseAspect;
       }
 
       [(PUCropToolController *)self straightenAngle];
-      [v7 constrainRect:v9 boundingRect:v11 boundingAngle:v13 minSize:{v15, v17, v19, v21, v23, v27, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8), v39, v40, v41, v42}];
+      [aspectCopy constrainRect:v9 boundingRect:v11 boundingAngle:v13 minSize:{v15, v17, v19, v21, v23, v27, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8), v39, v40, v41, v42}];
       [(PUCropToolController *)self _suggestedCropRectForImageRect:?];
       v29 = v28;
       v31 = v30;
       v33 = v32;
       v35 = v34;
-      v36 = [(PUCropToolController *)self cropView];
-      [v36 setImageCropRectFromViewCropRect:v4 animated:{v29, v31, v33, v35}];
+      cropView = [(PUCropToolController *)self cropView];
+      [cropView setImageCropRectFromViewCropRect:animatedCopy animated:{v29, v31, v33, v35}];
 
-      [(PUCropToolController *)self _setViewCropRect:v4 animated:v29, v31, v33, v35];
-      v37 = [(PUCropToolController *)self cropView];
+      [(PUCropToolController *)self _setViewCropRect:animatedCopy animated:v29, v31, v33, v35];
+      cropView2 = [(PUCropToolController *)self cropView];
       [(NUCropModel *)self->_cropModel cropRect];
-      [v37 setModelCropRect:? viewCropRect:?];
+      [cropView2 setModelCropRect:? viewCropRect:?];
 
-      v38 = [(PUCropToolController *)self cropView];
-      [v38 updateLayerTransformsAnimated:v4];
+      cropView3 = [(PUCropToolController *)self cropView];
+      [cropView3 updateLayerTransformsAnimated:animatedCopy];
     }
 
     [(PUCropToolController *)self _updateAspectRatioControls];
@@ -4857,27 +4857,27 @@ void __48__PUCropToolController__setCropAspect_animated___block_invoke(uint64_t 
   [v8 setConstraintHeight:v7];
 }
 
-- (void)_removeSnapshotView:(id)a3
+- (void)_removeSnapshotView:(id)view
 {
-  v4 = a3;
-  v5 = [(PUCropToolController *)self rotateSnapshotView];
+  viewCopy = view;
+  rotateSnapshotView = [(PUCropToolController *)self rotateSnapshotView];
 
-  if (v5 == v4)
+  if (rotateSnapshotView == viewCopy)
   {
     [(PUCropToolController *)self setRotateSnapshotView:0];
   }
 
-  v6 = [(PUPhotoEditToolController *)self delegate];
-  v7 = [v6 isLoopingVideo];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  isLoopingVideo = [delegate isLoopingVideo];
 
-  if (v7)
+  if (isLoopingVideo)
   {
     v8 = MEMORY[0x1E69DD250];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __44__PUCropToolController__removeSnapshotView___block_invoke;
     v11[3] = &unk_1E7B80DD0;
-    v12 = v4;
+    v12 = viewCopy;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __44__PUCropToolController__removeSnapshotView___block_invoke_2;
@@ -4888,26 +4888,26 @@ void __48__PUCropToolController__setCropAspect_animated___block_invoke(uint64_t 
 
   else
   {
-    [v4 removeFromSuperview];
+    [viewCopy removeFromSuperview];
   }
 }
 
-- (void)_performGeometryChange:(id)a3 animated:(BOOL)a4
+- (void)_performGeometryChange:(id)change animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PUCropToolController *)self geometry];
-  v8 = [v7 appliedOrientation];
-  v6[2](v6, v7);
+  animatedCopy = animated;
+  changeCopy = change;
+  geometry = [(PUCropToolController *)self geometry];
+  appliedOrientation = [geometry appliedOrientation];
+  changeCopy[2](changeCopy, geometry);
 
-  v9 = [v7 appliedOrientation];
-  v10 = [(PUCropToolController *)self cropView];
-  [v10 setOrientation:v9];
+  appliedOrientation2 = [geometry appliedOrientation];
+  cropView = [(PUCropToolController *)self cropView];
+  [cropView setOrientation:appliedOrientation2];
 
-  v11 = [(PUCropToolController *)self dataSource];
-  [v11 setOrientation:v9];
+  dataSource = [(PUCropToolController *)self dataSource];
+  [dataSource setOrientation:appliedOrientation2];
 
-  if (v8 != v9)
+  if (appliedOrientation != appliedOrientation2)
   {
     [(PUAdjustmentsViewController *)self->_adjustmentsViewController resetControls];
     [(PUPhotoEditToolController *)self willModifyAdjustment];
@@ -4916,13 +4916,13 @@ void __48__PUCropToolController__setCropAspect_animated___block_invoke(uint64_t 
     v62[2] = __56__PUCropToolController__performGeometryChange_animated___block_invoke;
     v62[3] = &unk_1E7B80C38;
     v62[4] = self;
-    v12 = v7;
+    v12 = geometry;
     v63 = v12;
     [(PUCropToolController *)self _performLocalModelChanges:v62];
     memset(&v61, 0, sizeof(v61));
     if (v12)
     {
-      [v12 transformFromOrientation:v8];
+      [v12 transformFromOrientation:appliedOrientation];
     }
 
     else
@@ -4945,23 +4945,23 @@ void __48__PUCropToolController__setCropAspect_animated___block_invoke(uint64_t 
     v65 = CGRectApplyAffineTransform(v64, &v60);
     v25 = PURectWithSizeThatFitsInRect(v65.size.width, v65.size.height, v14, v16, v18, v20);
     v29 = PURoundRectToPixel(v25, v26, v27, v28);
-    if (v4)
+    if (animatedCopy)
     {
       v33 = v29;
       v34 = v30;
       v35 = v31;
       v36 = v32;
-      v37 = [(PUCropToolController *)self rotateSnapshotView];
-      if (!v37)
+      rotateSnapshotView = [(PUCropToolController *)self rotateSnapshotView];
+      if (!rotateSnapshotView)
       {
-        v38 = [(PUCropToolController *)self cropView];
-        v37 = [v38 resizableSnapshotViewFromRect:0 afterScreenUpdates:x withCapInsets:{y, width, height, *MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
+        cropView2 = [(PUCropToolController *)self cropView];
+        rotateSnapshotView = [cropView2 resizableSnapshotViewFromRect:0 afterScreenUpdates:x withCapInsets:{y, width, height, *MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
 
-        [(PUCropToolController *)self setRotateSnapshotView:v37];
-        v39 = [(PUCropToolController *)self view];
-        [v39 addSubview:v37];
+        [(PUCropToolController *)self setRotateSnapshotView:rotateSnapshotView];
+        view = [(PUCropToolController *)self view];
+        [view addSubview:rotateSnapshotView];
 
-        [v37 setFrame:{x, y, width, height}];
+        [rotateSnapshotView setFrame:{x, y, width, height}];
       }
 
       [(PUCropToolController *)self setRotatingAnimationCount:[(PUCropToolController *)self rotatingAnimationCount]+ 1];
@@ -4971,7 +4971,7 @@ void __48__PUCropToolController__setCropAspect_animated___block_invoke(uint64_t 
       v53[1] = v50;
       v53[2] = __56__PUCropToolController__performGeometryChange_animated___block_invoke_3;
       v53[3] = &unk_1E7B76428;
-      v41 = v37;
+      v41 = rotateSnapshotView;
       v55 = v61;
       v54 = v41;
       v56 = v33;
@@ -4988,13 +4988,13 @@ void __48__PUCropToolController__setCropAspect_animated___block_invoke(uint64_t 
       [v40 _animateUsingDefaultTimingWithOptions:0 animations:v53 completion:v51];
     }
 
-    v43 = [(PUCropToolController *)self cropAspect];
+    cropAspect = [(PUCropToolController *)self cropAspect];
     v44 = PLOrientationBetweenOrientations();
     v45 = v44;
-    if (v43 && (v44 - 5) <= 3)
+    if (cropAspect && (v44 - 5) <= 3)
     {
-      v46 = [v43 inverseAspect];
-      [(PUCropToolController *)self setCropAspect:v46];
+      inverseAspect = [cropAspect inverseAspect];
+      [(PUCropToolController *)self setCropAspect:inverseAspect];
 
       [(PUCropToolController *)self _recomposeCropRectAnimated:0];
       v47 = v45 - 2;
@@ -5107,45 +5107,45 @@ void __56__PUCropToolController__performGeometryChange_animated___block_invoke_2
   [v4 setOrientation:PLOrientationConcat()];
 }
 
-- (void)setGainMapValue:(float)a3
+- (void)setGainMapValue:(float)value
 {
   if ((PXFloatApproximatelyEqualToFloat() & 1) == 0)
   {
-    self->_gainMapValue = a3;
-    v5 = [(PUCropToolController *)self cropView];
+    self->_gainMapValue = value;
+    cropView = [(PUCropToolController *)self cropView];
     [(PUCropToolController *)self gainMapValue];
-    [v5 setGainMapValue:?];
+    [cropView setGainMapValue:?];
   }
 }
 
-- (void)setGainMapImage:(CGImage *)a3
+- (void)setGainMapImage:(CGImage *)image
 {
   gainMapImage = self->_gainMapImage;
-  if (gainMapImage != a3)
+  if (gainMapImage != image)
   {
     CGImageRelease(gainMapImage);
-    self->_gainMapImage = CGImageRetain(a3);
-    v6 = [(PUCropToolController *)self cropView];
-    [v6 setGainMapImage:self->_gainMapImage];
+    self->_gainMapImage = CGImageRetain(image);
+    cropView = [(PUCropToolController *)self cropView];
+    [cropView setGainMapImage:self->_gainMapImage];
   }
 }
 
-- (void)_handleDidCreateEditedImage:(id)a3 inputExtent:(CGRect)a4
+- (void)_handleDidCreateEditedImage:(id)image inputExtent:(CGRect)extent
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v20 = a3;
-  v9 = [(PUPhotoEditToolController *)self compositionController];
-  v10 = [v9 imageOrientation];
+  height = extent.size.height;
+  width = extent.size.width;
+  y = extent.origin.y;
+  x = extent.origin.x;
+  imageCopy = image;
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  imageOrientation = [compositionController imageOrientation];
 
-  v11 = [objc_alloc(MEMORY[0x1E69BE490]) initWithInputSize:v10 inputOrientation:{width, height}];
+  v11 = [objc_alloc(MEMORY[0x1E69BE490]) initWithInputSize:imageOrientation inputOrientation:{width, height}];
   [(PUCropToolController *)self setGeometry:v11];
-  v12 = [(PUCropToolController *)self cropView];
+  cropView = [(PUCropToolController *)self cropView];
   if (width <= 0.0 || height <= 0.0)
   {
-    if (!v20)
+    if (!imageCopy)
     {
       goto LABEL_8;
     }
@@ -5162,34 +5162,34 @@ void __56__PUCropToolController__performGeometryChange_animated___block_invoke_2
   v17 = v16;
   [(NUCropModel *)self->_cropModel masterImageSize];
   [(NUCropModel *)v15 setAspectRatio:v17, v18];
-  v19 = [(PUPhotoEditToolController *)self compositionController];
-  [(PUCropToolController *)self _setupCropModelFromCompositionController:v19];
+  compositionController2 = [(PUPhotoEditToolController *)self compositionController];
+  [(PUCropToolController *)self _setupCropModelFromCompositionController:compositionController2];
 
-  [v12 _setCropModel:self->_cropModel];
-  if (v20)
+  [cropView _setCropModel:self->_cropModel];
+  if (imageCopy)
   {
-    [v12 setImage:v20];
+    [cropView setImage:imageCopy];
 LABEL_6:
-    [(PUCropToolController *)self setImage:v20];
+    [(PUCropToolController *)self setImage:imageCopy];
     goto LABEL_8;
   }
 
-  [v12 setImageSize:{width, height}];
+  [cropView setImageSize:{width, height}];
 LABEL_8:
   [(PUCropToolController *)self setInputExtent:x, y, width, height];
   [(PUCropToolController *)self _installRenderedImageAndDisplayIfNeeded];
 }
 
-- (void)_setupCropModelFromCompositionController:(id)a3
+- (void)_setupCropModelFromCompositionController:(id)controller
 {
-  v4 = [a3 cropAdjustmentController];
-  v5 = v4;
-  if (v4)
+  cropAdjustmentController = [controller cropAdjustmentController];
+  v5 = cropAdjustmentController;
+  if (cropAdjustmentController)
   {
-    v14 = v4;
-    v4 = [v4 enabled];
+    v14 = cropAdjustmentController;
+    cropAdjustmentController = [cropAdjustmentController enabled];
     v5 = v14;
-    if (v4)
+    if (cropAdjustmentController)
     {
       cropModel = self->_cropModel;
       [v14 yawRadians];
@@ -5207,12 +5207,12 @@ LABEL_8:
       [v14 cropRect];
       v12 = v11;
       [v14 cropRect];
-      v4 = [(NUCropModel *)v10 setAspectRatio:v12, v13];
+      cropAdjustmentController = [(NUCropModel *)v10 setAspectRatio:v12, v13];
       v5 = v14;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](cropAdjustmentController, v5);
 }
 
 - (void)_loadMediaIfNeeded
@@ -5220,21 +5220,21 @@ LABEL_8:
   if ([(PUCropToolController *)self needsMediaLoad])
   {
     [(PUCropToolController *)self setNeedsMediaLoad:0];
-    v3 = [(PUPhotoEditToolController *)self delegate];
-    v4 = [(PUCropToolController *)self cropView];
-    v5 = [(PUPhotoEditToolController *)self compositionController];
-    v6 = [v5 composition];
+    delegate = [(PUPhotoEditToolController *)self delegate];
+    cropView = [(PUCropToolController *)self cropView];
+    compositionController = [(PUPhotoEditToolController *)self compositionController];
+    composition = [compositionController composition];
 
-    if ([v3 isStandardVideo])
+    if ([delegate isStandardVideo])
     {
       v12 = 0uLL;
       v13 = 0;
-      v7 = [v3 mediaView];
-      v8 = [v7 player];
-      v9 = v8;
-      if (v8)
+      mediaView = [delegate mediaView];
+      player = [mediaView player];
+      v9 = player;
+      if (player)
       {
-        [v8 currentTime];
+        [player currentTime];
       }
 
       else
@@ -5245,26 +5245,26 @@ LABEL_8:
 
       v10 = v12;
       v11 = v13;
-      [v4 setVideoComposition:v6 withSeekTime:&v10];
+      [cropView setVideoComposition:composition withSeekTime:&v10];
     }
 
-    else if ([v3 isLoopingVideo])
+    else if ([delegate isLoopingVideo])
     {
-      [v4 setAutoloopComposition:v6];
+      [cropView setAutoloopComposition:composition];
     }
 
     [(PUCropToolController *)self _installRenderedImageAndDisplayIfNeeded];
   }
 }
 
-- (void)_loadImageIfNeededWithCompletion:(id)a3
+- (void)_loadImageIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (![(PUCropToolController *)self needsImageLoad])
   {
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
 
     goto LABEL_11;
@@ -5272,9 +5272,9 @@ LABEL_8:
 
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
-    v5 = [(PUCropToolController *)self imageLoadingQueue];
+    imageLoadingQueue = [(PUCropToolController *)self imageLoadingQueue];
 
-    if (!v5)
+    if (!imageLoadingQueue)
     {
       v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v7 = dispatch_queue_create("PUCropToolController image loading", v6);
@@ -5286,26 +5286,26 @@ LABEL_8:
       self->_imageLoadingQueueCompletionBlocks = v9;
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      v11 = [(PUCropToolController *)self imageLoadingQueueCompletionBlocks];
-      v12 = _Block_copy(v4);
-      [v11 addObject:v12];
+      imageLoadingQueueCompletionBlocks = [(PUCropToolController *)self imageLoadingQueueCompletionBlocks];
+      v12 = _Block_copy(completionCopy);
+      [imageLoadingQueueCompletionBlocks addObject:v12];
     }
 
     if (![(PUCropToolController *)self imageLoadingInProgress])
     {
       [(PUCropToolController *)self setImageLoadingInProgress:1];
-      v13 = [(PUPhotoEditToolController *)self delegate];
-      [v13 updateProgressIndicatorAnimated:1];
+      delegate = [(PUPhotoEditToolController *)self delegate];
+      [delegate updateProgressIndicatorAnimated:1];
 
-      v14 = [(PUCropToolController *)self imageLoadingQueue];
+      imageLoadingQueue2 = [(PUCropToolController *)self imageLoadingQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __57__PUCropToolController__loadImageIfNeededWithCompletion___block_invoke;
       block[3] = &unk_1E7B80DD0;
       block[4] = self;
-      dispatch_async(v14, block);
+      dispatch_async(imageLoadingQueue2, block);
     }
 
 LABEL_11:
@@ -5639,41 +5639,41 @@ void __57__PUCropToolController__loadImageIfNeededWithCompletion___block_invoke_
 
 - (void)_createRendererIfNeeded
 {
-  v3 = [(PUCropToolController *)self renderer];
+  renderer = [(PUCropToolController *)self renderer];
 
-  if (v3)
+  if (renderer)
   {
-    v9 = [(PUPhotoEditToolController *)self compositionController];
-    v4 = [(PUCropToolController *)self renderer];
-    v5 = v4;
-    v6 = v9;
+    compositionController = [(PUPhotoEditToolController *)self compositionController];
+    renderer2 = [(PUCropToolController *)self renderer];
+    compositionController2 = renderer2;
+    v6 = compositionController;
   }
 
   else
   {
     v7 = objc_alloc(MEMORY[0x1E69BE658]);
-    v8 = [(PUPhotoEditToolController *)self editSource];
-    v9 = [v7 initWithEditSource:v8 renderPriority:3];
+    editSource = [(PUPhotoEditToolController *)self editSource];
+    compositionController = [v7 initWithEditSource:editSource renderPriority:3];
 
-    [(PUCropToolController *)self setRenderer:v9];
-    v5 = [(PUPhotoEditToolController *)self compositionController];
-    v4 = v9;
-    v6 = v5;
+    [(PUCropToolController *)self setRenderer:compositionController];
+    compositionController2 = [(PUPhotoEditToolController *)self compositionController];
+    renderer2 = compositionController;
+    v6 = compositionController2;
   }
 
-  [v4 setCompositionController:v6];
+  [renderer2 setCompositionController:v6];
 }
 
-- (void)_performLocalCropModelChanges:(id)a3
+- (void)_performLocalCropModelChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __54__PUCropToolController__performLocalCropModelChanges___block_invoke;
   v6[3] = &unk_1E7B80B48;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = changesCopy;
+  v5 = changesCopy;
   [(PUCropToolController *)self _performLocalModelChanges:v6];
 }
 
@@ -5705,39 +5705,39 @@ void __54__PUCropToolController__performLocalCropModelChanges___block_invoke_2(u
   [v6 setEnabled:v3 ^ 1];
 }
 
-- (void)_performLocalModelChanges:(id)a3
+- (void)_performLocalModelChanges:(id)changes
 {
-  v9 = a3;
-  if (!v9)
+  changesCopy = changes;
+  if (!changesCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PUCropToolController.m" lineNumber:770 description:{@"Invalid parameter not satisfying: %@", @"changes != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUCropToolController.m" lineNumber:770 description:{@"Invalid parameter not satisfying: %@", @"changes != nil"}];
   }
 
-  v5 = [(PUPhotoEditToolController *)self compositionController];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
 
-  if (!v5)
+  if (!compositionController)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PUCropToolController.m" lineNumber:771 description:@"Need a composition to perform this operation"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUCropToolController.m" lineNumber:771 description:@"Need a composition to perform this operation"];
   }
 
-  v6 = [(PUCropToolController *)self isModelChangeLocal];
+  isModelChangeLocal = [(PUCropToolController *)self isModelChangeLocal];
   [(PUCropToolController *)self setModelChangeLocal:1];
-  v9[2]();
-  [(PUCropToolController *)self setModelChangeLocal:v6];
+  changesCopy[2]();
+  [(PUCropToolController *)self setModelChangeLocal:isModelChangeLocal];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(PUPhotoEditToolController *)self delegate];
+  delegateCopy = delegate;
+  delegate = [(PUPhotoEditToolController *)self delegate];
 
-  if (v5 != v4)
+  if (delegate != delegateCopy)
   {
     v6.receiver = self;
     v6.super_class = PUCropToolController;
-    [(PUPhotoEditToolController *)&v6 setDelegate:v4];
+    [(PUPhotoEditToolController *)&v6 setDelegate:delegateCopy];
   }
 }
 
@@ -5751,16 +5751,16 @@ void __54__PUCropToolController__performLocalCropModelChanges___block_invoke_2(u
     v6 = v5;
     v8 = v7;
     v10 = v9;
-    v11 = [(PUCropToolController *)self cropOverlayView];
-    v12 = [(PUCropToolController *)self cropOverlayView];
-    v13 = [v12 cropWindowView];
-    [v13 frame];
+    cropOverlayView = [(PUCropToolController *)self cropOverlayView];
+    cropOverlayView2 = [(PUCropToolController *)self cropOverlayView];
+    cropWindowView = [cropOverlayView2 cropWindowView];
+    [cropWindowView frame];
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v21 = v20;
-    v22 = [(PUCropToolController *)self view];
-    [v11 convertRect:v22 toView:{v15, v17, v19, v21}];
+    view = [(PUCropToolController *)self view];
+    [cropOverlayView convertRect:view toView:{v15, v17, v19, v21}];
     v24 = v23;
     v26 = v25;
     v28 = v27;
@@ -5785,19 +5785,19 @@ void __54__PUCropToolController__performLocalCropModelChanges___block_invoke_2(u
 
 - (void)_updateCropToggleConstraintsIfNeeded
 {
-  v3 = [(PUCropToolController *)self cropAspectViewController];
-  v61 = [v3 view];
+  cropAspectViewController = [(PUCropToolController *)self cropAspectViewController];
+  view = [cropAspectViewController view];
 
-  v4 = [(PUCropToolController *)self cropAspectFlipperView];
+  cropAspectFlipperView = [(PUCropToolController *)self cropAspectFlipperView];
   if (![(PUCropToolController *)self _hasConstraintsForKey:@"PUCropToggleConstraints"])
   {
     v5 = objc_opt_new();
-    v6 = [(PUPhotoEditToolController *)self photoEditSpec];
-    v7 = [v6 currentLayoutStyle];
+    photoEditSpec = [(PUPhotoEditToolController *)self photoEditSpec];
+    currentLayoutStyle = [photoEditSpec currentLayoutStyle];
 
-    v8 = [(PUPhotoEditToolController *)self layoutOrientation];
-    v9 = [(PUPhotoEditToolController *)self delegate];
-    v10 = [v9 toolControllerMainContainerView:self];
+    layoutOrientation = [(PUPhotoEditToolController *)self layoutOrientation];
+    delegate = [(PUPhotoEditToolController *)self delegate];
+    v10 = [delegate toolControllerMainContainerView:self];
 
     v11 = +[PUPhotoEditLayoutSupport isNotchedPhone];
     v12 = 88.0;
@@ -5806,7 +5806,7 @@ void __54__PUCropToolController__performLocalCropModelChanges___block_invoke_2(u
       v12 = 38.0;
     }
 
-    if (v8 == 2)
+    if (layoutOrientation == 2)
     {
       v13 = v12;
     }
@@ -5817,118 +5817,118 @@ void __54__PUCropToolController__performLocalCropModelChanges___block_invoke_2(u
     }
 
     [(PUCropToolController *)self _updateAspectRatioLayout];
-    if ((v8 - 2) >= 2)
+    if ((layoutOrientation - 2) >= 2)
     {
-      if (v8 != 1 || !v61)
+      if (layoutOrientation != 1 || !view)
       {
         goto LABEL_17;
       }
 
-      v27 = [v61 leftAnchor];
-      v28 = [(PUCropToolController *)self view];
-      v29 = [v28 leftAnchor];
-      v30 = [v27 constraintEqualToAnchor:v29];
+      leftAnchor = [view leftAnchor];
+      view2 = [(PUCropToolController *)self view];
+      leftAnchor2 = [view2 leftAnchor];
+      v30 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
       [v5 addObject:v30];
 
-      v31 = [v61 rightAnchor];
-      v32 = [(PUCropToolController *)self view];
-      v33 = [v32 rightAnchor];
-      v34 = [v31 constraintEqualToAnchor:v33];
+      rightAnchor = [view rightAnchor];
+      view3 = [(PUCropToolController *)self view];
+      rightAnchor2 = [view3 rightAnchor];
+      v34 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
       [v5 addObject:v34];
 
-      v35 = [v61 bottomAnchor];
-      v36 = [(PUCropToolController *)self view];
-      v37 = [v36 bottomAnchor];
-      v38 = [v35 constraintEqualToAnchor:v37 constant:-10.0];
+      bottomAnchor = [view bottomAnchor];
+      view4 = [(PUCropToolController *)self view];
+      bottomAnchor2 = [view4 bottomAnchor];
+      v38 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-10.0];
       [v5 addObject:v38];
 
-      v39 = [v61 heightAnchor];
-      v40 = [v39 constraintEqualToConstant:38.0];
+      heightAnchor = [view heightAnchor];
+      v40 = [heightAnchor constraintEqualToConstant:38.0];
       [v5 addObject:v40];
 
-      v41 = [v4 bottomAnchor];
-      v42 = [v61 topAnchor];
-      v43 = [v41 constraintEqualToAnchor:v42 constant:-17.0];
+      bottomAnchor3 = [cropAspectFlipperView bottomAnchor];
+      topAnchor = [view topAnchor];
+      v43 = [bottomAnchor3 constraintEqualToAnchor:topAnchor constant:-17.0];
       [v5 addObject:v43];
 
-      v24 = [v4 centerXAnchor];
-      v25 = [(PUCropToolController *)self view];
-      v26 = [v25 centerXAnchor];
+      centerXAnchor = [cropAspectFlipperView centerXAnchor];
+      view5 = [(PUCropToolController *)self view];
+      centerXAnchor2 = [view5 centerXAnchor];
     }
 
     else
     {
-      if (!v61)
+      if (!view)
       {
 LABEL_17:
-        v59 = [(PUCropToolController *)self cropAspectViewController];
-        [v59 updateAspectButtons];
+        cropAspectViewController2 = [(PUCropToolController *)self cropAspectViewController];
+        [cropAspectViewController2 updateAspectButtons];
 
-        v60 = [(PUCropToolController *)self view];
-        [v60 pu_addConstraints:v5 forKey:@"PUCropToggleConstraints"];
+        view6 = [(PUCropToolController *)self view];
+        [view6 pu_addConstraints:v5 forKey:@"PUCropToggleConstraints"];
 
         goto LABEL_18;
       }
 
-      v14 = [v61 rightAnchor];
-      v15 = [(PUCropToolController *)self view];
-      v16 = [v15 rightAnchor];
-      v17 = [v14 constraintEqualToAnchor:v16];
+      rightAnchor3 = [view rightAnchor];
+      view7 = [(PUCropToolController *)self view];
+      rightAnchor4 = [view7 rightAnchor];
+      v17 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
       [v5 addObject:v17];
 
-      if (v7 != 4)
+      if (currentLayoutStyle != 4)
       {
-        v47 = [v61 topAnchor];
-        v48 = [(PUCropToolController *)self view];
-        v49 = [v48 topAnchor];
+        topAnchor2 = [view topAnchor];
+        view8 = [(PUCropToolController *)self view];
+        topAnchor3 = [view8 topAnchor];
         [(PUCropToolController *)self additionalSafeAreaInsets];
-        v50 = [v47 constraintEqualToAnchor:v49 constant:?];
+        v50 = [topAnchor2 constraintEqualToAnchor:topAnchor3 constant:?];
         [v5 addObject:v50];
 
-        v51 = [v61 bottomAnchor];
-        v52 = [(PUCropToolController *)self view];
-        v53 = [v52 bottomAnchor];
-        v54 = [v51 constraintEqualToAnchor:v53];
+        bottomAnchor4 = [view bottomAnchor];
+        view9 = [(PUCropToolController *)self view];
+        bottomAnchor5 = [view9 bottomAnchor];
+        v54 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
         [v5 addObject:v54];
 
-        v55 = [v4 centerYAnchor];
-        v56 = [v10 centerYAnchor];
-        v57 = [v55 constraintEqualToAnchor:v56 constant:0.0];
+        centerYAnchor = [cropAspectFlipperView centerYAnchor];
+        centerYAnchor2 = [v10 centerYAnchor];
+        v57 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:0.0];
         v46 = 1;
         [v57 setActive:1];
 
-        v24 = [v4 leftAnchor];
-        v25 = [v10 safeAreaLayoutGuide];
-        v44 = [v25 leftAnchor];
-        v45 = [v24 constraintEqualToAnchor:v44 constant:v13];
+        centerXAnchor = [cropAspectFlipperView leftAnchor];
+        view5 = [v10 safeAreaLayoutGuide];
+        leftAnchor3 = [view5 leftAnchor];
+        v45 = [centerXAnchor constraintEqualToAnchor:leftAnchor3 constant:v13];
         [v45 setActive:1];
         goto LABEL_16;
       }
 
-      v18 = [v61 bottomAnchor];
-      v19 = [(PUCropToolController *)self view];
-      v20 = [v19 bottomAnchor];
-      v21 = [v18 constraintEqualToAnchor:v20 constant:-27.0];
+      bottomAnchor6 = [view bottomAnchor];
+      view10 = [(PUCropToolController *)self view];
+      bottomAnchor7 = [view10 bottomAnchor];
+      v21 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7 constant:-27.0];
       [v5 addObject:v21];
 
-      v22 = [v61 heightAnchor];
-      v23 = [v22 constraintEqualToConstant:38.0];
+      heightAnchor2 = [view heightAnchor];
+      v23 = [heightAnchor2 constraintEqualToConstant:38.0];
       [v5 addObject:v23];
 
-      v24 = [v61 leftAnchor];
-      v25 = [(PUCropToolController *)self view];
-      v26 = [v25 leftAnchor];
+      centerXAnchor = [view leftAnchor];
+      view5 = [(PUCropToolController *)self view];
+      centerXAnchor2 = [view5 leftAnchor];
     }
 
-    v44 = v26;
-    v45 = [v24 constraintEqualToAnchor:v26];
+    leftAnchor3 = centerXAnchor2;
+    v45 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v5 addObject:v45];
     v46 = 0;
 LABEL_16:
 
-    [v4 setLayoutOrientation:v46];
-    v58 = [(PUCropToolController *)self cropAspectViewController];
-    [v58 setLayoutOrientation:v46];
+    [cropAspectFlipperView setLayoutOrientation:v46];
+    cropAspectViewController3 = [(PUCropToolController *)self cropAspectViewController];
+    [cropAspectViewController3 setLayoutOrientation:v46];
 
     goto LABEL_17;
   }
@@ -5943,16 +5943,16 @@ LABEL_18:
     return;
   }
 
-  v3 = [(PUPhotoEditToolController *)self toolControllerSpec];
-  [v3 minimumCropInset];
+  toolControllerSpec = [(PUPhotoEditToolController *)self toolControllerSpec];
+  [toolControllerSpec minimumCropInset];
   v5 = v4;
 
-  v6 = [(PUPhotoEditToolController *)self layoutOrientation];
-  v7 = [(PUPhotoEditToolController *)self toolControllerSpec];
-  v8 = v7;
-  if (v6 == 1)
+  layoutOrientation = [(PUPhotoEditToolController *)self layoutOrientation];
+  toolControllerSpec2 = [(PUPhotoEditToolController *)self toolControllerSpec];
+  toolControllerSpec4 = toolControllerSpec2;
+  if (layoutOrientation == 1)
   {
-    [v7 standardBottomBarHeight];
+    [toolControllerSpec2 standardBottomBarHeight];
     v10 = v9;
     v11 = v5;
     v12 = v5;
@@ -5961,19 +5961,19 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  [v7 standardSideBarWidth];
+  [toolControllerSpec2 standardSideBarWidth];
   v11 = v13;
 
-  v14 = [(PUPhotoEditToolController *)self toolControllerSpec];
-  [v14 cropAspectRatioScrollHeight];
+  toolControllerSpec3 = [(PUPhotoEditToolController *)self toolControllerSpec];
+  [toolControllerSpec3 cropAspectRatioScrollHeight];
   v10 = v15;
 
-  v16 = [(PUPhotoEditToolController *)self photoEditSpec];
-  v17 = [v16 currentLayoutStyle];
+  photoEditSpec = [(PUPhotoEditToolController *)self photoEditSpec];
+  currentLayoutStyle = [photoEditSpec currentLayoutStyle];
 
-  if (v17 != 4)
+  if (currentLayoutStyle != 4)
   {
-    if (v6 == 3)
+    if (layoutOrientation == 3)
     {
       v18 = 30.0;
     }
@@ -5983,87 +5983,87 @@ LABEL_10:
       v18 = 10.0;
     }
 
-    v8 = [(PUPhotoEditToolController *)self toolControllerSpec];
-    [v8 cropAspectFlipperWidth];
+    toolControllerSpec4 = [(PUPhotoEditToolController *)self toolControllerSpec];
+    [toolControllerSpec4 cropAspectFlipperWidth];
     v12 = v18 + v19;
     goto LABEL_10;
   }
 
   v12 = v11;
 LABEL_11:
-  v36 = [(PUCropToolController *)self cropCanvasView];
-  v20 = [(PUCropToolController *)self view];
-  v21 = [v20 safeAreaLayoutGuide];
+  cropCanvasView = [(PUCropToolController *)self cropCanvasView];
+  view = [(PUCropToolController *)self view];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
 
-  v22 = [MEMORY[0x1E695DF70] array];
-  v23 = [v21 leftAnchor];
-  v24 = [v36 leftAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24 constant:-v12];
-  [v22 addObject:v25];
+  array = [MEMORY[0x1E695DF70] array];
+  leftAnchor = [safeAreaLayoutGuide leftAnchor];
+  leftAnchor2 = [cropCanvasView leftAnchor];
+  v25 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:-v12];
+  [array addObject:v25];
 
-  v26 = [v21 rightAnchor];
-  v27 = [v36 rightAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27 constant:v11];
-  [v22 addObject:v28];
+  rightAnchor = [safeAreaLayoutGuide rightAnchor];
+  rightAnchor2 = [cropCanvasView rightAnchor];
+  v28 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:v11];
+  [array addObject:v28];
 
-  v29 = [v21 topAnchor];
-  v30 = [v36 topAnchor];
-  v31 = [v29 constraintEqualToAnchor:v30 constant:-v5];
-  [v22 addObject:v31];
+  topAnchor = [safeAreaLayoutGuide topAnchor];
+  topAnchor2 = [cropCanvasView topAnchor];
+  v31 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:-v5];
+  [array addObject:v31];
 
-  v32 = [v21 bottomAnchor];
-  v33 = [v36 bottomAnchor];
-  v34 = [v32 constraintEqualToAnchor:v33 constant:v10];
-  [v22 addObject:v34];
+  bottomAnchor = [safeAreaLayoutGuide bottomAnchor];
+  bottomAnchor2 = [cropCanvasView bottomAnchor];
+  v34 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:v10];
+  [array addObject:v34];
 
-  v35 = [(PUCropToolController *)self view];
-  [v35 pu_addConstraints:v22 forKey:@"PUCropCanvasConstraints"];
+  view2 = [(PUCropToolController *)self view];
+  [view2 pu_addConstraints:array forKey:@"PUCropCanvasConstraints"];
 }
 
-- (BOOL)_hasConstraintsForKey:(id)a3
+- (BOOL)_hasConstraintsForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PUCropToolController *)self view];
-  v6 = [v5 pu_hasConstraintForKey:v4];
+  keyCopy = key;
+  view = [(PUCropToolController *)self view];
+  v6 = [view pu_hasConstraintForKey:keyCopy];
 
   return v6;
 }
 
-- (void)_invalidateConstraintsForKey:(id)a3
+- (void)_invalidateConstraintsForKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   if ([(PUCropToolController *)self isViewLoaded])
   {
-    v4 = [(PUCropToolController *)self view];
-    [v4 pu_removeAllConstraintsForKey:v5];
+    view = [(PUCropToolController *)self view];
+    [view pu_removeAllConstraintsForKey:keyCopy];
   }
 }
 
-- (void)_updateBadgeTextWithInfo:(id)a3
+- (void)_updateBadgeTextWithInfo:(id)info
 {
-  v4 = [a3 localizedName];
-  v9 = [v4 localizedUppercaseString];
+  localizedName = [info localizedName];
+  localizedUppercaseString = [localizedName localizedUppercaseString];
 
   v5 = MEMORY[0x1B8C6D660]();
-  v6 = [(PUCropToolController *)self badgeView];
-  v7 = v6;
+  badgeView = [(PUCropToolController *)self badgeView];
+  v7 = badgeView;
   if (v5)
   {
-    [v6 setText:v9];
+    [badgeView setText:localizedUppercaseString];
   }
 
   else
   {
-    [v6 _setText:v9];
+    [badgeView _setText:localizedUppercaseString];
   }
 
-  v8 = [(PUCropToolController *)self badgeView];
-  [v8 sizeToFit];
+  badgeView2 = [(PUCropToolController *)self badgeView];
+  [badgeView2 sizeToFit];
 
   [(PUCropToolController *)self _layoutAdjustmentTools];
 }
 
-- (void)adjustmentsViewControllerSliderDidEndScrubbing:(id)a3
+- (void)adjustmentsViewControllerSliderDidEndScrubbing:(id)scrubbing
 {
   [(PUCropToolController *)self resetToolLabelHidingTimer];
   [(PUCropToolController *)self setTrackingAdjustmentControl:0];
@@ -6072,7 +6072,7 @@ LABEL_11:
   [(PUPhotoEditToolController *)self setPerformingLiveInteraction:0];
 }
 
-- (void)adjustmentsViewControllerSliderWillBeginScrubbing:(id)a3
+- (void)adjustmentsViewControllerSliderWillBeginScrubbing:(id)scrubbing
 {
   [(PUCropToolController *)self showVideoScrubber:0];
   [(PUCropToolController *)self setTrackingAdjustmentControl:1];
@@ -6081,7 +6081,7 @@ LABEL_11:
   [(PUPhotoEditToolController *)self setPerformingLiveInteraction:1];
 }
 
-- (void)adjustmentsViewControllerToolDidEndScrubbing:(id)a3
+- (void)adjustmentsViewControllerToolDidEndScrubbing:(id)scrubbing
 {
   if ([(PUCropToolController *)self toolBadgeDoesHide])
   {
@@ -6090,7 +6090,7 @@ LABEL_11:
   }
 }
 
-- (void)adjustmentsViewControllerToolWillBeginScrubbing:(id)a3
+- (void)adjustmentsViewControllerToolWillBeginScrubbing:(id)scrubbing
 {
   if ([(PUCropToolController *)self toolBadgeDoesHide])
   {
@@ -6101,16 +6101,16 @@ LABEL_11:
 
 - (id)adjustmentsViewControllerMainContainerView
 {
-  v3 = [(PUPhotoEditToolController *)self delegate];
-  v4 = [v3 toolControllerMainContainerView:self];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  v4 = [delegate toolControllerMainContainerView:self];
 
   return v4;
 }
 
-- (void)adjustmentsViewControllerDidUpdateSelectedControl:(id)a3
+- (void)adjustmentsViewControllerDidUpdateSelectedControl:(id)control
 {
-  v4 = [a3 selectedAdjustmentInfo];
-  [(PUCropToolController *)self _updateBadgeTextWithInfo:v4];
+  selectedAdjustmentInfo = [control selectedAdjustmentInfo];
+  [(PUCropToolController *)self _updateBadgeTextWithInfo:selectedAdjustmentInfo];
 
   if ([(PUCropToolController *)self toolBadgeDoesHide])
   {
@@ -6119,15 +6119,15 @@ LABEL_11:
   }
 }
 
-- (void)setupWithAsset:(id)a3 compositionController:(id)a4 editSource:(id)a5 valuesCalculator:(id)a6
+- (void)setupWithAsset:(id)asset compositionController:(id)controller editSource:(id)source valuesCalculator:(id)calculator
 {
   v10.receiver = self;
   v10.super_class = PUCropToolController;
-  [(PUPhotoEditToolController *)&v10 setupWithAsset:a3 compositionController:a4 editSource:a5 valuesCalculator:a6];
-  v7 = [(PUCropToolController *)self dataSource];
-  v8 = [(PUPhotoEditToolController *)self compositionController];
-  v9 = [(PUPhotoEditToolController *)self valuesCalculator];
-  [v7 setupWithCompositionController:v8 valuesCalculator:v9];
+  [(PUPhotoEditToolController *)&v10 setupWithAsset:asset compositionController:controller editSource:source valuesCalculator:calculator];
+  dataSource = [(PUCropToolController *)self dataSource];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  valuesCalculator = [(PUPhotoEditToolController *)self valuesCalculator];
+  [dataSource setupWithCompositionController:compositionController valuesCalculator:valuesCalculator];
 }
 
 - (void)updateViewConstraints
@@ -6144,63 +6144,63 @@ LABEL_11:
   v117.receiver = self;
   v117.super_class = PUCropToolController;
   [(PUPhotoEditToolController *)&v117 viewDidLayoutSubviews];
-  v3 = [(PUPhotoEditToolController *)self delegate];
-  v4 = [v3 toolControllerMainContainerView:self];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  v4 = [delegate toolControllerMainContainerView:self];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    view = v4;
   }
 
   else
   {
-    v6 = [(PUCropToolController *)self view];
+    view = [(PUCropToolController *)self view];
   }
 
-  v7 = v6;
+  v7 = view;
 
   [v7 bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(PUCropToolController *)self cropOverlayView];
-  [v16 setFrame:{v9, v11, v13, v15}];
+  cropOverlayView = [(PUCropToolController *)self cropOverlayView];
+  [cropOverlayView setFrame:{v9, v11, v13, v15}];
 
-  v17 = [(PUCropToolController *)self view];
+  view2 = [(PUCropToolController *)self view];
   [v7 bounds];
   UIRectGetCenter();
-  [v17 convertPoint:v7 fromView:?];
+  [view2 convertPoint:v7 fromView:?];
   v19 = v18;
   v21 = v20;
 
-  v22 = [(PUCropToolController *)self cropOverlayView];
-  [v22 setCenter:{v19, v21}];
+  cropOverlayView2 = [(PUCropToolController *)self cropOverlayView];
+  [cropOverlayView2 setCenter:{v19, v21}];
 
   [(PUCropToolController *)self _cropCanvasFrame];
   v24 = v23;
   v26 = v25;
   v28 = v27;
   v30 = v29;
-  v31 = [(PUCropToolController *)self cropView];
-  [v31 setCanvasFrame:{v24, v26, v28, v30}];
+  cropView = [(PUCropToolController *)self cropView];
+  [cropView setCanvasFrame:{v24, v26, v28, v30}];
 
   if ([(PUCropToolController *)self modelLoadingSuspended])
   {
     goto LABEL_9;
   }
 
-  v32 = [(PUPhotoEditToolController *)self compositionController];
-  if (!v32)
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  if (!compositionController)
   {
     goto LABEL_9;
   }
 
-  v33 = v32;
+  v33 = compositionController;
   if (![(PUCropToolController *)self needsModelLoad])
   {
-    v34 = [(PUCropToolController *)self cropView];
-    [v34 frame];
+    cropView2 = [(PUCropToolController *)self cropView];
+    [cropView2 frame];
     v36 = v35;
     v38 = v37;
     v40 = v39;
@@ -6222,8 +6222,8 @@ LABEL_11:
     }
 
 LABEL_9:
-    v48 = [(PUCropToolController *)self cropView];
-    [v48 setNeedsLayout];
+    cropView3 = [(PUCropToolController *)self cropView];
+    [cropView3 setNeedsLayout];
 
     goto LABEL_11;
   }
@@ -6232,23 +6232,23 @@ LABEL_10:
   [(PUCropToolController *)self _loadStateFromModelAnimated:0];
 LABEL_11:
   [(PUCropToolController *)self _layoutAdjustmentTools];
-  v49 = [(PUPhotoEditToolController *)self photoEditSpec];
-  [v49 scrubberViewMargin];
+  photoEditSpec = [(PUPhotoEditToolController *)self photoEditSpec];
+  [photoEditSpec scrubberViewMargin];
   v51 = v50;
   v115 = v52;
   v54 = v53;
 
-  v55 = [(PUCropToolController *)self cropOverlayView];
-  v56 = [v55 cropWindowView];
+  cropOverlayView3 = [(PUCropToolController *)self cropOverlayView];
+  cropWindowView = [cropOverlayView3 cropWindowView];
 
-  v57 = [(PUCropToolController *)self view];
-  [v56 frame];
+  view3 = [(PUCropToolController *)self view];
+  [cropWindowView frame];
   v59 = v58;
   v61 = v60;
   v63 = v62;
   v65 = v64;
-  v66 = [v56 superview];
-  [v57 convertRect:v66 fromView:{v59, v61, v63, v65}];
+  superview = [cropWindowView superview];
+  [view3 convertRect:superview fromView:{v59, v61, v63, v65}];
   v68 = v67;
   MinY = v69;
   v72 = v71;
@@ -6285,12 +6285,12 @@ LABEL_11:
 
   else
   {
-    v78 = [(PUCropToolController *)self view];
-    [v78 frame];
+    view4 = [(PUCropToolController *)self view];
+    [view4 frame];
     v79 = MinY;
     v80 = CGRectGetWidth(v123);
-    v81 = [(PUPhotoEditToolController *)self toolContainerView];
-    [v81 frame];
+    toolContainerView = [(PUPhotoEditToolController *)self toolContainerView];
+    [toolContainerView frame];
     v82 = v80 - CGRectGetWidth(v124);
 
     v125.origin.x = v68;
@@ -6319,8 +6319,8 @@ LABEL_11:
   v127.size.height = Height;
   v116 = v51;
   v86 = fmin(CGRectGetWidth(v127) - v51 - v54, 477.0);
-  v87 = [(PUCropToolController *)self videoScrubberView];
-  [v87 intrinsicContentSize];
+  videoScrubberView = [(PUCropToolController *)self videoScrubberView];
+  [videoScrubberView intrinsicContentSize];
   v89 = v88;
 
   v128.origin.x = v68;
@@ -6347,8 +6347,8 @@ LABEL_11:
     v130.size.height = Height;
     rect = MinY;
     v92 = CGRectGetMaxY(v130) + 30.0;
-    v93 = [(PUCropToolController *)self view];
-    [v93 frame];
+    view5 = [(PUCropToolController *)self view];
+    [view5 frame];
     v95 = v94;
 
     v96 = v89 + v92;
@@ -6368,11 +6368,11 @@ LABEL_11:
     }
   }
 
-  v97 = [(PUCropToolController *)self playPauseButton];
-  [v97 sizeToFit];
+  playPauseButton = [(PUCropToolController *)self playPauseButton];
+  [playPauseButton sizeToFit];
 
-  v98 = [(PUCropToolController *)self playPauseButton];
-  [v98 frame];
+  playPauseButton2 = [(PUCropToolController *)self playPauseButton];
+  [playPauseButton2 frame];
   v100 = v99;
   v102 = v101;
 
@@ -6386,60 +6386,60 @@ LABEL_11:
   v133.size.width = v86;
   v133.size.height = v89;
   v104 = CGRectGetMinY(v133) + -7.0;
-  v105 = [(PUCropToolController *)self playPauseButton];
-  [v105 setFrame:{MinX, v104, v100, v102}];
+  playPauseButton3 = [(PUCropToolController *)self playPauseButton];
+  [playPauseButton3 setFrame:{MinX, v104, v100, v102}];
 
-  v106 = [(PUCropToolController *)self videoScrubberView];
-  [v106 setFrame:{v90 + v116 + v100, v92, v86 + (v116 + v100) * -2.0, v89}];
+  videoScrubberView2 = [(PUCropToolController *)self videoScrubberView];
+  [videoScrubberView2 setFrame:{v90 + v116 + v100, v92, v86 + (v116 + v100) * -2.0, v89}];
 
-  v107 = [(PUCropToolController *)self videoScrubberView];
-  [v107 setOverrideUserInterfaceStyle:v77];
+  videoScrubberView3 = [(PUCropToolController *)self videoScrubberView];
+  [videoScrubberView3 setOverrideUserInterfaceStyle:v77];
 
-  v108 = [(PUCropToolController *)self videoScrubberView];
+  videoScrubberView4 = [(PUCropToolController *)self videoScrubberView];
 
-  if (v108)
+  if (videoScrubberView4)
   {
-    v109 = [(PUCropToolController *)self view];
-    v110 = [(PUCropToolController *)self videoScrubberView];
-    [v109 bringSubviewToFront:v110];
+    view6 = [(PUCropToolController *)self view];
+    videoScrubberView5 = [(PUCropToolController *)self videoScrubberView];
+    [view6 bringSubviewToFront:videoScrubberView5];
   }
 
-  v111 = [(PUCropToolController *)self playPauseButton];
+  playPauseButton4 = [(PUCropToolController *)self playPauseButton];
 
-  if (v111)
+  if (playPauseButton4)
   {
-    v112 = [(PUCropToolController *)self view];
-    v113 = [(PUCropToolController *)self playPauseButton];
-    [v112 bringSubviewToFront:v113];
+    view7 = [(PUCropToolController *)self view];
+    playPauseButton5 = [(PUCropToolController *)self playPauseButton];
+    [view7 bringSubviewToFront:playPauseButton5];
   }
 
   [(PUCropToolController *)self _updateToolLabelAppearanceIfNeeded];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = PUCropToolController;
-  [(PUPhotoEditToolController *)&v10 viewDidAppear:a3];
+  [(PUPhotoEditToolController *)&v10 viewDidAppear:appear];
   [(PUCropToolController *)self resetToolLabelHidingTimer];
-  v4 = [(PUCropToolController *)self cropView];
-  v5 = [(PUPhotoEditToolController *)self delegate];
-  [v4 setShouldEnableImageModulation:{objc_msgSend(v5, "toolControllerShouldEnableImageModulation:", self)}];
+  cropView = [(PUCropToolController *)self cropView];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  [cropView setShouldEnableImageModulation:{objc_msgSend(delegate, "toolControllerShouldEnableImageModulation:", self)}];
 
-  v6 = [(PUCropToolController *)self cropView];
-  v7 = [(PUPhotoEditToolController *)self delegate];
-  v8 = [v7 toolControllerImageModulationOptions:self];
-  [v6 setImageModulationOptions:{v8, v9}];
+  cropView2 = [(PUCropToolController *)self cropView];
+  delegate2 = [(PUPhotoEditToolController *)self delegate];
+  v8 = [delegate2 toolControllerImageModulationOptions:self];
+  [cropView2 setImageModulationOptions:{v8, v9}];
 }
 
 - (void)_layoutAdjustmentTools
 {
-  v3 = [(PUPhotoEditToolController *)self layoutOrientation];
-  v4 = [(PUPhotoEditToolController *)self photoEditSpec];
-  v5 = [v4 currentLayoutStyle];
+  layoutOrientation = [(PUPhotoEditToolController *)self layoutOrientation];
+  photoEditSpec = [(PUPhotoEditToolController *)self photoEditSpec];
+  currentLayoutStyle = [photoEditSpec currentLayoutStyle];
 
-  v6 = [(PUCropToolController *)self view];
-  [v6 bounds];
+  view = [(PUCropToolController *)self view];
+  [view bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -6456,52 +6456,52 @@ LABEL_11:
   }
 
   [(PUPhotoEditToolController *)self setToolGradientDistance:v15];
-  if (v5 == 4)
+  if (currentLayoutStyle == 4)
   {
-    v16 = [(PUPhotoEditToolController *)self toolContainerView];
-    [v16 bounds];
+    toolContainerView = [(PUPhotoEditToolController *)self toolContainerView];
+    [toolContainerView bounds];
     [(UIView *)self->_adjustmentPickerView setFrame:?];
 
     [(PUAdjustmentsViewController *)self->_adjustmentsViewController setLayoutDirection:1];
-    v17 = [(PUPhotoEditToolController *)self delegate];
-    v18 = [v17 toolControllerMainContainerView:self];
+    delegate = [(PUPhotoEditToolController *)self delegate];
+    v18 = [delegate toolControllerMainContainerView:self];
     v19 = v18;
     if (v18)
     {
-      v20 = v18;
+      view2 = v18;
     }
 
     else
     {
-      v20 = [(PUCropToolController *)self view];
+      view2 = [(PUCropToolController *)self view];
     }
 
-    v74 = v20;
+    v74 = view2;
 
     [v74 center];
     v39 = v38;
     v41 = v40;
-    v42 = [v74 superview];
-    v43 = [(PUCropToolController *)self view];
-    [v42 convertPoint:v43 toView:{v39, v41}];
+    superview = [v74 superview];
+    view3 = [(PUCropToolController *)self view];
+    [superview convertPoint:view3 toView:{v39, v41}];
     v45 = v44;
 
-    v46 = [(PUPhotoEditToolController *)self toolContainerView];
-    [v46 frame];
+    toolContainerView2 = [(PUPhotoEditToolController *)self toolContainerView];
+    [toolContainerView2 frame];
     MinX = CGRectGetMinX(v78);
 
-    v48 = [(PUCropToolController *)self badgeView];
-    [v48 bounds];
+    badgeView = [(PUCropToolController *)self badgeView];
+    [badgeView bounds];
     v50 = MinX + v49 * -0.5 + -6.0;
 
-    v51 = [(PUCropToolController *)self badgeView];
-    v52 = v51;
+    badgeView2 = [(PUCropToolController *)self badgeView];
+    v52 = badgeView2;
     v53 = v50;
   }
 
   else
   {
-    if (v3 == 1)
+    if (layoutOrientation == 1)
     {
       [(PUAdjustmentsViewController *)self->_adjustmentsViewController setLayoutDirection:0];
       adjustmentPickerView = self->_adjustmentPickerView;
@@ -6510,61 +6510,61 @@ LABEL_11:
       v75[1] = v22;
       v75[2] = *(MEMORY[0x1E695EFD0] + 32);
       [(UIView *)adjustmentPickerView setTransform:v75];
-      v23 = [(PUPhotoEditToolController *)self toolContainerView];
-      [v23 frame];
+      toolContainerView3 = [(PUPhotoEditToolController *)self toolContainerView];
+      [toolContainerView3 frame];
       [(UIView *)self->_adjustmentPickerView setFrame:?];
 
-      v24 = [(PUPhotoEditToolController *)self toolContainerView];
-      [v24 bounds];
+      toolContainerView4 = [(PUPhotoEditToolController *)self toolContainerView];
+      [toolContainerView4 bounds];
       UIRectGetCenter();
       [(UIView *)self->_adjustmentPickerView setCenter:?];
 
-      v25 = [(PUPhotoEditToolController *)self toolContainerView];
-      [v25 frame];
+      toolContainerView5 = [(PUPhotoEditToolController *)self toolContainerView];
+      [toolContainerView5 frame];
       MinY = CGRectGetMinY(v77);
 
       UIRectGetCenter();
       v28 = v27;
-      v29 = [(PUCropToolController *)self badgeView];
-      [v29 bounds];
+      badgeView3 = [(PUCropToolController *)self badgeView];
+      [badgeView3 bounds];
       v31 = MinY + v30 * -0.5 + -6.0;
 
-      v32 = [(PUCropToolController *)self badgeView];
-      [v32 setCenter:{v28, v31}];
+      badgeView4 = [(PUCropToolController *)self badgeView];
+      [badgeView4 setCenter:{v28, v31}];
 
       return;
     }
 
-    v33 = [(PUPhotoEditToolController *)self toolContainerView];
-    [v33 bounds];
+    toolContainerView6 = [(PUPhotoEditToolController *)self toolContainerView];
+    [toolContainerView6 bounds];
     [(UIView *)self->_adjustmentPickerView setFrame:?];
 
     [(PUAdjustmentsViewController *)self->_adjustmentsViewController setLayoutDirection:1];
-    v34 = [(PUPhotoEditToolController *)self delegate];
-    v35 = [v34 toolControllerMainContainerView:self];
+    delegate2 = [(PUPhotoEditToolController *)self delegate];
+    v35 = [delegate2 toolControllerMainContainerView:self];
     v36 = v35;
     if (v35)
     {
-      v37 = v35;
+      view4 = v35;
     }
 
     else
     {
-      v37 = [(PUCropToolController *)self view];
+      view4 = [(PUCropToolController *)self view];
     }
 
-    v74 = v37;
+    v74 = view4;
 
     [v74 center];
     v55 = v54;
     v57 = v56;
-    v58 = [v74 superview];
-    v59 = [(PUCropToolController *)self view];
-    [v58 convertPoint:v59 toView:{v55, v57}];
+    superview2 = [v74 superview];
+    view5 = [(PUCropToolController *)self view];
+    [superview2 convertPoint:view5 toView:{v55, v57}];
     v61 = v60;
 
-    v62 = [(PUCropToolController *)self view];
-    [v62 safeAreaInsets];
+    view6 = [(PUCropToolController *)self view];
+    [view6 safeAreaInsets];
     v64 = v8 + v63;
     v66 = v10 + v65;
     v68 = v12 - (v63 + v67);
@@ -6575,35 +6575,35 @@ LABEL_11:
     v79.size.width = v68;
     v79.size.height = v70;
     MaxY = CGRectGetMaxY(v79);
-    v72 = [(PUCropToolController *)self badgeView];
-    [v72 bounds];
+    badgeView5 = [(PUCropToolController *)self badgeView];
+    [badgeView5 bounds];
     v45 = MaxY + v73 * -0.5;
 
-    v51 = [(PUCropToolController *)self badgeView];
-    v52 = v51;
+    badgeView2 = [(PUCropToolController *)self badgeView];
+    v52 = badgeView2;
     v53 = v61;
   }
 
-  [v51 setCenter:{v53, v45}];
+  [badgeView2 setCenter:{v53, v45}];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = PUCropToolController;
-  [(PUPhotoEditToolController *)&v8 viewWillAppear:a3];
+  [(PUPhotoEditToolController *)&v8 viewWillAppear:appear];
   [(PUCropToolController *)self setNeedsModelLoad:1];
-  v4 = [(PUPhotoEditToolController *)self delegate];
-  v5 = [v4 isStandardVideo];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  isStandardVideo = [delegate isStandardVideo];
 
-  if (v5)
+  if (isStandardVideo)
   {
     [(PUCropToolController *)self createVideoScrubber];
-    v6 = [(PUCropToolController *)self videoScrubberView];
-    [v6 setAlpha:0.0];
+    videoScrubberView = [(PUCropToolController *)self videoScrubberView];
+    [videoScrubberView setAlpha:0.0];
 
-    v7 = [(PUCropToolController *)self playPauseButton];
-    [v7 setAlpha:0.0];
+    playPauseButton = [(PUCropToolController *)self playPauseButton];
+    [playPauseButton setAlpha:0.0];
   }
 
   [(PUCropToolController *)self setToolBadgeDoesHide:1];
@@ -6620,18 +6620,18 @@ LABEL_11:
   v3 = objc_alloc_init(PUCropToolControllerSpec);
   [(PUPhotoEditToolController *)self setToolControllerSpec:v3];
 
-  v4 = [(PUCropToolController *)self cropView];
-  v5 = [(PUCropToolController *)self cropOverlayView];
-  v6 = [(PUPhotoEditToolController *)self toolContainerView];
-  v7 = [(PUCropToolController *)self cropHandleViewsByHandle];
-  v8 = [v7 allValues];
+  cropView = [(PUCropToolController *)self cropView];
+  cropOverlayView = [(PUCropToolController *)self cropOverlayView];
+  toolContainerView = [(PUPhotoEditToolController *)self toolContainerView];
+  cropHandleViewsByHandle = [(PUCropToolController *)self cropHandleViewsByHandle];
+  allValues = [cropHandleViewsByHandle allValues];
 
-  v9 = [(PUPhotoEditToolController *)self toolControllerSpec];
-  [v9 minimumCropHandleViewSize];
+  toolControllerSpec = [(PUPhotoEditToolController *)self toolControllerSpec];
+  [toolControllerSpec minimumCropHandleViewSize];
   v11 = v10;
   v13 = v12;
 
-  v108 = _NSDictionaryOfVariableBindings(&cfstr_CropviewContai.isa, v4, v6, 0);
+  v108 = _NSDictionaryOfVariableBindings(&cfstr_CropviewContai.isa, cropView, toolContainerView, 0);
   v130[0] = @"handleWidth";
   v14 = [MEMORY[0x1E696AD98] numberWithDouble:v11];
   v130[1] = @"handleHeight";
@@ -6640,37 +6640,37 @@ LABEL_11:
   v131[1] = v15;
   v117 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v131 forKeys:v130 count:2];
 
-  v16 = [(PUCropToolController *)self view];
-  v17 = [(PUCropToolController *)self cropCanvasView];
-  [v16 addSubview:v17];
+  view = [(PUCropToolController *)self view];
+  cropCanvasView = [(PUCropToolController *)self cropCanvasView];
+  [view addSubview:cropCanvasView];
 
-  v18 = [(PUCropToolController *)self view];
-  v106 = v4;
-  [v18 addSubview:v4];
+  view2 = [(PUCropToolController *)self view];
+  v106 = cropView;
+  [view2 addSubview:cropView];
 
-  v19 = [(PUCropToolController *)self view];
-  v109 = v5;
-  [v19 addSubview:v5];
+  view3 = [(PUCropToolController *)self view];
+  v109 = cropOverlayView;
+  [view3 addSubview:cropOverlayView];
 
   [(PUCropToolController *)self addChildViewController:self->_adjustmentsViewController];
-  v20 = [(PUAdjustmentsViewController *)self->_adjustmentsViewController view];
+  view4 = [(PUAdjustmentsViewController *)self->_adjustmentsViewController view];
   adjustmentPickerView = self->_adjustmentPickerView;
-  self->_adjustmentPickerView = v20;
+  self->_adjustmentPickerView = view4;
 
-  v105 = v6;
-  [v6 addSubview:self->_adjustmentPickerView];
+  v105 = toolContainerView;
+  [toolContainerView addSubview:self->_adjustmentPickerView];
   [(PUCropToolController *)self _updateCropActionButtons];
   v22 = objc_alloc_init(MEMORY[0x1E69DD250]);
-  v118 = self;
-  v23 = [(PUCropToolController *)self view];
+  selfCopy = self;
+  view5 = [(PUCropToolController *)self view];
   v116 = v22;
-  [v23 addSubview:v22];
+  [view5 addSubview:v22];
 
   v125 = 0u;
   v126 = 0u;
   v123 = 0u;
   v124 = 0u;
-  v24 = v8;
+  v24 = allValues;
   v25 = [v24 countByEnumeratingWithState:&v123 objects:v129 count:16];
   if (v25)
   {
@@ -6686,17 +6686,17 @@ LABEL_11:
         }
 
         v29 = *(*(&v123 + 1) + 8 * i);
-        v30 = [v29 isLateral];
-        v31 = [(PUCropToolController *)self view];
-        v32 = v31;
-        if (v30)
+        isLateral = [v29 isLateral];
+        view6 = [(PUCropToolController *)self view];
+        v32 = view6;
+        if (isLateral)
         {
-          [v31 insertSubview:v29 belowSubview:v22];
+          [view6 insertSubview:v29 belowSubview:v22];
         }
 
         else
         {
-          [v31 insertSubview:v29 aboveSubview:v22];
+          [view6 insertSubview:v29 aboveSubview:v22];
         }
 
         v33 = _NSDictionaryOfVariableBindings(&cfstr_Handleview.isa, v29, 0);
@@ -6720,22 +6720,22 @@ LABEL_11:
   }
 
   [v22 removeFromSuperview];
-  v36 = [(PUCropToolController *)self view];
+  view7 = [(PUCropToolController *)self view];
   v37 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|[cropView]|" options:0x10000 metrics:v117 views:v108];
-  [v36 addConstraints:v37];
+  [view7 addConstraints:v37];
 
-  v38 = [(PUCropToolController *)self view];
+  view8 = [(PUCropToolController *)self view];
   v39 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|[cropView]|" options:0 metrics:v117 views:v108];
-  [v38 addConstraints:v39];
+  [view8 addConstraints:v39];
 
-  v115 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v119 = 0u;
   v120 = 0u;
   v121 = 0u;
   v122 = 0u;
   obj = v24;
   v40 = [obj countByEnumeratingWithState:&v119 objects:v128 count:16];
-  v41 = v5;
+  v41 = cropOverlayView;
   if (v40)
   {
     v42 = v40;
@@ -6752,8 +6752,8 @@ LABEL_11:
         }
 
         v44 = *(*(&v119 + 1) + 8 * v43);
-        v45 = [v44 layoutReferenceItem];
-        v46 = [v41 layoutReferenceItem];
+        layoutReferenceItem = [v44 layoutReferenceItem];
+        layoutReferenceItem2 = [v41 layoutReferenceItem];
         if ([v44 isCorner])
         {
           if ([v44 isTop])
@@ -6776,27 +6776,27 @@ LABEL_11:
             v48 = 2;
           }
 
-          v49 = [MEMORY[0x1E696ACD8] constraintWithItem:v45 attribute:v47 relatedBy:0 toItem:v46 attribute:v47 multiplier:1.0 constant:0.0];
-          [v115 addObject:v49];
+          v49 = [MEMORY[0x1E696ACD8] constraintWithItem:layoutReferenceItem attribute:v47 relatedBy:0 toItem:layoutReferenceItem2 attribute:v47 multiplier:1.0 constant:0.0];
+          [array addObject:v49];
 
-          v50 = [MEMORY[0x1E696ACD8] constraintWithItem:v45 attribute:v48 relatedBy:0 toItem:v46 attribute:v48 multiplier:1.0 constant:0.0];
-          [v115 addObject:v50];
+          v50 = [MEMORY[0x1E696ACD8] constraintWithItem:layoutReferenceItem attribute:v48 relatedBy:0 toItem:layoutReferenceItem2 attribute:v48 multiplier:1.0 constant:0.0];
+          [array addObject:v50];
         }
 
         if ([v44 isLateral])
         {
-          v51 = [v44 adjacentHandles];
-          v52 = [v44 layoutReferenceItem];
-          v53 = [(PUCropToolController *)v118 cropHandleViewsByHandle];
-          v54 = [v51 objectAtIndexedSubscript:0];
-          v55 = [v53 objectForKeyedSubscript:v54];
+          adjacentHandles = [v44 adjacentHandles];
+          layoutReferenceItem3 = [v44 layoutReferenceItem];
+          cropHandleViewsByHandle2 = [(PUCropToolController *)selfCopy cropHandleViewsByHandle];
+          v54 = [adjacentHandles objectAtIndexedSubscript:0];
+          v55 = [cropHandleViewsByHandle2 objectForKeyedSubscript:v54];
           firstValue = [v55 layoutReferenceItem];
 
-          v56 = [(PUCropToolController *)v118 cropHandleViewsByHandle];
-          v113 = v51;
-          v57 = [v51 objectAtIndexedSubscript:1];
-          v58 = [v56 objectForKeyedSubscript:v57];
-          v59 = [v58 layoutReferenceItem];
+          cropHandleViewsByHandle3 = [(PUCropToolController *)selfCopy cropHandleViewsByHandle];
+          v113 = adjacentHandles;
+          v57 = [adjacentHandles objectAtIndexedSubscript:1];
+          v58 = [cropHandleViewsByHandle3 objectForKeyedSubscript:v57];
+          layoutReferenceItem4 = [v58 layoutReferenceItem];
 
           if (([v44 isTop] & 1) != 0 || objc_msgSend(v44, "isBottom"))
           {
@@ -6830,13 +6830,13 @@ LABEL_11:
             v62 = 4;
           }
 
-          v63 = _NSDictionaryOfVariableBindings(&cfstr_Adjacent1Handl.isa, firstValue, v52, v59, 0);
+          v63 = _NSDictionaryOfVariableBindings(&cfstr_Adjacent1Handl.isa, firstValue, layoutReferenceItem3, layoutReferenceItem4, 0);
           v64 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:[adjacent1][handleItem][adjacent2]", v61];
           v65 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:v64 options:v60 metrics:0 views:v63];
-          [v115 addObjectsFromArray:v65];
+          [array addObjectsFromArray:v65];
 
-          v66 = [MEMORY[0x1E696ACD8] constraintWithItem:v52 attribute:v62 relatedBy:0 toItem:v46 attribute:v62 multiplier:1.0 constant:0.0];
-          [v115 addObject:v66];
+          v66 = [MEMORY[0x1E696ACD8] constraintWithItem:layoutReferenceItem3 attribute:v62 relatedBy:0 toItem:layoutReferenceItem2 attribute:v62 multiplier:1.0 constant:0.0];
+          [array addObject:v66];
 
           v41 = v109;
           v42 = v110;
@@ -6852,120 +6852,120 @@ LABEL_11:
     while (v42);
   }
 
-  [MEMORY[0x1E696ACD8] activateConstraints:v115];
-  v67 = [(PUCropToolController *)v118 aspectRatioLockButton];
-  if (!v67)
+  [MEMORY[0x1E696ACD8] activateConstraints:array];
+  aspectRatioLockButton = [(PUCropToolController *)selfCopy aspectRatioLockButton];
+  if (!aspectRatioLockButton)
   {
     v68 = +[PUPhotoEditProtoSettings sharedInstance];
-    v69 = [v68 maintainCropAspectLockState];
+    maintainCropAspectLockState = [v68 maintainCropAspectLockState];
 
-    if (!v69)
+    if (!maintainCropAspectLockState)
     {
       goto LABEL_49;
     }
 
     v70 = [MEMORY[0x1E69C3BE8] buttonWithType:1];
-    [(PUCropToolController *)v118 setAspectRatioLockButton:v70];
+    [(PUCropToolController *)selfCopy setAspectRatioLockButton:v70];
 
-    v71 = [(PUCropToolController *)v118 aspectRatioLockButton];
-    [v71 setTranslatesAutoresizingMaskIntoConstraints:0];
+    aspectRatioLockButton2 = [(PUCropToolController *)selfCopy aspectRatioLockButton];
+    [aspectRatioLockButton2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v72 = [(PUCropToolController *)v118 aspectRatioLockButton];
-    [v72 addTarget:v118 action:sel__aspectLockButtonTapped forControlEvents:64];
+    aspectRatioLockButton3 = [(PUCropToolController *)selfCopy aspectRatioLockButton];
+    [aspectRatioLockButton3 addTarget:selfCopy action:sel__aspectLockButtonTapped forControlEvents:64];
 
-    v73 = [(PUCropToolController *)v118 view];
-    v74 = [(PUCropToolController *)v118 aspectRatioLockButton];
-    [v73 addSubview:v74];
+    view9 = [(PUCropToolController *)selfCopy view];
+    aspectRatioLockButton4 = [(PUCropToolController *)selfCopy aspectRatioLockButton];
+    [view9 addSubview:aspectRatioLockButton4];
 
-    v75 = [(PUCropToolController *)v118 aspectRatioLockButton];
-    v76 = [v75 topAnchor];
-    v77 = [v41 layoutReferenceItem];
-    v78 = [v77 topAnchor];
-    v79 = [v76 constraintEqualToAnchor:v78 constant:20.0];
+    aspectRatioLockButton5 = [(PUCropToolController *)selfCopy aspectRatioLockButton];
+    topAnchor = [aspectRatioLockButton5 topAnchor];
+    layoutReferenceItem5 = [v41 layoutReferenceItem];
+    topAnchor2 = [layoutReferenceItem5 topAnchor];
+    v79 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:20.0];
     [v79 setActive:1];
 
-    v80 = [(PUCropToolController *)v118 aspectRatioLockButton];
-    v81 = [v80 rightAnchor];
-    v82 = [v41 layoutReferenceItem];
-    v83 = [v82 rightAnchor];
-    v84 = [v81 constraintEqualToAnchor:v83 constant:-20.0];
+    aspectRatioLockButton6 = [(PUCropToolController *)selfCopy aspectRatioLockButton];
+    rightAnchor = [aspectRatioLockButton6 rightAnchor];
+    layoutReferenceItem6 = [v41 layoutReferenceItem];
+    rightAnchor2 = [layoutReferenceItem6 rightAnchor];
+    v84 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:-20.0];
     [v84 setActive:1];
 
-    v67 = [(PUCropToolController *)v118 aspectRatioLockButton];
-    [v67 setEnabled:1];
+    aspectRatioLockButton = [(PUCropToolController *)selfCopy aspectRatioLockButton];
+    [aspectRatioLockButton setEnabled:1];
   }
 
 LABEL_49:
-  [(PUCropToolController *)v118 updateAspectRatioLockButton];
-  v85 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:v118 action:sel__accessibilityLongPressChanged_];
+  [(PUCropToolController *)selfCopy updateAspectRatioLockButton];
+  v85 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:selfCopy action:sel__accessibilityLongPressChanged_];
   [v85 setMinimumPressDuration:0.15];
-  v86 = [MEMORY[0x1E69DC668] sharedApplication];
-  v87 = [v86 preferredContentSizeCategory];
-  [v85 setEnabled:UIContentSizeCategoryIsAccessibilityCategory(v87)];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+  [v85 setEnabled:UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory)];
 
-  v88 = [(PUCropToolController *)v118 view];
-  [v88 addGestureRecognizer:v85];
+  view10 = [(PUCropToolController *)selfCopy view];
+  [view10 addGestureRecognizer:v85];
 
-  [(PUCropToolController *)v118 setAccessibilityLongPressGestureRecognizer:v85];
-  v89 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v89 addObserver:v118 selector:sel__preferredContentSizeCategoryChanged name:*MEMORY[0x1E69DDC48] object:0];
+  [(PUCropToolController *)selfCopy setAccessibilityLongPressGestureRecognizer:v85];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:selfCopy selector:sel__preferredContentSizeCategoryChanged name:*MEMORY[0x1E69DDC48] object:0];
 
-  v90 = [(PUCropToolController *)v118 view];
-  v91 = [(PUPhotoEditToolController *)v118 toolContainerView];
-  [v90 bringSubviewToFront:v91];
+  view11 = [(PUCropToolController *)selfCopy view];
+  toolContainerView2 = [(PUPhotoEditToolController *)selfCopy toolContainerView];
+  [view11 bringSubviewToFront:toolContainerView2];
 
   if (MEMORY[0x1B8C6D660]())
   {
     v92 = [PUEditBadgeLabel alloc];
     v93 = +[PUInterfaceManager currentTheme];
     v94 = [(PUEditBadgeLabel *)v92 initWithText:0 style:1 interfaceTheme:v93];
-    [(PUCropToolController *)v118 setBadgeView:v94];
+    [(PUCropToolController *)selfCopy setBadgeView:v94];
 
-    v95 = [(PUCropToolController *)v118 badgeView];
-    [v95 setTranslatesAutoresizingMaskIntoConstraints:0];
+    badgeView = [(PUCropToolController *)selfCopy badgeView];
+    [badgeView setTranslatesAutoresizingMaskIntoConstraints:0];
   }
 
   else
   {
     v96 = objc_alloc(MEMORY[0x1E6993830]);
-    v95 = [v96 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-    [v95 setUserInteractionEnabled:0];
-    v97 = [v107 photoEditingBadgeViewFillColor];
-    [v95 _setFillColor:v97];
+    badgeView = [v96 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+    [badgeView setUserInteractionEnabled:0];
+    photoEditingBadgeViewFillColor = [v107 photoEditingBadgeViewFillColor];
+    [badgeView _setFillColor:photoEditingBadgeViewFillColor];
 
-    v98 = [v107 photoEditingBadgeViewContentColor];
-    [v95 _setContentColor:v98];
+    photoEditingBadgeViewContentColor = [v107 photoEditingBadgeViewContentColor];
+    [badgeView _setContentColor:photoEditingBadgeViewContentColor];
 
-    [v95 _setFillCornerRadius:4.0];
-    [v95 setAlpha:0.0];
+    [badgeView _setFillCornerRadius:4.0];
+    [badgeView setAlpha:0.0];
     [MEMORY[0x1E6993830] _defaultTextInsets];
-    [v95 _setTextInsets:{v102 + 1.0, v99 + 3.0, v101 + 1.0, v100 + 3.0}];
-    [(PUCropToolController *)v118 setBadgeView:v95];
+    [badgeView _setTextInsets:{v102 + 1.0, v99 + 3.0, v101 + 1.0, v100 + 3.0}];
+    [(PUCropToolController *)selfCopy setBadgeView:badgeView];
   }
 
-  v103 = [(PUCropToolController *)v118 view];
-  v104 = [(PUCropToolController *)v118 badgeView];
-  [v103 addSubview:v104];
+  view12 = [(PUCropToolController *)selfCopy view];
+  badgeView2 = [(PUCropToolController *)selfCopy badgeView];
+  [view12 addSubview:badgeView2];
 
-  [(PUCropToolController *)v118 px_enableImageModulation];
+  [(PUCropToolController *)selfCopy px_enableImageModulation];
 }
 
 - (void)dealloc
 {
   CGImageRelease(self->_gainMapImage);
-  v3 = [(PUCropToolController *)self cropView];
-  [v3 tearDownMediaViewAndLayers];
+  cropView = [(PUCropToolController *)self cropView];
+  [cropView tearDownMediaViewAndLayers];
 
   v4.receiver = self;
   v4.super_class = PUCropToolController;
   [(PUPhotoEditToolController *)&v4 dealloc];
 }
 
-- (PUCropToolController)initWithNibName:(id)a3 bundle:(id)a4
+- (PUCropToolController)initWithNibName:(id)name bundle:(id)bundle
 {
   v14.receiver = self;
   v14.super_class = PUCropToolController;
-  v4 = [(PUPhotoEditToolController *)&v14 initWithNibName:a3 bundle:a4];
+  v4 = [(PUPhotoEditToolController *)&v14 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x1E69DD250]);

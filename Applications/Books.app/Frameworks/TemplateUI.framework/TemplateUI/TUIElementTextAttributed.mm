@@ -1,51 +1,51 @@
 @interface TUIElementTextAttributed
-+ (id)builderWithNode:(id)a3 object:(id)a4 attributes:(id)a5 context:(id)a6;
-+ (void)addObject:(id)a3 toContainingBuilder:(id)a4 context:(id)a5;
-+ (void)configureObject:(id)a3 withBuilder:(id)a4 context:(id)a5;
-+ (void)configureObject:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
++ (id)builderWithNode:(id)node object:(id)object attributes:(id)attributes context:(id)context;
++ (void)addObject:(id)object toContainingBuilder:(id)builder context:(id)context;
++ (void)configureObject:(id)object withBuilder:(id)builder context:(id)context;
++ (void)configureObject:(id)object withNode:(id)node attributes:(id)attributes context:(id)context;
 @end
 
 @implementation TUIElementTextAttributed
 
-+ (id)builderWithNode:(id)a3 object:(id)a4 attributes:(id)a5 context:(id)a6
++ (id)builderWithNode:(id)node object:(id)object attributes:(id)attributes context:(id)context
 {
-  var0 = a3.var0;
-  v7 = a5;
-  v8 = [v7 colorForAttribute:51 node:var0];
-  v9 = [v7 fontSpecForNode:var0];
-  v10 = [v7 stringForAttribute:203 node:var0];
+  var0 = node.var0;
+  attributesCopy = attributes;
+  v8 = [attributesCopy colorForAttribute:51 node:var0];
+  v9 = [attributesCopy fontSpecForNode:var0];
+  v10 = [attributesCopy stringForAttribute:203 node:var0];
   v11 = [TUIBox textAlignmentFromString:v10];
 
   v12 = [[TUIAttributedStringBuilder alloc] initWithFontSpec:v9 style:0 color:v8 textAlignment:v11];
-  v13 = [v7 stringForAttribute:102 node:var0];
+  v13 = [attributesCopy stringForAttribute:102 node:var0];
 
   [(TUIAttributedStringBuilder *)v12 setOptions:sub_5E5B8(v13, 2uLL)];
   return v12;
 }
 
-+ (void)configureObject:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureObject:(id)object withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  var0 = a4.var0;
-  v8 = a3;
-  v9 = [a5 stringForAttribute:178 node:var0];
-  [v8 setRole:v9];
+  var0 = node.var0;
+  objectCopy = object;
+  v9 = [attributes stringForAttribute:178 node:var0];
+  [objectCopy setRole:v9];
 }
 
-+ (void)configureObject:(id)a3 withBuilder:(id)a4 context:(id)a5
++ (void)configureObject:(id)object withBuilder:(id)builder context:(id)context
 {
-  v7 = a3;
-  v8 = [a4 finalizeTextModelWithContext:a5];
-  [v7 setString:v8];
+  objectCopy = object;
+  v8 = [builder finalizeTextModelWithContext:context];
+  [objectCopy setString:v8];
 }
 
-+ (void)addObject:(id)a3 toContainingBuilder:(id)a4 context:(id)a5
++ (void)addObject:(id)object toContainingBuilder:(id)builder context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [v7 string];
-  v8 = [v7 role];
+  builderCopy = builder;
+  objectCopy = object;
+  string = [objectCopy string];
+  role = [objectCopy role];
 
-  [v6 addAttributedString:v9 forRole:v8];
+  [builderCopy addAttributedString:string forRole:role];
 }
 
 @end

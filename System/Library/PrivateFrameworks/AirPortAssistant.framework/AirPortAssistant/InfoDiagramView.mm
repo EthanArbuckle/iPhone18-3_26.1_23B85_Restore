@@ -8,26 +8,26 @@
 - (CGPoint)swapArcLineEndPoint;
 - (CGPoint)swapArcLineStartPoint;
 - (CGPoint)wanConnectedBaseWANPoint;
-- (InfoDiagramView)initWithFrame:(CGRect)a3 wanConnectedBaseProductID:(unsigned int)a4;
-- (InfoDiagramView)initWithFrame:(CGRect)a3 wanConnectedBaseProductID:(unsigned int)a4 replacementProductID:(unsigned int)a5;
+- (InfoDiagramView)initWithFrame:(CGRect)frame wanConnectedBaseProductID:(unsigned int)d;
+- (InfoDiagramView)initWithFrame:(CGRect)frame wanConnectedBaseProductID:(unsigned int)d replacementProductID:(unsigned int)iD;
 - (void)commonInit;
 - (void)dealloc;
-- (void)setWANConnectedBaseLabelString:(id)a3;
+- (void)setWANConnectedBaseLabelString:(id)string;
 - (void)startAnimatingCablingLayer;
 - (void)stopAnimatingCablingLayer;
 @end
 
 @implementation InfoDiagramView
 
-- (InfoDiagramView)initWithFrame:(CGRect)a3 wanConnectedBaseProductID:(unsigned int)a4
+- (InfoDiagramView)initWithFrame:(CGRect)frame wanConnectedBaseProductID:(unsigned int)d
 {
   v10.receiver = self;
   v10.super_class = InfoDiagramView;
-  v5 = [(InfoDiagramView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(InfoDiagramView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v8 = v5;
   if (v5)
   {
-    v5->wanBaseProductID = a4;
+    v5->wanBaseProductID = d;
     v5->replacementProductID = 0;
     objc_msgSend_commonInit(v5, v6, v7);
   }
@@ -35,16 +35,16 @@
   return v8;
 }
 
-- (InfoDiagramView)initWithFrame:(CGRect)a3 wanConnectedBaseProductID:(unsigned int)a4 replacementProductID:(unsigned int)a5
+- (InfoDiagramView)initWithFrame:(CGRect)frame wanConnectedBaseProductID:(unsigned int)d replacementProductID:(unsigned int)iD
 {
   v12.receiver = self;
   v12.super_class = InfoDiagramView;
-  v7 = [(InfoDiagramView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v7 = [(InfoDiagramView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v10 = v7;
   if (v7)
   {
-    v7->wanBaseProductID = a4;
-    v7->replacementProductID = a5;
+    v7->wanBaseProductID = d;
+    v7->replacementProductID = iD;
     objc_msgSend_commonInit(v7, v8, v9);
   }
 
@@ -335,9 +335,9 @@
   [(InfoDiagramView *)&v7 dealloc];
 }
 
-- (void)setWANConnectedBaseLabelString:(id)a3
+- (void)setWANConnectedBaseLabelString:(id)string
 {
-  objc_msgSend_setText_(self->wanConnectedBaseLabel, a2, a3);
+  objc_msgSend_setText_(self->wanConnectedBaseLabel, a2, string);
   objc_msgSend_sizeToFit(self->wanConnectedBaseLabel, v4, v5);
   wanConnectedBaseLabel = self->wanConnectedBaseLabel;
 

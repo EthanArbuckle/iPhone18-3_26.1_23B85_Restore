@@ -1,19 +1,19 @@
 @interface MSRemovalEvent
-- (MSRemovalEvent)initWithServiceId:(id)a3;
+- (MSRemovalEvent)initWithServiceId:(id)id;
 @end
 
 @implementation MSRemovalEvent
 
-- (MSRemovalEvent)initWithServiceId:(id)a3
+- (MSRemovalEvent)initWithServiceId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v8.receiver = self;
   v8.super_class = MSRemovalEvent;
   v5 = [(MSRemovalEvent *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(MSRemovalEvent *)v5 setServiceId:v4];
+    [(MSRemovalEvent *)v5 setServiceId:idCopy];
   }
 
   return v6;

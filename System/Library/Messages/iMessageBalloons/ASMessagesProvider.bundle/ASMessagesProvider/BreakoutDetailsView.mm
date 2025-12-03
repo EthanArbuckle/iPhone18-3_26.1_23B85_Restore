@@ -1,20 +1,20 @@
 @interface BreakoutDetailsView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
-- (_TtC18ASMessagesProvider19BreakoutDetailsView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
+- (_TtC18ASMessagesProvider19BreakoutDetailsView)initWithFrame:(CGRect)frame;
 - (void)didTapActionButton;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation BreakoutDetailsView
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_getObjectType();
   swift_unknownObjectRetain();
-  v6 = self;
-  v7 = sub_63D324(a4, v6);
+  selfCopy = self;
+  v7 = sub_63D324(in, selfCopy);
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -31,10 +31,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
-  v4 = sub_63D324(v3, v3);
+  selfCopy = self;
+  v4 = sub_63D324(selfCopy, selfCopy);
   v6 = v5;
 
   v7 = v4;
@@ -46,21 +46,21 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_63BC4C();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v7.receiver;
-  [(BreakoutDetailsView *)&v7 traitCollectionDidChange:v4];
-  v6 = [*&v5[OBJC_IVAR____TtC18ASMessagesProvider19BreakoutDetailsView_backgroundMaterialView] contentView];
+  [(BreakoutDetailsView *)&v7 traitCollectionDidChange:changeCopy];
+  contentView = [*&v5[OBJC_IVAR____TtC18ASMessagesProvider19BreakoutDetailsView_backgroundMaterialView] contentView];
   sub_639218();
   sub_769BA0();
-  [v6 setLayoutMargins:?];
+  [contentView setLayoutMargins:?];
 
   sub_6385E0();
   sub_63A390();
@@ -72,7 +72,7 @@
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider19BreakoutDetailsView_callToActionButtonHandler);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = sub_F714(v2);
     v2(v4);
 
@@ -80,7 +80,7 @@
   }
 }
 
-- (_TtC18ASMessagesProvider19BreakoutDetailsView)initWithFrame:(CGRect)a3
+- (_TtC18ASMessagesProvider19BreakoutDetailsView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

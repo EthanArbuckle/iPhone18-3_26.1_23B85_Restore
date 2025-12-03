@@ -1,24 +1,24 @@
 @interface NotesMigrationMapping
-+ (id)customMappingFromSourceModelName:(id)a3 toDestinationModelName:(id)a4;
-+ (id)descriptionStringFromSourceStoreNames:(id)a3 destinationStoreName:(id)a4;
-+ (id)inferredMappingFromSourceModelNames:(id)a3 toDestinationModelName:(id)a4;
++ (id)customMappingFromSourceModelName:(id)name toDestinationModelName:(id)modelName;
++ (id)descriptionStringFromSourceStoreNames:(id)names destinationStoreName:(id)name;
++ (id)inferredMappingFromSourceModelNames:(id)names toDestinationModelName:(id)name;
 + (id)mappings;
-+ (id)modelForModelName:(id)a3;
-- (BOOL)canMigrateStoreMetadata:(id)a3;
++ (id)modelForModelName:(id)name;
+- (BOOL)canMigrateStoreMetadata:(id)metadata;
 - (id)description;
-- (id)mappingModelForStoreMetadata:(id)a3;
-- (id)sourceModelForStoreMetadata:(id)a3;
+- (id)mappingModelForStoreMetadata:(id)metadata;
+- (id)sourceModelForStoreMetadata:(id)metadata;
 @end
 
 @implementation NotesMigrationMapping
 
-+ (id)descriptionStringFromSourceStoreNames:(id)a3 destinationStoreName:(id)a4
++ (id)descriptionStringFromSourceStoreNames:(id)names destinationStoreName:(id)name
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  namesCopy = names;
+  nameCopy = name;
   v7 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  if ([v5 count] >= 2)
+  if ([namesCopy count] >= 2)
   {
     [v7 appendString:@"["];
   }
@@ -27,7 +27,7 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v5;
+  v8 = namesCopy;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
@@ -44,8 +44,8 @@
 
         v13 = *(*(&v19 + 1) + 8 * i);
         [v7 appendString:{v13, v19}];
-        v14 = [v8 lastObject];
-        LODWORD(v13) = [v13 isEqualToString:v14];
+        lastObject = [v8 lastObject];
+        LODWORD(v13) = [v13 isEqualToString:lastObject];
 
         v15 = @"|";
         if (v13)
@@ -68,19 +68,19 @@
   }
 
   [v7 appendString:@" -> "];
-  [v7 appendString:v6];
+  [v7 appendString:nameCopy];
 
   v17 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-+ (id)modelForModelName:(id)a3
++ (id)modelForModelName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = NoteContextManagedObjectModelPath();
   v5 = MEMORY[0x277CBEBC0];
-  v6 = [v4 stringByAppendingPathComponent:v3];
+  v6 = [v4 stringByAppendingPathComponent:nameCopy];
 
   v7 = [v6 stringByAppendingPathExtension:@"mom"];
   v8 = [v5 fileURLWithPath:v7];
@@ -92,32 +92,32 @@
 
 + (id)mappings
 {
-  v2 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v3 = [NotesMigrationMapping inferredMappingFromSourceModelNames:&unk_286E32A50 toDestinationModelName:@"DidChooseToMigrate"];
-  [v2 addObject:v3];
+  [array addObject:v3];
 
   v4 = [NotesMigrationMapping customMappingFromSourceModelName:@"ExternalSequenceNumber" toDestinationModelName:@"Attachments"];
-  [v2 addObject:v4];
+  [array addObject:v4];
 
   v5 = [NotesMigrationMapping inferredMappingFromSourceModelNames:&unk_286E32A68 toDestinationModelName:@"ExternalSequenceNumber"];
-  [v2 addObject:v5];
+  [array addObject:v5];
 
-  v6 = [v2 copy];
+  v6 = [array copy];
 
   return v6;
 }
 
-+ (id)inferredMappingFromSourceModelNames:(id)a3 toDestinationModelName:(id)a4
++ (id)inferredMappingFromSourceModelNames:(id)names toDestinationModelName:(id)name
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  namesCopy = names;
+  nameCopy = name;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = v6;
+  v9 = namesCopy;
   v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
@@ -132,7 +132,7 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [a1 modelForModelName:{*(*(&v20 + 1) + 8 * i), v20}];
+        v14 = [self modelForModelName:{*(*(&v20 + 1) + 8 * i), v20}];
         [v8 addObject:v14];
       }
 
@@ -144,11 +144,11 @@
 
   v15 = objc_alloc_init(objc_opt_class());
   [v15 setSourceModels:v8];
-  v16 = [a1 modelForModelName:v7];
+  v16 = [self modelForModelName:nameCopy];
   [v15 setDestinationModel:v16];
 
   [v15 setType:1];
-  v17 = [a1 descriptionStringFromSourceStoreNames:v9 destinationStoreName:v7];
+  v17 = [self descriptionStringFromSourceStoreNames:v9 destinationStoreName:nameCopy];
   [v15 setDescriptionString:v17];
 
   v18 = *MEMORY[0x277D85DE8];
@@ -156,25 +156,25 @@
   return v15;
 }
 
-+ (id)customMappingFromSourceModelName:(id)a3 toDestinationModelName:(id)a4
++ (id)customMappingFromSourceModelName:(id)name toDestinationModelName:(id)modelName
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  modelNameCopy = modelName;
+  nameCopy = name;
   v8 = objc_alloc_init(objc_opt_class());
-  v9 = [a1 modelForModelName:v7];
+  v9 = [self modelForModelName:nameCopy];
   v17[0] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
   [v8 setSourceModels:v10];
 
-  v11 = [a1 modelForModelName:v6];
+  v11 = [self modelForModelName:modelNameCopy];
   [v8 setDestinationModel:v11];
 
   [v8 setType:0];
-  v16 = v7;
+  v16 = nameCopy;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v16 count:1];
 
-  v13 = [a1 descriptionStringFromSourceStoreNames:v12 destinationStoreName:v6];
+  v13 = [self descriptionStringFromSourceStoreNames:v12 destinationStoreName:modelNameCopy];
 
   [v8 setDescriptionString:v13];
   v14 = *MEMORY[0x277D85DE8];
@@ -182,56 +182,56 @@
   return v8;
 }
 
-- (id)sourceModelForStoreMetadata:(id)a3
+- (id)sourceModelForStoreMetadata:(id)metadata
 {
   v4 = MEMORY[0x277CBE450];
-  v5 = a3;
-  v6 = [(NotesMigrationMapping *)self sourceModels];
-  v7 = [v4 modelByMergingModels:v6 forStoreMetadata:v5];
+  metadataCopy = metadata;
+  sourceModels = [(NotesMigrationMapping *)self sourceModels];
+  v7 = [v4 modelByMergingModels:sourceModels forStoreMetadata:metadataCopy];
 
   return v7;
 }
 
-- (id)mappingModelForStoreMetadata:(id)a3
+- (id)mappingModelForStoreMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   if ([(NotesMigrationMapping *)self type]== 1)
   {
-    v5 = [(NotesMigrationMapping *)self sourceModelForStoreMetadata:v4];
+    v5 = [(NotesMigrationMapping *)self sourceModelForStoreMetadata:metadataCopy];
     v6 = MEMORY[0x277CBE458];
-    v7 = [(NotesMigrationMapping *)self destinationModel];
+    destinationModel = [(NotesMigrationMapping *)self destinationModel];
     v15 = 0;
-    v8 = [v6 inferredMappingModelForSourceModel:v5 destinationModel:v7 error:&v15];
+    v8 = [v6 inferredMappingModelForSourceModel:v5 destinationModel:destinationModel error:&v15];
     v9 = v15;
 
     if (!v8)
     {
-      NSLog(&cfstr_UnexpectedErro.isa, v4, v9);
+      NSLog(&cfstr_UnexpectedErro.isa, metadataCopy, v9);
     }
   }
 
   else
   {
     v10 = MEMORY[0x277CBE458];
-    v11 = [(NotesMigrationMapping *)self sourceModels];
-    v12 = [v11 lastObject];
-    v13 = [(NotesMigrationMapping *)self destinationModel];
-    v8 = [v10 mappingModelFromBundles:0 forSourceModel:v12 destinationModel:v13];
+    sourceModels = [(NotesMigrationMapping *)self sourceModels];
+    lastObject = [sourceModels lastObject];
+    destinationModel2 = [(NotesMigrationMapping *)self destinationModel];
+    v8 = [v10 mappingModelFromBundles:0 forSourceModel:lastObject destinationModel:destinationModel2];
   }
 
   return v8;
 }
 
-- (BOOL)canMigrateStoreMetadata:(id)a3
+- (BOOL)canMigrateStoreMetadata:(id)metadata
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = [a3 objectForKeyedSubscript:*MEMORY[0x277CBE2F0]];
+  v4 = [metadata objectForKeyedSubscript:*MEMORY[0x277CBE2F0]];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(NotesMigrationMapping *)self sourceModels];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  sourceModels = [(NotesMigrationMapping *)self sourceModels];
+  v6 = [sourceModels countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -241,11 +241,11 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sourceModels);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) entityVersionHashesByName];
-        v10 = [v9 isEqual:v4];
+        entityVersionHashesByName = [*(*(&v13 + 1) + 8 * i) entityVersionHashesByName];
+        v10 = [entityVersionHashesByName isEqual:v4];
 
         if (v10)
         {
@@ -254,7 +254,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [sourceModels countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -275,8 +275,8 @@ LABEL_11:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(NotesMigrationMapping *)self descriptionString];
-  v7 = [v3 stringWithFormat:@"<%@: %p  %@>", v5, self, v6];;
+  descriptionString = [(NotesMigrationMapping *)self descriptionString];
+  v7 = [v3 stringWithFormat:@"<%@: %p  %@>", v5, self, descriptionString];;
 
   return v7;
 }

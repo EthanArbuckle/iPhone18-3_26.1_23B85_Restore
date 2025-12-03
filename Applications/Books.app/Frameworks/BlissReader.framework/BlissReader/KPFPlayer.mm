@@ -1,27 +1,27 @@
 @interface KPFPlayer
-+ (id)createPlayerWithKPFDocument:(id)a3 bundle:(id)a4 layer:(id)a5;
++ (id)createPlayerWithKPFDocument:(id)document bundle:(id)bundle layer:(id)layer;
 @end
 
 @implementation KPFPlayer
 
-+ (id)createPlayerWithKPFDocument:(id)a3 bundle:(id)a4 layer:(id)a5
++ (id)createPlayerWithKPFDocument:(id)document bundle:(id)bundle layer:(id)layer
 {
-  if (!a4)
+  if (!bundle)
   {
     return 0;
   }
 
-  if ([a3 isLegacy])
+  if ([document isLegacy])
   {
     objc_opt_class();
-    v6 = [[CAKPFPlayerController alloc] initWithKPFDocument:TSUDynamicCast() showLayer:a5];
+    v6 = [[CAKPFPlayerController alloc] initWithKPFDocument:TSUDynamicCast() showLayer:layer];
     [(CAKPFPlayerController *)v6 resetToFirstEventAndShouldAutoPlay:0];
   }
 
   else
   {
     objc_opt_class();
-    v6 = [[KPFGingerPlayerController alloc] initWithKPFDocument:TSUDynamicCast() showLayer:a5];
+    v6 = [[KPFGingerPlayerController alloc] initWithKPFDocument:TSUDynamicCast() showLayer:layer];
   }
 
   [(CAKPFPlayerController *)v6 setAllowsShowToEndInternally:1];

@@ -1,12 +1,12 @@
 @interface SUNavigationButton
-- (CGRect)_accessoryViewRectForContentRect:(CGRect)a3;
-- (CGRect)titleRectForContentRect:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGRect)_accessoryViewRectForContentRect:(CGRect)rect;
+- (CGRect)titleRectForContentRect:(CGRect)rect;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)accessoryViewInsets;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setAccessoryView:(id)a3;
-- (void)setAccessoryViewInsets:(UIEdgeInsets)a3;
+- (void)setAccessoryView:(id)view;
+- (void)setAccessoryViewInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation SUNavigationButton
@@ -18,32 +18,32 @@
   [(UINavigationButton *)&v3 dealloc];
 }
 
-- (void)setAccessoryView:(id)a3
+- (void)setAccessoryView:(id)view
 {
   accessoryView = self->_accessoryView;
-  if (accessoryView != a3)
+  if (accessoryView != view)
   {
     [(UIView *)accessoryView removeFromSuperview];
 
-    v6 = a3;
-    self->_accessoryView = v6;
-    if (v6)
+    viewCopy = view;
+    self->_accessoryView = viewCopy;
+    if (viewCopy)
     {
 
-      [(SUNavigationButton *)self addSubview:v6];
+      [(SUNavigationButton *)self addSubview:viewCopy];
     }
   }
 }
 
-- (void)setAccessoryViewInsets:(UIEdgeInsets)a3
+- (void)setAccessoryViewInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_accessoryViewInsets.top, v3), vceqq_f64(*&self->_accessoryViewInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_accessoryViewInsets = a3;
+    self->_accessoryViewInsets = insets;
     [(SUNavigationButton *)self setNeedsLayout];
   }
 }
@@ -64,11 +64,11 @@
   [(UINavigationButton *)&v4 layoutSubviews];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v13.receiver = self;
   v13.super_class = SUNavigationButton;
-  [(UINavigationButton *)&v13 sizeThatFits:a3.width, a3.height];
+  [(UINavigationButton *)&v13 sizeThatFits:fits.width, fits.height];
   v5 = v4;
   v7 = v6;
   accessoryView = self->_accessoryView;
@@ -90,12 +90,12 @@
   return result;
 }
 
-- (CGRect)titleRectForContentRect:(CGRect)a3
+- (CGRect)titleRectForContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v24.receiver = self;
   v24.super_class = SUNavigationButton;
   [(SUNavigationButton *)&v24 titleRectForContentRect:?];
@@ -128,15 +128,15 @@
   return result;
 }
 
-- (CGRect)_accessoryViewRectForContentRect:(CGRect)a3
+- (CGRect)_accessoryViewRectForContentRect:(CGRect)rect
 {
-  y = a3.origin.y;
+  y = rect.origin.y;
   top = self->_accessoryViewInsets.top;
   left = self->_accessoryViewInsets.left;
-  v6 = a3.origin.x + left;
+  v6 = rect.origin.x + left;
   v7 = y + top;
-  v8 = a3.size.width - (left + self->_accessoryViewInsets.right);
-  v9 = a3.size.height - (top + self->_accessoryViewInsets.bottom);
+  v8 = rect.size.width - (left + self->_accessoryViewInsets.right);
+  v9 = rect.size.height - (top + self->_accessoryViewInsets.bottom);
   [(UIView *)self->_accessoryView frame];
   v11 = v10;
   v13 = v12;

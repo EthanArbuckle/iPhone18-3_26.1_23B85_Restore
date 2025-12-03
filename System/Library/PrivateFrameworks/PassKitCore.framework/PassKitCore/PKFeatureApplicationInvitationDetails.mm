@@ -1,51 +1,51 @@
 @interface PKFeatureApplicationInvitationDetails
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSPersonNameComponents)accountUserNameComponents;
 - (NSPersonNameComponents)originatorNameComponents;
-- (PKFeatureApplicationInvitationDetails)initWithAccountUserAltDSID:(id)a3 accessLevel:(unint64_t)a4;
-- (PKFeatureApplicationInvitationDetails)initWithCoder:(id)a3;
-- (PKFeatureApplicationInvitationDetails)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKFeatureApplicationInvitationDetails)initWithAccountUserAltDSID:(id)d accessLevel:(unint64_t)level;
+- (PKFeatureApplicationInvitationDetails)initWithCoder:(id)coder;
+- (PKFeatureApplicationInvitationDetails)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)jsonRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKFeatureApplicationInvitationDetails
 
-- (PKFeatureApplicationInvitationDetails)initWithDictionary:(id)a3
+- (PKFeatureApplicationInvitationDetails)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = PKFeatureApplicationInvitationDetails;
   v5 = [(PKFeatureApplicationInvitationDetails *)&v20 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"accountUserAltDSID"];
+    v6 = [dictionaryCopy PKStringForKey:@"accountUserAltDSID"];
     accountUserAltDSID = v5->_accountUserAltDSID;
     v5->_accountUserAltDSID = v6;
 
-    v8 = [v4 PKStringForKey:@"originatorAltDSID"];
+    v8 = [dictionaryCopy PKStringForKey:@"originatorAltDSID"];
     originatorAltDSID = v5->_originatorAltDSID;
     v5->_originatorAltDSID = v8;
 
-    v10 = [v4 PKStringForKey:@"accountUserAccessLevel"];
+    v10 = [dictionaryCopy PKStringForKey:@"accountUserAccessLevel"];
     v5->_accountUserAccessLevel = PKAccountAccessLevelFromString(v10);
 
-    v11 = [v4 PKStringForKey:@"originatorFirstName"];
+    v11 = [dictionaryCopy PKStringForKey:@"originatorFirstName"];
     originatorFirstName = v5->_originatorFirstName;
     v5->_originatorFirstName = v11;
 
-    v13 = [v4 PKStringForKey:@"originatorLastName"];
+    v13 = [dictionaryCopy PKStringForKey:@"originatorLastName"];
     originatorLastName = v5->_originatorLastName;
     v5->_originatorLastName = v13;
 
-    v15 = [v4 PKStringForKey:@"accountUserFirstName"];
+    v15 = [dictionaryCopy PKStringForKey:@"accountUserFirstName"];
     accountUserFirstName = v5->_accountUserFirstName;
     v5->_accountUserFirstName = v15;
 
-    v17 = [v4 PKStringForKey:@"accountUserLastName"];
+    v17 = [dictionaryCopy PKStringForKey:@"accountUserLastName"];
     accountUserLastName = v5->_accountUserLastName;
     v5->_accountUserLastName = v17;
   }
@@ -53,19 +53,19 @@
   return v5;
 }
 
-- (PKFeatureApplicationInvitationDetails)initWithAccountUserAltDSID:(id)a3 accessLevel:(unint64_t)a4
+- (PKFeatureApplicationInvitationDetails)initWithAccountUserAltDSID:(id)d accessLevel:(unint64_t)level
 {
-  v6 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = PKFeatureApplicationInvitationDetails;
   v7 = [(PKFeatureApplicationInvitationDetails *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [dCopy copy];
     accountUserAltDSID = v7->_accountUserAltDSID;
     v7->_accountUserAltDSID = v8;
 
-    v7->_accountUserAccessLevel = a4;
+    v7->_accountUserAccessLevel = level;
   }
 
   return v7;
@@ -126,18 +126,18 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     LOBYTE(v11) = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -335,36 +335,36 @@ LABEL_45:
   return v3;
 }
 
-- (PKFeatureApplicationInvitationDetails)initWithCoder:(id)a3
+- (PKFeatureApplicationInvitationDetails)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = PKFeatureApplicationInvitationDetails;
   v5 = [(PKFeatureApplicationInvitationDetails *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountUserAltDSID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountUserAltDSID"];
     accountUserAltDSID = v5->_accountUserAltDSID;
     v5->_accountUserAltDSID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originatorAltDSID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originatorAltDSID"];
     originatorAltDSID = v5->_originatorAltDSID;
     v5->_originatorAltDSID = v8;
 
-    v5->_accountUserAccessLevel = [v4 decodeIntegerForKey:@"accountUserAccessLevel"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originatorFirstName"];
+    v5->_accountUserAccessLevel = [coderCopy decodeIntegerForKey:@"accountUserAccessLevel"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originatorFirstName"];
     originatorFirstName = v5->_originatorFirstName;
     v5->_originatorFirstName = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originatorLastName"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originatorLastName"];
     originatorLastName = v5->_originatorLastName;
     v5->_originatorLastName = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountUserFirstName"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountUserFirstName"];
     accountUserFirstName = v5->_accountUserFirstName;
     v5->_accountUserFirstName = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountUserLastName"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountUserLastName"];
     accountUserLastName = v5->_accountUserLastName;
     v5->_accountUserLastName = v16;
   }
@@ -372,44 +372,44 @@ LABEL_45:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   accountUserAltDSID = self->_accountUserAltDSID;
-  v5 = a3;
-  [v5 encodeObject:accountUserAltDSID forKey:@"accountUserAltDSID"];
-  [v5 encodeObject:self->_originatorAltDSID forKey:@"originatorAltDSID"];
-  [v5 encodeInteger:self->_accountUserAccessLevel forKey:@"accountUserAccessLevel"];
-  [v5 encodeObject:self->_originatorFirstName forKey:@"originatorFirstName"];
-  [v5 encodeObject:self->_originatorLastName forKey:@"originatorLastName"];
-  [v5 encodeObject:self->_accountUserFirstName forKey:@"accountUserFirstName"];
-  [v5 encodeObject:self->_accountUserLastName forKey:@"accountUserLastName"];
+  coderCopy = coder;
+  [coderCopy encodeObject:accountUserAltDSID forKey:@"accountUserAltDSID"];
+  [coderCopy encodeObject:self->_originatorAltDSID forKey:@"originatorAltDSID"];
+  [coderCopy encodeInteger:self->_accountUserAccessLevel forKey:@"accountUserAccessLevel"];
+  [coderCopy encodeObject:self->_originatorFirstName forKey:@"originatorFirstName"];
+  [coderCopy encodeObject:self->_originatorLastName forKey:@"originatorLastName"];
+  [coderCopy encodeObject:self->_accountUserFirstName forKey:@"accountUserFirstName"];
+  [coderCopy encodeObject:self->_accountUserLastName forKey:@"accountUserLastName"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKFeatureApplicationInvitationDetails allocWithZone:](PKFeatureApplicationInvitationDetails init];
-  v6 = [(NSString *)self->_accountUserAltDSID copyWithZone:a3];
+  v6 = [(NSString *)self->_accountUserAltDSID copyWithZone:zone];
   accountUserAltDSID = v5->_accountUserAltDSID;
   v5->_accountUserAltDSID = v6;
 
-  v8 = [(NSString *)self->_originatorAltDSID copyWithZone:a3];
+  v8 = [(NSString *)self->_originatorAltDSID copyWithZone:zone];
   originatorAltDSID = v5->_originatorAltDSID;
   v5->_originatorAltDSID = v8;
 
   v5->_accountUserAccessLevel = self->_accountUserAccessLevel;
-  v10 = [(NSString *)self->_originatorFirstName copyWithZone:a3];
+  v10 = [(NSString *)self->_originatorFirstName copyWithZone:zone];
   originatorFirstName = v5->_originatorFirstName;
   v5->_originatorFirstName = v10;
 
-  v12 = [(NSString *)self->_originatorLastName copyWithZone:a3];
+  v12 = [(NSString *)self->_originatorLastName copyWithZone:zone];
   originatorLastName = v5->_originatorLastName;
   v5->_originatorLastName = v12;
 
-  v14 = [(NSString *)self->_accountUserFirstName copyWithZone:a3];
+  v14 = [(NSString *)self->_accountUserFirstName copyWithZone:zone];
   accountUserFirstName = v5->_accountUserFirstName;
   v5->_accountUserFirstName = v14;
 
-  v16 = [(NSString *)self->_accountUserLastName copyWithZone:a3];
+  v16 = [(NSString *)self->_accountUserLastName copyWithZone:zone];
   accountUserLastName = v5->_accountUserLastName;
   v5->_accountUserLastName = v16;
 

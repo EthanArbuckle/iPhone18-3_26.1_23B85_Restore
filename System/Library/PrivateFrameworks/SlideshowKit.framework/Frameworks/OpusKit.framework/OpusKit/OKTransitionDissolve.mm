@@ -1,25 +1,25 @@
 @interface OKTransitionDissolve
-- (void)_transitionInView:(id)a3 fromSubview:(id)a4 toSubview:(id)a5 wasInteractive:(BOOL)a6 duration:(double)a7 doEaseIn:(BOOL)a8 doEaseOut:(BOOL)a9 isCompleting:(BOOL)a10 wasCancelled:(BOOL)a11 fromProgress:(double)a12 completionHandler:(id)a13;
-- (void)makeCurrentTransitionInteractiveWithContext:(id)a3 andProgress:(double)a4;
-- (void)startInteractiveTransitionWithContext:(id)a3;
-- (void)updateInteractiveTransitionWithContext:(id)a3 andProgress:(double)a4;
+- (void)_transitionInView:(id)view fromSubview:(id)subview toSubview:(id)toSubview wasInteractive:(BOOL)interactive duration:(double)duration doEaseIn:(BOOL)in doEaseOut:(BOOL)out isCompleting:(BOOL)self0 wasCancelled:(BOOL)self1 fromProgress:(double)self2 completionHandler:(id)self3;
+- (void)makeCurrentTransitionInteractiveWithContext:(id)context andProgress:(double)progress;
+- (void)startInteractiveTransitionWithContext:(id)context;
+- (void)updateInteractiveTransitionWithContext:(id)context andProgress:(double)progress;
 @end
 
 @implementation OKTransitionDissolve
 
-- (void)_transitionInView:(id)a3 fromSubview:(id)a4 toSubview:(id)a5 wasInteractive:(BOOL)a6 duration:(double)a7 doEaseIn:(BOOL)a8 doEaseOut:(BOOL)a9 isCompleting:(BOOL)a10 wasCancelled:(BOOL)a11 fromProgress:(double)a12 completionHandler:(id)a13
+- (void)_transitionInView:(id)view fromSubview:(id)subview toSubview:(id)toSubview wasInteractive:(BOOL)interactive duration:(double)duration doEaseIn:(BOOL)in doEaseOut:(BOOL)out isCompleting:(BOOL)self0 wasCancelled:(BOOL)self1 fromProgress:(double)self2 completionHandler:(id)self3
 {
-  v14 = a9;
-  v15 = a8;
-  [a3 bounds];
+  outCopy = out;
+  inCopy = in;
+  [view bounds];
   Width = CGRectGetWidth(v32);
-  [a3 bounds];
+  [view bounds];
   Height = CGRectGetHeight(v33);
-  if (!a6)
+  if (!interactive)
   {
-    [a5 setFrame:{0.0, 0.0, Width, Height}];
-    [a5 setAlpha:0.0];
-    [a3 insertSubview:a5 aboveSubview:a4];
+    [toSubview setFrame:{0.0, 0.0, Width, Height}];
+    [toSubview setAlpha:0.0];
+    [view insertSubview:toSubview aboveSubview:subview];
   }
 
   v28[0] = MEMORY[0x277D85DD0];
@@ -27,35 +27,35 @@
   v28[2] = __164__OKTransitionDissolve__transitionInView_fromSubview_toSubview_wasInteractive_duration_doEaseIn_doEaseOut_isCompleting_wasCancelled_fromProgress_completionHandler___block_invoke_2;
   v28[3] = &unk_279C8F520;
   v24 = 131074;
-  v29 = a11;
-  v28[5] = a3;
+  cancelledCopy = cancelled;
+  v28[5] = view;
   v28[6] = &__block_literal_global_6;
-  if (v15)
+  if (inCopy)
   {
     v24 = 2;
   }
 
   v25 = 0x10000;
-  if (v14)
+  if (outCopy)
   {
     v25 = 0;
   }
 
-  *&v28[7] = a12;
-  *&v28[8] = a7;
-  v30 = v15;
-  v31 = v14;
-  v28[4] = a5;
+  *&v28[7] = progress;
+  *&v28[8] = duration;
+  v30 = inCopy;
+  v31 = outCopy;
+  v28[4] = toSubview;
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __164__OKTransitionDissolve__transitionInView_fromSubview_toSubview_wasInteractive_duration_doEaseIn_doEaseOut_isCompleting_wasCancelled_fromProgress_completionHandler___block_invoke_3;
   v26[3] = &unk_279C8E5D8;
-  v27 = a11;
+  cancelledCopy2 = cancelled;
   v26[4] = self;
-  v26[5] = a5;
-  v26[6] = a4;
-  v26[7] = a13;
-  [MEMORY[0x277D75D18] animateWithDuration:v25 | v24 delay:v28 options:v26 animations:a7 completion:0.0];
+  v26[5] = toSubview;
+  v26[6] = subview;
+  v26[7] = handler;
+  [MEMORY[0x277D75D18] animateWithDuration:v25 | v24 delay:v28 options:v26 animations:duration completion:0.0];
 }
 
 uint64_t __164__OKTransitionDissolve__transitionInView_fromSubview_toSubview_wasInteractive_duration_doEaseIn_doEaseOut_isCompleting_wasCancelled_fromProgress_completionHandler___block_invoke_2(uint64_t a1)
@@ -139,36 +139,36 @@ uint64_t __164__OKTransitionDissolve__transitionInView_fromSubview_toSubview_was
   return result;
 }
 
-- (void)startInteractiveTransitionWithContext:(id)a3
+- (void)startInteractiveTransitionWithContext:(id)context
 {
   v10.receiver = self;
   v10.super_class = OKTransitionDissolve;
   [(OKTransition *)&v10 startInteractiveTransitionWithContext:?];
-  v4 = [a3 fromViewController];
-  v5 = [a3 toViewController];
-  [objc_msgSend(a3 "containerView")];
-  [objc_msgSend(v5 "view")];
-  [objc_msgSend(objc_msgSend(a3 "toViewController")];
-  if (v5)
+  fromViewController = [context fromViewController];
+  toViewController = [context toViewController];
+  [objc_msgSend(context "containerView")];
+  [objc_msgSend(toViewController "view")];
+  [objc_msgSend(objc_msgSend(context "toViewController")];
+  if (toViewController)
   {
-    [objc_msgSend(a3 "containerView")];
+    [objc_msgSend(context "containerView")];
   }
 }
 
-- (void)updateInteractiveTransitionWithContext:(id)a3 andProgress:(double)a4
+- (void)updateInteractiveTransitionWithContext:(id)context andProgress:(double)progress
 {
   v8.receiver = self;
   v8.super_class = OKTransitionDissolve;
   [OKTransition updateInteractiveTransitionWithContext:sel_updateInteractiveTransitionWithContext_andProgress_ andProgress:?];
-  v6 = 0.0;
-  if (a4 >= 0.0)
+  progressCopy = 0.0;
+  if (progress >= 0.0)
   {
-    v6 = a4;
+    progressCopy = progress;
   }
 
-  if (v6 <= 1.0)
+  if (progressCopy <= 1.0)
   {
-    v7 = v6;
+    v7 = progressCopy;
   }
 
   else
@@ -176,23 +176,23 @@ uint64_t __164__OKTransitionDissolve__transitionInView_fromSubview_toSubview_was
     v7 = 1.0;
   }
 
-  [objc_msgSend(objc_msgSend(a3 "toViewController")];
+  [objc_msgSend(objc_msgSend(context "toViewController")];
 }
 
-- (void)makeCurrentTransitionInteractiveWithContext:(id)a3 andProgress:(double)a4
+- (void)makeCurrentTransitionInteractiveWithContext:(id)context andProgress:(double)progress
 {
   v8.receiver = self;
   v8.super_class = OKTransitionDissolve;
-  [(OKTransition *)&v8 makeCurrentTransitionInteractiveWithContext:a4 andProgress:?];
-  v5 = [objc_msgSend(a3 "fromViewController")];
-  v6 = [objc_msgSend(a3 "toViewController")];
+  [(OKTransition *)&v8 makeCurrentTransitionInteractiveWithContext:progress andProgress:?];
+  v5 = [objc_msgSend(context "fromViewController")];
+  v6 = [objc_msgSend(context "toViewController")];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __80__OKTransitionDissolve_makeCurrentTransitionInteractiveWithContext_andProgress___block_invoke;
   v7[3] = &unk_279C8E600;
   v7[4] = v5;
   v7[5] = v6;
-  v7[6] = a3;
+  v7[6] = context;
   [MEMORY[0x277D75D18] animateWithDuration:v7 animations:0 completion:0.0];
 }
 

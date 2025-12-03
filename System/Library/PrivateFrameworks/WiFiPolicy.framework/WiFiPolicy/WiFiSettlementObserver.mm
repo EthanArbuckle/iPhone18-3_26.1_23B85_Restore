@@ -1,32 +1,32 @@
 @interface WiFiSettlementObserver
-- (WiFiSettlementObserver)initWithScanProvider:(id)a3 configuration:(id)a4;
-- (void)_callSettlementCallbackWithStatus:(int64_t)a3 userInfo:(id)a4;
-- (void)_handleScanResults:(id)a3 error:(id)a4 userInfo:(id)a5;
-- (void)_updateSettlementStatus:(int64_t)a3 confidence:(unint64_t)a4;
-- (void)addSettlementCallback:(id)a3;
-- (void)removeSettlementCallback:(id)a3;
+- (WiFiSettlementObserver)initWithScanProvider:(id)provider configuration:(id)configuration;
+- (void)_callSettlementCallbackWithStatus:(int64_t)status userInfo:(id)info;
+- (void)_handleScanResults:(id)results error:(id)error userInfo:(id)info;
+- (void)_updateSettlementStatus:(int64_t)status confidence:(unint64_t)confidence;
+- (void)addSettlementCallback:(id)callback;
+- (void)removeSettlementCallback:(id)callback;
 - (void)resetSettlement;
 @end
 
 @implementation WiFiSettlementObserver
 
-- (WiFiSettlementObserver)initWithScanProvider:(id)a3 configuration:(id)a4
+- (WiFiSettlementObserver)initWithScanProvider:(id)provider configuration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  configurationCopy = configuration;
   v18.receiver = self;
   v18.super_class = WiFiSettlementObserver;
   v9 = [(WiFiSettlementObserver *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_scanProvider, a3);
-    objc_storeStrong(&v10->_configuration, a4);
+    objc_storeStrong(&v9->_scanProvider, provider);
+    objc_storeStrong(&v10->_configuration, configuration);
     v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
     callbacks = v10->_callbacks;
     v10->_callbacks = v11;
 
-    NSLog(&cfstr_SConfiguration.isa, "[WiFiSettlementObserver initWithScanProvider:configuration:]", v8);
+    NSLog(&cfstr_SConfiguration.isa, "[WiFiSettlementObserver initWithScanProvider:configuration:]", configurationCopy);
     objc_initWeak(&location, v10);
     scanProvider = v10->_scanProvider;
     v15[0] = MEMORY[0x277D85DD0];
@@ -51,17 +51,17 @@ void __61__WiFiSettlementObserver_initWithScanProvider_configuration___block_inv
   [WeakRetained _handleScanResults:v9 error:v8 userInfo:v7];
 }
 
-- (void)_handleScanResults:(id)a3 error:(id)a4 userInfo:(id)a5
+- (void)_handleScanResults:(id)results error:(id)error userInfo:(id)info
 {
-  v37 = a3;
-  v7 = a5;
-  v8 = [v7 objectForKeyedSubscript:@"resultType"];
-  v9 = [v8 integerValue];
+  resultsCopy = results;
+  infoCopy = info;
+  v8 = [infoCopy objectForKeyedSubscript:@"resultType"];
+  integerValue = [v8 integerValue];
 
-  v10 = [v7 objectForKeyedSubscript:@"clientName"];
-  v11 = [v7 objectForKeyedSubscript:@"directed"];
+  v10 = [infoCopy objectForKeyedSubscript:@"clientName"];
+  v11 = [infoCopy objectForKeyedSubscript:@"directed"];
 
-  NSLog(&cfstr_SScantypeLuCli.isa, "[WiFiSettlementObserver _handleScanResults:error:userInfo:]", v9, v10, v11 != 0, v37);
+  NSLog(&cfstr_SScantypeLuCli.isa, "[WiFiSettlementObserver _handleScanResults:error:userInfo:]", integerValue, v10, v11 != 0, resultsCopy);
   if (v11)
   {
     NSLog(&cfstr_SSkippingDirec.isa, "[WiFiSettlementObserver _handleScanResults:error:userInfo:]");
@@ -69,37 +69,37 @@ void __61__WiFiSettlementObserver_initWithScanProvider_configuration___block_inv
   }
 
   v12 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_2];
-  v13 = [v37 filteredSetUsingPredicate:v12];
+  v13 = [resultsCopy filteredSetUsingPredicate:v12];
 
-  v14 = [(WiFiSettlementObserver *)self currentContext];
-  if (v14)
+  currentContext = [(WiFiSettlementObserver *)self currentContext];
+  if (currentContext)
   {
   }
 
   else if ([v13 count])
   {
     v31 = [WiFiSettlementContext alloc];
-    v32 = [(WiFiSettlementObserver *)self configuration];
-    v33 = -[WiFiSettlementContext initWithNetworks:maxCount:](v31, "initWithNetworks:maxCount:", v13, [v32 maxNetworksForSettlement]);
+    configuration = [(WiFiSettlementObserver *)self configuration];
+    v33 = -[WiFiSettlementContext initWithNetworks:maxCount:](v31, "initWithNetworks:maxCount:", v13, [configuration maxNetworksForSettlement]);
     [(WiFiSettlementObserver *)self setCurrentContext:v33];
 
     goto LABEL_19;
   }
 
-  v15 = [(WiFiSettlementObserver *)self currentContext];
+  currentContext2 = [(WiFiSettlementObserver *)self currentContext];
 
-  if (v15)
+  if (currentContext2)
   {
-    v16 = [(WiFiSettlementObserver *)self currentContext];
-    v17 = [v16 compareWithScanResults:v13];
+    currentContext3 = [(WiFiSettlementObserver *)self currentContext];
+    v17 = [currentContext3 compareWithScanResults:v13];
 
     if (!v17)
     {
-      v34 = [(WiFiSettlementObserver *)self consecutiveScansWithoutMatch];
-      v35 = [(WiFiSettlementObserver *)self configuration];
-      v36 = [v35 maxScansWithoutMatchForUnsettlement];
+      consecutiveScansWithoutMatch = [(WiFiSettlementObserver *)self consecutiveScansWithoutMatch];
+      configuration2 = [(WiFiSettlementObserver *)self configuration];
+      maxScansWithoutMatchForUnsettlement = [configuration2 maxScansWithoutMatchForUnsettlement];
 
-      if (v34 >= v36)
+      if (consecutiveScansWithoutMatch >= maxScansWithoutMatchForUnsettlement)
       {
         [(WiFiSettlementObserver *)self resetSettlement];
       }
@@ -112,15 +112,15 @@ void __61__WiFiSettlementObserver_initWithScanProvider_configuration___block_inv
       goto LABEL_19;
     }
 
-    v18 = [(WiFiSettlementObserver *)self currentContext];
-    v19 = [v18 creationDate];
-    [v19 timeIntervalSinceNow];
+    currentContext4 = [(WiFiSettlementObserver *)self currentContext];
+    creationDate = [currentContext4 creationDate];
+    [creationDate timeIntervalSinceNow];
     v21 = -v20;
 
     NSLog(&cfstr_SSettledFor2fS.isa, "[WiFiSettlementObserver _handleScanResults:error:userInfo:]", *&v21);
     [(WiFiSettlementObserver *)self setConsecutiveScansWithoutMatch:0];
-    v22 = [(WiFiSettlementObserver *)self currentContext];
-    [v22 updateNetworks:v37];
+    currentContext5 = [(WiFiSettlementObserver *)self currentContext];
+    [currentContext5 updateNetworks:resultsCopy];
 
     if (-[WiFiSettlementObserver confidence](self, "confidence") || (-[WiFiSettlementObserver configuration](self, "configuration"), v23 = objc_claimAutoreleasedReturnValue(), [v23 lowConfidenceSettlementTime], v25 = v24, v23, v25 > v21))
     {
@@ -129,8 +129,8 @@ void __61__WiFiSettlementObserver_initWithScanProvider_configuration___block_inv
         goto LABEL_19;
       }
 
-      v26 = [(WiFiSettlementObserver *)self configuration];
-      [v26 highConfidenceSettlementTime];
+      configuration3 = [(WiFiSettlementObserver *)self configuration];
+      [configuration3 highConfidenceSettlementTime];
       v28 = v27;
 
       if (v28 > v21)
@@ -138,17 +138,17 @@ void __61__WiFiSettlementObserver_initWithScanProvider_configuration___block_inv
         goto LABEL_19;
       }
 
-      v29 = self;
+      selfCopy2 = self;
       v30 = 2;
     }
 
     else
     {
-      v29 = self;
+      selfCopy2 = self;
       v30 = 1;
     }
 
-    [(WiFiSettlementObserver *)v29 _updateSettlementStatus:1 confidence:v30];
+    [(WiFiSettlementObserver *)selfCopy2 _updateSettlementStatus:1 confidence:v30];
   }
 
 LABEL_19:
@@ -156,14 +156,14 @@ LABEL_19:
 LABEL_20:
 }
 
-- (void)_updateSettlementStatus:(int64_t)a3 confidence:(unint64_t)a4
+- (void)_updateSettlementStatus:(int64_t)status confidence:(unint64_t)confidence
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  if (self->_status == a3)
+  if (self->_status == status)
   {
     p_confidence = &self->_confidence;
     confidence = self->_confidence;
-    if (confidence == a4)
+    if (confidence == confidence)
     {
       goto LABEL_10;
     }
@@ -171,12 +171,12 @@ LABEL_20:
 
   else
   {
-    NSLog(&cfstr_SSettlementSta.isa, a2, "[WiFiSettlementObserver _updateSettlementStatus:confidence:]", self->_status, a3);
-    self->_status = a3;
-    if (a3 == 1)
+    NSLog(&cfstr_SSettlementSta.isa, a2, "[WiFiSettlementObserver _updateSettlementStatus:confidence:]", self->_status, status);
+    self->_status = status;
+    if (status == 1)
     {
-      v9 = [MEMORY[0x277CBEAA8] date];
-      [(WiFiSettlementObserver *)self setSettledDate:v9];
+      date = [MEMORY[0x277CBEAA8] date];
+      [(WiFiSettlementObserver *)self setSettledDate:date];
     }
 
     else
@@ -186,14 +186,14 @@ LABEL_20:
 
     p_confidence = &self->_confidence;
     confidence = self->_confidence;
-    if (confidence == a4)
+    if (confidence == confidence)
     {
       goto LABEL_9;
     }
   }
 
-  NSLog(&cfstr_SSettlementCon.isa, a2, "[WiFiSettlementObserver _updateSettlementStatus:confidence:]", confidence, a4);
-  *p_confidence = a4;
+  NSLog(&cfstr_SSettlementCon.isa, a2, "[WiFiSettlementObserver _updateSettlementStatus:confidence:]", confidence, confidence);
+  *p_confidence = confidence;
 LABEL_9:
   v13 = @"confidence";
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_confidence];
@@ -205,16 +205,16 @@ LABEL_10:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_callSettlementCallbackWithStatus:(int64_t)a3 userInfo:(id)a4
+- (void)_callSettlementCallbackWithStatus:(int64_t)status userInfo:(id)info
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  infoCopy = info;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(WiFiSettlementObserver *)self callbacks];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  callbacks = [(WiFiSettlementObserver *)self callbacks];
+  v7 = [callbacks countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -226,14 +226,14 @@ LABEL_10:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(callbacks);
         }
 
         (*(*(*(&v12 + 1) + 8 * v10++) + 16))();
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [callbacks countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -251,27 +251,27 @@ LABEL_10:
   [(WiFiSettlementObserver *)self _updateSettlementStatus:0 confidence:0];
 }
 
-- (void)addSettlementCallback:(id)a3
+- (void)addSettlementCallback:(id)callback
 {
-  if (a3)
+  if (callback)
   {
-    v4 = a3;
-    v6 = [(WiFiSettlementObserver *)self callbacks];
-    v5 = MEMORY[0x23839E400](v4);
+    callbackCopy = callback;
+    callbacks = [(WiFiSettlementObserver *)self callbacks];
+    v5 = MEMORY[0x23839E400](callbackCopy);
 
-    [v6 addObject:v5];
+    [callbacks addObject:v5];
   }
 }
 
-- (void)removeSettlementCallback:(id)a3
+- (void)removeSettlementCallback:(id)callback
 {
-  if (a3)
+  if (callback)
   {
-    v4 = a3;
-    v6 = [(WiFiSettlementObserver *)self callbacks];
-    v5 = MEMORY[0x23839E400](v4);
+    callbackCopy = callback;
+    callbacks = [(WiFiSettlementObserver *)self callbacks];
+    v5 = MEMORY[0x23839E400](callbackCopy);
 
-    [v6 removeObject:v5];
+    [callbacks removeObject:v5];
   }
 }
 

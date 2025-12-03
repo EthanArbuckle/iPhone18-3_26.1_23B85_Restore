@@ -1,20 +1,20 @@
 @interface EKConferenceUtils
-+ (id)_applicationRecordFromAppLink:(id)a3 appLinkError:(id)a4 orCustomScheme:(id)a5;
-+ (id)_validURLForConferenceURL:(id)a3 previousURLs:(id)a4 completion:(id)a5;
++ (id)_applicationRecordFromAppLink:(id)link appLinkError:(id)error orCustomScheme:(id)scheme;
++ (id)_validURLForConferenceURL:(id)l previousURLs:(id)ls completion:(id)completion;
 + (id)_workQueue;
 + (id)appRecordCache;
-+ (id)applicationRecordForURL:(id)a3 incomplete:(BOOL *)a4;
-+ (id)parentAppBundleIdentifierForExtensionBundleIdentifier:(id)a3;
-+ (id)synchronousAppTitleOnlyForURL:(id)a3 incomplete:(BOOL *)a4;
-+ (void)_findExtensionIdentifierForURL:(id)a3 completionHandler:(id)a4;
-+ (void)_findRoomTypeForURL:(id)a3 queue:(id)a4 completionHandler:(id)a5;
-+ (void)applicationRecordForURL:(id)a3 completionHandler:(id)a4;
++ (id)applicationRecordForURL:(id)l incomplete:(BOOL *)incomplete;
++ (id)parentAppBundleIdentifierForExtensionBundleIdentifier:(id)identifier;
++ (id)synchronousAppTitleOnlyForURL:(id)l incomplete:(BOOL *)incomplete;
++ (void)_findExtensionIdentifierForURL:(id)l completionHandler:(id)handler;
++ (void)_findRoomTypeForURL:(id)l queue:(id)queue completionHandler:(id)handler;
++ (void)applicationRecordForURL:(id)l completionHandler:(id)handler;
 + (void)clearAppRecordCache;
 + (void)fireAppRecordChangedNotification;
-+ (void)invalidateConferenceURL:(id)a3;
-+ (void)invalidateConferenceURLIfNeeded:(id)a3 inEventStore:(id)a4;
-+ (void)renewConferenceURL:(id)a3 toDate:(id)a4;
-+ (void)virtualConference:(id)a3 likelyCameFromRoomTypes:(id)a4 completionHandler:(id)a5;
++ (void)invalidateConferenceURL:(id)l;
++ (void)invalidateConferenceURLIfNeeded:(id)needed inEventStore:(id)store;
++ (void)renewConferenceURL:(id)l toDate:(id)date;
++ (void)virtualConference:(id)conference likelyCameFromRoomTypes:(id)types completionHandler:(id)handler;
 @end
 
 @implementation EKConferenceUtils
@@ -40,17 +40,17 @@ uint64_t __31__EKConferenceUtils__workQueue__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (void)virtualConference:(id)a3 likelyCameFromRoomTypes:(id)a4 completionHandler:(id)a5
++ (void)virtualConference:(id)conference likelyCameFromRoomTypes:(id)types completionHandler:(id)handler
 {
   v37 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v27 = a5;
+  conferenceCopy = conference;
+  typesCopy = types;
+  handlerCopy = handler;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v9 = v8;
+  v9 = typesCopy;
   v10 = [v9 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v10)
   {
@@ -67,18 +67,18 @@ uint64_t __31__EKConferenceUtils__workQueue__block_invoke()
         }
 
         v14 = *(*(&v32 + 1) + 8 * v13);
-        v15 = [v7 title];
-        if (v15)
+        title = [conferenceCopy title];
+        if (title)
         {
-          v16 = v15;
-          v17 = [v7 title];
-          v18 = [v14 title];
-          v19 = [v17 isEqualToString:v18];
+          v16 = title;
+          title2 = [conferenceCopy title];
+          title3 = [v14 title];
+          v19 = [title2 isEqualToString:title3];
 
           if (v19)
           {
-            v23 = v27;
-            (*(v27 + 2))(v27, v14);
+            v23 = handlerCopy;
+            (*(handlerCopy + 2))(handlerCopy, v14);
             v24 = v9;
             goto LABEL_12;
           }
@@ -98,18 +98,18 @@ uint64_t __31__EKConferenceUtils__workQueue__block_invoke()
     }
   }
 
-  v20 = [v7 joinMethods];
-  v21 = [v20 firstObject];
-  v22 = [v21 URL];
+  joinMethods = [conferenceCopy joinMethods];
+  firstObject = [joinMethods firstObject];
+  v22 = [firstObject URL];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __81__EKConferenceUtils_virtualConference_likelyCameFromRoomTypes_completionHandler___block_invoke;
   v28[3] = &unk_1E78011C0;
   v29 = v9;
-  v23 = v27;
-  v31 = a1;
-  v30 = v27;
-  [a1 applicationRecordForURL:v22 completionHandler:v28];
+  v23 = handlerCopy;
+  selfCopy = self;
+  v30 = handlerCopy;
+  [self applicationRecordForURL:v22 completionHandler:v28];
 
   v24 = v29;
 LABEL_12:
@@ -172,38 +172,38 @@ LABEL_11:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)synchronousAppTitleOnlyForURL:(id)a3 incomplete:(BOOL *)a4
++ (id)synchronousAppTitleOnlyForURL:(id)l incomplete:(BOOL *)incomplete
 {
-  v4 = [a1 applicationRecordForURL:a3 incomplete:a4];
+  v4 = [self applicationRecordForURL:l incomplete:incomplete];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 bundleIdentifier];
-    v7 = [v5 localizedName];
-    if ([v6 isEqualToString:@"com.microsoft.lync2013.iphone"])
+    bundleIdentifier = [v4 bundleIdentifier];
+    localizedName = [v5 localizedName];
+    if ([bundleIdentifier isEqualToString:@"com.microsoft.lync2013.iphone"])
     {
       v8 = EKBundle();
       v9 = [v8 localizedStringForKey:@"Skype" value:&stru_1F1B49D68 table:0];
 
-      v7 = v9;
+      localizedName = v9;
     }
   }
 
   else
   {
-    v7 = 0;
+    localizedName = 0;
   }
 
-  return v7;
+  return localizedName;
 }
 
-+ (void)applicationRecordForURL:(id)a3 completionHandler:(id)a4
++ (void)applicationRecordForURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 cal_hasSchemeTel])
+  lCopy = l;
+  handlerCopy = handler;
+  if ([lCopy cal_hasSchemeTel])
   {
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -213,9 +213,9 @@ LABEL_11:
     v9[1] = 3221225472;
     v9[2] = __63__EKConferenceUtils_applicationRecordForURL_completionHandler___block_invoke;
     v9[3] = &unk_1E7801210;
-    v12 = a1;
-    v10 = v6;
-    v11 = v7;
+    selfCopy = self;
+    v10 = lCopy;
+    v11 = handlerCopy;
     [v8 getAppLinksWithURL:v10 completionHandler:v9];
   }
 }
@@ -295,8 +295,8 @@ LABEL_11:
 
 + (void)clearAppRecordCache
 {
-  v2 = [a1 appRecordCache];
-  [v2 removeAllObjects];
+  appRecordCache = [self appRecordCache];
+  [appRecordCache removeAllObjects];
 }
 
 + (id)appRecordCache
@@ -334,7 +334,7 @@ uint64_t __35__EKConferenceUtils_appRecordCache__block_invoke()
   block[1] = 3221225472;
   block[2] = __53__EKConferenceUtils_fireAppRecordChangedNotification__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   v3 = dispatch_block_create(0, block);
   v4 = fireAppRecordChangedNotification_postBlock;
   fireAppRecordChangedNotification_postBlock = v3;
@@ -352,27 +352,27 @@ void __53__EKConferenceUtils_fireAppRecordChangedNotification__block_invoke(uint
   fireAppRecordChangedNotification_postBlock = 0;
 }
 
-+ (id)applicationRecordForURL:(id)a3 incomplete:(BOOL *)a4
++ (id)applicationRecordForURL:(id)l incomplete:(BOOL *)incomplete
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6 && ([v6 cal_hasSchemeTel] & 1) == 0)
+  lCopy = l;
+  v7 = lCopy;
+  if (lCopy && ([lCopy cal_hasSchemeTel] & 1) == 0)
   {
     check = 0;
     notify_check(apHiddenAppsNotifyToken, &check);
     if (check)
     {
-      [a1 clearAppRecordCache];
+      [self clearAppRecordCache];
     }
 
-    v9 = [a1 appRecordCache];
-    v10 = [v9 objectForKey:v7];
+    appRecordCache = [self appRecordCache];
+    v10 = [appRecordCache objectForKey:v7];
 
     if (!v10)
     {
       v11 = objc_opt_new();
-      v12 = [a1 appRecordCache];
-      [v12 setObject:v11 forKey:v7];
+      appRecordCache2 = [self appRecordCache];
+      [appRecordCache2 setObject:v11 forKey:v7];
 
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
@@ -380,31 +380,31 @@ void __53__EKConferenceUtils_fireAppRecordChangedNotification__block_invoke(uint
       v15[3] = &unk_1E7801238;
       v10 = v11;
       v16 = v10;
-      v17 = a1;
-      [a1 applicationRecordForURL:v7 completionHandler:v15];
+      selfCopy = self;
+      [self applicationRecordForURL:v7 completionHandler:v15];
     }
 
-    v8 = [v10 record];
-    v13 = v8 == 0;
+    record = [v10 record];
+    v13 = record == 0;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
 
-      v8 = 0;
+      record = 0;
     }
 
-    if (a4)
+    if (incomplete)
     {
-      *a4 = v13;
+      *incomplete = v13;
     }
   }
 
   else
   {
-    v8 = 0;
+    record = 0;
   }
 
-  return v8;
+  return record;
 }
 
 void __56__EKConferenceUtils_applicationRecordForURL_incomplete___block_invoke(uint64_t a1, uint64_t a2)
@@ -424,34 +424,34 @@ void __56__EKConferenceUtils_applicationRecordForURL_incomplete___block_invoke(u
   }
 }
 
-+ (id)_applicationRecordFromAppLink:(id)a3 appLinkError:(id)a4 orCustomScheme:(id)a5
++ (id)_applicationRecordFromAppLink:(id)link appLinkError:(id)error orCustomScheme:(id)scheme
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v7)
+  linkCopy = link;
+  errorCopy = error;
+  schemeCopy = scheme;
+  if (!linkCopy)
   {
-    v18 = [objc_opt_class() logHandle];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
+    logHandle = [objc_opt_class() logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
     {
       +[EKConferenceUtils _applicationRecordFromAppLink:appLinkError:orCustomScheme:];
     }
 
     v31 = 0;
-    v17 = [objc_alloc(MEMORY[0x1E6963630]) initWithURL:v9 error:&v31];
+    logHandle3 = [objc_alloc(MEMORY[0x1E6963630]) initWithURL:schemeCopy error:&v31];
     v19 = v31;
     v16 = v19;
-    if (v17)
+    if (logHandle3)
     {
-      v20 = [v17 bundleRecord];
-      if (v20)
+      bundleRecord = [logHandle3 bundleRecord];
+      if (bundleRecord)
       {
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) != 0 && ([v20 isWebBrowser]& 1) == 0)
+        if ((objc_opt_isKindOfClass() & 1) != 0 && ([bundleRecord isWebBrowser]& 1) == 0)
         {
-          v20 = v20;
-          v21 = [v20 bundleIdentifier];
-          v22 = [v21 isEqualToString:@"com.apple.FaceTimeLinkTrampoline"];
+          bundleRecord = bundleRecord;
+          bundleIdentifier = [bundleRecord bundleIdentifier];
+          v22 = [bundleIdentifier isEqualToString:@"com.apple.FaceTimeLinkTrampoline"];
 
           if (v22)
           {
@@ -463,8 +463,8 @@ void __56__EKConferenceUtils_applicationRecordForURL_incomplete___block_invoke(u
 
             if (!v15)
             {
-              v26 = [objc_opt_class() logHandle];
-              if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+              logHandle2 = [objc_opt_class() logHandle];
+              if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_ERROR))
               {
                 +[EKConferenceUtils _applicationRecordFromAppLink:appLinkError:orCustomScheme:];
               }
@@ -473,12 +473,12 @@ void __56__EKConferenceUtils_applicationRecordForURL_incomplete___block_invoke(u
             goto LABEL_22;
           }
 
-          v28 = [v20 bundleIdentifier];
-          v29 = [v28 containsString:@"com.apple.internal"];
+          bundleIdentifier2 = [bundleRecord bundleIdentifier];
+          v29 = [bundleIdentifier2 containsString:@"com.apple.internal"];
 
           if (!v29)
           {
-            v15 = v20;
+            v15 = bundleRecord;
             goto LABEL_22;
           }
         }
@@ -493,8 +493,8 @@ void __56__EKConferenceUtils_applicationRecordForURL_incomplete___block_invoke(u
         goto LABEL_23;
       }
 
-      v20 = [objc_opt_class() logHandle];
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+      bundleRecord = [objc_opt_class() logHandle];
+      if (os_log_type_enabled(bundleRecord, OS_LOG_TYPE_ERROR))
       {
         +[EKConferenceUtils _applicationRecordFromAppLink:appLinkError:orCustomScheme:];
       }
@@ -507,9 +507,9 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v10 = [v7 targetApplicationRecord];
-  v11 = [v10 bundleIdentifier];
-  v12 = [v11 isEqualToString:@"com.apple.FaceTimeLinkTrampoline"];
+  targetApplicationRecord = [linkCopy targetApplicationRecord];
+  bundleIdentifier3 = [targetApplicationRecord bundleIdentifier];
+  v12 = [bundleIdentifier3 isEqualToString:@"com.apple.FaceTimeLinkTrampoline"];
 
   if (!v12)
   {
@@ -524,8 +524,8 @@ LABEL_23:
 
   if (!v15)
   {
-    v17 = [objc_opt_class() logHandle];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    logHandle3 = [objc_opt_class() logHandle];
+    if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_ERROR))
     {
       +[EKConferenceUtils _applicationRecordFromAppLink:appLinkError:orCustomScheme:];
     }
@@ -535,35 +535,35 @@ LABEL_23:
 
 LABEL_24:
 
-  v10 = v15;
+  targetApplicationRecord = v15;
 LABEL_25:
 
-  return v10;
+  return targetApplicationRecord;
 }
 
-+ (id)parentAppBundleIdentifierForExtensionBundleIdentifier:(id)a3
++ (id)parentAppBundleIdentifierForExtensionBundleIdentifier:(id)identifier
 {
   v3 = MEMORY[0x1E69635D0];
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0;
-  v5 = [[v3 alloc] initWithBundleIdentifier:v4 error:&v14];
+  v5 = [[v3 alloc] initWithBundleIdentifier:identifierCopy error:&v14];
 
   v6 = v14;
   if (v5)
   {
-    v7 = [v5 containingBundleRecord];
-    if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    containingBundleRecord = [v5 containingBundleRecord];
+    if (containingBundleRecord && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v8 = [v7 bundleIdentifier];
-      v9 = [v7 bundleIdentifier];
-      if ([v9 isEqualToString:@"com.apple.mobilecal"])
+      bundleIdentifier = [containingBundleRecord bundleIdentifier];
+      bundleIdentifier2 = [containingBundleRecord bundleIdentifier];
+      if ([bundleIdentifier2 isEqualToString:@"com.apple.mobilecal"])
       {
       }
 
       else
       {
-        v11 = [v7 bundleIdentifier];
-        v12 = [v11 isEqualToString:@"com.apple.iCal"];
+        bundleIdentifier3 = [containingBundleRecord bundleIdentifier];
+        v12 = [bundleIdentifier3 isEqualToString:@"com.apple.iCal"];
 
         if (!v12)
         {
@@ -576,40 +576,40 @@ LABEL_25:
 
     else
     {
-      v8 = [objc_opt_class() logHandle];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      bundleIdentifier = [objc_opt_class() logHandle];
+      if (os_log_type_enabled(bundleIdentifier, OS_LOG_TYPE_ERROR))
       {
-        [EKConferenceUtils parentAppBundleIdentifierForExtensionBundleIdentifier:v8];
+        [EKConferenceUtils parentAppBundleIdentifierForExtensionBundleIdentifier:bundleIdentifier];
       }
 
       v10 = 0;
     }
 
-    v8 = v10;
+    bundleIdentifier = v10;
   }
 
   else
   {
-    v7 = [objc_opt_class() logHandle];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    containingBundleRecord = [objc_opt_class() logHandle];
+    if (os_log_type_enabled(containingBundleRecord, OS_LOG_TYPE_ERROR))
     {
       +[EKConferenceUtils parentAppBundleIdentifierForExtensionBundleIdentifier:];
     }
 
-    v8 = 0;
+    bundleIdentifier = 0;
   }
 
 LABEL_15:
 
-  return v8;
+  return bundleIdentifier;
 }
 
-+ (void)invalidateConferenceURLIfNeeded:(id)a3 inEventStore:(id)a4
++ (void)invalidateConferenceURLIfNeeded:(id)needed inEventStore:(id)store
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (v7 && [MEMORY[0x1E6992F40] isTUConversationLink:v7])
+  neededCopy = needed;
+  storeCopy = store;
+  if (neededCopy && [MEMORY[0x1E6992F40] isTUConversationLink:neededCopy])
   {
     os_unfair_lock_lock(&_invalidationLock);
     if (!_urlsAwaitingInvalidation)
@@ -628,41 +628,41 @@ LABEL_15:
       _invalidationQueue = v14;
     }
 
-    v16 = [_invalidatedURLs objectForKeyedSubscript:v7];
+    v16 = [_invalidatedURLs objectForKeyedSubscript:neededCopy];
     v17 = v16;
     if (v16)
     {
-      v18 = [v16 validURL];
+      validURL = [v16 validURL];
       v19 = 0;
     }
 
     else
     {
-      v20 = [_urlsAwaitingInvalidation objectForKeyedSubscript:v7];
-      v21 = [v20 integerValue];
-      v19 = v21 != 1;
-      if (v21 != 1)
+      v20 = [_urlsAwaitingInvalidation objectForKeyedSubscript:neededCopy];
+      integerValue = [v20 integerValue];
+      v19 = integerValue != 1;
+      if (integerValue != 1)
       {
-        [_urlsAwaitingInvalidation setObject:&unk_1F1B6AFC0 forKeyedSubscript:v7];
+        [_urlsAwaitingInvalidation setObject:&unk_1F1B6AFC0 forKeyedSubscript:neededCopy];
       }
 
-      v18 = 0;
+      validURL = 0;
     }
 
     os_unfair_lock_unlock(&_invalidationLock);
-    if (v18)
+    if (validURL)
     {
-      [a1 invalidateConferenceURLIfNeeded:v18 inEventStore:v8];
+      [self invalidateConferenceURLIfNeeded:validURL inEventStore:storeCopy];
     }
 
     else if (v19)
     {
-      v22 = [objc_opt_class() logHandle];
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
+      logHandle = [objc_opt_class() logHandle];
+      if (os_log_type_enabled(logHandle, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v32 = v7;
-        _os_log_impl(&dword_1A805E000, v22, OS_LOG_TYPE_INFO, "Checking if we need to invalidate URL %@", buf, 0xCu);
+        v32 = neededCopy;
+        _os_log_impl(&dword_1A805E000, logHandle, OS_LOG_TYPE_INFO, "Checking if we need to invalidate URL %@", buf, 0xCu);
       }
 
       v23 = dispatch_time(0, 500000000);
@@ -671,10 +671,10 @@ LABEL_15:
       v26[1] = 3221225472;
       v26[2] = __66__EKConferenceUtils_invalidateConferenceURLIfNeeded_inEventStore___block_invoke;
       v26[3] = &unk_1E7801260;
-      v27 = v7;
+      v27 = neededCopy;
       v29 = a2;
-      v30 = a1;
-      v28 = v8;
+      selfCopy = self;
+      v28 = storeCopy;
       dispatch_after(v23, v24, v26);
     }
   }
@@ -778,27 +778,27 @@ LABEL_22:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)invalidateConferenceURL:(id)a3
++ (void)invalidateConferenceURL:(id)l
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4 && [MEMORY[0x1E6992F40] isTUConversationLink:v4])
+  lCopy = l;
+  if (lCopy && [MEMORY[0x1E6992F40] isTUConversationLink:lCopy])
   {
-    v5 = [objc_opt_class() logHandle];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    logHandle = [objc_opt_class() logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v11 = v4;
-      _os_log_impl(&dword_1A805E000, v5, OS_LOG_TYPE_DEFAULT, "Going to invalidate the URL %@", buf, 0xCu);
+      v11 = lCopy;
+      _os_log_impl(&dword_1A805E000, logHandle, OS_LOG_TYPE_DEFAULT, "Going to invalidate the URL %@", buf, 0xCu);
     }
 
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __45__EKConferenceUtils_invalidateConferenceURL___block_invoke;
     v7[3] = &unk_1E78012B0;
-    v9 = a1;
-    v8 = v4;
-    [a1 _findExtensionIdentifierForURL:v8 completionHandler:v7];
+    selfCopy = self;
+    v8 = lCopy;
+    [self _findExtensionIdentifierForURL:v8 completionHandler:v7];
   }
 
   v6 = *MEMORY[0x1E69E9840];
@@ -925,12 +925,12 @@ void __45__EKConferenceUtils_invalidateConferenceURL___block_invoke_69(uint64_t 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_validURLForConferenceURL:(id)a3 previousURLs:(id)a4 completion:(id)a5
++ (id)_validURLForConferenceURL:(id)l previousURLs:(id)ls completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v8;
+  lCopy = l;
+  lsCopy = ls;
+  completionCopy = completion;
+  v11 = lCopy;
   os_unfair_lock_lock(&_invalidationLock);
   v12 = [_urlsAwaitingInvalidation objectForKeyedSubscript:v11];
   if (!v12)
@@ -942,22 +942,22 @@ void __45__EKConferenceUtils_invalidateConferenceURL___block_invoke_69(uint64_t 
       goto LABEL_3;
     }
 
-    v14 = [v18 validURL];
+    validURL = [v18 validURL];
 
-    if (v14)
+    if (validURL)
     {
       goto LABEL_4;
     }
 
-    v19 = [v13 waitingCompletionHandlers];
+    waitingCompletionHandlers = [v13 waitingCompletionHandlers];
 
-    if (v19)
+    if (waitingCompletionHandlers)
     {
-      v20 = [v13 waitingCompletionHandlers];
-      v21 = _Block_copy(v10);
-      [v20 addObject:v21];
+      waitingCompletionHandlers2 = [v13 waitingCompletionHandlers];
+      v21 = _Block_copy(completionCopy);
+      [waitingCompletionHandlers2 addObject:v21];
 
-      if (!v9)
+      if (!lsCopy)
       {
         os_unfair_lock_unlock(&_invalidationLock);
 LABEL_24:
@@ -971,28 +971,28 @@ LABEL_24:
       v22 = objc_alloc_init(MEMORY[0x1E695DF70]);
       [v13 setWaitingCompletionHandlers:v22];
 
-      v23 = [v13 waitingCompletionHandlers];
-      v24 = _Block_copy(v10);
-      [v23 addObject:v24];
+      waitingCompletionHandlers3 = [v13 waitingCompletionHandlers];
+      v24 = _Block_copy(completionCopy);
+      [waitingCompletionHandlers3 addObject:v24];
 
       v25 = objc_opt_new();
       [v13 setReplacementForURLs:v25];
 
-      v26 = [v13 replacementForURLs];
-      [v26 addObject:v11];
+      replacementForURLs = [v13 replacementForURLs];
+      [replacementForURLs addObject:v11];
 
-      if (!v9)
+      if (!lsCopy)
       {
         os_unfair_lock_unlock(&_invalidationLock);
         goto LABEL_23;
       }
     }
 
-    v27 = [v13 replacementForURLs];
-    [v27 unionSet:v9];
+    replacementForURLs2 = [v13 replacementForURLs];
+    [replacementForURLs2 unionSet:lsCopy];
 
     os_unfair_lock_unlock(&_invalidationLock);
-    if (v19)
+    if (waitingCompletionHandlers)
     {
       goto LABEL_24;
     }
@@ -1005,15 +1005,15 @@ LABEL_23:
   [_urlsAwaitingInvalidation setObject:&unk_1F1B6AFF0 forKeyedSubscript:v11];
   v13 = 0;
 LABEL_3:
-  v14 = v11;
+  validURL = v11;
 LABEL_4:
   os_unfair_lock_unlock(&_invalidationLock);
-  if (v14 && v13)
+  if (validURL && v13)
   {
-    v15 = [v13 replacementForURLs];
-    v16 = [a1 _validURLForConferenceURL:v14 previousURLs:v15 completion:v10];
+    replacementForURLs3 = [v13 replacementForURLs];
+    v16 = [self _validURLForConferenceURL:validURL previousURLs:replacementForURLs3 completion:completionCopy];
 
-    if (v16 && ([v16 isEqual:v14] & 1) == 0)
+    if (v16 && ([v16 isEqual:validURL] & 1) == 0)
     {
       os_unfair_lock_lock(&_invalidationLock);
       [v13 setValidURL:v16];
@@ -1023,7 +1023,7 @@ LABEL_4:
 
   else
   {
-    v16 = v14;
+    v16 = validURL;
   }
 
 LABEL_11:
@@ -1031,51 +1031,51 @@ LABEL_11:
   return v16;
 }
 
-+ (void)renewConferenceURL:(id)a3 toDate:(id)a4
++ (void)renewConferenceURL:(id)l toDate:(id)date
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() logHandle];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+  lCopy = l;
+  dateCopy = date;
+  logHandle = [objc_opt_class() logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v16 = v6;
+    v16 = lCopy;
     v17 = 2112;
-    v18 = v7;
-    _os_log_impl(&dword_1A805E000, v8, OS_LOG_TYPE_INFO, "ConferenceRenewal: Attempting to extend expiration of URL: %@ to date: %@", buf, 0x16u);
+    v18 = dateCopy;
+    _os_log_impl(&dword_1A805E000, logHandle, OS_LOG_TYPE_INFO, "ConferenceRenewal: Attempting to extend expiration of URL: %@ to date: %@", buf, 0x16u);
   }
 
-  if (v6 && v7)
+  if (lCopy && dateCopy)
   {
-    if ([MEMORY[0x1E6992F40] isTUConversationLink:v6])
+    if ([MEMORY[0x1E6992F40] isTUConversationLink:lCopy])
     {
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __47__EKConferenceUtils_renewConferenceURL_toDate___block_invoke;
       v11[3] = &unk_1E78012D8;
-      v14 = a1;
-      v12 = v6;
-      v13 = v7;
-      [a1 _findExtensionIdentifierForURL:v12 completionHandler:v11];
+      selfCopy = self;
+      v12 = lCopy;
+      v13 = dateCopy;
+      [self _findExtensionIdentifierForURL:v12 completionHandler:v11];
 
-      v9 = v12;
+      logHandle2 = v12;
     }
 
     else
     {
-      v9 = [objc_opt_class() logHandle];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      logHandle2 = [objc_opt_class() logHandle];
+      if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_ERROR))
       {
-        [EKConferenceUtils renewConferenceURL:v9 toDate:?];
+        [EKConferenceUtils renewConferenceURL:logHandle2 toDate:?];
       }
     }
   }
 
   else
   {
-    v9 = [objc_opt_class() logHandle];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    logHandle2 = [objc_opt_class() logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_ERROR))
     {
       +[EKConferenceUtils renewConferenceURL:toDate:];
     }
@@ -1209,12 +1209,12 @@ void __47__EKConferenceUtils_renewConferenceURL_toDate___block_invoke_79(uint64_
   v13 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_findExtensionIdentifierForURL:(id)a3 completionHandler:(id)a4
++ (void)_findExtensionIdentifierForURL:(id)l completionHandler:(id)handler
 {
-  v8 = a3;
-  v5 = a4;
-  v6 = v5;
-  if (v8)
+  lCopy = l;
+  handlerCopy = handler;
+  v6 = handlerCopy;
+  if (lCopy)
   {
     if ([MEMORY[0x1E6992F40] isTUConversationLink:?])
     {
@@ -1230,26 +1230,26 @@ void __47__EKConferenceUtils_renewConferenceURL_toDate___block_invoke_79(uint64_
 
   else
   {
-    (*(v5 + 2))(v5, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-+ (void)_findRoomTypeForURL:(id)a3 queue:(id)a4 completionHandler:(id)a5
++ (void)_findRoomTypeForURL:(id)l queue:(id)queue completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  queueCopy = queue;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __65__EKConferenceUtils__findRoomTypeForURL_queue_completionHandler___block_invoke;
   v14[3] = &unk_1E7801328;
-  v17 = v10;
-  v18 = a1;
-  v15 = v8;
-  v16 = v9;
-  v11 = v9;
-  v12 = v10;
-  v13 = v8;
+  v17 = handlerCopy;
+  selfCopy = self;
+  v15 = lCopy;
+  v16 = queueCopy;
+  v11 = queueCopy;
+  v12 = handlerCopy;
+  v13 = lCopy;
   [EKConferenceUtils _findExtensionIdentifierForURL:v13 completionHandler:v14];
 }
 

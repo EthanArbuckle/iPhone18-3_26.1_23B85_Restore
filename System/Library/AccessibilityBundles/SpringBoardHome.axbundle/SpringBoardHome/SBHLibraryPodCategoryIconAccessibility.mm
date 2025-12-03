@@ -1,17 +1,17 @@
 @interface SBHLibraryPodCategoryIconAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)automationElements;
 @end
 
 @implementation SBHLibraryPodCategoryIconAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBHLibraryPodCategoryIcon" hasInstanceMethod:@"category" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHLibraryCategory" hasInstanceMethod:@"compactPodFolder" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFolder" hasInstanceMethod:@"icons" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHLibraryCategoryFolder" isKindOfClass:@"SBFolder"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBHLibraryPodCategoryIcon" hasInstanceMethod:@"category" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHLibraryCategory" hasInstanceMethod:@"compactPodFolder" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFolder" hasInstanceMethod:@"icons" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHLibraryCategoryFolder" isKindOfClass:@"SBFolder"];
 }
 
 - (id)automationElements

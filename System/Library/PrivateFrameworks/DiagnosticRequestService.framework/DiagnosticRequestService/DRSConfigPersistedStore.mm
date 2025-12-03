@@ -1,24 +1,24 @@
 @interface DRSConfigPersistedStore
-- (BOOL)addConfigMetdata:(id)a3 errorOut:(id *)a4;
-- (BOOL)applyWaitingConfigWithUUID:(id)a3 appliedDate:(id)a4 errorOut:(id *)a5;
-- (BOOL)clearStoreWithErrorOut:(id *)a3;
-- (BOOL)completeConfigWithUUID:(id)a3 completedDate:(id)a4 completionType:(unint64_t)a5 completionDescription:(id)a6 errorOut:(id *)a7;
-- (BOOL)updateCloudChannelConfig:(id)a3 errorOut:(id *)a4;
+- (BOOL)addConfigMetdata:(id)metdata errorOut:(id *)out;
+- (BOOL)applyWaitingConfigWithUUID:(id)d appliedDate:(id)date errorOut:(id *)out;
+- (BOOL)clearStoreWithErrorOut:(id *)out;
+- (BOOL)completeConfigWithUUID:(id)d completedDate:(id)date completionType:(unint64_t)type completionDescription:(id)description errorOut:(id *)out;
+- (BOOL)updateCloudChannelConfig:(id)config errorOut:(id *)out;
 - (id)_ON_MOC_cloudChannelConfigMOs;
 - (id)cloudChannelConfig;
-- (id)configMetadataForUUID:(id)a3 errorOut:(id *)a4;
-- (id)configMetadatasForPredicate:(id)a3 sortDescriptors:(id)a4 fetchLimit:(unint64_t)a5 errorOut:(id *)a6;
-- (unint64_t)_countForFetchRequest:(id)a3 withPredicate:(id)a4 fetchLimit:(unint64_t)a5 errorOut:(id *)a6;
-- (unint64_t)configCountForPredicate:(id)a3 fetchLimit:(unint64_t)a4 withErrorOut:(id *)a5;
-- (unint64_t)metadataCountForPredicate:(id)a3 fetchLimit:(unint64_t)a4 withErrorOut:(id *)a5;
-- (void)_ON_MOC_deleteCloudChannelConfigMOs:(id)a3;
+- (id)configMetadataForUUID:(id)d errorOut:(id *)out;
+- (id)configMetadatasForPredicate:(id)predicate sortDescriptors:(id)descriptors fetchLimit:(unint64_t)limit errorOut:(id *)out;
+- (unint64_t)_countForFetchRequest:(id)request withPredicate:(id)predicate fetchLimit:(unint64_t)limit errorOut:(id *)out;
+- (unint64_t)configCountForPredicate:(id)predicate fetchLimit:(unint64_t)limit withErrorOut:(id *)out;
+- (unint64_t)metadataCountForPredicate:(id)predicate fetchLimit:(unint64_t)limit withErrorOut:(id *)out;
+- (void)_ON_MOC_deleteCloudChannelConfigMOs:(id)os;
 @end
 
 @implementation DRSConfigPersistedStore
 
-- (id)configMetadataForUUID:(id)a3 errorOut:(id *)a4
+- (id)configMetadataForUUID:(id)d errorOut:(id *)out
 {
-  v6 = a3;
+  dCopy = d;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -31,21 +31,21 @@
   v19 = __Block_byref_object_copy__7;
   v20 = __Block_byref_object_dispose__7;
   v21 = 0;
-  v7 = [(DRSConfigPersistedStore *)self context];
+  context = [(DRSConfigPersistedStore *)self context];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __58__DRSConfigPersistedStore_configMetadataForUUID_errorOut___block_invoke;
   v11[3] = &unk_27899ED80;
-  v8 = v6;
+  v8 = dCopy;
   v12 = v8;
-  v13 = self;
+  selfCopy = self;
   v14 = &v16;
   v15 = &v22;
-  [v7 performBlockAndWait:v11];
+  [context performBlockAndWait:v11];
 
-  if (a4)
+  if (out)
   {
-    *a4 = v17[5];
+    *out = v17[5];
   }
 
   v9 = v23[5];
@@ -76,10 +76,10 @@ void __58__DRSConfigPersistedStore_configMetadataForUUID_errorOut___block_invoke
   }
 }
 
-- (BOOL)addConfigMetdata:(id)a3 errorOut:(id *)a4
+- (BOOL)addConfigMetdata:(id)metdata errorOut:(id *)out
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  metdataCopy = metdata;
   if (![(DRSConfigPersistedStore *)self isReadOnly])
   {
     v32 = 0;
@@ -92,21 +92,21 @@ void __58__DRSConfigPersistedStore_configMetadataForUUID_errorOut___block_invoke
     v29 = __Block_byref_object_copy__7;
     v30 = __Block_byref_object_dispose__7;
     v31 = 0;
-    v10 = [(DRSConfigPersistedStore *)self context];
+    context = [(DRSConfigPersistedStore *)self context];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __53__DRSConfigPersistedStore_addConfigMetdata_errorOut___block_invoke;
     v21[3] = &unk_27899ED80;
-    v11 = v6;
+    v11 = metdataCopy;
     v22 = v11;
-    v23 = self;
+    selfCopy = self;
     v24 = &v26;
     v25 = &v32;
-    [v10 performBlockAndWait:v21];
+    [context performBlockAndWait:v21];
 
-    if (a4)
+    if (out)
     {
-      *a4 = v27[5];
+      *out = v27[5];
     }
 
     if (!v27[5])
@@ -117,25 +117,25 @@ void __58__DRSConfigPersistedStore_configMetadataForUUID_errorOut___block_invoke
         goto LABEL_13;
       }
 
-      if (a4)
+      if (out)
       {
         v12 = MEMORY[0x277CCACA8];
-        v13 = [v11 configUUID];
-        v14 = [v12 stringWithFormat:@"Attempted to add already existing metadata with config UUID %@", v13];
+        configUUID = [v11 configUUID];
+        v14 = [v12 stringWithFormat:@"Attempted to add already existing metadata with config UUID %@", configUUID];
 
         v15 = MEMORY[0x277CCA9B8];
         v38 = *MEMORY[0x277CCA450];
         v39 = v14;
         v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
-        *a4 = [v15 errorWithDomain:@"DRSConfigPersistenceError" code:0 userInfo:v16];
+        *out = [v15 errorWithDomain:@"DRSConfigPersistenceError" code:0 userInfo:v16];
       }
 
       v17 = DPLogHandle_ConfigPersistedStoreError();
       if (os_signpost_enabled(v17))
       {
-        v18 = [v11 configUUID];
+        configUUID2 = [v11 configUUID];
         *buf = 138412290;
-        v37 = v18;
+        v37 = configUUID2;
         _os_signpost_emit_with_name_impl(&dword_232906000, v17, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ConfigMetadataCollision", "Attempted to add already existing metadata with config UUID %@", buf, 0xCu);
       }
     }
@@ -152,7 +152,7 @@ LABEL_13:
   v40 = *MEMORY[0x277CCA450];
   v41[0] = @"Attempted write operation on read-only ConfigPersistedStore";
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:&v40 count:1];
-  *a4 = [v7 errorWithDomain:@"DRSConfigPersistenceError" code:0 userInfo:v8];
+  *out = [v7 errorWithDomain:@"DRSConfigPersistenceError" code:0 userInfo:v8];
 
   v9 = 0;
 LABEL_14:
@@ -233,18 +233,18 @@ void __53__DRSConfigPersistedStore_addConfigMetdata_errorOut___block_invoke(uint
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)applyWaitingConfigWithUUID:(id)a3 appliedDate:(id)a4 errorOut:(id *)a5
+- (BOOL)applyWaitingConfigWithUUID:(id)d appliedDate:(id)date errorOut:(id *)out
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  dateCopy = date;
   if ([(DRSConfigPersistedStore *)self isReadOnly])
   {
     v10 = MEMORY[0x277CCA9B8];
     v35 = *MEMORY[0x277CCA450];
     v36[0] = @"Attempted write operation on read-only ConfigPersistedStore";
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:&v35 count:1];
-    *a5 = [v10 errorWithDomain:@"DRSConfigPersistenceError" code:0 userInfo:v11];
+    *out = [v10 errorWithDomain:@"DRSConfigPersistenceError" code:0 userInfo:v11];
 
     v12 = 0;
   }
@@ -257,17 +257,17 @@ void __53__DRSConfigPersistedStore_addConfigMetdata_errorOut___block_invoke(uint
     v28 = __Block_byref_object_copy__7;
     v29 = __Block_byref_object_dispose__7;
     v30 = 0;
-    v13 = [(DRSConfigPersistedStore *)self context];
+    context = [(DRSConfigPersistedStore *)self context];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __75__DRSConfigPersistedStore_applyWaitingConfigWithUUID_appliedDate_errorOut___block_invoke;
     v20[3] = &unk_27899FAE0;
-    v14 = v8;
+    v14 = dCopy;
     v21 = v14;
-    v22 = self;
+    selfCopy = self;
     v24 = &v25;
-    v23 = v9;
-    [v13 performBlockAndWait:v20];
+    v23 = dateCopy;
+    [context performBlockAndWait:v20];
 
     v15 = v26[5];
     v12 = v15 == 0;
@@ -284,7 +284,7 @@ void __53__DRSConfigPersistedStore_addConfigMetdata_errorOut___block_invoke(uint
         _os_signpost_emit_with_name_impl(&dword_232906000, v16, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ApplyWaitingConfigFailed", "Could not apply waiting config %{public}@ due to error %{public}@", buf, 0x16u);
       }
 
-      *a5 = v26[5];
+      *out = v26[5];
     }
 
     _Block_object_dispose(&v25, 8);
@@ -389,21 +389,21 @@ LABEL_11:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)completeConfigWithUUID:(id)a3 completedDate:(id)a4 completionType:(unint64_t)a5 completionDescription:(id)a6 errorOut:(id *)a7
+- (BOOL)completeConfigWithUUID:(id)d completedDate:(id)date completionType:(unint64_t)type completionDescription:(id)description errorOut:(id *)out
 {
   v48[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  dCopy = d;
+  dateCopy = date;
+  descriptionCopy = description;
   if ([(DRSConfigPersistedStore *)self isReadOnly])
   {
-    if (a7)
+    if (out)
     {
       v15 = MEMORY[0x277CCA9B8];
       v47 = *MEMORY[0x277CCA450];
       v48[0] = @"Attempted write operation on read-only ConfigPersistedStore";
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v48 forKeys:&v47 count:1];
-      *a7 = [v15 errorWithDomain:@"DRSConfigPersistenceError" code:0 userInfo:v16];
+      *out = [v15 errorWithDomain:@"DRSConfigPersistenceError" code:0 userInfo:v16];
     }
 
     v17 = 0;
@@ -417,20 +417,20 @@ LABEL_11:
     v38 = __Block_byref_object_copy__7;
     v39 = __Block_byref_object_dispose__7;
     v40 = 0;
-    v18 = [(DRSConfigPersistedStore *)self context];
+    context = [(DRSConfigPersistedStore *)self context];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __110__DRSConfigPersistedStore_completeConfigWithUUID_completedDate_completionType_completionDescription_errorOut___block_invoke;
     v28[3] = &unk_27899FB30;
-    v19 = v12;
+    v19 = dCopy;
     v29 = v19;
-    v30 = self;
+    selfCopy = self;
     v33 = &v35;
-    v31 = v13;
-    v34 = a5;
-    v20 = v14;
+    v31 = dateCopy;
+    typeCopy = type;
+    v20 = descriptionCopy;
     v32 = v20;
-    [v18 performBlockAndWait:v28];
+    [context performBlockAndWait:v28];
 
     v21 = v36[5];
     v17 = v21 == 0;
@@ -447,9 +447,9 @@ LABEL_11:
         _os_signpost_emit_with_name_impl(&dword_232906000, v22, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "CompleteConfigFailed", "Could not complete active config %{public}@ due to error %{public}@", buf, 0x16u);
       }
 
-      if (a7)
+      if (out)
       {
-        *a7 = v36[5];
+        *out = v36[5];
       }
     }
 
@@ -458,7 +458,7 @@ LABEL_11:
       v24 = DPLogHandle_ConfigPersistedStore();
       if (os_signpost_enabled(v24))
       {
-        v25 = DRConfigCompletionTypeString(a5);
+        v25 = DRConfigCompletionTypeString(type);
         *buf = 138543874;
         v42 = v19;
         v43 = 2114;
@@ -651,36 +651,36 @@ void __110__DRSConfigPersistedStore_completeConfigWithUUID_completedDate_complet
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)configMetadatasForPredicate:(id)a3 sortDescriptors:(id)a4 fetchLimit:(unint64_t)a5 errorOut:(id *)a6
+- (id)configMetadatasForPredicate:(id)predicate sortDescriptors:(id)descriptors fetchLimit:(unint64_t)limit errorOut:(id *)out
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [MEMORY[0x277CBEB18] array];
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
+  array = [MEMORY[0x277CBEB18] array];
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
   v30 = __Block_byref_object_copy__7;
   v31 = __Block_byref_object_dispose__7;
   v32 = 0;
-  v13 = [(DRSConfigPersistedStore *)self context];
+  context = [(DRSConfigPersistedStore *)self context];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __91__DRSConfigPersistedStore_configMetadatasForPredicate_sortDescriptors_fetchLimit_errorOut___block_invoke;
   v20[3] = &unk_27899FB58;
-  v14 = v10;
+  v14 = predicateCopy;
   v21 = v14;
-  v22 = self;
-  v15 = v11;
+  selfCopy = self;
+  v15 = descriptorsCopy;
   v25 = &v27;
-  v26 = a5;
+  limitCopy = limit;
   v23 = v15;
-  v16 = v12;
+  v16 = array;
   v24 = v16;
-  [v13 performBlockAndWait:v20];
+  [context performBlockAndWait:v20];
 
-  if (a6)
+  if (out)
   {
-    *a6 = v28[5];
+    *out = v28[5];
   }
 
   v17 = v24;
@@ -774,10 +774,10 @@ LABEL_13:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)_countForFetchRequest:(id)a3 withPredicate:(id)a4 fetchLimit:(unint64_t)a5 errorOut:(id *)a6
+- (unint64_t)_countForFetchRequest:(id)request withPredicate:(id)predicate fetchLimit:(unint64_t)limit errorOut:(id *)out
 {
-  v10 = a3;
-  v11 = a4;
+  requestCopy = request;
+  predicateCopy = predicate;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -788,27 +788,27 @@ LABEL_13:
   v23 = __Block_byref_object_copy__7;
   v24 = __Block_byref_object_dispose__7;
   v25 = 0;
-  [v10 setPredicate:v11];
-  if (a5)
+  [requestCopy setPredicate:predicateCopy];
+  if (limit)
   {
-    [v10 setFetchLimit:a5];
+    [requestCopy setFetchLimit:limit];
   }
 
-  v12 = [(DRSConfigPersistedStore *)self context];
+  context = [(DRSConfigPersistedStore *)self context];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __83__DRSConfigPersistedStore__countForFetchRequest_withPredicate_fetchLimit_errorOut___block_invoke;
   v16[3] = &unk_27899ED10;
   v18 = &v26;
   v16[4] = self;
-  v13 = v10;
+  v13 = requestCopy;
   v17 = v13;
   v19 = &v20;
-  [v12 performBlockAndWait:v16];
+  [context performBlockAndWait:v16];
 
-  if (a6)
+  if (out)
   {
-    *a6 = v21[5];
+    *out = v21[5];
   }
 
   if (v21[5])
@@ -841,25 +841,25 @@ void __83__DRSConfigPersistedStore__countForFetchRequest_withPredicate_fetchLimi
   *(v6 + 40) = v5;
 }
 
-- (unint64_t)metadataCountForPredicate:(id)a3 fetchLimit:(unint64_t)a4 withErrorOut:(id *)a5
+- (unint64_t)metadataCountForPredicate:(id)predicate fetchLimit:(unint64_t)limit withErrorOut:(id *)out
 {
-  v8 = a3;
+  predicateCopy = predicate;
   v9 = +[DRSConfigMetadataMO fetchRequest];
-  v10 = [(DRSConfigPersistedStore *)self _countForFetchRequest:v9 withPredicate:v8 fetchLimit:a4 errorOut:a5];
+  v10 = [(DRSConfigPersistedStore *)self _countForFetchRequest:v9 withPredicate:predicateCopy fetchLimit:limit errorOut:out];
 
   return v10;
 }
 
-- (unint64_t)configCountForPredicate:(id)a3 fetchLimit:(unint64_t)a4 withErrorOut:(id *)a5
+- (unint64_t)configCountForPredicate:(id)predicate fetchLimit:(unint64_t)limit withErrorOut:(id *)out
 {
-  v8 = a3;
+  predicateCopy = predicate;
   v9 = +[DRConfigMO fetchRequest];
-  v10 = [(DRSConfigPersistedStore *)self _countForFetchRequest:v9 withPredicate:v8 fetchLimit:a4 errorOut:a5];
+  v10 = [(DRSConfigPersistedStore *)self _countForFetchRequest:v9 withPredicate:predicateCopy fetchLimit:limit errorOut:out];
 
   return v10;
 }
 
-- (BOOL)clearStoreWithErrorOut:(id *)a3
+- (BOOL)clearStoreWithErrorOut:(id *)out
 {
   v9 = 0;
   v10 = &v9;
@@ -867,18 +867,18 @@ void __83__DRSConfigPersistedStore__countForFetchRequest_withPredicate_fetchLimi
   v12 = __Block_byref_object_copy__7;
   v13 = __Block_byref_object_dispose__7;
   v14 = 0;
-  v5 = [(DRSConfigPersistedStore *)self context];
+  context = [(DRSConfigPersistedStore *)self context];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __50__DRSConfigPersistedStore_clearStoreWithErrorOut___block_invoke;
   v8[3] = &unk_27899F8D8;
   v8[4] = self;
   v8[5] = &v9;
-  [v5 performBlockAndWait:v8];
+  [context performBlockAndWait:v8];
 
-  if (a3)
+  if (out)
   {
-    *a3 = v10[5];
+    *out = v10[5];
   }
 
   v6 = v10[5] == 0;
@@ -1066,9 +1066,9 @@ void __50__DRSConfigPersistedStore_clearStoreWithErrorOut___block_invoke(uint64_
 {
   v17 = *MEMORY[0x277D85DE8];
   v3 = +[DRSCloudChannelConfigMO fetchRequest];
-  v4 = [(DRSConfigPersistedStore *)self context];
+  context = [(DRSConfigPersistedStore *)self context];
   v14 = 0;
-  v5 = [v4 executeFetchRequest:v3 error:&v14];
+  v5 = [context executeFetchRequest:v3 error:&v14];
   v6 = v14;
 
   if (v6)
@@ -1076,12 +1076,12 @@ void __50__DRSConfigPersistedStore_clearStoreWithErrorOut___block_invoke(uint64_
     v7 = DPLogHandle_ConfigPersistedStoreError();
     if (os_signpost_enabled(v7))
     {
-      v8 = [v6 localizedDescription];
-      v9 = v8;
+      localizedDescription = [v6 localizedDescription];
+      v9 = localizedDescription;
       v10 = @"Unknown";
-      if (v8)
+      if (localizedDescription)
       {
-        v10 = v8;
+        v10 = localizedDescription;
       }
 
       *buf = 138543362;
@@ -1102,18 +1102,18 @@ void __50__DRSConfigPersistedStore_clearStoreWithErrorOut___block_invoke(uint64_
   return v11;
 }
 
-- (void)_ON_MOC_deleteCloudChannelConfigMOs:(id)a3
+- (void)_ON_MOC_deleteCloudChannelConfigMOs:(id)os
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  osCopy = os;
+  v5 = osCopy;
+  if (osCopy)
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v6 = [v4 countByEnumeratingWithState:&v21 objects:v27 count:16];
+    v6 = [osCopy countByEnumeratingWithState:&v21 objects:v27 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1129,8 +1129,8 @@ void __50__DRSConfigPersistedStore_clearStoreWithErrorOut___block_invoke(uint64_
           }
 
           v10 = *(*(&v21 + 1) + 8 * v9);
-          v11 = [(DRSConfigPersistedStore *)self context];
-          [v11 deleteObject:v10];
+          context = [(DRSConfigPersistedStore *)self context];
+          [context deleteObject:v10];
 
           ++v9;
         }
@@ -1142,9 +1142,9 @@ void __50__DRSConfigPersistedStore_clearStoreWithErrorOut___block_invoke(uint64_
       while (v7);
     }
 
-    v12 = [(DRSConfigPersistedStore *)self context];
+    context2 = [(DRSConfigPersistedStore *)self context];
     v20 = 0;
-    v13 = [v12 save:&v20];
+    v13 = [context2 save:&v20];
     v14 = v20;
 
     if ((v13 & 1) == 0)
@@ -1152,12 +1152,12 @@ void __50__DRSConfigPersistedStore_clearStoreWithErrorOut___block_invoke(uint64_
       v15 = DPLogHandle_ConfigPersistedStoreError();
       if (os_signpost_enabled(v15))
       {
-        v16 = [v14 localizedDescription];
-        v17 = v16;
+        localizedDescription = [v14 localizedDescription];
+        v17 = localizedDescription;
         v18 = @"Unknown";
-        if (v16)
+        if (localizedDescription)
         {
-          v18 = v16;
+          v18 = localizedDescription;
         }
 
         *buf = 138543362;
@@ -1178,14 +1178,14 @@ void __50__DRSConfigPersistedStore_clearStoreWithErrorOut___block_invoke(uint64_
   v10 = __Block_byref_object_copy__7;
   v11 = __Block_byref_object_dispose__7;
   v12 = 0;
-  v3 = [(DRSConfigPersistedStore *)self context];
+  context = [(DRSConfigPersistedStore *)self context];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __45__DRSConfigPersistedStore_cloudChannelConfig__block_invoke;
   v6[3] = &unk_27899F8D8;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performBlockAndWait:v6];
+  [context performBlockAndWait:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1232,13 +1232,13 @@ void __45__DRSConfigPersistedStore_cloudChannelConfig__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)updateCloudChannelConfig:(id)a3 errorOut:(id *)a4
+- (BOOL)updateCloudChannelConfig:(id)config errorOut:(id *)out
 {
-  v6 = a3;
-  *a4 = 0;
-  v7 = [(DRSConfigPersistedStore *)self cloudChannelConfig];
-  v8 = v7;
-  if (!(v6 | v7) || v7 && ([v7 isEqual:v6] & 1) != 0)
+  configCopy = config;
+  *out = 0;
+  cloudChannelConfig = [(DRSConfigPersistedStore *)self cloudChannelConfig];
+  v8 = cloudChannelConfig;
+  if (!(configCopy | cloudChannelConfig) || cloudChannelConfig && ([cloudChannelConfig isEqual:configCopy] & 1) != 0)
   {
     v9 = 1;
   }
@@ -1255,18 +1255,18 @@ void __45__DRSConfigPersistedStore_cloudChannelConfig__block_invoke(uint64_t a1)
     v19 = __Block_byref_object_copy__7;
     v20 = __Block_byref_object_dispose__7;
     v21 = 0;
-    v10 = [(DRSConfigPersistedStore *)self context];
+    context = [(DRSConfigPersistedStore *)self context];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __61__DRSConfigPersistedStore_updateCloudChannelConfig_errorOut___block_invoke;
     v12[3] = &unk_27899ED80;
     v12[4] = self;
-    v13 = v6;
+    v13 = configCopy;
     v14 = &v22;
     v15 = &v16;
-    [v10 performBlockAndWait:v12];
+    [context performBlockAndWait:v12];
 
-    *a4 = v17[5];
+    *out = v17[5];
     v9 = *(v23 + 24);
 
     _Block_object_dispose(&v16, 8);

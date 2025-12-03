@@ -1,15 +1,15 @@
 @interface ARRollingNumberSeries
-- (ARRollingNumberSeries)initWithWindowSize:(unint64_t)a3;
+- (ARRollingNumberSeries)initWithWindowSize:(unint64_t)size;
 - (double)max;
 - (double)min;
-- (void)appendNumber:(double)a3;
+- (void)appendNumber:(double)number;
 - (void)clear;
 - (void)dealloc;
 @end
 
 @implementation ARRollingNumberSeries
 
-- (ARRollingNumberSeries)initWithWindowSize:(unint64_t)a3
+- (ARRollingNumberSeries)initWithWindowSize:(unint64_t)size
 {
   v7.receiver = self;
   v7.super_class = ARRollingNumberSeries;
@@ -17,9 +17,9 @@
   v5 = v4;
   if (v4)
   {
-    v4->_windowSize = a3;
+    v4->_windowSize = size;
     v4->_count = 0;
-    v4->_series = malloc_type_malloc(8 * a3, 0x100004000313F17uLL);
+    v4->_series = malloc_type_malloc(8 * size, 0x100004000313F17uLL);
     v5->_currentIndex = 0;
   }
 
@@ -86,7 +86,7 @@
   return result;
 }
 
-- (void)appendNumber:(double)a3
+- (void)appendNumber:(double)number
 {
   windowSize = self->_windowSize;
   count = self->_count;
@@ -96,13 +96,13 @@
     currentIndex = self->_currentIndex;
     v8 = series[currentIndex];
     self->_sum = self->_sum - v8;
-    series[currentIndex] = a3;
+    series[currentIndex] = number;
     v6 = count;
   }
 
   else
   {
-    series[count] = a3;
+    series[count] = number;
     v6 = count + 1;
     self->_count = count + 1;
     currentIndex = self->_currentIndex;
@@ -111,7 +111,7 @@
 
   self->_currentIndex = (currentIndex + 1) % windowSize;
   average = self->_average;
-  v10 = self->_sum + a3;
+  v10 = self->_sum + number;
   v11 = v10 / v6;
   self->_sum = v10;
   self->_average = v11;
@@ -123,8 +123,8 @@
 
   else
   {
-    v12 = a3 - average;
-    v13 = a3 - v11;
+    v12 = number - average;
+    v13 = number - v11;
     if (count >= windowSize)
     {
       v14 = v12 * v13 - (v8 - average) * (v8 - v11) + self->_sumVariance;

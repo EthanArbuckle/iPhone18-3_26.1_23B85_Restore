@@ -1,8 +1,8 @@
 @interface MapsSuggestionsCarPlaySource
 + (void)initialize;
-- (double)updateSuggestionEntriesWithHandler:(id)a3;
-- (id)initFromResourceDepot:(id)a3 name:(id)a4;
-- (void)setObserveExternalAccessory:(BOOL)a3;
+- (double)updateSuggestionEntriesWithHandler:(id)handler;
+- (id)initFromResourceDepot:(id)depot name:(id)name;
+- (void)setObserveExternalAccessory:(BOOL)accessory;
 - (void)start;
 - (void)stop;
 @end
@@ -23,21 +23,21 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     +[MapsExternalAccessory setUsePrivateQueue];
   }
 }
 
-- (id)initFromResourceDepot:(id)a3 name:(id)a4
+- (id)initFromResourceDepot:(id)depot name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  depotCopy = depot;
+  nameCopy = name;
+  if (!depotCopy)
   {
-    v9 = GEOFindOrCreateLog();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
+    oneSourceDelegate2 = GEOFindOrCreateLog();
+    if (os_log_type_enabled(oneSourceDelegate2, OS_LOG_TYPE_FAULT))
     {
       *buf = 136446978;
       v15 = "/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Suggestions/MapsSuggestionsCarPlaySource.m";
@@ -49,20 +49,20 @@
       v21 = "nil == (resourceDepot)";
       v11 = "At %{public}s:%d, %{public}s forbids: %{public}s. Requires a resource depot to buid!";
 LABEL_8:
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_FAULT, v11, buf, 0x26u);
+      _os_log_impl(&_mh_execute_header, oneSourceDelegate2, OS_LOG_TYPE_FAULT, v11, buf, 0x26u);
     }
 
 LABEL_9:
-    v10 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
-  v8 = [v6 oneSourceDelegate];
+  oneSourceDelegate = [depotCopy oneSourceDelegate];
 
-  if (!v8)
+  if (!oneSourceDelegate)
   {
-    v9 = GEOFindOrCreateLog();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
+    oneSourceDelegate2 = GEOFindOrCreateLog();
+    if (os_log_type_enabled(oneSourceDelegate2, OS_LOG_TYPE_FAULT))
     {
       *buf = 136446978;
       v15 = "/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Suggestions/MapsSuggestionsCarPlaySource.m";
@@ -79,25 +79,25 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v9 = [v6 oneSourceDelegate];
+  oneSourceDelegate2 = [depotCopy oneSourceDelegate];
   v13.receiver = self;
   v13.super_class = MapsSuggestionsCarPlaySource;
-  self = [(MapsSuggestionsCarPlaySource *)&v13 initWithDelegate:v9 name:v7];
-  v10 = self;
+  self = [(MapsSuggestionsCarPlaySource *)&v13 initWithDelegate:oneSourceDelegate2 name:nameCopy];
+  selfCopy = self;
 LABEL_10:
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)setObserveExternalAccessory:(BOOL)a3
+- (void)setObserveExternalAccessory:(BOOL)accessory
 {
-  v3 = a3;
-  if (+[MapsSuggestionsCarPlaySource isEnabled]&& self->_observeExternalAccessory != v3)
+  accessoryCopy = accessory;
+  if (+[MapsSuggestionsCarPlaySource isEnabled]&& self->_observeExternalAccessory != accessoryCopy)
   {
-    self->_observeExternalAccessory = v3;
+    self->_observeExternalAccessory = accessoryCopy;
     v6 = +[NSNotificationCenter defaultCenter];
     +[MapsExternalAccessory sharedInstance];
-    if (v3)
+    if (accessoryCopy)
       v5 = {;
       [v6 addObserver:self selector:"_updateExternalAccessory:" name:@"MapsExternalAccessoryUpdatedNotification" object:v5];
     }
@@ -121,15 +121,15 @@ LABEL_10:
   [(MapsSuggestionsCarPlaySource *)self setObserveExternalAccessory:0];
 }
 
-- (double)updateSuggestionEntriesWithHandler:(id)a3
+- (double)updateSuggestionEntriesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(MapsSuggestionsCarPlaySource *)self uniqueName];
+    uniqueName = [(MapsSuggestionsCarPlaySource *)self uniqueName];
     *buf = 138412546;
-    *&buf[4] = v6;
+    *&buf[4] = uniqueName;
     *&buf[12] = 2080;
     *&buf[14] = "updateSuggestionEntriesWithHandler";
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -145,10 +145,10 @@ LABEL_10:
   v8 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [(MapsSuggestionsCarPlaySource *)self uniqueName];
+    uniqueName2 = [(MapsSuggestionsCarPlaySource *)self uniqueName];
     v10 = NSStringFromMapsSuggestionsCurrentBestLocation();
     *buf = 138412802;
-    *&buf[4] = v9;
+    *&buf[4] = uniqueName2;
     *&buf[12] = 2112;
     *&buf[14] = @"ALL";
     *&buf[22] = 2112;
@@ -158,9 +158,9 @@ LABEL_10:
 
   v97 = objc_opt_new();
   v11 = +[MapsExternalAccessory sharedInstance];
-  v12 = [v11 needsFuel];
+  needsFuel = [v11 needsFuel];
 
-  if (!v12)
+  if (!needsFuel)
   {
     goto LABEL_101;
   }
@@ -168,9 +168,9 @@ LABEL_10:
   v13 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v14 = [(MapsSuggestionsCarPlaySource *)self uniqueName];
+    uniqueName3 = [(MapsSuggestionsCarPlaySource *)self uniqueName];
     *buf = 138412546;
-    *&buf[4] = v14;
+    *&buf[4] = uniqueName3;
     *&buf[12] = 2080;
     *&buf[14] = "needsFuel";
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -183,18 +183,18 @@ LABEL_10:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v15, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "needsFuel", "", buf, 2u);
   }
 
-  v93 = self;
-  v94 = v4;
+  selfCopy = self;
+  v94 = handlerCopy;
 
   v109 = 0u;
   v110 = 0u;
   v107 = 0u;
   v108 = 0u;
   v16 = +[MapsExternalAccessory sharedInstance];
-  v17 = [v16 engineStates];
-  v18 = [v17 allValues];
+  engineStates = [v16 engineStates];
+  allValues = [engineStates allValues];
 
-  v19 = [v18 countByEnumeratingWithState:&v107 objects:v112 count:16];
+  v19 = [allValues countByEnumeratingWithState:&v107 objects:v112 count:16];
   if (!v19)
   {
     LOBYTE(v22) = 1;
@@ -205,7 +205,7 @@ LABEL_10:
   v21 = *v108;
   v22 = 1;
   v95 = *v108;
-  v96 = v18;
+  v96 = allValues;
   do
   {
     v23 = 0;
@@ -215,7 +215,7 @@ LABEL_10:
       v24 = v22;
       if (*v108 != v21)
       {
-        objc_enumerationMutation(v18);
+        objc_enumerationMutation(allValues);
       }
 
       v25 = *(*(&v107 + 1) + 8 * v23);
@@ -225,12 +225,12 @@ LABEL_10:
         goto LABEL_46;
       }
 
-      v26 = [v25 engineType];
-      v27 = v26;
+      engineType = [v25 engineType];
+      v27 = engineType;
       v22 = 0;
-      if (v26 > 3)
+      if (engineType > 3)
       {
-        if (v26 != 8 && v26 != 4)
+        if (engineType != 8 && engineType != 4)
         {
           goto LABEL_46;
         }
@@ -238,7 +238,7 @@ LABEL_10:
 
       else
       {
-        if (v26 == 1)
+        if (engineType == 1)
         {
           if (!GEOConfigGetBOOL())
           {
@@ -248,7 +248,7 @@ LABEL_10:
           goto LABEL_29;
         }
 
-        if (v26 != 2)
+        if (engineType != 2)
         {
           goto LABEL_46;
         }
@@ -355,14 +355,14 @@ LABEL_43:
       [v97 addObject:v44];
       v22 = v24;
       v21 = v95;
-      v18 = v96;
+      allValues = v96;
       v20 = v98;
 LABEL_46:
       v23 = v23 + 1;
     }
 
     while (v20 != v23);
-    v45 = [v18 countByEnumeratingWithState:&v107 objects:v112 count:16];
+    v45 = [allValues countByEnumeratingWithState:&v107 objects:v112 count:16];
     v20 = v45;
   }
 
@@ -372,8 +372,8 @@ LABEL_52:
   if (![v97 count] && (v22 & 1) != 0)
   {
     obja = +[MapsExternalAccessory sharedInstance];
-    v46 = [obja primaryEngineType];
-    v47 = sub_10002A990(v46);
+    primaryEngineType = [obja primaryEngineType];
+    v47 = sub_10002A990(primaryEngineType);
     v48 = v47;
     if ((v47 & 0x10000) != 0 && !sub_10002ABDC(v47))
     {
@@ -418,7 +418,7 @@ LABEL_74:
         *buf = v63;
         *&buf[8] = &off_100079228;
         v115 = @"MapsSuggestionsCarPlayEnergyTypeKey";
-        v64 = [NSNumber numberWithUnsignedInt:v46];
+        v64 = [NSNumber numberWithUnsignedInt:primaryEngineType];
         v65 = v64;
         v66 = @"evcharger";
         if (((v48 & 0x1010100) != 0x10000) | v56 & 1)
@@ -434,7 +434,7 @@ LABEL_74:
         v128 = v55;
         v118 = @"MapsSuggestionsCarPlayEnergyBulletinSubtitle";
         v119 = @"MapsSuggestionsCarPlayEnergyBulletinEngineType";
-        v67 = [NSNumber numberWithUnsignedInt:v46];
+        v67 = [NSNumber numberWithUnsignedInt:primaryEngineType];
         v129 = v67;
         v130 = &off_100079240;
         v120 = @"MapsSuggestionsTransportTypeKey";
@@ -453,8 +453,8 @@ LABEL_74:
         [v97 addObject:v69];
 LABEL_95:
 
-        v4 = v94;
-        self = v93;
+        handlerCopy = v94;
+        self = selfCopy;
         goto LABEL_96;
       }
     }
@@ -471,14 +471,14 @@ LABEL_73:
     goto LABEL_74;
   }
 
-  v4 = v94;
-  self = v93;
+  handlerCopy = v94;
+  self = selfCopy;
   if ([v97 count] >= 2)
   {
     v49 = +[MapsExternalAccessory sharedInstance];
-    v50 = [v49 engineTypes];
-    v51 = v50;
-    if ((v50 & 0x10000) != 0 && !sub_10002ABDC(v50))
+    engineTypes = [v49 engineTypes];
+    v51 = engineTypes;
+    if ((engineTypes & 0x10000) != 0 && !sub_10002ABDC(engineTypes))
     {
       v52 = MapsSuggestionsLocalizedCarPlayLowEVString();
     }
@@ -500,9 +500,9 @@ LABEL_73:
     v69 = v52;
 
     v70 = +[MapsExternalAccessory sharedInstance];
-    v71 = [v70 engineTypes];
-    v72 = v71;
-    if ((v71 & 0x10000) != 0 && !sub_10002ABDC(v71))
+    engineTypes2 = [v70 engineTypes];
+    v72 = engineTypes2;
+    if ((engineTypes2 & 0x10000) != 0 && !sub_10002ABDC(engineTypes2))
     {
       v73 = MapsSuggestionsLocalizedFindEVChargerString();
     }
@@ -520,7 +520,7 @@ LABEL_73:
     v74 = v73;
 
     v75 = +[MapsExternalAccessory sharedInstance];
-    v76 = [v75 primaryEngineType];
+    primaryEngineType2 = [v75 primaryEngineType];
 
     v105 = 0u;
     v106 = 0u;
@@ -544,7 +544,7 @@ LABEL_73:
           v81 = *(*(&v103 + 1) + 8 * i);
           [v81 setString:v69 forKey:@"MapsSuggestionsCarPlayEnergyBulletinTitle"];
           [v81 setString:v74 forKey:@"MapsSuggestionsCarPlayEnergyBulletinSubtitle"];
-          [NSNumber numberWithUnsignedInt:v76];
+          [NSNumber numberWithUnsignedInt:primaryEngineType2];
           v83 = v82 = v69;
           [v81 setNumber:v83 forKey:@"MapsSuggestionsCarPlayEnergyBulletinEngineType"];
 
@@ -564,9 +564,9 @@ LABEL_96:
   v84 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v84, OS_LOG_TYPE_DEBUG))
   {
-    v85 = [(MapsSuggestionsCarPlaySource *)self uniqueName];
+    uniqueName4 = [(MapsSuggestionsCarPlaySource *)self uniqueName];
     *buf = 138412546;
-    *&buf[4] = v85;
+    *&buf[4] = uniqueName4;
     *&buf[12] = 2080;
     *&buf[14] = "needsFuel";
     _os_log_impl(&_mh_execute_header, v84, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s END", buf, 0x16u);
@@ -581,17 +581,17 @@ LABEL_96:
 
 LABEL_101:
   [(MapsSuggestionsCarPlaySource *)self addOrUpdateMySuggestionEntries:v97];
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
   }
 
   v87 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v87, OS_LOG_TYPE_DEBUG))
   {
-    v88 = [(MapsSuggestionsCarPlaySource *)self uniqueName];
+    uniqueName5 = [(MapsSuggestionsCarPlaySource *)self uniqueName];
     *buf = 138412546;
-    *&buf[4] = v88;
+    *&buf[4] = uniqueName5;
     *&buf[12] = 2080;
     *&buf[14] = "updateSuggestionEntriesWithHandler";
     _os_log_impl(&_mh_execute_header, v87, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s END", buf, 0x16u);

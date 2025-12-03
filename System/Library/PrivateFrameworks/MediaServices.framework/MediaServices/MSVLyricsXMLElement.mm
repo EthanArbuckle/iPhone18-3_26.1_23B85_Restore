@@ -8,9 +8,9 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MSVLyricsXMLElement *)self elementName];
-  v6 = [(MSVLyricsXMLElement *)self identifier];
-  v7 = [v3 stringWithFormat:@"<%@ %p> Name: %@, identifier: %@", v4, self, v5, v6];
+  elementName = [(MSVLyricsXMLElement *)self elementName];
+  identifier = [(MSVLyricsXMLElement *)self identifier];
+  v7 = [v3 stringWithFormat:@"<%@ %p> Name: %@, identifier: %@", v4, self, elementName, identifier];
 
   return v7;
 }

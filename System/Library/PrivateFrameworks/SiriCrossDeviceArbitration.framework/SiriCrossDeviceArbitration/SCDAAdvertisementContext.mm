@@ -1,50 +1,50 @@
 @interface SCDAAdvertisementContext
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SCDAAdvertisementContext)initWithBuilder:(id)a3;
-- (SCDAAdvertisementContext)initWithCoder:(id)a3;
-- (SCDAAdvertisementContext)initWithGeneration:(unint64_t)a3 contextData:(id)a4 contextFetchDelay:(double)a5;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (SCDAAdvertisementContext)initWithBuilder:(id)builder;
+- (SCDAAdvertisementContext)initWithCoder:(id)coder;
+- (SCDAAdvertisementContext)initWithGeneration:(unint64_t)generation contextData:(id)data contextFetchDelay:(double)delay;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SCDAAdvertisementContext
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   generation = self->_generation;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithUnsignedLongLong:generation];
-  [v6 encodeObject:v7 forKey:@"SCDAAdvertisementContext::generation"];
+  [coderCopy encodeObject:v7 forKey:@"SCDAAdvertisementContext::generation"];
 
-  [v6 encodeObject:self->_contextData forKey:@"SCDAAdvertisementContext::contextData"];
+  [coderCopy encodeObject:self->_contextData forKey:@"SCDAAdvertisementContext::contextData"];
   v8 = [MEMORY[0x1E696AD98] numberWithDouble:self->_contextFetchDelay];
-  [v6 encodeObject:v8 forKey:@"SCDAAdvertisementContext::contextFetchDelay"];
+  [coderCopy encodeObject:v8 forKey:@"SCDAAdvertisementContext::contextFetchDelay"];
 }
 
-- (SCDAAdvertisementContext)initWithCoder:(id)a3
+- (SCDAAdvertisementContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SCDAAdvertisementContext::generation"];
-  v6 = [v5 unsignedLongLongValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SCDAAdvertisementContext::generation"];
+  unsignedLongLongValue = [v5 unsignedLongLongValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SCDAAdvertisementContext::contextData"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SCDAAdvertisementContext::contextFetchDelay"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SCDAAdvertisementContext::contextData"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SCDAAdvertisementContext::contextFetchDelay"];
 
   [v8 doubleValue];
   v10 = v9;
 
-  v11 = [(SCDAAdvertisementContext *)self initWithGeneration:v6 contextData:v7 contextFetchDelay:v10];
+  v11 = [(SCDAAdvertisementContext *)self initWithGeneration:unsignedLongLongValue contextData:v7 contextFetchDelay:v10];
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -54,13 +54,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       generation = self->_generation;
       if (generation == [(SCDAAdvertisementContext *)v5 generation]&& (contextFetchDelay = self->_contextFetchDelay, [(SCDAAdvertisementContext *)v5 contextFetchDelay], contextFetchDelay == v8))
       {
-        v11 = [(SCDAAdvertisementContext *)v5 contextData];
+        contextData = [(SCDAAdvertisementContext *)v5 contextData];
         contextData = self->_contextData;
-        v9 = contextData == v11 || [(NSData *)contextData isEqual:v11];
+        v9 = contextData == contextData || [(NSData *)contextData isEqual:contextData];
       }
 
       else
@@ -89,7 +89,7 @@
   return v5 ^ v7;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v8.receiver = self;
@@ -100,17 +100,17 @@
   return v6;
 }
 
-- (SCDAAdvertisementContext)initWithGeneration:(unint64_t)a3 contextData:(id)a4 contextFetchDelay:(double)a5
+- (SCDAAdvertisementContext)initWithGeneration:(unint64_t)generation contextData:(id)data contextFetchDelay:(double)delay
 {
-  v8 = a4;
+  dataCopy = data;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __77__SCDAAdvertisementContext_initWithGeneration_contextData_contextFetchDelay___block_invoke;
   v12[3] = &unk_1E85D2EC8;
-  v13 = v8;
-  v14 = a3;
-  v15 = a5;
-  v9 = v8;
+  v13 = dataCopy;
+  generationCopy = generation;
+  delayCopy = delay;
+  v9 = dataCopy;
   v10 = [(SCDAAdvertisementContext *)self initWithBuilder:v12];
 
   return v10;
@@ -125,22 +125,22 @@ void __77__SCDAAdvertisementContext_initWithGeneration_contextData_contextFetchD
   [v4 setContextFetchDelay:*(a1 + 48)];
 }
 
-- (SCDAAdvertisementContext)initWithBuilder:(id)a3
+- (SCDAAdvertisementContext)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v13.receiver = self;
   v13.super_class = SCDAAdvertisementContext;
   v5 = [(SCDAAdvertisementContext *)&v13 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_SCDAAdvertisementContextMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_SCDAAdvertisementContextMutation *)v7 isDirty])
     {
       v6->_generation = [(_SCDAAdvertisementContextMutation *)v7 getGeneration];
-      v8 = [(_SCDAAdvertisementContextMutation *)v7 getContextData];
-      v9 = [v8 copy];
+      getContextData = [(_SCDAAdvertisementContextMutation *)v7 getContextData];
+      v9 = [getContextData copy];
       contextData = v6->_contextData;
       v6->_contextData = v9;
 
@@ -152,27 +152,27 @@ void __77__SCDAAdvertisementContext_initWithGeneration_contextData_contextFetchD
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_SCDAAdvertisementContextMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_SCDAAdvertisementContextMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(SCDAAdvertisementContext);
       v6->_generation = [(_SCDAAdvertisementContextMutation *)v5 getGeneration];
-      v7 = [(_SCDAAdvertisementContextMutation *)v5 getContextData];
-      v8 = [v7 copy];
+      getContextData = [(_SCDAAdvertisementContextMutation *)v5 getContextData];
+      v8 = [getContextData copy];
       contextData = v6->_contextData;
       v6->_contextData = v8;
 

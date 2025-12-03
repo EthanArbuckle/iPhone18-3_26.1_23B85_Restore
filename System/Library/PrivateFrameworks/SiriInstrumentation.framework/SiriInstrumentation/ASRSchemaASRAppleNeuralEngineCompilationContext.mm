@@ -1,31 +1,31 @@
 @interface ASRSchemaASRAppleNeuralEngineCompilationContext
-- (ASRSchemaASRAppleNeuralEngineCompilationContext)initWithDictionary:(id)a3;
-- (ASRSchemaASRAppleNeuralEngineCompilationContext)initWithJSON:(id)a3;
+- (ASRSchemaASRAppleNeuralEngineCompilationContext)initWithDictionary:(id)dictionary;
+- (ASRSchemaASRAppleNeuralEngineCompilationContext)initWithJSON:(id)n;
 - (ASRSchemaASRAppleNeuralEngineCompilationEnded)ended;
 - (ASRSchemaASRAppleNeuralEngineCompilationStarted)started;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (void)deleteEnded;
 - (void)deleteStarted;
-- (void)setEnded:(id)a3;
-- (void)setStarted:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setEnded:(id)ended;
+- (void)setStarted:(id)started;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASRSchemaASRAppleNeuralEngineCompilationContext
 
-- (ASRSchemaASRAppleNeuralEngineCompilationContext)initWithDictionary:(id)a3
+- (ASRSchemaASRAppleNeuralEngineCompilationContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = ASRSchemaASRAppleNeuralEngineCompilationContext;
   v5 = [(ASRSchemaASRAppleNeuralEngineCompilationContext *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"started"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"started"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,7 +33,7 @@
       [(ASRSchemaASRAppleNeuralEngineCompilationContext *)v5 setStarted:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"ended"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"ended"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -47,30 +47,30 @@
   return v5;
 }
 
-- (ASRSchemaASRAppleNeuralEngineCompilationContext)initWithJSON:(id)a3
+- (ASRSchemaASRAppleNeuralEngineCompilationContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ASRSchemaASRAppleNeuralEngineCompilationContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ASRSchemaASRAppleNeuralEngineCompilationContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ASRSchemaASRAppleNeuralEngineCompilationContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -83,72 +83,72 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_ended)
   {
-    v4 = [(ASRSchemaASRAppleNeuralEngineCompilationContext *)self ended];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    ended = [(ASRSchemaASRAppleNeuralEngineCompilationContext *)self ended];
+    dictionaryRepresentation = [ended dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"ended"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"ended"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"ended"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"ended"];
     }
   }
 
   if (self->_started)
   {
-    v7 = [(ASRSchemaASRAppleNeuralEngineCompilationContext *)self started];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    started = [(ASRSchemaASRAppleNeuralEngineCompilationContext *)self started];
+    dictionaryRepresentation2 = [started dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"started"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"started"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"started"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"started"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   whichContextevent = self->_whichContextevent;
-  if (whichContextevent != [v4 whichContextevent])
+  if (whichContextevent != [equalCopy whichContextevent])
   {
     goto LABEL_13;
   }
 
-  v6 = [(ASRSchemaASRAppleNeuralEngineCompilationContext *)self started];
-  v7 = [v4 started];
-  if ((v6 != 0) == (v7 == 0))
+  started = [(ASRSchemaASRAppleNeuralEngineCompilationContext *)self started];
+  started2 = [equalCopy started];
+  if ((started != 0) == (started2 == 0))
   {
     goto LABEL_12;
   }
 
-  v8 = [(ASRSchemaASRAppleNeuralEngineCompilationContext *)self started];
-  if (v8)
+  started3 = [(ASRSchemaASRAppleNeuralEngineCompilationContext *)self started];
+  if (started3)
   {
-    v9 = v8;
-    v10 = [(ASRSchemaASRAppleNeuralEngineCompilationContext *)self started];
-    v11 = [v4 started];
-    v12 = [v10 isEqual:v11];
+    v9 = started3;
+    started4 = [(ASRSchemaASRAppleNeuralEngineCompilationContext *)self started];
+    started5 = [equalCopy started];
+    v12 = [started4 isEqual:started5];
 
     if (!v12)
     {
@@ -160,12 +160,12 @@
   {
   }
 
-  v6 = [(ASRSchemaASRAppleNeuralEngineCompilationContext *)self ended];
-  v7 = [v4 ended];
-  if ((v6 != 0) != (v7 == 0))
+  started = [(ASRSchemaASRAppleNeuralEngineCompilationContext *)self ended];
+  started2 = [equalCopy ended];
+  if ((started != 0) != (started2 == 0))
   {
-    v13 = [(ASRSchemaASRAppleNeuralEngineCompilationContext *)self ended];
-    if (!v13)
+    ended = [(ASRSchemaASRAppleNeuralEngineCompilationContext *)self ended];
+    if (!ended)
     {
 
 LABEL_16:
@@ -173,10 +173,10 @@ LABEL_16:
       goto LABEL_14;
     }
 
-    v14 = v13;
-    v15 = [(ASRSchemaASRAppleNeuralEngineCompilationContext *)self ended];
-    v16 = [v4 ended];
-    v17 = [v15 isEqual:v16];
+    v14 = ended;
+    ended2 = [(ASRSchemaASRAppleNeuralEngineCompilationContext *)self ended];
+    ended3 = [equalCopy ended];
+    v17 = [ended2 isEqual:ended3];
 
     if (v17)
     {
@@ -196,22 +196,22 @@ LABEL_14:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(ASRSchemaASRAppleNeuralEngineCompilationContext *)self started];
+  toCopy = to;
+  started = [(ASRSchemaASRAppleNeuralEngineCompilationContext *)self started];
 
-  if (v4)
+  if (started)
   {
-    v5 = [(ASRSchemaASRAppleNeuralEngineCompilationContext *)self started];
+    started2 = [(ASRSchemaASRAppleNeuralEngineCompilationContext *)self started];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(ASRSchemaASRAppleNeuralEngineCompilationContext *)self ended];
+  ended = [(ASRSchemaASRAppleNeuralEngineCompilationContext *)self ended];
 
-  if (v6)
+  if (ended)
   {
-    v7 = [(ASRSchemaASRAppleNeuralEngineCompilationContext *)self ended];
+    ended2 = [(ASRSchemaASRAppleNeuralEngineCompilationContext *)self ended];
     PBDataWriterWriteSubmessage();
   }
 }
@@ -241,21 +241,21 @@ LABEL_14:
   return v3;
 }
 
-- (void)setEnded:(id)a3
+- (void)setEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   started = self->_started;
   self->_started = 0;
 
   v6 = 102;
-  if (!v4)
+  if (!endedCopy)
   {
     v6 = 0;
   }
 
   self->_whichContextevent = v6;
   ended = self->_ended;
-  self->_ended = v4;
+  self->_ended = endedCopy;
 }
 
 - (void)deleteStarted
@@ -283,43 +283,43 @@ LABEL_14:
   return v3;
 }
 
-- (void)setStarted:(id)a3
+- (void)setStarted:(id)started
 {
-  v4 = a3;
+  startedCopy = started;
   ended = self->_ended;
   self->_ended = 0;
 
   v6 = 101;
-  if (!v4)
+  if (!startedCopy)
   {
     v6 = 0;
   }
 
   self->_whichContextevent = v6;
   started = self->_started;
-  self->_started = v4;
+  self->_started = startedCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = ASRSchemaASRAppleNeuralEngineCompilationContext;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(ASRSchemaASRAppleNeuralEngineCompilationContext *)self started];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  started = [(ASRSchemaASRAppleNeuralEngineCompilationContext *)self started];
+  v7 = [started applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ASRSchemaASRAppleNeuralEngineCompilationContext *)self deleteStarted];
   }
 
-  v9 = [(ASRSchemaASRAppleNeuralEngineCompilationContext *)self ended];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  ended = [(ASRSchemaASRAppleNeuralEngineCompilationContext *)self ended];
+  v10 = [ended applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(ASRSchemaASRAppleNeuralEngineCompilationContext *)self deleteEnded];
   }

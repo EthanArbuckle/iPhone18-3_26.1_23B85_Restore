@@ -1,17 +1,17 @@
 @interface MPCPlaybackContextRemotePlaybackQueue
-- (MPCPlaybackContextRemotePlaybackQueue)initWithPlaybackContext:(id)a3;
+- (MPCPlaybackContextRemotePlaybackQueue)initWithPlaybackContext:(id)context;
 @end
 
 @implementation MPCPlaybackContextRemotePlaybackQueue
 
-- (MPCPlaybackContextRemotePlaybackQueue)initWithPlaybackContext:(id)a3
+- (MPCPlaybackContextRemotePlaybackQueue)initWithPlaybackContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v6 = [(MPCPlaybackContextRemotePlaybackQueue *)self initWithMediaRemotePlaybackQueue:0 options:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_playbackContext, a3);
+    objc_storeStrong(&v6->_playbackContext, context);
   }
 
   return v7;

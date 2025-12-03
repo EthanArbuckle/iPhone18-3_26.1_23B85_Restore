@@ -1,15 +1,15 @@
 @interface _PASCachedResult
 - (_PASCachedResult)init;
-- (_PASCachedResult)resultWithBlock:(id)a3;
-- (id)resultNonnullWithBlock:(id)a3;
+- (_PASCachedResult)resultWithBlock:(id)block;
+- (id)resultNonnullWithBlock:(id)block;
 - (void)dealloc;
 @end
 
 @implementation _PASCachedResult
 
-- (id)resultNonnullWithBlock:(id)a3
+- (id)resultNonnullWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = atomic_load(&self->_done);
   if ((v5 & 1) == 0)
   {
@@ -18,7 +18,7 @@
     if ((v9 & 1) == 0)
     {
       v10 = objc_autoreleasePoolPush();
-      v11 = v4[2](v4);
+      v11 = blockCopy[2](blockCopy);
       objc_autoreleasePoolPop(v10);
       data = self->_data;
       self->_data = v11;
@@ -35,9 +35,9 @@
   return v6;
 }
 
-- (_PASCachedResult)resultWithBlock:(id)a3
+- (_PASCachedResult)resultWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = atomic_load(&self->_done);
   if ((v5 & 1) == 0)
   {
@@ -46,7 +46,7 @@
     if ((v9 & 1) == 0)
     {
       v10 = objc_autoreleasePoolPush();
-      v11 = v4[2](v4);
+      v11 = blockCopy[2](blockCopy);
       objc_autoreleasePoolPop(v10);
       data = self->_data;
       self->_data = v11;

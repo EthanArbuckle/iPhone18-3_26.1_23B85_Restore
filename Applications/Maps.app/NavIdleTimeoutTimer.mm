@@ -1,13 +1,13 @@
 @interface NavIdleTimeoutTimer
-- (NavIdleTimeoutTimer)initWithView:(id)a3;
-- (NavIdleTimeoutTimer)initWithView:(id)a3 idleTimeout:(double)a4;
-- (NavIdleTimeoutTimer)initWithWindow:(id)a3;
-- (NavIdleTimeoutTimer)initWithWindow:(id)a3 idleTimeout:(double)a4;
+- (NavIdleTimeoutTimer)initWithView:(id)view;
+- (NavIdleTimeoutTimer)initWithView:(id)view idleTimeout:(double)timeout;
+- (NavIdleTimeoutTimer)initWithWindow:(id)window;
+- (NavIdleTimeoutTimer)initWithWindow:(id)window idleTimeout:(double)timeout;
 - (NavIdleTimerDelegate)delegate;
 - (UIView)view;
 - (UIWindow)window;
-- (void)_handleEvent:(id)a3;
-- (void)_handleGesture:(id)a3;
+- (void)_handleEvent:(id)event;
+- (void)_handleGesture:(id)gesture;
 - (void)_handleTimer;
 - (void)_invalidateTimer;
 - (void)_scheduleTimer;
@@ -48,18 +48,18 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Timeout fired", v5, 2u);
   }
 
-  v4 = [(NavIdleTimeoutTimer *)self delegate];
-  [v4 idleTimerDidTimeout:self];
+  delegate = [(NavIdleTimeoutTimer *)self delegate];
+  [delegate idleTimerDidTimeout:self];
 }
 
 - (void)_invalidateTimer
 {
-  v3 = [(NavIdleTimeoutTimer *)self dispatchSource];
+  dispatchSource = [(NavIdleTimeoutTimer *)self dispatchSource];
 
-  if (v3)
+  if (dispatchSource)
   {
-    v4 = [(NavIdleTimeoutTimer *)self dispatchSource];
-    dispatch_source_cancel(v4);
+    dispatchSource2 = [(NavIdleTimeoutTimer *)self dispatchSource];
+    dispatch_source_cancel(dispatchSource2);
 
     [(NavIdleTimeoutTimer *)self setDispatchSource:0];
   }
@@ -67,22 +67,22 @@
 
 - (void)_scheduleTimer
 {
-  v3 = [(NavIdleTimeoutTimer *)self dispatchSource];
+  dispatchSource = [(NavIdleTimeoutTimer *)self dispatchSource];
 
-  if (v3)
+  if (dispatchSource)
   {
     [(NavIdleTimeoutTimer *)self _invalidateTimer];
   }
 
   [(NavIdleTimeoutTimer *)self idleTimeout];
   v5 = v4;
-  v6 = [(NavIdleTimeoutTimer *)self delegate];
+  delegate = [(NavIdleTimeoutTimer *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(NavIdleTimeoutTimer *)self delegate];
-    [v8 nextIdleTimeout:self];
+    delegate2 = [(NavIdleTimeoutTimer *)self delegate];
+    [delegate2 nextIdleTimeout:self];
     v5 = v9;
   }
 
@@ -98,48 +98,48 @@
   [(NavIdleTimeoutTimer *)self setDispatchSource:v11];
 
   objc_initWeak(buf, self);
-  v12 = [(NavIdleTimeoutTimer *)self dispatchSource];
+  dispatchSource2 = [(NavIdleTimeoutTimer *)self dispatchSource];
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_100FB44F8;
   handler[3] = &unk_101661B98;
   objc_copyWeak(&v17, buf);
-  dispatch_source_set_event_handler(v12, handler);
+  dispatch_source_set_event_handler(dispatchSource2, handler);
 
   v13 = dispatch_time(0, (v5 * 1000000000.0));
-  v14 = [(NavIdleTimeoutTimer *)self dispatchSource];
-  dispatch_source_set_timer(v14, v13, 1000000000 * v5, 0x3B9ACA00uLL);
+  dispatchSource3 = [(NavIdleTimeoutTimer *)self dispatchSource];
+  dispatch_source_set_timer(dispatchSource3, v13, 1000000000 * v5, 0x3B9ACA00uLL);
 
-  v15 = [(NavIdleTimeoutTimer *)self dispatchSource];
-  dispatch_resume(v15);
+  dispatchSource4 = [(NavIdleTimeoutTimer *)self dispatchSource];
+  dispatch_resume(dispatchSource4);
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(buf);
 }
 
-- (void)_handleGesture:(id)a3
+- (void)_handleGesture:(id)gesture
 {
-  v4 = [a3 event];
-  [(NavIdleTimeoutTimer *)self _handleEvent:v4];
+  event = [gesture event];
+  [(NavIdleTimeoutTimer *)self _handleEvent:event];
 }
 
-- (void)_handleEvent:(id)a3
+- (void)_handleEvent:(id)event
 {
-  v4 = a3;
-  if (![v4 type] && !-[NavIdleTimeoutTimer suppressInterruptions](self, "suppressInterruptions"))
+  eventCopy = event;
+  if (![eventCopy type] && !-[NavIdleTimeoutTimer suppressInterruptions](self, "suppressInterruptions"))
   {
     [(NavIdleTimeoutTimer *)self _invalidateTimer];
-    v5 = [(NavIdleTimeoutTimer *)self window];
-    if (v5)
+    window = [(NavIdleTimeoutTimer *)self window];
+    if (window)
     {
-      v6 = [v4 touchesForWindow:v5];
+      v6 = [eventCopy touchesForWindow:window];
     }
 
     else
     {
-      v7 = [(NavIdleTimeoutTimer *)self view];
-      v8 = [v7 window];
-      v6 = [v4 touchesForWindow:v8];
+      view = [(NavIdleTimeoutTimer *)self view];
+      window2 = [view window];
+      v6 = [eventCopy touchesForWindow:window2];
     }
 
     v17 = 0u;
@@ -186,9 +186,9 @@ LABEL_17:
 
 - (void)_setupEventTap
 {
-  v3 = [(NavIdleTimeoutTimer *)self window];
+  window = [(NavIdleTimeoutTimer *)self window];
 
-  if (v3)
+  if (window)
   {
     objc_initWeak(&location, self);
     v11[0] = _NSConcreteStackBlock;
@@ -199,9 +199,9 @@ LABEL_17:
     v4 = [EventTap eventTapWithHandler:v11];
     [(NavIdleTimeoutTimer *)self setEventTap:v4];
 
-    v5 = [(NavIdleTimeoutTimer *)self window];
-    v6 = [(NavIdleTimeoutTimer *)self eventTap];
-    [v5 _maps_registerEventTap:v6];
+    window2 = [(NavIdleTimeoutTimer *)self window];
+    eventTap = [(NavIdleTimeoutTimer *)self eventTap];
+    [window2 _maps_registerEventTap:eventTap];
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
@@ -209,24 +209,24 @@ LABEL_17:
 
   else
   {
-    v7 = [(NavIdleTimeoutTimer *)self view];
+    view = [(NavIdleTimeoutTimer *)self view];
 
-    if (v7)
+    if (view)
     {
       v8 = [[NavIdleTimeoutGestureRecognizer alloc] initWithTarget:self action:"_handleGesture:"];
       [(NavIdleTimeoutTimer *)self setGestureRecognizer:v8];
 
-      v10 = [(NavIdleTimeoutTimer *)self view];
-      v9 = [(NavIdleTimeoutTimer *)self gestureRecognizer];
-      [v10 addGestureRecognizer:v9];
+      view2 = [(NavIdleTimeoutTimer *)self view];
+      gestureRecognizer = [(NavIdleTimeoutTimer *)self gestureRecognizer];
+      [view2 addGestureRecognizer:gestureRecognizer];
     }
   }
 }
 
 - (void)dealloc
 {
-  v3 = [(NavIdleTimeoutGestureRecognizer *)self->_gestureRecognizer view];
-  [v3 removeGestureRecognizer:self->_gestureRecognizer];
+  view = [(NavIdleTimeoutGestureRecognizer *)self->_gestureRecognizer view];
+  [view removeGestureRecognizer:self->_gestureRecognizer];
 
   [(NavIdleTimeoutTimer *)self _invalidateTimer];
   v4.receiver = self;
@@ -234,17 +234,17 @@ LABEL_17:
   [(NavIdleTimeoutTimer *)&v4 dealloc];
 }
 
-- (NavIdleTimeoutTimer)initWithView:(id)a3 idleTimeout:(double)a4
+- (NavIdleTimeoutTimer)initWithView:(id)view idleTimeout:(double)timeout
 {
-  v6 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = NavIdleTimeoutTimer;
   v7 = [(NavIdleTimeoutTimer *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_view, v6);
-    v8->_idleTimeout = a4;
+    objc_storeWeak(&v7->_view, viewCopy);
+    v8->_idleTimeout = timeout;
     [(NavIdleTimeoutTimer *)v8 _setupEventTap];
     [(NavIdleTimeoutTimer *)v8 _scheduleTimer];
   }
@@ -252,26 +252,26 @@ LABEL_17:
   return v8;
 }
 
-- (NavIdleTimeoutTimer)initWithView:(id)a3
+- (NavIdleTimeoutTimer)initWithView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   GEOConfigGetDouble();
-  v5 = [(NavIdleTimeoutTimer *)self initWithView:v4 idleTimeout:?];
+  v5 = [(NavIdleTimeoutTimer *)self initWithView:viewCopy idleTimeout:?];
 
   return v5;
 }
 
-- (NavIdleTimeoutTimer)initWithWindow:(id)a3 idleTimeout:(double)a4
+- (NavIdleTimeoutTimer)initWithWindow:(id)window idleTimeout:(double)timeout
 {
-  v6 = a3;
+  windowCopy = window;
   v10.receiver = self;
   v10.super_class = NavIdleTimeoutTimer;
   v7 = [(NavIdleTimeoutTimer *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_window, v6);
-    v8->_idleTimeout = a4;
+    objc_storeWeak(&v7->_window, windowCopy);
+    v8->_idleTimeout = timeout;
     [(NavIdleTimeoutTimer *)v8 _setupEventTap];
     [(NavIdleTimeoutTimer *)v8 _scheduleTimer];
   }
@@ -279,11 +279,11 @@ LABEL_17:
   return v8;
 }
 
-- (NavIdleTimeoutTimer)initWithWindow:(id)a3
+- (NavIdleTimeoutTimer)initWithWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   GEOConfigGetDouble();
-  v5 = [(NavIdleTimeoutTimer *)self initWithWindow:v4 idleTimeout:?];
+  v5 = [(NavIdleTimeoutTimer *)self initWithWindow:windowCopy idleTimeout:?];
 
   return v5;
 }

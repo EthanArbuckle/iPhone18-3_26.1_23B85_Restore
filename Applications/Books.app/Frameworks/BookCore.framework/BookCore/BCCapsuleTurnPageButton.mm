@@ -1,12 +1,12 @@
 @interface BCCapsuleTurnPageButton
-- (BCCapsuleTurnPageButton)initWithCoder:(id)a3;
-- (BCCapsuleTurnPageButton)initWithFrame:(CGRect)a3;
+- (BCCapsuleTurnPageButton)initWithCoder:(id)coder;
+- (BCCapsuleTurnPageButton)initWithFrame:(CGRect)frame;
 - (BCTurnPageButtonAccessibilityDelegate)delegate;
 - (BOOL)isHovering;
 - (NSString)accessibilityLabel;
 - (void)accessibilityElementDidBecomeFocused;
 - (void)accessibilityElementDidLoseFocus;
-- (void)setIsHovering:(BOOL)a3;
+- (void)setIsHovering:(BOOL)hovering;
 @end
 
 @implementation BCCapsuleTurnPageButton
@@ -26,20 +26,20 @@
   return *(self + v3);
 }
 
-- (void)setIsHovering:(BOOL)a3
+- (void)setIsHovering:(BOOL)hovering
 {
-  v3 = a3;
+  hoveringCopy = hovering;
   v5 = OBJC_IVAR___BCCapsuleTurnPageButton_isHovering;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = v3;
-  if (v6 != v3)
+  *(self + v5) = hoveringCopy;
+  if (v6 != hoveringCopy)
   {
     [(BCCapsuleTurnPageButton *)self setNeedsUpdateConfiguration];
   }
 }
 
-- (BCCapsuleTurnPageButton)initWithCoder:(id)a3
+- (BCCapsuleTurnPageButton)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   *(self + OBJC_IVAR___BCCapsuleTurnPageButton_isHovering) = 0;
@@ -48,7 +48,7 @@
   return result;
 }
 
-- (BCCapsuleTurnPageButton)initWithFrame:(CGRect)a3
+- (BCCapsuleTurnPageButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -57,8 +57,8 @@
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
-  [(BCCapsuleTurnPageButton *)v2 effectiveUserInterfaceLayoutDirection];
+  selfCopy = self;
+  [(BCCapsuleTurnPageButton *)selfCopy effectiveUserInterfaceLayoutDirection];
   sub_1CEECC();
 
   v3 = sub_1EEED4();
@@ -68,13 +68,13 @@
 
 - (void)accessibilityElementDidBecomeFocused
 {
-  v2 = self;
+  selfCopy = self;
   CapsuleTurnPageButton.accessibilityElementDidBecomeFocused()();
 }
 
 - (void)accessibilityElementDidLoseFocus
 {
-  v2 = self;
+  selfCopy = self;
   CapsuleTurnPageButton.accessibilityElementDidLoseFocus()();
 }
 

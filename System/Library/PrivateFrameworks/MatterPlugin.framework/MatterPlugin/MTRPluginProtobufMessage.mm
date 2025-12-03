@@ -1,8 +1,8 @@
 @interface MTRPluginProtobufMessage
-+ (id)messageWithProtobufData:(id)a3;
-+ (id)messageWithProtobufData:(id)a3 responseHandler:(id)a4;
++ (id)messageWithProtobufData:(id)data;
++ (id)messageWithProtobufData:(id)data responseHandler:(id)handler;
 - (BOOL)isRequest;
-- (MTRPluginProtobufMessage)initWithProtobufData:(id)a3 responseHandler:(id)a4;
+- (MTRPluginProtobufMessage)initWithProtobufData:(id)data responseHandler:(id)handler;
 - (NSNumber)messageType;
 - (NSUUID)homeIdentifier;
 - (NSUUID)sessionIdentifier;
@@ -12,10 +12,10 @@
 
 @implementation MTRPluginProtobufMessage
 
-- (MTRPluginProtobufMessage)initWithProtobufData:(id)a3 responseHandler:(id)a4
+- (MTRPluginProtobufMessage)initWithProtobufData:(id)data responseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   v16.receiver = self;
   v16.super_class = MTRPluginProtobufMessage;
   v8 = [(MTRPluginProtobufMessage *)&v16 init];
@@ -24,19 +24,19 @@
     goto LABEL_5;
   }
 
-  v9 = [[MTRPluginPBMHeaderMessage alloc] initWithData:v6];
+  v9 = [[MTRPluginPBMHeaderMessage alloc] initWithData:dataCopy];
   if ([(MTRPluginPBMHeaderMessage *)v9 hasHeader])
   {
-    v10 = [(MTRPluginPBMHeaderMessage *)v9 header];
-    v11 = [v10 isValid];
+    header = [(MTRPluginPBMHeaderMessage *)v9 header];
+    isValid = [header isValid];
 
-    if (v11)
+    if (isValid)
     {
-      [(MTRPluginProtobufMessage *)v8 setMessageData:v6];
-      v12 = [(MTRPluginPBMHeaderMessage *)v9 header];
-      [(MTRPluginProtobufMessage *)v8 setMessageHeader:v12];
+      [(MTRPluginProtobufMessage *)v8 setMessageData:dataCopy];
+      header2 = [(MTRPluginPBMHeaderMessage *)v9 header];
+      [(MTRPluginProtobufMessage *)v8 setMessageHeader:header2];
 
-      [(MTRPluginProtobufMessage *)v8 setResponseHandler:v7];
+      [(MTRPluginProtobufMessage *)v8 setResponseHandler:handlerCopy];
       [(MTRPluginProtobufMessage *)v8 setResponseTimeout:0.0];
 
 LABEL_5:
@@ -57,19 +57,19 @@ LABEL_9:
   return v13;
 }
 
-+ (id)messageWithProtobufData:(id)a3
++ (id)messageWithProtobufData:(id)data
 {
-  v3 = a3;
-  v4 = [[MTRPluginProtobufMessage alloc] initWithProtobufData:v3 responseHandler:0];
+  dataCopy = data;
+  v4 = [[MTRPluginProtobufMessage alloc] initWithProtobufData:dataCopy responseHandler:0];
 
   return v4;
 }
 
-+ (id)messageWithProtobufData:(id)a3 responseHandler:(id)a4
++ (id)messageWithProtobufData:(id)data responseHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MTRPluginProtobufMessage alloc] initWithProtobufData:v6 responseHandler:v5];
+  handlerCopy = handler;
+  dataCopy = data;
+  v7 = [[MTRPluginProtobufMessage alloc] initWithProtobufData:dataCopy responseHandler:handlerCopy];
 
   return v7;
 }
@@ -77,43 +77,43 @@ LABEL_9:
 - (NSNumber)messageType
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(MTRPluginProtobufMessage *)self messageHeader];
-  v4 = [v2 numberWithUnsignedInt:{objc_msgSend(v3, "messageType")}];
+  messageHeader = [(MTRPluginProtobufMessage *)self messageHeader];
+  v4 = [v2 numberWithUnsignedInt:{objc_msgSend(messageHeader, "messageType")}];
 
   return v4;
 }
 
 - (NSUUID)uniqueIdentifier
 {
-  v2 = [(MTRPluginProtobufMessage *)self messageHeader];
-  v3 = [v2 messageID];
-  v4 = [v3 uuid];
+  messageHeader = [(MTRPluginProtobufMessage *)self messageHeader];
+  messageID = [messageHeader messageID];
+  uuid = [messageID uuid];
 
-  return v4;
+  return uuid;
 }
 
 - (NSUUID)sessionIdentifier
 {
-  v2 = [(MTRPluginProtobufMessage *)self messageHeader];
-  v3 = [v2 sessionID];
-  v4 = [v3 uuid];
+  messageHeader = [(MTRPluginProtobufMessage *)self messageHeader];
+  sessionID = [messageHeader sessionID];
+  uuid = [sessionID uuid];
 
-  return v4;
+  return uuid;
 }
 
 - (NSUUID)homeIdentifier
 {
-  v2 = [(MTRPluginProtobufMessage *)self messageHeader];
-  v3 = [v2 homeID];
-  v4 = [v3 uuid];
+  messageHeader = [(MTRPluginProtobufMessage *)self messageHeader];
+  homeID = [messageHeader homeID];
+  uuid = [homeID uuid];
 
-  return v4;
+  return uuid;
 }
 
 - (BOOL)isRequest
 {
-  v2 = [(MTRPluginProtobufMessage *)self messageHeader];
-  v3 = [v2 messageDirection] == 2;
+  messageHeader = [(MTRPluginProtobufMessage *)self messageHeader];
+  v3 = [messageHeader messageDirection] == 2;
 
   return v3;
 }
@@ -122,26 +122,26 @@ LABEL_9:
 {
   context = objc_autoreleasePoolPush();
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(MTRPluginProtobufMessage *)self uniqueIdentifier];
-  v5 = [(MTRPluginProtobufMessage *)self messageHeader];
-  v6 = [v5 messageType];
-  v7 = [(MTRPluginProtobufMessage *)self messageHeader];
-  v8 = +[MTRPluginPBMHeader messageTypeAsString:](MTRPluginPBMHeader, "messageTypeAsString:", [v7 messageType]);
-  v9 = [(MTRPluginProtobufMessage *)self sessionIdentifier];
-  v10 = [(MTRPluginProtobufMessage *)self homeIdentifier];
-  v11 = [(MTRPluginProtobufMessage *)self messageHeader];
-  v12 = [v11 messageDirection];
-  if ((v12 - 1) >= 3)
+  uniqueIdentifier = [(MTRPluginProtobufMessage *)self uniqueIdentifier];
+  messageHeader = [(MTRPluginProtobufMessage *)self messageHeader];
+  messageType = [messageHeader messageType];
+  messageHeader2 = [(MTRPluginProtobufMessage *)self messageHeader];
+  v8 = +[MTRPluginPBMHeader messageTypeAsString:](MTRPluginPBMHeader, "messageTypeAsString:", [messageHeader2 messageType]);
+  sessionIdentifier = [(MTRPluginProtobufMessage *)self sessionIdentifier];
+  homeIdentifier = [(MTRPluginProtobufMessage *)self homeIdentifier];
+  messageHeader3 = [(MTRPluginProtobufMessage *)self messageHeader];
+  messageDirection = [messageHeader3 messageDirection];
+  if ((messageDirection - 1) >= 3)
   {
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", v12];
+    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", messageDirection];
   }
 
   else
   {
-    v13 = off_279894350[(v12 - 1)];
+    v13 = off_279894350[(messageDirection - 1)];
   }
 
-  v14 = [v3 stringWithFormat:@"<MTRPluginProtobufMessage: mid: %@, type: %u (%@), sid: %@, hid: %@, direction: %@>", v4, v6, v8, v9, v10, v13];
+  v14 = [v3 stringWithFormat:@"<MTRPluginProtobufMessage: mid: %@, type: %u (%@), sid: %@, hid: %@, direction: %@>", uniqueIdentifier, messageType, v8, sessionIdentifier, homeIdentifier, v13];
 
   objc_autoreleasePoolPop(context);
 

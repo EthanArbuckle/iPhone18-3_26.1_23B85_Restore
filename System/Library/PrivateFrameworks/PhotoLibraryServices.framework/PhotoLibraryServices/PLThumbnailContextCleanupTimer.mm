@@ -1,5 +1,5 @@
 @interface PLThumbnailContextCleanupTimer
-- (PLThumbnailContextCleanupTimer)initWithHandler:(id)a3;
+- (PLThumbnailContextCleanupTimer)initWithHandler:(id)handler;
 - (void)startOrRestartTimer;
 @end
 
@@ -37,15 +37,15 @@ void __44__PLThumbnailContextCleanupTimer_invalidate__block_invoke(uint64_t a1)
   *(v1 + 40) = 0;
 }
 
-- (PLThumbnailContextCleanupTimer)initWithHandler:(id)a3
+- (PLThumbnailContextCleanupTimer)initWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v20.receiver = self;
   v20.super_class = PLThumbnailContextCleanupTimer;
   v5 = [(PLThumbnailContextCleanupTimer *)&v20 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(handlerCopy);
     v7 = *(v5 + 1);
     *(v5 + 1) = v6;
 

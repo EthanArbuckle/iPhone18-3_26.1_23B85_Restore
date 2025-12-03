@@ -2,7 +2,7 @@
 - (BOOL)allowedByScreenTime;
 - (NSURL)url;
 - (id)description;
-- (id)spiChatWithQOS:(unsigned int)a3;
+- (id)spiChatWithQOS:(unsigned int)s;
 - (void)dealloc;
 @end
 
@@ -130,9 +130,9 @@
   return v5;
 }
 
-- (id)spiChatWithQOS:(unsigned int)a3
+- (id)spiChatWithQOS:(unsigned int)s
 {
-  v5 = sub_1A826443C(a3);
+  v5 = sub_1A826443C(s);
   v8 = objc_msgSend_firstObject(self->_chatGuids, v6, v7);
   v19 = 0;
   v20 = &v19;
@@ -150,7 +150,7 @@
     v18 = &v19;
     v12 = v11;
     v17 = v12;
-    IMSPIQueryChatWithGuid(v8, a3, v5, v16);
+    IMSPIQueryChatWithGuid(v8, s, v5, v16);
     v13 = dispatch_time(0, 5000000000);
     dispatch_semaphore_wait(v12, v13);
   }

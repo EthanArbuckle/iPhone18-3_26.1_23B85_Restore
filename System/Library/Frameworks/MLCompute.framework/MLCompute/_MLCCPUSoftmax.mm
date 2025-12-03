@@ -1,26 +1,26 @@
 @interface _MLCCPUSoftmax
-- (_MLCCPUSoftmax)initWithDevice:(id)a3 operation:(int)a4 dimension:(unint64_t)a5;
+- (_MLCCPUSoftmax)initWithDevice:(id)device operation:(int)operation dimension:(unint64_t)dimension;
 @end
 
 @implementation _MLCCPUSoftmax
 
-- (_MLCCPUSoftmax)initWithDevice:(id)a3 operation:(int)a4 dimension:(unint64_t)a5
+- (_MLCCPUSoftmax)initWithDevice:(id)device operation:(int)operation dimension:(unint64_t)dimension
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  deviceCopy = device;
   v9 = [MEMORY[0x277CBEBF8] mutableCopy];
   v28 = 0;
   v26 = 0u;
   v27 = 0u;
   v25 = 0u;
   memset(v24, 0, sizeof(v24));
-  if (!a4)
+  if (!operation)
   {
     v10 = 11;
     goto LABEL_5;
   }
 
-  if (a4 == 1)
+  if (operation == 1)
   {
     v10 = 21;
 LABEL_5:
@@ -38,30 +38,30 @@ LABEL_5:
 
     if (v16)
     {
-      [v16 setSoftmaxDimension:a5];
+      [v16 setSoftmaxDimension:dimension];
       [v9 addObject:v16];
     }
 
     v17 = [v9 copy];
     v21.receiver = self;
     v21.super_class = _MLCCPUSoftmax;
-    self = [(_MLCCPULayer *)&v21 initWithDevice:v8 deviceOps:v17];
+    self = [(_MLCCPULayer *)&v21 initWithDevice:deviceCopy deviceOps:v17];
 
-    v18 = self;
+    selfCopy = self;
     goto LABEL_11;
   }
 
   v11 = +[MLCLog framework];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
-    [_MLCCPUSoftmax initWithDevice:a4 operation:v11 dimension:?];
+    [_MLCCPUSoftmax initWithDevice:operation operation:v11 dimension:?];
   }
 
-  v18 = 0;
+  selfCopy = 0;
 LABEL_11:
 
   v19 = *MEMORY[0x277D85DE8];
-  return v18;
+  return selfCopy;
 }
 
 - (void)initWithDevice:(int)a1 operation:(NSObject *)a2 dimension:.cold.1(int a1, NSObject *a2)

@@ -2,12 +2,12 @@
 + (id)_allSPLOptions;
 + (id)thresholdSPLString;
 - (SettingsThresholdController)init;
-- (id)_specifierWithTitle:(id)a3 subtitle:(id)a4;
+- (id)_specifierWithTitle:(id)title subtitle:(id)subtitle;
 - (id)applicationBundleIdentifier;
 - (id)bundle;
 - (id)localizedPaneTitle;
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation SettingsThresholdController
@@ -58,9 +58,9 @@
 - (id)localizedPaneTitle
 {
   v2 = +[HUNoiseSettings sharedInstance];
-  v3 = [v2 noiseThresholdTitleDescription];
+  noiseThresholdTitleDescription = [v2 noiseThresholdTitleDescription];
 
-  return v3;
+  return noiseThresholdTitleDescription;
 }
 
 - (id)bundle
@@ -72,10 +72,10 @@
 
 - (id)applicationBundleIdentifier
 {
-  v2 = [(SettingsThresholdController *)self bundle];
-  v3 = [v2 bundleIdentifier];
+  bundle = [(SettingsThresholdController *)self bundle];
+  bundleIdentifier = [bundle bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (id)specifiers
@@ -84,8 +84,8 @@
   if (!v2)
   {
     v34 = OBJC_IVAR___PSListController__specifiers;
-    v3 = [(SettingsThresholdController *)self localizedPaneTitle];
-    [(SettingsThresholdController *)self setTitle:v3];
+    localizedPaneTitle = [(SettingsThresholdController *)self localizedPaneTitle];
+    [(SettingsThresholdController *)self setTitle:localizedPaneTitle];
 
     v4 = +[NSMutableArray array];
     v5 = [PSSpecifier groupSpecifierWithID:@"THRESHOLD_SPL_GROUP_ID"];
@@ -106,8 +106,8 @@
     v13 = @"ID_BPM_";
     do
     {
-      v14 = [objc_opt_class() _allSPLOptions];
-      v15 = [v14 objectAtIndex:v11];
+      _allSPLOptions = [objc_opt_class() _allSPLOptions];
+      v15 = [_allSPLOptions objectAtIndex:v11];
 
       v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@%ld", v13, [v15 integerValue]);
       +[HUNoiseSettings sharedInstance];
@@ -130,10 +130,10 @@
     objc_storeStrong(&self->PSListController_opaque[v34], v35);
     v23 = v10;
     v24 = +[HUNoiseSettings sharedInstance];
-    v25 = [v24 notificationsEnabled];
+    notificationsEnabled = [v24 notificationsEnabled];
 
     v26 = v23;
-    if (v25)
+    if (notificationsEnabled)
     {
       v27 = *&self->PSListController_opaque[v34];
       v28 = +[HUNoiseSettings sharedInstance];
@@ -143,8 +143,8 @@
 
     [v33 setObject:v26 forKeyedSubscript:PSRadioGroupCheckedSpecifierKey];
     v30 = +[HUNoiseSettings sharedInstance];
-    v31 = [v30 noiseThresholdValueFooterDescription];
-    [v33 setObject:v31 forKeyedSubscript:PSFooterTextGroupKey];
+    noiseThresholdValueFooterDescription = [v30 noiseThresholdValueFooterDescription];
+    [v33 setObject:noiseThresholdValueFooterDescription forKeyedSubscript:PSFooterTextGroupKey];
 
     v2 = *&self->PSListController_opaque[v34];
   }
@@ -152,14 +152,14 @@
   return v2;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SettingsThresholdController *)self indexForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(SettingsThresholdController *)self indexForIndexPath:pathCopy];
   v29 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
-  v9 = [v29 identifier];
-  v10 = [v9 isEqualToString:@"OFF"];
+  identifier = [v29 identifier];
+  v10 = [identifier isEqualToString:@"OFF"];
 
   if (v10)
   {
@@ -172,12 +172,12 @@
 
   else
   {
-    v27 = v7;
+    v27 = pathCopy;
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v26 = self;
+    selfCopy = self;
     obj = [objc_opt_class() _allSPLOptions];
     v13 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v13)
@@ -195,17 +195,17 @@
 
           v17 = *(*(&v31 + 1) + 8 * i);
           v18 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@%ld", @"ID_BPM_", [v17 integerValue]);
-          v19 = [v29 identifier];
-          v20 = [v18 isEqualToString:v19];
+          identifier2 = [v29 identifier];
+          v20 = [v18 isEqualToString:identifier2];
 
           if (v20)
           {
             v21 = +[HUNoiseSettings sharedInstance];
             [v21 setNotificationsEnabled:1];
 
-            v22 = [v17 integerValue];
+            integerValue = [v17 integerValue];
             v23 = +[HUNoiseSettings sharedInstance];
-            [v23 setNotificationThreshold:v22];
+            [v23 setNotificationThreshold:integerValue];
 
             goto LABEL_13;
           }
@@ -223,29 +223,29 @@
 
 LABEL_13:
 
-    v7 = v27;
-    self = v26;
+    pathCopy = v27;
+    self = selfCopy;
   }
 
   [(SettingsThresholdController *)self reloadSpecifiers];
   WeakRetained = objc_loadWeakRetained(&self->PSListController_opaque[OBJC_IVAR___PSViewController__parentController]);
-  v25 = [(SettingsThresholdController *)self specifier];
-  [WeakRetained reloadSpecifier:v25];
+  specifier = [(SettingsThresholdController *)self specifier];
+  [WeakRetained reloadSpecifier:specifier];
 
   v30.receiver = self;
   v30.super_class = SettingsThresholdController;
-  [(SettingsThresholdController *)&v30 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(SettingsThresholdController *)&v30 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
-- (id)_specifierWithTitle:(id)a3 subtitle:(id)a4
+- (id)_specifierWithTitle:(id)title subtitle:(id)subtitle
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [PSSpecifier preferenceSpecifierNamed:v7 target:self set:0 get:0 detail:0 cell:3 edit:0];
+  subtitleCopy = subtitle;
+  titleCopy = title;
+  v8 = [PSSpecifier preferenceSpecifierNamed:titleCopy target:self set:0 get:0 detail:0 cell:3 edit:0];
   [v8 setProperty:objc_opt_class() forKey:PSCellClassKey];
-  [v8 setProperty:v7 forKey:@"EDSpecifierTitleKey"];
+  [v8 setProperty:titleCopy forKey:@"EDSpecifierTitleKey"];
 
-  [v8 setProperty:v6 forKey:@"EDSpecifierSubtitleKey"];
+  [v8 setProperty:subtitleCopy forKey:@"EDSpecifierSubtitleKey"];
 
   return v8;
 }

@@ -1,14 +1,14 @@
 @interface ATXBiomeProactiveSuggestionUIFeedbackResultStreamWriter
-- (void)writeEventsToStreamWithXPCActivity:(id)a3;
+- (void)writeEventsToStreamWithXPCActivity:(id)activity;
 @end
 
 @implementation ATXBiomeProactiveSuggestionUIFeedbackResultStreamWriter
 
-- (void)writeEventsToStreamWithXPCActivity:(id)a3
+- (void)writeEventsToStreamWithXPCActivity:(id)activity
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 didDefer])
+  activityCopy = activity;
+  if ([activityCopy didDefer])
   {
     v5 = __atxlog_handle_blending_ecosystem();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))

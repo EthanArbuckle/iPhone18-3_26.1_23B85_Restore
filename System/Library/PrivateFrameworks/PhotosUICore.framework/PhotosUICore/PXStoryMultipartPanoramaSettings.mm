@@ -67,8 +67,8 @@
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:7];
   v16 = [v2 sectionWithRows:v15 title:@"Settings"];
   v43[0] = v16;
-  v17 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
-  v43[1] = v17;
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  v43[1] = px_restoreDefaultsSection;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:2];
   v19 = [v2 moduleWithTitle:@"Multipart Panoramas" contents:v18];
 

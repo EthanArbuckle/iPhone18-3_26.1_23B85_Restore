@@ -1,18 +1,18 @@
 @interface CHUISLiveSnapshotView
-- (void)setSnapshotView:(id)a3;
+- (void)setSnapshotView:(id)view;
 @end
 
 @implementation CHUISLiveSnapshotView
 
-- (void)setSnapshotView:(id)a3
+- (void)setSnapshotView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   snapshotView = self->_snapshotView;
-  v7 = v5;
-  if (snapshotView != v5)
+  v7 = viewCopy;
+  if (snapshotView != viewCopy)
   {
     [(UIView *)snapshotView removeFromSuperview];
-    objc_storeStrong(&self->_snapshotView, a3);
+    objc_storeStrong(&self->_snapshotView, view);
     if (v7)
     {
       [(CHUISLiveSnapshotView *)self addSubview:v7];

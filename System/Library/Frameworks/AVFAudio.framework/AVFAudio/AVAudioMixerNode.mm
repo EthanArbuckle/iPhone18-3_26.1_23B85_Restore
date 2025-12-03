@@ -1,26 +1,26 @@
 @interface AVAudioMixerNode
 - (AVAudioNodeBus)nextAvailableInputBus;
 - (float)outputVolume;
-- (void)didAttachToEngine:(id)a3;
-- (void)inputConnected:(unint64_t)a3;
-- (void)setInputPan:(float)a3 bus:(unint64_t)a4;
-- (void)setInputVolume:(float)a3 bus:(unint64_t)a4;
+- (void)didAttachToEngine:(id)engine;
+- (void)inputConnected:(unint64_t)connected;
+- (void)setInputPan:(float)pan bus:(unint64_t)bus;
+- (void)setInputVolume:(float)volume bus:(unint64_t)bus;
 - (void)setOutputVolume:(float)outputVolume;
 @end
 
 @implementation AVAudioMixerNode
 
-- (void)didAttachToEngine:(id)a3
+- (void)didAttachToEngine:(id)engine
 {
-  v5 = [a3 implementation];
+  implementation = [engine implementation];
   impl = self->super._impl;
-  std::lock[abi:ne200100]<std::recursive_mutex,std::recursive_mutex>((impl + 96), (v5 + 112));
+  std::lock[abi:ne200100]<std::recursive_mutex,std::recursive_mutex>((impl + 96), (implementation + 112));
   v7.receiver = self;
   v7.super_class = AVAudioMixerNode;
-  [(AVAudioNode *)&v7 didAttachToEngine:a3];
+  [(AVAudioNode *)&v7 didAttachToEngine:engine];
   (*(*self->super._impl + 128))(self->super._impl, 0, 2, 0, 1.0);
   std::recursive_mutex::unlock((impl + 96));
-  std::recursive_mutex::unlock((v5 + 112));
+  std::recursive_mutex::unlock((implementation + 112));
 }
 
 - (AVAudioNodeBus)nextAvailableInputBus
@@ -60,10 +60,10 @@
   return v5;
 }
 
-- (void)inputConnected:(unint64_t)a3
+- (void)inputConnected:(unint64_t)connected
 {
   AVAudioNodeImplBase::GetAttachAndEngineLock(&v6, self->super._impl);
-  (*(*self->super._impl + 128))(self->super._impl, 0, 1, a3, 1.0);
+  (*(*self->super._impl + 128))(self->super._impl, 0, 1, connected, 1.0);
   if (v9 == 1)
   {
     std::recursive_mutex::unlock(v8);
@@ -77,10 +77,10 @@
   }
 }
 
-- (void)setInputPan:(float)a3 bus:(unint64_t)a4
+- (void)setInputPan:(float)pan bus:(unint64_t)bus
 {
   AVAudioNodeImplBase::GetAttachAndEngineLock(&v8, self->super._impl);
-  (*(*self->super._impl + 128))(self->super._impl, 2, 1, a4, a3);
+  (*(*self->super._impl + 128))(self->super._impl, 2, 1, bus, pan);
   if (v11 == 1)
   {
     std::recursive_mutex::unlock(v10);
@@ -94,10 +94,10 @@
   }
 }
 
-- (void)setInputVolume:(float)a3 bus:(unint64_t)a4
+- (void)setInputVolume:(float)volume bus:(unint64_t)bus
 {
   AVAudioNodeImplBase::GetAttachAndEngineLock(&v8, self->super._impl);
-  (*(*self->super._impl + 128))(self->super._impl, 0, 1, a4, a3);
+  (*(*self->super._impl + 128))(self->super._impl, 0, 1, bus, volume);
   if (v11 == 1)
   {
     std::recursive_mutex::unlock(v10);

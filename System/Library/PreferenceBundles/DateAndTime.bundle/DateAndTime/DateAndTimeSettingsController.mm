@@ -1,7 +1,7 @@
 @interface DateAndTimeSettingsController
-- (_TtC11DateAndTime29DateAndTimeSettingsController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
-- (void)setDesiredVerticalContentOffsetItemNamed:(id)a3;
+- (_TtC11DateAndTime29DateAndTimeSettingsController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)handleURL:(id)l withCompletion:(id)completion;
+- (void)setDesiredVerticalContentOffsetItemNamed:(id)named;
 - (void)viewDidLoad;
 @end
 
@@ -9,16 +9,16 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_A0C0();
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  v6 = _Block_copy(a4);
-  if (a3)
+  v6 = _Block_copy(completion);
+  if (l)
   {
-    a3 = sub_E6E8();
+    l = sub_E6E8();
   }
 
   if (v6)
@@ -32,14 +32,14 @@
     v7 = 0;
   }
 
-  v8 = self;
-  sub_A398(a3, v7);
+  selfCopy = self;
+  sub_A398(l, v7);
   sub_ACAC(v7);
 }
 
-- (_TtC11DateAndTime29DateAndTimeSettingsController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11DateAndTime29DateAndTimeSettingsController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_E738();
     v7 = v6;
@@ -51,17 +51,17 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_A678(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_A678(v5, v7, bundle);
 }
 
-- (void)setDesiredVerticalContentOffsetItemNamed:(id)a3
+- (void)setDesiredVerticalContentOffsetItemNamed:(id)named
 {
-  if (a3)
+  if (named)
   {
     v4 = sub_E738();
     v6 = v5;
-    v8 = self;
+    selfCopy = self;
     v7 = sub_91C4(v4, v6);
     if (v7 == 5)
     {

@@ -1,11 +1,11 @@
 @interface InstallProgressView
-- (_TtC8AppStore19InstallProgressView)initWithCoder:(id)a3;
+- (_TtC8AppStore19InstallProgressView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation InstallProgressView
 
-- (_TtC8AppStore19InstallProgressView)initWithCoder:(id)a3
+- (_TtC8AppStore19InstallProgressView)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC8AppStore19InstallProgressView_state;
   *v3 = 0;
@@ -30,8 +30,8 @@
   if (v3)
   {
     v4 = v3;
-    v5 = [v2 layer];
-    [v5 bounds];
+    layer = [v2 layer];
+    [layer bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;

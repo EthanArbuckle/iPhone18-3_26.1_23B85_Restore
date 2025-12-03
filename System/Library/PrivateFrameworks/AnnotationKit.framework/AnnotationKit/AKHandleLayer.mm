@@ -23,8 +23,8 @@
 
     [(AKHandleLayer *)v2 setPath:?];
     [(AKHandleLayer *)v2 setLineWidth:1.0];
-    v4 = [MEMORY[0x277D75348] whiteColor];
-    -[AKHandleLayer setStrokeColor:](v2, "setStrokeColor:", [v4 CGColor]);
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    -[AKHandleLayer setStrokeColor:](v2, "setStrokeColor:", [whiteColor CGColor]);
 
     v5 = [MEMORY[0x277D75348] akColorWithSRGBRed:0.105882353 green:0.454901961 blue:0.796078431 alpha:1.0];
     -[AKHandleLayer setFillColor:](v2, "setFillColor:", [v5 CGColor]);

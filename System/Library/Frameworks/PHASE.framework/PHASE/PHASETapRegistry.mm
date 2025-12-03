@@ -1,13 +1,13 @@
 @interface PHASETapRegistry
-- (BOOL)registerTapReceiverForDescription:(id)a3 block:(id)a4;
-- (BOOL)registerTapReceiverWithIdentifier:(id)a3 block:(id)a4;
+- (BOOL)registerTapReceiverForDescription:(id)description block:(id)block;
+- (BOOL)registerTapReceiverWithIdentifier:(id)identifier block:(id)block;
 - (PHASETapRegistry)init;
-- (PHASETapRegistry)initWithEngine:(id)a3;
-- (id)tapReceiverFormatForDescription:(id)a3;
-- (id)tapReceiverFormatForIdentifier:(id)a3;
+- (PHASETapRegistry)initWithEngine:(id)engine;
+- (id)tapReceiverFormatForDescription:(id)description;
+- (id)tapReceiverFormatForIdentifier:(id)identifier;
 - (void)reset;
-- (void)unregisterTapReceiverForDescription:(id)a3;
-- (void)unregisterTapReceiverWithIdentifier:(id)a3;
+- (void)unregisterTapReceiverForDescription:(id)description;
+- (void)unregisterTapReceiverWithIdentifier:(id)identifier;
 @end
 
 @implementation PHASETapRegistry
@@ -19,16 +19,16 @@
   return 0;
 }
 
-- (PHASETapRegistry)initWithEngine:(id)a3
+- (PHASETapRegistry)initWithEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v10.receiver = self;
   v10.super_class = PHASETapRegistry;
   v5 = [(PHASETapRegistry *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_weakEngine, v4);
+    objc_storeWeak(&v5->_weakEngine, engineCopy);
     v7 = objc_opt_new();
     descriptions = v6->_descriptions;
     v6->_descriptions = v7;
@@ -52,10 +52,10 @@
   }
 }
 
-- (BOOL)registerTapReceiverWithIdentifier:(id)a3 block:(id)a4
+- (BOOL)registerTapReceiverWithIdentifier:(id)identifier block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   WeakRetained = objc_loadWeakRetained(&self->_weakEngine);
   v9 = WeakRetained;
   if (WeakRetained)
@@ -66,15 +66,15 @@
       std::terminate();
     }
 
-    Phase::Controller::ClientTapRegistryProxy::RegisterTapReceiver(v10, v6, v7);
+    Phase::Controller::ClientTapRegistryProxy::RegisterTapReceiver(v10, identifierCopy, blockCopy);
   }
 
   return 1;
 }
 
-- (void)unregisterTapReceiverWithIdentifier:(id)a3
+- (void)unregisterTapReceiverWithIdentifier:(id)identifier
 {
-  v7 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_weakEngine);
   v5 = WeakRetained;
   if (WeakRetained)
@@ -85,13 +85,13 @@
       std::terminate();
     }
 
-    Phase::Controller::ClientTapRegistryProxy::UnregisterTapReceiver(v6, v7);
+    Phase::Controller::ClientTapRegistryProxy::UnregisterTapReceiver(v6, identifierCopy);
   }
 }
 
-- (id)tapReceiverFormatForIdentifier:(id)a3
+- (id)tapReceiverFormatForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_weakEngine);
   v6 = WeakRetained;
   if (WeakRetained)
@@ -102,7 +102,7 @@
       std::terminate();
     }
 
-    v8 = Phase::Controller::ClientTapRegistryProxy::GetTapReceiverFormat(v7, v4);
+    v8 = Phase::Controller::ClientTapRegistryProxy::GetTapReceiverFormat(v7, identifierCopy);
   }
 
   else
@@ -113,30 +113,30 @@
   return v8;
 }
 
-- (BOOL)registerTapReceiverForDescription:(id)a3 block:(id)a4
+- (BOOL)registerTapReceiverForDescription:(id)description block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  [(NSMutableSet *)self->_descriptions addObject:v6];
-  v8 = [v6 uidString];
-  LOBYTE(self) = [(PHASETapRegistry *)self registerTapReceiverWithIdentifier:v8 block:v7];
+  descriptionCopy = description;
+  blockCopy = block;
+  [(NSMutableSet *)self->_descriptions addObject:descriptionCopy];
+  uidString = [descriptionCopy uidString];
+  LOBYTE(self) = [(PHASETapRegistry *)self registerTapReceiverWithIdentifier:uidString block:blockCopy];
 
   return self;
 }
 
-- (void)unregisterTapReceiverForDescription:(id)a3
+- (void)unregisterTapReceiverForDescription:(id)description
 {
-  v5 = a3;
-  v4 = [v5 uidString];
-  [(PHASETapRegistry *)self unregisterTapReceiverWithIdentifier:v4];
+  descriptionCopy = description;
+  uidString = [descriptionCopy uidString];
+  [(PHASETapRegistry *)self unregisterTapReceiverWithIdentifier:uidString];
 
-  [(NSMutableSet *)self->_descriptions removeObject:v5];
+  [(NSMutableSet *)self->_descriptions removeObject:descriptionCopy];
 }
 
-- (id)tapReceiverFormatForDescription:(id)a3
+- (id)tapReceiverFormatForDescription:(id)description
 {
-  v4 = [a3 uidString];
-  v5 = [(PHASETapRegistry *)self tapReceiverFormatForIdentifier:v4];
+  uidString = [description uidString];
+  v5 = [(PHASETapRegistry *)self tapReceiverFormatForIdentifier:uidString];
 
   return v5;
 }

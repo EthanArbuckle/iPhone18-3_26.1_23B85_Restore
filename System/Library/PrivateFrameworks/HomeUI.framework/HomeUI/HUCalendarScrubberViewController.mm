@@ -1,30 +1,30 @@
 @interface HUCalendarScrubberViewController
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (HUCalendarScrubberViewController)initWithCoder:(id)a3;
-- (HUCalendarScrubberViewController)initWithCollectionViewLayout:(id)a3;
-- (HUCalendarScrubberViewController)initWithDataSource:(id)a3;
-- (HUCalendarScrubberViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (HUCalendarScrubberViewController)initWithCoder:(id)coder;
+- (HUCalendarScrubberViewController)initWithCollectionViewLayout:(id)layout;
+- (HUCalendarScrubberViewController)initWithDataSource:(id)source;
+- (HUCalendarScrubberViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (HUCalendarScrubberViewDelegate)scrubberDelegate;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
 - (unint64_t)nextSection;
 - (unint64_t)previousSection;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)didReceiveMemoryWarning;
-- (void)jumpToSection:(unint64_t)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrubberDataSourceDidReload:(id)a3;
+- (void)jumpToSection:(unint64_t)section animated:(BOOL)animated completion:(id)completion;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrubberDataSourceDidReload:(id)reload;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation HUCalendarScrubberViewController
 
-- (HUCalendarScrubberViewController)initWithDataSource:(id)a3
+- (HUCalendarScrubberViewController)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v6 = objc_opt_new();
   [v6 setScrollDirection:1];
   [v6 setSectionInset:{0.0, 20.0, 0.0, 20.0}];
@@ -35,36 +35,36 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_dataSource, a3);
+    objc_storeStrong(&v7->_dataSource, source);
     [(HUCalendarScrubberDataSource *)v8->_dataSource addChangeObserver:v8];
   }
 
   return v8;
 }
 
-- (HUCalendarScrubberViewController)initWithCoder:(id)a3
+- (HUCalendarScrubberViewController)initWithCoder:(id)coder
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithDataSource_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUCalendarScrubberViewController.m" lineNumber:54 description:{@"%s is unavailable; use %@ instead", "-[HUCalendarScrubberViewController initWithCoder:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUCalendarScrubberViewController.m" lineNumber:54 description:{@"%s is unavailable; use %@ instead", "-[HUCalendarScrubberViewController initWithCoder:]", v6}];
 
   return 0;
 }
 
-- (HUCalendarScrubberViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (HUCalendarScrubberViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithDataSource_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUCalendarScrubberViewController.m" lineNumber:58 description:{@"%s is unavailable; use %@ instead", "-[HUCalendarScrubberViewController initWithNibName:bundle:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUCalendarScrubberViewController.m" lineNumber:58 description:{@"%s is unavailable; use %@ instead", "-[HUCalendarScrubberViewController initWithNibName:bundle:]", v7}];
 
   return 0;
 }
 
-- (HUCalendarScrubberViewController)initWithCollectionViewLayout:(id)a3
+- (HUCalendarScrubberViewController)initWithCollectionViewLayout:(id)layout
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithDataSource_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUCalendarScrubberViewController.m" lineNumber:62 description:{@"%s is unavailable; use %@ instead", "-[HUCalendarScrubberViewController initWithCollectionViewLayout:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUCalendarScrubberViewController.m" lineNumber:62 description:{@"%s is unavailable; use %@ instead", "-[HUCalendarScrubberViewController initWithCollectionViewLayout:]", v6}];
 
   return 0;
 }
@@ -75,21 +75,21 @@
   v9.super_class = HUCalendarScrubberViewController;
   [(HUCalendarScrubberViewController *)&v9 viewDidLoad];
   [(HUCalendarScrubberViewController *)self setCurrentSection:0];
-  v3 = [MEMORY[0x277D75348] clearColor];
-  v4 = [(HUCalendarScrubberViewController *)self collectionView];
-  [v4 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  collectionView = [(HUCalendarScrubberViewController *)self collectionView];
+  [collectionView setBackgroundColor:clearColor];
 
-  v5 = [(HUCalendarScrubberViewController *)self collectionView];
-  [v5 setPagingEnabled:1];
+  collectionView2 = [(HUCalendarScrubberViewController *)self collectionView];
+  [collectionView2 setPagingEnabled:1];
 
-  v6 = [(HUCalendarScrubberViewController *)self collectionView];
-  [v6 setShowsHorizontalScrollIndicator:0];
+  collectionView3 = [(HUCalendarScrubberViewController *)self collectionView];
+  [collectionView3 setShowsHorizontalScrollIndicator:0];
 
-  v7 = [(HUCalendarScrubberViewController *)self collectionView];
-  [v7 setSemanticContentAttribute:3];
+  collectionView4 = [(HUCalendarScrubberViewController *)self collectionView];
+  [collectionView4 setSemanticContentAttribute:3];
 
-  v8 = [(HUCalendarScrubberViewController *)self collectionView];
-  [v8 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"CalendarScrubberCell"];
+  collectionView5 = [(HUCalendarScrubberViewController *)self collectionView];
+  [collectionView5 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"CalendarScrubberCell"];
 }
 
 - (void)viewDidLayoutSubviews
@@ -98,32 +98,32 @@
   v15.super_class = HUCalendarScrubberViewController;
   [(HUCalendarScrubberViewController *)&v15 viewDidLayoutSubviews];
   [(HUCalendarScrubberViewController *)self lastBoundsWidth];
-  v3 = [(HUCalendarScrubberViewController *)self collectionView];
-  [v3 bounds];
+  collectionView = [(HUCalendarScrubberViewController *)self collectionView];
+  [collectionView bounds];
   v4 = NACGFloatEqualToFloat();
 
   if ((v4 & 1) == 0)
   {
-    v5 = [(HUCalendarScrubberViewController *)self collectionView];
-    [v5 bounds];
+    collectionView2 = [(HUCalendarScrubberViewController *)self collectionView];
+    [collectionView2 bounds];
     [(HUCalendarScrubberViewController *)self setLastBoundsWidth:v6];
 
-    v7 = [(HUCalendarScrubberViewController *)self collectionView];
-    [v7 bounds];
+    collectionView3 = [(HUCalendarScrubberViewController *)self collectionView];
+    [collectionView3 bounds];
     v9 = (v8 + -168.0) * 0.125;
 
     v10 = fmax(v9, 0.0);
-    v11 = [(HUCalendarScrubberViewController *)self collectionViewLayout];
-    [v11 setMinimumLineSpacing:v10];
+    collectionViewLayout = [(HUCalendarScrubberViewController *)self collectionViewLayout];
+    [collectionViewLayout setMinimumLineSpacing:v10];
 
-    v12 = [(HUCalendarScrubberViewController *)self collectionViewLayout];
-    [v12 setSectionInset:{0.0, v10, 0.0, v10}];
+    collectionViewLayout2 = [(HUCalendarScrubberViewController *)self collectionViewLayout];
+    [collectionViewLayout2 setSectionInset:{0.0, v10, 0.0, v10}];
 
-    v13 = [(HUCalendarScrubberViewController *)self collectionView];
-    [v13 reloadData];
+    collectionView4 = [(HUCalendarScrubberViewController *)self collectionView];
+    [collectionView4 reloadData];
 
-    v14 = [(HUCalendarScrubberViewController *)self collectionViewLayout];
-    [v14 invalidateLayout];
+    collectionViewLayout3 = [(HUCalendarScrubberViewController *)self collectionViewLayout];
+    [collectionViewLayout3 invalidateLayout];
   }
 }
 
@@ -136,9 +136,9 @@
 
 - (unint64_t)nextSection
 {
-  v3 = [(HUCalendarScrubberViewController *)self currentSection];
-  v4 = [(HUCalendarScrubberViewController *)self collectionView];
-  if (v3 >= [v4 numberOfSections] - 1)
+  currentSection = [(HUCalendarScrubberViewController *)self currentSection];
+  collectionView = [(HUCalendarScrubberViewController *)self collectionView];
+  if (currentSection >= [collectionView numberOfSections] - 1)
   {
     v5 = 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -164,96 +164,96 @@
   }
 }
 
-- (void)jumpToSection:(unint64_t)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)jumpToSection:(unint64_t)section animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v19 = a5;
-  v8 = [(HUCalendarScrubberViewController *)self collectionView];
-  v9 = [v8 numberOfSections];
+  animatedCopy = animated;
+  completionCopy = completion;
+  collectionView = [(HUCalendarScrubberViewController *)self collectionView];
+  numberOfSections = [collectionView numberOfSections];
 
-  if (v9 > a3)
+  if (numberOfSections > section)
   {
-    v10 = [(HUCalendarScrubberViewController *)self collectionView];
-    [v10 bounds];
+    collectionView2 = [(HUCalendarScrubberViewController *)self collectionView];
+    [collectionView2 bounds];
     v12 = v11;
     v14 = v13;
 
-    v15 = [(HUCalendarScrubberViewController *)self collectionView];
-    [v15 contentOffset];
+    collectionView3 = [(HUCalendarScrubberViewController *)self collectionView];
+    [collectionView3 contentOffset];
     v17 = v16;
 
-    v18 = [(HUCalendarScrubberViewController *)self collectionView];
-    [v18 scrollRectToVisible:v5 animated:{v12 * a3, 0.0, v12, v14}];
+    collectionView4 = [(HUCalendarScrubberViewController *)self collectionView];
+    [collectionView4 scrollRectToVisible:animatedCopy animated:{v12 * section, 0.0, v12, v14}];
 
-    if (v5 && vabdd_f64(v12 * a3, v17) > 0.00000011920929)
+    if (animatedCopy && vabdd_f64(v12 * section, v17) > 0.00000011920929)
     {
-      [(HUCalendarScrubberViewController *)self setScrollCompletionBlock:v19];
+      [(HUCalendarScrubberViewController *)self setScrollCompletionBlock:completionCopy];
     }
 
-    else if (v19)
+    else if (completionCopy)
     {
-      v19[2](v19, 1);
+      completionCopy[2](completionCopy, 1);
     }
 
-    [(HUCalendarScrubberViewController *)self setCurrentSection:a3];
+    [(HUCalendarScrubberViewController *)self setCurrentSection:section];
   }
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
-  v3 = [(HUCalendarScrubberViewController *)self dataSource];
-  v4 = [v3 totalNumberOfWeeks];
+  dataSource = [(HUCalendarScrubberViewController *)self dataSource];
+  totalNumberOfWeeks = [dataSource totalNumberOfWeeks];
 
-  return v4;
+  return totalNumberOfWeeks;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithReuseIdentifier:@"CalendarScrubberCell" forIndexPath:v6];
-  v8 = [(HUCalendarScrubberViewController *)self dataSource];
-  v9 = [v8 dayOfMonthForItemAtIndexPath:v6];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithReuseIdentifier:@"CalendarScrubberCell" forIndexPath:pathCopy];
+  dataSource = [(HUCalendarScrubberViewController *)self dataSource];
+  v9 = [dataSource dayOfMonthForItemAtIndexPath:pathCopy];
   v10 = [MEMORY[0x277CCACA8] localizedStringWithFormat:@"%li", v9];
   [v7 setDateString:v10];
 
   if (v9 == 1)
   {
-    [v8 shortMonthNameForItemAtIndexPath:v6];
+    [dataSource shortMonthNameForItemAtIndexPath:pathCopy];
   }
 
   else
   {
-    [v8 dayOfWeekForItemAtIndexPath:v6];
+    [dataSource dayOfWeekForItemAtIndexPath:pathCopy];
   }
   v11 = ;
   [v7 setDayOfWeekString:v11];
 
-  [v7 setEnabled:{objc_msgSend(v8, "eventExistsForItemAtIndexPath:", v6)}];
+  [v7 setEnabled:{objc_msgSend(dataSource, "eventExistsForItemAtIndexPath:", pathCopy)}];
 
   return v7;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(HUCalendarScrubberViewController *)self scrubberDelegate];
-  [v6 scrubberViewController:self didSelectItemAtIndex:v5];
+  pathCopy = path;
+  scrubberDelegate = [(HUCalendarScrubberViewController *)self scrubberDelegate];
+  [scrubberDelegate scrubberViewController:self didSelectItemAtIndex:pathCopy];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = HUCalendarScrubberViewController;
-  v7 = a4;
-  [(HUCalendarScrubberViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(HUCalendarScrubberViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __87__HUCalendarScrubberViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_277DB79B8;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
 void __87__HUCalendarScrubberViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -262,9 +262,9 @@ void __87__HUCalendarScrubberViewController_viewWillTransitionToSize_withTransit
   [v1 invalidateLayout];
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v5 = [(HUCalendarScrubberViewController *)self collectionView:a3];
+  v5 = [(HUCalendarScrubberViewController *)self collectionView:view];
   [v5 bounds];
   v7 = v6;
 
@@ -275,44 +275,44 @@ void __87__HUCalendarScrubberViewController_viewWillTransitionToSize_withTransit
   return result;
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = [(HUCalendarScrubberViewController *)self collectionView];
-  v5 = [(HUCalendarScrubberViewController *)self collectionView];
-  [v5 bounds];
+  collectionView = [(HUCalendarScrubberViewController *)self collectionView];
+  collectionView2 = [(HUCalendarScrubberViewController *)self collectionView];
+  [collectionView2 bounds];
   MidX = CGRectGetMidX(v12);
-  v7 = [(HUCalendarScrubberViewController *)self collectionView];
-  [v7 bounds];
-  v10 = [v4 indexPathForItemAtPoint:{MidX, CGRectGetMidY(v13)}];
+  collectionView3 = [(HUCalendarScrubberViewController *)self collectionView];
+  [collectionView3 bounds];
+  v10 = [collectionView indexPathForItemAtPoint:{MidX, CGRectGetMidY(v13)}];
 
   -[HUCalendarScrubberViewController setCurrentSection:](self, "setCurrentSection:", [v10 section]);
-  v8 = [(HUCalendarScrubberViewController *)self scrubberDelegate];
-  LOBYTE(v5) = objc_opt_respondsToSelector();
+  scrubberDelegate = [(HUCalendarScrubberViewController *)self scrubberDelegate];
+  LOBYTE(collectionView2) = objc_opt_respondsToSelector();
 
-  if (v5)
+  if (collectionView2)
   {
-    v9 = [(HUCalendarScrubberViewController *)self scrubberDelegate];
-    [v9 scrubberViewController:self didMoveToSection:{-[HUCalendarScrubberViewController currentSection](self, "currentSection")}];
+    scrubberDelegate2 = [(HUCalendarScrubberViewController *)self scrubberDelegate];
+    [scrubberDelegate2 scrubberViewController:self didMoveToSection:{-[HUCalendarScrubberViewController currentSection](self, "currentSection")}];
   }
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v4 = [(HUCalendarScrubberViewController *)self scrollCompletionBlock];
+  scrollCompletionBlock = [(HUCalendarScrubberViewController *)self scrollCompletionBlock];
 
-  if (v4)
+  if (scrollCompletionBlock)
   {
-    v5 = [(HUCalendarScrubberViewController *)self scrollCompletionBlock];
-    v5[2](v5, 1);
+    scrollCompletionBlock2 = [(HUCalendarScrubberViewController *)self scrollCompletionBlock];
+    scrollCompletionBlock2[2](scrollCompletionBlock2, 1);
 
     [(HUCalendarScrubberViewController *)self setScrollCompletionBlock:0];
   }
 }
 
-- (void)scrubberDataSourceDidReload:(id)a3
+- (void)scrubberDataSourceDidReload:(id)reload
 {
-  v3 = [(HUCalendarScrubberViewController *)self collectionView];
-  [v3 reloadData];
+  collectionView = [(HUCalendarScrubberViewController *)self collectionView];
+  [collectionView reloadData];
 }
 
 - (HUCalendarScrubberViewDelegate)scrubberDelegate

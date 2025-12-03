@@ -1,39 +1,39 @@
 @interface PSGCustomResponseHarvester
 + (void)clearCustomResponsesCheckpointForTesting;
-+ (void)runHarvestSkipMessageCollection:(BOOL)a3 clearCheckpoint:(BOOL)a4 reportMetrics:(BOOL)a5 modelConfigPath:(id)a6 modelVocabPath:(id)a7 modelFilePath:(id)a8 storeDirectory:(id)a9 evalFraction:(id)a10;
-- (BOOL)deferAfterWriteCheckpointForActivity:(id)a3;
-- (BOOL)isSupportedLanguage:(id)a3;
-- (PSGCustomResponseHarvester)initWithActivityManager:(id)a3 modelConfigPath:(id)a4 modelVocabPath:(id)a5 modelFilePath:(id)a6 storeDirectory:(id)a7;
-- (id)_customResponseParametersWithConfigPath:(id)a3;
-- (id)_customResponseParametersWithExperiment:(id)a3;
++ (void)runHarvestSkipMessageCollection:(BOOL)collection clearCheckpoint:(BOOL)checkpoint reportMetrics:(BOOL)metrics modelConfigPath:(id)path modelVocabPath:(id)vocabPath modelFilePath:(id)filePath storeDirectory:(id)directory evalFraction:(id)self0;
+- (BOOL)deferAfterWriteCheckpointForActivity:(id)activity;
+- (BOOL)isSupportedLanguage:(id)language;
+- (PSGCustomResponseHarvester)initWithActivityManager:(id)manager modelConfigPath:(id)path modelVocabPath:(id)vocabPath modelFilePath:(id)filePath storeDirectory:(id)directory;
+- (id)_customResponseParametersWithConfigPath:(id)path;
+- (id)_customResponseParametersWithExperiment:(id)experiment;
 - (id)_getCustomResponseParameters;
-- (id)modelForLanguage:(id)a3;
-- (unint64_t)activityStateAfterFilterWithStore:(id)a3 forActivity:(id)a4 andCustomResponseParameters:(id)a5;
-- (void)harvestWithActivity:(id)a3;
+- (id)modelForLanguage:(id)language;
+- (unint64_t)activityStateAfterFilterWithStore:(id)store forActivity:(id)activity andCustomResponseParameters:(id)parameters;
+- (void)harvestWithActivity:(id)activity;
 - (void)loadCustomResponsesCheckpoint;
 - (void)writeCheckpoint;
 @end
 
 @implementation PSGCustomResponseHarvester
 
-- (BOOL)deferAfterWriteCheckpointForActivity:(id)a3
+- (BOOL)deferAfterWriteCheckpointForActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   [(PSGCustomResponseHarvester *)self writeCheckpoint];
-  v5 = [(SGXPCActivityManagerProtocol *)self->_xpcActivityManager shouldDefer:v4];
+  v5 = [(SGXPCActivityManagerProtocol *)self->_xpcActivityManager shouldDefer:activityCopy];
   if (v5)
   {
-    [(SGXPCActivityManagerProtocol *)self->_xpcActivityManager setState:v4 state:3];
+    [(SGXPCActivityManagerProtocol *)self->_xpcActivityManager setState:activityCopy state:3];
   }
 
   return v5;
 }
 
-- (unint64_t)activityStateAfterFilterWithStore:(id)a3 forActivity:(id)a4 andCustomResponseParameters:(id)a5
+- (unint64_t)activityStateAfterFilterWithStore:(id)store forActivity:(id)activity andCustomResponseParameters:(id)parameters
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  activityCopy = activity;
+  parametersCopy = parameters;
   v85 = 0;
   v86 = &v85;
   v87 = 0x2020000000;
@@ -43,7 +43,7 @@
   v82[2] = __104__PSGCustomResponseHarvester_activityStateAfterFilterWithStore_forActivity_andCustomResponseParameters___block_invoke;
   v82[3] = &unk_279ABE0F8;
   v82[4] = self;
-  v12 = v10;
+  v12 = activityCopy;
   v83 = v12;
   v84 = &v85;
   v71 = MEMORY[0x2666EDC40](v82);
@@ -71,7 +71,7 @@
               _os_signpost_emit_with_name_impl(&dword_260D36000, v55, OS_SIGNPOST_INTERVAL_BEGIN, v53, "SGCustomResponses-TruncateCustomResponsesTable", "Start", buf, 2u);
             }
 
-            v56 = [v9 countCustomResponsesAfterTruncatingTable:{objc_msgSend(v11, "maxStoredCustomResponses")}];
+            v56 = [storeCopy countCustomResponsesAfterTruncatingTable:{objc_msgSend(parametersCopy, "maxStoredCustomResponses")}];
             v21 = objc_opt_new();
             [v21 setCustomResponsesAfterPruning:v56];
             [(PETEventTracker2 *)self->_pet2tracker trackScalarForMessage:v21];
@@ -98,7 +98,7 @@
               _os_signpost_emit_with_name_impl(&dword_260D36000, v67, OS_SIGNPOST_INTERVAL_BEGIN, v65, "SGCustomResponses-PrunePerRecipientTable", "Start", buf, 2u);
             }
 
-            [v9 prunePerRecipientTableWithMaxRows:{objc_msgSend(v11, "maxRowsInPerRecipientTable")}];
+            [storeCopy prunePerRecipientTableWithMaxRows:{objc_msgSend(parametersCopy, "maxRowsInPerRecipientTable")}];
             v68 = pre_signpost_handle();
             v21 = v68;
             if (v65 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v68))
@@ -122,7 +122,7 @@
               _os_signpost_emit_with_name_impl(&dword_260D36000, v19, OS_SIGNPOST_INTERVAL_BEGIN, v17, "SGCustomResponses-CalculateUsageSpreads", "Start", buf, 2u);
             }
 
-            [v9 calculateUsageSpreads];
+            [storeCopy calculateUsageSpreads];
             v20 = pre_signpost_handle();
             v21 = v20;
             if (v17 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v20))
@@ -154,8 +154,8 @@
           _os_signpost_emit_with_name_impl(&dword_260D36000, v38, OS_SIGNPOST_INTERVAL_BEGIN, v36, "SGCustomResponses-DecayAllCustomResponses", "Start", buf, 2u);
         }
 
-        [v11 timeDecayFactor];
-        [v9 decayAllCustomResponsesWithDecayFactor:self->_batchSize filteringBatchSize:?];
+        [parametersCopy timeDecayFactor];
+        [storeCopy decayAllCustomResponsesWithDecayFactor:self->_batchSize filteringBatchSize:?];
         v39 = pre_signpost_handle();
         v21 = v39;
         if (v36 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v39))
@@ -180,7 +180,7 @@
         _os_signpost_emit_with_name_impl(&dword_260D36000, v62, OS_SIGNPOST_INTERVAL_BEGIN, v60, "SGCustomResponses-RecordAllRemainingMessagesAsCustomResponses", "Start", buf, 2u);
       }
 
-      [v9 recordMessagesInBatchAsCustomResponsesWithEmbedder:v71 compatibilityVersion:{objc_msgSend(v11, "compatibilityVersion")}];
+      [storeCopy recordMessagesInBatchAsCustomResponsesWithEmbedder:v71 compatibilityVersion:{objc_msgSend(parametersCopy, "compatibilityVersion")}];
       if (*(v86 + 24))
       {
         v13 = 6;
@@ -221,7 +221,7 @@
           _os_signpost_emit_with_name_impl(&dword_260D36000, v33, OS_SIGNPOST_INTERVAL_BEGIN, v31, "SGCustomResponses-FilterBatch", "Start", buf, 2u);
         }
 
-        [v9 filterBatchWithMinimumDistinctRecipients:objc_msgSend(v11 minimumReplyOccurences:{"minimumDistinctRecipients"), objc_msgSend(v11, "minimumReplyOccurences")}];
+        [storeCopy filterBatchWithMinimumDistinctRecipients:objc_msgSend(parametersCopy minimumReplyOccurences:{"minimumDistinctRecipients"), objc_msgSend(parametersCopy, "minimumReplyOccurences")}];
         v34 = pre_signpost_handle();
         v21 = v34;
         if (v31 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v34))
@@ -246,9 +246,9 @@
         _os_signpost_emit_with_name_impl(&dword_260D36000, v49, OS_SIGNPOST_INTERVAL_BEGIN, v47, "SGCustomResponses-PruningAllCustomResponses", "Start", buf, 2u);
       }
 
-      [v11 minDecayedCountForPruning];
-      v50 = [v9 countCustomResponsesAfterPruningWithMinimumCountThreshold:?];
-      if (v50 >= [v11 maxStoredCustomResponses])
+      [parametersCopy minDecayedCountForPruning];
+      v50 = [storeCopy countCustomResponsesAfterPruningWithMinimumCountThreshold:?];
+      if (v50 >= [parametersCopy maxStoredCustomResponses])
       {
         v13 = 7;
       }
@@ -286,7 +286,7 @@
         _os_signpost_emit_with_name_impl(&dword_260D36000, v43, OS_SIGNPOST_INTERVAL_BEGIN, v41, "SGCustomResponses-DesignateFilteringBatch", "Start", buf, 2u);
       }
 
-      v44 = [v9 designateFilteringBatch:{objc_msgSend(v11, "filterBatchSize")}];
+      v44 = [storeCopy designateFilteringBatch:{objc_msgSend(parametersCopy, "filterBatchSize")}];
       if (v44)
       {
         v13 = 3;
@@ -329,7 +329,7 @@
       _os_signpost_emit_with_name_impl(&dword_260D36000, v25, OS_SIGNPOST_INTERVAL_BEGIN, v23, "SGCustomResponses-RecordKnownCustomResponses", "Start", buf, 2u);
     }
 
-    [v9 recordKnownCustomResponsesInBatchWithEmbedder:v71 compatibilityVersion:{objc_msgSend(v11, "compatibilityVersion")}];
+    [storeCopy recordKnownCustomResponsesInBatchWithEmbedder:v71 compatibilityVersion:{objc_msgSend(parametersCopy, "compatibilityVersion")}];
     if (*(v86 + 24))
     {
       v13 = 3;
@@ -464,11 +464,11 @@ LABEL_15:
   return v7;
 }
 
-- (id)modelForLanguage:(id)a3
+- (id)modelForLanguage:(id)language
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277D025A0] modelForLanguage:v4 mode:1 chunkPath:self->_modelFilePath plistPath:self->_modelConfigPath vocabPath:self->_modelVocabPath];
+  languageCopy = language;
+  v5 = [MEMORY[0x277D025A0] modelForLanguage:languageCopy mode:1 chunkPath:self->_modelFilePath plistPath:self->_modelConfigPath vocabPath:self->_modelVocabPath];
   v6 = v5;
   if (v5)
   {
@@ -478,7 +478,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (![v4 isEqualToString:self->_preferredLanguage])
+  if (![languageCopy isEqualToString:self->_preferredLanguage])
   {
     v7 = [(PSGCustomResponseHarvester *)self modelForLanguage:self->_preferredLanguage];
     goto LABEL_8;
@@ -501,20 +501,20 @@ LABEL_9:
   return v9;
 }
 
-- (BOOL)isSupportedLanguage:(id)a3
+- (BOOL)isSupportedLanguage:(id)language
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_modelExistsForLanguage objectForKeyedSubscript:v4];
+  languageCopy = language;
+  v5 = [(NSMutableDictionary *)self->_modelExistsForLanguage objectForKeyedSubscript:languageCopy];
   if (!v5)
   {
-    v6 = [MEMORY[0x277D02588] configWithLanguage:v4 mode:1 plistPath:self->_modelConfigPath vocabPath:self->_modelVocabPath];
+    v6 = [MEMORY[0x277D02588] configWithLanguage:languageCopy mode:1 plistPath:self->_modelConfigPath vocabPath:self->_modelVocabPath];
     v5 = [MEMORY[0x277CCABB0] numberWithInt:v6 != 0];
-    [(NSMutableDictionary *)self->_modelExistsForLanguage setObject:v5 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_modelExistsForLanguage setObject:v5 forKeyedSubscript:languageCopy];
   }
 
-  v7 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 - (void)writeCheckpoint
@@ -606,11 +606,11 @@ LABEL_9:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)harvestWithActivity:(id)a3
+- (void)harvestWithActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(PSGCustomResponseHarvester *)self _getCustomResponseParameters];
-  if (!v5)
+  activityCopy = activity;
+  _getCustomResponseParameters = [(PSGCustomResponseHarvester *)self _getCustomResponseParameters];
+  if (!_getCustomResponseParameters)
   {
     xpcActivityManager = self->_xpcActivityManager;
     goto LABEL_6;
@@ -622,15 +622,15 @@ LABEL_9:
   if (!v6)
   {
 LABEL_6:
-    v8 = v4;
+    v8 = activityCopy;
     v9 = 5;
     goto LABEL_7;
   }
 
-  if ([(SGXPCActivityManagerProtocol *)xpcActivityManager shouldDefer:v4])
+  if ([(SGXPCActivityManagerProtocol *)xpcActivityManager shouldDefer:activityCopy])
   {
     xpcActivityManager = self->_xpcActivityManager;
-    v8 = v4;
+    v8 = activityCopy;
     v9 = 3;
 LABEL_7:
     [(SGXPCActivityManagerProtocol *)xpcActivityManager setState:v8 state:v9];
@@ -643,23 +643,23 @@ LABEL_7:
   v10 = objc_autoreleasePoolPush();
   if ([(NSString *)self->_storeDirectory length])
   {
-    v41 = [objc_alloc(MEMORY[0x277D025B8]) initInDirectory:self->_storeDirectory inMemory:0 withMigration:1];
+    mEMORY[0x277D025B8] = [objc_alloc(MEMORY[0x277D025B8]) initInDirectory:self->_storeDirectory inMemory:0 withMigration:1];
   }
 
   else
   {
-    v41 = [MEMORY[0x277D025B8] sharedInstance];
+    mEMORY[0x277D025B8] = [MEMORY[0x277D025B8] sharedInstance];
   }
 
-  if (self->_customResponsesStep >= 2u && ![(PSGCustomResponseHarvester *)self activityStateAfterFilterWithStore:v41 forActivity:v4 andCustomResponseParameters:v5]|| (self->_customResponsesStep = 1, [(PSGCustomResponseHarvester *)self writeCheckpoint], [(SGXPCActivityManagerProtocol *)self->_xpcActivityManager shouldDefer:v4]))
+  if (self->_customResponsesStep >= 2u && ![(PSGCustomResponseHarvester *)self activityStateAfterFilterWithStore:mEMORY[0x277D025B8] forActivity:activityCopy andCustomResponseParameters:_getCustomResponseParameters]|| (self->_customResponsesStep = 1, [(PSGCustomResponseHarvester *)self writeCheckpoint], [(SGXPCActivityManagerProtocol *)self->_xpcActivityManager shouldDefer:activityCopy]))
   {
-    [(SGXPCActivityManagerProtocol *)self->_xpcActivityManager setState:v4 state:3];
+    [(SGXPCActivityManagerProtocol *)self->_xpcActivityManager setState:activityCopy state:3];
     PRERecordMeasurementState();
     v11 = 0;
     goto LABEL_55;
   }
 
-  v44 = v5;
+  v44 = _getCustomResponseParameters;
   v38 = v10;
   v48[0] = MEMORY[0x277D85DD0];
   v48[1] = 3221225472;
@@ -668,9 +668,9 @@ LABEL_7:
   v48[4] = self;
   v12 = 0;
   v39 = MEMORY[0x2666EDC40](v48);
-  v45 = v4;
+  v45 = activityCopy;
 LABEL_17:
-  if (([(SGXPCActivityManagerProtocol *)self->_xpcActivityManager shouldDefer:v4]& 1) == 0)
+  if (([(SGXPCActivityManagerProtocol *)self->_xpcActivityManager shouldDefer:activityCopy]& 1) == 0)
   {
     v13 = (v39)[2](v39, v44);
 
@@ -683,12 +683,12 @@ LABEL_17:
     context = objc_autoreleasePoolPush();
     while (1)
     {
-      if (-[SGXPCActivityManagerProtocol shouldDefer:](self->_xpcActivityManager, "shouldDefer:", v4) & 1) != 0 || ([v13 isDoneIterating])
+      if (-[SGXPCActivityManagerProtocol shouldDefer:](self->_xpcActivityManager, "shouldDefer:", activityCopy) & 1) != 0 || ([v13 isDoneIterating])
       {
 LABEL_42:
-        v33 = [v13 latestProcessedDate];
+        latestProcessedDate = [v13 latestProcessedDate];
         latestProcessedDate = self->_latestProcessedDate;
-        self->_latestProcessedDate = v33;
+        self->_latestProcessedDate = latestProcessedDate;
 
         [(PSGCustomResponseHarvester *)self writeCheckpoint];
         objc_autoreleasePoolPop(context);
@@ -711,7 +711,7 @@ LABEL_42:
 
       v19 = objc_autoreleasePoolPush();
       v20 = v13;
-      v21 = [v13 nextMessagePair];
+      nextMessagePair = [v13 nextMessagePair];
       objc_autoreleasePoolPop(v19);
       v22 = pre_signpost_handle();
       v23 = v22;
@@ -721,7 +721,7 @@ LABEL_42:
         _os_signpost_emit_with_name_impl(&dword_260D36000, v23, OS_SIGNPOST_INTERVAL_END, v16, "SGCustomResponses-NextMessagePair", "Completed", buf, 2u);
       }
 
-      if (v21)
+      if (nextMessagePair)
       {
         break;
       }
@@ -738,8 +738,8 @@ LABEL_39:
     }
 
     v24 = MEMORY[0x277D3A248];
-    v25 = [v21 prompt];
-    v26 = [v24 detectLanguageFromText:v25];
+    prompt = [nextMessagePair prompt];
+    v26 = [v24 detectLanguageFromText:prompt];
 
     if (v26)
     {
@@ -748,15 +748,15 @@ LABEL_39:
       {
         if ([(PSGCustomResponseHarvester *)self isSupportedLanguage:v27])
         {
-          v42 = [v44 filterBatchSize];
-          v28 = [v44 maxStoredMessages];
-          v43 = [v21 reply];
-          v29 = [v21 prompt];
-          v30 = [v21 handle];
-          v31 = [v21 sentAt];
-          LOBYTE(v28) = [v41 addingMessageExceedsBatchLimit:v42 tableLimit:v28 message:v43 language:v27 prompt:v29 recipientHandle:v30 sentAt:v31];
+          filterBatchSize = [v44 filterBatchSize];
+          maxStoredMessages = [v44 maxStoredMessages];
+          reply = [nextMessagePair reply];
+          prompt2 = [nextMessagePair prompt];
+          handle = [nextMessagePair handle];
+          sentAt = [nextMessagePair sentAt];
+          LOBYTE(maxStoredMessages) = [mEMORY[0x277D025B8] addingMessageExceedsBatchLimit:filterBatchSize tableLimit:maxStoredMessages message:reply language:v27 prompt:prompt2 recipientHandle:handle sentAt:sentAt];
 
-          if (v28)
+          if (maxStoredMessages)
           {
             self->_customResponsesStep = 2;
             [(PSGCustomResponseHarvester *)self writeCheckpoint];
@@ -765,11 +765,11 @@ LABEL_39:
               v32 = 1;
 LABEL_38:
 
-              v4 = v45;
+              activityCopy = v45;
               goto LABEL_39;
             }
 
-            [(PSGCustomResponseHarvester *)self activityStateAfterFilterWithStore:v41 forActivity:v45 andCustomResponseParameters:v44];
+            [(PSGCustomResponseHarvester *)self activityStateAfterFilterWithStore:mEMORY[0x277D025B8] forActivity:v45 andCustomResponseParameters:v44];
           }
         }
       }
@@ -785,7 +785,7 @@ LABEL_38:
   }
 
 LABEL_44:
-  if (([(SGXPCActivityManagerProtocol *)self->_xpcActivityManager shouldDefer:v4]& 1) != 0)
+  if (([(SGXPCActivityManagerProtocol *)self->_xpcActivityManager shouldDefer:activityCopy]& 1) != 0)
   {
     goto LABEL_53;
   }
@@ -801,8 +801,8 @@ LABEL_44:
     v36 = objc_autoreleasePoolPush();
     self->_customResponsesStep = 2;
     [(PSGCustomResponseHarvester *)self writeCheckpoint];
-    v37 = [(SGXPCActivityManagerProtocol *)self->_xpcActivityManager shouldDefer:v4];
-    v35 = (v37 & 1) != 0 ? 0 : [(PSGCustomResponseHarvester *)self activityStateAfterFilterWithStore:v41 forActivity:v4 andCustomResponseParameters:v44];
+    v37 = [(SGXPCActivityManagerProtocol *)self->_xpcActivityManager shouldDefer:activityCopy];
+    v35 = (v37 & 1) != 0 ? 0 : [(PSGCustomResponseHarvester *)self activityStateAfterFilterWithStore:mEMORY[0x277D025B8] forActivity:activityCopy andCustomResponseParameters:v44];
     objc_autoreleasePoolPop(v36);
   }
 
@@ -810,7 +810,7 @@ LABEL_44:
   if (!v35)
   {
 LABEL_53:
-    [(SGXPCActivityManagerProtocol *)self->_xpcActivityManager setState:v4 state:3];
+    [(SGXPCActivityManagerProtocol *)self->_xpcActivityManager setState:activityCopy state:3];
     PRERecordMeasurementState();
     v11 = 0;
   }
@@ -821,13 +821,13 @@ LABEL_53:
   }
 
   v10 = v38;
-  v5 = v44;
+  _getCustomResponseParameters = v44;
 LABEL_55:
 
   objc_autoreleasePoolPop(v10);
   if (v11)
   {
-    [(SGXPCActivityManagerProtocol *)self->_xpcActivityManager setState:v4 state:5];
+    [(SGXPCActivityManagerProtocol *)self->_xpcActivityManager setState:activityCopy state:5];
     PRERecordMeasurementState();
   }
 
@@ -869,17 +869,17 @@ id __50__PSGCustomResponseHarvester_harvestWithActivity___block_invoke(uint64_t 
   return v3;
 }
 
-- (id)_customResponseParametersWithConfigPath:(id)a3
+- (id)_customResponseParametersWithConfigPath:(id)path
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277D02588] configWithLanguage:self->_preferredLanguage mode:1 plistPath:v4 vocabPath:0];
-  v6 = [v5 customResponsesParameters];
-  if ([v6 isCustomResponsesEnabled])
+  pathCopy = path;
+  v5 = [MEMORY[0x277D02588] configWithLanguage:self->_preferredLanguage mode:1 plistPath:pathCopy vocabPath:0];
+  customResponsesParameters = [v5 customResponsesParameters];
+  if ([customResponsesParameters isCustomResponsesEnabled])
   {
     if ([(NSString *)self->_modelFilePath length]&& [(NSFileManager *)self->_fManager isReadableFileAtPath:self->_modelFilePath])
     {
-      v7 = v6;
+      v7 = customResponsesParameters;
       goto LABEL_12;
     }
 
@@ -902,7 +902,7 @@ id __50__PSGCustomResponseHarvester_harvestWithActivity___block_invoke(uint64_t 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       v14 = 138412290;
-      v15 = v4;
+      v15 = pathCopy;
       _os_log_debug_impl(&dword_260D36000, v8, OS_LOG_TYPE_DEBUG, "[CRH] Custom responses not enabled in this config: %@", &v14, 0xCu);
     }
   }
@@ -915,11 +915,11 @@ LABEL_12:
   return v7;
 }
 
-- (id)_customResponseParametersWithExperiment:(id)a3
+- (id)_customResponseParametersWithExperiment:(id)experiment
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (([v4 isMLModelEnabled] & 1) == 0)
+  experimentCopy = experiment;
+  if (([experimentCopy isMLModelEnabled] & 1) == 0)
   {
     v9 = psg_default_log_handle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -933,9 +933,9 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  v5 = [v4 inferenceModelConfigPath];
+  inferenceModelConfigPath = [experimentCopy inferenceModelConfigPath];
   modelConfigPath = self->_modelConfigPath;
-  self->_modelConfigPath = v5;
+  self->_modelConfigPath = inferenceModelConfigPath;
 
   if (![(NSString *)self->_modelConfigPath length]|| ![(NSFileManager *)self->_fManager isReadableFileAtPath:self->_modelConfigPath])
   {
@@ -945,17 +945,17 @@ LABEL_12:
     v9 = psg_default_log_handle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
-      v28 = [v4 treatmentName];
-      v29 = [v4 experimentIdentifiers];
-      v30 = [v29 experimentId];
-      v31 = [v4 experimentIdentifiers];
-      v32 = [v31 treatmentId];
+      treatmentName = [experimentCopy treatmentName];
+      experimentIdentifiers = [experimentCopy experimentIdentifiers];
+      experimentId = [experimentIdentifiers experimentId];
+      experimentIdentifiers2 = [experimentCopy experimentIdentifiers];
+      treatmentId = [experimentIdentifiers2 treatmentId];
       v34 = 138412802;
-      v35 = v28;
+      v35 = treatmentName;
       v36 = 2112;
-      v37 = v30;
+      v37 = experimentId;
       v38 = 2112;
-      v39 = v32;
+      v39 = treatmentId;
       _os_log_fault_impl(&dword_260D36000, v9, OS_LOG_TYPE_FAULT, "[CRH] Config file invalid while ML is enabled. Name: %@, Exp: %@; Trt: %@", &v34, 0x20u);
     }
 
@@ -964,60 +964,60 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v7 = [v4 vocabFilePath];
+  vocabFilePath = [experimentCopy vocabFilePath];
   modelVocabPath = self->_modelVocabPath;
-  self->_modelVocabPath = v7;
+  self->_modelVocabPath = vocabFilePath;
 
   v9 = [MEMORY[0x277D02588] configWithLanguage:self->_preferredLanguage mode:1 plistPath:self->_modelConfigPath vocabPath:self->_modelVocabPath];
-  v10 = [v9 customResponsesParameters];
-  if (([v10 isCustomResponsesEnabled] & 1) == 0)
+  customResponsesParameters = [v9 customResponsesParameters];
+  if (([customResponsesParameters isCustomResponsesEnabled] & 1) == 0)
   {
-    v12 = psg_default_log_handle();
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+    modelTypeName = psg_default_log_handle();
+    if (!os_log_type_enabled(modelTypeName, OS_LOG_TYPE_DEBUG))
     {
 LABEL_26:
       v16 = 0;
       goto LABEL_27;
     }
 
-    v19 = [v4 treatmentName];
+    treatmentName2 = [experimentCopy treatmentName];
     v34 = 138412290;
-    v35 = v19;
-    _os_log_debug_impl(&dword_260D36000, v12, OS_LOG_TYPE_DEBUG, "[CRH] Custom responses not enabled in this treatment (name: %@).", &v34, 0xCu);
+    v35 = treatmentName2;
+    _os_log_debug_impl(&dword_260D36000, modelTypeName, OS_LOG_TYPE_DEBUG, "[CRH] Custom responses not enabled in this treatment (name: %@).", &v34, 0xCu);
     goto LABEL_25;
   }
 
-  v11 = [v9 predictionParams];
-  v12 = [v11 modelTypeName];
+  predictionParams = [v9 predictionParams];
+  modelTypeName = [predictionParams modelTypeName];
 
-  if ([v12 isEqualToString:@"quickResponsesBinaryLogisticMultiLabel"])
+  if ([modelTypeName isEqualToString:@"quickResponsesBinaryLogisticMultiLabel"])
   {
-    v13 = [v4 inferenceModelFilePath];
+    inferenceModelFilePath = [experimentCopy inferenceModelFilePath];
   }
 
   else
   {
-    if (![v12 isEqualToString:@"quickResponsesEspressoClassifierMultiLabel"])
+    if (![modelTypeName isEqualToString:@"quickResponsesEspressoClassifierMultiLabel"])
     {
       modelFilePath = self->_modelFilePath;
       self->_modelFilePath = 0;
 
-      v19 = psg_default_log_handle();
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
+      treatmentName2 = psg_default_log_handle();
+      if (os_log_type_enabled(treatmentName2, OS_LOG_TYPE_FAULT))
       {
-        v22 = [v4 treatmentName];
-        v23 = [v4 experimentIdentifiers];
-        v24 = [v23 experimentId];
-        v25 = [v4 experimentIdentifiers];
-        v26 = [v25 treatmentId];
+        treatmentName3 = [experimentCopy treatmentName];
+        experimentIdentifiers3 = [experimentCopy experimentIdentifiers];
+        experimentId2 = [experimentIdentifiers3 experimentId];
+        experimentIdentifiers4 = [experimentCopy experimentIdentifiers];
+        treatmentId2 = [experimentIdentifiers4 treatmentId];
         v34 = 138413058;
-        v35 = v12;
+        v35 = modelTypeName;
         v36 = 2112;
-        v37 = v22;
+        v37 = treatmentName3;
         v38 = 2112;
-        v39 = v24;
+        v39 = experimentId2;
         v40 = 2112;
-        v41 = v26;
+        v41 = treatmentId2;
         v27 = "[CRH] Unexpected model type %@, and experiment (Name: %@, Exp: %@ Trt: %@).";
         goto LABEL_29;
       }
@@ -1027,36 +1027,36 @@ LABEL_25:
       goto LABEL_26;
     }
 
-    v13 = [v4 espressoBinFilePath];
+    inferenceModelFilePath = [experimentCopy espressoBinFilePath];
   }
 
   v20 = self->_modelFilePath;
-  self->_modelFilePath = v13;
+  self->_modelFilePath = inferenceModelFilePath;
 
   if (![(NSString *)self->_modelFilePath length]|| ![(NSFileManager *)self->_fManager isReadableFileAtPath:self->_modelFilePath])
   {
     v21 = self->_modelFilePath;
     self->_modelFilePath = 0;
 
-    v19 = psg_default_log_handle();
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
+    treatmentName2 = psg_default_log_handle();
+    if (os_log_type_enabled(treatmentName2, OS_LOG_TYPE_FAULT))
     {
-      v22 = [v4 treatmentName];
-      v23 = [v4 experimentIdentifiers];
-      v24 = [v23 experimentId];
-      v25 = [v4 experimentIdentifiers];
-      v26 = [v25 treatmentId];
+      treatmentName3 = [experimentCopy treatmentName];
+      experimentIdentifiers3 = [experimentCopy experimentIdentifiers];
+      experimentId2 = [experimentIdentifiers3 experimentId];
+      experimentIdentifiers4 = [experimentCopy experimentIdentifiers];
+      treatmentId2 = [experimentIdentifiers4 treatmentId];
       v34 = 138413058;
-      v35 = v12;
+      v35 = modelTypeName;
       v36 = 2112;
-      v37 = v22;
+      v37 = treatmentName3;
       v38 = 2112;
-      v39 = v24;
+      v39 = experimentId2;
       v40 = 2112;
-      v41 = v26;
+      v41 = treatmentId2;
       v27 = "[CRH] Model file invalid for ModelType: %@ and Experiment (Name: %@, Exp: %@ Trt: %@).";
 LABEL_29:
-      _os_log_fault_impl(&dword_260D36000, v19, OS_LOG_TYPE_FAULT, v27, &v34, 0x2Au);
+      _os_log_fault_impl(&dword_260D36000, treatmentName2, OS_LOG_TYPE_FAULT, v27, &v34, 0x2Au);
 
       goto LABEL_25;
     }
@@ -1064,7 +1064,7 @@ LABEL_29:
     goto LABEL_25;
   }
 
-  v16 = v10;
+  v16 = customResponsesParameters;
 LABEL_27:
 
 LABEL_12:
@@ -1073,13 +1073,13 @@ LABEL_12:
   return v16;
 }
 
-- (PSGCustomResponseHarvester)initWithActivityManager:(id)a3 modelConfigPath:(id)a4 modelVocabPath:(id)a5 modelFilePath:(id)a6 storeDirectory:(id)a7
+- (PSGCustomResponseHarvester)initWithActivityManager:(id)manager modelConfigPath:(id)path modelVocabPath:(id)vocabPath modelFilePath:(id)filePath storeDirectory:(id)directory
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v42 = a7;
+  managerCopy = manager;
+  pathCopy = path;
+  vocabPathCopy = vocabPath;
+  filePathCopy = filePath;
+  directoryCopy = directory;
   v44.receiver = self;
   v44.super_class = PSGCustomResponseHarvester;
   v17 = [(PSGCustomResponseHarvester *)&v44 init];
@@ -1091,41 +1091,41 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  objc_storeStrong(&v17->_xpcActivityManager, a3);
-  v19 = [MEMORY[0x277D41DA8] sharedInstance];
+  objc_storeStrong(&v17->_xpcActivityManager, manager);
+  mEMORY[0x277D41DA8] = [MEMORY[0x277D41DA8] sharedInstance];
   pet2tracker = v18->_pet2tracker;
-  v18->_pet2tracker = v19;
+  v18->_pet2tracker = mEMORY[0x277D41DA8];
 
-  v21 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   fManager = v18->_fManager;
-  v18->_fManager = v21;
+  v18->_fManager = defaultManager;
 
-  v23 = [MEMORY[0x277D3A258] suggestionsDirectory];
-  if (v23)
+  suggestionsDirectory = [MEMORY[0x277D3A258] suggestionsDirectory];
+  if (suggestionsDirectory)
   {
-    v24 = v23;
-    v40 = v16;
-    v41 = v15;
-    v25 = v14;
-    v26 = v13;
-    v27 = [MEMORY[0x277CBEAF8] preferredLanguages];
-    v28 = [v27 firstObject];
+    v24 = suggestionsDirectory;
+    v40 = filePathCopy;
+    v41 = vocabPathCopy;
+    v25 = pathCopy;
+    v26 = managerCopy;
+    preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+    firstObject = [preferredLanguages firstObject];
 
-    if (v28)
+    if (firstObject)
     {
-      v29 = [MEMORY[0x277D3A248] languageForLocaleIdentifier:v28];
+      v29 = [MEMORY[0x277D3A248] languageForLocaleIdentifier:firstObject];
       preferredLanguage = v18->_preferredLanguage;
       v18->_preferredLanguage = v29;
     }
 
-    v13 = v26;
+    managerCopy = v26;
     if (v18->_preferredLanguage)
     {
-      objc_storeStrong(&v18->_modelConfigPath, a4);
-      objc_storeStrong(&v18->_modelVocabPath, a5);
-      objc_storeStrong(&v18->_modelFilePath, a6);
-      objc_storeStrong(&v18->_storeDirectory, a7);
-      v14 = v25;
+      objc_storeStrong(&v18->_modelConfigPath, path);
+      objc_storeStrong(&v18->_modelVocabPath, vocabPath);
+      objc_storeStrong(&v18->_modelFilePath, filePath);
+      objc_storeStrong(&v18->_storeDirectory, directory);
+      pathCopy = v25;
       if ([(NSString *)v18->_storeDirectory length])
       {
         storeDirectory = v18->_storeDirectory;
@@ -1137,7 +1137,7 @@ LABEL_16:
       }
 
       v34 = [(NSString *)storeDirectory stringByAppendingPathComponent:@"custom-response-ckpt"];
-      v15 = v41;
+      vocabPathCopy = v41;
       checkpointFullPath = v18->_checkpointFullPath;
       v18->_checkpointFullPath = v34;
 
@@ -1151,12 +1151,12 @@ LABEL_16:
       modelExistsForLanguage = v18->_modelExistsForLanguage;
       v18->_modelExistsForLanguage = v37;
 
-      v16 = v40;
+      filePathCopy = v40;
       goto LABEL_16;
     }
 
     v33 = psg_default_log_handle();
-    v14 = v25;
+    pathCopy = v25;
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
     {
       *buf = 0;
@@ -1164,8 +1164,8 @@ LABEL_16:
     }
 
     v32 = 0;
-    v16 = v40;
-    v15 = v41;
+    filePathCopy = v40;
+    vocabPathCopy = v41;
   }
 
   else
@@ -1184,22 +1184,22 @@ LABEL_17:
   return v32;
 }
 
-+ (void)runHarvestSkipMessageCollection:(BOOL)a3 clearCheckpoint:(BOOL)a4 reportMetrics:(BOOL)a5 modelConfigPath:(id)a6 modelVocabPath:(id)a7 modelFilePath:(id)a8 storeDirectory:(id)a9 evalFraction:(id)a10
++ (void)runHarvestSkipMessageCollection:(BOOL)collection clearCheckpoint:(BOOL)checkpoint reportMetrics:(BOOL)metrics modelConfigPath:(id)path modelVocabPath:(id)vocabPath modelFilePath:(id)filePath storeDirectory:(id)directory evalFraction:(id)self0
 {
-  v13 = a4;
-  v14 = a3;
-  v25 = a6;
-  v15 = a7;
-  v16 = a8;
-  v17 = a9;
-  v18 = a10;
-  if (v13)
+  checkpointCopy = checkpoint;
+  collectionCopy = collection;
+  pathCopy = path;
+  vocabPathCopy = vocabPath;
+  filePathCopy = filePath;
+  directoryCopy = directory;
+  fractionCopy = fraction;
+  if (checkpointCopy)
   {
-    if ([v17 length])
+    if ([directoryCopy length])
     {
-      v19 = [MEMORY[0x277CCAA00] defaultManager];
-      v20 = [v17 stringByAppendingPathComponent:@"custom-response-ckpt"];
-      [v19 removeItemAtPath:v20 error:0];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      v20 = [directoryCopy stringByAppendingPathComponent:@"custom-response-ckpt"];
+      [defaultManager removeItemAtPath:v20 error:0];
     }
 
     else
@@ -1208,26 +1208,26 @@ LABEL_17:
     }
   }
 
-  v21 = [[PSGCustomResponseHarvester alloc] initWithActivityManager:0 modelConfigPath:v25 modelVocabPath:v15 modelFilePath:v16 storeDirectory:v17];
+  v21 = [[PSGCustomResponseHarvester alloc] initWithActivityManager:0 modelConfigPath:pathCopy modelVocabPath:vocabPathCopy modelFilePath:filePathCopy storeDirectory:directoryCopy];
   v22 = v21;
-  if (!a5)
+  if (!metrics)
   {
     [(PSGCustomResponseHarvester *)v21 setPet2TrackerForTesting:0];
   }
 
-  if (v14)
+  if (collectionCopy)
   {
     [(PSGCustomResponseHarvester *)v22 setCustomResponsesStepForTesting:2];
   }
 
   [(PSGCustomResponseHarvester *)v22 harvestWithActivity:0];
-  if (v18)
+  if (fractionCopy)
   {
-    [v18 doubleValue];
+    [fractionCopy doubleValue];
     if (v23 > 0.0)
     {
-      v24 = [objc_alloc(MEMORY[0x277D025B8]) initInDirectory:v17 inMemory:0 withMigration:1];
-      [v24 resetCustomResponsesForEval:v18];
+      v24 = [objc_alloc(MEMORY[0x277D025B8]) initInDirectory:directoryCopy inMemory:0 withMigration:1];
+      [v24 resetCustomResponsesForEval:fractionCopy];
     }
   }
 
@@ -1236,9 +1236,9 @@ LABEL_17:
 
 + (void)clearCustomResponsesCheckpointForTesting
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v2 = [MEMORY[0x277D3A258] suggestionsDirectoryFile:@"custom-response-ckpt"];
-  [v3 removeItemAtPath:v2 error:0];
+  [defaultManager removeItemAtPath:v2 error:0];
 }
 
 @end

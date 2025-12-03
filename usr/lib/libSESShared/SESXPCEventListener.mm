@@ -1,9 +1,9 @@
 @interface SESXPCEventListener
-+ (id)registerOnStream:(id)a3 forEvent:(id)a4 handler:(id)a5;
++ (id)registerOnStream:(id)stream forEvent:(id)event handler:(id)handler;
 + (id)sharedObject;
 - (SESXPCEventListener)init;
 - (os_state_data_s)_dumpState;
-- (void)_handleEvent:(id)a3 payload:(id)a4;
+- (void)_handleEvent:(id)event payload:(id)payload;
 @end
 
 @implementation SESXPCEventListener
@@ -57,12 +57,12 @@ uint64_t __35__SESXPCEventListener_sharedObject__block_invoke()
   return v2;
 }
 
-+ (id)registerOnStream:(id)a3 forEvent:(id)a4 handler:(id)a5
++ (id)registerOnStream:(id)stream forEvent:(id)event handler:(id)handler
 {
   v37 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  streamCopy = stream;
+  eventCopy = event;
+  handlerCopy = handler;
   v10 = +[SESXPCEventListener sharedObject];
   dispatch_assert_queue_not_V2(v10[1]);
   v27 = 0;
@@ -78,11 +78,11 @@ uint64_t __35__SESXPCEventListener_sharedObject__block_invoke()
   block[3] = &unk_1E86FFC50;
   v12 = v10;
   v22 = v12;
-  v13 = v7;
+  v13 = streamCopy;
   v23 = v13;
-  v14 = v9;
+  v14 = handlerCopy;
   v24 = v14;
-  v15 = v8;
+  v15 = eventCopy;
   v25 = v15;
   v26 = &v27;
   dispatch_sync(v11, block);
@@ -151,18 +151,18 @@ void __57__SESXPCEventListener_registerOnStream_forEvent_handler___block_invoke(
   }
 }
 
-- (void)_handleEvent:(id)a3 payload:(id)a4
+- (void)_handleEvent:(id)event payload:(id)payload
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  payloadCopy = payload;
   dispatch_assert_queue_V2(self->queue);
-  v8 = [(NSMutableDictionary *)self->registeredDelegates objectForKey:v6];
+  v8 = [(NSMutableDictionary *)self->registeredDelegates objectForKey:eventCopy];
   v9 = SESDefaultLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v24 = v6;
+    v24 = eventCopy;
     v25 = 2048;
     v26 = [v8 count];
     _os_log_impl(&dword_1E0FCB000, v9, OS_LOG_TYPE_INFO, "Received event on stream %@ have %lu delegates", buf, 0x16u);
@@ -192,7 +192,7 @@ void __57__SESXPCEventListener_registerOnStream_forEvent_handler___block_invoke(
           v15 = *(*(&v18 + 1) + 8 * i);
           if (v15)
           {
-            [v15 onEvent:v6 eventPayload:{v7, v18}];
+            [v15 onEvent:eventCopy eventPayload:{payloadCopy, v18}];
           }
         }
 
@@ -205,16 +205,16 @@ void __57__SESXPCEventListener_registerOnStream_forEvent_handler___block_invoke(
 
   else
   {
-    v10 = [(NSMutableDictionary *)self->pendingEvents objectForKeyedSubscript:v6];
+    v10 = [(NSMutableDictionary *)self->pendingEvents objectForKeyedSubscript:eventCopy];
     if (!self->pendingEvents)
     {
       v16 = objc_opt_new();
 
-      [(NSMutableDictionary *)self->pendingEvents setObject:v16 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)self->pendingEvents setObject:v16 forKeyedSubscript:eventCopy];
       v10 = v16;
     }
 
-    [v10 addObject:v7];
+    [v10 addObject:payloadCopy];
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -224,12 +224,12 @@ void __57__SESXPCEventListener_registerOnStream_forEvent_handler___block_invoke(
 {
   v12[2] = *MEMORY[0x1E69E9840];
   v11[0] = @"registeredStreams";
-  v3 = [(NSMutableDictionary *)self->registeredDelegates keyEnumerator];
-  v4 = [v3 allObjects];
+  keyEnumerator = [(NSMutableDictionary *)self->registeredDelegates keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
   v11[1] = @"pendingEvents";
-  v12[0] = v4;
-  v5 = [(NSMutableDictionary *)self->pendingEvents allKeys];
-  v12[1] = v5;
+  v12[0] = allObjects;
+  allKeys = [(NSMutableDictionary *)self->pendingEvents allKeys];
+  v12[1] = allKeys;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];
 
   v7 = [MEMORY[0x1E696AE40] dataWithPropertyList:v6 format:200 options:0 error:0];

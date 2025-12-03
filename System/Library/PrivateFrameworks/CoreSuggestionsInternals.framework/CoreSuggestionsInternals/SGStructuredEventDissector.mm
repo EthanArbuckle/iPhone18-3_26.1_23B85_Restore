@@ -1,48 +1,48 @@
 @interface SGStructuredEventDissector
-+ (BOOL)eventEnrichmentContainsReverseMappedTags:(id)a3;
-+ (id)addressDictionaryForAddressComponents:(id)a3;
-+ (id)annotateContent:(id)a3 withLabel:(id)a4 forMatchingString:(id)a5;
-+ (id)annotationMatchingStringsForSubject:(id)a3;
-+ (id)eventEnrichmentFromEntity:(id)a3;
-+ (id)jsMessageLogsDictionaryForMailMessage:(id)a3;
-+ (id)jsMessageLogsDictionaryForPrivacyAwareLogs:(id)a3;
-+ (id)labelsWithMatchingStringsForMailMessage:(id)a3;
-+ (id)mergeFallbackSchema:(id)a3 parentEntity:(id)a4;
-+ (id)nilEntities:(id)a3;
-+ (id)outputLogsForClassification:(id)a3;
-+ (id)plainTextStringsByLabelInTaggedCharacterRanges:(id)a3 inPlainText:(id)a4;
-+ (id)preprocessDomParserResult:(id)a3 subject:(id)a4 epoch:(double)a5 category:(id)a6 labelsWithMatchingStrings:(id)a7;
-+ (id)preprocessWithoutXPCForHTML:(id)a3 subject:(id)a4 epoch:(double)a5 category:(id)a6 labelsWithMatchingStrings:(id)a7;
-+ (id)schemaOrgAndMissingEntitiesForDUFoundInEvent:(id)a3 eventClassification:(id)a4 fromSuggestTool:(BOOL)a5;
-+ (id)schemaPostalAddressForPostalAddressExtraction:(id)a3 addressThreshold:(unint64_t)a4;
-+ (id)schemaStringForDateComponents:(id)a3;
-+ (id)schemaStringForEventStatus:(unsigned __int8)a3;
-+ (id)schemaStringForReservationStatus:(unsigned __int8)a3;
++ (BOOL)eventEnrichmentContainsReverseMappedTags:(id)tags;
++ (id)addressDictionaryForAddressComponents:(id)components;
++ (id)annotateContent:(id)content withLabel:(id)label forMatchingString:(id)string;
++ (id)annotationMatchingStringsForSubject:(id)subject;
++ (id)eventEnrichmentFromEntity:(id)entity;
++ (id)jsMessageLogsDictionaryForMailMessage:(id)message;
++ (id)jsMessageLogsDictionaryForPrivacyAwareLogs:(id)logs;
++ (id)labelsWithMatchingStringsForMailMessage:(id)message;
++ (id)mergeFallbackSchema:(id)schema parentEntity:(id)entity;
++ (id)nilEntities:(id)entities;
++ (id)outputLogsForClassification:(id)classification;
++ (id)plainTextStringsByLabelInTaggedCharacterRanges:(id)ranges inPlainText:(id)text;
++ (id)preprocessDomParserResult:(id)result subject:(id)subject epoch:(double)epoch category:(id)category labelsWithMatchingStrings:(id)strings;
++ (id)preprocessWithoutXPCForHTML:(id)l subject:(id)subject epoch:(double)epoch category:(id)category labelsWithMatchingStrings:(id)strings;
++ (id)schemaOrgAndMissingEntitiesForDUFoundInEvent:(id)event eventClassification:(id)classification fromSuggestTool:(BOOL)tool;
++ (id)schemaPostalAddressForPostalAddressExtraction:(id)extraction addressThreshold:(unint64_t)threshold;
++ (id)schemaStringForDateComponents:(id)components;
++ (id)schemaStringForEventStatus:(unsigned __int8)status;
++ (id)schemaStringForReservationStatus:(unsigned __int8)status;
 + (id)sharedInstance;
-+ (id)tupleWithEntity:(id)a3 label:(id)a4;
-+ (id)tupleWithError:(id)a3 label:(id)a4;
-+ (unint64_t)tokenCount:(id)a3;
-+ (unint64_t)tokenCountForPostalAddressComponents:(id)a3;
-+ (void)addSchemaAsEnrichment:(id)a3 inMessage:(id)a4 parentEntity:(id)a5 eventClassification:(id)a6 mlDefaultExtraction:(BOOL)a7;
-+ (void)logFailedExtractionWithClassification:(id)a3 missingEntities:(id)a4 mlSummary:(id)a5 shadowExtraction:(BOOL)a6 timingProcessingInMs:(unint64_t)a7 forMessage:(id)a8 parentEntity:(id)a9;
-+ (void)logMLExtractionForSchema:(id)a3 mergedSchemaAndDiff:(id)a4 parentEntity:(id)a5 timingProcessingInMs:(unint64_t)a6 eventClassification:(id)a7 mailMessage:(id)a8 shadowExtraction:(BOOL)a9 mlDefaultExtraction:(BOOL)a10;
-+ (void)logMLInteractions:(id)a3 context:(id)a4 mlDefaultExtraction:(BOOL)a5;
-- (id)preprocessHTML:(id)a3 subject:(id)a4 epoch:(double)a5 category:(id)a6 labelsWithMatchingStrings:(id)a7;
-- (id)tagsWithModelOutputFromEnrichedTaggedCharacterRanges:(id)a3;
-- (void)dissectMailMessage:(id)a3 entity:(id)a4 context:(id)a5;
++ (id)tupleWithEntity:(id)entity label:(id)label;
++ (id)tupleWithError:(id)error label:(id)label;
++ (unint64_t)tokenCount:(id)count;
++ (unint64_t)tokenCountForPostalAddressComponents:(id)components;
++ (void)addSchemaAsEnrichment:(id)enrichment inMessage:(id)message parentEntity:(id)entity eventClassification:(id)classification mlDefaultExtraction:(BOOL)extraction;
++ (void)logFailedExtractionWithClassification:(id)classification missingEntities:(id)entities mlSummary:(id)summary shadowExtraction:(BOOL)extraction timingProcessingInMs:(unint64_t)ms forMessage:(id)message parentEntity:(id)entity;
++ (void)logMLExtractionForSchema:(id)schema mergedSchemaAndDiff:(id)diff parentEntity:(id)entity timingProcessingInMs:(unint64_t)ms eventClassification:(id)classification mailMessage:(id)message shadowExtraction:(BOOL)extraction mlDefaultExtraction:(BOOL)self0;
++ (void)logMLInteractions:(id)interactions context:(id)context mlDefaultExtraction:(BOOL)extraction;
+- (id)preprocessHTML:(id)l subject:(id)subject epoch:(double)epoch category:(id)category labelsWithMatchingStrings:(id)strings;
+- (id)tagsWithModelOutputFromEnrichedTaggedCharacterRanges:(id)ranges;
+- (void)dissectMailMessage:(id)message entity:(id)entity context:(id)context;
 @end
 
 @implementation SGStructuredEventDissector
 
-- (id)tagsWithModelOutputFromEnrichedTaggedCharacterRanges:(id)a3
+- (id)tagsWithModelOutputFromEnrichedTaggedCharacterRanges:(id)ranges
 {
-  v3 = a3;
+  rangesCopy = ranges;
   v4 = +[SGStructuredEventExtractionModel sharedInstance];
-  v5 = [v4 modelInferences:v3];
+  v5 = [v4 modelInferences:rangesCopy];
 
   if (v5)
   {
-    v6 = [(SGExtractionModel *)SGStructuredEventExtractionModel enrichTaggedCharacterRangesWithModelOutput:v5 usingInputCharacterRanges:v3];
+    v6 = [(SGExtractionModel *)SGStructuredEventExtractionModel enrichTaggedCharacterRangesWithModelOutput:v5 usingInputCharacterRanges:rangesCopy];
   }
 
   else
@@ -61,53 +61,53 @@
   return v6;
 }
 
-- (id)preprocessHTML:(id)a3 subject:(id)a4 epoch:(double)a5 category:(id)a6 labelsWithMatchingStrings:(id)a7
+- (id)preprocessHTML:(id)l subject:(id)subject epoch:(double)epoch category:(id)category labelsWithMatchingStrings:(id)strings
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
+  stringsCopy = strings;
+  categoryCopy = category;
+  subjectCopy = subject;
+  lCopy = l;
   v15 = objc_opt_new();
-  v16 = [v15 parseHTML:v14];
+  v16 = [v15 parseHTML:lCopy];
 
-  v17 = [objc_opt_class() preprocessDomParserResult:v16 subject:v13 epoch:v12 category:v11 labelsWithMatchingStrings:a5];
+  v17 = [objc_opt_class() preprocessDomParserResult:v16 subject:subjectCopy epoch:categoryCopy category:stringsCopy labelsWithMatchingStrings:epoch];
 
   return v17;
 }
 
-- (void)dissectMailMessage:(id)a3 entity:(id)a4 context:(id)a5
+- (void)dissectMailMessage:(id)message entity:(id)entity context:(id)context
 {
   v89 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  messageCopy = message;
+  entityCopy = entity;
+  contextCopy = context;
   context = objc_autoreleasePoolPush();
   v78 = mach_absolute_time();
-  v10 = [v7 from];
-  v11 = [v10 emailAddress];
+  from = [messageCopy from];
+  emailAddress = [from emailAddress];
 
-  if (v11)
+  if (emailAddress)
   {
     v12 = +[SGStructuredEventExtractionModel sharedInstance];
-    v13 = [MEMORY[0x277D02098] detectStructuredEventsML];
-    v14 = [v7 from];
-    v15 = [v14 emailAddress];
-    v16 = [v12 isSenderSupportedForExtraction:v15];
+    detectStructuredEventsML = [MEMORY[0x277D02098] detectStructuredEventsML];
+    from2 = [messageCopy from];
+    emailAddress2 = [from2 emailAddress];
+    v16 = [v12 isSenderSupportedForExtraction:emailAddress2];
 
-    v17 = [v7 from];
-    v18 = [v17 emailAddress];
-    LODWORD(v15) = [v12 isSenderSupportedForShadowExtraction:v18];
+    from3 = [messageCopy from];
+    emailAddress3 = [from3 emailAddress];
+    LODWORD(emailAddress2) = [v12 isSenderSupportedForShadowExtraction:emailAddress3];
 
-    v19 = [v7 from];
-    v20 = [v19 emailAddress];
-    v77 = [v12 isSenderSupportedForMLDefaultExtraction:v20];
+    from4 = [messageCopy from];
+    emailAddress4 = [from4 emailAddress];
+    v77 = [v12 isSenderSupportedForMLDefaultExtraction:emailAddress4];
 
-    v21 = [v7 from];
-    v22 = [v21 emailAddress];
-    v23 = [v12 isSenderSupportedForPFLTraining:v22];
+    from5 = [messageCopy from];
+    emailAddress5 = [from5 emailAddress];
+    v23 = [v12 isSenderSupportedForPFLTraining:emailAddress5];
 
     v24 = sgEventsLogHandle();
-    v25 = v15 & (v13 ^ 1);
+    v25 = emailAddress2 & (detectStructuredEventsML ^ 1);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       v26 = @"NO";
@@ -145,9 +145,9 @@
       _os_log_impl(&dword_231E60000, v24, OS_LOG_TYPE_DEFAULT, "SGStructuredEventDissector: extractionSupported: %@, shadowExtraction: %@, pflTraining: %@", buf, 0x20u);
     }
 
-    if ((v13 | v16 | v25))
+    if ((detectStructuredEventsML | v16 | v25))
     {
-      if ([SGExtractionDissector emailIsForwardOrReply:v7])
+      if ([SGExtractionDissector emailIsForwardOrReply:messageCopy])
       {
         v29 = sgEventsLogHandle();
         if (!os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -164,8 +164,8 @@ LABEL_16:
         goto LABEL_20;
       }
 
-      v32 = [v7 htmlBody];
-      v33 = v32 == 0;
+      htmlBody = [messageCopy htmlBody];
+      v33 = htmlBody == 0;
 
       if (v33)
       {
@@ -179,9 +179,9 @@ LABEL_16:
         goto LABEL_20;
       }
 
-      if (v25 & 1 | (([v8 hasEventEnrichment] & 1) == 0) | v77 & 1)
+      if (v25 & 1 | (([entityCopy hasEventEnrichment] & 1) == 0) | v77 & 1)
       {
-        if ((([v9 backpressureHazard] == 1) & v25) == 1)
+        if ((([contextCopy backpressureHazard] == 1) & v25) == 1)
         {
           v29 = sgEventsLogHandle();
           if (!os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -194,20 +194,20 @@ LABEL_16:
           goto LABEL_16;
         }
 
-        v35 = [v8 sourceKey];
-        v75 = [v35 isEqualToString:@"suggest_tool"];
+        sourceKey = [entityCopy sourceKey];
+        v75 = [sourceKey isEqualToString:@"suggest_tool"];
 
         if (v75)
         {
           v36 = objc_opt_new();
-          v29 = [v36 eventClassificationWithoutXPCForMailMessage:v7];
+          v29 = [v36 eventClassificationWithoutXPCForMailMessage:messageCopy];
         }
 
         else
         {
           v37 = objc_autoreleasePoolPush();
           v38 = objc_opt_new();
-          v29 = [v38 eventClassificationForMailMessage:v7];
+          v29 = [v38 eventClassificationForMailMessage:messageCopy];
 
           objc_autoreleasePoolPop(v37);
         }
@@ -248,9 +248,9 @@ LABEL_16:
         if (_os_feature_enabled_impl())
         {
           v41 = [SGSimpleMailMessage alloc];
-          v42 = [(SGSimpleMailMessage *)v41 convertMailMessageToBMMailMessage:v7];
+          v42 = [(SGSimpleMailMessage *)v41 convertMailMessageToBMMailMessage:messageCopy];
 
-          v71 = [v42 encodeAsProto];
+          encodeAsProto = [v42 encodeAsProto];
           v43 = objc_opt_new();
           *buf = 0;
           *&buf[8] = buf;
@@ -263,7 +263,7 @@ LABEL_16:
           v82[2] = __64__SGStructuredEventDissector_dissectMailMessage_entity_context___block_invoke;
           v82[3] = &unk_278950C80;
           v82[4] = buf;
-          [v43 foundInEventResultWithSerializedDocument:v71 documentType:0 completion:v82];
+          [v43 foundInEventResultWithSerializedDocument:encodeAsProto documentType:0 completion:v82];
           if (*(*&buf[8] + 40))
           {
             v44 = objc_autoreleasePoolPush();
@@ -286,23 +286,23 @@ LABEL_16:
           if (v75)
           {
             v46 = objc_opt_class();
-            v72 = [v7 htmlBody];
-            v47 = [v7 subject];
-            [v8 creationTimestamp];
+            htmlBody2 = [messageCopy htmlBody];
+            subject = [messageCopy subject];
+            [entityCopy creationTimestamp];
             v49 = v48;
-            v50 = [objc_opt_class() labelsWithMatchingStringsForMailMessage:v7];
-            v42 = [v46 preprocessWithoutXPCForHTML:v72 subject:v47 epoch:v74 category:v50 labelsWithMatchingStrings:v49];
+            v50 = [objc_opt_class() labelsWithMatchingStringsForMailMessage:messageCopy];
+            v42 = [v46 preprocessWithoutXPCForHTML:htmlBody2 subject:subject epoch:v74 category:v50 labelsWithMatchingStrings:v49];
           }
 
           else
           {
             v69 = objc_autoreleasePoolPush();
-            v73 = [v7 htmlBody];
-            v51 = [v7 subject];
-            [v8 creationTimestamp];
+            htmlBody3 = [messageCopy htmlBody];
+            subject2 = [messageCopy subject];
+            [entityCopy creationTimestamp];
             v53 = v52;
-            v54 = [objc_opt_class() labelsWithMatchingStringsForMailMessage:v7];
-            v42 = [(SGStructuredEventDissector *)self preprocessHTML:v73 subject:v51 epoch:v74 category:v54 labelsWithMatchingStrings:v53];
+            v54 = [objc_opt_class() labelsWithMatchingStringsForMailMessage:messageCopy];
+            v42 = [(SGStructuredEventDissector *)self preprocessHTML:htmlBody3 subject:subject2 epoch:v74 category:v54 labelsWithMatchingStrings:v53];
 
             objc_autoreleasePoolPop(v69);
           }
@@ -319,8 +319,8 @@ LABEL_16:
             goto LABEL_76;
           }
 
-          v71 = [v42 objectForKeyedSubscript:@"crossTags"];
-          if (![v71 count])
+          encodeAsProto = [v42 objectForKeyedSubscript:@"crossTags"];
+          if (![encodeAsProto count])
           {
             v67 = sgEventsLogHandle();
             if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
@@ -332,20 +332,20 @@ LABEL_16:
             goto LABEL_76;
           }
 
-          [v8 releaseDissectorLock];
-          v55 = [v8 hasEventEnrichment];
-          if ((v23 & v55) == 1)
+          [entityCopy releaseDissectorLock];
+          hasEventEnrichment = [entityCopy hasEventEnrichment];
+          if ((v23 & hasEventEnrichment) == 1)
           {
-            v23 = [objc_opt_class() eventEnrichmentContainsReverseMappedTags:v8];
+            v23 = [objc_opt_class() eventEnrichmentContainsReverseMappedTags:entityCopy];
           }
 
           v70 = objc_autoreleasePoolPush();
-          v76 = [objc_opt_class() schemaOrgAndMissingEntitiesForPreprocessed:v42 eventClassification:v29 fromSuggestTool:v75 addressThreshold:-[NSObject addressComponentThreshold](v12 pflTrainable:"addressComponentThreshold") hasEvent:{v23, v55}];
+          v76 = [objc_opt_class() schemaOrgAndMissingEntitiesForPreprocessed:v42 eventClassification:v29 fromSuggestTool:v75 addressThreshold:-[NSObject addressComponentThreshold](v12 pflTrainable:"addressComponentThreshold") hasEvent:{v23, hasEventEnrichment}];
           objc_autoreleasePoolPop(v70);
           v45 = [v76 objectForKeyedSubscript:@"schema"];
         }
 
-        [v8 acquireDissectorLock];
+        [entityCopy acquireDissectorLock];
         v56 = mach_absolute_time();
         v57 = SGMachTimeToNanoseconds(v56 - v78);
         v79 = objc_autoreleasePoolPush();
@@ -369,7 +369,7 @@ LABEL_16:
 
             BYTE1(v68) = v77;
             LOBYTE(v68) = 1;
-            [objc_opt_class() logMLExtractionForSchema:v45 mergedSchemaAndDiff:v59 parentEntity:v8 timingProcessingInMs:v58 eventClassification:v29 mailMessage:v7 shadowExtraction:v68 mlDefaultExtraction:?];
+            [objc_opt_class() logMLExtractionForSchema:v45 mergedSchemaAndDiff:v59 parentEntity:entityCopy timingProcessingInMs:v58 eventClassification:v29 mailMessage:messageCopy shadowExtraction:v68 mlDefaultExtraction:?];
           }
 
           else
@@ -382,16 +382,16 @@ LABEL_16:
 
             if (v77)
             {
-              v65 = [objc_opt_class() mergeFallbackSchema:v45 parentEntity:v8];
+              v65 = [objc_opt_class() mergeFallbackSchema:v45 parentEntity:entityCopy];
 
               v59 = v65;
             }
 
             BYTE1(v68) = v77;
             LOBYTE(v68) = 0;
-            [objc_opt_class() logMLExtractionForSchema:v45 mergedSchemaAndDiff:v59 parentEntity:v8 timingProcessingInMs:v58 eventClassification:v29 mailMessage:v7 shadowExtraction:v68 mlDefaultExtraction:?];
-            [objc_opt_class() addSchemaAsEnrichment:v59 inMessage:v7 parentEntity:v8 eventClassification:v29 mlDefaultExtraction:v77];
-            [objc_opt_class() logMLInteractions:v8 context:v9 mlDefaultExtraction:v77];
+            [objc_opt_class() logMLExtractionForSchema:v45 mergedSchemaAndDiff:v59 parentEntity:entityCopy timingProcessingInMs:v58 eventClassification:v29 mailMessage:messageCopy shadowExtraction:v68 mlDefaultExtraction:?];
+            [objc_opt_class() addSchemaAsEnrichment:v59 inMessage:messageCopy parentEntity:entityCopy eventClassification:v29 mlDefaultExtraction:v77];
+            [objc_opt_class() logMLInteractions:entityCopy context:contextCopy mlDefaultExtraction:v77];
           }
 
           objc_autoreleasePoolPop(v79);
@@ -402,7 +402,7 @@ LABEL_16:
           v62 = objc_opt_class();
           v63 = [v76 objectForKeyedSubscript:@"missingEntities"];
           v64 = [v76 objectForKeyedSubscript:@"ml_summary"];
-          [v62 logFailedExtractionWithClassification:v29 missingEntities:v63 mlSummary:v64 shadowExtraction:v25 timingProcessingInMs:v58 forMessage:v7 parentEntity:v8];
+          [v62 logFailedExtractionWithClassification:v29 missingEntities:v63 mlSummary:v64 shadowExtraction:v25 timingProcessingInMs:v58 forMessage:messageCopy parentEntity:entityCopy];
 
           objc_autoreleasePoolPop(v79);
         }
@@ -471,18 +471,18 @@ void __64__SGStructuredEventDissector_dissectMailMessage_entity_context___block_
   *(v7 + 40) = v5;
 }
 
-+ (void)logMLInteractions:(id)a3 context:(id)a4 mlDefaultExtraction:(BOOL)a5
++ (void)logMLInteractions:(id)interactions context:(id)context mlDefaultExtraction:(BOOL)extraction
 {
-  v23 = a5;
+  extractionCopy = extraction;
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  interactionsCopy = interactions;
+  contextCopy = context;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v8 = [v6 enrichments];
-  v9 = [v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  enrichments = [interactionsCopy enrichments];
+  v9 = [enrichments countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v9)
   {
     v10 = v9;
@@ -493,24 +493,24 @@ void __64__SGStructuredEventDissector_dissectMailMessage_entity_context___block_
       {
         if (*v25 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(enrichments);
         }
 
         v13 = *(*(&v24 + 1) + 8 * i);
         v14 = objc_autoreleasePoolPush();
-        v15 = [v13 duplicateKey];
-        [v15 entityType];
+        duplicateKey = [v13 duplicateKey];
+        [duplicateKey entityType];
         if (SGEntityTypeIsEvent())
         {
-          v16 = [v13 isNaturalLanguageEvent];
+          isNaturalLanguageEvent = [v13 isNaturalLanguageEvent];
 
-          if (v16)
+          if (isNaturalLanguageEvent)
           {
             goto LABEL_18;
           }
 
-          v17 = [v7 backpressureHazard];
-          if (v17 == 1)
+          backpressureHazard = [contextCopy backpressureHazard];
+          if (backpressureHazard == 1)
           {
             v18 = 12;
           }
@@ -520,7 +520,7 @@ void __64__SGStructuredEventDissector_dissectMailMessage_entity_context___block_
             v18 = 0;
           }
 
-          if (v17)
+          if (backpressureHazard)
           {
             v19 = v18;
           }
@@ -530,7 +530,7 @@ void __64__SGStructuredEventDissector_dissectMailMessage_entity_context___block_
             v19 = 13;
           }
 
-          if (v23)
+          if (extractionCopy)
           {
             v20 = +[SGRTCLogging defaultLogger];
             [v20 resetInteractionsLogs];
@@ -539,15 +539,15 @@ void __64__SGStructuredEventDissector_dissectMailMessage_entity_context___block_
             [v21 resetInteractionsSummaryLogs];
           }
 
-          v15 = +[SGRTCLogging defaultLogger];
-          [v15 logEventInteractionForEntity:v13 interface:0 actionType:v19];
+          duplicateKey = +[SGRTCLogging defaultLogger];
+          [duplicateKey logEventInteractionForEntity:v13 interface:0 actionType:v19];
         }
 
 LABEL_18:
         objc_autoreleasePoolPop(v14);
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v10 = [enrichments countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v10);
@@ -556,17 +556,17 @@ LABEL_18:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)outputLogsForClassification:(id)a3
++ (id)outputLogsForClassification:(id)classification
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v11[0] = @"category";
-  v3 = a3;
-  v4 = +[SGStructuredEventClassification describeCategory:](SGStructuredEventClassification, "describeCategory:", [v3 category]);
+  classificationCopy = classification;
+  v4 = +[SGStructuredEventClassification describeCategory:](SGStructuredEventClassification, "describeCategory:", [classificationCopy category]);
   v11[1] = @"usecase";
   v12[0] = v4;
-  v5 = [v3 useCase];
+  useCase = [classificationCopy useCase];
 
-  v6 = [SGStructuredEventClassification describeUseCase:v5];
+  v6 = [SGStructuredEventClassification describeUseCase:useCase];
   v12[1] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
   v8 = [v7 mutableCopy];
@@ -576,11 +576,11 @@ LABEL_18:
   return v8;
 }
 
-+ (id)jsMessageLogsDictionaryForPrivacyAwareLogs:(id)a3
++ (id)jsMessageLogsDictionaryForPrivacyAwareLogs:(id)logs
 {
-  v3 = a3;
+  logsCopy = logs;
   v4 = objc_opt_new();
-  v5 = [v4 privacyAwareLogsForMLExtractions:v3];
+  v5 = [v4 privacyAwareLogsForMLExtractions:logsCopy];
 
   v6 = [v5 mutableCopy];
   v9[0] = MEMORY[0x277D85DD0];
@@ -603,13 +603,13 @@ void __73__SGStructuredEventDissector_jsMessageLogsDictionaryForPrivacyAwareLogs
   }
 }
 
-+ (id)jsMessageLogsDictionaryForMailMessage:(id)a3
++ (id)jsMessageLogsDictionaryForMailMessage:(id)message
 {
   v14[3] = *MEMORY[0x277D85DE8];
   v13[0] = @"domain";
-  v3 = [a3 from];
-  v4 = [v3 emailAddress];
-  v5 = emailAddressDomain(v4);
+  from = [message from];
+  emailAddress = [from emailAddress];
+  v5 = emailAddressDomain(emailAddress);
   v14[0] = v5;
   v13[1] = @"assetVersion";
   v6 = MEMORY[0x277CCABB0];
@@ -626,24 +626,24 @@ void __73__SGStructuredEventDissector_jsMessageLogsDictionaryForPrivacyAwareLogs
   return v10;
 }
 
-+ (void)logFailedExtractionWithClassification:(id)a3 missingEntities:(id)a4 mlSummary:(id)a5 shadowExtraction:(BOOL)a6 timingProcessingInMs:(unint64_t)a7 forMessage:(id)a8 parentEntity:(id)a9
++ (void)logFailedExtractionWithClassification:(id)classification missingEntities:(id)entities mlSummary:(id)summary shadowExtraction:(BOOL)extraction timingProcessingInMs:(unint64_t)ms forMessage:(id)message parentEntity:(id)entity
 {
-  v38 = a6;
+  extractionCopy = extraction;
   v57 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v43 = a4;
-  v14 = a5;
-  v15 = a8;
-  v40 = a9;
-  v41 = v15;
-  v39 = [a1 jsMessageLogsDictionaryForMailMessage:v15];
-  v44 = v13;
-  v16 = [a1 outputLogsForClassification:v13];
+  classificationCopy = classification;
+  entitiesCopy = entities;
+  summaryCopy = summary;
+  messageCopy = message;
+  entityCopy = entity;
+  v41 = messageCopy;
+  v39 = [self jsMessageLogsDictionaryForMailMessage:messageCopy];
+  v44 = classificationCopy;
+  v16 = [self outputLogsForClassification:classificationCopy];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v17 = v14;
+  v17 = summaryCopy;
   v18 = [v17 countByEnumeratingWithState:&v51 objects:v56 count:16];
   if (v18)
   {
@@ -670,16 +670,16 @@ void __73__SGStructuredEventDissector_jsMessageLogsDictionaryForPrivacyAwareLogs
     while (v19);
   }
 
-  v25 = [MEMORY[0x277CCABB0] numberWithBool:v38];
+  v25 = [MEMORY[0x277CCABB0] numberWithBool:extractionCopy];
   [v16 setObject:v25 forKeyedSubscript:@"shadowExtraction"];
 
-  v26 = [a1 eventEnrichmentFromEntity:v40];
+  v26 = [self eventEnrichmentFromEntity:entityCopy];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v27 = [v26 tags];
-  v28 = [v27 countByEnumeratingWithState:&v47 objects:v55 count:16];
+  tags = [v26 tags];
+  v28 = [tags countByEnumeratingWithState:&v47 objects:v55 count:16];
   if (v28)
   {
     v29 = v28;
@@ -690,7 +690,7 @@ LABEL_10:
     {
       if (*v48 != v30)
       {
-        objc_enumerationMutation(v27);
+        objc_enumerationMutation(tags);
       }
 
       v32 = *(*(&v47 + 1) + 8 * v31);
@@ -701,7 +701,7 @@ LABEL_10:
 
       if (v29 == ++v31)
       {
-        v29 = [v27 countByEnumeratingWithState:&v47 objects:v55 count:16];
+        v29 = [tags countByEnumeratingWithState:&v47 objects:v55 count:16];
         if (v29)
         {
           goto LABEL_10;
@@ -711,16 +711,16 @@ LABEL_10:
       }
     }
 
-    v33 = [v32 value];
+    value = [v32 value];
 
     v34 = v41;
-    if (!v33)
+    if (!value)
     {
       goto LABEL_22;
     }
 
-    [v16 setObject:v33 forKeyedSubscript:@"extractionTemplate"];
-    v35 = [a1 jsMessageLogsDictionaryForPrivacyAwareLogs:v41];
+    [v16 setObject:value forKeyedSubscript:@"extractionTemplate"];
+    v35 = [self jsMessageLogsDictionaryForPrivacyAwareLogs:v41];
     if (v35)
     {
       v45[0] = MEMORY[0x277D85DD0];
@@ -735,35 +735,35 @@ LABEL_10:
   else
   {
 LABEL_16:
-    v33 = v27;
+    value = tags;
     v34 = v41;
   }
 
 LABEL_22:
   v36 = +[SGRTCLogging defaultLogger];
-  [v36 logEventExtractionForTemplateName:@"ML" extractionStatus:3 outputExceptions:v43 outputInfos:MEMORY[0x277CBEBF8] jsMessageLogs:v39 jsOutputLogs:v16 timingProcessing:a7];
+  [v36 logEventExtractionForTemplateName:@"ML" extractionStatus:3 outputExceptions:entitiesCopy outputInfos:MEMORY[0x277CBEBF8] jsMessageLogs:v39 jsOutputLogs:v16 timingProcessing:ms];
 
   v37 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)logMLExtractionForSchema:(id)a3 mergedSchemaAndDiff:(id)a4 parentEntity:(id)a5 timingProcessingInMs:(unint64_t)a6 eventClassification:(id)a7 mailMessage:(id)a8 shadowExtraction:(BOOL)a9 mlDefaultExtraction:(BOOL)a10
++ (void)logMLExtractionForSchema:(id)schema mergedSchemaAndDiff:(id)diff parentEntity:(id)entity timingProcessingInMs:(unint64_t)ms eventClassification:(id)classification mailMessage:(id)message shadowExtraction:(BOOL)extraction mlDefaultExtraction:(BOOL)self0
 {
   v101 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v77 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  v19 = [a1 jsMessageLogsDictionaryForMailMessage:v18];
-  v20 = [a1 outputLogsForClassification:v17];
+  schemaCopy = schema;
+  diffCopy = diff;
+  entityCopy = entity;
+  classificationCopy = classification;
+  messageCopy = message;
+  v19 = [self jsMessageLogsDictionaryForMailMessage:messageCopy];
+  v20 = [self outputLogsForClassification:classificationCopy];
   v21 = @"fallbackExtraction";
-  if (a10)
+  if (defaultExtraction)
   {
     v21 = @"mlDefaultExtraction";
   }
 
   v22 = v20;
-  if (a9)
+  if (extraction)
   {
     v23 = @"shadowExtraction";
   }
@@ -774,7 +774,7 @@ LABEL_22:
   }
 
   [v20 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v23];
-  v24 = [a1 jsMessageLogsDictionaryForPrivacyAwareLogs:v18];
+  v24 = [self jsMessageLogsDictionaryForPrivacyAwareLogs:messageCopy];
   if (v24)
   {
     v94[0] = MEMORY[0x277D85DD0];
@@ -785,14 +785,14 @@ LABEL_22:
     [v24 enumerateKeysAndObjectsUsingBlock:v94];
   }
 
-  v25 = [a1 eventEnrichmentFromEntity:v16];
+  v25 = [self eventEnrichmentFromEntity:entityCopy];
   v74 = v25;
   v75 = v24;
   if (!v25)
   {
-    v60 = [v16 tags];
-    v61 = [MEMORY[0x277D01FA0] templateException];
-    v62 = [v60 containsObject:v61];
+    tags = [entityCopy tags];
+    templateException = [MEMORY[0x277D01FA0] templateException];
+    v62 = [tags containsObject:templateException];
 
     if (v62)
     {
@@ -805,8 +805,8 @@ LABEL_22:
     }
 
     [v22 setObject:v63 forKeyedSubscript:@"templateExtractionOutput"];
-    v64 = a6;
-    v40 = v77;
+    msCopy2 = ms;
+    v40 = diffCopy;
     goto LABEL_53;
   }
 
@@ -816,19 +816,19 @@ LABEL_22:
   v93 = 0u;
   v90 = 0u;
   v91 = 0u;
-  v26 = [v25 tags];
-  v27 = [v26 countByEnumeratingWithState:&v90 objects:v100 count:16];
+  tags2 = [v25 tags];
+  v27 = [tags2 countByEnumeratingWithState:&v90 objects:v100 count:16];
   if (!v27)
   {
     v29 = 0;
     v30 = 0;
-    v40 = v77;
+    v40 = diffCopy;
     goto LABEL_51;
   }
 
   v28 = v27;
-  v70 = v18;
-  v71 = v17;
+  v70 = messageCopy;
+  v71 = classificationCopy;
   v29 = 0;
   v30 = 0;
   v31 = *v91;
@@ -838,15 +838,15 @@ LABEL_22:
     {
       if (*v91 != v31)
       {
-        objc_enumerationMutation(v26);
+        objc_enumerationMutation(tags2);
       }
 
       v33 = *(*(&v90 + 1) + 8 * i);
       if ([v33 isSchemaOrg])
       {
-        v34 = [v33 value];
+        value = [v33 value];
         v35 = v30;
-        v30 = v34;
+        v30 = value;
       }
 
       else
@@ -856,13 +856,13 @@ LABEL_22:
           continue;
         }
 
-        v36 = [v33 value];
+        value2 = [v33 value];
         v35 = v29;
-        v29 = v36;
+        v29 = value2;
       }
     }
 
-    v28 = [v26 countByEnumeratingWithState:&v90 objects:v100 count:16];
+    v28 = [tags2 countByEnumeratingWithState:&v90 objects:v100 count:16];
   }
 
   while (v28);
@@ -873,26 +873,26 @@ LABEL_22:
     [v80 setObject:v29 forKeyedSubscript:@"extractionTemplate"];
   }
 
-  v18 = v70;
-  v17 = v71;
+  messageCopy = v70;
+  classificationCopy = v71;
   if (v30)
   {
     v37 = MEMORY[0x277CCAAA0];
     v38 = [v30 dataUsingEncoding:4];
     v89 = 0;
     v39 = [v37 JSONObjectWithData:v38 options:0 error:&v89];
-    v26 = v89;
+    tags2 = v89;
 
-    v40 = v77;
+    v40 = diffCopy;
     if (v39 && [v39 count])
     {
-      v68 = v16;
+      v68 = entityCopy;
       v41 = objc_opt_new();
-      v42 = [v39 firstObject];
-      v99 = v42;
+      firstObject = [v39 firstObject];
+      v99 = firstObject;
       v43 = [MEMORY[0x277CBEA60] arrayWithObjects:&v99 count:1];
-      v69 = v15;
-      v98 = v15;
+      v69 = schemaCopy;
+      v98 = schemaCopy;
       v44 = [MEMORY[0x277CBEA60] arrayWithObjects:&v98 count:1];
       v45 = [v41 diffSchemas:v43 withExpectedSchemas:v44];
 
@@ -927,9 +927,9 @@ LABEL_22:
         while (v47);
       }
 
-      if (a10)
+      if (defaultExtraction)
       {
-        v52 = [v77 objectForKeyedSubscript:@"diff"];
+        v52 = [diffCopy objectForKeyedSubscript:@"diff"];
 
         v83 = 0u;
         v84 = 0u;
@@ -963,19 +963,19 @@ LABEL_22:
         }
 
         v59 = v72;
-        v15 = v69;
+        schemaCopy = v69;
       }
 
       else
       {
-        v15 = v69;
+        schemaCopy = v69;
         v59 = v67;
       }
 
-      v40 = v77;
-      v16 = v68;
-      v18 = v70;
-      v17 = v71;
+      v40 = diffCopy;
+      entityCopy = v68;
+      messageCopy = v70;
+      classificationCopy = v71;
     }
 
     v19 = v73;
@@ -987,21 +987,21 @@ LABEL_51:
   else
   {
     v19 = v73;
-    v40 = v77;
+    v40 = diffCopy;
   }
 
-  v64 = a6;
+  msCopy2 = ms;
 LABEL_53:
   v65 = +[SGRTCLogging defaultLogger];
-  [v65 logEventExtractionForTemplateName:@"ML" extractionStatus:0 outputExceptions:MEMORY[0x277CBEBF8] outputInfos:MEMORY[0x277CBEBF8] jsMessageLogs:v19 jsOutputLogs:v22 timingProcessing:v64];
+  [v65 logEventExtractionForTemplateName:@"ML" extractionStatus:0 outputExceptions:MEMORY[0x277CBEBF8] outputInfos:MEMORY[0x277CBEBF8] jsMessageLogs:v19 jsOutputLogs:v22 timingProcessing:msCopy2];
 
   v66 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)eventEnrichmentContainsReverseMappedTags:(id)a3
++ (BOOL)eventEnrichmentContainsReverseMappedTags:(id)tags
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [a1 eventEnrichmentFromEntity:a3];
+  v3 = [self eventEnrichmentFromEntity:tags];
   v4 = v3;
   if (v3)
   {
@@ -1009,8 +1009,8 @@ LABEL_53:
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v5 = [v3 tags];
-    v6 = [v5 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    tags = [v3 tags];
+    v6 = [tags countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v6)
     {
       v7 = 0;
@@ -1024,7 +1024,7 @@ LABEL_53:
         {
           if (*v28 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(tags);
           }
 
           v11 = *(*(&v27 + 1) + 8 * i);
@@ -1050,14 +1050,14 @@ LABEL_53:
 
           else if ([v11 isFieldReverseMapped])
           {
-            v20 = [v11 value];
-            v21 = [v20 isEqualToString:@"reverseMapped_TITLE__MOVIE_TICKET_NAME"];
+            value = [v11 value];
+            v21 = [value isEqualToString:@"reverseMapped_TITLE__MOVIE_TICKET_NAME"];
 
             v8 |= v21;
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v6 = [tags countByEnumeratingWithState:&v27 objects:v31 count:16];
       }
 
       while (v6);
@@ -1086,15 +1086,15 @@ LABEL_53:
   return v22 & 1;
 }
 
-+ (id)eventEnrichmentFromEntity:(id)a3
++ (id)eventEnrichmentFromEntity:(id)entity
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [a3 enrichments];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  enrichments = [entity enrichments];
+  v4 = [enrichments countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = *v13;
@@ -1104,12 +1104,12 @@ LABEL_53:
       {
         if (*v13 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(enrichments);
         }
 
         v7 = *(*(&v12 + 1) + 8 * i);
-        v8 = [v7 duplicateKey];
-        [v8 entityType];
+        duplicateKey = [v7 duplicateKey];
+        [duplicateKey entityType];
         IsEvent = SGEntityTypeIsEvent();
 
         if (IsEvent)
@@ -1119,7 +1119,7 @@ LABEL_53:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [enrichments countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v4)
       {
         continue;
@@ -1136,18 +1136,18 @@ LABEL_11:
   return v4;
 }
 
-+ (id)addressDictionaryForAddressComponents:(id)a3
++ (id)addressDictionaryForAddressComponents:(id)components
 {
   v22[6] = *MEMORY[0x277D85DE8];
   v22[0] = @"http://schema.org/PostalAddress";
   v21[0] = @"@type";
   v21[1] = @"streetAddress";
-  v3 = a3;
-  v4 = [v3 street];
-  v5 = v4;
-  if (v4)
+  componentsCopy = components;
+  street = [componentsCopy street];
+  v5 = street;
+  if (street)
   {
-    v6 = v4;
+    v6 = street;
   }
 
   else
@@ -1157,11 +1157,11 @@ LABEL_11:
 
   v22[1] = v6;
   v21[2] = @"addressLocality";
-  v7 = [v3 city];
-  v8 = v7;
-  if (v7)
+  city = [componentsCopy city];
+  v8 = city;
+  if (city)
   {
-    v9 = v7;
+    v9 = city;
   }
 
   else
@@ -1171,11 +1171,11 @@ LABEL_11:
 
   v22[2] = v9;
   v21[3] = @"addressRegion";
-  v10 = [v3 state];
-  v11 = v10;
-  if (v10)
+  state = [componentsCopy state];
+  v11 = state;
+  if (state)
   {
-    v12 = v10;
+    v12 = state;
   }
 
   else
@@ -1185,11 +1185,11 @@ LABEL_11:
 
   v22[3] = v12;
   v21[4] = @"postalCode";
-  v13 = [v3 postalCode];
-  v14 = v13;
-  if (v13)
+  postalCode = [componentsCopy postalCode];
+  v14 = postalCode;
+  if (postalCode)
   {
-    v15 = v13;
+    v15 = postalCode;
   }
 
   else
@@ -1199,11 +1199,11 @@ LABEL_11:
 
   v22[4] = v15;
   v21[5] = @"addressCountry";
-  v16 = [v3 country];
+  country = [componentsCopy country];
 
-  if (v16)
+  if (country)
   {
-    v17 = v16;
+    v17 = country;
   }
 
   else
@@ -1219,13 +1219,13 @@ LABEL_11:
   return v18;
 }
 
-+ (unint64_t)tokenCount:(id)a3
++ (unint64_t)tokenCount:(id)count
 {
-  v3 = a3;
-  if (v3)
+  countCopy = count;
+  if (countCopy)
   {
     v4 = +[SGPOSTagger sharedInstance];
-    v5 = [v4 tokenizeTextContent:v3 languageHint:0];
+    v5 = [v4 tokenizeTextContent:countCopy languageHint:0];
 
     if ([v5 count])
     {
@@ -1234,9 +1234,9 @@ LABEL_11:
       do
       {
         v8 = [v5 objectAtIndexedSubscript:v6];
-        v9 = [v8 annotationType];
+        annotationType = [v8 annotationType];
 
-        if (v9 == 3)
+        if (annotationType == 3)
         {
           ++v7;
         }
@@ -1261,80 +1261,80 @@ LABEL_11:
   return v7;
 }
 
-+ (unint64_t)tokenCountForPostalAddressComponents:(id)a3
++ (unint64_t)tokenCountForPostalAddressComponents:(id)components
 {
-  v4 = a3;
-  v5 = [v4 street];
+  componentsCopy = components;
+  street = [componentsCopy street];
 
-  if (v5)
+  if (street)
   {
-    v6 = [v4 street];
-    v5 = [a1 tokenCount:v6];
+    street2 = [componentsCopy street];
+    street = [self tokenCount:street2];
   }
 
-  v7 = [v4 city];
+  city = [componentsCopy city];
 
-  if (v7)
+  if (city)
   {
-    v8 = [v4 city];
-    v5 += [a1 tokenCount:v8];
+    city2 = [componentsCopy city];
+    street += [self tokenCount:city2];
   }
 
-  v9 = [v4 state];
+  state = [componentsCopy state];
 
-  if (v9)
+  if (state)
   {
-    v10 = [v4 state];
-    v5 += [a1 tokenCount:v10];
+    state2 = [componentsCopy state];
+    street += [self tokenCount:state2];
   }
 
-  v11 = [v4 postalCode];
+  postalCode = [componentsCopy postalCode];
 
-  if (v11)
+  if (postalCode)
   {
-    v12 = [v4 postalCode];
-    v5 += [a1 tokenCount:v12];
+    postalCode2 = [componentsCopy postalCode];
+    street += [self tokenCount:postalCode2];
   }
 
-  v13 = [v4 country];
+  country = [componentsCopy country];
 
-  if (v13)
+  if (country)
   {
-    v14 = [v4 country];
-    v5 += [a1 tokenCount:v14];
+    country2 = [componentsCopy country];
+    street += [self tokenCount:country2];
   }
 
-  return v5;
+  return street;
 }
 
-+ (id)schemaPostalAddressForPostalAddressExtraction:(id)a3 addressThreshold:(unint64_t)a4
++ (id)schemaPostalAddressForPostalAddressExtraction:(id)extraction addressThreshold:(unint64_t)threshold
 {
-  v6 = a3;
-  v7 = [v6 components];
+  extractionCopy = extraction;
+  components = [extractionCopy components];
 
-  v8 = [v6 plainText];
+  plainText = [extractionCopy plainText];
 
-  if (v7)
+  if (components)
   {
-    if (!v8)
+    if (!plainText)
     {
       goto LABEL_4;
     }
 
-    v9 = [v6 components];
-    v10 = [a1 tokenCountForPostalAddressComponents:v9];
+    components2 = [extractionCopy components];
+    v10 = [self tokenCountForPostalAddressComponents:components2];
 
-    v11 = [v6 plainText];
-    v12 = [a1 tokenCount:v11];
+    plainText2 = [extractionCopy plainText];
+    v12 = [self tokenCount:plainText2];
 
-    v13 = [MEMORY[0x277CCABB0] numberWithDouble:a4 / 100.0 * v12];
-    LODWORD(v11) = [v13 intValue];
+    v13 = [MEMORY[0x277CCABB0] numberWithDouble:threshold / 100.0 * v12];
+    LODWORD(plainText2) = [v13 intValue];
 
-    if (v10 >= v11)
+    if (v10 >= plainText2)
     {
 LABEL_4:
-      v14 = [v6 components];
-      v15 = [a1 addressDictionaryForAddressComponents:v14];
+      components3 = [extractionCopy components];
+      plainText3 = [self addressDictionaryForAddressComponents:components3];
 
       goto LABEL_8;
     }
@@ -1342,25 +1342,25 @@ LABEL_4:
     goto LABEL_6;
   }
 
-  if (v8)
+  if (plainText)
   {
 LABEL_6:
-    v15 = [v6 plainText];
+    plainText3 = [extractionCopy plainText];
     goto LABEL_8;
   }
 
-  v15 = &stru_284703F00;
+  plainText3 = &stru_284703F00;
 LABEL_8:
 
-  return v15;
+  return plainText3;
 }
 
-+ (id)schemaStringForEventStatus:(unsigned __int8)a3
++ (id)schemaStringForEventStatus:(unsigned __int8)status
 {
-  v3 = a3;
+  statusCopy = status;
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v5 = @"Cancelled";
-  if (!v3)
+  if (!statusCopy)
   {
     v5 = @"Confirmed";
   }
@@ -1370,12 +1370,12 @@ LABEL_8:
   return v6;
 }
 
-+ (id)schemaStringForReservationStatus:(unsigned __int8)a3
++ (id)schemaStringForReservationStatus:(unsigned __int8)status
 {
-  v3 = a3;
+  statusCopy = status;
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v5 = @"Cancelled";
-  if (!v3)
+  if (!statusCopy)
   {
     v5 = @"Confirmed";
   }
@@ -1385,19 +1385,19 @@ LABEL_8:
   return v6;
 }
 
-+ (id)schemaStringForDateComponents:(id)a3
++ (id)schemaStringForDateComponents:(id)components
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 date], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  componentsCopy = components;
+  v4 = componentsCopy;
+  if (componentsCopy && ([componentsCopy date], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [v4 timeZone];
+    timeZone = [v4 timeZone];
 
-    if (v6)
+    if (timeZone)
     {
       v7 = objc_opt_new();
-      v8 = [v4 timeZone];
-      [v7 setTimeZone:v8];
+      timeZone2 = [v4 timeZone];
+      [v7 setTimeZone:timeZone2];
     }
 
     else
@@ -1416,8 +1416,8 @@ LABEL_8:
       [v7 setDateFormat:v10];
     }
 
-    v11 = [v4 date];
-    v9 = [v7 stringFromDate:v11];
+    date = [v4 date];
+    v9 = [v7 stringFromDate:date];
   }
 
   else
@@ -1428,26 +1428,26 @@ LABEL_8:
   return v9;
 }
 
-+ (id)plainTextStringsByLabelInTaggedCharacterRanges:(id)a3 inPlainText:(id)a4
++ (id)plainTextStringsByLabelInTaggedCharacterRanges:(id)ranges inPlainText:(id)text
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v26 = a4;
+  rangesCopy = ranges;
+  textCopy = text;
   v6 = objc_opt_new();
-  if ([v5 count])
+  if ([rangesCopy count])
   {
     v7 = 0;
-    v27 = v5;
+    v27 = rangesCopy;
     do
     {
       v28 = v7;
-      v8 = [v5 objectAtIndexedSubscript:v7];
+      v8 = [rangesCopy objectAtIndexedSubscript:v7];
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v9 = [v8 tags];
-      v10 = [v9 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      tags = [v8 tags];
+      v10 = [tags countByEnumeratingWithState:&v29 objects:v33 count:16];
       if (v10)
       {
         v11 = v10;
@@ -1458,13 +1458,13 @@ LABEL_8:
           {
             if (*v30 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(tags);
             }
 
             v14 = *(*(&v29 + 1) + 8 * i);
             v15 = objc_alloc(MEMORY[0x277CCACA8]);
-            v16 = [v8 annotationTypeUniqueIdentifier];
-            v17 = [v15 initWithFormat:@"%@_%@", v16, v14];
+            annotationTypeUniqueIdentifier = [v8 annotationTypeUniqueIdentifier];
+            v17 = [v15 initWithFormat:@"%@_%@", annotationTypeUniqueIdentifier, v14];
 
             v18 = [v6 objectForKeyedSubscript:v17];
 
@@ -1475,38 +1475,38 @@ LABEL_8:
             }
 
             v20 = [v6 objectForKeyedSubscript:v17];
-            v21 = [v8 range];
-            [v20 addIndexesInRange:{v21, v22}];
+            range = [v8 range];
+            [v20 addIndexesInRange:{range, v22}];
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v29 objects:v33 count:16];
+          v11 = [tags countByEnumeratingWithState:&v29 objects:v33 count:16];
         }
 
         while (v11);
       }
 
-      v5 = v27;
+      rangesCopy = v27;
       v7 = v28 + 1;
     }
 
     while ([v27 count] > (v28 + 1));
   }
 
-  v23 = [(SGExtractionDocument *)SGStructuredEventDocument candidatesForLabelsWithPlainTextIndexSets:v6 inPlainText:v26];
+  v23 = [(SGExtractionDocument *)SGStructuredEventDocument candidatesForLabelsWithPlainTextIndexSets:v6 inPlainText:textCopy];
 
   v24 = *MEMORY[0x277D85DE8];
 
   return v23;
 }
 
-+ (id)annotateContent:(id)a3 withLabel:(id)a4 forMatchingString:(id)a5
++ (id)annotateContent:(id)content withLabel:(id)label forMatchingString:(id)string
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  contentCopy = content;
+  labelCopy = label;
+  stringCopy = string;
   v10 = objc_opt_new();
-  if (![v7 length] || !objc_msgSend(v9, "length"))
+  if (![contentCopy length] || !objc_msgSend(stringCopy, "length"))
   {
     v23 = sgEventsLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -1521,7 +1521,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v8)
+  if (!labelCopy)
   {
     v23 = sgEventsLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -1536,7 +1536,7 @@ LABEL_21:
     goto LABEL_14;
   }
 
-  v11 = [v7 rangeOfString:v9 options:1 range:{0, objc_msgSend(v7, "length")}];
+  v11 = [contentCopy rangeOfString:stringCopy options:1 range:{0, objc_msgSend(contentCopy, "length")}];
   if (v11 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v13 = v11;
@@ -1544,9 +1544,9 @@ LABEL_21:
     do
     {
       v15 = [SGTaggedCharacterRange alloc];
-      v28[0] = v8;
+      v28[0] = labelCopy;
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
-      v17 = [v7 substringWithRange:{v13, v14}];
+      v17 = [contentCopy substringWithRange:{v13, v14}];
       v18 = [(SGTaggedCharacterRange *)v15 initWithAnnotationType:6 tags:v16 range:v13 text:v14, v17];
 
       if (v18)
@@ -1565,9 +1565,9 @@ LABEL_21:
       }
 
       v20 = v13 + v14;
-      v21 = [v7 length] - (v13 + v14);
+      v21 = [contentCopy length] - (v13 + v14);
 
-      v13 = [v7 rangeOfString:v9 options:1 range:{v20, v21}];
+      v13 = [contentCopy rangeOfString:stringCopy options:1 range:{v20, v21}];
       v14 = v22;
     }
 
@@ -1581,33 +1581,33 @@ LABEL_15:
   return v10;
 }
 
-+ (id)labelsWithMatchingStringsForMailMessage:(id)a3
++ (id)labelsWithMatchingStringsForMailMessage:(id)message
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v5 = objc_opt_new();
-  v6 = [v4 from];
-  v7 = [v6 name];
+  from = [messageCopy from];
+  name = [from name];
 
-  if (v7)
+  if (name)
   {
-    v8 = [v6 name];
-    v33[0] = v8;
+    name2 = [from name];
+    v33[0] = name2;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:1];
     [v5 setObject:v9 forKeyedSubscript:@"is_sender_name"];
   }
 
-  v10 = [v6 emailAddress];
+  emailAddress = [from emailAddress];
 
-  if (v10)
+  if (emailAddress)
   {
-    v11 = [v6 emailAddress];
-    v32 = v11;
+    emailAddress2 = [from emailAddress];
+    v32 = emailAddress2;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v32 count:1];
     [v5 setObject:v12 forKeyedSubscript:@"is_sender_email"];
 
-    v13 = [v6 emailAddress];
-    v14 = emailAddressDomain(v13);
+    emailAddress3 = [from emailAddress];
+    v14 = emailAddressDomain(emailAddress3);
 
     if (v14)
     {
@@ -1617,35 +1617,35 @@ LABEL_15:
     }
   }
 
-  v16 = [v4 to];
-  v17 = [v16 firstObject];
+  v16 = [messageCopy to];
+  firstObject = [v16 firstObject];
 
-  v18 = [v17 name];
+  name3 = [firstObject name];
 
-  if (v18)
+  if (name3)
   {
-    v19 = [v17 name];
-    v30 = v19;
+    name4 = [firstObject name];
+    v30 = name4;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v30 count:1];
     [v5 setObject:v20 forKeyedSubscript:@"is_recipient_name"];
   }
 
-  v21 = [v17 emailAddress];
+  emailAddress4 = [firstObject emailAddress];
 
-  if (v21)
+  if (emailAddress4)
   {
-    v22 = [v17 emailAddress];
-    v29 = v22;
+    emailAddress5 = [firstObject emailAddress];
+    v29 = emailAddress5;
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v29 count:1];
     [v5 setObject:v23 forKeyedSubscript:@"is_recipient_email"];
   }
 
-  v24 = [v4 subject];
+  subject = [messageCopy subject];
 
-  if (v24)
+  if (subject)
   {
-    v25 = [v4 subject];
-    v26 = [a1 annotationMatchingStringsForSubject:v25];
+    subject2 = [messageCopy subject];
+    v26 = [self annotationMatchingStringsForSubject:subject2];
 
     if ([v26 count])
     {
@@ -1658,12 +1658,12 @@ LABEL_15:
   return v5;
 }
 
-+ (id)annotationMatchingStringsForSubject:(id)a3
++ (id)annotationMatchingStringsForSubject:(id)subject
 {
-  v3 = a3;
+  subjectCopy = subject;
   v4 = objc_opt_new();
   v5 = +[SGPOSTagger sharedInstance];
-  v6 = [v5 tokenizeTextContent:v3 languageHint:0];
+  v6 = [v5 tokenizeTextContent:subjectCopy languageHint:0];
 
   v7 = objc_opt_new();
   if ([v6 count])
@@ -1672,15 +1672,15 @@ LABEL_15:
     do
     {
       v9 = [v6 objectAtIndexedSubscript:v8];
-      v10 = [v9 annotationType];
+      annotationType = [v9 annotationType];
 
-      if (v10 == 2)
+      if (annotationType == 2)
       {
         v11 = [v6 objectAtIndexedSubscript:v8];
-        v12 = [v11 tags];
-        v13 = [v12 firstObject];
+        tags = [v11 tags];
+        firstObject = [tags firstObject];
 
-        if (v13 && (([v13 isEqualToString:@"NN"] & 1) != 0 || objc_msgSend(v13, "isEqualToString:", @"NNP")))
+        if (firstObject && (([firstObject isEqualToString:@"NN"] & 1) != 0 || objc_msgSend(firstObject, "isEqualToString:", @"NNP")))
         {
           [v7 addIndex:v8];
         }
@@ -1697,10 +1697,10 @@ LABEL_15:
   v20[2] = __66__SGStructuredEventDissector_annotationMatchingStringsForSubject___block_invoke;
   v20[3] = &unk_278954548;
   v21 = v6;
-  v22 = v3;
+  v22 = subjectCopy;
   v14 = v4;
   v23 = v14;
-  v15 = v3;
+  v15 = subjectCopy;
   v16 = v6;
   [v7 enumerateRangesUsingBlock:v20];
   v17 = v23;
@@ -1730,12 +1730,12 @@ uint64_t __66__SGStructuredEventDissector_annotationMatchingStringsForSubject___
   return result;
 }
 
-+ (id)tupleWithError:(id)a3 label:(id)a4
++ (id)tupleWithError:(id)error label:(id)label
 {
   v5 = MEMORY[0x277D42648];
-  v6 = a4;
+  labelCopy = label;
   v7 = [v5 alloc];
-  if (a3)
+  if (error)
   {
     v8 = 0;
   }
@@ -1745,31 +1745,31 @@ uint64_t __66__SGStructuredEventDissector_annotationMatchingStringsForSubject___
     v8 = MEMORY[0x277CBEC38];
   }
 
-  v9 = [v7 initWithFirst:v8 second:v6];
+  v9 = [v7 initWithFirst:v8 second:labelCopy];
 
   return v9;
 }
 
-+ (id)tupleWithEntity:(id)a3 label:(id)a4
++ (id)tupleWithEntity:(id)entity label:(id)label
 {
   v5 = MEMORY[0x277D42648];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithFirst:v7 second:v6];
+  labelCopy = label;
+  entityCopy = entity;
+  v8 = [[v5 alloc] initWithFirst:entityCopy second:labelCopy];
 
   return v8;
 }
 
-+ (id)nilEntities:(id)a3
++ (id)nilEntities:(id)entities
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  entitiesCopy = entities;
   v18 = objc_opt_new();
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = v3;
+  v4 = entitiesCopy;
   v5 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
@@ -1785,41 +1785,41 @@ uint64_t __66__SGStructuredEventDissector_annotationMatchingStringsForSubject___
         }
 
         v9 = *(*(&v20 + 1) + 8 * i);
-        v10 = [v9 first];
-        if (!v10)
+        first = [v9 first];
+        if (!first)
         {
           goto LABEL_9;
         }
 
-        v11 = v10;
-        v12 = [v9 first];
+        second2 = first;
+        first2 = [v9 first];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v13 = [v9 first];
-          v14 = [v13 hasExtraction];
+          first3 = [v9 first];
+          hasExtraction = [first3 hasExtraction];
 
-          if (v14)
+          if (hasExtraction)
           {
             continue;
           }
 
 LABEL_9:
-          v15 = [v9 second];
+          second = [v9 second];
 
-          if (v15)
+          if (second)
           {
-            v11 = [v9 second];
-            [v18 addObject:v11];
+            second2 = [v9 second];
+            [v18 addObject:second2];
           }
 
           else
           {
-            v11 = sgEventsLogHandle();
-            if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+            second2 = sgEventsLogHandle();
+            if (os_log_type_enabled(second2, OS_LOG_TYPE_ERROR))
             {
               *buf = 0;
-              _os_log_error_impl(&dword_231E60000, v11, OS_LOG_TYPE_ERROR, "SGStructuredEventDissector: No name for missing entity", buf, 2u);
+              _os_log_error_impl(&dword_231E60000, second2, OS_LOG_TYPE_ERROR, "SGStructuredEventDissector: No name for missing entity", buf, 2u);
             }
           }
 
@@ -1840,52 +1840,52 @@ LABEL_14:
   return v18;
 }
 
-+ (id)preprocessWithoutXPCForHTML:(id)a3 subject:(id)a4 epoch:(double)a5 category:(id)a6 labelsWithMatchingStrings:(id)a7
++ (id)preprocessWithoutXPCForHTML:(id)l subject:(id)subject epoch:(double)epoch category:(id)category labelsWithMatchingStrings:(id)strings
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
+  stringsCopy = strings;
+  categoryCopy = category;
+  subjectCopy = subject;
+  lCopy = l;
   v16 = objc_opt_new();
-  v17 = [v16 parseHTML:v15];
+  v17 = [v16 parseHTML:lCopy];
 
-  v18 = [a1 preprocessDomParserResult:v17 subject:v14 epoch:v13 category:v12 labelsWithMatchingStrings:a5];
+  v18 = [self preprocessDomParserResult:v17 subject:subjectCopy epoch:categoryCopy category:stringsCopy labelsWithMatchingStrings:epoch];
 
   return v18;
 }
 
-+ (id)preprocessDomParserResult:(id)a3 subject:(id)a4 epoch:(double)a5 category:(id)a6 labelsWithMatchingStrings:(id)a7
++ (id)preprocessDomParserResult:(id)result subject:(id)subject epoch:(double)epoch category:(id)category labelsWithMatchingStrings:(id)strings
 {
   v106 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
-  v15 = v14;
-  if (v11)
+  resultCopy = result;
+  subjectCopy = subject;
+  categoryCopy = category;
+  stringsCopy = strings;
+  v15 = stringsCopy;
+  if (resultCopy)
   {
-    v71 = v14;
-    v72 = v13;
-    v69 = v12;
-    [v11 insertSubject:v12];
-    v16 = [v11 plainText];
+    v71 = stringsCopy;
+    v72 = categoryCopy;
+    v69 = subjectCopy;
+    [resultCopy insertSubject:subjectCopy];
+    plainText = [resultCopy plainText];
     v17 = objc_opt_new();
-    v70 = v11;
-    v18 = [v11 taggedCharacterRanges];
-    [v17 addObjectsFromArray:v18];
+    v70 = resultCopy;
+    taggedCharacterRanges = [resultCopy taggedCharacterRanges];
+    [v17 addObjectsFromArray:taggedCharacterRanges];
 
-    v19 = [MEMORY[0x277D02548] detectLanguageFromText:v16];
+    v19 = [MEMORY[0x277D02548] detectLanguageFromText:plainText];
     v20 = +[SGPOSTagger sharedInstance];
     v21 = +[SGStructuredEventExtractionModel sharedInstance];
-    v22 = [v21 gazetteer];
+    gazetteer = [v21 gazetteer];
     v68 = v19;
-    v23 = [v20 tokenizeTextContent:v16 languageHint:v19 gazetteer:v22];
+    v23 = [v20 tokenizeTextContent:plainText languageHint:v19 gazetteer:gazetteer];
 
     context = v17;
     v67 = v23;
     [v17 addObjectsFromArray:v23];
-    v24 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:a5];
-    v25 = [SGDataDetectorMatch detectionsInPlainText:v16 baseDate:v24];
+    v24 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:epoch];
+    v25 = [SGDataDetectorMatch detectionsInPlainText:plainText baseDate:v24];
 
     v94 = 0u;
     v95 = 0u;
@@ -1908,21 +1908,21 @@ LABEL_14:
 
           v29 = *(*(&v92 + 1) + 8 * i);
           v30 = objc_autoreleasePoolPush();
-          v31 = [v29 valueRange];
-          v33 = [v16 substringWithRange:v31, v32];
+          valueRange = [v29 valueRange];
+          v33 = [plainText substringWithRange:valueRange, v32];
           v34 = [SGTaggedCharacterRange alloc];
-          v35 = [v29 matchType];
+          matchType = [v29 matchType];
           v36 = @"SGDDMatchOther";
-          if (v35 <= 8)
+          if (matchType <= 8)
           {
-            v36 = off_27894F1C0[v35];
+            v36 = off_27894F1C0[matchType];
           }
 
           v37 = v36;
           v104 = v37;
           v38 = [MEMORY[0x277CBEA60] arrayWithObjects:&v104 count:1];
-          v39 = [v29 valueRange];
-          v41 = [(SGTaggedCharacterRange *)v34 initWithAnnotationType:1 tags:v38 range:v39 text:v40, v33];
+          valueRange2 = [v29 valueRange];
+          v41 = [(SGTaggedCharacterRange *)v34 initWithAnnotationType:1 tags:v38 range:valueRange2 text:v40, v33];
 
           [context addObject:v41];
           objc_autoreleasePoolPop(v30);
@@ -2016,7 +2016,7 @@ LABEL_14:
                   objc_enumerationMutation(v55);
                 }
 
-                v60 = [objc_opt_class() annotateContent:v16 withLabel:v54 forMatchingString:*(*(&v80 + 1) + 8 * m)];
+                v60 = [objc_opt_class() annotateContent:plainText withLabel:v54 forMatchingString:*(*(&v80 + 1) + 8 * m)];
                 if ([v60 count])
                 {
                   [v43 addObjectsFromArray:v60];
@@ -2041,7 +2041,7 @@ LABEL_14:
     v61 = [SGTaggedCharacterRange mergeTaggedCharacterRanges:v43 usingBaseTaggedCharacterRanges:v66 extraTags:v65 tagOverrides:0 alignWithGroundTruth:0];
     v97[0] = @"plainText";
     v97[1] = @"crossTags";
-    v98[0] = v16;
+    v98[0] = plainText;
     v98[1] = v61;
     v97[2] = @"tags";
     v97[3] = @"ddSGDetections";
@@ -2049,19 +2049,19 @@ LABEL_14:
     v98[3] = obj;
     v62 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v98 forKeys:v97 count:4];
 
-    v12 = v69;
-    v11 = v70;
+    subjectCopy = v69;
+    resultCopy = v70;
     v15 = v71;
-    v13 = v72;
+    categoryCopy = v72;
   }
 
   else
   {
-    v16 = sgEventsLogHandle();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    plainText = sgEventsLogHandle();
+    if (os_log_type_enabled(plainText, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_231E60000, v16, OS_LOG_TYPE_ERROR, "SGStructuredEventDissector: nil domParserResult", buf, 2u);
+      _os_log_error_impl(&dword_231E60000, plainText, OS_LOG_TYPE_ERROR, "SGStructuredEventDissector: nil domParserResult", buf, 2u);
     }
 
     v62 = 0;
@@ -2072,60 +2072,60 @@ LABEL_14:
   return v62;
 }
 
-+ (id)schemaOrgAndMissingEntitiesForDUFoundInEvent:(id)a3 eventClassification:(id)a4 fromSuggestTool:(BOOL)a5
++ (id)schemaOrgAndMissingEntitiesForDUFoundInEvent:(id)event eventClassification:(id)classification fromSuggestTool:(BOOL)tool
 {
   v173[7] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  eventCopy = event;
+  classificationCopy = classification;
   v9 = objc_opt_new();
-  if (([v7 detectedEventPolarity] & 1) == 0)
+  if (([eventCopy detectedEventPolarity] & 1) == 0)
   {
     [v9 setObject:&unk_28474A660 forKeyedSubscript:@"missingEntities"];
     goto LABEL_152;
   }
 
-  v10 = [v7 reservationIdError];
-  v11 = [v7 reservationId];
-  v12 = [v7 hotelName];
-  v13 = [v7 movieName];
-  v14 = [v7 startAddressError];
-  v125 = [v7 startAddressComponents];
-  v124 = [v7 startAddress];
-  v119 = [v7 endAddressError];
-  v118 = [v7 endAddressComponents];
-  v117 = [v7 endAddress];
-  v126 = [v7 startPlaceError];
-  v121 = [v7 startPlace];
-  v120 = [v7 endPlaceError];
-  v116 = [v7 endPlace];
-  v128 = [v7 startDate];
-  v127 = [v7 endDate];
-  v123 = [v7 guestName];
-  v15 = [v8 category];
+  reservationIdError = [eventCopy reservationIdError];
+  reservationId = [eventCopy reservationId];
+  hotelName = [eventCopy hotelName];
+  movieName = [eventCopy movieName];
+  startAddressError = [eventCopy startAddressError];
+  startAddressComponents = [eventCopy startAddressComponents];
+  startAddress = [eventCopy startAddress];
+  endAddressError = [eventCopy endAddressError];
+  endAddressComponents = [eventCopy endAddressComponents];
+  endAddress = [eventCopy endAddress];
+  startPlaceError = [eventCopy startPlaceError];
+  startPlace = [eventCopy startPlace];
+  endPlaceError = [eventCopy endPlaceError];
+  endPlace = [eventCopy endPlace];
+  startDate = [eventCopy startDate];
+  endDate = [eventCopy endDate];
+  guestName = [eventCopy guestName];
+  category = [classificationCopy category];
   v16 = 0;
-  v122 = v14;
-  v115 = v13;
-  if (v15 > 5)
+  v122 = startAddressError;
+  v115 = movieName;
+  if (category > 5)
   {
-    if (v15 == 6)
+    if (category == 6)
     {
-      v114 = v12;
-      v112 = v11;
-      if ((![v8 isCancelled] || !v13 || v10 && !v128) && (!v13 || !v128 || v10 || v14 || v126))
+      v114 = hotelName;
+      v112 = reservationId;
+      if ((![classificationCopy isCancelled] || !movieName || reservationIdError && !startDate) && (!movieName || !startDate || reservationIdError || startAddressError || startPlaceError))
       {
-        v113 = v10;
-        v110 = [a1 tupleWithError:v10 label:@"reservationId"];
+        v113 = reservationIdError;
+        v110 = [self tupleWithError:reservationIdError label:@"reservationId"];
         v149[0] = v110;
-        v83 = [a1 tupleWithEntity:v13 label:@"movieName"];
+        v83 = [self tupleWithEntity:movieName label:@"movieName"];
         v149[1] = v83;
-        v84 = [a1 tupleWithError:v126 label:@"place"];
+        v84 = [self tupleWithError:startPlaceError label:@"place"];
         v149[2] = v84;
-        v85 = [a1 tupleWithError:v14 label:@"address"];
+        v85 = [self tupleWithError:startAddressError label:@"address"];
         v149[3] = v85;
-        v86 = [a1 tupleWithEntity:v128 label:@"startDate"];
+        v86 = [self tupleWithEntity:startDate label:@"startDate"];
         v149[4] = v86;
         v87 = [MEMORY[0x277CBEA60] arrayWithObjects:v149 count:5];
-        v16 = [a1 nilEntities:v87];
+        v16 = [self nilEntities:v87];
 
         v35 = sgEventsLogHandle();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -2145,11 +2145,11 @@ LABEL_14:
       v157[0] = @"http://schema.org";
       v157[1] = @"http://schema.org/EventReservation";
       v156[2] = @"reservationStatus";
-      v36 = [a1 schemaStringForReservationStatus:{objc_msgSend(v8, "isCancelled")}];
+      v36 = [self schemaStringForReservationStatus:{objc_msgSend(classificationCopy, "isCancelled")}];
       v108 = v36;
-      if (v11)
+      if (reservationId)
       {
-        v37 = v11;
+        v37 = reservationId;
       }
 
       else
@@ -2164,17 +2164,17 @@ LABEL_14:
       v154[0] = @"@type";
       v154[1] = @"name";
       v155[0] = @"http://schema.org/Event";
-      v155[1] = v13;
-      v38 = v128;
-      if (!v128)
+      v155[1] = movieName;
+      v38 = startDate;
+      if (!startDate)
       {
         v38 = &stru_284703F00;
       }
 
       v154[2] = @"startDate";
       v154[3] = @"endDate";
-      v39 = v127;
-      if (!v127)
+      v39 = endDate;
+      if (!endDate)
       {
         v39 = &stru_284703F00;
       }
@@ -2184,8 +2184,8 @@ LABEL_14:
       v154[4] = @"location";
       v152[0] = @"@type";
       v152[1] = @"name";
-      v40 = v121;
-      if (!v121)
+      v40 = startPlace;
+      if (!startPlace)
       {
         v40 = &stru_284703F00;
       }
@@ -2193,28 +2193,28 @@ LABEL_14:
       v153[0] = @"http://schema.org/Place";
       v153[1] = v40;
       v152[2] = @"address";
-      v41 = v124;
-      if (!v124)
+      v41 = startAddress;
+      if (!startAddress)
       {
         v41 = &stru_284703F00;
       }
 
-      if (v125)
+      if (startAddressComponents)
       {
-        v41 = v125;
+        v41 = startAddressComponents;
       }
 
       v153[2] = v41;
       v42 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v153 forKeys:v152 count:3];
       v155[4] = v42;
       [MEMORY[0x277CBEAC0] dictionaryWithObjects:v155 forKeys:v154 count:5];
-      v44 = v43 = v10;
+      v44 = v43 = reservationIdError;
       v157[4] = v44;
       v156[5] = @"underName";
       v150[0] = @"@type";
       v150[1] = @"name";
-      v45 = v123;
-      if (!v123)
+      v45 = guestName;
+      if (!guestName)
       {
         v45 = &stru_284703F00;
       }
@@ -2230,35 +2230,35 @@ LABEL_14:
 
     else
     {
-      if (v15 != 7)
+      if (category != 7)
       {
-        v17 = 0;
-        if (v15 == 8)
+        sg_deepCopyWithoutEmptySchemaObjects = 0;
+        if (category == 8)
         {
-          v113 = v10;
-          if ([v8 isCancelled] && v12)
+          v113 = reservationIdError;
+          if ([classificationCopy isCancelled] && hotelName)
           {
-            if (!(v11 | v128))
+            if (!(reservationId | startDate))
             {
               goto LABEL_135;
             }
           }
 
-          else if (!v12 || !v128 || v10 || v14)
+          else if (!hotelName || !startDate || reservationIdError || startAddressError)
           {
 LABEL_135:
-            v112 = v11;
-            v114 = v12;
-            v71 = [a1 tupleWithEntity:v12 label:@"hotelName"];
+            v112 = reservationId;
+            v114 = hotelName;
+            v71 = [self tupleWithEntity:hotelName label:@"hotelName"];
             v167[0] = v71;
-            v72 = [a1 tupleWithError:v122 label:@"address"];
+            v72 = [self tupleWithError:v122 label:@"address"];
             v167[1] = v72;
-            v73 = [a1 tupleWithError:v10 label:@"reservationId"];
+            v73 = [self tupleWithError:reservationIdError label:@"reservationId"];
             v167[2] = v73;
-            v74 = [a1 tupleWithEntity:v128 label:@"startDate"];
+            v74 = [self tupleWithEntity:startDate label:@"startDate"];
             v167[3] = v74;
             v75 = [MEMORY[0x277CBEA60] arrayWithObjects:v167 count:4];
-            v16 = [a1 nilEntities:v75];
+            v16 = [self nilEntities:v75];
 
             v35 = sgEventsLogHandle();
             if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -2280,10 +2280,10 @@ LABEL_145:
           v172[1] = @"@type";
           v173[0] = @"http://schema.org";
           v173[1] = @"http://schema.org/FoodEstablishmentReservation";
-          v64 = v12;
-          if (v11)
+          v64 = hotelName;
+          if (reservationId)
           {
-            v65 = v11;
+            v65 = reservationId;
           }
 
           else
@@ -2294,30 +2294,30 @@ LABEL_145:
           v173[2] = v65;
           v172[2] = @"reservationId";
           v172[3] = @"reservationStatus";
-          v58 = [a1 schemaStringForReservationStatus:{objc_msgSend(v8, "isCancelled")}];
+          v58 = [self schemaStringForReservationStatus:{objc_msgSend(classificationCopy, "isCancelled")}];
           v173[3] = v58;
           v172[4] = @"reservationFor";
           v170[0] = @"@type";
           v170[1] = @"name";
           v171[0] = @"http://schema.org/FoodEstablishment";
-          v171[1] = v12;
+          v171[1] = hotelName;
           v170[2] = @"address";
-          v66 = v124;
-          if (!v124)
+          v66 = startAddress;
+          if (!startAddress)
           {
             v66 = &stru_284703F00;
           }
 
-          if (v125)
+          if (startAddressComponents)
           {
-            v66 = v125;
+            v66 = startAddressComponents;
           }
 
           v171[2] = v66;
           v67 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v171 forKeys:v170 count:3];
           v61 = v67;
-          v68 = v128;
-          if (!v128)
+          v68 = startDate;
+          if (!startDate)
           {
             v68 = &stru_284703F00;
           }
@@ -2328,8 +2328,8 @@ LABEL_145:
           v172[6] = @"underName";
           v168[0] = @"@type";
           v168[1] = @"name";
-          v69 = v123;
-          if (!v123)
+          v69 = guestName;
+          if (!guestName)
           {
             v69 = &stru_284703F00;
           }
@@ -2340,10 +2340,10 @@ LABEL_145:
           v173[6] = v70;
           v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v173 forKeys:v172 count:7];
 
-          v12 = v64;
+          hotelName = v64;
 LABEL_134:
 
-          v17 = [v35 sg_deepCopyWithoutEmptySchemaObjects];
+          sg_deepCopyWithoutEmptySchemaObjects = [v35 sg_deepCopyWithoutEmptySchemaObjects];
           v16 = 0;
 LABEL_148:
 
@@ -2353,22 +2353,22 @@ LABEL_148:
         goto LABEL_149;
       }
 
-      v114 = v12;
-      if ((![v8 isCancelled] || !v13 || v10 && !v128) && (!v13 || !v128 || v10 || v14 || v126))
+      v114 = hotelName;
+      if ((![classificationCopy isCancelled] || !movieName || reservationIdError && !startDate) && (!movieName || !startDate || reservationIdError || startAddressError || startPlaceError))
       {
-        v112 = v11;
+        v112 = reservationId;
         v88 = objc_opt_class();
-        v113 = v10;
-        [a1 tupleWithError:v10 label:@"reservationId"];
-        v90 = v89 = v14;
+        v113 = reservationIdError;
+        [self tupleWithError:reservationIdError label:@"reservationId"];
+        v90 = v89 = startAddressError;
         v129[0] = v90;
-        v91 = [a1 tupleWithEntity:v13 label:@"movieName"];
+        v91 = [self tupleWithEntity:movieName label:@"movieName"];
         v129[1] = v91;
-        v92 = [a1 tupleWithError:v89 label:@"address"];
+        v92 = [self tupleWithError:v89 label:@"address"];
         v129[2] = v92;
-        v93 = [a1 tupleWithError:v126 label:@"place"];
+        v93 = [self tupleWithError:startPlaceError label:@"place"];
         v129[3] = v93;
-        v94 = [a1 tupleWithEntity:v128 label:@"startDate"];
+        v94 = [self tupleWithEntity:startDate label:@"startDate"];
         v129[4] = v94;
         v95 = [MEMORY[0x277CBEA60] arrayWithObjects:v129 count:5];
         v16 = [v88 nilEntities:v95];
@@ -2390,9 +2390,9 @@ LABEL_148:
       v136[1] = @"@type";
       v137[0] = @"http://schema.org";
       v137[1] = @"http://schema.org/EventReservation";
-      if (v11)
+      if (reservationId)
       {
-        v50 = v11;
+        v50 = reservationId;
       }
 
       else
@@ -2403,15 +2403,15 @@ LABEL_148:
       v137[2] = v50;
       v136[2] = @"reservationId";
       v136[3] = @"reservationStatus";
-      v108 = [a1 schemaStringForEventStatus:{objc_msgSend(v8, "isCancelled")}];
+      v108 = [self schemaStringForEventStatus:{objc_msgSend(classificationCopy, "isCancelled")}];
       v137[3] = v108;
       v136[4] = @"reservationFor";
       v134[0] = @"@type";
       v134[1] = @"name";
       v135[0] = @"http://schema.org/ScreeningEvent";
-      v135[1] = v13;
-      v51 = v128;
-      if (!v128)
+      v135[1] = movieName;
+      v51 = startDate;
+      if (!startDate)
       {
         v51 = &stru_284703F00;
       }
@@ -2421,8 +2421,8 @@ LABEL_148:
       v134[3] = @"location";
       v132[0] = @"@type";
       v132[1] = @"name";
-      v52 = v121;
-      if (!v121)
+      v52 = startPlace;
+      if (!startPlace)
       {
         v52 = &stru_284703F00;
       }
@@ -2430,28 +2430,28 @@ LABEL_148:
       v133[0] = @"http://schema.org/Place";
       v133[1] = v52;
       v132[2] = @"address";
-      v53 = v124;
-      if (!v124)
+      v53 = startAddress;
+      if (!startAddress)
       {
         v53 = &stru_284703F00;
       }
 
-      if (v125)
+      if (startAddressComponents)
       {
-        v53 = v125;
+        v53 = startAddressComponents;
       }
 
       v133[2] = v53;
       v42 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v133 forKeys:v132 count:3];
       v135[3] = v42;
       [MEMORY[0x277CBEAC0] dictionaryWithObjects:v135 forKeys:v134 count:4];
-      v44 = v43 = v10;
+      v44 = v43 = reservationIdError;
       v137[4] = v44;
       v136[5] = @"underName";
       v130[0] = @"@type";
       v130[1] = @"name";
-      v54 = v123;
-      if (!v123)
+      v54 = guestName;
+      if (!guestName)
       {
         v54 = &stru_284703F00;
       }
@@ -2467,35 +2467,35 @@ LABEL_148:
 
     v35 = [v47 dictionaryWithObjects:v48 forKeys:v49 count:6];
 
-    v10 = v43;
+    reservationIdError = v43;
 LABEL_95:
 
-    v17 = [v35 sg_deepCopyWithoutEmptySchemaObjects];
+    sg_deepCopyWithoutEmptySchemaObjects = [v35 sg_deepCopyWithoutEmptySchemaObjects];
     v16 = 0;
 LABEL_147:
-    v12 = v114;
+    hotelName = v114;
     goto LABEL_148;
   }
 
-  if (v15 == 4)
+  if (category == 4)
   {
-    v113 = v10;
-    if ((![v8 isCancelled] || !v12 || !(v11 | v128)) && (!v12 || !v128 || !v127 || v10 || v14))
+    v113 = reservationIdError;
+    if ((![classificationCopy isCancelled] || !hotelName || !(reservationId | startDate)) && (!hotelName || !startDate || !endDate || reservationIdError || startAddressError))
     {
-      v112 = v11;
-      v111 = [a1 tupleWithError:v10 label:@"reservationId"];
+      v112 = reservationId;
+      v111 = [self tupleWithError:reservationIdError label:@"reservationId"];
       v158[0] = v111;
-      v114 = v12;
-      v96 = [a1 tupleWithEntity:v12 label:@"hotelName"];
+      v114 = hotelName;
+      v96 = [self tupleWithEntity:hotelName label:@"hotelName"];
       v158[1] = v96;
-      v97 = [a1 tupleWithError:v14 label:@"address"];
+      v97 = [self tupleWithError:startAddressError label:@"address"];
       v158[2] = v97;
-      v98 = [a1 tupleWithEntity:v128 label:@"startDate"];
+      v98 = [self tupleWithEntity:startDate label:@"startDate"];
       v158[3] = v98;
-      v99 = [a1 tupleWithEntity:v127 label:@"endDate"];
+      v99 = [self tupleWithEntity:endDate label:@"endDate"];
       v158[4] = v99;
       v100 = [MEMORY[0x277CBEA60] arrayWithObjects:v158 count:5];
-      v16 = [a1 nilEntities:v100];
+      v16 = [self nilEntities:v100];
 
       v35 = sgEventsLogHandle();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -2514,16 +2514,16 @@ LABEL_147:
     v163[1] = @"@type";
     v164[0] = @"http://schema.org";
     v164[1] = @"http://schema.org/LodgingReservation";
-    v55 = v128;
-    if (!v128)
+    v55 = startDate;
+    if (!startDate)
     {
       v55 = &stru_284703F00;
     }
 
     v163[2] = @"checkinTime";
     v163[3] = @"checkoutTime";
-    v56 = v127;
-    if (!v127)
+    v56 = endDate;
+    if (!endDate)
     {
       v56 = &stru_284703F00;
     }
@@ -2531,11 +2531,11 @@ LABEL_147:
     v164[2] = v55;
     v164[3] = v56;
     v163[4] = @"reservationStatus";
-    v57 = [a1 schemaStringForReservationStatus:{objc_msgSend(v8, "isCancelled")}];
+    v57 = [self schemaStringForReservationStatus:{objc_msgSend(classificationCopy, "isCancelled")}];
     v58 = v57;
-    if (v11)
+    if (reservationId)
     {
-      v59 = v11;
+      v59 = reservationId;
     }
 
     else
@@ -2550,17 +2550,17 @@ LABEL_147:
     v161[0] = @"@type";
     v161[1] = @"name";
     v162[0] = @"http://schema.org/LodgingBusiness";
-    v162[1] = v12;
+    v162[1] = hotelName;
     v161[2] = @"address";
-    v60 = v124;
-    if (!v124)
+    v60 = startAddress;
+    if (!startAddress)
     {
       v60 = &stru_284703F00;
     }
 
-    if (v125)
+    if (startAddressComponents)
     {
-      v60 = v125;
+      v60 = startAddressComponents;
     }
 
     v162[2] = v60;
@@ -2569,8 +2569,8 @@ LABEL_147:
     v163[7] = @"underName";
     v159[0] = @"@type";
     v159[1] = @"name";
-    v62 = v123;
-    if (!v123)
+    v62 = guestName;
+    if (!guestName)
     {
       v62 = &stru_284703F00;
     }
@@ -2581,41 +2581,41 @@ LABEL_147:
     v164[7] = v63;
     v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v164 forKeys:v163 count:8];
 
-    v10 = v113;
+    reservationIdError = v113;
     goto LABEL_134;
   }
 
-  v17 = 0;
-  if (v15 == 5)
+  sg_deepCopyWithoutEmptySchemaObjects = 0;
+  if (category == 5)
   {
-    v114 = v12;
-    v112 = v11;
-    v113 = v10;
-    if (![v8 isCancelled] || (objc_msgSend(v8, "providerName"), (v18 = objc_claimAutoreleasedReturnValue()) == 0) || (v18, v10) && !v128)
+    v114 = hotelName;
+    v112 = reservationId;
+    v113 = reservationIdError;
+    if (![classificationCopy isCancelled] || (objc_msgSend(classificationCopy, "providerName"), (v18 = objc_claimAutoreleasedReturnValue()) == 0) || (v18, reservationIdError) && !startDate)
     {
-      v19 = [v8 providerName];
+      providerName = [classificationCopy providerName];
 
-      if (!v19 || !v128 || !v127 || v10 || v14 || v126 || v120 || v119)
+      if (!providerName || !startDate || !endDate || reservationIdError || startAddressError || startPlaceError || endPlaceError || endAddressError)
       {
-        v109 = [a1 tupleWithError:v10 label:@"reservationId"];
+        v109 = [self tupleWithError:reservationIdError label:@"reservationId"];
         v138[0] = v109;
-        v107 = [a1 tupleWithError:v14 label:@"address"];
+        v107 = [self tupleWithError:startAddressError label:@"address"];
         v138[1] = v107;
-        v106 = [a1 tupleWithError:v119 label:@"endAddress"];
+        v106 = [self tupleWithError:endAddressError label:@"endAddress"];
         v138[2] = v106;
-        v105 = [a1 tupleWithError:v126 label:@"place"];
+        v105 = [self tupleWithError:startPlaceError label:@"place"];
         v138[3] = v105;
-        v104 = [a1 tupleWithError:v120 label:@"endPlace"];
+        v104 = [self tupleWithError:endPlaceError label:@"endPlace"];
         v138[4] = v104;
-        v78 = [a1 tupleWithEntity:v128 label:@"startDate"];
+        v78 = [self tupleWithEntity:startDate label:@"startDate"];
         v138[5] = v78;
-        v79 = [a1 tupleWithEntity:v127 label:@"endDate"];
+        v79 = [self tupleWithEntity:endDate label:@"endDate"];
         v138[6] = v79;
-        v80 = [v8 providerName];
-        v81 = [a1 tupleWithEntity:v80 label:@"providerName"];
+        providerName2 = [classificationCopy providerName];
+        v81 = [self tupleWithEntity:providerName2 label:@"providerName"];
         v138[7] = v81;
         v82 = [MEMORY[0x277CBEA60] arrayWithObjects:v138 count:8];
-        v16 = [a1 nilEntities:v82];
+        v16 = [self nilEntities:v82];
 
         v35 = sgEventsLogHandle();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -2628,9 +2628,9 @@ LABEL_147:
         }
 
 LABEL_146:
-        v17 = 0;
-        v11 = v112;
-        v10 = v113;
+        sg_deepCopyWithoutEmptySchemaObjects = 0;
+        reservationId = v112;
+        reservationIdError = v113;
         goto LABEL_147;
       }
     }
@@ -2639,8 +2639,8 @@ LABEL_146:
     v147[1] = @"@type";
     v148[0] = @"http://schema.org";
     v148[1] = @"http://schema.org/RentalCarReservation";
-    v20 = v11;
-    if (!v11)
+    v20 = reservationId;
+    if (!reservationId)
     {
       v20 = &stru_284703F00;
     }
@@ -2648,10 +2648,10 @@ LABEL_146:
     v148[2] = v20;
     v147[2] = @"reservationId";
     v147[3] = @"reservationStatus";
-    v21 = [a1 schemaStringForReservationStatus:{objc_msgSend(v8, "isCancelled")}];
+    v21 = [self schemaStringForReservationStatus:{objc_msgSend(classificationCopy, "isCancelled")}];
     v108 = v21;
-    v22 = v128;
-    if (!v128)
+    v22 = startDate;
+    if (!startDate)
     {
       v22 = &stru_284703F00;
     }
@@ -2662,22 +2662,22 @@ LABEL_146:
     v147[5] = @"pickupLocation";
     v145[0] = @"@type";
     v145[1] = @"address";
-    v23 = v124;
-    if (!v124)
+    v23 = startAddress;
+    if (!startAddress)
     {
       v23 = &stru_284703F00;
     }
 
-    if (v125)
+    if (startAddressComponents)
     {
-      v23 = v125;
+      v23 = startAddressComponents;
     }
 
     v146[0] = @"http://schema.org/Place";
     v146[1] = v23;
     v145[2] = @"name";
-    v24 = v121;
-    if (!v121)
+    v24 = startPlace;
+    if (!startPlace)
     {
       v24 = &stru_284703F00;
     }
@@ -2685,8 +2685,8 @@ LABEL_146:
     v146[2] = v24;
     v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v146 forKeys:v145 count:3];
     v26 = v25;
-    v27 = v127;
-    if (!v127)
+    v27 = endDate;
+    if (!endDate)
     {
       v27 = &stru_284703F00;
     }
@@ -2697,22 +2697,22 @@ LABEL_146:
     v147[7] = @"dropoffLocation";
     v143[0] = @"@type";
     v143[1] = @"address";
-    v28 = v117;
-    if (!v117)
+    v28 = endAddress;
+    if (!endAddress)
     {
       v28 = &stru_284703F00;
     }
 
-    if (v118)
+    if (endAddressComponents)
     {
-      v28 = v118;
+      v28 = endAddressComponents;
     }
 
     v144[0] = @"http://schema.org/Place";
     v144[1] = v28;
     v143[2] = @"name";
-    v29 = v116;
-    if (!v116)
+    v29 = endPlace;
+    if (!endPlace)
     {
       v29 = &stru_284703F00;
     }
@@ -2724,15 +2724,15 @@ LABEL_146:
     v142[0] = @"http://schema.org/Organization";
     v141[0] = @"type";
     v141[1] = @"name";
-    v31 = [v8 providerName];
-    v142[1] = v31;
+    providerName3 = [classificationCopy providerName];
+    v142[1] = providerName3;
     v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v142 forKeys:v141 count:2];
     v148[8] = v32;
     v147[9] = @"underName";
     v139[0] = @"@type";
     v139[1] = @"name";
-    v33 = v123;
-    if (!v123)
+    v33 = guestName;
+    if (!guestName)
     {
       v33 = &stru_284703F00;
     }
@@ -2743,14 +2743,14 @@ LABEL_146:
     v148[9] = v34;
     v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v148 forKeys:v147 count:10];
 
-    v11 = v112;
-    v10 = v113;
+    reservationId = v112;
+    reservationIdError = v113;
 
     goto LABEL_95;
   }
 
 LABEL_149:
-  [v9 setObject:v17 forKeyedSubscript:@"schema"];
+  [v9 setObject:sg_deepCopyWithoutEmptySchemaObjects forKeyedSubscript:@"schema"];
   [v9 setObject:v16 forKeyedSubscript:@"missingEntities"];
   v101 = sgEventsLogHandle();
   if (os_log_type_enabled(v101, OS_LOG_TYPE_DEFAULT))
@@ -2766,22 +2766,22 @@ LABEL_152:
   return v9;
 }
 
-+ (void)addSchemaAsEnrichment:(id)a3 inMessage:(id)a4 parentEntity:(id)a5 eventClassification:(id)a6 mlDefaultExtraction:(BOOL)a7
++ (void)addSchemaAsEnrichment:(id)enrichment inMessage:(id)message parentEntity:(id)entity eventClassification:(id)classification mlDefaultExtraction:(BOOL)extraction
 {
-  v39 = a7;
+  extractionCopy = extraction;
   v52[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v41 = a6;
+  enrichmentCopy = enrichment;
+  messageCopy = message;
+  entityCopy = entity;
+  classificationCopy = classification;
   v13 = objc_opt_new();
-  v36 = v10;
-  v40 = [v10 objectForKeyedSubscript:@"mergedSchema"];
+  v36 = enrichmentCopy;
+  v40 = [enrichmentCopy objectForKeyedSubscript:@"mergedSchema"];
   v52[0] = v40;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v52 count:1];
   v35 = v13;
-  v42 = v11;
-  v15 = [v13 enrichmentsFromSchemas:v14 inMessage:v11 parentEntity:v12];
+  v42 = messageCopy;
+  v15 = [v13 enrichmentsFromSchemas:v14 inMessage:messageCopy parentEntity:entityCopy];
 
   v46 = 0u;
   v47 = 0u;
@@ -2810,9 +2810,9 @@ LABEL_152:
         v20 = [MEMORY[0x277D01FA0] extractedFromTemplateWithShortName:@"ML"];
         [v17 addTag:v20];
 
-        v21 = [v42 from];
-        v22 = [v21 emailAddress];
-        v23 = emailAddressDomain(v22);
+        from = [v42 from];
+        emailAddress = [from emailAddress];
+        v23 = emailAddressDomain(emailAddress);
 
         if (v23)
         {
@@ -2820,19 +2820,19 @@ LABEL_152:
           [v17 addTag:v24];
         }
 
-        v25 = [v12 duplicateKey];
-        v26 = [v25 bundleId];
+        duplicateKey = [entityCopy duplicateKey];
+        bundleId = [duplicateKey bundleId];
 
         v27 = objc_alloc(MEMORY[0x277D01FC8]);
-        v28 = +[SGStructuredEventClassification describeCategory:](SGStructuredEventClassification, "describeCategory:", [v41 category]);
+        v28 = +[SGStructuredEventClassification describeCategory:](SGStructuredEventClassification, "describeCategory:", [classificationCopy category]);
         v50 = v40;
         v29 = [MEMORY[0x277CBEA60] arrayWithObjects:&v50 count:1];
-        v30 = [v27 initWithType:1 categoryDescription:v28 originBundleId:v26 confidence:v29 schemaOrg:0 participants:0 eventActivities:1.0];
+        v30 = [v27 initWithType:1 categoryDescription:v28 originBundleId:bundleId confidence:v29 schemaOrg:0 participants:0 eventActivities:1.0];
 
-        v31 = [v30 toJsonString];
-        if (v31)
+        toJsonString = [v30 toJsonString];
+        if (toJsonString)
         {
-          v32 = [MEMORY[0x277D01FA0] eventMetadata:v31];
+          v32 = [MEMORY[0x277D01FA0] eventMetadata:toJsonString];
           [v17 addTag:v32];
         }
 
@@ -2847,14 +2847,14 @@ LABEL_152:
           }
         }
 
-        if (v39)
+        if (extractionCopy)
         {
-          [v12 addOrReplaceEventEnrichment:v17];
+          [entityCopy addOrReplaceEventEnrichment:v17];
         }
 
         else
         {
-          [v12 addEnrichment:v17];
+          [entityCopy addEnrichment:v17];
         }
 
         v33 = sgEventsLogHandle();
@@ -2878,19 +2878,19 @@ LABEL_152:
   v34 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)mergeFallbackSchema:(id)a3 parentEntity:(id)a4
++ (id)mergeFallbackSchema:(id)schema parentEntity:(id)entity
 {
   v39[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  schemaCopy = schema;
+  entityCopy = entity;
   v38[0] = @"mergedSchema";
   v38[1] = @"diff";
-  v39[0] = v6;
+  v39[0] = schemaCopy;
   v39[1] = &stru_284703F00;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:v38 count:2];
-  if ([v7 hasEventEnrichment])
+  if ([entityCopy hasEventEnrichment])
   {
-    v9 = [a1 eventEnrichmentFromEntity:v7];
+    v9 = [self eventEnrichmentFromEntity:entityCopy];
     v10 = v9;
     if (v9)
     {
@@ -2898,8 +2898,8 @@ LABEL_152:
       v34 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v11 = [v9 tags];
-      v12 = [v11 countByEnumeratingWithState:&v31 objects:v37 count:16];
+      tags = [v9 tags];
+      v12 = [tags countByEnumeratingWithState:&v31 objects:v37 count:16];
       if (v12)
       {
         v13 = v12;
@@ -2910,7 +2910,7 @@ LABEL_5:
         {
           if (*v32 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(tags);
           }
 
           v16 = *(*(&v31 + 1) + 8 * v15);
@@ -2921,7 +2921,7 @@ LABEL_5:
 
           if (v13 == ++v15)
           {
-            v13 = [v11 countByEnumeratingWithState:&v31 objects:v37 count:16];
+            v13 = [tags countByEnumeratingWithState:&v31 objects:v37 count:16];
             if (v13)
             {
               goto LABEL_5;
@@ -2931,15 +2931,15 @@ LABEL_5:
           }
         }
 
-        v17 = [v16 value];
+        value = [v16 value];
 
-        if (!v17)
+        if (!value)
         {
           goto LABEL_18;
         }
 
         v18 = MEMORY[0x277CCAAA0];
-        v19 = [v17 dataUsingEncoding:4];
+        v19 = [value dataUsingEncoding:4];
         v30 = 0;
         v20 = [v18 JSONObjectWithData:v19 options:0 error:&v30];
         v21 = v30;
@@ -2948,10 +2948,10 @@ LABEL_5:
         {
           v29 = v21;
           v22 = objc_opt_new();
-          v36 = v6;
+          v36 = schemaCopy;
           v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v36 count:1];
-          v24 = [v20 firstObject];
-          v35 = v24;
+          firstObject = [v20 firstObject];
+          v35 = firstObject;
           v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v35 count:1];
           v28 = [v22 mergeSchemas:v23 withExpectedSchemas:v25];
 
@@ -2963,7 +2963,7 @@ LABEL_5:
       else
       {
 LABEL_11:
-        v17 = v11;
+        value = tags;
       }
     }
 

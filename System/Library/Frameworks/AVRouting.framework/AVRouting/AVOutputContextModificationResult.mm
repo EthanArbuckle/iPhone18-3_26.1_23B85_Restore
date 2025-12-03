@@ -1,12 +1,12 @@
 @interface AVOutputContextModificationResult
-- (AVOutputContextModificationResult)initWithFigRouteConfigUpdatedReason:(__CFString *)a3 metrics:(id)a4;
+- (AVOutputContextModificationResult)initWithFigRouteConfigUpdatedReason:(__CFString *)reason metrics:(id)metrics;
 - (id)cancellationReason;
 - (void)dealloc;
 @end
 
 @implementation AVOutputContextModificationResult
 
-- (AVOutputContextModificationResult)initWithFigRouteConfigUpdatedReason:(__CFString *)a3 metrics:(id)a4
+- (AVOutputContextModificationResult)initWithFigRouteConfigUpdatedReason:(__CFString *)reason metrics:(id)metrics
 {
   v20.receiver = self;
   v20.super_class = AVOutputContextModificationResult;
@@ -67,7 +67,7 @@ LABEL_8:
   }
 
   v5->mCancellationReason = &v14->isa;
-  v5->_modificationMetrics = a4;
+  v5->_modificationMetrics = metrics;
   return v5;
 }
 

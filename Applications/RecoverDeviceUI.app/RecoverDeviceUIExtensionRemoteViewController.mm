@@ -3,10 +3,10 @@
 - (BOOL)matchesRecentlyRecoveredDevice;
 - (id)backToMenuButton;
 - (id)deviceKey;
-- (id)getOverallResultActionForError:(id)a3 resultType:(int)a4;
-- (id)getOverallResultSubTitleStringForError:(id)a3 resultType:(int)a4;
-- (id)getOverallResultTitleStringForError:(id)a3 resultType:(int)a4;
-- (id)getOverallResultUIImageForError:(id)a3 resultType:(int)a4;
+- (id)getOverallResultActionForError:(id)error resultType:(int)type;
+- (id)getOverallResultSubTitleStringForError:(id)error resultType:(int)type;
+- (id)getOverallResultTitleStringForError:(id)error resultType:(int)type;
+- (id)getOverallResultUIImageForError:(id)error resultType:(int)type;
 - (id)learnMoreButtonAction;
 - (id)menuEACSButton;
 - (id)menuRebootButton;
@@ -18,19 +18,19 @@
 - (id)recoverButtonAction;
 - (id)uiImage;
 - (id)uiImageEACS;
-- (void)_setupKitEventHandler:(id)a3;
+- (void)_setupKitEventHandler:(id)handler;
 - (void)cleanDocumentation;
 - (void)cleanupOldRecoveredDevices;
-- (void)collectDocumentation:(id)a3 alternative:(BOOL)a4 completion:(id)a5;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (void)collectDocumentation:(id)documentation alternative:(BOOL)alternative completion:(id)completion;
+- (void)configureWithContext:(id)context completion:(id)completion;
 - (void)doneWaitingForServerResponse;
-- (void)handleOSRMessage:(id)a3;
-- (void)menuOptionChosen:(int)a3;
+- (void)handleOSRMessage:(id)message;
+- (void)menuOptionChosen:(int)chosen;
 - (void)persistRecoveringDevice;
 - (void)proxCardFlowDidDismiss;
 - (void)proxCardFlowWillPresent;
 - (void)recoverButtonPressed;
-- (void)sendMessage:(id)a3 completionHandler:(id)a4;
+- (void)sendMessage:(id)message completionHandler:(id)handler;
 - (void)setInitialCardForResume;
 - (void)setInitialCardForSetup;
 - (void)setupStop;
@@ -38,37 +38,37 @@
 - (void)showEACSCard;
 - (void)showLearnMoreCard;
 - (void)showMenuCard;
-- (void)showOverallResultCard:(id)a3 resultType:(int)a4;
-- (void)showProgressCard:(id)a3;
+- (void)showOverallResultCard:(id)card resultType:(int)type;
+- (void)showProgressCard:(id)card;
 - (void)showRecoveryCard;
-- (void)showSUCard:(id)a3 build:(id)a4 icon:(id)a5 isAlternate:(BOOL)a6;
-- (void)showSUSelectionCard:(id)a3;
+- (void)showSUCard:(id)card build:(id)build icon:(id)icon isAlternate:(BOOL)alternate;
+- (void)showSUSelectionCard:(id)card;
 - (void)showScanningCard;
 - (void)updateCodeCardToSettingUpState;
-- (void)updateProgressCardOnMainQueueWithInfo:(id)a3;
+- (void)updateProgressCardOnMainQueueWithInfo:(id)info;
 - (void)viewDidLoad;
 - (void)waitForServerResponse;
 @end
 
 @implementation RecoverDeviceUIExtensionRemoteViewController
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v8 = [[SUCoreLog alloc] initWithCategory:@"RecoverDeviceUI"];
   [(RecoverDeviceUIExtensionRemoteViewController *)self setLogger:v8];
 
   if ([(RecoverDeviceUIExtensionRemoteViewController *)self runningInStoreDemoMode]== 1)
   {
-    v9 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-    v10 = [v9 oslog];
+    logger = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+    oslog = [logger oslog];
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Skipping tap-to-recover prompt for device running in StoreDemoMode", buf, 2u);
+      _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Skipping tap-to-recover prompt for device running in StoreDemoMode", buf, 2u);
     }
 
 LABEL_85:
@@ -76,13 +76,13 @@ LABEL_85:
     goto LABEL_86;
   }
 
-  v11 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-  v12 = [v11 oslog];
+  logger2 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+  oslog2 = [logger2 oslog];
 
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Device running in regular mode. Proceeding with tap-to-recover prompt", buf, 2u);
+    _os_log_impl(&_mh_execute_header, oslog2, OS_LOG_TYPE_DEFAULT, "Device running in regular mode. Proceeding with tap-to-recover prompt", buf, 2u);
   }
 
   [(RecoverDeviceUIExtensionRemoteViewController *)self setSetupCompleted:0];
@@ -94,17 +94,17 @@ LABEL_85:
   v14 = objc_alloc_init(SKSetupClient);
   [(RecoverDeviceUIExtensionRemoteViewController *)self setSetupkitClient:v14];
 
-  v15 = [(RecoverDeviceUIExtensionRemoteViewController *)self setupkitClient];
-  [v15 setSetupType:1];
+  setupkitClient = [(RecoverDeviceUIExtensionRemoteViewController *)self setupkitClient];
+  [setupkitClient setSetupType:1];
 
-  v16 = [(RecoverDeviceUIExtensionRemoteViewController *)self setupkitClient];
-  [v16 setSkipWifi:0];
+  setupkitClient2 = [(RecoverDeviceUIExtensionRemoteViewController *)self setupkitClient];
+  [setupkitClient2 setSkipWifi:0];
 
-  v17 = [(RecoverDeviceUIExtensionRemoteViewController *)self setupkitClient];
-  [v17 setPasswordType:2];
+  setupkitClient3 = [(RecoverDeviceUIExtensionRemoteViewController *)self setupkitClient];
+  [setupkitClient3 setPasswordType:2];
 
-  v18 = [(RecoverDeviceUIExtensionRemoteViewController *)self setupkitClient];
-  [v18 setConditionalPersistent:1];
+  setupkitClient4 = [(RecoverDeviceUIExtensionRemoteViewController *)self setupkitClient];
+  [setupkitClient4 setConditionalPersistent:1];
 
   v113[0] = @"NeRDVersionKey";
   v19 = [NSNumber numberWithInteger:2];
@@ -116,114 +116,114 @@ LABEL_85:
   v114[2] = &__kCFBooleanTrue;
   v114[3] = &__kCFBooleanTrue;
   v20 = [NSDictionary dictionaryWithObjects:v114 forKeys:v113 count:4];
-  v21 = [(RecoverDeviceUIExtensionRemoteViewController *)self setupkitClient];
-  [v21 setClientConfig:v20];
+  setupkitClient5 = [(RecoverDeviceUIExtensionRemoteViewController *)self setupkitClient];
+  [setupkitClient5 setClientConfig:v20];
 
   v22 = dispatch_queue_create("com.apple.RecoverDeviceUI.mainOperationsQueue", 0);
   recoverDeviceOperationsQueue = self->_recoverDeviceOperationsQueue;
   self->_recoverDeviceOperationsQueue = v22;
 
-  v24 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-  v25 = [v24 oslog];
+  logger3 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+  oslog3 = [logger3 oslog];
 
-  if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "ConfigureWithContext invoked", buf, 2u);
+    _os_log_impl(&_mh_execute_header, oslog3, OS_LOG_TYPE_DEFAULT, "ConfigureWithContext invoked", buf, 2u);
   }
 
-  if (!v6 || ([v6 userInfo], v26 = objc_claimAutoreleasedReturnValue(), v27 = v26 == 0, v26, v27))
+  if (!contextCopy || ([contextCopy userInfo], v26 = objc_claimAutoreleasedReturnValue(), v27 = v26 == 0, v26, v27))
   {
-    v34 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-    v31 = [v34 oslog];
+    logger4 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+    oslog4 = [logger4 oslog];
 
-    if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Invalid userinfo object passed to RecoverDeviceUI", buf, 2u);
+      _os_log_impl(&_mh_execute_header, oslog4, OS_LOG_TYPE_DEFAULT, "Invalid userinfo object passed to RecoverDeviceUI", buf, 2u);
     }
   }
 
   else
   {
-    v28 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-    v29 = [v28 oslog];
+    logger5 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+    oslog5 = [logger5 oslog];
 
-    if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Valid context/info object", buf, 2u);
+      _os_log_impl(&_mh_execute_header, oslog5, OS_LOG_TYPE_DEFAULT, "Valid context/info object", buf, 2u);
     }
 
-    v30 = [v6 userInfo];
-    v31 = [v30 objectForKeyedSubscript:@"device"];
+    userInfo = [contextCopy userInfo];
+    oslog4 = [userInfo objectForKeyedSubscript:@"device"];
 
-    if (v31 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (oslog4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v32 = [CBDevice alloc];
+      oslog7 = [CBDevice alloc];
       if (objc_opt_respondsToSelector())
       {
-        v33 = [v32 initWithDictionary:v31 error:0];
-        [(RecoverDeviceUIExtensionRemoteViewController *)self setDeviceObj:v33];
+        oslog6 = [oslog7 initWithDictionary:oslog4 error:0];
+        [(RecoverDeviceUIExtensionRemoteViewController *)self setDeviceObj:oslog6];
       }
 
       else
       {
-        v36 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-        v33 = [v36 oslog];
+        logger6 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+        oslog6 = [logger6 oslog];
 
-        if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog6, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
-          _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "CBDevice implementation missing appropriate initialization function", buf, 2u);
+          _os_log_impl(&_mh_execute_header, oslog6, OS_LOG_TYPE_DEFAULT, "CBDevice implementation missing appropriate initialization function", buf, 2u);
         }
       }
     }
 
     else
     {
-      v35 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-      v32 = [v35 oslog];
+      logger7 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+      oslog7 = [logger7 oslog];
 
-      if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "Invalid dictionary in userinfo object passed to RecoverDeviceUI", buf, 2u);
+        _os_log_impl(&_mh_execute_header, oslog7, OS_LOG_TYPE_DEFAULT, "Invalid dictionary in userinfo object passed to RecoverDeviceUI", buf, 2u);
       }
     }
   }
 
-  v37 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
-  v38 = v37 == 0;
+  deviceObj = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
+  v38 = deviceObj == 0;
 
   if (v38)
   {
-    v51 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-    v10 = [v51 oslog];
+    logger8 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+    oslog = [logger8 oslog];
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Failed to initialize deviceObj for RecoverDeviceUI", buf, 2u);
+      _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Failed to initialize deviceObj for RecoverDeviceUI", buf, 2u);
     }
 
     goto LABEL_85;
   }
 
-  v39 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-  v40 = [v39 oslog];
+  logger9 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+  oslog8 = [logger9 oslog];
 
-  if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog8, OS_LOG_TYPE_DEFAULT))
   {
-    v41 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
-    v42 = [v41 nearbyActionType];
-    v43 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
-    v44 = [v43 nearbyActionFlags];
+    deviceObj2 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
+    nearbyActionType = [deviceObj2 nearbyActionType];
+    deviceObj3 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
+    nearbyActionFlags = [deviceObj3 nearbyActionFlags];
     *buf = 67109376;
-    *v111 = v42;
+    *v111 = nearbyActionType;
     *&v111[4] = 1024;
-    *&v111[6] = v44;
-    _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "nearbyActionType:%d nearbyActionFlags:%d", buf, 0xEu);
+    *&v111[6] = nearbyActionFlags;
+    _os_log_impl(&_mh_execute_header, oslog8, OS_LOG_TYPE_DEFAULT, "nearbyActionType:%d nearbyActionFlags:%d", buf, 0xEu);
   }
 
   if (os_variant_has_internal_content())
@@ -233,18 +233,18 @@ LABEL_85:
 
     if (v46)
     {
-      v47 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
-      v48 = [v47 nearbyActionFlags];
+      deviceObj4 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
+      nearbyActionFlags2 = [deviceObj4 nearbyActionFlags];
 
-      if ((v48 & 0x80) == 0)
+      if ((nearbyActionFlags2 & 0x80) == 0)
       {
-        v49 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-        v50 = [v49 oslog];
+        logger10 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+        oslog9 = [logger10 oslog];
 
-        if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog9, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
-          _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_DEFAULT, "ForceAuthTag default is set, but server don't have auth tag, ignoring", buf, 2u);
+          _os_log_impl(&_mh_execute_header, oslog9, OS_LOG_TYPE_DEFAULT, "ForceAuthTag default is set, but server don't have auth tag, ignoring", buf, 2u);
         }
 
 LABEL_70:
@@ -252,68 +252,68 @@ LABEL_70:
         goto LABEL_86;
       }
 
-      v52 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
-      v53 = [v52 nearbyAuthTag];
+      deviceObj5 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
+      nearbyAuthTag = [deviceObj5 nearbyAuthTag];
       v54 = [v46 dataUsingEncoding:4];
-      v55 = [v53 isEqual:v54];
+      v55 = [nearbyAuthTag isEqual:v54];
 
       if (!v55)
       {
-        v85 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-        v50 = [v85 oslog];
+        logger11 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+        oslog9 = [logger11 oslog];
 
-        if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog9, OS_LOG_TYPE_DEFAULT))
         {
           v86 = [v46 dataUsingEncoding:4];
-          v87 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
-          v88 = [v87 nearbyAuthTag];
+          deviceObj6 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
+          nearbyAuthTag2 = [deviceObj6 nearbyAuthTag];
           *buf = 138543618;
           *v111 = v86;
           *&v111[8] = 2114;
-          v112 = v88;
-          _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_DEFAULT, "ForceAuthTag default is set to %{public}@, but server have different auth tag %{public}@, ignoring", buf, 0x16u);
+          v112 = nearbyAuthTag2;
+          _os_log_impl(&_mh_execute_header, oslog9, OS_LOG_TYPE_DEFAULT, "ForceAuthTag default is set to %{public}@, but server have different auth tag %{public}@, ignoring", buf, 0x16u);
         }
 
         goto LABEL_70;
       }
 
-      v56 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-      v57 = [v56 oslog];
+      logger12 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+      oslog10 = [logger12 oslog];
 
-      if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_DEFAULT, "ForceAuthTag default is set, and server have matching auth tag, continue", buf, 2u);
+        _os_log_impl(&_mh_execute_header, oslog10, OS_LOG_TYPE_DEFAULT, "ForceAuthTag default is set, and server have matching auth tag, continue", buf, 2u);
       }
     }
   }
 
-  v58 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
-  v59 = [v58 nearbyActionType] == 85;
+  deviceObj7 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
+  v59 = [deviceObj7 nearbyActionType] == 85;
 
   if (v59)
   {
-    v60 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-    v61 = [v60 oslog];
+    logger13 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+    oslog11 = [logger13 oslog];
 
-    if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v61, OS_LOG_TYPE_DEFAULT, "extended mode detected", buf, 2u);
+      _os_log_impl(&_mh_execute_header, oslog11, OS_LOG_TYPE_DEFAULT, "extended mode detected", buf, 2u);
     }
 
     [(RecoverDeviceUIExtensionRemoteViewController *)self setExtendedMode:1];
   }
 
-  v62 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
-  if ([v62 nearbyActionDeviceClass] == 1)
+  deviceObj8 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
+  if ([deviceObj8 nearbyActionDeviceClass] == 1)
   {
   }
 
   else
   {
-    v63 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
-    v64 = [v63 nearbyActionDeviceClass] == 3;
+    deviceObj9 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
+    v64 = [deviceObj9 nearbyActionDeviceClass] == 3;
 
     if (!v64)
     {
@@ -321,37 +321,37 @@ LABEL_70:
     }
   }
 
-  v65 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
-  v66 = [v65 rssi] < -45;
+  deviceObj10 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
+  v66 = [deviceObj10 rssi] < -45;
 
   if (v66)
   {
-    v67 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-    v68 = [v67 oslog];
+    logger14 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+    oslog12 = [logger14 oslog];
 
-    if (os_log_type_enabled(v68, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog12, OS_LOG_TYPE_DEFAULT))
     {
-      v69 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
-      v70 = [v69 rssi];
+      deviceObj11 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
+      rssi = [deviceObj11 rssi];
       *buf = 67109120;
-      *v111 = v70;
-      _os_log_impl(&_mh_execute_header, v68, OS_LOG_TYPE_DEFAULT, "showing prox card, but rssi is %d", buf, 8u);
+      *v111 = rssi;
+      _os_log_impl(&_mh_execute_header, oslog12, OS_LOG_TYPE_DEFAULT, "showing prox card, but rssi is %d", buf, 8u);
     }
   }
 
 LABEL_52:
-  v71 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
-  v72 = [v71 nearbyActionDeviceClass] == 6;
+  deviceObj12 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
+  v72 = [deviceObj12 nearbyActionDeviceClass] == 6;
 
   if (v72)
   {
-    v73 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-    v74 = [v73 oslog];
+    logger15 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+    oslog13 = [logger15 oslog];
 
-    if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v74, OS_LOG_TYPE_DEFAULT, "Device needing recovery is an Apple Watch", buf, 2u);
+      _os_log_impl(&_mh_execute_header, oslog13, OS_LOG_TYPE_DEFAULT, "Device needing recovery is an Apple Watch", buf, 2u);
     }
 
     v75 = @"DEVICE_TYPE_WATCH";
@@ -359,18 +359,18 @@ LABEL_52:
 
   else
   {
-    v76 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
-    v77 = [v76 nearbyActionDeviceClass] == 11;
+    deviceObj13 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
+    v77 = [deviceObj13 nearbyActionDeviceClass] == 11;
 
     if (v77)
     {
-      v78 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-      v74 = [v78 oslog];
+      logger16 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+      oslog13 = [logger16 oslog];
 
-      if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&_mh_execute_header, v74, OS_LOG_TYPE_DEFAULT, "Device needing recovery was found", buf, 2u);
+        _os_log_impl(&_mh_execute_header, oslog13, OS_LOG_TYPE_DEFAULT, "Device needing recovery was found", buf, 2u);
       }
 
       v75 = @"DEVICE_TYPE_VISION";
@@ -378,18 +378,18 @@ LABEL_52:
 
     else
     {
-      v79 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
-      v80 = [v79 nearbyActionDeviceClass] == 4;
+      deviceObj14 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
+      v80 = [deviceObj14 nearbyActionDeviceClass] == 4;
 
       if (v80)
       {
-        v81 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-        v74 = [v81 oslog];
+        logger17 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+        oslog13 = [logger17 oslog];
 
-        if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog13, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
-          _os_log_impl(&_mh_execute_header, v74, OS_LOG_TYPE_DEFAULT, "Device needing recovery is an Apple TV", buf, 2u);
+          _os_log_impl(&_mh_execute_header, oslog13, OS_LOG_TYPE_DEFAULT, "Device needing recovery is an Apple TV", buf, 2u);
         }
 
         v75 = @"DEVICE_TYPE_ATV";
@@ -397,18 +397,18 @@ LABEL_52:
 
       else
       {
-        v82 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
-        v83 = [v82 nearbyActionDeviceClass] == 1;
+        deviceObj15 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
+        v83 = [deviceObj15 nearbyActionDeviceClass] == 1;
 
         if (v83)
         {
-          v84 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-          v74 = [v84 oslog];
+          logger18 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+          oslog13 = [logger18 oslog];
 
-          if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(oslog13, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 0;
-            _os_log_impl(&_mh_execute_header, v74, OS_LOG_TYPE_DEFAULT, "Device needing recovery is an iPhone", buf, 2u);
+            _os_log_impl(&_mh_execute_header, oslog13, OS_LOG_TYPE_DEFAULT, "Device needing recovery is an iPhone", buf, 2u);
           }
 
           v75 = @"DEVICE_TYPE_IPHONE";
@@ -416,33 +416,33 @@ LABEL_52:
 
         else
         {
-          v89 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
-          v90 = [v89 nearbyActionDeviceClass] == 3;
+          deviceObj16 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
+          v90 = [deviceObj16 nearbyActionDeviceClass] == 3;
 
           if (!v90)
           {
-            v102 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-            v103 = [v102 oslog];
+            logger19 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+            oslog14 = [logger19 oslog];
 
-            if (os_log_type_enabled(v103, OS_LOG_TYPE_DEFAULT))
+            if (os_log_type_enabled(oslog14, OS_LOG_TYPE_DEFAULT))
             {
-              v104 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
-              v105 = [v104 nearbyActionDeviceClass];
+              deviceObj17 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
+              nearbyActionDeviceClass = [deviceObj17 nearbyActionDeviceClass];
               *buf = 67109120;
-              *v111 = v105;
-              _os_log_impl(&_mh_execute_header, v103, OS_LOG_TYPE_DEFAULT, "Device needing recovery is unknown/unsupported: %d", buf, 8u);
+              *v111 = nearbyActionDeviceClass;
+              _os_log_impl(&_mh_execute_header, oslog14, OS_LOG_TYPE_DEFAULT, "Device needing recovery is unknown/unsupported: %d", buf, 8u);
             }
 
             goto LABEL_86;
           }
 
-          v91 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-          v74 = [v91 oslog];
+          logger20 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+          oslog13 = [logger20 oslog];
 
-          if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(oslog13, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 0;
-            _os_log_impl(&_mh_execute_header, v74, OS_LOG_TYPE_DEFAULT, "Device needing recovery is an iPad", buf, 2u);
+            _os_log_impl(&_mh_execute_header, oslog13, OS_LOG_TYPE_DEFAULT, "Device needing recovery is an iPad", buf, 2u);
           }
 
           v75 = @"DEVICE_TYPE_IPAD";
@@ -452,59 +452,59 @@ LABEL_52:
   }
 
   [(RecoverDeviceUIExtensionRemoteViewController *)self setKLocalizedDeviceType:v75];
-  v92 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
-  v93 = ([v92 nearbyActionFlags] & 0x40) == 0;
+  deviceObj18 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
+  v93 = ([deviceObj18 nearbyActionFlags] & 0x40) == 0;
 
   if (v93)
   {
-    v94 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-    v95 = [v94 oslog];
+    logger21 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+    oslog15 = [logger21 oslog];
 
-    if (os_log_type_enabled(v95, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v95, OS_LOG_TYPE_DEFAULT, "Device already recovering, skipping wifi setup step", buf, 2u);
+      _os_log_impl(&_mh_execute_header, oslog15, OS_LOG_TYPE_DEFAULT, "Device already recovering, skipping wifi setup step", buf, 2u);
     }
 
     if (![(RecoverDeviceUIExtensionRemoteViewController *)self matchesRecentlyRecoveredDevice])
     {
-      v101 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-      v10 = [v101 oslog];
+      logger22 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+      oslog = [logger22 oslog];
 
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Device isn't known to us. Bailing", buf, 2u);
+        _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Device isn't known to us. Bailing", buf, 2u);
       }
 
       goto LABEL_85;
     }
 
-    v96 = [(RecoverDeviceUIExtensionRemoteViewController *)self setupkitClient];
-    [v96 setSkipWifi:1];
+    setupkitClient6 = [(RecoverDeviceUIExtensionRemoteViewController *)self setupkitClient];
+    [setupkitClient6 setSkipWifi:1];
 
-    v97 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-    v98 = [v97 oslog];
+    logger23 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+    oslog16 = [logger23 oslog];
 
-    if (os_log_type_enabled(v98, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v98, OS_LOG_TYPE_DEFAULT, "Device is known to us", buf, 2u);
+      _os_log_impl(&_mh_execute_header, oslog16, OS_LOG_TYPE_DEFAULT, "Device is known to us", buf, 2u);
     }
   }
 
   v99 = objc_alloc_init(SFClient);
   [(RecoverDeviceUIExtensionRemoteViewController *)self setSfClient:v99];
 
-  v100 = [(RecoverDeviceUIExtensionRemoteViewController *)self sfClient];
+  sfClient = [(RecoverDeviceUIExtensionRemoteViewController *)self sfClient];
   v106[0] = _NSConcreteStackBlock;
   v106[1] = 3221225472;
   v106[2] = __80__RecoverDeviceUIExtensionRemoteViewController_configureWithContext_completion___block_invoke;
   v106[3] = &unk_100020470;
   v106[4] = self;
   objc_copyWeak(&v108, &location);
-  v107 = v7;
-  [v100 startProxCardTransactionWithOptions:0 completion:v106];
+  v107 = completionCopy;
+  [sfClient startProxCardTransactionWithOptions:0 completion:v106];
 
   objc_destroyWeak(&v108);
 LABEL_86:
@@ -588,18 +588,18 @@ void __80__RecoverDeviceUIExtensionRemoteViewController_configureWithContext_com
   [WeakRetained _setupKitEventHandler:v3];
 }
 
-- (void)_setupKitEventHandler:(id)a3
+- (void)_setupKitEventHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverDeviceOperationsQueue];
+  handlerCopy = handler;
+  recoverDeviceOperationsQueue = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverDeviceOperationsQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __70__RecoverDeviceUIExtensionRemoteViewController__setupKitEventHandler___block_invoke;
   v7[3] = &unk_100020498;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(recoverDeviceOperationsQueue, v7);
 }
 
 void __70__RecoverDeviceUIExtensionRemoteViewController__setupKitEventHandler___block_invoke(uint64_t a1)
@@ -1422,21 +1422,21 @@ id __75__RecoverDeviceUIExtensionRemoteViewController_progressDismissButtonActio
 
 - (id)deviceKey
 {
-  v3 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
-  v4 = [v3 stableIdentifier];
+  deviceObj = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
+  stableIdentifier = [deviceObj stableIdentifier];
 
-  if (v4)
+  if (stableIdentifier)
   {
-    v5 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
-    v6 = [v5 stableIdentifier];
+    deviceObj2 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceObj];
+    stableIdentifier2 = [deviceObj2 stableIdentifier];
   }
 
   else
   {
-    v6 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
+    stableIdentifier2 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
   }
 
-  return v6;
+  return stableIdentifier2;
 }
 
 - (void)cleanupOldRecoveredDevices
@@ -1474,16 +1474,16 @@ id __75__RecoverDeviceUIExtensionRemoteViewController_progressDismissButtonActio
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) != 0 && ([v23 timeIntervalSinceDate:v12], v13 < 28800.0))
           {
-            v14 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-            v15 = [v14 oslog];
+            logger = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+            oslog = [logger oslog];
 
-            if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+            if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543618;
               v29 = v11;
               v30 = 2114;
               v31 = v12;
-              _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Keeping key for device %{public}@, which was added on: %{public}@", buf, 0x16u);
+              _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Keeping key for device %{public}@, which was added on: %{public}@", buf, 0x16u);
             }
 
             [v22 setObject:v12 forKeyedSubscript:v11];
@@ -1491,16 +1491,16 @@ id __75__RecoverDeviceUIExtensionRemoteViewController_progressDismissButtonActio
 
           else
           {
-            v16 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-            v17 = [v16 oslog];
+            logger2 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+            oslog2 = [logger2 oslog];
 
-            if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+            if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543618;
               v29 = v11;
               v30 = 2114;
               v31 = v12;
-              _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Cleaning up key for device %{public}@, which was added on: %{public}@", buf, 0x16u);
+              _os_log_impl(&_mh_execute_header, oslog2, OS_LOG_TYPE_DEFAULT, "Cleaning up key for device %{public}@, which was added on: %{public}@", buf, 0x16u);
             }
           }
         }
@@ -1526,20 +1526,20 @@ id __75__RecoverDeviceUIExtensionRemoteViewController_progressDismissButtonActio
 - (void)persistRecoveringDevice
 {
   [(RecoverDeviceUIExtensionRemoteViewController *)self cleanupOldRecoveredDevices];
-  v3 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceKey];
-  if (v3)
+  deviceKey = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceKey];
+  if (deviceKey)
   {
-    v4 = +[NSDate date];
-    v5 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-    v6 = [v5 oslog];
+    oslog3 = +[NSDate date];
+    logger = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+    oslog = [logger oslog];
 
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543618;
-      v16 = v3;
+      v16 = deviceKey;
       v17 = 2114;
-      v18 = v4;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Persisting recovered device: %{public}@ with current time: %{public}@", &v15, 0x16u);
+      v18 = oslog3;
+      _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Persisting recovered device: %{public}@ with current time: %{public}@", &v15, 0x16u);
     }
 
     v7 = +[NSUserDefaults standardUserDefaults];
@@ -1548,19 +1548,19 @@ id __75__RecoverDeviceUIExtensionRemoteViewController_progressDismissButtonActio
 
     if (!v9)
     {
-      v10 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-      v11 = [v10 oslog];
+      logger2 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+      oslog2 = [logger2 oslog];
 
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(v15) = 0;
-        _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "No recovered device ids found, Creating a new dictionary", &v15, 2u);
+        _os_log_impl(&_mh_execute_header, oslog2, OS_LOG_TYPE_DEFAULT, "No recovered device ids found, Creating a new dictionary", &v15, 2u);
       }
 
       v9 = +[NSMutableDictionary dictionary];
     }
 
-    [v9 setObject:v4 forKeyedSubscript:v3];
+    [v9 setObject:oslog3 forKeyedSubscript:deviceKey];
     v12 = +[NSUserDefaults standardUserDefaults];
     [v12 setObject:v9 forKey:@"com.apple.RecoverDeviceUI.RecoveringDeviceKey"];
 
@@ -1570,13 +1570,13 @@ id __75__RecoverDeviceUIExtensionRemoteViewController_progressDismissButtonActio
 
   else
   {
-    v14 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-    v4 = [v14 oslog];
+    logger3 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+    oslog3 = [logger3 oslog];
 
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v15) = 0;
-      _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "No key to identify the device was found, not persisting", &v15, 2u);
+      _os_log_impl(&_mh_execute_header, oslog3, OS_LOG_TYPE_DEFAULT, "No key to identify the device was found, not persisting", &v15, 2u);
     }
   }
 }
@@ -1584,25 +1584,25 @@ id __75__RecoverDeviceUIExtensionRemoteViewController_progressDismissButtonActio
 - (BOOL)matchesRecentlyRecoveredDevice
 {
   [(RecoverDeviceUIExtensionRemoteViewController *)self cleanupOldRecoveredDevices];
-  v3 = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceKey];
-  if (v3)
+  deviceKey = [(RecoverDeviceUIExtensionRemoteViewController *)self deviceKey];
+  if (deviceKey)
   {
     v4 = +[NSUserDefaults standardUserDefaults];
-    v5 = [v4 dictionaryForKey:@"com.apple.RecoverDeviceUI.RecoveringDeviceKey"];
+    oslog2 = [v4 dictionaryForKey:@"com.apple.RecoverDeviceUI.RecoveringDeviceKey"];
 
-    if (v5 && ([v5 objectForKeyedSubscript:v3], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+    if (oslog2 && ([oslog2 objectForKeyedSubscript:deviceKey], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
     {
-      v7 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-      v8 = [v7 oslog];
+      logger = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+      oslog = [logger oslog];
 
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [v5 objectForKeyedSubscript:v3];
+        v9 = [oslog2 objectForKeyedSubscript:deviceKey];
         v14 = 138543618;
-        v15 = v3;
+        v15 = deviceKey;
         v16 = 2114;
         v17 = v9;
-        _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Device %{public}@ found in recovered device ids (added on: %{public}@)", &v14, 0x16u);
+        _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Device %{public}@ found in recovered device ids (added on: %{public}@)", &v14, 0x16u);
       }
 
       v10 = 1;
@@ -1610,16 +1610,16 @@ id __75__RecoverDeviceUIExtensionRemoteViewController_progressDismissButtonActio
 
     else
     {
-      v11 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-      v8 = [v11 oslog];
+      logger2 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+      oslog = [logger2 oslog];
 
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
         v14 = 138543618;
-        v15 = v3;
+        v15 = deviceKey;
         v16 = 2114;
-        v17 = v5;
-        _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Device %{public}@ is not a recently recovered device. Recently recovered: %{public}@", &v14, 0x16u);
+        v17 = oslog2;
+        _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Device %{public}@ is not a recently recovered device. Recently recovered: %{public}@", &v14, 0x16u);
       }
 
       v10 = 0;
@@ -1628,13 +1628,13 @@ id __75__RecoverDeviceUIExtensionRemoteViewController_progressDismissButtonActio
 
   else
   {
-    v12 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-    v5 = [v12 oslog];
+    logger3 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+    oslog2 = [logger3 oslog];
 
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v14) = 0;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "No key to identify the device was found, not persisting", &v14, 2u);
+      _os_log_impl(&_mh_execute_header, oslog2, OS_LOG_TYPE_DEFAULT, "No key to identify the device was found, not persisting", &v14, 2u);
     }
 
     v10 = 0;
@@ -1732,18 +1732,18 @@ id __75__RecoverDeviceUIExtensionRemoteViewController_overallResultOKButtonActio
   return [*(a1 + 32) setOverallResultCard:0];
 }
 
-- (id)getOverallResultTitleStringForError:(id)a3 resultType:(int)a4
+- (id)getOverallResultTitleStringForError:(id)error resultType:(int)type
 {
-  v6 = a3;
-  v7 = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverDeviceOperationsQueue];
-  dispatch_assert_queue_V2(v7);
+  errorCopy = error;
+  recoverDeviceOperationsQueue = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverDeviceOperationsQueue];
+  dispatch_assert_queue_V2(recoverDeviceOperationsQueue);
 
-  if (!v6)
+  if (!errorCopy)
   {
     v11 = +[NSBundle mainBundle];
-    v12 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
-    v13 = v12;
-    switch(a4)
+    kLocalizedDeviceType = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
+    v13 = kLocalizedDeviceType;
+    switch(type)
     {
       case 4:
         v14 = @"OVERALL_RESULT_RECOVERY_SUCCESS_TITLE";
@@ -1759,16 +1759,16 @@ id __75__RecoverDeviceUIExtensionRemoteViewController_overallResultOKButtonActio
         break;
     }
 
-    v27 = [NSString stringWithFormat:@"%@_%@", v14, v12];
+    v27 = [NSString stringWithFormat:@"%@_%@", v14, kLocalizedDeviceType];
     v28 = [v11 localizedStringForKey:v27 value:&stru_100020878 table:@"Localizable"];
     v19 = [NSString stringWithFormat:v28];
 
     goto LABEL_32;
   }
 
-  if (a4 > 4)
+  if (type > 4)
   {
-    if (a4 == 7)
+    if (type == 7)
     {
       v8 = +[NSBundle mainBundle];
       v9 = v8;
@@ -1776,7 +1776,7 @@ id __75__RecoverDeviceUIExtensionRemoteViewController_overallResultOKButtonActio
       goto LABEL_17;
     }
 
-    if (a4 == 5)
+    if (type == 5)
     {
       v8 = +[NSBundle mainBundle];
       v9 = v8;
@@ -1787,22 +1787,22 @@ id __75__RecoverDeviceUIExtensionRemoteViewController_overallResultOKButtonActio
     goto LABEL_13;
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
     v9 = +[NSBundle mainBundle];
-    v15 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
-    v16 = [NSString stringWithFormat:@"%@_%@", @"OVERALL_RESULT_RECOVERY_FAILURE_TITLE", v15];
+    kLocalizedDeviceType2 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
+    v16 = [NSString stringWithFormat:@"%@_%@", @"OVERALL_RESULT_RECOVERY_FAILURE_TITLE", kLocalizedDeviceType2];
     v13 = [v9 localizedStringForKey:v16 value:&stru_100020878 table:@"Localizable"];
 
     goto LABEL_15;
   }
 
-  if (a4 != 3)
+  if (type != 3)
   {
 LABEL_13:
     v9 = +[NSBundle mainBundle];
-    v15 = [v9 localizedStringForKey:@"OVERALL_RESULT_SETUP_FAILURE_TITLE" value:&stru_100020878 table:@"Localizable"];
-    v13 = [NSString stringWithFormat:v15];
+    kLocalizedDeviceType2 = [v9 localizedStringForKey:@"OVERALL_RESULT_SETUP_FAILURE_TITLE" value:&stru_100020878 table:@"Localizable"];
+    v13 = [NSString stringWithFormat:kLocalizedDeviceType2];
 LABEL_15:
 
     goto LABEL_18;
@@ -1815,12 +1815,12 @@ LABEL_17:
   v13 = [v8 localizedStringForKey:v10 value:&stru_100020878 table:@"Localizable"];
 LABEL_18:
 
-  v17 = [v6 domain];
-  v18 = [v17 isEqualToString:@"TapToRecoverProxCardError"];
+  domain = [errorCopy domain];
+  v18 = [domain isEqualToString:@"TapToRecoverProxCardError"];
 
   if (v18)
   {
-    if ([v6 code] != 10003)
+    if ([errorCopy code] != 10003)
     {
       goto LABEL_33;
     }
@@ -1830,19 +1830,19 @@ LABEL_18:
     goto LABEL_32;
   }
 
-  v20 = [v6 domain];
-  v21 = [v20 isEqualToString:NSOSStatusErrorDomain];
+  domain2 = [errorCopy domain];
+  v21 = [domain2 isEqualToString:NSOSStatusErrorDomain];
 
   if (v21)
   {
-    v22 = [v6 code];
-    if ((v22 - 301000) <= 0x22 && ((1 << (v22 + 56)) & 0x400000011) != 0)
+    code = [errorCopy code];
+    if ((code - 301000) <= 0x22 && ((1 << (code + 56)) & 0x400000011) != 0)
     {
-      v23 = [(RecoverDeviceUIExtensionRemoteViewController *)self useAlternateStringForWiFI];
+      useAlternateStringForWiFI = [(RecoverDeviceUIExtensionRemoteViewController *)self useAlternateStringForWiFI];
       v11 = +[NSBundle mainBundle];
-      v24 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
-      v25 = v24;
-      if (v23)
+      kLocalizedDeviceType3 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
+      v25 = kLocalizedDeviceType3;
+      if (useAlternateStringForWiFI)
       {
         v26 = @"OVERALL_RESULT_FAILURE_WLAN_TITLE";
       }
@@ -1852,7 +1852,7 @@ LABEL_18:
         v26 = @"OVERALL_RESULT_FAILURE_WIFI_TITLE";
       }
 
-      v29 = [NSString stringWithFormat:@"%@_%@", v26, v24];
+      v29 = [NSString stringWithFormat:@"%@_%@", v26, kLocalizedDeviceType3];
       v19 = [v11 localizedStringForKey:v29 value:&stru_100020878 table:@"Localizable"];
 
       v13 = v25;
@@ -1867,54 +1867,54 @@ LABEL_33:
   return v13;
 }
 
-- (id)getOverallResultSubTitleStringForError:(id)a3 resultType:(int)a4
+- (id)getOverallResultSubTitleStringForError:(id)error resultType:(int)type
 {
-  v6 = a3;
-  v7 = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverDeviceOperationsQueue];
-  dispatch_assert_queue_V2(v7);
+  errorCopy = error;
+  recoverDeviceOperationsQueue = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverDeviceOperationsQueue];
+  dispatch_assert_queue_V2(recoverDeviceOperationsQueue);
 
-  if (v6)
+  if (errorCopy)
   {
-    if (a4 > 4)
+    if (type > 4)
     {
-      if (a4 == 7)
+      if (type == 7)
       {
         v9 = +[NSBundle mainBundle];
-        v15 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
-        v16 = v15;
+        kLocalizedDeviceType = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
+        v16 = kLocalizedDeviceType;
         v17 = @"OVERALL_RESULT_REBOOT_FAILURE_DESCRIPTION";
         goto LABEL_19;
       }
 
-      if (a4 == 5)
+      if (type == 5)
       {
         v9 = +[NSBundle mainBundle];
-        v15 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
-        v16 = v15;
+        kLocalizedDeviceType = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
+        v16 = kLocalizedDeviceType;
         v17 = @"OVERALL_RESULT_EACS_FAILURE_DESCRIPTION";
 LABEL_19:
-        v18 = [NSString stringWithFormat:@"%@_%@", v17, v15];
-        v19 = [v9 localizedStringForKey:v18 value:&stru_100020878 table:@"Localizable"];
+        kLocalizedDeviceType2 = [NSString stringWithFormat:@"%@_%@", v17, kLocalizedDeviceType];
+        v19 = [v9 localizedStringForKey:kLocalizedDeviceType2 value:&stru_100020878 table:@"Localizable"];
         goto LABEL_20;
       }
     }
 
     else
     {
-      if (a4 == 2)
+      if (type == 2)
       {
         v9 = +[NSBundle mainBundle];
-        v15 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
-        v16 = v15;
+        kLocalizedDeviceType = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
+        v16 = kLocalizedDeviceType;
         v17 = @"OVERALL_RESULT_RECOVERY_FAILURE_DESCRIPTION";
         goto LABEL_19;
       }
 
-      if (a4 == 3)
+      if (type == 3)
       {
-        v8 = [(RecoverDeviceUIExtensionRemoteViewController *)self useAlternateStringForWiFI];
+        useAlternateStringForWiFI = [(RecoverDeviceUIExtensionRemoteViewController *)self useAlternateStringForWiFI];
         v9 = +[NSBundle mainBundle];
-        if (v8)
+        if (useAlternateStringForWiFI)
         {
           v10 = @"OVERALL_RESULT_RECOVERY_DISCONNECT_DESCRIPTION_WLAN";
         }
@@ -1925,59 +1925,59 @@ LABEL_19:
         }
 
         v16 = [UIDevice modelSpecificLocalizedStringKeyForKey:v10];
-        v18 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
-        v46 = [NSString stringWithFormat:@"%@_%@", v16, v18];
+        kLocalizedDeviceType2 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
+        v46 = [NSString stringWithFormat:@"%@_%@", v16, kLocalizedDeviceType2];
         v19 = [v9 localizedStringForKey:v46 value:&stru_100020878 table:@"Localizable"];
 
 LABEL_20:
-        v20 = [v6 domain];
-        v21 = [v20 isEqualToString:@"TapToRecoverProxCardError"];
+        domain = [errorCopy domain];
+        v21 = [domain isEqualToString:@"TapToRecoverProxCardError"];
 
         if (!v21)
         {
-          v29 = [v6 domain];
-          v30 = [v29 isEqualToString:NSOSStatusErrorDomain];
+          domain2 = [errorCopy domain];
+          v30 = [domain2 isEqualToString:NSOSStatusErrorDomain];
 
           if (!v30)
           {
 LABEL_60:
             if (os_variant_has_internal_content())
             {
-              v51 = [v6 description];
+              v51 = [errorCopy description];
               v52 = [v19 stringByAppendingFormat:@"\n[Internal Only]: %@", v51];
 
               v19 = v52;
             }
 
-            v53 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-            v13 = [v53 oslog];
+            logger = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+            oslog = [logger oslog];
 
-            if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+            if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
-              v61 = v19;
-              _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Subtitle is: %{public}@", buf, 0xCu);
+              code2 = v19;
+              _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Subtitle is: %{public}@", buf, 0xCu);
             }
 
             goto LABEL_64;
           }
 
-          v31 = [v6 code];
-          if ((v31 - 301000) <= 0x22 && ((1 << (v31 + 56)) & 0x400000011) != 0 || v31 == -71158)
+          code = [errorCopy code];
+          if ((code - 301000) <= 0x22 && ((1 << (code + 56)) & 0x400000011) != 0 || code == -71158)
           {
-            v32 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-            v33 = [v32 oslog];
+            logger2 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+            oslog2 = [logger2 oslog];
 
-            if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
+            if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 134217984;
-              v61 = [v6 code];
-              _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "Error Description: WiFi is unavailable/unsupported/not connected to network : %ld", buf, 0xCu);
+              code2 = [errorCopy code];
+              _os_log_impl(&_mh_execute_header, oslog2, OS_LOG_TYPE_DEFAULT, "Error Description: WiFi is unavailable/unsupported/not connected to network : %ld", buf, 0xCu);
             }
 
-            v34 = [(RecoverDeviceUIExtensionRemoteViewController *)self useAlternateStringForWiFI];
-            v24 = +[NSBundle mainBundle];
-            if (v34)
+            useAlternateStringForWiFI2 = [(RecoverDeviceUIExtensionRemoteViewController *)self useAlternateStringForWiFI];
+            oslog3 = +[NSBundle mainBundle];
+            if (useAlternateStringForWiFI2)
             {
               v35 = @"OVERALL_RESULT_FAILURE_WLAN_UNAVAILABLE";
             }
@@ -1988,21 +1988,21 @@ LABEL_60:
             }
 
             v43 = [UIDevice modelSpecificLocalizedStringKeyForKey:v35];
-            v44 = [v24 localizedStringForKey:v43 value:&stru_100020878 table:@"Localizable"];
+            v44 = [oslog3 localizedStringForKey:v43 value:&stru_100020878 table:@"Localizable"];
 
             v19 = v44;
             goto LABEL_59;
           }
 
-          v59 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-          v24 = [v59 oslog];
+          logger3 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+          oslog3 = [logger3 oslog];
 
-          if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 134217984;
-            v61 = [v6 code];
+            code2 = [errorCopy code];
             v45 = "Error Description: Generic/Unsupported error code from NSOSStatusErrorDomain(%ld). Using default subtitle";
-            v47 = v24;
+            v47 = oslog3;
             v48 = 12;
             goto LABEL_54;
           }
@@ -2010,64 +2010,64 @@ LABEL_60:
           goto LABEL_59;
         }
 
-        v22 = [v6 code];
-        v23 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-        v24 = [v23 oslog];
+        code3 = [errorCopy code];
+        logger4 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+        oslog3 = [logger4 oslog];
 
-        v25 = os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT);
-        if (v22 > 10000)
+        v25 = os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT);
+        if (code3 > 10000)
         {
-          if (v22 == 10001)
+          if (code3 == 10001)
           {
             if (v25)
             {
               *buf = 0;
-              _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Error Description: Expected a paired device but BLE server sent auth request", buf, 2u);
+              _os_log_impl(&_mh_execute_header, oslog3, OS_LOG_TYPE_DEFAULT, "Error Description: Expected a paired device but BLE server sent auth request", buf, 2u);
             }
 
-            v24 = +[NSBundle mainBundle];
-            v26 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
-            v27 = v26;
+            oslog3 = +[NSBundle mainBundle];
+            kLocalizedDeviceType3 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
+            v27 = kLocalizedDeviceType3;
             v28 = @"OVERALL_RESULT_FAILURE_CONNECTED_TO_ANOTHER";
             goto LABEL_58;
           }
 
-          if (v22 == 10003)
+          if (code3 == 10003)
           {
             if (v25)
             {
               *buf = 0;
-              _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Error Description: version mismatch", buf, 2u);
+              _os_log_impl(&_mh_execute_header, oslog3, OS_LOG_TYPE_DEFAULT, "Error Description: version mismatch", buf, 2u);
             }
 
             v36 = +[UIDevice currentDevice];
-            v37 = [v36 model];
-            v38 = [v37 uppercaseString];
-            v39 = [v38 containsString:@"IPHONE"];
+            model = [v36 model];
+            uppercaseString = [model uppercaseString];
+            v39 = [uppercaseString containsString:@"IPHONE"];
 
             if (v39)
             {
-              v24 = +[NSBundle mainBundle];
-              v26 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
-              v27 = v26;
+              oslog3 = +[NSBundle mainBundle];
+              kLocalizedDeviceType3 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
+              v27 = kLocalizedDeviceType3;
               v28 = @"OVERALL_RESULT_FAILURE_VERSION_IPHONE";
             }
 
             else
             {
               v55 = +[UIDevice currentDevice];
-              v56 = [v55 model];
-              v57 = [v56 uppercaseString];
-              v58 = [v57 containsString:@"IPAD"];
+              model2 = [v55 model];
+              uppercaseString2 = [model2 uppercaseString];
+              v58 = [uppercaseString2 containsString:@"IPAD"];
 
               if (!v58)
               {
                 goto LABEL_60;
               }
 
-              v24 = +[NSBundle mainBundle];
-              v26 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
-              v27 = v26;
+              oslog3 = +[NSBundle mainBundle];
+              kLocalizedDeviceType3 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
+              v27 = kLocalizedDeviceType3;
               v28 = @"OVERALL_RESULT_FAILURE_VERSION_IPAD";
             }
 
@@ -2077,7 +2077,7 @@ LABEL_60:
 
         else
         {
-          if (!v22)
+          if (!code3)
           {
             if (v25)
             {
@@ -2091,21 +2091,21 @@ LABEL_59:
             goto LABEL_60;
           }
 
-          if (v22 == 10000)
+          if (code3 == 10000)
           {
             if (v25)
             {
               *buf = 0;
-              _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Error Description: Too many code entry attempts", buf, 2u);
+              _os_log_impl(&_mh_execute_header, oslog3, OS_LOG_TYPE_DEFAULT, "Error Description: Too many code entry attempts", buf, 2u);
             }
 
-            v24 = +[NSBundle mainBundle];
-            v26 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
-            v27 = v26;
+            oslog3 = +[NSBundle mainBundle];
+            kLocalizedDeviceType3 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
+            v27 = kLocalizedDeviceType3;
             v28 = @"OVERALL_RESULT_FAILURE_TOO_MANY_CODE_ATTEMPTS_DESCRIPTION";
 LABEL_58:
-            v49 = [NSString stringWithFormat:@"%@_%@", v28, v26];
-            v50 = [v24 localizedStringForKey:v49 value:&stru_100020878 table:@"Localizable"];
+            v49 = [NSString stringWithFormat:@"%@_%@", v28, kLocalizedDeviceType3];
+            v50 = [oslog3 localizedStringForKey:v49 value:&stru_100020878 table:@"Localizable"];
 
             v19 = v50;
             goto LABEL_59;
@@ -2117,7 +2117,7 @@ LABEL_58:
           *buf = 0;
           v45 = "Error Description: Generic error code. Using default subtitle";
 LABEL_53:
-          v47 = v24;
+          v47 = oslog3;
           v48 = 2;
 LABEL_54:
           _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_DEFAULT, v45, buf, v48);
@@ -2129,23 +2129,23 @@ LABEL_54:
     }
 
     v9 = +[NSBundle mainBundle];
-    v15 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
-    v16 = v15;
+    kLocalizedDeviceType = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
+    v16 = kLocalizedDeviceType;
     v17 = @"OVERALL_RESULT_FAILURE_DESCRIPTION";
     goto LABEL_19;
   }
 
-  v11 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-  v12 = [v11 oslog];
+  logger5 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+  oslog4 = [logger5 oslog];
 
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "No error object passed in to covert to subtitle string", buf, 2u);
+    _os_log_impl(&_mh_execute_header, oslog4, OS_LOG_TYPE_DEFAULT, "No error object passed in to covert to subtitle string", buf, 2u);
   }
 
-  v13 = +[NSBundle mainBundle];
-  switch(a4)
+  oslog = +[NSBundle mainBundle];
+  switch(type)
   {
     case 8:
       v14 = @"OVERALL_RESULT_REBOOT_DESCRIPTION";
@@ -2162,59 +2162,59 @@ LABEL_54:
   }
 
   v40 = [UIDevice modelSpecificLocalizedStringKeyForKey:v14];
-  v41 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
-  v42 = [NSString stringWithFormat:@"%@_%@", v40, v41];
-  v19 = [v13 localizedStringForKey:v42 value:&stru_100020878 table:@"Localizable"];
+  kLocalizedDeviceType4 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
+  v42 = [NSString stringWithFormat:@"%@_%@", v40, kLocalizedDeviceType4];
+  v19 = [oslog localizedStringForKey:v42 value:&stru_100020878 table:@"Localizable"];
 
 LABEL_64:
 
   return v19;
 }
 
-- (id)getOverallResultActionForError:(id)a3 resultType:(int)a4
+- (id)getOverallResultActionForError:(id)error resultType:(int)type
 {
-  v5 = a3;
-  v6 = [v5 domain];
-  v7 = [v6 isEqualToString:@"TapToRecoverProxCardError"];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v7 = [domain isEqualToString:@"TapToRecoverProxCardError"];
 
-  if (v7 && [v5 code] == 10003)
+  if (v7 && [errorCopy code] == 10003)
   {
-    v8 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-    v9 = [v8 oslog];
+    logger = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+    oslog = [logger oslog];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *v13 = 0;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Error Description: version mismatch", v13, 2u);
+      _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Error Description: version mismatch", v13, 2u);
     }
 
-    v10 = [(RecoverDeviceUIExtensionRemoteViewController *)self overallResultSUButtonAction];
+    overallResultSUButtonAction = [(RecoverDeviceUIExtensionRemoteViewController *)self overallResultSUButtonAction];
   }
 
   else
   {
-    v10 = [(RecoverDeviceUIExtensionRemoteViewController *)self overallResultOKButtonAction];
+    overallResultSUButtonAction = [(RecoverDeviceUIExtensionRemoteViewController *)self overallResultOKButtonAction];
   }
 
-  v11 = v10;
+  v11 = overallResultSUButtonAction;
 
   return v11;
 }
 
-- (id)getOverallResultUIImageForError:(id)a3 resultType:(int)a4
+- (id)getOverallResultUIImageForError:(id)error resultType:(int)type
 {
-  v6 = a3;
-  if (!v6)
+  errorCopy = error;
+  if (!errorCopy)
   {
-    v9 = 0;
-    if (a4 > 5)
+    uiImage = 0;
+    if (type > 5)
     {
-      if (a4 == 6)
+      if (type == 6)
       {
         goto LABEL_25;
       }
 
-      if (a4 == 8)
+      if (type == 8)
       {
         v12 = [UIImageView alloc];
         v13 = @"arrowtriangle.backward.circle";
@@ -2224,26 +2224,26 @@ LABEL_64:
 
     else
     {
-      if (a4 == 1)
+      if (type == 1)
       {
         goto LABEL_25;
       }
 
-      if (a4 == 4)
+      if (type == 4)
       {
         v12 = [UIImageView alloc];
         v13 = @"gear";
 LABEL_22:
         v25 = [UIImage systemImageNamed:v13];
-        v9 = [v12 initWithImage:v25];
+        uiImage = [v12 initWithImage:v25];
 
         v26 = +[UIColor systemGrayColor];
 LABEL_24:
         v29 = v26;
-        [v9 setTintColor:v26];
+        [uiImage setTintColor:v26];
 
         v30 = [UIImageSymbolConfiguration configurationWithPointSize:64.0];
-        [v9 setPreferredSymbolConfiguration:v30];
+        [uiImage setPreferredSymbolConfiguration:v30];
 
         goto LABEL_25;
       }
@@ -2251,36 +2251,36 @@ LABEL_24:
 
     v27 = [UIImageView alloc];
     v28 = [UIImage systemImageNamed:@"checkmark.circle.fill"];
-    v9 = [v27 initWithImage:v28];
+    uiImage = [v27 initWithImage:v28];
 
     v26 = +[UIColor systemGreenColor];
     goto LABEL_24;
   }
 
-  if (a4 == 3)
+  if (type == 3)
   {
     v7 = [UIImageView alloc];
     v8 = [UIImage systemImageNamed:@"wifi.exclamationmark"];
-    v9 = [v7 initWithImage:v8];
+    uiImage = [v7 initWithImage:v8];
 
     v10 = +[UIColor systemGray3Color];
-    [v9 setTintColor:v10];
+    [uiImage setTintColor:v10];
 
     v11 = [UIImageSymbolConfiguration configurationWithPointSize:80.0];
-    [v9 setPreferredSymbolConfiguration:v11];
+    [uiImage setPreferredSymbolConfiguration:v11];
   }
 
   else
   {
-    v9 = 0;
+    uiImage = 0;
   }
 
-  v14 = [v6 domain];
-  v15 = [v14 isEqualToString:@"TapToRecoverProxCardError"];
+  domain = [errorCopy domain];
+  v15 = [domain isEqualToString:@"TapToRecoverProxCardError"];
 
   if (v15)
   {
-    if ([v6 code] != 10003)
+    if ([errorCopy code] != 10003)
     {
       goto LABEL_17;
     }
@@ -2289,12 +2289,12 @@ LABEL_24:
     goto LABEL_16;
   }
 
-  v17 = [v6 domain];
-  v18 = [v17 isEqualToString:NSOSStatusErrorDomain];
+  domain2 = [errorCopy domain];
+  v18 = [domain2 isEqualToString:NSOSStatusErrorDomain];
 
   if (v18)
   {
-    if ((v19 = [v6 code], v16 = @"wifi.slash", (v19 - 301000) <= 0x22) && ((1 << (v19 + 56)) & 0x400000011) != 0 || v19 == -71158)
+    if ((v19 = [errorCopy code], v16 = @"wifi.slash", (v19 - 301000) <= 0x22) && ((1 << (v19 + 56)) & 0x400000011) != 0 || v19 == -71158)
     {
 LABEL_16:
       v20 = [UIImageView alloc];
@@ -2307,32 +2307,32 @@ LABEL_16:
       v24 = [UIImageSymbolConfiguration configurationWithPointSize:80.0];
       [v22 setPreferredSymbolConfiguration:v24];
 
-      v9 = v22;
+      uiImage = v22;
     }
   }
 
 LABEL_17:
-  if (!v9)
+  if (!uiImage)
   {
-    v9 = [(RecoverDeviceUIExtensionRemoteViewController *)self uiImage];
+    uiImage = [(RecoverDeviceUIExtensionRemoteViewController *)self uiImage];
   }
 
 LABEL_25:
 
-  return v9;
+  return uiImage;
 }
 
-- (void)updateProgressCardOnMainQueueWithInfo:(id)a3
+- (void)updateProgressCardOnMainQueueWithInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v5 = [v4 objectForKeyedSubscript:@"NeRDState"];
-  v6 = [v4 objectForKeyedSubscript:@"NeRDProgress"];
+  v5 = [infoCopy objectForKeyedSubscript:@"NeRDState"];
+  v6 = [infoCopy objectForKeyedSubscript:@"NeRDProgress"];
 
   if (!v5)
   {
     v7 = +[NSBundle mainBundle];
-    v8 = v7;
+    oslog = v7;
     v9 = @"PROGRESS_FETCHING";
     goto LABEL_11;
   }
@@ -2340,12 +2340,12 @@ LABEL_25:
   if ([v5 isEqual:@"NeRDStateScanning"])
   {
     v7 = +[NSBundle mainBundle];
-    v8 = v7;
+    oslog = v7;
     v9 = @"PROGRESS_STATE_SCANNING";
 LABEL_11:
     v10 = [v7 localizedStringForKey:v9 value:&stru_100020878 table:@"Localizable"];
-    v11 = [(RecoverDeviceUIExtensionRemoteViewController *)self progressText];
-    [v11 setText:v10];
+    progressText = [(RecoverDeviceUIExtensionRemoteViewController *)self progressText];
+    [progressText setText:v10];
 
 LABEL_12:
     goto LABEL_13;
@@ -2354,7 +2354,7 @@ LABEL_12:
   if ([v5 isEqual:@"NeRDStateDownloading"])
   {
     v7 = +[NSBundle mainBundle];
-    v8 = v7;
+    oslog = v7;
     v9 = @"PROGRESS_STATE_DOWNLOADING";
     goto LABEL_11;
   }
@@ -2362,7 +2362,7 @@ LABEL_12:
   if ([v5 isEqual:@"NeRDStatePreparing"])
   {
     v7 = +[NSBundle mainBundle];
-    v8 = v7;
+    oslog = v7;
     v9 = @"PROGRESS_STATE_PREPARING";
     goto LABEL_11;
   }
@@ -2370,21 +2370,21 @@ LABEL_12:
   if ([v5 isEqual:@"NeRDStateInstalling"])
   {
     v7 = +[NSBundle mainBundle];
-    v8 = v7;
+    oslog = v7;
     v9 = @"PROGRESS_STATE_INSTALLING";
     goto LABEL_11;
   }
 
   if (([v5 isEqual:@"NeRDStateInstalled"] & 1) == 0)
   {
-    v16 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-    v8 = [v16 oslog];
+    logger = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+    oslog = [logger oslog];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138543362;
       v18 = v5;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Unknown state (%{public}@)!  file a bug", &v17, 0xCu);
+      _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Unknown state (%{public}@)!  file a bug", &v17, 0xCu);
     }
 
     goto LABEL_12;
@@ -2394,27 +2394,27 @@ LABEL_13:
   if (v6)
   {
     v12 = [v6 unsignedIntegerValue] * 0.01;
-    v13 = [(RecoverDeviceUIExtensionRemoteViewController *)self progressView];
+    progressView = [(RecoverDeviceUIExtensionRemoteViewController *)self progressView];
     *&v14 = v12;
-    [v13 setProgress:1 animated:v14];
+    [progressView setProgress:1 animated:v14];
 
-    v15 = [(RecoverDeviceUIExtensionRemoteViewController *)self progressView];
-    [v15 setNeedsLayout];
+    progressView2 = [(RecoverDeviceUIExtensionRemoteViewController *)self progressView];
+    [progressView2 setNeedsLayout];
   }
 }
 
-- (void)showProgressCard:(id)a3
+- (void)showProgressCard:(id)card
 {
-  v4 = a3;
-  v5 = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverDeviceOperationsQueue];
+  cardCopy = card;
+  recoverDeviceOperationsQueue = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverDeviceOperationsQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __65__RecoverDeviceUIExtensionRemoteViewController_showProgressCard___block_invoke;
   v7[3] = &unk_100020498;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = cardCopy;
+  v6 = cardCopy;
+  dispatch_async(recoverDeviceOperationsQueue, v7);
 }
 
 void __65__RecoverDeviceUIExtensionRemoteViewController_showProgressCard___block_invoke(uint64_t a1)
@@ -2574,13 +2574,13 @@ void __65__RecoverDeviceUIExtensionRemoteViewController_showProgressCard___block
 
 - (void)showScanningCard
 {
-  v3 = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverDeviceOperationsQueue];
+  recoverDeviceOperationsQueue = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverDeviceOperationsQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __64__RecoverDeviceUIExtensionRemoteViewController_showScanningCard__block_invoke;
   block[3] = &unk_1000204C0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(recoverDeviceOperationsQueue, block);
 }
 
 void __64__RecoverDeviceUIExtensionRemoteViewController_showScanningCard__block_invoke(uint64_t a1)
@@ -2658,21 +2658,21 @@ void __64__RecoverDeviceUIExtensionRemoteViewController_showScanningCard__block_
   [v33 pushViewController:v34 animated:1];
 }
 
-- (void)sendMessage:(id)a3 completionHandler:(id)a4
+- (void)sendMessage:(id)message completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverDeviceOperationsQueue];
+  messageCopy = message;
+  handlerCopy = handler;
+  recoverDeviceOperationsQueue = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverDeviceOperationsQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __78__RecoverDeviceUIExtensionRemoteViewController_sendMessage_completionHandler___block_invoke;
   block[3] = &unk_1000205C8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = messageCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = messageCopy;
+  dispatch_async(recoverDeviceOperationsQueue, block);
 }
 
 void __78__RecoverDeviceUIExtensionRemoteViewController_sendMessage_completionHandler___block_invoke(uint64_t a1)
@@ -2737,7 +2737,7 @@ void __78__RecoverDeviceUIExtensionRemoteViewController_sendMessage_completionHa
   v17[2] = __64__RecoverDeviceUIExtensionRemoteViewController_backToMenuButton__block_invoke;
   v3 = v17[3] = &unk_1000205F0;
   v18 = v3;
-  v19 = self;
+  selfCopy = self;
   v4 = [UIAction actionWithHandler:v17];
   [v3 addAction:v4 forControlEvents:0x2000];
 
@@ -2774,13 +2774,13 @@ id __64__RecoverDeviceUIExtensionRemoteViewController_backToMenuButton__block_in
 
 - (void)showRecoveryCard
 {
-  v3 = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverDeviceOperationsQueue];
+  recoverDeviceOperationsQueue = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverDeviceOperationsQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __64__RecoverDeviceUIExtensionRemoteViewController_showRecoveryCard__block_invoke;
   block[3] = &unk_1000204C0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(recoverDeviceOperationsQueue, block);
 }
 
 void __64__RecoverDeviceUIExtensionRemoteViewController_showRecoveryCard__block_invoke(uint64_t a1)
@@ -2960,7 +2960,7 @@ id __64__RecoverDeviceUIExtensionRemoteViewController_showRecoveryCard__block_in
   v18[2] = __72__RecoverDeviceUIExtensionRemoteViewController_menuSystemRecoveryButton__block_invoke;
   v3 = v18[3] = &unk_1000205F0;
   v19 = v3;
-  v20 = self;
+  selfCopy = self;
   v4 = [UIAction actionWithHandler:v18];
   [v3 addAction:v4 forControlEvents:0x2000];
 
@@ -3091,13 +3091,13 @@ void __68__RecoverDeviceUIExtensionRemoteViewController_showEACSApprovalCard__bl
 
 - (void)showEACSCard
 {
-  v3 = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverDeviceOperationsQueue];
+  recoverDeviceOperationsQueue = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverDeviceOperationsQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __60__RecoverDeviceUIExtensionRemoteViewController_showEACSCard__block_invoke;
   block[3] = &unk_1000204C0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(recoverDeviceOperationsQueue, block);
 }
 
 void __60__RecoverDeviceUIExtensionRemoteViewController_showEACSCard__block_invoke(uint64_t a1)
@@ -3214,7 +3214,7 @@ id __60__RecoverDeviceUIExtensionRemoteViewController_showEACSCard__block_invoke
   v18[2] = __62__RecoverDeviceUIExtensionRemoteViewController_menuEACSButton__block_invoke;
   v3 = v18[3] = &unk_1000205F0;
   v19 = v3;
-  v20 = self;
+  selfCopy = self;
   v4 = [UIAction actionWithHandler:v18];
   [v3 addAction:v4 forControlEvents:0x2000];
 
@@ -3262,7 +3262,7 @@ id __62__RecoverDeviceUIExtensionRemoteViewController_menuEACSButton__block_invo
   v17[2] = __64__RecoverDeviceUIExtensionRemoteViewController_menuRebootButton__block_invoke;
   v3 = v17[3] = &unk_1000205F0;
   v18 = v3;
-  v19 = self;
+  selfCopy = self;
   v4 = [UIAction actionWithHandler:v17];
   [v3 addAction:v4 forControlEvents:0x2000];
 
@@ -3340,17 +3340,17 @@ void __64__RecoverDeviceUIExtensionRemoteViewController_menuRebootButton__block_
   [v4 showOverallResultCard:v7 resultType:v8];
 }
 
-- (void)menuOptionChosen:(int)a3
+- (void)menuOptionChosen:(int)chosen
 {
-  switch(a3)
+  switch(chosen)
   {
     case 4:
-      v4 = [(RecoverDeviceUIExtensionRemoteViewController *)self menuCard];
+      menuCard = [(RecoverDeviceUIExtensionRemoteViewController *)self menuCard];
       v5 = +[NSBundle mainBundle];
-      v6 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
-      v7 = [NSString stringWithFormat:@"%@_%@", @"MENU_REBOOT_IN_PROGRESS_TEXT", v6];
+      kLocalizedDeviceType = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
+      v7 = [NSString stringWithFormat:@"%@_%@", @"MENU_REBOOT_IN_PROGRESS_TEXT", kLocalizedDeviceType];
       v8 = [v5 localizedStringForKey:v7 value:&stru_100020878 table:@"Localizable"];
-      [v4 showActivityIndicatorWithStatus:v8];
+      [menuCard showActivityIndicatorWithStatus:v8];
 
       v11 = @"NeRDCommand";
       v12 = @"NeRDCommandReboot";
@@ -3593,15 +3593,15 @@ void __66__RecoverDeviceUIExtensionRemoteViewController_cleanDocumentation__bloc
   }
 }
 
-- (void)collectDocumentation:(id)a3 alternative:(BOOL)a4 completion:(id)a5
+- (void)collectDocumentation:(id)documentation alternative:(BOOL)alternative completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  alternativeCopy = alternative;
+  documentationCopy = documentation;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (documentationCopy)
   {
-    if (v6)
+    if (alternativeCopy)
     {
       v11 = @"RecoverDeviceUI-alternate";
     }
@@ -3613,36 +3613,36 @@ void __66__RecoverDeviceUIExtensionRemoteViewController_cleanDocumentation__bloc
 
     v12 = objc_alloc_init(MAMsuDownloadOptions);
     [v12 setPurpose:v11];
-    v13 = [v8 objectForKeyedSubscript:@"NeRDSUInfoDocAssetUUID"];
+    v13 = [documentationCopy objectForKeyedSubscript:@"NeRDSUInfoDocAssetUUID"];
     [v12 setLiveAssetAudienceUUID:v13];
 
     [v12 setDiscretionary:0];
     [v12 setTimeoutIntervalForResource:30];
     v23[0] = @"SUDocumentationID";
-    v14 = [v8 objectForKeyedSubscript:@"NeRDSUInfoDocDocumentationID"];
+    v14 = [documentationCopy objectForKeyedSubscript:@"NeRDSUInfoDocDocumentationID"];
     v23[1] = @"DeviceName";
     v24[0] = v14;
-    v15 = [v8 objectForKeyedSubscript:@"NeRDSUInfoDocDeviceClass"];
+    v15 = [documentationCopy objectForKeyedSubscript:@"NeRDSUInfoDocDeviceClass"];
     v24[1] = v15;
     v16 = [NSDictionary dictionaryWithObjects:v24 forKeys:v23 count:2];
     v17 = [NSMutableDictionary dictionaryWithDictionary:v16];
     [v12 setAdditionalServerParams:v17];
 
-    v18 = [v8 objectForKeyedSubscript:@"NeRDSUInfoDocAssetType"];
+    v18 = [documentationCopy objectForKeyedSubscript:@"NeRDSUInfoDocAssetType"];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = __92__RecoverDeviceUIExtensionRemoteViewController_collectDocumentation_alternative_completion___block_invoke;
     v19[3] = &unk_100020690;
     v19[4] = self;
     v22 = v10;
-    v20 = v8;
+    v20 = documentationCopy;
     v21 = v11;
     [MAAsset startCatalogDownload:v18 options:v12 completionWithError:v19];
   }
 
   else
   {
-    (*(v9 + 2))(v9, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
   }
 }
 
@@ -3796,22 +3796,22 @@ void __92__RecoverDeviceUIExtensionRemoteViewController_collectDocumentation_alt
   }
 }
 
-- (void)showSUCard:(id)a3 build:(id)a4 icon:(id)a5 isAlternate:(BOOL)a6
+- (void)showSUCard:(id)card build:(id)build icon:(id)icon isAlternate:(BOOL)alternate
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverDeviceOperationsQueue];
+  cardCopy = card;
+  iconCopy = icon;
+  recoverDeviceOperationsQueue = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverDeviceOperationsQueue];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = __82__RecoverDeviceUIExtensionRemoteViewController_showSUCard_build_icon_isAlternate___block_invoke;
   v14[3] = &unk_1000206E0;
   v14[4] = self;
-  v15 = v9;
-  v16 = v10;
-  v17 = a6;
-  v12 = v10;
-  v13 = v9;
-  dispatch_async(v11, v14);
+  v15 = cardCopy;
+  v16 = iconCopy;
+  alternateCopy = alternate;
+  v12 = iconCopy;
+  v13 = cardCopy;
+  dispatch_async(recoverDeviceOperationsQueue, v14);
 }
 
 void __82__RecoverDeviceUIExtensionRemoteViewController_showSUCard_build_icon_isAlternate___block_invoke(uint64_t a1)
@@ -4044,18 +4044,18 @@ void __82__RecoverDeviceUIExtensionRemoteViewController_showSUCard_build_icon_is
   v10 = [v9 popViewControllerAnimated:1];
 }
 
-- (void)showSUSelectionCard:(id)a3
+- (void)showSUSelectionCard:(id)card
 {
-  v4 = a3;
-  v5 = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverDeviceOperationsQueue];
+  cardCopy = card;
+  recoverDeviceOperationsQueue = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverDeviceOperationsQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __68__RecoverDeviceUIExtensionRemoteViewController_showSUSelectionCard___block_invoke;
   v7[3] = &unk_100020498;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = cardCopy;
+  selfCopy = self;
+  v6 = cardCopy;
+  dispatch_async(recoverDeviceOperationsQueue, v7);
 }
 
 void __68__RecoverDeviceUIExtensionRemoteViewController_showSUSelectionCard___block_invoke(uint64_t a1)
@@ -4123,33 +4123,33 @@ id __68__RecoverDeviceUIExtensionRemoteViewController_showSUSelectionCard___bloc
   return [v8 cleanDocumentation];
 }
 
-- (void)handleOSRMessage:(id)a3
+- (void)handleOSRMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-  v6 = [v5 oslog];
+  messageCopy = message;
+  logger = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+  oslog = [logger oslog];
 
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v30 = v4;
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Got OSR message %{public}@", buf, 0xCu);
+    v30 = messageCopy;
+    _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Got OSR message %{public}@", buf, 0xCu);
   }
 
   if ([(RecoverDeviceUIExtensionRemoteViewController *)self setupCompleted])
   {
-    v7 = [v4 objectForKeyedSubscript:@"NeRDState"];
-    if ([v7 isEqual:@"NeRDStateUpdateFound"])
+    oslog3 = [messageCopy objectForKeyedSubscript:@"NeRDState"];
+    if ([oslog3 isEqual:@"NeRDStateUpdateFound"])
     {
       if (![(RecoverDeviceUIExtensionRemoteViewController *)self showingProgress])
       {
-        v8 = [(RecoverDeviceUIExtensionRemoteViewController *)self serverConfig];
-        v9 = [v8 objectForKeyedSubscript:@"NeRDIntent"];
+        serverConfig = [(RecoverDeviceUIExtensionRemoteViewController *)self serverConfig];
+        v9 = [serverConfig objectForKeyedSubscript:@"NeRDIntent"];
         v10 = [v9 isEqual:@"NeRDIntentRecovery"];
 
         if ((v10 & 1) == 0)
         {
-          v17 = [v4 objectForKeyedSubscript:@"NeRDUpdateFound"];
+          v17 = [messageCopy objectForKeyedSubscript:@"NeRDUpdateFound"];
           [(RecoverDeviceUIExtensionRemoteViewController *)self showSUSelectionCard:v17];
 LABEL_32:
 
@@ -4158,37 +4158,37 @@ LABEL_32:
       }
     }
 
-    if ([v7 isEqual:@"NeRDStateEACSSuccess"])
+    if ([oslog3 isEqual:@"NeRDStateEACSSuccess"])
     {
       if (![(RecoverDeviceUIExtensionRemoteViewController *)self performingEACS])
       {
-        v11 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-        v12 = [v11 oslog];
+        logger2 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+        oslog2 = [logger2 oslog];
 
-        if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
-          _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Not performing EACS, bug?", buf, 2u);
+          _os_log_impl(&_mh_execute_header, oslog2, OS_LOG_TYPE_DEFAULT, "Not performing EACS, bug?", buf, 2u);
         }
       }
 
-      v13 = self;
+      selfCopy2 = self;
       v14 = 6;
       goto LABEL_17;
     }
 
-    if ([v7 isEqual:@"NeRDStateInstalled"])
+    if ([oslog3 isEqual:@"NeRDStateInstalled"])
     {
-      v13 = self;
+      selfCopy2 = self;
       v14 = 4;
 LABEL_17:
-      [(RecoverDeviceUIExtensionRemoteViewController *)v13 showOverallResultCard:0 resultType:v14];
+      [(RecoverDeviceUIExtensionRemoteViewController *)selfCopy2 showOverallResultCard:0 resultType:v14];
       goto LABEL_33;
     }
 
-    if ([v7 isEqual:@"NeRDStateEACSFailed"])
+    if ([oslog3 isEqual:@"NeRDStateEACSFailed"])
     {
-      v16 = [v4 objectForKeyedSubscript:@"NeRDError"];
+      v16 = [messageCopy objectForKeyedSubscript:@"NeRDError"];
       v17 = v16;
       if (v16)
       {
@@ -4202,18 +4202,18 @@ LABEL_17:
         v20 = [NSError errorWithDomain:@"TapToRecoverProxCardError" code:10005 userInfo:0];
       }
 
-      v24 = self;
+      selfCopy4 = self;
       v25 = v20;
       v26 = 5;
 LABEL_31:
-      [(RecoverDeviceUIExtensionRemoteViewController *)v24 showOverallResultCard:v25 resultType:v26];
+      [(RecoverDeviceUIExtensionRemoteViewController *)selfCopy4 showOverallResultCard:v25 resultType:v26];
 
       goto LABEL_32;
     }
 
-    if ([v7 isEqual:@"NeRDStateFailed"])
+    if ([oslog3 isEqual:@"NeRDStateFailed"])
     {
-      v21 = [v4 objectForKeyedSubscript:@"NeRDError"];
+      v21 = [messageCopy objectForKeyedSubscript:@"NeRDError"];
       v17 = v21;
       if (v21)
       {
@@ -4227,7 +4227,7 @@ LABEL_31:
         v20 = [NSError errorWithDomain:@"TapToRecoverProxCardError" code:10005 userInfo:0];
       }
 
-      v24 = self;
+      selfCopy4 = self;
       v25 = v20;
       v26 = 2;
       goto LABEL_31;
@@ -4240,39 +4240,39 @@ LABEL_31:
       v27[2] = __65__RecoverDeviceUIExtensionRemoteViewController_handleOSRMessage___block_invoke;
       v27[3] = &unk_100020498;
       v27[4] = self;
-      v28 = v4;
+      v28 = messageCopy;
       dispatch_async(&_dispatch_main_q, v27);
     }
   }
 
   else
   {
-    v15 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-    v7 = [v15 oslog];
+    logger3 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+    oslog3 = [logger3 oslog];
 
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Setup not completed, dropping message", buf, 2u);
+      _os_log_impl(&_mh_execute_header, oslog3, OS_LOG_TYPE_DEFAULT, "Setup not completed, dropping message", buf, 2u);
     }
   }
 
 LABEL_33:
 }
 
-- (void)showOverallResultCard:(id)a3 resultType:(int)a4
+- (void)showOverallResultCard:(id)card resultType:(int)type
 {
-  v6 = a3;
-  v7 = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverDeviceOperationsQueue];
+  cardCopy = card;
+  recoverDeviceOperationsQueue = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverDeviceOperationsQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __81__RecoverDeviceUIExtensionRemoteViewController_showOverallResultCard_resultType___block_invoke;
   block[3] = &unk_100020758;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = cardCopy;
+  typeCopy = type;
+  v8 = cardCopy;
+  dispatch_async(recoverDeviceOperationsQueue, block);
 }
 
 void __81__RecoverDeviceUIExtensionRemoteViewController_showOverallResultCard_resultType___block_invoke(uint64_t a1)
@@ -4423,13 +4423,13 @@ void __81__RecoverDeviceUIExtensionRemoteViewController_showOverallResultCard_re
 
 - (void)updateCodeCardToSettingUpState
 {
-  v3 = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverDeviceOperationsQueue];
+  recoverDeviceOperationsQueue = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverDeviceOperationsQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __78__RecoverDeviceUIExtensionRemoteViewController_updateCodeCardToSettingUpState__block_invoke;
   block[3] = &unk_1000204C0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(recoverDeviceOperationsQueue, block);
 }
 
 void __78__RecoverDeviceUIExtensionRemoteViewController_updateCodeCardToSettingUpState__block_invoke(uint64_t a1)
@@ -4453,14 +4453,14 @@ void __78__RecoverDeviceUIExtensionRemoteViewController_updateCodeCardToSettingU
 
 - (BOOL)isCompanionSameDevice
 {
-  v6 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
-  v7 = [v6 containsString:@"IPHONE"];
+  kLocalizedDeviceType = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
+  v7 = [kLocalizedDeviceType containsString:@"IPHONE"];
   if (v7)
   {
     v2 = +[UIDevice currentDevice];
-    v3 = [v2 model];
-    v4 = [v3 uppercaseString];
-    if ([v4 containsString:@"IPHONE"])
+    model = [v2 model];
+    uppercaseString = [model uppercaseString];
+    if ([uppercaseString containsString:@"IPHONE"])
     {
       v8 = 1;
 LABEL_8:
@@ -4469,13 +4469,13 @@ LABEL_8:
     }
   }
 
-  v9 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
-  if ([v9 containsString:@"IPAD"])
+  kLocalizedDeviceType2 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
+  if ([kLocalizedDeviceType2 containsString:@"IPAD"])
   {
     v10 = +[UIDevice currentDevice];
-    v11 = [v10 model];
-    v12 = [v11 uppercaseString];
-    v8 = [v12 containsString:@"IPAD"];
+    model2 = [v10 model];
+    uppercaseString2 = [model2 uppercaseString];
+    v8 = [uppercaseString2 containsString:@"IPAD"];
   }
 
   else
@@ -4820,13 +4820,13 @@ void __94__RecoverDeviceUIExtensionRemoteViewController_showCollectCodeCard_inFl
 
 - (void)recoverButtonPressed
 {
-  v3 = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverDeviceOperationsQueue];
+  recoverDeviceOperationsQueue = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverDeviceOperationsQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __68__RecoverDeviceUIExtensionRemoteViewController_recoverButtonPressed__block_invoke;
   block[3] = &unk_1000204C0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(recoverDeviceOperationsQueue, block);
 }
 
 void __68__RecoverDeviceUIExtensionRemoteViewController_recoverButtonPressed__block_invoke(uint64_t a1)
@@ -4973,13 +4973,13 @@ void __66__RecoverDeviceUIExtensionRemoteViewController_notNowButtonAction__bloc
 
 - (void)showLearnMoreCard
 {
-  v3 = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverDeviceOperationsQueue];
+  recoverDeviceOperationsQueue = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverDeviceOperationsQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __65__RecoverDeviceUIExtensionRemoteViewController_showLearnMoreCard__block_invoke;
   block[3] = &unk_1000204C0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(recoverDeviceOperationsQueue, block);
 }
 
 void __65__RecoverDeviceUIExtensionRemoteViewController_showLearnMoreCard__block_invoke(uint64_t a1)
@@ -5088,76 +5088,76 @@ id __69__RecoverDeviceUIExtensionRemoteViewController_learnMoreButtonAction__blo
 - (void)setInitialCardForSetup
 {
   v3 = +[NSBundle mainBundle];
-  v4 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
-  v5 = [NSString stringWithFormat:@"%@_%@", @"MAIN_CARD_TITLE", v4];
+  kLocalizedDeviceType = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
+  v5 = [NSString stringWithFormat:@"%@_%@", @"MAIN_CARD_TITLE", kLocalizedDeviceType];
   v6 = [v3 localizedStringForKey:v5 value:&stru_100020878 table:@"Localizable"];
 
   if ([(RecoverDeviceUIExtensionRemoteViewController *)self extendedMode])
   {
     v7 = +[NSBundle mainBundle];
-    v8 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
-    v9 = [NSString stringWithFormat:@"%@_%@", @"MAIN_CARD_TITLE_EXT", v8];
+    kLocalizedDeviceType2 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
+    v9 = [NSString stringWithFormat:@"%@_%@", @"MAIN_CARD_TITLE_EXT", kLocalizedDeviceType2];
     v10 = [v7 localizedStringForKey:v9 value:&stru_100020878 table:@"Localizable"];
 
     v6 = v10;
   }
 
-  v11 = [(RecoverDeviceUIExtensionRemoteViewController *)self initialCard];
-  [v11 setTitle:v6];
+  initialCard = [(RecoverDeviceUIExtensionRemoteViewController *)self initialCard];
+  [initialCard setTitle:v6];
 
   v12 = +[NSBundle mainBundle];
   v13 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"MAIN_CARD_DESCRIPTION"];
-  v14 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
-  v15 = [NSString stringWithFormat:@"%@_%@", v13, v14];
+  kLocalizedDeviceType3 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
+  v15 = [NSString stringWithFormat:@"%@_%@", v13, kLocalizedDeviceType3];
   v16 = [v12 localizedStringForKey:v15 value:&stru_100020878 table:@"Localizable"];
 
   v46 = v6;
   if (os_variant_has_internal_content())
   {
     v17 = +[NSBundle mainBundle];
-    v18 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
-    v19 = [v17 localizedStringForKey:v18 value:&stru_100020878 table:@"Localizable"];
+    kLocalizedDeviceType4 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
+    v19 = [v17 localizedStringForKey:kLocalizedDeviceType4 value:&stru_100020878 table:@"Localizable"];
     v20 = [v16 stringByAppendingFormat:@"[Internal Only]: Please put %@ into DFU and restore", v19];
 
     v16 = v20;
   }
 
   v43 = v16;
-  v21 = [(RecoverDeviceUIExtensionRemoteViewController *)self initialCard];
-  [v21 setSubtitle:v16];
+  initialCard2 = [(RecoverDeviceUIExtensionRemoteViewController *)self initialCard];
+  [initialCard2 setSubtitle:v16];
 
-  v22 = [(RecoverDeviceUIExtensionRemoteViewController *)self initialCard];
-  [v22 setDismissalType:3];
+  initialCard3 = [(RecoverDeviceUIExtensionRemoteViewController *)self initialCard];
+  [initialCard3 setDismissalType:3];
 
-  v23 = [(RecoverDeviceUIExtensionRemoteViewController *)self initialCard];
-  v24 = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverButtonAction];
-  v25 = [v23 addAction:v24];
+  initialCard4 = [(RecoverDeviceUIExtensionRemoteViewController *)self initialCard];
+  recoverButtonAction = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverButtonAction];
+  v25 = [initialCard4 addAction:recoverButtonAction];
 
-  v26 = [(RecoverDeviceUIExtensionRemoteViewController *)self initialCard];
-  v27 = [(RecoverDeviceUIExtensionRemoteViewController *)self learnMoreButtonAction];
-  v28 = [v26 addAction:v27];
+  initialCard5 = [(RecoverDeviceUIExtensionRemoteViewController *)self initialCard];
+  learnMoreButtonAction = [(RecoverDeviceUIExtensionRemoteViewController *)self learnMoreButtonAction];
+  v28 = [initialCard5 addAction:learnMoreButtonAction];
 
-  v29 = [(RecoverDeviceUIExtensionRemoteViewController *)self uiImage];
-  [v29 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v30 = [(RecoverDeviceUIExtensionRemoteViewController *)self initialCard];
-  v31 = [v30 contentView];
-  [v31 addSubview:v29];
+  uiImage = [(RecoverDeviceUIExtensionRemoteViewController *)self uiImage];
+  [uiImage setTranslatesAutoresizingMaskIntoConstraints:0];
+  initialCard6 = [(RecoverDeviceUIExtensionRemoteViewController *)self initialCard];
+  contentView = [initialCard6 contentView];
+  [contentView addSubview:uiImage];
 
-  v32 = [(RecoverDeviceUIExtensionRemoteViewController *)self initialCard];
-  v33 = [v32 contentView];
-  v34 = [v33 mainContentGuide];
+  initialCard7 = [(RecoverDeviceUIExtensionRemoteViewController *)self initialCard];
+  contentView2 = [initialCard7 contentView];
+  mainContentGuide = [contentView2 mainContentGuide];
 
-  v45 = [v29 topAnchor];
-  v44 = [v34 topAnchor];
-  v35 = [v45 constraintGreaterThanOrEqualToAnchor:v44];
+  topAnchor = [uiImage topAnchor];
+  topAnchor2 = [mainContentGuide topAnchor];
+  v35 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
   v47[0] = v35;
-  v36 = [v29 centerYAnchor];
-  v37 = [v34 centerYAnchor];
-  v38 = [v36 constraintEqualToAnchor:v37];
+  centerYAnchor = [uiImage centerYAnchor];
+  centerYAnchor2 = [mainContentGuide centerYAnchor];
+  v38 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v47[1] = v38;
-  v39 = [v29 centerXAnchor];
-  v40 = [v34 centerXAnchor];
-  v41 = [v39 constraintEqualToAnchor:v40];
+  centerXAnchor = [uiImage centerXAnchor];
+  centerXAnchor2 = [mainContentGuide centerXAnchor];
+  v41 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v47[2] = v41;
   v42 = [NSArray arrayWithObjects:v47 count:3];
   [NSLayoutConstraint activateConstraints:v42];
@@ -5165,46 +5165,46 @@ id __69__RecoverDeviceUIExtensionRemoteViewController_learnMoreButtonAction__blo
 
 - (void)setInitialCardForResume
 {
-  v3 = [(RecoverDeviceUIExtensionRemoteViewController *)self initialCard];
+  initialCard = [(RecoverDeviceUIExtensionRemoteViewController *)self initialCard];
   v4 = +[NSBundle mainBundle];
-  v5 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
-  v6 = [NSString stringWithFormat:@"%@_%@", @"MAIN_CARD_TITLE_EXT", v5];
+  kLocalizedDeviceType = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
+  v6 = [NSString stringWithFormat:@"%@_%@", @"MAIN_CARD_TITLE_EXT", kLocalizedDeviceType];
   v7 = [v4 localizedStringForKey:v6 value:&stru_100020878 table:@"Localizable"];
-  [v3 setTitle:v7];
+  [initialCard setTitle:v7];
 
-  v8 = [(RecoverDeviceUIExtensionRemoteViewController *)self initialCard];
-  [v8 setDismissalType:3];
+  initialCard2 = [(RecoverDeviceUIExtensionRemoteViewController *)self initialCard];
+  [initialCard2 setDismissalType:3];
 
-  v9 = [(RecoverDeviceUIExtensionRemoteViewController *)self uiImage];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v10 = [(RecoverDeviceUIExtensionRemoteViewController *)self initialCard];
-  v11 = [v10 contentView];
-  [v11 addSubview:v9];
+  uiImage = [(RecoverDeviceUIExtensionRemoteViewController *)self uiImage];
+  [uiImage setTranslatesAutoresizingMaskIntoConstraints:0];
+  initialCard3 = [(RecoverDeviceUIExtensionRemoteViewController *)self initialCard];
+  contentView = [initialCard3 contentView];
+  [contentView addSubview:uiImage];
 
-  v12 = [(RecoverDeviceUIExtensionRemoteViewController *)self initialCard];
-  v13 = [v12 contentView];
-  v14 = [v13 mainContentGuide];
+  initialCard4 = [(RecoverDeviceUIExtensionRemoteViewController *)self initialCard];
+  contentView2 = [initialCard4 contentView];
+  mainContentGuide = [contentView2 mainContentGuide];
 
-  v27 = [v9 topAnchor];
-  v26 = [v14 topAnchor];
-  v15 = [v27 constraintGreaterThanOrEqualToAnchor:v26];
+  topAnchor = [uiImage topAnchor];
+  topAnchor2 = [mainContentGuide topAnchor];
+  v15 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
   v29[0] = v15;
-  v16 = [v9 centerYAnchor];
-  v28 = v14;
-  v17 = [v14 centerYAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  centerYAnchor = [uiImage centerYAnchor];
+  v28 = mainContentGuide;
+  centerYAnchor2 = [mainContentGuide centerYAnchor];
+  v18 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v29[1] = v18;
-  v19 = [v9 centerXAnchor];
-  v20 = [v14 centerXAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  centerXAnchor = [uiImage centerXAnchor];
+  centerXAnchor2 = [mainContentGuide centerXAnchor];
+  v21 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v29[2] = v21;
   v22 = [NSArray arrayWithObjects:v29 count:3];
   [NSLayoutConstraint activateConstraints:v22];
 
-  v23 = [(RecoverDeviceUIExtensionRemoteViewController *)self initialCard];
+  initialCard5 = [(RecoverDeviceUIExtensionRemoteViewController *)self initialCard];
   v24 = +[NSBundle mainBundle];
   v25 = [v24 localizedStringForKey:@"MAIN_CARD_CONNECTING" value:&stru_100020878 table:@"Localizable"];
-  [v23 showActivityIndicatorWithStatus:v25];
+  [initialCard5 showActivityIndicatorWithStatus:v25];
 }
 
 - (void)viewDidLoad
@@ -5212,20 +5212,20 @@ id __69__RecoverDeviceUIExtensionRemoteViewController_learnMoreButtonAction__blo
   v6.receiver = self;
   v6.super_class = RecoverDeviceUIExtensionRemoteViewController;
   [(RecoverDeviceUIExtensionRemoteViewController *)&v6 viewDidLoad];
-  v3 = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
-  v4 = [v3 oslog];
+  logger = [(RecoverDeviceUIExtensionRemoteViewController *)self logger];
+  oslog = [logger oslog];
 
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
-    _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "RecoverDeviceUI ViewDidLoad", v5, 2u);
+    _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "RecoverDeviceUI ViewDidLoad", v5, 2u);
   }
 }
 
 - (id)uiImage
 {
-  v3 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
-  v4 = [v3 isEqualToString:@"DEVICE_TYPE_WATCH"];
+  kLocalizedDeviceType = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
+  v4 = [kLocalizedDeviceType isEqualToString:@"DEVICE_TYPE_WATCH"];
 
   if (v4)
   {
@@ -5233,8 +5233,8 @@ id __69__RecoverDeviceUIExtensionRemoteViewController_learnMoreButtonAction__blo
     goto LABEL_12;
   }
 
-  v6 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
-  v7 = [v6 isEqualToString:@"DEVICE_TYPE_ATV"];
+  kLocalizedDeviceType2 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
+  v7 = [kLocalizedDeviceType2 isEqualToString:@"DEVICE_TYPE_ATV"];
 
   if (v7)
   {
@@ -5251,8 +5251,8 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v9 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
-  v10 = [v9 isEqualToString:@"DEVICE_TYPE_VISION"];
+  kLocalizedDeviceType3 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
+  v10 = [kLocalizedDeviceType3 isEqualToString:@"DEVICE_TYPE_VISION"];
 
   if (v10)
   {
@@ -5260,8 +5260,8 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  v11 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
-  v12 = [v11 isEqualToString:@"DEVICE_TYPE_IPHONE"];
+  kLocalizedDeviceType4 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
+  v12 = [kLocalizedDeviceType4 isEqualToString:@"DEVICE_TYPE_IPHONE"];
 
   if (v12)
   {
@@ -5269,8 +5269,8 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  v13 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
-  v14 = [v13 isEqualToString:@"DEVICE_TYPE_IPAD"];
+  kLocalizedDeviceType5 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
+  v14 = [kLocalizedDeviceType5 isEqualToString:@"DEVICE_TYPE_IPAD"];
 
   if (v14)
   {
@@ -5293,8 +5293,8 @@ LABEL_14:
 
 - (id)uiImageEACS
 {
-  v3 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
-  v4 = [v3 isEqualToString:@"DEVICE_TYPE_WATCH"];
+  kLocalizedDeviceType = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
+  v4 = [kLocalizedDeviceType isEqualToString:@"DEVICE_TYPE_WATCH"];
 
   if (v4)
   {
@@ -5302,8 +5302,8 @@ LABEL_14:
     goto LABEL_12;
   }
 
-  v6 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
-  v7 = [v6 isEqualToString:@"DEVICE_TYPE_ATV"];
+  kLocalizedDeviceType2 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
+  v7 = [kLocalizedDeviceType2 isEqualToString:@"DEVICE_TYPE_ATV"];
 
   if (v7)
   {
@@ -5320,8 +5320,8 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v9 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
-  v10 = [v9 isEqualToString:@"DEVICE_TYPE_VISION"];
+  kLocalizedDeviceType3 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
+  v10 = [kLocalizedDeviceType3 isEqualToString:@"DEVICE_TYPE_VISION"];
 
   if (v10)
   {
@@ -5329,8 +5329,8 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  v11 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
-  v12 = [v11 isEqualToString:@"DEVICE_TYPE_IPHONE"];
+  kLocalizedDeviceType4 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
+  v12 = [kLocalizedDeviceType4 isEqualToString:@"DEVICE_TYPE_IPHONE"];
 
   if (v12)
   {
@@ -5338,8 +5338,8 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  v13 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
-  v14 = [v13 isEqualToString:@"DEVICE_TYPE_IPAD"];
+  kLocalizedDeviceType5 = [(RecoverDeviceUIExtensionRemoteViewController *)self kLocalizedDeviceType];
+  v14 = [kLocalizedDeviceType5 isEqualToString:@"DEVICE_TYPE_IPAD"];
 
   if (v14)
   {
@@ -5357,13 +5357,13 @@ LABEL_14:
 
 - (void)setupStop
 {
-  v3 = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverDeviceOperationsQueue];
+  recoverDeviceOperationsQueue = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverDeviceOperationsQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __57__RecoverDeviceUIExtensionRemoteViewController_setupStop__block_invoke;
   block[3] = &unk_1000204C0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(recoverDeviceOperationsQueue, block);
 }
 
 void __57__RecoverDeviceUIExtensionRemoteViewController_setupStop__block_invoke(uint64_t a1)
@@ -5397,13 +5397,13 @@ void __57__RecoverDeviceUIExtensionRemoteViewController_setupStop__block_invoke(
 
 - (void)waitForServerResponse
 {
-  v3 = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverDeviceOperationsQueue];
+  recoverDeviceOperationsQueue = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverDeviceOperationsQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __69__RecoverDeviceUIExtensionRemoteViewController_waitForServerResponse__block_invoke;
   block[3] = &unk_1000204C0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(recoverDeviceOperationsQueue, block);
 }
 
 void __69__RecoverDeviceUIExtensionRemoteViewController_waitForServerResponse__block_invoke(uint64_t a1)
@@ -5463,13 +5463,13 @@ void __69__RecoverDeviceUIExtensionRemoteViewController_waitForServerResponse__b
 
 - (void)doneWaitingForServerResponse
 {
-  v3 = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverDeviceOperationsQueue];
+  recoverDeviceOperationsQueue = [(RecoverDeviceUIExtensionRemoteViewController *)self recoverDeviceOperationsQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __76__RecoverDeviceUIExtensionRemoteViewController_doneWaitingForServerResponse__block_invoke;
   block[3] = &unk_1000204C0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(recoverDeviceOperationsQueue, block);
 }
 
 id __76__RecoverDeviceUIExtensionRemoteViewController_doneWaitingForServerResponse__block_invoke(uint64_t a1)
@@ -5491,14 +5491,14 @@ id __76__RecoverDeviceUIExtensionRemoteViewController_doneWaitingForServerRespon
 
 - (void)proxCardFlowWillPresent
 {
-  v2 = [(RecoverDeviceUIExtensionRemoteViewController *)self _remoteViewControllerProxy];
-  [v2 setStatusBarHidden:1 withDuration:0.0];
+  _remoteViewControllerProxy = [(RecoverDeviceUIExtensionRemoteViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setStatusBarHidden:1 withDuration:0.0];
 }
 
 - (void)proxCardFlowDidDismiss
 {
-  v2 = [(RecoverDeviceUIExtensionRemoteViewController *)self _remoteViewControllerProxy];
-  [v2 dismiss];
+  _remoteViewControllerProxy = [(RecoverDeviceUIExtensionRemoteViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy dismiss];
 }
 
 @end

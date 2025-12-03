@@ -1,35 +1,35 @@
 @interface SXDataTableComponentSizer
-- (SXDataTableComponentSizer)initWithComponent:(id)a3 componentLayout:(id)a4 componentStyle:(id)a5 DOMObjectProvider:(id)a6 layoutOptions:(id)a7 textComponentLayoutHosting:(id)a8 textSourceFactory:(id)a9 recordValueTransformerFactory:(id)a10;
+- (SXDataTableComponentSizer)initWithComponent:(id)component componentLayout:(id)layout componentStyle:(id)style DOMObjectProvider:(id)provider layoutOptions:(id)options textComponentLayoutHosting:(id)hosting textSourceFactory:(id)factory recordValueTransformerFactory:(id)self0;
 - (SXTextComponentLayoutHosting)textComponentLayoutHosting;
-- (double)calculateHeightForWidth:(double)a3 layoutContext:(id)a4;
-- (id)contentSizeCategoryForDataTableComponentController:(id)a3;
-- (id)documentColumnLayoutForDataTableComponentController:(id)a3;
-- (id)tableStyleForComponent:(id)a3;
-- (id)unitConverterForDataTableComponentController:(id)a3;
+- (double)calculateHeightForWidth:(double)width layoutContext:(id)context;
+- (id)contentSizeCategoryForDataTableComponentController:(id)controller;
+- (id)documentColumnLayoutForDataTableComponentController:(id)controller;
+- (id)tableStyleForComponent:(id)component;
+- (id)unitConverterForDataTableComponentController:(id)controller;
 @end
 
 @implementation SXDataTableComponentSizer
 
-- (SXDataTableComponentSizer)initWithComponent:(id)a3 componentLayout:(id)a4 componentStyle:(id)a5 DOMObjectProvider:(id)a6 layoutOptions:(id)a7 textComponentLayoutHosting:(id)a8 textSourceFactory:(id)a9 recordValueTransformerFactory:(id)a10
+- (SXDataTableComponentSizer)initWithComponent:(id)component componentLayout:(id)layout componentStyle:(id)style DOMObjectProvider:(id)provider layoutOptions:(id)options textComponentLayoutHosting:(id)hosting textSourceFactory:(id)factory recordValueTransformerFactory:(id)self0
 {
-  v16 = a3;
-  v17 = a6;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
+  componentCopy = component;
+  providerCopy = provider;
+  hostingCopy = hosting;
+  factoryCopy = factory;
+  transformerFactoryCopy = transformerFactory;
   v44.receiver = self;
   v44.super_class = SXDataTableComponentSizer;
-  v21 = v17;
-  v22 = [(SXComponentSizer *)&v44 initWithComponent:v16 componentLayout:a4 componentStyle:a5 DOMObjectProvider:v17 layoutOptions:a7];
+  v21 = providerCopy;
+  v22 = [(SXComponentSizer *)&v44 initWithComponent:componentCopy componentLayout:layout componentStyle:style DOMObjectProvider:providerCopy layoutOptions:options];
   v23 = v22;
   if (v22)
   {
-    objc_storeWeak(&v22->_textComponentLayoutHosting, v18);
-    v24 = v16;
+    objc_storeWeak(&v22->_textComponentLayoutHosting, hostingCopy);
+    v24 = componentCopy;
     [(SXDataTableComponentSizer *)v23 tableStyleForComponent:v24];
-    v42 = v40 = v16;
-    v43 = v20;
-    v41 = v18;
+    v42 = v40 = componentCopy;
+    v43 = transformerFactoryCopy;
+    v41 = hostingCopy;
     v39 = [[SXJSONObjectMerger alloc] initWithObjectClass:objc_opt_class() exclusionKeys:0];
     v25 = [[SXJSONObjectMerger alloc] initWithObjectClass:objc_opt_class() exclusionKeys:0];
     v26 = [[SXJSONObjectMerger alloc] initWithObjectClass:objc_opt_class() exclusionKeys:0];
@@ -38,46 +38,46 @@
     v28 = [SXDataTableComponentStyleFactory alloc];
     [v24 data];
     v29 = v21;
-    v31 = v30 = v19;
-    v32 = [v24 dataOrientation];
+    v31 = v30 = factoryCopy;
+    dataOrientation = [v24 dataOrientation];
 
-    v33 = [(SXDataTableComponentStyleFactory *)v28 initWithRecordStore:v31 tableStyle:v42 dataOrientation:v32 rowStyleMerger:v39 columnStyleMerger:v25 cellStyleMerger:v26];
-    v19 = v30;
+    v33 = [(SXDataTableComponentStyleFactory *)v28 initWithRecordStore:v31 tableStyle:v42 dataOrientation:dataOrientation rowStyleMerger:v39 columnStyleMerger:v25 cellStyleMerger:v26];
+    factoryCopy = v30;
     v21 = v29;
-    v34 = [[SXDataTableComponentController alloc] initWithStyleFactory:v33 textSourceFactory:v19 dataSource:v23 recordValueTransformerFactory:v43 DOMObjectProvider:v29];
+    v34 = [[SXDataTableComponentController alloc] initWithStyleFactory:v33 textSourceFactory:factoryCopy dataSource:v23 recordValueTransformerFactory:v43 DOMObjectProvider:v29];
     dataTableComponentController = v23->_dataTableComponentController;
     v23->_dataTableComponentController = v34;
 
-    v20 = v43;
+    transformerFactoryCopy = v43;
     v36 = [[SXDataTableLayouter alloc] initWithDataSource:v23->_dataTableComponentController];
     layouter = v23->_layouter;
     v23->_layouter = v36;
 
-    v18 = v41;
-    v16 = v40;
+    hostingCopy = v41;
+    componentCopy = v40;
   }
 
   return v23;
 }
 
-- (double)calculateHeightForWidth:(double)a3 layoutContext:(id)a4
+- (double)calculateHeightForWidth:(double)width layoutContext:(id)context
 {
-  v6 = a4;
-  v7 = [(SXDataTableComponentSizer *)self dataTableComponentController];
-  [v7 prepareForLayout];
+  contextCopy = context;
+  dataTableComponentController = [(SXDataTableComponentSizer *)self dataTableComponentController];
+  [dataTableComponentController prepareForLayout];
 
-  v8 = [(SXDataTableComponentSizer *)self layouter];
-  [v8 reset];
+  layouter = [(SXDataTableComponentSizer *)self layouter];
+  [layouter reset];
 
-  [(SXDataTableComponentSizer *)self setCurrentLayoutContext:v6];
-  v9 = [(SXDataTableComponentSizer *)self layouter];
-  v10 = [v9 blueprintForWidth:a3];
+  [(SXDataTableComponentSizer *)self setCurrentLayoutContext:contextCopy];
+  layouter2 = [(SXDataTableComponentSizer *)self layouter];
+  v10 = [layouter2 blueprintForWidth:width];
 
   if (v10)
   {
     [(SXComponentSizer *)self saveInfo:v10 forRenderingPhaseWithIdentifier:@"blueprint"];
-    v11 = [(SXDataTableComponentSizer *)self dataTableComponentController];
-    [(SXComponentSizer *)self saveInfo:v11 forRenderingPhaseWithIdentifier:@"component_controller"];
+    dataTableComponentController2 = [(SXDataTableComponentSizer *)self dataTableComponentController];
+    [(SXComponentSizer *)self saveInfo:dataTableComponentController2 forRenderingPhaseWithIdentifier:@"component_controller"];
   }
 
   [v10 tableSize];
@@ -86,39 +86,39 @@
   return v13;
 }
 
-- (id)documentColumnLayoutForDataTableComponentController:(id)a3
+- (id)documentColumnLayoutForDataTableComponentController:(id)controller
 {
-  v3 = [(SXComponentSizer *)self layoutOptions];
-  v4 = [v3 columnLayout];
+  layoutOptions = [(SXComponentSizer *)self layoutOptions];
+  columnLayout = [layoutOptions columnLayout];
 
-  return v4;
+  return columnLayout;
 }
 
-- (id)contentSizeCategoryForDataTableComponentController:(id)a3
+- (id)contentSizeCategoryForDataTableComponentController:(id)controller
 {
-  v3 = [(SXComponentSizer *)self layoutOptions];
-  v4 = [v3 contentSizeCategory];
+  layoutOptions = [(SXComponentSizer *)self layoutOptions];
+  contentSizeCategory = [layoutOptions contentSizeCategory];
 
-  return v4;
+  return contentSizeCategory;
 }
 
-- (id)unitConverterForDataTableComponentController:(id)a3
+- (id)unitConverterForDataTableComponentController:(id)controller
 {
-  v3 = [(SXDataTableComponentSizer *)self currentLayoutContext];
-  v4 = [v3 unitConverter];
+  currentLayoutContext = [(SXDataTableComponentSizer *)self currentLayoutContext];
+  unitConverter = [currentLayoutContext unitConverter];
 
-  return v4;
+  return unitConverter;
 }
 
-- (id)tableStyleForComponent:(id)a3
+- (id)tableStyleForComponent:(id)component
 {
-  v4 = a3;
-  v5 = [(SXComponentSizer *)self DOMObjectProvider];
-  v6 = [v5 componentStyleForComponent:v4];
+  componentCopy = component;
+  dOMObjectProvider = [(SXComponentSizer *)self DOMObjectProvider];
+  v6 = [dOMObjectProvider componentStyleForComponent:componentCopy];
 
-  v7 = [v6 tableStyle];
+  tableStyle = [v6 tableStyle];
 
-  return v7;
+  return tableStyle;
 }
 
 - (SXTextComponentLayoutHosting)textComponentLayoutHosting

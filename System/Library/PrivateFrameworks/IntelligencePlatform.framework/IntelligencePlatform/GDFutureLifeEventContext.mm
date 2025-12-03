@@ -1,49 +1,49 @@
 @interface GDFutureLifeEventContext
-+ (id)subscribeToUpdateNotificationWithSystemwideUniqueSubscriptionIdentifier:(id)a3 targetQueue:(id)a4 onReceiveUpdateNotificationBlock:(id)a5;
-- (GDFutureLifeEventContext)initWithGDSwiftContext:(id)a3;
-- (id)initAndReturnError:(id *)a3;
++ (id)subscribeToUpdateNotificationWithSystemwideUniqueSubscriptionIdentifier:(id)identifier targetQueue:(id)queue onReceiveUpdateNotificationBlock:(id)block;
+- (GDFutureLifeEventContext)initWithGDSwiftContext:(id)context;
+- (id)initAndReturnError:(id *)error;
 @end
 
 @implementation GDFutureLifeEventContext
 
-- (id)initAndReturnError:(id *)a3
+- (id)initAndReturnError:(id *)error
 {
-  v4 = [[_TtC20IntelligencePlatform30_GDSwiftFutureLifeEventContext alloc] initAndReturnError:a3];
+  v4 = [[_TtC20IntelligencePlatform30_GDSwiftFutureLifeEventContext alloc] initAndReturnError:error];
   if (v4)
   {
     self = [(GDFutureLifeEventContext *)self initWithGDSwiftContext:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (GDFutureLifeEventContext)initWithGDSwiftContext:(id)a3
+- (GDFutureLifeEventContext)initWithGDSwiftContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = GDFutureLifeEventContext;
   v6 = [(GDFutureLifeEventContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->gdSwiftContext, a3);
+    objc_storeStrong(&v6->gdSwiftContext, context);
   }
 
   return v7;
 }
 
-+ (id)subscribeToUpdateNotificationWithSystemwideUniqueSubscriptionIdentifier:(id)a3 targetQueue:(id)a4 onReceiveUpdateNotificationBlock:(id)a5
++ (id)subscribeToUpdateNotificationWithSystemwideUniqueSubscriptionIdentifier:(id)identifier targetQueue:(id)queue onReceiveUpdateNotificationBlock:(id)block
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[GDFutureLifeEventUpdateNotificationSubscription alloc] initWithSystemwideUniqueSubscriptionIdentifier:v9 targetQueue:v8 onReceiveUpdateNotificationBlock:v7];
+  blockCopy = block;
+  queueCopy = queue;
+  identifierCopy = identifier;
+  v10 = [[GDFutureLifeEventUpdateNotificationSubscription alloc] initWithSystemwideUniqueSubscriptionIdentifier:identifierCopy targetQueue:queueCopy onReceiveUpdateNotificationBlock:blockCopy];
 
   return v10;
 }

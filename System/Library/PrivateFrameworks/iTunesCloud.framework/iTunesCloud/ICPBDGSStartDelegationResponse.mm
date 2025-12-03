@@ -1,11 +1,11 @@
 @interface ICPBDGSStartDelegationResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (uint64_t)addPlayerInfoContextToken:(uint64_t)a1;
+- (uint64_t)addPlayerInfoContextToken:(uint64_t)token;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ICPBDGSStartDelegationResponse
@@ -18,13 +18,13 @@
   return v4 ^ v5 ^ [(NSString *)self->_playerUserAgent hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((playerAnisetteMID = self->_playerAnisetteMID, !(playerAnisetteMID | v4[1])) || -[NSData isEqual:](playerAnisetteMID, "isEqual:")) && ((playerDeviceGUID = self->_playerDeviceGUID, !(playerDeviceGUID | v4[2])) || -[NSData isEqual:](playerDeviceGUID, "isEqual:")) && ((playerInfoContextTokens = self->_playerInfoContextTokens, !(playerInfoContextTokens | v4[3])) || -[NSMutableArray isEqual:](playerInfoContextTokens, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((playerAnisetteMID = self->_playerAnisetteMID, !(playerAnisetteMID | equalCopy[1])) || -[NSData isEqual:](playerAnisetteMID, "isEqual:")) && ((playerDeviceGUID = self->_playerDeviceGUID, !(playerDeviceGUID | equalCopy[2])) || -[NSData isEqual:](playerDeviceGUID, "isEqual:")) && ((playerInfoContextTokens = self->_playerInfoContextTokens, !(playerInfoContextTokens | equalCopy[3])) || -[NSMutableArray isEqual:](playerInfoContextTokens, "isEqual:")))
   {
     playerUserAgent = self->_playerUserAgent;
-    if (playerUserAgent | v4[4])
+    if (playerUserAgent | equalCopy[4])
     {
       v9 = [(NSString *)playerUserAgent isEqual:?];
     }
@@ -43,15 +43,15 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_playerAnisetteMID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_playerAnisetteMID copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSData *)self->_playerDeviceGUID copyWithZone:a3];
+  v8 = [(NSData *)self->_playerDeviceGUID copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
@@ -75,7 +75,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v19 + 1) + 8 * v14) copyWithZone:{a3, v19}];
+        v15 = [*(*(&v19 + 1) + 8 * v14) copyWithZone:{zone, v19}];
         [(ICPBDGSStartDelegationResponse *)v5 addPlayerInfoContextToken:v15];
 
         ++v14;
@@ -88,28 +88,28 @@
     while (v12);
   }
 
-  v16 = [(NSString *)self->_playerUserAgent copyWithZone:a3];
+  v16 = [(NSString *)self->_playerUserAgent copyWithZone:zone];
   v17 = v5[4];
   v5[4] = v16;
 
   return v5;
 }
 
-- (uint64_t)addPlayerInfoContextToken:(uint64_t)a1
+- (uint64_t)addPlayerInfoContextToken:(uint64_t)token
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (token)
   {
-    v5 = *(a1 + 24);
+    v5 = *(token + 24);
     v9 = v4;
     if (!v5)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v7 = *(a1 + 24);
-      *(a1 + 24) = v6;
+      v7 = *(token + 24);
+      *(token + 24) = v6;
 
-      v5 = *(a1 + 24);
+      v5 = *(token + 24);
     }
 
     v3 = [v5 addObject:v9];
@@ -119,10 +119,10 @@
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_playerAnisetteMID)
   {
     PBDataWriterWriteDataField();
@@ -173,12 +173,12 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   playerAnisetteMID = self->_playerAnisetteMID;
   if (playerAnisetteMID)
   {
-    [v3 setObject:playerAnisetteMID forKey:@"playerAnisetteMID"];
+    [dictionary setObject:playerAnisetteMID forKey:@"playerAnisetteMID"];
   }
 
   playerDeviceGUID = self->_playerDeviceGUID;
@@ -209,8 +209,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -237,8 +237,8 @@
   v8.receiver = self;
   v8.super_class = ICPBDGSStartDelegationResponse;
   v4 = [(ICPBDGSStartDelegationResponse *)&v8 description];
-  v5 = [(ICPBDGSStartDelegationResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ICPBDGSStartDelegationResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

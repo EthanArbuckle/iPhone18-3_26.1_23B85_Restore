@@ -1,15 +1,15 @@
 @interface SSBagKey
-- (SSBagKey)initWithStringRepresentation:(id)a3 valueType:(unint64_t)a4 defaultValue:(id)a5;
-- (id)valueFromDictionary:(id)a3;
+- (SSBagKey)initWithStringRepresentation:(id)representation valueType:(unint64_t)type defaultValue:(id)value;
+- (id)valueFromDictionary:(id)dictionary;
 @end
 
 @implementation SSBagKey
 
-- (SSBagKey)initWithStringRepresentation:(id)a3 valueType:(unint64_t)a4 defaultValue:(id)a5
+- (SSBagKey)initWithStringRepresentation:(id)representation valueType:(unint64_t)type defaultValue:(id)value
 {
-  v8 = a3;
-  v9 = a5;
-  if (v9 && !SSBagValueTypeIsPrimitive(a4))
+  representationCopy = representation;
+  valueCopy = value;
+  if (valueCopy && !SSBagValueTypeIsPrimitive(type))
   {
     v15 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Default values are only supported for primitive types." userInfo:0];
     objc_exception_throw(v15);
@@ -19,32 +19,32 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_defaultValue, a5);
-    v12 = [v8 componentsSeparatedByString:@"/"];
+    objc_storeStrong(&v10->_defaultValue, value);
+    v12 = [representationCopy componentsSeparatedByString:@"/"];
     stringRepresentation = v11->_stringRepresentation;
     v11->_stringRepresentation = v12;
 
-    v11->_valueType = a4;
+    v11->_valueType = type;
   }
 
   return v11;
 }
 
-- (id)valueFromDictionary:(id)a3
+- (id)valueFromDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(SSBagKey *)self stringRepresentation];
-  v6 = [v5 count];
+  dictionaryCopy = dictionary;
+  stringRepresentation = [(SSBagKey *)self stringRepresentation];
+  v6 = [stringRepresentation count];
 
   if (v6)
   {
     v7 = 0;
     while (1)
     {
-      v8 = [(SSBagKey *)self stringRepresentation];
-      v9 = [v8 objectAtIndexedSubscript:v7];
+      stringRepresentation2 = [(SSBagKey *)self stringRepresentation];
+      v9 = [stringRepresentation2 objectAtIndexedSubscript:v7];
 
-      v10 = [v4 objectForKeyedSubscript:v9];
+      v10 = [dictionaryCopy objectForKeyedSubscript:v9];
       if (!v10)
       {
 LABEL_9:
@@ -52,8 +52,8 @@ LABEL_9:
         goto LABEL_11;
       }
 
-      v11 = [(SSBagKey *)self stringRepresentation];
-      v12 = [v11 count] - 1;
+      stringRepresentation3 = [(SSBagKey *)self stringRepresentation];
+      v12 = [stringRepresentation3 count] - 1;
 
       if (v7 == v12)
       {
@@ -67,14 +67,14 @@ LABEL_9:
       }
 
       ++v7;
-      v13 = [(SSBagKey *)self stringRepresentation];
-      v14 = [v13 count];
+      stringRepresentation4 = [(SSBagKey *)self stringRepresentation];
+      v14 = [stringRepresentation4 count];
 
-      v4 = v10;
+      dictionaryCopy = v10;
       if (v7 >= v14)
       {
         v15 = 0;
-        v4 = v10;
+        dictionaryCopy = v10;
         goto LABEL_12;
       }
     }

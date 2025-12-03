@@ -1,10 +1,10 @@
 @interface CLAvailabilityTileParser
-+ (BOOL)generateAvlTileFromJSON:(id)a3 atPath:(id)a4;
-+ (void)_setParamOverrides:(void *)a3 fromDict:(id)a4;
++ (BOOL)generateAvlTileFromJSON:(id)n atPath:(id)path;
++ (void)_setParamOverrides:(void *)overrides fromDict:(id)dict;
 - (BOOL)_openTileFileForIncrementalIO;
 - (CLAvailabilityTileParser)init;
 - (CLAvailabilityTileParser)initWithEmptyTile;
-- (CLAvailabilityTileParser)initWithTilePathIncrementalIO:(id)a3;
+- (CLAvailabilityTileParser)initWithTilePathIncrementalIO:(id)o;
 - (id).cxx_construct;
 - (int)numVenuesExpected;
 @end
@@ -162,14 +162,14 @@ LABEL_17:
   return 0;
 }
 
-- (CLAvailabilityTileParser)initWithTilePathIncrementalIO:(id)a3
+- (CLAvailabilityTileParser)initWithTilePathIncrementalIO:(id)o
 {
-  v5 = a3;
+  oCopy = o;
   v14.receiver = self;
   v14.super_class = CLAvailabilityTileParser;
   v6 = [(CLAvailabilityTileParser *)&v14 init];
   v7 = v6;
-  if (v6 && (objc_storeStrong(&v6->_path, a3), (objc_msgSend__openTileFileForIncrementalIO(v7, v8, v9, v10, v11) & 1) == 0))
+  if (v6 && (objc_storeStrong(&v6->_path, o), (objc_msgSend__openTileFileForIncrementalIO(v7, v8, v9, v10, v11) & 1) == 0))
   {
     v12 = 0;
   }
@@ -182,260 +182,260 @@ LABEL_17:
   return v12;
 }
 
-+ (void)_setParamOverrides:(void *)a3 fromDict:(id)a4
++ (void)_setParamOverrides:(void *)overrides fromDict:(id)dict
 {
-  v5 = a4;
-  v10 = objc_msgSend_valueForKey_(v5, v6, v7, v8, v9, @"notifyIntervalNanos");
+  dictCopy = dict;
+  v10 = objc_msgSend_valueForKey_(dictCopy, v6, v7, v8, v9, @"notifyIntervalNanos");
 
   if (v10)
   {
-    v15 = objc_msgSend_objectForKeyedSubscript_(v5, v11, v12, v13, v14, @"notifyIntervalNanos");
+    v15 = objc_msgSend_objectForKeyedSubscript_(dictCopy, v11, v12, v13, v14, @"notifyIntervalNanos");
     v20 = objc_msgSend_unsignedIntValue(v15, v16, v17, v18, v19);
-    *(a3 + 75) |= 1u;
-    *(a3 + 2) = v20;
+    *(overrides + 75) |= 1u;
+    *(overrides + 2) = v20;
   }
 
-  v21 = objc_msgSend_valueForKey_(v5, v11, v12, v13, v14, @"numParticles");
+  v21 = objc_msgSend_valueForKey_(dictCopy, v11, v12, v13, v14, @"numParticles");
 
   if (v21)
   {
-    v26 = objc_msgSend_objectForKeyedSubscript_(v5, v22, v23, v24, v25, @"numParticles");
+    v26 = objc_msgSend_objectForKeyedSubscript_(dictCopy, v22, v23, v24, v25, @"numParticles");
     v31 = objc_msgSend_unsignedIntValue(v26, v27, v28, v29, v30);
-    *(a3 + 75) |= 2u;
-    *(a3 + 6) = v31;
+    *(overrides + 75) |= 2u;
+    *(overrides + 6) = v31;
   }
 
-  v32 = objc_msgSend_valueForKey_(v5, v22, v23, v24, v25, @"localizerType");
+  v32 = objc_msgSend_valueForKey_(dictCopy, v22, v23, v24, v25, @"localizerType");
 
   if (v32)
   {
-    v37 = objc_msgSend_objectForKeyedSubscript_(v5, v33, v34, v35, v36, @"localizerType");
+    v37 = objc_msgSend_objectForKeyedSubscript_(dictCopy, v33, v34, v35, v36, @"localizerType");
     v42 = objc_msgSend_unsignedIntValue(v37, v38, v39, v40, v41);
-    *(a3 + 75) |= 4u;
-    *(a3 + 7) = v42;
+    *(overrides + 75) |= 4u;
+    *(overrides + 7) = v42;
   }
 
-  v43 = objc_msgSend_valueForKey_(v5, v33, v34, v35, v36, @"modeEstimator");
+  v43 = objc_msgSend_valueForKey_(dictCopy, v33, v34, v35, v36, @"modeEstimator");
 
   if (v43)
   {
-    v48 = objc_msgSend_objectForKeyedSubscript_(v5, v44, v45, v46, v47, @"modeEstimator");
+    v48 = objc_msgSend_objectForKeyedSubscript_(dictCopy, v44, v45, v46, v47, @"modeEstimator");
     v53 = objc_msgSend_unsignedIntValue(v48, v49, v50, v51, v52);
-    *(a3 + 75) |= 0x10u;
-    *(a3 + 9) = v53;
+    *(overrides + 75) |= 0x10u;
+    *(overrides + 9) = v53;
   }
 
-  v54 = objc_msgSend_valueForKey_(v5, v44, v45, v46, v47, @"confidenceFactor");
+  v54 = objc_msgSend_valueForKey_(dictCopy, v44, v45, v46, v47, @"confidenceFactor");
 
   if (v54)
   {
-    v59 = objc_msgSend_objectForKeyedSubscript_(v5, v55, v56, v57, v58, @"confidenceFactor");
+    v59 = objc_msgSend_objectForKeyedSubscript_(dictCopy, v55, v56, v57, v58, @"confidenceFactor");
     objc_msgSend_floatValue(v59, v60, v61, v62, v63);
-    *(a3 + 75) |= 0x20u;
-    *(a3 + 10) = v64;
+    *(overrides + 75) |= 0x20u;
+    *(overrides + 10) = v64;
   }
 
-  v65 = objc_msgSend_valueForKey_(v5, v55, v56, v57, v58, @"motionPdrUnmodelledHeadingVariancePerSecond");
+  v65 = objc_msgSend_valueForKey_(dictCopy, v55, v56, v57, v58, @"motionPdrUnmodelledHeadingVariancePerSecond");
 
   if (v65)
   {
-    v70 = objc_msgSend_objectForKeyedSubscript_(v5, v66, v67, v68, v69, @"motionPdrUnmodelledHeadingVariancePerSecond");
+    v70 = objc_msgSend_objectForKeyedSubscript_(dictCopy, v66, v67, v68, v69, @"motionPdrUnmodelledHeadingVariancePerSecond");
     objc_msgSend_floatValue(v70, v71, v72, v73, v74);
-    *(a3 + 75) |= 0x40u;
-    *(a3 + 11) = v75;
+    *(overrides + 75) |= 0x40u;
+    *(overrides + 11) = v75;
   }
 
-  v76 = objc_msgSend_valueForKey_(v5, v66, v67, v68, v69, @"time2dMotionVariancePerSecond");
+  v76 = objc_msgSend_valueForKey_(dictCopy, v66, v67, v68, v69, @"time2dMotionVariancePerSecond");
 
   if (v76)
   {
-    v81 = objc_msgSend_objectForKeyedSubscript_(v5, v77, v78, v79, v80, @"time2dMotionVariancePerSecond");
+    v81 = objc_msgSend_objectForKeyedSubscript_(dictCopy, v77, v78, v79, v80, @"time2dMotionVariancePerSecond");
     objc_msgSend_floatValue(v81, v82, v83, v84, v85);
-    *(a3 + 75) |= 0x800u;
-    *(a3 + 24) = v86;
+    *(overrides + 75) |= 0x800u;
+    *(overrides + 24) = v86;
   }
 
-  v87 = objc_msgSend_valueForKey_(v5, v77, v78, v79, v80, @"secondsBetweenVenueTransitions");
+  v87 = objc_msgSend_valueForKey_(dictCopy, v77, v78, v79, v80, @"secondsBetweenVenueTransitions");
 
   if (v87)
   {
-    v92 = objc_msgSend_objectForKeyedSubscript_(v5, v88, v89, v90, v91, @"secondsBetweenVenueTransitions");
+    v92 = objc_msgSend_objectForKeyedSubscript_(dictCopy, v88, v89, v90, v91, @"secondsBetweenVenueTransitions");
     objc_msgSend_doubleValue(v92, v93, v94, v95, v96);
-    *(a3 + 75) |= 0x8000u;
-    *(a3 + 14) = v97;
+    *(overrides + 75) |= 0x8000u;
+    *(overrides + 14) = v97;
   }
 
-  v98 = objc_msgSend_valueForKey_(v5, v88, v89, v90, v91, @"coarseIndoorFloorSelection");
+  v98 = objc_msgSend_valueForKey_(dictCopy, v88, v89, v90, v91, @"coarseIndoorFloorSelection");
 
   if (v98)
   {
-    v103 = objc_msgSend_objectForKeyedSubscript_(v5, v99, v100, v101, v102, @"coarseIndoorFloorSelection");
+    v103 = objc_msgSend_objectForKeyedSubscript_(dictCopy, v99, v100, v101, v102, @"coarseIndoorFloorSelection");
     v108 = objc_msgSend_unsignedIntValue(v103, v104, v105, v106, v107);
-    *(a3 + 75) |= 1u;
-    *(a3 + 2) = v108;
+    *(overrides + 75) |= 1u;
+    *(overrides + 2) = v108;
   }
 
-  v109 = objc_msgSend_valueForKey_(v5, v99, v100, v101, v102, @"gpsStrobeDistance");
+  v109 = objc_msgSend_valueForKey_(dictCopy, v99, v100, v101, v102, @"gpsStrobeDistance");
 
   if (v109)
   {
-    v114 = objc_msgSend_objectForKeyedSubscript_(v5, v110, v111, v112, v113, @"gpsStrobeDistance");
+    v114 = objc_msgSend_objectForKeyedSubscript_(dictCopy, v110, v111, v112, v113, @"gpsStrobeDistance");
     objc_msgSend_floatValue(v114, v115, v116, v117, v118);
-    *(a3 + 75) |= 0x20000u;
-    *(a3 + 30) = v119;
+    *(overrides + 75) |= 0x20000u;
+    *(overrides + 30) = v119;
   }
 
-  v120 = objc_msgSend_valueForKey_(v5, v110, v111, v112, v113, @"lifespanDeepIndoors");
+  v120 = objc_msgSend_valueForKey_(dictCopy, v110, v111, v112, v113, @"lifespanDeepIndoors");
 
   if (v120)
   {
-    v125 = objc_msgSend_objectForKeyedSubscript_(v5, v121, v122, v123, v124, @"lifespanDeepIndoors");
+    v125 = objc_msgSend_objectForKeyedSubscript_(dictCopy, v121, v122, v123, v124, @"lifespanDeepIndoors");
     objc_msgSend_floatValue(v125, v126, v127, v128, v129);
-    *(a3 + 75) |= 0x40000u;
-    *(a3 + 31) = v130;
+    *(overrides + 75) |= 0x40000u;
+    *(overrides + 31) = v130;
   }
 
-  v131 = objc_msgSend_valueForKey_(v5, v121, v122, v123, v124, @"lifespanNearVenueEdge");
+  v131 = objc_msgSend_valueForKey_(dictCopy, v121, v122, v123, v124, @"lifespanNearVenueEdge");
 
   if (v131)
   {
-    v136 = objc_msgSend_objectForKeyedSubscript_(v5, v132, v133, v134, v135, @"lifespanNearVenueEdge");
+    v136 = objc_msgSend_objectForKeyedSubscript_(dictCopy, v132, v133, v134, v135, @"lifespanNearVenueEdge");
     objc_msgSend_floatValue(v136, v137, v138, v139, v140);
-    *(a3 + 75) |= 0x80000u;
-    *(a3 + 32) = v141;
+    *(overrides + 75) |= 0x80000u;
+    *(overrides + 32) = v141;
   }
 
-  v142 = objc_msgSend_valueForKey_(v5, v132, v133, v134, v135, @"lifespanAuxiliary");
+  v142 = objc_msgSend_valueForKey_(dictCopy, v132, v133, v134, v135, @"lifespanAuxiliary");
 
   if (v142)
   {
-    v147 = objc_msgSend_objectForKeyedSubscript_(v5, v143, v144, v145, v146, @"lifespanAuxiliary");
+    v147 = objc_msgSend_objectForKeyedSubscript_(dictCopy, v143, v144, v145, v146, @"lifespanAuxiliary");
     objc_msgSend_floatValue(v147, v148, v149, v150, v151);
-    *(a3 + 75) |= 0x100000u;
-    *(a3 + 33) = v152;
+    *(overrides + 75) |= 0x100000u;
+    *(overrides + 33) = v152;
   }
 
-  v153 = objc_msgSend_valueForKey_(v5, v143, v144, v145, v146, @"wifiLikelihoodOnMapPriorFactor");
+  v153 = objc_msgSend_valueForKey_(dictCopy, v143, v144, v145, v146, @"wifiLikelihoodOnMapPriorFactor");
 
   if (v153)
   {
-    v158 = objc_msgSend_objectForKeyedSubscript_(v5, v154, v155, v156, v157, @"wifiLikelihoodOnMapPriorFactor");
+    v158 = objc_msgSend_objectForKeyedSubscript_(dictCopy, v154, v155, v156, v157, @"wifiLikelihoodOnMapPriorFactor");
     objc_msgSend_floatValue(v158, v159, v160, v161, v162);
-    *(a3 + 75) |= 0x200000u;
-    *(a3 + 34) = v163;
+    *(overrides + 75) |= 0x200000u;
+    *(overrides + 34) = v163;
   }
 
-  v164 = objc_msgSend_valueForKey_(v5, v154, v155, v156, v157, @"coarseIndoorRadioOddsTransform");
+  v164 = objc_msgSend_valueForKey_(dictCopy, v154, v155, v156, v157, @"coarseIndoorRadioOddsTransform");
 
   if (v164)
   {
-    v169 = objc_msgSend_objectForKeyedSubscript_(v5, v165, v166, v167, v168, @"coarseIndoorRadioOddsTransform");
+    v169 = objc_msgSend_objectForKeyedSubscript_(dictCopy, v165, v166, v167, v168, @"coarseIndoorRadioOddsTransform");
     v174 = objc_msgSend_unsignedIntValue(v169, v170, v171, v172, v173);
-    *(a3 + 75) |= 0x800000u;
-    *(a3 + 35) = v174;
+    *(overrides + 75) |= 0x800000u;
+    *(overrides + 35) = v174;
   }
 
-  v175 = objc_msgSend_valueForKey_(v5, v165, v166, v167, v168, @"feasibleLocationRequiredPrbIndoor");
+  v175 = objc_msgSend_valueForKey_(dictCopy, v165, v166, v167, v168, @"feasibleLocationRequiredPrbIndoor");
 
   if (v175)
   {
-    v180 = objc_msgSend_objectForKeyedSubscript_(v5, v176, v177, v178, v179, @"feasibleLocationRequiredPrbIndoor");
+    v180 = objc_msgSend_objectForKeyedSubscript_(dictCopy, v176, v177, v178, v179, @"feasibleLocationRequiredPrbIndoor");
     objc_msgSend_doubleValue(v180, v181, v182, v183, v184);
-    *(a3 + 75) |= 0x1000000u;
-    *(a3 + 19) = v185;
+    *(overrides + 75) |= 0x1000000u;
+    *(overrides + 19) = v185;
   }
 
-  v186 = objc_msgSend_valueForKey_(v5, v176, v177, v178, v179, @"assignFloorWeightsByLikelihood");
+  v186 = objc_msgSend_valueForKey_(dictCopy, v176, v177, v178, v179, @"assignFloorWeightsByLikelihood");
 
   if (v186)
   {
-    v191 = objc_msgSend_objectForKeyedSubscript_(v5, v187, v188, v189, v190, @"assignFloorWeightsByLikelihood");
+    v191 = objc_msgSend_objectForKeyedSubscript_(dictCopy, v187, v188, v189, v190, @"assignFloorWeightsByLikelihood");
     v196 = objc_msgSend_BOOLValue(v191, v192, v193, v194, v195);
-    *(a3 + 75) |= 0x10000000u;
-    *(a3 + 192) = v196;
+    *(overrides + 75) |= 0x10000000u;
+    *(overrides + 192) = v196;
   }
 
-  v197 = objc_msgSend_valueForKey_(v5, v187, v188, v189, v190, @"priorOnMapWeightFraction");
+  v197 = objc_msgSend_valueForKey_(dictCopy, v187, v188, v189, v190, @"priorOnMapWeightFraction");
 
   if (v197)
   {
-    v202 = objc_msgSend_objectForKeyedSubscript_(v5, v198, v199, v200, v201, @"priorOnMapWeightFraction");
+    v202 = objc_msgSend_objectForKeyedSubscript_(dictCopy, v198, v199, v200, v201, @"priorOnMapWeightFraction");
     objc_msgSend_doubleValue(v202, v203, v204, v205, v206);
-    *(a3 + 75) |= 0x20000000u;
-    *(a3 + 23) = v207;
+    *(overrides + 75) |= 0x20000000u;
+    *(overrides + 23) = v207;
   }
 
-  v208 = objc_msgSend_valueForKey_(v5, v198, v199, v200, v201, @"enableBaroAidedFloorTransition");
+  v208 = objc_msgSend_valueForKey_(dictCopy, v198, v199, v200, v201, @"enableBaroAidedFloorTransition");
 
   if (v208)
   {
-    v213 = objc_msgSend_objectForKeyedSubscript_(v5, v209, v210, v211, v212, @"enableBaroAidedFloorTransition");
+    v213 = objc_msgSend_objectForKeyedSubscript_(dictCopy, v209, v210, v211, v212, @"enableBaroAidedFloorTransition");
     v218 = objc_msgSend_BOOLValue(v213, v214, v215, v216, v217);
-    *(a3 + 75) |= 0x40000000u;
-    *(a3 + 193) = v218;
+    *(overrides + 75) |= 0x40000000u;
+    *(overrides + 193) = v218;
   }
 
-  v219 = objc_msgSend_valueForKey_(v5, v209, v210, v211, v212, @"time2dMotionVariancePerSecondWifi2");
+  v219 = objc_msgSend_valueForKey_(dictCopy, v209, v210, v211, v212, @"time2dMotionVariancePerSecondWifi2");
 
   if (v219)
   {
-    v224 = objc_msgSend_objectForKeyedSubscript_(v5, v220, v221, v222, v223, @"time2dMotionVariancePerSecondWifi2");
+    v224 = objc_msgSend_objectForKeyedSubscript_(dictCopy, v220, v221, v222, v223, @"time2dMotionVariancePerSecondWifi2");
     objc_msgSend_floatValue(v224, v225, v226, v227, v228);
-    *(a3 + 75) |= 0x80000000;
-    *(a3 + 49) = v229;
+    *(overrides + 75) |= 0x80000000;
+    *(overrides + 49) = v229;
   }
 
-  v230 = objc_msgSend_valueForKey_(v5, v220, v221, v222, v223, @"bilinearObservations");
+  v230 = objc_msgSend_valueForKey_(dictCopy, v220, v221, v222, v223, @"bilinearObservations");
 
   if (v230)
   {
-    v235 = objc_msgSend_objectForKeyedSubscript_(v5, v231, v232, v233, v234, @"bilinearObservations");
+    v235 = objc_msgSend_objectForKeyedSubscript_(dictCopy, v231, v232, v233, v234, @"bilinearObservations");
     v240 = objc_msgSend_BOOLValue(v235, v236, v237, v238, v239);
-    *(a3 + 76) |= 2u;
-    *(a3 + 194) = v240;
+    *(overrides + 76) |= 2u;
+    *(overrides + 194) = v240;
   }
 
-  v241 = objc_msgSend_valueForKey_(v5, v231, v232, v233, v234, @"walkableBlueDotSearchRadius");
+  v241 = objc_msgSend_valueForKey_(dictCopy, v231, v232, v233, v234, @"walkableBlueDotSearchRadius");
 
   if (v241)
   {
-    v246 = objc_msgSend_objectForKeyedSubscript_(v5, v242, v243, v244, v245, @"walkableBlueDotSearchRadius");
+    v246 = objc_msgSend_objectForKeyedSubscript_(dictCopy, v242, v243, v244, v245, @"walkableBlueDotSearchRadius");
     objc_msgSend_floatValue(v246, v247, v248, v249, v250);
-    *(a3 + 76) |= 0x10u;
-    *(a3 + 56) = v251;
+    *(overrides + 76) |= 0x10u;
+    *(overrides + 56) = v251;
   }
 
-  v252 = objc_msgSend_valueForKey_(v5, v242, v243, v244, v245, @"motionPdrUnmodelledHeadingVariancePerSecondWifi2");
+  v252 = objc_msgSend_valueForKey_(dictCopy, v242, v243, v244, v245, @"motionPdrUnmodelledHeadingVariancePerSecondWifi2");
 
   if (v252)
   {
-    v257 = objc_msgSend_objectForKeyedSubscript_(v5, v253, v254, v255, v256, @"motionPdrUnmodelledHeadingVariancePerSecondWifi2");
+    v257 = objc_msgSend_objectForKeyedSubscript_(dictCopy, v253, v254, v255, v256, @"motionPdrUnmodelledHeadingVariancePerSecondWifi2");
     objc_msgSend_floatValue(v257, v258, v259, v260, v261);
-    *(a3 + 76) |= 0x40u;
-    *(a3 + 57) = v262;
+    *(overrides + 76) |= 0x40u;
+    *(overrides + 57) = v262;
   }
 
-  v263 = objc_msgSend_valueForKey_(v5, v253, v254, v255, v256, @"particleFilterOffMapProbabilityFloor");
+  v263 = objc_msgSend_valueForKey_(dictCopy, v253, v254, v255, v256, @"particleFilterOffMapProbabilityFloor");
 
   if (v263)
   {
-    v268 = objc_msgSend_objectForKeyedSubscript_(v5, v264, v265, v266, v267, @"particleFilterOffMapProbabilityFloor");
+    v268 = objc_msgSend_objectForKeyedSubscript_(dictCopy, v264, v265, v266, v267, @"particleFilterOffMapProbabilityFloor");
     objc_msgSend_floatValue(v268, v269, v270, v271, v272);
-    *(a3 + 76) |= 0x100u;
-    *(a3 + 62) = v273;
+    *(overrides + 76) |= 0x100u;
+    *(overrides + 62) = v273;
   }
 
-  v274 = objc_msgSend_valueForKey_(v5, v264, v265, v266, v267, @"coarseOutdoorProbabilityFloor");
+  v274 = objc_msgSend_valueForKey_(dictCopy, v264, v265, v266, v267, @"coarseOutdoorProbabilityFloor");
 
   if (v274)
   {
-    v279 = objc_msgSend_objectForKeyedSubscript_(v5, v275, v276, v277, v278, @"coarseOutdoorProbabilityFloor");
+    v279 = objc_msgSend_objectForKeyedSubscript_(dictCopy, v275, v276, v277, v278, @"coarseOutdoorProbabilityFloor");
     objc_msgSend_floatValue(v279, v280, v281, v282, v283);
-    *(a3 + 76) |= 0x200u;
-    *(a3 + 63) = v284;
+    *(overrides + 76) |= 0x200u;
+    *(overrides + 63) = v284;
   }
 
-  v285 = objc_msgSend_valueForKey_(v5, v275, v276, v277, v278, @"pdr");
+  v285 = objc_msgSend_valueForKey_(dictCopy, v275, v276, v277, v278, @"pdr");
 
   if (v285)
   {
@@ -466,7 +466,7 @@ LABEL_55:
   }
 
 LABEL_56:
-  v291 = objc_msgSend_valueForKey_(v5, v286, v287, v288, v289, @"pedomCompassMotionWifi2");
+  v291 = objc_msgSend_valueForKey_(dictCopy, v286, v287, v288, v289, @"pedomCompassMotionWifi2");
 
   if (!v291)
   {
@@ -496,7 +496,7 @@ LABEL_59:
 LABEL_60:
 
 LABEL_61:
-  v297 = objc_msgSend_valueForKey_(v5, v292, v293, v294, v295, @"deadReckoning");
+  v297 = objc_msgSend_valueForKey_(dictCopy, v292, v293, v294, v295, @"deadReckoning");
 
   if (!v297)
   {
@@ -526,7 +526,7 @@ LABEL_64:
 LABEL_65:
 
 LABEL_66:
-  v303 = objc_msgSend_valueForKey_(v5, v298, v299, v300, v301, @"coarseIndoor");
+  v303 = objc_msgSend_valueForKey_(dictCopy, v298, v299, v300, v301, @"coarseIndoor");
 
   if (!v303)
   {
@@ -556,7 +556,7 @@ LABEL_69:
 LABEL_70:
 
 LABEL_71:
-  v309 = objc_msgSend_valueForKey_(v5, v304, v305, v306, v307, @"gpsFusionGlobalParams");
+  v309 = objc_msgSend_valueForKey_(dictCopy, v304, v305, v306, v307, @"gpsFusionGlobalParams");
 
   if (!v309)
   {
@@ -586,7 +586,7 @@ LABEL_74:
 LABEL_75:
 
 LABEL_76:
-  v315 = objc_msgSend_valueForKey_(v5, v310, v311, v312, v313, @"wifi");
+  v315 = objc_msgSend_valueForKey_(dictCopy, v310, v311, v312, v313, @"wifi");
 
   if (!v315)
   {
@@ -616,7 +616,7 @@ LABEL_79:
 LABEL_80:
 
 LABEL_81:
-  v321 = objc_msgSend_valueForKey_(v5, v316, v317, v318, v319, @"bodyFixed");
+  v321 = objc_msgSend_valueForKey_(dictCopy, v316, v317, v318, v319, @"bodyFixed");
 
   if (!v321)
   {
@@ -646,7 +646,7 @@ LABEL_84:
 LABEL_85:
 
 LABEL_86:
-  v327 = objc_msgSend_valueForKey_(v5, v322, v323, v324, v325, @"motionTruth");
+  v327 = objc_msgSend_valueForKey_(dictCopy, v322, v323, v324, v325, @"motionTruth");
 
   if (!v327)
   {
@@ -676,7 +676,7 @@ LABEL_89:
 LABEL_90:
 
 LABEL_91:
-  v333 = objc_msgSend_valueForKey_(v5, v328, v329, v330, v331, @"multiphoneDbm");
+  v333 = objc_msgSend_valueForKey_(dictCopy, v328, v329, v330, v331, @"multiphoneDbm");
 
   if (!v333)
   {
@@ -706,7 +706,7 @@ LABEL_94:
 LABEL_95:
 
 LABEL_96:
-  v339 = objc_msgSend_valueForKey_(v5, v334, v335, v336, v337, @"pedomCompassMotion");
+  v339 = objc_msgSend_valueForKey_(dictCopy, v334, v335, v336, v337, @"pedomCompassMotion");
 
   if (!v339)
   {
@@ -736,7 +736,7 @@ LABEL_99:
 LABEL_100:
 
 LABEL_101:
-  v345 = objc_msgSend_valueForKey_(v5, v340, v341, v342, v343, @"injection");
+  v345 = objc_msgSend_valueForKey_(dictCopy, v340, v341, v342, v343, @"injection");
 
   if (!v345)
   {
@@ -766,7 +766,7 @@ LABEL_104:
 LABEL_105:
 
 LABEL_106:
-  v351 = objc_msgSend_valueForKey_(v5, v346, v347, v348, v349, @"beacon");
+  v351 = objc_msgSend_valueForKey_(dictCopy, v346, v347, v348, v349, @"beacon");
 
   if (!v351)
   {
@@ -796,7 +796,7 @@ LABEL_109:
 LABEL_110:
 
 LABEL_111:
-  v357 = objc_msgSend_valueForKey_(v5, v352, v353, v354, v355, @"wallBehavior");
+  v357 = objc_msgSend_valueForKey_(dictCopy, v352, v353, v354, v355, @"wallBehavior");
 
   if (!v357)
   {
@@ -826,7 +826,7 @@ LABEL_114:
 LABEL_115:
 
 LABEL_116:
-  v363 = objc_msgSend_valueForKey_(v5, v358, v359, v360, v361, @"dynamicUniverseParameters");
+  v363 = objc_msgSend_valueForKey_(dictCopy, v358, v359, v360, v361, @"dynamicUniverseParameters");
 
   if (!v363)
   {
@@ -856,7 +856,7 @@ LABEL_119:
 LABEL_120:
 
 LABEL_121:
-  v369 = objc_msgSend_valueForKey_(v5, v364, v365, v366, v367, @"dynamicUniverseParameters");
+  v369 = objc_msgSend_valueForKey_(dictCopy, v364, v365, v366, v367, @"dynamicUniverseParameters");
 
   if (!v369)
   {
@@ -886,7 +886,7 @@ LABEL_124:
 LABEL_125:
 
 LABEL_126:
-  v375 = objc_msgSend_valueForKey_(v5, v370, v371, v372, v373, @"altitude");
+  v375 = objc_msgSend_valueForKey_(dictCopy, v370, v371, v372, v373, @"altitude");
 
   if (v375)
   {
@@ -919,18 +919,18 @@ LABEL_130:
 LABEL_131:
 }
 
-+ (BOOL)generateAvlTileFromJSON:(id)a3 atPath:(id)a4
++ (BOOL)generateAvlTileFromJSON:(id)n atPath:(id)path
 {
   v511 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v464 = v5;
-  v458 = v6;
-  if (v5)
+  nCopy = n;
+  pathCopy = path;
+  v464 = nCopy;
+  v458 = pathCopy;
+  if (nCopy)
   {
-    if (v6)
+    if (pathCopy)
     {
-      objc_msgSend_dataUsingEncoding_(v5, v7, v8, v9, v10, 4);
+      objc_msgSend_dataUsingEncoding_(nCopy, v7, v8, v9, v10, 4);
       v457 = v488 = 0;
       v463 = objc_msgSend_JSONObjectWithData_options_error_(MEMORY[0x277CCAAA0], v11, v12, v13, v14);
       v460 = 0;

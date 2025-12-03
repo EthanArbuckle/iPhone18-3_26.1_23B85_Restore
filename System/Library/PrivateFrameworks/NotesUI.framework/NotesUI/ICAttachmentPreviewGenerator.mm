@@ -3,43 +3,43 @@
 + (BOOL)imageClassificationEnabled;
 + (BOOL)imageOCRGenerationEnabled;
 + (ICAttachmentPreviewGenerator)sharedGenerator;
-+ (void)purgeImageClassificationsInContext:(id)a3;
-+ (void)purgeOCRInContext:(id)a3;
-+ (void)setImageClassificationTemporarilyDisabled:(BOOL)a3;
++ (void)purgeImageClassificationsInContext:(id)context;
++ (void)purgeOCRInContext:(id)context;
++ (void)setImageClassificationTemporarilyDisabled:(BOOL)disabled;
 - (BOOL)isPreviewGenerationSupported;
 - (BOOL)previewOperationsIdle;
 - (ICAttachmentPreviewGenerator)init;
-- (id)progressForObjectID:(id)a3;
-- (void)adjustUserTitleIfNecessaryForAttachment:(id)a3;
-- (void)attachmentNeedsPostProcessingNotification:(id)a3;
-- (void)attachmentNeedsPreviewGenerationNotification:(id)a3;
-- (void)attachmentWillBeDeleted:(id)a3;
-- (void)beginPostProcessingAfterDelayIfNecessaryWithForceDelay:(BOOL)a3;
+- (id)progressForObjectID:(id)d;
+- (void)adjustUserTitleIfNecessaryForAttachment:(id)attachment;
+- (void)attachmentNeedsPostProcessingNotification:(id)notification;
+- (void)attachmentNeedsPreviewGenerationNotification:(id)notification;
+- (void)attachmentWillBeDeleted:(id)deleted;
+- (void)beginPostProcessingAfterDelayIfNecessaryWithForceDelay:(BOOL)delay;
 - (void)cancelGenerationOfPendingPreviews;
-- (void)cancelIfNeededForAttachment:(id)a3;
+- (void)cancelIfNeededForAttachment:(id)attachment;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
 - (void)disableAutomaticPreviewGeneration;
 - (void)enableAutomaticPreviewGeneration;
-- (void)fetchMissingOrOutdatedImageClassificationSummaryAttachmentIDsInContext:(id)a3 completion:(id)a4;
-- (void)fetchMissingOrOutdatedMetaDataAttachmentIDsInContext:(id)a3 completion:(id)a4;
-- (void)fetchMissingOrOutdatedOCRSummaryAttachmentIDsInContext:(id)a3 completion:(id)a4;
-- (void)generateMissingOrOutdatedAttachmentMetaDataIfNeededInContext:(id)a3;
-- (void)generatePendingPreviewForAttachment:(id)a3;
+- (void)fetchMissingOrOutdatedImageClassificationSummaryAttachmentIDsInContext:(id)context completion:(id)completion;
+- (void)fetchMissingOrOutdatedMetaDataAttachmentIDsInContext:(id)context completion:(id)completion;
+- (void)fetchMissingOrOutdatedOCRSummaryAttachmentIDsInContext:(id)context completion:(id)completion;
+- (void)generateMissingOrOutdatedAttachmentMetaDataIfNeededInContext:(id)context;
+- (void)generatePendingPreviewForAttachment:(id)attachment;
 - (void)generatePendingPreviews;
-- (void)generatePreviewIfNeededForAttachment:(id)a3;
-- (void)generatePreviewIfNeededForAttachmentWithObjectID:(id)a3;
+- (void)generatePreviewIfNeededForAttachment:(id)attachment;
+- (void)generatePreviewIfNeededForAttachmentWithObjectID:(id)d;
 - (void)generatePreviewsIfNeeded;
-- (void)mediaDidLoad:(id)a3;
-- (void)operationComplete:(id)a3;
-- (void)postProcessIfNeededForAttachment:(id)a3;
+- (void)mediaDidLoad:(id)load;
+- (void)operationComplete:(id)complete;
+- (void)postProcessIfNeededForAttachment:(id)attachment;
 - (void)postProcessPendingPreviews;
-- (void)postProcessPreviewForAttachment:(id)a3;
+- (void)postProcessPreviewForAttachment:(id)attachment;
 - (void)progressIndicatorTrackerStartAnimation;
 - (void)progressIndicatorTrackerStopAnimation;
-- (void)reachabilityChanged:(id)a3;
+- (void)reachabilityChanged:(id)changed;
 - (void)resume;
-- (void)setProgress:(id)a3 forObjectID:(id)a4;
+- (void)setProgress:(id)progress forObjectID:(id)d;
 - (void)suspend;
 @end
 
@@ -120,17 +120,17 @@ uint64_t __47__ICAttachmentPreviewGenerator_sharedGenerator__block_invoke()
       dispatch_async(MEMORY[0x1E69E96A0], &v37);
     }
 
-    v19 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     lastOperationForAttachmentID = v2->_lastOperationForAttachmentID;
-    v2->_lastOperationForAttachmentID = v19;
+    v2->_lastOperationForAttachmentID = strongToWeakObjectsMapTable;
 
     v21 = [MEMORY[0x1E695DFA8] set];
     attachmentIDsPending = v2->_attachmentIDsPending;
     v2->_attachmentIDsPending = v21;
 
-    v23 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     attachmentIDsProgress = v2->_attachmentIDsProgress;
-    v2->_attachmentIDsProgress = v23;
+    v2->_attachmentIDsProgress = dictionary;
 
     v25 = objc_alloc_init(MEMORY[0x1E695DFA0]);
     postProcessingIDsPending = v2->_postProcessingIDsPending;
@@ -191,10 +191,10 @@ uint64_t __47__ICAttachmentPreviewGenerator_sharedGenerator__block_invoke()
       _os_log_impl(&dword_1D4171000, v31, OS_LOG_TYPE_INFO, "Image Classification is %@", buf, 0xCu);
     }
 
-    v33 = [MEMORY[0x1E69B7800] sharedContext];
-    v34 = [v33 workerManagedObjectContext];
+    mEMORY[0x1E69B7800] = [MEMORY[0x1E69B7800] sharedContext];
+    workerManagedObjectContext = [mEMORY[0x1E69B7800] workerManagedObjectContext];
     workerManagedObjectContext = v2->_workerManagedObjectContext;
-    v2->_workerManagedObjectContext = v34;
+    v2->_workerManagedObjectContext = workerManagedObjectContext;
   }
 
   return v2;
@@ -208,8 +208,8 @@ void __36__ICAttachmentPreviewGenerator_init__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ICAttachmentPreviewGenerator;
@@ -218,52 +218,52 @@ void __36__ICAttachmentPreviewGenerator_init__block_invoke(uint64_t a1)
 
 - (void)progressIndicatorTrackerStartAnimation
 {
-  v2 = [(ICAttachmentPreviewGenerator *)self costlyGeneratorQueue];
-  [v2 setSuspended:1];
+  costlyGeneratorQueue = [(ICAttachmentPreviewGenerator *)self costlyGeneratorQueue];
+  [costlyGeneratorQueue setSuspended:1];
 }
 
 - (void)progressIndicatorTrackerStopAnimation
 {
-  v2 = [(ICAttachmentPreviewGenerator *)self costlyGeneratorQueue];
-  [v2 setSuspended:0];
+  costlyGeneratorQueue = [(ICAttachmentPreviewGenerator *)self costlyGeneratorQueue];
+  [costlyGeneratorQueue setSuspended:0];
 }
 
 - (BOOL)isPreviewGenerationSupported
 {
-  v2 = [MEMORY[0x1E69B7800] sharedContext];
-  v3 = [v2 hasContextOptions:32];
+  mEMORY[0x1E69B7800] = [MEMORY[0x1E69B7800] sharedContext];
+  v3 = [mEMORY[0x1E69B7800] hasContextOptions:32];
 
   return v3;
 }
 
 - (BOOL)previewOperationsIdle
 {
-  v3 = [(ICAttachmentPreviewGenerator *)self attachmentIDsPending];
-  v4 = [v3 count];
+  attachmentIDsPending = [(ICAttachmentPreviewGenerator *)self attachmentIDsPending];
+  v4 = [attachmentIDsPending count];
 
-  v5 = [(ICAttachmentPreviewGenerator *)self generatorQueue];
-  v6 = v4 | [v5 operationCount];
+  generatorQueue = [(ICAttachmentPreviewGenerator *)self generatorQueue];
+  v6 = v4 | [generatorQueue operationCount];
 
-  v7 = [(ICAttachmentPreviewGenerator *)self costlyGeneratorQueue];
-  v8 = [v7 operationCount];
+  costlyGeneratorQueue = [(ICAttachmentPreviewGenerator *)self costlyGeneratorQueue];
+  operationCount = [costlyGeneratorQueue operationCount];
 
-  v9 = [(ICAttachmentPreviewGenerator *)self asyncGeneratorQueue];
-  v10 = [v9 operationCount];
+  asyncGeneratorQueue = [(ICAttachmentPreviewGenerator *)self asyncGeneratorQueue];
+  operationCount2 = [asyncGeneratorQueue operationCount];
 
-  return !v6 && (v8 | v10) == 0;
+  return !v6 && (operationCount | operationCount2) == 0;
 }
 
 - (void)generatePreviewsIfNeeded
 {
   if ([(ICAttachmentPreviewGenerator *)self isPreviewGenerationSupported])
   {
-    v3 = [(ICAttachmentPreviewGenerator *)self previewQueue];
+    previewQueue = [(ICAttachmentPreviewGenerator *)self previewQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __56__ICAttachmentPreviewGenerator_generatePreviewsIfNeeded__block_invoke;
     block[3] = &unk_1E8468BA0;
     block[4] = self;
-    dispatch_async(v3, block);
+    dispatch_async(previewQueue, block);
 
     [(ICAttachmentPreviewGenerator *)self generatePendingPreviews];
   }
@@ -281,23 +281,23 @@ void __56__ICAttachmentPreviewGenerator_generatePreviewsIfNeeded__block_invoke(u
 
 + (BOOL)docCamOCRGenerationEnabled
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"ICDocCamOCRDisabledDefaultsKey"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"ICDocCamOCRDisabledDefaultsKey"];
 
   return v3 ^ 1;
 }
 
 + (BOOL)imageOCRGenerationEnabled
 {
-  if ([a1 universalSearchProcessingLibraryEnabled])
+  if ([self universalSearchProcessingLibraryEnabled])
   {
     LOBYTE(v2) = 0;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v2 = [v3 BOOLForKey:@"ICImageOCRDisabledDefaultsKey"] ^ 1;
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v2 = [standardUserDefaults BOOLForKey:@"ICImageOCRDisabledDefaultsKey"] ^ 1;
   }
 
   return v2;
@@ -305,26 +305,26 @@ void __56__ICAttachmentPreviewGenerator_generatePreviewsIfNeeded__block_invoke(u
 
 + (BOOL)imageClassificationEnabled
 {
-  if ([a1 universalSearchProcessingLibraryEnabled])
+  if ([self universalSearchProcessingLibraryEnabled])
   {
     return 0;
   }
 
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"ICImageClassificationDisabledDefaultsKey"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"ICImageClassificationDisabledDefaultsKey"];
   v5 = v4 ^ 1;
 
   if ((v4 & 1) == 0)
   {
     objc_opt_class();
-    v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v8 = [v7 objectForKey:@"ICImageClassificationTemporarilyDisabledUntilDateDefaultsKey"];
+    standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    v8 = [standardUserDefaults2 objectForKey:@"ICImageClassificationTemporarilyDisabledUntilDateDefaultsKey"];
     v9 = ICDynamicCast();
 
     if (v9)
     {
-      v10 = [MEMORY[0x1E695DF00] date];
-      v11 = [v10 compare:v9];
+      date = [MEMORY[0x1E695DF00] date];
+      v11 = [date compare:v9];
 
       if (v11 == -1)
       {
@@ -332,8 +332,8 @@ void __56__ICAttachmentPreviewGenerator_generatePreviewsIfNeeded__block_invoke(u
         goto LABEL_10;
       }
 
-      v12 = [MEMORY[0x1E695E000] standardUserDefaults];
-      [v12 removeObjectForKey:@"ICImageClassificationTemporarilyDisabledUntilDateDefaultsKey"];
+      standardUserDefaults3 = [MEMORY[0x1E695E000] standardUserDefaults];
+      [standardUserDefaults3 removeObjectForKey:@"ICImageClassificationTemporarilyDisabledUntilDateDefaultsKey"];
     }
 
     v6 = 1;
@@ -346,14 +346,14 @@ LABEL_10:
   return v6 & v5;
 }
 
-+ (void)setImageClassificationTemporarilyDisabled:(BOOL)a3
++ (void)setImageClassificationTemporarilyDisabled:(BOOL)disabled
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (disabled)
   {
     v3 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:10800.0];
-    v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v4 setObject:v3 forKey:@"ICImageClassificationTemporarilyDisabledUntilDateDefaultsKey"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults setObject:v3 forKey:@"ICImageClassificationTemporarilyDisabledUntilDateDefaultsKey"];
 
     v5 = os_log_create("com.apple.notes", "PreviewGeneration");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -366,8 +366,8 @@ LABEL_10:
 
   else
   {
-    v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v6 removeObjectForKey:@"ICImageClassificationTemporarilyDisabledUntilDateDefaultsKey"];
+    standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults2 removeObjectForKey:@"ICImageClassificationTemporarilyDisabledUntilDateDefaultsKey"];
 
     v3 = os_log_create("com.apple.notes", "PreviewGeneration");
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -378,15 +378,15 @@ LABEL_10:
   }
 }
 
-+ (void)purgeImageClassificationsInContext:(id)a3
++ (void)purgeImageClassificationsInContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __67__ICAttachmentPreviewGenerator_purgeImageClassificationsInContext___block_invoke;
   v5[3] = &unk_1E8468BA0;
-  v6 = v3;
-  v4 = v3;
+  v6 = contextCopy;
+  v4 = contextCopy;
   [v4 performBlockAndWait:v5];
 }
 
@@ -414,15 +414,15 @@ void __67__ICAttachmentPreviewGenerator_purgeImageClassificationsInContext___blo
   objc_autoreleasePoolPop(v2);
 }
 
-+ (void)purgeOCRInContext:(id)a3
++ (void)purgeOCRInContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __50__ICAttachmentPreviewGenerator_purgeOCRInContext___block_invoke;
   v5[3] = &unk_1E8468BA0;
-  v6 = v3;
-  v4 = v3;
+  v6 = contextCopy;
+  v4 = contextCopy;
   [v4 performBlockAndWait:v5];
 }
 
@@ -450,14 +450,14 @@ void __50__ICAttachmentPreviewGenerator_purgeOCRInContext___block_invoke_2(uint6
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)fetchMissingOrOutdatedImageClassificationSummaryAttachmentIDsInContext:(id)a3 completion:(id)a4
+- (void)fetchMissingOrOutdatedImageClassificationSummaryAttachmentIDsInContext:(id)context completion:(id)completion
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(media != nil)"];
   v8 = [MEMORY[0x1E69B7680] predicateForPasswordProtected:0];
-  v9 = [MEMORY[0x1E69B7680] notDeletedPredicate];
+  notDeletedPredicate = [MEMORY[0x1E69B7680] notDeletedPredicate];
   v20 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(imageClassificationSummary == nil)"];
   v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(imageClassificationSummaryVersion < %d)", *MEMORY[0x1E69B73C8]];
   v11 = MEMORY[0x1E696AB28];
@@ -468,7 +468,7 @@ void __50__ICAttachmentPreviewGenerator_purgeOCRInContext___block_invoke_2(uint6
 
   v14 = MEMORY[0x1E696AB28];
   v25[0] = v7;
-  v25[1] = v9;
+  v25[1] = notDeletedPredicate;
   v25[2] = v13;
   v25[3] = v8;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:4];
@@ -479,10 +479,10 @@ void __50__ICAttachmentPreviewGenerator_purgeOCRInContext___block_invoke_2(uint6
   v21[2] = __114__ICAttachmentPreviewGenerator_fetchMissingOrOutdatedImageClassificationSummaryAttachmentIDsInContext_completion___block_invoke;
   v21[3] = &unk_1E846BA48;
   v22 = v16;
-  v23 = v5;
-  v24 = v6;
-  v17 = v6;
-  v18 = v5;
+  v23 = contextCopy;
+  v24 = completionCopy;
+  v17 = completionCopy;
+  v18 = contextCopy;
   v19 = v16;
   [v18 performBlock:v21];
 }
@@ -493,14 +493,14 @@ void __114__ICAttachmentPreviewGenerator_fetchMissingOrOutdatedImageClassificati
   (*(a1[6] + 16))();
 }
 
-- (void)fetchMissingOrOutdatedOCRSummaryAttachmentIDsInContext:(id)a3 completion:(id)a4
+- (void)fetchMissingOrOutdatedOCRSummaryAttachmentIDsInContext:(id)context completion:(id)completion
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(media != nil)"];
   v8 = [MEMORY[0x1E69B7680] predicateForPasswordProtected:0];
-  v9 = [MEMORY[0x1E69B7680] notDeletedPredicate];
+  notDeletedPredicate = [MEMORY[0x1E69B7680] notDeletedPredicate];
   v20 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(ocrSummary == nil)"];
   v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(ocrSummaryVersion < %d)", *MEMORY[0x1E69B73D0]];
   v11 = MEMORY[0x1E696AB28];
@@ -513,7 +513,7 @@ void __114__ICAttachmentPreviewGenerator_fetchMissingOrOutdatedImageClassificati
   v25[0] = v7;
   v25[1] = v13;
   v25[2] = v8;
-  v25[3] = v9;
+  v25[3] = notDeletedPredicate;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:4];
   v16 = [v14 andPredicateWithSubpredicates:v15];
 
@@ -522,10 +522,10 @@ void __114__ICAttachmentPreviewGenerator_fetchMissingOrOutdatedImageClassificati
   v21[2] = __98__ICAttachmentPreviewGenerator_fetchMissingOrOutdatedOCRSummaryAttachmentIDsInContext_completion___block_invoke;
   v21[3] = &unk_1E846BA48;
   v22 = v16;
-  v23 = v5;
-  v24 = v6;
-  v17 = v6;
-  v18 = v5;
+  v23 = contextCopy;
+  v24 = completionCopy;
+  v17 = completionCopy;
+  v18 = contextCopy;
   v19 = v16;
   [v18 performBlock:v21];
 }
@@ -536,19 +536,19 @@ void __98__ICAttachmentPreviewGenerator_fetchMissingOrOutdatedOCRSummaryAttachme
   (*(a1[6] + 16))();
 }
 
-- (void)fetchMissingOrOutdatedMetaDataAttachmentIDsInContext:(id)a3 completion:(id)a4
+- (void)fetchMissingOrOutdatedMetaDataAttachmentIDsInContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __96__ICAttachmentPreviewGenerator_fetchMissingOrOutdatedMetaDataAttachmentIDsInContext_completion___block_invoke;
   v10[3] = &unk_1E846BA98;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = contextCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = contextCopy;
   [(ICAttachmentPreviewGenerator *)self fetchMissingOrOutdatedOCRSummaryAttachmentIDsInContext:v9 completion:v10];
 }
 
@@ -579,16 +579,16 @@ void __96__ICAttachmentPreviewGenerator_fetchMissingOrOutdatedMetaDataAttachment
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)generateMissingOrOutdatedAttachmentMetaDataIfNeededInContext:(id)a3
+- (void)generateMissingOrOutdatedAttachmentMetaDataIfNeededInContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __93__ICAttachmentPreviewGenerator_generateMissingOrOutdatedAttachmentMetaDataIfNeededInContext___block_invoke;
   v6[3] = &unk_1E846BAE8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = contextCopy;
+  selfCopy = self;
+  v5 = contextCopy;
   [(ICAttachmentPreviewGenerator *)self fetchMissingOrOutdatedMetaDataAttachmentIDsInContext:v5 completion:v6];
 }
 
@@ -636,24 +636,24 @@ void __93__ICAttachmentPreviewGenerator_generateMissingOrOutdatedAttachmentMetaD
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)generatePreviewIfNeededForAttachment:(id)a3
+- (void)generatePreviewIfNeededForAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   if ([(ICAttachmentPreviewGenerator *)self isPreviewGenerationSupported])
   {
-    v5 = [v4 ic_permanentObjectID];
-    v6 = [(ICAttachmentPreviewGenerator *)self previewQueue];
+    ic_permanentObjectID = [attachmentCopy ic_permanentObjectID];
+    previewQueue = [(ICAttachmentPreviewGenerator *)self previewQueue];
     v8 = MEMORY[0x1E69E9820];
     v9 = 3221225472;
     v10 = __69__ICAttachmentPreviewGenerator_generatePreviewIfNeededForAttachment___block_invoke;
     v11 = &unk_1E8468F80;
-    v12 = self;
-    v13 = v5;
-    v7 = v5;
-    dispatch_async(v6, &v8);
+    selfCopy = self;
+    v13 = ic_permanentObjectID;
+    v7 = ic_permanentObjectID;
+    dispatch_async(previewQueue, &v8);
 
     [(ICAttachmentPreviewGenerator *)self generatePendingPreviews:v8];
-    [(ICAttachmentPreviewGenerator *)self postProcessIfNeededForAttachment:v4];
+    [(ICAttachmentPreviewGenerator *)self postProcessIfNeededForAttachment:attachmentCopy];
   }
 }
 
@@ -667,26 +667,26 @@ void __69__ICAttachmentPreviewGenerator_generatePreviewIfNeededForAttachment___b
   }
 }
 
-- (void)generatePreviewIfNeededForAttachmentWithObjectID:(id)a3
+- (void)generatePreviewIfNeededForAttachmentWithObjectID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   if ([(ICAttachmentPreviewGenerator *)self isPreviewGenerationSupported])
   {
-    if ([v5 isTemporaryID])
+    if ([dCopy isTemporaryID])
     {
       v6 = MEMORY[0x1E69B7A38];
       v7 = NSStringFromSelector(a2);
       [v6 handleFailedAssertWithCondition:"!attachmentObjectID.isTemporaryID" functionName:"-[ICAttachmentPreviewGenerator generatePreviewIfNeededForAttachmentWithObjectID:]" simulateCrash:1 showAlert:0 format:{@"Can't send a temporary ID to %@", v7}];
     }
 
-    v8 = [(ICAttachmentPreviewGenerator *)self previewQueue];
+    previewQueue = [(ICAttachmentPreviewGenerator *)self previewQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __81__ICAttachmentPreviewGenerator_generatePreviewIfNeededForAttachmentWithObjectID___block_invoke;
     block[3] = &unk_1E8468F80;
     block[4] = self;
-    v10 = v5;
-    dispatch_async(v8, block);
+    v10 = dCopy;
+    dispatch_async(previewQueue, block);
 
     [(ICAttachmentPreviewGenerator *)self generatePendingPreviews];
   }
@@ -702,13 +702,13 @@ void __81__ICAttachmentPreviewGenerator_generatePreviewIfNeededForAttachmentWith
   }
 }
 
-- (void)attachmentNeedsPostProcessingNotification:(id)a3
+- (void)attachmentNeedsPostProcessingNotification:(id)notification
 {
   v4 = MEMORY[0x1E69B7680];
-  v5 = [a3 object];
-  v6 = [MEMORY[0x1E69B7800] sharedContext];
-  v7 = [v6 managedObjectContext];
-  v9 = [v4 ic_existingObjectWithID:v5 context:v7];
+  object = [notification object];
+  mEMORY[0x1E69B7800] = [MEMORY[0x1E69B7800] sharedContext];
+  managedObjectContext = [mEMORY[0x1E69B7800] managedObjectContext];
+  v9 = [v4 ic_existingObjectWithID:object context:managedObjectContext];
 
   v8 = v9;
   if (v9)
@@ -718,28 +718,28 @@ void __81__ICAttachmentPreviewGenerator_generatePreviewIfNeededForAttachmentWith
   }
 }
 
-- (void)postProcessIfNeededForAttachment:(id)a3
+- (void)postProcessIfNeededForAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   if (([objc_opt_class() docCamOCRGenerationEnabled] & 1) != 0 || (objc_msgSend(objc_opt_class(), "imageOCRGenerationEnabled") & 1) != 0 || objc_msgSend(objc_opt_class(), "imageClassificationEnabled"))
   {
-    v5 = [v4 attachmentModel];
-    v6 = [v5 needToPostProcessAttachment];
+    attachmentModel = [attachmentCopy attachmentModel];
+    needToPostProcessAttachment = [attachmentModel needToPostProcessAttachment];
 
-    if (v6)
+    if (needToPostProcessAttachment)
     {
-      v7 = [(ICAttachmentPreviewGenerator *)self postProcessingQueue];
-      [v7 cancelOperationsForAttachment:v4];
+      postProcessingQueue = [(ICAttachmentPreviewGenerator *)self postProcessingQueue];
+      [postProcessingQueue cancelOperationsForAttachment:attachmentCopy];
 
-      [v4 identifier];
-      v8 = [(ICAttachmentPreviewGenerator *)self previewQueue];
+      [attachmentCopy identifier];
+      previewQueue = [(ICAttachmentPreviewGenerator *)self previewQueue];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __65__ICAttachmentPreviewGenerator_postProcessIfNeededForAttachment___block_invoke;
       v9[3] = &unk_1E8468F80;
       v9[4] = self;
-      v10 = v4;
-      dispatch_async(v8, v9);
+      v10 = attachmentCopy;
+      dispatch_async(previewQueue, v9);
     }
   }
 }
@@ -755,18 +755,18 @@ uint64_t __65__ICAttachmentPreviewGenerator_postProcessIfNeededForAttachment___b
   return [v4 beginPostProcessingAfterDelayIfNecessaryWithForceDelay:1];
 }
 
-- (void)beginPostProcessingAfterDelayIfNecessaryWithForceDelay:(BOOL)a3
+- (void)beginPostProcessingAfterDelayIfNecessaryWithForceDelay:(BOOL)delay
 {
   if (([objc_opt_class() docCamOCRGenerationEnabled] & 1) != 0 || (objc_msgSend(objc_opt_class(), "imageOCRGenerationEnabled") & 1) != 0 || objc_msgSend(objc_opt_class(), "imageClassificationEnabled"))
   {
-    v5 = [(ICAttachmentPreviewGenerator *)self previewQueue];
+    previewQueue = [(ICAttachmentPreviewGenerator *)self previewQueue];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __87__ICAttachmentPreviewGenerator_beginPostProcessingAfterDelayIfNecessaryWithForceDelay___block_invoke;
     v6[3] = &unk_1E846BB10;
     v6[4] = self;
-    v7 = a3;
-    dispatch_async(v5, v6);
+    delayCopy = delay;
+    dispatch_async(previewQueue, v6);
   }
 }
 
@@ -825,13 +825,13 @@ void __87__ICAttachmentPreviewGenerator_beginPostProcessingAfterDelayIfNecessary
 {
   if (([objc_opt_class() docCamOCRGenerationEnabled] & 1) != 0 || (objc_msgSend(objc_opt_class(), "imageOCRGenerationEnabled") & 1) != 0 || objc_msgSend(objc_opt_class(), "imageClassificationEnabled"))
   {
-    v3 = [(ICAttachmentPreviewGenerator *)self previewQueue];
+    previewQueue = [(ICAttachmentPreviewGenerator *)self previewQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __58__ICAttachmentPreviewGenerator_postProcessPendingPreviews__block_invoke;
     block[3] = &unk_1E8468BA0;
     block[4] = self;
-    dispatch_async(v3, block);
+    dispatch_async(previewQueue, block);
   }
 }
 
@@ -897,25 +897,25 @@ void __58__ICAttachmentPreviewGenerator_postProcessPendingPreviews__block_invoke
   }
 }
 
-- (void)postProcessPreviewForAttachment:(id)a3
+- (void)postProcessPreviewForAttachment:(id)attachment
 {
-  v18 = a3;
-  [(ICAttachmentPreviewGenerator *)self adjustUserTitleIfNecessaryForAttachment:v18];
-  v4 = [v18 attachmentModel];
-  v5 = [v4 needToPostProcessAttachment];
+  attachmentCopy = attachment;
+  [(ICAttachmentPreviewGenerator *)self adjustUserTitleIfNecessaryForAttachment:attachmentCopy];
+  attachmentModel = [attachmentCopy attachmentModel];
+  needToPostProcessAttachment = [attachmentModel needToPostProcessAttachment];
 
-  if (!v5)
+  if (!needToPostProcessAttachment)
   {
     goto LABEL_13;
   }
 
-  v7 = [v18 attachmentModel];
-  if (![(ICAttachmentPreviewGeneratorOCROperation *)v7 supportsOCR])
+  attachmentModel2 = [attachmentCopy attachmentModel];
+  if (![(ICAttachmentPreviewGeneratorOCROperation *)attachmentModel2 supportsOCR])
   {
     goto LABEL_9;
   }
 
-  if ([objc_opt_class() docCamOCRGenerationEnabled] && (objc_msgSend(v18, "isChildOfDocumentGallery") & 1) != 0)
+  if ([objc_opt_class() docCamOCRGenerationEnabled] && (objc_msgSend(attachmentCopy, "isChildOfDocumentGallery") & 1) != 0)
   {
 
     goto LABEL_8;
@@ -928,63 +928,63 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v8 = [v18 isImage];
+  isImage = [attachmentCopy isImage];
 
-  if (v8)
+  if (isImage)
   {
 LABEL_8:
     v9 = [ICAttachmentPreviewGeneratorOCROperation alloc];
-    v10 = [v18 objectID];
-    v7 = [(ICAttachmentPreviewGeneratorOperation *)v9 initWithAttachmentManagedObjectID:v10];
+    objectID = [attachmentCopy objectID];
+    attachmentModel2 = [(ICAttachmentPreviewGeneratorOperation *)v9 initWithAttachmentManagedObjectID:objectID];
 
-    v11 = [(ICAttachmentPreviewGenerator *)self postProcessingQueue];
-    [v11 addOperation:v7];
+    postProcessingQueue = [(ICAttachmentPreviewGenerator *)self postProcessingQueue];
+    [postProcessingQueue addOperation:attachmentModel2];
 
     goto LABEL_9;
   }
 
 LABEL_10:
-  v6 = [objc_opt_class() imageClassificationEnabled];
-  if (v6)
+  imageClassificationEnabled = [objc_opt_class() imageClassificationEnabled];
+  if (imageClassificationEnabled)
   {
-    v12 = [v18 attachmentModel];
-    v13 = [v12 supportsImageClassification];
+    attachmentModel3 = [attachmentCopy attachmentModel];
+    supportsImageClassification = [attachmentModel3 supportsImageClassification];
 
-    if (v13)
+    if (supportsImageClassification)
     {
       v14 = [ICAttachmentPreviewGeneratorImageClassificationOperation alloc];
-      v15 = [v18 objectID];
-      v16 = [(ICAttachmentPreviewGeneratorOperation *)v14 initWithAttachmentManagedObjectID:v15];
+      objectID2 = [attachmentCopy objectID];
+      v16 = [(ICAttachmentPreviewGeneratorOperation *)v14 initWithAttachmentManagedObjectID:objectID2];
 
-      v17 = [(ICAttachmentPreviewGenerator *)self postProcessingQueue];
-      [v17 addOperation:v16];
+      postProcessingQueue2 = [(ICAttachmentPreviewGenerator *)self postProcessingQueue];
+      [postProcessingQueue2 addOperation:v16];
     }
   }
 
 LABEL_13:
 
-  MEMORY[0x1EEE66BB8](v6);
+  MEMORY[0x1EEE66BB8](imageClassificationEnabled);
 }
 
-- (void)adjustUserTitleIfNecessaryForAttachment:(id)a3
+- (void)adjustUserTitleIfNecessaryForAttachment:(id)attachment
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 parentAttachment];
-  v5 = [v4 title];
-  v6 = [v4 defaultTitle];
-  v7 = [v5 isEqualToString:v6];
+  attachmentCopy = attachment;
+  parentAttachment = [attachmentCopy parentAttachment];
+  title = [parentAttachment title];
+  defaultTitle = [parentAttachment defaultTitle];
+  v7 = [title isEqualToString:defaultTitle];
 
-  if ([v3 isChildOfDocumentGallery])
+  if ([attachmentCopy isChildOfDocumentGallery])
   {
     if ((v7 & 1) == 0)
     {
-      v8 = [v4 userTitle];
+      userTitle = [parentAttachment userTitle];
 
-      if (!v8)
+      if (!userTitle)
       {
-        v9 = [v3 parentAttachment];
-        v10 = [v9 attachmentModel];
+        parentAttachment2 = [attachmentCopy parentAttachment];
+        attachmentModel = [parentAttachment2 attachmentModel];
 
         objc_opt_class();
         v11 = ICDynamicCast();
@@ -1003,27 +1003,27 @@ LABEL_13:
           v12 = os_log_create("com.apple.notes", "PreviewGeneration");
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
           {
-            v13 = [v4 identifier];
-            [(ICAttachmentPreviewGenerator *)v13 adjustUserTitleIfNecessaryForAttachment:buf, v12];
+            identifier = [parentAttachment identifier];
+            [(ICAttachmentPreviewGenerator *)identifier adjustUserTitleIfNecessaryForAttachment:buf, v12];
           }
 
-          v14 = [v4 title];
-          [v4 setUserTitle:v14];
+          title2 = [parentAttachment title];
+          [parentAttachment setUserTitle:title2];
 
-          v15 = [v4 note];
-          v16 = [v15 regenerateTitle:1 snippet:1];
+          note = [parentAttachment note];
+          v16 = [note regenerateTitle:1 snippet:1];
 
           if (v16)
           {
-            v17 = [v4 note];
-            [v17 markShareDirtyIfNeededWithReason:@"Regenerated title from attachment OCR"];
+            note2 = [parentAttachment note];
+            [note2 markShareDirtyIfNeededWithReason:@"Regenerated title from attachment OCR"];
 
-            v18 = [v4 note];
-            [v18 updateChangeCountWithReason:@"Regenerated title from attachment OCR"];
+            note3 = [parentAttachment note];
+            [note3 updateChangeCountWithReason:@"Regenerated title from attachment OCR"];
           }
 
-          v19 = [v4 managedObjectContext];
-          [v19 ic_save];
+          managedObjectContext = [parentAttachment managedObjectContext];
+          [managedObjectContext ic_save];
         }
 
         _Block_object_dispose(&v21, 8);
@@ -1043,18 +1043,18 @@ void __72__ICAttachmentPreviewGenerator_adjustUserTitleIfNecessaryForAttachment_
   }
 }
 
-- (void)attachmentNeedsPreviewGenerationNotification:(id)a3
+- (void)attachmentNeedsPreviewGenerationNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69B7800] sharedContext];
+  notificationCopy = notification;
+  mEMORY[0x1E69B7800] = [MEMORY[0x1E69B7800] sharedContext];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __77__ICAttachmentPreviewGenerator_attachmentNeedsPreviewGenerationNotification___block_invoke;
   v7[3] = &unk_1E8469020;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 performBackgroundTask:v7];
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  [mEMORY[0x1E69B7800] performBackgroundTask:v7];
 }
 
 void __77__ICAttachmentPreviewGenerator_attachmentNeedsPreviewGenerationNotification___block_invoke(uint64_t a1, void *a2)
@@ -1073,42 +1073,42 @@ void __77__ICAttachmentPreviewGenerator_attachmentNeedsPreviewGenerationNotifica
   }
 }
 
-- (void)attachmentWillBeDeleted:(id)a3
+- (void)attachmentWillBeDeleted:(id)deleted
 {
-  v8 = [a3 object];
-  v4 = [(ICAttachmentPreviewGenerator *)self generatorQueue];
-  [v4 cancelOperationsForAttachment:v8];
+  object = [deleted object];
+  generatorQueue = [(ICAttachmentPreviewGenerator *)self generatorQueue];
+  [generatorQueue cancelOperationsForAttachment:object];
 
-  v5 = [(ICAttachmentPreviewGenerator *)self asyncGeneratorQueue];
-  [v5 cancelOperationsForAttachment:v8];
+  asyncGeneratorQueue = [(ICAttachmentPreviewGenerator *)self asyncGeneratorQueue];
+  [asyncGeneratorQueue cancelOperationsForAttachment:object];
 
-  v6 = [(ICAttachmentPreviewGenerator *)self costlyGeneratorQueue];
-  [v6 cancelOperationsForAttachment:v8];
+  costlyGeneratorQueue = [(ICAttachmentPreviewGenerator *)self costlyGeneratorQueue];
+  [costlyGeneratorQueue cancelOperationsForAttachment:object];
 
-  v7 = [(ICAttachmentPreviewGenerator *)self postProcessingQueue];
-  [v7 cancelOperationsForAttachment:v8];
+  postProcessingQueue = [(ICAttachmentPreviewGenerator *)self postProcessingQueue];
+  [postProcessingQueue cancelOperationsForAttachment:object];
 }
 
-- (void)mediaDidLoad:(id)a3
+- (void)mediaDidLoad:(id)load
 {
   v4 = MEMORY[0x1E69B77E0];
-  v5 = [a3 object];
-  v6 = [MEMORY[0x1E69B7800] sharedContext];
-  v7 = [v6 managedObjectContext];
-  v9 = [v4 ic_existingObjectWithID:v5 context:v7];
+  object = [load object];
+  mEMORY[0x1E69B7800] = [MEMORY[0x1E69B7800] sharedContext];
+  managedObjectContext = [mEMORY[0x1E69B7800] managedObjectContext];
+  v9 = [v4 ic_existingObjectWithID:object context:managedObjectContext];
 
-  v8 = [v9 attachment];
-  if (v8)
+  attachment = [v9 attachment];
+  if (attachment)
   {
-    [(ICAttachmentPreviewGenerator *)self generatePreviewIfNeededForAttachment:v8];
+    [(ICAttachmentPreviewGenerator *)self generatePreviewIfNeededForAttachment:attachment];
   }
 }
 
-- (void)reachabilityChanged:(id)a3
+- (void)reachabilityChanged:(id)changed
 {
-  v4 = [MEMORY[0x1E69B7AA0] sharedReachabilityForInternetConnection];
+  mEMORY[0x1E69B7AA0] = [MEMORY[0x1E69B7AA0] sharedReachabilityForInternetConnection];
 
-  if (v4)
+  if (mEMORY[0x1E69B7AA0])
   {
     v5 = 1;
     atomic_compare_exchange_strong(&self->_shouldGenerateAttachmentsWhenReachable, &v5, 0);
@@ -1122,17 +1122,17 @@ void __77__ICAttachmentPreviewGenerator_attachmentNeedsPreviewGenerationNotifica
 
 - (void)cancelGenerationOfPendingPreviews
 {
-  v3 = [(ICAttachmentPreviewGenerator *)self generatorQueue];
-  [v3 cancelAllOperations];
+  generatorQueue = [(ICAttachmentPreviewGenerator *)self generatorQueue];
+  [generatorQueue cancelAllOperations];
 
-  v4 = [(ICAttachmentPreviewGenerator *)self asyncGeneratorQueue];
-  [v4 cancelAllOperations];
+  asyncGeneratorQueue = [(ICAttachmentPreviewGenerator *)self asyncGeneratorQueue];
+  [asyncGeneratorQueue cancelAllOperations];
 
-  v5 = [(ICAttachmentPreviewGenerator *)self costlyGeneratorQueue];
-  [v5 cancelAllOperations];
+  costlyGeneratorQueue = [(ICAttachmentPreviewGenerator *)self costlyGeneratorQueue];
+  [costlyGeneratorQueue cancelAllOperations];
 
-  v6 = [(ICAttachmentPreviewGenerator *)self postProcessingQueue];
-  [v6 cancelAllOperations];
+  postProcessingQueue = [(ICAttachmentPreviewGenerator *)self postProcessingQueue];
+  [postProcessingQueue cancelAllOperations];
 }
 
 - (void)didReceiveMemoryWarning
@@ -1143,49 +1143,49 @@ void __77__ICAttachmentPreviewGenerator_attachmentNeedsPreviewGenerationNotifica
     [(ICAttachmentPreviewGenerator *)v3 didReceiveMemoryWarning];
   }
 
-  v4 = [(ICAttachmentPreviewGenerator *)self postProcessingQueue];
-  [v4 cancelAllOperations];
+  postProcessingQueue = [(ICAttachmentPreviewGenerator *)self postProcessingQueue];
+  [postProcessingQueue cancelAllOperations];
 }
 
 - (void)enableAutomaticPreviewGeneration
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel_attachmentDidLoad_ name:*MEMORY[0x1E69B73F0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_attachmentDidLoad_ name:*MEMORY[0x1E69B73F0] object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel_attachmentNeedsPreviewGenerationNotification_ name:*MEMORY[0x1E69B7410] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_attachmentNeedsPreviewGenerationNotification_ name:*MEMORY[0x1E69B7410] object:0];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 addObserver:self selector:sel_attachmentWillBeDeleted_ name:*MEMORY[0x1E69B7468] object:0];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel_attachmentWillBeDeleted_ name:*MEMORY[0x1E69B7468] object:0];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 addObserver:self selector:sel_mediaDidLoad_ name:*MEMORY[0x1E69B74B8] object:0];
+  defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter4 addObserver:self selector:sel_mediaDidLoad_ name:*MEMORY[0x1E69B74B8] object:0];
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
   v8 = *MEMORY[0x1E695D350];
-  v9 = [MEMORY[0x1E69B7800] sharedContext];
-  v10 = [v9 managedObjectContext];
-  [v7 addObserver:self selector:sel_managedObjectContextDidSave_ name:v8 object:v10];
+  mEMORY[0x1E69B7800] = [MEMORY[0x1E69B7800] sharedContext];
+  managedObjectContext = [mEMORY[0x1E69B7800] managedObjectContext];
+  [defaultCenter5 addObserver:self selector:sel_managedObjectContextDidSave_ name:v8 object:managedObjectContext];
 
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v11 addObserver:self selector:sel_reachabilityChanged_ name:*MEMORY[0x1E69B7B50] object:0];
+  defaultCenter6 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter6 addObserver:self selector:sel_reachabilityChanged_ name:*MEMORY[0x1E69B7B50] object:0];
 }
 
 - (void)disableAutomaticPreviewGeneration
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
 - (void)suspend
 {
-  v3 = [(ICAttachmentPreviewGenerator *)self previewQueue];
+  previewQueue = [(ICAttachmentPreviewGenerator *)self previewQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __39__ICAttachmentPreviewGenerator_suspend__block_invoke;
   block[3] = &unk_1E8468BA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(previewQueue, block);
 }
 
 void __39__ICAttachmentPreviewGenerator_suspend__block_invoke(uint64_t a1)
@@ -1205,13 +1205,13 @@ void __39__ICAttachmentPreviewGenerator_suspend__block_invoke(uint64_t a1)
 
 - (void)resume
 {
-  v3 = [(ICAttachmentPreviewGenerator *)self previewQueue];
+  previewQueue = [(ICAttachmentPreviewGenerator *)self previewQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __38__ICAttachmentPreviewGenerator_resume__block_invoke;
   block[3] = &unk_1E8468BA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(previewQueue, block);
 }
 
 uint64_t __38__ICAttachmentPreviewGenerator_resume__block_invoke(uint64_t a1)
@@ -1233,18 +1233,18 @@ uint64_t __38__ICAttachmentPreviewGenerator_resume__block_invoke(uint64_t a1)
   return [v6 beginPostProcessingAfterDelayIfNecessaryWithForceDelay:0];
 }
 
-- (void)operationComplete:(id)a3
+- (void)operationComplete:(id)complete
 {
-  v4 = a3;
-  v5 = [(ICAttachmentPreviewGenerator *)self previewQueue];
+  completeCopy = complete;
+  previewQueue = [(ICAttachmentPreviewGenerator *)self previewQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__ICAttachmentPreviewGenerator_operationComplete___block_invoke;
   v7[3] = &unk_1E8468F80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completeCopy;
+  v6 = completeCopy;
+  dispatch_async(previewQueue, v7);
 }
 
 void __50__ICAttachmentPreviewGenerator_operationComplete___block_invoke(uint64_t a1)
@@ -1268,21 +1268,21 @@ void __50__ICAttachmentPreviewGenerator_operationComplete___block_invoke(uint64_
   [v7 beginPostProcessingAfterDelayIfNecessaryWithForceDelay:v8];
 }
 
-- (void)setProgress:(id)a3 forObjectID:(id)a4
+- (void)setProgress:(id)progress forObjectID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICAttachmentPreviewGenerator *)self previewProgressQueue];
+  progressCopy = progress;
+  dCopy = d;
+  previewProgressQueue = [(ICAttachmentPreviewGenerator *)self previewProgressQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__ICAttachmentPreviewGenerator_setProgress_forObjectID___block_invoke;
   block[3] = &unk_1E8468D98;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = progressCopy;
+  selfCopy = self;
+  v14 = dCopy;
+  v9 = dCopy;
+  v10 = progressCopy;
+  dispatch_async(previewProgressQueue, block);
 }
 
 void __56__ICAttachmentPreviewGenerator_setProgress_forObjectID___block_invoke(uint64_t a1)
@@ -1302,25 +1302,25 @@ void __56__ICAttachmentPreviewGenerator_setProgress_forObjectID___block_invoke(u
   }
 }
 
-- (id)progressForObjectID:(id)a3
+- (id)progressForObjectID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__41;
   v16 = __Block_byref_object_dispose__41;
   v17 = 0;
-  v5 = [(ICAttachmentPreviewGenerator *)self previewProgressQueue];
+  previewProgressQueue = [(ICAttachmentPreviewGenerator *)self previewProgressQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__ICAttachmentPreviewGenerator_progressForObjectID___block_invoke;
   block[3] = &unk_1E8469640;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = dCopy;
+  dispatch_sync(previewProgressQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -1350,13 +1350,13 @@ void __52__ICAttachmentPreviewGenerator_progressForObjectID___block_invoke(uint6
 
   else
   {
-    v4 = [(ICAttachmentPreviewGenerator *)self previewQueue];
+    previewQueue = [(ICAttachmentPreviewGenerator *)self previewQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __55__ICAttachmentPreviewGenerator_generatePendingPreviews__block_invoke;
     block[3] = &unk_1E8468BA0;
     block[4] = self;
-    dispatch_async(v4, block);
+    dispatch_async(previewQueue, block);
   }
 }
 
@@ -1476,27 +1476,27 @@ void __55__ICAttachmentPreviewGenerator_generatePendingPreviews__block_invoke_15
   }
 }
 
-- (void)generatePendingPreviewForAttachment:(id)a3
+- (void)generatePendingPreviewForAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   if ([(ICAttachmentPreviewGenerator *)self isPreviewGenerationSupported])
   {
-    v5 = [v4 attachmentModel];
-    v6 = [v5 tooLargeForPreviewGeneration];
+    attachmentModel = [attachmentCopy attachmentModel];
+    tooLargeForPreviewGeneration = [attachmentModel tooLargeForPreviewGeneration];
 
-    if ((v6 & 1) == 0)
+    if ((tooLargeForPreviewGeneration & 1) == 0)
     {
-      v7 = [v4 managedObjectContext];
-      v8 = [(ICAttachmentPreviewGenerator *)self previewQueue];
+      managedObjectContext = [attachmentCopy managedObjectContext];
+      previewQueue = [(ICAttachmentPreviewGenerator *)self previewQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __68__ICAttachmentPreviewGenerator_generatePendingPreviewForAttachment___block_invoke;
       block[3] = &unk_1E8468D98;
-      v11 = v7;
-      v12 = v4;
-      v13 = self;
-      v9 = v7;
-      dispatch_async(v8, block);
+      v11 = managedObjectContext;
+      v12 = attachmentCopy;
+      selfCopy = self;
+      v9 = managedObjectContext;
+      dispatch_async(previewQueue, block);
     }
   }
 }
@@ -1640,22 +1640,22 @@ LABEL_15:
   return [v13 ic_refreshObject:v14 mergeChanges:0];
 }
 
-- (void)cancelIfNeededForAttachment:(id)a3
+- (void)cancelIfNeededForAttachment:(id)attachment
 {
   v41[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  attachmentCopy = attachment;
   [(ICAttachmentPreviewGenerator *)self suspend];
-  v26 = v4;
-  v5 = [v4 objectID];
-  v6 = [(ICAttachmentPreviewGenerator *)self asyncGeneratorQueue];
-  v41[0] = v6;
-  v7 = [(ICAttachmentPreviewGenerator *)self costlyGeneratorQueue];
-  v41[1] = v7;
-  v8 = [(ICAttachmentPreviewGenerator *)self generatorQueue];
-  v41[2] = v8;
-  v25 = self;
-  v9 = [(ICAttachmentPreviewGenerator *)self postProcessingQueue];
-  v41[3] = v9;
+  v26 = attachmentCopy;
+  objectID = [attachmentCopy objectID];
+  asyncGeneratorQueue = [(ICAttachmentPreviewGenerator *)self asyncGeneratorQueue];
+  v41[0] = asyncGeneratorQueue;
+  costlyGeneratorQueue = [(ICAttachmentPreviewGenerator *)self costlyGeneratorQueue];
+  v41[1] = costlyGeneratorQueue;
+  generatorQueue = [(ICAttachmentPreviewGenerator *)self generatorQueue];
+  v41[2] = generatorQueue;
+  selfCopy = self;
+  postProcessingQueue = [(ICAttachmentPreviewGenerator *)self postProcessingQueue];
+  v41[3] = postProcessingQueue;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:4];
 
   v37 = 0u;
@@ -1682,8 +1682,8 @@ LABEL_15:
         v32 = 0u;
         v33 = 0u;
         v34 = 0u;
-        v15 = [v14 operations];
-        v16 = [v15 countByEnumeratingWithState:&v31 objects:v39 count:16];
+        operations = [v14 operations];
+        v16 = [operations countByEnumeratingWithState:&v31 objects:v39 count:16];
         if (v16)
         {
           v17 = v16;
@@ -1694,12 +1694,12 @@ LABEL_15:
             {
               if (*v32 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(operations);
               }
 
               v20 = *(*(&v31 + 1) + 8 * j);
-              v21 = [v20 attachmentID];
-              v22 = [v21 isEqual:v5];
+              attachmentID = [v20 attachmentID];
+              v22 = [attachmentID isEqual:objectID];
 
               if (v22)
               {
@@ -1707,7 +1707,7 @@ LABEL_15:
               }
             }
 
-            v17 = [v15 countByEnumeratingWithState:&v31 objects:v39 count:16];
+            v17 = [operations countByEnumeratingWithState:&v31 objects:v39 count:16];
           }
 
           while (v17);
@@ -1720,17 +1720,17 @@ LABEL_15:
     while (v12);
   }
 
-  v23 = [(ICAttachmentPreviewGenerator *)v25 previewQueue];
+  previewQueue = [(ICAttachmentPreviewGenerator *)selfCopy previewQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__ICAttachmentPreviewGenerator_cancelIfNeededForAttachment___block_invoke;
   block[3] = &unk_1E8468F80;
-  block[4] = v25;
-  v30 = v5;
-  v24 = v5;
-  dispatch_sync(v23, block);
+  block[4] = selfCopy;
+  v30 = objectID;
+  v24 = objectID;
+  dispatch_sync(previewQueue, block);
 
-  [(ICAttachmentPreviewGenerator *)v25 resume];
+  [(ICAttachmentPreviewGenerator *)selfCopy resume];
 }
 
 void __60__ICAttachmentPreviewGenerator_cancelIfNeededForAttachment___block_invoke(uint64_t a1)

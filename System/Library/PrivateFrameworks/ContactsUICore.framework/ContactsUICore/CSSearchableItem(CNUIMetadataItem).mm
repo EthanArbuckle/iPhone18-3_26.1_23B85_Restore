@@ -7,8 +7,8 @@
 - (id)_cnui_valueForAttribute:()CNUIMetadataItem
 {
   v4 = a3;
-  v5 = [a1 attributeSet];
-  v6 = [v5 attributeForKey:v4];
+  attributeSet = [self attributeSet];
+  v6 = [attributeSet attributeForKey:v4];
 
   return v6;
 }

@@ -29,27 +29,27 @@
 - (unsigned)textLength;
 - (void)select;
 - (void)setAccessKey:(NSString *)accessKey;
-- (void)setAutocomplete:(id)a3;
+- (void)setAutocomplete:(id)autocomplete;
 - (void)setAutofocus:(BOOL)autofocus;
-- (void)setCanShowPlaceholder:(BOOL)a3;
+- (void)setCanShowPlaceholder:(BOOL)placeholder;
 - (void)setCols:(int)cols;
 - (void)setDefaultValue:(NSString *)defaultValue;
-- (void)setDirName:(id)a3;
+- (void)setDirName:(id)name;
 - (void)setDisabled:(BOOL)disabled;
-- (void)setMaxLength:(int)a3;
+- (void)setMaxLength:(int)length;
 - (void)setName:(NSString *)name;
-- (void)setPlaceholder:(id)a3;
-- (void)setRangeText:(id)a3;
-- (void)setRangeText:(id)a3 start:(unsigned int)a4 end:(unsigned int)a5 selectionMode:(id)a6;
+- (void)setPlaceholder:(id)placeholder;
+- (void)setRangeText:(id)text;
+- (void)setRangeText:(id)text start:(unsigned int)start end:(unsigned int)end selectionMode:(id)mode;
 - (void)setReadOnly:(BOOL)readOnly;
-- (void)setRequired:(BOOL)a3;
+- (void)setRequired:(BOOL)required;
 - (void)setRows:(int)rows;
-- (void)setSelectionDirection:(id)a3;
+- (void)setSelectionDirection:(id)direction;
 - (void)setSelectionEnd:(int)selectionEnd;
 - (void)setSelectionRange:(int)start end:(int)end;
 - (void)setSelectionStart:(int)selectionStart;
 - (void)setValue:(NSString *)value;
-- (void)setWrap:(id)a3;
+- (void)setWrap:(id)wrap;
 @end
 
 @implementation DOMHTMLTextAreaElement
@@ -203,13 +203,13 @@ LABEL_15:
   return result;
 }
 
-- (void)setDirName:(id)a3
+- (void)setDirName:(id)name
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v9);
   internal = self->super.super.super.super._internal;
   if ((*(internal + 16) & 0x10) != 0 && *(*(internal + 13) + 24) == *(*MEMORY[0x1E69E2910] + 24))
   {
-    WTF::AtomStringImpl::add(&v10, a3, v5);
+    WTF::AtomStringImpl::add(&v10, name, v5);
     v8 = v10;
     WebCore::Element::setAttributeWithoutSynchronization();
     if (v8)
@@ -359,7 +359,7 @@ LABEL_15:
   return result;
 }
 
-- (void)setMaxLength:(int)a3
+- (void)setMaxLength:(int)length
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v9);
   internal = self->super.super.super.super._internal;
@@ -559,13 +559,13 @@ LABEL_8:
   return result;
 }
 
-- (void)setPlaceholder:(id)a3
+- (void)setPlaceholder:(id)placeholder
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v9);
   internal = self->super.super.super.super._internal;
   if ((*(internal + 16) & 0x10) != 0 && *(*(internal + 13) + 24) == *(*MEMORY[0x1E69E2910] + 24))
   {
-    WTF::AtomStringImpl::add(&v10, a3, v5);
+    WTF::AtomStringImpl::add(&v10, placeholder, v5);
     v8 = v10;
     WebCore::Element::setAttributeWithoutSynchronization();
     if (v8)
@@ -727,7 +727,7 @@ LABEL_15:
   return result;
 }
 
-- (void)setRequired:(BOOL)a3
+- (void)setRequired:(BOOL)required
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v6);
   internal = self->super.super.super.super._internal;
@@ -863,13 +863,13 @@ LABEL_15:
   return result;
 }
 
-- (void)setWrap:(id)a3
+- (void)setWrap:(id)wrap
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v9);
   internal = self->super.super.super.super._internal;
   if ((*(internal + 16) & 0x10) != 0 && *(*(internal + 13) + 24) == *(*MEMORY[0x1E69E2910] + 24))
   {
-    WTF::AtomStringImpl::add(&v10, a3, v5);
+    WTF::AtomStringImpl::add(&v10, wrap, v5);
     v8 = v10;
     WebCore::Element::setAttributeWithoutSynchronization();
     if (v8)
@@ -1342,13 +1342,13 @@ LABEL_9:
   return result;
 }
 
-- (void)setSelectionDirection:(id)a3
+- (void)setSelectionDirection:(id)direction
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v9);
   internal = self->super.super.super.super._internal;
   if ((*(internal + 16) & 0x10) != 0 && *(*(internal + 13) + 24) == *(*MEMORY[0x1E69E2910] + 24))
   {
-    MEMORY[0x1CCA63A40](&v8, a3);
+    MEMORY[0x1CCA63A40](&v8, direction);
     WebCore::HTMLTextFormControlElement::setSelectionDirection(internal, &v8);
     v7 = v8;
     v8 = 0;
@@ -1502,13 +1502,13 @@ LABEL_9:
   return result;
 }
 
-- (void)setAutocomplete:(id)a3
+- (void)setAutocomplete:(id)autocomplete
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v9);
   internal = self->super.super.super.super._internal;
   if ((*(internal + 16) & 0x10) != 0 && *(*(internal + 13) + 24) == *(*MEMORY[0x1E69E2910] + 24))
   {
-    WTF::AtomStringImpl::add(&v10, a3, v5);
+    WTF::AtomStringImpl::add(&v10, autocomplete, v5);
     v8 = v10;
     WebCore::Element::setAttributeWithoutSynchronization();
     if (v8)
@@ -1544,13 +1544,13 @@ LABEL_9:
   }
 }
 
-- (void)setRangeText:(id)a3
+- (void)setRangeText:(id)text
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v13);
   internal = self->super.super.super.super._internal;
   if ((*(internal + 16) & 0x10) != 0 && *(*(internal + 13) + 24) == *(*MEMORY[0x1E69E2910] + 24))
   {
-    MEMORY[0x1CCA63A40](&v9, a3);
+    MEMORY[0x1CCA63A40](&v9, text);
     WebCore::HTMLTextFormControlElement::setRangeText();
     if (v12 == 1)
     {
@@ -1580,14 +1580,14 @@ LABEL_9:
   }
 }
 
-- (void)setRangeText:(id)a3 start:(unsigned int)a4 end:(unsigned int)a5 selectionMode:(id)a6
+- (void)setRangeText:(id)text start:(unsigned int)start end:(unsigned int)end selectionMode:(id)mode
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v19);
   internal = self->super.super.super.super._internal;
   if ((*(internal + 16) & 0x10) != 0 && *(*(internal + 13) + 24) == *(*MEMORY[0x1E69E2910] + 24))
   {
-    MEMORY[0x1CCA63A40](&v15, a3);
-    MEMORY[0x1CCA63A40](&v14, a6);
+    MEMORY[0x1CCA63A40](&v15, text);
+    MEMORY[0x1CCA63A40](&v14, mode);
     WebCore::HTMLTextFormControlElement::setRangeText();
     if (v18 == 1)
     {
@@ -1660,7 +1660,7 @@ LABEL_9:
   return result;
 }
 
-- (void)setCanShowPlaceholder:(BOOL)a3
+- (void)setCanShowPlaceholder:(BOOL)placeholder
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v6);
   internal = self->super.super.super.super._internal;

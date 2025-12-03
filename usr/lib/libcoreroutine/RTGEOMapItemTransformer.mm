@@ -1,34 +1,34 @@
 @interface RTGEOMapItemTransformer
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation RTGEOMapItemTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v3 = a3;
-  if ([v3 conformsToProtocol:&unk_284649618])
+  valueCopy = value;
+  if ([valueCopy conformsToProtocol:&unk_284649618])
   {
-    v4 = [MEMORY[0x277D0EBC0] mapItemStorageForGEOMapItem:v3];
-    v5 = [v4 data];
+    v4 = [MEMORY[0x277D0EBC0] mapItemStorageForGEOMapItem:valueCopy];
+    data = [v4 data];
   }
 
   else
   {
-    v5 = 0;
+    data = 0;
   }
 
-  return v5;
+  return data;
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [objc_alloc(MEMORY[0x277D0EBC0]) initWithData:v3];
+    v4 = [objc_alloc(MEMORY[0x277D0EBC0]) initWithData:valueCopy];
   }
 
   else

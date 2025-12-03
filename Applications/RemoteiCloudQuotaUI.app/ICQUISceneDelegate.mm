@@ -1,18 +1,18 @@
 @interface ICQUISceneDelegate
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)sceneWillResignActive:(id)active;
 @end
 
 @implementation ICQUISceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v6 = a3;
+  sceneCopy = scene;
   v7 = _ICQGetLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -23,7 +23,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
+    v8 = sceneCopy;
     v9 = [[UIWindow alloc] initWithWindowScene:v8];
     window = self->_window;
     self->_window = v9;
@@ -38,13 +38,13 @@
       sub_10000502C(v8, v13);
     }
 
-    v14 = [v8 _sceneIdentifier];
-    [(ICQUIRootViewController *)self->_rootViewController setSceneIdentifier:v14];
+    _sceneIdentifier = [v8 _sceneIdentifier];
+    [(ICQUIRootViewController *)self->_rootViewController setSceneIdentifier:_sceneIdentifier];
 
     [(UIWindow *)self->_window setRootViewController:self->_rootViewController];
     [(UIWindow *)self->_window setContentsPosition:0];
-    v17 = self;
-    v15 = [NSArray arrayWithObjects:&v17 count:1];
+    selfCopy = self;
+    v15 = [NSArray arrayWithObjects:&selfCopy count:1];
     [v8 _registerSceneActionsHandlerArray:v15 forKey:@"launch_params"];
   }
 
@@ -58,7 +58,7 @@
   }
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
   v3 = _ICQGetLogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -67,7 +67,7 @@
   }
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
   v3 = _ICQGetLogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -76,7 +76,7 @@
   }
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
   v3 = _ICQGetLogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -85,7 +85,7 @@
   }
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
   v3 = _ICQGetLogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -94,7 +94,7 @@
   }
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -106,9 +106,9 @@
   [(ICQUIRootViewController *)self->_rootViewController dismissUpgradeFlow];
 }
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
-  v6 = a3;
+  actionsCopy = actions;
   v7 = _ICQGetLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -117,12 +117,12 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s called.", buf, 0xCu);
   }
 
-  v8 = [v6 mutableCopy];
+  v8 = [actionsCopy mutableCopy];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v6;
+  obj = actionsCopy;
   v9 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v9)
   {
@@ -140,8 +140,8 @@
         }
 
         v14 = *(*(&v28 + 1) + 8 * i);
-        v15 = [v14 info];
-        v16 = [v15 objectForSetting:0];
+        info = [v14 info];
+        v16 = [info objectForSetting:0];
         v17 = [ICQRemoteContext contextFromDictionary:v16];
         v18 = _ICQGetLogSystem();
         v19 = v18;

@@ -1,17 +1,17 @@
 @interface ICRadioStationTrack
-+ (id)flattenedTracksWithTracks:(id)a3;
++ (id)flattenedTracksWithTracks:(id)tracks;
 - (BOOL)hasStartTime;
 - (BOOL)isSkippable;
 - (ICRadioStationTrack)afterPromoContentTrack;
 - (ICRadioStationTrack)beforePromoContentTrack;
-- (ICRadioStationTrack)initWithResponseDictionary:(id)a3 responseVersion:(int64_t)a4 expirationDate:(id)a5;
+- (ICRadioStationTrack)initWithResponseDictionary:(id)dictionary responseVersion:(int64_t)version expirationDate:(id)date;
 - (ICStoreHLSAssetInfo)hlsAsset;
 - (ICStorePlatformMetadata)storePlatformMetadata;
 - (NSArray)fileAssets;
 - (NSArray)radioStreamAssets;
 - (NSDictionary)serverTrackInfo;
 - (double)startTime;
-- (id)_hlsAssetFromAssetDictionary:(id)a3;
+- (id)_hlsAssetFromAssetDictionary:(id)dictionary;
 - (id)description;
 - (int64_t)likeState;
 - (int64_t)storeAdamID;
@@ -25,15 +25,15 @@
   v2 = [(NSDictionary *)self->_responseDictionary objectForKey:@"is-skippable"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 1;
+    bOOLValue = 1;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (int64_t)trackType
@@ -41,30 +41,30 @@
   v2 = [(NSDictionary *)self->_responseDictionary objectForKey:@"type"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v3 = 0;
+    integerValue = 0;
   }
 
-  return v3;
+  return integerValue;
 }
 
-- (id)_hlsAssetFromAssetDictionary:(id)a3
+- (id)_hlsAssetFromAssetDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKey:@"stream-url"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"stream-url"];
   if (_NSIsNSString() && [v5 length] && (objc_msgSend(MEMORY[0x1E695DFF8], "URLWithString:", v5), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
     v8 = objc_alloc_init(ICStoreHLSAssetInfo);
     [(ICStoreHLSAssetInfo *)v8 setPlaylistURL:v7];
-    v9 = [v4 ic_stringValueForKey:@"key-server-protocol-type"];
+    v9 = [dictionaryCopy ic_stringValueForKey:@"key-server-protocol-type"];
     [(ICStoreHLSAssetInfo *)v8 setKeyServerProtocolType:v9];
-    v10 = [v4 objectForKey:@"stream-key-cert-url"];
+    v10 = [dictionaryCopy objectForKey:@"stream-key-cert-url"];
     if (_NSIsNSString() && [v10 length])
     {
       v11 = [MEMORY[0x1E695DFF8] URLWithString:v10];
@@ -74,7 +74,7 @@
       }
     }
 
-    v12 = [v4 objectForKey:@"stream-key-server-url"];
+    v12 = [dictionaryCopy objectForKey:@"stream-key-server-url"];
     if (_NSIsNSString() && [v12 length])
     {
       v13 = [MEMORY[0x1E695DFF8] URLWithString:v12];
@@ -84,18 +84,18 @@
       }
     }
 
-    v14 = [v4 objectForKey:@"is-itunes-stream"];
+    v14 = [dictionaryCopy objectForKey:@"is-itunes-stream"];
     if (objc_opt_respondsToSelector())
     {
-      v15 = [v14 BOOLValue];
+      bOOLValue = [v14 BOOLValue];
     }
 
     else
     {
-      v15 = 1;
+      bOOLValue = 1;
     }
 
-    [(ICStoreHLSAssetInfo *)v8 setITunesStoreStream:v15];
+    [(ICStoreHLSAssetInfo *)v8 setITunesStoreStream:bOOLValue];
     if ([(ICRadioStationTrack *)self storeAdamID])
     {
       v17 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[ICRadioStationTrack storeAdamID](self, "storeAdamID")}];
@@ -109,7 +109,7 @@
       {
         responseDictionary = self->_responseDictionary;
         v20 = 138543618;
-        v21 = self;
+        selfCopy = self;
         v22 = 2114;
         v23 = responseDictionary;
         _os_log_impl(&dword_1B4491000, v18, OS_LOG_TYPE_ERROR, "%{public}@ Payload contains HLS asset without an adam ID, which is unexpected: %{public}@", &v20, 0x16u);
@@ -143,13 +143,13 @@
     v15 = &v16;
     v4 = v3;
     v13 = v4;
-    v14 = self;
+    selfCopy = self;
     v5 = MEMORY[0x1B8C781E0](v12);
     (v5)[2](v5, @"album-id", @"collectionId");
     (v5)[2](v5, @"is-explicit", @"is-explicit");
     v6 = [ICStorePlatformMetadata alloc];
     v7 = v17[5];
-    v8 = [(ICRadioStationTrack *)self expirationDate];
+    expirationDate = [(ICRadioStationTrack *)self expirationDate];
     if (v7)
     {
       v9 = v7;
@@ -160,7 +160,7 @@
       v9 = v4;
     }
 
-    v10 = [(ICStorePlatformMetadata *)v6 initWithMetadataDictionary:v9 expirationDate:v8];
+    v10 = [(ICStorePlatformMetadata *)v6 initWithMetadataDictionary:v9 expirationDate:expirationDate];
 
     _Block_object_dispose(&v16, 8);
   }
@@ -213,15 +213,15 @@ void __44__ICRadioStationTrack_storePlatformMetadata__block_invoke(uint64_t a1, 
   v2 = [(NSDictionary *)self->_responseDictionary objectForKey:@"adam-id"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 longLongValue];
+    longLongValue = [v2 longLongValue];
   }
 
   else
   {
-    v3 = 0;
+    longLongValue = 0;
   }
 
-  return v3;
+  return longLongValue;
 }
 
 - (double)startTime
@@ -242,9 +242,9 @@ void __44__ICRadioStationTrack_storePlatformMetadata__block_invoke(uint64_t a1, 
   v2 = [(NSDictionary *)self->_responseDictionary objectForKey:@"like-value"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 integerValue];
-    v4 = v3 >> 63;
-    if (v3)
+    integerValue = [v2 integerValue];
+    v4 = integerValue >> 63;
+    if (integerValue)
     {
       v5 = 1;
       goto LABEL_6;
@@ -579,8 +579,8 @@ LABEL_16:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(ICRadioStationTrack *)self trackType];
-  switch(v4)
+  trackType = [(ICRadioStationTrack *)self trackType];
+  switch(trackType)
   {
     case 1:
       v5 = @"Standard";
@@ -592,51 +592,51 @@ LABEL_16:
       v5 = @"AudioCliip";
       break;
     default:
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown-%ld", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown-%ld", trackType];
       break;
   }
 
-  v6 = [(ICRadioStationTrack *)self storeAdamID];
-  v7 = [(ICRadioStationTrack *)self storePlatformMetadata];
-  v8 = [v7 name];
-  v9 = [v3 stringWithFormat:@"<ICRadioStationTrack: %p type=%@ adamID=%lld name='%@'>", self, v5, v6, v8];
+  storeAdamID = [(ICRadioStationTrack *)self storeAdamID];
+  storePlatformMetadata = [(ICRadioStationTrack *)self storePlatformMetadata];
+  name = [storePlatformMetadata name];
+  v9 = [v3 stringWithFormat:@"<ICRadioStationTrack: %p type=%@ adamID=%lld name='%@'>", self, v5, storeAdamID, name];
 
   return v9;
 }
 
-- (ICRadioStationTrack)initWithResponseDictionary:(id)a3 responseVersion:(int64_t)a4 expirationDate:(id)a5
+- (ICRadioStationTrack)initWithResponseDictionary:(id)dictionary responseVersion:(int64_t)version expirationDate:(id)date
 {
-  v8 = a3;
-  v9 = a5;
+  dictionaryCopy = dictionary;
+  dateCopy = date;
   v16.receiver = self;
   v16.super_class = ICRadioStationTrack;
   v10 = [(ICRadioStationTrack *)&v16 init];
   if (v10)
   {
-    v11 = [v9 copy];
+    v11 = [dateCopy copy];
     expirationDate = v10->_expirationDate;
     v10->_expirationDate = v11;
 
-    v13 = [v8 copy];
+    v13 = [dictionaryCopy copy];
     responseDictionary = v10->_responseDictionary;
     v10->_responseDictionary = v13;
 
-    v10->_responseVersion = a4;
+    v10->_responseVersion = version;
   }
 
   return v10;
 }
 
-+ (id)flattenedTracksWithTracks:(id)a3
++ (id)flattenedTracksWithTracks:(id)tracks
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  tracksCopy = tracks;
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(tracksCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = tracksCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -652,17 +652,17 @@ LABEL_16:
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 beforePromoContentTrack];
-        if (v11)
+        beforePromoContentTrack = [v10 beforePromoContentTrack];
+        if (beforePromoContentTrack)
         {
-          [v4 addObject:v11];
+          [v4 addObject:beforePromoContentTrack];
         }
 
         [v4 addObject:v10];
-        v12 = [v10 afterPromoContentTrack];
-        if (v12)
+        afterPromoContentTrack = [v10 afterPromoContentTrack];
+        if (afterPromoContentTrack)
         {
-          [v4 addObject:v12];
+          [v4 addObject:afterPromoContentTrack];
         }
       }
 

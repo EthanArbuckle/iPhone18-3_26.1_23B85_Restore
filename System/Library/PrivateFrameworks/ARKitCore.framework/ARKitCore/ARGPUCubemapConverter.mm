@@ -1,7 +1,7 @@
 @interface ARGPUCubemapConverter
 - (ARGPUCubemapConverter)init;
-- (id)cubemapTextureFromEquirectangularTexture:(__n128)a3 rotation:(__n128)a4 size:(uint64_t)a5;
-- (id)equirectangularTextureFromCubemapTexture:(float32x4_t)a3 rotation:(float32x4_t)a4 width:(uint64_t)a5 height:(void *)a6;
+- (id)cubemapTextureFromEquirectangularTexture:(__n128)texture rotation:(__n128)rotation size:(uint64_t)size;
+- (id)equirectangularTextureFromCubemapTexture:(float32x4_t)texture rotation:(float32x4_t)rotation width:(uint64_t)width height:(void *)height;
 @end
 
 @implementation ARGPUCubemapConverter
@@ -13,13 +13,13 @@
   v43.super_class = ARGPUCubemapConverter;
   v2 = [(ARGPUCubemapConverter *)&v43 init];
   v3 = +[ARSharedGPUDevice sharedInstance];
-  v4 = [v3 device];
+  device = [v3 device];
   device = v2->_device;
-  v2->_device = v4;
+  v2->_device = device;
 
-  v6 = [(MTLDevice *)v2->_device newCommandQueue];
+  newCommandQueue = [(MTLDevice *)v2->_device newCommandQueue];
   commandQueue = v2->_commandQueue;
-  v2->_commandQueue = v6;
+  v2->_commandQueue = newCommandQueue;
 
   [(MTLCommandQueue *)v2->_commandQueue setLabel:@"com.apple.arkit.cubemapconverter.queue"];
   v2->_gpuFamilyAtleast4 = [(MTLDevice *)v2->_device supportsFamily:1004];
@@ -153,17 +153,17 @@ LABEL_22:
   return v2;
 }
 
-- (id)equirectangularTextureFromCubemapTexture:(float32x4_t)a3 rotation:(float32x4_t)a4 width:(uint64_t)a5 height:(void *)a6
+- (id)equirectangularTextureFromCubemapTexture:(float32x4_t)texture rotation:(float32x4_t)rotation width:(uint64_t)width height:(void *)height
 {
-  v11 = a6;
-  v12 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:objc_msgSend(v11 width:"pixelFormat") height:a7 mipmapped:a8, 0];
+  heightCopy = height;
+  v12 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:objc_msgSend(heightCopy width:"pixelFormat") height:a7 mipmapped:a8, 0];
   [v12 setUsage:3];
-  v13 = [*(a1 + 8) newTextureWithDescriptor:v12];
+  v13 = [*(self + 8) newTextureWithDescriptor:v12];
   [v13 setLabel:@"com.apple.arkit.cubemapconverter.latlongtexture"];
-  v14 = [*(a1 + 16) commandBuffer];
-  v15 = [v14 computeCommandEncoder];
-  [v15 setLabel:@"com.apple.arkit.gpucubemapconverter.computelatlong"];
-  [v15 setComputePipelineState:*(a1 + 24)];
+  commandBuffer = [*(self + 16) commandBuffer];
+  computeCommandEncoder = [commandBuffer computeCommandEncoder];
+  [computeCommandEncoder setLabel:@"com.apple.arkit.gpucubemapconverter.computelatlong"];
+  [computeCommandEncoder setComputePipelineState:*(self + 24)];
   v16 = 0;
   v27 = xmmword_1C25C8910;
   v28 = xmmword_1C25C8BC0;
@@ -173,7 +173,7 @@ LABEL_22:
   v32 = 0u;
   do
   {
-    *(&v30 + v16) = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a2, COERCE_FLOAT(*(&v27 + v16))), a3, *&v27.i8[v16], 1), a4, *(&v27 + v16), 2);
+    *(&v30 + v16) = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a2, COERCE_FLOAT(*(&v27 + v16))), texture, *&v27.i8[v16], 1), rotation, *(&v27 + v16), 2);
     v16 += 16;
   }
 
@@ -201,25 +201,25 @@ LABEL_22:
   *&v25 = v31;
   DWORD2(v26) = DWORD2(v32);
   *&v26 = v32;
-  [v15 setBytes:&v24 length:48 atIndex:0];
-  [v15 setTexture:v11 atIndex:0];
-  [v15 setTexture:v13 atIndex:1];
-  v18 = [v12 width];
-  v19 = [v12 height];
-  v30.i64[0] = v18;
-  v30.i64[1] = v19;
+  [computeCommandEncoder setBytes:&v24 length:48 atIndex:0];
+  [computeCommandEncoder setTexture:heightCopy atIndex:0];
+  [computeCommandEncoder setTexture:v13 atIndex:1];
+  width = [v12 width];
+  height = [v12 height];
+  v30.i64[0] = width;
+  v30.i64[1] = height;
   *&v31 = 1;
   v27 = vdupq_n_s64(1uLL);
   *&v28 = 1;
-  [v15 dispatchThreadgroups:&v30 threadsPerThreadgroup:&v27];
-  [v15 endEncoding];
-  [v14 commit];
-  [v14 waitUntilCompleted];
+  [computeCommandEncoder dispatchThreadgroups:&v30 threadsPerThreadgroup:&v27];
+  [computeCommandEncoder endEncoding];
+  [commandBuffer commit];
+  [commandBuffer waitUntilCompleted];
 
   return v13;
 }
 
-- (id)cubemapTextureFromEquirectangularTexture:(__n128)a3 rotation:(__n128)a4 size:(uint64_t)a5
+- (id)cubemapTextureFromEquirectangularTexture:(__n128)texture rotation:(__n128)rotation size:(uint64_t)size
 {
   v44 = *MEMORY[0x1E69E9840];
   v9 = a6;
@@ -229,14 +229,14 @@ LABEL_22:
     a7 = 2048;
   }
 
-  v11 = [MEMORY[0x1E69741C0] textureCubeDescriptorWithPixelFormat:objc_msgSend(v9 size:"pixelFormat" mipmapped:*&a2, *&a3, *&a4), a7, 0];
+  v11 = [MEMORY[0x1E69741C0] textureCubeDescriptorWithPixelFormat:objc_msgSend(v9 size:"pixelFormat" mipmapped:*&a2, *&texture, *&rotation), a7, 0];
   [v11 setUsage:23];
-  v12 = [*(a1 + 8) newTextureWithDescriptor:v11];
+  v12 = [*(self + 8) newTextureWithDescriptor:v11];
   [v12 setLabel:@"com.apple.arkit.cubemapconverter.cubemaptexture"];
-  v13 = [*(a1 + 16) commandBuffer];
-  v14 = *(a1 + 32);
-  v15 = [v13 computeCommandEncoder];
-  [v15 setComputePipelineState:v14];
+  commandBuffer = [*(self + 16) commandBuffer];
+  v14 = *(self + 32);
+  computeCommandEncoder = [commandBuffer computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:v14];
   v16 = 0;
   v38 = xmmword_1C25C8910;
   v39 = xmmword_1C25C8BC0;
@@ -271,11 +271,11 @@ LABEL_22:
   v37[2] = v42;
   v37[5] = DWORD2(v43);
   v37[4] = v43;
-  [v15 setBytes:v37 length:48 atIndex:0];
-  [v15 setTexture:v10 atIndex:0];
-  if (*(a1 + 40) == 1)
+  [computeCommandEncoder setBytes:v37 length:48 atIndex:0];
+  [computeCommandEncoder setTexture:v10 atIndex:0];
+  if (*(self + 40) == 1)
   {
-    [v15 setTexture:v12 atIndex:1];
+    [computeCommandEncoder setTexture:v12 atIndex:1];
   }
 
   else
@@ -294,41 +294,41 @@ LABEL_22:
     }
 
     while (v18 != 6);
-    [v15 setTextures:&v41 withRange:{1, 6}];
+    [computeCommandEncoder setTextures:&v41 withRange:{1, 6}];
     for (i = 40; i != -8; i -= 8)
     {
     }
   }
 
-  v22 = [v14 threadExecutionWidth];
-  v23 = [v12 width];
-  if (v22 >= v23)
+  threadExecutionWidth = [v14 threadExecutionWidth];
+  width = [v12 width];
+  if (threadExecutionWidth >= width)
   {
-    v22 = v23;
+    threadExecutionWidth = width;
   }
 
-  v24 = [v14 maxTotalThreadsPerThreadgroup];
-  v25 = v22;
+  maxTotalThreadsPerThreadgroup = [v14 maxTotalThreadsPerThreadgroup];
+  v25 = threadExecutionWidth;
   do
   {
     v26 = v25;
-    v27 = v25 * v22;
+    v27 = v25 * threadExecutionWidth;
     v25 >>= 1;
   }
 
-  while (v27 > v24);
-  v28 = (v22 + [v12 width] - 1) / v22;
-  v29 = [v12 height];
+  while (v27 > maxTotalThreadsPerThreadgroup);
+  v28 = (threadExecutionWidth + [v12 width] - 1) / threadExecutionWidth;
+  height = [v12 height];
   *&v41 = v28;
-  *(&v41 + 1) = (v26 + v29 - 1) / v26;
+  *(&v41 + 1) = (v26 + height - 1) / v26;
   *&v42 = 6;
-  *&v38 = v22;
+  *&v38 = threadExecutionWidth;
   *(&v38 + 1) = v26;
   *&v39 = 1;
-  [v15 dispatchThreadgroups:&v41 threadsPerThreadgroup:&v38];
-  [v15 endEncoding];
-  [v13 commit];
-  [v13 waitUntilCompleted];
+  [computeCommandEncoder dispatchThreadgroups:&v41 threadsPerThreadgroup:&v38];
+  [computeCommandEncoder endEncoding];
+  [commandBuffer commit];
+  [commandBuffer waitUntilCompleted];
 
   return v12;
 }

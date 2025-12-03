@@ -1,24 +1,24 @@
 @interface ACXRemoteAppList
-+ (id)remoteAppListForStorageBaseURL:(id)a3 delegate:(id)a4 queue:(id)a5;
-- (ACXRemoteAppList)initWithCoder:(id)a3;
-- (ACXRemoteAppList)initWithStorageBaseURL:(id)a3 delegate:(id)a4 queue:(id)a5;
++ (id)remoteAppListForStorageBaseURL:(id)l delegate:(id)delegate queue:(id)queue;
+- (ACXRemoteAppList)initWithCoder:(id)coder;
+- (ACXRemoteAppList)initWithStorageBaseURL:(id)l delegate:(id)delegate queue:(id)queue;
 - (ACXRemoteAppListCommunications)delegate;
 - (BOOL)_onQueue_databaseIsSynced;
-- (BOOL)applicationIsInstalledWithBundleID:(id)a3 error:(id *)a4;
-- (BOOL)applicationIsInstalledWithCounterpartBundleID:(id)a3 error:(id *)a4;
+- (BOOL)applicationIsInstalledWithBundleID:(id)d error:(id *)error;
+- (BOOL)applicationIsInstalledWithCounterpartBundleID:(id)d error:(id *)error;
 - (BOOL)databaseIsSynced;
 - (BOOL)startDatabaseSyncIfNeeded;
 - (BOOL)syncPending;
 - (OS_dispatch_queue)queue;
-- (id)appBundleIDForCounterpartBundleID:(id)a3 error:(id *)a4;
-- (id)applicationForBundleID:(id)a3 error:(id *)a4;
-- (id)applicationWithCounterpartBundleID:(id)a3 error:(id *)a4;
-- (id)bundleIDsTrackedWithError:(id *)a3;
+- (id)appBundleIDForCounterpartBundleID:(id)d error:(id *)error;
+- (id)applicationForBundleID:(id)d error:(id *)error;
+- (id)applicationWithCounterpartBundleID:(id)d error:(id *)error;
+- (id)bundleIDsTrackedWithError:(id *)error;
 - (void)_initCommonReliabilityState;
 - (void)_onQueue_acknowledgeAppEvents;
-- (void)_onQueue_appsAdded:(id)a3;
-- (void)_onQueue_appsRemoved:(id)a3;
-- (void)_onQueue_appsUpdated:(id)a3;
+- (void)_onQueue_appsAdded:(id)added;
+- (void)_onQueue_appsRemoved:(id)removed;
+- (void)_onQueue_appsUpdated:(id)updated;
 - (void)_onQueue_databaseResynced;
 - (void)_onQueue_fetchAppsForAppInstallRecords;
 - (void)_onQueue_fetchOutstandingAppEvents;
@@ -30,23 +30,23 @@
 - (void)_onQueue_startSyncTimer;
 - (void)_onQueue_stopResyncThrottleTimer;
 - (void)_onQueue_stopSyncTimer;
-- (void)_resetLastSequenceNumberTo:(unint64_t)a3;
+- (void)_resetLastSequenceNumberTo:(unint64_t)to;
 - (void)_serializeToDisk;
-- (void)addObserver:(id)a3 queue:(id)a4;
-- (void)appsAdded:(id)a3 currentRemoteDBUUID:(id)a4 lastSequenceNumber:(unint64_t)a5;
-- (void)appsRemoved:(id)a3 currentRemoteDBUUID:(id)a4 lastSequenceNumber:(unint64_t)a5;
-- (void)encodeWithCoder:(id)a3;
-- (void)getCurrentDBUUID:(id *)a3 sequenceNumber:(unint64_t *)a4;
+- (void)addObserver:(id)observer queue:(id)queue;
+- (void)appsAdded:(id)added currentRemoteDBUUID:(id)d lastSequenceNumber:(unint64_t)number;
+- (void)appsRemoved:(id)removed currentRemoteDBUUID:(id)d lastSequenceNumber:(unint64_t)number;
+- (void)encodeWithCoder:(id)coder;
+- (void)getCurrentDBUUID:(id *)d sequenceNumber:(unint64_t *)number;
 - (void)remoteDeviceConnected;
 - (void)remoteDeviceDisconnected;
-- (void)removeObserver:(id)a3 queue:(id)a4;
-- (void)reportAppEvents:(id)a3 forDBUUID:(id)a4 startingSequenceNumber:(unint64_t)a5;
-- (void)reportCurrentDBUUID:(id)a3 lastSequenceNumber:(unint64_t)a4;
-- (void)reportTotalSyncFailureForError:(id)a3;
-- (void)setCurrentDBUUID:(id)a3;
-- (void)setLastSequenceNumber:(unint64_t)a3;
-- (void)updateAppInfoWithRecords:(id)a3 currentRemoteDBUUID:(id)a4;
-- (void)updateBundleIDList:(id)a3 currentRemoteDBUUID:(id)a4 lastSequenceNumber:(unint64_t)a5;
+- (void)removeObserver:(id)observer queue:(id)queue;
+- (void)reportAppEvents:(id)events forDBUUID:(id)d startingSequenceNumber:(unint64_t)number;
+- (void)reportCurrentDBUUID:(id)d lastSequenceNumber:(unint64_t)number;
+- (void)reportTotalSyncFailureForError:(id)error;
+- (void)setCurrentDBUUID:(id)d;
+- (void)setLastSequenceNumber:(unint64_t)number;
+- (void)updateAppInfoWithRecords:(id)records currentRemoteDBUUID:(id)d;
+- (void)updateBundleIDList:(id)list currentRemoteDBUUID:(id)d lastSequenceNumber:(unint64_t)number;
 @end
 
 @implementation ACXRemoteAppList
@@ -59,9 +59,9 @@
   [(ACXRemoteAppList *)self setResyncAttempts:0];
 }
 
-- (ACXRemoteAppList)initWithCoder:(id)a3
+- (ACXRemoteAppList)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = ACXRemoteAppList;
   v5 = [(ACXRemoteAppList *)&v20 init];
@@ -74,18 +74,18 @@
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = [NSSet setWithObjects:v6, v7, v8, objc_opt_class(), 0];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"appList"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"appList"];
   appList = v5->_appList;
   v5->_appList = v10;
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentDBUUID"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentDBUUID"];
   currentDBUUID = v5->_currentDBUUID;
   v5->_currentDBUUID = v12;
 
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastSequenceNumber"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastSequenceNumber"];
   v5->_lastSequenceNumber = [v14 unsignedIntegerValue];
 
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AppListVersion"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AppListVersion"];
   v16 = v15;
   if (v15 && [v15 unsignedLongLongValue] != 4)
   {
@@ -102,9 +102,9 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v17 = [(ACXRemoteAppList *)v5 appList];
+  appList = [(ACXRemoteAppList *)v5 appList];
 
-  if (!v17)
+  if (!appList)
   {
     if (qword_1000A4878 && *(qword_1000A4878 + 44) < 3)
     {
@@ -123,35 +123,35 @@ LABEL_14:
   return v18;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   appList = self->_appList;
-  v6 = a3;
-  [v6 encodeObject:appList forKey:@"appList"];
-  [v6 encodeObject:self->_currentDBUUID forKey:@"currentDBUUID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:appList forKey:@"appList"];
+  [coderCopy encodeObject:self->_currentDBUUID forKey:@"currentDBUUID"];
   v5 = [NSNumber numberWithUnsignedInteger:self->_lastSequenceNumber];
-  [v6 encodeObject:v5 forKey:@"lastSequenceNumber"];
+  [coderCopy encodeObject:v5 forKey:@"lastSequenceNumber"];
 
-  [v6 encodeObject:&off_100097830 forKey:@"AppListVersion"];
+  [coderCopy encodeObject:&off_100097830 forKey:@"AppListVersion"];
 }
 
-- (ACXRemoteAppList)initWithStorageBaseURL:(id)a3 delegate:(id)a4 queue:(id)a5
+- (ACXRemoteAppList)initWithStorageBaseURL:(id)l delegate:(id)delegate queue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  lCopy = l;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = ACXRemoteAppList;
   v12 = [(ACXRemoteAppList *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_storageBaseURL, a3);
+    objc_storeStrong(&v12->_storageBaseURL, l);
     v14 = objc_opt_new();
     [(ACXRemoteAppList *)v13 setAppList:v14];
 
-    [(ACXRemoteAppList *)v13 setDelegate:v10];
-    [(ACXRemoteAppList *)v13 setDelegateQueue:v11];
+    [(ACXRemoteAppList *)v13 setDelegate:delegateCopy];
+    [(ACXRemoteAppList *)v13 setDelegateQueue:queueCopy];
     [(ACXRemoteAppList *)v13 _initCommonReliabilityState];
   }
 
@@ -160,43 +160,43 @@ LABEL_14:
 
 - (void)_serializeToDisk
 {
-  v3 = [(ACXRemoteAppList *)self queue];
+  queue = [(ACXRemoteAppList *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003C438;
   block[3] = &unk_10008CD40;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
-+ (id)remoteAppListForStorageBaseURL:(id)a3 delegate:(id)a4 queue:(id)a5
++ (id)remoteAppListForStorageBaseURL:(id)l delegate:(id)delegate queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 URLByAppendingPathComponent:@"ACXRemoteAppList.plist" isDirectory:0];
-  v11 = [v10 path];
+  lCopy = l;
+  delegateCopy = delegate;
+  queueCopy = queue;
+  v10 = [lCopy URLByAppendingPathComponent:@"ACXRemoteAppList.plist" isDirectory:0];
+  path = [v10 path];
   v58 = 0;
-  v12 = [NSData dataWithContentsOfFile:v11 options:1 error:&v58];
+  v12 = [NSData dataWithContentsOfFile:path options:1 error:&v58];
   v13 = v58;
 
   if (!v12)
   {
-    v20 = [v13 domain];
-    if (([v20 isEqualToString:NSCocoaErrorDomain] & 1) == 0)
+    domain = [v13 domain];
+    if (([domain isEqualToString:NSCocoaErrorDomain] & 1) == 0)
     {
 
       goto LABEL_15;
     }
 
-    v21 = [v13 code];
+    code = [v13 code];
 
-    if (v21 != 260)
+    if (code != 260)
     {
       goto LABEL_15;
     }
 
-    v22 = [v7 URLByAppendingPathComponent:@"com.apple.AppConduit.ACXRemoteAppList.plist" isDirectory:0];
+    v22 = [lCopy URLByAppendingPathComponent:@"com.apple.AppConduit.ACXRemoteAppList.plist" isDirectory:0];
 
     v10 = v22;
     v59 = 0;
@@ -206,9 +206,9 @@ LABEL_14:
     v53 = v23;
     if (v23)
     {
-      v55 = v7;
-      v25 = v9;
-      v26 = v8;
+      v55 = lCopy;
+      v25 = queueCopy;
+      v26 = delegateCopy;
       v27 = [v23 objectForKeyedSubscript:@"AppListVersion"];
       objc_opt_class();
       v28 = v27;
@@ -223,8 +223,8 @@ LABEL_14:
       }
 
       v51 = v29;
-      v41 = [v29 unsignedLongLongValue];
-      if (v41 == 1)
+      unsignedLongLongValue = [v29 unsignedLongLongValue];
+      if (unsignedLongLongValue == 1)
       {
         v42 = [v53 objectForKeyedSubscript:@"AppListData"];
         objc_opt_class();
@@ -242,17 +242,17 @@ LABEL_14:
         v47 = v53;
         if (v44)
         {
-          v8 = v26;
-          v9 = v25;
-          v7 = v55;
+          delegateCopy = v26;
+          queueCopy = v25;
+          lCopy = v55;
           goto LABEL_75;
         }
 
-        v8 = v26;
+        delegateCopy = v26;
         if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 3)
         {
-          v46 = [v10 path];
-          v48 = v46;
+          path2 = [v10 path];
+          path4 = path2;
           MOLogWrite();
           goto LABEL_71;
         }
@@ -262,37 +262,37 @@ LABEL_14:
 
       else
       {
-        v45 = v41;
+        v45 = unsignedLongLongValue;
         if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 3)
         {
-          v46 = [v10 path];
+          path2 = [v10 path];
           v49 = 1;
-          v50 = v46;
-          v48 = v45;
+          v50 = path2;
+          path4 = v45;
           MOLogWrite();
-          v8 = v26;
+          delegateCopy = v26;
 LABEL_71:
-          v9 = v25;
-          v7 = v55;
+          queueCopy = v25;
+          lCopy = v55;
           goto LABEL_72;
         }
 
         v44 = 0;
-        v8 = v26;
+        delegateCopy = v26;
       }
 
-      v9 = v25;
-      v7 = v55;
+      queueCopy = v25;
+      lCopy = v55;
       goto LABEL_74;
     }
 
     v38 = v24;
-    v39 = [v24 domain];
-    if ([v39 isEqualToString:NSCocoaErrorDomain])
+    domain2 = [v24 domain];
+    if ([domain2 isEqualToString:NSCocoaErrorDomain])
     {
-      v40 = [v38 code];
+      code2 = [v38 code];
 
-      if (v40 == 260)
+      if (code2 == 260)
       {
         goto LABEL_64;
       }
@@ -304,8 +304,8 @@ LABEL_71:
 
     if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 3)
     {
-      v46 = [v10 path];
-      v48 = v46;
+      path2 = [v10 path];
+      path4 = path2;
       v49 = v52;
       MOLogWrite();
       v51 = 0;
@@ -329,12 +329,12 @@ LABEL_75:
     }
 
 LABEL_15:
-    v31 = [v13 domain];
-    if ([v31 isEqualToString:NSCocoaErrorDomain])
+    domain3 = [v13 domain];
+    if ([domain3 isEqualToString:NSCocoaErrorDomain])
     {
-      v32 = [v13 code];
+      code3 = [v13 code];
 
-      if (v32 == 260)
+      if (code3 == 260)
       {
 LABEL_34:
         v14 = 0;
@@ -349,8 +349,8 @@ LABEL_34:
 
     if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 3)
     {
-      v30 = [v10 path];
-      v48 = v30;
+      path3 = [v10 path];
+      path4 = path3;
       v49 = v13;
       MOLogWrite();
       v14 = 0;
@@ -363,9 +363,9 @@ LABEL_34:
 
   v14 = v12;
 LABEL_3:
-  v54 = v7;
-  v15 = v9;
-  v16 = v8;
+  v54 = lCopy;
+  v15 = queueCopy;
+  v16 = delegateCopy;
   v57 = v13;
   v17 = [[NSKeyedUnarchiver alloc] initForReadingFromData:v14 error:&v57];
   v18 = v57;
@@ -387,11 +387,11 @@ LABEL_3:
     {
       if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5)
       {
-        v48 = [v10 path];
+        path4 = [v10 path];
         MOLogWrite();
       }
 
-      [v33 setDelegate:{v16, v48}];
+      [v33 setDelegate:{v16, path4}];
       [v33 setDelegateQueue:v15];
       [v33 setStorageBaseURL:v54];
       if (v12)
@@ -409,7 +409,7 @@ LABEL_3:
 
         if ((v35 & 1) == 0)
         {
-          v8 = v16;
+          delegateCopy = v16;
           if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 3)
           {
             MOLogWrite();
@@ -419,17 +419,17 @@ LABEL_3:
         }
       }
 
-      v8 = v16;
+      delegateCopy = v16;
 LABEL_37:
-      v9 = v15;
-      v7 = v54;
+      queueCopy = v15;
+      lCopy = v54;
       goto LABEL_44;
     }
 
     if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 3)
     {
-      v30 = [v10 path];
-      v48 = v30;
+      path3 = [v10 path];
+      path4 = path3;
       MOLogWrite();
       goto LABEL_28;
     }
@@ -439,16 +439,16 @@ LABEL_37:
   {
     if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 3)
     {
-      v30 = [v10 path];
-      v48 = v30;
+      path3 = [v10 path];
+      path4 = path3;
       v49 = v18;
       MOLogWrite();
       v17 = 0;
 LABEL_28:
       v13 = v18;
-      v8 = v16;
-      v9 = v15;
-      v7 = v54;
+      delegateCopy = v16;
+      queueCopy = v15;
+      lCopy = v54;
 LABEL_33:
 
       goto LABEL_40;
@@ -458,19 +458,19 @@ LABEL_33:
   }
 
   v13 = v18;
-  v8 = v16;
-  v9 = v15;
-  v7 = v54;
+  delegateCopy = v16;
+  queueCopy = v15;
+  lCopy = v54;
 LABEL_40:
   if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5)
   {
     MOLogWrite();
   }
 
-  v36 = [NSFileManager defaultManager:v48];
+  v36 = [NSFileManager defaultManager:path4];
   [v36 removeItemAtURL:v10 error:0];
 
-  v33 = [objc_alloc(objc_opt_class()) initWithStorageBaseURL:v7 delegate:v8 queue:v9];
+  v33 = [objc_alloc(objc_opt_class()) initWithStorageBaseURL:lCopy delegate:delegateCopy queue:queueCopy];
 LABEL_44:
 
   return v33;
@@ -490,16 +490,16 @@ LABEL_44:
 
 - (BOOL)syncPending
 {
-  v2 = [(ACXRemoteAppList *)self syncTimeout];
-  v3 = v2 != 0;
+  syncTimeout = [(ACXRemoteAppList *)self syncTimeout];
+  v3 = syncTimeout != 0;
 
   return v3;
 }
 
-- (void)_resetLastSequenceNumberTo:(unint64_t)a3
+- (void)_resetLastSequenceNumberTo:(unint64_t)to
 {
-  v5 = [(ACXRemoteAppList *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(ACXRemoteAppList *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5)
   {
@@ -507,61 +507,61 @@ LABEL_44:
     MOLogWrite();
   }
 
-  self->_lastSequenceNumber = a3;
+  self->_lastSequenceNumber = to;
 }
 
-- (void)setLastSequenceNumber:(unint64_t)a3
+- (void)setLastSequenceNumber:(unint64_t)number
 {
-  v5 = [(ACXRemoteAppList *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(ACXRemoteAppList *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (!a3 || self->_lastSequenceNumber < a3)
+  if (!number || self->_lastSequenceNumber < number)
   {
 
-    [(ACXRemoteAppList *)self _resetLastSequenceNumberTo:a3];
+    [(ACXRemoteAppList *)self _resetLastSequenceNumberTo:number];
   }
 }
 
-- (void)setCurrentDBUUID:(id)a3
+- (void)setCurrentDBUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(ACXRemoteAppList *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(ACXRemoteAppList *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   currentDBUUID = self->_currentDBUUID;
-  if (((v4 != 0) == (currentDBUUID == 0) || ([(NSUUID *)currentDBUUID isEqual:v4]& 1) == 0) && (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5))
+  if (((dCopy != 0) == (currentDBUUID == 0) || ([(NSUUID *)currentDBUUID isEqual:dCopy]& 1) == 0) && (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5))
   {
     v8 = self->_currentDBUUID;
     MOLogWrite();
   }
 
   v7 = self->_currentDBUUID;
-  self->_currentDBUUID = v4;
+  self->_currentDBUUID = dCopy;
 }
 
 - (void)_onQueue_purgeSavedData
 {
-  v3 = [(ACXRemoteAppList *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(ACXRemoteAppList *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(ACXRemoteAppList *)self storageBaseURL];
-  v5 = [v4 URLByAppendingPathComponent:@"ACXRemoteAppList.plist" isDirectory:0];
+  storageBaseURL = [(ACXRemoteAppList *)self storageBaseURL];
+  v5 = [storageBaseURL URLByAppendingPathComponent:@"ACXRemoteAppList.plist" isDirectory:0];
 
   if (v5)
   {
     v6 = +[NSFileManager defaultManager];
     v12 = 0;
     v7 = [v6 removeItemAtURL:v5 error:&v12];
-    v8 = v12;
+    storageBaseURL2 = v12;
 
     if ((v7 & 1) == 0)
     {
-      v9 = [v8 domain];
-      if ([v9 isEqualToString:NSCocoaErrorDomain])
+      domain = [storageBaseURL2 domain];
+      if ([domain isEqualToString:NSCocoaErrorDomain])
       {
-        v10 = [v8 code];
+        code = [storageBaseURL2 code];
 
-        if (v10 == 4)
+        if (code == 4)
         {
           goto LABEL_13;
         }
@@ -573,7 +573,7 @@ LABEL_44:
 
       if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 3)
       {
-        v11 = [v5 path];
+        path = [v5 path];
         MOLogWrite();
       }
     }
@@ -585,7 +585,7 @@ LABEL_13:
 
   if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 3)
   {
-    v8 = [(ACXRemoteAppList *)self storageBaseURL];
+    storageBaseURL2 = [(ACXRemoteAppList *)self storageBaseURL];
     MOLogWrite();
     goto LABEL_13;
   }
@@ -595,23 +595,23 @@ LABEL_14:
 
 - (void)_onQueue_saveData
 {
-  v3 = [(ACXRemoteAppList *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(ACXRemoteAppList *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (![(ACXRemoteAppList *)self performingResync])
   {
     v4 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
     [v4 setOutputFormat:200];
     [v4 encodeObject:self forKey:NSKeyedArchiveRootObjectKey];
-    v5 = [v4 encodedData];
-    v6 = [(ACXRemoteAppList *)self storageBaseURL];
-    v7 = [v6 URLByAppendingPathComponent:@"ACXRemoteAppList.plist" isDirectory:0];
+    encodedData = [v4 encodedData];
+    storageBaseURL = [(ACXRemoteAppList *)self storageBaseURL];
+    v7 = [storageBaseURL URLByAppendingPathComponent:@"ACXRemoteAppList.plist" isDirectory:0];
 
     if (v7)
     {
       v11 = 0;
-      v8 = [v5 writeToURL:v7 options:268435457 error:&v11];
-      v9 = v11;
+      v8 = [encodedData writeToURL:v7 options:268435457 error:&v11];
+      storageBaseURL2 = v11;
       if (v8)
       {
         if (qword_1000A4878 && *(qword_1000A4878 + 44) < 5)
@@ -625,7 +625,7 @@ LABEL_14:
         goto LABEL_18;
       }
 
-      v10 = [v7 path];
+      path = [v7 path];
       MOLogWrite();
     }
 
@@ -636,7 +636,7 @@ LABEL_14:
         goto LABEL_19;
       }
 
-      v9 = [(ACXRemoteAppList *)self storageBaseURL];
+      storageBaseURL2 = [(ACXRemoteAppList *)self storageBaseURL];
       MOLogWrite();
     }
 
@@ -655,13 +655,13 @@ LABEL_19:
 
 - (void)_onQueue_startSyncTimer
 {
-  v3 = [(ACXRemoteAppList *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(ACXRemoteAppList *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(ACXRemoteAppList *)self _onQueue_stopSyncTimer];
   v4 = os_transaction_create();
-  v5 = [(ACXRemoteAppList *)self queue];
-  v6 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v5);
+  queue2 = [(ACXRemoteAppList *)self queue];
+  v6 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue2);
 
   v7 = 300 * [(ACXRemoteAppList *)self resyncAttempts]+ 300;
   if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 3)
@@ -686,7 +686,7 @@ LABEL_19:
   v12[3] = &unk_10008CC38;
   v11 = v9;
   v13 = v11;
-  v14 = self;
+  selfCopy = self;
   dispatch_source_set_event_handler(v11, v12);
   if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5)
   {
@@ -699,14 +699,14 @@ LABEL_19:
 
 - (void)_onQueue_stopSyncTimer
 {
-  v3 = [(ACXRemoteAppList *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(ACXRemoteAppList *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(ACXRemoteAppList *)self syncTimeout];
-  v5 = v4;
-  if (v4)
+  syncTimeout = [(ACXRemoteAppList *)self syncTimeout];
+  v5 = syncTimeout;
+  if (syncTimeout)
   {
-    v6 = v4;
+    v6 = syncTimeout;
     if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5)
     {
       MOLogWrite();
@@ -714,21 +714,21 @@ LABEL_19:
     }
 
     dispatch_source_cancel(v5);
-    v4 = [(ACXRemoteAppList *)self setSyncTimeout:0];
+    syncTimeout = [(ACXRemoteAppList *)self setSyncTimeout:0];
     v5 = v6;
   }
 
-  _objc_release_x1(v4, v5);
+  _objc_release_x1(syncTimeout, v5);
 }
 
 - (void)_onQueue_startResyncThrottleTimer
 {
-  v3 = [(ACXRemoteAppList *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(ACXRemoteAppList *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(ACXRemoteAppList *)self resyncThrottleTimer];
+  resyncThrottleTimer = [(ACXRemoteAppList *)self resyncThrottleTimer];
 
-  if (v4)
+  if (resyncThrottleTimer)
   {
     if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 3)
     {
@@ -739,8 +739,8 @@ LABEL_19:
 
   else
   {
-    v5 = [(ACXRemoteAppList *)self queue];
-    v6 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v5);
+    queue2 = [(ACXRemoteAppList *)self queue];
+    v6 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue2);
 
     v7 = 600 * [(ACXRemoteAppList *)self resyncAttempts]+ 600;
     if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5)
@@ -763,7 +763,7 @@ LABEL_19:
     v11[3] = &unk_10008CC38;
     v10 = v9;
     v12 = v10;
-    v13 = self;
+    selfCopy = self;
     dispatch_source_set_event_handler(v10, v11);
     if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5)
     {
@@ -777,14 +777,14 @@ LABEL_19:
 
 - (void)_onQueue_stopResyncThrottleTimer
 {
-  v3 = [(ACXRemoteAppList *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(ACXRemoteAppList *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(ACXRemoteAppList *)self resyncThrottleTimer];
-  v5 = v4;
-  if (v4)
+  resyncThrottleTimer = [(ACXRemoteAppList *)self resyncThrottleTimer];
+  v5 = resyncThrottleTimer;
+  if (resyncThrottleTimer)
   {
-    v6 = v4;
+    v6 = resyncThrottleTimer;
     if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5)
     {
       MOLogWrite();
@@ -792,17 +792,17 @@ LABEL_19:
     }
 
     dispatch_source_cancel(v5);
-    v4 = [(ACXRemoteAppList *)self setResyncThrottleTimer:0];
+    resyncThrottleTimer = [(ACXRemoteAppList *)self setResyncThrottleTimer:0];
     v5 = v6;
   }
 
-  _objc_release_x1(v4, v5);
+  _objc_release_x1(resyncThrottleTimer, v5);
 }
 
 - (void)_onQueue_reSync
 {
-  v3 = [(ACXRemoteAppList *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(ACXRemoteAppList *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(ACXRemoteAppList *)self _onQueue_stopResyncThrottleTimer];
   if (![(ACXRemoteAppList *)self remoteIsConnected])
@@ -845,37 +845,37 @@ LABEL_8:
     MOLogWrite();
   }
 
-  v6 = [(ACXRemoteAppList *)self delegateQueue];
+  delegateQueue = [(ACXRemoteAppList *)self delegateQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10003DC18;
   v7[3] = &unk_10008CD40;
   v7[4] = self;
-  sub_100005828(v6, v7);
+  sub_100005828(delegateQueue, v7);
 }
 
-- (void)reportTotalSyncFailureForError:(id)a3
+- (void)reportTotalSyncFailureForError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 3)
   {
-    v6 = v4;
+    v6 = errorCopy;
     MOLogWrite();
   }
 
-  v5 = [(ACXRemoteAppList *)self queue];
+  queue = [(ACXRemoteAppList *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003DD34;
   block[3] = &unk_10008CD40;
   block[4] = self;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
 }
 
 - (void)_onQueue_fetchRemainingBundleIDs
 {
-  v3 = [(ACXRemoteAppList *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(ACXRemoteAppList *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(ACXRemoteAppList *)self remoteIsConnected])
   {
@@ -890,15 +890,15 @@ LABEL_8:
 
     else
     {
-      v24 = [(ACXRemoteAppList *)self bundleIDsToFetch];
-      if ([v24 count])
+      bundleIDsToFetch = [(ACXRemoteAppList *)self bundleIDsToFetch];
+      if ([bundleIDsToFetch count])
       {
         v5 = [NSMutableSet setWithCapacity:5];
         v33 = 0u;
         v34 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v6 = v24;
+        v6 = bundleIDsToFetch;
         v7 = [v6 countByEnumeratingWithState:&v31 objects:v39 count:16];
         if (v7)
         {
@@ -959,14 +959,14 @@ LABEL_19:
               }
 
               v16 = *(*(&v27 + 1) + 8 * i);
-              v17 = [(ACXRemoteAppList *)self attemptsPerBundleID];
-              v18 = [v17 objectForKeyedSubscript:v16];
+              attemptsPerBundleID = [(ACXRemoteAppList *)self attemptsPerBundleID];
+              v18 = [attemptsPerBundleID objectForKeyedSubscript:v16];
               v19 = v18 == 0;
 
               if (v19)
               {
-                v20 = [(ACXRemoteAppList *)self attemptsPerBundleID];
-                [v20 setObject:&off_100097848 forKeyedSubscript:v16];
+                attemptsPerBundleID2 = [(ACXRemoteAppList *)self attemptsPerBundleID];
+                [attemptsPerBundleID2 setObject:&off_100097848 forKeyedSubscript:v16];
               }
             }
 
@@ -977,7 +977,7 @@ LABEL_19:
         }
 
         [(ACXRemoteAppList *)self _onQueue_startSyncTimer];
-        v21 = [(ACXRemoteAppList *)self delegateQueue];
+        delegateQueue = [(ACXRemoteAppList *)self delegateQueue];
         v25[0] = _NSConcreteStackBlock;
         v25[1] = 3221225472;
         v25[2] = sub_10003E2A8;
@@ -985,7 +985,7 @@ LABEL_19:
         v25[4] = self;
         v26 = v12;
         v22 = v12;
-        sub_100005828(v21, v25);
+        sub_100005828(delegateQueue, v25);
       }
 
       else if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5)
@@ -997,9 +997,9 @@ LABEL_19:
 
   else
   {
-    v4 = [(ACXRemoteAppList *)self resumeOnReconnect];
+    resumeOnReconnect = [(ACXRemoteAppList *)self resumeOnReconnect];
 
-    if (!v4)
+    if (!resumeOnReconnect)
     {
       if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5)
       {
@@ -1026,8 +1026,8 @@ LABEL_19:
 
 - (void)_onQueue_fetchAppsForAppInstallRecords
 {
-  v3 = [(ACXRemoteAppList *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(ACXRemoteAppList *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(ACXRemoteAppList *)self remoteIsConnected])
   {
@@ -1042,12 +1042,12 @@ LABEL_19:
 
     else
     {
-      v5 = [(ACXRemoteAppList *)self appInstallRecordsToFetch];
-      v6 = [v5 allKeys];
+      appInstallRecordsToFetch = [(ACXRemoteAppList *)self appInstallRecordsToFetch];
+      allKeys = [appInstallRecordsToFetch allKeys];
 
-      if ([v6 count])
+      if ([allKeys count])
       {
-        v7 = [v6 count];
+        v7 = [allKeys count];
         if (v7 >= 5)
         {
           v8 = 5;
@@ -1058,7 +1058,7 @@ LABEL_19:
           v8 = v7;
         }
 
-        v22 = [v6 subarrayWithRange:{0, v8}];
+        v22 = [allKeys subarrayWithRange:{0, v8}];
         v9 = [NSSet setWithArray:v22];
         if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5)
         {
@@ -1085,14 +1085,14 @@ LABEL_19:
               }
 
               v14 = *(*(&v25 + 1) + 8 * i);
-              v15 = [(ACXRemoteAppList *)self attemptsPerBundleID];
-              v16 = [v15 objectForKeyedSubscript:v14];
+              attemptsPerBundleID = [(ACXRemoteAppList *)self attemptsPerBundleID];
+              v16 = [attemptsPerBundleID objectForKeyedSubscript:v14];
               v17 = v16 == 0;
 
               if (v17)
               {
-                v18 = [(ACXRemoteAppList *)self attemptsPerBundleID];
-                [v18 setObject:&off_100097848 forKeyedSubscript:v14];
+                attemptsPerBundleID2 = [(ACXRemoteAppList *)self attemptsPerBundleID];
+                [attemptsPerBundleID2 setObject:&off_100097848 forKeyedSubscript:v14];
               }
             }
 
@@ -1103,7 +1103,7 @@ LABEL_19:
         }
 
         [(ACXRemoteAppList *)self _onQueue_startSyncTimer];
-        v19 = [(ACXRemoteAppList *)self delegateQueue];
+        delegateQueue = [(ACXRemoteAppList *)self delegateQueue];
         v23[0] = _NSConcreteStackBlock;
         v23[1] = 3221225472;
         v23[2] = sub_10003E7BC;
@@ -1111,7 +1111,7 @@ LABEL_19:
         v23[4] = self;
         v24 = v10;
         v20 = v10;
-        sub_100005828(v19, v23);
+        sub_100005828(delegateQueue, v23);
       }
 
       else if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5)
@@ -1123,9 +1123,9 @@ LABEL_19:
 
   else
   {
-    v4 = [(ACXRemoteAppList *)self resumeOnReconnect];
+    resumeOnReconnect = [(ACXRemoteAppList *)self resumeOnReconnect];
 
-    if (!v4)
+    if (!resumeOnReconnect)
     {
       if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5)
       {
@@ -1152,8 +1152,8 @@ LABEL_19:
 
 - (void)_onQueue_fetchOutstandingAppEvents
 {
-  v3 = [(ACXRemoteAppList *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(ACXRemoteAppList *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(ACXRemoteAppList *)self remoteIsConnected])
   {
@@ -1174,21 +1174,21 @@ LABEL_19:
       }
 
       [(ACXRemoteAppList *)self _onQueue_startSyncTimer];
-      v5 = [(ACXRemoteAppList *)self delegateQueue];
+      delegateQueue = [(ACXRemoteAppList *)self delegateQueue];
       v6[0] = _NSConcreteStackBlock;
       v6[1] = 3221225472;
       v6[2] = sub_10003EAB0;
       v6[3] = &unk_10008CD40;
       v6[4] = self;
-      sub_100005828(v5, v6);
+      sub_100005828(delegateQueue, v6);
     }
   }
 
   else
   {
-    v4 = [(ACXRemoteAppList *)self resumeOnReconnect];
+    resumeOnReconnect = [(ACXRemoteAppList *)self resumeOnReconnect];
 
-    if (!v4)
+    if (!resumeOnReconnect)
     {
       if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5)
       {
@@ -1215,17 +1215,17 @@ LABEL_19:
 
 - (void)_onQueue_acknowledgeAppEvents
 {
-  v3 = [(ACXRemoteAppList *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(ACXRemoteAppList *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(ACXRemoteAppList *)self remoteIsConnected])
   {
-    v4 = [(ACXRemoteAppList *)self currentDBUUID];
-    v5 = [(ACXRemoteAppList *)self lastSequenceNumber];
+    currentDBUUID = [(ACXRemoteAppList *)self currentDBUUID];
+    lastSequenceNumber = [(ACXRemoteAppList *)self lastSequenceNumber];
     if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5)
     {
-      v9 = v4;
-      v10 = v5;
+      v9 = currentDBUUID;
+      v10 = lastSequenceNumber;
       MOLogWrite();
     }
 
@@ -1235,17 +1235,17 @@ LABEL_19:
     v11[2] = sub_10003ED70;
     v11[3] = &unk_10008CEC8;
     v11[4] = self;
-    v12 = v4;
-    v13 = v5;
-    v7 = v4;
+    v12 = currentDBUUID;
+    v13 = lastSequenceNumber;
+    v7 = currentDBUUID;
     sub_100005828(v6, v11);
   }
 
   else
   {
-    v8 = [(ACXRemoteAppList *)self resumeOnReconnect];
+    resumeOnReconnect = [(ACXRemoteAppList *)self resumeOnReconnect];
 
-    if (!v8)
+    if (!resumeOnReconnect)
     {
       if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5)
       {
@@ -1270,15 +1270,15 @@ LABEL_19:
   }
 }
 
-- (void)_onQueue_appsAdded:(id)a3
+- (void)_onQueue_appsAdded:(id)added
 {
-  v4 = a3;
-  v5 = [(ACXRemoteAppList *)self queue];
-  dispatch_assert_queue_V2(v5);
+  addedCopy = added;
+  queue = [(ACXRemoteAppList *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5)
   {
-    v13 = [v4 count];
+    v13 = [addedCopy count];
     MOLogWrite();
   }
 
@@ -1286,8 +1286,8 @@ LABEL_19:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(ACXRemoteAppList *)self observers];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  observers = [(ACXRemoteAppList *)self observers];
+  v7 = [observers countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1298,36 +1298,36 @@ LABEL_19:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(observers);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 queue];
+        queue2 = [v11 queue];
         v14[0] = _NSConcreteStackBlock;
         v14[1] = 3221225472;
         v14[2] = sub_10003EFAC;
         v14[3] = &unk_10008CC38;
         v14[4] = v11;
-        v15 = v4;
-        sub_100005828(v12, v14);
+        v15 = addedCopy;
+        sub_100005828(queue2, v14);
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [observers countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)_onQueue_appsUpdated:(id)a3
+- (void)_onQueue_appsUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [(ACXRemoteAppList *)self queue];
-  dispatch_assert_queue_V2(v5);
+  updatedCopy = updated;
+  queue = [(ACXRemoteAppList *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5)
   {
-    v13 = [v4 count];
+    v13 = [updatedCopy count];
     MOLogWrite();
   }
 
@@ -1335,8 +1335,8 @@ LABEL_19:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(ACXRemoteAppList *)self observers];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  observers = [(ACXRemoteAppList *)self observers];
+  v7 = [observers countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1347,36 +1347,36 @@ LABEL_19:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(observers);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 queue];
+        queue2 = [v11 queue];
         v14[0] = _NSConcreteStackBlock;
         v14[1] = 3221225472;
         v14[2] = sub_10003F1E8;
         v14[3] = &unk_10008CC38;
         v14[4] = v11;
-        v15 = v4;
-        sub_100005828(v12, v14);
+        v15 = updatedCopy;
+        sub_100005828(queue2, v14);
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [observers countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)_onQueue_appsRemoved:(id)a3
+- (void)_onQueue_appsRemoved:(id)removed
 {
-  v4 = a3;
-  v5 = [(ACXRemoteAppList *)self queue];
-  dispatch_assert_queue_V2(v5);
+  removedCopy = removed;
+  queue = [(ACXRemoteAppList *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5)
   {
-    v13 = [v4 count];
+    v13 = [removedCopy count];
     MOLogWrite();
   }
 
@@ -1384,8 +1384,8 @@ LABEL_19:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(ACXRemoteAppList *)self observers];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  observers = [(ACXRemoteAppList *)self observers];
+  v7 = [observers countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1396,21 +1396,21 @@ LABEL_19:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(observers);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 queue];
+        queue2 = [v11 queue];
         v14[0] = _NSConcreteStackBlock;
         v14[1] = 3221225472;
         v14[2] = sub_10003F424;
         v14[3] = &unk_10008CC38;
         v14[4] = v11;
-        v15 = v4;
-        sub_100005828(v12, v14);
+        v15 = removedCopy;
+        sub_100005828(queue2, v14);
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [observers countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -1419,8 +1419,8 @@ LABEL_19:
 
 - (void)_onQueue_databaseResynced
 {
-  v3 = [(ACXRemoteAppList *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(ACXRemoteAppList *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(ACXRemoteAppList *)self setResyncAttempts:0];
   if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5)
@@ -1432,8 +1432,8 @@ LABEL_19:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(ACXRemoteAppList *)self observers];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  observers = [(ACXRemoteAppList *)self observers];
+  v5 = [observers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1444,215 +1444,215 @@ LABEL_19:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(observers);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 queue];
+        queue2 = [v9 queue];
         v11[0] = _NSConcreteStackBlock;
         v11[1] = 3221225472;
         v11[2] = sub_10003F638;
         v11[3] = &unk_10008CD40;
         v11[4] = v9;
-        sub_100005828(v10, v11);
+        sub_100005828(queue2, v11);
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [observers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)addObserver:(id)a3 queue:(id)a4
+- (void)addObserver:(id)observer queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACXRemoteAppList *)self queue];
+  observerCopy = observer;
+  queueCopy = queue;
+  queue = [(ACXRemoteAppList *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003F754;
   block[3] = &unk_10008CA48;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = observerCopy;
+  v13 = queueCopy;
+  v9 = queueCopy;
+  v10 = observerCopy;
+  dispatch_sync(queue, block);
 }
 
-- (void)removeObserver:(id)a3 queue:(id)a4
+- (void)removeObserver:(id)observer queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACXRemoteAppList *)self queue];
+  observerCopy = observer;
+  queueCopy = queue;
+  queue = [(ACXRemoteAppList *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003F8C4;
   block[3] = &unk_10008CA48;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = observerCopy;
+  v13 = queueCopy;
+  v9 = queueCopy;
+  v10 = observerCopy;
+  dispatch_sync(queue, block);
 }
 
 - (void)remoteDeviceDisconnected
 {
-  v3 = [(ACXRemoteAppList *)self queue];
+  queue = [(ACXRemoteAppList *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003FB00;
   block[3] = &unk_10008CD40;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
 - (void)remoteDeviceConnected
 {
-  v3 = [(ACXRemoteAppList *)self queue];
+  queue = [(ACXRemoteAppList *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003FBFC;
   block[3] = &unk_10008CD40;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
-- (void)reportCurrentDBUUID:(id)a3 lastSequenceNumber:(unint64_t)a4
+- (void)reportCurrentDBUUID:(id)d lastSequenceNumber:(unint64_t)number
 {
-  v6 = a3;
-  v7 = [(ACXRemoteAppList *)self queue];
+  dCopy = d;
+  queue = [(ACXRemoteAppList *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003FD98;
   block[3] = &unk_10008CEC8;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
-  dispatch_sync(v7, block);
+  v10 = dCopy;
+  numberCopy = number;
+  v8 = dCopy;
+  dispatch_sync(queue, block);
 }
 
-- (void)updateBundleIDList:(id)a3 currentRemoteDBUUID:(id)a4 lastSequenceNumber:(unint64_t)a5
+- (void)updateBundleIDList:(id)list currentRemoteDBUUID:(id)d lastSequenceNumber:(unint64_t)number
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(ACXRemoteAppList *)self queue];
+  listCopy = list;
+  dCopy = d;
+  queue = [(ACXRemoteAppList *)self queue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000400DC;
   v13[3] = &unk_10008CF40;
   v13[4] = self;
-  v14 = v9;
-  v15 = v8;
-  v16 = a5;
-  v11 = v8;
-  v12 = v9;
-  dispatch_sync(v10, v13);
+  v14 = dCopy;
+  v15 = listCopy;
+  numberCopy = number;
+  v11 = listCopy;
+  v12 = dCopy;
+  dispatch_sync(queue, v13);
 }
 
-- (void)updateAppInfoWithRecords:(id)a3 currentRemoteDBUUID:(id)a4
+- (void)updateAppInfoWithRecords:(id)records currentRemoteDBUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACXRemoteAppList *)self queue];
+  recordsCopy = records;
+  dCopy = d;
+  queue = [(ACXRemoteAppList *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100040284;
   block[3] = &unk_10008CA48;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_sync(v8, block);
+  v12 = dCopy;
+  v13 = recordsCopy;
+  v9 = recordsCopy;
+  v10 = dCopy;
+  dispatch_sync(queue, block);
 }
 
-- (void)reportAppEvents:(id)a3 forDBUUID:(id)a4 startingSequenceNumber:(unint64_t)a5
+- (void)reportAppEvents:(id)events forDBUUID:(id)d startingSequenceNumber:(unint64_t)number
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(ACXRemoteAppList *)self queue];
+  eventsCopy = events;
+  dCopy = d;
+  queue = [(ACXRemoteAppList *)self queue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100040E04;
   v13[3] = &unk_10008CF40;
   v13[4] = self;
-  v14 = v9;
-  v15 = v8;
-  v16 = a5;
-  v11 = v8;
-  v12 = v9;
-  dispatch_sync(v10, v13);
+  v14 = dCopy;
+  v15 = eventsCopy;
+  numberCopy = number;
+  v11 = eventsCopy;
+  v12 = dCopy;
+  dispatch_sync(queue, v13);
 }
 
-- (void)appsAdded:(id)a3 currentRemoteDBUUID:(id)a4 lastSequenceNumber:(unint64_t)a5
+- (void)appsAdded:(id)added currentRemoteDBUUID:(id)d lastSequenceNumber:(unint64_t)number
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(ACXRemoteAppList *)self queue];
+  addedCopy = added;
+  dCopy = d;
+  queue = [(ACXRemoteAppList *)self queue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100041498;
   v13[3] = &unk_10008CF40;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a5;
-  v11 = v9;
-  v12 = v8;
-  dispatch_sync(v10, v13);
+  v14 = addedCopy;
+  v15 = dCopy;
+  numberCopy = number;
+  v11 = dCopy;
+  v12 = addedCopy;
+  dispatch_sync(queue, v13);
 }
 
-- (void)appsRemoved:(id)a3 currentRemoteDBUUID:(id)a4 lastSequenceNumber:(unint64_t)a5
+- (void)appsRemoved:(id)removed currentRemoteDBUUID:(id)d lastSequenceNumber:(unint64_t)number
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(ACXRemoteAppList *)self queue];
+  removedCopy = removed;
+  dCopy = d;
+  queue = [(ACXRemoteAppList *)self queue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100041B78;
   v13[3] = &unk_10008CF40;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a5;
-  v11 = v9;
-  v12 = v8;
-  dispatch_sync(v10, v13);
+  v14 = removedCopy;
+  v15 = dCopy;
+  numberCopy = number;
+  v11 = dCopy;
+  v12 = removedCopy;
+  dispatch_sync(queue, v13);
 }
 
 - (BOOL)startDatabaseSyncIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(ACXRemoteAppList *)self queue];
+  queue = [(ACXRemoteAppList *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100041FE4;
   v5[3] = &unk_10008C958;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)_onQueue_databaseIsSynced
 {
-  v3 = [(ACXRemoteAppList *)self appList];
-  if ([v3 count])
+  appList = [(ACXRemoteAppList *)self appList];
+  if ([appList count])
   {
-    v4 = [(ACXRemoteAppList *)self performingResync];
+    performingResync = [(ACXRemoteAppList *)self performingResync];
 
-    return v4 ^ 1;
+    return performingResync ^ 1;
   }
 
   else
@@ -1664,26 +1664,26 @@ LABEL_19:
 
 - (BOOL)databaseIsSynced
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(ACXRemoteAppList *)self queue];
+  queue = [(ACXRemoteAppList *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000421FC;
   v5[3] = &unk_10008C958;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (id)bundleIDsTrackedWithError:(id *)a3
+- (id)bundleIDsTrackedWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -1697,7 +1697,7 @@ LABEL_19:
   v13 = sub_1000423D0;
   v14 = sub_1000423E0;
   v15 = 0;
-  v5 = [(ACXRemoteAppList *)self queue];
+  queue = [(ACXRemoteAppList *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000423E8;
@@ -1705,12 +1705,12 @@ LABEL_19:
   block[4] = self;
   block[5] = &v16;
   block[6] = &v10;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
 
   v6 = v11[5];
-  if (a3 && !v6)
+  if (error && !v6)
   {
-    *a3 = v17[5];
+    *error = v17[5];
     v6 = v11[5];
   }
 
@@ -1722,9 +1722,9 @@ LABEL_19:
   return v7;
 }
 
-- (id)applicationForBundleID:(id)a3 error:(id *)a4
+- (id)applicationForBundleID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -1737,22 +1737,22 @@ LABEL_19:
   v19 = sub_1000423D0;
   v20 = sub_1000423E0;
   v21 = 0;
-  v7 = [(ACXRemoteAppList *)self queue];
+  queue = [(ACXRemoteAppList *)self queue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100042670;
   v12[3] = &unk_10008DD60;
   v12[4] = self;
   v14 = &v22;
-  v8 = v6;
+  v8 = dCopy;
   v13 = v8;
   v15 = &v16;
-  dispatch_sync(v7, v12);
+  dispatch_sync(queue, v12);
 
   v9 = v17[5];
-  if (a4 && !v9)
+  if (error && !v9)
   {
-    *a4 = v23[5];
+    *error = v23[5];
     v9 = v17[5];
   }
 
@@ -1764,9 +1764,9 @@ LABEL_19:
   return v10;
 }
 
-- (BOOL)applicationIsInstalledWithBundleID:(id)a3 error:(id *)a4
+- (BOOL)applicationIsInstalledWithBundleID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -1777,22 +1777,22 @@ LABEL_19:
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v7 = [(ACXRemoteAppList *)self queue];
+  queue = [(ACXRemoteAppList *)self queue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100042934;
   v11[3] = &unk_10008DD60;
   v11[4] = self;
   v13 = &v19;
-  v8 = v6;
+  v8 = dCopy;
   v12 = v8;
   v14 = &v15;
-  dispatch_sync(v7, v11);
+  dispatch_sync(queue, v11);
 
   v9 = *(v16 + 24);
-  if (a4 && (v16[3] & 1) == 0)
+  if (error && (v16[3] & 1) == 0)
   {
-    *a4 = v20[5];
+    *error = v20[5];
     v9 = *(v16 + 24);
   }
 
@@ -1802,9 +1802,9 @@ LABEL_19:
   return v9 & 1;
 }
 
-- (id)applicationWithCounterpartBundleID:(id)a3 error:(id *)a4
+- (id)applicationWithCounterpartBundleID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -1817,22 +1817,22 @@ LABEL_19:
   v19 = sub_1000423D0;
   v20 = sub_1000423E0;
   v21 = 0;
-  v7 = [(ACXRemoteAppList *)self queue];
+  queue = [(ACXRemoteAppList *)self queue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100042C20;
   v12[3] = &unk_10008DD60;
   v12[4] = self;
   v14 = &v22;
-  v8 = v6;
+  v8 = dCopy;
   v13 = v8;
   v15 = &v16;
-  dispatch_sync(v7, v12);
+  dispatch_sync(queue, v12);
 
   v9 = v17[5];
-  if (a4 && !v9)
+  if (error && !v9)
   {
-    *a4 = v23[5];
+    *error = v23[5];
     v9 = v17[5];
   }
 
@@ -1844,9 +1844,9 @@ LABEL_19:
   return v10;
 }
 
-- (BOOL)applicationIsInstalledWithCounterpartBundleID:(id)a3 error:(id *)a4
+- (BOOL)applicationIsInstalledWithCounterpartBundleID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -1857,22 +1857,22 @@ LABEL_19:
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v7 = [(ACXRemoteAppList *)self queue];
+  queue = [(ACXRemoteAppList *)self queue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100042FB8;
   v11[3] = &unk_10008DD60;
   v11[4] = self;
   v13 = &v19;
-  v8 = v6;
+  v8 = dCopy;
   v12 = v8;
   v14 = &v15;
-  dispatch_sync(v7, v11);
+  dispatch_sync(queue, v11);
 
   v9 = *(v16 + 24);
-  if (a4 && (v16[3] & 1) == 0)
+  if (error && (v16[3] & 1) == 0)
   {
-    *a4 = v20[5];
+    *error = v20[5];
     v9 = *(v16 + 24);
   }
 
@@ -1882,9 +1882,9 @@ LABEL_19:
   return v9 & 1;
 }
 
-- (id)appBundleIDForCounterpartBundleID:(id)a3 error:(id *)a4
+- (id)appBundleIDForCounterpartBundleID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -1897,22 +1897,22 @@ LABEL_19:
   v19 = sub_1000423D0;
   v20 = sub_1000423E0;
   v21 = 0;
-  v7 = [(ACXRemoteAppList *)self queue];
+  queue = [(ACXRemoteAppList *)self queue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100043384;
   v12[3] = &unk_10008DD60;
   v12[4] = self;
   v14 = &v22;
-  v8 = v6;
+  v8 = dCopy;
   v13 = v8;
   v15 = &v16;
-  dispatch_sync(v7, v12);
+  dispatch_sync(queue, v12);
 
   v9 = v17[5];
-  if (a4 && !v9)
+  if (error && !v9)
   {
-    *a4 = v23[5];
+    *error = v23[5];
     v9 = v17[5];
   }
 
@@ -1924,7 +1924,7 @@ LABEL_19:
   return v10;
 }
 
-- (void)getCurrentDBUUID:(id *)a3 sequenceNumber:(unint64_t *)a4
+- (void)getCurrentDBUUID:(id *)d sequenceNumber:(unint64_t *)number
 {
   v13 = 0;
   v14 = &v13;
@@ -1936,7 +1936,7 @@ LABEL_19:
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v7 = [(ACXRemoteAppList *)self queue];
+  queue = [(ACXRemoteAppList *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000436E8;
@@ -1944,10 +1944,10 @@ LABEL_19:
   block[4] = self;
   block[5] = &v13;
   block[6] = &v9;
-  dispatch_sync(v7, block);
+  dispatch_sync(queue, block);
 
-  *a3 = v14[5];
-  *a4 = v10[3];
+  *d = v14[5];
+  *number = v10[3];
   _Block_object_dispose(&v9, 8);
   _Block_object_dispose(&v13, 8);
 }

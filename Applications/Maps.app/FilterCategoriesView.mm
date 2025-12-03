@@ -1,23 +1,23 @@
 @interface FilterCategoriesView
 - (CGSize)intrinsicContentSize;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3;
-- (FilterCategoriesView)initWithFrame:(CGRect)a3;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size;
+- (FilterCategoriesView)initWithFrame:(CGRect)frame;
 - (FilterCategoriesViewDelegate)delegate;
 - (NSArray)visibleSuggestions;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (id)preferredFocusEnvironments;
 - (void)initCurrentListSession;
 - (void)layoutSubviews;
 - (void)loadSubCategories;
 - (void)safeAreaInsetsDidChange;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setBackgroundAndTitleColorToButton:(id)a3;
-- (void)setSelectedIndex:(unint64_t)a3;
-- (void)setSubCategories:(id)a3;
-- (void)setSubCategories:(id)a3 selectedIndex:(unint64_t)a4;
-- (void)touchedAction:(id)a3;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setBackgroundAndTitleColorToButton:(id)button;
+- (void)setSelectedIndex:(unint64_t)index;
+- (void)setSubCategories:(id)categories;
+- (void)setSubCategories:(id)categories selectedIndex:(unint64_t)index;
+- (void)touchedAction:(id)action;
 - (void)updateSelectedVisibility;
 - (void)updateTheme;
 @end
@@ -40,8 +40,8 @@
 
   v3 = [RefineSearchSession alloc];
   subCategories = self->_subCategories;
-  v5 = [(FilterCategoriesView *)self delegate];
-  v6 = -[RefineSearchSession initWithObjects:forType:](v3, "initWithObjects:forType:", subCategories, [v5 refineSearchSessionType]);
+  delegate = [(FilterCategoriesView *)self delegate];
+  v6 = -[RefineSearchSession initWithObjects:forType:](v3, "initWithObjects:forType:", subCategories, [delegate refineSearchSessionType]);
   refineSearchSession = self->_refineSearchSession;
   self->_refineSearchSession = v6;
 
@@ -50,12 +50,12 @@
   [(RefineSearchSession *)v8 updateWithFilterView:self];
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  v6 = a3;
+  draggingCopy = dragging;
   x = self->_lastScrollViewContentOffset.x;
-  v13 = v6;
-  [v6 contentOffset];
+  v13 = draggingCopy;
+  [draggingCopy contentOffset];
   if (x <= v8)
   {
     v10 = self->_lastScrollViewContentOffset.x;
@@ -79,10 +79,10 @@
 LABEL_6:
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   p_lastScrollViewContentOffset = &self->_lastScrollViewContentOffset;
-  [a3 contentOffset];
+  [dragging contentOffset];
   p_lastScrollViewContentOffset->x = v4;
   p_lastScrollViewContentOffset->y = v5;
 }
@@ -103,25 +103,25 @@ LABEL_6:
   return v2;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v5 = a4;
-  v6 = [v5 identifier];
+  regionCopy = region;
+  identifier = [regionCopy identifier];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [v5 identifier];
-    v9 = [v8 unsignedIntegerValue];
-    if (v9 >= [(NSMutableArray *)self->_subCategoriesViews count])
+    identifier2 = [regionCopy identifier];
+    unsignedIntegerValue = [identifier2 unsignedIntegerValue];
+    if (unsignedIntegerValue >= [(NSMutableArray *)self->_subCategoriesViews count])
     {
       v15 = 0;
     }
 
     else
     {
-      v10 = [(NSMutableArray *)self->_subCategoriesViews objectAtIndexedSubscript:v9];
+      v10 = [(NSMutableArray *)self->_subCategoriesViews objectAtIndexedSubscript:unsignedIntegerValue];
       v11 = [[UITargetedPreview alloc] initWithView:v10];
       if (v10 == self->_selected)
       {
@@ -148,9 +148,9 @@ LABEL_6:
   return v15;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v6 = a4;
+  requestCopy = request;
   v7 = [(NSMutableArray *)self->_subCategoriesViews count];
   if (v7)
   {
@@ -169,7 +169,7 @@ LABEL_6:
       y = v27.origin.y;
       width = v27.size.width;
       v16 = v27.size.height;
-      [v6 location];
+      [requestCopy location];
       v23.x = v17;
       v23.y = v18;
       v28.origin.x = x;
@@ -200,14 +200,14 @@ LABEL_5:
   return v19;
 }
 
-- (void)setBackgroundAndTitleColorToButton:(id)a3
+- (void)setBackgroundAndTitleColorToButton:(id)button
 {
-  v3 = a3;
+  buttonCopy = button;
   v4 = +[UIColor secondaryLabelColor];
-  [v3 setTitleColor:v4 forState:0];
+  [buttonCopy setTitleColor:v4 forState:0];
 
   v5 = +[UIColor tertiarySystemBackgroundColor];
-  [v3 setTitleColor:v5 forState:4];
+  [buttonCopy setTitleColor:v5 forState:4];
 }
 
 - (void)loadSubCategories
@@ -257,39 +257,39 @@ LABEL_5:
       [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
       [v12 setTag:v8];
       v13 = +[UIFont system15];
-      v14 = [v12 titleLabel];
-      [v14 setFont:v13];
+      titleLabel = [v12 titleLabel];
+      [titleLabel setFont:v13];
 
       [v12 setClipsToBounds:1];
-      v15 = [v12 layer];
-      [v15 setCornerRadius:5.0];
+      layer = [v12 layer];
+      [layer setCornerRadius:5.0];
 
       [v12 setContentEdgeInsets:{2.0, 9.0, 2.0, 9.0}];
       [v12 addTarget:self action:"touchedAction:" forControlEvents:0x2000];
       [v12 setTitle:v11 forState:0];
       [(FilterCategoriesView *)self setBackgroundAndTitleColorToButton:v12];
       [(UIScrollView *)self->_scrollView addSubview:v12];
-      v16 = [v12 centerYAnchor];
-      v17 = [(UIScrollView *)self->_scrollView centerYAnchor];
-      v18 = [v16 constraintEqualToAnchor:v17];
+      centerYAnchor = [v12 centerYAnchor];
+      centerYAnchor2 = [(UIScrollView *)self->_scrollView centerYAnchor];
+      v18 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v39 = v18;
       v19 = [NSArray arrayWithObjects:&v39 count:1];
       [v33 addObjectsFromArray:v19];
 
-      v20 = [v12 leadingAnchor];
+      leadingAnchor = [v12 leadingAnchor];
       if (v10)
       {
-        v21 = [(NSArray *)v10 trailingAnchor];
+        trailingAnchor = [(NSArray *)v10 trailingAnchor];
         v22 = 10.0;
       }
 
       else
       {
-        v21 = [(UIScrollView *)self->_scrollView leadingAnchor];
+        trailingAnchor = [(UIScrollView *)self->_scrollView leadingAnchor];
         v22 = 16.0;
       }
 
-      v23 = [v20 constraintEqualToAnchor:v21 constant:v22];
+      v23 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:v22];
       [v33 addObject:v23];
 
       ++v8;
@@ -309,9 +309,9 @@ LABEL_5:
   v5 = v29;
   if (v7)
   {
-    v24 = [(NSArray *)v7 trailingAnchor];
-    v25 = [(UIScrollView *)self->_scrollView trailingAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25 constant:-self->_lastButtonTrailingPadding];
+    trailingAnchor2 = [(NSArray *)v7 trailingAnchor];
+    trailingAnchor3 = [(UIScrollView *)self->_scrollView trailingAnchor];
+    v26 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-self->_lastButtonTrailingPadding];
     lastButtonTrailingConstraint = self->_lastButtonTrailingConstraint;
     self->_lastButtonTrailingConstraint = v26;
 
@@ -435,28 +435,28 @@ LABEL_16:
   return v22;
 }
 
-- (void)setSelectedIndex:(unint64_t)a3
+- (void)setSelectedIndex:(unint64_t)index
 {
-  if (self->_selectedIndex != a3)
+  if (self->_selectedIndex != index)
   {
-    self->_selectedIndex = a3;
-    if ([(NSMutableArray *)self->_subCategoriesViews count]> a3)
+    self->_selectedIndex = index;
+    if ([(NSMutableArray *)self->_subCategoriesViews count]> index)
     {
       [(UIButton *)self->_selected setSelected:0];
       v5 = +[UIFont system15];
-      v6 = [(UIButton *)self->_selected titleLabel];
-      [v6 setFont:v5];
+      titleLabel = [(UIButton *)self->_selected titleLabel];
+      [titleLabel setFont:v5];
 
       v7 = +[UIColor clearColor];
       [(UIButton *)self->_selected setBackgroundColor:v7];
 
-      v8 = [(NSMutableArray *)self->_subCategoriesViews objectAtIndexedSubscript:a3];
+      v8 = [(NSMutableArray *)self->_subCategoriesViews objectAtIndexedSubscript:index];
       selected = self->_selected;
       self->_selected = v8;
 
       v10 = +[UIFont system15Bold];
-      v11 = [(UIButton *)self->_selected titleLabel];
-      [v11 setFont:v10];
+      titleLabel2 = [(UIButton *)self->_selected titleLabel];
+      [titleLabel2 setFont:v10];
 
       v12 = +[UIColor secondaryLabelColor];
       [(UIButton *)self->_selected setBackgroundColor:v12];
@@ -469,9 +469,9 @@ LABEL_16:
   }
 }
 
-- (void)touchedAction:(id)a3
+- (void)touchedAction:(id)action
 {
-  v4 = [a3 tag];
+  v4 = [action tag];
   if (self->_selectedIndex != v4)
   {
     v5 = v4;
@@ -485,23 +485,23 @@ LABEL_16:
   }
 }
 
-- (void)setSubCategories:(id)a3 selectedIndex:(unint64_t)a4
+- (void)setSubCategories:(id)categories selectedIndex:(unint64_t)index
 {
-  v6 = a3;
-  if ([v6 count] > a4)
+  categoriesCopy = categories;
+  if ([categoriesCopy count] > index)
   {
-    [(FilterCategoriesView *)self setSubCategories:v6];
-    [(FilterCategoriesView *)self setSelectedIndex:a4];
+    [(FilterCategoriesView *)self setSubCategories:categoriesCopy];
+    [(FilterCategoriesView *)self setSelectedIndex:index];
   }
 }
 
-- (void)setSubCategories:(id)a3
+- (void)setSubCategories:(id)categories
 {
-  v5 = a3;
+  categoriesCopy = categories;
   subCategories = self->_subCategories;
-  if (subCategories != v5 && ([(NSArray *)subCategories isEqual:v5]& 1) == 0)
+  if (subCategories != categoriesCopy && ([(NSArray *)subCategories isEqual:categoriesCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_subCategories, a3);
+    objc_storeStrong(&self->_subCategories, categories);
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100901318;
@@ -546,21 +546,21 @@ LABEL_16:
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size
 {
-  width = a3.width;
-  [(FilterCategoriesView *)self intrinsicContentSize:a3.width];
+  width = size.width;
+  [(FilterCategoriesView *)self intrinsicContentSize:size.width];
   v5 = width;
   result.height = v4;
   result.width = v5;
   return result;
 }
 
-- (FilterCategoriesView)initWithFrame:(CGRect)a3
+- (FilterCategoriesView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = FilterCategoriesView;
-  v3 = [(FilterCategoriesView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(FilterCategoriesView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

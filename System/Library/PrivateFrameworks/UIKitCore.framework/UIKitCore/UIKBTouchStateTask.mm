@@ -1,33 +1,33 @@
 @interface UIKBTouchStateTask
-+ (id)touchStateTaskForTouchState:(id)a3 andTask:(id)a4;
-- (UIKBTouchStateTask)initWithTouchState:(id)a3 andTask:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)compare:(id)a3;
++ (id)touchStateTaskForTouchState:(id)state andTask:(id)task;
+- (UIKBTouchStateTask)initWithTouchState:(id)state andTask:(id)task;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation UIKBTouchStateTask
 
-+ (id)touchStateTaskForTouchState:(id)a3 andTask:(id)a4
++ (id)touchStateTaskForTouchState:(id)state andTask:(id)task
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[UIKBTouchStateTask alloc] initWithTouchState:v6 andTask:v5];
+  taskCopy = task;
+  stateCopy = state;
+  v7 = [[UIKBTouchStateTask alloc] initWithTouchState:stateCopy andTask:taskCopy];
 
   return v7;
 }
 
-- (UIKBTouchStateTask)initWithTouchState:(id)a3 andTask:(id)a4
+- (UIKBTouchStateTask)initWithTouchState:(id)state andTask:(id)task
 {
-  v7 = a3;
-  v8 = a4;
+  stateCopy = state;
+  taskCopy = task;
   v14.receiver = self;
   v14.super_class = UIKBTouchStateTask;
   v9 = [(UIKBTouchStateTask *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_touchState, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_touchState, state);
+    v11 = [taskCopy copy];
     task = v10->_task;
     v10->_task = v11;
   }
@@ -35,7 +35,7 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(UIKBTouchStateTask);
   objc_storeStrong(&v4->_touchState, self->_touchState);
@@ -46,12 +46,12 @@
   return v4;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(UIKBTouchState *)self->_touchState phase];
-  v6 = [v4 touchState];
-  v7 = v5 - [v6 phase];
+  compareCopy = compare;
+  phase = [(UIKBTouchState *)self->_touchState phase];
+  touchState = [compareCopy touchState];
+  v7 = phase - [touchState phase];
 
   if (v7 <= 0)
   {
@@ -64,8 +64,8 @@
     {
       [(UIKBTouchState *)self->_touchState timestamp];
       v10 = v9;
-      v11 = [v4 touchState];
-      [v11 timestamp];
+      touchState2 = [compareCopy touchState];
+      [touchState2 timestamp];
       v13 = v10 - v12;
 
       if (v13 >= 0.0)

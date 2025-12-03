@@ -1,20 +1,20 @@
 @interface TSDSVGToBezierPathConverter
-+ (CGAffineTransform)transformFromSVGTransformAttributeString:(SEL)a3;
-+ (CGPath)newPathFromSVGPathString:(id)a3 shouldClosePathAtEnd:(BOOL)a4;
-+ (CGPath)newPathFromSVGPolygonString:(id)a3;
-+ (CGPath)newPathFromSVGPolylineString:(id)a3;
-- (id)bezierPathFromSVGData:(id)a3;
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6;
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7;
++ (CGAffineTransform)transformFromSVGTransformAttributeString:(SEL)string;
++ (CGPath)newPathFromSVGPathString:(id)string shouldClosePathAtEnd:(BOOL)end;
++ (CGPath)newPathFromSVGPolygonString:(id)string;
++ (CGPath)newPathFromSVGPolylineString:(id)string;
+- (id)bezierPathFromSVGData:(id)data;
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
 @end
 
 @implementation TSDSVGToBezierPathConverter
 
-- (id)bezierPathFromSVGData:(id)a3
+- (id)bezierPathFromSVGData:(id)data
 {
   v42[2] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D81160];
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(v4);
   mFileBezierPath = self->mFileBezierPath;
   self->mFileBezierPath = v6;
@@ -35,7 +35,7 @@
   self->mViewBox.size = v11;
   self->mUsesEvenOdd = 0;
   v12 = objc_alloc(MEMORY[0x277CCAE70]);
-  v14 = objc_msgSend_initWithData_(v12, v13, v5);
+  v14 = objc_msgSend_initWithData_(v12, v13, dataCopy);
 
   objc_msgSend_setDelegate_(v14, v15, self);
   if (objc_msgSend_parse(v14, v16, v17) && (objc_msgSend_parserError(v14, v18, v19), v20 = objc_claimAutoreleasedReturnValue(), v20, !v20))
@@ -75,20 +75,20 @@
   return v30;
 }
 
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
   v375 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a7;
-  v12 = objc_msgSend_objectForKeyedSubscript_(v10, v11, @"style");
+  elementCopy = element;
+  attributesCopy = attributes;
+  v12 = objc_msgSend_objectForKeyedSubscript_(attributesCopy, v11, @"style");
   v363 = v12;
   if (v12)
   {
     v15 = v12;
-    v359 = self;
-    v361 = v9;
-    v358 = v10;
-    v10 = objc_msgSend_mutableCopy(v10, v13, v14);
+    selfCopy = self;
+    v361 = elementCopy;
+    v358 = attributesCopy;
+    attributesCopy = objc_msgSend_mutableCopy(attributesCopy, v13, v14);
     v17 = objc_msgSend_componentsSeparatedByString_(v15, v16, @"");;
     v369 = 0u;
     v370 = 0u;
@@ -111,7 +111,7 @@
           v25 = *(*(&v369 + 1) + 8 * i);
           if (objc_msgSend_length(v25, v20, v21))
           {
-            v26 = v10;
+            v26 = attributesCopy;
             v27 = objc_msgSend_componentsSeparatedByString_(v25, v20, @":");
             if (objc_msgSend_count(v27, v28, v29) != 2)
             {
@@ -130,7 +130,7 @@
             v45 = objc_msgSend_objectAtIndexedSubscript_(v27, v44, 1);
             v47 = objc_msgSend_stringByTrimmingCharactersInSet_(v45, v46, v39);
 
-            v10 = v26;
+            attributesCopy = v26;
             objc_msgSend_setObject_forKeyedSubscript_(v26, v48, v47, v43);
           }
         }
@@ -141,14 +141,14 @@
       while (v22);
     }
 
-    self = v359;
-    v9 = v361;
+    self = selfCopy;
+    elementCopy = v361;
   }
 
-  if (objc_msgSend_isEqualToString_(v9, v13, @"svg"))
+  if (objc_msgSend_isEqualToString_(elementCopy, v13, @"svg"))
   {
-    v50 = v10;
-    v51 = objc_msgSend_objectForKeyedSubscript_(v10, v49, @"preserveAspectRatio");
+    v50 = attributesCopy;
+    v51 = objc_msgSend_objectForKeyedSubscript_(attributesCopy, v49, @"preserveAspectRatio");
     v54 = objc_msgSend_whitespaceAndNewlineCharacterSet(MEMORY[0x277CCA900], v52, v53);
     v56 = objc_msgSend_componentsSeparatedByCharactersInSet_(v51, v55, v54);
 
@@ -180,7 +180,7 @@
 LABEL_28:
 
 LABEL_29:
-          v10 = v50;
+          attributesCopy = v50;
           v137 = objc_msgSend_objectForKeyedSubscript_(v50, v72, @"style");
           if (v137)
           {
@@ -221,7 +221,7 @@ LABEL_29:
       }
     }
 
-    v96 = objc_msgSend_objectForKeyedSubscript_(v10, v59, @"viewBox");
+    v96 = objc_msgSend_objectForKeyedSubscript_(attributesCopy, v59, @"viewBox");
     v99 = objc_msgSend_whitespaceAndNewlineCharacterSet(MEMORY[0x277CCA900], v97, v98);
     v75 = objc_msgSend_componentsSeparatedByCharactersInSet_(v96, v100, v99);
 
@@ -261,33 +261,33 @@ LABEL_29:
 
 LABEL_34:
   v148 = v363;
-  if (objc_msgSend_isEqualToString_(self->mHiddenOnTag, v49, v9))
+  if (objc_msgSend_isEqualToString_(self->mHiddenOnTag, v49, elementCopy))
   {
     ++self->mHiddenOnTagNestedCount;
   }
 
   if (!self->mHiddenOnTag)
   {
-    v149 = objc_msgSend_objectForKeyedSubscript_(v10, v147, @"display");
+    v149 = objc_msgSend_objectForKeyedSubscript_(attributesCopy, v147, @"display");
     if (objc_msgSend_isEqualToString_(v149, v150, @"none"))
     {
 
 LABEL_40:
-      v155 = objc_msgSend_copy(v9, v152, v153);
+      v155 = objc_msgSend_copy(elementCopy, v152, v153);
       mHiddenOnTag = self->mHiddenOnTag;
       self->mHiddenOnTag = v155;
 
       goto LABEL_80;
     }
 
-    v154 = objc_msgSend_isEqualToString_(v9, v151, @"pattern");
+    v154 = objc_msgSend_isEqualToString_(elementCopy, v151, @"pattern");
 
     if (v154)
     {
       goto LABEL_40;
     }
 
-    v157 = objc_msgSend_isEqualToString_(v9, v152, @"g");
+    v157 = objc_msgSend_isEqualToString_(elementCopy, v152, @"g");
     v159 = MEMORY[0x277CBF2C0];
     if (v157)
     {
@@ -301,11 +301,11 @@ LABEL_40:
       *&t2.tx = *(MEMORY[0x277CBF2C0] + 32);
       if (CGAffineTransformEqualToTransform(&t1, &t2))
       {
-        v162 = objc_msgSend_objectForKeyedSubscript_(v10, v158, @"transform");
+        v162 = objc_msgSend_objectForKeyedSubscript_(attributesCopy, v158, @"transform");
 
         if (v162)
         {
-          v163 = objc_msgSend_objectForKeyedSubscript_(v10, v158, @"transform");
+          v163 = objc_msgSend_objectForKeyedSubscript_(attributesCopy, v158, @"transform");
           objc_msgSend_transformFromSVGTransformAttributeString_(TSDSVGToBezierPathConverter, v164, v163);
           v165 = *&t1.c;
           *&self->mGroupedAffineTransform.a = *&t1.a;
@@ -320,20 +320,20 @@ LABEL_40:
       }
     }
 
-    v166 = objc_msgSend_isEqualToString_(v9, v158, @"line");
-    if (objc_msgSend_isEqualToString_(v9, v167, @"path"))
+    v166 = objc_msgSend_isEqualToString_(elementCopy, v158, @"line");
+    if (objc_msgSend_isEqualToString_(elementCopy, v167, @"path"))
     {
-      v169 = objc_msgSend_objectForKeyedSubscript_(v10, v168, @"d");
+      v169 = objc_msgSend_objectForKeyedSubscript_(attributesCopy, v168, @"d");
       shouldClosePathAtEnd = objc_msgSend_newPathFromSVGPathString_shouldClosePathAtEnd_(TSDSVGToBezierPathConverter, v170, v169, v166 ^ 1u);
     }
 
     else
     {
-      if (!objc_msgSend_isEqualToString_(v9, v168, @"polyline"))
+      if (!objc_msgSend_isEqualToString_(elementCopy, v168, @"polyline"))
       {
-        if (objc_msgSend_isEqualToString_(v9, v172, @"polygon"))
+        if (objc_msgSend_isEqualToString_(elementCopy, v172, @"polygon"))
         {
-          v234 = objc_msgSend_objectForKeyedSubscript_(v10, v233, @"points");
+          v234 = objc_msgSend_objectForKeyedSubscript_(attributesCopy, v233, @"points");
           CopyByTransformingPathSafe = objc_msgSend_newPathFromSVGPolygonString_(TSDSVGToBezierPathConverter, v235, v234);
 
           if (!v166)
@@ -346,18 +346,18 @@ LABEL_40:
         {
           if (!v166)
           {
-            if (objc_msgSend_isEqualToString_(v9, v233, @"rect"))
+            if (objc_msgSend_isEqualToString_(elementCopy, v233, @"rect"))
             {
-              v253 = objc_msgSend_objectForKeyedSubscript_(v10, v252, @"width");
+              v253 = objc_msgSend_objectForKeyedSubscript_(attributesCopy, v252, @"width");
               objc_msgSend_floatValue(v253, v254, v255);
-              v257 = objc_msgSend_objectForKeyedSubscript_(v10, v256, @"height");
+              v257 = objc_msgSend_objectForKeyedSubscript_(attributesCopy, v256, @"height");
               objc_msgSend_floatValue(v257, v258, v259);
 
               memset(&t1, 0, sizeof(t1));
-              v261 = objc_msgSend_objectForKeyedSubscript_(v10, v260, @"x");
+              v261 = objc_msgSend_objectForKeyedSubscript_(attributesCopy, v260, @"x");
               objc_msgSend_floatValue(v261, v262, v263);
               v265 = v264;
-              v267 = objc_msgSend_objectForKeyedSubscript_(v10, v266, @"y");
+              v267 = objc_msgSend_objectForKeyedSubscript_(attributesCopy, v266, @"y");
               objc_msgSend_floatValue(v267, v268, v269);
               CGAffineTransformMakeTranslation(&t1, v265, v270);
 
@@ -367,7 +367,7 @@ LABEL_40:
               v275 = v274;
               v277 = v276;
               v279 = v278;
-              v281 = objc_msgSend_objectForKeyedSubscript_(v10, v280, @"rx");
+              v281 = objc_msgSend_objectForKeyedSubscript_(attributesCopy, v280, @"rx");
               objc_msgSend_tsu_CGFloatValue(v281, v282, v283);
               v287 = objc_msgSend_bezierPathWithLegacyRoundedRect_cornerRadius_(v271, v284, v285, v273, v275, v277, v279, v286);
               v288 = v287;
@@ -379,17 +379,17 @@ LABEL_40:
               goto LABEL_67;
             }
 
-            if (objc_msgSend_isEqualToString_(v9, v252, @"circle"))
+            if (objc_msgSend_isEqualToString_(elementCopy, v252, @"circle"))
             {
-              v294 = objc_msgSend_objectForKeyedSubscript_(v10, v293, @"r");
+              v294 = objc_msgSend_objectForKeyedSubscript_(attributesCopy, v293, @"r");
               objc_msgSend_floatValue(v294, v295, v296);
               v298 = v297;
 
-              v300 = objc_msgSend_objectForKeyedSubscript_(v10, v299, @"cx");
+              v300 = objc_msgSend_objectForKeyedSubscript_(attributesCopy, v299, @"cx");
               objc_msgSend_floatValue(v300, v301, v302);
               v304 = v303 - v298;
 
-              v306 = objc_msgSend_objectForKeyedSubscript_(v10, v305, @"cy");
+              v306 = objc_msgSend_objectForKeyedSubscript_(attributesCopy, v305, @"cy");
               objc_msgSend_floatValue(v306, v307, v308);
               v310 = v309 - v298;
 
@@ -398,25 +398,25 @@ LABEL_40:
 
             else
             {
-              if (!objc_msgSend_isEqualToString_(v9, v293, @"ellipse"))
+              if (!objc_msgSend_isEqualToString_(elementCopy, v293, @"ellipse"))
               {
                 CopyByTransformingPathSafe = CGPathCreateMutable();
                 goto LABEL_67;
               }
 
-              v329 = objc_msgSend_objectForKeyedSubscript_(v10, v328, @"rx");
+              v329 = objc_msgSend_objectForKeyedSubscript_(attributesCopy, v328, @"rx");
               objc_msgSend_floatValue(v329, v330, v331);
               v333 = v332;
 
-              v335 = objc_msgSend_objectForKeyedSubscript_(v10, v334, @"ry");
+              v335 = objc_msgSend_objectForKeyedSubscript_(attributesCopy, v334, @"ry");
               objc_msgSend_floatValue(v335, v336, v337);
               v339 = v338;
 
-              v341 = objc_msgSend_objectForKeyedSubscript_(v10, v340, @"cx");
+              v341 = objc_msgSend_objectForKeyedSubscript_(attributesCopy, v340, @"cx");
               objc_msgSend_floatValue(v341, v342, v343);
               v345 = v344 - v333;
 
-              v347 = objc_msgSend_objectForKeyedSubscript_(v10, v346, @"cy");
+              v347 = objc_msgSend_objectForKeyedSubscript_(attributesCopy, v346, @"cy");
               objc_msgSend_floatValue(v347, v348, v349);
               v351 = v350 - v339;
 
@@ -431,25 +431,25 @@ LABEL_40:
           }
 
           CopyByTransformingPathSafe = CGPathCreateMutable();
-          v237 = objc_msgSend_objectForKeyedSubscript_(v10, v236, @"x1");
+          v237 = objc_msgSend_objectForKeyedSubscript_(attributesCopy, v236, @"x1");
           objc_msgSend_floatValue(v237, v238, v239);
-          v241 = objc_msgSend_objectForKeyedSubscript_(v10, v240, @"y1");
+          v241 = objc_msgSend_objectForKeyedSubscript_(attributesCopy, v240, @"y1");
           objc_msgSend_floatValue(v241, v242, v243);
           CGPathMoveToPointSafe();
 
-          v245 = objc_msgSend_objectForKeyedSubscript_(v10, v244, @"x2");
+          v245 = objc_msgSend_objectForKeyedSubscript_(attributesCopy, v244, @"x2");
           objc_msgSend_floatValue(v245, v246, v247);
-          v249 = objc_msgSend_objectForKeyedSubscript_(v10, v248, @"y2");
+          v249 = objc_msgSend_objectForKeyedSubscript_(attributesCopy, v248, @"y2");
           objc_msgSend_floatValue(v249, v250, v251);
           CGPathAddLineToPointSafe();
         }
 
 LABEL_51:
-        v362 = v9;
-        v176 = objc_msgSend_objectForKeyedSubscript_(v10, v175, @"stroke-width");
-        v178 = objc_msgSend_objectForKeyedSubscript_(v10, v177, @"stroke-linecap");
-        v180 = objc_msgSend_objectForKeyedSubscript_(v10, v179, @"stroke-linejoin");
-        v183 = objc_msgSend_objectForKeyedSubscript_(v10, v181, @"stroke-miterlimit");
+        v362 = elementCopy;
+        v176 = objc_msgSend_objectForKeyedSubscript_(attributesCopy, v175, @"stroke-width");
+        v178 = objc_msgSend_objectForKeyedSubscript_(attributesCopy, v177, @"stroke-linecap");
+        v180 = objc_msgSend_objectForKeyedSubscript_(attributesCopy, v179, @"stroke-linejoin");
+        v183 = objc_msgSend_objectForKeyedSubscript_(attributesCopy, v181, @"stroke-miterlimit");
         v184 = 1.0;
         if (v176 && (objc_msgSend_isEqualToString_(v176, v182, &stru_28857D120) & 1) == 0)
         {
@@ -472,14 +472,14 @@ LABEL_51:
           }
 
           v313 = MEMORY[0x277D81150];
-          v314 = v10;
-          v315 = self;
+          v314 = attributesCopy;
+          selfCopy2 = self;
           v316 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v182, "[TSDSVGToBezierPathConverter parser:didStartElement:namespaceURI:qualifiedName:attributes:]");
           v318 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v317, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDSVGToBezierPathConverter.m");
           objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v313, v319, v316, v318, 241, 0, "Unexpected Line Cap Style: %@", v178);
 
-          self = v315;
-          v10 = v314;
+          self = selfCopy2;
+          attributesCopy = v314;
 
           objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v320, v321);
         }
@@ -488,15 +488,15 @@ LABEL_51:
 LABEL_58:
         if (!v180 || (objc_msgSend_isEqualToString_(v180, v182, &stru_28857D120) & 1) != 0 || (objc_msgSend_isEqualToString_(v180, v182, @"miter") & 1) != 0)
         {
-          v188 = v10;
-          v189 = self;
+          v188 = attributesCopy;
+          selfCopy4 = self;
 LABEL_62:
           v190 = 0;
           goto LABEL_63;
         }
 
-        v188 = v10;
-        v189 = self;
+        v188 = attributesCopy;
+        selfCopy4 = self;
         if (objc_msgSend_isEqualToString_(v178, v182, @"round"))
         {
           v190 = 1;
@@ -534,22 +534,22 @@ LABEL_63:
         CopyByTransformingPathSafe = objc_msgSend_CGPath(v202, v203, v204);
 
         CGPathRetain(CopyByTransformingPathSafe);
-        v9 = v362;
+        elementCopy = v362;
         v148 = v363;
-        self = v189;
-        v10 = v188;
+        self = selfCopy4;
+        attributesCopy = v188;
         v159 = MEMORY[0x277CBF2C0];
 LABEL_67:
         v205 = *&self->mGroupedAffineTransform.c;
         *&t1.a = *&self->mGroupedAffineTransform.a;
         *&t1.c = v205;
         *&t1.tx = *&self->mGroupedAffineTransform.tx;
-        v206 = objc_msgSend_objectForKeyedSubscript_(v10, v175, @"transform");
+        v206 = objc_msgSend_objectForKeyedSubscript_(attributesCopy, v175, @"transform");
 
         if (v206)
         {
           memset(&t2, 0, sizeof(t2));
-          v208 = objc_msgSend_objectForKeyedSubscript_(v10, v207, @"transform");
+          v208 = objc_msgSend_objectForKeyedSubscript_(attributesCopy, v207, @"transform");
           objc_msgSend_transformFromSVGTransformAttributeString_(TSDSVGToBezierPathConverter, v209, v208);
 
           v365 = t1;
@@ -621,7 +621,7 @@ LABEL_79:
         goto LABEL_80;
       }
 
-      v169 = objc_msgSend_objectForKeyedSubscript_(v10, v172, @"points");
+      v169 = objc_msgSend_objectForKeyedSubscript_(attributesCopy, v172, @"points");
       shouldClosePathAtEnd = objc_msgSend_newPathFromSVGPolylineString_(TSDSVGToBezierPathConverter, v173, v169);
     }
 
@@ -638,10 +638,10 @@ LABEL_79:
 LABEL_80:
 }
 
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
-  v7 = a4;
-  if (objc_msgSend_isEqualToString_(self->mHiddenOnTag, v8, v7))
+  elementCopy = element;
+  if (objc_msgSend_isEqualToString_(self->mHiddenOnTag, v8, elementCopy))
   {
     mHiddenOnTagNestedCount = self->mHiddenOnTagNestedCount;
     if (mHiddenOnTagNestedCount)
@@ -656,7 +656,7 @@ LABEL_80:
     }
   }
 
-  if (objc_msgSend_isEqualToString_(v7, v9, @"g"))
+  if (objc_msgSend_isEqualToString_(elementCopy, v9, @"g"))
   {
     v12 = *&self->mGroupedAffineTransform.c;
     *&t1.a = *&self->mGroupedAffineTransform.a;
@@ -687,17 +687,17 @@ LABEL_80:
   }
 }
 
-+ (CGPath)newPathFromSVGPathString:(id)a3 shouldClosePathAtEnd:(BOOL)a4
++ (CGPath)newPathFromSVGPathString:(id)string shouldClosePathAtEnd:(BOOL)end
 {
-  v96 = a4;
+  endCopy = end;
   v110 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringCopy = string;
   Mutable = CGPathCreateMutable();
   v6 = MEMORY[0x277CBF348];
   v98 = *MEMORY[0x277CBF348];
   v107 = *MEMORY[0x277CBF348];
-  v97 = v4;
-  v8 = objc_msgSend_scannerWithString_(MEMORY[0x277CCAC80], v7, v4);
+  v97 = stringCopy;
+  v8 = objc_msgSend_scannerWithString_(MEMORY[0x277CCAC80], v7, stringCopy);
   v108 = *asc_27682D090;
   v109 = 2883717;
   v9 = MEMORY[0x277CCA900];
@@ -1088,7 +1088,7 @@ LABEL_105:
   v20 = 0;
   v21 = 0;
 LABEL_3:
-  if (v96 && (v21 & 0xFFDF) != 0x5A)
+  if (endCopy && (v21 & 0xFFDF) != 0x5A)
   {
     MutableCopy = CGPathCreateMutableCopy(Mutable);
     CGPathRelease(Mutable);
@@ -1109,12 +1109,12 @@ LABEL_3:
   return Mutable;
 }
 
-+ (CGPath)newPathFromSVGPolylineString:(id)a3
++ (CGPath)newPathFromSVGPolylineString:(id)string
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  stringCopy = string;
   Mutable = CGPathCreateMutable();
-  v6 = objc_msgSend_scannerWithString_(MEMORY[0x277CCAC80], v5, v3, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8));
+  v6 = objc_msgSend_scannerWithString_(MEMORY[0x277CCAC80], v5, stringCopy, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8));
   v31 = *asc_27682D090;
   v32 = 2883717;
   v7 = MEMORY[0x277CCA900];
@@ -1156,16 +1156,16 @@ LABEL_10:
   return Mutable;
 }
 
-+ (CGPath)newPathFromSVGPolygonString:(id)a3
++ (CGPath)newPathFromSVGPolygonString:(id)string
 {
-  v3 = objc_msgSend_newPathFromSVGPolylineString_(TSDSVGToBezierPathConverter, a2, a3);
+  v3 = objc_msgSend_newPathFromSVGPolylineString_(TSDSVGToBezierPathConverter, a2, string);
   MutableCopy = CGPathCreateMutableCopy(v3);
   CGPathRelease(v3);
   CGPathCloseSubpath(MutableCopy);
   return MutableCopy;
 }
 
-+ (CGAffineTransform)transformFromSVGTransformAttributeString:(SEL)a3
++ (CGAffineTransform)transformFromSVGTransformAttributeString:(SEL)string
 {
   v195 = *MEMORY[0x277D85DE8];
   v5 = a4;

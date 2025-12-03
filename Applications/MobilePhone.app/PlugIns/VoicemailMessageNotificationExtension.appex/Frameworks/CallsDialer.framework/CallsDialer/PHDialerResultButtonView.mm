@@ -1,51 +1,51 @@
 @interface PHDialerResultButtonView
 - (NSString)largeContentTitle;
-- (PHDialerResultButtonView)initWithFrame:(CGRect)a3;
+- (PHDialerResultButtonView)initWithFrame:(CGRect)frame;
 - (UILabel)primaryLabel;
-- (void)configureWithPrimaryTitle:(id)a3 image:(id)a4 buttonType:(int64_t)a5;
-- (void)configureWithPrimaryTitle:(id)a3 secondaryTitle:(id)a4 buttonType:(int64_t)a5;
-- (void)configureWithPrimaryTitle:(id)a3 secondaryTitle:(id)a4 searchString:(id)a5 isNumberPriority:(BOOL)a6 buttonType:(int64_t)a7;
-- (void)handleContentSizeCategoryDidChange:(id)a3;
+- (void)configureWithPrimaryTitle:(id)title image:(id)image buttonType:(int64_t)type;
+- (void)configureWithPrimaryTitle:(id)title secondaryTitle:(id)secondaryTitle buttonType:(int64_t)type;
+- (void)configureWithPrimaryTitle:(id)title secondaryTitle:(id)secondaryTitle searchString:(id)string isNumberPriority:(BOOL)priority buttonType:(int64_t)type;
+- (void)handleContentSizeCategoryDidChange:(id)change;
 - (void)handlePress;
-- (void)setPrimaryLabel:(id)a3;
+- (void)setPrimaryLabel:(id)label;
 @end
 
 @implementation PHDialerResultButtonView
 
 - (UILabel)primaryLabel
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_29378();
 
   return v3;
 }
 
-- (void)setPrimaryLabel:(id)a3
+- (void)setPrimaryLabel:(id)label
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___PHDialerResultButtonView____lazy_storage___primaryLabel);
-  *(&self->super.super.super.isa + OBJC_IVAR___PHDialerResultButtonView____lazy_storage___primaryLabel) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___PHDialerResultButtonView____lazy_storage___primaryLabel) = label;
+  labelCopy = label;
 }
 
-- (void)configureWithPrimaryTitle:(id)a3 secondaryTitle:(id)a4 buttonType:(int64_t)a5
+- (void)configureWithPrimaryTitle:(id)title secondaryTitle:(id)secondaryTitle buttonType:(int64_t)type
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  DialerResultButtonView.configure(primaryTitle:secondaryTitle:buttonType:)(a3, a4, a5);
+  titleCopy = title;
+  secondaryTitleCopy = secondaryTitle;
+  selfCopy = self;
+  DialerResultButtonView.configure(primaryTitle:secondaryTitle:buttonType:)(title, secondaryTitle, type);
 }
 
-- (void)configureWithPrimaryTitle:(id)a3 image:(id)a4 buttonType:(int64_t)a5
+- (void)configureWithPrimaryTitle:(id)title image:(id)image buttonType:(int64_t)type
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  DialerResultButtonView.configure(primaryTitle:image:buttonType:)(a3, a4, a5);
+  titleCopy = title;
+  imageCopy = image;
+  selfCopy = self;
+  DialerResultButtonView.configure(primaryTitle:image:buttonType:)(title, image, type);
 }
 
-- (void)configureWithPrimaryTitle:(id)a3 secondaryTitle:(id)a4 searchString:(id)a5 isNumberPriority:(BOOL)a6 buttonType:(int64_t)a7
+- (void)configureWithPrimaryTitle:(id)title secondaryTitle:(id)secondaryTitle searchString:(id)string isNumberPriority:(BOOL)priority buttonType:(int64_t)type
 {
-  if (a5)
+  if (string)
   {
     v12 = sub_2D7C8();
     v14 = v13;
@@ -57,25 +57,25 @@
     v14 = 0;
   }
 
-  v15 = a3;
-  v16 = a4;
-  v17 = self;
-  DialerResultButtonView.configure(primaryTitle:secondaryTitle:searchString:isNumberPriority:buttonType:)(a3, a4, v12, v14, a6, a7);
+  titleCopy = title;
+  secondaryTitleCopy = secondaryTitle;
+  selfCopy = self;
+  DialerResultButtonView.configure(primaryTitle:secondaryTitle:searchString:isNumberPriority:buttonType:)(title, secondaryTitle, v12, v14, priority, type);
 }
 
 - (void)handlePress
 {
-  v2 = self;
+  selfCopy = self;
   DialerResultButtonView.handlePress()();
 }
 
-- (void)handleContentSizeCategoryDidChange:(id)a3
+- (void)handleContentSizeCategoryDidChange:(id)change
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_5CAE0, &qword_31890);
   v6 = *(*(v5 - 8) + 64);
   off_50838(v5 - 8);
   v8 = &v12 - v7;
-  if (a3)
+  if (change)
   {
     sub_2D588();
     v9 = sub_2D5A8();
@@ -88,7 +88,7 @@
     (*(*(v10 - 8) + 56))(v8, 1, 1, v10);
   }
 
-  v11 = self;
+  selfCopy = self;
   sub_2AD04(v8);
 
   sub_2BB6C(v8, &qword_5CAE0, &qword_31890);
@@ -96,7 +96,7 @@
 
 - (NSString)largeContentTitle
 {
-  v2 = self;
+  selfCopy = self;
   DialerResultButtonView.largeContentTitle.getter();
   v4 = v3;
 
@@ -113,7 +113,7 @@
   return v5;
 }
 
-- (PHDialerResultButtonView)initWithFrame:(CGRect)a3
+- (PHDialerResultButtonView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

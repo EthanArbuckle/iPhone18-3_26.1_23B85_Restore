@@ -1,8 +1,8 @@
 @interface GKGameActivityEventHandler
 - (GKGameActivityEventHandler)init;
-- (void)attemptFallbackForActivity:(id)a3;
-- (void)deliverEncodedGameActivityInstance:(id)a3;
-- (void)receivedGKGameActivityNotification:(id)a3;
+- (void)attemptFallbackForActivity:(id)activity;
+- (void)deliverEncodedGameActivityInstance:(id)instance;
+- (void)receivedGKGameActivityNotification:(id)notification;
 @end
 
 @implementation GKGameActivityEventHandler
@@ -14,21 +14,21 @@
   v2 = [(GKGameActivityEventHandler *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_receivedGKGameActivityNotification_ name:@"GKGameActivityDelivered" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_receivedGKGameActivityNotification_ name:@"GKGameActivityDelivered" object:0];
   }
 
   return v2;
 }
 
-- (void)attemptFallbackForActivity:(id)a3
+- (void)attemptFallbackForActivity:(id)activity
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  activityCopy = activity;
   v4 = NSSelectorFromString(&cfstr_Fallbackpartyu.isa);
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v3 v4];
+    v5 = [activityCopy v4];
     v6 = os_log_GKGeneral;
     if (v5)
     {
@@ -46,8 +46,8 @@
       }
 
       v8 = +[GKDaemonProxy daemonProxy];
-      v9 = [v8 utilityService];
-      [v9 openHTTPsUniversalLink:v5];
+      utilityService = [v8 utilityService];
+      [utilityService openHTTPsUniversalLink:v5];
     }
 
     else
@@ -80,10 +80,10 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)receivedGKGameActivityNotification:(id)a3
+- (void)receivedGKGameActivityNotification:(id)notification
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -94,12 +94,12 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v22 = v4;
+    v22 = notificationCopy;
     _os_log_impl(&dword_227904000, v5, OS_LOG_TYPE_INFO, "GKGameActivityEventHandler receivedGKGameActivityNotification: %@", buf, 0xCu);
   }
 
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"activity"];
+  userInfo = [notificationCopy userInfo];
+  v8 = [userInfo objectForKeyedSubscript:@"activity"];
 
   v9 = os_log_GKGeneral;
   if (v8)
@@ -118,8 +118,8 @@
     }
 
     v11 = +[GKLocalPlayer localPlayer];
-    v12 = [v11 eventEmitter];
-    v13 = [v12 listenerRegisteredForSelector:sel_player_wantsToPlayGameActivity_completionHandler_];
+    eventEmitter = [v11 eventEmitter];
+    v13 = [eventEmitter listenerRegisteredForSelector:sel_player_wantsToPlayGameActivity_completionHandler_];
 
     if (v13)
     {
@@ -129,7 +129,7 @@
       block[3] = &unk_2785DDB40;
       v18 = v11;
       v19 = v8;
-      v20 = self;
+      selfCopy = self;
       dispatch_async(MEMORY[0x277D85CD0], block);
     }
 
@@ -243,10 +243,10 @@ void __65__GKGameActivityEventHandler_receivedGKGameActivityNotification___block
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deliverEncodedGameActivityInstance:(id)a3
+- (void)deliverEncodedGameActivityInstance:(id)instance
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  instanceCopy = instance;
   v4 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -257,14 +257,14 @@ void __65__GKGameActivityEventHandler_receivedGKGameActivityNotification___block
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v3;
+    v10 = instanceCopy;
     _os_log_impl(&dword_227904000, v4, OS_LOG_TYPE_DEFAULT, "GKGameActivityEventHandler deliver: %@", &v9, 0xCu);
   }
 
   v6 = +[GKLocalPlayer localPlayer];
   if (objc_opt_respondsToSelector())
   {
-    [v6 playerWantsToPlayGameActivity:v3 completion:&__block_literal_global_5];
+    [v6 playerWantsToPlayGameActivity:instanceCopy completion:&__block_literal_global_5];
   }
 
   else

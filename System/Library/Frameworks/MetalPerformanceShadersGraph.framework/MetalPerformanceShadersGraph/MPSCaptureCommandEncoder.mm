@@ -1,27 +1,27 @@
 @interface MPSCaptureCommandEncoder
-- (MPSCaptureCommandEncoder)initWithCommandEncoder:(id)a3 captureContext:(id)a4;
-- (id)forwardingTargetForSelector:(SEL)a3;
+- (MPSCaptureCommandEncoder)initWithCommandEncoder:(id)encoder captureContext:(id)context;
+- (id)forwardingTargetForSelector:(SEL)selector;
 - (void)dealloc;
-- (void)dispatchThreadgroups:(id *)a3 threadsPerThreadgroup:(id *)a4;
-- (void)executeCommandsInBuffer:(id)a3 indirectBuffer:(id)a4 indirectBufferOffset:(unint64_t)a5;
-- (void)setBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setComputePipelineState:(id)a3;
-- (void)setThreadgroupMemoryLength:(unint64_t)a3 atIndex:(unint64_t)a4;
+- (void)dispatchThreadgroups:(id *)threadgroups threadsPerThreadgroup:(id *)threadgroup;
+- (void)executeCommandsInBuffer:(id)buffer indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)offset;
+- (void)setBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index;
+- (void)setComputePipelineState:(id)state;
+- (void)setThreadgroupMemoryLength:(unint64_t)length atIndex:(unint64_t)index;
 @end
 
 @implementation MPSCaptureCommandEncoder
 
-- (MPSCaptureCommandEncoder)initWithCommandEncoder:(id)a3 captureContext:(id)a4
+- (MPSCaptureCommandEncoder)initWithCommandEncoder:(id)encoder captureContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  encoderCopy = encoder;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = MPSCaptureCommandEncoder;
   v9 = [(MPSCaptureCommandEncoder *)&v12 init];
   v10 = objc_autoreleasePoolPush();
-  objc_storeStrong(&v9->_encoder, a3);
-  objc_storeStrong(&v9->_captureContext, a4);
+  objc_storeStrong(&v9->_encoder, encoder);
+  objc_storeStrong(&v9->_captureContext, context);
   operator new();
 }
 
@@ -68,7 +68,7 @@
   [(MPSCaptureCommandEncoder *)&v9 dealloc];
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   if (objc_opt_respondsToSelector())
   {
@@ -83,79 +83,79 @@
   return v4;
 }
 
-- (void)setBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  v18 = a3;
+  bufferCopy = buffer;
   v8 = [(MPSGraphCaptureContext *)self->_captureContext constantBufferName:?];
   v9 = v8;
   encoderContext = self->_encoderContext;
   if (v8)
   {
     v11 = v8;
-    MPSEncoderContext::addBindingsIfNeeded(encoderContext, a5);
-    v12 = *encoderContext + 32 * a5;
+    MPSEncoderContext::addBindingsIfNeeded(encoderContext, index);
+    v12 = *encoderContext + 32 * index;
     *(v12 + 16) = 1;
     v13 = *(v12 + 24);
     *(v12 + 24) = v11;
     v14 = v11;
 
-    *(v12 + 8) = a4;
+    *(v12 + 8) = offset;
   }
 
   else
   {
-    v15 = v18;
-    MPSEncoderContext::addBindingsIfNeeded(encoderContext, a5);
-    v16 = *(*encoderContext + 32 * a5);
-    *(*encoderContext + 32 * a5) = v15;
+    v15 = bufferCopy;
+    MPSEncoderContext::addBindingsIfNeeded(encoderContext, index);
+    v16 = *(*encoderContext + 32 * index);
+    *(*encoderContext + 32 * index) = v15;
     v14 = v15;
 
-    v17 = *encoderContext + 32 * a5;
-    *(v17 + 8) = a4;
+    v17 = *encoderContext + 32 * index;
+    *(v17 + 8) = offset;
     *(v17 + 16) = 0;
   }
 
-  [(MTLComputeCommandEncoder *)self->_encoder setBuffer:v18 offset:a4 atIndex:a5];
+  [(MTLComputeCommandEncoder *)self->_encoder setBuffer:bufferCopy offset:offset atIndex:index];
 }
 
-- (void)setBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index
 {
   v9 = [MPSGraphCaptureContext dataWithBytes:"dataWithBytes:length:" length:?];
   encoderContext = self->_encoderContext;
   v11 = v9;
-  MPSEncoderContext::addBindingsIfNeeded(encoderContext, a5);
-  v12 = *encoderContext + 32 * a5;
+  MPSEncoderContext::addBindingsIfNeeded(encoderContext, index);
+  v12 = *encoderContext + 32 * index;
   *(v12 + 16) = 1;
   v13 = *(v12 + 24);
   *(v12 + 24) = v11;
   v14 = v11;
 
   *(v12 + 8) = 0;
-  [(MTLComputeCommandEncoder *)self->_encoder setBytes:a3 length:a4 atIndex:a5];
+  [(MTLComputeCommandEncoder *)self->_encoder setBytes:bytes length:length atIndex:index];
 }
 
-- (void)setComputePipelineState:(id)a3
+- (void)setComputePipelineState:(id)state
 {
-  objc_storeStrong(self->_encoderContext + 3, a3);
-  v5 = a3;
+  objc_storeStrong(self->_encoderContext + 3, state);
+  stateCopy = state;
   [(MTLComputeCommandEncoder *)self->_encoder setComputePipelineState:?];
 }
 
-- (void)setThreadgroupMemoryLength:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setThreadgroupMemoryLength:(unint64_t)length atIndex:(unint64_t)index
 {
   encoderContext = self->_encoderContext;
   v6 = *(encoderContext + 4);
   v7 = *(encoderContext + 5);
   v8 = v7 - v6;
   v9 = (v7 - v6) >> 3;
-  if (v9 > a4)
+  if (v9 > index)
   {
     goto LABEL_18;
   }
 
-  v10 = a4 + 1;
-  v11 = a4 + 1 - v9;
-  if (a4 + 1 > v9)
+  v10 = index + 1;
+  v11 = index + 1 - v9;
+  if (index + 1 > v9)
   {
     v12 = *(encoderContext + 6);
     if (v11 > (v12 - v7) >> 3)
@@ -186,61 +186,61 @@
 
     v15 = 8 * v11;
     v16 = 8 * v11;
-    v17 = a4;
-    v18 = a3;
+    indexCopy = index;
+    lengthCopy = length;
     bzero(*(encoderContext + 5), v16);
-    a3 = v18;
-    a4 = v17;
+    length = lengthCopy;
+    index = indexCopy;
     v14 = v7 + v15;
     goto LABEL_14;
   }
 
-  if (a4 + 1 < v9)
+  if (index + 1 < v9)
   {
     v14 = v6 + 8 * v10;
 LABEL_14:
     *(encoderContext + 5) = v14;
   }
 
-  if (v9 < a4)
+  if (v9 < index)
   {
-    v19 = a4;
-    v20 = a3;
-    bzero((v6 + v8), 8 * a4 - v8);
-    a3 = v20;
-    a4 = v19;
+    indexCopy2 = index;
+    lengthCopy2 = length;
+    bzero((v6 + v8), 8 * index - v8);
+    length = lengthCopy2;
+    index = indexCopy2;
   }
 
-  *(v6 + 8 * a4) = 0;
+  *(v6 + 8 * index) = 0;
 LABEL_18:
-  *(v6 + 8 * a4) = a3;
+  *(v6 + 8 * index) = length;
   encoder = self->_encoder;
 
   [MTLComputeCommandEncoder setThreadgroupMemoryLength:"setThreadgroupMemoryLength:atIndex:" atIndex:?];
 }
 
-- (void)dispatchThreadgroups:(id *)a3 threadsPerThreadgroup:(id *)a4
+- (void)dispatchThreadgroups:(id *)threadgroups threadsPerThreadgroup:(id *)threadgroup
 {
   v14[2] = *MEMORY[0x1E69E9840];
   v13[0] = @"ThreadsPerThreadgroup";
-  v7 = MTLSizeToNSArray(a4);
+  v7 = MTLSizeToNSArray(threadgroup);
   v13[1] = @"ThreadgroupsPerGrid";
   v14[0] = v7;
-  v8 = MTLSizeToNSArray(a3);
+  v8 = MTLSizeToNSArray(threadgroups);
   v14[1] = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
 
   [(MPSGraphCaptureContext *)self->_captureContext createNodeWithDispatchInfo:v9 encoderContext:self->_encoderContext];
   encoder = self->_encoder;
-  v12 = *a3;
-  v11 = *a4;
+  v12 = *threadgroups;
+  v11 = *threadgroup;
   [(MTLComputeCommandEncoder *)encoder dispatchThreadgroups:&v12 threadsPerThreadgroup:&v11];
 }
 
-- (void)executeCommandsInBuffer:(id)a3 indirectBuffer:(id)a4 indirectBufferOffset:(unint64_t)a5
+- (void)executeCommandsInBuffer:(id)buffer indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)offset
 {
-  v6 = a3;
-  v7 = a4;
+  bufferCopy = buffer;
+  indirectBufferCopy = indirectBuffer;
   abort();
 }
 

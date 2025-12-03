@@ -1,7 +1,7 @@
 @interface IMSPISimulatedMessage
 + (id)_dateFormatter;
 - (IMSPISimulatedMessage)init;
-- (IMSPISimulatedMessage)initWithDictionaryRepresentation:(id)a3;
+- (IMSPISimulatedMessage)initWithDictionaryRepresentation:(id)representation;
 - (NSDictionary)dictionaryRepresentation;
 - (id)_calculateGUID;
 - (id)_calculateSender;
@@ -200,48 +200,48 @@
   return v3;
 }
 
-- (IMSPISimulatedMessage)initWithDictionaryRepresentation:(id)a3
+- (IMSPISimulatedMessage)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v8 = objc_msgSend_init(self, v5, v6);
   if (v8)
   {
-    v9 = objc_msgSend_objectForKeyedSubscript_(v4, v7, @"guid");
+    v9 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v7, @"guid");
     objc_msgSend_setGuid_(v8, v10, v9);
 
-    v12 = objc_msgSend_objectForKeyedSubscript_(v4, v11, @"text");
+    v12 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v11, @"text");
     objc_msgSend_setText_(v8, v13, v12);
 
-    v15 = objc_msgSend_objectForKeyedSubscript_(v4, v14, @"sender");
+    v15 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v14, @"sender");
     objc_msgSend_setSender_(v8, v16, v15);
 
-    v18 = objc_msgSend_objectForKeyedSubscript_(v4, v17, @"serviceName");
+    v18 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v17, @"serviceName");
     objc_msgSend_setServiceName_(v8, v19, v18);
 
-    v21 = objc_msgSend_objectForKeyedSubscript_(v4, v20, @"accountID");
+    v21 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v20, @"accountID");
     objc_msgSend_setAccountID_(v8, v22, v21);
 
-    v24 = objc_msgSend_objectForKeyedSubscript_(v4, v23, @"fromMe");
+    v24 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v23, @"fromMe");
     v27 = objc_msgSend_BOOLValue(v24, v25, v26);
     objc_msgSend_setFromMe_(v8, v28, v27);
 
-    v30 = objc_msgSend_objectForKeyedSubscript_(v4, v29, @"chatGUID");
+    v30 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v29, @"chatGUID");
     objc_msgSend_setChatGUID_(v8, v31, v30);
 
-    v33 = objc_msgSend_objectForKeyedSubscript_(v4, v32, @"groupID");
+    v33 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v32, @"groupID");
     objc_msgSend_setGroupID_(v8, v34, v33);
 
-    v36 = objc_msgSend_objectForKeyedSubscript_(v4, v35, @"handles");
+    v36 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v35, @"handles");
     objc_msgSend_setHandles_(v8, v37, v36);
 
-    v39 = objc_msgSend_objectForKeyedSubscript_(v4, v38, @"lastAddressedHandle");
+    v39 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v38, @"lastAddressedHandle");
     objc_msgSend_setLastAddressedHandle_(v8, v40, v39);
 
-    v42 = objc_msgSend_objectForKeyedSubscript_(v4, v41, @"flags");
+    v42 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v41, @"flags");
     v45 = objc_msgSend_unsignedIntValue(v42, v43, v44);
     objc_msgSend_setFlags_(v8, v46, v45);
 
-    v50 = objc_msgSend_objectForKeyedSubscript_(v4, v47, @"date");
+    v50 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v47, @"date");
     if (v50)
     {
       v51 = objc_msgSend__dateFormatter(IMSPISimulatedMessage, v48, v49);
@@ -249,13 +249,13 @@
       objc_msgSend_setDate_(v8, v54, v53);
     }
 
-    v55 = objc_msgSend_objectForKeyedSubscript_(v4, v48, @"effectID");
+    v55 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v48, @"effectID");
     objc_msgSend_setEffectID_(v8, v56, v55);
 
-    v58 = objc_msgSend_objectForKeyedSubscript_(v4, v57, @"bundleID");
+    v58 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v57, @"bundleID");
     objc_msgSend_setBundleID_(v8, v59, v58);
 
-    v61 = objc_msgSend_objectForKeyedSubscript_(v4, v60, @"payloadData");
+    v61 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v60, @"payloadData");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -273,7 +273,7 @@
       }
     }
 
-    v67 = objc_msgSend_objectForKeyedSubscript_(v4, v66, @"threadIdentifier");
+    v67 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v66, @"threadIdentifier");
     objc_msgSend_setThreadIdentifier_(v8, v68, v67);
   }
 

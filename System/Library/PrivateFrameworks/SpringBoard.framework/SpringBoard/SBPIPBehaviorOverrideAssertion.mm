@@ -1,8 +1,8 @@
 @interface SBPIPBehaviorOverrideAssertion
-- (SBPIPBehaviorOverrideAssertion)initWithReason:(int64_t)a3 identifier:(id)a4 cameraSensorAttributionBundleIdentifier:(id)a5 invalidationBlock:(id)a6;
-- (SBPIPBehaviorOverrideAssertion)initWithReason:(int64_t)a3 identifier:(id)a4 invalidationBlock:(id)a5;
-- (SBPIPBehaviorOverrideAssertion)initWithReason:(int64_t)a3 invalidationBlock:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (SBPIPBehaviorOverrideAssertion)initWithReason:(int64_t)reason identifier:(id)identifier cameraSensorAttributionBundleIdentifier:(id)bundleIdentifier invalidationBlock:(id)block;
+- (SBPIPBehaviorOverrideAssertion)initWithReason:(int64_t)reason identifier:(id)identifier invalidationBlock:(id)block;
+- (SBPIPBehaviorOverrideAssertion)initWithReason:(int64_t)reason invalidationBlock:(id)block;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 - (int64_t)behaviorOverrideReason;
 @end
 
@@ -10,48 +10,48 @@
 
 - (int64_t)behaviorOverrideReason
 {
-  v2 = [(BSSimpleAssertion *)self reason];
-  v3 = SBPIPStashStateOverrideReasonForString(v2);
+  reason = [(BSSimpleAssertion *)self reason];
+  v3 = SBPIPStashStateOverrideReasonForString(reason);
 
   return v3;
 }
 
-- (SBPIPBehaviorOverrideAssertion)initWithReason:(int64_t)a3 invalidationBlock:(id)a4
+- (SBPIPBehaviorOverrideAssertion)initWithReason:(int64_t)reason invalidationBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  v9 = [(SBPIPBehaviorOverrideAssertion *)self initWithReason:a3 identifier:v8 invalidationBlock:v6];
+  v9 = [(SBPIPBehaviorOverrideAssertion *)self initWithReason:reason identifier:v8 invalidationBlock:blockCopy];
 
   return v9;
 }
 
-- (SBPIPBehaviorOverrideAssertion)initWithReason:(int64_t)a3 identifier:(id)a4 invalidationBlock:(id)a5
+- (SBPIPBehaviorOverrideAssertion)initWithReason:(int64_t)reason identifier:(id)identifier invalidationBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = SBStringForPIPBehaviorOverrideReason(a3);
+  blockCopy = block;
+  identifierCopy = identifier;
+  v10 = SBStringForPIPBehaviorOverrideReason(reason);
   v13.receiver = self;
   v13.super_class = SBPIPBehaviorOverrideAssertion;
-  v11 = [(BSSimpleAssertion *)&v13 initWithIdentifier:v9 forReason:v10 queue:MEMORY[0x277D85CD0] invalidationBlock:v8];
+  v11 = [(BSSimpleAssertion *)&v13 initWithIdentifier:identifierCopy forReason:v10 queue:MEMORY[0x277D85CD0] invalidationBlock:blockCopy];
 
   return v11;
 }
 
-- (SBPIPBehaviorOverrideAssertion)initWithReason:(int64_t)a3 identifier:(id)a4 cameraSensorAttributionBundleIdentifier:(id)a5 invalidationBlock:(id)a6
+- (SBPIPBehaviorOverrideAssertion)initWithReason:(int64_t)reason identifier:(id)identifier cameraSensorAttributionBundleIdentifier:(id)bundleIdentifier invalidationBlock:(id)block
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  blockCopy = block;
+  if (!reason)
   {
     [SBPIPBehaviorOverrideAssertion initWithReason:a2 identifier:self cameraSensorAttributionBundleIdentifier:? invalidationBlock:?];
   }
 
-  v14 = [(SBPIPBehaviorOverrideAssertion *)self initWithReason:a3 identifier:v11 invalidationBlock:v13];
+  v14 = [(SBPIPBehaviorOverrideAssertion *)self initWithReason:reason identifier:identifierCopy invalidationBlock:blockCopy];
   if (v14)
   {
-    v15 = [v12 copy];
+    v15 = [bundleIdentifierCopy copy];
     cameraSensorAttributionBundleIdentifier = v14->_cameraSensorAttributionBundleIdentifier;
     v14->_cameraSensorAttributionBundleIdentifier = v15;
   }
@@ -59,13 +59,13 @@
   return v14;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v7.receiver = self;
   v7.super_class = SBPIPBehaviorOverrideAssertion;
-  v4 = [(BSSimpleAssertion *)&v7 descriptionBuilderWithMultilinePrefix:a3];
-  v5 = [(SBPIPBehaviorOverrideAssertion *)self cameraSensorAttributionBundleIdentifier];
-  [v4 appendString:v5 withName:@"camera sensor bundle identifier" skipIfEmpty:1];
+  v4 = [(BSSimpleAssertion *)&v7 descriptionBuilderWithMultilinePrefix:prefix];
+  cameraSensorAttributionBundleIdentifier = [(SBPIPBehaviorOverrideAssertion *)self cameraSensorAttributionBundleIdentifier];
+  [v4 appendString:cameraSensorAttributionBundleIdentifier withName:@"camera sensor bundle identifier" skipIfEmpty:1];
 
   return v4;
 }

@@ -110,7 +110,7 @@
     v39 = a6;
     v33 = a8;
     v35 = *&a7.f64[0];
-    v30 = a1;
+    selfCopy = self;
     v31 = *(MEMORY[0x1E695F058] + 16);
     v28 = a4;
     v29 = a2;
@@ -119,7 +119,7 @@
     a3.f64[0] = v27.f64[0];
     a4.n128_u64[0] = v28.n128_u64[0];
     a2.n128_u64[0] = v29.n128_u64[0];
-    a1.f64[0] = v30.f64[0];
+    self.f64[0] = selfCopy.f64[0];
     v9 = v31;
     a8 = v33;
     *&a7.f64[0] = v35;
@@ -140,8 +140,8 @@
   *&a3.f64[1] = a4.n128_u64[0];
   __asm { FMOV            V3.2D, #0.5 }
 
-  *&a1.f64[1] = a2.n128_u64[0];
-  v16 = vdivq_f64(vrndmq_f64(vmulq_n_f64(vaddq_f64(a1, vmulq_f64(vsubq_f64(a3, v9), _Q3)), *&v10)), vdupq_lane_s64(v10, 0));
+  *&self.f64[1] = a2.n128_u64[0];
+  v16 = vdivq_f64(vrndmq_f64(vmulq_n_f64(vaddq_f64(self, vmulq_f64(vsubq_f64(a3, v9), _Q3)), *&v10)), vdupq_lane_s64(v10, 0));
   v17 = CKMainScreenScale_sMainScreenScale_49;
   a7.f64[1] = a8;
   if (*&CKMainScreenScale_sMainScreenScale_49 == 0.0)
@@ -155,7 +155,7 @@
   v32 = v16;
   v34 = vmlaq_f64(v16, vdupq_n_s64(0x3FD6666666666666uLL), v18);
   v36 = vmlaq_f64(v16, vdupq_n_s64(0x3FE6666666666666uLL), v18);
-  v19 = [MEMORY[0x1E6979390] animationWithKeyPath:{@"position", *&v27, *&v28, *&v29, *&v30, *&v31}];
+  v19 = [MEMORY[0x1E6979390] animationWithKeyPath:{@"position", *&v27, *&v28, *&v29, *&selfCopy, *&v31}];
   [v19 setCalculationMode:*MEMORY[0x1E6979598]];
   [v19 setFillMode:*MEMORY[0x1E69797E8]];
   v20 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
@@ -218,7 +218,7 @@
 + (id)ck_stickerFlyInBoundsAnimationFromSize:()ChatKit toSize:
 {
   v8 = [MEMORY[0x1E6979318] animationWithKeyPath:@"bounds.size"];
-  *v13 = a1;
+  *v13 = self;
   *&v13[1] = a2;
   v9 = [MEMORY[0x1E696B098] valueWithBytes:v13 objCType:"{CGSize=dd}"];
   [v8 setFromValue:v9];

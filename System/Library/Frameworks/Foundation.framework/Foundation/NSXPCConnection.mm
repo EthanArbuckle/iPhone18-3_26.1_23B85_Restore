@@ -1,7 +1,7 @@
 @interface NSXPCConnection
 + (NSXPCConnection)currentConnection;
 + (void)_currentBoost;
-+ (void)_handoffCurrentReplyToQueue:(id)a3 block:(id)a4;
++ (void)_handoffCurrentReplyToQueue:(id)queue block:(id)block;
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
 - (Class)_remoteObjectInterfaceClass;
 - (NSString)_serviceInfoForDecoder;
@@ -9,51 +9,51 @@
 - (NSXPCConnection)init;
 - (NSXPCConnection)initWithListenerEndpoint:(NSXPCListenerEndpoint *)endpoint;
 - (NSXPCConnection)initWithMachServiceName:(NSString *)name options:(NSXPCConnectionOptions)options;
-- (NSXPCConnection)initWithServiceName:(id)a3 options:(unint64_t)a4;
+- (NSXPCConnection)initWithServiceName:(id)name options:(unint64_t)options;
 - (NSXPCListenerEndpoint)endpoint;
 - (au_asid_t)auditSessionIdentifier;
 - (gid_t)effectiveGroupIdentifier;
 - (id)_additionalInvalidationHandler;
 - (id)_errorDescription;
-- (id)_initWithCustomTransport:(id)a3;
-- (id)_initWithRemoteConnection:(id)a3 name:(id)a4;
-- (id)_initWithRemoteService:(id)a3 name:(id)a4 options:(unint64_t)a5 mode:(unint64_t)a6;
+- (id)_initWithCustomTransport:(id)transport;
+- (id)_initWithRemoteConnection:(id)connection name:(id)name;
+- (id)_initWithRemoteService:(id)service name:(id)name options:(unint64_t)options mode:(unint64_t)mode;
 - (id)_unboostingRemoteObjectProxy;
 - (id)_xpcConnection;
 - (id)description;
 - (id)remoteObjectProxy;
 - (id)remoteObjectProxyWithErrorHandler:(void *)handler;
-- (id)remoteObjectProxyWithTimeout:(double)a3 errorHandler:(id)a4;
-- (id)remoteObjectProxyWithUserInfo:(id)a3 errorHandler:(id)a4;
-- (id)replacementObjectForEncoder:(id)a3 object:(id)a4;
+- (id)remoteObjectProxyWithTimeout:(double)timeout errorHandler:(id)handler;
+- (id)remoteObjectProxyWithUserInfo:(id)info errorHandler:(id)handler;
+- (id)replacementObjectForEncoder:(id)encoder object:(id)object;
 - (id)synchronousRemoteObjectProxyWithErrorHandler:(void *)handler;
 - (id)userInfo;
-- (id)valueForEntitlement:(id)a3;
+- (id)valueForEntitlement:(id)entitlement;
 - (pid_t)processIdentifier;
 - (uid_t)effectiveUserIdentifier;
-- (uint64_t)_initWithPeerConnection:(void *)a1 name:(_xpc_connection_s *)a2 options:(__CFString *)a3;
-- (uint64_t)_initWithRemotePeerConnection:(void *)a1 name:(uint64_t)a2 options:(__CFString *)a3;
+- (uint64_t)_initWithPeerConnection:(void *)connection name:(_xpc_connection_s *)name options:(__CFString *)options;
+- (uint64_t)_initWithRemotePeerConnection:(void *)connection name:(uint64_t)name options:(__CFString *)options;
 - (uint64_t)_removeImportedProxy:(uint64_t)result;
-- (uint64_t)_sendProgressMessage:(uint64_t)a3 forSequence:;
-- (void)_cancelProgress:(unint64_t)a3;
-- (void)_decodeAndInvokeMessageWithEvent:(id)a3 reply:(id)a4 flags:(unint64_t)a5;
-- (void)_decodeAndInvokeReplyBlockWithEvent:(id)a3 sequence:(unint64_t)a4 replyInfo:(id)a5;
-- (void)_decodeProgressMessageWithData:(id)a3 flags:(unint64_t)a4;
-- (void)_killConnection:(int)a3;
-- (void)_pauseProgress:(unint64_t)a3;
-- (void)_resumeProgress:(unint64_t)a3;
-- (void)_sendDesistForProxy:(id)a3;
-- (void)_sendInvocation:(id)a3 orArguments:(id *)a4 count:(unint64_t)a5 methodSignature:(id)a6 selector:(SEL)a7 withProxy:(id)a8;
-- (void)_sendSelector:(SEL)a3 withProxy:(id)a4;
-- (void)_sendSelector:(SEL)a3 withProxy:(id)a4 arg1:(id)a5;
-- (void)_sendSelector:(SEL)a3 withProxy:(id)a4 arg1:(id)a5 arg2:(id)a6;
-- (void)_sendSelector:(SEL)a3 withProxy:(id)a4 arg1:(id)a5 arg2:(id)a6 arg3:(id)a7;
-- (void)_sendSelector:(SEL)a3 withProxy:(id)a4 arg1:(id)a5 arg2:(id)a6 arg3:(id)a7 arg4:(id)a8;
-- (void)_setBootstrapObject:(id)a3 forKey:(id)a4;
-- (void)_setLanguages:(id)a3;
-- (void)_setQueue:(id)a3;
-- (void)_setTargetUserIdentifier:(unsigned int)a3;
-- (void)_setUUID:(id)a3;
+- (uint64_t)_sendProgressMessage:(uint64_t)message forSequence:;
+- (void)_cancelProgress:(unint64_t)progress;
+- (void)_decodeAndInvokeMessageWithEvent:(id)event reply:(id)reply flags:(unint64_t)flags;
+- (void)_decodeAndInvokeReplyBlockWithEvent:(id)event sequence:(unint64_t)sequence replyInfo:(id)info;
+- (void)_decodeProgressMessageWithData:(id)data flags:(unint64_t)flags;
+- (void)_killConnection:(int)connection;
+- (void)_pauseProgress:(unint64_t)progress;
+- (void)_resumeProgress:(unint64_t)progress;
+- (void)_sendDesistForProxy:(id)proxy;
+- (void)_sendInvocation:(id)invocation orArguments:(id *)arguments count:(unint64_t)count methodSignature:(id)signature selector:(SEL)selector withProxy:(id)proxy;
+- (void)_sendSelector:(SEL)selector withProxy:(id)proxy;
+- (void)_sendSelector:(SEL)selector withProxy:(id)proxy arg1:(id)arg1;
+- (void)_sendSelector:(SEL)selector withProxy:(id)proxy arg1:(id)arg1 arg2:(id)arg2;
+- (void)_sendSelector:(SEL)selector withProxy:(id)proxy arg1:(id)arg1 arg2:(id)arg2 arg3:(id)arg3;
+- (void)_sendSelector:(SEL)selector withProxy:(id)proxy arg1:(id)arg1 arg2:(id)arg2 arg3:(id)arg3 arg4:(id)arg4;
+- (void)_setBootstrapObject:(id)object forKey:(id)key;
+- (void)_setLanguages:(id)languages;
+- (void)_setQueue:(id)queue;
+- (void)_setTargetUserIdentifier:(unsigned int)identifier;
+- (void)_setUUID:(id)d;
 - (void)activate;
 - (void)dealloc;
 - (void)interruptionHandler;
@@ -61,12 +61,12 @@
 - (void)invalidationHandler;
 - (void)resume;
 - (void)scheduleSendBarrierBlock:(void *)block;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)setInterruptionHandler:(void *)interruptionHandler;
 - (void)setInvalidationHandler:(void *)invalidationHandler;
-- (void)setOptions:(unint64_t)a3;
-- (void)setUserInfo:(id)a3;
-- (void)set_additionalInvalidationHandler:(id)a3;
+- (void)setOptions:(unint64_t)options;
+- (void)setUserInfo:(id)info;
+- (void)set_additionalInvalidationHandler:(id)handler;
 - (void)suspend;
 @end
 
@@ -492,22 +492,22 @@
   return v2;
 }
 
-- (void)_decodeAndInvokeReplyBlockWithEvent:(id)a3 sequence:(unint64_t)a4 replyInfo:(id)a5
+- (void)_decodeAndInvokeReplyBlockWithEvent:(id)event sequence:(unint64_t)sequence replyInfo:(id)info
 {
   v31 = *MEMORY[0x1E69E9840];
-  if (a5)
+  if (info)
   {
     v8 = [NSXPCDecoder alloc];
-    v10 = [(NSXPCDecoder *)v8 initWithInterface:objc_getProperty(a5, v9, 40, 1)];
+    v10 = [(NSXPCDecoder *)v8 initWithInterface:objc_getProperty(info, v9, 40, 1)];
     [(NSXPCDecoder *)v10 _setConnection:self];
     if (self->_otherInfo)
     {
       [(NSXPCCoder *)v10 setUserInfo:?];
     }
 
-    if (*(a5 + 4))
+    if (*(info + 4))
     {
-      v11 = *(a5 + 4);
+      v11 = *(info + 4);
     }
 
     else
@@ -515,23 +515,23 @@
       v11 = 0;
     }
 
-    v14 = [(NSXPCDecoder *)v10 _decodeReplyFromXPCObject:a3 forSelector:v11];
+    v14 = [(NSXPCDecoder *)v10 _decodeReplyFromXPCObject:event forSelector:v11];
     if (!v14)
     {
       v24 = [NSString stringWithFormat:@"NSXPCConnection %p: Decode of incoming invocation failed (no result)", self];
       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v24 userInfo:0]);
     }
 
-    [v14 setTarget:{objc_getProperty(a5, v13, 8, 1)}];
+    [v14 setTarget:{objc_getProperty(info, v13, 8, 1)}];
     _CFGetTSD();
     _CFSetTSD();
     v15 = atomic_load(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
       v16 = [NSString alloc];
-      if (*(a5 + 4))
+      if (*(info + 4))
       {
-        v17 = *(a5 + 4);
+        v17 = *(info + 4);
       }
 
       else
@@ -540,12 +540,12 @@
       }
 
       v18 = [(NSString *)v16 initWithUTF8String:sel_getName(v17)];
-      if (objc_getProperty(a5, v19, 48, 1))
+      if (objc_getProperty(info, v19, 48, 1))
       {
         v27[0] = @"_NSXPCConnectionInvocationReplyToSelectorKey";
         v27[1] = @"_NSXPCConnectionInvocationReplyUserInfoKey";
         v28[0] = v18;
-        v28[1] = objc_getProperty(a5, v20, 48, 1);
+        v28[1] = objc_getProperty(info, v20, 48, 1);
         v21 = v27;
         v22 = v28;
         v23 = 2;
@@ -569,7 +569,7 @@
       __NSXPCCONNECTION_IS_CALLING_OUT_TO_REPLY_BLOCK__(v14);
     }
 
-    [(_NSXPCConnectionExpectedReplyInfo *)a5 cleanup];
+    [(_NSXPCConnectionExpectedReplyInfo *)info cleanup];
     _CFSetTSD();
   }
 
@@ -579,7 +579,7 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
     {
       *buf = 138543362;
-      v30 = self;
+      selfCopy = self;
       _os_log_fault_impl(&dword_18075C000, v12, OS_LOG_TYPE_FAULT, "%{public}@: Warning: Received reply to unknown message. Dropping incoming message and invalidating connection.", buf, 0xCu);
     }
 
@@ -597,11 +597,11 @@
   return result;
 }
 
-- (void)_decodeAndInvokeMessageWithEvent:(id)a3 reply:(id)a4 flags:(unint64_t)a5
+- (void)_decodeAndInvokeMessageWithEvent:(id)event reply:(id)reply flags:(unint64_t)flags
 {
-  v5 = a5;
+  flagsCopy = flags;
   v74[5] = *MEMORY[0x1E69E9840];
-  uint64 = xpc_dictionary_get_uint64(a3, "proxynum");
+  uint64 = xpc_dictionary_get_uint64(event, "proxynum");
   if (!uint64 || (v11 = [(_NSXPCConnectionExportedObjectTable *)self->_exportInfo exportedObjectForProxyNumber:?], v12 = [(_NSXPCConnectionExportedObjectTable *)self->_exportInfo interfaceForProxyNumber:?], !v11))
   {
     v16 = _NSXPCLog();
@@ -652,7 +652,7 @@ LABEL_10:
     [(NSXPCCoder *)v15 setUserInfo:?];
   }
 
-  v56 = [(NSXPCDecoder *)v15 _decodeMessageFromXPCObject:a3 allowingSimpleMessageSend:(v55 & 1) == 0 outInvocation:&v62 outArguments:v74 outArgumentsMaxCount:4 outMethodSignature:&v61 outSelector:&v66]== 1;
+  v56 = [(NSXPCDecoder *)v15 _decodeMessageFromXPCObject:event allowingSimpleMessageSend:(v55 & 1) == 0 outInvocation:&v62 outArguments:v74 outArgumentsMaxCount:4 outMethodSignature:&v61 outSelector:&v66]== 1;
   if (!v66)
   {
     v18 = _NSXPCLog();
@@ -672,7 +672,7 @@ LABEL_10:
     goto LABEL_95;
   }
 
-  if ((v5 & 0x20) == 0)
+  if ((flagsCopy & 0x20) == 0)
   {
     if (![v62 _hasBlockArgument])
     {
@@ -692,16 +692,16 @@ LABEL_10:
     goto LABEL_95;
   }
 
-  v20 = xpc_dictionary_get_uint64(a3, "sequence");
+  v20 = xpc_dictionary_get_uint64(event, "sequence");
   v51 = v20;
-  if ((v5 & 0x40) != 0)
+  if ((flagsCopy & 0x40) != 0)
   {
     v21 = [[_NSProgressWithRemoteParent alloc] initWithParent:0 userInfo:0];
     [(NSProgress *)v21 setTotalUnitCount:1];
     [(NSProgress *)v21 set_adoptChildUserInfo:1];
     [(_NSProgressWithRemoteParent *)v21 setSequence:v20];
     [(_NSProgressWithRemoteParent *)v21 setParentConnection:self];
-    v22 = (v5 & 0x80) == 0;
+    v22 = (flagsCopy & 0x80) == 0;
   }
 
   else
@@ -711,9 +711,9 @@ LABEL_10:
   }
 
   v53 = v22;
-  v23 = [v61 numberOfArguments];
+  numberOfArguments = [v61 numberOfArguments];
   v52 = v21;
-  if (v23 == 2)
+  if (numberOfArguments == 2)
   {
     goto LABEL_36;
   }
@@ -767,13 +767,13 @@ LABEL_34:
     }
 
     ++v24;
-    if (v23 == ++v25)
+    if (numberOfArguments == ++v25)
     {
       goto LABEL_36;
     }
   }
 
-  string = xpc_dictionary_get_string(a3, "replysig");
+  string = xpc_dictionary_get_string(event, "replysig");
   if (!string)
   {
     v38 = _NSXPCLog();
@@ -816,16 +816,16 @@ LABEL_95:
   v34 = [v50 numberOfArguments] - 1;
   if (v34 > 3)
   {
-    v49 = 0;
+    _isAllObjects = 0;
   }
 
   else
   {
-    v49 = [v50 _isAllObjects];
+    _isAllObjects = [v50 _isAllObjects];
   }
 
-  [(_NSXPCConnectionRequestedReplies *)self->_repliesRequested beginTransactionForSequence:v51 selector:v66 reply:a4 withProgress:v52];
-  v39 = v49 ^ 1;
+  [(_NSXPCConnectionRequestedReplies *)self->_repliesRequested beginTransactionForSequence:v51 selector:v66 reply:reply withProgress:v52];
+  v39 = _isAllObjects ^ 1;
   if (v34)
   {
     v40 = 1;
@@ -833,7 +833,7 @@ LABEL_95:
 
   else
   {
-    v40 = v49 ^ 1;
+    v40 = _isAllObjects ^ 1;
   }
 
   if ((v40 & 1) == 0)
@@ -843,7 +843,7 @@ LABEL_95:
     v60[1] = 3221225472;
     v60[2] = __64__NSXPCConnection__decodeAndInvokeMessageWithEvent_reply_flags___block_invoke;
     v60[3] = &unk_1E69FA1D0;
-    v60[5] = a4;
+    v60[5] = reply;
     v60[6] = v63;
     v60[7] = v51;
     v60[8] = v66;
@@ -869,15 +869,15 @@ LABEL_95:
     v59[8] = v51;
     v59[9] = v66;
     v59[10] = uint64;
-    v59[6] = a4;
+    v59[6] = reply;
     v59[7] = v63;
     goto LABEL_117;
   }
 
-  v42 = v49 ^ 1;
+  v42 = _isAllObjects ^ 1;
   if (v34 == 2)
   {
-    v43 = v49 ^ 1;
+    v43 = _isAllObjects ^ 1;
   }
 
   else
@@ -897,7 +897,7 @@ LABEL_95:
     v58[8] = v51;
     v58[9] = v66;
     v58[10] = uint64;
-    v58[6] = a4;
+    v58[6] = reply;
     v58[7] = v63;
     goto LABEL_117;
   }
@@ -926,7 +926,7 @@ LABEL_95:
     v57[8] = v51;
     v57[9] = v66;
     v57[10] = uint64;
-    v57[6] = a4;
+    v57[6] = reply;
     v57[7] = v63;
 LABEL_117:
     v65 = v41;
@@ -949,9 +949,9 @@ LABEL_36:
   _CFGetTSD();
   _CFSetTSD();
   _CFSetTSD();
-  if (a4)
+  if (reply)
   {
-    xpc_retain(a4);
+    xpc_retain(reply);
     _CFSetTSD();
   }
 
@@ -994,16 +994,16 @@ LABEL_36:
       objc_exception_throw(v48);
     }
 
-    v29 = [v61 numberOfArguments];
-    if (v29 <= 3)
+    numberOfArguments2 = [v61 numberOfArguments];
+    if (numberOfArguments2 <= 3)
     {
-      if (v29 != 2 && v29 != 3)
+      if (numberOfArguments2 != 2 && numberOfArguments2 != 3)
       {
         goto LABEL_71;
       }
     }
 
-    else if (v29 != 4 && v29 != 5 && v29 != 6)
+    else if (numberOfArguments2 != 4 && numberOfArguments2 != 5 && numberOfArguments2 != 6)
     {
       goto LABEL_71;
     }
@@ -1051,9 +1051,9 @@ LABEL_71:
   }
 
   _CFSetTSD();
-  if (a4)
+  if (reply)
   {
-    xpc_release(a4);
+    xpc_release(reply);
   }
 
   if (v56)
@@ -1260,43 +1260,43 @@ void __64__NSXPCConnection__decodeAndInvokeMessageWithEvent_reply_flags___block_
   }
 }
 
-+ (void)_handoffCurrentReplyToQueue:(id)a3 block:(id)a4
++ (void)_handoffCurrentReplyToQueue:(id)queue block:(id)block
 {
   if (!_CFGetTSD())
   {
-    v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: called when there is no reply context", _NSMethodExceptionProem(a1, a2)), 0}];
+    v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: called when there is no reply context", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v6);
   }
 
   MEMORY[0x1EEE74CA0]();
 }
 
-- (uint64_t)_initWithPeerConnection:(void *)a1 name:(_xpc_connection_s *)a2 options:(__CFString *)a3
+- (uint64_t)_initWithPeerConnection:(void *)connection name:(_xpc_connection_s *)name options:(__CFString *)options
 {
   handler[5] = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!connection)
   {
     return 0;
   }
 
-  v5 = [a1 init];
+  v5 = [connection init];
   if (v5)
   {
-    *(v5 + 104) = [(__CFString *)a3 copy];
-    pid = xpc_connection_get_pid(a2);
-    v7 = @"anonymous";
-    if (a3)
+    *(v5 + 104) = [(__CFString *)options copy];
+    pid = xpc_connection_get_pid(name);
+    optionsCopy = @"anonymous";
+    if (options)
     {
-      v7 = a3;
+      optionsCopy = options;
     }
 
-    v8 = [NSString stringWithFormat:@"com.apple.NSXPCConnection.user.%@.%d", v7, pid];
+    v8 = [NSString stringWithFormat:@"com.apple.NSXPCConnection.user.%@.%d", optionsCopy, pid];
     atomic_fetch_or((v5 + 36), 0x10u);
-    v9 = [(NSString *)v8 UTF8String];
+    uTF8String = [(NSString *)v8 UTF8String];
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     global_queue = dispatch_get_global_queue(21, 0);
-    *(v5 + 24) = dispatch_queue_create_with_target_V2(v9, v10, global_queue);
-    v12 = xpc_retain(a2);
+    *(v5 + 24) = dispatch_queue_create_with_target_V2(uTF8String, v10, global_queue);
+    v12 = xpc_retain(name);
     *(v5 + 8) = v12;
     xpc_connection_set_target_queue(v12, *(v5 + 24));
     v13 = *(v5 + 8);
@@ -1311,33 +1311,33 @@ void __64__NSXPCConnection__decodeAndInvokeMessageWithEvent_reply_flags___block_
   return v5;
 }
 
-- (uint64_t)_initWithRemotePeerConnection:(void *)a1 name:(uint64_t)a2 options:(__CFString *)a3
+- (uint64_t)_initWithRemotePeerConnection:(void *)connection name:(uint64_t)name options:(__CFString *)options
 {
   v17[5] = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!connection)
   {
     return 0;
   }
 
-  v5 = [a1 init];
+  v5 = [connection init];
   v6 = v5;
   if (v5)
   {
     atomic_fetch_or((v5 + 36), 0x40u);
-    *(v5 + 104) = [(__CFString *)a3 copy];
-    v7 = @"anonymous";
-    if (a3)
+    *(v5 + 104) = [(__CFString *)options copy];
+    optionsCopy = @"anonymous";
+    if (options)
     {
-      v7 = a3;
+      optionsCopy = options;
     }
 
-    v8 = [NSString stringWithFormat:@"com.apple.NSXPCConnection.user.%@.remote", v7];
+    optionsCopy = [NSString stringWithFormat:@"com.apple.NSXPCConnection.user.%@.remote", optionsCopy];
     atomic_fetch_or((v6 + 36), 0x10u);
-    v9 = [(NSString *)v8 UTF8String];
+    uTF8String = [(NSString *)optionsCopy UTF8String];
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     global_queue = dispatch_get_global_queue(21, 0);
-    *(v6 + 24) = dispatch_queue_create_with_target_V2(v9, v10, global_queue);
-    v12 = [[_NSXPCRemoteTransport alloc] initWithConnection:a2];
+    *(v6 + 24) = dispatch_queue_create_with_target_V2(uTF8String, v10, global_queue);
+    v12 = [[_NSXPCRemoteTransport alloc] initWithConnection:name];
     *(v6 + 152) = v12;
     [(_NSXPCRemoteTransport *)v12 setTargetQueue:*(v6 + 24)];
     v13 = *(v6 + 152);
@@ -1359,10 +1359,10 @@ void __64__NSXPCConnection__decodeAndInvokeMessageWithEvent_reply_flags___block_
   return v6;
 }
 
-- (id)_initWithRemoteService:(id)a3 name:(id)a4 options:(unint64_t)a5 mode:(unint64_t)a6
+- (id)_initWithRemoteService:(id)service name:(id)name options:(unint64_t)options mode:(unint64_t)mode
 {
   v19[5] = *MEMORY[0x1E69E9840];
-  v9 = [(NSXPCConnection *)self init:a3];
+  v9 = [(NSXPCConnection *)self init:service];
   v10 = v9;
   if (v9)
   {
@@ -1371,7 +1371,7 @@ void __64__NSXPCConnection__decodeAndInvokeMessageWithEvent_reply_flags___block_
     v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     global_queue = dispatch_get_global_queue(21, 0);
     v10->_userQueue = dispatch_queue_create_with_target_V2(v11, v12, global_queue);
-    v14 = [[_NSXPCRemoteTransport alloc] initWithRemoteService:a3 name:a4 queue:v10->_userQueue mode:a6];
+    v14 = [[_NSXPCRemoteTransport alloc] initWithRemoteService:service name:name queue:v10->_userQueue mode:mode];
     v10->_transport = v14;
     [(_NSXPCRemoteTransport *)v14 setTargetQueue:v10->_userQueue];
     transport = v10->_transport;
@@ -1394,10 +1394,10 @@ void __64__NSXPCConnection__decodeAndInvokeMessageWithEvent_reply_flags___block_
   return v10;
 }
 
-- (id)_initWithRemoteConnection:(id)a3 name:(id)a4
+- (id)_initWithRemoteConnection:(id)connection name:(id)name
 {
   v15[5] = *MEMORY[0x1E69E9840];
-  v5 = [(NSXPCConnection *)self init:a3];
+  v5 = [(NSXPCConnection *)self init:connection];
   v6 = v5;
   if (v5)
   {
@@ -1406,7 +1406,7 @@ void __64__NSXPCConnection__decodeAndInvokeMessageWithEvent_reply_flags___block_
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     global_queue = dispatch_get_global_queue(21, 0);
     v6->_userQueue = dispatch_queue_create_with_target_V2(v7, v8, global_queue);
-    v10 = [[_NSXPCRemoteTransport alloc] initWithConnection:a3];
+    v10 = [[_NSXPCRemoteTransport alloc] initWithConnection:connection];
     v6->_transport = v10;
     [(_NSXPCRemoteTransport *)v10 setTargetQueue:v6->_userQueue];
     transport = v6->_transport;
@@ -1429,25 +1429,25 @@ void __64__NSXPCConnection__decodeAndInvokeMessageWithEvent_reply_flags___block_
   return v6;
 }
 
-- (NSXPCConnection)initWithServiceName:(id)a3 options:(unint64_t)a4
+- (NSXPCConnection)initWithServiceName:(id)name options:(unint64_t)options
 {
   handler[5] = *MEMORY[0x1E69E9840];
-  v6 = [(NSXPCConnection *)self init:a3];
+  v6 = [(NSXPCConnection *)self init:name];
   if (v6)
   {
-    v7 = [+[NSFileManager defaultManager](NSFileManager fileSystemRepresentationWithPath:"fileSystemRepresentationWithPath:", a3];
-    if (!v7)
+    name = [+[NSFileManager defaultManager](NSFileManager fileSystemRepresentationWithPath:"fileSystemRepresentationWithPath:", name];
+    if (!name)
     {
 
-      v7 = 0;
+      name = 0;
     }
 
     v8 = [+[NSString stringWithFormat:](NSString UTF8String:@"com.apple.NSXPCConnection.user.%@"];
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     global_queue = dispatch_get_global_queue(21, 0);
     v6->_userQueue = dispatch_queue_create_with_target_V2(v8, v9, global_queue);
-    v6->_serviceName = [a3 copy];
-    v11 = xpc_connection_create(v7, v6->_userQueue);
+    v6->_serviceName = [name copy];
+    v11 = xpc_connection_create(name, v6->_userQueue);
     v6->_connection.xpc = v11;
     if (!v11)
     {
@@ -1475,11 +1475,11 @@ void __64__NSXPCConnection__decodeAndInvokeMessageWithEvent_reply_flags___block_
   v7 = [(NSXPCConnection *)self init];
   if (v7)
   {
-    v8 = [+[NSFileManager defaultManager](NSFileManager fileSystemRepresentationWithPath:"fileSystemRepresentationWithPath:", name];
-    if (!v8)
+    name = [+[NSFileManager defaultManager](NSFileManager fileSystemRepresentationWithPath:"fileSystemRepresentationWithPath:", name];
+    if (!name)
     {
 
-      v8 = 0;
+      name = 0;
     }
 
     v9 = [+[NSString stringWithFormat:](NSString UTF8String:@"com.apple.NSXPCConnection.m-user.%@"];
@@ -1487,7 +1487,7 @@ void __64__NSXPCConnection__decodeAndInvokeMessageWithEvent_reply_flags___block_
     global_queue = dispatch_get_global_queue(21, 0);
     v7->_userQueue = dispatch_queue_create_with_target_V2(v9, v10, global_queue);
     v7->_serviceName = [(NSString *)name copy];
-    mach_service = xpc_connection_create_mach_service(v8, v7->_userQueue, (options >> 11) & 2);
+    mach_service = xpc_connection_create_mach_service(name, v7->_userQueue, (options >> 11) & 2);
     v7->_connection.xpc = mach_service;
     if (!mach_service)
     {
@@ -1551,7 +1551,7 @@ void __64__NSXPCConnection__decodeAndInvokeMessageWithEvent_reply_flags___block_
   return v5;
 }
 
-- (id)_initWithCustomTransport:(id)a3
+- (id)_initWithCustomTransport:(id)transport
 {
   v12[5] = *MEMORY[0x1E69E9840];
   v4 = [(NSXPCConnection *)self init];
@@ -1561,9 +1561,9 @@ void __64__NSXPCConnection__decodeAndInvokeMessageWithEvent_reply_flags___block_
     global_queue = dispatch_get_global_queue(21, 0);
     v4->_userQueue = dispatch_queue_create_with_target_V2("com.apple.NSXPCConnection.user.endpoint", v5, global_queue);
     atomic_fetch_or(&v4->_state2, 0x40u);
-    v7 = a3;
-    v4->_transport = v7;
-    [(_NSXPCTransport *)v7 setTargetQueue:v4->_userQueue];
+    transportCopy = transport;
+    v4->_transport = transportCopy;
+    [(_NSXPCTransport *)transportCopy setTargetQueue:v4->_userQueue];
     transport = v4->_transport;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
@@ -1601,17 +1601,17 @@ void __64__NSXPCConnection__decodeAndInvokeMessageWithEvent_reply_flags___block_
   }
 }
 
-- (void)_sendDesistForProxy:(id)a3
+- (void)_sendDesistForProxy:(id)proxy
 {
-  if (a3)
+  if (proxy)
   {
-    v4 = *(a3 + 5);
+    v4 = *(proxy + 5);
     if (v4 == 1)
     {
       return;
     }
 
-    v5 = *(a3 + 6);
+    v5 = *(proxy + 6);
   }
 
   else
@@ -1640,11 +1640,11 @@ void __64__NSXPCConnection__decodeAndInvokeMessageWithEvent_reply_flags___block_
   }
 }
 
-- (void)_sendSelector:(SEL)a3 withProxy:(id)a4
+- (void)_sendSelector:(SEL)selector withProxy:(id)proxy
 {
-  if (a4)
+  if (proxy)
   {
-    Property = objc_getProperty(a4, a2, 16, 1);
+    Property = objc_getProperty(proxy, a2, 16, 1);
   }
 
   else
@@ -1652,18 +1652,18 @@ void __64__NSXPCConnection__decodeAndInvokeMessageWithEvent_reply_flags___block_
     Property = 0;
   }
 
-  v8 = [Property _methodSignatureForRemoteSelector:a3];
+  v8 = [Property _methodSignatureForRemoteSelector:selector];
 
-  [(NSXPCConnection *)self _sendInvocation:0 orArguments:0 count:0 methodSignature:v8 selector:a3 withProxy:a4];
+  [(NSXPCConnection *)self _sendInvocation:0 orArguments:0 count:0 methodSignature:v8 selector:selector withProxy:proxy];
 }
 
-- (void)_sendSelector:(SEL)a3 withProxy:(id)a4 arg1:(id)a5
+- (void)_sendSelector:(SEL)selector withProxy:(id)proxy arg1:(id)arg1
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  if (a4)
+  arg1Copy = arg1;
+  if (proxy)
   {
-    Property = objc_getProperty(a4, a2, 16, 1);
+    Property = objc_getProperty(proxy, a2, 16, 1);
   }
 
   else
@@ -1671,15 +1671,15 @@ void __64__NSXPCConnection__decodeAndInvokeMessageWithEvent_reply_flags___block_
     Property = 0;
   }
 
-  -[NSXPCConnection _sendInvocation:orArguments:count:methodSignature:selector:withProxy:](self, "_sendInvocation:orArguments:count:methodSignature:selector:withProxy:", 0, &v9, 1, [Property _methodSignatureForRemoteSelector:{a3, v9, v10}], a3, a4);
+  -[NSXPCConnection _sendInvocation:orArguments:count:methodSignature:selector:withProxy:](self, "_sendInvocation:orArguments:count:methodSignature:selector:withProxy:", 0, &arg1Copy, 1, [Property _methodSignatureForRemoteSelector:{selector, arg1Copy, v10}], selector, proxy);
 }
 
-- (void)_sendSelector:(SEL)a3 withProxy:(id)a4 arg1:(id)a5 arg2:(id)a6
+- (void)_sendSelector:(SEL)selector withProxy:(id)proxy arg1:(id)arg1 arg2:(id)arg2
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (proxy)
   {
-    Property = objc_getProperty(a4, a2, 16, 1);
+    Property = objc_getProperty(proxy, a2, 16, 1);
   }
 
   else
@@ -1687,17 +1687,17 @@ void __64__NSXPCConnection__decodeAndInvokeMessageWithEvent_reply_flags___block_
     Property = 0;
   }
 
-  v12[0] = a5;
-  v12[1] = a6;
-  -[NSXPCConnection _sendInvocation:orArguments:count:methodSignature:selector:withProxy:](self, "_sendInvocation:orArguments:count:methodSignature:selector:withProxy:", 0, v12, 2, [Property _methodSignatureForRemoteSelector:a3], a3, a4);
+  v12[0] = arg1;
+  v12[1] = arg2;
+  -[NSXPCConnection _sendInvocation:orArguments:count:methodSignature:selector:withProxy:](self, "_sendInvocation:orArguments:count:methodSignature:selector:withProxy:", 0, v12, 2, [Property _methodSignatureForRemoteSelector:selector], selector, proxy);
 }
 
-- (void)_sendSelector:(SEL)a3 withProxy:(id)a4 arg1:(id)a5 arg2:(id)a6 arg3:(id)a7
+- (void)_sendSelector:(SEL)selector withProxy:(id)proxy arg1:(id)arg1 arg2:(id)arg2 arg3:(id)arg3
 {
   v14[3] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (proxy)
   {
-    Property = objc_getProperty(a4, a2, 16, 1);
+    Property = objc_getProperty(proxy, a2, 16, 1);
   }
 
   else
@@ -1705,18 +1705,18 @@ void __64__NSXPCConnection__decodeAndInvokeMessageWithEvent_reply_flags___block_
     Property = 0;
   }
 
-  v14[0] = a5;
-  v14[1] = a6;
-  v14[2] = a7;
-  -[NSXPCConnection _sendInvocation:orArguments:count:methodSignature:selector:withProxy:](self, "_sendInvocation:orArguments:count:methodSignature:selector:withProxy:", 0, v14, 3, [Property _methodSignatureForRemoteSelector:a3], a3, a4);
+  v14[0] = arg1;
+  v14[1] = arg2;
+  v14[2] = arg3;
+  -[NSXPCConnection _sendInvocation:orArguments:count:methodSignature:selector:withProxy:](self, "_sendInvocation:orArguments:count:methodSignature:selector:withProxy:", 0, v14, 3, [Property _methodSignatureForRemoteSelector:selector], selector, proxy);
 }
 
-- (void)_sendSelector:(SEL)a3 withProxy:(id)a4 arg1:(id)a5 arg2:(id)a6 arg3:(id)a7 arg4:(id)a8
+- (void)_sendSelector:(SEL)selector withProxy:(id)proxy arg1:(id)arg1 arg2:(id)arg2 arg3:(id)arg3 arg4:(id)arg4
 {
   v16[4] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (proxy)
   {
-    Property = objc_getProperty(a4, a2, 16, 1);
+    Property = objc_getProperty(proxy, a2, 16, 1);
   }
 
   else
@@ -1724,22 +1724,22 @@ void __64__NSXPCConnection__decodeAndInvokeMessageWithEvent_reply_flags___block_
     Property = 0;
   }
 
-  v16[0] = a5;
-  v16[1] = a6;
-  v16[2] = a7;
-  v16[3] = a8;
-  -[NSXPCConnection _sendInvocation:orArguments:count:methodSignature:selector:withProxy:](self, "_sendInvocation:orArguments:count:methodSignature:selector:withProxy:", 0, v16, 4, [Property _methodSignatureForRemoteSelector:a3], a3, a4);
+  v16[0] = arg1;
+  v16[1] = arg2;
+  v16[2] = arg3;
+  v16[3] = arg4;
+  -[NSXPCConnection _sendInvocation:orArguments:count:methodSignature:selector:withProxy:](self, "_sendInvocation:orArguments:count:methodSignature:selector:withProxy:", 0, v16, 4, [Property _methodSignatureForRemoteSelector:selector], selector, proxy);
 }
 
-- (void)_sendInvocation:(id)a3 orArguments:(id *)a4 count:(unint64_t)a5 methodSignature:(id)a6 selector:(SEL)a7 withProxy:(id)a8
+- (void)_sendInvocation:(id)invocation orArguments:(id *)arguments count:(unint64_t)count methodSignature:(id)signature selector:(SEL)selector withProxy:(id)proxy
 {
   v105[256] = *MEMORY[0x1E69E9840];
-  v15 = [a8 _userInfo];
-  if (a8)
+  _userInfo = [proxy _userInfo];
+  if (proxy)
   {
-    v16 = *(a8 + 8);
-    Property = objc_getProperty(a8, v14, 32, 1);
-    newValue = objc_getProperty(a8, v17, 16, 1);
+    v16 = *(proxy + 8);
+    Property = objc_getProperty(proxy, v14, 32, 1);
+    newValue = objc_getProperty(proxy, v17, 16, 1);
   }
 
   else
@@ -1750,10 +1750,10 @@ void __64__NSXPCConnection__decodeAndInvokeMessageWithEvent_reply_flags___block_
   }
 
   v18 = xpc_dictionary_create(0, 0, 0);
-  v19 = [a6 numberOfArguments];
-  if (!a3 && v19 - 2 != a5)
+  numberOfArguments = [signature numberOfArguments];
+  if (!invocation && numberOfArguments - 2 != count)
   {
-    v67 = [NSString stringWithFormat:@"[NSXPCConnection sendInvocation]: Mismatch of count of expected arguments (%s) %lu vs %lu", sel_getName(a7), v19 - 2, a5];
+    v67 = [NSString stringWithFormat:@"[NSXPCConnection sendInvocation]: Mismatch of count of expected arguments (%s) %lu vs %lu", sel_getName(selector), numberOfArguments - 2, count];
 LABEL_110:
     v68 = v67;
     v69 = MEMORY[0x1E695DF30];
@@ -1761,9 +1761,9 @@ LABEL_110:
     goto LABEL_121;
   }
 
-  if (a8)
+  if (proxy)
   {
-    value = *(a8 + 5);
+    value = *(proxy + 5);
   }
 
   else
@@ -1771,21 +1771,21 @@ LABEL_110:
     value = 0;
   }
 
-  v80 = a5;
+  countCopy = count;
   v81 = a2;
   xdict = v18;
-  v86 = self;
-  if (v19 >= 3)
+  selfCopy = self;
+  if (numberOfArguments >= 3)
   {
     v20 = 0;
     v21 = 0;
     v82 = 0;
     v22 = 0;
-    v23 = v19 - 2;
+    v23 = numberOfArguments - 2;
     v24 = 1;
     while (1)
     {
-      v25 = [a6 _argInfo:v20 + 2];
+      v25 = [signature _argInfo:v20 + 2];
       if (!v25)
       {
         break;
@@ -1805,14 +1805,14 @@ LABEL_110:
 
       if ((v26 & 8) != 0)
       {
-        Name = sel_getName(a7);
+        Name = sel_getName(selector);
         v71 = @"[NSXPCConnection sendInvocation]: Arguments to messages sent to this proxy may not be 'byref'. (%s)";
         goto LABEL_119;
       }
 
       if ((v26 & 2) != 0)
       {
-        Name = sel_getName(a7);
+        Name = sel_getName(selector);
         v71 = @"[NSXPCConnection sendInvocation]: Arguments to messages sent to this proxy may not be 'out'. (%s)";
         goto LABEL_119;
       }
@@ -1824,7 +1824,7 @@ LABEL_110:
         {
           if ((*(v27 + 34) & 0x1000) != 0)
           {
-            Name = sel_getName(a7);
+            Name = sel_getName(selector);
             v71 = @"[NSXPCConnection sendInvocation]: Arguments to messages sent to this proxy may not be of type '**'. (%s)";
             goto LABEL_119;
           }
@@ -1835,22 +1835,22 @@ LABEL_110:
       {
         if (v21)
         {
-          Name = sel_getName(a7);
+          Name = sel_getName(selector);
           v71 = @"[NSXPCConnection sendInvocation]: Only one reply block is allowed per message send. (%s)";
           goto LABEL_119;
         }
 
-        if (a8 && (*(a8 + 56) & 2) != 0)
+        if (proxy && (*(proxy + 56) & 2) != 0)
         {
-          Name = sel_getName(a7);
+          Name = sel_getName(selector);
           v71 = @"[NSXPCConnection sendInvocation]: A reply block was sent over a 'no importance' proxy. (%s)";
           goto LABEL_119;
         }
 
         v105[0] = 0;
-        if (a3)
+        if (invocation)
         {
-          [a3 getArgument:v105 atIndex:v20 + 2];
+          [invocation getArgument:v105 atIndex:v20 + 2];
           v28 = v105[0];
           if (!v105[0])
           {
@@ -1860,12 +1860,12 @@ LABEL_110:
 
         else
         {
-          v28 = a4[v20];
+          v28 = arguments[v20];
           v105[0] = v28;
           if (!v28)
           {
 LABEL_117:
-            Name = sel_getName(a7);
+            Name = sel_getName(selector);
             v71 = @"[NSXPCConnection sendInvocation]: A NULL reply block was passed into a message meant to be sent over a connection. (%s)";
             goto LABEL_119;
           }
@@ -1874,7 +1874,7 @@ LABEL_117:
         v29 = _Block_signature(v28);
         if (!v29)
         {
-          Name = sel_getName(a7);
+          Name = sel_getName(selector);
           v71 = @"[NSXPCConnection sendInvocation]: Block was not compiled using a compiler that inserts type information about arguments. (%s)";
           goto LABEL_119;
         }
@@ -1888,20 +1888,20 @@ LABEL_117:
 
         if (*(v31 + 36) != 118)
         {
-          Name = sel_getName(a7);
+          Name = sel_getName(selector);
           v71 = @"[NSXPCConnection sendInvocation]: Return value of block argument must be 'void'. (%s)";
           goto LABEL_119;
         }
 
-        v32 = [[_NSXPCConnectionExpectedReplyInfo alloc] initWithSelector:a7];
+        v32 = [[_NSXPCConnectionExpectedReplyInfo alloc] initWithSelector:selector];
         v22 = v32;
         if (v32)
         {
           objc_setProperty_atomic(v32, v33, newValue, 40);
           v22[7] = value;
-          if (v15)
+          if (_userInfo)
           {
-            objc_setProperty_atomic(v22, v34, v15, 48);
+            objc_setProperty_atomic(v22, v34, _userInfo, 48);
           }
 
           objc_setProperty_atomic_copy(v22, v34, v105[0], 8);
@@ -1918,7 +1918,7 @@ LABEL_117:
           v82 = dispatch_semaphore_create(0);
         }
 
-        sel_getName(a7);
+        sel_getName(selector);
         v24 |= 0x20uLL;
         xpc_dictionary_set_string(xdict, "replysig", v30);
         v21 = 1;
@@ -1927,24 +1927,24 @@ LABEL_117:
       else if ((v26 & 0x2000) != 0)
       {
         v105[0] = 0;
-        if (a3)
+        if (invocation)
         {
-          [a3 getArgument:v105 atIndex:v20 + 2];
+          [invocation getArgument:v105 atIndex:v20 + 2];
         }
 
         else
         {
-          v105[0] = a4[v20];
+          v105[0] = arguments[v20];
         }
 
-        v37 = [newValue _interfaceForArgument:v20 ofSelector:a7 reply:0];
+        v37 = [newValue _interfaceForArgument:v20 ofSelector:selector reply:0];
         if (v105[0])
         {
           if (objc_opt_isKindOfClass())
           {
             if (!v37)
             {
-              v72 = [NSString stringWithFormat:@"[NSXPCConnection sendInvocation]: A proxy object was passed as an argument to a message (argument %ld) but the interface does not specify a proxy object there. (%s)", v20, sel_getName(a7), v79];
+              v72 = [NSString stringWithFormat:@"[NSXPCConnection sendInvocation]: A proxy object was passed as an argument to a message (argument %ld) but the interface does not specify a proxy object there. (%s)", v20, sel_getName(selector), v79];
               goto LABEL_120;
             }
           }
@@ -1952,17 +1952,17 @@ LABEL_117:
           else if (v105[0] && v37)
           {
             v38 = [_NSXPCDistantObject alloc];
-            v39 = [(_NSXPCDistantObject *)v38 _initWithConnection:v86 exportedObject:v105[0] interface:v37];
+            v39 = [(_NSXPCDistantObject *)v38 _initWithConnection:selfCopy exportedObject:v105[0] interface:v37];
             v104 = v39;
-            if (a3)
+            if (invocation)
             {
-              [a3 setArgument:&v104 atIndex:v20 + 2];
-              [a3 _addAttachedObject:v104];
+              [invocation setArgument:&v104 atIndex:v20 + 2];
+              [invocation _addAttachedObject:v104];
             }
 
             else
             {
-              a4[v20] = v39;
+              arguments[v20] = v39;
             }
           }
         }
@@ -1974,7 +1974,7 @@ LABEL_117:
       }
     }
 
-    v67 = [NSString stringWithFormat:@"[NSXPCConnection sendInvocation]: No argument type for invocation argument (%s)", sel_getName(a7), v78, v79];
+    v67 = [NSString stringWithFormat:@"[NSXPCConnection sendInvocation]: No argument type for invocation argument (%s)", sel_getName(selector), v78, v79];
     goto LABEL_110;
   }
 
@@ -1982,7 +1982,7 @@ LABEL_117:
   v82 = 0;
   v24 = 1;
 LABEL_55:
-  v40 = [a6 _argInfo:-1];
+  v40 = [signature _argInfo:-1];
   v42 = v40;
   if ((*(v40 + 34) & 0x80) != 0)
   {
@@ -1994,7 +1994,7 @@ LABEL_55:
   {
     if (v22)
     {
-      v44 = [newValue _returnClassForSelector:a7];
+      v44 = [newValue _returnClassForSelector:selector];
       if (v44 == NSProgress)
       {
         goto LABEL_60;
@@ -2002,13 +2002,13 @@ LABEL_55:
 
       v73 = v44;
       v74 = *(v42 + 36);
-      v75 = sel_getName(a7);
+      v75 = sel_getName(selector);
       v72 = [NSString stringWithFormat:@"[NSXPCConnection sendInvocation]: Return type (%c) of method %s is an object (%s) but not 'NSProgress'", v74, v75, class_getName(v73)];
     }
 
     else
     {
-      Name = sel_getName(a7);
+      Name = sel_getName(selector);
       v71 = @"[NSXPCConnection sendInvocation]: Return type of methods sent over this proxy must be 'void' or 'NSProgress *' (%s)";
 LABEL_119:
       v72 = [NSString stringWithFormat:v71, Name, v78, v79];
@@ -2025,8 +2025,8 @@ LABEL_121:
 LABEL_60:
   if (value != 1)
   {
-    v45 = a8 ? *(a8 + 6) : 0;
-    if (v45 != v86->_importInfo->_generationCount)
+    v45 = proxy ? *(proxy + 6) : 0;
+    if (v45 != selfCopy->_importInfo->_generationCount)
     {
       if (v22 && objc_getProperty(v22, v41, 16, 1))
       {
@@ -2034,16 +2034,16 @@ LABEL_60:
         block[1] = 3221225472;
         block[2] = __88__NSXPCConnection__sendInvocation_orArguments_count_methodSignature_selector_withProxy___block_invoke;
         block[3] = &unk_1E69F2080;
-        block[4] = v86;
+        block[4] = selfCopy;
         block[5] = v22;
-        if (a8 && (*(a8 + 56) & 4) != 0)
+        if (proxy && (*(proxy + 56) & 4) != 0)
         {
           __88__NSXPCConnection__sendInvocation_orArguments_count_methodSignature_selector_withProxy___block_invoke(block);
         }
 
         else
         {
-          dispatch_async(v86->_userQueue, block);
+          dispatch_async(selfCopy->_userQueue, block);
         }
       }
 
@@ -2055,36 +2055,36 @@ LABEL_60:
 
   v46 = objc_opt_new();
   v47 = [[NSXPCEncoder alloc] initWithStackSpace:v105 size:2048];
-  [(NSXPCEncoder *)v47 _setConnection:v86];
-  [(NSXPCEncoder *)v47 setDelegate:v86];
-  if (v86->_otherInfo)
+  [(NSXPCEncoder *)v47 _setConnection:selfCopy];
+  [(NSXPCEncoder *)v47 setDelegate:selfCopy];
+  if (selfCopy->_otherInfo)
   {
     [(NSXPCCoder *)v47 setUserInfo:?];
   }
 
-  if (a3)
+  if (invocation)
   {
-    [(NSXPCEncoder *)v47 _encodeInvocation:a3 isReply:0 into:xdict];
+    [(NSXPCEncoder *)v47 _encodeInvocation:invocation isReply:0 into:xdict];
   }
 
   else
   {
-    -[NSXPCEncoder _encodeInvocationObjectArgumentsOnly:count:typeString:selector:isReply:into:](v47, "_encodeInvocationObjectArgumentsOnly:count:typeString:selector:isReply:into:", a4, v80, [a6 _cTypeString], a7, 0, xdict);
+    -[NSXPCEncoder _encodeInvocationObjectArgumentsOnly:count:typeString:selector:isReply:into:](v47, "_encodeInvocationObjectArgumentsOnly:count:typeString:selector:isReply:into:", arguments, countCopy, [signature _cTypeString], selector, 0, xdict);
   }
 
   xpc_dictionary_set_uint64(xdict, "proxynum", value);
   if (!v22)
   {
     xpc_dictionary_set_uint64(xdict, "f", v24);
-    if (a8)
+    if (proxy)
     {
-      v52 = *(a8 + 7);
-      v53 = atomic_load(&v86->_state2);
+      v52 = *(proxy + 7);
+      v53 = atomic_load(&selfCopy->_state2);
       if ((v52 & 2) != 0)
       {
         if ((v53 & 0x40) != 0)
         {
-          [(_NSXPCTransport *)v86->_transport sendNotification:xdict, v50, v51];
+          [(_NSXPCTransport *)selfCopy->_transport sendNotification:xdict, v50, v51];
         }
 
         else
@@ -2103,18 +2103,18 @@ LABEL_60:
 
     else
     {
-      v76 = atomic_load(&v86->_state2);
+      v76 = atomic_load(&selfCopy->_state2);
       if ((v76 & 0x40) == 0)
       {
 LABEL_76:
-        xpc_connection_send_message(v86->_connection.xpc, xdict);
+        xpc_connection_send_message(selfCopy->_connection.xpc, xdict);
 LABEL_131:
         xpc_release(xdict);
         goto LABEL_132;
       }
     }
 
-    [(_NSXPCTransport *)v86->_transport sendMessage:xdict, v50, v51];
+    [(_NSXPCTransport *)selfCopy->_transport sendMessage:xdict, v50, v51];
     goto LABEL_131;
   }
 
@@ -2138,12 +2138,12 @@ LABEL_131:
   else
   {
     v105[0] = [NSProgress discreteProgressWithTotalUnitCount:1];
-    [a3 setReturnValue:v105];
+    [invocation setReturnValue:v105];
     v24 |= 0xC0uLL;
     v49 = v105[0];
   }
 
-  v54 = [(_NSXPCConnectionExpectedReplies *)v86->_repliesExpected sequenceForProgress:v49];
+  v54 = [(_NSXPCConnectionExpectedReplies *)selfCopy->_repliesExpected sequenceForProgress:v49];
   xpc_dictionary_set_uint64(xdict, "sequence", v54);
   xpc_dictionary_set_uint64(xdict, "f", v24);
   if (v105[0])
@@ -2153,30 +2153,30 @@ LABEL_131:
     v102[1] = 3221225472;
     v102[2] = __88__NSXPCConnection__sendInvocation_orArguments_count_methodSignature_selector_withProxy___block_invoke_2;
     v102[3] = &unk_1E69F4618;
-    v102[4] = v86;
+    v102[4] = selfCopy;
     v102[5] = v54;
     [v105[0] setCancellationHandler:v102];
     v101[0] = MEMORY[0x1E69E9820];
     v101[1] = 3221225472;
     v101[2] = __88__NSXPCConnection__sendInvocation_orArguments_count_methodSignature_selector_withProxy___block_invoke_3;
     v101[3] = &unk_1E69F4618;
-    v101[4] = v86;
+    v101[4] = selfCopy;
     v101[5] = v54;
     [v105[0] setPausingHandler:v101];
     v100[0] = MEMORY[0x1E69E9820];
     v100[1] = 3221225472;
     v100[2] = __88__NSXPCConnection__sendInvocation_orArguments_count_methodSignature_selector_withProxy___block_invoke_4;
     v100[3] = &unk_1E69F4618;
-    v100[4] = v86;
+    v100[4] = selfCopy;
     v100[5] = v54;
     [v105[0] setResumingHandler:v100];
   }
 
-  v57 = [newValue _hasProxiesInReplyBlockArgumentsOfSelector:{a7, v55, v56}];
+  v57 = [newValue _hasProxiesInReplyBlockArgumentsOfSelector:{selector, v55, v56}];
   v58 = v57;
   if (v57)
   {
-    exportInfo = v86->_exportInfo;
+    exportInfo = selfCopy->_exportInfo;
     if (exportInfo)
     {
       dispatch_group_enter(exportInfo->_replyGroup);
@@ -2187,28 +2187,28 @@ LABEL_131:
   handler[1] = 3221225472;
   v91 = __88__NSXPCConnection__sendInvocation_orArguments_count_methodSignature_selector_withProxy___block_invoke_5;
   v92 = &unk_1E69FA310;
-  v93 = v86;
+  v93 = selfCopy;
   v94 = v22;
   v95 = v105[0];
   v96 = v54;
   v97 = value;
   v98 = v81;
   v99 = v58;
-  if (a8)
+  if (proxy)
   {
-    v60 = *(a8 + 7);
-    v61 = atomic_load(&v86->_state2);
+    v60 = *(proxy + 7);
+    v61 = atomic_load(&selfCopy->_state2);
     if ((v60 & 4) != 0)
     {
       v62 = v82;
       if ((v61 & 0x40) != 0)
       {
-        v63 = [(_NSXPCTransport *)v86->_transport sendMessageWithReplySync:xdict];
+        v63 = [(_NSXPCTransport *)selfCopy->_transport sendMessageWithReplySync:xdict];
       }
 
       else
       {
-        v63 = __NSXPCCONNECTION_IS_WAITING_FOR_A_SYNCHRONOUS_REPLY__(v86->_connection.xpc, xdict);
+        v63 = __NSXPCCONNECTION_IS_WAITING_FOR_A_SYNCHRONOUS_REPLY__(selfCopy->_connection.xpc, xdict);
       }
 
       v64 = v63;
@@ -2220,18 +2220,18 @@ LABEL_131:
 
   else
   {
-    v61 = atomic_load(&v86->_state2);
+    v61 = atomic_load(&selfCopy->_state2);
   }
 
   v62 = v82;
   if ((v61 & 0x40) != 0)
   {
-    [(_NSXPCTransport *)v86->_transport sendMessageWithReply:xdict onQueue:v86->_userQueue replyHandler:handler];
+    [(_NSXPCTransport *)selfCopy->_transport sendMessageWithReply:xdict onQueue:selfCopy->_userQueue replyHandler:handler];
   }
 
   else
   {
-    xpc_connection_send_message_with_reply(v86->_connection.xpc, xdict, v86->_userQueue, handler);
+    xpc_connection_send_message_with_reply(selfCopy->_connection.xpc, xdict, selfCopy->_userQueue, handler);
   }
 
 LABEL_100:
@@ -2243,7 +2243,7 @@ LABEL_104:
     v66 = dispatch_time(0, (v16 * 1000000000.0));
     if (dispatch_semaphore_wait(v62, v66))
     {
-      [(NSXPCConnection *)v86 invalidate];
+      [(NSXPCConnection *)selfCopy invalidate];
       dispatch_semaphore_wait(v62, 0xFFFFFFFFFFFFFFFFLL);
     }
 
@@ -2506,18 +2506,18 @@ LABEL_41:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)set_additionalInvalidationHandler:(id)a3
+- (void)set_additionalInvalidationHandler:(id)handler
 {
   os_unfair_lock_lock(&self->_lock);
-  objc_setAssociatedObject(self, "additionalInvalidationHandler", a3, 0x303);
+  objc_setAssociatedObject(self, "additionalInvalidationHandler", handler, 0x303);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setOptions:(unint64_t)a3
+- (void)setOptions:(unint64_t)options
 {
-  v3 = a3;
-  if ((a3 & 0x100) != 0)
+  optionsCopy = options;
+  if ((options & 0x100) != 0)
   {
     v6 = atomic_load(&self->_state2);
     if ((v6 & 0x40) != 0)
@@ -2528,7 +2528,7 @@ LABEL_41:
     xpc_connection_set_legacy();
   }
 
-  if ((v3 & 0x1000) == 0)
+  if ((optionsCopy & 0x1000) == 0)
   {
     return;
   }
@@ -2546,7 +2546,7 @@ LABEL_9:
   MEMORY[0x1EEE74B08](xpc);
 }
 
-- (void)_setLanguages:(id)a3
+- (void)_setLanguages:(id)languages
 {
   v4 = atomic_load(&self->_state2);
   if ((v4 & 0x40) != 0)
@@ -2558,7 +2558,7 @@ LABEL_9:
   os_unfair_lock_lock(&self->_lock);
   if (self->_bootstrap)
   {
-    if (a3)
+    if (languages)
     {
 LABEL_4:
       _CFBundleSetupXPCBootstrapWithLanguages();
@@ -2569,7 +2569,7 @@ LABEL_4:
   else
   {
     self->_bootstrap = xpc_dictionary_create(0, 0, 0);
-    if (a3)
+    if (languages)
     {
       goto LABEL_4;
     }
@@ -2582,7 +2582,7 @@ LABEL_7:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_setBootstrapObject:(id)a3 forKey:(id)a4
+- (void)_setBootstrapObject:(id)object forKey:(id)key
 {
   os_unfair_lock_lock(&self->_lock);
   bootstrap = self->_bootstrap;
@@ -2592,13 +2592,13 @@ LABEL_7:
     self->_bootstrap = bootstrap;
   }
 
-  xpc_dictionary_set_value(bootstrap, [a4 UTF8String], a3);
+  xpc_dictionary_set_value(bootstrap, [key UTF8String], object);
   xpc_connection_set_bootstrap();
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)valueForEntitlement:(id)a3
+- (id)valueForEntitlement:(id)entitlement
 {
   v10 = *MEMORY[0x1E69E9840];
   v8 = 0u;
@@ -2611,22 +2611,22 @@ LABEL_7:
   importInfo = self->_importInfo;
   v7[0] = v8;
   v7[1] = v9;
-  return [(_NSXPCConnectionImportInfo *)importInfo _valueForEntitlement:a3 auditToken:v7];
+  return [(_NSXPCConnectionImportInfo *)importInfo _valueForEntitlement:entitlement auditToken:v7];
 }
 
-- (void)setUserInfo:(id)a3
+- (void)setUserInfo:(id)info
 {
   otherInfo = self->_otherInfo;
-  if (otherInfo != a3)
+  if (otherInfo != info)
   {
 
-    self->_otherInfo = a3;
+    self->_otherInfo = info;
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  atomic_store(a3, &self->_delegate);
+  atomic_store(delegate, &self->_delegate);
   atomic_load(&self->_delegate);
   v4 = objc_opt_respondsToSelector();
   p_state2 = &self->_state2;
@@ -2641,26 +2641,26 @@ LABEL_7:
   }
 }
 
-- (id)replacementObjectForEncoder:(id)a3 object:(id)a4
+- (id)replacementObjectForEncoder:(id)encoder object:(id)object
 {
   if (!atomic_load(&self->_delegate))
   {
-    return a4;
+    return object;
   }
 
   v5 = atomic_load(&self->_state2);
   if ((v5 & 2) == 0)
   {
-    return a4;
+    return object;
   }
 
   v7 = atomic_load(&self->_delegate);
   return [v7 replacementObjectForXPCConnection:? encoder:? object:?];
 }
 
-- (void)_setQueue:(id)a3
+- (void)_setQueue:(id)queue
 {
-  if (!a3)
+  if (!queue)
   {
     v9 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: The queue parameter is NULL, which is invalid", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v9);
@@ -2669,7 +2669,7 @@ LABEL_7:
   userQueue = self->_userQueue;
   if (userQueue)
   {
-    v6 = userQueue == a3;
+    v6 = userQueue == queue;
   }
 
   else
@@ -2679,18 +2679,18 @@ LABEL_7:
 
   if (!v6)
   {
-    dispatch_retain(a3);
+    dispatch_retain(queue);
     v7 = self->_userQueue;
-    self->_userQueue = a3;
+    self->_userQueue = queue;
     v8 = atomic_load(&self->_state2);
     if ((v8 & 0x40) != 0)
     {
-      [(_NSXPCTransport *)self->_transport setTargetQueue:a3];
+      [(_NSXPCTransport *)self->_transport setTargetQueue:queue];
     }
 
     else
     {
-      xpc_connection_set_target_queue(self->_connection.xpc, a3);
+      xpc_connection_set_target_queue(self->_connection.xpc, queue);
     }
 
     dispatch_release(v7);
@@ -2704,10 +2704,10 @@ LABEL_7:
   return v3;
 }
 
-- (id)remoteObjectProxyWithUserInfo:(id)a3 errorHandler:(id)a4
+- (id)remoteObjectProxyWithUserInfo:(id)info errorHandler:(id)handler
 {
   v5 = [objc_alloc(-[NSXPCConnection _remoteObjectInterfaceClass](self "_remoteObjectInterfaceClass"))];
-  [v5 set_userInfo:a3];
+  [v5 set_userInfo:info];
   return v5;
 }
 
@@ -2718,12 +2718,12 @@ LABEL_7:
   return v3;
 }
 
-- (id)remoteObjectProxyWithTimeout:(double)a3 errorHandler:(id)a4
+- (id)remoteObjectProxyWithTimeout:(double)timeout errorHandler:(id)handler
 {
   result = [objc_alloc(-[NSXPCConnection _remoteObjectInterfaceClass](self "_remoteObjectInterfaceClass"))];
   if (result)
   {
-    *(result + 8) = a3;
+    *(result + 8) = timeout;
   }
 
   return result;
@@ -2748,7 +2748,7 @@ LABEL_7:
   return result;
 }
 
-- (void)_setUUID:(id)a3
+- (void)_setUUID:(id)d
 {
   v5[2] = *MEMORY[0x1E69E9840];
   v3 = atomic_load(&self->_state2);
@@ -2760,11 +2760,11 @@ LABEL_7:
 
   v5[0] = 0;
   v5[1] = 0;
-  [a3 getUUIDBytes:v5];
+  [d getUUIDBytes:v5];
   xpc_connection_set_instance();
 }
 
-- (void)_setTargetUserIdentifier:(unsigned int)a3
+- (void)_setTargetUserIdentifier:(unsigned int)identifier
 {
   v4 = atomic_load(&self->_state2);
   if ((v4 & 0x40) != 0)
@@ -2775,10 +2775,10 @@ LABEL_7:
 
   xpc = self->_connection.xpc;
 
-  MEMORY[0x1EEE74B20](xpc, *&a3);
+  MEMORY[0x1EEE74B20](xpc, *&identifier);
 }
 
-- (void)_killConnection:(int)a3
+- (void)_killConnection:(int)connection
 {
   v4 = atomic_load(&self->_state2);
   if ((v4 & 0x40) != 0)
@@ -2789,16 +2789,16 @@ LABEL_7:
 
   xpc = self->_connection.xpc;
 
-  MEMORY[0x1EEE74A88](xpc, *&a3);
+  MEMORY[0x1EEE74A88](xpc, *&connection);
 }
 
-- (uint64_t)_sendProgressMessage:(uint64_t)a3 forSequence:
+- (uint64_t)_sendProgressMessage:(uint64_t)message forSequence:
 {
   if (result)
   {
     v5 = result;
     xpc_dictionary_set_uint64(xdict, "f", 0x15uLL);
-    xpc_dictionary_set_uint64(xdict, "sequence", a3);
+    xpc_dictionary_set_uint64(xdict, "sequence", message);
     v6 = atomic_load((v5 + 36));
     if ((v6 & 0x40) != 0)
     {
@@ -2817,11 +2817,11 @@ LABEL_7:
   return result;
 }
 
-- (void)_cancelProgress:(unint64_t)a3
+- (void)_cancelProgress:(unint64_t)progress
 {
   v5 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_uint64(v5, "f", 0x10015uLL);
-  xpc_dictionary_set_uint64(v5, "sequence", a3);
+  xpc_dictionary_set_uint64(v5, "sequence", progress);
   v6 = atomic_load(&self->_state2);
   if ((v6 & 0x40) != 0)
   {
@@ -2836,11 +2836,11 @@ LABEL_7:
   xpc_release(v5);
 }
 
-- (void)_pauseProgress:(unint64_t)a3
+- (void)_pauseProgress:(unint64_t)progress
 {
   v5 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_uint64(v5, "f", 0x20015uLL);
-  xpc_dictionary_set_uint64(v5, "sequence", a3);
+  xpc_dictionary_set_uint64(v5, "sequence", progress);
   v6 = atomic_load(&self->_state2);
   if ((v6 & 0x40) != 0)
   {
@@ -2855,11 +2855,11 @@ LABEL_7:
   xpc_release(v5);
 }
 
-- (void)_resumeProgress:(unint64_t)a3
+- (void)_resumeProgress:(unint64_t)progress
 {
   v5 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_uint64(v5, "f", 0x40015uLL);
-  xpc_dictionary_set_uint64(v5, "sequence", a3);
+  xpc_dictionary_set_uint64(v5, "sequence", progress);
   v6 = atomic_load(&self->_state2);
   if ((v6 & 0x40) != 0)
   {
@@ -2874,25 +2874,25 @@ LABEL_7:
   xpc_release(v5);
 }
 
-- (void)_decodeProgressMessageWithData:(id)a3 flags:(unint64_t)a4
+- (void)_decodeProgressMessageWithData:(id)data flags:(unint64_t)flags
 {
-  v4 = a4;
-  uint64 = xpc_dictionary_get_uint64(a3, "sequence");
-  if ((v4 & 0x10000) != 0)
+  flagsCopy = flags;
+  uint64 = xpc_dictionary_get_uint64(data, "sequence");
+  if ((flagsCopy & 0x10000) != 0)
   {
     v9 = [(_NSXPCConnectionRequestedReplies *)self->_repliesRequested progressForSequence:?];
 
     [v9 cancel];
   }
 
-  else if ((v4 & 0x20000) != 0)
+  else if ((flagsCopy & 0x20000) != 0)
   {
     v10 = [(_NSXPCConnectionRequestedReplies *)self->_repliesRequested progressForSequence:?];
 
     [v10 pause];
   }
 
-  else if ((v4 & 0x40000) != 0)
+  else if ((flagsCopy & 0x40000) != 0)
   {
     v11 = [(_NSXPCConnectionRequestedReplies *)self->_repliesRequested progressForSequence:?];
 
@@ -2903,7 +2903,7 @@ LABEL_7:
   {
     v8 = [(_NSXPCConnectionExpectedReplies *)self->_repliesExpected progressForSequence:?];
 
-    [NSProgress _receiveProgressMessage:v8 forSequence:a3];
+    [NSProgress _receiveProgressMessage:v8 forSequence:data];
   }
 }
 

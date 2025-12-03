@@ -4,14 +4,14 @@
 - (SFTabSnapshotRegistration)init;
 - (SFTabSnapshotVisibility)visibility;
 - (id)contentObserver;
-- (void)setVisibility:(id)a3;
+- (void)setVisibility:(id)visibility;
 @end
 
 @implementation SFTabSnapshotRegistration
 
 - (SFTabSnapshotContent)content
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18BC0EA08();
 
   return v3;
@@ -62,11 +62,11 @@
   return v7;
 }
 
-- (void)setVisibility:(id)a3
+- (void)setVisibility:(id)visibility
 {
-  v4 = a3;
-  v5 = self;
-  sub_18BC0EF84(v4);
+  visibilityCopy = visibility;
+  selfCopy = self;
+  sub_18BC0EF84(visibilityCopy);
 }
 
 - (SFTabSnapshotRegistration)init

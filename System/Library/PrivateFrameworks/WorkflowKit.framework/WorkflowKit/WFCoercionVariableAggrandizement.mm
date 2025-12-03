@@ -1,23 +1,23 @@
 @interface WFCoercionVariableAggrandizement
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (Class)coercionItemClass;
-- (WFCoercionVariableAggrandizement)initWithCoercionItemClass:(Class)a3;
-- (WFCoercionVariableAggrandizement)initWithDictionary:(id)a3;
+- (WFCoercionVariableAggrandizement)initWithCoercionItemClass:(Class)class;
+- (WFCoercionVariableAggrandizement)initWithDictionary:(id)dictionary;
 - (id)coercionItemClasses;
-- (void)applyToContentCollection:(id)a3 completionHandler:(id)a4;
+- (void)applyToContentCollection:(id)collection completionHandler:(id)handler;
 @end
 
 @implementation WFCoercionVariableAggrandizement
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4)
+  equalCopy = equal;
+  if (equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -32,38 +32,38 @@
   }
 
   v6 = v5;
-  v7 = [v6 coercionItemClass];
+  coercionItemClass = [v6 coercionItemClass];
 
-  v8 = v7 == [(WFCoercionVariableAggrandizement *)self coercionItemClass];
+  v8 = coercionItemClass == [(WFCoercionVariableAggrandizement *)self coercionItemClass];
   return v8;
 }
 
-- (void)applyToContentCollection:(id)a3 completionHandler:(id)a4
+- (void)applyToContentCollection:(id)collection completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WFCoercionVariableAggrandizement *)self coercionItemClasses];
-  v9 = [v8 array];
+  handlerCopy = handler;
+  collectionCopy = collection;
+  coercionItemClasses = [(WFCoercionVariableAggrandizement *)self coercionItemClasses];
+  array = [coercionItemClasses array];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __79__WFCoercionVariableAggrandizement_applyToContentCollection_completionHandler___block_invoke;
   v11[3] = &unk_1E837DBF8;
-  v12 = v6;
-  v10 = v6;
-  [v7 generateCollectionByCoercingToItemClasses:v9 completionHandler:v11];
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  [collectionCopy generateCollectionByCoercingToItemClasses:array completionHandler:v11];
 }
 
 - (id)coercionItemClasses
 {
-  v2 = [(WFCoercionVariableAggrandizement *)self coercionItemClass];
-  if ([(objc_class *)v2 isSubclassOfClass:objc_opt_class()])
+  coercionItemClass = [(WFCoercionVariableAggrandizement *)self coercionItemClass];
+  if ([(objc_class *)coercionItemClass isSubclassOfClass:objc_opt_class()])
   {
-    [MEMORY[0x1E695DFB8] orderedSetWithObjects:{objc_opt_class(), v2, 0}];
+    [MEMORY[0x1E695DFB8] orderedSetWithObjects:{objc_opt_class(), coercionItemClass, 0}];
   }
 
   else
   {
-    [MEMORY[0x1E695DFB8] orderedSetWithObject:v2];
+    [MEMORY[0x1E695DFB8] orderedSetWithObject:coercionItemClass];
   }
   v3 = ;
 
@@ -72,18 +72,18 @@
 
 - (Class)coercionItemClass
 {
-  v2 = [(WFVariableAggrandizement *)self dictionary];
-  v3 = [v2 objectForKey:@"CoercionItemClass"];
+  dictionary = [(WFVariableAggrandizement *)self dictionary];
+  v3 = [dictionary objectForKey:@"CoercionItemClass"];
   v4 = NSClassFromString(v3);
 
   return v4;
 }
 
-- (WFCoercionVariableAggrandizement)initWithDictionary:(id)a3
+- (WFCoercionVariableAggrandizement)initWithDictionary:(id)dictionary
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKey:@"CoercionItemClass"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"CoercionItemClass"];
   v6 = objc_opt_class();
   v7 = v5;
   if (v7 && (objc_opt_isKindOfClass() & 1) == 0)
@@ -115,24 +115,24 @@
   {
     v14.receiver = self;
     v14.super_class = WFCoercionVariableAggrandizement;
-    self = [(WFVariableAggrandizement *)&v14 initWithDictionary:v4];
-    v11 = self;
+    self = [(WFVariableAggrandizement *)&v14 initWithDictionary:dictionaryCopy];
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
   v12 = *MEMORY[0x1E69E9840];
-  return v11;
+  return selfCopy;
 }
 
-- (WFCoercionVariableAggrandizement)initWithCoercionItemClass:(Class)a3
+- (WFCoercionVariableAggrandizement)initWithCoercionItemClass:(Class)class
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v9 = @"CoercionItemClass";
-  v4 = NSStringFromClass(a3);
+  v4 = NSStringFromClass(class);
   v10[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
 

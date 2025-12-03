@@ -1,19 +1,19 @@
 @interface SUUIDeveloperInfoViewController
-- (SUUIDeveloperInfoViewController)initWithDeveloperInfo:(id)a3;
+- (SUUIDeveloperInfoViewController)initWithDeveloperInfo:(id)info;
 - (void)loadView;
 @end
 
 @implementation SUUIDeveloperInfoViewController
 
-- (SUUIDeveloperInfoViewController)initWithDeveloperInfo:(id)a3
+- (SUUIDeveloperInfoViewController)initWithDeveloperInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v9.receiver = self;
   v9.super_class = SUUIDeveloperInfoViewController;
   v5 = [(SUUIDeveloperInfoViewController *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [infoCopy copy];
     developerInfo = v5->_developerInfo;
     v5->_developerInfo = v6;
   }
@@ -23,8 +23,8 @@
 
 - (void)loadView
 {
-  v24 = [(SUUIViewController *)self clientContext];
-  v3 = SUUIUserInterfaceIdiom(v24);
+  clientContext = [(SUUIViewController *)self clientContext];
+  v3 = SUUIUserInterfaceIdiom(clientContext);
   v4 = v3;
   if (self->_infoView)
   {
@@ -38,8 +38,8 @@
     if (v3 != 1)
     {
 LABEL_9:
-      v11 = [MEMORY[0x277D759A0] mainScreen];
-      [v11 bounds];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen bounds];
       v10 = v12;
 
       goto LABEL_10;
@@ -48,7 +48,7 @@ LABEL_9:
 
   else
   {
-    v7 = [[SUUIDeveloperInfoView alloc] initWithDeveloperInfo:self->_developerInfo clientContext:v24];
+    v7 = [[SUUIDeveloperInfoView alloc] initWithDeveloperInfo:self->_developerInfo clientContext:clientContext];
     infoView = self->_infoView;
     self->_infoView = v7;
 
@@ -96,8 +96,8 @@ LABEL_10:
   }
 
   v21 = self->_infoView;
-  v22 = [*p_scrollView backgroundColor];
-  [(SUUIDeveloperInfoView *)v21 setBackgroundColor:v22];
+  backgroundColor = [*p_scrollView backgroundColor];
+  [(SUUIDeveloperInfoView *)v21 setBackgroundColor:backgroundColor];
 
   v23 = self->_infoView;
   [*p_scrollView bounds];

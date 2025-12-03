@@ -1,5 +1,5 @@
 @interface MIBUChallengeResponse
-- (BOOL)_deserialize:(id)a3;
+- (BOOL)_deserialize:(id)_deserialize;
 - (MIBUChallengeResponse)init;
 - (id)serialize;
 - (void)serialize;
@@ -26,39 +26,39 @@
 {
   v15[2] = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [(MIBUChallengeResponse *)self signatureBlob];
-  v5 = v4;
-  if (!v4)
+  signatureBlob = [(MIBUChallengeResponse *)self signatureBlob];
+  v5 = signatureBlob;
+  if (!signatureBlob)
   {
     v5 = objc_opt_new();
   }
 
   v15[0] = v5;
-  v6 = [(MIBUChallengeResponse *)self certChainBlob];
-  v7 = v6;
-  if (!v6)
+  certChainBlob = [(MIBUChallengeResponse *)self certChainBlob];
+  v7 = certChainBlob;
+  if (!certChainBlob)
   {
     v7 = objc_opt_new();
   }
 
   v15[1] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
-  if (!v6)
+  if (!certChainBlob)
   {
   }
 
-  if (!v4)
+  if (!signatureBlob)
   {
   }
 
   if ([v3 serialize:&unk_286AC86A0 withValue:v8])
   {
-    v9 = [(MIBUNFCResponse *)self error];
-    v10 = [v3 serializeResponseError:v9];
+    error = [(MIBUNFCResponse *)self error];
+    v10 = [v3 serializeResponseError:error];
 
     if (v10)
     {
-      v11 = [v3 serializedData];
+      serializedData = [v3 serializedData];
       goto LABEL_12;
     }
 
@@ -70,12 +70,12 @@
     [(MIBUChallengeResponse *)&v14 serialize];
   }
 
-  v11 = v14;
+  serializedData = v14;
 LABEL_12:
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return serializedData;
 }
 
 void __34__MIBUChallengeResponse_serialize__block_invoke()
@@ -174,13 +174,13 @@ void __38__MIBUChallengeResponse__deserialize___block_invoke_20()
   }
 }
 
-- (BOOL)_deserialize:(id)a3
+- (BOOL)_deserialize:(id)_deserialize
 {
-  v4 = a3;
-  v5 = [[MIBUDeserializer alloc] initWithData:v4];
+  _deserializeCopy = _deserialize;
+  v5 = [[MIBUDeserializer alloc] initWithData:_deserializeCopy];
 
-  v6 = [(MIBUDeserializer *)v5 deserialize];
-  if (!v6)
+  deserialize = [(MIBUDeserializer *)v5 deserialize];
+  if (!deserialize)
   {
     if (MIBUOnceToken != -1)
     {
@@ -228,7 +228,7 @@ void __38__MIBUChallengeResponse__deserialize___block_invoke_20()
     goto LABEL_7;
   }
 
-  v10 = [v6 objectForKey:&unk_286AC8370];
+  v10 = [deserialize objectForKey:&unk_286AC8370];
   if (!v10)
   {
     if (MIBUOnceToken != -1)
@@ -258,7 +258,7 @@ LABEL_29:
 
   v11 = v10;
   [(MIBUChallengeResponse *)self setSignatureBlob:v10];
-  v12 = [v6 objectForKey:&unk_286AC8388];
+  v12 = [deserialize objectForKey:&unk_286AC8388];
   if (!v12)
   {
     if (MIBUOnceToken != -1)
@@ -300,9 +300,9 @@ LABEL_8:
   if (os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_ERROR))
   {
     v6 = v4;
-    v7 = [a1 error];
+    error = [self error];
     v8 = 138543362;
-    v9 = v7;
+    v9 = error;
     _os_log_error_impl(&dword_259ABF000, v6, OS_LOG_TYPE_ERROR, "Failed to serialize response error: %{public}@", &v8, 0xCu);
   }
 

@@ -1,36 +1,36 @@
 @interface MIPAlbum
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addLibraryIdentifiers:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCompilation:(BOOL)a3;
-- (void)setHasLikedState:(BOOL)a3;
-- (void)setHasNumDiscs:(BOOL)a3;
-- (void)setHasNumTracks:(BOOL)a3;
-- (void)setHasPersistentId:(BOOL)a3;
-- (void)setHasStoreId:(BOOL)a3;
-- (void)setHasUserRating:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addLibraryIdentifiers:(id)identifiers;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCompilation:(BOOL)compilation;
+- (void)setHasLikedState:(BOOL)state;
+- (void)setHasNumDiscs:(BOOL)discs;
+- (void)setHasNumTracks:(BOOL)tracks;
+- (void)setHasPersistentId:(BOOL)id;
+- (void)setHasStoreId:(BOOL)id;
+- (void)setHasUserRating:(BOOL)rating;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MIPAlbum
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if ((v4[13] & 4) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((fromCopy[13] & 4) != 0)
   {
-    self->_storeId = v4[3];
+    self->_storeId = fromCopy[3];
     *&self->_has |= 4u;
   }
 
-  if (v4[9])
+  if (fromCopy[9])
   {
     [(MIPAlbum *)self setName:?];
   }
@@ -254,35 +254,35 @@ LABEL_18:
   return v15 ^ v16 ^ v14 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ [(NSMutableArray *)self->_libraryIdentifiers hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_59;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 104) & 4) == 0 || self->_storeId != *(v4 + 3))
+    if ((*(equalCopy + 104) & 4) == 0 || self->_storeId != *(equalCopy + 3))
     {
       goto LABEL_59;
     }
   }
 
-  else if ((*(v4 + 104) & 4) != 0)
+  else if ((*(equalCopy + 104) & 4) != 0)
   {
     goto LABEL_59;
   }
 
   name = self->_name;
-  if (name | *(v4 + 9) && ![(NSString *)name isEqual:?])
+  if (name | *(equalCopy + 9) && ![(NSString *)name isEqual:?])
   {
     goto LABEL_59;
   }
 
   sortName = self->_sortName;
-  if (sortName | *(v4 + 11))
+  if (sortName | *(equalCopy + 11))
   {
     if (![(NSString *)sortName isEqual:?])
     {
@@ -291,7 +291,7 @@ LABEL_18:
   }
 
   artist = self->_artist;
-  if (artist | *(v4 + 4))
+  if (artist | *(equalCopy + 4))
   {
     if (![(MIPArtist *)artist isEqual:?])
     {
@@ -300,35 +300,35 @@ LABEL_18:
   }
 
   has = self->_has;
-  v9 = *(v4 + 104);
+  v9 = *(equalCopy + 104);
   if ((has & 0x20) != 0)
   {
-    if ((*(v4 + 104) & 0x20) == 0 || self->_numTracks != *(v4 + 21))
+    if ((*(equalCopy + 104) & 0x20) == 0 || self->_numTracks != *(equalCopy + 21))
     {
       goto LABEL_59;
     }
   }
 
-  else if ((*(v4 + 104) & 0x20) != 0)
+  else if ((*(equalCopy + 104) & 0x20) != 0)
   {
     goto LABEL_59;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 104) & 0x10) == 0 || self->_numDiscs != *(v4 + 20))
+    if ((*(equalCopy + 104) & 0x10) == 0 || self->_numDiscs != *(equalCopy + 20))
     {
       goto LABEL_59;
     }
   }
 
-  else if ((*(v4 + 104) & 0x10) != 0)
+  else if ((*(equalCopy + 104) & 0x10) != 0)
   {
     goto LABEL_59;
   }
 
   artworkId = self->_artworkId;
-  if (artworkId | *(v4 + 5))
+  if (artworkId | *(equalCopy + 5))
   {
     if (![(NSString *)artworkId isEqual:?])
     {
@@ -336,12 +336,12 @@ LABEL_18:
     }
 
     has = self->_has;
-    v9 = *(v4 + 104);
+    v9 = *(equalCopy + 104);
   }
 
   if ((has & 0x40) != 0)
   {
-    if ((v9 & 0x40) == 0 || self->_userRating != *(v4 + 24))
+    if ((v9 & 0x40) == 0 || self->_userRating != *(equalCopy + 24))
     {
       goto LABEL_59;
     }
@@ -361,13 +361,13 @@ LABEL_18:
 
     if (self->_compilation)
     {
-      if ((*(v4 + 100) & 1) == 0)
+      if ((*(equalCopy + 100) & 1) == 0)
       {
         goto LABEL_59;
       }
     }
 
-    else if (*(v4 + 100))
+    else if (*(equalCopy + 100))
     {
       goto LABEL_59;
     }
@@ -380,7 +380,7 @@ LABEL_18:
 
   if ((has & 2) != 0)
   {
-    if ((v9 & 2) == 0 || self->_persistentId != *(v4 + 2))
+    if ((v9 & 2) == 0 || self->_persistentId != *(equalCopy + 2))
     {
       goto LABEL_59;
     }
@@ -392,12 +392,12 @@ LABEL_18:
   }
 
   cloudId = self->_cloudId;
-  if (cloudId | *(v4 + 6))
+  if (cloudId | *(equalCopy + 6))
   {
     if ([(NSString *)cloudId isEqual:?])
     {
       has = self->_has;
-      v9 = *(v4 + 104);
+      v9 = *(equalCopy + 104);
       goto LABEL_45;
     }
 
@@ -409,7 +409,7 @@ LABEL_59:
 LABEL_45:
   if ((has & 8) != 0)
   {
-    if ((v9 & 8) == 0 || self->_likedState != *(v4 + 16))
+    if ((v9 & 8) == 0 || self->_likedState != *(equalCopy + 16))
     {
       goto LABEL_59;
     }
@@ -422,7 +422,7 @@ LABEL_45:
 
   if (has)
   {
-    if ((v9 & 1) == 0 || self->_likedStateChangedDate != *(v4 + 1))
+    if ((v9 & 1) == 0 || self->_likedStateChangedDate != *(equalCopy + 1))
     {
       goto LABEL_59;
     }
@@ -434,7 +434,7 @@ LABEL_45:
   }
 
   libraryIdentifiers = self->_libraryIdentifiers;
-  if (libraryIdentifiers | *(v4 + 7))
+  if (libraryIdentifiers | *(equalCopy + 7))
   {
     v13 = [(NSMutableArray *)libraryIdentifiers isEqual:?];
   }
@@ -449,10 +449,10 @@ LABEL_60:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 4) != 0)
   {
@@ -460,15 +460,15 @@ LABEL_60:
     *(v5 + 104) |= 4u;
   }
 
-  v7 = [(NSString *)self->_name copyWithZone:a3];
+  v7 = [(NSString *)self->_name copyWithZone:zone];
   v8 = *(v6 + 72);
   *(v6 + 72) = v7;
 
-  v9 = [(NSString *)self->_sortName copyWithZone:a3];
+  v9 = [(NSString *)self->_sortName copyWithZone:zone];
   v10 = *(v6 + 88);
   *(v6 + 88) = v9;
 
-  v11 = [(MIPArtist *)self->_artist copyWithZone:a3];
+  v11 = [(MIPArtist *)self->_artist copyWithZone:zone];
   v12 = *(v6 + 32);
   *(v6 + 32) = v11;
 
@@ -486,7 +486,7 @@ LABEL_60:
     *(v6 + 104) |= 0x10u;
   }
 
-  v14 = [(NSString *)self->_artworkId copyWithZone:a3];
+  v14 = [(NSString *)self->_artworkId copyWithZone:zone];
   v15 = *(v6 + 40);
   *(v6 + 40) = v14;
 
@@ -523,7 +523,7 @@ LABEL_10:
   }
 
 LABEL_11:
-  v17 = [(NSString *)self->_cloudId copyWithZone:a3];
+  v17 = [(NSString *)self->_cloudId copyWithZone:zone];
   v18 = *(v6 + 48);
   *(v6 + 48) = v17;
 
@@ -560,7 +560,7 @@ LABEL_11:
           objc_enumerationMutation(v20);
         }
 
-        v25 = [*(*(&v27 + 1) + 8 * i) copyWithZone:{a3, v27}];
+        v25 = [*(*(&v27 + 1) + 8 * i) copyWithZone:{zone, v27}];
         [v6 addLibraryIdentifiers:v25];
       }
 
@@ -573,59 +573,59 @@ LABEL_11:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
-    v4[3] = self->_storeId;
-    *(v4 + 104) |= 4u;
+    toCopy[3] = self->_storeId;
+    *(toCopy + 104) |= 4u;
   }
 
-  v12 = v4;
+  v12 = toCopy;
   if (self->_name)
   {
-    [v4 setName:?];
-    v4 = v12;
+    [toCopy setName:?];
+    toCopy = v12;
   }
 
   if (self->_sortName)
   {
     [v12 setSortName:?];
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_artist)
   {
     [v12 setArtist:?];
-    v4 = v12;
+    toCopy = v12;
   }
 
   has = self->_has;
   if ((has & 0x20) != 0)
   {
-    *(v4 + 21) = self->_numTracks;
-    *(v4 + 104) |= 0x20u;
+    *(toCopy + 21) = self->_numTracks;
+    *(toCopy + 104) |= 0x20u;
     has = self->_has;
   }
 
   if ((has & 0x10) != 0)
   {
-    *(v4 + 20) = self->_numDiscs;
-    *(v4 + 104) |= 0x10u;
+    *(toCopy + 20) = self->_numDiscs;
+    *(toCopy + 104) |= 0x10u;
   }
 
   if (self->_artworkId)
   {
     [v12 setArtworkId:?];
-    v4 = v12;
+    toCopy = v12;
   }
 
   v6 = self->_has;
   if ((v6 & 0x40) != 0)
   {
-    *(v4 + 24) = self->_userRating;
-    *(v4 + 104) |= 0x40u;
+    *(toCopy + 24) = self->_userRating;
+    *(toCopy + 104) |= 0x40u;
     v6 = self->_has;
     if ((v6 & 0x80) == 0)
     {
@@ -644,43 +644,43 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  *(v4 + 100) = self->_compilation;
-  *(v4 + 104) |= 0x80u;
+  *(toCopy + 100) = self->_compilation;
+  *(toCopy + 104) |= 0x80u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_18:
-    v4[2] = self->_persistentId;
-    *(v4 + 104) |= 2u;
+    toCopy[2] = self->_persistentId;
+    *(toCopy + 104) |= 2u;
   }
 
 LABEL_19:
   if (self->_cloudId)
   {
     [v12 setCloudId:?];
-    v4 = v12;
+    toCopy = v12;
   }
 
   v7 = self->_has;
   if ((v7 & 8) != 0)
   {
-    *(v4 + 16) = self->_likedState;
-    *(v4 + 104) |= 8u;
+    *(toCopy + 16) = self->_likedState;
+    *(toCopy + 104) |= 8u;
     v7 = self->_has;
   }
 
   if (v7)
   {
-    v4[1] = self->_likedStateChangedDate;
-    *(v4 + 104) |= 1u;
+    toCopy[1] = self->_likedStateChangedDate;
+    *(toCopy + 104) |= 1u;
   }
 
   if ([(MIPAlbum *)self libraryIdentifiersCount])
   {
     [v12 clearLibraryIdentifiers];
-    v8 = [(MIPAlbum *)self libraryIdentifiersCount];
-    if (v8)
+    libraryIdentifiersCount = [(MIPAlbum *)self libraryIdentifiersCount];
+    if (libraryIdentifiersCount)
     {
-      v9 = v8;
+      v9 = libraryIdentifiersCount;
       for (i = 0; i != v9; ++i)
       {
         v11 = [(MIPAlbum *)self libraryIdentifiersAtIndex:i];
@@ -690,10 +690,10 @@ LABEL_19:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
     PBDataWriterWriteInt64Field();
@@ -810,37 +810,37 @@ LABEL_19:
 - (id)dictionaryRepresentation
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 4) != 0)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_storeId];
-    [v3 setObject:v4 forKey:@"storeId"];
+    [dictionary setObject:v4 forKey:@"storeId"];
   }
 
   name = self->_name;
   if (name)
   {
-    [v3 setObject:name forKey:@"name"];
+    [dictionary setObject:name forKey:@"name"];
   }
 
   sortName = self->_sortName;
   if (sortName)
   {
-    [v3 setObject:sortName forKey:@"sortName"];
+    [dictionary setObject:sortName forKey:@"sortName"];
   }
 
   artist = self->_artist;
   if (artist)
   {
-    v8 = [(MIPArtist *)artist dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"artist"];
+    dictionaryRepresentation = [(MIPArtist *)artist dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"artist"];
   }
 
   has = self->_has;
   if ((has & 0x20) != 0)
   {
     v10 = [MEMORY[0x277CCABB0] numberWithInt:self->_numTracks];
-    [v3 setObject:v10 forKey:@"numTracks"];
+    [dictionary setObject:v10 forKey:@"numTracks"];
 
     has = self->_has;
   }
@@ -848,20 +848,20 @@ LABEL_19:
   if ((has & 0x10) != 0)
   {
     v11 = [MEMORY[0x277CCABB0] numberWithInt:self->_numDiscs];
-    [v3 setObject:v11 forKey:@"numDiscs"];
+    [dictionary setObject:v11 forKey:@"numDiscs"];
   }
 
   artworkId = self->_artworkId;
   if (artworkId)
   {
-    [v3 setObject:artworkId forKey:@"artworkId"];
+    [dictionary setObject:artworkId forKey:@"artworkId"];
   }
 
   v13 = self->_has;
   if ((v13 & 0x40) != 0)
   {
     v27 = [MEMORY[0x277CCABB0] numberWithInt:self->_userRating];
-    [v3 setObject:v27 forKey:@"userRating"];
+    [dictionary setObject:v27 forKey:@"userRating"];
 
     v13 = self->_has;
     if ((v13 & 0x80) == 0)
@@ -882,27 +882,27 @@ LABEL_17:
   }
 
   v28 = [MEMORY[0x277CCABB0] numberWithBool:self->_compilation];
-  [v3 setObject:v28 forKey:@"compilation"];
+  [dictionary setObject:v28 forKey:@"compilation"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_18:
     v14 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_persistentId];
-    [v3 setObject:v14 forKey:@"persistentId"];
+    [dictionary setObject:v14 forKey:@"persistentId"];
   }
 
 LABEL_19:
   cloudId = self->_cloudId;
   if (cloudId)
   {
-    [v3 setObject:cloudId forKey:@"cloudId"];
+    [dictionary setObject:cloudId forKey:@"cloudId"];
   }
 
   v16 = self->_has;
   if ((v16 & 8) != 0)
   {
     v17 = [MEMORY[0x277CCABB0] numberWithInt:self->_likedState];
-    [v3 setObject:v17 forKey:@"likedState"];
+    [dictionary setObject:v17 forKey:@"likedState"];
 
     v16 = self->_has;
   }
@@ -910,7 +910,7 @@ LABEL_19:
   if (v16)
   {
     v18 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_likedStateChangedDate];
-    [v3 setObject:v18 forKey:@"likedStateChangedDate"];
+    [dictionary setObject:v18 forKey:@"likedStateChangedDate"];
   }
 
   if ([(NSMutableArray *)self->_libraryIdentifiers count])
@@ -935,8 +935,8 @@ LABEL_19:
             objc_enumerationMutation(v20);
           }
 
-          v25 = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
-          [v19 addObject:v25];
+          dictionaryRepresentation2 = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
+          [v19 addObject:dictionaryRepresentation2];
         }
 
         v22 = [(NSMutableArray *)v20 countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -945,10 +945,10 @@ LABEL_19:
       while (v22);
     }
 
-    [v3 setObject:v19 forKey:@"libraryIdentifiers"];
+    [dictionary setObject:v19 forKey:@"libraryIdentifiers"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -957,33 +957,33 @@ LABEL_19:
   v8.receiver = self;
   v8.super_class = MIPAlbum;
   v4 = [(MIPAlbum *)&v8 description];
-  v5 = [(MIPAlbum *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MIPAlbum *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addLibraryIdentifiers:(id)a3
+- (void)addLibraryIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   libraryIdentifiers = self->_libraryIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!libraryIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_libraryIdentifiers;
     self->_libraryIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     libraryIdentifiers = self->_libraryIdentifiers;
   }
 
-  [(NSMutableArray *)libraryIdentifiers addObject:v4];
+  [(NSMutableArray *)libraryIdentifiers addObject:identifiersCopy];
 }
 
-- (void)setHasLikedState:(BOOL)a3
+- (void)setHasLikedState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 8;
   }
@@ -996,9 +996,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasPersistentId:(BOOL)a3
+- (void)setHasPersistentId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 2;
   }
@@ -1011,9 +1011,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasCompilation:(BOOL)a3
+- (void)setHasCompilation:(BOOL)compilation
 {
-  if (a3)
+  if (compilation)
   {
     v3 = 0x80;
   }
@@ -1026,9 +1026,9 @@ LABEL_19:
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasUserRating:(BOOL)a3
+- (void)setHasUserRating:(BOOL)rating
 {
-  if (a3)
+  if (rating)
   {
     v3 = 64;
   }
@@ -1041,9 +1041,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasNumDiscs:(BOOL)a3
+- (void)setHasNumDiscs:(BOOL)discs
 {
-  if (a3)
+  if (discs)
   {
     v3 = 16;
   }
@@ -1056,9 +1056,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasNumTracks:(BOOL)a3
+- (void)setHasNumTracks:(BOOL)tracks
 {
-  if (a3)
+  if (tracks)
   {
     v3 = 32;
   }
@@ -1071,9 +1071,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasStoreId:(BOOL)a3
+- (void)setHasStoreId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 4;
   }

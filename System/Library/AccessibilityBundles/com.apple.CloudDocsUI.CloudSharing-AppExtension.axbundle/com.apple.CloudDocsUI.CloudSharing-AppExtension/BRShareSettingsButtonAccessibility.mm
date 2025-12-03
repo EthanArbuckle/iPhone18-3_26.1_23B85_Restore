@@ -1,14 +1,14 @@
 @interface BRShareSettingsButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation BRShareSettingsButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BRShareSettingsButton" hasInstanceMethod:@"titleLabel" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"BRShareSettingsButton" hasInstanceMethod:@"detailLabel" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BRShareSettingsButton" hasInstanceMethod:@"titleLabel" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"BRShareSettingsButton" hasInstanceMethod:@"detailLabel" withFullSignature:{"v", 0}];
 }
 
 @end

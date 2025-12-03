@@ -1,55 +1,55 @@
 @interface CloudBookmarksMigrationCoordinator
 - (BOOL)_hasValidDeviceIdentifier;
-- (CloudBookmarksMigrationCoordinator)initWithBookmarkStore:(id)a3 databaseAccessor:(id)a4 syncMigrationCoordinator:(id)a5;
-- (void)_attemptLocalMigrationBeforeTryingToBecomeResponsibleForMigrationInOperationGroup:(id)a3 externalCompletionHandler:(id)a4;
-- (void)_becameResponsibleForMigrationInOperationGroup:(id)a3 externalCompletionHandler:(id)a4;
-- (void)_determineCourseOfActionFromLocalStateInOperationGroup:(id)a3 externalCompletionHandler:(id)a4;
-- (void)_handleFailureToBecomeResponsibleForMigrationDueToConflictInOperationGroup:(id)a3 externalCompletionHandler:(id)a4;
-- (void)_resetToIdleAfterMigrationFailureInOperationGroup:(id)a3 externalCompletionHandler:(id)a4;
-- (void)_scheduleMigrationRetryIfNeededInOperationGroup:(id)a3 externalCompletionHandler:(id)a4;
-- (void)_transitionToMigrationState:(int64_t)a3;
-- (void)_tryToBecomeResponsibleForMigrationInOperationGroup:(id)a3 externalCompletionHandler:(id)a4;
-- (void)_tryToBecomeResponsibleForMigrationWithRetryManager:(id)a3 inOperationGroup:(id)a4 externalCompletionHandler:(id)a5;
-- (void)_tryToResumePendingRemoteMigrationFromMigrationInfo:(id)a3 inOperationGroup:(id)a4 externalCompletionHandler:(id)a5;
+- (CloudBookmarksMigrationCoordinator)initWithBookmarkStore:(id)store databaseAccessor:(id)accessor syncMigrationCoordinator:(id)coordinator;
+- (void)_attemptLocalMigrationBeforeTryingToBecomeResponsibleForMigrationInOperationGroup:(id)group externalCompletionHandler:(id)handler;
+- (void)_becameResponsibleForMigrationInOperationGroup:(id)group externalCompletionHandler:(id)handler;
+- (void)_determineCourseOfActionFromLocalStateInOperationGroup:(id)group externalCompletionHandler:(id)handler;
+- (void)_handleFailureToBecomeResponsibleForMigrationDueToConflictInOperationGroup:(id)group externalCompletionHandler:(id)handler;
+- (void)_resetToIdleAfterMigrationFailureInOperationGroup:(id)group externalCompletionHandler:(id)handler;
+- (void)_scheduleMigrationRetryIfNeededInOperationGroup:(id)group externalCompletionHandler:(id)handler;
+- (void)_transitionToMigrationState:(int64_t)state;
+- (void)_tryToBecomeResponsibleForMigrationInOperationGroup:(id)group externalCompletionHandler:(id)handler;
+- (void)_tryToBecomeResponsibleForMigrationWithRetryManager:(id)manager inOperationGroup:(id)group externalCompletionHandler:(id)handler;
+- (void)_tryToResumePendingRemoteMigrationFromMigrationInfo:(id)info inOperationGroup:(id)group externalCompletionHandler:(id)handler;
 - (void)invalidateCachedDataclassEnabledness;
-- (void)startCoordinatingMigrationInOperationGroup:(id)a3 completionHandler:(id)a4;
+- (void)startCoordinatingMigrationInOperationGroup:(id)group completionHandler:(id)handler;
 @end
 
 @implementation CloudBookmarksMigrationCoordinator
 
-- (CloudBookmarksMigrationCoordinator)initWithBookmarkStore:(id)a3 databaseAccessor:(id)a4 syncMigrationCoordinator:(id)a5
+- (CloudBookmarksMigrationCoordinator)initWithBookmarkStore:(id)store databaseAccessor:(id)accessor syncMigrationCoordinator:(id)coordinator
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  accessorCopy = accessor;
+  coordinatorCopy = coordinator;
   v16.receiver = self;
   v16.super_class = CloudBookmarksMigrationCoordinator;
   v12 = [(CloudBookmarksMigrationCoordinator *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_bookmarkStore, a3);
-    objc_storeStrong(&v13->_databaseAccessor, a4);
-    objc_storeStrong(&v13->_syncMigrationCoordinator, a5);
+    objc_storeStrong(&v12->_bookmarkStore, store);
+    objc_storeStrong(&v13->_databaseAccessor, accessor);
+    objc_storeStrong(&v13->_syncMigrationCoordinator, coordinator);
     v14 = v13;
   }
 
   return v13;
 }
 
-- (void)startCoordinatingMigrationInOperationGroup:(id)a3 completionHandler:(id)a4
+- (void)startCoordinatingMigrationInOperationGroup:(id)group completionHandler:(id)handler
 {
-  v5 = a3;
-  v8 = a4;
-  v6 = v5;
-  v7 = v8;
+  groupCopy = group;
+  handlerCopy = handler;
+  v6 = groupCopy;
+  v7 = handlerCopy;
   WBSDispatchAsyncToMainQueueWithAutoreleasePool();
 }
 
 - (void)invalidateCachedDataclassEnabledness
 {
-  v2 = [(CloudBookmarkSyncMigrationCoordinator *)self->_syncMigrationCoordinator accountPropertiesStore];
-  [v2 setNeedsDataclassEnabledCheck];
+  accountPropertiesStore = [(CloudBookmarkSyncMigrationCoordinator *)self->_syncMigrationCoordinator accountPropertiesStore];
+  [accountPropertiesStore setNeedsDataclassEnabledCheck];
 }
 
 - (BOOL)_hasValidDeviceIdentifier
@@ -60,18 +60,18 @@
   return v3;
 }
 
-- (void)_determineCourseOfActionFromLocalStateInOperationGroup:(id)a3 externalCompletionHandler:(id)a4
+- (void)_determineCourseOfActionFromLocalStateInOperationGroup:(id)group externalCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  handlerCopy = handler;
   if ([(CloudBookmarksMigrationCoordinator *)self _hasValidDeviceIdentifier])
   {
-    v8 = [(CloudBookmarksMigrationCoordinator *)self migrationState];
-    if (v8 <= 0)
+    migrationState = [(CloudBookmarksMigrationCoordinator *)self migrationState];
+    if (migrationState <= 0)
     {
-      if (v8 != -1)
+      if (migrationState != -1)
       {
-        if (v8)
+        if (migrationState)
         {
           goto LABEL_23;
         }
@@ -84,7 +84,7 @@ LABEL_14:
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Will attempt secondary migration", v15, 2u);
         }
 
-        [(CloudBookmarksMigrationCoordinator *)self _attemptLocalMigrationBeforeTryingToBecomeResponsibleForMigrationInOperationGroup:v6 externalCompletionHandler:v7];
+        [(CloudBookmarksMigrationCoordinator *)self _attemptLocalMigrationBeforeTryingToBecomeResponsibleForMigrationInOperationGroup:groupCopy externalCompletionHandler:handlerCopy];
         goto LABEL_23;
       }
 
@@ -94,16 +94,16 @@ LABEL_14:
         sub_10004B67C();
       }
 
-      [(CloudBookmarksMigrationCoordinator *)self _scheduleMigrationRetryIfNeededInOperationGroup:v6 externalCompletionHandler:v7];
+      [(CloudBookmarksMigrationCoordinator *)self _scheduleMigrationRetryIfNeededInOperationGroup:groupCopy externalCompletionHandler:handlerCopy];
     }
 
     else
     {
-      if (v8 != 1)
+      if (migrationState != 1)
       {
-        if (v8 != 2)
+        if (migrationState != 2)
         {
-          if (v8 == 3)
+          if (migrationState == 3)
           {
             v9 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
             if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -112,7 +112,7 @@ LABEL_14:
               _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Not migrating because we've already migrated", buf, 2u);
             }
 
-            v7[2](v7, 1);
+            handlerCopy[2](handlerCopy, 1);
           }
 
           goto LABEL_23;
@@ -128,7 +128,7 @@ LABEL_14:
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Will attempt primary migration", v14, 2u);
       }
 
-      [(CloudBookmarksMigrationCoordinator *)self _tryToBecomeResponsibleForMigrationInOperationGroup:v6 externalCompletionHandler:v7];
+      [(CloudBookmarksMigrationCoordinator *)self _tryToBecomeResponsibleForMigrationInOperationGroup:groupCopy externalCompletionHandler:handlerCopy];
     }
   }
 
@@ -140,16 +140,16 @@ LABEL_14:
       sub_10004B648();
     }
 
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
 LABEL_23:
 }
 
-- (void)_attemptLocalMigrationBeforeTryingToBecomeResponsibleForMigrationInOperationGroup:(id)a3 externalCompletionHandler:(id)a4
+- (void)_attemptLocalMigrationBeforeTryingToBecomeResponsibleForMigrationInOperationGroup:(id)group externalCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  handlerCopy = handler;
   v8 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -168,10 +168,10 @@ LABEL_23:
     goto LABEL_10;
   }
 
-  v9 = [(CloudBookmarkSyncMigrationCoordinator *)self->_syncMigrationCoordinator accountPropertiesStore];
-  v10 = [v9 isDataclassEnabled];
+  accountPropertiesStore = [(CloudBookmarkSyncMigrationCoordinator *)self->_syncMigrationCoordinator accountPropertiesStore];
+  isDataclassEnabled = [accountPropertiesStore isDataclassEnabled];
 
-  if ((v10 & 1) == 0)
+  if ((isDataclassEnabled & 1) == 0)
   {
     v13 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -181,7 +181,7 @@ LABEL_23:
     }
 
 LABEL_10:
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
     goto LABEL_11;
   }
 
@@ -192,8 +192,8 @@ LABEL_10:
   v14[2] = sub_1000499F0;
   v14[3] = &unk_100133730;
   objc_copyWeak(&v17, buf);
-  v16 = v7;
-  v15 = v6;
+  v16 = handlerCopy;
+  v15 = groupCopy;
   [(CloudBookmarkStore *)bookmarkStore fetchRemoteMigrationInfoInOperationGroup:v15 withCompletionHandler:v14];
 
   objc_destroyWeak(&v17);
@@ -201,10 +201,10 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)_tryToBecomeResponsibleForMigrationInOperationGroup:(id)a3 externalCompletionHandler:(id)a4
+- (void)_tryToBecomeResponsibleForMigrationInOperationGroup:(id)group externalCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  handlerCopy = handler;
   v8 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -216,7 +216,7 @@ LABEL_11:
   {
     v9 = [[WBSCloudKitOperationRetryManager alloc] initWithLog:-[CloudTabGroupSyncCoordinator _bookmarksLog]_0()];
     [v9 setTimeout:30.0];
-    [(CloudBookmarksMigrationCoordinator *)self _tryToBecomeResponsibleForMigrationWithRetryManager:v9 inOperationGroup:v6 externalCompletionHandler:v7];
+    [(CloudBookmarksMigrationCoordinator *)self _tryToBecomeResponsibleForMigrationWithRetryManager:v9 inOperationGroup:groupCopy externalCompletionHandler:handlerCopy];
   }
 
   else
@@ -227,15 +227,15 @@ LABEL_11:
       sub_10004B7B0();
     }
 
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)_tryToBecomeResponsibleForMigrationWithRetryManager:(id)a3 inOperationGroup:(id)a4 externalCompletionHandler:(id)a5
+- (void)_tryToBecomeResponsibleForMigrationWithRetryManager:(id)manager inOperationGroup:(id)group externalCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  groupCopy = group;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   bookmarkStore = self->_bookmarkStore;
   v12 = sub_1000328C4(self->_databaseAccessor);
@@ -244,11 +244,11 @@ LABEL_11:
   v16[2] = sub_100049F9C;
   v16[3] = &unk_100133758;
   objc_copyWeak(&v20, &location);
-  v13 = v10;
+  v13 = handlerCopy;
   v19 = v13;
-  v14 = v9;
+  v14 = groupCopy;
   v17 = v14;
-  v15 = v8;
+  v15 = managerCopy;
   v18 = v15;
   [(CloudBookmarkStore *)bookmarkStore setRemoteMigrationState:1 deviceIdentifier:v12 inOperationGroup:v14 completionHandler:v16];
 
@@ -256,10 +256,10 @@ LABEL_11:
   objc_destroyWeak(&location);
 }
 
-- (void)_becameResponsibleForMigrationInOperationGroup:(id)a3 externalCompletionHandler:(id)a4
+- (void)_becameResponsibleForMigrationInOperationGroup:(id)group externalCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  handlerCopy = handler;
   v8 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -267,14 +267,14 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Pushed migration state successfully; assuming we are now responsible for migration", buf, 2u);
   }
 
-  v9 = [(CloudBookmarkSyncMigrationCoordinator *)self->_syncMigrationCoordinator accountPropertiesStore];
-  v10 = [v9 isDataclassEnabled];
+  accountPropertiesStore = [(CloudBookmarkSyncMigrationCoordinator *)self->_syncMigrationCoordinator accountPropertiesStore];
+  isDataclassEnabled = [accountPropertiesStore isDataclassEnabled];
 
-  if (v10)
+  if (isDataclassEnabled)
   {
     v11 = self->_syncMigrationCoordinator;
-    v12 = [(CloudBookmarkSyncMigrationCoordinator *)v11 databaseCoordinator];
-    v13 = [v12 lockForClient:@"Migration coordinator"];
+    databaseCoordinator = [(CloudBookmarkSyncMigrationCoordinator *)v11 databaseCoordinator];
+    v13 = [databaseCoordinator lockForClient:@"Migration coordinator"];
 
     if (v13)
     {
@@ -283,9 +283,9 @@ LABEL_11:
       v19 = sub_10004A5AC;
       v20 = &unk_100132030;
       v21 = v11;
-      v22 = v7;
+      v22 = handlerCopy;
       v14 = objc_retainBlock(&v17);
-      [(CloudBookmarksMigrationCoordinator *)self _performMigrationAsPrimaryDevice:1 inOperationGroup:v6 externalCompletionHandler:v14, v17, v18, v19, v20];
+      [(CloudBookmarksMigrationCoordinator *)self _performMigrationAsPrimaryDevice:1 inOperationGroup:groupCopy externalCompletionHandler:v14, v17, v18, v19, v20];
     }
 
     else
@@ -296,7 +296,7 @@ LABEL_11:
         sub_10004B9C0();
       }
 
-      (*(v7 + 2))(v7, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 
@@ -310,36 +310,36 @@ LABEL_11:
     }
 
     [(CloudBookmarksMigrationCoordinator *)self _transitionToMigrationState:0];
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (void)_handleFailureToBecomeResponsibleForMigrationDueToConflictInOperationGroup:(id)a3 externalCompletionHandler:(id)a4
+- (void)_handleFailureToBecomeResponsibleForMigrationDueToConflictInOperationGroup:(id)group externalCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  handlerCopy = handler;
   v8 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     sub_10004B9F4();
   }
 
-  v9 = [(CloudBookmarksMigrationCoordinator *)self migrationState];
-  if (v9 > 0)
+  migrationState = [(CloudBookmarksMigrationCoordinator *)self migrationState];
+  if (migrationState > 0)
   {
-    if (v9 == 1)
+    if (migrationState == 1)
     {
-      [(CloudBookmarksMigrationCoordinator *)self _handlePreemptionInOperationGroup:v6 externalCompletionHandler:v7];
+      [(CloudBookmarksMigrationCoordinator *)self _handlePreemptionInOperationGroup:groupCopy externalCompletionHandler:handlerCopy];
       goto LABEL_13;
     }
 
-    if (v9 == 2)
+    if (migrationState == 2)
     {
-      [(CloudBookmarksMigrationCoordinator *)self _resetToIdleAfterMigrationFailureInOperationGroup:v6 externalCompletionHandler:v7];
+      [(CloudBookmarksMigrationCoordinator *)self _resetToIdleAfterMigrationFailureInOperationGroup:groupCopy externalCompletionHandler:handlerCopy];
       goto LABEL_13;
     }
 
-    if (v9 != 3)
+    if (migrationState != 3)
     {
       goto LABEL_13;
     }
@@ -347,24 +347,24 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  if (v9 == -1 || !v9)
+  if (migrationState == -1 || !migrationState)
   {
 LABEL_10:
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
 LABEL_13:
 }
 
-- (void)_tryToResumePendingRemoteMigrationFromMigrationInfo:(id)a3 inOperationGroup:(id)a4 externalCompletionHandler:(id)a5
+- (void)_tryToResumePendingRemoteMigrationFromMigrationInfo:(id)info inOperationGroup:(id)group externalCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  infoCopy = info;
+  groupCopy = group;
+  handlerCopy = handler;
   if ([(CloudBookmarksMigrationCoordinator *)self _hasValidDeviceIdentifier])
   {
-    v11 = [v8 migratorDeviceIdentifier];
-    if (!v11)
+    migratorDeviceIdentifier = [infoCopy migratorDeviceIdentifier];
+    if (!migratorDeviceIdentifier)
     {
       v12 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -374,7 +374,7 @@ LABEL_13:
     }
 
     v13 = sub_1000328C4(self->_databaseAccessor);
-    v14 = [v11 isEqualToString:v13];
+    v14 = [migratorDeviceIdentifier isEqualToString:v13];
 
     if (v14)
     {
@@ -385,12 +385,12 @@ LABEL_13:
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Migration record indicates that we are the migrating device; attempting to resume migration", buf, 2u);
       }
 
-      [(CloudBookmarksMigrationCoordinator *)self _tryToBecomeResponsibleForMigrationInOperationGroup:v9 externalCompletionHandler:v10];
+      [(CloudBookmarksMigrationCoordinator *)self _tryToBecomeResponsibleForMigrationInOperationGroup:groupCopy externalCompletionHandler:handlerCopy];
       goto LABEL_26;
     }
 
-    v17 = [v8 serverModificationDate];
-    if (v17)
+    serverModificationDate = [infoCopy serverModificationDate];
+    if (serverModificationDate)
     {
       v18 = +[NSUserDefaults safari_cloudBookmarksDefaults];
       [v18 doubleForKey:@"CloudBookmarksDebugDelayInSecondsBeforeStealingRightToMigrate"];
@@ -406,7 +406,7 @@ LABEL_13:
 
       v24 = [v21 dateByAddingTimeInterval:v23];
 
-      v25 = [v17 compare:v24];
+      v25 = [serverModificationDate compare:v24];
       v26 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
       v27 = os_log_type_enabled(v26, OS_LOG_TYPE_INFO);
       if (v25 == -1)
@@ -422,9 +422,9 @@ LABEL_13:
         v32[1] = 3221225472;
         v32[2] = sub_10004AAA8;
         v32[3] = &unk_100130E78;
-        v34 = v10;
+        v34 = handlerCopy;
         v32[4] = self;
-        v33 = v9;
+        v33 = groupCopy;
         [(CloudBookmarkStore *)bookmarkStore deleteBookmarksZoneInOperationGroup:v33 completionHandler:v32];
 
         goto LABEL_25;
@@ -452,7 +452,7 @@ LABEL_20:
       }
     }
 
-    (*(v10 + 2))(v10, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
 LABEL_25:
 
 LABEL_26:
@@ -465,28 +465,28 @@ LABEL_26:
     sub_10004BA28();
   }
 
-  (*(v10 + 2))(v10, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0);
 LABEL_27:
 }
 
-- (void)_resetToIdleAfterMigrationFailureInOperationGroup:(id)a3 externalCompletionHandler:(id)a4
+- (void)_resetToIdleAfterMigrationFailureInOperationGroup:(id)group externalCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  groupCopy = group;
   [(CloudBookmarksMigrationCoordinator *)self _transitionToMigrationState:0];
-  [(CloudBookmarksMigrationCoordinator *)self _scheduleMigrationRetryIfNeededInOperationGroup:v7 externalCompletionHandler:v6];
+  [(CloudBookmarksMigrationCoordinator *)self _scheduleMigrationRetryIfNeededInOperationGroup:groupCopy externalCompletionHandler:handlerCopy];
 }
 
-- (void)_scheduleMigrationRetryIfNeededInOperationGroup:(id)a3 externalCompletionHandler:(id)a4
+- (void)_scheduleMigrationRetryIfNeededInOperationGroup:(id)group externalCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  handlerCopy = handler;
   v8 = self->_numberOfRetryAttempts + 1;
   self->_numberOfRetryAttempts = v8;
-  v9 = [(CloudBookmarksMigrationCoordinator *)self _maximumNumberOfRetryAttempts];
+  _maximumNumberOfRetryAttempts = [(CloudBookmarksMigrationCoordinator *)self _maximumNumberOfRetryAttempts];
   v10 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
   v11 = v10;
-  if (v8 <= v9)
+  if (v8 <= _maximumNumberOfRetryAttempts)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -502,8 +502,8 @@ LABEL_27:
     block[2] = sub_10004AE50;
     block[3] = &unk_100133780;
     objc_copyWeak(&v17, buf);
-    v15 = v6;
-    v16 = v7;
+    v15 = groupCopy;
+    v16 = handlerCopy;
     dispatch_after(v13, &_dispatch_main_q, block);
 
     objc_destroyWeak(&v17);
@@ -517,27 +517,27 @@ LABEL_27:
       sub_10004BB28();
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (void)_transitionToMigrationState:(int64_t)a3
+- (void)_transitionToMigrationState:(int64_t)state
 {
-  v5 = [(CloudBookmarksMigrationCoordinator *)self migrationState];
-  if (v5 != a3)
+  migrationState = [(CloudBookmarksMigrationCoordinator *)self migrationState];
+  if (migrationState != state)
   {
-    v6 = v5;
+    v6 = migrationState;
     v7 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = 134218240;
       v9 = v6;
       v10 = 2048;
-      v11 = a3;
+      stateCopy = state;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Migration coordinator transitioning from state %zd to state %zd", &v8, 0x16u);
     }
 
-    [(CloudBookmarksMigrationCoordinator *)self setMigrationState:a3];
+    [(CloudBookmarksMigrationCoordinator *)self setMigrationState:state];
   }
 }
 

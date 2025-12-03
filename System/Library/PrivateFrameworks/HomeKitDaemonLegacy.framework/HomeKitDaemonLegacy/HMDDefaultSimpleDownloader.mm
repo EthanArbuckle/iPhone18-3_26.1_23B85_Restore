@@ -1,8 +1,8 @@
 @interface HMDDefaultSimpleDownloader
 + (id)logCategory;
-- (HMDDefaultSimpleDownloader)initWithLogIdentifier:(id)a3;
+- (HMDDefaultSimpleDownloader)initWithLogIdentifier:(id)identifier;
 - (id)logIdentifier;
-- (void)fetchURL:(id)a3 completion:(id)a4;
+- (void)fetchURL:(id)l completion:(id)completion;
 @end
 
 @implementation HMDDefaultSimpleDownloader
@@ -17,27 +17,27 @@
   return self;
 }
 
-- (void)fetchURL:(id)a3 completion:(id)a4
+- (void)fetchURL:(id)l completion:(id)completion
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   v8 = [objc_alloc(MEMORY[0x277CCACD8]) initWithMemoryCapacity:0x400000 diskCapacity:20971520 directoryURL:0];
-  v9 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
-  [v9 setHTTPCookieAcceptPolicy:1];
-  [v9 setHTTPCookieStorage:0];
-  [v9 setHTTPShouldSetCookies:0];
-  [v9 setURLCredentialStorage:0];
-  [v9 setURLCache:v8];
-  [v9 set_alternativeServicesStorage:0];
-  v10 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v9];
-  v29 = v6;
-  v11 = [objc_alloc(MEMORY[0x277CCAB70]) initWithURL:v6];
+  defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+  [defaultSessionConfiguration setHTTPCookieAcceptPolicy:1];
+  [defaultSessionConfiguration setHTTPCookieStorage:0];
+  [defaultSessionConfiguration setHTTPShouldSetCookies:0];
+  [defaultSessionConfiguration setURLCredentialStorage:0];
+  [defaultSessionConfiguration setURLCache:v8];
+  [defaultSessionConfiguration set_alternativeServicesStorage:0];
+  v10 = [MEMORY[0x277CCAD30] sessionWithConfiguration:defaultSessionConfiguration];
+  v29 = lCopy;
+  v11 = [objc_alloc(MEMORY[0x277CCAB70]) initWithURL:lCopy];
   [v11 setHTTPMethod:@"GET"];
-  v12 = [v10 configuration];
-  v13 = [v12 URLCache];
+  configuration = [v10 configuration];
+  uRLCache = [configuration URLCache];
   v31 = v11;
-  v14 = [v13 cachedResponseForRequest:v11];
+  v14 = [uRLCache cachedResponseForRequest:v11];
 
   v15 = v14;
   objc_opt_class();
@@ -57,7 +57,7 @@
   if (v17)
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
@@ -77,11 +77,11 @@
   v32[2] = __50__HMDDefaultSimpleDownloader_fetchURL_completion___block_invoke;
   v32[3] = &unk_27972D4A0;
   v32[4] = self;
-  v22 = v7;
+  v22 = completionCopy;
   v33 = v22;
   v23 = [v10 dataTaskWithRequest:v31 completionHandler:v32];
   v24 = objc_autoreleasePoolPush();
-  v25 = self;
+  selfCopy2 = self;
   v26 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
   {
@@ -182,14 +182,14 @@ LABEL_15:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDDefaultSimpleDownloader)initWithLogIdentifier:(id)a3
+- (HMDDefaultSimpleDownloader)initWithLogIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v8.receiver = self;
   v8.super_class = HMDDefaultSimpleDownloader;
   v5 = [(HMDDefaultSimpleDownloader *)&v8 init];
   identifier = v5->_identifier;
-  v5->_identifier = v4;
+  v5->_identifier = identifierCopy;
 
   return v5;
 }

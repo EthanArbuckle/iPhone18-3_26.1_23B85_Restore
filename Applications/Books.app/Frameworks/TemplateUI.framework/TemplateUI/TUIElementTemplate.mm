@@ -1,26 +1,26 @@
 @interface TUIElementTemplate
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
-+ (void)instantiateChildrenOfNode:(id)a3 object:(id)a4 builder:(id)a5 context:(id)a6 block:(id)a7;
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context;
++ (void)instantiateChildrenOfNode:(id)node object:(id)object builder:(id)builder context:(id)context block:(id)block;
 @end
 
 @implementation TUIElementTemplate
 
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  v7 = a3;
-  v8 = [a6 entry];
-  [v7 setEntry:v8];
+  boxCopy = box;
+  entry = [context entry];
+  [boxCopy setEntry:entry];
 }
 
-+ (void)instantiateChildrenOfNode:(id)a3 object:(id)a4 builder:(id)a5 context:(id)a6 block:(id)a7
++ (void)instantiateChildrenOfNode:(id)node object:(id)object builder:(id)builder context:(id)context block:(id)block
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v13 = [v11 entry];
-  v12 = [v9 updateWithEntry:v13 withBuilder:v10 environmentContainer:v11];
+  contextCopy = context;
+  builderCopy = builder;
+  objectCopy = object;
+  entry = [objectCopy entry];
+  v12 = [contextCopy updateWithEntry:entry withBuilder:builderCopy environmentContainer:objectCopy];
 
-  [v11 setDirectEnvironmentUseMask:v12];
+  [objectCopy setDirectEnvironmentUseMask:v12];
 }
 
 @end

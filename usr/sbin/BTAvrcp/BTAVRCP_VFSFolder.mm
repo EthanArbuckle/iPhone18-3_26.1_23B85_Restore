@@ -1,25 +1,25 @@
 @interface BTAVRCP_VFSFolder
-- (BTAVRCP_VFSFolder)initWithName:(id)a3 uid:(unint64_t)a4;
+- (BTAVRCP_VFSFolder)initWithName:(id)name uid:(unint64_t)uid;
 - (MPMediaQuery)query;
 - (id)recentlyAddedFolderName;
-- (id)replyItemWithUid:(id)a3 name:(id)a4 attributes:(id)a5;
-- (void)storePredicate:(id)a3;
-- (void)storePredicates:(id)a3;
+- (id)replyItemWithUid:(id)uid name:(id)name attributes:(id)attributes;
+- (void)storePredicate:(id)predicate;
+- (void)storePredicates:(id)predicates;
 @end
 
 @implementation BTAVRCP_VFSFolder
 
-- (BTAVRCP_VFSFolder)initWithName:(id)a3 uid:(unint64_t)a4
+- (BTAVRCP_VFSFolder)initWithName:(id)name uid:(unint64_t)uid
 {
-  v7 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = BTAVRCP_VFSFolder;
   v8 = [(BTAVRCP_VFSFolder *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_name, a3);
-    v9->_uid = a4;
+    objc_storeStrong(&v8->_name, name);
+    v9->_uid = uid;
     v10 = objc_alloc_init(NSMutableSet);
     storedPredicates = v9->_storedPredicates;
     v9->_storedPredicates = v10;
@@ -30,19 +30,19 @@
 
 - (MPMediaQuery)query
 {
-  v3 = [(BTAVRCP_VFSFolder *)self builtQuery];
+  builtQuery = [(BTAVRCP_VFSFolder *)self builtQuery];
 
-  if (!v3)
+  if (!builtQuery)
   {
-    v4 = [(BTAVRCP_VFSFolder *)self baseQuery];
-    [(BTAVRCP_VFSFolder *)self setBuiltQuery:v4];
+    baseQuery = [(BTAVRCP_VFSFolder *)self baseQuery];
+    [(BTAVRCP_VFSFolder *)self setBuiltQuery:baseQuery];
 
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = [(BTAVRCP_VFSFolder *)self storedPredicates];
-    v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    storedPredicates = [(BTAVRCP_VFSFolder *)self storedPredicates];
+    v6 = [storedPredicates countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
       v7 = v6;
@@ -54,18 +54,18 @@
         {
           if (*v16 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(storedPredicates);
           }
 
           v10 = *(*(&v15 + 1) + 8 * v9);
-          v11 = [(BTAVRCP_VFSFolder *)self builtQuery];
-          [v11 addFilterPredicate:v10];
+          builtQuery2 = [(BTAVRCP_VFSFolder *)self builtQuery];
+          [builtQuery2 addFilterPredicate:v10];
 
           v9 = v9 + 1;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v7 = [storedPredicates countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v7);
@@ -78,54 +78,54 @@
     }
   }
 
-  v13 = [(BTAVRCP_VFSFolder *)self builtQuery];
+  builtQuery3 = [(BTAVRCP_VFSFolder *)self builtQuery];
 
-  return v13;
+  return builtQuery3;
 }
 
-- (void)storePredicates:(id)a3
+- (void)storePredicates:(id)predicates
 {
-  v5 = a3;
-  v6 = [(BTAVRCP_VFSFolder *)self builtQuery];
+  predicatesCopy = predicates;
+  builtQuery = [(BTAVRCP_VFSFolder *)self builtQuery];
 
-  if (v6)
+  if (builtQuery)
   {
     sub_10000E9F4(a2, self);
   }
 
-  v7 = [(BTAVRCP_VFSFolder *)self storedPredicates];
-  [v7 unionSet:v5];
+  storedPredicates = [(BTAVRCP_VFSFolder *)self storedPredicates];
+  [storedPredicates unionSet:predicatesCopy];
 }
 
-- (void)storePredicate:(id)a3
+- (void)storePredicate:(id)predicate
 {
-  v4 = [NSSet setWithObject:a3];
+  v4 = [NSSet setWithObject:predicate];
   [(BTAVRCP_VFSFolder *)self storePredicates:v4];
 }
 
-- (id)replyItemWithUid:(id)a3 name:(id)a4 attributes:(id)a5
+- (id)replyItemWithUid:(id)uid name:(id)name attributes:(id)attributes
 {
-  v7 = a5;
+  attributesCopy = attributes;
   v14[0] = @"kIsFolder";
   v14[1] = @"kUid";
   v14[2] = @"kName";
   v15[0] = &__kCFBooleanFalse;
-  v8 = &stru_100019658;
-  if (a4)
+  nameCopy = &stru_100019658;
+  if (name)
   {
-    v8 = a4;
+    nameCopy = name;
   }
 
-  v15[1] = a3;
-  v15[2] = v8;
-  v9 = a4;
-  v10 = a3;
+  v15[1] = uid;
+  v15[2] = nameCopy;
+  nameCopy2 = name;
+  uidCopy = uid;
   v11 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:3];
 
-  if (v7)
+  if (attributesCopy)
   {
     v12 = [v11 mutableCopy];
-    [v12 setValue:v7 forKey:@"kAttributes"];
+    [v12 setValue:attributesCopy forKey:@"kAttributes"];
 
     v11 = v12;
   }

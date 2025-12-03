@@ -1,28 +1,28 @@
 @interface PPKQuickLookBannerView
 - (BOOL)_isUsingAccessibilityContentSizeCategory;
 - (BOOL)_useCompactLayout;
-- (PPKQuickLookBannerView)initWithFrame:(CGRect)a3;
+- (PPKQuickLookBannerView)initWithFrame:(CGRect)frame;
 - (id)_compactSizeConstraints;
 - (id)_extraCompactSizeConstraints;
 - (id)_regularSizeConstraints;
 - (int64_t)_numberOfSubtitleLines;
 - (int64_t)_numberOfTitleLines;
-- (void)_setUseExtraCompactLayout:(BOOL)a3;
-- (void)_updateImageViewWithConfiguration:(id)a3;
+- (void)_setUseExtraCompactLayout:(BOOL)layout;
+- (void)_updateImageViewWithConfiguration:(id)configuration;
 - (void)_updateUI;
-- (void)clearExistingActions:(id)a3;
+- (void)clearExistingActions:(id)actions;
 - (void)layoutSubviews;
-- (void)populateWithConfiguration:(id)a3;
+- (void)populateWithConfiguration:(id)configuration;
 @end
 
 @implementation PPKQuickLookBannerView
 
-- (PPKQuickLookBannerView)initWithFrame:(CGRect)a3
+- (PPKQuickLookBannerView)initWithFrame:(CGRect)frame
 {
   v65[2] = *MEMORY[0x1E69E9840];
   v63.receiver = self;
   v63.super_class = PPKQuickLookBannerView;
-  v3 = [(PPKQuickLookBannerView *)&v63 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PPKQuickLookBannerView *)&v63 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -50,8 +50,8 @@
 
     [(UIImageView *)v4->_imageView setContentMode:1];
     v16 = v4->_imageView;
-    v17 = [MEMORY[0x1E69DC888] labelColor];
-    [(UIImageView *)v16 setTintColor:v17];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UIImageView *)v16 setTintColor:labelColor];
 
     [(UIImageView *)v4->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v18) = 1148846080;
@@ -76,8 +76,8 @@
     v25 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v12];
     [(UILabel *)v4->_subtitle setFont:v25];
 
-    v26 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v4->_subtitle setTextColor:v26];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v4->_subtitle setTextColor:secondaryLabelColor];
 
     [(UILabel *)v4->_subtitle setLineBreakMode:0];
     [(UILabel *)v4->_subtitle setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -85,15 +85,15 @@
     actionButton = v4->_actionButton;
     v4->_actionButton = v27;
 
-    v29 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
-    [v29 setCornerStyle:4];
-    [v29 setTitleLineBreakMode:0];
+    filledButtonConfiguration = [MEMORY[0x1E69DC740] filledButtonConfiguration];
+    [filledButtonConfiguration setCornerStyle:4];
+    [filledButtonConfiguration setTitleLineBreakMode:0];
     v30 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@"Button"];
-    [v29 setAttributedTitle:v30];
+    [filledButtonConfiguration setAttributedTitle:v30];
 
-    [v29 setTitleTextAttributesTransformer:&__block_literal_global_5];
-    v62 = v29;
-    [(UIButton *)v4->_actionButton setConfiguration:v29];
+    [filledButtonConfiguration setTitleTextAttributesTransformer:&__block_literal_global_5];
+    v62 = filledButtonConfiguration;
+    [(UIButton *)v4->_actionButton setConfiguration:filledButtonConfiguration];
     [(UIButton *)v4->_actionButton setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v31) = 1148846080;
     [(UIButton *)v4->_actionButton setContentCompressionResistancePriority:0 forAxis:v31];
@@ -109,8 +109,8 @@
 
     v38 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"xmark" withConfiguration:v37];
     [(UIButton *)v4->_closeButton setImage:v38 forState:0];
-    v39 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    [(UIButton *)v4->_closeButton setTintColor:v39];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    [(UIButton *)v4->_closeButton setTintColor:tertiaryLabelColor];
 
     [(UIButton *)v4->_closeButton setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v40) = 1148846080;
@@ -141,25 +141,25 @@
     else
     {
       v46 = *MEMORY[0x1E69796E8];
-      v47 = [(UIView *)v4->_backgroundView layer];
-      [v47 setCornerCurve:v46];
+      layer = [(UIView *)v4->_backgroundView layer];
+      [layer setCornerCurve:v46];
 
-      v48 = [MEMORY[0x1E69DC888] blackColor];
-      v49 = [v48 CGColor];
-      v50 = [(UIView *)v4->_backgroundView layer];
-      [v50 setShadowColor:v49];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
+      cGColor = [blackColor CGColor];
+      layer2 = [(UIView *)v4->_backgroundView layer];
+      [layer2 setShadowColor:cGColor];
 
-      v51 = [(UIView *)v4->_backgroundView layer];
+      layer3 = [(UIView *)v4->_backgroundView layer];
       LODWORD(v52) = 0.25;
-      [v51 setShadowOpacity:v52];
+      [layer3 setShadowOpacity:v52];
 
       v53 = *MEMORY[0x1E695F060];
       v54 = *(MEMORY[0x1E695F060] + 8);
-      v55 = [(UIView *)v4->_backgroundView layer];
-      [v55 setShadowOffset:{v53, v54}];
+      layer4 = [(UIView *)v4->_backgroundView layer];
+      [layer4 setShadowOffset:{v53, v54}];
 
-      v56 = [(UIView *)v4->_backgroundView layer];
-      [v56 setShadowRadius:5.0];
+      layer5 = [(UIView *)v4->_backgroundView layer];
+      [layer5 setShadowRadius:5.0];
     }
 
     [(PPKQuickLookBannerView *)v4 _updateUI];
@@ -195,11 +195,11 @@ id __40__PPKQuickLookBannerView_initWithFrame___block_invoke(uint64_t a1, void *
   [(PPKQuickLookBannerView *)self _setUseExtraCompactLayout:v4];
 }
 
-- (void)_setUseExtraCompactLayout:(BOOL)a3
+- (void)_setUseExtraCompactLayout:(BOOL)layout
 {
-  if (self->_useExtraCompactLayout != a3)
+  if (self->_useExtraCompactLayout != layout)
   {
-    self->_useExtraCompactLayout = a3;
+    self->_useExtraCompactLayout = layout;
     [(PPKQuickLookBannerView *)self _updateUI];
   }
 }
@@ -208,7 +208,7 @@ id __40__PPKQuickLookBannerView_initWithFrame___block_invoke(uint64_t a1, void *
 {
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    v3 = 0x1E69DC000;
+    quaternaryLabelColor = 0x1E69DC000;
     if ([(PPKQuickLookBannerView *)self _useCompactLayout])
     {
       [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
@@ -231,25 +231,25 @@ id __40__PPKQuickLookBannerView_initWithFrame___block_invoke(uint64_t a1, void *
       v5 = 8.0;
     }
 
-    v6 = [(UIView *)self->_backgroundView layer];
-    [v6 setCornerRadius:v5];
+    layer = [(UIView *)self->_backgroundView layer];
+    [layer setCornerRadius:v5];
 
-    v7 = [(PPKQuickLookBannerView *)self _useCompactLayout];
-    if (v7)
+    _useCompactLayout = [(PPKQuickLookBannerView *)self _useCompactLayout];
+    if (_useCompactLayout)
     {
-      v8 = 0;
+      cGColor = 0;
     }
 
     else
     {
-      v3 = [MEMORY[0x1E69DC888] quaternaryLabelColor];
-      v8 = [v3 CGColor];
+      quaternaryLabelColor = [MEMORY[0x1E69DC888] quaternaryLabelColor];
+      cGColor = [quaternaryLabelColor CGColor];
     }
 
-    v9 = [(UIView *)self->_backgroundView layer];
-    [v9 setBorderColor:v8];
+    layer2 = [(UIView *)self->_backgroundView layer];
+    [layer2 setBorderColor:cGColor];
 
-    if (!v7)
+    if (!_useCompactLayout)
     {
     }
 
@@ -263,17 +263,17 @@ id __40__PPKQuickLookBannerView_initWithFrame___block_invoke(uint64_t a1, void *
       v10 = 0.5;
     }
 
-    v11 = [(UIView *)self->_backgroundView layer];
-    [v11 setBorderWidth:v10];
+    layer3 = [(UIView *)self->_backgroundView layer];
+    [layer3 setBorderWidth:v10];
   }
 
-  v12 = [(PPKQuickLookBannerView *)self _numberOfTitleLines];
-  v13 = [(PPKQuickLookBannerView *)self title];
-  [v13 setNumberOfLines:v12];
+  _numberOfTitleLines = [(PPKQuickLookBannerView *)self _numberOfTitleLines];
+  title = [(PPKQuickLookBannerView *)self title];
+  [title setNumberOfLines:_numberOfTitleLines];
 
-  v14 = [(PPKQuickLookBannerView *)self _numberOfSubtitleLines];
-  v15 = [(PPKQuickLookBannerView *)self subtitle];
-  [v15 setNumberOfLines:v14];
+  _numberOfSubtitleLines = [(PPKQuickLookBannerView *)self _numberOfSubtitleLines];
+  subtitle = [(PPKQuickLookBannerView *)self subtitle];
+  [subtitle setNumberOfLines:_numberOfSubtitleLines];
 
   [(UIStackView *)self->_titleStackView setAxis:[(PPKQuickLookBannerView *)self _useCompactLayout]];
   if (self->_extraCompactSizeConstraints)
@@ -311,7 +311,7 @@ id __40__PPKQuickLookBannerView_initWithFrame___block_invoke(uint64_t a1, void *
   if ([(PPKQuickLookBannerView *)self _isUsingAccessibilityContentSizeCategory])
   {
     v22 = MEMORY[0x1E696ACD8];
-    v23 = [(PPKQuickLookBannerView *)self _extraCompactSizeConstraints];
+    _extraCompactSizeConstraints = [(PPKQuickLookBannerView *)self _extraCompactSizeConstraints];
   }
 
   else
@@ -333,17 +333,17 @@ id __40__PPKQuickLookBannerView_initWithFrame___block_invoke(uint64_t a1, void *
     }
 
     v22 = MEMORY[0x1E696ACD8];
-    v23 = [(PPKQuickLookBannerView *)self _regularSizeConstraints];
+    _extraCompactSizeConstraints = [(PPKQuickLookBannerView *)self _regularSizeConstraints];
   }
 
-  v24 = v23;
+  v24 = _extraCompactSizeConstraints;
   v25 = v22;
 LABEL_34:
   [v25 activateConstraints:v24];
 
-  v29 = [(PPKQuickLookBannerView *)self imageView];
-  v26 = [v29 widthAnchor];
-  v27 = [v26 constraintEqualToConstant:0.0];
+  imageView = [(PPKQuickLookBannerView *)self imageView];
+  widthAnchor = [imageView widthAnchor];
+  v27 = [widthAnchor constraintEqualToConstant:0.0];
   v28 = self->_imageViewCollapsingConstraint;
   self->_imageViewCollapsingConstraint = v27;
 }
@@ -354,94 +354,94 @@ LABEL_34:
   compactSizeConstraints = self->_compactSizeConstraints;
   if (!compactSizeConstraints)
   {
-    v4 = [(UIStackView *)self->_titleStackView leadingAnchor];
-    v5 = [(PPKQuickLookBannerView *)self imageView];
-    v6 = [v5 trailingAnchor];
-    v7 = [v4 constraintEqualToAnchor:v6 constant:4.0];
+    leadingAnchor = [(UIStackView *)self->_titleStackView leadingAnchor];
+    imageView = [(PPKQuickLookBannerView *)self imageView];
+    trailingAnchor = [imageView trailingAnchor];
+    v7 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:4.0];
     titleStackLeadingConstraint = self->_titleStackLeadingConstraint;
     self->_titleStackLeadingConstraint = v7;
 
-    v74 = [(UIView *)self->_backgroundView topAnchor];
-    v73 = [(PPKQuickLookBannerView *)self topAnchor];
-    v72 = [v74 constraintEqualToAnchor:v73];
+    topAnchor = [(UIView *)self->_backgroundView topAnchor];
+    topAnchor2 = [(PPKQuickLookBannerView *)self topAnchor];
+    v72 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v75[0] = v72;
-    v71 = [(UIView *)self->_backgroundView leadingAnchor];
-    v70 = [(PPKQuickLookBannerView *)self leadingAnchor];
-    v69 = [v71 constraintEqualToAnchor:v70];
+    leadingAnchor2 = [(UIView *)self->_backgroundView leadingAnchor];
+    leadingAnchor3 = [(PPKQuickLookBannerView *)self leadingAnchor];
+    v69 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3];
     v75[1] = v69;
-    v68 = [(UIView *)self->_backgroundView trailingAnchor];
-    v67 = [(PPKQuickLookBannerView *)self trailingAnchor];
-    v66 = [v68 constraintEqualToAnchor:v67];
+    trailingAnchor2 = [(UIView *)self->_backgroundView trailingAnchor];
+    trailingAnchor3 = [(PPKQuickLookBannerView *)self trailingAnchor];
+    v66 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
     v75[2] = v66;
-    v65 = [(UIView *)self->_backgroundView bottomAnchor];
-    v64 = [(PPKQuickLookBannerView *)self bottomAnchor];
-    v63 = [v65 constraintEqualToAnchor:v64];
+    bottomAnchor = [(UIView *)self->_backgroundView bottomAnchor];
+    bottomAnchor2 = [(PPKQuickLookBannerView *)self bottomAnchor];
+    v63 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v75[3] = v63;
-    v62 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
-    v61 = [(PPKQuickLookBannerView *)self topAnchor];
-    v60 = [v62 constraintEqualToAnchor:v61 constant:16.0];
+    topAnchor3 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
+    topAnchor4 = [(PPKQuickLookBannerView *)self topAnchor];
+    v60 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:16.0];
     v75[4] = v60;
-    v59 = [(UILayoutGuide *)self->_contentLayoutGuide leadingAnchor];
-    v58 = [(PPKQuickLookBannerView *)self leadingAnchor];
-    v57 = [v59 constraintEqualToAnchor:v58 constant:12.0];
+    leadingAnchor4 = [(UILayoutGuide *)self->_contentLayoutGuide leadingAnchor];
+    leadingAnchor5 = [(PPKQuickLookBannerView *)self leadingAnchor];
+    v57 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5 constant:12.0];
     v75[5] = v57;
-    v56 = [(UILayoutGuide *)self->_contentLayoutGuide trailingAnchor];
-    v55 = [(PPKQuickLookBannerView *)self trailingAnchor];
-    v54 = [v56 constraintEqualToAnchor:v55 constant:-20.0];
+    trailingAnchor4 = [(UILayoutGuide *)self->_contentLayoutGuide trailingAnchor];
+    trailingAnchor5 = [(PPKQuickLookBannerView *)self trailingAnchor];
+    v54 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:-20.0];
     v75[6] = v54;
-    v53 = [(UILayoutGuide *)self->_contentLayoutGuide bottomAnchor];
-    v52 = [(PPKQuickLookBannerView *)self bottomAnchor];
-    v51 = [v53 constraintEqualToAnchor:v52 constant:-16.0];
+    bottomAnchor3 = [(UILayoutGuide *)self->_contentLayoutGuide bottomAnchor];
+    bottomAnchor4 = [(PPKQuickLookBannerView *)self bottomAnchor];
+    v51 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-16.0];
     v75[7] = v51;
-    v50 = [(PPKQuickLookBannerView *)self imageView];
-    v49 = [v50 centerYAnchor];
-    v48 = [(UILayoutGuide *)self->_contentLayoutGuide centerYAnchor];
-    v47 = [v49 constraintEqualToAnchor:v48];
+    imageView2 = [(PPKQuickLookBannerView *)self imageView];
+    centerYAnchor = [imageView2 centerYAnchor];
+    centerYAnchor2 = [(UILayoutGuide *)self->_contentLayoutGuide centerYAnchor];
+    v47 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v75[8] = v47;
-    v46 = [(PPKQuickLookBannerView *)self imageView];
-    v45 = [v46 leadingAnchor];
-    v44 = [(UILayoutGuide *)self->_contentLayoutGuide leadingAnchor];
-    v43 = [v45 constraintEqualToAnchor:v44];
+    imageView3 = [(PPKQuickLookBannerView *)self imageView];
+    leadingAnchor6 = [imageView3 leadingAnchor];
+    leadingAnchor7 = [(UILayoutGuide *)self->_contentLayoutGuide leadingAnchor];
+    v43 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
     v75[9] = v43;
-    v42 = [(UIStackView *)self->_titleStackView topAnchor];
-    v41 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
-    v40 = [v42 constraintGreaterThanOrEqualToAnchor:v41];
+    topAnchor5 = [(UIStackView *)self->_titleStackView topAnchor];
+    topAnchor6 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
+    v40 = [topAnchor5 constraintGreaterThanOrEqualToAnchor:topAnchor6];
     v75[10] = v40;
-    v39 = [(UIStackView *)self->_titleStackView bottomAnchor];
-    v38 = [(UILayoutGuide *)self->_contentLayoutGuide bottomAnchor];
-    v37 = [v39 constraintLessThanOrEqualToAnchor:v38];
+    bottomAnchor5 = [(UIStackView *)self->_titleStackView bottomAnchor];
+    bottomAnchor6 = [(UILayoutGuide *)self->_contentLayoutGuide bottomAnchor];
+    v37 = [bottomAnchor5 constraintLessThanOrEqualToAnchor:bottomAnchor6];
     v75[11] = v37;
-    v36 = [(UIStackView *)self->_titleStackView centerYAnchor];
-    v35 = [(UILayoutGuide *)self->_contentLayoutGuide centerYAnchor];
-    v34 = [v36 constraintEqualToAnchor:v35];
+    centerYAnchor3 = [(UIStackView *)self->_titleStackView centerYAnchor];
+    centerYAnchor4 = [(UILayoutGuide *)self->_contentLayoutGuide centerYAnchor];
+    v34 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v75[12] = v34;
-    v32 = [(UIStackView *)self->_titleStackView trailingAnchor];
-    v33 = [(PPKQuickLookBannerView *)self actionButton];
-    v31 = [v33 leadingAnchor];
-    v30 = [v32 constraintLessThanOrEqualToAnchor:v31 constant:-4.0];
+    trailingAnchor6 = [(UIStackView *)self->_titleStackView trailingAnchor];
+    actionButton = [(PPKQuickLookBannerView *)self actionButton];
+    leadingAnchor8 = [actionButton leadingAnchor];
+    v30 = [trailingAnchor6 constraintLessThanOrEqualToAnchor:leadingAnchor8 constant:-4.0];
     v9 = self->_titleStackLeadingConstraint;
     v75[13] = v30;
     v75[14] = v9;
-    v29 = [(PPKQuickLookBannerView *)self actionButton];
-    v27 = [v29 trailingAnchor];
-    v28 = [(PPKQuickLookBannerView *)self closeButton];
-    v26 = [v28 leadingAnchor];
-    v25 = [v27 constraintEqualToAnchor:v26 constant:-16.0];
+    actionButton2 = [(PPKQuickLookBannerView *)self actionButton];
+    trailingAnchor7 = [actionButton2 trailingAnchor];
+    closeButton = [(PPKQuickLookBannerView *)self closeButton];
+    leadingAnchor9 = [closeButton leadingAnchor];
+    v25 = [trailingAnchor7 constraintEqualToAnchor:leadingAnchor9 constant:-16.0];
     v75[15] = v25;
-    v24 = [(PPKQuickLookBannerView *)self actionButton];
-    v23 = [v24 centerYAnchor];
-    v22 = [(UILayoutGuide *)self->_contentLayoutGuide centerYAnchor];
-    v10 = [v23 constraintEqualToAnchor:v22];
+    actionButton3 = [(PPKQuickLookBannerView *)self actionButton];
+    centerYAnchor5 = [actionButton3 centerYAnchor];
+    centerYAnchor6 = [(UILayoutGuide *)self->_contentLayoutGuide centerYAnchor];
+    v10 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     v75[16] = v10;
-    v11 = [(PPKQuickLookBannerView *)self closeButton];
-    v12 = [v11 centerYAnchor];
-    v13 = [(UILayoutGuide *)self->_contentLayoutGuide centerYAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    closeButton2 = [(PPKQuickLookBannerView *)self closeButton];
+    centerYAnchor7 = [closeButton2 centerYAnchor];
+    centerYAnchor8 = [(UILayoutGuide *)self->_contentLayoutGuide centerYAnchor];
+    v14 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
     v75[17] = v14;
-    v15 = [(PPKQuickLookBannerView *)self closeButton];
-    v16 = [v15 trailingAnchor];
-    v17 = [(UILayoutGuide *)self->_contentLayoutGuide trailingAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    closeButton3 = [(PPKQuickLookBannerView *)self closeButton];
+    trailingAnchor8 = [closeButton3 trailingAnchor];
+    trailingAnchor9 = [(UILayoutGuide *)self->_contentLayoutGuide trailingAnchor];
+    v18 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9];
     v75[18] = v18;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v75 count:19];
     v20 = self->_compactSizeConstraints;
@@ -459,103 +459,103 @@ LABEL_34:
   extraCompactSizeConstraints = self->_extraCompactSizeConstraints;
   if (!extraCompactSizeConstraints)
   {
-    v4 = [(UIStackView *)self->_titleStackView leadingAnchor];
-    v5 = [(PPKQuickLookBannerView *)self imageView];
-    v6 = [v5 trailingAnchor];
-    v7 = [v4 constraintEqualToAnchor:v6 constant:4.0];
+    leadingAnchor = [(UIStackView *)self->_titleStackView leadingAnchor];
+    imageView = [(PPKQuickLookBannerView *)self imageView];
+    trailingAnchor = [imageView trailingAnchor];
+    v7 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:4.0];
     titleStackLeadingConstraint = self->_titleStackLeadingConstraint;
     self->_titleStackLeadingConstraint = v7;
 
-    v9 = [(UIStackView *)self->_titleStackView leadingAnchor];
-    v10 = [(UILayoutGuide *)self->_contentLayoutGuide leadingAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    leadingAnchor2 = [(UIStackView *)self->_titleStackView leadingAnchor];
+    leadingAnchor3 = [(UILayoutGuide *)self->_contentLayoutGuide leadingAnchor];
+    v11 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3];
 
     LODWORD(v12) = 1148829696;
     v57 = v11;
     [v11 setPriority:v12];
-    v80 = [(UIView *)self->_backgroundView topAnchor];
-    v79 = [(PPKQuickLookBannerView *)self topAnchor];
-    v78 = [v80 constraintEqualToAnchor:v79];
+    topAnchor = [(UIView *)self->_backgroundView topAnchor];
+    topAnchor2 = [(PPKQuickLookBannerView *)self topAnchor];
+    v78 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v81[0] = v78;
-    v77 = [(UIView *)self->_backgroundView leadingAnchor];
-    v76 = [(PPKQuickLookBannerView *)self leadingAnchor];
-    v75 = [v77 constraintEqualToAnchor:v76];
+    leadingAnchor4 = [(UIView *)self->_backgroundView leadingAnchor];
+    leadingAnchor5 = [(PPKQuickLookBannerView *)self leadingAnchor];
+    v75 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
     v81[1] = v75;
-    v74 = [(UIView *)self->_backgroundView trailingAnchor];
-    v73 = [(PPKQuickLookBannerView *)self trailingAnchor];
-    v72 = [v74 constraintEqualToAnchor:v73];
+    trailingAnchor2 = [(UIView *)self->_backgroundView trailingAnchor];
+    trailingAnchor3 = [(PPKQuickLookBannerView *)self trailingAnchor];
+    v72 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
     v81[2] = v72;
-    v71 = [(UIView *)self->_backgroundView bottomAnchor];
-    v70 = [(PPKQuickLookBannerView *)self bottomAnchor];
-    v69 = [v71 constraintEqualToAnchor:v70];
+    bottomAnchor = [(UIView *)self->_backgroundView bottomAnchor];
+    bottomAnchor2 = [(PPKQuickLookBannerView *)self bottomAnchor];
+    v69 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v81[3] = v69;
-    v68 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
-    v67 = [(PPKQuickLookBannerView *)self topAnchor];
-    v66 = [v68 constraintEqualToAnchor:v67 constant:16.0];
+    topAnchor3 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
+    topAnchor4 = [(PPKQuickLookBannerView *)self topAnchor];
+    v66 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:16.0];
     v81[4] = v66;
-    v65 = [(UILayoutGuide *)self->_contentLayoutGuide leadingAnchor];
-    v64 = [(PPKQuickLookBannerView *)self leadingAnchor];
-    v63 = [v65 constraintEqualToAnchor:v64 constant:12.0];
+    leadingAnchor6 = [(UILayoutGuide *)self->_contentLayoutGuide leadingAnchor];
+    leadingAnchor7 = [(PPKQuickLookBannerView *)self leadingAnchor];
+    v63 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7 constant:12.0];
     v81[5] = v63;
-    v62 = [(UILayoutGuide *)self->_contentLayoutGuide trailingAnchor];
-    v61 = [(PPKQuickLookBannerView *)self trailingAnchor];
-    v60 = [v62 constraintEqualToAnchor:v61 constant:-20.0];
+    trailingAnchor4 = [(UILayoutGuide *)self->_contentLayoutGuide trailingAnchor];
+    trailingAnchor5 = [(PPKQuickLookBannerView *)self trailingAnchor];
+    v60 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:-20.0];
     v81[6] = v60;
-    v59 = [(UILayoutGuide *)self->_contentLayoutGuide bottomAnchor];
-    v58 = [(PPKQuickLookBannerView *)self bottomAnchor];
-    v56 = [v59 constraintEqualToAnchor:v58 constant:-16.0];
+    bottomAnchor3 = [(UILayoutGuide *)self->_contentLayoutGuide bottomAnchor];
+    bottomAnchor4 = [(PPKQuickLookBannerView *)self bottomAnchor];
+    v56 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-16.0];
     v81[7] = v56;
-    v55 = [(PPKQuickLookBannerView *)self imageView];
-    v54 = [v55 topAnchor];
-    v53 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
-    v52 = [v54 constraintEqualToAnchor:v53];
+    imageView2 = [(PPKQuickLookBannerView *)self imageView];
+    topAnchor5 = [imageView2 topAnchor];
+    topAnchor6 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
+    v52 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
     v81[8] = v52;
-    v51 = [(PPKQuickLookBannerView *)self imageView];
-    v50 = [v51 leadingAnchor];
-    v49 = [(UILayoutGuide *)self->_contentLayoutGuide leadingAnchor];
-    v48 = [v50 constraintEqualToAnchor:v49];
+    imageView3 = [(PPKQuickLookBannerView *)self imageView];
+    leadingAnchor8 = [imageView3 leadingAnchor];
+    leadingAnchor9 = [(UILayoutGuide *)self->_contentLayoutGuide leadingAnchor];
+    v48 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9];
     v81[9] = v48;
-    v47 = [(UIStackView *)self->_titleStackView topAnchor];
-    v46 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
-    v45 = [v47 constraintEqualToAnchor:v46];
+    topAnchor7 = [(UIStackView *)self->_titleStackView topAnchor];
+    topAnchor8 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
+    v45 = [topAnchor7 constraintEqualToAnchor:topAnchor8];
     v81[10] = v45;
-    v43 = [(UIStackView *)self->_titleStackView trailingAnchor];
-    v44 = [(PPKQuickLookBannerView *)self closeButton];
-    v42 = [v44 leadingAnchor];
-    v41 = [v43 constraintEqualToAnchor:v42 constant:-4.0];
+    trailingAnchor6 = [(UIStackView *)self->_titleStackView trailingAnchor];
+    closeButton = [(PPKQuickLookBannerView *)self closeButton];
+    leadingAnchor10 = [closeButton leadingAnchor];
+    v41 = [trailingAnchor6 constraintEqualToAnchor:leadingAnchor10 constant:-4.0];
     v13 = self->_titleStackLeadingConstraint;
     v81[11] = v41;
     v81[12] = v13;
     v81[13] = v11;
-    v40 = [(PPKQuickLookBannerView *)self closeButton];
-    v39 = [v40 topAnchor];
-    v38 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
-    v37 = [v39 constraintEqualToAnchor:v38];
+    closeButton2 = [(PPKQuickLookBannerView *)self closeButton];
+    topAnchor9 = [closeButton2 topAnchor];
+    topAnchor10 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
+    v37 = [topAnchor9 constraintEqualToAnchor:topAnchor10];
     v81[14] = v37;
-    v36 = [(PPKQuickLookBannerView *)self closeButton];
-    v35 = [v36 trailingAnchor];
-    v34 = [(UILayoutGuide *)self->_contentLayoutGuide trailingAnchor];
-    v33 = [v35 constraintEqualToAnchor:v34];
+    closeButton3 = [(PPKQuickLookBannerView *)self closeButton];
+    trailingAnchor7 = [closeButton3 trailingAnchor];
+    trailingAnchor8 = [(UILayoutGuide *)self->_contentLayoutGuide trailingAnchor];
+    v33 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
     v81[15] = v33;
-    v32 = [(PPKQuickLookBannerView *)self actionButton];
-    v31 = [v32 topAnchor];
-    v30 = [(UIStackView *)self->_titleStackView bottomAnchor];
-    v29 = [v31 constraintEqualToAnchor:v30 constant:10.0];
+    actionButton = [(PPKQuickLookBannerView *)self actionButton];
+    topAnchor11 = [actionButton topAnchor];
+    bottomAnchor5 = [(UIStackView *)self->_titleStackView bottomAnchor];
+    v29 = [topAnchor11 constraintEqualToAnchor:bottomAnchor5 constant:10.0];
     v81[16] = v29;
-    v28 = [(PPKQuickLookBannerView *)self actionButton];
-    v27 = [v28 leadingAnchor];
-    v26 = [(UIStackView *)self->_titleStackView leadingAnchor];
-    v14 = [v27 constraintEqualToAnchor:v26];
+    actionButton2 = [(PPKQuickLookBannerView *)self actionButton];
+    leadingAnchor11 = [actionButton2 leadingAnchor];
+    leadingAnchor12 = [(UIStackView *)self->_titleStackView leadingAnchor];
+    v14 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12];
     v81[17] = v14;
-    v15 = [(PPKQuickLookBannerView *)self actionButton];
-    v16 = [v15 trailingAnchor];
-    v17 = [(UILayoutGuide *)self->_contentLayoutGuide trailingAnchor];
-    v18 = [v16 constraintLessThanOrEqualToAnchor:v17];
+    actionButton3 = [(PPKQuickLookBannerView *)self actionButton];
+    trailingAnchor9 = [actionButton3 trailingAnchor];
+    trailingAnchor10 = [(UILayoutGuide *)self->_contentLayoutGuide trailingAnchor];
+    v18 = [trailingAnchor9 constraintLessThanOrEqualToAnchor:trailingAnchor10];
     v81[18] = v18;
-    v19 = [(PPKQuickLookBannerView *)self actionButton];
-    v20 = [v19 bottomAnchor];
-    v21 = [(UILayoutGuide *)self->_contentLayoutGuide bottomAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    actionButton4 = [(PPKQuickLookBannerView *)self actionButton];
+    bottomAnchor6 = [actionButton4 bottomAnchor];
+    bottomAnchor7 = [(UILayoutGuide *)self->_contentLayoutGuide bottomAnchor];
+    v22 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
     v81[19] = v22;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v81 count:20];
     v24 = self->_extraCompactSizeConstraints;
@@ -584,132 +584,132 @@ LABEL_34:
     }
 
     v5 = _UISolariumEnabled();
-    v6 = [(UIStackView *)self->_titleStackView leadingAnchor];
-    v7 = [(PPKQuickLookBannerView *)self imageView];
-    v8 = [v7 trailingAnchor];
-    v9 = [v6 constraintEqualToAnchor:v8 constant:4.0];
+    leadingAnchor = [(UIStackView *)self->_titleStackView leadingAnchor];
+    imageView = [(PPKQuickLookBannerView *)self imageView];
+    trailingAnchor = [imageView trailingAnchor];
+    v9 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:4.0];
     titleStackLeadingConstraint = self->_titleStackLeadingConstraint;
     self->_titleStackLeadingConstraint = v9;
 
-    v103 = [(UIView *)self->_backgroundView topAnchor];
-    v102 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
-    v101 = [v103 constraintEqualToAnchor:v102];
+    topAnchor = [(UIView *)self->_backgroundView topAnchor];
+    topAnchor2 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
+    v101 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v104[0] = v101;
-    v100 = [(UIView *)self->_backgroundView leadingAnchor];
-    v99 = [(UILayoutGuide *)self->_contentLayoutGuide leadingAnchor];
-    v98 = [v100 constraintEqualToAnchor:v99];
+    leadingAnchor2 = [(UIView *)self->_backgroundView leadingAnchor];
+    leadingAnchor3 = [(UILayoutGuide *)self->_contentLayoutGuide leadingAnchor];
+    v98 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3];
     v104[1] = v98;
-    v97 = [(UIView *)self->_backgroundView trailingAnchor];
-    v96 = [(UILayoutGuide *)self->_contentLayoutGuide trailingAnchor];
-    v95 = [v97 constraintEqualToAnchor:v96];
+    trailingAnchor2 = [(UIView *)self->_backgroundView trailingAnchor];
+    trailingAnchor3 = [(UILayoutGuide *)self->_contentLayoutGuide trailingAnchor];
+    v95 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
     v104[2] = v95;
-    v94 = [(UIView *)self->_backgroundView bottomAnchor];
-    v93 = [(UILayoutGuide *)self->_contentLayoutGuide bottomAnchor];
-    v92 = [v94 constraintEqualToAnchor:v93];
+    bottomAnchor = [(UIView *)self->_backgroundView bottomAnchor];
+    bottomAnchor2 = [(UILayoutGuide *)self->_contentLayoutGuide bottomAnchor];
+    v92 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v104[3] = v92;
-    v91 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
-    v90 = [(PPKQuickLookBannerView *)self topAnchor];
-    v89 = [v91 constraintEqualToAnchor:v90 constant:16.0];
+    topAnchor3 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
+    topAnchor4 = [(PPKQuickLookBannerView *)self topAnchor];
+    v89 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:16.0];
     v104[4] = v89;
-    v88 = [(UILayoutGuide *)self->_contentLayoutGuide leadingAnchor];
-    v87 = [(PPKQuickLookBannerView *)self leadingAnchor];
-    v86 = [v88 constraintEqualToAnchor:v87 constant:v4];
+    leadingAnchor4 = [(UILayoutGuide *)self->_contentLayoutGuide leadingAnchor];
+    leadingAnchor5 = [(PPKQuickLookBannerView *)self leadingAnchor];
+    v86 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5 constant:v4];
     v104[5] = v86;
-    v11 = [(UILayoutGuide *)self->_contentLayoutGuide trailingAnchor];
-    v85 = v11;
-    v12 = [(PPKQuickLookBannerView *)self trailingAnchor];
-    v84 = v12;
+    trailingAnchor4 = [(UILayoutGuide *)self->_contentLayoutGuide trailingAnchor];
+    v85 = trailingAnchor4;
+    trailingAnchor5 = [(PPKQuickLookBannerView *)self trailingAnchor];
+    v84 = trailingAnchor5;
     v13 = -16.0;
     if (v5)
     {
       v13 = -12.0;
     }
 
-    v83 = [v11 constraintEqualToAnchor:v12 constant:v13];
+    v83 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:v13];
     v104[6] = v83;
-    v82 = [(UILayoutGuide *)self->_contentLayoutGuide bottomAnchor];
-    v81 = [(PPKQuickLookBannerView *)self bottomAnchor];
-    v80 = [v82 constraintEqualToAnchor:v81 constant:-16.0];
+    bottomAnchor3 = [(UILayoutGuide *)self->_contentLayoutGuide bottomAnchor];
+    bottomAnchor4 = [(PPKQuickLookBannerView *)self bottomAnchor];
+    v80 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-16.0];
     v104[7] = v80;
-    v79 = [(PPKQuickLookBannerView *)self imageView];
-    v78 = [v79 leadingAnchor];
-    v77 = [(UILayoutGuide *)self->_contentLayoutGuide leadingAnchor];
-    v76 = [v78 constraintEqualToAnchor:v77 constant:14.0];
+    imageView2 = [(PPKQuickLookBannerView *)self imageView];
+    leadingAnchor6 = [imageView2 leadingAnchor];
+    leadingAnchor7 = [(UILayoutGuide *)self->_contentLayoutGuide leadingAnchor];
+    v76 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7 constant:14.0];
     v104[8] = v76;
-    v75 = [(PPKQuickLookBannerView *)self imageView];
-    v74 = [v75 centerYAnchor];
-    v73 = [(UILayoutGuide *)self->_contentLayoutGuide centerYAnchor];
-    v72 = [v74 constraintEqualToAnchor:v73];
+    imageView3 = [(PPKQuickLookBannerView *)self imageView];
+    centerYAnchor = [imageView3 centerYAnchor];
+    centerYAnchor2 = [(UILayoutGuide *)self->_contentLayoutGuide centerYAnchor];
+    v72 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v104[9] = v72;
-    v71 = [(PPKQuickLookBannerView *)self imageView];
-    v70 = [v71 topAnchor];
-    v69 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
-    v68 = [v70 constraintGreaterThanOrEqualToAnchor:v69];
+    imageView4 = [(PPKQuickLookBannerView *)self imageView];
+    topAnchor5 = [imageView4 topAnchor];
+    topAnchor6 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
+    v68 = [topAnchor5 constraintGreaterThanOrEqualToAnchor:topAnchor6];
     v104[10] = v68;
-    v67 = [(PPKQuickLookBannerView *)self imageView];
-    v66 = [v67 bottomAnchor];
-    v65 = [(UILayoutGuide *)self->_contentLayoutGuide bottomAnchor];
-    v64 = [v66 constraintLessThanOrEqualToAnchor:v65];
+    imageView5 = [(PPKQuickLookBannerView *)self imageView];
+    bottomAnchor5 = [imageView5 bottomAnchor];
+    bottomAnchor6 = [(UILayoutGuide *)self->_contentLayoutGuide bottomAnchor];
+    v64 = [bottomAnchor5 constraintLessThanOrEqualToAnchor:bottomAnchor6];
     v104[11] = v64;
-    v63 = [(UIStackView *)self->_titleStackView centerYAnchor];
-    v62 = [(UILayoutGuide *)self->_contentLayoutGuide centerYAnchor];
-    v61 = [v63 constraintEqualToAnchor:v62];
+    centerYAnchor3 = [(UIStackView *)self->_titleStackView centerYAnchor];
+    centerYAnchor4 = [(UILayoutGuide *)self->_contentLayoutGuide centerYAnchor];
+    v61 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v104[12] = v61;
-    v59 = [(UIStackView *)self->_titleStackView trailingAnchor];
-    v60 = [(PPKQuickLookBannerView *)self actionButton];
-    v58 = [v60 leadingAnchor];
-    v57 = [v59 constraintLessThanOrEqualToAnchor:v58 constant:-8.0];
+    trailingAnchor6 = [(UIStackView *)self->_titleStackView trailingAnchor];
+    actionButton = [(PPKQuickLookBannerView *)self actionButton];
+    leadingAnchor8 = [actionButton leadingAnchor];
+    v57 = [trailingAnchor6 constraintLessThanOrEqualToAnchor:leadingAnchor8 constant:-8.0];
     v104[13] = v57;
-    v56 = [(UIStackView *)self->_titleStackView topAnchor];
-    v55 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
-    v54 = [v56 constraintGreaterThanOrEqualToAnchor:v55 constant:8.0];
+    topAnchor7 = [(UIStackView *)self->_titleStackView topAnchor];
+    topAnchor8 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
+    v54 = [topAnchor7 constraintGreaterThanOrEqualToAnchor:topAnchor8 constant:8.0];
     v104[14] = v54;
-    v53 = [(UIStackView *)self->_titleStackView bottomAnchor];
-    v52 = [(UILayoutGuide *)self->_contentLayoutGuide bottomAnchor];
-    v51 = [v53 constraintLessThanOrEqualToAnchor:v52 constant:-8.0];
+    bottomAnchor7 = [(UIStackView *)self->_titleStackView bottomAnchor];
+    bottomAnchor8 = [(UILayoutGuide *)self->_contentLayoutGuide bottomAnchor];
+    v51 = [bottomAnchor7 constraintLessThanOrEqualToAnchor:bottomAnchor8 constant:-8.0];
     v14 = self->_titleStackLeadingConstraint;
     v104[15] = v51;
     v104[16] = v14;
-    v50 = [(PPKQuickLookBannerView *)self actionButton];
-    v49 = [v50 topAnchor];
-    v48 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
-    v47 = [v49 constraintGreaterThanOrEqualToAnchor:v48 constant:8.0];
+    actionButton2 = [(PPKQuickLookBannerView *)self actionButton];
+    topAnchor9 = [actionButton2 topAnchor];
+    topAnchor10 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
+    v47 = [topAnchor9 constraintGreaterThanOrEqualToAnchor:topAnchor10 constant:8.0];
     v104[17] = v47;
-    v46 = [(PPKQuickLookBannerView *)self actionButton];
-    v45 = [v46 bottomAnchor];
-    v44 = [(UILayoutGuide *)self->_contentLayoutGuide bottomAnchor];
-    v43 = [v45 constraintLessThanOrEqualToAnchor:v44 constant:-8.0];
+    actionButton3 = [(PPKQuickLookBannerView *)self actionButton];
+    bottomAnchor9 = [actionButton3 bottomAnchor];
+    bottomAnchor10 = [(UILayoutGuide *)self->_contentLayoutGuide bottomAnchor];
+    v43 = [bottomAnchor9 constraintLessThanOrEqualToAnchor:bottomAnchor10 constant:-8.0];
     v104[18] = v43;
-    v42 = [(PPKQuickLookBannerView *)self actionButton];
-    v40 = [v42 trailingAnchor];
-    v41 = [(PPKQuickLookBannerView *)self closeButton];
-    v39 = [v41 leadingAnchor];
-    v38 = [v40 constraintEqualToAnchor:v39 constant:-14.0];
+    actionButton4 = [(PPKQuickLookBannerView *)self actionButton];
+    trailingAnchor7 = [actionButton4 trailingAnchor];
+    closeButton = [(PPKQuickLookBannerView *)self closeButton];
+    leadingAnchor9 = [closeButton leadingAnchor];
+    v38 = [trailingAnchor7 constraintEqualToAnchor:leadingAnchor9 constant:-14.0];
     v104[19] = v38;
-    v37 = [(PPKQuickLookBannerView *)self actionButton];
-    v36 = [v37 centerYAnchor];
-    v35 = [(UILayoutGuide *)self->_contentLayoutGuide centerYAnchor];
-    v34 = [v36 constraintEqualToAnchor:v35];
+    actionButton5 = [(PPKQuickLookBannerView *)self actionButton];
+    centerYAnchor5 = [actionButton5 centerYAnchor];
+    centerYAnchor6 = [(UILayoutGuide *)self->_contentLayoutGuide centerYAnchor];
+    v34 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     v104[20] = v34;
-    v33 = [(PPKQuickLookBannerView *)self closeButton];
-    v32 = [v33 trailingAnchor];
-    v31 = [(UILayoutGuide *)self->_contentLayoutGuide trailingAnchor];
-    v30 = [v32 constraintEqualToAnchor:v31 constant:-14.0];
+    closeButton2 = [(PPKQuickLookBannerView *)self closeButton];
+    trailingAnchor8 = [closeButton2 trailingAnchor];
+    trailingAnchor9 = [(UILayoutGuide *)self->_contentLayoutGuide trailingAnchor];
+    v30 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9 constant:-14.0];
     v104[21] = v30;
-    v29 = [(PPKQuickLookBannerView *)self closeButton];
-    v28 = [v29 centerYAnchor];
-    v27 = [(UILayoutGuide *)self->_contentLayoutGuide centerYAnchor];
-    v15 = [v28 constraintEqualToAnchor:v27];
+    closeButton3 = [(PPKQuickLookBannerView *)self closeButton];
+    centerYAnchor7 = [closeButton3 centerYAnchor];
+    centerYAnchor8 = [(UILayoutGuide *)self->_contentLayoutGuide centerYAnchor];
+    v15 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
     v104[22] = v15;
-    v16 = [(PPKQuickLookBannerView *)self closeButton];
-    v17 = [v16 topAnchor];
-    v18 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
-    v19 = [v17 constraintGreaterThanOrEqualToAnchor:v18];
+    closeButton4 = [(PPKQuickLookBannerView *)self closeButton];
+    topAnchor11 = [closeButton4 topAnchor];
+    topAnchor12 = [(UILayoutGuide *)self->_contentLayoutGuide topAnchor];
+    v19 = [topAnchor11 constraintGreaterThanOrEqualToAnchor:topAnchor12];
     v104[23] = v19;
-    v20 = [(PPKQuickLookBannerView *)self closeButton];
-    v21 = [v20 bottomAnchor];
-    v22 = [(UILayoutGuide *)self->_contentLayoutGuide bottomAnchor];
-    v23 = [v21 constraintLessThanOrEqualToAnchor:v22];
+    closeButton5 = [(PPKQuickLookBannerView *)self closeButton];
+    bottomAnchor11 = [closeButton5 bottomAnchor];
+    bottomAnchor12 = [(UILayoutGuide *)self->_contentLayoutGuide bottomAnchor];
+    v23 = [bottomAnchor11 constraintLessThanOrEqualToAnchor:bottomAnchor12];
     v104[24] = v23;
     v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v104 count:25];
     v25 = self->_regularSizeConstraints;
@@ -721,65 +721,65 @@ LABEL_34:
   return regularSizeConstraints;
 }
 
-- (void)populateWithConfiguration:(id)a3
+- (void)populateWithConfiguration:(id)configuration
 {
-  v25 = a3;
-  [(PPKQuickLookBannerView *)self _updateImageViewWithConfiguration:v25];
-  v4 = [v25 title];
-  v5 = [(PPKQuickLookBannerView *)self title];
-  [v5 setText:v4];
+  configurationCopy = configuration;
+  [(PPKQuickLookBannerView *)self _updateImageViewWithConfiguration:configurationCopy];
+  title = [configurationCopy title];
+  title2 = [(PPKQuickLookBannerView *)self title];
+  [title2 setText:title];
 
-  v6 = [v25 subtitle];
-  v7 = [(PPKQuickLookBannerView *)self subtitle];
-  [v7 setText:v6];
+  subtitle = [configurationCopy subtitle];
+  subtitle2 = [(PPKQuickLookBannerView *)self subtitle];
+  [subtitle2 setText:subtitle];
 
-  v8 = [v25 subtitle];
-  v9 = [v8 length] == 0;
-  v10 = [(PPKQuickLookBannerView *)self subtitle];
-  [v10 setHidden:v9];
+  subtitle3 = [configurationCopy subtitle];
+  v9 = [subtitle3 length] == 0;
+  subtitle4 = [(PPKQuickLookBannerView *)self subtitle];
+  [subtitle4 setHidden:v9];
 
-  v11 = [(PPKQuickLookBannerView *)self actionButton];
-  [(PPKQuickLookBannerView *)self clearExistingActions:v11];
+  actionButton = [(PPKQuickLookBannerView *)self actionButton];
+  [(PPKQuickLookBannerView *)self clearExistingActions:actionButton];
 
-  v12 = [(PPKQuickLookBannerView *)self closeButton];
-  [(PPKQuickLookBannerView *)self clearExistingActions:v12];
+  closeButton = [(PPKQuickLookBannerView *)self closeButton];
+  [(PPKQuickLookBannerView *)self clearExistingActions:closeButton];
 
-  v13 = [v25 primaryAction];
+  primaryAction = [configurationCopy primaryAction];
 
-  if (v13)
+  if (primaryAction)
   {
-    v14 = [(PPKQuickLookBannerView *)self actionButton];
-    v15 = [v25 primaryAction];
-    [v14 addAction:v15 forControlEvents:64];
+    actionButton2 = [(PPKQuickLookBannerView *)self actionButton];
+    primaryAction2 = [configurationCopy primaryAction];
+    [actionButton2 addAction:primaryAction2 forControlEvents:64];
 
-    v16 = [(PPKQuickLookBannerView *)self actionButton];
-    v17 = [v16 configuration];
-    v18 = [v17 copy];
+    actionButton3 = [(PPKQuickLookBannerView *)self actionButton];
+    configuration = [actionButton3 configuration];
+    v18 = [configuration copy];
 
-    v19 = [v25 primaryAction];
-    v20 = [v19 title];
-    [v18 setTitle:v20];
+    primaryAction3 = [configurationCopy primaryAction];
+    title3 = [primaryAction3 title];
+    [v18 setTitle:title3];
 
-    v21 = [(PPKQuickLookBannerView *)self actionButton];
-    [v21 setConfiguration:v18];
+    actionButton4 = [(PPKQuickLookBannerView *)self actionButton];
+    [actionButton4 setConfiguration:v18];
   }
 
-  v22 = [v25 dismissAction];
+  dismissAction = [configurationCopy dismissAction];
 
-  if (v22)
+  if (dismissAction)
   {
-    v23 = [(PPKQuickLookBannerView *)self closeButton];
-    v24 = [v25 dismissAction];
-    [v23 addAction:v24 forControlEvents:64];
+    closeButton2 = [(PPKQuickLookBannerView *)self closeButton];
+    dismissAction2 = [configurationCopy dismissAction];
+    [closeButton2 addAction:dismissAction2 forControlEvents:64];
   }
 }
 
-- (void)_updateImageViewWithConfiguration:(id)a3
+- (void)_updateImageViewWithConfiguration:(id)configuration
 {
-  v6 = [a3 image];
-  v4 = [(PPKQuickLookBannerView *)self imageView];
-  [v4 setImage:v6];
-  if (v6)
+  image = [configuration image];
+  imageView = [(PPKQuickLookBannerView *)self imageView];
+  [imageView setImage:image];
+  if (image)
   {
     v5 = 4.0;
   }
@@ -789,20 +789,20 @@ LABEL_34:
     v5 = 0.0;
   }
 
-  [(NSLayoutConstraint *)self->_imageViewCollapsingConstraint setActive:v6 == 0];
+  [(NSLayoutConstraint *)self->_imageViewCollapsingConstraint setActive:image == 0];
   [(NSLayoutConstraint *)self->_titleStackLeadingConstraint setConstant:v5];
-  [v4 setHidden:v6 == 0];
+  [imageView setHidden:image == 0];
 }
 
-- (void)clearExistingActions:(id)a3
+- (void)clearExistingActions:(id)actions
 {
-  v3 = a3;
+  actionsCopy = actions;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __47__PPKQuickLookBannerView_clearExistingActions___block_invoke;
   v5[3] = &unk_1E845C5A0;
-  v6 = v3;
-  v4 = v3;
+  v6 = actionsCopy;
+  v4 = actionsCopy;
   [v4 enumerateEventHandlers:v5];
 }
 
@@ -818,16 +818,16 @@ uint64_t __47__PPKQuickLookBannerView_clearExistingActions___block_invoke(uint64
 
 - (BOOL)_useCompactLayout
 {
-  v2 = [(PPKQuickLookBannerView *)self traitCollection];
-  if ([v2 horizontalSizeClass] == 1)
+  traitCollection = [(PPKQuickLookBannerView *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] == 1)
   {
     v3 = 1;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69DC938] currentDevice];
-    v3 = [v4 userInterfaceIdiom] == 0;
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    v3 = [currentDevice userInterfaceIdiom] == 0;
   }
 
   return v3;
@@ -835,9 +835,9 @@ uint64_t __47__PPKQuickLookBannerView_clearExistingActions___block_invoke(uint64
 
 - (BOOL)_isUsingAccessibilityContentSizeCategory
 {
-  v2 = [(PPKQuickLookBannerView *)self traitCollection];
-  v3 = [v2 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+  traitCollection = [(PPKQuickLookBannerView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   return IsAccessibilityCategory;
 }

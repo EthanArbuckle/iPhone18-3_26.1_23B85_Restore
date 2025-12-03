@@ -1,6 +1,6 @@
 @interface FTPreferences
 - (NSString)domain;
-- (void)setDomain:(id)a3;
+- (void)setDomain:(id)domain;
 @end
 
 @implementation FTPreferences
@@ -13,10 +13,10 @@
   return v2;
 }
 
-- (void)setDomain:(id)a3
+- (void)setDomain:(id)domain
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v4 = self;
+  selfCopy = self;
   sub_100246424();
 }
 

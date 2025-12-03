@@ -1,28 +1,28 @@
 @interface DNDSIDSRecordID
-+ (id)newWithDictionaryRepresentation:(id)a3 context:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (DNDSIDSRecordID)initWithIdentifier:(id)a3 zone:(id)a4;
++ (id)newWithDictionaryRepresentation:(id)representation context:(id)context;
+- (BOOL)isEqual:(id)equal;
+- (DNDSIDSRecordID)initWithIdentifier:(id)identifier zone:(id)zone;
 - (NSString)description;
-- (id)_initWithRecordID:(id)a3;
-- (id)dictionaryRepresentationWithContext:(id)a3;
+- (id)_initWithRecordID:(id)d;
+- (id)dictionaryRepresentationWithContext:(id)context;
 @end
 
 @implementation DNDSIDSRecordID
 
-- (DNDSIDSRecordID)initWithIdentifier:(id)a3 zone:(id)a4
+- (DNDSIDSRecordID)initWithIdentifier:(id)identifier zone:(id)zone
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  zoneCopy = zone;
   v14.receiver = self;
   v14.super_class = DNDSIDSRecordID;
   v8 = [(DNDSIDSRecordID *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [zoneCopy copy];
     zone = v8->_zone;
     v8->_zone = v11;
   }
@@ -30,20 +30,20 @@
   return v8;
 }
 
-- (id)_initWithRecordID:(id)a3
+- (id)_initWithRecordID:(id)d
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v4 zone];
+  dCopy = d;
+  identifier = [dCopy identifier];
+  v6 = [dCopy zone];
 
-  v7 = [(DNDSIDSRecordID *)self initWithIdentifier:v5 zone:v6];
+  v7 = [(DNDSIDSRecordID *)self initWithIdentifier:identifier zone:v6];
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -53,13 +53,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(DNDSIDSRecordID *)self identifier];
-      v8 = [(DNDSIDSRecordID *)v6 identifier];
-      if (v7 != v8)
+      v6 = equalCopy;
+      identifier = [(DNDSIDSRecordID *)self identifier];
+      identifier2 = [(DNDSIDSRecordID *)v6 identifier];
+      if (identifier != identifier2)
       {
-        v9 = [(DNDSIDSRecordID *)self identifier];
-        if (!v9)
+        identifier3 = [(DNDSIDSRecordID *)self identifier];
+        if (!identifier3)
         {
           v13 = 0;
 LABEL_24:
@@ -67,9 +67,9 @@ LABEL_24:
           goto LABEL_25;
         }
 
-        v3 = v9;
-        v10 = [(DNDSIDSRecordID *)v6 identifier];
-        if (!v10)
+        v3 = identifier3;
+        identifier4 = [(DNDSIDSRecordID *)v6 identifier];
+        if (!identifier4)
         {
           v13 = 0;
 LABEL_23:
@@ -77,9 +77,9 @@ LABEL_23:
           goto LABEL_24;
         }
 
-        v11 = [(DNDSIDSRecordID *)self identifier];
-        v12 = [(DNDSIDSRecordID *)v6 identifier];
-        if (![v11 isEqual:v12])
+        identifier5 = [(DNDSIDSRecordID *)self identifier];
+        identifier6 = [(DNDSIDSRecordID *)v6 identifier];
+        if (![identifier5 isEqual:identifier6])
         {
           v13 = 0;
 LABEL_22:
@@ -87,9 +87,9 @@ LABEL_22:
           goto LABEL_23;
         }
 
-        v24 = v12;
-        v25 = v11;
-        v26 = v10;
+        v24 = identifier6;
+        v25 = identifier5;
+        v26 = identifier4;
       }
 
       v14 = [(DNDSIDSRecordID *)self zone];
@@ -131,10 +131,10 @@ LABEL_22:
         }
       }
 
-      v11 = v25;
-      v10 = v26;
-      v12 = v24;
-      if (v7 == v8)
+      identifier5 = v25;
+      identifier4 = v26;
+      identifier6 = v24;
+      if (identifier == identifier2)
       {
         goto LABEL_24;
       }
@@ -154,24 +154,24 @@ LABEL_25:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(DNDSIDSRecordID *)self identifier];
+  identifier = [(DNDSIDSRecordID *)self identifier];
   v6 = [(DNDSIDSRecordID *)self zone];
-  v7 = [v3 stringWithFormat:@"<%@: %p identifier: %@; zone: %@>", v4, self, v5, v6];;
+  v7 = [v3 stringWithFormat:@"<%@: %p identifier: %@; zone: %@>", v4, self, identifier, v6];;
 
   return v7;
 }
 
-+ (id)newWithDictionaryRepresentation:(id)a3 context:(id)a4
++ (id)newWithDictionaryRepresentation:(id)representation context:(id)context
 {
-  v5 = a3;
-  v6 = [v5 bs_safeStringForKey:@"identifier"];
-  v7 = [v5 bs_safeStringForKey:@"zone"];
+  representationCopy = representation;
+  v6 = [representationCopy bs_safeStringForKey:@"identifier"];
+  v7 = [representationCopy bs_safeStringForKey:@"zone"];
 
-  v8 = [[a1 alloc] initWithIdentifier:v6 zone:v7];
+  v8 = [[self alloc] initWithIdentifier:v6 zone:v7];
   return v8;
 }
 
-- (id)dictionaryRepresentationWithContext:(id)a3
+- (id)dictionaryRepresentationWithContext:(id)context
 {
   v8[2] = *MEMORY[0x277D85DE8];
   v7[0] = @"identifier";

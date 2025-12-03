@@ -1,5 +1,5 @@
 @interface HFAddAndSetupNewAccessoriesHandler
-+ (id)addAndSetupNewAccessoriesForHome:(id)a3 room:(id)a4;
++ (id)addAndSetupNewAccessoriesForHome:(id)home room:(id)room;
 + (id)sharedHandler;
 - (HFAddAndSetupNewAccessoriesHandler)init;
 @end
@@ -38,19 +38,19 @@ void __51__HFAddAndSetupNewAccessoriesHandler_sharedHandler__block_invoke()
   return result;
 }
 
-+ (id)addAndSetupNewAccessoriesForHome:(id)a3 room:(id)a4
++ (id)addAndSetupNewAccessoriesForHome:(id)home room:(id)room
 {
-  v5 = a3;
-  v6 = a4;
+  homeCopy = home;
+  roomCopy = room;
   v7 = MEMORY[0x277D2C900];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __76__HFAddAndSetupNewAccessoriesHandler_addAndSetupNewAccessoriesForHome_room___block_invoke;
   v16 = &unk_277DF28D8;
-  v17 = v5;
-  v18 = v6;
-  v8 = v6;
-  v9 = v5;
+  v17 = homeCopy;
+  v18 = roomCopy;
+  v8 = roomCopy;
+  v9 = homeCopy;
   v10 = [v7 futureWithBlock:&v13];
   v11 = [v10 addCompletionBlock:{&__block_literal_global_8_2, v13, v14, v15, v16}];
 

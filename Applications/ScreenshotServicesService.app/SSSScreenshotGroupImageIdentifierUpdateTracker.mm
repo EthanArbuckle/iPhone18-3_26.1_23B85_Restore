@@ -3,49 +3,49 @@
 - (SSSScreenshotGroupImageIdentifierUpdateTracker)init;
 - (SSSScreenshotGroupImageIdentifierUpdateTrackerDelegate)delegate;
 - (void)_progressChanged;
-- (void)addScreenshotToGroup:(id)a3;
-- (void)screenshotReceivedImageIdentifierUpdate:(id)a3;
+- (void)addScreenshotToGroup:(id)group;
+- (void)screenshotReceivedImageIdentifierUpdate:(id)update;
 @end
 
 @implementation SSSScreenshotGroupImageIdentifierUpdateTracker
 
-- (void)addScreenshotToGroup:(id)a3
+- (void)addScreenshotToGroup:(id)group
 {
   environmentDescriptionIdentifierForScreenshotsAwaitingImageIdentifierUpdates = self->_environmentDescriptionIdentifierForScreenshotsAwaitingImageIdentifierUpdates;
   ++self->_totalScreenshotsInGroup;
-  v5 = [a3 environmentDescription];
-  v6 = [v5 identifier];
-  [(NSMutableArray *)environmentDescriptionIdentifierForScreenshotsAwaitingImageIdentifierUpdates addObject:v6];
+  environmentDescription = [group environmentDescription];
+  identifier = [environmentDescription identifier];
+  [(NSMutableArray *)environmentDescriptionIdentifierForScreenshotsAwaitingImageIdentifierUpdates addObject:identifier];
 
   [(SSSScreenshotGroupImageIdentifierUpdateTracker *)self _progressChanged];
 }
 
-- (void)screenshotReceivedImageIdentifierUpdate:(id)a3
+- (void)screenshotReceivedImageIdentifierUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [v4 identifier];
+  updateCopy = update;
+  identifier = [updateCopy identifier];
 
-  if (v5)
+  if (identifier)
   {
     ++self->_totalValidScreenshotsInGroup;
   }
 
   environmentDescriptionIdentifierForScreenshotsAwaitingImageIdentifierUpdates = self->_environmentDescriptionIdentifierForScreenshotsAwaitingImageIdentifierUpdates;
-  v7 = [v4 environmentDescription];
-  v8 = [v7 identifier];
-  [(NSMutableArray *)environmentDescriptionIdentifierForScreenshotsAwaitingImageIdentifierUpdates removeObject:v8];
+  environmentDescription = [updateCopy environmentDescription];
+  identifier2 = [environmentDescription identifier];
+  [(NSMutableArray *)environmentDescriptionIdentifierForScreenshotsAwaitingImageIdentifierUpdates removeObject:identifier2];
 
   [(SSSScreenshotGroupImageIdentifierUpdateTracker *)self _progressChanged];
-  v10 = [(SSSScreenshotGroupImageIdentifierUpdateTracker *)self delegate];
-  v9 = [v4 identifier];
+  delegate = [(SSSScreenshotGroupImageIdentifierUpdateTracker *)self delegate];
+  identifier3 = [updateCopy identifier];
 
-  [v10 groupImageIdentifierUpdateTrackerDidReceiveNewScreenshotIdentifier:v9];
+  [delegate groupImageIdentifierUpdateTrackerDidReceiveNewScreenshotIdentifier:identifier3];
 }
 
 - (void)_progressChanged
 {
-  v3 = [(SSSScreenshotGroupImageIdentifierUpdateTracker *)self delegate];
-  [v3 groupImageIdentifierUpdateTrackerChangedProgressTowardsReceivingAllImageIdentifierUpdates:self];
+  delegate = [(SSSScreenshotGroupImageIdentifierUpdateTracker *)self delegate];
+  [delegate groupImageIdentifierUpdateTrackerChangedProgressTowardsReceivingAllImageIdentifierUpdates:self];
 }
 
 - (BOOL)successful

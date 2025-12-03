@@ -1,18 +1,18 @@
 @interface TSPSupportPackageReadCoordinator
 - (BOOL)endReading;
-- (TSPSupportPackageReadCoordinator)initWithContext:(id)a3 package:(id)a4 packageURL:(id)a5 finalizeHandlerQueue:(id)a6 areExternalDataReferencesAllowed:(BOOL)a7 skipDocumentUpgrade:(BOOL)a8 documentLoadValidationPolicy:(id)a9;
-- (void)setDocumentPackageReadCoordinator:(id)a3;
+- (TSPSupportPackageReadCoordinator)initWithContext:(id)context package:(id)package packageURL:(id)l finalizeHandlerQueue:(id)queue areExternalDataReferencesAllowed:(BOOL)allowed skipDocumentUpgrade:(BOOL)upgrade documentLoadValidationPolicy:(id)policy;
+- (void)setDocumentPackageReadCoordinator:(id)coordinator;
 @end
 
 @implementation TSPSupportPackageReadCoordinator
 
-- (TSPSupportPackageReadCoordinator)initWithContext:(id)a3 package:(id)a4 packageURL:(id)a5 finalizeHandlerQueue:(id)a6 areExternalDataReferencesAllowed:(BOOL)a7 skipDocumentUpgrade:(BOOL)a8 documentLoadValidationPolicy:(id)a9
+- (TSPSupportPackageReadCoordinator)initWithContext:(id)context package:(id)package packageURL:(id)l finalizeHandlerQueue:(id)queue areExternalDataReferencesAllowed:(BOOL)allowed skipDocumentUpgrade:(BOOL)upgrade documentLoadValidationPolicy:(id)policy
 {
-  v30 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a9;
+  contextCopy = context;
+  packageCopy = package;
+  lCopy = l;
+  queueCopy = queue;
+  policyCopy = policy;
   v16 = MEMORY[0x277D81150];
   v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v17, "[TSPSupportPackageReadCoordinator initWithContext:package:packageURL:finalizeHandlerQueue:areExternalDataReferencesAllowed:skipDocumentUpgrade:documentLoadValidationPolicy:]");
   v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v19, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPPackageReadCoordinator.mm");
@@ -20,16 +20,16 @@
 
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v22, v23);
   v24 = MEMORY[0x277CBEAD8];
-  v26 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v25, @"%s: %s", "Do not call method", "[TSPSupportPackageReadCoordinator initWithContext:package:packageURL:finalizeHandlerQueue:areExternalDataReferencesAllowed:skipDocumentUpgrade:documentLoadValidationPolicy:]", v30, self);
+  v26 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v25, @"%s: %s", "Do not call method", "[TSPSupportPackageReadCoordinator initWithContext:package:packageURL:finalizeHandlerQueue:areExternalDataReferencesAllowed:skipDocumentUpgrade:documentLoadValidationPolicy:]", contextCopy, self);
   v28 = objc_msgSend_exceptionWithName_reason_userInfo_(v24, v27, *MEMORY[0x277CBE658], v26, 0);
   v29 = v28;
 
   objc_exception_throw(v28);
 }
 
-- (void)setDocumentPackageReadCoordinator:(id)a3
+- (void)setDocumentPackageReadCoordinator:(id)coordinator
 {
-  v4 = a3;
+  coordinatorCopy = coordinator;
   if (self->_documentPackageReadCoordinator)
   {
     TSUSetCrashReporterInfo();
@@ -42,20 +42,20 @@
     abort();
   }
 
-  self->_documentPackageReadCoordinator = v4;
+  self->_documentPackageReadCoordinator = coordinatorCopy;
 }
 
 - (BOOL)endReading
 {
   v6.receiver = self;
   v6.super_class = TSPSupportPackageReadCoordinator;
-  v4 = [(TSPPackageReadCoordinator *)&v6 endReading];
-  if (v4)
+  endReading = [(TSPPackageReadCoordinator *)&v6 endReading];
+  if (endReading)
   {
     objc_msgSend_tsp_enumerateObjectsUsingBlock_(self->super._objects, v3, &unk_2885C4660);
   }
 
-  return v4;
+  return endReading;
 }
 
 @end

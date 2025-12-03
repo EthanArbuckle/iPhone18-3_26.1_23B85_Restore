@@ -15,17 +15,17 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(UIFocusGuide *)v2 _impl];
-    [v4 _setIsUnoccludable:1];
+    _impl = [(UIFocusGuide *)v2 _impl];
+    [_impl _setIsUnoccludable:1];
 
-    v5 = [(UIFocusGuide *)v3 _impl];
-    [v5 _setIsUnclippable:1];
+    _impl2 = [(UIFocusGuide *)v3 _impl];
+    [_impl2 _setIsUnclippable:1];
 
-    v6 = [(UIFocusGuide *)v3 _impl];
-    [v6 _setFocusPriorityRequired:1];
+    _impl3 = [(UIFocusGuide *)v3 _impl];
+    [_impl3 _setFocusPriorityRequired:1];
 
-    v7 = [(UIFocusGuide *)v3 _impl];
-    [v7 _setIgnoresSpeedBumpEdges:1];
+    _impl4 = [(UIFocusGuide *)v3 _impl];
+    [_impl4 _setIgnoresSpeedBumpEdges:1];
   }
 
   return v3;
@@ -36,8 +36,8 @@
   v4.receiver = self;
   v4.super_class = UIKBFocusGuide;
   [(UIFocusGuide *)&v4 _didUpdateFocusToPreferredFocusedView];
-  v3 = [(UIKBFocusGuide *)self keyboardDelegate];
-  [v3 didFocusGuideWithHeading:{-[UIKBFocusGuide focusHeading](self, "focusHeading")}];
+  keyboardDelegate = [(UIKBFocusGuide *)self keyboardDelegate];
+  [keyboardDelegate didFocusGuideWithHeading:{-[UIKBFocusGuide focusHeading](self, "focusHeading")}];
 }
 
 - (id)description

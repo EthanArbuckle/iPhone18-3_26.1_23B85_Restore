@@ -1,24 +1,24 @@
 @interface MediaControlsParentContainerView
-- (MediaControlsParentContainerView)initWithFrame:(CGRect)a3;
-- (void)_setInitialFrameForRoutingView:(id)a3;
-- (void)_toggleRoutingPickerAnimated:(BOOL)a3;
-- (void)_updateRoutingPickerVisibilityAnimated:(BOOL)a3;
-- (void)_updateTimeControlVisibility:(id)a3;
+- (MediaControlsParentContainerView)initWithFrame:(CGRect)frame;
+- (void)_setInitialFrameForRoutingView:(id)view;
+- (void)_toggleRoutingPickerAnimated:(BOOL)animated;
+- (void)_updateRoutingPickerVisibilityAnimated:(BOOL)animated;
+- (void)_updateTimeControlVisibility:(id)visibility;
 - (void)didMoveToWindow;
-- (void)handleHoverGestureRecognizer:(id)a3;
+- (void)handleHoverGestureRecognizer:(id)recognizer;
 - (void)layoutSubviews;
-- (void)setRoutingView:(id)a3;
-- (void)setSelectedMode:(int64_t)a3 animated:(BOOL)a4;
-- (void)setStyle:(int64_t)a3;
+- (void)setRoutingView:(id)view;
+- (void)setSelectedMode:(int64_t)mode animated:(BOOL)animated;
+- (void)setStyle:(int64_t)style;
 @end
 
 @implementation MediaControlsParentContainerView
 
-- (MediaControlsParentContainerView)initWithFrame:(CGRect)a3
+- (MediaControlsParentContainerView)initWithFrame:(CGRect)frame
 {
   v25.receiver = self;
   v25.super_class = MediaControlsParentContainerView;
-  v3 = [(MediaControlsParentContainerView *)&v25 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MediaControlsParentContainerView *)&v25 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MediaControlsContainerView alloc];
@@ -43,23 +43,23 @@
     v3->_bottomDividerView = v15;
 
     v3->_routingViewControllerAnimationCount = 0;
-    v17 = [(MediaControlsParentContainerView *)v3 containerView];
-    [(MediaControlsParentContainerView *)v3 addSubview:v17];
+    containerView = [(MediaControlsParentContainerView *)v3 containerView];
+    [(MediaControlsParentContainerView *)v3 addSubview:containerView];
 
-    v18 = [(MediaControlsParentContainerView *)v3 mediaControlsRoutingPickerView];
-    [(MediaControlsParentContainerView *)v3 addSubview:v18];
+    mediaControlsRoutingPickerView = [(MediaControlsParentContainerView *)v3 mediaControlsRoutingPickerView];
+    [(MediaControlsParentContainerView *)v3 addSubview:mediaControlsRoutingPickerView];
 
-    v19 = [(MediaControlsParentContainerView *)v3 topDividerView];
-    [(MediaControlsParentContainerView *)v3 addSubview:v19];
+    topDividerView = [(MediaControlsParentContainerView *)v3 topDividerView];
+    [(MediaControlsParentContainerView *)v3 addSubview:topDividerView];
 
-    v20 = [(MediaControlsParentContainerView *)v3 bottomDividerView];
-    [(MediaControlsParentContainerView *)v3 addSubview:v20];
+    bottomDividerView = [(MediaControlsParentContainerView *)v3 bottomDividerView];
+    [(MediaControlsParentContainerView *)v3 addSubview:bottomDividerView];
 
     [(MediaControlsParentContainerView *)v3 setClipsToBounds:1];
-    v21 = [MEMORY[0x1E69DC938] currentDevice];
-    v22 = [v21 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v22 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v23 = [objc_alloc(MEMORY[0x1E69DCAA0]) initWithTarget:v3 action:sel_handleHoverGestureRecognizer_];
       [(MediaControlsParentContainerView *)v3 addGestureRecognizer:v23];
@@ -74,8 +74,8 @@
   v54.receiver = self;
   v54.super_class = MediaControlsParentContainerView;
   [(MediaControlsParentContainerView *)&v54 layoutSubviews];
-  v3 = [(MediaControlsParentContainerView *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(MediaControlsParentContainerView *)self traitCollection];
+  [traitCollection displayScale];
 
   MPFloatGetSafeScaleForValue();
   v5 = v4;
@@ -84,17 +84,17 @@
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(MediaControlsParentContainerView *)self selectedMode];
+  selectedMode = [(MediaControlsParentContainerView *)self selectedMode];
   style = self->_style;
   v16 = style > 5;
   v17 = (1 << style) & 0x29;
   if (v16 || v17 == 0)
   {
-    v43 = [(MediaControlsParentContainerView *)self containerView];
-    [v43 setFrame:{v7, v9, v11, v13}];
+    containerView = [(MediaControlsParentContainerView *)self containerView];
+    [containerView setFrame:{v7, v9, v11, v13}];
 
-    v37 = [(MediaControlsParentContainerView *)self mediaControlsRoutingPickerView];
-    v38 = v37;
+    mediaControlsRoutingPickerView = [(MediaControlsParentContainerView *)self mediaControlsRoutingPickerView];
+    v38 = mediaControlsRoutingPickerView;
     v39 = v7;
     v40 = v9;
     v41 = v11;
@@ -104,7 +104,7 @@
   else
   {
     v19 = v7 + 0.0;
-    if (v14 != 1)
+    if (selectedMode != 1)
     {
       v19 = v7;
     }
@@ -116,16 +116,16 @@
     v53 = v5;
     v25 = v24;
     v27 = v26;
-    v28 = [(MediaControlsParentContainerView *)self containerView];
-    [v28 setFrame:{v21, v23, v25, v27}];
+    containerView2 = [(MediaControlsParentContainerView *)self containerView];
+    [containerView2 setFrame:{v21, v23, v25, v27}];
 
     UIRectIntegralWithScale();
     v30 = v29;
     v32 = v31;
     v34 = v33;
     v36 = v35;
-    v37 = [(MediaControlsParentContainerView *)self mediaControlsRoutingPickerView];
-    v38 = v37;
+    mediaControlsRoutingPickerView = [(MediaControlsParentContainerView *)self mediaControlsRoutingPickerView];
+    v38 = mediaControlsRoutingPickerView;
     v39 = v30;
     v5 = v53;
     v40 = v32;
@@ -133,7 +133,7 @@
     v42 = v36;
   }
 
-  [v37 setFrame:{v39, v40, v41, v42, *&v52}];
+  [mediaControlsRoutingPickerView setFrame:{v39, v40, v41, v42, *&v52}];
 
   if (v5 >= 1.0)
   {
@@ -150,15 +150,15 @@
   MinY = CGRectGetMinY(v55);
   [(MediaControlsParentContainerView *)self bounds];
   Width = CGRectGetWidth(v56);
-  v48 = [(MediaControlsParentContainerView *)self topDividerView];
-  [v48 setFrame:{0.0, MinY, Width, v45}];
+  topDividerView = [(MediaControlsParentContainerView *)self topDividerView];
+  [topDividerView setFrame:{0.0, MinY, Width, v45}];
 
   [(MediaControlsParentContainerView *)self bounds];
   v49 = CGRectGetMaxY(v57) - v45;
   [(MediaControlsParentContainerView *)self bounds];
   v50 = CGRectGetWidth(v58);
-  v51 = [(MediaControlsParentContainerView *)self bottomDividerView];
-  [v51 setFrame:{0.0, v49, v50, v45}];
+  bottomDividerView = [(MediaControlsParentContainerView *)self bottomDividerView];
+  [bottomDividerView setFrame:{0.0, v49, v50, v45}];
 }
 
 - (void)didMoveToWindow
@@ -169,14 +169,14 @@
   [(MediaControlsParentContainerView *)self _updateTimeControlVisibility:@"didMoveToWindow"];
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  v5 = [(MediaControlsParentContainerView *)self containerView];
-  [v5 setStyle:a3];
+  containerView = [(MediaControlsParentContainerView *)self containerView];
+  [containerView setStyle:style];
 
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(MediaControlsParentContainerView *)self _updateRoutingPickerVisibilityAnimated:0];
     [(MediaControlsParentContainerView *)self _updateTimeControlVisibility:@"setStyle"];
 
@@ -184,28 +184,28 @@
   }
 }
 
-- (void)setSelectedMode:(int64_t)a3 animated:(BOOL)a4
+- (void)setSelectedMode:(int64_t)mode animated:(BOOL)animated
 {
-  if (self->_selectedMode != a3)
+  if (self->_selectedMode != mode)
   {
-    v5 = a4;
-    self->_selectedMode = a3;
+    animatedCopy = animated;
+    self->_selectedMode = mode;
     [(MediaControlsParentContainerView *)self _updateTimeControlVisibility:@"setSelectedMode"];
 
-    [(MediaControlsParentContainerView *)self _toggleRoutingPickerAnimated:v5];
+    [(MediaControlsParentContainerView *)self _toggleRoutingPickerAnimated:animatedCopy];
   }
 }
 
-- (void)_updateRoutingPickerVisibilityAnimated:(BOOL)a3
+- (void)_updateRoutingPickerVisibilityAnimated:(BOOL)animated
 {
-  v5 = [(MediaControlsParentContainerView *)self selectedMode];
-  if (!a3)
+  selectedMode = [(MediaControlsParentContainerView *)self selectedMode];
+  if (!animated)
   {
-    v6 = [(MediaControlsParentContainerView *)self mediaControlsRoutingPickerView];
-    [v6 setHidden:v5 != 1];
+    mediaControlsRoutingPickerView = [(MediaControlsParentContainerView *)self mediaControlsRoutingPickerView];
+    [mediaControlsRoutingPickerView setHidden:selectedMode != 1];
   }
 
-  if (v5 == 1)
+  if (selectedMode == 1)
   {
     v7 = 0.0;
   }
@@ -215,14 +215,14 @@
     v7 = 1.0;
   }
 
-  v8 = [(MediaControlsParentContainerView *)self containerView];
-  [v8 setAlpha:v7];
+  containerView = [(MediaControlsParentContainerView *)self containerView];
+  [containerView setAlpha:v7];
 }
 
-- (void)_updateTimeControlVisibility:(id)a3
+- (void)_updateTimeControlVisibility:(id)visibility
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  visibilityCopy = visibility;
   if ([(MediaControlsParentContainerView *)self _isInAWindow])
   {
     v5 = ![(MediaControlsParentContainerView *)self selectedMode]&& (![(MediaControlsParentContainerView *)self style]|| [(MediaControlsParentContainerView *)self style]== 4) || [(MediaControlsParentContainerView *)self style]== 3;
@@ -233,29 +233,29 @@
     v5 = 0;
   }
 
-  v6 = [(MediaControlsParentContainerView *)self containerView];
-  [v6 setTimeControlOnScreen:v5];
+  containerView = [(MediaControlsParentContainerView *)self containerView];
+  [containerView setTimeControlOnScreen:v5];
 
   if ([(MediaControlsParentContainerView *)self style]== 3)
   {
     v7 = _MRLogForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(MediaControlsParentContainerView *)self containerView];
+      containerView2 = [(MediaControlsParentContainerView *)self containerView];
       v9 = 138543874;
-      v10 = v4;
+      v10 = visibilityCopy;
       v11 = 1024;
-      v12 = [v8 isTimeControlOnScreen];
+      isTimeControlOnScreen = [containerView2 isTimeControlOnScreen];
       v13 = 1024;
-      v14 = [(MediaControlsParentContainerView *)self _isInAWindow];
+      _isInAWindow = [(MediaControlsParentContainerView *)self _isInAWindow];
       _os_log_impl(&dword_1A20FC000, v7, OS_LOG_TYPE_DEFAULT, "MediaControlsCoverSheet _updateTimeControlVisibility Reason: %{public}@ timeControlOnScreen: %{BOOL}u _isInAWindow:%{BOOL}u", &v9, 0x18u);
     }
   }
 }
 
-- (void)_toggleRoutingPickerAnimated:(BOOL)a3
+- (void)_toggleRoutingPickerAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(MediaControlsParentContainerView *)self selectedMode]== 1)
   {
     v20[0] = MEMORY[0x1E69E9820];
@@ -272,7 +272,7 @@
   aBlock[2] = __65__MediaControlsParentContainerView__toggleRoutingPickerAnimated___block_invoke_2;
   aBlock[3] = &unk_1E7663F38;
   aBlock[4] = self;
-  v19 = v3;
+  v19 = animatedCopy;
   v5 = _Block_copy(aBlock);
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -280,11 +280,11 @@
   v17[3] = &unk_1E7663898;
   v17[4] = self;
   v6 = _Block_copy(v17);
-  if (v3)
+  if (animatedCopy)
   {
-    v7 = [(MediaControlsParentContainerView *)self selectedMode];
+    selectedMode = [(MediaControlsParentContainerView *)self selectedMode];
     v8 = objc_alloc(MEMORY[0x1E6970508]);
-    if (v7 == 1)
+    if (selectedMode == 1)
     {
       v9 = 500.0;
       v10 = 1000.0;
@@ -346,10 +346,10 @@ void *__65__MediaControlsParentContainerView__toggleRoutingPickerAnimated___bloc
   return result;
 }
 
-- (void)_setInitialFrameForRoutingView:(id)a3
+- (void)_setInitialFrameForRoutingView:(id)view
 {
-  v4 = [(MediaControlsParentContainerView *)self traitCollection];
-  [v4 displayScale];
+  traitCollection = [(MediaControlsParentContainerView *)self traitCollection];
+  [traitCollection displayScale];
 
   [(MediaControlsParentContainerView *)self bounds];
   UIRectIntegralWithScale();
@@ -357,43 +357,43 @@ void *__65__MediaControlsParentContainerView__toggleRoutingPickerAnimated___bloc
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(MediaControlsParentContainerView *)self mediaControlsRoutingPickerView];
-  [v13 setFrame:{v6, v8, v10, v12}];
+  mediaControlsRoutingPickerView = [(MediaControlsParentContainerView *)self mediaControlsRoutingPickerView];
+  [mediaControlsRoutingPickerView setFrame:{v6, v8, v10, v12}];
 }
 
-- (void)setRoutingView:(id)a3
+- (void)setRoutingView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   mediaControlsRoutingPickerView = self->_mediaControlsRoutingPickerView;
-  if (mediaControlsRoutingPickerView != v5)
+  if (mediaControlsRoutingPickerView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     if ([(UIView *)mediaControlsRoutingPickerView isDescendantOfView:self])
     {
       [(UIView *)self->_mediaControlsRoutingPickerView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_mediaControlsRoutingPickerView, a3);
+    objc_storeStrong(&self->_mediaControlsRoutingPickerView, view);
     [(MediaControlsParentContainerView *)self addSubview:self->_mediaControlsRoutingPickerView];
     [(MediaControlsParentContainerView *)self _updateRoutingPickerVisibilityAnimated:0];
     mediaControlsRoutingPickerView = [(MediaControlsParentContainerView *)self selectedMode];
-    v5 = v7;
+    viewCopy = v7;
     if (mediaControlsRoutingPickerView == 1)
     {
       [(MediaControlsParentContainerView *)self layoutIfNeeded];
       mediaControlsRoutingPickerView = [(MediaControlsParentContainerView *)self setNeedsLayout];
-      v5 = v7;
+      viewCopy = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](mediaControlsRoutingPickerView, v5);
+  MEMORY[0x1EEE66BB8](mediaControlsRoutingPickerView, viewCopy);
 }
 
-- (void)handleHoverGestureRecognizer:(id)a3
+- (void)handleHoverGestureRecognizer:(id)recognizer
 {
   if (self->_style == 3)
   {
-    v5 = ([a3 state] - 3) < 0xFFFFFFFFFFFFFFFELL;
+    v5 = ([recognizer state] - 3) < 0xFFFFFFFFFFFFFFFELL;
 
     [(MediaControlsParentContainerView *)self setClipsToBounds:v5];
   }

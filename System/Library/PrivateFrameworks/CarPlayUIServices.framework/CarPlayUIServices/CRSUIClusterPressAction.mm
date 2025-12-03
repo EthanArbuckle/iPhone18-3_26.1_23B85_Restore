@@ -1,14 +1,14 @@
 @interface CRSUIClusterPressAction
-- (CRSUIClusterPressAction)initWithPressType:(unint64_t)a3;
+- (CRSUIClusterPressAction)initWithPressType:(unint64_t)type;
 - (unint64_t)actionType;
 @end
 
 @implementation CRSUIClusterPressAction
 
-- (CRSUIClusterPressAction)initWithPressType:(unint64_t)a3
+- (CRSUIClusterPressAction)initWithPressType:(unint64_t)type
 {
   v5 = objc_alloc_init(MEMORY[0x277CF0C80]);
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
   [v5 setObject:v6 forSetting:1];
 
   v9.receiver = self;
@@ -20,11 +20,11 @@
 
 - (unint64_t)actionType
 {
-  v2 = [(CRSUIClusterPressAction *)self info];
-  v3 = [v2 objectForSetting:1];
-  v4 = [v3 integerValue];
+  info = [(CRSUIClusterPressAction *)self info];
+  v3 = [info objectForSetting:1];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 @end

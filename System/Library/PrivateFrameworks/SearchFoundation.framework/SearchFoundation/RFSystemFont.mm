@@ -1,36 +1,36 @@
 @interface RFSystemFont
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (RFSystemFont)initWithCoder:(id)a3;
-- (RFSystemFont)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RFSystemFont)initWithCoder:(id)coder;
+- (RFSystemFont)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RFSystemFont
 
-- (RFSystemFont)initWithProtobuf:(id)a3
+- (RFSystemFont)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v11.receiver = self;
   v11.super_class = RFSystemFont;
   v5 = [(RFSystemFont *)&v11 init];
   if (v5)
   {
-    [v4 size];
+    [protobufCopy size];
     if (v6 != 0.0)
     {
       v7 = MEMORY[0x1E696AD98];
-      [v4 size];
+      [protobufCopy size];
       v8 = [v7 numberWithFloat:?];
       [(RFSystemFont *)v5 setSize:v8];
     }
 
-    if ([v4 weight])
+    if ([protobufCopy weight])
     {
-      -[RFSystemFont setWeight:](v5, "setWeight:", [v4 weight]);
+      -[RFSystemFont setWeight:](v5, "setWeight:", [protobufCopy weight]);
     }
 
     v9 = v5;
@@ -43,24 +43,24 @@
 {
   v3 = [(RFSystemFont *)self size];
   v4 = [v3 hash];
-  v5 = [(RFSystemFont *)self weight];
+  weight = [(RFSystemFont *)self weight];
 
-  return v4 ^ v5;
+  return v4 ^ weight;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(RFSystemFont *)v6 isMemberOfClass:objc_opt_class()])
+    if ([(RFSystemFont *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v7 = v6;
+      v7 = equalCopy;
       v8 = [(RFSystemFont *)self size];
       v9 = [(RFSystemFont *)v7 size];
       if ((v8 != 0) == (v9 == 0))
@@ -74,8 +74,8 @@ LABEL_13:
       v10 = [(RFSystemFont *)self size];
       if (!v10 || (-[RFSystemFont size](self, "size"), v3 = objc_claimAutoreleasedReturnValue(), -[RFSystemFont size](v7, "size"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
       {
-        v12 = [(RFSystemFont *)self weight];
-        v11 = v12 == [(RFSystemFont *)v7 weight];
+        weight = [(RFSystemFont *)self weight];
+        v11 = weight == [(RFSystemFont *)v7 weight];
         if (!v10)
         {
 LABEL_12:
@@ -100,9 +100,9 @@ LABEL_14:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(RFSystemFont *)self size];
   v6 = [v5 copy];
   [v4 setSize:v6];
@@ -114,31 +114,31 @@ LABEL_14:
 - (NSData)jsonData
 {
   v2 = [[_SFPBRFFont_RFSystemFont alloc] initWithFacade:self];
-  v3 = [(_SFPBRFFont_RFSystemFont *)v2 jsonData];
+  jsonData = [(_SFPBRFFont_RFSystemFont *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBRFFont_RFSystemFont alloc] initWithFacade:self];
-  v3 = [(_SFPBRFFont_RFSystemFont *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBRFFont_RFSystemFont *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBRFFont_RFSystemFont alloc] initWithFacade:self];
-  v5 = [(_SFPBRFFont_RFSystemFont *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBRFFont_RFSystemFont *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (RFSystemFont)initWithCoder:(id)a3
+- (RFSystemFont)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBRFFont_RFSystemFont alloc] initWithData:v5];
   v7 = [(RFSystemFont *)self initWithProtobuf:v6];

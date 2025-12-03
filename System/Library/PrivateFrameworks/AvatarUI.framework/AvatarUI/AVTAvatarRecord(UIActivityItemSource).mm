@@ -8,8 +8,8 @@
 - (id)activityViewController:()UIActivityItemSource subjectForActivityType:
 {
   v1 = MEMORY[0x1E696AEC0];
-  v2 = [a1 identifier];
-  v3 = [v1 stringWithFormat:@"avatar_%@.avt", v2];
+  identifier = [self identifier];
+  v3 = [v1 stringWithFormat:@"avatar_%@.avt", identifier];
 
   return v3;
 }
@@ -18,7 +18,7 @@
 {
   v2 = objc_alloc_init(AVTAvatarRecordImageProvider);
   v3 = +[AVTRenderingScope gridThumbnailScope];
-  v4 = [(AVTAvatarRecordImageProvider *)v2 imageForRecord:a1 scope:v3];
+  v4 = [(AVTAvatarRecordImageProvider *)v2 imageForRecord:self scope:v3];
 
   return v4;
 }

@@ -7,14 +7,14 @@
 - (void)pr_performUpdate:()PRScene
 {
   v4 = a3;
-  v5 = [a1 clientSettings];
-  v8 = [v5 mutableCopy];
+  clientSettings = [self clientSettings];
+  v8 = [clientSettings mutableCopy];
 
-  v6 = [a1 specification];
-  v7 = [objc_msgSend(v6 "transitionContextClass")];
+  specification = [self specification];
+  v7 = [objc_msgSend(specification "transitionContextClass")];
 
   v4[2](v4, v8, v7);
-  [a1 updateClientSettings:v8 withTransitionContext:v7];
+  [self updateClientSettings:v8 withTransitionContext:v7];
 }
 
 @end

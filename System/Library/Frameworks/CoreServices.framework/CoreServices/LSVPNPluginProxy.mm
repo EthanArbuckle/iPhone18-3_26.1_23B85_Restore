@@ -1,27 +1,27 @@
 @interface LSVPNPluginProxy
-+ (id)VPNPluginProxyForIdentifier:(id)a3;
-+ (id)VPNPluginProxyForIdentifier:(id)a3 withContext:(LSContext *)a4;
-- (LSVPNPluginProxy)initWithCoder:(id)a3;
-- (id)_initWithBundleIdentifier:(id)a3 withContext:(LSContext *)a4;
-- (void)encodeWithCoder:(id)a3;
++ (id)VPNPluginProxyForIdentifier:(id)identifier;
++ (id)VPNPluginProxyForIdentifier:(id)identifier withContext:(LSContext *)context;
+- (LSVPNPluginProxy)initWithCoder:(id)coder;
+- (id)_initWithBundleIdentifier:(id)identifier withContext:(LSContext *)context;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LSVPNPluginProxy
 
-- (id)_initWithBundleIdentifier:(id)a3 withContext:(LSContext *)a4
+- (id)_initWithBundleIdentifier:(id)identifier withContext:(LSContext *)context
 {
-  v6 = a3;
-  v7 = _LSFindBundleWithInfo(a4, 5uLL, v6, 0, 0, 0, 0);
+  identifierCopy = identifier;
+  v7 = _LSFindBundleWithInfo(context, 5uLL, identifierCopy, 0, 0, 0, 0);
   v10.receiver = self;
   v10.super_class = LSVPNPluginProxy;
-  v8 = [(LSBundleProxy *)&v10 _initWithBundleUnit:v7 context:a4 bundleType:5 bundleID:v6 localizedName:0 bundleContainerURL:0 dataContainerURL:0 resourcesDirectoryURL:0 iconsDictionary:0 iconFileNames:0 version:0];
+  v8 = [(LSBundleProxy *)&v10 _initWithBundleUnit:v7 context:context bundleType:5 bundleID:identifierCopy localizedName:0 bundleContainerURL:0 dataContainerURL:0 resourcesDirectoryURL:0 iconsDictionary:0 iconFileNames:0 version:0];
 
   return v8;
 }
 
-+ (id)VPNPluginProxyForIdentifier:(id)a3
++ (id)VPNPluginProxyForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v7 = 0;
   if (_LSContextInit(&v7))
   {
@@ -30,33 +30,33 @@
 
   else
   {
-    v5 = [a1 VPNPluginProxyForIdentifier:v4 withContext:&v7];
+    v5 = [self VPNPluginProxyForIdentifier:identifierCopy withContext:&v7];
     _LSContextDestroy(&v7);
   }
 
   return v5;
 }
 
-+ (id)VPNPluginProxyForIdentifier:(id)a3 withContext:(LSContext *)a4
++ (id)VPNPluginProxyForIdentifier:(id)identifier withContext:(LSContext *)context
 {
-  v6 = a3;
-  v7 = [[a1 alloc] _initWithBundleIdentifier:v6 withContext:a4];
+  identifierCopy = identifier;
+  v7 = [[self alloc] _initWithBundleIdentifier:identifierCopy withContext:context];
 
   return v7;
 }
 
-- (LSVPNPluginProxy)initWithCoder:(id)a3
+- (LSVPNPluginProxy)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = LSVPNPluginProxy;
-  return [(LSBundleProxy *)&v4 initWithCoder:a3];
+  return [(LSBundleProxy *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = LSVPNPluginProxy;
-  [(LSBundleProxy *)&v3 encodeWithCoder:a3];
+  [(LSBundleProxy *)&v3 encodeWithCoder:coder];
 }
 
 @end

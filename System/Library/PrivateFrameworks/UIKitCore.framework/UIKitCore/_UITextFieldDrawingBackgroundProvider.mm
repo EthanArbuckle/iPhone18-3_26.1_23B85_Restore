@@ -1,13 +1,13 @@
 @interface _UITextFieldDrawingBackgroundProvider
 - (_UITextFieldDrawingBackgroundProvider)init;
-- (void)_buildDescription:(id)a3;
-- (void)_setDrawsContent:(BOOL)a3;
-- (void)addToTextField:(id)a3;
-- (void)drawInBounds:(CGRect)a3;
+- (void)_buildDescription:(id)description;
+- (void)_setDrawsContent:(BOOL)content;
+- (void)addToTextField:(id)field;
+- (void)drawInBounds:(CGRect)bounds;
 - (void)removeFromTextField;
 - (void)setDrawsContentBasedOnTraitsIfNeeded;
 - (void)setNeedsDisplay;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation _UITextFieldDrawingBackgroundProvider
@@ -25,39 +25,39 @@
   return result;
 }
 
-- (void)_setDrawsContent:(BOOL)a3
+- (void)_setDrawsContent:(BOOL)content
 {
   *&self->_flags &= ~1u;
-  if (*(&self->_flags + 1) != a3)
+  if (*(&self->_flags + 1) != content)
   {
-    v4 = a3;
-    *(&self->_flags + 1) = a3;
-    v5 = [(_UITextFieldBackgroundProvider *)self textField];
-    v7 = v5;
-    if (v4)
+    contentCopy = content;
+    *(&self->_flags + 1) = content;
+    textField = [(_UITextFieldBackgroundProvider *)self textField];
+    v7 = textField;
+    if (contentCopy)
     {
-      [v5 setNeedsDisplay];
+      [textField setNeedsDisplay];
     }
 
     else
     {
-      v6 = [v5 layer];
-      [v6 setContents:0];
+      layer = [textField layer];
+      [layer setContents:0];
     }
   }
 }
 
 - (void)setDrawsContentBasedOnTraitsIfNeeded
 {
-  v3 = [(_UITextFieldBackgroundProvider *)self textField];
-  if ((*&self->_flags & 1) != 0 && v3)
+  textField = [(_UITextFieldBackgroundProvider *)self textField];
+  if ((*&self->_flags & 1) != 0 && textField)
   {
-    v7 = v3;
-    v4 = [v3 traitCollection];
-    v5 = v4;
-    if (v4)
+    v7 = textField;
+    traitCollection = [textField traitCollection];
+    v5 = traitCollection;
+    if (traitCollection)
     {
-      v6 = [v4 userInterfaceIdiom] != 2;
+      v6 = [traitCollection userInterfaceIdiom] != 2;
     }
 
     else
@@ -67,20 +67,20 @@
 
     [(_UITextFieldDrawingBackgroundProvider *)self setDrawsContent:v6];
 
-    v3 = v7;
+    textField = v7;
   }
 }
 
-- (void)addToTextField:(id)a3
+- (void)addToTextField:(id)field
 {
-  v4 = a3;
+  fieldCopy = field;
   v5.receiver = self;
   v5.super_class = _UITextFieldDrawingBackgroundProvider;
-  [(_UITextFieldBackgroundProvider *)&v5 addToTextField:v4];
+  [(_UITextFieldBackgroundProvider *)&v5 addToTextField:fieldCopy];
   [(_UITextFieldDrawingBackgroundProvider *)self setDrawsContentBasedOnTraitsIfNeeded];
   if ([(_UITextFieldDrawingBackgroundProvider *)self drawsContent])
   {
-    [v4 setNeedsDisplay];
+    [fieldCopy setNeedsDisplay];
   }
 }
 
@@ -88,9 +88,9 @@
 {
   if ([(_UITextFieldDrawingBackgroundProvider *)self drawsContent])
   {
-    v3 = [(_UITextFieldBackgroundProvider *)self textField];
-    v4 = [v3 layer];
-    [v4 setContents:0];
+    textField = [(_UITextFieldBackgroundProvider *)self textField];
+    layer = [textField layer];
+    [layer setContents:0];
   }
 
   v5.receiver = self;
@@ -98,15 +98,15 @@
   [(_UITextFieldBackgroundProvider *)&v5 removeFromTextField];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = _UITextFieldDrawingBackgroundProvider;
-  [(_UITextFieldBackgroundProvider *)&v4 traitCollectionDidChange:a3];
+  [(_UITextFieldBackgroundProvider *)&v4 traitCollectionDidChange:change];
   [(_UITextFieldDrawingBackgroundProvider *)self setDrawsContentBasedOnTraitsIfNeeded];
 }
 
-- (void)drawInBounds:(CGRect)a3
+- (void)drawInBounds:(CGRect)bounds
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -124,16 +124,16 @@
   v4.receiver = self;
   v4.super_class = _UITextFieldDrawingBackgroundProvider;
   [(_UITextFieldBackgroundProvider *)&v4 setNeedsDisplay];
-  v3 = [(_UITextFieldBackgroundProvider *)self textField];
-  [v3 setNeedsDisplay];
+  textField = [(_UITextFieldBackgroundProvider *)self textField];
+  [textField setNeedsDisplay];
 }
 
-- (void)_buildDescription:(id)a3
+- (void)_buildDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v9.receiver = self;
   v9.super_class = _UITextFieldDrawingBackgroundProvider;
-  [(_UITextFieldBackgroundProvider *)&v9 _buildDescription:v4];
+  [(_UITextFieldBackgroundProvider *)&v9 _buildDescription:descriptionCopy];
   if (*(&self->_flags + 1))
   {
     v5 = @"yes";
@@ -155,7 +155,7 @@
   }
 
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v5, v6];
-  v8 = [v4 appendName:@"drawsContent" object:v7];
+  v8 = [descriptionCopy appendName:@"drawsContent" object:v7];
 }
 
 @end

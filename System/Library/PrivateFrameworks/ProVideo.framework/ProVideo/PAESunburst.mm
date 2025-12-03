@@ -1,9 +1,9 @@
 @interface PAESunburst
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInfo:(id *)a4;
-- (BOOL)frameSetup:(id *)a3 hardware:(BOOL *)a4 software:(BOOL *)a5;
-- (PAESunburst)initWithAPIManager:(id)a3;
-- (id)multiplyMatrix:(id)a3 byMatrix:(id)a4;
+- (BOOL)canThrowRenderOutput:(id)output withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup hardware:(BOOL *)hardware software:(BOOL *)software;
+- (PAESunburst)initWithAPIManager:(id)manager;
+- (id)multiplyMatrix:(id)matrix byMatrix:(id)byMatrix;
 - (id)properties;
 - (void)dealloc;
 - (void)getTransformMatrix:(double *)(a3 forCenterX:centerY:angle:andOutputImage:;
@@ -11,11 +11,11 @@
 
 @implementation PAESunburst
 
-- (PAESunburst)initWithAPIManager:(id)a3
+- (PAESunburst)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAESunburst;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (void)dealloc
@@ -57,32 +57,32 @@
   return v2 != 0;
 }
 
-- (id)multiplyMatrix:(id)a3 byMatrix:(id)a4
+- (id)multiplyMatrix:(id)matrix byMatrix:(id)byMatrix
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = [a3 matrix];
-  v6 = [a4 matrix];
+  matrix = [matrix matrix];
+  matrix2 = [byMatrix matrix];
   v7 = 0;
-  v8 = v5 + 96;
-  v9 = *v6;
-  v10 = v6[1];
-  v11 = v6[2];
-  v12 = v6[3];
-  v13 = v6[4];
-  v14 = v6[5];
-  v15 = v6[6];
-  v16 = v6[7];
-  v17 = v6[8];
-  v18 = v6[9];
-  v19 = v6[10];
-  v20 = v6[11];
-  v21 = v6[12];
-  v22 = v6[13];
-  v23 = v6[14];
-  v24 = v6[15];
+  v8 = matrix + 96;
+  v9 = *matrix2;
+  v10 = matrix2[1];
+  v11 = matrix2[2];
+  v12 = matrix2[3];
+  v13 = matrix2[4];
+  v14 = matrix2[5];
+  v15 = matrix2[6];
+  v16 = matrix2[7];
+  v17 = matrix2[8];
+  v18 = matrix2[9];
+  v19 = matrix2[10];
+  v20 = matrix2[11];
+  v21 = matrix2[12];
+  v22 = matrix2[13];
+  v23 = matrix2[14];
+  v24 = matrix2[15];
   do
   {
-    v25 = *(v5 + v7);
+    v25 = *(matrix + v7);
     v26 = *(v8 + v7 - 64);
     v27 = *(v8 + v7 - 32);
     v28 = *(v8 + v7);
@@ -127,7 +127,7 @@
   *a3 = [-[PAESunburst multiplyMatrix:byMatrix:](self multiplyMatrix:-[PAESunburst multiplyMatrix:byMatrix:](self byMatrix:{"multiplyMatrix:byMatrix:", objc_msgSend(a7, "inversePixelTransform"), -[FxMatrix44 initWithMatrix44Data:]([FxMatrix44 alloc], "initWithMatrix44Data:", v13)), -[FxMatrix44 initWithMatrix44Data:]([FxMatrix44 alloc], "initWithMatrix44Data:", v21)), "matrix"}];
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInfo:(id *)a4
+- (BOOL)canThrowRenderOutput:(id)output withInfo:(id *)info
 {
   v7 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   v8 = v7;
@@ -149,9 +149,9 @@
     v55 = 1.0;
     __x = 0.5;
     v53 = 1.0;
-    [v7 getFloatValue:&v67 fromParm:2 atFxTime:a4->var0.var1];
-    [v8 getFloatValue:&v66 fromParm:3 atFxTime:a4->var0.var1];
-    [v8 getFloatValue:&v65 fromParm:4 atFxTime:a4->var0.var1];
+    [v7 getFloatValue:&v67 fromParm:2 atFxTime:info->var0.var1];
+    [v8 getFloatValue:&v66 fromParm:3 atFxTime:info->var0.var1];
+    [v8 getFloatValue:&v65 fromParm:4 atFxTime:info->var0.var1];
     v9 = v67;
     if (v67 == 3.0)
     {
@@ -162,32 +162,32 @@
       }
     }
 
-    [v8 getFloatValue:&v64 fromParm:5 atFxTime:{a4->var0.var1, v9}];
-    [v8 getFloatValue:&v63 fromParm:6 atFxTime:a4->var0.var1];
+    [v8 getFloatValue:&v64 fromParm:5 atFxTime:{info->var0.var1, v9}];
+    [v8 getFloatValue:&v63 fromParm:6 atFxTime:info->var0.var1];
     v63 = v63 / 10.0;
-    [v8 getFloatValue:&v62 fromParm:7 atFxTime:a4->var0.var1];
+    [v8 getFloatValue:&v62 fromParm:7 atFxTime:info->var0.var1];
     v62 = v62 / 10.0;
-    [v8 getFloatValue:&v61 fromParm:8 atFxTime:a4->var0.var1];
-    [v8 getRedValue:&v60 greenValue:&v59 blueValue:&v58 alphaValue:&v57 fromParm:9 atFxTime:a4->var0.var1];
+    [v8 getFloatValue:&v61 fromParm:8 atFxTime:info->var0.var1];
+    [v8 getRedValue:&v60 greenValue:&v59 blueValue:&v58 alphaValue:&v57 fromParm:9 atFxTime:info->var0.var1];
     v59 = v57 * v59;
     v60 = v57 * v60;
     v58 = v57 * v58;
-    [v8 getRedValue:&v56 greenValue:&v55 blueValue:&v54 alphaValue:&v53 fromParm:10 atFxTime:a4->var0.var1];
+    [v8 getRedValue:&v56 greenValue:&v55 blueValue:&v54 alphaValue:&v53 fromParm:10 atFxTime:info->var0.var1];
     v55 = v53 * v55;
     v56 = v53 * v56;
     v54 = v53 * v54;
-    [v8 getFloatValue:&__x fromParm:11 atFxTime:a4->var0.var1];
+    [v8 getFloatValue:&__x fromParm:11 atFxTime:info->var0.var1];
     __x = pow(__x, 3.0);
-    [a3 bounds];
+    [output bounds];
     v11 = v10;
     v13 = v12;
     v50 = 0.5;
     v51 = 0.5;
-    [v8 getXValue:&v51 YValue:&v50 fromParm:1 atFxTime:a4->var0.var1];
+    [v8 getXValue:&v51 YValue:&v50 fromParm:1 atFxTime:info->var0.var1];
     v50 = v13 * (0.5 - v50);
     v51 = v11 * (0.5 - v51);
     v49 = 0;
-    [PAESunburst getTransformMatrix:"getTransformMatrix:forCenterX:centerY:angle:andOutputImage:" forCenterX:&v49 centerY:a3 angle:? andOutputImage:?];
+    [PAESunburst getTransformMatrix:"getTransformMatrix:forCenterX:centerY:angle:andOutputImage:" forCenterX:&v49 centerY:output angle:? andOutputImage:?];
     v14 = v67;
     v15 = HGObject::operator new(0x1A0uLL);
     HgcSunburst::HgcSunburst(v15);
@@ -238,7 +238,7 @@
     (*(*v15 + 96))(v15, 13, v46, 0.0, 0.0, 0.0);
     v48 = v15;
     (*(*v15 + 16))(v15);
-    [a3 setHeliumRef:&v48];
+    [output setHeliumRef:&v48];
     if (v48)
     {
       (*(*v48 + 24))(v48);
@@ -250,14 +250,14 @@
   return v8 != 0;
 }
 
-- (BOOL)frameSetup:(id *)a3 hardware:(BOOL *)a4 software:(BOOL *)a5
+- (BOOL)frameSetup:(id *)setup hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a5 = 0;
-  *a4 = 0;
-  v5 = *&a3->var2;
-  v7[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v5 = *&setup->var2;
+  v7[0] = *&setup->var0.var0;
   v7[1] = v5;
-  v7[2] = *&a3->var4;
+  v7[2] = *&setup->var4;
   [PAESharedDefaultBase overrideFrameSetupForRenderMode:"overrideFrameSetupForRenderMode:hardware:software:" hardware:v7 software:?];
   return 1;
 }

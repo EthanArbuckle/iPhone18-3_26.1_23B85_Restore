@@ -34,9 +34,9 @@
 - (id)messageStream
 {
   v2 = +[AssistantSiriAnalytics sharedAnalytics];
-  v3 = [v2 defaultMessageStream];
+  defaultMessageStream = [v2 defaultMessageStream];
 
-  return v3;
+  return defaultMessageStream;
 }
 
 - (ADSiriAnalyticsServiceHost)init

@@ -7,7 +7,7 @@
 - (double)getUserInactiveMinIntervalCA;
 - (id)getLastSystemSleepDate;
 - (void)initOperatorDependancies;
-- (void)setLastUserInactiveTime:(id)a3;
+- (void)setLastUserInactiveTime:(id)time;
 @end
 
 @implementation PLUserActiveStateService
@@ -25,7 +25,7 @@ uint64_t __52__PLUserActiveStateService_initOperatorDependancies__block_invoke(u
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLUserActiveStateService;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -53,25 +53,25 @@ uint64_t __52__PLUserActiveStateService_initOperatorDependancies__block_invoke(u
   v22[0] = v16;
   v21[1] = *MEMORY[0x277D3F540];
   v17[0] = @"UserInactiveTime";
-  v15 = [MEMORY[0x277D3F198] sharedInstance];
-  v14 = [v15 commonTypeDict_RealFormat];
-  v18[0] = v14;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat = [mEMORY[0x277D3F198] commonTypeDict_RealFormat];
+  v18[0] = commonTypeDict_RealFormat;
   v17[1] = @"TimePluggedInDuringInactiveState";
-  v2 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v2 commonTypeDict_RealFormat];
-  v18[1] = v3;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_RealFormat];
+  v18[1] = commonTypeDict_RealFormat2;
   v17[2] = @"TimeSinceLastUnplugDuringInactiveState";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_RealFormat];
-  v18[2] = v5;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_RealFormat];
+  v18[2] = commonTypeDict_RealFormat3;
   v17[3] = @"DidSleep";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_BoolFormat];
-  v18[3] = v7;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]4 commonTypeDict_BoolFormat];
+  v18[3] = commonTypeDict_BoolFormat;
   v17[4] = @"BatteryTableID";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v18[4] = v9;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v18[4] = commonTypeDict_IntegerFormat;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:5];
   v22[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:2];
@@ -85,7 +85,7 @@ uint64_t __52__PLUserActiveStateService_initOperatorDependancies__block_invoke(u
 {
   if ([MEMORY[0x277D3F258] isPowerlogHelperd] & 1) != 0 || (objc_msgSend(MEMORY[0x277D3F258], "isPerfPowerMetricd"))
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -93,10 +93,10 @@ uint64_t __52__PLUserActiveStateService_initOperatorDependancies__block_invoke(u
     v5.receiver = self;
     v5.super_class = PLUserActiveStateService;
     self = [(PLOperator *)&v5 init];
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)initOperatorDependancies
@@ -108,12 +108,12 @@ uint64_t __52__PLUserActiveStateService_initOperatorDependancies__block_invoke(u
 
   else
   {
-    v7 = [(PLUserActiveStateService *)self lastUserInactiveTime];
+    lastUserInactiveTime = [(PLUserActiveStateService *)self lastUserInactiveTime];
 
-    if (v7 && IOPSDrawingUnlimitedPower())
+    if (lastUserInactiveTime && IOPSDrawingUnlimitedPower())
     {
-      v8 = [MEMORY[0x277CBEAA8] monotonicDate];
-      [(PLUserActiveStateService *)self setLastPluggedInTime:v8];
+      monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+      [(PLUserActiveStateService *)self setLastPluggedInTime:monotonicDate];
 
       [(PLUserActiveStateService *)self setPluggedInState:MEMORY[0x277CBEC38]];
     }
@@ -129,7 +129,7 @@ uint64_t __52__PLUserActiveStateService_initOperatorDependancies__block_invoke(u
   v5 = [v3 initWithOperator:self forEntryKey:v4 withBlock:v9];
   [(PLUserActiveStateService *)self setBatteryNotification:v5];
 
-  v6 = [(PLOperator *)self workQueue];
+  workQueue = [(PLOperator *)self workQueue];
   [(PLUserActiveStateService *)self setUserActiveNotificationHandle:IOPMScheduleUserActiveChangedNotification(), MEMORY[0x277D85DD0], 3221225472, __52__PLUserActiveStateService_initOperatorDependancies__block_invoke_2, &unk_278259D80, self];
 }
 
@@ -139,25 +139,25 @@ uint64_t __52__PLUserActiveStateService_initOperatorDependancies__block_invoke(u
   v3 = [(PLOperator *)PLSleepWakeAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"PowerState"];
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ IS NOT NULL", @"KernelSleepDate"];
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ = %hd", @"Event", 4];
-  v6 = [(PLOperator *)self storage];
+  storage = [(PLOperator *)self storage];
   v12[0] = v4;
   v12[1] = v5;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
-  v8 = [v6 lastEntryForKey:v3 withFilters:v7];
+  v8 = [storage lastEntryForKey:v3 withFilters:v7];
 
   if (v8)
   {
-    v9 = [v8 entryDate];
+    entryDate = [v8 entryDate];
   }
 
   else
   {
-    v9 = 0;
+    entryDate = 0;
   }
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return entryDate;
 }
 
 - (NSDate)lastUserInactiveTime
@@ -176,11 +176,11 @@ uint64_t __52__PLUserActiveStateService_initOperatorDependancies__block_invoke(u
   return v3;
 }
 
-- (void)setLastUserInactiveTime:(id)a3
+- (void)setLastUserInactiveTime:(id)time
 {
-  if (a3)
+  if (time)
   {
-    [a3 timeIntervalSince1970];
+    [time timeIntervalSince1970];
     v4 = MEMORY[0x277D3F180];
     v6 = [MEMORY[0x277CCABB0] numberWithDouble:?];
     [v4 setObject:v6 forKey:@"PLUserActiveStateLastUserInactiveTimestamp" saveToDisk:1];

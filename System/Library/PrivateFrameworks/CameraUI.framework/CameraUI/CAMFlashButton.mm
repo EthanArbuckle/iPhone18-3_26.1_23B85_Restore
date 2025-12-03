@@ -1,23 +1,23 @@
 @interface CAMFlashButton
 - (BOOL)shouldIgnoreMenuInteraction;
 - (BOOL)wantsSelectedItemToBeVisible;
-- (CAMFlashButton)initWithFrame:(CGRect)a3;
-- (CAMFlashButton)initWithLayoutStyle:(int64_t)a3;
+- (CAMFlashButton)initWithFrame:(CGRect)frame;
+- (CAMFlashButton)initWithLayoutStyle:(int64_t)style;
 - (double)collapsedSelectedLabelHorizontalMargin;
-- (id)_currentGlyphImageForAccessibilityHUD:(BOOL)a3;
+- (id)_currentGlyphImageForAccessibilityHUD:(BOOL)d;
 - (id)headerView;
 - (id)imageForAccessibilityHUD;
-- (id)titleForMenuItemAtIndex:(int64_t)a3;
+- (id)titleForMenuItemAtIndex:(int64_t)index;
 - (int64_t)flashMode;
-- (int64_t)indexForMode:(int64_t)a3;
-- (int64_t)modeForIndex:(int64_t)a3;
+- (int64_t)indexForMode:(int64_t)mode;
+- (int64_t)modeForIndex:(int64_t)index;
 - (int64_t)numberOfMenuItems;
 - (void)_commonCAMFlashButtonInitialization;
 - (void)_updateCurrentGlyphImage;
 - (void)reloadData;
-- (void)setAllowsAutomaticFlash:(BOOL)a3 needsReloadData:(BOOL)a4;
-- (void)setFlashMode:(int64_t)a3;
-- (void)setUnavailable:(BOOL)a3;
+- (void)setAllowsAutomaticFlash:(BOOL)flash needsReloadData:(BOOL)data;
+- (void)setFlashMode:(int64_t)mode;
+- (void)setUnavailable:(BOOL)unavailable;
 @end
 
 @implementation CAMFlashButton
@@ -97,15 +97,15 @@
 - (void)_updateCurrentGlyphImage
 {
   v4 = [(CAMFlashButton *)self _currentGlyphImageForAccessibilityHUD:0];
-  v3 = [(CAMFlashButton *)self _glyphView];
-  [v3 setImage:v4];
+  _glyphView = [(CAMFlashButton *)self _glyphView];
+  [_glyphView setImage:v4];
 }
 
-- (CAMFlashButton)initWithLayoutStyle:(int64_t)a3
+- (CAMFlashButton)initWithLayoutStyle:(int64_t)style
 {
   v7.receiver = self;
   v7.super_class = CAMFlashButton;
-  v3 = [(CAMExpandableMenuButton *)&v7 initWithLayoutStyle:a3];
+  v3 = [(CAMExpandableMenuButton *)&v7 initWithLayoutStyle:style];
   v4 = v3;
   if (v3)
   {
@@ -116,37 +116,37 @@
   return v4;
 }
 
-- (CAMFlashButton)initWithFrame:(CGRect)a3
+- (CAMFlashButton)initWithFrame:(CGRect)frame
 {
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 cam_initialLayoutStyle];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  cam_initialLayoutStyle = [currentDevice cam_initialLayoutStyle];
 
-  return [(CAMFlashButton *)self initWithLayoutStyle:v5];
+  return [(CAMFlashButton *)self initWithLayoutStyle:cam_initialLayoutStyle];
 }
 
 - (int64_t)flashMode
 {
-  v3 = [(CAMExpandableMenuButton *)self selectedIndex];
+  selectedIndex = [(CAMExpandableMenuButton *)self selectedIndex];
 
-  return [(CAMFlashButton *)self modeForIndex:v3];
+  return [(CAMFlashButton *)self modeForIndex:selectedIndex];
 }
 
-- (void)setFlashMode:(int64_t)a3
+- (void)setFlashMode:(int64_t)mode
 {
-  [(CAMExpandableMenuButton *)self setSelectedIndex:[(CAMFlashButton *)self indexForMode:a3]];
+  [(CAMExpandableMenuButton *)self setSelectedIndex:[(CAMFlashButton *)self indexForMode:mode]];
 
   [(CAMFlashButton *)self _updateCurrentGlyphImage];
 }
 
-- (void)setAllowsAutomaticFlash:(BOOL)a3 needsReloadData:(BOOL)a4
+- (void)setAllowsAutomaticFlash:(BOOL)flash needsReloadData:(BOOL)data
 {
-  if (self->_allowsAutomaticFlash != a3)
+  if (self->_allowsAutomaticFlash != flash)
   {
-    v4 = a4;
+    dataCopy = data;
     v7 = [(CAMFlashButton *)self modeForIndex:[(CAMExpandableMenuButton *)self selectedIndex]];
-    self->_allowsAutomaticFlash = a3;
+    self->_allowsAutomaticFlash = flash;
     v8 = [(CAMFlashButton *)self indexForMode:v7];
-    if (v4)
+    if (dataCopy)
     {
       [(CAMFlashButton *)self reloadData];
     }
@@ -157,12 +157,12 @@
   }
 }
 
-- (void)setUnavailable:(BOOL)a3
+- (void)setUnavailable:(BOOL)unavailable
 {
-  if (self->_unavailable != a3)
+  if (self->_unavailable != unavailable)
   {
-    self->_unavailable = a3;
-    if (a3 && !self->__warningIndicatorView)
+    self->_unavailable = unavailable;
+    if (unavailable && !self->__warningIndicatorView)
     {
       v5 = MEMORY[0x1E69DCAB8];
       v6 = CAMCameraUIFrameworkBundle();
@@ -174,15 +174,15 @@
       self->__warningIndicatorView = v9;
 
       v11 = self->__warningIndicatorView;
-      v12 = [MEMORY[0x1E69DC888] systemYellowColor];
-      [(UIImageView *)v11 setTintColor:v12];
+      systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+      [(UIImageView *)v11 setTintColor:systemYellowColor];
     }
 
     [(CAMFlashButton *)self reloadData];
   }
 }
 
-- (int64_t)modeForIndex:(int64_t)a3
+- (int64_t)modeForIndex:(int64_t)index
 {
   LODWORD(result) = [(CAMFlashButton *)self allowsAutomaticFlash];
   v5 = 1;
@@ -191,12 +191,12 @@
     v5 = 2;
   }
 
-  if (a3 == 2)
+  if (index == 2)
   {
     v5 = 0;
   }
 
-  if (a3 == 1)
+  if (index == 1)
   {
     return result;
   }
@@ -207,11 +207,11 @@
   }
 }
 
-- (int64_t)indexForMode:(int64_t)a3
+- (int64_t)indexForMode:(int64_t)mode
 {
-  if (a3)
+  if (mode)
   {
-    v4 = a3 == 1;
+    v4 = mode == 1;
   }
 
   else
@@ -219,7 +219,7 @@
     v4 = 2;
   }
 
-  v5 = [(CAMFlashButton *)self allowsAutomaticFlash];
+  allowsAutomaticFlash = [(CAMFlashButton *)self allowsAutomaticFlash];
   v6 = 0x7FFFFFFFFFFFFFFFLL;
   if (v4 <= 1)
   {
@@ -232,12 +232,12 @@
   }
 
   v8 = v7 - 1;
-  if (a3 != 2)
+  if (mode != 2)
   {
     v6 = v8;
   }
 
-  if (v5)
+  if (allowsAutomaticFlash)
   {
     return v4;
   }
@@ -248,9 +248,9 @@
   }
 }
 
-- (id)titleForMenuItemAtIndex:(int64_t)a3
+- (id)titleForMenuItemAtIndex:(int64_t)index
 {
-  v3 = [(CAMFlashButton *)self modeForIndex:a3];
+  v3 = [(CAMFlashButton *)self modeForIndex:index];
   if (v3 > 2)
   {
     v4 = 0;
@@ -264,13 +264,13 @@
   return v4;
 }
 
-- (id)_currentGlyphImageForAccessibilityHUD:(BOOL)a3
+- (id)_currentGlyphImageForAccessibilityHUD:(BOOL)d
 {
-  v3 = a3;
+  dCopy = d;
   v5 = [(CAMFlashButton *)self modeForIndex:[(CAMExpandableMenuButton *)self selectedIndex]];
-  v6 = [(CAMExpandableMenuButton *)self isExpanded];
-  v7 = [(CAMFlashButton *)self wantsSelectedItemToBeVisible];
-  v8 = [(CAMExpandableMenuButton *)self layoutStyle];
+  isExpanded = [(CAMExpandableMenuButton *)self isExpanded];
+  wantsSelectedItemToBeVisible = [(CAMFlashButton *)self wantsSelectedItemToBeVisible];
+  layoutStyle = [(CAMExpandableMenuButton *)self layoutStyle];
   if (v5)
   {
     v9 = 1;
@@ -278,11 +278,11 @@
 
   else
   {
-    v9 = v6;
+    v9 = isExpanded;
   }
 
-  v10 = v9 | v7;
-  if (v8 == 3)
+  v10 = v9 | wantsSelectedItemToBeVisible;
+  if (layoutStyle == 3)
   {
 LABEL_7:
     v11 = @"CAMFlashButtonOff";
@@ -290,13 +290,13 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  if (v8 != 1)
+  if (layoutStyle != 1)
   {
-    if (v8)
+    if (layoutStyle)
     {
       v13 = 0;
       v17 = 0;
-      if (!v3)
+      if (!dCopy)
       {
         goto LABEL_17;
       }
@@ -316,7 +316,7 @@ LABEL_9:
   }
 
   v13 = v11;
-  if (!v3)
+  if (!dCopy)
   {
     v14 = MEMORY[0x1E69DCAB8];
     v15 = CAMCameraUIFrameworkBundle();

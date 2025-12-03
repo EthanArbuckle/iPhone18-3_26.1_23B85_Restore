@@ -8,9 +8,9 @@
 - (id)accessibilityValue
 {
   v2 = [(MPRouteButtonAccessibility *)self safeValueForKey:@"_routeLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits

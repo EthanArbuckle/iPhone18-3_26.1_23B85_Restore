@@ -1,18 +1,18 @@
 @interface HMDSKPresenceProvider
-- (id)createPresenceWithChannelName:(id)a3 serviceIdentifier:(id)a4;
+- (id)createPresenceWithChannelName:(id)name serviceIdentifier:(id)identifier;
 @end
 
 @implementation HMDSKPresenceProvider
 
-- (id)createPresenceWithChannelName:(id)a3 serviceIdentifier:(id)a4
+- (id)createPresenceWithChannelName:(id)name serviceIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x277D68100]) initWithServiceIdentifier:v7];
+  nameCopy = name;
+  identifierCopy = identifier;
+  v8 = [objc_alloc(MEMORY[0x277D68100]) initWithServiceIdentifier:identifierCopy];
   [v8 setIsDaemonIdleExitEnabled:1];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -27,7 +27,7 @@
   }
 
   objc_autoreleasePoolPop(v9);
-  v14 = [objc_alloc(MEMORY[0x277D680D8]) initWithPresenceIdentifier:v6 options:v8];
+  v14 = [objc_alloc(MEMORY[0x277D680D8]) initWithPresenceIdentifier:nameCopy options:v8];
 
   v15 = *MEMORY[0x277D85DE8];
 

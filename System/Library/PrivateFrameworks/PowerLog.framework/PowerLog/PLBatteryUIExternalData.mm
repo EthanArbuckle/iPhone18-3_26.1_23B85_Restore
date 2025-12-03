@@ -1,19 +1,19 @@
 @interface PLBatteryUIExternalData
-+ (id)getLocalizedStringForKey:(id)a3;
-+ (id)getTitleAndTextForType:(int)a3;
++ (id)getLocalizedStringForKey:(id)key;
++ (id)getTitleAndTextForType:(int)type;
 @end
 
 @implementation PLBatteryUIExternalData
 
-+ (id)getTitleAndTextForType:(int)a3
++ (id)getTitleAndTextForType:(int)type
 {
   v3 = 0;
   v21[2] = *MEMORY[0x1E69E9840];
-  if (a3 <= 1)
+  if (type <= 1)
   {
-    if (a3)
+    if (type)
     {
-      if (a3 != 1)
+      if (type != 1)
       {
         goto LABEL_14;
       }
@@ -45,7 +45,7 @@
     goto LABEL_12;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v16[0] = @"Title";
     v4 = [PLBatteryUIExternalData getLocalizedStringForKey:@"REDUCEBRIGHTNESS"];
@@ -61,7 +61,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (a3 != 3)
+  if (type != 3)
   {
     goto LABEL_14;
   }
@@ -89,12 +89,12 @@ LABEL_14:
   return v3;
 }
 
-+ (id)getLocalizedStringForKey:(id)a3
++ (id)getLocalizedStringForKey:(id)key
 {
   v3 = MEMORY[0x1E696AAE8];
-  v4 = a3;
+  keyCopy = key;
   v5 = [v3 bundleForClass:objc_opt_class()];
-  v6 = [v5 localizedStringForKey:v4 value:&stru_1F38DE2A8 table:@"BatteryUI"];
+  v6 = [v5 localizedStringForKey:keyCopy value:&stru_1F38DE2A8 table:@"BatteryUI"];
 
   return v6;
 }

@@ -32,12 +32,12 @@
   {
     v12.receiver = self;
     v12.super_class = ICQUIInlineTipRow;
-    v5 = [(RUITableViewRow *)&v12 tableCell];
+    tableCell = [(RUITableViewRow *)&v12 tableCell];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v6 = MEMORY[0x277D3FAD8];
-      v7 = v5;
+      v7 = tableCell;
       v8 = [v6 preferenceSpecifierNamed:0 target:0 set:0 get:0 detail:0 cell:-1 edit:0];
       [v8 setIdentifier:@"TIP_HOST_CELL_MS"];
       [v8 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
@@ -49,8 +49,8 @@
     }
 
     v9 = self->_tableCell;
-    self->_tableCell = v5;
-    v10 = v5;
+    self->_tableCell = tableCell;
+    v10 = tableCell;
 
     os_unfair_lock_unlock(&self->_tableCellLock);
     v4 = self->_tableCell;

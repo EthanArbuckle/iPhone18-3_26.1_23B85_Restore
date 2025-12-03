@@ -1,16 +1,16 @@
 @interface FKBankConnectAccountsProvider
-- (FKBankConnectAccountsProvider)initWithPrimaryAccountIdentifier:(id)a3;
+- (FKBankConnectAccountsProvider)initWithPrimaryAccountIdentifier:(id)identifier;
 @end
 
 @implementation FKBankConnectAccountsProvider
 
-- (FKBankConnectAccountsProvider)initWithPrimaryAccountIdentifier:(id)a3
+- (FKBankConnectAccountsProvider)initWithPrimaryAccountIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = FKBankConnectAccountsProvider;
   v5 = [(FKBankConnectAccountsProvider *)&v11 init];
-  if (v5 && ([_TtC10FinanceKit27BankConnectAccountsProvider makeProviderWithPrimaryAccountIdentifier:v4], v6 = objc_claimAutoreleasedReturnValue(), dataProvider = v5->_dataProvider, v5->_dataProvider = v6, dataProvider, !v5->_dataProvider))
+  if (v5 && ([_TtC10FinanceKit27BankConnectAccountsProvider makeProviderWithPrimaryAccountIdentifier:identifierCopy], v6 = objc_claimAutoreleasedReturnValue(), dataProvider = v5->_dataProvider, v5->_dataProvider = v6, dataProvider, !v5->_dataProvider))
   {
     v9 = os_log_create("com.apple.FinanceKit", "BankConnect");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))

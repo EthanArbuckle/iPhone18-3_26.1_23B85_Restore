@@ -3,8 +3,8 @@
 - (PSSpecifier)specifier;
 - (void)_updateAttributedMessage;
 - (void)_updateInstructionsText;
-- (void)setHasEndedEventCapture:(BOOL)a3;
-- (void)updateWithKeyChord:(id)a3 shouldSpeakChange:(BOOL)a4;
+- (void)setHasEndedEventCapture:(BOOL)capture;
+- (void)updateWithKeyChord:(id)chord shouldSpeakChange:(BOOL)change;
 - (void)viewDidLoad;
 @end
 
@@ -20,34 +20,34 @@
   [v3 addObserver:self selector:"_updateAttributedMessage" name:UIContentSizeCategoryDidChangeNotification object:0];
 }
 
-- (void)setHasEndedEventCapture:(BOOL)a3
+- (void)setHasEndedEventCapture:(BOOL)capture
 {
-  if (self->_hasEndedEventCapture != a3)
+  if (self->_hasEndedEventCapture != capture)
   {
-    self->_hasEndedEventCapture = a3;
+    self->_hasEndedEventCapture = capture;
     [(AXKeyboardShortcutEntryViewController *)self _updateInstructionsText];
   }
 }
 
-- (void)updateWithKeyChord:(id)a3 shouldSpeakChange:(BOOL)a4
+- (void)updateWithKeyChord:(id)chord shouldSpeakChange:(BOOL)change
 {
-  v4 = a4;
-  v6 = a3;
+  changeCopy = change;
+  chordCopy = chord;
   if ([(AXKeyboardShortcutEntryViewController *)self shouldAllowTabAsModifier])
   {
-    [v6 accessibilitySpeakableDisplayValueWithStyle:1];
+    [chordCopy accessibilitySpeakableDisplayValueWithStyle:1];
   }
 
   else
   {
-    [v6 accessibilitySpeakableDisplayValue];
+    [chordCopy accessibilitySpeakableDisplayValue];
   }
   v7 = ;
 
   [(AXKeyboardShortcutEntryViewController *)self setKeyChordDisplayText:v7];
-  if (v4)
+  if (changeCopy)
   {
-    v8 = [(AXKeyboardShortcutEntryViewController *)self keyChordDisplayText];
+    keyChordDisplayText = [(AXKeyboardShortcutEntryViewController *)self keyChordDisplayText];
     UIAccessibilitySpeak();
   }
 
@@ -82,29 +82,29 @@
 - (void)_updateAttributedMessage
 {
   v3 = objc_opt_new();
-  v4 = [(AXKeyboardShortcutEntryViewController *)self instructionsText];
-  v5 = [v4 length];
+  instructionsText = [(AXKeyboardShortcutEntryViewController *)self instructionsText];
+  v5 = [instructionsText length];
 
   if (v5)
   {
     v6 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleFootnote addingSymbolicTraits:0x8000 options:2];
     v7 = [NSAttributedString alloc];
-    v8 = [(AXKeyboardShortcutEntryViewController *)self instructionsText];
+    instructionsText2 = [(AXKeyboardShortcutEntryViewController *)self instructionsText];
     v24 = NSFontAttributeName;
     v9 = [UIFont fontWithDescriptor:v6 size:0.0];
     v25 = v9;
     v10 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
-    v11 = [v7 initWithString:v8 attributes:v10];
+    v11 = [v7 initWithString:instructionsText2 attributes:v10];
     [v3 appendAttributedString:v11];
   }
 
-  v12 = [(AXKeyboardShortcutEntryViewController *)self keyChordDisplayText];
-  v13 = [v12 length];
+  keyChordDisplayText = [(AXKeyboardShortcutEntryViewController *)self keyChordDisplayText];
+  v13 = [keyChordDisplayText length];
 
   if (v13)
   {
-    v14 = [(AXKeyboardShortcutEntryViewController *)self instructionsText];
-    v15 = [v14 length];
+    instructionsText3 = [(AXKeyboardShortcutEntryViewController *)self instructionsText];
+    v15 = [instructionsText3 length];
 
     if (v15)
     {
@@ -114,11 +114,11 @@
 
     v17 = [UIFont _preferredFontForTextStyle:UIFontTextStyleTitle2 variant:1024];
     v18 = [NSAttributedString alloc];
-    v19 = [(AXKeyboardShortcutEntryViewController *)self keyChordDisplayText];
+    keyChordDisplayText2 = [(AXKeyboardShortcutEntryViewController *)self keyChordDisplayText];
     v22 = NSFontAttributeName;
     v23 = v17;
     v20 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
-    v21 = [v18 initWithString:v19 attributes:v20];
+    v21 = [v18 initWithString:keyChordDisplayText2 attributes:v20];
     [v3 appendAttributedString:v21];
   }
 

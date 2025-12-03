@@ -1,28 +1,28 @@
 @interface SBSUISystemNotesWindowScene
-- (void)takeScreenshotOfDisplays:(id)a3 handler:(id)a4;
+- (void)takeScreenshotOfDisplays:(id)displays handler:(id)handler;
 @end
 
 @implementation SBSUISystemNotesWindowScene
 
-- (void)takeScreenshotOfDisplays:(id)a3 handler:(id)a4
+- (void)takeScreenshotOfDisplays:(id)displays handler:(id)handler
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (handlerCopy)
   {
     v8 = MEMORY[0x1E698E5F8];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __64__SBSUISystemNotesWindowScene_takeScreenshotOfDisplays_handler___block_invoke;
     v14[3] = &unk_1E789E448;
-    v15 = v6;
-    v9 = a3;
+    v15 = handlerCopy;
+    displaysCopy = displays;
     v10 = [v8 responderWithHandler:v14];
-    v11 = [objc_alloc(MEMORY[0x1E69D4308]) initWithDisplaysToScreenshot:v9 responder:v10];
+    v11 = [objc_alloc(MEMORY[0x1E69D4308]) initWithDisplaysToScreenshot:displaysCopy responder:v10];
 
-    v12 = [(SBSUISystemNotesWindowScene *)self _FBSScene];
+    _FBSScene = [(SBSUISystemNotesWindowScene *)self _FBSScene];
     v13 = [MEMORY[0x1E695DFD8] setWithObject:v11];
-    [v12 sendActions:v13];
+    [_FBSScene sendActions:v13];
   }
 }
 

@@ -1,25 +1,25 @@
 @interface MessageEngramGroupController
 + (id)sharedInstance;
-- (BOOL)_createGroupForExistingChat:(id)a3;
-- (id)_URIsFromApplicationData:(id)a3;
-- (id)_callerURIForChat:(id)a3;
-- (id)_createApplicationDataForDestinations:(id)a3;
-- (id)applicationDataDictionary:(id)a3;
+- (BOOL)_createGroupForExistingChat:(id)chat;
+- (id)_URIsFromApplicationData:(id)data;
+- (id)_callerURIForChat:(id)chat;
+- (id)_createApplicationDataForDestinations:(id)destinations;
+- (id)applicationDataDictionary:(id)dictionary;
 - (int64_t)_daysToWaitBeforeCreatingEngroup;
-- (void)_addRemoveParticipantsToENGroupForChat:(id)a3 participantsToAdd:(id)a4 participantsToRemove:(id)a5 service:(id)a6 fromID:(id)a7 attemptCount:(unint64_t)a8 completion:(id)a9;
-- (void)_checkAndSetUpContext:(id)a3;
-- (void)_createEngramGroupForChat:(id)a3 fromID:(id)a4 service:(id)a5 completion:(id)a6;
-- (void)_createGroupFromGroupContext:(id)a3 chat:(id)a4 enparticipants:(id)a5 destinations:(id)a6 completion:(id)a7;
-- (void)_createParticipantsAndUpdateGroup:(id)a3 addParticipantsURIs:(id)a4 removeParticipantURIs:(id)a5 fromID:(id)a6 service:(id)a7 completion:(id)a8;
-- (void)_enparticipantsForDestinations:(id)a3 completion:(id)a4;
-- (void)_updateGroupWithParticipants:(id)a3 chat:(id)a4 service:(id)a5 participants:(id)a6 destinations:(id)a7 completion:(id)a8;
-- (void)_updateLocalParticipantsFromEngroup:(id)a3 chat:(id)a4 fromID:(id)a5;
-- (void)addParticipantsToENGroup:(id)a3 chat:(id)a4 service:(id)a5 fromID:(id)a6 completion:(id)a7;
-- (void)convergeOnIncomingGroup:(id)a3 chat:(id)a4 service:(id)a5;
-- (void)groupContext:(id)a3 didUpdateGroup:(id)a4 withNewGroup:(id)a5;
-- (void)lookUpENGroupForChat:(id)a3 service:(id)a4 completion:(id)a5;
-- (void)removeParticipantsFromENGroup:(id)a3 chat:(id)a4 service:(id)a5 fromID:(id)a6 completion:(id)a7;
-- (void)sendMessageWithEngram:(id)a3 chat:(id)a4 service:(id)a5 fromID:(id)a6 fromAccount:(id)a7 session:(id)a8 context:(id)a9 groupController:(id)a10 completionBlock:(id)a11;
+- (void)_addRemoveParticipantsToENGroupForChat:(id)chat participantsToAdd:(id)add participantsToRemove:(id)remove service:(id)service fromID:(id)d attemptCount:(unint64_t)count completion:(id)completion;
+- (void)_checkAndSetUpContext:(id)context;
+- (void)_createEngramGroupForChat:(id)chat fromID:(id)d service:(id)service completion:(id)completion;
+- (void)_createGroupFromGroupContext:(id)context chat:(id)chat enparticipants:(id)enparticipants destinations:(id)destinations completion:(id)completion;
+- (void)_createParticipantsAndUpdateGroup:(id)group addParticipantsURIs:(id)is removeParticipantURIs:(id)rIs fromID:(id)d service:(id)service completion:(id)completion;
+- (void)_enparticipantsForDestinations:(id)destinations completion:(id)completion;
+- (void)_updateGroupWithParticipants:(id)participants chat:(id)chat service:(id)service participants:(id)a6 destinations:(id)destinations completion:(id)completion;
+- (void)_updateLocalParticipantsFromEngroup:(id)engroup chat:(id)chat fromID:(id)d;
+- (void)addParticipantsToENGroup:(id)group chat:(id)chat service:(id)service fromID:(id)d completion:(id)completion;
+- (void)convergeOnIncomingGroup:(id)group chat:(id)chat service:(id)service;
+- (void)groupContext:(id)context didUpdateGroup:(id)group withNewGroup:(id)newGroup;
+- (void)lookUpENGroupForChat:(id)chat service:(id)service completion:(id)completion;
+- (void)removeParticipantsFromENGroup:(id)group chat:(id)chat service:(id)service fromID:(id)d completion:(id)completion;
+- (void)sendMessageWithEngram:(id)engram chat:(id)chat service:(id)service fromID:(id)d fromAccount:(id)account session:(id)session context:(id)context groupController:(id)self0 completionBlock:(id)self1;
 @end
 
 @implementation MessageEngramGroupController
@@ -34,13 +34,13 @@
   return qword_124310;
 }
 
-- (void)_checkAndSetUpContext:(id)a3
+- (void)_checkAndSetUpContext:(id)context
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_6FDEC;
   v3[3] = &unk_113C70;
-  v3[4] = a3;
+  v3[4] = context;
   v3[5] = self;
   if (qword_124378 != -1)
   {
@@ -48,9 +48,9 @@
   }
 }
 
-- (void)lookUpENGroupForChat:(id)a3 service:(id)a4 completion:(id)a5
+- (void)lookUpENGroupForChat:(id)chat service:(id)service completion:(id)completion
 {
-  v9 = [objc_msgSend(a3 "engramID")];
+  v9 = [objc_msgSend(chat "engramID")];
   if (v9)
   {
     v11[0] = _NSConcreteStackBlock;
@@ -59,9 +59,9 @@
     v11[3] = &unk_113D10;
     v11[4] = self;
     v11[5] = v9;
-    v11[6] = a3;
-    v11[7] = a5;
-    [a4 performGroupTask:v11];
+    v11[6] = chat;
+    v11[7] = completion;
+    [service performGroupTask:v11];
   }
 
   else
@@ -72,16 +72,16 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v13 = [a3 engramID];
+        engramID = [chat engramID];
         _os_log_impl(&dword_0, v10, OS_LOG_TYPE_INFO, "Couldn't create a valid NSData for engramid: %@", buf, 0xCu);
       }
     }
 
-    (*(a5 + 2))(a5, 0, 0, [NSError errorWithDomain:EngramControllerErrorDomain code:3 userInfo:0]);
+    (*(completion + 2))(completion, 0, 0, [NSError errorWithDomain:EngramControllerErrorDomain code:3 userInfo:0]);
   }
 }
 
-- (void)addParticipantsToENGroup:(id)a3 chat:(id)a4 service:(id)a5 fromID:(id)a6 completion:(id)a7
+- (void)addParticipantsToENGroup:(id)group chat:(id)chat service:(id)service fromID:(id)d completion:(id)completion
 {
   if (IMOSLoggingEnabled())
   {
@@ -89,15 +89,15 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v15 = a3;
+      groupCopy = group;
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_INFO, "We are explicitly adding these participants: %@", buf, 0xCu);
     }
   }
 
-  [(MessageEngramGroupController *)self _addRemoveParticipantsToENGroupForChat:a4 participantsToAdd:a3 participantsToRemove:0 service:a5 fromID:a6 attemptCount:0 completion:a7];
+  [(MessageEngramGroupController *)self _addRemoveParticipantsToENGroupForChat:chat participantsToAdd:group participantsToRemove:0 service:service fromID:d attemptCount:0 completion:completion];
 }
 
-- (void)removeParticipantsFromENGroup:(id)a3 chat:(id)a4 service:(id)a5 fromID:(id)a6 completion:(id)a7
+- (void)removeParticipantsFromENGroup:(id)group chat:(id)chat service:(id)service fromID:(id)d completion:(id)completion
 {
   if (IMOSLoggingEnabled())
   {
@@ -105,17 +105,17 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v15 = a3;
+      groupCopy = group;
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_INFO, "We are explicitly removing these participants: %@", buf, 0xCu);
     }
   }
 
-  [(MessageEngramGroupController *)self _addRemoveParticipantsToENGroupForChat:a4 participantsToAdd:0 participantsToRemove:a3 service:a5 fromID:a6 attemptCount:0 completion:a7];
+  [(MessageEngramGroupController *)self _addRemoveParticipantsToENGroupForChat:chat participantsToAdd:0 participantsToRemove:group service:service fromID:d attemptCount:0 completion:completion];
 }
 
-- (void)sendMessageWithEngram:(id)a3 chat:(id)a4 service:(id)a5 fromID:(id)a6 fromAccount:(id)a7 session:(id)a8 context:(id)a9 groupController:(id)a10 completionBlock:(id)a11
+- (void)sendMessageWithEngram:(id)engram chat:(id)chat service:(id)service fromID:(id)d fromAccount:(id)account session:(id)session context:(id)context groupController:(id)self0 completionBlock:(id)self1
 {
-  if ([objc_msgSend(a4 "engramID")])
+  if ([objc_msgSend(chat "engramID")])
   {
     if (IMOSLoggingEnabled())
     {
@@ -123,7 +123,7 @@
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v24 = a4;
+        chatCopy = chat;
         _os_log_impl(&dword_0, v17, OS_LOG_TYPE_INFO, "Looking up engram group for chat: %@", buf, 0xCu);
       }
     }
@@ -132,19 +132,19 @@
     v22[1] = 3221225472;
     v22[2] = sub_7078C;
     v22[3] = &unk_113D60;
-    v22[11] = a5;
-    v22[12] = a11;
-    v22[4] = a4;
-    v22[5] = a10;
-    v22[6] = a3;
-    v22[7] = a6;
-    v22[8] = a7;
-    v22[9] = a9;
+    v22[11] = service;
+    v22[12] = block;
+    v22[4] = chat;
+    v22[5] = controller;
+    v22[6] = engram;
+    v22[7] = d;
+    v22[8] = account;
+    v22[9] = context;
     v22[10] = self;
-    [(MessageEngramGroupController *)self lookUpENGroupForChat:a4 service:a5 completion:v22];
+    [(MessageEngramGroupController *)self lookUpENGroupForChat:chat service:service completion:v22];
   }
 
-  else if (([a4 createEngramGroupOnMessageSend] & 1) != 0 || objc_msgSend(objc_msgSend(a4, "groupID"), "length") && -[MessageEngramGroupController _createGroupForExistingChat:](self, "_createGroupForExistingChat:", a4))
+  else if (([chat createEngramGroupOnMessageSend] & 1) != 0 || objc_msgSend(objc_msgSend(chat, "groupID"), "length") && -[MessageEngramGroupController _createGroupForExistingChat:](self, "_createGroupForExistingChat:", chat))
   {
     if (IMOSLoggingEnabled())
     {
@@ -152,7 +152,7 @@
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v24 = [a4 groupID];
+        chatCopy = [chat groupID];
         _os_log_impl(&dword_0, v18, OS_LOG_TYPE_INFO, "Going to create engram group for chat: %@", buf, 0xCu);
       }
     }
@@ -161,14 +161,14 @@
     v21[1] = 3221225472;
     v21[2] = sub_70B80;
     v21[3] = &unk_113D38;
-    v21[9] = a9;
-    v21[10] = a11;
-    v21[4] = a10;
-    v21[5] = a4;
-    v21[6] = a3;
-    v21[7] = a6;
-    v21[8] = a7;
-    [(MessageEngramGroupController *)self _createEngramGroupForChat:a4 fromID:a6 service:a5 completion:v21];
+    v21[9] = context;
+    v21[10] = block;
+    v21[4] = controller;
+    v21[5] = chat;
+    v21[6] = engram;
+    v21[7] = d;
+    v21[8] = account;
+    [(MessageEngramGroupController *)self _createEngramGroupForChat:chat fromID:d service:service completion:v21];
   }
 
   else
@@ -184,32 +184,32 @@
     }
 
     LOBYTE(v20) = 1;
-    (*(a11 + 2))(a11, a10, a4, a3, a6, a7, a9, 0, v20);
+    (*(block + 2))(block, controller, chat, engram, d, account, context, 0, v20);
   }
 }
 
-- (void)convergeOnIncomingGroup:(id)a3 chat:(id)a4 service:(id)a5
+- (void)convergeOnIncomingGroup:(id)group chat:(id)chat service:(id)service
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_70D68;
   v5[3] = &unk_113D88;
-  v5[4] = a4;
-  v5[5] = a3;
+  v5[4] = chat;
+  v5[5] = group;
   v5[6] = self;
-  [(MessageEngramGroupController *)self lookUpENGroupForChat:a4 service:a5 completion:v5];
+  [(MessageEngramGroupController *)self lookUpENGroupForChat:chat service:service completion:v5];
 }
 
 - (int64_t)_daysToWaitBeforeCreatingEngroup
 {
   if ([-[MessageEngramGroupController lockDownManager](self "lockDownManager")] && (v3 = IMGetCachedDomainValueForKey()) != 0 || (v4 = -[MessageEngramGroupController IDSServerBagiMessageSharedInstance](self, "IDSServerBagiMessageSharedInstance"), (v3 = objc_msgSend(v4, "objectForKey:", off_123B88)) != 0))
   {
-    v5 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v5 = &dword_4 + 3;
+    integerValue = &dword_4 + 3;
   }
 
   if (IMOSLoggingEnabled())
@@ -218,26 +218,26 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v8 = 138412290;
-      v9 = [NSNumber numberWithInteger:v5];
+      v9 = [NSNumber numberWithInteger:integerValue];
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_INFO, "Days to wait before creating engroup: %@", &v8, 0xCu);
     }
   }
 
-  return v5;
+  return integerValue;
 }
 
-- (BOOL)_createGroupForExistingChat:(id)a3
+- (BOOL)_createGroupForExistingChat:(id)chat
 {
-  v5 = [a3 engroupCreationDate];
-  if (v5 < 1)
+  engroupCreationDate = [chat engroupCreationDate];
+  if (engroupCreationDate < 1)
   {
-    v8 = [(MessageEngramGroupController *)self _daysToWaitBeforeCreatingEngroup];
-    if (!v8)
+    _daysToWaitBeforeCreatingEngroup = [(MessageEngramGroupController *)self _daysToWaitBeforeCreatingEngroup];
+    if (!_daysToWaitBeforeCreatingEngroup)
     {
       goto LABEL_12;
     }
 
-    v9 = [+[NSDate date](NSDate dateByAddingTimeInterval:"dateByAddingTimeInterval:", (86400 * v8)];
+    v9 = [+[NSDate date](NSDate dateByAddingTimeInterval:"dateByAddingTimeInterval:", (86400 * _daysToWaitBeforeCreatingEngroup)];
     if (IMOSLoggingEnabled())
     {
       v10 = OSLogHandleForIMFoundationCategory();
@@ -250,13 +250,13 @@
     }
 
     [(NSDate *)v9 timeIntervalSince1970];
-    [a3 updateEngroupCreationDate:v11];
+    [chat updateEngroupCreationDate:v11];
 LABEL_11:
     v7 = 0;
     goto LABEL_13;
   }
 
-  if ([+[NSDate dateWithTimeIntervalSince1970:](NSDate compare:v5), "compare:", +[NSDate date]]!= NSOrderedAscending)
+  if ([+[NSDate dateWithTimeIntervalSince1970:](NSDate compare:engroupCreationDate), "compare:", +[NSDate date]]!= NSOrderedAscending)
   {
     goto LABEL_11;
   }
@@ -282,7 +282,7 @@ LABEL_13:
     v12 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = +[NSDate dateWithTimeIntervalSinceNow:](NSDate, "dateWithTimeIntervalSinceNow:", [a3 engroupCreationDate]);
+      v13 = +[NSDate dateWithTimeIntervalSinceNow:](NSDate, "dateWithTimeIntervalSinceNow:", [chat engroupCreationDate]);
       v15 = 138412290;
       v16 = v13;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_INFO, "We are waiting for to create this group: %@", &v15, 0xCu);
@@ -292,7 +292,7 @@ LABEL_13:
   return v7;
 }
 
-- (void)_enparticipantsForDestinations:(id)a3 completion:(id)a4
+- (void)_enparticipantsForDestinations:(id)destinations completion:(id)completion
 {
   if (IMOSLoggingEnabled())
   {
@@ -300,7 +300,7 @@ LABEL_13:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v9 = a3;
+      destinationsCopy = destinations;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_INFO, "Going to create enparticipants for destinations: %@", buf, 0xCu);
     }
   }
@@ -309,17 +309,17 @@ LABEL_13:
   v7[1] = 3221225472;
   v7[2] = sub_71568;
   v7[3] = &unk_113DB0;
-  v7[4] = a4;
-  [IMIDSIDQueryController participantsForDestinations:a3 service:IDSServiceNameiMessage listenerID:@"__kMessageGroupControllerIDSIDQueryControllerListenerID" queue:&_dispatch_main_q completionBlock:v7];
+  v7[4] = completion;
+  [IMIDSIDQueryController participantsForDestinations:destinations service:IDSServiceNameiMessage listenerID:@"__kMessageGroupControllerIDSIDQueryControllerListenerID" queue:&_dispatch_main_q completionBlock:v7];
 }
 
-- (id)_createApplicationDataForDestinations:(id)a3
+- (id)_createApplicationDataForDestinations:(id)destinations
 {
-  if ([a3 count])
+  if ([destinations count])
   {
     v9 = off_123B80;
-    v10 = a3;
-    [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
+    destinationsCopy = destinations;
+    [NSDictionary dictionaryWithObjects:&destinationsCopy forKeys:&v9 count:1];
     v4 = JWEncodeDictionary();
   }
 
@@ -336,7 +336,7 @@ LABEL_13:
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         v7 = 138412290;
-        v8 = a3;
+        destinationsCopy2 = destinations;
         _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "/**----We failed to create the shared application data!! Please file a radar!!! destinations: %@----*/", &v7, 0xCu);
       }
     }
@@ -348,29 +348,29 @@ LABEL_13:
   return [v4 _FTCopyGzippedData];
 }
 
-- (void)_createEngramGroupForChat:(id)a3 fromID:(id)a4 service:(id)a5 completion:(id)a6
+- (void)_createEngramGroupForChat:(id)chat fromID:(id)d service:(id)service completion:(id)completion
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_717D0;
   v6[3] = &unk_113E00;
-  v6[8] = a6;
-  v6[4] = a5;
+  v6[8] = completion;
+  v6[4] = service;
   v6[5] = self;
-  v6[6] = a3;
-  [(MessageEngramGroupController *)self _enparticipantsForDestinations:[(MessageEngramGroupController *)self _URIsForChatParticipants:a3 fromID:a4] completion:v6];
+  v6[6] = chat;
+  [(MessageEngramGroupController *)self _enparticipantsForDestinations:[(MessageEngramGroupController *)self _URIsForChatParticipants:chat fromID:d] completion:v6];
 }
 
-- (void)_createGroupFromGroupContext:(id)a3 chat:(id)a4 enparticipants:(id)a5 destinations:(id)a6 completion:(id)a7
+- (void)_createGroupFromGroupContext:(id)context chat:(id)chat enparticipants:(id)enparticipants destinations:(id)destinations completion:(id)completion
 {
-  v11 = [(MessageEngramGroupController *)self _createApplicationDataForDestinations:a6];
+  v11 = [(MessageEngramGroupController *)self _createApplicationDataForDestinations:destinations];
   if (IMOSLoggingEnabled())
   {
     v12 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v15 = a3;
+      contextCopy = context;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_INFO, "Creating group with context: %@", buf, 0xCu);
     }
   }
@@ -379,97 +379,97 @@ LABEL_13:
   v13[1] = 3221225472;
   v13[2] = sub_71BF0;
   v13[3] = &unk_113E50;
-  v13[5] = a5;
-  v13[6] = a7;
-  v13[4] = a4;
-  [a3 createGroupWithParticipants:a5 sharedApplicationData:v11 completion:v13];
+  v13[5] = enparticipants;
+  v13[6] = completion;
+  v13[4] = chat;
+  [context createGroupWithParticipants:enparticipants sharedApplicationData:v11 completion:v13];
 }
 
-- (void)_addRemoveParticipantsToENGroupForChat:(id)a3 participantsToAdd:(id)a4 participantsToRemove:(id)a5 service:(id)a6 fromID:(id)a7 attemptCount:(unint64_t)a8 completion:(id)a9
+- (void)_addRemoveParticipantsToENGroupForChat:(id)chat participantsToAdd:(id)add participantsToRemove:(id)remove service:(id)service fromID:(id)d attemptCount:(unint64_t)count completion:(id)completion
 {
-  if (a8 == 5)
+  if (count == 5)
   {
-    v9 = [NSError errorWithDomain:EngramControllerErrorDomain code:6 userInfo:0, a6, a7];
-    v10 = *(a9 + 2);
+    v9 = [NSError errorWithDomain:EngramControllerErrorDomain code:6 userInfo:0, service, d];
+    v10 = *(completion + 2);
 
-    v10(a9, 0, 0, v9);
+    v10(completion, 0, 0, v9);
   }
 
   else
   {
-    [a3 setPendingENGroupParticipantUpdate:1];
-    if ([a4 count])
+    [chat setPendingENGroupParticipantUpdate:1];
+    if ([add count])
     {
-      v17 = [a4 _URIsFromIDs];
+      _URIsFromIDs = [add _URIsFromIDs];
     }
 
     else
     {
-      v17 = 0;
+      _URIsFromIDs = 0;
     }
 
-    if ([a5 count])
+    if ([remove count])
     {
-      v18 = [a5 _URIsFromIDs];
+      _URIsFromIDs2 = [remove _URIsFromIDs];
     }
 
     else
     {
-      v18 = 0;
+      _URIsFromIDs2 = 0;
     }
 
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_72058;
     v19[3] = &unk_113E78;
-    v19[5] = a4;
-    v19[6] = a9;
+    v19[5] = add;
+    v19[6] = completion;
     v19[4] = self;
-    [(MessageEngramGroupController *)self _createParticipantsAndUpdateGroup:a3 addParticipantsURIs:v17 removeParticipantURIs:v18 fromID:a7 service:a6 completion:v19];
+    [(MessageEngramGroupController *)self _createParticipantsAndUpdateGroup:chat addParticipantsURIs:_URIsFromIDs removeParticipantURIs:_URIsFromIDs2 fromID:d service:service completion:v19];
   }
 }
 
-- (void)_createParticipantsAndUpdateGroup:(id)a3 addParticipantsURIs:(id)a4 removeParticipantURIs:(id)a5 fromID:(id)a6 service:(id)a7 completion:(id)a8
+- (void)_createParticipantsAndUpdateGroup:(id)group addParticipantsURIs:(id)is removeParticipantURIs:(id)rIs fromID:(id)d service:(id)service completion:(id)completion
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_72390;
   v8[3] = &unk_113EC8;
   v8[4] = self;
-  v8[5] = a3;
-  v8[6] = a6;
-  v8[7] = a4;
-  v8[9] = a7;
-  v8[10] = a8;
-  v8[8] = a5;
-  [(MessageEngramGroupController *)self lookUpENGroupForChat:a3 service:a7 completion:v8];
+  v8[5] = group;
+  v8[6] = d;
+  v8[7] = is;
+  v8[9] = service;
+  v8[10] = completion;
+  v8[8] = rIs;
+  [(MessageEngramGroupController *)self lookUpENGroupForChat:group service:service completion:v8];
 }
 
-- (void)_updateGroupWithParticipants:(id)a3 chat:(id)a4 service:(id)a5 participants:(id)a6 destinations:(id)a7 completion:(id)a8
+- (void)_updateGroupWithParticipants:(id)participants chat:(id)chat service:(id)service participants:(id)a6 destinations:(id)destinations completion:(id)completion
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_7280C;
   v8[3] = &unk_113F68;
   v8[4] = self;
-  v8[5] = a7;
-  v8[6] = a3;
+  v8[5] = destinations;
+  v8[6] = participants;
   v8[7] = a6;
-  v8[8] = a4;
-  v8[9] = a8;
-  [a5 performGroupTask:v8];
+  v8[8] = chat;
+  v8[9] = completion;
+  [service performGroupTask:v8];
 }
 
-- (id)applicationDataDictionary:(id)a3
+- (id)applicationDataDictionary:(id)dictionary
 {
-  [a3 _FTOptionallyDecompressData];
+  [dictionary _FTOptionallyDecompressData];
 
   return JWDecodeDictionary();
 }
 
-- (id)_URIsFromApplicationData:(id)a3
+- (id)_URIsFromApplicationData:(id)data
 {
-  v3 = [(MessageEngramGroupController *)self applicationDataDictionary:a3];
+  v3 = [(MessageEngramGroupController *)self applicationDataDictionary:data];
   v4 = [v3 objectForKey:off_123B80];
   if (![v4 count])
   {
@@ -489,14 +489,14 @@ LABEL_13:
   return v4;
 }
 
-- (void)_updateLocalParticipantsFromEngroup:(id)a3 chat:(id)a4 fromID:(id)a5
+- (void)_updateLocalParticipantsFromEngroup:(id)engroup chat:(id)chat fromID:(id)d
 {
-  v7 = -[MessageEngramGroupController _URIsFromApplicationData:](self, "_URIsFromApplicationData:", [a3 sharedApplicationData]);
+  v7 = -[MessageEngramGroupController _URIsFromApplicationData:](self, "_URIsFromApplicationData:", [engroup sharedApplicationData]);
   if ([v7 count])
   {
-    v42 = a5;
-    v8 = [objc_msgSend(v7 arrayByExcludingObjectsInArray:{+[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v42, 1)), "__imSetFromArray"}];
-    v9 = [URIsFromHandles(objc_msgSend(a4 "participants"))];
+    dCopy = d;
+    v8 = [objc_msgSend(v7 arrayByExcludingObjectsInArray:{+[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &dCopy, 1)), "__imSetFromArray"}];
+    v9 = [URIsFromHandles(objc_msgSend(chat "participants"))];
     v10 = [v8 mutableCopy];
     [v10 minusSet:v9];
     v11 = [objc_msgSend(v10 "allObjects")];
@@ -505,7 +505,7 @@ LABEL_13:
     [v12 minusSet:v8];
     v29 = [objc_msgSend(v12 "allObjects")];
 
-    v13 = [a4 serviceSession];
+    serviceSession = [chat serviceSession];
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
@@ -536,9 +536,9 @@ LABEL_13:
             }
           }
 
-          v19 = [a4 chatIdentifier];
-          LOBYTE(v27) = [a4 style];
-          [v13 didChangeMemberStatus:2 forHandle:v17 fromHandle:0 unformattedNumber:0 countryCode:0 forChat:v19 style:v27 account:objc_msgSend(v13 destinationCallerID:{"account"), a5}];
+          chatIdentifier = [chat chatIdentifier];
+          LOBYTE(v27) = [chat style];
+          [serviceSession didChangeMemberStatus:2 forHandle:v17 fromHandle:0 unformattedNumber:0 countryCode:0 forChat:chatIdentifier style:v27 account:objc_msgSend(serviceSession destinationCallerID:{"account"), d}];
         }
 
         v15 = [v11 countByEnumeratingWithState:&v34 objects:v41 count:16];
@@ -576,9 +576,9 @@ LABEL_13:
             }
           }
 
-          v25 = [a4 chatIdentifier];
-          LOBYTE(v27) = [a4 style];
-          [v13 didChangeMemberStatus:3 forHandle:v23 fromHandle:0 unformattedNumber:0 countryCode:0 forChat:v25 style:v27 account:objc_msgSend(v13 destinationCallerID:{"account"), a5}];
+          chatIdentifier2 = [chat chatIdentifier];
+          LOBYTE(v27) = [chat style];
+          [serviceSession didChangeMemberStatus:3 forHandle:v23 fromHandle:0 unformattedNumber:0 countryCode:0 forChat:chatIdentifier2 style:v27 account:objc_msgSend(serviceSession destinationCallerID:{"account"), d}];
         }
 
         v20 = [v29 countByEnumeratingWithState:&v30 objects:v38 count:16];
@@ -592,7 +592,7 @@ LABEL_13:
       return;
     }
 
-    [+[IMDChatStore sharedInstance](IMDChatStore storeChat:"storeChat:", a4];
+    [+[IMDChatStore sharedInstance](IMDChatStore storeChat:"storeChat:", chat];
   }
 
   else if (IMOSLoggingEnabled())
@@ -606,14 +606,14 @@ LABEL_13:
   }
 }
 
-- (id)_callerURIForChat:(id)a3
+- (id)_callerURIForChat:(id)chat
 {
-  [a3 serviceSession];
+  [chat serviceSession];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7 = 0;
-    return _LastAddressedURIForChatLogMetricIfNeeded(a3, 0, [a3 serviceSession], &v7, 0);
+    return _LastAddressedURIForChatLogMetricIfNeeded(chat, 0, [chat serviceSession], &v7, 0);
   }
 
   else
@@ -632,15 +632,15 @@ LABEL_13:
   }
 }
 
-- (void)groupContext:(id)a3 didUpdateGroup:(id)a4 withNewGroup:(id)a5
+- (void)groupContext:(id)context didUpdateGroup:(id)group withNewGroup:(id)newGroup
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_7348C;
   block[3] = &unk_113F90;
-  block[4] = a4;
+  block[4] = group;
   block[5] = self;
-  block[6] = a5;
+  block[6] = newGroup;
   dispatch_async(&_dispatch_main_q, block);
 }
 

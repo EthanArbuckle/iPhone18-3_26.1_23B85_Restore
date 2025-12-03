@@ -1,32 +1,32 @@
 @interface IDSGlobalLinkMessage
-+ (id)messageWithBuffer:(char *)a3 length:(int)a4;
-+ (id)messageWithCommand:(int64_t)a3 attributes:(id)a4;
-- (BOOL)_addAttribute:(IDSGlobalLinkAttribute *)a3;
-- (BOOL)_write:(char *)a3 outputLength:(int *)a4 dropLowerPriorityFields:(BOOL)a5;
-- (BOOL)getAttribute:(int64_t)a3 attribute:(IDSGlobalLinkAttribute *)a4;
-- (BOOL)read:(char *)a3 inputLength:(int)a4;
-- (BOOL)verifyHMacDigestWithKey:(id)a3 inputBuffer:(char *)a4 inputLength:(int)a5;
-- (BOOL)write:(char *)a3 outputLength:(int *)a4;
-- (IDSGlobalLinkMessage)initWithCommand:(int64_t)a3;
-- (void)_addAddressAttribute:(int64_t)a3 value:(sockaddr *)a4;
-- (void)_addBinaryDataAttribute:(int64_t)a3 value:(id)a4;
-- (void)_addUInt16Attribute:(int64_t)a3 value:(unsigned __int16)a4;
-- (void)_addUInt32Attribute:(int64_t)a3 value:(unsigned int)a4;
-- (void)_addUInt64Attribute:(int64_t)a3 value:(unint64_t)a4;
++ (id)messageWithBuffer:(char *)buffer length:(int)length;
++ (id)messageWithCommand:(int64_t)command attributes:(id)attributes;
+- (BOOL)_addAttribute:(IDSGlobalLinkAttribute *)attribute;
+- (BOOL)_write:(char *)_write outputLength:(int *)length dropLowerPriorityFields:(BOOL)fields;
+- (BOOL)getAttribute:(int64_t)attribute attribute:(IDSGlobalLinkAttribute *)a4;
+- (BOOL)read:(char *)read inputLength:(int)length;
+- (BOOL)verifyHMacDigestWithKey:(id)key inputBuffer:(char *)buffer inputLength:(int)length;
+- (BOOL)write:(char *)write outputLength:(int *)length;
+- (IDSGlobalLinkMessage)initWithCommand:(int64_t)command;
+- (void)_addAddressAttribute:(int64_t)attribute value:(sockaddr *)value;
+- (void)_addBinaryDataAttribute:(int64_t)attribute value:(id)value;
+- (void)_addUInt16Attribute:(int64_t)attribute value:(unsigned __int16)value;
+- (void)_addUInt32Attribute:(int64_t)attribute value:(unsigned int)value;
+- (void)_addUInt64Attribute:(int64_t)attribute value:(unint64_t)value;
 - (void)dealloc;
-- (void)setAttributes:(id)a3;
+- (void)setAttributes:(id)attributes;
 @end
 
 @implementation IDSGlobalLinkMessage
 
-- (IDSGlobalLinkMessage)initWithCommand:(int64_t)a3
+- (IDSGlobalLinkMessage)initWithCommand:(int64_t)command
 {
   v5.receiver = self;
   v5.super_class = IDSGlobalLinkMessage;
   result = [(IDSGlobalLinkMessage *)&v5 init];
   if (result)
   {
-    result->_command = a3;
+    result->_command = command;
   }
 
   return result;
@@ -39,32 +39,32 @@
   [(IDSGlobalLinkMessage *)&v2 dealloc];
 }
 
-+ (id)messageWithCommand:(int64_t)a3 attributes:(id)a4
++ (id)messageWithCommand:(int64_t)command attributes:(id)attributes
 {
-  v5 = a4;
-  v6 = [[IDSGlobalLinkMessage alloc] initWithCommand:a3];
-  [(IDSGlobalLinkMessage *)v6 setAttributes:v5];
+  attributesCopy = attributes;
+  v6 = [[IDSGlobalLinkMessage alloc] initWithCommand:command];
+  [(IDSGlobalLinkMessage *)v6 setAttributes:attributesCopy];
 
   return v6;
 }
 
-+ (id)messageWithBuffer:(char *)a3 length:(int)a4
++ (id)messageWithBuffer:(char *)buffer length:(int)length
 {
-  v4 = *&a4;
+  v4 = *&length;
   v6 = objc_alloc_init(IDSGlobalLinkMessage);
-  [(IDSGlobalLinkMessage *)v6 read:a3 inputLength:v4];
+  [(IDSGlobalLinkMessage *)v6 read:buffer inputLength:v4];
 
   return v6;
 }
 
-- (BOOL)_addAttribute:(IDSGlobalLinkAttribute *)a3
+- (BOOL)_addAttribute:(IDSGlobalLinkAttribute *)attribute
 {
-  if (a3)
+  if (attribute)
   {
     numAttribute = self->_numAttribute;
     if (numAttribute != 20)
     {
-      memcpy(&self->_attributes[numAttribute], a3, sizeof(self->_attributes[numAttribute]));
+      memcpy(&self->_attributes[numAttribute], attribute, sizeof(self->_attributes[numAttribute]));
       ++self->_numAttribute;
       LOBYTE(v6) = 1;
       return v6;
@@ -125,69 +125,69 @@ LABEL_15:
   return v6;
 }
 
-- (void)_addAddressAttribute:(int64_t)a3 value:(sockaddr *)a4
+- (void)_addAddressAttribute:(int64_t)attribute value:(sockaddr *)value
 {
-  v4 = a3;
+  attributeCopy = attribute;
   v7 = *MEMORY[0x1E69E9840];
   memset(__b, 170, sizeof(__b));
-  __b[0] = v4;
+  __b[0] = attributeCopy;
   __b[1] = 128;
   __memcpy_chk();
   [(IDSGlobalLinkMessage *)self _addAttribute:__b];
 }
 
-- (void)_addUInt16Attribute:(int64_t)a3 value:(unsigned __int16)a4
+- (void)_addUInt16Attribute:(int64_t)attribute value:(unsigned __int16)value
 {
-  v5 = a3;
+  attributeCopy = attribute;
   v8 = *MEMORY[0x1E69E9840];
   memset(__b, 170, sizeof(__b));
-  __b[0] = v5;
+  __b[0] = attributeCopy;
   __b[1] = 2;
-  __b[4] = a4;
+  __b[4] = value;
   [(IDSGlobalLinkMessage *)self _addAttribute:__b];
 }
 
-- (void)_addUInt32Attribute:(int64_t)a3 value:(unsigned int)a4
+- (void)_addUInt32Attribute:(int64_t)attribute value:(unsigned int)value
 {
-  v5 = a3;
+  attributeCopy = attribute;
   v8 = *MEMORY[0x1E69E9840];
   memset(__b, 170, sizeof(__b));
-  LOWORD(__b[0]) = v5;
+  LOWORD(__b[0]) = attributeCopy;
   HIWORD(__b[0]) = 4;
-  __b[2] = a4;
+  __b[2] = value;
   [(IDSGlobalLinkMessage *)self _addAttribute:__b];
 }
 
-- (void)_addUInt64Attribute:(int64_t)a3 value:(unint64_t)a4
+- (void)_addUInt64Attribute:(int64_t)attribute value:(unint64_t)value
 {
-  v5 = a3;
+  attributeCopy = attribute;
   __b[130] = *MEMORY[0x1E69E9840];
   memset(__b, 170, 0x410uLL);
-  LOWORD(__b[0]) = v5;
+  LOWORD(__b[0]) = attributeCopy;
   WORD1(__b[0]) = 8;
-  __b[1] = a4;
+  __b[1] = value;
   [(IDSGlobalLinkMessage *)self _addAttribute:__b];
 }
 
-- (void)_addBinaryDataAttribute:(int64_t)a3 value:(id)a4
+- (void)_addBinaryDataAttribute:(int64_t)attribute value:(id)value
 {
-  v4 = a3;
+  attributeCopy = attribute;
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (v6)
+  valueCopy = value;
+  if (valueCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       memset(__b, 170, sizeof(__b));
-      v7 = [v6 length];
+      v7 = [valueCopy length];
       v8 = v7;
       if ((v7 - 1025) > 0xFFFFFBFF)
       {
-        LOWORD(__b[0]) = v4;
+        LOWORD(__b[0]) = attributeCopy;
         HIWORD(__b[0]) = v7;
         __b[2] = v7;
-        [v6 bytes];
+        [valueCopy bytes];
         __memcpy_chk();
         [(IDSGlobalLinkMessage *)self _addAttribute:__b];
       }
@@ -200,7 +200,7 @@ LABEL_15:
           *buf = 67109376;
           v11 = v8;
           v12 = 1024;
-          v13 = v4;
+          v13 = attributeCopy;
           _os_log_impl(&dword_1A7AD9000, v9, OS_LOG_TYPE_DEFAULT, "failed to add %dB for binary attr type %04x.", buf, 0xEu);
         }
 
@@ -220,10 +220,10 @@ LABEL_15:
   }
 }
 
-- (void)setAttributes:(id)a3
+- (void)setAttributes:(id)attributes
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  attributesCopy = attributes;
   v5 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -231,7 +231,7 @@ LABEL_15:
     *buf = 134218242;
     *&buf[4] = command;
     *&buf[12] = 2112;
-    *&buf[14] = v4;
+    *&buf[14] = attributesCopy;
     _os_log_impl(&dword_1A7AD9000, v5, OS_LOG_TYPE_DEFAULT, "[IDSGlobalLinkMessage command:%04lx setAttributes: %@]", buf, 0x16u);
   }
 
@@ -240,18 +240,18 @@ LABEL_15:
     if (_IDSShouldLogTransport())
     {
       v15 = self->_command;
-      v16 = v4;
+      v16 = attributesCopy;
       _IDSLogTransport(@"GL", @"IDS", @"[IDSGlobalLinkMessage command:%04lx setAttributes: %@]");
       if (_IDSShouldLog())
       {
         v15 = self->_command;
-        v16 = v4;
+        v16 = attributesCopy;
         _IDSLogV(0, @"IDSFoundation", @"GL", @"[IDSGlobalLinkMessage command:%04lx setAttributes: %@]");
       }
     }
   }
 
-  [v4 allKeys];
+  [attributesCopy allKeys];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
@@ -272,9 +272,9 @@ LABEL_15:
 
         Value = 0;
         v11 = *(*(&v19 + 1) + 8 * i);
-        if (v4 && v11)
+        if (attributesCopy && v11)
         {
-          Value = CFDictionaryGetValue(v4, *(*(&v19 + 1) + 8 * i));
+          Value = CFDictionaryGetValue(attributesCopy, *(*(&v19 + 1) + 8 * i));
         }
 
         v12 = Value;
@@ -426,7 +426,7 @@ LABEL_15:
   }
 }
 
-- (BOOL)getAttribute:(int64_t)a3 attribute:(IDSGlobalLinkAttribute *)a4
+- (BOOL)getAttribute:(int64_t)attribute attribute:(IDSGlobalLinkAttribute *)a4
 {
   numAttribute = self->_numAttribute;
   if (numAttribute < 1)
@@ -435,7 +435,7 @@ LABEL_15:
   }
 
   attributes = self->_attributes;
-  if (self->_attributes[0].type != a3)
+  if (self->_attributes[0].type != attribute)
   {
     v7 = 0;
     v8 = &self->_attributes[1];
@@ -444,7 +444,7 @@ LABEL_15:
       type = v8->type;
       ++v8;
       ++v7;
-      if (type == a3)
+      if (type == attribute)
       {
         v6 = v7 < numAttribute;
         attributes = v8 - 1;
@@ -461,21 +461,21 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)verifyHMacDigestWithKey:(id)a3 inputBuffer:(char *)a4 inputLength:(int)a5
+- (BOOL)verifyHMacDigestWithKey:(id)key inputBuffer:(char *)buffer inputLength:(int)length
 {
   macOut[3] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
+  keyCopy = key;
+  v8 = keyCopy;
   memset(macOut, 170, 20);
-  if (a5 < 44)
+  if (length < 44)
   {
     v15 = 0;
   }
 
   else
   {
-    CCHmac(0, [v7 bytes], objc_msgSend(v7, "length"), a4, (a5 - 24), macOut);
-    v9 = &a4[a5];
+    CCHmac(0, [keyCopy bytes], objc_msgSend(keyCopy, "length"), buffer, (length - 24), macOut);
+    v9 = &buffer[length];
     v10 = *(v9 - 20);
     v11 = *(v9 - 12);
     v12 = *(v9 - 1);
@@ -497,18 +497,18 @@ LABEL_8:
     }
 
     v18 = [MEMORY[0x1E695DEF0] dataWithBytes:macOut length:20];
-    v19 = [v18 __imHexString];
-    v20 = [MEMORY[0x1E695DEF0] dataWithBytes:&a4[a5 - 20] length:20];
-    v21 = [v20 __imHexString];
-    v22 = [v8 __imHexString];
+    __imHexString = [v18 __imHexString];
+    v20 = [MEMORY[0x1E695DEF0] dataWithBytes:&buffer[length - 20] length:20];
+    __imHexString2 = [v20 __imHexString];
+    __imHexString3 = [v8 __imHexString];
     *buf = 138413058;
     v38 = v17;
     v39 = 2112;
-    v40 = v19;
+    v40 = __imHexString;
     v41 = 2112;
-    v42 = v21;
+    v42 = __imHexString2;
     v43 = 2112;
-    v44 = v22;
+    v44 = __imHexString3;
     _os_log_impl(&dword_1A7AD9000, v16, OS_LOG_TYPE_DEFAULT, "verifyHMacDigestWithKey result:%@ (HMac:%@, Recv:%@, Key: %@).", buf, 0x2Au);
 
     v15 = v36;
@@ -527,20 +527,20 @@ LABEL_8:
     }
 
     v24 = [MEMORY[0x1E695DEF0] dataWithBytes:macOut length:20];
-    v25 = [v24 __imHexString];
-    v26 = &a4[a5 - 20];
+    __imHexString4 = [v24 __imHexString];
+    v26 = &buffer[length - 20];
     v27 = [MEMORY[0x1E695DEF0] dataWithBytes:v26 length:20];
-    v28 = [v27 __imHexString];
-    v34 = [v8 __imHexString];
+    __imHexString5 = [v27 __imHexString];
+    __imHexString6 = [v8 __imHexString];
     _IDSLogTransport(@"GL", @"IDS", @"verifyHMacDigestWithKey result:%@ (HMac:%@, Recv:%@, Key: %@).");
 
     if (_IDSShouldLog())
     {
-      v29 = [MEMORY[0x1E695DEF0] dataWithBytes:macOut length:{20, v23, v25, v28, v34}];
-      v30 = [v29 __imHexString];
+      v29 = [MEMORY[0x1E695DEF0] dataWithBytes:macOut length:{20, v23, __imHexString4, __imHexString5, __imHexString6}];
+      __imHexString7 = [v29 __imHexString];
       v31 = [MEMORY[0x1E695DEF0] dataWithBytes:v26 length:20];
-      v32 = [v31 __imHexString];
-      v35 = [v8 __imHexString];
+      __imHexString8 = [v31 __imHexString];
+      __imHexString9 = [v8 __imHexString];
       _IDSLogV(0, @"IDSFoundation", @"GL", @"verifyHMacDigestWithKey result:%@ (HMac:%@, Recv:%@, Key: %@).");
     }
   }
@@ -548,7 +548,7 @@ LABEL_8:
   return v15;
 }
 
-- (BOOL)write:(char *)a3 outputLength:(int *)a4
+- (BOOL)write:(char *)write outputLength:(int *)length
 {
   v7 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -569,7 +569,7 @@ LABEL_8:
     }
   }
 
-  if ([(IDSGlobalLinkMessage *)self _write:a3 outputLength:a4 dropLowerPriorityFields:0])
+  if ([(IDSGlobalLinkMessage *)self _write:write outputLength:length dropLowerPriorityFields:0])
   {
     goto LABEL_15;
   }
@@ -593,7 +593,7 @@ LABEL_8:
     }
   }
 
-  if ([(IDSGlobalLinkMessage *)self _write:a3 outputLength:a4 dropLowerPriorityFields:1])
+  if ([(IDSGlobalLinkMessage *)self _write:write outputLength:length dropLowerPriorityFields:1])
   {
 LABEL_15:
     v9 = OSLogHandleForTransportCategory();
@@ -634,14 +634,14 @@ LABEL_25:
   return 1;
 }
 
-- (BOOL)_write:(char *)a3 outputLength:(int *)a4 dropLowerPriorityFields:(BOOL)a5
+- (BOOL)_write:(char *)_write outputLength:(int *)length dropLowerPriorityFields:(BOOL)fields
 {
-  v5 = a4;
+  lengthCopy2 = length;
   v41 = *MEMORY[0x1E69E9840];
-  *a3 = bswap32(LOWORD(self->_command)) >> 16;
-  *(a3 + 12) = 0;
-  *(a3 + 4) = 0;
-  v8 = a3 + 20;
+  *_write = bswap32(LOWORD(self->_command)) >> 16;
+  *(_write + 12) = 0;
+  *(_write + 4) = 0;
+  v8 = _write + 20;
   numAttribute = self->_numAttribute;
   if (numAttribute <= 0)
   {
@@ -650,20 +650,20 @@ LABEL_25:
     goto LABEL_41;
   }
 
-  v10 = a5;
+  fieldsCopy = fields;
   v11 = 0;
   v35 = 0;
   attributes = self->_attributes;
   while (1)
   {
-    if (v10 && attributes->type == 22)
+    if (fieldsCopy && attributes->type == 22)
     {
       goto LABEL_30;
     }
 
     v13 = attributes->len + 4;
     v36 = attributes->len + 4;
-    if (v8 - a3 + v13 >= 1025)
+    if (v8 - _write + v13 >= 1025)
     {
       break;
     }
@@ -793,12 +793,12 @@ LABEL_30:
 
   v17 = 0;
 LABEL_40:
-  v5 = a4;
+  lengthCopy2 = length;
 LABEL_41:
-  *(a3 + 1) = bswap32(v8 - a3 - 20) >> 16;
-  if (v5)
+  *(_write + 1) = bswap32(v8 - _write - 20) >> 16;
+  if (lengthCopy2)
   {
-    *v5 = v8 - a3;
+    *lengthCopy2 = v8 - _write;
   }
 
   v19 = OSLogHandleForTransportCategory();
@@ -844,17 +844,17 @@ LABEL_41:
     hmacKeyData = self->_hmacKeyData;
     if (hmacKeyData)
     {
-      CCHmac(0, [(NSData *)hmacKeyData bytes], [(NSData *)self->_hmacKeyData length], a3, *v5 - 24, &a3[*v5 - 20]);
+      CCHmac(0, [(NSData *)hmacKeyData bytes], [(NSData *)self->_hmacKeyData length], _write, *lengthCopy2 - 24, &_write[*lengthCopy2 - 20]);
       v23 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = [MEMORY[0x1E695DEF0] dataWithBytes:&a3[*v5 - 20] length:20];
-        v25 = [v24 __imHexString];
-        v26 = [(NSData *)self->_hmacKeyData __imHexString];
+        v24 = [MEMORY[0x1E695DEF0] dataWithBytes:&_write[*lengthCopy2 - 20] length:20];
+        __imHexString = [v24 __imHexString];
+        __imHexString2 = [(NSData *)self->_hmacKeyData __imHexString];
         *buf = 138412546;
-        v38 = v25;
+        v38 = __imHexString;
         v39 = 2112;
-        v40 = v26;
+        v40 = __imHexString2;
         _os_log_impl(&dword_1A7AD9000, v23, OS_LOG_TYPE_DEFAULT, "HMac:%@, Key: %@", buf, 0x16u);
       }
 
@@ -862,16 +862,16 @@ LABEL_41:
       {
         if (_IDSShouldLogTransport())
         {
-          v27 = [MEMORY[0x1E695DEF0] dataWithBytes:&a3[*v5 - 20] length:20];
-          v28 = [v27 __imHexString];
-          v32 = [(NSData *)self->_hmacKeyData __imHexString];
+          v27 = [MEMORY[0x1E695DEF0] dataWithBytes:&_write[*lengthCopy2 - 20] length:20];
+          __imHexString3 = [v27 __imHexString];
+          __imHexString4 = [(NSData *)self->_hmacKeyData __imHexString];
           _IDSLogTransport(@"GL", @"IDS", @"HMac:%@, Key: %@");
 
           if (_IDSShouldLog())
           {
-            v29 = [MEMORY[0x1E695DEF0] dataWithBytes:&a3[*v5 - 20] length:{20, v28, v32}];
-            v30 = [v29 __imHexString];
-            v33 = [(NSData *)self->_hmacKeyData __imHexString];
+            v29 = [MEMORY[0x1E695DEF0] dataWithBytes:&_write[*lengthCopy2 - 20] length:{20, __imHexString3, __imHexString4}];
+            __imHexString5 = [v29 __imHexString];
+            __imHexString6 = [(NSData *)self->_hmacKeyData __imHexString];
             _IDSLogV(0, @"IDSFoundation", @"GL", @"HMac:%@, Key: %@");
           }
         }
@@ -882,16 +882,16 @@ LABEL_41:
   return v17;
 }
 
-- (BOOL)read:(char *)a3 inputLength:(int)a4
+- (BOOL)read:(char *)read inputLength:(int)length
 {
   v29 = *MEMORY[0x1E69E9840];
-  if (a4 <= 19)
+  if (length <= 19)
   {
     v5 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v26 = a4;
+      lengthCopy2 = length;
       _os_log_impl(&dword_1A7AD9000, v5, OS_LOG_TYPE_DEFAULT, "receive invalid command data length %uB, too short.", buf, 8u);
     }
 
@@ -918,15 +918,15 @@ LABEL_41:
     goto LABEL_15;
   }
 
-  self->_command = bswap32(*a3) >> 16;
-  v8 = (bswap32(*(a3 + 1)) >> 16) + 20;
-  if (v8 > a4)
+  self->_command = bswap32(*read) >> 16;
+  v8 = (bswap32(*(read + 1)) >> 16) + 20;
+  if (v8 > length)
   {
     v9 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109376;
-      v26 = a4;
+      lengthCopy2 = length;
       v27 = 1024;
       v28 = v8;
       _os_log_impl(&dword_1A7AD9000, v9, OS_LOG_TYPE_DEFAULT, "receive incomplete packet (%d < %d), skip.", buf, 0xEu);
@@ -958,7 +958,7 @@ LABEL_15:
   }
 
   v24 = -1431655766;
-  if (a4 < 0x18)
+  if (length < 0x18)
   {
     v10 = 0;
 LABEL_18:
@@ -968,9 +968,9 @@ LABEL_18:
   }
 
   v11 = 0;
-  v12 = &a3[a4];
-  v13 = (a3 + 24);
-  v14 = a3 + 20;
+  v12 = &read[length];
+  v13 = (read + 24);
+  v14 = read + 20;
   attributes = self->_attributes;
   while (1)
   {
@@ -985,7 +985,7 @@ LABEL_18:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109376;
-        v26 = v12 - v13;
+        lengthCopy2 = v12 - v13;
         v27 = 1024;
         v28 = v24;
         _os_log_impl(&dword_1A7AD9000, v21, OS_LOG_TYPE_DEFAULT, "Buffer may overflow, %d, %d, return", buf, 0xEu);
@@ -1032,7 +1032,7 @@ LABEL_41:
           {
             type = attributes->type;
             *buf = 67109120;
-            v26 = type;
+            lengthCopy2 = type;
             _os_log_impl(&dword_1A7AD9000, v19, OS_LOG_TYPE_DEFAULT, "receive invalid attribute %04x, skip.", buf, 8u);
           }
 
@@ -1115,7 +1115,7 @@ LABEL_36:
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v26 = v24;
+    lengthCopy2 = v24;
     _os_log_impl(&dword_1A7AD9000, v22, OS_LOG_TYPE_DEFAULT, "attrLen %d is greater than kIDSGLAttributeMaxSize, return", buf, 8u);
   }
 

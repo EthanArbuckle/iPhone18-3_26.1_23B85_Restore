@@ -1,8 +1,8 @@
 @interface ACUISActivityAlertClient
 - (ACUISActivityAlertClient)init;
 - (ACUISActivityAlertClientDelegate)delegate;
-- (void)activityWithAlertClient:(id)a3 dismissAlertProvider:(id)a4;
-- (void)activityWithAlertClient:(id)a3 presentAlertProvider:(id)a4 completion:(id)a5;
+- (void)activityWithAlertClient:(id)client dismissAlertProvider:(id)provider;
+- (void)activityWithAlertClient:(id)client presentAlertProvider:(id)provider completion:(id)completion;
 @end
 
 @implementation ACUISActivityAlertClient
@@ -31,32 +31,32 @@
   return v2;
 }
 
-- (void)activityWithAlertClient:(id)a3 presentAlertProvider:(id)a4 completion:(id)a5
+- (void)activityWithAlertClient:(id)client presentAlertProvider:(id)provider completion:(id)completion
 {
-  v12 = a4;
-  v7 = a5;
-  v8 = [(ACUISActivityAlertClient *)self delegate];
+  providerCopy = provider;
+  completionCopy = completion;
+  delegate = [(ACUISActivityAlertClient *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [[ACUISActivityAlertProvider alloc] initWithActivityAlertProviding:v12];
-    v11 = [(ACUISActivityAlertClient *)self delegate];
-    [v11 activityAlertClient:self presentAlertProvider:v10 completion:v7];
+    v10 = [[ACUISActivityAlertProvider alloc] initWithActivityAlertProviding:providerCopy];
+    delegate2 = [(ACUISActivityAlertClient *)self delegate];
+    [delegate2 activityAlertClient:self presentAlertProvider:v10 completion:completionCopy];
   }
 }
 
-- (void)activityWithAlertClient:(id)a3 dismissAlertProvider:(id)a4
+- (void)activityWithAlertClient:(id)client dismissAlertProvider:(id)provider
 {
-  v9 = a4;
-  v5 = [(ACUISActivityAlertClient *)self delegate];
+  providerCopy = provider;
+  delegate = [(ACUISActivityAlertClient *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [[ACUISActivityAlertProvider alloc] initWithActivityAlertProviding:v9];
-    v8 = [(ACUISActivityAlertClient *)self delegate];
-    [v8 activityAlertClient:self dismissAlertProvider:v7];
+    v7 = [[ACUISActivityAlertProvider alloc] initWithActivityAlertProviding:providerCopy];
+    delegate2 = [(ACUISActivityAlertClient *)self delegate];
+    [delegate2 activityAlertClient:self dismissAlertProvider:v7];
   }
 }
 

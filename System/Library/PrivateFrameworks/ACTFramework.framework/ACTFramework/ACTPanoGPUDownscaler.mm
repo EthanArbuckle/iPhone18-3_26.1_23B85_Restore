@@ -1,7 +1,7 @@
 @interface ACTPanoGPUDownscaler
 - (ACTPanoGPUDownscaler)init;
-- (ACTPanoGPUDownscaler)initWithContext:(id)a3;
-- (int)downsample:(__CVBuffer *)a3 to:(__CVBuffer *)a4 inputBitDepth:(int)a5 outputBitDepth:(int)a6;
+- (ACTPanoGPUDownscaler)initWithContext:(id)context;
+- (int)downsample:(__CVBuffer *)downsample to:(__CVBuffer *)to inputBitDepth:(int)depth outputBitDepth:(int)bitDepth;
 - (void)dealloc;
 @end
 
@@ -23,10 +23,10 @@
   [(ACTPanoGPUDownscaler *)&v6 dealloc];
 }
 
-- (int)downsample:(__CVBuffer *)a3 to:(__CVBuffer *)a4 inputBitDepth:(int)a5 outputBitDepth:(int)a6
+- (int)downsample:(__CVBuffer *)downsample to:(__CVBuffer *)to inputBitDepth:(int)depth outputBitDepth:(int)bitDepth
 {
   v9 = 10;
-  if (a5 == 2)
+  if (depth == 2)
   {
     v10 = 20;
   }
@@ -36,7 +36,7 @@
     v10 = 10;
   }
 
-  if (a5 == 2)
+  if (depth == 2)
   {
     v11 = 60;
   }
@@ -46,13 +46,13 @@
     v11 = 30;
   }
 
-  if (a6 == 2)
+  if (bitDepth == 2)
   {
     v9 = 20;
   }
 
   v91 = v9;
-  if (a6 == 2)
+  if (bitDepth == 2)
   {
     v12 = 60;
   }
@@ -63,31 +63,31 @@
   }
 
   v92 = v12;
-  IOSurface = CVPixelBufferGetIOSurface(a3);
-  v14 = CVPixelBufferGetIOSurface(a4);
+  IOSurface = CVPixelBufferGetIOSurface(downsample);
+  v14 = CVPixelBufferGetIOSurface(to);
   v15 = MEMORY[0x277CD7058];
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  Width = CVPixelBufferGetWidth(downsample);
+  Height = CVPixelBufferGetHeight(downsample);
   v19 = objc_msgSend_texture2DDescriptorWithPixelFormat_width_height_mipmapped_(v15, v18, v10, Width, Height, 0);
   objc_msgSend_setUsage_(v19, v20, 1, v21);
   v93 = objc_msgSend_newTextureWithDescriptor_iosurface_plane_(self->_device, v22, v19, IOSurface, 0);
   v23 = MEMORY[0x277CD7058];
-  v24 = CVPixelBufferGetWidth(a3) >> 1;
-  v25 = CVPixelBufferGetHeight(a3);
+  v24 = CVPixelBufferGetWidth(downsample) >> 1;
+  v25 = CVPixelBufferGetHeight(downsample);
   v27 = objc_msgSend_texture2DDescriptorWithPixelFormat_width_height_mipmapped_(v23, v26, v11, v24, v25 >> 1, 0);
 
   objc_msgSend_setUsage_(v27, v28, 1, v29);
   v31 = objc_msgSend_newTextureWithDescriptor_iosurface_plane_(self->_device, v30, v27, IOSurface, 1);
   v32 = MEMORY[0x277CD7058];
-  v33 = CVPixelBufferGetWidth(a4);
-  v34 = CVPixelBufferGetHeight(a4);
+  v33 = CVPixelBufferGetWidth(to);
+  v34 = CVPixelBufferGetHeight(to);
   v36 = objc_msgSend_texture2DDescriptorWithPixelFormat_width_height_mipmapped_(v32, v35, v91, v33, v34, 0);
 
   objc_msgSend_setUsage_(v36, v37, 2, v38);
   v40 = objc_msgSend_newTextureWithDescriptor_iosurface_plane_(self->_device, v39, v36, v14, 0);
   v41 = MEMORY[0x277CD7058];
-  v42 = CVPixelBufferGetWidth(a4) >> 1;
-  v43 = CVPixelBufferGetHeight(a4);
+  v42 = CVPixelBufferGetWidth(to) >> 1;
+  v43 = CVPixelBufferGetHeight(to);
   v45 = objc_msgSend_texture2DDescriptorWithPixelFormat_width_height_mipmapped_(v41, v44, v92, v42, v43 >> 1, 0);
 
   objc_msgSend_setUsage_(v45, v46, 2, v47);
@@ -116,15 +116,15 @@
   return 0;
 }
 
-- (ACTPanoGPUDownscaler)initWithContext:(id)a3
+- (ACTPanoGPUDownscaler)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v22.receiver = self;
   v22.super_class = ACTPanoGPUDownscaler;
   v8 = [(ACTPanoGPUDownscaler *)&v22 init];
-  if (v8 && (objc_msgSend_device(v4, v5, v6, v7), v9 = objc_claimAutoreleasedReturnValue(), device = v8->_device, v8->_device = v9, device, (v14 = v8->_device) != 0) && (v15 = objc_msgSend_newCommandQueue(v14, v11, v12, v13), queue = v8->_queue, v8->_queue = v15, queue, v8->_queue))
+  if (v8 && (objc_msgSend_device(contextCopy, v5, v6, v7), v9 = objc_claimAutoreleasedReturnValue(), device = v8->_device, v8->_device = v9, device, (v14 = v8->_device) != 0) && (v15 = objc_msgSend_newCommandQueue(v14, v11, v12, v13), queue = v8->_queue, v8->_queue = v15, queue, v8->_queue))
   {
-    v18 = objc_msgSend_computePipelineStateFor_constants_(v4, v17, @"downsampleYUV", 0);
+    v18 = objc_msgSend_computePipelineStateFor_constants_(contextCopy, v17, @"downsampleYUV", 0);
     downsampleState = v8->_downsampleState;
     v8->_downsampleState = v18;
 

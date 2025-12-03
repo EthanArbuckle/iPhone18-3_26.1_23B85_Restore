@@ -1,16 +1,16 @@
 @interface KCellularNrRachAttempt
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsDcModeDetails:(id)a3;
-- (int)StringAsRachContentionDetails:(id)a3;
-- (int)StringAsRachReasonDetails:(id)a3;
-- (int)StringAsRachResultDetails:(id)a3;
-- (int)StringAsServingCellBeamInfoAntennaPanelIndexDetails:(id)a3;
-- (int)StringAsServingCellBeamInfoCellRsrpDetails:(id)a3;
-- (int)StringAsServingCellBeamInfoCellRsrqDetails:(id)a3;
-- (int)StringAsTxPowerDiffDetails:(id)a3;
+- (int)StringAsDcModeDetails:(id)details;
+- (int)StringAsRachContentionDetails:(id)details;
+- (int)StringAsRachReasonDetails:(id)details;
+- (int)StringAsRachResultDetails:(id)details;
+- (int)StringAsServingCellBeamInfoAntennaPanelIndexDetails:(id)details;
+- (int)StringAsServingCellBeamInfoCellRsrpDetails:(id)details;
+- (int)StringAsServingCellBeamInfoCellRsrqDetails:(id)details;
+- (int)StringAsTxPowerDiffDetails:(id)details;
 - (int)dcModeDetails;
 - (int)rachContentionDetails;
 - (int)rachReasonDetails;
@@ -20,38 +20,38 @@
 - (int)servingCellBeamInfoCellRsrqDetails;
 - (int)txPowerDiffDetails;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAccbState:(BOOL)a3;
-- (void)setHasCsiRsId:(BOOL)a3;
-- (void)setHasDcModeDetails:(BOOL)a3;
-- (void)setHasFreqBandInd:(BOOL)a3;
-- (void)setHasIsDataPreferred:(BOOL)a3;
-- (void)setHasIsLteHst:(BOOL)a3;
-- (void)setHasIsNrHst:(BOOL)a3;
-- (void)setHasIsPowerLimited:(BOOL)a3;
-- (void)setHasLastTxPower:(BOOL)a3;
-- (void)setHasMtplDbm10:(BOOL)a3;
-- (void)setHasNumAttempt:(BOOL)a3;
-- (void)setHasNumSubs:(BOOL)a3;
-- (void)setHasRachContentionDetails:(BOOL)a3;
-- (void)setHasRachReasonDetails:(BOOL)a3;
-- (void)setHasRachResultDetails:(BOOL)a3;
-- (void)setHasServingCellBeamInfoAntennaPanelIndexDetails:(BOOL)a3;
-- (void)setHasServingCellBeamInfoCellRsrpDetails:(BOOL)a3;
-- (void)setHasServingCellBeamInfoCellRsrqDetails:(BOOL)a3;
-- (void)setHasServingCellBeamInfoNumDetectedTxBeams:(BOOL)a3;
-- (void)setHasServingCellBeamInfoRxBeamId0:(BOOL)a3;
-- (void)setHasServingCellBeamInfoRxBeamId1:(BOOL)a3;
-- (void)setHasServingCellBeamInfoSsbIndex:(BOOL)a3;
-- (void)setHasSftToCellDelay:(BOOL)a3;
-- (void)setHasSsbId:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)setHasTimeDefer:(BOOL)a3;
-- (void)setHasTxPowerDiff:(BOOL)a3;
-- (void)setHasTxPowerDiffDetails:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasAccbState:(BOOL)state;
+- (void)setHasCsiRsId:(BOOL)id;
+- (void)setHasDcModeDetails:(BOOL)details;
+- (void)setHasFreqBandInd:(BOOL)ind;
+- (void)setHasIsDataPreferred:(BOOL)preferred;
+- (void)setHasIsLteHst:(BOOL)hst;
+- (void)setHasIsNrHst:(BOOL)hst;
+- (void)setHasIsPowerLimited:(BOOL)limited;
+- (void)setHasLastTxPower:(BOOL)power;
+- (void)setHasMtplDbm10:(BOOL)dbm10;
+- (void)setHasNumAttempt:(BOOL)attempt;
+- (void)setHasNumSubs:(BOOL)subs;
+- (void)setHasRachContentionDetails:(BOOL)details;
+- (void)setHasRachReasonDetails:(BOOL)details;
+- (void)setHasRachResultDetails:(BOOL)details;
+- (void)setHasServingCellBeamInfoAntennaPanelIndexDetails:(BOOL)details;
+- (void)setHasServingCellBeamInfoCellRsrpDetails:(BOOL)details;
+- (void)setHasServingCellBeamInfoCellRsrqDetails:(BOOL)details;
+- (void)setHasServingCellBeamInfoNumDetectedTxBeams:(BOOL)beams;
+- (void)setHasServingCellBeamInfoRxBeamId0:(BOOL)id0;
+- (void)setHasServingCellBeamInfoRxBeamId1:(BOOL)id1;
+- (void)setHasServingCellBeamInfoSsbIndex:(BOOL)index;
+- (void)setHasSftToCellDelay:(BOOL)delay;
+- (void)setHasSsbId:(BOOL)id;
+- (void)setHasSubsId:(BOOL)id;
+- (void)setHasTimeDefer:(BOOL)defer;
+- (void)setHasTxPowerDiff:(BOOL)diff;
+- (void)setHasTxPowerDiffDetails:(BOOL)details;
+- (void)writeTo:(id)to;
 @end
 
 @implementation KCellularNrRachAttempt
@@ -64,9 +64,9 @@
   [(KCellularNrRachAttempt *)&v3 dealloc];
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 0x200000;
   }
@@ -79,9 +79,9 @@
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)setHasNumSubs:(BOOL)a3
+- (void)setHasNumSubs:(BOOL)subs
 {
-  if (a3)
+  if (subs)
   {
     v3 = 256;
   }
@@ -94,9 +94,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasNumAttempt:(BOOL)a3
+- (void)setHasNumAttempt:(BOOL)attempt
 {
-  if (a3)
+  if (attempt)
   {
     v3 = 128;
   }
@@ -109,9 +109,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasSsbId:(BOOL)a3
+- (void)setHasSsbId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 0x100000;
   }
@@ -124,9 +124,9 @@
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasCsiRsId:(BOOL)a3
+- (void)setHasCsiRsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 4;
   }
@@ -139,9 +139,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasLastTxPower:(BOOL)a3
+- (void)setHasLastTxPower:(BOOL)power
 {
-  if (a3)
+  if (power)
   {
     v3 = 32;
   }
@@ -154,9 +154,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasAccbState:(BOOL)a3
+- (void)setHasAccbState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 2;
   }
@@ -169,9 +169,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasTxPowerDiff:(BOOL)a3
+- (void)setHasTxPowerDiff:(BOOL)diff
 {
-  if (a3)
+  if (diff)
   {
     v3 = 0x800000;
   }
@@ -184,9 +184,9 @@
   self->_has = (*&self->_has & 0xFF7FFFFF | v3);
 }
 
-- (void)setHasFreqBandInd:(BOOL)a3
+- (void)setHasFreqBandInd:(BOOL)ind
 {
-  if (a3)
+  if (ind)
   {
     v3 = 16;
   }
@@ -199,9 +199,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasIsPowerLimited:(BOOL)a3
+- (void)setHasIsPowerLimited:(BOOL)limited
 {
-  if (a3)
+  if (limited)
   {
     v3 = 0x10000000;
   }
@@ -214,9 +214,9 @@
   self->_has = (*&self->_has & 0xEFFFFFFF | v3);
 }
 
-- (void)setHasIsNrHst:(BOOL)a3
+- (void)setHasIsNrHst:(BOOL)hst
 {
-  if (a3)
+  if (hst)
   {
     v3 = 0x8000000;
   }
@@ -229,9 +229,9 @@
   self->_has = (*&self->_has & 0xF7FFFFFF | v3);
 }
 
-- (void)setHasIsLteHst:(BOOL)a3
+- (void)setHasIsLteHst:(BOOL)hst
 {
-  if (a3)
+  if (hst)
   {
     v3 = 0x4000000;
   }
@@ -244,9 +244,9 @@
   self->_has = (*&self->_has & 0xFBFFFFFF | v3);
 }
 
-- (void)setHasIsDataPreferred:(BOOL)a3
+- (void)setHasIsDataPreferred:(BOOL)preferred
 {
-  if (a3)
+  if (preferred)
   {
     v3 = 0x2000000;
   }
@@ -259,9 +259,9 @@
   self->_has = (*&self->_has & 0xFDFFFFFF | v3);
 }
 
-- (void)setHasServingCellBeamInfoSsbIndex:(BOOL)a3
+- (void)setHasServingCellBeamInfoSsbIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 0x40000;
   }
@@ -274,9 +274,9 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasServingCellBeamInfoRxBeamId0:(BOOL)a3
+- (void)setHasServingCellBeamInfoRxBeamId0:(BOOL)id0
 {
-  if (a3)
+  if (id0)
   {
     v3 = 0x10000;
   }
@@ -289,9 +289,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasServingCellBeamInfoRxBeamId1:(BOOL)a3
+- (void)setHasServingCellBeamInfoRxBeamId1:(BOOL)id1
 {
-  if (a3)
+  if (id1)
   {
     v3 = 0x20000;
   }
@@ -304,9 +304,9 @@
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasServingCellBeamInfoNumDetectedTxBeams:(BOOL)a3
+- (void)setHasServingCellBeamInfoNumDetectedTxBeams:(BOOL)beams
 {
-  if (a3)
+  if (beams)
   {
     v3 = 0x8000;
   }
@@ -332,9 +332,9 @@
   }
 }
 
-- (void)setHasRachResultDetails:(BOOL)a3
+- (void)setHasRachResultDetails:(BOOL)details
 {
-  if (a3)
+  if (details)
   {
     v3 = 2048;
   }
@@ -347,85 +347,85 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (int)StringAsRachResultDetails:(id)a3
+- (int)StringAsRachResultDetails:(id)details
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"RACH_RESULT_SUCCESS"])
+  detailsCopy = details;
+  if ([detailsCopy isEqualToString:@"RACH_RESULT_SUCCESS"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"RACH_RESULT_FAILURE_MSG2_RA_TIMER_EXP"])
+  else if ([detailsCopy isEqualToString:@"RACH_RESULT_FAILURE_MSG2_RA_TIMER_EXP"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"RACH_RESULT_FAILURE_MSG2_RAPID_MISMATCH"])
+  else if ([detailsCopy isEqualToString:@"RACH_RESULT_FAILURE_MSG2_RAPID_MISMATCH"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"RACH_RESULT_FAILURE_MSG2_RAR_PRUNE"])
+  else if ([detailsCopy isEqualToString:@"RACH_RESULT_FAILURE_MSG2_RAR_PRUNE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"RACH_RESULT_BOI_ONLY_MSG2"])
+  else if ([detailsCopy isEqualToString:@"RACH_RESULT_BOI_ONLY_MSG2"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"RACH_RESULT_FAILURE_MSG4_CT_TIMER_EXPIRED"])
+  else if ([detailsCopy isEqualToString:@"RACH_RESULT_FAILURE_MSG4_CT_TIMER_EXPIRED"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"RACH_RESULT_FAILURE_CONT_RES_FAILED"])
+  else if ([detailsCopy isEqualToString:@"RACH_RESULT_FAILURE_CONT_RES_FAILED"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"RACH_RESULT_ABORTED"])
+  else if ([detailsCopy isEqualToString:@"RACH_RESULT_ABORTED"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"RACH_RESULT_SUSPENDED"])
+  else if ([detailsCopy isEqualToString:@"RACH_RESULT_SUSPENDED"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"RACH_RESULT_RESUMED"])
+  else if ([detailsCopy isEqualToString:@"RACH_RESULT_RESUMED"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"RACH_RESULT_BAD_CELL"])
+  else if ([detailsCopy isEqualToString:@"RACH_RESULT_BAD_CELL"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"RACH_RESULT_NO_CELL"])
+  else if ([detailsCopy isEqualToString:@"RACH_RESULT_NO_CELL"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"RACH_RESULT_SINGLE_RECEIVE"])
+  else if ([detailsCopy isEqualToString:@"RACH_RESULT_SINGLE_RECEIVE"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"RACH_RESULT_T304_EXPIRY"])
+  else if ([detailsCopy isEqualToString:@"RACH_RESULT_T304_EXPIRY"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"RACH_RESULT_T300_EXPIRY"])
+  else if ([detailsCopy isEqualToString:@"RACH_RESULT_T300_EXPIRY"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"RACH_RESULT_FAILURE_OTHERS"])
+  else if ([detailsCopy isEqualToString:@"RACH_RESULT_FAILURE_OTHERS"])
   {
     v4 = 15;
   }
@@ -451,9 +451,9 @@
   }
 }
 
-- (void)setHasRachContentionDetails:(BOOL)a3
+- (void)setHasRachContentionDetails:(BOOL)details
 {
-  if (a3)
+  if (details)
   {
     v3 = 512;
   }
@@ -466,30 +466,30 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (int)StringAsRachContentionDetails:(id)a3
+- (int)StringAsRachContentionDetails:(id)details
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"RACH_CONTENTION_FREE"])
+  detailsCopy = details;
+  if ([detailsCopy isEqualToString:@"RACH_CONTENTION_FREE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"RACH_CONTENTION_BASED"])
+  else if ([detailsCopy isEqualToString:@"RACH_CONTENTION_BASED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"RACH_CONTENTION_DL_MCE"])
+  else if ([detailsCopy isEqualToString:@"RACH_CONTENTION_DL_MCE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"RACH_CONTENTION_UL_GRANT"])
+  else if ([detailsCopy isEqualToString:@"RACH_CONTENTION_UL_GRANT"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"RACH_PDCCH_CRNTI"])
+  else if ([detailsCopy isEqualToString:@"RACH_PDCCH_CRNTI"])
   {
     v4 = 4;
   }
@@ -515,9 +515,9 @@
   }
 }
 
-- (void)setHasRachReasonDetails:(BOOL)a3
+- (void)setHasRachReasonDetails:(BOOL)details
 {
-  if (a3)
+  if (details)
   {
     v3 = 1024;
   }
@@ -530,110 +530,110 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (int)StringAsRachReasonDetails:(id)a3
+- (int)StringAsRachReasonDetails:(id)details
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"RACH_REASON_CONNECTION_REQUEST"])
+  detailsCopy = details;
+  if ([detailsCopy isEqualToString:@"RACH_REASON_CONNECTION_REQUEST"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"RACH_REASON_RADIO_LINK_FAILURE"])
+  else if ([detailsCopy isEqualToString:@"RACH_REASON_RADIO_LINK_FAILURE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"RACH_REASON_HANDOVER"])
+  else if ([detailsCopy isEqualToString:@"RACH_REASON_HANDOVER"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"RACH_REASON_UL_DATA_ARRIVAL"])
+  else if ([detailsCopy isEqualToString:@"RACH_REASON_UL_DATA_ARRIVAL"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"RACH_REASON_DL_DATA_ARRIVAL"])
+  else if ([detailsCopy isEqualToString:@"RACH_REASON_DL_DATA_ARRIVAL"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"RACH_REASON_UNDEFINED"])
+  else if ([detailsCopy isEqualToString:@"RACH_REASON_UNDEFINED"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"RACH_REASON_BEAM_FAILURE"])
+  else if ([detailsCopy isEqualToString:@"RACH_REASON_BEAM_FAILURE"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"RACH_REASON_ON_DEMAND_SI"])
+  else if ([detailsCopy isEqualToString:@"RACH_REASON_ON_DEMAND_SI"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"RACH_REASON_RESUME"])
+  else if ([detailsCopy isEqualToString:@"RACH_REASON_RESUME"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"RACH_REASON_OOS_RECOVERY"])
+  else if ([detailsCopy isEqualToString:@"RACH_REASON_OOS_RECOVERY"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"RACH_REASON_T300"])
+  else if ([detailsCopy isEqualToString:@"RACH_REASON_T300"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"RACH_REASON_UL_SIGNALLING_IN_CONNECTED_MODE"])
+  else if ([detailsCopy isEqualToString:@"RACH_REASON_UL_SIGNALLING_IN_CONNECTED_MODE"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"RACH_REASON_UL_SIGNALLING_IN_CONNECTED_MODE_WHILE_L1_CNF"])
+  else if ([detailsCopy isEqualToString:@"RACH_REASON_UL_SIGNALLING_IN_CONNECTED_MODE_WHILE_L1_CNF"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"RACH_REASON_MCG_FAILURE"])
+  else if ([detailsCopy isEqualToString:@"RACH_REASON_MCG_FAILURE"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"RACH_REASON_ABORT_FOR_SON_REPORT"])
+  else if ([detailsCopy isEqualToString:@"RACH_REASON_ABORT_FOR_SON_REPORT"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"RACH_REASON_CONNECTION_REQUEST_REESTAB"])
+  else if ([detailsCopy isEqualToString:@"RACH_REASON_CONNECTION_REQUEST_REESTAB"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"RACH_REASON_HO_RECONF_WITH_SYNC"])
+  else if ([detailsCopy isEqualToString:@"RACH_REASON_HO_RECONF_WITH_SYNC"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"RACH_REASON_ENDC_HO_RECONF_WITH_SYNC"])
+  else if ([detailsCopy isEqualToString:@"RACH_REASON_ENDC_HO_RECONF_WITH_SYNC"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"RACH_REASON_ENDC_SCG_CELL"])
+  else if ([detailsCopy isEqualToString:@"RACH_REASON_ENDC_SCG_CELL"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"RACH_REASON_ENDC_PSCELL_CHANGE_OR_ADDITION"])
+  else if ([detailsCopy isEqualToString:@"RACH_REASON_ENDC_PSCELL_CHANGE_OR_ADDITION"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"RACH_REASON_NRDC_PSCELL_CHANGE_OR_ADDITION"])
+  else if ([detailsCopy isEqualToString:@"RACH_REASON_NRDC_PSCELL_CHANGE_OR_ADDITION"])
   {
     v4 = 20;
   }
@@ -659,9 +659,9 @@
   }
 }
 
-- (void)setHasTxPowerDiffDetails:(BOOL)a3
+- (void)setHasTxPowerDiffDetails:(BOOL)details
 {
-  if (a3)
+  if (details)
   {
     v3 = 0x1000000;
   }
@@ -674,30 +674,30 @@
   self->_has = (*&self->_has & 0xFEFFFFFF | v3);
 }
 
-- (int)StringAsTxPowerDiffDetails:(id)a3
+- (int)StringAsTxPowerDiffDetails:(id)details
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NO_ERROR"])
+  detailsCopy = details;
+  if ([detailsCopy isEqualToString:@"NO_ERROR"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"P_ERROR_1_TO_3"])
+  else if ([detailsCopy isEqualToString:@"P_ERROR_1_TO_3"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"P_ERROR_MORE_THAN_3"])
+  else if ([detailsCopy isEqualToString:@"P_ERROR_MORE_THAN_3"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"BAD_PDET"])
+  else if ([detailsCopy isEqualToString:@"BAD_PDET"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"NO_VALUE"])
+  else if ([detailsCopy isEqualToString:@"NO_VALUE"])
   {
     v4 = 255;
   }
@@ -723,9 +723,9 @@
   }
 }
 
-- (void)setHasDcModeDetails:(BOOL)a3
+- (void)setHasDcModeDetails:(BOOL)details
 {
-  if (a3)
+  if (details)
   {
     v3 = 8;
   }
@@ -738,25 +738,25 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (int)StringAsDcModeDetails:(id)a3
+- (int)StringAsDcModeDetails:(id)details
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"DC_MODE_SA"])
+  detailsCopy = details;
+  if ([detailsCopy isEqualToString:@"DC_MODE_SA"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"DC_MODE_ENDC"])
+  else if ([detailsCopy isEqualToString:@"DC_MODE_ENDC"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"DC_MODE_NRDC"])
+  else if ([detailsCopy isEqualToString:@"DC_MODE_NRDC"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"DC_MODE_NA"])
+  else if ([detailsCopy isEqualToString:@"DC_MODE_NA"])
   {
     v4 = 3;
   }
@@ -782,9 +782,9 @@
   }
 }
 
-- (void)setHasServingCellBeamInfoAntennaPanelIndexDetails:(BOOL)a3
+- (void)setHasServingCellBeamInfoAntennaPanelIndexDetails:(BOOL)details
 {
-  if (a3)
+  if (details)
   {
     v3 = 4096;
   }
@@ -797,35 +797,35 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (int)StringAsServingCellBeamInfoAntennaPanelIndexDetails:(id)a3
+- (int)StringAsServingCellBeamInfoAntennaPanelIndexDetails:(id)details
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ANTENNA_PANEL_FR1"])
+  detailsCopy = details;
+  if ([detailsCopy isEqualToString:@"ANTENNA_PANEL_FR1"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ANTENNA_PANEL_BG"])
+  else if ([detailsCopy isEqualToString:@"ANTENNA_PANEL_BG"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ANTENNA_PANEL_CG"])
+  else if ([detailsCopy isEqualToString:@"ANTENNA_PANEL_CG"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ANTENNA_PANEL_SF"])
+  else if ([detailsCopy isEqualToString:@"ANTENNA_PANEL_SF"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ANTENNA_PANEL_BG1"])
+  else if ([detailsCopy isEqualToString:@"ANTENNA_PANEL_BG1"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"ANTENNA_PANEL_BG2"])
+  else if ([detailsCopy isEqualToString:@"ANTENNA_PANEL_BG2"])
   {
     v4 = 5;
   }
@@ -851,9 +851,9 @@
   }
 }
 
-- (void)setHasServingCellBeamInfoCellRsrpDetails:(BOOL)a3
+- (void)setHasServingCellBeamInfoCellRsrpDetails:(BOOL)details
 {
-  if (a3)
+  if (details)
   {
     v3 = 0x2000;
   }
@@ -866,20 +866,20 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (int)StringAsServingCellBeamInfoCellRsrpDetails:(id)a3
+- (int)StringAsServingCellBeamInfoCellRsrpDetails:(id)details
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"RSRP_STATE_BAD_RF"])
+  detailsCopy = details;
+  if ([detailsCopy isEqualToString:@"RSRP_STATE_BAD_RF"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"RSRP_STATE_GOOD_RF"])
+  else if ([detailsCopy isEqualToString:@"RSRP_STATE_GOOD_RF"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"RSRP_STATE_EXCELLENT_RF"])
+  else if ([detailsCopy isEqualToString:@"RSRP_STATE_EXCELLENT_RF"])
   {
     v4 = 2;
   }
@@ -905,9 +905,9 @@
   }
 }
 
-- (void)setHasServingCellBeamInfoCellRsrqDetails:(BOOL)a3
+- (void)setHasServingCellBeamInfoCellRsrqDetails:(BOOL)details
 {
-  if (a3)
+  if (details)
   {
     v3 = 0x4000;
   }
@@ -920,20 +920,20 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (int)StringAsServingCellBeamInfoCellRsrqDetails:(id)a3
+- (int)StringAsServingCellBeamInfoCellRsrqDetails:(id)details
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"RSRQ_STATE_BAD_RF"])
+  detailsCopy = details;
+  if ([detailsCopy isEqualToString:@"RSRQ_STATE_BAD_RF"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"RSRQ_STATE_GOOD_RF"])
+  else if ([detailsCopy isEqualToString:@"RSRQ_STATE_GOOD_RF"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"RSRQ_STATE_EXCELLENT_RF"])
+  else if ([detailsCopy isEqualToString:@"RSRQ_STATE_EXCELLENT_RF"])
   {
     v4 = 2;
   }
@@ -946,9 +946,9 @@
   return v4;
 }
 
-- (void)setHasMtplDbm10:(BOOL)a3
+- (void)setHasMtplDbm10:(BOOL)dbm10
 {
-  if (a3)
+  if (dbm10)
   {
     v3 = 64;
   }
@@ -961,9 +961,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasTimeDefer:(BOOL)a3
+- (void)setHasTimeDefer:(BOOL)defer
 {
-  if (a3)
+  if (defer)
   {
     v3 = 0x400000;
   }
@@ -976,9 +976,9 @@
   self->_has = (*&self->_has & 0xFFBFFFFF | v3);
 }
 
-- (void)setHasSftToCellDelay:(BOOL)a3
+- (void)setHasSftToCellDelay:(BOOL)delay
 {
-  if (a3)
+  if (delay)
   {
     v3 = 0x80000;
   }
@@ -996,8 +996,8 @@
   v7.receiver = self;
   v7.super_class = KCellularNrRachAttempt;
   v3 = [(KCellularNrRachAttempt *)&v7 description];
-  v4 = [(KCellularNrRachAttempt *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(KCellularNrRachAttempt *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -1557,9 +1557,9 @@ LABEL_34:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v35 = a3;
+  toCopy = to;
   has = self->_has;
   if (*&has)
   {
@@ -1978,14 +1978,14 @@ LABEL_33:
 LABEL_34:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (*&has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 31) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 31) |= 1u;
     has = self->_has;
     if ((*&has & 0x200000) == 0)
     {
@@ -2004,8 +2004,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 26) = self->_subsId;
-  *(v4 + 31) |= 0x200000u;
+  *(toCopy + 26) = self->_subsId;
+  *(toCopy + 31) |= 0x200000u;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -2019,8 +2019,8 @@ LABEL_4:
   }
 
 LABEL_39:
-  *(v4 + 11) = self->_numSubs;
-  *(v4 + 31) |= 0x100u;
+  *(toCopy + 11) = self->_numSubs;
+  *(toCopy + 31) |= 0x100u;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -2034,8 +2034,8 @@ LABEL_5:
   }
 
 LABEL_40:
-  *(v4 + 10) = self->_numAttempt;
-  *(v4 + 31) |= 0x80u;
+  *(toCopy + 10) = self->_numAttempt;
+  *(toCopy + 31) |= 0x80u;
   has = self->_has;
   if ((*&has & 0x100000) == 0)
   {
@@ -2049,8 +2049,8 @@ LABEL_6:
   }
 
 LABEL_41:
-  *(v4 + 25) = self->_ssbId;
-  *(v4 + 31) |= 0x100000u;
+  *(toCopy + 25) = self->_ssbId;
+  *(toCopy + 31) |= 0x100000u;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -2064,8 +2064,8 @@ LABEL_7:
   }
 
 LABEL_42:
-  *(v4 + 5) = self->_csiRsId;
-  *(v4 + 31) |= 4u;
+  *(toCopy + 5) = self->_csiRsId;
+  *(toCopy + 31) |= 4u;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -2079,8 +2079,8 @@ LABEL_8:
   }
 
 LABEL_43:
-  *(v4 + 8) = self->_lastTxPower;
-  *(v4 + 31) |= 0x20u;
+  *(toCopy + 8) = self->_lastTxPower;
+  *(toCopy + 31) |= 0x20u;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -2094,8 +2094,8 @@ LABEL_9:
   }
 
 LABEL_44:
-  *(v4 + 4) = self->_accbState;
-  *(v4 + 31) |= 2u;
+  *(toCopy + 4) = self->_accbState;
+  *(toCopy + 31) |= 2u;
   has = self->_has;
   if ((*&has & 0x800000) == 0)
   {
@@ -2109,8 +2109,8 @@ LABEL_10:
   }
 
 LABEL_45:
-  *(v4 + 28) = self->_txPowerDiff;
-  *(v4 + 31) |= 0x800000u;
+  *(toCopy + 28) = self->_txPowerDiff;
+  *(toCopy + 31) |= 0x800000u;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -2124,8 +2124,8 @@ LABEL_11:
   }
 
 LABEL_46:
-  *(v4 + 7) = self->_freqBandInd;
-  *(v4 + 31) |= 0x10u;
+  *(toCopy + 7) = self->_freqBandInd;
+  *(toCopy + 31) |= 0x10u;
   has = self->_has;
   if ((*&has & 0x10000000) == 0)
   {
@@ -2139,8 +2139,8 @@ LABEL_12:
   }
 
 LABEL_47:
-  *(v4 + 123) = self->_isPowerLimited;
-  *(v4 + 31) |= 0x10000000u;
+  *(toCopy + 123) = self->_isPowerLimited;
+  *(toCopy + 31) |= 0x10000000u;
   has = self->_has;
   if ((*&has & 0x8000000) == 0)
   {
@@ -2154,8 +2154,8 @@ LABEL_13:
   }
 
 LABEL_48:
-  *(v4 + 122) = self->_isNrHst;
-  *(v4 + 31) |= 0x8000000u;
+  *(toCopy + 122) = self->_isNrHst;
+  *(toCopy + 31) |= 0x8000000u;
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
   {
@@ -2169,28 +2169,28 @@ LABEL_14:
   }
 
 LABEL_49:
-  *(v4 + 121) = self->_isLteHst;
-  *(v4 + 31) |= 0x4000000u;
+  *(toCopy + 121) = self->_isLteHst;
+  *(toCopy + 31) |= 0x4000000u;
   if ((*&self->_has & 0x2000000) != 0)
   {
 LABEL_15:
-    *(v4 + 120) = self->_isDataPreferred;
-    *(v4 + 31) |= 0x2000000u;
+    *(toCopy + 120) = self->_isDataPreferred;
+    *(toCopy + 31) |= 0x2000000u;
   }
 
 LABEL_16:
   if (self->_plmn)
   {
-    v7 = v4;
-    [v4 setPlmn:?];
-    v4 = v7;
+    v7 = toCopy;
+    [toCopy setPlmn:?];
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((*&v6 & 0x40000) != 0)
   {
-    *(v4 + 23) = self->_servingCellBeamInfoSsbIndex;
-    *(v4 + 31) |= 0x40000u;
+    *(toCopy + 23) = self->_servingCellBeamInfoSsbIndex;
+    *(toCopy + 31) |= 0x40000u;
     v6 = self->_has;
     if ((*&v6 & 0x10000) == 0)
     {
@@ -2209,8 +2209,8 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  *(v4 + 21) = self->_servingCellBeamInfoRxBeamId0;
-  *(v4 + 31) |= 0x10000u;
+  *(toCopy + 21) = self->_servingCellBeamInfoRxBeamId0;
+  *(toCopy + 31) |= 0x10000u;
   v6 = self->_has;
   if ((*&v6 & 0x20000) == 0)
   {
@@ -2224,8 +2224,8 @@ LABEL_21:
   }
 
 LABEL_53:
-  *(v4 + 22) = self->_servingCellBeamInfoRxBeamId1;
-  *(v4 + 31) |= 0x20000u;
+  *(toCopy + 22) = self->_servingCellBeamInfoRxBeamId1;
+  *(toCopy + 31) |= 0x20000u;
   v6 = self->_has;
   if ((*&v6 & 0x8000) == 0)
   {
@@ -2239,8 +2239,8 @@ LABEL_22:
   }
 
 LABEL_54:
-  *(v4 + 20) = self->_servingCellBeamInfoNumDetectedTxBeams;
-  *(v4 + 31) |= 0x8000u;
+  *(toCopy + 20) = self->_servingCellBeamInfoNumDetectedTxBeams;
+  *(toCopy + 31) |= 0x8000u;
   v6 = self->_has;
   if ((*&v6 & 0x800) == 0)
   {
@@ -2254,8 +2254,8 @@ LABEL_23:
   }
 
 LABEL_55:
-  *(v4 + 16) = self->_rachResultDetails;
-  *(v4 + 31) |= 0x800u;
+  *(toCopy + 16) = self->_rachResultDetails;
+  *(toCopy + 31) |= 0x800u;
   v6 = self->_has;
   if ((*&v6 & 0x200) == 0)
   {
@@ -2269,8 +2269,8 @@ LABEL_24:
   }
 
 LABEL_56:
-  *(v4 + 14) = self->_rachContentionDetails;
-  *(v4 + 31) |= 0x200u;
+  *(toCopy + 14) = self->_rachContentionDetails;
+  *(toCopy + 31) |= 0x200u;
   v6 = self->_has;
   if ((*&v6 & 0x400) == 0)
   {
@@ -2284,8 +2284,8 @@ LABEL_25:
   }
 
 LABEL_57:
-  *(v4 + 15) = self->_rachReasonDetails;
-  *(v4 + 31) |= 0x400u;
+  *(toCopy + 15) = self->_rachReasonDetails;
+  *(toCopy + 31) |= 0x400u;
   v6 = self->_has;
   if ((*&v6 & 0x1000000) == 0)
   {
@@ -2299,8 +2299,8 @@ LABEL_26:
   }
 
 LABEL_58:
-  *(v4 + 29) = self->_txPowerDiffDetails;
-  *(v4 + 31) |= 0x1000000u;
+  *(toCopy + 29) = self->_txPowerDiffDetails;
+  *(toCopy + 31) |= 0x1000000u;
   v6 = self->_has;
   if ((*&v6 & 8) == 0)
   {
@@ -2314,8 +2314,8 @@ LABEL_27:
   }
 
 LABEL_59:
-  *(v4 + 6) = self->_dcModeDetails;
-  *(v4 + 31) |= 8u;
+  *(toCopy + 6) = self->_dcModeDetails;
+  *(toCopy + 31) |= 8u;
   v6 = self->_has;
   if ((*&v6 & 0x1000) == 0)
   {
@@ -2329,8 +2329,8 @@ LABEL_28:
   }
 
 LABEL_60:
-  *(v4 + 17) = self->_servingCellBeamInfoAntennaPanelIndexDetails;
-  *(v4 + 31) |= 0x1000u;
+  *(toCopy + 17) = self->_servingCellBeamInfoAntennaPanelIndexDetails;
+  *(toCopy + 31) |= 0x1000u;
   v6 = self->_has;
   if ((*&v6 & 0x2000) == 0)
   {
@@ -2344,8 +2344,8 @@ LABEL_29:
   }
 
 LABEL_61:
-  *(v4 + 18) = self->_servingCellBeamInfoCellRsrpDetails;
-  *(v4 + 31) |= 0x2000u;
+  *(toCopy + 18) = self->_servingCellBeamInfoCellRsrpDetails;
+  *(toCopy + 31) |= 0x2000u;
   v6 = self->_has;
   if ((*&v6 & 0x4000) == 0)
   {
@@ -2359,8 +2359,8 @@ LABEL_30:
   }
 
 LABEL_62:
-  *(v4 + 19) = self->_servingCellBeamInfoCellRsrqDetails;
-  *(v4 + 31) |= 0x4000u;
+  *(toCopy + 19) = self->_servingCellBeamInfoCellRsrqDetails;
+  *(toCopy + 31) |= 0x4000u;
   v6 = self->_has;
   if ((*&v6 & 0x40) == 0)
   {
@@ -2374,8 +2374,8 @@ LABEL_31:
   }
 
 LABEL_63:
-  *(v4 + 9) = self->_mtplDbm10;
-  *(v4 + 31) |= 0x40u;
+  *(toCopy + 9) = self->_mtplDbm10;
+  *(toCopy + 31) |= 0x40u;
   v6 = self->_has;
   if ((*&v6 & 0x400000) == 0)
   {
@@ -2389,21 +2389,21 @@ LABEL_32:
   }
 
 LABEL_64:
-  *(v4 + 27) = self->_timeDefer;
-  *(v4 + 31) |= 0x400000u;
+  *(toCopy + 27) = self->_timeDefer;
+  *(toCopy + 31) |= 0x400000u;
   if ((*&self->_has & 0x80000) != 0)
   {
 LABEL_33:
-    *(v4 + 24) = self->_sftToCellDelay;
-    *(v4 + 31) |= 0x80000u;
+    *(toCopy + 24) = self->_sftToCellDelay;
+    *(toCopy + 31) |= 0x80000u;
   }
 
 LABEL_34:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (*&has)
@@ -2603,7 +2603,7 @@ LABEL_15:
   }
 
 LABEL_16:
-  v8 = [(NSData *)self->_plmn copyWithZone:a3];
+  v8 = [(NSData *)self->_plmn copyWithZone:zone];
   v9 = v6[6];
   v6[6] = v8;
 
@@ -2822,19 +2822,19 @@ LABEL_31:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_162;
   }
 
   has = self->_has;
-  v6 = *(v4 + 31);
+  v6 = *(equalCopy + 31);
   if (*&has)
   {
-    if ((v6 & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_162;
     }
@@ -2847,7 +2847,7 @@ LABEL_31:
 
   if ((*&has & 0x200000) != 0)
   {
-    if ((v6 & 0x200000) == 0 || self->_subsId != *(v4 + 26))
+    if ((v6 & 0x200000) == 0 || self->_subsId != *(equalCopy + 26))
     {
       goto LABEL_162;
     }
@@ -2860,7 +2860,7 @@ LABEL_31:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v6 & 0x100) == 0 || self->_numSubs != *(v4 + 11))
+    if ((v6 & 0x100) == 0 || self->_numSubs != *(equalCopy + 11))
     {
       goto LABEL_162;
     }
@@ -2873,7 +2873,7 @@ LABEL_31:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_numAttempt != *(v4 + 10))
+    if ((v6 & 0x80) == 0 || self->_numAttempt != *(equalCopy + 10))
     {
       goto LABEL_162;
     }
@@ -2886,7 +2886,7 @@ LABEL_31:
 
   if ((*&has & 0x100000) != 0)
   {
-    if ((v6 & 0x100000) == 0 || self->_ssbId != *(v4 + 25))
+    if ((v6 & 0x100000) == 0 || self->_ssbId != *(equalCopy + 25))
     {
       goto LABEL_162;
     }
@@ -2899,7 +2899,7 @@ LABEL_31:
 
   if ((*&has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_csiRsId != *(v4 + 5))
+    if ((v6 & 4) == 0 || self->_csiRsId != *(equalCopy + 5))
     {
       goto LABEL_162;
     }
@@ -2912,7 +2912,7 @@ LABEL_31:
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_lastTxPower != *(v4 + 8))
+    if ((v6 & 0x20) == 0 || self->_lastTxPower != *(equalCopy + 8))
     {
       goto LABEL_162;
     }
@@ -2925,7 +2925,7 @@ LABEL_31:
 
   if ((*&has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_accbState != *(v4 + 4))
+    if ((v6 & 2) == 0 || self->_accbState != *(equalCopy + 4))
     {
       goto LABEL_162;
     }
@@ -2938,7 +2938,7 @@ LABEL_31:
 
   if ((*&has & 0x800000) != 0)
   {
-    if ((v6 & 0x800000) == 0 || self->_txPowerDiff != *(v4 + 28))
+    if ((v6 & 0x800000) == 0 || self->_txPowerDiff != *(equalCopy + 28))
     {
       goto LABEL_162;
     }
@@ -2951,7 +2951,7 @@ LABEL_31:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_freqBandInd != *(v4 + 7))
+    if ((v6 & 0x10) == 0 || self->_freqBandInd != *(equalCopy + 7))
     {
       goto LABEL_162;
     }
@@ -2969,16 +2969,16 @@ LABEL_31:
       goto LABEL_162;
     }
 
-    v9 = *(v4 + 123);
+    v9 = *(equalCopy + 123);
     if (self->_isPowerLimited)
     {
-      if ((*(v4 + 123) & 1) == 0)
+      if ((*(equalCopy + 123) & 1) == 0)
       {
         goto LABEL_162;
       }
     }
 
-    else if (*(v4 + 123))
+    else if (*(equalCopy + 123))
     {
       goto LABEL_162;
     }
@@ -2996,16 +2996,16 @@ LABEL_31:
       goto LABEL_162;
     }
 
-    v10 = *(v4 + 122);
+    v10 = *(equalCopy + 122);
     if (self->_isNrHst)
     {
-      if ((*(v4 + 122) & 1) == 0)
+      if ((*(equalCopy + 122) & 1) == 0)
       {
         goto LABEL_162;
       }
     }
 
-    else if (*(v4 + 122))
+    else if (*(equalCopy + 122))
     {
       goto LABEL_162;
     }
@@ -3023,16 +3023,16 @@ LABEL_31:
       goto LABEL_162;
     }
 
-    v11 = *(v4 + 121);
+    v11 = *(equalCopy + 121);
     if (self->_isLteHst)
     {
-      if ((*(v4 + 121) & 1) == 0)
+      if ((*(equalCopy + 121) & 1) == 0)
       {
         goto LABEL_162;
       }
     }
 
-    else if (*(v4 + 121))
+    else if (*(equalCopy + 121))
     {
       goto LABEL_162;
     }
@@ -3050,16 +3050,16 @@ LABEL_31:
       goto LABEL_162;
     }
 
-    v12 = *(v4 + 120);
+    v12 = *(equalCopy + 120);
     if (self->_isDataPreferred)
     {
-      if ((*(v4 + 120) & 1) == 0)
+      if ((*(equalCopy + 120) & 1) == 0)
       {
         goto LABEL_162;
       }
     }
 
-    else if (*(v4 + 120))
+    else if (*(equalCopy + 120))
     {
       goto LABEL_162;
     }
@@ -3071,7 +3071,7 @@ LABEL_31:
   }
 
   plmn = self->_plmn;
-  if (!(plmn | *(v4 + 6)))
+  if (!(plmn | *(equalCopy + 6)))
   {
     goto LABEL_63;
   }
@@ -3085,10 +3085,10 @@ LABEL_162:
 
   has = self->_has;
 LABEL_63:
-  v8 = *(v4 + 31);
+  v8 = *(equalCopy + 31);
   if ((*&has & 0x40000) != 0)
   {
-    if ((v8 & 0x40000) == 0 || self->_servingCellBeamInfoSsbIndex != *(v4 + 23))
+    if ((v8 & 0x40000) == 0 || self->_servingCellBeamInfoSsbIndex != *(equalCopy + 23))
     {
       goto LABEL_162;
     }
@@ -3101,7 +3101,7 @@ LABEL_63:
 
   if ((*&has & 0x10000) != 0)
   {
-    if ((v8 & 0x10000) == 0 || self->_servingCellBeamInfoRxBeamId0 != *(v4 + 21))
+    if ((v8 & 0x10000) == 0 || self->_servingCellBeamInfoRxBeamId0 != *(equalCopy + 21))
     {
       goto LABEL_162;
     }
@@ -3114,7 +3114,7 @@ LABEL_63:
 
   if ((*&has & 0x20000) != 0)
   {
-    if ((v8 & 0x20000) == 0 || self->_servingCellBeamInfoRxBeamId1 != *(v4 + 22))
+    if ((v8 & 0x20000) == 0 || self->_servingCellBeamInfoRxBeamId1 != *(equalCopy + 22))
     {
       goto LABEL_162;
     }
@@ -3127,7 +3127,7 @@ LABEL_63:
 
   if ((*&has & 0x8000) != 0)
   {
-    if ((v8 & 0x8000) == 0 || self->_servingCellBeamInfoNumDetectedTxBeams != *(v4 + 20))
+    if ((v8 & 0x8000) == 0 || self->_servingCellBeamInfoNumDetectedTxBeams != *(equalCopy + 20))
     {
       goto LABEL_162;
     }
@@ -3140,7 +3140,7 @@ LABEL_63:
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v8 & 0x800) == 0 || self->_rachResultDetails != *(v4 + 16))
+    if ((v8 & 0x800) == 0 || self->_rachResultDetails != *(equalCopy + 16))
     {
       goto LABEL_162;
     }
@@ -3153,7 +3153,7 @@ LABEL_63:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v8 & 0x200) == 0 || self->_rachContentionDetails != *(v4 + 14))
+    if ((v8 & 0x200) == 0 || self->_rachContentionDetails != *(equalCopy + 14))
     {
       goto LABEL_162;
     }
@@ -3166,7 +3166,7 @@ LABEL_63:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v8 & 0x400) == 0 || self->_rachReasonDetails != *(v4 + 15))
+    if ((v8 & 0x400) == 0 || self->_rachReasonDetails != *(equalCopy + 15))
     {
       goto LABEL_162;
     }
@@ -3179,7 +3179,7 @@ LABEL_63:
 
   if ((*&has & 0x1000000) != 0)
   {
-    if ((v8 & 0x1000000) == 0 || self->_txPowerDiffDetails != *(v4 + 29))
+    if ((v8 & 0x1000000) == 0 || self->_txPowerDiffDetails != *(equalCopy + 29))
     {
       goto LABEL_162;
     }
@@ -3192,7 +3192,7 @@ LABEL_63:
 
   if ((*&has & 8) != 0)
   {
-    if ((v8 & 8) == 0 || self->_dcModeDetails != *(v4 + 6))
+    if ((v8 & 8) == 0 || self->_dcModeDetails != *(equalCopy + 6))
     {
       goto LABEL_162;
     }
@@ -3205,7 +3205,7 @@ LABEL_63:
 
   if ((*&has & 0x1000) != 0)
   {
-    if ((v8 & 0x1000) == 0 || self->_servingCellBeamInfoAntennaPanelIndexDetails != *(v4 + 17))
+    if ((v8 & 0x1000) == 0 || self->_servingCellBeamInfoAntennaPanelIndexDetails != *(equalCopy + 17))
     {
       goto LABEL_162;
     }
@@ -3218,7 +3218,7 @@ LABEL_63:
 
   if ((*&has & 0x2000) != 0)
   {
-    if ((v8 & 0x2000) == 0 || self->_servingCellBeamInfoCellRsrpDetails != *(v4 + 18))
+    if ((v8 & 0x2000) == 0 || self->_servingCellBeamInfoCellRsrpDetails != *(equalCopy + 18))
     {
       goto LABEL_162;
     }
@@ -3231,7 +3231,7 @@ LABEL_63:
 
   if ((*&has & 0x4000) != 0)
   {
-    if ((v8 & 0x4000) == 0 || self->_servingCellBeamInfoCellRsrqDetails != *(v4 + 19))
+    if ((v8 & 0x4000) == 0 || self->_servingCellBeamInfoCellRsrqDetails != *(equalCopy + 19))
     {
       goto LABEL_162;
     }
@@ -3244,7 +3244,7 @@ LABEL_63:
 
   if ((*&has & 0x40) != 0)
   {
-    if ((v8 & 0x40) == 0 || self->_mtplDbm10 != *(v4 + 9))
+    if ((v8 & 0x40) == 0 || self->_mtplDbm10 != *(equalCopy + 9))
     {
       goto LABEL_162;
     }
@@ -3257,7 +3257,7 @@ LABEL_63:
 
   if ((*&has & 0x400000) != 0)
   {
-    if ((v8 & 0x400000) == 0 || self->_timeDefer != *(v4 + 27))
+    if ((v8 & 0x400000) == 0 || self->_timeDefer != *(equalCopy + 27))
     {
       goto LABEL_162;
     }
@@ -3270,7 +3270,7 @@ LABEL_63:
 
   if ((*&has & 0x80000) != 0)
   {
-    if ((v8 & 0x80000) == 0 || self->_sftToCellDelay != *(v4 + 24))
+    if ((v8 & 0x80000) == 0 || self->_sftToCellDelay != *(equalCopy + 24))
     {
       goto LABEL_162;
     }
@@ -3689,15 +3689,15 @@ LABEL_45:
   return v34 ^ v35 ^ v33 ^ v32 ^ v31 ^ v30 ^ v29 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v11 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24 ^ v25 ^ v26 ^ v27;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 31);
+  fromCopy = from;
+  v5 = *(fromCopy + 31);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 31);
+    v5 = *(fromCopy + 31);
     if ((v5 & 0x200000) == 0)
     {
 LABEL_3:
@@ -3715,9 +3715,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_subsId = *(v4 + 26);
+  self->_subsId = *(fromCopy + 26);
   *&self->_has |= 0x200000u;
-  v5 = *(v4 + 31);
+  v5 = *(fromCopy + 31);
   if ((v5 & 0x100) == 0)
   {
 LABEL_4:
@@ -3730,9 +3730,9 @@ LABEL_4:
   }
 
 LABEL_39:
-  self->_numSubs = *(v4 + 11);
+  self->_numSubs = *(fromCopy + 11);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 31);
+  v5 = *(fromCopy + 31);
   if ((v5 & 0x80) == 0)
   {
 LABEL_5:
@@ -3745,9 +3745,9 @@ LABEL_5:
   }
 
 LABEL_40:
-  self->_numAttempt = *(v4 + 10);
+  self->_numAttempt = *(fromCopy + 10);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 31);
+  v5 = *(fromCopy + 31);
   if ((v5 & 0x100000) == 0)
   {
 LABEL_6:
@@ -3760,9 +3760,9 @@ LABEL_6:
   }
 
 LABEL_41:
-  self->_ssbId = *(v4 + 25);
+  self->_ssbId = *(fromCopy + 25);
   *&self->_has |= 0x100000u;
-  v5 = *(v4 + 31);
+  v5 = *(fromCopy + 31);
   if ((v5 & 4) == 0)
   {
 LABEL_7:
@@ -3775,9 +3775,9 @@ LABEL_7:
   }
 
 LABEL_42:
-  self->_csiRsId = *(v4 + 5);
+  self->_csiRsId = *(fromCopy + 5);
   *&self->_has |= 4u;
-  v5 = *(v4 + 31);
+  v5 = *(fromCopy + 31);
   if ((v5 & 0x20) == 0)
   {
 LABEL_8:
@@ -3790,9 +3790,9 @@ LABEL_8:
   }
 
 LABEL_43:
-  self->_lastTxPower = *(v4 + 8);
+  self->_lastTxPower = *(fromCopy + 8);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 31);
+  v5 = *(fromCopy + 31);
   if ((v5 & 2) == 0)
   {
 LABEL_9:
@@ -3805,9 +3805,9 @@ LABEL_9:
   }
 
 LABEL_44:
-  self->_accbState = *(v4 + 4);
+  self->_accbState = *(fromCopy + 4);
   *&self->_has |= 2u;
-  v5 = *(v4 + 31);
+  v5 = *(fromCopy + 31);
   if ((v5 & 0x800000) == 0)
   {
 LABEL_10:
@@ -3820,9 +3820,9 @@ LABEL_10:
   }
 
 LABEL_45:
-  self->_txPowerDiff = *(v4 + 28);
+  self->_txPowerDiff = *(fromCopy + 28);
   *&self->_has |= 0x800000u;
-  v5 = *(v4 + 31);
+  v5 = *(fromCopy + 31);
   if ((v5 & 0x10) == 0)
   {
 LABEL_11:
@@ -3835,9 +3835,9 @@ LABEL_11:
   }
 
 LABEL_46:
-  self->_freqBandInd = *(v4 + 7);
+  self->_freqBandInd = *(fromCopy + 7);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 31);
+  v5 = *(fromCopy + 31);
   if ((v5 & 0x10000000) == 0)
   {
 LABEL_12:
@@ -3850,9 +3850,9 @@ LABEL_12:
   }
 
 LABEL_47:
-  self->_isPowerLimited = *(v4 + 123);
+  self->_isPowerLimited = *(fromCopy + 123);
   *&self->_has |= 0x10000000u;
-  v5 = *(v4 + 31);
+  v5 = *(fromCopy + 31);
   if ((v5 & 0x8000000) == 0)
   {
 LABEL_13:
@@ -3865,9 +3865,9 @@ LABEL_13:
   }
 
 LABEL_48:
-  self->_isNrHst = *(v4 + 122);
+  self->_isNrHst = *(fromCopy + 122);
   *&self->_has |= 0x8000000u;
-  v5 = *(v4 + 31);
+  v5 = *(fromCopy + 31);
   if ((v5 & 0x4000000) == 0)
   {
 LABEL_14:
@@ -3880,29 +3880,29 @@ LABEL_14:
   }
 
 LABEL_49:
-  self->_isLteHst = *(v4 + 121);
+  self->_isLteHst = *(fromCopy + 121);
   *&self->_has |= 0x4000000u;
-  if ((*(v4 + 31) & 0x2000000) != 0)
+  if ((*(fromCopy + 31) & 0x2000000) != 0)
   {
 LABEL_15:
-    self->_isDataPreferred = *(v4 + 120);
+    self->_isDataPreferred = *(fromCopy + 120);
     *&self->_has |= 0x2000000u;
   }
 
 LABEL_16:
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
-    v7 = v4;
+    v7 = fromCopy;
     [(KCellularNrRachAttempt *)self setPlmn:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 31);
+  v6 = *(fromCopy + 31);
   if ((v6 & 0x40000) != 0)
   {
-    self->_servingCellBeamInfoSsbIndex = *(v4 + 23);
+    self->_servingCellBeamInfoSsbIndex = *(fromCopy + 23);
     *&self->_has |= 0x40000u;
-    v6 = *(v4 + 31);
+    v6 = *(fromCopy + 31);
     if ((v6 & 0x10000) == 0)
     {
 LABEL_20:
@@ -3920,9 +3920,9 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  self->_servingCellBeamInfoRxBeamId0 = *(v4 + 21);
+  self->_servingCellBeamInfoRxBeamId0 = *(fromCopy + 21);
   *&self->_has |= 0x10000u;
-  v6 = *(v4 + 31);
+  v6 = *(fromCopy + 31);
   if ((v6 & 0x20000) == 0)
   {
 LABEL_21:
@@ -3935,9 +3935,9 @@ LABEL_21:
   }
 
 LABEL_53:
-  self->_servingCellBeamInfoRxBeamId1 = *(v4 + 22);
+  self->_servingCellBeamInfoRxBeamId1 = *(fromCopy + 22);
   *&self->_has |= 0x20000u;
-  v6 = *(v4 + 31);
+  v6 = *(fromCopy + 31);
   if ((v6 & 0x8000) == 0)
   {
 LABEL_22:
@@ -3950,9 +3950,9 @@ LABEL_22:
   }
 
 LABEL_54:
-  self->_servingCellBeamInfoNumDetectedTxBeams = *(v4 + 20);
+  self->_servingCellBeamInfoNumDetectedTxBeams = *(fromCopy + 20);
   *&self->_has |= 0x8000u;
-  v6 = *(v4 + 31);
+  v6 = *(fromCopy + 31);
   if ((v6 & 0x800) == 0)
   {
 LABEL_23:
@@ -3965,9 +3965,9 @@ LABEL_23:
   }
 
 LABEL_55:
-  self->_rachResultDetails = *(v4 + 16);
+  self->_rachResultDetails = *(fromCopy + 16);
   *&self->_has |= 0x800u;
-  v6 = *(v4 + 31);
+  v6 = *(fromCopy + 31);
   if ((v6 & 0x200) == 0)
   {
 LABEL_24:
@@ -3980,9 +3980,9 @@ LABEL_24:
   }
 
 LABEL_56:
-  self->_rachContentionDetails = *(v4 + 14);
+  self->_rachContentionDetails = *(fromCopy + 14);
   *&self->_has |= 0x200u;
-  v6 = *(v4 + 31);
+  v6 = *(fromCopy + 31);
   if ((v6 & 0x400) == 0)
   {
 LABEL_25:
@@ -3995,9 +3995,9 @@ LABEL_25:
   }
 
 LABEL_57:
-  self->_rachReasonDetails = *(v4 + 15);
+  self->_rachReasonDetails = *(fromCopy + 15);
   *&self->_has |= 0x400u;
-  v6 = *(v4 + 31);
+  v6 = *(fromCopy + 31);
   if ((v6 & 0x1000000) == 0)
   {
 LABEL_26:
@@ -4010,9 +4010,9 @@ LABEL_26:
   }
 
 LABEL_58:
-  self->_txPowerDiffDetails = *(v4 + 29);
+  self->_txPowerDiffDetails = *(fromCopy + 29);
   *&self->_has |= 0x1000000u;
-  v6 = *(v4 + 31);
+  v6 = *(fromCopy + 31);
   if ((v6 & 8) == 0)
   {
 LABEL_27:
@@ -4025,9 +4025,9 @@ LABEL_27:
   }
 
 LABEL_59:
-  self->_dcModeDetails = *(v4 + 6);
+  self->_dcModeDetails = *(fromCopy + 6);
   *&self->_has |= 8u;
-  v6 = *(v4 + 31);
+  v6 = *(fromCopy + 31);
   if ((v6 & 0x1000) == 0)
   {
 LABEL_28:
@@ -4040,9 +4040,9 @@ LABEL_28:
   }
 
 LABEL_60:
-  self->_servingCellBeamInfoAntennaPanelIndexDetails = *(v4 + 17);
+  self->_servingCellBeamInfoAntennaPanelIndexDetails = *(fromCopy + 17);
   *&self->_has |= 0x1000u;
-  v6 = *(v4 + 31);
+  v6 = *(fromCopy + 31);
   if ((v6 & 0x2000) == 0)
   {
 LABEL_29:
@@ -4055,9 +4055,9 @@ LABEL_29:
   }
 
 LABEL_61:
-  self->_servingCellBeamInfoCellRsrpDetails = *(v4 + 18);
+  self->_servingCellBeamInfoCellRsrpDetails = *(fromCopy + 18);
   *&self->_has |= 0x2000u;
-  v6 = *(v4 + 31);
+  v6 = *(fromCopy + 31);
   if ((v6 & 0x4000) == 0)
   {
 LABEL_30:
@@ -4070,9 +4070,9 @@ LABEL_30:
   }
 
 LABEL_62:
-  self->_servingCellBeamInfoCellRsrqDetails = *(v4 + 19);
+  self->_servingCellBeamInfoCellRsrqDetails = *(fromCopy + 19);
   *&self->_has |= 0x4000u;
-  v6 = *(v4 + 31);
+  v6 = *(fromCopy + 31);
   if ((v6 & 0x40) == 0)
   {
 LABEL_31:
@@ -4085,9 +4085,9 @@ LABEL_31:
   }
 
 LABEL_63:
-  self->_mtplDbm10 = *(v4 + 9);
+  self->_mtplDbm10 = *(fromCopy + 9);
   *&self->_has |= 0x40u;
-  v6 = *(v4 + 31);
+  v6 = *(fromCopy + 31);
   if ((v6 & 0x400000) == 0)
   {
 LABEL_32:
@@ -4100,12 +4100,12 @@ LABEL_32:
   }
 
 LABEL_64:
-  self->_timeDefer = *(v4 + 27);
+  self->_timeDefer = *(fromCopy + 27);
   *&self->_has |= 0x400000u;
-  if ((*(v4 + 31) & 0x80000) != 0)
+  if ((*(fromCopy + 31) & 0x80000) != 0)
   {
 LABEL_33:
-    self->_sftToCellDelay = *(v4 + 24);
+    self->_sftToCellDelay = *(fromCopy + 24);
     *&self->_has |= 0x80000u;
   }
 

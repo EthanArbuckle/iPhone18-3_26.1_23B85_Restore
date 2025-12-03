@@ -1,16 +1,16 @@
 @interface NWConcrete_nw_listener
-- (BOOL)canHandleNewConnection:(id)a3;
+- (BOOL)canHandleNewConnection:(id)connection;
 - (NSString)description;
 - (char)copyPeerDeviceID;
-- (char)initWithParameters:(void *)a3 multicastDescriptor:;
+- (char)initWithParameters:(void *)parameters multicastDescriptor:;
 - (id)copyPeerTXTRecord;
 - (id)getIDSInformation;
 - (void)dealloc;
-- (void)handleInbound:(id)a3 addProtocolInbox:(BOOL)a4;
-- (void)handleInboundPacket:(const char *)a3 length:(unsigned __int16)a4 from:(id)a5 to:(id)a6 interface:(id)a7 socket:(id)a8;
-- (void)handleInboxCancelComplete:(id)a3;
-- (void)handleInboxFailed:(id)a3 error:(id)a4;
-- (void)updateParametersForNewConnection:(id)a3;
+- (void)handleInbound:(id)inbound addProtocolInbox:(BOOL)inbox;
+- (void)handleInboundPacket:(const char *)packet length:(unsigned __int16)length from:(id)from to:(id)to interface:(id)interface socket:(id)socket;
+- (void)handleInboxCancelComplete:(id)complete;
+- (void)handleInboxFailed:(id)failed error:(id)error;
+- (void)updateParametersForNewConnection:(id)connection;
 @end
 
 @implementation NWConcrete_nw_listener
@@ -278,19 +278,19 @@ LABEL_17:
 
 - (NSString)description
 {
-  v2 = self;
-  v3 = v2;
+  selfCopy = self;
+  v3 = selfCopy;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  if (v2)
+  if (selfCopy)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __nw_listener_copy_description_block_invoke;
     v8[3] = &unk_1E6A3D738;
-    v9 = v2;
+    v9 = selfCopy;
     v10 = &v11;
     v4 = _Block_copy(v8);
     os_unfair_lock_lock(v3 + 2);
@@ -346,9 +346,9 @@ LABEL_17:
   return v4;
 }
 
-- (void)updateParametersForNewConnection:(id)a3
+- (void)updateParametersForNewConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   nw_context_assert_queue(*(self + 3));
   v9 = 0;
   v10 = &v9;
@@ -369,7 +369,7 @@ LABEL_17:
 
   if (v10[5])
   {
-    v6 = nw_parameters_copy_default_protocol_stack(v4);
+    v6 = nw_parameters_copy_default_protocol_stack(connectionCopy);
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __59__NWConcrete_nw_listener_updateParametersForNewConnection___block_invoke_2;
@@ -382,10 +382,10 @@ LABEL_17:
   _Block_object_dispose(&v9, 8);
 }
 
-- (void)handleInboxCancelComplete:(id)a3
+- (void)handleInboxCancelComplete:(id)complete
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completeCopy = complete;
   nw_context_assert_queue(*(self + 3));
   v5 = *(self + 76);
   if (v5)
@@ -405,8 +405,8 @@ LABEL_17:
         v8 = glistenerLogObj;
         if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
         {
-          v9 = self;
-          v10 = v9 + 42;
+          selfCopy = self;
+          v10 = selfCopy + 42;
 
           v11 = *(self + 76);
           *buf = 136446978;
@@ -414,7 +414,7 @@ LABEL_17:
           v29 = 2082;
           v30 = v10;
           v31 = 2114;
-          v32 = v4;
+          v32 = completeCopy;
           v33 = 1024;
           LODWORD(v34) = v11;
           _os_log_impl(&dword_181A37000, v8, OS_LOG_TYPE_INFO, "%{public}s [%{public}s] Removing deferral for %{public}@ -> %u", buf, 0x26u);
@@ -452,14 +452,14 @@ LABEL_17:
   }
 
   v13 = glistenerLogObj;
-  v14 = self;
+  selfCopy2 = self;
 
   *buf = 136446722;
   v28 = "[NWConcrete_nw_listener handleInboxCancelComplete:]";
   v29 = 2082;
-  v30 = v14 + 42;
+  v30 = selfCopy2 + 42;
   v31 = 2114;
-  v32 = v4;
+  v32 = completeCopy;
   v15 = _os_log_send_and_compose_impl();
 
   type = OS_LOG_TYPE_ERROR;
@@ -484,9 +484,9 @@ LABEL_17:
       *buf = 136446722;
       v28 = "[NWConcrete_nw_listener handleInboxCancelComplete:]";
       v29 = 2082;
-      v30 = v14 + 42;
+      v30 = selfCopy2 + 42;
       v31 = 2114;
-      v32 = v4;
+      v32 = completeCopy;
       _os_log_impl(&dword_181A37000, v16, v17, "%{public}s [%{public}s] Removing deferral for %{public}@ results in invalid defer count", buf, 0x20u);
     }
 
@@ -518,9 +518,9 @@ LABEL_26:
       *buf = 136446722;
       v28 = "[NWConcrete_nw_listener handleInboxCancelComplete:]";
       v29 = 2082;
-      v30 = v14 + 42;
+      v30 = selfCopy2 + 42;
       v31 = 2114;
-      v32 = v4;
+      v32 = completeCopy;
       _os_log_impl(&dword_181A37000, v16, v22, "%{public}s [%{public}s] Removing deferral for %{public}@ results in invalid defer count, backtrace limit exceeded", buf, 0x20u);
     }
 
@@ -539,13 +539,13 @@ LABEL_26:
     v23 = type;
     if (os_log_type_enabled(v16, type))
     {
-      id_string = nw_listener_get_id_string(v14);
+      id_string = nw_listener_get_id_string(selfCopy2);
       *buf = 136446722;
       v28 = "[NWConcrete_nw_listener handleInboxCancelComplete:]";
       v29 = 2082;
       v30 = id_string;
       v31 = 2114;
-      v32 = v4;
+      v32 = completeCopy;
       _os_log_impl(&dword_181A37000, v16, v23, "%{public}s [%{public}s] Removing deferral for %{public}@ results in invalid defer count, no backtrace", buf, 0x20u);
     }
 
@@ -566,9 +566,9 @@ LABEL_26:
     *buf = 136446978;
     v28 = "[NWConcrete_nw_listener handleInboxCancelComplete:]";
     v29 = 2082;
-    v30 = v14 + 42;
+    v30 = selfCopy2 + 42;
     v31 = 2114;
-    v32 = v4;
+    v32 = completeCopy;
     v33 = 2082;
     v34 = v19;
     _os_log_impl(&dword_181A37000, v20, v21, "%{public}s [%{public}s] Removing deferral for %{public}@ results in invalid defer count, dumping backtrace:%{public}s", buf, 0x2Au);
@@ -583,11 +583,11 @@ LABEL_26:
 LABEL_36:
 }
 
-- (void)handleInboxFailed:(id)a3 error:(id)a4
+- (void)handleInboxFailed:(id)failed error:(id)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  failedCopy = failed;
+  errorCopy = error;
   nw_context_assert_queue(*(self + 3));
   v8 = *(self + 2);
   if (v8 && !_nw_parameters_get_logging_disabled(v8))
@@ -600,28 +600,28 @@ LABEL_36:
     v9 = glistenerLogObj;
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = self;
-      v11 = v10 + 42;
+      selfCopy = self;
+      v11 = selfCopy + 42;
 
       v17 = 136446722;
       v18 = "[NWConcrete_nw_listener handleInboxFailed:error:]";
       v19 = 2082;
       v20 = v11;
       v21 = 2114;
-      v22 = v6;
+      v22 = failedCopy;
       _os_log_impl(&dword_181A37000, v9, OS_LOG_TYPE_DEFAULT, "%{public}s [%{public}s] inbox failed: %{public}@", &v17, 0x20u);
     }
   }
 
   v12 = *(self + 18);
-  if (v12 && v6 && (_nw_array_contains_object(v12, v6) & 1) != 0)
+  if (v12 && failedCopy && (_nw_array_contains_object(v12, failedCopy) & 1) != 0)
   {
-    nw_array_remove_object(*(self + 18), v6);
-    nw_listener_cancel_inbox_on_queue(self, v6);
+    nw_array_remove_object(*(self + 18), failedCopy);
+    nw_listener_cancel_inbox_on_queue(self, failedCopy);
     v13 = *(self + 18);
     if (!v13 || !_nw_array_get_count(v13))
     {
-      nw_listener_set_state_on_queue(self, 1, v7);
+      nw_listener_set_state_on_queue(self, 1, errorCopy);
     }
   }
 
@@ -638,28 +638,28 @@ LABEL_36:
       v15 = glistenerLogObj;
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
-        v16 = self;
+        selfCopy2 = self;
 
         v17 = 136446466;
         v18 = "[NWConcrete_nw_listener handleInboxFailed:error:]";
         v19 = 2082;
-        v20 = v16 + 42;
+        v20 = selfCopy2 + 42;
         _os_log_impl(&dword_181A37000, v15, OS_LOG_TYPE_DEBUG, "%{public}s [%{public}s] inbox already removed, not cancelling redundantly", &v17, 0x16u);
       }
     }
   }
 }
 
-- (void)handleInboundPacket:(const char *)a3 length:(unsigned __int16)a4 from:(id)a5 to:(id)a6 interface:(id)a7 socket:(id)a8
+- (void)handleInboundPacket:(const char *)packet length:(unsigned __int16)length from:(id)from to:(id)to interface:(id)interface socket:(id)socket
 {
-  v11 = a4;
+  lengthCopy = length;
   v90 = *MEMORY[0x1E69E9840];
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  fromCopy = from;
+  toCopy = to;
+  interfaceCopy = interface;
+  socketCopy = socket;
   nw_context_assert_queue(*(self + 3));
-  if (!a3)
+  if (!packet)
   {
     v34 = __nwlog_obj();
     *buf = 136446210;
@@ -739,7 +739,7 @@ LABEL_127:
     goto LABEL_128;
   }
 
-  if (!v11)
+  if (!lengthCopy)
   {
     v38 = __nwlog_obj();
     *buf = 136446210;
@@ -809,7 +809,7 @@ LABEL_127:
     goto LABEL_90;
   }
 
-  if (!v14)
+  if (!fromCopy)
   {
     v40 = __nwlog_obj();
     *buf = 136446210;
@@ -879,7 +879,7 @@ LABEL_127:
     goto LABEL_90;
   }
 
-  if (!v15)
+  if (!toCopy)
   {
     v42 = __nwlog_obj();
     *buf = 136446210;
@@ -949,7 +949,7 @@ LABEL_127:
     goto LABEL_90;
   }
 
-  if (!v16)
+  if (!interfaceCopy)
   {
     v44 = __nwlog_obj();
     *buf = 136446210;
@@ -1019,7 +1019,7 @@ LABEL_127:
     goto LABEL_90;
   }
 
-  if (!v17)
+  if (!socketCopy)
   {
     v46 = __nwlog_obj();
     *buf = 136446210;
@@ -1125,16 +1125,16 @@ LABEL_90:
 
     if (*(*&buf[8] + 40))
     {
-      v19 = dispatch_data_create(a3, v11, 0, 0);
+      v19 = dispatch_data_create(packet, lengthCopy, 0, 0);
       v68[0] = MEMORY[0x1E69E9820];
       v68[1] = 3221225472;
       v68[2] = __78__NWConcrete_nw_listener_handleInboundPacket_length_from_to_interface_socket___block_invoke_45;
       v68[3] = &unk_1E6A2E000;
       v74 = buf;
-      v69 = v14;
-      v70 = v15;
-      v71 = v16;
-      v72 = v17;
+      v69 = fromCopy;
+      v70 = toCopy;
+      v71 = interfaceCopy;
+      v72 = socketCopy;
       v20 = v19;
       v73 = v20;
       v21 = _Block_copy(v68);
@@ -1171,12 +1171,12 @@ LABEL_90:
       v20 = glistenerLogObj;
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
       {
-        v33 = self;
+        selfCopy = self;
 
         *v82 = 136446466;
         v83 = "[NWConcrete_nw_listener handleInboundPacket:length:from:to:interface:socket:]";
         v84 = 2082;
-        v85 = v33 + 42;
+        v85 = selfCopy + 42;
         _os_log_impl(&dword_181A37000, v20, OS_LOG_TYPE_DEBUG, "%{public}s [%{public}s] ignoring inbound packet: no new packet handler", v82, 0x16u);
       }
     }
@@ -1199,8 +1199,8 @@ LABEL_29:
     v29 = glistenerLogObj;
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
     {
-      v30 = self;
-      v31 = v30 + 42;
+      selfCopy2 = self;
+      v31 = selfCopy2 + 42;
 
       *buf = 136446466;
       *&buf[4] = "[NWConcrete_nw_listener handleInboundPacket:length:from:to:interface:socket:]";
@@ -1213,11 +1213,11 @@ LABEL_29:
 LABEL_30:
 }
 
-- (void)handleInbound:(id)a3 addProtocolInbox:(BOOL)a4
+- (void)handleInbound:(id)inbound addProtocolInbox:(BOOL)inbox
 {
-  v4 = a4;
+  inboxCopy = inbox;
   v84 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  inboundCopy = inbound;
   nw_context_assert_queue(*(self + 3));
   v7 = *(self + 2);
   if (v7 && !_nw_parameters_get_logging_disabled(v7))
@@ -1230,17 +1230,17 @@ LABEL_30:
     v8 = glistenerLogObj;
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = self;
-      v10 = v9 + 42;
+      selfCopy = self;
+      v10 = selfCopy + 42;
 
       *buf = 136446978;
       *&buf[4] = "[NWConcrete_nw_listener handleInbound:addProtocolInbox:]";
       *&buf[12] = 2082;
       *&buf[14] = v10;
       *&buf[22] = 1024;
-      LODWORD(v82) = v4;
+      LODWORD(v82) = inboxCopy;
       WORD2(v82) = 2112;
-      *(&v82 + 6) = v6;
+      *(&v82 + 6) = inboundCopy;
       _os_log_impl(&dword_181A37000, v8, OS_LOG_TYPE_DEFAULT, "%{public}s [%{public}s] Handling inbound connection (add inbox %u) %@", buf, 0x26u);
     }
   }
@@ -1257,8 +1257,8 @@ LABEL_30:
     v11[2](v11);
     os_unfair_lock_unlock(self + 2);
 
-    v12 = self;
-    if (nw_parameters_get_include_peer_to_peer(*(self + 2)) && nw_parameters_get_multipath_service(*(self + 2)) && (v13 = *(v12 + 34)) != 0)
+    selfCopy2 = self;
+    if (nw_parameters_get_include_peer_to_peer(*(self + 2)) && nw_parameters_get_multipath_service(*(self + 2)) && (v13 = *(selfCopy2 + 34)) != 0)
     {
       v14 = v13;
       v15 = v14[2] == 2;
@@ -1276,13 +1276,13 @@ LABEL_30:
           v17 = glistenerLogObj;
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
-            id_string = nw_listener_get_id_string(v12);
+            id_string = nw_listener_get_id_string(selfCopy2);
             *buf = 136446722;
             *&buf[4] = "[NWConcrete_nw_listener handleInbound:addProtocolInbox:]";
             *&buf[12] = 2082;
             *&buf[14] = id_string;
             *&buf[22] = 2112;
-            *&v82 = v6;
+            *&v82 = inboundCopy;
             _os_log_impl(&dword_181A37000, v17, OS_LOG_TYPE_DEFAULT, "%{public}s [%{public}s] Monitoring connection %@ for AWDL usage", buf, 0x20u);
           }
         }
@@ -1291,8 +1291,8 @@ LABEL_30:
         v74[1] = 3221225472;
         v74[2] = __57__NWConcrete_nw_listener_handleInbound_addProtocolInbox___block_invoke_41;
         v74[3] = &unk_1E6A2DFD8;
-        v74[4] = v12;
-        v75 = v6;
+        v74[4] = selfCopy2;
+        v75 = inboundCopy;
         nw_connection_set_interface_use_callback(v75, v74);
       }
     }
@@ -1301,9 +1301,9 @@ LABEL_30:
     {
     }
 
-    if (v4)
+    if (inboxCopy)
     {
-      listener_protocol_on_nw_queue = nw_connection_get_listener_protocol_on_nw_queue(v6, *(self + 2), 0);
+      listener_protocol_on_nw_queue = nw_connection_get_listener_protocol_on_nw_queue(inboundCopy, *(self + 2), 0);
       if (listener_protocol_on_nw_queue)
       {
         v20 = *(self + 2);
@@ -1317,7 +1317,7 @@ LABEL_30:
           v21 = glistenerLogObj;
           if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
           {
-            v22 = v12;
+            v22 = selfCopy2;
 
             *buf = 136446466;
             *&buf[4] = "[NWConcrete_nw_listener handleInbound:addProtocolInbox:]";
@@ -1327,10 +1327,10 @@ LABEL_30:
           }
         }
 
-        v23 = [[nw_listener_inbox_protocol alloc] initWithProtocol:v12 delegate:?];
+        v23 = [[nw_listener_inbox_protocol alloc] initWithProtocol:selfCopy2 delegate:?];
         if (v23)
         {
-          v24 = *(v12 + 18);
+          v24 = *(selfCopy2 + 18);
           if (v24)
           {
             _nw_array_append(v24, v23);
@@ -1350,7 +1350,7 @@ LABEL_30:
             v26 = glistenerLogObj;
             if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
             {
-              v27 = nw_listener_get_id_string(v12);
+              v27 = nw_listener_get_id_string(selfCopy2);
               v28 = listener_protocol_on_nw_queue[2];
               *buf = 136446722;
               *&buf[4] = "[NWConcrete_nw_listener handleInbound:addProtocolInbox:]";
@@ -1397,7 +1397,7 @@ LABEL_30:
     v51[1] = 3221225472;
     v51[2] = __57__NWConcrete_nw_listener_handleInbound_addProtocolInbox___block_invoke_43;
     v51[3] = &unk_1E6A2EF40;
-    v51[4] = v12;
+    v51[4] = selfCopy2;
     v51[5] = &v70;
     v51[6] = buf;
     v51[7] = &v64;
@@ -1410,9 +1410,9 @@ LABEL_30:
 
     if (v59[5])
     {
-      v30 = nw_connection_copy_endpoint(v6);
+      v30 = nw_connection_copy_endpoint(inboundCopy);
       multiplex = nw_group_descriptor_create_multiplex(v30);
-      v32 = nw_connection_group_create_with_connection(multiplex, v6);
+      v32 = nw_connection_group_create_with_connection(multiplex, inboundCopy);
       v48[0] = MEMORY[0x1E69E9820];
       v48[1] = 3221225472;
       v48[2] = __57__NWConcrete_nw_listener_handleInbound_addProtocolInbox___block_invoke_2;
@@ -1442,7 +1442,7 @@ LABEL_30:
         v39 = glistenerLogObj;
         if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
         {
-          v41 = nw_listener_get_id_string(v12);
+          v41 = nw_listener_get_id_string(selfCopy2);
           *v77 = 136446466;
           v78 = "[NWConcrete_nw_listener handleInbound:addProtocolInbox:]";
           v79 = 2082;
@@ -1459,7 +1459,7 @@ LABEL_30:
       v45[2] = __57__NWConcrete_nw_listener_handleInbound_addProtocolInbox___block_invoke_3;
       v45[3] = &unk_1E6A3D738;
       v47 = &v64;
-      v46 = v6;
+      v46 = inboundCopy;
       v34 = _Block_copy(v45);
       v30 = v46;
     }
@@ -1495,7 +1495,7 @@ LABEL_62:
       }
     }
 
-    v36 = *(v12 + 18);
+    v36 = *(selfCopy2 + 18);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __57__NWConcrete_nw_listener_handleInbound_addProtocolInbox___block_invoke_44;
@@ -1516,10 +1516,10 @@ LABEL_61:
 LABEL_63:
 }
 
-- (BOOL)canHandleNewConnection:(id)a3
+- (BOOL)canHandleNewConnection:(id)connection
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  connectionCopy = connection;
   nw_context_assert_queue(*(self + 3));
   v20 = 0;
   v21 = &v20;
@@ -1548,7 +1548,7 @@ LABEL_63:
 
   if (*(v21 + 24) == 1)
   {
-    nw_listener_suspend_inbox(self, v4);
+    nw_listener_suspend_inbox(self, connectionCopy);
   }
 
   else
@@ -1559,7 +1559,7 @@ LABEL_63:
       goto LABEL_7;
     }
 
-    nw_listener_suspend_inbox(self, v4);
+    nw_listener_suspend_inbox(self, connectionCopy);
     v8 = *(self + 2);
     if (v8 && !_nw_parameters_get_logging_disabled(v8))
     {
@@ -1571,12 +1571,12 @@ LABEL_63:
       v9 = glistenerLogObj;
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = self;
+        selfCopy = self;
 
         *buf = 136446466;
         v25 = "[NWConcrete_nw_listener canHandleNewConnection:]";
         v26 = 2082;
-        v27 = v10 + 42;
+        v27 = selfCopy + 42;
         _os_log_impl(&dword_181A37000, v9, OS_LOG_TYPE_DEFAULT, "%{public}s [%{public}s] cannot handle new connection due to no authorized keys", buf, 0x16u);
       }
     }
@@ -1591,19 +1591,19 @@ LABEL_7:
   return v6;
 }
 
-- (char)initWithParameters:(void *)a3 multicastDescriptor:
+- (char)initWithParameters:(void *)parameters multicastDescriptor:
 {
   v65 = *MEMORY[0x1E69E9840];
   v6 = a2;
-  v7 = a3;
-  if (!a1)
+  parametersCopy = parameters;
+  if (!self)
   {
 LABEL_93:
     v26 = 0;
     goto LABEL_35;
   }
 
-  v56.receiver = a1;
+  v56.receiver = self;
   v56.super_class = NWConcrete_nw_listener;
   v8 = objc_msgSendSuper2(&v56, sel_init);
   if (!v8)
@@ -1763,7 +1763,7 @@ LABEL_7:
     v12 = *(v8 + 3);
     *(v8 + 3) = v11;
 
-    objc_storeStrong(v8 + 4, a3);
+    objc_storeStrong(v8 + 4, parameters);
     nw_parameters_set_server_mode(*(v8 + 2));
     add = atomic_fetch_add(nw_listener_get_next_id(void)::s_last_listener_id, 1u);
     v14 = add + 1;

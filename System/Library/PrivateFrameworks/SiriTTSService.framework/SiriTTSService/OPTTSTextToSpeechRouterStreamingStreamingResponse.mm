@@ -1,12 +1,12 @@
 @interface OPTTSTextToSpeechRouterStreamingStreamingResponse
-+ (Class)content_immutableClassForType:(int64_t)a3;
-+ (int64_t)content_typeForImmutableObject:(id)a3;
++ (Class)content_immutableClassForType:(int64_t)type;
++ (int64_t)content_typeForImmutableObject:(id)object;
 - (FLTBFBufferAccessor)content;
 - (OPTTSBeginTextToSpeechStreamingResponse)contentAsOPTTSBeginTextToSpeechStreamingResponse;
 - (OPTTSFinalTextToSpeechStreamingResponse)contentAsOPTTSFinalTextToSpeechStreamingResponse;
 - (OPTTSPartialTextToSpeechStreamingResponse)contentAsOPTTSPartialTextToSpeechStreamingResponse;
-- (OPTTSTextToSpeechRouterStreamingStreamingResponse)initWithFlatbuffData:(id)a3 root:(const TextToSpeechRouterStreamingStreamingResponse *)a4 verify:(BOOL)a5;
-- (Offset<siri::speech::qss_fb::TextToSpeechRouterStreamingStreamingResponse>)addObjectToBuffer:(void *)a3;
+- (OPTTSTextToSpeechRouterStreamingStreamingResponse)initWithFlatbuffData:(id)data root:(const TextToSpeechRouterStreamingStreamingResponse *)root verify:(BOOL)verify;
+- (Offset<siri::speech::qss_fb::TextToSpeechRouterStreamingStreamingResponse>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 - (int64_t)content_type;
 @end
@@ -42,13 +42,13 @@ apple::aiml::flatbuffers2::DetachedBuffer *__65__OPTTSTextToSpeechRouterStreamin
   return result;
 }
 
-- (Offset<siri::speech::qss_fb::TextToSpeechRouterStreamingStreamingResponse>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::qss_fb::TextToSpeechRouterStreamingStreamingResponse>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(OPTTSTextToSpeechRouterStreamingStreamingResponse *)self content_type];
+  content_type = [(OPTTSTextToSpeechRouterStreamingStreamingResponse *)self content_type];
   if ([(OPTTSTextToSpeechRouterStreamingStreamingResponse *)self content_type]== 1)
   {
-    v6 = [(OPTTSTextToSpeechRouterStreamingStreamingResponse *)self contentAsOPTTSBeginTextToSpeechStreamingResponse];
-    LODWORD(v7) = [v6 addObjectToBuffer:a3];
+    contentAsOPTTSBeginTextToSpeechStreamingResponse = [(OPTTSTextToSpeechRouterStreamingStreamingResponse *)self contentAsOPTTSBeginTextToSpeechStreamingResponse];
+    LODWORD(v7) = [contentAsOPTTSBeginTextToSpeechStreamingResponse addObjectToBuffer:buffer];
 
     v7 = v7;
   }
@@ -60,8 +60,8 @@ apple::aiml::flatbuffers2::DetachedBuffer *__65__OPTTSTextToSpeechRouterStreamin
 
   if ([(OPTTSTextToSpeechRouterStreamingStreamingResponse *)self content_type]== 2)
   {
-    v8 = [(OPTTSTextToSpeechRouterStreamingStreamingResponse *)self contentAsOPTTSPartialTextToSpeechStreamingResponse];
-    LODWORD(v9) = [v8 addObjectToBuffer:a3];
+    contentAsOPTTSPartialTextToSpeechStreamingResponse = [(OPTTSTextToSpeechRouterStreamingStreamingResponse *)self contentAsOPTTSPartialTextToSpeechStreamingResponse];
+    LODWORD(v9) = [contentAsOPTTSPartialTextToSpeechStreamingResponse addObjectToBuffer:buffer];
 
     v9 = v9;
   }
@@ -73,8 +73,8 @@ apple::aiml::flatbuffers2::DetachedBuffer *__65__OPTTSTextToSpeechRouterStreamin
 
   if ([(OPTTSTextToSpeechRouterStreamingStreamingResponse *)self content_type]== 3)
   {
-    v10 = [(OPTTSTextToSpeechRouterStreamingStreamingResponse *)self contentAsOPTTSFinalTextToSpeechStreamingResponse];
-    v11 = [v10 addObjectToBuffer:a3];
+    contentAsOPTTSFinalTextToSpeechStreamingResponse = [(OPTTSTextToSpeechRouterStreamingStreamingResponse *)self contentAsOPTTSFinalTextToSpeechStreamingResponse];
+    v11 = [contentAsOPTTSFinalTextToSpeechStreamingResponse addObjectToBuffer:buffer];
 
     v12 = v11;
   }
@@ -84,50 +84,50 @@ apple::aiml::flatbuffers2::DetachedBuffer *__65__OPTTSTextToSpeechRouterStreamin
     v12 = 0;
   }
 
-  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v13 = *(a3 + 5);
-  v14 = *(a3 + 6);
-  v15 = *(a3 + 4);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(a3, 4, v5);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v13 = *(buffer + 5);
+  v14 = *(buffer + 6);
+  v15 = *(buffer + 4);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(buffer, 4, content_type);
   if ([(OPTTSTextToSpeechRouterStreamingStreamingResponse *)self content_type]== 1)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<void>(a3, v7);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<void>(buffer, v7);
   }
 
   if ([(OPTTSTextToSpeechRouterStreamingStreamingResponse *)self content_type]== 2)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<void>(a3, v9);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<void>(buffer, v9);
   }
 
   if ([(OPTTSTextToSpeechRouterStreamingStreamingResponse *)self content_type]== 3)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<void>(a3, v12);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<void>(buffer, v12);
   }
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v15 - v14 + v13);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v15 - v14 + v13);
 }
 
 - (FLTBFBufferAccessor)content
 {
-  v3 = [(OPTTSTextToSpeechRouterStreamingStreamingResponse *)self content_type];
-  switch(v3)
+  content_type = [(OPTTSTextToSpeechRouterStreamingStreamingResponse *)self content_type];
+  switch(content_type)
   {
     case 3:
-      v4 = [(OPTTSTextToSpeechRouterStreamingStreamingResponse *)self contentAsOPTTSFinalTextToSpeechStreamingResponse];
+      contentAsOPTTSFinalTextToSpeechStreamingResponse = [(OPTTSTextToSpeechRouterStreamingStreamingResponse *)self contentAsOPTTSFinalTextToSpeechStreamingResponse];
       break;
     case 2:
-      v4 = [(OPTTSTextToSpeechRouterStreamingStreamingResponse *)self contentAsOPTTSPartialTextToSpeechStreamingResponse];
+      contentAsOPTTSFinalTextToSpeechStreamingResponse = [(OPTTSTextToSpeechRouterStreamingStreamingResponse *)self contentAsOPTTSPartialTextToSpeechStreamingResponse];
       break;
     case 1:
-      v4 = [(OPTTSTextToSpeechRouterStreamingStreamingResponse *)self contentAsOPTTSBeginTextToSpeechStreamingResponse];
+      contentAsOPTTSFinalTextToSpeechStreamingResponse = [(OPTTSTextToSpeechRouterStreamingStreamingResponse *)self contentAsOPTTSBeginTextToSpeechStreamingResponse];
       break;
     default:
-      v4 = 0;
+      contentAsOPTTSFinalTextToSpeechStreamingResponse = 0;
       break;
   }
 
-  return v4;
+  return contentAsOPTTSFinalTextToSpeechStreamingResponse;
 }
 
 - (OPTTSFinalTextToSpeechStreamingResponse)contentAsOPTTSFinalTextToSpeechStreamingResponse
@@ -244,10 +244,10 @@ apple::aiml::flatbuffers2::DetachedBuffer *__65__OPTTSTextToSpeechRouterStreamin
   }
 }
 
-- (OPTTSTextToSpeechRouterStreamingStreamingResponse)initWithFlatbuffData:(id)a3 root:(const TextToSpeechRouterStreamingStreamingResponse *)a4 verify:(BOOL)a5
+- (OPTTSTextToSpeechRouterStreamingStreamingResponse)initWithFlatbuffData:(id)data root:(const TextToSpeechRouterStreamingStreamingResponse *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v33.receiver = self;
   v33.super_class = OPTTSTextToSpeechRouterStreamingStreamingResponse;
   v10 = [(OPTTSTextToSpeechRouterStreamingStreamingResponse *)&v33 init];
@@ -257,32 +257,32 @@ apple::aiml::flatbuffers2::DetachedBuffer *__65__OPTTSTextToSpeechRouterStreamin
     goto LABEL_37;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_38;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v12 = [(NSData *)v10->_data bytes];
-    a4 = v12 + *v12;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (v5)
+  v10->_root = root;
+  if (verifyCopy)
   {
-    v13 = [(NSData *)v10->_data bytes];
+    bytes2 = [(NSData *)v10->_data bytes];
     v14 = [(NSData *)v10->_data length];
     root = v10->_root;
-    if (root < v13 || root > v13 + v14)
+    if (root < bytes2 || root > bytes2 + v14)
     {
       goto LABEL_38;
     }
 
-    v17 = [(NSData *)v10->_data bytes];
+    bytes3 = [(NSData *)v10->_data bytes];
     v18 = [(NSData *)v10->_data length];
-    v28 = v17;
+    v28 = bytes3;
     v29 = v18;
     v30 = xmmword_1B1C41700;
     v31 = 0;
@@ -361,9 +361,9 @@ LABEL_38:
   }
 
 LABEL_36:
-  v24 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   storage = v11->_storage;
-  v11->_storage = v24;
+  v11->_storage = dictionary;
 
 LABEL_37:
   v26 = v11;
@@ -372,20 +372,20 @@ LABEL_39:
   return v26;
 }
 
-+ (int64_t)content_typeForImmutableObject:(id)a3
++ (int64_t)content_typeForImmutableObject:(id)object
 {
-  v3 = a3;
-  if ([v3 isMemberOfClass:objc_opt_class()])
+  objectCopy = object;
+  if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 1;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 2;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 3;
   }
@@ -398,16 +398,16 @@ LABEL_39:
   return v4;
 }
 
-+ (Class)content_immutableClassForType:(int64_t)a3
++ (Class)content_immutableClassForType:(int64_t)type
 {
-  if ((a3 - 1) > 2)
+  if ((type - 1) > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v4 = *off_1E7AF38D0[a3 - 1];
+    v4 = *off_1E7AF38D0[type - 1];
     v5 = objc_opt_class();
   }
 

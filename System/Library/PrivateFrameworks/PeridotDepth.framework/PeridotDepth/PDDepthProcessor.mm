@@ -1,16 +1,16 @@
 @interface PDDepthProcessor
-- (BOOL)_prepareForPeridotPreset:(int)a3;
+- (BOOL)_prepareForPeridotPreset:(int)preset;
 - (BOOL)prepareDataPool;
-- (BOOL)prepareForPeridotPreset:(int)a3 rawSensorDimensions:(CGSize)a4;
-- (BOOL)setDataBufferPool:(__CVDataBufferPool *)a3;
-- (PDDepthProcessor)initWithSystemCalibrationData:(id)a3;
+- (BOOL)prepareForPeridotPreset:(int)preset rawSensorDimensions:(CGSize)dimensions;
+- (BOOL)setDataBufferPool:(__CVDataBufferPool *)pool;
+- (PDDepthProcessor)initWithSystemCalibrationData:(id)data;
 - (id).cxx_construct;
-- (id)generatePointCloudFromRawFrame:(id)a3;
-- (id)generatePointCloudFromRawFrame:(id)a3 timestamp:(id *)a4;
-- (id)generatePointCloudFromRawFrame:(id)a3 timestamp:(id *)a4 usingDataBuffer:(__CVBuffer *)a5;
+- (id)generatePointCloudFromRawFrame:(id)frame;
+- (id)generatePointCloudFromRawFrame:(id)frame timestamp:(id *)timestamp;
+- (id)generatePointCloudFromRawFrame:(id)frame timestamp:(id *)timestamp usingDataBuffer:(__CVBuffer *)buffer;
 - (id)getInternalState;
-- (id)postProcessAllBanks:(id)a3;
-- (id)rawFrameFromPointCloud:(id)a3;
+- (id)postProcessAllBanks:(id)banks;
+- (id)rawFrameFromPointCloud:(id)cloud;
 - (void)dealloc;
 - (void)reportSessionStatistics;
 @end
@@ -25,38 +25,38 @@
   operator new();
 }
 
-- (id)postProcessAllBanks:(id)a3
+- (id)postProcessAllBanks:(id)banks
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  banksCopy = banks;
   LODWORD(v20) = 335676608;
   kdebug_trace();
-  v5 = [objc_alloc(MEMORY[0x277CED0E8]) initByMergingPointClouds:{v4, v20, 0, 0, 0, 0}];
-  if ([v4 count])
+  v5 = [objc_alloc(MEMORY[0x277CED0E8]) initByMergingPointClouds:{banksCopy, v20, 0, 0, 0, 0}];
+  if ([banksCopy count])
   {
     if (self->_spotClasificationEnabled)
     {
-      v6 = [v4 objectAtIndex:0];
-      v7 = [v6 additionalData];
-      v8 = [v7 bytes];
-      v9 = v8 && *v8 == -771601400 && v8[1] == 1;
+      v6 = [banksCopy objectAtIndex:0];
+      additionalData = [v6 additionalData];
+      bytes = [additionalData bytes];
+      v9 = bytes && *bytes == -771601400 && bytes[1] == 1;
 
-      v11 = [v6 additionalData];
-      v12 = [v11 bytes];
+      additionalData2 = [v6 additionalData];
+      bytes2 = [additionalData2 bytes];
 
-      if (v9 && *(v12 + 8))
+      if (v9 && *(bytes2 + 8))
       {
         bzero(v21, 0x700uLL);
         v13 = 0;
-        for (i = 0; [v4 count] > i; ++i)
+        for (i = 0; [banksCopy count] > i; ++i)
         {
-          v15 = [v4 objectAtIndex:i];
+          v15 = [banksCopy objectAtIndex:i];
 
-          v16 = [v15 additionalData];
-          v17 = [v16 bytes];
+          additionalData3 = [v15 additionalData];
+          bytes3 = [additionalData3 bytes];
 
           v18 = self->_presetInfo.additionalDataHeader.dataSizes[0];
-          memcpy(&v21[v13], (v17 + 24), v18);
+          memcpy(&v21[v13], (bytes3 + 24), v18);
           v13 += v18;
           v6 = v15;
         }
@@ -80,9 +80,9 @@
 
 - (id)getInternalState
 {
-  v2 = [*self->_algo._impl.__ptr_ copySessionState];
+  copySessionState = [*self->_algo._impl.__ptr_ copySessionState];
 
-  return v2;
+  return copySessionState;
 }
 
 - (void)reportSessionStatistics
@@ -96,9 +96,9 @@
   }
 }
 
-- (id)generatePointCloudFromRawFrame:(id)a3 timestamp:(id *)a4 usingDataBuffer:(__CVBuffer *)a5
+- (id)generatePointCloudFromRawFrame:(id)frame timestamp:(id *)timestamp usingDataBuffer:(__CVBuffer *)buffer
 {
-  v5 = (MEMORY[0x28223BE20])(self, a2, a3);
+  v5 = (MEMORY[0x28223BE20])(self, a2, frame);
   v7 = v6;
   v9 = v8;
   v101 = v5;
@@ -751,12 +751,12 @@ LABEL_9:
     memset(&v133[128], 0, 96);
     memset(&v134[16], 0, 96);
     memset(&v134[128], 0, 96);
-    v18 = [v11 bytes];
+    bytes = [v11 bytes];
     v19 = [v11 length];
     *v108 = *v9;
     *&v108[16] = *(v9 + 16);
     v94 = 0;
-    if (peridot::PeridotAlgo::Impl::processSuperFrame(*(v101 + 96), v18, v19, *v108))
+    if (peridot::PeridotAlgo::Impl::processSuperFrame(*(v101 + 96), bytes, v19, *v108))
     {
       if (BYTE8(v146[269]) == 255)
       {
@@ -886,21 +886,21 @@ LABEL_17:
     if (v25)
     {
       v26 = v25;
-      v27 = [v25 mutableCameraPixels];
-      v28 = [v26 mutableEuclideanDistances];
-      v105 = [v26 mutableConfidences];
-      v104 = [v26 mutableIntensities];
-      v29 = [v26 mutableSignalToNoiseRatios];
-      v30 = [v26 mutableBankIds];
-      v31 = [v26 mutableSpotIds];
-      v32 = [v26 mutableEchoIds];
-      v33 = [v26 mutableFlags];
-      v34 = [v26 additionalData];
-      v35 = v34;
-      v36 = [v34 bytes];
+      mutableCameraPixels = [v25 mutableCameraPixels];
+      mutableEuclideanDistances = [v26 mutableEuclideanDistances];
+      mutableConfidences = [v26 mutableConfidences];
+      mutableIntensities = [v26 mutableIntensities];
+      mutableSignalToNoiseRatios = [v26 mutableSignalToNoiseRatios];
+      mutableBankIds = [v26 mutableBankIds];
+      mutableSpotIds = [v26 mutableSpotIds];
+      mutableEchoIds = [v26 mutableEchoIds];
+      mutableFlags = [v26 mutableFlags];
+      additionalData = [v26 additionalData];
+      v35 = additionalData;
+      bytes2 = [additionalData bytes];
       v37 = *(v101 + 56);
-      *(v36 + 16) = *(v101 + 72);
-      *v36 = v37;
+      *(bytes2 + 16) = *(v101 + 72);
+      *bytes2 = v37;
 
       v95 = *(v101 + 64);
       bzero(&__src, 0x700uLL);
@@ -908,12 +908,12 @@ LABEL_17:
       {
         v38 = 0;
         v39 = &v115;
-        v40 = (v27 + 32);
-        v41 = v105 + 8;
-        v42 = v104 + 8;
-        v43 = v29 + 8;
-        v44 = v28 + 8;
-        v45 = v33 + 8;
+        v40 = (mutableCameraPixels + 32);
+        v41 = mutableConfidences + 8;
+        v42 = mutableIntensities + 8;
+        v43 = mutableSignalToNoiseRatios + 8;
+        v44 = mutableEuclideanDistances + 8;
+        v45 = mutableFlags + 8;
         v46 = v146;
         v47 = 2;
         do
@@ -929,11 +929,11 @@ LABEL_17:
           v54 = v47;
           do
           {
-            v55 = (v30 + v54);
+            v55 = (mutableBankIds + v54);
             *(v55 - 2) = v50[4312];
-            v56 = (v31 + v54);
+            v56 = (mutableSpotIds + v54);
             *(v56 - 2) = v49;
-            v57 = (v32 + v54);
+            v57 = (mutableEchoIds + v54);
             *(v57 - 2) = 0;
             v51[-2] = vcvtq_f64_f32(v52[4]);
             v58 = (v41 + v48);
@@ -996,25 +996,25 @@ LABEL_17:
       }
 
       v11 = v97;
-      v67 = [v99 additionalData];
-      v68 = v67;
-      memcpy(([v67 bytes] + 24), &__src, *(v101 + 64));
+      additionalData2 = [v99 additionalData];
+      v68 = additionalData2;
+      memcpy(([additionalData2 bytes] + 24), &__src, *(v101 + 64));
 
       [*(v101 + 88) undistort:objc_msgSend(v99 distortedPixels:"length") outUndistorted:{objc_msgSend(v99, "cameraPixels"), objc_msgSend(v99, "mutableUndistortedCameraPixels")}];
       [*(v101 + 88) backProject:objc_msgSend(v99 undistortedPixels:"length") withR:objc_msgSend(v99 outPoints:{"undistortedCameraPixels"), objc_msgSend(v99, "mutableEuclideanDistances"), objc_msgSend(v99, "mutablePoints")}];
       [v99 applyPerformanceOverrides];
       if (*(v101 + 104) == 1)
       {
-        v69 = [v99 additionalData];
-        v70 = v69;
-        v71 = [v69 bytes];
+        additionalData3 = [v99 additionalData];
+        v70 = additionalData3;
+        bytes3 = [additionalData3 bytes];
         v72 = v97;
-        memcpy((v71 + (v95 + 24)), [v97 bytes], *(v101 + 72));
+        memcpy((bytes3 + (v95 + 24)), [v97 bytes], *(v101 + 72));
       }
 
-      v73 = [v98 dumpRawFramesPath];
-      v74 = [v98 dumpPointCloudsPath];
-      if (v73 | v74)
+      dumpRawFramesPath = [v98 dumpRawFramesPath];
+      dumpPointCloudsPath = [v98 dumpPointCloudsPath];
+      if (dumpRawFramesPath | dumpPointCloudsPath)
       {
         if (*(v96 + 12))
         {
@@ -1028,15 +1028,15 @@ LABEL_17:
         }
 
         v77 = v75;
-        if (v73)
+        if (dumpRawFramesPath)
         {
-          v78 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@.L008", v73, v75];
+          v78 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@.L008", dumpRawFramesPath, v75];
           [v97 writeToFile:v78 atomically:0];
         }
 
-        if (v74)
+        if (dumpPointCloudsPath)
         {
-          v79 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@.csv", v74, v77];
+          v79 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@.csv", dumpPointCloudsPath, v77];
           [v99 writeToFile:v79 atomically:0];
         }
       }
@@ -1120,9 +1120,9 @@ LABEL_46:
   return v99;
 }
 
-- (id)generatePointCloudFromRawFrame:(id)a3 timestamp:(id *)a4
+- (id)generatePointCloudFromRawFrame:(id)frame timestamp:(id *)timestamp
 {
-  v6 = a3;
+  frameCopy = frame;
   buffer = 0;
   if (self->_dataBufferPool || ([(PDDepthProcessor *)self prepareDataPool], self->_dataBufferPool))
   {
@@ -1141,41 +1141,41 @@ LABEL_46:
     v8 = 0;
   }
 
-  v10 = *&a4->var0;
-  var3 = a4->var3;
-  v7 = [(PDDepthProcessor *)self generatePointCloudFromRawFrame:v6 timestamp:&v10 usingDataBuffer:v8];
+  v10 = *&timestamp->var0;
+  var3 = timestamp->var3;
+  v7 = [(PDDepthProcessor *)self generatePointCloudFromRawFrame:frameCopy timestamp:&v10 usingDataBuffer:v8];
   CVBufferRelease(buffer);
 LABEL_8:
 
   return v7;
 }
 
-- (id)generatePointCloudFromRawFrame:(id)a3
+- (id)generatePointCloudFromRawFrame:(id)frame
 {
   v5 = *MEMORY[0x277CC0898];
   v6 = *(MEMORY[0x277CC0898] + 16);
-  v3 = [(PDDepthProcessor *)self generatePointCloudFromRawFrame:a3 timestamp:&v5];
+  v3 = [(PDDepthProcessor *)self generatePointCloudFromRawFrame:frame timestamp:&v5];
 
   return v3;
 }
 
-- (BOOL)prepareForPeridotPreset:(int)a3 rawSensorDimensions:(CGSize)a4
+- (BOOL)prepareForPeridotPreset:(int)preset rawSensorDimensions:(CGSize)dimensions
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = *&a3;
+  height = dimensions.height;
+  width = dimensions.width;
+  v6 = *&preset;
   storeRawFramesInPointCloud = self->_storeRawFramesInPointCloud;
-  if (a4.width == 512.0 && a4.height == 768.0)
+  if (dimensions.width == 512.0 && dimensions.height == 768.0)
   {
     v11 = 2;
   }
 
-  else if (a4.width == 1024.0 && a4.height == 768.0)
+  else if (dimensions.width == 1024.0 && dimensions.height == 768.0)
   {
     v11 = 4;
   }
 
-  else if (a4.width == 0.0 && a4.height == 0.0)
+  else if (dimensions.width == 0.0 && dimensions.height == 0.0)
   {
     v11 = 8;
   }
@@ -1183,7 +1183,7 @@ LABEL_8:
   else
   {
     v11 = 8;
-    peridot_depth_log("Unknown raw sensor dimensions: %fx%f. Will allow up to %zu banks per frame.", a4.width, a4.height, 8uLL);
+    peridot_depth_log("Unknown raw sensor dimensions: %fx%f. Will allow up to %zu banks per frame.", dimensions.width, dimensions.height, 8uLL);
   }
 
   v12 = 224 * v11;
@@ -1211,14 +1211,14 @@ LABEL_8:
   return [(PDDepthProcessor *)self _prepareForPeridotPreset:v6];
 }
 
-- (BOOL)_prepareForPeridotPreset:(int)a3
+- (BOOL)_prepareForPeridotPreset:(int)preset
 {
   v5 = [PDUtils getPresetName:?];
   peridot_depth_log("PDDepthProcessor preparing for preset %s", [v5 UTF8String]);
 
   ptr = self->_algo._impl.__ptr_;
-  *(ptr + 100866) = a3;
-  v7 = peridot::presetToRunMode(a3);
+  *(ptr + 100866) = preset;
+  v7 = peridot::presetToRunMode(preset);
   *(ptr + 403473) = v7;
   *(ptr + 403475) = BYTE2(v7);
   *(ptr + 201744) = v7;
@@ -1328,9 +1328,9 @@ LABEL_8:
   return v2;
 }
 
-- (BOOL)setDataBufferPool:(__CVDataBufferPool *)a3
+- (BOOL)setDataBufferPool:(__CVDataBufferPool *)pool
 {
-  if (a3)
+  if (pool)
   {
     v5 = CVDataBufferPoolGetDataBufferAttributes();
     v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277CC4B58]];
@@ -1341,19 +1341,19 @@ LABEL_8:
     }
 
     v8 = [v6 objectForKeyedSubscript:*MEMORY[0x277CD2A70]];
-    v9 = [v8 unsignedIntValue];
+    unsignedIntValue = [v8 unsignedIntValue];
 
-    if (v9 != [MEMORY[0x277CED0A0] pixelFormat])
+    if (unsignedIntValue != [MEMORY[0x277CED0A0] pixelFormat])
     {
       goto LABEL_6;
     }
 
     v10 = [v7 objectForKeyedSubscript:*MEMORY[0x277CD2948]];
-    v11 = [v10 unsignedIntegerValue];
+    unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-    if (v11 < [(PDDepthProcessor *)self requiredStorageBytesForGeneratedPointClouds])
+    if (unsignedIntegerValue < [(PDDepthProcessor *)self requiredStorageBytesForGeneratedPointClouds])
     {
-      peridot_depth_log("Got a buffer pool with smaller size (%zu) than required (%zu)", v11, [(PDDepthProcessor *)self requiredStorageBytesForGeneratedPointClouds]);
+      peridot_depth_log("Got a buffer pool with smaller size (%zu) than required (%zu)", unsignedIntegerValue, [(PDDepthProcessor *)self requiredStorageBytesForGeneratedPointClouds]);
 LABEL_6:
 
       return 0;
@@ -1367,23 +1367,23 @@ LABEL_6:
     self->_dataBufferPool = 0;
   }
 
-  if (a3)
+  if (pool)
   {
-    self->_dataBufferPool = CFRetain(a3);
+    self->_dataBufferPool = CFRetain(pool);
   }
 
   return 1;
 }
 
-- (id)rawFrameFromPointCloud:(id)a3
+- (id)rawFrameFromPointCloud:(id)cloud
 {
-  v4 = a3;
-  v5 = [v4 additionalData];
-  v6 = [v5 bytes];
-  v7 = !v6 || *v6 != -771601400 || v6[1] != 1;
+  cloudCopy = cloud;
+  additionalData = [cloudCopy additionalData];
+  bytes = [additionalData bytes];
+  v7 = !bytes || *bytes != -771601400 || bytes[1] != 1;
 
-  v8 = [v4 additionalData];
-  v9 = *([v8 bytes] + 16);
+  additionalData2 = [cloudCopy additionalData];
+  v9 = *([additionalData2 bytes] + 16);
 
   if (v9)
   {
@@ -1404,8 +1404,8 @@ LABEL_6:
   {
     v12 = self->_presetInfo.additionalDataHeader.dataSizes[0];
     v13 = objc_alloc(MEMORY[0x277CBEA90]);
-    v14 = [v4 additionalData];
-    v11 = [v13 initWithBytes:objc_msgSend(v14 length:{"bytes") + (v12 + 24), self->_presetInfo.additionalDataHeader.dataSizes[1]}];
+    additionalData3 = [cloudCopy additionalData];
+    v11 = [v13 initWithBytes:objc_msgSend(additionalData3 length:{"bytes") + (v12 + 24), self->_presetInfo.additionalDataHeader.dataSizes[1]}];
   }
 
   return v11;
@@ -1424,10 +1424,10 @@ LABEL_6:
   [(PDDepthProcessor *)&v4 dealloc];
 }
 
-- (PDDepthProcessor)initWithSystemCalibrationData:(id)a3
+- (PDDepthProcessor)initWithSystemCalibrationData:(id)data
 {
-  v4 = a3;
-  if (!v4)
+  dataCopy = data;
+  if (!dataCopy)
   {
     goto LABEL_5;
   }
@@ -1440,13 +1440,13 @@ LABEL_6:
     goto LABEL_5;
   }
 
-  v5 = [v4 peridotModule];
+  peridotModule = [dataCopy peridotModule];
   moduleCalib = self->_moduleCalib;
-  self->_moduleCalib = v5;
+  self->_moduleCalib = peridotModule;
 
-  v7 = [v4 peridotCamera];
+  peridotCamera = [dataCopy peridotCamera];
   cameraCalib = self->_cameraCalib;
-  self->_cameraCalib = v7;
+  self->_cameraCalib = peridotCamera;
 
   v9 = +[PDUserDefaults defaults];
   self->_storeRawFramesInPointCloud = [v9 storeRawFramesInPointCloud];
@@ -1461,12 +1461,12 @@ LABEL_6:
   self->_presetInfo.dimensions = v10;
   self->_dataBufferPool = 0;
   self->_frameCounter = 0;
-  if (!peridot::PeridotAlgo::Impl::init(self->_algo._impl.__ptr_, -[PDPeridotModuleCalibrationData calib](self->_moduleCalib, "calib"), self->_cameraCalib, [v4 platform], 0))
+  if (!peridot::PeridotAlgo::Impl::init(self->_algo._impl.__ptr_, -[PDPeridotModuleCalibrationData calib](self->_moduleCalib, "calib"), self->_cameraCalib, [dataCopy platform], 0))
   {
     v14 = +[PDUserDefaults defaults];
-    v15 = [v14 loopDxpResults];
+    loopDxpResults = [v14 loopDxpResults];
 
-    if (v15)
+    if (loopDxpResults)
     {
       v16 = objc_alloc_init(MEMORY[0x277CBEB38]);
       lastOutputs = self->_lastOutputs;
@@ -1474,12 +1474,12 @@ LABEL_6:
     }
 
     v18 = +[PDUserDefaults defaults];
-    v19 = [v18 spotClasificationEnabled];
+    spotClasificationEnabled = [v18 spotClasificationEnabled];
 
-    switch(v19)
+    switch(spotClasificationEnabled)
     {
       case -1:
-        spotClasificationEnabled = [v4 platform] == 6;
+        spotClasificationEnabled = [dataCopy platform] == 6;
         break;
       case 0:
         spotClasificationEnabled = 0;
@@ -1487,12 +1487,12 @@ LABEL_6:
 LABEL_17:
         NSLog(&cfstr_SpotclassnetEn.isa, spotClasificationEnabled);
         v21 = +[PDUserDefaults defaults];
-        v22 = [v21 gmoCfgBits];
+        gmoCfgBits = [v21 gmoCfgBits];
 
-        NSLog(&cfstr_GmoPddepthproc.isa, v22);
-        [*self->_algo._impl.__ptr_ setCfgBits:v22];
+        NSLog(&cfstr_GmoPddepthproc.isa, gmoCfgBits);
+        [*self->_algo._impl.__ptr_ setCfgBits:gmoCfgBits];
         self = self;
-        v12 = self;
+        selfCopy = self;
         goto LABEL_6;
       case 1:
         spotClasificationEnabled = 1;
@@ -1508,10 +1508,10 @@ LABEL_17:
 
   peridot_depth_log("Failed to initialize algo");
 LABEL_5:
-  v12 = 0;
+  selfCopy = 0;
 LABEL_6:
 
-  return v12;
+  return selfCopy;
 }
 
 @end

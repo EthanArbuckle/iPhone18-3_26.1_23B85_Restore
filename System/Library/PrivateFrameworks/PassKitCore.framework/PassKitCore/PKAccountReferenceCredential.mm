@@ -1,34 +1,34 @@
 @interface PKAccountReferenceCredential
-- (BOOL)_isEqualToCredential:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PKAccountReferenceCredential)initWithAccountIdentifier:(id)a3 feature:(unint64_t)a4;
+- (BOOL)_isEqualToCredential:(id)credential;
+- (BOOL)isEqual:(id)equal;
+- (PKAccountReferenceCredential)initWithAccountIdentifier:(id)identifier feature:(unint64_t)feature;
 - (id)activationMethods;
 - (unint64_t)hash;
 @end
 
 @implementation PKAccountReferenceCredential
 
-- (PKAccountReferenceCredential)initWithAccountIdentifier:(id)a3 feature:(unint64_t)a4
+- (PKAccountReferenceCredential)initWithAccountIdentifier:(id)identifier feature:(unint64_t)feature
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = PKAccountReferenceCredential;
   v8 = [(PKPaymentCredential *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_accountIdentifier, a3);
-    v9->_feature = a4;
+    objc_storeStrong(&v8->_accountIdentifier, identifier);
+    v9->_feature = feature;
     [(PKPaymentCredential *)v9 setCardType:1];
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -36,19 +36,19 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PKAccountReferenceCredential *)self _isEqualToCredential:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PKAccountReferenceCredential *)self _isEqualToCredential:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)_isEqualToCredential:(id)a3
+- (BOOL)_isEqualToCredential:(id)credential
 {
-  v4 = a3;
+  credentialCopy = credential;
   accountIdentifier = self->_accountIdentifier;
-  v6 = [v4 accountIdentifier];
+  accountIdentifier = [credentialCopy accountIdentifier];
   v7 = accountIdentifier;
-  v8 = v6;
+  v8 = accountIdentifier;
   v9 = v8;
   if (v7 != v8)
   {
@@ -81,7 +81,7 @@
   }
 
 LABEL_10:
-  v12 = self->_feature == v4[15];
+  v12 = self->_feature == credentialCopy[15];
 LABEL_12:
 
   return v12;
@@ -89,9 +89,9 @@ LABEL_12:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_accountIdentifier];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_accountIdentifier];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }

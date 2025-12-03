@@ -1,19 +1,19 @@
 @interface TLKMultilineText
-+ (TLKMultilineText)textWithString:(id)a3;
++ (TLKMultilineText)textWithString:(id)string;
 - (id)description;
-- (void)setMaxLines:(unint64_t)a3;
-- (void)setText:(id)a3;
+- (void)setMaxLines:(unint64_t)lines;
+- (void)setText:(id)text;
 @end
 
 @implementation TLKMultilineText
 
-+ (TLKMultilineText)textWithString:(id)a3
++ (TLKMultilineText)textWithString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    v3 = a3;
+    stringCopy = string;
     v4 = objc_opt_new();
-    [v4 setText:v3];
+    [v4 setText:stringCopy];
 
     [v4 setMaxLines:0];
   }
@@ -26,44 +26,44 @@
   return v4;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v10 = a3;
-  if (self->_text != v10)
+  textCopy = text;
+  if (self->_text != textCopy)
   {
-    objc_storeStrong(&self->_text, a3);
-    v5 = [(TLKObject *)self observer];
-    if (v5)
+    objc_storeStrong(&self->_text, text);
+    observer = [(TLKObject *)self observer];
+    if (observer)
     {
-      v6 = v5;
-      v7 = [(TLKObject *)self observer];
-      v8 = [v7 batchUpdateCount];
+      v6 = observer;
+      observer2 = [(TLKObject *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v8)
+      if (!batchUpdateCount)
       {
-        v9 = [(TLKObject *)self observer];
-        [v9 propertiesDidChange];
+        observer3 = [(TLKObject *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setMaxLines:(unint64_t)a3
+- (void)setMaxLines:(unint64_t)lines
 {
-  if (self->_maxLines != a3)
+  if (self->_maxLines != lines)
   {
-    self->_maxLines = a3;
-    v4 = [(TLKObject *)self observer];
-    if (v4)
+    self->_maxLines = lines;
+    observer = [(TLKObject *)self observer];
+    if (observer)
     {
-      v5 = v4;
-      v6 = [(TLKObject *)self observer];
-      v7 = [v6 batchUpdateCount];
+      v5 = observer;
+      observer2 = [(TLKObject *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v7)
+      if (!batchUpdateCount)
       {
-        v8 = [(TLKObject *)self observer];
-        [v8 propertiesDidChange];
+        observer3 = [(TLKObject *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
@@ -75,8 +75,8 @@
   v8.receiver = self;
   v8.super_class = TLKMultilineText;
   v4 = [(TLKMultilineText *)&v8 description];
-  v5 = [(TLKMultilineText *)self text];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  text = [(TLKMultilineText *)self text];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, text];
 
   return v6;
 }

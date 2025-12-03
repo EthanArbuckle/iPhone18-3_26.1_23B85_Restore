@@ -2,12 +2,12 @@
 - (TSCH3DProtectResourceDelegate)protectResourceDelegate;
 - (TSCH3DShaderCache)init;
 - (id)description;
-- (id)shaderForShaderContext:(id)a3 initializeProgramBlock:(id)a4;
+- (id)shaderForShaderContext:(id)context initializeProgramBlock:(id)block;
 - (void)dealloc;
 - (void)debug_verifyUniqueShadersInCache;
 - (void)p_ensureCacheLimit;
 - (void)p_unprotectAllCacheItems;
-- (void)setProtectResourceDelegate:(id)a3;
+- (void)setProtectResourceDelegate:(id)delegate;
 @end
 
 @implementation TSCH3DShaderCache
@@ -66,12 +66,12 @@
   [(TSCH3DShaderCache *)&v52 dealloc];
 }
 
-- (void)setProtectResourceDelegate:(id)a3
+- (void)setProtectResourceDelegate:(id)delegate
 {
-  v5 = objc_initWeak(&location, a3);
+  v5 = objc_initWeak(&location, delegate);
   WeakRetained = objc_loadWeakRetained(&self->_protectResourceDelegate);
 
-  if (WeakRetained != a3)
+  if (WeakRetained != delegate)
   {
     objc_msgSend_p_unprotectAllCacheItems(self, v7, v8, v9, v10);
     v11 = objc_loadWeakRetained(&location);
@@ -189,10 +189,10 @@
   }
 }
 
-- (id)shaderForShaderContext:(id)a3 initializeProgramBlock:(id)a4
+- (id)shaderForShaderContext:(id)context initializeProgramBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  blockCopy = block;
   v13 = objc_msgSend_count(self->_shaderCache, v8, v9, v10, v11);
   if (v13 < 1)
   {
@@ -203,15 +203,15 @@ LABEL_5:
     if (v32)
     {
       WeakRetained = objc_loadWeakRetained(&self->_protectResourceDelegate);
-      v42 = objc_msgSend_shader(v6, v38, v39, v40, v41);
+      v42 = objc_msgSend_shader(contextCopy, v38, v39, v40, v41);
       objc_msgSend_protectResource_(WeakRetained, v43, v44, v45, v46, v42);
     }
 
-    objc_msgSend_addObject_(self->_shaderCache, v33, v34, v35, v36, v6);
+    objc_msgSend_addObject_(self->_shaderCache, v33, v34, v35, v36, contextCopy);
     objc_msgSend_p_ensureCacheLimit(self, v47, v48, v49, v50);
-    v55 = objc_msgSend_shader(v6, v51, v52, v53, v54);
+    v55 = objc_msgSend_shader(contextCopy, v51, v52, v53, v54);
     v18 = objc_msgSend_program(v55, v56, v57, v58, v59);
-    v7[2](v7, v18, v6);
+    blockCopy[2](blockCopy, v18, contextCopy);
   }
 
   else
@@ -220,7 +220,7 @@ LABEL_5:
     while (1)
     {
       v18 = objc_msgSend_objectAtIndexedSubscript_(self->_shaderCache, v12, v14, v15, v16, --v13);
-      if (objc_msgSend_isEqual_(v18, v19, v20, v21, v22, v6))
+      if (objc_msgSend_isEqual_(v18, v19, v20, v21, v22, contextCopy))
       {
         break;
       }

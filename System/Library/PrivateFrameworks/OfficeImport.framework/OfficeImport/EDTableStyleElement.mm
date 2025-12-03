@@ -1,25 +1,25 @@
 @interface EDTableStyleElement
-+ (id)tableStyleElementWithResources:(id)a3;
-- (EDTableStyleElement)initWithResources:(id)a3;
++ (id)tableStyleElementWithResources:(id)resources;
+- (EDTableStyleElement)initWithResources:(id)resources;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setDifferentialStyle:(id)a3;
-- (void)setDifferentialStyleWithIndex:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setDifferentialStyle:(id)style;
+- (void)setDifferentialStyleWithIndex:(unint64_t)index;
 @end
 
 @implementation EDTableStyleElement
 
-- (EDTableStyleElement)initWithResources:(id)a3
+- (EDTableStyleElement)initWithResources:(id)resources
 {
-  v4 = a3;
+  resourcesCopy = resources;
   v9.receiver = self;
   v9.super_class = EDTableStyleElement;
   v5 = [(EDTableStyleElement *)&v9 init];
   if (v5)
   {
-    v6 = [v4 differentialStyles];
+    differentialStyles = [resourcesCopy differentialStyles];
     mDifferentialStyles = v5->mDifferentialStyles;
-    v5->mDifferentialStyles = v6;
+    v5->mDifferentialStyles = differentialStyles;
 
     *&v5->mType = 0xFFFFFFFF00000000;
   }
@@ -27,15 +27,15 @@
   return v5;
 }
 
-+ (id)tableStyleElementWithResources:(id)a3
++ (id)tableStyleElementWithResources:(id)resources
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithResources:v3];
+  resourcesCopy = resources;
+  v4 = [objc_alloc(objc_opt_class()) initWithResources:resourcesCopy];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = v4;
@@ -53,22 +53,22 @@
   return v5;
 }
 
-- (void)setDifferentialStyle:(id)a3
+- (void)setDifferentialStyle:(id)style
 {
-  v5 = a3;
+  styleCopy = style;
   mDifferentialStyle = self->mDifferentialStyle;
   p_mDifferentialStyle = &self->mDifferentialStyle;
-  if (mDifferentialStyle != v5)
+  if (mDifferentialStyle != styleCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mDifferentialStyle, a3);
-    v5 = v8;
+    v8 = styleCopy;
+    objc_storeStrong(p_mDifferentialStyle, style);
+    styleCopy = v8;
   }
 }
 
-- (void)setDifferentialStyleWithIndex:(unint64_t)a3
+- (void)setDifferentialStyleWithIndex:(unint64_t)index
 {
-  v4 = [(EDCollection *)self->mDifferentialStyles objectAtIndex:a3];
+  v4 = [(EDCollection *)self->mDifferentialStyles objectAtIndex:index];
   [(EDTableStyleElement *)self setDifferentialStyle:?];
 }
 

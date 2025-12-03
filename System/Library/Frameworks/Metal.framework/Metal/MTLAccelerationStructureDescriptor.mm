@@ -1,32 +1,32 @@
 @interface MTLAccelerationStructureDescriptor
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MTLAccelerationStructureDescriptor
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setUsage:self->_usage];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   Class = object_getClass(self);
-  if (Class != object_getClass(a3))
+  if (Class != object_getClass(equal))
   {
     return 0;
   }
 
-  v7 = [(MTLAccelerationStructureDescriptor *)self usage];
-  return v7 == [a3 usage];
+  usage = [(MTLAccelerationStructureDescriptor *)self usage];
+  return usage == [equal usage];
 }
 
 @end

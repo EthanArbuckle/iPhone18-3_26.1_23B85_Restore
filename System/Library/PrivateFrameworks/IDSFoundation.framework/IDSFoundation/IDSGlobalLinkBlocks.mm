@@ -1,33 +1,33 @@
 @interface IDSGlobalLinkBlocks
-- (IDSGlobalLinkBlocks)initWithBlocks:(id)a3 qraAWDBlock:(id)a4 qraCONBlock:(id)a5 qraDISBlock:(id)a6;
+- (IDSGlobalLinkBlocks)initWithBlocks:(id)blocks qraAWDBlock:(id)block qraCONBlock:(id)nBlock qraDISBlock:(id)sBlock;
 @end
 
 @implementation IDSGlobalLinkBlocks
 
-- (IDSGlobalLinkBlocks)initWithBlocks:(id)a3 qraAWDBlock:(id)a4 qraCONBlock:(id)a5 qraDISBlock:(id)a6
+- (IDSGlobalLinkBlocks)initWithBlocks:(id)blocks qraAWDBlock:(id)block qraCONBlock:(id)nBlock qraDISBlock:(id)sBlock
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  blocksCopy = blocks;
+  blockCopy = block;
+  nBlockCopy = nBlock;
+  sBlockCopy = sBlock;
   v24.receiver = self;
   v24.super_class = IDSGlobalLinkBlocks;
   v14 = [(IDSGlobalLinkBlocks *)&v24 init];
   if (v14)
   {
-    v15 = _Block_copy(v10);
+    v15 = _Block_copy(blocksCopy);
     qraREQBlock = v14->_qraREQBlock;
     v14->_qraREQBlock = v15;
 
-    v17 = _Block_copy(v11);
+    v17 = _Block_copy(blockCopy);
     qraAWDBlock = v14->_qraAWDBlock;
     v14->_qraAWDBlock = v17;
 
-    v19 = _Block_copy(v12);
+    v19 = _Block_copy(nBlockCopy);
     qraCONBlock = v14->_qraCONBlock;
     v14->_qraCONBlock = v19;
 
-    v21 = _Block_copy(v13);
+    v21 = _Block_copy(sBlockCopy);
     qraDISBlock = v14->_qraDISBlock;
     v14->_qraDISBlock = v21;
   }

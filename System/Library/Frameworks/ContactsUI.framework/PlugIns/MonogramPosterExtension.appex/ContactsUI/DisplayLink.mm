@@ -1,17 +1,17 @@
 @interface DisplayLink
 - (_TtC23MonogramPosterExtension11DisplayLink)init;
-- (void)frameWithDisplaylink:(id)a3;
+- (void)frameWithDisplaylink:(id)displaylink;
 @end
 
 @implementation DisplayLink
 
-- (void)frameWithDisplaylink:(id)a3
+- (void)frameWithDisplaylink:(id)displaylink
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v5 = a3;
-  v6 = self;
-  v7 = v5;
+  displaylinkCopy = displaylink;
+  selfCopy = self;
+  v7 = displaylinkCopy;
   sub_100026720();
   type metadata accessor for DisplayLink();
   sub_10000F2D8();

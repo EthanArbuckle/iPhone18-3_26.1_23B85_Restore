@@ -1,27 +1,27 @@
 @interface ABSProgressReporter
-- (ABSProgressReporter)initWithSession:(id)a3;
-- (void)doneForRealNotifyingPairedSync:(BOOL)a3;
+- (ABSProgressReporter)initWithSession:(id)session;
+- (void)doneForRealNotifyingPairedSync:(BOOL)sync;
 @end
 
 @implementation ABSProgressReporter
 
-- (ABSProgressReporter)initWithSession:(id)a3
+- (ABSProgressReporter)initWithSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v9.receiver = self;
   v9.super_class = ABSProgressReporter;
   v6 = [(ABSProgressReporter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_session, a3);
+    objc_storeStrong(&v6->_session, session);
     v7->_start = CFAbsoluteTimeGetCurrent();
   }
 
   return v7;
 }
 
-- (void)doneForRealNotifyingPairedSync:(BOOL)a3
+- (void)doneForRealNotifyingPairedSync:(BOOL)sync
 {
   v5 = os_transaction_create();
   v6 = sub_10002ADFC();
@@ -29,7 +29,7 @@
   block[1] = 3221225472;
   block[2] = sub_100039E14;
   block[3] = &unk_10005DB00;
-  v10 = a3;
+  syncCopy = sync;
   block[4] = self;
   v9 = v5;
   v7 = v5;

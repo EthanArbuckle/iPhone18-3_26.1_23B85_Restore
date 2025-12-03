@@ -1,11 +1,11 @@
 @interface _HKHeartSettingsUtilities
 + (BOOL)isBackgroundHeartRateEnabled;
 + (BOOL)isBradycardiaDetectionEnabled;
-+ (BOOL)isBradycardiaDetectionEnabledWithDefaults:(id)a3;
++ (BOOL)isBradycardiaDetectionEnabledWithDefaults:(id)defaults;
 + (BOOL)isTachycardiaDetectionEnabled;
-+ (BOOL)isTachycardiaDetectionEnabledWithDefaults:(id)a3;
++ (BOOL)isTachycardiaDetectionEnabledWithDefaults:(id)defaults;
 + (BOOL)isWristDetectionEnabled;
-+ (BOOL)shouldFooterTextDisplayOffConfiguration:(BOOL)a3;
++ (BOOL)shouldFooterTextDisplayOffConfiguration:(BOOL)configuration;
 + (NSString)aFibBurdenAppleSupportURL;
 + (NSString)aFibBurdenDefaultLinkURL;
 + (NSString)aFibBurdenDeviceNotSupportedFooterDescription;
@@ -49,16 +49,16 @@
 + (NSString)cardioFitnessWristDetectFooterDescriptionWithLink;
 + (NSString)cardioFitnessWristDetectFooterLinkTitle;
 + (NSString)irregularHeartRhythmFooterDescription;
-+ (id)_calculateHeartRateOptionsWithMin:(int64_t)a3 increment:(int64_t)a4 max:(int64_t)a5;
-+ (id)bradycardiaHeartThresholdFooterDescriptionWithThresholdValue:(id)a3;
-+ (id)tachycardiaHeartThresholdFooterDescriptionWithThresholdValue:(id)a3;
++ (id)_calculateHeartRateOptionsWithMin:(int64_t)min increment:(int64_t)increment max:(int64_t)max;
++ (id)bradycardiaHeartThresholdFooterDescriptionWithThresholdValue:(id)value;
++ (id)tachycardiaHeartThresholdFooterDescriptionWithThresholdValue:(id)value;
 + (int64_t)bradycardiaThresholdHeartRate;
-+ (int64_t)bradycardiaThresholdHeartRateWithDefaults:(id)a3;
++ (int64_t)bradycardiaThresholdHeartRateWithDefaults:(id)defaults;
 + (int64_t)tachycardiaThresholdHeartRate;
-+ (int64_t)tachycardiaThresholdHeartRateWithDefaults:(id)a3;
-+ (void)_setThresholdHeartRate:(id)a3 detectedEnabledDefaultsKey:(id)a4 thresholdHeartRateDefaultKey:(id)a5 userDefaults:(id)a6;
-+ (void)setBradycardiaThresholdHeartRate:(id)a3;
-+ (void)setTachycardiaThresholdHeartRate:(id)a3;
++ (int64_t)tachycardiaThresholdHeartRateWithDefaults:(id)defaults;
++ (void)_setThresholdHeartRate:(id)rate detectedEnabledDefaultsKey:(id)key thresholdHeartRateDefaultKey:(id)defaultKey userDefaults:(id)defaults;
++ (void)setBradycardiaThresholdHeartRate:(id)rate;
++ (void)setTachycardiaThresholdHeartRate:(id)rate;
 @end
 
 @implementation _HKHeartSettingsUtilities
@@ -84,24 +84,24 @@
 
 + (BOOL)isBackgroundHeartRateEnabled
 {
-  v3 = [a1 isHeartRateEnabled];
-  if (v3)
+  isHeartRateEnabled = [self isHeartRateEnabled];
+  if (isHeartRateEnabled)
   {
 
-    LOBYTE(v3) = [a1 isWristDetectionEnabled];
+    LOBYTE(isHeartRateEnabled) = [self isWristDetectionEnabled];
   }
 
-  return v3;
+  return isHeartRateEnabled;
 }
 
-+ (id)bradycardiaHeartThresholdFooterDescriptionWithThresholdValue:(id)a3
++ (id)bradycardiaHeartThresholdFooterDescriptionWithThresholdValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = MEMORY[0x277CCACA8];
   v6 = HKHeartRateLocalizedString(@"MINUTES_%ld");
   v7 = [v5 localizedStringWithFormat:v6, 10];
 
-  v8 = [a1 shouldFooterTextDisplayOffConfiguration:{objc_msgSend(a1, "isBradycardiaDetectionEnabled")}];
+  v8 = [self shouldFooterTextDisplayOffConfiguration:{objc_msgSend(self, "isBradycardiaDetectionEnabled")}];
   v9 = MEMORY[0x277CCACA8];
   if (v8)
   {
@@ -112,7 +112,7 @@
   else
   {
     v10 = HKHeartRateLocalizedString(@"HEART_NOTIFICATION_BRADYCARDIA_FOOTER_%@_%@");
-    [v9 stringWithFormat:v10, v4, v7];
+    [v9 stringWithFormat:v10, valueCopy, v7];
   }
   v11 = ;
 
@@ -123,123 +123,123 @@
 {
   v3 = objc_alloc(MEMORY[0x277CBEBD0]);
   v4 = [v3 initWithSuiteName:*MEMORY[0x277CCE458]];
-  LOBYTE(a1) = [a1 isBradycardiaDetectionEnabledWithDefaults:v4];
+  LOBYTE(self) = [self isBradycardiaDetectionEnabledWithDefaults:v4];
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)isBradycardiaDetectionEnabledWithDefaults:(id)a3
++ (BOOL)isBradycardiaDetectionEnabledWithDefaults:(id)defaults
 {
-  v3 = [a3 objectForKey:*MEMORY[0x277CCE438]];
+  v3 = [defaults objectForKey:*MEMORY[0x277CCE438]];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 + (int64_t)bradycardiaThresholdHeartRate
 {
   v3 = objc_alloc(MEMORY[0x277CBEBD0]);
   v4 = [v3 initWithSuiteName:*MEMORY[0x277CCE458]];
-  v5 = [a1 bradycardiaThresholdHeartRateWithDefaults:v4];
+  v5 = [self bradycardiaThresholdHeartRateWithDefaults:v4];
 
   return v5;
 }
 
-+ (int64_t)bradycardiaThresholdHeartRateWithDefaults:(id)a3
++ (int64_t)bradycardiaThresholdHeartRateWithDefaults:(id)defaults
 {
-  v3 = [a3 objectForKey:*MEMORY[0x277CCE428]];
+  v3 = [defaults objectForKey:*MEMORY[0x277CCE428]];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v5 = 40;
+    integerValue = 40;
   }
 
-  return v5;
+  return integerValue;
 }
 
-+ (void)setBradycardiaThresholdHeartRate:(id)a3
++ (void)setBradycardiaThresholdHeartRate:(id)rate
 {
   v4 = MEMORY[0x277CBEBD0];
-  v5 = a3;
+  rateCopy = rate;
   v6 = [v4 alloc];
   v7 = [v6 initWithSuiteName:*MEMORY[0x277CCE458]];
-  [a1 setBradycardiaThresholdHeartRate:v5 defaults:v7];
+  [self setBradycardiaThresholdHeartRate:rateCopy defaults:v7];
 }
 
 + (BOOL)isTachycardiaDetectionEnabled
 {
   v3 = objc_alloc(MEMORY[0x277CBEBD0]);
   v4 = [v3 initWithSuiteName:*MEMORY[0x277CCE458]];
-  LOBYTE(a1) = [a1 isTachycardiaDetectionEnabledWithDefaults:v4];
+  LOBYTE(self) = [self isTachycardiaDetectionEnabledWithDefaults:v4];
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)isTachycardiaDetectionEnabledWithDefaults:(id)a3
++ (BOOL)isTachycardiaDetectionEnabledWithDefaults:(id)defaults
 {
-  v3 = [a3 objectForKey:*MEMORY[0x277CCE448]];
+  v3 = [defaults objectForKey:*MEMORY[0x277CCE448]];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 + (int64_t)tachycardiaThresholdHeartRate
 {
   v3 = objc_alloc(MEMORY[0x277CBEBD0]);
   v4 = [v3 initWithSuiteName:*MEMORY[0x277CCE458]];
-  v5 = [a1 tachycardiaThresholdHeartRateWithDefaults:v4];
+  v5 = [self tachycardiaThresholdHeartRateWithDefaults:v4];
 
   return v5;
 }
 
-+ (int64_t)tachycardiaThresholdHeartRateWithDefaults:(id)a3
++ (int64_t)tachycardiaThresholdHeartRateWithDefaults:(id)defaults
 {
-  v3 = [a3 objectForKey:*MEMORY[0x277CCE450]];
+  v3 = [defaults objectForKey:*MEMORY[0x277CCE450]];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v5 = 120;
+    integerValue = 120;
   }
 
-  return v5;
+  return integerValue;
 }
 
-+ (id)tachycardiaHeartThresholdFooterDescriptionWithThresholdValue:(id)a3
++ (id)tachycardiaHeartThresholdFooterDescriptionWithThresholdValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = MEMORY[0x277CCACA8];
   v6 = HKHeartRateLocalizedString(@"MINUTES_%ld");
   v7 = [v5 localizedStringWithFormat:v6, 10];
 
-  v8 = [a1 shouldFooterTextDisplayOffConfiguration:{objc_msgSend(a1, "isTachycardiaDetectionEnabled")}];
+  v8 = [self shouldFooterTextDisplayOffConfiguration:{objc_msgSend(self, "isTachycardiaDetectionEnabled")}];
   v9 = MEMORY[0x277CCACA8];
   if (v8)
   {
@@ -250,27 +250,27 @@
   else
   {
     v10 = HKHeartRateLocalizedString(@"HEART_NOTIFICATION_TACHYCARDIA_FOOTER_%@_%@");
-    [v9 stringWithFormat:v10, v4, v7];
+    [v9 stringWithFormat:v10, valueCopy, v7];
   }
   v11 = ;
 
   return v11;
 }
 
-+ (void)setTachycardiaThresholdHeartRate:(id)a3
++ (void)setTachycardiaThresholdHeartRate:(id)rate
 {
   v4 = MEMORY[0x277CBEBD0];
-  v5 = a3;
+  rateCopy = rate;
   v6 = [v4 alloc];
   v7 = [v6 initWithSuiteName:*MEMORY[0x277CCE458]];
-  [a1 setTachycardiaThresholdHeartRate:v5 defaults:v7];
+  [self setTachycardiaThresholdHeartRate:rateCopy defaults:v7];
 }
 
 + (NSString)irregularHeartRhythmFooterDescription
 {
   v3 = HKHeartRateLocalizedString(@"HEART_NOTIFICATION_ATRIAL_FIBRILLATION_NEEDS_GEOLOCATION_FOOTER");
-  v4 = [a1 irregularHeartRhythmFooterLinkTitle];
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n%@", v3, v4];
+  irregularHeartRhythmFooterLinkTitle = [self irregularHeartRhythmFooterLinkTitle];
+  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n%@", v3, irregularHeartRhythmFooterLinkTitle];
 
   return v5;
 }
@@ -328,8 +328,8 @@
   v3 = HKHRHeartHealthBundle();
   v4 = [v3 localizedStringForKey:@"HEART_NOTIFICATION_CARDIO_FITNESS_FOOTER" value:&stru_283BD8508 table:@"HeartRateSettings-CardioFitness"];
 
-  v5 = [a1 cardioFitnessFooterLinkTitle];
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n%@", v4, v5];
+  cardioFitnessFooterLinkTitle = [self cardioFitnessFooterLinkTitle];
+  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n%@", v4, cardioFitnessFooterLinkTitle];
 
   return v6;
 }
@@ -339,8 +339,8 @@
   v3 = HKHRHeartHealthBundle();
   v4 = [v3 localizedStringForKey:@"CARDIO_FITNESS_PREGNANCY_FOOTER" value:&stru_283BD8508 table:@"HeartRateSettings-Pregnancy"];
 
-  v5 = [a1 cardioFitnessFooterLinkTitle];
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n%@", v4, v5];
+  cardioFitnessFooterLinkTitle = [self cardioFitnessFooterLinkTitle];
+  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n%@", v4, cardioFitnessFooterLinkTitle];
 
   return v6;
 }
@@ -366,8 +366,8 @@
   v3 = HKHRHeartHealthBundle();
   v4 = [v3 localizedStringForKey:@"HEART_NOTIFICATION_CARDIO_FITNESS_FOOTER_WRIST_DETECT" value:&stru_283BD8508 table:@"HeartRateSettings-CardioFitness"];
 
-  v5 = [a1 cardioFitnessWristDetectFooterLinkTitle];
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:v4, v5];
+  cardioFitnessWristDetectFooterLinkTitle = [self cardioFitnessWristDetectFooterLinkTitle];
+  v6 = [MEMORY[0x277CCACA8] stringWithFormat:v4, cardioFitnessWristDetectFooterLinkTitle];
 
   return v6;
 }
@@ -393,8 +393,8 @@
   v3 = HKHRHeartHealthBundle();
   v4 = [v3 localizedStringForKey:@"HEART_NOTIFICATION_CARDIO_FITNESS_FOOTER_AGE_DELETED" value:&stru_283BD8508 table:@"HeartRateSettings-CardioFitness"];
 
-  v5 = [a1 cardioFitnessAgeDeletedFooterLinkTitle];
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:v4, v5];
+  cardioFitnessAgeDeletedFooterLinkTitle = [self cardioFitnessAgeDeletedFooterLinkTitle];
+  v6 = [MEMORY[0x277CCACA8] stringWithFormat:v4, cardioFitnessAgeDeletedFooterLinkTitle];
 
   return v6;
 }
@@ -465,9 +465,9 @@
 
 + (NSString)aFibBurdenFooterDescriptionWithLink
 {
-  v3 = [a1 aFibBurdenFooterDescription];
-  v4 = [a1 aFibBurdenFooterLinkTitle];
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n%@", v3, v4];
+  aFibBurdenFooterDescription = [self aFibBurdenFooterDescription];
+  aFibBurdenFooterLinkTitle = [self aFibBurdenFooterLinkTitle];
+  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n%@", aFibBurdenFooterDescription, aFibBurdenFooterLinkTitle];
 
   return v5;
 }
@@ -501,8 +501,8 @@
   v3 = HKHRHeartHealthBundle();
   v4 = [v3 localizedStringForKey:@"HEART_NOTIFICATION_AFIB_BURDEN_FOOTER_HEART_RATE" value:&stru_283BD8508 table:@"HeartRateSettings-AFibBurden"];
 
-  v5 = [a1 aFibBurdenHeartRateFooterLinkTitle];
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:v4, v5];
+  aFibBurdenHeartRateFooterLinkTitle = [self aFibBurdenHeartRateFooterLinkTitle];
+  v6 = [MEMORY[0x277CCACA8] stringWithFormat:v4, aFibBurdenHeartRateFooterLinkTitle];
 
   return v6;
 }
@@ -520,8 +520,8 @@
   v3 = HKHRHeartHealthBundle();
   v4 = [v3 localizedStringForKey:@"HEART_NOTIFICATION_AFIB_BURDEN_FOOTER_WRIST_DETECT" value:&stru_283BD8508 table:@"HeartRateSettings-AFibBurden"];
 
-  v5 = [a1 aFibBurdenWristDetectFooterLinkTitle];
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:v4, v5];
+  aFibBurdenWristDetectFooterLinkTitle = [self aFibBurdenWristDetectFooterLinkTitle];
+  v6 = [MEMORY[0x277CCACA8] stringWithFormat:v4, aFibBurdenWristDetectFooterLinkTitle];
 
   return v6;
 }
@@ -552,9 +552,9 @@
 
 + (NSString)aFibBurdenIRNEnabledFooterDescriptionWithLink
 {
-  v3 = [a1 aFibBurdenIRNEnabledFooterDescription];
-  v4 = [a1 aFibBurdenFooterLinkTitle];
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n%@", v3, v4];
+  aFibBurdenIRNEnabledFooterDescription = [self aFibBurdenIRNEnabledFooterDescription];
+  aFibBurdenFooterLinkTitle = [self aFibBurdenFooterLinkTitle];
+  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n%@", aFibBurdenIRNEnabledFooterDescription, aFibBurdenFooterLinkTitle];
 
   return v5;
 }
@@ -593,9 +593,9 @@
 
 + (NSString)aFibBurdenRemoteDisabledFooterDescriptionWithLink
 {
-  v3 = [a1 aFibBurdenRemoteDisabledFooterDescription];
-  v4 = [a1 remoteDisabledLinkTitle];
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n%@", v3, v4];
+  aFibBurdenRemoteDisabledFooterDescription = [self aFibBurdenRemoteDisabledFooterDescription];
+  remoteDisabledLinkTitle = [self remoteDisabledLinkTitle];
+  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n%@", aFibBurdenRemoteDisabledFooterDescription, remoteDisabledLinkTitle];
 
   return v5;
 }
@@ -618,27 +618,27 @@
 
 + (NSString)aFibBurdenSeedExpiryFooterDescriptionWithLink
 {
-  v3 = [a1 aFibBurdenSeedExpiryFooterDescription];
-  v4 = [a1 seedExpiredLinkTitle];
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n%@", v3, v4];
+  aFibBurdenSeedExpiryFooterDescription = [self aFibBurdenSeedExpiryFooterDescription];
+  seedExpiredLinkTitle = [self seedExpiredLinkTitle];
+  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n%@", aFibBurdenSeedExpiryFooterDescription, seedExpiredLinkTitle];
 
   return v5;
 }
 
 + (NSString)aFibBurdenRegionNotSupportedFooterDescriptionWithLink
 {
-  v3 = [a1 aFibBurdenRegionNotSupportedFooterDescription];
-  v4 = [a1 remoteDisabledLinkTitle];
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n%@", v3, v4];
+  aFibBurdenRegionNotSupportedFooterDescription = [self aFibBurdenRegionNotSupportedFooterDescription];
+  remoteDisabledLinkTitle = [self remoteDisabledLinkTitle];
+  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n%@", aFibBurdenRegionNotSupportedFooterDescription, remoteDisabledLinkTitle];
 
   return v5;
 }
 
-+ (BOOL)shouldFooterTextDisplayOffConfiguration:(BOOL)a3
++ (BOOL)shouldFooterTextDisplayOffConfiguration:(BOOL)configuration
 {
-  if ([a1 isHeartRateEnabled])
+  if ([self isHeartRateEnabled])
   {
-    return [a1 isWristDetectionEnabled] & a3 ^ 1;
+    return [self isWristDetectionEnabled] & configuration ^ 1;
   }
 
   else
@@ -647,27 +647,27 @@
   }
 }
 
-+ (void)_setThresholdHeartRate:(id)a3 detectedEnabledDefaultsKey:(id)a4 thresholdHeartRateDefaultKey:(id)a5 userDefaults:(id)a6
++ (void)_setThresholdHeartRate:(id)rate detectedEnabledDefaultsKey:(id)key thresholdHeartRateDefaultKey:(id)defaultKey userDefaults:(id)defaults
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v9 = a3 != 0;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  [v10 setBool:v9 forKey:v12];
-  [v10 setObject:v13 forKey:v11];
+  v9 = rate != 0;
+  defaultsCopy = defaults;
+  defaultKeyCopy = defaultKey;
+  keyCopy = key;
+  rateCopy = rate;
+  [defaultsCopy setBool:v9 forKey:keyCopy];
+  [defaultsCopy setObject:rateCopy forKey:defaultKeyCopy];
 
   v14 = objc_alloc_init(MEMORY[0x277D2BA60]);
   v15 = *MEMORY[0x277CCE458];
   v16 = MEMORY[0x277CBEB98];
-  v20[0] = v12;
-  v20[1] = v11;
+  v20[0] = keyCopy;
+  v20[1] = defaultKeyCopy;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
   v18 = [v16 setWithArray:v17];
 
   [v14 synchronizeUserDefaultsDomain:v15 keys:v18];
-  if (a3)
+  if (rate)
   {
     HKHRSubmitNotificationsEnabledSignal();
   }
@@ -675,11 +675,11 @@
   v19 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_calculateHeartRateOptionsWithMin:(int64_t)a3 increment:(int64_t)a4 max:(int64_t)a5
++ (id)_calculateHeartRateOptionsWithMin:(int64_t)min increment:(int64_t)increment max:(int64_t)max
 {
   for (i = [MEMORY[0x277CBEB18] array];
   {
-    v9 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v9 = [MEMORY[0x277CCABB0] numberWithInteger:min];
     [i addObject:v9];
   }
 

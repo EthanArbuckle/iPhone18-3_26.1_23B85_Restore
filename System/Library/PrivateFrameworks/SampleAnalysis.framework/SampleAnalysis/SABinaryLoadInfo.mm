@@ -1,23 +1,23 @@
 @interface SABinaryLoadInfo
-+ (id)addBinaryLoadInfoForDyldImage:(void *)a3 toLoadInfos:(int)a4 isKernel:(int)a5 dataGatheringOptions:;
-+ (id)binaryLoadInfoForAddress:(unint64_t)a3 inBinaryLoadInfos:(id)a4;
-+ (id)binaryLoadInfoForAddress:(unint64_t)a3 inBinaryLoadInfos:(id)a4 libraryCache:(id)a5;
-+ (id)binaryLoadInfoForSymbolicator:(uint64_t)a1 isKernel:(uint64_t)a2 dataGatheringOptions:(uint64_t)a3 excludeRange:(uint64_t)a4 ignoreSharedCache:(char)a5;
-+ (id)binaryLoadInfoWithBinary:(uint64_t)a3 loadAddress:(int)a4 isInKernelAddressSpace:(void *)a5 exclave:;
-+ (id)binaryLoadInfoWithSegment:(uint64_t)a3 loadAddress:(int)a4 isInKernelAddressSpace:(void *)a5 exclave:;
-+ (id)loadInfosForSegmentsInBinary:(uint64_t)a3 binaryBaseAddress:(int)a4 isInKernelAddressSpace:(void *)a5 exclave:;
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4;
-+ (void)binaryLoadInfoWithoutReferencesFromPAStyleSerializedImageInfo:(uint64_t)a1;
-- (BOOL)addSelfToBuffer:(id *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5;
++ (id)addBinaryLoadInfoForDyldImage:(void *)image toLoadInfos:(int)infos isKernel:(int)kernel dataGatheringOptions:;
++ (id)binaryLoadInfoForAddress:(unint64_t)address inBinaryLoadInfos:(id)infos;
++ (id)binaryLoadInfoForAddress:(unint64_t)address inBinaryLoadInfos:(id)infos libraryCache:(id)cache;
++ (id)binaryLoadInfoForSymbolicator:(uint64_t)symbolicator isKernel:(uint64_t)kernel dataGatheringOptions:(uint64_t)options excludeRange:(uint64_t)range ignoreSharedCache:(char)cache;
++ (id)binaryLoadInfoWithBinary:(uint64_t)binary loadAddress:(int)address isInKernelAddressSpace:(void *)space exclave:;
++ (id)binaryLoadInfoWithSegment:(uint64_t)segment loadAddress:(int)address isInKernelAddressSpace:(void *)space exclave:;
++ (id)loadInfosForSegmentsInBinary:(uint64_t)binary binaryBaseAddress:(int)address isInKernelAddressSpace:(void *)space exclave:;
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length;
++ (void)binaryLoadInfoWithoutReferencesFromPAStyleSerializedImageInfo:(uint64_t)info;
+- (BOOL)addSelfToBuffer:(id *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary;
 - (NSString)debugDescription;
-- (SABinaryLoadInfo)initWithBinary:(id)a3 segment:(id)a4 loadAddress:(unint64_t)a5;
-- (id)instructionAtOffsetIntoLoadInfo:(unint64_t)a3;
+- (SABinaryLoadInfo)initWithBinary:(id)binary segment:(id)segment loadAddress:(unint64_t)address;
+- (id)instructionAtOffsetIntoLoadInfo:(unint64_t)info;
 - (unint64_t)length;
 - (unint64_t)textSegmentLoadAddress;
-- (void)addSelfToSerializationDictionary:(id)a3;
-- (void)populateReferencesUsingBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6;
-- (void)populateReferencesUsingPAStyleSerializedImageInfo:(void *)a3 andDeserializationDictionary:(void *)a4 andDataBufferDictionary:;
-- (void)writeJSONDictionaryEntriesToStream:(id)a3;
+- (void)addSelfToSerializationDictionary:(id)dictionary;
+- (void)populateReferencesUsingBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary;
+- (void)populateReferencesUsingPAStyleSerializedImageInfo:(void *)info andDeserializationDictionary:(void *)dictionary andDataBufferDictionary:;
+- (void)writeJSONDictionaryEntriesToStream:(id)stream;
 @end
 
 @implementation SABinaryLoadInfo
@@ -33,7 +33,7 @@
   return [segment length];
 }
 
-- (SABinaryLoadInfo)initWithBinary:(id)a3 segment:(id)a4 loadAddress:(unint64_t)a5
+- (SABinaryLoadInfo)initWithBinary:(id)binary segment:(id)segment loadAddress:(unint64_t)address
 {
   v11.receiver = self;
   v11.super_class = SABinaryLoadInfo;
@@ -41,35 +41,35 @@
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_binary, a3);
-    objc_storeStrong(&v9->_segment, a4);
-    v9->_loadAddress = a5;
+    objc_storeStrong(&v8->_binary, binary);
+    objc_storeStrong(&v9->_segment, segment);
+    v9->_loadAddress = address;
   }
 
   return v9;
 }
 
-+ (id)binaryLoadInfoWithSegment:(uint64_t)a3 loadAddress:(int)a4 isInKernelAddressSpace:(void *)a5 exclave:
++ (id)binaryLoadInfoWithSegment:(uint64_t)segment loadAddress:(int)address isInKernelAddressSpace:(void *)space exclave:
 {
   v48 = *MEMORY[0x1E69E9840];
   objc_opt_self();
-  v9 = [a2 binary];
-  if (!v9)
+  binary = [a2 binary];
+  if (!binary)
   {
     v16 = *__error();
     v10 = _sa_logt();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      a5 = [a2 debugDescription];
+      space = [a2 debugDescription];
       *buf = 136315138;
-      v43 = [a5 UTF8String];
+      uTF8String = [space UTF8String];
       _os_log_error_impl(&dword_1E0E2F000, v10, OS_LOG_TYPE_ERROR, "Getting a load info for segment %s when the binary has already been deallcoated", buf, 0xCu);
     }
 
     *__error() = v16;
     a2 = [a2 debugDescription];
-    v17 = [a2 UTF8String];
-    _SASetCrashLogMessage(2857, "Getting a load info for segment %s when the binary has already been deallcoated", v18, v19, v20, v21, v22, v23, v17);
+    uTF8String2 = [a2 UTF8String];
+    _SASetCrashLogMessage(2857, "Getting a load info for segment %s when the binary has already been deallcoated", v18, v19, v20, v21, v22, v23, uTF8String2);
 
     _os_crash();
     __break(1u);
@@ -79,44 +79,44 @@ LABEL_16:
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
       v26 = [v10 debugDescription];
-      v27 = [v26 UTF8String];
+      uTF8String3 = [v26 UTF8String];
       v28 = [a2 debugDescription];
-      v29 = [v28 UTF8String];
-      v30 = [a5 debugDescription];
-      v31 = [v30 UTF8String];
+      uTF8String4 = [v28 UTF8String];
+      v30 = [space debugDescription];
+      uTF8String5 = [v30 UTF8String];
       *buf = 136315650;
-      v43 = v27;
+      uTF8String = uTF8String3;
       v44 = 2080;
-      v45 = v29;
+      v45 = uTF8String4;
       v46 = 2080;
-      v47 = v31;
+      v47 = uTF8String5;
       _os_log_error_impl(&dword_1E0E2F000, v25, OS_LOG_TYPE_ERROR, "%s segment %s has exclave %s in user space", buf, 0x20u);
     }
 
     *__error() = v24;
     v32 = [v10 debugDescription];
-    v33 = [v32 UTF8String];
+    uTF8String6 = [v32 UTF8String];
     v34 = [a2 debugDescription];
     [v34 UTF8String];
-    v35 = [a5 debugDescription];
+    v35 = [space debugDescription];
     [v35 UTF8String];
-    _SASetCrashLogMessage(2858, "%s segment %s has exclave %s in user space", v36, v37, v38, v39, v40, v41, v33);
+    _SASetCrashLogMessage(2858, "%s segment %s has exclave %s in user space", v36, v37, v38, v39, v40, v41, uTF8String6);
 
     _os_crash();
     __break(1u);
   }
 
-  v10 = v9;
-  if (a5 && (a4 & 1) == 0)
+  v10 = binary;
+  if (space && (address & 1) == 0)
   {
     goto LABEL_16;
   }
 
-  if (a4)
+  if (address)
   {
-    if (a5)
+    if (space)
     {
-      v11 = [[SAExclaveBinaryLoadInfo alloc] initWithBinary:v9 segment:a2 loadAddress:a3 exclave:a5];
+      v11 = [[SAExclaveBinaryLoadInfo alloc] initWithBinary:binary segment:a2 loadAddress:segment exclave:space];
       goto LABEL_10;
     }
 
@@ -128,7 +128,7 @@ LABEL_16:
     v12 = SAUserBinaryLoadInfo;
   }
 
-  v11 = [[v12 alloc] initWithBinary:v10 segment:a2 loadAddress:a3];
+  v11 = [[v12 alloc] initWithBinary:v10 segment:a2 loadAddress:segment];
 LABEL_10:
   v13 = v11;
 
@@ -137,42 +137,42 @@ LABEL_10:
   return v13;
 }
 
-+ (id)binaryLoadInfoWithBinary:(uint64_t)a3 loadAddress:(int)a4 isInKernelAddressSpace:(void *)a5 exclave:
++ (id)binaryLoadInfoWithBinary:(uint64_t)binary loadAddress:(int)address isInKernelAddressSpace:(void *)space exclave:
 {
   v31 = *MEMORY[0x1E69E9840];
   objc_opt_self();
-  if (a5 && (a4 & 1) == 0)
+  if (space && (address & 1) == 0)
   {
     v13 = *__error();
     v14 = _sa_logt();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v15 = [a2 debugDescription];
-      v16 = [v15 UTF8String];
-      v17 = [a5 debugDescription];
+      uTF8String = [v15 UTF8String];
+      v17 = [space debugDescription];
       *buf = 136315394;
-      v28 = v16;
+      v28 = uTF8String;
       v29 = 2080;
-      v30 = [v17 UTF8String];
+      uTF8String2 = [v17 UTF8String];
       _os_log_error_impl(&dword_1E0E2F000, v14, OS_LOG_TYPE_ERROR, "%s has exclave %s in user space", buf, 0x16u);
     }
 
     *__error() = v13;
     v18 = [a2 debugDescription];
-    v19 = [v18 UTF8String];
-    v20 = [a5 debugDescription];
+    uTF8String3 = [v18 UTF8String];
+    v20 = [space debugDescription];
     [v20 UTF8String];
-    _SASetCrashLogMessage(2873, "%s has exclave %s in user space", v21, v22, v23, v24, v25, v26, v19);
+    _SASetCrashLogMessage(2873, "%s has exclave %s in user space", v21, v22, v23, v24, v25, v26, uTF8String3);
 
     _os_crash();
     __break(1u);
   }
 
-  if (a4)
+  if (address)
   {
-    if (a5)
+    if (space)
     {
-      v9 = [[SAExclaveBinaryLoadInfo alloc] initWithBinary:a2 segment:0 loadAddress:a3 exclave:a5];
+      v9 = [[SAExclaveBinaryLoadInfo alloc] initWithBinary:a2 segment:0 loadAddress:binary exclave:space];
       goto LABEL_9;
     }
 
@@ -184,30 +184,30 @@ LABEL_10:
     v10 = SAUserBinaryLoadInfo;
   }
 
-  v9 = [[v10 alloc] initWithBinary:a2 segment:0 loadAddress:a3];
+  v9 = [[v10 alloc] initWithBinary:a2 segment:0 loadAddress:binary];
 LABEL_9:
   v11 = *MEMORY[0x1E69E9840];
 
   return v9;
 }
 
-+ (id)binaryLoadInfoForAddress:(unint64_t)a3 inBinaryLoadInfos:(id)a4
++ (id)binaryLoadInfoForAddress:(unint64_t)address inBinaryLoadInfos:(id)infos
 {
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __63__SABinaryLoadInfo_binaryLoadInfoForAddress_inBinaryLoadInfos___block_invoke;
   v14[3] = &__block_descriptor_40_e26_q16__0__SABinaryLoadInfo_8l;
-  v14[4] = a3;
-  v6 = SABinarySearchArray(a4, 1536, v14);
+  v14[4] = address;
+  v6 = SABinarySearchArray(infos, 1536, v14);
   if (v6)
   {
-    v7 = [a4 objectAtIndexedSubscript:v6 - 1];
-    v8 = [v7 segment];
-    v9 = [v8 length];
+    v7 = [infos objectAtIndexedSubscript:v6 - 1];
+    segment = [v7 segment];
+    v9 = [segment length];
     if (!v9)
     {
-      v10 = [v7 binary];
-      v11 = [v10 length];
+      binary = [v7 binary];
+      v11 = [binary length];
       if (v11)
       {
         v9 = v11;
@@ -219,7 +219,7 @@ LABEL_9:
       }
     }
 
-    if ([v7 loadAddress] + v9 <= a3)
+    if ([v7 loadAddress] + v9 <= address)
     {
       v12 = 0;
     }
@@ -255,12 +255,12 @@ uint64_t __63__SABinaryLoadInfo_binaryLoadInfoForAddress_inBinaryLoadInfos___blo
   }
 }
 
-+ (id)binaryLoadInfoForAddress:(unint64_t)a3 inBinaryLoadInfos:(id)a4 libraryCache:(id)a5
++ (id)binaryLoadInfoForAddress:(unint64_t)address inBinaryLoadInfos:(id)infos libraryCache:(id)cache
 {
-  if (!a5)
+  if (!cache)
   {
     v10 = 0;
-    if (!a4)
+    if (!infos)
     {
       goto LABEL_18;
     }
@@ -268,21 +268,21 @@ uint64_t __63__SABinaryLoadInfo_binaryLoadInfoForAddress_inBinaryLoadInfos___blo
     goto LABEL_11;
   }
 
-  v8 = [a5 binaryLoadInfos];
-  if (!v8)
+  binaryLoadInfos = [cache binaryLoadInfos];
+  if (!binaryLoadInfos)
   {
 LABEL_9:
     v10 = 0;
     goto LABEL_10;
   }
 
-  v9 = [a5 startAddress];
+  startAddress = [cache startAddress];
   v10 = 0;
-  if (v9 != -1 && v9 <= a3)
+  if (startAddress != -1 && startAddress <= address)
   {
-    if ([a5 endAddress] > a3)
+    if ([cache endAddress] > address)
     {
-      v10 = [SABinaryLoadInfo binaryLoadInfoForAddress:a3 inBinaryLoadInfos:v8];
+      v10 = [SABinaryLoadInfo binaryLoadInfoForAddress:address inBinaryLoadInfos:binaryLoadInfos];
       goto LABEL_10;
     }
 
@@ -291,7 +291,7 @@ LABEL_9:
 
 LABEL_10:
 
-  if (!a4)
+  if (!infos)
   {
     goto LABEL_18;
   }
@@ -299,16 +299,16 @@ LABEL_10:
 LABEL_11:
   if (!v10)
   {
-    v11 = [SABinaryLoadInfo binaryLoadInfoForAddress:a3 inBinaryLoadInfos:a4];
+    v11 = [SABinaryLoadInfo binaryLoadInfoForAddress:address inBinaryLoadInfos:infos];
     v10 = v11;
-    if (a5)
+    if (cache)
     {
       if (v11)
       {
-        if ([a5 startAddress] != -1)
+        if ([cache startAddress] != -1)
         {
-          v12 = [v10 loadAddress];
-          if (v12 < [a5 startAddress] && objc_msgSend(a5, "startAddress") <= a3)
+          loadAddress = [v10 loadAddress];
+          if (loadAddress < [cache startAddress] && objc_msgSend(cache, "startAddress") <= address)
           {
 
             v10 = 0;
@@ -323,9 +323,9 @@ LABEL_18:
   return v10;
 }
 
-+ (id)binaryLoadInfoForSymbolicator:(uint64_t)a1 isKernel:(uint64_t)a2 dataGatheringOptions:(uint64_t)a3 excludeRange:(uint64_t)a4 ignoreSharedCache:(char)a5
++ (id)binaryLoadInfoForSymbolicator:(uint64_t)symbolicator isKernel:(uint64_t)kernel dataGatheringOptions:(uint64_t)options excludeRange:(uint64_t)range ignoreSharedCache:(char)cache
 {
-  v5 = ~a5;
+  v5 = ~cache;
   objc_opt_self();
   v6 = objc_autoreleasePoolPush();
   if ((v5 & 5) != 0)
@@ -439,12 +439,12 @@ void __111__SABinaryLoadInfo_binaryLoadInfoForSymbolicator_isKernel_dataGatherin
   v17 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)addBinaryLoadInfoForDyldImage:(void *)a3 toLoadInfos:(int)a4 isKernel:(int)a5 dataGatheringOptions:
++ (id)addBinaryLoadInfoForDyldImage:(void *)image toLoadInfos:(int)infos isKernel:(int)kernel dataGatheringOptions:
 {
   v50 = *MEMORY[0x1E69E9840];
   objc_opt_self();
   v9 = objc_autoreleasePoolPush();
-  v10 = [SABinary binaryForDyldImage:a2 options:a5];
+  v10 = [SABinary binaryForDyldImage:a2 options:kernel];
   v11 = v10;
   if (v10)
   {
@@ -494,8 +494,8 @@ void __111__SABinaryLoadInfo_binaryLoadInfoForSymbolicator_isKernel_dataGatherin
     {
       if (v14 == v15 && v35[3] - v14 == v31[3])
       {
-        v21 = [SABinaryLoadInfo binaryLoadInfoWithBinary:v12 loadAddress:v14 isInKernelAddressSpace:a4 exclave:0];
-        [a3 addObject:v21];
+        v21 = [SABinaryLoadInfo binaryLoadInfoWithBinary:v12 loadAddress:v14 isInKernelAddressSpace:infos exclave:0];
+        [image addObject:v21];
       }
 
       else
@@ -580,17 +580,17 @@ void __92__SABinaryLoadInfo_addBinaryLoadInfoForDyldImage_toLoadInfos_isKernel_d
   [*(a1 + 40) addObject:v9];
 }
 
-+ (id)loadInfosForSegmentsInBinary:(uint64_t)a3 binaryBaseAddress:(int)a4 isInKernelAddressSpace:(void *)a5 exclave:
++ (id)loadInfosForSegmentsInBinary:(uint64_t)binary binaryBaseAddress:(int)address isInKernelAddressSpace:(void *)space exclave:
 {
   v25 = *MEMORY[0x1E69E9840];
   objc_opt_self();
-  v9 = [a2 segments];
-  v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v9, "count")}];
+  segments = [a2 segments];
+  v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(segments, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v11 = v9;
+  v11 = segments;
   v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v12)
   {
@@ -608,7 +608,7 @@ void __92__SABinaryLoadInfo_addBinaryLoadInfoForDyldImage_toLoadInfos_isKernel_d
         v16 = *(*(&v20 + 1) + 8 * i);
         if ([v16 hasOffsetIntoBinary])
         {
-          v17 = +[SABinaryLoadInfo binaryLoadInfoWithSegment:loadAddress:isInKernelAddressSpace:exclave:](SABinaryLoadInfo, v16, [v16 offsetIntoBinary] + a3, a4, a5);
+          v17 = +[SABinaryLoadInfo binaryLoadInfoWithSegment:loadAddress:isInKernelAddressSpace:exclave:](SABinaryLoadInfo, v16, [v16 offsetIntoBinary] + binary, address, space);
           [v10 addObject:v17];
         }
       }
@@ -624,17 +624,17 @@ void __92__SABinaryLoadInfo_addBinaryLoadInfoForDyldImage_toLoadInfos_isKernel_d
   return v10;
 }
 
-- (id)instructionAtOffsetIntoLoadInfo:(unint64_t)a3
+- (id)instructionAtOffsetIntoLoadInfo:(unint64_t)info
 {
   segment = self->_segment;
   if (segment)
   {
-    [(SASegment *)segment instructionAtOffsetIntoSegment:a3];
+    [(SASegment *)segment instructionAtOffsetIntoSegment:info];
   }
 
   else
   {
-    [(SABinary *)self->_binary instructionAtOffsetIntoBinary:a3];
+    [(SABinary *)self->_binary instructionAtOffsetIntoBinary:info];
   }
   v5 = ;
 
@@ -656,7 +656,7 @@ uint64_t __40__SABinaryLoadInfo_sortBinaryLoadInfos___block_invoke(uint64_t a1, 
 - (NSString)debugDescription
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(SABinaryLoadInfo *)self isInKernelAddressSpace];
+  isInKernelAddressSpace = [(SABinaryLoadInfo *)self isInKernelAddressSpace];
   segment = self->_segment;
   loadAddress = self->_loadAddress;
   if (!segment)
@@ -667,7 +667,7 @@ uint64_t __40__SABinaryLoadInfo_sortBinaryLoadInfos___block_invoke(uint64_t a1, 
   v7 = [segment debugDescription];
   v8 = v7;
   v9 = @" ";
-  if (v4)
+  if (isInKernelAddressSpace)
   {
     v9 = @"*";
   }
@@ -712,65 +712,65 @@ LABEL_7:
   return v6;
 }
 
-- (void)writeJSONDictionaryEntriesToStream:(id)a3
+- (void)writeJSONDictionaryEntriesToStream:(id)stream
 {
-  v5 = [(SABinary *)self->_binary uuid];
-  v6 = [v5 UUIDString];
-  SAJSONWriteDictionaryFirstEntry(a3, @"binary", v6);
+  uuid = [(SABinary *)self->_binary uuid];
+  uUIDString = [uuid UUIDString];
+  SAJSONWriteDictionaryFirstEntry(stream, @"binary", uUIDString);
 
   segment = self->_segment;
   if (segment)
   {
-    v8 = [(SASegment *)segment name];
-    SAJSONWriteDictionaryEntry(a3, @"segment", v8);
+    name = [(SASegment *)segment name];
+    SAJSONWriteDictionaryEntry(stream, @"segment", name);
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_loadAddress];
-  SAJSONWriteDictionaryEntry(a3, @"loadAddress", v9);
+  SAJSONWriteDictionaryEntry(stream, @"loadAddress", v9);
 
   if ([(SABinaryLoadInfo *)self isInKernelAddressSpace])
   {
-    SAJSONWriteDictionaryEntry(a3, @"isInKernelAddressSpace", MEMORY[0x1E695E118]);
-    v10 = [(SABinaryLoadInfo *)self exclave];
+    SAJSONWriteDictionaryEntry(stream, @"isInKernelAddressSpace", MEMORY[0x1E695E118]);
+    exclave = [(SABinaryLoadInfo *)self exclave];
 
-    if (v10)
+    if (exclave)
     {
-      v11 = [(SABinaryLoadInfo *)self exclave];
-      v12 = [v11 name];
-      if (v12)
+      exclave2 = [(SABinaryLoadInfo *)self exclave];
+      name2 = [exclave2 name];
+      if (name2)
       {
-        SAJSONWriteDictionaryEntry(a3, @"exclave", v12);
+        SAJSONWriteDictionaryEntry(stream, @"exclave", name2);
       }
 
       else
       {
         v13 = MEMORY[0x1E696AD98];
-        v14 = [(SABinaryLoadInfo *)self exclave];
-        v15 = [v13 numberWithUnsignedLongLong:{objc_msgSend(v14, "identifier")}];
-        SAJSONWriteDictionaryEntry(a3, @"exclave", v15);
+        exclave3 = [(SABinaryLoadInfo *)self exclave];
+        v15 = [v13 numberWithUnsignedLongLong:{objc_msgSend(exclave3, "identifier")}];
+        SAJSONWriteDictionaryEntry(stream, @"exclave", v15);
       }
     }
   }
 
-  v16 = [(SABinary *)self->_binary path];
-  if (v16)
+  path = [(SABinary *)self->_binary path];
+  if (path)
   {
-    v17 = v16;
-    v18 = [(SABinary *)self->_binary uuid];
-    v19 = [SABinary haveMultipleBinariesWithUUID:v18];
+    v17 = path;
+    uuid2 = [(SABinary *)self->_binary uuid];
+    v19 = [SABinary haveMultipleBinariesWithUUID:uuid2];
 
     if (v19)
     {
-      v20 = [(SABinary *)self->_binary path];
-      SAJSONWriteDictionaryEntry(a3, @"binaryPath", v20);
+      path2 = [(SABinary *)self->_binary path];
+      SAJSONWriteDictionaryEntry(stream, @"binaryPath", path2);
     }
   }
 }
 
-- (BOOL)addSelfToBuffer:(id *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5
+- (BOOL)addSelfToBuffer:(id *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary
 {
   v29 = *MEMORY[0x1E69E9840];
-  if ([(SABinaryLoadInfo *)self sizeInBytesForSerializedVersion]!= a4)
+  if ([(SABinaryLoadInfo *)self sizeInBytesForSerializedVersion]!= length)
   {
     v12 = *__error();
     v13 = _sa_logt();
@@ -778,73 +778,73 @@ LABEL_7:
     {
       v14 = [(SABinaryLoadInfo *)self debugDescription];
       *buf = 136315650;
-      v24 = [v14 UTF8String];
+      uTF8String = [v14 UTF8String];
       v25 = 2048;
-      v26 = [(SABinaryLoadInfo *)self sizeInBytesForSerializedVersion];
+      sizeInBytesForSerializedVersion = [(SABinaryLoadInfo *)self sizeInBytesForSerializedVersion];
       v27 = 2048;
-      v28 = a4;
+      lengthCopy = length;
       _os_log_error_impl(&dword_1E0E2F000, v13, OS_LOG_TYPE_ERROR, "%s: size %lu != buffer length %lu", buf, 0x20u);
     }
 
     *__error() = v12;
     v15 = [(SABinaryLoadInfo *)self debugDescription];
-    v16 = [v15 UTF8String];
+    uTF8String2 = [v15 UTF8String];
     [(SABinaryLoadInfo *)self sizeInBytesForSerializedVersion];
-    _SASetCrashLogMessage(5141, "%s: size %lu != buffer length %lu", v17, v18, v19, v20, v21, v22, v16);
+    _SASetCrashLogMessage(5141, "%s: size %lu != buffer length %lu", v17, v18, v19, v20, v21, v22, uTF8String2);
 
     _os_crash();
     __break(1u);
   }
 
-  *&a3->var0 = 769;
-  *(&a3->var2 + 2) = self->_loadAddress;
-  BYTE2(a3->var3) = BYTE2(a3->var3) & 0xFE | [(SABinaryLoadInfo *)self isInKernelAddressSpace];
-  *(&a3->var1 + 1) = SASerializableIndexForPointerFromSerializationDictionary(self->_binary, a5);
-  *(&a3->var3 + 3) = SASerializableIndexForPointerFromSerializationDictionary(self->_segment, a5);
-  v9 = [(SABinaryLoadInfo *)self exclave];
-  *(&a3->var4.var1 + 3) = SASerializableIndexForPointerFromSerializationDictionary(v9, a5);
+  *&buffer->var0 = 769;
+  *(&buffer->var2 + 2) = self->_loadAddress;
+  BYTE2(buffer->var3) = BYTE2(buffer->var3) & 0xFE | [(SABinaryLoadInfo *)self isInKernelAddressSpace];
+  *(&buffer->var1 + 1) = SASerializableIndexForPointerFromSerializationDictionary(self->_binary, dictionary);
+  *(&buffer->var3 + 3) = SASerializableIndexForPointerFromSerializationDictionary(self->_segment, dictionary);
+  exclave = [(SABinaryLoadInfo *)self exclave];
+  *(&buffer->var4.var1 + 3) = SASerializableIndexForPointerFromSerializationDictionary(exclave, dictionary);
 
   v10 = *MEMORY[0x1E69E9840];
   return 1;
 }
 
-- (void)addSelfToSerializationDictionary:(id)a3
+- (void)addSelfToSerializationDictionary:(id)dictionary
 {
-  v5 = [objc_opt_class() classDictionaryKey];
-  v6 = SASerializableAddInstanceToSerializationDictionaryWithClassKey(a3, self, v5);
+  classDictionaryKey = [objc_opt_class() classDictionaryKey];
+  v6 = SASerializableAddInstanceToSerializationDictionaryWithClassKey(dictionary, self, classDictionaryKey);
 
   if (v6)
   {
-    [(SABinary *)self->_binary addSelfToSerializationDictionary:a3];
-    [(SASegment *)self->_segment addSelfToSerializationDictionary:a3];
-    v7 = [(SABinaryLoadInfo *)self exclave];
-    [v7 addSelfToSerializationDictionary:a3];
+    [(SABinary *)self->_binary addSelfToSerializationDictionary:dictionary];
+    [(SASegment *)self->_segment addSelfToSerializationDictionary:dictionary];
+    exclave = [(SABinaryLoadInfo *)self exclave];
+    [exclave addSelfToSerializationDictionary:dictionary];
   }
 }
 
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (*a3 >= 4u)
+  if (*buffer >= 4u)
   {
     goto LABEL_13;
   }
 
-  if (a4 <= 0x12)
+  if (length <= 0x12)
   {
     v9 = *__error();
     v10 = _sa_logt();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v19 = a4;
+      lengthCopy = length;
       v20 = 2048;
       v21 = 19;
       _os_log_error_impl(&dword_1E0E2F000, v10, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SABinaryLoadInfo struct %lu", buf, 0x16u);
     }
 
     *__error() = v9;
-    _SASetCrashLogMessage(5171, "bufferLength %lu < serialized SABinaryLoadInfo struct %lu", v11, v12, v13, v14, v15, v16, a4);
+    _SASetCrashLogMessage(5171, "bufferLength %lu < serialized SABinaryLoadInfo struct %lu", v11, v12, v13, v14, v15, v16, length);
     _os_crash();
     __break(1u);
 LABEL_13:
@@ -852,9 +852,9 @@ LABEL_13:
     objc_exception_throw(v17);
   }
 
-  if (*(a3 + 18))
+  if (*(buffer + 18))
   {
-    if (*(a3 + 1) < 3u || *(a3 + 27) == -1)
+    if (*(buffer + 1) < 3u || *(buffer + 27) == -1)
     {
       v6 = off_1E86F4D18;
     }
@@ -871,46 +871,46 @@ LABEL_13:
   }
 
   result = objc_alloc_init(*v6);
-  *(result + 3) = *(a3 + 10);
+  *(result + 3) = *(buffer + 10);
   v8 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (void)populateReferencesUsingBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6
+- (void)populateReferencesUsingBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary
 {
   v61 = *MEMORY[0x1E69E9840];
-  if (*a3 >= 4u)
+  if (*buffer >= 4u)
   {
     goto LABEL_29;
   }
 
-  if (a4 <= 0x12)
+  if (length <= 0x12)
   {
     v31 = *__error();
     v32 = _sa_logt();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v58 = a4;
+      lengthCopy3 = length;
       v59 = 2048;
       v60 = 19;
       _os_log_error_impl(&dword_1E0E2F000, v32, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SABinaryLoadInfo struct %lu", buf, 0x16u);
     }
 
     *__error() = v31;
-    _SASetCrashLogMessage(5192, "bufferLength %lu < serialized SABinaryLoadInfo struct %lu", v33, v34, v35, v36, v37, v38, a4);
+    _SASetCrashLogMessage(5192, "bufferLength %lu < serialized SABinaryLoadInfo struct %lu", v33, v34, v35, v36, v37, v38, length);
     _os_crash();
     __break(1u);
     goto LABEL_23;
   }
 
-  v11 = *(a3 + 2);
+  v11 = *(buffer + 2);
   v12 = objc_opt_class();
-  v13 = SASerializableNonnullInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v11, a5, a6, v12);
+  v13 = SASerializableNonnullInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v11, dictionary, bufferDictionary, v12);
   binary = self->_binary;
   self->_binary = v13;
 
-  if (*(a3 + 1) < 2u)
+  if (*(buffer + 1) < 2u)
   {
     v23 = [(SABinary *)self->_binary checkForSegmentWithCleanName:?];
     v24 = v23;
@@ -930,7 +930,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (a4 <= 0x1A)
+  if (length <= 0x1A)
   {
 LABEL_23:
     v39 = *__error();
@@ -938,14 +938,14 @@ LABEL_23:
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v58 = a4;
+      lengthCopy3 = length;
       v59 = 2048;
       v60 = 27;
       _os_log_error_impl(&dword_1E0E2F000, v40, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SABinaryLoadInfo v2 struct %lu", buf, 0x16u);
     }
 
     *__error() = v39;
-    _SASetCrashLogMessage(5198, "bufferLength %lu < serialized SABinaryLoadInfo v2 struct %lu", v41, v42, v43, v44, v45, v46, a4);
+    _SASetCrashLogMessage(5198, "bufferLength %lu < serialized SABinaryLoadInfo v2 struct %lu", v41, v42, v43, v44, v45, v46, length);
     _os_crash();
     __break(1u);
 LABEL_26:
@@ -954,14 +954,14 @@ LABEL_26:
     if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v58 = a4;
+      lengthCopy3 = length;
       v59 = 2048;
       v60 = 35;
       _os_log_error_impl(&dword_1E0E2F000, v48, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SABinaryLoadInfo v3 struct %lu", buf, 0x16u);
     }
 
     *__error() = v47;
-    _SASetCrashLogMessage(5210, "bufferLength %lu < serialized SABinaryLoadInfo v3 struct %lu", v49, v50, v51, v52, v53, v54, a4);
+    _SASetCrashLogMessage(5210, "bufferLength %lu < serialized SABinaryLoadInfo v3 struct %lu", v49, v50, v51, v52, v53, v54, length);
     _os_crash();
     __break(1u);
 LABEL_29:
@@ -977,9 +977,9 @@ LABEL_29:
     *v17 = v18;
   }
 
-  v19 = *(a3 + 19);
+  v19 = *(buffer + 19);
   v20 = objc_opt_class();
-  v21 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v19, a5, a6, v20, 0);
+  v21 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v19, dictionary, bufferDictionary, v20, 0);
   v22 = self->_segment;
   self->_segment = v21;
 
@@ -989,25 +989,25 @@ LABEL_29:
   }
 
 LABEL_13:
-  if (*(a3 + 1) < 3u || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (*(buffer + 1) < 3u || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v30 = *MEMORY[0x1E69E9840];
     return;
   }
 
-  if (a4 <= 0x22)
+  if (length <= 0x22)
   {
     goto LABEL_26;
   }
 
-  v27 = *(a3 + 27);
+  v27 = *(buffer + 27);
   v28 = objc_opt_class();
-  v56 = SASerializableNonnullInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v27, a5, a6, v28);
+  v56 = SASerializableNonnullInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v27, dictionary, bufferDictionary, v28);
   objc_storeWeak(&self[1].super.isa, v56);
   v29 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)binaryLoadInfoWithoutReferencesFromPAStyleSerializedImageInfo:(uint64_t)a1
++ (void)binaryLoadInfoWithoutReferencesFromPAStyleSerializedImageInfo:(uint64_t)info
 {
   objc_opt_self();
   if (*(a2 + 16) <= 0x8000000000000000)
@@ -1026,18 +1026,18 @@ LABEL_13:
   return v4;
 }
 
-- (void)populateReferencesUsingPAStyleSerializedImageInfo:(void *)a3 andDeserializationDictionary:(void *)a4 andDataBufferDictionary:
+- (void)populateReferencesUsingPAStyleSerializedImageInfo:(void *)info andDeserializationDictionary:(void *)dictionary andDataBufferDictionary:
 {
-  if (a1)
+  if (self)
   {
     v7 = *(a2 + 8);
     v8 = objc_opt_class();
-    v15 = SASerializableNonnullInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v7, a3, a4, v8);
+    v15 = SASerializableNonnullInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v7, info, dictionary, v8);
     v9 = [SABinary binaryWithUUID:"binaryWithUUID:absolutePath:" absolutePath:?];
-    v10 = *(a1 + 8);
-    *(a1 + 8) = v9;
+    v10 = *(self + 8);
+    *(self + 8) = v9;
 
-    v11 = [(SABinary *)*(a1 + 8) checkForSegmentWithCleanName:?];
+    v11 = [(SABinary *)*(self + 8) checkForSegmentWithCleanName:?];
     v12 = v11;
     if (v11)
     {
@@ -1046,11 +1046,11 @@ LABEL_13:
 
     else
     {
-      v13 = [(SABinary *)*(a1 + 8) checkForSegmentWithCleanName:?];
+      v13 = [(SABinary *)*(self + 8) checkForSegmentWithCleanName:?];
     }
 
-    v14 = *(a1 + 16);
-    *(a1 + 16) = v13;
+    v14 = *(self + 16);
+    *(self + 16) = v13;
   }
 }
 

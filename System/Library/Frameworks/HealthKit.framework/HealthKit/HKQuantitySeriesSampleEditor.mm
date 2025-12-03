@@ -1,21 +1,21 @@
 @interface HKQuantitySeriesSampleEditor
 + (id)serverInterface;
-- (BOOL)_performWithError:(id *)a3 stateValidator:(id)a4 lockedBlock:(id)a5;
-- (BOOL)removeQuantityForDateInterval:(id)a3 error:(id *)a4;
-- (HKQuantitySeriesSampleEditor)initWithHealthStore:(id)a3 quantitySample:(id)a4;
+- (BOOL)_performWithError:(id *)error stateValidator:(id)validator lockedBlock:(id)block;
+- (BOOL)removeQuantityForDateInterval:(id)interval error:(id *)error;
+- (HKQuantitySeriesSampleEditor)initWithHealthStore:(id)store quantitySample:(id)sample;
 - (NSString)description;
 - (int64_t)unitTest_state;
-- (void)commitWithCompletion:(id)a3;
+- (void)commitWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)discard;
 @end
 
 @implementation HKQuantitySeriesSampleEditor
 
-- (HKQuantitySeriesSampleEditor)initWithHealthStore:(id)a3 quantitySample:(id)a4
+- (HKQuantitySeriesSampleEditor)initWithHealthStore:(id)store quantitySample:(id)sample
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  sampleCopy = sample;
   v22.receiver = self;
   v22.super_class = HKQuantitySeriesSampleEditor;
   v9 = [(HKQuantitySeriesSampleEditor *)&v22 init];
@@ -35,19 +35,19 @@
       [MEMORY[0x1E695DF30] raise:*v11 format:{@"A valid %@ object is required.", objc_opt_class()}];
     }
 
-    if ([v8 count] <= 1)
+    if ([sampleCopy count] <= 1)
     {
-      [MEMORY[0x1E695DF30] raise:*v11 format:{@"A quantity sample with count = %ld is invalid. A count greater than 1 is required.", objc_msgSend(v8, "count")}];
+      [MEMORY[0x1E695DF30] raise:*v11 format:{@"A quantity sample with count = %ld is invalid. A count greater than 1 is required.", objc_msgSend(sampleCopy, "count")}];
     }
 
-    v12 = [v8 copy];
+    v12 = [sampleCopy copy];
     quantitySample = v9->_quantitySample;
     v9->_quantitySample = v12;
 
-    objc_storeStrong(&v9->_healthStore, a3);
-    v14 = [MEMORY[0x1E696AFB0] UUID];
+    objc_storeStrong(&v9->_healthStore, store);
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     identifier = v9->_identifier;
-    v9->_identifier = v14;
+    v9->_identifier = uUID;
 
     v16 = [[HKQuantitySeriesSampleEditorTaskServerConfiguration alloc] initWithQuantitySample:v9->_quantitySample];
     v17 = [[HKTaskServerProxyProvider alloc] initWithHealthStore:v9->_healthStore taskIdentifier:@"HKQuantitySeriesSampleEditorTaskServerIdentifier" exportedObject:v9 taskUUID:v9->_identifier];
@@ -68,8 +68,8 @@
 
 - (void)dealloc
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"HKQuantitySeriesSampleEditor.m" lineNumber:84 description:{@"Editor %@ must be committed or discarded prior to deallocation", a2}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"HKQuantitySeriesSampleEditor.m" lineNumber:84 description:{@"Editor %@ must be committed or discarded prior to deallocation", a2}];
 }
 
 - (NSString)description
@@ -91,19 +91,19 @@
   return [v3 stringWithFormat:@"<%@:%p %@ %@>", v4, self, self->_identifier, v7];
 }
 
-- (BOOL)removeQuantityForDateInterval:(id)a3 error:(id *)a4
+- (BOOL)removeQuantityForDateInterval:(id)interval error:(id *)error
 {
-  v6 = a3;
+  intervalCopy = interval;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __68__HKQuantitySeriesSampleEditor_removeQuantityForDateInterval_error___block_invoke_2;
   v9[3] = &unk_1E7378400;
   v9[4] = self;
-  v10 = v6;
-  v7 = v6;
-  LOBYTE(a4) = [(HKQuantitySeriesSampleEditor *)self _performWithError:a4 stateValidator:&__block_literal_global_92 lockedBlock:v9];
+  v10 = intervalCopy;
+  v7 = intervalCopy;
+  LOBYTE(error) = [(HKQuantitySeriesSampleEditor *)self _performWithError:error stateValidator:&__block_literal_global_92 lockedBlock:v9];
 
-  return a4;
+  return error;
 }
 
 uint64_t __68__HKQuantitySeriesSampleEditor_removeQuantityForDateInterval_error___block_invoke_2(uint64_t a1)
@@ -113,16 +113,16 @@ uint64_t __68__HKQuantitySeriesSampleEditor_removeQuantityForDateInterval_error_
   return result;
 }
 
-- (void)commitWithCompletion:(id)a3
+- (void)commitWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x3032000000;
   v16[3] = __Block_byref_object_copy__38;
   v16[4] = __Block_byref_object_dispose__38;
   v17 = 0;
-  v5 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:v4];
+  v5 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completionCopy];
 
   v15 = 0;
   v14[0] = MEMORY[0x1E69E9820];
@@ -172,7 +172,7 @@ void __53__HKQuantitySeriesSampleEditor_commitWithCompletion___block_invoke_2(ui
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = 138543618;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2114;
   v7 = a2;
   _os_log_error_impl(&dword_19197B000, log, OS_LOG_TYPE_ERROR, "%{public}@: error performing discard: %{public}@", &v4, 0x16u);
@@ -194,17 +194,17 @@ uint64_t __39__HKQuantitySeriesSampleEditor_discard__block_invoke_2(uint64_t a1)
   return state;
 }
 
-- (BOOL)_performWithError:(id *)a3 stateValidator:(id)a4 lockedBlock:(id)a5
+- (BOOL)_performWithError:(id *)error stateValidator:(id)validator lockedBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
+  blockCopy = block;
+  validatorCopy = validator;
   os_unfair_lock_lock(&self->_lock);
   state = self->_state;
-  v11 = v9[2](v9, state);
+  v11 = validatorCopy[2](validatorCopy, state);
 
   if (v11)
   {
-    v8[2](v8);
+    blockCopy[2](blockCopy);
     os_unfair_lock_unlock(&self->_lock);
   }
 
@@ -221,7 +221,7 @@ uint64_t __39__HKQuantitySeriesSampleEditor_discard__block_invoke_2(uint64_t a1)
     }
 
     v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid state %@", v12];
-    [MEMORY[0x1E696ABC0] hk_assignError:a3 code:3 description:v13];
+    [MEMORY[0x1E696ABC0] hk_assignError:error code:3 description:v13];
     if (state == 3)
     {
       v14 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:v13 userInfo:0];

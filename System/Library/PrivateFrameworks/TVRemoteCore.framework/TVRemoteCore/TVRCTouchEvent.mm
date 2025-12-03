@@ -1,57 +1,57 @@
 @interface TVRCTouchEvent
 - (CGPoint)digitizerLocation;
-- (TVRCTouchEvent)initWithCoder:(id)a3;
-- (id)_initWithTimestamp:(double)a3 finger:(int64_t)a4 phase:(int64_t)a5 digitizerLocation:(CGPoint)a6;
+- (TVRCTouchEvent)initWithCoder:(id)coder;
+- (id)_initWithTimestamp:(double)timestamp finger:(int64_t)finger phase:(int64_t)phase digitizerLocation:(CGPoint)location;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TVRCTouchEvent
 
-- (TVRCTouchEvent)initWithCoder:(id)a3
+- (TVRCTouchEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = TVRCTouchEvent;
   v5 = [(TVRCTouchEvent *)&v10 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"timestamp"];
+    [coderCopy decodeDoubleForKey:@"timestamp"];
     v5->_timestamp = v6;
-    v5->_finger = [v4 decodeIntegerForKey:@"finger"];
-    v5->_phase = [v4 decodeIntegerForKey:@"phase"];
-    [v4 decodeDoubleForKey:@"digitizerLocation.x"];
+    v5->_finger = [coderCopy decodeIntegerForKey:@"finger"];
+    v5->_phase = [coderCopy decodeIntegerForKey:@"phase"];
+    [coderCopy decodeDoubleForKey:@"digitizerLocation.x"];
     v5->_digitizerLocation.x = v7;
-    [v4 decodeDoubleForKey:@"digitizerLocation.y"];
+    [coderCopy decodeDoubleForKey:@"digitizerLocation.y"];
     v5->_digitizerLocation.y = v8;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   timestamp = self->_timestamp;
-  v5 = a3;
-  [v5 encodeDouble:@"timestamp" forKey:timestamp];
-  [v5 encodeInteger:self->_finger forKey:@"finger"];
-  [v5 encodeInteger:self->_phase forKey:@"phase"];
-  [v5 encodeDouble:@"digitizerLocation.x" forKey:self->_digitizerLocation.x];
-  [v5 encodeDouble:@"digitizerLocation.y" forKey:self->_digitizerLocation.y];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"timestamp" forKey:timestamp];
+  [coderCopy encodeInteger:self->_finger forKey:@"finger"];
+  [coderCopy encodeInteger:self->_phase forKey:@"phase"];
+  [coderCopy encodeDouble:@"digitizerLocation.x" forKey:self->_digitizerLocation.x];
+  [coderCopy encodeDouble:@"digitizerLocation.y" forKey:self->_digitizerLocation.y];
 }
 
-- (id)_initWithTimestamp:(double)a3 finger:(int64_t)a4 phase:(int64_t)a5 digitizerLocation:(CGPoint)a6
+- (id)_initWithTimestamp:(double)timestamp finger:(int64_t)finger phase:(int64_t)phase digitizerLocation:(CGPoint)location
 {
-  y = a6.y;
-  x = a6.x;
+  y = location.y;
+  x = location.x;
   v12.receiver = self;
   v12.super_class = TVRCTouchEvent;
   result = [(TVRCTouchEvent *)&v12 init];
   if (result)
   {
-    *(result + 1) = a3;
-    *(result + 2) = a4;
-    *(result + 3) = a5;
+    *(result + 1) = timestamp;
+    *(result + 2) = finger;
+    *(result + 3) = phase;
     *(result + 4) = x;
     *(result + 5) = y;
   }

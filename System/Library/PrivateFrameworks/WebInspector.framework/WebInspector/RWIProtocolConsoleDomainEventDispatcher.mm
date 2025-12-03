@@ -1,30 +1,30 @@
 @interface RWIProtocolConsoleDomainEventDispatcher
-- (RWIProtocolConsoleDomainEventDispatcher)initWithController:(AugmentableInspectorController *)a3;
-- (void)heapSnapshotWithTimestamp:(double)a3 snapshotData:(id)a4 title:(id *)a5;
-- (void)messageAddedWithMessage:(id)a3;
-- (void)messagesClearedWithReason:(int64_t)a3;
+- (RWIProtocolConsoleDomainEventDispatcher)initWithController:(AugmentableInspectorController *)controller;
+- (void)heapSnapshotWithTimestamp:(double)timestamp snapshotData:(id)data title:(id *)title;
+- (void)messageAddedWithMessage:(id)message;
+- (void)messagesClearedWithReason:(int64_t)reason;
 @end
 
 @implementation RWIProtocolConsoleDomainEventDispatcher
 
-- (RWIProtocolConsoleDomainEventDispatcher)initWithController:(AugmentableInspectorController *)a3
+- (RWIProtocolConsoleDomainEventDispatcher)initWithController:(AugmentableInspectorController *)controller
 {
   v5.receiver = self;
   v5.super_class = RWIProtocolConsoleDomainEventDispatcher;
   result = [(RWIProtocolConsoleDomainEventDispatcher *)&v5 init];
   if (result)
   {
-    result->_controller = a3;
+    result->_controller = controller;
   }
 
   return result;
 }
 
-- (void)messageAddedWithMessage:(id)a3
+- (void)messageAddedWithMessage:(id)message
 {
   v4 = (*(self->_controller->var0 + 4))(self->_controller, a2);
   v5 = v4;
-  if (!a3)
+  if (!message)
   {
     v4 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"message"}];
   }
@@ -41,9 +41,9 @@
   v8 = v30;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v28 = v32[0];
-  if (a3)
+  if (message)
   {
-    [a3 toJSONObject];
+    [message toJSONObject];
     v9 = v26;
   }
 
@@ -140,7 +140,7 @@
   [RWIProtocolCSSDomainEventDispatcher styleSheetChangedWithStyleSheetId:v32];
 }
 
-- (void)messagesClearedWithReason:(int64_t)a3
+- (void)messagesClearedWithReason:(int64_t)reason
 {
   v3 = (*(self->_controller->var0 + 4))(self->_controller, a2);
   WTF::JSONImpl::Object::create(&v25, v3);
@@ -224,16 +224,16 @@
   [RWIProtocolCSSDomainEventDispatcher styleSheetChangedWithStyleSheetId:v26];
 }
 
-- (void)heapSnapshotWithTimestamp:(double)a3 snapshotData:(id)a4 title:(id *)a5
+- (void)heapSnapshotWithTimestamp:(double)timestamp snapshotData:(id)data title:(id *)title
 {
   v8 = (*(self->_controller->var0 + 4))(self->_controller, a2);
   v9 = v8;
-  if (!a4)
+  if (!data)
   {
     v8 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"snapshotData"}];
   }
 
-  if (a5 && !*a5)
+  if (title && !*title)
   {
     v8 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"optional parameter '%@' cannot be nil", @"title"}];
   }
@@ -250,19 +250,19 @@
   v12 = v31;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v29 = v33[0];
-  WTF::JSONImpl::ObjectBase::setDouble(v12, &v29, a3);
+  WTF::JSONImpl::ObjectBase::setDouble(v12, &v29, timestamp);
   Inspector::ObjCInspectorCSSBackendDispatcher::setLayoutContextTypeChangedMode(&v29);
   v13 = v31;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v29 = v33[0];
-  MEMORY[0x2743DB520](&v28, a4);
+  MEMORY[0x2743DB520](&v28, data);
   WTF::JSONImpl::ObjectBase::setString(v13, &v29, &v28);
-  if (([RWIProtocolConsoleDomainEventDispatcher heapSnapshotWithTimestamp:&v29 snapshotData:a5 == 0 title:?]& 1) == 0)
+  if (([RWIProtocolConsoleDomainEventDispatcher heapSnapshotWithTimestamp:&v29 snapshotData:title == 0 title:?]& 1) == 0)
   {
     v14 = v31;
     WTF::StringImpl::createWithoutCopyingNonEmpty();
     v27 = v33[0];
-    MEMORY[0x2743DB520](&v26, *a5);
+    MEMORY[0x2743DB520](&v26, *title);
     WTF::JSONImpl::ObjectBase::setString(v14, &v27, &v26);
     ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v26);
   }

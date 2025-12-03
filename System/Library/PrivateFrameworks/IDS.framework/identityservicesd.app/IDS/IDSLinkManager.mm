@@ -1,133 +1,133 @@
 @interface IDSLinkManager
 - (BOOL)_hasGlobalLinkConnectingOrConnected;
-- (BOOL)_startUDPLinkHandshakeForDefaultDevice:(BOOL)a3 immediately:(BOOL)a4;
-- (BOOL)isConnectedToDeviceID:(id)a3;
-- (BOOL)link:(id)a3 didReceivePacket:(id *)a4 fromDeviceUniqueID:(id)a5 cbuuid:(id)a6;
-- (IDSLinkManager)initWithDelegate:(id)a3;
-- (id)_getIDSLinkTypeString:(unint64_t)a3;
-- (id)_linkKeyForLink:(id)a3;
-- (id)_newGlobalLinkForDeviceUniqueID:(id)a3 cbuuid:(id)a4 options:(id)a5;
-- (id)_newUDPGlobalLinkForDeviceUniqueID:(id)a3 cbuuid:(id)a4;
-- (id)_newUDPLinkForDeviceUniqueID:(id)a3 cbuuid:(id)a4 IPVersion:(unint64_t)a5 port:(unsigned __int16)a6;
-- (id)_selectBestLink:(id)a3;
+- (BOOL)_startUDPLinkHandshakeForDefaultDevice:(BOOL)device immediately:(BOOL)immediately;
+- (BOOL)isConnectedToDeviceID:(id)d;
+- (BOOL)link:(id)link didReceivePacket:(id *)packet fromDeviceUniqueID:(id)d cbuuid:(id)cbuuid;
+- (IDSLinkManager)initWithDelegate:(id)delegate;
+- (id)_getIDSLinkTypeString:(unint64_t)string;
+- (id)_linkKeyForLink:(id)link;
+- (id)_newGlobalLinkForDeviceUniqueID:(id)d cbuuid:(id)cbuuid options:(id)options;
+- (id)_newUDPGlobalLinkForDeviceUniqueID:(id)d cbuuid:(id)cbuuid;
+- (id)_newUDPLinkForDeviceUniqueID:(id)d cbuuid:(id)cbuuid IPVersion:(unint64_t)version port:(unsigned __int16)port;
+- (id)_selectBestLink:(id)link;
 - (id)copyLinkStatsDict;
-- (id)generateLinkReport:(double)a3 forceReport:(BOOL)a4;
-- (id)globalLinkForSessionID:(id)a3;
-- (id)linkForCBUUID:(id)a3;
-- (unint64_t)_getIDSLinkTypeFromWRMLinkType:(unint64_t)a3;
-- (unint64_t)_getWRMLinkTypeFromIDSLinkType:(unint64_t)a3;
-- (unint64_t)_sendPacketBuffer:(id *)a3 toDeviceUniqueID:(id)a4 cbuuid:(id)a5 link:(id)a6;
-- (unint64_t)currentLinkType:(id)a3;
-- (unint64_t)sendPacketBuffer:(id *)a3 toDeviceUniqueID:(id)a4 cbuuid:(id)a5;
-- (unint64_t)sendPacketBufferArray:(id *)a3 arraySize:(int)a4 toDeviceUniqueID:(id)a5 cbuuid:(id)a6;
-- (void)_addAllocateRequestForDevice:(id)a3 requestID:(id)a4;
-- (void)_bringUpWiFi:(BOOL)a3;
+- (id)generateLinkReport:(double)report forceReport:(BOOL)forceReport;
+- (id)globalLinkForSessionID:(id)d;
+- (id)linkForCBUUID:(id)d;
+- (unint64_t)_getIDSLinkTypeFromWRMLinkType:(unint64_t)type;
+- (unint64_t)_getWRMLinkTypeFromIDSLinkType:(unint64_t)type;
+- (unint64_t)_sendPacketBuffer:(id *)buffer toDeviceUniqueID:(id)d cbuuid:(id)cbuuid link:(id)link;
+- (unint64_t)currentLinkType:(id)type;
+- (unint64_t)sendPacketBuffer:(id *)buffer toDeviceUniqueID:(id)d cbuuid:(id)cbuuid;
+- (unint64_t)sendPacketBufferArray:(id *)array arraySize:(int)size toDeviceUniqueID:(id)d cbuuid:(id)cbuuid;
+- (void)_addAllocateRequestForDevice:(id)device requestID:(id)d;
+- (void)_bringUpWiFi:(BOOL)fi;
 - (void)_clearWiFiAssociationPowerAssertion;
-- (void)_connectivityChangedForDefaultDevice:(BOOL)a3 isCloudConnected:(BOOL)a4;
-- (void)_createWiFiAssociationPowerAssertion:(double)a3;
+- (void)_connectivityChangedForDefaultDevice:(BOOL)device isCloudConnected:(BOOL)connected;
+- (void)_createWiFiAssociationPowerAssertion:(double)assertion;
 - (void)_createWiFiManagerClient;
-- (void)_handleNetworkChanges:(id)a3;
-- (void)_handleWRMLinkRecommendation:(unint64_t)a3;
-- (void)_handleWiFiAutoJoinStatusChange:(int64_t)a3 WiFiSSID:(id)a4;
+- (void)_handleNetworkChanges:(id)changes;
+- (void)_handleWRMLinkRecommendation:(unint64_t)recommendation;
+- (void)_handleWiFiAutoJoinStatusChange:(int64_t)change WiFiSSID:(id)d;
 - (void)_nearbyChangedForDefaultDevice;
-- (void)_processLMCommandPacket:(id *)a3 fromLink:(id)a4 deviceUniqueID:(id)a5 cbuuid:(id)a6;
-- (void)_processLinkChangeForDefaultDeviceFrom:(id)a3 to:(id)a4;
-- (void)_removeAllLinksForDeviceID:(id)a3;
-- (void)_removeAllocateRequestForDevice:(id)a3 requestID:(id)a4;
-- (void)_removeLinkForDeviceID:(id)a3 linkKey:(id)a4 verifyWithLink:(id)a5;
-- (void)_sendUDPLinkInterfaceAddresses:(id)a3 toDeviceID:(id)a4 isRetransmission:(BOOL)a5 isReply:(BOOL)a6;
-- (void)_setBestLinkToCurrent:(id)a3;
-- (void)_startAllocateRequestForDevice:(id)a3;
-- (void)_startCellularDataStatusListener:(BOOL)a3;
-- (void)_startNetworkInterfaceListener:(BOOL)a3;
+- (void)_processLMCommandPacket:(id *)packet fromLink:(id)link deviceUniqueID:(id)d cbuuid:(id)cbuuid;
+- (void)_processLinkChangeForDefaultDeviceFrom:(id)from to:(id)to;
+- (void)_removeAllLinksForDeviceID:(id)d;
+- (void)_removeAllocateRequestForDevice:(id)device requestID:(id)d;
+- (void)_removeLinkForDeviceID:(id)d linkKey:(id)key verifyWithLink:(id)link;
+- (void)_sendUDPLinkInterfaceAddresses:(id)addresses toDeviceID:(id)d isRetransmission:(BOOL)retransmission isReply:(BOOL)reply;
+- (void)_setBestLinkToCurrent:(id)current;
+- (void)_startAllocateRequestForDevice:(id)device;
+- (void)_startCellularDataStatusListener:(BOOL)listener;
+- (void)_startNetworkInterfaceListener:(BOOL)listener;
 - (void)_startReporter;
-- (void)_subscribeToWRMForLinkRecommendation:(unint64_t)a3;
-- (void)_suspendBTLink:(BOOL)a3 cbuuid:(id)a4;
+- (void)_subscribeToWRMForLinkRecommendation:(unint64_t)recommendation;
+- (void)_suspendBTLink:(BOOL)link cbuuid:(id)cbuuid;
 - (void)_unsubscribeFromWRMForLinkRecommendation;
-- (void)addPairedDevice:(id)a3;
-- (void)cellularRadioAccessTechnologyDidChange:(BOOL)a3;
-- (void)cellularSoMaskDidChange:(unsigned int)a3;
-- (void)clearGlobalLinkConfigurationForSession:(id)a3 configuration:(id)a4;
-- (void)clearGlobalLinkForSessionID:(id)a3;
-- (void)connectGlobalLinkForDevice:(id)a3 sessionInfo:(id)a4 connectReadyHandler:(id)a5 withLocalInterfacePreference:(int)a6;
-- (void)connectPairedDevice:(id)a3;
-- (void)createConnectionDataForDevice:(id)a3 localPartyID:(id)a4 dataReadyHandler:(id)a5;
-- (void)currentLinkType:(unint64_t *)a3 andRATType:(unsigned int *)a4 forDeviceID:(id)a5;
+- (void)addPairedDevice:(id)device;
+- (void)cellularRadioAccessTechnologyDidChange:(BOOL)change;
+- (void)cellularSoMaskDidChange:(unsigned int)change;
+- (void)clearGlobalLinkConfigurationForSession:(id)session configuration:(id)configuration;
+- (void)clearGlobalLinkForSessionID:(id)d;
+- (void)connectGlobalLinkForDevice:(id)device sessionInfo:(id)info connectReadyHandler:(id)handler withLocalInterfacePreference:(int)preference;
+- (void)connectPairedDevice:(id)device;
+- (void)createConnectionDataForDevice:(id)device localPartyID:(id)d dataReadyHandler:(id)handler;
+- (void)currentLinkType:(unint64_t *)type andRATType:(unsigned int *)tType forDeviceID:(id)d;
 - (void)dealloc;
-- (void)deletePairedDevice:(id)a3;
-- (void)didReceiveBlockedIndicationForLink:(id)a3 reason:(unsigned int)a4;
-- (void)disconnectGlobalLinkForDevice:(id)a3 isReinitiating:(BOOL)a4 completionHandler:(id)a5;
-- (void)flushBuffer:(unint64_t)a3 toDeviceUniqueID:(id)a4 cbuuid:(id)a5;
-- (void)getSessionInfo:(id)a3 relayGroupID:(id)a4 relaySessionID:(id)a5 options:(id)a6;
-- (void)handleAllocateRequestFailureForDevice:(id)a3 requestID:(id)a4 errorCode:(int)a5;
-- (void)injectFakePacketInBTLink:(id *)a3 cbuuid:(id)a4;
-- (void)link:(id)a3 didAddQREvent:(id)a4;
-- (void)link:(id)a3 didCellularMTUChange:(unsigned __int16)a4;
-- (void)link:(id)a3 didCellularNWPathFlagsChanged:(unsigned __int16)a4;
-- (void)link:(id)a3 didConnectForDeviceUniqueID:(id)a4 cbuuid:(id)a5;
-- (void)link:(id)a3 didConnectOverCloud:(id)a4 cbuuid:(id)a5;
-- (void)link:(id)a3 didConnectUnderlyingLink:(char)a4 linkUUID:(id)a5 localAttributes:(id)a6 remoteAttributes:(id)a7;
-- (void)link:(id)a3 didDefaultUnderlyingLinkChangeSucceeded:(BOOL)a4 currentDefaultLinkID:(char)a5;
-- (void)link:(id)a3 didDisconnectForDeviceUniqueID:(id)a4 cbuuid:(id)a5;
-- (void)link:(id)a3 didDisconnectOverCloud:(id)a4 cbuuid:(id)a5;
-- (void)link:(id)a3 didDisconnectUnderlyingLinkID:(char)a4 linkUUID:(id)a5 reason:(unsigned __int8)a6;
-- (void)link:(id)a3 didFailToConnectOverCloud:(id)a4 cbuuid:(id)a5;
-- (void)link:(id)a3 didFinishConvergenceForRelaySessionID:(id)a4;
-- (void)link:(id)a3 didGetLinkProbingStatus:(id)a4;
-- (void)link:(id)a3 didRATChange:(unsigned __int8)a4;
-- (void)link:(id)a3 didReceiveChildConnections:(id)a4 forLinkID:(char)a5;
-- (void)link:(id)a3 didReceiveEncryptedDataBlobs:(id)a4;
-- (void)link:(id)a3 didReceiveErrorIndicationWithCode:(unsigned int)a4;
-- (void)link:(id)a3 didReceiveKeyMaterialMessageData:(id)a4 fromParticipantIDs:(id)a5 toParticipantID:(id)a6;
-- (void)link:(id)a3 didReceiveMappedParticipantsDict:(id)a4 forLinkID:(char)a5;
-- (void)link:(id)a3 didReceiveMaterialInfo:(id)a4 material:(id)a5;
-- (void)link:(id)a3 didReceiveParticipantUpdate:(id)a4 status:(unsigned __int16)a5;
-- (void)link:(id)a3 didReceivePluginDisconnect:(id)a4;
-- (void)link:(id)a3 didReceivePluginRegistration:(unint64_t)a4 pluginName:(id)a5;
-- (void)link:(id)a3 didReceivePluginUnregistration:(unint64_t)a4 pluginName:(id)a5;
-- (void)link:(id)a3 didReceiveReliableUnicastServerMaterial:(id)a4;
-- (void)link:(id)a3 didReceiveReportEvent:(id)a4;
-- (void)link:(id)a3 didReceiveRequestToPurgeRegistration:(id)a4;
-- (void)link:(id)a3 didReceiveSKEData:(id)a4;
-- (void)link:(id)a3 didReceiveSessionInfo:(id)a4 relayGroupID:(id)a5 relaySessionID:(id)a6 status:(unsigned int)a7;
-- (void)link:(id)a3 didReceiveSessionStateCounter:(unsigned int)a4;
-- (void)link:(id)a3 didReceiveSessionStats:(id)a4 relayGroupID:(id)a5 relaySessionID:(id)a6 success:(BOOL)a7;
-- (void)link:(id)a3 didWiFiNWPathFlagsChanged:(unsigned __int16)a4;
-- (void)link:(id)a3 hasSpaceAvailable:(BOOL)a4 deviceUniqueID:(id)a5 cbuuid:(id)a6;
-- (void)link:(id)a3 hostAwakeDidChange:(BOOL)a4 deviceUniqueID:(id)a5 cbuuid:(id)a6;
-- (void)link:(id)a3 pathMTUDidChange:(unsigned __int16)a4 forLinkID:(char)a5;
-- (void)link:(id)a3 reportNoSessionState:(id)a4;
-- (void)manager:(id)a3 didPairedDeviceChange:(BOOL)a4;
-- (void)manager:(id)a3 didPowerStateChange:(BOOL)a4;
-- (void)manager:(id)a3 linkDidConnect:(id)a4;
-- (void)manager:(id)a3 linkDidDisconnect:(id)a4;
+- (void)deletePairedDevice:(id)device;
+- (void)didReceiveBlockedIndicationForLink:(id)link reason:(unsigned int)reason;
+- (void)disconnectGlobalLinkForDevice:(id)device isReinitiating:(BOOL)reinitiating completionHandler:(id)handler;
+- (void)flushBuffer:(unint64_t)buffer toDeviceUniqueID:(id)d cbuuid:(id)cbuuid;
+- (void)getSessionInfo:(id)info relayGroupID:(id)d relaySessionID:(id)iD options:(id)options;
+- (void)handleAllocateRequestFailureForDevice:(id)device requestID:(id)d errorCode:(int)code;
+- (void)injectFakePacketInBTLink:(id *)link cbuuid:(id)cbuuid;
+- (void)link:(id)link didAddQREvent:(id)event;
+- (void)link:(id)link didCellularMTUChange:(unsigned __int16)change;
+- (void)link:(id)link didCellularNWPathFlagsChanged:(unsigned __int16)changed;
+- (void)link:(id)link didConnectForDeviceUniqueID:(id)d cbuuid:(id)cbuuid;
+- (void)link:(id)link didConnectOverCloud:(id)cloud cbuuid:(id)cbuuid;
+- (void)link:(id)link didConnectUnderlyingLink:(char)underlyingLink linkUUID:(id)d localAttributes:(id)attributes remoteAttributes:(id)remoteAttributes;
+- (void)link:(id)link didDefaultUnderlyingLinkChangeSucceeded:(BOOL)succeeded currentDefaultLinkID:(char)d;
+- (void)link:(id)link didDisconnectForDeviceUniqueID:(id)d cbuuid:(id)cbuuid;
+- (void)link:(id)link didDisconnectOverCloud:(id)cloud cbuuid:(id)cbuuid;
+- (void)link:(id)link didDisconnectUnderlyingLinkID:(char)d linkUUID:(id)iD reason:(unsigned __int8)reason;
+- (void)link:(id)link didFailToConnectOverCloud:(id)cloud cbuuid:(id)cbuuid;
+- (void)link:(id)link didFinishConvergenceForRelaySessionID:(id)d;
+- (void)link:(id)link didGetLinkProbingStatus:(id)status;
+- (void)link:(id)link didRATChange:(unsigned __int8)change;
+- (void)link:(id)link didReceiveChildConnections:(id)connections forLinkID:(char)d;
+- (void)link:(id)link didReceiveEncryptedDataBlobs:(id)blobs;
+- (void)link:(id)link didReceiveErrorIndicationWithCode:(unsigned int)code;
+- (void)link:(id)link didReceiveKeyMaterialMessageData:(id)data fromParticipantIDs:(id)ds toParticipantID:(id)d;
+- (void)link:(id)link didReceiveMappedParticipantsDict:(id)dict forLinkID:(char)d;
+- (void)link:(id)link didReceiveMaterialInfo:(id)info material:(id)material;
+- (void)link:(id)link didReceiveParticipantUpdate:(id)update status:(unsigned __int16)status;
+- (void)link:(id)link didReceivePluginDisconnect:(id)disconnect;
+- (void)link:(id)link didReceivePluginRegistration:(unint64_t)registration pluginName:(id)name;
+- (void)link:(id)link didReceivePluginUnregistration:(unint64_t)unregistration pluginName:(id)name;
+- (void)link:(id)link didReceiveReliableUnicastServerMaterial:(id)material;
+- (void)link:(id)link didReceiveReportEvent:(id)event;
+- (void)link:(id)link didReceiveRequestToPurgeRegistration:(id)registration;
+- (void)link:(id)link didReceiveSKEData:(id)data;
+- (void)link:(id)link didReceiveSessionInfo:(id)info relayGroupID:(id)d relaySessionID:(id)iD status:(unsigned int)status;
+- (void)link:(id)link didReceiveSessionStateCounter:(unsigned int)counter;
+- (void)link:(id)link didReceiveSessionStats:(id)stats relayGroupID:(id)d relaySessionID:(id)iD success:(BOOL)success;
+- (void)link:(id)link didWiFiNWPathFlagsChanged:(unsigned __int16)changed;
+- (void)link:(id)link hasSpaceAvailable:(BOOL)available deviceUniqueID:(id)d cbuuid:(id)cbuuid;
+- (void)link:(id)link hostAwakeDidChange:(BOOL)change deviceUniqueID:(id)d cbuuid:(id)cbuuid;
+- (void)link:(id)link pathMTUDidChange:(unsigned __int16)change forLinkID:(char)d;
+- (void)link:(id)link reportNoSessionState:(id)state;
+- (void)manager:(id)manager didPairedDeviceChange:(BOOL)change;
+- (void)manager:(id)manager didPowerStateChange:(BOOL)change;
+- (void)manager:(id)manager linkDidConnect:(id)connect;
+- (void)manager:(id)manager linkDidDisconnect:(id)disconnect;
 - (void)obliterateConnectionInfo;
-- (void)processRemoteConnectionDataForDevice:(id)a3 remoteConnectionData:(id)a4 completionHandler:(id)a5;
-- (void)setIsOnPhoneCall:(BOOL)a3 forDeviceID:(id)a4;
-- (void)setPreferInfraWiFi:(BOOL)a3;
-- (void)setRequireBT:(BOOL)a3;
-- (void)setShouldStartBTLinkManager:(BOOL)a3;
+- (void)processRemoteConnectionDataForDevice:(id)device remoteConnectionData:(id)data completionHandler:(id)handler;
+- (void)setIsOnPhoneCall:(BOOL)call forDeviceID:(id)d;
+- (void)setPreferInfraWiFi:(BOOL)fi;
+- (void)setRequireBT:(BOOL)t;
+- (void)setShouldStartBTLinkManager:(BOOL)manager;
 - (void)start;
-- (void)startBTDatagramLinkForDeviceUniqueID:(id)a3 cbuuid:(id)a4;
-- (void)startConnectionForDevice:(id)a3 isInitiator:(BOOL)a4 remotePartyID:(id)a5 useStunMICheck:(BOOL)a6;
-- (void)startGlobalLinkForDevice:(id)a3;
-- (void)startLinkForDeviceUniqueID:(id)a3 cbuuid:(id)a4;
+- (void)startBTDatagramLinkForDeviceUniqueID:(id)d cbuuid:(id)cbuuid;
+- (void)startConnectionForDevice:(id)device isInitiator:(BOOL)initiator remotePartyID:(id)d useStunMICheck:(BOOL)check;
+- (void)startGlobalLinkForDevice:(id)device;
+- (void)startLinkForDeviceUniqueID:(id)d cbuuid:(id)cbuuid;
 - (void)startLocalSetup;
-- (void)startUDPGlobalLinkForDevice:(id)a3;
-- (void)stopBTDatagramLinkForDeviceUniqueID:(id)a3 cbuuid:(id)a4;
-- (void)stopGlobalLinkForDevice:(id)a3;
-- (void)stopLinkForDeviceUniqueID:(id)a3 cbuuid:(id)a4 disconnectWP:(BOOL)a5;
-- (void)stopUDPGlobalLinkForDevice:(id)a3;
-- (void)terminateCallDueToIdleClientForLink:(id)a3;
-- (void)triggerBTCorruptionRecoveryForCBUUID:(id)a3;
+- (void)startUDPGlobalLinkForDevice:(id)device;
+- (void)stopBTDatagramLinkForDeviceUniqueID:(id)d cbuuid:(id)cbuuid;
+- (void)stopGlobalLinkForDevice:(id)device;
+- (void)stopLinkForDeviceUniqueID:(id)d cbuuid:(id)cbuuid disconnectWP:(BOOL)p;
+- (void)stopUDPGlobalLinkForDevice:(id)device;
+- (void)terminateCallDueToIdleClientForLink:(id)link;
+- (void)triggerBTCorruptionRecoveryForCBUUID:(id)d;
 - (void)triggerFixedInterfaceLinksDidConnect;
 @end
 
 @implementation IDSLinkManager
 
-- (IDSLinkManager)initWithDelegate:(id)a3
+- (IDSLinkManager)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v38.receiver = self;
   v38.super_class = IDSLinkManager;
   v5 = [(IDSLinkManager *)&v38 init];
@@ -147,7 +147,7 @@
       _IDSLogV();
     }
 
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     cbuuidToLinks = v5->_cbuuidToLinks;
     v5->_cbuuidToLinks = Mutable;
@@ -173,15 +173,15 @@
     v15 = v14;
     if (v14)
     {
-      v16 = [v14 unsignedIntValue];
+      unsignedIntValue = [v14 unsignedIntValue];
     }
 
     else
     {
-      v16 = 1.0;
+      unsignedIntValue = 1.0;
     }
 
-    v5->_minReportFileOpenTimeInterval = v16;
+    v5->_minReportFileOpenTimeInterval = unsignedIntValue;
     v5->_previousReportFileOpenTime = 0.0;
     v17 = +[IMUserDefaults fixedInterface];
     fixedInterface = v5->_fixedInterface;
@@ -249,15 +249,15 @@
     v29 = v28;
     if (v28)
     {
-      v30 = [v28 unsignedIntValue];
+      unsignedIntValue2 = [v28 unsignedIntValue];
     }
 
     else
     {
-      v30 = 60.0;
+      unsignedIntValue2 = 60.0;
     }
 
-    v5->_preferInfraWiFiConnectionTimeout = v30;
+    v5->_preferInfraWiFiConnectionTimeout = unsignedIntValue2;
     v31 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
@@ -293,13 +293,13 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "============= Dealloc LinkManager %@ =============", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v10 = self;
+    selfCopy2 = self;
     _IDSLogV();
   }
 
@@ -309,7 +309,7 @@
     CFRelease(dynamicStore);
   }
 
-  [(IDSLinkManager *)self _bringUpWiFi:0, v10];
+  [(IDSLinkManager *)self _bringUpWiFi:0, selfCopy2];
   if (self->_wifiDevice)
   {
     if (qword_100CBEED8 != -1)
@@ -358,16 +358,16 @@
   [(IDSLinkManager *)&v11 dealloc];
 }
 
-- (id)globalLinkForSessionID:(id)a3
+- (id)globalLinkForSessionID:(id)d
 {
   v3 = 0;
-  if (a3)
+  if (d)
   {
     cbuuidToLinks = self->_cbuuidToLinks;
     v5 = 0;
     if (cbuuidToLinks)
     {
-      v6 = CFDictionaryGetValue(cbuuidToLinks, a3);
+      v6 = CFDictionaryGetValue(cbuuidToLinks, d);
       v3 = v6;
       if (v6)
       {
@@ -389,16 +389,16 @@
   return v5;
 }
 
-- (void)clearGlobalLinkConfigurationForSession:(id)a3 configuration:(id)a4
+- (void)clearGlobalLinkConfigurationForSession:(id)session configuration:(id)configuration
 {
-  v9 = a3;
+  sessionCopy = session;
   globalLinkConfigurationsBySessionID = self->_globalLinkConfigurationsBySessionID;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)globalLinkConfigurationsBySessionID objectForKeyedSubscript:v9];
+  configurationCopy = configuration;
+  v8 = [(NSMutableDictionary *)globalLinkConfigurationsBySessionID objectForKeyedSubscript:sessionCopy];
 
-  if (v8 == v7)
+  if (v8 == configurationCopy)
   {
-    [(NSMutableDictionary *)self->_globalLinkConfigurationsBySessionID setObject:0 forKeyedSubscript:v9];
+    [(NSMutableDictionary *)self->_globalLinkConfigurationsBySessionID setObject:0 forKeyedSubscript:sessionCopy];
   }
 }
 
@@ -470,10 +470,10 @@
     }
 
     v6 = Value;
-    v9 = [(NSDictionary *)self->_deviceIDToUDPDestinations allKeys];
+    allKeys = [(NSDictionary *)self->_deviceIDToUDPDestinations allKeys];
     v10 = v6;
     v7 = v6;
-    v8 = v9;
+    v8 = allKeys;
     IDSTransportThreadAddBlock();
   }
 }
@@ -497,12 +497,12 @@
     Value = CFDictionaryGetValue(self->_cbuuidToLinks, kIDSDefaultPairedDeviceID);
   }
 
-  v6 = [Value allValues];
+  allValues = [Value allValues];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v7 = [allValues countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
     v8 = v7;
@@ -513,18 +513,18 @@
       {
         if (*v22 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
-        v12 = [v11 copyLinkStatsDict];
-        if (v12)
+        copyLinkStatsDict = [v11 copyLinkStatsDict];
+        if (copyLinkStatsDict)
         {
-          CFDictionarySetValue(Mutable, [v11 linkTypeString], v12);
+          CFDictionarySetValue(Mutable, [v11 linkTypeString], copyLinkStatsDict);
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v8);
@@ -546,16 +546,16 @@
   return Mutable;
 }
 
-- (id)generateLinkReport:(double)a3 forceReport:(BOOL)a4
+- (id)generateLinkReport:(double)report forceReport:(BOOL)forceReport
 {
   previousReportTime = self->_previousReportTime;
-  v6 = a3 - previousReportTime;
-  if (a4 || v6 >= 30.0)
+  v6 = report - previousReportTime;
+  if (forceReport || v6 >= 30.0)
   {
     if (previousReportTime == 0.0)
     {
 LABEL_36:
-      self->_previousReportTime = a3;
+      self->_previousReportTime = report;
       return 0;
     }
 
@@ -604,13 +604,13 @@ LABEL_5:
 
 LABEL_12:
       v12 = [[NSMutableString alloc] initWithFormat:@"                            Since last report (for %.1fs)\tCumulative total\n", *&v6];
-      v13 = [(NSMutableDictionary *)self->_cbuuidToLinks allKeys];
+      allKeys = [(NSMutableDictionary *)self->_cbuuidToLinks allKeys];
       context = objc_autoreleasePoolPush();
       v71 = 0u;
       v72 = 0u;
       v69 = 0u;
       v70 = 0u;
-      obj = v13;
+      obj = allKeys;
       v14 = [obj countByEnumeratingWithState:&v69 objects:v75 count:16];
       if (v14)
       {
@@ -653,12 +653,12 @@ LABEL_12:
               v22 = CFDictionaryGetValue(self->_cbuuidToLinks, v17);
             }
 
-            v23 = [v22 allValues];
+            allValues = [v22 allValues];
             v67 = 0u;
             v68 = 0u;
             v65 = 0u;
             v66 = 0u;
-            v24 = [v23 countByEnumeratingWithState:&v65 objects:v74 count:16];
+            v24 = [allValues countByEnumeratingWithState:&v65 objects:v74 count:16];
             if (v24)
             {
               v25 = *v66;
@@ -668,14 +668,14 @@ LABEL_12:
                 {
                   if (*v66 != v25)
                   {
-                    objc_enumerationMutation(v23);
+                    objc_enumerationMutation(allValues);
                   }
 
-                  v27 = [*(*(&v65 + 1) + 8 * j) generateLinkReport:objc_msgSend(*(*(&v65 + 1) + 8 * j) isCurrentLink:{"isEqual:", v21), a3}];
+                  v27 = [*(*(&v65 + 1) + 8 * j) generateLinkReport:objc_msgSend(*(*(&v65 + 1) + 8 * j) isCurrentLink:{"isEqual:", v21), report}];
                   [v12 appendString:v27];
                 }
 
-                v24 = [v23 countByEnumeratingWithState:&v65 objects:v74 count:16];
+                v24 = [allValues countByEnumeratingWithState:&v65 objects:v74 count:16];
               }
 
               while (v24);
@@ -715,7 +715,7 @@ LABEL_12:
       block[2] = sub_10053A6D8;
       block[3] = &unk_100BD6E40;
       v63 = v12;
-      v64 = self;
+      selfCopy = self;
       v41 = v12;
       dispatch_async(v40, block);
 
@@ -727,12 +727,12 @@ LABEL_12:
       goto LABEL_36;
     }
 
-    if (a3 - self->_previousReportFileOpenTime < self->_minReportFileOpenTimeInterval)
+    if (report - self->_previousReportFileOpenTime < self->_minReportFileOpenTimeInterval)
     {
       return 0;
     }
 
-    self->_previousReportFileOpenTime = a3;
+    self->_previousReportFileOpenTime = report;
     v44 = self->_reporterFile;
     v45 = open(self->_reporterFile, 5);
     self->_reporterFd = v45;
@@ -1117,9 +1117,9 @@ LABEL_45:
   }
 }
 
-- (id)_linkKeyForLink:(id)a3
+- (id)_linkKeyForLink:(id)link
 {
-  v3 = a3;
+  linkCopy = link;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1179,9 +1179,9 @@ LABEL_45:
   return v4;
 }
 
-- (void)_suspendBTLink:(BOOL)a3 cbuuid:(id)a4
+- (void)_suspendBTLink:(BOOL)link cbuuid:(id)cbuuid
 {
-  v4 = a3;
+  linkCopy = link;
   v6 = kIDSDefaultPairedDeviceID;
   cbuuidToLinks = self->_cbuuidToLinks;
   if (cbuuidToLinks)
@@ -1197,7 +1197,7 @@ LABEL_45:
   if (v8 || (v9 = CFDictionaryGetValue(cbuuidToLinks, v6)) == 0)
   {
     v10 = 0;
-    self->_doesDefaultDevicePreferInfraWiFi = v4;
+    self->_doesDefaultDevicePreferInfraWiFi = linkCopy;
   }
 
   else
@@ -1205,16 +1205,16 @@ LABEL_45:
     v10 = v9;
     v11 = CFDictionaryGetValue(v9, @"IDSLinkBTKey");
     doesDefaultDevicePreferInfraWiFi = self->_doesDefaultDevicePreferInfraWiFi;
-    self->_doesDefaultDevicePreferInfraWiFi = v4;
+    self->_doesDefaultDevicePreferInfraWiFi = linkCopy;
     if (v11)
     {
       v13 = v11;
-      v14 = [v11 isLinkSuspended];
+      isLinkSuspended = [v11 isLinkSuspended];
       v15 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         v16 = @"NO";
-        if (v14)
+        if (isLinkSuspended)
         {
           v17 = @"YES";
         }
@@ -1224,7 +1224,7 @@ LABEL_45:
           v17 = @"NO";
         }
 
-        if (v4)
+        if (linkCopy)
         {
           v16 = @"YES";
         }
@@ -1248,9 +1248,9 @@ LABEL_45:
         }
       }
 
-      if (v14 == v4)
+      if (isLinkSuspended == linkCopy)
       {
-        if (doesDefaultDevicePreferInfraWiFi && !v4 && !self->_isCentral)
+        if (doesDefaultDevicePreferInfraWiFi && !linkCopy && !self->_isCentral)
         {
           [(IDSLinkManager *)self _startUDPLinkHandshakeForDefaultDevice:0 immediately:1];
           if (self->_isDefaultDeviceUsingBTLink)
@@ -1262,7 +1262,7 @@ LABEL_45:
 
       else
       {
-        [v13 suspendLink:v4];
+        [v13 suspendLink:linkCopy];
         [(IDSLinkManager *)self _setBestLinkToCurrent:v6];
       }
 
@@ -1270,7 +1270,7 @@ LABEL_45:
     }
   }
 
-  if (!v4)
+  if (!linkCopy)
   {
     [(IDSLinkManager *)self _setBestLinkToCurrent:v6];
   }
@@ -1279,10 +1279,10 @@ LABEL_45:
 LABEL_24:
 }
 
-- (void)injectFakePacketInBTLink:(id *)a3 cbuuid:(id)a4
+- (void)injectFakePacketInBTLink:(id *)link cbuuid:(id)cbuuid
 {
-  v6 = a4;
-  v7 = v6;
+  cbuuidCopy = cbuuid;
+  v7 = cbuuidCopy;
   if (self->_isInternalInstall)
   {
     key = kIDSDefaultPairedDeviceID;
@@ -1307,24 +1307,24 @@ LABEL_24:
       Value = 0;
     }
 
-    [Value injectFakePacket:a3];
+    [Value injectFakePacket:link];
 
-    v6 = key;
+    cbuuidCopy = key;
   }
 }
 
-- (void)_connectivityChangedForDefaultDevice:(BOOL)a3 isCloudConnected:(BOOL)a4
+- (void)_connectivityChangedForDefaultDevice:(BOOL)device isCloudConnected:(BOOL)connected
 {
   if (self->_shouldStartBTLinkManager)
   {
-    v4 = a4;
-    v5 = a3;
-    if (a3)
+    connectedCopy = connected;
+    deviceCopy = device;
+    if (device)
     {
       self->_hasDelayedNoConnectivityNotification = 0;
     }
 
-    if (self->_lastSentDefaultDeviceConnectivity != a3 || self->_lastSentDefaultDeviceCloudConnectivity != a4)
+    if (self->_lastSentDefaultDeviceConnectivity != device || self->_lastSentDefaultDeviceCloudConnectivity != connected)
     {
       v7 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1341,7 +1341,7 @@ LABEL_24:
         }
 
         lastSentDefaultDeviceCloudConnectivity = self->_lastSentDefaultDeviceCloudConnectivity;
-        if (v5)
+        if (deviceCopy)
         {
           v11 = @"YES";
         }
@@ -1365,7 +1365,7 @@ LABEL_24:
 
         v27 = 2112;
         v28 = v11;
-        if (v4)
+        if (connectedCopy)
         {
           v8 = @"YES";
         }
@@ -1389,9 +1389,9 @@ LABEL_24:
         }
       }
 
-      self->_lastSentDefaultDeviceConnectivity = v5;
-      self->_lastSentDefaultDeviceCloudConnectivity = v4;
-      if (v5 || v4)
+      self->_lastSentDefaultDeviceConnectivity = deviceCopy;
+      self->_lastSentDefaultDeviceCloudConnectivity = connectedCopy;
+      if (deviceCopy || connectedCopy)
       {
         v16 = OSLogHandleForIDSCategory();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -1434,7 +1434,7 @@ LABEL_24:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         v18 = @"NO";
-        if (v5)
+        if (deviceCopy)
         {
           v18 = @"YES";
         }
@@ -1454,15 +1454,15 @@ LABEL_24:
       }
     }
 
-    else if (self->_lastSentDefaultPeerConnectivity != v5)
+    else if (self->_lastSentDefaultPeerConnectivity != deviceCopy)
     {
-      self->_lastSentDefaultPeerConnectivity = v5;
+      self->_lastSentDefaultPeerConnectivity = deviceCopy;
       v19 = im_primary_queue();
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_10053CC70;
       block[3] = &unk_100BDFD48;
-      v24 = v5;
+      v24 = deviceCopy;
       dispatch_async(v19, block);
     }
 
@@ -1471,7 +1471,7 @@ LABEL_24:
     v21[1] = 3221225472;
     v21[2] = sub_10053CE08;
     v21[3] = &unk_100BDFD48;
-    v22 = v4;
+    v22 = connectedCopy;
     dispatch_async(v20, v21);
   }
 
@@ -1547,13 +1547,13 @@ LABEL_24:
   }
 }
 
-- (void)_processLMCommandPacket:(id *)a3 fromLink:(id)a4 deviceUniqueID:(id)a5 cbuuid:(id)a6
+- (void)_processLMCommandPacket:(id *)packet fromLink:(id)link deviceUniqueID:(id)d cbuuid:(id)cbuuid
 {
-  v10 = a4;
-  v55 = a5;
-  v11 = a6;
-  *&v12 = *a3->var0;
-  if (*a3->var0 <= 0x42u)
+  linkCopy = link;
+  dCopy = d;
+  cbuuidCopy = cbuuid;
+  *&v12 = *packet->var0;
+  if (*packet->var0 <= 0x42u)
   {
     if (LODWORD(v12) == 64)
     {
@@ -1572,15 +1572,15 @@ LABEL_5:
 
 LABEL_20:
           context = objc_autoreleasePoolPush();
-          v16 = [IDSInterfaceAddress interfaceAddressWithTransmittedBytes:a3->var0 + 1 length:a3->var2 - 1 withLocalInterfaceName:self->_fixedInterface];
+          v16 = [IDSInterfaceAddress interfaceAddressWithTransmittedBytes:packet->var0 + 1 length:packet->var2 - 1 withLocalInterfaceName:self->_fixedInterface];
           v17 = v16;
           if (!v16 || ([v16 address], v18 = objc_claimAutoreleasedReturnValue(), v18, !v18))
           {
             v29 = OSLogHandleForTransportCategory();
             if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
             {
-              v30 = a3->var2 - 1;
-              v31 = [NSData dataWithBytes:a3->var0 + 1 length:v30];
+              v30 = packet->var2 - 1;
+              v31 = [NSData dataWithBytes:packet->var0 + 1 length:v30];
               *buf = 134218242;
               v57 = *&v30;
               v58 = 2112;
@@ -1598,8 +1598,8 @@ LABEL_20:
               goto LABEL_138;
             }
 
-            v32 = a3->var2 - 1;
-            v50 = [NSData dataWithBytes:a3->var0 + 1 length:v32];
+            v32 = packet->var2 - 1;
+            v50 = [NSData dataWithBytes:packet->var0 + 1 length:v32];
             _IDSLogTransport();
 
             if (!_IDSShouldLog())
@@ -1607,7 +1607,7 @@ LABEL_20:
               goto LABEL_138;
             }
 
-            v33 = [NSData dataWithBytes:a3->var0 + 1 length:a3->var2 - 1, v32, v50];
+            v33 = [NSData dataWithBytes:packet->var0 + 1 length:packet->var2 - 1, v32, v50];
             _IDSLogV();
 LABEL_137:
 
@@ -1640,7 +1640,7 @@ LABEL_138:
             v60 = 2112;
             v61 = v17;
             v62 = 2112;
-            v63 = v10;
+            v63 = linkCopy;
             _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "received remote UDPLink %@interface address %@%@ through %@", buf, 0x2Au);
           }
 
@@ -1649,14 +1649,14 @@ LABEL_138:
             *&v23 = v19 >= 2 ? COERCE_DOUBLE(&stru_100C06028) : COERCE_DOUBLE(@"(prefer) ");
             v24 = v53 == 66 ? @"(reply) " : &stru_100C06028;
             v51 = v17;
-            v52 = v10;
+            v52 = linkCopy;
             v48 = *&v23;
             v49 = v24;
             _IDSLogTransport();
             if (_IDSShouldLog())
             {
               v51 = v17;
-              v52 = v10;
+              v52 = linkCopy;
               v48 = *&v23;
               v49 = v24;
               _IDSLogV();
@@ -1698,7 +1698,7 @@ LABEL_138:
 LABEL_93:
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
-          v42 = -[IDSLinkManager _newUDPLinkForDeviceUniqueID:cbuuid:IPVersion:port:](self, "_newUDPLinkForDeviceUniqueID:cbuuid:IPVersion:port:", 0, v11, [v17 IPVersion], 0);
+          v42 = -[IDSLinkManager _newUDPLinkForDeviceUniqueID:cbuuid:IPVersion:port:](self, "_newUDPLinkForDeviceUniqueID:cbuuid:IPVersion:port:", 0, cbuuidCopy, [v17 IPVersion], 0);
           if ((v28 & self->_isCentral) == 1 && !(isKindOfClass & 1 | !self->_doesDefaultDevicePreferInfraWiFi))
           {
             v33 = 0;
@@ -1706,9 +1706,9 @@ LABEL_93:
 
           else
           {
-            if ((isKindOfClass & 1) != 0 && a3->var19.ss_family)
+            if ((isKindOfClass & 1) != 0 && packet->var19.ss_family)
             {
-              v33 = [[IDSSockAddrWrapper alloc] initWithSockAddr:&a3->var19];
+              v33 = [[IDSSockAddrWrapper alloc] initWithSockAddr:&packet->var19];
             }
 
             else
@@ -1716,8 +1716,8 @@ LABEL_93:
               v33 = 0;
             }
 
-            v43 = [v17 address];
-            v44 = [v42 setDestinationAddress:v43 isFixedDestination:self->_hasFixedDestination fromAddress:v33];
+            address = [v17 address];
+            v44 = [v42 setDestinationAddress:address isFixedDestination:self->_hasFixedDestination fromAddress:v33];
 
             if ((v44 & 1) == 0)
             {
@@ -1788,7 +1788,7 @@ LABEL_136:
 
               if (v53 != 66)
               {
-                [(IDSLinkManager *)self _sendUDPLinkInterfaceAddresses:v42 toDeviceID:v11 isRetransmission:0 isReply:1];
+                [(IDSLinkManager *)self _sendUDPLinkInterfaceAddresses:v42 toDeviceID:cbuuidCopy isRetransmission:0 isReply:1];
               }
 
               goto LABEL_136;
@@ -1800,7 +1800,7 @@ LABEL_136:
             goto LABEL_123;
           }
 
-          [(IDSLinkManager *)self _suspendBTLink:v28 cbuuid:v11, *&v48];
+          [(IDSLinkManager *)self _suspendBTLink:v28 cbuuid:cbuuidCopy, *&v48];
           goto LABEL_123;
         }
 
@@ -1842,7 +1842,7 @@ LABEL_54:
       *buf = 138412546;
       v57 = *&v35;
       v58 = 2112;
-      v59 = v10;
+      v59 = linkCopy;
       _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "received remote UDPLink interface down %@through %@", buf, 0x16u);
     }
 
@@ -1850,25 +1850,25 @@ LABEL_54:
     {
       *&v36 = LODWORD(v12) == 67 ? COERCE_DOUBLE(@"(reply) ") : COERCE_DOUBLE(&stru_100C06028);
       v48 = *&v36;
-      v49 = v10;
+      v49 = linkCopy;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
         v48 = *&v36;
-        v49 = v10;
+        v49 = linkCopy;
         _IDSLogV();
       }
     }
 
     if (self->_doesDefaultDevicePreferInfraWiFi)
     {
-      [(IDSLinkManager *)self _suspendBTLink:0 cbuuid:v11];
+      [(IDSLinkManager *)self _suspendBTLink:0 cbuuid:cbuuidCopy];
     }
 
-    v14 = [(IDSLinkManager *)self _newUDPLinkForDeviceUniqueID:0 cbuuid:v11 IPVersion:0 port:0, *&v48, v49];
+    v14 = [(IDSLinkManager *)self _newUDPLinkForDeviceUniqueID:0 cbuuid:cbuuidCopy IPVersion:0 port:0, *&v48, v49];
     if (LODWORD(v12) == 65)
     {
-      [(IDSLinkManager *)self _sendUDPLinkInterfaceAddresses:v14 toDeviceID:v11 isRetransmission:0 isReply:1];
+      [(IDSLinkManager *)self _sendUDPLinkInterfaceAddresses:v14 toDeviceID:cbuuidCopy isRetransmission:0 isReply:1];
     }
 
     objc_opt_class();
@@ -1994,25 +1994,25 @@ LABEL_79:
 
   if (objc_opt_respondsToSelector())
   {
-    [(__CFString *)v10 remoteDetectedCorruption];
+    [(__CFString *)linkCopy remoteDetectedCorruption];
   }
 
 LABEL_139:
 }
 
-- (void)_sendUDPLinkInterfaceAddresses:(id)a3 toDeviceID:(id)a4 isRetransmission:(BOOL)a5 isReply:(BOOL)a6
+- (void)_sendUDPLinkInterfaceAddresses:(id)addresses toDeviceID:(id)d isRetransmission:(BOOL)retransmission isReply:(BOOL)reply
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
+  replyCopy = reply;
+  retransmissionCopy = retransmission;
+  addressesCopy = addresses;
+  dCopy = d;
+  v12 = dCopy;
   if (!self->_hasFixedDestination)
   {
     v13 = kIDSDefaultPairedDeviceID;
-    if ([v11 isEqualToString:kIDSDefaultPairedDeviceID])
+    if ([dCopy isEqualToString:kIDSDefaultPairedDeviceID])
     {
-      if ([v10 isInvalidated])
+      if ([addressesCopy isInvalidated])
       {
         v14 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -2040,17 +2040,17 @@ LABEL_139:
         goto LABEL_116;
       }
 
-      if (v6)
+      if (replyCopy)
       {
 LABEL_11:
-        v15 = [v10 copyCurrentNetworkInterfaces];
-        v16 = [v15 firstObject];
-        v17 = [v16 address];
+        copyCurrentNetworkInterfaces = [addressesCopy copyCurrentNetworkInterfaces];
+        firstObject = [copyCurrentNetworkInterfaces firstObject];
+        address = [firstObject address];
         localWiFiAddressUsedForDefaultDevice = self->_localWiFiAddressUsedForDefaultDevice;
-        self->_localWiFiAddressUsedForDefaultDevice = v17;
+        self->_localWiFiAddressUsedForDefaultDevice = address;
 
         v19 = _IDSLinkPacketBufferCreate();
-        if (v16)
+        if (firstObject)
         {
           v20 = OSLogHandleForTransportCategory();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -2069,23 +2069,23 @@ LABEL_11:
             *buf = 138412802;
             v59 = *&v22;
             v60 = 2112;
-            if (v6)
+            if (replyCopy)
             {
               v21 = @"(reply) ";
             }
 
             v61 = v21;
             v62 = 2112;
-            v63 = v16;
+            v63 = firstObject;
             _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "transmitting UDPLink %@interface address %@%@", buf, 0x20u);
           }
 
           if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
           {
             v23 = self->_doesDefaultDevicePreferInfraWiFi ? @"(prefer) " : &stru_100C06028;
-            v24 = v6 ? @"(reply) " : &stru_100C06028;
+            v24 = replyCopy ? @"(reply) " : &stru_100C06028;
             v54 = v24;
-            v55 = v16;
+            v55 = firstObject;
             v53 = *&v23;
             _IDSLogTransport();
             if (_IDSShouldLog())
@@ -2101,13 +2101,13 @@ LABEL_11:
               }
 
               v54 = v24;
-              v55 = v16;
+              v55 = firstObject;
               v53 = *&v25;
               _IDSLogV();
             }
           }
 
-          if (v6)
+          if (replyCopy)
           {
             v26 = 70;
           }
@@ -2117,7 +2117,7 @@ LABEL_11:
             v26 = 69;
           }
 
-          if (v6)
+          if (replyCopy)
           {
             v27 = 66;
           }
@@ -2137,7 +2137,7 @@ LABEL_11:
             v28 = v27;
           }
 
-          v29 = [v16 getTransmittableBytes:*v19 withPrefixByte:{v28, *&v53, v54, v55}];
+          v29 = [firstObject getTransmittableBytes:*v19 withPrefixByte:{v28, *&v53, v54, v55}];
         }
 
         else
@@ -2163,7 +2163,7 @@ LABEL_11:
               }
             }
 
-            if (!v6)
+            if (!replyCopy)
             {
               self->_addressRetransmissionInterval = 0.0;
             }
@@ -2175,7 +2175,7 @@ LABEL_11:
           if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
           {
             v42 = &stru_100C06028;
-            if (v6)
+            if (replyCopy)
             {
               v42 = @"(reply)";
             }
@@ -2187,7 +2187,7 @@ LABEL_11:
 
           if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
           {
-            v43 = v6 ? @"(reply)" : &stru_100C06028;
+            v43 = replyCopy ? @"(reply)" : &stru_100C06028;
             v53 = *&v43;
             _IDSLogTransport();
             if (_IDSShouldLog())
@@ -2197,7 +2197,7 @@ LABEL_11:
             }
           }
 
-          if (v6)
+          if (replyCopy)
           {
             v44 = 67;
           }
@@ -2219,7 +2219,7 @@ LABEL_11:
           [WeakRetained link:self hasSpaceAvailable:0 deviceUniqueID:0 cbuuid:v12];
         }
 
-        if (v6)
+        if (replyCopy)
         {
 LABEL_94:
 
@@ -2233,7 +2233,7 @@ LABEL_94:
           if (addressRetransmissionInterval >= 4.0)
           {
 LABEL_93:
-            v56 = v10;
+            v56 = addressesCopy;
             v57 = v12;
             IDSTransportThreadAddBlockAfter();
 
@@ -2249,11 +2249,11 @@ LABEL_93:
 
       ids_monotonic_time();
       v31 = v30;
-      if (v7)
+      if (retransmissionCopy)
       {
-        [v10 lastDestinationSent];
+        [addressesCopy lastDestinationSent];
         v33 = v32;
-        [v10 lastDestinationReceived];
+        [addressesCopy lastDestinationReceived];
         if (v33 <= v34)
         {
           v52 = OSLogHandleForTransportCategory();
@@ -2296,7 +2296,7 @@ LABEL_117:
           v35 = 60.0;
         }
 
-        [v10 lastDestinationSent];
+        [addressesCopy lastDestinationSent];
         if (v31 - v36 <= v35)
         {
           goto LABEL_11;
@@ -2374,7 +2374,7 @@ LABEL_117:
 
       else
       {
-        [v10 setLastDestinationSent:v30];
+        [addressesCopy setLastDestinationSent:v30];
         if (self->_addressRetransmissionInterval <= 0.0)
         {
           goto LABEL_11;
@@ -2409,11 +2409,11 @@ LABEL_117:
 LABEL_118:
 }
 
-- (void)_createWiFiAssociationPowerAssertion:(double)a3
+- (void)_createWiFiAssociationPowerAssertion:(double)assertion
 {
   if (self->_isCentral)
   {
-    v5 = [[CUTPowerAssertion alloc] initWithIdentifier:@"IDSLinkManagerWiFiPowerAssertion" timeout:a3];
+    v5 = [[CUTPowerAssertion alloc] initWithIdentifier:@"IDSLinkManagerWiFiPowerAssertion" timeout:assertion];
     WiFiPowerAssertion = self->_WiFiPowerAssertion;
     self->_WiFiPowerAssertion = v5;
 
@@ -2424,7 +2424,7 @@ LABEL_118:
       *buf = 134218240;
       v10 = v8;
       v11 = 1024;
-      v12 = a3;
+      assertionCopy = assertion;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Created new power assertion %p for WiFi association with timeout %d.", buf, 0x12u);
     }
 
@@ -2466,14 +2466,14 @@ LABEL_118:
   }
 }
 
-- (void)_handleWiFiAutoJoinStatusChange:(int64_t)a3 WiFiSSID:(id)a4
+- (void)_handleWiFiAutoJoinStatusChange:(int64_t)change WiFiSSID:(id)d
 {
-  v17 = a4;
-  self->_currentWiFiAutoJoinStatus = a3;
-  if ((a3 - 3) > 1)
+  dCopy = d;
+  self->_currentWiFiAutoJoinStatus = change;
+  if ((change - 3) > 1)
   {
     self->_isWiFiAssociated = 0;
-    if (a3 - 1) < 0xA && ((0x213u >> (a3 - 1)))
+    if (change - 1) < 0xA && ((0x213u >> (change - 1)))
     {
       v7 = 0;
     }
@@ -2507,7 +2507,7 @@ LABEL_118:
     }
   }
 
-  objc_storeStrong(&self->_currentWiFiSSID, a4);
+  objc_storeStrong(&self->_currentWiFiSSID, d);
   if (self->_isCentral && (v7 & self->_isWiFiBroughtUp) == 1 && self->_WiFiAssociationStartTime > 0.0)
   {
     doesDefaultDevicePreferInfraWiFi = self->_doesDefaultDevicePreferInfraWiFi;
@@ -2525,17 +2525,17 @@ LABEL_118:
   }
 }
 
-- (BOOL)_startUDPLinkHandshakeForDefaultDevice:(BOOL)a3 immediately:(BOOL)a4
+- (BOOL)_startUDPLinkHandshakeForDefaultDevice:(BOOL)device immediately:(BOOL)immediately
 {
   if (!self->_requireBT)
   {
-    v6 = a4;
-    v7 = a3;
+    immediatelyCopy = immediately;
+    deviceCopy = device;
     v9 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = @"NO";
-      if (v7)
+      if (deviceCopy)
       {
         v11 = @"YES";
       }
@@ -2546,7 +2546,7 @@ LABEL_118:
       }
 
       mayBringUpWiFi = self->_mayBringUpWiFi;
-      if (v6)
+      if (immediatelyCopy)
       {
         v13 = @"YES";
       }
@@ -2572,8 +2572,8 @@ LABEL_118:
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
     {
-      v14 = v7 ? @"YES" : @"NO";
-      v15 = v6 ? @"YES" : @"NO";
+      v14 = deviceCopy ? @"YES" : @"NO";
+      v15 = immediatelyCopy ? @"YES" : @"NO";
       v16 = self->_mayBringUpWiFi ? @"YES" : @"NO";
       v38 = v15;
       v39 = v16;
@@ -2598,7 +2598,7 @@ LABEL_118:
       }
     }
 
-    if (v7)
+    if (deviceCopy)
     {
       if (self->_isCentral)
       {
@@ -2657,10 +2657,10 @@ LABEL_118:
         return v5;
       }
 
-      v19 = [IMWeakLinkClass() sharedInstance];
-      v20 = [v19 isWiFiEnabled];
+      iMWeakLinkClass() = [IMWeakLinkClass() sharedInstance];
+      isWiFiEnabled = [iMWeakLinkClass() isWiFiEnabled];
 
-      if ((v20 & 1) == 0)
+      if ((isWiFiEnabled & 1) == 0)
       {
         v33 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -2706,7 +2706,7 @@ LABEL_118:
           v46 = 3221225472;
           v47 = sub_10053F950;
           v48 = &unk_100BD8A20;
-          v49 = self;
+          selfCopy = self;
           IDSTransportThreadAddBlock();
         }
 
@@ -2714,18 +2714,18 @@ LABEL_118:
       }
     }
 
-    v21 = !v7 || v6;
+    v21 = !deviceCopy || immediatelyCopy;
     if (self->_isCentral)
     {
-      v22 = v7;
+      v22 = deviceCopy;
     }
 
     else
     {
-      v22 = !v7 || v6;
+      v22 = !deviceCopy || immediatelyCopy;
     }
 
-    if (v7)
+    if (deviceCopy)
     {
       v21 |= self->_isWiFiBroughtUp;
     }
@@ -2738,7 +2738,7 @@ LABEL_118:
     v41[3] = &unk_100BDFD98;
     v41[4] = self;
     v42 = v23;
-    v43 = v7;
+    v43 = deviceCopy;
     v44 = v22;
     v24 = objc_retainBlock(v41);
     if (v21)
@@ -2747,7 +2747,7 @@ LABEL_118:
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
         v26 = @"down";
-        if (v7)
+        if (deviceCopy)
         {
           v26 = @"up";
         }
@@ -2786,7 +2786,7 @@ LABEL_118:
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
         v29 = @"down";
-        if (v7)
+        if (deviceCopy)
         {
           v29 = @"up";
         }
@@ -2812,7 +2812,7 @@ LABEL_118:
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
       {
-        v31 = v7 ? @"up" : @"down";
+        v31 = deviceCopy ? @"up" : @"down";
         v32 = v22 ? &stru_100C06028 : @"don't ";
         v38 = v32;
         v39 = 0x4024000000000000;
@@ -2864,10 +2864,10 @@ LABEL_95:
   return v5;
 }
 
-- (void)_processLinkChangeForDefaultDeviceFrom:(id)a3 to:(id)a4
+- (void)_processLinkChangeForDefaultDeviceFrom:(id)from to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  toCopy = to;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   objc_opt_class();
@@ -2878,9 +2878,9 @@ LABEL_95:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v33 = v6;
+    v33 = fromCopy;
     v34 = 2112;
-    v35 = v7;
+    v35 = toCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "process link change for default paired device (oldLink:%@, newLink:%@).", buf, 0x16u);
   }
 
@@ -2888,13 +2888,13 @@ LABEL_95:
   {
     if (_IDSShouldLogTransport())
     {
-      v30 = v6;
-      v31 = v7;
+      v30 = fromCopy;
+      v31 = toCopy;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v30 = v6;
-        v31 = v7;
+        v30 = fromCopy;
+        v31 = toCopy;
         _IDSLogV();
       }
     }
@@ -2907,10 +2907,10 @@ LABEL_95:
     self->_isDefaultDeviceUsingBTLink = v9 & 1;
   }
 
-  if (v7)
+  if (toCopy)
   {
     v14 = kIDSDefaultPairedDeviceID;
-    CFDictionarySetValue(self->_deviceIDToCurrentLink, kIDSDefaultPairedDeviceID, v7);
+    CFDictionarySetValue(self->_deviceIDToCurrentLink, kIDSDefaultPairedDeviceID, toCopy);
     if ((v12 | v10))
     {
       [(IDSLinkManager *)self _connectivityChangedForDefaultDevice:v12 isCloudConnected:v10 & 1];
@@ -2992,7 +2992,7 @@ LABEL_19:
 LABEL_25:
   if (v12)
   {
-    v20 = 1;
+    defaultLinkType = 1;
   }
 
   else
@@ -3000,7 +3000,7 @@ LABEL_25:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v20 = 2;
+      defaultLinkType = 2;
     }
 
     else
@@ -3008,22 +3008,22 @@ LABEL_25:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v20 = [v7 defaultLinkType];
+        defaultLinkType = [toCopy defaultLinkType];
       }
 
       else
       {
-        v20 = 0;
+        defaultLinkType = 0;
       }
     }
   }
 
-  if (self->_currentDefaultDeviceLinkType != v20)
+  if (self->_currentDefaultDeviceLinkType != defaultLinkType)
   {
-    v21 = [v7 linkTypeString];
-    if (v21)
+    linkTypeString = [toCopy linkTypeString];
+    if (linkTypeString)
     {
-      v22 = v21;
+      v22 = linkTypeString;
     }
 
     else
@@ -3038,7 +3038,7 @@ LABEL_25:
       *buf = 134218498;
       v33 = currentDefaultDeviceLinkType;
       v34 = 2048;
-      v35 = v20;
+      v35 = defaultLinkType;
       v36 = 2112;
       v37 = v22;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Link type changed from %lu to %lu, current link: %@", buf, 0x20u);
@@ -3056,8 +3056,8 @@ LABEL_25:
       }
     }
 
-    self->_currentDefaultDeviceLinkType = v20;
-    if (v20 == 1)
+    self->_currentDefaultDeviceLinkType = defaultLinkType;
+    if (defaultLinkType == 1)
     {
       [(IDSLinkManager *)self disconnectGlobalLinkForDevice:v14 isReinitiating:0 completionHandler:0];
       [(IDSLinkManager *)self _clearWiFiAssociationPowerAssertion];
@@ -3069,7 +3069,7 @@ LABEL_25:
     v27 = [v25 initWithObjectsAndKeys:{v26, @"IDSLinkType", 0}];
 
     IDSPowerLogDictionary();
-    if (v20 == 2 && self->_doesDefaultDevicePreferInfraWiFi)
+    if (defaultLinkType == 2 && self->_doesDefaultDevicePreferInfraWiFi)
     {
       [(IDSLinkManager *)self _subscribeToWRMForLinkRecommendation:0];
     }
@@ -3084,41 +3084,41 @@ LABEL_25:
   }
 }
 
-- (id)_selectBestLink:(id)a3
+- (id)_selectBestLink:(id)link
 {
-  v3 = a3;
-  v4 = [v3 allValues];
+  linkCopy = link;
+  allValues = [linkCopy allValues];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
     v7 = 0;
     v8 = *v15;
-    v9 = 255;
+    headerOverhead = 255;
     do
     {
       for (i = 0; i != v6; i = i + 1)
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        if ([v11 state] == 4 && objc_msgSend(v11, "headerOverhead") < v9)
+        if ([v11 state] == 4 && objc_msgSend(v11, "headerOverhead") < headerOverhead)
         {
-          v9 = [v11 headerOverhead];
+          headerOverhead = [v11 headerOverhead];
           v12 = v11;
 
           v7 = v12;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -3132,24 +3132,24 @@ LABEL_25:
   return v7;
 }
 
-- (void)_setBestLinkToCurrent:(id)a3
+- (void)_setBestLinkToCurrent:(id)current
 {
-  v4 = a3;
+  currentCopy = current;
   Value = 0;
-  if (v4 && self->_deviceIDToCurrentLink)
+  if (currentCopy && self->_deviceIDToCurrentLink)
   {
-    Value = CFDictionaryGetValue(self->_deviceIDToCurrentLink, v4);
+    Value = CFDictionaryGetValue(self->_deviceIDToCurrentLink, currentCopy);
   }
 
   v6 = Value;
   v7 = 0;
-  if (v4)
+  if (currentCopy)
   {
     cbuuidToLinks = self->_cbuuidToLinks;
     v9 = 0;
     if (cbuuidToLinks)
     {
-      v7 = CFDictionaryGetValue(cbuuidToLinks, v4);
+      v7 = CFDictionaryGetValue(cbuuidToLinks, currentCopy);
       if (v7)
       {
         v9 = [(IDSLinkManager *)self _selectBestLink:v7];
@@ -3173,7 +3173,7 @@ LABEL_25:
     v12 = self->_cbuuidToLinks;
     deviceIDToCurrentLink = self->_deviceIDToCurrentLink;
     *buf = 138413314;
-    v30 = v4;
+    v30 = currentCopy;
     v31 = 2112;
     v32 = deviceIDToCurrentLink;
     v33 = 2112;
@@ -3191,7 +3191,7 @@ LABEL_25:
     v28 = v9;
     v25 = self->_deviceIDToCurrentLink;
     v26 = self->_cbuuidToLinks;
-    v23 = v4;
+    v23 = currentCopy;
     _IDSLogV();
   }
 
@@ -3200,15 +3200,15 @@ LABEL_25:
     v13 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(NSMutableDictionary *)v9 deviceUniqueID];
+      deviceUniqueID = [(NSMutableDictionary *)v9 deviceUniqueID];
       *buf = 138413058;
       v30 = v6;
       v31 = 2112;
       v32 = v9;
       v33 = 2112;
-      v34 = v4;
+      v34 = currentCopy;
       v35 = 2112;
-      v36 = v14;
+      v36 = deviceUniqueID;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "set current link from %@ to %@ for cbuuid %@ deviceUniqueID %@", buf, 0x2Au);
     }
 
@@ -3217,7 +3217,7 @@ LABEL_25:
       if (_IDSShouldLogTransport())
       {
         [(NSMutableDictionary *)v9 deviceUniqueID];
-        v27 = v26 = v4;
+        v27 = v26 = currentCopy;
         v23 = v6;
         v25 = v9;
         _IDSLogTransport();
@@ -3225,7 +3225,7 @@ LABEL_25:
         if (_IDSShouldLog())
         {
           [(NSMutableDictionary *)v9 deviceUniqueID:v6];
-          v27 = v26 = v4;
+          v27 = v26 = currentCopy;
           v23 = v6;
           v25 = v9;
           _IDSLogV();
@@ -3233,7 +3233,7 @@ LABEL_25:
       }
     }
 
-    if ([(NSMutableDictionary *)v4 isEqualToString:kIDSDefaultPairedDeviceID, v23, v25, v26, v27, v28]&& !self->_hasFixedDestination)
+    if ([(NSMutableDictionary *)currentCopy isEqualToString:kIDSDefaultPairedDeviceID, v23, v25, v26, v27, v28]&& !self->_hasFixedDestination)
     {
       [(IDSLinkManager *)self _processLinkChangeForDefaultDeviceFrom:v6 to:v9];
       goto LABEL_52;
@@ -3241,7 +3241,7 @@ LABEL_25:
 
     if (v9)
     {
-      CFDictionarySetValue(self->_deviceIDToCurrentLink, v4, v9);
+      CFDictionarySetValue(self->_deviceIDToCurrentLink, currentCopy, v9);
       if (self->_hasFixedDestination)
       {
         [(IDSLinkManager *)self _connectivityChangedForDefaultDevice:1 isCloudConnected:0];
@@ -3252,7 +3252,7 @@ LABEL_25:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v30 = v4;
+        v30 = currentCopy;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "sending UTunController didConnectForDevice %@", buf, 0xCu);
       }
 
@@ -3260,38 +3260,38 @@ LABEL_25:
       {
         if (_IDSShouldLogTransport())
         {
-          v24 = v4;
+          v24 = currentCopy;
           _IDSLogTransport();
           if (_IDSShouldLog())
           {
-            v24 = v4;
+            v24 = currentCopy;
             _IDSLogV();
           }
         }
       }
 
-      v17 = [(NSMutableDictionary *)v9 alternateDelegate];
-      v18 = v17;
-      if (v17)
+      alternateDelegate = [(NSMutableDictionary *)v9 alternateDelegate];
+      v18 = alternateDelegate;
+      if (alternateDelegate)
       {
-        [v17 link:self didConnectForDeviceUniqueID:0 cbuuid:v4];
+        [alternateDelegate link:self didConnectForDeviceUniqueID:0 cbuuid:currentCopy];
       }
 
       else
       {
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
-        [WeakRetained link:self didConnectForDeviceUniqueID:0 cbuuid:v4];
+        [WeakRetained link:self didConnectForDeviceUniqueID:0 cbuuid:currentCopy];
       }
     }
 
     else
     {
-      if (v4)
+      if (currentCopy)
       {
         v15 = self->_deviceIDToCurrentLink;
         if (v15)
         {
-          CFDictionaryRemoveValue(v15, v4);
+          CFDictionaryRemoveValue(v15, currentCopy);
         }
       }
 
@@ -3305,7 +3305,7 @@ LABEL_25:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v30 = v4;
+        v30 = currentCopy;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "sending UTunController didDisconnectForDevice %@", buf, 0xCu);
       }
 
@@ -3313,27 +3313,27 @@ LABEL_25:
       {
         if (_IDSShouldLogTransport())
         {
-          v24 = v4;
+          v24 = currentCopy;
           _IDSLogTransport();
           if (_IDSShouldLog())
           {
-            v24 = v4;
+            v24 = currentCopy;
             _IDSLogV();
           }
         }
       }
 
-      v20 = [(NSMutableDictionary *)v6 alternateDelegate];
-      v18 = v20;
-      if (v20)
+      alternateDelegate2 = [(NSMutableDictionary *)v6 alternateDelegate];
+      v18 = alternateDelegate2;
+      if (alternateDelegate2)
       {
-        [v20 link:self didDisconnectForDeviceUniqueID:0 cbuuid:v4];
+        [alternateDelegate2 link:self didDisconnectForDeviceUniqueID:0 cbuuid:currentCopy];
       }
 
       else
       {
         v22 = objc_loadWeakRetained(&self->_delegate);
-        [v22 link:self didDisconnectForDeviceUniqueID:0 cbuuid:v4];
+        [v22 link:self didDisconnectForDeviceUniqueID:0 cbuuid:currentCopy];
       }
     }
   }
@@ -3341,19 +3341,19 @@ LABEL_25:
 LABEL_52:
 }
 
-- (id)_newUDPLinkForDeviceUniqueID:(id)a3 cbuuid:(id)a4 IPVersion:(unint64_t)a5 port:(unsigned __int16)a6
+- (id)_newUDPLinkForDeviceUniqueID:(id)d cbuuid:(id)cbuuid IPVersion:(unint64_t)version port:(unsigned __int16)port
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
+  portCopy = port;
+  dCopy = d;
+  cbuuidCopy = cbuuid;
   v12 = 0;
   v13 = 1;
-  if (v11)
+  if (cbuuidCopy)
   {
     cbuuidToLinks = self->_cbuuidToLinks;
     if (cbuuidToLinks)
     {
-      v15 = CFDictionaryGetValue(cbuuidToLinks, v11);
+      v15 = CFDictionaryGetValue(cbuuidToLinks, cbuuidCopy);
       v12 = v15;
       if (v15)
       {
@@ -3369,7 +3369,7 @@ LABEL_52:
     }
   }
 
-  v18 = [[IDSUDPLink alloc] initWithDeviceUniqueID:v10 cbuuid:v11];
+  v18 = [[IDSUDPLink alloc] initWithDeviceUniqueID:dCopy cbuuid:cbuuidCopy];
   [(NSMutableDictionary *)v18 setDelegate:self];
   if (v13)
   {
@@ -3377,7 +3377,7 @@ LABEL_52:
     if (v12)
     {
       v19 = self->_cbuuidToLinks;
-      v20 = v11;
+      v20 = cbuuidCopy;
       v21 = v12;
 LABEL_12:
       CFDictionarySetValue(v19, v20, v21);
@@ -3392,9 +3392,9 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  [(NSMutableDictionary *)v18 setPort:v6];
+  [(NSMutableDictionary *)v18 setPort:portCopy];
   [(NSMutableDictionary *)v18 setAllowsLinkLocal:self->_hasFixedDestination];
-  v22 = [(NSMutableDictionary *)v18 newSocketWithIPVersion:a5 wantsAWDL:0 wantsWiFi:1 wantsCellular:0];
+  v22 = [(NSMutableDictionary *)v18 newSocketWithIPVersion:version wantsAWDL:0 wantsWiFi:1 wantsCellular:0];
   v23 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
@@ -3443,18 +3443,18 @@ LABEL_28:
   return v17;
 }
 
-- (id)_newUDPGlobalLinkForDeviceUniqueID:(id)a3 cbuuid:(id)a4
+- (id)_newUDPGlobalLinkForDeviceUniqueID:(id)d cbuuid:(id)cbuuid
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  cbuuidCopy = cbuuid;
   v8 = 0;
   v9 = 1;
-  if (v7)
+  if (cbuuidCopy)
   {
     cbuuidToLinks = self->_cbuuidToLinks;
     if (cbuuidToLinks)
     {
-      v11 = CFDictionaryGetValue(cbuuidToLinks, v7);
+      v11 = CFDictionaryGetValue(cbuuidToLinks, cbuuidCopy);
       v8 = v11;
       if (v11)
       {
@@ -3470,7 +3470,7 @@ LABEL_28:
     }
   }
 
-  v13 = [[IDSUDPGlobalLink alloc] initWithDeviceUniqueID:v6 cbuuid:v7];
+  v13 = [[IDSUDPGlobalLink alloc] initWithDeviceUniqueID:dCopy cbuuid:cbuuidCopy];
   [(IDSUDPGlobalLink *)v13 setDelegate:self];
   if (v9)
   {
@@ -3478,7 +3478,7 @@ LABEL_28:
     if (v8)
     {
       v14 = self->_cbuuidToLinks;
-      v15 = v7;
+      v15 = cbuuidCopy;
       v16 = v8;
 LABEL_12:
       CFDictionarySetValue(v14, v15, v16);
@@ -3531,11 +3531,11 @@ LABEL_23:
   return v19;
 }
 
-- (id)_newGlobalLinkForDeviceUniqueID:(id)a3 cbuuid:(id)a4 options:(id)a5
+- (id)_newGlobalLinkForDeviceUniqueID:(id)d cbuuid:(id)cbuuid options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  cbuuidCopy = cbuuid;
+  optionsCopy = options;
   if (self->_hasFixedDestination)
   {
     v11 = 0;
@@ -3543,9 +3543,9 @@ LABEL_23:
 
   else
   {
-    v12 = [(NSMutableDictionary *)self->_cbuuidToLinks objectForKeyedSubscript:v9];
-    v13 = [(NSMutableDictionary *)self->_globalLinkConfigurationsBySessionID objectForKeyedSubscript:v9];
-    v14 = [(IDSLinkManager *)self globalLinkForSessionID:v9];
+    v12 = [(NSMutableDictionary *)self->_cbuuidToLinks objectForKeyedSubscript:cbuuidCopy];
+    v13 = [(NSMutableDictionary *)self->_globalLinkConfigurationsBySessionID objectForKeyedSubscript:cbuuidCopy];
+    v14 = [(IDSLinkManager *)self globalLinkForSessionID:cbuuidCopy];
     if (v14)
     {
       v11 = v14;
@@ -3553,16 +3553,16 @@ LABEL_23:
 
     else
     {
-      v15 = [objc_alloc(+[IDSGlobalLink getGLClassWithOptions:](IDSGlobalLink getGLClassWithOptions:{v10)), "initWithDeviceUniqueID:cbuuid:", v8, v9}];
+      v15 = [objc_alloc(+[IDSGlobalLink getGLClassWithOptions:](IDSGlobalLink getGLClassWithOptions:{optionsCopy)), "initWithDeviceUniqueID:cbuuid:", dCopy, cbuuidCopy}];
       [v13 configureGlobalLink:v15];
       [v15 setDelegate:self];
-      Mutable = [v10 mutableCopy];
+      Mutable = [optionsCopy mutableCopy];
       if (!Mutable)
       {
         Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
       }
 
-      if ([v9 isEqualToString:kIDSDefaultPairedDeviceID])
+      if ([cbuuidCopy isEqualToString:kIDSDefaultPairedDeviceID])
       {
         [(__CFDictionary *)Mutable setObject:&__kCFBooleanTrue forKeyedSubscript:IDSGlobalLinkOptionForceRelayKey];
       }
@@ -3573,7 +3573,7 @@ LABEL_23:
       if (!v12)
       {
         v12 = +[NSMutableDictionary dictionary];
-        [(NSMutableDictionary *)self->_cbuuidToLinks setObject:v12 forKeyedSubscript:v9];
+        [(NSMutableDictionary *)self->_cbuuidToLinks setObject:v12 forKeyedSubscript:cbuuidCopy];
       }
 
       [v12 setObject:v15 forKeyedSubscript:@"IDSLinkGlobalKey"];
@@ -3594,7 +3594,7 @@ LABEL_23:
         *buf = 138412802;
         v26 = v15;
         v27 = 2112;
-        v28 = v9;
+        v28 = cbuuidCopy;
         v29 = 2080;
         v30 = v19;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "created new GlobalLink %@ for session %@ (=> cbuuid), state %s.", buf, 0x20u);
@@ -3613,7 +3613,7 @@ LABEL_23:
           v20 = _IDSLinkStateStrings[[v15 state]];
         }
 
-        v23 = v9;
+        v23 = cbuuidCopy;
         v24 = v20;
         v22 = v15;
         _IDSLogV();
@@ -3628,9 +3628,9 @@ LABEL_23:
   return v11;
 }
 
-- (void)_bringUpWiFi:(BOOL)a3
+- (void)_bringUpWiFi:(BOOL)fi
 {
-  if (a3)
+  if (fi)
   {
     if (self->_shouldBringWiFiDown)
     {
@@ -3718,7 +3718,7 @@ LABEL_23:
       Value = CFDictionaryGetValue(deviceIDToGlobalLinkUp, kIDSDefaultPairedDeviceID);
     }
 
-    v12 = [Value BOOLValue];
+    bOOLValue = [Value BOOLValue];
     if (self->_isDefaultDeviceOnPhoneCall)
     {
       v13 = OSLogHandleForTransportCategory();
@@ -3743,7 +3743,7 @@ LABEL_23:
       self->_shouldBringWiFiDown = 1;
     }
 
-    else if (v12)
+    else if (bOOLValue)
     {
       if (self->_currentDefaultDeviceLinkType == 1)
       {
@@ -3861,43 +3861,43 @@ LABEL_23:
   }
 }
 
-- (void)_removeLinkForDeviceID:(id)a3 linkKey:(id)a4 verifyWithLink:(id)a5
+- (void)_removeLinkForDeviceID:(id)d linkKey:(id)key verifyWithLink:(id)link
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  keyCopy = key;
+  linkCopy = link;
   v11 = 0;
-  if (v8)
+  if (dCopy)
   {
     cbuuidToLinks = self->_cbuuidToLinks;
     v13 = 0;
     if (cbuuidToLinks)
     {
-      v14 = CFDictionaryGetValue(cbuuidToLinks, v8);
+      v14 = CFDictionaryGetValue(cbuuidToLinks, dCopy);
       v13 = v14;
       v11 = 0;
-      if (v9)
+      if (keyCopy)
       {
         if (v14)
         {
-          v11 = CFDictionaryGetValue(v14, v9);
+          v11 = CFDictionaryGetValue(v14, keyCopy);
           if (v11)
           {
-            if (!v10 || [(__CFString *)v10 isEqual:v11])
+            if (!linkCopy || [(__CFString *)linkCopy isEqual:v11])
             {
               v15 = OSLogHandleForTransportCategory();
               if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
               {
                 v16 = @"a BT/BTLE link";
-                if (v10)
+                if (linkCopy)
                 {
-                  v16 = v10;
+                  v16 = linkCopy;
                 }
 
                 *buf = 138412546;
                 v18 = v16;
                 v19 = 2112;
-                v20 = v8;
+                v20 = dCopy;
                 _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "removing %@ from links for device %@", buf, 0x16u);
               }
 
@@ -3918,8 +3918,8 @@ LABEL_23:
                 [v11 invalidate];
               }
 
-              CFDictionaryRemoveValue(v13, v9);
-              [(IDSLinkManager *)self _setBestLinkToCurrent:v8];
+              CFDictionaryRemoveValue(v13, keyCopy);
+              [(IDSLinkManager *)self _setBestLinkToCurrent:dCopy];
             }
           }
         }
@@ -3933,9 +3933,9 @@ LABEL_23:
   }
 }
 
-- (void)_removeAllLinksForDeviceID:(id)a3
+- (void)_removeAllLinksForDeviceID:(id)d
 {
-  key = a3;
+  key = d;
   if (key && (cbuuidToLinks = self->_cbuuidToLinks) != 0)
   {
     v5 = CFDictionaryGetValue(cbuuidToLinks, key);
@@ -3991,8 +3991,8 @@ LABEL_7:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(NSMutableDictionary *)self->_cbuuidToLinks allValues];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allValues = [(NSMutableDictionary *)self->_cbuuidToLinks allValues];
+  v6 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = *v17;
@@ -4002,7 +4002,7 @@ LABEL_7:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
@@ -4046,7 +4046,7 @@ LABEL_7:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v6)
       {
         continue;
@@ -4062,10 +4062,10 @@ LABEL_28:
   return v11;
 }
 
-- (void)_startNetworkInterfaceListener:(BOOL)a3
+- (void)_startNetworkInterfaceListener:(BOOL)listener
 {
   dynamicStore = self->_dynamicStore;
-  if (a3)
+  if (listener)
   {
     if (!dynamicStore)
     {
@@ -4141,9 +4141,9 @@ LABEL_17:
   }
 }
 
-- (void)_startCellularDataStatusListener:(BOOL)a3
+- (void)_startCellularDataStatusListener:(BOOL)listener
 {
-  if (a3)
+  if (listener)
   {
     if (!self->_cellularDataStatusListenerStarted)
     {
@@ -4202,13 +4202,13 @@ LABEL_13:
   }
 }
 
-- (unint64_t)sendPacketBuffer:(id *)a3 toDeviceUniqueID:(id)a4 cbuuid:(id)a5
+- (unint64_t)sendPacketBuffer:(id *)buffer toDeviceUniqueID:(id)d cbuuid:(id)cbuuid
 {
-  v8 = a4;
-  v9 = a5;
-  if (a3->var0)
+  dCopy = d;
+  cbuuidCopy = cbuuid;
+  if (buffer->var0)
   {
-    v10 = (*a3->var0 >> 5) & 1;
+    v10 = (*buffer->var0 >> 5) & 1;
   }
 
   else
@@ -4226,7 +4226,7 @@ LABEL_13:
 
     if (self->_hasFixedDestination)
     {
-      var2 = a3->var2;
+      var2 = buffer->var2;
       if (!self->_deviceIDToUDPDestinations)
       {
         goto LABEL_30;
@@ -4240,16 +4240,16 @@ LABEL_13:
       }
 
       v15 = Value;
-      if (v9)
+      if (cbuuidCopy)
       {
         deviceIDToUDPDestinations = self->_deviceIDToUDPDestinations;
         if (deviceIDToUDPDestinations)
         {
-          v17 = CFDictionaryGetValue(deviceIDToUDPDestinations, v9);
+          v17 = CFDictionaryGetValue(deviceIDToUDPDestinations, cbuuidCopy);
           if (v17)
           {
             v18 = v17;
-            v19 = [v15 sendPacketBuffer:a3 destination:v17 toDeviceID:0];
+            v19 = [v15 sendPacketBuffer:buffer destination:v17 toDeviceID:0];
             v20 = OSLogHandleForTransportCategory();
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
             {
@@ -4289,24 +4289,24 @@ LABEL_13:
         }
       }
 
-      v27 = [v9 isEqualToString:v14];
+      v27 = [cbuuidCopy isEqualToString:v14];
 
       if ((v27 & 1) == 0)
       {
 LABEL_30:
         v15 = 0;
-        if (v9)
+        if (cbuuidCopy)
         {
           deviceIDToCurrentLink = self->_deviceIDToCurrentLink;
           if (deviceIDToCurrentLink)
           {
-            v29 = CFDictionaryGetValue(deviceIDToCurrentLink, v9);
+            v29 = CFDictionaryGetValue(deviceIDToCurrentLink, cbuuidCopy);
             v15 = v29;
             if (v29)
             {
               if ([v29 state] == 4)
               {
-                v19 = [v15 sendPacketBuffer:a3 toDeviceUniqueID:v8 cbuuid:v9];
+                v19 = [v15 sendPacketBuffer:buffer toDeviceUniqueID:dCopy cbuuid:cbuuidCopy];
                 v30 = OSLogHandleForTransportCategory();
                 if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
                 {
@@ -4366,7 +4366,7 @@ LABEL_39:
     }
   }
 
-  if (!a3->var10)
+  if (!buffer->var10)
   {
     goto LABEL_86;
   }
@@ -4376,12 +4376,12 @@ LABEL_39:
   {
     if (currentDefaultDeviceLinkType != 1)
     {
-      if (currentDefaultDeviceLinkType != 2 || !a3->var7)
+      if (currentDefaultDeviceLinkType != 2 || !buffer->var7)
       {
         goto LABEL_86;
       }
 
-      v32 = [(IDSLinkManager *)self globalLinkForSessionID:v9];
+      v32 = [(IDSLinkManager *)self globalLinkForSessionID:cbuuidCopy];
       v33 = v32;
       if (v32 && [v32 state] == 4)
       {
@@ -4417,13 +4417,13 @@ LABEL_39:
       goto LABEL_76;
     }
 
-    if (!a3->var11)
+    if (!buffer->var11)
     {
       goto LABEL_86;
     }
 
     v36 = 0;
-    if (!v9)
+    if (!cbuuidCopy)
     {
       v38 = 0;
       v34 = 0;
@@ -4435,7 +4435,7 @@ LABEL_39:
     v34 = 0;
     if (cbuuidToLinks)
     {
-      v39 = CFDictionaryGetValue(cbuuidToLinks, v9);
+      v39 = CFDictionaryGetValue(cbuuidToLinks, cbuuidCopy);
       v36 = v39;
       if (v39)
       {
@@ -4462,15 +4462,15 @@ LABEL_75:
 LABEL_76:
     if (v34)
     {
-      if (!a3->var8)
+      if (!buffer->var8)
       {
         goto LABEL_123;
       }
 
       v41 = 0;
-      if (v9 && self->_deviceIDToCurrentLink)
+      if (cbuuidCopy && self->_deviceIDToCurrentLink)
       {
-        v41 = CFDictionaryGetValue(self->_deviceIDToCurrentLink, v9);
+        v41 = CFDictionaryGetValue(self->_deviceIDToCurrentLink, cbuuidCopy);
       }
 
       if (v34 == v41)
@@ -4482,9 +4482,9 @@ LABEL_123:
       else
       {
         v42 = 0;
-        if (v9 && self->_deviceIDToCurrentLink)
+        if (cbuuidCopy && self->_deviceIDToCurrentLink)
         {
-          v42 = CFDictionaryGetValue(self->_deviceIDToCurrentLink, v9);
+          v42 = CFDictionaryGetValue(self->_deviceIDToCurrentLink, cbuuidCopy);
         }
 
         v43 = v42;
@@ -4511,30 +4511,30 @@ LABEL_123:
     }
 
 LABEL_86:
-    if (!v9 || (v44 = self->_deviceIDToCurrentLink) == 0 || (v45 = CFDictionaryGetValue(v44, v9)) == 0)
+    if (!cbuuidCopy || (v44 = self->_deviceIDToCurrentLink) == 0 || (v45 = CFDictionaryGetValue(v44, cbuuidCopy)) == 0)
     {
       ++self->_totalPacketsDropped;
       v48 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v59 = v9;
+        v59 = cbuuidCopy;
         _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_DEFAULT, "no current link for %@", buf, 0xCu);
       }
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
-        v55 = v9;
+        v55 = cbuuidCopy;
         _IDSLogV();
       }
 
-      if (([v9 isEqualToString:{kIDSDefaultPairedDeviceID, v55}] & 1) == 0 && !a3->var7)
+      if (([cbuuidCopy isEqualToString:{kIDSDefaultPairedDeviceID, v55}] & 1) == 0 && !buffer->var7)
       {
         v49 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v59 = v9;
+          v59 = cbuuidCopy;
           _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_DEFAULT, "No current link for %@ -- asking WiProx to connect.", buf, 0xCu);
         }
 
@@ -4542,18 +4542,18 @@ LABEL_86:
         {
           if (_IDSShouldLogTransport())
           {
-            v57 = v9;
+            v57 = cbuuidCopy;
             _IDSLogTransport();
             if (_IDSShouldLog())
             {
-              v57 = v9;
+              v57 = cbuuidCopy;
               _IDSLogV();
             }
           }
         }
 
         v50 = +[IDSWPLinkManager sharedInstance];
-        [v50 connectToPeer:v9];
+        [v50 connectToPeer:cbuuidCopy];
       }
 
       v34 = 0;
@@ -4573,7 +4573,7 @@ LABEL_91:
         kdebug_trace();
       }
 
-      v19 = [(IDSLinkManager *)self _sendPacketBuffer:a3 toDeviceUniqueID:v8 cbuuid:v9 link:v34, v55];
+      v19 = [(IDSLinkManager *)self _sendPacketBuffer:buffer toDeviceUniqueID:dCopy cbuuid:cbuuidCopy link:v34, v55];
       if (v46)
       {
         if (v47)
@@ -4606,7 +4606,7 @@ LABEL_91:
           }
         }
 
-        if (![(IDSLinkManager *)self _sendPacketBuffer:v47 toDeviceUniqueID:v8 cbuuid:v9 link:v43, v56])
+        if (![(IDSLinkManager *)self _sendPacketBuffer:v47 toDeviceUniqueID:dCopy cbuuid:cbuuidCopy link:v43, v56])
         {
           v19 = 0;
         }
@@ -4621,7 +4621,7 @@ LABEL_127:
     if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v59 = v9;
+      v59 = cbuuidCopy;
       _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEFAULT, "dropped data for device %@", buf, 0xCu);
     }
 
@@ -4630,9 +4630,9 @@ LABEL_127:
       _IDSLogV();
     }
 
-    if (!a3->var7)
+    if (!buffer->var7)
     {
-      [(IDSLinkManager *)self startLinkForDeviceUniqueID:v8 cbuuid:v9];
+      [(IDSLinkManager *)self startLinkForDeviceUniqueID:dCopy cbuuid:cbuuidCopy];
     }
 
 LABEL_111:
@@ -4643,7 +4643,7 @@ LABEL_112:
     goto LABEL_113;
   }
 
-  if (a3->var7)
+  if (buffer->var7)
   {
     goto LABEL_86;
   }
@@ -4652,7 +4652,7 @@ LABEL_112:
   v23 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
-    v24 = a3->var2;
+    v24 = buffer->var2;
     v25 = self->_currentDefaultDeviceLinkType;
     totalPacketsDropped = self->_totalPacketsDropped;
     *buf = 134218496;
@@ -4683,14 +4683,14 @@ LABEL_113:
   return v19;
 }
 
-- (unint64_t)_sendPacketBuffer:(id *)a3 toDeviceUniqueID:(id)a4 cbuuid:(id)a5 link:(id)a6
+- (unint64_t)_sendPacketBuffer:(id *)buffer toDeviceUniqueID:(id)d cbuuid:(id)cbuuid link:(id)link
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  var2 = a3->var2;
-  var10 = a3->var10;
-  v15 = [v12 sendPacketBuffer:a3 toDeviceUniqueID:v10 cbuuid:v11];
+  dCopy = d;
+  cbuuidCopy = cbuuid;
+  linkCopy = link;
+  var2 = buffer->var2;
+  var10 = buffer->var10;
+  v15 = [linkCopy sendPacketBuffer:buffer toDeviceUniqueID:dCopy cbuuid:cbuuidCopy];
   v16 = v15;
   if (var10 && v15 != 0)
   {
@@ -4708,7 +4708,7 @@ LABEL_113:
       }
 
       *buf = 138412802;
-      v23 = v12;
+      v23 = linkCopy;
       v24 = 2048;
       v25 = var2;
       v26 = 2080;
@@ -4745,12 +4745,12 @@ LABEL_113:
   return v16;
 }
 
-- (unint64_t)sendPacketBufferArray:(id *)a3 arraySize:(int)a4 toDeviceUniqueID:(id)a5 cbuuid:(id)a6
+- (unint64_t)sendPacketBufferArray:(id *)array arraySize:(int)size toDeviceUniqueID:(id)d cbuuid:(id)cbuuid
 {
-  v7 = *&a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(IDSLinkManager *)self globalLinkForSessionID:v11];
+  v7 = *&size;
+  dCopy = d;
+  cbuuidCopy = cbuuid;
+  v12 = [(IDSLinkManager *)self globalLinkForSessionID:cbuuidCopy];
   v13 = v12;
   if (v12)
   {
@@ -4767,10 +4767,10 @@ LABEL_113:
       {
         v16 = 0;
         v17 = v7;
-        v18 = a3;
+        arrayCopy = array;
         do
         {
-          v19 = *v18++;
+          v19 = *arrayCopy++;
           v16 += *(v19 + 16);
           --v17;
         }
@@ -4778,7 +4778,7 @@ LABEL_113:
         while (v17);
       }
 
-      v20 = [v14 sendPacketBufferArray:a3 arraySize:v7 toDeviceUniqueID:v10 cbuuid:v11];
+      v20 = [v14 sendPacketBufferArray:array arraySize:v7 toDeviceUniqueID:dCopy cbuuid:cbuuidCopy];
       if (v20)
       {
         v22 = 216;
@@ -4808,7 +4808,7 @@ LABEL_113:
     v21 = v7;
     do
     {
-      ++a3;
+      ++array;
       _IDSLinkPacketBufferRelease();
       --v21;
     }
@@ -4822,15 +4822,15 @@ LABEL_18:
   return v20;
 }
 
-- (void)flushBuffer:(unint64_t)a3 toDeviceUniqueID:(id)a4 cbuuid:(id)a5
+- (void)flushBuffer:(unint64_t)buffer toDeviceUniqueID:(id)d cbuuid:(id)cbuuid
 {
-  v15 = a4;
-  v8 = a5;
-  v9 = v8;
+  dCopy = d;
+  cbuuidCopy = cbuuid;
+  v9 = cbuuidCopy;
   if (!self->_hasFixedDestination)
   {
     v10 = 0;
-    if (v8)
+    if (cbuuidCopy)
     {
       cbuuidToLinks = self->_cbuuidToLinks;
       v12 = 0;
@@ -4844,7 +4844,7 @@ LABEL_18:
           v12 = v14;
           if (v14)
           {
-            [v14 flushBuffer:a3];
+            [v14 flushBuffer:buffer];
           }
         }
 
@@ -5036,16 +5036,16 @@ LABEL_18:
   }
 }
 
-- (void)addPairedDevice:(id)a3
+- (void)addPairedDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   if (!self->_hasFixedDestination)
   {
     btLinkManager = self->_btLinkManager;
     if (btLinkManager)
     {
-      v6 = [(IDSBTLinkManager *)btLinkManager pairedDevice];
-      v7 = [v6 isEqualToString:v4];
+      pairedDevice = [(IDSBTLinkManager *)btLinkManager pairedDevice];
+      v7 = [pairedDevice isEqualToString:deviceCopy];
 
       if (v7)
       {
@@ -5053,7 +5053,7 @@ LABEL_18:
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v16 = v4;
+          v16 = deviceCopy;
           _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "addPairedDevice for the same UUID %@ - Ignoring", buf, 0xCu);
         }
 
@@ -5077,7 +5077,7 @@ LABEL_18:
         block[1] = 3221225472;
         block[2] = sub_10054505C;
         block[3] = &unk_100BD6ED0;
-        v12 = v4;
+        v12 = deviceCopy;
         v14 = v12;
         dispatch_async(v11, block);
 
@@ -5088,7 +5088,7 @@ LABEL_18:
 
     else
     {
-      v9 = [[IDSBTLinkManager alloc] initWithDelegate:self pairedDevice:v4];
+      v9 = [[IDSBTLinkManager alloc] initWithDelegate:self pairedDevice:deviceCopy];
       v10 = self->_btLinkManager;
       self->_btLinkManager = v9;
 
@@ -5100,13 +5100,13 @@ LABEL_18:
   }
 }
 
-- (void)connectPairedDevice:(id)a3
+- (void)connectPairedDevice:(id)device
 {
-  v4 = a3;
-  v5 = v4;
+  deviceCopy = device;
+  v5 = deviceCopy;
   if (!self->_hasFixedDestination)
   {
-    if (v4 && (-[IDSBTLinkManager pairedDevice](self->_btLinkManager, "pairedDevice"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v5 isEqualToString:v6], v6, v7))
+    if (deviceCopy && (-[IDSBTLinkManager pairedDevice](self->_btLinkManager, "pairedDevice"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v5 isEqualToString:v6], v6, v7))
     {
       [(IDSBTLinkManager *)self->_btLinkManager connect];
     }
@@ -5136,13 +5136,13 @@ LABEL_18:
   }
 }
 
-- (void)deletePairedDevice:(id)a3
+- (void)deletePairedDevice:(id)device
 {
-  v4 = a3;
-  v5 = v4;
+  deviceCopy = device;
+  v5 = deviceCopy;
   if (!self->_hasFixedDestination)
   {
-    if (v4 && (-[IDSBTLinkManager pairedDevice](self->_btLinkManager, "pairedDevice"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v5 isEqualToString:v6], v6, !v7))
+    if (deviceCopy && (-[IDSBTLinkManager pairedDevice](self->_btLinkManager, "pairedDevice"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v5 isEqualToString:v6], v6, !v7))
     {
       v12 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -5210,7 +5210,7 @@ LABEL_18:
   }
 }
 
-- (void)setPreferInfraWiFi:(BOOL)a3
+- (void)setPreferInfraWiFi:(BOOL)fi
 {
   if (self->_hasFixedDestination)
   {
@@ -5262,7 +5262,7 @@ LABEL_16:
     }
   }
 
-  else if (a3)
+  else if (fi)
   {
     if (self->_doesDefaultDevicePreferInfraWiFi)
     {
@@ -5347,25 +5347,25 @@ LABEL_16:
   }
 }
 
-- (BOOL)isConnectedToDeviceID:(id)a3
+- (BOOL)isConnectedToDeviceID:(id)d
 {
   result = 0;
-  if (a3)
+  if (d)
   {
     deviceIDToCurrentLink = self->_deviceIDToCurrentLink;
     if (deviceIDToCurrentLink)
     {
-      return CFDictionaryGetValue(deviceIDToCurrentLink, a3) != 0;
+      return CFDictionaryGetValue(deviceIDToCurrentLink, d) != 0;
     }
   }
 
   return result;
 }
 
-- (void)triggerBTCorruptionRecoveryForCBUUID:(id)a3
+- (void)triggerBTCorruptionRecoveryForCBUUID:(id)d
 {
   v4 = 0;
-  key = a3;
+  key = d;
   if (key)
   {
     Value = 0;
@@ -5398,16 +5398,16 @@ LABEL_16:
 LABEL_9:
 }
 
-- (void)setRequireBT:(BOOL)a3
+- (void)setRequireBT:(BOOL)t
 {
-  if (self->_requireBT != a3)
+  if (self->_requireBT != t)
   {
-    v3 = a3;
+    tCopy = t;
     v5 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"NO";
-      if (v3)
+      if (tCopy)
       {
         v6 = @"YES";
       }
@@ -5426,15 +5426,15 @@ LABEL_9:
       }
     }
 
-    self->_requireBT = v3;
+    self->_requireBT = tCopy;
   }
 }
 
-- (void)setShouldStartBTLinkManager:(BOOL)a3
+- (void)setShouldStartBTLinkManager:(BOOL)manager
 {
-  if (self->_shouldStartBTLinkManager != a3)
+  if (self->_shouldStartBTLinkManager != manager)
   {
-    self->_shouldStartBTLinkManager = a3;
+    self->_shouldStartBTLinkManager = manager;
     v4 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -5482,12 +5482,12 @@ LABEL_9:
   }
 }
 
-- (void)startLinkForDeviceUniqueID:(id)a3 cbuuid:(id)a4
+- (void)startLinkForDeviceUniqueID:(id)d cbuuid:(id)cbuuid
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7 && ([v7 isEqualToString:kIDSDefaultPairedDeviceID] & 1) == 0 && !self->_hasFixedDestination)
+  dCopy = d;
+  cbuuidCopy = cbuuid;
+  v8 = cbuuidCopy;
+  if (cbuuidCopy && ([cbuuidCopy isEqualToString:kIDSDefaultPairedDeviceID] & 1) == 0 && !self->_hasFixedDestination)
   {
     deviceIDToCurrentLink = self->_deviceIDToCurrentLink;
     if (deviceIDToCurrentLink)
@@ -5505,7 +5505,7 @@ LABEL_9:
         *buf = 138412546;
         v17 = v8;
         v18 = 2112;
-        v19 = v6;
+        v19 = dCopy;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Already have BTLE link for cbuuid %@ deviceUniqueID %@", buf, 0x16u);
       }
 
@@ -5530,7 +5530,7 @@ LABEL_9:
         *buf = 138412546;
         v17 = v8;
         v18 = 2112;
-        v19 = v6;
+        v19 = dCopy;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "No connected BTLE link for cbuuid %@ deviceUniqueID %@ -- asking WiProx to connect.", buf, 0x16u);
       }
 
@@ -5539,12 +5539,12 @@ LABEL_9:
         if (_IDSShouldLogTransport())
         {
           v14 = v8;
-          v15 = v6;
+          v15 = dCopy;
           _IDSLogTransport();
           if (_IDSShouldLog())
           {
             v14 = v8;
-            v15 = v6;
+            v15 = dCopy;
             _IDSLogV();
           }
         }
@@ -5556,13 +5556,13 @@ LABEL_9:
   }
 }
 
-- (void)stopLinkForDeviceUniqueID:(id)a3 cbuuid:(id)a4 disconnectWP:(BOOL)a5
+- (void)stopLinkForDeviceUniqueID:(id)d cbuuid:(id)cbuuid disconnectWP:(BOOL)p
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v9 && ([v9 isEqualToString:kIDSDefaultPairedDeviceID] & 1) == 0 && !self->_hasFixedDestination)
+  pCopy = p;
+  dCopy = d;
+  cbuuidCopy = cbuuid;
+  v10 = cbuuidCopy;
+  if (cbuuidCopy && ([cbuuidCopy isEqualToString:kIDSDefaultPairedDeviceID] & 1) == 0 && !self->_hasFixedDestination)
   {
     v11 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -5570,7 +5570,7 @@ LABEL_9:
       *buf = 138412546;
       v16 = v10;
       v17 = 2112;
-      v18 = v8;
+      v18 = dCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Asked to disconnect from cbuuid %@ deviceUniqueID %@", buf, 0x16u);
     }
 
@@ -5579,19 +5579,19 @@ LABEL_9:
       if (_IDSShouldLogTransport())
       {
         v13 = v10;
-        v14 = v8;
+        v14 = dCopy;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
           v13 = v10;
-          v14 = v8;
+          v14 = dCopy;
           _IDSLogV();
         }
       }
     }
 
     [(IDSLinkManager *)self _removeAllLinksForDeviceID:v10, v13, v14];
-    if (v5)
+    if (pCopy)
     {
       v12 = +[IDSWPLinkManager sharedInstance];
       [v12 disconnectFromPeer:v10];
@@ -5599,49 +5599,49 @@ LABEL_9:
   }
 }
 
-- (void)startUDPGlobalLinkForDevice:(id)a3
+- (void)startUDPGlobalLinkForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = v4;
+    v8 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "startUDPGlobalLinkForDevice %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v6 = v4;
+    v6 = deviceCopy;
     _IDSLogV();
   }
 }
 
-- (void)stopUDPGlobalLinkForDevice:(id)a3
+- (void)stopUDPGlobalLinkForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v4;
+    v13 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "stopUDPGlobalLinkForDevice %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v11 = v4;
+    v11 = deviceCopy;
     _IDSLogV();
   }
 
   v6 = 0;
-  if (v4)
+  if (deviceCopy)
   {
     cbuuidToLinks = self->_cbuuidToLinks;
     v8 = 0;
     if (cbuuidToLinks)
     {
-      v9 = CFDictionaryGetValue(cbuuidToLinks, v4);
+      v9 = CFDictionaryGetValue(cbuuidToLinks, deviceCopy);
       v6 = v9;
       if (v9)
       {
@@ -5652,13 +5652,13 @@ LABEL_9:
           if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v13 = v4;
+            v13 = deviceCopy;
             _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Remove UDPGlobalLink for device %@", buf, 0xCu);
           }
 
           if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
           {
-            v11 = v4;
+            v11 = deviceCopy;
             _IDSLogV();
           }
 
@@ -5683,21 +5683,21 @@ LABEL_9:
     v8 = 0;
   }
 
-  [(IDSLinkManager *)self _removeAllLinksForDeviceID:v4, v11];
+  [(IDSLinkManager *)self _removeAllLinksForDeviceID:deviceCopy, v11];
 }
 
-- (void)createConnectionDataForDevice:(id)a3 localPartyID:(id)a4 dataReadyHandler:(id)a5
+- (void)createConnectionDataForDevice:(id)device localPartyID:(id)d dataReadyHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  dCopy = d;
+  handlerCopy = handler;
   v11 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v27 = v8;
+    v27 = deviceCopy;
     v28 = 2112;
-    v29 = v9;
+    v29 = dCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "createConnectionDataForDevice - deviceID=%@, localPartyID=%@", buf, 0x16u);
   }
 
@@ -5705,25 +5705,25 @@ LABEL_9:
   {
     if (_IDSShouldLogTransport())
     {
-      v21 = v8;
-      v22 = v9;
+      v21 = deviceCopy;
+      v22 = dCopy;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v21 = v8;
-        v22 = v9;
+        v21 = deviceCopy;
+        v22 = dCopy;
         _IDSLogV();
       }
     }
   }
 
   v12 = 0;
-  if (v8 && (cbuuidToLinks = self->_cbuuidToLinks) != 0 && (v14 = CFDictionaryGetValue(cbuuidToLinks, v8), (v12 = v14) != 0) && (v15 = CFDictionaryGetValue(v14, @"IDSLinkGlobalUDPKey")) != 0)
+  if (deviceCopy && (cbuuidToLinks = self->_cbuuidToLinks) != 0 && (v14 = CFDictionaryGetValue(cbuuidToLinks, deviceCopy), (v12 = v14) != 0) && (v15 = CFDictionaryGetValue(v14, @"IDSLinkGlobalUDPKey")) != 0)
   {
     v16 = v15;
     if (objc_opt_respondsToSelector())
     {
-      [v16 createConnectionData:v9 dataReadyHandler:v10];
+      [v16 createConnectionData:dCopy dataReadyHandler:handlerCopy];
     }
   }
 
@@ -5751,14 +5751,14 @@ LABEL_9:
       }
     }
 
-    if (v10)
+    if (handlerCopy)
     {
       v20 = im_primary_queue();
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100546BF8;
       block[3] = &unk_100BD7298;
-      v25 = v10;
+      v25 = handlerCopy;
       v24 = v18;
       dispatch_async(v20, block);
     }
@@ -5767,16 +5767,16 @@ LABEL_9:
   }
 }
 
-- (void)processRemoteConnectionDataForDevice:(id)a3 remoteConnectionData:(id)a4 completionHandler:(id)a5
+- (void)processRemoteConnectionDataForDevice:(id)device remoteConnectionData:(id)data completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  dataCopy = data;
+  handlerCopy = handler;
   v11 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v26 = v8;
+    v26 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "processRemoteConnectionDataForDevice - %@", buf, 0xCu);
   }
 
@@ -5784,23 +5784,23 @@ LABEL_9:
   {
     if (_IDSShouldLogTransport())
     {
-      v21 = v8;
+      v21 = deviceCopy;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v21 = v8;
+        v21 = deviceCopy;
         _IDSLogV();
       }
     }
   }
 
   v12 = 0;
-  if (v8 && (cbuuidToLinks = self->_cbuuidToLinks) != 0 && (v14 = CFDictionaryGetValue(cbuuidToLinks, v8), (v12 = v14) != 0) && (v15 = CFDictionaryGetValue(v14, @"IDSLinkGlobalUDPKey")) != 0)
+  if (deviceCopy && (cbuuidToLinks = self->_cbuuidToLinks) != 0 && (v14 = CFDictionaryGetValue(cbuuidToLinks, deviceCopy), (v12 = v14) != 0) && (v15 = CFDictionaryGetValue(v14, @"IDSLinkGlobalUDPKey")) != 0)
   {
     v16 = v15;
     if (objc_opt_respondsToSelector())
     {
-      [v16 processRemoteConnectionData:v9 completionHandler:v10];
+      [v16 processRemoteConnectionData:dataCopy completionHandler:handlerCopy];
     }
   }
 
@@ -5828,14 +5828,14 @@ LABEL_9:
       }
     }
 
-    if (v10)
+    if (handlerCopy)
     {
       v20 = im_primary_queue();
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100546F94;
       block[3] = &unk_100BD7298;
-      v24 = v10;
+      v24 = handlerCopy;
       v23 = v18;
       dispatch_async(v20, block);
     }
@@ -5844,27 +5844,27 @@ LABEL_9:
   }
 }
 
-- (void)startConnectionForDevice:(id)a3 isInitiator:(BOOL)a4 remotePartyID:(id)a5 useStunMICheck:(BOOL)a6
+- (void)startConnectionForDevice:(id)device isInitiator:(BOOL)initiator remotePartyID:(id)d useStunMICheck:(BOOL)check
 {
-  v6 = a6;
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
+  checkCopy = check;
+  initiatorCopy = initiator;
+  deviceCopy = device;
+  dCopy = d;
   v12 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = @"NO";
     *buf = 138412802;
-    v19 = v10;
+    v19 = deviceCopy;
     v20 = 2112;
-    if (v8)
+    if (initiatorCopy)
     {
       v13 = @"YES";
     }
 
     v21 = v13;
     v22 = 2112;
-    v23 = v11;
+    v23 = dCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "startConnectionForDevice - deviceID=%@ isInitiator=%@ remotePartyID=%@", buf, 0x20u);
   }
 
@@ -5881,20 +5881,20 @@ LABEL_9:
   }
 
   v14 = 0;
-  if (v10)
+  if (deviceCopy)
   {
     cbuuidToLinks = self->_cbuuidToLinks;
     v16 = 0;
     if (cbuuidToLinks)
     {
-      v17 = CFDictionaryGetValue(cbuuidToLinks, v10);
+      v17 = CFDictionaryGetValue(cbuuidToLinks, deviceCopy);
       v14 = v17;
       if (v17)
       {
         v16 = CFDictionaryGetValue(v17, @"IDSLinkGlobalUDPKey");
         if (v16 && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          [v16 startConnectionForDevice:v10 isInitiator:v8 remotePartyID:v11 useStunMICheck:v6];
+          [v16 startConnectionForDevice:deviceCopy isInitiator:initiatorCopy remotePartyID:dCopy useStunMICheck:checkCopy];
         }
       }
 
@@ -5911,17 +5911,17 @@ LABEL_9:
   }
 }
 
-- (void)startBTDatagramLinkForDeviceUniqueID:(id)a3 cbuuid:(id)a4
+- (void)startBTDatagramLinkForDeviceUniqueID:(id)d cbuuid:(id)cbuuid
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  cbuuidCopy = cbuuid;
   v8 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v12 = v6;
+    v12 = dCopy;
     v13 = 2112;
-    v14 = v7;
+    v14 = cbuuidCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "startBTDatagramLinkForDeviceUniqueID - deviceID %@ cbuuid %@", buf, 0x16u);
   }
 
@@ -5929,13 +5929,13 @@ LABEL_9:
   {
     if (_IDSShouldLogTransport())
     {
-      v9 = v6;
-      v10 = v7;
+      v9 = dCopy;
+      v10 = cbuuidCopy;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v9 = v6;
-        v10 = v7;
+        v9 = dCopy;
+        v10 = cbuuidCopy;
         _IDSLogV();
       }
     }
@@ -5944,17 +5944,17 @@ LABEL_9:
   [(IDSBTLinkManager *)self->_btLinkManager startDatagramLink:v9];
 }
 
-- (void)stopBTDatagramLinkForDeviceUniqueID:(id)a3 cbuuid:(id)a4
+- (void)stopBTDatagramLinkForDeviceUniqueID:(id)d cbuuid:(id)cbuuid
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  cbuuidCopy = cbuuid;
   v8 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v12 = v6;
+    v12 = dCopy;
     v13 = 2112;
-    v14 = v7;
+    v14 = cbuuidCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "stopBTDatagramLinkForDeviceUniqueID - deviceID %@ cbuuid %@", buf, 0x16u);
   }
 
@@ -5962,13 +5962,13 @@ LABEL_9:
   {
     if (_IDSShouldLogTransport())
     {
-      v9 = v6;
-      v10 = v7;
+      v9 = dCopy;
+      v10 = cbuuidCopy;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v9 = v6;
-        v10 = v7;
+        v9 = dCopy;
+        v10 = cbuuidCopy;
         _IDSLogV();
       }
     }
@@ -5977,21 +5977,21 @@ LABEL_9:
   [(IDSBTLinkManager *)self->_btLinkManager stopDatagramLink:v9];
 }
 
-- (void)_startAllocateRequestForDevice:(id)a3
+- (void)_startAllocateRequestForDevice:(id)device
 {
-  v4 = a3;
-  v5 = v4;
+  deviceCopy = device;
+  v5 = deviceCopy;
   if (self->_hasFixedDestination)
   {
     goto LABEL_41;
   }
 
-  v6 = [v4 isEqualToString:kIDSDefaultPairedDeviceID];
+  v6 = [deviceCopy isEqualToString:kIDSDefaultPairedDeviceID];
   if (!v6 || self->_currentDefaultDeviceLinkType != 1)
   {
     v8 = [(IDSLinkManager *)self _newGlobalLinkForDeviceUniqueID:0 cbuuid:v5 options:0];
-    v9 = [v8 state];
-    if (v9 < 2)
+    state = [v8 state];
+    if (state < 2)
     {
       if ([v8 hasReachableInterface:0] & 1) != 0 || (objc_msgSend(v8, "hasReachableInterface:", 1))
       {
@@ -6022,7 +6022,7 @@ LABEL_9:
           block[2] = sub_100547A20;
           block[3] = &unk_100BD6E40;
           v21 = v5;
-          v22 = self;
+          selfCopy = self;
           v18 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, QOS_CLASS_USER_INITIATED, 0, block);
           dispatch_async(v17, v18);
 
@@ -6075,7 +6075,7 @@ LABEL_40:
 
     else
     {
-      v10 = v9;
+      v10 = state;
       v11 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
@@ -6131,22 +6131,22 @@ LABEL_40:
 LABEL_41:
 }
 
-- (void)startGlobalLinkForDevice:(id)a3
+- (void)startGlobalLinkForDevice:(id)device
 {
-  v4 = a3;
-  v5 = v4;
+  deviceCopy = device;
+  v5 = deviceCopy;
   if (self->_hasFixedDestination)
   {
     goto LABEL_36;
   }
 
-  v6 = [v4 isEqualToString:kIDSDefaultPairedDeviceID];
+  v6 = [deviceCopy isEqualToString:kIDSDefaultPairedDeviceID];
   if (!v6 || self->_currentDefaultDeviceLinkType != 1)
   {
     v8 = [(IDSLinkManager *)self _newGlobalLinkForDeviceUniqueID:0 cbuuid:v5 options:0];
-    v9 = [v8 state];
-    v10 = v9;
-    if (v9 < 2)
+    state = [v8 state];
+    v10 = state;
+    if (state < 2)
     {
       v13 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -6190,7 +6190,7 @@ LABEL_41:
       goto LABEL_35;
     }
 
-    if ((v9 - 7) > 0xFFFFFFFFFFFFFFFDLL)
+    if ((state - 7) > 0xFFFFFFFFFFFFFFFDLL)
     {
       if (!v6 || self->_delayedDefaultDeviceAllocateRequest)
       {
@@ -6285,35 +6285,35 @@ LABEL_35:
 LABEL_36:
 }
 
-- (void)clearGlobalLinkForSessionID:(id)a3
+- (void)clearGlobalLinkForSessionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   cbuuidToLinks = self->_cbuuidToLinks;
   if (cbuuidToLinks)
   {
-    v7 = v4;
-    cbuuidToLinks = [cbuuidToLinks objectForKeyedSubscript:v4];
-    v4 = v7;
+    v7 = dCopy;
+    cbuuidToLinks = [cbuuidToLinks objectForKeyedSubscript:dCopy];
+    dCopy = v7;
     if (cbuuidToLinks)
     {
       v6 = cbuuidToLinks;
       [cbuuidToLinks setObject:0 forKeyedSubscript:@"IDSLinkGlobalKey"];
 
-      v4 = v7;
+      dCopy = v7;
     }
   }
 
-  _objc_release_x1(cbuuidToLinks, v4);
+  _objc_release_x1(cbuuidToLinks, dCopy);
 }
 
-- (void)stopGlobalLinkForDevice:(id)a3
+- (void)stopGlobalLinkForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v4;
+    v16 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "stopGlobalLinkForDevice %@ (=> cbuuid)", buf, 0xCu);
   }
 
@@ -6321,17 +6321,17 @@ LABEL_36:
   {
     if (_IDSShouldLogTransport())
     {
-      v12 = v4;
+      v12 = deviceCopy;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v12 = v4;
+        v12 = deviceCopy;
         _IDSLogV();
       }
     }
   }
 
-  v6 = [(IDSLinkManager *)self globalLinkForSessionID:v4, v12];
+  v6 = [(IDSLinkManager *)self globalLinkForSessionID:deviceCopy, v12];
   if (v6)
   {
     v7 = OSLogHandleForTransportCategory();
@@ -6340,7 +6340,7 @@ LABEL_36:
       *buf = 138412546;
       v16 = v6;
       v17 = 2112;
-      v18 = v4;
+      v18 = deviceCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Remove %@ for session %@", buf, 0x16u);
     }
 
@@ -6349,19 +6349,19 @@ LABEL_36:
       if (_IDSShouldLogTransport())
       {
         v13 = v6;
-        v14 = v4;
+        v14 = deviceCopy;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
           v13 = v6;
-          v14 = v4;
+          v14 = deviceCopy;
           _IDSLogV();
         }
       }
     }
 
     [v6 invalidate];
-    [(IDSLinkManager *)self clearGlobalLinkForSessionID:v4];
+    [(IDSLinkManager *)self clearGlobalLinkForSessionID:deviceCopy];
   }
 
   if (!self->_btLinkManager && ![(IDSLinkManager *)self _hasGlobalLinkConnectingOrConnected])
@@ -6371,24 +6371,24 @@ LABEL_36:
   }
 
   Value = 0;
-  if (v4 && self->_deviceIDToGlobalLinkUp)
+  if (deviceCopy && self->_deviceIDToGlobalLinkUp)
   {
-    Value = CFDictionaryGetValue(self->_deviceIDToGlobalLinkUp, v4);
+    Value = CFDictionaryGetValue(self->_deviceIDToGlobalLinkUp, deviceCopy);
   }
 
   if ([Value BOOLValue])
   {
-    CFDictionarySetValue(self->_deviceIDToGlobalLinkUp, v4, &__kCFBooleanFalse);
+    CFDictionarySetValue(self->_deviceIDToGlobalLinkUp, deviceCopy, &__kCFBooleanFalse);
   }
 
-  if ([v4 isEqualToString:kIDSDefaultPairedDeviceID])
+  if ([deviceCopy isEqualToString:kIDSDefaultPairedDeviceID])
   {
     self->_delayedDefaultDeviceAllocateRequest = 0;
     v9 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v16 = v4;
+      v16 = deviceCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "IDSGlobalLink is brought down for %@.", buf, 0xCu);
     }
 
@@ -6396,11 +6396,11 @@ LABEL_36:
     {
       if (_IDSShouldLogTransport())
       {
-        v13 = v4;
+        v13 = deviceCopy;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
-          v13 = v4;
+          v13 = deviceCopy;
           _IDSLogV();
         }
       }
@@ -6437,25 +6437,25 @@ LABEL_36:
 
   else
   {
-    [(IDSLinkManager *)self _removeAllLinksForDeviceID:v4];
+    [(IDSLinkManager *)self _removeAllLinksForDeviceID:deviceCopy];
   }
 }
 
-- (void)connectGlobalLinkForDevice:(id)a3 sessionInfo:(id)a4 connectReadyHandler:(id)a5 withLocalInterfacePreference:(int)a6
+- (void)connectGlobalLinkForDevice:(id)device sessionInfo:(id)info connectReadyHandler:(id)handler withLocalInterfacePreference:(int)preference
 {
-  v6 = *&a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  v6 = *&preference;
+  deviceCopy = device;
+  infoCopy = info;
+  handlerCopy = handler;
   if (!self->_hasFixedDestination)
   {
-    if ([(__CFString *)v10 isEqualToString:kIDSDefaultPairedDeviceID]&& self->_currentDefaultDeviceLinkType == 1)
+    if ([(__CFString *)deviceCopy isEqualToString:kIDSDefaultPairedDeviceID]&& self->_currentDefaultDeviceLinkType == 1)
     {
       v13 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v42 = v10;
+        v42 = deviceCopy;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Magent is connected, skip connecting GlobalLink for %@.", buf, 0xCu);
       }
 
@@ -6475,22 +6475,22 @@ LABEL_36:
     else
     {
       Value = 0;
-      if (v11 && kIDSQRAllocateKey_RequestID)
+      if (infoCopy && kIDSQRAllocateKey_RequestID)
       {
-        Value = CFDictionaryGetValue(v11, kIDSQRAllocateKey_RequestID);
+        Value = CFDictionaryGetValue(infoCopy, kIDSQRAllocateKey_RequestID);
       }
 
       v15 = Value;
-      [(IDSLinkManager *)self _removeAllocateRequestForDevice:v10 requestID:v15];
+      [(IDSLinkManager *)self _removeAllocateRequestForDevice:deviceCopy requestID:v15];
       v16 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
         v42 = v15;
         v43 = 2112;
-        v44 = v10;
+        v44 = deviceCopy;
         v45 = 2112;
-        v46 = v11;
+        v46 = infoCopy;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Receive allocate response for request %@, device %@. connectGlobalLinkForDevice with sessionInfo %@.", buf, 0x20u);
       }
 
@@ -6498,14 +6498,14 @@ LABEL_36:
       {
         if (_IDSShouldLogTransport())
         {
-          v34 = v10;
-          v36 = v11;
+          v34 = deviceCopy;
+          v36 = infoCopy;
           v32 = v15;
           _IDSLogTransport();
           if (_IDSShouldLog())
           {
-            v34 = v10;
-            v36 = v11;
+            v34 = deviceCopy;
+            v36 = infoCopy;
             v32 = v15;
             _IDSLogV();
           }
@@ -6515,7 +6515,7 @@ LABEL_36:
       v17 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [(__CFDictionary *)v11 objectForKeyedSubscript:kIDSQRAllocateKey_StreamInfoSubscribedStreams];
+        v18 = [(__CFDictionary *)infoCopy objectForKeyedSubscript:kIDSQRAllocateKey_StreamInfoSubscribedStreams];
         *buf = 138412290;
         v42 = v18;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "connectGlobalLinkForDevice: sessionInfo[kIDSQRAllocateKey_StreamInfoSubscribedStreams]:%@", buf, 0xCu);
@@ -6526,21 +6526,21 @@ LABEL_36:
         if (_IDSShouldLogTransport())
         {
           v19 = kIDSQRAllocateKey_StreamInfoSubscribedStreams;
-          v32 = [(__CFDictionary *)v11 objectForKeyedSubscript:kIDSQRAllocateKey_StreamInfoSubscribedStreams];
+          v32 = [(__CFDictionary *)infoCopy objectForKeyedSubscript:kIDSQRAllocateKey_StreamInfoSubscribedStreams];
           _IDSLogTransport();
 
           if (_IDSShouldLog())
           {
-            v32 = [(__CFDictionary *)v11 objectForKeyedSubscript:v19, v32];
+            v32 = [(__CFDictionary *)infoCopy objectForKeyedSubscript:v19, v32];
             _IDSLogV();
           }
         }
       }
 
-      v20 = [(IDSLinkManager *)self _newGlobalLinkForDeviceUniqueID:0 cbuuid:v10 options:v11, v32, v34, v36];
+      v20 = [(IDSLinkManager *)self _newGlobalLinkForDeviceUniqueID:0 cbuuid:deviceCopy options:infoCopy, v32, v34, v36];
       if (kIDSQRAllocateKey_AlternateDelegate)
       {
-        v21 = v11 != 0;
+        v21 = infoCopy != 0;
       }
 
       else
@@ -6550,7 +6550,7 @@ LABEL_36:
 
       if (v21)
       {
-        v22 = CFDictionaryGetValue(v11, kIDSQRAllocateKey_AlternateDelegate);
+        v22 = CFDictionaryGetValue(infoCopy, kIDSQRAllocateKey_AlternateDelegate);
       }
 
       else
@@ -6565,21 +6565,21 @@ LABEL_36:
         *buf = 138412546;
         v42 = v23;
         v43 = 2112;
-        v44 = v10;
+        v44 = deviceCopy;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Set alternateDelegate %@ for %@", buf, 0x16u);
       }
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
         v33 = v23;
-        v35 = v10;
+        v35 = deviceCopy;
         _IDSLogV();
       }
 
       [v20 setAlternateDelegate:{v23, v33, v35}];
       if (kIDSQRAllocateKey_ClientUniquePID)
       {
-        v25 = v11 != 0;
+        v25 = infoCopy != 0;
       }
 
       else
@@ -6589,7 +6589,7 @@ LABEL_36:
 
       if (v25)
       {
-        v26 = CFDictionaryGetValue(v11, kIDSQRAllocateKey_ClientUniquePID);
+        v26 = CFDictionaryGetValue(infoCopy, kIDSQRAllocateKey_ClientUniquePID);
       }
 
       else
@@ -6601,7 +6601,7 @@ LABEL_36:
       [v20 setClientUniquePID:{objc_msgSend(v27, "unsignedLongLongValue")}];
       if (v20)
       {
-        [v20 connectWithSessionInfo:v11 interfaceAddress:0 joinSession:1 completionHandler:v12 withLocalInterfacePreference:v6];
+        [v20 connectWithSessionInfo:infoCopy interfaceAddress:0 joinSession:1 completionHandler:handlerCopy withLocalInterfacePreference:v6];
       }
 
       else
@@ -6629,14 +6629,14 @@ LABEL_36:
           }
         }
 
-        if (v12)
+        if (handlerCopy)
         {
           v30 = im_primary_queue();
           block[0] = _NSConcreteStackBlock;
           block[1] = 3221225472;
           block[2] = sub_100548FB4;
           block[3] = &unk_100BD7298;
-          v40 = v12;
+          v40 = handlerCopy;
           v39 = v37;
           v31 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, QOS_CLASS_USER_INITIATED, 0, block);
           dispatch_async(v30, v31);
@@ -6646,12 +6646,12 @@ LABEL_36:
   }
 }
 
-- (void)disconnectGlobalLinkForDevice:(id)a3 isReinitiating:(BOOL)a4 completionHandler:(id)a5
+- (void)disconnectGlobalLinkForDevice:(id)device isReinitiating:(BOOL)reinitiating completionHandler:(id)handler
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(IDSLinkManager *)self globalLinkForSessionID:v8];
+  reinitiatingCopy = reinitiating;
+  deviceCopy = device;
+  handlerCopy = handler;
+  v10 = [(IDSLinkManager *)self globalLinkForSessionID:deviceCopy];
   if (!v10)
   {
     goto LABEL_10;
@@ -6661,7 +6661,7 @@ LABEL_36:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v8;
+    v18 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "disconnectGlobalLinkForDevice for  %@", buf, 0xCu);
   }
 
@@ -6669,11 +6669,11 @@ LABEL_36:
   {
     if (_IDSShouldLogTransport())
     {
-      v14 = v8;
+      v14 = deviceCopy;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v14 = v8;
+        v14 = deviceCopy;
         _IDSLogV();
       }
     }
@@ -6681,38 +6681,38 @@ LABEL_36:
 
   if ([v10 state] <= 4)
   {
-    [v10 disconnectWithCompletionHandler:v9 isReinitiating:v6];
+    [v10 disconnectWithCompletionHandler:handlerCopy isReinitiating:reinitiatingCopy];
   }
 
   else
   {
 LABEL_10:
-    if (v9)
+    if (handlerCopy)
     {
       v12 = im_primary_queue();
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_1005491F4;
       block[3] = &unk_100BD7270;
-      v16 = v9;
+      v16 = handlerCopy;
       v13 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INTERACTIVE, 0, block);
       dispatch_async(v12, v13);
     }
   }
 }
 
-- (void)_addAllocateRequestForDevice:(id)a3 requestID:(id)a4
+- (void)_addAllocateRequestForDevice:(id)device requestID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6 || (deviceIDToAllocRequests = self->_deviceIDToAllocRequests) == 0 || (v9 = CFDictionaryGetValue(deviceIDToAllocRequests, v6)) == 0)
+  deviceCopy = device;
+  dCopy = d;
+  if (!deviceCopy || (deviceIDToAllocRequests = self->_deviceIDToAllocRequests) == 0 || (v9 = CFDictionaryGetValue(deviceIDToAllocRequests, deviceCopy)) == 0)
   {
     v9 = objc_alloc_init(NSMutableArray);
   }
 
-  if (v7 && v9)
+  if (dCopy && v9)
   {
-    CFArrayAppendValue(v9, v7);
+    CFArrayAppendValue(v9, dCopy);
   }
 
   if (!self->_deviceIDToAllocRequests)
@@ -6725,7 +6725,7 @@ LABEL_10:
   v12 = v9;
   if (v9)
   {
-    CFDictionarySetValue(self->_deviceIDToAllocRequests, v6, v12);
+    CFDictionarySetValue(self->_deviceIDToAllocRequests, deviceCopy, v12);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -6737,9 +6737,9 @@ LABEL_10:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v15 = v7;
+    v15 = dCopy;
     v16 = 2112;
-    v17 = v6;
+    v17 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "allocate request %@ is pending for %@", buf, 0x16u);
   }
 
@@ -6756,32 +6756,32 @@ LABEL_10:
   }
 }
 
-- (void)_removeAllocateRequestForDevice:(id)a3 requestID:(id)a4
+- (void)_removeAllocateRequestForDevice:(id)device requestID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   Value = 0;
-  v8 = v6;
-  if (a3 && self->_deviceIDToAllocRequests)
+  v8 = dCopy;
+  if (device && self->_deviceIDToAllocRequests)
   {
-    Value = CFDictionaryGetValue(self->_deviceIDToAllocRequests, a3);
-    v6 = v8;
+    Value = CFDictionaryGetValue(self->_deviceIDToAllocRequests, device);
+    dCopy = v8;
   }
 
-  [Value removeObject:v6];
+  [Value removeObject:dCopy];
 }
 
-- (void)handleAllocateRequestFailureForDevice:(id)a3 requestID:(id)a4 errorCode:(int)a5
+- (void)handleAllocateRequestFailureForDevice:(id)device requestID:(id)d errorCode:(int)code
 {
-  v5 = *&a5;
-  v8 = a3;
-  v9 = a4;
+  v5 = *&code;
+  deviceCopy = device;
+  dCopy = d;
   v10 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v16 = v8;
+    v16 = deviceCopy;
     v17 = 2112;
-    v18 = v9;
+    v18 = dCopy;
     v19 = 1024;
     v20 = v5;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "handleAllocateRequestFailureForDevice - deviceID %@, requestID %@, erroCode %d", buf, 0x1Cu);
@@ -6791,55 +6791,55 @@ LABEL_10:
   {
     if (_IDSShouldLogTransport())
     {
-      v13 = v9;
+      v13 = dCopy;
       v14 = v5;
-      v12 = v8;
+      v12 = deviceCopy;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v13 = v9;
+        v13 = dCopy;
         v14 = v5;
-        v12 = v8;
+        v12 = deviceCopy;
         _IDSLogV();
       }
     }
   }
 
-  [(IDSLinkManager *)self _removeAllocateRequestForDevice:v8 requestID:v9, v12, v13, v14];
+  [(IDSLinkManager *)self _removeAllocateRequestForDevice:deviceCopy requestID:dCopy, v12, v13, v14];
   Value = 0;
-  if (v8 && self->_deviceIDToGlobalLinkUp)
+  if (deviceCopy && self->_deviceIDToGlobalLinkUp)
   {
-    Value = CFDictionaryGetValue(self->_deviceIDToGlobalLinkUp, v8);
+    Value = CFDictionaryGetValue(self->_deviceIDToGlobalLinkUp, deviceCopy);
   }
 
   if ([Value BOOLValue])
   {
-    CFDictionarySetValue(self->_deviceIDToGlobalLinkUp, v8, &__kCFBooleanFalse);
+    CFDictionarySetValue(self->_deviceIDToGlobalLinkUp, deviceCopy, &__kCFBooleanFalse);
   }
 }
 
-- (void)getSessionInfo:(id)a3 relayGroupID:(id)a4 relaySessionID:(id)a5 options:(id)a6
+- (void)getSessionInfo:(id)info relayGroupID:(id)d relaySessionID:(id)iD options:(id)options
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  infoCopy = info;
+  dCopy = d;
+  iDCopy = iD;
+  optionsCopy = options;
   Value = 0;
-  if (v13 && IDSGlobalLinkOptionSessionInfoRequestTypeKey)
+  if (optionsCopy && IDSGlobalLinkOptionSessionInfoRequestTypeKey)
   {
-    Value = CFDictionaryGetValue(v13, IDSGlobalLinkOptionSessionInfoRequestTypeKey);
+    Value = CFDictionaryGetValue(optionsCopy, IDSGlobalLinkOptionSessionInfoRequestTypeKey);
   }
 
-  v15 = [Value unsignedIntValue];
+  unsignedIntValue = [Value unsignedIntValue];
   v16 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v41 = v11;
+    v41 = dCopy;
     v42 = 2112;
-    v43 = v12;
+    v43 = iDCopy;
     v44 = 2112;
-    v45 = v13;
+    v45 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "get session info for group %@, session %@, options %@", buf, 0x20u);
   }
 
@@ -6847,50 +6847,50 @@ LABEL_10:
   {
     if (_IDSShouldLogTransport())
     {
-      v37 = v12;
-      v39 = v13;
-      v35 = v11;
+      v37 = iDCopy;
+      v39 = optionsCopy;
+      v35 = dCopy;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v37 = v12;
-        v39 = v13;
-        v35 = v11;
+        v37 = iDCopy;
+        v39 = optionsCopy;
+        v35 = dCopy;
         _IDSLogV();
       }
     }
   }
 
-  v17 = [(IDSLinkManager *)self globalLinkForSessionID:v10, v35, v37, v39];
+  v17 = [(IDSLinkManager *)self globalLinkForSessionID:infoCopy, v35, v37, v39];
   v18 = v17;
-  if (v17 || v15 != 1)
+  if (v17 || unsignedIntValue != 1)
   {
     if (v17)
     {
-      if (v15 != 1)
+      if (unsignedIntValue != 1)
       {
-        v23 = v13;
+        v23 = optionsCopy;
 LABEL_53:
-        [v18 getSessionInfo:v11 relaySessionID:v12 requestType:v15 options:v23];
+        [v18 getSessionInfo:dCopy relaySessionID:iDCopy requestType:unsignedIntValue options:v23];
 
         goto LABEL_54;
       }
 
 LABEL_43:
       v30 = 0;
-      if (v13 && IDSGlobalLinkOptionQRSessionInfoKey)
+      if (optionsCopy && IDSGlobalLinkOptionQRSessionInfoKey)
       {
-        v30 = CFDictionaryGetValue(v13, IDSGlobalLinkOptionQRSessionInfoKey);
+        v30 = CFDictionaryGetValue(optionsCopy, IDSGlobalLinkOptionQRSessionInfoKey);
       }
 
       v23 = v30;
       v31 = IDSGlobalLinkOptionSessionInfoCommandFlagKey;
-      v32 = [(__CFDictionary *)v13 objectForKey:IDSGlobalLinkOptionSessionInfoCommandFlagKey];
-      v33 = [v32 unsignedIntValue];
+      v32 = [(__CFDictionary *)optionsCopy objectForKey:IDSGlobalLinkOptionSessionInfoCommandFlagKey];
+      unsignedIntValue2 = [v32 unsignedIntValue];
 
-      if (v33)
+      if (unsignedIntValue2)
       {
-        v34 = [NSNumber numberWithUnsignedInt:v33];
+        v34 = [NSNumber numberWithUnsignedInt:unsignedIntValue2];
         if (v34)
         {
           CFDictionarySetValue(v23, v31, v34);
@@ -6909,7 +6909,7 @@ LABEL_43:
   else
   {
     v19 = IDSGlobalLinkOptionNewLinkOptionsKey;
-    if (v13)
+    if (optionsCopy)
     {
       v20 = IDSGlobalLinkOptionNewLinkOptionsKey == 0;
     }
@@ -6927,15 +6927,15 @@ LABEL_43:
 
     else
     {
-      v22 = CFDictionaryGetValue(v13, IDSGlobalLinkOptionNewLinkOptionsKey);
+      v22 = CFDictionaryGetValue(optionsCopy, IDSGlobalLinkOptionNewLinkOptionsKey);
     }
 
-    v18 = [(IDSLinkManager *)self _newGlobalLinkForDeviceUniqueID:0 cbuuid:v10 options:v22];
+    v18 = [(IDSLinkManager *)self _newGlobalLinkForDeviceUniqueID:0 cbuuid:infoCopy options:v22];
     if (v18)
     {
       if (v21)
       {
-        v24 = CFDictionaryGetValue(v13, v19);
+        v24 = CFDictionaryGetValue(optionsCopy, v19);
         v25 = 0;
         if (v24 && kIDSQRAllocateKey_AlternateDelegate)
         {
@@ -6956,21 +6956,21 @@ LABEL_43:
         *buf = 138412546;
         v41 = v26;
         v42 = 2112;
-        v43 = v10;
+        v43 = infoCopy;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Set alternateDelegate %@ for %@", buf, 0x16u);
       }
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
         v36 = v26;
-        v38 = v10;
+        v38 = infoCopy;
         _IDSLogV();
       }
 
       [v18 setAlternateDelegate:{v26, v36, v38}];
       if (kIDSQRAllocateKey_ClientUniquePID)
       {
-        v28 = v13 != 0;
+        v28 = optionsCopy != 0;
       }
 
       else
@@ -6980,7 +6980,7 @@ LABEL_43:
 
       if (v28)
       {
-        v29 = CFDictionaryGetValue(v13, kIDSQRAllocateKey_ClientUniquePID);
+        v29 = CFDictionaryGetValue(optionsCopy, kIDSQRAllocateKey_ClientUniquePID);
       }
 
       else
@@ -6994,19 +6994,19 @@ LABEL_43:
     }
   }
 
-  v23 = v13;
+  v23 = optionsCopy;
 LABEL_54:
 }
 
-- (void)setIsOnPhoneCall:(BOOL)a3 forDeviceID:(id)a4
+- (void)setIsOnPhoneCall:(BOOL)call forDeviceID:(id)d
 {
-  v4 = a3;
-  v6 = a4;
+  callCopy = call;
+  dCopy = d;
   v7 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = @"NO";
-    if (v4)
+    if (callCopy)
     {
       v8 = @"YES";
     }
@@ -7014,66 +7014,66 @@ LABEL_54:
     *buf = 138412546;
     v14 = v8;
     v15 = 2112;
-    v16 = v6;
+    v16 = dCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "setIsOnPhoneCall %@ for deviceID %@", buf, 0x16u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
   {
-    v9 = v4 ? @"YES" : @"NO";
+    v9 = callCopy ? @"YES" : @"NO";
     v11 = v9;
-    v12 = v6;
+    v12 = dCopy;
     _IDSLogTransport();
     if (_IDSShouldLog())
     {
       v11 = v9;
-      v12 = v6;
+      v12 = dCopy;
       _IDSLogV();
     }
   }
 
-  if ([v6 isEqualToString:{kIDSDefaultPairedDeviceID, v11, v12}])
+  if ([dCopy isEqualToString:{kIDSDefaultPairedDeviceID, v11, v12}])
   {
     isDefaultDeviceOnPhoneCall = self->_isDefaultDeviceOnPhoneCall;
-    self->_isDefaultDeviceOnPhoneCall = v4;
-    if (isDefaultDeviceOnPhoneCall && !v4 && self->_shouldBringWiFiDown)
+    self->_isDefaultDeviceOnPhoneCall = callCopy;
+    if (isDefaultDeviceOnPhoneCall && !callCopy && self->_shouldBringWiFiDown)
     {
       [(IDSLinkManager *)self _bringUpWiFi:0];
     }
   }
 }
 
-- (void)link:(id)a3 didConnectForDeviceUniqueID:(id)a4 cbuuid:(id)a5
+- (void)link:(id)link didConnectForDeviceUniqueID:(id)d cbuuid:(id)cbuuid
 {
-  v8 = a3;
-  v20 = a4;
-  v9 = a5;
+  linkCopy = link;
+  dCopy = d;
+  cbuuidCopy = cbuuid;
   v10 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v28 = v8;
+    v28 = linkCopy;
     v29 = 2112;
-    v30 = v9;
+    v30 = cbuuidCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%@ didConnectForDevice %@", buf, 0x16u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v18 = v8;
-    v19 = v9;
+    v18 = linkCopy;
+    v19 = cbuuidCopy;
     _IDSLogV();
   }
 
-  [(IDSLinkManager *)self _setBestLinkToCurrent:v9, v18, v19];
+  [(IDSLinkManager *)self _setBestLinkToCurrent:cbuuidCopy, v18, v19];
   if (self->_hasFixedDestination)
   {
-    v11 = [(NSDictionary *)self->_deviceIDToUDPDestinations allKeys];
+    allKeys = [(NSDictionary *)self->_deviceIDToUDPDestinations allKeys];
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    v12 = [allKeys countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v12)
     {
       v13 = *v23;
@@ -7083,7 +7083,7 @@ LABEL_54:
         {
           if (*v23 != v13)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(allKeys);
           }
 
           v15 = *(*(&v22 + 1) + 8 * i);
@@ -7091,94 +7091,94 @@ LABEL_54:
           [v16 setAlwaysConnectedForCBUUID:v15];
         }
 
-        v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v12 = [allKeys countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v12);
     }
 
-    v21 = v8;
-    v17 = v11;
+    v21 = linkCopy;
+    v17 = allKeys;
     IDSTransportThreadAddBlockAfter();
   }
 }
 
-- (void)link:(id)a3 didDisconnectForDeviceUniqueID:(id)a4 cbuuid:(id)a5
+- (void)link:(id)link didDisconnectForDeviceUniqueID:(id)d cbuuid:(id)cbuuid
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  linkCopy = link;
+  dCopy = d;
+  cbuuidCopy = cbuuid;
   v11 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v16 = v8;
+    v16 = linkCopy;
     v17 = 2112;
-    v18 = v10;
+    v18 = cbuuidCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%@ didDisconnectForDevice %@", buf, 0x16u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v13 = v8;
-    v14 = v10;
+    v13 = linkCopy;
+    v14 = cbuuidCopy;
     _IDSLogV();
   }
 
-  v12 = [(IDSLinkManager *)self _linkKeyForLink:v8, v13, v14];
-  [(IDSLinkManager *)self _removeLinkForDeviceID:v10 linkKey:v12 verifyWithLink:v8];
+  v12 = [(IDSLinkManager *)self _linkKeyForLink:linkCopy, v13, v14];
+  [(IDSLinkManager *)self _removeLinkForDeviceID:cbuuidCopy linkKey:v12 verifyWithLink:linkCopy];
   if (([v12 isEqualToString:@"IDSLinkBTKey"] & 1) != 0 || objc_msgSend(v12, "isEqualToString:", @"IDSLinkBTLEKey"))
   {
-    [(IDSBTLinkManager *)self->_btLinkManager removeLink:v8];
-    [(IDSWPLinkManager *)self->_wpLinkManager removeLink:v8];
+    [(IDSBTLinkManager *)self->_btLinkManager removeLink:linkCopy];
+    [(IDSWPLinkManager *)self->_wpLinkManager removeLink:linkCopy];
   }
 }
 
-- (BOOL)link:(id)a3 didReceivePacket:(id *)a4 fromDeviceUniqueID:(id)a5 cbuuid:(id)a6
+- (BOOL)link:(id)link didReceivePacket:(id *)packet fromDeviceUniqueID:(id)d cbuuid:(id)cbuuid
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  var2 = a4->var2;
+  linkCopy = link;
+  dCopy = d;
+  cbuuidCopy = cbuuid;
+  var2 = packet->var2;
   v14 = vdupq_n_s64(1uLL);
   v14.i64[0] = var2;
   *&self->_totalBytesReceived = vaddq_s64(*&self->_totalBytesReceived, v14);
   if (var2 >= 1)
   {
-    if ((*a4->var0 & 0xE0) == 0x40 && !a4->var6)
+    if ((*packet->var0 & 0xE0) == 0x40 && !packet->var6)
     {
-      [(IDSLinkManager *)self _processLMCommandPacket:a4 fromLink:v10 deviceUniqueID:v11 cbuuid:v12];
+      [(IDSLinkManager *)self _processLMCommandPacket:packet fromLink:linkCopy deviceUniqueID:dCopy cbuuid:cbuuidCopy];
       v17 = 1;
       goto LABEL_10;
     }
 
-    if ((*a4->var0 & 0x20) != 0)
+    if ((*packet->var0 & 0x20) != 0)
     {
       kdebug_trace();
     }
   }
 
-  v15 = [v10 alternateDelegate];
-  v16 = v15;
-  if (v15)
+  alternateDelegate = [linkCopy alternateDelegate];
+  v16 = alternateDelegate;
+  if (alternateDelegate)
   {
-    v17 = [v15 link:self didReceivePacket:a4 fromDeviceUniqueID:v11 cbuuid:v12];
+    v17 = [alternateDelegate link:self didReceivePacket:packet fromDeviceUniqueID:dCopy cbuuid:cbuuidCopy];
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v17 = [WeakRetained link:self didReceivePacket:a4 fromDeviceUniqueID:v11 cbuuid:v12];
+    v17 = [WeakRetained link:self didReceivePacket:packet fromDeviceUniqueID:dCopy cbuuid:cbuuidCopy];
   }
 
 LABEL_10:
   return v17;
 }
 
-- (void)link:(id)a3 hostAwakeDidChange:(BOOL)a4 deviceUniqueID:(id)a5 cbuuid:(id)a6
+- (void)link:(id)link hostAwakeDidChange:(BOOL)change deviceUniqueID:(id)d cbuuid:(id)cbuuid
 {
-  v7 = [a3 cbuuid];
-  v8 = [v7 isEqualToString:kIDSDefaultPairedDeviceID];
+  cbuuid = [link cbuuid];
+  v8 = [cbuuid isEqualToString:kIDSDefaultPairedDeviceID];
 
   if (v8)
   {
@@ -7187,17 +7187,17 @@ LABEL_10:
     block[1] = 3221225472;
     block[2] = sub_10054A414;
     block[3] = &unk_100BDFD48;
-    v11 = a4;
+    changeCopy = change;
     dispatch_async(v9, block);
   }
 }
 
-- (void)link:(id)a3 hasSpaceAvailable:(BOOL)a4 deviceUniqueID:(id)a5 cbuuid:(id)a6
+- (void)link:(id)link hasSpaceAvailable:(BOOL)available deviceUniqueID:(id)d cbuuid:(id)cbuuid
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  availableCopy = available;
+  linkCopy = link;
+  dCopy = d;
+  cbuuidCopy = cbuuid;
   if (!self->_isCentral && self->_doesDefaultDevicePreferInfraWiFi && self->_currentDefaultDeviceLinkType == 1)
   {
     v13 = OSLogHandleForTransportCategory();
@@ -7223,22 +7223,22 @@ LABEL_10:
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained link:self hasSpaceAvailable:v8 deviceUniqueID:v11 cbuuid:v12];
+    [WeakRetained link:self hasSpaceAvailable:availableCopy deviceUniqueID:dCopy cbuuid:cbuuidCopy];
   }
 }
 
-- (void)link:(id)a3 didReceiveSKEData:(id)a4
+- (void)link:(id)link didReceiveSKEData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 alternateDelegate];
+  linkCopy = link;
+  dataCopy = data;
+  alternateDelegate = [linkCopy alternateDelegate];
   v9 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v12 = v8;
+    v12 = alternateDelegate;
     v13 = 1024;
-    v14 = [v7 length];
+    v14 = [dataCopy length];
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "didReceiveSKEData - alternateDelegate:%@, skeData:%d bytes.", buf, 0x12u);
   }
 
@@ -7246,38 +7246,38 @@ LABEL_10:
   {
     if (_IDSShouldLogTransport())
     {
-      v10 = [v7 length];
+      v10 = [dataCopy length];
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        [v7 length];
+        [dataCopy length];
         _IDSLogV();
       }
     }
   }
 
-  if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (alternateDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v8 link:self didReceiveSKEData:v7];
+    [alternateDelegate link:self didReceiveSKEData:dataCopy];
   }
 }
 
-- (void)link:(id)a3 didReceiveKeyMaterialMessageData:(id)a4 fromParticipantIDs:(id)a5 toParticipantID:(id)a6
+- (void)link:(id)link didReceiveKeyMaterialMessageData:(id)data fromParticipantIDs:(id)ds toParticipantID:(id)d
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 alternateDelegate];
+  linkCopy = link;
+  dataCopy = data;
+  dsCopy = ds;
+  dCopy = d;
+  alternateDelegate = [linkCopy alternateDelegate];
   v15 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v17 = v14;
+    v17 = alternateDelegate;
     v18 = 2112;
-    v19 = v12;
+    v19 = dsCopy;
     v20 = 2112;
-    v21 = v13;
+    v21 = dCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "didReceiveKeyMaterialMessage - alternateDelegate:%@ from %@ to %@", buf, 0x20u);
   }
 
@@ -7293,25 +7293,25 @@ LABEL_10:
     }
   }
 
-  if (v14 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (alternateDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v14 link:self didReceiveKeyMaterialMessageData:v11 fromParticipantIDs:v12 toParticipantID:v13];
+    [alternateDelegate link:self didReceiveKeyMaterialMessageData:dataCopy fromParticipantIDs:dsCopy toParticipantID:dCopy];
   }
 }
 
-- (void)link:(id)a3 didReceiveMaterialInfo:(id)a4 material:(id)a5
+- (void)link:(id)link didReceiveMaterialInfo:(id)info material:(id)material
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 alternateDelegate];
+  linkCopy = link;
+  infoCopy = info;
+  materialCopy = material;
+  alternateDelegate = [linkCopy alternateDelegate];
   v12 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v14 = v11;
+    v14 = alternateDelegate;
     v15 = 2112;
-    v16 = v9;
+    v16 = infoCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "didReceiveMaterialInfo - alternateDelegate:%@ materialInfo:%@", buf, 0x16u);
   }
 
@@ -7327,24 +7327,24 @@ LABEL_10:
     }
   }
 
-  if (v11 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (alternateDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v11 link:self didReceiveMaterialInfo:v9 material:v10];
+    [alternateDelegate link:self didReceiveMaterialInfo:infoCopy material:materialCopy];
   }
 }
 
-- (void)link:(id)a3 didConnectOverCloud:(id)a4 cbuuid:(id)a5
+- (void)link:(id)link didConnectOverCloud:(id)cloud cbuuid:(id)cbuuid
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  linkCopy = link;
+  cloudCopy = cloud;
+  cbuuidCopy = cbuuid;
   if (self->_shouldStartBTLinkManager)
   {
     v11 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v10;
+      v18 = cbuuidCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "didConnectOverCloud for %@.", buf, 0xCu);
     }
 
@@ -7352,18 +7352,18 @@ LABEL_10:
     {
       if (_IDSShouldLogTransport())
       {
-        v14 = v10;
+        v14 = cbuuidCopy;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
-          v14 = v10;
+          v14 = cbuuidCopy;
           _IDSLogV();
         }
       }
     }
 
-    [(IDSLinkManager *)self _setBestLinkToCurrent:v10, v14];
-    if ([v10 isEqualToString:kIDSDefaultPairedDeviceID])
+    [(IDSLinkManager *)self _setBestLinkToCurrent:cbuuidCopy, v14];
+    if ([cbuuidCopy isEqualToString:kIDSDefaultPairedDeviceID])
     {
       [(IDSLinkManager *)self _connectivityChangedForDefaultDevice:self->_lastSentDefaultDeviceConnectivity isCloudConnected:1];
     }
@@ -7375,7 +7375,7 @@ LABEL_10:
       block[1] = 3221225472;
       block[2] = sub_10054AE10;
       block[3] = &unk_100BD6ED0;
-      v16 = v10;
+      v16 = cbuuidCopy;
       dispatch_async(v13, block);
     }
   }
@@ -7403,16 +7403,16 @@ LABEL_10:
   }
 }
 
-- (void)link:(id)a3 didFailToConnectOverCloud:(id)a4 cbuuid:(id)a5
+- (void)link:(id)link didFailToConnectOverCloud:(id)cloud cbuuid:(id)cbuuid
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  linkCopy = link;
+  cloudCopy = cloud;
+  cbuuidCopy = cbuuid;
   v11 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v10;
+    v17 = cbuuidCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "didFailToConnectOverCloud for %@.", buf, 0xCu);
   }
 
@@ -7420,19 +7420,19 @@ LABEL_10:
   {
     if (_IDSShouldLogTransport())
     {
-      v13 = v10;
+      v13 = cbuuidCopy;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v13 = v10;
+        v13 = cbuuidCopy;
         _IDSLogV();
       }
     }
   }
 
-  [(IDSLinkManager *)self disconnectGlobalLinkForDevice:v10 isReinitiating:0 completionHandler:0, v13];
-  [(IDSLinkManager *)self _setBestLinkToCurrent:v10];
-  if ([v10 isEqualToString:kIDSDefaultPairedDeviceID])
+  [(IDSLinkManager *)self disconnectGlobalLinkForDevice:cbuuidCopy isReinitiating:0 completionHandler:0, v13];
+  [(IDSLinkManager *)self _setBestLinkToCurrent:cbuuidCopy];
+  if ([cbuuidCopy isEqualToString:kIDSDefaultPairedDeviceID])
   {
     [(IDSLinkManager *)self _connectivityChangedForDefaultDevice:self->_lastSentDefaultDeviceConnectivity isCloudConnected:0];
   }
@@ -7444,21 +7444,21 @@ LABEL_10:
     block[1] = 3221225472;
     block[2] = sub_10054B090;
     block[3] = &unk_100BD6ED0;
-    v15 = v10;
+    v15 = cbuuidCopy;
     dispatch_async(v12, block);
   }
 }
 
-- (void)link:(id)a3 didDisconnectOverCloud:(id)a4 cbuuid:(id)a5
+- (void)link:(id)link didDisconnectOverCloud:(id)cloud cbuuid:(id)cbuuid
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  linkCopy = link;
+  cloudCopy = cloud;
+  cbuuidCopy = cbuuid;
   v11 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v10;
+    v21 = cbuuidCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "didDisconnectOverCloud for %@.", buf, 0xCu);
   }
 
@@ -7466,21 +7466,21 @@ LABEL_10:
   {
     if (_IDSShouldLogTransport())
     {
-      v17 = v10;
+      v17 = cbuuidCopy;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v17 = v10;
+        v17 = cbuuidCopy;
         _IDSLogV();
       }
     }
   }
 
-  [(IDSLinkManager *)self stopGlobalLinkForDevice:v10, v17];
-  [(IDSLinkManager *)self _setBestLinkToCurrent:v10];
-  v12 = [v8 cbuuid];
+  [(IDSLinkManager *)self stopGlobalLinkForDevice:cbuuidCopy, v17];
+  [(IDSLinkManager *)self _setBestLinkToCurrent:cbuuidCopy];
+  cbuuid = [linkCopy cbuuid];
   v13 = kIDSDefaultPairedDeviceID;
-  v14 = [v12 isEqualToString:kIDSDefaultPairedDeviceID];
+  v14 = [cbuuid isEqualToString:kIDSDefaultPairedDeviceID];
 
   if (v14)
   {
@@ -7517,28 +7517,28 @@ LABEL_10:
     block[1] = 3221225472;
     block[2] = sub_10054B400;
     block[3] = &unk_100BD6ED0;
-    v19 = v10;
+    v19 = cbuuidCopy;
     dispatch_async(v16, block);
   }
 }
 
-- (void)link:(id)a3 didConnectUnderlyingLink:(char)a4 linkUUID:(id)a5 localAttributes:(id)a6 remoteAttributes:(id)a7
+- (void)link:(id)link didConnectUnderlyingLink:(char)underlyingLink linkUUID:(id)d localAttributes:(id)attributes remoteAttributes:(id)remoteAttributes
 {
-  v10 = a4;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [v12 alternateDelegate];
+  underlyingLinkCopy = underlyingLink;
+  linkCopy = link;
+  dCopy = d;
+  attributesCopy = attributes;
+  remoteAttributesCopy = remoteAttributes;
+  alternateDelegate = [linkCopy alternateDelegate];
   v17 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v19 = v16;
+    v19 = alternateDelegate;
     v20 = 1024;
-    v21 = v10;
+    v21 = underlyingLinkCopy;
     v22 = 2112;
-    v23 = v13;
+    v23 = dCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "didConnectUnderlyingLink - alternateDelegate:%@, linkID:%d, linkUUID:%@.", buf, 0x1Cu);
   }
 
@@ -7554,27 +7554,27 @@ LABEL_10:
     }
   }
 
-  if (v16 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (alternateDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v16 link:self didConnectUnderlyingLink:v10 linkUUID:v13 localAttributes:v14 remoteAttributes:v15];
+    [alternateDelegate link:self didConnectUnderlyingLink:underlyingLinkCopy linkUUID:dCopy localAttributes:attributesCopy remoteAttributes:remoteAttributesCopy];
   }
 }
 
-- (void)link:(id)a3 didReceiveChildConnections:(id)a4 forLinkID:(char)a5
+- (void)link:(id)link didReceiveChildConnections:(id)connections forLinkID:(char)d
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 alternateDelegate];
+  dCopy = d;
+  linkCopy = link;
+  connectionsCopy = connections;
+  alternateDelegate = [linkCopy alternateDelegate];
   v11 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v13 = v10;
+    v13 = alternateDelegate;
     v14 = 2112;
-    v15 = v9;
+    v15 = connectionsCopy;
     v16 = 1024;
-    v17 = v5;
+    v17 = dCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "didReceiveChildConnectionID - alternateDelegate:%@, connections:%@ linkID:%d", buf, 0x1Cu);
   }
 
@@ -7590,22 +7590,22 @@ LABEL_10:
     }
   }
 
-  if (v10 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (alternateDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v10 link:self didReceiveChildConnections:v9 forLinkID:v5];
+    [alternateDelegate link:self didReceiveChildConnections:connectionsCopy forLinkID:dCopy];
   }
 }
 
-- (void)link:(id)a3 didReceiveReliableUnicastServerMaterial:(id)a4
+- (void)link:(id)link didReceiveReliableUnicastServerMaterial:(id)material
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 alternateDelegate];
+  linkCopy = link;
+  materialCopy = material;
+  alternateDelegate = [linkCopy alternateDelegate];
   v9 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v7;
+    v11 = materialCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "didReceiveReliableUnicastServerMaterial - material: %@", buf, 0xCu);
   }
 
@@ -7621,30 +7621,30 @@ LABEL_10:
     }
   }
 
-  if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (alternateDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v8 link:self didReceiveReliableUnicastServerMaterial:v7];
+    [alternateDelegate link:self didReceiveReliableUnicastServerMaterial:materialCopy];
   }
 }
 
-- (void)link:(id)a3 didDisconnectUnderlyingLinkID:(char)a4 linkUUID:(id)a5 reason:(unsigned __int8)a6
+- (void)link:(id)link didDisconnectUnderlyingLinkID:(char)d linkUUID:(id)iD reason:(unsigned __int8)reason
 {
-  v6 = a6;
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = [v10 alternateDelegate];
+  reasonCopy = reason;
+  dCopy = d;
+  linkCopy = link;
+  iDCopy = iD;
+  alternateDelegate = [linkCopy alternateDelegate];
   v13 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v15 = v12;
+    v15 = alternateDelegate;
     v16 = 1024;
-    v17 = v8;
+    v17 = dCopy;
     v18 = 2112;
-    v19 = v11;
+    v19 = iDCopy;
     v20 = 1024;
-    v21 = v6;
+    v21 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "didDisconnectUnderlyingLinkID - alternateDelegate:%@, linkID:%d, linkUUID:%@, reason: %d", buf, 0x22u);
   }
 
@@ -7660,25 +7660,25 @@ LABEL_10:
     }
   }
 
-  if (v12 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (alternateDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v12 link:self didDisconnectUnderlyingLinkID:v8 linkUUID:v11 reason:v6];
+    [alternateDelegate link:self didDisconnectUnderlyingLinkID:dCopy linkUUID:iDCopy reason:reasonCopy];
   }
 }
 
-- (void)link:(id)a3 didDefaultUnderlyingLinkChangeSucceeded:(BOOL)a4 currentDefaultLinkID:(char)a5
+- (void)link:(id)link didDefaultUnderlyingLinkChangeSucceeded:(BOOL)succeeded currentDefaultLinkID:(char)d
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  v9 = [v8 alternateDelegate];
+  dCopy = d;
+  succeededCopy = succeeded;
+  linkCopy = link;
+  alternateDelegate = [linkCopy alternateDelegate];
   v10 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v12 = v9;
+    v12 = alternateDelegate;
     v13 = 1024;
-    v14 = v5;
+    v14 = dCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "didDefaultUnderlyingLinkChangeSucceeded - alternateDelegate:%@, currentDefaultLinkID:%d.", buf, 0x12u);
   }
 
@@ -7694,24 +7694,24 @@ LABEL_10:
     }
   }
 
-  if (v9 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (alternateDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v9 link:self didDefaultUnderlyingLinkChangeSucceeded:v6 currentDefaultLinkID:v5];
+    [alternateDelegate link:self didDefaultUnderlyingLinkChangeSucceeded:succeededCopy currentDefaultLinkID:dCopy];
   }
 }
 
-- (void)link:(id)a3 didWiFiNWPathFlagsChanged:(unsigned __int16)a4
+- (void)link:(id)link didWiFiNWPathFlagsChanged:(unsigned __int16)changed
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 alternateDelegate];
+  changedCopy = changed;
+  linkCopy = link;
+  alternateDelegate = [linkCopy alternateDelegate];
   v8 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v10 = v7;
+    v10 = alternateDelegate;
     v11 = 1024;
-    v12 = v4;
+    v12 = changedCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "didWiFiNWPathFlagsChanged - alternateDelegate:%@, nwPathFlags:%u.", buf, 0x12u);
   }
 
@@ -7727,24 +7727,24 @@ LABEL_10:
     }
   }
 
-  if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (alternateDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v7 link:self didWiFiNWPathFlagsChanged:v4];
+    [alternateDelegate link:self didWiFiNWPathFlagsChanged:changedCopy];
   }
 }
 
-- (void)link:(id)a3 didCellularNWPathFlagsChanged:(unsigned __int16)a4
+- (void)link:(id)link didCellularNWPathFlagsChanged:(unsigned __int16)changed
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 alternateDelegate];
+  changedCopy = changed;
+  linkCopy = link;
+  alternateDelegate = [linkCopy alternateDelegate];
   v8 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v10 = v7;
+    v10 = alternateDelegate;
     v11 = 1024;
-    v12 = v4;
+    v12 = changedCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "didCellularNWPathFlagsChanged - alternateDelegate:%@, nwPathFlags:%u.", buf, 0x12u);
   }
 
@@ -7760,22 +7760,22 @@ LABEL_10:
     }
   }
 
-  if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (alternateDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v7 link:self didCellularNWPathFlagsChanged:v4];
+    [alternateDelegate link:self didCellularNWPathFlagsChanged:changedCopy];
   }
 }
 
-- (void)link:(id)a3 didRATChange:(unsigned __int8)a4
+- (void)link:(id)link didRATChange:(unsigned __int8)change
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 alternateDelegate];
+  changeCopy = change;
+  linkCopy = link;
+  alternateDelegate = [linkCopy alternateDelegate];
   v8 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v10 = v7;
+    v10 = alternateDelegate;
     v11 = 2080;
     v12 = IDSRadioAccessTechnologyToString();
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "didRATChange - alternateDelegate:%@, newRAT:%s.", buf, 0x16u);
@@ -7795,24 +7795,24 @@ LABEL_10:
     }
   }
 
-  if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (alternateDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v7 link:self didRATChange:v4];
+    [alternateDelegate link:self didRATChange:changeCopy];
   }
 }
 
-- (void)link:(id)a3 didCellularMTUChange:(unsigned __int16)a4
+- (void)link:(id)link didCellularMTUChange:(unsigned __int16)change
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 alternateDelegate];
+  changeCopy = change;
+  linkCopy = link;
+  alternateDelegate = [linkCopy alternateDelegate];
   v8 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v10 = v7;
+    v10 = alternateDelegate;
     v11 = 1024;
-    v12 = v4;
+    v12 = changeCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "didCellularMTUChange - alternateDelegate:%@, cellular MTU:%u.", buf, 0x12u);
   }
 
@@ -7828,31 +7828,31 @@ LABEL_10:
     }
   }
 
-  if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (alternateDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v7 link:self didCellularMTUChange:v4];
+    [alternateDelegate link:self didCellularMTUChange:changeCopy];
   }
 }
 
-- (void)link:(id)a3 didGetLinkProbingStatus:(id)a4
+- (void)link:(id)link didGetLinkProbingStatus:(id)status
 {
-  v7 = a4;
-  v6 = [a3 alternateDelegate];
-  if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
+  statusCopy = status;
+  alternateDelegate = [link alternateDelegate];
+  if (alternateDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v6 link:self didGetLinkProbingStatus:v7];
+    [alternateDelegate link:self didGetLinkProbingStatus:statusCopy];
   }
 }
 
-- (void)terminateCallDueToIdleClientForLink:(id)a3
+- (void)terminateCallDueToIdleClientForLink:(id)link
 {
-  v4 = a3;
-  v5 = [v4 alternateDelegate];
+  linkCopy = link;
+  alternateDelegate = [linkCopy alternateDelegate];
   v6 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = v5;
+    v8 = alternateDelegate;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "terminateCallDueToIdleClientForLink - alternateDelegate:%@", buf, 0xCu);
   }
 
@@ -7868,27 +7868,27 @@ LABEL_10:
     }
   }
 
-  if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (alternateDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v5 terminateCallDueToIdleClientForLink:self];
+    [alternateDelegate terminateCallDueToIdleClientForLink:self];
   }
 }
 
-- (void)link:(id)a3 didReceiveSessionInfo:(id)a4 relayGroupID:(id)a5 relaySessionID:(id)a6 status:(unsigned int)a7
+- (void)link:(id)link didReceiveSessionInfo:(id)info relayGroupID:(id)d relaySessionID:(id)iD status:(unsigned int)status
 {
-  v7 = *&a7;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [v12 alternateDelegate];
+  v7 = *&status;
+  linkCopy = link;
+  infoCopy = info;
+  dCopy = d;
+  iDCopy = iD;
+  alternateDelegate = [linkCopy alternateDelegate];
   v17 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v19 = v14;
+    v19 = dCopy;
     v20 = 2112;
-    v21 = v15;
+    v21 = iDCopy;
     v22 = 1024;
     v23 = v7;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "receive session-info for group %@, session %@, status: %u.", buf, 0x1Cu);
@@ -7906,22 +7906,22 @@ LABEL_10:
     }
   }
 
-  if (v16 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (alternateDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v16 link:self didReceiveSessionInfo:v13 relayGroupID:v14 relaySessionID:v15 status:v7];
+    [alternateDelegate link:self didReceiveSessionInfo:infoCopy relayGroupID:dCopy relaySessionID:iDCopy status:v7];
   }
 }
 
-- (void)link:(id)a3 didFinishConvergenceForRelaySessionID:(id)a4
+- (void)link:(id)link didFinishConvergenceForRelaySessionID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 alternateDelegate];
+  linkCopy = link;
+  dCopy = d;
+  alternateDelegate = [linkCopy alternateDelegate];
   v9 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v7;
+    v11 = dCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "didFinishConvergenceForRelaySessionID: %@.", buf, 0xCu);
   }
 
@@ -7937,33 +7937,33 @@ LABEL_10:
     }
   }
 
-  if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (alternateDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v8 link:self didFinishConvergenceForRelaySessionID:v7];
+    [alternateDelegate link:self didFinishConvergenceForRelaySessionID:dCopy];
   }
 }
 
-- (void)link:(id)a3 didReceiveSessionStats:(id)a4 relayGroupID:(id)a5 relaySessionID:(id)a6 success:(BOOL)a7
+- (void)link:(id)link didReceiveSessionStats:(id)stats relayGroupID:(id)d relaySessionID:(id)iD success:(BOOL)success
 {
-  v7 = a7;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [v12 alternateDelegate];
+  successCopy = success;
+  linkCopy = link;
+  statsCopy = stats;
+  dCopy = d;
+  iDCopy = iD;
+  alternateDelegate = [linkCopy alternateDelegate];
   v17 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     v18 = @"NO";
     *buf = 138412802;
-    v20 = v14;
+    v20 = dCopy;
     v21 = 2112;
-    if (v7)
+    if (successCopy)
     {
       v18 = @"YES";
     }
 
-    v22 = v15;
+    v22 = iDCopy;
     v23 = 2112;
     v24 = v18;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "receive session stats for group %@, session %@, success: %@.", buf, 0x20u);
@@ -7981,24 +7981,24 @@ LABEL_10:
     }
   }
 
-  if (v16 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (alternateDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v16 link:self didReceiveSessionStats:v13 relayGroupID:v14 relaySessionID:v15 success:v7];
+    [alternateDelegate link:self didReceiveSessionStats:statsCopy relayGroupID:dCopy relaySessionID:iDCopy success:successCopy];
   }
 }
 
-- (void)link:(id)a3 didReceiveReportEvent:(id)a4
+- (void)link:(id)link didReceiveReportEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 alternateDelegate];
+  linkCopy = link;
+  eventCopy = event;
+  alternateDelegate = [linkCopy alternateDelegate];
   v9 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v11 = v8;
+    v11 = alternateDelegate;
     v12 = 2112;
-    v13 = v7;
+    v13 = eventCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "didReceiveReportEvent - alternateDelegate:%@, eventDictionary:%@", buf, 0x16u);
   }
 
@@ -8014,121 +8014,121 @@ LABEL_10:
     }
   }
 
-  if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (alternateDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v8 link:self didReceiveReportEvent:v7];
+    [alternateDelegate link:self didReceiveReportEvent:eventCopy];
   }
 }
 
-- (void)link:(id)a3 didAddQREvent:(id)a4
+- (void)link:(id)link didAddQREvent:(id)event
 {
-  v7 = a4;
-  v6 = [a3 alternateDelegate];
-  if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
+  eventCopy = event;
+  alternateDelegate = [link alternateDelegate];
+  if (alternateDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v6 link:self didAddQREvent:v7];
+    [alternateDelegate link:self didAddQREvent:eventCopy];
   }
 }
 
-- (void)link:(id)a3 reportNoSessionState:(id)a4
+- (void)link:(id)link reportNoSessionState:(id)state
 {
-  v7 = a4;
-  v6 = [a3 alternateDelegate];
-  if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
+  stateCopy = state;
+  alternateDelegate = [link alternateDelegate];
+  if (alternateDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v6 link:self reportNoSessionState:v7];
+    [alternateDelegate link:self reportNoSessionState:stateCopy];
   }
 }
 
-- (void)link:(id)a3 didReceiveParticipantUpdate:(id)a4 status:(unsigned __int16)a5
+- (void)link:(id)link didReceiveParticipantUpdate:(id)update status:(unsigned __int16)status
 {
-  v5 = a5;
-  v9 = a4;
-  v8 = [a3 alternateDelegate];
-  if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+  statusCopy = status;
+  updateCopy = update;
+  alternateDelegate = [link alternateDelegate];
+  if (alternateDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v8 link:self didReceiveParticipantUpdate:v9 status:v5];
+    [alternateDelegate link:self didReceiveParticipantUpdate:updateCopy status:statusCopy];
   }
 }
 
-- (void)link:(id)a3 didReceivePluginRegistration:(unint64_t)a4 pluginName:(id)a5
+- (void)link:(id)link didReceivePluginRegistration:(unint64_t)registration pluginName:(id)name
 {
-  v9 = a5;
-  v8 = [a3 alternateDelegate];
-  if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+  nameCopy = name;
+  alternateDelegate = [link alternateDelegate];
+  if (alternateDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v8 link:self didReceivePluginRegistration:a4 pluginName:v9];
+    [alternateDelegate link:self didReceivePluginRegistration:registration pluginName:nameCopy];
   }
 }
 
-- (void)link:(id)a3 didReceivePluginUnregistration:(unint64_t)a4 pluginName:(id)a5
+- (void)link:(id)link didReceivePluginUnregistration:(unint64_t)unregistration pluginName:(id)name
 {
-  v9 = a5;
-  v8 = [a3 alternateDelegate];
-  if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+  nameCopy = name;
+  alternateDelegate = [link alternateDelegate];
+  if (alternateDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v8 link:self didReceivePluginUnregistration:a4 pluginName:v9];
+    [alternateDelegate link:self didReceivePluginUnregistration:unregistration pluginName:nameCopy];
   }
 }
 
-- (void)link:(id)a3 didReceiveRequestToPurgeRegistration:(id)a4
+- (void)link:(id)link didReceiveRequestToPurgeRegistration:(id)registration
 {
-  v7 = a4;
-  v6 = [a3 alternateDelegate];
-  if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
+  registrationCopy = registration;
+  alternateDelegate = [link alternateDelegate];
+  if (alternateDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v6 link:self didReceiveRequestToPurgeRegistration:v7];
+    [alternateDelegate link:self didReceiveRequestToPurgeRegistration:registrationCopy];
   }
 }
 
-- (void)link:(id)a3 didReceivePluginDisconnect:(id)a4
+- (void)link:(id)link didReceivePluginDisconnect:(id)disconnect
 {
-  v7 = a4;
-  v6 = [a3 alternateDelegate];
-  if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
+  disconnectCopy = disconnect;
+  alternateDelegate = [link alternateDelegate];
+  if (alternateDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v6 link:self didReceivePluginDisconnect:v7];
+    [alternateDelegate link:self didReceivePluginDisconnect:disconnectCopy];
   }
 }
 
-- (void)link:(id)a3 didReceiveMappedParticipantsDict:(id)a4 forLinkID:(char)a5
+- (void)link:(id)link didReceiveMappedParticipantsDict:(id)dict forLinkID:(char)d
 {
-  v5 = a5;
-  v9 = a4;
-  v8 = [a3 alternateDelegate];
-  if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+  dCopy = d;
+  dictCopy = dict;
+  alternateDelegate = [link alternateDelegate];
+  if (alternateDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v8 link:self didReceiveMappedParticipantsDict:v9 forLinkID:v5];
+    [alternateDelegate link:self didReceiveMappedParticipantsDict:dictCopy forLinkID:dCopy];
   }
 }
 
-- (void)link:(id)a3 pathMTUDidChange:(unsigned __int16)a4 forLinkID:(char)a5
+- (void)link:(id)link pathMTUDidChange:(unsigned __int16)change forLinkID:(char)d
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = [a3 alternateDelegate];
-  v9 = v8;
-  if (v8)
+  dCopy = d;
+  changeCopy = change;
+  alternateDelegate = [link alternateDelegate];
+  v9 = alternateDelegate;
+  if (alternateDelegate)
   {
-    v11 = v8;
+    v11 = alternateDelegate;
     v10 = objc_opt_respondsToSelector();
     v9 = v11;
     if (v10)
     {
-      [v11 link:self pathMTUDidChange:v6 forLinkID:v5];
+      [v11 link:self pathMTUDidChange:changeCopy forLinkID:dCopy];
       v9 = v11;
     }
   }
 }
 
-- (void)link:(id)a3 didReceiveSessionStateCounter:(unsigned int)a4
+- (void)link:(id)link didReceiveSessionStateCounter:(unsigned int)counter
 {
-  v4 = *&a4;
-  v6 = [a3 alternateDelegate];
-  v7 = v6;
-  if (v6)
+  v4 = *&counter;
+  alternateDelegate = [link alternateDelegate];
+  v7 = alternateDelegate;
+  if (alternateDelegate)
   {
-    v9 = v6;
+    v9 = alternateDelegate;
     v8 = objc_opt_respondsToSelector();
     v7 = v9;
     if (v8)
@@ -8139,14 +8139,14 @@ LABEL_10:
   }
 }
 
-- (void)didReceiveBlockedIndicationForLink:(id)a3 reason:(unsigned int)a4
+- (void)didReceiveBlockedIndicationForLink:(id)link reason:(unsigned int)reason
 {
-  v4 = *&a4;
-  v6 = [a3 alternateDelegate];
-  v7 = v6;
-  if (v6)
+  v4 = *&reason;
+  alternateDelegate = [link alternateDelegate];
+  v7 = alternateDelegate;
+  if (alternateDelegate)
   {
-    v9 = v6;
+    v9 = alternateDelegate;
     v8 = objc_opt_respondsToSelector();
     v7 = v9;
     if (v8)
@@ -8157,24 +8157,24 @@ LABEL_10:
   }
 }
 
-- (void)link:(id)a3 didReceiveEncryptedDataBlobs:(id)a4
+- (void)link:(id)link didReceiveEncryptedDataBlobs:(id)blobs
 {
-  v7 = a4;
-  v6 = [a3 alternateDelegate];
-  if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
+  blobsCopy = blobs;
+  alternateDelegate = [link alternateDelegate];
+  if (alternateDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v6 link:self didReceiveEncryptedDataBlobs:v7];
+    [alternateDelegate link:self didReceiveEncryptedDataBlobs:blobsCopy];
   }
 }
 
-- (void)link:(id)a3 didReceiveErrorIndicationWithCode:(unsigned int)a4
+- (void)link:(id)link didReceiveErrorIndicationWithCode:(unsigned int)code
 {
-  v4 = *&a4;
-  v6 = [a3 alternateDelegate];
-  v7 = v6;
-  if (v6)
+  v4 = *&code;
+  alternateDelegate = [link alternateDelegate];
+  v7 = alternateDelegate;
+  if (alternateDelegate)
   {
-    v9 = v6;
+    v9 = alternateDelegate;
     v8 = objc_opt_respondsToSelector();
     v7 = v9;
     if (v8)
@@ -8185,21 +8185,21 @@ LABEL_10:
   }
 }
 
-- (void)manager:(id)a3 didPowerStateChange:(BOOL)a4
+- (void)manager:(id)manager didPowerStateChange:(BOOL)change
 {
-  v4 = a4;
-  v5 = a3;
+  changeCopy = change;
+  managerCopy = manager;
   v6 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"OFF";
-    if (v4)
+    if (changeCopy)
     {
       v7 = @"ON";
     }
 
     *buf = 138412546;
-    v10 = v5;
+    v10 = managerCopy;
     v11 = 2112;
     v12 = v7;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ reported power state change: %@", buf, 0x16u);
@@ -8217,38 +8217,38 @@ LABEL_10:
     }
   }
 
-  if (!v4)
+  if (!changeCopy)
   {
-    v8 = v5;
+    v8 = managerCopy;
     IDSTransportThreadAddBlock();
   }
 }
 
-- (void)manager:(id)a3 linkDidConnect:(id)a4
+- (void)manager:(id)manager linkDidConnect:(id)connect
 {
-  v5 = a4;
-  v4 = v5;
+  connectCopy = connect;
+  v4 = connectCopy;
   IDSTransportThreadAddBlock();
 }
 
-- (void)manager:(id)a3 linkDidDisconnect:(id)a4
+- (void)manager:(id)manager linkDidDisconnect:(id)disconnect
 {
-  v5 = a4;
-  v4 = v5;
+  disconnectCopy = disconnect;
+  v4 = disconnectCopy;
   IDSTransportThreadAddBlock();
 }
 
-- (void)manager:(id)a3 didPairedDeviceChange:(BOOL)a4
+- (void)manager:(id)manager didPairedDeviceChange:(BOOL)change
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4 && !self->_isCentral)
+  changeCopy = change;
+  managerCopy = manager;
+  if (changeCopy && !self->_isCentral)
   {
     v7 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v10 = v6;
+      v10 = managerCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%@ reported paired device change.", buf, 0xCu);
     }
 
@@ -8264,18 +8264,18 @@ LABEL_10:
       }
     }
 
-    v8 = v6;
+    v8 = managerCopy;
     IDSTransportThreadAddBlock();
   }
 }
 
-- (void)_handleNetworkChanges:(id)a3
+- (void)_handleNetworkChanges:(id)changes
 {
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
-  obj = a3;
+  obj = changes;
   v4 = [obj countByEnumeratingWithState:&v64 objects:v73 count:16];
   if (v4)
   {
@@ -8521,23 +8521,23 @@ LABEL_10:
   if (v57)
   {
     v30 = +[IDSPairingManager sharedInstance];
-    v31 = [v30 shouldUseIPsecLinkForDefaultPairedDevice];
+    shouldUseIPsecLinkForDefaultPairedDevice = [v30 shouldUseIPsecLinkForDefaultPairedDevice];
 
-    if ((v31 & 1) == 0)
+    if ((shouldUseIPsecLinkForDefaultPairedDevice & 1) == 0)
     {
       v32 = kIDSDefaultPairedDeviceID;
       v33 = [(IDSLinkManager *)self _newUDPLinkForDeviceUniqueID:0 cbuuid:kIDSDefaultPairedDeviceID IPVersion:0 port:0];
-      v34 = [v33 copyCurrentNetworkInterfaces];
-      v35 = v34;
+      copyCurrentNetworkInterfaces = [v33 copyCurrentNetworkInterfaces];
+      v35 = copyCurrentNetworkInterfaces;
       if (self->_isDefaultDeviceUsingBTLink)
       {
-        if (!self->_isCentral && self->_doesDefaultDevicePreferInfraWiFi && ![v34 count])
+        if (!self->_isCentral && self->_doesDefaultDevicePreferInfraWiFi && ![copyCurrentNetworkInterfaces count])
         {
           [(IDSLinkManager *)self _suspendBTLink:0 cbuuid:v32];
 LABEL_106:
-          v49 = [v35 firstObject];
-          v50 = [v49 address];
-          [v33 reconnectWithLocalAddress:v50];
+          firstObject = [v35 firstObject];
+          address = [firstObject address];
+          [v33 reconnectWithLocalAddress:address];
 
           goto LABEL_107;
         }
@@ -8589,19 +8589,19 @@ LABEL_106:
         goto LABEL_106;
       }
 
-      v38 = [v35 firstObject];
-      v39 = v38;
+      firstObject2 = [v35 firstObject];
+      v39 = firstObject2;
       if (self->_isWiFiBroughtUp)
       {
         v40 = self->_localWiFiAddressUsedForDefaultDevice;
         if (!self->_isCentral)
         {
-          v51 = [v38 address];
-          v52 = [(IDSSockAddrWrapper *)v40 isEqualToWrapper:v51];
+          address2 = [firstObject2 address];
+          v52 = [(IDSSockAddrWrapper *)v40 isEqualToWrapper:address2];
 
-          v53 = [v35 firstObject];
-          v54 = [v53 address];
-          [v33 reconnectWithLocalAddress:v54];
+          firstObject3 = [v35 firstObject];
+          address3 = [firstObject3 address];
+          [v33 reconnectWithLocalAddress:address3];
 
           if ((v52 & 1) == 0)
           {
@@ -8641,14 +8641,14 @@ LABEL_90:
           goto LABEL_107;
         }
 
-        if (!v40 || ([v38 address], v41 = objc_claimAutoreleasedReturnValue(), v42 = -[IDSSockAddrWrapper isEqualToWrapper:](v40, "isEqualToWrapper:", v41), v41, v42))
+        if (!v40 || ([firstObject2 address], v41 = objc_claimAutoreleasedReturnValue(), v42 = -[IDSSockAddrWrapper isEqualToWrapper:](v40, "isEqualToWrapper:", v41), v41, v42))
         {
           self->_shouldKeepWiFiUp = 1;
 
 LABEL_89:
-          v43 = [v35 firstObject];
-          v44 = [v43 address];
-          [v33 reconnectWithLocalAddress:v44];
+          firstObject4 = [v35 firstObject];
+          address4 = [firstObject4 address];
+          [v33 reconnectWithLocalAddress:address4];
 
           goto LABEL_90;
         }
@@ -8659,48 +8659,48 @@ LABEL_89:
         [(IDSLinkManager *)self _connectivityChangedForDefaultDevice:0 isCloudConnected:self->_lastSentDefaultDeviceCloudConnectivity];
       }
 
-      v47 = [v35 firstObject];
-      v48 = [v47 address];
-      [v33 reconnectWithLocalAddress:v48];
+      firstObject5 = [v35 firstObject];
+      address5 = [firstObject5 address];
+      [v33 reconnectWithLocalAddress:address5];
 
 LABEL_107:
     }
   }
 }
 
-- (void)currentLinkType:(unint64_t *)a3 andRATType:(unsigned int *)a4 forDeviceID:(id)a5
+- (void)currentLinkType:(unint64_t *)type andRATType:(unsigned int *)tType forDeviceID:(id)d
 {
-  v8 = a5;
-  *a3 = 0;
-  *a4 = 0;
-  if ([v8 isEqualToString:kIDSDefaultPairedDeviceID])
+  dCopy = d;
+  *type = 0;
+  *tType = 0;
+  if ([dCopy isEqualToString:kIDSDefaultPairedDeviceID])
   {
-    *a3 = self->_currentDefaultDeviceLinkType;
+    *type = self->_currentDefaultDeviceLinkType;
   }
 
   else
   {
     Value = 0;
-    if (v8 && self->_deviceIDToCurrentLink)
+    if (dCopy && self->_deviceIDToCurrentLink)
     {
-      Value = CFDictionaryGetValue(self->_deviceIDToCurrentLink, v8);
+      Value = CFDictionaryGetValue(self->_deviceIDToCurrentLink, dCopy);
     }
 
     v10 = Value;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v10 defaultLinkType];
-      *a3 = v11;
-      if (v11 == 4)
+      defaultLinkType = [v10 defaultLinkType];
+      *type = defaultLinkType;
+      if (defaultLinkType == 4)
       {
         v12 = +[IDSCellularLinkMonitor sharedInstance];
-        *a4 = [v12 radioAccessTechnology];
+        *tType = [v12 radioAccessTechnology];
       }
 
       else
       {
-        *a4 = 0;
+        *tType = 0;
       }
     }
 
@@ -8709,15 +8709,15 @@ LABEL_107:
       objc_opt_class();
       if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
       {
-        *a3 = 2;
+        *type = 2;
       }
     }
 
     v13 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = *a3;
-      v15 = *a4;
+      v14 = *type;
+      v15 = *tType;
       *buf = 134218240;
       v17 = v14;
       v18 = 2048;
@@ -8739,15 +8739,15 @@ LABEL_107:
   }
 }
 
-- (id)linkForCBUUID:(id)a3
+- (id)linkForCBUUID:(id)d
 {
   Value = 0;
-  if (a3)
+  if (d)
   {
     deviceIDToCurrentLink = self->_deviceIDToCurrentLink;
     if (deviceIDToCurrentLink)
     {
-      Value = CFDictionaryGetValue(deviceIDToCurrentLink, a3);
+      Value = CFDictionaryGetValue(deviceIDToCurrentLink, d);
       v3 = vars8;
     }
   }
@@ -8755,10 +8755,10 @@ LABEL_107:
   return Value;
 }
 
-- (unint64_t)currentLinkType:(id)a3
+- (unint64_t)currentLinkType:(id)type
 {
-  v4 = a3;
-  if ([v4 isEqualToString:kIDSDefaultPairedDeviceID])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:kIDSDefaultPairedDeviceID])
   {
     currentDefaultDeviceLinkType = self->_currentDefaultDeviceLinkType;
   }
@@ -8766,9 +8766,9 @@ LABEL_107:
   else
   {
     Value = 0;
-    if (v4 && self->_deviceIDToCurrentLink)
+    if (typeCopy && self->_deviceIDToCurrentLink)
     {
-      Value = CFDictionaryGetValue(self->_deviceIDToCurrentLink, v4);
+      Value = CFDictionaryGetValue(self->_deviceIDToCurrentLink, typeCopy);
     }
 
     v7 = Value;
@@ -8796,7 +8796,7 @@ LABEL_107:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v11 = v4;
+      v11 = typeCopy;
       v12 = 1024;
       v13 = currentDefaultDeviceLinkType;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "current link type for %@ is %d.", buf, 0x12u);
@@ -8818,53 +8818,53 @@ LABEL_107:
   return currentDefaultDeviceLinkType;
 }
 
-- (id)_getIDSLinkTypeString:(unint64_t)a3
+- (id)_getIDSLinkTypeString:(unint64_t)string
 {
-  if (a3 > 6)
+  if (string > 6)
   {
     return @"UnexpectedType";
   }
 
   else
   {
-    return *(&off_100BDFFB0 + a3);
+    return *(&off_100BDFFB0 + string);
   }
 }
 
-- (unint64_t)_getIDSLinkTypeFromWRMLinkType:(unint64_t)a3
+- (unint64_t)_getIDSLinkTypeFromWRMLinkType:(unint64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     return 6;
   }
 
   else
   {
-    return qword_1009ABB60[a3];
+    return qword_1009ABB60[type];
   }
 }
 
-- (unint64_t)_getWRMLinkTypeFromIDSLinkType:(unint64_t)a3
+- (unint64_t)_getWRMLinkTypeFromIDSLinkType:(unint64_t)type
 {
-  if (a3 - 1 > 3)
+  if (type - 1 > 3)
   {
     return 2;
   }
 
   else
   {
-    return qword_1009ABB80[a3 - 1];
+    return qword_1009ABB80[type - 1];
   }
 }
 
-- (void)_handleWRMLinkRecommendation:(unint64_t)a3
+- (void)_handleWRMLinkRecommendation:(unint64_t)recommendation
 {
-  v3 = a3;
+  recommendationCopy = recommendation;
   v4 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v6 = v3;
+    v6 = recommendationCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "WRM recommends the link type %u, but IDS ignores WRM recommendations per rdar://problem/33602915 discussion", buf, 8u);
   }
 
@@ -8877,7 +8877,7 @@ LABEL_107:
   }
 }
 
-- (void)_subscribeToWRMForLinkRecommendation:(unint64_t)a3
+- (void)_subscribeToWRMForLinkRecommendation:(unint64_t)recommendation
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
@@ -8887,7 +8887,7 @@ LABEL_107:
   v4 = objc_retainBlock(v7);
   v5 = +[IDSWRMExchange sharedInstance];
   v6 = dispatch_get_global_queue(-32768, 0);
-  [v5 subscribeForRecommendation:v6 recommendationType:a3 block:v4];
+  [v5 subscribeForRecommendation:v6 recommendationType:recommendation block:v4];
 }
 
 - (void)_unsubscribeFromWRMForLinkRecommendation
@@ -8896,14 +8896,14 @@ LABEL_107:
   [v2 unsubscribeForRecommendation];
 }
 
-- (void)cellularRadioAccessTechnologyDidChange:(BOOL)a3
+- (void)cellularRadioAccessTechnologyDidChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   v5 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"NO";
-    if (v3)
+    if (changeCopy)
     {
       v6 = @"YES";
     }
@@ -8915,7 +8915,7 @@ LABEL_107:
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
   {
-    v7 = v3 ? @"YES" : @"NO";
+    v7 = changeCopy ? @"YES" : @"NO";
     v23 = v7;
     _IDSLogTransport();
     if (_IDSShouldLog())
@@ -8925,14 +8925,14 @@ LABEL_107:
     }
   }
 
-  if (v3)
+  if (changeCopy)
   {
-    v8 = [(NSMutableDictionary *)self->_cbuuidToLinks allKeys];
+    allKeys = [(NSMutableDictionary *)self->_cbuuidToLinks allKeys];
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v9 = v8;
+    v9 = allKeys;
     v10 = 0;
     v11 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v11)
@@ -9043,13 +9043,13 @@ LABEL_41:
   }
 }
 
-- (void)cellularSoMaskDidChange:(unsigned int)a3
+- (void)cellularSoMaskDidChange:(unsigned int)change
 {
   v4 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v6 = a3;
+    changeCopy = change;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "cellular SoMask changed: %u.", buf, 8u);
   }
 

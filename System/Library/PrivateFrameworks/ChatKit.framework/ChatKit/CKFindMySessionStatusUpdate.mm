@@ -1,17 +1,17 @@
 @interface CKFindMySessionStatusUpdate
-+ (id)statusUpdateWithLocationText:(id)a3 isLocationAvailableForDisplay:(BOOL)a4;
++ (id)statusUpdateWithLocationText:(id)text isLocationAvailableForDisplay:(BOOL)display;
 @end
 
 @implementation CKFindMySessionStatusUpdate
 
-+ (id)statusUpdateWithLocationText:(id)a3 isLocationAvailableForDisplay:(BOOL)a4
++ (id)statusUpdateWithLocationText:(id)text isLocationAvailableForDisplay:(BOOL)display
 {
-  v4 = a4;
-  v5 = a3;
+  displayCopy = display;
+  textCopy = text;
   v6 = objc_alloc_init(CKFindMySessionStatusUpdate);
-  [(CKFindMySessionStatusUpdate *)v6 setLocationText:v5];
+  [(CKFindMySessionStatusUpdate *)v6 setLocationText:textCopy];
 
-  [(CKFindMySessionStatusUpdate *)v6 setIsLocationAvailableForDisplay:v4];
+  [(CKFindMySessionStatusUpdate *)v6 setIsLocationAvailableForDisplay:displayCopy];
 
   return v6;
 }

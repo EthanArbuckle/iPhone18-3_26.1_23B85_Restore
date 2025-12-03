@@ -17,9 +17,9 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001A2440(0);
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for PersonalTranslationActivityManager();
   [(PersonalTranslationActivityManager *)&v3 dealloc];
 }

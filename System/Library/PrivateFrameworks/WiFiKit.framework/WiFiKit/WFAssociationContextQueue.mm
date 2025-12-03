@@ -5,7 +5,7 @@
 - (void)_dumpQueue;
 - (void)_queueCount;
 - (void)pop;
-- (void)push:(id)a3;
+- (void)push:(id)push;
 - (void)removeAll;
 @end
 
@@ -28,36 +28,36 @@
 
 - (id)peek
 {
-  v3 = [(WFAssociationContextQueue *)self queue];
-  objc_sync_enter(v3);
-  v4 = [(WFAssociationContextQueue *)self queue];
-  v5 = [v4 firstObject];
+  queue = [(WFAssociationContextQueue *)self queue];
+  objc_sync_enter(queue);
+  queue2 = [(WFAssociationContextQueue *)self queue];
+  firstObject = [queue2 firstObject];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(queue);
 
-  return v5;
+  return firstObject;
 }
 
-- (void)push:(id)a3
+- (void)push:(id)push
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFAssociationContextQueue *)self queue];
-  objc_sync_enter(v5);
+  pushCopy = push;
+  queue = [(WFAssociationContextQueue *)self queue];
+  objc_sync_enter(queue);
   v6 = WFLogForCategory(5uLL);
   v7 = OSLogForWFLogLevel(4uLL);
   if (WFCurrentLogLevel() >= 4 && v6 && os_log_type_enabled(v6, v7))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = pushCopy;
     _os_log_impl(&dword_273ECD000, v6, v7, "adding %@ to association queue", &v10, 0xCu);
   }
 
-  v8 = [(WFAssociationContextQueue *)self queue];
-  [v8 addObject:v4];
+  queue2 = [(WFAssociationContextQueue *)self queue];
+  [queue2 addObject:pushCopy];
 
   [(WFAssociationContextQueue *)self _queueCount];
-  objc_sync_exit(v5);
+  objc_sync_exit(queue);
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -65,35 +65,35 @@
 - (id)pop
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(WFAssociationContextQueue *)self peek];
-  if (v3)
+  peek = [(WFAssociationContextQueue *)self peek];
+  if (peek)
   {
-    v4 = [(WFAssociationContextQueue *)self queue];
-    objc_sync_enter(v4);
+    queue = [(WFAssociationContextQueue *)self queue];
+    objc_sync_enter(queue);
     v5 = WFLogForCategory(5uLL);
     v6 = OSLogForWFLogLevel(4uLL);
     if (WFCurrentLogLevel() >= 4 && v5 && os_log_type_enabled(v5, v6))
     {
       *v10 = 138412290;
-      *&v10[4] = v3;
+      *&v10[4] = peek;
       _os_log_impl(&dword_273ECD000, v5, v6, "removing %@ from association queue", v10, 0xCu);
     }
 
-    v7 = [(WFAssociationContextQueue *)self queue];
-    [v7 removeObject:v3];
+    queue2 = [(WFAssociationContextQueue *)self queue];
+    [queue2 removeObject:peek];
 
-    objc_sync_exit(v4);
+    objc_sync_exit(queue);
   }
 
   else
   {
     [(WFAssociationContextQueue *)v10 pop];
-    v4 = *v10;
+    queue = *v10;
   }
 
   v8 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return peek;
 }
 
 - (void)removeAll
@@ -107,12 +107,12 @@
   }
 
   [(WFAssociationContextQueue *)self _dumpQueue];
-  v5 = [(WFAssociationContextQueue *)self queue];
-  objc_sync_enter(v5);
-  v6 = [(WFAssociationContextQueue *)self queue];
-  [v6 removeAllObjects];
+  queue = [(WFAssociationContextQueue *)self queue];
+  objc_sync_enter(queue);
+  queue2 = [(WFAssociationContextQueue *)self queue];
+  [queue2 removeAllObjects];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(queue);
 }
 
 - (void)_dumpQueue
@@ -122,8 +122,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(WFAssociationContextQueue *)self queue];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v17 count:16];
+  queue = [(WFAssociationContextQueue *)self queue];
+  v3 = [queue countByEnumeratingWithState:&v11 objects:v17 count:16];
   if (v3)
   {
     v4 = v3;
@@ -134,7 +134,7 @@
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(queue);
         }
 
         v7 = *(*(&v11 + 1) + 8 * i);
@@ -148,7 +148,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v17 count:16];
+      v4 = [queue countByEnumeratingWithState:&v11 objects:v17 count:16];
     }
 
     while (v4);
@@ -225,7 +225,7 @@ LABEL_14:
     _os_log_impl(&dword_273ECD000, v2, v3, "%s: attempted to pop when queue is empty", &v5, 0xCu);
   }
 
-  *a1 = v2;
+  *self = v2;
   v4 = *MEMORY[0x277D85DE8];
 }
 

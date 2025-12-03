@@ -1,80 +1,80 @@
 @interface _UIButtonBarButtonVisualProviderIOS
-- (BOOL)buttonSelectionState:(id)a3 forRequestedState:(BOOL)a4;
+- (BOOL)buttonSelectionState:(id)state forRequestedState:(BOOL)requestedState;
 - (BOOL)shouldLift;
 - (CGPoint)menuAnchorPoint;
 - (CGRect)accessoryViewAlignmentRect;
-- (CGSize)backButtonSystemLayoutSizeFittingSize:(CGSize)a3 horizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (CGSize)buttonImageViewSize:(id)a3;
-- (UIEdgeInsets)_imageInsetsForBarButtonItem:(id)a3 compact:(BOOL)a4 isBackButton:(BOOL)a5;
-- (UIEdgeInsets)_insetsForCompact:(BOOL)a3;
-- (UIOffset)backButtonBackgroundVerticalAdjustmentForCompact:(BOOL)a3;
-- (UIOffset)backButtonTitlePositionOffsetForCompact:(BOOL)a3;
-- (UIOffset)backgroundVerticalAdjustmentForCompact:(BOOL)a3;
-- (UIOffset)titlePositionOffsetForCompact:(BOOL)a3;
+- (CGSize)backButtonSystemLayoutSizeFittingSize:(CGSize)size horizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (CGSize)buttonImageViewSize:(id)size;
+- (UIEdgeInsets)_imageInsetsForBarButtonItem:(id)item compact:(BOOL)compact isBackButton:(BOOL)button;
+- (UIEdgeInsets)_insetsForCompact:(BOOL)compact;
+- (UIOffset)backButtonBackgroundVerticalAdjustmentForCompact:(BOOL)compact;
+- (UIOffset)backButtonTitlePositionOffsetForCompact:(BOOL)compact;
+- (UIOffset)backgroundVerticalAdjustmentForCompact:(BOOL)compact;
+- (UIOffset)titlePositionOffsetForCompact:(BOOL)compact;
 - (__CFString)_backButtonTitleForCurrentBoundsSize;
-- (double)_defaultBackIndicatorBaselineInsetCompact:(BOOL)a3;
-- (double)_defaultPaddingForInsets:(UIEdgeInsets)a3;
+- (double)_defaultBackIndicatorBaselineInsetCompact:(BOOL)compact;
+- (double)_defaultPaddingForInsets:(UIEdgeInsets)insets;
 - (double)_effectiveEdgeSpacing;
 - (double)_widthForBackButtonChevronIncludingPaddingToContentButton;
-- (id)_backIndicatorImageForCompact:(BOOL)a3;
-- (id)_backIndicatorMaskForCompact:(BOOL)a3;
-- (id)_backIndicatorMaskSymbolConfigurationForCompact:(BOOL)a3;
-- (id)_backIndicatorSymbolConfigurationForCompact:(BOOL)a3;
-- (id)_titleContentForTitle:(id)a3;
+- (id)_backIndicatorImageForCompact:(BOOL)compact;
+- (id)_backIndicatorMaskForCompact:(BOOL)compact;
+- (id)_backIndicatorMaskSymbolConfigurationForCompact:(BOOL)compact;
+- (id)_backIndicatorSymbolConfigurationForCompact:(BOOL)compact;
+- (id)_titleContentForTitle:(id)title;
 - (id)alignmentViewForStaticNavBarButtonLeading;
 - (id)alignmentViewForStaticNavBarButtonTrailing;
-- (id)backButtonBackgroundImageForState:(unint64_t)a3 compact:(BOOL)a4;
-- (id)backgroundImageForState:(unint64_t)a3 compact:(BOOL)a4;
+- (id)backButtonBackgroundImageForState:(unint64_t)state compact:(BOOL)compact;
+- (id)backgroundImageForState:(unint64_t)state compact:(BOOL)compact;
 - (id)buttonContextMenuInteractionConfiguration;
-- (id)buttonContextMenuStyleFromDefaultStyle:(id)a3;
+- (id)buttonContextMenuStyleFromDefaultStyle:(id)style;
 - (id)buttonContextMenuTargetedPreview;
 - (id)buttonSpringLoadedInteractionEffect;
 - (id)contentView;
-- (id)matchingPointerShapeForView:(id)a3 rect:(CGRect)a4 inContainer:(id)a5;
+- (id)matchingPointerShapeForView:(id)view rect:(CGRect)rect inContainer:(id)container;
 - (id)pointerPreviewParameters;
-- (id)pointerShapeInContainer:(id)a3;
-- (id)symbolConfigurationCompact:(BOOL)a3;
+- (id)pointerShapeInContainer:(id)container;
+- (id)symbolConfigurationCompact:(BOOL)compact;
 - (id)symbolImageView;
 - (id)tintColor;
-- (void)_addConstraintsForBackgroundViewWithOffset:(double)a3 isBackButton:(BOOL)a4 resizesImage:(BOOL)a5;
-- (void)_addHorizontalConstraintsForContentButton:(id)a3 titleOffset:(double)a4 backButtonLayoutInsets:(NSDirectionalEdgeInsets)a5;
-- (void)_addHorizontalConstraintsForImageWithInsets:(UIEdgeInsets)a3 paddingEdges:(unint64_t)a4 additionalPadding:(double)a5;
-- (void)_addHorizontalConstraintsForTextWithOffset:(double)a3 additionalPadding:(UIEdgeInsets)a4;
-- (void)_addVerticalConstraintsForBackIndicatorWithTitleOffset:(double)a3 bottomOffset:(double)a4 useBaselineAlignment:(BOOL)a5;
-- (void)_addVerticalConstraintsForImageWithInsets:(UIEdgeInsets)a3;
-- (void)_addVerticalConstraintsForTextWithOffset:(double)a3;
+- (void)_addConstraintsForBackgroundViewWithOffset:(double)offset isBackButton:(BOOL)button resizesImage:(BOOL)image;
+- (void)_addHorizontalConstraintsForContentButton:(id)button titleOffset:(double)offset backButtonLayoutInsets:(NSDirectionalEdgeInsets)insets;
+- (void)_addHorizontalConstraintsForImageWithInsets:(UIEdgeInsets)insets paddingEdges:(unint64_t)edges additionalPadding:(double)padding;
+- (void)_addHorizontalConstraintsForTextWithOffset:(double)offset additionalPadding:(UIEdgeInsets)padding;
+- (void)_addVerticalConstraintsForBackIndicatorWithTitleOffset:(double)offset bottomOffset:(double)bottomOffset useBaselineAlignment:(BOOL)alignment;
+- (void)_addVerticalConstraintsForImageWithInsets:(UIEdgeInsets)insets;
+- (void)_addVerticalConstraintsForTextWithOffset:(double)offset;
 - (void)_computeTextAttributes;
-- (void)_computeTextAttributesForBarButtonItem:(id)a3;
+- (void)_computeTextAttributesForBarButtonItem:(id)item;
 - (void)_configureBackButtonMask;
-- (void)_configureBackButtonWithBackButtonLayoutInsets:(NSDirectionalEdgeInsets)a3 useBaselineAlignment:(BOOL)a4;
-- (void)_configureImageBackButtonWithImageInsets:(UIEdgeInsets)a3 backButtonLayoutInsets:(NSDirectionalEdgeInsets)a4 useBaselineAlignment:(BOOL)a5;
-- (void)_configureImageOrTitleCompact:(BOOL)a3;
-- (void)_configureImageWithInsets:(UIEdgeInsets)a3 paddingEdges:(unint64_t)a4 additionalPadding:(double)a5;
-- (void)_configureTextBackButtonWithTitlePositionAdjustment:(UIOffset)a3 backButtonLayoutInsets:(NSDirectionalEdgeInsets)a4 useBaselineAlignment:(BOOL)a5;
-- (void)_configureTextWithOffset:(UIOffset)a3 additionalPadding:(UIEdgeInsets)a4;
-- (void)_prepareBackgroundViewFromBarButtonItem:(id)a3 isBackButton:(BOOL)a4;
+- (void)_configureBackButtonWithBackButtonLayoutInsets:(NSDirectionalEdgeInsets)insets useBaselineAlignment:(BOOL)alignment;
+- (void)_configureImageBackButtonWithImageInsets:(UIEdgeInsets)insets backButtonLayoutInsets:(NSDirectionalEdgeInsets)layoutInsets useBaselineAlignment:(BOOL)alignment;
+- (void)_configureImageOrTitleCompact:(BOOL)compact;
+- (void)_configureImageWithInsets:(UIEdgeInsets)insets paddingEdges:(unint64_t)edges additionalPadding:(double)padding;
+- (void)_configureTextBackButtonWithTitlePositionAdjustment:(UIOffset)adjustment backButtonLayoutInsets:(NSDirectionalEdgeInsets)insets useBaselineAlignment:(BOOL)alignment;
+- (void)_configureTextWithOffset:(UIOffset)offset additionalPadding:(UIEdgeInsets)padding;
+- (void)_prepareBackgroundViewFromBarButtonItem:(id)item isBackButton:(BOOL)button;
 - (void)_removeTitleButton;
-- (void)_setTitle:(id)a3;
+- (void)_setTitle:(id)title;
 - (void)_setupAlternateTitles;
 - (void)_updateMonochromaticTreatment;
 - (void)_updateTextContent;
 - (void)_updateViewsForMaskingEnabled;
 - (void)activateHeightMinimizer;
 - (void)activateWidthMinimizer;
-- (void)addActiveConstraint:(id)a3 named:(id)a4;
+- (void)addActiveConstraint:(id)constraint named:(id)named;
 - (void)buttonDidUpdateBoundsSize;
-- (void)buttonLayoutSubviews:(id)a3 baseImplementation:(id)a4;
-- (void)configureButton:(id)a3 fromBarButtonItem:(id)a4;
-- (void)configureButton:(id)a3 withAppearanceDelegate:(id)a4 fromBarItem:(id)a5;
+- (void)buttonLayoutSubviews:(id)subviews baseImplementation:(id)implementation;
+- (void)configureButton:(id)button fromBarButtonItem:(id)item;
+- (void)configureButton:(id)button withAppearanceDelegate:(id)delegate fromBarItem:(id)item;
 - (void)reload;
 - (void)resetButtonHasHighlighted;
-- (void)setBackButtonMaskEnabled:(BOOL)a3;
+- (void)setBackButtonMaskEnabled:(BOOL)enabled;
 - (void)traitDependenciesUpdated;
-- (void)updateActiveConstraints:(id)a3;
-- (void)updateButton:(id)a3 forEnabledState:(BOOL)a4;
-- (void)updateButton:(id)a3 forHeldState:(BOOL)a4;
-- (void)updateButton:(id)a3 forHighlightedState:(BOOL)a4;
-- (void)updateButton:(id)a3 forSelectedState:(BOOL)a4;
+- (void)updateActiveConstraints:(id)constraints;
+- (void)updateButton:(id)button forEnabledState:(BOOL)state;
+- (void)updateButton:(id)button forHeldState:(BOOL)state;
+- (void)updateButton:(id)button forHighlightedState:(BOOL)state;
+- (void)updateButton:(id)button forSelectedState:(BOOL)state;
 - (void)updateImage;
 - (void)updateMenu;
 @end
@@ -84,11 +84,11 @@
 - (void)_computeTextAttributes
 {
   v35[3] = *MEMORY[0x1E69E9840];
-  v3 = [(_UIButtonBarButton *)self->super._button appearanceData];
-  if (v3)
+  appearanceData = [(_UIButtonBarButton *)self->super._button appearanceData];
+  if (appearanceData)
   {
-    v4 = v3;
-    v5 = [v3 titleTextAttributesForState:0];
+    v4 = appearanceData;
+    v5 = [appearanceData titleTextAttributesForState:0];
     v34 = [v4 titleTextAttributesForState:1];
     v6 = [v4 titleTextAttributesForState:2];
   }
@@ -98,47 +98,47 @@
     v4 = [_UIBarButtonItemData standardItemDataForStyle:(*&self->_flags >> 2) & 7];
     v7 = [v4 titleTextAttributesForState:0];
     WeakRetained = objc_loadWeakRetained(&self->_appearanceDelegate);
-    v9 = [WeakRetained appearanceStorage];
-    v10 = [v9 textAttributesForState:0];
+    appearanceStorage = [WeakRetained appearanceStorage];
+    v10 = [appearanceStorage textAttributesForState:0];
     v5 = _finalAttributesFromSources(v7, v10, 0, 0);
 
     v11 = [v4 titleTextAttributesForState:1];
     v12 = objc_loadWeakRetained(&self->_appearanceDelegate);
-    v13 = [v12 appearanceStorage];
-    v14 = [v13 textAttributesForState:1];
+    appearanceStorage2 = [v12 appearanceStorage];
+    v14 = [appearanceStorage2 textAttributesForState:1];
     v34 = _finalAttributesFromSources(v11, v14, 0, 0);
 
     v15 = [v4 titleTextAttributesForState:2];
     v16 = objc_loadWeakRetained(&self->_appearanceDelegate);
-    v17 = [v16 appearanceStorage];
-    v18 = [v17 textAttributesForState:2];
+    appearanceStorage3 = [v16 appearanceStorage];
+    v18 = [appearanceStorage3 textAttributesForState:2];
     v6 = _finalAttributesFromSources(v15, v18, 0, 0);
   }
 
-  v19 = [(_UIButtonBarButtonVisualProviderIOS *)self tintColor];
-  v20 = v19;
-  if (v19)
+  tintColor = [(_UIButtonBarButtonVisualProviderIOS *)self tintColor];
+  v20 = tintColor;
+  if (tintColor)
   {
-    v21 = v19;
+    tintColor2 = tintColor;
   }
 
   else
   {
-    v21 = [(UIView *)self->super._button tintColor];
+    tintColor2 = [(UIView *)self->super._button tintColor];
   }
 
-  v22 = v21;
+  v22 = tintColor2;
 
-  v23 = [(UIView *)self->super._button traitCollection];
+  traitCollection = [(UIView *)self->super._button traitCollection];
   v24 = [(NSArray *)self->_barButtonTitleAttributes objectAtIndexedSubscript:0];
   v33 = v5;
-  v25 = _finalAttributesFromSources(v5, v24, v22, v23);
+  v25 = _finalAttributesFromSources(v5, v24, v22, traitCollection);
 
   v26 = [(NSArray *)self->_barButtonTitleAttributes objectAtIndexedSubscript:1];
-  v27 = _finalAttributesFromSources(v34, v26, v22, v23);
+  v27 = _finalAttributesFromSources(v34, v26, v22, traitCollection);
 
   v28 = [(NSArray *)self->_barButtonTitleAttributes objectAtIndexedSubscript:2];
-  v29 = _finalAttributesFromSources(v6, v28, v22, v23);
+  v29 = _finalAttributesFromSources(v6, v28, v22, traitCollection);
 
   v35[0] = v25;
   v35[1] = v27;
@@ -157,29 +157,29 @@
 - (void)updateMenu
 {
   WeakRetained = objc_loadWeakRetained(&self->super._barButtonItem);
-  v4 = [WeakRetained menu];
+  menu = [WeakRetained menu];
 
   if ([(_UIButtonBarButton *)self->super._button isBackButton])
   {
-    v5 = 0;
+    _menuIsPrimary = 0;
   }
 
   else
   {
     v6 = objc_loadWeakRetained(&self->super._barButtonItem);
-    v5 = [v6 _menuIsPrimary];
+    _menuIsPrimary = [v6 _menuIsPrimary];
   }
 
   v7 = objc_loadWeakRetained(&self->super._barButtonItem);
-  v8 = [v7 _secondaryActionsProvider];
+  _secondaryActionsProvider = [v7 _secondaryActionsProvider];
 
   v9 = objc_loadWeakRetained(&self->super._barButtonItem);
-  v10 = [v9 _owningButtonGroup];
+  _owningButtonGroup = [v9 _owningButtonGroup];
 
-  if (v8)
+  if (_secondaryActionsProvider)
   {
     objc_copyWeak(&to, &self->super._barButtonItem);
-    if (v5)
+    if (_menuIsPrimary)
     {
       v11 = &v31;
       v12 = v30;
@@ -199,7 +199,7 @@
 
     v12[2] = v13;
     v12[3] = &unk_1E70F7478;
-    v12[4] = v8;
+    v12[4] = _secondaryActionsProvider;
     objc_copyWeak(v11, &to);
     v17 = _Block_copy(v12);
     menuProvider = self->_menuProvider;
@@ -211,13 +211,13 @@
 
   else
   {
-    if (v4)
+    if (menu)
     {
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __49___UIButtonBarButtonVisualProviderIOS_updateMenu__block_invoke_3;
       aBlock[3] = &unk_1E70F6A70;
-      v27 = v4;
+      v27 = menu;
       v14 = _Block_copy(aBlock);
       v15 = self->_menuProvider;
       self->_menuProvider = v14;
@@ -227,23 +227,23 @@
 
     else
     {
-      if (v10)
+      if (_owningButtonGroup)
       {
         v19 = objc_loadWeakRetained(&self->super._barButtonItem);
-        v20 = [v19 _hasAction];
+        _hasAction = [v19 _hasAction];
 
-        if ((v20 & 1) == 0)
+        if ((_hasAction & 1) == 0)
         {
           v24[0] = MEMORY[0x1E69E9820];
           v24[1] = 3221225472;
           v24[2] = __49___UIButtonBarButtonVisualProviderIOS_updateMenu__block_invoke_4;
           v24[3] = &unk_1E70F6A70;
-          v25 = v10;
+          v25 = _owningButtonGroup;
           v22 = _Block_copy(v24);
           v23 = self->_menuProvider;
           self->_menuProvider = v22;
 
-          v5 = 1;
+          _menuIsPrimary = 1;
           goto LABEL_15;
         }
       }
@@ -258,7 +258,7 @@ LABEL_15:
   -[_UIButtonBarButton setPreferredMenuElementOrder:](self->super._button, "setPreferredMenuElementOrder:", [v21 preferredMenuElementOrder]);
 
   [(UIControl *)self->super._button setContextMenuInteractionEnabled:self->_menuProvider != 0];
-  [(UIControl *)self->super._button setShowsMenuAsPrimaryAction:v5];
+  [(UIControl *)self->super._button setShowsMenuAsPrimaryAction:_menuIsPrimary];
 }
 
 - (id)tintColor
@@ -271,14 +271,14 @@ LABEL_15:
   else
   {
     v4 = objc_loadWeakRetained(&self->super._barButtonItem);
-    v5 = [v4 isEnabled];
+    isEnabled = [v4 isEnabled];
 
-    if ((v5 & 1) == 0)
+    if ((isEnabled & 1) == 0)
     {
       v6 = +[UIColor tertiaryLabelColor];
       if (v6)
       {
-        v7 = v6;
+        tintColor3 = v6;
         goto LABEL_21;
       }
     }
@@ -287,27 +287,27 @@ LABEL_15:
   v8 = objc_loadWeakRetained(&self->super._barButtonItem);
   if ([v8 _prefersFilledAppearance])
   {
-    v9 = [(_UIButtonBarButton *)self->super._button usesAdjustedTintColorWhenItemPrefersFilledAppearance];
+    usesAdjustedTintColorWhenItemPrefersFilledAppearance = [(_UIButtonBarButton *)self->super._button usesAdjustedTintColorWhenItemPrefersFilledAppearance];
 
-    if (v9)
+    if (usesAdjustedTintColorWhenItemPrefersFilledAppearance)
     {
       v10 = objc_loadWeakRetained(&self->super._barButtonItem);
-      v11 = [v10 tintColor];
-      if (v11)
+      tintColor = [v10 tintColor];
+      if (tintColor)
       {
         v12 = objc_loadWeakRetained(&self->super._barButtonItem);
-        v13 = [v12 tintColor];
+        tintColor2 = [v12 tintColor];
       }
 
       else
       {
-        v13 = [(UIView *)self->super._button _ancestorTintColor];
+        tintColor2 = [(UIView *)self->super._button _ancestorTintColor];
       }
 
-      v21 = [(UIView *)self->super._button traitCollection];
-      v7 = [UIColor _legibleForegroundColorForBackgroundColor:v13 traitCollection:v21];
+      traitCollection = [(UIView *)self->super._button traitCollection];
+      tintColor3 = [UIColor _legibleForegroundColorForBackgroundColor:tintColor2 traitCollection:traitCollection];
 
-      if (v7)
+      if (tintColor3)
       {
         goto LABEL_21;
       }
@@ -319,15 +319,15 @@ LABEL_15:
   }
 
   v14 = objc_loadWeakRetained(&self->super._barButtonItem);
-  v7 = [v14 tintColor];
+  tintColor3 = [v14 tintColor];
 
-  if (!v7)
+  if (!tintColor3)
   {
     v15 = objc_loadWeakRetained(&self->_appearanceDelegate);
-    v16 = [v15 appearanceStorage];
-    v7 = [v16 tintColor];
+    appearanceStorage = [v15 appearanceStorage];
+    tintColor3 = [appearanceStorage tintColor];
 
-    if (!v7)
+    if (!tintColor3)
     {
       v17 = objc_loadWeakRetained(&self->_appearanceDelegate);
       v18 = objc_opt_respondsToSelector();
@@ -343,13 +343,13 @@ LABEL_15:
       {
         [v19 tintColor];
       }
-      v7 = ;
+      tintColor3 = ;
     }
   }
 
 LABEL_21:
 
-  return v7;
+  return tintColor3;
 }
 
 - (void)_setupAlternateTitles
@@ -358,17 +358,17 @@ LABEL_21:
   if (self->_titleButton)
   {
     WeakRetained = objc_loadWeakRetained(&self->super._barButtonItem);
-    v4 = [WeakRetained _backButtonAlternateTitles];
+    _backButtonAlternateTitles = [WeakRetained _backButtonAlternateTitles];
 
-    if ([v4 count])
+    if ([_backButtonAlternateTitles count])
     {
       v5 = objc_opt_new();
       v6 = objc_loadWeakRetained(&self->super._barButtonItem);
-      v7 = [v6 resolvedTitle];
+      resolvedTitle = [v6 resolvedTitle];
 
-      if (v7)
+      if (resolvedTitle)
       {
-        v36 = [v4 containsObject:v7];
+        v36 = [_backButtonAlternateTitles containsObject:resolvedTitle];
       }
 
       else
@@ -383,9 +383,9 @@ LABEL_21:
         self->_titleLookup = v11;
       }
 
-      if (v7)
+      if (resolvedTitle)
       {
-        v13 = [(_UIButtonBarButtonVisualProviderIOS *)self _titleContentForTitle:v7];
+        v13 = [(_UIButtonBarButtonVisualProviderIOS *)self _titleContentForTitle:resolvedTitle];
         [v5 addObject:v13];
       }
 
@@ -393,7 +393,7 @@ LABEL_21:
       v40 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v14 = v4;
+      v14 = _backButtonAlternateTitles;
       v15 = [v14 countByEnumeratingWithState:&v37 objects:v41 count:16];
       if (v15)
       {
@@ -439,7 +439,7 @@ LABEL_21:
 
       v25 = [(NSArray *)self->_titleContent count];
       v26 = v36 ^ 1;
-      if (!v7)
+      if (!resolvedTitle)
       {
         v26 = 0;
       }
@@ -457,8 +457,8 @@ LABEL_21:
 LABEL_30:
         LODWORD(v10) = 1132068864;
         [(UIView *)self->_titleButton setContentCompressionResistancePriority:0 forAxis:v10];
-        v27 = [(NSArray *)self->_titleContent firstObject];
-        [v27 width];
+        firstObject = [(NSArray *)self->_titleContent firstObject];
+        [firstObject width];
         v29 = v28;
 
         p_backButtonTitleMaxWidthConstraint = &self->_backButtonTitleMaxWidthConstraint;
@@ -470,8 +470,8 @@ LABEL_30:
 
         else
         {
-          v33 = [(UIView *)self->_titleButton widthAnchor];
-          v34 = [v33 constraintLessThanOrEqualToConstant:v29];
+          widthAnchor = [(UIView *)self->_titleButton widthAnchor];
+          v34 = [widthAnchor constraintLessThanOrEqualToConstant:v29];
           v35 = *p_backButtonTitleMaxWidthConstraint;
           *p_backButtonTitleMaxWidthConstraint = v34;
         }
@@ -510,8 +510,8 @@ LABEL_36:
 
 - (void)_updateMonochromaticTreatment
 {
-  v3 = [(UIView *)self->super._button traitCollection];
-  [v3 _monochromaticTreatment];
+  traitCollection = [(UIView *)self->super._button traitCollection];
+  [traitCollection _monochromaticTreatment];
 
   WeakRetained = objc_loadWeakRetained(&self->super._barButtonItem);
   if ([WeakRetained isEnabled])
@@ -533,8 +533,8 @@ LABEL_36:
       else
       {
         v8 = objc_loadWeakRetained(&self->super._barButtonItem);
-        v9 = [v8 tintColor];
-        if (v9)
+        tintColor = [v8 tintColor];
+        if (tintColor)
         {
           v6 = +[_UIButtonBarButton shouldUseMonochromeTreatmentWithCustomTintColor];
         }
@@ -561,8 +561,8 @@ LABEL_36:
 
 - (void)activateWidthMinimizer
 {
-  v3 = [(_UIButtonBarButton *)self->super._button widthMinimizingConstraint];
-  [(NSMutableDictionary *)self->_currentConstraints setObject:v3 forKeyedSubscript:@"minimizeWidth"];
+  widthMinimizingConstraint = [(_UIButtonBarButton *)self->super._button widthMinimizingConstraint];
+  [(NSMutableDictionary *)self->_currentConstraints setObject:widthMinimizingConstraint forKeyedSubscript:@"minimizeWidth"];
   [(NSMutableDictionary *)self->_oldConstraints setObject:0 forKeyedSubscript:@"minimizeWidth"];
 }
 
@@ -686,12 +686,12 @@ LABEL_36:
     return;
   }
 
-  v4 = [(_UIButtonBarButtonVisualProviderIOS *)self _backButtonTitleForCurrentBoundsSize];
+  _backButtonTitleForCurrentBoundsSize = [(_UIButtonBarButtonVisualProviderIOS *)self _backButtonTitleForCurrentBoundsSize];
   v5 = [(UIButton *)self->_titleButton attributedTitleForState:0];
-  v6 = [v5 string];
+  string = [v5 string];
 
-  v7 = v6;
-  v8 = v4;
+  v7 = string;
+  v8 = _backButtonTitleForCurrentBoundsSize;
   v12 = v8;
   if (v7 == v8)
   {
@@ -743,96 +743,96 @@ LABEL_2:
   return v3;
 }
 
-- (id)symbolConfigurationCompact:(BOOL)a3
+- (id)symbolConfigurationCompact:(BOOL)compact
 {
-  v5 = [(_UIButtonBarButton *)self->super._button appearanceData];
-  if (!v5)
+  appearanceData = [(_UIButtonBarButton *)self->super._button appearanceData];
+  if (!appearanceData)
   {
-    v5 = [_UIBarButtonItemData standardItemDataForStyle:(*&self->_flags >> 2) & 7];
+    appearanceData = [_UIBarButtonItemData standardItemDataForStyle:(*&self->_flags >> 2) & 7];
   }
 
-  if (a3)
+  if (compact)
   {
-    [v5 compactImageSymbolConfiguration];
+    [appearanceData compactImageSymbolConfiguration];
   }
 
   else
   {
-    [v5 imageSymbolConfiguration];
+    [appearanceData imageSymbolConfiguration];
   }
   v6 = ;
 
   return v6;
 }
 
-- (id)backgroundImageForState:(unint64_t)a3 compact:(BOOL)a4
+- (id)backgroundImageForState:(unint64_t)state compact:(BOOL)compact
 {
-  v4 = a4;
-  v7 = [(_UIButtonBarButton *)self->super._button appearanceData];
-  v8 = v7;
-  if (v7)
+  compactCopy = compact;
+  appearanceData = [(_UIButtonBarButton *)self->super._button appearanceData];
+  v8 = appearanceData;
+  if (appearanceData)
   {
-    if (a3)
+    if (state)
     {
       v9 = 1;
     }
 
     else
     {
-      v9 = a3 & 2;
+      v9 = state & 2;
     }
 
-    v10 = [v7 backgroundImageForState:v9];
+    v10 = [appearanceData backgroundImageForState:v9];
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_appearanceDelegate);
-    v12 = [WeakRetained appearanceStorage];
-    v10 = [v12 backgroundImageForState:a3 style:(*&self->_flags >> 2) & 7 isMini:v4];
+    appearanceStorage = [WeakRetained appearanceStorage];
+    v10 = [appearanceStorage backgroundImageForState:state style:(*&self->_flags >> 2) & 7 isMini:compactCopy];
   }
 
   return v10;
 }
 
-- (id)backButtonBackgroundImageForState:(unint64_t)a3 compact:(BOOL)a4
+- (id)backButtonBackgroundImageForState:(unint64_t)state compact:(BOOL)compact
 {
-  v4 = a4;
-  v7 = [(_UIButtonBarButton *)self->super._button appearanceData];
-  v8 = v7;
-  if (v7)
+  compactCopy = compact;
+  appearanceData = [(_UIButtonBarButton *)self->super._button appearanceData];
+  v8 = appearanceData;
+  if (appearanceData)
   {
-    if (a3)
+    if (state)
     {
       v9 = 1;
     }
 
     else
     {
-      v9 = a3 & 2;
+      v9 = state & 2;
     }
 
-    v10 = [v7 backgroundImageForState:v9];
+    v10 = [appearanceData backgroundImageForState:v9];
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_appearanceDelegate);
-    v12 = [WeakRetained appearanceStorage];
-    v10 = [v12 backButtonBackgroundImageForState:a3 isMini:v4];
+    appearanceStorage = [WeakRetained appearanceStorage];
+    v10 = [appearanceStorage backButtonBackgroundImageForState:state isMini:compactCopy];
   }
 
   return v10;
 }
 
-- (UIOffset)backgroundVerticalAdjustmentForCompact:(BOOL)a3
+- (UIOffset)backgroundVerticalAdjustmentForCompact:(BOOL)compact
 {
-  v3 = a3;
-  v5 = [(_UIButtonBarButton *)self->super._button appearanceData];
-  v6 = v5;
-  if (v5)
+  compactCopy = compact;
+  appearanceData = [(_UIButtonBarButton *)self->super._button appearanceData];
+  v6 = appearanceData;
+  if (appearanceData)
   {
-    [v5 backgroundImagePositionAdjustmentForState:0];
+    [appearanceData backgroundImagePositionAdjustmentForState:0];
     v8 = v7;
     v10 = v9;
   }
@@ -840,8 +840,8 @@ LABEL_2:
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_appearanceDelegate);
-    v12 = [WeakRetained appearanceStorage];
-    [v12 backgroundVerticalAdjustmentForBarMetrics:v3];
+    appearanceStorage = [WeakRetained appearanceStorage];
+    [appearanceStorage backgroundVerticalAdjustmentForBarMetrics:compactCopy];
     v10 = v13;
     v8 = 0.0;
   }
@@ -853,14 +853,14 @@ LABEL_2:
   return result;
 }
 
-- (UIOffset)backButtonBackgroundVerticalAdjustmentForCompact:(BOOL)a3
+- (UIOffset)backButtonBackgroundVerticalAdjustmentForCompact:(BOOL)compact
 {
-  v3 = a3;
-  v5 = [(_UIButtonBarButton *)self->super._button appearanceData];
-  v6 = v5;
-  if (v5)
+  compactCopy = compact;
+  appearanceData = [(_UIButtonBarButton *)self->super._button appearanceData];
+  v6 = appearanceData;
+  if (appearanceData)
   {
-    [v5 backgroundImagePositionAdjustmentForState:0];
+    [appearanceData backgroundImagePositionAdjustmentForState:0];
     v8 = v7;
     v10 = v9;
   }
@@ -868,8 +868,8 @@ LABEL_2:
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_appearanceDelegate);
-    v12 = [WeakRetained appearanceStorage];
-    [v12 backButtonBackgroundVerticalAdjustmentForBarMetrics:v3];
+    appearanceStorage = [WeakRetained appearanceStorage];
+    [appearanceStorage backButtonBackgroundVerticalAdjustmentForBarMetrics:compactCopy];
     v10 = v13;
     v8 = 0.0;
   }
@@ -881,13 +881,13 @@ LABEL_2:
   return result;
 }
 
-- (UIOffset)titlePositionOffsetForCompact:(BOOL)a3
+- (UIOffset)titlePositionOffsetForCompact:(BOOL)compact
 {
-  v5 = [(_UIButtonBarButton *)self->super._button appearanceData];
-  v6 = v5;
-  if (v5)
+  appearanceData = [(_UIButtonBarButton *)self->super._button appearanceData];
+  v6 = appearanceData;
+  if (appearanceData)
   {
-    [v5 titlePositionAdjustmentForState:0];
+    [appearanceData titlePositionAdjustmentForState:0];
     v8 = v7;
     v10 = v9;
   }
@@ -895,16 +895,16 @@ LABEL_2:
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_appearanceDelegate);
-    v12 = [WeakRetained appearanceStorage];
+    appearanceStorage = [WeakRetained appearanceStorage];
 
-    if (a3)
+    if (compact)
     {
-      [v12 miniTitlePositionOffset];
+      [appearanceStorage miniTitlePositionOffset];
     }
 
     else
     {
-      [v12 titlePositionOffset];
+      [appearanceStorage titlePositionOffset];
     }
     v13 = ;
     v14 = v13;
@@ -929,13 +929,13 @@ LABEL_2:
   return result;
 }
 
-- (UIOffset)backButtonTitlePositionOffsetForCompact:(BOOL)a3
+- (UIOffset)backButtonTitlePositionOffsetForCompact:(BOOL)compact
 {
-  v5 = [(_UIButtonBarButton *)self->super._button appearanceData];
-  v6 = v5;
-  if (v5)
+  appearanceData = [(_UIButtonBarButton *)self->super._button appearanceData];
+  v6 = appearanceData;
+  if (appearanceData)
   {
-    [v5 titlePositionAdjustmentForState:0];
+    [appearanceData titlePositionAdjustmentForState:0];
     v8 = v7;
     v10 = v9;
   }
@@ -943,16 +943,16 @@ LABEL_2:
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_appearanceDelegate);
-    v12 = [WeakRetained appearanceStorage];
+    appearanceStorage = [WeakRetained appearanceStorage];
 
-    if (a3)
+    if (compact)
     {
-      [v12 miniBackButtonTitlePositionOffset];
+      [appearanceStorage miniBackButtonTitlePositionOffset];
     }
 
     else
     {
-      [v12 backButtonTitlePositionOffset];
+      [appearanceStorage backButtonTitlePositionOffset];
     }
     v13 = ;
     v14 = v13;
@@ -977,36 +977,36 @@ LABEL_2:
   return result;
 }
 
-- (id)_backIndicatorImageForCompact:(BOOL)a3
+- (id)_backIndicatorImageForCompact:(BOOL)compact
 {
-  v5 = [(_UIButtonBarButton *)self->super._button appearanceData];
-  v6 = v5;
-  if (!v5)
+  appearanceData = [(_UIButtonBarButton *)self->super._button appearanceData];
+  v6 = appearanceData;
+  if (!appearanceData)
   {
     goto LABEL_16;
   }
 
-  if (a3)
+  if (compact)
   {
-    [v5 compactBackIndicatorImage];
+    [appearanceData compactBackIndicatorImage];
   }
 
   else
   {
-    [v5 backIndicatorImage];
+    [appearanceData backIndicatorImage];
   }
-  v7 = ;
-  if (!v7)
+  backIndicatorImage = ;
+  if (!backIndicatorImage)
   {
 LABEL_16:
     WeakRetained = objc_loadWeakRetained(&self->_appearanceDelegate);
-    v7 = [WeakRetained backIndicatorImage];
+    backIndicatorImage = [WeakRetained backIndicatorImage];
 
-    if (!v7)
+    if (!backIndicatorImage)
     {
       v9 = +[_UIBarButtonItemData standardBackButtonData];
       v10 = v9;
-      if (a3)
+      if (compact)
       {
         [v9 compactBackIndicatorImage];
       }
@@ -1015,44 +1015,44 @@ LABEL_16:
       {
         [v9 backIndicatorImage];
       }
-      v7 = ;
+      backIndicatorImage = ;
     }
   }
 
-  v11 = [v7 imageFlippedForRightToLeftLayoutDirection];
+  imageFlippedForRightToLeftLayoutDirection = [backIndicatorImage imageFlippedForRightToLeftLayoutDirection];
 
-  return v11;
+  return imageFlippedForRightToLeftLayoutDirection;
 }
 
-- (id)_backIndicatorSymbolConfigurationForCompact:(BOOL)a3
+- (id)_backIndicatorSymbolConfigurationForCompact:(BOOL)compact
 {
   if (dyld_program_sdk_at_least())
   {
-    v5 = [(_UIButtonBarButton *)self->super._button appearanceData];
-    if (!v5)
+    appearanceData = [(_UIButtonBarButton *)self->super._button appearanceData];
+    if (!appearanceData)
     {
       WeakRetained = objc_loadWeakRetained(&self->_appearanceDelegate);
-      v7 = [WeakRetained backIndicatorImage];
+      backIndicatorImage = [WeakRetained backIndicatorImage];
 
-      if (v7)
+      if (backIndicatorImage)
       {
-        v5 = 0;
+        appearanceData = 0;
       }
 
       else
       {
-        v5 = +[_UIBarButtonItemData standardBackButtonData];
+        appearanceData = +[_UIBarButtonItemData standardBackButtonData];
       }
     }
 
-    if (a3)
+    if (compact)
     {
-      [v5 compactBackIndicatorSymbolConfiguration];
+      [appearanceData compactBackIndicatorSymbolConfiguration];
     }
 
     else
     {
-      [v5 backIndicatorSymbolConfiguration];
+      [appearanceData backIndicatorSymbolConfiguration];
     }
     v8 = ;
   }
@@ -1065,72 +1065,72 @@ LABEL_16:
   return v8;
 }
 
-- (id)_backIndicatorMaskForCompact:(BOOL)a3
+- (id)_backIndicatorMaskForCompact:(BOOL)compact
 {
-  v5 = [(_UIButtonBarButton *)self->super._button appearanceData];
-  v6 = v5;
-  if (!v5)
+  appearanceData = [(_UIButtonBarButton *)self->super._button appearanceData];
+  v6 = appearanceData;
+  if (!appearanceData)
   {
     goto LABEL_13;
   }
 
-  if (a3)
+  if (compact)
   {
-    [v5 compactBackIndicatorTransitionMaskImage];
+    [appearanceData compactBackIndicatorTransitionMaskImage];
   }
 
   else
   {
-    [v5 backIndicatorTransitionMaskImage];
+    [appearanceData backIndicatorTransitionMaskImage];
   }
-  v7 = ;
-  if (!v7)
+  backIndicatorMaskImage = ;
+  if (!backIndicatorMaskImage)
   {
 LABEL_13:
     WeakRetained = objc_loadWeakRetained(&self->_appearanceDelegate);
-    v7 = [WeakRetained backIndicatorMaskImage];
+    backIndicatorMaskImage = [WeakRetained backIndicatorMaskImage];
 
-    if (!v7)
+    if (!backIndicatorMaskImage)
     {
       v9 = +[_UIBarButtonItemData standardBackButtonData];
-      v7 = [v9 compactBackIndicatorTransitionMaskImage];
+      backIndicatorMaskImage = [v9 compactBackIndicatorTransitionMaskImage];
     }
   }
 
-  v10 = [v7 imageFlippedForRightToLeftLayoutDirection];
+  imageFlippedForRightToLeftLayoutDirection = [backIndicatorMaskImage imageFlippedForRightToLeftLayoutDirection];
 
-  return v10;
+  return imageFlippedForRightToLeftLayoutDirection;
 }
 
-- (id)_backIndicatorMaskSymbolConfigurationForCompact:(BOOL)a3
+- (id)_backIndicatorMaskSymbolConfigurationForCompact:(BOOL)compact
 {
   if (dyld_program_sdk_at_least())
   {
-    v5 = [(_UIButtonBarButton *)self->super._button appearanceData];
-    if (!v5)
+    appearanceData = [(_UIButtonBarButton *)self->super._button appearanceData];
+    if (!appearanceData)
     {
       WeakRetained = objc_loadWeakRetained(&self->_appearanceDelegate);
-      v7 = [WeakRetained backIndicatorImage];
+      backIndicatorImage = [WeakRetained backIndicatorImage];
 
-      if (v7)
+      if (backIndicatorImage)
       {
-        v5 = 0;
+        appearanceData = 0;
       }
 
       else
       {
-        v5 = +[_UIBarButtonItemData standardBackButtonData];
+        appearanceData = +[_UIBarButtonItemData standardBackButtonData];
       }
     }
 
-    if (a3)
+    if (compact)
     {
-      [v5 compactBackIndicatorTransitionMaskSymbolConfiguration];
+      [appearanceData compactBackIndicatorTransitionMaskSymbolConfiguration];
     }
 
     else
     {
-      [v5 backIndicatorTransitionMaskSymbolConfiguration];
+      [appearanceData backIndicatorTransitionMaskSymbolConfiguration];
     }
     v8 = ;
   }
@@ -1195,17 +1195,17 @@ LABEL_10:
   return v3;
 }
 
-- (id)pointerShapeInContainer:(id)a3
+- (id)pointerShapeInContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v5 = +[_UIPointerSettingsDomain rootSettings];
-  v6 = [v5 navigationAndToolbarSettings];
+  navigationAndToolbarSettings = [v5 navigationAndToolbarSettings];
 
   if ((*&self->_flags & 0x20) != 0 && self->_systemItem == 24)
   {
     backgroundView = self->_backgroundView;
     [(UIView *)backgroundView bounds];
-    [(UIView *)backgroundView convertRect:v4 toView:?];
+    [(UIView *)backgroundView convertRect:containerCopy toView:?];
     v8 = [UIPointerShape shapeWithRoundedRect:v37.origin.x cornerRadius:v37.origin.y, v37.size.width, v37.size.height, CGRectGetWidth(v37) * 0.5];
     goto LABEL_32;
   }
@@ -1230,7 +1230,7 @@ LABEL_10:
     if ([(UIButton *)v10 _hasVisibleDefaultSelectionIndicator])
     {
       [(_UIModernBarButton *)v10 _selectedIndicatorBounds];
-      [(UIView *)v10 convertRect:v4 toView:?];
+      [(UIView *)v10 convertRect:containerCopy toView:?];
       v8 = [UIPointerShape shapeWithRoundedRect:"shapeWithRoundedRect:cornerRadius:" cornerRadius:?];
 
       goto LABEL_32;
@@ -1285,16 +1285,16 @@ LABEL_16:
       goto LABEL_23;
     }
 
-    v26 = [(UIButton *)imageButton imageView];
+    imageView = [(UIButton *)imageButton imageView];
     goto LABEL_21;
   }
 
-  v26 = [(UIButton *)v24 titleLabel];
-  if (([v26 isHidden] & 1) == 0)
+  imageView = [(UIButton *)v24 titleLabel];
+  if (([imageView isHidden] & 1) == 0)
   {
 LABEL_21:
-    [v26 bounds];
-    [v26 convertRect:self->super._button toView:?];
+    [imageView bounds];
+    [imageView convertRect:self->super._button toView:?];
     v43.origin.x = v28;
     v43.origin.y = v29;
     v43.size.width = v30;
@@ -1340,24 +1340,24 @@ LABEL_23:
 
   button = self->super._button;
   WeakRetained = objc_loadWeakRetained(&self->_appearanceDelegate);
-  v8 = _calculateFinalPointerShape(button, v4, WeakRetained, v6, [(_UIButtonBarButton *)self->super._button isBackButton], [(UIView *)self->super._button effectiveUserInterfaceLayoutDirection]!= UIUserInterfaceLayoutDirectionRightToLeft, v32, [(_UIButtonBarButtonVisualProviderIOS *)self prefersCapsularPointerShape], x, y, width, height);
+  v8 = _calculateFinalPointerShape(button, containerCopy, WeakRetained, navigationAndToolbarSettings, [(_UIButtonBarButton *)self->super._button isBackButton], [(UIView *)self->super._button effectiveUserInterfaceLayoutDirection]!= UIUserInterfaceLayoutDirectionRightToLeft, v32, [(_UIButtonBarButtonVisualProviderIOS *)self prefersCapsularPointerShape], x, y, width, height);
 
 LABEL_32:
 
   return v8;
 }
 
-- (id)matchingPointerShapeForView:(id)a3 rect:(CGRect)a4 inContainer:(id)a5
+- (id)matchingPointerShapeForView:(id)view rect:(CGRect)rect inContainer:(id)container
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a5;
-  v12 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  containerCopy = container;
+  viewCopy = view;
   v13 = +[_UIPointerSettingsDomain rootSettings];
-  v14 = [v13 navigationAndToolbarSettings];
-  v15 = _calculateFinalPointerShape(v12, v11, 0, v14, 0, 0, 0, [(_UIButtonBarButtonVisualProviderIOS *)self prefersCapsularPointerShape], x, y, width, height);
+  navigationAndToolbarSettings = [v13 navigationAndToolbarSettings];
+  v15 = _calculateFinalPointerShape(viewCopy, containerCopy, 0, navigationAndToolbarSettings, 0, 0, 0, [(_UIButtonBarButtonVisualProviderIOS *)self prefersCapsularPointerShape], x, y, width, height);
 
   return v15;
 }
@@ -1366,43 +1366,43 @@ LABEL_32:
 {
   if ((*&self->_flags & 0x20) != 0 && self->_systemItem == 24)
   {
-    LOBYTE(v2) = 1;
+    LOBYTE(isSelected) = 1;
   }
 
   else
   {
-    v2 = [(UIControl *)self->super._button isSelected];
-    if (v2)
+    isSelected = [(UIControl *)self->super._button isSelected];
+    if (isSelected)
     {
       v3 = +[_UIPointerSettingsDomain rootSettings];
-      v4 = [v3 navigationAndToolbarSettings];
+      navigationAndToolbarSettings = [v3 navigationAndToolbarSettings];
 
-      LOBYTE(v3) = [v4 enableLiftOnSelected];
-      LOBYTE(v2) = v3;
+      LOBYTE(v3) = [navigationAndToolbarSettings enableLiftOnSelected];
+      LOBYTE(isSelected) = v3;
     }
   }
 
-  return v2;
+  return isSelected;
 }
 
-- (void)updateActiveConstraints:(id)a3
+- (void)updateActiveConstraints:(id)constraints
 {
-  v12 = a3;
+  constraintsCopy = constraints;
   oldConstraints = self->_oldConstraints;
   if (oldConstraints)
   {
-    v5 = oldConstraints;
+    dictionary = oldConstraints;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  v6 = v5;
+  v6 = dictionary;
   objc_storeStrong(&self->_oldConstraints, self->_currentConstraints);
   objc_storeStrong(&self->_currentConstraints, v6);
-  v12[2]();
+  constraintsCopy[2]();
   if ([(_UIButtonBarButtonVisualProviderIOS *)self allowsFittingSizeCachingWithNilLayoutEngine])
   {
     v7 = [(NSMutableDictionary *)self->_oldConstraints count];
@@ -1415,8 +1415,8 @@ LABEL_32:
   if ([(NSMutableDictionary *)self->_oldConstraints count])
   {
     v8 = MEMORY[0x1E69977A0];
-    v9 = [(NSMutableDictionary *)self->_oldConstraints allValues];
-    [v8 deactivateConstraints:v9];
+    allValues = [(NSMutableDictionary *)self->_oldConstraints allValues];
+    [v8 deactivateConstraints:allValues];
 
     [(NSMutableDictionary *)self->_oldConstraints removeAllObjects];
   }
@@ -1424,37 +1424,37 @@ LABEL_32:
   if ([(NSMutableDictionary *)self->_currentConstraints count])
   {
     v10 = MEMORY[0x1E69977A0];
-    v11 = [(NSMutableDictionary *)self->_currentConstraints allValues];
-    [v10 activateConstraints:v11];
+    allValues2 = [(NSMutableDictionary *)self->_currentConstraints allValues];
+    [v10 activateConstraints:allValues2];
   }
 }
 
-- (void)addActiveConstraint:(id)a3 named:(id)a4
+- (void)addActiveConstraint:(id)constraint named:(id)named
 {
-  v17 = a3;
-  v7 = a4;
-  if (![v7 length])
+  constraintCopy = constraint;
+  namedCopy = named;
+  if (![namedCopy length])
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"_UIButtonBarButtonVisualProviderIOS.m" lineNumber:872 description:@"Activating a constraint requires a non-empty identifier"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIButtonBarButtonVisualProviderIOS.m" lineNumber:872 description:@"Activating a constraint requires a non-empty identifier"];
   }
 
-  if (!v17)
+  if (!constraintCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"_UIButtonBarButtonVisualProviderIOS.m" lineNumber:873 description:{@"Cannot activate a nil constraint (%@)", v7}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIButtonBarButtonVisualProviderIOS.m" lineNumber:873 description:{@"Cannot activate a nil constraint (%@)", namedCopy}];
   }
 
   p_oldConstraints = &self->_oldConstraints;
-  v9 = [(NSMutableDictionary *)self->_oldConstraints objectForKeyedSubscript:v7];
+  v9 = [(NSMutableDictionary *)self->_oldConstraints objectForKeyedSubscript:namedCopy];
   v10 = v9;
-  v11 = v17;
-  if (v9 == v17)
+  v11 = constraintCopy;
+  if (v9 == constraintCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"_UIButtonBarButtonVisualProviderIOS.m" lineNumber:878 description:@"On non-optimal path for reusing existing constraint – did you mean to call -activate[Width|Height]Minimizer instead?"];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"_UIButtonBarButtonVisualProviderIOS.m" lineNumber:878 description:@"On non-optimal path for reusing existing constraint – did you mean to call -activate[Width|Height]Minimizer instead?"];
 
-    v11 = v17;
+    v11 = constraintCopy;
     if (!v10)
     {
       goto LABEL_10;
@@ -1466,40 +1466,40 @@ LABEL_32:
     goto LABEL_10;
   }
 
-  v12 = [v10 _isEqualToConstraintValue:v17 includingConstant:0 includeOtherMutableProperties:0];
-  v11 = v17;
+  v12 = [v10 _isEqualToConstraintValue:constraintCopy includingConstant:0 includeOtherMutableProperties:0];
+  v11 = constraintCopy;
   if (v12)
   {
-    [v17 constant];
+    [constraintCopy constant];
     [v10 setConstant:?];
-    [(NSMutableDictionary *)self->_currentConstraints setObject:v10 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)self->_currentConstraints setObject:v10 forKeyedSubscript:namedCopy];
     v13 = 0;
     goto LABEL_11;
   }
 
 LABEL_10:
-  [v11 setIdentifier:v7];
+  [v11 setIdentifier:namedCopy];
   p_oldConstraints = &self->_currentConstraints;
-  v13 = v17;
+  v13 = constraintCopy;
 LABEL_11:
-  [(NSMutableDictionary *)*p_oldConstraints setObject:v13 forKeyedSubscript:v7];
+  [(NSMutableDictionary *)*p_oldConstraints setObject:v13 forKeyedSubscript:namedCopy];
 }
 
 - (void)activateHeightMinimizer
 {
-  v3 = [(_UIButtonBarButton *)self->super._button heightMinimizingConstraint];
-  [(NSMutableDictionary *)self->_currentConstraints setObject:v3 forKeyedSubscript:@"minimizeHeight"];
+  heightMinimizingConstraint = [(_UIButtonBarButton *)self->super._button heightMinimizingConstraint];
+  [(NSMutableDictionary *)self->_currentConstraints setObject:heightMinimizingConstraint forKeyedSubscript:@"minimizeHeight"];
   [(NSMutableDictionary *)self->_oldConstraints setObject:0 forKeyedSubscript:@"minimizeHeight"];
 }
 
-- (void)setBackButtonMaskEnabled:(BOOL)a3
+- (void)setBackButtonMaskEnabled:(BOOL)enabled
 {
   if (self->_backButtonMask)
   {
     flags = self->_flags;
-    if (((((flags & 2) == 0) ^ a3) & 1) == 0)
+    if (((((flags & 2) == 0) ^ enabled) & 1) == 0)
     {
-      if (a3)
+      if (enabled)
       {
         v4 = 2;
       }
@@ -1515,14 +1515,14 @@ LABEL_11:
   }
 }
 
-- (BOOL)buttonSelectionState:(id)a3 forRequestedState:(BOOL)a4
+- (BOOL)buttonSelectionState:(id)state forRequestedState:(BOOL)requestedState
 {
-  if (!a4)
+  if (!requestedState)
   {
     return 0;
   }
 
-  if ([a3 isBackButton])
+  if ([state isBackButton])
   {
     return 0;
   }
@@ -1535,17 +1535,17 @@ LABEL_11:
   return self->_imageButton != 0;
 }
 
-- (void)updateButton:(id)a3 forSelectedState:(BOOL)a4
+- (void)updateButton:(id)button forSelectedState:(BOOL)state
 {
-  v4 = a4;
-  v16 = a3;
+  stateCopy = state;
+  buttonCopy = button;
   titleButton = self->_titleButton;
-  if (!titleButton || [(UIControl *)titleButton isSelected]== v4)
+  if (!titleButton || [(UIControl *)titleButton isSelected]== stateCopy)
   {
     imageButton = self->_imageButton;
     if (imageButton)
     {
-      v7 = [(UIControl *)imageButton isSelected]^ v4;
+      v7 = [(UIControl *)imageButton isSelected]^ stateCopy;
     }
 
     else
@@ -1559,9 +1559,9 @@ LABEL_11:
     v7 = 1;
   }
 
-  [(UIButton *)self->_titleButton setSelected:v4];
-  [(UIButton *)self->_imageButton setSelected:v4];
-  if (v4)
+  [(UIButton *)self->_titleButton setSelected:stateCopy];
+  [(UIButton *)self->_imageButton setSelected:stateCopy];
+  if (stateCopy)
   {
     v9 = 4;
   }
@@ -1586,46 +1586,46 @@ LABEL_11:
   if ((_UISMCBarsEnabled() & v7) == 1)
   {
     [(_UIButtonBarButtonVisualProviderIOS *)self _updateMonochromaticTreatment];
-    [v16 setNeedsLayout];
+    [buttonCopy setNeedsLayout];
   }
 }
 
-- (void)updateButton:(id)a3 forHighlightedState:(BOOL)a4
+- (void)updateButton:(id)button forHighlightedState:(BOOL)state
 {
-  v4 = a4;
-  [(UIButton *)self->_backIndicatorButton setHighlighted:a4];
-  [(UIButton *)self->_titleButton setHighlighted:v4];
-  [(UIButton *)self->_imageButton setHighlighted:v4];
+  stateCopy = state;
+  [(UIButton *)self->_backIndicatorButton setHighlighted:state];
+  [(UIButton *)self->_titleButton setHighlighted:stateCopy];
+  [(UIButton *)self->_imageButton setHighlighted:stateCopy];
   backgroundImages = self->_backgroundImages;
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v4];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:stateCopy];
   v8 = [(NSMutableDictionary *)backgroundImages objectForKeyedSubscript:v7];
 
   if (v8)
   {
     v9 = self->_backgroundImages;
-    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v4];
+    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:stateCopy];
     v10 = [(NSMutableDictionary *)v9 objectForKeyedSubscript:v11];
     [(UIImageView *)self->_backgroundView setImage:v10];
   }
 }
 
-- (void)updateButton:(id)a3 forHeldState:(BOOL)a4
+- (void)updateButton:(id)button forHeldState:(BOOL)state
 {
-  v4 = a4;
-  [(UIButton *)self->_backIndicatorButton _setHasActiveMenuPresentation:a4];
-  [(UIButton *)self->_titleButton _setHasActiveMenuPresentation:v4];
+  stateCopy = state;
+  [(UIButton *)self->_backIndicatorButton _setHasActiveMenuPresentation:state];
+  [(UIButton *)self->_titleButton _setHasActiveMenuPresentation:stateCopy];
   imageButton = self->_imageButton;
 
-  [(UIButton *)imageButton _setHasActiveMenuPresentation:v4];
+  [(UIButton *)imageButton _setHasActiveMenuPresentation:stateCopy];
 }
 
-- (void)updateButton:(id)a3 forEnabledState:(BOOL)a4
+- (void)updateButton:(id)button forEnabledState:(BOOL)state
 {
-  v4 = a4;
-  [(UIButton *)self->_backIndicatorButton setEnabled:a4];
-  [(UIButton *)self->_titleButton setEnabled:v4];
-  [(UIButton *)self->_imageButton setEnabled:v4];
-  if (v4)
+  stateCopy = state;
+  [(UIButton *)self->_backIndicatorButton setEnabled:state];
+  [(UIButton *)self->_titleButton setEnabled:stateCopy];
+  [(UIButton *)self->_imageButton setEnabled:stateCopy];
+  if (stateCopy)
   {
     v6 = 0;
   }
@@ -1648,12 +1648,12 @@ LABEL_11:
   }
 }
 
-- (void)_computeTextAttributesForBarButtonItem:(id)a3
+- (void)_computeTextAttributesForBarButtonItem:(id)item
 {
   v16[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  *&self->_flags = *&self->_flags & 0xE3 | (4 * ([v4 style] & 7));
-  v5 = [v4 titleTextAttributesForState:0];
+  itemCopy = item;
+  *&self->_flags = *&self->_flags & 0xE3 | (4 * ([itemCopy style] & 7));
+  v5 = [itemCopy titleTextAttributesForState:0];
   v6 = v5;
   v7 = MEMORY[0x1E695E0F8];
   if (v5)
@@ -1666,7 +1666,7 @@ LABEL_11:
     v8 = MEMORY[0x1E695E0F8];
   }
 
-  v9 = [v4 titleTextAttributesForState:{1, v8}];
+  v9 = [itemCopy titleTextAttributesForState:{1, v8}];
   v10 = v9;
   if (v9)
   {
@@ -1679,7 +1679,7 @@ LABEL_11:
   }
 
   v16[1] = v11;
-  v12 = [v4 titleTextAttributesForState:2];
+  v12 = [itemCopy titleTextAttributesForState:2];
 
   if (v12)
   {
@@ -1699,11 +1699,11 @@ LABEL_11:
   [(_UIButtonBarButtonVisualProviderIOS *)self _computeTextAttributes];
 }
 
-- (void)_setTitle:(id)a3
+- (void)_setTitle:(id)title
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  titleCopy = title;
+  if (titleCopy)
   {
     goto LABEL_10;
   }
@@ -1718,13 +1718,13 @@ LABEL_11:
 
     WeakRetained = objc_loadWeakRetained(&self->super._barButtonItem);
     titleButton = self->_titleButton;
-    v9 = [(UIButton *)titleButton _allButtonContent];
+    _allButtonContent = [(UIButton *)titleButton _allButtonContent];
     v24 = 138412802;
     v25 = WeakRetained;
     v26 = 2112;
     v27 = titleButton;
     v28 = 2112;
-    v29 = v9;
+    v29 = _allButtonContent;
     _os_log_fault_impl(&dword_188A29000, v6, OS_LOG_TYPE_FAULT, "Received nil title, substituting item's title (item=%@, button=%@, buttonContent=%@)", &v24, 0x20u);
 LABEL_5:
 
@@ -1738,28 +1738,28 @@ LABEL_6:
     v6 = v5;
     WeakRetained = objc_loadWeakRetained(&self->super._barButtonItem);
     v8 = self->_titleButton;
-    v9 = [(UIButton *)v8 _allButtonContent];
+    _allButtonContent = [(UIButton *)v8 _allButtonContent];
     v24 = 138412802;
     v25 = WeakRetained;
     v26 = 2112;
     v27 = v8;
     v28 = 2112;
-    v29 = v9;
+    v29 = _allButtonContent;
     _os_log_impl(&dword_188A29000, v6, OS_LOG_TYPE_ERROR, "Received nil title, substituting item's title (item=%@, button=%@, buttonContent=%@)", &v24, 0x20u);
     goto LABEL_5;
   }
 
 LABEL_7:
   v10 = objc_loadWeakRetained(&self->super._barButtonItem);
-  v11 = [v10 resolvedTitle];
-  v12 = v11;
+  resolvedTitle = [v10 resolvedTitle];
+  v12 = resolvedTitle;
   v13 = &stru_1EFB14550;
-  if (v11)
+  if (resolvedTitle)
   {
-    v13 = v11;
+    v13 = resolvedTitle;
   }
 
-  v4 = v13;
+  titleCopy = v13;
 
 LABEL_10:
   if (!self->_finalTitleAttributes)
@@ -1769,29 +1769,29 @@ LABEL_10:
 
   v14 = objc_alloc(MEMORY[0x1E696AAB0]);
   v15 = [(NSArray *)self->_finalTitleAttributes objectAtIndexedSubscript:0];
-  v16 = [v14 initWithString:v4 attributes:v15];
+  v16 = [v14 initWithString:titleCopy attributes:v15];
 
   [(UIButton *)self->_titleButton setAttributedTitle:v16 forState:0];
   v17 = objc_alloc(MEMORY[0x1E696AAB0]);
   v18 = [(NSArray *)self->_finalTitleAttributes objectAtIndexedSubscript:1];
-  v19 = [v17 initWithString:v4 attributes:v18];
+  v19 = [v17 initWithString:titleCopy attributes:v18];
 
   [(UIButton *)self->_titleButton setAttributedTitle:v19 forState:1];
   v20 = objc_alloc(MEMORY[0x1E696AAB0]);
   v21 = [(NSArray *)self->_finalTitleAttributes objectAtIndexedSubscript:2];
-  v22 = [v20 initWithString:v4 attributes:v21];
+  v22 = [v20 initWithString:titleCopy attributes:v21];
 
   [(UIButton *)self->_titleButton setAttributedTitle:v22 forState:2];
 }
 
-- (void)_configureImageOrTitleCompact:(BOOL)a3
+- (void)_configureImageOrTitleCompact:(BOOL)compact
 {
-  v3 = a3;
+  compactCopy = compact;
   v56[2] = *MEMORY[0x1E69E9840];
   if (![(_UIButtonBarButton *)self->super._button isBreadcrumb])
   {
     WeakRetained = objc_loadWeakRetained(&self->super._barButtonItem);
-    v7 = [WeakRetained _imageForState:0 compact:v3 type:0];
+    v7 = [WeakRetained _imageForState:0 compact:compactCopy type:0];
 
     if (v7)
     {
@@ -1818,12 +1818,12 @@ LABEL_10:
       v16 = objc_loadWeakRetained(&self->super._barButtonItem);
       -[UIButton setEnabled:](self->_imageButton, "setEnabled:", [v16 isEnabled]);
 
-      v11 = v7;
-      *&self->_flags = *&self->_flags & 0xFE | [v11 hasBaseline];
-      v17 = [(_UIButtonBarButtonVisualProviderIOS *)self symbolConfigurationCompact:v3];
-      [(UIButton *)self->_imageButton setImage:v11 forState:0];
+      resolvedTitle = v7;
+      *&self->_flags = *&self->_flags & 0xFE | [resolvedTitle hasBaseline];
+      v17 = [(_UIButtonBarButtonVisualProviderIOS *)self symbolConfigurationCompact:compactCopy];
+      [(UIButton *)self->_imageButton setImage:resolvedTitle forState:0];
       [(UIButton *)self->_imageButton setPreferredSymbolConfiguration:v17 forImageInState:0];
-      [(UIButton *)self->_imageButton setImage:v11 forState:2];
+      [(UIButton *)self->_imageButton setImage:resolvedTitle forState:2];
       [(_UIModernBarButton *)self->_imageButton _setGuardAgainstDegenerateBaselineCalculation:1];
       v18 = objc_loadWeakRetained(&self->super._barButtonItem);
       -[UIControl setSymbolAnimationEnabled:](self->_imageButton, "setSymbolAnimationEnabled:", [v18 isSymbolAnimationEnabled]);
@@ -1841,9 +1841,9 @@ LABEL_16:
 
     *&self->_flags &= ~1u;
     v10 = objc_loadWeakRetained(&self->super._barButtonItem);
-    v11 = [v10 resolvedTitle];
+    resolvedTitle = [v10 resolvedTitle];
 
-    if (!v11 || ![v11 length])
+    if (!resolvedTitle || ![resolvedTitle length])
     {
       [(_UIButtonBarButtonVisualProviderIOS *)self _removeTitleButton];
       goto LABEL_16;
@@ -1877,14 +1877,14 @@ LABEL_16:
     else
     {
       v26 = objc_loadWeakRetained(&self->_appearanceDelegate);
-      v27 = [v26 centerTextButtons];
+      centerTextButtons = [v26 centerTextButtons];
 
       v25 = 0.0;
-      if ((v27 & 1) == 0)
+      if ((centerTextButtons & 1) == 0)
       {
-        v28 = [(_UIButtonBarButton *)self->super._button isBackButton];
+        isBackButton = [(_UIButtonBarButton *)self->super._button isBackButton];
         v25 = 0.0;
-        if (!v28)
+        if (!isBackButton)
         {
           v29 = objc_loadWeakRetained(&self->_appearanceDelegate);
           v30 = objc_loadWeakRetained(&self->super._barButtonItem);
@@ -1901,7 +1901,7 @@ LABEL_16:
           }
         }
 
-        if (v3)
+        if (compactCopy)
         {
           v24 = 3.0;
         }
@@ -1920,28 +1920,28 @@ LABEL_16:
 
     if (titleButton && (v33 = self->_titleContent) != 0)
     {
-      v34 = [(NSArray *)v33 firstObject];
-      v35 = [v34 title];
-      v36 = [v35 isEqualToString:v11];
+      firstObject = [(NSArray *)v33 firstObject];
+      title = [firstObject title];
+      v36 = [title isEqualToString:resolvedTitle];
 
       [(_UIButtonBarButtonVisualProviderIOS *)self _setupAlternateTitles];
       if (v36 && self->_titleContent)
       {
         v37 = [(UIButton *)self->_titleButton attributedTitleForState:0];
-        v38 = [v37 string];
+        string = [v37 string];
 
-        if (v38)
+        if (string)
         {
           titleContent = self->_titleContent;
           v51 = MEMORY[0x1E69E9820];
           v52 = 3221225472;
           v53 = __69___UIButtonBarButtonVisualProviderIOS__configureImageOrTitleCompact___block_invoke;
           v54 = &unk_1E70F73B8;
-          v40 = v38;
+          v40 = string;
           v55 = v40;
           if ([(NSArray *)titleContent indexOfObjectPassingTest:&v51]== 0x7FFFFFFFFFFFFFFFLL)
           {
-            v41 = v11;
+            v41 = resolvedTitle;
           }
 
           else
@@ -1954,7 +1954,7 @@ LABEL_16:
 
         else
         {
-          v17 = v11;
+          v17 = resolvedTitle;
         }
 
         goto LABEL_43;
@@ -1968,15 +1968,15 @@ LABEL_16:
 
     if (_UISMCBarsEnabled() && self->_titleContent)
     {
-      v42 = [(_UIButtonBarButtonVisualProviderIOS *)self _backButtonTitleForCurrentBoundsSize];
+      _backButtonTitleForCurrentBoundsSize = [(_UIButtonBarButtonVisualProviderIOS *)self _backButtonTitleForCurrentBoundsSize];
     }
 
     else
     {
-      v42 = v11;
+      _backButtonTitleForCurrentBoundsSize = resolvedTitle;
     }
 
-    v17 = v42;
+    v17 = _backButtonTitleForCurrentBoundsSize;
 LABEL_43:
     [(_UIButtonBarButtonVisualProviderIOS *)self _setTitle:v17, v51, v52, v53, v54];
     if ((_UISMCBarsEnabled() & 1) == 0)
@@ -2014,18 +2014,18 @@ LABEL_43:
 
 - (__CFString)_backButtonTitleForCurrentBoundsSize
 {
-  if (a1)
+  if (self)
   {
-    [*(a1 + 8) bounds];
+    [*(self + 8) bounds];
     v3 = v2;
-    v4 = [(_UIButtonBarButtonVisualProviderIOS *)a1 _widthForBackButtonChevronIncludingPaddingToContentButton];
-    if ([*(a1 + 128) count])
+    _widthForBackButtonChevronIncludingPaddingToContentButton = [(_UIButtonBarButtonVisualProviderIOS *)self _widthForBackButtonChevronIncludingPaddingToContentButton];
+    if ([*(self + 128) count])
     {
       v5 = 0;
-      v6 = v3 - (v4 + 6.0);
+      v6 = v3 - (_widthForBackButtonChevronIncludingPaddingToContentButton + 6.0);
       while (1)
       {
-        v7 = [*(a1 + 128) objectAtIndexedSubscript:v5];
+        v7 = [*(self + 128) objectAtIndexedSubscript:v5];
         [v7 width];
         if (v8 <= v6)
         {
@@ -2038,25 +2038,25 @@ LABEL_43:
           break;
         }
 
-        if (++v5 >= [*(a1 + 128) count])
+        if (++v5 >= [*(self + 128) count])
         {
           goto LABEL_7;
         }
       }
 
-      v10 = [v7 title];
+      title = [v7 title];
     }
 
     else
     {
 LABEL_7:
-      v10 = 0;
+      title = 0;
     }
 
     v11 = &stru_1EFB14550;
-    if (v10)
+    if (title)
     {
-      v11 = v10;
+      v11 = title;
     }
 
     v12 = v11;
@@ -2070,14 +2070,14 @@ LABEL_7:
   return v12;
 }
 
-- (void)_prepareBackgroundViewFromBarButtonItem:(id)a3 isBackButton:(BOOL)a4
+- (void)_prepareBackgroundViewFromBarButtonItem:(id)item isBackButton:(BOOL)button
 {
-  v4 = a4;
-  v28 = a3;
+  buttonCopy = button;
+  itemCopy = item;
   WeakRetained = objc_loadWeakRetained(&self->_appearanceDelegate);
-  v7 = [WeakRetained compactMetrics];
+  compactMetrics = [WeakRetained compactMetrics];
 
-  v8 = v7;
+  v8 = compactMetrics;
   if (!self->_backgroundImages)
   {
     v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -2091,9 +2091,9 @@ LABEL_7:
   do
   {
     v14 = qword_18A678698[v11];
-    if (v4)
+    if (buttonCopy)
     {
-      v15 = [v28 backButtonBackgroundImageForState:qword_18A678698[v11] barMetrics:v8];
+      v15 = [itemCopy backButtonBackgroundImageForState:qword_18A678698[v11] barMetrics:v8];
       if (!v15)
       {
         v16 = [(_UIButtonBarButtonVisualProviderIOS *)self backButtonBackgroundImageForState:v14 compact:v8];
@@ -2101,7 +2101,7 @@ LABEL_10:
         v17 = v16;
         if (!v16)
         {
-          v17 = [v28 _backgroundImageForState:v14 compact:v8 type:0];
+          v17 = [itemCopy _backgroundImageForState:v14 compact:v8 type:0];
           if (!v17)
           {
             goto LABEL_17;
@@ -2114,7 +2114,7 @@ LABEL_10:
 
     else
     {
-      v15 = [v28 backgroundImageForState:qword_18A678698[v11] style:(*&self->_flags >> 2) & 7 barMetrics:v8];
+      v15 = [itemCopy backgroundImageForState:qword_18A678698[v11] style:(*&self->_flags >> 2) & 7 barMetrics:v8];
       if (!v15)
       {
         v16 = [(_UIButtonBarButtonVisualProviderIOS *)self backgroundImageForState:v14 compact:v8];
@@ -2167,10 +2167,10 @@ LABEL_24:
   }
 }
 
-- (void)_addConstraintsForBackgroundViewWithOffset:(double)a3 isBackButton:(BOOL)a4 resizesImage:(BOOL)a5
+- (void)_addConstraintsForBackgroundViewWithOffset:(double)offset isBackButton:(BOOL)button resizesImage:(BOOL)image
 {
-  v5 = a5;
-  v6 = a4;
+  imageCopy = image;
+  buttonCopy = button;
   imageButton = self->_imageButton;
   if (imageButton)
   {
@@ -2187,64 +2187,64 @@ LABEL_24:
   }
 
   v26 = v10;
-  if (v6 && self->_backIndicatorButton)
+  if (buttonCopy && self->_backIndicatorButton)
   {
-    v11 = [(UIView *)self->_backgroundView leadingAnchor];
-    v12 = [(UIView *)self->_backIndicatorButton leadingAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12 constant:-3.0];
+    leadingAnchor = [(UIView *)self->_backgroundView leadingAnchor];
+    leadingAnchor2 = [(UIView *)self->_backIndicatorButton leadingAnchor];
+    v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:-3.0];
     v14 = @"BGI_Leading_BIB_Leading";
   }
 
   else
   {
-    v11 = [(UIView *)self->_backgroundView leadingAnchor];
-    v12 = [(UIView *)v26 leadingAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12 constant:-3.0];
+    leadingAnchor = [(UIView *)self->_backgroundView leadingAnchor];
+    leadingAnchor2 = [(UIView *)v26 leadingAnchor];
+    v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:-3.0];
     v14 = @"BGI_Leading_CB_Leading";
   }
 
   [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v13 named:v14];
 
-  v15 = [(UIView *)self->_backgroundView trailingAnchor];
-  v16 = [(UIView *)v26 trailingAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16 constant:3.0];
+  trailingAnchor = [(UIView *)self->_backgroundView trailingAnchor];
+  trailingAnchor2 = [(UIView *)v26 trailingAnchor];
+  v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:3.0];
   [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v17 named:@"BGI_Trailing_CB_Trailing"];
 
   backgroundView = self->_backgroundView;
-  if (v5)
+  if (imageCopy)
   {
-    v19 = [(UIView *)backgroundView topAnchor];
-    v20 = [(UIView *)v26 topAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20 constant:a3 + -3.0];
+    topAnchor = [(UIView *)backgroundView topAnchor];
+    topAnchor2 = [(UIView *)v26 topAnchor];
+    v21 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:offset + -3.0];
     [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v21 named:@"BGI_Top_CB_Top"];
 
-    v22 = [(UIView *)self->_backgroundView bottomAnchor];
-    v23 = [(UIView *)v26 bottomAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23 constant:a3 + 3.0];
+    bottomAnchor = [(UIView *)self->_backgroundView bottomAnchor];
+    bottomAnchor2 = [(UIView *)v26 bottomAnchor];
+    v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:offset + 3.0];
     v25 = @"BGI_Bottom_CB_Bottom";
   }
 
   else
   {
-    v22 = [(UIView *)backgroundView centerYAnchor];
-    v23 = [(UIView *)v26 centerYAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23 constant:a3];
+    bottomAnchor = [(UIView *)backgroundView centerYAnchor];
+    bottomAnchor2 = [(UIView *)v26 centerYAnchor];
+    v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:offset];
     v25 = @"BGI_Center_CB_Center";
   }
 
   [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v24 named:v25];
 }
 
-- (UIEdgeInsets)_insetsForCompact:(BOOL)a3
+- (UIEdgeInsets)_insetsForCompact:(BOOL)compact
 {
-  v3 = a3;
+  compactCopy = compact;
   WeakRetained = objc_loadWeakRetained(&self->_appearanceDelegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_appearanceDelegate);
-    [v7 _layoutMarginsForButtonBarButton:self->super._button compact:v3];
+    [v7 _layoutMarginsForButtonBarButton:self->super._button compact:compactCopy];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -2253,7 +2253,7 @@ LABEL_24:
 
   else
   {
-    if (v3)
+    if (compactCopy)
     {
       v13 = 11.0;
     }
@@ -2279,13 +2279,13 @@ LABEL_24:
   return result;
 }
 
-- (double)_defaultBackIndicatorBaselineInsetCompact:(BOOL)a3
+- (double)_defaultBackIndicatorBaselineInsetCompact:(BOOL)compact
 {
   result = 3.0;
-  if (!a3)
+  if (!compact)
   {
-    v4 = [(UIView *)self->super._button traitCollection];
-    [v4 displayScale];
+    traitCollection = [(UIView *)self->super._button traitCollection];
+    [traitCollection displayScale];
     v6 = v5;
 
     result = 4.0;
@@ -2298,15 +2298,15 @@ LABEL_24:
   return result;
 }
 
-- (double)_defaultPaddingForInsets:(UIEdgeInsets)a3
+- (double)_defaultPaddingForInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  left = a3.left;
+  right = insets.right;
+  left = insets.left;
   WeakRetained = objc_loadWeakRetained(&self->_appearanceDelegate);
-  v6 = [WeakRetained barType];
+  barType = [WeakRetained barType];
 
   v7 = 10.0;
-  if (v6 == 1)
+  if (barType == 1)
   {
     v7 = 22.0;
   }
@@ -2344,15 +2344,15 @@ LABEL_24:
   return titleButton;
 }
 
-- (UIEdgeInsets)_imageInsetsForBarButtonItem:(id)a3 compact:(BOOL)a4 isBackButton:(BOOL)a5
+- (UIEdgeInsets)_imageInsetsForBarButtonItem:(id)item compact:(BOOL)compact isBackButton:(BOOL)button
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [(UIButton *)self->_imageButton currentImage];
-  v10 = v9;
-  if (v9)
+  compactCopy = compact;
+  itemCopy = item;
+  currentImage = [(UIButton *)self->_imageButton currentImage];
+  v10 = currentImage;
+  if (currentImage)
   {
-    [v9 alignmentRectInsets];
+    [currentImage alignmentRectInsets];
     v12 = v11;
     v14 = v13;
     v16 = v15;
@@ -2362,16 +2362,16 @@ LABEL_24:
     v21 = 0.0;
     v22 = 0.0;
     v23 = 0.0;
-    if (v8)
+    if (itemCopy)
     {
-      if (v6)
+      if (compactCopy)
       {
-        [v8 landscapeImagePhoneInsets];
+        [itemCopy landscapeImagePhoneInsets];
       }
 
       else
       {
-        [v8 imageInsets];
+        [itemCopy imageInsets];
       }
 
       v22 = v24;
@@ -2380,13 +2380,13 @@ LABEL_24:
 
     v30 = v12 + v23;
     v31 = v16 + v21;
-    if (!a5)
+    if (!button)
     {
-      [(_UIButtonBarButtonVisualProviderIOS *)self backgroundVerticalAdjustmentForCompact:v6];
+      [(_UIButtonBarButtonVisualProviderIOS *)self backgroundVerticalAdjustmentForCompact:compactCopy];
       v19 = v32;
       if (fabs(v32) < 2.22044605e-16)
       {
-        [v8 backgroundVerticalPositionAdjustmentForBarMetrics:v6];
+        [itemCopy backgroundVerticalPositionAdjustmentForBarMetrics:compactCopy];
         v19 = v33;
       }
     }
@@ -2395,8 +2395,8 @@ LABEL_24:
     v26 = v18 + v20;
     v34 = v30 + v19;
     v35 = v31 - v19;
-    v36 = [objc_opt_self() mainScreen];
-    [v36 scale];
+    mainScreen = [objc_opt_self() mainScreen];
+    [mainScreen scale];
     v38 = v37;
 
     UIRoundToScale(1.0 / v38, v38);
@@ -2423,48 +2423,48 @@ LABEL_24:
   return result;
 }
 
-- (void)configureButton:(id)a3 withAppearanceDelegate:(id)a4 fromBarItem:(id)a5
+- (void)configureButton:(id)button withAppearanceDelegate:(id)delegate fromBarItem:(id)item
 {
-  v8 = a5;
-  v9 = a3;
-  objc_storeWeak(&self->_appearanceDelegate, a4);
-  [(_UIButtonBarButtonVisualProviderIOS *)self configureButton:v9 fromBarButtonItem:v8];
+  itemCopy = item;
+  buttonCopy = button;
+  objc_storeWeak(&self->_appearanceDelegate, delegate);
+  [(_UIButtonBarButtonVisualProviderIOS *)self configureButton:buttonCopy fromBarButtonItem:itemCopy];
 }
 
 - (double)_widthForBackButtonChevronIncludingPaddingToContentButton
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  WeakRetained = objc_loadWeakRetained((a1 + 96));
+  WeakRetained = objc_loadWeakRetained((self + 96));
   v3 = objc_opt_respondsToSelector();
 
   v4 = 0.0;
   if (v3)
   {
-    v5 = objc_loadWeakRetained((a1 + 96));
-    [v5 _backButtonContentPaddingInButtonBarButton:*(a1 + 8)];
+    v5 = objc_loadWeakRetained((self + 96));
+    [v5 _backButtonContentPaddingInButtonBarButton:*(self + 8)];
     v7 = v6;
 
     v4 = v7 + v7;
   }
 
-  [*(a1 + 56) intrinsicContentSize];
+  [*(self + 56) intrinsicContentSize];
   return v4 + v8;
 }
 
-- (void)_addHorizontalConstraintsForContentButton:(id)a3 titleOffset:(double)a4 backButtonLayoutInsets:(NSDirectionalEdgeInsets)a5
+- (void)_addHorizontalConstraintsForContentButton:(id)button titleOffset:(double)offset backButtonLayoutInsets:(NSDirectionalEdgeInsets)insets
 {
-  trailing = a5.trailing;
-  leading = a5.leading;
-  v35 = a3;
+  trailing = insets.trailing;
+  leading = insets.leading;
+  buttonCopy = button;
   WeakRetained = objc_loadWeakRetained(&self->_appearanceDelegate);
   [WeakRetained backButtonMargin];
   v11 = v10;
 
-  if (v35)
+  if (buttonCopy)
   {
     v12 = objc_loadWeakRetained(&self->_appearanceDelegate);
     v13 = objc_opt_respondsToSelector();
@@ -2477,66 +2477,66 @@ LABEL_24:
       v14 = v16;
     }
 
-    v17 = [(UIView *)self->_backIndicatorButton leadingAnchor];
-    v18 = [(UIView *)self->super._button leadingAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18 constant:v11 - leading + v14];
+    leadingAnchor = [(UIView *)self->_backIndicatorButton leadingAnchor];
+    leadingAnchor2 = [(UIView *)self->super._button leadingAnchor];
+    v19 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v11 - leading + v14];
     [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v19 named:@"BIB_Leading_Leading"];
 
     [(_UIButtonBarButtonVisualProviderIOS *)self contentButtonTrailingOffset:v14];
     v21 = -v20;
-    v22 = [v35 leadingAnchor];
-    v23 = [(UIView *)self->_backIndicatorButton trailingAnchor];
+    leadingAnchor3 = [buttonCopy leadingAnchor];
+    trailingAnchor = [(UIView *)self->_backIndicatorButton trailingAnchor];
     v24 = 6.0;
     if (!self)
     {
       v24 = 0.0;
     }
 
-    v25 = [v22 constraintEqualToAnchor:v23 constant:v24 + a4 - trailing];
-    [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v25 named:@"BIB_Trailing_CB_Leading"];
+    trailing = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:v24 + offset - trailing];
+    [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:trailing named:@"BIB_Trailing_CB_Leading"];
 
-    v26 = [v35 trailingAnchor];
-    v27 = [(UIView *)self->super._button trailingAnchor];
-    v28 = [v26 constraintLessThanOrEqualToAnchor:v27 constant:v21];
+    trailingAnchor2 = [buttonCopy trailingAnchor];
+    trailingAnchor3 = [(UIView *)self->super._button trailingAnchor];
+    trailing2 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:trailingAnchor3 constant:v21];
     v29 = @"CB_Trailing_Trailing";
   }
 
   else
   {
-    v30 = [(UIView *)self->_backIndicatorButton leadingAnchor];
-    v31 = [(UIView *)self->super._button leadingAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31 constant:v11 - leading];
-    [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v32 named:@"BIB_Leading_Leading"];
+    leadingAnchor4 = [(UIView *)self->_backIndicatorButton leadingAnchor];
+    leadingAnchor5 = [(UIView *)self->super._button leadingAnchor];
+    leading = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5 constant:v11 - leading];
+    [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:leading named:@"BIB_Leading_Leading"];
 
     v33 = _UISMCBarsEnabled();
     backIndicatorButton = self->_backIndicatorButton;
     if (v33)
     {
-      v26 = [(UIView *)backIndicatorButton centerXAnchor];
-      v27 = [(UIView *)self->super._button centerXAnchor];
-      v28 = [v26 constraintEqualToAnchor:v27 constant:leading - trailing];
+      trailingAnchor2 = [(UIView *)backIndicatorButton centerXAnchor];
+      trailingAnchor3 = [(UIView *)self->super._button centerXAnchor];
+      trailing2 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:leading - trailing];
       v29 = @"BIB_CenterX_CenterX";
     }
 
     else
     {
-      v26 = [(UIView *)backIndicatorButton trailingAnchor];
-      v27 = [(UIView *)self->super._button trailingAnchor];
-      v28 = [v26 constraintLessThanOrEqualToAnchor:v27 constant:-trailing];
+      trailingAnchor2 = [(UIView *)backIndicatorButton trailingAnchor];
+      trailingAnchor3 = [(UIView *)self->super._button trailingAnchor];
+      trailing2 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:trailingAnchor3 constant:-trailing];
       v29 = @"BIB_Trailing_Trailing";
     }
   }
 
-  [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v28 named:v29];
+  [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:trailing2 named:v29];
 
   [(_UIButtonBarButtonVisualProviderIOS *)self activateWidthMinimizer];
 }
 
-- (void)_addHorizontalConstraintsForTextWithOffset:(double)a3 additionalPadding:(UIEdgeInsets)a4
+- (void)_addHorizontalConstraintsForTextWithOffset:(double)offset additionalPadding:(UIEdgeInsets)padding
 {
-  right = a4.right;
-  left = a4.left;
-  v8 = [(UIView *)self->super._button effectiveUserInterfaceLayoutDirection:a3];
+  right = padding.right;
+  left = padding.left;
+  v8 = [(UIView *)self->super._button effectiveUserInterfaceLayoutDirection:offset];
   if (v8 == UIUserInterfaceLayoutDirectionRightToLeft)
   {
     v9 = right;
@@ -2552,25 +2552,25 @@ LABEL_24:
     right = left;
   }
 
-  v10 = [(UIView *)self->_titleButton leadingAnchor];
-  v11 = [(UIView *)self->super._button leadingAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11 constant:v9 + a3];
-  [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v12 named:@"TB_Leading_Leading"];
+  leadingAnchor = [(UIView *)self->_titleButton leadingAnchor];
+  leadingAnchor2 = [(UIView *)self->super._button leadingAnchor];
+  offset = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v9 + offset];
+  [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:offset named:@"TB_Leading_Leading"];
 
-  v15 = [(UIView *)self->super._button trailingAnchor];
-  v13 = [(UIView *)self->_titleButton trailingAnchor];
-  v14 = [v15 constraintEqualToAnchor:v13 constant:right - a3];
-  [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v14 named:@"TB_Trailing_Trailing"];
+  trailingAnchor = [(UIView *)self->super._button trailingAnchor];
+  trailingAnchor2 = [(UIView *)self->_titleButton trailingAnchor];
+  offset2 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:right - offset];
+  [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:offset2 named:@"TB_Trailing_Trailing"];
 }
 
-- (void)_addHorizontalConstraintsForImageWithInsets:(UIEdgeInsets)a3 paddingEdges:(unint64_t)a4 additionalPadding:(double)a5
+- (void)_addHorizontalConstraintsForImageWithInsets:(UIEdgeInsets)insets paddingEdges:(unint64_t)edges additionalPadding:(double)padding
 {
-  right = a3.right;
-  left = a3.left;
-  [(_UIButtonBarButtonVisualProviderIOS *)self _defaultPaddingForInsets:a3.top, a3.left, a3.bottom];
+  right = insets.right;
+  left = insets.left;
+  [(_UIButtonBarButtonVisualProviderIOS *)self _defaultPaddingForInsets:insets.top, insets.left, insets.bottom];
   v11 = v10;
-  v12 = [(UIView *)self->super._button effectiveUserInterfaceLayoutDirection];
-  if (v12 == UIUserInterfaceLayoutDirectionRightToLeft)
+  effectiveUserInterfaceLayoutDirection = [(UIView *)self->super._button effectiveUserInterfaceLayoutDirection];
+  if (effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft)
   {
     v13 = 8;
   }
@@ -2580,7 +2580,7 @@ LABEL_24:
     v13 = 2;
   }
 
-  if (v12 == UIUserInterfaceLayoutDirectionRightToLeft)
+  if (effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft)
   {
     v14 = 2;
   }
@@ -2590,7 +2590,7 @@ LABEL_24:
     v14 = 8;
   }
 
-  if (v12 == UIUserInterfaceLayoutDirectionRightToLeft)
+  if (effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft)
   {
     v15 = right;
   }
@@ -2600,7 +2600,7 @@ LABEL_24:
     v15 = left;
   }
 
-  if (v12 == UIUserInterfaceLayoutDirectionRightToLeft)
+  if (effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft)
   {
     v16 = left;
   }
@@ -2610,12 +2610,12 @@ LABEL_24:
     v16 = right;
   }
 
-  if ((v13 & a4) != 0)
+  if ((v13 & edges) != 0)
   {
-    v17 = v11 * 0.5 + a5;
-    v18 = [(UIView *)self->_imageButton leadingAnchor];
-    v19 = [(UIView *)self->super._button leadingAnchor];
-    v20 = [v18 constraintGreaterThanOrEqualToAnchor:v19 constant:v17 - v15];
+    v17 = v11 * 0.5 + padding;
+    leadingAnchor = [(UIView *)self->_imageButton leadingAnchor];
+    leadingAnchor2 = [(UIView *)self->super._button leadingAnchor];
+    v20 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2 constant:v17 - v15];
     [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v20 named:@"IB_Leading_Leading"];
 
     v21 = v17 + 0.0;
@@ -2625,21 +2625,21 @@ LABEL_24:
   {
     [(_UIButtonBarButtonVisualProviderIOS *)self _effectiveEdgeSpacing];
     v23 = v22 - v15;
-    v24 = [(UIView *)self->_imageButton leadingAnchor];
-    v25 = [(UIView *)self->super._button leadingAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25 constant:v23];
+    leadingAnchor3 = [(UIView *)self->_imageButton leadingAnchor];
+    leadingAnchor4 = [(UIView *)self->super._button leadingAnchor];
+    v26 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:v23];
     [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v26 named:@"IB_Leading_Leading"];
 
     v17 = 0.0;
     v21 = 0.0;
   }
 
-  if ((v14 & a4) != 0)
+  if ((v14 & edges) != 0)
   {
-    v27 = v11 * 0.5 + a5;
-    v28 = [(UIView *)self->super._button trailingAnchor];
-    v29 = [(UIView *)self->_imageButton trailingAnchor];
-    v30 = [v28 constraintGreaterThanOrEqualToAnchor:v29 constant:v27 - v16];
+    v27 = v11 * 0.5 + padding;
+    trailingAnchor = [(UIView *)self->super._button trailingAnchor];
+    trailingAnchor2 = [(UIView *)self->_imageButton trailingAnchor];
+    v30 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2 constant:v27 - v16];
     [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v30 named:@"IB_Trailing_Trailing"];
 
     v21 = v27 + v21;
@@ -2649,9 +2649,9 @@ LABEL_24:
   {
     [(_UIButtonBarButtonVisualProviderIOS *)self _effectiveEdgeSpacing];
     v32 = v31 - v16;
-    v33 = [(UIView *)self->super._button trailingAnchor];
-    v34 = [(UIView *)self->_imageButton trailingAnchor];
-    v35 = [v33 constraintEqualToAnchor:v34 constant:v32];
+    trailingAnchor3 = [(UIView *)self->super._button trailingAnchor];
+    trailingAnchor4 = [(UIView *)self->_imageButton trailingAnchor];
+    v35 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:v32];
     [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v35 named:@"IB_Trailing_Trailing"];
 
     v27 = 0.0;
@@ -2672,126 +2672,126 @@ LABEL_24:
     left = -v37;
   }
 
-  v39 = [(UIView *)self->_imageButton centerXAnchor];
-  v40 = [(UIView *)self->super._button centerXAnchor];
-  v46 = [v39 constraintEqualToAnchor:v40 constant:left];
+  centerXAnchor = [(UIView *)self->_imageButton centerXAnchor];
+  centerXAnchor2 = [(UIView *)self->super._button centerXAnchor];
+  v46 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2 constant:left];
 
   LODWORD(v41) = 1148829696;
   [v46 setPriority:v41];
   [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v46 named:@"IB_CenterX_CenterX"];
   [(_UIButtonBarButtonVisualProviderIOS *)self activateWidthMinimizer];
-  v42 = [(UIView *)self->super._button widthAnchor];
-  v43 = [(UIView *)self->_imageButton widthAnchor];
-  v44 = [v42 constraintEqualToAnchor:v43 constant:v21];
+  widthAnchor = [(UIView *)self->super._button widthAnchor];
+  widthAnchor2 = [(UIView *)self->_imageButton widthAnchor];
+  v44 = [widthAnchor constraintEqualToAnchor:widthAnchor2 constant:v21];
 
   LODWORD(v45) = 1148829696;
   [v44 setPriority:v45];
   [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v44 named:@"IB_Width"];
 }
 
-- (void)_addVerticalConstraintsForBackIndicatorWithTitleOffset:(double)a3 bottomOffset:(double)a4 useBaselineAlignment:(BOOL)a5
+- (void)_addVerticalConstraintsForBackIndicatorWithTitleOffset:(double)offset bottomOffset:(double)bottomOffset useBaselineAlignment:(BOOL)alignment
 {
-  v5 = a5;
-  v9 = [(_UIButtonBarButton *)self->super._button verticallyCentersContents];
+  alignmentCopy = alignment;
+  verticallyCentersContents = [(_UIButtonBarButton *)self->super._button verticallyCentersContents];
   backIndicatorButton = self->_backIndicatorButton;
-  if (v9)
+  if (verticallyCentersContents)
   {
-    v11 = [(UIView *)backIndicatorButton centerYAnchor];
-    v12 = [(UIView *)self->super._button centerYAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
-    [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v13 named:@"BIB_CenterY_CenterY"];
+    centerYAnchor = [(UIView *)backIndicatorButton centerYAnchor];
+    centerYAnchor2 = [(UIView *)self->super._button centerYAnchor];
+    bottomAnchor = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+    [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:bottomAnchor named:@"BIB_CenterY_CenterY"];
   }
 
   else
   {
-    if (v5)
+    if (alignmentCopy)
     {
-      v11 = [(UIView *)backIndicatorButton lastBaselineAnchor];
-      v12 = [(UIView *)self->super._button layoutMarginsGuide];
-      v13 = [v12 bottomAnchor];
-      v14 = [v11 constraintEqualToAnchor:v13 constant:-a3];
+      centerYAnchor = [(UIView *)backIndicatorButton lastBaselineAnchor];
+      centerYAnchor2 = [(UIView *)self->super._button layoutMarginsGuide];
+      bottomAnchor = [centerYAnchor2 bottomAnchor];
+      offset = [centerYAnchor constraintEqualToAnchor:bottomAnchor constant:-offset];
       v15 = @"BIB_Baseline_Baseline";
     }
 
     else
     {
-      v11 = [(UIView *)backIndicatorButton bottomAnchor];
-      v12 = [(UIView *)self->super._button layoutMarginsGuide];
-      v13 = [v12 bottomAnchor];
-      v14 = [v11 constraintEqualToAnchor:v13 constant:a4 - a3];
+      centerYAnchor = [(UIView *)backIndicatorButton bottomAnchor];
+      centerYAnchor2 = [(UIView *)self->super._button layoutMarginsGuide];
+      bottomAnchor = [centerYAnchor2 bottomAnchor];
+      offset = [centerYAnchor constraintEqualToAnchor:bottomAnchor constant:bottomOffset - offset];
       v15 = @"BIB_Bottom_Baseline";
     }
 
-    [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v14 named:v15];
+    [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:offset named:v15];
   }
 
-  v16 = [(UIView *)self->_backIndicatorButton topAnchor];
-  v17 = [(UIView *)self->super._button topAnchor];
-  v18 = [v16 constraintGreaterThanOrEqualToAnchor:v17];
+  topAnchor = [(UIView *)self->_backIndicatorButton topAnchor];
+  topAnchor2 = [(UIView *)self->super._button topAnchor];
+  v18 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
   [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v18 named:@"BIB_Top_Top"];
 
-  v21 = [(UIView *)self->super._button bottomAnchor];
-  v19 = [(UIView *)self->_backIndicatorButton bottomAnchor];
-  v20 = [v21 constraintGreaterThanOrEqualToAnchor:v19];
+  bottomAnchor2 = [(UIView *)self->super._button bottomAnchor];
+  bottomAnchor3 = [(UIView *)self->_backIndicatorButton bottomAnchor];
+  v20 = [bottomAnchor2 constraintGreaterThanOrEqualToAnchor:bottomAnchor3];
   [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v20 named:@"BIB_Bottom_Bottom"];
 }
 
-- (void)_addVerticalConstraintsForTextWithOffset:(double)a3
+- (void)_addVerticalConstraintsForTextWithOffset:(double)offset
 {
   if (!self->_titleButton)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"_UIButtonBarButtonVisualProviderIOS.m" lineNumber:1547 description:@"Invalid text button configuration"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIButtonBarButtonVisualProviderIOS.m" lineNumber:1547 description:@"Invalid text button configuration"];
   }
 
   if (-[_UIButtonBarButton verticallyCentersContents](self->super._button, "verticallyCentersContents") || (WeakRetained = objc_loadWeakRetained(&self->_appearanceDelegate), v6 = [WeakRetained centerTextButtons], WeakRetained, v6))
   {
-    v7 = [(UIView *)self->_titleButton centerYAnchor];
-    v8 = [(UIView *)self->super._button centerYAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
-    [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v9 named:@"TB_CenterY_CenterY"];
+    centerYAnchor = [(UIView *)self->_titleButton centerYAnchor];
+    centerYAnchor2 = [(UIView *)self->super._button centerYAnchor];
+    bottomAnchor = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+    [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:bottomAnchor named:@"TB_CenterY_CenterY"];
   }
 
   else
   {
-    v7 = [(UIView *)self->_titleButton lastBaselineAnchor];
-    v8 = [(UIView *)self->super._button layoutMarginsGuide];
-    v9 = [v8 bottomAnchor];
-    v10 = [v7 constraintEqualToAnchor:v9 constant:a3];
+    centerYAnchor = [(UIView *)self->_titleButton lastBaselineAnchor];
+    centerYAnchor2 = [(UIView *)self->super._button layoutMarginsGuide];
+    bottomAnchor = [centerYAnchor2 bottomAnchor];
+    v10 = [centerYAnchor constraintEqualToAnchor:bottomAnchor constant:offset];
     [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v10 named:@"TB_Baseline_Baseline"];
   }
 
-  v11 = [(UIView *)self->_titleButton topAnchor];
-  v12 = [(UIView *)self->super._button topAnchor];
-  v13 = [v11 constraintGreaterThanOrEqualToAnchor:v12];
+  topAnchor = [(UIView *)self->_titleButton topAnchor];
+  topAnchor2 = [(UIView *)self->super._button topAnchor];
+  v13 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
   [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v13 named:@"TB_Top_Top"];
 
-  v18 = [(UIView *)self->super._button bottomAnchor];
-  v14 = [(UIView *)self->_titleButton bottomAnchor];
-  v15 = [v18 constraintGreaterThanOrEqualToAnchor:v14];
+  bottomAnchor2 = [(UIView *)self->super._button bottomAnchor];
+  bottomAnchor3 = [(UIView *)self->_titleButton bottomAnchor];
+  v15 = [bottomAnchor2 constraintGreaterThanOrEqualToAnchor:bottomAnchor3];
   [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v15 named:@"TB_Bottom_Bottom"];
 }
 
-- (void)_addVerticalConstraintsForImageWithInsets:(UIEdgeInsets)a3
+- (void)_addVerticalConstraintsForImageWithInsets:(UIEdgeInsets)insets
 {
-  bottom = a3.bottom;
-  top = a3.top;
+  bottom = insets.bottom;
+  top = insets.top;
   if (!self->_imageButton)
   {
-    v34 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v34 handleFailureInMethod:a2 object:self file:@"_UIButtonBarButtonVisualProviderIOS.m" lineNumber:1561 description:@"Invalid image button configuration"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIButtonBarButtonVisualProviderIOS.m" lineNumber:1561 description:@"Invalid image button configuration"];
   }
 
-  if ([(_UIButtonBarButton *)self->super._button verticallyCentersContents:a3.top])
+  if ([(_UIButtonBarButton *)self->super._button verticallyCentersContents:insets.top])
   {
-    v6 = [(UIButton *)self->_imageButton imageView];
-    [v6 alignmentRectInsets];
+    imageView = [(UIButton *)self->_imageButton imageView];
+    [imageView alignmentRectInsets];
     v8 = v7;
     v10 = v9;
 
-    v35 = [(UIView *)self->_imageButton centerYAnchor];
-    v11 = [(UIView *)self->super._button centerYAnchor];
-    v12 = [v35 constraintEqualToAnchor:v11 constant:(v8 - v10) * -0.5];
+    centerYAnchor = [(UIView *)self->_imageButton centerYAnchor];
+    centerYAnchor2 = [(UIView *)self->super._button centerYAnchor];
+    v12 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:(v8 - v10) * -0.5];
     v13 = @"IB_CenterY_CenterY";
 LABEL_16:
     [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v12 named:v13];
@@ -2801,20 +2801,20 @@ LABEL_16:
 
   if (*&self->_flags)
   {
-    v26 = [(UIView *)self->_imageButton lastBaselineAnchor];
-    v27 = [(UIView *)self->super._button layoutMarginsGuide];
-    v28 = [v27 bottomAnchor];
-    v29 = [v26 constraintEqualToAnchor:v28];
+    lastBaselineAnchor = [(UIView *)self->_imageButton lastBaselineAnchor];
+    layoutMarginsGuide = [(UIView *)self->super._button layoutMarginsGuide];
+    bottomAnchor = [layoutMarginsGuide bottomAnchor];
+    v29 = [lastBaselineAnchor constraintEqualToAnchor:bottomAnchor];
     [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v29 named:@"IB_Baseline_Baseline"];
 
-    v30 = [(UIView *)self->_imageButton topAnchor];
-    v31 = [(UIView *)self->super._button topAnchor];
-    v32 = [v30 constraintGreaterThanOrEqualToAnchor:v31];
+    topAnchor = [(UIView *)self->_imageButton topAnchor];
+    topAnchor2 = [(UIView *)self->super._button topAnchor];
+    v32 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
     [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v32 named:@"IB_Top_Top"];
 
-    v35 = [(UIView *)self->super._button bottomAnchor];
-    v11 = [(UIView *)self->_imageButton bottomAnchor];
-    v12 = [v35 constraintGreaterThanOrEqualToAnchor:v11];
+    centerYAnchor = [(UIView *)self->super._button bottomAnchor];
+    centerYAnchor2 = [(UIView *)self->_imageButton bottomAnchor];
+    v12 = [centerYAnchor constraintGreaterThanOrEqualToAnchor:centerYAnchor2];
     v13 = @"IB_Bottom_Bottom";
     goto LABEL_16;
   }
@@ -2831,39 +2831,39 @@ LABEL_16:
     v16 = top;
   }
 
-  v17 = [(UIView *)self->_imageButton centerYAnchor];
-  v18 = [(UIView *)self->super._button centerYAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18 constant:v16];
+  centerYAnchor3 = [(UIView *)self->_imageButton centerYAnchor];
+  centerYAnchor4 = [(UIView *)self->super._button centerYAnchor];
+  v19 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4 constant:v16];
   [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v19 named:@"IB_CenterY_CenterY"];
 
-  v20 = [(UIView *)self->_imageButton topAnchor];
-  v21 = [(UIView *)self->super._button topAnchor];
-  v22 = [v20 constraintGreaterThanOrEqualToAnchor:v21 constant:top];
+  topAnchor3 = [(UIView *)self->_imageButton topAnchor];
+  topAnchor4 = [(UIView *)self->super._button topAnchor];
+  v22 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4 constant:top];
   [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v22 named:@"IB_Top_Top"];
 
-  v23 = [(UIView *)self->super._button bottomAnchor];
-  v24 = [(UIView *)self->_imageButton bottomAnchor];
-  v25 = [v23 constraintGreaterThanOrEqualToAnchor:v24 constant:v15];
+  bottomAnchor2 = [(UIView *)self->super._button bottomAnchor];
+  bottomAnchor3 = [(UIView *)self->_imageButton bottomAnchor];
+  v25 = [bottomAnchor2 constraintGreaterThanOrEqualToAnchor:bottomAnchor3 constant:v15];
   [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v25 named:@"IB_Bottom_Bottom"];
 
   [(_UIButtonBarButtonVisualProviderIOS *)self activateHeightMinimizer];
 }
 
-- (void)_configureImageWithInsets:(UIEdgeInsets)a3 paddingEdges:(unint64_t)a4 additionalPadding:(double)a5
+- (void)_configureImageWithInsets:(UIEdgeInsets)insets paddingEdges:(unint64_t)edges additionalPadding:(double)padding
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  [(_UIButtonBarButtonVisualProviderIOS *)self _addHorizontalConstraintsForImageWithInsets:a4 paddingEdges:a3.top additionalPadding:a3.left, a3.bottom, a3.right, a5];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  [(_UIButtonBarButtonVisualProviderIOS *)self _addHorizontalConstraintsForImageWithInsets:edges paddingEdges:insets.top additionalPadding:insets.left, insets.bottom, insets.right, padding];
 
   [(_UIButtonBarButtonVisualProviderIOS *)self _addVerticalConstraintsForImageWithInsets:top, left, bottom, right];
 }
 
-- (void)_configureTextWithOffset:(UIOffset)a3 additionalPadding:(UIEdgeInsets)a4
+- (void)_configureTextWithOffset:(UIOffset)offset additionalPadding:(UIEdgeInsets)padding
 {
-  vertical = a3.vertical;
-  [(_UIButtonBarButtonVisualProviderIOS *)self _addHorizontalConstraintsForTextWithOffset:a3.horizontal additionalPadding:a4.top, a4.left, a4.bottom, a4.right];
+  vertical = offset.vertical;
+  [(_UIButtonBarButtonVisualProviderIOS *)self _addHorizontalConstraintsForTextWithOffset:offset.horizontal additionalPadding:padding.top, padding.left, padding.bottom, padding.right];
 
   [(_UIButtonBarButtonVisualProviderIOS *)self _addVerticalConstraintsForTextWithOffset:vertical];
 }
@@ -2873,122 +2873,122 @@ LABEL_16:
   backButtonMask = self->_backButtonMask;
   if (backButtonMask)
   {
-    v4 = [(UIView *)backButtonMask leadingAnchor];
-    v5 = [(UIView *)self->super._button leadingAnchor];
-    v6 = [v4 constraintEqualToAnchor:v5];
+    leadingAnchor = [(UIView *)backButtonMask leadingAnchor];
+    leadingAnchor2 = [(UIView *)self->super._button leadingAnchor];
+    v6 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v6 named:@"Mask_Leading_Leading"];
 
-    v7 = [(UIView *)self->_backButtonMask trailingAnchor];
-    v8 = [(UIView *)self->super._button trailingAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
+    trailingAnchor = [(UIView *)self->_backButtonMask trailingAnchor];
+    trailingAnchor2 = [(UIView *)self->super._button trailingAnchor];
+    v9 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v9 named:@"Mask_Trailing_Trailing"];
 
-    v10 = [(UIView *)self->_backButtonMask topAnchor];
-    v11 = [(UIView *)self->super._button topAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    topAnchor = [(UIView *)self->_backButtonMask topAnchor];
+    topAnchor2 = [(UIView *)self->super._button topAnchor];
+    v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v12 named:@"Mask_Top_Top"];
 
-    v13 = [(UIView *)self->_backButtonMask bottomAnchor];
-    v14 = [(UIView *)self->super._button bottomAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    bottomAnchor = [(UIView *)self->_backButtonMask bottomAnchor];
+    bottomAnchor2 = [(UIView *)self->super._button bottomAnchor];
+    v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v15 named:@"Mask_Bottom_Bottom"];
 
-    v16 = [(_UIBackButtonMaskView *)self->_backButtonMask maskImageView];
-    v17 = [v16 leadingAnchor];
-    v18 = [(UIView *)self->_backIndicatorButton leadingAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    maskImageView = [(_UIBackButtonMaskView *)self->_backButtonMask maskImageView];
+    leadingAnchor3 = [maskImageView leadingAnchor];
+    leadingAnchor4 = [(UIView *)self->_backIndicatorButton leadingAnchor];
+    v19 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v19 named:@"MaskIV_Leading_BIB_Leadinng"];
 
-    v20 = [(_UIBackButtonMaskView *)self->_backButtonMask maskExtensionLeadingAnchor];
-    v21 = [(UIView *)self->_backIndicatorButton trailingAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    maskExtensionLeadingAnchor = [(_UIBackButtonMaskView *)self->_backButtonMask maskExtensionLeadingAnchor];
+    trailingAnchor3 = [(UIView *)self->_backIndicatorButton trailingAnchor];
+    v22 = [maskExtensionLeadingAnchor constraintEqualToAnchor:trailingAnchor3];
     [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v22 named:@"MaskEV_Leading_BIB_Trailing"];
 
-    v26 = [(_UIBackButtonMaskView *)self->_backButtonMask maskImageView];
-    v23 = [v26 centerYAnchor];
-    v24 = [(UIView *)self->_backIndicatorButton centerYAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
+    maskImageView2 = [(_UIBackButtonMaskView *)self->_backButtonMask maskImageView];
+    centerYAnchor = [maskImageView2 centerYAnchor];
+    centerYAnchor2 = [(UIView *)self->_backIndicatorButton centerYAnchor];
+    v25 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [(_UIButtonBarButtonVisualProviderIOS *)self addActiveConstraint:v25 named:@"MaskIV_CenterY_BIB_CenterY"];
   }
 }
 
-- (void)_configureImageBackButtonWithImageInsets:(UIEdgeInsets)a3 backButtonLayoutInsets:(NSDirectionalEdgeInsets)a4 useBaselineAlignment:(BOOL)a5
+- (void)_configureImageBackButtonWithImageInsets:(UIEdgeInsets)insets backButtonLayoutInsets:(NSDirectionalEdgeInsets)layoutInsets useBaselineAlignment:(BOOL)alignment
 {
-  v5 = a5;
-  trailing = a4.trailing;
-  bottom = a4.bottom;
-  leading = a4.leading;
-  top = a4.top;
-  right = a3.right;
-  v11 = a3.bottom;
-  left = a3.left;
-  v13 = a3.top;
+  alignmentCopy = alignment;
+  trailing = layoutInsets.trailing;
+  bottom = layoutInsets.bottom;
+  leading = layoutInsets.leading;
+  top = layoutInsets.top;
+  right = insets.right;
+  v11 = insets.bottom;
+  left = insets.left;
+  v13 = insets.top;
   if (!self->_imageButton)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"_UIButtonBarButtonVisualProviderIOS.m" lineNumber:1614 description:@"Invalid image button configuration"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIButtonBarButtonVisualProviderIOS.m" lineNumber:1614 description:@"Invalid image button configuration"];
   }
 
   [(_UIButtonBarButtonVisualProviderIOS *)self _addHorizontalConstraintsForContentButton:0.0 titleOffset:top backButtonLayoutInsets:leading, bottom, trailing];
-  [(_UIButtonBarButtonVisualProviderIOS *)self _addVerticalConstraintsForBackIndicatorWithTitleOffset:v5 bottomOffset:0.0 useBaselineAlignment:bottom];
+  [(_UIButtonBarButtonVisualProviderIOS *)self _addVerticalConstraintsForBackIndicatorWithTitleOffset:alignmentCopy bottomOffset:0.0 useBaselineAlignment:bottom];
   [(_UIButtonBarButtonVisualProviderIOS *)self _addVerticalConstraintsForImageWithInsets:v13, left, v11, right];
 
   [(_UIButtonBarButtonVisualProviderIOS *)self _configureBackButtonMask];
 }
 
-- (void)_configureTextBackButtonWithTitlePositionAdjustment:(UIOffset)a3 backButtonLayoutInsets:(NSDirectionalEdgeInsets)a4 useBaselineAlignment:(BOOL)a5
+- (void)_configureTextBackButtonWithTitlePositionAdjustment:(UIOffset)adjustment backButtonLayoutInsets:(NSDirectionalEdgeInsets)insets useBaselineAlignment:(BOOL)alignment
 {
-  v5 = a5;
-  trailing = a4.trailing;
-  bottom = a4.bottom;
-  leading = a4.leading;
-  top = a4.top;
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
+  alignmentCopy = alignment;
+  trailing = insets.trailing;
+  bottom = insets.bottom;
+  leading = insets.leading;
+  top = insets.top;
+  vertical = adjustment.vertical;
+  horizontal = adjustment.horizontal;
   if (!self->_titleButton)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"_UIButtonBarButtonVisualProviderIOS.m" lineNumber:1623 description:@"Invalid text button configuration"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIButtonBarButtonVisualProviderIOS.m" lineNumber:1623 description:@"Invalid text button configuration"];
   }
 
   [(_UIButtonBarButtonVisualProviderIOS *)self _addHorizontalConstraintsForContentButton:horizontal titleOffset:top backButtonLayoutInsets:leading, bottom, trailing];
-  [(_UIButtonBarButtonVisualProviderIOS *)self _addVerticalConstraintsForBackIndicatorWithTitleOffset:v5 bottomOffset:vertical useBaselineAlignment:bottom];
+  [(_UIButtonBarButtonVisualProviderIOS *)self _addVerticalConstraintsForBackIndicatorWithTitleOffset:alignmentCopy bottomOffset:vertical useBaselineAlignment:bottom];
   [(_UIButtonBarButtonVisualProviderIOS *)self _addVerticalConstraintsForTextWithOffset:vertical];
 
   [(_UIButtonBarButtonVisualProviderIOS *)self _configureBackButtonMask];
 }
 
-- (void)_configureBackButtonWithBackButtonLayoutInsets:(NSDirectionalEdgeInsets)a3 useBaselineAlignment:(BOOL)a4
+- (void)_configureBackButtonWithBackButtonLayoutInsets:(NSDirectionalEdgeInsets)insets useBaselineAlignment:(BOOL)alignment
 {
-  v4 = a4;
-  bottom = a3.bottom;
-  [(_UIButtonBarButtonVisualProviderIOS *)self _addHorizontalConstraintsForContentButton:0 titleOffset:0.0 backButtonLayoutInsets:a3.top, a3.leading, a3.bottom, a3.trailing];
-  [(_UIButtonBarButtonVisualProviderIOS *)self _addVerticalConstraintsForBackIndicatorWithTitleOffset:v4 bottomOffset:0.0 useBaselineAlignment:bottom];
+  alignmentCopy = alignment;
+  bottom = insets.bottom;
+  [(_UIButtonBarButtonVisualProviderIOS *)self _addHorizontalConstraintsForContentButton:0 titleOffset:0.0 backButtonLayoutInsets:insets.top, insets.leading, insets.bottom, insets.trailing];
+  [(_UIButtonBarButtonVisualProviderIOS *)self _addVerticalConstraintsForBackIndicatorWithTitleOffset:alignmentCopy bottomOffset:0.0 useBaselineAlignment:bottom];
 
   [(_UIButtonBarButtonVisualProviderIOS *)self _configureBackButtonMask];
 }
 
-- (id)_titleContentForTitle:(id)a3
+- (id)_titleContentForTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_titleLookup objectForKeyedSubscript:v4];
+  titleCopy = title;
+  v5 = [(NSMutableDictionary *)self->_titleLookup objectForKeyedSubscript:titleCopy];
   if (!v5)
   {
     v6 = [(NSArray *)self->_finalTitleAttributes objectAtIndexedSubscript:0];
-    v5 = [_UITitleContent contentWithTitle:v4 attributes:v6 button:self->_titleButton];
+    v5 = [_UITitleContent contentWithTitle:titleCopy attributes:v6 button:self->_titleButton];
 
-    [(NSMutableDictionary *)self->_titleLookup setObject:v5 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_titleLookup setObject:v5 forKeyedSubscript:titleCopy];
   }
 
   return v5;
 }
 
-- (CGSize)buttonImageViewSize:(id)a3
+- (CGSize)buttonImageViewSize:(id)size
 {
   if (self->_imageButton)
   {
-    v3 = [(UIButton *)self->_imageButton _imageView];
-    [v3 bounds];
+    _imageView = [(UIButton *)self->_imageButton _imageView];
+    [_imageView bounds];
     v5 = v4;
     v7 = v6;
   }
@@ -2997,7 +2997,7 @@ LABEL_16:
   {
     v12.receiver = self;
     v12.super_class = _UIButtonBarButtonVisualProviderIOS;
-    [(_UIButtonBarButtonVisualProvider *)&v12 buttonImageViewSize:a3];
+    [(_UIButtonBarButtonVisualProvider *)&v12 buttonImageViewSize:size];
     v5 = v8;
     v7 = v9;
   }
@@ -3015,16 +3015,16 @@ LABEL_16:
   imageButton = self->_imageButton;
   if (imageButton)
   {
-    v8 = [(UIButton *)imageButton imageView];
-    v9 = [(UIButton *)self->_imageButton imageView];
-    [v9 bounds];
-    [v8 convertRect:self->super._button toView:?];
+    imageView = [(UIButton *)imageButton imageView];
+    imageView2 = [(UIButton *)self->_imageButton imageView];
+    [imageView2 bounds];
+    [imageView convertRect:self->super._button toView:?];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
 
-    v18 = [(UIButton *)self->_imageButton imageView];
+    imageView3 = [(UIButton *)self->_imageButton imageView];
   }
 
   else
@@ -3039,20 +3039,20 @@ LABEL_16:
       goto LABEL_6;
     }
 
-    v20 = [(UIButton *)titleButton titleLabel];
-    v21 = [(UIButton *)self->_titleButton titleLabel];
-    [v21 bounds];
-    [v20 convertRect:self->super._button toView:?];
+    titleLabel = [(UIButton *)titleButton titleLabel];
+    titleLabel2 = [(UIButton *)self->_titleButton titleLabel];
+    [titleLabel2 bounds];
+    [titleLabel convertRect:self->super._button toView:?];
     v11 = v22;
     v13 = v23;
     v15 = v24;
     v17 = v25;
 
-    v18 = [(UIButton *)self->_titleButton titleLabel];
+    imageView3 = [(UIButton *)self->_titleButton titleLabel];
   }
 
-  v26 = v18;
-  [v18 alignmentRectForFrame:{v11, v13, v15, v17}];
+  v26 = imageView3;
+  [imageView3 alignmentRectForFrame:{v11, v13, v15, v17}];
   v28 = v27;
   v30 = v29;
   v32 = v31;
@@ -3070,11 +3070,11 @@ LABEL_6:
   return result;
 }
 
-- (void)configureButton:(id)a3 fromBarButtonItem:(id)a4
+- (void)configureButton:(id)button fromBarButtonItem:(id)item
 {
   v117[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  buttonCopy = button;
+  itemCopy = item;
   v104 = 0u;
   v105 = 0u;
   v106 = 0u;
@@ -3135,20 +3135,20 @@ LABEL_6:
   }
 
   v68 = v11;
-  if ([v8 isSpringLoaded])
+  if ([itemCopy isSpringLoaded])
   {
-    v13 = 1;
+    isBackButton = 1;
   }
 
   else
   {
-    v13 = [v7 isBackButton];
+    isBackButton = [buttonCopy isBackButton];
   }
 
-  [v7 setSpringLoaded:v13];
+  [buttonCopy setSpringLoaded:isBackButton];
   [(_UIButtonBarButtonVisualProviderIOS *)self updateMenu];
-  v14 = [v8 isSystemItem];
-  if (v14)
+  isSystemItem = [itemCopy isSystemItem];
+  if (isSystemItem)
   {
     v15 = 32;
   }
@@ -3160,45 +3160,45 @@ LABEL_6:
 
   flags = *&self->_flags & 0xDF | v15;
   *&self->_flags = flags;
-  if (v14)
+  if (isSystemItem)
   {
-    self->_systemItem = [v8 systemItem];
+    self->_systemItem = [itemCopy systemItem];
     flags = self->_flags;
   }
 
   v69 = a2;
   *&self->_flags = flags & 0xFD;
-  v17 = [(_UIButtonBarButtonVisualProviderIOS *)self tintColor];
-  [v7 setTintColor:v17];
+  tintColor = [(_UIButtonBarButtonVisualProviderIOS *)self tintColor];
+  [buttonCopy setTintColor:tintColor];
 
-  [(_UIButtonBarButtonVisualProviderIOS *)self _computeTextAttributesForBarButtonItem:v8];
+  [(_UIButtonBarButtonVisualProviderIOS *)self _computeTextAttributesForBarButtonItem:itemCopy];
   v18 = objc_loadWeakRetained(&self->_appearanceDelegate);
-  v19 = [v18 compactMetrics];
+  compactMetrics = [v18 compactMetrics];
 
   v71 = v12;
-  if ([v7 isBackButton])
+  if ([buttonCopy isBackButton])
   {
-    v20 = 1;
+    _showsChevron = 1;
   }
 
   else
   {
-    v20 = [v8 _showsChevron];
+    _showsChevron = [itemCopy _showsChevron];
   }
 
-  [(_UIButtonBarButtonVisualProviderIOS *)self _configureImageOrTitleCompact:v19];
+  [(_UIButtonBarButtonVisualProviderIOS *)self _configureImageOrTitleCompact:compactMetrics];
   [(_UIButtonBarButtonVisualProviderIOS *)self _updateMonochromaticTreatment];
   v21 = objc_opt_self();
   v117[0] = v21;
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v117 count:1];
-  v23 = [v7 registerForTraitChanges:v22 withTarget:self action:sel__updateMonochromaticTreatment];
+  v23 = [buttonCopy registerForTraitChanges:v22 withTarget:self action:sel__updateMonochromaticTreatment];
 
   backIndicatorButton = self->_backIndicatorButton;
-  v25 = v20;
-  v70 = v8;
-  if (v20)
+  v25 = _showsChevron;
+  v70 = itemCopy;
+  if (_showsChevron)
   {
-    v67 = v20;
+    v67 = _showsChevron;
     if (!backIndicatorButton)
     {
       v26 = _newButton(self);
@@ -3206,9 +3206,9 @@ LABEL_6:
       self->_backIndicatorButton = v26;
     }
 
-    v66 = [(_UIButtonBarButtonVisualProviderIOS *)self _backIndicatorImageForCompact:v19];
+    v66 = [(_UIButtonBarButtonVisualProviderIOS *)self _backIndicatorImageForCompact:compactMetrics];
     [UIButton setImage:"setImage:forState:" forState:?];
-    v28 = [(_UIButtonBarButtonVisualProviderIOS *)self _backIndicatorSymbolConfigurationForCompact:v19];
+    v28 = [(_UIButtonBarButtonVisualProviderIOS *)self _backIndicatorSymbolConfigurationForCompact:compactMetrics];
     [(UIButton *)self->_backIndicatorButton setPreferredSymbolConfiguration:v28 forImageInState:0];
     [(UIButton *)self->_backIndicatorButton setTintColor:0];
     if (!self->_backButtonMask)
@@ -3220,13 +3220,13 @@ LABEL_6:
       [(UIView *)self->_backButtonMask setTranslatesAutoresizingMaskIntoConstraints:0];
     }
 
-    v31 = [(_UIButtonBarButtonVisualProviderIOS *)self _backIndicatorMaskForCompact:v19];
-    v32 = [(_UIBackButtonMaskView *)self->_backButtonMask maskImageView];
-    [v32 setImage:v31];
+    v31 = [(_UIButtonBarButtonVisualProviderIOS *)self _backIndicatorMaskForCompact:compactMetrics];
+    maskImageView = [(_UIBackButtonMaskView *)self->_backButtonMask maskImageView];
+    [maskImageView setImage:v31];
 
-    v33 = [(_UIButtonBarButtonVisualProviderIOS *)self _backIndicatorMaskSymbolConfigurationForCompact:v19];
-    v34 = [(_UIBackButtonMaskView *)self->_backButtonMask maskImageView];
-    [v34 setPreferredSymbolConfiguration:v33];
+    v33 = [(_UIButtonBarButtonVisualProviderIOS *)self _backIndicatorMaskSymbolConfigurationForCompact:compactMetrics];
+    maskImageView2 = [(_UIBackButtonMaskView *)self->_backButtonMask maskImageView];
+    [maskImageView2 setPreferredSymbolConfiguration:v33];
 
     v25 = v67;
     v35 = v66;
@@ -3246,8 +3246,8 @@ LABEL_6:
 
   [(_UIButtonBarButtonVisualProviderIOS *)self _prepareBackgroundViewFromBarButtonItem:v70 isBackButton:v25];
   [(_UIButtonBarButtonVisualProviderIOS *)self _updateViewsForMaskingEnabled];
-  [(_UIButtonBarButtonVisualProviderIOS *)self _insetsForCompact:v19];
-  [v7 setLayoutMargins:?];
+  [(_UIButtonBarButtonVisualProviderIOS *)self _insetsForCompact:compactMetrics];
+  [buttonCopy setLayoutMargins:?];
   v37 = objc_loadWeakRetained(&self->_appearanceDelegate);
   v38 = [v37 edgesPaddingBarButtonItem:v70];
 
@@ -3262,20 +3262,20 @@ LABEL_6:
   v89 = v25;
   v42 = v35;
   v83 = v42;
-  v84 = self;
-  v90 = v19;
+  selfCopy = self;
+  v90 = compactMetrics;
   v43 = v70;
   v85 = v43;
   v86 = v38;
   v87 = v41;
-  v88 = v19;
+  v88 = compactMetrics;
   [(_UIButtonBarButtonVisualProviderIOS *)self updateActiveConstraints:v82];
   v81 = 0u;
   v79 = 0u;
   v80 = 0u;
   v78 = 0u;
-  v44 = [v43 _gestureRecognizers];
-  v45 = [v44 countByEnumeratingWithState:&v78 objects:v116 count:16];
+  _gestureRecognizers = [v43 _gestureRecognizers];
+  v45 = [_gestureRecognizers countByEnumeratingWithState:&v78 objects:v116 count:16];
   if (v45)
   {
     v46 = v45;
@@ -3286,13 +3286,13 @@ LABEL_6:
       {
         if (*v79 != v47)
         {
-          objc_enumerationMutation(v44);
+          objc_enumerationMutation(_gestureRecognizers);
         }
 
-        [v7 addGestureRecognizer:*(*(&v78 + 1) + 8 * i)];
+        [buttonCopy addGestureRecognizer:*(*(&v78 + 1) + 8 * i)];
       }
 
-      v46 = [v44 countByEnumeratingWithState:&v78 objects:v116 count:16];
+      v46 = [_gestureRecognizers countByEnumeratingWithState:&v78 objects:v116 count:16];
     }
 
     while (v46);
@@ -3302,8 +3302,8 @@ LABEL_6:
   v77 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v49 = [v43 _interactions];
-  v50 = [v49 countByEnumeratingWithState:&v74 objects:v115 count:16];
+  _interactions = [v43 _interactions];
+  v50 = [_interactions countByEnumeratingWithState:&v74 objects:v115 count:16];
   if (v50)
   {
     v51 = v50;
@@ -3314,13 +3314,13 @@ LABEL_6:
       {
         if (*v75 != v52)
         {
-          objc_enumerationMutation(v49);
+          objc_enumerationMutation(_interactions);
         }
 
-        [v7 addInteraction:*(*(&v74 + 1) + 8 * j)];
+        [buttonCopy addInteraction:*(*(&v74 + 1) + 8 * j)];
       }
 
-      v51 = [v49 countByEnumeratingWithState:&v74 objects:v115 count:16];
+      v51 = [_interactions countByEnumeratingWithState:&v74 objects:v115 count:16];
     }
 
     while (v51);
@@ -3400,8 +3400,8 @@ LABEL_6:
   self->_finalTitleAttributes = 0;
 
   v15 = [(UIButton *)self->_titleButton attributedTitleForState:0];
-  v4 = [v15 string];
-  [(_UIButtonBarButtonVisualProviderIOS *)self _setTitle:v4];
+  string = [v15 string];
+  [(_UIButtonBarButtonVisualProviderIOS *)self _setTitle:string];
 
   v18 = 0u;
   v19 = 0u;
@@ -3433,24 +3433,24 @@ LABEL_6:
     while (v7);
   }
 
-  v12 = [(NSArray *)self->_titleContent firstObject];
-  [v12 width];
+  firstObject = [(NSArray *)self->_titleContent firstObject];
+  [firstObject width];
   v14 = v13;
 
   [(NSLayoutConstraint *)self->_backButtonTitleMaxWidthConstraint setConstant:v14];
   [(UIView *)self->super._button setNeedsLayout];
 }
 
-- (CGSize)backButtonSystemLayoutSizeFittingSize:(CGSize)a3 horizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)backButtonSystemLayoutSizeFittingSize:(CGSize)size horizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if ([(_UIButtonBarButton *)self->super._button isBreadcrumb]|| !self->_titleContent)
   {
     v31.receiver = self;
     v31.super_class = _UIButtonBarButtonVisualProviderIOS;
-    *&v10 = a4;
-    *&v11 = a5;
+    *&v10 = priority;
+    *&v11 = fittingPriority;
     [(_UIButtonBarButtonVisualProvider *)&v31 backButtonSystemLayoutSizeFittingSize:width horizontalFittingPriority:height verticalFittingPriority:v10, v11];
     v16 = v17;
     v14 = v18;
@@ -3461,8 +3461,8 @@ LABEL_6:
     imageButton = self->_imageButton;
     if (imageButton)
     {
-      *&v10 = a4;
-      *&v11 = a5;
+      *&v10 = priority;
+      *&v11 = fittingPriority;
       [(UIButton *)imageButton systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:v10, v11];
       v14 = v13;
       v16 = v15 + [(_UIButtonBarButtonVisualProviderIOS *)self _widthForBackButtonChevronIncludingPaddingToContentButton]+ 6.0;
@@ -3471,7 +3471,7 @@ LABEL_6:
     else
     {
       v21 = [(UIButton *)self->_titleButton attributedTitleForState:0];
-      v22 = [v21 string];
+      string = [v21 string];
 
       v26 = 0;
       v27 = &v26;
@@ -3486,8 +3486,8 @@ LABEL_6:
       v23[5] = &v26;
       *&v23[6] = width;
       *&v23[7] = height;
-      v24 = a4;
-      v25 = a5;
+      priorityCopy = priority;
+      fittingPriorityCopy = fittingPriority;
       [UIView performWithoutAnimation:v23];
       v16 = v27[4];
       v14 = v27[5];
@@ -3502,10 +3502,10 @@ LABEL_6:
   return result;
 }
 
-- (void)buttonLayoutSubviews:(id)a3 baseImplementation:(id)a4
+- (void)buttonLayoutSubviews:(id)subviews baseImplementation:(id)implementation
 {
-  v20 = a3;
-  v6 = a4;
+  subviewsCopy = subviews;
+  implementationCopy = implementation;
   if ((_UISMCBarsEnabled() & 1) != 0 || !self->_titleContent)
   {
     v15 = 0;
@@ -3522,12 +3522,12 @@ LABEL_6:
   {
     v14 = 0;
 LABEL_12:
-    v11 = &stru_1EFB14550;
+    title = &stru_1EFB14550;
     goto LABEL_13;
   }
 
   v10 = 0;
-  v11 = &stru_1EFB14550;
+  title = &stru_1EFB14550;
   while (1)
   {
     v12 = [(NSArray *)self->_titleContent objectAtIndexedSubscript:v10];
@@ -3550,13 +3550,13 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v11 = [v12 title];
+  title = [v12 title];
 
 LABEL_13:
   v16 = [(UIButton *)self->_titleButton titleForState:0];
   if ([v16 length])
   {
-    v15 = v14 & ([v16 isEqualToString:v11] ^ 1);
+    v15 = v14 & ([v16 isEqualToString:title] ^ 1);
   }
 
   else
@@ -3564,23 +3564,23 @@ LABEL_13:
     v15 = 0;
   }
 
-  [(_UIButtonBarButtonVisualProviderIOS *)self _setTitle:v11];
+  [(_UIButtonBarButtonVisualProviderIOS *)self _setTitle:title];
 
 LABEL_17:
-  v6[2](v6);
-  if (([v20 isBackButton] & 1) == 0 && objc_msgSend(v20, "usesTintColorCapsuleForSelection"))
+  implementationCopy[2](implementationCopy);
+  if (([subviewsCopy isBackButton] & 1) == 0 && objc_msgSend(subviewsCopy, "usesTintColorCapsuleForSelection"))
   {
     if (self->_imageButton)
     {
-      [v20 bounds];
-      [v20 convertRect:self->_imageButton toView:?];
+      [subviewsCopy bounds];
+      [subviewsCopy convertRect:self->_imageButton toView:?];
       [(_UIModernBarButton *)self->_imageButton setSelectionIndicatorViewFrame:?];
     }
 
     if (self->_titleButton)
     {
-      [v20 bounds];
-      [v20 convertRect:self->_titleButton toView:?];
+      [subviewsCopy bounds];
+      [subviewsCopy convertRect:self->_titleButton toView:?];
       [(_UIModernBarButton *)self->_titleButton setSelectionIndicatorViewFrame:?];
     }
   }
@@ -3613,17 +3613,17 @@ LABEL_17:
   return v3;
 }
 
-- (id)buttonContextMenuStyleFromDefaultStyle:(id)a3
+- (id)buttonContextMenuStyleFromDefaultStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   [(_UIButtonBarButtonVisualProviderIOS *)self menuAnchorPoint];
   v6 = v5;
   v8 = v7;
   button = self->super._button;
-  v10 = [(_UIButtonBarButtonVisualProviderIOS *)self buttonContextMenuTargetedPreview];
-  _UIControlMenuSupportUpdateStyleForBarButtons(v4, button, v10, self->_backIndicatorButton != 0, v6, v8);
+  buttonContextMenuTargetedPreview = [(_UIButtonBarButtonVisualProviderIOS *)self buttonContextMenuTargetedPreview];
+  _UIControlMenuSupportUpdateStyleForBarButtons(styleCopy, button, buttonContextMenuTargetedPreview, self->_backIndicatorButton != 0, v6, v8);
 
-  return v4;
+  return styleCopy;
 }
 
 - (id)buttonContextMenuTargetedPreview
@@ -3651,23 +3651,23 @@ LABEL_17:
   }
 
   v3 = imageButton;
-  v4 = [(UIView *)v3 _viewControllerForAncestor];
-  v5 = [v4 view];
+  _viewControllerForAncestor = [(UIView *)v3 _viewControllerForAncestor];
+  view = [_viewControllerForAncestor view];
 
-  if (!v5)
+  if (!view)
   {
-    v5 = [(UIView *)v3 window];
+    view = [(UIView *)v3 window];
   }
 
-  v6 = [(UIView *)v3 superview];
+  superview = [(UIView *)v3 superview];
   [(UIView *)v3 frame];
-  [v6 convertRect:v5 toView:?];
+  [superview convertRect:view toView:?];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = _UIControlMenuAttachmentPointForRectInContainer(v5, v8, v10, v12, v14);
+  v15 = _UIControlMenuAttachmentPointForRectInContainer(view, v8, v10, v12, v14);
   v17 = v16;
 
   v18 = v15;

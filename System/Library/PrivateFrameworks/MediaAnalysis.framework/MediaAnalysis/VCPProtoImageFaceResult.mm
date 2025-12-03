@@ -1,23 +1,23 @@
 @interface VCPProtoImageFaceResult
-+ (id)resultFromLegacyDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultFromLegacyDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoImageFaceResult
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"attributes"];
-  v5 = [v3 objectForKeyedSubscript:@"flags"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"attributes"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"flags"];
   v6 = [v4 objectForKeyedSubscript:@"facePoseYaw"];
   v7 = [v4 objectForKeyedSubscript:@"facePosition"];
   v8 = [v4 objectForKeyedSubscript:@"faceBounds"];
@@ -40,16 +40,16 @@
   else
   {
     v13 = objc_alloc_init(VCPProtoImageFaceResult);
-    v14 = [v5 unsignedIntegerValue];
-    v15 = v14;
-    if ((v14 & 4) != 0)
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
+    v15 = unsignedIntegerValue;
+    if ((unsignedIntegerValue & 4) != 0)
     {
       v16 = 2;
     }
 
     else
     {
-      v16 = (v14 >> 3) & 1;
+      v16 = (unsignedIntegerValue >> 3) & 1;
     }
 
     [(VCPProtoImageFaceResult *)v13 setEyeExpression:v16];
@@ -77,15 +77,15 @@
 - (id)exportToLegacyDictionary
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v3 = [(VCPProtoImageFaceResult *)self eyeExpression];
-  if (v3 == 1)
+  eyeExpression = [(VCPProtoImageFaceResult *)self eyeExpression];
+  if (eyeExpression == 1)
   {
     v4 = 8;
   }
 
   else
   {
-    v4 = 4 * (v3 == 2);
+    v4 = 4 * (eyeExpression == 2);
   }
 
   if ([(VCPProtoImageFaceResult *)self mouthExpression]== 1)
@@ -103,31 +103,31 @@
     v5 = v4;
   }
 
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[VCPProtoImageFaceResult yaw](self, "yaw")}];
-  [v6 setObject:v7 forKeyedSubscript:@"facePoseYaw"];
+  [dictionary setObject:v7 forKeyedSubscript:@"facePoseYaw"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithInt:{-[VCPProtoImageFaceResult position](self, "position")}];
-  [v6 setObject:v8 forKeyedSubscript:@"facePosition"];
+  [dictionary setObject:v8 forKeyedSubscript:@"facePosition"];
 
-  v9 = [(VCPProtoImageFaceResult *)self bounds];
-  [v9 rectValue];
+  bounds = [(VCPProtoImageFaceResult *)self bounds];
+  [bounds rectValue];
   v10 = NSStringFromRect(v19);
-  [v6 setObject:v10 forKeyedSubscript:@"faceBounds"];
+  [dictionary setObject:v10 forKeyedSubscript:@"faceBounds"];
 
   if ([(VCPProtoImageFaceResult *)self hasFaceQuality])
   {
     v11 = MEMORY[0x1E696AD98];
     [(VCPProtoImageFaceResult *)self faceQuality];
     v12 = [v11 numberWithFloat:?];
-    [v6 setObject:v12 forKeyedSubscript:@"faceQuality"];
+    [dictionary setObject:v12 forKeyedSubscript:@"faceQuality"];
   }
 
   v16[0] = @"flags";
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v5];
   v16[1] = @"attributes";
   v17[0] = v13;
-  v17[1] = v6;
+  v17[1] = dictionary;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:2];
 
   return v14;
@@ -139,50 +139,50 @@
   v8.receiver = self;
   v8.super_class = VCPProtoImageFaceResult;
   v4 = [(VCPProtoImageFaceResult *)&v8 description];
-  v5 = [(VCPProtoImageFaceResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoImageFaceResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithInt:self->_eyeExpression];
-  [v3 setObject:v4 forKey:@"eyeExpression"];
+  [dictionary setObject:v4 forKey:@"eyeExpression"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithInt:self->_mouthExpression];
-  [v3 setObject:v5 forKey:@"mouthExpression"];
+  [dictionary setObject:v5 forKey:@"mouthExpression"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithInt:self->_yaw];
-  [v3 setObject:v6 forKey:@"yaw"];
+  [dictionary setObject:v6 forKey:@"yaw"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithInt:self->_position];
-  [v3 setObject:v7 forKey:@"position"];
+  [dictionary setObject:v7 forKey:@"position"];
 
   bounds = self->_bounds;
   if (bounds)
   {
-    v9 = [(VCPProtoBounds *)bounds dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"bounds"];
+    dictionaryRepresentation = [(VCPProtoBounds *)bounds dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"bounds"];
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithBool:self->_isCloseup];
-  [v3 setObject:v10 forKey:@"isCloseup"];
+  [dictionary setObject:v10 forKey:@"isCloseup"];
 
   if (*&self->_has)
   {
     *&v11 = self->_faceQuality;
     v12 = [MEMORY[0x1E696AD98] numberWithFloat:v11];
-    [v3 setObject:v12 forKey:@"faceQuality"];
+    [dictionary setObject:v12 forKey:@"faceQuality"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   PBDataWriterWriteInt32Field();
   PBDataWriterWriteInt32Field();
   PBDataWriterWriteInt32Field();
@@ -195,30 +195,30 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[4] = self->_eyeExpression;
-  v4[6] = self->_mouthExpression;
-  v4[8] = self->_yaw;
-  v4[7] = self->_position;
-  [v4 setBounds:self->_bounds];
-  *(v4 + 36) = self->_isCloseup;
+  toCopy = to;
+  toCopy[4] = self->_eyeExpression;
+  toCopy[6] = self->_mouthExpression;
+  toCopy[8] = self->_yaw;
+  toCopy[7] = self->_position;
+  [toCopy setBounds:self->_bounds];
+  *(toCopy + 36) = self->_isCloseup;
   if (*&self->_has)
   {
-    v4[5] = LODWORD(self->_faceQuality);
-    *(v4 + 40) |= 1u;
+    toCopy[5] = LODWORD(self->_faceQuality);
+    *(toCopy + 40) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 16) = self->_eyeExpression;
   *(v5 + 24) = self->_mouthExpression;
   *(v5 + 32) = self->_yaw;
   *(v5 + 28) = self->_position;
-  v6 = [(VCPProtoBounds *)self->_bounds copyWithZone:a3];
+  v6 = [(VCPProtoBounds *)self->_bounds copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -232,36 +232,36 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
-  if (self->_eyeExpression != *(v4 + 4))
+  if (self->_eyeExpression != *(equalCopy + 4))
   {
     goto LABEL_16;
   }
 
-  if (self->_mouthExpression != *(v4 + 6))
+  if (self->_mouthExpression != *(equalCopy + 6))
   {
     goto LABEL_16;
   }
 
-  if (self->_yaw != *(v4 + 8))
+  if (self->_yaw != *(equalCopy + 8))
   {
     goto LABEL_16;
   }
 
-  if (self->_position != *(v4 + 7))
+  if (self->_position != *(equalCopy + 7))
   {
     goto LABEL_16;
   }
 
   bounds = self->_bounds;
-  if (bounds | *(v4 + 1))
+  if (bounds | *(equalCopy + 1))
   {
     if (![(VCPProtoBounds *)bounds isEqual:?])
     {
@@ -271,23 +271,23 @@
 
   if (self->_isCloseup)
   {
-    if ((*(v4 + 36) & 1) == 0)
+    if ((*(equalCopy + 36) & 1) == 0)
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
 LABEL_16:
     v6 = 0;
     goto LABEL_17;
   }
 
-  v6 = (*(v4 + 40) & 1) == 0;
+  v6 = (*(equalCopy + 40) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_faceQuality != *(v4 + 5))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_faceQuality != *(equalCopy + 5))
     {
       goto LABEL_16;
     }
@@ -343,15 +343,15 @@ LABEL_17:
   return (2654435761 * mouthExpression) ^ (2654435761 * eyeExpression) ^ (2654435761 * yaw) ^ (2654435761 * position) ^ v7 ^ (2654435761 * self->_isCloseup) ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_eyeExpression = *(v4 + 4);
-  self->_mouthExpression = *(v4 + 6);
-  self->_yaw = *(v4 + 8);
-  self->_position = *(v4 + 7);
+  fromCopy = from;
+  self->_eyeExpression = *(fromCopy + 4);
+  self->_mouthExpression = *(fromCopy + 6);
+  self->_yaw = *(fromCopy + 8);
+  self->_position = *(fromCopy + 7);
   bounds = self->_bounds;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (bounds)
   {
     if (!v6)
@@ -359,7 +359,7 @@ LABEL_17:
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(VCPProtoBounds *)bounds mergeFrom:?];
   }
 
@@ -370,16 +370,16 @@ LABEL_17:
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(VCPProtoImageFaceResult *)self setBounds:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  self->_isCloseup = *(v4 + 36);
-  if (*(v4 + 40))
+  self->_isCloseup = *(fromCopy + 36);
+  if (*(fromCopy + 40))
   {
-    self->_faceQuality = *(v4 + 5);
+    self->_faceQuality = *(fromCopy + 5);
     *&self->_has |= 1u;
   }
 }

@@ -2,11 +2,11 @@
 + (double)_defaultFirstPartyAdditionalScale;
 + (double)_defaultLaunchScale;
 + (double)_defaultResumeScale;
-+ (double)_scaleForGestaltKey:(__CFString *)a3;
++ (double)_scaleForGestaltKey:(__CFString *)key;
 + (id)defaultPolicy;
 - (FBApplicationProcessWatchdogPolicy)init;
-- (double)_queue_watchdogScalingFactorForAppInfo:(id)a3 isResume:(BOOL)a4;
-- (id)watchdogPolicyForProcess:(id)a3 eventContext:(id)a4;
+- (double)_queue_watchdogScalingFactorForAppInfo:(id)info isResume:(BOOL)resume;
+- (id)watchdogPolicyForProcess:(id)process eventContext:(id)context;
 - (void)_queue_reloadDefaultSettings;
 - (void)dealloc;
 @end
@@ -80,11 +80,11 @@ void __51__FBApplicationProcessWatchdogPolicy_defaultPolicy__block_invoke()
   self->_deviceResumeScale = v4;
   [objc_opt_class() _defaultFirstPartyAdditionalScale];
   self->_additionalFirstPartyScale = v5;
-  v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-  self->_enableThirdPartyPre9 = [v6 BOOLForKey:@"FBLaunchWatchdogEnableThirdPartyPre9"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  self->_enableThirdPartyPre9 = [standardUserDefaults BOOLForKey:@"FBLaunchWatchdogEnableThirdPartyPre9"];
 
-  v10 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v7 = [v10 dictionaryForKey:@"FBLaunchWatchdogExceptions"];
+  standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v7 = [standardUserDefaults2 dictionaryForKey:@"FBLaunchWatchdogExceptions"];
   v8 = [v7 copy];
   watchdogPolicyExceptions = self->_watchdogPolicyExceptions;
   self->_watchdogPolicyExceptions = v8;
@@ -94,8 +94,8 @@ void __51__FBApplicationProcessWatchdogPolicy_defaultPolicy__block_invoke()
 {
   if (MEMORY[0x1AC572820]("+[FBApplicationProcessWatchdogPolicy _defaultLaunchScale]", a2))
   {
-    v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v3 doubleForKey:@"FBLaunchWatchdogScaleOverride"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults doubleForKey:@"FBLaunchWatchdogScaleOverride"];
     v5 = v4;
 
     if (v5 > 0.0)
@@ -104,8 +104,8 @@ void __51__FBApplicationProcessWatchdogPolicy_defaultPolicy__block_invoke()
     }
   }
 
-  v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v6 doubleForKey:@"FBLaunchWatchdogScale"];
+  standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults2 doubleForKey:@"FBLaunchWatchdogScale"];
   v5 = v7;
 
   if (v5 > 0.0)
@@ -113,7 +113,7 @@ void __51__FBApplicationProcessWatchdogPolicy_defaultPolicy__block_invoke()
     return v5;
   }
 
-  [a1 _scaleForGestaltKey:@"emXA9B552rnSoI7xXE91DA"];
+  [self _scaleForGestaltKey:@"emXA9B552rnSoI7xXE91DA"];
   return result;
 }
 
@@ -121,8 +121,8 @@ void __51__FBApplicationProcessWatchdogPolicy_defaultPolicy__block_invoke()
 {
   if (MEMORY[0x1AC572820]("+[FBApplicationProcessWatchdogPolicy _defaultResumeScale]", a2))
   {
-    v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v3 doubleForKey:@"FBLaunchWatchdogResumeScaleOverride"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults doubleForKey:@"FBLaunchWatchdogResumeScaleOverride"];
     v5 = v4;
 
     if (v5 > 0.0)
@@ -131,8 +131,8 @@ void __51__FBApplicationProcessWatchdogPolicy_defaultPolicy__block_invoke()
     }
   }
 
-  v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v6 doubleForKey:@"FBLaunchWatchdogResumeScale"];
+  standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults2 doubleForKey:@"FBLaunchWatchdogResumeScale"];
   v5 = v7;
 
   if (v5 > 0.0)
@@ -140,7 +140,7 @@ void __51__FBApplicationProcessWatchdogPolicy_defaultPolicy__block_invoke()
     return v5;
   }
 
-  [a1 _scaleForGestaltKey:@"QbQzuIbef01P4JeoL9EmKg"];
+  [self _scaleForGestaltKey:@"QbQzuIbef01P4JeoL9EmKg"];
   return result;
 }
 
@@ -148,8 +148,8 @@ void __51__FBApplicationProcessWatchdogPolicy_defaultPolicy__block_invoke()
 {
   if (MEMORY[0x1AC572820]("+[FBApplicationProcessWatchdogPolicy _defaultFirstPartyAdditionalScale]", a2))
   {
-    v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v3 doubleForKey:@"FBLaunchWatchdogFirstPartyScaleOverride"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults doubleForKey:@"FBLaunchWatchdogFirstPartyScaleOverride"];
     v5 = v4;
 
     if (v5 > 0.0)
@@ -158,8 +158,8 @@ void __51__FBApplicationProcessWatchdogPolicy_defaultPolicy__block_invoke()
     }
   }
 
-  v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v6 doubleForKey:@"FBLaunchWatchdogFirstPartyScale"];
+  standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults2 doubleForKey:@"FBLaunchWatchdogFirstPartyScale"];
   v5 = v7;
 
   if (v5 > 0.0)
@@ -167,7 +167,7 @@ void __51__FBApplicationProcessWatchdogPolicy_defaultPolicy__block_invoke()
     return v5;
   }
 
-  [a1 _scaleForGestaltKey:@"NUYAz1eq3Flzt7ZQxXC/ng"];
+  [self _scaleForGestaltKey:@"NUYAz1eq3Flzt7ZQxXC/ng"];
   return result;
 }
 
@@ -192,7 +192,7 @@ void __42__FBApplicationProcessWatchdogPolicy_init__block_invoke_2(uint64_t a1)
   [(FBApplicationProcessWatchdogPolicy *)&v5 dealloc];
 }
 
-+ (double)_scaleForGestaltKey:(__CFString *)a3
++ (double)_scaleForGestaltKey:(__CFString *)key
 {
   v3 = 1.0;
   if (BSSystemHasCapability())
@@ -210,31 +210,31 @@ void __42__FBApplicationProcessWatchdogPolicy_init__block_invoke_2(uint64_t a1)
   return v3;
 }
 
-- (double)_queue_watchdogScalingFactorForAppInfo:(id)a3 isResume:(BOOL)a4
+- (double)_queue_watchdogScalingFactorForAppInfo:(id)info isResume:(BOOL)resume
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  resumeCopy = resume;
+  infoCopy = info;
+  v7 = infoCopy;
+  if (infoCopy)
   {
-    v8 = [v6 type];
+    type = [infoCopy type];
     if ([v7 type] == 2 && !self->_enableThirdPartyPre9)
     {
       v9 = 1.0;
-      if (![v7 builtOnOrAfterSDKVersion:@"10.0"] || !v8)
+      if (![v7 builtOnOrAfterSDKVersion:@"10.0"] || !type)
       {
         goto LABEL_15;
       }
     }
 
-    else if (!v8)
+    else if (!type)
     {
       v9 = 1.0;
       goto LABEL_15;
     }
 
     v11 = 8;
-    if (v4)
+    if (resumeCopy)
     {
       v11 = 16;
     }
@@ -249,7 +249,7 @@ void __42__FBApplicationProcessWatchdogPolicy_init__block_invoke_2(uint64_t a1)
   else
   {
     v10 = 8;
-    if (v4)
+    if (resumeCopy)
     {
       v10 = 16;
     }
@@ -262,24 +262,24 @@ LABEL_15:
   return v9;
 }
 
-- (id)watchdogPolicyForProcess:(id)a3 eventContext:(id)a4
+- (id)watchdogPolicyForProcess:(id)process eventContext:(id)context
 {
   v56[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 event];
-  if (([v6 isApplicationProcess] & 1) == 0 && v8 == 1)
+  processCopy = process;
+  contextCopy = context;
+  event = [contextCopy event];
+  if (([processCopy isApplicationProcess] & 1) == 0 && event == 1)
   {
-    v9 = [v6 executionContext];
-    v10 = [v9 forSceneActivation];
+    executionContext = [processCopy executionContext];
+    forSceneActivation = [executionContext forSceneActivation];
 
-    if (!v10)
+    if (!forSceneActivation)
     {
       v16 = 0;
       goto LABEL_38;
     }
 
-    v11 = [v6 applicationInfo];
+    applicationInfo = [processCopy applicationInfo];
     v51 = 0;
     v52 = &v51;
     v53 = 0x2020000000;
@@ -287,48 +287,48 @@ LABEL_15:
     goto LABEL_8;
   }
 
-  v11 = [v6 applicationInfo];
+  applicationInfo = [processCopy applicationInfo];
   v51 = 0;
   v52 = &v51;
   v53 = 0x2020000000;
   v54 = 0xBFF0000000000000;
-  if ((v8 - 2) < 2)
+  if ((event - 2) < 2)
   {
-    v13 = [v7 sceneSettings];
-    v17 = [v13 isForeground];
-    v18 = [v7 sceneUpdateContext];
-    v19 = [v18 settingsDiff];
-    v20 = [v19 containsProperty:sel_isForeground];
+    sceneSettings = [contextCopy sceneSettings];
+    isForeground = [sceneSettings isForeground];
+    sceneUpdateContext = [contextCopy sceneUpdateContext];
+    settingsDiff = [sceneUpdateContext settingsDiff];
+    v20 = [settingsDiff containsProperty:sel_isForeground];
 
-    if ((v17 | v20))
+    if ((isForeground | v20))
     {
       v52[3] = 10.0;
     }
 
     else
     {
-      v24 = [v7 sceneTransitionContext];
-      v25 = [v24 allowCPUThrottling];
+      sceneTransitionContext = [contextCopy sceneTransitionContext];
+      allowCPUThrottling = [sceneTransitionContext allowCPUThrottling];
 
-      if ((v25 & 1) == 0)
+      if ((allowCPUThrottling & 1) == 0)
       {
         v52[3] = 30.0;
       }
 
-      v26 = [MEMORY[0x1E696AE30] processInfo];
-      v27 = [v26 thermalState];
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      thermalState = [processInfo thermalState];
 
       v28 = 1.0;
-      if ((v27 - 1) < 3)
+      if ((thermalState - 1) < 3)
       {
-        v28 = dbl_1A8A72058[v27 - 1];
+        v28 = dbl_1A8A72058[thermalState - 1];
       }
 
       v52[3] = v28 * v52[3];
     }
 
     v12 = -1.0;
-    if (v17)
+    if (isForeground)
     {
       queue = self->_queue;
       v45[0] = MEMORY[0x1E69E9820];
@@ -337,20 +337,20 @@ LABEL_15:
       v45[3] = &unk_1E783BFC0;
       v47 = &v51;
       v45[4] = self;
-      v11 = v11;
-      v46 = v11;
+      applicationInfo = applicationInfo;
+      v46 = applicationInfo;
       dispatch_sync(queue, v45);
     }
 
     goto LABEL_28;
   }
 
-  if (v8 == 4)
+  if (event == 4)
   {
-    v13 = [v7 sceneTransitionContext];
-    v21 = [v13 _uiApplicationSceneTransitionContextShim];
-    v22 = v21;
-    if (v21 && ([v21 waitForBackgroundTaskCompletion] & 1) != 0)
+    sceneSettings = [contextCopy sceneTransitionContext];
+    _uiApplicationSceneTransitionContextShim = [sceneSettings _uiApplicationSceneTransitionContextShim];
+    v22 = _uiApplicationSceneTransitionContextShim;
+    if (_uiApplicationSceneTransitionContextShim && ([_uiApplicationSceneTransitionContextShim waitForBackgroundTaskCompletion] & 1) != 0)
     {
       v23 = 60.0;
     }
@@ -369,15 +369,15 @@ LABEL_28:
   }
 
   v12 = -1.0;
-  if (v8 == 1)
+  if (event == 1)
   {
 LABEL_8:
-    v13 = [v6 executionContext];
-    v14 = [v13 launchIntent];
+    sceneSettings = [processCopy executionContext];
+    launchIntent = [sceneSettings launchIntent];
     v12 = -1.0;
-    if ((v14 - 3) >= 3)
+    if ((launchIntent - 3) >= 3)
     {
-      if (v14 == 2)
+      if (launchIntent == 2)
       {
         v52[3] = 30.0;
         v12 = 10.0;
@@ -387,7 +387,7 @@ LABEL_8:
     else
     {
       v52[3] = 20.0;
-      if ((v14 - 3) <= 1)
+      if ((launchIntent - 3) <= 1)
       {
         v15 = self->_queue;
         block[0] = MEMORY[0x1E69E9820];
@@ -396,8 +396,8 @@ LABEL_8:
         block[3] = &unk_1E783BFC0;
         v50 = &v51;
         block[4] = self;
-        v11 = v11;
-        v49 = v11;
+        applicationInfo = applicationInfo;
+        v49 = applicationInfo;
         dispatch_sync(v15, block);
       }
     }
@@ -407,8 +407,8 @@ LABEL_8:
 
 LABEL_29:
   watchdogPolicyExceptions = self->_watchdogPolicyExceptions;
-  v31 = [v6 bundleIdentifier];
-  v32 = [(NSDictionary *)watchdogPolicyExceptions objectForKey:v31];
+  bundleIdentifier = [processCopy bundleIdentifier];
+  v32 = [(NSDictionary *)watchdogPolicyExceptions objectForKey:bundleIdentifier];
 
   if (v32)
   {

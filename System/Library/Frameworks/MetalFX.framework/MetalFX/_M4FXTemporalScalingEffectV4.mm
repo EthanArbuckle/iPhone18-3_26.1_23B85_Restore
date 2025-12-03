@@ -2,20 +2,20 @@
 - (CGPoint)jitterOffset;
 - (CGPoint)motionVectorScale;
 - (CGPoint)previousJitterOffset;
-- (_M4FXTemporalScalingEffectV4)initWithDevice:(id)a3 descriptor:(id)a4 compiler:(id)a5 history:(id)a6;
+- (_M4FXTemporalScalingEffectV4)initWithDevice:(id)device descriptor:(id)descriptor compiler:(id)compiler history:(id)history;
 - (__n128)currentViewToClipMatrix;
 - (__n128)currentWorldToViewMatrix;
 - (__n128)previousViewToClipMatrix;
 - (__n128)previousWorldToViewMatrix;
-- (__n128)setCurrentViewToClipMatrix:(__n128)a3;
-- (__n128)setCurrentWorldToViewMatrix:(__n128)a3;
-- (__n128)setPreviousViewToClipMatrix:(__n128)a3;
-- (__n128)setPreviousWorldToViewMatrix:(__n128)a3;
+- (__n128)setCurrentViewToClipMatrix:(__n128)matrix;
+- (__n128)setCurrentWorldToViewMatrix:(__n128)matrix;
+- (__n128)setPreviousViewToClipMatrix:(__n128)matrix;
+- (__n128)setPreviousWorldToViewMatrix:(__n128)matrix;
 - (float)jitterOffsetX;
 - (float)motionVectorScaleX;
 - (id).cxx_construct;
 - (void)dealloc;
-- (void)encodeToCommandBuffer:(id)a3;
+- (void)encodeToCommandBuffer:(id)buffer;
 @end
 
 @implementation _M4FXTemporalScalingEffectV4
@@ -52,17 +52,17 @@
   return result;
 }
 
-- (_M4FXTemporalScalingEffectV4)initWithDevice:(id)a3 descriptor:(id)a4 compiler:(id)a5 history:(id)a6
+- (_M4FXTemporalScalingEffectV4)initWithDevice:(id)device descriptor:(id)descriptor compiler:(id)compiler history:(id)history
 {
   v15 = *MEMORY[0x277D85DE8];
-  a3;
-  v11 = a4;
-  a5;
-  a6;
+  device;
+  descriptorCopy = descriptor;
+  compiler;
+  history;
   v14.receiver = self;
   v14.super_class = _M4FXTemporalScalingEffectV4;
   v12 = [(_MTL4FXEffect *)&v14 init];
-  objc_storeStrong(&v12->_device, a3);
+  objc_storeStrong(&v12->_device, device);
   operator new();
 }
 
@@ -87,10 +87,10 @@
   [(_M4FXTemporalScalingEffectV4 *)&v4 dealloc];
 }
 
-- (void)encodeToCommandBuffer:(id)a3
+- (void)encodeToCommandBuffer:(id)buffer
 {
-  v27 = a3;
-  [(_MTL4FXEffect *)self _beginEncodeWithCommandBuffer:v27];
+  bufferCopy = buffer;
+  [(_MTL4FXEffect *)self _beginEncodeWithCommandBuffer:bufferCopy];
   *(self->_filter + 136) = *(self->_filter + 136) == 0;
   if (!self->_fence && !self->_outputTextureBarrierStages)
   {
@@ -144,14 +144,14 @@
   self->_reactiveMaskTexture;
   v14 = self->_inputContentWidth;
   v15 = self->_inputContentHeight;
-  [v27 useResidencySet:self->device4->var2];
+  [bufferCopy useResidencySet:self->device4->var2];
   if (self->super.super.super._useRefTensors)
   {
     MTLReportFailure();
   }
 
   device4 = self->device4;
-  MFXComputeEncoder4::beginEncoding(device4->var4, v27, device4->var3);
+  MFXComputeEncoder4::beginEncoding(device4->var4, bufferCopy, device4->var3);
   var4 = device4->var4;
   [*var4 setLabel:@"MetalFX_Temporal_PreProcessing"];
   if (MTLTraceEnabled())
@@ -191,17 +191,17 @@
 
 - (__n128)currentWorldToViewMatrix
 {
-  result = *(a1 + 576);
-  v2 = *(a1 + 592);
-  v3 = *(a1 + 608);
-  v4 = *(a1 + 624);
+  result = *(self + 576);
+  v2 = *(self + 592);
+  v3 = *(self + 608);
+  v4 = *(self + 624);
   return result;
 }
 
-- (__n128)setCurrentWorldToViewMatrix:(__n128)a3
+- (__n128)setCurrentWorldToViewMatrix:(__n128)matrix
 {
   result[36] = a2;
-  result[37] = a3;
+  result[37] = matrix;
   result[38] = a4;
   result[39] = a5;
   return result;
@@ -209,17 +209,17 @@
 
 - (__n128)currentViewToClipMatrix
 {
-  result = *(a1 + 640);
-  v2 = *(a1 + 656);
-  v3 = *(a1 + 672);
-  v4 = *(a1 + 688);
+  result = *(self + 640);
+  v2 = *(self + 656);
+  v3 = *(self + 672);
+  v4 = *(self + 688);
   return result;
 }
 
-- (__n128)setCurrentViewToClipMatrix:(__n128)a3
+- (__n128)setCurrentViewToClipMatrix:(__n128)matrix
 {
   result[40] = a2;
-  result[41] = a3;
+  result[41] = matrix;
   result[42] = a4;
   result[43] = a5;
   return result;
@@ -227,17 +227,17 @@
 
 - (__n128)previousWorldToViewMatrix
 {
-  result = *(a1 + 704);
-  v2 = *(a1 + 720);
-  v3 = *(a1 + 736);
-  v4 = *(a1 + 752);
+  result = *(self + 704);
+  v2 = *(self + 720);
+  v3 = *(self + 736);
+  v4 = *(self + 752);
   return result;
 }
 
-- (__n128)setPreviousWorldToViewMatrix:(__n128)a3
+- (__n128)setPreviousWorldToViewMatrix:(__n128)matrix
 {
   result[44] = a2;
-  result[45] = a3;
+  result[45] = matrix;
   result[46] = a4;
   result[47] = a5;
   return result;
@@ -245,17 +245,17 @@
 
 - (__n128)previousViewToClipMatrix
 {
-  result = *(a1 + 768);
-  v2 = *(a1 + 784);
-  v3 = *(a1 + 800);
-  v4 = *(a1 + 816);
+  result = *(self + 768);
+  v2 = *(self + 784);
+  v3 = *(self + 800);
+  v4 = *(self + 816);
   return result;
 }
 
-- (__n128)setPreviousViewToClipMatrix:(__n128)a3
+- (__n128)setPreviousViewToClipMatrix:(__n128)matrix
 {
   result[48] = a2;
-  result[49] = a3;
+  result[49] = matrix;
   result[50] = a4;
   result[51] = a5;
   return result;

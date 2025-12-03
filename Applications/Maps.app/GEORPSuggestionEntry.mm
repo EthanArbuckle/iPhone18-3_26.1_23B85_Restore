@@ -1,21 +1,21 @@
 @interface GEORPSuggestionEntry
-- (id)initWithType:(int)a3;
-- (void)safeAddDisplayLine:(id)a3;
+- (id)initWithType:(int)type;
+- (void)safeAddDisplayLine:(id)line;
 @end
 
 @implementation GEORPSuggestionEntry
 
-- (void)safeAddDisplayLine:(id)a3
+- (void)safeAddDisplayLine:(id)line
 {
-  if (a3)
+  if (line)
   {
     [(GEORPSuggestionEntry *)self addDisplayLine:?];
   }
 }
 
-- (id)initWithType:(int)a3
+- (id)initWithType:(int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   v4 = [(GEORPSuggestionEntry *)self init];
   v5 = v4;
   if (v4)

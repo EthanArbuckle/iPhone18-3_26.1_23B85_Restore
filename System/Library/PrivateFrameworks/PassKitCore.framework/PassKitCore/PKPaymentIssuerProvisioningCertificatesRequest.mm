@@ -1,21 +1,21 @@
 @interface PKPaymentIssuerProvisioningCertificatesRequest
-- (PKPaymentIssuerProvisioningCertificatesRequest)initWithEncryptionScheme:(id)a3;
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 appleAccountInformation:(id)a5;
+- (PKPaymentIssuerProvisioningCertificatesRequest)initWithEncryptionScheme:(id)scheme;
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier appleAccountInformation:(id)information;
 @end
 
 @implementation PKPaymentIssuerProvisioningCertificatesRequest
 
-- (PKPaymentIssuerProvisioningCertificatesRequest)initWithEncryptionScheme:(id)a3
+- (PKPaymentIssuerProvisioningCertificatesRequest)initWithEncryptionScheme:(id)scheme
 {
-  v4 = a3;
-  if ([v4 length])
+  schemeCopy = scheme;
+  if ([schemeCopy length])
   {
     v9.receiver = self;
     v9.super_class = PKPaymentIssuerProvisioningCertificatesRequest;
     v5 = [(PKOverlayableWebServiceRequest *)&v9 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [schemeCopy copy];
       encryptionScheme = v5->_encryptionScheme;
       v5->_encryptionScheme = v6;
     }
@@ -30,23 +30,23 @@
   return v5;
 }
 
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 appleAccountInformation:(id)a5
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier appleAccountInformation:(id)information
 {
   v20[3] = *MEMORY[0x1E69E9840];
   v20[0] = @"devices";
-  v20[1] = a4;
+  v20[1] = identifier;
   v20[2] = @"issuerProvisioningCertificates";
   v8 = MEMORY[0x1E695DEC8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  informationCopy = information;
+  identifierCopy = identifier;
+  lCopy = l;
   v12 = [v8 arrayWithObjects:v20 count:3];
   encryptionScheme = self->_encryptionScheme;
   v18 = @"encryptionVersion";
   v19 = encryptionScheme;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
 
-  v15 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v11 endpointComponents:v12 queryParameters:v14 appleAccountInformation:v9];
+  v15 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:v12 queryParameters:v14 appleAccountInformation:informationCopy];
 
   [v15 setHTTPMethod:@"GET"];
   [v15 setCachePolicy:1];

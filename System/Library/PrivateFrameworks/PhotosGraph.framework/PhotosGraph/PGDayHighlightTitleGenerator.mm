@@ -1,15 +1,15 @@
 @interface PGDayHighlightTitleGenerator
-- (PGDayHighlightTitleGenerator)initWithSummarizedFeatures:(id)a3 momentNodes:(id)a4 titleGenerationContext:(id)a5 loggingConnection:(id)a6;
+- (PGDayHighlightTitleGenerator)initWithSummarizedFeatures:(id)features momentNodes:(id)nodes titleGenerationContext:(id)context loggingConnection:(id)connection;
 - (PGTitleTuple)titleTuple;
 - (id)dayHighlightMeaningLabels;
-- (id)localizedTitleStringForSortedSummarizedFeatures:(id)a3;
-- (id)localizedTitleStringFromBusinessFeature:(id)a3;
-- (id)localizedTitleStringFromDistrictNode:(id)a3 districtName:(id)a4;
-- (id)localizedTitleStringFromHolidayDateFeature:(id)a3;
-- (id)localizedTitleStringFromLocationFeature:(id)a3;
-- (id)localizedTitleStringFromMeaningFeature:(id)a3;
-- (id)localizedTitleStringFromPublicEventFeature:(id)a3;
-- (id)nameFromLocationFeature:(id)a3;
+- (id)localizedTitleStringForSortedSummarizedFeatures:(id)features;
+- (id)localizedTitleStringFromBusinessFeature:(id)feature;
+- (id)localizedTitleStringFromDistrictNode:(id)node districtName:(id)name;
+- (id)localizedTitleStringFromHolidayDateFeature:(id)feature;
+- (id)localizedTitleStringFromLocationFeature:(id)feature;
+- (id)localizedTitleStringFromMeaningFeature:(id)feature;
+- (id)localizedTitleStringFromPublicEventFeature:(id)feature;
+- (id)nameFromLocationFeature:(id)feature;
 @end
 
 @implementation PGDayHighlightTitleGenerator
@@ -34,28 +34,28 @@
   return v2;
 }
 
-- (id)localizedTitleStringFromDistrictNode:(id)a3 districtName:(id)a4
+- (id)localizedTitleStringFromDistrictNode:(id)node districtName:(id)name
 {
   v55 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PGTitleGenerationContext *)self->_titleGenerationContext locationHelper];
-  v9 = [v8 cityNodeFromDistrictNode:v6];
+  nodeCopy = node;
+  nameCopy = name;
+  locationHelper = [(PGTitleGenerationContext *)self->_titleGenerationContext locationHelper];
+  v9 = [locationHelper cityNodeFromDistrictNode:nodeCopy];
 
   if ([v9 count] == 1)
   {
-    v43 = v6;
-    v10 = [v9 anyNode];
-    v11 = [(PGTitleGenerationContext *)self->_titleGenerationContext locationHelper];
-    v12 = [PGLocationTitleUtility beautifiedLocationNodeStringWithPlaceNode:v10 locationHelper:v11];
+    v43 = nodeCopy;
+    anyNode = [v9 anyNode];
+    locationHelper2 = [(PGTitleGenerationContext *)self->_titleGenerationContext locationHelper];
+    v12 = [PGLocationTitleUtility beautifiedLocationNodeStringWithPlaceNode:anyNode locationHelper:locationHelper2];
 
     v13 = [objc_alloc(MEMORY[0x277CD89E0]) initWithUnit:0];
     v14 = objc_opt_new();
     v15 = objc_opt_new();
     v42 = v12;
     [v13 setString:v12];
-    v16 = [v13 string];
-    v17 = [v16 length];
+    string = [v13 string];
+    v17 = [string length];
 
     v47[0] = MEMORY[0x277D85DD0];
     v47[1] = 3221225472;
@@ -66,9 +66,9 @@
     v19 = v14;
     v49 = v19;
     [v18 enumerateTokensInRange:0 usingBlock:{v17, v47}];
-    [v18 setString:v7];
-    v20 = [v18 string];
-    v21 = [v20 length];
+    [v18 setString:nameCopy];
+    string2 = [v18 string];
+    v21 = [string2 length];
 
     v44[0] = MEMORY[0x277D85DD0];
     v44[1] = 3221225472;
@@ -89,9 +89,9 @@ LABEL_6:
       v31 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v32 = [v31 localizedStringForKey:@"PGLocationTitleFormatOneDistrict %@ city %@" value:@"PGLocationTitleFormatOneDistrict %@ city %@" table:@"Localizable"];
       v33 = v42;
-      v34 = [v30 localizedStringWithFormat:v32, v7, v42];
+      v34 = [v30 localizedStringWithFormat:v32, nameCopy, v42];
 
-      v50[0] = v7;
+      v50[0] = nameCopy;
       v50[1] = v42;
       v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:2];
       v35 = [PGCommonTitleUtility titleWithNoLineBreakSpaceForTitle:v34 andUsedNames:v29];
@@ -122,14 +122,14 @@ LABEL_6:
         *buf = 138412546;
         v52 = v42;
         v53 = 2112;
-        v54 = v7;
+        v54 = nameCopy;
         _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "Only city name %@ used for highlight subtitle, not using district name %@", buf, 0x16u);
       }
 
       v35 = v42;
     }
 
-    v6 = v43;
+    nodeCopy = v43;
   }
 
   else
@@ -138,11 +138,11 @@ LABEL_6:
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
     {
       v40 = v36;
-      v41 = [v6 UUID];
+      uUID = [nodeCopy UUID];
       *buf = 138412546;
-      v52 = v41;
+      v52 = uUID;
       v53 = 2112;
-      v54 = v7;
+      v54 = nameCopy;
       _os_log_error_impl(&dword_22F0FC000, v40, OS_LOG_TYPE_ERROR, "cityNode from districtNode count is invalid for districtNode: %@ with name: %@", buf, 0x16u);
     }
 
@@ -170,37 +170,37 @@ void __82__PGDayHighlightTitleGenerator_localizedTitleStringFromDistrictNode_dis
   [*(a1 + 40) addObject:v7];
 }
 
-- (id)localizedTitleStringFromHolidayDateFeature:(id)a3
+- (id)localizedTitleStringFromHolidayDateFeature:(id)feature
 {
-  v4 = a3;
+  featureCopy = feature;
   v5 = [PGTitleGeneratorDateMatching alloc];
   v6 = [(MAElementCollection *)self->_momentNodes set];
   titleGenerationContext = self->_titleGenerationContext;
-  v8 = [v4 holidayName];
+  holidayName = [featureCopy holidayName];
 
-  v9 = [(PGTitleGeneratorDateMatching *)v5 initWithType:4 referenceDateInterval:0 momentNodes:v6 titleGenerationContext:titleGenerationContext holidayName:v8 isForHighlight:1];
+  v9 = [(PGTitleGeneratorDateMatching *)v5 initWithType:4 referenceDateInterval:0 momentNodes:v6 titleGenerationContext:titleGenerationContext holidayName:holidayName isForHighlight:1];
   [(PGTitleGeneratorDateMatching *)v9 setLineBreakBehavior:2];
-  v10 = [(PGTitleGeneratorDateMatching *)v9 title];
-  v11 = [v10 stringValue];
+  title = [(PGTitleGeneratorDateMatching *)v9 title];
+  stringValue = [title stringValue];
 
-  return v11;
+  return stringValue;
 }
 
-- (id)localizedTitleStringFromLocationFeature:(id)a3
+- (id)localizedTitleStringFromLocationFeature:(id)feature
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PGDayHighlightTitleGenerator *)self nameFromLocationFeature:v4];
-  v6 = [v4 locationNode];
+  featureCopy = feature;
+  v5 = [(PGDayHighlightTitleGenerator *)self nameFromLocationFeature:featureCopy];
+  locationNode = [featureCopy locationNode];
 
   if (v5)
   {
-    v7 = [v6 label];
-    v8 = [v7 isEqualToString:@"District"];
+    label = [locationNode label];
+    v8 = [label isEqualToString:@"District"];
 
     if (v8)
     {
-      v9 = [(PGDayHighlightTitleGenerator *)self localizedTitleStringFromDistrictNode:v6 districtName:v5];
+      v9 = [(PGDayHighlightTitleGenerator *)self localizedTitleStringFromDistrictNode:locationNode districtName:v5];
     }
 
     else
@@ -220,9 +220,9 @@ void __82__PGDayHighlightTitleGenerator_localizedTitleStringFromDistrictNode_dis
     if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       v17 = loggingConnection;
-      v18 = [v6 name];
+      name = [locationNode name];
       *buf = 138412290;
-      v20 = v18;
+      v20 = name;
       _os_log_error_impl(&dword_22F0FC000, v17, OS_LOG_TYPE_ERROR, "Nil beautified locationName for locationNode %@", buf, 0xCu);
     }
 
@@ -234,82 +234,82 @@ void __82__PGDayHighlightTitleGenerator_localizedTitleStringFromDistrictNode_dis
   return v9;
 }
 
-- (id)localizedTitleStringFromPublicEventFeature:(id)a3
+- (id)localizedTitleStringFromPublicEventFeature:(id)feature
 {
-  v4 = a3;
+  featureCopy = feature;
   v5 = [PGSpecBasedHighlightTitleGenerator alloc];
   v6 = [(MAElementCollection *)self->_momentNodes set];
-  v7 = [v4 publicEventLabel];
+  publicEventLabel = [featureCopy publicEventLabel];
 
-  v8 = [(PGSpecBasedHighlightTitleGenerator *)v5 initWithMomentNodes:v6 meaningLabel:v7 createVerboseTitle:0 titleGenerationContext:self->_titleGenerationContext];
+  v8 = [(PGSpecBasedHighlightTitleGenerator *)v5 initWithMomentNodes:v6 meaningLabel:publicEventLabel createVerboseTitle:0 titleGenerationContext:self->_titleGenerationContext];
   [(PGTitleGenerator *)v8 setLineBreakBehavior:2];
-  v9 = [(PGTitleGenerator *)v8 title];
-  v10 = [v9 stringValue];
+  title = [(PGTitleGenerator *)v8 title];
+  stringValue = [title stringValue];
 
-  return v10;
+  return stringValue;
 }
 
-- (id)localizedTitleStringFromBusinessFeature:(id)a3
+- (id)localizedTitleStringFromBusinessFeature:(id)feature
 {
-  v3 = [a3 businessNode];
-  v4 = [v3 name];
+  businessNode = [feature businessNode];
+  name = [businessNode name];
 
   v5 = MEMORY[0x277CCACA8];
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"PGDayHighlightTitleFormatOneBusinessLocation %@" value:@"PGDayHighlightTitleFormatOneBusinessLocation %@" table:@"Localizable"];
-  v8 = [v5 localizedStringWithFormat:v7, v4];
+  v8 = [v5 localizedStringWithFormat:v7, name];
 
   v9 = [v8 stringByReplacingOccurrencesOfString:@" " withString:@" "];
 
   return v9;
 }
 
-- (id)localizedTitleStringFromMeaningFeature:(id)a3
+- (id)localizedTitleStringFromMeaningFeature:(id)feature
 {
-  v4 = a3;
+  featureCopy = feature;
   v5 = [PGSpecBasedHighlightTitleGenerator alloc];
   v6 = [(MAElementCollection *)self->_momentNodes set];
-  v7 = [v4 meaningLabel];
+  meaningLabel = [featureCopy meaningLabel];
 
-  v8 = [(PGSpecBasedHighlightTitleGenerator *)v5 initWithMomentNodes:v6 meaningLabel:v7 createVerboseTitle:0 titleGenerationContext:self->_titleGenerationContext];
+  v8 = [(PGSpecBasedHighlightTitleGenerator *)v5 initWithMomentNodes:v6 meaningLabel:meaningLabel createVerboseTitle:0 titleGenerationContext:self->_titleGenerationContext];
   [(PGTitleGenerator *)v8 setLineBreakBehavior:2];
-  v9 = [(PGTitleGenerator *)v8 title];
-  v10 = [v9 stringValue];
+  title = [(PGTitleGenerator *)v8 title];
+  stringValue = [title stringValue];
 
-  return v10;
+  return stringValue;
 }
 
-- (id)nameFromLocationFeature:(id)a3
+- (id)nameFromLocationFeature:(id)feature
 {
-  v4 = a3;
-  v5 = [v4 subtype];
-  if ((v5 - 2) >= 4)
+  featureCopy = feature;
+  subtype = [featureCopy subtype];
+  if ((subtype - 2) >= 4)
   {
-    if (v5 == 1)
+    if (subtype == 1)
     {
-      v8 = [v4 locationName];
+      locationName = [featureCopy locationName];
     }
 
     else
     {
-      v8 = 0;
+      locationName = 0;
     }
   }
 
   else
   {
-    v6 = [v4 locationNode];
-    v7 = [(PGTitleGenerationContext *)self->_titleGenerationContext locationHelper];
-    v8 = [PGLocationTitleUtility beautifiedLocationNodeStringWithPlaceNode:v6 locationHelper:v7];
+    locationNode = [featureCopy locationNode];
+    locationHelper = [(PGTitleGenerationContext *)self->_titleGenerationContext locationHelper];
+    locationName = [PGLocationTitleUtility beautifiedLocationNodeStringWithPlaceNode:locationNode locationHelper:locationHelper];
   }
 
-  return v8;
+  return locationName;
 }
 
-- (id)localizedTitleStringForSortedSummarizedFeatures:(id)a3
+- (id)localizedTitleStringForSortedSummarizedFeatures:(id)features
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  featuresCopy = features;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -319,7 +319,7 @@ void __82__PGDayHighlightTitleGenerator_localizedTitleStringFromDistrictNode_dis
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v9 = v3;
+  v9 = featuresCopy;
   v10 = [v9 countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v10)
   {
@@ -335,28 +335,28 @@ void __82__PGDayHighlightTitleGenerator_localizedTitleStringFromDistrictNode_dis
         }
 
         v14 = *(*(&v34 + 1) + 8 * i);
-        v15 = [v14 type];
+        type = [v14 type];
         v16 = v4;
-        if (v15 == 1)
+        if (type == 1)
         {
           goto LABEL_11;
         }
 
-        v17 = [v14 type];
+        type2 = [v14 type];
         v16 = v5;
-        if (v17 != 3)
+        if (type2 != 3)
         {
-          v18 = [v14 type];
+          type3 = [v14 type];
           v16 = v6;
-          if (v18 != 2)
+          if (type3 != 2)
           {
-            v19 = [v14 type];
+            type4 = [v14 type];
             v16 = v7;
-            if (v19 != 4)
+            if (type4 != 4)
             {
-              v20 = [v14 type];
+              type5 = [v14 type];
               v16 = v8;
-              if (v20 != 5)
+              if (type5 != 5)
               {
                 continue;
               }
@@ -374,9 +374,9 @@ LABEL_11:
     while (v11);
   }
 
-  v21 = [(PGDayHighlightTitleGenerator *)self dayHighlightMeaningLabels];
-  v22 = [v5 firstObject];
-  if ([v5 count] == 1 && (objc_msgSend(v22, "meaningLabel"), v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v21, "containsObject:", v23), v23, v24) && (-[PGDayHighlightTitleGenerator localizedTitleStringFromMeaningFeature:](self, "localizedTitleStringFromMeaningFeature:", v22), (v25 = objc_claimAutoreleasedReturnValue()) != 0))
+  dayHighlightMeaningLabels = [(PGDayHighlightTitleGenerator *)self dayHighlightMeaningLabels];
+  firstObject = [v5 firstObject];
+  if ([v5 count] == 1 && (objc_msgSend(firstObject, "meaningLabel"), v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(dayHighlightMeaningLabels, "containsObject:", v23), v23, v24) && (-[PGDayHighlightTitleGenerator localizedTitleStringFromMeaningFeature:](self, "localizedTitleStringFromMeaningFeature:", firstObject), (v25 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v26 = v25;
   }
@@ -389,8 +389,8 @@ LABEL_11:
       {
         if ([v4 count] == 1)
         {
-          v30 = [v4 firstObject];
-          v26 = [(PGDayHighlightTitleGenerator *)self localizedTitleStringFromLocationFeature:v30];
+          firstObject2 = [v4 firstObject];
+          v26 = [(PGDayHighlightTitleGenerator *)self localizedTitleStringFromLocationFeature:firstObject2];
         }
 
         else
@@ -427,22 +427,22 @@ LABEL_11:
   return titleTuple;
 }
 
-- (PGDayHighlightTitleGenerator)initWithSummarizedFeatures:(id)a3 momentNodes:(id)a4 titleGenerationContext:(id)a5 loggingConnection:(id)a6
+- (PGDayHighlightTitleGenerator)initWithSummarizedFeatures:(id)features momentNodes:(id)nodes titleGenerationContext:(id)context loggingConnection:(id)connection
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  featuresCopy = features;
+  nodesCopy = nodes;
+  contextCopy = context;
+  connectionCopy = connection;
   v18.receiver = self;
   v18.super_class = PGDayHighlightTitleGenerator;
   v15 = [(PGDayHighlightTitleGenerator *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_summarizedFeatures, a3);
-    objc_storeStrong(&v16->_momentNodes, a4);
-    objc_storeStrong(&v16->_loggingConnection, a6);
-    objc_storeStrong(&v16->_titleGenerationContext, a5);
+    objc_storeStrong(&v15->_summarizedFeatures, features);
+    objc_storeStrong(&v16->_momentNodes, nodes);
+    objc_storeStrong(&v16->_loggingConnection, connection);
+    objc_storeStrong(&v16->_titleGenerationContext, context);
   }
 
   return v16;

@@ -1,6 +1,6 @@
 @interface LAACL
-- (BOOL)isEqual:(id)a3;
-- (LAACL)initWithData:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LAACL)initWithData:(id)data;
 - (NSData)data;
 - (NSDictionary)constraints;
 - (void)dealloc;
@@ -9,15 +9,15 @@
 
 @implementation LAACL
 
-- (LAACL)initWithData:(id)a3
+- (LAACL)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v7.receiver = self;
   v7.super_class = LAACL;
   v5 = [(LAACL *)&v7 init];
   if (v5)
   {
-    v5->_acl = [MEMORY[0x1E69AD210] deserializeACL:v4];
+    v5->_acl = [MEMORY[0x1E69AD210] deserializeACL:dataCopy];
   }
 
   return v5;
@@ -66,25 +66,25 @@
   return data;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 data];
-    v7 = [(LAACL *)self data];
-    if (v6 == v7)
+    v5 = equalCopy;
+    data = [v5 data];
+    data2 = [(LAACL *)self data];
+    if (data == data2)
     {
       v10 = 1;
     }
 
     else
     {
-      v8 = [v5 data];
-      v9 = [(LAACL *)self data];
-      v10 = [v8 isEqualToData:v9];
+      data3 = [v5 data];
+      data4 = [(LAACL *)self data];
+      v10 = [data3 isEqualToData:data4];
     }
   }
 

@@ -1,10 +1,10 @@
 @interface FCAVAssetKeyService
 - (FCAVAssetKeyService)init;
-- (void)_performHTTPRequest:(void *)a3 keyURI:(void *)a4 completion:;
-- (void)executeRequest:(void *)a3 keyURI:(void *)a4 callbackQueue:(void *)a5 completion:;
-- (void)fetchAppCertificateWithCompletionHandler:(id)a3;
-- (void)fetchContentKeyWithURI:(id)a3 spcData:(id)a4 completionHandler:(id)a5;
-- (void)initWithConfigurationManager:(void *)a1;
+- (void)_performHTTPRequest:(void *)request keyURI:(void *)i completion:;
+- (void)executeRequest:(void *)request keyURI:(void *)i callbackQueue:(void *)queue completion:;
+- (void)fetchAppCertificateWithCompletionHandler:(id)handler;
+- (void)fetchContentKeyWithURI:(id)i spcData:(id)data completionHandler:(id)handler;
+- (void)initWithConfigurationManager:(void *)manager;
 @end
 
 @implementation FCAVAssetKeyService
@@ -35,23 +35,23 @@
   objc_exception_throw(v6);
 }
 
-- (void)initWithConfigurationManager:(void *)a1
+- (void)initWithConfigurationManager:(void *)manager
 {
   v3 = a2;
-  if (a1)
+  if (manager)
   {
-    v14.receiver = a1;
+    v14.receiver = manager;
     v14.super_class = FCAVAssetKeyService;
-    a1 = objc_msgSendSuper2(&v14, sel_init);
-    if (a1)
+    manager = objc_msgSendSuper2(&v14, sel_init);
+    if (manager)
     {
       v4 = [objc_alloc(MEMORY[0x1E69B68D8]) initWithConstructor:&__block_literal_global_20];
-      v5 = a1[1];
-      a1[1] = v4;
+      v5 = manager[1];
+      manager[1] = v4;
 
       v6 = [objc_alloc(MEMORY[0x1E69B68D8]) initWithConstructor:&__block_literal_global_18_0];
-      v7 = a1[2];
-      a1[2] = v6;
+      v7 = manager[2];
+      manager[2] = v6;
 
       v8 = objc_alloc(MEMORY[0x1E69B68F8]);
       v12[0] = MEMORY[0x1E69E9820];
@@ -60,12 +60,12 @@
       v12[3] = &unk_1E7C39ED0;
       v13 = v3;
       v9 = [v8 initWithResolver:v12];
-      v10 = a1[3];
-      a1[3] = v9;
+      v10 = manager[3];
+      manager[3] = v9;
     }
   }
 
-  return a1;
+  return manager;
 }
 
 id __52__FCAVAssetKeyService_initWithConfigurationManager___block_invoke()
@@ -118,9 +118,9 @@ void __52__FCAVAssetKeyService_initWithConfigurationManager___block_invoke_4(uin
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)fetchAppCertificateWithCompletionHandler:(id)a3
+- (void)fetchAppCertificateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (self)
   {
     fairPlayBaseURLPromise = self->_fairPlayBaseURLPromise;
@@ -138,7 +138,7 @@ void __52__FCAVAssetKeyService_initWithConfigurationManager___block_invoke_4(uin
   v15[2] = __64__FCAVAssetKeyService_fetchAppCertificateWithCompletionHandler___block_invoke;
   v15[3] = &unk_1E7C39F20;
   v15[4] = self;
-  v8 = v4;
+  v8 = handlerCopy;
   v16 = v8;
   v9 = [(NFPromise *)v6 thenOn:v7 then:v15];
   v10 = zalgo();
@@ -389,12 +389,12 @@ void __64__FCAVAssetKeyService_fetchAppCertificateWithCompletionHandler___block_
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_performHTTPRequest:(void *)a3 keyURI:(void *)a4 completion:
+- (void)_performHTTPRequest:(void *)request keyURI:(void *)i completion:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  requestCopy = request;
+  iCopy = i;
+  if (self)
   {
     v10 = dispatch_get_global_queue(17, 0);
     v31 = 0;
@@ -403,9 +403,9 @@ void __64__FCAVAssetKeyService_fetchAppCertificateWithCompletionHandler___block_
     v34 = __Block_byref_object_copy__15;
     v35 = __Block_byref_object_dispose__15;
     v36 = [v7 mutableCopy];
-    v11 = [v32[5] HTTPBody];
+    hTTPBody = [v32[5] HTTPBody];
 
-    if (v11)
+    if (hTTPBody)
     {
       v12 = FCAVAssetLog;
       if (os_log_type_enabled(FCAVAssetLog, OS_LOG_TYPE_DEFAULT))
@@ -414,17 +414,17 @@ void __64__FCAVAssetKeyService_fetchAppCertificateWithCompletionHandler___block_
         _os_log_impl(&dword_1B63EF000, v12, OS_LOG_TYPE_DEFAULT, "AV asset key service will generate Mescal signature", buf, 2u);
       }
 
-      v13 = [v32[5] HTTPBody];
+      hTTPBody2 = [v32[5] HTTPBody];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __61__FCAVAssetKeyService__performHTTPRequest_keyURI_completion___block_invoke_67;
       v15[3] = &unk_1E7C3A088;
-      v19 = v9;
+      v19 = iCopy;
       v16 = v10;
-      v17 = a1;
+      selfCopy = self;
       v20 = &v31;
-      v18 = v8;
-      [FCMescalSignature signatureFromData:v13 completion:v15];
+      v18 = requestCopy;
+      [FCMescalSignature signatureFromData:hTTPBody2 completion:v15];
 
       v14 = v19;
     }
@@ -435,12 +435,12 @@ void __64__FCAVAssetKeyService_fetchAppCertificateWithCompletionHandler___block_
       v23 = 3221225472;
       v24 = __61__FCAVAssetKeyService__performHTTPRequest_keyURI_completion___block_invoke;
       v25 = &unk_1E7C3A038;
-      v26 = a1;
+      selfCopy2 = self;
       v30 = &v31;
-      v27 = v8;
+      v27 = requestCopy;
       v28 = v10;
-      v29 = v9;
-      [(FCAVAssetKeyService *)a1 executeRequest:v27 keyURI:v28 callbackQueue:v29 completion:?];
+      v29 = iCopy;
+      [(FCAVAssetKeyService *)self executeRequest:v27 keyURI:v28 callbackQueue:v29 completion:?];
 
       v14 = v27;
     }
@@ -460,11 +460,11 @@ uint64_t __64__FCAVAssetKeyService_fetchAppCertificateWithCompletionHandler___bl
   return result;
 }
 
-- (void)fetchContentKeyWithURI:(id)a3 spcData:(id)a4 completionHandler:(id)a5
+- (void)fetchContentKeyWithURI:(id)i spcData:(id)data completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  iCopy = i;
+  dataCopy = data;
+  handlerCopy = handler;
   if (self)
   {
     fairPlayBaseURLPromise = self->_fairPlayBaseURLPromise;
@@ -481,13 +481,13 @@ uint64_t __64__FCAVAssetKeyService_fetchAppCertificateWithCompletionHandler___bl
   v23[1] = 3221225472;
   v23[2] = __72__FCAVAssetKeyService_fetchContentKeyWithURI_spcData_completionHandler___block_invoke;
   v23[3] = &unk_1E7C3A010;
-  v24 = v9;
-  v25 = v8;
-  v26 = self;
-  v14 = v10;
+  v24 = dataCopy;
+  v25 = iCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
   v27 = v14;
-  v15 = v8;
-  v16 = v9;
+  v15 = iCopy;
+  v16 = dataCopy;
   v17 = [(NFPromise *)v12 thenOn:v13 then:v23];
   v18 = zalgo();
   v21[0] = MEMORY[0x1E69E9820];
@@ -979,13 +979,13 @@ uint64_t __72__FCAVAssetKeyService_fetchContentKeyWithURI_spcData_completionHand
   return result;
 }
 
-- (void)executeRequest:(void *)a3 keyURI:(void *)a4 callbackQueue:(void *)a5 completion:
+- (void)executeRequest:(void *)request keyURI:(void *)i callbackQueue:(void *)queue completion:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a1)
+  requestCopy = request;
+  iCopy = i;
+  queueCopy = queue;
+  if (self)
   {
     v13 = FCAVAssetLog;
     if (os_log_type_enabled(FCAVAssetLog, OS_LOG_TYPE_DEFAULT))
@@ -994,17 +994,17 @@ uint64_t __72__FCAVAssetKeyService_fetchContentKeyWithURI_spcData_completionHand
       _os_log_impl(&dword_1B63EF000, v13, OS_LOG_TYPE_DEFAULT, "AV asset key service will construct AMS request", buf, 2u);
     }
 
-    v14 = [*(a1 + 16) value];
-    v15 = [v14 requestByEncodingRequest:v9 parameters:0];
+    value = [*(self + 16) value];
+    v15 = [value requestByEncodingRequest:v9 parameters:0];
 
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __70__FCAVAssetKeyService_executeRequest_keyURI_callbackQueue_completion___block_invoke;
     v16[3] = &unk_1E7C3A100;
-    v20 = v12;
-    v17 = v11;
-    v18 = v10;
-    v19 = a1;
+    v20 = queueCopy;
+    v17 = iCopy;
+    v18 = requestCopy;
+    selfCopy = self;
     [v15 addFinishBlock:v16];
   }
 }

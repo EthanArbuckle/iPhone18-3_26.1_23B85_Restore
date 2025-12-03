@@ -1,11 +1,11 @@
 @interface VisionCoreFaceprintInferenceNetworkDescriptor
-+ (id)FPrev4_0FArev1_4_MD2AndReturnError:(id *)a3;
-+ (id)_outputNameForFaceAttribute:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (VisionCoreFaceprintInferenceNetworkDescriptor)initWithCoder:(id)a3;
++ (id)FPrev4_0FArev1_4_MD2AndReturnError:(id *)error;
++ (id)_outputNameForFaceAttribute:(id)attribute error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (VisionCoreFaceprintInferenceNetworkDescriptor)initWithCoder:(id)coder;
 - (id)ANESpecificURL;
-- (id)outputForFaceAttribute:(id)a3 error:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)outputForFaceAttribute:(id)attribute error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VisionCoreFaceprintInferenceNetworkDescriptor
@@ -15,23 +15,23 @@
   aneSpecificModelURL = self->_aneSpecificModelURL;
   if (aneSpecificModelURL)
   {
-    v3 = aneSpecificModelURL;
+    aNESpecificURL = aneSpecificModelURL;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = VisionCoreFaceprintInferenceNetworkDescriptor;
-    v3 = [(VisionCoreEspressoNetworkDescriptor *)&v5 ANESpecificURL];
+    aNESpecificURL = [(VisionCoreEspressoNetworkDescriptor *)&v5 ANESpecificURL];
   }
 
-  return v3;
+  return aNESpecificURL;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -39,13 +39,13 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v10.receiver = self, v10.super_class = VisionCoreFaceprintInferenceNetworkDescriptor, [(VisionCoreInferenceNetworkDescriptor *)&v10 isEqual:v4]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v10.receiver = self, v10.super_class = VisionCoreFaceprintInferenceNetworkDescriptor, [(VisionCoreInferenceNetworkDescriptor *)&v10 isEqual:equalCopy]))
     {
-      v5 = v4;
-      v6 = [(VisionCoreFaceprintInferenceNetworkDescriptor *)self faceprintOutput];
-      v7 = [(VisionCoreFaceprintInferenceNetworkDescriptor *)v5 faceprintOutput];
+      v5 = equalCopy;
+      faceprintOutput = [(VisionCoreFaceprintInferenceNetworkDescriptor *)self faceprintOutput];
+      faceprintOutput2 = [(VisionCoreFaceprintInferenceNetworkDescriptor *)v5 faceprintOutput];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [faceprintOutput isEqual:faceprintOutput2];
     }
 
     else
@@ -57,13 +57,13 @@
   return v8;
 }
 
-- (VisionCoreFaceprintInferenceNetworkDescriptor)initWithCoder:(id)a3
+- (VisionCoreFaceprintInferenceNetworkDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = VisionCoreFaceprintInferenceNetworkDescriptor;
-  v5 = [(VisionCoreInferenceNetworkDescriptor *)&v10 initWithCoder:v4];
-  if (v5 && ([v4 decodeObjectOfClass:objc_opt_class() forKey:@"faceprintOutput"], v6 = objc_claimAutoreleasedReturnValue(), faceprintOutput = v5->_faceprintOutput, v5->_faceprintOutput = v6, faceprintOutput, !v5->_faceprintOutput))
+  v5 = [(VisionCoreInferenceNetworkDescriptor *)&v10 initWithCoder:coderCopy];
+  if (v5 && ([coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"faceprintOutput"], v6 = objc_claimAutoreleasedReturnValue(), faceprintOutput = v5->_faceprintOutput, v5->_faceprintOutput = v6, faceprintOutput, !v5->_faceprintOutput))
   {
     v8 = 0;
   }
@@ -76,23 +76,23 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = VisionCoreFaceprintInferenceNetworkDescriptor;
-  v4 = a3;
-  [(VisionCoreInferenceNetworkDescriptor *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_faceprintOutput forKey:{@"faceprintOutput", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(VisionCoreInferenceNetworkDescriptor *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_faceprintOutput forKey:{@"faceprintOutput", v5.receiver, v5.super_class}];
 }
 
-- (id)outputForFaceAttribute:(id)a3 error:(id *)a4
+- (id)outputForFaceAttribute:(id)attribute error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_opt_class() _outputNameForFaceAttribute:v6 error:a4];
+  attributeCopy = attribute;
+  v7 = [objc_opt_class() _outputNameForFaceAttribute:attributeCopy error:error];
 
   if (v7)
   {
-    v8 = [(VisionCoreInferenceNetworkDescriptor *)self outputNamed:v7 error:a4];
+    v8 = [(VisionCoreInferenceNetworkDescriptor *)self outputNamed:v7 error:error];
   }
 
   else
@@ -103,7 +103,7 @@
   return v8;
 }
 
-+ (id)FPrev4_0FArev1_4_MD2AndReturnError:(id *)a3
++ (id)FPrev4_0FArev1_4_MD2AndReturnError:(id *)error
 {
   v4 = [[VisionCoreResourceVersion alloc] initWithMajor:4 minor:0 micro:0];
   v5 = [[VisionCoreResourceVersion alloc] initWithMajor:4 minor:0 micro:0];
@@ -135,8 +135,8 @@
   v19 = @"facerec_fp4.0_fa1.4_md2_2_fp16.espresso";
   v20 = MEMORY[0x1E12C8870](&v25);
   v21 = [VisionCoreFrameworkManager sharedManager:v25];
-  v22 = [v21 inferenceNetworkDescriptorsCache];
-  v23 = [v22 objectForIdentifier:@"FPrev4_0FArev1_4_MD2" creationBlock:v20 error:a3];
+  inferenceNetworkDescriptorsCache = [v21 inferenceNetworkDescriptorsCache];
+  v23 = [inferenceNetworkDescriptorsCache objectForIdentifier:@"FPrev4_0FArev1_4_MD2" creationBlock:v20 error:error];
 
   return v23;
 }
@@ -349,26 +349,26 @@ void __67__VisionCoreFaceprintInferenceNetworkDescriptor_faceAttributesV1_3__blo
   faceAttributesV1_3_faceAttributes = v0;
 }
 
-+ (id)_outputNameForFaceAttribute:(id)a3 error:(id *)a4
++ (id)_outputNameForFaceAttribute:(id)attribute error:(id *)error
 {
-  v5 = a3;
-  if ([v5 length])
+  attributeCopy = attribute;
+  if ([attributeCopy length])
   {
-    v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"softmax_%@_output", v5];
+    attributeCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"softmax_%@_output", attributeCopy];
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] VisionCoreErrorForInvalidArgumentWithLocalizedDescription:@"illegal face attribute"];
-    *a4 = v6 = 0;
+    *error = attributeCopy = 0;
   }
 
   else
   {
-    v6 = 0;
+    attributeCopy = 0;
   }
 
-  return v6;
+  return attributeCopy;
 }
 
 @end

@@ -1,68 +1,68 @@
 @interface RTRelabelerPersister
-+ (id)locationFromAggregateVisits:(id)a3;
-- (BOOL)associateNonPlaceholderRelabeledInferredMapItem:(id)a3 oldCandidate:(id)a4 error:(id *)a5;
-- (BOOL)associatePlaceholderRelabeledInferredMapItem:(id)a3 oldCandidate:(id)a4 error:(id *)a5;
-- (BOOL)cleanUpCombinedPairs:(id)a3 context:(id)a4 error:(id *)a5;
-- (BOOL)cleanUpWithError:(id *)a3;
-- (BOOL)combineEarlierVisitMO:(id)a3 withLaterVisitMO:(id)a4 error:(id *)a5;
-- (BOOL)combineOverlappingRevGeoLOIsStabilized:(BOOL *)a3 error:(id *)a4;
-- (BOOL)combineSequentialVisitsWithError:(id *)a3;
-- (BOOL)consolidateVisitsToLoisWithKnownPlaceTypesWithError:(id *)a3;
-- (BOOL)dedupeLOIsWithError:(id *)a3;
-- (BOOL)fixUnconcreteLOIs:(id *)a3;
-- (BOOL)iterativelyCollapseOverlappingRevGeoLOIsWithError:(id *)a3;
-- (BOOL)moveVisitMOs:(id)a3 toLOIMO:(id)a4 error:(id *)a5;
-- (BOOL)performBlock:(id)a3 error:(id *)a4;
-- (BOOL)resnapVisitsWithError:(id *)a3;
-- (BOOL)restoreToOldCandidate:(id)a3 error:(id *)a4;
-- (BOOL)restoreVisit:(id)a3 transitions:(id)a4 toOldCandidate:(id)a5 error:(id *)a6;
-- (BOOL)saveWithError:(id *)a3;
-- (BOOL)unassociateOldCandidate:(id)a3 error:(id *)a4;
-- (BOOL)unconcreteLOIMO:(id)a3;
-- (BOOL)untrustedVisitMO:(id)a3;
-- (BOOL)useRelabeledInferredMapItem:(id)a3 oldCandidate:(id)a4 associate:(BOOL)a5 error:(id *)a6;
-- (BOOL)uuidConflicts:(id)a3 context:(id)a4 error:(id *)a5;
-- (RTRelabelerPersister)initWithDefaultsManager:(id)a3 distanceCalculator:(id)a4 learnedPlaceParameters:(id)a5 metrics:(id)a6 persistenceManager:(id)a7 relabelerParameters:(id)a8 reverseGeocodeProvider:(id)a9;
-- (RTRelabelerPersister)initWithDistanceCalculator:(id)a3 learnedPlaceParameters:(id)a4 locationShifter:(id)a5 metrics:(id)a6 persistenceManager:(id)a7 relabelerParameters:(id)a8 relabelerPersisterParameters:(id)a9 reverseGeocodeProvider:(id)a10;
-- (double)scoreLOIMO:(id)a3;
-- (double)scoreVisitMO:(id)a3;
-- (id)connectedComponentForLoiMO:(id)a3 encounteredIdentifiers:(id)a4 error:(id *)a5;
-- (id)dedupableLOIsNearLocation:(id)a3 mapItem:(id)a4 error:(id *)a5;
-- (id)fetchClosestUnconcreteLocationOfInterestMOToLocation:(id)a3 withinDistance:(double)a4 distanceCalculator:(id)a5 error:(id *)a6;
-- (id)fetchLearnedLocationOfInterestVisitMOForIdentifier:(id)a3 error:(id *)a4;
-- (id)fetchLearnedPlaceMOforMapItemIdentifier:(id)a3 error:(id *)a4;
-- (id)fetchLocationOfInterestMOforMapItemIdentifier:(id)a3 error:(id *)a4;
-- (id)fetchNearbyLocationOfInterestMOsAroundLocation:(id)a3 withinDistance:(double)a4 error:(id *)a5;
-- (id)fetchOverlappingUnconcreteLocationOfInterestMOsForLOIMO:(id)a3 distanceCalculator:(id)a4 unusableIdentifiers:(id)a5 error:(id *)a6;
-- (id)fetchRevGeoLearnedPlaceInVicinityOfLocation:(id)a3 error:(id *)a4;
-- (id)fetchTransitionMOsEndingAtVisitIdentifier:(id)a3 error:(id *)a4;
-- (id)fetchTransitionMOsOriginatingFromVisitIdentifier:(id)a3 error:(id *)a4;
-- (id)filteredVisitMOs:(id)a3 referenceMapItem:(id)a4 referencePlaceType:(unint64_t)a5 error:(id *)a6;
-- (id)learnedPlaceForVisit:(id)a3 creationDate:(id)a4 expirationDate:(id)a5 context:(id)a6 error:(id *)a7;
-- (id)loiToMoveToFromConnectedComponent:(id)a3;
-- (id)rollLOIIdentifier:(id)a3 context:(id)a4 error:(id *)a5;
-- (id)rollUUIDGivenUUID:(id)a3;
-- (void)logLocalStoreWithReason:(id)a3;
++ (id)locationFromAggregateVisits:(id)visits;
+- (BOOL)associateNonPlaceholderRelabeledInferredMapItem:(id)item oldCandidate:(id)candidate error:(id *)error;
+- (BOOL)associatePlaceholderRelabeledInferredMapItem:(id)item oldCandidate:(id)candidate error:(id *)error;
+- (BOOL)cleanUpCombinedPairs:(id)pairs context:(id)context error:(id *)error;
+- (BOOL)cleanUpWithError:(id *)error;
+- (BOOL)combineEarlierVisitMO:(id)o withLaterVisitMO:(id)mO error:(id *)error;
+- (BOOL)combineOverlappingRevGeoLOIsStabilized:(BOOL *)stabilized error:(id *)error;
+- (BOOL)combineSequentialVisitsWithError:(id *)error;
+- (BOOL)consolidateVisitsToLoisWithKnownPlaceTypesWithError:(id *)error;
+- (BOOL)dedupeLOIsWithError:(id *)error;
+- (BOOL)fixUnconcreteLOIs:(id *)is;
+- (BOOL)iterativelyCollapseOverlappingRevGeoLOIsWithError:(id *)error;
+- (BOOL)moveVisitMOs:(id)os toLOIMO:(id)o error:(id *)error;
+- (BOOL)performBlock:(id)block error:(id *)error;
+- (BOOL)resnapVisitsWithError:(id *)error;
+- (BOOL)restoreToOldCandidate:(id)candidate error:(id *)error;
+- (BOOL)restoreVisit:(id)visit transitions:(id)transitions toOldCandidate:(id)candidate error:(id *)error;
+- (BOOL)saveWithError:(id *)error;
+- (BOOL)unassociateOldCandidate:(id)candidate error:(id *)error;
+- (BOOL)unconcreteLOIMO:(id)o;
+- (BOOL)untrustedVisitMO:(id)o;
+- (BOOL)useRelabeledInferredMapItem:(id)item oldCandidate:(id)candidate associate:(BOOL)associate error:(id *)error;
+- (BOOL)uuidConflicts:(id)conflicts context:(id)context error:(id *)error;
+- (RTRelabelerPersister)initWithDefaultsManager:(id)manager distanceCalculator:(id)calculator learnedPlaceParameters:(id)parameters metrics:(id)metrics persistenceManager:(id)persistenceManager relabelerParameters:(id)relabelerParameters reverseGeocodeProvider:(id)provider;
+- (RTRelabelerPersister)initWithDistanceCalculator:(id)calculator learnedPlaceParameters:(id)parameters locationShifter:(id)shifter metrics:(id)metrics persistenceManager:(id)manager relabelerParameters:(id)relabelerParameters relabelerPersisterParameters:(id)persisterParameters reverseGeocodeProvider:(id)self0;
+- (double)scoreLOIMO:(id)o;
+- (double)scoreVisitMO:(id)o;
+- (id)connectedComponentForLoiMO:(id)o encounteredIdentifiers:(id)identifiers error:(id *)error;
+- (id)dedupableLOIsNearLocation:(id)location mapItem:(id)item error:(id *)error;
+- (id)fetchClosestUnconcreteLocationOfInterestMOToLocation:(id)location withinDistance:(double)distance distanceCalculator:(id)calculator error:(id *)error;
+- (id)fetchLearnedLocationOfInterestVisitMOForIdentifier:(id)identifier error:(id *)error;
+- (id)fetchLearnedPlaceMOforMapItemIdentifier:(id)identifier error:(id *)error;
+- (id)fetchLocationOfInterestMOforMapItemIdentifier:(id)identifier error:(id *)error;
+- (id)fetchNearbyLocationOfInterestMOsAroundLocation:(id)location withinDistance:(double)distance error:(id *)error;
+- (id)fetchOverlappingUnconcreteLocationOfInterestMOsForLOIMO:(id)o distanceCalculator:(id)calculator unusableIdentifiers:(id)identifiers error:(id *)error;
+- (id)fetchRevGeoLearnedPlaceInVicinityOfLocation:(id)location error:(id *)error;
+- (id)fetchTransitionMOsEndingAtVisitIdentifier:(id)identifier error:(id *)error;
+- (id)fetchTransitionMOsOriginatingFromVisitIdentifier:(id)identifier error:(id *)error;
+- (id)filteredVisitMOs:(id)os referenceMapItem:(id)item referencePlaceType:(unint64_t)type error:(id *)error;
+- (id)learnedPlaceForVisit:(id)visit creationDate:(id)date expirationDate:(id)expirationDate context:(id)context error:(id *)error;
+- (id)loiToMoveToFromConnectedComponent:(id)component;
+- (id)rollLOIIdentifier:(id)identifier context:(id)context error:(id *)error;
+- (id)rollUUIDGivenUUID:(id)d;
+- (void)logLocalStoreWithReason:(id)reason;
 @end
 
 @implementation RTRelabelerPersister
 
-- (RTRelabelerPersister)initWithDefaultsManager:(id)a3 distanceCalculator:(id)a4 learnedPlaceParameters:(id)a5 metrics:(id)a6 persistenceManager:(id)a7 relabelerParameters:(id)a8 reverseGeocodeProvider:(id)a9
+- (RTRelabelerPersister)initWithDefaultsManager:(id)manager distanceCalculator:(id)calculator learnedPlaceParameters:(id)parameters metrics:(id)metrics persistenceManager:(id)persistenceManager relabelerParameters:(id)relabelerParameters reverseGeocodeProvider:(id)provider
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  if (v15)
+  managerCopy = manager;
+  calculatorCopy = calculator;
+  parametersCopy = parameters;
+  metricsCopy = metrics;
+  persistenceManagerCopy = persistenceManager;
+  relabelerParametersCopy = relabelerParameters;
+  providerCopy = provider;
+  if (managerCopy)
   {
-    v22 = [[RTRelabelerPersisterParameters alloc] initWithDefaultsManager:v15];
+    v22 = [[RTRelabelerPersisterParameters alloc] initWithDefaultsManager:managerCopy];
     v23 = objc_opt_new();
-    self = [(RTRelabelerPersister *)self initWithDistanceCalculator:v16 learnedPlaceParameters:v17 locationShifter:v23 metrics:v18 persistenceManager:v19 relabelerParameters:v20 relabelerPersisterParameters:v22 reverseGeocodeProvider:v21];
+    self = [(RTRelabelerPersister *)self initWithDistanceCalculator:calculatorCopy learnedPlaceParameters:parametersCopy locationShifter:v23 metrics:metricsCopy persistenceManager:persistenceManagerCopy relabelerParameters:relabelerParametersCopy relabelerPersisterParameters:v22 reverseGeocodeProvider:providerCopy];
 
-    v24 = self;
+    selfCopy = self;
   }
 
   else
@@ -74,29 +74,29 @@
       _os_log_error_impl(&dword_2304B3000, v25, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: defaultsManager", buf, 2u);
     }
 
-    v24 = 0;
+    selfCopy = 0;
   }
 
-  return v24;
+  return selfCopy;
 }
 
-- (RTRelabelerPersister)initWithDistanceCalculator:(id)a3 learnedPlaceParameters:(id)a4 locationShifter:(id)a5 metrics:(id)a6 persistenceManager:(id)a7 relabelerParameters:(id)a8 relabelerPersisterParameters:(id)a9 reverseGeocodeProvider:(id)a10
+- (RTRelabelerPersister)initWithDistanceCalculator:(id)calculator learnedPlaceParameters:(id)parameters locationShifter:(id)shifter metrics:(id)metrics persistenceManager:(id)manager relabelerParameters:(id)relabelerParameters relabelerPersisterParameters:(id)persisterParameters reverseGeocodeProvider:(id)self0
 {
   v50 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v38 = a4;
-  v18 = a4;
-  v39 = a5;
-  v19 = a5;
-  obj = a6;
-  v42 = a6;
-  v20 = a7;
-  v41 = a8;
-  v44 = a9;
-  v21 = a10;
-  v43 = v17;
-  v40 = v21;
-  if (!v17)
+  calculatorCopy = calculator;
+  parametersCopy = parameters;
+  parametersCopy2 = parameters;
+  shifterCopy = shifter;
+  shifterCopy2 = shifter;
+  obj = metrics;
+  metricsCopy = metrics;
+  managerCopy = manager;
+  relabelerParametersCopy = relabelerParameters;
+  persisterParametersCopy = persisterParameters;
+  providerCopy = provider;
+  v43 = calculatorCopy;
+  v40 = providerCopy;
+  if (!calculatorCopy)
   {
     v31 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -105,42 +105,42 @@
       _os_log_error_impl(&dword_2304B3000, v31, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: distanceCalculator", buf, 2u);
     }
 
-    v30 = 0;
-    v22 = v20;
+    selfCopy = 0;
+    v22 = managerCopy;
     goto LABEL_22;
   }
 
-  if (!v18)
+  if (!parametersCopy2)
   {
     v32 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    v22 = v20;
+    v22 = managerCopy;
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
       _os_log_error_impl(&dword_2304B3000, v32, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: learnedPlaceParameters", buf, 2u);
     }
 
-    v30 = 0;
+    selfCopy = 0;
 LABEL_22:
-    v24 = v41;
-    v23 = v42;
+    v24 = relabelerParametersCopy;
+    v23 = metricsCopy;
     goto LABEL_39;
   }
 
-  v22 = v20;
-  if (v19)
+  v22 = managerCopy;
+  if (shifterCopy2)
   {
-    v24 = v41;
-    v23 = v42;
-    if (v42)
+    v24 = relabelerParametersCopy;
+    v23 = metricsCopy;
+    if (metricsCopy)
     {
       if (v22)
       {
-        if (v41)
+        if (relabelerParametersCopy)
         {
-          if (v44)
+          if (persisterParametersCopy)
           {
-            if (v21)
+            if (providerCopy)
             {
               v45.receiver = self;
               v45.super_class = RTRelabelerPersister;
@@ -149,36 +149,36 @@ LABEL_22:
               {
 LABEL_15:
                 self = self;
-                v30 = self;
+                selfCopy = self;
                 goto LABEL_39;
               }
 
-              v25 = [v22 managedObjectContext];
+              managedObjectContext = [v22 managedObjectContext];
               context = self->_context;
-              self->_context = v25;
+              self->_context = managedObjectContext;
 
               if (self->_context)
               {
-                objc_storeStrong(&self->_distanceCalculator, a3);
+                objc_storeStrong(&self->_distanceCalculator, calculator);
                 objc_storeStrong(&self->_metrics, obj);
-                objc_storeStrong(&self->_learnedPlaceParameters, v38);
-                objc_storeStrong(&self->_locationShifter, v39);
-                v27 = [MEMORY[0x277CBEB38] dictionary];
+                objc_storeStrong(&self->_learnedPlaceParameters, parametersCopy);
+                objc_storeStrong(&self->_locationShifter, shifterCopy);
+                dictionary = [MEMORY[0x277CBEB38] dictionary];
                 loiIdentifierToUnconcreteMap = self->_loiIdentifierToUnconcreteMap;
-                self->_loiIdentifierToUnconcreteMap = v27;
+                self->_loiIdentifierToUnconcreteMap = dictionary;
 
-                objc_storeStrong(&self->_relabelerParameters, a8);
-                objc_storeStrong(&self->_relabelerPersisterParameters, a9);
-                objc_storeStrong(&self->_reverseGeocodeProvider, a10);
+                objc_storeStrong(&self->_relabelerParameters, relabelerParameters);
+                objc_storeStrong(&self->_relabelerPersisterParameters, persisterParameters);
+                objc_storeStrong(&self->_reverseGeocodeProvider, provider);
                 if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
                 {
                   v29 = _rt_log_facility_get_os_log(RTLogFacilityRelabeling);
                   if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
                   {
                     *buf = 138740227;
-                    v47 = v18;
+                    v47 = parametersCopy2;
                     v48 = 2117;
-                    v49 = v44;
+                    v49 = persisterParametersCopy;
                     _os_log_impl(&dword_2304B3000, v29, OS_LOG_TYPE_INFO, "created relabelerPersister with learnedPlaceParameters, %{sensitive}@, relabelerPersisterParameters, %{sensitive}@", buf, 0x16u);
                   }
                 }
@@ -187,7 +187,7 @@ LABEL_15:
               }
 
 LABEL_38:
-              v30 = 0;
+              selfCopy = 0;
               goto LABEL_39;
             }
 
@@ -258,24 +258,24 @@ LABEL_36:
   }
 
   v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-  v24 = v41;
+  v24 = relabelerParametersCopy;
   if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
   {
     *buf = 0;
     _os_log_error_impl(&dword_2304B3000, v33, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: locationShifter", buf, 2u);
   }
 
-  v30 = 0;
-  v23 = v42;
+  selfCopy = 0;
+  v23 = metricsCopy;
 LABEL_39:
 
-  return v30;
+  return selfCopy;
 }
 
-+ (id)locationFromAggregateVisits:(id)a3
++ (id)locationFromAggregateVisits:(id)visits
 {
-  v3 = a3;
-  v4 = [[_RTMap alloc] initWithInput:v3];
+  visitsCopy = visits;
+  v4 = [[_RTMap alloc] initWithInput:visitsCopy];
 
   v5 = [(_RTMap *)v4 withBlock:&__block_literal_global_86];
 
@@ -284,35 +284,35 @@ LABEL_39:
   return v6;
 }
 
-- (BOOL)unconcreteLOIMO:(id)a3
+- (BOOL)unconcreteLOIMO:(id)o
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  oCopy = o;
+  if (oCopy)
   {
-    v5 = [(RTRelabelerPersister *)self loiIdentifierToUnconcreteMap];
-    v6 = [v4 identifier];
-    v7 = [v5 objectForKeyedSubscript:v6];
+    loiIdentifierToUnconcreteMap = [(RTRelabelerPersister *)self loiIdentifierToUnconcreteMap];
+    identifier = [oCopy identifier];
+    v7 = [loiIdentifierToUnconcreteMap objectForKeyedSubscript:identifier];
 
     if (v7)
     {
-      v8 = [(RTRelabelerPersister *)self loiIdentifierToUnconcreteMap];
-      v9 = [v4 identifier];
-      v10 = [v8 objectForKeyedSubscript:v9];
+      loiIdentifierToUnconcreteMap2 = [(RTRelabelerPersister *)self loiIdentifierToUnconcreteMap];
+      identifier2 = [oCopy identifier];
+      v10 = [loiIdentifierToUnconcreteMap2 objectForKeyedSubscript:identifier2];
       LOBYTE(v11) = [v10 BOOLValue];
     }
 
     else
     {
-      v13 = [v4 visits];
-      v11 = [v13 count] != 0;
+      visits = [oCopy visits];
+      v11 = [visits count] != 0;
 
       v27 = 0u;
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v14 = [v4 visits];
-      v15 = [v14 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      visits2 = [oCopy visits];
+      v15 = [visits2 countByEnumeratingWithState:&v25 objects:v30 count:16];
       if (v15)
       {
         v16 = v15;
@@ -323,20 +323,20 @@ LABEL_39:
           {
             if (*v26 != v17)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(visits2);
             }
 
-            v19 = [*(*(&v25 + 1) + 8 * i) locationOfInterestSource];
-            v20 = [v19 unsignedIntegerValue];
+            locationOfInterestSource = [*(*(&v25 + 1) + 8 * i) locationOfInterestSource];
+            unsignedIntegerValue = [locationOfInterestSource unsignedIntegerValue];
 
-            if (v20)
+            if (unsignedIntegerValue)
             {
               v11 = 0;
               goto LABEL_17;
             }
           }
 
-          v16 = [v14 countByEnumeratingWithState:&v25 objects:v30 count:16];
+          v16 = [visits2 countByEnumeratingWithState:&v25 objects:v30 count:16];
           if (v16)
           {
             continue;
@@ -349,9 +349,9 @@ LABEL_39:
 LABEL_17:
 
       v21 = [MEMORY[0x277CCABB0] numberWithBool:v11];
-      v22 = [(RTRelabelerPersister *)self loiIdentifierToUnconcreteMap];
-      v23 = [v4 identifier];
-      [v22 setObject:v21 forKeyedSubscript:v23];
+      loiIdentifierToUnconcreteMap3 = [(RTRelabelerPersister *)self loiIdentifierToUnconcreteMap];
+      identifier3 = [oCopy identifier];
+      [loiIdentifierToUnconcreteMap3 setObject:v21 forKeyedSubscript:identifier3];
     }
   }
 
@@ -370,14 +370,14 @@ LABEL_17:
   return v11;
 }
 
-- (id)fetchNearbyLocationOfInterestMOsAroundLocation:(id)a3 withinDistance:(double)a4 error:(id *)a5
+- (id)fetchNearbyLocationOfInterestMOsAroundLocation:(id)location withinDistance:(double)distance error:(id *)error
 {
   v95[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = v9;
-  if (a5)
+  locationCopy = location;
+  v10 = locationCopy;
+  if (error)
   {
-    if (!v9)
+    if (!locationCopy)
     {
       v18 = MEMORY[0x277CCA9B8];
       v19 = *MEMORY[0x277D01448];
@@ -401,11 +401,11 @@ LABEL_10:
 
       v21 = v14;
       v17 = 0;
-      *a5 = v14;
+      *error = v14;
       goto LABEL_33;
     }
 
-    if (a4 < 0.0)
+    if (distance < 0.0)
     {
       v11 = MEMORY[0x277CCA9B8];
       v12 = *MEMORY[0x277D01448];
@@ -436,14 +436,14 @@ LABEL_37:
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v87 count:1];
 
     v23 = +[RTLearnedLocationOfInterestMO fetchRequest];
-    v24 = [(RTRelabelerPersister *)self locationShifter];
+    locationShifter = [(RTRelabelerPersister *)self locationShifter];
     v85 = 0;
-    v25 = [v23 setupBoundingBoxFetchRequestForLocation:v10 distance:1 entityCanBeLocationShifted:v24 locationShifter:0 resultExpansionPredicates:v14 resultFilteringPredicates:&v85 error:a4];
+    v25 = [v23 setupBoundingBoxFetchRequestForLocation:v10 distance:1 entityCanBeLocationShifted:locationShifter locationShifter:0 resultExpansionPredicates:v14 resultFilteringPredicates:&v85 error:distance];
     v26 = v85;
 
     if (v25)
     {
-      v76 = self;
+      selfCopy = self;
       [v23 setReturnsObjectsAsFaults:1];
       [v23 setFetchBatchSize:1];
       v84 = 0;
@@ -453,8 +453,8 @@ LABEL_37:
       if (v28)
       {
         v29 = MEMORY[0x277CCA9B8];
-        v30 = [v28 userInfo];
-        v31 = [v29 errorWithDomain:@"RTRelabelerPersisterErrorDomain" code:2 userInfo:v30];
+        userInfo = [v28 userInfo];
+        v31 = [v29 errorWithDomain:@"RTRelabelerPersisterErrorDomain" code:2 userInfo:userInfo];
 
         v32 = _rt_log_facility_get_os_log(RTLogFacilityRelabeling);
         if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -468,14 +468,14 @@ LABEL_37:
 
         v33 = v31;
         v17 = 0;
-        *a5 = v31;
+        *error = v31;
       }
 
       else
       {
         v67 = v26;
         v68 = v23;
-        v65 = a5;
+        errorCopy = error;
         v69 = v14;
         v71 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v27, "count")}];
         v80 = 0u;
@@ -501,30 +501,30 @@ LABEL_19:
             v36 = *(*(&v80 + 1) + 8 * v35);
             context = objc_autoreleasePoolPush();
             v37 = objc_alloc(MEMORY[0x277D01160]);
-            v78 = [v36 locationLatitude];
-            [v78 doubleValue];
+            locationLatitude = [v36 locationLatitude];
+            [locationLatitude doubleValue];
             v39 = v38;
-            v40 = [v36 locationLongitude];
-            [v40 doubleValue];
+            locationLongitude = [v36 locationLongitude];
+            [locationLongitude doubleValue];
             v42 = v41;
-            v43 = [v36 locationHorizontalUncertainty];
-            [v43 doubleValue];
+            locationHorizontalUncertainty = [v36 locationHorizontalUncertainty];
+            [locationHorizontalUncertainty doubleValue];
             v45 = v44;
-            v46 = [v36 locationAltitude];
-            [v46 doubleValue];
+            locationAltitude = [v36 locationAltitude];
+            [locationAltitude doubleValue];
             v48 = v47;
-            v49 = [v36 locationVerticalUncertainty];
-            [v49 doubleValue];
+            locationVerticalUncertainty = [v36 locationVerticalUncertainty];
+            [locationVerticalUncertainty doubleValue];
             v51 = v50;
-            v52 = [v36 locationReferenceFrame];
-            v53 = [v52 intValue];
-            v54 = [v36 locationSourceAccuracy];
-            v55 = [v37 initWithLatitude:0 longitude:v53 horizontalUncertainty:objc_msgSend(v54 altitude:"intValue") verticalUncertainty:v39 date:v42 referenceFrame:v45 speed:v48 sourceAccuracy:{v51, 0.0}];
+            locationReferenceFrame = [v36 locationReferenceFrame];
+            intValue = [locationReferenceFrame intValue];
+            locationSourceAccuracy = [v36 locationSourceAccuracy];
+            v55 = [v37 initWithLatitude:0 longitude:intValue horizontalUncertainty:objc_msgSend(locationSourceAccuracy altitude:"intValue") verticalUncertainty:v39 date:v42 referenceFrame:v45 speed:v48 sourceAccuracy:{v51, 0.0}];
 
-            v56 = [(RTRelabelerPersister *)v76 distanceCalculator];
+            distanceCalculator = [(RTRelabelerPersister *)selfCopy distanceCalculator];
             v79 = 0;
             v10 = v74;
-            [v56 distanceFromLocation:v55 toLocation:v74 error:&v79];
+            [distanceCalculator distanceFromLocation:v55 toLocation:v74 error:&v79];
             v58 = v57;
             v59 = v79;
 
@@ -533,7 +533,7 @@ LABEL_19:
               break;
             }
 
-            if (v58 <= a4)
+            if (v58 <= distance)
             {
               [v71 addObject:v36];
             }
@@ -552,8 +552,8 @@ LABEL_19:
           }
 
           v60 = MEMORY[0x277CCA9B8];
-          v61 = [v59 userInfo];
-          v62 = [v60 errorWithDomain:@"RTRelabelerPersisterErrorDomain" code:1 userInfo:v61];
+          userInfo2 = [v59 userInfo];
+          v62 = [v60 errorWithDomain:@"RTRelabelerPersisterErrorDomain" code:1 userInfo:userInfo2];
 
           objc_autoreleasePoolPop(context);
           if (!v62)
@@ -562,7 +562,7 @@ LABEL_19:
           }
 
           v63 = v62;
-          *v65 = v62;
+          *errorCopy = v62;
 
           v17 = 0;
           v23 = v68;
@@ -591,7 +591,7 @@ LABEL_30:
     {
       v34 = v26;
       v17 = 0;
-      *a5 = v26;
+      *error = v26;
     }
   }
 
@@ -612,27 +612,27 @@ LABEL_33:
   return v17;
 }
 
-- (id)fetchClosestUnconcreteLocationOfInterestMOToLocation:(id)a3 withinDistance:(double)a4 distanceCalculator:(id)a5 error:(id *)a6
+- (id)fetchClosestUnconcreteLocationOfInterestMOToLocation:(id)location withinDistance:(double)distance distanceCalculator:(id)calculator error:(id *)error
 {
   v91[1] = *MEMORY[0x277D85DE8];
-  v73 = COERCE_DOUBLE(a3);
-  v11 = a5;
-  v12 = v11;
-  if (a6)
+  v73 = COERCE_DOUBLE(location);
+  calculatorCopy = calculator;
+  v12 = calculatorCopy;
+  if (error)
   {
     aSelector = a2;
-    v65 = a6;
-    if (v11)
+    errorCopy = error;
+    if (calculatorCopy)
     {
       v80 = 0;
-      v13 = [(RTRelabelerPersister *)self fetchNearbyLocationOfInterestMOsAroundLocation:*&v73 withinDistance:&v80 error:a4];
+      v13 = [(RTRelabelerPersister *)self fetchNearbyLocationOfInterestMOsAroundLocation:*&v73 withinDistance:&v80 error:distance];
       v14 = v80;
       v15 = v14;
       if (v14)
       {
         v16 = v14;
         v17 = 0;
-        *a6 = v15;
+        *error = v15;
       }
 
       else
@@ -652,7 +652,7 @@ LABEL_33:
           v68 = v13;
           v69 = v12;
           v66 = *v77;
-          v67 = self;
+          selfCopy = self;
           while (2)
           {
             v27 = 0;
@@ -668,25 +668,25 @@ LABEL_33:
               if ([(RTRelabelerPersister *)self unconcreteLOIMO:v28])
               {
                 v29 = objc_alloc(MEMORY[0x277D01160]);
-                v74 = [v28 locationLatitude];
-                [v74 doubleValue];
+                locationLatitude = [v28 locationLatitude];
+                [locationLatitude doubleValue];
                 v31 = v30;
-                v32 = [v28 locationLongitude];
-                [v32 doubleValue];
+                locationLongitude = [v28 locationLongitude];
+                [locationLongitude doubleValue];
                 v34 = v33;
-                v35 = [v28 locationHorizontalUncertainty];
-                [v35 doubleValue];
+                locationHorizontalUncertainty = [v28 locationHorizontalUncertainty];
+                [locationHorizontalUncertainty doubleValue];
                 v37 = v36;
-                v38 = [v28 locationAltitude];
-                [v38 doubleValue];
+                locationAltitude = [v28 locationAltitude];
+                [locationAltitude doubleValue];
                 v40 = v39;
-                v41 = [v28 locationVerticalUncertainty];
-                [v41 doubleValue];
+                locationVerticalUncertainty = [v28 locationVerticalUncertainty];
+                [locationVerticalUncertainty doubleValue];
                 v43 = v42;
-                v44 = [v28 locationReferenceFrame];
-                v45 = [v44 intValue];
-                v46 = [v28 locationSourceAccuracy];
-                v47 = [v29 initWithLatitude:0 longitude:v45 horizontalUncertainty:objc_msgSend(v46 altitude:"intValue") verticalUncertainty:v31 date:v34 referenceFrame:v37 speed:v40 sourceAccuracy:{v43, 0.0}];
+                locationReferenceFrame = [v28 locationReferenceFrame];
+                intValue = [locationReferenceFrame intValue];
+                locationSourceAccuracy = [v28 locationSourceAccuracy];
+                v47 = [v29 initWithLatitude:0 longitude:intValue horizontalUncertainty:objc_msgSend(locationSourceAccuracy altitude:"intValue") verticalUncertainty:v31 date:v34 referenceFrame:v37 speed:v40 sourceAccuracy:{v43, 0.0}];
 
                 v12 = v69;
                 v75 = 0;
@@ -697,8 +697,8 @@ LABEL_33:
                 {
                   v52 = v50;
                   v53 = MEMORY[0x277CCA9B8];
-                  v54 = [v50 userInfo];
-                  v55 = [v53 errorWithDomain:@"RTRelabelerPersisterErrorDomain" code:1 userInfo:v54];
+                  userInfo = [v50 userInfo];
+                  v55 = [v53 errorWithDomain:@"RTRelabelerPersisterErrorDomain" code:1 userInfo:userInfo];
 
                   v56 = _rt_log_facility_get_os_log(RTLogFacilityRelabeling);
                   if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
@@ -709,14 +709,14 @@ LABEL_33:
                     v83 = 2117;
                     v84 = v47;
                     v85 = 2117;
-                    v86 = v73;
+                    distanceCopy = v73;
                     v87 = 2112;
                     v88 = v55;
                     _os_log_error_impl(&dword_2304B3000, v56, OS_LOG_TYPE_ERROR, "%@, distance from location %{sensitive}@, to location %{sensitive}@, error, %@", buf, 0x2Au);
                   }
 
                   v57 = v55;
-                  *v65 = v55;
+                  *errorCopy = v55;
 
                   v17 = 0;
                   v15 = 0;
@@ -737,7 +737,7 @@ LABEL_33:
                 v25 = v66;
                 v24 = v70;
 
-                self = v67;
+                self = selfCopy;
               }
 
               ++v27;
@@ -765,13 +765,13 @@ LABEL_33:
           v59 = _rt_log_facility_get_os_log(RTLogFacilityRelabeling);
           if (os_log_type_enabled(v59, OS_LOG_TYPE_INFO))
           {
-            v60 = [v71 identifier];
+            identifier = [v71 identifier];
             *buf = 138412803;
-            v82 = v60;
+            v82 = identifier;
             v83 = 2117;
             v84 = *&v73;
             v85 = 2048;
-            v86 = a4;
+            distanceCopy = distance;
             _os_log_impl(&dword_2304B3000, v59, OS_LOG_TYPE_INFO, "fetched closest unconcrete, identifier, %@, location, %{sensitive}@, distance, %.3f", buf, 0x20u);
           }
         }
@@ -804,7 +804,7 @@ LABEL_33:
 
       v22 = v15;
       v17 = 0;
-      *v65 = v15;
+      *errorCopy = v15;
     }
   }
 
@@ -823,14 +823,14 @@ LABEL_33:
   return v17;
 }
 
-- (id)fetchOverlappingUnconcreteLocationOfInterestMOsForLOIMO:(id)a3 distanceCalculator:(id)a4 unusableIdentifiers:(id)a5 error:(id *)a6
+- (id)fetchOverlappingUnconcreteLocationOfInterestMOsForLOIMO:(id)o distanceCalculator:(id)calculator unusableIdentifiers:(id)identifiers error:(id *)error
 {
   v134[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (!a6)
+  oCopy = o;
+  calculatorCopy = calculator;
+  identifiersCopy = identifiers;
+  v13 = identifiersCopy;
+  if (!error)
   {
     v34 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -843,7 +843,7 @@ LABEL_33:
     goto LABEL_44;
   }
 
-  if (!v10)
+  if (!oCopy)
   {
     v40 = MEMORY[0x277CCA9B8];
     v41 = *MEMORY[0x277D01448];
@@ -871,7 +871,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (!v12)
+  if (!identifiersCopy)
   {
     v46 = MEMORY[0x277CCA9B8];
     v47 = *MEMORY[0x277D01448];
@@ -895,7 +895,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (!v11)
+  if (!calculatorCopy)
   {
     v49 = MEMORY[0x277CCA9B8];
     v50 = *MEMORY[0x277D01448];
@@ -920,38 +920,38 @@ LABEL_17:
 
     v52 = v34;
     v39 = 0;
-    *a6 = v34;
+    *error = v34;
     goto LABEL_44;
   }
 
   aSelector = a2;
-  v103 = a6;
-  v107 = v12;
-  v108 = v11;
+  errorCopy = error;
+  v107 = identifiersCopy;
+  v108 = calculatorCopy;
   v14 = objc_alloc(MEMORY[0x277D01160]);
-  v15 = [v10 locationLatitude];
-  [v15 doubleValue];
+  locationLatitude = [oCopy locationLatitude];
+  [locationLatitude doubleValue];
   v17 = v16;
-  v18 = [v10 locationLongitude];
-  [v18 doubleValue];
+  locationLongitude = [oCopy locationLongitude];
+  [locationLongitude doubleValue];
   v20 = v19;
-  v21 = [v10 locationHorizontalUncertainty];
-  [v21 doubleValue];
+  locationHorizontalUncertainty = [oCopy locationHorizontalUncertainty];
+  [locationHorizontalUncertainty doubleValue];
   v23 = v22;
-  v24 = [v10 locationAltitude];
-  [v24 doubleValue];
+  locationAltitude = [oCopy locationAltitude];
+  [locationAltitude doubleValue];
   v26 = v25;
-  v27 = [v10 locationVerticalUncertainty];
-  [v27 doubleValue];
+  locationVerticalUncertainty = [oCopy locationVerticalUncertainty];
+  [locationVerticalUncertainty doubleValue];
   v29 = v28;
-  v30 = [v10 locationReferenceFrame];
-  v31 = [v30 intValue];
-  v32 = [v10 locationSourceAccuracy];
-  v33 = [v14 initWithLatitude:0 longitude:v31 horizontalUncertainty:objc_msgSend(v32 altitude:"intValue") verticalUncertainty:v17 date:v20 referenceFrame:v23 speed:v26 sourceAccuracy:{v29, 0.0}];
+  locationReferenceFrame = [oCopy locationReferenceFrame];
+  intValue = [locationReferenceFrame intValue];
+  locationSourceAccuracy = [oCopy locationSourceAccuracy];
+  v33 = [v14 initWithLatitude:0 longitude:intValue horizontalUncertainty:objc_msgSend(locationSourceAccuracy altitude:"intValue") verticalUncertainty:v17 date:v20 referenceFrame:v23 speed:v26 sourceAccuracy:{v29, 0.0}];
 
   v34 = v33;
-  v35 = [(RTRelabelerPersister *)self relabelerPersisterParameters];
-  [v35 unconcreteLOICollapseDistanceThreshold];
+  relabelerPersisterParameters = [(RTRelabelerPersister *)self relabelerPersisterParameters];
+  [relabelerPersisterParameters unconcreteLOICollapseDistanceThreshold];
   v119 = 0;
   v36 = [(RTRelabelerPersister *)self fetchNearbyLocationOfInterestMOsAroundLocation:v33 withinDistance:&v119 error:?];
   v37 = v119;
@@ -960,15 +960,15 @@ LABEL_17:
   {
     v38 = v37;
     v39 = 0;
-    *v103 = v37;
+    *errorCopy = v37;
     v13 = v107;
-    v11 = v108;
+    calculatorCopy = v108;
   }
 
   else
   {
     v106 = v33;
-    v104 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v115 = 0u;
     v116 = 0u;
     v117 = 0u;
@@ -980,9 +980,9 @@ LABEL_17:
     if (v53)
     {
       v54 = v53;
-      v55 = self;
+      selfCopy2 = self;
       v56 = *v116;
-      v105 = v10;
+      v105 = oCopy;
       while (2)
       {
         for (i = 0; i != v54; ++i)
@@ -993,39 +993,39 @@ LABEL_17:
           }
 
           v58 = *(*(&v115 + 1) + 8 * i);
-          v59 = [v58 identifier];
-          v60 = [v10 identifier];
-          v61 = [v59 isEqual:v60];
+          identifier = [v58 identifier];
+          identifier2 = [oCopy identifier];
+          v61 = [identifier isEqual:identifier2];
 
           if ((v61 & 1) == 0)
           {
-            v62 = [v58 identifier];
-            v63 = [v13 member:v62];
+            identifier3 = [v58 identifier];
+            v63 = [v13 member:identifier3];
 
             if (!v63)
             {
-              if ([(RTRelabelerPersister *)v55 unconcreteLOIMO:v58])
+              if ([(RTRelabelerPersister *)selfCopy2 unconcreteLOIMO:v58])
               {
                 v64 = objc_alloc(MEMORY[0x277D01160]);
-                v111 = [v58 locationLatitude];
-                [v111 doubleValue];
+                locationLatitude2 = [v58 locationLatitude];
+                [locationLatitude2 doubleValue];
                 v66 = v65;
-                v110 = [v58 locationLongitude];
-                [v110 doubleValue];
+                locationLongitude2 = [v58 locationLongitude];
+                [locationLongitude2 doubleValue];
                 v68 = v67;
-                v109 = [v58 locationHorizontalUncertainty];
-                [v109 doubleValue];
+                locationHorizontalUncertainty2 = [v58 locationHorizontalUncertainty];
+                [locationHorizontalUncertainty2 doubleValue];
                 v70 = v69;
-                v71 = [v58 locationAltitude];
-                [v71 doubleValue];
+                locationAltitude2 = [v58 locationAltitude];
+                [locationAltitude2 doubleValue];
                 v73 = v72;
-                v74 = [v58 locationVerticalUncertainty];
-                [v74 doubleValue];
+                locationVerticalUncertainty2 = [v58 locationVerticalUncertainty];
+                [locationVerticalUncertainty2 doubleValue];
                 v76 = v75;
-                v77 = [v58 locationReferenceFrame];
-                v78 = [v77 intValue];
-                v79 = [v58 locationSourceAccuracy];
-                v80 = [v64 initWithLatitude:0 longitude:v78 horizontalUncertainty:objc_msgSend(v79 altitude:"intValue") verticalUncertainty:v66 date:v68 referenceFrame:v70 speed:v73 sourceAccuracy:{v76, 0.0}];
+                locationReferenceFrame2 = [v58 locationReferenceFrame];
+                intValue2 = [locationReferenceFrame2 intValue];
+                locationSourceAccuracy2 = [v58 locationSourceAccuracy];
+                v80 = [v64 initWithLatitude:0 longitude:intValue2 horizontalUncertainty:objc_msgSend(locationSourceAccuracy2 altitude:"intValue") verticalUncertainty:v66 date:v68 referenceFrame:v70 speed:v73 sourceAccuracy:{v76, 0.0}];
 
                 v114 = 0;
                 [v108 distanceFromLocation:v80 toLocation:v106 error:&v114];
@@ -1035,8 +1035,8 @@ LABEL_17:
                 {
                   v93 = v83;
                   v94 = MEMORY[0x277CCA9B8];
-                  v95 = [v83 userInfo];
-                  v96 = [v94 errorWithDomain:@"RTRelabelerPersisterErrorDomain" code:1 userInfo:v95];
+                  userInfo = [v83 userInfo];
+                  v96 = [v94 errorWithDomain:@"RTRelabelerPersisterErrorDomain" code:1 userInfo:userInfo];
 
                   v97 = _rt_log_facility_get_os_log(RTLogFacilityRelabeling);
                   v36 = v101;
@@ -1055,15 +1055,15 @@ LABEL_17:
                   }
 
                   v98 = v96;
-                  *v103 = v96;
+                  *errorCopy = v96;
 
                   v39 = 0;
-                  v10 = v105;
+                  oCopy = v105;
                   v34 = v106;
                   v13 = v107;
-                  v11 = v108;
+                  calculatorCopy = v108;
                   v37 = 0;
-                  v88 = v104;
+                  v88 = array;
                   goto LABEL_42;
                 }
 
@@ -1072,12 +1072,12 @@ LABEL_17:
                 [v106 horizontalUncertainty];
                 if (v85 < v86)
                 {
-                  [v104 addObject:v58];
+                  [array addObject:v58];
                 }
 
-                v10 = v105;
+                oCopy = v105;
                 v13 = v107;
-                v55 = self;
+                selfCopy2 = self;
               }
             }
           }
@@ -1093,13 +1093,13 @@ LABEL_17:
       }
     }
 
-    v87 = v10;
+    v87 = oCopy;
 
-    v88 = v104;
-    v89 = [[_RTMap alloc] initWithInput:v104];
+    v88 = array;
+    v89 = [[_RTMap alloc] initWithInput:array];
     obj = [(_RTMap *)v89 withBlock:&__block_literal_global_244];
 
-    v11 = v108;
+    calculatorCopy = v108;
     v34 = v106;
     v37 = 0;
     v36 = v101;
@@ -1109,11 +1109,11 @@ LABEL_17:
       if (os_log_type_enabled(v90, OS_LOG_TYPE_INFO))
       {
         v91 = [obj count];
-        v92 = [v87 identifier];
+        identifier4 = [v87 identifier];
         *buf = 134218242;
         v121 = v91;
         v122 = 2112;
-        v123 = v92;
+        v123 = identifier4;
         _os_log_impl(&dword_2304B3000, v90, OS_LOG_TYPE_INFO, "fetched %lu overlapping LOI MOs, initial identifier, %@", buf, 0x16u);
 
         v34 = v106;
@@ -1125,8 +1125,8 @@ LABEL_17:
       [obj enumerateObjectsUsingBlock:&__block_literal_global_248];
     }
 
-    v39 = v104;
-    v10 = v87;
+    v39 = array;
+    oCopy = v87;
 LABEL_42:
   }
 
@@ -1151,14 +1151,14 @@ void __125__RTRelabelerPersister_fetchOverlappingUnconcreteLocationOfInterestMOs
   }
 }
 
-- (id)fetchLearnedLocationOfInterestVisitMOForIdentifier:(id)a3 error:(id *)a4
+- (id)fetchLearnedLocationOfInterestVisitMOForIdentifier:(id)identifier error:(id *)error
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  identifierCopy = identifier;
+  v7 = identifierCopy;
+  if (error)
   {
-    if (v6)
+    if (identifierCopy)
     {
       v8 = +[RTLearnedLocationOfInterestVisitMO fetchRequest];
       v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"identifier", v7];
@@ -1169,23 +1169,23 @@ void __125__RTRelabelerPersister_fetchOverlappingUnconcreteLocationOfInterestMOs
       v29 = 0;
       v10 = [v8 execute:&v29];
       v11 = v29;
-      v12 = [v10 firstObject];
+      firstObject = [v10 firstObject];
 
       if (v11)
       {
         v13 = MEMORY[0x277CCA9B8];
-        v14 = [v11 userInfo];
-        v15 = [v13 errorWithDomain:@"RTRelabelerPersisterErrorDomain" code:2 userInfo:v14];
+        userInfo = [v11 userInfo];
+        v15 = [v13 errorWithDomain:@"RTRelabelerPersisterErrorDomain" code:2 userInfo:userInfo];
 
         v16 = v15;
-        *a4 = v15;
+        *error = v15;
       }
 
       else
       {
-        if (v12)
+        if (firstObject)
         {
-          v17 = v12;
+          v17 = firstObject;
           goto LABEL_14;
         }
 
@@ -1197,7 +1197,7 @@ void __125__RTRelabelerPersister_fetchOverlappingUnconcreteLocationOfInterestMOs
         v26 = [v24 errorWithDomain:@"RTRelabelerPersisterErrorDomain" code:3 userInfo:v25];
 
         v27 = v26;
-        *a4 = v26;
+        *error = v26;
       }
 
       v17 = 0;
@@ -1226,7 +1226,7 @@ LABEL_14:
 
     v22 = v8;
     v17 = 0;
-    *a4 = v8;
+    *error = v8;
   }
 
   else
@@ -1246,14 +1246,14 @@ LABEL_15:
   return v17;
 }
 
-- (id)fetchTransitionMOsOriginatingFromVisitIdentifier:(id)a3 error:(id *)a4
+- (id)fetchTransitionMOsOriginatingFromVisitIdentifier:(id)identifier error:(id *)error
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  identifierCopy = identifier;
+  v7 = identifierCopy;
+  if (error)
   {
-    if (v6)
+    if (identifierCopy)
     {
       v8 = +[RTLearnedLocationOfInterestTransitionMO fetchRequest];
       v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"visitIdentifierOrigin", v7];
@@ -1272,11 +1272,11 @@ LABEL_15:
       if (v13)
       {
         v15 = MEMORY[0x277CCA9B8];
-        v16 = [v13 userInfo];
-        v17 = [v15 errorWithDomain:@"RTRelabelerPersisterErrorDomain" code:2 userInfo:v16];
+        userInfo = [v13 userInfo];
+        v17 = [v15 errorWithDomain:@"RTRelabelerPersisterErrorDomain" code:2 userInfo:userInfo];
 
         v18 = v17;
-        *a4 = v17;
+        *error = v17;
 
         v19 = 0;
       }
@@ -1309,7 +1309,7 @@ LABEL_15:
 
       v24 = v8;
       v19 = 0;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -1328,14 +1328,14 @@ LABEL_15:
   return v19;
 }
 
-- (id)fetchTransitionMOsEndingAtVisitIdentifier:(id)a3 error:(id *)a4
+- (id)fetchTransitionMOsEndingAtVisitIdentifier:(id)identifier error:(id *)error
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  identifierCopy = identifier;
+  v7 = identifierCopy;
+  if (error)
   {
-    if (v6)
+    if (identifierCopy)
     {
       v8 = +[RTLearnedLocationOfInterestTransitionMO fetchRequest];
       v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"visitIdentifierDestination", v7];
@@ -1354,11 +1354,11 @@ LABEL_15:
       if (v13)
       {
         v15 = MEMORY[0x277CCA9B8];
-        v16 = [v13 userInfo];
-        v17 = [v15 errorWithDomain:@"RTRelabelerPersisterErrorDomain" code:2 userInfo:v16];
+        userInfo = [v13 userInfo];
+        v17 = [v15 errorWithDomain:@"RTRelabelerPersisterErrorDomain" code:2 userInfo:userInfo];
 
         v18 = v17;
-        *a4 = v17;
+        *error = v17;
 
         v19 = 0;
       }
@@ -1391,7 +1391,7 @@ LABEL_15:
 
       v24 = v8;
       v19 = 0;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -1410,14 +1410,14 @@ LABEL_15:
   return v19;
 }
 
-- (id)fetchLocationOfInterestMOforMapItemIdentifier:(id)a3 error:(id *)a4
+- (id)fetchLocationOfInterestMOforMapItemIdentifier:(id)identifier error:(id *)error
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  identifierCopy = identifier;
+  v7 = identifierCopy;
+  if (error)
   {
-    if (v6)
+    if (identifierCopy)
     {
       v8 = +[RTLearnedLocationOfInterestMO fetchRequest];
       v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"placeMapItemIdentifier", v7];
@@ -1428,23 +1428,23 @@ LABEL_15:
       v32 = 0;
       v10 = [v8 execute:&v32];
       v11 = v32;
-      v12 = [v10 firstObject];
+      firstObject = [v10 firstObject];
 
       if (v11)
       {
         v13 = MEMORY[0x277CCA9B8];
-        v14 = [v11 userInfo];
-        v15 = [v13 errorWithDomain:@"RTRelabelerPersisterErrorDomain" code:2 userInfo:v14];
+        userInfo = [v11 userInfo];
+        v15 = [v13 errorWithDomain:@"RTRelabelerPersisterErrorDomain" code:2 userInfo:userInfo];
 
         v16 = v15;
-        *a4 = v15;
+        *error = v15;
       }
 
       else
       {
-        if (v12)
+        if (firstObject)
         {
-          v17 = v12;
+          v17 = firstObject;
           goto LABEL_14;
         }
 
@@ -1467,7 +1467,7 @@ LABEL_15:
         }
 
         v29 = v27;
-        *a4 = v27;
+        *error = v27;
       }
 
       v17 = 0;
@@ -1496,7 +1496,7 @@ LABEL_14:
 
     v22 = v8;
     v17 = 0;
-    *a4 = v8;
+    *error = v8;
   }
 
   else
@@ -1516,14 +1516,14 @@ LABEL_15:
   return v17;
 }
 
-- (id)fetchLearnedPlaceMOforMapItemIdentifier:(id)a3 error:(id *)a4
+- (id)fetchLearnedPlaceMOforMapItemIdentifier:(id)identifier error:(id *)error
 {
   v58[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  identifierCopy = identifier;
+  v7 = identifierCopy;
+  if (error)
   {
-    if (v6)
+    if (identifierCopy)
     {
       v8 = +[RTLearnedLocationOfInterestMO fetchRequest];
       v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"placeMapItemIdentifier", v7];
@@ -1534,13 +1534,13 @@ LABEL_15:
       v50 = 0;
       v10 = [v8 execute:&v50];
       v11 = v50;
-      v12 = [v10 firstObject];
+      firstObject = [v10 firstObject];
 
       if (v11)
       {
         v13 = MEMORY[0x277CCA9B8];
-        v14 = [v11 userInfo];
-        v15 = [v13 errorWithDomain:@"RTRelabelerPersisterErrorDomain" code:2 userInfo:v14];
+        userInfo = [v11 userInfo];
+        v15 = [v13 errorWithDomain:@"RTRelabelerPersisterErrorDomain" code:2 userInfo:userInfo];
 
         v16 = _rt_log_facility_get_os_log(RTLogFacilityRelabeling);
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -1555,28 +1555,28 @@ LABEL_15:
 
         v17 = v15;
         v18 = 0;
-        *a4 = v15;
+        *error = v15;
         goto LABEL_21;
       }
 
       v15 = +[RTLearnedPlaceMO fetchRequest];
       v24 = MEMORY[0x277CCAC30];
-      v25 = [v12 placeIdentifier];
-      v26 = [v24 predicateWithFormat:@"%K == %@", @"identifier", v25];
+      placeIdentifier = [firstObject placeIdentifier];
+      v26 = [v24 predicateWithFormat:@"%K == %@", @"identifier", placeIdentifier];
       [v15 setPredicate:v26];
 
       v49 = 0;
       v27 = [v15 execute:&v49];
       v28 = v49;
-      v29 = [v27 firstObject];
+      firstObject2 = [v27 firstObject];
 
       if (v28)
       {
-        v47 = v29;
+        v47 = firstObject2;
         v48 = v28;
         v30 = MEMORY[0x277CCA9B8];
-        v31 = [v28 userInfo];
-        v32 = [v30 errorWithDomain:@"RTRelabelerPersisterErrorDomain" code:2 userInfo:v31];
+        userInfo2 = [v28 userInfo];
+        v32 = [v30 errorWithDomain:@"RTRelabelerPersisterErrorDomain" code:2 userInfo:userInfo2];
 
         v33 = _rt_log_facility_get_os_log(RTLogFacilityRelabeling);
         if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -1590,14 +1590,14 @@ LABEL_15:
         }
 
         v34 = v32;
-        *a4 = v32;
+        *error = v32;
       }
 
       else
       {
-        if (v29)
+        if (firstObject2)
         {
-          v18 = v29;
+          v18 = firstObject2;
           goto LABEL_20;
         }
 
@@ -1623,11 +1623,11 @@ LABEL_15:
         }
 
         v41 = v39;
-        *a4 = v39;
+        *error = v39;
       }
 
       v18 = 0;
-      v29 = v47;
+      firstObject2 = v47;
       v28 = v48;
 LABEL_20:
 
@@ -1655,7 +1655,7 @@ LABEL_21:
 
     v23 = v8;
     v18 = 0;
-    *a4 = v8;
+    *error = v8;
   }
 
   else
@@ -1675,32 +1675,32 @@ LABEL_22:
   return v18;
 }
 
-- (id)fetchRevGeoLearnedPlaceInVicinityOfLocation:(id)a3 error:(id *)a4
+- (id)fetchRevGeoLearnedPlaceInVicinityOfLocation:(id)location error:(id *)error
 {
   v74[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  locationCopy = location;
+  if (locationCopy)
   {
     v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K & %lu) != 0", @"mapItemSource", 1];
     v74[0] = v7;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v74 count:1];
 
     v9 = +[RTMapItemMO fetchRequest];
-    v10 = [(RTRelabelerPersister *)self relabelerPersisterParameters];
-    [v10 reverseGeocodePlaceFetchDistanceThreshold];
+    relabelerPersisterParameters = [(RTRelabelerPersister *)self relabelerPersisterParameters];
+    [relabelerPersisterParameters reverseGeocodePlaceFetchDistanceThreshold];
     v12 = v11;
-    v13 = [(RTRelabelerPersister *)self locationShifter];
+    locationShifter = [(RTRelabelerPersister *)self locationShifter];
     v68 = 0;
-    v14 = [v9 setupBoundingBoxFetchRequestForLocation:v6 distance:1 entityCanBeLocationShifted:v13 locationShifter:0 resultExpansionPredicates:v8 resultFilteringPredicates:&v68 error:v12];
+    v14 = [v9 setupBoundingBoxFetchRequestForLocation:locationCopy distance:1 entityCanBeLocationShifted:locationShifter locationShifter:0 resultExpansionPredicates:v8 resultFilteringPredicates:&v68 error:v12];
     v15 = v68;
 
     if ((v14 & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v22 = v15;
         v20 = 0;
-        *a4 = v15;
+        *error = v15;
       }
 
       else
@@ -1719,11 +1719,11 @@ LABEL_35:
     v18 = v17;
     if (v17)
     {
-      if (a4)
+      if (error)
       {
         v19 = v17;
         v20 = 0;
-        *a4 = v18;
+        *error = v18;
       }
 
       else
@@ -1766,55 +1766,55 @@ LABEL_15:
       }
 
       v27 = *(*(&v63 + 1) + 8 * v26);
-      v28 = [v27 place];
+      place = [v27 place];
 
-      if (!v28)
+      if (!place)
       {
         goto LABEL_27;
       }
 
       v29 = objc_alloc(MEMORY[0x277D01160]);
-      v30 = [v27 latitude];
-      [v30 doubleValue];
+      latitude = [v27 latitude];
+      [latitude doubleValue];
       v32 = v31;
-      v33 = [v27 longitude];
-      [v33 doubleValue];
+      longitude = [v27 longitude];
+      [longitude doubleValue];
       v35 = v34;
       [v27 uncertainty];
-      v36 = self;
-      v38 = v37 = v6;
+      selfCopy = self;
+      v38 = v37 = locationCopy;
       [v38 doubleValue];
       v40 = v39;
-      v41 = [v27 referenceFrame];
-      v42 = [v29 initWithLatitude:0 longitude:objc_msgSend(v41 horizontalUncertainty:"intValue") date:v32 referenceFrame:{v35, v40}];
+      referenceFrame = [v27 referenceFrame];
+      v42 = [v29 initWithLatitude:0 longitude:objc_msgSend(referenceFrame horizontalUncertainty:"intValue") date:v32 referenceFrame:{v35, v40}];
 
-      v6 = v37;
-      self = v36;
+      locationCopy = v37;
+      self = selfCopy;
 
-      v43 = [(RTRelabelerPersister *)v36 distanceCalculator];
+      distanceCalculator = [(RTRelabelerPersister *)selfCopy distanceCalculator];
       v62 = 0;
-      [v43 distanceFromLocation:v42 toLocation:v6 error:&v62];
+      [distanceCalculator distanceFromLocation:v42 toLocation:locationCopy error:&v62];
       v45 = v44;
       v46 = v62;
 
       if (v46)
       {
-        v47 = _rt_log_facility_get_os_log(RTLogFacilityRelabeling);
-        if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
+        place2 = _rt_log_facility_get_os_log(RTLogFacilityRelabeling);
+        if (os_log_type_enabled(place2, OS_LOG_TYPE_ERROR))
         {
           v48 = NSStringFromSelector(a2);
           *buf = 138412546;
           v70 = v48;
           v71 = 2112;
           v72 = v46;
-          _os_log_error_impl(&dword_2304B3000, v47, OS_LOG_TYPE_ERROR, "%@, distance error, %@", buf, 0x16u);
+          _os_log_error_impl(&dword_2304B3000, place2, OS_LOG_TYPE_ERROR, "%@, distance error, %@", buf, 0x16u);
         }
       }
 
       else
       {
-        v49 = [(RTRelabelerPersister *)v36 relabelerPersisterParameters];
-        [v49 reverseGeocodePlaceFetchDistanceThreshold];
+        relabelerPersisterParameters2 = [(RTRelabelerPersister *)selfCopy relabelerPersisterParameters];
+        [relabelerPersisterParameters2 reverseGeocodePlaceFetchDistanceThreshold];
         v51 = v50;
 
         if (v45 > v51 || v45 >= v25)
@@ -1822,8 +1822,8 @@ LABEL_15:
           goto LABEL_26;
         }
 
-        v47 = [v27 place];
-        v52 = [RTLearnedPlace createWithManagedObject:v47];
+        place2 = [v27 place];
+        v52 = [RTLearnedPlace createWithManagedObject:place2];
 
         v59 = v52;
         v25 = v45;
@@ -1859,10 +1859,10 @@ LABEL_33:
     _os_log_error_impl(&dword_2304B3000, v21, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: location", buf, 2u);
   }
 
-  if (a4)
+  if (error)
   {
     _RTErrorInvalidParameterCreate(@"location");
-    *a4 = v20 = 0;
+    *error = v20 = 0;
   }
 
   else
@@ -1875,15 +1875,15 @@ LABEL_36:
   return v20;
 }
 
-- (id)learnedPlaceForVisit:(id)a3 creationDate:(id)a4 expirationDate:(id)a5 context:(id)a6 error:(id *)a7
+- (id)learnedPlaceForVisit:(id)visit creationDate:(id)date expirationDate:(id)expirationDate context:(id)context error:(id *)error
 {
   v97[1] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = v16;
-  if (!a7)
+  visitCopy = visit;
+  dateCopy = date;
+  expirationDateCopy = expirationDate;
+  contextCopy = context;
+  v17 = contextCopy;
+  if (!error)
   {
     v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -1895,38 +1895,38 @@ LABEL_36:
     goto LABEL_26;
   }
 
-  if (v16)
+  if (contextCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v18 = _rt_log_facility_get_os_log(RTLogFacilityRelabeling);
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
-        v19 = [v13 identifier];
+        identifier = [visitCopy identifier];
         *buf = 138412290;
-        v93 = v19;
+        v93 = identifier;
         _os_log_impl(&dword_2304B3000, v18, OS_LOG_TYPE_INFO, "rev geo query for visit identifier, %@", buf, 0xCu);
       }
     }
 
-    if (v13)
+    if (visitCopy)
     {
-      if (v14)
+      if (dateCopy)
       {
-        if (v15)
+        if (expirationDateCopy)
         {
           aSelector = a2;
-          v20 = [v13 location];
-          v21 = [v20 location];
+          location = [visitCopy location];
+          v20Location = [location location];
           v83 = 0;
-          v22 = [(RTRelabelerPersister *)self fetchRevGeoLearnedPlaceInVicinityOfLocation:v21 error:&v83];
+          v22 = [(RTRelabelerPersister *)self fetchRevGeoLearnedPlaceInVicinityOfLocation:v20Location error:&v83];
           v23 = v83;
 
           if (v23)
           {
             v24 = v23;
             v25 = 0;
-            *a7 = v23;
+            *error = v23;
 LABEL_40:
 
             goto LABEL_27;
@@ -1939,21 +1939,21 @@ LABEL_40:
           }
 
           v42 = objc_alloc(MEMORY[0x277D011E0]);
-          v79 = [(RTRelabelerPersister *)self relabelerPersisterParameters];
-          [v79 reverseGeocodeLeewayDistance];
+          relabelerPersisterParameters = [(RTRelabelerPersister *)self relabelerPersisterParameters];
+          [relabelerPersisterParameters reverseGeocodeLeewayDistance];
           v44 = v43;
-          v77 = [v13 location];
-          v45 = [v77 location];
-          v46 = [v13 entryDate];
-          v47 = [v13 exitDate];
-          v48 = [v42 initWithinDistance:v45 location:v46 startDate:v47 endDate:v44];
+          location2 = [visitCopy location];
+          v77Location = [location2 location];
+          entryDate = [visitCopy entryDate];
+          exitDate = [visitCopy exitDate];
+          v48 = [v42 initWithinDistance:v77Location location:entryDate startDate:exitDate endDate:v44];
 
           reverseGeocodeProvider = self->_reverseGeocodeProvider;
           v82 = 0;
           v80 = v48;
           v50 = [(RTMapItemProviderReverseGeocode *)reverseGeocodeProvider mapItemsWithOptions:v48 error:&v82];
           v51 = v82;
-          v52 = [v50 firstObject];
+          firstObject = [v50 firstObject];
 
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
@@ -1961,20 +1961,20 @@ LABEL_40:
             if (os_log_type_enabled(v53, OS_LOG_TYPE_INFO))
             {
               *buf = 138412546;
-              v93 = v52;
+              v93 = firstObject;
               v94 = 2112;
               v95 = v51;
               _os_log_impl(&dword_2304B3000, v53, OS_LOG_TYPE_INFO, "rev geo query result, %@, error, %@", buf, 0x16u);
             }
           }
 
-          v76 = v52;
+          v76 = firstObject;
           v78 = v51;
           if (v51)
           {
             v54 = MEMORY[0x277CCA9B8];
-            v55 = [(RTLearnedPlace *)v51 userInfo];
-            v56 = [v54 errorWithDomain:@"RTRelabelerPersisterErrorDomain" code:6 userInfo:v55];
+            userInfo = [(RTLearnedPlace *)v51 userInfo];
+            v56 = [v54 errorWithDomain:@"RTRelabelerPersisterErrorDomain" code:6 userInfo:userInfo];
 
             v57 = _rt_log_facility_get_os_log(RTLogFacilityRelabeling);
             if (!os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
@@ -1992,19 +1992,19 @@ LABEL_40:
 
           else
           {
-            if (v52)
+            if (firstObject)
             {
-              v59 = v52;
+              v59 = firstObject;
               v60 = [RTLearnedPlace alloc];
-              v61 = [MEMORY[0x277CCAD78] UUID];
-              v62 = [v59 mapItem];
-              v63 = [(RTLearnedPlace *)v60 initWithIdentifier:v61 type:0 typeSource:0 mapItem:v62 customLabel:0 creationDate:v14 expirationDate:v15];
+              uUID = [MEMORY[0x277CCAD78] UUID];
+              mapItem = [v59 mapItem];
+              v63 = [(RTLearnedPlace *)v60 initWithIdentifier:uUID type:0 typeSource:0 mapItem:mapItem customLabel:0 creationDate:dateCopy expirationDate:expirationDateCopy];
 
               if (v63)
               {
                 v64 = [(RTLearnedPlace *)v63 managedObjectWithContext:v17];
-                v65 = [(RTRelabelerPersister *)self metrics];
-                [v65 tallyKey:@"numberOfPlaceholderNotCollapsedRevGeoQuery"];
+                metrics = [(RTRelabelerPersister *)self metrics];
+                [metrics tallyKey:@"numberOfPlaceholderNotCollapsedRevGeoQuery"];
 
                 v56 = v63;
                 v25 = v56;
@@ -2030,7 +2030,7 @@ LABEL_40:
                 }
 
                 v74 = v72;
-                *a7 = v72;
+                *error = v72;
 
                 v56 = 0;
                 v25 = 0;
@@ -2052,7 +2052,7 @@ LABEL_38:
 
               v58 = v56;
               v25 = 0;
-              *a7 = v56;
+              *error = v56;
 LABEL_39:
               v23 = 0;
               v22 = 0;
@@ -2138,7 +2138,7 @@ LABEL_24:
 LABEL_25:
 
     v40 = v31;
-    *a7 = v31;
+    *error = v31;
 
 LABEL_26:
     v25 = 0;
@@ -2153,62 +2153,62 @@ LABEL_26:
   }
 
   _RTErrorInvalidParameterCreate(@"context");
-  *a7 = v25 = 0;
+  *error = v25 = 0;
 LABEL_27:
 
   return v25;
 }
 
-- (BOOL)restoreVisit:(id)a3 transitions:(id)a4 toOldCandidate:(id)a5 error:(id *)a6
+- (BOOL)restoreVisit:(id)visit transitions:(id)transitions toOldCandidate:(id)candidate error:(id *)error
 {
   v54[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = v13;
-  if (a6)
+  visitCopy = visit;
+  transitionsCopy = transitions;
+  candidateCopy = candidate;
+  v14 = candidateCopy;
+  if (error)
   {
-    if (v11)
+    if (visitCopy)
     {
-      if (v13)
+      if (candidateCopy)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
           v15 = _rt_log_facility_get_os_log(RTLogFacilityRelabeling);
           if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
           {
-            v16 = [v11 identifier];
-            v17 = [v14 secondObject];
-            v18 = [v17 identifier];
+            identifier = [visitCopy identifier];
+            secondObject = [v14 secondObject];
+            identifier2 = [secondObject identifier];
             *buf = 138412546;
-            v50 = v16;
+            v50 = identifier;
             v51 = 2112;
-            v52 = v18;
+            v52 = identifier2;
             _os_log_impl(&dword_2304B3000, v15, OS_LOG_TYPE_INFO, "restoring visit identifier, %@, to old map item identifier, %@", buf, 0x16u);
           }
         }
 
-        v19 = [v14 secondObject];
-        v20 = [v19 identifier];
+        secondObject2 = [v14 secondObject];
+        identifier3 = [secondObject2 identifier];
         v45 = 0;
-        v21 = [(RTRelabelerPersister *)self fetchLocationOfInterestMOforMapItemIdentifier:v20 error:&v45];
+        v21 = [(RTRelabelerPersister *)self fetchLocationOfInterestMOforMapItemIdentifier:identifier3 error:&v45];
         v22 = v45;
 
         v23 = v22 == 0;
         if (v22)
         {
           v24 = v22;
-          *a6 = v22;
+          *error = v22;
         }
 
         else
         {
-          [v11 setLocationOfInterest:v21];
+          [visitCopy setLocationOfInterest:v21];
           v43 = 0u;
           v44 = 0u;
           v41 = 0u;
           v42 = 0u;
-          v34 = v12;
+          v34 = transitionsCopy;
           v35 = [v34 countByEnumeratingWithState:&v41 objects:v46 count:16];
           if (v35)
           {
@@ -2238,7 +2238,7 @@ LABEL_27:
             if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
             {
               *buf = 138739971;
-              v50 = v11;
+              v50 = visitCopy;
               _os_log_impl(&dword_2304B3000, v39, OS_LOG_TYPE_INFO, "successfully restored visit, %{sensitive}@", buf, 0xCu);
             }
           }
@@ -2261,7 +2261,7 @@ LABEL_16:
 
         v33 = v22;
         v23 = 0;
-        *a6 = v22;
+        *error = v22;
         goto LABEL_29;
       }
 
@@ -2312,13 +2312,13 @@ LABEL_29:
   return v23;
 }
 
-- (BOOL)restoreToOldCandidate:(id)a3 error:(id *)a4
+- (BOOL)restoreToOldCandidate:(id)candidate error:(id *)error
 {
-  v7 = a3;
-  v8 = v7;
-  if (a4)
+  candidateCopy = candidate;
+  v8 = candidateCopy;
+  if (error)
   {
-    if (v7)
+    if (candidateCopy)
     {
       objc_initWeak(location, self);
       aBlock[0] = MEMORY[0x277D85DD0];
@@ -2336,7 +2336,7 @@ LABEL_29:
       if (v10)
       {
         v10 = v10;
-        *a4 = v10;
+        *error = v10;
       }
 
       objc_destroyWeak(v18);
@@ -2353,7 +2353,7 @@ LABEL_29:
       }
 
       _RTErrorInvalidParameterCreate(@"oldCandidate");
-      *a4 = v11 = 0;
+      *error = v11 = 0;
     }
   }
 
@@ -2423,10 +2423,10 @@ void __52__RTRelabelerPersister_restoreToOldCandidate_error___block_invoke(uint6
   }
 }
 
-- (BOOL)performBlock:(id)a3 error:(id *)a4
+- (BOOL)performBlock:(id)block error:(id *)error
 {
-  v7 = a3;
-  if (a4)
+  blockCopy = block;
+  if (error)
   {
     *buf = 0;
     v20 = buf;
@@ -2435,11 +2435,11 @@ void __52__RTRelabelerPersister_restoreToOldCandidate_error___block_invoke(uint6
     v23 = __Block_byref_object_dispose__101;
     v24 = 0;
     objc_initWeak(&location, self);
-    v8 = [(RTRelabelerPersister *)self context];
+    context = [(RTRelabelerPersister *)self context];
 
-    if (v8)
+    if (context)
     {
-      v9 = [(RTRelabelerPersister *)self context];
+      context2 = [(RTRelabelerPersister *)self context];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __43__RTRelabelerPersister_performBlock_error___block_invoke;
@@ -2447,14 +2447,14 @@ void __52__RTRelabelerPersister_restoreToOldCandidate_error___block_invoke(uint6
       objc_copyWeak(v17, &location);
       v17[1] = a2;
       v16 = buf;
-      v15 = v7;
-      [v9 performBlockAndWait:v14];
+      v15 = blockCopy;
+      [context2 performBlockAndWait:v14];
 
       v10 = *(v20 + 5);
       v11 = v10 == 0;
       if (v10)
       {
-        *a4 = v10;
+        *error = v10;
       }
 
       objc_destroyWeak(v17);
@@ -2525,49 +2525,49 @@ void __43__RTRelabelerPersister_performBlock_error___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)untrustedVisitMO:(id)a3
+- (BOOL)untrustedVisitMO:(id)o
 {
-  v4 = a3;
-  v5 = [v4 locationOfInterestSource];
-  v6 = ([v5 unsignedIntegerValue] & 0x3FDFDE) == 0;
+  oCopy = o;
+  locationOfInterestSource = [oCopy locationOfInterestSource];
+  v6 = ([locationOfInterestSource unsignedIntegerValue] & 0x3FDFDE) == 0;
 
-  v7 = [v4 locationOfInterestConfidence];
+  locationOfInterestConfidence = [oCopy locationOfInterestConfidence];
 
-  [v7 doubleValue];
+  [locationOfInterestConfidence doubleValue];
   v9 = v8;
-  v10 = [(RTRelabelerPersister *)self relabelerParameters];
-  [v10 passthroughThreshold];
+  relabelerParameters = [(RTRelabelerPersister *)self relabelerParameters];
+  [relabelerParameters passthroughThreshold];
   v12 = v11;
 
   return v9 < v12 && v6;
 }
 
-- (double)scoreVisitMO:(id)a3
+- (double)scoreVisitMO:(id)o
 {
-  v4 = a3;
-  if (v4)
+  oCopy = o;
+  if (oCopy)
   {
-    if ([(RTRelabelerPersister *)self untrustedVisitMO:v4])
+    if ([(RTRelabelerPersister *)self untrustedVisitMO:oCopy])
     {
-      v5 = [(RTRelabelerPersister *)self learnedPlaceParameters];
-      [v5 revGeoConfidence];
+      learnedPlaceParameters = [(RTRelabelerPersister *)self learnedPlaceParameters];
+      [learnedPlaceParameters revGeoConfidence];
     }
 
     else
     {
-      v9 = [v4 locationOfInterestSource];
-      v10 = [v9 unsignedIntegerValue];
+      locationOfInterestSource = [oCopy locationOfInterestSource];
+      unsignedIntegerValue = [locationOfInterestSource unsignedIntegerValue];
 
-      if ((v10 & 0x2000) != 0)
+      if ((unsignedIntegerValue & 0x2000) != 0)
       {
-        v5 = [v4 locationOfInterestConfidence];
-        [v5 doubleValue];
+        learnedPlaceParameters = [oCopy locationOfInterestConfidence];
+        [learnedPlaceParameters doubleValue];
       }
 
       else
       {
-        v5 = [(RTRelabelerPersister *)self learnedPlaceParameters];
-        [v5 nonRevGeoConfidence];
+        learnedPlaceParameters = [(RTRelabelerPersister *)self learnedPlaceParameters];
+        [learnedPlaceParameters nonRevGeoConfidence];
       }
     }
 
@@ -2589,16 +2589,16 @@ void __43__RTRelabelerPersister_performBlock_error___block_invoke(uint64_t a1)
   return v8;
 }
 
-- (double)scoreLOIMO:(id)a3
+- (double)scoreLOIMO:(id)o
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!o)
   {
-    v4 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    visits = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(visits, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_2304B3000, v4, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: loiMO", buf, 2u);
+      _os_log_error_impl(&dword_2304B3000, visits, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: loiMO", buf, 2u);
     }
 
     goto LABEL_14;
@@ -2608,8 +2608,8 @@ void __43__RTRelabelerPersister_performBlock_error___block_invoke(uint64_t a1)
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [a3 visits];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  visits = [o visits];
+  v5 = [visits countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (!v5)
   {
 LABEL_14:
@@ -2626,7 +2626,7 @@ LABEL_14:
     {
       if (*v13 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(visits);
       }
 
       [(RTRelabelerPersister *)self scoreVisitMO:*(*(&v12 + 1) + 8 * i)];
@@ -2636,7 +2636,7 @@ LABEL_14:
       }
     }
 
-    v6 = [v4 countByEnumeratingWithState:&v12 objects:v17 count:16];
+    v6 = [visits countByEnumeratingWithState:&v12 objects:v17 count:16];
   }
 
   while (v6);
@@ -2645,9 +2645,9 @@ LABEL_15:
   return v8;
 }
 
-- (BOOL)resnapVisitsWithError:(id *)a3
+- (BOOL)resnapVisitsWithError:(id *)error
 {
-  if (a3)
+  if (error)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -2676,7 +2676,7 @@ LABEL_15:
       [(RTRelabelerPersisterMetrics *)self->_metrics tallyError:v8];
       [(RTRelabelerPersisterMetrics *)self->_metrics setErrorKey:@"resnappingErroredOut"];
       v10 = v8;
-      *a3 = v8;
+      *error = v8;
     }
 
     objc_destroyWeak(v15);
@@ -3140,28 +3140,28 @@ LABEL_80:
 LABEL_81:
 }
 
-- (BOOL)unassociateOldCandidate:(id)a3 error:(id *)a4
+- (BOOL)unassociateOldCandidate:(id)candidate error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = v7;
-  if (a4)
+  candidateCopy = candidate;
+  v8 = candidateCopy;
+  if (error)
   {
-    if (v7)
+    if (candidateCopy)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v9 = _rt_log_facility_get_os_log(RTLogFacilityRelabeling);
         if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
         {
-          v10 = [v8 firstObject];
-          v11 = [v10 identifier];
-          v12 = [v8 secondObject];
-          v13 = [v12 identifier];
+          firstObject = [v8 firstObject];
+          identifier = [firstObject identifier];
+          secondObject = [v8 secondObject];
+          identifier2 = [secondObject identifier];
           *buf = 138412546;
-          v26 = v11;
+          v26 = identifier;
           v27 = 2112;
-          v28 = v13;
+          v28 = identifier2;
           _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "unassociating oldCandidate visit identifier, %@, oldCandidate mapItem identifier, %@", buf, 0x16u);
         }
       }
@@ -3184,7 +3184,7 @@ LABEL_81:
         [(RTRelabelerPersisterMetrics *)self->_metrics tallyKey:@"numberUnassociatedError"];
         [(RTRelabelerPersisterMetrics *)self->_metrics tallyError:v15];
         v17 = v15;
-        *a4 = v15;
+        *error = v15;
       }
 
       objc_destroyWeak(v24);
@@ -3201,7 +3201,7 @@ LABEL_81:
       }
 
       _RTErrorInvalidParameterCreate(@"oldCandidate");
-      *a4 = v16 = 0;
+      *error = v16 = 0;
     }
   }
 
@@ -3317,36 +3317,36 @@ void __54__RTRelabelerPersister_unassociateOldCandidate_error___block_invoke(uin
   }
 }
 
-- (BOOL)associateNonPlaceholderRelabeledInferredMapItem:(id)a3 oldCandidate:(id)a4 error:(id *)a5
+- (BOOL)associateNonPlaceholderRelabeledInferredMapItem:(id)item oldCandidate:(id)candidate error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  if (a5)
+  itemCopy = item;
+  candidateCopy = candidate;
+  if (error)
   {
-    if (v9)
+    if (itemCopy)
     {
-      v11 = [v9 mapItem];
+      mapItem = [itemCopy mapItem];
 
-      if (v11)
+      if (mapItem)
       {
-        if (v10)
+        if (candidateCopy)
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
             v12 = _rt_log_facility_get_os_log(RTLogFacilityRelabeling);
             if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
             {
-              v13 = [v10 firstObject];
-              v14 = [v13 identifier];
-              v15 = [v10 secondObject];
-              v16 = [v15 identifier];
+              firstObject = [candidateCopy firstObject];
+              identifier = [firstObject identifier];
+              secondObject = [candidateCopy secondObject];
+              identifier2 = [secondObject identifier];
               *buf = 138740483;
-              v33 = v9;
+              v33 = itemCopy;
               v34 = 2112;
-              v35 = v14;
+              v35 = identifier;
               v36 = 2112;
-              v37 = v16;
+              v37 = identifier2;
               _os_log_impl(&dword_2304B3000, v12, OS_LOG_TYPE_INFO, "associating non placeholder relabeledInferredMapItem %{sensitive}@, oldCandidate visit identifier, %@, oldCandidate mapItem identifier, %@", buf, 0x20u);
             }
           }
@@ -3358,8 +3358,8 @@ void __54__RTRelabelerPersister_unassociateOldCandidate_error___block_invoke(uin
           aBlock[3] = &unk_2788CD8B0;
           objc_copyWeak(v31, buf);
           v31[1] = a2;
-          v29 = v10;
-          v30 = v9;
+          v29 = candidateCopy;
+          v30 = itemCopy;
           v17 = _Block_copy(aBlock);
           v27 = 0;
           [(RTRelabelerPersister *)self performBlock:v17 error:&v27];
@@ -3370,7 +3370,7 @@ void __54__RTRelabelerPersister_unassociateOldCandidate_error___block_invoke(uin
             [(RTRelabelerPersisterMetrics *)self->_metrics tallyKey:@"numberOfNonPlaceholderError"];
             [(RTRelabelerPersisterMetrics *)self->_metrics tallyError:v18];
             v20 = v18;
-            *a5 = v18;
+            *error = v18;
           }
 
           objc_destroyWeak(v31);
@@ -3414,7 +3414,7 @@ void __54__RTRelabelerPersister_unassociateOldCandidate_error___block_invoke(uin
     }
 
     v19 = 0;
-    *a5 = v23;
+    *error = v23;
     goto LABEL_25;
   }
 
@@ -3581,13 +3581,13 @@ void __91__RTRelabelerPersister_associateNonPlaceholderRelabeledInferredMapItem_
   }
 }
 
-- (id)rollLOIIdentifier:(id)a3 context:(id)a4 error:(id *)a5
+- (id)rollLOIIdentifier:(id)identifier context:(id)context error:(id *)error
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!a5)
+  identifierCopy = identifier;
+  contextCopy = context;
+  v10 = contextCopy;
+  if (!error)
   {
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -3600,7 +3600,7 @@ void __91__RTRelabelerPersister_associateNonPlaceholderRelabeledInferredMapItem_
     goto LABEL_22;
   }
 
-  if (!v8)
+  if (!identifierCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -3613,7 +3613,7 @@ void __91__RTRelabelerPersister_associateNonPlaceholderRelabeledInferredMapItem_
     goto LABEL_18;
   }
 
-  if (!v9)
+  if (!contextCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -3625,11 +3625,11 @@ void __91__RTRelabelerPersister_associateNonPlaceholderRelabeledInferredMapItem_
     v23 = @"context";
 LABEL_18:
     _RTErrorInvalidParameterCreate(v23);
-    *a5 = v20 = 0;
+    *error = v20 = 0;
     goto LABEL_22;
   }
 
-  v11 = [(RTRelabelerPersister *)self rollUUIDGivenUUID:v8];
+  v11 = [(RTRelabelerPersister *)self rollUUIDGivenUUID:identifierCopy];
   v12 = 100;
   while (1)
   {
@@ -3662,7 +3662,7 @@ LABEL_18:
 
       v19 = v15;
       v20 = 0;
-      *a5 = v15;
+      *error = v15;
       v11 = v16;
       goto LABEL_21;
     }
@@ -3670,7 +3670,7 @@ LABEL_18:
 
   v25 = v14;
   v20 = 0;
-  *a5 = v15;
+  *error = v15;
 LABEL_21:
 
 LABEL_22:
@@ -3678,14 +3678,14 @@ LABEL_22:
   return v20;
 }
 
-- (id)rollUUIDGivenUUID:(id)a3
+- (id)rollUUIDGivenUUID:(id)d
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (d)
   {
     v8[0] = 0;
     v8[1] = 0;
-    [a3 getUUIDBytes:v8];
+    [d getUUIDBytes:v8];
     v3 = [MEMORY[0x277CBEA90] dataWithBytes:v8 length:16];
     CC_SHA256([v3 bytes], objc_msgSend(v3, "length"), v7);
     v4 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:v7];
@@ -3706,12 +3706,12 @@ LABEL_22:
   return v4;
 }
 
-- (BOOL)uuidConflicts:(id)a3 context:(id)a4 error:(id *)a5
+- (BOOL)uuidConflicts:(id)conflicts context:(id)context error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!a5)
+  conflictsCopy = conflicts;
+  contextCopy = context;
+  v9 = contextCopy;
+  if (!error)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -3723,7 +3723,7 @@ LABEL_22:
     goto LABEL_16;
   }
 
-  if (!v7)
+  if (!conflictsCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -3736,7 +3736,7 @@ LABEL_22:
     goto LABEL_15;
   }
 
-  if (!v8)
+  if (!contextCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -3747,15 +3747,15 @@ LABEL_22:
 
     v17 = @"context";
 LABEL_15:
-    *a5 = _RTErrorInvalidParameterCreate(v17);
+    *error = _RTErrorInvalidParameterCreate(v17);
 LABEL_16:
     v14 = 1;
     goto LABEL_19;
   }
 
   v10 = +[RTLearnedLocationOfInterestMO fetchRequest];
-  v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"identifier", v7];
-  [v10 setPredicate:v11];
+  conflictsCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"identifier", conflictsCopy];
+  [v10 setPredicate:conflictsCopy];
 
   v20 = 0;
   v12 = [v9 countForFetchRequest:v10 error:&v20];
@@ -3763,7 +3763,7 @@ LABEL_16:
   if (v13)
   {
     v13 = v13;
-    *a5 = v13;
+    *error = v13;
     v14 = 1;
   }
 
@@ -3776,14 +3776,14 @@ LABEL_19:
   return v14;
 }
 
-- (BOOL)associatePlaceholderRelabeledInferredMapItem:(id)a3 oldCandidate:(id)a4 error:(id *)a5
+- (BOOL)associatePlaceholderRelabeledInferredMapItem:(id)item oldCandidate:(id)candidate error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  if (a5)
+  itemCopy = item;
+  candidateCopy = candidate;
+  if (error)
   {
-    if (!v9)
+    if (!itemCopy)
     {
       v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -3796,9 +3796,9 @@ LABEL_19:
       goto LABEL_13;
     }
 
-    v11 = [v9 mapItem];
+    mapItem = [itemCopy mapItem];
 
-    if (v11)
+    if (mapItem)
     {
       v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -3810,11 +3810,11 @@ LABEL_19:
       v13 = _RTErrorInvalidParameterCreate(@"!relabeledInferredMapItem.mapItem");
 LABEL_13:
       v15 = 0;
-      *a5 = v13;
+      *error = v13;
       goto LABEL_14;
     }
 
-    if (!v10)
+    if (!candidateCopy)
     {
       v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -3832,16 +3832,16 @@ LABEL_13:
       v18 = _rt_log_facility_get_os_log(RTLogFacilityRelabeling);
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
-        v19 = [v10 firstObject];
-        v20 = [v19 identifier];
-        v21 = [v10 secondObject];
-        v22 = [v21 identifier];
+        firstObject = [candidateCopy firstObject];
+        identifier = [firstObject identifier];
+        secondObject = [candidateCopy secondObject];
+        identifier2 = [secondObject identifier];
         *buf = 138740483;
-        v33 = v9;
+        v33 = itemCopy;
         v34 = 2112;
-        v35 = v20;
+        v35 = identifier;
         v36 = 2112;
-        v37 = v22;
+        v37 = identifier2;
         _os_log_impl(&dword_2304B3000, v18, OS_LOG_TYPE_INFO, "associating placeholder relabeledInferredMapItem %{sensitive}@, oldCandidate visit identifier, %@, oldCandidate mapItem identifier, %@", buf, 0x20u);
       }
     }
@@ -3853,8 +3853,8 @@ LABEL_13:
     aBlock[3] = &unk_2788CD8B0;
     objc_copyWeak(v31, buf);
     v31[1] = a2;
-    v29 = v10;
-    v30 = v9;
+    v29 = candidateCopy;
+    v30 = itemCopy;
     v23 = _Block_copy(aBlock);
     v27 = 0;
     [(RTRelabelerPersister *)self performBlock:v23 error:&v27];
@@ -3865,7 +3865,7 @@ LABEL_13:
       [(RTRelabelerPersisterMetrics *)self->_metrics tallyKey:@"numberOfPlaceholderError"];
       [(RTRelabelerPersisterMetrics *)self->_metrics tallyError:v24];
       v25 = v24;
-      *a5 = v24;
+      *error = v24;
     }
 
     objc_destroyWeak(v31);
@@ -4291,35 +4291,35 @@ LABEL_16:
 LABEL_18:
 }
 
-- (BOOL)useRelabeledInferredMapItem:(id)a3 oldCandidate:(id)a4 associate:(BOOL)a5 error:(id *)a6
+- (BOOL)useRelabeledInferredMapItem:(id)item oldCandidate:(id)candidate associate:(BOOL)associate error:(id *)error
 {
-  v7 = a5;
+  associateCopy = associate;
   v41 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
-  if (a6)
+  itemCopy = item;
+  candidateCopy = candidate;
+  v12 = candidateCopy;
+  if (error)
   {
-    if (v10)
+    if (itemCopy)
     {
-      if (v11)
+      if (candidateCopy)
       {
-        if (v7)
+        if (associateCopy)
         {
-          v13 = [v10 mapItem];
+          mapItem = [itemCopy mapItem];
 
-          if (v13)
+          if (mapItem)
           {
             v29 = 0;
             v14 = &v29;
-            [(RTRelabelerPersister *)self associateNonPlaceholderRelabeledInferredMapItem:v10 oldCandidate:v12 error:&v29];
+            [(RTRelabelerPersister *)self associateNonPlaceholderRelabeledInferredMapItem:itemCopy oldCandidate:v12 error:&v29];
           }
 
           else
           {
             v28 = 0;
             v14 = &v28;
-            [(RTRelabelerPersister *)self associatePlaceholderRelabeledInferredMapItem:v10 oldCandidate:v12 error:&v28];
+            [(RTRelabelerPersister *)self associatePlaceholderRelabeledInferredMapItem:itemCopy oldCandidate:v12 error:&v28];
           }
         }
 
@@ -4327,7 +4327,7 @@ LABEL_18:
         {
           v30 = 0;
           v14 = &v30;
-          [(RTRelabelerPersister *)self unassociateOldCandidate:v11 error:&v30];
+          [(RTRelabelerPersister *)self unassociateOldCandidate:candidateCopy error:&v30];
         }
 
         v20 = *v14;
@@ -4336,18 +4336,18 @@ LABEL_18:
           v21 = _rt_log_facility_get_os_log(RTLogFacilityRelabeling);
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
           {
-            v24 = [v12 firstObject];
-            v25 = [v24 identifier];
-            v26 = [v12 secondObject];
-            v27 = [v26 identifier];
+            firstObject = [v12 firstObject];
+            identifier = [firstObject identifier];
+            secondObject = [v12 secondObject];
+            identifier2 = [secondObject identifier];
             *buf = 138740995;
-            v32 = v10;
+            v32 = itemCopy;
             v33 = 2112;
-            v34 = v25;
+            v34 = identifier;
             v35 = 2112;
-            v36 = v27;
+            v36 = identifier2;
             v37 = 2048;
-            v38 = v7;
+            v38 = associateCopy;
             v39 = 2112;
             v40 = v20;
             _os_log_debug_impl(&dword_2304B3000, v21, OS_LOG_TYPE_DEBUG, "used relabelInferredMapItem, %{sensitive}@, oldCandidate visit identifier, %@, oldCandidate map item identifier, %@, associate, %lu, error, %@", buf, 0x34u);
@@ -4358,7 +4358,7 @@ LABEL_18:
         if (v20)
         {
           v22 = v20;
-          *a6 = v20;
+          *error = v20;
         }
 
         goto LABEL_26;
@@ -4387,7 +4387,7 @@ LABEL_18:
     }
 
     _RTErrorInvalidParameterCreate(v18);
-    *a6 = v16 = 0;
+    *error = v16 = 0;
     goto LABEL_26;
   }
 
@@ -4404,12 +4404,12 @@ LABEL_26:
   return v16;
 }
 
-- (BOOL)combineOverlappingRevGeoLOIsStabilized:(BOOL *)a3 error:(id *)a4
+- (BOOL)combineOverlappingRevGeoLOIsStabilized:(BOOL *)stabilized error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (error)
   {
-    if (a3)
+    if (stabilized)
     {
       *v20 = 0;
       v21 = v20;
@@ -4445,12 +4445,12 @@ LABEL_26:
         [(RTRelabelerPersisterMetrics *)self->_metrics tallyError:v9];
         [(RTRelabelerPersisterMetrics *)self->_metrics setErrorKey:@"combineErroredOut"];
         v12 = v9;
-        *a4 = v9;
+        *error = v9;
       }
 
       else
       {
-        *a3 = v21[24];
+        *stabilized = v21[24];
       }
 
       objc_destroyWeak(v18);
@@ -4468,7 +4468,7 @@ LABEL_26:
       }
 
       _RTErrorInvalidParameterCreate(@"stabilized");
-      *a4 = v11 = 0;
+      *error = v11 = 0;
     }
   }
 
@@ -4898,10 +4898,10 @@ LABEL_80:
   }
 }
 
-- (BOOL)cleanUpWithError:(id *)a3
+- (BOOL)cleanUpWithError:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (error)
   {
     objc_initWeak(&location, self);
     aBlock[0] = MEMORY[0x277D85DD0];
@@ -4931,7 +4931,7 @@ LABEL_80:
       [(RTRelabelerPersisterMetrics *)self->_metrics tallyError:v7];
       [(RTRelabelerPersisterMetrics *)self->_metrics setErrorKey:@"cleanUpErroredOut"];
       v10 = v7;
-      *a3 = v7;
+      *error = v7;
     }
 
     objc_destroyWeak(v15);
@@ -5198,9 +5198,9 @@ LABEL_37:
 LABEL_42:
 }
 
-- (BOOL)iterativelyCollapseOverlappingRevGeoLOIsWithError:(id *)a3
+- (BOOL)iterativelyCollapseOverlappingRevGeoLOIsWithError:(id *)error
 {
-  if (a3)
+  if (error)
   {
     v16 = 0;
     [(RTRelabelerPersister *)self cleanUpWithError:&v16];
@@ -5210,7 +5210,7 @@ LABEL_42:
 LABEL_3:
       v6 = v5;
       v7 = 0;
-      *a3 = v5;
+      *error = v5;
     }
 
     else
@@ -5219,10 +5219,10 @@ LABEL_3:
       v8 = -1;
       while (1)
       {
-        v9 = [(RTRelabelerPersister *)self relabelerPersisterParameters];
-        v10 = [v9 maxCollapseIterations];
+        relabelerPersisterParameters = [(RTRelabelerPersister *)self relabelerPersisterParameters];
+        maxCollapseIterations = [relabelerPersisterParameters maxCollapseIterations];
 
-        if (++v8 >= v10)
+        if (++v8 >= maxCollapseIterations)
         {
 LABEL_12:
           v6 = 0;
@@ -5254,7 +5254,7 @@ LABEL_12:
       }
 
       v12 = v11;
-      *a3 = v12;
+      *error = v12;
 
       v7 = 0;
       v6 = 0;
@@ -5278,13 +5278,13 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)moveVisitMOs:(id)a3 toLOIMO:(id)a4 error:(id *)a5
+- (BOOL)moveVisitMOs:(id)os toLOIMO:(id)o error:(id *)error
 {
   v47 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!a5)
+  osCopy = os;
+  oCopy = o;
+  v10 = oCopy;
+  if (!error)
   {
     v28 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -5296,7 +5296,7 @@ LABEL_14:
     goto LABEL_29;
   }
 
-  if (!v8)
+  if (!osCopy)
   {
     v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -5304,7 +5304,7 @@ LABEL_14:
 LABEL_33:
 
       _RTErrorInvalidParameterCreate(@"visitMOs");
-      *a5 = v27 = 0;
+      *error = v27 = 0;
       goto LABEL_34;
     }
 
@@ -5314,7 +5314,7 @@ LABEL_36:
     goto LABEL_33;
   }
 
-  if (!v9)
+  if (!oCopy)
   {
     v30 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -5323,14 +5323,14 @@ LABEL_36:
       _os_log_error_impl(&dword_2304B3000, v30, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: loiMO", buf, 2u);
     }
 
-    *a5 = _RTErrorInvalidParameterCreate(@"loiMO");
+    *error = _RTErrorInvalidParameterCreate(@"loiMO");
 LABEL_29:
 
     v27 = 0;
     goto LABEL_34;
   }
 
-  v11 = [MEMORY[0x277CBEA60] arrayWithArray:v8];
+  v11 = [MEMORY[0x277CBEA60] arrayWithArray:osCopy];
 
   if (!v11)
   {
@@ -5353,7 +5353,7 @@ LABEL_29:
   if (v13)
   {
     v14 = v13;
-    v33 = a5;
+    errorCopy = error;
     obj = v12;
     v15 = *v41;
     while (2)
@@ -5367,9 +5367,9 @@ LABEL_29:
 
         v17 = *(*(&v40 + 1) + 8 * i);
         v18 = objc_autoreleasePoolPush();
-        v19 = [v17 identifier];
+        identifier = [v17 identifier];
         v39 = 0;
-        v20 = [(RTRelabelerPersister *)self fetchTransitionMOsEndingAtVisitIdentifier:v19 error:&v39];
+        v20 = [(RTRelabelerPersister *)self fetchTransitionMOsEndingAtVisitIdentifier:identifier error:&v39];
         v21 = v39;
 
         if (v21)
@@ -5380,7 +5380,7 @@ LABEL_29:
 
           v31 = v21;
           v27 = 0;
-          *v33 = v21;
+          *errorCopy = v21;
           goto LABEL_31;
         }
 
@@ -5404,7 +5404,7 @@ LABEL_29:
                 objc_enumerationMutation(v22);
               }
 
-              [*(*(&v35 + 1) + 8 * j) setLocationOfInterest:{v10, v33}];
+              [*(*(&v35 + 1) + 8 * j) setLocationOfInterest:{v10, errorCopy}];
             }
 
             v24 = [v22 countByEnumeratingWithState:&v35 objects:v45 count:16];
@@ -5435,27 +5435,27 @@ LABEL_34:
   return v27;
 }
 
-- (id)dedupableLOIsNearLocation:(id)a3 mapItem:(id)a4 error:(id *)a5
+- (id)dedupableLOIsNearLocation:(id)location mapItem:(id)item error:(id *)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (a5)
+  locationCopy = location;
+  itemCopy = item;
+  v10 = itemCopy;
+  if (error)
   {
-    if (v8)
+    if (locationCopy)
     {
-      if (v9)
+      if (itemCopy)
       {
         v36 = 0;
-        v11 = [(RTRelabelerPersister *)self fetchNearbyLocationOfInterestMOsAroundLocation:v8 withinDistance:&v36 error:1000.0];
+        v11 = [(RTRelabelerPersister *)self fetchNearbyLocationOfInterestMOsAroundLocation:locationCopy withinDistance:&v36 error:1000.0];
         v12 = v36;
         v13 = v12;
         if (v12)
         {
           v14 = v12;
           v31 = 0;
-          *a5 = v13;
+          *error = v13;
         }
 
         else
@@ -5484,8 +5484,8 @@ LABEL_34:
                 v24 = *(*(&v32 + 1) + 8 * i);
                 v25 = objc_autoreleasePoolPush();
                 v26 = MEMORY[0x277D011A0];
-                v27 = [v24 mapItem];
-                v28 = [v26 createWithManagedObject:v27];
+                mapItem = [v24 mapItem];
+                v28 = [v26 createWithManagedObject:mapItem];
 
                 if (v28 && [v28 isEqual:v10])
                 {
@@ -5531,7 +5531,7 @@ LABEL_34:
     }
 
     _RTErrorInvalidParameterCreate(v17);
-    *a5 = v31 = 0;
+    *error = v31 = 0;
     goto LABEL_28;
   }
 
@@ -5548,28 +5548,28 @@ LABEL_28:
   return v31;
 }
 
-- (id)connectedComponentForLoiMO:(id)a3 encounteredIdentifiers:(id)a4 error:(id *)a5
+- (id)connectedComponentForLoiMO:(id)o encounteredIdentifiers:(id)identifiers error:(id *)error
 {
   v76 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (a5)
+  oCopy = o;
+  identifiersCopy = identifiers;
+  v9 = identifiersCopy;
+  if (error)
   {
-    if (v7)
+    if (oCopy)
     {
-      if (v8)
+      if (identifiersCopy)
       {
-        v10 = [v7 identifier];
+        identifier = [oCopy identifier];
 
-        if (v10)
+        if (identifier)
         {
-          v57 = a5;
-          v11 = [MEMORY[0x277CBEB18] arrayWithObject:v7];
-          v12 = [MEMORY[0x277CBEB18] arrayWithObject:v7];
-          v58 = v7;
-          v13 = [v7 identifier];
-          [v9 addObject:v13];
+          errorCopy = error;
+          v11 = [MEMORY[0x277CBEB18] arrayWithObject:oCopy];
+          v12 = [MEMORY[0x277CBEB18] arrayWithObject:oCopy];
+          v58 = oCopy;
+          identifier2 = [oCopy identifier];
+          [v9 addObject:identifier2];
 
           v60 = 0;
           do
@@ -5580,31 +5580,31 @@ LABEL_28:
             }
 
             v66 = objc_autoreleasePoolPush();
-            v14 = [v12 firstObject];
+            firstObject = [v12 firstObject];
             v67 = objc_alloc(MEMORY[0x277D01160]);
-            v64 = [v14 locationLatitude];
-            [v64 doubleValue];
+            locationLatitude = [firstObject locationLatitude];
+            [locationLatitude doubleValue];
             v16 = v15;
-            v62 = [v14 locationLongitude];
-            [v62 doubleValue];
+            locationLongitude = [firstObject locationLongitude];
+            [locationLongitude doubleValue];
             v18 = v17;
-            v19 = [v14 locationHorizontalUncertainty];
-            [v19 doubleValue];
+            locationHorizontalUncertainty = [firstObject locationHorizontalUncertainty];
+            [locationHorizontalUncertainty doubleValue];
             v21 = v20;
-            v22 = [v14 locationAltitude];
-            [v22 doubleValue];
+            locationAltitude = [firstObject locationAltitude];
+            [locationAltitude doubleValue];
             v24 = v23;
-            v25 = [v14 locationVerticalUncertainty];
-            [v25 doubleValue];
+            locationVerticalUncertainty = [firstObject locationVerticalUncertainty];
+            [locationVerticalUncertainty doubleValue];
             v27 = v26;
-            v28 = [v14 locationReferenceFrame];
-            v29 = [v28 intValue];
-            v30 = [v14 locationSourceAccuracy];
-            v68 = [v67 initWithLatitude:0 longitude:v29 horizontalUncertainty:objc_msgSend(v30 altitude:"intValue") verticalUncertainty:v16 date:v18 referenceFrame:v21 speed:v24 sourceAccuracy:{v27, 0.0}];
+            locationReferenceFrame = [firstObject locationReferenceFrame];
+            intValue = [locationReferenceFrame intValue];
+            locationSourceAccuracy = [firstObject locationSourceAccuracy];
+            v68 = [v67 initWithLatitude:0 longitude:intValue horizontalUncertainty:objc_msgSend(locationSourceAccuracy altitude:"intValue") verticalUncertainty:v16 date:v18 referenceFrame:v21 speed:v24 sourceAccuracy:{v27, 0.0}];
 
             v31 = MEMORY[0x277D011A0];
-            v32 = [v14 mapItem];
-            v33 = [v31 createWithManagedObject:v32];
+            mapItem = [firstObject mapItem];
+            v33 = [v31 createWithManagedObject:mapItem];
 
             v34 = v68;
             if (v68 && v33)
@@ -5625,7 +5625,7 @@ LABEL_28:
               {
                 v59 = v35;
                 v63 = v33;
-                v65 = v14;
+                v65 = firstObject;
                 v71 = 0u;
                 v72 = 0u;
                 v69 = 0u;
@@ -5646,17 +5646,17 @@ LABEL_28:
                       }
 
                       v45 = *(*(&v69 + 1) + 8 * i);
-                      v46 = [v45 identifier];
+                      identifier3 = [v45 identifier];
 
-                      if (v46)
+                      if (identifier3)
                       {
-                        v47 = [v45 identifier];
-                        v48 = [v9 member:v47];
+                        identifier4 = [v45 identifier];
+                        v48 = [v9 member:identifier4];
 
                         if (!v48)
                         {
-                          v49 = [v45 identifier];
-                          [v9 addObject:v49];
+                          identifier5 = [v45 identifier];
+                          [v9 addObject:identifier5];
 
                           [v11 addObject:v45];
                           [v12 addObject:v45];
@@ -5672,7 +5672,7 @@ LABEL_28:
 
                 [v12 removeObjectAtIndex:0];
                 v33 = v63;
-                v14 = v65;
+                firstObject = v65;
                 v34 = v68;
                 v38 = 0;
                 v37 = 0;
@@ -5694,7 +5694,7 @@ LABEL_28:
           {
             v50 = v60;
             v51 = 0;
-            *v57 = v60;
+            *errorCopy = v60;
           }
 
           else
@@ -5702,12 +5702,12 @@ LABEL_28:
             v51 = v11;
           }
 
-          v7 = v58;
+          oCopy = v58;
         }
 
         else
         {
-          v51 = [MEMORY[0x277CBEA60] arrayWithObject:v7];
+          v51 = [MEMORY[0x277CBEA60] arrayWithObject:oCopy];
         }
 
         goto LABEL_40;
@@ -5736,7 +5736,7 @@ LABEL_28:
     }
 
     _RTErrorInvalidParameterCreate(v54);
-    *a5 = v51 = 0;
+    *error = v51 = 0;
     goto LABEL_40;
   }
 
@@ -5753,12 +5753,12 @@ LABEL_40:
   return v51;
 }
 
-- (id)loiToMoveToFromConnectedComponent:(id)a3
+- (id)loiToMoveToFromConnectedComponent:(id)component
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  componentCopy = component;
+  v4 = componentCopy;
+  if (!componentCopy)
   {
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -5774,7 +5774,7 @@ LABEL_40:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [v3 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  v5 = [componentCopy countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (!v5)
   {
 LABEL_22:
@@ -5797,13 +5797,13 @@ LABEL_22:
       v10 = *(*(&v25 + 1) + 8 * i);
       if (v7)
       {
-        v11 = [*(*(&v25 + 1) + 8 * i) mapItem];
-        v12 = [v11 mapItemSource];
-        v13 = [v12 unsignedIntegerValue] & 0x3FDFDE;
+        mapItem = [*(*(&v25 + 1) + 8 * i) mapItem];
+        mapItemSource = [mapItem mapItemSource];
+        v13 = [mapItemSource unsignedIntegerValue] & 0x3FDFDE;
 
-        v14 = [v7 mapItem];
-        v15 = [v14 mapItemSource];
-        v16 = [v15 unsignedIntegerValue] & 0x3FDFDE;
+        mapItem2 = [v7 mapItem];
+        mapItemSource2 = [mapItem2 mapItemSource];
+        v16 = [mapItemSource2 unsignedIntegerValue] & 0x3FDFDE;
 
         if (v13)
         {
@@ -5838,10 +5838,10 @@ LABEL_23:
   return v7;
 }
 
-- (BOOL)dedupeLOIsWithError:(id *)a3
+- (BOOL)dedupeLOIsWithError:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (error)
   {
     objc_initWeak(&location, self);
     aBlock[0] = MEMORY[0x277D85DD0];
@@ -5869,7 +5869,7 @@ LABEL_23:
       }
 
       v10 = v7;
-      *a3 = v7;
+      *error = v7;
     }
 
     objc_destroyWeak(v16);
@@ -6107,26 +6107,26 @@ LABEL_34:
   }
 }
 
-- (BOOL)combineEarlierVisitMO:(id)a3 withLaterVisitMO:(id)a4 error:(id *)a5
+- (BOOL)combineEarlierVisitMO:(id)o withLaterVisitMO:(id)mO error:(id *)error
 {
   v49[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (a5)
+  oCopy = o;
+  mOCopy = mO;
+  v9 = mOCopy;
+  if (error)
   {
-    if (v7)
+    if (oCopy)
     {
-      if (v8)
+      if (mOCopy)
       {
-        v10 = [v7 entryDate];
-        [v9 setEntryDate:v10];
+        entryDate = [oCopy entryDate];
+        [v9 setEntryDate:entryDate];
 
-        v11 = [v7 expirationDate];
-        v12 = [v9 expirationDate];
-        if ([v11 isAfterDate:v12])
+        expirationDate = [oCopy expirationDate];
+        expirationDate2 = [v9 expirationDate];
+        if ([expirationDate isAfterDate:expirationDate2])
         {
-          v13 = v7;
+          v13 = oCopy;
         }
 
         else
@@ -6134,16 +6134,16 @@ LABEL_34:
           v13 = v9;
         }
 
-        v14 = [v13 expirationDate];
-        [v9 setExpirationDate:v14];
+        expirationDate3 = [v13 expirationDate];
+        [v9 setExpirationDate:expirationDate3];
 
         v15 = MEMORY[0x277CCABB0];
-        v16 = [v7 locationOfInterestConfidence];
-        [v16 doubleValue];
+        locationOfInterestConfidence = [oCopy locationOfInterestConfidence];
+        [locationOfInterestConfidence doubleValue];
         v18 = v17;
 
-        v19 = [v9 locationOfInterestConfidence];
-        [v19 doubleValue];
+        locationOfInterestConfidence2 = [v9 locationOfInterestConfidence];
+        [locationOfInterestConfidence2 doubleValue];
         v21 = v20;
 
         if (v18 >= v21)
@@ -6160,33 +6160,33 @@ LABEL_34:
         [v9 setLocationOfInterestConfidence:v23];
 
         v24 = MEMORY[0x277CCABB0];
-        v25 = [v7 locationOfInterestSource];
-        v26 = [v25 unsignedIntegerValue];
-        v27 = [v9 locationOfInterestSource];
-        v28 = [v24 numberWithUnsignedInteger:{objc_msgSend(v27, "unsignedIntegerValue") | v26}];
+        locationOfInterestSource = [oCopy locationOfInterestSource];
+        unsignedIntegerValue = [locationOfInterestSource unsignedIntegerValue];
+        locationOfInterestSource2 = [v9 locationOfInterestSource];
+        v28 = [v24 numberWithUnsignedInteger:{objc_msgSend(locationOfInterestSource2, "unsignedIntegerValue") | unsignedIntegerValue}];
         [v9 setLocationOfInterestSource:v28];
 
         v29 = objc_opt_class();
-        v49[0] = v7;
+        v49[0] = oCopy;
         v49[1] = v9;
         v30 = [MEMORY[0x277CBEA60] arrayWithObjects:v49 count:2];
         v31 = [v29 locationFromAggregateVisits:v30];
 
         v32 = MEMORY[0x277CCABB0];
-        v33 = [v31 location];
-        [v33 latitude];
+        location = [v31 location];
+        [location latitude];
         v34 = [v32 numberWithDouble:?];
         [v9 setLocationLatitude:v34];
 
         v35 = MEMORY[0x277CCABB0];
-        v36 = [v31 location];
-        [v36 longitude];
+        location2 = [v31 location];
+        [location2 longitude];
         v37 = [v35 numberWithDouble:?];
         [v9 setLocationLongitude:v37];
 
         v38 = MEMORY[0x277CCABB0];
-        v39 = [v31 location];
-        [v39 horizontalUncertainty];
+        location3 = [v31 location];
+        [location3 horizontalUncertainty];
         v40 = [v38 numberWithDouble:?];
         [v9 setLocationHorizontalUncertainty:v40];
 
@@ -6220,7 +6220,7 @@ LABEL_34:
     }
 
     _RTErrorInvalidParameterCreate(v45);
-    *a5 = v42 = 0;
+    *error = v42 = 0;
     goto LABEL_21;
   }
 
@@ -6237,14 +6237,14 @@ LABEL_21:
   return v42;
 }
 
-- (BOOL)cleanUpCombinedPairs:(id)a3 context:(id)a4 error:(id *)a5
+- (BOOL)cleanUpCombinedPairs:(id)pairs context:(id)context error:(id *)error
 {
   v65 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  v45 = a5;
-  if (!a5)
+  pairsCopy = pairs;
+  contextCopy = context;
+  v9 = contextCopy;
+  errorCopy = error;
+  if (!error)
   {
     v34 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -6257,7 +6257,7 @@ LABEL_21:
     goto LABEL_45;
   }
 
-  if (!v7)
+  if (!pairsCopy)
   {
     v35 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -6270,7 +6270,7 @@ LABEL_21:
     goto LABEL_40;
   }
 
-  if (!v8)
+  if (!contextCopy)
   {
     v37 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -6282,7 +6282,7 @@ LABEL_21:
     v36 = @"context";
 LABEL_40:
     _RTErrorInvalidParameterCreate(v36);
-    *a5 = v33 = 0;
+    *error = v33 = 0;
     goto LABEL_45;
   }
 
@@ -6290,12 +6290,12 @@ LABEL_40:
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  obj = v7;
+  obj = pairsCopy;
   v44 = [obj countByEnumeratingWithState:&v57 objects:v64 count:16];
   if (v44)
   {
     v43 = *v58;
-    v40 = v7;
+    v40 = pairsCopy;
     while (2)
     {
       for (i = 0; i != v44; ++i)
@@ -6306,21 +6306,21 @@ LABEL_40:
         }
 
         v11 = *(*(&v57 + 1) + 8 * i);
-        v12 = [v11 firstObject];
-        v13 = [v11 secondObject];
-        v14 = [v12 identifier];
+        firstObject = [v11 firstObject];
+        secondObject = [v11 secondObject];
+        identifier = [firstObject identifier];
         v56 = 0;
-        v15 = [(RTRelabelerPersister *)self fetchTransitionMOsEndingAtVisitIdentifier:v14 error:&v56];
+        v15 = [(RTRelabelerPersister *)self fetchTransitionMOsEndingAtVisitIdentifier:identifier error:&v56];
         v16 = v56;
 
         if (v16)
         {
           v38 = v16;
-          *v45 = v16;
+          *errorCopy = v16;
 
 LABEL_43:
           v33 = 0;
-          v7 = v40;
+          pairsCopy = v40;
           goto LABEL_44;
         }
 
@@ -6344,8 +6344,8 @@ LABEL_43:
               }
 
               v22 = *(*(&v52 + 1) + 8 * j);
-              v23 = [v13 identifier];
-              [v22 setVisitIdentifierDestination:v23];
+              identifier2 = [secondObject identifier];
+              [v22 setVisitIdentifierDestination:identifier2];
             }
 
             v19 = [v17 countByEnumeratingWithState:&v52 objects:v63 count:16];
@@ -6354,15 +6354,15 @@ LABEL_43:
           while (v19);
         }
 
-        v24 = [v12 identifier];
+        identifier3 = [firstObject identifier];
         v51 = 0;
-        v25 = [(RTRelabelerPersister *)self fetchTransitionMOsOriginatingFromVisitIdentifier:v24 error:&v51];
+        v25 = [(RTRelabelerPersister *)self fetchTransitionMOsOriginatingFromVisitIdentifier:identifier3 error:&v51];
         v26 = v51;
 
         if (v26)
         {
           v27 = v26;
-          *v45 = v26;
+          *errorCopy = v26;
         }
 
         else
@@ -6396,7 +6396,7 @@ LABEL_43:
             while (v30);
           }
 
-          [v9 deleteObject:v12];
+          [v9 deleteObject:firstObject];
           v25 = v41;
         }
 
@@ -6407,7 +6407,7 @@ LABEL_43:
       }
 
       v33 = 1;
-      v7 = v40;
+      pairsCopy = v40;
       v44 = [obj countByEnumeratingWithState:&v57 objects:v64 count:16];
       if (v44)
       {
@@ -6429,10 +6429,10 @@ LABEL_45:
   return v33;
 }
 
-- (BOOL)combineSequentialVisitsWithError:(id *)a3
+- (BOOL)combineSequentialVisitsWithError:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (error)
   {
     objc_initWeak(&location, self);
     aBlock[0] = MEMORY[0x277D85DD0];
@@ -6462,7 +6462,7 @@ LABEL_45:
       [(RTRelabelerPersisterMetrics *)self->_metrics tallyError:v7];
       [(RTRelabelerPersisterMetrics *)self->_metrics setErrorKey:@"mergingSequentialVisitsErroredOut"];
       v10 = v7;
-      *a3 = v7;
+      *error = v7;
     }
 
     objc_destroyWeak(v15);
@@ -6713,7 +6713,7 @@ LABEL_39:
   }
 }
 
-- (BOOL)fixUnconcreteLOIs:(id *)a3
+- (BOOL)fixUnconcreteLOIs:(id *)is
 {
   v20 = *MEMORY[0x277D85DE8];
   objc_initWeak(&location, self);
@@ -6745,10 +6745,10 @@ LABEL_39:
   {
     [(RTRelabelerPersisterMetrics *)self->_metrics tallyError:v7];
     [(RTRelabelerPersisterMetrics *)self->_metrics setErrorKey:@"fixingUnconcreteErroredOut"];
-    if (a3)
+    if (is)
     {
       v10 = v7;
-      *a3 = v7;
+      *is = v7;
     }
   }
 
@@ -6882,13 +6882,13 @@ void __42__RTRelabelerPersister_fixUnconcreteLOIs___block_invoke(uint64_t a1, ui
   }
 }
 
-- (id)filteredVisitMOs:(id)a3 referenceMapItem:(id)a4 referencePlaceType:(unint64_t)a5 error:(id *)a6
+- (id)filteredVisitMOs:(id)os referenceMapItem:(id)item referencePlaceType:(unint64_t)type error:(id *)error
 {
   v89 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
-  if (!a6)
+  osCopy = os;
+  itemCopy = item;
+  v12 = itemCopy;
+  if (!error)
   {
     v64 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
@@ -6901,7 +6901,7 @@ void __42__RTRelabelerPersister_fixUnconcreteLOIs___block_invoke(uint64_t a1, ui
     goto LABEL_34;
   }
 
-  if (!v10)
+  if (!osCopy)
   {
     v65 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
@@ -6914,7 +6914,7 @@ void __42__RTRelabelerPersister_fixUnconcreteLOIs___block_invoke(uint64_t a1, ui
     goto LABEL_33;
   }
 
-  if (!v11)
+  if (!itemCopy)
   {
     v68 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
@@ -6926,38 +6926,38 @@ void __42__RTRelabelerPersister_fixUnconcreteLOIs___block_invoke(uint64_t a1, ui
     v66 = @"referenceMapItem";
 LABEL_33:
     _RTErrorInvalidParameterCreate(v66);
-    *a6 = v63 = 0;
+    *error = v63 = 0;
     goto LABEL_34;
   }
 
-  v70 = a6;
+  errorCopy = error;
   v13 = objc_alloc(MEMORY[0x277D01160]);
-  v14 = [v12 latitude];
-  [v14 doubleValue];
+  latitude = [v12 latitude];
+  [latitude doubleValue];
   v16 = v15;
-  v17 = [v12 longitude];
-  [v17 doubleValue];
+  longitude = [v12 longitude];
+  [longitude doubleValue];
   v19 = v18;
-  v20 = [v12 uncertainty];
-  [v20 doubleValue];
+  uncertainty = [v12 uncertainty];
+  [uncertainty doubleValue];
   v22 = v21;
   v73 = v12;
-  v23 = [v12 referenceFrame];
-  v79 = [v13 initWithLatitude:0 longitude:objc_msgSend(v23 horizontalUncertainty:"intValue") date:v16 referenceFrame:{v19, v22}];
+  referenceFrame = [v12 referenceFrame];
+  v79 = [v13 initWithLatitude:0 longitude:objc_msgSend(referenceFrame horizontalUncertainty:"intValue") date:v16 referenceFrame:{v19, v22}];
 
-  v75 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v10, "count")}];
+  v75 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(osCopy, "count")}];
   v83 = 0u;
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
-  v71 = v10;
-  obj = v10;
+  v71 = osCopy;
+  obj = osCopy;
   v78 = [obj countByEnumeratingWithState:&v83 objects:v88 count:16];
   if (v78)
   {
     v76 = *v84;
-    v77 = self;
-    v72 = a5 & 0xFFFFFFFFFFFFFFFELL;
+    selfCopy = self;
+    v72 = type & 0xFFFFFFFFFFFFFFFELL;
 LABEL_6:
     v24 = 0;
     while (1)
@@ -6971,29 +6971,29 @@ LABEL_6:
       v25 = *(*(&v83 + 1) + 8 * v24);
       context = objc_autoreleasePoolPush();
       v26 = objc_alloc(MEMORY[0x277D01160]);
-      v27 = [v25 locationLatitude];
-      [v27 doubleValue];
+      locationLatitude = [v25 locationLatitude];
+      [locationLatitude doubleValue];
       v29 = v28;
-      v30 = [v25 locationLongitude];
-      [v30 doubleValue];
+      locationLongitude = [v25 locationLongitude];
+      [locationLongitude doubleValue];
       v32 = v31;
-      v33 = [v25 locationHorizontalUncertainty];
-      [v33 doubleValue];
+      locationHorizontalUncertainty = [v25 locationHorizontalUncertainty];
+      [locationHorizontalUncertainty doubleValue];
       v35 = v34;
-      v36 = [v25 locationAltitude];
-      [v36 doubleValue];
+      locationAltitude = [v25 locationAltitude];
+      [locationAltitude doubleValue];
       v38 = v37;
-      v39 = [v25 locationVerticalUncertainty];
-      [v39 doubleValue];
+      locationVerticalUncertainty = [v25 locationVerticalUncertainty];
+      [locationVerticalUncertainty doubleValue];
       v41 = v40;
-      v42 = [v25 locationReferenceFrame];
-      v43 = [v42 intValue];
-      v44 = [v25 locationSourceAccuracy];
-      v45 = [v26 initWithLatitude:0 longitude:v43 horizontalUncertainty:objc_msgSend(v44 altitude:"intValue") verticalUncertainty:v29 date:v32 referenceFrame:v35 speed:v38 sourceAccuracy:{v41, 0.0}];
+      locationReferenceFrame = [v25 locationReferenceFrame];
+      intValue = [locationReferenceFrame intValue];
+      locationSourceAccuracy = [v25 locationSourceAccuracy];
+      v45 = [v26 initWithLatitude:0 longitude:intValue horizontalUncertainty:objc_msgSend(locationSourceAccuracy altitude:"intValue") verticalUncertainty:v29 date:v32 referenceFrame:v35 speed:v38 sourceAccuracy:{v41, 0.0}];
 
-      v46 = [(RTRelabelerPersister *)v77 distanceCalculator];
+      distanceCalculator = [(RTRelabelerPersister *)selfCopy distanceCalculator];
       v82 = 0;
-      [v46 distanceFromLocation:v45 toLocation:v79 error:&v82];
+      [distanceCalculator distanceFromLocation:v45 toLocation:v79 error:&v82];
       v48 = v47;
       v49 = v82;
 
@@ -7002,7 +7002,7 @@ LABEL_6:
 
         objc_autoreleasePoolPop(context);
         v67 = v49;
-        *v70 = v49;
+        *errorCopy = v49;
 
         v63 = 0;
         v12 = v73;
@@ -7010,21 +7010,21 @@ LABEL_6:
         goto LABEL_29;
       }
 
-      v50 = [(RTRelabelerPersister *)v77 learnedPlaceParameters];
-      [v50 softDistanceThreshold];
+      learnedPlaceParameters = [(RTRelabelerPersister *)selfCopy learnedPlaceParameters];
+      [learnedPlaceParameters softDistanceThreshold];
       v52 = v51;
 
       if (v48 >= v52)
       {
-        v53 = [(RTRelabelerPersister *)v77 learnedPlaceParameters];
-        [v53 softDistanceThreshold];
+        learnedPlaceParameters2 = [(RTRelabelerPersister *)selfCopy learnedPlaceParameters];
+        [learnedPlaceParameters2 softDistanceThreshold];
         if (v48 <= v54)
         {
           goto LABEL_18;
         }
 
-        v55 = [(RTRelabelerPersister *)v77 learnedPlaceParameters];
-        [v55 softDistanceThreshold];
+        learnedPlaceParameters3 = [(RTRelabelerPersister *)selfCopy learnedPlaceParameters];
+        [learnedPlaceParameters3 softDistanceThreshold];
         if (v48 >= v56 + v56)
         {
 
@@ -7032,11 +7032,11 @@ LABEL_18:
           goto LABEL_19;
         }
 
-        v57 = [v25 locationOfInterest];
-        v58 = [v57 mapItem];
-        v59 = [v58 name];
-        v60 = [v73 name];
-        v61 = [v59 isEqualToString:v60];
+        locationOfInterest = [v25 locationOfInterest];
+        mapItem = [locationOfInterest mapItem];
+        name = [mapItem name];
+        name2 = [v73 name];
+        v61 = [name isEqualToString:name2];
 
         if (v72 != 2 || !v61)
         {
@@ -7067,16 +7067,16 @@ LABEL_19:
   v12 = v73;
 LABEL_29:
 
-  v10 = v71;
+  osCopy = v71;
 LABEL_34:
 
   return v63;
 }
 
-- (BOOL)consolidateVisitsToLoisWithKnownPlaceTypesWithError:(id *)a3
+- (BOOL)consolidateVisitsToLoisWithKnownPlaceTypesWithError:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (error)
   {
     objc_initWeak(&location, self);
     aBlock[0] = MEMORY[0x277D85DD0];
@@ -7104,7 +7104,7 @@ LABEL_34:
       }
 
       v10 = v7;
-      *a3 = v7;
+      *error = v7;
     }
 
     else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -7371,7 +7371,7 @@ LABEL_33:
   }
 }
 
-- (BOOL)saveWithError:(id *)a3
+- (BOOL)saveWithError:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0;
@@ -7392,10 +7392,10 @@ LABEL_33:
 
     [(RTRelabelerPersisterMetrics *)self->_metrics tallyError:v6];
     [(RTRelabelerPersisterMetrics *)self->_metrics setErrorKey:@"saveErroredOut"];
-    if (a3)
+    if (error)
     {
       v8 = v6;
-      *a3 = v6;
+      *error = v6;
     }
   }
 
@@ -7420,15 +7420,15 @@ void __38__RTRelabelerPersister_saveWithError___block_invoke(uint64_t a1, void *
   *a3 = v4;
 }
 
-- (void)logLocalStoreWithReason:(id)a3
+- (void)logLocalStoreWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __48__RTRelabelerPersister_logLocalStoreWithReason___block_invoke;
   aBlock[3] = &unk_2788CD920;
-  v9 = v4;
-  v5 = v4;
+  v9 = reasonCopy;
+  v5 = reasonCopy;
   v6 = _Block_copy(aBlock);
   v7 = 0;
   [(RTRelabelerPersister *)self performBlock:v6 error:&v7];

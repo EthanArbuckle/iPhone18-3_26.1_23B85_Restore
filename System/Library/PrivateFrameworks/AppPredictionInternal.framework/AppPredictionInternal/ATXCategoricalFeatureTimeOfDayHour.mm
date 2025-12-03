@@ -1,20 +1,20 @@
 @interface ATXCategoricalFeatureTimeOfDayHour
-- (id)categoricalFeatureValueForContext:(id)a3 candidate:(id)a4;
+- (id)categoricalFeatureValueForContext:(id)context candidate:(id)candidate;
 @end
 
 @implementation ATXCategoricalFeatureTimeOfDayHour
 
-- (id)categoricalFeatureValueForContext:(id)a3 candidate:(id)a4
+- (id)categoricalFeatureValueForContext:(id)context candidate:(id)candidate
 {
-  v4 = a3;
-  v5 = [v4 timeContext];
+  contextCopy = context;
+  timeContext = [contextCopy timeContext];
 
-  if (v5)
+  if (timeContext)
   {
     v6 = MEMORY[0x277CCABB0];
-    v7 = [v4 timeContext];
-    v8 = [v6 numberWithInt:{objc_msgSend(v7, "timeOfDay")}];
-    v9 = [v8 stringValue];
+    timeContext2 = [contextCopy timeContext];
+    v8 = [v6 numberWithInt:{objc_msgSend(timeContext2, "timeOfDay")}];
+    stringValue = [v8 stringValue];
   }
 
   else
@@ -25,10 +25,10 @@
       [ATXCategoricalFeatureTimeOfDayHour categoricalFeatureValueForContext:candidate:];
     }
 
-    v9 = @"<Unexpected Category Value>";
+    stringValue = @"<Unexpected Category Value>";
   }
 
-  return v9;
+  return stringValue;
 }
 
 - (void)categoricalFeatureValueForContext:candidate:.cold.1()

@@ -1,13 +1,13 @@
 @interface INBusTrip
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (INBusTrip)initWithCoder:(id)a3;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (INBusTrip)initWithCoder:(id)coder;
 - (INBusTrip)initWithProvider:(NSString *)provider busName:(NSString *)busName busNumber:(NSString *)busNumber tripDuration:(INDateComponentsRange *)tripDuration departureBusStopLocation:(CLPlacemark *)departureBusStopLocation departurePlatform:(NSString *)departurePlatform arrivalBusStopLocation:(CLPlacemark *)arrivalBusStopLocation arrivalPlatform:(NSString *)arrivalPlatform;
 - (id)_dictionaryRepresentation;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INBusTrip
@@ -16,14 +16,14 @@
 {
   v28[8] = *MEMORY[0x1E69E9840];
   provider = self->_provider;
-  v3 = provider;
+  null = provider;
   v27[0] = @"provider";
   if (!provider)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28[0] = v3;
+  v28[0] = null;
   v27[1] = @"busName";
   busName = self->_busName;
   v24 = busName;
@@ -36,62 +36,62 @@
   v28[1] = busName;
   v27[2] = @"busNumber";
   busNumber = self->_busNumber;
-  v6 = busNumber;
+  null2 = busNumber;
   if (!busNumber)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22 = v6;
-  v28[2] = v6;
+  v22 = null2;
+  v28[2] = null2;
   v27[3] = @"tripDuration";
   tripDuration = self->_tripDuration;
-  v8 = tripDuration;
+  null3 = tripDuration;
   if (!tripDuration)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25 = v3;
-  v21 = v8;
-  v28[3] = v8;
+  v25 = null;
+  v21 = null3;
+  v28[3] = null3;
   v27[4] = @"departureBusStopLocation";
   departureBusStopLocation = self->_departureBusStopLocation;
-  v10 = departureBusStopLocation;
+  null4 = departureBusStopLocation;
   if (!departureBusStopLocation)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v10;
-  v28[4] = v10;
+  v20 = null4;
+  v28[4] = null4;
   v27[5] = @"departurePlatform";
   departurePlatform = self->_departurePlatform;
-  v12 = departurePlatform;
+  null5 = departurePlatform;
   if (!departurePlatform)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28[5] = v12;
+  v28[5] = null5;
   v27[6] = @"arrivalBusStopLocation";
   arrivalBusStopLocation = self->_arrivalBusStopLocation;
-  v14 = arrivalBusStopLocation;
+  null6 = arrivalBusStopLocation;
   if (!arrivalBusStopLocation)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28[6] = v14;
+  v28[6] = null6;
   v27[7] = @"arrivalPlatform";
   arrivalPlatform = self->_arrivalPlatform;
-  v16 = arrivalPlatform;
+  null7 = arrivalPlatform;
   if (!arrivalPlatform)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28[7] = v16;
+  v28[7] = null7;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:8];
   if (arrivalPlatform)
   {
@@ -168,105 +168,105 @@ LABEL_23:
   return v17;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INBusTrip;
   v6 = [(INBusTrip *)&v11 description];
-  v7 = [(INBusTrip *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INBusTrip *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [v6 encodeObject:self->_provider];
-  [v7 if_setObjectIfNonNil:v8 forKey:@"provider"];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
+  v8 = [encoderCopy encodeObject:self->_provider];
+  [dictionary if_setObjectIfNonNil:v8 forKey:@"provider"];
 
-  v9 = [v6 encodeObject:self->_busName];
-  [v7 if_setObjectIfNonNil:v9 forKey:@"busName"];
+  v9 = [encoderCopy encodeObject:self->_busName];
+  [dictionary if_setObjectIfNonNil:v9 forKey:@"busName"];
 
-  v10 = [v6 encodeObject:self->_busNumber];
-  [v7 if_setObjectIfNonNil:v10 forKey:@"busNumber"];
+  v10 = [encoderCopy encodeObject:self->_busNumber];
+  [dictionary if_setObjectIfNonNil:v10 forKey:@"busNumber"];
 
-  v11 = [v6 encodeObject:self->_tripDuration];
-  [v7 if_setObjectIfNonNil:v11 forKey:@"tripDuration"];
+  v11 = [encoderCopy encodeObject:self->_tripDuration];
+  [dictionary if_setObjectIfNonNil:v11 forKey:@"tripDuration"];
 
-  v12 = [v6 encodeObject:self->_departureBusStopLocation];
-  [v7 if_setObjectIfNonNil:v12 forKey:@"departureBusStopLocation"];
+  v12 = [encoderCopy encodeObject:self->_departureBusStopLocation];
+  [dictionary if_setObjectIfNonNil:v12 forKey:@"departureBusStopLocation"];
 
-  v13 = [v6 encodeObject:self->_departurePlatform];
-  [v7 if_setObjectIfNonNil:v13 forKey:@"departurePlatform"];
+  v13 = [encoderCopy encodeObject:self->_departurePlatform];
+  [dictionary if_setObjectIfNonNil:v13 forKey:@"departurePlatform"];
 
-  v14 = [v6 encodeObject:self->_arrivalBusStopLocation];
-  [v7 if_setObjectIfNonNil:v14 forKey:@"arrivalBusStopLocation"];
+  v14 = [encoderCopy encodeObject:self->_arrivalBusStopLocation];
+  [dictionary if_setObjectIfNonNil:v14 forKey:@"arrivalBusStopLocation"];
 
-  v15 = [v6 encodeObject:self->_arrivalPlatform];
+  v15 = [encoderCopy encodeObject:self->_arrivalPlatform];
 
-  [v7 if_setObjectIfNonNil:v15 forKey:@"arrivalPlatform"];
+  [dictionary if_setObjectIfNonNil:v15 forKey:@"arrivalPlatform"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   provider = self->_provider;
-  v5 = a3;
-  [v5 encodeObject:provider forKey:@"provider"];
-  [v5 encodeObject:self->_busName forKey:@"busName"];
-  [v5 encodeObject:self->_busNumber forKey:@"busNumber"];
-  [v5 encodeObject:self->_tripDuration forKey:@"tripDuration"];
-  [v5 encodeObject:self->_departureBusStopLocation forKey:@"departureBusStopLocation"];
-  [v5 encodeObject:self->_departurePlatform forKey:@"departurePlatform"];
-  [v5 encodeObject:self->_arrivalBusStopLocation forKey:@"arrivalBusStopLocation"];
-  [v5 encodeObject:self->_arrivalPlatform forKey:@"arrivalPlatform"];
+  coderCopy = coder;
+  [coderCopy encodeObject:provider forKey:@"provider"];
+  [coderCopy encodeObject:self->_busName forKey:@"busName"];
+  [coderCopy encodeObject:self->_busNumber forKey:@"busNumber"];
+  [coderCopy encodeObject:self->_tripDuration forKey:@"tripDuration"];
+  [coderCopy encodeObject:self->_departureBusStopLocation forKey:@"departureBusStopLocation"];
+  [coderCopy encodeObject:self->_departurePlatform forKey:@"departurePlatform"];
+  [coderCopy encodeObject:self->_arrivalBusStopLocation forKey:@"arrivalBusStopLocation"];
+  [coderCopy encodeObject:self->_arrivalPlatform forKey:@"arrivalPlatform"];
 }
 
-- (INBusTrip)initWithCoder:(id)a3
+- (INBusTrip)initWithCoder:(id)coder
 {
   v3 = MEMORY[0x1E695DFD8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = [v3 setWithObjects:{v5, objc_opt_class(), 0}];
-  v28 = [v4 decodeObjectOfClasses:v6 forKey:@"provider"];
+  v28 = [coderCopy decodeObjectOfClasses:v6 forKey:@"provider"];
 
   v7 = MEMORY[0x1E695DFD8];
   v8 = objc_opt_class();
   v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-  v27 = [v4 decodeObjectOfClasses:v9 forKey:@"busName"];
+  v27 = [coderCopy decodeObjectOfClasses:v9 forKey:@"busName"];
 
   v10 = MEMORY[0x1E695DFD8];
   v11 = objc_opt_class();
   v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-  v13 = [v4 decodeObjectOfClasses:v12 forKey:@"busNumber"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"busNumber"];
 
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tripDuration"];
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"departureBusStopLocation"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tripDuration"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"departureBusStopLocation"];
   v16 = MEMORY[0x1E695DFD8];
   v17 = objc_opt_class();
   v18 = [v16 setWithObjects:{v17, objc_opt_class(), 0}];
-  v19 = [v4 decodeObjectOfClasses:v18 forKey:@"departurePlatform"];
+  v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"departurePlatform"];
 
-  v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"arrivalBusStopLocation"];
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"arrivalBusStopLocation"];
   v21 = MEMORY[0x1E695DFD8];
   v22 = objc_opt_class();
   v23 = [v21 setWithObjects:{v22, objc_opt_class(), 0}];
-  v24 = [v4 decodeObjectOfClasses:v23 forKey:@"arrivalPlatform"];
+  v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"arrivalPlatform"];
 
   v25 = [(INBusTrip *)self initWithProvider:v28 busName:v27 busNumber:v13 tripDuration:v14 departureBusStopLocation:v15 departurePlatform:v19 arrivalBusStopLocation:v20 arrivalPlatform:v24];
   return v25;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v14 = 1;
   }
@@ -276,7 +276,7 @@ LABEL_23:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       provider = self->_provider;
       v14 = 0;
       if (provider == v5->_provider || [(NSString *)provider isEqual:?])
@@ -385,35 +385,35 @@ LABEL_23:
   return v24;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a3;
-  v8 = a5;
+  decoderCopy = decoder;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v26 = [v8 objectForKeyedSubscript:@"provider"];
-    v9 = [v8 objectForKeyedSubscript:@"busName"];
-    v25 = [v8 objectForKeyedSubscript:@"busNumber"];
+    v26 = [fromCopy objectForKeyedSubscript:@"provider"];
+    v9 = [fromCopy objectForKeyedSubscript:@"busName"];
+    v25 = [fromCopy objectForKeyedSubscript:@"busNumber"];
     v10 = objc_opt_class();
-    v11 = [v8 objectForKeyedSubscript:@"tripDuration"];
-    v12 = [v7 decodeObjectOfClass:v10 from:v11];
+    v11 = [fromCopy objectForKeyedSubscript:@"tripDuration"];
+    v12 = [decoderCopy decodeObjectOfClass:v10 from:v11];
 
     v13 = objc_opt_class();
-    v14 = [v8 objectForKeyedSubscript:@"departureBusStopLocation"];
-    v15 = [v7 decodeObjectOfClass:v13 from:v14];
+    v14 = [fromCopy objectForKeyedSubscript:@"departureBusStopLocation"];
+    v15 = [decoderCopy decodeObjectOfClass:v13 from:v14];
 
-    v16 = [v8 objectForKeyedSubscript:@"departurePlatform"];
+    v16 = [fromCopy objectForKeyedSubscript:@"departurePlatform"];
     v17 = objc_opt_class();
-    v18 = [v8 objectForKeyedSubscript:@"arrivalBusStopLocation"];
-    v19 = [v7 decodeObjectOfClass:v17 from:v18];
+    v18 = [fromCopy objectForKeyedSubscript:@"arrivalBusStopLocation"];
+    v19 = [decoderCopy decodeObjectOfClass:v17 from:v18];
 
-    v20 = [v8 objectForKeyedSubscript:@"arrivalPlatform"];
-    v24 = v7;
+    v20 = [fromCopy objectForKeyedSubscript:@"arrivalPlatform"];
+    v24 = decoderCopy;
     v21 = v15;
-    v22 = [[a1 alloc] initWithProvider:v26 busName:v9 busNumber:v25 tripDuration:v12 departureBusStopLocation:v15 departurePlatform:v16 arrivalBusStopLocation:v19 arrivalPlatform:v20];
+    v22 = [[self alloc] initWithProvider:v26 busName:v9 busNumber:v25 tripDuration:v12 departureBusStopLocation:v15 departurePlatform:v16 arrivalBusStopLocation:v19 arrivalPlatform:v20];
 
-    v7 = v24;
+    decoderCopy = v24;
   }
 
   else

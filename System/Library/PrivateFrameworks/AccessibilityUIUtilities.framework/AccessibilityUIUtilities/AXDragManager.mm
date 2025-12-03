@@ -1,48 +1,48 @@
 @interface AXDragManager
-- (AXDragManager)initWithMachServiceName:(id)a3;
+- (AXDragManager)initWithMachServiceName:(id)name;
 - (AXDragManagerDelegate)delegate;
-- (BOOL)_shouldAllowEndpointVendForRequestingConnection:(id)a3;
+- (BOOL)_shouldAllowEndpointVendForRequestingConnection:(id)connection;
 - (BOOL)isDragActive;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (id)endpointForRequestingConnection:(id)a3 fromEndpointVendor:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (id)endpointForRequestingConnection:(id)connection fromEndpointVendor:(id)vendor;
 - (void)cancelDrag;
-- (void)dragSession:(id)a3 movedToPoint:(CGPoint)a4 byRequestor:(id)a5;
-- (void)dragSessionChanged:(id)a3 toStatus:(id)a4;
-- (void)dragSessionEnded:(id)a3 withOperation:(unint64_t)a4;
-- (void)dragSessionWasTerminated:(id)a3;
+- (void)dragSession:(id)session movedToPoint:(CGPoint)point byRequestor:(id)requestor;
+- (void)dragSessionChanged:(id)changed toStatus:(id)status;
+- (void)dragSessionEnded:(id)ended withOperation:(unint64_t)operation;
+- (void)dragSessionWasTerminated:(id)terminated;
 - (void)drop;
-- (void)moveToAndDropAtPoint:(CGPoint)a3;
-- (void)moveToPoint:(CGPoint)a3;
-- (void)setDragSession:(id)a3;
-- (void)waitForDragStartFromPid:(int)a3 completionHandler:(id)a4;
+- (void)moveToAndDropAtPoint:(CGPoint)point;
+- (void)moveToPoint:(CGPoint)point;
+- (void)setDragSession:(id)session;
+- (void)waitForDragStartFromPid:(int)pid completionHandler:(id)handler;
 @end
 
 @implementation AXDragManager
 
-- (AXDragManager)initWithMachServiceName:(id)a3
+- (AXDragManager)initWithMachServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v19.receiver = self;
   v19.super_class = AXDragManager;
   v5 = [(AXDragManager *)&v19 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x1E696B0D8]) initWithMachServiceName:v4];
+    v6 = [objc_alloc(MEMORY[0x1E696B0D8]) initWithMachServiceName:nameCopy];
     v7 = [[AXDragEndpointVendor alloc] initWithXPCListener:v6];
     vendor = v5->_vendor;
     v5->_vendor = v7;
 
     [(AXDragEndpointVendor *)v5->_vendor setDelegate:v5];
-    v9 = [MEMORY[0x1E696B0D8] anonymousListener];
+    anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
     endpointListener = v5->_endpointListener;
-    v5->_endpointListener = v9;
+    v5->_endpointListener = anonymousListener;
 
     [(NSXPCListener *)v5->_endpointListener setDelegate:v5];
-    v11 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     activeSessions = v5->_activeSessions;
-    v5->_activeSessions = v11;
+    v5->_activeSessions = array;
 
-    v13 = [v4 stringByAppendingFormat:@"-DragStateQueue"];
+    v13 = [nameCopy stringByAppendingFormat:@"-DragStateQueue"];
     v14 = dispatch_queue_create([v13 UTF8String], 0);
     dragStateQueue = v5->_dragStateQueue;
     v5->_dragStateQueue = v14;
@@ -50,7 +50,7 @@
     v5->_pidForDrag = -1;
     [(AXDragEndpointVendor *)v5->_vendor resume];
     [(NSXPCListener *)v5->_endpointListener resume];
-    v16 = [v4 copy];
+    v16 = [nameCopy copy];
     machServiceName = v5->_machServiceName;
     v5->_machServiceName = v16;
   }
@@ -58,21 +58,21 @@
   return v5;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  connectionCopy = connection;
   v6 = AXLogDragging();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [AXDragManager listener:v5 shouldAcceptNewConnection:?];
+    [AXDragManager listener:connectionCopy shouldAcceptNewConnection:?];
   }
 
-  v7 = [v5 valueForEntitlement:@"com.apple.backboardd.detachTouches"];
+  v7 = [connectionCopy valueForEntitlement:@"com.apple.backboardd.detachTouches"];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && ([v7 BOOLValue])
   {
-    v8 = [[AXDragSession alloc] initWithDruidConnection:v5];
+    v8 = [[AXDragSession alloc] initWithDruidConnection:connectionCopy];
     [(AXDragSession *)v8 setManager:self];
     [(NSMutableArray *)self->_activeSessions addObject:v8];
     dragStateQueue = self->_dragStateQueue;
@@ -94,7 +94,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v16 = [v5 processIdentifier];
+      processIdentifier = [connectionCopy processIdentifier];
       _os_log_impl(&dword_1C0DFB000, v10, OS_LOG_TYPE_DEFAULT, "Process %d, you are not druid. Go away.", buf, 8u);
     }
 
@@ -155,9 +155,9 @@ uint64_t __52__AXDragManager_listener_shouldAcceptNewConnection___block_invoke(u
   return [*v2 setDragStartCompletionHandler:0];
 }
 
-- (BOOL)_shouldAllowEndpointVendForRequestingConnection:(id)a3
+- (BOOL)_shouldAllowEndpointVendForRequestingConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -168,9 +168,9 @@ uint64_t __52__AXDragManager_listener_shouldAcceptNewConnection___block_invoke(u
   block[2] = __65__AXDragManager__shouldAllowEndpointVendForRequestingConnection___block_invoke;
   block[3] = &unk_1E812DDD8;
   block[4] = self;
-  v9 = v4;
+  v9 = connectionCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = connectionCopy;
   dispatch_sync(dragStateQueue, block);
   LOBYTE(dragStateQueue) = *(v12 + 24);
 
@@ -203,18 +203,18 @@ void __65__AXDragManager__shouldAllowEndpointVendForRequestingConnection___block
   }
 }
 
-- (id)endpointForRequestingConnection:(id)a3 fromEndpointVendor:(id)a4
+- (id)endpointForRequestingConnection:(id)connection fromEndpointVendor:(id)vendor
 {
-  v5 = a3;
+  connectionCopy = connection;
   v6 = AXLogDragging();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [AXDragManager endpointForRequestingConnection:v5 fromEndpointVendor:?];
+    [AXDragManager endpointForRequestingConnection:connectionCopy fromEndpointVendor:?];
   }
 
-  if ([(AXDragManager *)self _shouldAllowEndpointVendForRequestingConnection:v5])
+  if ([(AXDragManager *)self _shouldAllowEndpointVendForRequestingConnection:connectionCopy])
   {
-    v7 = [(NSXPCListener *)self->_endpointListener endpoint];
+    endpoint = [(NSXPCListener *)self->_endpointListener endpoint];
   }
 
   else
@@ -222,18 +222,18 @@ void __65__AXDragManager__shouldAllowEndpointVendForRequestingConnection___block
     v8 = AXLogDragging();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [AXDragManager endpointForRequestingConnection:v5 fromEndpointVendor:v8];
+      [AXDragManager endpointForRequestingConnection:connectionCopy fromEndpointVendor:v8];
     }
 
-    v7 = 0;
+    endpoint = 0;
   }
 
-  return v7;
+  return endpoint;
 }
 
-- (void)waitForDragStartFromPid:(int)a3 completionHandler:(id)a4
+- (void)waitForDragStartFromPid:(int)pid completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = AXLogDragging();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -245,10 +245,10 @@ void __65__AXDragManager__shouldAllowEndpointVendForRequestingConnection___block
   block[1] = 3221225472;
   block[2] = __59__AXDragManager_waitForDragStartFromPid_completionHandler___block_invoke;
   block[3] = &unk_1E812DE00;
-  v12 = a3;
+  pidCopy = pid;
   block[4] = self;
-  v11 = v6;
-  v9 = v6;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   dispatch_async(dragStateQueue, block);
 }
 
@@ -305,16 +305,16 @@ void __59__AXDragManager_waitForDragStartFromPid_completionHandler___block_invok
   }
 }
 
-- (void)setDragSession:(id)a3
+- (void)setDragSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   dragSession = self->_dragSession;
   p_dragSession = &self->_dragSession;
   v6 = dragSession;
-  if (dragSession != v5)
+  if (dragSession != sessionCopy)
   {
     [(AXDragSession *)v6 cancel];
-    objc_storeStrong(p_dragSession, a3);
+    objc_storeStrong(p_dragSession, session);
   }
 
   MEMORY[0x1EEE66BB8]();
@@ -358,7 +358,7 @@ void __27__AXDragManager_cancelDrag__block_invoke(uint64_t a1)
   [v1 cancel];
 }
 
-- (void)moveToPoint:(CGPoint)a3
+- (void)moveToPoint:(CGPoint)point
 {
   dragStateQueue = self->_dragStateQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -366,7 +366,7 @@ void __27__AXDragManager_cancelDrag__block_invoke(uint64_t a1)
   block[2] = __29__AXDragManager_moveToPoint___block_invoke;
   block[3] = &unk_1E812DE78;
   block[4] = self;
-  v5 = a3;
+  pointCopy = point;
   dispatch_async(dragStateQueue, block);
 }
 
@@ -426,10 +426,10 @@ void __21__AXDragManager_drop__block_invoke(uint64_t a1)
   }
 }
 
-- (void)moveToAndDropAtPoint:(CGPoint)a3
+- (void)moveToAndDropAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = AXLogDragging();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -501,21 +501,21 @@ void __38__AXDragManager_moveToAndDropAtPoint___block_invoke_296(uint64_t a1)
   }
 }
 
-- (void)dragSession:(id)a3 movedToPoint:(CGPoint)a4 byRequestor:(id)a5
+- (void)dragSession:(id)session movedToPoint:(CGPoint)point byRequestor:(id)requestor
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a3;
+  y = point.y;
+  x = point.x;
+  sessionCopy = session;
   dragStateQueue = self->_dragStateQueue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __54__AXDragManager_dragSession_movedToPoint_byRequestor___block_invoke;
   v11[3] = &unk_1E812DEC8;
-  v12 = v8;
-  v13 = self;
+  v12 = sessionCopy;
+  selfCopy = self;
   v14 = x;
   v15 = y;
-  v10 = v8;
+  v10 = sessionCopy;
   dispatch_async(dragStateQueue, v11);
 }
 
@@ -552,20 +552,20 @@ LABEL_8:
   }
 }
 
-- (void)dragSessionChanged:(id)a3 toStatus:(id)a4
+- (void)dragSessionChanged:(id)changed toStatus:(id)status
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  statusCopy = status;
   dragStateQueue = self->_dragStateQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __45__AXDragManager_dragSessionChanged_toStatus___block_invoke;
   block[3] = &unk_1E812DEF0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = changedCopy;
+  selfCopy = self;
+  v14 = statusCopy;
+  v9 = statusCopy;
+  v10 = changedCopy;
   dispatch_async(dragStateQueue, block);
 }
 
@@ -602,18 +602,18 @@ LABEL_8:
   }
 }
 
-- (void)dragSessionEnded:(id)a3 withOperation:(unint64_t)a4
+- (void)dragSessionEnded:(id)ended withOperation:(unint64_t)operation
 {
-  v6 = a3;
+  endedCopy = ended;
   dragStateQueue = self->_dragStateQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__AXDragManager_dragSessionEnded_withOperation___block_invoke;
   block[3] = &unk_1E812DF18;
-  v10 = v6;
-  v11 = self;
-  v12 = a4;
-  v8 = v6;
+  v10 = endedCopy;
+  selfCopy = self;
+  operationCopy = operation;
+  v8 = endedCopy;
   dispatch_async(dragStateQueue, block);
 }
 
@@ -650,17 +650,17 @@ LABEL_8:
   }
 }
 
-- (void)dragSessionWasTerminated:(id)a3
+- (void)dragSessionWasTerminated:(id)terminated
 {
-  v4 = a3;
+  terminatedCopy = terminated;
   dragStateQueue = self->_dragStateQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__AXDragManager_dragSessionWasTerminated___block_invoke;
   v7[3] = &unk_1E812DD68;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = terminatedCopy;
+  selfCopy = self;
+  v6 = terminatedCopy;
   dispatch_async(dragStateQueue, v7);
 }
 

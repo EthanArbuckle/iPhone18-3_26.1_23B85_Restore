@@ -1,14 +1,14 @@
 @interface DEDFeedbackAnalytics
-+ (void)logDataLoadWithContentItemCount:(unint64_t)a3 formItemsCount:(unint64_t)a4 teamCount:(unint64_t)a5 errorsCount:(unint64_t)a6 startedAt:(double)a7 endedAt:(double)a8;
-+ (void)logEventWithRequest:(id)a3 httpStatusCode:(int64_t)a4 nsurlErrorCode:(int64_t)a5 success:(BOOL)a6 startedAt:(double)a7 endedAt:(double)a8;
-+ (void)logFBKBugSessionStartWithDeviceType:(id)a3 isRemote:(BOOL)a4 success:(BOOL)a5 errorCode:(int64_t)a6 startedAt:(double)a7 getSessionEndedAt:(double)a8 showExtensionsEndedAt:(double)a9 getStatusEndedAt:(double)a10;
++ (void)logDataLoadWithContentItemCount:(unint64_t)count formItemsCount:(unint64_t)itemsCount teamCount:(unint64_t)teamCount errorsCount:(unint64_t)errorsCount startedAt:(double)at endedAt:(double)endedAt;
++ (void)logEventWithRequest:(id)request httpStatusCode:(int64_t)code nsurlErrorCode:(int64_t)errorCode success:(BOOL)success startedAt:(double)at endedAt:(double)endedAt;
++ (void)logFBKBugSessionStartWithDeviceType:(id)type isRemote:(BOOL)remote success:(BOOL)success errorCode:(int64_t)code startedAt:(double)at getSessionEndedAt:(double)endedAt showExtensionsEndedAt:(double)extensionsEndedAt getStatusEndedAt:(double)self0;
 @end
 
 @implementation DEDFeedbackAnalytics
 
-+ (void)logEventWithRequest:(id)a3 httpStatusCode:(int64_t)a4 nsurlErrorCode:(int64_t)a5 success:(BOOL)a6 startedAt:(double)a7 endedAt:(double)a8
++ (void)logEventWithRequest:(id)request httpStatusCode:(int64_t)code nsurlErrorCode:(int64_t)errorCode success:(BOOL)success startedAt:(double)at endedAt:(double)endedAt
 {
-  v13 = a3;
+  requestCopy = request;
   if (logEventWithRequest_httpStatusCode_nsurlErrorCode_success_startedAt_endedAt__onceToken != -1)
   {
     +[DEDFeedbackAnalytics logEventWithRequest:httpStatusCode:nsurlErrorCode:success:startedAt:endedAt:];
@@ -18,13 +18,13 @@
   v19 = 3221225472;
   v20 = __100__DEDFeedbackAnalytics_logEventWithRequest_httpStatusCode_nsurlErrorCode_success_startedAt_endedAt___block_invoke_2;
   v21 = &unk_278F66470;
-  v22 = v13;
-  v23 = a4;
-  v24 = a5;
-  v25 = a7;
-  v26 = a8;
-  v27 = a6;
-  v14 = v13;
+  v22 = requestCopy;
+  codeCopy = code;
+  errorCodeCopy = errorCode;
+  atCopy = at;
+  endedAtCopy = endedAt;
+  successCopy = success;
+  v14 = requestCopy;
   v15 = AnalyticsSendEventLazy();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -153,7 +153,7 @@ LABEL_6:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)logDataLoadWithContentItemCount:(unint64_t)a3 formItemsCount:(unint64_t)a4 teamCount:(unint64_t)a5 errorsCount:(unint64_t)a6 startedAt:(double)a7 endedAt:(double)a8
++ (void)logDataLoadWithContentItemCount:(unint64_t)count formItemsCount:(unint64_t)itemsCount teamCount:(unint64_t)teamCount errorsCount:(unint64_t)errorsCount startedAt:(double)at endedAt:(double)endedAt
 {
   if (logDataLoadWithContentItemCount_formItemsCount_teamCount_errorsCount_startedAt_endedAt__onceToken != -1)
   {
@@ -164,12 +164,12 @@ LABEL_6:
   v18 = 3221225472;
   v19 = __111__DEDFeedbackAnalytics_logDataLoadWithContentItemCount_formItemsCount_teamCount_errorsCount_startedAt_endedAt___block_invoke_2;
   v20 = &__block_descriptor_80_e19___NSDictionary_8__0l;
-  v21 = a3;
-  v22 = a4;
-  v23 = a5;
-  v24 = a6;
-  v25 = a8;
-  v26 = a7;
+  countCopy = count;
+  itemsCountCopy = itemsCount;
+  teamCountCopy = teamCount;
+  errorsCountCopy = errorsCount;
+  endedAtCopy = endedAt;
+  atCopy = at;
   v14 = AnalyticsSendEventLazy();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -256,9 +256,9 @@ LABEL_6:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)logFBKBugSessionStartWithDeviceType:(id)a3 isRemote:(BOOL)a4 success:(BOOL)a5 errorCode:(int64_t)a6 startedAt:(double)a7 getSessionEndedAt:(double)a8 showExtensionsEndedAt:(double)a9 getStatusEndedAt:(double)a10
++ (void)logFBKBugSessionStartWithDeviceType:(id)type isRemote:(BOOL)remote success:(BOOL)success errorCode:(int64_t)code startedAt:(double)at getSessionEndedAt:(double)endedAt showExtensionsEndedAt:(double)extensionsEndedAt getStatusEndedAt:(double)self0
 {
-  v17 = a3;
+  typeCopy = type;
   if (logFBKBugSessionStartWithDeviceType_isRemote_success_errorCode_startedAt_getSessionEndedAt_showExtensionsEndedAt_getStatusEndedAt__onceToken != -1)
   {
     +[DEDFeedbackAnalytics logFBKBugSessionStartWithDeviceType:isRemote:success:errorCode:startedAt:getSessionEndedAt:showExtensionsEndedAt:getStatusEndedAt:];
@@ -268,15 +268,15 @@ LABEL_6:
   v23 = 3221225472;
   v24 = __154__DEDFeedbackAnalytics_logFBKBugSessionStartWithDeviceType_isRemote_success_errorCode_startedAt_getSessionEndedAt_showExtensionsEndedAt_getStatusEndedAt___block_invoke_2;
   v25 = &unk_278F664B8;
-  v27 = a7;
-  v28 = a8;
-  v29 = a9;
-  v30 = a10;
-  v26 = v17;
-  v32 = a4;
-  v33 = a5;
-  v31 = a6;
-  v18 = v17;
+  atCopy = at;
+  endedAtCopy = endedAt;
+  extensionsEndedAtCopy = extensionsEndedAt;
+  statusEndedAtCopy = statusEndedAt;
+  v26 = typeCopy;
+  remoteCopy = remote;
+  successCopy = success;
+  codeCopy = code;
+  v18 = typeCopy;
   v19 = AnalyticsSendEventLazy();
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;

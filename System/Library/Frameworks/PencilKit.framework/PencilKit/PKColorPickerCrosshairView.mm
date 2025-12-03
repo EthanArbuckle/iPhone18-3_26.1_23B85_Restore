@@ -1,85 +1,85 @@
 @interface PKColorPickerCrosshairView
-- (PKColorPickerCrosshairView)initWithFrame:(CGRect)a3;
+- (PKColorPickerCrosshairView)initWithFrame:(CGRect)frame;
 - (PKColorPickerCrosshairViewDelegate)delegate;
 - (void)layoutSubviews;
-- (void)setCornerPosition:(unint64_t)a3;
+- (void)setCornerPosition:(unint64_t)position;
 - (void)update;
 @end
 
 @implementation PKColorPickerCrosshairView
 
-- (PKColorPickerCrosshairView)initWithFrame:(CGRect)a3
+- (PKColorPickerCrosshairView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v29.receiver = self;
   v29.super_class = PKColorPickerCrosshairView;
   v7 = [(PKColorPickerCrosshairView *)&v29 initWithFrame:?];
-  v8 = [[_PKColorPickerSimpleCrosshairView alloc] initWithFrame:x, y, width, height];
+  height = [[_PKColorPickerSimpleCrosshairView alloc] initWithFrame:x, y, width, height];
   baseView = v7->_baseView;
-  v7->_baseView = v8;
+  v7->_baseView = height;
 
-  v10 = [(PKColorPickerCrosshairView *)v7 baseView];
-  [v10 setBorderCornerRadius:0.0];
+  baseView = [(PKColorPickerCrosshairView *)v7 baseView];
+  [baseView setBorderCornerRadius:0.0];
 
-  v11 = [(PKColorPickerCrosshairView *)v7 baseView];
-  [(PKColorPickerCrosshairView *)v7 addSubview:v11];
+  baseView2 = [(PKColorPickerCrosshairView *)v7 baseView];
+  [(PKColorPickerCrosshairView *)v7 addSubview:baseView2];
 
-  v12 = [[_PKColorPickerCrosshairCornerMaskView alloc] initWithFrame:x, y, width, height];
+  height2 = [[_PKColorPickerCrosshairCornerMaskView alloc] initWithFrame:x, y, width, height];
   baseMaskView = v7->_baseMaskView;
-  v7->_baseMaskView = v12;
+  v7->_baseMaskView = height2;
 
-  v14 = [(PKColorPickerCrosshairView *)v7 baseMaskView];
-  [v14 setExcludeCorner:1];
+  baseMaskView = [(PKColorPickerCrosshairView *)v7 baseMaskView];
+  [baseMaskView setExcludeCorner:1];
 
-  v15 = [(PKColorPickerCrosshairView *)v7 baseMaskView];
-  [v15 setCornerPosition:1];
+  baseMaskView2 = [(PKColorPickerCrosshairView *)v7 baseMaskView];
+  [baseMaskView2 setCornerPosition:1];
 
-  v16 = [(PKColorPickerCrosshairView *)v7 baseMaskView];
-  v17 = [(PKColorPickerCrosshairView *)v7 baseView];
-  [v17 setMaskView:v16];
+  baseMaskView3 = [(PKColorPickerCrosshairView *)v7 baseMaskView];
+  baseView3 = [(PKColorPickerCrosshairView *)v7 baseView];
+  [baseView3 setMaskView:baseMaskView3];
 
-  v18 = [[_PKColorPickerSimpleCrosshairView alloc] initWithFrame:x, y, width, height];
+  height3 = [[_PKColorPickerSimpleCrosshairView alloc] initWithFrame:x, y, width, height];
   cornerEdgeView = v7->_cornerEdgeView;
-  v7->_cornerEdgeView = v18;
+  v7->_cornerEdgeView = height3;
 
-  v20 = [(PKColorPickerCrosshairView *)v7 cornerEdgeView];
-  [v20 setBorderCornerRadius:8.0];
+  cornerEdgeView = [(PKColorPickerCrosshairView *)v7 cornerEdgeView];
+  [cornerEdgeView setBorderCornerRadius:8.0];
 
-  v21 = [(PKColorPickerCrosshairView *)v7 cornerEdgeView];
-  [(PKColorPickerCrosshairView *)v7 addSubview:v21];
+  cornerEdgeView2 = [(PKColorPickerCrosshairView *)v7 cornerEdgeView];
+  [(PKColorPickerCrosshairView *)v7 addSubview:cornerEdgeView2];
 
-  v22 = [[_PKColorPickerCrosshairCornerMaskView alloc] initWithFrame:x, y, width, height];
+  height4 = [[_PKColorPickerCrosshairCornerMaskView alloc] initWithFrame:x, y, width, height];
   cornerEdgeMaskView = v7->_cornerEdgeMaskView;
-  v7->_cornerEdgeMaskView = v22;
+  v7->_cornerEdgeMaskView = height4;
 
-  v24 = [(PKColorPickerCrosshairView *)v7 cornerEdgeMaskView];
-  [v24 setExcludeCorner:0];
+  cornerEdgeMaskView = [(PKColorPickerCrosshairView *)v7 cornerEdgeMaskView];
+  [cornerEdgeMaskView setExcludeCorner:0];
 
-  v25 = [(PKColorPickerCrosshairView *)v7 cornerEdgeMaskView];
-  [v25 setCornerPosition:1];
+  cornerEdgeMaskView2 = [(PKColorPickerCrosshairView *)v7 cornerEdgeMaskView];
+  [cornerEdgeMaskView2 setCornerPosition:1];
 
-  v26 = [(PKColorPickerCrosshairView *)v7 cornerEdgeMaskView];
-  v27 = [(PKColorPickerCrosshairView *)v7 cornerEdgeView];
-  [v27 setMaskView:v26];
+  cornerEdgeMaskView3 = [(PKColorPickerCrosshairView *)v7 cornerEdgeMaskView];
+  cornerEdgeView3 = [(PKColorPickerCrosshairView *)v7 cornerEdgeView];
+  [cornerEdgeView3 setMaskView:cornerEdgeMaskView3];
 
   [(PKColorPickerCrosshairView *)v7 setClipsToBounds:0];
   [(PKColorPickerCrosshairView *)v7 setUserInteractionEnabled:0];
   return v7;
 }
 
-- (void)setCornerPosition:(unint64_t)a3
+- (void)setCornerPosition:(unint64_t)position
 {
-  if (self->_cornerPosition != a3)
+  if (self->_cornerPosition != position)
   {
-    self->_cornerPosition = a3;
-    v6 = [(PKColorPickerCrosshairView *)self baseMaskView];
-    [v6 setCornerPosition:a3];
+    self->_cornerPosition = position;
+    baseMaskView = [(PKColorPickerCrosshairView *)self baseMaskView];
+    [baseMaskView setCornerPosition:position];
 
-    v7 = [(PKColorPickerCrosshairView *)self cornerEdgeMaskView];
-    [v7 setCornerPosition:a3];
+    cornerEdgeMaskView = [(PKColorPickerCrosshairView *)self cornerEdgeMaskView];
+    [cornerEdgeMaskView setCornerPosition:position];
   }
 }
 
@@ -93,47 +93,47 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PKColorPickerCrosshairView *)self baseView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  baseView = [(PKColorPickerCrosshairView *)self baseView];
+  [baseView setFrame:{v4, v6, v8, v10}];
 
   [(PKColorPickerCrosshairView *)self bounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(PKColorPickerCrosshairView *)self cornerEdgeView];
-  [v20 setFrame:{v13, v15, v17, v19}];
+  cornerEdgeView = [(PKColorPickerCrosshairView *)self cornerEdgeView];
+  [cornerEdgeView setFrame:{v13, v15, v17, v19}];
 
-  v21 = [(PKColorPickerCrosshairView *)self baseView];
-  [v21 bounds];
+  baseView2 = [(PKColorPickerCrosshairView *)self baseView];
+  [baseView2 bounds];
   v37 = CGRectInset(v36, -4.0, -4.0);
   x = v37.origin.x;
   y = v37.origin.y;
   width = v37.size.width;
   height = v37.size.height;
-  v26 = [(PKColorPickerCrosshairView *)self baseMaskView];
-  [v26 setFrame:{x, y, width, height}];
+  baseMaskView = [(PKColorPickerCrosshairView *)self baseMaskView];
+  [baseMaskView setFrame:{x, y, width, height}];
 
-  v27 = [(PKColorPickerCrosshairView *)self cornerEdgeView];
-  [v27 bounds];
+  cornerEdgeView2 = [(PKColorPickerCrosshairView *)self cornerEdgeView];
+  [cornerEdgeView2 bounds];
   v39 = CGRectInset(v38, -4.0, -4.0);
   v28 = v39.origin.x;
   v29 = v39.origin.y;
   v30 = v39.size.width;
   v31 = v39.size.height;
-  v32 = [(PKColorPickerCrosshairView *)self cornerEdgeMaskView];
-  [v32 setFrame:{v28, v29, v30, v31}];
+  cornerEdgeMaskView = [(PKColorPickerCrosshairView *)self cornerEdgeMaskView];
+  [cornerEdgeMaskView setFrame:{v28, v29, v30, v31}];
 
-  v33 = [(PKColorPickerCrosshairView *)self delegate];
-  v34 = [v33 cornerPositionForColorPickerCrosshairView:self];
+  delegate = [(PKColorPickerCrosshairView *)self delegate];
+  v34 = [delegate cornerPositionForColorPickerCrosshairView:self];
 
   [(PKColorPickerCrosshairView *)self setCornerPosition:v34];
 }
 
 - (void)update
 {
-  v3 = [(PKColorPickerCrosshairView *)self delegate];
-  [v3 frameForColorPickerCrosshairView:self];
+  delegate = [(PKColorPickerCrosshairView *)self delegate];
+  [delegate frameForColorPickerCrosshairView:self];
   v5 = v4;
   v7 = v6;
   v9 = v8;

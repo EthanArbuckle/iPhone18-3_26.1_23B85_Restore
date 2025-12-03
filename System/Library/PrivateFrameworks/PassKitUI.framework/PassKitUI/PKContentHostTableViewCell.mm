@@ -1,29 +1,29 @@
 @interface PKContentHostTableViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKContentHostTableViewCell)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKContentHostTableViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setHostedContentView:(id)a3;
+- (void)setHostedContentView:(id)view;
 @end
 
 @implementation PKContentHostTableViewCell
 
-- (PKContentHostTableViewCell)initWithFrame:(CGRect)a3
+- (PKContentHostTableViewCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PKContentHostTableViewCell;
-  v3 = [(PKContentHostTableViewCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKContentHostTableViewCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] clearColor];
-    [(PKContentHostTableViewCell *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(PKContentHostTableViewCell *)v3 setBackgroundColor:clearColor];
   }
 
   return v3;
 }
 
-- (void)setHostedContentView:(id)a3
+- (void)setHostedContentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   hostedContentView = self->_hostedContentView;
   if (hostedContentView)
   {
@@ -36,11 +36,11 @@
     v6 = 0;
   }
 
-  self->_hostedContentView = v4;
-  v7 = v4;
+  self->_hostedContentView = viewCopy;
+  v7 = viewCopy;
 
-  v8 = [(PKContentHostTableViewCell *)self contentView];
-  [v8 addSubview:v7];
+  contentView = [(PKContentHostTableViewCell *)self contentView];
+  [contentView addSubview:v7];
 
   [(PKContentHostTableViewCell *)self setNeedsLayout];
 }
@@ -58,9 +58,9 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UIView *)self->_hostedContentView sizeThatFits:a3.width, a3.height];
+  [(UIView *)self->_hostedContentView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;

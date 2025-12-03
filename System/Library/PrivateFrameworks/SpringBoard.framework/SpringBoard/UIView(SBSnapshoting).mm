@@ -18,7 +18,7 @@
   v3[2] = __65__UIView_SBSnapshoting__sb_generateSnapshotContentsSynchronously__block_invoke;
   v3[3] = &unk_2783C3FB0;
   v3[4] = &v4;
-  [a1 _generateSnapshotOnQueue:0 completionHandler:v3];
+  [self _generateSnapshotOnQueue:0 completionHandler:v3];
   v1 = v5[5];
   _Block_object_dispose(&v4, 8);
 
@@ -29,26 +29,26 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 window];
-  v9 = [v8 _contextId];
+  window = [self window];
+  _contextId = [window _contextId];
 
-  v10 = [MEMORY[0x277CD9E38] allContexts];
+  allContexts = [MEMORY[0x277CD9E38] allContexts];
   *&v52.m11 = MEMORY[0x277D85DD0];
   *&v52.m12 = 3221225472;
   *&v52.m13 = __SBCAContextForContextID_block_invoke;
   *&v52.m14 = &__block_descriptor_36_e19_B16__0__CAContext_8l;
-  LODWORD(v52.m21) = v9;
-  v11 = [v10 bs_firstObjectPassingTest:&v52];
+  LODWORD(v52.m21) = _contextId;
+  v11 = [allContexts bs_firstObjectPassingTest:&v52];
 
-  v12 = [a1 layer];
-  v13 = [a1 _screen];
-  [v13 scale];
+  layer = [self layer];
+  _screen = [self _screen];
+  [_screen scale];
   v15 = v14;
-  v16 = [v12 presentationLayer];
-  if (v16)
+  presentationLayer = [layer presentationLayer];
+  if (presentationLayer)
   {
-    v17 = [v12 presentationLayer];
-    [v17 bounds];
+    presentationLayer2 = [layer presentationLayer];
+    [presentationLayer2 bounds];
     v19 = v18;
     v21 = v20;
     v23 = v22;
@@ -57,7 +57,7 @@
 
   else
   {
-    [a1 bounds];
+    [self bounds];
     v19 = v26;
     v21 = v27;
     v23 = v28;
@@ -84,8 +84,8 @@
   v40 = v32;
   v43 = v30;
   v44 = v31;
-  v51 = v9;
-  v33 = v12;
+  v51 = _contextId;
+  v33 = layer;
   v41 = v33;
   v45 = v19;
   v46 = v21;

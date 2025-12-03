@@ -1,16 +1,16 @@
 @interface LPPlaceholderPlayButtonControl
-- (LPPlaceholderPlayButtonControl)initWithStyle:(id)a3 theme:(id)a4;
+- (LPPlaceholderPlayButtonControl)initWithStyle:(id)style theme:(id)theme;
 @end
 
 @implementation LPPlaceholderPlayButtonControl
 
-- (LPPlaceholderPlayButtonControl)initWithStyle:(id)a3 theme:(id)a4
+- (LPPlaceholderPlayButtonControl)initWithStyle:(id)style theme:(id)theme
 {
-  v6 = a3;
-  v7 = a4;
+  styleCopy = style;
+  themeCopy = theme;
   v12.receiver = self;
   v12.super_class = LPPlaceholderPlayButtonControl;
-  v8 = [(LPPlayButtonControl *)&v12 initWithStyle:v6 theme:v7];
+  v8 = [(LPPlayButtonControl *)&v12 initWithStyle:styleCopy theme:themeCopy];
   v9 = v8;
   if (v8)
   {

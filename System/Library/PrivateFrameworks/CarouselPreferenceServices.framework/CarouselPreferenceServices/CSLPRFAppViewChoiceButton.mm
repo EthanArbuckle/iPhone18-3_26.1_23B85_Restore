@@ -27,8 +27,8 @@
     v6 = [MEMORY[0x277D755B8] systemImageNamed:@"circle" withConfiguration:v5];
     [(CSLPRFAppViewChoiceButton *)v2 setImage:v6 forState:0];
     [(CSLPRFAppViewChoiceButton *)v2 setImage:v4 forState:4];
-    v7 = [MEMORY[0x277D75348] systemGrayColor];
-    [(CSLPRFAppViewChoiceButton *)v2 setTintColor:v7];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [(CSLPRFAppViewChoiceButton *)v2 setTintColor:systemGrayColor];
 
     [(CSLPRFAppViewChoiceButton *)v2 setTranslatesAutoresizingMaskIntoConstraints:0];
   }

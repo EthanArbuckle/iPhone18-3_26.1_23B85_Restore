@@ -1,24 +1,24 @@
 @interface NSString
-+ (NSString)stringWithFileSystemRepresentation:(const char *)a3;
-+ (NSString)stringWithFileSystemRepresentation:(const char *)a3 length:(unint64_t)a4;
++ (NSString)stringWithFileSystemRepresentation:(const char *)representation;
++ (NSString)stringWithFileSystemRepresentation:(const char *)representation length:(unint64_t)length;
 - (BOOL)containsDotDotPathComponents;
 @end
 
 @implementation NSString
 
-+ (NSString)stringWithFileSystemRepresentation:(const char *)a3 length:(unint64_t)a4
++ (NSString)stringWithFileSystemRepresentation:(const char *)representation length:(unint64_t)length
 {
   v6 = +[NSFileManager defaultManager];
-  v7 = [v6 stringWithFileSystemRepresentation:a3 length:a4];
+  v7 = [v6 stringWithFileSystemRepresentation:representation length:length];
 
   return v7;
 }
 
-+ (NSString)stringWithFileSystemRepresentation:(const char *)a3
++ (NSString)stringWithFileSystemRepresentation:(const char *)representation
 {
-  v4 = strlen(a3);
+  v4 = strlen(representation);
 
-  return [NSString stringWithFileSystemRepresentation:a3 length:v4];
+  return [NSString stringWithFileSystemRepresentation:representation length:v4];
 }
 
 - (BOOL)containsDotDotPathComponents

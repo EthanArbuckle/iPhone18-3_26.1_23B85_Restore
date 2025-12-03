@@ -1,15 +1,15 @@
 @interface HFAnalyticsCameraRecordingCloudUpgradeResultEvent
-- (HFAnalyticsCameraRecordingCloudUpgradeResultEvent)initWithData:(id)a3;
+- (HFAnalyticsCameraRecordingCloudUpgradeResultEvent)initWithData:(id)data;
 - (id)payload;
 @end
 
 @implementation HFAnalyticsCameraRecordingCloudUpgradeResultEvent
 
-- (HFAnalyticsCameraRecordingCloudUpgradeResultEvent)initWithData:(id)a3
+- (HFAnalyticsCameraRecordingCloudUpgradeResultEvent)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
-  v5 = [v4 objectForKeyedSubscript:@"numCameras"];
+  v5 = [dataCopy objectForKeyedSubscript:@"numCameras"];
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -28,7 +28,7 @@
   }
 
   objc_opt_class();
-  v8 = [v4 objectForKeyedSubscript:@"offerPresented"];
+  v8 = [dataCopy objectForKeyedSubscript:@"offerPresented"];
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -47,7 +47,7 @@
   }
 
   objc_opt_class();
-  v11 = [v4 objectForKeyedSubscript:@"iCloudUpgradeState"];
+  v11 = [dataCopy objectForKeyedSubscript:@"iCloudUpgradeState"];
   if (objc_opt_isKindOfClass())
   {
     v12 = v11;
@@ -82,8 +82,8 @@
 {
   v9.receiver = self;
   v9.super_class = HFAnalyticsCameraRecordingCloudUpgradeResultEvent;
-  v3 = [(HFAnalyticsEvent *)&v9 payload];
-  v4 = [v3 mutableCopy];
+  payload = [(HFAnalyticsEvent *)&v9 payload];
+  v4 = [payload mutableCopy];
 
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HFAnalyticsCameraRecordingCloudUpgradeResultEvent numCamerasWithRecording](self, "numCamerasWithRecording")}];
   [v4 setObject:v5 forKeyedSubscript:@"numCamerasWithRecording"];

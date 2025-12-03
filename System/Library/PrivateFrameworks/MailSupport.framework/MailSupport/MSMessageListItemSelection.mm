@@ -1,22 +1,22 @@
 @interface MSMessageListItemSelection
-- (MSMessageListItemSelection)initWithMailboxes:(id)a3 excludedMessageListItems:(id)a4;
-- (MSMessageListItemSelection)initWithMessageListItems:(id)a3;
+- (MSMessageListItemSelection)initWithMailboxes:(id)mailboxes excludedMessageListItems:(id)items;
+- (MSMessageListItemSelection)initWithMessageListItems:(id)items;
 @end
 
 @implementation MSMessageListItemSelection
 
-- (MSMessageListItemSelection)initWithMessageListItems:(id)a3
+- (MSMessageListItemSelection)initWithMessageListItems:(id)items
 {
-  v5 = a3;
+  itemsCopy = items;
   v9.receiver = self;
   v9.super_class = MSMessageListItemSelection;
   v6 = [(MSMessageListItemSelection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_messageListItems, a3);
+    objc_storeStrong(&v6->_messageListItems, items);
     v7->_isSelectAll = 0;
-    v7->_actingOnSender = [v5 ef_any:&__block_literal_global_6];
+    v7->_actingOnSender = [itemsCopy ef_any:&__block_literal_global_6];
   }
 
   return v7;
@@ -31,14 +31,14 @@ uint64_t __55__MSMessageListItemSelection_initWithMessageListItems___block_invok
   return isKindOfClass & 1;
 }
 
-- (MSMessageListItemSelection)initWithMailboxes:(id)a3 excludedMessageListItems:(id)a4
+- (MSMessageListItemSelection)initWithMailboxes:(id)mailboxes excludedMessageListItems:(id)items
 {
-  v7 = a3;
-  v8 = [(MSMessageListItemSelection *)self initWithMessageListItems:a4];
+  mailboxesCopy = mailboxes;
+  v8 = [(MSMessageListItemSelection *)self initWithMessageListItems:items];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_mailboxes, a3);
+    objc_storeStrong(&v8->_mailboxes, mailboxes);
     v9->_isSelectAll = 1;
   }
 

@@ -1,46 +1,46 @@
 @interface NTKCompanionResourceDirectoryEditor
-+ (BOOL)_transcodeIrisVideoOf:(id)a3 forPhoto:(id)a4 withCrop:(CGRect)a5 into:(id)a6 previewOnly:(BOOL)a7;
-+ (BOOL)_transcodeStillImageOf:(id)a3 forPhoto:(id)a4 withCrop:(CGRect)a5 into:(id)a6;
++ (BOOL)_transcodeIrisVideoOf:(id)of forPhoto:(id)photo withCrop:(CGRect)crop into:(id)into previewOnly:(BOOL)only;
++ (BOOL)_transcodeStillImageOf:(id)of forPhoto:(id)photo withCrop:(CGRect)crop into:(id)into;
 + (CGSize)_watchPhotoImageSize;
 + (CGSize)_watchPhotoVideoSize;
-+ (id)_createResourceDirectoryWithAsset:(id)a3 assetCollection:(id)a4 forDevice:(id)a5 previewOnly:(BOOL)a6;
-+ (id)_cropAndScaleUIImage:(id)a3 cropRect:(CGRect)a4 outputSize:(CGSize)a5;
-+ (id)_linkPhoto:(id)a3 to:(id)a4 previewOnly:(BOOL)a5;
-+ (id)_scaleImage:(id)a3 toLongestEdgeInPixels:(double)a4;
-+ (id)_subsampledImageWithData:(id)a3 orientation:(int64_t)a4 subsampleFactor:(unint64_t)a5;
-+ (id)_transcodeAsset:(id)a3 withCrop:(CGRect)a4 into:(id)a5 previewOnly:(BOOL)a6;
-+ (id)_videoAssetOf:(id)a3;
-+ (id)_writeAsset:(id)a3 image:(id)a4 withImageCrop:(CGRect)a5 to:(id)a6;
-+ (unint64_t)_subsampleFactorForScale:(double)a3;
-+ (void)_imageDataForAsset:(id)a3 completion:(id)a4;
-+ (void)_imageForAsset:(id)a3 forSize:(CGSize)a4 completion:(id)a5;
-- (NTKCompanionResourceDirectoryEditor)initWithResourceDirectory:(id)a3 forDevice:(id)a4;
++ (id)_createResourceDirectoryWithAsset:(id)asset assetCollection:(id)collection forDevice:(id)device previewOnly:(BOOL)only;
++ (id)_cropAndScaleUIImage:(id)image cropRect:(CGRect)rect outputSize:(CGSize)size;
++ (id)_linkPhoto:(id)photo to:(id)to previewOnly:(BOOL)only;
++ (id)_scaleImage:(id)image toLongestEdgeInPixels:(double)pixels;
++ (id)_subsampledImageWithData:(id)data orientation:(int64_t)orientation subsampleFactor:(unint64_t)factor;
++ (id)_transcodeAsset:(id)asset withCrop:(CGRect)crop into:(id)into previewOnly:(BOOL)only;
++ (id)_videoAssetOf:(id)of;
++ (id)_writeAsset:(id)asset image:(id)image withImageCrop:(CGRect)crop to:(id)to;
++ (unint64_t)_subsampleFactorForScale:(double)scale;
++ (void)_imageDataForAsset:(id)asset completion:(id)completion;
++ (void)_imageForAsset:(id)asset forSize:(CGSize)size completion:(id)completion;
+- (NTKCompanionResourceDirectoryEditor)initWithResourceDirectory:(id)directory forDevice:(id)device;
 - (void)_deleteResourceDirectoryHardLinkIfNecessary;
 - (void)dealloc;
-- (void)finalizeWithCompletion:(id)a3;
-- (void)finalizeWithProgress:(id)a3 completion:(id)a4;
-- (void)generateGalleryPreviewResourceDirectoryWithCompletion:(id)a3;
-- (void)setResourceDirectory:(id)a3;
+- (void)finalizeWithCompletion:(id)completion;
+- (void)finalizeWithProgress:(id)progress completion:(id)completion;
+- (void)generateGalleryPreviewResourceDirectoryWithCompletion:(id)completion;
+- (void)setResourceDirectory:(id)directory;
 @end
 
 @implementation NTKCompanionResourceDirectoryEditor
 
-- (NTKCompanionResourceDirectoryEditor)initWithResourceDirectory:(id)a3 forDevice:(id)a4
+- (NTKCompanionResourceDirectoryEditor)initWithResourceDirectory:(id)directory forDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  directoryCopy = directory;
+  deviceCopy = device;
   v15.receiver = self;
   v15.super_class = NTKCompanionResourceDirectoryEditor;
   v8 = [(NTKCompanionResourceDirectoryEditor *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_device, a4);
-    if (v6)
+    objc_storeStrong(&v8->_device, device);
+    if (directoryCopy)
     {
       v10 = NTKNewUniqueTeporaryResourceDirectory();
-      v11 = [MEMORY[0x277CCAA00] defaultManager];
-      [v11 linkItemAtPath:v6 toPath:v10 error:0];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      [defaultManager linkItemAtPath:directoryCopy toPath:v10 error:0];
 
       resourceDirectory = v9->_resourceDirectory;
       v9->_resourceDirectory = v10;
@@ -65,13 +65,13 @@
   [(NTKCompanionResourceDirectoryEditor *)&v3 dealloc];
 }
 
-- (void)setResourceDirectory:(id)a3
+- (void)setResourceDirectory:(id)directory
 {
-  v5 = a3;
-  if (self->_resourceDirectoryIsHardLink || (NTKEqualStrings(v5, self->_resourceDirectory) & 1) == 0)
+  directoryCopy = directory;
+  if (self->_resourceDirectoryIsHardLink || (NTKEqualStrings(directoryCopy, self->_resourceDirectory) & 1) == 0)
   {
     [(NTKCompanionResourceDirectoryEditor *)self _deleteResourceDirectoryHardLinkIfNecessary];
-    objc_storeStrong(&self->_resourceDirectory, a3);
+    objc_storeStrong(&self->_resourceDirectory, directory);
   }
 }
 
@@ -79,8 +79,8 @@
 {
   if (self->_resourceDirectoryIsHardLink)
   {
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
-    [v3 removeItemAtPath:self->_resourceDirectory error:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager removeItemAtPath:self->_resourceDirectory error:0];
 
     resourceDirectory = self->_resourceDirectory;
     self->_resourceDirectory = 0;
@@ -89,17 +89,17 @@
   }
 }
 
-- (void)generateGalleryPreviewResourceDirectoryWithCompletion:(id)a3
+- (void)generateGalleryPreviewResourceDirectoryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   self->_state = 3;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __93__NTKCompanionResourceDirectoryEditor_generateGalleryPreviewResourceDirectoryWithCompletion___block_invoke;
   v6[3] = &unk_27877FF60;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -115,33 +115,33 @@ uint64_t __93__NTKCompanionResourceDirectoryEditor_generateGalleryPreviewResourc
   return v4();
 }
 
-- (void)finalizeWithCompletion:(id)a3
+- (void)finalizeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   self->_state = 4;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __62__NTKCompanionResourceDirectoryEditor_finalizeWithCompletion___block_invoke;
   v6[3] = &unk_27877FF60;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (void)finalizeWithProgress:(id)a3 completion:(id)a4
+- (void)finalizeWithProgress:(id)progress completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  progressCopy = progress;
+  completionCopy = completion;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__NTKCompanionResourceDirectoryEditor_finalizeWithProgress_completion___block_invoke;
   block[3] = &unk_278784548;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = progressCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = progressCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -154,33 +154,33 @@ uint64_t __71__NTKCompanionResourceDirectoryEditor_finalizeWithProgress_completi
   return v2();
 }
 
-+ (id)_linkPhoto:(id)a3 to:(id)a4 previewOnly:(BOOL)a5
++ (id)_linkPhoto:(id)photo to:(id)to previewOnly:(BOOL)only
 {
-  v5 = a5;
+  onlyCopy = only;
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  photoCopy = photo;
+  toCopy = to;
   v9 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 imageURL];
-    v11 = v10;
+    imageURL = [photoCopy imageURL];
+    v11 = imageURL;
     v12 = "NO";
-    if (v5)
+    if (onlyCopy)
     {
       v12 = "YES";
     }
 
     v19 = 138412546;
-    v20 = v10;
+    v20 = imageURL;
     v21 = 2080;
     v22 = v12;
     _os_log_impl(&dword_22D9C5000, v9, OS_LOG_TYPE_DEFAULT, "_linkPhoto: linking existing photo %@ into the new resource directory; preview == %s", &v19, 0x16u);
   }
 
-  v13 = [v7 copy];
-  v14 = [v7 imageURL];
-  v15 = NTKPhotosLinkURL(v14, v8);
+  v13 = [photoCopy copy];
+  imageURL2 = [photoCopy imageURL];
+  v15 = NTKPhotosLinkURL(imageURL2, toCopy);
 
   if (!v15)
   {
@@ -189,7 +189,7 @@ uint64_t __71__NTKCompanionResourceDirectoryEditor_finalizeWithProgress_completi
   }
 
   [v13 setImageURL:v15];
-  if (v5)
+  if (onlyCopy)
   {
     [v13 setIsIris:0];
     [v13 setIrisVideoURL:0];
@@ -197,10 +197,10 @@ uint64_t __71__NTKCompanionResourceDirectoryEditor_finalizeWithProgress_completi
     [v13 setIrisStillDisplayTime:0.0];
   }
 
-  else if ([v7 isIris])
+  else if ([photoCopy isIris])
   {
-    v17 = [v7 irisVideoURL];
-    v16 = NTKPhotosLinkURL(v17, v8);
+    irisVideoURL = [photoCopy irisVideoURL];
+    v16 = NTKPhotosLinkURL(irisVideoURL, toCopy);
 
     if (!v16)
     {
@@ -216,47 +216,47 @@ LABEL_13:
   return v16;
 }
 
-+ (id)_transcodeAsset:(id)a3 withCrop:(CGRect)a4 into:(id)a5 previewOnly:(BOOL)a6
++ (id)_transcodeAsset:(id)asset withCrop:(CGRect)crop into:(id)into previewOnly:(BOOL)only
 {
-  v6 = a6;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  onlyCopy = only;
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
   v32 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a5;
+  assetCopy = asset;
+  intoCopy = into;
   v15 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v13 localIdentifier];
-    v17 = v16;
+    localIdentifier = [assetCopy localIdentifier];
+    v17 = localIdentifier;
     v18 = "NO";
-    if (v6)
+    if (onlyCopy)
     {
       v18 = "YES";
     }
 
     v28 = 138412546;
-    v29 = v16;
+    v29 = localIdentifier;
     v30 = 2080;
     v31 = v18;
     _os_log_impl(&dword_22D9C5000, v15, OS_LOG_TYPE_DEFAULT, "_transcodeAsset: transcoding new asset %@ into the new resource directory; preview == %s", &v28, 0x16u);
   }
 
   v19 = objc_opt_new();
-  v20 = [v13 localIdentifier];
-  [v19 setLocalIdentifier:v20];
+  localIdentifier2 = [assetCopy localIdentifier];
+  [v19 setLocalIdentifier:localIdentifier2];
 
-  v21 = [v13 modificationDate];
-  [v19 setModificationDate:v21];
+  modificationDate = [assetCopy modificationDate];
+  [v19 setModificationDate:modificationDate];
 
   [v19 setOriginalCrop:{x, y, width, height}];
-  v22 = x / [v13 pixelWidth];
-  v23 = y / [v13 pixelHeight];
-  v24 = width / [v13 pixelWidth];
-  v25 = height / [v13 pixelHeight];
-  if ([a1 _transcodeStillImageOf:v13 forPhoto:v19 withCrop:v14 into:{v22, v23, v24, v25}] && objc_msgSend(a1, "_transcodeIrisVideoOf:forPhoto:withCrop:into:previewOnly:", v13, v19, v14, v6, v22, v23, v24, v25))
+  v22 = x / [assetCopy pixelWidth];
+  v23 = y / [assetCopy pixelHeight];
+  v24 = width / [assetCopy pixelWidth];
+  v25 = height / [assetCopy pixelHeight];
+  if ([self _transcodeStillImageOf:assetCopy forPhoto:v19 withCrop:intoCopy into:{v22, v23, v24, v25}] && objc_msgSend(self, "_transcodeIrisVideoOf:forPhoto:withCrop:into:previewOnly:", assetCopy, v19, intoCopy, onlyCopy, v22, v23, v24, v25))
   {
     v26 = v19;
   }
@@ -269,15 +269,15 @@ LABEL_13:
   return v26;
 }
 
-+ (BOOL)_transcodeStillImageOf:(id)a3 forPhoto:(id)a4 withCrop:(CGRect)a5 into:(id)a6
++ (BOOL)_transcodeStillImageOf:(id)of forPhoto:(id)photo withCrop:(CGRect)crop into:(id)into
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  ofCopy = of;
+  photoCopy = photo;
+  intoCopy = into;
   v55 = 0;
   v56 = &v55;
   v57 = 0x2020000000;
@@ -301,13 +301,13 @@ LABEL_13:
   v44 = &v45;
   v17 = v16;
   v42 = v17;
-  [a1 _imageDataForAsset:v13 completion:v41];
+  [self _imageDataForAsset:ofCopy completion:v41];
   dispatch_semaphore_wait(v17, 0xFFFFFFFFFFFFFFFFLL);
   if (v50[5])
   {
-    v18 = [v13 pixelWidth];
-    v19 = [v13 pixelHeight];
-    CGAffineTransformMakeScale(&v40, [v13 pixelWidth], objc_msgSend(v13, "pixelHeight"));
+    pixelWidth = [ofCopy pixelWidth];
+    pixelHeight = [ofCopy pixelHeight];
+    CGAffineTransformMakeScale(&v40, [ofCopy pixelWidth], objc_msgSend(ofCopy, "pixelHeight"));
     v59.origin.x = x;
     v59.origin.y = y;
     v59.size.width = width;
@@ -317,21 +317,21 @@ LABEL_13:
     v21 = v60.origin.y;
     v22 = v60.size.width;
     v23 = v60.size.height;
-    [a1 _watchPhotoImageSize];
+    [self _watchPhotoImageSize];
     v25 = v24;
     v27 = v26;
     v28 = [NTKCompanionImageDataScaler alloc];
-    v29 = [(NTKCompanionImageDataScaler *)v28 initWithSize:v50[5] crop:v46[3] data:v18 orientation:v19 outputSize:v20, v21, v22, v23, v25, v27];
+    v29 = [(NTKCompanionImageDataScaler *)v28 initWithSize:v50[5] crop:v46[3] data:pixelWidth orientation:pixelHeight outputSize:v20, v21, v22, v23, v25, v27];
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __85__NTKCompanionResourceDirectoryEditor__transcodeStillImageOf_forPhoto_withCrop_into___block_invoke_2;
     v33[3] = &unk_2787845C0;
     v30 = v17;
     v34 = v30;
-    v35 = v14;
+    v35 = photoCopy;
     v38 = v25;
     v39 = v27;
-    v36 = v15;
+    v36 = intoCopy;
     v37 = &v55;
     [(NTKCompanionImageDataScaler *)v29 cropAndScaleWithCompletion:v33];
     dispatch_semaphore_wait(v30, 0xFFFFFFFFFFFFFFFFLL);
@@ -457,13 +457,13 @@ void __85__NTKCompanionResourceDirectoryEditor__transcodeStillImageOf_forPhoto_w
   }
 }
 
-+ (id)_createResourceDirectoryWithAsset:(id)a3 assetCollection:(id)a4 forDevice:(id)a5 previewOnly:(BOOL)a6
++ (id)_createResourceDirectoryWithAsset:(id)asset assetCollection:(id)collection forDevice:(id)device previewOnly:(BOOL)only
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!(v10 | v11))
+  onlyCopy = only;
+  assetCopy = asset;
+  collectionCopy = collection;
+  deviceCopy = device;
+  if (!(assetCopy | collectionCopy))
   {
     v13 = 0;
     goto LABEL_15;
@@ -472,38 +472,38 @@ void __85__NTKCompanionResourceDirectoryEditor__transcodeStillImageOf_forPhoto_w
   v14 = NTKPhotosCreateResourceDirectory();
   if (v14)
   {
-    if (v10)
+    if (assetCopy)
     {
-      NTKPhotosDefaultCropForAsset(v10, v12);
-      v13 = [a1 _transcodeAsset:v10 withCrop:v14 into:v6 previewOnly:?];
+      NTKPhotosDefaultCropForAsset(assetCopy, deviceCopy);
+      v13 = [self _transcodeAsset:assetCopy withCrop:v14 into:onlyCopy previewOnly:?];
       if (!v13)
       {
-        v15 = [MEMORY[0x277CCAA00] defaultManager];
-        [v15 removeItemAtPath:v14 error:0];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+        [defaultManager removeItemAtPath:v14 error:0];
 LABEL_13:
 
         goto LABEL_14;
       }
 
-      v15 = objc_opt_new();
-      v16 = [v13 encodeAsDictionary];
-      [v15 addObject:v16];
+      defaultManager = objc_opt_new();
+      encodeAsDictionary = [v13 encodeAsDictionary];
+      [defaultManager addObject:encodeAsDictionary];
     }
 
     else
     {
-      v15 = objc_opt_new();
+      defaultManager = objc_opt_new();
     }
 
-    if (NTKPhotosWriteImageListForAssetCollection(v15, v11, v14))
+    if (NTKPhotosWriteImageListForAssetCollection(defaultManager, collectionCopy, v14))
     {
       v13 = v14;
     }
 
     else
     {
-      v17 = [MEMORY[0x277CCAA00] defaultManager];
-      [v17 removeItemAtPath:v14 error:0];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+      [defaultManager2 removeItemAtPath:v14 error:0];
 
       v13 = 0;
     }
@@ -519,47 +519,47 @@ LABEL_15:
   return v13;
 }
 
-+ (BOOL)_transcodeIrisVideoOf:(id)a3 forPhoto:(id)a4 withCrop:(CGRect)a5 into:(id)a6 previewOnly:(BOOL)a7
++ (BOOL)_transcodeIrisVideoOf:(id)of forPhoto:(id)photo withCrop:(CGRect)crop into:(id)into previewOnly:(BOOL)only
 {
-  v7 = a7;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  if (!NTKPhotosIsPHAssetIris(v15) || v7)
+  onlyCopy = only;
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  ofCopy = of;
+  photoCopy = photo;
+  intoCopy = into;
+  if (!NTKPhotosIsPHAssetIris(ofCopy) || onlyCopy)
   {
-    [v16 setIsIris:0];
-    [v16 setIrisVideoURL:0];
-    [v16 setIrisDuration:0.0];
-    [v16 setIrisStillDisplayTime:0.0];
+    [photoCopy setIsIris:0];
+    [photoCopy setIrisVideoURL:0];
+    [photoCopy setIrisDuration:0.0];
+    [photoCopy setIrisStillDisplayTime:0.0];
     v26 = 1;
   }
 
   else
   {
     context = objc_autoreleasePoolPush();
-    [v16 setIsIris:1];
-    v18 = [v16 imageURL];
+    [photoCopy setIsIris:1];
+    imageURL = [photoCopy imageURL];
 
-    if (v18)
+    if (imageURL)
     {
       v19 = MEMORY[0x277CCACA8];
-      v20 = [v16 imageURL];
-      v21 = [v19 stringWithUTF8String:{objc_msgSend(v20, "fileSystemRepresentation")}];
-      v22 = [v21 lastPathComponent];
+      imageURL2 = [photoCopy imageURL];
+      v21 = [v19 stringWithUTF8String:{objc_msgSend(imageURL2, "fileSystemRepresentation")}];
+      lastPathComponent = [v21 lastPathComponent];
 
       v23 = MEMORY[0x277CCACA8];
-      v24 = [v22 stringByDeletingPathExtension];
-      v25 = [v23 stringWithFormat:@"%@.mov", v24];
+      stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+      uUIDString = [v23 stringWithFormat:@"%@.mov", stringByDeletingPathExtension];
     }
 
     else
     {
-      v24 = [MEMORY[0x277CCAD78] UUID];
-      v25 = [v24 UUIDString];
+      stringByDeletingPathExtension = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [stringByDeletingPathExtension UUIDString];
     }
 
     v27 = dispatch_semaphore_create(0);
@@ -570,12 +570,12 @@ LABEL_15:
     v58 = __Block_byref_object_dispose__39;
     v59 = 0;
     v28 = MEMORY[0x277CBEBC0];
-    v29 = [v17 stringByAppendingPathComponent:v25];
+    v29 = [intoCopy stringByAppendingPathComponent:uUIDString];
     v30 = [v28 fileURLWithPath:v29];
 
     v31 = [NTKCompanionIrisVideoExportSession alloc];
-    v32 = [a1 _videoAssetOf:v15];
-    [a1 _watchPhotoVideoSize];
+    v32 = [self _videoAssetOf:ofCopy];
+    [self _watchPhotoVideoSize];
     v35 = [(NTKCompanionIrisVideoExportSession *)v31 initWithVideo:v32 crop:300000 outputSize:v30 bitrate:x outputURL:y, width, height, v33, v34];
 
     v48[0] = MEMORY[0x277D85DD0];
@@ -587,7 +587,7 @@ LABEL_15:
     v37 = v35;
     v50 = v37;
     v53 = &v54;
-    v38 = v15;
+    v38 = ofCopy;
     v51 = v38;
     v39 = v27;
     v52 = v39;
@@ -597,12 +597,12 @@ LABEL_15:
     v26 = v40 == 0;
     if (!v40)
     {
-      [v16 setIrisVideoURL:v36];
-      v41 = [v38 photoIrisProperties];
-      v42 = v41;
-      if (v41)
+      [photoCopy setIrisVideoURL:v36];
+      photoIrisProperties = [v38 photoIrisProperties];
+      v42 = photoIrisProperties;
+      if (photoIrisProperties)
       {
-        [v41 photoIrisVideoDuration];
+        [photoIrisProperties photoIrisVideoDuration];
       }
 
       else
@@ -610,13 +610,13 @@ LABEL_15:
         memset(&time, 0, sizeof(time));
       }
 
-      [v16 setIrisDuration:CMTimeGetSeconds(&time)];
+      [photoCopy setIrisDuration:CMTimeGetSeconds(&time)];
 
-      v43 = [v38 photoIrisProperties];
-      v44 = v43;
-      if (v43)
+      photoIrisProperties2 = [v38 photoIrisProperties];
+      v44 = photoIrisProperties2;
+      if (photoIrisProperties2)
       {
-        [v43 photoIrisStillDisplayTime];
+        [photoIrisProperties2 photoIrisStillDisplayTime];
       }
 
       else
@@ -624,7 +624,7 @@ LABEL_15:
         memset(&time, 0, sizeof(time));
       }
 
-      [v16 setIrisStillDisplayTime:CMTimeGetSeconds(&time)];
+      [photoCopy setIrisStillDisplayTime:CMTimeGetSeconds(&time)];
     }
 
     _Block_object_dispose(&v54, 8);
@@ -663,24 +663,24 @@ intptr_t __96__NTKCompanionResourceDirectoryEditor__transcodeIrisVideoOf_forPhot
   return dispatch_semaphore_signal(*(a1 + 56));
 }
 
-+ (id)_writeAsset:(id)a3 image:(id)a4 withImageCrop:(CGRect)a5 to:(id)a6
++ (id)_writeAsset:(id)asset image:(id)image withImageCrop:(CGRect)crop to:(id)to
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  assetCopy = asset;
+  imageCopy = image;
+  toCopy = to;
   v15 = MEMORY[0x277CCACA8];
-  v16 = [MEMORY[0x277CCAD78] UUID];
-  v17 = [v16 UUIDString];
-  v18 = [v15 stringWithFormat:@"%@.jpg", v17];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v18 = [v15 stringWithFormat:@"%@.jpg", uUIDString];
 
-  v19 = UIImageJPEGRepresentation(v13, 0.85);
+  v19 = UIImageJPEGRepresentation(imageCopy, 0.85);
   if (v19)
   {
-    v20 = [v14 stringByAppendingPathComponent:v18];
+    v20 = [toCopy stringByAppendingPathComponent:v18];
     v53[0] = 0;
     [v19 writeToFile:v20 options:0 error:v53];
     v21 = v53[0];
@@ -700,19 +700,19 @@ intptr_t __96__NTKCompanionResourceDirectoryEditor__transcodeIrisVideoOf_forPhot
       v48 = v18;
       v31 = objc_opt_new();
       v47 = v19;
-      if (v12)
+      if (assetCopy)
       {
-        v32 = [v12 localIdentifier];
-        [v31 setLocalIdentifier:v32];
+        localIdentifier = [assetCopy localIdentifier];
+        [v31 setLocalIdentifier:localIdentifier];
 
-        [v12 modificationDate];
+        [assetCopy modificationDate];
       }
 
       else
       {
         v33 = MEMORY[0x277CCACA8];
-        v34 = [MEMORY[0x277CCAD78] UUID];
-        [v34 UUIDString];
+        uUID2 = [MEMORY[0x277CCAD78] UUID];
+        [uUID2 UUIDString];
         v36 = v35 = v20;
         v37 = [v33 stringWithFormat:@"Temp-%@", v36];
         [v31 setLocalIdentifier:v37];
@@ -742,7 +742,7 @@ intptr_t __96__NTKCompanionResourceDirectoryEditor__transcodeIrisVideoOf_forPhot
         v49[3] = &unk_278784598;
         v23 = v31;
         v50 = v23;
-        v51 = v13;
+        v51 = imageCopy;
         v52 = v40;
         [v44 enumerateSizeClasses:v49];
 
@@ -779,13 +779,13 @@ void __74__NTKCompanionResourceDirectoryEditor__writeAsset_image_withImageCrop_t
   [v4 setAnalysis:v5 alignment:a1[6] deviceSizeClass:a2];
 }
 
-+ (id)_scaleImage:(id)a3 toLongestEdgeInPixels:(double)a4
++ (id)_scaleImage:(id)image toLongestEdgeInPixels:(double)pixels
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  imageCopy = image;
+  v5 = imageCopy;
+  if (imageCopy)
   {
-    [v4 size];
+    [imageCopy size];
     v20 = v7;
     v21 = v6;
     [v5 scale];
@@ -793,7 +793,7 @@ void __74__NTKCompanionResourceDirectoryEditor__writeAsset_image_withImageCrop_t
     [v5 scale];
     CGAffineTransformMakeScale(&v24, v9, v10);
     v11 = vmlaq_n_f64(vmulq_n_f64(*&v24.c, v20), *&v24.a, v21);
-    v12 = vdivq_f64(vdupq_lane_s64(*&a4, 0), v11);
+    v12 = vdivq_f64(vdupq_lane_s64(*&pixels, 0), v11);
     if (v12.f64[0] >= v12.f64[1])
     {
       v12.f64[0] = v12.f64[1];
@@ -829,10 +829,10 @@ void __74__NTKCompanionResourceDirectoryEditor__writeAsset_image_withImageCrop_t
   return v18;
 }
 
-+ (id)_videoAssetOf:(id)a3
++ (id)_videoAssetOf:(id)of
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  ofCopy = of;
   v4 = objc_alloc_init(MEMORY[0x277CD9A00]);
   [v4 setVersion:0];
   [v4 setDeliveryMode:1];
@@ -845,7 +845,7 @@ void __74__NTKCompanionResourceDirectoryEditor__writeAsset_image_withImageCrop_t
   v23 = __Block_byref_object_dispose__39;
   v24 = 0;
   v5 = dispatch_semaphore_create(0);
-  v6 = [MEMORY[0x277CD9898] defaultManager];
+  defaultManager = [MEMORY[0x277CD9898] defaultManager];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __53__NTKCompanionResourceDirectoryEditor__videoAssetOf___block_invoke;
@@ -853,16 +853,16 @@ void __74__NTKCompanionResourceDirectoryEditor__writeAsset_image_withImageCrop_t
   v18 = &v19;
   v7 = v5;
   v17 = v7;
-  [v6 requestURLForVideo:v3 options:v4 resultHandler:&v13];
+  [defaultManager requestURLForVideo:ofCopy options:v4 resultHandler:&v13];
 
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
   v8 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v3 localIdentifier];
+    localIdentifier = [ofCopy localIdentifier];
     v10 = [v20[5] URL];
     *buf = 138412546;
-    v26 = v9;
+    v26 = localIdentifier;
     v27 = 2112;
     v28 = v10;
     _os_log_impl(&dword_22D9C5000, v8, OS_LOG_TYPE_DEFAULT, "_videoAssetOf: %@ ==> %@", buf, 0x16u);
@@ -889,16 +889,16 @@ intptr_t __53__NTKCompanionResourceDirectoryEditor__videoAssetOf___block_invoke(
   return dispatch_semaphore_signal(v6);
 }
 
-+ (id)_cropAndScaleUIImage:(id)a3 cropRect:(CGRect)a4 outputSize:(CGSize)a5
++ (id)_cropAndScaleUIImage:(id)image cropRect:(CGRect)rect outputSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v7 = a4.size.height;
-  v8 = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = size.height;
+  width = size.width;
+  v7 = rect.size.height;
+  v8 = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v36 = *MEMORY[0x277D85DE8];
-  v11 = a3;
+  imageCopy = image;
   v38.width = width;
   v38.height = height;
   UIGraphicsBeginImageContextWithOptions(v38, 0, 1.0);
@@ -924,12 +924,12 @@ intptr_t __53__NTKCompanionResourceDirectoryEditor__videoAssetOf___block_invoke(
   v28 = y;
   v13 = x + fmax((v8 - v40.size.width) * 0.5, 0.0);
   v14 = y + fmax((v7 - v40.size.height) * 0.5, 0.0);
-  [v11 size];
+  [imageCopy size];
   v16 = v15;
   v18 = v17;
-  [v11 scale];
+  [imageCopy scale];
   v20 = v19;
-  [v11 scale];
+  [imageCopy scale];
   CGAffineTransformMakeScale(v31, v20, v21);
   v22 = v18 * *&v31[16] + *v31 * v16;
   v23 = v18 * *&v31[24] + *&v31[8] * v16;
@@ -939,7 +939,7 @@ intptr_t __53__NTKCompanionResourceDirectoryEditor__videoAssetOf___block_invoke(
   v41.size.width = v22;
   v41.size.height = v23;
   v42 = CGRectApplyAffineTransform(v41, v31);
-  [v11 drawInRect:{v42.origin.x, v42.origin.y, v42.size.width, v42.size.height}];
+  [imageCopy drawInRect:{v42.origin.x, v42.origin.y, v42.size.width, v42.size.height}];
   v24 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   if (!v24)
@@ -948,7 +948,7 @@ intptr_t __53__NTKCompanionResourceDirectoryEditor__videoAssetOf___block_invoke(
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
       *v31 = 138413826;
-      *&v31[4] = v11;
+      *&v31[4] = imageCopy;
       *&v31[12] = 2048;
       *&v31[14] = v27;
       *&v31[22] = 2048;
@@ -968,19 +968,19 @@ intptr_t __53__NTKCompanionResourceDirectoryEditor__videoAssetOf___block_invoke(
   return v24;
 }
 
-+ (void)_imageDataForAsset:(id)a3 completion:(id)a4
++ (void)_imageDataForAsset:(id)asset completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  assetCopy = asset;
+  completionCopy = completion;
   v7 = dispatch_get_global_queue(25, 0);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __69__NTKCompanionResourceDirectoryEditor__imageDataForAsset_completion___block_invoke;
   v10[3] = &unk_27877FF60;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = assetCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = assetCopy;
   dispatch_async(v7, v10);
 }
 
@@ -1066,12 +1066,12 @@ void __69__NTKCompanionResourceDirectoryEditor__imageDataForAsset_completion___b
   (*(*(a1 + 40) + 16))();
 }
 
-+ (void)_imageForAsset:(id)a3 forSize:(CGSize)a4 completion:(id)a5
++ (void)_imageForAsset:(id)asset forSize:(CGSize)size completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
-  v9 = a5;
+  height = size.height;
+  width = size.width;
+  assetCopy = asset;
+  completionCopy = completion;
   v10 = dispatch_get_global_queue(25, 0);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -1079,10 +1079,10 @@ void __69__NTKCompanionResourceDirectoryEditor__imageDataForAsset_completion___b
   v13[3] = &unk_278782DB8;
   v16 = width;
   v17 = height;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = assetCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = assetCopy;
   dispatch_async(v10, v13);
 }
 
@@ -1177,26 +1177,26 @@ void __73__NTKCompanionResourceDirectoryEditor__imageForAsset_forSize_completion
   return result;
 }
 
-+ (unint64_t)_subsampleFactorForScale:(double)a3
++ (unint64_t)_subsampleFactorForScale:(double)scale
 {
   v3 = 2;
-  if (a3 > 0.5)
+  if (scale > 0.5)
   {
     v3 = 1;
   }
 
-  return v3 << (a3 <= 0.25) << (a3 <= 0.125);
+  return v3 << (scale <= 0.25) << (scale <= 0.125);
 }
 
-+ (id)_subsampledImageWithData:(id)a3 orientation:(int64_t)a4 subsampleFactor:(unint64_t)a5
++ (id)_subsampledImageWithData:(id)data orientation:(int64_t)orientation subsampleFactor:(unint64_t)factor
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v7 = CGImageSourceCreateWithData(a3, 0);
+  v7 = CGImageSourceCreateWithData(data, 0);
   if (v7)
   {
     v8 = v7;
     v30 = *MEMORY[0x277CD3650];
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:factor];
     v31[0] = v9;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:&v30 count:1];
 
@@ -1204,7 +1204,7 @@ void __73__NTKCompanionResourceDirectoryEditor__imageForAsset_forSize_completion
     if (ImageAtIndex)
     {
       v12 = ImageAtIndex;
-      v13 = [MEMORY[0x277D755B8] imageWithCGImage:ImageAtIndex scale:a4 orientation:1.0];
+      v13 = [MEMORY[0x277D755B8] imageWithCGImage:ImageAtIndex scale:orientation orientation:1.0];
       CFRelease(v12);
     }
 

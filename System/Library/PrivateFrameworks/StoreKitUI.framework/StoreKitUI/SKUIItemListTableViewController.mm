@@ -1,56 +1,56 @@
 @interface SKUIItemListTableViewController
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (CGRect)frameForItemAtIndex:(int64_t)a3;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (CGRect)frameForItemAtIndex:(int64_t)index;
 - (CGSize)imageBoundingSize;
 - (NSString)visibleMetricsImpressions;
 - (SKUIItemArtworkContext)artworkContext;
 - (SKUIItemListTableDelegate)delegate;
-- (SKUIItemListTableViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SKUIItemListTableViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (SKUIStyledImageDataConsumer)iconDataConsumer;
-- (_NSRange)itemCollectionController:(id)a3 itemPageRangeForOffset:(CGPoint)a4;
-- (_NSRange)visibleItemRangeForItemCollectionController:(id)a3;
+- (_NSRange)itemCollectionController:(id)controller itemPageRangeForOffset:(CGPoint)offset;
+- (_NSRange)visibleItemRangeForItemCollectionController:(id)controller;
 - (id)_itemCollectionController;
-- (id)itemCollectionController:(id)a3 cellLayoutForItemIndex:(int64_t)a4;
-- (id)popIconImageViewForItemAtIndex:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_finishLoadMoreOperationWithItems:(id)a3 error:(id)a4;
-- (void)_loadRemainingItemsWithPriority:(int64_t)a3;
-- (void)addItems:(id)a3;
+- (id)itemCollectionController:(id)controller cellLayoutForItemIndex:(int64_t)index;
+- (id)popIconImageViewForItemAtIndex:(int64_t)index;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_finishLoadMoreOperationWithItems:(id)items error:(id)error;
+- (void)_loadRemainingItemsWithPriority:(int64_t)priority;
+- (void)addItems:(id)items;
 - (void)dealloc;
-- (void)deleteRowsAtIndexPaths:(id)a3;
-- (void)itemTableView:(id)a3 didConfirmItemOfferForTableViewCell:(id)a4;
-- (void)itemTableView:(id)a3 didRemoveCell:(id)a4;
-- (void)loadNextPageOfArtworkWithReason:(int64_t)a3;
+- (void)deleteRowsAtIndexPaths:(id)paths;
+- (void)itemTableView:(id)view didConfirmItemOfferForTableViewCell:(id)cell;
+- (void)itemTableView:(id)view didRemoveCell:(id)cell;
+- (void)loadNextPageOfArtworkWithReason:(int64_t)reason;
 - (void)loadView;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setArtworkLoader:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setIconDataConsumer:(id)a3;
-- (void)setItemArtworkContext:(id)a3;
-- (void)setItemCellClass:(Class)a3;
-- (void)setItemList:(id)a3;
-- (void)setRowHeight:(double)a3;
-- (void)setSeparatorStyle:(int64_t)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didEndDisplayingCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setArtworkLoader:(id)loader;
+- (void)setDelegate:(id)delegate;
+- (void)setIconDataConsumer:(id)consumer;
+- (void)setItemArtworkContext:(id)context;
+- (void)setItemCellClass:(Class)class;
+- (void)setItemList:(id)list;
+- (void)setRowHeight:(double)height;
+- (void)setSeparatorStyle:(int64_t)style;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didEndDisplayingCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)unhideIcons;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation SKUIItemListTableViewController
 
-- (SKUIItemListTableViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SKUIItemListTableViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIItemListTableViewController initWithNibName:bundle:];
@@ -58,20 +58,20 @@
 
   v13.receiver = self;
   v13.super_class = SKUIItemListTableViewController;
-  v8 = [(SKUIItemListTableViewController *)&v13 initWithNibName:v6 bundle:v7];
+  v8 = [(SKUIItemListTableViewController *)&v13 initWithNibName:nameCopy bundle:bundleCopy];
   if (v8)
   {
-    v9 = [MEMORY[0x277D75418] currentDevice];
-    v10 = [v9 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
     v11 = 95.0;
-    if (v10 != 1)
+    if (userInterfaceIdiom != 1)
     {
       v11 = 84.0;
     }
 
     v8->_rowHeight = v11;
-    v8->_selectionStyle = v10 != 1;
+    v8->_selectionStyle = userInterfaceIdiom != 1;
   }
 
   return v8;
@@ -85,14 +85,14 @@
   [(SKUIItemListTableViewController *)&v3 dealloc];
 }
 
-- (void)addItems:(id)a3
+- (void)addItems:(id)items
 {
-  v14 = a3;
+  itemsCopy = items;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [(SKUIItemList *)self->_itemList items];
-  v6 = [v5 count];
+  items = [(SKUIItemList *)self->_itemList items];
+  v6 = [items count];
 
-  if ([v14 count])
+  if ([itemsCopy count])
   {
     v7 = 0;
     do
@@ -101,43 +101,43 @@
       [v4 addObject:v8];
 
       itemList = self->_itemList;
-      v10 = [v14 objectAtIndex:v7];
+      v10 = [itemsCopy objectAtIndex:v7];
       [(SKUIItemList *)itemList addItem:v10];
 
       ++v7;
     }
 
-    while (v7 < [v14 count]);
+    while (v7 < [itemsCopy count]);
   }
 
   itemCollectionController = self->_itemCollectionController;
-  v12 = [(SKUIItemList *)self->_itemList items];
-  [(SKUIItemCollectionController *)itemCollectionController setItems:v12];
+  items2 = [(SKUIItemList *)self->_itemList items];
+  [(SKUIItemCollectionController *)itemCollectionController setItems:items2];
 
-  v13 = [(SKUIItemListTableViewController *)self tableView];
-  [v13 beginUpdates];
-  [v13 insertRowsAtIndexPaths:v4 withRowAnimation:5];
-  [v13 endUpdates];
+  tableView = [(SKUIItemListTableViewController *)self tableView];
+  [tableView beginUpdates];
+  [tableView insertRowsAtIndexPaths:v4 withRowAnimation:5];
+  [tableView endUpdates];
 }
 
 - (SKUIItemArtworkContext)artworkContext
 {
-  v2 = [(SKUIItemListTableViewController *)self _itemCollectionController];
-  v3 = [v2 artworkContext];
+  _itemCollectionController = [(SKUIItemListTableViewController *)self _itemCollectionController];
+  artworkContext = [_itemCollectionController artworkContext];
 
-  return v3;
+  return artworkContext;
 }
 
-- (void)deleteRowsAtIndexPaths:(id)a3
+- (void)deleteRowsAtIndexPaths:(id)paths
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathsCopy = paths;
   v5 = objc_alloc_init(MEMORY[0x277CCAB58]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = pathsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -165,18 +165,18 @@
 
   [(SKUIItemList *)self->_itemList removeItemsAtIndexes:v5];
   itemCollectionController = self->_itemCollectionController;
-  v12 = [(SKUIItemList *)self->_itemList items];
-  [(SKUIItemCollectionController *)itemCollectionController setItems:v12];
+  items = [(SKUIItemList *)self->_itemList items];
+  [(SKUIItemCollectionController *)itemCollectionController setItems:items];
 
-  v13 = [(SKUIItemListTableViewController *)self tableView];
-  [v13 deleteRowsAtIndexPaths:v6 withRowAnimation:100];
+  tableView = [(SKUIItemListTableViewController *)self tableView];
+  [tableView deleteRowsAtIndexPaths:v6 withRowAnimation:100];
 }
 
-- (CGRect)frameForItemAtIndex:(int64_t)a3
+- (CGRect)frameForItemAtIndex:(int64_t)index
 {
-  v4 = [(SKUIItemListTableViewController *)self tableView];
-  v5 = [MEMORY[0x277CCAA70] indexPathForRow:a3 inSection:0];
-  v6 = [v4 cellForRowAtIndexPath:v5];
+  tableView = [(SKUIItemListTableViewController *)self tableView];
+  v5 = [MEMORY[0x277CCAA70] indexPathForRow:index inSection:0];
+  v6 = [tableView cellForRowAtIndexPath:v5];
 
   if (v6)
   {
@@ -209,40 +209,40 @@
 
 - (SKUIStyledImageDataConsumer)iconDataConsumer
 {
-  v2 = [(SKUIItemListTableViewController *)self _itemCollectionController];
-  v3 = [v2 iconDataConsumer];
+  _itemCollectionController = [(SKUIItemListTableViewController *)self _itemCollectionController];
+  iconDataConsumer = [_itemCollectionController iconDataConsumer];
 
-  return v3;
+  return iconDataConsumer;
 }
 
-- (void)loadNextPageOfArtworkWithReason:(int64_t)a3
+- (void)loadNextPageOfArtworkWithReason:(int64_t)reason
 {
-  v4 = [(SKUIItemListTableViewController *)self _itemCollectionController];
-  [v4 loadNextPageOfArtworkWithReason:a3];
+  _itemCollectionController = [(SKUIItemListTableViewController *)self _itemCollectionController];
+  [_itemCollectionController loadNextPageOfArtworkWithReason:reason];
 }
 
-- (id)popIconImageViewForItemAtIndex:(int64_t)a3
+- (id)popIconImageViewForItemAtIndex:(int64_t)index
 {
-  v5 = [(SKUIItemListTableViewController *)self tableView];
-  v6 = [MEMORY[0x277CCAA70] indexPathForRow:a3 inSection:0];
-  v7 = [v5 cellForRowAtIndexPath:v6];
+  tableView = [(SKUIItemListTableViewController *)self tableView];
+  v6 = [MEMORY[0x277CCAA70] indexPathForRow:index inSection:0];
+  v7 = [tableView cellForRowAtIndexPath:v6];
 
   if (v7)
   {
-    v8 = [v7 layout];
-    v9 = [v8 iconImageView];
-    [v9 frame];
+    layout = [v7 layout];
+    iconImageView = [layout iconImageView];
+    [iconImageView frame];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
 
     v18 = objc_alloc(MEMORY[0x277D755E8]);
-    v19 = [v8 iconImage];
-    v20 = [v18 initWithImage:v19];
+    iconImage = [layout iconImage];
+    v20 = [v18 initWithImage:iconImage];
 
-    v21 = [(SKUIItemListTableViewController *)self view];
-    [v21 convertRect:v7 fromView:{v11, v13, v15, v17}];
+    view = [(SKUIItemListTableViewController *)self view];
+    [view convertRect:v7 fromView:{v11, v13, v15, v17}];
     [v20 setFrame:?];
 
     hiddenIconIndexSet = self->_hiddenIconIndexSet;
@@ -255,8 +255,8 @@
       hiddenIconIndexSet = self->_hiddenIconIndexSet;
     }
 
-    [(NSMutableIndexSet *)hiddenIconIndexSet addIndex:a3];
-    [v8 setIconImageHidden:1];
+    [(NSMutableIndexSet *)hiddenIconIndexSet addIndex:index];
+    [layout setIconImageHidden:1];
   }
 
   else
@@ -267,16 +267,16 @@
   return v20;
 }
 
-- (void)setArtworkLoader:(id)a3
+- (void)setArtworkLoader:(id)loader
 {
-  v4 = a3;
-  v5 = [(SKUIItemListTableViewController *)self _itemCollectionController];
-  [v5 setArtworkLoader:v4];
+  loaderCopy = loader;
+  _itemCollectionController = [(SKUIItemListTableViewController *)self _itemCollectionController];
+  [_itemCollectionController setArtworkLoader:loaderCopy];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -291,42 +291,42 @@
   }
 }
 
-- (void)setIconDataConsumer:(id)a3
+- (void)setIconDataConsumer:(id)consumer
 {
-  v4 = a3;
-  v5 = [(SKUIItemListTableViewController *)self _itemCollectionController];
-  [v5 setIconDataConsumer:v4];
+  consumerCopy = consumer;
+  _itemCollectionController = [(SKUIItemListTableViewController *)self _itemCollectionController];
+  [_itemCollectionController setIconDataConsumer:consumerCopy];
 }
 
-- (void)setItemArtworkContext:(id)a3
+- (void)setItemArtworkContext:(id)context
 {
-  v4 = a3;
-  v5 = [(SKUIItemListTableViewController *)self _itemCollectionController];
-  [v5 setArtworkContext:v4];
+  contextCopy = context;
+  _itemCollectionController = [(SKUIItemListTableViewController *)self _itemCollectionController];
+  [_itemCollectionController setArtworkContext:contextCopy];
 }
 
-- (void)setItemCellClass:(Class)a3
+- (void)setItemCellClass:(Class)class
 {
-  v4 = [(SKUIItemListTableViewController *)self tableView];
-  [v4 registerClass:a3 forCellReuseIdentifier:@"ItemCellReuseIdentifier"];
+  tableView = [(SKUIItemListTableViewController *)self tableView];
+  [tableView registerClass:class forCellReuseIdentifier:@"ItemCellReuseIdentifier"];
 }
 
-- (void)setItemList:(id)a3
+- (void)setItemList:(id)list
 {
-  v5 = a3;
-  if (self->_itemList != v5)
+  listCopy = list;
+  if (self->_itemList != listCopy)
   {
-    v13 = v5;
-    objc_storeStrong(&self->_itemList, a3);
+    v13 = listCopy;
+    objc_storeStrong(&self->_itemList, list);
     self->_didLoadMore = 0;
     if ([(SKUIItemListTableViewController *)self isViewLoaded])
     {
-      v6 = [(SKUIItemListTableViewController *)self tableView];
+      tableView = [(SKUIItemListTableViewController *)self tableView];
     }
 
     else
     {
-      v6 = 0;
+      tableView = 0;
     }
 
     loadMoreOperation = self->_loadMoreOperation;
@@ -338,47 +338,47 @@
       self->_loadMoreOperation = 0;
 
       v9 = [MEMORY[0x277CCAA78] indexSetWithIndex:1];
-      [v6 deleteSections:v9 withRowAnimation:5];
+      [tableView deleteSections:v9 withRowAnimation:5];
     }
 
     itemCollectionController = self->_itemCollectionController;
-    v11 = [(SKUIItemList *)self->_itemList items];
-    [(SKUIItemCollectionController *)itemCollectionController setItems:v11];
+    items = [(SKUIItemList *)self->_itemList items];
+    [(SKUIItemCollectionController *)itemCollectionController setItems:items];
 
-    if (v6)
+    if (tableView)
     {
-      [v6 reloadData];
+      [tableView reloadData];
       v12 = self->_itemCollectionController;
-      [v6 contentOffset];
+      [tableView contentOffset];
       [SKUIItemCollectionController precacheNextPageArtworkForOffset:v12 direction:"precacheNextPageArtworkForOffset:direction:"];
     }
 
-    v5 = v13;
+    listCopy = v13;
   }
 }
 
-- (void)setRowHeight:(double)a3
+- (void)setRowHeight:(double)height
 {
-  if (self->_rowHeight != a3)
+  if (self->_rowHeight != height)
   {
-    self->_rowHeight = a3;
+    self->_rowHeight = height;
     if ([(SKUIItemListTableViewController *)self isViewLoaded])
     {
-      v4 = [(SKUIItemListTableViewController *)self tableView];
-      [v4 setRowHeight:self->_rowHeight];
+      tableView = [(SKUIItemListTableViewController *)self tableView];
+      [tableView setRowHeight:self->_rowHeight];
     }
   }
 }
 
-- (void)setSeparatorStyle:(int64_t)a3
+- (void)setSeparatorStyle:(int64_t)style
 {
-  if (self->_separatorStyle != a3)
+  if (self->_separatorStyle != style)
   {
-    self->_separatorStyle = a3;
+    self->_separatorStyle = style;
     if ([(SKUIItemListTableViewController *)self isViewLoaded])
     {
-      v4 = [(SKUIItemListTableViewController *)self tableView];
-      [v4 reloadData];
+      tableView = [(SKUIItemListTableViewController *)self tableView];
+      [tableView reloadData];
     }
   }
 }
@@ -389,14 +389,14 @@
   {
     if ([(SKUIItemListTableViewController *)self isViewLoaded])
     {
-      v3 = [(SKUIItemListTableViewController *)self tableView];
+      tableView = [(SKUIItemListTableViewController *)self tableView];
       hiddenIconIndexSet = self->_hiddenIconIndexSet;
       v7[0] = MEMORY[0x277D85DD0];
       v7[1] = 3221225472;
       v7[2] = __46__SKUIItemListTableViewController_unhideIcons__block_invoke;
       v7[3] = &unk_2781FC790;
-      v8 = v3;
-      v5 = v3;
+      v8 = tableView;
+      v5 = tableView;
       [(NSMutableIndexSet *)hiddenIconIndexSet enumerateIndexesWithOptions:0 usingBlock:v7];
     }
 
@@ -417,15 +417,15 @@ void __46__SKUIItemListTableViewController_unhideIcons__block_invoke(uint64_t a1
 {
   v23 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(SKUIMetricsImpressionSession);
-  v4 = [(SKUIItemListTableViewController *)self tableView];
-  v5 = [v4 indexPathsForVisibleRows];
+  tableView = [(SKUIItemListTableViewController *)self tableView];
+  indexPathsForVisibleRows = [tableView indexPathsForVisibleRows];
 
-  v6 = [(SKUIItemList *)self->_itemList items];
+  items = [(SKUIItemList *)self->_itemList items];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = v5;
+  v7 = indexPathsForVisibleRows;
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
@@ -442,18 +442,18 @@ void __46__SKUIItemListTableViewController_unhideIcons__block_invoke(uint64_t a1
 
         v12 = *(*(&v18 + 1) + 8 * i);
         v13 = [v12 row];
-        if ([v12 section] || v13 >= objc_msgSend(v6, "count"))
+        if ([v12 section] || v13 >= objc_msgSend(items, "count"))
         {
-          v15 = 0;
+          itemIdentifier = 0;
         }
 
         else
         {
-          v14 = [v6 objectAtIndex:v13];
-          v15 = [v14 itemIdentifier];
+          v14 = [items objectAtIndex:v13];
+          itemIdentifier = [v14 itemIdentifier];
         }
 
-        [(SKUIMetricsImpressionSession *)v3 addItemIdentifier:v15];
+        [(SKUIMetricsImpressionSession *)v3 addItemIdentifier:itemIdentifier];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -462,28 +462,28 @@ void __46__SKUIItemListTableViewController_unhideIcons__block_invoke(uint64_t a1
     while (v9);
   }
 
-  v16 = [(SKUIMetricsImpressionSession *)v3 impressionsString];
+  impressionsString = [(SKUIMetricsImpressionSession *)v3 impressionsString];
 
-  return v16;
+  return impressionsString;
 }
 
-- (id)itemCollectionController:(id)a3 cellLayoutForItemIndex:(int64_t)a4
+- (id)itemCollectionController:(id)controller cellLayoutForItemIndex:(int64_t)index
 {
-  v5 = [(SKUIItemListTableViewController *)self tableView];
-  v6 = [MEMORY[0x277CCAA70] indexPathForRow:a4 inSection:0];
-  v7 = [v5 cellForRowAtIndexPath:v6];
+  tableView = [(SKUIItemListTableViewController *)self tableView];
+  v6 = [MEMORY[0x277CCAA70] indexPathForRow:index inSection:0];
+  v7 = [tableView cellForRowAtIndexPath:v6];
 
-  v8 = [v7 layout];
+  layout = [v7 layout];
 
-  return v8;
+  return layout;
 }
 
-- (_NSRange)itemCollectionController:(id)a3 itemPageRangeForOffset:(CGPoint)a4
+- (_NSRange)itemCollectionController:(id)controller itemPageRangeForOffset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = [(SKUIItemListTableViewController *)self tableView];
-  v7 = SKUIItemCollectionItemPageRangeForTableView(v6, x, y);
+  y = offset.y;
+  x = offset.x;
+  tableView = [(SKUIItemListTableViewController *)self tableView];
+  v7 = SKUIItemCollectionItemPageRangeForTableView(tableView, x, y);
   v9 = v8;
 
   v10 = v7;
@@ -493,10 +493,10 @@ void __46__SKUIItemListTableViewController_unhideIcons__block_invoke(uint64_t a1
   return result;
 }
 
-- (_NSRange)visibleItemRangeForItemCollectionController:(id)a3
+- (_NSRange)visibleItemRangeForItemCollectionController:(id)controller
 {
-  v3 = [(SKUIItemListTableViewController *)self tableView];
-  v4 = SKUIItemCollectionVisibleItemRangeForTableView(v3);
+  tableView = [(SKUIItemListTableViewController *)self tableView];
+  v4 = SKUIItemCollectionVisibleItemRangeForTableView(tableView);
   v6 = v5;
 
   v7 = v4;
@@ -511,43 +511,43 @@ void __46__SKUIItemListTableViewController_unhideIcons__block_invoke(uint64_t a1
   v6.receiver = self;
   v6.super_class = SKUIItemListTableViewController;
   [(SKUIItemListTableViewController *)&v6 loadView];
-  v3 = [(SKUIItemListTableViewController *)self tableView];
-  [v3 setRowHeight:self->_rowHeight];
-  [v3 setSeparatorStyle:0];
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  [v3 setShowsVerticalScrollIndicator:{objc_msgSend(v4, "userInterfaceIdiom") == 0}];
+  tableView = [(SKUIItemListTableViewController *)self tableView];
+  [tableView setRowHeight:self->_rowHeight];
+  [tableView setSeparatorStyle:0];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  [tableView setShowsVerticalScrollIndicator:{objc_msgSend(currentDevice, "userInterfaceIdiom") == 0}];
 
-  v5 = [MEMORY[0x277D75348] whiteColor];
-  [v3 setBackgroundColor:v5];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [tableView setBackgroundColor:whiteColor];
 
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"LoadMoreCellReuseIdentifier"];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"LoadMoreCellReuseIdentifier"];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(SKUIItemCollectionController *)self->_itemCollectionController enterForeground];
-  v5 = [(SKUIItemListTableViewController *)self _itemCollectionController];
-  v6 = [(SKUIItemListTableViewController *)self tableView];
-  [v6 contentOffset];
-  [v5 precacheNextPageArtworkForOffset:? direction:?];
+  _itemCollectionController = [(SKUIItemListTableViewController *)self _itemCollectionController];
+  tableView = [(SKUIItemListTableViewController *)self tableView];
+  [tableView contentOffset];
+  [_itemCollectionController precacheNextPageArtworkForOffset:? direction:?];
 
   v7.receiver = self;
   v7.super_class = SKUIItemListTableViewController;
-  [(SKUIItemListTableViewController *)&v7 viewDidAppear:v3];
+  [(SKUIItemListTableViewController *)&v7 viewDidAppear:appearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SKUIItemListTableViewController;
-  [(SKUIItemListTableViewController *)&v4 viewDidDisappear:a3];
+  [(SKUIItemListTableViewController *)&v4 viewDidDisappear:disappear];
   [(SKUIItemCollectionController *)self->_itemCollectionController enterBackground];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v7 = a3;
+  draggingCopy = dragging;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
@@ -557,26 +557,26 @@ void __46__SKUIItemListTableViewController_unhideIcons__block_invoke(uint64_t a1
     [v6 itemListWillBeginDragging:self];
   }
 
-  [(SKUIItemCollectionController *)self->_itemCollectionController scrollViewWillBeginDragging:v7];
+  [(SKUIItemCollectionController *)self->_itemCollectionController scrollViewWillBeginDragging:draggingCopy];
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  v10 = a5->y;
-  v12 = v9;
-  [v9 contentSize];
+  y = velocity.y;
+  x = velocity.x;
+  draggingCopy = dragging;
+  v10 = offset->y;
+  v12 = draggingCopy;
+  [draggingCopy contentSize];
   if (v10 >= v11 * 0.33)
   {
     [(SKUIItemListTableViewController *)self _loadRemainingItemsWithPriority:0];
   }
 
-  [(SKUIItemCollectionController *)self->_itemCollectionController scrollViewWillEndDragging:v12 withVelocity:a5 targetContentOffset:x, y];
+  [(SKUIItemCollectionController *)self->_itemCollectionController scrollViewWillEndDragging:v12 withVelocity:offset targetContentOffset:x, y];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if (self->_loadMoreOperation)
   {
@@ -589,69 +589,69 @@ void __46__SKUIItemListTableViewController_unhideIcons__block_invoke(uint64_t a1
   }
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
   if (!self->_delegateWantsCanRemove)
   {
     return self->_delegateWantsDidRemove;
   }
 
-  v5 = a4;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v7 = [WeakRetained itemList:self canRemoveItemAtIndexPath:v5];
+  v7 = [WeakRetained itemList:self canRemoveItemAtIndexPath:pathCopy];
 
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  if ([v6 section])
+  pathCopy = path;
+  viewCopy = view;
+  if ([pathCopy section])
   {
-    v8 = [v7 dequeueReusableCellWithIdentifier:@"LoadMoreCellReuseIdentifier" forIndexPath:v6];
+    v8 = [viewCopy dequeueReusableCellWithIdentifier:@"LoadMoreCellReuseIdentifier" forIndexPath:pathCopy];
   }
 
   else
   {
-    v8 = [v7 dequeueReusableCellWithIdentifier:@"ItemCellReuseIdentifier" forIndexPath:v6];
+    v8 = [viewCopy dequeueReusableCellWithIdentifier:@"ItemCellReuseIdentifier" forIndexPath:pathCopy];
 
     [v8 setSelectionStyle:self->_selectionStyle];
-    v9 = [v8 multipleSelectionBackgroundView];
+    multipleSelectionBackgroundView = [v8 multipleSelectionBackgroundView];
 
-    if (!v9)
+    if (!multipleSelectionBackgroundView)
     {
       v10 = objc_alloc_init(MEMORY[0x277D75D18]);
-      v11 = [MEMORY[0x277D75348] clearColor];
-      [v10 setBackgroundColor:v11];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [v10 setBackgroundColor:clearColor];
 
       [v8 setMultipleSelectionBackgroundView:v10];
     }
 
-    v7 = [v8 layout];
-    [v7 setClientContext:self->_clientContext];
+    viewCopy = [v8 layout];
+    [viewCopy setClientContext:self->_clientContext];
   }
 
   return v8;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return 1;
   }
 
-  v5 = [(SKUIItemList *)self->_itemList items];
-  v6 = [v5 count];
+  items = [(SKUIItemList *)self->_itemList items];
+  v6 = [items count];
 
   return v6;
 }
 
-- (void)itemTableView:(id)a3 didConfirmItemOfferForTableViewCell:(id)a4
+- (void)itemTableView:(id)view didConfirmItemOfferForTableViewCell:(id)cell
 {
-  v14 = a4;
-  v6 = [a3 indexPathForCell:?];
+  cellCopy = cell;
+  v6 = [view indexPathForCell:?];
   if (![v6 section])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -659,8 +659,8 @@ void __46__SKUIItemListTableViewController_unhideIcons__block_invoke(uint64_t a1
 
     if (v8)
     {
-      v9 = [(SKUIItemCollectionController *)self->_itemCollectionController items];
-      v10 = [v9 objectAtIndex:{objc_msgSend(v6, "row")}];
+      items = [(SKUIItemCollectionController *)self->_itemCollectionController items];
+      v10 = [items objectAtIndex:{objc_msgSend(v6, "row")}];
 
       v11 = objc_loadWeakRetained(&self->_delegate);
       v12 = [v11 itemList:self didConfirmItemOfferForItem:v10 atIndexPath:v6];
@@ -682,8 +682,8 @@ LABEL_7:
       }
     }
 
-    v13 = [v14 layout];
-    [v13 setItemState:v12 animated:1];
+    layout = [cellCopy layout];
+    [layout setItemState:v12 animated:1];
 
     goto LABEL_7;
   }
@@ -691,9 +691,9 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)itemTableView:(id)a3 didRemoveCell:(id)a4
+- (void)itemTableView:(id)view didRemoveCell:(id)cell
 {
-  v5 = [a3 indexPathForCell:a4];
+  v5 = [view indexPathForCell:cell];
   if (v5)
   {
     v9 = v5;
@@ -711,86 +711,86 @@ LABEL_8:
   }
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v10 = a5;
-  v8 = [(SKUIItemListTableViewController *)self tableView:a3 canEditRowAtIndexPath:?];
-  if (a4 == 1 && v8)
+  pathCopy = path;
+  v8 = [(SKUIItemListTableViewController *)self tableView:view canEditRowAtIndexPath:?];
+  if (style == 1 && v8)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained itemList:self didRemoveItemAtIndexPath:v10];
+    [WeakRetained itemList:self didRemoveItemAtIndexPath:pathCopy];
   }
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
-  v10 = a4;
-  if (![v10 section])
+  pathCopy = path;
+  if (![pathCopy section])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(SKUIItemList *)self->_itemList items];
-      v8 = [v7 objectAtIndex:{objc_msgSend(v10, "row")}];
+      items = [(SKUIItemList *)self->_itemList items];
+      v8 = [items objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
       v9 = objc_loadWeakRetained(&self->_delegate);
-      [v9 itemList:self didDeselectItem:v8 atIndexPath:v10];
+      [v9 itemList:self didDeselectItem:v8 atIndexPath:pathCopy];
     }
   }
 }
 
-- (void)tableView:(id)a3 didEndDisplayingCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view didEndDisplayingCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v8 = a4;
-  v7 = a5;
-  if ([v7 section] == 1)
+  cellCopy = cell;
+  pathCopy = path;
+  if ([pathCopy section] == 1)
   {
-    [v8 stopAnimating];
+    [cellCopy stopAnimating];
   }
 
   else
   {
-    -[SKUIItemCollectionController didEndDisplayingItemAtIndex:](self->_itemCollectionController, "didEndDisplayingItemAtIndex:", [v7 row]);
+    -[SKUIItemCollectionController didEndDisplayingItemAtIndex:](self->_itemCollectionController, "didEndDisplayingItemAtIndex:", [pathCopy row]);
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v10 = a4;
-  if (![v10 section])
+  pathCopy = path;
+  if (![pathCopy section])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(SKUIItemList *)self->_itemList items];
-      v8 = [v7 objectAtIndex:{objc_msgSend(v10, "row")}];
+      items = [(SKUIItemList *)self->_itemList items];
+      v8 = [items objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
       v9 = objc_loadWeakRetained(&self->_delegate);
-      [v9 itemList:self didSelectItem:v8 atIndexPath:v10];
+      [v9 itemList:self didSelectItem:v8 atIndexPath:pathCopy];
     }
   }
 }
 
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(SKUIItemListTableViewController *)self delegate];
+  pathCopy = path;
+  delegate = [(SKUIItemListTableViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 itemList:self titleForDeleteConfirmationButtonForRowAtIndexPath:v5];
+    v7 = [delegate itemList:self titleForDeleteConfirmationButtonForRowAtIndexPath:pathCopy];
   }
 
   else
   {
-    v8 = [(SKUIItemListTableViewController *)self clientContext];
-    v9 = v8;
-    if (v8)
+    clientContext = [(SKUIItemListTableViewController *)self clientContext];
+    v9 = clientContext;
+    if (clientContext)
     {
-      [v8 localizedStringForKey:@"SWIPE_TO_DELETE_BUTTON"];
+      [clientContext localizedStringForKey:@"SWIPE_TO_DELETE_BUTTON"];
     }
 
     else
@@ -803,104 +803,104 @@ LABEL_8:
   return v7;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v25 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(SKUIUber *)self->_uber colorScheme];
-  v11 = [v10 backgroundColor];
+  viewCopy = view;
+  cellCopy = cell;
+  pathCopy = path;
+  colorScheme = [(SKUIUber *)self->_uber colorScheme];
+  backgroundColor = [colorScheme backgroundColor];
 
-  if (v11)
+  if (backgroundColor)
   {
-    [v8 setBackgroundColor:v11];
+    [cellCopy setBackgroundColor:backgroundColor];
   }
 
   else
   {
-    v12 = [v25 backgroundColor];
-    [v8 setBackgroundColor:v12];
+    backgroundColor2 = [viewCopy backgroundColor];
+    [cellCopy setBackgroundColor:backgroundColor2];
   }
 
   if (self->_separatorStyle == 1)
   {
-    [v8 setBottomBorderColor:0];
+    [cellCopy setBottomBorderColor:0];
   }
 
   else
   {
-    v13 = [(SKUIUber *)self->_uber colorScheme];
-    v14 = [v13 primaryTextColor];
-    if (v14)
+    colorScheme2 = [(SKUIUber *)self->_uber colorScheme];
+    primaryTextColor = [colorScheme2 primaryTextColor];
+    if (primaryTextColor)
     {
-      [v8 setBottomBorderColor:v14];
+      [cellCopy setBottomBorderColor:primaryTextColor];
     }
 
     else
     {
       v15 = [MEMORY[0x277D75348] colorWithWhite:0.75 alpha:1.0];
-      [v8 setBottomBorderColor:v15];
+      [cellCopy setBottomBorderColor:v15];
     }
   }
 
-  if ([v9 section] == 1)
+  if ([pathCopy section] == 1)
   {
-    [v8 startAnimating];
+    [cellCopy startAnimating];
   }
 
   else
   {
-    v16 = [v8 layout];
-    v17 = [v9 row];
-    v18 = [(SKUIItemList *)self->_itemList items];
-    v19 = [v18 objectAtIndex:v17];
+    layout = [cellCopy layout];
+    v17 = [pathCopy row];
+    items = [(SKUIItemList *)self->_itemList items];
+    v19 = [items objectAtIndex:v17];
 
-    [v8 configureForItem:v19 clientContext:self->_clientContext rowIndex:v17];
-    v20 = [(SKUIItemListTableViewController *)self _itemCollectionController];
-    [v20 configureCellLayout:v16 forIndex:v17];
+    [cellCopy configureForItem:v19 clientContext:self->_clientContext rowIndex:v17];
+    _itemCollectionController = [(SKUIItemListTableViewController *)self _itemCollectionController];
+    [_itemCollectionController configureCellLayout:layout forIndex:v17];
 
-    [v16 setIconImageHidden:{-[NSMutableIndexSet containsIndex:](self->_hiddenIconIndexSet, "containsIndex:", v17)}];
-    v21 = [(SKUIUber *)self->_uber colorScheme];
-    [v16 setColoringWithColorScheme:v21];
+    [layout setIconImageHidden:{-[NSMutableIndexSet containsIndex:](self->_hiddenIconIndexSet, "containsIndex:", v17)}];
+    colorScheme3 = [(SKUIUber *)self->_uber colorScheme];
+    [layout setColoringWithColorScheme:colorScheme3];
 
     if (self->_imageBoundingSize.width != *MEMORY[0x277CBF3A8] || self->_imageBoundingSize.height != *(MEMORY[0x277CBF3A8] + 8))
     {
-      [v16 setImageBoundingSize:?];
+      [layout setImageBoundingSize:?];
     }
 
     if (self->_delegateWantsWillDisplay)
     {
-      v22 = [(SKUIItemList *)self->_itemList items];
-      v23 = [v22 objectAtIndex:{objc_msgSend(v9, "row")}];
+      items2 = [(SKUIItemList *)self->_itemList items];
+      v23 = [items2 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      [WeakRetained itemList:self willDisplayCellForItem:v23 atIndexPath:v9];
+      [WeakRetained itemList:self willDisplayCellForItem:v23 atIndexPath:pathCopy];
     }
   }
 }
 
-- (void)_finishLoadMoreOperationWithItems:(id)a3 error:(id)a4
+- (void)_finishLoadMoreOperationWithItems:(id)items error:(id)error
 {
-  v18 = a3;
+  itemsCopy = items;
   self->_didLoadMore = 1;
   [(SSVLoadURLOperation *)self->_loadMoreOperation setOutputBlock:0];
   loadMoreOperation = self->_loadMoreOperation;
   self->_loadMoreOperation = 0;
 
-  v6 = 0;
+  tableView = 0;
   if ([(SKUIItemListTableViewController *)self isViewLoaded])
   {
-    v6 = [(SKUIItemListTableViewController *)self tableView];
+    tableView = [(SKUIItemListTableViewController *)self tableView];
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v18 count])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [itemsCopy count])
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v8 = [(SKUIItemList *)self->_itemList items];
-    v9 = [v8 count];
+    items = [(SKUIItemList *)self->_itemList items];
+    v9 = [items count];
 
-    v10 = [v18 count];
+    v10 = [itemsCopy count];
     if (v9 < v10)
     {
       v11 = v10;
@@ -910,7 +910,7 @@ LABEL_8:
         [v7 addObject:v12];
 
         itemList = self->_itemList;
-        v14 = [v18 objectAtIndex:v9];
+        v14 = [itemsCopy objectAtIndex:v9];
         [(SKUIItemList *)itemList addItem:v14];
 
         ++v9;
@@ -920,22 +920,22 @@ LABEL_8:
     }
 
     itemCollectionController = self->_itemCollectionController;
-    v16 = [(SKUIItemList *)self->_itemList items];
-    [(SKUIItemCollectionController *)itemCollectionController setItems:v16];
+    items2 = [(SKUIItemList *)self->_itemList items];
+    [(SKUIItemCollectionController *)itemCollectionController setItems:items2];
 
-    [v6 beginUpdates];
+    [tableView beginUpdates];
     v17 = [MEMORY[0x277CCAA78] indexSetWithIndex:1];
-    [v6 deleteSections:v17 withRowAnimation:5];
+    [tableView deleteSections:v17 withRowAnimation:5];
 
-    [v6 insertRowsAtIndexPaths:v7 withRowAnimation:5];
-    [v6 endUpdates];
+    [tableView insertRowsAtIndexPaths:v7 withRowAnimation:5];
+    [tableView endUpdates];
     [(SKUIItemListTableViewController *)self loadNextPageOfArtworkWithReason:-1];
   }
 
   else
   {
     v7 = [MEMORY[0x277CCAA78] indexSetWithIndex:1];
-    [v6 deleteSections:v7 withRowAnimation:5];
+    [tableView deleteSections:v7 withRowAnimation:5];
   }
 }
 
@@ -955,8 +955,8 @@ LABEL_8:
 
     [(SKUIItemCollectionController *)self->_itemCollectionController setArtworkContext:self->_artworkContext];
     v8 = self->_itemCollectionController;
-    v9 = [(SKUIItemList *)self->_itemList items];
-    [(SKUIItemCollectionController *)v8 setItems:v9];
+    items = [(SKUIItemList *)self->_itemList items];
+    [(SKUIItemCollectionController *)v8 setItems:items];
 
     [(SKUIItemCollectionController *)self->_itemCollectionController setNumberOfItemsPerPage:10];
     [(SKUIItemCollectionController *)self->_itemCollectionController setNumberOfPagesToCacheAhead:1.5];
@@ -966,26 +966,26 @@ LABEL_8:
   return itemCollectionController;
 }
 
-- (void)_loadRemainingItemsWithPriority:(int64_t)a3
+- (void)_loadRemainingItemsWithPriority:(int64_t)priority
 {
   if (!self->_didLoadMore && self->_loadsMoreItems && !self->_loadMoreOperation)
   {
-    v5 = [(SKUIItemList *)self->_itemList seeAllURLString];
-    if (v5)
+    seeAllURLString = [(SKUIItemList *)self->_itemList seeAllURLString];
+    if (seeAllURLString)
     {
-      v6 = [MEMORY[0x277CBEBC0] URLWithString:v5];
+      v6 = [MEMORY[0x277CBEBC0] URLWithString:seeAllURLString];
       v7 = [objc_alloc(MEMORY[0x277D69CD8]) initWithURL:v6];
       loadMoreOperation = self->_loadMoreOperation;
       self->_loadMoreOperation = v7;
 
-      [(SSVLoadURLOperation *)self->_loadMoreOperation setQueuePriority:a3];
+      [(SSVLoadURLOperation *)self->_loadMoreOperation setQueuePriority:priority];
       v9 = self->_loadMoreOperation;
       v10 = [(SKUIClientContext *)self->_clientContext valueForConfigurationKey:@"sfsuffix"];
       [(SSVLoadURLOperation *)v9 setStoreFrontSuffix:v10];
 
       v11 = +[(SSVURLDataConsumer *)SKUILoadMoreDataConsumer];
-      v12 = [(SKUIItemList *)self->_itemList unavailableItemIdentifiers];
-      [v11 setUnavailableItemIdentifiers:v12];
+      unavailableItemIdentifiers = [(SKUIItemList *)self->_itemList unavailableItemIdentifiers];
+      [v11 setUnavailableItemIdentifiers:unavailableItemIdentifiers];
 
       [(SSVLoadURLOperation *)self->_loadMoreOperation setDataConsumer:v11];
       objc_initWeak(&location, self);
@@ -998,9 +998,9 @@ LABEL_8:
       [(SSVLoadURLOperation *)v13 setOutputBlock:&v16];
       if ([(SKUIItemListTableViewController *)self isViewLoaded:v16])
       {
-        v14 = [(SKUIItemListTableViewController *)self tableView];
+        tableView = [(SKUIItemListTableViewController *)self tableView];
         v15 = [MEMORY[0x277CCAA78] indexSetWithIndex:1];
-        [v14 insertSections:v15 withRowAnimation:5];
+        [tableView insertSections:v15 withRowAnimation:5];
       }
 
       [(NSOperationQueue *)self->_operationQueue addOperation:self->_loadMoreOperation];

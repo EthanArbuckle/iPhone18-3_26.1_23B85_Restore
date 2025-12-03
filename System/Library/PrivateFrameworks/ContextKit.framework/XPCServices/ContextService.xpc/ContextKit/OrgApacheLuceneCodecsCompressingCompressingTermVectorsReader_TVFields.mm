@@ -1,6 +1,6 @@
 @interface OrgApacheLuceneCodecsCompressingCompressingTermVectorsReader_TVFields
 - (id)iterator;
-- (id)termsWithNSString:(id)a3;
+- (id)termsWithNSString:(id)string;
 - (int)size;
 - (void)dealloc;
 @end
@@ -16,7 +16,7 @@
   return v3;
 }
 
-- (id)termsWithNSString:(id)a3
+- (id)termsWithNSString:(id)string
 {
   fieldInfos = self->this$0_->fieldInfos_;
   if (!fieldInfos)
@@ -24,7 +24,7 @@
     goto LABEL_55;
   }
 
-  v5 = [(OrgApacheLuceneIndexFieldInfos *)fieldInfos fieldInfoWithNSString:a3];
+  v5 = [(OrgApacheLuceneIndexFieldInfos *)fieldInfos fieldInfoWithNSString:string];
   if (!v5)
   {
     return 0;

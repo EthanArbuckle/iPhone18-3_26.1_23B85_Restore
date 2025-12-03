@@ -1,38 +1,38 @@
 @interface DRSTaskingManager
-- (BOOL)checkConfigsForInvalidation:(id *)a3;
-- (BOOL)clearTaskingHistoryWithErrorOut:(id *)a3;
+- (BOOL)checkConfigsForInvalidation:(id *)invalidation;
+- (BOOL)clearTaskingHistoryWithErrorOut:(id *)out;
 - (BOOL)isTaskingEnabled;
-- (BOOL)subscribeToChannelWithConfig:(id)a3 errorOut:(id *)a4;
-- (BOOL)unsubscribeFromSubscribedChannelWithErrorOut:(id *)a3;
-- (BOOL)updatePersistedChannelConfig:(id)a3 errorOut:(id *)a4;
-- (DRSTaskingManager)initWithDecisionMaker:(id)a3 cloudKitHelper:(id)a4 configStateChangeBlock:(id)a5;
-- (id)metadataForConfigUUID:(id)a3 teamID:(id)a4 errorOut:(id *)a5;
+- (BOOL)subscribeToChannelWithConfig:(id)config errorOut:(id *)out;
+- (BOOL)unsubscribeFromSubscribedChannelWithErrorOut:(id *)out;
+- (BOOL)updatePersistedChannelConfig:(id)config errorOut:(id *)out;
+- (DRSTaskingManager)initWithDecisionMaker:(id)maker cloudKitHelper:(id)helper configStateChangeBlock:(id)block;
+- (id)metadataForConfigUUID:(id)d teamID:(id)iD errorOut:(id *)out;
 - (id)persistedCloudChannelConfig;
-- (void)_bestEffortLogMessageReceiptTelemetry:(id)a3 transaction:(id)a4 cloudChannelConfig:(id)a5;
-- (void)_emitTaskingSystemMessageTelemetry:(id)a3 messageType:(id)a4 dateBroadcast:(id)a5 dateReceived:(id)a6 transaction:(id)a7 cloudChannelConfig:(id)a8;
-- (void)_emitTelemetryForLoggableMesssage:(id)a3 transaction:(id)a4 cloudChannelConfig:(id)a5;
-- (void)clientCompletedConfigUUID:(id)a3 teamID:(id)a4;
-- (void)clientRejectsConfigUUID:(id)a3 teamID:(id)a4;
-- (void)processCancelMessage:(id)a3 cloudChannelConfig:(id)a4 transaction:(id)a5 shouldEmitCATelemetry:(BOOL)a6;
-- (void)processPingMessage:(id)a3 cloudChannelConfig:(id)a4 transaction:(id)a5 shouldEmitCATelemetry:(BOOL)a6;
-- (void)processTaskingMessage:(id)a3 cloudChannelConfig:(id)a4 transaction:(id)a5 shouldEmitCATelemetry:(BOOL)a6;
+- (void)_bestEffortLogMessageReceiptTelemetry:(id)telemetry transaction:(id)transaction cloudChannelConfig:(id)config;
+- (void)_emitTaskingSystemMessageTelemetry:(id)telemetry messageType:(id)type dateBroadcast:(id)broadcast dateReceived:(id)received transaction:(id)transaction cloudChannelConfig:(id)config;
+- (void)_emitTelemetryForLoggableMesssage:(id)messsage transaction:(id)transaction cloudChannelConfig:(id)config;
+- (void)clientCompletedConfigUUID:(id)d teamID:(id)iD;
+- (void)clientRejectsConfigUUID:(id)d teamID:(id)iD;
+- (void)processCancelMessage:(id)message cloudChannelConfig:(id)config transaction:(id)transaction shouldEmitCATelemetry:(BOOL)telemetry;
+- (void)processPingMessage:(id)message cloudChannelConfig:(id)config transaction:(id)transaction shouldEmitCATelemetry:(BOOL)telemetry;
+- (void)processTaskingMessage:(id)message cloudChannelConfig:(id)config transaction:(id)transaction shouldEmitCATelemetry:(BOOL)telemetry;
 @end
 
 @implementation DRSTaskingManager
 
-- (void)_emitTaskingSystemMessageTelemetry:(id)a3 messageType:(id)a4 dateBroadcast:(id)a5 dateReceived:(id)a6 transaction:(id)a7 cloudChannelConfig:(id)a8
+- (void)_emitTaskingSystemMessageTelemetry:(id)telemetry messageType:(id)type dateBroadcast:(id)broadcast dateReceived:(id)received transaction:(id)transaction cloudChannelConfig:(id)config
 {
   v43[3] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v37 = a7;
-  v18 = a8;
-  v19 = v18;
-  if (v15)
+  telemetryCopy = telemetry;
+  typeCopy = type;
+  broadcastCopy = broadcast;
+  receivedCopy = received;
+  transactionCopy = transaction;
+  configCopy = config;
+  v19 = configCopy;
+  if (typeCopy)
   {
-    v20 = v15;
+    v20 = typeCopy;
   }
 
   else
@@ -41,12 +41,12 @@
   }
 
   v36 = v20;
-  if (v18)
+  if (configCopy)
   {
     v43[0] = v20;
     v42[0] = kMessageReceivedEventKey_MessageType;
     v42[1] = kMessageReceivedEventKey_ChannelType;
-    v21 = +[DRSCloudChannelConfig stringForChannelType:](DRSCloudChannelConfig, "stringForChannelType:", [v18 type]);
+    v21 = +[DRSCloudChannelConfig stringForChannelType:](DRSCloudChannelConfig, "stringForChannelType:", [configCopy type]);
     v43[1] = v21;
     v42[2] = kMessageReceivedEventKey_ChannelEnvironment;
     v22 = +[DRSCloudChannelConfig stringForEnvironment:](DRSCloudChannelConfig, "stringForEnvironment:", [v19 environment]);
@@ -67,16 +67,16 @@
     v24 = [v21 mutableCopy];
   }
 
-  if (v14)
+  if (telemetryCopy)
   {
-    v25 = [v14 UUIDString];
-    [v24 setObject:v25 forKeyedSubscript:kUUIDKey];
+    uUIDString = [telemetryCopy UUIDString];
+    [v24 setObject:uUIDString forKeyedSubscript:kUUIDKey];
   }
 
-  if (v16 && v17)
+  if (broadcastCopy && receivedCopy)
   {
     v26 = MEMORY[0x277CCABB0];
-    [v17 timeIntervalSinceDate:v16];
+    [receivedCopy timeIntervalSinceDate:broadcastCopy];
     v27 = [v26 numberWithDouble:?];
     [v24 setObject:v27 forKeyedSubscript:kMessageReceivedEventKey_ReceiptDelay];
   }
@@ -88,11 +88,11 @@
     goto LABEL_15;
   }
 
-  v29 = [(DRSTaskingManager *)self cloudKitHelper];
+  cloudKitHelper = [(DRSTaskingManager *)self cloudKitHelper];
 
-  if (v29)
+  if (cloudKitHelper)
   {
-    v35 = [(DRSTaskingManager *)self cloudKitHelper];
+    cloudKitHelper2 = [(DRSTaskingManager *)self cloudKitHelper];
     v30 = [v24 objectForKeyedSubscript:kUUIDKey];
     v31 = [v24 objectForKeyedSubscript:kMessageReceivedEventKey_MessageType];
     v32 = [v24 objectForKeyedSubscript:kMessageReceivedEventKey_ChannelType];
@@ -101,8 +101,8 @@
     v38[1] = 3221225472;
     v38[2] = __126__DRSTaskingManager__emitTaskingSystemMessageTelemetry_messageType_dateBroadcast_dateReceived_transaction_cloudChannelConfig___block_invoke;
     v38[3] = &unk_27899F820;
-    v39 = v14;
-    [v35 reportTaskingSystemMessageReceipt:v30 messageType:v31 channelType:v32 channelEnvironment:v33 dateBroadcast:v16 dateReceived:v17 transaction:v37 completionHandler:v38];
+    v39 = telemetryCopy;
+    [cloudKitHelper2 reportTaskingSystemMessageReceipt:v30 messageType:v31 channelType:v32 channelEnvironment:v33 dateBroadcast:broadcastCopy dateReceived:receivedCopy transaction:transactionCopy completionHandler:v38];
 
     v28 = v39;
 LABEL_15:
@@ -153,44 +153,44 @@ LABEL_6:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_emitTelemetryForLoggableMesssage:(id)a3 transaction:(id)a4 cloudChannelConfig:(id)a5
+- (void)_emitTelemetryForLoggableMesssage:(id)messsage transaction:(id)transaction cloudChannelConfig:(id)config
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v14 = [v10 messageUUID];
-  v11 = [v10 messageType];
-  v12 = [v10 dateBroadcast];
-  v13 = [v10 dateReceived];
+  configCopy = config;
+  transactionCopy = transaction;
+  messsageCopy = messsage;
+  messageUUID = [messsageCopy messageUUID];
+  messageType = [messsageCopy messageType];
+  dateBroadcast = [messsageCopy dateBroadcast];
+  dateReceived = [messsageCopy dateReceived];
 
-  [(DRSTaskingManager *)self _emitTaskingSystemMessageTelemetry:v14 messageType:v11 dateBroadcast:v12 dateReceived:v13 transaction:v9 cloudChannelConfig:v8];
+  [(DRSTaskingManager *)self _emitTaskingSystemMessageTelemetry:messageUUID messageType:messageType dateBroadcast:dateBroadcast dateReceived:dateReceived transaction:transactionCopy cloudChannelConfig:configCopy];
 }
 
-- (void)processTaskingMessage:(id)a3 cloudChannelConfig:(id)a4 transaction:(id)a5 shouldEmitCATelemetry:(BOOL)a6
+- (void)processTaskingMessage:(id)message cloudChannelConfig:(id)config transaction:(id)transaction shouldEmitCATelemetry:(BOOL)telemetry
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v6)
+  telemetryCopy = telemetry;
+  messageCopy = message;
+  configCopy = config;
+  transactionCopy = transaction;
+  if (telemetryCopy)
   {
-    [(DRSTaskingManager *)self _emitTelemetryForLoggableMesssage:v10 transaction:v12 cloudChannelConfig:v11];
+    [(DRSTaskingManager *)self _emitTelemetryForLoggableMesssage:messageCopy transaction:transactionCopy cloudChannelConfig:configCopy];
   }
 
-  v13 = [(DRSTaskingManager *)self workQueue];
+  workQueue = [(DRSTaskingManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __96__DRSTaskingManager_processTaskingMessage_cloudChannelConfig_transaction_shouldEmitCATelemetry___block_invoke;
   block[3] = &unk_27899F9E0;
-  v18 = v10;
-  v19 = self;
-  v22 = v6;
-  v20 = v11;
-  v21 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_sync(v13, block);
+  v18 = messageCopy;
+  selfCopy = self;
+  v22 = telemetryCopy;
+  v20 = configCopy;
+  v21 = transactionCopy;
+  v14 = transactionCopy;
+  v15 = configCopy;
+  v16 = messageCopy;
+  dispatch_sync(workQueue, block);
 }
 
 void __96__DRSTaskingManager_processTaskingMessage_cloudChannelConfig_transaction_shouldEmitCATelemetry___block_invoke(uint64_t a1)
@@ -279,27 +279,27 @@ void __96__DRSTaskingManager_processTaskingMessage_cloudChannelConfig_transactio
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processCancelMessage:(id)a3 cloudChannelConfig:(id)a4 transaction:(id)a5 shouldEmitCATelemetry:(BOOL)a6
+- (void)processCancelMessage:(id)message cloudChannelConfig:(id)config transaction:(id)transaction shouldEmitCATelemetry:(BOOL)telemetry
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a5;
-  if (v6)
+  telemetryCopy = telemetry;
+  messageCopy = message;
+  transactionCopy = transaction;
+  if (telemetryCopy)
   {
-    [(DRSTaskingManager *)self _emitTelemetryForLoggableMesssage:v10 transaction:v11 cloudChannelConfig:a4];
+    [(DRSTaskingManager *)self _emitTelemetryForLoggableMesssage:messageCopy transaction:transactionCopy cloudChannelConfig:config];
   }
 
-  v12 = [(DRSTaskingManager *)self workQueue];
+  workQueue = [(DRSTaskingManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __95__DRSTaskingManager_processCancelMessage_cloudChannelConfig_transaction_shouldEmitCATelemetry___block_invoke;
   block[3] = &unk_27899F400;
-  v16 = v10;
-  v17 = self;
-  v18 = v11;
-  v13 = v11;
-  v14 = v10;
-  dispatch_sync(v12, block);
+  v16 = messageCopy;
+  selfCopy = self;
+  v18 = transactionCopy;
+  v13 = transactionCopy;
+  v14 = messageCopy;
+  dispatch_sync(workQueue, block);
 }
 
 void __95__DRSTaskingManager_processCancelMessage_cloudChannelConfig_transaction_shouldEmitCATelemetry___block_invoke(id *a1)
@@ -407,15 +407,15 @@ void __95__DRSTaskingManager_processCancelMessage_cloudChannelConfig_transaction
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processPingMessage:(id)a3 cloudChannelConfig:(id)a4 transaction:(id)a5 shouldEmitCATelemetry:(BOOL)a6
+- (void)processPingMessage:(id)message cloudChannelConfig:(id)config transaction:(id)transaction shouldEmitCATelemetry:(BOOL)telemetry
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v6)
+  telemetryCopy = telemetry;
+  messageCopy = message;
+  configCopy = config;
+  transactionCopy = transaction;
+  if (telemetryCopy)
   {
-    [(DRSTaskingManager *)self _emitTelemetryForLoggableMesssage:v10 transaction:v12 cloudChannelConfig:v11];
+    [(DRSTaskingManager *)self _emitTelemetryForLoggableMesssage:messageCopy transaction:transactionCopy cloudChannelConfig:configCopy];
   }
 
   v13 = DPLogHandle_TaskingManager();
@@ -426,41 +426,41 @@ void __95__DRSTaskingManager_processCancelMessage_cloudChannelConfig_transaction
   }
 }
 
-- (void)_bestEffortLogMessageReceiptTelemetry:(id)a3 transaction:(id)a4 cloudChannelConfig:(id)a5
+- (void)_bestEffortLogMessageReceiptTelemetry:(id)telemetry transaction:(id)transaction cloudChannelConfig:(id)config
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CBEAA8] date];
-  v11 = _dateFromJSONDict(v16, kDRSTaskingSystemMessage_DateBroadcastKey);
-  v12 = [v16 objectForKeyedSubscript:kDRSTaskingSystemMessage_messageUUIDKey];
+  telemetryCopy = telemetry;
+  transactionCopy = transaction;
+  configCopy = config;
+  date = [MEMORY[0x277CBEAA8] date];
+  v11 = _dateFromJSONDict(telemetryCopy, kDRSTaskingSystemMessage_DateBroadcastKey);
+  v12 = [telemetryCopy objectForKeyedSubscript:kDRSTaskingSystemMessage_messageUUIDKey];
   if (v12)
   {
     v13 = v12;
     v14 = off_27899E9D8;
 LABEL_5:
-    v15 = [(__objc2_class *)*v14 messageType];
+    messageType = [(__objc2_class *)*v14 messageType];
     goto LABEL_6;
   }
 
-  v13 = [v16 objectForKeyedSubscript:kDRSTaskingSystemMessage_messageUUIDKey];
+  v13 = [telemetryCopy objectForKeyedSubscript:kDRSTaskingSystemMessage_messageUUIDKey];
   if (v13)
   {
     v14 = off_27899E8C8;
     goto LABEL_5;
   }
 
-  v15 = 0;
+  messageType = 0;
 LABEL_6:
-  [(DRSTaskingManager *)self _emitTaskingSystemMessageTelemetry:v13 messageType:v15 dateBroadcast:v11 dateReceived:v10 transaction:v8 cloudChannelConfig:v9];
+  [(DRSTaskingManager *)self _emitTaskingSystemMessageTelemetry:v13 messageType:messageType dateBroadcast:v11 dateReceived:date transaction:transactionCopy cloudChannelConfig:configCopy];
 }
 
-- (DRSTaskingManager)initWithDecisionMaker:(id)a3 cloudKitHelper:(id)a4 configStateChangeBlock:(id)a5
+- (DRSTaskingManager)initWithDecisionMaker:(id)maker cloudKitHelper:(id)helper configStateChangeBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  makerCopy = maker;
+  helperCopy = helper;
+  blockCopy = block;
+  if (!blockCopy)
   {
     v18 = DPLogHandle_TaskingManagerError();
     if (os_signpost_enabled(v18))
@@ -473,11 +473,11 @@ LABEL_10:
 
 LABEL_11:
 
-    v17 = 0;
+    selfCopy = 0;
     goto LABEL_12;
   }
 
-  if (!v9)
+  if (!makerCopy)
   {
     v18 = DPLogHandle_TaskingManagerError();
     if (os_signpost_enabled(v18))
@@ -499,83 +499,83 @@ LABEL_11:
     workQueue = v12->_workQueue;
     v12->_workQueue = v13;
 
-    v15 = _Block_copy(v11);
+    v15 = _Block_copy(blockCopy);
     configStateChangeBlock = v12->_configStateChangeBlock;
     v12->_configStateChangeBlock = v15;
 
-    objc_storeStrong(&v12->_decisionMaker, a3);
-    objc_storeStrong(&v12->_cloudKitHelper, a4);
+    objc_storeStrong(&v12->_decisionMaker, maker);
+    objc_storeStrong(&v12->_cloudKitHelper, helper);
   }
 
   self = v12;
-  v17 = self;
+  selfCopy = self;
 LABEL_12:
 
-  return v17;
+  return selfCopy;
 }
 
-- (void)clientRejectsConfigUUID:(id)a3 teamID:(id)a4
+- (void)clientRejectsConfigUUID:(id)d teamID:(id)iD
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v8 = DPLogHandle_TaskingManager();
   if (os_signpost_enabled(v8))
   {
     *buf = 138543618;
-    v22 = v6;
+    v22 = dCopy;
     v23 = 2114;
-    v24 = v7;
+    v24 = iDCopy;
     _os_signpost_emit_with_name_impl(&dword_232906000, v8, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ClientRejectsConfig", "Client rejects config %{public}@ (teamID: %{public}@)", buf, 0x16u);
   }
 
-  v9 = [(DRSTaskingManager *)self decisionMaker];
-  v10 = [v9 configStore];
+  decisionMaker = [(DRSTaskingManager *)self decisionMaker];
+  configStore = [decisionMaker configStore];
   v20 = 0;
-  v11 = [v10 configMetadataForUUID:v6 errorOut:&v20];
+  v11 = [configStore configMetadataForUUID:dCopy errorOut:&v20];
   v12 = v20;
 
   if (v11)
   {
     if ([v11 state] == 3)
     {
-      v13 = DPLogHandle_TaskingManagerError();
-      if (os_signpost_enabled(v13))
+      configStateChangeBlock = DPLogHandle_TaskingManagerError();
+      if (os_signpost_enabled(configStateChangeBlock))
       {
         *buf = 138543618;
-        v22 = v7;
+        v22 = iDCopy;
         v23 = 2114;
-        v24 = v6;
+        v24 = dCopy;
         v14 = "Client (teamID %{public}@) attempting to reject completed config %{public}@";
 LABEL_13:
-        _os_signpost_emit_with_name_impl(&dword_232906000, v13, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ClientRejectsConfigError", v14, buf, 0x16u);
+        _os_signpost_emit_with_name_impl(&dword_232906000, configStateChangeBlock, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ClientRejectsConfigError", v14, buf, 0x16u);
       }
     }
 
     else
     {
-      v15 = [v11 teamID];
-      v16 = [v15 isEqualToString:v7];
+      teamID = [v11 teamID];
+      v16 = [teamID isEqualToString:iDCopy];
 
       if (v16)
       {
-        v17 = [(DRSTaskingManager *)self decisionMaker];
-        [v17 clientRejectsConfigUUID:v6];
+        decisionMaker2 = [(DRSTaskingManager *)self decisionMaker];
+        [decisionMaker2 clientRejectsConfigUUID:dCopy];
 
         v18 = [v11 state] == 2;
-        v13 = [(DRSTaskingManager *)self configStateChangeBlock];
-        (*(v13 + 16))(v13, v7, v6, 0, 3, 5, v18);
+        configStateChangeBlock = [(DRSTaskingManager *)self configStateChangeBlock];
+        (*(configStateChangeBlock + 16))(configStateChangeBlock, iDCopy, dCopy, 0, 3, 5, v18);
       }
 
       else
       {
-        v13 = DPLogHandle_TaskingManagerError();
-        if (os_signpost_enabled(v13))
+        configStateChangeBlock = DPLogHandle_TaskingManagerError();
+        if (os_signpost_enabled(configStateChangeBlock))
         {
           *buf = 138543618;
-          v22 = v7;
+          v22 = iDCopy;
           v23 = 2114;
-          v24 = v6;
+          v24 = dCopy;
           v14 = "Client (teamID %{public}@) attempting to reject config %{public}@ for wrong team";
           goto LABEL_13;
         }
@@ -585,13 +585,13 @@ LABEL_13:
 
   else
   {
-    v13 = DPLogHandle_TaskingManagerError();
-    if (os_signpost_enabled(v13))
+    configStateChangeBlock = DPLogHandle_TaskingManagerError();
+    if (os_signpost_enabled(configStateChangeBlock))
     {
       *buf = 138543618;
-      v22 = v7;
+      v22 = iDCopy;
       v23 = 2114;
-      v24 = v6;
+      v24 = dCopy;
       v14 = "Client (teamID %{public}@) attempting to reject non-existent config %{public}@";
       goto LABEL_13;
     }
@@ -600,68 +600,68 @@ LABEL_13:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clientCompletedConfigUUID:(id)a3 teamID:(id)a4
+- (void)clientCompletedConfigUUID:(id)d teamID:(id)iD
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v8 = DPLogHandle_TaskingManager();
   if (os_signpost_enabled(v8))
   {
     *buf = 138543618;
-    v22 = v6;
+    v22 = dCopy;
     v23 = 2114;
-    v24 = v7;
+    v24 = iDCopy;
     _os_signpost_emit_with_name_impl(&dword_232906000, v8, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ClientCompletedConfig", "Client completed config %{public}@ (teamID: %{public}@)", buf, 0x16u);
   }
 
-  v9 = [(DRSTaskingManager *)self decisionMaker];
-  v10 = [v9 configStore];
+  decisionMaker = [(DRSTaskingManager *)self decisionMaker];
+  configStore = [decisionMaker configStore];
   v20 = 0;
-  v11 = [v10 configMetadataForUUID:v6 errorOut:&v20];
+  v11 = [configStore configMetadataForUUID:dCopy errorOut:&v20];
   v12 = v20;
 
   if (v11)
   {
     if ([v11 state] == 3)
     {
-      v13 = DPLogHandle_TaskingManagerError();
-      if (os_signpost_enabled(v13))
+      configStateChangeBlock = DPLogHandle_TaskingManagerError();
+      if (os_signpost_enabled(configStateChangeBlock))
       {
         *buf = 138543618;
-        v22 = v7;
+        v22 = iDCopy;
         v23 = 2114;
-        v24 = v6;
+        v24 = dCopy;
         v14 = "Client (teamID %{public}@) attempting to complete already-completed config %{public}@";
 LABEL_13:
-        _os_signpost_emit_with_name_impl(&dword_232906000, v13, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ClientCompletedConfigError", v14, buf, 0x16u);
+        _os_signpost_emit_with_name_impl(&dword_232906000, configStateChangeBlock, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ClientCompletedConfigError", v14, buf, 0x16u);
       }
     }
 
     else
     {
-      v15 = [v11 teamID];
-      v16 = [v15 isEqualToString:v7];
+      teamID = [v11 teamID];
+      v16 = [teamID isEqualToString:iDCopy];
 
       if (v16)
       {
-        v17 = [(DRSTaskingManager *)self decisionMaker];
-        [v17 clientCompletedConfigUUID:v6];
+        decisionMaker2 = [(DRSTaskingManager *)self decisionMaker];
+        [decisionMaker2 clientCompletedConfigUUID:dCopy];
 
         v18 = [v11 state] == 2;
-        v13 = [(DRSTaskingManager *)self configStateChangeBlock];
-        (*(v13 + 16))(v13, v7, v6, 0, 3, 6, v18);
+        configStateChangeBlock = [(DRSTaskingManager *)self configStateChangeBlock];
+        (*(configStateChangeBlock + 16))(configStateChangeBlock, iDCopy, dCopy, 0, 3, 6, v18);
       }
 
       else
       {
-        v13 = DPLogHandle_TaskingManagerError();
-        if (os_signpost_enabled(v13))
+        configStateChangeBlock = DPLogHandle_TaskingManagerError();
+        if (os_signpost_enabled(configStateChangeBlock))
         {
           *buf = 138543618;
-          v22 = v7;
+          v22 = iDCopy;
           v23 = 2114;
-          v24 = v6;
+          v24 = dCopy;
           v14 = "Client (teamID %{public}@) attempting to complete config %{public}@ for wrong team";
           goto LABEL_13;
         }
@@ -671,13 +671,13 @@ LABEL_13:
 
   else
   {
-    v13 = DPLogHandle_TaskingManagerError();
-    if (os_signpost_enabled(v13))
+    configStateChangeBlock = DPLogHandle_TaskingManagerError();
+    if (os_signpost_enabled(configStateChangeBlock))
     {
       *buf = 138543618;
-      v22 = v7;
+      v22 = iDCopy;
       v23 = 2114;
-      v24 = v6;
+      v24 = dCopy;
       v14 = "Client (teamID %{public}@) attempting to complete non-existent config %{public}@";
       goto LABEL_13;
     }
@@ -686,14 +686,14 @@ LABEL_13:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)metadataForConfigUUID:(id)a3 teamID:(id)a4 errorOut:(id *)a5
+- (id)metadataForConfigUUID:(id)d teamID:(id)iD errorOut:(id *)out
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(teamID == %@) AND (configUUID == %@)", a4, a3];
-  v8 = [(DRSTaskingManager *)self decisionMaker];
-  v9 = [v8 configStore];
+  v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(teamID == %@) AND (configUUID == %@)", iD, d];
+  decisionMaker = [(DRSTaskingManager *)self decisionMaker];
+  configStore = [decisionMaker configStore];
   v17 = 0;
-  v10 = [v9 configMetadatasForPredicate:v7 sortDescriptors:0 fetchLimit:1 errorOut:&v17];
+  v10 = [configStore configMetadatasForPredicate:v7 sortDescriptors:0 fetchLimit:1 errorOut:&v17];
   v11 = v17;
 
   if (v11)
@@ -706,36 +706,36 @@ LABEL_13:
       _os_signpost_emit_with_name_impl(&dword_232906000, v12, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "MetadataLookupFailure", "Failed to lookup metadata due to error: %{public}@", buf, 0xCu);
     }
 
-    if (a5)
+    if (out)
     {
       v13 = v11;
-      v14 = 0;
-      *a5 = v11;
+      firstObject = 0;
+      *out = v11;
       goto LABEL_10;
     }
   }
 
   else if (v10 && [v10 count])
   {
-    v14 = [v10 firstObject];
+    firstObject = [v10 firstObject];
     goto LABEL_10;
   }
 
-  v14 = 0;
+  firstObject = 0;
 LABEL_10:
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return firstObject;
 }
 
-- (BOOL)clearTaskingHistoryWithErrorOut:(id *)a3
+- (BOOL)clearTaskingHistoryWithErrorOut:(id *)out
 {
-  v4 = [(DRSTaskingManager *)self decisionMaker];
-  v5 = [v4 configStore];
-  LOBYTE(a3) = [v5 clearStoreWithErrorOut:a3];
+  decisionMaker = [(DRSTaskingManager *)self decisionMaker];
+  configStore = [decisionMaker configStore];
+  LOBYTE(out) = [configStore clearStoreWithErrorOut:out];
 
-  return a3;
+  return out;
 }
 
 - (id)persistedCloudChannelConfig
@@ -746,14 +746,14 @@ LABEL_10:
   v10 = __Block_byref_object_copy__6;
   v11 = __Block_byref_object_dispose__6;
   v12 = 0;
-  v3 = [(DRSTaskingManager *)self workQueue];
+  workQueue = [(DRSTaskingManager *)self workQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __48__DRSTaskingManager_persistedCloudChannelConfig__block_invoke;
   v6[3] = &unk_27899F4F0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(workQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -771,29 +771,29 @@ void __48__DRSTaskingManager_persistedCloudChannelConfig__block_invoke(uint64_t 
   *(v4 + 40) = v3;
 }
 
-- (BOOL)updatePersistedChannelConfig:(id)a3 errorOut:(id *)a4
+- (BOOL)updatePersistedChannelConfig:(id)config errorOut:(id *)out
 {
-  v6 = a3;
-  v7 = [(DRSTaskingManager *)self decisionMaker];
-  v8 = [v7 configStore];
-  LOBYTE(a4) = [v8 updateCloudChannelConfig:v6 errorOut:a4];
+  configCopy = config;
+  decisionMaker = [(DRSTaskingManager *)self decisionMaker];
+  configStore = [decisionMaker configStore];
+  LOBYTE(out) = [configStore updateCloudChannelConfig:configCopy errorOut:out];
 
-  return a4;
+  return out;
 }
 
-- (BOOL)unsubscribeFromSubscribedChannelWithErrorOut:(id *)a3
+- (BOOL)unsubscribeFromSubscribedChannelWithErrorOut:(id *)out
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  *a3 = 0;
-  v5 = [(DRSTaskingManager *)self taskingMessageChannel];
+  *out = 0;
+  taskingMessageChannel = [(DRSTaskingManager *)self taskingMessageChannel];
 
-  if (!v5)
+  if (!taskingMessageChannel)
   {
     goto LABEL_4;
   }
 
-  v6 = [(DRSTaskingManager *)self taskingMessageChannel];
-  v7 = [v6 unsubscribe:a3];
+  taskingMessageChannel2 = [(DRSTaskingManager *)self taskingMessageChannel];
+  v7 = [taskingMessageChannel2 unsubscribe:out];
 
   if (v7)
   {
@@ -803,23 +803,23 @@ LABEL_4:
     goto LABEL_10;
   }
 
-  if (!*a3)
+  if (!*out)
   {
     v9 = MEMORY[0x277CCA9B8];
     v20 = *MEMORY[0x277CCA450];
     v21[0] = @"Unknown unsubscribe failure";
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-    *a3 = [v9 errorWithDomain:@"DiagnosticRequestCloudChannelError" code:0 userInfo:v10];
+    *out = [v9 errorWithDomain:@"DiagnosticRequestCloudChannelError" code:0 userInfo:v10];
   }
 
   v11 = DPLogHandle_TaskingManagerError();
   if (os_signpost_enabled(v11))
   {
-    v12 = [(DRSTaskingManager *)self taskingMessageChannel];
-    v13 = [v12 config];
-    v14 = *a3;
+    taskingMessageChannel3 = [(DRSTaskingManager *)self taskingMessageChannel];
+    config = [taskingMessageChannel3 config];
+    v14 = *out;
     v16 = 138543618;
-    v17 = v13;
+    v17 = config;
     v18 = 2114;
     v19 = v14;
     _os_signpost_emit_with_name_impl(&dword_232906000, v11, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "UnsubscribeChannelFailed", "Failed to unsubscribe from %{public}@ due to error: %{public}@", &v16, 0x16u);
@@ -834,17 +834,17 @@ LABEL_10:
 - (BOOL)isTaskingEnabled
 {
   v2 = +[DRSSystemProfile sharedInstance];
-  v3 = [v2 isTaskingEnabled];
+  isTaskingEnabled = [v2 isTaskingEnabled];
 
-  return v3;
+  return isTaskingEnabled;
 }
 
-- (BOOL)subscribeToChannelWithConfig:(id)a3 errorOut:(id *)a4
+- (BOOL)subscribeToChannelWithConfig:(id)config errorOut:(id *)out
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  *a4 = 0;
-  if (v6)
+  configCopy = config;
+  *out = 0;
+  if (configCopy)
   {
     v7 = [DRSTaskingMessageChannel alloc];
     v16[0] = MEMORY[0x277D85DD0];
@@ -852,8 +852,8 @@ LABEL_10:
     v16[2] = __59__DRSTaskingManager_subscribeToChannelWithConfig_errorOut___block_invoke;
     v16[3] = &unk_27899FA58;
     v16[4] = self;
-    v8 = [(DRSTaskingMessageChannel *)v7 initWithCloudChannelConfig:v6 payloadProcessingBlock:v16];
-    LODWORD(v9) = [(DRSTaskingMessageChannel *)v8 subscribe:a4];
+    v8 = [(DRSTaskingMessageChannel *)v7 initWithCloudChannelConfig:configCopy payloadProcessingBlock:v16];
+    LODWORD(v9) = [(DRSTaskingMessageChannel *)v8 subscribe:out];
     if (v9)
     {
       [(DRSTaskingManager *)self setTaskingMessageChannel:v8];
@@ -864,10 +864,10 @@ LABEL_10:
       v10 = DPLogHandle_TaskingManagerError();
       if (os_signpost_enabled(v10))
       {
-        v11 = [v6 debugDescription];
+        v11 = [configCopy debugDescription];
         v12 = v11;
-        v13 = *a4;
-        if (!*a4)
+        v13 = *out;
+        if (!*out)
         {
           v13 = @"Unknown";
         }
@@ -915,22 +915,22 @@ void __59__DRSTaskingManager_subscribeToChannelWithConfig_errorOut___block_invok
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)checkConfigsForInvalidation:(id *)a3
+- (BOOL)checkConfigsForInvalidation:(id *)invalidation
 {
   v107 = *MEMORY[0x277D85DE8];
-  *a3 = 0;
+  *invalidation = 0;
   v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(state == %u) || (state == %u)", 2, 1];
-  v6 = [(DRSTaskingManager *)self decisionMaker];
-  v7 = [v6 configStore];
-  v8 = [v7 configMetadatasForPredicate:v5 sortDescriptors:0 fetchLimit:0 errorOut:a3];
+  decisionMaker = [(DRSTaskingManager *)self decisionMaker];
+  configStore = [decisionMaker configStore];
+  v8 = [configStore configMetadatasForPredicate:v5 sortDescriptors:0 fetchLimit:0 errorOut:invalidation];
 
-  v9 = *a3;
-  if (*a3)
+  v9 = *invalidation;
+  if (*invalidation)
   {
     v10 = DPLogHandle_TaskingManagerError();
     if (os_signpost_enabled(v10))
     {
-      v11 = *a3;
+      v11 = *invalidation;
       *buf = 138543362;
       v98 = v11;
       v12 = "InvalidationCheckFailed";
@@ -947,10 +947,10 @@ LABEL_53:
 
   if (v8 && [v8 count])
   {
-    v80 = self;
+    selfCopy = self;
     v78 = v5;
-    v16 = [MEMORY[0x277CBEAA8] date];
-    v17 = [MEMORY[0x277CBEB38] dictionary];
+    date = [MEMORY[0x277CBEAA8] date];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v93 = 0u;
     v94 = 0u;
     v95 = 0u;
@@ -971,17 +971,17 @@ LABEL_53:
           }
 
           v23 = *(*(&v93 + 1) + 8 * i);
-          v24 = [v23 teamID];
-          v25 = [v17 objectForKeyedSubscript:v24];
+          teamID = [v23 teamID];
+          array = [dictionary objectForKeyedSubscript:teamID];
 
-          if (!v25)
+          if (!array)
           {
-            v25 = [MEMORY[0x277CBEB18] array];
-            v26 = [v23 teamID];
-            [v17 setObject:v25 forKeyedSubscript:v26];
+            array = [MEMORY[0x277CBEB18] array];
+            teamID2 = [v23 teamID];
+            [dictionary setObject:array forKeyedSubscript:teamID2];
           }
 
-          [v25 addObject:v23];
+          [array addObject:v23];
         }
 
         v20 = [v18 countByEnumeratingWithState:&v93 objects:v106 count:16];
@@ -990,17 +990,17 @@ LABEL_53:
       while (v20);
     }
 
-    v27 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v89[0] = MEMORY[0x277D85DD0];
     v89[1] = 3221225472;
     v89[2] = __49__DRSTaskingManager_checkConfigsForInvalidation___block_invoke;
     v89[3] = &unk_27899FA30;
-    v28 = v27;
+    v28 = array2;
     v90 = v28;
-    v91 = v80;
-    v82 = v16;
+    v91 = selfCopy;
+    v82 = date;
     v92 = v82;
-    [v17 enumerateKeysAndObjectsUsingBlock:v89];
+    [dictionary enumerateKeysAndObjectsUsingBlock:v89];
     v29 = v28;
 
     v87 = 0u;
@@ -1033,29 +1033,29 @@ LABEL_17:
       }
 
       v34 = *(*(&v85 + 1) + 8 * v33);
-      v35 = [*(v32 + 2456) sharedInstance];
-      v36 = [v35 build];
-      v37 = [v34 config];
-      v38 = [v37 build];
-      v39 = [v36 isEqualToString:v38];
+      sharedInstance = [*(v32 + 2456) sharedInstance];
+      build = [sharedInstance build];
+      config = [v34 config];
+      build2 = [config build];
+      v39 = [build isEqualToString:build2];
 
       if (v39)
       {
-        v40 = [v34 config];
-        v41 = [v40 endDate];
-        v42 = [v82 compare:v41];
+        config2 = [v34 config];
+        endDate = [config2 endDate];
+        v42 = [v82 compare:endDate];
 
         if (v42 == -1)
         {
           v48 = DPLogHandle_TaskingManager();
           if (os_signpost_enabled(v48))
           {
-            v72 = [v34 configUUID];
-            v73 = [v34 teamID];
+            configUUID = [v34 configUUID];
+            teamID3 = [v34 teamID];
             *buf = 138543618;
-            v98 = v72;
+            v98 = configUUID;
             v99 = 2114;
-            v100 = v73;
+            v100 = teamID3;
             _os_signpost_emit_with_name_impl(&dword_232906000, v48, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ConfigStillValid", "Config %{public}@ (Team ID %{public}@) is still valid", buf, 0x16u);
           }
 
@@ -1073,28 +1073,28 @@ LABEL_17:
           v43 = 8194;
         }
 
-        v44 = [(DRSTaskingManager *)v80 decisionMaker];
-        v45 = [v44 configStore];
-        v46 = [v34 configUUID];
+        decisionMaker2 = [(DRSTaskingManager *)selfCopy decisionMaker];
+        configStore2 = [decisionMaker2 configStore];
+        configUUID2 = [v34 configUUID];
         v83 = 0;
-        v47 = [v45 completeConfigWithUUID:v46 completedDate:v82 completionType:v43 completionDescription:@"Expired" errorOut:&v83];
+        v47 = [configStore2 completeConfigWithUUID:configUUID2 completedDate:v82 completionType:v43 completionDescription:@"Expired" errorOut:&v83];
         v48 = v83;
 
         if (v47)
         {
-          v49 = [(DRSTaskingManager *)v80 configStateChangeBlock];
-          v50 = [v34 teamID];
-          v51 = [v34 configUUID];
-          (v49[2].isa)(v49, v50, v51, 0, 3, 4, [v34 state] == 2);
+          configStateChangeBlock = [(DRSTaskingManager *)selfCopy configStateChangeBlock];
+          teamID4 = [v34 teamID];
+          configUUID3 = [v34 configUUID];
+          (configStateChangeBlock[2].isa)(configStateChangeBlock, teamID4, configUUID3, 0, 3, 4, [v34 state] == 2);
           goto LABEL_45;
         }
 
-        v49 = DPLogHandle_TaskingManagerError();
-        if (os_signpost_enabled(v49))
+        configStateChangeBlock = DPLogHandle_TaskingManagerError();
+        if (os_signpost_enabled(configStateChangeBlock))
         {
-          v50 = [v34 configUUID];
-          v74 = [v34 teamID];
-          v51 = v74;
+          teamID4 = [v34 configUUID];
+          teamID5 = [v34 teamID];
+          configUUID3 = teamID5;
           *buf = 138543874;
           v75 = @"Unknown";
           if (v48)
@@ -1102,12 +1102,12 @@ LABEL_17:
             v75 = v48;
           }
 
-          v98 = v50;
+          v98 = teamID4;
           v99 = 2114;
-          v100 = v74;
+          v100 = teamID5;
           v101 = 2114;
           v102 = v75;
-          _os_signpost_emit_with_name_impl(&dword_232906000, v49, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "InvalidationFailed", "Failed to invalidate expiring config %{public}@ (Team ID: %{public}@) due to error: %{public}@", buf, 0x20u);
+          _os_signpost_emit_with_name_impl(&dword_232906000, configStateChangeBlock, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "InvalidationFailed", "Failed to invalidate expiring config %{public}@ (Team ID: %{public}@) due to error: %{public}@", buf, 0x20u);
 LABEL_45:
         }
 
@@ -1116,11 +1116,11 @@ LABEL_45:
       }
 
       v52 = MEMORY[0x277CCACA8];
-      v53 = [v34 config];
-      v54 = [v53 build];
-      v55 = [*(v32 + 2456) sharedInstance];
-      v56 = [v55 build];
-      v48 = [v52 stringWithFormat:@"Build changed (%@ -> %@)", v54, v56];
+      config3 = [v34 config];
+      build3 = [config3 build];
+      sharedInstance2 = [*(v32 + 2456) sharedInstance];
+      build4 = [sharedInstance2 build];
+      v48 = [v52 stringWithFormat:@"Build changed (%@ -> %@)", build3, build4];
 
       if ([v34 state] == 1)
       {
@@ -1132,47 +1132,47 @@ LABEL_45:
         v57 = 8193;
       }
 
-      v58 = [(DRSTaskingManager *)v80 decisionMaker];
-      v59 = [v58 configStore];
-      v60 = [v34 configUUID];
+      decisionMaker3 = [(DRSTaskingManager *)selfCopy decisionMaker];
+      configStore3 = [decisionMaker3 configStore];
+      configUUID4 = [v34 configUUID];
       v84 = 0;
-      v61 = [v59 completeConfigWithUUID:v60 completedDate:v82 completionType:v57 completionDescription:v48 errorOut:&v84];
-      v49 = v84;
+      v61 = [configStore3 completeConfigWithUUID:configUUID4 completedDate:v82 completionType:v57 completionDescription:v48 errorOut:&v84];
+      configStateChangeBlock = v84;
 
       if (v61)
       {
-        v62 = [(DRSTaskingManager *)v80 configStateChangeBlock];
-        v63 = [v34 teamID];
-        v64 = [v34 configUUID];
-        (*(v62 + 16))(v62, v63, v64, 0, 3, 3, [v34 state] == 2);
+        configStateChangeBlock2 = [(DRSTaskingManager *)selfCopy configStateChangeBlock];
+        teamID6 = [v34 teamID];
+        configUUID5 = [v34 configUUID];
+        (*(configStateChangeBlock2 + 16))(configStateChangeBlock2, teamID6, configUUID5, 0, 3, 3, [v34 state] == 2);
       }
 
       else
       {
-        v62 = DPLogHandle_TaskingManagerError();
-        if (os_signpost_enabled(v62))
+        configStateChangeBlock2 = DPLogHandle_TaskingManagerError();
+        if (os_signpost_enabled(configStateChangeBlock2))
         {
-          v65 = [v34 configUUID];
-          v66 = [v34 config];
-          v67 = [v66 build];
+          configUUID6 = [v34 configUUID];
+          config4 = [v34 config];
+          build5 = [config4 build];
           v68 = +[DRSSystemProfile sharedInstance];
-          v69 = [v68 build];
-          v70 = v69;
+          build6 = [v68 build];
+          v70 = build6;
           *buf = 138544130;
           v71 = @"Unknown";
-          if (v49)
+          if (configStateChangeBlock)
           {
-            v71 = v49;
+            v71 = configStateChangeBlock;
           }
 
-          v98 = v65;
+          v98 = configUUID6;
           v99 = 2114;
-          v100 = v67;
+          v100 = build5;
           v101 = 2114;
-          v102 = v69;
+          v102 = build6;
           v103 = 2114;
           v104 = v71;
-          _os_signpost_emit_with_name_impl(&dword_232906000, v62, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "InvalidationFailed", "Failed to invalidate config %{public}@ (%{public}@ -> %{public}@) due to error: %{public}@", buf, 0x2Au);
+          _os_signpost_emit_with_name_impl(&dword_232906000, configStateChangeBlock2, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "InvalidationFailed", "Failed to invalidate config %{public}@ (%{public}@ -> %{public}@) due to error: %{public}@", buf, 0x2Au);
 
           v32 = 0x27899E000;
           goto LABEL_37;

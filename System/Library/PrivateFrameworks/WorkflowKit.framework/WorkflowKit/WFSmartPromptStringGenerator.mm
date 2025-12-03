@@ -1,23 +1,23 @@
 @interface WFSmartPromptStringGenerator
-+ (id)contentDescriptionWithAttributionSet:(id)a3 contentItemCache:(id)a4;
-+ (id)localizedOutputContentDescriptionWithContentCollection:(id)a3;
-+ (id)localizedPromptForWorkflowName:(id)a3 attributionSet:(id)a4 contentCollection:(id)a5 contentItemCache:(id)a6 contentDestination:(id)a7 action:(id)a8 isWebpageCoercion:(BOOL)a9;
-+ (id)localizedSubtitleForWorkflowName:(id)a3 attributionSet:(id)a4 previousAttributions:(id)a5 contentItemCache:(id)a6 contentDestination:(id)a7 action:(id)a8 isWebpageCoercion:(BOOL)a9;
++ (id)contentDescriptionWithAttributionSet:(id)set contentItemCache:(id)cache;
++ (id)localizedOutputContentDescriptionWithContentCollection:(id)collection;
++ (id)localizedPromptForWorkflowName:(id)name attributionSet:(id)set contentCollection:(id)collection contentItemCache:(id)cache contentDestination:(id)destination action:(id)action isWebpageCoercion:(BOOL)coercion;
++ (id)localizedSubtitleForWorkflowName:(id)name attributionSet:(id)set previousAttributions:(id)attributions contentItemCache:(id)cache contentDestination:(id)destination action:(id)action isWebpageCoercion:(BOOL)coercion;
 @end
 
 @implementation WFSmartPromptStringGenerator
 
-+ (id)localizedOutputContentDescriptionWithContentCollection:(id)a3
++ (id)localizedOutputContentDescriptionWithContentCollection:(id)collection
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  collectionCopy = collection;
   v4 = [MEMORY[0x1E696AB50] set];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v5 = [v3 items];
-  v6 = [v5 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  items = [collectionCopy items];
+  v6 = [items countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v6)
   {
     v7 = v6;
@@ -28,7 +28,7 @@
       {
         if (*v28 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(items);
         }
 
         v10 = *(*(&v27 + 1) + 8 * i);
@@ -39,7 +39,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v7 = [items countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v7);
@@ -55,22 +55,22 @@
   if ([v13 count])
   {
     v14 = MEMORY[0x1E696AD08];
-    v15 = [v13 allObjects];
-    v16 = [v14 localizedStringByJoiningStrings:v15];
-    v17 = [v16 localizedLowercaseString];
+    allObjects = [v13 allObjects];
+    v16 = [v14 localizedStringByJoiningStrings:allObjects];
+    localizedLowercaseString = [v16 localizedLowercaseString];
   }
 
   else
   {
     v18 = MEMORY[0x1E696AEC0];
-    v15 = WFLocalizedPluralString(@"%1$d items");
-    v19 = [v3 numberOfItems];
-    v17 = [v18 localizedStringWithFormat:v15, v19, v22, v23, v24, v25];
+    allObjects = WFLocalizedPluralString(@"%1$d items");
+    numberOfItems = [collectionCopy numberOfItems];
+    localizedLowercaseString = [v18 localizedStringWithFormat:allObjects, numberOfItems, v22, v23, v24, v25];
   }
 
   v20 = *MEMORY[0x1E69E9840];
 
-  return v17;
+  return localizedLowercaseString;
 }
 
 id __87__WFSmartPromptStringGenerator_localizedOutputContentDescriptionWithContentCollection___block_invoke(uint64_t a1, void *a2)
@@ -91,20 +91,20 @@ id __87__WFSmartPromptStringGenerator_localizedOutputContentDescriptionWithConte
   return v4;
 }
 
-+ (id)contentDescriptionWithAttributionSet:(id)a3 contentItemCache:(id)a4
++ (id)contentDescriptionWithAttributionSet:(id)set contentItemCache:(id)cache
 {
   v92 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  setCopy = set;
+  cacheCopy = cache;
   v7 = [MEMORY[0x1E696AB50] set];
   v8 = [MEMORY[0x1E695DFA8] set];
   v80 = 0u;
   v81 = 0u;
   v82 = 0u;
   v83 = 0u;
-  v64 = v5;
-  v9 = [v5 attributions];
-  v10 = [v9 countByEnumeratingWithState:&v80 objects:v91 count:16];
+  v64 = setCopy;
+  attributions = [setCopy attributions];
+  v10 = [attributions countByEnumeratingWithState:&v80 objects:v91 count:16];
   if (v10)
   {
     v11 = v10;
@@ -115,15 +115,15 @@ id __87__WFSmartPromptStringGenerator_localizedOutputContentDescriptionWithConte
       {
         if (*v81 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(attributions);
         }
 
-        v14 = [*(*(&v80 + 1) + 8 * i) privateItemIdentifiers];
-        v15 = [v14 set];
+        privateItemIdentifiers = [*(*(&v80 + 1) + 8 * i) privateItemIdentifiers];
+        v15 = [privateItemIdentifiers set];
         [v8 unionSet:v15];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v80 objects:v91 count:16];
+      v11 = [attributions countByEnumeratingWithState:&v80 objects:v91 count:16];
     }
 
     while (v11);
@@ -148,7 +148,7 @@ id __87__WFSmartPromptStringGenerator_localizedOutputContentDescriptionWithConte
           objc_enumerationMutation(v16);
         }
 
-        v21 = [v6 contentItemForUUID:*(*(&v76 + 1) + 8 * j)];
+        v21 = [cacheCopy contentItemForUUID:*(*(&v76 + 1) + 8 * j)];
         v22 = objc_opt_class();
         if (v22)
         {
@@ -173,13 +173,13 @@ id __87__WFSmartPromptStringGenerator_localizedOutputContentDescriptionWithConte
   {
     v62 = v23;
     v63 = v24;
-    v26 = [MEMORY[0x1E696AB50] set];
+    allObjects = [MEMORY[0x1E696AB50] set];
     v70 = 0u;
     v71 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v29 = [v64 attributions];
-    v30 = [v29 countByEnumeratingWithState:&v70 objects:v89 count:16];
+    attributions2 = [v64 attributions];
+    v30 = [attributions2 countByEnumeratingWithState:&v70 objects:v89 count:16];
     if (v30)
     {
       v31 = v30;
@@ -190,25 +190,25 @@ id __87__WFSmartPromptStringGenerator_localizedOutputContentDescriptionWithConte
         {
           if (*v71 != v32)
           {
-            objc_enumerationMutation(v29);
+            objc_enumerationMutation(attributions2);
           }
 
           v34 = *(*(&v70 + 1) + 8 * k);
-          v35 = [v34 origin];
-          if (v35)
+          origin = [v34 origin];
+          if (origin)
           {
-            v36 = v35;
-            v37 = [v34 disclosureLevel];
+            v36 = origin;
+            disclosureLevel = [v34 disclosureLevel];
 
-            if (v37 == 1)
+            if (disclosureLevel == 1)
             {
               if ([v34 count])
               {
                 v38 = 0;
                 do
                 {
-                  v39 = [v34 origin];
-                  [v26 addObject:v39];
+                  origin2 = [v34 origin];
+                  [allObjects addObject:origin2];
 
                   ++v38;
                 }
@@ -219,34 +219,34 @@ id __87__WFSmartPromptStringGenerator_localizedOutputContentDescriptionWithConte
           }
         }
 
-        v31 = [v29 countByEnumeratingWithState:&v70 objects:v89 count:16];
+        v31 = [attributions2 countByEnumeratingWithState:&v70 objects:v89 count:16];
       }
 
       while (v31);
     }
 
-    if (![v26 count])
+    if (![allObjects count])
     {
-      v28 = 0;
+      localizedLowercaseString = 0;
       v23 = v62;
       v24 = v63;
       goto LABEL_57;
     }
 
     v61 = v16;
-    v27 = [MEMORY[0x1E695DFA0] orderedSet];
+    orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
     v66 = 0u;
     v67 = 0u;
     v68 = 0u;
     v69 = 0u;
-    v26 = v26;
-    v40 = [v26 countByEnumeratingWithState:&v66 objects:v88 count:16];
-    v41 = v26;
+    allObjects = allObjects;
+    v40 = [allObjects countByEnumeratingWithState:&v66 objects:v88 count:16];
+    v41 = allObjects;
     v24 = v63;
     if (v40)
     {
       v42 = v40;
-      v65 = v27;
+      v65 = orderedSet;
       v43 = 0;
       v44 = *v67;
       do
@@ -255,26 +255,26 @@ id __87__WFSmartPromptStringGenerator_localizedOutputContentDescriptionWithConte
         {
           if (*v67 != v44)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(allObjects);
           }
 
           v46 = *(*(&v66 + 1) + 8 * m);
-          v47 = [v26 countForObject:v46];
-          v48 = [v46 localizedTitle];
-          if (v48)
+          v47 = [allObjects countForObject:v46];
+          localizedTitle = [v46 localizedTitle];
+          if (localizedTitle)
           {
             v49 = MEMORY[0x1E696AEC0];
             if (v47 == 1)
             {
               v50 = WFLocalizedString(@"1 %1$@ item");
-              v51 = [v49 localizedStringWithFormat:v50, v48];
+              v51 = [v49 localizedStringWithFormat:v50, localizedTitle];
               [v65 addObject:v51];
             }
 
             else
             {
               v53 = WFLocalizedString(@"%1$d %2$@ items");
-              v54 = [v49 localizedStringWithFormat:v53, v47, v48];
+              v54 = [v49 localizedStringWithFormat:v53, v47, localizedTitle];
               [v65 addObject:v54];
             }
           }
@@ -295,13 +295,13 @@ id __87__WFSmartPromptStringGenerator_localizedOutputContentDescriptionWithConte
           }
         }
 
-        v42 = [v26 countByEnumeratingWithState:&v66 objects:v88 count:16];
+        v42 = [allObjects countByEnumeratingWithState:&v66 objects:v88 count:16];
       }
 
       while (v42);
 
       v24 = v63;
-      v27 = v65;
+      orderedSet = v65;
       if (!v43)
       {
         goto LABEL_52;
@@ -323,16 +323,16 @@ id __87__WFSmartPromptStringGenerator_localizedOutputContentDescriptionWithConte
     }
 
 LABEL_52:
-    if ([v27 count])
+    if ([orderedSet count])
     {
       v57 = MEMORY[0x1E696AD08];
-      v58 = [v27 array];
-      v28 = [v57 localizedStringByJoiningStrings:v58];
+      array = [orderedSet array];
+      localizedLowercaseString = [v57 localizedStringByJoiningStrings:array];
     }
 
     else
     {
-      v28 = 0;
+      localizedLowercaseString = 0;
     }
 
     v16 = v61;
@@ -341,15 +341,15 @@ LABEL_52:
   }
 
   v25 = MEMORY[0x1E696AD08];
-  v26 = [v24 allObjects];
-  v27 = [v25 localizedStringByJoiningStrings:v26];
-  v28 = [v27 localizedLowercaseString];
+  allObjects = [v24 allObjects];
+  orderedSet = [v25 localizedStringByJoiningStrings:allObjects];
+  localizedLowercaseString = [orderedSet localizedLowercaseString];
 LABEL_56:
 
 LABEL_57:
   v59 = *MEMORY[0x1E69E9840];
 
-  return v28;
+  return localizedLowercaseString;
 }
 
 id __86__WFSmartPromptStringGenerator_contentDescriptionWithAttributionSet_contentItemCache___block_invoke(uint64_t a1, void *a2)
@@ -370,28 +370,28 @@ id __86__WFSmartPromptStringGenerator_contentDescriptionWithAttributionSet_conte
   return v4;
 }
 
-+ (id)localizedSubtitleForWorkflowName:(id)a3 attributionSet:(id)a4 previousAttributions:(id)a5 contentItemCache:(id)a6 contentDestination:(id)a7 action:(id)a8 isWebpageCoercion:(BOOL)a9
++ (id)localizedSubtitleForWorkflowName:(id)name attributionSet:(id)set previousAttributions:(id)attributions contentItemCache:(id)cache contentDestination:(id)destination action:(id)action isWebpageCoercion:(BOOL)coercion
 {
   v60 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = [a1 contentDescriptionWithAttributionSet:v16 contentItemCache:v18];
+  nameCopy = name;
+  setCopy = set;
+  attributionsCopy = attributions;
+  cacheCopy = cache;
+  destinationCopy = destination;
+  actionCopy = action;
+  v21 = [self contentDescriptionWithAttributionSet:setCopy contentItemCache:cacheCopy];
   v22 = [MEMORY[0x1E695DFA0] orderedSetWithCapacity:2];
-  v53 = v17;
-  if (v17)
+  v53 = attributionsCopy;
+  if (attributionsCopy)
   {
-    v17 = [a1 contentDescriptionWithAttributionSet:v17 contentItemCache:v18];
+    attributionsCopy = [self contentDescriptionWithAttributionSet:attributionsCopy contentItemCache:cacheCopy];
   }
 
-  v23 = [v19 localizedTitle];
-  v51 = v20;
-  v49 = v17;
-  v54 = v15;
-  v24 = [v20 smartPromptSubtitleWithPreviousContentDescription:v17 contentDestination:v23 workflowName:v15];
+  localizedTitle = [destinationCopy localizedTitle];
+  v51 = actionCopy;
+  v49 = attributionsCopy;
+  v54 = nameCopy;
+  v24 = [actionCopy smartPromptSubtitleWithPreviousContentDescription:attributionsCopy contentDestination:localizedTitle workflowName:nameCopy];
 
   if ([v24 length])
   {
@@ -399,10 +399,10 @@ id __86__WFSmartPromptStringGenerator_contentDescriptionWithAttributionSet_conte
   }
 
   v48 = v24;
-  if (!a9)
+  if (!coercion)
   {
-    v25 = [MEMORY[0x1E6996D78] webpagesLocation];
-    if ([v19 isEqual:v25])
+    webpagesLocation = [MEMORY[0x1E6996D78] webpagesLocation];
+    if ([destinationCopy isEqual:webpagesLocation])
     {
     }
 
@@ -434,8 +434,8 @@ id __86__WFSmartPromptStringGenerator_contentDescriptionWithAttributionSet_conte
     }
 
     v31 = WFLocalizedString(v29);
-    v32 = [v19 localizedTitle];
-    v33 = [v28 localizedStringWithFormat:v31, v54, v32];
+    localizedTitle2 = [destinationCopy localizedTitle];
+    v33 = [v28 localizedStringWithFormat:v31, v54, localizedTitle2];
     [v22 addObject:v33];
   }
 
@@ -452,21 +452,21 @@ id __86__WFSmartPromptStringGenerator_contentDescriptionWithAttributionSet_conte
     }
 
     v31 = WFLocalizedString(v30);
-    v32 = [v28 localizedStringWithFormat:v31, v54];
-    [v22 addObject:v32];
+    localizedTitle2 = [v28 localizedStringWithFormat:v31, v54];
+    [v22 addObject:localizedTitle2];
   }
 
 LABEL_19:
-  v50 = v19;
+  v50 = destinationCopy;
   v34 = v21;
-  v52 = v18;
+  v52 = cacheCopy;
   v57 = 0u;
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v35 = v16;
-  v36 = [v16 attributions];
-  v37 = [v36 countByEnumeratingWithState:&v55 objects:v59 count:16];
+  v35 = setCopy;
+  attributions = [setCopy attributions];
+  v37 = [attributions countByEnumeratingWithState:&v55 objects:v59 count:16];
   if (v37)
   {
     v38 = v37;
@@ -477,16 +477,16 @@ LABEL_19:
       {
         if (*v56 != v39)
         {
-          objc_enumerationMutation(v36);
+          objc_enumerationMutation(attributions);
         }
 
-        v41 = [*(*(&v55 + 1) + 8 * i) disclosureWarnings];
-        v42 = [v41 if_map:&__block_literal_global_44640];
+        disclosureWarnings = [*(*(&v55 + 1) + 8 * i) disclosureWarnings];
+        v42 = [disclosureWarnings if_map:&__block_literal_global_44640];
 
         [v22 unionOrderedSet:v42];
       }
 
-      v38 = [v36 countByEnumeratingWithState:&v55 objects:v59 count:16];
+      v38 = [attributions countByEnumeratingWithState:&v55 objects:v59 count:16];
     }
 
     while (v38);
@@ -495,8 +495,8 @@ LABEL_19:
   if ([v22 count])
   {
     v43 = MEMORY[0x1E696AD08];
-    v44 = [v22 array];
-    v45 = [v43 localizedStringByJoiningStrings:v44];
+    array = [v22 array];
+    v45 = [v43 localizedStringByJoiningStrings:array];
   }
 
   else
@@ -509,31 +509,31 @@ LABEL_19:
   return v45;
 }
 
-+ (id)localizedPromptForWorkflowName:(id)a3 attributionSet:(id)a4 contentCollection:(id)a5 contentItemCache:(id)a6 contentDestination:(id)a7 action:(id)a8 isWebpageCoercion:(BOOL)a9
++ (id)localizedPromptForWorkflowName:(id)name attributionSet:(id)set contentCollection:(id)collection contentItemCache:(id)cache contentDestination:(id)destination action:(id)action isWebpageCoercion:(BOOL)coercion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if ([v17 promptingBehaviour] == 2 && (objc_msgSend(v18, "identifier"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "isEqualToString:", @"is.workflow.actions.askllm"), v19, !v20))
+  nameCopy = name;
+  setCopy = set;
+  cacheCopy = cache;
+  destinationCopy = destination;
+  actionCopy = action;
+  if ([destinationCopy promptingBehaviour] == 2 && (objc_msgSend(actionCopy, "identifier"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "isEqualToString:", @"is.workflow.actions.askllm"), v19, !v20))
   {
     v21 = 0;
   }
 
   else
   {
-    v21 = [a1 contentDescriptionWithAttributionSet:v15 contentItemCache:v16];
+    v21 = [self contentDescriptionWithAttributionSet:setCopy contentItemCache:cacheCopy];
   }
 
-  v22 = [v17 localizedTitle];
-  if (!a9)
+  localizedTitle = [destinationCopy localizedTitle];
+  if (!coercion)
   {
     goto LABEL_12;
   }
 
-  v23 = [MEMORY[0x1E6996D78] webpagesLocation];
-  v24 = [v17 isEqual:v23];
+  webpagesLocation = [MEMORY[0x1E6996D78] webpagesLocation];
+  v24 = [destinationCopy isEqual:webpagesLocation];
 
   if (!v24)
   {
@@ -544,15 +544,15 @@ LABEL_19:
       if (v21)
       {
         v26 = WFLocalizedString(@"Allow “%1$@” to access %2$@ while loading web content on “%3$@”?");
-        v28 = [v17 localizedTitle];
-        [v27 localizedStringWithFormat:v26, v14, v21, v28];
+        localizedTitle2 = [destinationCopy localizedTitle];
+        [v27 localizedStringWithFormat:v26, nameCopy, v21, localizedTitle2];
       }
 
       else
       {
         v26 = WFLocalizedString(@"Allow “%1$@” to load web content on “%2$@”?");
-        v28 = [v17 localizedTitle];
-        [v27 localizedStringWithFormat:v26, v14, v28, v32];
+        localizedTitle2 = [destinationCopy localizedTitle];
+        [v27 localizedStringWithFormat:v26, nameCopy, localizedTitle2, v32];
       }
       v29 = ;
 
@@ -560,7 +560,7 @@ LABEL_19:
     }
 
 LABEL_12:
-    v29 = [v18 smartPromptWithContentDescription:v21 contentDestination:v22 workflowName:v14];
+    v29 = [actionCopy smartPromptWithContentDescription:v21 contentDestination:localizedTitle workflowName:nameCopy];
     goto LABEL_18;
   }
 
@@ -568,13 +568,13 @@ LABEL_12:
   if (v21)
   {
     v26 = WFLocalizedString(@"Allow “%1$@” to access %2$@ while loading web content?");
-    [v25 localizedStringWithFormat:v26, v14, v21];
+    [v25 localizedStringWithFormat:v26, nameCopy, v21];
   }
 
   else
   {
     v26 = WFLocalizedString(@"Allow “%1$@” to load web content?");
-    [v25 localizedStringWithFormat:v26, v14, v31];
+    [v25 localizedStringWithFormat:v26, nameCopy, v31];
   }
   v29 = ;
 LABEL_17:

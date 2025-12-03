@@ -1,51 +1,51 @@
 @interface _SFPBCollectionStyle
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBCollectionStyle)initWithDictionary:(id)a3;
-- (_SFPBCollectionStyle)initWithFacade:(id)a3;
-- (_SFPBCollectionStyle)initWithJSON:(id)a3;
+- (_SFPBCollectionStyle)initWithDictionary:(id)dictionary;
+- (_SFPBCollectionStyle)initWithFacade:(id)facade;
+- (_SFPBCollectionStyle)initWithJSON:(id)n;
 - (_SFPBCollectionStyleGrid)collectionStyleGrid;
 - (_SFPBCollectionStyleHorizontallyScrolling)collectionStyleScrolling;
 - (_SFPBCollectionStyleRow)collectionStyleRow;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setCollectionStyleGrid:(id)a3;
-- (void)setCollectionStyleRow:(id)a3;
-- (void)setCollectionStyleScrolling:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setCollectionStyleGrid:(id)grid;
+- (void)setCollectionStyleRow:(id)row;
+- (void)setCollectionStyleScrolling:(id)scrolling;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBCollectionStyle
 
-- (_SFPBCollectionStyle)initWithFacade:(id)a3
+- (_SFPBCollectionStyle)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBCollectionStyle *)self init];
   if (v5)
   {
-    if ([v4 hasInitiallyVisibleCardSectionCount])
+    if ([facadeCopy hasInitiallyVisibleCardSectionCount])
     {
-      -[_SFPBCollectionStyle setInitiallyVisibleCardSectionCount:](v5, "setInitiallyVisibleCardSectionCount:", [v4 initiallyVisibleCardSectionCount]);
+      -[_SFPBCollectionStyle setInitiallyVisibleCardSectionCount:](v5, "setInitiallyVisibleCardSectionCount:", [facadeCopy initiallyVisibleCardSectionCount]);
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [[_SFPBCollectionStyleRow alloc] initWithFacade:v4];
+      v6 = [[_SFPBCollectionStyleRow alloc] initWithFacade:facadeCopy];
       [(_SFPBCollectionStyle *)v5 setCollectionStyleRow:v6];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [[_SFPBCollectionStyleGrid alloc] initWithFacade:v4];
+      v7 = [[_SFPBCollectionStyleGrid alloc] initWithFacade:facadeCopy];
       [(_SFPBCollectionStyle *)v5 setCollectionStyleGrid:v7];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [[_SFPBCollectionStyleHorizontallyScrolling alloc] initWithFacade:v4];
+      v8 = [[_SFPBCollectionStyleHorizontallyScrolling alloc] initWithFacade:facadeCopy];
       [(_SFPBCollectionStyle *)v5 setCollectionStyleScrolling:v8];
     }
 
@@ -55,15 +55,15 @@
   return v5;
 }
 
-- (_SFPBCollectionStyle)initWithDictionary:(id)a3
+- (_SFPBCollectionStyle)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = _SFPBCollectionStyle;
   v5 = [(_SFPBCollectionStyle *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"collectionStyleRow"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"collectionStyleRow"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -71,7 +71,7 @@
       [(_SFPBCollectionStyle *)v5 setCollectionStyleRow:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"collectionStyleGrid"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"collectionStyleGrid"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -79,7 +79,7 @@
       [(_SFPBCollectionStyle *)v5 setCollectionStyleGrid:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"collectionStyleScrolling"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"collectionStyleScrolling"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -87,7 +87,7 @@
       [(_SFPBCollectionStyle *)v5 setCollectionStyleScrolling:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"initiallyVisibleCardSectionCount"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"initiallyVisibleCardSectionCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -100,30 +100,30 @@
   return v5;
 }
 
-- (_SFPBCollectionStyle)initWithJSON:(id)a3
+- (_SFPBCollectionStyle)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBCollectionStyle *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBCollectionStyle *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBCollectionStyle *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -136,62 +136,62 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_collectionStyleGrid)
   {
-    v4 = [(_SFPBCollectionStyle *)self collectionStyleGrid];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    collectionStyleGrid = [(_SFPBCollectionStyle *)self collectionStyleGrid];
+    dictionaryRepresentation = [collectionStyleGrid dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"collectionStyleGrid"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"collectionStyleGrid"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"collectionStyleGrid"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"collectionStyleGrid"];
     }
   }
 
   if (self->_collectionStyleRow)
   {
-    v7 = [(_SFPBCollectionStyle *)self collectionStyleRow];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    collectionStyleRow = [(_SFPBCollectionStyle *)self collectionStyleRow];
+    dictionaryRepresentation2 = [collectionStyleRow dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"collectionStyleRow"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"collectionStyleRow"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"collectionStyleRow"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"collectionStyleRow"];
     }
   }
 
   if (self->_collectionStyleScrolling)
   {
-    v10 = [(_SFPBCollectionStyle *)self collectionStyleScrolling];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    collectionStyleScrolling = [(_SFPBCollectionStyle *)self collectionStyleScrolling];
+    dictionaryRepresentation3 = [collectionStyleScrolling dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"collectionStyleScrolling"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"collectionStyleScrolling"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"collectionStyleScrolling"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"collectionStyleScrolling"];
     }
   }
 
   if (self->_initiallyVisibleCardSectionCount)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[_SFPBCollectionStyle initiallyVisibleCardSectionCount](self, "initiallyVisibleCardSectionCount")}];
-    [v3 setObject:v13 forKeyedSubscript:@"initiallyVisibleCardSectionCount"];
+    [dictionary setObject:v13 forKeyedSubscript:@"initiallyVisibleCardSectionCount"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -201,28 +201,28 @@
   return v4 ^ v3 ^ [(_SFPBCollectionStyleHorizontallyScrolling *)self->_collectionStyleScrolling hash]^ (2654435761 * self->_initiallyVisibleCardSectionCount);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_SFPBCollectionStyle *)self collectionStyleRow];
-  v6 = [v4 collectionStyleRow];
-  if ((v5 != 0) == (v6 == 0))
+  collectionStyleRow = [(_SFPBCollectionStyle *)self collectionStyleRow];
+  collectionStyleRow2 = [equalCopy collectionStyleRow];
+  if ((collectionStyleRow != 0) == (collectionStyleRow2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_SFPBCollectionStyle *)self collectionStyleRow];
-  if (v7)
+  collectionStyleRow3 = [(_SFPBCollectionStyle *)self collectionStyleRow];
+  if (collectionStyleRow3)
   {
-    v8 = v7;
-    v9 = [(_SFPBCollectionStyle *)self collectionStyleRow];
-    v10 = [v4 collectionStyleRow];
-    v11 = [v9 isEqual:v10];
+    v8 = collectionStyleRow3;
+    collectionStyleRow4 = [(_SFPBCollectionStyle *)self collectionStyleRow];
+    collectionStyleRow5 = [equalCopy collectionStyleRow];
+    v11 = [collectionStyleRow4 isEqual:collectionStyleRow5];
 
     if (!v11)
     {
@@ -234,20 +234,20 @@
   {
   }
 
-  v5 = [(_SFPBCollectionStyle *)self collectionStyleGrid];
-  v6 = [v4 collectionStyleGrid];
-  if ((v5 != 0) == (v6 == 0))
+  collectionStyleRow = [(_SFPBCollectionStyle *)self collectionStyleGrid];
+  collectionStyleRow2 = [equalCopy collectionStyleGrid];
+  if ((collectionStyleRow != 0) == (collectionStyleRow2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_SFPBCollectionStyle *)self collectionStyleGrid];
-  if (v12)
+  collectionStyleGrid = [(_SFPBCollectionStyle *)self collectionStyleGrid];
+  if (collectionStyleGrid)
   {
-    v13 = v12;
-    v14 = [(_SFPBCollectionStyle *)self collectionStyleGrid];
-    v15 = [v4 collectionStyleGrid];
-    v16 = [v14 isEqual:v15];
+    v13 = collectionStyleGrid;
+    collectionStyleGrid2 = [(_SFPBCollectionStyle *)self collectionStyleGrid];
+    collectionStyleGrid3 = [equalCopy collectionStyleGrid];
+    v16 = [collectionStyleGrid2 isEqual:collectionStyleGrid3];
 
     if (!v16)
     {
@@ -259,24 +259,24 @@
   {
   }
 
-  v5 = [(_SFPBCollectionStyle *)self collectionStyleScrolling];
-  v6 = [v4 collectionStyleScrolling];
-  if ((v5 != 0) != (v6 == 0))
+  collectionStyleRow = [(_SFPBCollectionStyle *)self collectionStyleScrolling];
+  collectionStyleRow2 = [equalCopy collectionStyleScrolling];
+  if ((collectionStyleRow != 0) != (collectionStyleRow2 == 0))
   {
-    v17 = [(_SFPBCollectionStyle *)self collectionStyleScrolling];
-    if (!v17)
+    collectionStyleScrolling = [(_SFPBCollectionStyle *)self collectionStyleScrolling];
+    if (!collectionStyleScrolling)
     {
 
 LABEL_20:
       initiallyVisibleCardSectionCount = self->_initiallyVisibleCardSectionCount;
-      v22 = initiallyVisibleCardSectionCount == [v4 initiallyVisibleCardSectionCount];
+      v22 = initiallyVisibleCardSectionCount == [equalCopy initiallyVisibleCardSectionCount];
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_SFPBCollectionStyle *)self collectionStyleScrolling];
-    v20 = [v4 collectionStyleScrolling];
-    v21 = [v19 isEqual:v20];
+    v18 = collectionStyleScrolling;
+    collectionStyleScrolling2 = [(_SFPBCollectionStyle *)self collectionStyleScrolling];
+    collectionStyleScrolling3 = [equalCopy collectionStyleScrolling];
+    v21 = [collectionStyleScrolling2 isEqual:collectionStyleScrolling3];
 
     if (v21)
     {
@@ -296,33 +296,33 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
-  v4 = [(_SFPBCollectionStyle *)self collectionStyleRow];
-  if (v4)
+  toCopy = to;
+  collectionStyleRow = [(_SFPBCollectionStyle *)self collectionStyleRow];
+  if (collectionStyleRow)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v5 = [(_SFPBCollectionStyle *)self collectionStyleGrid];
-  if (v5)
+  collectionStyleGrid = [(_SFPBCollectionStyle *)self collectionStyleGrid];
+  if (collectionStyleGrid)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_SFPBCollectionStyle *)self collectionStyleScrolling];
-  if (v6)
+  collectionStyleScrolling = [(_SFPBCollectionStyle *)self collectionStyleScrolling];
+  if (collectionStyleScrolling)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_SFPBCollectionStyle *)self initiallyVisibleCardSectionCount];
-  v8 = v9;
-  if (v7)
+  initiallyVisibleCardSectionCount = [(_SFPBCollectionStyle *)self initiallyVisibleCardSectionCount];
+  v8 = toCopy;
+  if (initiallyVisibleCardSectionCount)
   {
     PBDataWriterWriteUint32Field();
-    v8 = v9;
+    v8 = toCopy;
   }
 }
 
@@ -341,9 +341,9 @@ LABEL_18:
   return v3;
 }
 
-- (void)setCollectionStyleScrolling:(id)a3
+- (void)setCollectionStyleScrolling:(id)scrolling
 {
-  v4 = a3;
+  scrollingCopy = scrolling;
   collectionStyleRow = self->_collectionStyleRow;
   self->_collectionStyleRow = 0;
 
@@ -351,14 +351,14 @@ LABEL_18:
   self->_collectionStyleGrid = 0;
 
   v7 = 3;
-  if (!v4)
+  if (!scrollingCopy)
   {
     v7 = 0;
   }
 
   self->_whichValue = v7;
   collectionStyleScrolling = self->_collectionStyleScrolling;
-  self->_collectionStyleScrolling = v4;
+  self->_collectionStyleScrolling = scrollingCopy;
 }
 
 - (_SFPBCollectionStyleGrid)collectionStyleGrid
@@ -376,18 +376,18 @@ LABEL_18:
   return v3;
 }
 
-- (void)setCollectionStyleGrid:(id)a3
+- (void)setCollectionStyleGrid:(id)grid
 {
-  v4 = a3;
+  gridCopy = grid;
   collectionStyleRow = self->_collectionStyleRow;
   self->_collectionStyleRow = 0;
 
   collectionStyleScrolling = self->_collectionStyleScrolling;
   self->_collectionStyleScrolling = 0;
 
-  self->_whichValue = 2 * (v4 != 0);
+  self->_whichValue = 2 * (gridCopy != 0);
   collectionStyleGrid = self->_collectionStyleGrid;
-  self->_collectionStyleGrid = v4;
+  self->_collectionStyleGrid = gridCopy;
 }
 
 - (_SFPBCollectionStyleRow)collectionStyleRow
@@ -405,18 +405,18 @@ LABEL_18:
   return v3;
 }
 
-- (void)setCollectionStyleRow:(id)a3
+- (void)setCollectionStyleRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   collectionStyleGrid = self->_collectionStyleGrid;
   self->_collectionStyleGrid = 0;
 
   collectionStyleScrolling = self->_collectionStyleScrolling;
   self->_collectionStyleScrolling = 0;
 
-  self->_whichValue = v4 != 0;
+  self->_whichValue = rowCopy != 0;
   collectionStyleRow = self->_collectionStyleRow;
-  self->_collectionStyleRow = v4;
+  self->_collectionStyleRow = rowCopy;
 }
 
 @end

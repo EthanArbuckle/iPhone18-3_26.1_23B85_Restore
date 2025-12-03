@@ -1,22 +1,22 @@
 @interface MessageDisplayRequest
-- (MessageDisplayRequest)initWithMessage:(id)a3 completion:(id)a4 firstPaintCompletion:(id)a5;
-- (void)_messageViewDidFinishFirstPaint:(id)a3;
+- (MessageDisplayRequest)initWithMessage:(id)message completion:(id)completion firstPaintCompletion:(id)paintCompletion;
+- (void)_messageViewDidFinishFirstPaint:(id)paint;
 - (void)didBeginProcessingRequest;
-- (void)requestAbortedWithError:(id)a3;
+- (void)requestAbortedWithError:(id)error;
 @end
 
 @implementation MessageDisplayRequest
 
-- (MessageDisplayRequest)initWithMessage:(id)a3 completion:(id)a4 firstPaintCompletion:(id)a5
+- (MessageDisplayRequest)initWithMessage:(id)message completion:(id)completion firstPaintCompletion:(id)paintCompletion
 {
-  v7 = a3;
+  messageCopy = message;
   v15.receiver = self;
   v15.super_class = MessageDisplayRequest;
   v8 = [(MessageDisplayRequest *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_message, a3);
+    objc_storeStrong(&v8->_message, message);
     v10 = objc_alloc_init(EFPromise);
     startPromise = v9->_startPromise;
     v9->_startPromise = v10;
@@ -53,9 +53,9 @@
   }
 }
 
-- (void)requestAbortedWithError:(id)a3
+- (void)requestAbortedWithError:(id)error
 {
-  v6 = a3;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
   hasStarted = self->_hasStarted;
   if (!hasStarted)
@@ -72,30 +72,30 @@
   os_unfair_lock_unlock(&self->_lock);
   if (!hasStarted)
   {
-    [(EFPromise *)self->_startPromise finishWithError:v6];
+    [(EFPromise *)self->_startPromise finishWithError:errorCopy];
   }
 
   if (!hasFinished)
   {
-    [(EFPromise *)self->_finishPromise finishWithError:v6];
+    [(EFPromise *)self->_finishPromise finishWithError:errorCopy];
   }
 }
 
-- (void)_messageViewDidFinishFirstPaint:(id)a3
+- (void)_messageViewDidFinishFirstPaint:(id)paint
 {
-  v16 = a3;
+  paintCopy = paint;
   os_unfair_lock_lock(&self->_lock);
   hasFinished = self->_hasFinished;
   os_unfair_lock_unlock(&self->_lock);
-  v5 = v16;
+  v5 = paintCopy;
   if (!hasFinished)
   {
-    v6 = [v16 userInfo];
-    v7 = [v6 objectForKeyedSubscript:MFMessageContentViewDidFinishFirstPaintMessageKey];
-    v8 = [v7 itemID];
-    v9 = [(MessageDisplayRequest *)self message];
-    v10 = [v9 itemID];
-    v11 = [v8 isEqual:v10];
+    userInfo = [paintCopy userInfo];
+    v7 = [userInfo objectForKeyedSubscript:MFMessageContentViewDidFinishFirstPaintMessageKey];
+    itemID = [v7 itemID];
+    message = [(MessageDisplayRequest *)self message];
+    itemID2 = [message itemID];
+    v11 = [itemID isEqual:itemID2];
 
     if (v11)
     {
@@ -112,7 +112,7 @@
         v12 = +[NSNotificationCenter defaultCenter];
         [v12 removeObserver:self name:MFMessageContentViewDidFinishFirstPaint object:0];
 
-        v13 = [v6 objectForKeyedSubscript:MFMessageContentViewDidFinishFirstPaintErrorKey];
+        v13 = [userInfo objectForKeyedSubscript:MFMessageContentViewDidFinishFirstPaintErrorKey];
         finishPromise = self->_finishPromise;
         if (v13)
         {
@@ -127,7 +127,7 @@
       }
     }
 
-    v5 = v16;
+    v5 = paintCopy;
   }
 }
 

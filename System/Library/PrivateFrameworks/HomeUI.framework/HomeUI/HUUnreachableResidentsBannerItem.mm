@@ -1,35 +1,35 @@
 @interface HUUnreachableResidentsBannerItem
 - (BOOL)_hasPotentialResidentsConfiguring;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HUUnreachableResidentsBannerItem
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v53 = *MEMORY[0x277D85DE8];
-  v5 = [a3 objectForKeyedSubscript:*MEMORY[0x277D13BB0]];
-  v6 = [v5 BOOLValue];
+  v5 = [options objectForKeyedSubscript:*MEMORY[0x277D13BB0]];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [(HUBannerItem *)self home];
-  v8 = [v7 residentDevices];
+  home = [(HUBannerItem *)self home];
+  residentDevices = [home residentDevices];
 
-  v9 = [v8 na_filter:&__block_literal_global_236];
-  v10 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v11 = [v10 homeManager];
-  v12 = [v11 hasOptedToHH2];
+  v9 = [residentDevices na_filter:&__block_literal_global_236];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  homeManager = [mEMORY[0x277D146E8] homeManager];
+  hasOptedToHH2 = [homeManager hasOptedToHH2];
 
   v13 = HFLogForCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v14 = NSStringFromSelector(a2);
-    v15 = [v8 count];
+    v15 = [residentDevices count];
     v16 = [v9 count];
     v17 = @"NO";
     *buf = 138413570;
-    v42 = self;
+    selfCopy4 = self;
     v43 = 2112;
-    if (v12)
+    if (hasOptedToHH2)
     {
       v17 = @"YES";
     }
@@ -47,14 +47,14 @@
   }
 
   v40 = v9;
-  if (![v8 count] || ((objc_msgSend(v9, "count") == 0) & v12) == 0)
+  if (![residentDevices count] || ((objc_msgSend(v9, "count") == 0) & hasOptedToHH2) == 0)
   {
     v18 = HFLogForCategory();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       v19 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v42 = self;
+      selfCopy4 = self;
       v43 = 2112;
       v44 = v19;
       v20 = "%@:%@ Setting banner shouldShow to NO";
@@ -66,21 +66,21 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (v6)
+  if (bOOLValue)
   {
 LABEL_17:
     v21 = 0;
     goto LABEL_18;
   }
 
-  if ([v8 count] && !objc_msgSend(v9, "count") && -[HUUnreachableResidentsBannerItem _hasPotentialResidentsConfiguring](self, "_hasPotentialResidentsConfiguring"))
+  if ([residentDevices count] && !objc_msgSend(v9, "count") && -[HUUnreachableResidentsBannerItem _hasPotentialResidentsConfiguring](self, "_hasPotentialResidentsConfiguring"))
   {
     v18 = HFLogForCategory();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       v19 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v42 = self;
+      selfCopy4 = self;
       v43 = 2112;
       v44 = v19;
       v20 = "%@:%@: Hiding banner since there are HomePods or Apple TVs in the home that are still configuring.";
@@ -102,7 +102,7 @@ LABEL_18:
     {
       v23 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v42 = self;
+      selfCopy4 = self;
       v43 = 2112;
       v44 = v23;
       _os_log_impl(&dword_20CEB6000, v22, OS_LOG_TYPE_DEFAULT, "%@:%@ Forcing banner shouldShow to YES", buf, 0x16u);
@@ -124,8 +124,8 @@ LABEL_18:
   [v24 setObject:v27 forKeyedSubscript:*MEMORY[0x277D13DE8]];
 
   v28 = MEMORY[0x277D755D0];
-  v29 = [MEMORY[0x277D75348] hf_keyColor];
-  v30 = [v28 configurationWithHierarchicalColor:v29];
+  hf_keyColor = [MEMORY[0x277D75348] hf_keyColor];
+  v30 = [v28 configurationWithHierarchicalColor:hf_keyColor];
 
   v31 = [MEMORY[0x277D755D0] configurationWithScale:0];
   v32 = [v31 configurationByApplyingConfiguration:v30];
@@ -135,8 +135,8 @@ LABEL_18:
   v35 = [MEMORY[0x277CBEB98] setWithObject:objc_opt_class()];
   [v24 setObject:v35 forKeyedSubscript:*MEMORY[0x277D13DA0]];
 
-  v36 = [(HUBannerItem *)self home];
-  LODWORD(v35) = [v36 supportsResidentSelection];
+  home2 = [(HUBannerItem *)self home];
+  LODWORD(v35) = [home2 supportsResidentSelection];
 
   v37 = [MEMORY[0x277CCABB0] numberWithInt:v35 | v21 ^ 1];
   [v24 setObject:v37 forKeyedSubscript:*MEMORY[0x277D13FB8]];
@@ -150,19 +150,19 @@ LABEL_18:
 - (BOOL)_hasPotentialResidentsConfiguring
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = [(HUBannerItem *)self home];
-  v5 = [v4 residentDevices];
+  home = [(HUBannerItem *)self home];
+  residentDevices = [home residentDevices];
 
-  v6 = [(HUBannerItem *)self home];
-  v7 = [v6 accessories];
-  v8 = [v7 na_filter:&__block_literal_global_32_1];
+  home2 = [(HUBannerItem *)self home];
+  accessories = [home2 accessories];
+  v8 = [accessories na_filter:&__block_literal_global_32_1];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __69__HUUnreachableResidentsBannerItem__hasPotentialResidentsConfiguring__block_invoke_2;
   v16[3] = &unk_277DB8EC0;
-  v17 = v5;
-  v9 = v5;
+  v17 = residentDevices;
+  v9 = residentDevices;
   v10 = [v8 na_filter:v16];
   v11 = [v10 count];
   if (v11)
@@ -173,7 +173,7 @@ LABEL_18:
       v13 = NSStringFromSelector(a2);
       v14 = [v10 count];
       *buf = 138413058;
-      v19 = self;
+      selfCopy = self;
       v20 = 2112;
       v21 = v13;
       v22 = 2048;

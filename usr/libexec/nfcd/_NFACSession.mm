@@ -2,32 +2,32 @@
 - (BOOL)didEnd;
 - (BOOL)isEnding;
 - (BOOL)needsCleanup;
-- (_NFACSession)initWithRemoteObject:(id)a3 workQueue:(id)a4;
+- (_NFACSession)initWithRemoteObject:(id)object workQueue:(id)queue;
 - (id)_powerAssertionIdentifier;
 - (id)clientName;
 - (id)willStartSession;
 - (void)cleanup;
-- (void)didEndSession:(id)a3;
-- (void)didStartSession:(id)a3;
-- (void)endSession:(id)a3;
-- (void)internalEndSession:(id)a3;
+- (void)didEndSession:(id)session;
+- (void)didStartSession:(id)session;
+- (void)endSession:(id)session;
+- (void)internalEndSession:(id)session;
 - (void)releaseRemoteObject;
 @end
 
 @implementation _NFACSession
 
-- (_NFACSession)initWithRemoteObject:(id)a3 workQueue:(id)a4
+- (_NFACSession)initWithRemoteObject:(id)object workQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = _NFACSession;
   v9 = [(_NFACSession *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_remoteObject, a3);
-    v10->_workQueue = v8;
+    objc_storeStrong(&v9->_remoteObject, object);
+    v10->_workQueue = queueCopy;
     v10->_isEnding = 0;
     v10->_driverOpen = 0;
   }
@@ -44,29 +44,29 @@
 
 - (BOOL)isEnding
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  isEnding = v2->_isEnding;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isEnding = selfCopy->_isEnding;
+  objc_sync_exit(selfCopy);
 
   return isEnding;
 }
 
 - (BOOL)didEnd
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  didEnd = v2->_didEnd;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  didEnd = selfCopy->_didEnd;
+  objc_sync_exit(selfCopy);
 
   return didEnd;
 }
 
 - (id)_powerAssertionIdentifier
 {
-  v3 = [(_NFACSession *)self clientName];
-  v4 = v3;
-  if (!v3 || ![(__CFString *)v3 length])
+  clientName = [(_NFACSession *)self clientName];
+  v4 = clientName;
+  if (!clientName || ![(__CFString *)clientName length])
   {
 
     v4 = @"unavailable";
@@ -79,9 +79,9 @@
 
 - (id)clientName
 {
-  v3 = [(_NFACSession *)self connection];
+  connection = [(_NFACSession *)self connection];
 
-  if (!v3 || (-[_NFACSession connection](self, "connection"), v4 = objc_claimAutoreleasedReturnValue(), [v4 NF_clientName], v5 = objc_claimAutoreleasedReturnValue(), v4, !v5))
+  if (!connection || (-[_NFACSession connection](self, "connection"), v4 = objc_claimAutoreleasedReturnValue(), [v4 NF_clientName], v5 = objc_claimAutoreleasedReturnValue(), v4, !v5))
   {
     v5 = &stru_10031EA18;
   }
@@ -91,13 +91,13 @@
 
 - (BOOL)needsCleanup
 {
-  v3 = [(_NFACSession *)self didStart];
-  if (v3)
+  didStart = [(_NFACSession *)self didStart];
+  if (didStart)
   {
-    LOBYTE(v3) = ![(_NFACSession *)self didEnd];
+    LOBYTE(didStart) = ![(_NFACSession *)self didEnd];
   }
 
-  return v3;
+  return didStart;
 }
 
 - (void)cleanup
@@ -146,25 +146,25 @@
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i ", buf, 0x22u);
   }
 
-  v13 = self;
-  objc_sync_enter(v13);
-  driverOpen = v13->_driverOpen;
-  v13->_driverOpen = 0;
-  objc_sync_exit(v13);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  driverOpen = selfCopy->_driverOpen;
+  selfCopy->_driverOpen = 0;
+  objc_sync_exit(selfCopy);
 
   if (driverOpen)
   {
-    driverWrapper = v13->_driverWrapper;
-    v16 = [(_NFACSession *)v13 _powerAssertionIdentifier];
-    [(NFACDriverWrapper *)driverWrapper closeSession:v16];
+    driverWrapper = selfCopy->_driverWrapper;
+    _powerAssertionIdentifier = [(_NFACSession *)selfCopy _powerAssertionIdentifier];
+    [(NFACDriverWrapper *)driverWrapper closeSession:_powerAssertionIdentifier];
   }
 
   v17 = +[NFPowerAssertion sharedPowerAssertion];
-  v18 = [(_NFACSession *)v13 _powerAssertionIdentifier];
-  [v17 releasePowerAssertion:v18];
+  _powerAssertionIdentifier2 = [(_NFACSession *)selfCopy _powerAssertionIdentifier];
+  [v17 releasePowerAssertion:_powerAssertionIdentifier2];
 }
 
-- (void)didEndSession:(id)a3
+- (void)didEndSession:(id)session
 {
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -210,18 +210,18 @@
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i ", buf, 0x22u);
   }
 
-  v14 = self;
-  objc_sync_enter(v14);
-  if (v14->_didEnd)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_didEnd)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v15 = NFLogGetLogger();
     if (v15)
     {
       v16 = v15;
-      v17 = object_getClass(v14);
+      v17 = object_getClass(selfCopy);
       v18 = class_isMetaClass(v17);
-      v19 = object_getClassName(v14);
+      v19 = object_getClassName(selfCopy);
       v47 = sel_getName(a2);
       v20 = 45;
       if (v18)
@@ -236,7 +236,7 @@
     v21 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = object_getClass(v14);
+      v22 = object_getClass(selfCopy);
       if (class_isMetaClass(v22))
       {
         v23 = 43;
@@ -247,7 +247,7 @@
         v23 = 45;
       }
 
-      v24 = object_getClassName(v14);
+      v24 = object_getClassName(selfCopy);
       v25 = sel_getName(a2);
       *buf = 67109890;
       v50 = v23;
@@ -260,12 +260,12 @@
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Session already ended", buf, 0x22u);
     }
 
-    objc_sync_exit(v14);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    objc_sync_exit(v14);
+    objc_sync_exit(selfCopy);
 
     v26 = objc_opt_class();
     v27 = NSStringFromClass(v26);
@@ -274,27 +274,27 @@
     if (v28)
     {
       v29 = v28;
-      v30 = object_getClass(v14);
+      v30 = object_getClass(selfCopy);
       v31 = class_isMetaClass(v30);
-      v32 = object_getClassName(v14);
+      v32 = object_getClassName(selfCopy);
       v33 = sel_getName(a2);
-      v34 = [(_NFACSession *)v14 clientName];
-      v35 = [(_NFACSession *)v14 connection];
-      v48 = [v35 processIdentifier];
+      clientName = [(_NFACSession *)selfCopy clientName];
+      connection = [(_NFACSession *)selfCopy connection];
+      processIdentifier = [connection processIdentifier];
       v36 = 43;
       if (!v31)
       {
         v36 = 45;
       }
 
-      v29(6, "%c[%{public}s %{public}s]:%i %{public}@ (%d) ended %{public}@", v36, v32, v33, 126, v34, v48, v27);
+      v29(6, "%c[%{public}s %{public}s]:%i %{public}@ (%d) ended %{public}@", v36, v32, v33, 126, clientName, processIdentifier, v27);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v37 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
-      v38 = object_getClass(v14);
+      v38 = object_getClass(selfCopy);
       if (class_isMetaClass(v38))
       {
         v39 = 43;
@@ -305,11 +305,11 @@
         v39 = 45;
       }
 
-      v40 = object_getClassName(v14);
+      v40 = object_getClassName(selfCopy);
       v41 = sel_getName(a2);
-      v42 = [(_NFACSession *)v14 clientName];
-      v43 = [(_NFACSession *)v14 connection];
-      v44 = [v43 processIdentifier];
+      clientName2 = [(_NFACSession *)selfCopy clientName];
+      connection2 = [(_NFACSession *)selfCopy connection];
+      processIdentifier2 = [connection2 processIdentifier];
       *buf = 67110658;
       v50 = v39;
       v51 = 2082;
@@ -319,21 +319,21 @@
       v55 = 1024;
       v56 = 126;
       v57 = 2114;
-      v58 = v42;
+      v58 = clientName2;
       v59 = 1024;
-      v60 = v44;
+      v60 = processIdentifier2;
       v61 = 2114;
       v62 = v27;
       _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@ (%d) ended %{public}@", buf, 0x3Cu);
     }
 
-    [(_NFACSession *)v14 cleanup];
-    v45 = v14;
+    [(_NFACSession *)selfCopy cleanup];
+    v45 = selfCopy;
     objc_sync_enter(v45);
-    v14->_didEnd = 1;
+    selfCopy->_didEnd = 1;
     objc_sync_exit(v45);
 
-    v14 = v27;
+    selfCopy = v27;
   }
 }
 
@@ -384,21 +384,21 @@
   }
 
   v13 = +[NFPowerAssertion sharedPowerAssertion];
-  v14 = [(_NFACSession *)self _powerAssertionIdentifier];
-  v15 = [v13 holdPowerAssertion:v14 onBehalfOf:-[NSXPCConnection processIdentifier](self->_connection behaviourWhenSleepStarted:{"processIdentifier"), 1}];
+  _powerAssertionIdentifier = [(_NFACSession *)self _powerAssertionIdentifier];
+  v15 = [v13 holdPowerAssertion:_powerAssertionIdentifier onBehalfOf:-[NSXPCConnection processIdentifier](self->_connection behaviourWhenSleepStarted:{"processIdentifier"), 1}];
 
   if (v15)
   {
     driverWrapper = self->_driverWrapper;
-    v17 = [(_NFACSession *)self _powerAssertionIdentifier];
-    v18 = [(NFACDriverWrapper *)driverWrapper openSession:v17];
+    _powerAssertionIdentifier2 = [(_NFACSession *)self _powerAssertionIdentifier];
+    v18 = [(NFACDriverWrapper *)driverWrapper openSession:_powerAssertionIdentifier2];
 
     if (v18 == 1)
     {
-      v19 = self;
-      objc_sync_enter(v19);
-      v19->_driverOpen = 1;
-      objc_sync_exit(v19);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      selfCopy->_driverOpen = 1;
+      objc_sync_exit(selfCopy);
       v20 = 0;
       goto LABEL_34;
     }
@@ -452,13 +452,13 @@
     }
 
     v48 = [NSError alloc];
-    v19 = [NSString stringWithUTF8String:"nfcd"];
+    selfCopy = [NSString stringWithUTF8String:"nfcd"];
     v54 = NSLocalizedDescriptionKey;
     v33 = [NSString stringWithUTF8String:"Stack Error"];
     v55 = v33;
     v34 = [NSDictionary dictionaryWithObjects:&v55 forKeys:&v54 count:1];
     v35 = v48;
-    v36 = v19;
+    v36 = selfCopy;
     v37 = 15;
   }
 
@@ -511,13 +511,13 @@
     }
 
     v32 = [NSError alloc];
-    v19 = [NSString stringWithUTF8String:"nfcd"];
+    selfCopy = [NSString stringWithUTF8String:"nfcd"];
     v66 = NSLocalizedDescriptionKey;
     v33 = [NSString stringWithUTF8String:"Unavailable - System Will Sleep"];
     v67 = v33;
     v34 = [NSDictionary dictionaryWithObjects:&v67 forKeys:&v66 count:1];
     v35 = v32;
-    v36 = v19;
+    v36 = selfCopy;
     v37 = 72;
   }
 
@@ -528,12 +528,12 @@ LABEL_34:
   return v20;
 }
 
-- (void)didStartSession:(id)a3
+- (void)didStartSession:(id)session
 {
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [(_NFACSession *)self connection];
-  v8 = [v7 NF_clientName];
+  connection = [(_NFACSession *)self connection];
+  nF_clientName = [connection NF_clientName];
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -544,15 +544,15 @@ LABEL_34:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v15 = [(_NFACSession *)self connection];
-    v23 = [v15 processIdentifier];
+    connection2 = [(_NFACSession *)self connection];
+    processIdentifier = [connection2 processIdentifier];
     v16 = 43;
     if (!isMetaClass)
     {
       v16 = 45;
     }
 
-    v10(6, "%c[%{public}s %{public}s]:%i %{public}@ (%d) started %{public}@", v16, ClassName, Name, 161, v8, v23, v6);
+    v10(6, "%c[%{public}s %{public}s]:%i %{public}@ (%d) started %{public}@", v16, ClassName, Name, 161, nF_clientName, processIdentifier, v6);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -572,7 +572,7 @@ LABEL_34:
 
     v20 = object_getClassName(self);
     v21 = sel_getName(a2);
-    v22 = [(_NFACSession *)self connection];
+    connection3 = [(_NFACSession *)self connection];
     *buf = 67110658;
     v25 = v19;
     v26 = 2082;
@@ -582,9 +582,9 @@ LABEL_34:
     v30 = 1024;
     v31 = 161;
     v32 = 2114;
-    v33 = v8;
+    v33 = nF_clientName;
     v34 = 1024;
-    v35 = [v22 processIdentifier];
+    processIdentifier2 = [connection3 processIdentifier];
     v36 = 2114;
     v37 = v6;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@ (%d) started %{public}@", buf, 0x3Cu);
@@ -593,9 +593,9 @@ LABEL_34:
   self->_didStart = 1;
 }
 
-- (void)internalEndSession:(id)a3
+- (void)internalEndSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -640,9 +640,9 @@ LABEL_34:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i ", buf, 0x22u);
   }
 
-  v15 = self;
-  objc_sync_enter(v15);
-  didEnd = v15->_didEnd;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  didEnd = selfCopy->_didEnd;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   v17 = NFLogGetLogger();
   v18 = v17;
@@ -650,9 +650,9 @@ LABEL_34:
   {
     if (v17)
     {
-      v19 = object_getClass(v15);
+      v19 = object_getClass(selfCopy);
       v20 = class_isMetaClass(v19);
-      v21 = object_getClassName(v15);
+      v21 = object_getClassName(selfCopy);
       v38 = sel_getName(a2);
       v22 = 45;
       if (v20)
@@ -664,10 +664,10 @@ LABEL_34:
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
-    v23 = NFSharedLogGetLogger();
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+    queue = NFSharedLogGetLogger();
+    if (os_log_type_enabled(queue, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = object_getClass(v15);
+      v24 = object_getClass(selfCopy);
       if (class_isMetaClass(v24))
       {
         v25 = 43;
@@ -678,7 +678,7 @@ LABEL_34:
         v25 = 45;
       }
 
-      v26 = object_getClassName(v15);
+      v26 = object_getClassName(selfCopy);
       v27 = sel_getName(a2);
       *buf = 67109890;
       v41 = v25;
@@ -688,7 +688,7 @@ LABEL_34:
       v45 = v27;
       v46 = 1024;
       v47 = 172;
-      _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Already ended", buf, 0x22u);
+      _os_log_impl(&_mh_execute_header, queue, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Already ended", buf, 0x22u);
     }
   }
 
@@ -696,9 +696,9 @@ LABEL_34:
   {
     if (v17)
     {
-      v28 = object_getClass(v15);
+      v28 = object_getClass(selfCopy);
       v29 = class_isMetaClass(v28);
-      v30 = object_getClassName(v15);
+      v30 = object_getClassName(selfCopy);
       v39 = sel_getName(a2);
       v31 = 45;
       if (v29)
@@ -713,7 +713,7 @@ LABEL_34:
     v32 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
-      v33 = object_getClass(v15);
+      v33 = object_getClass(selfCopy);
       if (class_isMetaClass(v33))
       {
         v34 = 43;
@@ -724,7 +724,7 @@ LABEL_34:
         v34 = 45;
       }
 
-      v35 = object_getClassName(v15);
+      v35 = object_getClassName(selfCopy);
       v36 = sel_getName(a2);
       *buf = 67109890;
       v41 = v34;
@@ -737,23 +737,23 @@ LABEL_34:
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i ", buf, 0x22u);
     }
 
-    v23 = [(_NFACSession *)v15 queue];
-    [v23 dequeueSession:v15];
+    queue = [(_NFACSession *)selfCopy queue];
+    [queue dequeueSession:selfCopy];
   }
 
-  objc_sync_exit(v15);
-  if (v5)
+  objc_sync_exit(selfCopy);
+  if (sessionCopy)
   {
-    v5[2](v5);
+    sessionCopy[2](sessionCopy);
   }
 }
 
-- (void)endSession:(id)a3
+- (void)endSession:(id)session
 {
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  didEnd = v6->_didEnd;
+  sessionCopy = session;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  didEnd = selfCopy->_didEnd;
   if (didEnd)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -761,9 +761,9 @@ LABEL_34:
     if (Logger)
     {
       v9 = Logger;
-      Class = object_getClass(v6);
+      Class = object_getClass(selfCopy);
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(v6);
+      ClassName = object_getClassName(selfCopy);
       Name = sel_getName(a2);
       v13 = 45;
       if (isMetaClass)
@@ -778,7 +778,7 @@ LABEL_34:
     v14 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = object_getClass(v6);
+      v15 = object_getClass(selfCopy);
       if (class_isMetaClass(v15))
       {
         v16 = 43;
@@ -792,7 +792,7 @@ LABEL_34:
       *buf = 67109890;
       v23 = v16;
       v24 = 2082;
-      v25 = object_getClassName(v6);
+      v25 = object_getClassName(selfCopy);
       v26 = 2082;
       v27 = sel_getName(a2);
       v28 = 1024;
@@ -803,23 +803,23 @@ LABEL_34:
 
   else
   {
-    v6->_isEnding = 1;
-    v17 = [(_NFACSession *)v6 workQueue];
+    selfCopy->_isEnding = 1;
+    workQueue = [(_NFACSession *)selfCopy workQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100157348;
     block[3] = &unk_100316050;
-    block[4] = v6;
+    block[4] = selfCopy;
     v21 = a2;
-    v20 = v5;
-    dispatch_async(v17, block);
+    v20 = sessionCopy;
+    dispatch_async(workQueue, block);
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
-  if (v5 && didEnd)
+  if (sessionCopy && didEnd)
   {
-    v5[2](v5);
+    sessionCopy[2](sessionCopy);
   }
 }
 

@@ -1,29 +1,29 @@
 @interface UISwipeActionStandardButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)accessibilityFrame;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation UISwipeActionStandardButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"UISwipeActionStandardButton" hasInstanceVariable:@"_buttonWidth" withType:"d"];
   objc_storeStrong(location, 0);
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  v29 = a3;
-  v28 = self;
+  testCopy = test;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a4);
-  v26 = [(UISwipeActionStandardButtonAccessibility *)v28 _accessibilityBoolValueForKey:@"AXInHitTestOverride"];
+  objc_storeStrong(location, event);
+  v26 = [(UISwipeActionStandardButtonAccessibility *)selfCopy _accessibilityBoolValueForKey:@"AXInHitTestOverride"];
   v18 = 0;
   v12 = 0;
   if ((v26 & 1) == 0)
@@ -33,7 +33,7 @@
     v22 = 0;
     v23 = __76__UISwipeActionStandardButtonAccessibility__accessibilityHitTest_withEvent___block_invoke;
     v24 = &unk_29F30CEB0;
-    v25 = MEMORY[0x29EDC9748](v28);
+    v25 = MEMORY[0x29EDC9748](selfCopy);
     v19 = &v25;
     v18 = 1;
     v12 = (__76__UISwipeActionStandardButtonAccessibility__accessibilityHitTest_withEvent___block_invoke)();
@@ -41,9 +41,9 @@
 
   if (v12)
   {
-    [(UISwipeActionStandardButtonAccessibility *)v28 _accessibilitySetBoolValue:1 forKey:?];
-    v17 = [(UISwipeActionStandardButtonAccessibility *)v28 accessibilityHitTest:location[0] withEvent:v29.x, v29.y];
-    [(UISwipeActionStandardButtonAccessibility *)v28 _accessibilitySetBoolValue:0 forKey:@"AXInHitTestOverride"];
+    [(UISwipeActionStandardButtonAccessibility *)selfCopy _accessibilitySetBoolValue:1 forKey:?];
+    v17 = [(UISwipeActionStandardButtonAccessibility *)selfCopy accessibilityHitTest:location[0] withEvent:testCopy.x, testCopy.y];
+    [(UISwipeActionStandardButtonAccessibility *)selfCopy _accessibilitySetBoolValue:0 forKey:@"AXInHitTestOverride"];
     v30 = MEMORY[0x29EDC9748](v17);
     v16 = 1;
     objc_storeStrong(&v17, 0);
@@ -61,7 +61,7 @@
 
   if (!v16)
   {
-    [(UISwipeActionStandardButtonAccessibility *)v28 accessibilityFrame];
+    [(UISwipeActionStandardButtonAccessibility *)selfCopy accessibilityFrame];
     rect.origin.x = v4;
     rect.origin.y = v5;
     rect.size.width = v6;
@@ -71,14 +71,14 @@
     point.y = v9;
     if (CGRectContainsPoint(rect, point))
     {
-      v30 = MEMORY[0x29EDC9748](v28);
+      v30 = MEMORY[0x29EDC9748](selfCopy);
     }
 
     else
     {
-      v13.receiver = v28;
+      v13.receiver = selfCopy;
       v13.super_class = UISwipeActionStandardButtonAccessibility;
-      v30 = [(UISwipeActionStandardButtonAccessibility *)&v13 _accessibilityHitTest:location[0] withEvent:v29.x, v29.y];
+      v30 = [(UISwipeActionStandardButtonAccessibility *)&v13 _accessibilityHitTest:location[0] withEvent:testCopy.x, testCopy.y];
     }
 
     v16 = 1;

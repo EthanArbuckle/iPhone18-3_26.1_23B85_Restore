@@ -1,19 +1,19 @@
 @interface AAMessagingCapability
-- (AAMessagingCapability)initWithCapabilityType:(int64_t)a3;
-- (AAMessagingCapability)initWithCoder:(id)a3;
+- (AAMessagingCapability)initWithCapabilityType:(int64_t)type;
+- (AAMessagingCapability)initWithCoder:(id)coder;
 - (NSString)capabilityString;
 @end
 
 @implementation AAMessagingCapability
 
-- (AAMessagingCapability)initWithCapabilityType:(int64_t)a3
+- (AAMessagingCapability)initWithCapabilityType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = AAMessagingCapability;
   result = [(AAMessagingCapability *)&v5 init];
   if (result)
   {
-    result->_capability = a3;
+    result->_capability = type;
   }
 
   return result;
@@ -33,13 +33,13 @@
   }
 }
 
-- (AAMessagingCapability)initWithCoder:(id)a3
+- (AAMessagingCapability)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(AAMessagingCapability *)self init];
   if (v5)
   {
-    v5->_capability = [v4 decodeIntegerForKey:@"capability"];
+    v5->_capability = [coderCopy decodeIntegerForKey:@"capability"];
   }
 
   return v5;

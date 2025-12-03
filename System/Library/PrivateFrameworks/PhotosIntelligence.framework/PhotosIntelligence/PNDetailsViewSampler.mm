@@ -1,10 +1,10 @@
 @interface PNDetailsViewSampler
-+ (id)_assetObjectIDsFromClusters:(id)a3 facesByAssetIdentifiers:(id)a4 includeExtraAssets:(unint64_t)a5;
++ (id)_assetObjectIDsFromClusters:(id)clusters facesByAssetIdentifiers:(id)identifiers includeExtraAssets:(unint64_t)assets;
 + (id)_logger;
-+ (id)_timeBasedAssetClustersForAssets:(id)a3 maximumClusterCount:(unint64_t)a4 photoLibrary:(id)a5;
-+ (id)fetchMovieAssetsForPerson:(id)a3 options:(id)a4;
-+ (id)fetchMovieAssetsForSocialGroup:(id)a3 options:(id)a4;
-+ (unint64_t)_maximumNumberOfClustersForCuratedAssetCount:(unint64_t)a3 fetchLimit:(unint64_t)a4;
++ (id)_timeBasedAssetClustersForAssets:(id)assets maximumClusterCount:(unint64_t)count photoLibrary:(id)library;
++ (id)fetchMovieAssetsForPerson:(id)person options:(id)options;
++ (id)fetchMovieAssetsForSocialGroup:(id)group options:(id)options;
++ (unint64_t)_maximumNumberOfClustersForCuratedAssetCount:(unint64_t)count fetchLimit:(unint64_t)limit;
 @end
 
 @implementation PNDetailsViewSampler
@@ -30,16 +30,16 @@ uint64_t __31__PNDetailsViewSampler__logger__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v2, v1);
 }
 
-+ (id)_assetObjectIDsFromClusters:(id)a3 facesByAssetIdentifiers:(id)a4 includeExtraAssets:(unint64_t)a5
++ (id)_assetObjectIDsFromClusters:(id)clusters facesByAssetIdentifiers:(id)identifiers includeExtraAssets:(unint64_t)assets
 {
   v48 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v35 = a4;
-  v9 = [a1 _logger];
-  v10 = os_signpost_id_generate(v9);
+  clustersCopy = clusters;
+  identifiersCopy = identifiers;
+  _logger = [self _logger];
+  v10 = os_signpost_id_generate(_logger);
   info = 0;
   mach_timebase_info(&info);
-  v11 = v9;
+  v11 = _logger;
   v12 = v11;
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
   {
@@ -50,12 +50,12 @@ uint64_t __31__PNDetailsViewSampler__logger__block_invoke()
   v33 = v12;
 
   v32 = mach_absolute_time();
-  v13 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v8;
+  obj = clustersCopy;
   v14 = [obj countByEnumeratingWithState:&v38 objects:v47 count:16];
   if (v14)
   {
@@ -75,25 +75,25 @@ uint64_t __31__PNDetailsViewSampler__logger__block_invoke()
         v36[1] = 3221225472;
         v36[2] = __95__PNDetailsViewSampler__assetObjectIDsFromClusters_facesByAssetIdentifiers_includeExtraAssets___block_invoke;
         v36[3] = &unk_1E82A27F8;
-        v37 = v35;
+        v37 = identifiersCopy;
         v19 = [v18 sortedArrayUsingComparator:v36];
         v20 = [v19 count];
         if (v20 >= 1)
         {
           v21 = v20;
-          v22 = [v19 firstObject];
-          v23 = [v22 objectID];
-          [v13 addObject:v23];
+          firstObject = [v19 firstObject];
+          objectID = [firstObject objectID];
+          [array addObject:objectID];
 
-          if (a5)
+          if (assets)
           {
             if (v21 != 1)
             {
               v24 = [v19 objectAtIndexedSubscript:1];
-              v25 = [v24 objectID];
-              [v13 addObject:v25];
+              objectID2 = [v24 objectID];
+              [array addObject:objectID2];
 
-              --a5;
+              --assets;
             }
           }
         }
@@ -125,7 +125,7 @@ uint64_t __31__PNDetailsViewSampler__logger__block_invoke()
     _os_log_impl(&dword_1C6F5C000, v30, OS_LOG_TYPE_INFO, "[Performance] %s: %f ms", buf, 0x16u);
   }
 
-  return v13;
+  return array;
 }
 
 uint64_t __95__PNDetailsViewSampler__assetObjectIDsFromClusters_facesByAssetIdentifiers_includeExtraAssets___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -247,55 +247,55 @@ uint64_t __95__PNDetailsViewSampler__assetObjectIDsFromClusters_facesByAssetIden
   return v8;
 }
 
-+ (unint64_t)_maximumNumberOfClustersForCuratedAssetCount:(unint64_t)a3 fetchLimit:(unint64_t)a4
++ (unint64_t)_maximumNumberOfClustersForCuratedAssetCount:(unint64_t)count fetchLimit:(unint64_t)limit
 {
-  v6 = pow(a3, 0.8);
-  if (v6 >= 0x50)
+  countCopy = pow(count, 0.8);
+  if (countCopy >= 0x50)
   {
-    v6 = 80;
+    countCopy = 80;
   }
 
-  if (v6 <= 6)
+  if (countCopy <= 6)
   {
-    v6 = 6;
+    countCopy = 6;
   }
 
-  if (v6 >= a3)
+  if (countCopy >= count)
   {
-    v6 = a3;
+    countCopy = count;
   }
 
-  if (v6 >= a4)
+  if (countCopy >= limit)
   {
-    v7 = a4;
-  }
-
-  else
-  {
-    v7 = v6;
-  }
-
-  if (a4)
-  {
-    return v7;
+    limitCopy = limit;
   }
 
   else
   {
-    return v6;
+    limitCopy = countCopy;
+  }
+
+  if (limit)
+  {
+    return limitCopy;
+  }
+
+  else
+  {
+    return countCopy;
   }
 }
 
-+ (id)_timeBasedAssetClustersForAssets:(id)a3 maximumClusterCount:(unint64_t)a4 photoLibrary:(id)a5
++ (id)_timeBasedAssetClustersForAssets:(id)assets maximumClusterCount:(unint64_t)count photoLibrary:(id)library
 {
   v101[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = [a1 _logger];
-  v10 = os_signpost_id_generate(v9);
+  assetsCopy = assets;
+  libraryCopy = library;
+  _logger = [self _logger];
+  v10 = os_signpost_id_generate(_logger);
   info = 0;
   mach_timebase_info(&info);
-  v11 = v9;
+  v11 = _logger;
   v12 = v11;
   v74 = v10 - 1;
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
@@ -307,41 +307,41 @@ uint64_t __95__PNDetailsViewSampler__assetObjectIDsFromClusters_facesByAssetIden
   spid = v10;
 
   v73 = mach_absolute_time();
-  v13 = [MEMORY[0x1E695DF70] arrayWithCapacity:a4];
-  v14 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:a4];
-  v15 = [v7 firstObject];
-  v16 = [v15 creationDate];
+  v13 = [MEMORY[0x1E695DF70] arrayWithCapacity:count];
+  v14 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:count];
+  firstObject = [assetsCopy firstObject];
+  creationDate = [firstObject creationDate];
 
-  v17 = [v7 lastObject];
-  v18 = [v17 creationDate];
+  lastObject = [assetsCopy lastObject];
+  creationDate2 = [lastObject creationDate];
 
-  if (!v16 || !v18)
+  if (!creationDate || !creationDate2)
   {
-    v101[0] = v7;
+    v101[0] = assetsCopy;
     v51 = [MEMORY[0x1E695DEC8] arrayWithObjects:v101 count:1];
     goto LABEL_61;
   }
 
-  v19 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v16 endDate:v18];
+  v19 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:creationDate endDate:creationDate2];
   if (!v19)
   {
-    v100 = v7;
+    v100 = assetsCopy;
     v64 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v100 count:1];
     v63 = 0;
     v51 = v64;
     goto LABEL_60;
   }
 
-  v68 = v16;
+  v68 = creationDate;
   v69 = v12;
-  v70 = v8;
+  v70 = libraryCopy;
   [v13 addObject:v19];
-  v71 = v7;
+  v71 = assetsCopy;
   v66 = v19;
-  [v14 setObject:v7 forKeyedSubscript:v19];
+  [v14 setObject:assetsCopy forKeyedSubscript:v19];
   v76 = v13;
-  v67 = v18;
-  if ([v13 count] >= a4)
+  v67 = creationDate2;
+  if ([v13 count] >= count)
   {
     goto LABEL_45;
   }
@@ -368,8 +368,8 @@ uint64_t __95__PNDetailsViewSampler__assetObjectIDsFromClusters_facesByAssetIden
     {
       v23 = v22 - 1;
       v24 = [v13 objectAtIndexedSubscript:v22 - 1];
-      v25 = [v24 startDate];
-      v26 = [v24 endDate];
+      startDate = [v24 startDate];
+      endDate = [v24 endDate];
       [v24 duration];
       v28 = v27;
       v29 = [v14 objectForKeyedSubscript:v24];
@@ -390,12 +390,12 @@ LABEL_39:
     }
 
     v30 = v28 * 0.5;
-    v80 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v25 duration:v30];
-    v79 = [v25 dateByAddingTimeInterval:v30 + 2.22044605e-16];
-    v81 = v26;
-    v84 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v79 endDate:v26];
-    v82 = v25;
-    [v25 timeIntervalSinceReferenceDate];
+    v80 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:startDate duration:v30];
+    v79 = [startDate dateByAddingTimeInterval:v30 + 2.22044605e-16];
+    v81 = endDate;
+    v84 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v79 endDate:endDate];
+    v82 = startDate;
+    [startDate timeIntervalSinceReferenceDate];
     v32 = v31;
     v89 = 0u;
     v90 = 0u;
@@ -435,8 +435,8 @@ LABEL_31:
           objc_enumerationMutation(v33);
         }
 
-        v41 = [*(*(&v89 + 1) + 8 * v39) creationDate];
-        [v41 timeIntervalSinceReferenceDate];
+        creationDate3 = [*(*(&v89 + 1) + 8 * v39) creationDate];
+        [creationDate3 timeIntervalSinceReferenceDate];
         v43 = v42;
 
         if (v43 > v37)
@@ -516,10 +516,10 @@ LABEL_37:
     [v14 setObject:0 forKeyedSubscript:v24];
     v49 = [v13 count];
 
-    if (v49 < a4)
+    if (v49 < count)
     {
-      v26 = v81;
-      v25 = v82;
+      endDate = v81;
+      startDate = v82;
       v29 = v78;
       v20 = v83;
       goto LABEL_39;
@@ -530,7 +530,7 @@ LABEL_44:
     objc_autoreleasePoolPop(context);
   }
 
-  while ([v13 count] < a4);
+  while ([v13 count] < count);
 LABEL_45:
   v51 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v13, "count")}];
   v85 = 0u;
@@ -539,9 +539,9 @@ LABEL_45:
   v88 = 0u;
   v52 = v13;
   v53 = [v52 countByEnumeratingWithState:&v85 objects:v98 count:16];
-  v8 = v70;
-  v7 = v71;
-  v16 = v68;
+  libraryCopy = v70;
+  assetsCopy = v71;
+  creationDate = v68;
   if (v53)
   {
     v54 = v53;
@@ -577,7 +577,7 @@ LABEL_45:
     _os_signpost_emit_with_name_impl(&dword_1C6F5C000, v62, OS_SIGNPOST_INTERVAL_END, spid, "timeBasedAssetClustersForAssets", "", buf, 2u);
   }
 
-  v18 = v67;
+  creationDate2 = v67;
   if (os_log_type_enabled(v62, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
@@ -596,17 +596,17 @@ LABEL_61:
   return v51;
 }
 
-+ (id)fetchMovieAssetsForSocialGroup:(id)a3 options:(id)a4
++ (id)fetchMovieAssetsForSocialGroup:(id)group options:(id)options
 {
   v80[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v67 = a1;
-  v8 = [a1 _logger];
-  v9 = os_signpost_id_generate(v8);
+  groupCopy = group;
+  optionsCopy = options;
+  selfCopy = self;
+  _logger = [self _logger];
+  v9 = os_signpost_id_generate(_logger);
   info = 0;
   mach_timebase_info(&info);
-  v10 = v8;
+  v10 = _logger;
   v11 = v10;
   v62 = v9 - 1;
   if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
@@ -619,8 +619,8 @@ LABEL_61:
   v58 = v11;
 
   v57 = mach_absolute_time();
-  v12 = [v7 fetchOptions];
-  v13 = [v12 copy];
+  fetchOptions = [optionsCopy fetchOptions];
+  v13 = [fetchOptions copy];
   [v13 setSortDescriptors:0];
   v14 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"dateCreated" ascending:1];
   v80[0] = v14;
@@ -633,24 +633,24 @@ LABEL_61:
 
   [v13 setFetchLimit:0];
   v63 = v13;
-  v18 = +[PNPersonCurationWrapper fetchCuratedAssetsForSocialGroup:options:includeOthersInSocialGroupAssets:](PNPersonCurationWrapper, "fetchCuratedAssetsForSocialGroup:options:includeOthersInSocialGroupAssets:", v6, v13, [v7 includeOthersInSocialGroupAssets]);
-  v19 = [v67 _maximumNumberOfClustersForCuratedAssetCount:objc_msgSend(v18 fetchLimit:{"count"), objc_msgSend(v12, "fetchLimit")}];
+  v18 = +[PNPersonCurationWrapper fetchCuratedAssetsForSocialGroup:options:includeOthersInSocialGroupAssets:](PNPersonCurationWrapper, "fetchCuratedAssetsForSocialGroup:options:includeOthersInSocialGroupAssets:", groupCopy, v13, [optionsCopy includeOthersInSocialGroupAssets]);
+  v19 = [selfCopy _maximumNumberOfClustersForCuratedAssetCount:objc_msgSend(v18 fetchLimit:{"count"), objc_msgSend(fetchOptions, "fetchLimit")}];
   v66 = v18;
-  v20 = [v18 fetchedObjects];
-  v21 = [v6 photoLibrary];
+  fetchedObjects = [v18 fetchedObjects];
+  photoLibrary = [groupCopy photoLibrary];
   v59 = v19;
-  v61 = [v67 _timeBasedAssetClustersForAssets:v20 maximumClusterCount:v19 photoLibrary:v21];
+  v61 = [selfCopy _timeBasedAssetClustersForAssets:fetchedObjects maximumClusterCount:v19 photoLibrary:photoLibrary];
 
-  v22 = [v6 photoLibrary];
-  v23 = [v22 librarySpecificFetchOptions];
+  photoLibrary2 = [groupCopy photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary2 librarySpecificFetchOptions];
 
   v79 = *MEMORY[0x1E6978D88];
   v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v79 count:1];
-  [v23 setFetchPropertySets:v24];
+  [librarySpecificFetchOptions setFetchPropertySets:v24];
 
-  [v23 setIncludedDetectionTypes:&unk_1F46E56C0];
-  v60 = v23;
-  v25 = [MEMORY[0x1E6978980] fetchPersonsInSocialGroup:v6 option:v23];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_1F46E56C0];
+  v60 = librarySpecificFetchOptions;
+  v25 = [MEMORY[0x1E6978980] fetchPersonsInSocialGroup:groupCopy option:librarySpecificFetchOptions];
   v26 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v25, "count")}];
   v69 = 0u;
   v70 = 0u;
@@ -671,8 +671,8 @@ LABEL_61:
           objc_enumerationMutation(v27);
         }
 
-        v32 = [*(*(&v69 + 1) + 8 * i) objectID];
-        [v26 addObject:v32];
+        objectID = [*(*(&v69 + 1) + 8 * i) objectID];
+        [v26 addObject:objectID];
       }
 
       v29 = [v27 countByEnumeratingWithState:&v69 objects:v78 count:16];
@@ -681,12 +681,12 @@ LABEL_61:
     while (v29);
   }
 
-  v64 = v7;
+  v64 = optionsCopy;
 
   v33 = MEMORY[0x1E6978830];
-  v65 = v6;
-  v34 = [v6 photoLibrary];
-  v35 = [v33 fetchOptionsWithPhotoLibrary:v34 orObject:0];
+  v65 = groupCopy;
+  photoLibrary3 = [groupCopy photoLibrary];
+  v35 = [v33 fetchOptionsWithPhotoLibrary:photoLibrary3 orObject:0];
 
   [v35 setIncludedDetectionTypes:&unk_1F46E56D8];
   v36 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"personForFace", v26];
@@ -726,8 +726,8 @@ LABEL_61:
     _os_log_impl(&dword_1C6F5C000, v47, OS_LOG_TYPE_INFO, "[Performance] %s: %f ms", buf, 0x16u);
   }
 
-  v48 = [v67 _assetObjectIDsFromClusters:v61 facesByAssetIdentifiers:v42 includeExtraAssets:{v59 - objc_msgSend(v61, "count")}];
-  v49 = [MEMORY[0x1E6978630] fetchAssetsWithObjectIDs:v48 options:v12];
+  v48 = [selfCopy _assetObjectIDsFromClusters:v61 facesByAssetIdentifiers:v42 includeExtraAssets:{v59 - objc_msgSend(v61, "count")}];
+  v49 = [MEMORY[0x1E6978630] fetchAssetsWithObjectIDs:v48 options:fetchOptions];
   v50 = mach_absolute_time();
   v52 = info.numer;
   v51 = info.denom;
@@ -751,17 +751,17 @@ LABEL_61:
   return v49;
 }
 
-+ (id)fetchMovieAssetsForPerson:(id)a3 options:(id)a4
++ (id)fetchMovieAssetsForPerson:(id)person options:(id)options
 {
   v65[3] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v57 = a1;
-  v8 = [a1 _logger];
-  v9 = os_signpost_id_generate(v8);
+  optionsCopy = options;
+  personCopy = person;
+  selfCopy = self;
+  _logger = [self _logger];
+  v9 = os_signpost_id_generate(_logger);
   info = 0;
   mach_timebase_info(&info);
-  v10 = v8;
+  v10 = _logger;
   v11 = v10;
   v53 = v9 - 1;
   if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
@@ -773,9 +773,9 @@ LABEL_61:
   spid = v9;
 
   v51 = mach_absolute_time();
-  v55 = v6;
-  v12 = [v6 fetchOptions];
-  v13 = [v12 copy];
+  v55 = optionsCopy;
+  fetchOptions = [optionsCopy fetchOptions];
+  v13 = [fetchOptions copy];
   [v13 setSortDescriptors:0];
   v14 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"dateCreated" ascending:1];
   v65[0] = v14;
@@ -787,17 +787,17 @@ LABEL_61:
   [v13 setInternalSortDescriptors:v17];
 
   [v13 setFetchLimit:0];
-  v18 = [PNPersonCurationWrapper fetchCuratedAssetsForPerson:v7 options:v13];
-  v54 = v12;
-  v19 = [v57 _maximumNumberOfClustersForCuratedAssetCount:objc_msgSend(v18 fetchLimit:{"count"), objc_msgSend(v12, "fetchLimit")}];
-  v20 = [v18 fetchedObjects];
-  v21 = [v7 photoLibrary];
+  v18 = [PNPersonCurationWrapper fetchCuratedAssetsForPerson:personCopy options:v13];
+  v54 = fetchOptions;
+  v19 = [selfCopy _maximumNumberOfClustersForCuratedAssetCount:objc_msgSend(v18 fetchLimit:{"count"), objc_msgSend(fetchOptions, "fetchLimit")}];
+  fetchedObjects = [v18 fetchedObjects];
+  photoLibrary = [personCopy photoLibrary];
   v52 = v19;
-  v56 = [v57 _timeBasedAssetClustersForAssets:v20 maximumClusterCount:v19 photoLibrary:v21];
+  v56 = [selfCopy _timeBasedAssetClustersForAssets:fetchedObjects maximumClusterCount:v19 photoLibrary:photoLibrary];
 
   v22 = MEMORY[0x1E6978830];
-  v23 = [v7 photoLibrary];
-  v24 = [v22 fetchOptionsWithPhotoLibrary:v23 orObject:0];
+  photoLibrary2 = [personCopy photoLibrary];
+  v24 = [v22 fetchOptionsWithPhotoLibrary:photoLibrary2 orObject:0];
 
   v64 = *MEMORY[0x1E6978D88];
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v64 count:1];
@@ -805,9 +805,9 @@ LABEL_61:
 
   [v24 setIncludedDetectionTypes:&unk_1F46E56A8];
   v26 = MEMORY[0x1E696AE18];
-  v27 = [v7 objectID];
+  objectID = [personCopy objectID];
 
-  v28 = [v26 predicateWithFormat:@"%K = %@", @"personForFace", v27];
+  v28 = [v26 predicateWithFormat:@"%K = %@", @"personForFace", objectID];
   [v24 setInternalPredicate:v28];
 
   v29 = v11;
@@ -844,10 +844,10 @@ LABEL_61:
     _os_log_impl(&dword_1C6F5C000, v39, OS_LOG_TYPE_INFO, "[Performance] %s: %f ms", buf, 0x16u);
   }
 
-  v40 = [v57 _assetObjectIDsFromClusters:v56 facesByAssetIdentifiers:v34 includeExtraAssets:{v52 - objc_msgSend(v56, "count")}];
+  v40 = [selfCopy _assetObjectIDsFromClusters:v56 facesByAssetIdentifiers:v34 includeExtraAssets:{v52 - objc_msgSend(v56, "count")}];
   v41 = MEMORY[0x1E6978630];
-  v42 = [v55 fetchOptions];
-  v43 = [v41 fetchAssetsWithObjectIDs:v40 options:v42];
+  fetchOptions2 = [v55 fetchOptions];
+  v43 = [v41 fetchAssetsWithObjectIDs:v40 options:fetchOptions2];
 
   v44 = mach_absolute_time();
   v46 = info.numer;

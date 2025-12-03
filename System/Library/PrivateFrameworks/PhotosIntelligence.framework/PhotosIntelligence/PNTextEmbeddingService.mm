@@ -1,17 +1,17 @@
 @interface PNTextEmbeddingService
 - (PNTextEmbeddingService)init;
-- (void)prewarmWithCompletionHandler:(id)a3;
-- (void)requestTextEmbeddings:(id)a3 completionHandler:(id)a4;
+- (void)prewarmWithCompletionHandler:(id)handler;
+- (void)requestTextEmbeddings:(id)embeddings completionHandler:(id)handler;
 @end
 
 @implementation PNTextEmbeddingService
 
-- (void)requestTextEmbeddings:(id)a3 completionHandler:(id)a4
+- (void)requestTextEmbeddings:(id)embeddings completionHandler:(id)handler
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  embeddingsCopy = embeddings;
+  handlerCopy = handler;
+  if ([embeddingsCopy count])
   {
     v8 = objc_alloc_init(getMADTextEmbeddingRequestClass());
     if (v8)
@@ -19,9 +19,9 @@
       os_unfair_lock_lock(&self->_madServiceLock);
       if (!self->_madService)
       {
-        v9 = [getMADServiceClass() service];
+        service = [getMADServiceClass() service];
         madService = self->_madService;
-        self->_madService = v9;
+        self->_madService = service;
       }
 
       os_unfair_lock_unlock(&self->_madServiceLock);
@@ -34,8 +34,8 @@
       v16[2] = __66__PNTextEmbeddingService_requestTextEmbeddings_completionHandler___block_invoke;
       v16[3] = &unk_1E82A20F0;
       v17 = v8;
-      v18 = v6;
-      v13 = v7;
+      v18 = embeddingsCopy;
+      v13 = handlerCopy;
       v19 = v13;
       LODWORD(v11) = [(MADService *)v11 performRequests:v12 text:v18 identifier:0 completionHandler:v16];
 
@@ -49,14 +49,14 @@
     else
     {
       v15 = [MEMORY[0x1E696ABC0] pn_genericErrorWithLocalizedDescription:@"[PNTextEmbeddingService] Failed to create MADTextEmbeddingRequest."];
-      (*(v7 + 2))(v7, 0, v15);
+      (*(handlerCopy + 2))(handlerCopy, 0, v15);
     }
   }
 
   else
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DEC8]);
-    (*(v7 + 2))(v7, v8, 0);
+    (*(handlerCopy + 2))(handlerCopy, v8, 0);
   }
 }
 
@@ -220,16 +220,16 @@ LABEL_33:
   }
 }
 
-- (void)prewarmWithCompletionHandler:(id)a3
+- (void)prewarmWithCompletionHandler:(id)handler
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_madServiceLock);
   if (!self->_madService)
   {
-    v5 = [getMADServiceClass() service];
+    service = [getMADServiceClass() service];
     madService = self->_madService;
-    self->_madService = v5;
+    self->_madService = service;
   }
 
   os_unfair_lock_unlock(&self->_madServiceLock);
@@ -245,7 +245,7 @@ LABEL_33:
     v14[1] = 3221225472;
     v14[2] = __55__PNTextEmbeddingService_prewarmWithCompletionHandler___block_invoke;
     v14[3] = &unk_1E82A20C8;
-    v11 = v4;
+    v11 = handlerCopy;
     v15 = v11;
     LODWORD(v9) = [(MADService *)v9 prewarmTextRequests:v10 completionHandler:v14];
 
@@ -259,7 +259,7 @@ LABEL_33:
   else
   {
     v13 = [MEMORY[0x1E696ABC0] pn_genericErrorWithLocalizedDescription:@"[PNTextEmbeddingService] Failed to create MADTextEmbeddingRequest for prewarming."];
-    (*(v4 + 2))(v4, v13);
+    (*(handlerCopy + 2))(handlerCopy, v13);
   }
 }
 

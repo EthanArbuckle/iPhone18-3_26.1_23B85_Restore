@@ -2,25 +2,25 @@
 - (VIUVisualIntelligenceView)overlayView;
 - (VKCImageAnalysisInteractionDelegate)hostDelegate;
 - (void)resetInterface;
-- (void)setAnalysisResult:(id)a3;
-- (void)setHostDelegate:(id)a3;
+- (void)setAnalysisResult:(id)result;
+- (void)setHostDelegate:(id)delegate;
 @end
 
 @implementation VIUIVisualIntelligenceViewCoordinator
 
 - (VKCImageAnalysisInteractionDelegate)hostDelegate
 {
-  v2 = self;
+  selfCopy = self;
   sub_21E086C58();
   v4 = v3;
 
   return v4;
 }
 
-- (void)setHostDelegate:(id)a3
+- (void)setHostDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_21E086D94();
 }
 
@@ -38,16 +38,16 @@
 
 - (void)resetInterface
 {
-  v2 = self;
+  selfCopy = self;
   sub_21E088720();
 }
 
-- (void)setAnalysisResult:(id)a3
+- (void)setAnalysisResult:(id)result
 {
   v4 = *(&self->super.isa + OBJC_IVAR___VIUIVisualIntelligenceViewCoordinator_analysisResult);
-  *(&self->super.isa + OBJC_IVAR___VIUIVisualIntelligenceViewCoordinator_analysisResult) = a3;
-  v5 = a3;
-  v6 = self;
+  *(&self->super.isa + OBJC_IVAR___VIUIVisualIntelligenceViewCoordinator_analysisResult) = result;
+  resultCopy = result;
+  selfCopy = self;
 
   sub_21E088A70();
 }

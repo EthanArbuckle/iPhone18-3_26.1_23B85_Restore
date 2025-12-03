@@ -1,25 +1,25 @@
 @interface NTKCUltraCubeFaceDetailViewController
 - (BOOL)_isShareButtonEnabled;
-- (id)_sectionForEditOptionCollection:(id)a3;
+- (id)_sectionForEditOptionCollection:(id)collection;
 - (id)reasonFaceCanNotBeAddedToLibrary;
 - (void)_addFace;
-- (void)_reloadVisibleCellsForEditMode:(int64_t)a3;
-- (void)ultracubeSectionDidUpdate:(id)a3;
+- (void)_reloadVisibleCellsForEditMode:(int64_t)mode;
+- (void)ultracubeSectionDidUpdate:(id)update;
 @end
 
 @implementation NTKCUltraCubeFaceDetailViewController
 
-- (id)_sectionForEditOptionCollection:(id)a3
+- (id)_sectionForEditOptionCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(NTKCUltraCubeFaceDetailViewController *)self face];
-  v6 = [(NTKCUltraCubeFaceDetailViewController *)self inGallery];
-  v7 = [(NTKCUltraCubeFaceDetailViewController *)self faceVC];
-  v8 = [v7 faceView];
-  if (+[NTKCFaceDetailUltraCubeSectionController hasUltraCubeSectionForFace:forEditMode:](NTKCFaceDetailUltraCubeSectionController, "hasUltraCubeSectionForFace:forEditMode:", v5, [v4 mode]))
+  collectionCopy = collection;
+  face = [(NTKCUltraCubeFaceDetailViewController *)self face];
+  inGallery = [(NTKCUltraCubeFaceDetailViewController *)self inGallery];
+  faceVC = [(NTKCUltraCubeFaceDetailViewController *)self faceVC];
+  faceView = [faceVC faceView];
+  if (+[NTKCFaceDetailUltraCubeSectionController hasUltraCubeSectionForFace:forEditMode:](NTKCFaceDetailUltraCubeSectionController, "hasUltraCubeSectionForFace:forEditMode:", face, [collectionCopy mode]))
   {
-    v9 = [(NTKCUltraCubeFaceDetailViewController *)self externalAssets];
-    v10 = [[NTKCFaceDetailUltraCubeSectionController alloc] initWithTableViewController:self face:v5 inGallery:v6 editOptionCollection:v4 faceView:v8 externalAssets:v9];
+    externalAssets = [(NTKCUltraCubeFaceDetailViewController *)self externalAssets];
+    v10 = [[NTKCFaceDetailUltraCubeSectionController alloc] initWithTableViewController:self face:face inGallery:inGallery editOptionCollection:collectionCopy faceView:faceView externalAssets:externalAssets];
     ultracubeSection = self->_ultracubeSection;
     self->_ultracubeSection = v10;
 
@@ -28,9 +28,9 @@
     v12 = self->_ultracubeSection;
   }
 
-  else if (+[NTKCFaceDetailUltraCubeStyleSectionController hasSectionForFace:forEditMode:](NTKCFaceDetailUltraCubeStyleSectionController, "hasSectionForFace:forEditMode:", v5, [v4 mode]))
+  else if (+[NTKCFaceDetailUltraCubeStyleSectionController hasSectionForFace:forEditMode:](NTKCFaceDetailUltraCubeStyleSectionController, "hasSectionForFace:forEditMode:", face, [collectionCopy mode]))
   {
-    v12 = [[NTKCFaceDetailUltraCubeStyleSectionController alloc] initWithTableViewController:self face:v5 inGallery:v6 editOptionCollection:v4 faceView:v8];
+    v12 = [[NTKCFaceDetailUltraCubeStyleSectionController alloc] initWithTableViewController:self face:face inGallery:inGallery editOptionCollection:collectionCopy faceView:faceView];
     [(NTKCFaceDetailUltraCubeSectionController *)v12 setDelegate:self];
   }
 
@@ -38,7 +38,7 @@
   {
     v14.receiver = self;
     v14.super_class = NTKCUltraCubeFaceDetailViewController;
-    v12 = [(NTKCUltraCubeFaceDetailViewController *)&v14 _sectionForEditOptionCollection:v4];
+    v12 = [(NTKCUltraCubeFaceDetailViewController *)&v14 _sectionForEditOptionCollection:collectionCopy];
   }
 
   return v12;
@@ -48,10 +48,10 @@
 {
   if ([(NTKCFaceDetailUltraCubeSectionController *)self->_ultracubeSection hasChanges])
   {
-    v3 = [(NTKCUltraCubeFaceDetailViewController *)self addSpinner];
-    [v3 startAnimating];
-    v4 = [(NTKCUltraCubeFaceDetailViewController *)self addButton];
-    [v4 setHidden:1];
+    addSpinner = [(NTKCUltraCubeFaceDetailViewController *)self addSpinner];
+    [addSpinner startAnimating];
+    addButton = [(NTKCUltraCubeFaceDetailViewController *)self addButton];
+    [addButton setHidden:1];
     ultracubeSection = self->_ultracubeSection;
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
@@ -75,55 +75,55 @@
   {
     v5.receiver = self;
     v5.super_class = NTKCUltraCubeFaceDetailViewController;
-    v3 = [(NTKCUltraCubeFaceDetailViewController *)&v5 reasonFaceCanNotBeAddedToLibrary];
+    reasonFaceCanNotBeAddedToLibrary = [(NTKCUltraCubeFaceDetailViewController *)&v5 reasonFaceCanNotBeAddedToLibrary];
   }
 
   else
   {
-    v3 = NTKClockFaceLocalizedString();
+    reasonFaceCanNotBeAddedToLibrary = NTKClockFaceLocalizedString();
   }
 
-  return v3;
+  return reasonFaceCanNotBeAddedToLibrary;
 }
 
 - (BOOL)_isShareButtonEnabled
 {
-  v3 = [(NTKCUltraCubeFaceDetailViewController *)self face];
-  v4 = [v3 resourceDirectory];
-  v5 = [NTKUltraCubePhotosReader readerForResourceDirectory:v4];
+  face = [(NTKCUltraCubeFaceDetailViewController *)self face];
+  resourceDirectory = [face resourceDirectory];
+  v5 = [NTKUltraCubePhotosReader readerForResourceDirectory:resourceDirectory];
 
   if ([v5 count])
   {
-    v6 = [(NTKCUltraCubeFaceDetailViewController *)self face];
-    v7 = [v6 isValidConfigurationToAddToLibrary];
+    face2 = [(NTKCUltraCubeFaceDetailViewController *)self face];
+    isValidConfigurationToAddToLibrary = [face2 isValidConfigurationToAddToLibrary];
   }
 
   else
   {
-    v7 = 0;
+    isValidConfigurationToAddToLibrary = 0;
   }
 
-  return v7;
+  return isValidConfigurationToAddToLibrary;
 }
 
-- (void)ultracubeSectionDidUpdate:(id)a3
+- (void)ultracubeSectionDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   [(NTKCUltraCubeFaceDetailViewController *)self _updateAddButton];
   [(NTKCUltraCubeFaceDetailViewController *)self _updateShareButton];
-  v5 = [(NTKCUltraCubeFaceDetailViewController *)self face];
-  v6 = [v5 hasSampleResourceDirectory];
+  face = [(NTKCUltraCubeFaceDetailViewController *)self face];
+  hasSampleResourceDirectory = [face hasSampleResourceDirectory];
 
-  v7 = [v4 ultracubePhotosEditor];
+  ultracubePhotosEditor = [updateCopy ultracubePhotosEditor];
 
-  v8 = [v7 photosCount];
-  if ((v6 & 1) == 0 && v8 >= 1)
+  photosCount = [ultracubePhotosEditor photosCount];
+  if ((hasSampleResourceDirectory & 1) == 0 && photosCount >= 1)
   {
-    v9 = [(NTKCUltraCubeFaceDetailViewController *)self faceVC];
-    v10 = [v9 faceView];
-    v11 = [(NTKCUltraCubeFaceDetailViewController *)self face];
-    v12 = [v11 selectedOptionsForCustomEditModes];
-    [v10 prepareSwatchImagesForSelectedOptions:v12];
+    faceVC = [(NTKCUltraCubeFaceDetailViewController *)self faceVC];
+    faceView = [faceVC faceView];
+    face2 = [(NTKCUltraCubeFaceDetailViewController *)self face];
+    selectedOptionsForCustomEditModes = [face2 selectedOptionsForCustomEditModes];
+    [faceView prepareSwatchImagesForSelectedOptions:selectedOptionsForCustomEditModes];
 
     [(NTKCUltraCubeFaceDetailViewController *)self _reloadVisibleCellsForEditMode:13];
 
@@ -131,14 +131,14 @@
   }
 }
 
-- (void)_reloadVisibleCellsForEditMode:(int64_t)a3
+- (void)_reloadVisibleCellsForEditMode:(int64_t)mode
 {
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v4 = [(NTKCUltraCubeFaceDetailViewController *)self editOptionSections];
-  v5 = [v4 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  editOptionSections = [(NTKCUltraCubeFaceDetailViewController *)self editOptionSections];
+  v5 = [editOptionSections countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v5)
   {
     v6 = v5;
@@ -149,21 +149,21 @@
       {
         if (*v24 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(editOptionSections);
         }
 
         v9 = *(*(&v23 + 1) + 8 * i);
-        v10 = [v9 collection];
-        v11 = [v10 mode];
+        collection = [v9 collection];
+        mode = [collection mode];
 
-        if (v11 == a3)
+        if (mode == mode)
         {
           v12 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v6 = [editOptionSections countByEnumeratingWithState:&v23 objects:v28 count:16];
       if (v6)
       {
         continue;
@@ -180,8 +180,8 @@ LABEL_11:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v13 = [v12 rows];
-  v14 = [v13 countByEnumeratingWithState:&v19 objects:v27 count:16];
+  rows = [v12 rows];
+  v14 = [rows countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v14)
   {
     v15 = v14;
@@ -192,7 +192,7 @@ LABEL_11:
       {
         if (*v20 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(rows);
         }
 
         v18 = *(*(&v19 + 1) + 8 * j);
@@ -203,7 +203,7 @@ LABEL_11:
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v19 objects:v27 count:16];
+      v15 = [rows countByEnumeratingWithState:&v19 objects:v27 count:16];
     }
 
     while (v15);

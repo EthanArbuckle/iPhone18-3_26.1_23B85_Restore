@@ -1,16 +1,16 @@
 @interface VSJSResponsePayload
 - (VSJSResponsePayload)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation VSJSResponsePayload
 
 - (VSJSResponsePayload)init
 {
-  v3 = [MEMORY[0x277D1B028] currentAppContext];
+  currentAppContext = [MEMORY[0x277D1B028] currentAppContext];
   v9.receiver = self;
   v9.super_class = VSJSResponsePayload;
-  v4 = [(IKJSObject *)&v9 initWithAppContext:v3];
+  v4 = [(IKJSObject *)&v9 initWithAppContext:currentAppContext];
 
   if (v4)
   {
@@ -30,11 +30,11 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [VSJSResponsePayload allocWithZone:a3];
-  v5 = [(IKJSObject *)self appContext];
-  v6 = [(IKJSObject *)v4 initWithAppContext:v5];
+  v4 = [VSJSResponsePayload allocWithZone:zone];
+  appContext = [(IKJSObject *)self appContext];
+  v6 = [(IKJSObject *)v4 initWithAppContext:appContext];
 
   v7 = [(NSString *)self->_authN copy];
   authN = v6->_authN;

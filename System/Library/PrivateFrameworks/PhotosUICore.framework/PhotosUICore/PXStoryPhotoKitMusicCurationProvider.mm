@@ -3,42 +3,42 @@
 - (NSArray)recentlyUsedAppleMusicSongIDs;
 - (NSArray)recentlyUsedFlexSongIDs;
 - (PXStoryPhotoKitMusicCurationProvider)init;
-- (id)_cachedResultForAssetContainer:(id)a3 options:(id)a4;
-- (id)_performRequestForAssetContainer:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (id)requestMusicCurationForAssetContainer:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (void)_handleMusicCurationResult:(id)a3 forAssetContainer:(id)a4 options:(id)a5;
-- (void)_removeRejectedSong:(id)a3 fromCachedResultForAssetContainer:(id)a4;
-- (void)_replaceSongWithSong:(id)a3 inCachedResultForAssetContainer:(id)a4;
-- (void)_saveNegativeFeedbackForSongIdentifier:(id)a3 assetContainer:(id)a4;
-- (void)applyNegativeFeedbackToSong:(id)a3 forAssetContainer:(id)a4;
-- (void)setRecentlyUsedAppleMusicSongIDs:(id)a3;
-- (void)setRecentlyUsedFlexSongIDs:(id)a3;
-- (void)updateAudioAsset:(id)a3 forAssetContainer:(id)a4;
+- (id)_cachedResultForAssetContainer:(id)container options:(id)options;
+- (id)_performRequestForAssetContainer:(id)container options:(id)options resultHandler:(id)handler;
+- (id)requestMusicCurationForAssetContainer:(id)container options:(id)options resultHandler:(id)handler;
+- (void)_handleMusicCurationResult:(id)result forAssetContainer:(id)container options:(id)options;
+- (void)_removeRejectedSong:(id)song fromCachedResultForAssetContainer:(id)container;
+- (void)_replaceSongWithSong:(id)song inCachedResultForAssetContainer:(id)container;
+- (void)_saveNegativeFeedbackForSongIdentifier:(id)identifier assetContainer:(id)container;
+- (void)applyNegativeFeedbackToSong:(id)song forAssetContainer:(id)container;
+- (void)setRecentlyUsedAppleMusicSongIDs:(id)ds;
+- (void)setRecentlyUsedFlexSongIDs:(id)ds;
+- (void)updateAudioAsset:(id)asset forAssetContainer:(id)container;
 @end
 
 @implementation PXStoryPhotoKitMusicCurationProvider
 
-- (void)_saveNegativeFeedbackForSongIdentifier:(id)a3 assetContainer:(id)a4
+- (void)_saveNegativeFeedbackForSongIdentifier:(id)identifier assetContainer:(id)container
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 container];
+  identifierCopy = identifier;
+  containerCopy = container;
+  container = [containerCopy container];
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v9 = v8;
+    v9 = container;
 
     if (v9)
     {
-      v10 = [(PXStoryPhotoKitMusicCurationProvider *)self workQueue];
+      workQueue = [(PXStoryPhotoKitMusicCurationProvider *)self workQueue];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __94__PXStoryPhotoKitMusicCurationProvider__saveNegativeFeedbackForSongIdentifier_assetContainer___block_invoke;
       v13[3] = &unk_1E774C620;
       v11 = v9;
       v14 = v11;
-      v15 = v6;
-      dispatch_async(v10, v13);
+      v15 = identifierCopy;
+      dispatch_async(workQueue, v13);
 
       v12 = v14;
       goto LABEL_9;
@@ -53,7 +53,7 @@
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v17 = v7;
+    v17 = containerCopy;
     _os_log_impl(&dword_1A3C1C000, v12, OS_LOG_TYPE_ERROR, "[MemoriesMusic] (PXMusicCurationManager) Failed to save negative feedback for asset container of unsupported type: %@", buf, 0xCu);
   }
 
@@ -138,21 +138,21 @@ void __94__PXStoryPhotoKitMusicCurationProvider__saveNegativeFeedbackForSongIden
   [v2 setUserFeedback:*(a1 + 40)];
 }
 
-- (void)_replaceSongWithSong:(id)a3 inCachedResultForAssetContainer:(id)a4
+- (void)_replaceSongWithSong:(id)song inCachedResultForAssetContainer:(id)container
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXStoryPhotoKitMusicCurationProvider *)self stateQueue];
+  songCopy = song;
+  containerCopy = container;
+  stateQueue = [(PXStoryPhotoKitMusicCurationProvider *)self stateQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __93__PXStoryPhotoKitMusicCurationProvider__replaceSongWithSong_inCachedResultForAssetContainer___block_invoke;
   block[3] = &unk_1E774A1B8;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = containerCopy;
+  v13 = songCopy;
+  v9 = songCopy;
+  v10 = containerCopy;
+  dispatch_async(stateQueue, block);
 }
 
 void __93__PXStoryPhotoKitMusicCurationProvider__replaceSongWithSong_inCachedResultForAssetContainer___block_invoke(uint64_t a1)
@@ -230,21 +230,21 @@ void __93__PXStoryPhotoKitMusicCurationProvider__replaceSongWithSong_inCachedRes
   }
 }
 
-- (void)_removeRejectedSong:(id)a3 fromCachedResultForAssetContainer:(id)a4
+- (void)_removeRejectedSong:(id)song fromCachedResultForAssetContainer:(id)container
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXStoryPhotoKitMusicCurationProvider *)self stateQueue];
+  songCopy = song;
+  containerCopy = container;
+  stateQueue = [(PXStoryPhotoKitMusicCurationProvider *)self stateQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __94__PXStoryPhotoKitMusicCurationProvider__removeRejectedSong_fromCachedResultForAssetContainer___block_invoke;
   block[3] = &unk_1E774A1B8;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = containerCopy;
+  v13 = songCopy;
+  v9 = songCopy;
+  v10 = containerCopy;
+  dispatch_async(stateQueue, block);
 }
 
 void __94__PXStoryPhotoKitMusicCurationProvider__removeRejectedSong_fromCachedResultForAssetContainer___block_invoke(uint64_t a1)
@@ -298,24 +298,24 @@ void __94__PXStoryPhotoKitMusicCurationProvider__removeRejectedSong_fromCachedRe
   }
 }
 
-- (id)_cachedResultForAssetContainer:(id)a3 options:(id)a4
+- (id)_cachedResultForAssetContainer:(id)container options:(id)options
 {
-  v6 = a3;
-  v7 = [a4 categories];
-  v8 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v7, "count")}];
-  v9 = [(PXStoryPhotoKitMusicCurationProvider *)self stateQueue];
+  containerCopy = container;
+  categories = [options categories];
+  v8 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(categories, "count")}];
+  stateQueue = [(PXStoryPhotoKitMusicCurationProvider *)self stateQueue];
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __79__PXStoryPhotoKitMusicCurationProvider__cachedResultForAssetContainer_options___block_invoke;
   v21 = &unk_1E7744F50;
-  v10 = v7;
+  v10 = categories;
   v22 = v10;
   v11 = v8;
   v23 = v11;
-  v24 = self;
-  v12 = v6;
+  selfCopy = self;
+  v12 = containerCopy;
   v25 = v12;
-  dispatch_sync(v9, &v18);
+  dispatch_sync(stateQueue, &v18);
 
   v13 = [v11 count];
   if (v13 == [v10 count])
@@ -373,24 +373,24 @@ void __79__PXStoryPhotoKitMusicCurationProvider__cachedResultForAssetContainer_o
   }
 }
 
-- (void)_handleMusicCurationResult:(id)a3 forAssetContainer:(id)a4 options:(id)a5
+- (void)_handleMusicCurationResult:(id)result forAssetContainer:(id)container options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PXStoryPhotoKitMusicCurationProvider *)self stateQueue];
+  resultCopy = result;
+  containerCopy = container;
+  optionsCopy = options;
+  stateQueue = [(PXStoryPhotoKitMusicCurationProvider *)self stateQueue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __93__PXStoryPhotoKitMusicCurationProvider__handleMusicCurationResult_forAssetContainer_options___block_invoke;
   v15[3] = &unk_1E7744F50;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = resultCopy;
+  selfCopy = self;
+  v18 = containerCopy;
+  v19 = optionsCopy;
+  v12 = optionsCopy;
+  v13 = containerCopy;
+  v14 = resultCopy;
+  dispatch_async(stateQueue, v15);
 }
 
 void __93__PXStoryPhotoKitMusicCurationProvider__handleMusicCurationResult_forAssetContainer_options___block_invoke(id *a1)
@@ -434,11 +434,11 @@ void __93__PXStoryPhotoKitMusicCurationProvider__handleMusicCurationResult_forAs
   [v12 setObject:0 forKeyedSubscript:v13];
 }
 
-- (id)_performRequestForAssetContainer:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (id)_performRequestForAssetContainer:(id)container options:(id)options resultHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  containerCopy = container;
+  optionsCopy = options;
+  handlerCopy = handler;
   v50 = 0;
   v51 = &v50;
   v52 = 0x3032000000;
@@ -457,8 +457,8 @@ void __93__PXStoryPhotoKitMusicCurationProvider__handleMusicCurationResult_forAs
   v41 = __Block_byref_object_copy__3748;
   v42 = __Block_byref_object_dispose__3749;
   v43 = 0;
-  v11 = RequestCacheKey(v8, v9);
-  v12 = [(PXStoryPhotoKitMusicCurationProvider *)self stateQueue];
+  v11 = RequestCacheKey(containerCopy, optionsCopy);
+  stateQueue = [(PXStoryPhotoKitMusicCurationProvider *)self stateQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __95__PXStoryPhotoKitMusicCurationProvider__performRequestForAssetContainer_options_resultHandler___block_invoke;
@@ -469,7 +469,7 @@ void __93__PXStoryPhotoKitMusicCurationProvider__handleMusicCurationResult_forAs
   v34 = v13;
   v36 = &v44;
   v37 = &v38;
-  dispatch_sync(v12, block);
+  dispatch_sync(stateQueue, block);
 
   v14 = v51[5];
   if (!v14)
@@ -483,13 +483,13 @@ void __93__PXStoryPhotoKitMusicCurationProvider__handleMusicCurationResult_forAs
     v28[2] = __95__PXStoryPhotoKitMusicCurationProvider__performRequestForAssetContainer_options_resultHandler___block_invoke_2;
     v28[3] = &unk_1E772DA40;
     objc_copyWeak(&v31, &location);
-    v29 = v8;
-    v30 = v9;
+    v29 = containerCopy;
+    v30 = optionsCopy;
     v18 = [(_PXStoryMusicCurationProviderRequest *)v15 initWithAssetContainer:v29 options:v30 recentlyUsedFlexSongIDs:v16 recentlyUsedAppleMusicSongIDs:v17 completion:v28];
     v19 = v51[5];
     v51[5] = v18;
 
-    v20 = [(PXStoryPhotoKitMusicCurationProvider *)self stateQueue];
+    stateQueue2 = [(PXStoryPhotoKitMusicCurationProvider *)self stateQueue];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __95__PXStoryPhotoKitMusicCurationProvider__performRequestForAssetContainer_options_resultHandler___block_invoke_3;
@@ -497,30 +497,30 @@ void __93__PXStoryPhotoKitMusicCurationProvider__handleMusicCurationResult_forAs
     v25[4] = self;
     v26 = v13;
     v27 = &v50;
-    dispatch_sync(v20, v25);
+    dispatch_sync(stateQueue2, v25);
 
     objc_destroyWeak(&v31);
     objc_destroyWeak(&location);
     v14 = v51[5];
   }
 
-  [v14 appendResultHandler:v10];
-  v21 = [(PXStoryPhotoKitMusicCurationProvider *)self workQueue];
+  [v14 appendResultHandler:handlerCopy];
+  workQueue = [(PXStoryPhotoKitMusicCurationProvider *)self workQueue];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __95__PXStoryPhotoKitMusicCurationProvider__performRequestForAssetContainer_options_resultHandler___block_invoke_4;
   v24[3] = &unk_1E774BD00;
   v24[4] = &v50;
-  dispatch_async(v21, v24);
+  dispatch_async(workQueue, v24);
 
-  v22 = [v51[5] progress];
+  progress = [v51[5] progress];
 
   _Block_object_dispose(&v38, 8);
   _Block_object_dispose(&v44, 8);
 
   _Block_object_dispose(&v50, 8);
 
-  return v22;
+  return progress;
 }
 
 void __95__PXStoryPhotoKitMusicCurationProvider__performRequestForAssetContainer_options_resultHandler___block_invoke(uint64_t a1)
@@ -556,50 +556,50 @@ void __95__PXStoryPhotoKitMusicCurationProvider__performRequestForAssetContainer
   [v3 setObject:v2 forKeyedSubscript:*(a1 + 40)];
 }
 
-- (void)updateAudioAsset:(id)a3 forAssetContainer:(id)a4
+- (void)updateAudioAsset:(id)asset forAssetContainer:(id)container
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  containerCopy = container;
   v8 = PLStoryGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = 138412546;
-    v10 = v6;
+    v10 = assetCopy;
     v11 = 2112;
-    v12 = v7;
+    v12 = containerCopy;
     _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_INFO, "[MemoriesMusic] (PXMusicCurationManager) Received request to update song: %@ in asset container: %@", &v9, 0x16u);
   }
 
-  [(PXStoryPhotoKitMusicCurationProvider *)self _replaceSongWithSong:v6 inCachedResultForAssetContainer:v7];
+  [(PXStoryPhotoKitMusicCurationProvider *)self _replaceSongWithSong:assetCopy inCachedResultForAssetContainer:containerCopy];
 }
 
-- (void)applyNegativeFeedbackToSong:(id)a3 forAssetContainer:(id)a4
+- (void)applyNegativeFeedbackToSong:(id)song forAssetContainer:(id)container
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  songCopy = song;
+  containerCopy = container;
   v8 = PLStoryGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v10 = 138412546;
-    v11 = v6;
+    v11 = songCopy;
     v12 = 2112;
-    v13 = v7;
+    v13 = containerCopy;
     _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_INFO, "[MemoriesMusic] (PXMusicCurationManager) Received request to apply negative feedback for song: %@ in asset container: %@", &v10, 0x16u);
   }
 
-  [(PXStoryPhotoKitMusicCurationProvider *)self _removeRejectedSong:v6 fromCachedResultForAssetContainer:v7];
-  v9 = [v6 identifier];
-  [(PXStoryPhotoKitMusicCurationProvider *)self _saveNegativeFeedbackForSongIdentifier:v9 assetContainer:v7];
+  [(PXStoryPhotoKitMusicCurationProvider *)self _removeRejectedSong:songCopy fromCachedResultForAssetContainer:containerCopy];
+  identifier = [songCopy identifier];
+  [(PXStoryPhotoKitMusicCurationProvider *)self _saveNegativeFeedbackForSongIdentifier:identifier assetContainer:containerCopy];
 }
 
-- (id)requestMusicCurationForAssetContainer:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (id)requestMusicCurationForAssetContainer:(id)container options:(id)options resultHandler:(id)handler
 {
   v48 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  containerCopy = container;
+  optionsCopy = options;
+  handlerCopy = handler;
   v11 = [(PXStoryPhotoKitMusicCurationProvider *)self log];
   v12 = os_signpost_id_make_with_pointer(v11, self);
   v13 = v11;
@@ -608,15 +608,15 @@ void __95__PXStoryPhotoKitMusicCurationProvider__performRequestForAssetContainer
   if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
   {
     *buf = 134217984;
-    v45 = [v9 logContext];
+    logContext = [optionsCopy logContext];
     _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "PXStoryMusicCurationManagerResultDelivery", "Context=%{signpost.telemetry:string2}lu ", buf, 0xCu);
   }
 
   spid = v12;
 
-  if (v9)
+  if (optionsCopy)
   {
-    v16 = [v9 copy];
+    v16 = [optionsCopy copy];
   }
 
   else
@@ -625,8 +625,8 @@ void __95__PXStoryPhotoKitMusicCurationProvider__performRequestForAssetContainer
   }
 
   v17 = v16;
-  v18 = [(PXStoryMusicCurationProviderOptions *)v16 categories];
-  if ([v18 count])
+  categories = [(PXStoryMusicCurationProviderOptions *)v16 categories];
+  if ([categories count])
   {
     [(PXStoryMusicCurationProviderOptions *)v17 categories];
   }
@@ -643,46 +643,46 @@ void __95__PXStoryPhotoKitMusicCurationProvider__performRequestForAssetContainer
 
   if ((v19 & 1) == 0)
   {
-    v21 = [(PXStoryMusicCurationProviderOptions *)v17 categories];
+    categories2 = [(PXStoryMusicCurationProviderOptions *)v17 categories];
     v22 = PXAppleMusicCurationCategories();
-    v23 = PXSetSubtract(v21, v22);
+    v23 = PXSetSubtract(categories2, v22);
     [(PXStoryMusicCurationProviderOptions *)v17 setCategories:v23];
   }
 
   v24 = PLStoryGetLog();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
   {
-    v25 = [v8 identifier];
-    v26 = [(PXStoryMusicCurationProviderOptions *)v17 categories];
+    identifier = [containerCopy identifier];
+    categories3 = [(PXStoryMusicCurationProviderOptions *)v17 categories];
     *buf = 138412546;
-    v45 = v25;
+    logContext = identifier;
     v46 = 2112;
-    v47 = v26;
+    v47 = categories3;
     _os_log_impl(&dword_1A3C1C000, v24, OS_LOG_TYPE_INFO, "[MemoriesMusic] (PXMusicCurationManager) Received request for music curation for asset container: %@; categories: %@", buf, 0x16u);
   }
 
-  v27 = [(PXStoryPhotoKitMusicCurationProvider *)self _cachedResultForAssetContainer:v8 options:v17];
-  v28 = [v27 isComplete];
+  v27 = [(PXStoryPhotoKitMusicCurationProvider *)self _cachedResultForAssetContainer:containerCopy options:v17];
+  isComplete = [v27 isComplete];
   v29 = PLStoryGetLog();
   v30 = os_log_type_enabled(v29, OS_LOG_TYPE_INFO);
-  if (v28)
+  if (isComplete)
   {
     if (v30)
     {
-      v31 = [v8 identifier];
+      identifier2 = [containerCopy identifier];
       *buf = 138412290;
-      v45 = v31;
+      logContext = identifier2;
       _os_log_impl(&dword_1A3C1C000, v29, OS_LOG_TYPE_INFO, "[MemoriesMusic] (PXMusicCurationManager) Cached music curation result found for asset container: %@.", buf, 0xCu);
     }
 
-    v10[2](v10, v27);
+    handlerCopy[2](handlerCopy, v27);
     v32 = v14;
     v33 = v32;
     if (v15 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v32))
     {
-      v34 = [v9 logContext];
+      logContext2 = [optionsCopy logContext];
       *buf = 134218242;
-      v45 = v34;
+      logContext = logContext2;
       v46 = 2114;
       v47 = v27;
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v33, OS_SIGNPOST_INTERVAL_END, spid, "PXStoryMusicCurationManagerResultDelivery", "Context=%{signpost.telemetry:string2}lu %{public}@", buf, 0x16u);
@@ -695,9 +695,9 @@ void __95__PXStoryPhotoKitMusicCurationProvider__performRequestForAssetContainer
   {
     if (v30)
     {
-      v36 = [v8 identifier];
+      identifier3 = [containerCopy identifier];
       *buf = 138412290;
-      v45 = v36;
+      logContext = identifier3;
       _os_log_impl(&dword_1A3C1C000, v29, OS_LOG_TYPE_INFO, "[MemoriesMusic] (PXMusicCurationManager) No music curation result found. Starting new request for asset container: %@", buf, 0xCu);
     }
 
@@ -707,9 +707,9 @@ void __95__PXStoryPhotoKitMusicCurationProvider__performRequestForAssetContainer
     v39[3] = &unk_1E772D9F0;
     v40 = v14;
     v43 = spid;
-    v41 = v9;
-    v42 = v10;
-    v35 = [(PXStoryPhotoKitMusicCurationProvider *)self _performRequestForAssetContainer:v8 options:v17 resultHandler:v39];
+    v41 = optionsCopy;
+    v42 = handlerCopy;
+    v35 = [(PXStoryPhotoKitMusicCurationProvider *)self _performRequestForAssetContainer:containerCopy options:v17 resultHandler:v39];
 
     v33 = v40;
   }
@@ -737,10 +737,10 @@ void __100__PXStoryPhotoKitMusicCurationProvider_requestMusicCurationForAssetCon
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)setRecentlyUsedAppleMusicSongIDs:(id)a3
+- (void)setRecentlyUsedAppleMusicSongIDs:(id)ds
 {
-  v4 = [a3 copy];
-  v5 = [(PXStoryPhotoKitMusicCurationProvider *)self stateQueue];
+  v4 = [ds copy];
+  stateQueue = [(PXStoryPhotoKitMusicCurationProvider *)self stateQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __73__PXStoryPhotoKitMusicCurationProvider_setRecentlyUsedAppleMusicSongIDs___block_invoke;
@@ -748,7 +748,7 @@ void __100__PXStoryPhotoKitMusicCurationProvider_requestMusicCurationForAssetCon
   v7[4] = self;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, v7);
+  dispatch_async(stateQueue, v7);
 }
 
 - (NSArray)recentlyUsedAppleMusicSongIDs
@@ -759,14 +759,14 @@ void __100__PXStoryPhotoKitMusicCurationProvider_requestMusicCurationForAssetCon
   v10 = __Block_byref_object_copy__3748;
   v11 = __Block_byref_object_dispose__3749;
   v12 = 0;
-  v3 = [(PXStoryPhotoKitMusicCurationProvider *)self stateQueue];
+  stateQueue = [(PXStoryPhotoKitMusicCurationProvider *)self stateQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __69__PXStoryPhotoKitMusicCurationProvider_recentlyUsedAppleMusicSongIDs__block_invoke;
   v6[3] = &unk_1E7749A28;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(stateQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -782,10 +782,10 @@ void __69__PXStoryPhotoKitMusicCurationProvider_recentlyUsedAppleMusicSongIDs__b
   *(v3 + 40) = v2;
 }
 
-- (void)setRecentlyUsedFlexSongIDs:(id)a3
+- (void)setRecentlyUsedFlexSongIDs:(id)ds
 {
-  v4 = [a3 copy];
-  v5 = [(PXStoryPhotoKitMusicCurationProvider *)self stateQueue];
+  v4 = [ds copy];
+  stateQueue = [(PXStoryPhotoKitMusicCurationProvider *)self stateQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__PXStoryPhotoKitMusicCurationProvider_setRecentlyUsedFlexSongIDs___block_invoke;
@@ -793,7 +793,7 @@ void __69__PXStoryPhotoKitMusicCurationProvider_recentlyUsedAppleMusicSongIDs__b
   v7[4] = self;
   v8 = v4;
   v6 = v4;
-  dispatch_async(v5, v7);
+  dispatch_async(stateQueue, v7);
 }
 
 - (NSArray)recentlyUsedFlexSongIDs
@@ -804,14 +804,14 @@ void __69__PXStoryPhotoKitMusicCurationProvider_recentlyUsedAppleMusicSongIDs__b
   v10 = __Block_byref_object_copy__3748;
   v11 = __Block_byref_object_dispose__3749;
   v12 = 0;
-  v3 = [(PXStoryPhotoKitMusicCurationProvider *)self stateQueue];
+  stateQueue = [(PXStoryPhotoKitMusicCurationProvider *)self stateQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __63__PXStoryPhotoKitMusicCurationProvider_recentlyUsedFlexSongIDs__block_invoke;
   v6[3] = &unk_1E7749A28;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(stateQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);

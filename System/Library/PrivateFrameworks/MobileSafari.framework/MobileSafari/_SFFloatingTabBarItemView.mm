@@ -1,11 +1,11 @@
 @interface _SFFloatingTabBarItemView
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
 @end
 
 @implementation _SFFloatingTabBarItemView
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____SFFloatingTabBarItemView_configuration + 2);
   v4 = *(&self->super.super._responderFlags + OBJC_IVAR____SFFloatingTabBarItemView_configuration);
@@ -19,20 +19,20 @@
   v13 = v5;
   v14 = v6;
   v15 = v7;
-  v10 = self;
+  selfCopy = self;
   sub_18BC1E3F8();
   sub_18BC1E3F8();
   sub_18BA1288C(v11);
-  v8 = *(&v10->super.super.super.isa + OBJC_IVAR____SFFloatingTabBarItemView_didBeginRetitling);
+  v8 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____SFFloatingTabBarItemView_didBeginRetitling);
   v9 = sub_18BC1E1A8();
   v8(v9);
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
-  sub_18BA134C0(v4);
+  editingCopy = editing;
+  selfCopy = self;
+  sub_18BA134C0(editingCopy);
 }
 
 @end

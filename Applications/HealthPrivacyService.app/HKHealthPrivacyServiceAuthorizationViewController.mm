@@ -1,31 +1,31 @@
 @interface HKHealthPrivacyServiceAuthorizationViewController
 - (BOOL)_isPresentingLastRequest;
-- (HKHealthPrivacyServiceAuthorizationViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)_promptControllerForClinicalHealthRecordsPresentationRequest:(id)a3 source:(id)a4;
-- (id)_promptControllerForHealthDataPresentationRequest:(id)a3 source:(id)a4;
-- (id)_promptControllerForPresentationRequest:(id)a3 source:(id)a4;
+- (HKHealthPrivacyServiceAuthorizationViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)_promptControllerForClinicalHealthRecordsPresentationRequest:(id)request source:(id)source;
+- (id)_promptControllerForHealthDataPresentationRequest:(id)request source:(id)source;
+- (id)_promptControllerForPresentationRequest:(id)request source:(id)source;
 - (unsigned)_appStateTerminationUpperBound;
-- (void)_beginAuthorizationSessionWithIdentifier:(id)a3;
+- (void)_beginAuthorizationSessionWithIdentifier:(id)identifier;
 - (void)_configureApplicationStateMonitor;
-- (void)_didFinishPresentingRequestWithError:(id)a3;
-- (void)_finishWithError:(id)a3;
-- (void)_hostApplicationStateDidChange:(unsigned int)a3;
+- (void)_didFinishPresentingRequestWithError:(id)error;
+- (void)_finishWithError:(id)error;
+- (void)_hostApplicationStateDidChange:(unsigned int)change;
 - (void)_hostDidTerminate;
 - (void)_presentNextRequest;
-- (void)_presentRequestIfNeeded:(id)a3;
-- (void)promptControllerDidFinish:(id)a3 error:(id)a4;
-- (void)setRequestRecord:(id)a3 presentationRequests:(id)a4;
+- (void)_presentRequestIfNeeded:(id)needed;
+- (void)promptControllerDidFinish:(id)finish error:(id)error;
+- (void)setRequestRecord:(id)record presentationRequests:(id)requests;
 - (void)show;
 - (void)viewDidLoad;
 @end
 
 @implementation HKHealthPrivacyServiceAuthorizationViewController
 
-- (HKHealthPrivacyServiceAuthorizationViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (HKHealthPrivacyServiceAuthorizationViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = HKHealthPrivacyServiceAuthorizationViewController;
-  v4 = [(HKHealthPrivacyServiceAuthorizationViewController *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(HKHealthPrivacyServiceAuthorizationViewController *)&v8 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_alloc_init(HKHealthStore);
@@ -47,25 +47,25 @@
   }
 }
 
-- (void)setRequestRecord:(id)a3 presentationRequests:(id)a4
+- (void)setRequestRecord:(id)record presentationRequests:(id)requests
 {
-  v8 = a4;
-  v6 = a3;
-  if (([v8 hk_allElementsUnique] & 1) == 0)
+  requestsCopy = requests;
+  recordCopy = record;
+  if (([requestsCopy hk_allElementsUnique] & 1) == 0)
   {
     sub_10000635C();
   }
 
-  if (![v8 count])
+  if (![requestsCopy count])
   {
     sub_1000063D0();
   }
 
-  [(HKHealthPrivacyServiceAuthorizationViewController *)self setRequestRecord:v6];
-  [(HKHealthPrivacyServiceAuthorizationViewController *)self setPresentationRequests:v8];
-  v7 = [v6 sessionIdentifier];
+  [(HKHealthPrivacyServiceAuthorizationViewController *)self setRequestRecord:recordCopy];
+  [(HKHealthPrivacyServiceAuthorizationViewController *)self setPresentationRequests:requestsCopy];
+  sessionIdentifier = [recordCopy sessionIdentifier];
 
-  [(HKHealthPrivacyServiceAuthorizationViewController *)self _beginAuthorizationSessionWithIdentifier:v7];
+  [(HKHealthPrivacyServiceAuthorizationViewController *)self _beginAuthorizationSessionWithIdentifier:sessionIdentifier];
 }
 
 - (void)show
@@ -76,20 +76,20 @@
     return;
   }
 
-  v3 = [(HKHealthPrivacyServiceAuthorizationViewController *)self currentTransactionSource];
-  if (!v3)
+  currentTransactionSource = [(HKHealthPrivacyServiceAuthorizationViewController *)self currentTransactionSource];
+  if (!currentTransactionSource)
   {
     self->_showAtNextSourceFetch = 1;
     goto LABEL_8;
   }
 
-  v8 = v3;
+  v8 = currentTransactionSource;
   self->_showAtViewLoad = 0;
   self->_showAtNextSourceFetch = 0;
-  v4 = [(HKHealthPrivacyServiceAuthorizationViewController *)self requestRecord];
-  v5 = [(HKHealthPrivacyServiceAuthorizationViewController *)self presentationRequests];
-  v6 = v5;
-  if (!v4)
+  requestRecord = [(HKHealthPrivacyServiceAuthorizationViewController *)self requestRecord];
+  presentationRequests = [(HKHealthPrivacyServiceAuthorizationViewController *)self presentationRequests];
+  v6 = presentationRequests;
+  if (!requestRecord)
   {
     sub_100006444();
     if (v6)
@@ -102,41 +102,41 @@ LABEL_12:
     goto LABEL_5;
   }
 
-  if (!v5)
+  if (!presentationRequests)
   {
     goto LABEL_12;
   }
 
 LABEL_5:
-  v7 = [v6 firstObject];
-  [(HKHealthPrivacyServiceAuthorizationViewController *)self _presentRequestIfNeeded:v7];
+  firstObject = [v6 firstObject];
+  [(HKHealthPrivacyServiceAuthorizationViewController *)self _presentRequestIfNeeded:firstObject];
 
-  v3 = v8;
+  currentTransactionSource = v8;
 LABEL_8:
 }
 
-- (void)_presentRequestIfNeeded:(id)a3
+- (void)_presentRequestIfNeeded:(id)needed
 {
-  v10 = a3;
-  v4 = [(HKHealthPrivacyServiceAuthorizationViewController *)self currentTransactionSessionIdentifier];
+  neededCopy = needed;
+  currentTransactionSessionIdentifier = [(HKHealthPrivacyServiceAuthorizationViewController *)self currentTransactionSessionIdentifier];
 
-  if (!v4)
+  if (!currentTransactionSessionIdentifier)
   {
     sub_10000652C();
   }
 
-  v5 = [(HKHealthPrivacyServiceAuthorizationViewController *)self currentTransactionSource];
-  if (!v5)
+  currentTransactionSource = [(HKHealthPrivacyServiceAuthorizationViewController *)self currentTransactionSource];
+  if (!currentTransactionSource)
   {
     sub_1000065A0();
   }
 
-  [(HKHealthPrivacyServiceAuthorizationViewController *)self setPresentedRequest:v10];
-  v6 = [(HKHealthPrivacyServiceAuthorizationViewController *)self _promptControllerForPresentationRequest:v10 source:v5];
+  [(HKHealthPrivacyServiceAuthorizationViewController *)self setPresentedRequest:neededCopy];
+  v6 = [(HKHealthPrivacyServiceAuthorizationViewController *)self _promptControllerForPresentationRequest:neededCopy source:currentTransactionSource];
   if (v6 && ((objc_opt_respondsToSelector() & 1) == 0 || ([v6 shouldPresent] & 1) != 0))
   {
-    v7 = [(HKHealthPrivacyServiceAuthorizationViewController *)self presentationRequests];
-    v8 = [v7 indexOfObject:v10] != 0;
+    presentationRequests = [(HKHealthPrivacyServiceAuthorizationViewController *)self presentationRequests];
+    v8 = [presentationRequests indexOfObject:neededCopy] != 0;
 
     v9 = [[HKNavigationController alloc] initWithRootViewController:v6];
     [v9 setModalInPresentation:1];
@@ -152,12 +152,12 @@ LABEL_8:
 
 - (BOOL)_isPresentingLastRequest
 {
-  v3 = [(HKHealthPrivacyServiceAuthorizationViewController *)self presentedRequest];
-  if (v3)
+  presentedRequest = [(HKHealthPrivacyServiceAuthorizationViewController *)self presentedRequest];
+  if (presentedRequest)
   {
-    v4 = [(HKHealthPrivacyServiceAuthorizationViewController *)self presentationRequests];
-    v5 = [v4 lastObject];
-    v6 = [v3 isEqual:v5];
+    presentationRequests = [(HKHealthPrivacyServiceAuthorizationViewController *)self presentationRequests];
+    lastObject = [presentationRequests lastObject];
+    v6 = [presentedRequest isEqual:lastObject];
   }
 
   else
@@ -170,15 +170,15 @@ LABEL_8:
 
 - (void)_presentNextRequest
 {
-  v6 = [(HKHealthPrivacyServiceAuthorizationViewController *)self presentedRequest];
-  v3 = [(HKHealthPrivacyServiceAuthorizationViewController *)self currentTransactionSessionIdentifier];
+  presentedRequest = [(HKHealthPrivacyServiceAuthorizationViewController *)self presentedRequest];
+  currentTransactionSessionIdentifier = [(HKHealthPrivacyServiceAuthorizationViewController *)self currentTransactionSessionIdentifier];
 
-  if (!v3)
+  if (!currentTransactionSessionIdentifier)
   {
     sub_100006614();
   }
 
-  if (!v6)
+  if (!presentedRequest)
   {
     sub_100006688();
   }
@@ -188,17 +188,17 @@ LABEL_8:
     sub_1000066FC();
   }
 
-  v4 = [(HKHealthPrivacyServiceAuthorizationViewController *)self presentationRequests];
-  v5 = [v4 objectAtIndexedSubscript:{objc_msgSend(v4, "indexOfObject:", v6) + 1}];
+  presentationRequests = [(HKHealthPrivacyServiceAuthorizationViewController *)self presentationRequests];
+  v5 = [presentationRequests objectAtIndexedSubscript:{objc_msgSend(presentationRequests, "indexOfObject:", presentedRequest) + 1}];
   [(HKHealthPrivacyServiceAuthorizationViewController *)self _presentRequestIfNeeded:v5];
 }
 
-- (void)_didFinishPresentingRequestWithError:(id)a3
+- (void)_didFinishPresentingRequestWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   if ([(HKHealthPrivacyServiceAuthorizationViewController *)self _isPresentingLastRequest]|| ([(HKHealthPrivacyServiceAuthorizationViewController *)self currentTransactionSessionIdentifier], v4 = objc_claimAutoreleasedReturnValue(), v4, !v4))
   {
-    [(HKHealthPrivacyServiceAuthorizationViewController *)self _finishWithError:v5];
+    [(HKHealthPrivacyServiceAuthorizationViewController *)self _finishWithError:errorCopy];
   }
 
   else
@@ -207,20 +207,20 @@ LABEL_8:
   }
 }
 
-- (id)_promptControllerForPresentationRequest:(id)a3 source:(id)a4
+- (id)_promptControllerForPresentationRequest:(id)request source:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 type];
-  if (v8 == 1)
+  requestCopy = request;
+  sourceCopy = source;
+  type = [requestCopy type];
+  if (type == 1)
   {
-    v9 = [(HKHealthPrivacyServiceAuthorizationViewController *)self _promptControllerForHealthDataPresentationRequest:v6 source:v7];
+    v9 = [(HKHealthPrivacyServiceAuthorizationViewController *)self _promptControllerForHealthDataPresentationRequest:requestCopy source:sourceCopy];
     goto LABEL_5;
   }
 
-  if (!v8)
+  if (!type)
   {
-    v9 = [(HKHealthPrivacyServiceAuthorizationViewController *)self _promptControllerForClinicalHealthRecordsPresentationRequest:v6 source:v7];
+    v9 = [(HKHealthPrivacyServiceAuthorizationViewController *)self _promptControllerForClinicalHealthRecordsPresentationRequest:requestCopy source:sourceCopy];
 LABEL_5:
     v10 = v9;
     goto LABEL_7;
@@ -232,41 +232,41 @@ LABEL_7:
   return v10;
 }
 
-- (id)_promptControllerForClinicalHealthRecordsPresentationRequest:(id)a3 source:(id)a4
+- (id)_promptControllerForClinicalHealthRecordsPresentationRequest:(id)request source:(id)source
 {
-  v6 = a4;
-  v7 = a3;
-  if ([v7 type])
+  sourceCopy = source;
+  requestCopy = request;
+  if ([requestCopy type])
   {
     sub_100006770();
   }
 
-  v8 = [(HKHealthPrivacyServiceAuthorizationViewController *)self healthStore];
-  v9 = [HKClinicalAuthorizationSequenceContext contextWithHealthStore:v8 request:v7 source:v6];
+  healthStore = [(HKHealthPrivacyServiceAuthorizationViewController *)self healthStore];
+  v9 = [HKClinicalAuthorizationSequenceContext contextWithHealthStore:healthStore request:requestCopy source:sourceCopy];
 
   v10 = [v9 createInitialViewControllerWithDelegate:self];
 
   return v10;
 }
 
-- (id)_promptControllerForHealthDataPresentationRequest:(id)a3 source:(id)a4
+- (id)_promptControllerForHealthDataPresentationRequest:(id)request source:(id)source
 {
-  v6 = a4;
-  v7 = a3;
-  if ([v7 type] != 1)
+  sourceCopy = source;
+  requestCopy = request;
+  if ([requestCopy type] != 1)
   {
     sub_1000067E4();
   }
 
   v8 = [HKAuthorizationSettingsViewController alloc];
-  v9 = [(HKHealthPrivacyServiceAuthorizationViewController *)self healthStore];
-  v10 = [v7 typesRequiringShareAuthorization];
-  v11 = [v7 typesRequiringReadAuthorization];
-  v12 = [v7 readUsageDescription];
-  v13 = [v7 shareUsageDescription];
-  v14 = [v7 researchStudyUsageDescription];
+  healthStore = [(HKHealthPrivacyServiceAuthorizationViewController *)self healthStore];
+  typesRequiringShareAuthorization = [requestCopy typesRequiringShareAuthorization];
+  typesRequiringReadAuthorization = [requestCopy typesRequiringReadAuthorization];
+  readUsageDescription = [requestCopy readUsageDescription];
+  shareUsageDescription = [requestCopy shareUsageDescription];
+  researchStudyUsageDescription = [requestCopy researchStudyUsageDescription];
 
-  v15 = [v8 initWithHealthStore:v9 style:1 source:v6 typesToShare:v10 typesToRead:v11 shareDescription:v12 updateDescription:v13 researchStudyUsageDescription:v14];
+  v15 = [v8 initWithHealthStore:healthStore style:1 source:sourceCopy typesToShare:typesRequiringShareAuthorization typesToRead:typesRequiringReadAuthorization shareDescription:readUsageDescription updateDescription:shareUsageDescription researchStudyUsageDescription:researchStudyUsageDescription];
   [v15 sourceConfigure];
   [v15 setDelegate:self];
 
@@ -275,8 +275,8 @@ LABEL_7:
 
 - (unsigned)_appStateTerminationUpperBound
 {
-  v2 = [(HKHealthPrivacyServiceAuthorizationViewController *)self presentedRequest];
-  if ([v2 shouldDismissWhenBackgrounded])
+  presentedRequest = [(HKHealthPrivacyServiceAuthorizationViewController *)self presentedRequest];
+  if ([presentedRequest shouldDismissWhenBackgrounded])
   {
     v3 = 4;
   }
@@ -289,9 +289,9 @@ LABEL_7:
   return v3;
 }
 
-- (void)_hostApplicationStateDidChange:(unsigned int)a3
+- (void)_hostApplicationStateDidChange:(unsigned int)change
 {
-  if ([(HKHealthPrivacyServiceAuthorizationViewController *)self _appStateTerminationUpperBound]> a3)
+  if ([(HKHealthPrivacyServiceAuthorizationViewController *)self _appStateTerminationUpperBound]> change)
   {
     _HKInitializeLogging();
     v5 = HKLogAuthorization();
@@ -302,7 +302,7 @@ LABEL_7:
       v7 = HKLogAuthorization();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
-        sub_100005F74(a3, v7);
+        sub_100005F74(change, v7);
       }
     }
 
@@ -319,8 +319,8 @@ LABEL_7:
 {
   objc_initWeak(&location, self);
   v3 = [BKSApplicationStateMonitor alloc];
-  v4 = [(HKHealthPrivacyServiceAuthorizationViewController *)self _hostApplicationBundleIdentifier];
-  v13 = v4;
+  _hostApplicationBundleIdentifier = [(HKHealthPrivacyServiceAuthorizationViewController *)self _hostApplicationBundleIdentifier];
+  v13 = _hostApplicationBundleIdentifier;
   v5 = [NSArray arrayWithObjects:&v13 count:1];
   v6 = [v3 initWithBundleIDs:v5 states:BKSApplicationStateAll];
 
@@ -339,26 +339,26 @@ LABEL_7:
 - (void)_hostDidTerminate
 {
   [(HKHealthPrivacyServiceAuthorizationViewController *)self setApplicationStateMonitor:0];
-  v3 = [(HKHealthPrivacyServiceAuthorizationViewController *)self currentTransactionSessionIdentifier];
+  currentTransactionSessionIdentifier = [(HKHealthPrivacyServiceAuthorizationViewController *)self currentTransactionSessionIdentifier];
 
-  if (v3)
+  if (currentTransactionSessionIdentifier)
   {
     v4 = [NSError errorWithDomain:HKErrorDomain code:5 userInfo:0];
     [(HKHealthPrivacyServiceAuthorizationViewController *)self _finishWithError:v4];
   }
 }
 
-- (void)_beginAuthorizationSessionWithIdentifier:(id)a3
+- (void)_beginAuthorizationSessionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     sub_100006858();
   }
 
-  v5 = [(HKHealthPrivacyServiceAuthorizationViewController *)self currentTransactionSessionIdentifier];
+  currentTransactionSessionIdentifier = [(HKHealthPrivacyServiceAuthorizationViewController *)self currentTransactionSessionIdentifier];
 
-  if (v5)
+  if (currentTransactionSessionIdentifier)
   {
     sub_1000068CC();
   }
@@ -372,25 +372,25 @@ LABEL_7:
     v8 = HKLogAuthorization();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      sub_100006940(self, v4, v8);
+      sub_100006940(self, identifierCopy, v8);
     }
   }
 
-  [(HKHealthPrivacyServiceAuthorizationViewController *)self setCurrentTransactionSessionIdentifier:v4];
+  [(HKHealthPrivacyServiceAuthorizationViewController *)self setCurrentTransactionSessionIdentifier:identifierCopy];
   [(HKHealthPrivacyServiceAuthorizationViewController *)self _configureApplicationStateMonitor];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100005700;
   v20[3] = &unk_10000C548;
   v20[4] = self;
-  v9 = v4;
+  v9 = identifierCopy;
   v21 = v9;
   v10 = objc_retainBlock(v20);
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_10000588C;
   v17 = &unk_10000C660;
-  v18 = self;
+  selfCopy = self;
   v19 = v9;
   v11 = v9;
   v12 = objc_retainBlock(&v14);
@@ -398,37 +398,37 @@ LABEL_7:
   [v13 beginAuthorizationDelegateTransactionWithSessionIdentifier:v11 sourceHandler:v12 errorHandler:v10];
 }
 
-- (void)promptControllerDidFinish:(id)a3 error:(id)a4
+- (void)promptControllerDidFinish:(id)finish error:(id)error
 {
-  v5 = a4;
-  v6 = [(HKHealthPrivacyServiceAuthorizationViewController *)self presentedViewController];
+  errorCopy = error;
+  presentedViewController = [(HKHealthPrivacyServiceAuthorizationViewController *)self presentedViewController];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100005AF0;
   v8[3] = &unk_10000C688;
-  v10 = v5 == 0;
+  v10 = errorCopy == 0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  [v6 dismissViewControllerAnimated:1 completion:v8];
+  v9 = errorCopy;
+  v7 = errorCopy;
+  [presentedViewController dismissViewControllerAnimated:1 completion:v8];
 }
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
-  v7 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v4 = [(HKHealthPrivacyServiceAuthorizationViewController *)self currentTransactionSessionIdentifier];
-  if (v4)
+  currentTransactionSessionIdentifier = [(HKHealthPrivacyServiceAuthorizationViewController *)self currentTransactionSessionIdentifier];
+  if (currentTransactionSessionIdentifier)
   {
-    v5 = [(HKHealthPrivacyServiceAuthorizationViewController *)self healthStore];
-    [v5 endAuthorizationDelegateTransactionWithSessionIdentifier:v4 error:v7];
+    healthStore = [(HKHealthPrivacyServiceAuthorizationViewController *)self healthStore];
+    [healthStore endAuthorizationDelegateTransactionWithSessionIdentifier:currentTransactionSessionIdentifier error:errorCopy];
   }
 
   [(HKHealthPrivacyServiceAuthorizationViewController *)self setCurrentTransactionSessionIdentifier:0];
   [(HKHealthPrivacyServiceAuthorizationViewController *)self setCurrentTransactionSource:0];
   [(HKHealthPrivacyServiceAuthorizationViewController *)self setPresentedRequest:0];
-  v6 = [(HKHealthPrivacyServiceAuthorizationViewController *)self _healthPrivacyHostViewController];
-  [v6 didFinishWithError:v7];
+  _healthPrivacyHostViewController = [(HKHealthPrivacyServiceAuthorizationViewController *)self _healthPrivacyHostViewController];
+  [_healthPrivacyHostViewController didFinishWithError:errorCopy];
 }
 
 @end

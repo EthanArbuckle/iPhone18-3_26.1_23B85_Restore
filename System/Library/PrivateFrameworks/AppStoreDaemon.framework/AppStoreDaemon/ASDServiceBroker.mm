@@ -1,51 +1,51 @@
 @interface ASDServiceBroker
 + (id)defaultBroker;
 + (id)interface;
-+ (id)newBrokerForMachServiceName:(id)a3;
-- (ASDServiceBroker)initWithMachServiceName:(id)a3;
-- (id)getBackgroundAssetsServiceWithError:(id *)a3;
-- (id)getCapabilitiesServiceWithError:(id *)a3;
-- (id)getClipServiceWithError:(id *)a3;
-- (id)getDiagnosticServiceWithError:(id *)a3;
-- (id)getFairPlayServiceWithError:(id *)a3;
-- (id)getIAPHistoryServiceWithError:(id *)a3;
-- (id)getInstallAttributionServiceWithError:(id *)a3;
-- (id)getInstallationServiceWithError:(id *)a3;
-- (id)getLibraryServiceWithError:(id *)a3;
-- (id)getManagedAppServiceWithError:(id *)a3;
-- (id)getPurchaseHistoryServiceWithError:(id *)a3;
-- (id)getPurchaseServiceWithError:(id *)a3;
-- (id)getRepairServiceWithError:(id *)a3;
-- (id)getStoreKitExternalNotificationServiceWithError:(id *)a3;
-- (id)getTestFlightFeedbackServiceWithError:(id *)a3;
-- (id)getUpdatesServiceWithError:(id *)a3;
++ (id)newBrokerForMachServiceName:(id)name;
+- (ASDServiceBroker)initWithMachServiceName:(id)name;
+- (id)getBackgroundAssetsServiceWithError:(id *)error;
+- (id)getCapabilitiesServiceWithError:(id *)error;
+- (id)getClipServiceWithError:(id *)error;
+- (id)getDiagnosticServiceWithError:(id *)error;
+- (id)getFairPlayServiceWithError:(id *)error;
+- (id)getIAPHistoryServiceWithError:(id *)error;
+- (id)getInstallAttributionServiceWithError:(id *)error;
+- (id)getInstallationServiceWithError:(id *)error;
+- (id)getLibraryServiceWithError:(id *)error;
+- (id)getManagedAppServiceWithError:(id *)error;
+- (id)getPurchaseHistoryServiceWithError:(id *)error;
+- (id)getPurchaseServiceWithError:(id *)error;
+- (id)getRepairServiceWithError:(id *)error;
+- (id)getStoreKitExternalNotificationServiceWithError:(id *)error;
+- (id)getTestFlightFeedbackServiceWithError:(id *)error;
+- (id)getUpdatesServiceWithError:(id *)error;
 - (void)_connect;
-- (void)_remoteObjectProxyWithErrorHandler:(void *)a1;
-- (void)_synchronousRemoteObjectProxyWithErrorHandler:(void *)a1;
+- (void)_remoteObjectProxyWithErrorHandler:(void *)handler;
+- (void)_synchronousRemoteObjectProxyWithErrorHandler:(void *)handler;
 - (void)dealloc;
-- (void)getAppMetricsServiceWithCompletionHandler:(id)a3;
-- (void)getAppStoreServiceWithCompletionHandler:(id)a3;
-- (void)getBackgroundAssetsServiceWithCompletionHandler:(id)a3;
-- (void)getClipServiceWithCompletionHandler:(id)a3;
-- (void)getCrossfireServiceWithCompletionHandler:(id)a3;
-- (void)getDiagnosticServiceWithCompletionHandler:(id)a3;
-- (void)getIAPHistoryServiceWithCompletionHandler:(id)a3;
-- (void)getInstallAttributionServiceWithCompletionHandler:(id)a3;
-- (void)getInstallWebAttributionServiceWithCompletionHandler:(id)a3;
-- (void)getInstallationServiceWithCompletionHandler:(id)a3;
-- (void)getLibraryServiceWithCompletionHandler:(id)a3;
-- (void)getManagedAppServiceWithCompletionHandler:(id)a3;
-- (void)getOcelotServiceWithCompletionHandler:(id)a3;
-- (void)getPersonalizationServiceWithCompletionHandler:(id)a3;
-- (void)getPurchaseHistoryServiceWithCompletionHandler:(id)a3;
-- (void)getPurchaseServiceWithCompletionHandler:(id)a3;
-- (void)getRepairServiceWithCompletionHandler:(id)a3;
-- (void)getRestoreServiceWithCompletionHandler:(id)a3;
-- (void)getSKANInteropServiceWithCompletionHandler:(id)a3;
-- (void)getSkannerServiceWithCompletionHandler:(id)a3;
-- (void)getTestFlightFeedbackServiceWithCompletionHandler:(id)a3;
-- (void)getUpdatesServiceWithCompletionHandler:(id)a3;
-- (void)setSupportedNotificationDelivery:(id)a3;
+- (void)getAppMetricsServiceWithCompletionHandler:(id)handler;
+- (void)getAppStoreServiceWithCompletionHandler:(id)handler;
+- (void)getBackgroundAssetsServiceWithCompletionHandler:(id)handler;
+- (void)getClipServiceWithCompletionHandler:(id)handler;
+- (void)getCrossfireServiceWithCompletionHandler:(id)handler;
+- (void)getDiagnosticServiceWithCompletionHandler:(id)handler;
+- (void)getIAPHistoryServiceWithCompletionHandler:(id)handler;
+- (void)getInstallAttributionServiceWithCompletionHandler:(id)handler;
+- (void)getInstallWebAttributionServiceWithCompletionHandler:(id)handler;
+- (void)getInstallationServiceWithCompletionHandler:(id)handler;
+- (void)getLibraryServiceWithCompletionHandler:(id)handler;
+- (void)getManagedAppServiceWithCompletionHandler:(id)handler;
+- (void)getOcelotServiceWithCompletionHandler:(id)handler;
+- (void)getPersonalizationServiceWithCompletionHandler:(id)handler;
+- (void)getPurchaseHistoryServiceWithCompletionHandler:(id)handler;
+- (void)getPurchaseServiceWithCompletionHandler:(id)handler;
+- (void)getRepairServiceWithCompletionHandler:(id)handler;
+- (void)getRestoreServiceWithCompletionHandler:(id)handler;
+- (void)getSKANInteropServiceWithCompletionHandler:(id)handler;
+- (void)getSkannerServiceWithCompletionHandler:(id)handler;
+- (void)getTestFlightFeedbackServiceWithCompletionHandler:(id)handler;
+- (void)getUpdatesServiceWithCompletionHandler:(id)handler;
+- (void)setSupportedNotificationDelivery:(id)delivery;
 @end
 
 @implementation ASDServiceBroker
@@ -56,7 +56,7 @@
   block[1] = 3221225472;
   block[2] = __33__ASDServiceBroker_defaultBroker__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED90D4F0 != -1)
   {
     dispatch_once(&qword_1ED90D4F0, block);
@@ -78,36 +78,36 @@ uint64_t __33__ASDServiceBroker_defaultBroker__block_invoke(uint64_t a1)
 
 - (void)_connect
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 24))
+    if (*(self + 24))
     {
-      v2 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:*(a1 + 24) options:0];
-      v3 = *(a1 + 8);
-      *(a1 + 8) = v2;
+      v2 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:*(self + 24) options:0];
+      v3 = *(self + 8);
+      *(self + 8) = v2;
 
-      [*(a1 + 8) _setQueue:*(a1 + 16)];
-      v4 = *(a1 + 8);
-      v5 = [objc_opt_class() interface];
-      [v4 setRemoteObjectInterface:v5];
+      [*(self + 8) _setQueue:*(self + 16)];
+      v4 = *(self + 8);
+      interface = [objc_opt_class() interface];
+      [v4 setRemoteObjectInterface:interface];
 
-      v6 = *(a1 + 8);
+      v6 = *(self + 8);
       v7 = +[ASDNotificationCenter defaultCenter];
       [v6 setExportedObject:v7];
 
-      v8 = *(a1 + 8);
+      v8 = *(self + 8);
       v9 = +[ASDNotificationCenter interface];
       [v8 setExportedInterface:v9];
 
-      [*(a1 + 8) setInterruptionHandler:&__block_literal_global_9];
-      v10 = *(a1 + 8);
+      [*(self + 8) setInterruptionHandler:&__block_literal_global_9];
+      v10 = *(self + 8);
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __28__ASDServiceBroker__connect__block_invoke_5;
       v12[3] = &unk_1E7CDB930;
-      v12[4] = a1;
+      v12[4] = self;
       [v10 setInvalidationHandler:v12];
-      [*(a1 + 8) resume];
+      [*(self + 8) resume];
     }
 
     else
@@ -203,17 +203,17 @@ uint64_t __33__ASDServiceBroker_defaultBroker__block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (id)newBrokerForMachServiceName:(id)a3
++ (id)newBrokerForMachServiceName:(id)name
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithMachServiceName:v4];
+  nameCopy = name;
+  v5 = [[self alloc] initWithMachServiceName:nameCopy];
 
   return v5;
 }
 
-- (ASDServiceBroker)initWithMachServiceName:(id)a3
+- (ASDServiceBroker)initWithMachServiceName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = ASDServiceBroker;
   v6 = [(ASDServiceBroker *)&v14 init];
@@ -224,7 +224,7 @@ uint64_t __33__ASDServiceBroker_defaultBroker__block_invoke(uint64_t a1)
     dispatchQueue = v6->_dispatchQueue;
     v6->_dispatchQueue = v8;
 
-    objc_storeStrong(&v6->_machServiceName, a3);
+    objc_storeStrong(&v6->_machServiceName, name);
     [(ASDServiceBroker *)v6 _connect];
     v10 = v6->_dispatchQueue;
     handler[0] = MEMORY[0x1E69E9820];
@@ -288,7 +288,7 @@ void __28__ASDServiceBroker__connect__block_invoke_5(uint64_t a1)
   [(ASDServiceBroker *)&v3 dealloc];
 }
 
-- (id)getCapabilitiesServiceWithError:(id *)a3
+- (id)getCapabilitiesServiceWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -317,9 +317,9 @@ void __28__ASDServiceBroker__connect__block_invoke_5(uint64_t a1)
   [v4 getAppCapabilitiesServiceWithReplyHandler:v8];
 
   v5 = v11[5];
-  if (a3 && !v5)
+  if (error && !v5)
   {
-    *a3 = v17[5];
+    *error = v17[5];
     v5 = v11[5];
   }
 
@@ -331,11 +331,11 @@ void __28__ASDServiceBroker__connect__block_invoke_5(uint64_t a1)
   return v6;
 }
 
-- (void)_synchronousRemoteObjectProxyWithErrorHandler:(void *)a1
+- (void)_synchronousRemoteObjectProxyWithErrorHandler:(void *)handler
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (handler)
   {
     v13 = 0;
     v14 = &v13;
@@ -343,13 +343,13 @@ void __28__ASDServiceBroker__connect__block_invoke_5(uint64_t a1)
     v16 = __Block_byref_object_copy__4;
     v17 = __Block_byref_object_dispose__4;
     v18 = 0;
-    v5 = a1[2];
+    v5 = handler[2];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __66__ASDServiceBroker__synchronousRemoteObjectProxyWithErrorHandler___block_invoke;
     block[3] = &unk_1E7CDC938;
     v12 = &v13;
-    block[4] = a1;
+    block[4] = handler;
     v6 = v3;
     v11 = v6;
     dispatch_sync(v5, block);
@@ -362,12 +362,12 @@ void __28__ASDServiceBroker__connect__block_invoke_5(uint64_t a1)
       v7 = v14[5];
     }
 
-    a1 = v7;
+    handler = v7;
 
     _Block_object_dispose(&v13, 8);
   }
 
-  return a1;
+  return handler;
 }
 
 void __52__ASDServiceBroker_getCapabilitiesServiceWithError___block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -380,24 +380,24 @@ void __52__ASDServiceBroker_getCapabilitiesServiceWithError___block_invoke_2(uin
   *(v6 + 40) = v5;
 }
 
-- (void)getBackgroundAssetsServiceWithCompletionHandler:(id)a3
+- (void)getBackgroundAssetsServiceWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __68__ASDServiceBroker_getBackgroundAssetsServiceWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CDB730;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(ASDServiceBroker *)self _remoteObjectProxyWithErrorHandler:v7];
   [v6 getBackgroundAssetsServiceWithReplyHandler:v5];
 }
 
-- (void)_remoteObjectProxyWithErrorHandler:(void *)a1
+- (void)_remoteObjectProxyWithErrorHandler:(void *)handler
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (handler)
   {
     v13 = 0;
     v14 = &v13;
@@ -405,13 +405,13 @@ void __52__ASDServiceBroker_getCapabilitiesServiceWithError___block_invoke_2(uin
     v16 = __Block_byref_object_copy__4;
     v17 = __Block_byref_object_dispose__4;
     v18 = 0;
-    v5 = a1[2];
+    v5 = handler[2];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __55__ASDServiceBroker__remoteObjectProxyWithErrorHandler___block_invoke;
     block[3] = &unk_1E7CDC938;
     v12 = &v13;
-    block[4] = a1;
+    block[4] = handler;
     v6 = v3;
     v11 = v6;
     dispatch_sync(v5, block);
@@ -424,15 +424,15 @@ void __52__ASDServiceBroker_getCapabilitiesServiceWithError___block_invoke_2(uin
       v7 = v14[5];
     }
 
-    a1 = v7;
+    handler = v7;
 
     _Block_object_dispose(&v13, 8);
   }
 
-  return a1;
+  return handler;
 }
 
-- (id)getBackgroundAssetsServiceWithError:(id *)a3
+- (id)getBackgroundAssetsServiceWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -461,9 +461,9 @@ void __52__ASDServiceBroker_getCapabilitiesServiceWithError___block_invoke_2(uin
   [v4 getBackgroundAssetsServiceWithReplyHandler:v8];
 
   v5 = v11[5];
-  if (a3 && !v5)
+  if (error && !v5)
   {
-    *a3 = v17[5];
+    *error = v17[5];
     v5 = v11[5];
   }
 
@@ -485,33 +485,33 @@ void __56__ASDServiceBroker_getBackgroundAssetsServiceWithError___block_invoke_2
   *(v6 + 40) = v5;
 }
 
-- (void)getCrossfireServiceWithCompletionHandler:(id)a3
+- (void)getCrossfireServiceWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__ASDServiceBroker_getCrossfireServiceWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CDB730;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(ASDServiceBroker *)self _remoteObjectProxyWithErrorHandler:v7];
   [v6 getCrossfireServiceWithReplyHandler:v5];
 }
 
-- (void)getClipServiceWithCompletionHandler:(id)a3
+- (void)getClipServiceWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__ASDServiceBroker_getClipServiceWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CDB730;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(ASDServiceBroker *)self _remoteObjectProxyWithErrorHandler:v7];
   [v6 getClipServiceWithReplyHandler:v5];
 }
 
-- (id)getClipServiceWithError:(id *)a3
+- (id)getClipServiceWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -540,9 +540,9 @@ void __56__ASDServiceBroker_getBackgroundAssetsServiceWithError___block_invoke_2
   [v4 getClipServiceWithReplyHandler:v8];
 
   v5 = v11[5];
-  if (a3 && !v5)
+  if (error && !v5)
   {
-    *a3 = v17[5];
+    *error = v17[5];
     v5 = v11[5];
   }
 
@@ -564,7 +564,7 @@ void __44__ASDServiceBroker_getClipServiceWithError___block_invoke_2(uint64_t a1
   *(v6 + 40) = v5;
 }
 
-- (id)getDiagnosticServiceWithError:(id *)a3
+- (id)getDiagnosticServiceWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -593,9 +593,9 @@ void __44__ASDServiceBroker_getClipServiceWithError___block_invoke_2(uint64_t a1
   [v4 getDiagnosticServiceWithReplyHandler:v8];
 
   v5 = v11[5];
-  if (a3 && !v5)
+  if (error && !v5)
   {
-    *a3 = v17[5];
+    *error = v17[5];
     v5 = v11[5];
   }
 
@@ -617,20 +617,20 @@ void __50__ASDServiceBroker_getDiagnosticServiceWithError___block_invoke_2(uint6
   *(v6 + 40) = v5;
 }
 
-- (void)getDiagnosticServiceWithCompletionHandler:(id)a3
+- (void)getDiagnosticServiceWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__ASDServiceBroker_getDiagnosticServiceWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CDB730;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(ASDServiceBroker *)self _remoteObjectProxyWithErrorHandler:v7];
   [v6 getDiagnosticServiceWithReplyHandler:v5];
 }
 
-- (id)getFairPlayServiceWithError:(id *)a3
+- (id)getFairPlayServiceWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -659,9 +659,9 @@ void __50__ASDServiceBroker_getDiagnosticServiceWithError___block_invoke_2(uint6
   [v4 getFairPlayServiceWithReplyHandler:v8];
 
   v5 = v11[5];
-  if (a3 && !v5)
+  if (error && !v5)
   {
-    *a3 = v17[5];
+    *error = v17[5];
     v5 = v11[5];
   }
 
@@ -683,7 +683,7 @@ void __48__ASDServiceBroker_getFairPlayServiceWithError___block_invoke_2(uint64_
   *(v6 + 40) = v5;
 }
 
-- (id)getIAPHistoryServiceWithError:(id *)a3
+- (id)getIAPHistoryServiceWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -712,9 +712,9 @@ void __48__ASDServiceBroker_getFairPlayServiceWithError___block_invoke_2(uint64_
   [v4 getIAPHistoryServiceWithReplyHandler:v8];
 
   v5 = v11[5];
-  if (a3 && !v5)
+  if (error && !v5)
   {
-    *a3 = v17[5];
+    *error = v17[5];
     v5 = v11[5];
   }
 
@@ -736,20 +736,20 @@ void __50__ASDServiceBroker_getIAPHistoryServiceWithError___block_invoke_2(uint6
   *(v6 + 40) = v5;
 }
 
-- (void)getIAPHistoryServiceWithCompletionHandler:(id)a3
+- (void)getIAPHistoryServiceWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__ASDServiceBroker_getIAPHistoryServiceWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CDB730;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(ASDServiceBroker *)self _remoteObjectProxyWithErrorHandler:v7];
   [v6 getIAPHistoryServiceWithReplyHandler:v5];
 }
 
-- (id)getInstallationServiceWithError:(id *)a3
+- (id)getInstallationServiceWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -778,9 +778,9 @@ void __50__ASDServiceBroker_getIAPHistoryServiceWithError___block_invoke_2(uint6
   [v4 getInstallationServiceWithReplyHandler:v8];
 
   v5 = v11[5];
-  if (a3 && !v5)
+  if (error && !v5)
   {
-    *a3 = v17[5];
+    *error = v17[5];
     v5 = v11[5];
   }
 
@@ -802,20 +802,20 @@ void __52__ASDServiceBroker_getInstallationServiceWithError___block_invoke_2(uin
   *(v6 + 40) = v5;
 }
 
-- (void)getInstallationServiceWithCompletionHandler:(id)a3
+- (void)getInstallationServiceWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__ASDServiceBroker_getInstallationServiceWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CDB730;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(ASDServiceBroker *)self _remoteObjectProxyWithErrorHandler:v7];
   [v6 getInstallationServiceWithReplyHandler:v5];
 }
 
-- (id)getInstallAttributionServiceWithError:(id *)a3
+- (id)getInstallAttributionServiceWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -844,9 +844,9 @@ void __52__ASDServiceBroker_getInstallationServiceWithError___block_invoke_2(uin
   [v4 getInstallAttributionServiceWithReplyHandler:v8];
 
   v5 = v11[5];
-  if (a3 && !v5)
+  if (error && !v5)
   {
-    *a3 = v17[5];
+    *error = v17[5];
     v5 = v11[5];
   }
 
@@ -868,46 +868,46 @@ void __58__ASDServiceBroker_getInstallAttributionServiceWithError___block_invoke
   *(v6 + 40) = v5;
 }
 
-- (void)getInstallAttributionServiceWithCompletionHandler:(id)a3
+- (void)getInstallAttributionServiceWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__ASDServiceBroker_getInstallAttributionServiceWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CDB730;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(ASDServiceBroker *)self _remoteObjectProxyWithErrorHandler:v7];
   [v6 getInstallAttributionServiceWithReplyHandler:v5];
 }
 
-- (void)getInstallWebAttributionServiceWithCompletionHandler:(id)a3
+- (void)getInstallWebAttributionServiceWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __73__ASDServiceBroker_getInstallWebAttributionServiceWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CDB730;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(ASDServiceBroker *)self _remoteObjectProxyWithErrorHandler:v7];
   [v6 getInstallWebAttributionServiceWithReplyHandler:v5];
 }
 
-- (void)getSKANInteropServiceWithCompletionHandler:(id)a3
+- (void)getSKANInteropServiceWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__ASDServiceBroker_getSKANInteropServiceWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CDB730;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(ASDServiceBroker *)self _remoteObjectProxyWithErrorHandler:v7];
   [v6 getSKANInteropServiceWithReplyHandler:v5];
 }
 
-- (id)getLibraryServiceWithError:(id *)a3
+- (id)getLibraryServiceWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -936,9 +936,9 @@ void __58__ASDServiceBroker_getInstallAttributionServiceWithError___block_invoke
   [v4 getLibraryServiceWithReplyHandler:v8];
 
   v5 = v11[5];
-  if (a3 && !v5)
+  if (error && !v5)
   {
-    *a3 = v17[5];
+    *error = v17[5];
     v5 = v11[5];
   }
 
@@ -960,20 +960,20 @@ void __47__ASDServiceBroker_getLibraryServiceWithError___block_invoke_2(uint64_t
   *(v6 + 40) = v5;
 }
 
-- (void)getLibraryServiceWithCompletionHandler:(id)a3
+- (void)getLibraryServiceWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__ASDServiceBroker_getLibraryServiceWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CDB730;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(ASDServiceBroker *)self _remoteObjectProxyWithErrorHandler:v7];
   [v6 getLibraryServiceWithReplyHandler:v5];
 }
 
-- (id)getManagedAppServiceWithError:(id *)a3
+- (id)getManagedAppServiceWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -1002,9 +1002,9 @@ void __47__ASDServiceBroker_getLibraryServiceWithError___block_invoke_2(uint64_t
   [v4 getManagedAppServiceWithReplyHandler:v8];
 
   v5 = v11[5];
-  if (a3 && !v5)
+  if (error && !v5)
   {
-    *a3 = v17[5];
+    *error = v17[5];
     v5 = v11[5];
   }
 
@@ -1026,46 +1026,46 @@ void __50__ASDServiceBroker_getManagedAppServiceWithError___block_invoke_2(uint6
   *(v6 + 40) = v5;
 }
 
-- (void)getManagedAppServiceWithCompletionHandler:(id)a3
+- (void)getManagedAppServiceWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__ASDServiceBroker_getManagedAppServiceWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CDB730;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(ASDServiceBroker *)self _remoteObjectProxyWithErrorHandler:v7];
   [v6 getManagedAppServiceWithReplyHandler:v5];
 }
 
-- (void)getOcelotServiceWithCompletionHandler:(id)a3
+- (void)getOcelotServiceWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__ASDServiceBroker_getOcelotServiceWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CDB730;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(ASDServiceBroker *)self _remoteObjectProxyWithErrorHandler:v7];
   [v6 getOcelotServiceWithReplyHandler:v5];
 }
 
-- (void)getPersonalizationServiceWithCompletionHandler:(id)a3
+- (void)getPersonalizationServiceWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__ASDServiceBroker_getPersonalizationServiceWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CDB730;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(ASDServiceBroker *)self _remoteObjectProxyWithErrorHandler:v7];
   [v6 getPersonalizationServiceWithReplyHandler:v5];
 }
 
-- (id)getPurchaseHistoryServiceWithError:(id *)a3
+- (id)getPurchaseHistoryServiceWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -1094,9 +1094,9 @@ void __50__ASDServiceBroker_getManagedAppServiceWithError___block_invoke_2(uint6
   [v4 getPurchaseHistoryServiceWithReplyHandler:v8];
 
   v5 = v11[5];
-  if (a3 && !v5)
+  if (error && !v5)
   {
-    *a3 = v17[5];
+    *error = v17[5];
     v5 = v11[5];
   }
 
@@ -1118,20 +1118,20 @@ void __55__ASDServiceBroker_getPurchaseHistoryServiceWithError___block_invoke_2(
   *(v6 + 40) = v5;
 }
 
-- (void)getPurchaseHistoryServiceWithCompletionHandler:(id)a3
+- (void)getPurchaseHistoryServiceWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__ASDServiceBroker_getPurchaseHistoryServiceWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CDB730;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(ASDServiceBroker *)self _remoteObjectProxyWithErrorHandler:v7];
   [v6 getPurchaseHistoryServiceWithReplyHandler:v5];
 }
 
-- (id)getPurchaseServiceWithError:(id *)a3
+- (id)getPurchaseServiceWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -1160,9 +1160,9 @@ void __55__ASDServiceBroker_getPurchaseHistoryServiceWithError___block_invoke_2(
   [v4 getPurchaseServiceWithReplyHandler:v8];
 
   v5 = v11[5];
-  if (a3 && !v5)
+  if (error && !v5)
   {
-    *a3 = v17[5];
+    *error = v17[5];
     v5 = v11[5];
   }
 
@@ -1184,59 +1184,59 @@ void __48__ASDServiceBroker_getPurchaseServiceWithError___block_invoke_2(uint64_
   *(v6 + 40) = v5;
 }
 
-- (void)getAppMetricsServiceWithCompletionHandler:(id)a3
+- (void)getAppMetricsServiceWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__ASDServiceBroker_getAppMetricsServiceWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CDB730;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(ASDServiceBroker *)self _remoteObjectProxyWithErrorHandler:v7];
   [v6 getMetricsServiceWithReplyHandler:v5];
 }
 
-- (void)getAppStoreServiceWithCompletionHandler:(id)a3
+- (void)getAppStoreServiceWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__ASDServiceBroker_getAppStoreServiceWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CDB730;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(ASDServiceBroker *)self _remoteObjectProxyWithErrorHandler:v7];
   [v6 getAppStoreServiceWithReplyHandler:v5];
 }
 
-- (void)getPurchaseServiceWithCompletionHandler:(id)a3
+- (void)getPurchaseServiceWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__ASDServiceBroker_getPurchaseServiceWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CDB730;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(ASDServiceBroker *)self _remoteObjectProxyWithErrorHandler:v7];
   [v6 getPurchaseServiceWithReplyHandler:v5];
 }
 
-- (void)getSkannerServiceWithCompletionHandler:(id)a3
+- (void)getSkannerServiceWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__ASDServiceBroker_getSkannerServiceWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CDB730;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(ASDServiceBroker *)self _remoteObjectProxyWithErrorHandler:v7];
   [v6 getSkannerServiceWithReplyHandler:v5];
 }
 
-- (id)getStoreKitExternalNotificationServiceWithError:(id *)a3
+- (id)getStoreKitExternalNotificationServiceWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -1265,9 +1265,9 @@ void __48__ASDServiceBroker_getPurchaseServiceWithError___block_invoke_2(uint64_
   [v4 getStoreKitExternalNotificationServiceWithReplyHandler:v8];
 
   v5 = v11[5];
-  if (a3 && !v5)
+  if (error && !v5)
   {
-    *a3 = v17[5];
+    *error = v17[5];
     v5 = v11[5];
   }
 
@@ -1289,20 +1289,20 @@ void __68__ASDServiceBroker_getStoreKitExternalNotificationServiceWithError___bl
   *(v6 + 40) = v5;
 }
 
-- (void)getTestFlightFeedbackServiceWithCompletionHandler:(id)a3
+- (void)getTestFlightFeedbackServiceWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__ASDServiceBroker_getTestFlightFeedbackServiceWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CDB730;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(ASDServiceBroker *)self _remoteObjectProxyWithErrorHandler:v7];
   [v6 getTestFlightFeedbackServiceWithReplyHandler:v5];
 }
 
-- (id)getTestFlightFeedbackServiceWithError:(id *)a3
+- (id)getTestFlightFeedbackServiceWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -1331,9 +1331,9 @@ void __68__ASDServiceBroker_getStoreKitExternalNotificationServiceWithError___bl
   [v4 getTestFlightFeedbackServiceWithReplyHandler:v8];
 
   v5 = v11[5];
-  if (a3 && !v5)
+  if (error && !v5)
   {
-    *a3 = v17[5];
+    *error = v17[5];
     v5 = v11[5];
   }
 
@@ -1355,7 +1355,7 @@ void __58__ASDServiceBroker_getTestFlightFeedbackServiceWithError___block_invoke
   *(v6 + 40) = v5;
 }
 
-- (id)getUpdatesServiceWithError:(id *)a3
+- (id)getUpdatesServiceWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -1384,9 +1384,9 @@ void __58__ASDServiceBroker_getTestFlightFeedbackServiceWithError___block_invoke
   [v4 getUpdatesServiceWithReplyHandler:v8];
 
   v5 = v11[5];
-  if (a3 && !v5)
+  if (error && !v5)
   {
-    *a3 = v17[5];
+    *error = v17[5];
     v5 = v11[5];
   }
 
@@ -1408,7 +1408,7 @@ void __47__ASDServiceBroker_getUpdatesServiceWithError___block_invoke_2(uint64_t
   *(v6 + 40) = v5;
 }
 
-- (id)getRepairServiceWithError:(id *)a3
+- (id)getRepairServiceWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -1437,9 +1437,9 @@ void __47__ASDServiceBroker_getUpdatesServiceWithError___block_invoke_2(uint64_t
   [v4 getRepairServiceWithReplyHandler:v8];
 
   v5 = v11[5];
-  if (a3 && !v5)
+  if (error && !v5)
   {
-    *a3 = v17[5];
+    *error = v17[5];
     v5 = v11[5];
   }
 
@@ -1461,50 +1461,50 @@ void __46__ASDServiceBroker_getRepairServiceWithError___block_invoke_2(uint64_t 
   *(v6 + 40) = v5;
 }
 
-- (void)getRepairServiceWithCompletionHandler:(id)a3
+- (void)getRepairServiceWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__ASDServiceBroker_getRepairServiceWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CDB730;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(ASDServiceBroker *)self _remoteObjectProxyWithErrorHandler:v7];
   [v6 getRepairServiceWithReplyHandler:v5];
 }
 
-- (void)getRestoreServiceWithCompletionHandler:(id)a3
+- (void)getRestoreServiceWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__ASDServiceBroker_getRestoreServiceWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CDB730;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(ASDServiceBroker *)self _remoteObjectProxyWithErrorHandler:v7];
   [v6 getRestoreServiceWithReplyHandler:v5];
 }
 
-- (void)getUpdatesServiceWithCompletionHandler:(id)a3
+- (void)getUpdatesServiceWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__ASDServiceBroker_getUpdatesServiceWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CDB730;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(ASDServiceBroker *)self _remoteObjectProxyWithErrorHandler:v7];
   [v6 getUpdatesServiceWithReplyHandler:v5];
 }
 
-- (void)setSupportedNotificationDelivery:(id)a3
+- (void)setSupportedNotificationDelivery:(id)delivery
 {
-  v4 = a3;
+  deliveryCopy = delivery;
   v5 = [(ASDServiceBroker *)self _synchronousRemoteObjectProxyWithErrorHandler:?];
-  [v5 setSupportedNotificationDelivery:v4];
+  [v5 setSupportedNotificationDelivery:deliveryCopy];
 }
 
 void __53__ASDServiceBroker_setSupportedNotificationDelivery___block_invoke(uint64_t a1, void *a2)

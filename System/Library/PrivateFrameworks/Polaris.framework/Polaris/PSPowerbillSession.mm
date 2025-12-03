@@ -1,36 +1,36 @@
 @interface PSPowerbillSession
 - (PSPowerbillDelegate)delegate;
-- (PSPowerbillSession)initWithDelegate:(id)a3 queue:(id)a4;
+- (PSPowerbillSession)initWithDelegate:(id)delegate queue:(id)queue;
 - (void)begin;
 - (void)end;
-- (void)updateWithMetadata:(const ps_telemetry_metadata_s *)a3 event:(id *)a4;
+- (void)updateWithMetadata:(const ps_telemetry_metadata_s *)metadata event:(id *)event;
 @end
 
 @implementation PSPowerbillSession
 
-- (PSPowerbillSession)initWithDelegate:(id)a3 queue:(id)a4
+- (PSPowerbillSession)initWithDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = PSPowerbillSession;
   v8 = [(PSPowerbillSession *)&v18 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
     v9->_isComplete = 0;
     v10 = objc_alloc_init(PSPowerbillData);
     data = v9->_data;
     v9->_data = v10;
 
-    v12 = [MEMORY[0x277CBEB38] dictionary];
-    [(PSPowerbillData *)v9->_data setDataByGraph:v12];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(PSPowerbillData *)v9->_data setDataByGraph:dictionary];
 
     [(PSPowerbillData *)v9->_data setNumberOfPerfLevels:2];
-    if (v7)
+    if (queueCopy)
     {
-      v13 = v7;
+      v13 = queueCopy;
     }
 
     else
@@ -50,42 +50,42 @@
   return v9;
 }
 
-- (void)updateWithMetadata:(const ps_telemetry_metadata_s *)a3 event:(id *)a4
+- (void)updateWithMetadata:(const ps_telemetry_metadata_s *)metadata event:(id *)event
 {
   if (![(PSPowerbillSession *)self isComplete])
   {
-    var0 = a3->var0;
+    var0 = metadata->var0;
     if (var0 >= [(PSPowerbillSession *)self targetStartTimestampInNanoseconds])
     {
-      v8 = [(PSPowerbillSession *)self data];
-      v9 = [v8 beginTimestampInNanoseconds];
+      data = [(PSPowerbillSession *)self data];
+      beginTimestampInNanoseconds = [data beginTimestampInNanoseconds];
 
-      if (!v9)
+      if (!beginTimestampInNanoseconds)
       {
-        v10 = a3->var0;
-        v11 = [(PSPowerbillSession *)self data];
-        [v11 setBeginTimestampInNanoseconds:v10];
+        v10 = metadata->var0;
+        data2 = [(PSPowerbillSession *)self data];
+        [data2 setBeginTimestampInNanoseconds:v10];
       }
 
-      v12 = a3->var0;
-      v13 = [(PSPowerbillSession *)self data];
-      [v13 setEndTimestampInNanoseconds:v12];
+      v12 = metadata->var0;
+      data3 = [(PSPowerbillSession *)self data];
+      [data3 setEndTimestampInNanoseconds:v12];
 
-      v14 = a3->var0;
+      v14 = metadata->var0;
       if (v14 > [(PSPowerbillSession *)self targetEndTimestampInNanoseconds])
       {
         [(PSPowerbillSession *)self setIsComplete:1];
-        v15 = [(PSPowerbillSession *)self completionSemaphore];
-        dispatch_semaphore_signal(v15);
+        completionSemaphore = [(PSPowerbillSession *)self completionSemaphore];
+        dispatch_semaphore_signal(completionSemaphore);
       }
 
-      var3 = a3->var3;
-      var5 = a4->var5;
+      var3 = metadata->var3;
+      var5 = event->var5;
       v18 = var5 | (var3 << 16);
-      v19 = [(PSPowerbillSession *)self data];
-      v20 = [v19 dataByGraph];
+      data4 = [(PSPowerbillSession *)self data];
+      dataByGraph = [data4 dataByGraph];
       v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v18];
-      v41 = [v20 objectForKey:v21];
+      v41 = [dataByGraph objectForKey:v21];
 
       v22 = v41;
       if (!v41)
@@ -97,54 +97,54 @@
         v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:ps_telemetry_get_client_name(var3)];
         [(PSPowerbillGraphData *)v42 setProcessName:v24];
 
-        [(PSPowerbillGraphData *)v42 setPid:a3->var2];
+        [(PSPowerbillGraphData *)v42 setPid:metadata->var2];
         v25 = [MEMORY[0x277CBEB58] set];
         [(PSPowerbillGraphData *)v42 setThreadIDSet:v25];
 
-        v26 = [MEMORY[0x277CBEB38] dictionary];
-        [(PSPowerbillGraphData *)v42 setDataByTask:v26];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
+        [(PSPowerbillGraphData *)v42 setDataByTask:dictionary];
 
-        v27 = [(PSPowerbillSession *)self data];
-        v28 = [v27 dataByGraph];
+        data5 = [(PSPowerbillSession *)self data];
+        dataByGraph2 = [data5 dataByGraph];
         v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v18];
-        [v28 setObject:v42 forKey:v29];
+        [dataByGraph2 setObject:v42 forKey:v29];
 
         v22 = v42;
       }
 
       v43 = v22;
-      v30 = [(PSPowerbillGraphData *)v22 threadIDSet];
-      v31 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3->var1];
-      v32 = [v30 containsObject:v31];
+      threadIDSet = [(PSPowerbillGraphData *)v22 threadIDSet];
+      v31 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:metadata->var1];
+      v32 = [threadIDSet containsObject:v31];
 
       if ((v32 & 1) == 0)
       {
-        v33 = [(PSPowerbillGraphData *)v43 threadIDSet];
-        v34 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3->var1];
-        [v33 addObject:v34];
+        threadIDSet2 = [(PSPowerbillGraphData *)v43 threadIDSet];
+        v34 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:metadata->var1];
+        [threadIDSet2 addObject:v34];
       }
 
-      v35 = [(PSPowerbillGraphData *)v43 dataByTask];
-      v36 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:a4->var4];
-      v37 = [v35 objectForKey:v36];
+      dataByTask = [(PSPowerbillGraphData *)v43 dataByTask];
+      v36 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:event->var4];
+      v37 = [dataByTask objectForKey:v36];
 
       if (!v37)
       {
         v37 = objc_alloc_init(PSPowerbillTaskData);
-        v38 = [MEMORY[0x277CCACA8] stringWithUTF8String:{ps_telemetry_get_string(a4->var4, a3->var3)}];
+        v38 = [MEMORY[0x277CCACA8] stringWithUTF8String:{ps_telemetry_get_string(event->var4, metadata->var3)}];
         [(PSPowerbillTaskData *)v37 setTaskName:v38];
 
-        v39 = [(PSPowerbillGraphData *)v43 dataByTask];
-        v40 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:a4->var4];
-        [v39 setObject:v37 forKey:v40];
+        dataByTask2 = [(PSPowerbillGraphData *)v43 dataByTask];
+        v40 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:event->var4];
+        [dataByTask2 setObject:v37 forKey:v40];
       }
 
       if (v32)
       {
-        [(PSPowerbillGraphData *)v43 addToInterTaskCounts:a4->var1];
+        [(PSPowerbillGraphData *)v43 addToInterTaskCounts:event->var1];
       }
 
-      [(PSPowerbillTaskData *)v37 addToCounts:a4];
+      [(PSPowerbillTaskData *)v37 addToCounts:event];
     }
   }
 }
@@ -240,8 +240,8 @@ void __27__PSPowerbillSession_begin__block_invoke_3(uint64_t a1)
 {
   [(PSPowerbillSession *)self setTargetEndTimestampInNanoseconds:clock_gettime_nsec_np(_CLOCK_UPTIME_RAW)];
   v3 = dispatch_time(0, 150000000);
-  v4 = [(PSPowerbillSession *)self completionSemaphore];
-  dispatch_semaphore_wait(v4, v3);
+  completionSemaphore = [(PSPowerbillSession *)self completionSemaphore];
+  dispatch_semaphore_wait(completionSemaphore, v3);
 
   ps_telemetry_stop_reader();
   ps_telemetry_disable();

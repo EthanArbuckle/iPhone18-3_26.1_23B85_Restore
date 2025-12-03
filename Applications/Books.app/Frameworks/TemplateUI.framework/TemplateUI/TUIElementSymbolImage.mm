@@ -1,24 +1,24 @@
 @interface TUIElementSymbolImage
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context;
 @end
 
 @implementation TUIElementSymbolImage
 
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
-  var0 = a4.var0;
-  v11 = [v9 fontSpecForNode:a4.var0];
-  v12 = [v9 stringForAttribute:137 node:var0];
-  [v8 setName:v12];
+  boxCopy = box;
+  attributesCopy = attributes;
+  var0 = node.var0;
+  v11 = [attributesCopy fontSpecForNode:node.var0];
+  v12 = [attributesCopy stringForAttribute:137 node:var0];
+  [boxCopy setName:v12];
 
-  v13 = [v9 stringForAttribute:194 node:var0];
-  [v8 setScale:{+[TUISymbolImageBox scaleFromString:](TUISymbolImageBox, "scaleFromString:", v13)}];
+  v13 = [attributesCopy stringForAttribute:194 node:var0];
+  [boxCopy setScale:{+[TUISymbolImageBox scaleFromString:](TUISymbolImageBox, "scaleFromString:", v13)}];
 
-  v14 = [v9 stringForAttribute:224 node:var0];
+  v14 = [attributesCopy stringForAttribute:224 node:var0];
   [v11 weight];
-  [v8 setWeight:{+[TUISymbolImageBox weightFromString:withDefault:](TUISymbolImageBox, "weightFromString:withDefault:", v14, UIImageSymbolWeightForFontWeight(v15))}];
+  [boxCopy setWeight:{+[TUISymbolImageBox weightFromString:withDefault:](TUISymbolImageBox, "weightFromString:withDefault:", v14, UIImageSymbolWeightForFontWeight(v15))}];
 
   if (v11)
   {
@@ -30,32 +30,32 @@
     v16 = 17.0;
   }
 
-  [v8 setFontSize:v16];
-  v17 = [v9 stringForAttribute:168 node:var0];
-  [v8 setRenderingMode:{+[TUISymbolImageBox renderingModeFromString:](TUISymbolImageBox, "renderingModeFromString:", v17)}];
+  [boxCopy setFontSize:v16];
+  v17 = [attributesCopy stringForAttribute:168 node:var0];
+  [boxCopy setRenderingMode:{+[TUISymbolImageBox renderingModeFromString:](TUISymbolImageBox, "renderingModeFromString:", v17)}];
 
-  v18 = [v11 foregroundColor];
-  if (v18)
+  foregroundColor = [v11 foregroundColor];
+  if (foregroundColor)
   {
-    v19 = [v11 foregroundColor];
-    v23 = v19;
+    foregroundColor2 = [v11 foregroundColor];
+    v23 = foregroundColor2;
     v20 = [NSArray arrayWithObjects:&v23 count:1];
-    [v8 setColors:v20];
+    [boxCopy setColors:v20];
   }
 
   else
   {
-    v19 = [v9 colorArrayForAttribute:51 node:var0];
-    [v8 setColors:v19];
+    foregroundColor2 = [attributesCopy colorArrayForAttribute:51 node:var0];
+    [boxCopy setColors:foregroundColor2];
   }
 
-  [v8 setBaseline:{objc_msgSend(v9, "BOOLForAttribute:withDefault:node:", 33, 1, var0)}];
-  [v9 insetsForAttribute:112 withDefault:var0 node:{NAN, NAN, NAN, NAN}];
-  [v8 setInsets:?];
-  [v8 setHflipForRTL:{objc_msgSend(v9, "BOOLForAttribute:node:", 99, var0)}];
-  v21 = [v9 stringForAttribute:37 node:var0];
+  [boxCopy setBaseline:{objc_msgSend(attributesCopy, "BOOLForAttribute:withDefault:node:", 33, 1, var0)}];
+  [attributesCopy insetsForAttribute:112 withDefault:var0 node:{NAN, NAN, NAN, NAN}];
+  [boxCopy setInsets:?];
+  [boxCopy setHflipForRTL:{objc_msgSend(attributesCopy, "BOOLForAttribute:node:", 99, var0)}];
+  v21 = [attributesCopy stringForAttribute:37 node:var0];
   v22 = [(TUIBox *)TUISymbolImageBox blendModeFromString:v21];
-  [v8 setBlendMode:v22];
+  [boxCopy setBlendMode:v22];
 }
 
 @end

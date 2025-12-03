@@ -1,28 +1,28 @@
 @interface TCDialRequest
-- (TCDialRequest)initWithURL:(id)a3;
+- (TCDialRequest)initWithURL:(id)l;
 - (id)URL;
 @end
 
 @implementation TCDialRequest
 
-- (TCDialRequest)initWithURL:(id)a3
+- (TCDialRequest)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v18.receiver = self;
   v18.super_class = TCDialRequest;
-  v5 = [(TCDialRequest *)&v18 initWithURL:v4];
+  v5 = [(TCDialRequest *)&v18 initWithURL:lCopy];
   if (v5)
   {
-    v6 = [MEMORY[0x277CCACE0] componentsWithURL:v4 resolvingAgainstBaseURL:1];
+    v6 = [MEMORY[0x277CCACE0] componentsWithURL:lCopy resolvingAgainstBaseURL:1];
     v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"name=%@", @"sessionState"];
-    v8 = [v6 queryItems];
-    v9 = [v8 filteredArrayUsingPredicate:v7];
-    v10 = [v9 firstObject];
+    queryItems = [v6 queryItems];
+    v9 = [queryItems filteredArrayUsingPredicate:v7];
+    firstObject = [v9 firstObject];
 
-    if (v10)
+    if (firstObject)
     {
-      v11 = [v10 value];
-      [(TCDialRequest *)v5 setState:TCSessionStateFromString(v11)];
+      value = [firstObject value];
+      [(TCDialRequest *)v5 setState:TCSessionStateFromString(value)];
     }
 
     else
@@ -31,12 +31,12 @@
     }
 
     v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"name=%@", @"remoteUplinkMuted"];
-    v13 = [v6 queryItems];
-    v14 = [v13 filteredArrayUsingPredicate:v12];
-    v15 = [v14 firstObject];
+    queryItems2 = [v6 queryItems];
+    v14 = [queryItems2 filteredArrayUsingPredicate:v12];
+    firstObject2 = [v14 firstObject];
 
-    v16 = [v15 value];
-    -[TCDialRequest setRemoteUplinkMuted:](v5, "setRemoteUplinkMuted:", [v16 isEqualToString:@"YES"]);
+    value2 = [firstObject2 value];
+    -[TCDialRequest setRemoteUplinkMuted:](v5, "setRemoteUplinkMuted:", [value2 isEqualToString:@"YES"]);
   }
 
   return v5;
@@ -50,23 +50,23 @@
   if ([(TCDialRequest *)self state])
   {
     v4 = [MEMORY[0x277CCACE0] componentsWithURL:v3 resolvingAgainstBaseURL:1];
-    v5 = [v4 queryItems];
-    if (v5)
+    queryItems = [v4 queryItems];
+    if (queryItems)
     {
-      v6 = [v4 queryItems];
-      v7 = [v6 mutableCopy];
+      queryItems2 = [v4 queryItems];
+      array = [queryItems2 mutableCopy];
     }
 
     else
     {
-      v7 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
     }
 
     v8 = MEMORY[0x277CCAD18];
     v9 = NSStringFromTCSessionState([(TCDialRequest *)self state]);
     v10 = [v8 queryItemWithName:@"sessionState" value:v9];
 
-    [v7 addObject:v10];
+    [array addObject:v10];
     v11 = MEMORY[0x277CCAD18];
     if ([(TCDialRequest *)self isRemoteUplinkMuted])
     {
@@ -79,8 +79,8 @@
     }
 
     v13 = [v11 queryItemWithName:@"remoteUplinkMuted" value:v12];
-    [v7 addObject:v13];
-    [v4 setQueryItems:v7];
+    [array addObject:v13];
+    [v4 setQueryItems:array];
     v14 = [v4 URL];
 
     v3 = v14;

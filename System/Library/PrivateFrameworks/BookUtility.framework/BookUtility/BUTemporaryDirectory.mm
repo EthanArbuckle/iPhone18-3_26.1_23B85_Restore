@@ -1,8 +1,8 @@
 @interface BUTemporaryDirectory
-- (BOOL)_createDirectoryWithSignature:(id)a3 subdirectory:(id)a4 error:(id *)a5;
+- (BOOL)_createDirectoryWithSignature:(id)signature subdirectory:(id)subdirectory error:(id *)error;
 - (BUTemporaryDirectory)init;
-- (BUTemporaryDirectory)initWithSignature:(id)a3 subdirectory:(id)a4 error:(id *)a5;
-- (id)initForWritingToURL:(id)a3 error:(id *)a4;
+- (BUTemporaryDirectory)initWithSignature:(id)signature subdirectory:(id)subdirectory error:(id *)error;
+- (id)initForWritingToURL:(id)l error:(id *)error;
 - (void)dealloc;
 @end
 
@@ -19,15 +19,15 @@
   objc_exception_throw(v6);
 }
 
-- (BUTemporaryDirectory)initWithSignature:(id)a3 subdirectory:(id)a4 error:(id *)a5
+- (BUTemporaryDirectory)initWithSignature:(id)signature subdirectory:(id)subdirectory error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  signatureCopy = signature;
+  subdirectoryCopy = subdirectory;
   v14.receiver = self;
   v14.super_class = BUTemporaryDirectory;
   v10 = [(BUTemporaryDirectory *)&v14 init];
   v12 = v10;
-  if (v10 && (objc_msgSend__createDirectoryWithSignature_subdirectory_error_(v10, v11, v8, v9, a5) & 1) == 0)
+  if (v10 && (objc_msgSend__createDirectoryWithSignature_subdirectory_error_(v10, v11, signatureCopy, subdirectoryCopy, error) & 1) == 0)
   {
 
     v12 = 0;
@@ -36,16 +36,16 @@
   return v12;
 }
 
-- (id)initForWritingToURL:(id)a3 error:(id *)a4
+- (id)initForWritingToURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v18.receiver = self;
   v18.super_class = BUTemporaryDirectory;
   v9 = [(BUTemporaryDirectory *)&v18 init];
   if (v9)
   {
     v10 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v7, v8);
-    v12 = objc_msgSend_URLForDirectory_inDomain_appropriateForURL_create_error_(v10, v11, 99, 1, v6, 1, a4);
+    v12 = objc_msgSend_URLForDirectory_inDomain_appropriateForURL_create_error_(v10, v11, 99, 1, lCopy, 1, error);
 
     v15 = objc_msgSend_path(v12, v13, v14);
     path = v9->_path;
@@ -98,13 +98,13 @@ LABEL_8:
   [(BUTemporaryDirectory *)&v13 dealloc];
 }
 
-- (BOOL)_createDirectoryWithSignature:(id)a3 subdirectory:(id)a4 error:(id *)a5
+- (BOOL)_createDirectoryWithSignature:(id)signature subdirectory:(id)subdirectory error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  signatureCopy = signature;
+  subdirectoryCopy = subdirectory;
+  if (signatureCopy)
   {
-    v10 = v8;
+    v10 = signatureCopy;
   }
 
   else
@@ -128,9 +128,9 @@ LABEL_8:
 
   v18 = NSTemporaryDirectory();
   v20 = v18;
-  if (v9)
+  if (subdirectoryCopy)
   {
-    v21 = objc_msgSend_stringByAppendingPathComponent_(v18, v19, v9);
+    v21 = objc_msgSend_stringByAppendingPathComponent_(v18, v19, subdirectoryCopy);
 
     v20 = v21;
   }
@@ -142,18 +142,18 @@ LABEL_8:
   v28 = v33;
 
   objc_storeStrong(&self->_path, v22);
-  if (a5 && (v27 & 1) == 0)
+  if (error && (v27 & 1) == 0)
   {
     if (v28)
     {
       v30 = v28;
-      *a5 = v28;
+      *error = v28;
     }
 
     else
     {
       v31 = objc_msgSend_bu_fileWriteUnknownErrorWithUserInfo_(MEMORY[0x277CCA9B8], v29, 0);
-      *a5 = v31;
+      *error = v31;
     }
   }
 

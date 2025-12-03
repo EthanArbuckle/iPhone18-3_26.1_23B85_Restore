@@ -1,19 +1,19 @@
 @interface CNEntitlementVerifier
-- (BOOL)auditToken:(id *)a3 allowsHighPriorityWithError:(id *)a4;
-- (BOOL)auditToken:(id *)a3 hasArrayWithStringValue:(id)a4 forAnyEntitlement:(id)a5 error:(id *)a6;
-- (BOOL)auditToken:(id *)a3 hasBooleanEntitlement:(id)a4 error:(id *)a5;
-- (BOOL)auditToken:(id *)a3 isFirstOrSecondPartyWithError:(id *)a4;
-- (BOOL)currentProcessHasArrayWithStringValue:(id)a3 forAnyEntitlement:(id)a4 error:(id *)a5;
-- (BOOL)currentProcessHasBooleanEntitlement:(id)a3 error:(id *)a4;
-- (BOOL)currentProcessIsFirstOrSecondPartyWithError:(id *)a3;
-- (BOOL)secTask:(__SecTask *)a3 allowsHighPriorityWithError:(id *)a4;
-- (BOOL)secTask:(__SecTask *)a3 hasArrayWithStringValue:(id)a4 forAnyEntitlement:(id)a5 error:(id *)a6;
-- (BOOL)secTask:(__SecTask *)a3 hasBooleanEntitlement:(id)a4 error:(id *)a5;
-- (BOOL)secTask:(__SecTask *)a3 isFirstOrSecondPartyWithError:(id *)a4;
+- (BOOL)auditToken:(id *)token allowsHighPriorityWithError:(id *)error;
+- (BOOL)auditToken:(id *)token hasArrayWithStringValue:(id)value forAnyEntitlement:(id)entitlement error:(id *)error;
+- (BOOL)auditToken:(id *)token hasBooleanEntitlement:(id)entitlement error:(id *)error;
+- (BOOL)auditToken:(id *)token isFirstOrSecondPartyWithError:(id *)error;
+- (BOOL)currentProcessHasArrayWithStringValue:(id)value forAnyEntitlement:(id)entitlement error:(id *)error;
+- (BOOL)currentProcessHasBooleanEntitlement:(id)entitlement error:(id *)error;
+- (BOOL)currentProcessIsFirstOrSecondPartyWithError:(id *)error;
+- (BOOL)secTask:(__SecTask *)task allowsHighPriorityWithError:(id *)error;
+- (BOOL)secTask:(__SecTask *)task hasArrayWithStringValue:(id)value forAnyEntitlement:(id)entitlement error:(id *)error;
+- (BOOL)secTask:(__SecTask *)task hasBooleanEntitlement:(id)entitlement error:(id *)error;
+- (BOOL)secTask:(__SecTask *)task isFirstOrSecondPartyWithError:(id *)error;
 - (id)highPriorityBundleIdentifiers;
-- (id)secTask:(__SecTask *)a3 valuesForEntitlements:(id)a4 error:(id *)a5;
-- (id)valuesForAuditToken:(id *)a3 forEntitlements:(id)a4 error:(id *)a5;
-- (id)valuesForCurrentProcessForEntitlements:(id)a3 error:(id *)a4;
+- (id)secTask:(__SecTask *)task valuesForEntitlements:(id)entitlements error:(id *)error;
+- (id)valuesForAuditToken:(id *)token forEntitlements:(id)entitlements error:(id *)error;
+- (id)valuesForCurrentProcessForEntitlements:(id)entitlements error:(id *)error;
 @end
 
 @implementation CNEntitlementVerifier
@@ -30,24 +30,24 @@
   return v3;
 }
 
-- (BOOL)currentProcessHasBooleanEntitlement:(id)a3 error:(id *)a4
+- (BOOL)currentProcessHasBooleanEntitlement:(id)entitlement error:(id *)error
 {
-  v6 = a3;
+  entitlementCopy = entitlement;
   v7 = SecTaskCreateFromSelf(*MEMORY[0x1E695E480]);
   if (v7)
   {
     v8 = v7;
-    v9 = [(CNEntitlementVerifier *)self secTask:v7 hasBooleanEntitlement:v6 error:a4];
+    v9 = [(CNEntitlementVerifier *)self secTask:v7 hasBooleanEntitlement:entitlementCopy error:error];
     CFRelease(v8);
   }
 
   else
   {
     v10 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CNContactsFoundationErrorDomain" code:3 userInfo:0];
-    if (a4)
+    if (error)
     {
       v10 = v10;
-      *a4 = v10;
+      *error = v10;
     }
 
     v9 = 0;
@@ -56,27 +56,27 @@
   return v9;
 }
 
-- (BOOL)auditToken:(id *)a3 hasBooleanEntitlement:(id)a4 error:(id *)a5
+- (BOOL)auditToken:(id *)token hasBooleanEntitlement:(id)entitlement error:(id *)error
 {
-  v8 = a4;
-  v9 = *&a3->var0[4];
-  *v15.val = *a3->var0;
+  entitlementCopy = entitlement;
+  v9 = *&token->var0[4];
+  *v15.val = *token->var0;
   *&v15.val[4] = v9;
   v10 = SecTaskCreateWithAuditToken(0, &v15);
   if (v10)
   {
     v11 = v10;
-    v12 = [(CNEntitlementVerifier *)self secTask:v10 hasBooleanEntitlement:v8 error:a5];
+    v12 = [(CNEntitlementVerifier *)self secTask:v10 hasBooleanEntitlement:entitlementCopy error:error];
     CFRelease(v11);
   }
 
   else
   {
     v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CNContactsFoundationErrorDomain" code:3 userInfo:0];
-    if (a5)
+    if (error)
     {
       v13 = v13;
-      *a5 = v13;
+      *error = v13;
     }
 
     v12 = 0;
@@ -85,39 +85,39 @@
   return v12;
 }
 
-- (BOOL)secTask:(__SecTask *)a3 hasBooleanEntitlement:(id)a4 error:(id *)a5
+- (BOOL)secTask:(__SecTask *)task hasBooleanEntitlement:(id)entitlement error:(id *)error
 {
   error = 0;
-  v6 = SecTaskCopyValueForEntitlement(a3, a4, &error);
-  if (a5)
+  v6 = SecTaskCopyValueForEntitlement(task, entitlement, &error);
+  if (error)
   {
-    *a5 = error;
+    *error = error;
   }
 
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
-- (BOOL)currentProcessHasArrayWithStringValue:(id)a3 forAnyEntitlement:(id)a4 error:(id *)a5
+- (BOOL)currentProcessHasArrayWithStringValue:(id)value forAnyEntitlement:(id)entitlement error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  valueCopy = value;
+  entitlementCopy = entitlement;
   v10 = SecTaskCreateFromSelf(*MEMORY[0x1E695E480]);
   if (v10)
   {
     v11 = v10;
-    v12 = [(CNEntitlementVerifier *)self secTask:v10 hasArrayWithStringValue:v8 forAnyEntitlement:v9 error:a5];
+    v12 = [(CNEntitlementVerifier *)self secTask:v10 hasArrayWithStringValue:valueCopy forAnyEntitlement:entitlementCopy error:error];
     CFRelease(v11);
   }
 
   else
   {
     v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CNContactsFoundationErrorDomain" code:3 userInfo:0];
-    if (a5)
+    if (error)
     {
       v13 = v13;
-      *a5 = v13;
+      *error = v13;
     }
 
     v12 = 0;
@@ -126,28 +126,28 @@
   return v12;
 }
 
-- (BOOL)auditToken:(id *)a3 hasArrayWithStringValue:(id)a4 forAnyEntitlement:(id)a5 error:(id *)a6
+- (BOOL)auditToken:(id *)token hasArrayWithStringValue:(id)value forAnyEntitlement:(id)entitlement error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = *&a3->var0[4];
-  *v18.val = *a3->var0;
+  valueCopy = value;
+  entitlementCopy = entitlement;
+  v12 = *&token->var0[4];
+  *v18.val = *token->var0;
   *&v18.val[4] = v12;
   v13 = SecTaskCreateWithAuditToken(0, &v18);
   if (v13)
   {
     v14 = v13;
-    v15 = [(CNEntitlementVerifier *)self secTask:v13 hasArrayWithStringValue:v10 forAnyEntitlement:v11 error:a6];
+    v15 = [(CNEntitlementVerifier *)self secTask:v13 hasArrayWithStringValue:valueCopy forAnyEntitlement:entitlementCopy error:error];
     CFRelease(v14);
   }
 
   else
   {
     v16 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CNContactsFoundationErrorDomain" code:3 userInfo:0];
-    if (a6)
+    if (error)
     {
       v16 = v16;
-      *a6 = v16;
+      *error = v16;
     }
 
     v15 = 0;
@@ -156,10 +156,10 @@
   return v15;
 }
 
-- (BOOL)secTask:(__SecTask *)a3 hasArrayWithStringValue:(id)a4 forAnyEntitlement:(id)a5 error:(id *)a6
+- (BOOL)secTask:(__SecTask *)task hasArrayWithStringValue:(id)value forAnyEntitlement:(id)entitlement error:(id *)error
 {
-  v9 = a4;
-  v10 = a5;
+  valueCopy = value;
+  entitlementCopy = entitlement;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -171,17 +171,17 @@
   v15[2] = __81__CNEntitlementVerifier_secTask_hasArrayWithStringValue_forAnyEntitlement_error___block_invoke;
   v15[3] = &unk_1E6ED53C0;
   v17 = &v19;
-  v18 = a3;
-  v11 = v9;
+  taskCopy = task;
+  v11 = valueCopy;
   v16 = v11;
-  v12 = [v10 _cn_any:v15];
+  v12 = [entitlementCopy _cn_any:v15];
   v13 = v20[5];
   if (v13)
   {
     v12 = 0;
-    if (a6)
+    if (error)
     {
-      *a6 = v13;
+      *error = v13;
     }
   }
 
@@ -212,24 +212,24 @@ uint64_t __81__CNEntitlementVerifier_secTask_hasArrayWithStringValue_forAnyEntit
   return v8;
 }
 
-- (id)valuesForCurrentProcessForEntitlements:(id)a3 error:(id *)a4
+- (id)valuesForCurrentProcessForEntitlements:(id)entitlements error:(id *)error
 {
-  v6 = a3;
+  entitlementsCopy = entitlements;
   v7 = SecTaskCreateFromSelf(*MEMORY[0x1E695E480]);
   if (v7)
   {
     v8 = v7;
-    v9 = [(CNEntitlementVerifier *)self secTask:v7 valuesForEntitlements:v6 error:a4];
+    v9 = [(CNEntitlementVerifier *)self secTask:v7 valuesForEntitlements:entitlementsCopy error:error];
     CFRelease(v8);
   }
 
   else
   {
     v10 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CNContactsFoundationErrorDomain" code:3 userInfo:0];
-    if (a4)
+    if (error)
     {
       v10 = v10;
-      *a4 = v10;
+      *error = v10;
     }
 
     v9 = 0;
@@ -238,27 +238,27 @@ uint64_t __81__CNEntitlementVerifier_secTask_hasArrayWithStringValue_forAnyEntit
   return v9;
 }
 
-- (id)valuesForAuditToken:(id *)a3 forEntitlements:(id)a4 error:(id *)a5
+- (id)valuesForAuditToken:(id *)token forEntitlements:(id)entitlements error:(id *)error
 {
-  v8 = a4;
-  v9 = *&a3->var0[4];
-  *v15.val = *a3->var0;
+  entitlementsCopy = entitlements;
+  v9 = *&token->var0[4];
+  *v15.val = *token->var0;
   *&v15.val[4] = v9;
   v10 = SecTaskCreateWithAuditToken(0, &v15);
   if (v10)
   {
     v11 = v10;
-    v12 = [(CNEntitlementVerifier *)self secTask:v10 valuesForEntitlements:v8 error:a5];
+    v12 = [(CNEntitlementVerifier *)self secTask:v10 valuesForEntitlements:entitlementsCopy error:error];
     CFRelease(v11);
   }
 
   else
   {
     v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CNContactsFoundationErrorDomain" code:3 userInfo:0];
-    if (a5)
+    if (error)
     {
       v13 = v13;
-      *a5 = v13;
+      *error = v13;
     }
 
     v12 = 0;
@@ -267,21 +267,21 @@ uint64_t __81__CNEntitlementVerifier_secTask_hasArrayWithStringValue_forAnyEntit
   return v12;
 }
 
-- (id)secTask:(__SecTask *)a3 valuesForEntitlements:(id)a4 error:(id *)a5
+- (id)secTask:(__SecTask *)task valuesForEntitlements:(id)entitlements error:(id *)error
 {
-  v7 = a4;
-  v8 = v7;
-  if ([(__CFArray *)v7 containsObject:@"com.apple.private.contacts"])
+  entitlementsCopy = entitlements;
+  v8 = entitlementsCopy;
+  if ([(__CFArray *)entitlementsCopy containsObject:@"com.apple.private.contacts"])
   {
-    v8 = [(__CFArray *)v7 arrayByAddingObject:@"com.apple.private.contactsui"];
+    v8 = [(__CFArray *)entitlementsCopy arrayByAddingObject:@"com.apple.private.contactsui"];
   }
 
   error = 0;
-  v9 = SecTaskCopyValuesForEntitlements(a3, v8, &error);
+  v9 = SecTaskCopyValuesForEntitlements(task, v8, &error);
   v10 = v9;
-  if (a5)
+  if (error)
   {
-    *a5 = error;
+    *error = error;
   }
 
   else if (!v9)
@@ -292,13 +292,13 @@ uint64_t __81__CNEntitlementVerifier_secTask_hasArrayWithStringValue_forAnyEntit
   return v10;
 }
 
-- (BOOL)currentProcessIsFirstOrSecondPartyWithError:(id *)a3
+- (BOOL)currentProcessIsFirstOrSecondPartyWithError:(id *)error
 {
   v5 = SecTaskCreateFromSelf(*MEMORY[0x1E695E480]);
   if (v5)
   {
     v6 = v5;
-    v7 = [(CNEntitlementVerifier *)self secTask:v5 isFirstOrSecondPartyWithError:a3];
+    v7 = [(CNEntitlementVerifier *)self secTask:v5 isFirstOrSecondPartyWithError:error];
     CFRelease(v6);
     return v7;
   }
@@ -306,37 +306,37 @@ uint64_t __81__CNEntitlementVerifier_secTask_hasArrayWithStringValue_forAnyEntit
   else
   {
     v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CNContactsFoundationErrorDomain" code:3 userInfo:0];
-    if (a3)
+    if (error)
     {
       v9 = v9;
-      *a3 = v9;
+      *error = v9;
     }
 
     return 0;
   }
 }
 
-- (BOOL)auditToken:(id *)a3 isFirstOrSecondPartyWithError:(id *)a4
+- (BOOL)auditToken:(id *)token isFirstOrSecondPartyWithError:(id *)error
 {
   v6 = *MEMORY[0x1E695E480];
-  v7 = *&a3->var0[4];
-  *v13.val = *a3->var0;
+  v7 = *&token->var0[4];
+  *v13.val = *token->var0;
   *&v13.val[4] = v7;
   v8 = SecTaskCreateWithAuditToken(v6, &v13);
   if (v8)
   {
     v9 = v8;
-    v10 = [(CNEntitlementVerifier *)self secTask:v8 isFirstOrSecondPartyWithError:a4];
+    v10 = [(CNEntitlementVerifier *)self secTask:v8 isFirstOrSecondPartyWithError:error];
     CFRelease(v9);
   }
 
   else
   {
     v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CNContactsFoundationErrorDomain" code:3 userInfo:0];
-    if (a4)
+    if (error)
     {
       v11 = v11;
-      *a4 = v11;
+      *error = v11;
     }
 
     return 0;
@@ -345,16 +345,16 @@ uint64_t __81__CNEntitlementVerifier_secTask_hasArrayWithStringValue_forAnyEntit
   return v10;
 }
 
-- (BOOL)secTask:(__SecTask *)a3 isFirstOrSecondPartyWithError:(id *)a4
+- (BOOL)secTask:(__SecTask *)task isFirstOrSecondPartyWithError:(id *)error
 {
-  v5 = SecTaskCopySigningIdentifier(a3, 0);
+  v5 = SecTaskCopySigningIdentifier(task, 0);
   if (off_1EF440708(&__block_literal_global_120, v5))
   {
     v6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CNContactsFoundationErrorDomain" code:3 userInfo:0];
-    if (a4)
+    if (error)
     {
       v6 = v6;
-      *a4 = v6;
+      *error = v6;
     }
 
     v7 = 0;
@@ -368,27 +368,27 @@ uint64_t __81__CNEntitlementVerifier_secTask_hasArrayWithStringValue_forAnyEntit
   return v7;
 }
 
-- (BOOL)auditToken:(id *)a3 allowsHighPriorityWithError:(id *)a4
+- (BOOL)auditToken:(id *)token allowsHighPriorityWithError:(id *)error
 {
   v6 = *MEMORY[0x1E695E480];
-  v7 = *&a3->var0[4];
-  *v13.val = *a3->var0;
+  v7 = *&token->var0[4];
+  *v13.val = *token->var0;
   *&v13.val[4] = v7;
   v8 = SecTaskCreateWithAuditToken(v6, &v13);
   if (v8)
   {
     v9 = v8;
-    v10 = [(CNEntitlementVerifier *)self secTask:v8 allowsHighPriorityWithError:a4];
+    v10 = [(CNEntitlementVerifier *)self secTask:v8 allowsHighPriorityWithError:error];
     CFRelease(v9);
   }
 
   else
   {
     v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CNContactsFoundationErrorDomain" code:3 userInfo:0];
-    if (a4)
+    if (error)
     {
       v11 = v11;
-      *a4 = v11;
+      *error = v11;
     }
 
     return 0;
@@ -397,18 +397,18 @@ uint64_t __81__CNEntitlementVerifier_secTask_hasArrayWithStringValue_forAnyEntit
   return v10;
 }
 
-- (BOOL)secTask:(__SecTask *)a3 allowsHighPriorityWithError:(id *)a4
+- (BOOL)secTask:(__SecTask *)task allowsHighPriorityWithError:(id *)error
 {
-  v6 = SecTaskCopySigningIdentifier(a3, 0);
+  v6 = SecTaskCopySigningIdentifier(task, 0);
   if (off_1EF440708(&__block_literal_global_120, v6))
   {
     v7 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CNContactsFoundationErrorDomain" code:3 userInfo:0];
-    v8 = v7;
-    if (a4)
+    highPriorityBundleIdentifiers = v7;
+    if (error)
     {
       v9 = v7;
       v10 = 0;
-      *a4 = v8;
+      *error = highPriorityBundleIdentifiers;
     }
 
     else
@@ -419,8 +419,8 @@ uint64_t __81__CNEntitlementVerifier_secTask_hasArrayWithStringValue_forAnyEntit
 
   else
   {
-    v8 = [(CNEntitlementVerifier *)self highPriorityBundleIdentifiers];
-    v10 = [v8 containsObject:v6];
+    highPriorityBundleIdentifiers = [(CNEntitlementVerifier *)self highPriorityBundleIdentifiers];
+    v10 = [highPriorityBundleIdentifiers containsObject:v6];
   }
 
   return v10;

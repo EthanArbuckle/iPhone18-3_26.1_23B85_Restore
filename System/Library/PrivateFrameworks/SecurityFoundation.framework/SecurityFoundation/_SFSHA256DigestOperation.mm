@@ -1,23 +1,23 @@
 @interface _SFSHA256DigestOperation
-+ (id)digest:(id)a3;
++ (id)digest:(id)digest;
 - (NSData)hashValue;
 - (_SFSHA256DigestOperation)init;
-- (_SFSHA256DigestOperation)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addData:(id)a3;
+- (_SFSHA256DigestOperation)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addData:(id)data;
 @end
 
 @implementation _SFSHA256DigestOperation
 
-+ (id)digest:(id)a3
++ (id)digest:(id)digest
 {
-  v3 = a3;
+  digestCopy = digest;
   v4 = objc_alloc_init(_SFSHA256DigestOperation);
-  [(_SFSHA256DigestOperation *)v4 addData:v3];
+  [(_SFSHA256DigestOperation *)v4 addData:digestCopy];
 
-  v5 = [(_SFSHA256DigestOperation *)v4 hashValue];
+  hashValue = [(_SFSHA256DigestOperation *)v4 hashValue];
 
-  return v5;
+  return hashValue;
 }
 
 - (_SFSHA256DigestOperation)init
@@ -37,14 +37,14 @@
   return v2;
 }
 
-- (_SFSHA256DigestOperation)initWithCoder:(id)a3
+- (_SFSHA256DigestOperation)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = _SFSHA256DigestOperation;
   return [(_SFSHA256DigestOperation *)&v4 init];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = objc_opt_class();
 
@@ -74,15 +74,15 @@
   return v8;
 }
 
-- (void)addData:(id)a3
+- (void)addData:(id)data
 {
   sha256DigestOperationInternal = self->_sha256DigestOperationInternal;
-  v5 = a3;
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  dataCopy2 = data;
+  bytes = [dataCopy2 bytes];
+  v8 = [dataCopy2 length];
 
-  CC_SHA256_Update((sha256DigestOperationInternal + 8), v7, v8);
+  CC_SHA256_Update((sha256DigestOperationInternal + 8), bytes, v8);
 }
 
 @end

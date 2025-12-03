@@ -4,20 +4,20 @@
 - (UIView)view;
 - (_TtC5UIKit15BridgedProperty)init;
 - (id)transformer;
-- (id)velocityTarget:(BOOL)a3;
-- (void)invalidateAndStopImmediately:(BOOL)a3;
-- (void)setIsVelocityUsableForVFD:(BOOL)a3;
-- (void)setTransformer:(id)a3;
-- (void)setVelocity:(id)a3 target:(BOOL)a4;
+- (id)velocityTarget:(BOOL)target;
+- (void)invalidateAndStopImmediately:(BOOL)immediately;
+- (void)setIsVelocityUsableForVFD:(BOOL)d;
+- (void)setTransformer:(id)transformer;
+- (void)setVelocity:(id)velocity target:(BOOL)target;
 @end
 
 @implementation BridgedProperty
 
-- (void)setTransformer:(id)a3
+- (void)setTransformer:(id)transformer
 {
-  if (a3)
+  if (transformer)
   {
-    v3 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_18A4A7DE8();
     swift_unknownObjectRelease();
@@ -26,30 +26,30 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v4 = self;
+    selfCopy2 = self;
   }
 
   sub_188A8ED08(v6);
 }
 
-- (void)setIsVelocityUsableForVFD:(BOOL)a3
+- (void)setIsVelocityUsableForVFD:(BOOL)d
 {
-  v3 = a3;
+  dCopy = d;
   v5 = *&self->property[OBJC_IVAR____TtC5UIKit15BridgedProperty_property];
   ObjectType = swift_getObjectType();
   v7 = *(v5 + 72);
-  v8 = self;
-  v7(v3, ObjectType, v5);
+  selfCopy = self;
+  v7(dCopy, ObjectType, v5);
 }
 
-- (void)invalidateAndStopImmediately:(BOOL)a3
+- (void)invalidateAndStopImmediately:(BOOL)immediately
 {
-  v3 = a3;
+  immediatelyCopy = immediately;
   v5 = *&self->property[OBJC_IVAR____TtC5UIKit15BridgedProperty_property];
   ObjectType = swift_getObjectType();
   v7 = *(v5 + 32);
-  v8 = self;
-  v7(v3, ObjectType, v5);
+  selfCopy = self;
+  v7(immediatelyCopy, ObjectType, v5);
 }
 
 - (BOOL)isInvalidated
@@ -57,18 +57,18 @@
   v3 = *&self->property[OBJC_IVAR____TtC5UIKit15BridgedProperty_property];
   ObjectType = swift_getObjectType();
   v5 = *(v3 + 24);
-  v6 = self;
+  selfCopy = self;
   v7 = v5(ObjectType, v3);
 
   return v7 & 1;
 }
 
-- (void)setVelocity:(id)a3 target:(BOOL)a4
+- (void)setVelocity:(id)velocity target:(BOOL)target
 {
-  v4 = a4;
-  if (a3)
+  targetCopy = target;
+  if (velocity)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_18A4A7DE8();
     swift_unknownObjectRelease();
@@ -77,22 +77,22 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
   v8 = *&self->property[OBJC_IVAR____TtC5UIKit15BridgedProperty_property];
   ObjectType = swift_getObjectType();
-  sub_18922BE00(v10, v4, ObjectType, v8);
+  sub_18922BE00(v10, targetCopy, ObjectType, v8);
   sub_188A3F5FC(v10, &qword_1EA934050);
 }
 
-- (id)velocityTarget:(BOOL)a3
+- (id)velocityTarget:(BOOL)target
 {
-  v3 = a3;
+  targetCopy = target;
   v5 = *&self->property[OBJC_IVAR____TtC5UIKit15BridgedProperty_property];
   ObjectType = swift_getObjectType();
-  v7 = self;
-  sub_18922C168(v3, ObjectType, v5);
+  selfCopy = self;
+  sub_18922C168(targetCopy, ObjectType, v5);
 
   __swift_project_boxed_opaque_existential_0(v10, v10[3]);
   v8 = sub_18A4A86A8();
@@ -106,7 +106,7 @@
   v3 = *&self->property[OBJC_IVAR____TtC5UIKit15BridgedProperty_property];
   ObjectType = swift_getObjectType();
   v5 = *(v3 + 136);
-  v6 = self;
+  selfCopy = self;
   v7 = v5(ObjectType, v3);
 
   return v7;
@@ -117,7 +117,7 @@
   v3 = *&self->property[OBJC_IVAR____TtC5UIKit15BridgedProperty_property];
   ObjectType = swift_getObjectType();
   v5 = *(v3 + 40);
-  v6 = self;
+  selfCopy = self;
   v7 = v5(ObjectType, v3);
 
   if (v7)
@@ -135,7 +135,7 @@
   v3 = *&self->property[OBJC_IVAR____TtC5UIKit15BridgedProperty_property];
   ObjectType = swift_getObjectType();
   v5 = *(v3 + 64);
-  v6 = self;
+  selfCopy = self;
   v7 = v5(ObjectType, v3);
 
   return v7 & 1;

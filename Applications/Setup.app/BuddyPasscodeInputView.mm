@@ -4,48 +4,48 @@
 - (BOOL)resignFirstResponder;
 - (BuddyPasscodeInputViewDelegate)delegate;
 - (CGSize)intrinsicContentSize;
-- (void)setPasscode:(id)a3;
+- (void)setPasscode:(id)passcode;
 - (void)shakePasscode;
 @end
 
 @implementation BuddyPasscodeInputView
 
-- (void)setPasscode:(id)a3
+- (void)setPasscode:(id)passcode
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, passcode);
   objc_storeStrong(location, 0);
 }
 
 - (BOOL)becomeFirstResponder
 {
   v2 = [(BuddyPasscodeInputView *)self passcodeField:a2];
-  v3 = [v2 becomeFirstResponder];
+  becomeFirstResponder = [v2 becomeFirstResponder];
 
-  return v3 & 1;
+  return becomeFirstResponder & 1;
 }
 
 - (BOOL)isFirstResponder
 {
   v2 = [(BuddyPasscodeInputView *)self passcodeField:a2];
-  v3 = [v2 isFirstResponder];
+  isFirstResponder = [v2 isFirstResponder];
 
-  return v3 & 1;
+  return isFirstResponder & 1;
 }
 
 - (BOOL)resignFirstResponder
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   v5.receiver = self;
   v5.super_class = BuddyPasscodeInputView;
   [(BuddyPasscodeInputView *)&v5 resignFirstResponder];
-  v2 = [(BuddyPasscodeInputView *)v7 passcodeField];
-  v3 = [v2 resignFirstResponder];
+  passcodeField = [(BuddyPasscodeInputView *)selfCopy passcodeField];
+  resignFirstResponder = [passcodeField resignFirstResponder];
 
-  return v3 & 1;
+  return resignFirstResponder & 1;
 }
 
 - (void)shakePasscode
@@ -68,8 +68,8 @@
   [v26[0] setDuration:0.666999996];
   [v26[0] setInitialVelocity:0.0];
   [v26[0] setFillMode:kCAFillModeBackwards];
-  v7 = [v27[0] layer];
-  [v7 position];
+  layer = [v27[0] layer];
+  [layer position];
   location[1] = v8;
   location[2] = v9;
   v10 = *&v8 + 75.0;
@@ -77,8 +77,8 @@
   v11 = [NSNumber numberWithFloat:v10];
   [v26[0] setFromValue:v11];
 
-  v12 = [v27[0] layer];
-  [v12 addAnimation:v26[0] forKey:@"spring"];
+  layer2 = [v27[0] layer];
+  [layer2 addAnimation:v26[0] forKey:@"spring"];
 
   location[0] = [CABasicAnimation animationWithKeyPath:@"position.x"];
   LODWORD(v13) = 1054276898;
@@ -90,16 +90,16 @@
 
   [location[0] setDuration:0.100000001];
   [location[0] setFillMode:kCAFillModeBackwards];
-  v18 = [v27[0] layer];
-  [v18 position];
+  layer3 = [v27[0] layer];
+  [layer3 position];
   v24 = v19;
   v20 = v19 - 75.0;
   *&v20 = v20;
   v22 = [NSNumber numberWithFloat:v20, *&v24, v21];
   [location[0] setFromValue:v22];
 
-  v23 = [v27[0] layer];
-  [v23 addAnimation:location[0] forKey:@"force"];
+  layer4 = [v27[0] layer];
+  [layer4 addAnimation:location[0] forKey:@"force"];
 
   objc_storeStrong(location, 0);
   objc_storeStrong(v26, 0);
@@ -108,8 +108,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(BuddyPasscodeInputView *)self passcodeField];
-  [v2 frame];
+  passcodeField = [(BuddyPasscodeInputView *)self passcodeField];
+  [passcodeField frame];
   v8 = v3;
   v7 = v4;
 

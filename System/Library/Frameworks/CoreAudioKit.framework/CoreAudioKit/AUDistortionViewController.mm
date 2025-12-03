@@ -1,34 +1,34 @@
 @interface AUDistortionViewController
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation AUDistortionViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_237187290();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   sub_23718A0DC();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5 = objc_opt_self();
-  v6 = self;
-  v7 = [v5 defaultCenter];
-  [v7 removeObserver_];
+  selfCopy = self;
+  defaultCenter = [v5 defaultCenter];
+  [defaultCenter removeObserver_];
 
-  v8.receiver = v6;
+  v8.receiver = selfCopy;
   v8.super_class = type metadata accessor for AUDistortionViewController();
-  [(AUAppleViewControllerBase *)&v8 viewWillDisappear:v3];
+  [(AUAppleViewControllerBase *)&v8 viewWillDisappear:disappearCopy];
 }
 
 @end

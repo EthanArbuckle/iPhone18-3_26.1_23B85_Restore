@@ -1,23 +1,23 @@
 @interface PLAppleArchiveLoggerRecord
-- (PLAppleArchiveLoggerRecord)initWithURL:(id)a3 logger:(id)a4;
+- (PLAppleArchiveLoggerRecord)initWithURL:(id)l logger:(id)logger;
 @end
 
 @implementation PLAppleArchiveLoggerRecord
 
-- (PLAppleArchiveLoggerRecord)initWithURL:(id)a3 logger:(id)a4
+- (PLAppleArchiveLoggerRecord)initWithURL:(id)l logger:(id)logger
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  loggerCopy = logger;
   v12.receiver = self;
   v12.super_class = PLAppleArchiveLoggerRecord;
   v8 = [(PLAppleArchiveLoggerRecord *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [lCopy copy];
     url = v8->_url;
     v8->_url = v9;
 
-    objc_storeStrong(&v8->_logger, a4);
+    objc_storeStrong(&v8->_logger, logger);
     v8->_refCount = 0;
   }
 

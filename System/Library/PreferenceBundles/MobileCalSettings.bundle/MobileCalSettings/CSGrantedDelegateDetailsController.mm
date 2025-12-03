@@ -1,19 +1,19 @@
 @interface CSGrantedDelegateDetailsController
-- (id)enabledWriteAccess:(id)a3;
-- (id)initInAddDelegateMode:(BOOL)a3;
+- (id)enabledWriteAccess:(id)access;
+- (id)initInAddDelegateMode:(BOOL)mode;
 - (id)specifiers;
-- (void)modalCancelPressed:(id)a3;
-- (void)modalSavePressed:(id)a3;
-- (void)removeDelegateTapped:(id)a3;
-- (void)setEnabledWriteAccess:(id)a3 specifier:(id)a4;
-- (void)setSpecifier:(id)a3;
+- (void)modalCancelPressed:(id)pressed;
+- (void)modalSavePressed:(id)pressed;
+- (void)removeDelegateTapped:(id)tapped;
+- (void)setEnabledWriteAccess:(id)access specifier:(id)specifier;
+- (void)setSpecifier:(id)specifier;
 @end
 
 @implementation CSGrantedDelegateDetailsController
 
-- (id)initInAddDelegateMode:(BOOL)a3
+- (id)initInAddDelegateMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v15.receiver = self;
   v15.super_class = CSGrantedDelegateDetailsController;
   v4 = [(CSGrantedDelegateDetailsController *)&v15 init];
@@ -23,47 +23,47 @@
     eventStore = v4->_eventStore;
     v4->_eventStore = v5;
 
-    v4->_addDelegateMode = v3;
-    if (v3)
+    v4->_addDelegateMode = modeCopy;
+    if (modeCopy)
     {
       v7 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:v4 action:"modalCancelPressed:"];
-      v8 = [(CSGrantedDelegateDetailsController *)v4 navigationItem];
-      [v8 setLeftBarButtonItem:v7];
+      navigationItem = [(CSGrantedDelegateDetailsController *)v4 navigationItem];
+      [navigationItem setLeftBarButtonItem:v7];
 
       v9 = [UIBarButtonItem alloc];
       v10 = [NSBundle bundleForClass:objc_opt_class()];
       v11 = [v10 localizedStringForKey:@"Save" value:&stru_210B8 table:@"MobileCalSettings"];
       v12 = [v9 initWithTitle:v11 style:2 target:v4 action:"modalSavePressed:"];
-      v13 = [(CSGrantedDelegateDetailsController *)v4 navigationItem];
-      [v13 setRightBarButtonItem:v12];
+      navigationItem2 = [(CSGrantedDelegateDetailsController *)v4 navigationItem];
+      [navigationItem2 setRightBarButtonItem:v12];
     }
   }
 
   return v4;
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v14.receiver = self;
   v14.super_class = CSGrantedDelegateDetailsController;
-  v4 = a3;
-  [(CSGrantedDelegateDetailsController *)&v14 setSpecifier:v4];
-  v5 = [v4 propertyForKey:{@"CSDelegateClassInstanceKey", v14.receiver, v14.super_class}];
+  specifierCopy = specifier;
+  [(CSGrantedDelegateDetailsController *)&v14 setSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:{@"CSDelegateClassInstanceKey", v14.receiver, v14.super_class}];
 
   objc_storeWeak(&self->_delegateFromSpecifier, v5);
-  v6 = [(CSGrantedDelegateDetailsController *)self specifier];
-  v7 = [v6 propertyForKey:@"CSSourceKey"];
+  specifier = [(CSGrantedDelegateDetailsController *)self specifier];
+  v7 = [specifier propertyForKey:@"CSSourceKey"];
   source = self->_source;
   self->_source = v7;
 
-  v9 = [(CSGrantedDelegateDetailsController *)self specifier];
-  v10 = [v9 propertyForKey:@"CSGrantedDelegateKey"];
+  specifier2 = [(CSGrantedDelegateDetailsController *)self specifier];
+  v10 = [specifier2 propertyForKey:@"CSGrantedDelegateKey"];
   grantedDelegate = self->_grantedDelegate;
   self->_grantedDelegate = v10;
 
-  v12 = [(CalGrantedDelegate *)self->_grantedDelegate displayName];
-  v13 = [(CSGrantedDelegateDetailsController *)self navigationItem];
-  [v13 setTitle:v12];
+  displayName = [(CalGrantedDelegate *)self->_grantedDelegate displayName];
+  navigationItem = [(CSGrantedDelegateDetailsController *)self navigationItem];
+  [navigationItem setTitle:displayName];
 }
 
 - (id)specifiers
@@ -76,9 +76,9 @@
     v6 = +[NSMutableArray array];
     v7 = +[PSSpecifier emptyGroupSpecifier];
     v8 = [(CSGrantedDelegateDetailsController *)self enabledWriteAccess:0];
-    v9 = [v8 BOOLValue];
+    bOOLValue = [v8 BOOLValue];
 
-    if (v9)
+    if (bOOLValue)
     {
       v10 = @"Enable write access for delegate explanatory note (switch on)";
       v11 = @"This account can create, edit and delete events and calendars on your behalf.";
@@ -124,11 +124,11 @@
   return v4;
 }
 
-- (void)setEnabledWriteAccess:(id)a3 specifier:(id)a4
+- (void)setEnabledWriteAccess:(id)access specifier:(id)specifier
 {
-  v6 = a3;
-  objc_storeStrong(&self->_currentPermission, a3);
-  if ([v6 BOOLValue])
+  accessCopy = access;
+  objc_storeStrong(&self->_currentPermission, access);
+  if ([accessCopy BOOLValue])
   {
     v7 = 2;
   }
@@ -157,7 +157,7 @@
   [(CSGrantedDelegateDetailsController *)self reloadSpecifiers];
 }
 
-- (id)enabledWriteAccess:(id)a3
+- (id)enabledWriteAccess:(id)access
 {
   currentPermission = self->_currentPermission;
   if (currentPermission)
@@ -173,17 +173,17 @@
   return v4;
 }
 
-- (void)removeDelegateTapped:(id)a3
+- (void)removeDelegateTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   if (!self->_addDelegateMode)
   {
     v5 = [NSBundle bundleForClass:objc_opt_class()];
     v6 = +[UIDevice currentDevice];
-    v7 = [v6 userInterfaceIdiom];
+    userInterfaceIdiom = [v6 userInterfaceIdiom];
 
-    v8 = v7 & 0xFFFFFFFFFFFFFFFBLL;
-    if ((v7 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    v8 = userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL;
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v9 = [v5 localizedStringForKey:@"Remove delegate name" value:@"Remove Delegate" table:@"MobileCalSettings"];
     }
@@ -195,9 +195,9 @@
 
     v10 = [v5 localizedStringForKey:@"Confirm delete delegate alert sheet description" value:@"Removing this delegate will remove their read and write access to your account." table:@"MobileCalSettings"];
     v11 = +[UIDevice currentDevice];
-    v12 = [v11 userInterfaceIdiom];
+    userInterfaceIdiom2 = [v11 userInterfaceIdiom];
 
-    v13 = [UIAlertController alertControllerWithTitle:v9 message:v10 preferredStyle:(v12 & 0xFFFFFFFFFFFFFFFBLL) == 1];
+    v13 = [UIAlertController alertControllerWithTitle:v9 message:v10 preferredStyle:(userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1];
 
     if (v8 == 1)
     {
@@ -216,21 +216,21 @@
     v17 = [UIAlertAction actionWithTitle:v16 style:1 handler:&stru_20A60];
     [v13 addAction:v17];
 
-    v18 = [(CSGrantedDelegateDetailsController *)self cachedCellForSpecifier:v4];
-    v19 = [v13 popoverPresentationController];
-    [v19 setSourceView:v18];
+    v18 = [(CSGrantedDelegateDetailsController *)self cachedCellForSpecifier:tappedCopy];
+    popoverPresentationController = [v13 popoverPresentationController];
+    [popoverPresentationController setSourceView:v18];
 
     y = CGRectNull.origin.y;
     width = CGRectNull.size.width;
     height = CGRectNull.size.height;
-    v23 = [v13 popoverPresentationController];
-    [v23 setSourceRect:{CGRectNull.origin.x, y, width, height}];
+    popoverPresentationController2 = [v13 popoverPresentationController];
+    [popoverPresentationController2 setSourceRect:{CGRectNull.origin.x, y, width, height}];
 
     [(CSGrantedDelegateDetailsController *)self presentViewController:v13 animated:1 completion:0];
   }
 }
 
-- (void)modalCancelPressed:(id)a3
+- (void)modalCancelPressed:(id)pressed
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegateFromSpecifier);
   [WeakRetained didDismissViewControllerSavingNewDelegate:0];
@@ -238,7 +238,7 @@
   [(CSGrantedDelegateDetailsController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)modalSavePressed:(id)a3
+- (void)modalSavePressed:(id)pressed
 {
   [(EKEventStore *)self->_eventStore updateGrantedDelegate:self->_grantedDelegate action:0 source:self->_source completion:0];
   WeakRetained = objc_loadWeakRetained(&self->_delegateFromSpecifier);

@@ -1,15 +1,15 @@
 @interface SPCalculatorQuery
-- (SPCalculatorQuery)initWithUserQuery:(id)a3 queryGroupId:(unint64_t)a4 options:(unint64_t)a5 queryContext:(id)a6;
+- (SPCalculatorQuery)initWithUserQuery:(id)query queryGroupId:(unint64_t)id options:(unint64_t)options queryContext:(id)context;
 - (void)start;
 @end
 
 @implementation SPCalculatorQuery
 
-- (SPCalculatorQuery)initWithUserQuery:(id)a3 queryGroupId:(unint64_t)a4 options:(unint64_t)a5 queryContext:(id)a6
+- (SPCalculatorQuery)initWithUserQuery:(id)query queryGroupId:(unint64_t)id options:(unint64_t)options queryContext:(id)context
 {
   v12.receiver = self;
   v12.super_class = SPCalculatorQuery;
-  v6 = [(SPKQuery *)&v12 initWithUserQuery:a3 queryGroupId:a4 options:0 queryContext:a6];
+  v6 = [(SPKQuery *)&v12 initWithUserQuery:query queryGroupId:id options:0 queryContext:context];
   if (v6)
   {
     v7 = qos_class_self();
@@ -29,14 +29,14 @@
   [(SPKQuery *)&v19 start];
   if (![(SPKQuery *)self sendEmptyResponseIfNecessaryForSourceKind:4])
   {
-    v3 = [(SPKQuery *)self userQueryString];
-    v4 = [(SPKQuery *)self queryContext];
-    v5 = [(SPKQuery *)self delegate];
-    v6 = [v5 queryIdent];
-    v7 = [v5 clientBundleID];
-    v8 = [objc_alloc(MEMORY[0x277D4C658]) initWithInput:v3 triggerEvent:objc_msgSend(v4 indexType:"whyQuery") queryId:{2, v6}];
-    v9 = [MEMORY[0x277D4BEC0] sharedProxy];
-    [v9 sendFeedbackType:5 feedback:v8 queryId:v6 clientID:v7];
+    userQueryString = [(SPKQuery *)self userQueryString];
+    queryContext = [(SPKQuery *)self queryContext];
+    delegate = [(SPKQuery *)self delegate];
+    queryIdent = [delegate queryIdent];
+    clientBundleID = [delegate clientBundleID];
+    v8 = [objc_alloc(MEMORY[0x277D4C658]) initWithInput:userQueryString triggerEvent:objc_msgSend(queryContext indexType:"whyQuery") queryId:{2, queryIdent}];
+    mEMORY[0x277D4BEC0] = [MEMORY[0x277D4BEC0] sharedProxy];
+    [mEMORY[0x277D4BEC0] sendFeedbackType:5 feedback:v8 queryId:queryIdent clientID:clientBundleID];
 
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -44,13 +44,13 @@
     block[2] = __26__SPCalculatorQuery_start__block_invoke;
     block[3] = &unk_279CFE038;
     block[4] = self;
-    v15 = v3;
-    v17 = v7;
-    v18 = v6;
+    v15 = userQueryString;
+    v17 = clientBundleID;
+    v18 = queryIdent;
     v16 = v8;
-    v11 = v7;
+    v11 = clientBundleID;
     v12 = v8;
-    v13 = v3;
+    v13 = userQueryString;
     dispatch_async(queue, block);
   }
 }

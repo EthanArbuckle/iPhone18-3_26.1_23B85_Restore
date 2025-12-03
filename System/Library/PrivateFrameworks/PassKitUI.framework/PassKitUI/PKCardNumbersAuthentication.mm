@@ -1,19 +1,19 @@
 @interface PKCardNumbersAuthentication
 + (id)genericDisplayableVirtualCardError;
 + (id)rateLimitDisplayableVirtualCardError;
-+ (void)_reportAnalyticsAuthEnded:(id)a3 result:(id)a4 featureIdentifier:(unint64_t)a5;
-+ (void)_reportAnalyticsAuthStartedForFeatureIdentifier:(unint64_t)a3;
-+ (void)authenticationContextLocationBased:(BOOL)a3 featureIdentifier:(unint64_t)a4 completion:(id)a5;
++ (void)_reportAnalyticsAuthEnded:(id)ended result:(id)result featureIdentifier:(unint64_t)identifier;
++ (void)_reportAnalyticsAuthStartedForFeatureIdentifier:(unint64_t)identifier;
++ (void)authenticationContextLocationBased:(BOOL)based featureIdentifier:(unint64_t)identifier completion:(id)completion;
 @end
 
 @implementation PKCardNumbersAuthentication
 
-+ (void)authenticationContextLocationBased:(BOOL)a3 featureIdentifier:(unint64_t)a4 completion:(id)a5
++ (void)authenticationContextLocationBased:(BOOL)based featureIdentifier:(unint64_t)identifier completion:(id)completion
 {
-  v6 = a3;
+  basedCopy = based;
   v23[4] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  if (v8)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v9 = objc_alloc_init(MEMORY[0x1E696EE50]);
     v22[0] = &unk_1F3CC6D58;
@@ -30,7 +30,7 @@
     v23[3] = MEMORY[0x1E695E118];
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:4];
 
-    if (v6)
+    if (basedCopy)
     {
       v15 = 1025;
     }
@@ -40,15 +40,15 @@
       v15 = 2;
     }
 
-    [a1 _reportAnalyticsAuthStartedForFeatureIdentifier:a4];
-    objc_initWeak(&location, a1);
+    [self _reportAnalyticsAuthStartedForFeatureIdentifier:identifier];
+    objc_initWeak(&location, self);
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __95__PKCardNumbersAuthentication_authenticationContextLocationBased_featureIdentifier_completion___block_invoke;
     v17[3] = &unk_1E8010E48;
     objc_copyWeak(v20, &location);
-    v20[1] = a4;
-    v19 = v8;
+    v20[1] = identifier;
+    v19 = completionCopy;
     v16 = v9;
     v18 = v16;
     [v16 evaluatePolicy:v15 options:v14 reply:v17];
@@ -100,19 +100,19 @@ void __95__PKCardNumbersAuthentication_authenticationContextLocationBased_featur
   return v3;
 }
 
-+ (void)_reportAnalyticsAuthStartedForFeatureIdentifier:(unint64_t)a3
++ (void)_reportAnalyticsAuthStartedForFeatureIdentifier:(unint64_t)identifier
 {
-  if (a3 == 1)
+  if (identifier == 1)
   {
     [MEMORY[0x1E69B8540] reportDTOAuthEvent:*MEMORY[0x1E69BA760] forSubject:*MEMORY[0x1E69BB6A8]];
   }
 }
 
-+ (void)_reportAnalyticsAuthEnded:(id)a3 result:(id)a4 featureIdentifier:(unint64_t)a5
++ (void)_reportAnalyticsAuthEnded:(id)ended result:(id)result featureIdentifier:(unint64_t)identifier
 {
-  if (a5 == 1)
+  if (identifier == 1)
   {
-    [MEMORY[0x1E69B8540] reportDTOAuthEndedWithResult:a4 error:a3 forSubject:*MEMORY[0x1E69BB6A8]];
+    [MEMORY[0x1E69B8540] reportDTOAuthEndedWithResult:result error:ended forSubject:*MEMORY[0x1E69BB6A8]];
   }
 }
 

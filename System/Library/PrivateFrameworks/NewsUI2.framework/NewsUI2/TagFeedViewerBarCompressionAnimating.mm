@@ -1,7 +1,7 @@
 @interface TagFeedViewerBarCompressionAnimating
-- (double)maximumBarHeightForTraitCollection:(id)a3;
+- (double)maximumBarHeightForTraitCollection:(id)collection;
 - (double)topOffset;
-- (void)scrollViewIsAtTop:(BOOL)a3 offset:(double)a4;
+- (void)scrollViewIsAtTop:(BOOL)top offset:(double)offset;
 @end
 
 @implementation TagFeedViewerBarCompressionAnimating
@@ -15,15 +15,15 @@
   return v3;
 }
 
-- (void)scrollViewIsAtTop:(BOOL)a3 offset:(double)a4
+- (void)scrollViewIsAtTop:(BOOL)top offset:(double)offset
 {
 
-  sub_219045294(a3, a4);
+  sub_219045294(top, offset);
 }
 
-- (double)maximumBarHeightForTraitCollection:(id)a3
+- (double)maximumBarHeightForTraitCollection:(id)collection
 {
-  v3 = a3;
+  collectionCopy = collection;
 
   v4 = sub_219045810();
 

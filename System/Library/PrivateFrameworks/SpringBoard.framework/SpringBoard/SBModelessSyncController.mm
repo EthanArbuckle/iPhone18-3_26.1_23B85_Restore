@@ -4,13 +4,13 @@
 - (void)_appSyncStateChanged;
 - (void)_beginObservingICloudRestoreStatus;
 - (void)_iCloudStatusChanged;
-- (void)_setAppSyncState:(BOOL)a3;
+- (void)_setAppSyncState:(BOOL)state;
 - (void)_updateIconsForStateChange;
 - (void)beginMonitoring;
-- (void)connection:(id)a3 updatedProgress:(id)a4;
+- (void)connection:(id)connection updatedProgress:(id)progress;
 - (void)dealloc;
 - (void)endMonitoring;
-- (void)setIsSyncing:(BOOL)a3;
+- (void)setIsSyncing:(BOOL)syncing;
 @end
 
 @implementation SBModelessSyncController
@@ -59,39 +59,39 @@ uint64_t __42__SBModelessSyncController_sharedInstance__block_invoke()
   return kdebug_trace();
 }
 
-- (void)setIsSyncing:(BOOL)a3
+- (void)setIsSyncing:(BOOL)syncing
 {
-  if (self->_isSyncing != a3)
+  if (self->_isSyncing != syncing)
   {
-    self->_isSyncing = a3;
+    self->_isSyncing = syncing;
     v4 = @"kSBSyncSessionEnded";
-    if (a3)
+    if (syncing)
     {
       v4 = @"kSBSyncSessionBegan";
     }
 
     v5 = MEMORY[0x277CCAB98];
     v6 = v4;
-    v7 = [v5 defaultCenter];
-    [v7 postNotificationName:v6 object:0 userInfo:0];
+    defaultCenter = [v5 defaultCenter];
+    [defaultCenter postNotificationName:v6 object:0 userInfo:0];
   }
 }
 
-- (void)connection:(id)a3 updatedProgress:(id)a4
+- (void)connection:(id)connection updatedProgress:(id)progress
 {
-  v5 = a4;
-  v6 = [v5 objectForKey:@"Enabled"];
-  v7 = [v6 BOOLValue];
+  progressCopy = progress;
+  v6 = [progressCopy objectForKey:@"Enabled"];
+  bOOLValue = [v6 BOOLValue];
 
-  v8 = [v5 objectForKey:@"AutoSync"];
-  v9 = [v8 BOOLValue];
+  v8 = [progressCopy objectForKey:@"AutoSync"];
+  bOOLValue2 = [v8 BOOLValue];
 
-  v10 = [v5 objectForKey:@"Wireless"];
+  v10 = [progressCopy objectForKey:@"Wireless"];
 
-  LOBYTE(v5) = [v10 BOOLValue];
-  [(SBModelessSyncController *)self setIsSyncing:v7];
-  self->_isAutoSyncing = v9;
-  self->_isWirelessSyncing = v5;
+  LOBYTE(progressCopy) = [v10 BOOLValue];
+  [(SBModelessSyncController *)self setIsSyncing:bOOLValue];
+  self->_isAutoSyncing = bOOLValue2;
+  self->_isWirelessSyncing = progressCopy;
 }
 
 - (void)beginMonitoring
@@ -137,21 +137,21 @@ uint64_t __42__SBModelessSyncController_sharedInstance__block_invoke()
   [(SBModelessSyncController *)self _setAppSyncState:state64 != 0];
 }
 
-- (void)_setAppSyncState:(BOOL)a3
+- (void)_setAppSyncState:(BOOL)state
 {
-  if (self->_isAppSyncing != a3)
+  if (self->_isAppSyncing != state)
   {
-    self->_isAppSyncing = a3;
+    self->_isAppSyncing = state;
     v4 = @"kSBWirelessAppSyncEnded";
-    if (a3)
+    if (state)
     {
       v4 = @"kSBWirelessAppSyncBegan";
     }
 
     v5 = MEMORY[0x277CCAB98];
     v6 = v4;
-    v7 = [v5 defaultCenter];
-    [v7 postNotificationName:v6 object:0 userInfo:0];
+    defaultCenter = [v5 defaultCenter];
+    [defaultCenter postNotificationName:v6 object:0 userInfo:0];
 
     if (!self->_isAppSyncing)
     {
@@ -168,10 +168,10 @@ uint64_t __42__SBModelessSyncController_sharedInstance__block_invoke()
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v2 = [SBApp windowSceneManager];
-  v3 = [v2 connectedWindowScenes];
+  windowSceneManager = [SBApp windowSceneManager];
+  connectedWindowScenes = [windowSceneManager connectedWindowScenes];
 
-  v4 = [v3 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  v4 = [connectedWindowScenes countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v4)
   {
     v5 = v4;
@@ -182,18 +182,18 @@ uint64_t __42__SBModelessSyncController_sharedInstance__block_invoke()
       {
         if (*v21 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(connectedWindowScenes);
         }
 
-        v8 = [*(*(&v20 + 1) + 8 * i) iconController];
-        v9 = [v8 iconModel];
+        iconController = [*(*(&v20 + 1) + 8 * i) iconController];
+        iconModel = [iconController iconModel];
 
         v18 = 0u;
         v19 = 0u;
         v16 = 0u;
         v17 = 0u;
-        v10 = [v9 leafIcons];
-        v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
+        leafIcons = [iconModel leafIcons];
+        v11 = [leafIcons countByEnumeratingWithState:&v16 objects:v24 count:16];
         if (v11)
         {
           v12 = v11;
@@ -204,7 +204,7 @@ uint64_t __42__SBModelessSyncController_sharedInstance__block_invoke()
             {
               if (*v17 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(leafIcons);
               }
 
               v15 = *(*(&v16 + 1) + 8 * j);
@@ -214,14 +214,14 @@ uint64_t __42__SBModelessSyncController_sharedInstance__block_invoke()
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
+            v12 = [leafIcons countByEnumeratingWithState:&v16 objects:v24 count:16];
           }
 
           while (v12);
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v5 = [connectedWindowScenes countByEnumeratingWithState:&v20 objects:v25 count:16];
     }
 
     while (v5);
@@ -237,8 +237,8 @@ uint64_t __42__SBModelessSyncController_sharedInstance__block_invoke()
   if (self->_restoringFromICloud != v4)
   {
     self->_restoringFromICloud = v4;
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    v6 = v5;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    v6 = defaultCenter;
     if (v3 >= 2)
     {
       v7 = @"SBICloudRestoreDidEndNotification";
@@ -249,19 +249,19 @@ uint64_t __42__SBModelessSyncController_sharedInstance__block_invoke()
       v7 = @"SBICloudRestoreDidBeginNotification";
     }
 
-    [v5 postNotificationName:v7 object:0];
+    [defaultCenter postNotificationName:v7 object:0];
   }
 }
 
 - (void)_beginObservingICloudRestoreStatus
 {
-  v3 = [*MEMORY[0x277D28AA0] UTF8String];
+  uTF8String = [*MEMORY[0x277D28AA0] UTF8String];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __62__SBModelessSyncController__beginObservingICloudRestoreStatus__block_invoke;
   handler[3] = &unk_2783A95E8;
   handler[4] = self;
-  notify_register_dispatch(v3, &self->_iCloudRestoreToken, MEMORY[0x277D85CD0], handler);
+  notify_register_dispatch(uTF8String, &self->_iCloudRestoreToken, MEMORY[0x277D85CD0], handler);
   [(SBModelessSyncController *)self _iCloudStatusChanged];
 }
 

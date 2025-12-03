@@ -3,9 +3,9 @@
 - (BOOL)isSharedInGroup;
 - (NSDate)creationDate;
 - (SFFileVaultRecoveryKey)init;
-- (SFFileVaultRecoveryKey)initWithVolumeID:(id)a3 serialNumber:(id)a4 recoveryKey:(id)a5 displayName:(id)a6 creationDate:(id)a7;
-- (void)setIsSavedInPasswordsApp:(BOOL)a3;
-- (void)setIsSharedInGroup:(BOOL)a3;
+- (SFFileVaultRecoveryKey)initWithVolumeID:(id)d serialNumber:(id)number recoveryKey:(id)key displayName:(id)name creationDate:(id)date;
+- (void)setIsSavedInPasswordsApp:(BOOL)app;
+- (void)setIsSharedInGroup:(BOOL)group;
 @end
 
 @implementation SFFileVaultRecoveryKey
@@ -32,11 +32,11 @@
   return *(self + v3);
 }
 
-- (void)setIsSharedInGroup:(BOOL)a3
+- (void)setIsSharedInGroup:(BOOL)group
 {
   v5 = OBJC_IVAR___SFFileVaultRecoveryKey_isSharedInGroup;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = group;
 }
 
 - (BOOL)isSavedInPasswordsApp
@@ -46,14 +46,14 @@
   return *(self + v3);
 }
 
-- (void)setIsSavedInPasswordsApp:(BOOL)a3
+- (void)setIsSavedInPasswordsApp:(BOOL)app
 {
   v5 = OBJC_IVAR___SFFileVaultRecoveryKey_isSavedInPasswordsApp;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = app;
 }
 
-- (SFFileVaultRecoveryKey)initWithVolumeID:(id)a3 serialNumber:(id)a4 recoveryKey:(id)a5 displayName:(id)a6 creationDate:(id)a7
+- (SFFileVaultRecoveryKey)initWithVolumeID:(id)d serialNumber:(id)number recoveryKey:(id)key displayName:(id)name creationDate:(id)date
 {
   v23[1] = self;
   v7 = *(*(sub_26453929C() - 8) + 64);

@@ -1,23 +1,23 @@
 @interface DDResultCluster
-+ (id)clustersWithDDResults:(id)a3 mlResults:(id)a4;
-- (__DDResult)resolvedDDResultFromOriginalQuery:(__DDScanQuery *)a3 mlSupportedTypes:(__CFArray *)a4;
-- (void)addDDResult:(__DDResult *)a3;
-- (void)setMLResult:(id)a3;
++ (id)clustersWithDDResults:(id)results mlResults:(id)mlResults;
+- (__DDResult)resolvedDDResultFromOriginalQuery:(__DDScanQuery *)query mlSupportedTypes:(__CFArray *)types;
+- (void)addDDResult:(__DDResult *)result;
+- (void)setMLResult:(id)result;
 @end
 
 @implementation DDResultCluster
 
-- (__DDResult)resolvedDDResultFromOriginalQuery:(__DDScanQuery *)a3 mlSupportedTypes:(__CFArray *)a4
+- (__DDResult)resolvedDDResultFromOriginalQuery:(__DDScanQuery *)query mlSupportedTypes:(__CFArray *)types
 {
   v49 = *MEMORY[0x1E69E9840];
   v7 = [(NSMutableArray *)self->_DDResults count];
-  v38 = self;
+  selfCopy = self;
   MLResult = self->_MLResult;
   if (v7)
   {
     if (MLResult)
     {
-      v36 = a3;
+      queryCopy = query;
       v45 = 0u;
       v46 = 0u;
       v43 = 0u;
@@ -42,10 +42,10 @@
             }
 
             v17 = *(*(&v43 + 1) + 8 * i);
-            v18 = [(DDMLResult *)v38->_MLResult classification];
-            if (v18 == 10 || DDMLClassificationForType(v17) != v18)
+            classification = [(DDMLResult *)selfCopy->_MLResult classification];
+            if (classification == 10 || DDMLClassificationForType(v17) != classification)
             {
-              if (!DDResultTypeIsMLSupported(v17, a4) && *(v17 + 48) > v14)
+              if (!DDResultTypeIsMLSupported(v17, types) && *(v17 + 48) > v14)
               {
                 v14 = *(v17 + 48);
                 v11 = v17;
@@ -81,7 +81,7 @@
         v24 = v11;
       }
 
-      a3 = v36;
+      query = queryCopy;
     }
 
     else
@@ -108,7 +108,7 @@
             }
 
             v28 = *(*(&v39 + 1) + 8 * j);
-            if (!DDResultTypeIsMLSupported(v28, a4) && *(v28 + 48) > v26)
+            if (!DDResultTypeIsMLSupported(v28, types) && *(v28 + 48) > v26)
             {
               v26 = *(v28 + 48);
               v24 = v28;
@@ -127,11 +127,11 @@
       }
     }
 
-    v29 = v38->_MLResult;
+    v29 = selfCopy->_MLResult;
     if (!v24)
     {
 LABEL_45:
-      v24 = [(DDMLResult *)v29 ddResultFromQuery:a3];
+      v24 = [(DDMLResult *)v29 ddResultFromQuery:query];
 LABEL_49:
       v35 = *MEMORY[0x1E69E9840];
       return v24;
@@ -143,14 +143,14 @@ LABEL_49:
       {
         var0 = v24->var2.var0;
         var1 = v24->var2.var1;
-        v32 = var0 - [(DDMLResult *)v38->_MLResult range];
-        v33 = [(DDMLResult *)v38->_MLResult range];
-        [(DDMLResult *)v38->_MLResult range];
-        DDResultExpandRange(v24, a3, v32, v33 - (var0 + var1) + v34);
+        v32 = var0 - [(DDMLResult *)selfCopy->_MLResult range];
+        range = [(DDMLResult *)selfCopy->_MLResult range];
+        [(DDMLResult *)selfCopy->_MLResult range];
+        DDResultExpandRange(v24, query, v32, range - (var0 + var1) + v34);
         goto LABEL_49;
       }
 
-      v29 = v38->_MLResult;
+      v29 = selfCopy->_MLResult;
       goto LABEL_45;
     }
 
@@ -171,22 +171,22 @@ LABEL_47:
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return [(DDMLResult *)MLResult ddResultFromQuery:a3];
+  return [(DDMLResult *)MLResult ddResultFromQuery:query];
 }
 
-- (void)setMLResult:(id)a3
+- (void)setMLResult:(id)result
 {
-  v12 = a3;
+  resultCopy = result;
   if (self->_DDRange.length < 1)
   {
     goto LABEL_8;
   }
 
-  v5 = [v12 range];
+  range = [resultCopy range];
   location = self->_DDRange.location;
-  if (location <= v5)
+  if (location <= range)
   {
-    v8 = v5;
+    v8 = range;
   }
 
   else
@@ -195,8 +195,8 @@ LABEL_47:
   }
 
   v9 = self->_DDRange.length + location;
-  v10 = v5 + v6;
-  v11 = v12;
+  v10 = range + v6;
+  v11 = resultCopy;
   if (v9 >= v10)
   {
     v9 = v10;
@@ -205,44 +205,44 @@ LABEL_47:
   if (v8 < v9)
   {
 LABEL_8:
-    objc_storeStrong(&self->_MLResult, a3);
-    v11 = v12;
+    objc_storeStrong(&self->_MLResult, result);
+    v11 = resultCopy;
   }
 }
 
-- (void)addDDResult:(__DDResult *)a3
+- (void)addDDResult:(__DDResult *)result
 {
   if (self->_DDResults)
   {
-    if (self->_DDRange.location == DDResultGetRangeForURLification(a3) && self->_DDRange.length == v5)
+    if (self->_DDRange.location == DDResultGetRangeForURLification(result) && self->_DDRange.length == v5)
     {
       DDResults = self->_DDResults;
 
-      [(NSMutableArray *)DDResults addObject:a3];
+      [(NSMutableArray *)DDResults addObject:result];
     }
   }
 
   else
   {
-    v7 = [MEMORY[0x1E695DF70] arrayWithObject:a3];
+    v7 = [MEMORY[0x1E695DF70] arrayWithObject:result];
     v8 = self->_DDResults;
     self->_DDResults = v7;
 
-    self->_DDRange.location = DDResultGetRangeForURLification(a3);
+    self->_DDRange.location = DDResultGetRangeForURLification(result);
     self->_DDRange.length = v9;
   }
 }
 
-+ (id)clustersWithDDResults:(id)a3 mlResults:(id)a4
++ (id)clustersWithDDResults:(id)results mlResults:(id)mlResults
 {
   v50 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  resultsCopy = results;
+  mlResultsCopy = mlResults;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v32 = v5;
-  v36 = [v5 count];
-  v31 = v6;
-  v35 = [v6 count];
+  v32 = resultsCopy;
+  v36 = [resultsCopy count];
+  v31 = mlResultsCopy;
+  v35 = [mlResultsCopy count];
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v9 = 0;
   v42 = 0;
@@ -253,7 +253,7 @@ LABEL_8:
   v13 = 0;
   v39 = 0x7FFFFFFFFFFFFFFFuLL;
   v40 = 0x7FFFFFFFFFFFFFFFLL;
-  v41 = 0x7FFFFFFFFFFFFFFFLL;
+  range = 0x7FFFFFFFFFFFFFFFLL;
   v33 = v8;
   v34 = v7;
   while (1)
@@ -291,7 +291,7 @@ LABEL_6:
       else
       {
         v10 = [v31 objectAtIndexedSubscript:v11];
-        v41 = [v10 range];
+        range = [v10 range];
         v43 = v14;
         ++v11;
       }
@@ -301,7 +301,7 @@ LABEL_11:
     v15 = v40;
     if (v10)
     {
-      v16 = v40 >= v41;
+      v16 = v40 >= range;
     }
 
     else
@@ -312,7 +312,7 @@ LABEL_11:
     v17 = !v16;
     if (!v17)
     {
-      v15 = v41;
+      v15 = range;
     }
 
     v18 = v42;
@@ -325,7 +325,7 @@ LABEL_11:
     v20 = 0x7FFFFFFFFFFFFFFFLL;
     if (v10)
     {
-      v20 = v41;
+      v20 = range;
     }
 
     else

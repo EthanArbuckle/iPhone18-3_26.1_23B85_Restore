@@ -1,21 +1,21 @@
 @interface QLTRenderedIcon
 - (CGRect)contentRect;
-- (QLTRenderedIcon)initWithImage:(id)a3 contentRect:(CGRect)a4;
+- (QLTRenderedIcon)initWithImage:(id)image contentRect:(CGRect)rect;
 @end
 
 @implementation QLTRenderedIcon
 
-- (QLTRenderedIcon)initWithImage:(id)a3 contentRect:(CGRect)a4
+- (QLTRenderedIcon)initWithImage:(id)image contentRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v11.receiver = self;
   v11.super_class = QLTRenderedIcon;
-  v8 = a3;
+  imageCopy = image;
   v9 = [(QLTRenderedIcon *)&v11 init];
-  [(QLTRenderedIcon *)v9 setImage:v8, v11.receiver, v11.super_class];
+  [(QLTRenderedIcon *)v9 setImage:imageCopy, v11.receiver, v11.super_class];
 
   [(QLTRenderedIcon *)v9 setContentRect:x, y, width, height];
   return v9;

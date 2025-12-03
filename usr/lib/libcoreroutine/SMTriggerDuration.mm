@@ -1,24 +1,24 @@
 @interface SMTriggerDuration
-- (BOOL)_startMonitoringWithConfig:(id)a3 error:(id *)a4;
+- (BOOL)_startMonitoringWithConfig:(id)config error:(id *)error;
 - (BOOL)_stopMonitoring;
-- (SMTriggerDuration)initWithQueue:(id)a3 defaultsManager:(id)a4 sessionStore:(id)a5;
+- (SMTriggerDuration)initWithQueue:(id)queue defaultsManager:(id)manager sessionStore:(id)store;
 - (SMTriggerManagerProtocol)sessionMonitorDelegate;
 - (void)_initializeTimers;
-- (void)modifyMonitoringWithConfiguration:(id)a3 handler:(id)a4;
+- (void)modifyMonitoringWithConfiguration:(id)configuration handler:(id)handler;
 - (void)setup;
-- (void)startMonitoringWithConfiguration:(id)a3 handler:(id)a4;
-- (void)stopMonitoringWithHandler:(id)a3;
+- (void)startMonitoringWithConfiguration:(id)configuration handler:(id)handler;
+- (void)stopMonitoringWithHandler:(id)handler;
 @end
 
 @implementation SMTriggerDuration
 
-- (SMTriggerDuration)initWithQueue:(id)a3 defaultsManager:(id)a4 sessionStore:(id)a5
+- (SMTriggerDuration)initWithQueue:(id)queue defaultsManager:(id)manager sessionStore:(id)store
 {
   v26 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10)
+  queueCopy = queue;
+  managerCopy = manager;
+  storeCopy = store;
+  if (!queueCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -53,9 +53,9 @@
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_queue, a3);
-    objc_storeStrong(&v19->_defaultsManager, a4);
-    objc_storeStrong(&v19->_sessionStore, a5);
+    objc_storeStrong(&v18->_queue, queue);
+    objc_storeStrong(&v19->_defaultsManager, manager);
+    objc_storeStrong(&v19->_sessionStore, store);
     [(SMTriggerDuration *)v19 setup];
   }
 
@@ -64,26 +64,26 @@
 
 - (void)setup
 {
-  v3 = [(SMTriggerDuration *)self queue];
+  queue = [(SMTriggerDuration *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __26__SMTriggerDuration_setup__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_initializeTimers
 {
   v14 = *MEMORY[0x277D85DE8];
   v3 = [RTXPCTimerAlarm alloc];
-  v4 = [(SMTriggerDuration *)self queue];
+  queue = [(SMTriggerDuration *)self queue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __38__SMTriggerDuration__initializeTimers__block_invoke;
   v9[3] = &unk_2788C4EA0;
   v9[4] = self;
-  v5 = [(RTXPCTimerAlarm *)v3 initWithIdentifier:@"com.apple.routined.triggerDuration" queue:v4 handler:v9];
+  v5 = [(RTXPCTimerAlarm *)v3 initWithIdentifier:@"com.apple.routined.triggerDuration" queue:queue handler:v9];
   [(SMTriggerDuration *)self setXpcTimerAlarm:v5];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -91,12 +91,12 @@
     v6 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [(SMTriggerDuration *)self xpcTimerAlarm];
-      v8 = [v7 identifier];
+      xpcTimerAlarm = [(SMTriggerDuration *)self xpcTimerAlarm];
+      identifier = [xpcTimerAlarm identifier];
       *buf = 136315394;
       v11 = "[SMTriggerDuration _initializeTimers]";
       v12 = 2112;
-      v13 = v8;
+      v13 = identifier;
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%s, initialized xpcTimerAlarm, %@", buf, 0x16u);
     }
   }
@@ -137,29 +137,29 @@ void __38__SMTriggerDuration__initializeTimers__block_invoke_2(uint64_t a1)
   [v8 onTriggerNotification:v7];
 }
 
-- (void)startMonitoringWithConfiguration:(id)a3 handler:(id)a4
+- (void)startMonitoringWithConfiguration:(id)configuration handler:(id)handler
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 time];
-  v10 = [v9 timeBound];
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  time = [configurationCopy time];
+  timeBound = [time timeBound];
 
-  if (v10)
+  if (timeBound)
   {
-    v11 = [(SMTriggerDuration *)self queue];
+    queue = [(SMTriggerDuration *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __62__SMTriggerDuration_startMonitoringWithConfiguration_handler___block_invoke;
     block[3] = &unk_2788C4C20;
     block[4] = self;
-    v17 = v7;
+    v17 = configurationCopy;
     v19 = a2;
-    v18 = v8;
-    dispatch_async(v11, block);
+    v18 = handlerCopy;
+    dispatch_async(queue, block);
   }
 
-  else if (v8)
+  else if (handlerCopy)
   {
     v12 = MEMORY[0x277CCA9B8];
     v13 = *MEMORY[0x277D01448];
@@ -168,7 +168,7 @@ void __38__SMTriggerDuration__initializeTimers__block_invoke_2(uint64_t a1)
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
     v15 = [v12 errorWithDomain:v13 code:7 userInfo:v14];
 
-    (*(v8 + 2))(v8, v15);
+    (*(handlerCopy + 2))(handlerCopy, v15);
   }
 }
 
@@ -212,25 +212,25 @@ void __62__SMTriggerDuration_startMonitoringWithConfiguration_handler___block_in
   }
 }
 
-- (BOOL)_startMonitoringWithConfig:(id)a3 error:(id *)a4
+- (BOOL)_startMonitoringWithConfig:(id)config error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (v7)
+  configCopy = config;
+  if (configCopy)
   {
-    v8 = [(SMTriggerDuration *)self xpcTimerAlarm];
+    xpcTimerAlarm = [(SMTriggerDuration *)self xpcTimerAlarm];
 
-    if (!v8)
+    if (!xpcTimerAlarm)
     {
       [(SMTriggerDuration *)self _initializeTimers];
     }
 
-    v9 = [(SMTriggerDuration *)self xpcTimerAlarm];
+    xpcTimerAlarm2 = [(SMTriggerDuration *)self xpcTimerAlarm];
     v20 = 0;
-    [v9 fireWithDate:v7 error:&v20];
+    [xpcTimerAlarm2 fireWithDate:configCopy error:&v20];
     v10 = v20;
 
-    if (a4)
+    if (error)
     {
       v11 = v10 == 0;
     }
@@ -259,7 +259,7 @@ void __62__SMTriggerDuration_startMonitoringWithConfiguration_handler___block_in
       }
 
       v14 = v10;
-      *a4 = v10;
+      *error = v10;
     }
   }
 
@@ -272,10 +272,10 @@ void __62__SMTriggerDuration_startMonitoringWithConfiguration_handler___block_in
       _os_log_error_impl(&dword_2304B3000, v15, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: endDate", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       _RTErrorInvalidParameterCreate(@"endDate");
-      *a4 = v12 = 0;
+      *error = v12 = 0;
     }
 
     else
@@ -287,19 +287,19 @@ void __62__SMTriggerDuration_startMonitoringWithConfiguration_handler___block_in
   return v12;
 }
 
-- (void)stopMonitoringWithHandler:(id)a3
+- (void)stopMonitoringWithHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(SMTriggerDuration *)self queue];
+  handlerCopy = handler;
+  queue = [(SMTriggerDuration *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__SMTriggerDuration_stopMonitoringWithHandler___block_invoke;
   block[3] = &unk_2788C6300;
-  v9 = v5;
+  v9 = handlerCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 uint64_t __47__SMTriggerDuration_stopMonitoringWithHandler___block_invoke(uint64_t a1)
@@ -333,29 +333,29 @@ uint64_t __47__SMTriggerDuration_stopMonitoringWithHandler___block_invoke(uint64
 
 - (BOOL)_stopMonitoring
 {
-  v3 = [(SMTriggerDuration *)self xpcTimerAlarm];
-  [v3 invalidate];
+  xpcTimerAlarm = [(SMTriggerDuration *)self xpcTimerAlarm];
+  [xpcTimerAlarm invalidate];
 
   [(SMTriggerDuration *)self setXpcTimerAlarm:0];
   return 1;
 }
 
-- (void)modifyMonitoringWithConfiguration:(id)a3 handler:(id)a4
+- (void)modifyMonitoringWithConfiguration:(id)configuration handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(SMTriggerDuration *)self queue];
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  queue = [(SMTriggerDuration *)self queue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __63__SMTriggerDuration_modifyMonitoringWithConfiguration_handler___block_invoke;
   v12[3] = &unk_2788C6940;
   v12[4] = self;
-  v13 = v7;
-  v14 = v8;
+  v13 = configurationCopy;
+  v14 = handlerCopy;
   v15 = a2;
-  v10 = v7;
-  v11 = v8;
-  dispatch_async(v9, v12);
+  v10 = configurationCopy;
+  v11 = handlerCopy;
+  dispatch_async(queue, v12);
 }
 
 uint64_t __63__SMTriggerDuration_modifyMonitoringWithConfiguration_handler___block_invoke(uint64_t a1)

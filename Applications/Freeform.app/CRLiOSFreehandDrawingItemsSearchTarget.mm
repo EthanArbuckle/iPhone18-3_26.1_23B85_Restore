@@ -1,14 +1,14 @@
 @interface CRLiOSFreehandDrawingItemsSearchTarget
 - (_TtC8Freeform38CRLiOSFreehandDrawingItemsSearchTarget)init;
-- (void)layoutSearchForString:(id)a3 options:(unint64_t)a4 hitBlock:(id)a5 completionBlock:(id)a6;
+- (void)layoutSearchForString:(id)string options:(unint64_t)options hitBlock:(id)block completionBlock:(id)completionBlock;
 @end
 
 @implementation CRLiOSFreehandDrawingItemsSearchTarget
 
-- (void)layoutSearchForString:(id)a3 options:(unint64_t)a4 hitBlock:(id)a5 completionBlock:(id)a6
+- (void)layoutSearchForString:(id)string options:(unint64_t)options hitBlock:(id)block completionBlock:(id)completionBlock
 {
-  v9 = _Block_copy(a5);
-  v10 = _Block_copy(a6);
+  v9 = _Block_copy(block);
+  v10 = _Block_copy(completionBlock);
   v11 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
   v14 = swift_allocObject();
@@ -25,8 +25,8 @@
     v15 = 0;
   }
 
-  v16 = self;
-  sub_10070FB90(v11, v13, a4, sub_1007127A4, v14, v10, v15);
+  selfCopy = self;
+  sub_10070FB90(v11, v13, options, sub_1007127A4, v14, v10, v15);
   sub_1000C1014(v10);
 }
 

@@ -32,17 +32,17 @@
     _os_log_impl(&dword_1C81FC000, v3, OS_LOG_TYPE_DEFAULT, "Checking vehicle storage for CarPlay tips.", buf, 2u);
   }
 
-  v4 = [(CRUsageInformation *)self serviceClient];
+  serviceClient = [(CRUsageInformation *)self serviceClient];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__CRUsageInformation_shouldSuggestCarPlayTips__block_invoke;
   v6[3] = &unk_1E82FC008;
   v6[4] = &v8;
-  [v4 performSynchronousServiceBlock:v6 errorHandler:0];
+  [serviceClient performSynchronousServiceBlock:v6 errorHandler:0];
 
-  LOBYTE(v4) = *(v9 + 24);
+  LOBYTE(serviceClient) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
-  return v4;
+  return serviceClient;
 }
 
 uint64_t __46__CRUsageInformation_shouldSuggestCarPlayTips__block_invoke(uint64_t a1, void *a2)

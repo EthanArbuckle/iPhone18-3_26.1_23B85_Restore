@@ -1,39 +1,39 @@
 @interface PKDashboardMessageView
-- (CGSize)_layoutWithBounds:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKDashboardMessageView)initWithFrame:(CGRect)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKDashboardMessageView)initWithFrame:(CGRect)frame;
 - (id)_messageWithImageAttributedText;
 - (void)_updateAvatarView;
 - (void)_updateFonts;
 - (void)_updateMessageLabel;
 - (void)_updateSymbolImage;
-- (void)dismissButtonPressed:(id)a3;
+- (void)dismissButtonPressed:(id)pressed;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setActionOnButtonPress:(id)a3;
-- (void)setActionOnDismiss:(id)a3;
-- (void)setAvatarContact:(id)a3;
-- (void)setButtonTitle:(id)a3;
-- (void)setImageDescriptor:(id)a3;
-- (void)setMessage:(id)a3;
-- (void)setMessage:(id)a3 withImage:(id)a4;
-- (void)setMessageImage:(id)a3;
-- (void)setSecondaryMessage:(id)a3;
-- (void)setSecondaryTitle:(id)a3;
-- (void)setShowSpinner:(BOOL)a3;
-- (void)setStrokeImage:(BOOL)a3;
-- (void)setTitle:(id)a3;
-- (void)updateWithMessage:(id)a3;
+- (void)setActionOnButtonPress:(id)press;
+- (void)setActionOnDismiss:(id)dismiss;
+- (void)setAvatarContact:(id)contact;
+- (void)setButtonTitle:(id)title;
+- (void)setImageDescriptor:(id)descriptor;
+- (void)setMessage:(id)message;
+- (void)setMessage:(id)message withImage:(id)image;
+- (void)setMessageImage:(id)image;
+- (void)setSecondaryMessage:(id)message;
+- (void)setSecondaryTitle:(id)title;
+- (void)setShowSpinner:(BOOL)spinner;
+- (void)setStrokeImage:(BOOL)image;
+- (void)setTitle:(id)title;
+- (void)updateWithMessage:(id)message;
 @end
 
 @implementation PKDashboardMessageView
 
-- (PKDashboardMessageView)initWithFrame:(CGRect)a3
+- (PKDashboardMessageView)initWithFrame:(CGRect)frame
 {
   v61[2] = *MEMORY[0x1E69E9840];
   v60.receiver = self;
   v60.super_class = PKDashboardMessageView;
-  v3 = [(PKDashboardMessageView *)&v60 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKDashboardMessageView *)&v60 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     objc_initWeak(&location, v3);
@@ -46,18 +46,18 @@
     v54 = [v4 actionWithHandler:v57];
     v5 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:22.0];
     v6 = MEMORY[0x1E69DCAD8];
-    v7 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v61[0] = v7;
-    v8 = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
-    v61[1] = v8;
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    v61[0] = secondaryLabelColor;
+    quaternarySystemFillColor = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
+    v61[1] = quaternarySystemFillColor;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v61 count:2];
     v10 = [v6 configurationWithPaletteColors:v9];
     v53 = [v5 configurationByApplyingConfiguration:v10];
 
     v52 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"xmark.circle.fill" withConfiguration:v53];
-    v11 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-    [v11 setImage:v52];
-    v12 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v11 primaryAction:v54];
+    plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+    [plainButtonConfiguration setImage:v52];
+    v12 = [MEMORY[0x1E69DC738] buttonWithConfiguration:plainButtonConfiguration primaryAction:v54];
     dismissButton = v3->_dismissButton;
     v3->_dismissButton = v12;
 
@@ -69,24 +69,24 @@
     v55[3] = &unk_1E8010A60;
     objc_copyWeak(&v56, &location);
     v15 = [v14 actionWithHandler:v55];
-    v16 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
+    filledButtonConfiguration = [MEMORY[0x1E69DC740] filledButtonConfiguration];
 
-    [v16 setCornerStyle:4];
-    v17 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
-    [v16 setBaseBackgroundColor:v17];
+    [filledButtonConfiguration setCornerStyle:4];
+    systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+    [filledButtonConfiguration setBaseBackgroundColor:systemGroupedBackgroundColor];
 
-    v18 = [MEMORY[0x1E69DC888] labelColor];
-    [v16 setBaseForegroundColor:v18];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [filledButtonConfiguration setBaseForegroundColor:labelColor];
 
-    [v16 setContentInsets:{16.0, 0.0, 16.0, 0.0}];
-    [v16 setImagePadding:5.0];
-    v19 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v16 primaryAction:v15];
+    [filledButtonConfiguration setContentInsets:{16.0, 0.0, 16.0, 0.0}];
+    [filledButtonConfiguration setImagePadding:5.0];
+    v19 = [MEMORY[0x1E69DC738] buttonWithConfiguration:filledButtonConfiguration primaryAction:v15];
     actionButton = v3->_actionButton;
     v3->_actionButton = v19;
 
-    v21 = [(UIButton *)v3->_actionButton titleLabel];
-    [v21 setNumberOfLines:0];
-    [v21 setTextAlignment:1];
+    titleLabel = [(UIButton *)v3->_actionButton titleLabel];
+    [titleLabel setNumberOfLines:0];
+    [titleLabel setTextAlignment:1];
     v22 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC38], *MEMORY[0x1E69DB980]);
     [(UIButton *)v3->_actionButton pkui_updateTitleTextAttributesWithFont:v22];
     [(PKDashboardMessageView *)v3 addSubview:v3->_actionButton];
@@ -103,8 +103,8 @@
     v3->_labelTitle = v28;
 
     v30 = v3->_labelTitle;
-    v31 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v30 setTextColor:v31];
+    labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v30 setTextColor:labelColor2];
 
     [(UILabel *)v3->_labelTitle setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
     [(PKDashboardMessageView *)v3 addSubview:v3->_labelTitle];
@@ -113,8 +113,8 @@
     v3->_labelSecondaryTitle = v32;
 
     v34 = v3->_labelSecondaryTitle;
-    v35 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v34 setTextColor:v35];
+    labelColor3 = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v34 setTextColor:labelColor3];
 
     [(UILabel *)v3->_labelSecondaryTitle setAccessibilityIdentifier:*MEMORY[0x1E69B9BF0]];
     [(PKDashboardMessageView *)v3 addSubview:v3->_labelSecondaryTitle];
@@ -123,8 +123,8 @@
     v3->_labelMessage = v36;
 
     v38 = v3->_labelMessage;
-    v39 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v38 setTextColor:v39];
+    secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v38 setTextColor:secondaryLabelColor2];
 
     [(UILabel *)v3->_labelMessage setAccessibilityIdentifier:*MEMORY[0x1E69B9CC8]];
     [(PKDashboardMessageView *)v3 addSubview:v3->_labelMessage];
@@ -133,8 +133,8 @@
     v3->_labelSecondaryMessage = v40;
 
     v42 = v3->_labelSecondaryMessage;
-    v43 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v42 setTextColor:v43];
+    secondaryLabelColor3 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v42 setTextColor:secondaryLabelColor3];
 
     [(UILabel *)v3->_labelSecondaryMessage setAccessibilityIdentifier:*MEMORY[0x1E69B9BE8]];
     [(PKDashboardMessageView *)v3 addSubview:v3->_labelSecondaryMessage];
@@ -154,8 +154,8 @@
 
     [(UIImageView *)v46 _setContinuousCornerRadius:v48];
     [(PKDashboardMessageView *)v3 addSubview:v3->_iconImageView];
-    v49 = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
-    v50 = [(PKDashboardMessageView *)v3 registerForTraitChanges:v49 withHandler:&__block_literal_global_72];
+    systemTraitsAffectingColorAppearance = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
+    v50 = [(PKDashboardMessageView *)v3 registerForTraitChanges:systemTraitsAffectingColorAppearance withHandler:&__block_literal_global_72];
 
     [(PKDashboardMessageView *)v3 setAccessibilityIdentifier:*MEMORY[0x1E69B9958]];
     objc_destroyWeak(&v56);
@@ -192,34 +192,34 @@ void __40__PKDashboardMessageView_initWithFrame___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)updateWithMessage:(id)a3
+- (void)updateWithMessage:(id)message
 {
-  v4 = a3;
-  -[PKDashboardMessageView setType:](self, "setType:", [v4 type]);
-  v5 = [v4 title];
-  [(PKDashboardMessageView *)self setTitle:v5];
+  messageCopy = message;
+  -[PKDashboardMessageView setType:](self, "setType:", [messageCopy type]);
+  title = [messageCopy title];
+  [(PKDashboardMessageView *)self setTitle:title];
 
-  v6 = [v4 secondaryTitle];
-  [(PKDashboardMessageView *)self setSecondaryTitle:v6];
+  secondaryTitle = [messageCopy secondaryTitle];
+  [(PKDashboardMessageView *)self setSecondaryTitle:secondaryTitle];
 
-  -[PKDashboardMessageView setParseEmphasisInMessage:](self, "setParseEmphasisInMessage:", [v4 parseEmphasisInMessage]);
-  v7 = [v4 message];
-  v8 = [v4 messageImage];
-  [(PKDashboardMessageView *)self setMessage:v7 withImage:v8];
+  -[PKDashboardMessageView setParseEmphasisInMessage:](self, "setParseEmphasisInMessage:", [messageCopy parseEmphasisInMessage]);
+  message = [messageCopy message];
+  messageImage = [messageCopy messageImage];
+  [(PKDashboardMessageView *)self setMessage:message withImage:messageImage];
 
-  v9 = [v4 secondaryMessage];
-  [(PKDashboardMessageView *)self setSecondaryMessage:v9];
+  secondaryMessage = [messageCopy secondaryMessage];
+  [(PKDashboardMessageView *)self setSecondaryMessage:secondaryMessage];
 
-  -[PKDashboardMessageView setIconImageContentMode:](self, "setIconImageContentMode:", [v4 imageContentMode]);
-  -[PKDashboardMessageView setImageOnTrailingEdge:](self, "setImageOnTrailingEdge:", [v4 imageOnTrailingEdge]);
-  -[PKDashboardMessageView setImageRequestExtraLarge:](self, "setImageRequestExtraLarge:", [v4 imageRequestExtraLarge]);
-  -[PKDashboardMessageView setStrokeImage:](self, "setStrokeImage:", [v4 strokeImage]);
-  v10 = [v4 avatarContact];
-  [(PKDashboardMessageView *)self setAvatarContact:v10];
+  -[PKDashboardMessageView setIconImageContentMode:](self, "setIconImageContentMode:", [messageCopy imageContentMode]);
+  -[PKDashboardMessageView setImageOnTrailingEdge:](self, "setImageOnTrailingEdge:", [messageCopy imageOnTrailingEdge]);
+  -[PKDashboardMessageView setImageRequestExtraLarge:](self, "setImageRequestExtraLarge:", [messageCopy imageRequestExtraLarge]);
+  -[PKDashboardMessageView setStrokeImage:](self, "setStrokeImage:", [messageCopy strokeImage]);
+  avatarContact = [messageCopy avatarContact];
+  [(PKDashboardMessageView *)self setAvatarContact:avatarContact];
 
-  v11 = [v4 actionOnDismiss];
-  v12 = v4;
-  v13 = v11;
+  actionOnDismiss = [messageCopy actionOnDismiss];
+  v12 = messageCopy;
+  v13 = actionOnDismiss;
   v14 = v13;
   if (v13)
   {
@@ -238,24 +238,24 @@ void __40__PKDashboardMessageView_initWithFrame___block_invoke_2(uint64_t a1)
   }
 
   [(PKDashboardMessageView *)self setActionOnDismiss:v15];
-  v16 = [v12 buttonTitle];
-  [(PKDashboardMessageView *)self setButtonTitle:v16];
+  buttonTitle = [v12 buttonTitle];
+  [(PKDashboardMessageView *)self setButtonTitle:buttonTitle];
 
-  v17 = [v12 actionOnButtonPress];
-  v18 = _ReportableActionOnButtonPressedForMessageWithAction(v12, v17);
+  actionOnButtonPress = [v12 actionOnButtonPress];
+  v18 = _ReportableActionOnButtonPressedForMessageWithAction(v12, actionOnButtonPress);
   [(PKDashboardMessageView *)self setActionOnButtonPress:v18];
 
   [(PKDashboardMessageView *)self _updateFonts];
   -[PKDashboardMessageView setShowSpinner:](self, "setShowSpinner:", [v12 showSpinner]);
-  v19 = [v12 imageDescriptor];
-  [(PKDashboardMessageView *)self setImageDescriptor:v19];
+  imageDescriptor = [v12 imageDescriptor];
+  [(PKDashboardMessageView *)self setImageDescriptor:imageDescriptor];
 }
 
-- (void)setShowSpinner:(BOOL)a3
+- (void)setShowSpinner:(BOOL)spinner
 {
-  if (self->_showSpinner == !a3)
+  if (self->_showSpinner == !spinner)
   {
-    self->_showSpinner = a3;
+    self->_showSpinner = spinner;
     [(UIButton *)self->_actionButton pkui_updateConfigurationShowingActivityIndicator:?];
   }
 }
@@ -286,57 +286,57 @@ void __40__PKDashboardMessageView_initWithFrame___block_invoke_2(uint64_t a1)
   [(UIButton *)actionButton setHidden:1];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  objc_storeStrong(&self->_title, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_title, title);
+  titleCopy = title;
   [(UILabel *)self->_labelTitle setText:self->_title];
 
   [(PKDashboardMessageView *)self setNeedsLayout];
 }
 
-- (void)setButtonTitle:(id)a3
+- (void)setButtonTitle:(id)title
 {
-  objc_storeStrong(&self->_buttonTitle, a3);
-  v5 = a3;
-  [(UIButton *)self->_actionButton setTitle:v5 forState:0];
+  objc_storeStrong(&self->_buttonTitle, title);
+  titleCopy = title;
+  [(UIButton *)self->_actionButton setTitle:titleCopy forState:0];
 
   [(PKDashboardMessageView *)self setNeedsLayout];
 }
 
-- (void)setSecondaryTitle:(id)a3
+- (void)setSecondaryTitle:(id)title
 {
-  objc_storeStrong(&self->_secondaryTitle, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_secondaryTitle, title);
+  titleCopy = title;
   [(UILabel *)self->_labelSecondaryTitle setText:self->_secondaryTitle];
 
   [(PKDashboardMessageView *)self setNeedsLayout];
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  objc_storeStrong(&self->_message, a3);
+  objc_storeStrong(&self->_message, message);
 
   [(PKDashboardMessageView *)self _updateMessageLabel];
 }
 
-- (void)setMessageImage:(id)a3
+- (void)setMessageImage:(id)image
 {
-  objc_storeStrong(&self->_messageImage, a3);
+  objc_storeStrong(&self->_messageImage, image);
 
   [(PKDashboardMessageView *)self _updateMessageLabel];
 }
 
-- (void)setMessage:(id)a3 withImage:(id)a4
+- (void)setMessage:(id)message withImage:(id)image
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  imageCopy = image;
   message = self->_message;
-  self->_message = v6;
-  v9 = v6;
+  self->_message = messageCopy;
+  v9 = messageCopy;
 
   messageImage = self->_messageImage;
-  self->_messageImage = v7;
+  self->_messageImage = imageCopy;
 
   [(PKDashboardMessageView *)self _updateMessageLabel];
 }
@@ -348,8 +348,8 @@ void __40__PKDashboardMessageView_initWithFrame___block_invoke_2(uint64_t a1)
   {
     [(UILabel *)self->_labelMessage setText:0];
     labelMessage = self->_labelMessage;
-    v4 = [(PKDashboardMessageView *)self _messageWithImageAttributedText];
-    [(UILabel *)labelMessage setAttributedText:v4];
+    _messageWithImageAttributedText = [(PKDashboardMessageView *)self _messageWithImageAttributedText];
+    [(UILabel *)labelMessage setAttributedText:_messageWithImageAttributedText];
   }
 
   else
@@ -357,12 +357,12 @@ void __40__PKDashboardMessageView_initWithFrame___block_invoke_2(uint64_t a1)
     message = self->_message;
     if (message && self->_parseEmphasisInMessage)
     {
-      v6 = [(UILabel *)self->_labelMessage font];
+      font = [(UILabel *)self->_labelMessage font];
       v10 = *MEMORY[0x1E69DB650];
-      v7 = [(UILabel *)self->_labelMessage textColor];
-      v11[0] = v7;
+      textColor = [(UILabel *)self->_labelMessage textColor];
+      v11[0] = textColor;
       v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-      v9 = PKAttributedStringByParsingEmphasisInString(message, v6, v8);
+      v9 = PKAttributedStringByParsingEmphasisInString(message, font, v8);
 
       [(UILabel *)self->_labelMessage setText:0];
       [(UILabel *)self->_labelMessage setAttributedText:v9];
@@ -407,41 +407,41 @@ void __40__PKDashboardMessageView_initWithFrame___block_invoke_2(uint64_t a1)
   return v6;
 }
 
-- (void)setSecondaryMessage:(id)a3
+- (void)setSecondaryMessage:(id)message
 {
-  objc_storeStrong(&self->_secondaryMessage, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_secondaryMessage, message);
+  messageCopy = message;
   [(UILabel *)self->_labelSecondaryMessage setText:self->_secondaryMessage];
 
   [(PKDashboardMessageView *)self setNeedsLayout];
 }
 
-- (void)setImageDescriptor:(id)a3
+- (void)setImageDescriptor:(id)descriptor
 {
-  v13 = a3;
-  objc_storeStrong(&self->_imageDescriptor, a3);
+  descriptorCopy = descriptor;
+  objc_storeStrong(&self->_imageDescriptor, descriptor);
   imageDescriptor = self->_imageDescriptor;
   if (imageDescriptor)
   {
-    v6 = [(PKDashboardPassMessageImageDescriptor *)imageDescriptor type];
-    if (v6 == 1)
+    type = [(PKDashboardPassMessageImageDescriptor *)imageDescriptor type];
+    if (type == 1)
     {
       [(PKDashboardMessageView *)self _updateSymbolImage];
     }
 
-    else if (!v6)
+    else if (!type)
     {
       iconImageView = self->_iconImageView;
-      v8 = [(PKDashboardPassMessageImageDescriptor *)self->_imageDescriptor image];
-      [(UIImageView *)iconImageView setImage:v8];
+      image = [(PKDashboardPassMessageImageDescriptor *)self->_imageDescriptor image];
+      [(UIImageView *)iconImageView setImage:image];
 
       v9 = self->_iconImageView;
-      v10 = [(PKDashboardPassMessageImageDescriptor *)self->_imageDescriptor tintColor];
-      [(UIImageView *)v9 setTintColor:v10];
+      tintColor = [(PKDashboardPassMessageImageDescriptor *)self->_imageDescriptor tintColor];
+      [(UIImageView *)v9 setTintColor:tintColor];
 
       v11 = self->_iconImageView;
-      v12 = [(PKDashboardPassMessageImageDescriptor *)self->_imageDescriptor backgroundColor];
-      [(UIImageView *)v11 setBackgroundColor:v12];
+      backgroundColor = [(PKDashboardPassMessageImageDescriptor *)self->_imageDescriptor backgroundColor];
+      [(UIImageView *)v11 setBackgroundColor:backgroundColor];
     }
   }
 
@@ -464,28 +464,28 @@ void __40__PKDashboardMessageView_initWithFrame___block_invoke_2(uint64_t a1)
     v17 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:26.0];
     v4 = self->_imageDescriptor;
     v5 = MEMORY[0x1E69DCAB8];
-    v6 = [(PKDashboardPassMessageImageDescriptor *)v4 name];
-    v7 = [v5 systemImageNamed:v6 withConfiguration:v17];
+    name = [(PKDashboardPassMessageImageDescriptor *)v4 name];
+    v7 = [v5 systemImageNamed:name withConfiguration:v17];
 
-    v8 = [(PKDashboardPassMessageImageDescriptor *)v4 tintColor];
-    v9 = [(PKDashboardPassMessageImageDescriptor *)v4 backgroundColor];
-    v10 = v9;
-    if (v9)
+    tintColor = [(PKDashboardPassMessageImageDescriptor *)v4 tintColor];
+    backgroundColor = [(PKDashboardPassMessageImageDescriptor *)v4 backgroundColor];
+    v10 = backgroundColor;
+    if (backgroundColor)
     {
-      v11 = v9;
+      clearColor = backgroundColor;
     }
 
     else
     {
-      v11 = [MEMORY[0x1E69DC888] clearColor];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
     }
 
-    v12 = v11;
+    v12 = clearColor;
 
-    if (v8)
+    if (tintColor)
     {
-      v13 = [(PKDashboardPassMessageImageDescriptor *)v4 tintColor];
-      v14 = [v7 imageWithTintColor:v13];
+      tintColor2 = [(PKDashboardPassMessageImageDescriptor *)v4 tintColor];
+      v14 = [v7 imageWithTintColor:tintColor2];
 
       v7 = v14;
     }
@@ -499,41 +499,41 @@ void __40__PKDashboardMessageView_initWithFrame___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setStrokeImage:(BOOL)a3
+- (void)setStrokeImage:(BOOL)image
 {
-  self->_strokeImage = a3;
+  self->_strokeImage = image;
   v4 = 0.0;
-  if (a3)
+  if (image)
   {
     v4 = PKUIPixelLength();
   }
 
-  v5 = [(UIImageView *)self->_iconImageView layer];
-  [v5 setBorderWidth:v4];
+  layer = [(UIImageView *)self->_iconImageView layer];
+  [layer setBorderWidth:v4];
 
   strokeImage = self->_strokeImage;
   if (strokeImage)
   {
-    v9 = [MEMORY[0x1E69DC888] systemGrayColor];
-    v7 = [v9 CGColor];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+    cGColor = [systemGrayColor CGColor];
   }
 
   else
   {
-    v7 = 0;
+    cGColor = 0;
   }
 
-  v8 = [(UIImageView *)self->_iconImageView layer];
-  [v8 setBorderColor:v7];
+  layer2 = [(UIImageView *)self->_iconImageView layer];
+  [layer2 setBorderColor:cGColor];
 
   if (strokeImage)
   {
   }
 }
 
-- (void)setActionOnDismiss:(id)a3
+- (void)setActionOnDismiss:(id)dismiss
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(dismiss);
   actionOnDismiss = self->_actionOnDismiss;
   self->_actionOnDismiss = v4;
 
@@ -542,12 +542,12 @@ void __40__PKDashboardMessageView_initWithFrame___block_invoke_2(uint64_t a1)
   [(PKDashboardMessageView *)self setNeedsLayout];
 }
 
-- (void)dismissButtonPressed:(id)a3
+- (void)dismissButtonPressed:(id)pressed
 {
   actionOnDismiss = self->_actionOnDismiss;
   if (actionOnDismiss)
   {
-    actionOnDismiss[2](actionOnDismiss, a2, a3);
+    actionOnDismiss[2](actionOnDismiss, a2, pressed);
     v5 = self->_actionOnDismiss == 0;
   }
 
@@ -561,9 +561,9 @@ void __40__PKDashboardMessageView_initWithFrame___block_invoke_2(uint64_t a1)
   [(UIButton *)dismissButton setHidden:v5];
 }
 
-- (void)setActionOnButtonPress:(id)a3
+- (void)setActionOnButtonPress:(id)press
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(press);
   actionOnButtonPress = self->_actionOnButtonPress;
   self->_actionOnButtonPress = v4;
 
@@ -581,27 +581,27 @@ void __40__PKDashboardMessageView_initWithFrame___block_invoke_2(uint64_t a1)
   [(PKDashboardMessageView *)self _layoutWithBounds:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   self->_isTemplateLayout = 1;
-  [(PKDashboardMessageView *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKDashboardMessageView *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   self->_isTemplateLayout = 0;
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3
+- (CGSize)_layoutWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v8);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-  v10 = [(PKDashboardMessageView *)self _shouldReverseLayoutDirection];
-  if (v10)
+  _shouldReverseLayoutDirection = [(PKDashboardMessageView *)self _shouldReverseLayoutDirection];
+  if (_shouldReverseLayoutDirection)
   {
     v11 = 2;
   }
@@ -612,7 +612,7 @@ void __40__PKDashboardMessageView_initWithFrame___block_invoke_2(uint64_t a1)
   }
 
   v72 = v11;
-  if (v10)
+  if (_shouldReverseLayoutDirection)
   {
     v12 = CGRectMinXEdge;
   }
@@ -920,15 +920,15 @@ LABEL_52:
   return result;
 }
 
-- (void)setAvatarContact:(id)a3
+- (void)setAvatarContact:(id)contact
 {
-  v5 = a3;
-  if (self->_avatarContact != v5)
+  contactCopy = contact;
+  if (self->_avatarContact != contactCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_avatarContact, a3);
+    v6 = contactCopy;
+    objc_storeStrong(&self->_avatarContact, contact);
     [(PKDashboardMessageView *)self _updateAvatarView];
-    v5 = v6;
+    contactCopy = v6;
   }
 }
 

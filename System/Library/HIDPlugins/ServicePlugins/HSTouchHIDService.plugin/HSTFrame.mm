@@ -1,9 +1,9 @@
 @interface HSTFrame
-- (BOOL)decodeFromMap:(void *)a3;
-- (BOOL)hsDecode:(void *)a3;
-- (BOOL)hsEncode:(void *)a3;
+- (BOOL)decodeFromMap:(void *)map;
+- (BOOL)hsDecode:(void *)decode;
+- (BOOL)hsEncode:(void *)encode;
 - (HSTFrame)init;
-- (void)encodeToMap:(void *)a3;
+- (void)encodeToMap:(void *)map;
 @end
 
 @implementation HSTFrame
@@ -23,19 +23,19 @@
   return v3;
 }
 
-- (void)encodeToMap:(void *)a3
+- (void)encodeToMap:(void *)map
 {
-  HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)116,(char)105,(char)109,(char)101,(char)115,(char)116,(char)97,(char)109,(char)112>::Key, self->timestamp);
+  HSUtil::Encoder::encodeUInt(map, HSUtil::CoderKey::Literal<(char)116,(char)105,(char)109,(char)101,(char)115,(char)116,(char)97,(char)109,(char)112>::Key, self->timestamp);
   v5 = HSUtil::CoderKey::Literal<(char)100,(char)97,(char)116,(char)97>::Key;
   data = self->data;
 
-  HSUtil::Encoder::encodeNSData(a3, v5, data);
+  HSUtil::Encoder::encodeNSData(map, v5, data);
 }
 
-- (BOOL)decodeFromMap:(void *)a3
+- (BOOL)decodeFromMap:(void *)map
 {
-  self->timestamp = HSUtil::Decoder::decodeUInt(a3, HSUtil::CoderKey::Literal<(char)116,(char)105,(char)109,(char)101,(char)115,(char)116,(char)97,(char)109,(char)112>::Key);
-  if (*a3)
+  self->timestamp = HSUtil::Decoder::decodeUInt(map, HSUtil::CoderKey::Literal<(char)116,(char)105,(char)109,(char)101,(char)115,(char)116,(char)97,(char)109,(char)112>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTPipeline/HSTFrame.mm", __b);
@@ -47,11 +47,11 @@
     return 0;
   }
 
-  v5 = HSUtil::Decoder::decodeNSData(a3, HSUtil::CoderKey::Literal<(char)100,(char)97,(char)116,(char)97>::Key);
+  v5 = HSUtil::Decoder::decodeNSData(map, HSUtil::CoderKey::Literal<(char)100,(char)97,(char)116,(char)97>::Key);
   data = self->data;
   self->data = v5;
 
-  if (*a3)
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTPipeline/HSTFrame.mm", __b);
@@ -66,26 +66,26 @@
   return 1;
 }
 
-- (BOOL)hsEncode:(void *)a3
+- (BOOL)hsEncode:(void *)encode
 {
-  if (!*a3)
+  if (!*encode)
   {
-    *&v6 = *(a3 + 17);
+    *&v6 = *(encode + 17);
     DWORD2(v6) = 2;
-    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](a3 + 56, &v6);
-    HSUtil::Encoder::_writeTokenValue16(a3, 0xEAu, 0);
+    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](encode + 56, &v6);
+    HSUtil::Encoder::_writeTokenValue16(encode, 0xEAu, 0);
   }
 
-  [(HSTFrame *)self encodeToMap:a3];
-  if (!*a3)
+  [(HSTFrame *)self encodeToMap:encode];
+  if (!*encode)
   {
-    HSUtil::Encoder::_encodeContainerStop(a3);
+    HSUtil::Encoder::_encodeContainerStop(encode);
   }
 
   return 1;
 }
 
-- (BOOL)hsDecode:(void *)a3
+- (BOOL)hsDecode:(void *)decode
 {
   *&v5 = 0xAAAAAAAAAAAAAAAALL;
   *(&v5 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -94,8 +94,8 @@
   v10 = v5;
   v11 = v5;
   v9 = v5;
-  HSUtil::Decoder::decodeMap(a3, &v9);
-  if (*a3)
+  HSUtil::Decoder::decodeMap(decode, &v9);
+  if (*decode)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTPipeline/HSTFrame.mm", __b);

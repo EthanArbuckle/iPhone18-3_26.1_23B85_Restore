@@ -1,17 +1,17 @@
 @interface DTMobileNotificationsService
-- (void)_setAppStateNotificationsEnabled:(BOOL)a3;
-- (void)_setMemNotificationsEnabled:(BOOL)a3;
-- (void)messageReceived:(id)a3;
-- (void)postDarwinNotification:(id)a3;
-- (void)setApplicationStateNotificationsEnabled:(id)a3;
-- (void)setMemoryNotificationsEnabled:(id)a3;
+- (void)_setAppStateNotificationsEnabled:(BOOL)enabled;
+- (void)_setMemNotificationsEnabled:(BOOL)enabled;
+- (void)messageReceived:(id)received;
+- (void)postDarwinNotification:(id)notification;
+- (void)setApplicationStateNotificationsEnabled:(id)enabled;
+- (void)setMemoryNotificationsEnabled:(id)enabled;
 @end
 
 @implementation DTMobileNotificationsService
 
-- (void)messageReceived:(id)a3
+- (void)messageReceived:(id)received
 {
-  if ([a3 errorStatus] == 2)
+  if ([received errorStatus] == 2)
   {
     [(DTMobileNotificationsService *)self _setAppStateNotificationsEnabled:0];
 
@@ -19,19 +19,19 @@
   }
 }
 
-- (void)setApplicationStateNotificationsEnabled:(id)a3
+- (void)setApplicationStateNotificationsEnabled:(id)enabled
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
 
-  [(DTMobileNotificationsService *)self _setAppStateNotificationsEnabled:v4];
+  [(DTMobileNotificationsService *)self _setAppStateNotificationsEnabled:bOOLValue];
 }
 
-- (void)_setAppStateNotificationsEnabled:(BOOL)a3
+- (void)_setAppStateNotificationsEnabled:(BOOL)enabled
 {
-  if (self->_applicationStateNotificationsEnabled != a3)
+  if (self->_applicationStateNotificationsEnabled != enabled)
   {
-    self->_applicationStateNotificationsEnabled = a3;
-    if (a3)
+    self->_applicationStateNotificationsEnabled = enabled;
+    if (enabled)
     {
       v6[0] = MEMORY[0x277D85DD0];
       v6[1] = 3221225472;
@@ -51,32 +51,32 @@
   }
 }
 
-- (void)setMemoryNotificationsEnabled:(id)a3
+- (void)setMemoryNotificationsEnabled:(id)enabled
 {
-  [a3 BOOLValue];
+  [enabled BOOLValue];
 
   MEMORY[0x2821F9670](self, sel__setMemNotificationsEnabled_);
 }
 
-- (void)postDarwinNotification:(id)a3
+- (void)postDarwinNotification:(id)notification
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  notificationCopy = notification;
   if (qword_27EE84350 != -1)
   {
     sub_24802EC44();
   }
 
-  if ([qword_27EE84348 containsObject:v3])
+  if ([qword_27EE84348 containsObject:notificationCopy])
   {
-    v4 = notify_post([v3 UTF8String]);
+    v4 = notify_post([notificationCopy UTF8String]);
     if (v4)
     {
       v5 = v4;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         v10 = 138412546;
-        v11 = v3;
+        v11 = notificationCopy;
         v12 = 1024;
         v13 = v5;
         v6 = MEMORY[0x277D86220];
@@ -91,7 +91,7 @@ LABEL_9:
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v10 = 138412290;
-    v11 = v3;
+    v11 = notificationCopy;
     v6 = MEMORY[0x277D86220];
     v7 = "Failed to post notification %@";
     v8 = 12;
@@ -101,10 +101,10 @@ LABEL_9:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setMemNotificationsEnabled:(BOOL)a3
+- (void)_setMemNotificationsEnabled:(BOOL)enabled
 {
   memoryNotificationSource = self->_memoryNotificationSource;
-  if (a3)
+  if (enabled)
   {
     if (memoryNotificationSource)
     {
@@ -157,7 +157,7 @@ LABEL_18:
           v22 = v6;
           v14 = v13;
           v20 = v14;
-          v21 = self;
+          selfCopy = self;
           dispatch_source_set_event_handler(v14, handler);
           v17[0] = MEMORY[0x277D85DD0];
           v17[1] = 3221225472;

@@ -1,24 +1,24 @@
 @interface BRCSharingCopyWebAuthTokenOperation
-- (BRCSharingCopyWebAuthTokenOperation)initWithSyncContext:(id)a3 ckContainerID:(id)a4 sessionContext:(id)a5;
+- (BRCSharingCopyWebAuthTokenOperation)initWithSyncContext:(id)context ckContainerID:(id)d sessionContext:(id)sessionContext;
 - (id)createActivity;
 - (void)main;
 @end
 
 @implementation BRCSharingCopyWebAuthTokenOperation
 
-- (BRCSharingCopyWebAuthTokenOperation)initWithSyncContext:(id)a3 ckContainerID:(id)a4 sessionContext:(id)a5
+- (BRCSharingCopyWebAuthTokenOperation)initWithSyncContext:(id)context ckContainerID:(id)d sessionContext:(id)sessionContext
 {
-  v9 = a4;
+  dCopy = d;
   v14.receiver = self;
   v14.super_class = BRCSharingCopyWebAuthTokenOperation;
-  v10 = [(_BRCOperation *)&v14 initWithName:@"sharing/copy-web-auth-token" syncContext:a3 sessionContext:a5];
+  v10 = [(_BRCOperation *)&v14 initWithName:@"sharing/copy-web-auth-token" syncContext:context sessionContext:sessionContext];
   v11 = v10;
   if (v10)
   {
     [(_BRCOperation *)v10 setNonDiscretionary:1];
-    objc_storeStrong(&v11->_ckContainerID, a4);
-    v12 = [MEMORY[0x277CBC4F8] br_sharingMisc];
-    [(_BRCOperation *)v11 setGroup:v12];
+    objc_storeStrong(&v11->_ckContainerID, d);
+    br_sharingMisc = [MEMORY[0x277CBC4F8] br_sharingMisc];
+    [(_BRCOperation *)v11 setGroup:br_sharingMisc];
   }
 
   return v11;
@@ -38,8 +38,8 @@
   [v3 setConfiguration:v4];
 
   v5 = [MEMORY[0x277CBC218] containerWithIdentifier:self->_ckContainerID];
-  v6 = [v3 configuration];
-  [v6 setContainer:v5];
+  configuration = [v3 configuration];
+  [configuration setContainer:v5];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;

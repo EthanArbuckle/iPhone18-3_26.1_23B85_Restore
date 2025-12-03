@@ -1,15 +1,15 @@
 @interface BKEnrollResultInfo
-- (BKEnrollResultInfo)initWithServerIdentity:(id)a3 details:(id)a4 device:(id)a5;
+- (BKEnrollResultInfo)initWithServerIdentity:(id)identity details:(id)details device:(id)device;
 @end
 
 @implementation BKEnrollResultInfo
 
-- (BKEnrollResultInfo)initWithServerIdentity:(id)a3 details:(id)a4 device:(id)a5
+- (BKEnrollResultInfo)initWithServerIdentity:(id)identity details:(id)details device:(id)device
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identityCopy = identity;
+  detailsCopy = details;
+  deviceCopy = device;
   v11 = MEMORY[0x1E69E9C10];
   if (__osLogTrace)
   {
@@ -24,11 +24,11 @@
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v23 = v8;
+    v23 = identityCopy;
     v24 = 2112;
-    v25 = v9;
+    v25 = detailsCopy;
     v26 = 2112;
-    v27 = v10;
+    v27 = deviceCopy;
     _os_log_impl(&dword_1C82AD000, v12, OS_LOG_TYPE_DEFAULT, "BKEnrollResultInfo::initWithServerIdentity:details:device: %@, %@, %@\n", buf, 0x20u);
   }
 
@@ -58,7 +58,7 @@
   }
 
   v14 = v13;
-  if (!v8)
+  if (!identityCopy)
   {
     [BKEnrollResultInfo initWithServerIdentity:v13 details:? device:?];
 LABEL_18:
@@ -66,7 +66,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v15 = [[BKIdentity alloc] initWithServerIdentity:v8 device:v10];
+  v15 = [[BKIdentity alloc] initWithServerIdentity:identityCopy device:deviceCopy];
   enrolledIdentity = v14->_enrolledIdentity;
   v14->_enrolledIdentity = v15;
 

@@ -1,29 +1,29 @@
 @interface CKDThrottleManager
-+ (id)throttleFromPThrottlingConfig:(id)a3;
-+ (id)throttleFromServerJSONDictionary:(id)a3;
-- (BOOL)addThrottle:(id)a3;
++ (id)throttleFromPThrottlingConfig:(id)config;
++ (id)throttleFromServerJSONDictionary:(id)dictionary;
+- (BOOL)addThrottle:(id)throttle;
 - (CKDLogicalDeviceContext)deviceContext;
-- (CKDThrottleManager)initWithDeviceContext:(id)a3;
+- (CKDThrottleManager)initWithDeviceContext:(id)context;
 - (void)invalidateAdopterThrottles;
 - (void)loadThrottlesFromDatabase;
-- (void)noteDataChangeForThrottle:(id)a3;
+- (void)noteDataChangeForThrottle:(id)throttle;
 - (void)throttleListBecameEmpty;
-- (void)throttleWasAdded:(id)a3;
-- (void)throttleWillBeRemoved:(id)a3;
+- (void)throttleWasAdded:(id)added;
+- (void)throttleWillBeRemoved:(id)removed;
 @end
 
 @implementation CKDThrottleManager
 
-- (CKDThrottleManager)initWithDeviceContext:(id)a3
+- (CKDThrottleManager)initWithDeviceContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = CKDThrottleManager;
-  v5 = [(CKThrottleManager *)&v10 initInternal];
-  v6 = v5;
-  if (v5)
+  initInternal = [(CKThrottleManager *)&v10 initInternal];
+  v6 = initInternal;
+  if (initInternal)
   {
-    objc_storeWeak(v5 + 13, v4);
+    objc_storeWeak(initInternal + 13, contextCopy);
     objc_msgSend_loadThrottlesFromDatabase(v6, v7, v8);
   }
 
@@ -167,11 +167,11 @@ LABEL_28:
   objc_msgSend_enumerateConnections_(v4, v5, v6);
 }
 
-- (BOOL)addThrottle:(id)a3
+- (BOOL)addThrottle:(id)throttle
 {
   v8.receiver = self;
   v8.super_class = CKDThrottleManager;
-  v6 = [(CKThrottleManager *)&v8 addThrottle:a3];
+  v6 = [(CKThrottleManager *)&v8 addThrottle:throttle];
   if (v6)
   {
     objc_msgSend_invalidateAdopterThrottles(self, v4, v5);
@@ -180,18 +180,18 @@ LABEL_28:
   return v6;
 }
 
-- (void)throttleWasAdded:(id)a3
+- (void)throttleWasAdded:(id)added
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ((objc_msgSend_isExpired(v4, v5, v6) & 1) == 0)
+  addedCopy = added;
+  if ((objc_msgSend_isExpired(addedCopy, v5, v6) & 1) == 0)
   {
-    v9 = objc_msgSend_throttleID(v4, v7, v8);
+    v9 = objc_msgSend_throttleID(addedCopy, v7, v8);
 
     if (!v9)
     {
       v11 = objc_msgSend_throttleTable_(self, v10, 1);
-      v13 = objc_msgSend_insertObject_(v11, v12, v4);
+      v13 = objc_msgSend_insertObject_(v11, v12, addedCopy);
 
       if (v13)
       {
@@ -214,12 +214,12 @@ LABEL_28:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)throttleWillBeRemoved:(id)a3
+- (void)throttleWillBeRemoved:(id)removed
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  removedCopy = removed;
   v6 = objc_msgSend_throttleTable_(self, v5, 1);
-  v8 = objc_msgSend_deleteObject_(v6, v7, v4);
+  v8 = objc_msgSend_deleteObject_(v6, v7, removedCopy);
 
   if (v8)
   {
@@ -257,12 +257,12 @@ LABEL_28:
   objc_msgSend_purgeGroupWithName_inDatabase_(MEMORY[0x277CBC660], v13, v12, v14);
 }
 
-- (void)noteDataChangeForThrottle:(id)a3
+- (void)noteDataChangeForThrottle:(id)throttle
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  throttleCopy = throttle;
   v6 = objc_msgSend_throttleTable_(self, v5, 1);
-  v8 = objc_msgSend_updateRequestCount_(v6, v7, v4);
+  v8 = objc_msgSend_updateRequestCount_(v6, v7, throttleCopy);
 
   if (v8)
   {
@@ -283,12 +283,12 @@ LABEL_28:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)throttleFromServerJSONDictionary:(id)a3
++ (id)throttleFromServerJSONDictionary:(id)dictionary
 {
-  v4 = a3;
-  v6 = objc_msgSend_objectForKey_(v4, v5, @"label");
-  v8 = objc_msgSend_objectForKey_(v4, v7, @"criteria");
-  v10 = objc_msgSend_objectForKey_(v4, v9, @"rateLimit");
+  dictionaryCopy = dictionary;
+  v6 = objc_msgSend_objectForKey_(dictionaryCopy, v5, @"label");
+  v8 = objc_msgSend_objectForKey_(dictionaryCopy, v7, @"criteria");
+  v10 = objc_msgSend_objectForKey_(dictionaryCopy, v9, @"rateLimit");
   v12 = objc_msgSend_objectForKey_(v8, v11, @"containerName");
   v13 = v12;
   if (v8 | v10)
@@ -715,9 +715,9 @@ LABEL_28:
       v163 = v162 = v23;
       objc_msgSend_date(MEMORY[0x277CBEAA8], v164, v165);
       v189 = v8;
-      v166 = a1;
+      selfCopy = self;
       v167 = v10;
-      v168 = v4;
+      v168 = dictionaryCopy;
       v170 = v169 = v13;
       v172 = objc_msgSend_startOfDayForDate_(v163, v171, v170);
 
@@ -725,16 +725,16 @@ LABEL_28:
       objc_msgSend_setThrottleStartDate_(v162, v176, v175);
 
       v13 = v169;
-      v4 = v168;
+      dictionaryCopy = v168;
       v10 = v167;
-      a1 = v166;
+      self = selfCopy;
       v8 = v189;
 
       v23 = v162;
       v149 = v187;
     }
 
-    v177 = objc_msgSend_objectForKey_(v4, v156, @"ttlSec");
+    v177 = objc_msgSend_objectForKey_(dictionaryCopy, v156, @"ttlSec");
     v180 = v177;
     if (v177)
     {
@@ -749,7 +749,7 @@ LABEL_28:
     if (v181 == 1)
     {
       v182 = objc_msgSend_integerValue(v177, v178, v179);
-      v184 = objc_msgSend__expirationDateForTTLSeconds_(a1, v183, v182);
+      v184 = objc_msgSend__expirationDateForTTLSeconds_(self, v183, v182);
       objc_msgSend_setExpirationDate_(v23, v185, v184);
     }
 
@@ -779,13 +779,13 @@ LABEL_28:
   return v20;
 }
 
-+ (id)throttleFromPThrottlingConfig:(id)a3
++ (id)throttleFromPThrottlingConfig:(id)config
 {
   v121 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (objc_msgSend_hasLabel(v4, v5, v6))
+  configCopy = config;
+  if (objc_msgSend_hasLabel(configCopy, v5, v6))
   {
-    v9 = objc_msgSend_label(v4, v7, v8);
+    v9 = objc_msgSend_label(configCopy, v7, v8);
   }
 
   else
@@ -793,9 +793,9 @@ LABEL_28:
     v9 = 0;
   }
 
-  if (objc_msgSend_hasCriteria(v4, v7, v8))
+  if (objc_msgSend_hasCriteria(configCopy, v7, v8))
   {
-    v12 = objc_msgSend_criteria(v4, v10, v11);
+    v12 = objc_msgSend_criteria(configCopy, v10, v11);
   }
 
   else
@@ -803,9 +803,9 @@ LABEL_28:
     v12 = 0;
   }
 
-  if (objc_msgSend_hasRateLimit(v4, v10, v11))
+  if (objc_msgSend_hasRateLimit(configCopy, v10, v11))
   {
-    v15 = objc_msgSend_rateLimit(v4, v13, v14);
+    v15 = objc_msgSend_rateLimit(configCopy, v13, v14);
   }
 
   else
@@ -962,20 +962,20 @@ LABEL_28:
       objc_msgSend_startOfDayForDate_(v94, v98, v97);
       v118 = v9;
       v99 = v17;
-      v100 = v17 = a1;
+      v100 = v17 = self;
 
       v103 = objc_msgSend_dateByAddingTimeInterval_(v100, v101, v102, v91);
       objc_msgSend_setThrottleStartDate_(v23, v104, v103);
 
-      a1 = v17;
+      self = v17;
       LOBYTE(v17) = v99;
       v9 = v118;
     }
 
-    if ((v17 & 1) == 0 && objc_msgSend_hasTtlSec(v4, v89, v90))
+    if ((v17 & 1) == 0 && objc_msgSend_hasTtlSec(configCopy, v89, v90))
     {
-      v106 = objc_msgSend_ttlSec(v4, v89, v105);
-      v108 = objc_msgSend__expirationDateForTTLSeconds_(a1, v107, v106);
+      v106 = objc_msgSend_ttlSec(configCopy, v89, v105);
+      v108 = objc_msgSend__expirationDateForTTLSeconds_(self, v107, v106);
       objc_msgSend_setExpirationDate_(v23, v109, v108);
     }
 

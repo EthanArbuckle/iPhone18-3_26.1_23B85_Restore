@@ -1,57 +1,57 @@
 @interface MSDContentServerURLRetryPolicy
-- (MSDContentServerURLRetryPolicy)initWithContext:(id)a3;
-- (id)buildLocalURLListFromContext:(id)a3;
+- (MSDContentServerURLRetryPolicy)initWithContext:(id)context;
+- (id)buildLocalURLListFromContext:(id)context;
 - (id)getCredential;
-- (id)getURLSchemaList:(id)a3;
+- (id)getURLSchemaList:(id)list;
 - (id)nextTry;
 @end
 
 @implementation MSDContentServerURLRetryPolicy
 
-- (MSDContentServerURLRetryPolicy)initWithContext:(id)a3
+- (MSDContentServerURLRetryPolicy)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v20.receiver = self;
   v20.super_class = MSDContentServerURLRetryPolicy;
   v5 = [(MSDContentServerURLRetryPolicy *)&v20 init];
   if (v5)
   {
-    v6 = [v4 fdc];
+    v6 = [contextCopy fdc];
     [(MSDContentServerURLRetryPolicy *)v5 setFdc:v6];
 
-    v7 = [v4 fdc];
-    v8 = [v4 originServer];
-    v9 = [v7 localCredentialForOriginServer:v8];
+    v7 = [contextCopy fdc];
+    originServer = [contextCopy originServer];
+    v9 = [v7 localCredentialForOriginServer:originServer];
     [(MSDContentServerURLRetryPolicy *)v5 setLocalCredential:v9];
 
-    v10 = [v4 fdc];
-    v11 = [v4 originServer];
-    v12 = [v10 remoteCredentialForOriginServer:v11];
+    v10 = [contextCopy fdc];
+    originServer2 = [contextCopy originServer];
+    v12 = [v10 remoteCredentialForOriginServer:originServer2];
     [(MSDContentServerURLRetryPolicy *)v5 setRemoteCredential:v12];
 
-    v13 = [(MSDContentServerURLRetryPolicy *)v5 localCredential];
-    [(MSDContentServerURLRetryPolicy *)v5 setCachingHubAvailable:v13 != 0];
+    localCredential = [(MSDContentServerURLRetryPolicy *)v5 localCredential];
+    [(MSDContentServerURLRetryPolicy *)v5 setCachingHubAvailable:localCredential != 0];
 
     [(MSDContentServerURLRetryPolicy *)v5 setServerType:@"remoteCDN"];
-    if ([v4 tryCachingHub] && -[MSDContentServerURLRetryPolicy cachingHubAvailable](v5, "cachingHubAvailable"))
+    if ([contextCopy tryCachingHub] && -[MSDContentServerURLRetryPolicy cachingHubAvailable](v5, "cachingHubAvailable"))
     {
-      v14 = [(MSDContentServerURLRetryPolicy *)v5 buildLocalURLListFromContext:v4];
+      v14 = [(MSDContentServerURLRetryPolicy *)v5 buildLocalURLListFromContext:contextCopy];
       [(MSDContentServerURLRetryPolicy *)v5 setLocalURLList:v14];
 
       [(MSDContentServerURLRetryPolicy *)v5 setServerType:@"localCachingHub"];
     }
 
-    v15 = [(MSDContentServerURLRetryPolicy *)v5 remoteCredential];
+    remoteCredential = [(MSDContentServerURLRetryPolicy *)v5 remoteCredential];
 
-    if (v15)
+    if (remoteCredential)
     {
-      v16 = [(MSDContentServerURLRetryPolicy *)v5 remoteCredential];
-      v17 = [(MSDContentServerURLRetryPolicy *)v5 getURLSchemaList:v16];
+      remoteCredential2 = [(MSDContentServerURLRetryPolicy *)v5 remoteCredential];
+      v17 = [(MSDContentServerURLRetryPolicy *)v5 getURLSchemaList:remoteCredential2];
       [(MSDContentServerURLRetryPolicy *)v5 setRemoteURLList:v17];
     }
 
     [(MSDContentServerURLRetryPolicy *)v5 setCurrentTry:0];
-    -[MSDContentServerURLRetryPolicy setLocalHubReachable:](v5, "setLocalHubReachable:", [v4 tryCachingHub]);
+    -[MSDContentServerURLRetryPolicy setLocalHubReachable:](v5, "setLocalHubReachable:", [contextCopy tryCachingHub]);
     v18 = v5;
   }
 
@@ -60,19 +60,19 @@
 
 - (id)nextTry
 {
-  v3 = [(MSDContentServerURLRetryPolicy *)self serverType];
-  v4 = [v3 isEqualToString:@"localCachingHub"];
+  serverType = [(MSDContentServerURLRetryPolicy *)self serverType];
+  v4 = [serverType isEqualToString:@"localCachingHub"];
 
   if (v4)
   {
-    v5 = [(MSDContentServerURLRetryPolicy *)self currentTry];
-    v6 = [(MSDContentServerURLRetryPolicy *)self localURLList];
-    v7 = [v6 count];
+    currentTry = [(MSDContentServerURLRetryPolicy *)self currentTry];
+    localURLList = [(MSDContentServerURLRetryPolicy *)self localURLList];
+    v7 = [localURLList count];
 
-    if (v5 < v7)
+    if (currentTry < v7)
     {
-      v8 = [(MSDContentServerURLRetryPolicy *)self localURLList];
-      v9 = [v8 objectAtIndex:{-[MSDContentServerURLRetryPolicy currentTry](self, "currentTry")}];
+      localURLList2 = [(MSDContentServerURLRetryPolicy *)self localURLList];
+      v9 = [localURLList2 objectAtIndex:{-[MSDContentServerURLRetryPolicy currentTry](self, "currentTry")}];
 
       goto LABEL_8;
     }
@@ -90,24 +90,24 @@
 
   v9 = 0;
 LABEL_8:
-  v11 = [(MSDContentServerURLRetryPolicy *)self serverType];
-  v12 = [v11 isEqualToString:@"remoteCDN"];
+  serverType2 = [(MSDContentServerURLRetryPolicy *)self serverType];
+  v12 = [serverType2 isEqualToString:@"remoteCDN"];
 
   if (v12)
   {
     if (-[MSDContentServerURLRetryPolicy currentTry](self, "currentTry") || (-[MSDContentServerURLRetryPolicy remoteURLList](self, "remoteURLList"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 count], v14, !v15))
     {
-      v13 = sub_100063A54();
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      remoteURLList = sub_100063A54();
+      if (os_log_type_enabled(remoteURLList, OS_LOG_TYPE_ERROR))
       {
-        sub_1000D8C98(self, v13);
+        sub_1000D8C98(self, remoteURLList);
       }
     }
 
     else
     {
-      v13 = [(MSDContentServerURLRetryPolicy *)self remoteURLList];
-      v16 = [v13 objectAtIndex:0];
+      remoteURLList = [(MSDContentServerURLRetryPolicy *)self remoteURLList];
+      v16 = [remoteURLList objectAtIndex:0];
 
       v9 = v16;
     }
@@ -117,12 +117,12 @@ LABEL_8:
   {
     v17 = objc_alloc_init(MSDServerRetryInfo);
     [(MSDServerRetryInfo *)v17 setUrlSchema:v9];
-    v18 = [(MSDContentServerURLRetryPolicy *)self serverType];
-    [(MSDServerRetryInfo *)v17 setServerType:v18];
+    serverType3 = [(MSDContentServerURLRetryPolicy *)self serverType];
+    [(MSDServerRetryInfo *)v17 setServerType:serverType3];
 
     [(MSDServerRetryInfo *)v17 setLocalHubReachable:[(MSDContentServerURLRetryPolicy *)self localHubReachable]];
-    v19 = [(MSDContentServerURLRetryPolicy *)self getCredential];
-    [(MSDServerRetryInfo *)v17 setCredential:v19];
+    getCredential = [(MSDContentServerURLRetryPolicy *)self getCredential];
+    [(MSDServerRetryInfo *)v17 setCredential:getCredential];
   }
 
   else
@@ -137,8 +137,8 @@ LABEL_8:
 
 - (id)getCredential
 {
-  v3 = [(MSDContentServerURLRetryPolicy *)self serverType];
-  if ([v3 isEqualToString:@"localCachingHub"])
+  serverType = [(MSDContentServerURLRetryPolicy *)self serverType];
+  if ([serverType isEqualToString:@"localCachingHub"])
   {
     [(MSDContentServerURLRetryPolicy *)self localCredential];
   }
@@ -152,32 +152,32 @@ LABEL_8:
   return v4;
 }
 
-- (id)buildLocalURLListFromContext:(id)a3
+- (id)buildLocalURLListFromContext:(id)context
 {
-  v4 = a3;
-  v5 = [(MSDContentServerURLRetryPolicy *)self localCredential];
-  v6 = [(MSDContentServerURLRetryPolicy *)self getURLSchemaList:v5];
+  contextCopy = context;
+  localCredential = [(MSDContentServerURLRetryPolicy *)self localCredential];
+  v6 = [(MSDContentServerURLRetryPolicy *)self getURLSchemaList:localCredential];
 
-  v7 = [v4 cachedLocalURL];
-  v8 = [v6 containsObject:v7];
+  cachedLocalURL = [contextCopy cachedLocalURL];
+  v8 = [v6 containsObject:cachedLocalURL];
 
   if (v8)
   {
-    v9 = [v4 cachedLocalURL];
-    [v6 removeObject:v9];
+    cachedLocalURL2 = [contextCopy cachedLocalURL];
+    [v6 removeObject:cachedLocalURL2];
 
-    v10 = [v4 cachedLocalURL];
-    [v6 insertObject:v10 atIndex:0];
+    cachedLocalURL3 = [contextCopy cachedLocalURL];
+    [v6 insertObject:cachedLocalURL3 atIndex:0];
   }
 
   return v6;
 }
 
-- (id)getURLSchemaList:(id)a3
+- (id)getURLSchemaList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v5 = objc_alloc_init(NSMutableArray);
-  v6 = [v4 objectForKey:@"URLSchema"];
+  v6 = [listCopy objectForKey:@"URLSchema"];
   if (v6)
   {
     objc_opt_class();
@@ -200,11 +200,11 @@ LABEL_6:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v11 = 138543874;
-      v12 = self;
+      selfCopy = self;
       v13 = 2114;
       v14 = objc_opt_class();
       v15 = 2114;
-      v16 = v4;
+      v16 = listCopy;
       v10 = v14;
       _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "%{public}@: Unrecognized URL Scheme type :%{public}@ from download credential %{public}@", &v11, 0x20u);
     }
@@ -212,7 +212,7 @@ LABEL_6:
 
   else
   {
-    sub_1000D8D10(self, v4);
+    sub_1000D8D10(self, listCopy);
   }
 
   v7 = 0;

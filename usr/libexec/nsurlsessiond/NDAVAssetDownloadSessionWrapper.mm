@@ -1,17 +1,17 @@
 @interface NDAVAssetDownloadSessionWrapper
-- (NDAVAssetDownloadSessionWrapper)initWithURL:(id)a3 destinationURL:(id)a4 options:(id)a5 delegate:(id)a6 queue:(id)a7;
-- (NDAVAssetDownloadSessionWrapper)initWithURLAsset:(id)a3 destinationURL:(id)a4 options:(id)a5 delegate:(id)a6 queue:(id)a7;
+- (NDAVAssetDownloadSessionWrapper)initWithURL:(id)l destinationURL:(id)rL options:(id)options delegate:(id)delegate queue:(id)queue;
+- (NDAVAssetDownloadSessionWrapper)initWithURLAsset:(id)asset destinationURL:(id)l options:(id)options delegate:(id)delegate queue:(id)queue;
 - (NDAVAssetDownloadSessionWrapperDelegate)delegate;
-- (void)assetDownloadSession:(id)a3 didFailWithError:(id)a4;
-- (void)assetDownloadSession:(id)a3 didFinishDownloadForMediaSelection:(id)a4;
-- (void)assetDownloadSession:(id)a3 didLoadTimeRange:(id *)a4 totalTimeRangesLoaded:(id)a5 timeRangeExpectedToLoad:(id *)a6 forMediaSelection:(id)a7;
-- (void)assetDownloadSession:(id)a3 didReceiveMetricEvent:(id)a4;
-- (void)assetDownloadSession:(id)a3 didResolveMediaSelection:(id)a4;
-- (void)assetDownloadSession:(id)a3 didUpdateProgressWithExpectedBytes:(unint64_t)a4 bytesDownloaded:(unint64_t)a5;
-- (void)assetDownloadSession:(id)a3 willDownloadVariants:(id)a4;
-- (void)assetDownloadSessionDidFinishDownload:(id)a3;
+- (void)assetDownloadSession:(id)session didFailWithError:(id)error;
+- (void)assetDownloadSession:(id)session didFinishDownloadForMediaSelection:(id)selection;
+- (void)assetDownloadSession:(id)session didLoadTimeRange:(id *)range totalTimeRangesLoaded:(id)loaded timeRangeExpectedToLoad:(id *)load forMediaSelection:(id)selection;
+- (void)assetDownloadSession:(id)session didReceiveMetricEvent:(id)event;
+- (void)assetDownloadSession:(id)session didResolveMediaSelection:(id)selection;
+- (void)assetDownloadSession:(id)session didUpdateProgressWithExpectedBytes:(unint64_t)bytes bytesDownloaded:(unint64_t)downloaded;
+- (void)assetDownloadSession:(id)session willDownloadVariants:(id)variants;
+- (void)assetDownloadSessionDidFinishDownload:(id)download;
 - (void)cancel;
-- (void)cancelAndDeliverError:(id)a3;
+- (void)cancelAndDeliverError:(id)error;
 - (void)disavowSession;
 - (void)releasePowerAssertion;
 - (void)resume;
@@ -29,35 +29,35 @@
   return WeakRetained;
 }
 
-- (void)assetDownloadSession:(id)a3 didReceiveMetricEvent:(id)a4
+- (void)assetDownloadSession:(id)session didReceiveMetricEvent:(id)event
 {
-  v5 = a4;
+  eventCopy = event;
   delegateQueue = self->_delegateQueue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10001EB08;
   v8[3] = &unk_1000D6420;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = eventCopy;
+  v7 = eventCopy;
   dispatch_async(delegateQueue, v8);
 }
 
-- (void)assetDownloadSession:(id)a3 willDownloadVariants:(id)a4
+- (void)assetDownloadSession:(id)session willDownloadVariants:(id)variants
 {
-  v5 = a4;
+  variantsCopy = variants;
   delegateQueue = self->_delegateQueue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10001EC08;
   v8[3] = &unk_1000D6420;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = variantsCopy;
+  v7 = variantsCopy;
   dispatch_async(delegateQueue, v8);
 }
 
-- (void)assetDownloadSession:(id)a3 didUpdateProgressWithExpectedBytes:(unint64_t)a4 bytesDownloaded:(unint64_t)a5
+- (void)assetDownloadSession:(id)session didUpdateProgressWithExpectedBytes:(unint64_t)bytes bytesDownloaded:(unint64_t)downloaded
 {
   delegateQueue = self->_delegateQueue;
   block[0] = _NSConcreteStackBlock;
@@ -65,28 +65,28 @@
   block[2] = sub_10001ECE8;
   block[3] = &unk_1000D5200;
   block[4] = self;
-  block[5] = a5;
-  block[6] = a4;
+  block[5] = downloaded;
+  block[6] = bytes;
   dispatch_async(delegateQueue, block);
 }
 
-- (void)assetDownloadSession:(id)a3 didResolveMediaSelection:(id)a4
+- (void)assetDownloadSession:(id)session didResolveMediaSelection:(id)selection
 {
-  v5 = a4;
+  selectionCopy = selection;
   delegateQueue = self->_delegateQueue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10001EE40;
   v8[3] = &unk_1000D6420;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = selectionCopy;
+  selfCopy = self;
+  v7 = selectionCopy;
   dispatch_async(delegateQueue, v8);
 }
 
-- (void)assetDownloadSession:(id)a3 didFinishDownloadForMediaSelection:(id)a4
+- (void)assetDownloadSession:(id)session didFinishDownloadForMediaSelection:(id)selection
 {
-  v5 = a4;
+  selectionCopy = selection;
   v6 = qword_1000EB210;
   if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_DEFAULT))
   {
@@ -100,41 +100,41 @@
   v9[2] = sub_10001EFCC;
   v9[3] = &unk_1000D6420;
   v9[4] = self;
-  v10 = v5;
-  v8 = v5;
+  v10 = selectionCopy;
+  v8 = selectionCopy;
   dispatch_async(delegateQueue, v9);
 }
 
-- (void)assetDownloadSession:(id)a3 didLoadTimeRange:(id *)a4 totalTimeRangesLoaded:(id)a5 timeRangeExpectedToLoad:(id *)a6 forMediaSelection:(id)a7
+- (void)assetDownloadSession:(id)session didLoadTimeRange:(id *)range totalTimeRangesLoaded:(id)loaded timeRangeExpectedToLoad:(id *)load forMediaSelection:(id)selection
 {
-  v11 = a5;
-  v12 = a7;
+  loadedCopy = loaded;
+  selectionCopy = selection;
   delegateQueue = self->_delegateQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
-  v14 = *&a4->var0.var3;
-  v23 = *&a4->var0.var0;
+  v14 = *&range->var0.var3;
+  v23 = *&range->var0.var0;
   v24 = v14;
-  v15 = *&a6->var0.var0;
-  v16 = *&a6->var0.var3;
-  v25 = *&a4->var1.var1;
+  v15 = *&load->var0.var0;
+  v16 = *&load->var0.var3;
+  v25 = *&range->var1.var1;
   v26 = v15;
   block[2] = sub_10001F14C;
   block[3] = &unk_1000D51D8;
-  v17 = *&a6->var1.var1;
+  v17 = *&load->var1.var1;
   v27 = v16;
   v28 = v17;
   block[4] = self;
-  v21 = v11;
-  v22 = v12;
-  v18 = v12;
-  v19 = v11;
+  v21 = loadedCopy;
+  v22 = selectionCopy;
+  v18 = selectionCopy;
+  v19 = loadedCopy;
   dispatch_async(delegateQueue, block);
 }
 
-- (void)assetDownloadSession:(id)a3 didFailWithError:(id)a4
+- (void)assetDownloadSession:(id)session didFailWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = qword_1000EB210;
   if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_DEFAULT))
   {
@@ -148,12 +148,12 @@
   v9[2] = sub_10001F33C;
   v9[3] = &unk_1000D6420;
   v9[4] = self;
-  v10 = v5;
-  v8 = v5;
+  v10 = errorCopy;
+  v8 = errorCopy;
   dispatch_async(delegateQueue, v9);
 }
 
-- (void)assetDownloadSessionDidFinishDownload:(id)a3
+- (void)assetDownloadSessionDidFinishDownload:(id)download
 {
   v4 = qword_1000EB210;
   if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_DEFAULT))
@@ -173,30 +173,30 @@
 
 - (void)startLoadingMetadata
 {
-  v2 = [(NDAVAssetDownloadSessionWrapper *)self downloadSession];
-  [v2 startLoadingMetadata];
+  downloadSession = [(NDAVAssetDownloadSessionWrapper *)self downloadSession];
+  [downloadSession startLoadingMetadata];
 }
 
-- (void)cancelAndDeliverError:(id)a3
+- (void)cancelAndDeliverError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   [(NDAVAssetDownloadSessionWrapper *)self cancel];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained NDAVAssetDownloadSessionWrapper:self didCompleteWithError:v5];
+  [WeakRetained NDAVAssetDownloadSessionWrapper:self didCompleteWithError:errorCopy];
 }
 
 - (void)cancel
 {
-  v3 = [(NDAVAssetDownloadSessionWrapper *)self downloadSession];
-  [v3 stop];
+  downloadSession = [(NDAVAssetDownloadSessionWrapper *)self downloadSession];
+  [downloadSession stop];
 
   [(NDAVAssetDownloadSessionWrapper *)self disavowSession];
 }
 
 - (void)suspend
 {
-  v3 = [(NDAVAssetDownloadSessionWrapper *)self downloadSession];
-  [v3 pause];
+  downloadSession = [(NDAVAssetDownloadSessionWrapper *)self downloadSession];
+  [downloadSession pause];
 
   [(NDAVAssetDownloadSessionWrapper *)self releasePowerAssertion];
 }
@@ -211,56 +211,56 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Starting AVAssetDownloadSession", v5, 2u);
   }
 
-  v4 = [(NDAVAssetDownloadSessionWrapper *)self downloadSession];
-  [v4 start];
+  downloadSession = [(NDAVAssetDownloadSessionWrapper *)self downloadSession];
+  [downloadSession start];
 }
 
 - (void)releasePowerAssertion
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  powerAssertion = v2->_powerAssertion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  powerAssertion = selfCopy->_powerAssertion;
   if (powerAssertion)
   {
     v4 = qword_1000EB210;
     if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_DEFAULT))
     {
-      downloadToken = v2->_downloadToken;
-      taskIdentifier = v2->_taskIdentifier;
+      downloadToken = selfCopy->_downloadToken;
+      taskIdentifier = selfCopy->_taskIdentifier;
       v9 = 134218240;
       v10 = downloadToken;
       v11 = 2048;
       v12 = taskIdentifier;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Releasing power assertion for AVAssetDownloadSessionWrapper %llu with taskIdentifier %lu", &v9, 0x16u);
-      powerAssertion = v2->_powerAssertion;
+      powerAssertion = selfCopy->_powerAssertion;
     }
 
     IOPMAssertionRelease(powerAssertion);
-    v2->_powerAssertion = 0;
+    selfCopy->_powerAssertion = 0;
   }
 
-  powerAssertionTimer = v2->_powerAssertionTimer;
+  powerAssertionTimer = selfCopy->_powerAssertionTimer;
   if (powerAssertionTimer)
   {
     dispatch_source_cancel(powerAssertionTimer);
-    v8 = v2->_powerAssertionTimer;
-    v2->_powerAssertionTimer = 0;
+    v8 = selfCopy->_powerAssertionTimer;
+    selfCopy->_powerAssertionTimer = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)takePowerAssertion
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_powerAssertion)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_powerAssertion)
   {
     v3 = qword_1000EB210;
     if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_DEFAULT))
     {
-      downloadToken = v2->_downloadToken;
-      taskIdentifier = v2->_taskIdentifier;
+      downloadToken = selfCopy->_downloadToken;
+      taskIdentifier = selfCopy->_taskIdentifier;
       *buf = 134218240;
       v26 = downloadToken;
       v27 = 2048;
@@ -268,13 +268,13 @@
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Taking power assertion for AVAssetDownloadSessionWrapper %llu with taskIdentifier %lu", buf, 0x16u);
     }
 
-    v6 = [(NSDictionary *)v2->_options objectForKeyedSubscript:AVAssetDownloadSessionClientBundleIdentifierKey];
+    v6 = [(NSDictionary *)selfCopy->_options objectForKeyedSubscript:AVAssetDownloadSessionClientBundleIdentifierKey];
     v23[0] = @"AssertType";
     v23[1] = @"AssertLevel";
     v24[0] = @"PreventUserIdleSystemSleep";
     v24[1] = &off_1000D88C0;
     v23[2] = @"AssertName";
-    v7 = [NSString stringWithFormat:@"AVAssetDownloadSessionWrapper %llu (%@)", v2->_downloadToken, v6];
+    v7 = [NSString stringWithFormat:@"AVAssetDownloadSessionWrapper %llu (%@)", selfCopy->_downloadToken, v6];
     v24[2] = v7;
     v24[3] = &off_1000D88D8;
     v23[3] = @"TimeoutSeconds";
@@ -293,8 +293,8 @@ LABEL_6:
         goto LABEL_7;
       }
 
-      v16 = v2->_downloadToken;
-      v17 = v2->_taskIdentifier;
+      v16 = selfCopy->_downloadToken;
+      v17 = selfCopy->_taskIdentifier;
       *buf = 134218240;
       v26 = v16;
       v27 = 2048;
@@ -304,29 +304,29 @@ LABEL_6:
 
     else
     {
-      v2->_powerAssertion = AssertionID;
-      if (!sub_10006E5E0(v9) || ![v6 isEqualToString:@"com.apple.news"] || v2->_powerAssertionTimer)
+      selfCopy->_powerAssertion = AssertionID;
+      if (!sub_10006E5E0(v9) || ![v6 isEqualToString:@"com.apple.news"] || selfCopy->_powerAssertionTimer)
       {
         goto LABEL_6;
       }
 
       v11 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, &_dispatch_main_q);
-      powerAssertionTimer = v2->_powerAssertionTimer;
-      v2->_powerAssertionTimer = v11;
+      powerAssertionTimer = selfCopy->_powerAssertionTimer;
+      selfCopy->_powerAssertionTimer = v11;
 
-      v13 = v2->_powerAssertionTimer;
+      v13 = selfCopy->_powerAssertionTimer;
       if (v13)
       {
         handler[0] = _NSConcreteStackBlock;
         handler[1] = 3221225472;
         handler[2] = sub_10001FBC4;
         handler[3] = &unk_1000D63D0;
-        handler[4] = v2;
+        handler[4] = selfCopy;
         dispatch_source_set_event_handler(v13, handler);
-        v14 = v2->_powerAssertionTimer;
+        v14 = selfCopy->_powerAssertionTimer;
         v15 = dispatch_time(0, 7200000000000);
         dispatch_source_set_timer(v14, v15, 0xFFFFFFFFFFFFFFFFLL, 0);
-        dispatch_activate(v2->_powerAssertionTimer);
+        dispatch_activate(selfCopy->_powerAssertionTimer);
         goto LABEL_6;
       }
 
@@ -336,8 +336,8 @@ LABEL_6:
         goto LABEL_6;
       }
 
-      v19 = v2->_downloadToken;
-      v20 = v2->_taskIdentifier;
+      v19 = selfCopy->_downloadToken;
+      v20 = selfCopy->_taskIdentifier;
       *buf = 134218240;
       v26 = v19;
       v27 = 2048;
@@ -350,7 +350,7 @@ LABEL_6:
   }
 
 LABEL_7:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)disavowSession
@@ -360,7 +360,7 @@ LABEL_7:
   if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%p Disavowing AVAssetDownloadSession", &v5, 0xCu);
   }
 
@@ -369,13 +369,13 @@ LABEL_7:
   self->_callbackQueue = 0;
 }
 
-- (NDAVAssetDownloadSessionWrapper)initWithURLAsset:(id)a3 destinationURL:(id)a4 options:(id)a5 delegate:(id)a6 queue:(id)a7
+- (NDAVAssetDownloadSessionWrapper)initWithURLAsset:(id)asset destinationURL:(id)l options:(id)options delegate:(id)delegate queue:(id)queue
 {
-  v13 = a3;
-  v52 = a4;
-  v14 = a5;
-  v53 = a6;
-  v51 = a7;
+  assetCopy = asset;
+  lCopy = l;
+  optionsCopy = options;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v63.receiver = self;
   v63.super_class = NDAVAssetDownloadSessionWrapper;
   v15 = [(NDAVAssetDownloadSessionWrapper *)&v63 init];
@@ -385,11 +385,11 @@ LABEL_7:
     goto LABEL_34;
   }
 
-  objc_storeStrong(&v15->_asset, a3);
-  objc_storeStrong(&v54->_destinationURL, a4);
-  if (v14)
+  objc_storeStrong(&v15->_asset, asset);
+  objc_storeStrong(&v54->_destinationURL, l);
+  if (optionsCopy)
   {
-    v16 = [v14 objectForKeyedSubscript:@"AVAssetDownloadSessionMediaSelectionArrayKey"];
+    v16 = [optionsCopy objectForKeyedSubscript:@"AVAssetDownloadSessionMediaSelectionArrayKey"];
     v17 = v16 == 0;
 
     if (v17)
@@ -399,8 +399,8 @@ LABEL_7:
 
     else
     {
-      v49 = [v14 objectForKey:@"AVAssetDownloadSessionMediaSelectionArrayKey"];
-      v18 = [v14 mutableCopy];
+      v49 = [optionsCopy objectForKey:@"AVAssetDownloadSessionMediaSelectionArrayKey"];
+      v18 = [optionsCopy mutableCopy];
       v19 = +[NSMutableArray array];
       v61 = 0u;
       v62 = 0u;
@@ -420,7 +420,7 @@ LABEL_7:
               objc_enumerationMutation(v20);
             }
 
-            v24 = [[AVMediaSelection alloc] initWithAsset:v13 propertyList:*(*(&v59 + 1) + 8 * i)];
+            v24 = [[AVMediaSelection alloc] initWithAsset:assetCopy propertyList:*(*(&v59 + 1) + 8 * i)];
             if (v24)
             {
               [v19 addObject:v24];
@@ -439,10 +439,10 @@ LABEL_7:
         goto LABEL_30;
       }
 
-      v14 = v18;
+      optionsCopy = v18;
     }
 
-    v25 = [v14 objectForKeyedSubscript:@"AVAssetDownloadTaskMediaSelectionsForMultichannelKey"];
+    v25 = [optionsCopy objectForKeyedSubscript:@"AVAssetDownloadTaskMediaSelectionsForMultichannelKey"];
     v26 = v25 == 0;
 
     if (v26)
@@ -450,8 +450,8 @@ LABEL_7:
       goto LABEL_28;
     }
 
-    v48 = [v14 objectForKeyedSubscript:@"AVAssetDownloadTaskMediaSelectionsForMultichannelKey"];
-    v50 = [v14 mutableCopy];
+    v48 = [optionsCopy objectForKeyedSubscript:@"AVAssetDownloadTaskMediaSelectionsForMultichannelKey"];
+    v50 = [optionsCopy mutableCopy];
     v27 = +[NSMutableArray array];
     v57 = 0u;
     v58 = 0u;
@@ -471,7 +471,7 @@ LABEL_7:
             objc_enumerationMutation(v28);
           }
 
-          v32 = [[AVMediaSelection alloc] initWithAsset:v13 propertyList:*(*(&v55 + 1) + 8 * j)];
+          v32 = [[AVMediaSelection alloc] initWithAsset:assetCopy propertyList:*(*(&v55 + 1) + 8 * j)];
           if (v32)
           {
             [v27 addObject:v32];
@@ -485,23 +485,23 @@ LABEL_7:
     }
 
     [v50 setObject:v27 forKeyedSubscript:@"AVAssetDownloadTaskMediaSelectionsForMultichannelKey"];
-    v14 = v50;
+    optionsCopy = v50;
     if (v50)
     {
 LABEL_28:
-      v33 = [v14 objectForKeyedSubscript:@"AVAssetDownloadTaskMediaSelectionKey"];
+      v33 = [optionsCopy objectForKeyedSubscript:@"AVAssetDownloadTaskMediaSelectionKey"];
       v34 = v33 == 0;
 
       if (v34)
       {
-        v36 = v14;
+        v36 = optionsCopy;
       }
 
       else
       {
-        v35 = [v14 objectForKeyedSubscript:@"AVAssetDownloadTaskMediaSelectionKey"];
-        v36 = [v14 mutableCopy];
-        v37 = [[AVMediaSelection alloc] initWithAsset:v13 propertyList:v35];
+        v35 = [optionsCopy objectForKeyedSubscript:@"AVAssetDownloadTaskMediaSelectionKey"];
+        v36 = [optionsCopy mutableCopy];
+        v37 = [[AVMediaSelection alloc] initWithAsset:assetCopy propertyList:v35];
         [v36 setObject:v37 forKeyedSubscript:AVAssetDownloadSessionMediaSelectionKey];
         [v36 removeObjectForKey:@"AVAssetDownloadTaskMediaSelectionKey"];
       }
@@ -530,12 +530,12 @@ LABEL_31:
     [v38 removeObjectForKey:@"AVAssetDownloadTaskMinimumRequiredMediaBitrateKey"];
   }
 
-  v14 = v38;
+  optionsCopy = v38;
 
   objc_storeStrong(&v54->_options, v38);
-  objc_storeWeak(&v54->_delegate, v53);
-  objc_storeStrong(&v54->_delegateQueue, a7);
-  v42 = [AVAssetDownloadSession assetDownloadSessionWithAsset:v13 mediaSelections:v19 destinationURL:v52 options:v14];
+  objc_storeWeak(&v54->_delegate, delegateCopy);
+  objc_storeStrong(&v54->_delegateQueue, queue);
+  v42 = [AVAssetDownloadSession assetDownloadSessionWithAsset:assetCopy mediaSelections:v19 destinationURL:lCopy options:optionsCopy];
   downloadSession = v54->_downloadSession;
   v54->_downloadSession = v42;
 
@@ -551,25 +551,25 @@ LABEL_34:
   return v54;
 }
 
-- (NDAVAssetDownloadSessionWrapper)initWithURL:(id)a3 destinationURL:(id)a4 options:(id)a5 delegate:(id)a6 queue:(id)a7
+- (NDAVAssetDownloadSessionWrapper)initWithURL:(id)l destinationURL:(id)rL options:(id)options delegate:(id)delegate queue:(id)queue
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v25 = a7;
+  lCopy = l;
+  rLCopy = rL;
+  optionsCopy = options;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v26.receiver = self;
   v26.super_class = NDAVAssetDownloadSessionWrapper;
   v17 = [(NDAVAssetDownloadSessionWrapper *)&v26 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_URL, a3);
-    objc_storeStrong(&v18->_destinationURL, a4);
-    objc_storeStrong(&v18->_options, a5);
-    objc_storeWeak(&v18->_delegate, v16);
-    objc_storeStrong(&v18->_delegateQueue, a7);
-    v19 = [AVAssetDownloadSession assetDownloadSessionWithURL:v13 destinationURL:v14 options:v15];
+    objc_storeStrong(&v17->_URL, l);
+    objc_storeStrong(&v18->_destinationURL, rL);
+    objc_storeStrong(&v18->_options, options);
+    objc_storeWeak(&v18->_delegate, delegateCopy);
+    objc_storeStrong(&v18->_delegateQueue, queue);
+    v19 = [AVAssetDownloadSession assetDownloadSessionWithURL:lCopy destinationURL:rLCopy options:optionsCopy];
     downloadSession = v18->_downloadSession;
     v18->_downloadSession = v19;
 

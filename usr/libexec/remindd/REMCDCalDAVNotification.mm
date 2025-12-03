@@ -1,14 +1,14 @@
 @interface REMCDCalDAVNotification
-- (BOOL)isConnectedToAccountObject:(id)a3;
+- (BOOL)isConnectedToAccountObject:(id)object;
 @end
 
 @implementation REMCDCalDAVNotification
 
-- (BOOL)isConnectedToAccountObject:(id)a3
+- (BOOL)isConnectedToAccountObject:(id)object
 {
-  v4 = a3;
-  v5 = [(REMCDCalDAVNotification *)self owner];
-  v6 = [v5 isConnectedToAccountObject:v4];
+  objectCopy = object;
+  owner = [(REMCDCalDAVNotification *)self owner];
+  v6 = [owner isConnectedToAccountObject:objectCopy];
 
   return v6;
 }

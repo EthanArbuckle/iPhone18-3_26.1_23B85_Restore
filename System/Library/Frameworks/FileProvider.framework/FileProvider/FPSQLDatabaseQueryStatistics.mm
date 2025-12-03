@@ -1,28 +1,28 @@
 @interface FPSQLDatabaseQueryStatistics
-- (FPSQLDatabaseQueryStatistics)initWithCoder:(id)a3;
-- (FPSQLDatabaseQueryStatistics)initWithMinTime:(double)a3 maxTime:(double)a4 cumulatedTime:(double)a5 cumulatedSquareDiffFromMean:(double)a6 count:(int64_t)a7 queryPlan:(id)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (FPSQLDatabaseQueryStatistics)initWithCoder:(id)coder;
+- (FPSQLDatabaseQueryStatistics)initWithMinTime:(double)time maxTime:(double)maxTime cumulatedTime:(double)cumulatedTime cumulatedSquareDiffFromMean:(double)mean count:(int64_t)count queryPlan:(id)plan;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FPSQLDatabaseQueryStatistics
 
-- (FPSQLDatabaseQueryStatistics)initWithMinTime:(double)a3 maxTime:(double)a4 cumulatedTime:(double)a5 cumulatedSquareDiffFromMean:(double)a6 count:(int64_t)a7 queryPlan:(id)a8
+- (FPSQLDatabaseQueryStatistics)initWithMinTime:(double)time maxTime:(double)maxTime cumulatedTime:(double)cumulatedTime cumulatedSquareDiffFromMean:(double)mean count:(int64_t)count queryPlan:(id)plan
 {
-  v15 = a8;
+  planCopy = plan;
   v19.receiver = self;
   v19.super_class = FPSQLDatabaseQueryStatistics;
   v16 = [(FPSQLDatabaseQueryStatistics *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    v16->_minTime = a3;
-    v16->_maxTime = a4;
-    v16->_cumulatedTime = a5;
-    v16->_cumulatedSquareDiffFromMean = a6;
-    v16->_count = a7;
-    objc_storeStrong(&v16->_queryPlan, a8);
+    v16->_minTime = time;
+    v16->_maxTime = maxTime;
+    v16->_cumulatedTime = cumulatedTime;
+    v16->_cumulatedSquareDiffFromMean = mean;
+    v16->_count = count;
+    objc_storeStrong(&v16->_queryPlan, plan);
   }
 
   return v17;
@@ -39,25 +39,25 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@" minTime %fs, maxTime %fs, totalTime %fs, mean %fs, stdDev %fs, count %llu, _queryPlan %@", *&self->_minTime, *&self->_maxTime, *&self->_cumulatedTime, self->_cumulatedTime / self->_count, sqrt(self->_cumulatedSquareDiffFromMean / self->_count), self->_count, queryPlan];
 }
 
-- (FPSQLDatabaseQueryStatistics)initWithCoder:(id)a3
+- (FPSQLDatabaseQueryStatistics)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = FPSQLDatabaseQueryStatistics;
   v5 = [(FPSQLDatabaseQueryStatistics *)&v14 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"minTime"];
+    [coderCopy decodeDoubleForKey:@"minTime"];
     v5->_minTime = v6;
-    [v4 decodeDoubleForKey:@"maxTime"];
+    [coderCopy decodeDoubleForKey:@"maxTime"];
     v5->_maxTime = v7;
-    [v4 decodeDoubleForKey:@"cumulatedTime"];
+    [coderCopy decodeDoubleForKey:@"cumulatedTime"];
     v5->_cumulatedTime = v8;
-    [v4 decodeDoubleForKey:@"cumulatedSquareDiffFromMean"];
+    [coderCopy decodeDoubleForKey:@"cumulatedSquareDiffFromMean"];
     v5->_cumulatedSquareDiffFromMean = v9;
-    [v4 decodeDoubleForKey:@"count"];
+    [coderCopy decodeDoubleForKey:@"count"];
     v5->_count = v10;
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"queryPlan"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"queryPlan"];
     queryPlan = v5->_queryPlan;
     v5->_queryPlan = v11;
   }
@@ -65,22 +65,22 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeDouble:@"minTime" forKey:self->_minTime];
-  [v5 encodeDouble:@"maxTime" forKey:self->_maxTime];
-  [v5 encodeDouble:@"cumulatedTime" forKey:self->_cumulatedTime];
-  [v5 encodeDouble:@"cumulatedSquareDiffFromMean" forKey:self->_cumulatedSquareDiffFromMean];
-  [v5 encodeDouble:@"count" forKey:self->_count];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"minTime" forKey:self->_minTime];
+  [coderCopy encodeDouble:@"maxTime" forKey:self->_maxTime];
+  [coderCopy encodeDouble:@"cumulatedTime" forKey:self->_cumulatedTime];
+  [coderCopy encodeDouble:@"cumulatedSquareDiffFromMean" forKey:self->_cumulatedSquareDiffFromMean];
+  [coderCopy encodeDouble:@"count" forKey:self->_count];
   queryPlan = self->_queryPlan;
   if (queryPlan)
   {
-    [v5 encodeObject:queryPlan forKey:@"queryPlan"];
+    [coderCopy encodeObject:queryPlan forKey:@"queryPlan"];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   minTime = self->_minTime;

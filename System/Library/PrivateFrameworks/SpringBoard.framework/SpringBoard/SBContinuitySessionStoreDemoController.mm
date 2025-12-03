@@ -1,14 +1,14 @@
 @interface SBContinuitySessionStoreDemoController
-- (SBContinuitySessionStoreDemoController)initWithSystemEventMonitor:(id)a3;
-- (void)continuitySessionDidUpdateState:(id)a3;
+- (SBContinuitySessionStoreDemoController)initWithSystemEventMonitor:(id)monitor;
+- (void)continuitySessionDidUpdateState:(id)state;
 @end
 
 @implementation SBContinuitySessionStoreDemoController
 
-- (SBContinuitySessionStoreDemoController)initWithSystemEventMonitor:(id)a3
+- (SBContinuitySessionStoreDemoController)initWithSystemEventMonitor:(id)monitor
 {
-  v6 = a3;
-  if (!v6)
+  monitorCopy = monitor;
+  if (!monitorCopy)
   {
     [(SBContinuitySessionStoreDemoController *)a2 initWithSystemEventMonitor:?];
   }
@@ -19,18 +19,18 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_systemEventMonitor, a3);
+    objc_storeStrong(&v7->_systemEventMonitor, monitor);
   }
 
   return v8;
 }
 
-- (void)continuitySessionDidUpdateState:(id)a3
+- (void)continuitySessionDidUpdateState:(id)state
 {
-  v4 = a3;
-  if ([v4 state] == 1 && !-[SBContinuitySessionSystemEventMonitor isUILocked](self->_systemEventMonitor, "isUILocked"))
+  stateCopy = state;
+  if ([stateCopy state] == 1 && !-[SBContinuitySessionSystemEventMonitor isUILocked](self->_systemEventMonitor, "isUILocked"))
   {
-    v5 = v4;
+    v5 = stateCopy;
     BSDispatchMain();
   }
 }

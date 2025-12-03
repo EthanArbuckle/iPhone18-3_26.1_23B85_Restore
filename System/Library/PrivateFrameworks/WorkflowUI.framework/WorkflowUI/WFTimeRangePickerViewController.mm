@@ -1,15 +1,15 @@
 @interface WFTimeRangePickerViewController
-- (WFTimeRangePickerViewController)initWithStartTime:(id)a3 endTime:(id)a4;
+- (WFTimeRangePickerViewController)initWithStartTime:(id)time endTime:(id)endTime;
 - (WFTimeRangePickerViewControllerDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (void)cancel:(id)a3;
-- (void)done:(id)a3;
-- (void)endTimeChanged:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (void)cancel:(id)cancel;
+- (void)done:(id)done;
+- (void)endTimeChanged:(id)changed;
 - (void)loadView;
-- (void)startTimeChanged:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)startTimeChanged:(id)changed;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation WFTimeRangePickerViewController
@@ -21,58 +21,58 @@
   return WeakRetained;
 }
 
-- (void)done:(id)a3
+- (void)done:(id)done
 {
-  v6 = [(WFTimeRangePickerViewController *)self delegate];
-  v4 = [(WFTimeRangePickerViewController *)self startTime];
-  v5 = [(WFTimeRangePickerViewController *)self endTime];
-  [v6 timeRangePickerViewController:self didPickStartTime:v4 endTime:v5];
+  delegate = [(WFTimeRangePickerViewController *)self delegate];
+  startTime = [(WFTimeRangePickerViewController *)self startTime];
+  endTime = [(WFTimeRangePickerViewController *)self endTime];
+  [delegate timeRangePickerViewController:self didPickStartTime:startTime endTime:endTime];
 }
 
-- (void)cancel:(id)a3
+- (void)cancel:(id)cancel
 {
-  v4 = [(WFTimeRangePickerViewController *)self delegate];
-  [v4 timeRangePickerViewControllerDidCancel:self];
+  delegate = [(WFTimeRangePickerViewController *)self delegate];
+  [delegate timeRangePickerViewControllerDidCancel:self];
 }
 
-- (void)endTimeChanged:(id)a3
+- (void)endTimeChanged:(id)changed
 {
-  v4 = [a3 date];
-  [(WFTimeRangePickerViewController *)self setEndTime:v4];
+  date = [changed date];
+  [(WFTimeRangePickerViewController *)self setEndTime:date];
 }
 
-- (void)startTimeChanged:(id)a3
+- (void)startTimeChanged:(id)changed
 {
-  v4 = [a3 date];
-  [(WFTimeRangePickerViewController *)self setStartTime:v4];
+  date = [changed date];
+  [(WFTimeRangePickerViewController *)self setStartTime:date];
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(WFTimeRangePickerViewController *)self sections];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  sections = [(WFTimeRangePickerViewController *)self sections];
+  v6 = [sections objectAtIndexedSubscript:section];
   v7 = [v6 objectForKeyedSubscript:@"sectionTitle"];
 
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WFTimeRangePickerViewController *)self sections];
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v6, "section")}];
+  pathCopy = path;
+  viewCopy = view;
+  sections = [(WFTimeRangePickerViewController *)self sections];
+  v9 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  v12 = [v7 dequeueReusableCellWithIdentifier:v11 forIndexPath:v6];
+  v12 = [viewCopy dequeueReusableCellWithIdentifier:v11 forIndexPath:pathCopy];
 
   v13 = [v9 objectForKeyedSubscript:@"identifier"];
-  LODWORD(v7) = [v13 isEqual:@"start"];
+  LODWORD(viewCopy) = [v13 isEqual:@"start"];
 
-  if (v7)
+  if (viewCopy)
   {
-    v14 = [(WFTimeRangePickerViewController *)self startTime];
+    startTime = [(WFTimeRangePickerViewController *)self startTime];
     v15 = &selRef_startTimeChanged_;
   }
 
@@ -86,33 +86,33 @@
       goto LABEL_6;
     }
 
-    v14 = [(WFTimeRangePickerViewController *)self endTime];
+    startTime = [(WFTimeRangePickerViewController *)self endTime];
     v15 = &selRef_endTimeChanged_;
   }
 
-  v18 = [v12 datePicker];
-  [v18 setDate:v14];
+  datePicker = [v12 datePicker];
+  [datePicker setDate:startTime];
 
-  v19 = [v12 datePicker];
-  [v19 addTarget:self action:*v15 forControlEvents:4096];
+  datePicker2 = [v12 datePicker];
+  [datePicker2 addTarget:self action:*v15 forControlEvents:4096];
 
 LABEL_6:
 
   return v12;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(WFTimeRangePickerViewController *)self sections];
-  v4 = [v3 count];
+  sections = [(WFTimeRangePickerViewController *)self sections];
+  v4 = [sections count];
 
   return v4;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = [(WFTimeRangePickerViewController *)self tableView];
-  [v3 reloadData];
+  tableView = [(WFTimeRangePickerViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)loadView
@@ -120,56 +120,56 @@ LABEL_6:
   v11.receiver = self;
   v11.super_class = WFTimeRangePickerViewController;
   [(WFTimeRangePickerViewController *)&v11 loadView];
-  v3 = [(WFTimeRangePickerViewController *)self navigationItem];
+  navigationItem = [(WFTimeRangePickerViewController *)self navigationItem];
   v4 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancel_];
-  [v3 setLeftBarButtonItem:v4];
+  [navigationItem setLeftBarButtonItem:v4];
 
-  v5 = [(WFTimeRangePickerViewController *)self navigationItem];
+  navigationItem2 = [(WFTimeRangePickerViewController *)self navigationItem];
   v6 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_done_];
-  [v5 setRightBarButtonItem:v6];
+  [navigationItem2 setRightBarButtonItem:v6];
 
-  v7 = [(WFTimeRangePickerViewController *)self tableView];
+  tableView = [(WFTimeRangePickerViewController *)self tableView];
   v8 = objc_opt_class();
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  [v7 registerClass:v8 forCellReuseIdentifier:v10];
+  [tableView registerClass:v8 forCellReuseIdentifier:v10];
 }
 
-- (WFTimeRangePickerViewController)initWithStartTime:(id)a3 endTime:(id)a4
+- (WFTimeRangePickerViewController)initWithStartTime:(id)time endTime:(id)endTime
 {
   v34[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  timeCopy = time;
+  endTimeCopy = endTime;
   v29.receiver = self;
   v29.super_class = WFTimeRangePickerViewController;
   v9 = [(WFTimeRangePickerViewController *)&v29 initWithStyle:2];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_startTime, a3);
+    objc_storeStrong(&v9->_startTime, time);
     if (!v10->_startTime)
     {
-      v11 = [MEMORY[0x277CBEA80] currentCalendar];
-      v12 = [MEMORY[0x277CBEAA8] date];
-      v13 = [v11 components:96 fromDate:v12];
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+      date = [MEMORY[0x277CBEAA8] date];
+      v13 = [currentCalendar components:96 fromDate:date];
 
       [v13 setHour:9];
       [v13 setMinute:0];
-      v14 = [v11 dateFromComponents:v13];
+      v14 = [currentCalendar dateFromComponents:v13];
       startTime = v10->_startTime;
       v10->_startTime = v14;
     }
 
-    objc_storeStrong(&v10->_endTime, a4);
+    objc_storeStrong(&v10->_endTime, endTime);
     if (!v10->_endTime)
     {
-      v16 = [MEMORY[0x277CBEA80] currentCalendar];
-      v17 = [MEMORY[0x277CBEAA8] date];
-      v18 = [v16 components:96 fromDate:v17];
+      currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      v18 = [currentCalendar2 components:96 fromDate:date2];
 
       [v18 setHour:17];
       [v18 setMinute:0];
-      v19 = [v16 dateFromComponents:v18];
+      v19 = [currentCalendar2 dateFromComponents:v18];
       endTime = v10->_endTime;
       v10->_endTime = v19;
     }

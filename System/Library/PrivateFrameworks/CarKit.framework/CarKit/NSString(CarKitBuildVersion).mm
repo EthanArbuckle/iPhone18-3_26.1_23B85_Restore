@@ -9,13 +9,13 @@
   v4 = a3;
   if (v4)
   {
-    v5 = [a1 length];
+    v5 = [self length];
     v6 = [v4 length];
     if (v5)
     {
       if (v6)
       {
-        v7 = [a1 componentsSeparatedByString:@"."];
+        v7 = [self componentsSeparatedByString:@"."];
         v8 = [v4 componentsSeparatedByString:@"."];
         v9 = [v7 count];
         if (v9 >= [v8 count])
@@ -68,9 +68,9 @@ LABEL_15:
               do
               {
                 v21 = [v8 objectAtIndex:v11];
-                v22 = [v21 integerValue];
+                integerValue = [v21 integerValue];
 
-                if (v22 >= 1)
+                if (integerValue >= 1)
                 {
                   break;
                 }
@@ -79,7 +79,7 @@ LABEL_15:
               }
 
               while (v11 < [v8 count]);
-              if (v22 <= 0)
+              if (integerValue <= 0)
               {
                 v17 = 0;
               }
@@ -98,9 +98,9 @@ LABEL_15:
             while (1)
             {
               v19 = [v7 objectAtIndex:v18];
-              v20 = [v19 integerValue];
+              integerValue2 = [v19 integerValue];
 
-              if (v20 >= 1)
+              if (integerValue2 >= 1)
               {
                 break;
               }

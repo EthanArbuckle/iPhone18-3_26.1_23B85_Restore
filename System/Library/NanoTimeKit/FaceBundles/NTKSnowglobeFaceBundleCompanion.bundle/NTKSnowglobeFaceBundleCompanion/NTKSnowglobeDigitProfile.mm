@@ -1,10 +1,10 @@
 @interface NTKSnowglobeDigitProfile
-+ (id)profileForCharacter:(unint64_t)a3;
++ (id)profileForCharacter:(unint64_t)character;
 @end
 
 @implementation NTKSnowglobeDigitProfile
 
-+ (id)profileForCharacter:(unint64_t)a3
++ (id)profileForCharacter:(unint64_t)character
 {
   v3 = objc_opt_new();
   CLKInterpolateBetweenFloatsClipped();

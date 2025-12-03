@@ -1,11 +1,11 @@
 @interface TSPDocumentSaveValidationPolicy
-- (TSPDocumentSaveValidationPolicy)initWithValidateDataCRC:(BOOL)a3 validateDataDigest:(BOOL)a4 scanForOSLikeCorruption:(BOOL)a5 corruptedDataFailToSaveMitigationPolicy:(int64_t)a6 corruptedDataRemovalMitigationPolicy:(int64_t)a7 updateDataModificationDate:(BOOL)a8 failToSaveIfUpdateDataModificationDateFails:(BOOL)a9;
+- (TSPDocumentSaveValidationPolicy)initWithValidateDataCRC:(BOOL)c validateDataDigest:(BOOL)digest scanForOSLikeCorruption:(BOOL)corruption corruptedDataFailToSaveMitigationPolicy:(int64_t)policy corruptedDataRemovalMitigationPolicy:(int64_t)mitigationPolicy updateDataModificationDate:(BOOL)date failToSaveIfUpdateDataModificationDateFails:(BOOL)fails;
 - (id)description;
 @end
 
 @implementation TSPDocumentSaveValidationPolicy
 
-- (TSPDocumentSaveValidationPolicy)initWithValidateDataCRC:(BOOL)a3 validateDataDigest:(BOOL)a4 scanForOSLikeCorruption:(BOOL)a5 corruptedDataFailToSaveMitigationPolicy:(int64_t)a6 corruptedDataRemovalMitigationPolicy:(int64_t)a7 updateDataModificationDate:(BOOL)a8 failToSaveIfUpdateDataModificationDateFails:(BOOL)a9
+- (TSPDocumentSaveValidationPolicy)initWithValidateDataCRC:(BOOL)c validateDataDigest:(BOOL)digest scanForOSLikeCorruption:(BOOL)corruption corruptedDataFailToSaveMitigationPolicy:(int64_t)policy corruptedDataRemovalMitigationPolicy:(int64_t)mitigationPolicy updateDataModificationDate:(BOOL)date failToSaveIfUpdateDataModificationDateFails:(BOOL)fails
 {
   v33.receiver = self;
   v33.super_class = TSPDocumentSaveValidationPolicy;
@@ -13,41 +13,41 @@
   v17 = v15;
   if (v15)
   {
-    v15->_validateDataCRC = a3;
-    v15->_validateDataDigest = a4;
-    v15->_scanForOSLikeCorruption = a5;
-    v15->_updateDataModificationDate = a8;
-    v15->_failToSaveIfUpdateDataModificationDateFails = a9;
-    if (a6 > 4)
+    v15->_validateDataCRC = c;
+    v15->_validateDataDigest = digest;
+    v15->_scanForOSLikeCorruption = corruption;
+    v15->_updateDataModificationDate = date;
+    v15->_failToSaveIfUpdateDataModificationDateFails = fails;
+    if (policy > 4)
     {
       v15->_corruptedDataFailToSaveMitigationPolicy = 0;
       v18 = MEMORY[0x277D81150];
       v19 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v16, "[TSPDocumentSaveValidationPolicy initWithValidateDataCRC:validateDataDigest:scanForOSLikeCorruption:corruptedDataFailToSaveMitigationPolicy:corruptedDataRemovalMitigationPolicy:updateDataModificationDate:failToSaveIfUpdateDataModificationDateFails:]");
       v21 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v20, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPDocumentValidationPolicy.m");
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v18, v22, v19, v21, 120, 0, "Invalid value for TSPDocumentCorruptedDataFailToSaveMitigationPolicy: %td", a6);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v18, v22, v19, v21, 120, 0, "Invalid value for TSPDocumentCorruptedDataFailToSaveMitigationPolicy: %td", policy);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24);
     }
 
     else
     {
-      v15->_corruptedDataFailToSaveMitigationPolicy = a6;
+      v15->_corruptedDataFailToSaveMitigationPolicy = policy;
     }
 
-    if (a7 > 6)
+    if (mitigationPolicy > 6)
     {
       v17->_corruptedDataRemovalMitigationPolicy = 0;
       v25 = MEMORY[0x277D81150];
       v26 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v16, "[TSPDocumentSaveValidationPolicy initWithValidateDataCRC:validateDataDigest:scanForOSLikeCorruption:corruptedDataFailToSaveMitigationPolicy:corruptedDataRemovalMitigationPolicy:updateDataModificationDate:failToSaveIfUpdateDataModificationDateFails:]");
       v28 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v27, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPDocumentValidationPolicy.m");
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v25, v29, v26, v28, 127, 0, "Invalid value for TSPDocumentCorruptedDataRemovalMitigationPolicy: %td", a7);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v25, v29, v26, v28, 127, 0, "Invalid value for TSPDocumentCorruptedDataRemovalMitigationPolicy: %td", mitigationPolicy);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v30, v31);
     }
 
     else
     {
-      v17->_corruptedDataRemovalMitigationPolicy = a7;
+      v17->_corruptedDataRemovalMitigationPolicy = mitigationPolicy;
     }
   }
 

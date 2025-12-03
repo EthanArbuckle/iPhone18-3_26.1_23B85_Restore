@@ -1,73 +1,73 @@
 @interface SXTextComponentView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)absoluteTextViewFrame;
 - (CGSize)calculatedSize;
 - (SXTangierController)tangierController;
-- (SXTextComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6 tangierController:(id)a7;
-- (id)accessibilityContextualLabelForTextView:(id)a3;
-- (id)accessibilityCustomRotorMembershipForTextView:(id)a3;
-- (id)componentIdentifierForTextView:(id)a3;
-- (id)textRulesForTextView:(id)a3;
+- (SXTextComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory tangierController:(id)controller;
+- (id)accessibilityContextualLabelForTextView:(id)view;
+- (id)accessibilityCustomRotorMembershipForTextView:(id)view;
+- (id)componentIdentifierForTextView:(id)view;
+- (id)textRulesForTextView:(id)view;
 - (id)textSource;
-- (void)animationDidFinish:(id)a3;
-- (void)animationDidStart:(id)a3;
-- (void)didApplyBehavior:(id)a3;
+- (void)animationDidFinish:(id)finish;
+- (void)animationDidStart:(id)start;
+- (void)didApplyBehavior:(id)behavior;
 - (void)didMoveToWindow;
-- (void)presentComponentWithChanges:(id)a3;
-- (void)provideInfosLayoutTo:(id)a3;
-- (void)receivedInfo:(id)a3 fromLayoutingPhaseWithIdentifier:(id)a4;
-- (void)setAbsoluteFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setPresentationFrame:(CGRect)a3;
+- (void)presentComponentWithChanges:(id)changes;
+- (void)provideInfosLayoutTo:(id)to;
+- (void)receivedInfo:(id)info fromLayoutingPhaseWithIdentifier:(id)identifier;
+- (void)setAbsoluteFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setPresentationFrame:(CGRect)frame;
 - (void)setupTextView;
 @end
 
 @implementation SXTextComponentView
 
-- (SXTextComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6 tangierController:(id)a7
+- (SXTextComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory tangierController:(id)controller
 {
-  v12 = a7;
+  controllerCopy = controller;
   v16.receiver = self;
   v16.super_class = SXTextComponentView;
-  v13 = [(SXComponentView *)&v16 initWithDOMObjectProvider:a3 viewport:a4 presentationDelegate:a5 componentStyleRendererFactory:a6];
+  v13 = [(SXComponentView *)&v16 initWithDOMObjectProvider:provider viewport:viewport presentationDelegate:delegate componentStyleRendererFactory:factory];
   v14 = v13;
   if (v13)
   {
-    objc_storeWeak(&v13->_tangierController, v12);
+    objc_storeWeak(&v13->_tangierController, controllerCopy);
   }
 
   return v14;
 }
 
-- (void)presentComponentWithChanges:(id)a3
+- (void)presentComponentWithChanges:(id)changes
 {
   v12.receiver = self;
   v12.super_class = SXTextComponentView;
-  [(SXComponentView *)&v12 presentComponentWithChanges:*&a3.var0 & 0xFFFFFFLL];
+  [(SXComponentView *)&v12 presentComponentWithChanges:*&changes.var0 & 0xFFFFFFLL];
   [(SXTextComponentView *)self setupTextView];
-  v4 = [(SXTextComponentView *)self textView];
+  textView = [(SXTextComponentView *)self textView];
   [(SXComponentView *)self contentFrame];
-  [v4 setFrame:?];
+  [textView setFrame:?];
 
-  v5 = [(SXTextComponentView *)self textView];
+  textView2 = [(SXTextComponentView *)self textView];
   [(SXTextComponentView *)self absoluteTextViewFrame];
-  [v5 setFrameInCanvas:?];
+  [textView2 setFrameInCanvas:?];
 
-  v6 = [(SXTextComponentView *)self textView];
+  textView3 = [(SXTextComponentView *)self textView];
   [(SXTextComponentView *)self frame];
-  [v6 setParentFrame:?];
+  [textView3 setParentFrame:?];
 
-  v7 = [(SXTextComponentView *)self textView];
-  [v7 invalidate];
+  textView4 = [(SXTextComponentView *)self textView];
+  [textView4 invalidate];
 
-  v8 = [(SXTextComponentView *)self textView];
-  v9 = [v8 superview];
+  textView5 = [(SXTextComponentView *)self textView];
+  superview = [textView5 superview];
 
-  if (!v9)
+  if (!superview)
   {
-    v10 = [(SXComponentView *)self contentView];
-    v11 = [(SXTextComponentView *)self textView];
-    [v10 addSubview:v11];
+    contentView = [(SXComponentView *)self contentView];
+    textView6 = [(SXTextComponentView *)self textView];
+    [contentView addSubview:textView6];
   }
 }
 
@@ -76,11 +76,11 @@
   v16.receiver = self;
   v16.super_class = SXTextComponentView;
   [(SXComponentView *)&v16 didMoveToWindow];
-  v3 = [(SXTextComponentView *)self window];
+  window = [(SXTextComponentView *)self window];
 
-  v4 = [(SXTextComponentView *)self textView];
-  v5 = v4;
-  if (!v3)
+  textView = [(SXTextComponentView *)self textView];
+  v5 = textView;
+  if (!window)
   {
 
     if (!v5)
@@ -88,65 +88,65 @@
       return;
     }
 
-    v13 = [(SXComponentView *)self presentationDelegate];
-    v14 = [v13 tangierController];
-    v15 = [(SXTextComponentView *)self textView];
-    [v14 didStopPresentingTextView:v15];
+    presentationDelegate = [(SXComponentView *)self presentationDelegate];
+    tangierController = [presentationDelegate tangierController];
+    textView2 = [(SXTextComponentView *)self textView];
+    [tangierController didStopPresentingTextView:textView2];
     goto LABEL_8;
   }
 
-  v6 = [v4 rep];
-  v7 = [v6 updateFromVisualPosition];
+  v6 = [textView rep];
+  updateFromVisualPosition = [v6 updateFromVisualPosition];
 
-  if (v7)
+  if (updateFromVisualPosition)
   {
-    v8 = [(SXTextComponentView *)self textView];
-    v9 = [v8 rep];
+    textView3 = [(SXTextComponentView *)self textView];
+    v9 = [textView3 rep];
     v10 = [v9 icc];
     [v10 invalidateLayers];
   }
 
-  v11 = [(SXTextComponentView *)self textView];
+  textView4 = [(SXTextComponentView *)self textView];
 
-  if (v11)
+  if (textView4)
   {
-    v12 = [(SXTextComponentView *)self textView];
+    textView5 = [(SXTextComponentView *)self textView];
     [(SXTextComponentView *)self absoluteTextViewFrame];
-    [v12 setFrameInCanvas:?];
+    [textView5 setFrameInCanvas:?];
 
-    v13 = [(SXComponentView *)self presentationDelegate];
-    v14 = [v13 tangierController];
-    v15 = [(SXTextComponentView *)self textView];
-    [v14 didStartPresentingTextView:v15];
+    presentationDelegate = [(SXComponentView *)self presentationDelegate];
+    tangierController = [presentationDelegate tangierController];
+    textView2 = [(SXTextComponentView *)self textView];
+    [tangierController didStartPresentingTextView:textView2];
 LABEL_8:
   }
 }
 
-- (void)setAbsoluteFrame:(CGRect)a3
+- (void)setAbsoluteFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = SXTextComponentView;
-  [(SXComponentView *)&v5 setAbsoluteFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v4 = [(SXTextComponentView *)self textView];
+  [(SXComponentView *)&v5 setAbsoluteFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+  textView = [(SXTextComponentView *)self textView];
   [(SXTextComponentView *)self absoluteTextViewFrame];
-  [v4 setFrameInCanvas:?];
+  [textView setFrameInCanvas:?];
 }
 
-- (void)setPresentationFrame:(CGRect)a3
+- (void)setPresentationFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = SXTextComponentView;
-  [(SXComponentView *)&v5 setPresentationFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v4 = [(SXTextComponentView *)self textView];
+  [(SXComponentView *)&v5 setPresentationFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+  textView = [(SXTextComponentView *)self textView];
   [(SXTextComponentView *)self absoluteTextViewFrame];
-  [v4 setFrameInCanvas:?];
+  [textView setFrameInCanvas:?];
 }
 
 - (void)setupTextView
 {
-  v3 = [(SXTextComponentView *)self textView];
+  textView = [(SXTextComponentView *)self textView];
 
-  if (!v3)
+  if (!textView)
   {
     v4 = objc_alloc_init(SXTextView);
     textView = self->_textView;
@@ -156,52 +156,52 @@ LABEL_8:
     [(SXTextComponentView *)self absoluteTextViewFrame];
     [(SXTextView *)v6 setFrameInCanvas:?];
     [(SXTextView *)self->_textView setDelegate:self];
-    v7 = [(SXComponentView *)self component];
-    v8 = [v7 classification];
-    v9 = [v8 textRules];
-    -[SXTextView setIsSelectable:](self->_textView, "setIsSelectable:", [v9 isSelectable]);
+    component = [(SXComponentView *)self component];
+    classification = [component classification];
+    textRules = [classification textRules];
+    -[SXTextView setIsSelectable:](self->_textView, "setIsSelectable:", [textRules isSelectable]);
 
-    v12 = [(SXComponentView *)self presentationDelegate];
-    v10 = [v12 tangierController];
-    v11 = [(SXTextComponentView *)self textView];
-    [v10 didStartPresentingTextView:v11];
+    presentationDelegate = [(SXComponentView *)self presentationDelegate];
+    tangierController = [presentationDelegate tangierController];
+    textView2 = [(SXTextComponentView *)self textView];
+    [tangierController didStartPresentingTextView:textView2];
   }
 }
 
-- (void)receivedInfo:(id)a3 fromLayoutingPhaseWithIdentifier:(id)a4
+- (void)receivedInfo:(id)info fromLayoutingPhaseWithIdentifier:(id)identifier
 {
-  v6 = a3;
+  infoCopy = info;
   v10.receiver = self;
   v10.super_class = SXTextComponentView;
-  v7 = a4;
-  [(SXComponentView *)&v10 receivedInfo:v6 fromLayoutingPhaseWithIdentifier:v7];
-  v8 = [v7 isEqualToString:{@"TextLayouter", v10.receiver, v10.super_class}];
+  identifierCopy = identifier;
+  [(SXComponentView *)&v10 receivedInfo:infoCopy fromLayoutingPhaseWithIdentifier:identifierCopy];
+  v8 = [identifierCopy isEqualToString:{@"TextLayouter", v10.receiver, v10.super_class}];
 
   if (v8)
   {
     [(SXTextComponentView *)self setupTextView];
-    v9 = [(SXTextComponentView *)self textView];
-    [v9 setTextLayouter:v6];
+    textView = [(SXTextComponentView *)self textView];
+    [textView setTextLayouter:infoCopy];
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v39 = *MEMORY[0x1E69E9840];
   v37.receiver = self;
   v37.super_class = SXTextComponentView;
-  v7 = [(SXTextComponentView *)&v37 pointInside:a4 withEvent:?];
+  v7 = [(SXTextComponentView *)&v37 pointInside:event withEvent:?];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v8 = [(SXTextComponentView *)self textView];
-  v9 = [v8 textLayouter];
-  v10 = [v9 exclusionPaths];
+  textView = [(SXTextComponentView *)self textView];
+  textLayouter = [textView textLayouter];
+  exclusionPaths = [textLayouter exclusionPaths];
 
-  v11 = [v10 countByEnumeratingWithState:&v33 objects:v38 count:16];
+  v11 = [exclusionPaths countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v11)
   {
     v12 = v11;
@@ -212,24 +212,24 @@ LABEL_8:
       {
         if (*v34 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(exclusionPaths);
         }
 
         v15 = *(*(&v33 + 1) + 8 * i);
-        v16 = [(SXTextExclusionPath *)v15 path];
-        [v16 bounds];
+        path = [(SXTextExclusionPath *)v15 path];
+        [path bounds];
         v18 = v17;
         v20 = v19;
         v22 = v21;
         v24 = v23;
-        v25 = [(SXTextExclusionPath *)v15 actualPosition];
+        actualPosition = [(SXTextExclusionPath *)v15 actualPosition];
         [(SXTextExclusionPath *)v15 actualPosition];
         v27 = v26;
         v41.origin.x = v18;
         v41.origin.y = v20;
         v41.size.width = v22;
         v41.size.height = v24;
-        v42 = CGRectOffset(v41, v25, v27);
+        v42 = CGRectOffset(v41, actualPosition, v27);
         v28 = v42.origin.x;
         v29 = v42.origin.y;
         width = v42.size.width;
@@ -248,7 +248,7 @@ LABEL_8:
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v33 objects:v38 count:16];
+      v12 = [exclusionPaths countByEnumeratingWithState:&v33 objects:v38 count:16];
       if (v12)
       {
         continue;
@@ -267,15 +267,15 @@ LABEL_11:
 {
   [(SXComponentView *)self absoluteFrame];
   MinX = CGRectGetMinX(v17);
-  v4 = [(SXComponentView *)self contentView];
-  [v4 frame];
+  contentView = [(SXComponentView *)self contentView];
+  [contentView frame];
   v5 = MinX + CGRectGetMinX(v18);
   [(SXComponentView *)self contentFrame];
   v6 = v5 + CGRectGetMinX(v19);
   [(SXComponentView *)self absoluteFrame];
   MinY = CGRectGetMinY(v20);
-  v8 = [(SXComponentView *)self contentView];
-  [v8 frame];
+  contentView2 = [(SXComponentView *)self contentView];
+  [contentView2 frame];
   v9 = MinY + CGRectGetMinY(v21);
   [(SXComponentView *)self contentFrame];
   v10 = v9 + CGRectGetMinY(v22);
@@ -297,86 +297,86 @@ LABEL_11:
 
 - (id)textSource
 {
-  v2 = [(SXTextComponentView *)self textView];
-  v3 = [v2 textSource];
+  textView = [(SXTextComponentView *)self textView];
+  textSource = [textView textSource];
 
-  return v3;
+  return textSource;
 }
 
-- (void)animationDidStart:(id)a3
+- (void)animationDidStart:(id)start
 {
   v5.receiver = self;
   v5.super_class = SXTextComponentView;
-  [(SXComponentView *)&v5 animationDidStart:a3];
-  v4 = [(SXTextComponentView *)self textView];
-  [v4 setMightBeVisuallyMisplaced:1];
+  [(SXComponentView *)&v5 animationDidStart:start];
+  textView = [(SXTextComponentView *)self textView];
+  [textView setMightBeVisuallyMisplaced:1];
 }
 
-- (void)animationDidFinish:(id)a3
+- (void)animationDidFinish:(id)finish
 {
   v5.receiver = self;
   v5.super_class = SXTextComponentView;
-  [(SXComponentView *)&v5 animationDidFinish:a3];
-  v4 = [(SXTextComponentView *)self textView];
-  [v4 setMightBeVisuallyMisplaced:0];
+  [(SXComponentView *)&v5 animationDidFinish:finish];
+  textView = [(SXTextComponentView *)self textView];
+  [textView setMightBeVisuallyMisplaced:0];
 }
 
-- (void)didApplyBehavior:(id)a3
+- (void)didApplyBehavior:(id)behavior
 {
   v6.receiver = self;
   v6.super_class = SXTextComponentView;
   [(SXComponentView *)&v6 didApplyBehavior:?];
-  v5 = [(SXTextComponentView *)self textView];
-  [v5 setMightBeVisuallyMisplaced:a3 != 0];
+  textView = [(SXTextComponentView *)self textView];
+  [textView setMightBeVisuallyMisplaced:behavior != 0];
 }
 
-- (id)componentIdentifierForTextView:(id)a3
+- (id)componentIdentifierForTextView:(id)view
 {
-  v3 = [(SXComponentView *)self component];
-  v4 = [v3 identifier];
+  component = [(SXComponentView *)self component];
+  identifier = [component identifier];
 
-  return v4;
+  return identifier;
 }
 
-- (id)textRulesForTextView:(id)a3
+- (id)textRulesForTextView:(id)view
 {
-  v3 = [(SXComponentView *)self component];
-  v4 = [v3 classification];
-  v5 = [v4 textRules];
+  component = [(SXComponentView *)self component];
+  classification = [component classification];
+  textRules = [classification textRules];
 
-  return v5;
+  return textRules;
 }
 
-- (id)accessibilityCustomRotorMembershipForTextView:(id)a3
+- (id)accessibilityCustomRotorMembershipForTextView:(id)view
 {
-  v3 = [(SXComponentView *)self component];
-  v4 = [v3 classification];
-  v5 = [v4 accessibilityCustomRotorMembership];
+  component = [(SXComponentView *)self component];
+  classification = [component classification];
+  accessibilityCustomRotorMembership = [classification accessibilityCustomRotorMembership];
 
-  return v5;
+  return accessibilityCustomRotorMembership;
 }
 
-- (id)accessibilityContextualLabelForTextView:(id)a3
+- (id)accessibilityContextualLabelForTextView:(id)view
 {
-  v3 = [(SXComponentView *)self component];
-  v4 = [v3 classification];
-  v5 = [v4 accessibilityContextualLabel];
+  component = [(SXComponentView *)self component];
+  classification = [component classification];
+  accessibilityContextualLabel = [classification accessibilityContextualLabel];
 
-  return v5;
+  return accessibilityContextualLabel;
 }
 
-- (void)provideInfosLayoutTo:(id)a3
+- (void)provideInfosLayoutTo:(id)to
 {
-  v4 = a3;
-  v5 = [(SXTextComponentView *)self textView];
-  [v5 provideInfosLayoutTo:v4];
+  toCopy = to;
+  textView = [(SXTextComponentView *)self textView];
+  [textView provideInfosLayoutTo:toCopy];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v5.receiver = self;
   v5.super_class = SXTextComponentView;
-  [(SXComponentView *)&v5 setHighlighted:a3];
+  [(SXComponentView *)&v5 setHighlighted:highlighted];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __38__SXTextComponentView_setHighlighted___block_invoke;

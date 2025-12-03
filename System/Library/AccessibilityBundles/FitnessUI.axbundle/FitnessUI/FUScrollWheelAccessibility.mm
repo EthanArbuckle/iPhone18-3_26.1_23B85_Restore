@@ -1,23 +1,23 @@
 @interface FUScrollWheelAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
-- (void)scrollViewDidEndDecelerating:(id)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
 @end
 
 @implementation FUScrollWheelAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"FUScrollWheel" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FUScrollWheel" hasInstanceMethod:@"currentIndex" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"FUScrollWheel" hasInstanceMethod:@"setCurrentIndex:" withFullSignature:{"v", "Q", 0}];
-  [v3 validateClass:@"FUScrollWheel" hasInstanceMethod:@"_alertDidChangeToCurrentIndex:" withFullSignature:{"v", "Q", 0}];
-  [v3 validateClass:@"FUScrollWheel" hasInstanceMethod:@"_setActiveScrollwheelIfNotActive" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"FUScrollWheel" hasInstanceMethod:@"scrollViewDidEndDecelerating:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"FUScrollWheel" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FUScrollWheel" hasInstanceMethod:@"currentIndex" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"FUScrollWheel" hasInstanceMethod:@"setCurrentIndex:" withFullSignature:{"v", "Q", 0}];
+  [validationsCopy validateClass:@"FUScrollWheel" hasInstanceMethod:@"_alertDidChangeToCurrentIndex:" withFullSignature:{"v", "Q", 0}];
+  [validationsCopy validateClass:@"FUScrollWheel" hasInstanceMethod:@"_setActiveScrollwheelIfNotActive" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"FUScrollWheel" hasInstanceMethod:@"scrollViewDidEndDecelerating:" withFullSignature:{"v", "@", 0}];
 }
 
 - (unint64_t)accessibilityTraits
@@ -118,17 +118,17 @@ id __52__FUScrollWheelAccessibility_accessibilityDecrement__block_invoke(uint64_
   return [v2 _alertDidChangeToCurrentIndex:v3];
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   v6.receiver = self;
   v6.super_class = FUScrollWheelAccessibility;
-  [(FUScrollWheelAccessibility *)&v6 scrollViewDidEndDecelerating:a3];
+  [(FUScrollWheelAccessibility *)&v6 scrollViewDidEndDecelerating:decelerating];
   if (UIAccessibilityIsVoiceOverRunning())
   {
-    v4 = [(FUScrollWheelAccessibility *)self accessibilityValue];
-    if ([v4 length])
+    accessibilityValue = [(FUScrollWheelAccessibility *)self accessibilityValue];
+    if ([accessibilityValue length])
     {
-      v5 = [[AXAttributedString alloc] initWithString:v4];
+      v5 = [[AXAttributedString alloc] initWithString:accessibilityValue];
       [v5 setAttribute:&__kCFBooleanTrue forKey:kAXPageScrollIsCrownScroll];
       [v5 setAttribute:&__kCFBooleanTrue forKey:kAXPageScrollShouldSpeakElement];
       UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, v5);

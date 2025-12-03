@@ -1,89 +1,89 @@
 @interface IDSQuickRelayAllocator
 + (IDSQuickRelayAllocator)sharedInstance;
-- (BOOL)_addConnectStatus:(id)a3 relaySessionID:(id)a4 previousTime:(unint64_t)a5 qrReason:(unsigned __int16)a6 previousError:(unsigned __int16)a7 previousRelayIP:(unsigned int)a8 previousAccessToken:(id)a9;
-- (BOOL)_addResponseToCache:(id)a3 sessionInfo:(id)a4 modifiedMessage:(id *)a5;
-- (BOOL)_hasSessionInfoRequiredKeys:(id)a3;
-- (BOOL)_isDuplicateResponse:(id)a3 newResponse:(id)a4;
-- (BOOL)_sendKeepAliveRequest:(id)a3;
-- (BOOL)_shouldUseCurrentResponse:(id)a3 cachedMessage:(id)a4;
-- (BOOL)_startQRConnectionWithDefaults:(id)a3;
-- (BOOL)hasParticipantID:(id)a3 participantID:(id)a4;
-- (BOOL)invalidateLatestResponse:(id)a3 qrReason:(unsigned __int16)a4 previousError:(unsigned __int16)a5;
-- (BOOL)isURIAvailabeInAllocateResponse:(id)a3 uri:(id)a4;
+- (BOOL)_addConnectStatus:(id)status relaySessionID:(id)d previousTime:(unint64_t)time qrReason:(unsigned __int16)reason previousError:(unsigned __int16)error previousRelayIP:(unsigned int)p previousAccessToken:(id)token;
+- (BOOL)_addResponseToCache:(id)cache sessionInfo:(id)info modifiedMessage:(id *)message;
+- (BOOL)_hasSessionInfoRequiredKeys:(id)keys;
+- (BOOL)_isDuplicateResponse:(id)response newResponse:(id)newResponse;
+- (BOOL)_sendKeepAliveRequest:(id)request;
+- (BOOL)_shouldUseCurrentResponse:(id)response cachedMessage:(id)message;
+- (BOOL)_startQRConnectionWithDefaults:(id)defaults;
+- (BOOL)hasParticipantID:(id)d participantID:(id)iD;
+- (BOOL)invalidateLatestResponse:(id)response qrReason:(unsigned __int16)reason previousError:(unsigned __int16)error;
+- (BOOL)isURIAvailabeInAllocateResponse:(id)response uri:(id)uri;
 - (IDSQuickRelayAllocator)init;
-- (id)_createSessionInfoFromResponsePayload:(id)a3;
-- (id)_filterSelfAllocationsForSessionID:(id)a3;
-- (id)_findAllocationForSessionID:(id)a3 requestIDStr:(id)a4;
-- (id)_findAllocationListForSessionID:(id)a3;
-- (id)_findSessionWithID:(id)a3;
-- (id)_getCombinedSoftwareID:(id)a3;
-- (id)_getGroupID:(id)a3;
-- (id)_getParticipantIDFromPushToken:(id)a3 pushToken:(id)a4;
-- (id)_getPushTokenFromParticipantID:(id)a3 participantID:(id)a4;
-- (id)_getQuickRelayIPPreference:(unint64_t)a3;
-- (id)_getResponse:(id)a3 relaySessionID:(id)a4;
-- (id)_getResponseForQRSessionID:(id)a3 sessionID:(id)a4 index:(int64_t *)a5;
-- (id)_getResponseFromQRGroupID:(id)a3;
-- (id)_getSelfAllocationFromCache:(id)a3;
-- (id)_getStatusMessageFromStatusCode:(unint64_t)a3;
-- (id)_getURIForRecipientFromResponse:(id)a3;
-- (id)_mergeParticipantID2PushTokenMapping:(id)a3 sourceResponse:(id)a4 mappingChange:(BOOL *)a5;
-- (id)_parseQuickRelayDefaults:(id)a3 gropuID:(id)a4;
+- (id)_createSessionInfoFromResponsePayload:(id)payload;
+- (id)_filterSelfAllocationsForSessionID:(id)d;
+- (id)_findAllocationForSessionID:(id)d requestIDStr:(id)str;
+- (id)_findAllocationListForSessionID:(id)d;
+- (id)_findSessionWithID:(id)d;
+- (id)_getCombinedSoftwareID:(id)d;
+- (id)_getGroupID:(id)d;
+- (id)_getParticipantIDFromPushToken:(id)token pushToken:(id)pushToken;
+- (id)_getPushTokenFromParticipantID:(id)d participantID:(id)iD;
+- (id)_getQuickRelayIPPreference:(unint64_t)preference;
+- (id)_getResponse:(id)response relaySessionID:(id)d;
+- (id)_getResponseForQRSessionID:(id)d sessionID:(id)iD index:(int64_t *)index;
+- (id)_getResponseFromQRGroupID:(id)d;
+- (id)_getSelfAllocationFromCache:(id)cache;
+- (id)_getStatusMessageFromStatusCode:(unint64_t)code;
+- (id)_getURIForRecipientFromResponse:(id)response;
+- (id)_mergeParticipantID2PushTokenMapping:(id)mapping sourceResponse:(id)response mappingChange:(BOOL *)change;
+- (id)_parseQuickRelayDefaults:(id)defaults gropuID:(id)d;
 - (id)_queryPolicy;
-- (id)_setupAllocation:(id)a3 fromURI:(id)a4 sessionID:(id)a5 isSessionIDRemoteDeviceID:(BOOL)a6 options:(id)a7 prevConnectStatus:(id *)a8 requestUUID:(id)a9 connectReadyHandler:(id)a10 withPreferredLocalInterface:(int)a11;
-- (id)_setupNewAllocation:(id)a3 sessionID:(id)a4 isSessionIDRemoteDeviceID:(BOOL)a5 fromIdentity:(id)a6 fromURI:(id)a7 fromService:(id)a8 options:(id)a9 connectReadyHandler:(id)a10 withPreferredLocalInterface:(int)a11 forAdditionalAllocation:(BOOL)a12;
-- (id)_tokenURIForToken:(id)a3 uri:(id)a4;
-- (id)_translateParticipantIDtoUINT64ForResponse:(id)a3;
-- (id)_uriToParticipantID:(id)a3;
-- (id)_uuidFromNSStringToNSData:(id)a3;
-- (id)findAllocateResponseForSessionID:(id)a3 FromURI:(id)a4;
-- (id)getAdditionalAllocationForAddress:(id)a3 selfAddress:(unsigned int)a4 relaySessionID:(id)a5 allocateType:(int64_t)a6 qrReason:(unsigned __int16)a7 previousTime:(unint64_t)a8 previousError:(unsigned __int16)a9 previousRelayIP:(unsigned int)a10 previousAccessToken:(id)a11 requestSelfAllocation:(BOOL)a12 isSessionIDRemoteDeviceID:(BOOL)a13 withPreferredRemoteInterface:(int)a14 withPreferredLocalInterface:(int)a15;
-- (id)getAllocateResponse:(id)a3 groupID:(id)a4;
-- (id)getParticipantIDFromPushToken:(id)a3 pushToken:(id)a4;
-- (id)getPushTokenForRelaySessionID:(id)a3 relaySessionID:(id)a4;
-- (id)getPushTokenFromParticipantID:(id)a3 participantID:(id)a4;
-- (id)getPushTokensFromParticipantIDs:(id)a3 participantIDs:(id)a4;
-- (id)getRelaySessionIDForIDSSessionID:(id)a3 pushToken:(id)a4;
-- (id)getURIFromParticipantID:(id)a3 participantID:(id)a4;
-- (id)setupNewAllocation:(id)a3 sessionID:(id)a4 fromIdentity:(id)a5 fromURI:(id)a6 fromService:(id)a7 options:(id)a8 connectReadyHandler:(id)a9;
-- (id)setupNewAllocationToDevice:(id)a3 options:(id)a4 connectReadyHandler:(id)a5;
-- (int64_t)getServerProviderForIDSSessionID:(id)a3;
-- (unint64_t)getLocalParticipantIDForRelaySessionID:(id)a3;
-- (unsigned)_getErrorCodeFromAllocationStatus:(int)a3;
-- (void)_addAllocationForSession:(id)a3 allocation:(id)a4;
+- (id)_setupAllocation:(id)allocation fromURI:(id)i sessionID:(id)d isSessionIDRemoteDeviceID:(BOOL)iD options:(id)options prevConnectStatus:(id *)status requestUUID:(id)uID connectReadyHandler:(id)self0 withPreferredLocalInterface:(int)self1;
+- (id)_setupNewAllocation:(id)allocation sessionID:(id)d isSessionIDRemoteDeviceID:(BOOL)iD fromIdentity:(id)identity fromURI:(id)i fromService:(id)service options:(id)options connectReadyHandler:(id)self0 withPreferredLocalInterface:(int)self1 forAdditionalAllocation:(BOOL)self2;
+- (id)_tokenURIForToken:(id)token uri:(id)uri;
+- (id)_translateParticipantIDtoUINT64ForResponse:(id)response;
+- (id)_uriToParticipantID:(id)d;
+- (id)_uuidFromNSStringToNSData:(id)data;
+- (id)findAllocateResponseForSessionID:(id)d FromURI:(id)i;
+- (id)getAdditionalAllocationForAddress:(id)address selfAddress:(unsigned int)selfAddress relaySessionID:(id)d allocateType:(int64_t)type qrReason:(unsigned __int16)reason previousTime:(unint64_t)time previousError:(unsigned __int16)error previousRelayIP:(unsigned int)self0 previousAccessToken:(id)self1 requestSelfAllocation:(BOOL)self2 isSessionIDRemoteDeviceID:(BOOL)self3 withPreferredRemoteInterface:(int)self4 withPreferredLocalInterface:(int)self5;
+- (id)getAllocateResponse:(id)response groupID:(id)d;
+- (id)getParticipantIDFromPushToken:(id)token pushToken:(id)pushToken;
+- (id)getPushTokenForRelaySessionID:(id)d relaySessionID:(id)iD;
+- (id)getPushTokenFromParticipantID:(id)d participantID:(id)iD;
+- (id)getPushTokensFromParticipantIDs:(id)ds participantIDs:(id)iDs;
+- (id)getRelaySessionIDForIDSSessionID:(id)d pushToken:(id)token;
+- (id)getURIFromParticipantID:(id)d participantID:(id)iD;
+- (id)setupNewAllocation:(id)allocation sessionID:(id)d fromIdentity:(id)identity fromURI:(id)i fromService:(id)service options:(id)options connectReadyHandler:(id)handler;
+- (id)setupNewAllocationToDevice:(id)device options:(id)options connectReadyHandler:(id)handler;
+- (int64_t)getServerProviderForIDSSessionID:(id)d;
+- (unint64_t)getLocalParticipantIDForRelaySessionID:(id)d;
+- (unsigned)_getErrorCodeFromAllocationStatus:(int)status;
+- (void)_addAllocationForSession:(id)session allocation:(id)allocation;
 - (void)_cleanupResponses;
-- (void)_discardAllocation:(id)a3;
-- (void)_dispatchIncomingAllocateResponse:(id)a3 isFromCache:(BOOL)a4 connectReadyHandler:(id)a5 requestOptions:(id)a6;
-- (void)_handleIncomingAllocateResponse:(id)a3 isFromCache:(BOOL)a4 requestOptions:(id)a5;
-- (void)_invalidateSession:(id)a3 isExpiryPurging:(BOOL)a4;
-- (void)_notifyParticipantID2PushTokenMappingChange:(id)a3;
-- (void)_notifyURIToParticipantIDMappingChange:(id)a3;
-- (void)_processAllocationStatusResult:(id)a3;
-- (void)_processSelfAllocations:(id)a3 allocation:(id)a4;
-- (void)_removeAllAllocationsForSessionID:(id)a3;
-- (void)_sendAWDMetricsForAllocation:(id)a3 status:(int64_t)a4 hasRecipientAccepted:(BOOL)a5;
-- (void)_sendAllocateRequest:(id)a3;
-- (void)_sendIDQueryRequest:(id)a3 fromIdentity:(id)a4 fromURI:(id)a5 fromService:(id)a6 completionBlock:(id)a7;
-- (void)_setResponseForQRGroupID:(id)a3 groupID:(id)a4;
+- (void)_discardAllocation:(id)allocation;
+- (void)_dispatchIncomingAllocateResponse:(id)response isFromCache:(BOOL)cache connectReadyHandler:(id)handler requestOptions:(id)options;
+- (void)_handleIncomingAllocateResponse:(id)response isFromCache:(BOOL)cache requestOptions:(id)options;
+- (void)_invalidateSession:(id)session isExpiryPurging:(BOOL)purging;
+- (void)_notifyParticipantID2PushTokenMappingChange:(id)change;
+- (void)_notifyURIToParticipantIDMappingChange:(id)change;
+- (void)_processAllocationStatusResult:(id)result;
+- (void)_processSelfAllocations:(id)allocations allocation:(id)allocation;
+- (void)_removeAllAllocationsForSessionID:(id)d;
+- (void)_sendAWDMetricsForAllocation:(id)allocation status:(int64_t)status hasRecipientAccepted:(BOOL)accepted;
+- (void)_sendAllocateRequest:(id)request;
+- (void)_sendIDQueryRequest:(id)request fromIdentity:(id)identity fromURI:(id)i fromService:(id)service completionBlock:(id)block;
+- (void)_setResponseForQRGroupID:(id)d groupID:(id)iD;
 - (void)_setSessionInfoRequiredKeys;
 - (void)_startCleanupTimer;
-- (void)_startQRConnectionForSession:(id)a3 isInitiatorsAcceptedSession:(BOOL)a4 withLocalInterfacePreference:(int)a5;
-- (void)_storeMappingFromPushTokenToURIs:(id)a3 fromID:(id)a4 service:(id)a5 cert:(id)a6 forGroup:(id)a7;
-- (void)_triggerSymptomsWithType:(id)a3 subType:(id)a4 subTypeContext:(id)a5;
-- (void)cleanUpCachedMappings:(id)a3;
-- (void)clearResponseFromQRGroupID:(id)a3;
+- (void)_startQRConnectionForSession:(id)session isInitiatorsAcceptedSession:(BOOL)acceptedSession withLocalInterfacePreference:(int)preference;
+- (void)_storeMappingFromPushTokenToURIs:(id)is fromID:(id)d service:(id)service cert:(id)cert forGroup:(id)group;
+- (void)_triggerSymptomsWithType:(id)type subType:(id)subType subTypeContext:(id)context;
+- (void)cleanUpCachedMappings:(id)mappings;
+- (void)clearResponseFromQRGroupID:(id)d;
 - (void)dealloc;
-- (void)enablePushHandler:(BOOL)a3;
-- (void)handler:(id)a3 didReceiveMessage:(id)a4 forTopic:(id)a5 fromID:(id)a6 messageContext:(id)a7;
-- (void)handler:(id)a3 receivedOfflineMessagePendingForTopic:(id)a4 messageContext:(id)a5;
-- (void)invalidateAllocation:(id)a3;
-- (void)invalidateSession:(id)a3 isExpiryPurging:(BOOL)a4;
-- (void)reportAWDAllocatorEvent:(unsigned int)a3 relayProviderType:(int64_t)a4 transport:(int64_t)a5 localRAT:(unsigned int)a6 duration:(unint64_t)a7 idsSessionID:(id)a8 reportingDataBlob:(id)a9 isInitiator:(BOOL)a10 serverSoftwareVersion:(id)a11;
-- (void)requestAllocationForRecipient:(id)a3;
-- (void)setInitiatorsAcceptedToken:(id)a3 pushToken:(id)a4;
-- (void)setRequestIDToSession:(id)a3 idsSessionID:(id)a4;
-- (void)startKeepAliveTimer:(id)a3 relaySessionID:(id)a4;
-- (void)stopKeepAliveTimer:(id)a3 relaySessionID:(id)a4;
+- (void)enablePushHandler:(BOOL)handler;
+- (void)handler:(id)handler didReceiveMessage:(id)message forTopic:(id)topic fromID:(id)d messageContext:(id)context;
+- (void)handler:(id)handler receivedOfflineMessagePendingForTopic:(id)topic messageContext:(id)context;
+- (void)invalidateAllocation:(id)allocation;
+- (void)invalidateSession:(id)session isExpiryPurging:(BOOL)purging;
+- (void)reportAWDAllocatorEvent:(unsigned int)event relayProviderType:(int64_t)type transport:(int64_t)transport localRAT:(unsigned int)t duration:(unint64_t)duration idsSessionID:(id)d reportingDataBlob:(id)blob isInitiator:(BOOL)self0 serverSoftwareVersion:(id)self1;
+- (void)requestAllocationForRecipient:(id)recipient;
+- (void)setInitiatorsAcceptedToken:(id)token pushToken:(id)pushToken;
+- (void)setRequestIDToSession:(id)session idsSessionID:(id)d;
+- (void)startKeepAliveTimer:(id)timer relaySessionID:(id)d;
+- (void)stopKeepAliveTimer:(id)timer relaySessionID:(id)d;
 @end
 
 @implementation IDSQuickRelayAllocator
@@ -168,7 +168,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Dealloc IDSQuickRelayAllocator %@.", buf, 0xCu);
   }
 
@@ -176,17 +176,17 @@
   {
     if (_IDSShouldLogTransport())
     {
-      v4 = self;
+      selfCopy3 = self;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v4 = self;
+        selfCopy3 = self;
         _IDSLogV();
       }
     }
   }
 
-  [(IDSPushHandler *)self->_pushHandler removeListener:self, v4];
+  [(IDSPushHandler *)self->_pushHandler removeListener:self, selfCopy3];
   [(NSMutableDictionary *)self->_requestIDToSession removeAllObjects];
   [(NSMutableDictionary *)self->_sessionToAllocations removeAllObjects];
   [(NSMutableSet *)self->_pendingRecipientsAcceptedSessions removeAllObjects];
@@ -212,14 +212,14 @@
   return v4;
 }
 
-- (BOOL)_sendKeepAliveRequest:(id)a3
+- (BOOL)_sendKeepAliveRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:kIDSQRAllocateKey_GroupID];
+  requestCopy = request;
+  v5 = [requestCopy objectForKey:kIDSQRAllocateKey_GroupID];
   if (v5)
   {
-    v6 = [v4 objectForKey:kIDSQRAllocateKey_RelaySessionToken];
-    v7 = [v4 objectForKey:kIDSQRAllocateKey_RelayAddress];
+    v6 = [requestCopy objectForKey:kIDSQRAllocateKey_RelaySessionToken];
+    v7 = [requestCopy objectForKey:kIDSQRAllocateKey_RelayAddress];
     v8 = v7;
     if (v6)
     {
@@ -260,7 +260,7 @@
 
     else
     {
-      v12 = [v4 objectForKey:kIDSQRAllocateKey_IDSSessionID];
+      v12 = [requestCopy objectForKey:kIDSQRAllocateKey_IDSSessionID];
       v13 = [(IDSQuickRelayAllocator *)self _findSessionWithID:v12];
       v14 = v13;
       v15 = v13 != 0;
@@ -273,12 +273,12 @@
         v18 = [(IDSQuickRelayAllocator *)self _uuidFromNSStringToNSData:v12];
         [v16 setIDSSessionID:v18];
 
-        v19 = [v14 fromURI];
-        v20 = [v19 prefixedURI];
-        [v16 setSenderURI:v20];
+        fromURI = [v14 fromURI];
+        prefixedURI = [fromURI prefixedURI];
+        [v16 setSenderURI:prefixedURI];
 
-        v21 = [v14 getAppID];
-        [v16 setAppID:v21];
+        getAppID = [v14 getAppID];
+        [v16 setAppID:getAppID];
 
         [v16 setAllocateType:&off_100C3CBB0];
         [v16 setGroupID:v5];
@@ -292,7 +292,7 @@
         v23 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
-          v24 = [v4 objectForKey:kIDSQRAllocateKey_RelaySessionID];
+          v24 = [requestCopy objectForKey:kIDSQRAllocateKey_RelaySessionID];
           *buf = 138412546;
           v35 = v5;
           v36 = 2112;
@@ -305,12 +305,12 @@
           if (_IDSShouldLogTransport())
           {
             v25 = kIDSQRAllocateKey_RelaySessionID;
-            v30 = [v4 objectForKey:kIDSQRAllocateKey_RelaySessionID];
+            v30 = [requestCopy objectForKey:kIDSQRAllocateKey_RelaySessionID];
             _IDSLogTransport();
 
             if (_IDSShouldLog())
             {
-              v31 = [v4 objectForKey:{v25, v5, v30}];
+              v31 = [requestCopy objectForKey:{v25, v5, v30}];
               _IDSLogV();
             }
           }
@@ -357,7 +357,7 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v35 = v4;
+      v35 = requestCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "no groupID in %@", buf, 0xCu);
     }
 
@@ -379,17 +379,17 @@
   return v15;
 }
 
-- (void)_sendAllocateRequest:(id)a3
+- (void)_sendAllocateRequest:(id)request
 {
-  v3 = a3;
-  objc_initWeak(&location, v3);
+  requestCopy = request;
+  objc_initWeak(&location, requestCopy);
   v4 = im_primary_queue();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1005950B8;
   block[3] = &unk_100BE0D60;
-  v7 = v3;
-  v5 = v3;
+  v7 = requestCopy;
+  v5 = requestCopy;
   objc_copyWeak(&v8, &location);
   dispatch_async(v4, block);
 
@@ -397,35 +397,35 @@
   objc_destroyWeak(&location);
 }
 
-- (id)_setupAllocation:(id)a3 fromURI:(id)a4 sessionID:(id)a5 isSessionIDRemoteDeviceID:(BOOL)a6 options:(id)a7 prevConnectStatus:(id *)a8 requestUUID:(id)a9 connectReadyHandler:(id)a10 withPreferredLocalInterface:(int)a11
+- (id)_setupAllocation:(id)allocation fromURI:(id)i sessionID:(id)d isSessionIDRemoteDeviceID:(BOOL)iD options:(id)options prevConnectStatus:(id *)status requestUUID:(id)uID connectReadyHandler:(id)self0 withPreferredLocalInterface:(int)self1
 {
-  v13 = a6;
-  v161 = a3;
-  v153 = a4;
-  v16 = a5;
-  v17 = a7;
-  v154 = a9;
-  v152 = a10;
+  iDCopy = iD;
+  allocationCopy = allocation;
+  iCopy = i;
+  dCopy = d;
+  optionsCopy = options;
+  uIDCopy = uID;
+  handlerCopy = handler;
   v18 = +[IDSFoundationLog QRAllocator];
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [v17 objectForKeyedSubscript:kIDSQRAllocateKey_IsLightweightParticipant];
-    v20 = [v19 BOOLValue];
+    v19 = [optionsCopy objectForKeyedSubscript:kIDSQRAllocateKey_IsLightweightParticipant];
+    bOOLValue = [v19 BOOLValue];
     v21 = @"NO";
-    if (v20)
+    if (bOOLValue)
     {
       v21 = @"YES";
     }
 
     *buf = 138412546;
-    *&buf[4] = v16;
+    *&buf[4] = dCopy;
     *&buf[12] = 2112;
     *&buf[14] = v21;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "_setupAllocation:fromURI:sessionID:isSessionIDRemoteDeviceID:options:prevConnectStatus:requestUUID:connectReadyHandler: called {sessionID: %@} options[kIDSQRAllocateKey_IsLightweightParticipant] = %@", buf, 0x16u);
   }
 
-  v22 = [[IDSQuickRelayAllocateMessage alloc] init:v154];
-  v155 = [[NSUUID alloc] initWithUUIDString:v16];
+  v22 = [[IDSQuickRelayAllocateMessage alloc] init:uIDCopy];
+  v155 = [[NSUUID alloc] initWithUUIDString:dCopy];
   v170.i64[0] = 0xAAAAAAAAAAAAAAAALL;
   v170.i64[1] = 0xAAAAAAAAAAAAAAAALL;
   [v155 getUUIDBytes:&v170];
@@ -436,17 +436,17 @@
     self->_requestIDToPreferredLocalInterface = Mutable;
   }
 
-  v25 = [NSNumber numberWithInteger:a11];
+  v25 = [NSNumber numberWithInteger:interface];
   if (v25)
   {
     v26 = self->_requestIDToPreferredLocalInterface;
-    v27 = [v22 requestIDStr];
-    CFDictionarySetValue(v26, v27, v25);
+    requestIDStr = [v22 requestIDStr];
+    CFDictionarySetValue(v26, requestIDStr, v25);
   }
 
   else
   {
-    v27 = &_os_log_default;
+    requestIDStr = &_os_log_default;
     v28 = &_os_log_default;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
@@ -454,7 +454,7 @@
     }
   }
 
-  if (v13)
+  if (iDCopy)
   {
     v29 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -468,11 +468,11 @@
     {
       if (_IDSShouldLogTransport())
       {
-        v144 = v155;
+        statusCopy2 = v155;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
-          v144 = v155;
+          statusCopy2 = v155;
           _IDSLogV();
         }
       }
@@ -480,23 +480,23 @@
 
     memset(buf, 170, 16);
     v30 = +[IDSCurrentDevice sharedInstance];
-    v31 = [v30 deviceIdentifier];
+    deviceIdentifier = [v30 deviceIdentifier];
 
-    v32 = [[NSUUID alloc] initWithUUIDString:v31];
+    v32 = [[NSUUID alloc] initWithUUIDString:deviceIdentifier];
     [v32 getUUIDBytes:buf];
 
     v170 = veorq_s8(v170, *buf);
     v33 = [[NSUUID alloc] initWithUUIDBytes:&v170];
-    v34 = [v33 UUIDString];
+    uUIDString = [v33 UUIDString];
 
-    v16 = v34;
+    dCopy = uUIDString;
   }
 
   v35 = [[NSData alloc] initWithBytes:&v170 length:16];
   [v22 setIDSSessionID:v35];
 
-  [v22 setSenderURI:v153];
-  v36 = [v17 objectForKey:kIDSQRAllocateKey_AllocateType];
+  [v22 setSenderURI:iCopy];
+  v36 = [optionsCopy objectForKey:kIDSQRAllocateKey_AllocateType];
   v162 = v36;
   if (v36)
   {
@@ -510,19 +510,19 @@
 
   [v22 setAllocateType:v37];
   v38 = +[IMDeviceSupport sharedInstance];
-  v39 = [v38 userAgentString];
-  [v22 setUserAgent:v39];
+  userAgentString = [v38 userAgentString];
+  [v22 setUserAgent:userAgentString];
 
   if ([v162 intValue] == 3)
   {
-    v40 = [v17 objectForKey:kIDSQRAllocateKey_GroupID];
+    v40 = [optionsCopy objectForKey:kIDSQRAllocateKey_GroupID];
     if (v40)
     {
       v41 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        *&buf[4] = a8;
+        *&buf[4] = status;
         _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "shared session allocation, previous connect status: %p", buf, 0xCu);
       }
 
@@ -530,20 +530,20 @@
       {
         if (_IDSShouldLogTransport())
         {
-          v144 = a8;
+          statusCopy2 = status;
           _IDSLogTransport();
           if (_IDSShouldLog())
           {
-            v144 = a8;
+            statusCopy2 = status;
             _IDSLogV();
           }
         }
       }
 
-      [v22 setIsSharedSession:{&off_100C3CB68, v144}];
+      [v22 setIsSharedSession:{&off_100C3CB68, statusCopy2}];
       [v22 setGroupID:v40];
       v42 = kIDSQRAllocateKey_TestOptions;
-      v43 = [v17 objectForKey:kIDSQRAllocateKey_TestOptions];
+      v43 = [optionsCopy objectForKey:kIDSQRAllocateKey_TestOptions];
       v44 = v43 == 0;
 
       if (!v44)
@@ -551,29 +551,29 @@
         v45 = +[IDSFoundationLog QRAllocator];
         if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
         {
-          v46 = [v22 requestIDStr];
-          v47 = [v17 objectForKey:v42];
+          requestIDStr2 = [v22 requestIDStr];
+          v47 = [optionsCopy objectForKey:v42];
           *buf = 138412546;
-          *&buf[4] = v46;
+          *&buf[4] = requestIDStr2;
           *&buf[12] = 2112;
           *&buf[14] = v47;
           _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEFAULT, "_setupAllocation: set test option for request ID %@: %@", buf, 0x16u);
         }
 
-        v48 = [v17 objectForKey:v42];
+        v48 = [optionsCopy objectForKey:v42];
         [v22 setTestOptions:v48];
       }
 
-      if (a8)
+      if (status)
       {
-        v49 = [[NSData alloc] initWithBytes:&a8->var2 length:4];
-        v50 = [[NSData alloc] initWithBytes:a8->var5 length:a8->var4];
+        v49 = [[NSData alloc] initWithBytes:&status->var2 length:4];
+        v50 = [[NSData alloc] initWithBytes:status->var5 length:status->var4];
         v51 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
         {
-          var0 = a8->var0;
-          var1 = a8->var1;
-          var2 = a8->var2;
+          var0 = status->var0;
+          var1 = status->var1;
+          var2 = status->var2;
           *buf = 67109890;
           *&buf[4] = var0;
           *&buf[8] = 1024;
@@ -589,26 +589,26 @@
         {
           if (_IDSShouldLogTransport())
           {
-            v146 = a8->var2;
+            v146 = status->var2;
             v147 = v50;
-            v144 = a8->var0;
-            v145 = a8->var1;
+            statusCopy2 = status->var0;
+            v145 = status->var1;
             _IDSLogTransport();
             if (_IDSShouldLog())
             {
-              v146 = a8->var2;
+              v146 = status->var2;
               v147 = v50;
-              v144 = a8->var0;
-              v145 = a8->var1;
+              statusCopy2 = status->var0;
+              v145 = status->var1;
               _IDSLogV();
             }
           }
         }
 
-        v55 = [NSNumber numberWithUnsignedShort:a8->var0, v144, v145, v146, v147];
-        [v22 setQrReason:v55];
+        v147 = [NSNumber numberWithUnsignedShort:status->var0, statusCopy2, v145, v146, v147];
+        [v22 setQrReason:v147];
 
-        if (a8->var1 != 0xFFFF)
+        if (status->var1 != 0xFFFF)
         {
           v56 = [NSNumber numberWithUnsignedShort:?];
           [v22 setQrError:v56];
@@ -623,10 +623,10 @@
         [v22 setQrReason:&off_100C3CBE0];
       }
 
-      v58 = [v17 objectForKey:kIDSQRAllocateKey_IsNewUPlusOneSession];
-      v59 = [v58 BOOLValue];
+      v58 = [optionsCopy objectForKey:kIDSQRAllocateKey_IsNewUPlusOneSession];
+      bOOLValue2 = [v58 BOOLValue];
 
-      if (v59)
+      if (bOOLValue2)
       {
         [v22 setIsNewUPlusOneSession:&off_100C3CB68];
       }
@@ -638,7 +638,7 @@
       if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        *&buf[4] = v17;
+        *&buf[4] = optionsCopy;
         _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_DEFAULT, "groupID not set for shared session allocation: %@", buf, 0xCu);
       }
 
@@ -646,33 +646,33 @@
       {
         if (_IDSShouldLogTransport())
         {
-          v144 = v17;
+          statusCopy2 = optionsCopy;
           _IDSLogTransport();
           if (_IDSShouldLog())
           {
-            v144 = v17;
+            statusCopy2 = optionsCopy;
             _IDSLogV();
           }
         }
       }
     }
 
-    v60 = [v17 objectForKey:{kIDSQRAllocateKey_GroupMemberCount, v144}];
+    v60 = [optionsCopy objectForKey:{kIDSQRAllocateKey_GroupMemberCount, statusCopy2}];
     if (v60)
     {
       [v22 setGroupMemberCount:v60];
     }
   }
 
-  if (a8)
+  if (status)
   {
-    free(a8->var5);
-    free(a8);
+    free(status->var5);
+    free(status);
   }
 
-  if (!v161)
+  if (!allocationCopy)
   {
-    v161 = objc_alloc_init(NSMutableArray);
+    allocationCopy = objc_alloc_init(NSMutableArray);
   }
 
   if (!self->_requestIDToSession)
@@ -682,17 +682,17 @@
     self->_requestIDToSession = v61;
   }
 
-  value = v16;
+  value = dCopy;
   if (value)
   {
     v63 = self->_requestIDToSession;
-    v64 = [v22 requestIDStr];
-    CFDictionarySetValue(v63, v64, value);
+    requestIDStr3 = [v22 requestIDStr];
+    CFDictionarySetValue(v63, requestIDStr3, value);
   }
 
   else
   {
-    v64 = &_os_log_default;
+    requestIDStr3 = &_os_log_default;
     v65 = &_os_log_default;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
@@ -700,7 +700,7 @@
     }
   }
 
-  v66 = [v17 objectForKey:kIDSQRAllocateKey_QRForceExperiment];
+  v66 = [optionsCopy objectForKey:kIDSQRAllocateKey_QRForceExperiment];
   [v22 setQrForceExperiment:v66];
 
   if (IMGetDomainIntForKey())
@@ -725,9 +725,9 @@
     }
   }
 
-  v156 = [v17 objectForKey:kIDSQRAllocateKey_RelayAddress];
-  v160 = [v17 objectForKey:kIDSQRAllocateKey_RelaySessionToken];
-  v159 = [v17 objectForKey:kIDSQRAllocateKey_RelaySessionKey];
+  v156 = [optionsCopy objectForKey:kIDSQRAllocateKey_RelayAddress];
+  v160 = [optionsCopy objectForKey:kIDSQRAllocateKey_RelaySessionToken];
+  v159 = [optionsCopy objectForKey:kIDSQRAllocateKey_RelaySessionKey];
   if (v156 && v160 && v159)
   {
     [v22 setExistingRelayIP:v156];
@@ -737,23 +737,23 @@
     *buf = v68;
     *&buf[16] = v68;
     v69 = v159;
-    v70 = [v159 bytes];
+    bytes = [v159 bytes];
     v71 = [v159 length];
     v72 = v160;
-    CCHmac(2u, v70, v71, [v160 bytes], objc_msgSend(v160, "length"), buf);
+    CCHmac(2u, bytes, v71, [v160 bytes], objc_msgSend(v160, "length"), buf);
     v73 = [[NSData alloc] initWithBytes:buf length:32];
     [v22 setExistingRelaySignature:v73];
   }
 
   v74 = kIDSQRAllocateKey_SenderExternalAddress;
-  v75 = [v17 objectForKey:kIDSQRAllocateKey_SenderExternalAddress];
+  v75 = [optionsCopy objectForKey:kIDSQRAllocateKey_SenderExternalAddress];
 
   if (v75)
   {
     v76 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v76, OS_LOG_TYPE_DEFAULT))
     {
-      v77 = [v17 objectForKey:v74];
+      v77 = [optionsCopy objectForKey:v74];
       *buf = 138412290;
       *&buf[4] = v77;
       _os_log_impl(&_mh_execute_header, v76, OS_LOG_TYPE_DEFAULT, "request allocation for a specific address %@", buf, 0xCu);
@@ -763,27 +763,27 @@
     {
       if (_IDSShouldLogTransport())
       {
-        v144 = [v17 objectForKey:v74];
+        statusCopy2 = [optionsCopy objectForKey:v74];
         _IDSLogTransport();
 
         if (_IDSShouldLog())
         {
-          v144 = [v17 objectForKey:{v74, v144}];
+          statusCopy2 = [optionsCopy objectForKey:{v74, statusCopy2}];
           _IDSLogV();
         }
       }
     }
 
-    v78 = [v17 objectForKey:{v74, v144}];
+    v78 = [optionsCopy objectForKey:{v74, statusCopy2}];
     [v22 setSenderExternalIP:v78];
   }
 
   v79 = kIDSQRAllocateKey_AppID;
-  v80 = [v17 objectForKey:kIDSQRAllocateKey_AppID];
+  v80 = [optionsCopy objectForKey:kIDSQRAllocateKey_AppID];
 
   if (v80)
   {
-    v81 = [v17 objectForKey:v79];
+    v81 = [optionsCopy objectForKey:v79];
     [v22 setAppID:v81];
   }
 
@@ -792,31 +792,31 @@
     [v22 setAppID:kIDSQuickRelayPushTopic];
   }
 
-  v157 = [v17 objectForKey:kIDSQRAllocateKey_ConversationID];
+  v157 = [optionsCopy objectForKey:kIDSQRAllocateKey_ConversationID];
   if (v157)
   {
     [v22 setConversationID:v157];
   }
 
-  v82 = [v17 objectForKey:kIDSQRAllocateKey_IsLightweightParticipant];
+  v82 = [optionsCopy objectForKey:kIDSQRAllocateKey_IsLightweightParticipant];
   [v22 setIsLightweightParticipant:v82];
 
   if ([v162 intValue] != 3)
   {
-    v83 = [v17 objectForKey:kIDSQRAllocateKey_SelfAllocationCount];
+    v83 = [optionsCopy objectForKey:kIDSQRAllocateKey_SelfAllocationCount];
     [v22 setSelfAllocationCount:v83];
   }
 
-  v84 = [v17 objectForKey:IDSSessionInvitationRetryCountKey];
+  v84 = [optionsCopy objectForKey:IDSSessionInvitationRetryCountKey];
   [v22 setInvitationRetryCount:v84];
 
   v85 = _IDSAllocateProtocolVersionNumber();
   [v22 setAllocateProtocolVersion:v85];
 
-  [v22 setRecipients:v161];
+  [v22 setRecipients:allocationCopy];
   [v22 setWantsResponse:1];
   [v22 setTopic:kIDSQuickRelayPushTopic];
-  v158 = [v17 objectForKey:kIDSQRAllocateKey_PreferredRemoteInterface];
+  v158 = [optionsCopy objectForKey:kIDSQRAllocateKey_PreferredRemoteInterface];
   if ([v158 intValue])
   {
     v86 = OSLogHandleForTransportCategory();
@@ -834,25 +834,25 @@
       if (_IDSShouldLogTransport())
       {
         [v158 intValue];
-        v144 = GLUtilPreferredInterfaceToString();
+        statusCopy2 = GLUtilPreferredInterfaceToString();
         _IDSLogTransport();
 
         if (_IDSShouldLog())
         {
           [v158 intValue];
-          v144 = GLUtilPreferredInterfaceToString();
+          statusCopy2 = GLUtilPreferredInterfaceToString();
           _IDSLogV();
         }
       }
     }
 
-    [v22 setInfoAttribute:{v158, v144}];
+    [v22 setInfoAttribute:{v158, statusCopy2}];
   }
 
   v88 = +[IMLockdownManager sharedInstance];
-  v89 = [v88 isInternalInstall];
+  isInternalInstall = [v88 isInternalInstall];
 
-  if (v89)
+  if (isInternalInstall)
   {
     if (IMGetDomainBoolForKey())
     {
@@ -894,11 +894,11 @@
       {
         if (_IDSShouldLogTransport())
         {
-          v144 = v92;
+          statusCopy2 = v92;
           _IDSLogTransport();
           if (_IDSShouldLog())
           {
-            v144 = v92;
+            statusCopy2 = v92;
             _IDSLogV();
           }
         }
@@ -993,8 +993,8 @@
   if (v103)
   {
     v104 = [(NSMutableDictionary *)self->_sessionToRequestIDToAllocateTime objectForKeyedSubscript:value];
-    v105 = [v22 requestIDStr];
-    CFDictionarySetValue(v104, v105, v103);
+    requestIDStr4 = [v22 requestIDStr];
+    CFDictionarySetValue(v104, requestIDStr4, v103);
   }
 
   else
@@ -1011,21 +1011,21 @@
   v107 = +[IDSFoundationLog QRAllocator];
   if (os_log_type_enabled(v107, OS_LOG_TYPE_DEFAULT))
   {
-    v108 = [v161 count];
-    v109 = [v22 requestIDStr];
+    v108 = [allocationCopy count];
+    requestIDStr5 = [v22 requestIDStr];
     *buf = 138413058;
     *&buf[4] = value;
     *&buf[12] = 1024;
     *&buf[14] = v108;
     *&buf[18] = 2112;
-    *&buf[20] = v109;
+    *&buf[20] = requestIDStr5;
     *&buf[28] = 2048;
     *&buf[30] = v98;
     _os_log_impl(&_mh_execute_header, v107, OS_LOG_TYPE_DEFAULT, "Send allocate request, sessionID: %@, recipient count: %u, requestID: %@, time: %.6f.", buf, 0x26u);
   }
 
   v110 = [v22 description];
-  [v161 count];
+  [allocationCopy count];
   v150 = v110;
   cut_dispatch_log_queue();
   v151 = +[NSDate date];
@@ -1033,22 +1033,22 @@
   v111 = [[QRAllocation alloc] initWithRequest:v22];
   if ([v162 intValue] == 3)
   {
-    v112 = [v17 objectForKey:kIDSQRAllocateKey_StreamInfoPublishedStreams];
-    v113 = [v17 objectForKey:kIDSQRAllocateKey_StreamInfoSubscribedStreams];
-    v114 = [v17 objectForKey:kIDSQRAllocateKey_StreamInfoGenerationCounter];
-    v115 = [v17 objectForKey:kIDSQRAllocateKey_StreamInfoMaxConcurrentStreams];
-    v116 = [v17 objectForKey:kIDSQRAllocateKey_IsJoinAllocation];
+    v112 = [optionsCopy objectForKey:kIDSQRAllocateKey_StreamInfoPublishedStreams];
+    v113 = [optionsCopy objectForKey:kIDSQRAllocateKey_StreamInfoSubscribedStreams];
+    v114 = [optionsCopy objectForKey:kIDSQRAllocateKey_StreamInfoGenerationCounter];
+    v115 = [optionsCopy objectForKey:kIDSQRAllocateKey_StreamInfoMaxConcurrentStreams];
+    v116 = [optionsCopy objectForKey:kIDSQRAllocateKey_IsJoinAllocation];
     -[QRAllocation setIsJoinAllocation:](v111, "setIsJoinAllocation:", [v116 BOOLValue]);
 
     v117 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v117, OS_LOG_TYPE_DEFAULT))
     {
-      v118 = [(QRAllocation *)v111 isJoinAllocation];
+      isJoinAllocation = [(QRAllocation *)v111 isJoinAllocation];
       v119 = @"NO";
       *buf = 138413570;
       *&buf[4] = value;
       *&buf[12] = 2112;
-      if (v118)
+      if (isJoinAllocation)
       {
         v119 = @"YES";
       }
@@ -1072,7 +1072,7 @@
       v149 = v115;
       v146 = v112;
       v147 = v113;
-      v144 = value;
+      statusCopy2 = value;
       v145 = v120;
       _IDSLogTransport();
       if (_IDSShouldLog())
@@ -1091,7 +1091,7 @@
         v149 = v115;
         v146 = v112;
         v147 = v113;
-        v144 = value;
+        statusCopy2 = value;
         v145 = v121;
         _IDSLogV();
       }
@@ -1104,31 +1104,31 @@
     }
   }
 
-  [(QRAllocation *)v111 setConnectReadyHandler:v152, v144, v145, v146, v147, v148, v149];
+  [(QRAllocation *)v111 setConnectReadyHandler:handlerCopy, statusCopy2, v145, v146, v147, v148, v149];
   [(IDSQuickRelayAllocator *)self _addAllocationForSession:value allocation:v111];
   v123 = [IDSQuickRelayMetric alloc];
-  v124 = [v22 provider];
-  v125 = [v22 allocateProtocolVersion];
-  v126 = [v22 appID];
-  v127 = [v123 initWithType:&off_100C3CB38 eventSubType:&off_100C3CBF8 duration:0 resultCode:&off_100C3CC10 providerType:v124 transportType:0 interfaceType:0 skeEnabled:0 isInitiator:&off_100C3CB68 protocolVersion:v125 retryCount:0 serviceName:v126 subServiceName:0 participantCount:0];
+  provider = [v22 provider];
+  allocateProtocolVersion = [v22 allocateProtocolVersion];
+  appID = [v22 appID];
+  v127 = [v123 initWithType:&off_100C3CB38 eventSubType:&off_100C3CBF8 duration:0 resultCode:&off_100C3CC10 providerType:provider transportType:0 interfaceType:0 skeEnabled:0 isInitiator:&off_100C3CB68 protocolVersion:allocateProtocolVersion retryCount:0 serviceName:appID subServiceName:0 participantCount:0];
 
   v128 = +[IDSCoreAnalyticsLogger defaultLogger];
   [v128 logMetric:v127];
 
-  v129 = [(IDSQuickRelayAllocator *)self _getIDSAWDLoggingInstance];
-  v130 = [v22 provider];
-  v131 = [v22 allocateProtocolVersion];
-  v132 = [v22 appID];
-  [v129 IDSQuickRelayEventType:&off_100C3CB38 eventSubType:&off_100C3CBF8 duration:0 resultCode:&off_100C3CC10 providerType:v130 transportType:0 interfaceType:0 skeEnabled:0 isInitiator:&off_100C3CB68 protocolVersion:v131 retryCount:0 serviceName:v132 subServiceName:0 participantCount:0];
+  _getIDSAWDLoggingInstance = [(IDSQuickRelayAllocator *)self _getIDSAWDLoggingInstance];
+  provider2 = [v22 provider];
+  allocateProtocolVersion2 = [v22 allocateProtocolVersion];
+  appID2 = [v22 appID];
+  [_getIDSAWDLoggingInstance IDSQuickRelayEventType:&off_100C3CB38 eventSubType:&off_100C3CBF8 duration:0 resultCode:&off_100C3CC10 providerType:provider2 transportType:0 interfaceType:0 skeEnabled:0 isInitiator:&off_100C3CB68 protocolVersion:allocateProtocolVersion2 retryCount:0 serviceName:appID2 subServiceName:0 participantCount:0];
 
   v133 = +[IDSDSessionController sharedInstance];
-  v134 = [(QRAllocation *)v111 sessionIDStr];
-  v135 = [v133 sessionWithUniqueID:v134];
+  sessionIDStr = [(QRAllocation *)v111 sessionIDStr];
+  v135 = [v133 sessionWithUniqueID:sessionIDStr];
 
   if (v135)
   {
     v136 = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-    v137 = [v17 objectForKeyedSubscript:kIDSQRAllocateKey_TimeBase];
+    v137 = [optionsCopy objectForKeyedSubscript:kIDSQRAllocateKey_TimeBase];
     if (v137)
     {
       [v151 timeIntervalSinceDate:v137];
@@ -1138,8 +1138,8 @@
       objc_storeStrong(&self->_timeBase, v137);
     }
 
-    v140 = [v22 allocateProtocolVersion];
-    [(__CFDictionary *)v136 setObject:v140 forKeyedSubscript:IDSDSessionReportQRVersionKey];
+    allocateProtocolVersion3 = [v22 allocateProtocolVersion];
+    [(__CFDictionary *)v136 setObject:allocateProtocolVersion3 forKeyedSubscript:IDSDSessionReportQRVersionKey];
 
     [(__CFDictionary *)v136 setObject:&off_100C3CBF8 forKeyedSubscript:IDSDSessionReportQREventSubTypeKey];
     [(__CFDictionary *)v136 setObject:&off_100C3CC10 forKeyedSubscript:IDSDSessionReportResultCodeKey];
@@ -1168,26 +1168,26 @@
     }
   }
 
-  v142 = [v22 requestIDStr];
+  requestIDStr6 = [v22 requestIDStr];
 
-  return v142;
+  return requestIDStr6;
 }
 
-- (id)setupNewAllocationToDevice:(id)a3 options:(id)a4 connectReadyHandler:(id)a5
+- (id)setupNewAllocationToDevice:(id)device options:(id)options connectReadyHandler:(id)handler
 {
-  v8 = a3;
-  Mutable = a4;
-  v10 = a5;
+  deviceCopy = device;
+  Mutable = options;
+  handlerCopy = handler;
   v11 = +[IDSFoundationLog QRAllocator];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v46 = v8;
+    v46 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "setupNewAllocationToDevice:options:connectReadyHandler: called {deviceID: %@}", buf, 0xCu);
   }
 
   im_assert_primary_base_queue();
-  if ([(IDSQuickRelayAllocator *)self _startQRConnectionWithDefaults:v8])
+  if ([(IDSQuickRelayAllocator *)self _startQRConnectionWithDefaults:deviceCopy])
   {
     v12 = 0;
     goto LABEL_42;
@@ -1200,7 +1200,7 @@
   v15 = +[IDSDAccountController sharedInstance];
   v16 = [v15 appleIDAccountOnService:v42];
 
-  v17 = [(__CFString *)v8 isEqualToString:kIDSDefaultPairedDeviceID];
+  v17 = [(__CFString *)deviceCopy isEqualToString:kIDSDefaultPairedDeviceID];
   if (v17)
   {
     [v16 defaultPairedDependentRegistration];
@@ -1208,7 +1208,7 @@
 
   else
   {
-    [v16 dependentRegistrationMatchingUUID:v8];
+    [v16 dependentRegistrationMatchingUUID:deviceCopy];
   }
   v41 = ;
   if (!v41)
@@ -1233,12 +1233,12 @@
       }
     }
 
-    if (v10)
+    if (handlerCopy)
     {
       v20 = [NSDictionary dictionaryWithObject:@"No device found" forKey:NSLocalizedDescriptionKey];
       valuea = [NSError errorWithDomain:@"QRAllocator" code:7002 userInfo:v20];
 
-      v10[2](v10, valuea, 0);
+      handlerCopy[2](handlerCopy, valuea, 0);
       v12 = 0;
     }
 
@@ -1271,32 +1271,32 @@
     }
 
     CFDictionarySetValue(Mutable, kIDSQRAllocateKey_AllocateType, &off_100C3CBC8);
-    v24 = [v16 unprefixedURIStringsFromRegistration];
+    unprefixedURIStringsFromRegistration = [v16 unprefixedURIStringsFromRegistration];
     v25 = _IDSCopyCallerIDWithSelfMessagingHint();
 
-    v38 = [v25 _bestGuessURI];
+    _bestGuessURI = [v25 _bestGuessURI];
 
-    v26 = [v16 primaryRegistration];
-    v23 = [v26 registrationCert];
+    primaryRegistration = [v16 primaryRegistration];
+    registrationCert = [primaryRegistration registrationCert];
 
     v27 = [NSMutableArray alloc];
-    v28 = [v16 prefixedURIStringsFromRegistration];
+    prefixedURIStringsFromRegistration = [v16 prefixedURIStringsFromRegistration];
     v43[0] = _NSConcreteStackBlock;
     v43[1] = 3221225472;
     v43[2] = sub_100597BA4;
     v43[3] = &unk_100BE0D88;
     v44 = v16;
-    v29 = [v28 __imArrayByApplyingBlock:v43];
+    v29 = [prefixedURIStringsFromRegistration __imArrayByApplyingBlock:v43];
     v30 = [v27 initWithArray:v29];
 
     v31 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
-      v32 = [v42 identifier];
+      identifier = [v42 identifier];
       *buf = 138412546;
-      v46 = v32;
+      v46 = identifier;
       v47 = 2112;
-      v48 = v8;
+      v48 = deviceCopy;
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "setup allocation for %@ service to device %@", buf, 0x16u);
     }
 
@@ -1304,33 +1304,33 @@
     {
       if (_IDSShouldLogTransport())
       {
-        v35 = [v42 identifier];
-        v36 = v8;
+        identifier2 = [v42 identifier];
+        v36 = deviceCopy;
         _IDSLogTransport();
 
         if (_IDSShouldLog())
         {
-          v35 = [v42 identifier];
-          v36 = v8;
+          identifier2 = [v42 identifier];
+          v36 = deviceCopy;
           _IDSLogV();
         }
       }
     }
 
-    v33 = [v42 identifier];
+    identifier3 = [v42 identifier];
     BYTE4(v37) = 0;
     LODWORD(v37) = 0;
-    v12 = [(IDSQuickRelayAllocator *)self _setupNewAllocation:v30 sessionID:v8 isSessionIDRemoteDeviceID:v17 ^ 1 fromIdentity:v23 fromURI:v38 fromService:v33 options:Mutable connectReadyHandler:v10 withPreferredLocalInterface:v37 forAdditionalAllocation:?];
+    v12 = [(IDSQuickRelayAllocator *)self _setupNewAllocation:v30 sessionID:deviceCopy isSessionIDRemoteDeviceID:v17 ^ 1 fromIdentity:registrationCert fromURI:_bestGuessURI fromService:identifier3 options:Mutable connectReadyHandler:handlerCopy withPreferredLocalInterface:v37 forAdditionalAllocation:?];
   }
 
   else
   {
-    v38 = [NSString stringWithFormat:@"No push token for device %@", v8];
+    _bestGuessURI = [NSString stringWithFormat:@"No push token for device %@", deviceCopy];
     v21 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v46 = v38;
+      v46 = _bestGuessURI;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
     }
 
@@ -1346,16 +1346,16 @@
       }
     }
 
-    if (!v10)
+    if (!handlerCopy)
     {
       v12 = 0;
       goto LABEL_40;
     }
 
-    v22 = [NSDictionary dictionaryWithObject:v38 forKey:NSLocalizedDescriptionKey];
-    v23 = [NSError errorWithDomain:@"QRAllocator" code:7003 userInfo:v22];
+    v22 = [NSDictionary dictionaryWithObject:_bestGuessURI forKey:NSLocalizedDescriptionKey];
+    registrationCert = [NSError errorWithDomain:@"QRAllocator" code:7003 userInfo:v22];
 
-    v10[2](v10, v23, 0);
+    handlerCopy[2](handlerCopy, registrationCert, 0);
     v12 = 0;
   }
 
@@ -1367,10 +1367,10 @@ LABEL_42:
   return v12;
 }
 
-- (id)_getResponseFromQRGroupID:(id)a3
+- (id)_getResponseFromQRGroupID:(id)d
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_allocateResponses objectForKey:v4];
+  dCopy = d;
+  v5 = [(NSMutableDictionary *)self->_allocateResponses objectForKey:dCopy];
   v6 = v5;
   if (v5)
   {
@@ -1383,7 +1383,7 @@ LABEL_42:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v11 = v4;
+      v11 = dCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "No response found for groupID: %@", buf, 0xCu);
     }
 
@@ -1405,16 +1405,16 @@ LABEL_42:
   return v7;
 }
 
-- (void)clearResponseFromQRGroupID:(id)a3
+- (void)clearResponseFromQRGroupID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     v5 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v8 = v4;
+      v8 = dCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "clear response for groupID %@", buf, 0xCu);
     }
 
@@ -1422,33 +1422,33 @@ LABEL_42:
     {
       if (_IDSShouldLogTransport())
       {
-        v6 = v4;
+        v6 = dCopy;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
-          v6 = v4;
+          v6 = dCopy;
           _IDSLogV();
         }
       }
     }
 
-    [(NSMutableDictionary *)self->_allocateResponses removeObjectForKey:v4, v6];
+    [(NSMutableDictionary *)self->_allocateResponses removeObjectForKey:dCopy, v6];
   }
 }
 
-- (void)_setResponseForQRGroupID:(id)a3 groupID:(id)a4
+- (void)_setResponseForQRGroupID:(id)d groupID:(id)iD
 {
-  v6 = a4;
-  v7 = a3;
+  iDCopy = iD;
+  dCopy = d;
   v8 = +[IDSFoundationLog QRAllocator];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v6;
+    v14 = iDCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "_setResponseForQRGroupID:groupID: called {groupID: %@}", &v13, 0xCu);
   }
 
-  v9 = [(NSMutableDictionary *)self->_allocateResponses objectForKey:v6];
+  v9 = [(NSMutableDictionary *)self->_allocateResponses objectForKey:iDCopy];
   v10 = v9;
   if (v9)
   {
@@ -1465,17 +1465,17 @@ LABEL_42:
     v11 = mach_absolute_time() * dword_100CBF0E8 / *algn_100CBF0EC / 0x3B9ACA00 + 1800;
   }
 
-  v12 = [[IDSAllocateResponseWrapper alloc] initWithResponse:v7 cleanupTime:v11];
+  v12 = [[IDSAllocateResponseWrapper alloc] initWithResponse:dCopy cleanupTime:v11];
 
-  [(NSMutableDictionary *)self->_allocateResponses setObject:v12 forKey:v6];
+  [(NSMutableDictionary *)self->_allocateResponses setObject:v12 forKey:iDCopy];
 }
 
-- (id)findAllocateResponseForSessionID:(id)a3 FromURI:(id)a4
+- (id)findAllocateResponseForSessionID:(id)d FromURI:(id)i
 {
-  v6 = a3;
-  v7 = a4;
-  v65 = self;
-  v8 = [(IDSQuickRelayAllocator *)self getAllocateResponse:v6 groupID:v6];
+  dCopy = d;
+  iCopy = i;
+  selfCopy = self;
+  v8 = [(IDSQuickRelayAllocator *)self getAllocateResponse:dCopy groupID:dCopy];
   v64 = kIDSQRAllocateKey_Allocations;
   [v8 objectForKeyedSubscript:?];
   v79 = 0u;
@@ -1499,7 +1499,7 @@ LABEL_3:
 
       v15 = *(*(&v79 + 1) + 8 * v14);
       v16 = [v15 objectForKeyedSubscript:v13];
-      if ([v16 isEqualToIgnoringCase:v7])
+      if ([v16 isEqualToIgnoringCase:iCopy])
       {
         break;
       }
@@ -1520,20 +1520,20 @@ LABEL_3:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v84 = v7;
+      v84 = iCopy;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Main cached allocation response contains fromURI: %@", buf, 0xCu);
     }
 
     v18 = kIDSQRAllocateKey_RecipientID;
     v19 = [v15 objectForKeyedSubscript:kIDSQRAllocateKey_RecipientID];
-    v20 = [v19 unsignedLongLongValue];
+    unsignedLongLongValue = [v19 unsignedLongLongValue];
 
-    if (v20)
+    if (unsignedLongLongValue)
     {
       v21 = [v8 objectForKeyedSubscript:v18];
-      v22 = [v21 unsignedLongLongValue];
+      unsignedLongLongValue2 = [v21 unsignedLongLongValue];
 
-      if (v22 == v20)
+      if (unsignedLongLongValue2 == unsignedLongLongValue)
       {
         v23 = v8;
         goto LABEL_45;
@@ -1546,15 +1546,15 @@ LABEL_3:
 LABEL_9:
   }
 
-  v24 = v65;
-  v25 = [(IDSQuickRelayAllocator *)v65 _findAllocationListForSessionID:v6];
+  v24 = selfCopy;
+  v25 = [(IDSQuickRelayAllocator *)selfCopy _findAllocationListForSessionID:dCopy];
   if (v25)
   {
     v61 = v9;
     v62 = v8;
-    v66 = v7;
-    v63 = v6;
-    os_unfair_lock_lock(&v65->_lock);
+    v66 = iCopy;
+    v63 = dCopy;
+    os_unfair_lock_lock(&selfCopy->_lock);
     v77 = 0u;
     v78 = 0u;
     v75 = 0u;
@@ -1585,12 +1585,12 @@ LABEL_9:
           v72 = 0u;
           v73 = 0u;
           v74 = 0u;
-          v33 = [v32 responses];
-          v55 = [v33 countByEnumeratingWithState:&v71 objects:v88 count:16];
+          responses = [v32 responses];
+          v55 = [responses countByEnumeratingWithState:&v71 objects:v88 count:16];
           if (v55)
           {
             v34 = *v72;
-            v60 = v33;
+            v60 = responses;
             v53 = *v72;
             v54 = v31;
             do
@@ -1600,13 +1600,13 @@ LABEL_9:
               {
                 if (*v72 != v34)
                 {
-                  objc_enumerationMutation(v33);
+                  objc_enumerationMutation(responses);
                 }
 
                 v56 = v35;
                 v36 = *(*(&v71 + 1) + 8 * v35);
                 v37 = [v36 objectForKeyedSubscript:v29];
-                v38 = [v37 unsignedLongLongValue];
+                unsignedLongLongValue3 = [v37 unsignedLongLongValue];
 
                 v57 = v36;
                 v39 = [v36 objectForKeyedSubscript:v64];
@@ -1632,26 +1632,26 @@ LABEL_9:
                       v45 = *(*(&v67 + 1) + 8 * i);
                       v46 = [v45 objectForKeyedSubscript:v30];
                       v47 = [v45 objectForKeyedSubscript:v29];
-                      v48 = [v47 unsignedLongLongValue];
+                      unsignedLongLongValue4 = [v47 unsignedLongLongValue];
 
-                      if (v38 == v48 && [v46 isEqualToIgnoringCase:v66])
+                      if (unsignedLongLongValue3 == unsignedLongLongValue4 && [v46 isEqualToIgnoringCase:v66])
                       {
                         v49 = +[IDSFoundationLog QRAllocator];
-                        v7 = v66;
+                        iCopy = v66;
                         if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
                         {
                           *buf = 138412546;
                           v84 = v66;
                           v85 = 2048;
-                          v86 = v38;
+                          v86 = unsignedLongLongValue3;
                           _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_DEFAULT, "Current cached allocation response contains fromURI: %@ and is for the corresponding participant ID %llu", buf, 0x16u);
                         }
 
-                        os_unfair_lock_unlock(&v65->_lock);
+                        os_unfair_lock_unlock(&selfCopy->_lock);
                         v23 = v57;
 
                         v8 = v62;
-                        v6 = v63;
+                        dCopy = v63;
                         v9 = v61;
                         v25 = v59;
                         goto LABEL_44;
@@ -1669,10 +1669,10 @@ LABEL_9:
                 }
 
                 v35 = v56 + 1;
-                v24 = v65;
+                v24 = selfCopy;
                 v26 = v58;
                 v25 = v59;
-                v33 = v60;
+                responses = v60;
                 v34 = v53;
                 v31 = v54;
               }
@@ -1698,8 +1698,8 @@ LABEL_9:
     os_unfair_lock_unlock(v24 + 28);
     v23 = 0;
     v8 = v62;
-    v6 = v63;
-    v7 = v66;
+    dCopy = v63;
+    iCopy = v66;
     v9 = v61;
   }
 
@@ -1715,28 +1715,28 @@ LABEL_45:
   return v23;
 }
 
-- (id)getAllocateResponse:(id)a3 groupID:(id)a4
+- (id)getAllocateResponse:(id)response groupID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  dCopy = d;
   v8 = +[IDSFoundationLog QRAllocator];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v7;
+    v15 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "getAllocateResponse:groupID called {groupID: %@}", buf, 0xCu);
   }
 
-  v9 = [(IDSQuickRelayAllocator *)self _parseQuickRelayDefaults:v6 gropuID:v7];
+  v9 = [(IDSQuickRelayAllocator *)self _parseQuickRelayDefaults:responseCopy gropuID:dCopy];
   if (v9)
   {
     v10 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v15 = v7;
+      v15 = dCopy;
       v16 = 2112;
-      v17 = v6;
+      v17 = responseCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "use hardcoded session token for group %@, session %@.", buf, 0x16u);
     }
 
@@ -1758,7 +1758,7 @@ LABEL_45:
   else
   {
     os_unfair_lock_lock(&self->_lock);
-    v12 = [(IDSQuickRelayAllocator *)self _getResponseFromQRGroupID:v7];
+    v12 = [(IDSQuickRelayAllocator *)self _getResponseFromQRGroupID:dCopy];
     os_unfair_lock_unlock(&self->_lock);
     v11 = [(IDSQuickRelayAllocator *)self _createSessionInfoFromResponsePayload:v12];
   }
@@ -1766,15 +1766,15 @@ LABEL_45:
   return v11;
 }
 
-- (BOOL)_shouldUseCurrentResponse:(id)a3 cachedMessage:(id)a4
+- (BOOL)_shouldUseCurrentResponse:(id)response cachedMessage:(id)message
 {
-  v5 = a3;
-  v6 = a4;
+  responseCopy = response;
+  messageCopy = message;
   v7 = objc_opt_class();
   v8 = kIDSQRAllocateKey_SessionAllocationTime;
-  v9 = sub_10001B8C4(v7, v6, kIDSQRAllocateKey_SessionAllocationTime);
+  v9 = sub_10001B8C4(v7, messageCopy, kIDSQRAllocateKey_SessionAllocationTime);
   v10 = objc_opt_class();
-  v11 = sub_10001B8C4(v10, v5, v8);
+  v11 = sub_10001B8C4(v10, responseCopy, v8);
   v12 = v11;
   if (v9)
   {
@@ -1815,39 +1815,39 @@ LABEL_45:
 
   else
   {
-    v16 = [v9 unsignedLongLongValue];
-    v17 = [v12 unsignedLongLongValue];
-    if (v16 == v17)
+    unsignedLongLongValue = [v9 unsignedLongLongValue];
+    unsignedLongLongValue2 = [v12 unsignedLongLongValue];
+    if (unsignedLongLongValue == unsignedLongLongValue2)
     {
       v18 = kIDSQRAllocateKey_RelaySessionID;
-      v19 = [v6 objectForKey:kIDSQRAllocateKey_RelaySessionID];
+      v19 = [messageCopy objectForKey:kIDSQRAllocateKey_RelaySessionID];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v20 = [v6 objectForKey:v18];
+        v20 = [messageCopy objectForKey:v18];
         v21 = [NSData _IDSDataFromBase64String:v20];
       }
 
       else
       {
-        v20 = [v6 objectForKey:v18];
+        v20 = [messageCopy objectForKey:v18];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           v22 = 0;
 LABEL_21:
 
-          v23 = [v5 objectForKey:v18];
+          v23 = [responseCopy objectForKey:v18];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v24 = [v5 objectForKey:v18];
+            v24 = [responseCopy objectForKey:v18];
             v25 = [NSData _IDSDataFromBase64String:v24];
           }
 
           else
           {
-            v24 = [v5 objectForKey:v18];
+            v24 = [responseCopy objectForKey:v18];
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
@@ -1855,7 +1855,7 @@ LABEL_21:
               goto LABEL_27;
             }
 
-            v25 = [v5 objectForKey:v18];
+            v25 = [responseCopy objectForKey:v18];
           }
 
           v26 = v25;
@@ -1899,21 +1899,21 @@ LABEL_27:
 
               v59 = v28;
               v30 = kIDSQRAllocateKey_RelayAddress;
-              v61 = [v6 objectForKey:kIDSQRAllocateKey_RelayAddress];
+              v61 = [messageCopy objectForKey:kIDSQRAllocateKey_RelayAddress];
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v31 = [v6 objectForKey:v30];
+                v31 = [messageCopy objectForKey:v30];
                 v60 = [NSData _IDSDataFromBase64String:v31];
               }
 
               else
               {
-                v31 = [v6 objectForKey:v30];
+                v31 = [messageCopy objectForKey:v30];
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v60 = [v6 objectForKey:v30];
+                  v60 = [messageCopy objectForKey:v30];
                 }
 
                 else
@@ -1922,17 +1922,17 @@ LABEL_27:
                 }
               }
 
-              v62 = [v5 objectForKey:v30];
+              v62 = [responseCopy objectForKey:v30];
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v36 = [v5 objectForKey:v30];
+                v36 = [responseCopy objectForKey:v30];
                 v37 = [NSData _IDSDataFromBase64String:v36];
               }
 
               else
               {
-                v36 = [v5 objectForKey:v30];
+                v36 = [responseCopy objectForKey:v30];
                 objc_opt_class();
                 if ((objc_opt_isKindOfClass() & 1) == 0)
                 {
@@ -1940,7 +1940,7 @@ LABEL_27:
                   goto LABEL_66;
                 }
 
-                v37 = [v5 objectForKey:v30];
+                v37 = [responseCopy objectForKey:v30];
               }
 
               v38 = v37;
@@ -1951,21 +1951,21 @@ LABEL_66:
               {
                 v56 = v38;
                 v40 = kIDSQRAllocateKey_RelayAddressIPv6;
-                v63 = [v6 objectForKey:kIDSQRAllocateKey_RelayAddressIPv6];
+                v63 = [messageCopy objectForKey:kIDSQRAllocateKey_RelayAddressIPv6];
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v41 = [v6 objectForKey:v40];
+                  v41 = [messageCopy objectForKey:v40];
                   v58 = [NSData _IDSDataFromBase64String:v41];
                 }
 
                 else
                 {
-                  v41 = [v6 objectForKey:v40];
+                  v41 = [messageCopy objectForKey:v40];
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
-                    v58 = [v6 objectForKey:v40];
+                    v58 = [messageCopy objectForKey:v40];
                   }
 
                   else
@@ -1974,21 +1974,21 @@ LABEL_66:
                   }
                 }
 
-                v64 = [v5 objectForKey:v40];
+                v64 = [responseCopy objectForKey:v40];
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v42 = [v5 objectForKey:v40];
+                  v42 = [responseCopy objectForKey:v40];
                   v57 = [NSData _IDSDataFromBase64String:v42];
                 }
 
                 else
                 {
-                  v42 = [v5 objectForKey:v40];
+                  v42 = [responseCopy objectForKey:v40];
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
-                    v57 = [v5 objectForKey:v40];
+                    v57 = [responseCopy objectForKey:v40];
                   }
 
                   else
@@ -1997,15 +1997,15 @@ LABEL_66:
                   }
                 }
 
-                if ([v58 isEqualToData:v57] && (v43 = objc_opt_class(), v44 = kIDSQRAllocateKey_RelayPort, sub_10001B8C4(v43, v6, kIDSQRAllocateKey_RelayPort), v45 = objc_claimAutoreleasedReturnValue(), v46 = objc_msgSend(v45, "unsignedShortValue"), v45, v47 = objc_opt_class(), sub_10001B8C4(v47, v5, v44), v48 = objc_claimAutoreleasedReturnValue(), LODWORD(v44) = objc_msgSend(v48, "unsignedShortValue"), v48, v46 == v44))
+                if ([v58 isEqualToData:v57] && (v43 = objc_opt_class(), v44 = kIDSQRAllocateKey_RelayPort, sub_10001B8C4(v43, messageCopy, kIDSQRAllocateKey_RelayPort), v45 = objc_claimAutoreleasedReturnValue(), v46 = objc_msgSend(v45, "unsignedShortValue"), v45, v47 = objc_opt_class(), sub_10001B8C4(v47, responseCopy, v44), v48 = objc_claimAutoreleasedReturnValue(), LODWORD(v44) = objc_msgSend(v48, "unsignedShortValue"), v48, v46 == v44))
                 {
-                  v49 = [v22 bytes];
-                  v50 = [v26 bytes];
+                  bytes = [v22 bytes];
+                  bytes2 = [v26 bytes];
                   v29 = v59;
                   v38 = v56;
-                  v51 = bswap64(*v49);
-                  v52 = bswap64(*v50);
-                  if (v51 == v52 && (v51 = bswap64(v49[1]), v52 = bswap64(v50[1]), v51 == v52))
+                  v51 = bswap64(*bytes);
+                  v52 = bswap64(*bytes2);
+                  if (v51 == v52 && (v51 = bswap64(bytes[1]), v52 = bswap64(bytes2[1]), v51 == v52))
                   {
                     v53 = 0;
                     v39 = v60;
@@ -2105,14 +2105,14 @@ LABEL_48:
           goto LABEL_49;
         }
 
-        v21 = [v6 objectForKey:v18];
+        v21 = [messageCopy objectForKey:v18];
       }
 
       v22 = v21;
       goto LABEL_21;
     }
 
-    LOBYTE(v15) = v16 < v17;
+    LOBYTE(v15) = unsignedLongLongValue < unsignedLongLongValue2;
   }
 
 LABEL_49:
@@ -2120,11 +2120,11 @@ LABEL_49:
   return v15;
 }
 
-- (id)_getResponseForQRSessionID:(id)a3 sessionID:(id)a4 index:(int64_t *)a5
+- (id)_getResponseForQRSessionID:(id)d sessionID:(id)iD index:(int64_t *)index
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 count];
+  dCopy = d;
+  iDCopy = iD;
+  v9 = [dCopy count];
   if (v9 - 1 < 0)
   {
 LABEL_5:
@@ -2132,7 +2132,7 @@ LABEL_5:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v8;
+      v18 = iDCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "No response for relay sessionID %@", buf, 0xCu);
     }
 
@@ -2157,9 +2157,9 @@ LABEL_5:
     v11 = kIDSQRAllocateKey_RelaySessionID;
     while (1)
     {
-      v12 = [v7 objectAtIndex:--v10];
+      v12 = [dCopy objectAtIndex:--v10];
       v13 = [v12 objectForKey:v11];
-      v14 = [v8 isEqualToData:v13];
+      v14 = [iDCopy isEqualToData:v13];
 
       if (v14)
       {
@@ -2172,26 +2172,26 @@ LABEL_5:
       }
     }
 
-    if (a5)
+    if (index)
     {
-      *a5 = v10;
+      *index = v10;
     }
   }
 
   return v12;
 }
 
-- (BOOL)hasParticipantID:(id)a3 participantID:(id)a4
+- (BOOL)hasParticipantID:(id)d participantID:(id)iD
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  dCopy = d;
+  iDCopy = iD;
+  if (dCopy)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = v5;
+    v7 = dCopy;
     v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v8)
     {
@@ -2210,8 +2210,8 @@ LABEL_5:
           v13 = [*(*(&v17 + 1) + 8 * i) objectForKey:{v11, v17}];
           if (v13)
           {
-            v14 = [v6 unsignedLongLongValue];
-            if (v14 == [v13 unsignedLongLongValue])
+            unsignedLongLongValue = [iDCopy unsignedLongLongValue];
+            if (unsignedLongLongValue == [v13 unsignedLongLongValue])
             {
 
               v15 = 1;
@@ -2242,10 +2242,10 @@ LABEL_14:
   return v15;
 }
 
-- (id)_mergeParticipantID2PushTokenMapping:(id)a3 sourceResponse:(id)a4 mappingChange:(BOOL *)a5
+- (id)_mergeParticipantID2PushTokenMapping:(id)mapping sourceResponse:(id)response mappingChange:(BOOL *)change
 {
-  v36 = a3;
-  v32 = a4;
+  mappingCopy = mapping;
+  responseCopy = response;
   v7 = +[IDSFoundationLog QRAllocator];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -2254,10 +2254,10 @@ LABEL_14:
   }
 
   v33 = kIDSQRAllocateKey_Allocations;
-  v8 = [v36 objectForKey:?];
-  v9 = [v32 objectForKey:v33];
+  v8 = [mappingCopy objectForKey:?];
+  v9 = [responseCopy objectForKey:v33];
   v31 = v9;
-  *a5 = 0;
+  *change = 0;
   if (v9)
   {
     v41 = 0u;
@@ -2354,17 +2354,17 @@ LABEL_14:
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v21 = v36;
+                  v21 = mappingCopy;
                 }
 
                 else
                 {
-                  v22 = [v36 mutableCopy];
+                  v22 = [mappingCopy mutableCopy];
 
                   v21 = v22;
                 }
 
-                v36 = v21;
+                mappingCopy = v21;
                 [v21 setObject:v8 forKey:{v33, v29}];
               }
 
@@ -2379,14 +2379,14 @@ LABEL_14:
                 objc_opt_class();
                 if ((objc_opt_isKindOfClass() & 1) == 0)
                 {
-                  v24 = [v36 mutableCopy];
+                  v24 = [mappingCopy mutableCopy];
 
-                  v36 = v24;
+                  mappingCopy = v24;
                 }
 
                 v23 = [v8 mutableCopy];
 
-                [v36 setObject:v23 forKey:v33];
+                [mappingCopy setObject:v23 forKey:v33];
               }
 
               [v23 addObject:{v13, v29}];
@@ -2405,7 +2405,7 @@ LABEL_14:
 
       if (v34)
       {
-        *a5 = 1;
+        *change = 1;
         v25 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
@@ -2441,7 +2441,7 @@ LABEL_14:
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v44[0] = v32;
+      v44[0] = responseCopy;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "No participant information in %@", buf, 0xCu);
     }
 
@@ -2458,14 +2458,14 @@ LABEL_14:
     }
   }
 
-  v27 = v36;
+  v27 = mappingCopy;
 
-  return v36;
+  return mappingCopy;
 }
 
-- (void)_notifyParticipantID2PushTokenMappingChange:(id)a3
+- (void)_notifyParticipantID2PushTokenMappingChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = +[IDSFoundationLog QRAllocator];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2474,22 +2474,22 @@ LABEL_14:
   }
 
   v6 = kIDSQRAllocateKey_IDSSessionID;
-  v7 = [v4 objectForKey:kIDSQRAllocateKey_IDSSessionID];
+  v7 = [changeCopy objectForKey:kIDSQRAllocateKey_IDSSessionID];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v4 objectForKey:v6];
+    v8 = [changeCopy objectForKey:v6];
     v9 = [NSData _IDSDataFromBase64String:v8];
     v10 = sub_100592F04(v9);
   }
 
   else
   {
-    v8 = [v4 objectForKey:v6];
+    v8 = [changeCopy objectForKey:v6];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v4 objectForKey:v6];
+      v11 = [changeCopy objectForKey:v6];
       v10 = sub_100592F04(v11);
     }
 
@@ -2503,7 +2503,7 @@ LABEL_14:
   v13 = v12;
   if (v12)
   {
-    [v12 onParticipantID2PushTokenMappingChange:v4];
+    [v12 onParticipantID2PushTokenMappingChange:changeCopy];
   }
 
   else
@@ -2530,9 +2530,9 @@ LABEL_14:
   }
 }
 
-- (void)_notifyURIToParticipantIDMappingChange:(id)a3
+- (void)_notifyURIToParticipantIDMappingChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = +[IDSFoundationLog QRAllocator];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2543,22 +2543,22 @@ LABEL_14:
   }
 
   v7 = kIDSQRAllocateKey_IDSSessionID;
-  v8 = [v4 objectForKey:kIDSQRAllocateKey_IDSSessionID];
+  v8 = [changeCopy objectForKey:kIDSQRAllocateKey_IDSSessionID];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v4 objectForKey:v7];
+    v9 = [changeCopy objectForKey:v7];
     v10 = [NSData _IDSDataFromBase64String:v9];
     v11 = sub_100592F04(v10);
   }
 
   else
   {
-    v9 = [v4 objectForKey:v7];
+    v9 = [changeCopy objectForKey:v7];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [v4 objectForKey:v7];
+      v12 = [changeCopy objectForKey:v7];
       v11 = sub_100592F04(v12);
     }
 
@@ -2571,8 +2571,8 @@ LABEL_14:
   v13 = [(IDSQuickRelayAllocator *)self _findSessionWithID:v11];
   if (v13)
   {
-    v14 = [(IDSQuickRelayAllocator *)self _createSessionInfoFromResponsePayload:v4];
-    [v13 onURI2ParticipantIDMappingChange:v14 allocateResponse:v4];
+    v14 = [(IDSQuickRelayAllocator *)self _createSessionInfoFromResponsePayload:changeCopy];
+    [v13 onURI2ParticipantIDMappingChange:v14 allocateResponse:changeCopy];
   }
 
   else
@@ -2599,32 +2599,32 @@ LABEL_14:
   }
 }
 
-- (BOOL)_addResponseToCache:(id)a3 sessionInfo:(id)a4 modifiedMessage:(id *)a5
+- (BOOL)_addResponseToCache:(id)cache sessionInfo:(id)info modifiedMessage:(id *)message
 {
-  v8 = a3;
-  v77 = a4;
-  v9 = v8;
-  *a5 = v8;
+  cacheCopy = cache;
+  infoCopy = info;
+  v9 = cacheCopy;
+  *message = cacheCopy;
   v10 = objc_opt_class();
-  v11 = sub_10001B8C4(v10, v8, kIDSQRAllocateKey_GroupID);
+  v11 = sub_10001B8C4(v10, cacheCopy, kIDSQRAllocateKey_GroupID);
   if (v11)
   {
     v12 = kIDSQRAllocateKey_RelaySessionID;
-    v13 = [v8 objectForKey:kIDSQRAllocateKey_RelaySessionID];
+    v13 = [cacheCopy objectForKey:kIDSQRAllocateKey_RelaySessionID];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [v8 objectForKey:v12];
+      v14 = [cacheCopy objectForKey:v12];
       v78 = [NSData _IDSDataFromBase64String:v14];
     }
 
     else
     {
-      v14 = [v8 objectForKey:v12];
+      v14 = [cacheCopy objectForKey:v12];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v78 = [v8 objectForKey:v12];
+        v78 = [cacheCopy objectForKey:v12];
       }
 
       else
@@ -2639,7 +2639,7 @@ LABEL_14:
       if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v83 = v8;
+        v83 = cacheCopy;
         _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "No QR sessionID in %@", buf, 0xCu);
       }
 
@@ -2664,7 +2664,7 @@ LABEL_14:
     v76 = [(IDSQuickRelayAllocator *)self _findSessionWithID:v11];
     if (!v17)
     {
-      [(IDSQuickRelayAllocator *)self _setResponseForQRGroupID:v8 groupID:v11];
+      [(IDSQuickRelayAllocator *)self _setResponseForQRGroupID:cacheCopy groupID:v11];
       v16 = 1;
       goto LABEL_70;
     }
@@ -2705,12 +2705,12 @@ LABEL_14:
       if ((v46 & 1) == 0)
       {
 LABEL_57:
-        if ([(IDSQuickRelayAllocator *)self _shouldUseCurrentResponse:v8 cachedMessage:v17])
+        if ([(IDSQuickRelayAllocator *)self _shouldUseCurrentResponse:cacheCopy cachedMessage:v17])
         {
-          v47 = [(IDSQuickRelayAllocator *)self _mergeParticipantID2PushTokenMapping:v8 sourceResponse:v17 mappingChange:&v81];
+          v47 = [(IDSQuickRelayAllocator *)self _mergeParticipantID2PushTokenMapping:cacheCopy sourceResponse:v17 mappingChange:&v81];
 
           v48 = v47;
-          *a5 = v47;
+          *message = v47;
           v49 = OSLogHandleForTransportCategory();
           if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
           {
@@ -2742,7 +2742,7 @@ LABEL_57:
           goto LABEL_71;
         }
 
-        v50 = [(IDSQuickRelayAllocator *)self _mergeParticipantID2PushTokenMapping:v17 sourceResponse:v8 mappingChange:&v81];
+        v50 = [(IDSQuickRelayAllocator *)self _mergeParticipantID2PushTokenMapping:v17 sourceResponse:cacheCopy mappingChange:&v81];
         if (v50 != v17)
         {
           [(IDSQuickRelayAllocator *)self _setResponseForQRGroupID:v50 groupID:v11];
@@ -2756,7 +2756,7 @@ LABEL_57:
 
         v16 = 0;
 LABEL_70:
-        v47 = v8;
+        v47 = cacheCopy;
 LABEL_71:
         v51 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
@@ -2791,7 +2791,7 @@ LABEL_18:
       v84 = 2112;
       v85 = v17;
       v86 = 2112;
-      v87 = v8;
+      v87 = cacheCopy;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Duplicated responses for sessionID: %@, %@, %@", buf, 0x20u);
     }
 
@@ -2800,13 +2800,13 @@ LABEL_18:
       if (_IDSShouldLogTransport())
       {
         v72 = v17;
-        v73 = v8;
+        v73 = cacheCopy;
         v70 = v78;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
           v72 = v17;
-          v73 = v8;
+          v73 = cacheCopy;
           v70 = v78;
           _IDSLogV();
         }
@@ -2814,16 +2814,16 @@ LABEL_18:
     }
 
     v23 = kIDSQRAllocateKey_RecipientID;
-    v24 = [v8 objectForKeyedSubscript:{kIDSQRAllocateKey_RecipientID, v70, v72, v73}];
-    v25 = [v24 unsignedLongLongValue];
+    v24 = [cacheCopy objectForKeyedSubscript:{kIDSQRAllocateKey_RecipientID, v70, v72, v73}];
+    unsignedLongLongValue = [v24 unsignedLongLongValue];
     v26 = [v17 objectForKeyedSubscript:v23];
-    LODWORD(v25) = v25 == [v26 unsignedLongLongValue];
+    LODWORD(unsignedLongLongValue) = unsignedLongLongValue == [v26 unsignedLongLongValue];
 
-    if (v25)
+    if (unsignedLongLongValue)
     {
-      v27 = [v8 objectForKey:kIDSQRAllocateKey_RelayExpiryTimestamp];
-      v75 = v27;
-      if (v27)
+      fromURI = [cacheCopy objectForKey:kIDSQRAllocateKey_RelayExpiryTimestamp];
+      v75 = fromURI;
+      if (fromURI)
       {
         v28 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -2868,13 +2868,13 @@ LABEL_18:
           dispatch_source_cancel(v34);
         }
 
-        [(NSMutableDictionary *)self->_duplicateAllocateResponses setObject:v8 forKey:v11];
-        v36 = [v75 unsignedLongLongValue];
+        [(NSMutableDictionary *)self->_duplicateAllocateResponses setObject:cacheCopy forKey:v11];
+        unsignedLongLongValue2 = [v75 unsignedLongLongValue];
         v37 = time(0);
         v38 = im_primary_queue();
         source = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v38);
 
-        v39 = dispatch_time(0, 1000000 * &v36[-1000 * v37 - 10]);
+        v39 = dispatch_time(0, 1000000 * &unsignedLongLongValue2[-1000 * v37 - 10]);
         dispatch_source_set_timer(source, v39, 0xFFFFFFFFFFFFFFFFLL, 0x5F5E100uLL);
         handler[0] = _NSConcreteStackBlock;
         handler[1] = 3221225472;
@@ -2907,7 +2907,7 @@ LABEL_18:
         [(NSMutableDictionary *)self->_groupIDToDuplicateResponseCleanupTimers setObject:source forKey:v40];
 
 LABEL_90:
-        v27 = v75;
+        fromURI = v75;
       }
     }
 
@@ -2918,18 +2918,18 @@ LABEL_90:
         goto LABEL_92;
       }
 
-      v27 = [v76 fromURI];
-      v75 = v27;
-      if (v27)
+      fromURI = [v76 fromURI];
+      v75 = fromURI;
+      if (fromURI)
       {
-        source = [v27 prefixedURI];
-        v52 = [(IDSQuickRelayAllocator *)self _getURIForRecipientFromResponse:v8];
+        source = [fromURI prefixedURI];
+        v52 = [(IDSQuickRelayAllocator *)self _getURIForRecipientFromResponse:cacheCopy];
         if ([source isEqualToString:v52])
         {
-          v47 = [(IDSQuickRelayAllocator *)self _mergeParticipantID2PushTokenMapping:v8 sourceResponse:v17 mappingChange:&v81];
+          v47 = [(IDSQuickRelayAllocator *)self _mergeParticipantID2PushTokenMapping:cacheCopy sourceResponse:v17 mappingChange:&v81];
 
           v53 = v47;
-          *a5 = v47;
+          *message = v47;
           [(IDSQuickRelayAllocator *)self _setResponseForQRGroupID:v47 groupID:v11];
           v54 = OSLogHandleForTransportCategory();
           if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
@@ -3008,10 +3008,10 @@ LABEL_98:
             }
           }
 
-          v47 = [(IDSQuickRelayAllocator *)self _mergeParticipantID2PushTokenMapping:v8 sourceResponse:v17 mappingChange:&v81, v71];
+          v47 = [(IDSQuickRelayAllocator *)self _mergeParticipantID2PushTokenMapping:cacheCopy sourceResponse:v17 mappingChange:&v81, v71];
 
           v61 = v47;
-          *a5 = v47;
+          *message = v47;
           [(IDSQuickRelayAllocator *)self _setResponseForQRGroupID:v47 groupID:v11];
           v62 = OSLogHandleForTransportCategory();
           if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
@@ -3037,7 +3037,7 @@ LABEL_98:
           goto LABEL_146;
         }
 
-        v63 = [(IDSQuickRelayAllocator *)self _mergeParticipantID2PushTokenMapping:v17 sourceResponse:v8 mappingChange:&v81];
+        v63 = [(IDSQuickRelayAllocator *)self _mergeParticipantID2PushTokenMapping:v17 sourceResponse:cacheCopy mappingChange:&v81];
         if (v63 != v17)
         {
           [(IDSQuickRelayAllocator *)self _setResponseForQRGroupID:v63 groupID:v11];
@@ -3049,7 +3049,7 @@ LABEL_98:
           [(IDSQuickRelayAllocator *)self _notifyURIToParticipantIDMappingChange:v63];
         }
 
-        v64 = [v77 objectForKey:kIDSQRAllocateKey_IDSSessionID];
+        v64 = [infoCopy objectForKey:kIDSQRAllocateKey_IDSSessionID];
         if (v64)
         {
           if (v76)
@@ -3092,11 +3092,11 @@ LABEL_144:
               v16 = 0;
 LABEL_145:
 
-              v47 = v8;
+              v47 = cacheCopy;
 LABEL_146:
 
 LABEL_147:
-              v8 = v47;
+              cacheCopy = v47;
 LABEL_148:
 
               goto LABEL_149;
@@ -3137,7 +3137,7 @@ LABEL_148:
           if (os_log_type_enabled(v66, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v83 = v77;
+            v83 = infoCopy;
             _os_log_impl(&_mh_execute_header, v66, OS_LOG_TYPE_DEFAULT, "no IDSDSession ID in %@", buf, 0xCu);
           }
 
@@ -3173,7 +3173,7 @@ LABEL_148:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v83 = v8;
+    v83 = cacheCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "No groupID in %@", buf, 0xCu);
   }
 
@@ -3195,14 +3195,14 @@ LABEL_149:
   return v16;
 }
 
-- (id)_getURIForRecipientFromResponse:(id)a3
+- (id)_getURIForRecipientFromResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   v4 = kIDSQRAllocateKey_RecipientID;
-  v5 = [v3 objectForKeyedSubscript:kIDSQRAllocateKey_RecipientID];
-  v6 = [v5 unsignedLongLongValue];
+  v5 = [responseCopy objectForKeyedSubscript:kIDSQRAllocateKey_RecipientID];
+  unsignedLongLongValue = [v5 unsignedLongLongValue];
 
-  [v3 objectForKeyedSubscript:kIDSQRAllocateKey_Allocations];
+  [responseCopy objectForKeyedSubscript:kIDSQRAllocateKey_Allocations];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -3223,9 +3223,9 @@ LABEL_149:
 
         v12 = *(*(&v17 + 1) + 8 * i);
         v13 = [v12 objectForKeyedSubscript:{v4, v17}];
-        v14 = [v13 unsignedLongLongValue];
+        unsignedLongLongValue2 = [v13 unsignedLongLongValue];
 
-        if (v6 == v14)
+        if (unsignedLongLongValue == unsignedLongLongValue2)
         {
           v15 = [v12 objectForKeyedSubscript:kIDSQRAllocateKey_RecipientURI];
           goto LABEL_11;
@@ -3248,29 +3248,29 @@ LABEL_11:
   return v15;
 }
 
-- (BOOL)_addConnectStatus:(id)a3 relaySessionID:(id)a4 previousTime:(unint64_t)a5 qrReason:(unsigned __int16)a6 previousError:(unsigned __int16)a7 previousRelayIP:(unsigned int)a8 previousAccessToken:(id)a9
+- (BOOL)_addConnectStatus:(id)status relaySessionID:(id)d previousTime:(unint64_t)time qrReason:(unsigned __int16)reason previousError:(unsigned __int16)error previousRelayIP:(unsigned int)p previousAccessToken:(id)token
 {
-  v9 = *&a8;
-  v10 = a7;
-  v11 = a6;
-  v15 = a3;
-  v16 = a4;
-  v36 = a9;
+  v9 = *&p;
+  errorCopy = error;
+  reasonCopy = reason;
+  statusCopy = status;
+  dCopy = d;
+  tokenCopy = token;
   v17 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413570;
-    v38 = v15;
+    v38 = statusCopy;
     v39 = 2112;
-    v40 = v16;
+    v40 = dCopy;
     v41 = 1024;
-    v42 = v11;
+    v42 = reasonCopy;
     v43 = 1024;
-    v44 = v10;
+    v44 = errorCopy;
     v45 = 1024;
     v46 = v9;
     v47 = 2112;
-    v48 = v36;
+    v48 = tokenCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "addConnectStatus, groupID: %@, relaySessionID: %@i, data: %u %u %u %@", buf, 0x32u);
   }
 
@@ -3279,26 +3279,26 @@ LABEL_11:
     if (_IDSShouldLogTransport())
     {
       v34 = v9;
-      v35 = v36;
-      v32 = v11;
-      v33 = v10;
-      v30 = v15;
-      v31 = v16;
+      v35 = tokenCopy;
+      v32 = reasonCopy;
+      v33 = errorCopy;
+      v30 = statusCopy;
+      v31 = dCopy;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
         v34 = v9;
-        v35 = v36;
-        v32 = v11;
-        v33 = v10;
-        v30 = v15;
-        v31 = v16;
+        v35 = tokenCopy;
+        v32 = reasonCopy;
+        v33 = errorCopy;
+        v30 = statusCopy;
+        v31 = dCopy;
         _IDSLogV();
       }
     }
   }
 
-  v18 = [(IDSQuickRelayAllocator *)self _getResponseFromQRGroupID:v15, v30, v31, v32, v33, v34, v35];
+  v18 = [(IDSQuickRelayAllocator *)self _getResponseFromQRGroupID:statusCopy, v30, v31, v32, v33, v34, v35];
   v19 = v18;
   if (!v18)
   {
@@ -3306,7 +3306,7 @@ LABEL_11:
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v38 = v15;
+      v38 = statusCopy;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "No response for groupID: %@", buf, 0xCu);
     }
 
@@ -3327,7 +3327,7 @@ LABEL_11:
   }
 
   v20 = [v18 objectForKey:kIDSQRAllocateKey_RelaySessionID];
-  v21 = [v16 isEqualToData:v20];
+  v21 = [dCopy isEqualToData:v20];
 
   if ((v21 & 1) == 0)
   {
@@ -3335,7 +3335,7 @@ LABEL_11:
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v38 = v16;
+      v38 = dCopy;
       v39 = 2112;
       v40 = v19;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Response is not for sessionID %@, response %@", buf, 0x16u);
@@ -3358,7 +3358,7 @@ LABEL_24:
     goto LABEL_33;
   }
 
-  v22 = sub_10059BFE4(a5, v11, v10, v9, v36);
+  v22 = sub_10059BFE4(time, reasonCopy, errorCopy, v9, tokenCopy);
   v23 = sub_10059C0A8(v22);
   sub_100597284(v22);
   objc_opt_class();
@@ -3373,14 +3373,14 @@ LABEL_24:
     v24 = [v19 mutableCopy];
 
     [v24 setObject:v23 forKey:kIDSQRAllocateKey_QRConnectStatus];
-    [(IDSQuickRelayAllocator *)self _setResponseForQRGroupID:v24 groupID:v15];
+    [(IDSQuickRelayAllocator *)self _setResponseForQRGroupID:v24 groupID:statusCopy];
   }
 
   v28 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v38 = v16;
+    v38 = dCopy;
     _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Cached response modified for relay sessionID %@", buf, 0xCu);
   }
 
@@ -3403,17 +3403,17 @@ LABEL_33:
   return v27;
 }
 
-- (BOOL)invalidateLatestResponse:(id)a3 qrReason:(unsigned __int16)a4 previousError:(unsigned __int16)a5
+- (BOOL)invalidateLatestResponse:(id)response qrReason:(unsigned __int16)reason previousError:(unsigned __int16)error
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  errorCopy = error;
+  reasonCopy = reason;
+  responseCopy = response;
   v9 = +[IMLockdownManager sharedInstance];
-  v10 = [v9 isInternalInstall];
+  isInternalInstall = [v9 isInternalInstall];
 
-  if (v10)
+  if (isInternalInstall)
   {
-    v11 = [(IDSQuickRelayAllocator *)self _getResponseFromQRGroupID:v8];
+    v11 = [(IDSQuickRelayAllocator *)self _getResponseFromQRGroupID:responseCopy];
     v12 = v11;
     if (v11)
     {
@@ -3442,7 +3442,7 @@ LABEL_33:
 
       [v19 getBytes:buf length:4];
       ids_monotonic_time();
-      v16 = [(IDSQuickRelayAllocator *)self _addConnectStatus:v8 relaySessionID:v13 previousTime:v20 qrReason:v6 previousError:v5 previousRelayIP:*buf previousAccessToken:v18];
+      v16 = [(IDSQuickRelayAllocator *)self _addConnectStatus:responseCopy relaySessionID:v13 previousTime:v20 qrReason:reasonCopy previousError:errorCopy previousRelayIP:*buf previousAccessToken:v18];
     }
 
     else
@@ -3451,7 +3451,7 @@ LABEL_33:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v23 = v8;
+        v23 = responseCopy;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "no response for groupID %@", buf, 0xCu);
       }
 
@@ -3498,32 +3498,32 @@ LABEL_33:
   return v16;
 }
 
-- (void)_dispatchIncomingAllocateResponse:(id)a3 isFromCache:(BOOL)a4 connectReadyHandler:(id)a5 requestOptions:(id)a6
+- (void)_dispatchIncomingAllocateResponse:(id)response isFromCache:(BOOL)cache connectReadyHandler:(id)handler requestOptions:(id)options
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  responseCopy = response;
+  handlerCopy = handler;
+  optionsCopy = options;
   v13 = im_primary_queue();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10059C558;
   block[3] = &unk_100BD9968;
   block[4] = self;
-  v18 = v10;
-  v21 = a4;
-  v19 = v12;
-  v20 = v11;
-  v14 = v11;
-  v15 = v12;
-  v16 = v10;
+  v18 = responseCopy;
+  cacheCopy = cache;
+  v19 = optionsCopy;
+  v20 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = optionsCopy;
+  v16 = responseCopy;
   dispatch_async(v13, block);
 }
 
-- (id)_getSelfAllocationFromCache:(id)a3
+- (id)_getSelfAllocationFromCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(IDSQuickRelayAllocator *)self _findAllocationListForSessionID:v4];
+  v5 = [(IDSQuickRelayAllocator *)self _findAllocationListForSessionID:cacheCopy];
   v6 = v5;
   if (v5)
   {
@@ -3545,14 +3545,14 @@ LABEL_33:
             objc_enumerationMutation(v7);
           }
 
-          v11 = [*(*(&v17 + 1) + 8 * i) getAllocation];
-          if (v11)
+          getAllocation = [*(*(&v17 + 1) + 8 * i) getAllocation];
+          if (getAllocation)
           {
             v13 = OSLogHandleForTransportCategory();
             if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v22 = v11;
+              v22 = getAllocation;
               _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "self allocation in cache: %@", buf, 0xCu);
             }
 
@@ -3560,19 +3560,19 @@ LABEL_33:
             {
               if (_IDSShouldLogTransport())
               {
-                v16 = v11;
+                v16 = getAllocation;
                 _IDSLogTransport();
                 if (_IDSShouldLog())
                 {
-                  v16 = v11;
+                  v16 = getAllocation;
                   _IDSLogV();
                 }
               }
             }
 
-            [(IDSQuickRelayAllocator *)self _dispatchIncomingAllocateResponse:v11 isFromCache:1 connectReadyHandler:0 requestOptions:0, v16];
+            [(IDSQuickRelayAllocator *)self _dispatchIncomingAllocateResponse:getAllocation isFromCache:1 connectReadyHandler:0 requestOptions:0, v16];
             os_unfair_lock_unlock(&self->_lock);
-            v14 = [v11 objectForKey:kIDSQRAllocateKey_RequestID];
+            v14 = [getAllocation objectForKey:kIDSQRAllocateKey_RequestID];
             v12 = sub_100592F04(v14);
 
             goto LABEL_21;
@@ -3595,7 +3595,7 @@ LABEL_33:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v22 = v4;
+    v22 = cacheCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "_getSelfAllocationFromCache: allocation is nil {sessinID: %@}", buf, 0xCu);
   }
 
@@ -3605,22 +3605,22 @@ LABEL_21:
   return v12;
 }
 
-- (void)_sendIDQueryRequest:(id)a3 fromIdentity:(id)a4 fromURI:(id)a5 fromService:(id)a6 completionBlock:(id)a7
+- (void)_sendIDQueryRequest:(id)request fromIdentity:(id)identity fromURI:(id)i fromService:(id)service completionBlock:(id)block
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(IDSQuickRelayAllocator *)self _queryPolicy];
-  v18 = [v17 shouldQueryOnEveryQRAllocationForServiceIdentifier:v15];
+  requestCopy = request;
+  identityCopy = identity;
+  iCopy = i;
+  serviceCopy = service;
+  blockCopy = block;
+  _queryPolicy = [(IDSQuickRelayAllocator *)self _queryPolicy];
+  v18 = [_queryPolicy shouldQueryOnEveryQRAllocationForServiceIdentifier:serviceCopy];
 
   v19 = +[IDSFoundationLog QRAllocator];
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     v20 = @"NO";
     *buf = 138413314;
-    v25 = v15;
+    v25 = serviceCopy;
     if (v18)
     {
       v20 = @"YES";
@@ -3629,59 +3629,59 @@ LABEL_21:
     v26 = 2112;
     v27 = v20;
     v28 = 2112;
-    v29 = v14;
+    v29 = iCopy;
     v30 = 2048;
-    v31 = v13;
+    v31 = identityCopy;
     v32 = 2112;
-    v33 = v12;
+    v33 = requestCopy;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "_sendIDQueryRequest:fromIdentity:fromURI:fromService:completionBlock: called { fromService: %@, shouldForceQuery: %@, fromURI: %@, fromIdentity: %p, recipientIDs: %@ }", buf, 0x34u);
   }
 
-  v21 = [(IDSQuickRelayAllocator *)self _peerIDManager];
-  v22 = [IDSURI URIWithPrefixedURI:v14 withServiceLoggingHint:v15];
+  _peerIDManager = [(IDSQuickRelayAllocator *)self _peerIDManager];
+  v22 = [IDSURI URIWithPrefixedURI:iCopy withServiceLoggingHint:serviceCopy];
   LOBYTE(v23) = 0;
-  [v21 startQueryForURIs:v12 fromIdentity:v13 fromURI:v22 fromService:v15 forSending:1 forceToServer:v18 clientRequestedForceQuery:v23 reason:@"QRAlloc" completionBlock:v16];
+  [_peerIDManager startQueryForURIs:requestCopy fromIdentity:identityCopy fromURI:v22 fromService:serviceCopy forSending:1 forceToServer:v18 clientRequestedForceQuery:v23 reason:@"QRAlloc" completionBlock:blockCopy];
 }
 
-- (id)_setupNewAllocation:(id)a3 sessionID:(id)a4 isSessionIDRemoteDeviceID:(BOOL)a5 fromIdentity:(id)a6 fromURI:(id)a7 fromService:(id)a8 options:(id)a9 connectReadyHandler:(id)a10 withPreferredLocalInterface:(int)a11 forAdditionalAllocation:(BOOL)a12
+- (id)_setupNewAllocation:(id)allocation sessionID:(id)d isSessionIDRemoteDeviceID:(BOOL)iD fromIdentity:(id)identity fromURI:(id)i fromService:(id)service options:(id)options connectReadyHandler:(id)self0 withPreferredLocalInterface:(int)self1 forAdditionalAllocation:(BOOL)self2
 {
-  v97 = a5;
-  v100 = a3;
-  v16 = a4;
-  v101 = a6;
-  v103 = a7;
-  v99 = a8;
-  v17 = a9;
-  v98 = a10;
-  v18 = [v17 objectForKeyedSubscript:kIDSQRAllocateKey_IsLightweightParticipant];
-  v19 = [v18 BOOLValue];
+  iDCopy = iD;
+  allocationCopy = allocation;
+  dCopy = d;
+  identityCopy = identity;
+  iCopy = i;
+  serviceCopy = service;
+  optionsCopy = options;
+  handlerCopy = handler;
+  v18 = [optionsCopy objectForKeyedSubscript:kIDSQRAllocateKey_IsLightweightParticipant];
+  bOOLValue = [v18 BOOLValue];
 
   v20 = +[IDSFoundationLog QRAllocator];
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     v21 = @"NO";
     *buf = 138412802;
-    v118 = v16;
+    v118 = dCopy;
     v119 = 2112;
-    if (v19)
+    if (bOOLValue)
     {
       v21 = @"YES";
     }
 
     v120 = v21;
     v121 = 2112;
-    v122 = v103;
+    v122 = iCopy;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "_setupNewAllocation: called {sessionID: %@}, isLightweightParticipant = %@, fromURI: %@", buf, 0x20u);
   }
 
   im_assert_primary_base_queue();
-  if (!v101 || !v103)
+  if (!identityCopy || !iCopy)
   {
     v22 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v118 = v99;
+      v118 = serviceCopy;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Unable to setup QR allocation for unregistered account for %@ service", buf, 0xCu);
     }
 
@@ -3689,18 +3689,18 @@ LABEL_21:
     {
       if (_IDSShouldLogTransport())
       {
-        v88 = v99;
+        v88 = serviceCopy;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
-          v88 = v99;
+          v88 = serviceCopy;
           _IDSLogV();
         }
       }
     }
   }
 
-  if (!v16)
+  if (!dCopy)
   {
     v23 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -3722,23 +3722,23 @@ LABEL_21:
     }
   }
 
-  if ([(IDSQuickRelayAllocator *)self _startQRConnectionWithDefaults:v16, v88])
+  if ([(IDSQuickRelayAllocator *)self _startQRConnectionWithDefaults:dCopy, v88])
   {
-    v24 = [(IDSQuickRelayAllocator *)self _findSessionWithID:v16];
+    v24 = [(IDSQuickRelayAllocator *)self _findSessionWithID:dCopy];
     v25 = v24;
-    if (v24 && a12)
+    if (v24 && additionalAllocation)
     {
-      [v24 setHasPendingAllocation:0 forIDSSession:v16];
+      [v24 setHasPendingAllocation:0 forIDSSession:dCopy];
     }
 
     goto LABEL_25;
   }
 
   v27 = kIDSQRAllocateKey_AllocateType;
-  v28 = [v17 objectForKey:?];
+  v28 = [optionsCopy objectForKey:?];
   if ([v28 intValue] == 3)
   {
-    v29 = [v17 objectForKey:kIDSQRAllocateKey_TestOptions];
+    v29 = [optionsCopy objectForKey:kIDSQRAllocateKey_TestOptions];
     v30 = [v29 isEqualToString:IDSGroupSessionForceQRSession];
 
     if (v30)
@@ -3747,14 +3747,14 @@ LABEL_21:
       goto LABEL_90;
     }
 
-    v28 = [v17 objectForKey:kIDSQRAllocateKey_GroupID];
+    v28 = [optionsCopy objectForKey:kIDSQRAllocateKey_GroupID];
     if (!v28)
     {
       v32 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v118 = v17;
+        v118 = optionsCopy;
         _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "No groupID for shared session %@", buf, 0xCu);
       }
 
@@ -3780,16 +3780,16 @@ LABEL_21:
     if (theDict)
     {
 LABEL_56:
-      v41 = [v17 objectForKey:kIDSQRAllocateKey_AllocateRequestForUnauthorizedUser];
-      v42 = [v41 BOOLValue];
+      v41 = [optionsCopy objectForKey:kIDSQRAllocateKey_AllocateRequestForUnauthorizedUser];
+      bOOLValue2 = [v41 BOOLValue];
 
       if (theDict)
       {
         v43 = [(IDSQuickRelayAllocator *)self _getURIForRecipientFromResponse:?];
         v44 = v43;
-        if (v103)
+        if (iCopy)
         {
-          v45 = [v43 isEqualToString:v103];
+          v45 = [v43 isEqualToString:iCopy];
         }
 
         else
@@ -3797,14 +3797,14 @@ LABEL_56:
           v45 = 1;
         }
 
-        if (!(v42 & 1 | ((v45 & 1) == 0)))
+        if (!(bOOLValue2 & 1 | ((v45 & 1) == 0)))
         {
           v96 = [(__CFDictionary *)theDict objectForKey:kIDSQRAllocateKey_QRConnectStatus];
           v74 = OSLogHandleForTransportCategory();
           if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412802;
-            v118 = v16;
+            v118 = dCopy;
             v119 = 2112;
             v120 = theDict;
             v121 = 2112;
@@ -3818,26 +3818,26 @@ LABEL_56:
             {
               v90 = theDict;
               v91 = v96;
-              v89 = v16;
+              v89 = dCopy;
               _IDSLogTransport();
               if (_IDSShouldLog())
               {
                 v90 = theDict;
                 v91 = v96;
-                v89 = v16;
+                v89 = dCopy;
                 _IDSLogV();
               }
             }
           }
 
-          [(IDSQuickRelayAllocator *)self _storeMappingFromPushTokenToURIs:v100 fromID:v103 service:v99 cert:v101 forGroup:v28, v89, v90, v91];
+          [(IDSQuickRelayAllocator *)self _storeMappingFromPushTokenToURIs:allocationCopy fromID:iCopy service:serviceCopy cert:identityCopy forGroup:v28, v89, v90, v91];
           if (v96)
           {
             v75 = OSLogHandleForTransportCategory();
             if (os_log_type_enabled(v75, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412546;
-              v118 = v16;
+              v118 = dCopy;
               v119 = 2112;
               v120 = v96;
               _os_log_impl(&_mh_execute_header, v75, OS_LOG_TYPE_DEFAULT, "cached allocation response has issue: %@ %@", buf, 0x16u);
@@ -3847,12 +3847,12 @@ LABEL_56:
             {
               if (_IDSShouldLogTransport())
               {
-                v89 = v16;
+                v89 = dCopy;
                 v90 = v96;
                 _IDSLogTransport();
                 if (_IDSShouldLog())
                 {
-                  v89 = v16;
+                  v89 = dCopy;
                   v90 = v96;
                   _IDSLogV();
                 }
@@ -3869,13 +3869,13 @@ LABEL_56:
               goto LABEL_156;
             }
 
-            v78 = [v76 unsignedLongLongValue];
+            unsignedLongLongValue = [v76 unsignedLongLongValue];
             v79 = 1000 * time(0);
             v80 = OSLogHandleForTransportCategory();
             if (os_log_type_enabled(v80, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 134218240;
-              v118 = v78;
+              v118 = unsignedLongLongValue;
               v119 = 2048;
               v120 = v79;
               _os_log_impl(&_mh_execute_header, v80, OS_LOG_TYPE_DEFAULT, "Expired time: %llu, current time: %llu", buf, 0x16u);
@@ -3885,19 +3885,19 @@ LABEL_56:
             {
               if (_IDSShouldLogTransport())
               {
-                v89 = v78;
+                v89 = unsignedLongLongValue;
                 v90 = v79;
                 _IDSLogTransport();
                 if (_IDSShouldLog())
                 {
-                  v89 = v78;
+                  v89 = unsignedLongLongValue;
                   v90 = v79;
                   _IDSLogV();
                 }
               }
             }
 
-            if (v79 + 10 < v78)
+            if (v79 + 10 < unsignedLongLongValue)
             {
               goto LABEL_156;
             }
@@ -3923,7 +3923,7 @@ LABEL_56:
 
             v93 = [(NSMutableDictionary *)self->_duplicateAllocateResponses objectForKey:v28, v89, v90];
             v92 = [(IDSQuickRelayAllocator *)self _getURIForRecipientFromResponse:v93];
-            if (v93 && (!v103 || [v92 isEqualToString:v103]))
+            if (v93 && (!iCopy || [v92 isEqualToString:iCopy]))
             {
               v82 = theDict;
               theDict = v93;
@@ -3951,7 +3951,7 @@ LABEL_156:
               [IDSQuickRelayAllocator _dispatchIncomingAllocateResponse:"_dispatchIncomingAllocateResponse:isFromCache:connectReadyHandler:requestOptions:" isFromCache:v89 connectReadyHandler:? requestOptions:?];
 
 LABEL_25:
-              v26 = 0;
+              uUIDString = 0;
               goto LABEL_113;
             }
           }
@@ -3969,7 +3969,7 @@ LABEL_25:
       if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
       {
         v47 = @"NO";
-        if (v42)
+        if (bOOLValue2)
         {
           v48 = @"YES";
         }
@@ -3980,7 +3980,7 @@ LABEL_25:
         }
 
         *buf = 138412802;
-        v118 = v16;
+        v118 = dCopy;
         v120 = v48;
         v119 = 2112;
         if (v45)
@@ -3995,17 +3995,17 @@ LABEL_25:
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
       {
-        v49 = v42 ? @"YES" : @"NO";
+        v49 = bOOLValue2 ? @"YES" : @"NO";
         v50 = v45 ? @"YES" : @"NO";
         v90 = v49;
         v91 = v50;
-        v89 = v16;
+        v89 = dCopy;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
           v90 = v49;
           v91 = v50;
-          v89 = v16;
+          v89 = dCopy;
           _IDSLogV();
         }
       }
@@ -4034,18 +4034,18 @@ LABEL_80:
           }
         }
 
-        v52 = [v17 mutableCopy];
+        v52 = [optionsCopy mutableCopy];
 
-        v17 = v52;
+        optionsCopy = v52;
       }
 
-      v53 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v100 count]);
-      [v17 setObject:v53 forKey:kIDSQRAllocateKey_GroupMemberCount];
+      v53 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [allocationCopy count]);
+      [optionsCopy setObject:v53 forKey:kIDSQRAllocateKey_GroupMemberCount];
 
       goto LABEL_89;
     }
 
-    v33 = [(NSMutableDictionary *)self->_sessionIDToURIToResponsePayload objectForKey:v16];
+    v33 = [(NSMutableDictionary *)self->_sessionIDToURIToResponsePayload objectForKey:dCopy];
     v34 = v33;
     if (!v33)
     {
@@ -4055,16 +4055,16 @@ LABEL_55:
       goto LABEL_56;
     }
 
-    v35 = [v33 allKeys];
-    v36 = v35;
-    if (v103)
+    allKeys = [v33 allKeys];
+    v36 = allKeys;
+    if (iCopy)
     {
-      theDict = [v34 objectForKey:v103];
+      theDict = [v34 objectForKey:iCopy];
     }
 
     else
     {
-      if (![v35 count])
+      if (![allKeys count])
       {
         goto LABEL_53;
       }
@@ -4116,28 +4116,28 @@ LABEL_89:
 
 LABEL_90:
   Value = 0;
-  if (v17 && kIDSQRAllocateKey_RecipientPushToken)
+  if (optionsCopy && kIDSQRAllocateKey_RecipientPushToken)
   {
-    Value = CFDictionaryGetValue(v17, kIDSQRAllocateKey_RecipientPushToken);
+    Value = CFDictionaryGetValue(optionsCopy, kIDSQRAllocateKey_RecipientPushToken);
   }
 
   theDicta = Value;
   v55 = +[NSUUID UUID];
-  v56 = [v17 objectForKey:v27];
-  v57 = [v56 intValue];
+  v56 = [optionsCopy objectForKey:v27];
+  intValue = [v56 intValue];
 
-  if (v100 || v57 != 2)
+  if (allocationCopy || intValue != 2)
   {
-    v61 = [v17 objectForKeyedSubscript:kIDSQRAllocateKey_waitingForAllocation];
-    v62 = [v61 BOOLValue];
+    v61 = [optionsCopy objectForKeyedSubscript:kIDSQRAllocateKey_waitingForAllocation];
+    bOOLValue3 = [v61 BOOLValue];
 
-    if (v62)
+    if (bOOLValue3)
     {
       v63 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v118 = v16;
+        v118 = dCopy;
         _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_DEFAULT, "Will not send QR allocation request for session: %@", buf, 0xCu);
       }
 
@@ -4153,7 +4153,7 @@ LABEL_90:
         }
       }
 
-      v26 = 0;
+      uUIDString = 0;
     }
 
     else
@@ -4163,22 +4163,22 @@ LABEL_90:
       v104[2] = sub_10059DE58;
       v104[3] = &unk_100BE0DB0;
       v104[4] = self;
-      v64 = v99;
+      v64 = serviceCopy;
       v105 = v64;
       v106 = theDicta;
-      v65 = v100;
+      v65 = allocationCopy;
       v107 = v65;
-      v66 = v101;
+      v66 = identityCopy;
       v108 = v66;
-      v109 = v17;
-      v67 = v98;
+      v109 = optionsCopy;
+      v67 = handlerCopy;
       v114 = v67;
-      v110 = v16;
-      v115 = a12;
+      v110 = dCopy;
+      additionalAllocationCopy = additionalAllocation;
       v111 = v96;
-      v68 = v103;
+      v68 = iCopy;
       v112 = v68;
-      v116 = v97;
+      v116 = iDCopy;
       v69 = v55;
       v113 = v69;
       v70 = objc_retainBlock(v104);
@@ -4195,13 +4195,13 @@ LABEL_90:
         (*(v67 + 2))(v67, v72, 0);
       }
 
-      v26 = [v69 UUIDString];
+      uUIDString = [v69 UUIDString];
     }
   }
 
   else
   {
-    v58 = [(IDSQuickRelayAllocator *)self _getSelfAllocationFromCache:v16];
+    v58 = [(IDSQuickRelayAllocator *)self _getSelfAllocationFromCache:dCopy];
     v59 = v58;
     if (v58)
     {
@@ -4210,48 +4210,48 @@ LABEL_90:
 
     else
     {
-      LODWORD(v91) = a11;
-      v60 = [(IDSQuickRelayAllocator *)self _setupAllocation:0 fromURI:v103 sessionID:v16 isSessionIDRemoteDeviceID:v97 options:v17 prevConnectStatus:0 requestUUID:v55 connectReadyHandler:v98 withPreferredLocalInterface:v91];
+      LODWORD(v91) = interface;
+      v60 = [(IDSQuickRelayAllocator *)self _setupAllocation:0 fromURI:iCopy sessionID:dCopy isSessionIDRemoteDeviceID:iDCopy options:optionsCopy prevConnectStatus:0 requestUUID:v55 connectReadyHandler:handlerCopy withPreferredLocalInterface:v91];
     }
 
-    v26 = v60;
+    uUIDString = v60;
   }
 
 LABEL_113:
 
-  return v26;
+  return uUIDString;
 }
 
-- (id)_tokenURIForToken:(id)a3 uri:(id)a4
+- (id)_tokenURIForToken:(id)token uri:(id)uri
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length] && objc_msgSend(v6, "length"))
+  tokenCopy = token;
+  uriCopy = uri;
+  if ([tokenCopy length] && objc_msgSend(uriCopy, "length"))
   {
     v7 = [NSString alloc];
-    v8 = [v5 __imHexString];
-    v9 = [v7 initWithFormat:@"token:%@/%@", v8, v6];
+    __imHexString = [tokenCopy __imHexString];
+    uriCopy = [v7 initWithFormat:@"token:%@/%@", __imHexString, uriCopy];
   }
 
   else
   {
-    v9 = 0;
+    uriCopy = 0;
   }
 
-  return v9;
+  return uriCopy;
 }
 
-- (id)setupNewAllocation:(id)a3 sessionID:(id)a4 fromIdentity:(id)a5 fromURI:(id)a6 fromService:(id)a7 options:(id)a8 connectReadyHandler:(id)a9
+- (id)setupNewAllocation:(id)allocation sessionID:(id)d fromIdentity:(id)identity fromURI:(id)i fromService:(id)service options:(id)options connectReadyHandler:(id)handler
 {
   BYTE4(v10) = 0;
   LODWORD(v10) = 0;
-  return [(IDSQuickRelayAllocator *)self _setupNewAllocation:a3 sessionID:a4 isSessionIDRemoteDeviceID:0 fromIdentity:a5 fromURI:a6 fromService:a7 options:a8 connectReadyHandler:a9 withPreferredLocalInterface:v10 forAdditionalAllocation:?];
+  return [(IDSQuickRelayAllocator *)self _setupNewAllocation:allocation sessionID:d isSessionIDRemoteDeviceID:0 fromIdentity:identity fromURI:i fromService:service options:options connectReadyHandler:handler withPreferredLocalInterface:v10 forAdditionalAllocation:?];
 }
 
-- (BOOL)_startQRConnectionWithDefaults:(id)a3
+- (BOOL)_startQRConnectionWithDefaults:(id)defaults
 {
-  v4 = a3;
-  v5 = [(IDSQuickRelayAllocator *)self _parseQuickRelayDefaults:v4 gropuID:0];
+  defaultsCopy = defaults;
+  v5 = [(IDSQuickRelayAllocator *)self _parseQuickRelayDefaults:defaultsCopy gropuID:0];
   if (v5)
   {
     v6 = OSLogHandleForTransportCategory();
@@ -4277,11 +4277,11 @@ LABEL_113:
     }
 
     v7 = +[NSUUID UUID];
-    v8 = [v7 UUIDString];
+    uUIDString = [v7 UUIDString];
 
-    if (v8)
+    if (uUIDString)
     {
-      CFDictionarySetValue(v5, kIDSQRAllocateKey_RequestID, v8);
+      CFDictionarySetValue(v5, kIDSQRAllocateKey_RequestID, uUIDString);
     }
 
     else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -4289,7 +4289,7 @@ LABEL_113:
       sub_10092A71C();
     }
 
-    v9 = v4;
+    v9 = defaultsCopy;
     if (v9)
     {
       CFDictionarySetValue(v5, kIDSQRAllocateKey_IDSSessionID, v9);
@@ -4316,16 +4316,16 @@ LABEL_113:
   return v5 != 0;
 }
 
-- (id)_getPushTokenFromParticipantID:(id)a3 participantID:(id)a4
+- (id)_getPushTokenFromParticipantID:(id)d participantID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   os_unfair_lock_lock(&self->_lock);
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = v6;
+  v8 = dCopy;
   v9 = [v8 countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v9)
   {
@@ -4345,8 +4345,8 @@ LABEL_113:
         v15 = v14;
         if (v14)
         {
-          v16 = [v14 unsignedLongLongValue];
-          if (v16 == [v7 unsignedLongLongValue])
+          unsignedLongLongValue = [v14 unsignedLongLongValue];
+          if (unsignedLongLongValue == [iDCopy unsignedLongLongValue])
           {
             v19 = [v13 objectForKey:kIDSQRAllocateKey_RecipientPushToken];
             os_unfair_lock_unlock(&self->_lock);
@@ -4370,9 +4370,9 @@ LABEL_113:
   v17 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v7 unsignedLongLongValue];
+    unsignedLongLongValue2 = [iDCopy unsignedLongLongValue];
     *buf = 134217984;
-    v27 = v18;
+    v27 = unsignedLongLongValue2;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "no push token for participantID %llu", buf, 0xCu);
   }
 
@@ -4380,11 +4380,11 @@ LABEL_113:
   {
     if (_IDSShouldLogTransport())
     {
-      v21 = [v7 unsignedLongLongValue];
+      unsignedLongLongValue3 = [iDCopy unsignedLongLongValue];
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        [v7 unsignedLongLongValue];
+        [iDCopy unsignedLongLongValue];
         _IDSLogV();
       }
     }
@@ -4396,16 +4396,16 @@ LABEL_18:
   return v19;
 }
 
-- (id)_getParticipantIDFromPushToken:(id)a3 pushToken:(id)a4
+- (id)_getParticipantIDFromPushToken:(id)token pushToken:(id)pushToken
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  pushTokenCopy = pushToken;
   os_unfair_lock_lock(&self->_lock);
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v6;
+  v8 = tokenCopy;
   v9 = [v8 countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v9)
   {
@@ -4435,7 +4435,7 @@ LABEL_18:
           v18 = 1;
         }
 
-        if (!v18 && ([v16 isEqualToData:v7] & 1) != 0)
+        if (!v18 && ([v16 isEqualToData:pushTokenCopy] & 1) != 0)
         {
           os_unfair_lock_unlock(&self->_lock);
 
@@ -4458,7 +4458,7 @@ LABEL_18:
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v26 = v7;
+    v26 = pushTokenCopy;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "no participantID for pushToken %@", buf, 0xCu);
   }
 
@@ -4480,23 +4480,23 @@ LABEL_21:
   return v15;
 }
 
-- (id)getPushTokensFromParticipantIDs:(id)a3 participantIDs:(id)a4
+- (id)getPushTokensFromParticipantIDs:(id)ds participantIDs:(id)iDs
 {
-  v23 = a3;
-  v24 = a4;
-  v6 = [(IDSQuickRelayAllocator *)self _getResponseFromQRGroupID:v23];
+  dsCopy = ds;
+  iDsCopy = iDs;
+  v6 = [(IDSQuickRelayAllocator *)self _getResponseFromQRGroupID:dsCopy];
   v25 = v6;
   if (v6)
   {
     v7 = [v6 objectForKey:kIDSQRAllocateKey_Allocations];
     if (v7)
     {
-      v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v24 count]);
+      v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [iDsCopy count]);
       v28 = 0u;
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v9 = v24;
+      v9 = iDsCopy;
       v10 = [v9 countByEnumeratingWithState:&v26 objects:v34 count:16];
       if (v10)
       {
@@ -4611,7 +4611,7 @@ LABEL_21:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v31 = v23;
+      v31 = dsCopy;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "no response for %@", buf, 0xCu);
     }
 
@@ -4633,29 +4633,29 @@ LABEL_21:
   return v8;
 }
 
-- (id)getPushTokenFromParticipantID:(id)a3 participantID:(id)a4
+- (id)getPushTokenFromParticipantID:(id)d participantID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IDSQuickRelayAllocator *)self _getResponseFromQRGroupID:v6];
+  dCopy = d;
+  iDCopy = iD;
+  v8 = [(IDSQuickRelayAllocator *)self _getResponseFromQRGroupID:dCopy];
   v9 = v8;
   if (v8)
   {
     v10 = [v8 objectForKey:kIDSQRAllocateKey_Allocations];
     if (v10)
     {
-      v11 = [(IDSQuickRelayAllocator *)self _getPushTokenFromParticipantID:v10 participantID:v7];
+      v11 = [(IDSQuickRelayAllocator *)self _getPushTokenFromParticipantID:v10 participantID:iDCopy];
       if (v11)
       {
         v12 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218498;
-          v21 = [v7 unsignedLongLongValue];
+          unsignedLongLongValue = [iDCopy unsignedLongLongValue];
           v22 = 2112;
           v23 = v11;
           v24 = 2112;
-          v25 = v6;
+          v25 = dCopy;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "participantID: %llu, pushToken: %@, group: %@", buf, 0x20u);
         }
 
@@ -4663,11 +4663,11 @@ LABEL_21:
         {
           if (_IDSShouldLogTransport())
           {
-            v18 = [v7 unsignedLongLongValue];
+            unsignedLongLongValue2 = [iDCopy unsignedLongLongValue];
             _IDSLogTransport();
             if (_IDSShouldLog())
             {
-              [v7 unsignedLongLongValue];
+              [iDCopy unsignedLongLongValue];
               _IDSLogV();
             }
           }
@@ -4682,11 +4682,11 @@ LABEL_21:
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218498;
-          v21 = [v7 unsignedLongLongValue];
+          unsignedLongLongValue = [iDCopy unsignedLongLongValue];
           v22 = 2112;
           v23 = v9;
           v24 = 2112;
-          v25 = v6;
+          v25 = dCopy;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "no push token for participantID %llu in response %@ for group: %@", buf, 0x20u);
         }
 
@@ -4694,11 +4694,11 @@ LABEL_21:
         {
           if (_IDSShouldLogTransport())
           {
-            v19 = [v7 unsignedLongLongValue];
+            unsignedLongLongValue3 = [iDCopy unsignedLongLongValue];
             _IDSLogTransport();
             if (_IDSShouldLog())
             {
-              [v7 unsignedLongLongValue];
+              [iDCopy unsignedLongLongValue];
               _IDSLogV();
             }
           }
@@ -4712,7 +4712,7 @@ LABEL_21:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v21 = v9;
+        unsignedLongLongValue = v9;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "no participant list in %@", buf, 0xCu);
       }
 
@@ -4738,7 +4738,7 @@ LABEL_21:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v21 = v6;
+      unsignedLongLongValue = dCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "no response for %@", buf, 0xCu);
     }
 
@@ -4760,29 +4760,29 @@ LABEL_21:
   return v11;
 }
 
-- (id)getParticipantIDFromPushToken:(id)a3 pushToken:(id)a4
+- (id)getParticipantIDFromPushToken:(id)token pushToken:(id)pushToken
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IDSQuickRelayAllocator *)self _getResponseFromQRGroupID:v6];
+  tokenCopy = token;
+  pushTokenCopy = pushToken;
+  v8 = [(IDSQuickRelayAllocator *)self _getResponseFromQRGroupID:tokenCopy];
   v9 = v8;
   if (v8)
   {
     v10 = [v8 objectForKey:kIDSQRAllocateKey_Allocations];
     if (v10)
     {
-      v11 = [(IDSQuickRelayAllocator *)self _getParticipantIDFromPushToken:v10 pushToken:v7];
+      v11 = [(IDSQuickRelayAllocator *)self _getParticipantIDFromPushToken:v10 pushToken:pushTokenCopy];
       if (v11)
       {
         v12 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218498;
-          v20 = [v11 unsignedLongLongValue];
+          unsignedLongLongValue = [v11 unsignedLongLongValue];
           v21 = 2112;
-          v22 = v7;
+          v22 = pushTokenCopy;
           v23 = 2112;
-          v24 = v6;
+          v24 = tokenCopy;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "participantID: %llu, pushToken: %@, group: %@", buf, 0x20u);
         }
 
@@ -4790,7 +4790,7 @@ LABEL_21:
         {
           if (_IDSShouldLogTransport())
           {
-            v18 = [v11 unsignedLongLongValue];
+            unsignedLongLongValue2 = [v11 unsignedLongLongValue];
             _IDSLogTransport();
             if (_IDSShouldLog())
             {
@@ -4809,11 +4809,11 @@ LABEL_21:
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412802;
-          v20 = v7;
+          unsignedLongLongValue = pushTokenCopy;
           v21 = 2112;
           v22 = v9;
           v23 = 2112;
-          v24 = v6;
+          v24 = tokenCopy;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "no participantID for pushToken %@ in response %@ for group: %@", buf, 0x20u);
         }
 
@@ -4837,7 +4837,7 @@ LABEL_21:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v20 = v9;
+        unsignedLongLongValue = v9;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "no participant list in %@", buf, 0xCu);
       }
 
@@ -4863,7 +4863,7 @@ LABEL_21:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v20 = v6;
+      unsignedLongLongValue = tokenCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "no response for %@", buf, 0xCu);
     }
 
@@ -4885,12 +4885,12 @@ LABEL_21:
   return v11;
 }
 
-- (id)getURIFromParticipantID:(id)a3 participantID:(id)a4
+- (id)getURIFromParticipantID:(id)d participantID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
-  v32 = v6;
-  v8 = [(IDSQuickRelayAllocator *)self _getResponseFromQRGroupID:v6];
+  dCopy = d;
+  iDCopy = iD;
+  v32 = dCopy;
+  v8 = [(IDSQuickRelayAllocator *)self _getResponseFromQRGroupID:dCopy];
   v9 = v8;
   if (v8)
   {
@@ -4922,17 +4922,17 @@ LABEL_21:
             v18 = v17;
             if (v17)
             {
-              v19 = [v17 unsignedLongLongValue];
-              if (v19 == [v7 unsignedLongLongValue])
+              unsignedLongLongValue = [v17 unsignedLongLongValue];
+              if (unsignedLongLongValue == [iDCopy unsignedLongLongValue])
               {
                 v22 = [v16 objectForKey:kIDSQRAllocateKey_RecipientURI];
                 v24 = OSLogHandleForTransportCategory();
                 if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
                 {
-                  v25 = [v7 unsignedLongLongValue];
+                  unsignedLongLongValue2 = [iDCopy unsignedLongLongValue];
                   v26 = IDSLoggableDescriptionForHandleOnService();
                   *buf = 134218498;
-                  v38 = v25;
+                  v38 = unsignedLongLongValue2;
                   v39 = 2112;
                   v40 = v32;
                   v41 = 2112;
@@ -4944,13 +4944,13 @@ LABEL_21:
                 {
                   if (_IDSShouldLogTransport())
                   {
-                    v27 = [v7 unsignedLongLongValue];
+                    unsignedLongLongValue3 = [iDCopy unsignedLongLongValue];
                     v29 = IDSLoggableDescriptionForHandleOnService();
                     _IDSLogTransport();
 
                     if (_IDSShouldLog())
                     {
-                      [v7 unsignedLongLongValue];
+                      [iDCopy unsignedLongLongValue];
                       v30 = IDSLoggableDescriptionForHandleOnService();
                       _IDSLogV();
                     }
@@ -4976,7 +4976,7 @@ LABEL_21:
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v38 = v7;
+        v38 = iDCopy;
         v39 = 2112;
         v40 = v32;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "No URI for participant %@ in group %@", buf, 0x16u);
@@ -5028,7 +5028,7 @@ LABEL_39:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v38 = v6;
+      v38 = dCopy;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "no response for %@", buf, 0xCu);
     }
 
@@ -5050,12 +5050,12 @@ LABEL_39:
   return v22;
 }
 
-- (BOOL)isURIAvailabeInAllocateResponse:(id)a3 uri:(id)a4
+- (BOOL)isURIAvailabeInAllocateResponse:(id)response uri:(id)uri
 {
-  v6 = a3;
-  v7 = a4;
-  v23 = v6;
-  v8 = [(IDSQuickRelayAllocator *)self _getResponseFromQRGroupID:v6];
+  responseCopy = response;
+  uriCopy = uri;
+  v23 = responseCopy;
+  v8 = [(IDSQuickRelayAllocator *)self _getResponseFromQRGroupID:responseCopy];
   v9 = v8;
   if (v8)
   {
@@ -5083,7 +5083,7 @@ LABEL_39:
             }
 
             v17 = [*(*(&v24 + 1) + 8 * i) objectForKey:v15];
-            v18 = [v7 isEqualToString:v17];
+            v18 = [uriCopy isEqualToString:v17];
 
             if (v18)
             {
@@ -5137,7 +5137,7 @@ LABEL_27:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v30 = v6;
+      v30 = responseCopy;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "no response for %@", buf, 0xCu);
     }
 
@@ -5159,26 +5159,26 @@ LABEL_27:
   return v20;
 }
 
-- (id)getAdditionalAllocationForAddress:(id)a3 selfAddress:(unsigned int)a4 relaySessionID:(id)a5 allocateType:(int64_t)a6 qrReason:(unsigned __int16)a7 previousTime:(unint64_t)a8 previousError:(unsigned __int16)a9 previousRelayIP:(unsigned int)a10 previousAccessToken:(id)a11 requestSelfAllocation:(BOOL)a12 isSessionIDRemoteDeviceID:(BOOL)a13 withPreferredRemoteInterface:(int)a14 withPreferredLocalInterface:(int)a15
+- (id)getAdditionalAllocationForAddress:(id)address selfAddress:(unsigned int)selfAddress relaySessionID:(id)d allocateType:(int64_t)type qrReason:(unsigned __int16)reason previousTime:(unint64_t)time previousError:(unsigned __int16)error previousRelayIP:(unsigned int)self0 previousAccessToken:(id)self1 requestSelfAllocation:(BOOL)self2 isSessionIDRemoteDeviceID:(BOOL)self3 withPreferredRemoteInterface:(int)self4 withPreferredLocalInterface:(int)self5
 {
-  v16 = a7;
-  v92 = a3;
-  v97 = a4;
-  v21 = a5;
-  v87 = a11;
+  reasonCopy = reason;
+  addressCopy = address;
+  selfAddressCopy = selfAddress;
+  dCopy = d;
+  tokenCopy = token;
   im_assert_primary_base_queue();
-  v88 = v21;
+  v88 = dCopy;
   v22 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    *v99 = v92;
+    *v99 = addressCopy;
     *&v99[8] = 2112;
-    *&v99[10] = v21;
+    *&v99[10] = dCopy;
     *&v99[18] = 1024;
-    *&v99[20] = a6;
+    *&v99[20] = type;
     v100 = 1024;
-    LODWORD(v101) = v16;
+    LODWORD(v101) = reasonCopy;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "IDSSession ID %@ requested additional allocation for QR Session ID %@, allocateType %d, reason %d", buf, 0x22u);
   }
 
@@ -5186,23 +5186,23 @@ LABEL_27:
   {
     if (_IDSShouldLogTransport())
     {
-      v78 = a6;
-      v81 = v16;
-      v73 = v92;
-      v76 = v21;
+      typeCopy2 = type;
+      v81 = reasonCopy;
+      v73 = addressCopy;
+      v76 = dCopy;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v78 = a6;
-        v81 = v16;
-        v73 = v92;
-        v76 = v21;
+        typeCopy2 = type;
+        v81 = reasonCopy;
+        v73 = addressCopy;
+        v76 = dCopy;
         _IDSLogV();
       }
     }
   }
 
-  v91 = [(IDSQuickRelayAllocator *)self _filterSelfAllocationsForSessionID:v92, v73, v76, v78, v81];
+  v91 = [(IDSQuickRelayAllocator *)self _filterSelfAllocationsForSessionID:addressCopy, v73, v76, typeCopy2, v81];
   if (![v91 count])
   {
     v23 = OSLogHandleForTransportCategory();
@@ -5239,7 +5239,7 @@ LABEL_27:
     if (v26)
     {
       v27 = [(IDSQuickRelayAllocator *)self _uuidFromNSStringToNSData:v88];
-      [(IDSQuickRelayAllocator *)self _addConnectStatus:v26 relaySessionID:v27 previousTime:a8 qrReason:v16 previousError:a9 previousRelayIP:a10 previousAccessToken:v87];
+      [(IDSQuickRelayAllocator *)self _addConnectStatus:v26 relaySessionID:v27 previousTime:time qrReason:reasonCopy previousError:error previousRelayIP:p previousAccessToken:tokenCopy];
 
       goto LABEL_24;
     }
@@ -5254,7 +5254,7 @@ LABEL_27:
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *v99 = v92;
+    *v99 = addressCopy;
     _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "No groupID for %@", buf, 0xCu);
   }
 
@@ -5262,11 +5262,11 @@ LABEL_27:
   {
     if (_IDSShouldLogTransport())
     {
-      v74 = v92;
+      v74 = addressCopy;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v74 = v92;
+        v74 = addressCopy;
         _IDSLogV();
       }
     }
@@ -5277,48 +5277,48 @@ LABEL_24:
   if ([v91 count])
   {
     v29 = [v91 objectAtIndex:0];
-    v89 = [v29 request];
+    request = [v29 request];
   }
 
   else
   {
-    v89 = 0;
+    request = 0;
   }
 
   os_unfair_lock_unlock(&self->_lock);
   theDict = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-  v30 = [(IDSQuickRelayAllocator *)self _findSessionWithID:v92];
+  v30 = [(IDSQuickRelayAllocator *)self _findSessionWithID:addressCopy];
   if (v30)
   {
-    if (v89)
+    if (request)
     {
-      v85 = [v89 appID];
-      v86 = [v89 senderURI];
+      appID = [request appID];
+      senderURI = [request senderURI];
     }
 
     else
     {
-      v85 = [v30 getAppID];
-      v33 = [v30 fromURI];
-      v86 = [v33 prefixedURI];
+      appID = [v30 getAppID];
+      fromURI = [v30 fromURI];
+      senderURI = [fromURI prefixedURI];
     }
 
-    if (v97)
+    if (selfAddressCopy)
     {
-      v34 = [[NSData alloc] initWithBytes:&v97 length:4];
+      v34 = [[NSData alloc] initWithBytes:&selfAddressCopy length:4];
       [(__CFDictionary *)theDict setValue:v34 forKey:kIDSQRAllocateKey_SenderExternalAddress];
     }
 
-    [(__CFDictionary *)theDict setValue:v85 forKey:kIDSQRAllocateKey_AppID, v74];
-    v35 = [NSNumber numberWithInteger:a6];
+    [(__CFDictionary *)theDict setValue:appID forKey:kIDSQRAllocateKey_AppID, v74];
+    v35 = [NSNumber numberWithInteger:type];
     [(__CFDictionary *)theDict setValue:v35 forKey:kIDSQRAllocateKey_AllocateType];
 
-    v36 = [NSNumber numberWithInt:a14];
+    v36 = [NSNumber numberWithInt:interface];
     [(__CFDictionary *)theDict setValue:v36 forKey:kIDSQRAllocateKey_PreferredRemoteInterface];
 
-    if (a12)
+    if (allocation)
     {
-      if (a6 == 3)
+      if (type == 3)
       {
         v37 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
@@ -5328,20 +5328,20 @@ LABEL_24:
         }
 
         v38 = os_log_shim_legacy_logging_enabled();
-        v39 = v89;
+        v39 = request;
         if (v38)
         {
           v40 = _IDSShouldLogTransport();
-          v39 = v89;
+          v39 = request;
           if (v40)
           {
             _IDSLogTransport();
             v41 = _IDSShouldLog();
-            v39 = v89;
+            v39 = request;
             if (v41)
             {
               _IDSLogV();
-              v39 = v89;
+              v39 = request;
             }
           }
         }
@@ -5352,27 +5352,27 @@ LABEL_24:
       [(__CFDictionary *)theDict setValue:&off_100C3CC28 forKey:kIDSQRAllocateKey_SelfAllocationCount];
     }
 
-    v39 = v89;
-    if (a6 == 3)
+    v39 = request;
+    if (type == 3)
     {
 LABEL_53:
       v45 = v39 == 0;
-      v46 = [v30 groupID];
-      v47 = v46;
+      groupID = [v30 groupID];
+      v47 = groupID;
       if (v45)
       {
-        v48 = v46;
+        groupID2 = groupID;
       }
 
       else
       {
-        v48 = [v89 groupID];
+        groupID2 = [request groupID];
       }
 
-      v59 = v48;
-      if (v48)
+      v59 = groupID2;
+      if (groupID2)
       {
-        CFDictionarySetValue(theDict, kIDSQRAllocateKey_GroupID, v48);
+        CFDictionarySetValue(theDict, kIDSQRAllocateKey_GroupID, groupID2);
       }
 
       else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -5385,7 +5385,7 @@ LABEL_53:
         if (![v91 count])
         {
           v60 = [(IDSQuickRelayAllocator *)self _uuidFromNSStringToNSData:v88];
-          [(IDSQuickRelayAllocator *)self _addConnectStatus:v47 relaySessionID:v60 previousTime:a8 qrReason:v16 previousError:a9 previousRelayIP:a10 previousAccessToken:v87];
+          [(IDSQuickRelayAllocator *)self _addConnectStatus:v47 relaySessionID:v60 previousTime:time qrReason:reasonCopy previousError:error previousRelayIP:p previousAccessToken:tokenCopy];
         }
       }
 
@@ -5395,7 +5395,7 @@ LABEL_53:
         if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          *v99 = v92;
+          *v99 = addressCopy;
           _os_log_impl(&_mh_execute_header, v61, OS_LOG_TYPE_DEFAULT, "No groupID for shared session %@", buf, 0xCu);
         }
 
@@ -5403,11 +5403,11 @@ LABEL_53:
         {
           if (_IDSShouldLogTransport())
           {
-            v75 = v92;
+            v75 = addressCopy;
             _IDSLogTransport();
             if (_IDSShouldLog())
             {
-              v75 = v92;
+              v75 = addressCopy;
               _IDSLogV();
             }
           }
@@ -5418,15 +5418,15 @@ LABEL_88:
       v62 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
       {
-        v63 = [v30 destinations];
+        destinations = [v30 destinations];
         *buf = 67109890;
-        *v99 = a6;
+        *v99 = type;
         *&v99[4] = 2112;
-        *&v99[6] = v63;
+        *&v99[6] = destinations;
         *&v99[14] = 2112;
-        *&v99[16] = v92;
+        *&v99[16] = addressCopy;
         v100 = 2112;
-        v101 = v86;
+        v101 = senderURI;
         _os_log_impl(&_mh_execute_header, v62, OS_LOG_TYPE_DEFAULT, "need to do ID query: allocateType: %d, destinations: %@, sessionID: %@, fromURI: %@", buf, 0x26u);
       }
 
@@ -5435,36 +5435,36 @@ LABEL_88:
         if (_IDSShouldLogTransport())
         {
           [v30 destinations];
-          v79 = v92;
-          v82 = v86;
-          v77 = v75 = a6;
+          v79 = addressCopy;
+          v82 = senderURI;
+          v77 = v75 = type;
           _IDSLogTransport();
 
           if (_IDSShouldLog())
           {
             [v30 destinations];
-            v79 = v92;
-            v82 = v86;
-            v77 = v75 = a6;
+            v79 = addressCopy;
+            v82 = senderURI;
+            v77 = v75 = type;
             _IDSLogV();
           }
         }
       }
 
-      v64 = [v30 destinations];
-      v65 = [v64 allObjects];
-      v66 = [v30 getCallerCert];
-      v67 = [v30 getFromService];
+      destinations2 = [v30 destinations];
+      allObjects = [destinations2 allObjects];
+      getCallerCert = [v30 getCallerCert];
+      getFromService = [v30 getFromService];
       BYTE4(v80) = 1;
-      LODWORD(v80) = a15;
-      v32 = [(IDSQuickRelayAllocator *)self _setupNewAllocation:v65 sessionID:v92 isSessionIDRemoteDeviceID:a13 fromIdentity:v66 fromURI:v86 fromService:v67 options:theDict connectReadyHandler:0 withPreferredLocalInterface:v80 forAdditionalAllocation:?];
+      LODWORD(v80) = localInterface;
+      v32 = [(IDSQuickRelayAllocator *)self _setupNewAllocation:allObjects sessionID:addressCopy isSessionIDRemoteDeviceID:iD fromIdentity:getCallerCert fromURI:senderURI fromService:getFromService options:theDict connectReadyHandler:0 withPreferredLocalInterface:v80 forAdditionalAllocation:?];
 
       goto LABEL_118;
     }
 
-    if (a6 == 2)
+    if (type == 2)
     {
-      v42 = [(IDSQuickRelayAllocator *)self _getSelfAllocationFromCache:v92];
+      v42 = [(IDSQuickRelayAllocator *)self _getSelfAllocationFromCache:addressCopy];
       v43 = v42;
       if (v42)
       {
@@ -5473,8 +5473,8 @@ LABEL_88:
 
       else
       {
-        LODWORD(v79) = a15;
-        v44 = [(IDSQuickRelayAllocator *)self _setupAllocation:0 fromURI:v86 sessionID:v92 isSessionIDRemoteDeviceID:a13 options:theDict prevConnectStatus:0 requestUUID:0 connectReadyHandler:0 withPreferredLocalInterface:v79];
+        LODWORD(v79) = localInterface;
+        v44 = [(IDSQuickRelayAllocator *)self _setupAllocation:0 fromURI:senderURI sessionID:addressCopy isSessionIDRemoteDeviceID:iD options:theDict prevConnectStatus:0 requestUUID:0 connectReadyHandler:0 withPreferredLocalInterface:v79];
       }
 
       v32 = v44;
@@ -5482,15 +5482,15 @@ LABEL_88:
       goto LABEL_118;
     }
 
-    if (!v89)
+    if (!request)
     {
       goto LABEL_88;
     }
 
-    v84 = [v89 recipients];
+    recipients = [request recipients];
     if (v88)
     {
-      v49 = [(IDSQuickRelayAllocator *)self getPushTokenForRelaySessionID:v92 relaySessionID:?];
+      v49 = [(IDSQuickRelayAllocator *)self getPushTokenForRelaySessionID:addressCopy relaySessionID:?];
       if (!v49)
       {
         v69 = OSLogHandleForTransportCategory();
@@ -5515,7 +5515,7 @@ LABEL_88:
           }
         }
 
-        [v30 setHasPendingAllocation:0 forIDSSession:{v92, v75}];
+        [v30 setHasPendingAllocation:0 forIDSSession:{addressCopy, v75}];
         goto LABEL_116;
       }
 
@@ -5524,7 +5524,7 @@ LABEL_88:
       v96 = 0u;
       v93 = 0u;
       v94 = 0u;
-      v50 = v84;
+      v50 = recipients;
       v51 = [v50 countByEnumeratingWithState:&v93 objects:v102 count:16];
       if (v51)
       {
@@ -5586,14 +5586,14 @@ LABEL_106:
 
     else
     {
-      v68 = v84;
+      v68 = recipients;
     }
 
     v70 = v68;
     if ([v68 count])
     {
-      LODWORD(v79) = a15;
-      v32 = [(IDSQuickRelayAllocator *)self _setupAllocation:v70 fromURI:v86 sessionID:v92 isSessionIDRemoteDeviceID:a13 options:theDict prevConnectStatus:0 requestUUID:0 connectReadyHandler:0 withPreferredLocalInterface:v79];
+      LODWORD(v79) = localInterface;
+      v32 = [(IDSQuickRelayAllocator *)self _setupAllocation:v70 fromURI:senderURI sessionID:addressCopy isSessionIDRemoteDeviceID:iD options:theDict prevConnectStatus:0 requestUUID:0 connectReadyHandler:0 withPreferredLocalInterface:v79];
 
 LABEL_117:
       goto LABEL_118;
@@ -5618,7 +5618,7 @@ LABEL_117:
       }
     }
 
-    [v30 setHasPendingAllocation:0 forIDSSession:v92];
+    [v30 setHasPendingAllocation:0 forIDSSession:addressCopy];
 
 LABEL_116:
     v32 = 0;
@@ -5629,7 +5629,7 @@ LABEL_116:
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *v99 = v92;
+    *v99 = addressCopy;
     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Session not found for %@", buf, 0xCu);
   }
 
@@ -5651,29 +5651,29 @@ LABEL_118:
   return v32;
 }
 
-- (void)_handleIncomingAllocateResponse:(id)a3 isFromCache:(BOOL)a4 requestOptions:(id)a5
+- (void)_handleIncomingAllocateResponse:(id)response isFromCache:(BOOL)cache requestOptions:(id)options
 {
-  v268 = a4;
-  v6 = a3;
-  v264 = a5;
+  cacheCopy = cache;
+  responseCopy = response;
+  optionsCopy = options;
   v7 = +[IDSFoundationLog QRAllocator];
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
   v9 = kIDSQRAllocateKey_RequestID;
   if (v8)
   {
-    v10 = [v6 objectForKey:kIDSQRAllocateKey_RequestID];
+    v10 = [responseCopy objectForKey:kIDSQRAllocateKey_RequestID];
     v11 = sub_100592F04(v10);
     v12 = kIDSQRAllocateKey_IDSSessionID;
-    v13 = [v6 objectForKey:kIDSQRAllocateKey_IDSSessionID];
+    v13 = [responseCopy objectForKey:kIDSQRAllocateKey_IDSSessionID];
     v14 = sub_100592F04(v13);
     key = kIDSQRAllocateKey_RelaySessionID;
-    v15 = [v6 objectForKey:?];
+    v15 = [responseCopy objectForKey:?];
     v16 = sub_100592F04(v15);
     v17 = v16;
     v18 = @"NO";
     *buf = 138413058;
     v294 = v11;
-    if (v268)
+    if (cacheCopy)
     {
       v18 = @"YES";
     }
@@ -5693,14 +5693,14 @@ LABEL_118:
     key = kIDSQRAllocateKey_RelaySessionID;
   }
 
-  v265 = [(IDSQuickRelayAllocator *)self _translateParticipantIDtoUINT64ForResponse:v6];
-  v19 = [v6 objectForKey:v9];
+  v265 = [(IDSQuickRelayAllocator *)self _translateParticipantIDtoUINT64ForResponse:responseCopy];
+  v19 = [responseCopy objectForKey:v9];
   v20 = sub_100592F04(v19);
 
-  v21 = [v6 objectForKey:v12];
+  v21 = [responseCopy objectForKey:v12];
   v22 = sub_100592F04(v21);
 
-  v23 = [v6 objectForKey:key];
+  v23 = [responseCopy objectForKey:key];
   v24 = sub_100592F04(v23);
 
   v25 = IDSLoggableDescriptionForObjectOnService();
@@ -5714,16 +5714,16 @@ LABEL_118:
   v288 = v259;
   v260 = v24;
   v289 = v260;
-  v291 = v268;
+  v291 = cacheCopy;
   v261 = v25;
   v290 = v261;
   cut_dispatch_log_queue();
   v26 = +[IDSFoundationLog QRAllocator];
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
-    v27 = [v6 objectForKey:kIDSQRAllocateKey_RelayAddress];
-    v28 = [v6 objectForKey:kIDSQRAllocateKey_RelayPort];
-    v29 = [v6 objectForKey:kIDSQRAllocateKey_RelayAddressIPv6];
+    v27 = [responseCopy objectForKey:kIDSQRAllocateKey_RelayAddress];
+    v28 = [responseCopy objectForKey:kIDSQRAllocateKey_RelayPort];
+    v29 = [responseCopy objectForKey:kIDSQRAllocateKey_RelayAddressIPv6];
     *buf = 138412802;
     v294 = v27;
     v295 = 2112;
@@ -5736,8 +5736,8 @@ LABEL_118:
   v30 = +[IDSFoundationLog QRAllocator];
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
-    v31 = [v6 objectForKey:kIDSQRAllocateKey_RelayHighPriorityPort];
-    v32 = [v6 objectForKey:kIDSQRAllocateKey_RelayIPPreference];
+    v31 = [responseCopy objectForKey:kIDSQRAllocateKey_RelayHighPriorityPort];
+    v32 = [responseCopy objectForKey:kIDSQRAllocateKey_RelayIPPreference];
     v33 = -[IDSQuickRelayAllocator _getQuickRelayIPPreference:](self, "_getQuickRelayIPPreference:", [v32 unsignedIntegerValue]);
     *buf = 138412546;
     v294 = v31;
@@ -5749,10 +5749,10 @@ LABEL_118:
   v34 = +[IDSFoundationLog QRAllocator];
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
   {
-    v35 = [v6 objectForKey:kIDSQRAllocateKey_RelayServerType];
-    v36 = [v35 unsignedIntValue];
+    v35 = [responseCopy objectForKey:kIDSQRAllocateKey_RelayServerType];
+    unsignedIntValue = [v35 unsignedIntValue];
     v37 = @"Multi-Server Configuration";
-    if (!v36)
+    if (!unsignedIntValue)
     {
       v37 = @"Single-Server Configuration";
     }
@@ -5762,7 +5762,7 @@ LABEL_118:
     _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "QRserver type: %@", buf, 0xCu);
   }
 
-  v38 = [(IDSQuickRelayAllocator *)self _createSessionInfoFromResponsePayload:v6];
+  v38 = [(IDSQuickRelayAllocator *)self _createSessionInfoFromResponsePayload:responseCopy];
   v39 = v38;
   if (v38)
   {
@@ -5786,13 +5786,13 @@ LABEL_118:
     }
 
     v254 = Value;
-    v253 = [v254 intValue];
+    intValue = [v254 intValue];
     v271 = [(IDSQuickRelayAllocator *)self _findAllocationForSessionID:v270 requestIDStr:v263];
     v257 = [(IDSQuickRelayAllocator *)self _findSessionWithID:v270];
-    v44 = [(QRAllocation *)v271 request];
-    if (v44)
+    request = [(QRAllocation *)v271 request];
+    if (request)
     {
-      v45 = v268;
+      v45 = cacheCopy;
     }
 
     else
@@ -5807,10 +5807,10 @@ LABEL_118:
 
     v46 = objc_opt_class();
     v47 = kIDSQRAllocateKey_AllocateType;
-    v48 = sub_10001B8C4(v46, v6, kIDSQRAllocateKey_AllocateType);
-    v262 = [v48 integerValue];
+    v48 = sub_10001B8C4(v46, responseCopy, kIDSQRAllocateKey_AllocateType);
+    integerValue = [v48 integerValue];
 
-    if (v262 == 3)
+    if (integerValue == 3)
     {
       Mutable = [(NSMutableDictionary *)self->_sessionIDToURIToResponsePayload objectForKey:v270];
       if (!Mutable)
@@ -5818,11 +5818,11 @@ LABEL_118:
         Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
       }
 
-      v50 = [(IDSQuickRelayAllocator *)self _getURIForRecipientFromResponse:v6];
+      v50 = [(IDSQuickRelayAllocator *)self _getURIForRecipientFromResponse:responseCopy];
       v51 = [Mutable objectForKeyedSubscript:v50];
-      if (!v51 || ([v6 objectForKey:key], v52 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v51, "objectForKey:", key), v53 = objc_claimAutoreleasedReturnValue(), v54 = objc_msgSend(v52, "isEqualToData:", v53), v53, v52, (v54 & 1) != 0) || -[IDSQuickRelayAllocator _shouldUseCurrentResponse:cachedMessage:](self, "_shouldUseCurrentResponse:cachedMessage:", v6, v51))
+      if (!v51 || ([responseCopy objectForKey:key], v52 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v51, "objectForKey:", key), v53 = objc_claimAutoreleasedReturnValue(), v54 = objc_msgSend(v52, "isEqualToData:", v53), v53, v52, (v54 & 1) != 0) || -[IDSQuickRelayAllocator _shouldUseCurrentResponse:cachedMessage:](self, "_shouldUseCurrentResponse:cachedMessage:", responseCopy, v51))
       {
-        [Mutable setObject:v6 forKey:v50];
+        [Mutable setObject:responseCopy forKey:v50];
         [(NSMutableDictionary *)self->_sessionIDToURIToResponsePayload setObject:Mutable forKey:v270];
       }
 
@@ -5833,7 +5833,7 @@ LABEL_118:
         v74 = [(IDSQuickRelayAllocator *)self _createSessionInfoFromResponsePayload:v73];
 
         v39 = v74;
-        v6 = v73;
+        responseCopy = v73;
       }
 
       if (!v257)
@@ -5858,16 +5858,16 @@ LABEL_118:
         }
 
         v59 = 0;
-        if (v6 && kIDSQRAllocateKey_GroupID)
+        if (responseCopy && kIDSQRAllocateKey_GroupID)
         {
-          v59 = CFDictionaryGetValue(v6, kIDSQRAllocateKey_GroupID);
+          v59 = CFDictionaryGetValue(responseCopy, kIDSQRAllocateKey_GroupID);
         }
 
         v60 = v59;
         v61 = 0;
-        if (key && v6)
+        if (key && responseCopy)
         {
-          v61 = CFDictionaryGetValue(v6, key);
+          v61 = CFDictionaryGetValue(responseCopy, key);
         }
 
         v62 = sub_100592F04(v61);
@@ -5884,7 +5884,7 @@ LABEL_118:
 
             if (v196)
             {
-              v197 = [(IDSQuickRelayAllocator *)self _mergeParticipantID2PushTokenMapping:v64 sourceResponse:v6 mappingChange:&v282];
+              v197 = [(IDSQuickRelayAllocator *)self _mergeParticipantID2PushTokenMapping:v64 sourceResponse:responseCopy mappingChange:&v282];
               if (v197 != v64)
               {
                 [(IDSQuickRelayAllocator *)self _setResponseForQRGroupID:v197 groupID:v60];
@@ -5924,19 +5924,19 @@ LABEL_118:
         goto LABEL_454;
       }
 
-      v55 = [v257 fromURI];
+      fromURI = [v257 fromURI];
       v56 = [(__CFDictionary *)v39 objectForKey:kIDSQRAllocateKey_AppID];
       v57 = [v56 isEqualToString:@"com.apple.private.alloy.airdrop.walkaway"];
 
-      if ((v55 == 0) | v57 & 1)
+      if ((fromURI == 0) | v57 & 1)
       {
         v255 = 1;
       }
 
       else
       {
-        v251 = [v55 prefixedURI];
-        v66 = [Mutable objectForKey:v251];
+        prefixedURI = [fromURI prefixedURI];
+        v66 = [Mutable objectForKey:prefixedURI];
         v255 = v66 != 0;
         if (v66)
         {
@@ -5971,7 +5971,7 @@ LABEL_118:
 
           [(NSMutableDictionary *)self->_sessionIDToURIToResponsePayload removeAllObjects];
           v39 = v71;
-          v6 = v70;
+          responseCopy = v70;
         }
 
         else
@@ -5980,7 +5980,7 @@ LABEL_118:
           if (os_log_type_enabled(v75, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v294 = v251;
+            v294 = prefixedURI;
             _os_log_impl(&_mh_execute_header, v75, OS_LOG_TYPE_DEFAULT, "Have not yet received the allocate response for %@", buf, 0xCu);
           }
 
@@ -5988,11 +5988,11 @@ LABEL_118:
           {
             if (_IDSShouldLogTransport())
             {
-              v238 = v251;
+              v238 = prefixedURI;
               _IDSLogTransport();
               if (_IDSShouldLog())
               {
-                v238 = v251;
+                v238 = prefixedURI;
                 _IDSLogV();
               }
             }
@@ -6009,7 +6009,7 @@ LABEL_454:
     }
 
     v76 = objc_opt_class();
-    v77 = sub_10001B8C4(v76, v6, v47);
+    v77 = sub_10001B8C4(v76, responseCopy, v47);
     v78 = [v77 integerValue] == 2;
 
     if (!v78)
@@ -6021,7 +6021,7 @@ LABEL_454:
         self->_sessionToLocalParticipantID = v79;
       }
 
-      v81 = [v6 objectForKey:{kIDSQRAllocateKey_RecipientID, v238}];
+      v81 = [responseCopy objectForKey:{kIDSQRAllocateKey_RecipientID, v238}];
       v82 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v81 unsignedLongLongValue]);
       v83 = v82;
       if (v270)
@@ -6047,7 +6047,7 @@ LABEL_454:
       }
     }
 
-    if (v271 && v262 != 3 && [(IDSQuickRelayAllocator *)self _isDuplicateResponse:v271 newResponse:v39])
+    if (v271 && integerValue != 3 && [(IDSQuickRelayAllocator *)self _isDuplicateResponse:v271 newResponse:v39])
     {
       v87 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v87, OS_LOG_TYPE_DEFAULT))
@@ -6071,7 +6071,7 @@ LABEL_454:
       goto LABEL_454;
     }
 
-    if (v268 || v262 != 3)
+    if (cacheCopy || integerValue != 3)
     {
       v250 = 0;
     }
@@ -6079,11 +6079,11 @@ LABEL_454:
     else
     {
       v281 = 0;
-      v88 = [(IDSQuickRelayAllocator *)self _addResponseToCache:v6 sessionInfo:v39 modifiedMessage:&v281];
+      v88 = [(IDSQuickRelayAllocator *)self _addResponseToCache:responseCopy sessionInfo:v39 modifiedMessage:&v281];
       v89 = v281;
-      if (v89 == v6)
+      if (v89 == responseCopy)
       {
-        v91 = v6;
+        v91 = responseCopy;
       }
 
       else
@@ -6169,17 +6169,17 @@ LABEL_454:
 
         [v257 qrAllocatorDidReceiveAllocateResponse:{v91, v238}];
 
-        v6 = v91;
+        responseCopy = v91;
         goto LABEL_454;
       }
 
       v250 = 1;
-      v6 = v91;
+      responseCopy = v91;
     }
 
     v93 = kIDSQRAllocateKey_AppID;
-    v94 = [(__CFDictionary *)v39 objectForKey:kIDSQRAllocateKey_AppID, v238];
-    v252 = [v94 isEqualToString:IDSRegistrationServiceTypeCloudMessaging];
+    v238 = [(__CFDictionary *)v39 objectForKey:kIDSQRAllocateKey_AppID, v238];
+    v252 = [v238 isEqualToString:IDSRegistrationServiceTypeCloudMessaging];
 
     if ([(__CFString *)v270 isEqualToString:kIDSDefaultPairedDeviceID])
     {
@@ -6213,9 +6213,9 @@ LABEL_454:
 LABEL_131:
       if (v271)
       {
-        v105 = [(QRAllocation *)v271 request];
+        request2 = [(QRAllocation *)v271 request];
 
-        if (v105)
+        if (request2)
         {
           v106 = OSLogHandleForTransportCategory();
           if (os_log_type_enabled(v106, OS_LOG_TYPE_DEFAULT))
@@ -6248,8 +6248,8 @@ LABEL_131:
           v246 = v107;
           [v246 doubleValue];
           [(QRAllocation *)v271 setPurgeAtExpiration:?];
-          v108 = [(QRAllocation *)v271 responses];
-          [v108 addObject:v39];
+          responses = [(QRAllocation *)v271 responses];
+          [responses addObject:v39];
 
           [(QRAllocation *)v271 startTime];
           if (v109 == 0.0)
@@ -6271,11 +6271,11 @@ LABEL_131:
           {
             [(QRAllocation *)v271 duration];
             v121 = v120;
-            v122 = [(QRAllocation *)v271 request];
-            v123 = [v122 recipients];
-            v124 = [v123 count];
-            v125 = [(QRAllocation *)v271 responses];
-            v126 = [v125 count];
+            request3 = [(QRAllocation *)v271 request];
+            recipients = [request3 recipients];
+            v124 = [recipients count];
+            responses2 = [(QRAllocation *)v271 responses];
+            v126 = [responses2 count];
             *buf = 138413058;
             v294 = v263;
             v295 = 2048;
@@ -6293,12 +6293,12 @@ LABEL_131:
             {
               [(QRAllocation *)v271 duration];
               v128 = v127;
-              v129 = [(QRAllocation *)v271 request];
-              v130 = [v129 recipients];
-              v131 = [v130 count];
-              v132 = [(QRAllocation *)v271 responses];
+              request4 = [(QRAllocation *)v271 request];
+              recipients2 = [request4 recipients];
+              v131 = [recipients2 count];
+              responses3 = [(QRAllocation *)v271 responses];
               v242 = v131;
-              v243 = [v132 count];
+              v243 = [responses3 count];
               v241 = v128;
               v239 = v263;
               _IDSLogTransport();
@@ -6307,12 +6307,12 @@ LABEL_131:
               {
                 [(QRAllocation *)v271 duration:v263];
                 v134 = v133;
-                v135 = [(QRAllocation *)v271 request];
-                v136 = [v135 recipients];
-                v137 = [v136 count];
-                v138 = [(QRAllocation *)v271 responses];
+                request5 = [(QRAllocation *)v271 request];
+                recipients3 = [request5 recipients];
+                v137 = [recipients3 count];
+                responses4 = [(QRAllocation *)v271 responses];
                 v242 = v137;
-                v243 = [v138 count];
+                v243 = [responses4 count];
                 v241 = v134;
                 v239 = v263;
                 _IDSLogV();
@@ -6321,7 +6321,7 @@ LABEL_131:
           }
 
           v139 = objc_opt_class();
-          v140 = sub_10001B8C4(v139, v6, kIDSQRAllocateKey_Allocations);
+          v140 = sub_10001B8C4(v139, responseCopy, kIDSQRAllocateKey_Allocations);
           if (!v140)
           {
             v151 = OSLogHandleForTransportCategory();
@@ -6467,8 +6467,8 @@ LABEL_131:
                   }
                 }
 
-                v150 = [(QRAllocation *)v271 pushTokenToQRSessionID];
-                [v150 setObject:v146 forKey:v145];
+                pushTokenToQRSessionID = [(QRAllocation *)v271 pushTokenToQRSessionID];
+                [pushTokenToQRSessionID setObject:v146 forKey:v145];
               }
 
               v141 = [obj countByEnumeratingWithState:&v277 objects:v304 count:16];
@@ -6491,12 +6491,12 @@ LABEL_241:
 
           keya = 1;
 LABEL_243:
-          v159 = [v257 sharedSessionHasJoined];
-          v160 = v159;
-          if (v268)
+          sharedSessionHasJoined = [v257 sharedSessionHasJoined];
+          v160 = sharedSessionHasJoined;
+          if (cacheCopy)
           {
-            v161 = (v262 == 3) & v159;
-            v162 = v264;
+            v161 = (integerValue == 3) & sharedSessionHasJoined;
+            v162 = optionsCopy;
             if (v161 == 1)
             {
               v163 = OSLogHandleForTransportCategory();
@@ -6518,7 +6518,7 @@ LABEL_243:
                 }
               }
 
-              v162 = v264;
+              v162 = optionsCopy;
               goto LABEL_290;
             }
           }
@@ -6526,14 +6526,14 @@ LABEL_243:
           else
           {
             v164 = v250 ^ 1;
-            if (v262 != 3)
+            if (integerValue != 3)
             {
               v164 = 1;
             }
 
             if (v164)
             {
-              if (v262 == 3)
+              if (integerValue == 3)
               {
                 v166 = OSLogHandleForTransportCategory();
                 if (os_log_type_enabled(v166, OS_LOG_TYPE_DEFAULT))
@@ -6578,7 +6578,7 @@ LABEL_243:
               }
             }
 
-            else if (v159)
+            else if (sharedSessionHasJoined)
             {
               v165 = OSLogHandleForTransportCategory();
               if (os_log_type_enabled(v165, OS_LOG_TYPE_DEFAULT))
@@ -6629,14 +6629,14 @@ LABEL_243:
               v250 = 0;
             }
 
-            [(IDSQuickRelayAllocator *)self _processSelfAllocations:v6 allocation:v271, v240, v241];
-            v162 = v264;
+            [(IDSQuickRelayAllocator *)self _processSelfAllocations:responseCopy allocation:v271, v240, v241];
+            v162 = optionsCopy;
           }
 
-          if (v262 != 3)
+          if (integerValue != 3)
           {
 LABEL_383:
-            if ((keya & 1) != 0 || ((v250 | v252 | [(NSMutableSet *)self->_pendingRecipientsAcceptedSessions containsObject:v270]) & 1) != 0 || v268)
+            if ((keya & 1) != 0 || ((v250 | v252 | [(NSMutableSet *)self->_pendingRecipientsAcceptedSessions containsObject:v270]) & 1) != 0 || cacheCopy)
             {
               v217 = OSLogHandleForTransportCategory();
               if (os_log_type_enabled(v217, OS_LOG_TYPE_DEFAULT))
@@ -6684,7 +6684,7 @@ LABEL_383:
                   v224 = @"NO";
                 }
 
-                if (v268)
+                if (cacheCopy)
                 {
                   v218 = @"YES";
                 }
@@ -6716,7 +6716,7 @@ LABEL_383:
                 v227 = [(NSMutableSet *)self->_pendingRecipientsAcceptedSessions containsObject:v270]? @"YES" : @"NO";
                 v228 = v252 ? @"YES" : @"NO";
                 v229 = v250 ? @"YES" : @"NO";
-                v230 = v268 ? @"YES" : @"NO";
+                v230 = cacheCopy ? @"YES" : @"NO";
                 v231 = kIDSQRAllocateKey_StreamInfoSubscribedStreams;
                 v232 = !v39 || kIDSQRAllocateKey_StreamInfoSubscribedStreams == 0;
                 v233 = !v232;
@@ -6778,12 +6778,12 @@ LABEL_383:
                 }
               }
 
-              [(IDSQuickRelayAllocator *)self _startQRConnectionForSession:v39 isInitiatorsAcceptedSession:v256 & 1 withLocalInterfacePreference:v253, v240, v241, v242, v243, v244, v245];
+              [(IDSQuickRelayAllocator *)self _startQRConnectionForSession:v39 isInitiatorsAcceptedSession:v256 & 1 withLocalInterfacePreference:intValue, v240, v241, v242, v243, v244, v245];
             }
 
             else
             {
-              if (v262 == 3)
+              if (integerValue == 3)
               {
                 [(IDSQuickRelayAllocator *)self _startCleanupTimer];
               }
@@ -6808,7 +6808,7 @@ LABEL_383:
               }
             }
 
-            [v257 qrAllocatorDidReceiveAllocateResponse:v6];
+            [v257 qrAllocatorDidReceiveAllocateResponse:responseCopy];
             goto LABEL_454;
           }
 
@@ -6816,19 +6816,19 @@ LABEL_290:
           if (v162)
           {
             v172 = [v162 objectForKey:kIDSQRAllocateKey_StreamInfoPublishedStreams];
-            v173 = [v264 objectForKey:kIDSQRAllocateKey_StreamInfoSubscribedStreams];
-            v174 = [v264 objectForKey:kIDSQRAllocateKey_StreamInfoGenerationCounter];
-            v175 = [v264 objectForKey:kIDSQRAllocateKey_StreamInfoMaxConcurrentStreams];
+            v173 = [optionsCopy objectForKey:kIDSQRAllocateKey_StreamInfoSubscribedStreams];
+            v174 = [optionsCopy objectForKey:kIDSQRAllocateKey_StreamInfoGenerationCounter];
+            v175 = [optionsCopy objectForKey:kIDSQRAllocateKey_StreamInfoMaxConcurrentStreams];
             v176 = OSLogHandleForTransportCategory();
             if (os_log_type_enabled(v176, OS_LOG_TYPE_DEFAULT))
             {
-              v177 = [v264 objectForKey:kIDSQRAllocateKey_IsJoinAllocation];
-              v178 = [v177 BOOLValue];
+              v177 = [optionsCopy objectForKey:kIDSQRAllocateKey_IsJoinAllocation];
+              bOOLValue = [v177 BOOLValue];
               v179 = @"NO";
               *buf = 138413570;
               v294 = v270;
               v295 = 2112;
-              if (v178)
+              if (bOOLValue)
               {
                 v179 = @"YES";
               }
@@ -6851,7 +6851,7 @@ LABEL_290:
             }
 
             v180 = kIDSQRAllocateKey_IsJoinAllocation;
-            v181 = [v264 objectForKey:kIDSQRAllocateKey_IsJoinAllocation];
+            v181 = [optionsCopy objectForKey:kIDSQRAllocateKey_IsJoinAllocation];
             v182 = [v181 BOOLValue] ? @"YES" : @"NO";
             v244 = v175;
             v245 = v182;
@@ -6866,7 +6866,7 @@ LABEL_290:
               goto LABEL_372;
             }
 
-            v183 = [v264 objectForKey:{v180, v270, v172, v173, v174, v175, v245}];
+            v183 = [optionsCopy objectForKey:{v180, v270, v172, v173, v174, v175, v245}];
             if ([v183 BOOLValue])
             {
               v184 = @"YES";
@@ -6895,10 +6895,10 @@ LABEL_290:
               v193 = 0;
               v194 = 0;
 LABEL_380:
-              v216 = [(IDSQuickRelayAllocator *)self _uriToParticipantID:v39, v240, v241, v242, v243, v244, v245];
-              if (v216)
+              v245 = [(IDSQuickRelayAllocator *)self _uriToParticipantID:v39, v240, v241, v242, v243, v244, v245];
+              if (v245)
               {
-                CFDictionarySetValue(v39, kIDSQRAllocateKey_URIToParticipantID, v216);
+                CFDictionarySetValue(v39, kIDSQRAllocateKey_URIToParticipantID, v245);
               }
 
               goto LABEL_383;
@@ -6908,9 +6908,9 @@ LABEL_380:
             v185 = OSLogHandleForTransportCategory();
             if (os_log_type_enabled(v185, OS_LOG_TYPE_DEFAULT))
             {
-              v186 = [(QRAllocation *)v271 isJoinAllocation];
+              isJoinAllocation = [(QRAllocation *)v271 isJoinAllocation];
               v187 = @"NO";
-              if (v186)
+              if (isJoinAllocation)
               {
                 v187 = @"YES";
               }
@@ -7014,32 +7014,32 @@ LABEL_380:
                       v201 = *(*(&v273 + 1) + 8 * j);
                       if ([v201 isJoinAllocation])
                       {
-                        v202 = [v201 streamInfo];
-                        v203 = v202 == 0;
+                        streamInfo = [v201 streamInfo];
+                        v203 = streamInfo == 0;
 
                         if (!v203)
                         {
-                          v206 = [v201 streamInfo];
-                          [(QRAllocation *)v271 setStreamInfo:v206];
+                          streamInfo2 = [v201 streamInfo];
+                          [(QRAllocation *)v271 setStreamInfo:streamInfo2];
 
-                          v207 = [v201 streamInfo];
-                          v172 = v207[1];
+                          streamInfo3 = [v201 streamInfo];
+                          v172 = streamInfo3[1];
 
-                          v208 = [v201 streamInfo];
-                          v173 = v208[2];
+                          streamInfo4 = [v201 streamInfo];
+                          v173 = streamInfo4[2];
 
-                          v209 = [v201 streamInfo];
-                          v174 = v209[3];
+                          streamInfo5 = [v201 streamInfo];
+                          v174 = streamInfo5[3];
 
-                          v210 = [v201 streamInfo];
-                          v175 = v210[4];
+                          streamInfo6 = [v201 streamInfo];
+                          v175 = streamInfo6[4];
 
                           v211 = OSLogHandleForTransportCategory();
                           if (os_log_type_enabled(v211, OS_LOG_TYPE_DEFAULT))
                           {
-                            v212 = [v201 streamInfo];
+                            streamInfo7 = [v201 streamInfo];
                             *buf = 138413314;
-                            v294 = v212;
+                            v294 = streamInfo7;
                             v295 = 2112;
                             v296 = v173;
                             v297 = 2112;
@@ -7127,8 +7127,8 @@ LABEL_361:
               }
 
               os_unfair_lock_unlock(&self->_lock);
-              v213 = [(QRAllocation *)v271 streamInfo];
-              v214 = v213 == 0;
+              streamInfo8 = [(QRAllocation *)v271 streamInfo];
+              v214 = streamInfo8 == 0;
 
               if (v214)
               {
@@ -7184,8 +7184,8 @@ LABEL_372:
           goto LABEL_380;
         }
 
-        v115 = [(QRAllocation *)v271 responses];
-        [v115 addObject:v39];
+        responses5 = [(QRAllocation *)v271 responses];
+        [responses5 addObject:v39];
 
         v116 = 0;
         if (v39 && kIDSQRAllocateKey_RelayExpiryTimestamp)
@@ -7232,18 +7232,18 @@ LABEL_372:
     }
 
     v97 = objc_opt_class();
-    v98 = sub_10001B8C4(v97, v6, kIDSQRAllocateKey_RelayExpiryTimestamp);
+    v98 = sub_10001B8C4(v97, responseCopy, kIDSQRAllocateKey_RelayExpiryTimestamp);
     if (!v98)
     {
 LABEL_122:
       v101 = +[IDSPairingManager sharedInstance];
-      v102 = [v101 pairedDeviceUniqueID];
+      pairedDeviceUniqueID = [v101 pairedDeviceUniqueID];
 
       v103 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v103, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v294 = v102;
+        v294 = pairedDeviceUniqueID;
         _os_log_impl(&_mh_execute_header, v103, OS_LOG_TYPE_DEFAULT, "defaultRemoteDeviceCBUUIDString: %@", buf, 0xCu);
       }
 
@@ -7251,17 +7251,17 @@ LABEL_122:
       {
         if (_IDSShouldLogTransport())
         {
-          v239 = v102;
+          v239 = pairedDeviceUniqueID;
           _IDSLogTransport();
           if (_IDSShouldLog())
           {
-            v239 = v102;
+            v239 = pairedDeviceUniqueID;
             _IDSLogV();
           }
         }
       }
 
-      v104 = v102;
+      v104 = pairedDeviceUniqueID;
       if (v104)
       {
         [(__CFDictionary *)v39 setObject:v104 forKey:kIDSQRAllocateKey_DefaultRemoteDeviceCBUUID];
@@ -7273,9 +7273,9 @@ LABEL_122:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v99 = [v98 unsignedLongLongValue];
+      unsignedLongLongValue = [v98 unsignedLongLongValue];
       v100 = 1000 * time(0);
-      if (v99 > v100)
+      if (unsignedLongLongValue > v100)
       {
         goto LABEL_122;
       }
@@ -7286,9 +7286,9 @@ LABEL_122:
         *buf = 134218498;
         v294 = v100;
         v295 = 2048;
-        v296 = v99;
+        v296 = unsignedLongLongValue;
         v297 = 2112;
-        *v298 = v6;
+        *v298 = responseCopy;
         _os_log_impl(&_mh_execute_header, v156, OS_LOG_TYPE_DEFAULT, "response expired: %16llx %16llx, %@", buf, 0x20u);
       }
 
@@ -7364,12 +7364,12 @@ LABEL_226:
 LABEL_455:
 }
 
-- (id)_translateParticipantIDtoUINT64ForResponse:(id)a3
+- (id)_translateParticipantIDtoUINT64ForResponse:(id)response
 {
-  v3 = a3;
-  v4 = [v3 mutableCopy];
+  responseCopy = response;
+  v4 = [responseCopy mutableCopy];
   v5 = kIDSQRAllocateKey_RecipientID;
-  v6 = [v3 objectForKey:kIDSQRAllocateKey_RecipientID];
+  v6 = [responseCopy objectForKey:kIDSQRAllocateKey_RecipientID];
   v7 = v6;
   if (v6)
   {
@@ -7386,12 +7386,12 @@ LABEL_455:
   }
 
   v9 = kIDSQRAllocateKey_Allocations;
-  v10 = [v3 objectForKey:kIDSQRAllocateKey_Allocations];
+  v10 = [responseCopy objectForKey:kIDSQRAllocateKey_Allocations];
   v11 = v10;
   if (v10 && [v10 count])
   {
     key = v9;
-    v27 = v3;
+    v27 = responseCopy;
     theDict = v4;
     v12 = objc_alloc_init(NSMutableArray);
     v29 = 0u;
@@ -7450,12 +7450,12 @@ LABEL_455:
     {
       v4 = theDict;
       CFDictionarySetValue(theDict, key, v23);
-      v3 = v27;
+      responseCopy = v27;
     }
 
     else
     {
-      v3 = v27;
+      responseCopy = v27;
       v4 = theDict;
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
@@ -7469,19 +7469,19 @@ LABEL_455:
   return v4;
 }
 
-- (BOOL)_isDuplicateResponse:(id)a3 newResponse:(id)a4
+- (BOOL)_isDuplicateResponse:(id)response newResponse:(id)newResponse
 {
-  v5 = a3;
-  if (v5 && a4)
+  responseCopy = response;
+  if (responseCopy && newResponse)
   {
     v6 = kIDSQRAllocateKey_RelaySessionID;
-    v7 = [a4 objectForKey:kIDSQRAllocateKey_RelaySessionID];
+    v7 = [newResponse objectForKey:kIDSQRAllocateKey_RelaySessionID];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v8 = [v5 responses];
-    v9 = [v8 countByEnumeratingWithState:&v18 objects:v24 count:16];
+    responses = [responseCopy responses];
+    v9 = [responses countByEnumeratingWithState:&v18 objects:v24 count:16];
     if (v9)
     {
       v10 = v9;
@@ -7492,7 +7492,7 @@ LABEL_455:
         {
           if (*v19 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(responses);
           }
 
           Value = 0;
@@ -7517,7 +7517,7 @@ LABEL_455:
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v18 objects:v24 count:16];
+        v10 = [responses countByEnumeratingWithState:&v18 objects:v24 count:16];
         if (v10)
         {
           continue;
@@ -7527,11 +7527,11 @@ LABEL_455:
       }
     }
 
-    v8 = +[IDSFoundationLog QRAllocator];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    responses = +[IDSFoundationLog QRAllocator];
+    if (os_log_type_enabled(responses, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "_isDuplicateResponse:newResponse: duplicate response not found.", buf, 2u);
+      _os_log_impl(&_mh_execute_header, responses, OS_LOG_TYPE_DEFAULT, "_isDuplicateResponse:newResponse: duplicate response not found.", buf, 2u);
     }
 
     v15 = 0;
@@ -7553,10 +7553,10 @@ LABEL_23:
   return v15;
 }
 
-- (void)_processSelfAllocations:(id)a3 allocation:(id)a4
+- (void)_processSelfAllocations:(id)allocations allocation:(id)allocation
 {
-  v30 = a3;
-  v29 = a4;
+  allocationsCopy = allocations;
+  allocationCopy = allocation;
   v5 = +[IDSFoundationLog QRAllocator];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -7566,7 +7566,7 @@ LABEL_23:
 
   v6 = objc_opt_class();
   v28 = kIDSQRAllocateKey_SelfAllocationArray;
-  v23 = sub_10001B8C4(v6, v30, kIDSQRAllocateKey_SelfAllocationArray);
+  v23 = sub_10001B8C4(v6, allocationsCopy, kIDSQRAllocateKey_SelfAllocationArray);
   if (v23)
   {
     v7 = OSLogHandleForTransportCategory();
@@ -7635,7 +7635,7 @@ LABEL_23:
             }
           }
 
-          v13 = [v30 mutableCopy];
+          v13 = [allocationsCopy mutableCopy];
           [v13 removeObjectForKey:v28];
           v14 = objc_alloc_init(NSMutableArray);
           [v13 setObject:v14 forKey:v26];
@@ -7670,7 +7670,7 @@ LABEL_23:
           }
 
           [v13 setObject:&off_100C3CC40 forKey:v25];
-          [v29 addAllocation:v13];
+          [allocationCopy addAllocation:v13];
           v21 = OSLogHandleForTransportCategory();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
           {
@@ -7702,9 +7702,9 @@ LABEL_23:
   }
 }
 
-- (id)_getCombinedSoftwareID:(id)a3
+- (id)_getCombinedSoftwareID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[IDSFoundationLog QRAllocator];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -7712,13 +7712,13 @@ LABEL_23:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "_getCombinedSoftwareID: called", buf, 2u);
   }
 
-  if ([v3 length])
+  if ([dCopy length])
   {
     v5 = _IDSAllocateProtocolVersionNumber();
-    v6 = [v5 unsignedShortValue];
+    unsignedShortValue = [v5 unsignedShortValue];
 
-    v10 = v6;
-    v7 = [[NSMutableData alloc] initWithData:v3];
+    v10 = unsignedShortValue;
+    v7 = [[NSMutableData alloc] initWithData:dCopy];
     [v7 appendBytes:&v10 length:1];
   }
 
@@ -7749,9 +7749,9 @@ LABEL_23:
   return v7;
 }
 
-- (id)_createSessionInfoFromResponsePayload:(id)a3
+- (id)_createSessionInfoFromResponsePayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v5 = +[IDSFoundationLog QRAllocator];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -7759,22 +7759,22 @@ LABEL_23:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "_createSessionInfoFromResponsePayload: called", buf, 2u);
   }
 
-  if (!v4)
+  if (!payloadCopy)
   {
     v17 = 0;
     goto LABEL_278;
   }
 
-  v6 = [[IDSQuickRelayAllocateMessage alloc] initWithDictionary:v4];
-  v174 = [(IDSQuickRelayAllocateMessage *)v6 IDSSessionID];
-  v173 = [(IDSQuickRelayAllocateMessage *)v6 appID];
+  v6 = [[IDSQuickRelayAllocateMessage alloc] initWithDictionary:payloadCopy];
+  iDSSessionID = [(IDSQuickRelayAllocateMessage *)v6 IDSSessionID];
+  appID = [(IDSQuickRelayAllocateMessage *)v6 appID];
   Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   v8 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(IDSQuickRelayAllocateMessage *)v6 relayBuildVersion];
+    relayBuildVersion = [(IDSQuickRelayAllocateMessage *)v6 relayBuildVersion];
     *buf = 138412290;
-    *&buf[4] = v9;
+    *&buf[4] = relayBuildVersion;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "QR Build Version: %@", buf, 0xCu);
   }
 
@@ -7782,34 +7782,34 @@ LABEL_23:
   {
     if (_IDSShouldLogTransport())
     {
-      v161 = [(IDSQuickRelayAllocateMessage *)v6 relayBuildVersion];
+      relayBuildVersion2 = [(IDSQuickRelayAllocateMessage *)v6 relayBuildVersion];
       _IDSLogTransport();
 
       if (_IDSShouldLog())
       {
-        v161 = [(IDSQuickRelayAllocateMessage *)v6 relayBuildVersion];
+        relayBuildVersion2 = [(IDSQuickRelayAllocateMessage *)v6 relayBuildVersion];
         _IDSLogV();
       }
     }
   }
 
-  if ([v173 isEqualToString:{IDSRegistrationServiceTypeCloudMessaging, v161}])
+  if ([appID isEqualToString:{IDSRegistrationServiceTypeCloudMessaging, relayBuildVersion2}])
   {
-    v10 = sub_100592F04(v174);
+    v10 = sub_100592F04(iDSSessionID);
     if (([v10 isEqualToString:kIDSDefaultPairedDeviceID] & 1) == 0)
     {
-      v11 = v174;
+      v11 = iDSSessionID;
       memset(buf, 170, 16);
       v186.i64[0] = 0xAAAAAAAAAAAAAAAALL;
       v186.i64[1] = 0xAAAAAAAAAAAAAAAALL;
       v12 = +[IDSCurrentDevice sharedInstance];
-      v13 = [v12 deviceIdentifier];
+      deviceIdentifier = [v12 deviceIdentifier];
 
       if ([v11 length] == 16)
       {
         v14 = v11;
         *keya = *[v11 bytes];
-        v15 = [[NSUUID alloc] initWithUUIDString:v13];
+        v15 = [[NSUUID alloc] initWithUUIDString:deviceIdentifier];
         [v15 getUUIDBytes:buf];
 
         v186 = veorq_s8(*keya, *buf);
@@ -7886,8 +7886,8 @@ LABEL_23:
     v10 = 0;
   }
 
-  v23 = [(IDSQuickRelayAllocateMessage *)v6 requestID];
-  v24 = sub_100592F04(v23);
+  requestID = [(IDSQuickRelayAllocateMessage *)v6 requestID];
+  v24 = sub_100592F04(requestID);
 
   v25 = v24;
   key = v25;
@@ -7914,7 +7914,7 @@ LABEL_43:
     goto LABEL_44;
   }
 
-  v27 = sub_100592F04(v174);
+  v27 = sub_100592F04(iDSSessionID);
   if (v27)
   {
     goto LABEL_43;
@@ -7973,7 +7973,7 @@ LABEL_44:
   if (v176)
   {
     v33 = kIDSQRAllocateKey_InferredExternalAddress;
-    if (kIDSQRAllocateKey_InferredExternalAddress && (v34 = CFDictionaryGetValue(v4, kIDSQRAllocateKey_InferredExternalAddress)) != 0)
+    if (kIDSQRAllocateKey_InferredExternalAddress && (v34 = CFDictionaryGetValue(payloadCopy, kIDSQRAllocateKey_InferredExternalAddress)) != 0)
     {
       v35 = v34;
       CFDictionarySetValue(Mutable, v33, v34);
@@ -8059,8 +8059,8 @@ LABEL_44:
     }
   }
 
-  v175 = [(IDSQuickRelayAllocator *)self _findAllocationForSessionID:v177 requestIDStr:key, v163, *&v167, v169, v170];
-  if (!v175 || ([v175 request], v47 = objc_claimAutoreleasedReturnValue(), v48 = v47 == 0, v47, v48))
+  v170 = [(IDSQuickRelayAllocator *)self _findAllocationForSessionID:v177 requestIDStr:key, v163, *&v167, v169, v170];
+  if (!v170 || ([v170 request], v47 = objc_claimAutoreleasedReturnValue(), v48 = v47 == 0, v47, v48))
   {
     CFDictionarySetValue(Mutable, kIDSQRAllocateKey_isInitiator, &__kCFBooleanFalse);
   }
@@ -8068,10 +8068,10 @@ LABEL_44:
   else
   {
     CFDictionarySetValue(Mutable, kIDSQRAllocateKey_isInitiator, &__kCFBooleanTrue);
-    v49 = [v175 request];
-    v50 = [v49 senderExternalIP];
+    request = [v170 request];
+    senderExternalIP = [request senderExternalIP];
 
-    if (v50)
+    if (senderExternalIP)
     {
       v51 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
@@ -8092,12 +8092,12 @@ LABEL_44:
         }
       }
 
-      v52 = [v175 request];
-      v53 = [v52 senderExternalIP];
+      request2 = [v170 request];
+      senderExternalIP2 = [request2 senderExternalIP];
 
-      if (v53)
+      if (senderExternalIP2)
       {
-        CFDictionarySetValue(Mutable, kIDSQRAllocateKey_SenderExternalAddress, v53);
+        CFDictionarySetValue(Mutable, kIDSQRAllocateKey_SenderExternalAddress, senderExternalIP2);
       }
 
       else
@@ -8112,7 +8112,7 @@ LABEL_44:
   }
 
   v56 = kIDSQRAllocateKey_Provider;
-  if (kIDSQRAllocateKey_Provider && (v57 = CFDictionaryGetValue(v4, kIDSQRAllocateKey_Provider)) != 0)
+  if (kIDSQRAllocateKey_Provider && (v57 = CFDictionaryGetValue(payloadCopy, kIDSQRAllocateKey_Provider)) != 0)
   {
     v58 = v57;
     CFDictionarySetValue(Mutable, v56, v57);
@@ -8131,8 +8131,8 @@ LABEL_44:
     v172 = 0;
   }
 
-  v60 = [(IDSQuickRelayAllocateMessage *)v6 relaySoftwareVersion];
-  v61 = [(IDSQuickRelayAllocator *)self _getCombinedSoftwareID:v60];
+  relaySoftwareVersion = [(IDSQuickRelayAllocateMessage *)v6 relaySoftwareVersion];
+  v61 = [(IDSQuickRelayAllocator *)self _getCombinedSoftwareID:relaySoftwareVersion];
 
   v62 = v61;
   if (v62)
@@ -8144,10 +8144,10 @@ LABEL_44:
 
   v171 = v62;
 
-  v64 = [(IDSQuickRelayAllocateMessage *)v6 relayPort];
-  if (v64)
+  relayPort = [(IDSQuickRelayAllocateMessage *)v6 relayPort];
+  if (relayPort)
   {
-    CFDictionarySetValue(Mutable, kIDSQRAllocateKey_RelayPort, v64);
+    CFDictionarySetValue(Mutable, kIDSQRAllocateKey_RelayPort, relayPort);
   }
 
   else
@@ -8159,10 +8159,10 @@ LABEL_44:
     }
   }
 
-  v66 = [(IDSQuickRelayAllocateMessage *)v6 relayIP];
-  if (v66)
+  relayIP = [(IDSQuickRelayAllocateMessage *)v6 relayIP];
+  if (relayIP)
   {
-    CFDictionarySetValue(Mutable, kIDSQRAllocateKey_RelayAddress, v66);
+    CFDictionarySetValue(Mutable, kIDSQRAllocateKey_RelayAddress, relayIP);
   }
 
   else
@@ -8174,22 +8174,22 @@ LABEL_44:
     }
   }
 
-  v68 = [(IDSQuickRelayAllocateMessage *)v6 relayIPv6];
-  if (v68)
+  relayIPv6 = [(IDSQuickRelayAllocateMessage *)v6 relayIPv6];
+  if (relayIPv6)
   {
-    CFDictionarySetValue(Mutable, kIDSQRAllocateKey_RelayAddressIPv6, v68);
+    CFDictionarySetValue(Mutable, kIDSQRAllocateKey_RelayAddressIPv6, relayIPv6);
   }
 
-  v69 = [(IDSQuickRelayAllocateMessage *)v6 relayHighPriorityPort];
-  if (v69)
+  relayHighPriorityPort = [(IDSQuickRelayAllocateMessage *)v6 relayHighPriorityPort];
+  if (relayHighPriorityPort)
   {
-    CFDictionarySetValue(Mutable, kIDSQRAllocateKey_RelayHighPriorityPort, v69);
+    CFDictionarySetValue(Mutable, kIDSQRAllocateKey_RelayHighPriorityPort, relayHighPriorityPort);
   }
 
-  v70 = [(IDSQuickRelayAllocateMessage *)v6 relaySessionToken];
-  if (v70)
+  relaySessionToken = [(IDSQuickRelayAllocateMessage *)v6 relaySessionToken];
+  if (relaySessionToken)
   {
-    CFDictionarySetValue(Mutable, kIDSQRAllocateKey_RelaySessionToken, v70);
+    CFDictionarySetValue(Mutable, kIDSQRAllocateKey_RelaySessionToken, relaySessionToken);
   }
 
   else
@@ -8201,49 +8201,49 @@ LABEL_44:
     }
   }
 
-  v72 = [(IDSQuickRelayAllocateMessage *)v6 infoAttribute];
-  if (v72)
+  infoAttribute = [(IDSQuickRelayAllocateMessage *)v6 infoAttribute];
+  if (infoAttribute)
   {
-    CFDictionarySetValue(Mutable, kIDSQRAllocateKey_PreferredRemoteInterface, v72);
+    CFDictionarySetValue(Mutable, kIDSQRAllocateKey_PreferredRemoteInterface, infoAttribute);
   }
 
-  v73 = [(IDSQuickRelayAllocateMessage *)v6 pskTransportParameters];
-  if (v73)
+  pskTransportParameters = [(IDSQuickRelayAllocateMessage *)v6 pskTransportParameters];
+  if (pskTransportParameters)
   {
-    CFDictionarySetValue(Mutable, kIDSQRAllocateKey_PSKTransportParameters, v73);
+    CFDictionarySetValue(Mutable, kIDSQRAllocateKey_PSKTransportParameters, pskTransportParameters);
   }
 
-  v74 = [(IDSQuickRelayAllocateMessage *)v6 pskH3Settings];
-  if (v74)
+  pskH3Settings = [(IDSQuickRelayAllocateMessage *)v6 pskH3Settings];
+  if (pskH3Settings)
   {
-    CFDictionarySetValue(Mutable, kIDSQRAllocateKey_PSKH3Settings, v74);
+    CFDictionarySetValue(Mutable, kIDSQRAllocateKey_PSKH3Settings, pskH3Settings);
   }
 
-  v75 = [(IDSQuickRelayAllocateMessage *)v6 reportingDataBlob];
-  if (v75)
+  reportingDataBlob = [(IDSQuickRelayAllocateMessage *)v6 reportingDataBlob];
+  if (reportingDataBlob)
   {
-    CFDictionarySetValue(Mutable, kIDSQRAllocateKey_ReportingDataBlob, v75);
+    CFDictionarySetValue(Mutable, kIDSQRAllocateKey_ReportingDataBlob, reportingDataBlob);
   }
 
-  v76 = [(IDSQuickRelayAllocateMessage *)v6 isInternal];
-  if (v76)
+  isInternal = [(IDSQuickRelayAllocateMessage *)v6 isInternal];
+  if (isInternal)
   {
-    CFDictionarySetValue(Mutable, kIDSQRAllocateKey_IsInternal, v76);
+    CFDictionarySetValue(Mutable, kIDSQRAllocateKey_IsInternal, isInternal);
   }
 
-  v77 = [(IDSQuickRelayAllocateMessage *)v6 relayBuildVersion];
-  if (v77)
+  relayBuildVersion3 = [(IDSQuickRelayAllocateMessage *)v6 relayBuildVersion];
+  if (relayBuildVersion3)
   {
-    CFDictionarySetValue(Mutable, kIDSQRAllocateKey_RelayBuildVersion, v77);
+    CFDictionarySetValue(Mutable, kIDSQRAllocateKey_RelayBuildVersion, relayBuildVersion3);
   }
 
   v78 = IMGetCachedDomainIntForKeyWithDefaultValue();
   if ((v78 & 0x80000000) != 0)
   {
-    v80 = [(IDSQuickRelayAllocateMessage *)v6 ipPreference];
-    if (v80)
+    ipPreference = [(IDSQuickRelayAllocateMessage *)v6 ipPreference];
+    if (ipPreference)
     {
-      CFDictionarySetValue(Mutable, kIDSQRAllocateKey_RelayIPPreference, v80);
+      CFDictionarySetValue(Mutable, kIDSQRAllocateKey_RelayIPPreference, ipPreference);
     }
   }
 
@@ -8293,7 +8293,7 @@ LABEL_44:
     v85 = kIDSQRAllocateKey_LinkSuggestion;
     if (kIDSQRAllocateKey_LinkSuggestion)
     {
-      v86 = CFDictionaryGetValue(v4, kIDSQRAllocateKey_LinkSuggestion);
+      v86 = CFDictionaryGetValue(payloadCopy, kIDSQRAllocateKey_LinkSuggestion);
       if (v86)
       {
         v87 = v86;
@@ -8348,7 +8348,7 @@ LABEL_44:
     v92 = kIDSQRAllocateKey_LinkScore;
     if (kIDSQRAllocateKey_LinkScore)
     {
-      v93 = CFDictionaryGetValue(v4, kIDSQRAllocateKey_LinkScore);
+      v93 = CFDictionaryGetValue(payloadCopy, kIDSQRAllocateKey_LinkScore);
       if (v93)
       {
         v94 = v93;
@@ -8397,7 +8397,7 @@ LABEL_44:
     }
   }
 
-  v97 = [(IDSQuickRelayAllocateMessage *)v6 qrExperiments];
+  qrExperiments = [(IDSQuickRelayAllocateMessage *)v6 qrExperiments];
   if (IMGetDomainBoolForKey())
   {
     v98 = [NSNumber numberWithBool:1];
@@ -8426,7 +8426,7 @@ LABEL_44:
   else
   {
     v99 = kIDSQRAllocateKey_HTTP2Disabled;
-    v100 = [v97 objectForKey:kIDSQRAllocateKey_HTTP2Disabled];
+    v100 = [qrExperiments objectForKey:kIDSQRAllocateKey_HTTP2Disabled];
     if (v100)
     {
       CFDictionarySetValue(Mutable, v99, v100);
@@ -8461,7 +8461,7 @@ LABEL_44:
   else
   {
     v103 = kIDSQRAllocateKey_IPDiscoveryDisabled;
-    v104 = [v97 objectForKey:kIDSQRAllocateKey_IPDiscoveryDisabled];
+    v104 = [qrExperiments objectForKey:kIDSQRAllocateKey_IPDiscoveryDisabled];
     if (v104)
     {
       CFDictionarySetValue(Mutable, v103, v104);
@@ -8469,41 +8469,41 @@ LABEL_44:
   }
 
   v106 = kIDSQRAllocateKey_UplinkNackDisabled;
-  v107 = [v97 objectForKey:kIDSQRAllocateKey_UplinkNackDisabled];
+  v107 = [qrExperiments objectForKey:kIDSQRAllocateKey_UplinkNackDisabled];
   if (v107)
   {
     CFDictionarySetValue(Mutable, v106, v107);
   }
 
   v108 = kIDSQRAllocateKey_TransportLayerEncryptionDisabled;
-  v109 = [v97 objectForKey:kIDSQRAllocateKey_TransportLayerEncryptionDisabled];
+  v109 = [qrExperiments objectForKey:kIDSQRAllocateKey_TransportLayerEncryptionDisabled];
   if (v109)
   {
     CFDictionarySetValue(Mutable, v108, v109);
   }
 
   v110 = kIDSQRAllocateKey_IPDiscoveryDisabled;
-  v111 = [v97 objectForKey:kIDSQRAllocateKey_IPDiscoveryDisabled];
+  v111 = [qrExperiments objectForKey:kIDSQRAllocateKey_IPDiscoveryDisabled];
   if (v111)
   {
     CFDictionarySetValue(Mutable, v110, v111);
   }
 
-  v112 = v97;
+  v112 = qrExperiments;
   if (v112)
   {
     CFDictionarySetValue(Mutable, kIDSQRAllocateKey_QRExperiments, v112);
   }
 
-  v113 = [(IDSQuickRelayAllocateMessage *)v6 relaySessionID];
-  v114 = [v113 length] == 16;
+  relaySessionID = [(IDSQuickRelayAllocateMessage *)v6 relaySessionID];
+  v114 = [relaySessionID length] == 16;
 
   if (v114)
   {
     v115 = [NSUUID alloc];
-    v116 = [(IDSQuickRelayAllocateMessage *)v6 relaySessionID];
-    v117 = v116;
-    v118 = [v115 initWithUUIDBytes:{objc_msgSend(v116, "bytes")}];
+    relaySessionID2 = [(IDSQuickRelayAllocateMessage *)v6 relaySessionID];
+    v117 = relaySessionID2;
+    v118 = [v115 initWithUUIDBytes:{objc_msgSend(relaySessionID2, "bytes")}];
 LABEL_211:
 
     goto LABEL_219;
@@ -8512,8 +8512,8 @@ LABEL_211:
   v119 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v119, OS_LOG_TYPE_DEFAULT))
   {
-    v120 = [(IDSQuickRelayAllocateMessage *)v6 relaySessionID];
-    v121 = [v120 length];
+    relaySessionID3 = [(IDSQuickRelayAllocateMessage *)v6 relaySessionID];
+    v121 = [relaySessionID3 length];
     *buf = 134218240;
     *&buf[4] = v121;
     *&buf[12] = 2048;
@@ -8525,15 +8525,15 @@ LABEL_211:
   {
     if (_IDSShouldLogTransport())
     {
-      v122 = [(IDSQuickRelayAllocateMessage *)v6 relaySessionID];
-      v165 = [v122 length];
+      relaySessionID4 = [(IDSQuickRelayAllocateMessage *)v6 relaySessionID];
+      v165 = [relaySessionID4 length];
       v168 = 16;
       _IDSLogTransport();
 
       if (_IDSShouldLog())
       {
-        v116 = [(IDSQuickRelayAllocateMessage *)v6 relaySessionID:v165];
-        v165 = [v116 length];
+        relaySessionID2 = [(IDSQuickRelayAllocateMessage *)v6 relaySessionID:v165];
+        v165 = [relaySessionID2 length];
         v168 = 16;
         _IDSLogV();
         v118 = 0;
@@ -8544,10 +8544,10 @@ LABEL_211:
 
   v118 = 0;
 LABEL_219:
-  v123 = [v118 UUIDString];
-  if (v123)
+  uUIDString = [v118 UUIDString];
+  if (uUIDString)
   {
-    CFDictionarySetValue(Mutable, kIDSQRAllocateKey_RelaySessionID, v123);
+    CFDictionarySetValue(Mutable, kIDSQRAllocateKey_RelaySessionID, uUIDString);
   }
 
   else
@@ -8559,10 +8559,10 @@ LABEL_219:
     }
   }
 
-  v125 = [(IDSQuickRelayAllocateMessage *)v6 relaySessionKey];
-  if (v125)
+  relaySessionKey = [(IDSQuickRelayAllocateMessage *)v6 relaySessionKey];
+  if (relaySessionKey)
   {
-    CFDictionarySetValue(Mutable, kIDSQRAllocateKey_RelaySessionKey, v125);
+    CFDictionarySetValue(Mutable, kIDSQRAllocateKey_RelaySessionKey, relaySessionKey);
   }
 
   else
@@ -8574,10 +8574,10 @@ LABEL_219:
     }
   }
 
-  v127 = [(IDSQuickRelayAllocateMessage *)v6 appID];
-  if (v127)
+  appID2 = [(IDSQuickRelayAllocateMessage *)v6 appID];
+  if (appID2)
   {
-    CFDictionarySetValue(Mutable, kIDSQRAllocateKey_AppID, v127);
+    CFDictionarySetValue(Mutable, kIDSQRAllocateKey_AppID, appID2);
   }
 
   else
@@ -8589,8 +8589,8 @@ LABEL_219:
     }
   }
 
-  v129 = [(IDSQuickRelayAllocateMessage *)v6 relayExpiryTimeStamp];
-  [v129 doubleValue];
+  relayExpiryTimeStamp = [(IDSQuickRelayAllocateMessage *)v6 relayExpiryTimeStamp];
+  [relayExpiryTimeStamp doubleValue];
   v131 = v130;
 
   v132 = [[NSNumber alloc] initWithDouble:v131];
@@ -8610,7 +8610,7 @@ LABEL_219:
 
   v134 = objc_opt_class();
   v135 = kIDSQRAllocateKey_AllocateType;
-  v136 = sub_10001B8C4(v134, v4, kIDSQRAllocateKey_AllocateType);
+  v136 = sub_10001B8C4(v134, payloadCopy, kIDSQRAllocateKey_AllocateType);
   v137 = v136;
   if (v136)
   {
@@ -8621,7 +8621,7 @@ LABEL_219:
     {
       v139 = objc_opt_class();
       v140 = kIDSQRAllocateKey_Allocations;
-      v141 = sub_10001B8C4(v139, v4, kIDSQRAllocateKey_Allocations);
+      v141 = sub_10001B8C4(v139, payloadCopy, kIDSQRAllocateKey_Allocations);
       v142 = v141;
       if (v141)
       {
@@ -8674,23 +8674,23 @@ LABEL_219:
     }
   }
 
-  v145 = [(IDSQuickRelayAllocateMessage *)v6 allocateProtocolVersion];
-  v146 = [v145 intValue] > 1;
+  allocateProtocolVersion = [(IDSQuickRelayAllocateMessage *)v6 allocateProtocolVersion];
+  v146 = [allocateProtocolVersion intValue] > 1;
 
   if (!v146)
   {
     CFDictionarySetValue(Mutable, v135, &off_100C3CBC8);
 LABEL_265:
     v151 = kIDSQRAllocateKey_SessionAllocationTime;
-    v152 = [(__CFDictionary *)v4 objectForKey:kIDSQRAllocateKey_SessionAllocationTime];
+    v152 = [(__CFDictionary *)payloadCopy objectForKey:kIDSQRAllocateKey_SessionAllocationTime];
     if (v152)
     {
       [(__CFDictionary *)Mutable setObject:v152 forKey:v151];
     }
 
     v153 = kIDSQRAllocateKey_RecipientID;
-    v154 = [(__CFDictionary *)v4 objectForKey:kIDSQRAllocateKey_RecipientID];
-    v149 = v154;
+    v154 = [(__CFDictionary *)payloadCopy objectForKey:kIDSQRAllocateKey_RecipientID];
+    allocateProtocolVersion3 = v154;
     if (v154)
     {
       v155 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v154 unsignedLongLongValue]);
@@ -8701,14 +8701,14 @@ LABEL_265:
     }
 
     v156 = kIDSQRAllocateKey_GroupID;
-    v157 = [(__CFDictionary *)v4 objectForKey:kIDSQRAllocateKey_GroupID];
+    v157 = [(__CFDictionary *)payloadCopy objectForKey:kIDSQRAllocateKey_GroupID];
     if (v157)
     {
       [(__CFDictionary *)Mutable setObject:v157 forKey:v156];
     }
 
     v158 = kIDSQRAllocateKey_GroupMemberCount;
-    v159 = [(__CFDictionary *)v4 objectForKey:kIDSQRAllocateKey_GroupMemberCount];
+    v159 = [(__CFDictionary *)payloadCopy objectForKey:kIDSQRAllocateKey_GroupMemberCount];
     if (v159)
     {
       [(__CFDictionary *)Mutable setObject:v159 forKey:v158];
@@ -8721,9 +8721,9 @@ LABEL_265:
   v147 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v147, OS_LOG_TYPE_DEFAULT))
   {
-    v148 = [(IDSQuickRelayAllocateMessage *)v6 allocateProtocolVersion];
+    allocateProtocolVersion2 = [(IDSQuickRelayAllocateMessage *)v6 allocateProtocolVersion];
     *buf = 138412290;
-    *&buf[4] = v148;
+    *&buf[4] = allocateProtocolVersion2;
     _os_log_impl(&_mh_execute_header, v147, OS_LOG_TYPE_DEFAULT, "allocate type is required for allocate protocol version %@", buf, 0xCu);
   }
 
@@ -8733,7 +8733,7 @@ LABEL_265:
     goto LABEL_277;
   }
 
-  v149 = [(IDSQuickRelayAllocateMessage *)v6 allocateProtocolVersion];
+  allocateProtocolVersion3 = [(IDSQuickRelayAllocateMessage *)v6 allocateProtocolVersion];
   _IDSLogV();
   v17 = 0;
 LABEL_276:
@@ -8773,10 +8773,10 @@ LABEL_278:
   [(NSMutableArray *)self->_sessionInfoRequiredKeys addObject:kIDSQRAllocateKey_isInitiator];
 }
 
-- (BOOL)_hasSessionInfoRequiredKeys:(id)a3
+- (BOOL)_hasSessionInfoRequiredKeys:(id)keys
 {
-  v4 = a3;
-  if (v4)
+  keysCopy = keys;
+  if (keysCopy)
   {
     if ([(NSMutableArray *)self->_sessionInfoRequiredKeys count])
     {
@@ -8800,7 +8800,7 @@ LABEL_278:
             }
 
             v10 = *(*(&v17 + 1) + 8 * i);
-            v11 = [v4 objectForKey:{v10, v15, v16}];
+            v11 = [keysCopy objectForKey:{v10, v15, v16}];
             v12 = v11 == 0;
 
             if (v12)
@@ -8811,7 +8811,7 @@ LABEL_278:
                 *buf = 138412546;
                 v22 = v10;
                 v23 = 2112;
-                v24 = v4;
+                v24 = keysCopy;
                 _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, " is missing required attributes %@ in sessionInfo %@", buf, 0x16u);
               }
 
@@ -8820,12 +8820,12 @@ LABEL_278:
                 if (_IDSShouldLogTransport())
                 {
                   v15 = v10;
-                  v16 = v4;
+                  v16 = keysCopy;
                   _IDSLogTransport();
                   if (_IDSShouldLog())
                   {
                     v15 = v10;
-                    v16 = v4;
+                    v16 = keysCopy;
                     _IDSLogV();
                   }
                 }
@@ -8861,18 +8861,18 @@ LABEL_278:
   return v8 & 1;
 }
 
-- (void)_triggerSymptomsWithType:(id)a3 subType:(id)a4 subTypeContext:(id)a5
+- (void)_triggerSymptomsWithType:(id)type subType:(id)subType subTypeContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  typeCopy = type;
+  subTypeCopy = subType;
+  contextCopy = context;
   v10 = +[IMLockdownManager sharedInstance];
-  v11 = [v10 isInternalInstall];
+  isInternalInstall = [v10 isInternalInstall];
 
-  if (v11)
+  if (isInternalInstall)
   {
     v12 = objc_alloc_init(IMWeakLinkClass());
-    v13 = [v12 signatureWithDomain:@"IDSQuickRelay" type:v7 subType:v8 subtypeContext:v9 detectedProcess:@"identityservicesd" triggerThresholdValues:0];
+    v13 = [v12 signatureWithDomain:@"IDSQuickRelay" type:typeCopy subType:subTypeCopy subtypeContext:contextCopy detectedProcess:@"identityservicesd" triggerThresholdValues:0];
     v14 = im_primary_queue();
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
@@ -8888,18 +8888,18 @@ LABEL_278:
   }
 }
 
-- (unsigned)_getErrorCodeFromAllocationStatus:(int)a3
+- (unsigned)_getErrorCodeFromAllocationStatus:(int)status
 {
-  if (a3 > 5007)
+  if (status > 5007)
   {
-    if (a3 > 5031)
+    if (status > 5031)
     {
-      if (a3 == 5032)
+      if (status == 5032)
       {
         return 37;
       }
 
-      if (a3 == 7000)
+      if (status == 7000)
       {
         return 42;
       }
@@ -8907,26 +8907,26 @@ LABEL_278:
 
     else
     {
-      if (a3 == 5008)
+      if (status == 5008)
       {
         return 36;
       }
 
-      if (a3 == 5010)
+      if (status == 5010)
       {
         return 45;
       }
     }
   }
 
-  else if (a3 > 5000)
+  else if (status > 5000)
   {
-    if (a3 == 5001)
+    if (status == 5001)
     {
       return 34;
     }
 
-    if (a3 == 5004)
+    if (status == 5004)
     {
       return 35;
     }
@@ -8934,12 +8934,12 @@ LABEL_278:
 
   else
   {
-    if (a3 == 1000)
+    if (status == 1000)
     {
       return 32;
     }
 
-    if (a3 == 1001)
+    if (status == 1001)
     {
       return 33;
     }
@@ -8948,9 +8948,9 @@ LABEL_278:
   return 38;
 }
 
-- (void)_processAllocationStatusResult:(id)a3
+- (void)_processAllocationStatusResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v5 = +[IDSFoundationLog QRAllocator];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -8959,17 +8959,17 @@ LABEL_278:
   }
 
   v6 = objc_opt_class();
-  v7 = sub_10001B8C4(v6, v4, @"s");
-  v8 = [v7 intValue];
+  v7 = sub_10001B8C4(v6, resultCopy, @"s");
+  intValue = [v7 intValue];
 
-  if (!v8)
+  if (!intValue)
   {
     goto LABEL_55;
   }
 
   v9 = objc_opt_class();
-  v10 = sub_10001B8C4(v9, v4, @"p");
-  v11 = v8;
+  v10 = sub_10001B8C4(v9, resultCopy, @"p");
+  v11 = intValue;
   if (v10)
   {
     v12 = OSLogHandleForTransportCategory();
@@ -9006,7 +9006,7 @@ LABEL_278:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v47 = v4;
+    v47 = resultCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Allocation error response: %@", buf, 0xCu);
   }
 
@@ -9014,11 +9014,11 @@ LABEL_278:
   {
     if (_IDSShouldLogTransport())
     {
-      v39 = v4;
+      v39 = resultCopy;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v39 = v4;
+        v39 = resultCopy;
         _IDSLogV();
       }
     }
@@ -9026,22 +9026,22 @@ LABEL_278:
 
   v16 = [(IDSQuickRelayAllocator *)self _getErrorCodeFromAllocationStatus:v11, v39, v41];
   v17 = kIDSQRAllocateKey_RequestID;
-  v18 = [v4 objectForKey:kIDSQRAllocateKey_RequestID];
+  v18 = [resultCopy objectForKey:kIDSQRAllocateKey_RequestID];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v19 = [v4 objectForKey:v17];
+    v19 = [resultCopy objectForKey:v17];
     v20 = [NSData _IDSDataFromBase64String:v19];
     v21 = sub_100592F04(v20);
   }
 
   else
   {
-    v19 = [v4 objectForKey:v17];
+    v19 = [resultCopy objectForKey:v17];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v22 = [v4 objectForKey:v17];
+      v22 = [resultCopy objectForKey:v17];
       v21 = sub_100592F04(v22);
     }
 
@@ -9119,9 +9119,9 @@ LABEL_278:
         }
 
         v27 = [(IDSQuickRelayAllocator *)self _findAllocationForSessionID:v25 requestIDStr:v21, v40, v42, v43];
-        v28 = [v27 request];
+        request = [v27 request];
 
-        [(IDSQuickRelayAllocator *)self _sendAllocateRequest:v28];
+        [(IDSQuickRelayAllocator *)self _sendAllocateRequest:request];
         goto LABEL_60;
       }
 
@@ -9184,11 +9184,11 @@ LABEL_54:
 
 LABEL_55:
   v34 = objc_opt_class();
-  v10 = sub_10001B8C4(v34, v4, kIDSQRAllocateKey_QRFailureSubType);
+  v10 = sub_10001B8C4(v34, resultCopy, kIDSQRAllocateKey_QRFailureSubType);
   v35 = objc_opt_class();
-  v21 = sub_10001B8C4(v35, v4, kIDSQRAllocateKey_QRFailureContext);
+  v21 = sub_10001B8C4(v35, resultCopy, kIDSQRAllocateKey_QRFailureContext);
   v36 = objc_opt_class();
-  v25 = sub_10001B8C4(v36, v4, kIDSQRAllocateKey_AllocateType);
+  v25 = sub_10001B8C4(v36, resultCopy, kIDSQRAllocateKey_AllocateType);
   v44[0] = &off_100C3CBC8;
   v44[1] = &off_100C3CC40;
   v45[0] = @"IDSQuickRelayTwoWay";
@@ -9199,8 +9199,8 @@ LABEL_55:
   v45[3] = @"IDSQuickRelayKeepAlive";
   v44[4] = &off_100C3CC70;
   v45[4] = @"IDSQuickRelayMax";
-  v28 = [NSDictionary dictionaryWithObjects:v45 forKeys:v44 count:5];
-  v37 = [v28 objectForKey:v25];
+  request = [NSDictionary dictionaryWithObjects:v45 forKeys:v44 count:5];
+  v37 = [request objectForKey:v25];
   v38 = v37;
   if (v10 && v21 && v37)
   {
@@ -9210,10 +9210,10 @@ LABEL_55:
 LABEL_60:
 }
 
-- (void)_sendAWDMetricsForAllocation:(id)a3 status:(int64_t)a4 hasRecipientAccepted:(BOOL)a5
+- (void)_sendAWDMetricsForAllocation:(id)allocation status:(int64_t)status hasRecipientAccepted:(BOOL)accepted
 {
-  v5 = a5;
-  v8 = a3;
+  acceptedCopy = accepted;
+  allocationCopy = allocation;
   v9 = +[IDSFoundationLog QRAllocator];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -9221,62 +9221,62 @@ LABEL_60:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "_sendAWDMetricsForAllocation:status:hasRecipientAccepted: called", buf, 2u);
   }
 
-  v10 = [v8 responses];
-  v11 = [v10 count];
+  responses = [allocationCopy responses];
+  v11 = [responses count];
 
   if (v11)
   {
-    v12 = [v8 request];
-    if (v12)
+    request = [allocationCopy request];
+    if (request)
     {
-      v13 = [v8 request];
-      v14 = [v13 appID];
+      request2 = [allocationCopy request];
+      appID = [request2 appID];
     }
 
     else
     {
-      v14 = &stru_100C06028;
+      appID = &stru_100C06028;
     }
 
-    v16 = [v8 request];
-    if (v16)
+    request3 = [allocationCopy request];
+    if (request3)
     {
-      v17 = [v8 request];
-      v18 = [v17 requestLength];
+      request4 = [allocationCopy request];
+      requestLength = [request4 requestLength];
     }
 
     else
     {
-      v18 = 0;
+      requestLength = 0;
     }
 
     v19 = [IDSQRAllocationMetric alloc];
-    [v8 duration];
-    v21 = [v19 initWithDuration:v20 result:a4 hasRecipientAccepted:v5 payloadSize:v18 topic:v14 service:v14];
+    [allocationCopy duration];
+    v21 = [v19 initWithDuration:v20 result:status hasRecipientAccepted:acceptedCopy payloadSize:requestLength topic:appID service:appID];
     v22 = +[IDSCoreAnalyticsLogger defaultLogger];
     [v22 logMetric:v21];
 
-    v23 = [(IDSQuickRelayAllocator *)self _getIDSAWDLoggingInstance];
-    [v8 duration];
-    [v23 IDSQRAllocation:v24 result:a4 hasRecipientAccepted:v5 payloadSize:v18 topic:v14 service:v14];
+    _getIDSAWDLoggingInstance = [(IDSQuickRelayAllocator *)self _getIDSAWDLoggingInstance];
+    [allocationCopy duration];
+    [_getIDSAWDLoggingInstance IDSQRAllocation:v24 result:status hasRecipientAccepted:acceptedCopy payloadSize:requestLength topic:appID service:appID];
 
     v25 = +[IDSDSessionController sharedInstance];
-    v26 = [v8 sessionIDStr];
-    v27 = [v25 sessionWithUniqueID:v26];
+    sessionIDStr = [allocationCopy sessionIDStr];
+    v27 = [v25 sessionWithUniqueID:sessionIDStr];
 
     if (v27)
     {
       Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-      v29 = [v8 request];
-      v30 = [v29 allocateProtocolVersion];
-      [(__CFDictionary *)Mutable setObject:v30 forKeyedSubscript:IDSDSessionReportQRVersionKey];
+      request5 = [allocationCopy request];
+      allocateProtocolVersion = [request5 allocateProtocolVersion];
+      [(__CFDictionary *)Mutable setObject:allocateProtocolVersion forKeyedSubscript:IDSDSessionReportQRVersionKey];
 
       [(__CFDictionary *)Mutable setObject:&off_100C3CC88 forKeyedSubscript:IDSDSessionReportQREventSubTypeKey];
-      [v8 duration];
+      [allocationCopy duration];
       v31 = [NSNumber numberWithDouble:?];
       [(__CFDictionary *)Mutable setObject:v31 forKeyedSubscript:IDSDSessionReportDurationKey];
 
-      v32 = [NSNumber numberWithInteger:a4];
+      v32 = [NSNumber numberWithInteger:status];
       [(__CFDictionary *)Mutable setObject:v32 forKeyedSubscript:IDSDSessionReportResultCodeKey];
 
       [v27 addQREventForRTCReport:Mutable];
@@ -9328,18 +9328,18 @@ LABEL_60:
   }
 }
 
-- (id)_getStatusMessageFromStatusCode:(unint64_t)a3
+- (id)_getStatusMessageFromStatusCode:(unint64_t)code
 {
-  if (a3 <= 5003)
+  if (code <= 5003)
   {
-    if (!a3)
+    if (!code)
     {
       return @"Success";
     }
 
-    if (a3 != 5001)
+    if (code != 5001)
     {
-      if (a3 == 5003)
+      if (code == 5003)
       {
         return @"BadRequest";
       }
@@ -9350,11 +9350,11 @@ LABEL_60:
     return @"ServerInternalError";
   }
 
-  else if (a3 > 5040)
+  else if (code > 5040)
   {
-    if (a3 != 5041)
+    if (code != 5041)
     {
-      if (a3 == 5042)
+      if (code == 5042)
       {
         return @"ExpiredSessionToken";
       }
@@ -9367,9 +9367,9 @@ LABEL_60:
 
   else
   {
-    if (a3 != 5004)
+    if (code != 5004)
     {
-      if (a3 == 5008)
+      if (code == 5008)
       {
         return @"MissingRequiredKey";
       }
@@ -9381,16 +9381,16 @@ LABEL_60:
   }
 }
 
-- (void)_startQRConnectionForSession:(id)a3 isInitiatorsAcceptedSession:(BOOL)a4 withLocalInterfacePreference:(int)a5
+- (void)_startQRConnectionForSession:(id)session isInitiatorsAcceptedSession:(BOOL)acceptedSession withLocalInterfacePreference:(int)preference
 {
-  v5 = *&a5;
-  v6 = a4;
-  v8 = a3;
+  v5 = *&preference;
+  acceptedSessionCopy = acceptedSession;
+  sessionCopy = session;
   v9 = +[IDSFoundationLog QRAllocator];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = @"NO";
-    if (v6)
+    if (acceptedSessionCopy)
     {
       v10 = @"YES";
     }
@@ -9398,27 +9398,27 @@ LABEL_60:
     *buf = 138412546;
     v58 = v10;
     v59 = 2112;
-    v60 = v8;
+    v60 = sessionCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "_startQRConnectionForSession:isInitiatorsAcceptedSession: called {isInitiator: %@} sessionInfo %@", buf, 0x16u);
   }
 
-  if ([(IDSQuickRelayAllocator *)self _hasSessionInfoRequiredKeys:v8])
+  if ([(IDSQuickRelayAllocator *)self _hasSessionInfoRequiredKeys:sessionCopy])
   {
     Value = 0;
     v12 = kIDSQRAllocateKey_RequestID;
-    if (v8 && kIDSQRAllocateKey_RequestID)
+    if (sessionCopy && kIDSQRAllocateKey_RequestID)
     {
-      Value = CFDictionaryGetValue(v8, kIDSQRAllocateKey_RequestID);
+      Value = CFDictionaryGetValue(sessionCopy, kIDSQRAllocateKey_RequestID);
     }
 
     key = Value;
-    v13 = [(__CFDictionary *)v8 objectForKey:kIDSQRAllocateKey_IDSSessionID];
+    v13 = [(__CFDictionary *)sessionCopy objectForKey:kIDSQRAllocateKey_IDSSessionID];
     v14 = v13;
     if (key)
     {
       if (v13 || (v19 = self->_requestIDToSession) != 0 && (v14 = CFDictionaryGetValue(v19, key)) != 0)
       {
-        if (-[__CFString isEqualToString:](v14, "isEqualToString:", kIDSDefaultPairedDeviceID) & 1) != 0 || (-[__CFDictionary objectForKey:](v8, "objectForKey:", kIDSQRAllocateKey_AppID), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v15 isEqualToString:IDSRegistrationServiceTypeCloudMessaging], v15, (v16))
+        if (-[__CFString isEqualToString:](v14, "isEqualToString:", kIDSDefaultPairedDeviceID) & 1) != 0 || (-[__CFDictionary objectForKey:](sessionCopy, "objectForKey:", kIDSQRAllocateKey_AppID), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v15 isEqualToString:IDSRegistrationServiceTypeCloudMessaging], v15, (v16))
         {
           v55 = 0;
           v17 = 1;
@@ -9439,20 +9439,20 @@ LABEL_60:
             [(IDSQuickRelayAllocator *)self _sendAWDMetricsForAllocation:0 status:0 hasRecipientAccepted:1];
           }
 
-          v54 = [(__CFDictionary *)v8 objectForKey:kIDSQRAllocateKey_GroupID];
-          v53 = [(__CFDictionary *)v8 objectForKey:kIDSQRAllocateKey_AllocateType];
+          v54 = [(__CFDictionary *)sessionCopy objectForKey:kIDSQRAllocateKey_GroupID];
+          v53 = [(__CFDictionary *)sessionCopy objectForKey:kIDSQRAllocateKey_AllocateType];
           v23 = OSLogHandleForTransportCategory();
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
           {
-            v24 = [v55 uniqueID];
-            v25 = [v22 connectReadyHandler];
-            v26 = objc_retainBlock(v25);
-            v27 = [v55 shouldConnectToQRServer];
+            uniqueID = [v55 uniqueID];
+            connectReadyHandler = [v22 connectReadyHandler];
+            v26 = objc_retainBlock(connectReadyHandler);
+            shouldConnectToQRServer = [v55 shouldConnectToQRServer];
             v28 = @"NO";
             *buf = 138413058;
-            v58 = v24;
+            v58 = uniqueID;
             v59 = 2048;
-            if (v27)
+            if (shouldConnectToQRServer)
             {
               v28 = @"YES";
             }
@@ -9467,19 +9467,19 @@ LABEL_60:
 
           if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
           {
-            v29 = [v55 uniqueID];
-            v30 = [v22 connectReadyHandler];
+            uniqueID2 = [v55 uniqueID];
+            connectReadyHandler2 = [v22 connectReadyHandler];
             v31 = [v55 shouldConnectToQRServer] ? @"YES" : @"NO";
-            v51 = v30;
+            v51 = connectReadyHandler2;
             v52 = v31;
-            v48 = v29;
+            v48 = uniqueID2;
             v50 = v22;
             _IDSLogTransport();
 
             if (_IDSShouldLog())
             {
-              v32 = [v55 uniqueID];
-              v33 = [v22 connectReadyHandler];
+              uniqueID3 = [v55 uniqueID];
+              connectReadyHandler3 = [v22 connectReadyHandler];
               if ([v55 shouldConnectToQRServer])
               {
                 v34 = @"YES";
@@ -9490,18 +9490,18 @@ LABEL_60:
                 v34 = @"NO";
               }
 
-              v51 = v33;
+              v51 = connectReadyHandler3;
               v52 = v34;
-              v48 = v32;
+              v48 = uniqueID3;
               v50 = v22;
               _IDSLogV();
             }
           }
 
-          if (!v22 || ([v22 connectReadyHandler], v35 = objc_claimAutoreleasedReturnValue(), v36 = v35 == 0, v35, v36) || (objc_msgSend(v22, "connectReadyHandler"), v37 = objc_claimAutoreleasedReturnValue(), (v37)[2](v37, 0, v8), v37, objc_msgSend(v22, "setConnectReadyHandler:", 0), -[NSMutableSet containsObject:](self->_pendingRecipientsAcceptedSessions, "containsObject:", v14)))
+          if (!v22 || ([v22 connectReadyHandler], v35 = objc_claimAutoreleasedReturnValue(), v36 = v35 == 0, v35, v36) || (objc_msgSend(v22, "connectReadyHandler"), v37 = objc_claimAutoreleasedReturnValue(), (v37)[2](v37, 0, sessionCopy), v37, objc_msgSend(v22, "setConnectReadyHandler:", 0), -[NSMutableSet containsObject:](self->_pendingRecipientsAcceptedSessions, "containsObject:", v14)))
           {
             [v55 setShouldConnectToQRServer:{0, v48, v50, v51, v52}];
-            [v55 connectQRServer:v8 withPreferredLocalInterface:v5];
+            [v55 connectQRServer:sessionCopy withPreferredLocalInterface:v5];
           }
 
           if (v54 && v53 && [v53 intValue] == 3)
@@ -9537,9 +9537,9 @@ LABEL_60:
             }
           }
 
-          if (v6)
+          if (acceptedSessionCopy)
           {
-            v46 = [(__CFDictionary *)v8 objectForKey:kIDSQRAllocateKey_RelaySessionID];
+            v46 = [(__CFDictionary *)sessionCopy objectForKey:kIDSQRAllocateKey_RelaySessionID];
             [v55 setAcceptedRelaySession:v46];
           }
 
@@ -9577,7 +9577,7 @@ LABEL_60:
           [v22 setConnectReadyHandler:{0, v48}];
           if (v17)
           {
-            v41 = [(__CFDictionary *)v8 objectForKey:kIDSQRAllocateKey_RemoteDeviceIDKey];
+            v41 = [(__CFDictionary *)sessionCopy objectForKey:kIDSQRAllocateKey_RemoteDeviceIDKey];
             if (!v41)
             {
               v41 = v14;
@@ -9606,7 +9606,7 @@ LABEL_60:
             }
 
             v43 = +[IDSUTunController sharedInstance];
-            [v43 connectGlobalLinkForDevice:v41 sessionInfo:v8 connectReadyHandler:0 withLocalInterfacePreference:0];
+            [v43 connectGlobalLinkForDevice:v41 sessionInfo:sessionCopy connectReadyHandler:0 withLocalInterfacePreference:0];
 
             v44 = self->_requestIDToSession;
             if (v44)
@@ -9670,39 +9670,39 @@ LABEL_60:
   }
 }
 
-- (id)_findSessionWithID:(id)a3
+- (id)_findSessionWithID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[IDSDSessionController sharedInstance];
-  v5 = [v4 sessionWithUniqueID:v3];
+  v5 = [v4 sessionWithUniqueID:dCopy];
 
   return v5;
 }
 
-- (void)_storeMappingFromPushTokenToURIs:(id)a3 fromID:(id)a4 service:(id)a5 cert:(id)a6 forGroup:(id)a7
+- (void)_storeMappingFromPushTokenToURIs:(id)is fromID:(id)d service:(id)service cert:(id)cert forGroup:(id)group
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  isCopy = is;
+  dCopy = d;
+  serviceCopy = service;
+  certCopy = cert;
+  groupCopy = group;
   v17 = +[IDSFoundationLog QRAllocator];
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v51 = v16;
+    v51 = groupCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "_storeMappingFromPushTokenToURIs:fromURI:service:cert:forGroup: called {groupID: %@}", buf, 0xCu);
   }
 
-  v32 = v16;
-  v18 = [(NSMutableDictionary *)self->_pushTokenToURIForGroup objectForKeyedSubscript:v16];
-  v19 = [(IDSQuickRelayAllocator *)self _peerIDManager];
-  v35 = v13;
-  v20 = [IDSURI URIWithPrefixedURI:v13 withServiceLoggingHint:v14];
-  v36 = v12;
-  v33 = v15;
-  v34 = v14;
-  v21 = [v19 sessionTokensForURIs:v12 fromURI:v20 service:v14 fromIdentity:v15 includeSelfDevice:1 fullyRemoveSelfDevice:0];
+  v32 = groupCopy;
+  v18 = [(NSMutableDictionary *)self->_pushTokenToURIForGroup objectForKeyedSubscript:groupCopy];
+  _peerIDManager = [(IDSQuickRelayAllocator *)self _peerIDManager];
+  v35 = dCopy;
+  v20 = [IDSURI URIWithPrefixedURI:dCopy withServiceLoggingHint:serviceCopy];
+  v36 = isCopy;
+  v33 = certCopy;
+  v34 = serviceCopy;
+  v21 = [_peerIDManager sessionTokensForURIs:isCopy fromURI:v20 service:serviceCopy fromIdentity:certCopy includeSelfDevice:1 fullyRemoveSelfDevice:0];
 
   v46 = 0u;
   v47 = 0u;
@@ -9744,8 +9744,8 @@ LABEL_60:
               }
 
               v30 = *(*(&v40 + 1) + 8 * j);
-              v31 = [v23 prefixedURI];
-              [v18 setObject:v31 forKeyedSubscript:v30];
+              prefixedURI = [v23 prefixedURI];
+              [v18 setObject:prefixedURI forKeyedSubscript:v30];
             }
 
             v27 = [v25 countByEnumeratingWithState:&v40 objects:v48 count:16];
@@ -9762,19 +9762,19 @@ LABEL_60:
   }
 }
 
-- (id)_uriToParticipantID:(id)a3
+- (id)_uriToParticipantID:(id)d
 {
-  v26 = a3;
+  dCopy = d;
   v3 = +[IDSFoundationLog QRAllocator];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v38 = v26;
+    v38 = dCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "_uriToParticipantID: called sessionInfo %@", buf, 0xCu);
   }
 
-  v25 = [(NSMutableDictionary *)v26 objectForKeyedSubscript:kIDSQRAllocateKey_GroupID];
-  v4 = [(NSMutableDictionary *)v26 objectForKeyedSubscript:kIDSQRAllocateKey_Allocations];
+  v25 = [(NSMutableDictionary *)dCopy objectForKeyedSubscript:kIDSQRAllocateKey_GroupID];
+  v4 = [(NSMutableDictionary *)dCopy objectForKeyedSubscript:kIDSQRAllocateKey_Allocations];
   v29 = [(NSMutableDictionary *)self->_pushTokenToURIForGroup objectForKeyedSubscript:v25];
   v5 = +[NSMutableDictionary dictionary];
   v34 = 0u;
@@ -9866,23 +9866,23 @@ LABEL_21:
   return v19;
 }
 
-- (id)getRelaySessionIDForIDSSessionID:(id)a3 pushToken:(id)a4
+- (id)getRelaySessionIDForIDSSessionID:(id)d pushToken:(id)token
 {
-  v21 = a3;
-  v6 = a4;
+  dCopy = d;
+  tokenCopy = token;
   v7 = +[IDSFoundationLog QRAllocator];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v28 = v21;
+    v28 = dCopy;
     v29 = 2112;
-    v30 = v6;
+    v30 = tokenCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "getRelaySessionIDForIDSSessionID:pushToken: called {sessionID: %@, pushToken: %@}", buf, 0x16u);
   }
 
   im_assert_primary_base_queue();
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(IDSQuickRelayAllocator *)self _findAllocationListForSessionID:v21];
+  v8 = [(IDSQuickRelayAllocator *)self _findAllocationListForSessionID:dCopy];
   if ([v8 count])
   {
     v24 = 0u;
@@ -9904,11 +9904,11 @@ LABEL_21:
           }
 
           v13 = *(*(&v22 + 1) + 8 * i);
-          v14 = [v13 pushTokenToQRSessionID];
-          v15 = v14;
-          if (v14)
+          pushTokenToQRSessionID = [v13 pushTokenToQRSessionID];
+          v15 = pushTokenToQRSessionID;
+          if (pushTokenToQRSessionID)
           {
-            v16 = v6 != 0;
+            v16 = tokenCopy != 0;
           }
 
           else
@@ -9918,8 +9918,8 @@ LABEL_21:
 
           if (v16)
           {
-            v17 = [v13 pushTokenToQRSessionID];
-            v18 = CFDictionaryGetValue(v17, v6);
+            pushTokenToQRSessionID2 = [v13 pushTokenToQRSessionID];
+            v18 = CFDictionaryGetValue(pushTokenToQRSessionID2, tokenCopy);
 
             if (v18)
             {
@@ -9946,7 +9946,7 @@ LABEL_21:
   else
   {
     os_unfair_lock_unlock(&self->_lock);
-    v18 = [(NSMutableDictionary *)self->_idsSessionIDToqrSessionID objectForKey:v21];
+    v18 = [(NSMutableDictionary *)self->_idsSessionIDToqrSessionID objectForKey:dCopy];
     if (v18)
     {
       goto LABEL_27;
@@ -9957,7 +9957,7 @@ LABEL_21:
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v28 = v21;
+    v28 = dCopy;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "failed to find allocation for session %@", buf, 0xCu);
   }
 
@@ -9979,21 +9979,21 @@ LABEL_27:
   return v18;
 }
 
-- (id)getPushTokenForRelaySessionID:(id)a3 relaySessionID:(id)a4
+- (id)getPushTokenForRelaySessionID:(id)d relaySessionID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v8 = +[IDSFoundationLog QRAllocator];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v25 = v6;
+    v25 = dCopy;
     v26 = 2112;
-    v27 = v7;
+    v27 = iDCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "getPushTokenForRelaySessionID:relaySessionID called {sessionID: %@, relaySessionID: %@}", buf, 0x16u);
   }
 
-  v9 = [(IDSQuickRelayAllocator *)self _filterSelfAllocationsForSessionID:v6];
+  v9 = [(IDSQuickRelayAllocator *)self _filterSelfAllocationsForSessionID:dCopy];
   if ([v9 count])
   {
     os_unfair_lock_lock(&self->_lock);
@@ -10015,13 +10015,13 @@ LABEL_27:
             objc_enumerationMutation(v10);
           }
 
-          v14 = [*(*(&v19 + 1) + 8 * i) pushTokenToQRSessionID];
-          v15 = [v14 allKeysForObject:v7];
+          pushTokenToQRSessionID = [*(*(&v19 + 1) + 8 * i) pushTokenToQRSessionID];
+          v15 = [pushTokenToQRSessionID allKeysForObject:iDCopy];
 
           if ([v15 count])
           {
             os_unfair_lock_unlock(&self->_lock);
-            v16 = [v15 firstObject];
+            firstObject = [v15 firstObject];
 
             goto LABEL_21;
           }
@@ -10046,7 +10046,7 @@ LABEL_27:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v25 = v6;
+      v25 = dCopy;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "failed to find allocation for session %@", buf, 0xCu);
     }
 
@@ -10063,22 +10063,22 @@ LABEL_27:
     }
   }
 
-  v16 = 0;
+  firstObject = 0;
 LABEL_21:
 
-  return v16;
+  return firstObject;
 }
 
-- (void)requestAllocationForRecipient:(id)a3
+- (void)requestAllocationForRecipient:(id)recipient
 {
-  v4 = a3;
+  recipientCopy = recipient;
   im_assert_primary_base_queue();
-  value = v4;
+  value = recipientCopy;
   v5 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v54 = v4;
+    v54 = recipientCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "IDSSession ID %@ requested for a QR allocation", buf, 0xCu);
   }
 
@@ -10086,19 +10086,19 @@ LABEL_21:
   {
     if (_IDSShouldLogTransport())
     {
-      v37 = v4;
+      v37 = recipientCopy;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v37 = v4;
+        v37 = recipientCopy;
         _IDSLogV();
       }
     }
   }
 
-  if (v4)
+  if (recipientCopy)
   {
-    theDict = [(IDSQuickRelayAllocator *)self _parseQuickRelayDefaults:v4 gropuID:0];
+    theDict = [(IDSQuickRelayAllocator *)self _parseQuickRelayDefaults:recipientCopy gropuID:0];
     if (theDict)
     {
       v6 = OSLogHandleForTransportCategory();
@@ -10124,11 +10124,11 @@ LABEL_21:
       }
 
       v7 = +[NSUUID UUID];
-      v8 = [v7 UUIDString];
+      uUIDString = [v7 UUIDString];
 
-      if (v8)
+      if (uUIDString)
       {
-        CFDictionarySetValue(theDict, kIDSQRAllocateKey_RequestID, v8);
+        CFDictionarySetValue(theDict, kIDSQRAllocateKey_RequestID, uUIDString);
       }
 
       else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -10149,7 +10149,7 @@ LABEL_21:
     else
     {
       os_unfair_lock_lock(&self->_lock);
-      v10 = [(IDSQuickRelayAllocator *)self _findAllocationListForSessionID:v4];
+      v10 = [(IDSQuickRelayAllocator *)self _findAllocationListForSessionID:recipientCopy];
       v11 = objc_alloc_init(NSMutableArray);
       v51 = 0u;
       v52 = 0u;
@@ -10174,8 +10174,8 @@ LABEL_21:
             v46 = 0u;
             v47 = 0u;
             v48 = 0u;
-            v17 = [v16 responses];
-            v18 = [v17 countByEnumeratingWithState:&v45 objects:v58 count:16];
+            responses = [v16 responses];
+            v18 = [responses countByEnumeratingWithState:&v45 objects:v58 count:16];
             if (v18)
             {
               v19 = *v46;
@@ -10185,7 +10185,7 @@ LABEL_21:
                 {
                   if (*v46 != v19)
                   {
-                    objc_enumerationMutation(v17);
+                    objc_enumerationMutation(responses);
                   }
 
                   if (v11)
@@ -10198,7 +10198,7 @@ LABEL_21:
                   }
                 }
 
-                v18 = [v17 countByEnumeratingWithState:&v45 objects:v58 count:16];
+                v18 = [responses countByEnumeratingWithState:&v45 objects:v58 count:16];
               }
 
               while (v18);
@@ -10354,28 +10354,28 @@ LABEL_21:
   }
 }
 
-- (void)setInitiatorsAcceptedToken:(id)a3 pushToken:(id)a4
+- (void)setInitiatorsAcceptedToken:(id)token pushToken:(id)pushToken
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  pushTokenCopy = pushToken;
   v8 = +[IDSFoundationLog QRAllocator];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v7;
+    v13 = pushTokenCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "setInitiatorsAcceptedToken:pushToken: called {pushToken: %@}", buf, 0xCu);
   }
 
   im_assert_primary_base_queue();
-  if (v6 && v7)
+  if (tokenCopy && pushTokenCopy)
   {
     v9 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v13 = v6;
+      v13 = tokenCopy;
       v14 = 2112;
-      v15 = v7;
+      v15 = pushTokenCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "add accepted session %@ with token %@", buf, 0x16u);
     }
 
@@ -10398,55 +10398,55 @@ LABEL_21:
       self->_initiatorsAcceptedSessionsWithToken = Mutable;
     }
 
-    CFDictionarySetValue(self->_initiatorsAcceptedSessionsWithToken, v6, v7);
+    CFDictionarySetValue(self->_initiatorsAcceptedSessionsWithToken, tokenCopy, pushTokenCopy);
   }
 }
 
-- (int64_t)getServerProviderForIDSSessionID:(id)a3
+- (int64_t)getServerProviderForIDSSessionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[IDSFoundationLog QRAllocator];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "getServerProviderForIDSSessionID: called {sessionID: %@}", &v13, 0xCu);
   }
 
   im_assert_primary_base_queue();
   os_unfair_lock_lock(&self->_lock);
-  v6 = [(IDSQuickRelayAllocator *)self _findAllocationListForSessionID:v4];
-  v7 = [v6 firstObject];
-  v8 = [v7 responses];
-  v9 = [v8 anyObject];
+  v6 = [(IDSQuickRelayAllocator *)self _findAllocationListForSessionID:dCopy];
+  firstObject = [v6 firstObject];
+  responses = [firstObject responses];
+  anyObject = [responses anyObject];
 
   os_unfair_lock_unlock(&self->_lock);
   Value = 0;
-  if (v9 && kIDSQRAllocateKey_Provider)
+  if (anyObject && kIDSQRAllocateKey_Provider)
   {
-    Value = CFDictionaryGetValue(v9, kIDSQRAllocateKey_Provider);
+    Value = CFDictionaryGetValue(anyObject, kIDSQRAllocateKey_Provider);
   }
 
-  v11 = [Value unsignedIntValue];
+  unsignedIntValue = [Value unsignedIntValue];
 
-  return v11;
+  return unsignedIntValue;
 }
 
-- (void)reportAWDAllocatorEvent:(unsigned int)a3 relayProviderType:(int64_t)a4 transport:(int64_t)a5 localRAT:(unsigned int)a6 duration:(unint64_t)a7 idsSessionID:(id)a8 reportingDataBlob:(id)a9 isInitiator:(BOOL)a10 serverSoftwareVersion:(id)a11
+- (void)reportAWDAllocatorEvent:(unsigned int)event relayProviderType:(int64_t)type transport:(int64_t)transport localRAT:(unsigned int)t duration:(unint64_t)duration idsSessionID:(id)d reportingDataBlob:(id)blob isInitiator:(BOOL)self0 serverSoftwareVersion:(id)self1
 {
-  v54 = *&a3;
-  v50 = a8;
-  v48 = a9;
-  v49 = a11;
+  v54 = *&event;
+  dCopy = d;
+  blobCopy = blob;
+  versionCopy = version;
   v12 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = _IDSStunTransportStrings[a5];
+    v13 = _IDSStunTransportStrings[transport];
     v14 = IDSRadioAccessTechnologyToString();
     v15 = @"NO";
     *buf = 67110658;
     v56 = v54;
-    if (a10)
+    if (initiator)
     {
       v15 = @"YES";
     }
@@ -10456,13 +10456,13 @@ LABEL_21:
     v59 = 2080;
     v60 = v14;
     v61 = 1024;
-    v62 = a7;
+    durationCopy = duration;
     v63 = 2112;
-    v64 = v50;
+    v64 = dCopy;
     v65 = 2112;
     v66 = v15;
     v67 = 2112;
-    v68 = v49;
+    v68 = versionCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "report AWD allocator event %u, transport [%s], RAT [%s], duration %u ms, idsSessionID %@, isInitiator:%@, serverSoftwareVersion: %@", buf, 0x40u);
   }
 
@@ -10482,29 +10482,29 @@ LABEL_21:
 
   v16 = [IDSQuickRelayMetric alloc];
   v17 = [NSNumber numberWithUnsignedInt:v54];
-  v18 = [NSNumber numberWithUnsignedLongLong:a7];
-  v19 = [NSNumber numberWithInteger:a4];
-  v20 = [NSNumber numberWithInteger:a5];
-  v21 = [NSNumber numberWithUnsignedInt:a6];
-  v22 = [NSNumber numberWithBool:a10];
+  v18 = [NSNumber numberWithUnsignedLongLong:duration];
+  v19 = [NSNumber numberWithInteger:type];
+  v20 = [NSNumber numberWithInteger:transport];
+  v21 = [NSNumber numberWithUnsignedInt:t];
+  v22 = [NSNumber numberWithBool:initiator];
   v23 = _IDSAllocateProtocolVersionNumber();
   v24 = [v16 initWithType:&off_100C3CB38 eventSubType:v17 duration:v18 resultCode:0 providerType:v19 transportType:v20 interfaceType:v21 skeEnabled:0 isInitiator:v22 protocolVersion:v23 retryCount:0 serviceName:0 subServiceName:0 participantCount:0];
 
   v25 = +[IDSCoreAnalyticsLogger defaultLogger];
   [v25 logMetric:v24];
 
-  v26 = [(IDSQuickRelayAllocator *)self _getIDSAWDLoggingInstance];
+  _getIDSAWDLoggingInstance = [(IDSQuickRelayAllocator *)self _getIDSAWDLoggingInstance];
   v27 = [NSNumber numberWithUnsignedInt:v54];
-  v28 = [NSNumber numberWithUnsignedLongLong:a7];
-  v29 = [NSNumber numberWithInteger:a4];
-  v30 = [NSNumber numberWithInteger:a5];
-  v31 = [NSNumber numberWithUnsignedInt:a6];
-  v32 = [NSNumber numberWithBool:a10];
+  v28 = [NSNumber numberWithUnsignedLongLong:duration];
+  v29 = [NSNumber numberWithInteger:type];
+  v30 = [NSNumber numberWithInteger:transport];
+  v31 = [NSNumber numberWithUnsignedInt:t];
+  v32 = [NSNumber numberWithBool:initiator];
   v33 = _IDSAllocateProtocolVersionNumber();
-  [v26 IDSQuickRelayEventType:&off_100C3CB38 eventSubType:v27 duration:v28 resultCode:0 providerType:v29 transportType:v30 interfaceType:v31 skeEnabled:0 isInitiator:v32 protocolVersion:v33 retryCount:0 serviceName:0 subServiceName:0 participantCount:0];
+  [_getIDSAWDLoggingInstance IDSQuickRelayEventType:&off_100C3CB38 eventSubType:v27 duration:v28 resultCode:0 providerType:v29 transportType:v30 interfaceType:v31 skeEnabled:0 isInitiator:v32 protocolVersion:v33 retryCount:0 serviceName:0 subServiceName:0 participantCount:0];
 
   v34 = +[IDSDSessionController sharedInstance];
-  v35 = [v34 sessionWithUniqueID:v50];
+  v35 = [v34 sessionWithUniqueID:dCopy];
 
   if (v35)
   {
@@ -10515,21 +10515,21 @@ LABEL_21:
     v38 = [NSNumber numberWithUnsignedInt:v54];
     [(__CFDictionary *)Mutable setObject:v38 forKeyedSubscript:IDSDSessionReportQREventSubTypeKey];
 
-    v39 = [NSNumber numberWithUnsignedLongLong:a7];
+    v39 = [NSNumber numberWithUnsignedLongLong:duration];
     [(__CFDictionary *)Mutable setObject:v39 forKeyedSubscript:IDSDSessionReportDurationKey];
 
     [(__CFDictionary *)Mutable setObject:&off_100C3CC10 forKeyedSubscript:IDSDSessionReportResultCodeKey];
-    v40 = [NSNumber numberWithInteger:a5];
+    v40 = [NSNumber numberWithInteger:transport];
     [(__CFDictionary *)Mutable setObject:v40 forKeyedSubscript:IDSDSessionReportTransportTypeKey];
 
-    v41 = [NSNumber numberWithUnsignedInt:a6];
+    v41 = [NSNumber numberWithUnsignedInt:t];
     [(__CFDictionary *)Mutable setObject:v41 forKeyedSubscript:IDSDSessionReportLocalInterfaceTypeKey];
 
-    [(__CFDictionary *)Mutable setObject:v48 forKeyedSubscript:IDSDSessionReportReportingDataBlobKey];
-    v42 = [NSNumber numberWithBool:a10];
+    [(__CFDictionary *)Mutable setObject:blobCopy forKeyedSubscript:IDSDSessionReportReportingDataBlobKey];
+    v42 = [NSNumber numberWithBool:initiator];
     [(__CFDictionary *)Mutable setObject:v42 forKeyedSubscript:IDSDSessionReportIsInitiatorKey];
 
-    [(__CFDictionary *)Mutable setObject:v49 forKeyedSubscript:IDSDSessionReportReportingSoftwareVersionKey];
+    [(__CFDictionary *)Mutable setObject:versionCopy forKeyedSubscript:IDSDSessionReportReportingSoftwareVersionKey];
     if (v54 == 402 && self->_timeBase)
     {
       v43 = +[NSDate date];
@@ -10564,14 +10564,14 @@ LABEL_21:
   }
 }
 
-- (void)cleanUpCachedMappings:(id)a3
+- (void)cleanUpCachedMappings:(id)mappings
 {
-  v4 = a3;
+  mappingsCopy = mappings;
   v5 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = v4;
+    v8 = mappingsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "cleanUpCachedMappings for group %@", buf, 0xCu);
   }
 
@@ -10579,43 +10579,43 @@ LABEL_21:
   {
     if (_IDSShouldLogTransport())
     {
-      v6 = v4;
+      v6 = mappingsCopy;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v6 = v4;
+        v6 = mappingsCopy;
         _IDSLogV();
       }
     }
   }
 
-  [(NSMutableDictionary *)self->_pushTokenToURIForGroup setObject:0 forKeyedSubscript:v4, v6];
+  [(NSMutableDictionary *)self->_pushTokenToURIForGroup setObject:0 forKeyedSubscript:mappingsCopy, v6];
 }
 
-- (void)invalidateSession:(id)a3 isExpiryPurging:(BOOL)a4
+- (void)invalidateSession:(id)session isExpiryPurging:(BOOL)purging
 {
-  v6 = a3;
+  sessionCopy = session;
   v7 = im_primary_queue();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1005AC630;
   block[3] = &unk_100BD8FC0;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = sessionCopy;
+  purgingCopy = purging;
+  v8 = sessionCopy;
   dispatch_async(v7, block);
 }
 
-- (void)_invalidateSession:(id)a3 isExpiryPurging:(BOOL)a4
+- (void)_invalidateSession:(id)session isExpiryPurging:(BOOL)purging
 {
-  v6 = a3;
+  sessionCopy = session;
   im_assert_primary_base_queue();
   v7 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v6;
+    v12 = sessionCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "invalidate all allocations for IDSSession ID %@", buf, 0xCu);
   }
 
@@ -10623,30 +10623,30 @@ LABEL_21:
   {
     if (_IDSShouldLogTransport())
     {
-      v10 = v6;
+      v10 = sessionCopy;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v10 = v6;
+        v10 = sessionCopy;
         _IDSLogV();
       }
     }
   }
 
-  [(IDSQuickRelayAllocator *)self _removeAllAllocationsForSessionID:v6, v10];
-  if (!a4)
+  [(IDSQuickRelayAllocator *)self _removeAllAllocationsForSessionID:sessionCopy, v10];
+  if (!purging)
   {
-    [(NSMutableSet *)self->_pendingRecipientsAcceptedSessions removeObject:v6];
-    [(NSMutableDictionary *)self->_initiatorsAcceptedSessionsWithToken removeObjectForKey:v6];
+    [(NSMutableSet *)self->_pendingRecipientsAcceptedSessions removeObject:sessionCopy];
+    [(NSMutableDictionary *)self->_initiatorsAcceptedSessionsWithToken removeObjectForKey:sessionCopy];
   }
 
-  v8 = [(NSMutableDictionary *)self->_requestIDToSession allKeysForObject:v6];
+  v8 = [(NSMutableDictionary *)self->_requestIDToSession allKeysForObject:sessionCopy];
   [(NSMutableDictionary *)self->_requestIDToSession removeObjectsForKeys:v8];
-  [(NSMutableDictionary *)self->_idsSessionIDToqrSessionID removeObjectForKey:v6];
+  [(NSMutableDictionary *)self->_idsSessionIDToqrSessionID removeObjectForKey:sessionCopy];
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableDictionary *)self->_sessionToRequestIDToAllocateTime removeObjectForKey:v6];
+  [(NSMutableDictionary *)self->_sessionToRequestIDToAllocateTime removeObjectForKey:sessionCopy];
   os_unfair_lock_unlock(&self->_lock);
-  v9 = [(NSMutableDictionary *)self->_allocateResponses objectForKey:v6];
+  v9 = [(NSMutableDictionary *)self->_allocateResponses objectForKey:sessionCopy];
   if (v9)
   {
     if (qword_100CBF0F0 != -1)
@@ -10659,9 +10659,9 @@ LABEL_21:
   }
 }
 
-- (void)invalidateAllocation:(id)a3
+- (void)invalidateAllocation:(id)allocation
 {
-  v4 = a3;
+  allocationCopy = allocation;
   v5 = +[IDSFoundationLog QRAllocator];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -10675,36 +10675,36 @@ LABEL_21:
   v8[2] = sub_1005AC974;
   v8[3] = &unk_100BD6E40;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = allocationCopy;
+  v7 = allocationCopy;
   dispatch_async(v6, v8);
 }
 
-- (void)_addAllocationForSession:(id)a3 allocation:(id)a4
+- (void)_addAllocationForSession:(id)session allocation:(id)allocation
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  sessionCopy = session;
+  allocationCopy = allocation;
+  if (!sessionCopy)
   {
     goto LABEL_25;
   }
 
   v8 = +[IDSDSessionController sharedInstance];
-  v9 = [v8 sessionWithUniqueID:v6];
+  v9 = [v8 sessionWithUniqueID:sessionCopy];
 
-  v10 = [v9 sharedSessionHasJoined];
+  sharedSessionHasJoined = [v9 sharedSessionHasJoined];
   v11 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = @"NO";
-    if (v10)
+    if (sharedSessionHasJoined)
     {
       v12 = @"YES";
     }
 
     *buf = 138412802;
-    v18 = v6;
-    if (!v7)
+    v18 = sessionCopy;
+    if (!allocationCopy)
     {
       v12 = @"invalid";
     }
@@ -10712,7 +10712,7 @@ LABEL_21:
     v19 = 2112;
     v20 = v12;
     v21 = 2112;
-    v22 = v7;
+    v22 = allocationCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Add allocation For Session: %@, _sharedSessionHasJoined=%@, %@", buf, 0x20u);
   }
 
@@ -10729,10 +10729,10 @@ LABEL_21:
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v13 = [(IDSQuickRelayAllocator *)self _findAllocationListForSessionID:v6];
+  v13 = [(IDSQuickRelayAllocator *)self _findAllocationListForSessionID:sessionCopy];
   if (v13)
   {
-    if (!v7)
+    if (!allocationCopy)
     {
       goto LABEL_18;
     }
@@ -10740,14 +10740,14 @@ LABEL_21:
 LABEL_16:
     if (v13)
     {
-      CFArrayAppendValue(v13, v7);
+      CFArrayAppendValue(v13, allocationCopy);
     }
 
     goto LABEL_18;
   }
 
   v13 = objc_alloc_init(NSMutableArray);
-  if (v7)
+  if (allocationCopy)
   {
     goto LABEL_16;
   }
@@ -10763,7 +10763,7 @@ LABEL_18:
   v16 = v13;
   if (v13)
   {
-    CFDictionarySetValue(self->_sessionToAllocations, v6, v16);
+    CFDictionarySetValue(self->_sessionToAllocations, sessionCopy, v16);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -10775,14 +10775,14 @@ LABEL_18:
 LABEL_25:
 }
 
-- (void)_discardAllocation:(id)a3
+- (void)_discardAllocation:(id)allocation
 {
-  v4 = a3;
-  if (v4)
+  allocationCopy = allocation;
+  if (allocationCopy)
   {
     v5 = [NSString alloc];
-    v6 = [v4 sessionIDStr];
-    v7 = [v5 initWithString:v6];
+    sessionIDStr = [allocationCopy sessionIDStr];
+    v7 = [v5 initWithString:sessionIDStr];
 
     os_unfair_lock_lock(&self->_lock);
     v8 = [(IDSQuickRelayAllocator *)self _findAllocationListForSessionID:v7];
@@ -10792,7 +10792,7 @@ LABEL_25:
       *buf = 138412546;
       v15 = v7;
       v16 = 2112;
-      v17 = v4;
+      v17 = allocationCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Discard allocation For Session: %@, %@", buf, 0x16u);
     }
 
@@ -10801,12 +10801,12 @@ LABEL_25:
       if (_IDSShouldLogTransport())
       {
         v12 = v7;
-        v13 = v4;
+        v13 = allocationCopy;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
           v12 = v7;
-          v13 = v4;
+          v13 = allocationCopy;
           _IDSLogV();
         }
       }
@@ -10814,7 +10814,7 @@ LABEL_25:
 
     if (v8)
     {
-      [v8 removeObject:v4];
+      [v8 removeObject:allocationCopy];
       os_unfair_lock_unlock(&self->_lock);
       if (![v8 count])
       {
@@ -10869,13 +10869,13 @@ LABEL_25:
   }
 }
 
-- (void)_removeAllAllocationsForSessionID:(id)a3
+- (void)_removeAllAllocationsForSessionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
-  v23 = self;
-  key = v4;
-  v25 = [(IDSQuickRelayAllocator *)self _findAllocationListForSessionID:v4];
+  selfCopy = self;
+  key = dCopy;
+  v25 = [(IDSQuickRelayAllocator *)self _findAllocationListForSessionID:dCopy];
   v5 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -10935,8 +10935,8 @@ LABEL_25:
           v34 = 0u;
           v29 = v9;
           v30 = v11;
-          v12 = [v11 responses];
-          v13 = [v12 countByEnumeratingWithState:&v31 objects:v39 count:16];
+          responses = [v11 responses];
+          v13 = [responses countByEnumeratingWithState:&v31 objects:v39 count:16];
           if (v13)
           {
             v14 = *v32;
@@ -10946,7 +10946,7 @@ LABEL_25:
               {
                 if (*v32 != v14)
                 {
-                  objc_enumerationMutation(v12);
+                  objc_enumerationMutation(responses);
                 }
 
                 v16 = *(*(&v31 + 1) + 8 * i);
@@ -10981,7 +10981,7 @@ LABEL_25:
                 }
               }
 
-              v13 = [v12 countByEnumeratingWithState:&v31 objects:v39 count:16];
+              v13 = [responses countByEnumeratingWithState:&v31 objects:v39 count:16];
             }
 
             while (v13);
@@ -11002,7 +11002,7 @@ LABEL_25:
     v6 = v25;
     if (key)
     {
-      sessionToAllocations = v23->_sessionToAllocations;
+      sessionToAllocations = selfCopy->_sessionToAllocations;
       if (sessionToAllocations)
       {
         CFDictionaryRemoveValue(sessionToAllocations, key);
@@ -11011,14 +11011,14 @@ LABEL_25:
     }
   }
 
-  os_unfair_lock_unlock(&v23->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
 }
 
-- (id)_filterSelfAllocationsForSessionID:(id)a3
+- (id)_filterSelfAllocationsForSessionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(IDSQuickRelayAllocator *)self _findAllocationListForSessionID:v4];
+  v5 = [(IDSQuickRelayAllocator *)self _findAllocationListForSessionID:dCopy];
   v6 = objc_alloc_init(NSMutableIndexSet);
   if ([v5 count])
   {
@@ -11026,11 +11026,11 @@ LABEL_25:
     do
     {
       v8 = [v5 objectAtIndexedSubscript:v7];
-      v9 = [v8 request];
-      v10 = [v9 allocateType];
-      v11 = [v10 intValue];
+      request = [v8 request];
+      allocateType = [request allocateType];
+      intValue = [allocateType intValue];
 
-      if (v11 == 2)
+      if (intValue == 2)
       {
         [v6 addIndex:v7];
       }
@@ -11048,15 +11048,15 @@ LABEL_25:
   return v12;
 }
 
-- (id)_findAllocationListForSessionID:(id)a3
+- (id)_findAllocationListForSessionID:(id)d
 {
   Value = 0;
-  if (a3)
+  if (d)
   {
     sessionToAllocations = self->_sessionToAllocations;
     if (sessionToAllocations)
     {
-      Value = CFDictionaryGetValue(sessionToAllocations, a3);
+      Value = CFDictionaryGetValue(sessionToAllocations, d);
       v3 = vars8;
     }
   }
@@ -11064,26 +11064,26 @@ LABEL_25:
   return Value;
 }
 
-- (id)_findAllocationForSessionID:(id)a3 requestIDStr:(id)a4
+- (id)_findAllocationForSessionID:(id)d requestIDStr:(id)str
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  strCopy = str;
   v8 = +[IDSFoundationLog QRAllocator];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v28 = v6;
+    v28 = dCopy;
     v29 = 2112;
-    v30 = v7;
+    v30 = strCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "_findAllocationForSessionID:requestIDStr called {sessionID: %@, requestID: %@}", buf, 0x16u);
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v9 = [(IDSQuickRelayAllocator *)self _findAllocationListForSessionID:v6];
+  v9 = [(IDSQuickRelayAllocator *)self _findAllocationListForSessionID:dCopy];
   v10 = v9;
   if (v9)
   {
-    v21 = v6;
+    v21 = dCopy;
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
@@ -11104,14 +11104,14 @@ LABEL_25:
           }
 
           v16 = *(*(&v22 + 1) + 8 * i);
-          v17 = [v16 requestIDStr];
-          v18 = [v17 isEqualToIgnoringCase:v7];
+          requestIDStr = [v16 requestIDStr];
+          v18 = [requestIDStr isEqualToIgnoringCase:strCopy];
 
           if (v18)
           {
             os_unfair_lock_unlock(&self->_lock);
             v19 = v16;
-            v6 = v21;
+            dCopy = v21;
             goto LABEL_17;
           }
         }
@@ -11126,7 +11126,7 @@ LABEL_25:
       }
     }
 
-    v6 = v21;
+    dCopy = v21;
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -11134,9 +11134,9 @@ LABEL_25:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v28 = v6;
+    v28 = dCopy;
     v29 = 2112;
-    v30 = v7;
+    v30 = strCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "_findAllocationForSessionID, {sessionID: %@, requestID: %@} not found", buf, 0x16u);
   }
 
@@ -11146,10 +11146,10 @@ LABEL_17:
   return v19;
 }
 
-- (id)_parseQuickRelayDefaults:(id)a3 gropuID:(id)a4
+- (id)_parseQuickRelayDefaults:(id)defaults gropuID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  defaultsCopy = defaults;
+  dCopy = d;
   v8 = IMGetDomainValueForKey();
   v9 = [v8 componentsSeparatedByString:@":"];
   if ([v9 count] == 2)
@@ -11161,7 +11161,7 @@ LABEL_17:
     {
       v54 = [[NSData alloc] initWithBytes:v64 + 4 length:4];
       v11 = [v9 objectAtIndex:1];
-      v53 = [v11 integerValue];
+      integerValue = [v11 integerValue];
 
       v12 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -11169,7 +11169,7 @@ LABEL_17:
         *buf = 138412546;
         v61 = v10;
         v62 = 1024;
-        LODWORD(v63) = v53;
+        LODWORD(v63) = integerValue;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "decoded relay-server-address %@:%u", buf, 0x12u);
       }
 
@@ -11178,12 +11178,12 @@ LABEL_17:
         if (_IDSShouldLogTransport())
         {
           v47 = v10;
-          v48 = v53;
+          v48 = integerValue;
           _IDSLogTransport();
           if (_IDSShouldLog())
           {
             v47 = v10;
-            v48 = v53;
+            v48 = integerValue;
             _IDSLogV();
           }
         }
@@ -11231,12 +11231,12 @@ LABEL_17:
       }
 
       v49 = v15;
-      v57 = [v15 UUIDString];
+      uUIDString = [v15 UUIDString];
       v20 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v61 = v57;
+        v61 = uUIDString;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "decoded base64 relay-session-id %@", buf, 0xCu);
       }
 
@@ -11296,7 +11296,7 @@ LABEL_17:
         }
       }
 
-      if (v54 && v53 && v57 && v56 && v55)
+      if (v54 && integerValue && uUIDString && v56 && v55)
       {
         Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
         ids_monotonic_time();
@@ -11330,7 +11330,7 @@ LABEL_17:
           }
         }
 
-        v29 = v6;
+        v29 = defaultsCopy;
         if (v29)
         {
           CFDictionarySetValue(Mutable, kIDSQRAllocateKey_IDSSessionID, v29);
@@ -11345,7 +11345,7 @@ LABEL_17:
           }
         }
 
-        v31 = v7;
+        v31 = dCopy;
         if (v31)
         {
           CFDictionarySetValue(Mutable, kIDSQRAllocateKey_GroupID, v31);
@@ -11365,7 +11365,7 @@ LABEL_17:
         v35 = v54;
         CFDictionarySetValue(Mutable, kIDSQRAllocateKey_RelayAddress, v35);
 
-        v36 = [NSNumber numberWithUnsignedShort:v53];
+        v36 = [NSNumber numberWithUnsignedShort:integerValue];
         if (v36)
         {
           CFDictionarySetValue(Mutable, kIDSQRAllocateKey_RelayPort, v36);
@@ -11380,7 +11380,7 @@ LABEL_17:
           }
         }
 
-        v38 = v57;
+        v38 = uUIDString;
         CFDictionarySetValue(Mutable, kIDSQRAllocateKey_RelaySessionID, v38);
 
         v39 = v56;
@@ -11499,33 +11499,33 @@ LABEL_17:
   return v16;
 }
 
-- (void)enablePushHandler:(BOOL)a3
+- (void)enablePushHandler:(BOOL)handler
 {
   v5 = im_primary_queue();
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1005AE6EC;
   v6[3] = &unk_100BD7478;
-  v7 = a3;
+  handlerCopy = handler;
   v6[4] = self;
   dispatch_async(v5, v6);
 }
 
-- (unint64_t)getLocalParticipantIDForRelaySessionID:(id)a3
+- (unint64_t)getLocalParticipantIDForRelaySessionID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->_sessionToLocalParticipantID objectForKey:a3];
-  v4 = [v3 unsignedLongLongValue];
+  v3 = [(NSMutableDictionary *)self->_sessionToLocalParticipantID objectForKey:d];
+  unsignedLongLongValue = [v3 unsignedLongLongValue];
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
-- (void)handler:(id)a3 didReceiveMessage:(id)a4 forTopic:(id)a5 fromID:(id)a6 messageContext:(id)a7
+- (void)handler:(id)handler didReceiveMessage:(id)message forTopic:(id)topic fromID:(id)d messageContext:(id)context
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  handlerCopy = handler;
+  messageCopy = message;
+  topicCopy = topic;
+  dCopy = d;
+  contextCopy = context;
   v17 = +[IDSFoundationLog QRAllocator];
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
@@ -11535,17 +11535,17 @@ LABEL_17:
 
   im_assert_primary_base_queue();
   v18 = objc_opt_class();
-  v19 = sub_10001B8C4(v18, v13, @"c");
-  v20 = [v19 intValue];
+  v19 = sub_10001B8C4(v18, messageCopy, @"c");
+  intValue = [v19 intValue];
 
-  if (v20 == 255)
+  if (intValue == 255)
   {
-    [(IDSQuickRelayAllocator *)self _processAllocationStatusResult:v13];
+    [(IDSQuickRelayAllocator *)self _processAllocationStatusResult:messageCopy];
   }
 
-  else if (v20 == 200)
+  else if (intValue == 200)
   {
-    [(IDSQuickRelayAllocator *)self _handleIncomingAllocateResponse:v13 isFromCache:0 requestOptions:0];
+    [(IDSQuickRelayAllocator *)self _handleIncomingAllocateResponse:messageCopy isFromCache:0 requestOptions:0];
   }
 
   else
@@ -11554,7 +11554,7 @@ LABEL_17:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v23 = v13;
+      v23 = messageCopy;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "received an unexpected message %@", buf, 0xCu);
     }
 
@@ -11572,16 +11572,16 @@ LABEL_17:
   }
 }
 
-- (void)handler:(id)a3 receivedOfflineMessagePendingForTopic:(id)a4 messageContext:(id)a5
+- (void)handler:(id)handler receivedOfflineMessagePendingForTopic:(id)topic messageContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  handlerCopy = handler;
+  topicCopy = topic;
+  contextCopy = context;
   v10 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v8;
+    v14 = topicCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "receivedOfflineMessagePendingForTopic: %@", buf, 0xCu);
   }
 
@@ -11589,23 +11589,23 @@ LABEL_17:
   {
     if (_IDSShouldLogTransport())
     {
-      v12 = v8;
+      v12 = topicCopy;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v12 = v8;
+        v12 = topicCopy;
         _IDSLogV();
       }
     }
   }
 
   v11 = +[IDSServerStorageStateMachine sharedInstance];
-  [v11 incomingStorageRequestForTopic:v8 primary:1 messageContext:v9 sendReasonPathID:26];
+  [v11 incomingStorageRequestForTopic:topicCopy primary:1 messageContext:contextCopy sendReasonPathID:26];
 }
 
-- (id)_getGroupID:(id)a3
+- (id)_getGroupID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[IDSFoundationLog QRAllocator];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -11613,11 +11613,11 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "_getGroupID called", buf, 2u);
   }
 
-  v5 = [v3 request];
-  v6 = v5;
-  if (v5)
+  request = [dCopy request];
+  v6 = request;
+  if (request)
   {
-    v7 = [v5 groupID];
+    groupID = [request groupID];
   }
 
   else
@@ -11626,8 +11626,8 @@ LABEL_17:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = [v3 responses];
-    v9 = [v8 countByEnumeratingWithState:&v16 objects:v21 count:16];
+    responses = [dCopy responses];
+    v9 = [responses countByEnumeratingWithState:&v16 objects:v21 count:16];
     if (v9)
     {
       v10 = v9;
@@ -11639,19 +11639,19 @@ LABEL_17:
         {
           if (*v17 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(responses);
           }
 
           v14 = [*(*(&v16 + 1) + 8 * i) objectForKey:v12];
           if (v14)
           {
-            v7 = v14;
+            groupID = v14;
 
             goto LABEL_15;
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v16 objects:v21 count:16];
+        v10 = [responses countByEnumeratingWithState:&v16 objects:v21 count:16];
         if (v10)
         {
           continue;
@@ -11661,17 +11661,17 @@ LABEL_17:
       }
     }
 
-    v7 = 0;
+    groupID = 0;
   }
 
 LABEL_15:
 
-  return v7;
+  return groupID;
 }
 
-- (id)_uuidFromNSStringToNSData:(id)a3
+- (id)_uuidFromNSStringToNSData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[IDSFoundationLog QRAllocator];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -11679,7 +11679,7 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "_uuidFromNSStringToNSData called", v8, 2u);
   }
 
-  v5 = [[NSUUID alloc] initWithUUIDString:v3];
+  v5 = [[NSUUID alloc] initWithUUIDString:dataCopy];
   v8[0] = 0xAAAAAAAAAAAAAAAALL;
   v8[1] = 0xAAAAAAAAAAAAAAAALL;
   [v5 getUUIDBytes:v8];
@@ -11688,14 +11688,14 @@ LABEL_15:
   return v6;
 }
 
-- (id)_getResponse:(id)a3 relaySessionID:(id)a4
+- (id)_getResponse:(id)response relaySessionID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
-  v27 = v6;
-  v28 = self;
-  v29 = [(IDSQuickRelayAllocator *)self _findAllocationListForSessionID:v6];
+  v27 = responseCopy;
+  selfCopy = self;
+  v29 = [(IDSQuickRelayAllocator *)self _findAllocationListForSessionID:responseCopy];
   if ([v29 count])
   {
     v36 = 0u;
@@ -11723,8 +11723,8 @@ LABEL_15:
           v31 = 0u;
           v32 = 0u;
           v33 = 0u;
-          v12 = [v11 responses];
-          v13 = [v12 countByEnumeratingWithState:&v30 objects:v38 count:16];
+          responses = [v11 responses];
+          v13 = [responses countByEnumeratingWithState:&v30 objects:v38 count:16];
           if (v13)
           {
             v14 = *v31;
@@ -11734,23 +11734,23 @@ LABEL_15:
               {
                 if (*v31 != v14)
                 {
-                  objc_enumerationMutation(v12);
+                  objc_enumerationMutation(responses);
                 }
 
                 v16 = *(*(&v30 + 1) + 8 * j);
                 v17 = [v16 objectForKey:v9];
-                v18 = [v7 isEqualToString:v17];
+                v18 = [dCopy isEqualToString:v17];
 
                 if (v18)
                 {
-                  os_unfair_lock_unlock(&v28->_lock);
+                  os_unfair_lock_unlock(&selfCopy->_lock);
                   v20 = v16;
 
                   goto LABEL_32;
                 }
               }
 
-              v13 = [v12 countByEnumeratingWithState:&v30 objects:v38 count:16];
+              v13 = [responses countByEnumeratingWithState:&v30 objects:v38 count:16];
               if (v13)
               {
                 continue;
@@ -11770,12 +11770,12 @@ LABEL_15:
       while (v25);
     }
 
-    os_unfair_lock_unlock(&v28->_lock);
+    os_unfair_lock_unlock(&selfCopy->_lock);
     v19 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v41 = v7;
+      v41 = dCopy;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "no response for %@", buf, 0xCu);
     }
 
@@ -11799,7 +11799,7 @@ LABEL_15:
     {
       sessionToAllocations = self->_sessionToAllocations;
       *buf = 138412546;
-      v41 = v6;
+      v41 = responseCopy;
       v42 = 2112;
       v43 = sessionToAllocations;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Cannot find allocation for session %@, all allocations: %@", buf, 0x16u);
@@ -11826,21 +11826,21 @@ LABEL_32:
   return v20;
 }
 
-- (void)startKeepAliveTimer:(id)a3 relaySessionID:(id)a4
+- (void)startKeepAliveTimer:(id)timer relaySessionID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  timerCopy = timer;
+  dCopy = d;
   v8 = +[IDSFoundationLog QRAllocator];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v23 = v6;
+    v23 = timerCopy;
     v24 = 2112;
-    v25 = v7;
+    v25 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "startKeepAliveTimer:relaySessionID called - {sessionID: %@, relaySessionID %@}", buf, 0x16u);
   }
 
-  v9 = [(IDSQuickRelayAllocator *)self _getResponse:v6 relaySessionID:v7];
+  v9 = [(IDSQuickRelayAllocator *)self _getResponse:timerCopy relaySessionID:dCopy];
   v10 = v9;
   if (v9)
   {
@@ -11873,7 +11873,7 @@ LABEL_32:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v23 = v7;
+      v23 = dCopy;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "keepalive timer started for %@", buf, 0xCu);
     }
 
@@ -11891,21 +11891,21 @@ LABEL_32:
   }
 }
 
-- (void)stopKeepAliveTimer:(id)a3 relaySessionID:(id)a4
+- (void)stopKeepAliveTimer:(id)timer relaySessionID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  timerCopy = timer;
+  dCopy = d;
   v8 = +[IDSFoundationLog QRAllocator];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v16 = v6;
+    v16 = timerCopy;
     v17 = 2112;
-    v18 = v7;
+    v18 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "stopKeepAliveTimer:relaySessionID: called {sessionID: %@, relaySessionID %@}", buf, 0x16u);
   }
 
-  v9 = [(IDSQuickRelayAllocator *)self _getResponse:v6 relaySessionID:v7];
+  v9 = [(IDSQuickRelayAllocator *)self _getResponse:timerCopy relaySessionID:dCopy];
   v10 = v9;
   if (v9)
   {
@@ -11919,7 +11919,7 @@ LABEL_32:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v16 = v7;
+        v16 = dCopy;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "keepalive timer stopped for %@", buf, 0xCu);
       }
 
@@ -11946,7 +11946,7 @@ LABEL_32:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v16 = v7;
+        v16 = dCopy;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "keepalive timer not found for %@", buf, 0xCu);
       }
 
@@ -12140,15 +12140,15 @@ LABEL_17:
   }
 }
 
-- (id)_getQuickRelayIPPreference:(unint64_t)a3
+- (id)_getQuickRelayIPPreference:(unint64_t)preference
 {
   v3 = @"Unknown preference";
-  if (a3 == 1)
+  if (preference == 1)
   {
     v3 = @"Prefer IPV6";
   }
 
-  if (a3)
+  if (preference)
   {
     return v3;
   }
@@ -12159,10 +12159,10 @@ LABEL_17:
   }
 }
 
-- (void)setRequestIDToSession:(id)a3 idsSessionID:(id)a4
+- (void)setRequestIDToSession:(id)session idsSessionID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  dCopy = d;
   if (!self->_requestIDToSession)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
@@ -12170,10 +12170,10 @@ LABEL_17:
     self->_requestIDToSession = Mutable;
   }
 
-  v10 = v7;
+  v10 = dCopy;
   if (v10)
   {
-    CFDictionarySetValue(self->_requestIDToSession, v6, v10);
+    CFDictionarySetValue(self->_requestIDToSession, sessionCopy, v10);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))

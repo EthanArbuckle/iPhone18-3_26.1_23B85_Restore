@@ -1,23 +1,23 @@
 @interface CKTranscriptScrollIntentEntryViewActiveTrigger
 - (CKTranscriptScrollIntentEntryViewActiveTrigger)init;
-- (CKTranscriptScrollIntentEntryViewActiveTrigger)initWithChatController:(id)a3;
-- (id)updateRequestWithUpdateContext:(id)a3;
+- (CKTranscriptScrollIntentEntryViewActiveTrigger)initWithChatController:(id)controller;
+- (id)updateRequestWithUpdateContext:(id)context;
 @end
 
 @implementation CKTranscriptScrollIntentEntryViewActiveTrigger
 
-- (CKTranscriptScrollIntentEntryViewActiveTrigger)initWithChatController:(id)a3
+- (CKTranscriptScrollIntentEntryViewActiveTrigger)initWithChatController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 entryView];
-  v6 = [v5 sendLaterPluginInfo];
+  controllerCopy = controller;
+  entryView = [controllerCopy entryView];
+  sendLaterPluginInfo = [entryView sendLaterPluginInfo];
 
-  if (v6)
+  if (sendLaterPluginInfo)
   {
   }
 
-  *(&self->super.isa + OBJC_IVAR___CKTranscriptScrollIntentEntryViewActiveTrigger_hasSendLaterPluginInfo) = v6 != 0;
-  v7 = [v4 _appearState] == 1;
+  *(&self->super.isa + OBJC_IVAR___CKTranscriptScrollIntentEntryViewActiveTrigger_hasSendLaterPluginInfo) = sendLaterPluginInfo != 0;
+  v7 = [controllerCopy _appearState] == 1;
   *(&self->super.isa + OBJC_IVAR___CKTranscriptScrollIntentEntryViewActiveTrigger_isAppearing) = v7;
   v10.receiver = self;
   v10.super_class = CKTranscriptScrollIntentEntryViewActiveTrigger;
@@ -26,11 +26,11 @@
   return v8;
 }
 
-- (id)updateRequestWithUpdateContext:(id)a3
+- (id)updateRequestWithUpdateContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_19091A164(v4);
+  contextCopy = context;
+  selfCopy = self;
+  v6 = sub_19091A164(contextCopy);
 
   return v6;
 }

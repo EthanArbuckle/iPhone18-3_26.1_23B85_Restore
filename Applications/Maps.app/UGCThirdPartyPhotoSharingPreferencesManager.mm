@@ -2,17 +2,17 @@
 + (id)sharedManager;
 - (BOOL)hasDeviceReadServerSettings;
 - (UGCThirdPartyPhotoSharingPreferencesManager)init;
-- (void)_setDefaultsKeyForPreferences:(id)a3;
-- (void)_updateThirdPartyPhotoSharingPreferences:(BOOL)a3 versionID:(id)a4 eraseServerSavedSetting:(BOOL)a5 completion:(id)a6;
+- (void)_setDefaultsKeyForPreferences:(id)preferences;
+- (void)_updateThirdPartyPhotoSharingPreferences:(BOOL)preferences versionID:(id)d eraseServerSavedSetting:(BOOL)setting completion:(id)completion;
 - (void)debugEraseServerSavedThirdPartyPhotoSharingPreference;
-- (void)fetchThirdPartyPhotoSharingPreferencesWithCompletion:(id)a3;
+- (void)fetchThirdPartyPhotoSharingPreferencesWithCompletion:(id)completion;
 @end
 
 @implementation UGCThirdPartyPhotoSharingPreferencesManager
 
-- (void)_setDefaultsKeyForPreferences:(id)a3
+- (void)_setDefaultsKeyForPreferences:(id)preferences
 {
-  v3 = a3;
+  preferencesCopy = preferences;
   v4 = sub_100970CF4();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -20,27 +20,27 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "Updating defaults with newest preferences", v7, 2u);
   }
 
-  v5 = [v3 hasOptIn];
+  hasOptIn = [preferencesCopy hasOptIn];
   v6 = +[NSUserDefaults standardUserDefaults];
-  [v6 setBool:v5 forKey:@"UGCThirdPartyPhotoSharingDeviceHasReadServerSetting"];
+  [v6 setBool:hasOptIn forKey:@"UGCThirdPartyPhotoSharingDeviceHasReadServerSetting"];
 }
 
-- (void)_updateThirdPartyPhotoSharingPreferences:(BOOL)a3 versionID:(id)a4 eraseServerSavedSetting:(BOOL)a5 completion:(id)a6
+- (void)_updateThirdPartyPhotoSharingPreferences:(BOOL)preferences versionID:(id)d eraseServerSavedSetting:(BOOL)setting completion:(id)completion
 {
-  v10 = a4;
-  v11 = a6;
+  dCopy = d;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100970E68;
   v15[3] = &unk_101630030;
-  v19 = a5;
-  v20 = a3;
-  v16 = v10;
-  v17 = self;
-  v18 = v11;
-  v13 = v11;
-  v14 = v10;
+  settingCopy = setting;
+  preferencesCopy = preferences;
+  v16 = dCopy;
+  selfCopy = self;
+  v18 = completionCopy;
+  v13 = completionCopy;
+  v14 = dCopy;
   dispatch_async(workQueue, v15);
 }
 
@@ -57,17 +57,17 @@
   objc_destroyWeak(&location);
 }
 
-- (void)fetchThirdPartyPhotoSharingPreferencesWithCompletion:(id)a3
+- (void)fetchThirdPartyPhotoSharingPreferencesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1009716F4;
   v7[3] = &unk_101661090;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(workQueue, v7);
 }
 

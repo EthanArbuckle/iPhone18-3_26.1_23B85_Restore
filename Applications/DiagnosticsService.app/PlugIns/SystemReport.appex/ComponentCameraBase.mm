@@ -4,43 +4,43 @@
 - (id)faceIDFdrValidationStatus;
 - (id)illuminatorSerialNumber;
 - (id)ioRegFdrValidationStatus;
-- (id)retrieveDataSerialNumberWithComponentName:(id)a3;
-- (id)retrieveSerialNumberWithComponentName:(id)a3;
+- (id)retrieveDataSerialNumberWithComponentName:(id)name;
+- (id)retrieveSerialNumberWithComponentName:(id)name;
 - (id)serialNumber;
-- (id)zhuGeFDRLabelForCategory:(id)a3;
-- (id)zhuGeFDRStatus:(id)a3;
+- (id)zhuGeFDRLabelForCategory:(id)category;
+- (id)zhuGeFDRStatus:(id)status;
 - (int64_t)cameraModuleType;
-- (void)populateAttributes:(id)a3;
-- (void)populateFdrValidationStatus:(id)a3;
+- (void)populateAttributes:(id)attributes;
+- (void)populateFdrValidationStatus:(id)status;
 @end
 
 @implementation ComponentCameraBase
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
-  v13 = a3;
-  v4 = [(ComponentCameraBase *)self serialNumber];
-  v5 = stringOrNull(v4);
-  [v13 setObject:v5 forKeyedSubscript:@"serialNumber"];
+  attributesCopy = attributes;
+  serialNumber = [(ComponentCameraBase *)self serialNumber];
+  v5 = stringOrNull(serialNumber);
+  [attributesCopy setObject:v5 forKeyedSubscript:@"serialNumber"];
 
-  [(ComponentCameraBase *)self populateFdrValidationStatus:v13];
-  v6 = [(ComponentCameraBase *)self illuminatorSerialNumber];
-  v7 = stringOrNull(v6);
+  [(ComponentCameraBase *)self populateFdrValidationStatus:attributesCopy];
+  illuminatorSerialNumber = [(ComponentCameraBase *)self illuminatorSerialNumber];
+  v7 = stringOrNull(illuminatorSerialNumber);
 
   v8 = +[NSNull null];
   v9 = [v7 isEqual:v8];
 
   if ((v9 & 1) == 0)
   {
-    [v13 setObject:v7 forKeyedSubscript:@"illuminatorSerialNumber"];
+    [attributesCopy setObject:v7 forKeyedSubscript:@"illuminatorSerialNumber"];
     v10 = [(ComponentCameraBase *)self zhuGeFDRStatus:v7];
     if ([v10 count] == 2)
     {
       v11 = [v10 objectAtIndexedSubscript:0];
-      [v13 setObject:v11 forKeyedSubscript:@"illuminatorFdrValidationStatus"];
+      [attributesCopy setObject:v11 forKeyedSubscript:@"illuminatorFdrValidationStatus"];
 
       v12 = [v10 objectAtIndexedSubscript:1];
-      [v13 setObject:v12 forKeyedSubscript:@"zhuGeIlluminatorValidationStatus"];
+      [attributesCopy setObject:v12 forKeyedSubscript:@"zhuGeIlluminatorValidationStatus"];
     }
   }
 }
@@ -98,11 +98,11 @@ LABEL_11:
 
 - (BOOL)isPresent
 {
-  v3 = [(ComponentCameraBase *)self IORegClassName];
-  if (v3)
+  iORegClassName = [(ComponentCameraBase *)self IORegClassName];
+  if (iORegClassName)
   {
-    v4 = [(ComponentCameraBase *)self serialNumber];
-    v5 = v4 != 0;
+    serialNumber = [(ComponentCameraBase *)self serialNumber];
+    v5 = serialNumber != 0;
   }
 
   else
@@ -113,15 +113,15 @@ LABEL_11:
   return v5;
 }
 
-- (id)retrieveSerialNumberWithComponentName:(id)a3
+- (id)retrieveSerialNumberWithComponentName:(id)name
 {
-  v4 = a3;
-  v5 = [(ComponentCameraBase *)self IORegClassName];
-  v6 = v5;
+  nameCopy = name;
+  iORegClassName = [(ComponentCameraBase *)self IORegClassName];
+  v6 = iORegClassName;
   v7 = 0;
-  if (v4 && v5)
+  if (nameCopy && iORegClassName)
   {
-    v8 = +[DAComponentUtil getIOregData:property:length:optionalKey:](DAComponentUtil, "getIOregData:property:length:optionalKey:", [v5 UTF8String], v4, 17, 0);
+    v8 = +[DAComponentUtil getIOregData:property:length:optionalKey:](DAComponentUtil, "getIOregData:property:length:optionalKey:", [iORegClassName UTF8String], nameCopy, 17, 0);
     if (v8)
     {
       v7 = [[NSString alloc] initWithData:v8 encoding:4];
@@ -148,25 +148,25 @@ LABEL_11:
   return v9;
 }
 
-- (id)retrieveDataSerialNumberWithComponentName:(id)a3
+- (id)retrieveDataSerialNumberWithComponentName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = +[NSMutableString string];
-  v6 = v4;
+  v6 = nameCopy;
   if (v6)
   {
-    v7 = [(ComponentCameraBase *)self IORegClassName];
-    v8 = +[DAComponentUtil getIOregData:property:length:optionalKey:](DAComponentUtil, "getIOregData:property:length:optionalKey:", [v7 UTF8String], v6, 11, 0);
+    iORegClassName = [(ComponentCameraBase *)self IORegClassName];
+    v8 = +[DAComponentUtil getIOregData:property:length:optionalKey:](DAComponentUtil, "getIOregData:property:length:optionalKey:", [iORegClassName UTF8String], v6, 11, 0);
 
     if (v8)
     {
-      v9 = [v8 bytes];
+      bytes = [v8 bytes];
       if ([v8 length])
       {
         v10 = 0;
         do
         {
-          [v5 appendFormat:@"%02X", v9[v10++]];
+          [v5 appendFormat:@"%02X", bytes[v10++]];
         }
 
         while ([v8 length] > v10);
@@ -191,16 +191,16 @@ LABEL_11:
 
 - (id)serialNumber
 {
-  v3 = [(ComponentCameraBase *)self serialNumberComponentPropertyKey];
-  v4 = [(ComponentCameraBase *)self retrieveSerialNumberWithComponentName:v3];
+  serialNumberComponentPropertyKey = [(ComponentCameraBase *)self serialNumberComponentPropertyKey];
+  v4 = [(ComponentCameraBase *)self retrieveSerialNumberWithComponentName:serialNumberComponentPropertyKey];
 
   return v4;
 }
 
 - (id)illuminatorSerialNumber
 {
-  v3 = [(ComponentCameraBase *)self illuminatorSerialNumberComponentPropertyKey];
-  v4 = [(ComponentCameraBase *)self retrieveDataSerialNumberWithComponentName:v3];
+  illuminatorSerialNumberComponentPropertyKey = [(ComponentCameraBase *)self illuminatorSerialNumberComponentPropertyKey];
+  v4 = [(ComponentCameraBase *)self retrieveDataSerialNumberWithComponentName:illuminatorSerialNumberComponentPropertyKey];
 
   return v4;
 }
@@ -217,22 +217,22 @@ LABEL_11:
   return 0;
 }
 
-- (void)populateFdrValidationStatus:(id)a3
+- (void)populateFdrValidationStatus:(id)status
 {
-  v4 = a3;
-  v5 = [(ComponentCameraBase *)self cameraModuleType];
-  if (v5 == 3)
+  statusCopy = status;
+  cameraModuleType = [(ComponentCameraBase *)self cameraModuleType];
+  if (cameraModuleType == 3)
   {
-    v7 = [(ComponentCameraBase *)self faceIDFdrValidationStatus];
+    faceIDFdrValidationStatus = [(ComponentCameraBase *)self faceIDFdrValidationStatus];
     goto LABEL_5;
   }
 
-  v6 = v5;
-  if (v5 == 1)
+  v6 = cameraModuleType;
+  if (cameraModuleType == 1)
   {
-    v7 = [(ComponentCameraBase *)self ioRegFdrValidationStatus];
+    faceIDFdrValidationStatus = [(ComponentCameraBase *)self ioRegFdrValidationStatus];
 LABEL_5:
-    v8 = v7;
+    v8 = faceIDFdrValidationStatus;
     goto LABEL_9;
   }
 
@@ -261,7 +261,7 @@ LABEL_9:
 
       if ((v12 & 1) == 0)
       {
-        [v4 setObject:v10 forKeyedSubscript:@"fdrValidationStatus"];
+        [statusCopy setObject:v10 forKeyedSubscript:@"fdrValidationStatus"];
       }
     }
   }
@@ -269,10 +269,10 @@ LABEL_9:
 
 - (id)ioRegFdrValidationStatus
 {
-  v2 = [(ComponentCameraBase *)self IORegClassName];
-  if (v2)
+  iORegClassName = [(ComponentCameraBase *)self IORegClassName];
+  if (iORegClassName)
   {
-    v3 = [DAComponentUtil getIORegistryClass:v2 property:@"CmClValidationStatus" optionalKey:0 classValidator:0];
+    v3 = [DAComponentUtil getIORegistryClass:iORegClassName property:@"CmClValidationStatus" optionalKey:0 classValidator:0];
     if (v3)
     {
       v4 = [[NSString alloc] initWithData:v3 encoding:4];
@@ -316,9 +316,9 @@ LABEL_9:
   }
 }
 
-- (id)zhuGeFDRStatus:(id)a3
+- (id)zhuGeFDRStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   if (qword_1000D1FD8 != -1)
   {
     dispatch_once(&qword_1000D1FD8, &stru_100090AC8);
@@ -331,9 +331,9 @@ LABEL_9:
   v26[4] = @"VerifiedProperties";
   v5 = [NSArray arrayWithObjects:v26 count:5];
   v6 = v5;
-  if (v4 && [v5 count])
+  if (statusCopy && [v5 count])
   {
-    v22 = self;
+    selfCopy = self;
     v7 = 0;
     v8 = 0;
     p_cache = ComponentApplePay.cache;
@@ -349,11 +349,11 @@ LABEL_9:
         while ([v11 count] > v12)
         {
           v13 = [v11 objectAtIndexedSubscript:v12];
-          v14 = [v13 allValues];
-          v15 = [v14 firstObject];
+          allValues = [v13 allValues];
+          firstObject = [allValues firstObject];
 
-          v16 = [v15 objectForKey:@"LiveInstance"];
-          v17 = [v16 containsString:v4];
+          v16 = [firstObject objectForKey:@"LiveInstance"];
+          v17 = [v16 containsString:statusCopy];
           if (v17)
           {
             v18 = v10;
@@ -382,7 +382,7 @@ LABEL_9:
 LABEL_17:
     if (v7)
     {
-      v20 = [(ComponentCameraBase *)v22 zhuGeFDRLabelForCategory:v7];
+      v20 = [(ComponentCameraBase *)selfCopy zhuGeFDRLabelForCategory:v7];
       v25[0] = v20;
       v25[1] = v7;
       v19 = [NSArray arrayWithObjects:v25 count:2];
@@ -403,16 +403,16 @@ LABEL_17:
   return v19;
 }
 
-- (id)zhuGeFDRLabelForCategory:(id)a3
+- (id)zhuGeFDRLabelForCategory:(id)category
 {
-  if (a3)
+  if (category)
   {
     v10[0] = @"VerifiedData";
     v10[1] = @"VerifiedProperties";
-    v3 = a3;
+    categoryCopy = category;
     v4 = [NSArray arrayWithObjects:v10 count:2];
     v5 = [NSSet setWithArray:v4];
-    v6 = [v5 containsObject:v3];
+    v6 = [v5 containsObject:categoryCopy];
 
     v7 = @"Fail";
     if (v6)

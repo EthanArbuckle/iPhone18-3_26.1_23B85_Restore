@@ -1,30 +1,30 @@
 @interface TIMessageEvent
-- (BOOL)hasText:(id)a3;
-- (BOOL)hasTextInWordEntry:(id)a3;
+- (BOOL)hasText:(id)text;
+- (BOOL)hasTextInWordEntry:(id)entry;
 - (TIMessageEvent)init;
-- (void)adjustEmojiCountsFromKeyboardInputForWordAligned:(id)a3;
-- (void)analyzeWordEntry:(id)a3;
-- (void)analyzeWordEntryAligned:(id)a3;
-- (void)dispatchWithFeatureUsageMetricsCache:(id)a3 andContext:(id)a4 assetAvailabilityStatus:(int64_t)a5;
+- (void)adjustEmojiCountsFromKeyboardInputForWordAligned:(id)aligned;
+- (void)analyzeWordEntry:(id)entry;
+- (void)analyzeWordEntryAligned:(id)aligned;
+- (void)dispatchWithFeatureUsageMetricsCache:(id)cache andContext:(id)context assetAvailabilityStatus:(int64_t)status;
 @end
 
 @implementation TIMessageEvent
 
-- (void)dispatchWithFeatureUsageMetricsCache:(id)a3 andContext:(id)a4 assetAvailabilityStatus:(int64_t)a5
+- (void)dispatchWithFeatureUsageMetricsCache:(id)cache andContext:(id)context assetAvailabilityStatus:(int64_t)status
 {
   v93[36] = *MEMORY[0x277D85DE8];
   if (self->_wordsEnteredCount >= 1)
   {
     messageText = self->_messageText;
-    v8 = a4;
-    v9 = a3;
-    v10 = [(NSString *)messageText _graphemeCount];
+    contextCopy = context;
+    cacheCopy = cache;
+    _graphemeCount = [(NSString *)messageText _graphemeCount];
     v11 = [(TIMessageEvent *)self durationInSecondsFromStartTime:self->_startTime endTime:self->_endTime];
     v92[0] = @"totalMessageDuration";
     v91 = [MEMORY[0x277CCABB0] numberWithInt:v11];
     v93[0] = v91;
     v92[1] = @"totalMessageLength";
-    v90 = [MEMORY[0x277CCABB0] numberWithInt:v10];
+    v90 = [MEMORY[0x277CCABB0] numberWithInt:_graphemeCount];
     v93[1] = v90;
     v92[2] = @"totalWordsEntered";
     v89 = [MEMORY[0x277CCABB0] numberWithInt:self->_wordsEnteredCount];
@@ -39,7 +39,7 @@
     v93[4] = v86;
     v92[5] = @"messageLength";
     v13 = MEMORY[0x277D6F320];
-    v85 = [MEMORY[0x277CCABB0] numberWithInt:v10];
+    v85 = [MEMORY[0x277CCABB0] numberWithInt:_graphemeCount];
     v84 = [v13 bucketNumber:v85 bucketThresholds:&unk_28400BB20 bucketValues:0];
     v93[5] = v84;
     v92[6] = @"wordsEntered";
@@ -123,27 +123,27 @@
     v50 = [v29 bucketNumber:v51 bucketThresholds:&unk_28400BB50 bucketValues:0];
     v93[21] = v50;
     v92[22] = kFeatureKeyboardUsage;
-    v49 = [v9 featureUsageMetricFromName:? forContext:?];
+    v49 = [cacheCopy featureUsageMetricFromName:? forContext:?];
     v93[22] = v49;
     v92[23] = kFeatureContinuousPathUsage;
-    v48 = [v9 featureUsageMetricFromName:? forContext:?];
+    v48 = [cacheCopy featureUsageMetricFromName:? forContext:?];
     v93[23] = v48;
     v92[24] = kFeatureAutocorrectionUsage;
-    v47 = [v9 featureUsageMetricFromName:? forContext:?];
+    v47 = [cacheCopy featureUsageMetricFromName:? forContext:?];
     v93[24] = v47;
     v92[25] = kFeatureCandidateBarUsage;
-    v46 = [v9 featureUsageMetricFromName:? forContext:?];
+    v46 = [cacheCopy featureUsageMetricFromName:? forContext:?];
     v93[25] = v46;
     v92[26] = kFeatureMultilingualUsage;
-    v45 = [v9 featureUsageMetricFromName:? forContext:?];
+    v45 = [cacheCopy featureUsageMetricFromName:? forContext:?];
     v93[26] = v45;
     v92[27] = kFeatureStringTypingSpeed;
-    v30 = [v9 featureUsageMetricFromName:? forContext:?];
+    v30 = [cacheCopy featureUsageMetricFromName:? forContext:?];
 
     v93[27] = v30;
     v92[28] = kFeatureStringAssetAvailabilityStatus;
     v31 = @"Installed";
-    if (!a5)
+    if (!status)
     {
       v31 = @"Unavailable";
     }
@@ -151,32 +151,32 @@
     v32 = v31;
     v93[28] = v32;
     v92[29] = kFeatureStringKeyboardLanguage;
-    v33 = [v8 inputLanguage];
-    v93[29] = v33;
+    inputLanguage = [contextCopy inputLanguage];
+    v93[29] = inputLanguage;
     v92[30] = kFeatureStringKeyboardRegion;
-    v34 = [v8 inputRegion];
-    v93[30] = v34;
+    inputRegion = [contextCopy inputRegion];
+    v93[30] = inputRegion;
     v92[31] = kFeatureStringKeyboardVariant;
-    v35 = [v8 inputVariant];
-    v93[31] = v35;
+    inputVariant = [contextCopy inputVariant];
+    v93[31] = inputVariant;
     v92[32] = kFeatureStringKeyboardSecondaryLanguage;
-    v36 = [v8 secondaryLanguage];
-    v93[32] = v36;
+    secondaryLanguage = [contextCopy secondaryLanguage];
+    v93[32] = secondaryLanguage;
     v92[33] = kFeatureStringKeyboardSecondaryRegion;
-    v37 = [v8 secondaryRegion];
-    v93[33] = v37;
+    secondaryRegion = [contextCopy secondaryRegion];
+    v93[33] = secondaryRegion;
     v92[34] = kFeatureStringKeyboardLayout;
-    v38 = [v8 layoutName];
-    v93[34] = v38;
+    layoutName = [contextCopy layoutName];
+    v93[34] = layoutName;
     v92[35] = kFeatureStringKeyboardType;
-    v39 = +[TIKBAnalyticsMetricsContext keyboardTypeEnumToString:](TIKBAnalyticsMetricsContext, "keyboardTypeEnumToString:", [v8 keyboardType]);
+    v39 = +[TIKBAnalyticsMetricsContext keyboardTypeEnumToString:](TIKBAnalyticsMetricsContext, "keyboardTypeEnumToString:", [contextCopy keyboardType]);
     v93[35] = v39;
     v71 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v93 forKeys:v92 count:36];
 
-    v40 = [MEMORY[0x277D6F318] sharedInstance];
-    v41 = [v8 testingParameters];
+    mEMORY[0x277D6F318] = [MEMORY[0x277D6F318] sharedInstance];
+    testingParameters = [contextCopy testingParameters];
 
-    [v40 dispatchEventWithName:@"typingSpeedDetails" payload:v71 testingParameters:v41 allowSparsePayload:0];
+    [mEMORY[0x277D6F318] dispatchEventWithName:@"typingSpeedDetails" payload:v71 testingParameters:testingParameters allowSparsePayload:0];
     v42 = +[TIProactiveQuickTypeManager sharedInstance];
     v43 = [MEMORY[0x277CCACA8] stringWithUTF8String:"SpeedMetric"];
     [v42 propogateMetrics:v43 data:v71];
@@ -185,29 +185,29 @@
   v44 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)hasText:(id)a3
+- (BOOL)hasText:(id)text
 {
   v3 = MEMORY[0x277CCA900];
-  v4 = a3;
-  v5 = [v3 whitespaceCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  textCopy = text;
+  whitespaceCharacterSet = [v3 whitespaceCharacterSet];
+  v6 = [textCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-  v7 = [MEMORY[0x277CCA900] punctuationCharacterSet];
-  v8 = [v6 stringByTrimmingCharactersInSet:v7];
+  punctuationCharacterSet = [MEMORY[0x277CCA900] punctuationCharacterSet];
+  v8 = [v6 stringByTrimmingCharactersInSet:punctuationCharacterSet];
 
-  LOBYTE(v7) = [v8 length] != 0;
-  return v7;
+  LOBYTE(punctuationCharacterSet) = [v8 length] != 0;
+  return punctuationCharacterSet;
 }
 
-- (void)adjustEmojiCountsFromKeyboardInputForWordAligned:(id)a3
+- (void)adjustEmojiCountsFromKeyboardInputForWordAligned:(id)aligned
 {
   v20 = *MEMORY[0x277D85DE8];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [a3 alignedKeyboardInputs];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  alignedKeyboardInputs = [aligned alignedKeyboardInputs];
+  v5 = [alignedKeyboardInputs countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -221,11 +221,11 @@
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(alignedKeyboardInputs);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * i) string];
-        if ([v12 _containsEmoji])
+        string = [*(*(&v15 + 1) + 8 * i) string];
+        if ([string _containsEmoji])
         {
           ++v9;
           if (v7 > 0)
@@ -238,11 +238,11 @@
 
         else
         {
-          v7 += [(TIMessageEvent *)self hasText:v12];
+          v7 += [(TIMessageEvent *)self hasText:string];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [alignedKeyboardInputs countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -275,39 +275,39 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)analyzeWordEntryAligned:(id)a3
+- (void)analyzeWordEntryAligned:(id)aligned
 {
-  v18 = a3;
-  v4 = [v18 originalWord];
-  v5 = [v4 editedEntry];
-  v6 = [v18 originalWord];
-  v7 = v6;
-  if (v5)
+  alignedCopy = aligned;
+  originalWord = [alignedCopy originalWord];
+  editedEntry = [originalWord editedEntry];
+  originalWord2 = [alignedCopy originalWord];
+  v7 = originalWord2;
+  if (editedEntry)
   {
-    v8 = [v6 editedEntry];
+    editedEntry2 = [originalWord2 editedEntry];
 
-    v7 = v8;
+    v7 = editedEntry2;
   }
 
-  v9 = [v7 acceptedCandidate];
-  v10 = [v9 candidate];
-  v11 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v12 = [v10 stringByTrimmingCharactersInSet:v11];
+  acceptedCandidate = [v7 acceptedCandidate];
+  candidate = [acceptedCandidate candidate];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v12 = [candidate stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-  v13 = [v7 keyboardState];
-  v14 = [v13 emojiSearchMode];
+  keyboardState = [v7 keyboardState];
+  emojiSearchMode = [keyboardState emojiSearchMode];
 
-  v15 = [v7 keyboardState];
-  v16 = [v15 emojiPopoverMode];
+  keyboardState2 = [v7 keyboardState];
+  emojiPopoverMode = [keyboardState2 emojiPopoverMode];
 
   if (![v12 _containsEmoji])
   {
-    if (v14)
+    if (emojiSearchMode)
     {
       goto LABEL_12;
     }
 
-    if ([v9 isContinuousPathConversion])
+    if ([acceptedCandidate isContinuousPathConversion])
     {
       ++self->_finalWordsEnteredCount;
       goto LABEL_17;
@@ -316,9 +316,9 @@
     goto LABEL_15;
   }
 
-  if ((v16 & 1) == 0)
+  if ((emojiPopoverMode & 1) == 0)
   {
-    if (v14)
+    if (emojiSearchMode)
     {
       ++self->_finalWordsEnteredCount;
       ++self->_emojiSearchCount;
@@ -339,54 +339,54 @@ LABEL_12:
     }
 
 LABEL_15:
-    [(TIMessageEvent *)self adjustEmojiCountsFromKeyboardInputForWordAligned:v18];
+    [(TIMessageEvent *)self adjustEmojiCountsFromKeyboardInputForWordAligned:alignedCopy];
     goto LABEL_17;
   }
 
   ++self->_finalWordsEnteredCount;
   ++self->_emojiPopoverCount;
-  if (v14)
+  if (emojiSearchMode)
   {
     goto LABEL_12;
   }
 
 LABEL_17:
-  if (([v9 sourceMask] & 0x8000) != 0 || (objc_msgSend(v9, "sourceMask") & 0x20000) != 0)
+  if (([acceptedCandidate sourceMask] & 0x8000) != 0 || (objc_msgSend(acceptedCandidate, "sourceMask") & 0x20000) != 0)
   {
     ++self->_staticCount;
   }
 
-  if (([v9 sourceMask] & 0x10000) != 0 || (objc_msgSend(v9, "sourceMask") & 0x40000) != 0)
+  if (([acceptedCandidate sourceMask] & 0x10000) != 0 || (objc_msgSend(acceptedCandidate, "sourceMask") & 0x40000) != 0)
   {
     ++self->_dynamicCount;
   }
 
-  if (([v9 sourceMask] & 4) != 0)
+  if (([acceptedCandidate sourceMask] & 4) != 0)
   {
     ++self->_textReplacementsCount;
   }
 
-  if (([v9 sourceMask] & 8) != 0)
+  if (([acceptedCandidate sourceMask] & 8) != 0)
   {
     ++self->_addressBookCount;
   }
 
-  if (([v9 sourceMask] & 0x10) != 0)
+  if (([acceptedCandidate sourceMask] & 0x10) != 0)
   {
     ++self->_namedEntitiesCount;
   }
 
-  if (([v9 sourceMask] & 0x20) != 0)
+  if (([acceptedCandidate sourceMask] & 0x20) != 0)
   {
     ++self->_oovCount;
   }
 
-  if (([v9 sourceMask] & 0x400) != 0)
+  if (([acceptedCandidate sourceMask] & 0x400) != 0)
   {
     ++self->_supplementalLexiconCount;
   }
 
-  if ([v9 isResponseKitCandidate])
+  if ([acceptedCandidate isResponseKitCandidate])
   {
     ++self->_responseKitCount;
   }
@@ -399,8 +399,8 @@ LABEL_17:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v17 = [v9 proactiveTrigger];
-    if (v17)
+    proactiveTrigger = [acceptedCandidate proactiveTrigger];
+    if (proactiveTrigger)
     {
       ++self->_pqtCount;
     }
@@ -409,13 +409,13 @@ LABEL_17:
 LABEL_41:
 }
 
-- (BOOL)hasTextInWordEntry:(id)a3
+- (BOOL)hasTextInWordEntry:(id)entry
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 acceptedCandidate];
-  v6 = [v5 candidate];
-  v7 = [(TIMessageEvent *)self hasText:v6];
+  entryCopy = entry;
+  acceptedCandidate = [entryCopy acceptedCandidate];
+  candidate = [acceptedCandidate candidate];
+  v7 = [(TIMessageEvent *)self hasText:candidate];
 
   if (v7)
   {
@@ -428,8 +428,8 @@ LABEL_41:
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = [v4 allKeyboardInputs];
-    v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    allKeyboardInputs = [entryCopy allKeyboardInputs];
+    v10 = [allKeyboardInputs countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
       v11 = v10;
@@ -440,11 +440,11 @@ LABEL_41:
         {
           if (*v19 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allKeyboardInputs);
           }
 
-          v14 = [*(*(&v18 + 1) + 8 * i) string];
-          v15 = [(TIMessageEvent *)self hasText:v14];
+          string = [*(*(&v18 + 1) + 8 * i) string];
+          v15 = [(TIMessageEvent *)self hasText:string];
 
           if (v15)
           {
@@ -453,7 +453,7 @@ LABEL_41:
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v11 = [allKeyboardInputs countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v11)
         {
           continue;
@@ -471,42 +471,42 @@ LABEL_13:
   return v8;
 }
 
-- (void)analyzeWordEntry:(id)a3
+- (void)analyzeWordEntry:(id)entry
 {
-  v23 = a3;
-  v4 = [v23 keyboardState];
-  v5 = [v4 documentState];
-  v6 = [v5 contextBeforeInput];
-  if (v6)
+  entryCopy = entry;
+  keyboardState = [entryCopy keyboardState];
+  documentState = [keyboardState documentState];
+  contextBeforeInput = [documentState contextBeforeInput];
+  if (contextBeforeInput)
   {
-    v7 = [v5 contextBeforeInput];
+    contextBeforeInput2 = [documentState contextBeforeInput];
   }
 
   else
   {
-    v7 = &stru_283FDFAF8;
+    contextBeforeInput2 = &stru_283FDFAF8;
   }
 
-  v8 = [v5 contextAfterInput];
-  if (v8)
+  contextAfterInput = [documentState contextAfterInput];
+  if (contextAfterInput)
   {
-    v9 = [v5 contextAfterInput];
+    contextAfterInput2 = [documentState contextAfterInput];
   }
 
   else
   {
-    v9 = &stru_283FDFAF8;
+    contextAfterInput2 = &stru_283FDFAF8;
   }
 
-  v10 = [(__CFString *)v7 stringByAppendingString:v9];
+  v10 = [(__CFString *)contextBeforeInput2 stringByAppendingString:contextAfterInput2];
   messageText = self->_messageText;
   self->_messageText = v10;
 
-  [v23 startTime];
+  [entryCopy startTime];
   if (v12 > 0.0)
   {
     startTime = self->_startTime;
-    [v23 startTime];
+    [entryCopy startTime];
     if (startTime >= v14)
     {
       v15 = v14;
@@ -525,11 +525,11 @@ LABEL_13:
     self->_startTime = v14;
   }
 
-  [v23 endTime];
+  [entryCopy endTime];
   if (v16 > 0.0)
   {
     endTime = self->_endTime;
-    [v23 endTime];
+    [entryCopy endTime];
     if (endTime >= v18 && endTime != 0.0)
     {
       v18 = endTime;
@@ -538,11 +538,11 @@ LABEL_13:
     self->_endTime = v18;
   }
 
-  v20 = [v23 keyboardState];
-  v21 = [v20 emojiSearchMode];
+  keyboardState2 = [entryCopy keyboardState];
+  emojiSearchMode = [keyboardState2 emojiSearchMode];
 
-  v22 = [(TIMessageEvent *)self hasTextInWordEntry:v23];
-  if ((v21 & 1) == 0 && v22)
+  v22 = [(TIMessageEvent *)self hasTextInWordEntry:entryCopy];
+  if ((emojiSearchMode & 1) == 0 && v22)
   {
     ++self->_wordsEnteredCount;
   }

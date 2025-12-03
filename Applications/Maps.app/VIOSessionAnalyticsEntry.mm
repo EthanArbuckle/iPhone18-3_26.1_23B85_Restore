@@ -1,8 +1,8 @@
 @interface VIOSessionAnalyticsEntry
 - (GEOMarcoLiteUsageState)usageState;
-- (VIOSessionAnalyticsEntry)initWithUsageType:(int)a3 value:(id)a4;
+- (VIOSessionAnalyticsEntry)initWithUsageType:(int)type value:(id)value;
 - (id)description;
-- (void)completeEntryWithReason:(int)a3;
+- (void)completeEntryWithReason:(int)reason;
 @end
 
 @implementation VIOSessionAnalyticsEntry
@@ -25,15 +25,15 @@
   exitReason = self->_exitReason;
   if (exitReason)
   {
-    v8 = [(NSNumber *)self->_exitReason integerValue];
-    if (v8 >= 0x1A)
+    integerValue = [(NSNumber *)self->_exitReason integerValue];
+    if (integerValue >= 0x1A)
     {
-      v9 = [NSString stringWithFormat:@"(unknown: %i)", v8];
+      v9 = [NSString stringWithFormat:@"(unknown: %i)", integerValue];
     }
 
     else
     {
-      v9 = off_10165F498[v8 & 0x1F];
+      v9 = off_10165F498[integerValue & 0x1F];
     }
   }
 
@@ -90,23 +90,23 @@
   [(VIOSessionAnalyticsEntry *)self totalTime];
   LODWORD(v5) = vcvtpd_u64_f64(v4);
   [v3 setStateTime:v5];
-  v6 = [(VIOSessionAnalyticsEntry *)self value];
+  value = [(VIOSessionAnalyticsEntry *)self value];
 
-  if (v6)
+  if (value)
   {
-    v7 = [(VIOSessionAnalyticsEntry *)self value];
-    [v3 setStateValue:{objc_msgSend(v7, "unsignedIntegerValue")}];
+    value2 = [(VIOSessionAnalyticsEntry *)self value];
+    [v3 setStateValue:{objc_msgSend(value2, "unsignedIntegerValue")}];
   }
 
-  v8 = [(VIOSessionAnalyticsEntry *)self exitReason];
-  [v3 setStateExitReason:{objc_msgSend(v8, "integerValue")}];
+  exitReason = [(VIOSessionAnalyticsEntry *)self exitReason];
+  [v3 setStateExitReason:{objc_msgSend(exitReason, "integerValue")}];
 
   return v3;
 }
 
-- (void)completeEntryWithReason:(int)a3
+- (void)completeEntryWithReason:(int)reason
 {
-  v3 = *&a3;
+  v3 = *&reason;
   if ([(VIOSessionAnalyticsEntry *)self isComplete])
   {
     v9 = sub_10006D178();
@@ -148,17 +148,17 @@
   }
 }
 
-- (VIOSessionAnalyticsEntry)initWithUsageType:(int)a3 value:(id)a4
+- (VIOSessionAnalyticsEntry)initWithUsageType:(int)type value:(id)value
 {
-  v7 = a4;
+  valueCopy = value;
   v13.receiver = self;
   v13.super_class = VIOSessionAnalyticsEntry;
   v8 = [(VIOSessionAnalyticsEntry *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    v8->_usageType = a3;
-    objc_storeStrong(&v8->_value, a4);
+    v8->_usageType = type;
+    objc_storeStrong(&v8->_value, value);
     v10 = +[NSDate date];
     startDate = v9->_startDate;
     v9->_startDate = v10;

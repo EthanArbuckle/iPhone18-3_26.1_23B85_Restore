@@ -11,9 +11,9 @@
   v4.receiver = self;
   v4.super_class = AXCaptionSubtitlePreviewView;
   [(AXCaptionSubtitlePreviewView *)&v4 didMoveToWindow];
-  v3 = [(AXCaptionSubtitlePreviewView *)self image];
+  image = [(AXCaptionSubtitlePreviewView *)self image];
 
-  if (!v3)
+  if (!image)
   {
     [(AXCaptionSubtitlePreviewView *)self update];
   }
@@ -35,9 +35,9 @@
 
 - (void)update
 {
-  v3 = [(AXCaptionSubtitlePreviewView *)self window];
+  window = [(AXCaptionSubtitlePreviewView *)self window];
 
-  if (v3)
+  if (window)
   {
     v4 = +[UIScreen mainScreen];
     [v4 scale];

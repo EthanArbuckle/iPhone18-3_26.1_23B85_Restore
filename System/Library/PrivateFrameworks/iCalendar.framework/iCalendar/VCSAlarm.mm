@@ -1,15 +1,15 @@
 @interface VCSAlarm
-+ (id)_componentsWithISO8601DurationString:(id)a3;
-- (VCSAlarm)initWithLine:(id)a3 parseState:(id)a4 property:(id *)a5;
++ (id)_componentsWithISO8601DurationString:(id)string;
+- (VCSAlarm)initWithLine:(id)line parseState:(id)state property:(id *)property;
 - (id)dictify;
-- (void)ensureRelativeAlarmWithStartDate:(id)a3;
+- (void)ensureRelativeAlarmWithStartDate:(id)date;
 @end
 
 @implementation VCSAlarm
 
-- (VCSAlarm)initWithLine:(id)a3 parseState:(id)a4 property:(id *)a5
+- (VCSAlarm)initWithLine:(id)line parseState:(id)state property:(id *)property
 {
-  v6 = a3;
+  lineCopy = line;
   v39.receiver = self;
   v39.super_class = VCSAlarm;
   v7 = [(VCSEntity *)&v39 init];
@@ -20,8 +20,8 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  v8 = [v6 content];
-  v9 = strdup([v8 bytes]);
+  content = [lineCopy content];
+  v9 = strdup([content bytes]);
 
   v10 = strchr(v9, 59);
   v11 = v10;
@@ -55,7 +55,7 @@ LABEL_10:
 
   *v14 = 0;
   v15 = v14 + 1;
-  if ([v6 tokenID] != 27)
+  if ([lineCopy tokenID] != 27)
   {
     goto LABEL_10;
   }
@@ -97,10 +97,10 @@ LABEL_11:
       }
     }
 
-    v29 = [v6 tokenID];
-    if (v29 > 26)
+    tokenID = [lineCopy tokenID];
+    if (tokenID > 26)
     {
-      if (v29 == 27)
+      if (tokenID == 27)
       {
         v7->_alarmType = 2;
         if (v17)
@@ -120,18 +120,18 @@ LABEL_11:
         objc_storeStrong(&v7->_body, v7->_summary);
       }
 
-      else if (v29 == 30)
+      else if (tokenID == 30)
       {
         v7->_alarmType = 3;
       }
     }
 
-    else if (v29 == 14)
+    else if (tokenID == 14)
     {
       v7->_alarmType = 0;
     }
 
-    else if (v29 == 20)
+    else if (tokenID == 20)
     {
       v7->_alarmType = 1;
       if (v15)
@@ -160,18 +160,18 @@ LABEL_34:
   return v33;
 }
 
-- (void)ensureRelativeAlarmWithStartDate:(id)a3
+- (void)ensureRelativeAlarmWithStartDate:(id)date
 {
   if (self->_triggerType != 1)
   {
     triggerDate = self->_triggerDate;
-    v5 = a3;
-    v6 = [(VCSDate *)triggerDate components];
-    v7 = [v6 date];
-    v8 = [v5 components];
+    dateCopy = date;
+    components = [(VCSDate *)triggerDate components];
+    date = [components date];
+    components2 = [dateCopy components];
 
-    v9 = [v8 date];
-    [v7 timeIntervalSinceDate:v9];
+    date2 = [components2 date];
+    [date timeIntervalSinceDate:date2];
     self->_triggerDuration = v10;
 
     self->_triggerType = 1;
@@ -182,8 +182,8 @@ LABEL_34:
 {
   v14.receiver = self;
   v14.super_class = VCSAlarm;
-  v3 = [(VCSEntity *)&v14 dictify];
-  v4 = [v3 mutableCopy];
+  dictify = [(VCSEntity *)&v14 dictify];
+  v4 = [dictify mutableCopy];
 
   alarmType = self->_alarmType;
   if (alarmType >= 4)
@@ -248,39 +248,39 @@ LABEL_34:
   return v4;
 }
 
-+ (id)_componentsWithISO8601DurationString:(id)a3
++ (id)_componentsWithISO8601DurationString:(id)string
 {
-  v3 = a3;
-  if (!v3)
+  stringCopy = string;
+  if (!stringCopy)
   {
     v6 = 0;
     goto LABEL_43;
   }
 
   v4 = objc_opt_new();
-  v5 = [v3 UTF8String];
-  v6 = v5;
-  if (!v5)
+  uTF8String = [stringCopy UTF8String];
+  v6 = uTF8String;
+  if (!uTF8String)
   {
     goto LABEL_42;
   }
 
-  if (*v5 != 80)
+  if (*uTF8String != 80)
   {
     v16 = VCSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      [(VCSAlarm *)v3 _componentsWithISO8601DurationString:v16, v17, v18, v19, v20, v21, v22];
+      [(VCSAlarm *)stringCopy _componentsWithISO8601DurationString:v16, v17, v18, v19, v20, v21, v22];
     }
 
     v6 = 0;
     goto LABEL_42;
   }
 
-  v7 = (v5 + 1);
-  v8 = v5[1];
+  v7 = (uTF8String + 1);
+  v8 = uTF8String[1];
   v9 = v4;
-  if (!v5[1])
+  if (!uTF8String[1])
   {
     goto LABEL_41;
   }
@@ -307,7 +307,7 @@ LABEL_34:
       v23 = VCSLogHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
-        [(VCSAlarm *)v3 _componentsWithISO8601DurationString:v23, v25, v26, v27, v28, v29, v30];
+        [(VCSAlarm *)stringCopy _componentsWithISO8601DurationString:v23, v25, v26, v27, v28, v29, v30];
       }
 
       goto LABEL_40;
@@ -381,7 +381,7 @@ LABEL_38:
   v23 = VCSLogHandle();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
   {
-    [(VCSAlarm *)v3 _componentsWithISO8601DurationString:v23, v31, v32, v33, v34, v35, v36];
+    [(VCSAlarm *)stringCopy _componentsWithISO8601DurationString:v23, v31, v32, v33, v34, v35, v36];
   }
 
 LABEL_40:

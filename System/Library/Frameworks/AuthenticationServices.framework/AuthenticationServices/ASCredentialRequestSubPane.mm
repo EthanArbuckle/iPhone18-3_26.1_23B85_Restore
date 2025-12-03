@@ -1,44 +1,44 @@
 @interface ASCredentialRequestSubPane
-- (ASCredentialRequestSubPane)initWithView:(id)a3;
-- (void)addToStackView:(id)a3 withCustomSpacingAfter:(double)a4 context:(id)a5;
-- (void)setCustomSpacingAfter:(double)a3;
+- (ASCredentialRequestSubPane)initWithView:(id)view;
+- (void)addToStackView:(id)view withCustomSpacingAfter:(double)after context:(id)context;
+- (void)setCustomSpacingAfter:(double)after;
 @end
 
 @implementation ASCredentialRequestSubPane
 
-- (ASCredentialRequestSubPane)initWithView:(id)a3
+- (ASCredentialRequestSubPane)initWithView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = ASCredentialRequestSubPane;
   v6 = [(ASCredentialRequestSubPane *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_view, a3);
+    objc_storeStrong(&v6->_view, view);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)addToStackView:(id)a3 withCustomSpacingAfter:(double)a4 context:(id)a5
+- (void)addToStackView:(id)view withCustomSpacingAfter:(double)after context:(id)context
 {
-  [a3 addArrangedSubview:{self->_view, a5}];
+  [view addArrangedSubview:{self->_view, context}];
 
-  [(ASCredentialRequestSubPane *)self setCustomSpacingAfter:a4];
+  [(ASCredentialRequestSubPane *)self setCustomSpacingAfter:after];
 }
 
-- (void)setCustomSpacingAfter:(double)a3
+- (void)setCustomSpacingAfter:(double)after
 {
-  if (self->_customSpacingAfter != a3)
+  if (self->_customSpacingAfter != after)
   {
-    self->_customSpacingAfter = a3;
-    v5 = [(UIView *)self->_view superview];
+    self->_customSpacingAfter = after;
+    superview = [(UIView *)self->_view superview];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v5 setCustomSpacing:self->_view afterView:a3];
+      [superview setCustomSpacing:self->_view afterView:after];
     }
   }
 }

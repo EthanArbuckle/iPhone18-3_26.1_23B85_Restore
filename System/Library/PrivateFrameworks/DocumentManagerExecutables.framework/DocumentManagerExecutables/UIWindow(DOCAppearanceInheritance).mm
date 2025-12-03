@@ -7,16 +7,16 @@
 
 - (id)effectiveAppearance
 {
-  v2 = [a1 appearance];
-  v3 = v2;
-  if (v2)
+  appearance = [self appearance];
+  v3 = appearance;
+  if (appearance)
   {
-    v4 = v2;
+    v4 = appearance;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &off_285D87CB0;
     v4 = objc_msgSendSuper2(&v7, sel_effectiveAppearance);
   }
@@ -28,9 +28,9 @@
 
 - (void)setAppearance:()DOCAppearanceInheritance
 {
-  objc_setAssociatedObject(a1, &_docAppearanceIdentifier, a3, 3);
-  v4 = [a1 effectiveAppearance];
-  [a1 _notifyAppearanceChange:v4];
+  objc_setAssociatedObject(self, &_docAppearanceIdentifier, a3, 3);
+  effectiveAppearance = [self effectiveAppearance];
+  [self _notifyAppearanceChange:effectiveAppearance];
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface RBPrewarmManager
-- (RBPrewarmManager)initWithDelegate:(id)a3 timeProvider:(id)a4;
-- (void)_queue_addPrewarmForIdentity:(id)a3;
+- (RBPrewarmManager)initWithDelegate:(id)delegate timeProvider:(id)provider;
+- (void)_queue_addPrewarmForIdentity:(id)identity;
 - (void)_queue_checkForNewPrewarms;
 - (void)_queue_runPrewarm;
-- (void)_queue_schedulePrewarmForIdentity:(id)a3 withInterval:(id)a4;
-- (void)identityDidTerminate:(id)a3;
-- (void)prewarmingConfigurationDidChange:(id)a3;
+- (void)_queue_schedulePrewarmForIdentity:(id)identity withInterval:(id)interval;
+- (void)identityDidTerminate:(id)terminate;
+- (void)prewarmingConfigurationDidChange:(id)change;
 @end
 
 @implementation RBPrewarmManager
 
-- (RBPrewarmManager)initWithDelegate:(id)a3 timeProvider:(id)a4
+- (RBPrewarmManager)initWithDelegate:(id)delegate timeProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  delegateCopy = delegate;
+  providerCopy = provider;
+  v9 = providerCopy;
+  if (delegateCopy)
   {
-    if (v8)
+    if (providerCopy)
     {
       goto LABEL_3;
     }
@@ -40,8 +40,8 @@ LABEL_3:
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_delegate, v7);
-    objc_storeStrong(&v11->_timeProvider, a4);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
+    objc_storeStrong(&v11->_timeProvider, provider);
     v12 = [MEMORY[0x277D47028] createBackgroundQueue:@"RBPrewarmManager"];
     prewarmingQueue = v11->_prewarmingQueue;
     v11->_prewarmingQueue = v12;
@@ -99,9 +99,9 @@ LABEL_3:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_addPrewarmForIdentity:(id)a3
+- (void)_queue_addPrewarmForIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   dispatch_assert_queue_V2(self->_prewarmingQueue);
   pendingPrewarms = self->_pendingPrewarms;
   if (!pendingPrewarms)
@@ -120,7 +120,7 @@ LABEL_3:
     pendingPrewarms = self->_pendingPrewarms;
   }
 
-  [(NSMutableSet *)pendingPrewarms addObject:v4];
+  [(NSMutableSet *)pendingPrewarms addObject:identityCopy];
 }
 
 - (void)_queue_checkForNewPrewarms
@@ -138,7 +138,7 @@ LABEL_3:
     v5[2] = __46__RBPrewarmManager__queue_checkForNewPrewarms__block_invoke;
     v5[3] = &unk_279B33668;
     v6 = v3;
-    v7 = self;
+    selfCopy = self;
     [(NSDictionary *)v4 enumerateKeysAndObjectsUsingBlock:v5];
   }
 }
@@ -155,10 +155,10 @@ void __46__RBPrewarmManager__queue_checkForNewPrewarms__block_invoke(uint64_t a1
   }
 }
 
-- (void)_queue_schedulePrewarmForIdentity:(id)a3 withInterval:(id)a4
+- (void)_queue_schedulePrewarmForIdentity:(id)identity withInterval:(id)interval
 {
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  intervalCopy = interval;
   dispatch_assert_queue_V2(self->_prewarmingQueue);
   if (!self->_prewarmingEventQueue)
   {
@@ -168,19 +168,19 @@ void __46__RBPrewarmManager__queue_checkForNewPrewarms__block_invoke(uint64_t a1
   }
 
   pendingPrewarms = self->_pendingPrewarms;
-  if (!pendingPrewarms || ([(NSMutableSet *)pendingPrewarms containsObject:v6]& 1) == 0)
+  if (!pendingPrewarms || ([(NSMutableSet *)pendingPrewarms containsObject:identityCopy]& 1) == 0)
   {
-    [v7 doubleValue];
+    [intervalCopy doubleValue];
     v12 = v11;
     if (v11 == 0.0)
     {
-      [(RBPrewarmManager *)self _queue_addPrewarmForIdentity:v6];
+      [(RBPrewarmManager *)self _queue_addPrewarmForIdentity:identityCopy];
     }
 
     if (v12 >= 0.0 && ((*&v12 & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 <= 0x3FE || (*&v12 - 1) <= 0xFFFFFFFFFFFFELL)
     {
       v15 = objc_alloc_init(RBEventQueueEvent);
-      [(RBEventQueueEvent *)v15 setContext:v6];
+      [(RBEventQueueEvent *)v15 setContext:identityCopy];
       [(RBTimeProviding *)self->_timeProvider currentTime];
       [(RBEventQueueEvent *)v15 setEventTime:v12 + v16];
       v17[0] = MEMORY[0x277D85DD0];
@@ -201,13 +201,13 @@ void __67__RBPrewarmManager__queue_schedulePrewarmForIdentity_withInterval___blo
   [v2 _queue_addPrewarmForIdentity:v3];
 }
 
-- (void)prewarmingConfigurationDidChange:(id)a3
+- (void)prewarmingConfigurationDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   os_unfair_lock_lock(&self->_dataLock);
   currentConfiguration = self->_currentConfiguration;
-  self->_currentConfiguration = v4;
-  v6 = v4;
+  self->_currentConfiguration = changeCopy;
+  v6 = changeCopy;
 
   os_unfair_lock_unlock(&self->_dataLock);
   prewarmingQueue = self->_prewarmingQueue;
@@ -219,11 +219,11 @@ void __67__RBPrewarmManager__queue_schedulePrewarmForIdentity_withInterval___blo
   dispatch_async(prewarmingQueue, block);
 }
 
-- (void)identityDidTerminate:(id)a3
+- (void)identityDidTerminate:(id)terminate
 {
-  v4 = a3;
+  terminateCopy = terminate;
   os_unfair_lock_lock(&self->_dataLock);
-  v5 = [(NSDictionary *)self->_currentConfiguration objectForKey:v4];
+  v5 = [(NSDictionary *)self->_currentConfiguration objectForKey:terminateCopy];
   if (v5)
   {
     prewarmingQueue = self->_prewarmingQueue;
@@ -232,7 +232,7 @@ void __67__RBPrewarmManager__queue_schedulePrewarmForIdentity_withInterval___blo
     block[2] = __41__RBPrewarmManager_identityDidTerminate___block_invoke;
     block[3] = &unk_279B329D0;
     block[4] = self;
-    v8 = v4;
+    v8 = terminateCopy;
     v9 = v5;
     dispatch_async(prewarmingQueue, block);
   }

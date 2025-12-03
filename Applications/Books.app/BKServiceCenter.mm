@@ -1,17 +1,17 @@
 @interface BKServiceCenter
 - (BKPriceTrackingService)priceTrackingService;
 - (BKServiceCenter)init;
-- (BKServiceCenter)initWithAppConfiguration:(id)a3;
-- (void)deleteCloudDataWithCompletion:(id)a3;
-- (void)setupServicesWithLibraryManager:(id)a3 appDelegate:(id)a4;
+- (BKServiceCenter)initWithAppConfiguration:(id)configuration;
+- (void)deleteCloudDataWithCompletion:(id)completion;
+- (void)setupServicesWithLibraryManager:(id)manager appDelegate:(id)delegate;
 @end
 
 @implementation BKServiceCenter
 
-- (BKServiceCenter)initWithAppConfiguration:(id)a3
+- (BKServiceCenter)initWithAppConfiguration:(id)configuration
 {
   v4 = objc_allocWithZone(swift_getObjectType());
-  v5 = sub_100013574(a3, v4);
+  v5 = sub_100013574(configuration, v4);
   swift_deallocPartialClassInstance();
   return v5;
 }
@@ -19,7 +19,7 @@
 - (BKPriceTrackingService)priceTrackingService
 {
   type metadata accessor for PriceTrackingService();
-  v3 = self;
+  selfCopy = self;
   sub_1001F1160(&qword_100AEB0B0);
   v4 = sub_1007A22E4();
   v6 = sub_10057FB10(v4, v5, type metadata accessor for PriceTrackingService);
@@ -43,20 +43,20 @@
   return [(BKServiceCenter *)&v6 init];
 }
 
-- (void)setupServicesWithLibraryManager:(id)a3 appDelegate:(id)a4
+- (void)setupServicesWithLibraryManager:(id)manager appDelegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  ServiceCenter.setupServices(withLibraryManager:appDelegate:)(v6, v7);
+  managerCopy = manager;
+  delegateCopy = delegate;
+  selfCopy = self;
+  ServiceCenter.setupServices(withLibraryManager:appDelegate:)(managerCopy, delegateCopy);
 }
 
-- (void)deleteCloudDataWithCompletion:(id)a3
+- (void)deleteCloudDataWithCompletion:(id)completion
 {
   v5 = sub_1001F1160(&qword_100AD67D0);
   __chkstk_darwin(v5 - 8);
   v7 = &v13 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(completion);
   if (v8)
   {
     v9 = swift_allocObject();
@@ -77,7 +77,7 @@
   v11[4] = self;
   v11[5] = v8;
   v11[6] = v9;
-  v12 = self;
+  selfCopy = self;
   sub_1003457A0(0, 0, v7, &unk_1008354C0, v11);
 }
 

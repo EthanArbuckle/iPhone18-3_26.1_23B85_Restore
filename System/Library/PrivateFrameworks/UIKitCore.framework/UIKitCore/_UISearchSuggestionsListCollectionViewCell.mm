@@ -1,16 +1,16 @@
 @interface _UISearchSuggestionsListCollectionViewCell
 - (_UISearchSuggestion_dci)representedSuggestion;
-- (_UISearchSuggestionsListCollectionViewCell)initWithFrame:(CGRect)a3;
-- (void)setRepresentedSuggestion:(id)a3;
+- (_UISearchSuggestionsListCollectionViewCell)initWithFrame:(CGRect)frame;
+- (void)setRepresentedSuggestion:(id)suggestion;
 @end
 
 @implementation _UISearchSuggestionsListCollectionViewCell
 
-- (_UISearchSuggestionsListCollectionViewCell)initWithFrame:(CGRect)a3
+- (_UISearchSuggestionsListCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _UISearchSuggestionsListCollectionViewCell;
-  v3 = [(UICollectionViewListCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UICollectionViewListCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor labelColor];
@@ -20,21 +20,21 @@
   return v3;
 }
 
-- (void)setRepresentedSuggestion:(id)a3
+- (void)setRepresentedSuggestion:(id)suggestion
 {
-  v4 = a3;
+  suggestionCopy = suggestion;
   v8 = +[UIListContentConfiguration cellConfiguration];
-  v5 = [v4 iconImage];
-  [v8 setImage:v5];
+  iconImage = [suggestionCopy iconImage];
+  [v8 setImage:iconImage];
 
-  v6 = [v4 localizedSuggestion];
-  [v8 setText:v6];
+  localizedSuggestion = [suggestionCopy localizedSuggestion];
+  [v8 setText:localizedSuggestion];
 
-  v7 = [v4 localizedAttributedSuggestion];
-  [v8 setAttributedText:v7];
+  localizedAttributedSuggestion = [suggestionCopy localizedAttributedSuggestion];
+  [v8 setAttributedText:localizedAttributedSuggestion];
 
   [(UICollectionViewCell *)self setContentConfiguration:v8];
-  objc_storeWeak(&self->_representedSuggestion, v4);
+  objc_storeWeak(&self->_representedSuggestion, suggestionCopy);
 }
 
 - (_UISearchSuggestion_dci)representedSuggestion

@@ -1,21 +1,21 @@
 @interface ISWrappedMemoriesAppleMusicPlayer
 + (BOOL)isFeatureEnabled;
-- (ISWrappedMemoriesAppleMusicPlayer)initWithPlayerItem:(id)a3 queue:(id)a4;
+- (ISWrappedMemoriesAppleMusicPlayer)initWithPlayerItem:(id)item queue:(id)queue;
 - (id)appleMusicPlayer;
 - (void)_modifyAudioSessionToMixWithOthers;
 - (void)_waitForAssetLoadingIfNeccesary;
 - (void)dealloc;
 - (void)pause;
-- (void)playWithCompletionHandler:(id)a3;
-- (void)prepareWithCompletionHandler:(id)a3;
+- (void)playWithCompletionHandler:(id)handler;
+- (void)prepareWithCompletionHandler:(id)handler;
 - (void)stop;
 @end
 
 @implementation ISWrappedMemoriesAppleMusicPlayer
 
-- (void)playWithCompletionHandler:(id)a3
+- (void)playWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (+[ISWrappedMemoriesAppleMusicPlayer isFeatureEnabled])
   {
     [(ISWrappedMemoriesAppleMusicPlayer *)self _modifyAudioSessionToMixWithOthers];
@@ -26,7 +26,7 @@
     v5[3] = &unk_279A298D8;
     v5[4] = self;
     objc_copyWeak(&v7, &location);
-    v6 = v4;
+    v6 = handlerCopy;
     [(ISWrappedMemoriesAppleMusicPlayer *)self prepareWithCompletionHandler:v5];
 
     objc_destroyWeak(&v7);
@@ -95,20 +95,20 @@ void __63__ISWrappedMemoriesAppleMusicPlayer_playWithCompletionHandler___block_i
   [v1 stop];
 }
 
-- (void)prepareWithCompletionHandler:(id)a3
+- (void)prepareWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   if (+[ISWrappedMemoriesAppleMusicPlayer isFeatureEnabled])
   {
-    v5 = [(ISWrappedMemoriesAppleMusicPlayer *)self appleMusicPlayerQueue];
+    appleMusicPlayerQueue = [(ISWrappedMemoriesAppleMusicPlayer *)self appleMusicPlayerQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __66__ISWrappedMemoriesAppleMusicPlayer_prepareWithCompletionHandler___block_invoke;
     block[3] = &unk_279A2A158;
     objc_copyWeak(&v8, &location);
-    v7 = v4;
-    dispatch_async(v5, block);
+    v7 = handlerCopy;
+    dispatch_async(appleMusicPlayerQueue, block);
 
     objc_destroyWeak(&v8);
   }
@@ -160,9 +160,9 @@ LABEL_7:
 {
   if ([(ISWrappedMemoriesAppleMusicPlayer *)self isLoadingAsset])
   {
-    v3 = [(ISWrappedMemoriesAppleMusicPlayer *)self isLoadingAssetSemaphore];
+    isLoadingAssetSemaphore = [(ISWrappedMemoriesAppleMusicPlayer *)self isLoadingAssetSemaphore];
 
-    if (v3)
+    if (isLoadingAssetSemaphore)
     {
       dsema = [(ISWrappedMemoriesAppleMusicPlayer *)self isLoadingAssetSemaphore];
       v4 = dispatch_time(0, -1);
@@ -177,10 +177,10 @@ LABEL_7:
   if (+[ISWrappedMemoriesAppleMusicPlayer isFeatureEnabled])
   {
     v2 = +[ISWrappedAVAudioSession sharedVideoPlaybackInstance];
-    v3 = [v2 category];
-    v4 = [v2 mode];
+    category = [v2 category];
+    mode = [v2 mode];
     v9 = 0;
-    v5 = [v2 setCategory:v3 mode:v4 routeSharingPolicy:0 options:1 error:&v9];
+    v5 = [v2 setCategory:category mode:mode routeSharingPolicy:0 options:1 error:&v9];
     v6 = v9;
     if ((v5 & 1) == 0)
     {
@@ -241,15 +241,15 @@ void __42__ISWrappedMemoriesAppleMusicPlayer_pause__block_invoke(uint64_t a1)
 {
   if (+[ISWrappedMemoriesAppleMusicPlayer isFeatureEnabled])
   {
-    v2 = [MEMORY[0x277CD5FB8] applicationQueuePlayer];
+    applicationQueuePlayer = [MEMORY[0x277CD5FB8] applicationQueuePlayer];
   }
 
   else
   {
-    v2 = 0;
+    applicationQueuePlayer = 0;
   }
 
-  return v2;
+  return applicationQueuePlayer;
 }
 
 - (void)dealloc
@@ -268,23 +268,23 @@ void __42__ISWrappedMemoriesAppleMusicPlayer_pause__block_invoke(uint64_t a1)
   [(ISWrappedMemoriesAppleMusicPlayer *)&v5 dealloc];
 }
 
-- (ISWrappedMemoriesAppleMusicPlayer)initWithPlayerItem:(id)a3 queue:(id)a4
+- (ISWrappedMemoriesAppleMusicPlayer)initWithPlayerItem:(id)item queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  queueCopy = queue;
   v17.receiver = self;
   v17.super_class = ISWrappedMemoriesAppleMusicPlayer;
   v8 = [(ISWrappedMemoriesAppleMusicPlayer *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_appleMusicPlayerQueue, a4);
-    if (v6)
+    objc_storeStrong(&v8->_appleMusicPlayerQueue, queue);
+    if (itemCopy)
     {
       if (+[ISWrappedMemoriesAppleMusicPlayer isFeatureEnabled])
       {
-        v10 = [v6 asset];
-        if (v10)
+        asset = [itemCopy asset];
+        if (asset)
         {
           v11 = dispatch_semaphore_create(0);
           isLoadingAssetSemaphore = v9->_isLoadingAssetSemaphore;
@@ -297,7 +297,7 @@ void __42__ISWrappedMemoriesAppleMusicPlayer_pause__block_invoke(uint64_t a1)
           v15[2] = __62__ISWrappedMemoriesAppleMusicPlayer_initWithPlayerItem_queue___block_invoke;
           v15[3] = &unk_279A29888;
           v16 = v9;
-          [v10 loadMediaSelectionGroupForMediaCharacteristic:v13 completionHandler:v15];
+          [asset loadMediaSelectionGroupForMediaCharacteristic:v13 completionHandler:v15];
         }
       }
     }

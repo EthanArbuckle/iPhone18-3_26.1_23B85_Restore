@@ -1,8 +1,8 @@
 @interface SASBluetoothEndpointUtility
 - (BOOL)isConnectedToBluetoothVehicle;
 - (SASBluetoothEndpointUtility)init;
-- (void)_registerListenersAndSetEndpointTypeWithNotification:(id)a3;
-- (void)_setEndpointTypeWithNotification:(id)a3;
+- (void)_registerListenersAndSetEndpointTypeWithNotification:(id)notification;
+- (void)_setEndpointTypeWithNotification:(id)notification;
 - (void)dealloc;
 - (void)isConnectedToBluetoothVehicle;
 @end
@@ -50,8 +50,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   endpointType = self->_endpointType;
   self->_endpointType = 0;
@@ -61,13 +61,13 @@
   [(SASBluetoothEndpointUtility *)&v5 dealloc];
 }
 
-- (void)_registerListenersAndSetEndpointTypeWithNotification:(id)a3
+- (void)_registerListenersAndSetEndpointTypeWithNotification:(id)notification
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v5 = [MEMORY[0x1E69AED08] sharedAVSystemController];
+  mEMORY[0x1E69AED08] = [MEMORY[0x1E69AED08] sharedAVSystemController];
   v6 = MEMORY[0x1E69AE9B8];
   v7 = MEMORY[0x1E69AEAE8];
   v8 = *MEMORY[0x1E69AEAE8];
@@ -76,7 +76,7 @@
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
   v10 = *MEMORY[0x1E69AECE0];
   v19 = 0;
-  v11 = [v5 setAttribute:v9 forKey:v10 error:&v19];
+  v11 = [mEMORY[0x1E69AED08] setAttribute:v9 forKey:v10 error:&v19];
   v12 = v19;
   v13 = MEMORY[0x1E698D0A0];
   if ((v11 & 1) == 0 && os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_ERROR))
@@ -84,14 +84,14 @@
     [SASBluetoothEndpointUtility _registerListenersAndSetEndpointTypeWithNotification:];
   }
 
-  v14 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v14 addObserver:self selector:sel__registerListenersAndSetEndpointTypeWithNotification_ name:*MEMORY[0x1E69AECB0] object:v5];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__registerListenersAndSetEndpointTypeWithNotification_ name:*MEMORY[0x1E69AECB0] object:mEMORY[0x1E69AED08]];
 
-  v15 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v15 addObserver:self selector:sel__setEndpointTypeWithNotification_ name:*v6 object:v5];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel__setEndpointTypeWithNotification_ name:*v6 object:mEMORY[0x1E69AED08]];
 
-  v16 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v16 addObserver:self selector:sel__setEndpointTypeWithNotification_ name:*v7 object:v5];
+  defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter4 addObserver:self selector:sel__setEndpointTypeWithNotification_ name:*v7 object:mEMORY[0x1E69AED08]];
 
   [(SASBluetoothEndpointUtility *)self _setEndpointTypeWithNotification:0];
   v17 = *v13;
@@ -105,7 +105,7 @@
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setEndpointTypeWithNotification:(id)a3
+- (void)_setEndpointTypeWithNotification:(id)notification
 {
   objc_initWeak(&location, self);
   serialBluetoothEndpointQueue = self->_serialBluetoothEndpointQueue;

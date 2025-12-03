@@ -1,8 +1,8 @@
 @interface PXModelDeliveryProgressViewController
-- (_TtC12PhotosUICore37PXModelDeliveryProgressViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)reportProgress:(double)a3 stage:(unint64_t)a4;
-- (void)setErrorState:(int64_t)a3;
-- (void)setIsiPadConfiguration:(BOOL)a3;
+- (_TtC12PhotosUICore37PXModelDeliveryProgressViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)reportProgress:(double)progress stage:(unint64_t)stage;
+- (void)setErrorState:(int64_t)state;
+- (void)setIsiPadConfiguration:(BOOL)configuration;
 - (void)viewDidLoad;
 @end
 
@@ -17,27 +17,27 @@
   sub_1A41C7BA0();
 }
 
-- (void)reportProgress:(double)a3 stage:(unint64_t)a4
+- (void)reportProgress:(double)progress stage:(unint64_t)stage
 {
-  v6 = self;
-  sub_1A41C7F80(a4, a3);
+  selfCopy = self;
+  sub_1A41C7F80(stage, progress);
 }
 
-- (void)setIsiPadConfiguration:(BOOL)a3
+- (void)setIsiPadConfiguration:(BOOL)configuration
 {
-  v4 = self;
-  sub_1A41C84EC(a3);
+  selfCopy = self;
+  sub_1A41C84EC(configuration);
 }
 
-- (void)setErrorState:(int64_t)a3
+- (void)setErrorState:(int64_t)state
 {
-  v4 = self;
-  sub_1A41C85F4(a3);
+  selfCopy = self;
+  sub_1A41C85F4(state);
 }
 
-- (_TtC12PhotosUICore37PXModelDeliveryProgressViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12PhotosUICore37PXModelDeliveryProgressViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_1A524C674();
     v7 = v6;
@@ -49,8 +49,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1A41C87F0(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1A41C87F0(v5, v7, bundle);
 }
 
 @end

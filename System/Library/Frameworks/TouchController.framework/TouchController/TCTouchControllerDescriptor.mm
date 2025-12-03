@@ -2,7 +2,7 @@
 - (CGSize)drawableSize;
 - (CGSize)size;
 - (TCTouchControllerDescriptor)init;
-- (TCTouchControllerDescriptor)initWithMTKView:(id)a3;
+- (TCTouchControllerDescriptor)initWithMTKView:(id)view;
 @end
 
 @implementation TCTouchControllerDescriptor
@@ -14,23 +14,23 @@
   return [(TCTouchControllerDescriptor *)&v3 init];
 }
 
-- (TCTouchControllerDescriptor)initWithMTKView:(id)a3
+- (TCTouchControllerDescriptor)initWithMTKView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [(TCTouchControllerDescriptor *)self init];
   if (v5)
   {
-    v6 = [v4 device];
+    device = [viewCopy device];
     device = v5->_device;
-    v5->_device = v6;
+    v5->_device = device;
 
-    [v4 bounds];
+    [viewCopy bounds];
     v5->_size.width = v8;
     v5->_size.height = v9;
-    v5->_colorPixelFormat = [v4 colorPixelFormat];
-    v5->_depthAttachmentPixelFormat = [v4 depthStencilPixelFormat];
-    v5->_stencilAttachmentPixelFormat = [v4 depthStencilPixelFormat];
-    v5->_sampleCount = [v4 sampleCount];
+    v5->_colorPixelFormat = [viewCopy colorPixelFormat];
+    v5->_depthAttachmentPixelFormat = [viewCopy depthStencilPixelFormat];
+    v5->_stencilAttachmentPixelFormat = [viewCopy depthStencilPixelFormat];
+    v5->_sampleCount = [viewCopy sampleCount];
   }
 
   return v5;

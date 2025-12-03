@@ -1,5 +1,5 @@
 @interface UNNotificationMuteAssertion
-- (UNNotificationMuteAssertion)initWithCoder:(id)a3;
+- (UNNotificationMuteAssertion)initWithCoder:(id)coder;
 - (id)_init;
 @end
 
@@ -12,7 +12,7 @@
   return [(UNNotificationMuteAssertion *)&v3 init];
 }
 
-- (UNNotificationMuteAssertion)initWithCoder:(id)a3
+- (UNNotificationMuteAssertion)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = UNNotificationMuteAssertion;

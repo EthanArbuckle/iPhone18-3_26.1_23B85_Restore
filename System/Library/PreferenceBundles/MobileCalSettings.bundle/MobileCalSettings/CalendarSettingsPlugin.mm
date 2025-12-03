@@ -1,53 +1,53 @@
 @interface CalendarSettingsPlugin
 - (BOOL)_shouldShowDefaultCalendarSpecifier;
 - (CalendarSettingsPlugin)init;
-- (double)_defaultEventDurationForIdentifier:(id)a3;
+- (double)_defaultEventDurationForIdentifier:(id)identifier;
 - (id)_accountStore;
 - (id)_defaultEventDurationLocalizedStrings;
 - (id)_eventStore;
-- (id)_localeSpecificLocalizedMonthSyncTitleWithBundle:(id)a3 months:(unint64_t)a4;
-- (id)_localeSpecificLocalizedTwoWeeksSyncTitleWithBundle:(id)a3;
-- (id)_titlesForCalendarIdentifiers:(id)a3;
+- (id)_localeSpecificLocalizedMonthSyncTitleWithBundle:(id)bundle months:(unint64_t)months;
+- (id)_localeSpecificLocalizedTwoWeeksSyncTitleWithBundle:(id)bundle;
+- (id)_titlesForCalendarIdentifiers:(id)identifiers;
 - (id)_titlesForDaysToSync;
-- (id)_titlesForWeekDays:(id)a3;
+- (id)_titlesForWeekDays:(id)days;
 - (id)accountsSupportingDelegation;
-- (id)daysToSync:(id)a3;
-- (id)defaultCalendarName:(id)a3;
-- (id)defaultEventDuration:(id)a3;
+- (id)daysToSync:(id)sync;
+- (id)defaultCalendarName:(id)name;
+- (id)defaultEventDuration:(id)duration;
 - (id)helpkitURLString;
-- (id)immediateAlarmCreation:(id)a3;
-- (id)overlayCalendarID:(id)a3;
-- (id)showInviteeDeclinesEnabled:(id)a3;
-- (id)showWeekNumbers:(id)a3;
+- (id)immediateAlarmCreation:(id)creation;
+- (id)overlayCalendarID:(id)d;
+- (id)showInviteeDeclinesEnabled:(id)enabled;
+- (id)showWeekNumbers:(id)numbers;
 - (id)specifiers;
-- (id)suggestEventLocations:(id)a3;
-- (id)timeZoneSupportEnabled:(id)a3;
-- (id)weekStart:(id)a3;
-- (id)weekViewStartsOnToday:(id)a3;
+- (id)suggestEventLocations:(id)locations;
+- (id)timeZoneSupportEnabled:(id)enabled;
+- (id)weekStart:(id)start;
+- (id)weekViewStartsOnToday:(id)today;
 - (id)writableEnabledIdentities;
 - (int64_t)_countOfAccountsSyncingCalendars;
-- (void)_applicationDidRemoveDeactivationReasonNotification:(id)a3;
-- (void)_applicationWillAddDeactivationReasonNotification:(id)a3;
+- (void)_applicationDidRemoveDeactivationReasonNotification:(id)notification;
+- (void)_applicationWillAddDeactivationReasonNotification:(id)notification;
 - (void)_authenticateIfRequired;
 - (void)_cancelAuthentication;
 - (void)_createAllCommonSpecifiers;
-- (void)_eventStoreChanged:(id)a3;
+- (void)_eventStoreChanged:(id)changed;
 - (void)_freeSpecifiers;
 - (void)_restrictToShield;
-- (void)reloadSpecifiers:(id)a3;
-- (void)setDaysToSync:(id)a3 specifier:(id)a4;
-- (void)setDefaultCalendar:(id)a3 specifier:(id)a4;
-- (void)setDefaultEventDuration:(id)a3 specifier:(id)a4;
-- (void)setImmediateAlarmCreation:(id)a3 specifier:(id)a4;
-- (void)setOverlayCalendarID:(id)a3 specifier:(id)a4;
-- (void)setShowInviteeDeclinesEnabled:(id)a3 specifier:(id)a4;
-- (void)setShowWeekNumbers:(id)a3 specifier:(id)a4;
-- (void)setSuggestEventLocations:(id)a3 specifier:(id)a4;
-- (void)setWeekViewStartsOnToday:(id)a3 specifier:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)reloadSpecifiers:(id)specifiers;
+- (void)setDaysToSync:(id)sync specifier:(id)specifier;
+- (void)setDefaultCalendar:(id)calendar specifier:(id)specifier;
+- (void)setDefaultEventDuration:(id)duration specifier:(id)specifier;
+- (void)setImmediateAlarmCreation:(id)creation specifier:(id)specifier;
+- (void)setOverlayCalendarID:(id)d specifier:(id)specifier;
+- (void)setShowInviteeDeclinesEnabled:(id)enabled specifier:(id)specifier;
+- (void)setShowWeekNumbers:(id)numbers specifier:(id)specifier;
+- (void)setSuggestEventLocations:(id)locations specifier:(id)specifier;
+- (void)setWeekViewStartsOnToday:(id)today specifier:(id)specifier;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CalendarSettingsPlugin
@@ -75,15 +75,15 @@
   shieldView = self->shieldView;
   self->shieldView = v5;
 
-  v7 = [(CalendarSettingsPlugin *)self view];
-  [v7 bounds];
+  view = [(CalendarSettingsPlugin *)self view];
+  [view bounds];
   [(APBaseShieldView *)self->shieldView setFrame:?];
 
   [(APBaseShieldView *)self->shieldView setAutoresizingMask:18];
   [(APBaseShieldView *)self->shieldView setDelegate:self];
   [(APBaseShieldView *)self->shieldView setShieldStyle:1];
-  v8 = [(CalendarSettingsPlugin *)self view];
-  [v8 addSubview:self->shieldView];
+  view2 = [(CalendarSettingsPlugin *)self view];
+  [view2 addSubview:self->shieldView];
 
   v9 = +[NSNotificationCenter defaultCenter];
   [v9 addObserver:self selector:"_applicationDidEnterBackground" name:UIApplicationDidEnterBackgroundNotification object:0];
@@ -95,36 +95,36 @@
   [(CalendarSettingsPlugin *)self _authenticateIfRequired];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CalendarSettingsPlugin;
-  [(CalendarSettingsPlugin *)&v4 viewWillAppear:a3];
+  [(CalendarSettingsPlugin *)&v4 viewWillAppear:appear];
   if (([(CalendarSettingsPlugin *)self isMovingToParentViewController]& 1) == 0)
   {
     [(CalendarSettingsPlugin *)self reloadSpecifiers];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v13.receiver = self;
   v13.super_class = CalendarSettingsPlugin;
-  [(CalendarSettingsPlugin *)&v13 viewDidAppear:a3];
+  [(CalendarSettingsPlugin *)&v13 viewDidAppear:appear];
   v4 = [NSURL URLWithString:@"settings-navigation://com.apple.Settings.Apps/com.apple.mobilecal"];
   v5 = [_NSLocalizedStringResource alloc];
   v6 = +[NSLocale currentLocale];
   v7 = [NSBundle bundleForClass:objc_opt_class()];
-  v8 = [v7 bundleURL];
-  v9 = [v5 initWithKey:@"Calendar" table:@"MobileCalSettings" locale:v6 bundleURL:v8];
+  bundleURL = [v7 bundleURL];
+  v9 = [v5 initWithKey:@"Calendar" table:@"MobileCalSettings" locale:v6 bundleURL:bundleURL];
 
   [(CalendarSettingsPlugin *)self pe_emitNavigationEventForApplicationSettingsWithApplicationBundleIdentifier:@"com.apple.mobilecal" title:v9 localizedNavigationComponents:&__NSArray0__struct deepLink:v4];
-  v10 = [v9 localize];
-  [(CalendarSettingsPlugin *)self setTitle:v10];
+  localize = [v9 localize];
+  [(CalendarSettingsPlugin *)self setTitle:localize];
 
   v11 = +[NSNotificationCenter defaultCenter];
-  v12 = [(CalendarSettingsPlugin *)self _eventStore];
-  [v11 addObserver:self selector:"_eventStoreChanged:" name:EKEventStoreChangedNotification object:v12];
+  _eventStore = [(CalendarSettingsPlugin *)self _eventStore];
+  [v11 addObserver:self selector:"_eventStoreChanged:" name:EKEventStoreChangedNotification object:_eventStore];
 
   [v11 addObserver:self selector:"_localeChanged:" name:CUIKLocaleChangedNotification object:0];
   [v11 addObserver:self selector:"_alternativeCalendarChanged" name:CUIKPreferencesNotification_OverlayCalendarID object:0];
@@ -137,14 +137,14 @@
   [CalDistributedNotificationCenter addObserver:self selector:"_showInviteeDeclinesChanged" name:kCalAlertPrefChangedNotification];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = CalendarSettingsPlugin;
-  [(CalendarSettingsPlugin *)&v6 viewDidDisappear:a3];
+  [(CalendarSettingsPlugin *)&v6 viewDidDisappear:disappear];
   v4 = +[NSNotificationCenter defaultCenter];
-  v5 = [(CalendarSettingsPlugin *)self _eventStore];
-  [v4 removeObserver:self name:EKEventStoreChangedNotification object:v5];
+  _eventStore = [(CalendarSettingsPlugin *)self _eventStore];
+  [v4 removeObserver:self name:EKEventStoreChangedNotification object:_eventStore];
 
   [v4 removeObserver:self name:CUIKLocaleChangedNotification object:0];
   [v4 removeObserver:self name:CUIKPreferencesNotification_OverlayCalendarID object:0];
@@ -158,15 +158,15 @@
   [CalDistributedNotificationCenter removeObserver:self name:kCalAlertPrefChangedNotification];
 }
 
-- (id)_titlesForWeekDays:(id)a3
+- (id)_titlesForWeekDays:(id)days
 {
-  v3 = a3;
-  v4 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v3, "count")}];
+  daysCopy = days;
+  v4 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(daysCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = daysCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -209,17 +209,17 @@
   return v4;
 }
 
-- (id)_titlesForCalendarIdentifiers:(id)a3
+- (id)_titlesForCalendarIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_619C;
   v9[3] = &unk_20AA0;
   v9[4] = self;
-  v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v10 = v5;
-  [v4 enumerateObjectsUsingBlock:v9];
+  [identifiersCopy enumerateObjectsUsingBlock:v9];
 
   v6 = v10;
   v7 = v5;
@@ -247,8 +247,8 @@
     [(PSSpecifier *)self->_timeZoneSupportSpecifier setProperty:@"com.apple.mobilecal" forKey:PSDefaultsKey];
     [(PSSpecifier *)self->_timeZoneSupportSpecifier setIdentifier:@"timeZoneOverride"];
     v8 = +[NSLocale currentLocale];
-    v9 = [v8 localeIdentifier];
-    v10 = [IntlUtility lunarCalendarsForLocaleID:v9];
+    localeIdentifier = [v8 localeIdentifier];
+    v10 = [IntlUtility lunarCalendarsForLocaleID:localeIdentifier];
     v11 = [&off_225E8 arrayByAddingObjectsFromArray:v10];
 
     v12 = [v64 localizedStringForKey:@"Alternate Calendars" value:&stru_210B8 table:@"MobileCalSettings"];
@@ -287,8 +287,8 @@
     v29 = [NSNumber numberWithInt:183];
     v30 = [NSNumber numberWithInt:0];
     v31 = [NSArray arrayWithObjects:v26, v27, v28, v29, v30, 0];
-    v32 = [(CalendarSettingsPlugin *)self _titlesForDaysToSync];
-    [(PSSpecifier *)v25 setValues:v31 titles:v32];
+    _titlesForDaysToSync = [(CalendarSettingsPlugin *)self _titlesForDaysToSync];
+    [(PSSpecifier *)v25 setValues:v31 titles:_titlesForDaysToSync];
 
     [(PSSpecifier *)self->_syncDaysSpecifier setProperty:kCFBooleanTrue forKey:PSDeferItemSelectionKey];
     [(PSSpecifier *)self->_syncDaysSpecifier setIdentifier:@"syncDuration"];
@@ -303,17 +303,17 @@
     v37 = [v64 localizedStringForKey:@"Start Week On" value:&stru_210B8 table:@"MobileCalSettings"];
     v38 = [PSSpecifier preferenceSpecifierNamed:v37 target:self set:0 get:"weekStart:" detail:objc_opt_class() cell:2 edit:0];
 
-    v60 = [(CalendarSettingsPlugin *)self _numbersForWeekdays];
-    v39 = [(CalendarSettingsPlugin *)self _titlesForWeekDays:v60];
-    [v38 setValues:v60 titles:v39];
+    _numbersForWeekdays = [(CalendarSettingsPlugin *)self _numbersForWeekdays];
+    v39 = [(CalendarSettingsPlugin *)self _titlesForWeekDays:_numbersForWeekdays];
+    [v38 setValues:_numbersForWeekdays titles:v39];
 
     [v38 setIdentifier:@"startWeekOn"];
     weekStartSpecifier = self->_weekStartSpecifier;
     self->_weekStartSpecifier = v38;
     v59 = v38;
 
-    v41 = [(CalendarSettingsPlugin *)self _eventStore];
-    self->_numTotalCalendars = [v41 readWriteCalendarCountForEntityType:0] != 0;
+    _eventStore = [(CalendarSettingsPlugin *)self _eventStore];
+    self->_numTotalCalendars = [_eventStore readWriteCalendarCountForEntityType:0] != 0;
 
     v42 = [v64 localizedStringForKey:@"Default Alert Times" value:&stru_210B8 table:@"MobileCalSettings"];
     v43 = [PSSpecifier preferenceSpecifierNamed:v42 target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
@@ -340,14 +340,14 @@
     self->_showSingleAccountSupportingDelegationSpecifier = v52;
 
     [(PSSpecifier *)self->_showSingleAccountSupportingDelegationSpecifier setIdentifier:@"DELEGATE_CALENDARS"];
-    v54 = [(CalendarSettingsPlugin *)self _defaultEventDurationIdentifiers];
-    v55 = [(CalendarSettingsPlugin *)self _defaultEventDurationLocalizedStrings];
+    _defaultEventDurationIdentifiers = [(CalendarSettingsPlugin *)self _defaultEventDurationIdentifiers];
+    _defaultEventDurationLocalizedStrings = [(CalendarSettingsPlugin *)self _defaultEventDurationLocalizedStrings];
     v56 = [v64 localizedStringForKey:@"Duration for New Events" value:&stru_210B8 table:@"MobileCalSettings"];
     v57 = [PSSpecifier preferenceSpecifierNamed:v56 target:self set:"setDefaultEventDuration:specifier:" get:"defaultEventDuration:" detail:objc_opt_class() cell:2 edit:0];
     defaultEventDurationSpecifier = self->_defaultEventDurationSpecifier;
     self->_defaultEventDurationSpecifier = v57;
 
-    [(PSSpecifier *)self->_defaultEventDurationSpecifier setValues:v54 titles:v55];
+    [(PSSpecifier *)self->_defaultEventDurationSpecifier setValues:_defaultEventDurationIdentifiers titles:_defaultEventDurationLocalizedStrings];
     [(PSSpecifier *)self->_defaultEventDurationSpecifier setIdentifier:@"durationForNewEvents"];
   }
 }
@@ -370,20 +370,20 @@
   return v9;
 }
 
-- (id)_localeSpecificLocalizedTwoWeeksSyncTitleWithBundle:(id)a3
+- (id)_localeSpecificLocalizedTwoWeeksSyncTitleWithBundle:(id)bundle
 {
-  v3 = [a3 localizedStringForKey:@"2 Week Sync Title" value:@"Events 2 Weeks Back" table:@"MobileCalSettings"];
+  v3 = [bundle localizedStringForKey:@"2 Week Sync Title" value:@"Events 2 Weeks Back" table:@"MobileCalSettings"];
   v4 = [NSString localizedStringWithFormat:v3, 2];
 
   return v4;
 }
 
-- (id)_localeSpecificLocalizedMonthSyncTitleWithBundle:(id)a3 months:(unint64_t)a4
+- (id)_localeSpecificLocalizedMonthSyncTitleWithBundle:(id)bundle months:(unint64_t)months
 {
-  v5 = [a3 localizedStringForKey:@"Month Sync Title" value:@"Events %ld Months Back" table:@"MobileCalSettings"];
-  v6 = [NSString localizedStringWithFormat:v5, a4];
+  v5 = [bundle localizedStringForKey:@"Month Sync Title" value:@"Events %ld Months Back" table:@"MobileCalSettings"];
+  months = [NSString localizedStringWithFormat:v5, months];
 
-  return v6;
+  return months;
 }
 
 - (void)_freeSpecifiers
@@ -436,10 +436,10 @@
   v3 = +[NSMutableArray array];
   [(CalendarSettingsPlugin *)self _freeSpecifiers];
   [(CalendarSettingsPlugin *)self _createAllCommonSpecifiers];
-  v4 = [(CalendarSettingsPlugin *)self traitCollection];
-  v5 = [v4 pe_isSettingsFeatureDescriptionCellSupported];
+  traitCollection = [(CalendarSettingsPlugin *)self traitCollection];
+  pe_isSettingsFeatureDescriptionCellSupported = [traitCollection pe_isSettingsFeatureDescriptionCellSupported];
 
-  if (v5)
+  if (pe_isSettingsFeatureDescriptionCellSupported)
   {
     v6 = +[PSSpecifier emptyGroupSpecifier];
     [v6 setIdentifier:@"PLACARD_GROUP"];
@@ -450,8 +450,8 @@
     [v9 setIdentifier:@"PLACARD"];
     [v9 setProperty:objc_opt_class() forKey:PSCellClassKey];
     v10 = [v7 localizedStringForKey:@"Add or remove accounts value:manage Siri & Search table:{and customize how your calendar appears. [Learn more…](%@)", &stru_210B8, @"MobileCalSettings"}];
-    v11 = [(CalendarSettingsPlugin *)self helpkitURLString];
-    v12 = [NSString localizedStringWithFormat:v10, v11];
+    helpkitURLString = [(CalendarSettingsPlugin *)self helpkitURLString];
+    v12 = [NSString localizedStringWithFormat:v10, helpkitURLString];
 
     [v9 setProperty:v12 forKey:PSTableCellSubtitleTextKey];
     [v9 setProperty:kCalCalendarBundleIdentifier forKey:PSLazyIconAppID];
@@ -506,9 +506,9 @@
   [v3 addObject:self->_overlayCalendarSpecifier];
   [v3 addObject:self->_showWeekNumbersSpecifier];
   v23 = +[UIDevice currentDevice];
-  v24 = [v23 userInterfaceIdiom];
+  userInterfaceIdiom = [v23 userInterfaceIdiom];
 
-  if ((EKUIUseLargeFormatPhoneUI() & 1) != 0 || v24)
+  if ((EKUIUseLargeFormatPhoneUI() & 1) != 0 || userInterfaceIdiom)
   {
     [v3 addObject:self->_weekViewStartsOnTodaySpecifier];
   }
@@ -521,24 +521,24 @@
 
   [v3 addObject:self->_defaultAlarmsSpecifier];
   [v3 addObject:self->_defaultEventDurationSpecifier];
-  v25 = [(CalendarSettingsPlugin *)self weekStartSpecifier];
-  [v3 addObject:v25];
+  weekStartSpecifier = [(CalendarSettingsPlugin *)self weekStartSpecifier];
+  [v3 addObject:weekStartSpecifier];
 
   if ([(CalendarSettingsPlugin *)self _shouldShowDefaultCalendarSpecifier])
   {
     [v3 addObject:self->_defaultCalendarSpecifier];
   }
 
-  v26 = [(CalendarSettingsPlugin *)self accountsSupportingDelegation];
-  v27 = [v26 count];
+  accountsSupportingDelegation = [(CalendarSettingsPlugin *)self accountsSupportingDelegation];
+  v27 = [accountsSupportingDelegation count];
   if (v27)
   {
     if (v27 == &def_F7BC + 1)
     {
       p_showSingleAccountSupportingDelegationSpecifier = &self->_showSingleAccountSupportingDelegationSpecifier;
       showSingleAccountSupportingDelegationSpecifier = self->_showSingleAccountSupportingDelegationSpecifier;
-      v30 = [v26 firstObject];
-      [(PSSpecifier *)showSingleAccountSupportingDelegationSpecifier setProperty:v30 forKey:@"CSSourceKey"];
+      firstObject = [accountsSupportingDelegation firstObject];
+      [(PSSpecifier *)showSingleAccountSupportingDelegationSpecifier setProperty:firstObject forKey:@"CSSourceKey"];
 
       [(PSSpecifier *)self->_showSingleAccountSupportingDelegationSpecifier setProperty:&__kCFBooleanFalse forKey:@"CSPresentedFromDisambiguationControllerKey"];
     }
@@ -567,9 +567,9 @@
 - (id)helpkitURLString
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  if (v3)
+  if (userInterfaceIdiom)
   {
     v4 = @"ipad581be0bc";
   }
@@ -584,10 +584,10 @@
 
 - (BOOL)_shouldShowDefaultCalendarSpecifier
 {
-  v2 = [(CalendarSettingsPlugin *)self _eventStore];
-  v3 = [v2 sources];
+  _eventStore = [(CalendarSettingsPlugin *)self _eventStore];
+  sources = [_eventStore sources];
   v4 = [NSPredicate predicateWithBlock:&stru_20AE0];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [sources filteredArrayUsingPredicate:v4];
 
   v17 = 0u;
   v18 = 0u;
@@ -639,58 +639,58 @@ LABEL_3:
   return v9 > 1;
 }
 
-- (void)setShowInviteeDeclinesEnabled:(id)a3 specifier:(id)a4
+- (void)setShowInviteeDeclinesEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
 
-  _CalSetAlertInviteeDeclines(v4);
+  _CalSetAlertInviteeDeclines(bOOLValue);
 }
 
-- (id)showInviteeDeclinesEnabled:(id)a3
+- (id)showInviteeDeclinesEnabled:(id)enabled
 {
   v3 = CalAlertInviteeDeclines() != 0;
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setShowWeekNumbers:(id)a3 specifier:(id)a4
+- (void)setShowWeekNumbers:(id)numbers specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [numbers BOOLValue];
   v5 = +[CUIKPreferences sharedPreferences];
-  [v5 setShowWeekNumbers:v4];
+  [v5 setShowWeekNumbers:bOOLValue];
 }
 
-- (id)showWeekNumbers:(id)a3
+- (id)showWeekNumbers:(id)numbers
 {
   v3 = +[CUIKPreferences sharedPreferences];
-  v4 = [v3 showWeekNumbers];
+  showWeekNumbers = [v3 showWeekNumbers];
 
-  return [NSNumber numberWithBool:v4];
+  return [NSNumber numberWithBool:showWeekNumbers];
 }
 
-- (void)setWeekViewStartsOnToday:(id)a3 specifier:(id)a4
+- (void)setWeekViewStartsOnToday:(id)today specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [today BOOLValue];
   v5 = +[CUIKPreferences sharedPreferences];
-  [v5 setWeekViewStartsOnToday:v4];
+  [v5 setWeekViewStartsOnToday:bOOLValue];
 }
 
-- (id)weekViewStartsOnToday:(id)a3
+- (id)weekViewStartsOnToday:(id)today
 {
   v3 = +[CUIKPreferences sharedPreferences];
-  v4 = [v3 weekViewStartsOnToday];
+  weekViewStartsOnToday = [v3 weekViewStartsOnToday];
 
-  return [NSNumber numberWithBool:v4];
+  return [NSNumber numberWithBool:weekViewStartsOnToday];
 }
 
-- (void)setSuggestEventLocations:(id)a3 specifier:(id)a4
+- (void)setSuggestEventLocations:(id)locations specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [locations BOOLValue];
   v5 = +[CDBPreferences shared];
-  [v5 set_suggestEventLocations:v4];
+  [v5 set_suggestEventLocations:bOOLValue];
 }
 
-- (id)suggestEventLocations:(id)a3
+- (id)suggestEventLocations:(id)locations
 {
   v3 = +[CDBPreferences shared];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 get_suggestEventLocations]);
@@ -698,43 +698,43 @@ LABEL_3:
   return v4;
 }
 
-- (void)setImmediateAlarmCreation:(id)a3 specifier:(id)a4
+- (void)setImmediateAlarmCreation:(id)creation specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [creation BOOLValue];
   v5 = +[CUIKPreferences sharedPreferences];
-  [v5 setImmediateAlarmCreation:v4];
+  [v5 setImmediateAlarmCreation:bOOLValue];
 }
 
-- (id)immediateAlarmCreation:(id)a3
+- (id)immediateAlarmCreation:(id)creation
 {
   v3 = +[CUIKPreferences sharedPreferences];
-  v4 = [v3 immediateAlarmCreation];
+  immediateAlarmCreation = [v3 immediateAlarmCreation];
 
-  return [NSNumber numberWithBool:v4];
+  return [NSNumber numberWithBool:immediateAlarmCreation];
 }
 
-- (void)setDaysToSync:(id)a3 specifier:(id)a4
+- (void)setDaysToSync:(id)sync specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  syncCopy = sync;
+  specifierCopy = specifier;
+  if (syncCopy)
   {
     v7 = kCSLogHandle;
     if (os_log_type_enabled(kCSLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v8 = v7;
       v11 = 134217984;
-      v12 = [v5 integerValue];
+      integerValue = [syncCopy integerValue];
       _os_log_impl(&def_F7BC, v8, OS_LOG_TYPE_DEFAULT, "Set days to sync: [%ld].", &v11, 0xCu);
     }
 
-    v9 = [v5 integerValue];
+    integerValue2 = [syncCopy integerValue];
     v10 = +[CDBPreferences shared];
-    [v10 set_kCalPreferredDaysToSyncKey:v9];
+    [v10 set_kCalPreferredDaysToSyncKey:integerValue2];
   }
 }
 
-- (id)daysToSync:(id)a3
+- (id)daysToSync:(id)sync
 {
   v3 = +[CDBPreferences shared];
   v4 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 get_kCalPreferredDaysToSyncKey]);
@@ -742,42 +742,42 @@ LABEL_3:
   return v4;
 }
 
-- (void)setDefaultCalendar:(id)a3 specifier:(id)a4
+- (void)setDefaultCalendar:(id)calendar specifier:(id)specifier
 {
-  v10 = a4;
-  if (a3)
+  specifierCopy = specifier;
+  if (calendar)
   {
-    v6 = a3;
-    v7 = [(CalendarSettingsPlugin *)self _eventStore];
-    v8 = [v7 calendarWithID:v6];
+    calendarCopy = calendar;
+    _eventStore = [(CalendarSettingsPlugin *)self _eventStore];
+    v8 = [_eventStore calendarWithID:calendarCopy];
 
-    v9 = [(CalendarSettingsPlugin *)self _eventStore];
-    [v9 setDefaultCalendarForNewEvents:v8];
+    _eventStore2 = [(CalendarSettingsPlugin *)self _eventStore];
+    [_eventStore2 setDefaultCalendarForNewEvents:v8];
   }
 
-  [(CalendarSettingsPlugin *)self reloadSpecifier:v10];
+  [(CalendarSettingsPlugin *)self reloadSpecifier:specifierCopy];
 }
 
-- (id)defaultCalendarName:(id)a3
+- (id)defaultCalendarName:(id)name
 {
-  v3 = [(CalendarSettingsPlugin *)self _eventStore];
-  v4 = [v3 defaultCalendarForNewEvents];
+  _eventStore = [(CalendarSettingsPlugin *)self _eventStore];
+  defaultCalendarForNewEvents = [_eventStore defaultCalendarForNewEvents];
   v5 = CUIKDisplayedTitleForCalendar();
 
   return v5;
 }
 
-- (id)weekStart:(id)a3
+- (id)weekStart:(id)start
 {
   v3 = +[CUIKPreferences sharedPreferences];
-  v4 = [v3 weekStart];
+  weekStart = [v3 weekStart];
 
-  return v4;
+  return weekStart;
 }
 
-- (id)timeZoneSupportEnabled:(id)a3
+- (id)timeZoneSupportEnabled:(id)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = CalCopyDefaultTimeZoneSetting();
   if (v4)
   {
@@ -786,12 +786,12 @@ LABEL_3:
     if (v6 || (PSCityForTimeZone(), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v7 = v6;
-      v8 = [v6 name];
+      name = [v6 name];
     }
 
     else
     {
-      v8 = CFTimeZoneGetName(v5);
+      name = CFTimeZoneGetName(v5);
     }
 
     CFRelease(v5);
@@ -800,42 +800,42 @@ LABEL_3:
   else
   {
     v9 = [NSBundle bundleForClass:objc_opt_class()];
-    v8 = [v9 localizedStringForKey:@"Time Zone Support Off" value:@"Off" table:@"MobileCalSettings"];
+    name = [v9 localizedStringForKey:@"Time Zone Support Off" value:@"Off" table:@"MobileCalSettings"];
   }
 
-  return v8;
+  return name;
 }
 
-- (void)setOverlayCalendarID:(id)a3 specifier:(id)a4
+- (void)setOverlayCalendarID:(id)d specifier:(id)specifier
 {
-  if (a3)
+  if (d)
   {
-    v4 = a3;
+    dCopy = d;
     v5 = +[CUIKPreferences sharedPreferences];
-    [v5 setOverlayCalendarID:v4];
+    [v5 setOverlayCalendarID:dCopy];
   }
 }
 
-- (id)overlayCalendarID:(id)a3
+- (id)overlayCalendarID:(id)d
 {
   v3 = +[CUIKPreferences sharedPreferences];
-  v4 = [v3 overlayCalendarID];
+  overlayCalendarID = [v3 overlayCalendarID];
 
-  return v4;
+  return overlayCalendarID;
 }
 
-- (void)setDefaultEventDuration:(id)a3 specifier:(id)a4
+- (void)setDefaultEventDuration:(id)duration specifier:(id)specifier
 {
-  if (a3)
+  if (duration)
   {
-    [(CalendarSettingsPlugin *)self _defaultEventDurationForIdentifier:a3, a4];
+    [(CalendarSettingsPlugin *)self _defaultEventDurationForIdentifier:duration, specifier];
     v5 = v4;
     v6 = +[CalFoundationPreferences shared];
     [v6 setDefaultEventDuration:v5];
   }
 }
 
-- (id)defaultEventDuration:(id)a3
+- (id)defaultEventDuration:(id)duration
 {
   v3 = +[CalFoundationPreferences shared];
   [v3 defaultEventDuration];
@@ -898,26 +898,26 @@ LABEL_3:
   }
 }
 
-- (void)_applicationWillAddDeactivationReasonNotification:(id)a3
+- (void)_applicationWillAddDeactivationReasonNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:_UIApplicationDeactivationReasonUserInfoKey];
-  v6 = [v5 longLongValue];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKey:_UIApplicationDeactivationReasonUserInfoKey];
+  longLongValue = [v5 longLongValue];
 
-  if (v6 == 3 && !self->_isActive)
+  if (longLongValue == 3 && !self->_isActive)
   {
 
     [(CalendarSettingsPlugin *)self _restrictToShield];
   }
 }
 
-- (void)_applicationDidRemoveDeactivationReasonNotification:(id)a3
+- (void)_applicationDidRemoveDeactivationReasonNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:_UIApplicationDeactivationReasonUserInfoKey];
-  v6 = [v5 longLongValue];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKey:_UIApplicationDeactivationReasonUserInfoKey];
+  longLongValue = [v5 longLongValue];
 
-  if (v6 == 3 && self->_isActive)
+  if (longLongValue == 3 && self->_isActive)
   {
 
     [(CalendarSettingsPlugin *)self _authenticateIfRequired];
@@ -926,29 +926,29 @@ LABEL_3:
 
 - (id)accountsSupportingDelegation
 {
-  v2 = [(CalendarSettingsPlugin *)self _eventStore];
-  v3 = [v2 sources];
+  _eventStore = [(CalendarSettingsPlugin *)self _eventStore];
+  sources = [_eventStore sources];
   v4 = [NSPredicate predicateWithBlock:&stru_20B68];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [sources filteredArrayUsingPredicate:v4];
 
   return v5;
 }
 
 - (id)writableEnabledIdentities
 {
-  v2 = [(CalendarSettingsPlugin *)self _eventStore];
-  v3 = [v2 delegateSources];
+  _eventStore = [(CalendarSettingsPlugin *)self _eventStore];
+  delegateSources = [_eventStore delegateSources];
   v4 = [NSPredicate predicateWithBlock:&stru_20B88];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [delegateSources filteredArrayUsingPredicate:v4];
 
   return v5;
 }
 
-- (void)reloadSpecifiers:(id)a3
+- (void)reloadSpecifiers:(id)specifiers
 {
-  v4 = a3;
-  v5 = [(CalendarSettingsPlugin *)self specifiers];
-  [(CalendarSettingsPlugin *)self updateSpecifiers:v4 withSpecifiers:v5];
+  specifiersCopy = specifiers;
+  specifiers = [(CalendarSettingsPlugin *)self specifiers];
+  [(CalendarSettingsPlugin *)self updateSpecifiers:specifiersCopy withSpecifiers:specifiers];
 }
 
 - (id)_eventStore
@@ -966,10 +966,10 @@ LABEL_3:
   return eventStore;
 }
 
-- (void)_eventStoreChanged:(id)a3
+- (void)_eventStoreChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:EKEventStoreChangedObjectIDsUserInfoKey];
+  userInfo = [changed userInfo];
+  v5 = [userInfo objectForKey:EKEventStoreChangedObjectIDsUserInfoKey];
 
   if ([v5 count])
   {
@@ -1024,13 +1024,13 @@ LABEL_15:
     v12 = 1;
   }
 
-  v13 = [(CalendarSettingsPlugin *)self _eventStore];
-  v14 = [v13 readWriteCalendarCountForEntityType:0];
+  _eventStore = [(CalendarSettingsPlugin *)self _eventStore];
+  v14 = [_eventStore readWriteCalendarCountForEntityType:0];
   numTotalCalendars = self->_numTotalCalendars;
 
   delegationSpecifierShowing = self->_delegationSpecifierShowing;
-  v17 = [(CalendarSettingsPlugin *)self accountsSupportingDelegation];
-  v18 = [v17 count];
+  accountsSupportingDelegation = [(CalendarSettingsPlugin *)self accountsSupportingDelegation];
+  v18 = [accountsSupportingDelegation count];
 
   if (v12)
   {
@@ -1043,8 +1043,8 @@ LABEL_15:
 
 - (int64_t)_countOfAccountsSyncingCalendars
 {
-  v2 = [(CalendarSettingsPlugin *)self _accountStore];
-  v3 = [v2 accountIdentifiersEnabledToSyncDataclass:kAccountDataclassCalendars];
+  _accountStore = [(CalendarSettingsPlugin *)self _accountStore];
+  v3 = [_accountStore accountIdentifiersEnabledToSyncDataclass:kAccountDataclassCalendars];
 
   v4 = [v3 count];
   return v4;
@@ -1067,13 +1067,13 @@ LABEL_15:
 
 - (id)_defaultEventDurationLocalizedStrings
 {
-  v3 = [(CalendarSettingsPlugin *)self _defaultEventDurationIdentifiers];
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  _defaultEventDurationIdentifiers = [(CalendarSettingsPlugin *)self _defaultEventDurationIdentifiers];
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [_defaultEventDurationIdentifiers count]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = _defaultEventDurationIdentifiers;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -1116,13 +1116,13 @@ LABEL_15:
   return v12;
 }
 
-- (double)_defaultEventDurationForIdentifier:(id)a3
+- (double)_defaultEventDurationForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CalendarSettingsPlugin *)self _defaultEventDurationIdentifiers];
-  if ([v5 containsObject:v4])
+  identifierCopy = identifier;
+  _defaultEventDurationIdentifiers = [(CalendarSettingsPlugin *)self _defaultEventDurationIdentifiers];
+  if ([_defaultEventDurationIdentifiers containsObject:identifierCopy])
   {
-    [v4 doubleValue];
+    [identifierCopy doubleValue];
     v7 = v6 * 60.0;
   }
 

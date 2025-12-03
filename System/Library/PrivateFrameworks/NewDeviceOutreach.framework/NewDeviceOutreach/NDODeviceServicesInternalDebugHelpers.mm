@@ -19,9 +19,9 @@
 
   v2 = qword_27FBDCCA8;
   v3 = sub_25BD797A8();
-  v4 = [v2 stringForKey_];
+  stringForKey_ = [v2 stringForKey_];
 
-  if (v4)
+  if (stringForKey_)
   {
     sub_25BD797B8();
 

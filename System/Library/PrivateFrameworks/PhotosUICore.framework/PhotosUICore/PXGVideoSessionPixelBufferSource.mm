@@ -2,11 +2,11 @@
 - (CGAffineTransform)preferredTransform;
 - (CGSize)maxOutputSize;
 - (PXGVideoSessionPixelBufferSource)init;
-- (PXGVideoSessionPixelBufferSource)initWithVideoSession:(id)a3 maxOutputSize:(CGSize)a4;
+- (PXGVideoSessionPixelBufferSource)initWithVideoSession:(id)session maxOutputSize:(CGSize)size;
 - (__CVBuffer)currentPixelBuffer;
 - (void)dealloc;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setProvidePlaceholderHandler:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setProvidePlaceholderHandler:(id)handler;
 @end
 
 @implementation PXGVideoSessionPixelBufferSource
@@ -22,12 +22,12 @@
 
 - (CGAffineTransform)preferredTransform
 {
-  v4 = [(PXGVideoSessionPixelBufferSource *)self videoSession];
-  if (v4)
+  videoSession = [(PXGVideoSessionPixelBufferSource *)self videoSession];
+  if (videoSession)
   {
-    v6 = v4;
-    [v4 preferredTransform];
-    v4 = v6;
+    v6 = videoSession;
+    [videoSession preferredTransform];
+    videoSession = v6;
   }
 
   else
@@ -42,20 +42,20 @@
 
 - (__CVBuffer)currentPixelBuffer
 {
-  v2 = [(PXGVideoSessionPixelBufferSource *)self videoSession];
-  v3 = [v2 currentPixelBuffer];
+  videoSession = [(PXGVideoSessionPixelBufferSource *)self videoSession];
+  currentPixelBuffer = [videoSession currentPixelBuffer];
 
-  return v3;
+  return currentPixelBuffer;
 }
 
-- (void)setProvidePlaceholderHandler:(id)a3
+- (void)setProvidePlaceholderHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   providePlaceholderHandler = self->_providePlaceholderHandler;
   self->_providePlaceholderHandler = v4;
 
-  v8 = [(PXGVideoSessionPixelBufferSource *)self videoSession];
-  if ([v8 isPlayable])
+  videoSession = [(PXGVideoSessionPixelBufferSource *)self videoSession];
+  if ([videoSession isPlayable])
   {
   }
 
@@ -72,43 +72,43 @@
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v14 = a3;
-  if (VideoSessionObservableContext != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (VideoSessionObservableContext != context)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXGVideoSessionPixelBufferSource.m" lineNumber:61 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGVideoSessionPixelBufferSource.m" lineNumber:61 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if ((v6 & 0x400) != 0)
+  if ((changeCopy & 0x400) != 0)
   {
-    v9 = [(PXGVideoSessionPixelBufferSource *)self pixelBufferDidChangeHandler];
+    pixelBufferDidChangeHandler = [(PXGVideoSessionPixelBufferSource *)self pixelBufferDidChangeHandler];
 
-    if (v9)
+    if (pixelBufferDidChangeHandler)
     {
-      v10 = [(PXGVideoSessionPixelBufferSource *)self pixelBufferDidChangeHandler];
-      v10[2]();
+      pixelBufferDidChangeHandler2 = [(PXGVideoSessionPixelBufferSource *)self pixelBufferDidChangeHandler];
+      pixelBufferDidChangeHandler2[2]();
     }
   }
 
-  if ((v6 & 0x20) != 0)
+  if ((changeCopy & 0x20) != 0)
   {
-    v11 = [(PXGVideoSessionPixelBufferSource *)self videoSession];
-    if (([v11 isPlayable] & 1) == 0)
+    videoSession = [(PXGVideoSessionPixelBufferSource *)self videoSession];
+    if (([videoSession isPlayable] & 1) == 0)
     {
-      v12 = [(PXGVideoSessionPixelBufferSource *)self providePlaceholderHandler];
+      providePlaceholderHandler = [(PXGVideoSessionPixelBufferSource *)self providePlaceholderHandler];
 
-      if (!v12)
+      if (!providePlaceholderHandler)
       {
         goto LABEL_10;
       }
 
-      v11 = [(PXGVideoSessionPixelBufferSource *)self providePlaceholderHandler];
-      v11[2]();
+      videoSession = [(PXGVideoSessionPixelBufferSource *)self providePlaceholderHandler];
+      videoSession[2]();
     }
   }
 
@@ -123,30 +123,30 @@ LABEL_10:
   [(PXGVideoSessionPixelBufferSource *)&v3 dealloc];
 }
 
-- (PXGVideoSessionPixelBufferSource)initWithVideoSession:(id)a3 maxOutputSize:(CGSize)a4
+- (PXGVideoSessionPixelBufferSource)initWithVideoSession:(id)session maxOutputSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
+  height = size.height;
+  width = size.width;
+  sessionCopy = session;
   v18.receiver = self;
   v18.super_class = PXGVideoSessionPixelBufferSource;
   v9 = [(PXGVideoSessionPixelBufferSource *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_videoSession, a3);
+    objc_storeStrong(&v9->_videoSession, session);
     v10->_maxOutputSize.width = width;
     v10->_maxOutputSize.height = height;
     v11 = objc_alloc(MEMORY[0x1E696AEC0]);
     v12 = [objc_opt_class() description];
-    v13 = [MEMORY[0x1E696AFB0] UUID];
-    v14 = [v13 UUIDString];
-    v15 = [v11 initWithFormat:@"%@-%@", v12, v14];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v15 = [v11 initWithFormat:@"%@-%@", v12, uUIDString];
     bufferRequestIdentifier = v10->_bufferRequestIdentifier;
     v10->_bufferRequestIdentifier = v15;
 
-    [v8 registerChangeObserver:v10 context:VideoSessionObservableContext];
-    [v8 requestPixelBufferOutputWithRequestIdentifier:v10->_bufferRequestIdentifier maxOutputSize:{width, height}];
+    [sessionCopy registerChangeObserver:v10 context:VideoSessionObservableContext];
+    [sessionCopy requestPixelBufferOutputWithRequestIdentifier:v10->_bufferRequestIdentifier maxOutputSize:{width, height}];
   }
 
   return v10;
@@ -154,8 +154,8 @@ LABEL_10:
 
 - (PXGVideoSessionPixelBufferSource)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGVideoSessionPixelBufferSource.m" lineNumber:29 description:{@"%s is not available as initializer", "-[PXGVideoSessionPixelBufferSource init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGVideoSessionPixelBufferSource.m" lineNumber:29 description:{@"%s is not available as initializer", "-[PXGVideoSessionPixelBufferSource init]"}];
 
   abort();
 }

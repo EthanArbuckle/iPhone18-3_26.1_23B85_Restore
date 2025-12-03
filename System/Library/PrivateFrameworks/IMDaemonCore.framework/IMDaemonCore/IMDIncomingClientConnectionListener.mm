@@ -1,16 +1,16 @@
 @interface IMDIncomingClientConnectionListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (IMDIncomingClientConnectionListener)init;
 - (void)dealloc;
 @end
 
 @implementation IMDIncomingClientConnectionListener
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
   v9 = sub_22B4CF8C8();
 
   return v9 & 1;
@@ -20,11 +20,11 @@
 {
   ObjectType = swift_getObjectType();
   v4 = *(&self->super.isa + OBJC_IVAR___IMDIncomingClientConnectionListener_queue);
-  v5 = self;
+  selfCopy = self;
 
   sub_22B7DACB8();
 
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = ObjectType;
   [(IMDIncomingClientConnectionListener *)&v6 dealloc];
 }

@@ -3,11 +3,11 @@
 - (id)realtimeSuggestion;
 - (id)suggestionCategory;
 - (id)suggestionCategoryImage;
-- (id)suggestionCategorySubtitleForItems:(id)a3;
+- (id)suggestionCategorySubtitleForItems:(id)items;
 - (id)suggestionPrimaryAction;
 - (id)suggestionSubtitle;
 - (id)suggestionTitle;
-- (void)setSuggestionDelegate:(id)a3;
+- (void)setSuggestionDelegate:(id)delegate;
 @end
 
 @implementation SGWalletPassSuggestion
@@ -19,10 +19,10 @@
   return v2;
 }
 
-- (void)setSuggestionDelegate:(id)a3
+- (void)setSuggestionDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1B81D7080();
 }
 
@@ -35,7 +35,7 @@
 
 - (id)suggestionTitle
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B81D7E30();
 
   v3 = sub_1B81F8F58();
@@ -45,7 +45,7 @@
 
 - (id)suggestionSubtitle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B81D8034();
   v5 = v4;
 
@@ -65,7 +65,7 @@
 
 - (id)suggestionPrimaryAction
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B81D8394();
 
   return v3;
@@ -73,17 +73,17 @@
 
 - (id)suggestionCategoryImage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B81D8894();
 
   return v3;
 }
 
-- (id)suggestionCategorySubtitleForItems:(id)a3
+- (id)suggestionCategorySubtitleForItems:(id)items
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EBA7CBD0);
   v4 = sub_1B81F90C8();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_1B81D8A58(v4);
   v8 = v7;
 
@@ -103,7 +103,7 @@
 
 - (id)realtimeSuggestion
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B81D8C60();
 
   return v3;

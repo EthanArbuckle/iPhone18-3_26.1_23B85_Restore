@@ -1,15 +1,15 @@
 @interface HUIconViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation HUIconViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUIconView" hasInstanceMethod:@"currentIconContentView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUIconContentView" hasInstanceMethod:@"iconDescriptor" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUIconView" hasInstanceMethod:@"currentIconContentView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUIconContentView" hasInstanceMethod:@"iconDescriptor" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -22,7 +22,7 @@
   v5 = __UIAccessibilityCastAsClass();
 
   v6 = accessibilityLabelForIconIdentifier(v5);
-  v9 = [v3 accessibilityValue];
+  accessibilityValue = [v3 accessibilityValue];
   v7 = __AXStringForVariables();
 
   return v7;

@@ -1,10 +1,10 @@
 @interface PXShadowView
 - (CGRect)castingFrame;
-- (PXShadowView)initWithFrame:(CGRect)a3;
+- (PXShadowView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setCastingFrame:(CGRect)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setShadow:(id)a3;
+- (void)setCastingFrame:(CGRect)frame;
+- (void)setCornerRadius:(double)radius;
+- (void)setShadow:(id)shadow;
 @end
 
 @implementation PXShadowView
@@ -27,16 +27,16 @@
   v12.receiver = self;
   v12.super_class = PXShadowView;
   [(PXShadowView *)&v12 layoutSubviews];
-  v3 = [(PXShadowView *)self shadow];
+  shadow = [(PXShadowView *)self shadow];
   if (self->_resizableShadowImageNeedsUpdate)
   {
     v4 = +[PXShadowImageCache sharedInstance];
     [(PXShadowView *)self cornerRadius];
     v6 = v5;
-    v7 = [(PXShadowView *)self window];
-    v8 = [v7 screen];
-    [v8 scale];
-    v10 = [v4 stretchableShadowImageFor:v3 cornerRadius:v6 screenScale:v9];
+    window = [(PXShadowView *)self window];
+    screen = [window screen];
+    [screen scale];
+    v10 = [v4 stretchableShadowImageFor:shadow cornerRadius:v6 screenScale:v9];
     resizableShadowImage = self->_resizableShadowImage;
     self->_resizableShadowImage = v10;
 
@@ -44,31 +44,31 @@
   }
 
   [(UIImageView *)self->_imageView setImage:self->_resizableShadowImage];
-  if (v3)
+  if (shadow)
   {
     [(PXShadowView *)self castingFrame];
     PXGResizableShadowImageFrameForCastingFrame();
   }
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     [(PXShadowView *)self _invalidateResizableShadowImage];
   }
 }
 
-- (void)setShadow:(id)a3
+- (void)setShadow:(id)shadow
 {
-  v4 = a3;
+  shadowCopy = shadow;
   shadow = self->_shadow;
-  if (shadow != v4)
+  if (shadow != shadowCopy)
   {
-    v9 = v4;
-    v6 = [(NSShadow *)shadow isEqual:v4];
-    v4 = v9;
+    v9 = shadowCopy;
+    v6 = [(NSShadow *)shadow isEqual:shadowCopy];
+    shadowCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSShadow *)v9 copy];
@@ -76,19 +76,19 @@
       self->_shadow = v7;
 
       [(PXShadowView *)self _invalidateResizableShadowImage];
-      v4 = v9;
+      shadowCopy = v9;
     }
   }
 }
 
-- (void)setCastingFrame:(CGRect)a3
+- (void)setCastingFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   p_castingFrame = &self->_castingFrame;
-  if (!CGRectEqualToRect(self->_castingFrame, a3))
+  if (!CGRectEqualToRect(self->_castingFrame, frame))
   {
     p_castingFrame->origin.x = x;
     p_castingFrame->origin.y = y;
@@ -99,11 +99,11 @@
   }
 }
 
-- (PXShadowView)initWithFrame:(CGRect)a3
+- (PXShadowView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = PXShadowView;
-  v3 = [(PXShadowView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXShadowView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCAE0]);

@@ -2,15 +2,15 @@
 + (MXMProxyServiceManager)shared;
 - (BOOL)wake;
 - (MetricMeasurementHelperProtocol_Internal)_proxyObject;
-- (id)_sampleWithProxyMetric:(id)a3 timeout:(double)a4 stopReason:(unint64_t *)a5;
+- (id)_sampleWithProxyMetric:(id)metric timeout:(double)timeout stopReason:(unint64_t *)reason;
 - (id)initInternal;
-- (void)_quiesceBeforeIteration:(double)a3 timeout:(double)a4 response:(id)a5;
-- (void)_startFunctionCoverageCollection:(id)a3 response:(id)a4;
-- (void)_startPerformanceTrace:(id)a3 response:(id)a4;
-- (void)_stopFunctionCoverageCollection:(id)a3;
-- (void)_stopPerformanceTrace:(id)a3;
-- (void)_terminateProcessesBeforeIteration:(id)a3 response:(id)a4;
-- (void)_uncacheBeforeIteration:(id)a3 response:(id)a4;
+- (void)_quiesceBeforeIteration:(double)iteration timeout:(double)timeout response:(id)response;
+- (void)_startFunctionCoverageCollection:(id)collection response:(id)response;
+- (void)_startPerformanceTrace:(id)trace response:(id)response;
+- (void)_stopFunctionCoverageCollection:(id)collection;
+- (void)_stopPerformanceTrace:(id)trace;
+- (void)_terminateProcessesBeforeIteration:(id)iteration response:(id)response;
+- (void)_uncacheBeforeIteration:(id)iteration response:(id)response;
 - (void)dealloc;
 @end
 
@@ -57,8 +57,8 @@ uint64_t __32__MXMProxyServiceManager_shared__block_invoke()
 
 - (MetricMeasurementHelperProtocol_Internal)_proxyObject
 {
-  v2 = [(MXMProxyServiceManager *)self _serviceConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_75];
+  _serviceConnection = [(MXMProxyServiceManager *)self _serviceConnection];
+  v3 = [_serviceConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_75];
 
   return v3;
 }
@@ -86,13 +86,13 @@ void __38__MXMProxyServiceManager__proxyObject__block_invoke(uint64_t a1, void *
   v10 = __Block_byref_object_copy_;
   v11 = __Block_byref_object_dispose_;
   v12 = 0;
-  v2 = [(MXMProxyServiceManager *)self _proxyObject];
+  _proxyObject = [(MXMProxyServiceManager *)self _proxyObject];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __30__MXMProxyServiceManager_wake__block_invoke;
   v6[3] = &unk_2798C9438;
   v6[4] = &v7;
-  [v2 _wakeWithPhrase:@"Copyright © 2019 Apple" response:v6];
+  [_proxyObject _wakeWithPhrase:@"Copyright © 2019 Apple" response:v6];
 
   v3 = v8[5];
   v4 = [@"Copyright © 2019 Apple" stringByAppendingString:@"ACK"];
@@ -102,9 +102,9 @@ void __38__MXMProxyServiceManager__proxyObject__block_invoke(uint64_t a1, void *
   return v3;
 }
 
-- (id)_sampleWithProxyMetric:(id)a3 timeout:(double)a4 stopReason:(unint64_t *)a5
+- (id)_sampleWithProxyMetric:(id)metric timeout:(double)timeout stopReason:(unint64_t *)reason
 {
-  v8 = a3;
+  metricCopy = metric;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -115,18 +115,18 @@ void __38__MXMProxyServiceManager__proxyObject__block_invoke(uint64_t a1, void *
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v9 = [(MXMProxyServiceManager *)self _proxyObject];
+  _proxyObject = [(MXMProxyServiceManager *)self _proxyObject];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __68__MXMProxyServiceManager__sampleWithProxyMetric_timeout_stopReason___block_invoke;
   v12[3] = &unk_2798C9460;
   v12[4] = &v17;
   v12[5] = &v13;
-  [v9 _sampleWithProxyMetric:v8 timeout:v12 response:a4];
+  [_proxyObject _sampleWithProxyMetric:metricCopy timeout:v12 response:timeout];
 
-  if (a5)
+  if (reason)
   {
-    *a5 = v14[3];
+    *reason = v14[3];
   }
 
   v10 = v18[5];
@@ -143,10 +143,10 @@ void __68__MXMProxyServiceManager__sampleWithProxyMetric_timeout_stopReason___bl
   *(*(*(a1 + 40) + 8) + 24) = a3;
 }
 
-- (void)_startPerformanceTrace:(id)a3 response:(id)a4
+- (void)_startPerformanceTrace:(id)trace response:(id)response
 {
-  v6 = a3;
-  v7 = a4;
+  traceCopy = trace;
+  responseCopy = response;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -169,7 +169,7 @@ void __68__MXMProxyServiceManager__sampleWithProxyMetric_timeout_stopReason___bl
   v13 = __Block_byref_object_copy_;
   v14 = __Block_byref_object_dispose_;
   v15 = 0;
-  v8 = [(MXMProxyServiceManager *)self _proxyObject];
+  _proxyObject = [(MXMProxyServiceManager *)self _proxyObject];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __58__MXMProxyServiceManager__startPerformanceTrace_response___block_invoke;
@@ -178,9 +178,9 @@ void __68__MXMProxyServiceManager__sampleWithProxyMetric_timeout_stopReason___bl
   v9[5] = &v22;
   v9[6] = &v16;
   v9[7] = &v10;
-  [v8 _startPerformanceTraceHelper:v6 response:v9];
+  [_proxyObject _startPerformanceTraceHelper:traceCopy response:v9];
 
-  v7[2](v7, *(v29 + 24), v23[5], v17[5], v11[5]);
+  responseCopy[2](responseCopy, *(v29 + 24), v23[5], v17[5], v11[5]);
   _Block_object_dispose(&v10, 8);
 
   _Block_object_dispose(&v16, 8);
@@ -210,10 +210,10 @@ void __58__MXMProxyServiceManager__startPerformanceTrace_response___block_invoke
   *(v15 + 40) = v9;
 }
 
-- (void)_stopPerformanceTrace:(id)a3
+- (void)_stopPerformanceTrace:(id)trace
 {
   v50[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  traceCopy = trace;
   v43 = 0;
   v44 = &v43;
   v45 = 0x3032000000;
@@ -250,7 +250,7 @@ void __58__MXMProxyServiceManager__startPerformanceTrace_response___block_invoke
   v16 = __Block_byref_object_copy_;
   v17 = __Block_byref_object_dispose_;
   v18 = 0;
-  v5 = [(MXMProxyServiceManager *)self _proxyObject];
+  _proxyObject = [(MXMProxyServiceManager *)self _proxyObject];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __48__MXMProxyServiceManager__stopPerformanceTrace___block_invoke;
@@ -261,7 +261,7 @@ void __58__MXMProxyServiceManager__startPerformanceTrace_response___block_invoke
   v12[7] = &v13;
   v12[8] = &v43;
   v12[9] = &v37;
-  [v5 _stopPerformanceTraceHelper:v12];
+  [_proxyObject _stopPerformanceTraceHelper:v12];
 
   v6 = v44[5];
   if (v6 && (v7 = v38[5]) != 0)
@@ -281,7 +281,7 @@ void __58__MXMProxyServiceManager__startPerformanceTrace_response___block_invoke
     v7 = v38[5];
   }
 
-  v4[2](v4, v6, v7, v8, v32[5], v26[5], v20[5], v14[5]);
+  traceCopy[2](traceCopy, v6, v7, v8, v32[5], v26[5], v20[5], v14[5]);
 
   _Block_object_dispose(&v13, 8);
   _Block_object_dispose(&v19, 8);
@@ -333,10 +333,10 @@ void __48__MXMProxyServiceManager__stopPerformanceTrace___block_invoke(void *a1,
   *(v33 + 40) = v14;
 }
 
-- (void)_startFunctionCoverageCollection:(id)a3 response:(id)a4
+- (void)_startFunctionCoverageCollection:(id)collection response:(id)response
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  responseCopy = response;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -347,24 +347,24 @@ void __48__MXMProxyServiceManager__stopPerformanceTrace___block_invoke(void *a1,
   v13 = __Block_byref_object_copy_;
   v14 = __Block_byref_object_dispose_;
   v15 = 0;
-  v8 = [(MXMProxyServiceManager *)self _proxyObject];
+  _proxyObject = [(MXMProxyServiceManager *)self _proxyObject];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __68__MXMProxyServiceManager__startFunctionCoverageCollection_response___block_invoke;
   v9[3] = &unk_2798C94D8;
   v9[4] = &v16;
   v9[5] = &v10;
-  [v8 _startFunctionCoverageCollectionHelper:v6 response:v9];
+  [_proxyObject _startFunctionCoverageCollectionHelper:collectionCopy response:v9];
 
-  (*(v7 + 2))(v7, *(v17 + 24), v11[5], 0);
+  (*(responseCopy + 2))(responseCopy, *(v17 + 24), v11[5], 0);
   _Block_object_dispose(&v10, 8);
 
   _Block_object_dispose(&v16, 8);
 }
 
-- (void)_stopFunctionCoverageCollection:(id)a3
+- (void)_stopFunctionCoverageCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -377,16 +377,16 @@ void __48__MXMProxyServiceManager__stopPerformanceTrace___block_invoke(void *a1,
   v10 = __Block_byref_object_copy_;
   v11 = __Block_byref_object_dispose_;
   v12 = 0;
-  v5 = [(MXMProxyServiceManager *)self _proxyObject];
+  _proxyObject = [(MXMProxyServiceManager *)self _proxyObject];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __58__MXMProxyServiceManager__stopFunctionCoverageCollection___block_invoke;
   v6[3] = &unk_2798C9500;
   v6[4] = &v13;
   v6[5] = &v7;
-  [v5 _stopFunctionCoverageCollectionHelper:v6];
+  [_proxyObject _stopFunctionCoverageCollectionHelper:v6];
 
-  v4[2](v4, v14[5], v8[5]);
+  collectionCopy[2](collectionCopy, v14[5], v8[5]);
   _Block_object_dispose(&v7, 8);
 
   _Block_object_dispose(&v13, 8);
@@ -406,9 +406,9 @@ void __58__MXMProxyServiceManager__stopFunctionCoverageCollection___block_invoke
   *(v9 + 40) = v6;
 }
 
-- (void)_quiesceBeforeIteration:(double)a3 timeout:(double)a4 response:(id)a5
+- (void)_quiesceBeforeIteration:(double)iteration timeout:(double)timeout response:(id)response
 {
-  v8 = a5;
+  responseCopy = response;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -419,25 +419,25 @@ void __58__MXMProxyServiceManager__stopFunctionCoverageCollection___block_invoke
   v14 = __Block_byref_object_copy_;
   v15 = __Block_byref_object_dispose_;
   v16 = 0;
-  v9 = [(MXMProxyServiceManager *)self _proxyObject];
+  _proxyObject = [(MXMProxyServiceManager *)self _proxyObject];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __67__MXMProxyServiceManager__quiesceBeforeIteration_timeout_response___block_invoke;
   v10[3] = &unk_2798C9528;
   v10[4] = &v17;
   v10[5] = &v11;
-  [v9 _quiesceBeforeIterationHelper:v10 timeout:a3 response:a4];
+  [_proxyObject _quiesceBeforeIterationHelper:v10 timeout:iteration response:timeout];
 
-  v8[2](v8, *(v18 + 24), v12[5]);
+  responseCopy[2](responseCopy, *(v18 + 24), v12[5]);
   _Block_object_dispose(&v11, 8);
 
   _Block_object_dispose(&v17, 8);
 }
 
-- (void)_uncacheBeforeIteration:(id)a3 response:(id)a4
+- (void)_uncacheBeforeIteration:(id)iteration response:(id)response
 {
-  v6 = a3;
-  v7 = a4;
+  iterationCopy = iteration;
+  responseCopy = response;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -448,25 +448,25 @@ void __58__MXMProxyServiceManager__stopFunctionCoverageCollection___block_invoke
   v13 = __Block_byref_object_copy_;
   v14 = __Block_byref_object_dispose_;
   v15 = 0;
-  v8 = [(MXMProxyServiceManager *)self _proxyObject];
+  _proxyObject = [(MXMProxyServiceManager *)self _proxyObject];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __59__MXMProxyServiceManager__uncacheBeforeIteration_response___block_invoke;
   v9[3] = &unk_2798C9528;
   v9[4] = &v16;
   v9[5] = &v10;
-  [v8 _uncacheBeforeIterationHelper:v6 response:v9];
+  [_proxyObject _uncacheBeforeIterationHelper:iterationCopy response:v9];
 
-  v7[2](v7, *(v17 + 24), v11[5]);
+  responseCopy[2](responseCopy, *(v17 + 24), v11[5]);
   _Block_object_dispose(&v10, 8);
 
   _Block_object_dispose(&v16, 8);
 }
 
-- (void)_terminateProcessesBeforeIteration:(id)a3 response:(id)a4
+- (void)_terminateProcessesBeforeIteration:(id)iteration response:(id)response
 {
-  v6 = a3;
-  v7 = a4;
+  iterationCopy = iteration;
+  responseCopy = response;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -477,16 +477,16 @@ void __58__MXMProxyServiceManager__stopFunctionCoverageCollection___block_invoke
   v13 = __Block_byref_object_copy_;
   v14 = __Block_byref_object_dispose_;
   v15 = 0;
-  v8 = [(MXMProxyServiceManager *)self _proxyObject];
+  _proxyObject = [(MXMProxyServiceManager *)self _proxyObject];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __70__MXMProxyServiceManager__terminateProcessesBeforeIteration_response___block_invoke;
   v9[3] = &unk_2798C9528;
   v9[4] = &v16;
   v9[5] = &v10;
-  [v8 _terminateProcessesBeforeIterationHelper:v6 response:v9];
+  [_proxyObject _terminateProcessesBeforeIterationHelper:iterationCopy response:v9];
 
-  v7[2](v7, *(v17 + 24), v11[5]);
+  responseCopy[2](responseCopy, *(v17 + 24), v11[5]);
   _Block_object_dispose(&v10, 8);
 
   _Block_object_dispose(&v16, 8);
@@ -494,8 +494,8 @@ void __58__MXMProxyServiceManager__stopFunctionCoverageCollection___block_invoke
 
 - (void)dealloc
 {
-  v3 = [(MXMProxyServiceManager *)self _serviceConnection];
-  [v3 invalidate];
+  _serviceConnection = [(MXMProxyServiceManager *)self _serviceConnection];
+  [_serviceConnection invalidate];
 
   v4.receiver = self;
   v4.super_class = MXMProxyServiceManager;

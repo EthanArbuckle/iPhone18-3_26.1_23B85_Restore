@@ -1,18 +1,18 @@
 @interface PLUUIDStringFromUUIDDataTransformer
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation PLUUIDStringFromUUIDDataTransformer
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v3 length] == 16)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [valueCopy length] == 16)
   {
     v4 = MEMORY[0x1E69BF320];
-    v5 = v3;
+    v5 = valueCopy;
     v6 = [[v4 alloc] initWithUUIDData:v5];
   }
 
@@ -24,16 +24,16 @@
   return v6;
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = objc_opt_class();
     if (v4 == objc_opt_class())
     {
-      [v3 UUIDData];
+      [valueCopy UUIDData];
     }
 
     else

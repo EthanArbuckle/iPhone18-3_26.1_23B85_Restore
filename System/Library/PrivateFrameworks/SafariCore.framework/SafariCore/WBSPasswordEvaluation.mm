@@ -1,59 +1,59 @@
 @interface WBSPasswordEvaluation
-- (BOOL)_shouldShowUserFeedbackStringsForWordListPatternMatch:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_shouldShowUserFeedbackStringsForWordListPatternMatch:(id)match;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)dictionaryRepresentation;
-- (WBSPasswordEvaluation)initWithCoder:(id)a3;
-- (WBSPasswordEvaluation)initWithDictionaryRepresentation:(id)a3;
-- (WBSPasswordEvaluation)initWithEvaluationType:(int64_t)a3 password:(id)a4 patternMatches:(id)a5 guessesRequired:(double)a6;
+- (WBSPasswordEvaluation)initWithCoder:(id)coder;
+- (WBSPasswordEvaluation)initWithDictionaryRepresentation:(id)representation;
+- (WBSPasswordEvaluation)initWithEvaluationType:(int64_t)type password:(id)password patternMatches:(id)matches guessesRequired:(double)required;
 - (WBSPasswordPatternMatch)bestPatternMatchForUserFeedback;
 - (double)guessesRequired;
-- (id)_bestPatternMatchOfType:(unint64_t)a3;
-- (id)_passwordFeedbackStringWithPasswordVisibility:(unint64_t)a3;
-- (id)compactDescriptionWithPasswordColumnWidth:(unint64_t)a3 includePatternMatches:(BOOL)a4;
-- (id)userFeedbackStringWithPasswordVisibility:(unint64_t)a3;
-- (unint64_t)_userFeedbackLengthScoreForPatternMatch:(id)a3;
+- (id)_bestPatternMatchOfType:(unint64_t)type;
+- (id)_passwordFeedbackStringWithPasswordVisibility:(unint64_t)visibility;
+- (id)compactDescriptionWithPasswordColumnWidth:(unint64_t)width includePatternMatches:(BOOL)matches;
+- (id)userFeedbackStringWithPasswordVisibility:(unint64_t)visibility;
+- (unint64_t)_userFeedbackLengthScoreForPatternMatch:(id)match;
 - (unint64_t)hash;
 - (unint64_t)strength;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WBSPasswordEvaluation
 
-- (WBSPasswordEvaluation)initWithEvaluationType:(int64_t)a3 password:(id)a4 patternMatches:(id)a5 guessesRequired:(double)a6
+- (WBSPasswordEvaluation)initWithEvaluationType:(int64_t)type password:(id)password patternMatches:(id)matches guessesRequired:(double)required
 {
-  v10 = a4;
-  v11 = a5;
+  passwordCopy = password;
+  matchesCopy = matches;
   v20.receiver = self;
   v20.super_class = WBSPasswordEvaluation;
   v12 = [(WBSPasswordEvaluation *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    v12->_evaluationType = a3;
-    v14 = [v10 copy];
+    v12->_evaluationType = type;
+    v14 = [passwordCopy copy];
     password = v13->_password;
     v13->_password = v14;
 
-    v16 = [v11 copy];
+    v16 = [matchesCopy copy];
     patternMatches = v13->_patternMatches;
     v13->_patternMatches = v16;
 
-    v13->_guessesRequired = a6;
+    v13->_guessesRequired = required;
     v18 = v13;
   }
 
   return v13;
 }
 
-- (WBSPasswordEvaluation)initWithDictionaryRepresentation:(id)a3
+- (WBSPasswordEvaluation)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 safari_numberForKey:@"evaluationType"];
-  v6 = [v4 safari_numberForKey:@"guessesRequired"];
-  v7 = [v4 safari_arrayContainingObjectsOfClass:objc_opt_class() forKey:@"patternMatches"];
-  v8 = [v4 objectForKeyedSubscript:@"password"];
+  representationCopy = representation;
+  v5 = [representationCopy safari_numberForKey:@"evaluationType"];
+  v6 = [representationCopy safari_numberForKey:@"guessesRequired"];
+  v7 = [representationCopy safari_arrayContainingObjectsOfClass:objc_opt_class() forKey:@"patternMatches"];
+  v8 = [representationCopy objectForKeyedSubscript:@"password"];
 
-  v9 = 0;
+  selfCopy = 0;
   if (v8)
   {
     v10 = v8;
@@ -67,14 +67,14 @@
   if (v5 && v6 && v7)
   {
     v11 = [v7 safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_46];
-    v12 = [v5 integerValue];
+    integerValue = [v5 integerValue];
     [v6 doubleValue];
-    self = [(WBSPasswordEvaluation *)self initWithEvaluationType:v12 password:v10 patternMatches:v11 guessesRequired:?];
+    self = [(WBSPasswordEvaluation *)self initWithEvaluationType:integerValue password:v10 patternMatches:v11 guessesRequired:?];
 
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 WBSPasswordPatternMatch *__58__WBSPasswordEvaluation_initWithDictionaryRepresentation___block_invoke(uint64_t a1, void *a2)
@@ -85,10 +85,10 @@ WBSPasswordPatternMatch *__58__WBSPasswordEvaluation_initWithDictionaryRepresent
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -98,7 +98,7 @@ WBSPasswordPatternMatch *__58__WBSPasswordEvaluation_initWithDictionaryRepresent
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_evaluationType == v5->_evaluationType && [(NSString *)self->_password isEqual:v5->_password]&& [(NSArray *)self->_patternMatches isEqualToArray:v5->_patternMatches]&& self->_guessesRequired == v5->_guessesRequired;
     }
 
@@ -188,11 +188,11 @@ WBSPasswordPatternMatch *__58__WBSPasswordEvaluation_initWithDictionaryRepresent
   return v8;
 }
 
-- (unint64_t)_userFeedbackLengthScoreForPatternMatch:(id)a3
+- (unint64_t)_userFeedbackLengthScoreForPatternMatch:(id)match
 {
-  v3 = a3;
-  v4 = [v3 type] == 3;
-  [v3 range];
+  matchCopy = match;
+  v4 = [matchCopy type] == 3;
+  [matchCopy range];
   v6 = v5;
 
   return v6 << v4;
@@ -283,7 +283,7 @@ id __56__WBSPasswordEvaluation_bestPatternMatchForUserFeedback__block_invoke_2(u
   return v13;
 }
 
-- (id)_bestPatternMatchOfType:(unint64_t)a3
+- (id)_bestPatternMatchOfType:(unint64_t)type
 {
   v22 = *MEMORY[0x1E69E9840];
   v17 = 0u;
@@ -307,7 +307,7 @@ id __56__WBSPasswordEvaluation_bestPatternMatchForUserFeedback__block_invoke_2(u
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        if ([v10 type] == a3)
+        if ([v10 type] == type)
         {
           if (!v7 || ([v7 guessesRequired], v12 = v11, objc_msgSend(v10, "guessesRequired"), v12 > v13))
           {
@@ -334,45 +334,45 @@ id __56__WBSPasswordEvaluation_bestPatternMatchForUserFeedback__block_invoke_2(u
   return v7;
 }
 
-- (BOOL)_shouldShowUserFeedbackStringsForWordListPatternMatch:(id)a3
+- (BOOL)_shouldShowUserFeedbackStringsForWordListPatternMatch:(id)match
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 safari_numberForKey:@"WordListGuessesRequired"];
+  userInfo = [match userInfo];
+  v4 = [userInfo safari_numberForKey:@"WordListGuessesRequired"];
   [v4 doubleValue];
   v6 = v5;
 
   return v6 <= 100000.0;
 }
 
-- (id)_passwordFeedbackStringWithPasswordVisibility:(unint64_t)a3
+- (id)_passwordFeedbackStringWithPasswordVisibility:(unint64_t)visibility
 {
-  v5 = [(WBSPasswordEvaluation *)self bestPatternMatchForUserFeedback];
-  v6 = v5;
-  if (!v5)
+  bestPatternMatchForUserFeedback = [(WBSPasswordEvaluation *)self bestPatternMatchForUserFeedback];
+  v6 = bestPatternMatchForUserFeedback;
+  if (!bestPatternMatchForUserFeedback)
   {
     goto LABEL_7;
   }
 
-  if ([v5 type] != 3 || !-[WBSPasswordEvaluation _shouldShowUserFeedbackStringsForWordListPatternMatch:](self, "_shouldShowUserFeedbackStringsForWordListPatternMatch:", v6))
+  if ([bestPatternMatchForUserFeedback type] != 3 || !-[WBSPasswordEvaluation _shouldShowUserFeedbackStringsForWordListPatternMatch:](self, "_shouldShowUserFeedbackStringsForWordListPatternMatch:", v6))
   {
     goto LABEL_39;
   }
 
-  v7 = [v6 userInfo];
-  v8 = v7;
-  if (a3 == 2)
+  userInfo = [v6 userInfo];
+  v8 = userInfo;
+  if (visibility == 2)
   {
     v9 = 1;
   }
 
-  else if (a3)
+  else if (visibility)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = [v7 safari_BOOLForKey:@"IsSensitive"];
+    v9 = [userInfo safari_BOOLForKey:@"IsSensitive"];
   }
 
   v10 = [v8 safari_stringForKey:@"WordListIdentifier"];
@@ -456,8 +456,8 @@ LABEL_16:
     }
 
     v22 = _WBSLocalizedString(v21, &_WBSLocalizableStringsBundleOnceToken, &_WBSLocalizableStringsBundle);
-    v23 = [v6 matchedSubstring];
-    v9 = [v20 stringWithFormat:v22, v23];
+    matchedSubstring = [v6 matchedSubstring];
+    v9 = [v20 stringWithFormat:v22, matchedSubstring];
 
     goto LABEL_37;
   }
@@ -501,8 +501,8 @@ LABEL_7:
   v25 = @"This password uses a sequence, “%@”, which makes it easy to guess.";
 LABEL_43:
   v26 = _WBSLocalizedString(v25, &_WBSLocalizableStringsBundleOnceToken, &_WBSLocalizableStringsBundle);
-  v27 = [v6 matchedSubstring];
-  v9 = [v24 stringWithFormat:v26, v27];
+  matchedSubstring2 = [v6 matchedSubstring];
+  v9 = [v24 stringWithFormat:v26, matchedSubstring2];
 
 LABEL_44:
 LABEL_45:
@@ -510,7 +510,7 @@ LABEL_45:
   return v9;
 }
 
-- (id)userFeedbackStringWithPasswordVisibility:(unint64_t)a3
+- (id)userFeedbackStringWithPasswordVisibility:(unint64_t)visibility
 {
   if ([(WBSPasswordEvaluation *)self userShouldBeShownPassiveWarning])
   {
@@ -521,7 +521,7 @@ LABEL_45:
 
     else
     {
-      [(WBSPasswordEvaluation *)self _passwordFeedbackStringWithPasswordVisibility:a3];
+      [(WBSPasswordEvaluation *)self _passwordFeedbackStringWithPasswordVisibility:visibility];
     }
     v5 = ;
   }
@@ -534,26 +534,26 @@ LABEL_45:
   return v5;
 }
 
-- (id)compactDescriptionWithPasswordColumnWidth:(unint64_t)a3 includePatternMatches:(BOOL)a4
+- (id)compactDescriptionWithPasswordColumnWidth:(unint64_t)width includePatternMatches:(BOOL)matches
 {
-  v4 = a4;
+  matchesCopy = matches;
   v25 = *MEMORY[0x1E69E9840];
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v8 = [(WBSPasswordEvaluation *)self strength];
-  if (v8 > 3)
+  strength = [(WBSPasswordEvaluation *)self strength];
+  if (strength > 3)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = off_1E7CF34E0[v8];
+    v9 = off_1E7CF34E0[strength];
   }
 
-  v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%-*s | %12lg | %@", a3, -[NSString UTF8String](self->_password, "UTF8String"), *&self->_guessesRequired, v9];
+  v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%-*s | %12lg | %@", width, -[NSString UTF8String](self->_password, "UTF8String"), *&self->_guessesRequired, v9];
   [v7 addObject:v10];
 
-  if (v4)
+  if (matchesCopy)
   {
     [v7 addObject:&stru_1F3064D08];
     v22 = 0u;
@@ -575,7 +575,7 @@ LABEL_45:
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v20 + 1) + 8 * i) compactDescriptionWithMatchedStringColumnWidth:a3];
+          v16 = [*(*(&v20 + 1) + 8 * i) compactDescriptionWithMatchedStringColumnWidth:width];
           [v7 addObject:v16];
         }
 
@@ -593,17 +593,17 @@ LABEL_45:
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WBSPasswordEvaluation *)self dictionaryRepresentation];
-  [v4 encodeObject:v5];
+  coderCopy = coder;
+  dictionaryRepresentation = [(WBSPasswordEvaluation *)self dictionaryRepresentation];
+  [coderCopy encodeObject:dictionaryRepresentation];
 }
 
-- (WBSPasswordEvaluation)initWithCoder:(id)a3
+- (WBSPasswordEvaluation)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeObject];
-  v5 = [(WBSPasswordEvaluation *)self initWithDictionaryRepresentation:v4];
+  decodeObject = [coder decodeObject];
+  v5 = [(WBSPasswordEvaluation *)self initWithDictionaryRepresentation:decodeObject];
 
   return v5;
 }

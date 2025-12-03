@@ -1,18 +1,18 @@
 @interface TSCEDateValue
-+ (TSCEDateValue)dateValueWithDays:(double)a3;
-+ (id)dateValue:(id)a3;
-+ (id)dateValue:(id)a3 format:(const TSCEFormat *)a4;
++ (TSCEDateValue)dateValueWithDays:(double)days;
++ (id)dateValue:(id)value;
++ (id)dateValue:(id)value format:(const TSCEFormat *)format;
 - (TSCEDateValue)init;
-- (TSCEDateValue)initWithDate:(id)a3;
-- (TSCEDateValue)initWithDate:(id)a3 format:(const TSCEFormat *)a4;
-- (TSCEDateValue)initWithDays:(double)a3;
-- (id)asDate:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6;
-- (id)asString:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6;
-- (id)asStringWithLocale:(id)a3;
-- (id)canonicalKeyStringForLocale:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSCEDateValue)initWithDate:(id)date;
+- (TSCEDateValue)initWithDate:(id)date format:(const TSCEFormat *)format;
+- (TSCEDateValue)initWithDays:(double)days;
+- (id)asDate:(id)date functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error;
+- (id)asString:(id)string functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error;
+- (id)asStringWithLocale:(id)locale;
+- (id)canonicalKeyStringForLocale:(id)locale;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)appendASTForConstantToNodeArray:(TSCEASTNodeArray *)a3;
+- (void)appendASTForConstantToNodeArray:(TSCEASTNodeArray *)array;
 @end
 
 @implementation TSCEDateValue
@@ -24,7 +24,7 @@
   return [(TSCEValue *)&v3 init];
 }
 
-- (TSCEDateValue)initWithDate:(id)a3
+- (TSCEDateValue)initWithDate:(id)date
 {
   v5 = 0;
   v6 = 0;
@@ -33,25 +33,25 @@
   v9 = 1;
   v10 = -50266102;
   v11 = 253;
-  return objc_msgSend_initWithDate_format_(self, a2, a3, &v5, v3);
+  return objc_msgSend_initWithDate_format_(self, a2, date, &v5, v3);
 }
 
-- (TSCEDateValue)initWithDate:(id)a3 format:(const TSCEFormat *)a4
+- (TSCEDateValue)initWithDate:(id)date format:(const TSCEFormat *)format
 {
-  v7 = a3;
+  dateCopy = date;
   v11.receiver = self;
   v11.super_class = TSCEDateValue;
-  v8 = [(TSCEValue *)&v11 initWithTSCEFormat:a4];
+  v8 = [(TSCEValue *)&v11 initWithTSCEFormat:format];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_date, a3);
+    objc_storeStrong(&v8->_date, date);
   }
 
   return v9;
 }
 
-- (TSCEDateValue)initWithDays:(double)a3
+- (TSCEDateValue)initWithDays:(double)days
 {
   v13.receiver = self;
   v13.super_class = TSCEDateValue;
@@ -59,7 +59,7 @@
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x277CBEAA8]);
-    v10 = objc_msgSend_initWithTimeIntervalSinceReferenceDate_(v5, v6, v7, v8, v9, a3 * 86400.0);
+    v10 = objc_msgSend_initWithTimeIntervalSinceReferenceDate_(v5, v6, v7, v8, v9, days * 86400.0);
     date = v4->_date;
     v4->_date = v10;
   }
@@ -67,37 +67,37 @@
   return v4;
 }
 
-+ (id)dateValue:(id)a3
++ (id)dateValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   v4 = [TSCEDateValue alloc];
-  v8 = objc_msgSend_initWithDate_(v4, v5, v3, v6, v7);
+  v8 = objc_msgSend_initWithDate_(v4, v5, valueCopy, v6, v7);
 
   return v8;
 }
 
-+ (id)dateValue:(id)a3 format:(const TSCEFormat *)a4
++ (id)dateValue:(id)value format:(const TSCEFormat *)format
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [TSCEDateValue alloc];
-  v9 = objc_msgSend_initWithDate_format_(v6, v7, v5, a4, v8);
+  v9 = objc_msgSend_initWithDate_format_(v6, v7, valueCopy, format, v8);
 
   return v9;
 }
 
-+ (TSCEDateValue)dateValueWithDays:(double)a3
++ (TSCEDateValue)dateValueWithDays:(double)days
 {
   v4 = [TSCEDateValue alloc];
-  v9 = objc_msgSend_initWithDays_(v4, v5, v6, v7, v8, a3);
+  v9 = objc_msgSend_initWithDays_(v4, v5, v6, v7, v8, days);
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = TSCEDateValue;
-  v4 = [(TSCEValue *)&v12 copyWithZone:a3];
+  v4 = [(TSCEValue *)&v12 copyWithZone:zone];
   v9 = objc_msgSend_copy(self->_date, v5, v6, v7, v8);
   v10 = v4[7];
   v4[7] = v9;
@@ -113,23 +113,23 @@
   return v10;
 }
 
-- (id)canonicalKeyStringForLocale:(id)a3
+- (id)canonicalKeyStringForLocale:(id)locale
 {
-  v6 = objc_msgSend_date(self, a2, a3, v3, v4);
+  v6 = objc_msgSend_date(self, a2, locale, v3, v4);
   v10 = objc_msgSend_dateValue_(TSCEDateValue, v7, v6, v8, v9);
 
-  v14 = objc_msgSend_asStringWithLocale_(v10, v11, a3, v12, v13);
+  v14 = objc_msgSend_asStringWithLocale_(v10, v11, locale, v12, v13);
   v18 = objc_msgSend_stringByAppendingString_(@"dat_", v15, v14, v16, v17);
 
   return v18;
 }
 
-- (id)asDate:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6
+- (id)asDate:(id)date functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error
 {
-  if (!a6)
+  if (!error)
   {
     v7 = MEMORY[0x277D81150];
-    v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEDateValue asDate:functionSpec:argumentIndex:outError:]", a4, *&a5);
+    v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEDateValue asDate:functionSpec:argumentIndex:outError:]", spec, *&index);
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEDateValue.mm", v10, v11);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v7, v13, v8, v12, 101, 0, "outError pointer is required for this API");
 
@@ -141,26 +141,26 @@
   return date;
 }
 
-- (id)asString:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6
+- (id)asString:(id)string functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error
 {
-  if (!a6)
+  if (!error)
   {
     v8 = MEMORY[0x277D81150];
-    v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEDateValue asString:functionSpec:argumentIndex:outError:]", a4, *&a5);
+    v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEDateValue asString:functionSpec:argumentIndex:outError:]", spec, *&index);
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEDateValue.mm", v11, v12);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v14, v9, v13, 109, 0, "outError pointer is required for this API");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v15, v16, v17, v18);
   }
 
-  v20 = objc_msgSend_locale(a3, a2, a3, a4, *&a5);
+  v20 = objc_msgSend_locale(string, a2, string, spec, *&index);
 
   return objc_msgSend_asStringWithLocale_(self, v19, v20, v21, v22);
 }
 
-- (id)asStringWithLocale:(id)a3
+- (id)asStringWithLocale:(id)locale
 {
-  if (!a3)
+  if (!locale)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEDateValue asStringWithLocale:]", v3, v4);
@@ -170,7 +170,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15, v16, v17);
   }
 
-  objc_msgSend_format(self, a2, a3, v3, v4);
+  objc_msgSend_format(self, a2, locale, v3, v4);
   if (v88._formatType == 261)
   {
     objc_msgSend_format(self, v18, v19, v20, v21);
@@ -211,7 +211,7 @@
       goto LABEL_11;
     }
 
-    v31 = objc_msgSend_defaultDateTimeFormatForLocale_(MEMORY[0x277D811A0], v73, a3, v75, v76);
+    v31 = objc_msgSend_defaultDateTimeFormatForLocale_(MEMORY[0x277D811A0], v73, locale, v75, v76);
     v32 = TSUDateFormatterStringFromDateWithFormat();
 LABEL_5:
     v33 = v32;
@@ -220,28 +220,28 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  v26 = objc_msgSend_defaultDateTimeFormatForLocale_(MEMORY[0x277D811A0], v34, a3, v36, v37);
+  v26 = objc_msgSend_defaultDateTimeFormatForLocale_(MEMORY[0x277D811A0], v34, locale, v36, v37);
   v33 = TSUDateFormatterStringFromDateWithFormat();
 LABEL_13:
 
   return v33;
 }
 
-- (void)appendASTForConstantToNodeArray:(TSCEASTNodeArray *)a3
+- (void)appendASTForConstantToNodeArray:(TSCEASTNodeArray *)array
 {
-  objc_msgSend_format(self, a2, a3, v3, v4);
+  objc_msgSend_format(self, a2, array, v3, v4);
   if (v22._formatType == 261)
   {
     objc_msgSend_format(self, v7, v8, v9, v10);
     v15 = TSCEFormat::dateTimeFormat(&v22, v11, v12, v13, v14);
     date = self->_date;
     v21 = objc_msgSend_formatString(v15, v17, v18, v19, v20);
-    TSCEASTDateElement::appendDateElement(a3, date, v21, 0, 0);
+    TSCEASTDateElement::appendDateElement(array, date, v21, 0, 0);
   }
 
   else
   {
-    TSCEASTDateElement::appendDateElement(a3, self->_date, 0, 0, 0);
+    TSCEASTDateElement::appendDateElement(array, self->_date, 0, 0, 0);
   }
 }
 

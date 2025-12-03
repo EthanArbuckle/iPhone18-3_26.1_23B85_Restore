@@ -1,44 +1,44 @@
 @interface HRMonogrammer
 - (CGSize)monogramSize;
-- (HRMonogrammer)initWithDiameter:(double)a3;
-- (id)_monogramSymbolNameWith:(id)a3;
-- (id)_monogramWith:(id)a3;
+- (HRMonogrammer)initWithDiameter:(double)diameter;
+- (id)_monogramSymbolNameWith:(id)with;
+- (id)_monogramWith:(id)with;
 @end
 
 @implementation HRMonogrammer
 
-- (HRMonogrammer)initWithDiameter:(double)a3
+- (HRMonogrammer)initWithDiameter:(double)diameter
 {
   v5.receiver = self;
   v5.super_class = HRMonogrammer;
   result = [(HRMonogrammer *)&v5 init];
   if (result)
   {
-    result->_monogramSize.width = a3;
-    result->_monogramSize.height = a3;
+    result->_monogramSize.width = diameter;
+    result->_monogramSize.height = diameter;
   }
 
   return result;
 }
 
-- (id)_monogramSymbolNameWith:(id)a3
+- (id)_monogramSymbolNameWith:(id)with
 {
   v3 = MEMORY[0x1E696AB08];
-  v4 = a3;
-  v5 = [v3 alphanumericCharacterSet];
-  v6 = [v5 invertedSet];
-  v7 = [v4 componentsSeparatedByCharactersInSet:v6];
+  withCopy = with;
+  alphanumericCharacterSet = [v3 alphanumericCharacterSet];
+  invertedSet = [alphanumericCharacterSet invertedSet];
+  v7 = [withCopy componentsSeparatedByCharactersInSet:invertedSet];
 
   v8 = [v7 componentsJoinedByString:&stru_1F4D16E38];
 
   v9 = [v8 mutableCopy];
   CFStringTransform(v9, 0, *MEMORY[0x1E695E9A8], 0);
   CFStringTransform(v9, 0, *MEMORY[0x1E695E9A0], 0);
-  v10 = [(__CFString *)v9 lowercaseString];
-  if ([v10 length])
+  lowercaseString = [(__CFString *)v9 lowercaseString];
+  if ([lowercaseString length])
   {
     v11 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v12 = [v10 substringToIndex:1];
+    v12 = [lowercaseString substringToIndex:1];
     v13 = [v11 initWithFormat:@"%@.circle.fill", v12];
   }
 
@@ -50,14 +50,14 @@
   return v13;
 }
 
-- (id)_monogramWith:(id)a3
+- (id)_monogramWith:(id)with
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v4 = [(HRMonogrammer *)self _monogramSymbolNameWith:a3];
+  v4 = [(HRMonogrammer *)self _monogramSymbolNameWith:with];
   v5 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:4 weight:self->_monogramSize.width];
   v6 = MEMORY[0x1E69DCAD8];
-  v7 = [MEMORY[0x1E69DC888] whiteColor];
-  v17[0] = v7;
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v17[0] = whiteColor;
   v8 = [MEMORY[0x1E69DC888] colorWithWhite:0.65 alpha:1.0];
   v17[1] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
@@ -68,16 +68,16 @@
   v13 = v12;
   if (v12)
   {
-    v14 = [v12 imageWithoutBaseline];
+    imageWithoutBaseline = [v12 imageWithoutBaseline];
   }
 
   else
   {
     v15 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"number.circle.fill" withConfiguration:v11];
-    v14 = [v15 imageWithoutBaseline];
+    imageWithoutBaseline = [v15 imageWithoutBaseline];
   }
 
-  return v14;
+  return imageWithoutBaseline;
 }
 
 - (CGSize)monogramSize

@@ -1,12 +1,12 @@
 @interface MCMFSNode
 - (BOOL)isDirectory;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFSNode:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFSNode:(id)node;
 - (BOOL)isSymlink;
-- (MCMFSNode)initWithINode:(unint64_t)a3 device:(int)a4 ctime:(timespec)a5 mtime:(timespec)a6 birthtime:(timespec)a7 isDirectory:(BOOL)a8 isSymlink:(BOOL)a9;
-- (MCMFSNode)initWithStat:(stat *)a3;
+- (MCMFSNode)initWithINode:(unint64_t)node device:(int)device ctime:(timespec)ctime mtime:(timespec)mtime birthtime:(timespec)birthtime isDirectory:(BOOL)directory isSymlink:(BOOL)symlink;
+- (MCMFSNode)initWithStat:(stat *)stat;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int)device;
 - (timespec)birthtime;
 - (timespec)ctime;
@@ -79,10 +79,10 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6 = *MEMORY[0x1E69E9840];
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (result)
   {
     *(result + 2) = self->_inode;
@@ -98,26 +98,26 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self == v4;
+  equalCopy = equal;
+  v5 = self == equalCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(MCMFSNode *)self isEqualToFSNode:v4];
+    v5 = [(MCMFSNode *)self isEqualToFSNode:equalCopy];
   }
 
   v6 = *MEMORY[0x1E69E9840];
   return v5;
 }
 
-- (BOOL)isEqualToFSNode:(id)a3
+- (BOOL)isEqualToFSNode:(id)node
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self->_inode == v4[2] && self->_device == *(v4 + 3) && self->_isDirectory == *(v4 + 8) && self->_isSymlink == *(v4 + 9);
+  nodeCopy = node;
+  v5 = self->_inode == nodeCopy[2] && self->_device == *(nodeCopy + 3) && self->_isDirectory == *(nodeCopy + 8) && self->_isSymlink == *(nodeCopy + 9);
 
   v6 = *MEMORY[0x1E69E9840];
   return v5;
@@ -142,15 +142,15 @@
   v21 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v20 = [(MCMFSNode *)self inode];
-  v19 = [(MCMFSNode *)self device];
-  v18 = [(MCMFSNode *)self ctime];
+  inode = [(MCMFSNode *)self inode];
+  device = [(MCMFSNode *)self device];
+  ctime = [(MCMFSNode *)self ctime];
   [(MCMFSNode *)self ctime];
   v6 = v5;
-  v7 = [(MCMFSNode *)self mtime];
+  mtime = [(MCMFSNode *)self mtime];
   [(MCMFSNode *)self mtime];
   v9 = v8;
-  v10 = [(MCMFSNode *)self birthtime];
+  birthtime = [(MCMFSNode *)self birthtime];
   [(MCMFSNode *)self birthtime];
   v12 = v11;
   if ([(MCMFSNode *)self isDirectory])
@@ -173,55 +173,55 @@
     v14 = @"NO";
   }
 
-  v15 = [v21 stringWithFormat:@"<%@: %p inode = %llu, device = %d, ctime = %ld.%09ld, mtime = %ld.%09ld, birthtime = %ld.%09ld, isDirectory = %@, isSymlink = %@>", v4, self, v20, v19, v18, v6, v7, v9, v10, v12, v13, v14];;
+  v15 = [v21 stringWithFormat:@"<%@: %p inode = %llu, device = %d, ctime = %ld.%09ld, mtime = %ld.%09ld, birthtime = %ld.%09ld, isDirectory = %@, isSymlink = %@>", v4, self, inode, device, ctime, v6, mtime, v9, birthtime, v12, v13, v14];;
 
   v16 = *MEMORY[0x1E69E9840];
 
   return v15;
 }
 
-- (MCMFSNode)initWithStat:(stat *)a3
+- (MCMFSNode)initWithStat:(stat *)stat
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (stat)
   {
-    v3 = a3->st_mode & 0xF000;
+    v3 = stat->st_mode & 0xF000;
     BYTE1(v7) = v3 == 40960;
     LOBYTE(v7) = v3 == 0x4000;
-    self = [(MCMFSNode *)self initWithINode:a3->st_ino device:a3->st_dev ctime:a3->st_ctimespec.tv_sec mtime:a3->st_ctimespec.tv_nsec birthtime:a3->st_mtimespec.tv_sec isDirectory:a3->st_mtimespec.tv_nsec isSymlink:a3->st_birthtimespec.tv_sec, a3->st_birthtimespec.tv_nsec, v7];
-    v4 = self;
+    self = [(MCMFSNode *)self initWithINode:stat->st_ino device:stat->st_dev ctime:stat->st_ctimespec.tv_sec mtime:stat->st_ctimespec.tv_nsec birthtime:stat->st_mtimespec.tv_sec isDirectory:stat->st_mtimespec.tv_nsec isSymlink:stat->st_birthtimespec.tv_sec, stat->st_birthtimespec.tv_nsec, v7];
+    selfCopy = self;
   }
 
   else
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
   v5 = *MEMORY[0x1E69E9840];
-  return v4;
+  return selfCopy;
 }
 
-- (MCMFSNode)initWithINode:(unint64_t)a3 device:(int)a4 ctime:(timespec)a5 mtime:(timespec)a6 birthtime:(timespec)a7 isDirectory:(BOOL)a8 isSymlink:(BOOL)a9
+- (MCMFSNode)initWithINode:(unint64_t)node device:(int)device ctime:(timespec)ctime mtime:(timespec)mtime birthtime:(timespec)birthtime isDirectory:(BOOL)directory isSymlink:(BOOL)symlink
 {
-  tv_nsec = a6.tv_nsec;
-  tv_sec = a6.tv_sec;
-  v11 = a5.tv_nsec;
-  v12 = a5.tv_sec;
+  tv_nsec = mtime.tv_nsec;
+  tv_sec = mtime.tv_sec;
+  v11 = ctime.tv_nsec;
+  v12 = ctime.tv_sec;
   v18 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = MCMFSNode;
   result = [(MCMFSNode *)&v17 init];
   if (result)
   {
-    result->_device = a4;
-    result->_inode = a3;
+    result->_device = device;
+    result->_inode = node;
     result->_ctime.tv_sec = v12;
     result->_ctime.tv_nsec = v11;
     result->_mtime.tv_sec = tv_sec;
     result->_mtime.tv_nsec = tv_nsec;
-    result->_birthtime = a7;
-    result->_isDirectory = a8;
-    result->_isSymlink = a9;
+    result->_birthtime = birthtime;
+    result->_isDirectory = directory;
+    result->_isSymlink = symlink;
   }
 
   v16 = *MEMORY[0x1E69E9840];

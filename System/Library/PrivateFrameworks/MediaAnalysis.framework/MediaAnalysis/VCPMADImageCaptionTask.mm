@@ -1,25 +1,25 @@
 @interface VCPMADImageCaptionTask
-+ (id)taskWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5;
-- (VCPMADImageCaptionTask)initWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5;
++ (id)taskWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload;
+- (VCPMADImageCaptionTask)initWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload;
 - (int)run;
 @end
 
 @implementation VCPMADImageCaptionTask
 
-- (VCPMADImageCaptionTask)initWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5
+- (VCPMADImageCaptionTask)initWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  assetCopy = asset;
+  payloadCopy = payload;
   v16.receiver = self;
   v16.super_class = VCPMADImageCaptionTask;
   v12 = [(VCPMADImageCaptionTask *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_request, a3);
-    objc_storeStrong(&v13->_imageAsset, a4);
-    objc_storeStrong(&v13->_signpostPayload, a5);
+    objc_storeStrong(&v12->_request, request);
+    objc_storeStrong(&v13->_imageAsset, asset);
+    objc_storeStrong(&v13->_signpostPayload, payload);
     imageCaptionModel = v13->_imageCaptionModel;
     v13->_imageCaptionModel = 0;
   }
@@ -27,15 +27,15 @@
   return v13;
 }
 
-+ (id)taskWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5
++ (id)taskWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isMemberOfClass:objc_opt_class()])
+  requestCopy = request;
+  assetCopy = asset;
+  payloadCopy = payload;
+  if ([requestCopy isMemberOfClass:objc_opt_class()])
   {
-    v11 = [[a1 alloc] initWithRequest:v8 imageAsset:v9 andSignpostPayload:v10];
+    v11 = [[self alloc] initWithRequest:requestCopy imageAsset:assetCopy andSignpostPayload:payloadCopy];
   }
 
   else
@@ -74,8 +74,8 @@
     return -128;
   }
 
-  v5 = [(MADImageCaptionRequest *)self->_request modelType];
-  v6 = [(MADImageCaptionRequest *)self->_request safetyType];
+  modelType = [(MADImageCaptionRequest *)self->_request modelType];
+  safetyType = [(MADImageCaptionRequest *)self->_request safetyType];
   v7 = VCPSignPostLog();
   v8 = os_signpost_id_generate(v7);
 
@@ -89,12 +89,12 @@
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "VCPMADImageCaptionTask_modelPrepare", "%@", buf, 0xCu);
   }
 
-  v12 = [VCPMADImageCaptionResource sharedResourceForModelType:v5 safetyType:v6];
+  v12 = [VCPMADImageCaptionResource sharedResourceForModelType:modelType safetyType:safetyType];
   v13 = +[VCPMADResourceManager sharedManager];
   v14 = [v13 activateResource:v12];
 
-  v15 = [v12 imageCaptionAnalyzer];
-  LODWORD(v13) = v15 == 0;
+  imageCaptionAnalyzer = [v12 imageCaptionAnalyzer];
+  LODWORD(v13) = imageCaptionAnalyzer == 0;
 
   if (v13)
   {
@@ -165,14 +165,14 @@
         _os_signpost_emit_with_name_impl(&dword_1C9B70000, v32, OS_SIGNPOST_INTERVAL_BEGIN, v30, "VCPMADImageCaptionTask_requestCaption", "%@", buf, 0xCu);
       }
 
-      v34 = [v12 imageCaptionAnalyzer];
+      imageCaptionAnalyzer2 = [v12 imageCaptionAnalyzer];
       v66[4] = self;
       v67 = 0;
       v66[0] = MEMORY[0x1E69E9820];
       v66[1] = 3221225472;
       v66[2] = __29__VCPMADImageCaptionTask_run__block_invoke;
       v66[3] = &unk_1E834C078;
-      v35 = [v34 analyzePixelBuffer:v69 flags:0 results:&v67 cancel:v66];
+      v35 = [imageCaptionAnalyzer2 analyzePixelBuffer:v69 flags:0 results:&v67 cancel:v66];
       v36 = v67;
 
       if (v35)
@@ -208,7 +208,7 @@
         }
 
         v45 = &MediaAnalysisImageCaptionResultsKey;
-        if ((v5 - 1) >= 2)
+        if ((modelType - 1) >= 2)
         {
           v45 = &MediaAnalysisMiCaImageCaptionResultsKey;
         }
@@ -233,10 +233,10 @@
             v54 = objc_alloc(MEMORY[0x1E69AE2F8]);
             [v65 floatValue];
             v56 = v55;
-            v57 = [v64 BOOLValue];
-            v58 = [v52 BOOLValue];
+            bOOLValue = [v64 BOOLValue];
+            bOOLValue2 = [v52 BOOLValue];
             LODWORD(v59) = v56;
-            v60 = [v54 initWithCaption:v63 score:v57 containsUnsafeContent:v58 isLowConfidence:v53 classificationIdentifiers:v59];
+            v60 = [v54 initWithCaption:v63 score:bOOLValue containsUnsafeContent:bOOLValue2 isLowConfidence:v53 classificationIdentifiers:v59];
             v61 = self->_request;
             v70 = v60;
             v62 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v70 count:1];

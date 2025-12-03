@@ -1,16 +1,16 @@
 @interface NRBTLinkPreferencesAgent
 + (id)agentDomain;
 + (id)agentType;
-- (BOOL)assertAgentWithOptions:(id)a3;
+- (BOOL)assertAgentWithOptions:(id)options;
 - (void)dealloc;
-- (void)unassertAgentWithOptions:(id)a3;
+- (void)unassertAgentWithOptions:(id)options;
 @end
 
 @implementation NRBTLinkPreferencesAgent
 
-- (void)unassertAgentWithOptions:(id)a3
+- (void)unassertAgentWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   if (self)
   {
     queue = self->_queue;
@@ -26,14 +26,14 @@
   v7[2] = sub_1000779F0;
   v7[3] = &unk_1001FD060;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = optionsCopy;
+  v6 = optionsCopy;
   dispatch_async(queue, v7);
 }
 
-- (BOOL)assertAgentWithOptions:(id)a3
+- (BOOL)assertAgentWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   if (self)
   {
     queue = self->_queue;
@@ -49,8 +49,8 @@
   v8[2] = sub_100077EA4;
   v8[3] = &unk_1001FD060;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = optionsCopy;
+  v6 = optionsCopy;
   dispatch_async(queue, v8);
 
   return 1;

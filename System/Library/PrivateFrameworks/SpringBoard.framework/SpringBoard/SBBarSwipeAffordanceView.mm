@@ -1,29 +1,29 @@
 @interface SBBarSwipeAffordanceView
 - (BOOL)ignoresLuminance;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (SBBarSwipeAffordanceDelegate)delegate;
-- (SBBarSwipeAffordanceView)initWithFrame:(CGRect)a3 systemGestureManager:(id)a4 enableGestures:(BOOL)a5;
+- (SBBarSwipeAffordanceView)initWithFrame:(CGRect)frame systemGestureManager:(id)manager enableGestures:(BOOL)gestures;
 - (id)_hideHomeAffordanceAnimationSettings;
 - (id)_unhideHomeAffordanceAnimationSettings;
-- (id)customScreenEdgePanGestureRecognizerForHomeGestureInteraction:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)customScreenEdgePanGestureRecognizerForHomeGestureInteraction:(id)interaction;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (int64_t)_effectiveOrientationAccountingForTransforms;
 - (int64_t)colorBias;
-- (unint64_t)homeGestureInteraction:(id)a3 systemGestureTypeForType:(int64_t)a4;
+- (unint64_t)homeGestureInteraction:(id)interaction systemGestureTypeForType:(int64_t)type;
 - (void)_activate;
 - (void)_deactivate;
-- (void)_runBlockOnObservers:(id)a3;
+- (void)_runBlockOnObservers:(id)observers;
 - (void)_updateHomeAffordanceVisibility;
-- (void)addObserver:(id)a3;
-- (void)barSwipeBehaviorActionPerformed:(id)a3;
-- (void)didAddSubview:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)barSwipeBehaviorActionPerformed:(id)performed;
+- (void)didAddSubview:(id)subview;
 - (void)layoutSubviews;
-- (void)setActive:(BOOL)a3;
-- (void)setColorBias:(int64_t)a3;
-- (void)setDelegate:(id)a3;
-- (void)setHomeAffordanceHidden:(BOOL)a3;
-- (void)setIgnoresLuminance:(BOOL)a3;
-- (void)setKeyboardHomeAffordanceAssertion:(id)a3;
+- (void)setActive:(BOOL)active;
+- (void)setColorBias:(int64_t)bias;
+- (void)setDelegate:(id)delegate;
+- (void)setHomeAffordanceHidden:(BOOL)hidden;
+- (void)setIgnoresLuminance:(BOOL)luminance;
+- (void)setKeyboardHomeAffordanceAssertion:(id)assertion;
 @end
 
 @implementation SBBarSwipeAffordanceView
@@ -38,49 +38,49 @@
 - (void)_activate
 {
   [(SBHomeGestureInteraction *)self->_homeGestureInteraction setEnabled:1];
-  v3 = [(SBBarSwipeAffordanceView *)self grabberView];
-  v4 = [(SBBarSwipeAffordanceView *)self _unhideHomeAffordanceAnimationSettings];
-  [v3 setHidden:0 forReason:@"SBBarSwipeAffordanceView" withAnimationSettings:v4];
+  grabberView = [(SBBarSwipeAffordanceView *)self grabberView];
+  _unhideHomeAffordanceAnimationSettings = [(SBBarSwipeAffordanceView *)self _unhideHomeAffordanceAnimationSettings];
+  [grabberView setHidden:0 forReason:@"SBBarSwipeAffordanceView" withAnimationSettings:_unhideHomeAffordanceAnimationSettings];
 
-  v5 = [(SBBarSwipeAffordanceView *)self grabberView];
-  [v5 setHomeAffordanceInteractionEnabled:1];
+  grabberView2 = [(SBBarSwipeAffordanceView *)self grabberView];
+  [grabberView2 setHomeAffordanceInteractionEnabled:1];
 }
 
 - (id)_unhideHomeAffordanceAnimationSettings
 {
-  v3 = [(SBBarSwipeAffordanceView *)self delegate];
-  if (!v3 || (objc_opt_respondsToSelector() & 1) == 0 || ([v3 unhideAnimationSettingsForBarSwipeAffordanceView:self], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+  delegate = [(SBBarSwipeAffordanceView *)self delegate];
+  if (!delegate || (objc_opt_respondsToSelector() & 1) == 0 || ([delegate unhideAnimationSettingsForBarSwipeAffordanceView:self], (bSAnimationSettings = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v5 = [MEMORY[0x277D65E80] rootSettings];
-    v6 = [v5 unhideForHomeGestureOwnershipAnimationSettings];
-    v4 = [v6 BSAnimationSettings];
+    rootSettings = [MEMORY[0x277D65E80] rootSettings];
+    unhideForHomeGestureOwnershipAnimationSettings = [rootSettings unhideForHomeGestureOwnershipAnimationSettings];
+    bSAnimationSettings = [unhideForHomeGestureOwnershipAnimationSettings BSAnimationSettings];
   }
 
-  return v4;
+  return bSAnimationSettings;
 }
 
 - (void)_deactivate
 {
   [(SBHomeGestureInteraction *)self->_homeGestureInteraction setEnabled:0];
-  v3 = [(SBBarSwipeAffordanceView *)self grabberView];
-  v4 = [(SBBarSwipeAffordanceView *)self _hideHomeAffordanceAnimationSettings];
-  [v3 setHidden:1 forReason:@"SBBarSwipeAffordanceView" withAnimationSettings:v4];
+  grabberView = [(SBBarSwipeAffordanceView *)self grabberView];
+  _hideHomeAffordanceAnimationSettings = [(SBBarSwipeAffordanceView *)self _hideHomeAffordanceAnimationSettings];
+  [grabberView setHidden:1 forReason:@"SBBarSwipeAffordanceView" withAnimationSettings:_hideHomeAffordanceAnimationSettings];
 
-  v5 = [(SBBarSwipeAffordanceView *)self grabberView];
-  [v5 setHomeAffordanceInteractionEnabled:0];
+  grabberView2 = [(SBBarSwipeAffordanceView *)self grabberView];
+  [grabberView2 setHomeAffordanceInteractionEnabled:0];
 }
 
 - (id)_hideHomeAffordanceAnimationSettings
 {
-  v3 = [(SBBarSwipeAffordanceView *)self delegate];
-  if (!v3 || (objc_opt_respondsToSelector() & 1) == 0 || ([v3 hideAnimationSettingsForBarSwipeAffordanceView:self], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+  delegate = [(SBBarSwipeAffordanceView *)self delegate];
+  if (!delegate || (objc_opt_respondsToSelector() & 1) == 0 || ([delegate hideAnimationSettingsForBarSwipeAffordanceView:self], (bSAnimationSettings = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v5 = [MEMORY[0x277D65E80] rootSettings];
-    v6 = [v5 hideForHomeGestureOwnershipAnimationSettings];
-    v4 = [v6 BSAnimationSettings];
+    rootSettings = [MEMORY[0x277D65E80] rootSettings];
+    hideForHomeGestureOwnershipAnimationSettings = [rootSettings hideForHomeGestureOwnershipAnimationSettings];
+    bSAnimationSettings = [hideForHomeGestureOwnershipAnimationSettings BSAnimationSettings];
   }
 
-  return v4;
+  return bSAnimationSettings;
 }
 
 - (void)layoutSubviews
@@ -98,8 +98,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [(SBBarSwipeAffordanceView *)self subviews];
-  v12 = [v11 countByEnumeratingWithState:&v16 objects:v21 count:16];
+  subviews = [(SBBarSwipeAffordanceView *)self subviews];
+  v12 = [subviews countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v12)
   {
     v13 = v12;
@@ -111,35 +111,35 @@
       {
         if (*v17 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v16 + 1) + 8 * v15++) setFrame:{v4, v6, v8, v10}];
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v16 objects:v21 count:16];
+      v13 = [subviews countByEnumeratingWithState:&v16 objects:v21 count:16];
     }
 
     while (v13);
   }
 }
 
-- (SBBarSwipeAffordanceView)initWithFrame:(CGRect)a3 systemGestureManager:(id)a4 enableGestures:(BOOL)a5
+- (SBBarSwipeAffordanceView)initWithFrame:(CGRect)frame systemGestureManager:(id)manager enableGestures:(BOOL)gestures
 {
-  v5 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a4;
+  gesturesCopy = gestures;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  managerCopy = manager;
   v34.receiver = self;
   v34.super_class = SBBarSwipeAffordanceView;
-  v13 = [(SBBarSwipeAffordanceView *)&v34 initWithFrame:x, y, width, height];
-  v14 = v13;
-  if (v13)
+  height = [(SBBarSwipeAffordanceView *)&v34 initWithFrame:x, y, width, height];
+  v14 = height;
+  if (height)
   {
-    objc_storeStrong(&v13->_gestureManager, a4);
+    objc_storeStrong(&height->_gestureManager, manager);
     v15 = SBFEffectiveHomeButtonType();
     objc_opt_class();
     v16 = objc_opt_isKindOfClass() & 1;
@@ -147,7 +147,7 @@
     if (v15 == 2 || SBFEffectiveDeviceClass() == 2)
     {
       v18 = [SBHomeGrabberView alloc];
-      v19 = [(SBHomeGrabberView *)v18 initWithFrame:v5 shouldEnableGestures:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+      v19 = [(SBHomeGrabberView *)v18 initWithFrame:gesturesCopy shouldEnableGestures:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
       grabberView = v14->_grabberView;
       v14->_grabberView = v19;
 
@@ -157,9 +157,9 @@
       v21 = objc_alloc(MEMORY[0x277D65E10]);
       v22 = v14->_grabberView;
       v23 = +[SBAppSwitcherDomain rootSettings];
-      v24 = [v23 animationSettings];
-      v25 = [v24 alertBarSwipeDismissalSettings];
-      v26 = [v21 initWithGrabberView:v22 settleAffordanceAnimationBehaviorDescription:v25];
+      animationSettings = [v23 animationSettings];
+      alertBarSwipeDismissalSettings = [animationSettings alertBarSwipeDismissalSettings];
+      v26 = [v21 initWithGrabberView:v22 settleAffordanceAnimationBehaviorDescription:alertBarSwipeDismissalSettings];
       barSwipeBehavior = v14->_barSwipeBehavior;
       v14->_barSwipeBehavior = v26;
 
@@ -192,9 +192,9 @@ uint64_t __78__SBBarSwipeAffordanceView_initWithFrame_systemGestureManager_enabl
   return [v2 _deactivate];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -235,12 +235,12 @@ uint64_t __78__SBBarSwipeAffordanceView_initWithFrame_systemGestureManager_enabl
 LABEL_8:
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
-    if (a3)
+    self->_active = active;
+    if (active)
     {
       [(SBBarSwipeAffordanceView *)self _activate];
     }
@@ -254,55 +254,55 @@ LABEL_8:
 
 - (int64_t)colorBias
 {
-  v2 = [(SBBarSwipeAffordanceView *)self grabberView];
-  v3 = [v2 colorBias];
+  grabberView = [(SBBarSwipeAffordanceView *)self grabberView];
+  colorBias = [grabberView colorBias];
 
-  return v3;
+  return colorBias;
 }
 
-- (void)setColorBias:(int64_t)a3
+- (void)setColorBias:(int64_t)bias
 {
-  v4 = [(SBBarSwipeAffordanceView *)self grabberView];
-  [v4 setColorBias:a3];
+  grabberView = [(SBBarSwipeAffordanceView *)self grabberView];
+  [grabberView setColorBias:bias];
 }
 
 - (BOOL)ignoresLuminance
 {
-  v2 = [(SBBarSwipeAffordanceView *)self grabberView];
-  v3 = [v2 ignoresLuminance];
+  grabberView = [(SBBarSwipeAffordanceView *)self grabberView];
+  ignoresLuminance = [grabberView ignoresLuminance];
 
-  return v3;
+  return ignoresLuminance;
 }
 
-- (void)setIgnoresLuminance:(BOOL)a3
+- (void)setIgnoresLuminance:(BOOL)luminance
 {
-  v3 = a3;
-  v4 = [(SBBarSwipeAffordanceView *)self grabberView];
-  [v4 setIgnoresLuminance:v3];
+  luminanceCopy = luminance;
+  grabberView = [(SBBarSwipeAffordanceView *)self grabberView];
+  [grabberView setIgnoresLuminance:luminanceCopy];
 }
 
-- (void)setHomeAffordanceHidden:(BOOL)a3
+- (void)setHomeAffordanceHidden:(BOOL)hidden
 {
-  if (self->_homeAffordanceHidden != a3)
+  if (self->_homeAffordanceHidden != hidden)
   {
-    self->_homeAffordanceHidden = a3;
+    self->_homeAffordanceHidden = hidden;
     [(SBBarSwipeAffordanceView *)self _updateHomeAffordanceVisibility];
   }
 }
 
-- (void)setKeyboardHomeAffordanceAssertion:(id)a3
+- (void)setKeyboardHomeAffordanceAssertion:(id)assertion
 {
-  v5 = a3;
+  assertionCopy = assertion;
   keyboardHomeAffordanceAssertion = self->_keyboardHomeAffordanceAssertion;
-  if (keyboardHomeAffordanceAssertion != v5)
+  if (keyboardHomeAffordanceAssertion != assertionCopy)
   {
-    v12 = v5;
-    if (v5)
+    v12 = assertionCopy;
+    if (assertionCopy)
     {
-      objc_storeStrong(&self->_keyboardHomeAffordanceAssertion, a3);
-      v7 = [(SBBarSwipeAffordanceView *)self grabberView];
-      v8 = [(SBBarSwipeAffordanceView *)self _hideHomeAffordanceAnimationSettings];
-      v9 = v7;
+      objc_storeStrong(&self->_keyboardHomeAffordanceAssertion, assertion);
+      grabberView = [(SBBarSwipeAffordanceView *)self grabberView];
+      _hideHomeAffordanceAnimationSettings = [(SBBarSwipeAffordanceView *)self _hideHomeAffordanceAnimationSettings];
+      v9 = grabberView;
       v10 = 1;
     }
 
@@ -312,64 +312,64 @@ LABEL_8:
       v11 = self->_keyboardHomeAffordanceAssertion;
       self->_keyboardHomeAffordanceAssertion = 0;
 
-      v7 = [(SBBarSwipeAffordanceView *)self grabberView];
-      v8 = [(SBBarSwipeAffordanceView *)self _unhideHomeAffordanceAnimationSettings];
-      v9 = v7;
+      grabberView = [(SBBarSwipeAffordanceView *)self grabberView];
+      _hideHomeAffordanceAnimationSettings = [(SBBarSwipeAffordanceView *)self _unhideHomeAffordanceAnimationSettings];
+      v9 = grabberView;
       v10 = 0;
     }
 
-    [v9 setHidden:v10 forReason:@"SBBarSwipeAffordanceViewKeyboardVisible" withAnimationSettings:v8];
+    [v9 setHidden:v10 forReason:@"SBBarSwipeAffordanceViewKeyboardVisible" withAnimationSettings:_hideHomeAffordanceAnimationSettings];
 
-    v5 = v12;
+    assertionCopy = v12;
   }
 }
 
 - (void)_updateHomeAffordanceVisibility
 {
-  v3 = [(SBBarSwipeAffordanceView *)self grabberView];
-  [v3 setHidden:self->_homeAffordanceHidden forReason:@"SBBarSwipeAffordanceViewAlways" withAnimationSettings:0];
+  grabberView = [(SBBarSwipeAffordanceView *)self grabberView];
+  [grabberView setHidden:self->_homeAffordanceHidden forReason:@"SBBarSwipeAffordanceViewAlways" withAnimationSettings:0];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
     v6 = [MEMORY[0x277CCAA50] hashTableWithOptions:517];
     v7 = self->_observers;
     self->_observers = v6;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)_runBlockOnObservers:(id)a3
+- (void)_runBlockOnObservers:(id)observers
 {
   observers = self->_observers;
-  v4 = a3;
-  v5 = [(NSHashTable *)observers allObjects];
-  [v5 bs_each:v4];
+  observersCopy = observers;
+  allObjects = [(NSHashTable *)observers allObjects];
+  [allObjects bs_each:observersCopy];
 }
 
-- (void)didAddSubview:(id)a3
+- (void)didAddSubview:(id)subview
 {
   v5.receiver = self;
   v5.super_class = SBBarSwipeAffordanceView;
-  [(SBBarSwipeAffordanceView *)&v5 didAddSubview:a3];
-  v4 = [(SBBarSwipeAffordanceView *)self grabberView];
-  [(SBBarSwipeAffordanceView *)self bringSubviewToFront:v4];
+  [(SBBarSwipeAffordanceView *)&v5 didAddSubview:subview];
+  grabberView = [(SBBarSwipeAffordanceView *)self grabberView];
+  [(SBBarSwipeAffordanceView *)self bringSubviewToFront:grabberView];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = [(SBBarSwipeAffordanceView *)self grabberView];
+  grabberView = [(SBBarSwipeAffordanceView *)self grabberView];
   BSRectWithSize();
-  [v3 grabberFrameForBounds:?];
+  [grabberView grabberFrameForBounds:?];
   v5 = v4;
   v7 = v6;
 
@@ -380,11 +380,11 @@ LABEL_8:
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = SBBarSwipeAffordanceView;
-  v5 = [(SBBarSwipeAffordanceView *)&v8 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(SBBarSwipeAffordanceView *)&v8 hitTest:event withEvent:test.x, test.y];
   if ([(SBBarSwipeAffordanceView *)self allowsTouchesToPassThrough]&& v5 == self)
   {
     v6 = 0;
@@ -398,15 +398,15 @@ LABEL_8:
   return v6;
 }
 
-- (unint64_t)homeGestureInteraction:(id)a3 systemGestureTypeForType:(int64_t)a4
+- (unint64_t)homeGestureInteraction:(id)interaction systemGestureTypeForType:(int64_t)type
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v7 = [WeakRetained barSwipeAffordanceView:self systemGestureTypeForType:a4];
+  v7 = [WeakRetained barSwipeAffordanceView:self systemGestureTypeForType:type];
 
   return v7;
 }
 
-- (id)customScreenEdgePanGestureRecognizerForHomeGestureInteraction:(id)a3
+- (id)customScreenEdgePanGestureRecognizerForHomeGestureInteraction:(id)interaction
 {
   v4 = [SBHomeGesturePanGestureRecognizer homeGesturePanGestureRecognizerWithTarget:0 action:0];
   [v4 setInterfaceDelegate:self];
@@ -415,7 +415,7 @@ LABEL_8:
   return v4;
 }
 
-- (void)barSwipeBehaviorActionPerformed:(id)a3
+- (void)barSwipeBehaviorActionPerformed:(id)performed
 {
   if ([(SBHomeGestureInteraction *)self->_homeGestureInteraction isEnabled])
   {
@@ -433,16 +433,16 @@ LABEL_8:
 
 - (int64_t)_effectiveOrientationAccountingForTransforms
 {
-  v3 = [(SBBarSwipeAffordanceView *)self window];
-  v4 = [(SBBarSwipeAffordanceView *)self window];
-  [(SBBarSwipeAffordanceView *)self convertPoint:v4 toView:1.0, 1.0];
-  [v3 _convertPointToSceneReferenceSpace:?];
+  window = [(SBBarSwipeAffordanceView *)self window];
+  window2 = [(SBBarSwipeAffordanceView *)self window];
+  [(SBBarSwipeAffordanceView *)self convertPoint:window2 toView:1.0, 1.0];
+  [window _convertPointToSceneReferenceSpace:?];
   v6 = v5;
   v8 = v7;
-  v9 = [(SBBarSwipeAffordanceView *)self window];
-  v10 = [(SBBarSwipeAffordanceView *)self window];
-  [(SBBarSwipeAffordanceView *)self convertPoint:v10 toView:0.0, 0.0];
-  [v9 _convertPointToSceneReferenceSpace:?];
+  window3 = [(SBBarSwipeAffordanceView *)self window];
+  window4 = [(SBBarSwipeAffordanceView *)self window];
+  [(SBBarSwipeAffordanceView *)self convertPoint:window4 toView:0.0, 0.0];
+  [window3 _convertPointToSceneReferenceSpace:?];
   v12 = v11;
   v14 = v13;
 

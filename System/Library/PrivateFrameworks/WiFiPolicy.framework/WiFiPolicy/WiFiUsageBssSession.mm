@@ -8,79 +8,79 @@
 - ($FEE1510A43A03BFC9F45CB2D5A0A197D)strongestRSSIByBand;
 - ($FEE1510A43A03BFC9F45CB2D5A0A197D)strongestRSSICountByBand;
 - (BOOL)submitAnalytics;
-- (WiFiUsageBssSession)initWithInterfaceName:(id)a3 bssEnvironment:(id)a4 andBssDetails:(id)a5 andNetworkDetails:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WiFiUsageBssSession)initWithInterfaceName:(id)name bssEnvironment:(id)environment andBssDetails:(id)details andNetworkDetails:(id)networkDetails;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)inRoamSuppressionEnabledDurationPerc;
-- (void)bssDidChange:(id)a3 withDetails:(id)a4;
-- (void)callStateDidChange:(BOOL)a3;
-- (void)cellularFallbackStateDidChange:(BOOL)a3;
-- (void)cellularOutrankingStateDidChange:(BOOL)a3;
-- (void)faultEventDetected:(unint64_t)a3;
-- (void)linkQualityDidChange:(id)a3;
-- (void)motionStateDidChange:(BOOL)a3 andVehicularState:(BOOL)a4;
+- (void)bssDidChange:(id)change withDetails:(id)details;
+- (void)callStateDidChange:(BOOL)change;
+- (void)cellularFallbackStateDidChange:(BOOL)change;
+- (void)cellularOutrankingStateDidChange:(BOOL)change;
+- (void)faultEventDetected:(unint64_t)detected;
+- (void)linkQualityDidChange:(id)change;
+- (void)motionStateDidChange:(BOOL)change andVehicularState:(BOOL)state;
 - (void)reset;
-- (void)roamCandidatesStatsDidUpdate:(id *)a3;
-- (void)roamingARConfigurationDidChange:(id *)a3;
-- (void)roamingConfigurationDidChange:(int64_t)a3 withChannelList:(id)a4;
-- (void)roamingStateDidChange:(BOOL)a3 reason:(unint64_t)a4 andStatus:(unint64_t)a5 andLatency:(unint64_t)a6 andRoamData:(id)a7 andPingPongNth:(BOOL)a8;
-- (void)sentBssTransitionResponseWithStatus:(int64_t)a3 terminationDelayRequested:(BOOL)a4;
-- (void)setJoinRssi:(int64_t)a3;
-- (void)setRoamConfigChannels:(id *)a3;
-- (void)setRoamConfigCriteria:(id *)a3;
-- (void)setRoamNeighsLrgstCurrentToBestRssiByBand:(id *)a3;
-- (void)setRoamNeighsLrgstCurrentToNextBestRssiByBand:(id *)a3;
-- (void)setRoamNeighsSmllstCurrentToBestRssiByBand:(id *)a3;
-- (void)setRoamNeighsSmllstCurrentToNextBestRssiByBand:(id *)a3;
-- (void)setStrongestRSSIByBand:(id *)a3;
-- (void)setStrongestRSSICountByBand:(id *)a3;
-- (void)triggerDisconnectAlerted:(BOOL)a3 confirmed:(BOOL)a4 executed:(BOOL)a5;
-- (void)updateActivityDurations:(id)a3;
-- (void)updateRssi:(int64_t)a3 timeSinceLastUpdate:(double)a4;
-- (void)updateRssiDiffStats:(id *)a3 For:(id)a4;
-- (void)updateWithCompatibilityMode:(unsigned __int8)a3;
-- (void)updateWithRoamingSuppression:(unsigned __int8)a3;
+- (void)roamCandidatesStatsDidUpdate:(id *)update;
+- (void)roamingARConfigurationDidChange:(id *)change;
+- (void)roamingConfigurationDidChange:(int64_t)change withChannelList:(id)list;
+- (void)roamingStateDidChange:(BOOL)change reason:(unint64_t)reason andStatus:(unint64_t)status andLatency:(unint64_t)latency andRoamData:(id)data andPingPongNth:(BOOL)nth;
+- (void)sentBssTransitionResponseWithStatus:(int64_t)status terminationDelayRequested:(BOOL)requested;
+- (void)setJoinRssi:(int64_t)rssi;
+- (void)setRoamConfigChannels:(id *)channels;
+- (void)setRoamConfigCriteria:(id *)criteria;
+- (void)setRoamNeighsLrgstCurrentToBestRssiByBand:(id *)band;
+- (void)setRoamNeighsLrgstCurrentToNextBestRssiByBand:(id *)band;
+- (void)setRoamNeighsSmllstCurrentToBestRssiByBand:(id *)band;
+- (void)setRoamNeighsSmllstCurrentToNextBestRssiByBand:(id *)band;
+- (void)setStrongestRSSIByBand:(id *)band;
+- (void)setStrongestRSSICountByBand:(id *)band;
+- (void)triggerDisconnectAlerted:(BOOL)alerted confirmed:(BOOL)confirmed executed:(BOOL)executed;
+- (void)updateActivityDurations:(id)durations;
+- (void)updateRssi:(int64_t)rssi timeSinceLastUpdate:(double)update;
+- (void)updateRssiDiffStats:(id *)stats For:(id)for;
+- (void)updateWithCompatibilityMode:(unsigned __int8)mode;
+- (void)updateWithRoamingSuppression:(unsigned __int8)suppression;
 @end
 
 @implementation WiFiUsageBssSession
 
-- (WiFiUsageBssSession)initWithInterfaceName:(id)a3 bssEnvironment:(id)a4 andBssDetails:(id)a5 andNetworkDetails:(id)a6
+- (WiFiUsageBssSession)initWithInterfaceName:(id)name bssEnvironment:(id)environment andBssDetails:(id)details andNetworkDetails:(id)networkDetails
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10)
+  nameCopy = name;
+  environmentCopy = environment;
+  detailsCopy = details;
+  networkDetailsCopy = networkDetails;
+  if (nameCopy)
   {
-    v14 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v19.receiver = self;
     v19.super_class = WiFiUsageBssSession;
     v15 = [(WiFiUsageBssSession *)&v19 init];
-    [(WiFiUsageBssSession *)v15 setInterfaceName:v10];
+    [(WiFiUsageBssSession *)v15 setInterfaceName:nameCopy];
     v16 = objc_opt_new();
     [(WiFiUsageBssSession *)v15 setRoamNeighborsByBand:v16];
 
     [(WiFiUsageBssSession *)v15 reset];
-    [(WiFiUsageBssSession *)v15 setBssEnvironment:v11];
-    [(WiFiUsageBssSession *)v15 setOriginBssDetails:v12];
+    [(WiFiUsageBssSession *)v15 setBssEnvironment:environmentCopy];
+    [(WiFiUsageBssSession *)v15 setOriginBssDetails:detailsCopy];
     [(WiFiUsageBssSession *)v15 setTargetBssDetails:0];
-    [(WiFiUsageBssSession *)v15 setNetworkDetails:v13];
-    -[WiFiUsageBssSession setJoinRssi:](v15, "setJoinRssi:", [v12 rssi]);
-    -[WiFiUsageBssSession setCurrentBand:](v15, "setCurrentBand:", [v12 band]);
-    -[WiFiUsageBssSession setCurrentChannel:](v15, "setCurrentChannel:", [v12 channel]);
-    -[WiFiUsageBssSession setLastLinkRssi:](v15, "setLastLinkRssi:", [v12 rssi]);
-    [(WiFiUsageBssSession *)v15 setJoinedTimestamp:v14];
+    [(WiFiUsageBssSession *)v15 setNetworkDetails:networkDetailsCopy];
+    -[WiFiUsageBssSession setJoinRssi:](v15, "setJoinRssi:", [detailsCopy rssi]);
+    -[WiFiUsageBssSession setCurrentBand:](v15, "setCurrentBand:", [detailsCopy band]);
+    -[WiFiUsageBssSession setCurrentChannel:](v15, "setCurrentChannel:", [detailsCopy channel]);
+    -[WiFiUsageBssSession setLastLinkRssi:](v15, "setLastLinkRssi:", [detailsCopy rssi]);
+    [(WiFiUsageBssSession *)v15 setJoinedTimestamp:date];
     self = v15;
 
-    v17 = self;
+    selfCopy = self;
   }
 
   else
   {
     NSLog(&cfstr_SCannotInitSes.isa, "[WiFiUsageBssSession initWithInterfaceName:bssEnvironment:andBssDetails:andNetworkDetails:]", 0);
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
 - (void)reset
@@ -240,20 +240,20 @@
   [(WiFiUsageBssSession *)self setLastCompatibilityModeChangedTime:v3];
 }
 
-- (void)setJoinRssi:(int64_t)a3
+- (void)setJoinRssi:(int64_t)rssi
 {
-  self->_joinRssi = a3;
-  self->_leftRssi = a3;
-  self->_maxLinkRssi = a3;
-  self->_minLinkRssi = a3;
-  self->_avgLinkRssi = a3;
+  self->_joinRssi = rssi;
+  self->_leftRssi = rssi;
+  self->_maxLinkRssi = rssi;
+  self->_minLinkRssi = rssi;
+  self->_avgLinkRssi = rssi;
 }
 
-- (void)bssDidChange:(id)a3 withDetails:(id)a4
+- (void)bssDidChange:(id)change withDetails:(id)details
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEAA8] date];
+  changeCopy = change;
+  detailsCopy = details;
+  date = [MEMORY[0x277CBEAA8] date];
   lastLinkRssi = self->_lastLinkRssi;
   if (lastLinkRssi >= self->_lastRoamScanRssi)
   {
@@ -261,7 +261,7 @@
   }
 
   self->_leftRssi = lastLinkRssi;
-  if (v6 && (-[WiFiUsageBssSession setNewBand:](self, "setNewBand:", [v6 band]), -[WiFiUsageBssSession setNewChannel:](self, "setNewChannel:", objc_msgSend(v6, "channel")), -[WiFiUsageBssSession setNewRssi:](self, "setNewRssi:", objc_msgSend(v6, "rssi")), -[WiFiUsageBssSession setTargetBssDetails:](self, "setTargetBssDetails:", v6), self->_roamingActiveTime))
+  if (detailsCopy && (-[WiFiUsageBssSession setNewBand:](self, "setNewBand:", [detailsCopy band]), -[WiFiUsageBssSession setNewChannel:](self, "setNewChannel:", objc_msgSend(detailsCopy, "channel")), -[WiFiUsageBssSession setNewRssi:](self, "setNewRssi:", objc_msgSend(detailsCopy, "rssi")), -[WiFiUsageBssSession setTargetBssDetails:](self, "setTargetBssDetails:", detailsCopy), self->_roamingActiveTime))
   {
     NSLog(&cfstr_SInRoamingStat.isa, "[WiFiUsageBssSession bssDidChange:withDetails:]");
   }
@@ -271,36 +271,36 @@
     if (self->_originBssDetails)
     {
       NSLog(&cfstr_SBssSessionEnd.isa, "[WiFiUsageBssSession bssDidChange:withDetails:]");
-      [(WiFiUsageBssSession *)self updateActivityDurations:v7];
+      [(WiFiUsageBssSession *)self updateActivityDurations:date];
       [(WiFiUsageBssSession *)self submitAnalytics];
       [(WiFiUsageBssSession *)self reset];
     }
 
-    if (v6)
+    if (detailsCopy)
     {
-      [(WiFiUsageBssSession *)self setOriginBssDetails:v6];
+      [(WiFiUsageBssSession *)self setOriginBssDetails:detailsCopy];
       [(WiFiUsageBssSession *)self setTargetBssDetails:0];
-      -[WiFiUsageBssSession setJoinRssi:](self, "setJoinRssi:", [v6 rssi]);
-      -[WiFiUsageBssSession setCurrentBand:](self, "setCurrentBand:", [v6 band]);
-      -[WiFiUsageBssSession setCurrentChannel:](self, "setCurrentChannel:", [v6 channel]);
-      -[WiFiUsageBssSession setLastLinkRssi:](self, "setLastLinkRssi:", [v6 rssi]);
-      [(WiFiUsageBssSession *)self setJoinedTimestamp:v7];
-      [(WiFiUsageBssSession *)self setBssEnvironment:v9];
+      -[WiFiUsageBssSession setJoinRssi:](self, "setJoinRssi:", [detailsCopy rssi]);
+      -[WiFiUsageBssSession setCurrentBand:](self, "setCurrentBand:", [detailsCopy band]);
+      -[WiFiUsageBssSession setCurrentChannel:](self, "setCurrentChannel:", [detailsCopy channel]);
+      -[WiFiUsageBssSession setLastLinkRssi:](self, "setLastLinkRssi:", [detailsCopy rssi]);
+      [(WiFiUsageBssSession *)self setJoinedTimestamp:date];
+      [(WiFiUsageBssSession *)self setBssEnvironment:changeCopy];
     }
   }
 }
 
-- (void)updateActivityDurations:(id)a3
+- (void)updateActivityDurations:(id)durations
 {
-  v4 = a3;
+  durationsCopy = durations;
   lastLqmUpdateTimestamp = self->_lastLqmUpdateTimestamp;
-  v36 = v4;
+  v36 = durationsCopy;
   if (!lastLqmUpdateTimestamp)
   {
     lastLqmUpdateTimestamp = self->_joinedTimestamp;
   }
 
-  [v4 timeIntervalSinceDate:lastLqmUpdateTimestamp];
+  [durationsCopy timeIntervalSinceDate:lastLqmUpdateTimestamp];
   [(WiFiUsageBssSession *)self updateRssi:self->_lastLinkRssi timeSinceLastUpdate:?];
   lastPoorCoverageEntryTimestamp = self->_lastPoorCoverageEntryTimestamp;
   if (lastPoorCoverageEntryTimestamp)
@@ -471,7 +471,7 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithInterfaceName:self->_interfaceName bssEnvironment:self->_bssEnvironment andBssDetails:self->_originBssDetails andNetworkDetails:self->_networkDetails];
   v5 = [(NSMutableDictionary *)self->_sessionInfo mutableCopy];
@@ -667,474 +667,474 @@
 - (BOOL)submitAnalytics
 {
   v205 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [(WiFiUsageBssSession *)self joinedTimestamp];
-  v196 = v3;
-  [v3 timeIntervalSinceDate:v4];
+  date = [MEMORY[0x277CBEAA8] date];
+  joinedTimestamp = [(WiFiUsageBssSession *)self joinedTimestamp];
+  v196 = date;
+  [date timeIntervalSinceDate:joinedTimestamp];
   v6 = v5;
 
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  [v7 setObject:@"BSS" forKeyedSubscript:@"SessionName"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:@"BSS" forKeyedSubscript:@"SessionName"];
   v8 = [WiFiUsagePrivacyFilter numberWithDuration:v6];
-  [v7 setObject:v8 forKeyedSubscript:@"SessionDuration"];
+  [dictionary setObject:v8 forKeyedSubscript:@"SessionDuration"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithBool:self->_supportsNeighborReport];
-  [v7 setObject:v9 forKeyedSubscript:@"SupportsNeighborReport"];
+  [dictionary setObject:v9 forKeyedSubscript:@"SupportsNeighborReport"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithBool:self->_supportsFastTransition];
-  [v7 setObject:v10 forKeyedSubscript:@"SupportsFastTransition"];
+  [dictionary setObject:v10 forKeyedSubscript:@"SupportsFastTransition"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithBool:self->_supportsBssTransitionManagement];
-  [v7 setObject:v11 forKeyedSubscript:@"SupportsBssTransitionManagement"];
+  [dictionary setObject:v11 forKeyedSubscript:@"SupportsBssTransitionManagement"];
 
   v12 = [MEMORY[0x277CCABB0] numberWithBool:self->_supportsAdaptiveFastTransition];
-  [v7 setObject:v12 forKeyedSubscript:@"SupportsAdaptiveFastTransition"];
+  [dictionary setObject:v12 forKeyedSubscript:@"SupportsAdaptiveFastTransition"];
 
   v13 = [MEMORY[0x277CCABB0] numberWithBool:self->_supportsFastlane];
-  [v7 setObject:v13 forKeyedSubscript:@"SupportsFastlane"];
+  [dictionary setObject:v13 forKeyedSubscript:@"SupportsFastlane"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithBool:self->_supportsNetworkAssurance];
-  [v7 setObject:v14 forKeyedSubscript:@"SupportsNetworkAssurance"];
+  [dictionary setObject:v14 forKeyedSubscript:@"SupportsNetworkAssurance"];
 
   v15 = [MEMORY[0x277CCABB0] numberWithBool:self->_supportsAdaptiveRoaming];
-  [v7 setObject:v15 forKeyedSubscript:@"SupportsAdaptiveRoaming"];
+  [dictionary setObject:v15 forKeyedSubscript:@"SupportsAdaptiveRoaming"];
 
-  [v7 setObject:self->_bssEnvironment forKeyedSubscript:@"NetworkBssEnvironment"];
-  [v7 setObject:self->_bssEnvironment forKeyedSubscript:@"NetworkBssEnvironmentString"];
+  [dictionary setObject:self->_bssEnvironment forKeyedSubscript:@"NetworkBssEnvironment"];
+  [dictionary setObject:self->_bssEnvironment forKeyedSubscript:@"NetworkBssEnvironmentString"];
   v16 = MEMORY[0x277CCABB0];
-  v17 = [(WiFiUsageNetworkDetails *)self->_networkDetails hasEnterpriseSecurity]|| [(WiFiUsageNetworkDetails *)self->_networkDetails isWidelyDeployed];
-  v18 = [v16 numberWithBool:v17];
-  [v7 setObject:v18 forKeyedSubscript:@"NetworkIsEnterprise"];
+  isWidelyDeployed = [(WiFiUsageNetworkDetails *)self->_networkDetails hasEnterpriseSecurity]|| [(WiFiUsageNetworkDetails *)self->_networkDetails isWidelyDeployed];
+  v18 = [v16 numberWithBool:isWidelyDeployed];
+  [dictionary setObject:v18 forKeyedSubscript:@"NetworkIsEnterprise"];
 
   v19 = MEMORY[0x277CCABB0];
-  v20 = [(WiFiUsageNetworkDetails *)self->_networkDetails isWidelyDeployed]|| [(WiFiUsageNetworkDetails *)self->_networkDetails isPublic];
-  v21 = [v19 numberWithBool:v20];
-  [v7 setObject:v21 forKeyedSubscript:@"NetworkIsPublic"];
+  isPublic = [(WiFiUsageNetworkDetails *)self->_networkDetails isWidelyDeployed]|| [(WiFiUsageNetworkDetails *)self->_networkDetails isPublic];
+  v21 = [v19 numberWithBool:isPublic];
+  [dictionary setObject:v21 forKeyedSubscript:@"NetworkIsPublic"];
 
   v22 = [MEMORY[0x277CCABB0] numberWithInteger:self->_roamConfigTriggerRssi];
-  [v7 setObject:v22 forKeyedSubscript:@"RoamConfigTriggerRssi"];
+  [dictionary setObject:v22 forKeyedSubscript:@"RoamConfigTriggerRssi"];
 
   v23 = *&self->_roamConfigChannels.valueByBand[2];
   v202 = *self->_roamConfigChannels.valueByBand;
   v203 = v23;
   v24 = [WiFiUsagePrivacyFilter getLabelForIntegerByBand:&v202];
-  [v7 setObject:v24 forKeyedSubscript:@"RoamConfigChannelCountByBand"];
+  [dictionary setObject:v24 forKeyedSubscript:@"RoamConfigChannelCountByBand"];
 
   v25 = *&self->_roamConfigChannels.valueByBand[2];
   v202 = *self->_roamConfigChannels.valueByBand;
   v203 = v25;
   v26 = [MEMORY[0x277CCABB0] numberWithInteger:{+[WiFiUsagePrivacyFilter getSumAllBands:](WiFiUsagePrivacyFilter, "getSumAllBands:", &v202)}];
-  [v7 setObject:v26 forKeyedSubscript:@"RoamConfigChannelCountTotal"];
+  [dictionary setObject:v26 forKeyedSubscript:@"RoamConfigChannelCountTotal"];
 
   v27 = [MEMORY[0x277CCABB0] numberWithBool:self->_roamConfigCriteria.forceApply];
-  [v7 setObject:v27 forKeyedSubscript:@"RoamConfigARIsForceApplied"];
+  [dictionary setObject:v27 forKeyedSubscript:@"RoamConfigARIsForceApplied"];
 
   v28 = [MEMORY[0x277CCABB0] numberWithBool:self->_roamConfigCriteria.deviceSupport];
-  [v7 setObject:v28 forKeyedSubscript:@"RoamConfigARdeviceSupport"];
+  [dictionary setObject:v28 forKeyedSubscript:@"RoamConfigARdeviceSupport"];
 
   v29 = [MEMORY[0x277CCABB0] numberWithBool:self->_roamConfigCriteria.isEAP];
-  [v7 setObject:v29 forKeyedSubscript:@"RoamConfigARIsEAP"];
+  [dictionary setObject:v29 forKeyedSubscript:@"RoamConfigARIsEAP"];
 
   v30 = [MEMORY[0x277CCABB0] numberWithInteger:self->_roamConfigCriteria.environment];
-  [v7 setObject:v30 forKeyedSubscript:@"RoamConfigAREnv"];
+  [dictionary setObject:v30 forKeyedSubscript:@"RoamConfigAREnv"];
 
   v31 = [MEMORY[0x277CCABB0] numberWithInteger:self->_roamConfigCriteria.networkOfInterestType];
-  [v7 setObject:v31 forKeyedSubscript:@"RoamConfigARNetworkType"];
+  [dictionary setObject:v31 forKeyedSubscript:@"RoamConfigARNetworkType"];
 
   v32 = [MEMORY[0x277CCABB0] numberWithInteger:self->_roamConfigCriteria.LOIType];
-  [v7 setObject:v32 forKeyedSubscript:@"RoamConfigARLOIType"];
+  [dictionary setObject:v32 forKeyedSubscript:@"RoamConfigARLOIType"];
 
   v33 = [WiFiUsagePrivacyFilter getLabelForNeighborsByBand:self->_roamNeighborsByBand];
-  [v7 setObject:v33 forKeyedSubscript:@"RoamNeighborsCountByBand"];
+  [dictionary setObject:v33 forKeyedSubscript:@"RoamNeighborsCountByBand"];
 
   v34 = [WiFiUsagePrivacyFilter getSumArrayCountAllBand:self->_roamNeighborsByBand];
-  [v7 setObject:v34 forKeyedSubscript:@"RoamNeighborsCountTotal"];
+  [dictionary setObject:v34 forKeyedSubscript:@"RoamNeighborsCountTotal"];
 
   v35 = [WiFiUsagePrivacyFilter numberWithInstances:self->_minCandidatesCount];
-  [v7 setObject:v35 forKeyedSubscript:@"RoamCandidatesCountMin"];
+  [dictionary setObject:v35 forKeyedSubscript:@"RoamCandidatesCountMin"];
 
   v36 = [WiFiUsagePrivacyFilter numberWithInstances:self->_maxCandidatesCount];
-  [v7 setObject:v36 forKeyedSubscript:@"RoamCandidatesCountMax"];
+  [dictionary setObject:v36 forKeyedSubscript:@"RoamCandidatesCountMax"];
 
   roamReasonLowRssiCount = self->_roamReasonLowRssiCount;
   if (roamReasonLowRssiCount)
   {
     v38 = [WiFiUsagePrivacyFilter getBinEvery10Over100:100 * self->_currentRSSIStrongestCount / roamReasonLowRssiCount As:0];
-    [v7 setObject:v38 forKeyedSubscript:@"RoamCandidatesLowRssiCurrentBSSIsBestPerc"];
+    [dictionary setObject:v38 forKeyedSubscript:@"RoamCandidatesLowRssiCurrentBSSIsBestPerc"];
   }
 
   else
   {
-    [v7 setObject:0 forKeyedSubscript:@"RoamCandidatesLowRssiCurrentBSSIsBestPerc"];
+    [dictionary setObject:0 forKeyedSubscript:@"RoamCandidatesLowRssiCurrentBSSIsBestPerc"];
   }
 
   v39 = *&self->_strongestRSSICountByBand.valueByBand[2];
   v202 = *self->_strongestRSSICountByBand.valueByBand;
   v203 = v39;
   v40 = [WiFiUsagePrivacyFilter getLabelForPercIntegerByBand:&v202];
-  [v7 setObject:v40 forKeyedSubscript:@"RoamCandidatesStrongestRssiByBandPerc"];
+  [dictionary setObject:v40 forKeyedSubscript:@"RoamCandidatesStrongestRssiByBandPerc"];
 
   v41 = *&self->_strongestRSSIByBand.valueByBand[2];
   v202 = *self->_strongestRSSIByBand.valueByBand;
   v203 = v41;
   v42 = [WiFiUsagePrivacyFilter getLabelForRssiByBand:&v202];
-  [v7 setObject:v42 forKeyedSubscript:@"RoamCandidatesStrongestRssiByBand"];
+  [dictionary setObject:v42 forKeyedSubscript:@"RoamCandidatesStrongestRssiByBand"];
 
   v43 = *&self->_roamNeighsSmllstCurrentToNextBestRssiByBand.valueByBand[2];
   v202 = *self->_roamNeighsSmllstCurrentToNextBestRssiByBand.valueByBand;
   v203 = v43;
   v44 = [WiFiUsagePrivacyFilter getLabelForRssiDeltaByBand:&v202];
-  [v7 setObject:v44 forKeyedSubscript:@"RoamCandidatesSmallestDiffCurrentToNextBestRSSIByBand"];
+  [dictionary setObject:v44 forKeyedSubscript:@"RoamCandidatesSmallestDiffCurrentToNextBestRSSIByBand"];
 
   v45 = *&self->_roamNeighsLrgstCurrentToNextBestRssiByBand.valueByBand[2];
   v202 = *self->_roamNeighsLrgstCurrentToNextBestRssiByBand.valueByBand;
   v203 = v45;
   v46 = [WiFiUsagePrivacyFilter getLabelForRssiDeltaByBand:&v202];
-  [v7 setObject:v46 forKeyedSubscript:@"RoamCandidatesLargestDiffCurrentToNextBestRSSIByBand"];
+  [dictionary setObject:v46 forKeyedSubscript:@"RoamCandidatesLargestDiffCurrentToNextBestRSSIByBand"];
 
   v47 = *&self->_roamNeighsSmllstCurrentToBestRssiByBand.valueByBand[2];
   v202 = *self->_roamNeighsSmllstCurrentToBestRssiByBand.valueByBand;
   v203 = v47;
   v48 = [WiFiUsagePrivacyFilter getLabelForRssiDeltaByBand:&v202];
-  [v7 setObject:v48 forKeyedSubscript:@"RoamCandidatesSmallestDiffCurrentToBestRSSIByBand"];
+  [dictionary setObject:v48 forKeyedSubscript:@"RoamCandidatesSmallestDiffCurrentToBestRSSIByBand"];
 
   v49 = *&self->_roamNeighsLrgstCurrentToBestRssiByBand.valueByBand[2];
   v202 = *self->_roamNeighsLrgstCurrentToBestRssiByBand.valueByBand;
   v203 = v49;
   v50 = [WiFiUsagePrivacyFilter getLabelForRssiDeltaByBand:&v202];
-  [v7 setObject:v50 forKeyedSubscript:@"RoamCandidatesLargestDiffCurrentToBestRSSIByBand"];
+  [dictionary setObject:v50 forKeyedSubscript:@"RoamCandidatesLargestDiffCurrentToBestRSSIByBand"];
 
   v51 = [WiFiUsagePrivacyFilter numberWithInstances:self->_roamReasonInitialAssociationCount];
-  [v7 setObject:v51 forKeyedSubscript:@"RoamReasonInitialAssociationCount"];
+  [dictionary setObject:v51 forKeyedSubscript:@"RoamReasonInitialAssociationCount"];
 
   v52 = [WiFiUsagePrivacyFilter numberWithInstances:self->_roamReasonLowRssiCount];
-  [v7 setObject:v52 forKeyedSubscript:@"RoamReasonLowRssiCount"];
+  [dictionary setObject:v52 forKeyedSubscript:@"RoamReasonLowRssiCount"];
 
   v53 = [WiFiUsagePrivacyFilter numberWithInstances:self->_roamReasonDeauthDisassocCount];
-  [v7 setObject:v53 forKeyedSubscript:@"RoamReasonDeauthDisassocCount"];
+  [dictionary setObject:v53 forKeyedSubscript:@"RoamReasonDeauthDisassocCount"];
 
   v54 = [WiFiUsagePrivacyFilter numberWithInstances:self->_roamReasonBeaconLostCount];
-  [v7 setObject:v54 forKeyedSubscript:@"RoamReasonBeaconLostCount"];
+  [dictionary setObject:v54 forKeyedSubscript:@"RoamReasonBeaconLostCount"];
 
   v55 = [WiFiUsagePrivacyFilter numberWithInstances:self->_roamReasonSteeredByApCount];
-  [v7 setObject:v55 forKeyedSubscript:@"RoamReasonSteeredByApCount"];
+  [dictionary setObject:v55 forKeyedSubscript:@"RoamReasonSteeredByApCount"];
 
   v56 = [WiFiUsagePrivacyFilter numberWithInstances:self->_roamReasonSteeredByBtmCount];
-  [v7 setObject:v56 forKeyedSubscript:@"RoamReasonSteeredByBtmCount"];
+  [dictionary setObject:v56 forKeyedSubscript:@"RoamReasonSteeredByBtmCount"];
 
   v57 = [WiFiUsagePrivacyFilter numberWithInstances:self->_roamReasonSteeredByCsaCount];
-  [v7 setObject:v57 forKeyedSubscript:@"RoamReasonSteeredByCsaCount"];
+  [dictionary setObject:v57 forKeyedSubscript:@"RoamReasonSteeredByCsaCount"];
 
   v58 = [WiFiUsagePrivacyFilter numberWithInstances:self->_roamReasonReassocRequestedCount];
-  [v7 setObject:v58 forKeyedSubscript:@"RoamReasonReassocRequestedCount"];
+  [dictionary setObject:v58 forKeyedSubscript:@"RoamReasonReassocRequestedCount"];
 
   v59 = [WiFiUsagePrivacyFilter numberWithInstances:self->_roamReasonHostTriggeredCount];
-  [v7 setObject:v59 forKeyedSubscript:@"RoamReasonHostTriggeredCount"];
+  [dictionary setObject:v59 forKeyedSubscript:@"RoamReasonHostTriggeredCount"];
 
   v60 = [WiFiUsagePrivacyFilter numberWithInstances:self->_roamReasonBetterCandidateCount];
-  [v7 setObject:v60 forKeyedSubscript:@"RoamReasonBetterCandidateCount"];
+  [dictionary setObject:v60 forKeyedSubscript:@"RoamReasonBetterCandidateCount"];
 
   v61 = [WiFiUsagePrivacyFilter numberWithInstances:self->_roamReasonBetterConditionCount];
-  [v7 setObject:v61 forKeyedSubscript:@"RoamReasonBetterConditionCount"];
+  [dictionary setObject:v61 forKeyedSubscript:@"RoamReasonBetterConditionCount"];
 
   v62 = [WiFiUsagePrivacyFilter numberWithInstances:self->_roamReasonMiscCount];
-  [v7 setObject:v62 forKeyedSubscript:@"RoamReasonMiscCount"];
+  [dictionary setObject:v62 forKeyedSubscript:@"RoamReasonMiscCount"];
 
   v63 = [WiFiUsagePrivacyFilter numberWithInstances:self->_roamStatusSucceededCount];
-  [v7 setObject:v63 forKeyedSubscript:@"RoamStatusSucceededCount"];
+  [dictionary setObject:v63 forKeyedSubscript:@"RoamStatusSucceededCount"];
 
   v64 = [WiFiUsagePrivacyFilter numberWithInstances:self->_roamStatusFailedCount];
-  [v7 setObject:v64 forKeyedSubscript:@"RoamStatusFailedCount"];
+  [dictionary setObject:v64 forKeyedSubscript:@"RoamStatusFailedCount"];
 
   v65 = [WiFiUsagePrivacyFilter numberWithInstances:self->_roamStatusNoCandidateCount];
-  [v7 setObject:v65 forKeyedSubscript:@"RoamStatusNoCandidateCount"];
+  [dictionary setObject:v65 forKeyedSubscript:@"RoamStatusNoCandidateCount"];
 
   v66 = [WiFiUsagePrivacyFilter numberWithInstances:self->_roamStatusNoQualifiedCandidateCount];
-  [v7 setObject:v66 forKeyedSubscript:@"RoamStatusNoQualifiedCandidateCount"];
+  [dictionary setObject:v66 forKeyedSubscript:@"RoamStatusNoQualifiedCandidateCount"];
 
   v67 = [WiFiUsagePrivacyFilter numberWithInstances:self->_roamIsWNMScoreUsedCount];
-  [v7 setObject:v67 forKeyedSubscript:@"RoamWNMScoreUsedCount"];
+  [dictionary setObject:v67 forKeyedSubscript:@"RoamWNMScoreUsedCount"];
 
   v68 = [WiFiUsagePrivacyFilter numberWithInstances:self->_roamPingPongNth];
-  [v7 setObject:v68 forKeyedSubscript:@"RoamPingPongNth"];
+  [dictionary setObject:v68 forKeyedSubscript:@"RoamPingPongNth"];
 
   v69 = [MEMORY[0x277CCABB0] numberWithBool:self->_roamInMotion];
-  [v7 setObject:v69 forKeyedSubscript:@"RoamInMotion"];
+  [dictionary setObject:v69 forKeyedSubscript:@"RoamInMotion"];
 
   v70 = [WiFiUsagePrivacyFilter numberWithInstances:self->_bssTransitionRequestCount];
-  [v7 setObject:v70 forKeyedSubscript:@"RoamBssTransitionRequestCount"];
+  [dictionary setObject:v70 forKeyedSubscript:@"RoamBssTransitionRequestCount"];
 
   v71 = [WiFiUsagePrivacyFilter numberWithInstances:self->_bssTransitionAcceptedCount];
-  [v7 setObject:v71 forKeyedSubscript:@"RoamBssTransitionAcceptedCount"];
+  [dictionary setObject:v71 forKeyedSubscript:@"RoamBssTransitionAcceptedCount"];
 
   v72 = [WiFiUsagePrivacyFilter numberWithInstances:self->_bssTransitionRejectedCount];
-  [v7 setObject:v72 forKeyedSubscript:@"RoamBssTransitionRejectedCount"];
+  [dictionary setObject:v72 forKeyedSubscript:@"RoamBssTransitionRejectedCount"];
 
   v73 = [WiFiUsagePrivacyFilter numberWithInstances:self->_highRssiRoamScanCount];
-  [v7 setObject:v73 forKeyedSubscript:@"RoamScanCountHighRssi"];
+  [dictionary setObject:v73 forKeyedSubscript:@"RoamScanCountHighRssi"];
 
   v74 = [WiFiUsagePrivacyFilter numberWithInstances:self->_lowRssiRoamScanCount];
-  [v7 setObject:v74 forKeyedSubscript:@"RoamScanCountLowRssi"];
+  [dictionary setObject:v74 forKeyedSubscript:@"RoamScanCountLowRssi"];
 
   v75 = [WiFiUsagePrivacyFilter numberWithInstances:self->_unexpectedBeaconLostRoamScanCount];
-  [v7 setObject:v75 forKeyedSubscript:@"RoamScanCountUnexpectedBeaconLost"];
+  [dictionary setObject:v75 forKeyedSubscript:@"RoamScanCountUnexpectedBeaconLost"];
 
   v76 = [WiFiUsagePrivacyFilter numberWithInstances:self->_inRoamSuppressionEnabledCount];
-  [v7 setObject:v76 forKeyedSubscript:@"WiFiInRoamSuppressedCount"];
+  [dictionary setObject:v76 forKeyedSubscript:@"WiFiInRoamSuppressedCount"];
 
   v77 = [WiFiUsagePrivacyFilter timePercentage:self->_inRoamSuppressionEnabledDuration overTotalDuration:v6];
-  [v7 setObject:v77 forKeyedSubscript:@"WiFiInRoamSuppressedDuration"];
+  [dictionary setObject:v77 forKeyedSubscript:@"WiFiInRoamSuppressedDuration"];
 
   lastRoamSuppressionWaitForRoamStart = self->_lastRoamSuppressionWaitForRoamStart;
   *&lastRoamSuppressionWaitForRoamStart = lastRoamSuppressionWaitForRoamStart;
   v79 = [MEMORY[0x277CCABB0] numberWithFloat:lastRoamSuppressionWaitForRoamStart];
-  [v7 setObject:v79 forKeyedSubscript:@"WiFiInRoamSuppressedWaitForRoamStart"];
+  [dictionary setObject:v79 forKeyedSubscript:@"WiFiInRoamSuppressedWaitForRoamStart"];
 
   lastRoamSuppressionWaitForRoamEnd = self->_lastRoamSuppressionWaitForRoamEnd;
   *&lastRoamSuppressionWaitForRoamEnd = lastRoamSuppressionWaitForRoamEnd;
   v81 = [MEMORY[0x277CCABB0] numberWithFloat:lastRoamSuppressionWaitForRoamEnd];
-  [v7 setObject:v81 forKeyedSubscript:@"WiFiInRoamSuppressedWaitForRoamEnd"];
+  [dictionary setObject:v81 forKeyedSubscript:@"WiFiInRoamSuppressedWaitForRoamEnd"];
 
   v82 = [WiFiUsagePrivacyFilter numberWithInstances:self->_inCallEventCount];
-  [v7 setObject:v82 forKeyedSubscript:@"SystemInCallCount"];
+  [dictionary setObject:v82 forKeyedSubscript:@"SystemInCallCount"];
 
   v83 = [WiFiUsagePrivacyFilter timePercentage:self->_inCallDuration overTotalDuration:v6];
-  [v7 setObject:v83 forKeyedSubscript:@"SystemInCallDuration"];
+  [dictionary setObject:v83 forKeyedSubscript:@"SystemInCallDuration"];
 
   v84 = [WiFiUsagePrivacyFilter numberWithInstances:self->_inVehicleEventCount];
-  [v7 setObject:v84 forKeyedSubscript:@"SystemInVehicleCount"];
+  [dictionary setObject:v84 forKeyedSubscript:@"SystemInVehicleCount"];
 
   v85 = [WiFiUsagePrivacyFilter timePercentage:self->_inVehicleDuration overTotalDuration:v6];
-  [v7 setObject:v85 forKeyedSubscript:@"SystemInVehicleDuration"];
+  [dictionary setObject:v85 forKeyedSubscript:@"SystemInVehicleDuration"];
 
   v86 = [WiFiUsagePrivacyFilter numberWithInstances:self->_inMotionEventCount];
-  [v7 setObject:v86 forKeyedSubscript:@"SystemInMotionCount"];
+  [dictionary setObject:v86 forKeyedSubscript:@"SystemInMotionCount"];
 
   v87 = [WiFiUsagePrivacyFilter timePercentage:self->_inMotionDuration overTotalDuration:v6];
-  [v7 setObject:v87 forKeyedSubscript:@"SystemInMotionDuration"];
+  [dictionary setObject:v87 forKeyedSubscript:@"SystemInMotionDuration"];
 
   v88 = [WiFiUsagePrivacyFilter numberWithInstances:self->_triggerDisconnectAlertedCount];
-  [v7 setObject:v88 forKeyedSubscript:@"TriggerDisconnectAlertedCount"];
+  [dictionary setObject:v88 forKeyedSubscript:@"TriggerDisconnectAlertedCount"];
 
   v89 = [WiFiUsagePrivacyFilter numberWithInstances:self->_triggerDisconnectConfirmedCount];
-  [v7 setObject:v89 forKeyedSubscript:@"TriggerDisconnectConfirmedCount"];
+  [dictionary setObject:v89 forKeyedSubscript:@"TriggerDisconnectConfirmedCount"];
 
   v90 = [WiFiUsagePrivacyFilter numberWithInstances:self->_triggerDisconnectExecutedCount];
-  [v7 setObject:v90 forKeyedSubscript:@"TriggerDisconnectExecutedCount"];
+  [dictionary setObject:v90 forKeyedSubscript:@"TriggerDisconnectExecutedCount"];
 
   v91 = [WiFiUsagePrivacyFilter numberWithInstances:self->_inA2dpEventCount];
-  [v7 setObject:v91 forKeyedSubscript:@"BluetoothInA2dpCount"];
+  [dictionary setObject:v91 forKeyedSubscript:@"BluetoothInA2dpCount"];
 
   v92 = [WiFiUsagePrivacyFilter timePercentage:self->_inA2dpDuration overTotalDuration:v6];
-  [v7 setObject:v92 forKeyedSubscript:@"BluetoothInA2dpDuration"];
+  [dictionary setObject:v92 forKeyedSubscript:@"BluetoothInA2dpDuration"];
 
   v93 = [WiFiUsagePrivacyFilter numberWithInstances:self->_inScoEventCount];
-  [v7 setObject:v93 forKeyedSubscript:@"BluetoothInScoCount"];
+  [dictionary setObject:v93 forKeyedSubscript:@"BluetoothInScoCount"];
 
   v94 = [WiFiUsagePrivacyFilter timePercentage:self->_inScoDuration overTotalDuration:v6];
-  [v7 setObject:v94 forKeyedSubscript:@"BluetoothInScoDuration"];
+  [dictionary setObject:v94 forKeyedSubscript:@"BluetoothInScoDuration"];
 
   v95 = [WiFiUsagePrivacyFilter numberWithInstances:self->_inHidPresentCount];
-  [v7 setObject:v95 forKeyedSubscript:@"BluetoothInHidCount"];
+  [dictionary setObject:v95 forKeyedSubscript:@"BluetoothInHidCount"];
 
   v96 = [WiFiUsagePrivacyFilter timePercentage:self->_inHidPresentDuration overTotalDuration:v6];
-  [v7 setObject:v96 forKeyedSubscript:@"BluetoothInHidDuration"];
+  [dictionary setObject:v96 forKeyedSubscript:@"BluetoothInHidDuration"];
 
   v97 = [WiFiUsagePrivacyFilter numberWithInstances:self->_inAwdlEventCount];
-  [v7 setObject:v97 forKeyedSubscript:@"WiFiInAwdlCount"];
+  [dictionary setObject:v97 forKeyedSubscript:@"WiFiInAwdlCount"];
 
   v98 = [WiFiUsagePrivacyFilter timePercentage:self->_inAwdlDuration overTotalDuration:v6];
-  [v7 setObject:v98 forKeyedSubscript:@"WiFiInAwdlDuration"];
+  [dictionary setObject:v98 forKeyedSubscript:@"WiFiInAwdlDuration"];
 
   v99 = [WiFiUsagePrivacyFilter numberWithInstances:self->_inRoamEventCount];
-  [v7 setObject:v99 forKeyedSubscript:@"WiFiInRoamCount"];
+  [dictionary setObject:v99 forKeyedSubscript:@"WiFiInRoamCount"];
 
   v100 = [WiFiUsagePrivacyFilter timePercentage:self->_inRoamDuration overTotalDuration:v6];
-  [v7 setObject:v100 forKeyedSubscript:@"WiFiInRoamDuration"];
+  [dictionary setObject:v100 forKeyedSubscript:@"WiFiInRoamDuration"];
 
   v101 = [WiFiUsagePrivacyFilter numberWithInstances:self->_inScanEventCount];
-  [v7 setObject:v101 forKeyedSubscript:@"WiFiInScanCount"];
+  [dictionary setObject:v101 forKeyedSubscript:@"WiFiInScanCount"];
 
   v102 = [WiFiUsagePrivacyFilter numberWithInstances:self->_locationScanCount];
-  [v7 setObject:v102 forKeyedSubscript:@"WiFiInLocationScanCount"];
+  [dictionary setObject:v102 forKeyedSubscript:@"WiFiInLocationScanCount"];
 
   v103 = [WiFiUsagePrivacyFilter numberWithInstances:self->_indoorScanCount];
-  [v7 setObject:v103 forKeyedSubscript:@"WiFiInIndoorScanCount"];
+  [dictionary setObject:v103 forKeyedSubscript:@"WiFiInIndoorScanCount"];
 
   v104 = [WiFiUsagePrivacyFilter timePercentage:self->_inScanDuration overTotalDuration:v6];
-  [v7 setObject:v104 forKeyedSubscript:@"WiFiInScanDuration"];
+  [dictionary setObject:v104 forKeyedSubscript:@"WiFiInScanDuration"];
 
   v105 = [WiFiUsagePrivacyFilter timePercentage:self->_inCellularFallbackDuration overTotalDuration:v6];
-  [v7 setObject:v105 forKeyedSubscript:@"WiFiInCellularFallbackDuration"];
+  [dictionary setObject:v105 forKeyedSubscript:@"WiFiInCellularFallbackDuration"];
 
   v106 = [WiFiUsagePrivacyFilter numberWithInstances:self->_cellularFallbackStateChangedCount];
-  [v7 setObject:v106 forKeyedSubscript:@"WiFiCellularFallbackStateChangedCount"];
+  [dictionary setObject:v106 forKeyedSubscript:@"WiFiCellularFallbackStateChangedCount"];
 
   v107 = [WiFiUsagePrivacyFilter timePercentage:self->_inCellularOutrankingDuration overTotalDuration:v6];
-  [v7 setObject:v107 forKeyedSubscript:@"WiFiInCellularOutrankingDuration"];
+  [dictionary setObject:v107 forKeyedSubscript:@"WiFiInCellularOutrankingDuration"];
 
   v108 = [WiFiUsagePrivacyFilter numberWithInstances:self->_cellularOutrankingStateChangedCount];
-  [v7 setObject:v108 forKeyedSubscript:@"WiFiCellularOutrankingStateChangedCount"];
+  [dictionary setObject:v108 forKeyedSubscript:@"WiFiCellularOutrankingStateChangedCount"];
 
   v109 = [WiFiUsagePrivacyFilter timePercentage:self->_inPoorCoverageDuration overTotalDuration:v6];
-  [v7 setObject:v109 forKeyedSubscript:@"PoorCoverageDuration"];
+  [dictionary setObject:v109 forKeyedSubscript:@"PoorCoverageDuration"];
 
   v110 = [WiFiUsagePrivacyFilter timePercentage:self->_poorCoverageAndA2dpDuration overTotalDuration:v6];
-  [v7 setObject:v110 forKeyedSubscript:@"PoorCoverageAndA2dpDuration"];
+  [dictionary setObject:v110 forKeyedSubscript:@"PoorCoverageAndA2dpDuration"];
 
   v111 = [WiFiUsagePrivacyFilter timePercentage:self->_poorCoverageAndScoDuration overTotalDuration:v6];
-  [v7 setObject:v111 forKeyedSubscript:@"PoorCoverageAndScoDuration"];
+  [dictionary setObject:v111 forKeyedSubscript:@"PoorCoverageAndScoDuration"];
 
   v112 = [WiFiUsagePrivacyFilter timePercentage:self->_poorCoverageAndAwdlDuration overTotalDuration:v6];
-  [v7 setObject:v112 forKeyedSubscript:@"PoorCoverageAndAwdlDuration"];
+  [dictionary setObject:v112 forKeyedSubscript:@"PoorCoverageAndAwdlDuration"];
 
   v113 = [WiFiUsagePrivacyFilter timePercentage:self->_poorCoverageAndScanDuration overTotalDuration:v6];
-  [v7 setObject:v113 forKeyedSubscript:@"PoorCoverageAndScanDuration"];
+  [dictionary setObject:v113 forKeyedSubscript:@"PoorCoverageAndScanDuration"];
 
   v114 = [WiFiUsagePrivacyFilter numberWithInstances:self->_faultReasonCount[1]];
-  [v7 setObject:v114 forKeyedSubscript:@"FaultReasonDnsFailureCount"];
+  [dictionary setObject:v114 forKeyedSubscript:@"FaultReasonDnsFailureCount"];
 
   v115 = [WiFiUsagePrivacyFilter numberWithInstances:self->_faultReasonCount[2]];
-  [v7 setObject:v115 forKeyedSubscript:@"FaultReasonArpFailureCount"];
+  [dictionary setObject:v115 forKeyedSubscript:@"FaultReasonArpFailureCount"];
 
   v116 = [WiFiUsagePrivacyFilter numberWithInstances:self->_faultReasonCount[4]];
-  [v7 setObject:v116 forKeyedSubscript:@"FaultReasonShortFlowCount"];
+  [dictionary setObject:v116 forKeyedSubscript:@"FaultReasonShortFlowCount"];
 
   v117 = [WiFiUsagePrivacyFilter numberWithInstances:self->_faultReasonCount[5]];
-  [v7 setObject:v117 forKeyedSubscript:@"FaultReasonRTTFailureCount"];
+  [dictionary setObject:v117 forKeyedSubscript:@"FaultReasonRTTFailureCount"];
 
   v118 = [WiFiUsagePrivacyFilter numberWithInstances:self->_faultReasonCount[3]];
-  [v7 setObject:v118 forKeyedSubscript:@"FaultReasonSymptomDataStallCount"];
+  [dictionary setObject:v118 forKeyedSubscript:@"FaultReasonSymptomDataStallCount"];
 
   v119 = [WiFiUsagePrivacyFilter numberWithInstances:self->_faultReasonCount[6]];
-  [v7 setObject:v119 forKeyedSubscript:@"FaultReasonL2DatapathStallCount"];
+  [dictionary setObject:v119 forKeyedSubscript:@"FaultReasonL2DatapathStallCount"];
 
   v120 = [WiFiUsagePrivacyFilter numberWithInstances:self->_faultReasonCount[10]];
-  [v7 setObject:v120 forKeyedSubscript:@"FaultReasonSlowWiFi"];
+  [dictionary setObject:v120 forKeyedSubscript:@"FaultReasonSlowWiFi"];
 
   v121 = [WiFiUsagePrivacyFilter numberWithInstances:self->_faultReasonCount[19]];
-  [v7 setObject:v121 forKeyedSubscript:@"FaultReasonSlowWiFiDUT"];
+  [dictionary setObject:v121 forKeyedSubscript:@"FaultReasonSlowWiFiDUT"];
 
   v122 = [WiFiUsagePrivacyFilter numberWithInstances:self->_faultReasonCount[13]];
-  [v7 setObject:v122 forKeyedSubscript:@"FaultReasonDhcpFailure"];
+  [dictionary setObject:v122 forKeyedSubscript:@"FaultReasonDhcpFailure"];
 
   v123 = [WiFiUsagePrivacyFilter numberWithInstances:self->_faultReasonCount[14]];
-  [v7 setObject:v123 forKeyedSubscript:@"FaultReasonLinkTestLocalCheckFailure"];
+  [dictionary setObject:v123 forKeyedSubscript:@"FaultReasonLinkTestLocalCheckFailure"];
 
   v124 = [WiFiUsagePrivacyFilter numberWithInstances:self->_faultReasonCount[15]];
-  [v7 setObject:v124 forKeyedSubscript:@"FaultReasonLinkTestInternetCheckFailure"];
+  [dictionary setObject:v124 forKeyedSubscript:@"FaultReasonLinkTestInternetCheckFailure"];
 
   v125 = [WiFiUsagePrivacyFilter numberWithInstances:self->_faultReasonCount[16]];
-  [v7 setObject:v125 forKeyedSubscript:@"FaultReasonLinkTestDNSCheckFailure"];
+  [dictionary setObject:v125 forKeyedSubscript:@"FaultReasonLinkTestDNSCheckFailure"];
 
   v126 = [WiFiUsagePrivacyFilter numberWithInstances:self->_faultReasonCount[20]];
-  [v7 setObject:v126 forKeyedSubscript:@"FaultReasonUserOverridesCellularOutranking"];
+  [dictionary setObject:v126 forKeyedSubscript:@"FaultReasonUserOverridesCellularOutranking"];
 
   v127 = [WiFiUsagePrivacyFilter numberWithInstances:self->_faultReasonCount[25]];
-  [v7 setObject:v127 forKeyedSubscript:@"FaultReasonSiriTimedOut"];
+  [dictionary setObject:v127 forKeyedSubscript:@"FaultReasonSiriTimedOut"];
 
   v128 = [WiFiUsagePrivacyFilter numberWithInstances:self->_faultReasonCount[26]];
-  [v7 setObject:v128 forKeyedSubscript:@"FaultReasonApsdTimedOut"];
+  [dictionary setObject:v128 forKeyedSubscript:@"FaultReasonApsdTimedOut"];
 
   v129 = [WiFiUsagePrivacyFilter numberWithInstances:self->_faultReasonCount[27]];
-  [v7 setObject:v129 forKeyedSubscript:@"FaultReasonBrokenBackhaulLinkFailed"];
+  [dictionary setObject:v129 forKeyedSubscript:@"FaultReasonBrokenBackhaulLinkFailed"];
 
   v130 = [WiFiUsagePrivacyFilter numberWithInstances:self->_faultReasonCount[36]];
-  [v7 setObject:v130 forKeyedSubscript:@"FaultReasonRxDataStallEvent"];
+  [dictionary setObject:v130 forKeyedSubscript:@"FaultReasonRxDataStallEvent"];
 
   v131 = [MEMORY[0x277CCABB0] numberWithInteger:self->_joinRssi];
-  [v7 setObject:v131 forKeyedSubscript:@"RssiAtJoin"];
+  [dictionary setObject:v131 forKeyedSubscript:@"RssiAtJoin"];
 
   v132 = [MEMORY[0x277CCABB0] numberWithInteger:self->_leftRssi];
-  [v7 setObject:v132 forKeyedSubscript:@"RssiAtLeave"];
+  [dictionary setObject:v132 forKeyedSubscript:@"RssiAtLeave"];
 
   v133 = [MEMORY[0x277CCABB0] numberWithInteger:self->_newRssi];
-  [v7 setObject:v133 forKeyedSubscript:@"RssiAfterRoam"];
+  [dictionary setObject:v133 forKeyedSubscript:@"RssiAfterRoam"];
 
   v134 = [MEMORY[0x277CCABB0] numberWithInteger:self->_lastLinkRssi];
-  [v7 setObject:v134 forKeyedSubscript:@"RssiLastLink"];
+  [dictionary setObject:v134 forKeyedSubscript:@"RssiLastLink"];
 
   v135 = [MEMORY[0x277CCABB0] numberWithInteger:self->_lastRoamScanRssi];
-  [v7 setObject:v135 forKeyedSubscript:@"RssiLastRoamScan"];
+  [dictionary setObject:v135 forKeyedSubscript:@"RssiLastRoamScan"];
 
   v136 = [MEMORY[0x277CCABB0] numberWithInteger:self->_maxLinkRssi];
-  [v7 setObject:v136 forKeyedSubscript:@"RssiMax"];
+  [dictionary setObject:v136 forKeyedSubscript:@"RssiMax"];
 
   v137 = [MEMORY[0x277CCABB0] numberWithInteger:self->_minLinkRssi];
-  [v7 setObject:v137 forKeyedSubscript:@"RssiMin"];
+  [dictionary setObject:v137 forKeyedSubscript:@"RssiMin"];
 
   v138 = [MEMORY[0x277CCABB0] numberWithInteger:self->_avgLinkRssi];
-  [v7 setObject:v138 forKeyedSubscript:@"RssiAvg"];
+  [dictionary setObject:v138 forKeyedSubscript:@"RssiAvg"];
 
   v139 = [WiFiUsagePrivacyFilter bandAsString:self->_currentBand];
-  [v7 setObject:v139 forKeyedSubscript:@"BandAtJoin"];
+  [dictionary setObject:v139 forKeyedSubscript:@"BandAtJoin"];
 
   v140 = [WiFiUsagePrivacyFilter bandAsString:self->_newBand];
-  [v7 setObject:v140 forKeyedSubscript:@"BandAfterRoam"];
+  [dictionary setObject:v140 forKeyedSubscript:@"BandAfterRoam"];
 
   v141 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_currentChannel];
-  [v7 setObject:v141 forKeyedSubscript:@"ChannelAtJoin"];
+  [dictionary setObject:v141 forKeyedSubscript:@"ChannelAtJoin"];
 
   v142 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_newChannel];
-  [v7 setObject:v142 forKeyedSubscript:@"ChannelAfterRoam"];
+  [dictionary setObject:v142 forKeyedSubscript:@"ChannelAfterRoam"];
 
   if (+[WiFiUsagePrivacyFilter isInternalInstall]&& [(WiFiUsageNetworkDetails *)self->_networkDetails isInternal])
   {
-    v143 = [(WiFiUsageNetworkDetails *)self->_networkDetails networkName];
-    [v7 setObject:v143 forKeyedSubscript:@"NetworkName"];
+    networkName = [(WiFiUsageNetworkDetails *)self->_networkDetails networkName];
+    [dictionary setObject:networkName forKeyedSubscript:@"NetworkName"];
 
-    v144 = [(WiFiUsageBssDetails *)self->_originBssDetails bssid];
-    [v7 setObject:v144 forKeyedSubscript:@"RoamBssidOrigin"];
+    bssid = [(WiFiUsageBssDetails *)self->_originBssDetails bssid];
+    [dictionary setObject:bssid forKeyedSubscript:@"RoamBssidOrigin"];
 
-    v145 = [(WiFiUsageBssDetails *)self->_originBssDetails bssid];
-    v146 = [WiFiUsageAccessPointProfile apNameForBSSID:v145];
+    bssid2 = [(WiFiUsageBssDetails *)self->_originBssDetails bssid];
+    v146 = [WiFiUsageAccessPointProfile apNameForBSSID:bssid2];
 
-    [v7 setObject:v146 forKeyedSubscript:@"RoamOriginAPName"];
+    [dictionary setObject:v146 forKeyedSubscript:@"RoamOriginAPName"];
     v147 = [[WiFiUsageAppleWiFiNameBlocks alloc] initWithAPName:v146];
     v148 = v147;
     if (v147)
     {
-      v149 = [(WiFiUsageAppleWiFiNameBlocks *)v147 building];
-      [v7 setObject:v149 forKeyedSubscript:@"RoamOriginAPNamePortionA"];
+      building = [(WiFiUsageAppleWiFiNameBlocks *)v147 building];
+      [dictionary setObject:building forKeyedSubscript:@"RoamOriginAPNamePortionA"];
 
-      v150 = [(WiFiUsageAppleWiFiNameBlocks *)v148 section];
-      [v7 setObject:v150 forKeyedSubscript:@"RoamOriginAPNamePortionB"];
+      section = [(WiFiUsageAppleWiFiNameBlocks *)v148 section];
+      [dictionary setObject:section forKeyedSubscript:@"RoamOriginAPNamePortionB"];
 
-      v151 = [(WiFiUsageAppleWiFiNameBlocks *)v148 floor];
-      [v7 setObject:v151 forKeyedSubscript:@"RoamOriginAPNamePortionC"];
+      floor = [(WiFiUsageAppleWiFiNameBlocks *)v148 floor];
+      [dictionary setObject:floor forKeyedSubscript:@"RoamOriginAPNamePortionC"];
 
       v152 = [(WiFiUsageAppleWiFiNameBlocks *)v148 pod];
-      [v7 setObject:v152 forKeyedSubscript:@"RoamOriginAPNamePortionD"];
+      [dictionary setObject:v152 forKeyedSubscript:@"RoamOriginAPNamePortionD"];
 
-      v153 = [(WiFiUsageAppleWiFiNameBlocks *)v148 other];
-      [v7 setObject:v153 forKeyedSubscript:@"RoamOriginAPNamePortionE"];
+      other = [(WiFiUsageAppleWiFiNameBlocks *)v148 other];
+      [dictionary setObject:other forKeyedSubscript:@"RoamOriginAPNamePortionE"];
     }
 
-    v154 = [(WiFiUsageBssDetails *)self->_targetBssDetails bssid];
-    [v7 setObject:v154 forKeyedSubscript:@"RoamBssidTarget"];
+    bssid3 = [(WiFiUsageBssDetails *)self->_targetBssDetails bssid];
+    [dictionary setObject:bssid3 forKeyedSubscript:@"RoamBssidTarget"];
 
-    v155 = [(WiFiUsageBssDetails *)self->_targetBssDetails bssid];
-    v156 = [WiFiUsageAccessPointProfile apNameForBSSID:v155];
+    bssid4 = [(WiFiUsageBssDetails *)self->_targetBssDetails bssid];
+    v156 = [WiFiUsageAccessPointProfile apNameForBSSID:bssid4];
 
-    [v7 setObject:v156 forKeyedSubscript:@"RoamTargetAPName"];
+    [dictionary setObject:v156 forKeyedSubscript:@"RoamTargetAPName"];
     v157 = [[WiFiUsageAppleWiFiNameBlocks alloc] initWithAPName:v156];
 
     if (v157)
     {
-      v158 = [(WiFiUsageAppleWiFiNameBlocks *)v157 building];
-      [v7 setObject:v158 forKeyedSubscript:@"RoamTargetAPNamePortionA"];
+      building2 = [(WiFiUsageAppleWiFiNameBlocks *)v157 building];
+      [dictionary setObject:building2 forKeyedSubscript:@"RoamTargetAPNamePortionA"];
 
-      v159 = [(WiFiUsageAppleWiFiNameBlocks *)v157 section];
-      [v7 setObject:v159 forKeyedSubscript:@"RoamTargetAPNamePortionB"];
+      section2 = [(WiFiUsageAppleWiFiNameBlocks *)v157 section];
+      [dictionary setObject:section2 forKeyedSubscript:@"RoamTargetAPNamePortionB"];
 
-      v160 = [(WiFiUsageAppleWiFiNameBlocks *)v157 floor];
-      [v7 setObject:v160 forKeyedSubscript:@"RoamTargetAPNamePortionC"];
+      floor2 = [(WiFiUsageAppleWiFiNameBlocks *)v157 floor];
+      [dictionary setObject:floor2 forKeyedSubscript:@"RoamTargetAPNamePortionC"];
 
       v161 = [(WiFiUsageAppleWiFiNameBlocks *)v157 pod];
-      [v7 setObject:v161 forKeyedSubscript:@"RoamTargetAPNamePortionD"];
+      [dictionary setObject:v161 forKeyedSubscript:@"RoamTargetAPNamePortionD"];
 
-      v162 = [(WiFiUsageAppleWiFiNameBlocks *)v157 other];
-      [v7 setObject:v162 forKeyedSubscript:@"RoamTargetAPNamePortionE"];
+      other2 = [(WiFiUsageAppleWiFiNameBlocks *)v157 other];
+      [dictionary setObject:other2 forKeyedSubscript:@"RoamTargetAPNamePortionE"];
     }
   }
 
@@ -1145,101 +1145,101 @@
 
   else
   {
-    [v7 setObject:@"Gt40" forKeyedSubscript:@"RssiMode"];
+    [dictionary setObject:@"Gt40" forKeyedSubscript:@"RssiMode"];
     linkRssiGt40 = self->_linkRssiGt40;
   }
 
   if (self->_linkRssi40to50 >= linkRssiGt40)
   {
-    [v7 setObject:@"40to50" forKeyedSubscript:@"RssiMode"];
+    [dictionary setObject:@"40to50" forKeyedSubscript:@"RssiMode"];
     linkRssiGt40 = self->_linkRssi40to50;
   }
 
   if (self->_linkRssi50to60 >= linkRssiGt40)
   {
-    [v7 setObject:@"50to60" forKeyedSubscript:@"RssiMode"];
+    [dictionary setObject:@"50to60" forKeyedSubscript:@"RssiMode"];
     linkRssiGt40 = self->_linkRssi50to60;
   }
 
   if (self->_linkRssi60to65 >= linkRssiGt40)
   {
-    [v7 setObject:@"60to65" forKeyedSubscript:@"RssiMode"];
+    [dictionary setObject:@"60to65" forKeyedSubscript:@"RssiMode"];
     linkRssiGt40 = self->_linkRssi60to65;
   }
 
   if (self->_linkRssi65to70 >= linkRssiGt40)
   {
-    [v7 setObject:@"65to70" forKeyedSubscript:@"RssiMode"];
+    [dictionary setObject:@"65to70" forKeyedSubscript:@"RssiMode"];
     linkRssiGt40 = self->_linkRssi65to70;
   }
 
   if (self->_linkRssi70to75 >= linkRssiGt40)
   {
-    [v7 setObject:@"70to75" forKeyedSubscript:@"RssiMode"];
+    [dictionary setObject:@"70to75" forKeyedSubscript:@"RssiMode"];
     linkRssiGt40 = self->_linkRssi70to75;
   }
 
   if (self->_linkRssi75to80 >= linkRssiGt40)
   {
-    [v7 setObject:@"75to80" forKeyedSubscript:@"RssiMode"];
+    [dictionary setObject:@"75to80" forKeyedSubscript:@"RssiMode"];
     linkRssiGt40 = self->_linkRssi75to80;
   }
 
   if (self->_linkRssi80to85 >= linkRssiGt40)
   {
-    [v7 setObject:@"80to85" forKeyedSubscript:@"RssiMode"];
+    [dictionary setObject:@"80to85" forKeyedSubscript:@"RssiMode"];
     linkRssiGt40 = self->_linkRssi80to85;
   }
 
   if (self->_linkRssi85to90 >= linkRssiGt40)
   {
-    [v7 setObject:@"85to90" forKeyedSubscript:@"RssiMode"];
+    [dictionary setObject:@"85to90" forKeyedSubscript:@"RssiMode"];
     linkRssiGt40 = self->_linkRssi85to90;
   }
 
   if (self->_linkRssiLt90 >= linkRssiGt40)
   {
-    [v7 setObject:@"Lt90" forKeyedSubscript:@"RssiMode"];
+    [dictionary setObject:@"Lt90" forKeyedSubscript:@"RssiMode"];
   }
 
   v164 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_minRoamLatency];
-  [v7 setObject:v164 forKeyedSubscript:@"RoamLatencyMin"];
+  [dictionary setObject:v164 forKeyedSubscript:@"RoamLatencyMin"];
 
   v165 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_maxRoamLatency];
-  [v7 setObject:v165 forKeyedSubscript:@"RoamLatencyMax"];
+  [dictionary setObject:v165 forKeyedSubscript:@"RoamLatencyMax"];
 
   v166 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_partialScanCount];
-  [v7 setObject:v166 forKeyedSubscript:@"PartialScanCount"];
+  [dictionary setObject:v166 forKeyedSubscript:@"PartialScanCount"];
 
   v167 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_fullScanCount];
-  [v7 setObject:v167 forKeyedSubscript:@"FullScanCount"];
+  [dictionary setObject:v167 forKeyedSubscript:@"FullScanCount"];
 
   v168 = [MEMORY[0x277CCABB0] numberWithBool:self->_isCompatibilityModeEnabledAtStart];
-  [v7 setObject:v168 forKeyedSubscript:@"WiFiCompatibilityModeEnabledAtStart"];
+  [dictionary setObject:v168 forKeyedSubscript:@"WiFiCompatibilityModeEnabledAtStart"];
 
   v169 = [MEMORY[0x277CCABB0] numberWithBool:self->_isCompatibilityModeEnabled];
-  [v7 setObject:v169 forKeyedSubscript:@"WiFiCompatibilityModeEnabledAtEnd"];
+  [dictionary setObject:v169 forKeyedSubscript:@"WiFiCompatibilityModeEnabledAtEnd"];
 
   v170 = [MEMORY[0x277CCABB0] numberWithInteger:self->_compatibilityModeChangeCount];
-  [v7 setObject:v170 forKeyedSubscript:@"WiFiCompatibilityModeChangeCount"];
+  [dictionary setObject:v170 forKeyedSubscript:@"WiFiCompatibilityModeChangeCount"];
 
   v171 = [WiFiUsagePrivacyFilter timePercentage:self->_inCompatibilityModeEnabledDuration overTotalDuration:v6];
-  [v7 setObject:v171 forKeyedSubscript:@"WiFiCompatibilityModeChangeDuration"];
+  [dictionary setObject:v171 forKeyedSubscript:@"WiFiCompatibilityModeChangeDuration"];
 
-  v172 = [(WiFiUsageBssSession *)self originBssDetails];
-  v173 = [v172 eventDictionary:1];
-  [v7 addEntriesFromDictionary:v173];
+  originBssDetails = [(WiFiUsageBssSession *)self originBssDetails];
+  v173 = [originBssDetails eventDictionary:1];
+  [dictionary addEntriesFromDictionary:v173];
 
   context = objc_autoreleasePoolPush();
   v174 = MEMORY[0x277CCAB68];
-  v197 = self;
+  selfCopy = self;
   v175 = objc_opt_class();
   v176 = NSStringFromClass(v175);
-  v177 = [v174 stringWithFormat:@"%@:: ", v176];
+  v176 = [v174 stringWithFormat:@"%@:: ", v176];
 
-  v178 = v7;
-  v179 = [v7 allKeys];
-  v180 = [v179 sortedArrayUsingSelector:sel_compare_];
+  v178 = dictionary;
+  allKeys = [dictionary allKeys];
+  v180 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v200 = 0u;
   v201 = 0u;
@@ -1262,16 +1262,16 @@
 
         v186 = *(*(&v198 + 1) + 8 * i);
         v187 = [v178 objectForKey:v186];
-        [v177 appendFormat:@"%@=%@; ", v186, v187, context];
+        [v176 appendFormat:@"%@=%@; ", v186, v187, context];
 
-        if ([v177 length] >= 0xB5)
+        if ([v176 length] >= 0xB5)
         {
-          NSLog(&stru_284888320.isa, v177);
+          NSLog(&stru_284888320.isa, v176);
           v188 = MEMORY[0x277CCACA8];
           v189 = objc_opt_class();
           v190 = NSStringFromClass(v189);
-          v191 = [v188 stringWithFormat:@"%@:: ", v190];
-          [v177 setString:v191];
+          v190 = [v188 stringWithFormat:@"%@:: ", v190];
+          [v176 setString:v190];
         }
       }
 
@@ -1281,38 +1281,38 @@
     while (v183);
   }
 
-  NSLog(&stru_284888320.isa, v177);
+  NSLog(&stru_284888320.isa, v176);
   NSLog(&cfstr_STotalBssSessi.isa, "-[WiFiUsageBssSession submitAnalytics]", [v181 count]);
 
   objc_autoreleasePoolPop(context);
   v192 = v178;
   AnalyticsSendEventLazy();
 
-  [(WiFiUsageBssSession *)v197 setSessionInfo:v192];
+  [(WiFiUsageBssSession *)selfCopy setSessionInfo:v192];
   v193 = *MEMORY[0x277D85DE8];
   return 1;
 }
 
-- (void)motionStateDidChange:(BOOL)a3 andVehicularState:(BOOL)a4
+- (void)motionStateDidChange:(BOOL)change andVehicularState:(BOOL)state
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v11 = v7;
-  if (v5)
+  stateCopy = state;
+  changeCopy = change;
+  date = [MEMORY[0x277CBEAA8] date];
+  v11 = date;
+  if (changeCopy)
   {
-    [(WiFiUsageBssSession *)self setInMotionStartedTime:v7];
+    [(WiFiUsageBssSession *)self setInMotionStartedTime:date];
     ++self->_inMotionEventCount;
   }
 
   else if (self->_inMotionStartedTime)
   {
-    [v7 timeIntervalSinceDate:?];
+    [date timeIntervalSinceDate:?];
     self->_inMotionDuration = v8 + self->_inMotionDuration;
     [(WiFiUsageBssSession *)self setInMotionStartedTime:0];
   }
 
-  if (v4)
+  if (stateCopy)
   {
     [(WiFiUsageBssSession *)self setInVehicleEntryTime:v11];
     v9 = v11;
@@ -1332,42 +1332,42 @@
   }
 }
 
-- (void)callStateDidChange:(BOOL)a3
+- (void)callStateDidChange:(BOOL)change
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = v5;
-  if (v3)
+  changeCopy = change;
+  date = [MEMORY[0x277CBEAA8] date];
+  v6 = date;
+  if (changeCopy)
   {
-    v8 = v5;
-    v5 = [(WiFiUsageBssSession *)self setCallStartedTime:v5];
+    v8 = date;
+    date = [(WiFiUsageBssSession *)self setCallStartedTime:date];
     v6 = v8;
     ++self->_inCallEventCount;
   }
 
   else if (self->_callStartedTime)
   {
-    v9 = v5;
-    [v5 timeIntervalSinceDate:?];
+    v9 = date;
+    [date timeIntervalSinceDate:?];
     self->_inCallDuration = v7 + self->_inCallDuration;
-    v5 = [(WiFiUsageBssSession *)self setCallStartedTime:0];
+    date = [(WiFiUsageBssSession *)self setCallStartedTime:0];
     v6 = v9;
   }
 
-  MEMORY[0x2821F96F8](v5, v6);
+  MEMORY[0x2821F96F8](date, v6);
 }
 
-- (void)updateRssi:(int64_t)a3 timeSinceLastUpdate:(double)a4
+- (void)updateRssi:(int64_t)rssi timeSinceLastUpdate:(double)update
 {
   lastPoorCoverageEntryTimestamp = [MEMORY[0x277CBEAA8] date];
   v8 = lastPoorCoverageEntryTimestamp;
-  if (a3)
+  if (rssi)
   {
     v40 = lastPoorCoverageEntryTimestamp;
-    [(WiFiUsageBssSession *)self setLastLinkRssi:a3];
-    if (a3 <= -41)
+    [(WiFiUsageBssSession *)self setLastLinkRssi:rssi];
+    if (rssi <= -41)
     {
-      if (a3 <= 0xFFFFFFFFFFFFFFCDLL)
+      if (rssi <= 0xFFFFFFFFFFFFFFCDLL)
       {
         v9 = 560;
         v10 = 568;
@@ -1376,37 +1376,37 @@
         v13 = 592;
         v14 = 600;
         v15 = 616;
-        if (a3 > 0xFFFFFFFFFFFFFFA5)
+        if (rssi > 0xFFFFFFFFFFFFFFA5)
         {
           v15 = 608;
         }
 
-        if (a3 <= 0xFFFFFFFFFFFFFFAALL)
+        if (rssi <= 0xFFFFFFFFFFFFFFAALL)
         {
           v14 = v15;
         }
 
-        if (a3 <= 0xFFFFFFFFFFFFFFAFLL)
+        if (rssi <= 0xFFFFFFFFFFFFFFAFLL)
         {
           v13 = v14;
         }
 
-        if (a3 <= 0xFFFFFFFFFFFFFFB4)
+        if (rssi <= 0xFFFFFFFFFFFFFFB4)
         {
           v12 = v13;
         }
 
-        if (a3 <= 0xFFFFFFFFFFFFFFB9)
+        if (rssi <= 0xFFFFFFFFFFFFFFB9)
         {
           v11 = v12;
         }
 
-        if (a3 <= 0xFFFFFFFFFFFFFFBELL)
+        if (rssi <= 0xFFFFFFFFFFFFFFBELL)
         {
           v10 = v11;
         }
 
-        if (a3 <= 0xFFFFFFFFFFFFFFC3)
+        if (rssi <= 0xFFFFFFFFFFFFFFC3)
         {
           v9 = v10;
         }
@@ -1424,66 +1424,66 @@
     }
 
     v8 = v40;
-    *(&self->super.isa + v9) = (*(&self->super.isa + v9) + a4);
+    *(&self->super.isa + v9) = (*(&self->super.isa + v9) + update);
     maxLinkRssi = self->_maxLinkRssi;
     minLinkRssi = self->_minLinkRssi;
-    if (minLinkRssi >= a3)
+    if (minLinkRssi >= rssi)
     {
-      v18 = a3;
+      rssiCopy = rssi;
     }
 
     else
     {
-      v18 = self->_minLinkRssi;
+      rssiCopy = self->_minLinkRssi;
     }
 
     if (minLinkRssi)
     {
-      v19 = v18;
+      rssiCopy2 = rssiCopy;
     }
 
     else
     {
-      v19 = a3;
+      rssiCopy2 = rssi;
     }
 
-    if (maxLinkRssi <= a3)
+    if (maxLinkRssi <= rssi)
     {
-      v20 = a3;
+      rssiCopy3 = rssi;
     }
 
     else
     {
-      v20 = self->_maxLinkRssi;
+      rssiCopy3 = self->_maxLinkRssi;
     }
 
     if (maxLinkRssi)
     {
-      v21 = v20;
+      rssiCopy4 = rssiCopy3;
     }
 
     else
     {
-      v21 = a3;
+      rssiCopy4 = rssi;
     }
 
-    self->_maxLinkRssi = v21;
-    self->_minLinkRssi = v19;
+    self->_maxLinkRssi = rssiCopy4;
+    self->_minLinkRssi = rssiCopy2;
     avgLinkRssi = self->_avgLinkRssi;
-    v23 = vcvtd_n_f64_s64(avgLinkRssi + a3, 1uLL);
+    v23 = vcvtd_n_f64_s64(avgLinkRssi + rssi, 1uLL);
     if (avgLinkRssi)
     {
-      v24 = v23;
+      rssiCopy5 = v23;
     }
 
     else
     {
-      v24 = a3;
+      rssiCopy5 = rssi;
     }
 
-    self->_avgLinkRssi = v24;
+    self->_avgLinkRssi = rssiCopy5;
     lastPoorCoverageEntryTimestamp = self->_lastPoorCoverageEntryTimestamp;
-    if (self->_roamConfigTriggerRssi <= a3)
+    if (self->_roamConfigTriggerRssi <= rssi)
     {
       if (!lastPoorCoverageEntryTimestamp)
       {
@@ -1567,38 +1567,38 @@ LABEL_57:
   MEMORY[0x2821F96F8](lastPoorCoverageEntryTimestamp, v8);
 }
 
-- (void)linkQualityDidChange:(id)a3
+- (void)linkQualityDidChange:(id)change
 {
-  v9 = a3;
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = v4;
+  changeCopy = change;
+  date = [MEMORY[0x277CBEAA8] date];
+  v5 = date;
   lastLqmUpdateTimestamp = self->_lastLqmUpdateTimestamp;
   if (!lastLqmUpdateTimestamp)
   {
     lastLqmUpdateTimestamp = self->_joinedTimestamp;
   }
 
-  [v4 timeIntervalSinceDate:lastLqmUpdateTimestamp];
+  [date timeIntervalSinceDate:lastLqmUpdateTimestamp];
   v8 = v7;
   if (!self->_lastLqmUpdateTimestamp || v7 >= 1.0)
   {
     [(WiFiUsageBssSession *)self setLastLqmUpdateTimestamp:v5];
-    -[WiFiUsageBssSession updateRssi:timeSinceLastUpdate:](self, "updateRssi:timeSinceLastUpdate:", [v9 rssi], v8);
+    -[WiFiUsageBssSession updateRssi:timeSinceLastUpdate:](self, "updateRssi:timeSinceLastUpdate:", [changeCopy rssi], v8);
   }
 }
 
-- (void)roamingStateDidChange:(BOOL)a3 reason:(unint64_t)a4 andStatus:(unint64_t)a5 andLatency:(unint64_t)a6 andRoamData:(id)a7 andPingPongNth:(BOOL)a8
+- (void)roamingStateDidChange:(BOOL)change reason:(unint64_t)reason andStatus:(unint64_t)status andLatency:(unint64_t)latency andRoamData:(id)data andPingPongNth:(BOOL)nth
 {
-  v8 = a8;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v41 = a7;
-  v14 = [MEMORY[0x277CBEAA8] date];
-  v15 = v14;
-  if (v12)
+  nthCopy = nth;
+  statusCopy = status;
+  reasonCopy = reason;
+  changeCopy = change;
+  dataCopy = data;
+  date = [MEMORY[0x277CBEAA8] date];
+  v15 = date;
+  if (changeCopy)
   {
-    [(WiFiUsageBssSession *)self setRoamingActiveTime:v14];
+    [(WiFiUsageBssSession *)self setRoamingActiveTime:date];
     ++self->_inRoamEventCount;
     if (self->_lastRoamSuppressionToggled && !self->_isRoamSuppressionEnabled && !self->_roamsAfterSupprLifted)
     {
@@ -1612,7 +1612,7 @@ LABEL_57:
     if (lastLinkRssi > self->_roamConfigTriggerRssi)
     {
       ++self->_highRssiRoamScanCount;
-      switch(v11)
+      switch(reasonCopy)
       {
         case -528348160:
           goto LABEL_65;
@@ -1647,7 +1647,7 @@ LABEL_57:
     }
 
     ++self->_lowRssiRoamScanCount;
-    switch(v11)
+    switch(reasonCopy)
     {
       case -528348160:
 LABEL_65:
@@ -1706,33 +1706,33 @@ LABEL_64:
 
   else if (self->_roamingActiveTime)
   {
-    if (!a6)
+    if (!latency)
     {
-      [v14 timeIntervalSinceDate:?];
-      a6 = (v18 * 1000.0);
+      [date timeIntervalSinceDate:?];
+      latency = (v18 * 1000.0);
     }
 
     v19.f64[0] = self->_minRoamLatency;
-    v19.f64[1] = a6;
+    v19.f64[1] = latency;
     v20.f64[1] = self->_maxRoamLatency;
-    v20.f64[0] = a6;
+    v20.f64[0] = latency;
     *&self->_minRoamLatency = vbslq_s8(vbicq_s8(vcgtq_f64(v20, v19), vceqzq_f64(*&self->_minRoamLatency)), *&self->_minRoamLatency, vdupq_laneq_s64(v19, 1));
-    v21 = [v41 objectForKey:@"ROAM_SCAN_SUMMARY"];
+    v21 = [dataCopy objectForKey:@"ROAM_SCAN_SUMMARY"];
     v22 = v21;
     if (v21 && ([v21 objectForKeyedSubscript:@"ROAM_NUM_FULL_BAND_SCANS"], v23 = objc_claimAutoreleasedReturnValue(), v23, v23))
     {
       v24 = [v22 objectForKeyedSubscript:@"ROAM_NUM_FULL_BAND_SCANS"];
-      v25 = [v24 integerValue];
+      integerValue = [v24 integerValue];
 
-      if (v25 >= 1)
+      if (integerValue >= 1)
       {
         ++self->_fullScanCount;
       }
 
       v26 = [v22 objectForKeyedSubscript:@"ROAM_NUM_PARTIAL_SCANS"];
-      v27 = [v26 integerValue];
+      integerValue2 = [v26 integerValue];
 
-      if (v27 >= 1)
+      if (integerValue2 >= 1)
       {
         ++self->_partialScanCount;
       }
@@ -1740,13 +1740,13 @@ LABEL_64:
 
     else
     {
-      v28 = [v41 objectForKey:@"ROAMEDEVENT_CHANNELS_SCANNED_COUNT"];
+      v28 = [dataCopy objectForKey:@"ROAMEDEVENT_CHANNELS_SCANNED_COUNT"];
       v29 = v28;
       if (v28)
       {
-        v30 = [v28 unsignedIntegerValue];
+        unsignedIntegerValue = [v28 unsignedIntegerValue];
         v31 = 920;
-        if (v30 > 0xD)
+        if (unsignedIntegerValue > 0xD)
         {
           v31 = 928;
         }
@@ -1778,17 +1778,17 @@ LABEL_64:
       NSLog(&cfstr_SRoamsaftersup.isa, "[WiFiUsageBssSession roamingStateDidChange:reason:andStatus:andLatency:andRoamData:andPingPongNth:]", v34, *&lastRoamSuppressionWaitForRoamEnd);
     }
 
-    if (v10 == -528350205)
+    if (statusCopy == -528350205)
     {
       ++self->_roamStatusNoCandidateCount;
     }
 
-    else if (v10 == -528350133)
+    else if (statusCopy == -528350133)
     {
       ++self->_roamStatusNoQualifiedCandidateCount;
     }
 
-    else if (v10)
+    else if (statusCopy)
     {
       ++self->_roamStatusFailedCount;
     }
@@ -1796,11 +1796,11 @@ LABEL_64:
     else
     {
       ++self->_roamStatusSucceededCount;
-      self->_roamPingPongNth = v8;
+      self->_roamPingPongNth = nthCopy;
       self->_roamInMotion = self->_inMotionStartedTime != 0;
     }
 
-    v36 = [v41 objectForKey:@"ROAMEDEVENT_FLAGS"];
+    v36 = [dataCopy objectForKey:@"ROAMEDEVENT_FLAGS"];
     v37 = v36;
     if (v36)
     {
@@ -1823,21 +1823,21 @@ LABEL_64:
     }
   }
 
-  v38 = [v41 objectForKey:@"ROAMEDEVENT_FLAGS"];
+  v38 = [dataCopy objectForKey:@"ROAMEDEVENT_FLAGS"];
   v39 = v38;
   if (!v38)
   {
     goto LABEL_52;
   }
 
-  v40 = [v38 unsignedIntegerValue];
-  if (v40)
+  unsignedIntegerValue2 = [v38 unsignedIntegerValue];
+  if (unsignedIntegerValue2)
   {
     self->_supportsNeighborReport = 1;
-    if ((v40 & 2) == 0)
+    if ((unsignedIntegerValue2 & 2) == 0)
     {
 LABEL_47:
-      if ((v40 & 4) == 0)
+      if ((unsignedIntegerValue2 & 4) == 0)
       {
         goto LABEL_48;
       }
@@ -1846,26 +1846,26 @@ LABEL_47:
     }
   }
 
-  else if ((v40 & 2) == 0)
+  else if ((unsignedIntegerValue2 & 2) == 0)
   {
     goto LABEL_47;
   }
 
   self->_supportsFastTransition = 1;
-  if ((v40 & 4) == 0)
+  if ((unsignedIntegerValue2 & 4) == 0)
   {
 LABEL_48:
-    if ((v40 & 8) == 0)
+    if ((unsignedIntegerValue2 & 8) == 0)
     {
       goto LABEL_49;
     }
 
 LABEL_58:
     self->_supportsAdaptiveFastTransition = 1;
-    if ((v40 & 0x10) == 0)
+    if ((unsignedIntegerValue2 & 0x10) == 0)
     {
 LABEL_50:
-      if ((v40 & 0x20) == 0)
+      if ((unsignedIntegerValue2 & 0x20) == 0)
       {
         goto LABEL_52;
       }
@@ -1878,20 +1878,20 @@ LABEL_50:
 
 LABEL_57:
   self->_supportsBssTransitionManagement = 1;
-  if ((v40 & 8) != 0)
+  if ((unsignedIntegerValue2 & 8) != 0)
   {
     goto LABEL_58;
   }
 
 LABEL_49:
-  if ((v40 & 0x10) == 0)
+  if ((unsignedIntegerValue2 & 0x10) == 0)
   {
     goto LABEL_50;
   }
 
 LABEL_59:
   self->_supportsFastlane = 1;
-  if ((v40 & 0x20) != 0)
+  if ((unsignedIntegerValue2 & 0x20) != 0)
   {
 LABEL_51:
     self->_supportsNetworkAssurance = 1;
@@ -1900,25 +1900,25 @@ LABEL_51:
 LABEL_52:
 }
 
-- (void)roamingARConfigurationDidChange:(id *)a3
+- (void)roamingARConfigurationDidChange:(id *)change
 {
-  self->_supportsAdaptiveRoaming = a3->var0;
-  v3 = *&a3->var0;
-  *&self->_roamConfigCriteria.networkOfInterestType = *&a3->var5;
+  self->_supportsAdaptiveRoaming = change->var0;
+  v3 = *&change->var0;
+  *&self->_roamConfigCriteria.networkOfInterestType = *&change->var5;
   *&self->_roamConfigCriteria.isAllowed = v3;
 }
 
-- (void)roamingConfigurationDidChange:(int64_t)a3 withChannelList:(id)a4
+- (void)roamingConfigurationDidChange:(int64_t)change withChannelList:(id)list
 {
   v18 = *MEMORY[0x277D85DE8];
-  self->_roamConfigTriggerRssi = a3;
+  self->_roamConfigTriggerRssi = change;
   *self->_roamConfigChannels.valueByBand = 0u;
   *&self->_roamConfigChannels.valueByBand[2] = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  obj = [a4 allObjects];
+  obj = [list allObjects];
   v5 = [obj countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
@@ -1949,15 +1949,15 @@ LABEL_52:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateRssiDiffStats:(id *)a3 For:(id)a4
+- (void)updateRssiDiffStats:(id *)stats For:(id)for
 {
-  v6 = a4;
-  var3 = a3->var3;
-  var0 = a3->var0;
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"roamNeighsSmllst%@RssiByBand", v6];
+  forCopy = for;
+  var3 = stats->var3;
+  var0 = stats->var0;
+  forCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"roamNeighsSmllst%@RssiByBand", forCopy];
   v28 = 0u;
   v29 = 0u;
-  v10 = [(WiFiUsageBssSession *)self valueForKey:v9];
+  v10 = [(WiFiUsageBssSession *)self valueForKey:forCopy];
   v11 = v10;
   if (v10)
   {
@@ -1972,7 +1972,7 @@ LABEL_52:
 
   v12 = var3 - var0;
 
-  var5 = a3->var5;
+  var5 = stats->var5;
   if (*(&v29 + var5 + 8) != 1 || v12 < *(&v28 + var5))
   {
     *(&v28 + var5) = v12;
@@ -1980,14 +1980,14 @@ LABEL_52:
     v26 = v28;
     v27 = v29;
     v14 = [MEMORY[0x277CCAE60] valuewithIntegerByBand:&v26];
-    [(WiFiUsageBssSession *)self setValue:v14 forKey:v9];
+    [(WiFiUsageBssSession *)self setValue:v14 forKey:forCopy];
   }
 
-  v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"roamNeighsLrgst%@RssiByBand", v6];
+  forCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"roamNeighsLrgst%@RssiByBand", forCopy];
 
   v26 = 0u;
   v27 = 0u;
-  v16 = [(WiFiUsageBssSession *)self valueForKey:v15];
+  v16 = [(WiFiUsageBssSession *)self valueForKey:forCopy2];
   v17 = v16;
   if (v16)
   {
@@ -2000,7 +2000,7 @@ LABEL_52:
     v27 = 0u;
   }
 
-  v18 = a3->var5;
+  v18 = stats->var5;
   if (*(&v27 + v18 + 8) != 1 || v12 > *(&v26 + v18))
   {
     *(&v26 + v18) = v12;
@@ -2008,12 +2008,12 @@ LABEL_52:
     v24 = v26;
     v25 = v27;
     v19 = [MEMORY[0x277CCAE60] valuewithIntegerByBand:&v24];
-    [(WiFiUsageBssSession *)self setValue:v19 forKey:v15];
+    [(WiFiUsageBssSession *)self setValue:v19 forKey:forCopy2];
 
-    v18 = a3->var5;
+    v18 = stats->var5;
   }
 
-  v20 = a3->var3;
+  v20 = stats->var3;
   v21 = [WiFiUsagePrivacyFilter bandAsString:v18];
   v24 = v28;
   v25 = v29;
@@ -2024,15 +2024,15 @@ LABEL_52:
   NSLog(&cfstr_SStrongestrssi.isa, "[WiFiUsageBssSession updateRssiDiffStats:For:]", v20, v12, v21, v22, v23);
 }
 
-- (void)roamCandidatesStatsDidUpdate:(id *)a3
+- (void)roamCandidatesStatsDidUpdate:(id *)update
 {
   v37 = *MEMORY[0x277D85DE8];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v5 = [a3->var7 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  allKeys = [update->var7 allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v6)
   {
     v7 = *v33;
@@ -2042,7 +2042,7 @@ LABEL_52:
       {
         if (*v33 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v32 + 1) + 8 * i);
@@ -2053,21 +2053,21 @@ LABEL_52:
           [(NSMutableDictionary *)self->_roamNeighborsByBand setObject:v10 forKeyedSubscript:v9];
         }
 
-        v11 = [a3->var7 objectForKeyedSubscript:v9];
-        v12 = [v11 allObjects];
-        [v10 addObjectsFromArray:v12];
+        v11 = [update->var7 objectForKeyedSubscript:v9];
+        allObjects = [v11 allObjects];
+        [v10 addObjectsFromArray:allObjects];
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v32 objects:v36 count:16];
     }
 
     while (v6);
   }
 
   minCandidatesCount = self->_minCandidatesCount;
-  if (minCandidatesCount >= a3->var6)
+  if (minCandidatesCount >= update->var6)
   {
-    var6 = a3->var6;
+    var6 = update->var6;
   }
 
   else
@@ -2082,14 +2082,14 @@ LABEL_52:
 
   else
   {
-    v15 = a3->var6;
+    v15 = update->var6;
   }
 
   self->_minCandidatesCount = v15;
   maxCandidatesCount = self->_maxCandidatesCount;
-  if (maxCandidatesCount <= a3->var6)
+  if (maxCandidatesCount <= update->var6)
   {
-    v17 = a3->var6;
+    v17 = update->var6;
   }
 
   else
@@ -2104,30 +2104,30 @@ LABEL_52:
 
   else
   {
-    v18 = a3->var6;
+    v18 = update->var6;
   }
 
   self->_maxCandidatesCount = v18;
-  NSLog(&cfstr_SStatsCandidat.isa, "[WiFiUsageBssSession roamCandidatesStatsDidUpdate:]", a3->var6, v15, v18);
+  NSLog(&cfstr_SStatsCandidat.isa, "[WiFiUsageBssSession roamCandidatesStatsDidUpdate:]", update->var6, v15, v18);
   currentRSSIStrongestCount = self->_currentRSSIStrongestCount;
-  if (a3->var2 == a3->var0)
+  if (update->var2 == update->var0)
   {
     self->_currentRSSIStrongestCount = ++currentRSSIStrongestCount;
   }
 
-  var4 = a3->var4;
+  var4 = update->var4;
   v21 = &self->super.isa + var4;
   v21[164] = (v21[164] + 1);
   v22 = self + var4;
   v22[1336] = 1;
-  var2 = a3->var2;
+  var2 = update->var2;
   v21[168] = var2;
   v22[1368] = 1;
-  NSLog(&cfstr_SStatsStronges.isa, "[WiFiUsageBssSession roamCandidatesStatsDidUpdate:]", var2, a3->var0, currentRSSIStrongestCount);
-  var0 = a3->var0;
-  if (a3->var0 >= -94)
+  NSLog(&cfstr_SStatsStronges.isa, "[WiFiUsageBssSession roamCandidatesStatsDidUpdate:]", var2, update->var0, currentRSSIStrongestCount);
+  var0 = update->var0;
+  if (update->var0 >= -94)
   {
-    var3 = a3->var3;
+    var3 = update->var3;
     if (var3 >= -94)
     {
       if (var3 >= var0)
@@ -2150,13 +2150,13 @@ LABEL_52:
         v27 = @"CurrentToNextBest";
       }
 
-      v28 = *&a3->var2;
-      *v26 = *&a3->var0;
+      v28 = *&update->var2;
+      *v26 = *&update->var0;
       *(v26 + 1) = v28;
-      *(v26 + 2) = *&a3->var4;
-      *(v26 + 6) = a3->var7;
-      *(v26 + 7) = a3->var8;
-      v26[64] = a3->var9;
+      *(v26 + 2) = *&update->var4;
+      *(v26 + 6) = update->var7;
+      *(v26 + 7) = update->var8;
+      v26[64] = update->var9;
       [(WiFiUsageBssSession *)self updateRssiDiffStats:v26 For:v27];
     }
   }
@@ -2164,15 +2164,15 @@ LABEL_52:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cellularFallbackStateDidChange:(BOOL)a3
+- (void)cellularFallbackStateDidChange:(BOOL)change
 {
-  v5 = [MEMORY[0x277CBEAA8] date];
-  self->_cellularFallbackEnabled = a3;
-  if (a3)
+  date = [MEMORY[0x277CBEAA8] date];
+  self->_cellularFallbackEnabled = change;
+  if (change)
   {
     ++self->_cellularFallbackStateChangedCount;
-    v8 = v5;
-    v6 = v5;
+    v8 = date;
+    v6 = date;
   }
 
   else
@@ -2182,26 +2182,26 @@ LABEL_52:
       goto LABEL_6;
     }
 
-    v8 = v5;
-    [v5 timeIntervalSinceDate:?];
+    v8 = date;
+    [date timeIntervalSinceDate:?];
     v6 = 0;
     self->_inCellularFallbackDuration = v7 + self->_inCellularFallbackDuration;
   }
 
   [(WiFiUsageBssSession *)self setLastCellularFallbackStateChangedTime:v6];
-  v5 = v8;
+  date = v8;
 LABEL_6:
 }
 
-- (void)cellularOutrankingStateDidChange:(BOOL)a3
+- (void)cellularOutrankingStateDidChange:(BOOL)change
 {
-  v5 = [MEMORY[0x277CBEAA8] date];
-  self->_cellularOutrankingEnabled = a3;
-  if (a3)
+  date = [MEMORY[0x277CBEAA8] date];
+  self->_cellularOutrankingEnabled = change;
+  if (change)
   {
     ++self->_cellularOutrankingStateChangedCount;
-    v8 = v5;
-    v6 = v5;
+    v8 = date;
+    v6 = date;
   }
 
   else
@@ -2211,34 +2211,34 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    v8 = v5;
-    [v5 timeIntervalSinceDate:?];
+    v8 = date;
+    [date timeIntervalSinceDate:?];
     v6 = 0;
     self->_inCellularOutrankingDuration = v7 + self->_inCellularOutrankingDuration;
   }
 
   [(WiFiUsageBssSession *)self setLastCellularOutrankingStateChangedTime:v6];
-  v5 = v8;
+  date = v8;
 LABEL_6:
 }
 
-- (void)faultEventDetected:(unint64_t)a3
+- (void)faultEventDetected:(unint64_t)detected
 {
-  if (a3 - 1 <= 0x24)
+  if (detected - 1 <= 0x24)
   {
-    ++self->_faultReasonCount[a3];
+    ++self->_faultReasonCount[detected];
   }
 }
 
-- (void)triggerDisconnectAlerted:(BOOL)a3 confirmed:(BOOL)a4 executed:(BOOL)a5
+- (void)triggerDisconnectAlerted:(BOOL)alerted confirmed:(BOOL)confirmed executed:(BOOL)executed
 {
-  if (a3)
+  if (alerted)
   {
     ++self->_triggerDisconnectAlertedCount;
-    if (!a4)
+    if (!confirmed)
     {
 LABEL_3:
-      if (!a5)
+      if (!executed)
       {
         return;
       }
@@ -2249,22 +2249,22 @@ LABEL_7:
     }
   }
 
-  else if (!a4)
+  else if (!confirmed)
   {
     goto LABEL_3;
   }
 
   ++self->_triggerDisconnectConfirmedCount;
-  if (a5)
+  if (executed)
   {
     goto LABEL_7;
   }
 }
 
-- (void)sentBssTransitionResponseWithStatus:(int64_t)a3 terminationDelayRequested:(BOOL)a4
+- (void)sentBssTransitionResponseWithStatus:(int64_t)status terminationDelayRequested:(BOOL)requested
 {
   v4 = 808;
-  if (!a3)
+  if (!status)
   {
     v4 = 800;
   }
@@ -2272,11 +2272,11 @@ LABEL_7:
   ++*(&self->super.isa + v4);
 }
 
-- (void)updateWithRoamingSuppression:(unsigned __int8)a3
+- (void)updateWithRoamingSuppression:(unsigned __int8)suppression
 {
-  v3 = a3;
+  suppressionCopy = suppression;
   v5 = [MEMORY[0x277CBEAA8] now];
-  if (v3)
+  if (suppressionCopy)
   {
     if (self->_isRoamSuppressionEnabled)
     {
@@ -2310,7 +2310,7 @@ LABEL_6:
   }
 
 LABEL_7:
-  self->_isRoamSuppressionEnabled = v3 != 0;
+  self->_isRoamSuppressionEnabled = suppressionCopy != 0;
 }
 
 - (unint64_t)inRoamSuppressionEnabledDurationPerc
@@ -2325,28 +2325,28 @@ LABEL_7:
   }
 
   v7 = [MEMORY[0x277CBEAA8] now];
-  v8 = [(WiFiUsageBssSession *)self joinedTimestamp];
-  [v7 timeIntervalSinceDate:v8];
+  joinedTimestamp = [(WiFiUsageBssSession *)self joinedTimestamp];
+  [v7 timeIntervalSinceDate:joinedTimestamp];
   v10 = [WiFiUsagePrivacyFilter timePercentage:inRoamSuppressionEnabledDuration overTotalDuration:v9];
-  v11 = [v10 unsignedIntegerValue];
+  unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-  return v11;
+  return unsignedIntegerValue;
 }
 
-- (void)updateWithCompatibilityMode:(unsigned __int8)a3
+- (void)updateWithCompatibilityMode:(unsigned __int8)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   isCompatibilityModeEnabled = self->_isCompatibilityModeEnabled;
-  if (!a3 && self->_isCompatibilityModeEnabled)
+  if (!mode && self->_isCompatibilityModeEnabled)
   {
     [(NSDate *)self->_lastCompatibilityModeChangedTime timeIntervalSinceNow];
     self->_inCompatibilityModeEnabledDuration = self->_inCompatibilityModeEnabledDuration - v6;
     isCompatibilityModeEnabled = self->_isCompatibilityModeEnabled;
   }
 
-  if (isCompatibilityModeEnabled != v3)
+  if (isCompatibilityModeEnabled != modeCopy)
   {
-    [(WiFiUsageBssSession *)self setIsCompatibilityModeEnabled:v3 != 0];
+    [(WiFiUsageBssSession *)self setIsCompatibilityModeEnabled:modeCopy != 0];
     ++self->_compatibilityModeChangeCount;
     v7 = [MEMORY[0x277CBEAA8] now];
     [(WiFiUsageBssSession *)self setLastCompatibilityModeChangedTime:v7];
@@ -2361,10 +2361,10 @@ LABEL_7:
   return self;
 }
 
-- (void)setRoamConfigChannels:(id *)a3
+- (void)setRoamConfigChannels:(id *)channels
 {
-  v3 = *a3->var0;
-  *&self->_roamConfigChannels.valueByBand[2] = *&a3->var0[2];
+  v3 = *channels->var0;
+  *&self->_roamConfigChannels.valueByBand[2] = *&channels->var0[2];
   *self->_roamConfigChannels.valueByBand = v3;
 }
 
@@ -2376,10 +2376,10 @@ LABEL_7:
   return self;
 }
 
-- (void)setRoamConfigCriteria:(id *)a3
+- (void)setRoamConfigCriteria:(id *)criteria
 {
-  v3 = *&a3->var0;
-  *&self->_roamConfigCriteria.networkOfInterestType = *&a3->var5;
+  v3 = *&criteria->var0;
+  *&self->_roamConfigCriteria.networkOfInterestType = *&criteria->var5;
   *&self->_roamConfigCriteria.isAllowed = v3;
 }
 
@@ -2391,10 +2391,10 @@ LABEL_7:
   return self;
 }
 
-- (void)setStrongestRSSICountByBand:(id *)a3
+- (void)setStrongestRSSICountByBand:(id *)band
 {
-  v3 = *a3->var0;
-  *&self->_strongestRSSICountByBand.valueByBand[2] = *&a3->var0[2];
+  v3 = *band->var0;
+  *&self->_strongestRSSICountByBand.valueByBand[2] = *&band->var0[2];
   *self->_strongestRSSICountByBand.valueByBand = v3;
 }
 
@@ -2406,10 +2406,10 @@ LABEL_7:
   return self;
 }
 
-- (void)setStrongestRSSIByBand:(id *)a3
+- (void)setStrongestRSSIByBand:(id *)band
 {
-  v3 = *a3->var0;
-  *&self->_strongestRSSIByBand.valueByBand[2] = *&a3->var0[2];
+  v3 = *band->var0;
+  *&self->_strongestRSSIByBand.valueByBand[2] = *&band->var0[2];
   *self->_strongestRSSIByBand.valueByBand = v3;
 }
 
@@ -2421,10 +2421,10 @@ LABEL_7:
   return self;
 }
 
-- (void)setRoamNeighsSmllstCurrentToBestRssiByBand:(id *)a3
+- (void)setRoamNeighsSmllstCurrentToBestRssiByBand:(id *)band
 {
-  v3 = *a3->var0;
-  *&self->_roamNeighsSmllstCurrentToBestRssiByBand.valueByBand[2] = *&a3->var0[2];
+  v3 = *band->var0;
+  *&self->_roamNeighsSmllstCurrentToBestRssiByBand.valueByBand[2] = *&band->var0[2];
   *self->_roamNeighsSmllstCurrentToBestRssiByBand.valueByBand = v3;
 }
 
@@ -2436,10 +2436,10 @@ LABEL_7:
   return self;
 }
 
-- (void)setRoamNeighsLrgstCurrentToBestRssiByBand:(id *)a3
+- (void)setRoamNeighsLrgstCurrentToBestRssiByBand:(id *)band
 {
-  v3 = *a3->var0;
-  *&self->_roamNeighsLrgstCurrentToBestRssiByBand.valueByBand[2] = *&a3->var0[2];
+  v3 = *band->var0;
+  *&self->_roamNeighsLrgstCurrentToBestRssiByBand.valueByBand[2] = *&band->var0[2];
   *self->_roamNeighsLrgstCurrentToBestRssiByBand.valueByBand = v3;
 }
 
@@ -2451,10 +2451,10 @@ LABEL_7:
   return self;
 }
 
-- (void)setRoamNeighsSmllstCurrentToNextBestRssiByBand:(id *)a3
+- (void)setRoamNeighsSmllstCurrentToNextBestRssiByBand:(id *)band
 {
-  v3 = *a3->var0;
-  *&self->_roamNeighsSmllstCurrentToNextBestRssiByBand.valueByBand[2] = *&a3->var0[2];
+  v3 = *band->var0;
+  *&self->_roamNeighsSmllstCurrentToNextBestRssiByBand.valueByBand[2] = *&band->var0[2];
   *self->_roamNeighsSmllstCurrentToNextBestRssiByBand.valueByBand = v3;
 }
 
@@ -2466,10 +2466,10 @@ LABEL_7:
   return self;
 }
 
-- (void)setRoamNeighsLrgstCurrentToNextBestRssiByBand:(id *)a3
+- (void)setRoamNeighsLrgstCurrentToNextBestRssiByBand:(id *)band
 {
-  v3 = *a3->var0;
-  *&self->_roamNeighsLrgstCurrentToNextBestRssiByBand.valueByBand[2] = *&a3->var0[2];
+  v3 = *band->var0;
+  *&self->_roamNeighsLrgstCurrentToNextBestRssiByBand.valueByBand[2] = *&band->var0[2];
   *self->_roamNeighsLrgstCurrentToNextBestRssiByBand.valueByBand = v3;
 }
 

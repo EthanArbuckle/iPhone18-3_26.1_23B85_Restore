@@ -1,6 +1,6 @@
 @interface HFDiscoveredAccessoryItemProvider
 - (HFDiscoveredAccessoryItemProvider)init;
-- (HFDiscoveredAccessoryItemProvider)initWithAccessoryBrowsingManager:(id)a3;
+- (HFDiscoveredAccessoryItemProvider)initWithAccessoryBrowsingManager:(id)manager;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
@@ -9,23 +9,23 @@
 
 - (HFDiscoveredAccessoryItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithAccessoryBrowsingManager_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFDiscoveredAccessoryItemProvider.m" lineNumber:25 description:{@"%s is unavailable; use %@ instead", "-[HFDiscoveredAccessoryItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFDiscoveredAccessoryItemProvider.m" lineNumber:25 description:{@"%s is unavailable; use %@ instead", "-[HFDiscoveredAccessoryItemProvider init]", v5}];
 
   return 0;
 }
 
-- (HFDiscoveredAccessoryItemProvider)initWithAccessoryBrowsingManager:(id)a3
+- (HFDiscoveredAccessoryItemProvider)initWithAccessoryBrowsingManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = HFDiscoveredAccessoryItemProvider;
   v6 = [(HFItemProvider *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accessoryBrowsingManager, a3);
+    objc_storeStrong(&v6->_accessoryBrowsingManager, manager);
     v8 = [MEMORY[0x277CBEB58] set];
     discoveredAccessoryItems = v7->_discoveredAccessoryItems;
     v7->_discoveredAccessoryItems = v8;
@@ -36,18 +36,18 @@
 
 - (id)reloadItems
 {
-  v3 = [(HFDiscoveredAccessoryItemProvider *)self accessoryBrowsingManager];
-  v4 = [v3 discoveredHMAccessories];
-  v5 = [v4 na_map:&__block_literal_global_12_10];
+  accessoryBrowsingManager = [(HFDiscoveredAccessoryItemProvider *)self accessoryBrowsingManager];
+  discoveredHMAccessories = [accessoryBrowsingManager discoveredHMAccessories];
+  v5 = [discoveredHMAccessories na_map:&__block_literal_global_12_10];
 
-  v6 = [(HFDiscoveredAccessoryItemProvider *)self accessoryBrowsingManager];
-  v7 = [v6 discoveredSharingDevices];
-  v8 = [v7 na_map:&__block_literal_global_15_10];
+  accessoryBrowsingManager2 = [(HFDiscoveredAccessoryItemProvider *)self accessoryBrowsingManager];
+  discoveredSharingDevices = [accessoryBrowsingManager2 discoveredSharingDevices];
+  v8 = [discoveredSharingDevices na_map:&__block_literal_global_15_10];
   v9 = [v5 arrayByAddingObjectsFromArray:v8];
 
   objc_initWeak(&location, self);
-  v10 = [(HFDiscoveredAccessoryItemProvider *)self filter];
-  v11 = [(HFItemProvider *)self reloadItemsWithHomeKitObjects:v9 filter:v10 itemMap:&__block_literal_global_213];
+  filter = [(HFDiscoveredAccessoryItemProvider *)self filter];
+  v11 = [(HFItemProvider *)self reloadItemsWithHomeKitObjects:v9 filter:filter itemMap:&__block_literal_global_213];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __48__HFDiscoveredAccessoryItemProvider_reloadItems__block_invoke_16;
@@ -156,8 +156,8 @@ id __48__HFDiscoveredAccessoryItemProvider_reloadItems__block_invoke_16(uint64_t
 {
   v5.receiver = self;
   v5.super_class = HFDiscoveredAccessoryItemProvider;
-  v2 = [(HFItemProvider *)&v5 invalidationReasons];
-  v3 = [v2 setByAddingObject:@"accessory"];
+  invalidationReasons = [(HFItemProvider *)&v5 invalidationReasons];
+  v3 = [invalidationReasons setByAddingObject:@"accessory"];
 
   return v3;
 }

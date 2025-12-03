@@ -1,20 +1,20 @@
 @interface TSDConnectionLineOrthogonalLayout
-- (CGPoint)axisSnapPoint:(CGPoint)result toXs:()vector<double toYs:(std:()vector<double :(std:(double)a6 :allocator<double>> *)a5 allocator<double>> *)a4 withThreshold:;
-- (CGPoint)controlPointForPointA:(CGPoint)a3 pointB:(CGPoint)a4 andOriginalA:(CGPoint)a5 originalB:(CGPoint)a6;
-- (CGPoint)getControlKnobPosition:(unint64_t)a3;
-- (CGRect)orthoRectOfLayout:(id)a3 outset:(double)a4;
-- (id)createConnectedPathFrom:(id)a3 to:(id)a4 withControlPoints:(CGPoint)a5[3];
-- (void)addEndpointSnapsToXs:(void *)a3 andYs:(void *)a4;
+- (CGPoint)axisSnapPoint:(CGPoint)result toXs:()vector<double toYs:(std:()vector<double :(std:(double)std :allocator<double>> *)a5 allocator<double>> *)a4 withThreshold:;
+- (CGPoint)controlPointForPointA:(CGPoint)a pointB:(CGPoint)b andOriginalA:(CGPoint)originalA originalB:(CGPoint)originalB;
+- (CGPoint)getControlKnobPosition:(unint64_t)position;
+- (CGRect)orthoRectOfLayout:(id)layout outset:(double)outset;
+- (id)createConnectedPathFrom:(id)from to:(id)to withControlPoints:(CGPoint)points[3];
+- (void)addEndpointSnapsToXs:(void *)xs andYs:(void *)ys;
 @end
 
 @implementation TSDConnectionLineOrthogonalLayout
 
-- (CGRect)orthoRectOfLayout:(id)a3 outset:(double)a4
+- (CGRect)orthoRectOfLayout:(id)layout outset:(double)outset
 {
-  [a3 centerForConnecting];
+  [layout centerForConnecting];
   v8 = v7;
   v10 = v9;
-  [a3 boundsForStandardKnobs];
+  [layout boundsForStandardKnobs];
   v13 = 0;
   if (v11 <= v12)
   {
@@ -26,7 +26,7 @@
     v14 = v11;
   }
 
-  v15 = a4 + 10.0 + v14;
+  v15 = outset + 10.0 + v14;
   v33 = 1;
   v16 = 0.0;
   v17 = v8;
@@ -38,7 +38,7 @@
     [v20 moveToPoint:{v8, v10}];
     v21 = TSDDirectionDelta(v13);
     [v20 relativeLineToPoint:{TSDMultiplyPointScalar(v21, v22, v15)}];
-    v23 = [(TSDConnectionLineAbstractLayout *)self clipPath:v20 onLayout:a3 outset:0 reversed:&v33 isValid:a4];
+    v23 = [(TSDConnectionLineAbstractLayout *)self clipPath:v20 onLayout:layout outset:0 reversed:&v33 isValid:outset];
     if (v23 && v33 == 1)
     {
       [v23 point];
@@ -63,13 +63,13 @@
   return result;
 }
 
-- (id)createConnectedPathFrom:(id)a3 to:(id)a4 withControlPoints:(CGPoint)a5[3]
+- (id)createConnectedPathFrom:(id)from to:(id)to withControlPoints:(CGPoint)points[3]
 {
   v9 = 0;
   v79 = *MEMORY[0x277D85DE8];
   do
   {
-    v10 = TSDMultiplyPointScalar(a5[v9 / 2].x, a5[v9 / 2].y, 10.0);
+    v10 = TSDMultiplyPointScalar(points[v9 / 2].x, points[v9 / 2].y, 10.0);
     v11 = &v76[v9];
     *v11 = v10;
     *(v11 + 1) = v12;
@@ -107,11 +107,11 @@
   v60 = 0u;
   v61 = 0u;
   v62 = 0;
-  if (a3)
+  if (from)
   {
     [(TSDConnectionLineAbstractLayout *)self outsetFrom];
-    [(TSDConnectionLineOrthogonalLayout *)self orthoRectOfLayout:a3 outset:?];
-    [a3 centerForConnecting];
+    [(TSDConnectionLineOrthogonalLayout *)self orthoRectOfLayout:from outset:?];
+    [from centerForConnecting];
     TSDIntPointFromCGPointWithScale(v25, v26, 10.0);
     v15 = v27;
     v17 = v28;
@@ -126,11 +126,11 @@
     }
   }
 
-  if (a4)
+  if (to)
   {
     [(TSDConnectionLineAbstractLayout *)self outsetTo];
-    [(TSDConnectionLineOrthogonalLayout *)self orthoRectOfLayout:a4 outset:?];
-    [a4 centerForConnecting];
+    [(TSDConnectionLineOrthogonalLayout *)self orthoRectOfLayout:to outset:?];
+    [to centerForConnecting];
     TSDIntPointFromCGPointWithScale(v33, v34, 10.0);
     v18 = v35;
     v20 = v36;
@@ -194,7 +194,7 @@
   routePath();
 }
 
-- (CGPoint)controlPointForPointA:(CGPoint)a3 pointB:(CGPoint)a4 andOriginalA:(CGPoint)a5 originalB:(CGPoint)a6
+- (CGPoint)controlPointForPointA:(CGPoint)a pointB:(CGPoint)b andOriginalA:(CGPoint)originalA originalB:(CGPoint)originalB
 {
   objc_opt_class();
   if (!self->super.super.mResizePathSource)
@@ -232,7 +232,7 @@ LABEL_7:
   return result;
 }
 
-- (CGPoint)axisSnapPoint:(CGPoint)result toXs:()vector<double toYs:(std:()vector<double :(std:(double)a6 :allocator<double>> *)a5 allocator<double>> *)a4 withThreshold:
+- (CGPoint)axisSnapPoint:(CGPoint)result toXs:()vector<double toYs:(std:()vector<double :(std:(double)std :allocator<double>> *)a5 allocator<double>> *)a4 withThreshold:
 {
   begin = a4->__begin_;
   end = a4->__end_;
@@ -311,7 +311,7 @@ LABEL_7:
   }
 
   v21 = result.x - v8;
-  if (v20 < a6)
+  if (v20 < std)
   {
     result.x = v21;
   }
@@ -323,7 +323,7 @@ LABEL_7:
   }
 
   v23 = result.y - v15;
-  if (v22 < a6)
+  if (v22 < std)
   {
     result.y = v23;
   }
@@ -331,7 +331,7 @@ LABEL_7:
   return result;
 }
 
-- (void)addEndpointSnapsToXs:(void *)a3 andYs:(void *)a4
+- (void)addEndpointSnapsToXs:(void *)xs andYs:(void *)ys
 {
   mConnectedFrom = self->super.mConnectedFrom;
   if (mConnectedFrom && (v8 = [(TSDAbstractLayout *)mConnectedFrom parent], v8 == [(TSDAbstractLayout *)self parent]))
@@ -355,8 +355,8 @@ LABEL_7:
     v12 = 0;
   }
 
-  v13 = [(TSDConnectionLineAbstractLayout *)self connectedPathSource];
-  v14 = v13;
+  connectedPathSource = [(TSDConnectionLineAbstractLayout *)self connectedPathSource];
+  v14 = connectedPathSource;
   if (v9)
   {
     [(TSDLayout *)v9 centerForConnecting];
@@ -374,13 +374,13 @@ LABEL_11:
 
   else
   {
-    [(TSDConnectionLinePathSource *)v13 getControlKnobPosition:10];
+    [(TSDConnectionLinePathSource *)connectedPathSource getControlKnobPosition:10];
     v31 = v20;
     v33 = v19;
-    v21 = [(TSDLayout *)self pureGeometry];
-    if (v21)
+    pureGeometry = [(TSDLayout *)self pureGeometry];
+    if (pureGeometry)
     {
-      [v21 transform];
+      [pureGeometry transform];
       v22 = v35;
       v23 = v36;
       v24 = v37;
@@ -403,10 +403,10 @@ LABEL_11:
   [(TSDConnectionLinePathSource *)v14 getControlKnobPosition:11];
   v32 = v26;
   v34 = v25;
-  v27 = [(TSDLayout *)self pureGeometry];
-  if (v27)
+  pureGeometry2 = [(TSDLayout *)self pureGeometry];
+  if (pureGeometry2)
   {
-    [v27 transform];
+    [pureGeometry2 transform];
     v28 = v35;
     v29 = v36;
     v30 = v37;
@@ -421,17 +421,17 @@ LABEL_11:
 
   v35 = vaddq_f64(v30, vmlaq_n_f64(vmulq_n_f64(v29, v32), v28, v34));
 LABEL_20:
-  std::vector<double>::push_back[abi:nn200100](a3, &v38);
-  std::vector<double>::push_back[abi:nn200100](a4, &v38.f64[1]);
-  std::vector<double>::push_back[abi:nn200100](a3, &v35);
-  std::vector<double>::push_back[abi:nn200100](a4, &v35.f64[1]);
+  std::vector<double>::push_back[abi:nn200100](xs, &v38);
+  std::vector<double>::push_back[abi:nn200100](ys, &v38.f64[1]);
+  std::vector<double>::push_back[abi:nn200100](xs, &v35);
+  std::vector<double>::push_back[abi:nn200100](ys, &v35.f64[1]);
 }
 
-- (CGPoint)getControlKnobPosition:(unint64_t)a3
+- (CGPoint)getControlKnobPosition:(unint64_t)position
 {
-  [(TSDConnectionLinePathSource *)[(TSDConnectionLineAbstractLayout *)self connectedPathSource] getControlKnobPosition:a3];
+  [(TSDConnectionLinePathSource *)[(TSDConnectionLineAbstractLayout *)self connectedPathSource] getControlKnobPosition:position];
   v7 = v6;
-  if (a3 == 12)
+  if (position == 12)
   {
     v22 = v5.f64[0];
     v38 = 0;
@@ -442,10 +442,10 @@ LABEL_20:
     v37 = 0;
     [(TSDConnectionLineOrthogonalLayout *)self addEndpointSnapsToXs:&v38 andYs:&v35];
     memset(&v34, 0, sizeof(v34));
-    v8 = [(TSDLayout *)self pureGeometry];
-    if (v8)
+    pureGeometry = [(TSDLayout *)self pureGeometry];
+    if (pureGeometry)
     {
-      [v8 transform];
+      [pureGeometry transform];
       b = v34.b;
       a = v34.a;
       d = v34.d;

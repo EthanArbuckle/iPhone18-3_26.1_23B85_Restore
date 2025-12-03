@@ -1,9 +1,9 @@
 @interface MPStoreLibraryPersonalizationRequestOperation
 + (__n128)_personalizedArtistResponseForStoreID:modelObject:groupingKey:personalizationStyle:personalizationProperties:libraryView:libraryRequest:matchingStoreIDAndName:;
 + (__n128)personalizedResponseForContentDescriptor:requestedProperties:matchAlbumArtistOnStoreIdAndName:;
-+ (id)_personalizedArtistResponseForStoreID:(int64_t)a3 modelObject:(id)a4 groupingKey:(id)a5 personalizationStyle:(int64_t)a6 personalizationProperties:(id)a7 libraryView:(id)a8 libraryRequest:(id)a9 matchingStoreIDAndName:(BOOL)a10;
-+ (id)personalizedResponseForContentDescriptor:(id)a3 requestedProperties:(id)a4;
-+ (id)personalizedResponseForContentDescriptor:(id)a3 requestedProperties:(id)a4 matchAlbumArtistOnStoreIdAndName:(BOOL)a5;
++ (id)_personalizedArtistResponseForStoreID:(int64_t)d modelObject:(id)object groupingKey:(id)key personalizationStyle:(int64_t)style personalizationProperties:(id)properties libraryView:(id)view libraryRequest:(id)request matchingStoreIDAndName:(BOOL)self0;
++ (id)personalizedResponseForContentDescriptor:(id)descriptor requestedProperties:(id)properties;
++ (id)personalizedResponseForContentDescriptor:(id)descriptor requestedProperties:(id)properties matchAlbumArtistOnStoreIdAndName:(BOOL)name;
 + (uint64_t)_personalizedArtistResponseForStoreID:modelObject:groupingKey:personalizationStyle:personalizationProperties:libraryView:libraryRequest:matchingStoreIDAndName:;
 + (uint64_t)personalizedResponseForContentDescriptor:requestedProperties:matchAlbumArtistOnStoreIdAndName:;
 + (void)_personalizedArtistResponseForStoreID:modelObject:groupingKey:personalizationStyle:personalizationProperties:libraryView:libraryRequest:matchingStoreIDAndName:;
@@ -16,41 +16,41 @@
 
 - (void)execute
 {
-  v3 = self;
+  selfCopy2 = self;
   v149 = *MEMORY[0x1E69E9840];
   if (![(MPAsyncOperation *)self isCancelled])
   {
-    if (!v3->_operationQueue)
+    if (!selfCopy2->_operationQueue)
     {
       v5 = objc_alloc_init(MEMORY[0x1E696ADC8]);
-      operationQueue = v3->_operationQueue;
-      v3->_operationQueue = v5;
+      operationQueue = selfCopy2->_operationQueue;
+      selfCopy2->_operationQueue = v5;
 
-      [(NSOperationQueue *)v3->_operationQueue setName:@"com.apple.MediaPlayer.MPStoreLibraryPersonalizationRequestOperation.operationQueue"];
-      [(NSOperationQueue *)v3->_operationQueue setMaxConcurrentOperationCount:1];
-      v7 = v3->_operationQueue;
-      v8 = [MEMORY[0x1E696AF00] currentThread];
-      -[NSOperationQueue setQualityOfService:](v7, "setQualityOfService:", [v8 qualityOfService]);
+      [(NSOperationQueue *)selfCopy2->_operationQueue setName:@"com.apple.MediaPlayer.MPStoreLibraryPersonalizationRequestOperation.operationQueue"];
+      [(NSOperationQueue *)selfCopy2->_operationQueue setMaxConcurrentOperationCount:1];
+      v7 = selfCopy2->_operationQueue;
+      currentThread = [MEMORY[0x1E696AF00] currentThread];
+      -[NSOperationQueue setQualityOfService:](v7, "setQualityOfService:", [currentThread qualityOfService]);
 
-      v3 = self;
+      selfCopy2 = self;
     }
 
-    v9 = [(MPStoreLibraryPersonalizationRequestOperation *)v3 request];
-    v10 = [v9 ignoreExplicitContentRestrictions];
+    request = [(MPStoreLibraryPersonalizationRequestOperation *)selfCopy2 request];
+    ignoreExplicitContentRestrictions = [request ignoreExplicitContentRestrictions];
 
-    v11 = [(MPStoreLibraryPersonalizationRequestOperation *)self request];
-    v12 = [v11 mediaLibraryOverrideForTestingOnly];
+    request2 = [(MPStoreLibraryPersonalizationRequestOperation *)self request];
+    mediaLibraryOverrideForTestingOnly = [request2 mediaLibraryOverrideForTestingOnly];
 
-    v73 = v12;
-    if (v12)
+    v73 = mediaLibraryOverrideForTestingOnly;
+    if (mediaLibraryOverrideForTestingOnly)
     {
-      v87 = [MPStoreLibraryPersonalizationRequest libraryViewWithMediaLibraryOverrideForTestingOnly:v12];
+      v87 = [MPStoreLibraryPersonalizationRequest libraryViewWithMediaLibraryOverrideForTestingOnly:mediaLibraryOverrideForTestingOnly];
     }
 
     else
     {
       [(MPAsyncOperation *)self userIdentity];
-      if (v10)
+      if (ignoreExplicitContentRestrictions)
         v13 = {;
         [MPStoreLibraryPersonalizationRequest libraryViewIgnoringContentRestrictionsWithUserIdentity:v13];
       }
@@ -63,23 +63,23 @@
     }
 
     v78 = objc_alloc_init(MPModelLibraryRequest);
-    v14 = [v87 library];
-    [(MPModelLibraryRequest *)v78 setMediaLibrary:v14];
+    library = [v87 library];
+    [(MPModelLibraryRequest *)v78 setMediaLibrary:library];
 
     -[MPModelLibraryRequest setFilteringOptions:](v78, "setFilteringOptions:", [v87 filteringOptions]);
     v77 = objc_alloc_init(MPStoreLibraryPersonalizationCollectionDataSource);
-    v15 = [(MPModelRequest *)self->_request itemProperties];
-    [(MPStoreLibraryPersonalizationCollectionDataSource *)v77 setItemProperties:v15];
+    itemProperties = [(MPModelRequest *)self->_request itemProperties];
+    [(MPStoreLibraryPersonalizationCollectionDataSource *)v77 setItemProperties:itemProperties];
 
-    v16 = [(MPStoreLibraryPersonalizationRequest *)self->_request itemIndexPathToOverridePropertySet];
-    [(MPStoreLibraryPersonalizationCollectionDataSource *)v77 setItemIndexPathToOverridePropertySet:v16];
+    itemIndexPathToOverridePropertySet = [(MPStoreLibraryPersonalizationRequest *)self->_request itemIndexPathToOverridePropertySet];
+    [(MPStoreLibraryPersonalizationCollectionDataSource *)v77 setItemIndexPathToOverridePropertySet:itemIndexPathToOverridePropertySet];
 
-    v17 = [(MPModelRequest *)self->_request sectionProperties];
-    [(MPStoreLibraryPersonalizationCollectionDataSource *)v77 setSectionProperties:v17];
+    sectionProperties = [(MPModelRequest *)self->_request sectionProperties];
+    [(MPStoreLibraryPersonalizationCollectionDataSource *)v77 setSectionProperties:sectionProperties];
 
     [(MPStoreLibraryPersonalizationCollectionDataSource *)v77 setLibraryView:v87];
-    v76 = [(MPStoreLibraryPersonalizationRequest *)self->_request representedObjects];
-    v75 = [(MPStoreLibraryPersonalizationRequest *)self->_request unpersonalizedContentDescriptors];
+    representedObjects = [(MPStoreLibraryPersonalizationRequest *)self->_request representedObjects];
+    unpersonalizedContentDescriptors = [(MPStoreLibraryPersonalizationRequest *)self->_request unpersonalizedContentDescriptors];
     v74 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v143[0] = 0;
     v143[1] = v143;
@@ -97,24 +97,24 @@
     v79 = v74;
     v137 = v79;
     v142 = v143;
-    v72 = v76;
+    v72 = representedObjects;
     v138 = v72;
-    v96 = v75;
+    v96 = unpersonalizedContentDescriptors;
     v139 = v96;
     v70 = v78;
     v140 = v70;
-    v141 = self;
+    selfCopy3 = self;
     val = [(MPAsyncBlockOperation *)v18 initWithStartHandler:v135];
     v94 = [objc_alloc(MEMORY[0x1E696AD18]) initWithKeyOptions:514 valueOptions:0 capacity:1];
-    v19 = [v96 numberOfSections];
-    if (v19 < 1)
+    numberOfSections = [v96 numberOfSections];
+    if (numberOfSections < 1)
     {
       v86 = 0;
     }
 
     else
     {
-      v101 = v19;
+      v101 = numberOfSections;
       v86 = 0;
       for (i = 0; i != v101; ++i)
       {
@@ -135,13 +135,13 @@
             v25 = objc_opt_class();
             if (v25 == objc_opt_class())
             {
-              v2 = [v24 model];
-              v26 = [v2 relativeModelObjectForStoreLibraryPersonalization];
+              model = [v24 model];
+              relativeModelObjectForStoreLibraryPersonalization = [model relativeModelObjectForStoreLibraryPersonalization];
 
-              if (v26)
+              if (relativeModelObjectForStoreLibraryPersonalization)
               {
-                v2 = [v26 identifiers];
-                if (v2)
+                model = [relativeModelObjectForStoreLibraryPersonalization identifiers];
+                if (model)
                 {
                   v27 = objc_opt_class();
                   if (([v27 isSubclassOfClass:objc_opt_class()] & 1) == 0)
@@ -156,7 +156,7 @@
                     [v94 setObject:v28 forKey:v27];
                   }
 
-                  v29 = [MEMORY[0x1E695DF20] dictionaryWithObject:v2 forKey:v26];
+                  v29 = [MEMORY[0x1E695DF20] dictionaryWithObject:model forKey:relativeModelObjectForStoreLibraryPersonalization];
                   [v28 addObject:v29];
                 }
               }
@@ -172,13 +172,13 @@
         v31 = objc_opt_class();
         if (v31 == objc_opt_class() && [v30 personalizationStyle])
         {
-          v32 = [v30 model];
-          v33 = [v32 relativeModelObjectForStoreLibraryPersonalization];
+          model2 = [v30 model];
+          relativeModelObjectForStoreLibraryPersonalization2 = [model2 relativeModelObjectForStoreLibraryPersonalization];
 
-          if (v33)
+          if (relativeModelObjectForStoreLibraryPersonalization2)
           {
-            v34 = [v33 identifiers];
-            if (v34)
+            identifiers = [relativeModelObjectForStoreLibraryPersonalization2 identifiers];
+            if (identifiers)
             {
               v35 = objc_opt_class();
               if ((v104 & 1) != 0 && (([v35 isSubclassOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v35, "isSubclassOfClass:", objc_opt_class()) & 1) != 0 || objc_msgSend(v35, "isSubclassOfClass:", objc_opt_class())))
@@ -200,8 +200,8 @@
                 [v94 setObject:v37 forKey:v35];
               }
 
-              v2 = [MEMORY[0x1E695DF20] dictionaryWithObject:v34 forKey:v33];
-              [v37 addObject:v2];
+              model = [MEMORY[0x1E695DF20] dictionaryWithObject:identifiers forKey:relativeModelObjectForStoreLibraryPersonalization2];
+              [v37 addObject:model];
             }
           }
         }
@@ -263,7 +263,7 @@ LABEL_114:
       }
     }
 
-    v97 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v85 = [obj objectForKey:v38];
     if ([v38 isSubclassOfClass:objc_opt_class()] && -[MPStoreLibraryPersonalizationRequest matchAlbumArtistsOnNameAndStoreID](self->_request, "matchAlbumArtistsOnNameAndStoreID"))
     {
@@ -290,8 +290,8 @@ LABEL_114:
               objc_enumerationMutation(v40);
             }
 
-            v44 = [*(*(&v125 + 1) + 8 * j) allValues];
-            [v97 addObjectsFromArray:v44];
+            allValues = [*(*(&v125 + 1) + 8 * j) allValues];
+            [array addObjectsFromArray:allValues];
           }
 
           v41 = [v40 countByEnumeratingWithState:&v125 objects:v147 count:16];
@@ -308,7 +308,7 @@ LABEL_114:
     [(MPStoreLibraryMappingRequestOperation *)v45 setModelClass:v38];
     if (v39)
     {
-      v46 = v97;
+      v46 = array;
     }
 
     else
@@ -351,7 +351,7 @@ LABEL_79:
     v117 = v79;
     v118 = v87;
     objc_copyWeak(v122, &location);
-    v119 = self;
+    selfCopy4 = self;
     [(MPStoreLibraryMappingRequestOperation *)v45 setResponseHandler:v114];
     if (v39)
     {
@@ -364,19 +364,19 @@ LABEL_113:
       goto LABEL_114;
     }
 
-    v100 = [MEMORY[0x1E695DF90] dictionary];
-    v105 = [MEMORY[0x1E695DF70] array];
-    v48 = [MEMORY[0x1E69E4688] canAccessAccountStore];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    array2 = [MEMORY[0x1E695DF70] array];
+    canAccessAccountStore = [MEMORY[0x1E69E4688] canAccessAccountStore];
     v49 = MEMORY[0x1E69B34E0];
-    if (v48)
+    if (canAccessAccountStore)
     {
-      v50 = [MEMORY[0x1E69E4680] activeAccount];
-      v102 = [v49 musicLibraryForUserAccount:v50];
+      activeAccount = [MEMORY[0x1E69E4680] activeAccount];
+      autoupdatingSharedLibrary = [v49 musicLibraryForUserAccount:activeAccount];
     }
 
     else
     {
-      v102 = [MEMORY[0x1E69B34E0] autoupdatingSharedLibrary];
+      autoupdatingSharedLibrary = [MEMORY[0x1E69B34E0] autoupdatingSharedLibrary];
     }
 
     v112 = 0u;
@@ -389,7 +389,7 @@ LABEL_113:
     {
 LABEL_112:
 
-      [(MPStoreLibraryMappingRequestOperation *)v88 setAlbumArtistNamesToIdentifierSets:v105];
+      [(MPStoreLibraryMappingRequestOperation *)v88 setAlbumArtistNamesToIdentifierSets:array2];
       [(MPAsyncBlockOperation *)val addDependency:v88];
       [(NSOperationQueue *)self->_operationQueue addOperation:v88];
 
@@ -411,8 +411,8 @@ LABEL_86:
       v107 = 0u;
       v108 = 0u;
       v109 = 0u;
-      v52 = [v51 allKeys];
-      v53 = [v52 countByEnumeratingWithState:&v106 objects:v145 count:16];
+      allKeys = [v51 allKeys];
+      v53 = [allKeys countByEnumeratingWithState:&v106 objects:v145 count:16];
       if (v53)
       {
         break;
@@ -433,7 +433,7 @@ LABEL_110:
     }
 
     v54 = *v107;
-    v99 = v52;
+    v99 = allKeys;
 LABEL_91:
     v55 = 0;
     while (1)
@@ -445,28 +445,28 @@ LABEL_91:
 
       v56 = *(*(&v106 + 1) + 8 * v55);
       v57 = [v51 objectForKey:v56];
-      v58 = [v57 universalStore];
-      v59 = [v58 adamID];
+      universalStore = [v57 universalStore];
+      adamID = [universalStore adamID];
 
-      v60 = [v56 name];
-      v61 = v60;
-      if (v60)
+      name = [v56 name];
+      v61 = name;
+      if (name)
       {
-        if ([v60 length])
+        if ([name length])
         {
           v62 = 1;
         }
 
         else
         {
-          v62 = v59 == 0;
+          v62 = adamID == 0;
         }
 
         if (!v62)
         {
 LABEL_102:
-          v63 = [MEMORY[0x1E696AD98] numberWithLongLong:v59];
-          v64 = [v100 objectForKey:v63];
+          v63 = [MEMORY[0x1E696AD98] numberWithLongLong:adamID];
+          v64 = [dictionary objectForKey:v63];
           v65 = v64 == 0;
 
           if (v65)
@@ -476,18 +476,18 @@ LABEL_102:
         }
       }
 
-      else if (v59)
+      else if (adamID)
       {
         goto LABEL_102;
       }
 
-      v66 = [v102 groupingKeyForString:v61];
+      v66 = [autoupdatingSharedLibrary groupingKeyForString:v61];
       v67 = MEMORY[0x1E695DF20];
       v68 = v66;
       if (!v66)
       {
-        v2 = [MEMORY[0x1E695DFB0] null];
-        v68 = v2;
+        model = [MEMORY[0x1E695DFB0] null];
+        v68 = model;
       }
 
       v69 = [v67 dictionaryWithObject:v68 forKey:v57];
@@ -495,11 +495,11 @@ LABEL_102:
       {
       }
 
-      [v105 addObject:v69];
+      [array2 addObject:v69];
 
       if (v53 == ++v55)
       {
-        v52 = v99;
+        allKeys = v99;
         v53 = [v99 countByEnumeratingWithState:&v106 objects:v145 count:16];
         if (!v53)
         {
@@ -855,16 +855,16 @@ void __56__MPStoreLibraryPersonalizationRequestOperation_execute__block_invoke_4
   [(NSOperationQueue *)self->_operationQueue cancelAllOperations];
 }
 
-+ (id)_personalizedArtistResponseForStoreID:(int64_t)a3 modelObject:(id)a4 groupingKey:(id)a5 personalizationStyle:(int64_t)a6 personalizationProperties:(id)a7 libraryView:(id)a8 libraryRequest:(id)a9 matchingStoreIDAndName:(BOOL)a10
++ (id)_personalizedArtistResponseForStoreID:(int64_t)d modelObject:(id)object groupingKey:(id)key personalizationStyle:(int64_t)style personalizationProperties:(id)properties libraryView:(id)view libraryRequest:(id)request matchingStoreIDAndName:(BOOL)self0
 {
   v22 = *MEMORY[0x1E69E9840];
-  v20 = a3;
-  v19 = a4;
-  v18 = a5;
-  v17 = a7;
-  v16 = a8;
-  v15 = a10;
-  [[MPModelLibraryResponse alloc] initWithRequest:a9];
+  dCopy = d;
+  objectCopy = object;
+  keyCopy = key;
+  propertiesCopy = properties;
+  viewCopy = view;
+  nameCopy = name;
+  [[MPModelLibraryResponse alloc] initWithRequest:request];
   v14 = mlcore::ArtistPropertyStoreID(objc_alloc_init(MPMutableSectionedCollection));
   LODWORD(v21) = 0;
   std::allocate_shared[abi:ne200100]<mlcore::ComparisonPredicate<long long>,std::allocator<mlcore::ComparisonPredicate<long long>>,mlcore::ModelProperty<long long> *&,mlcore::ComparisonOperator,long long const&,0>();
@@ -874,7 +874,7 @@ void __56__MPStoreLibraryPersonalizationRequestOperation_execute__block_invoke_4
 {
   if (std::type_info::operator==[abi:ne200100](*(a2 + 8), "Z208+[MPStoreLibraryPersonalizationRequestOperation _personalizedArtistResponseForStoreID:modelObject:groupingKey:personalizationStyle:personalizationProperties:libraryView:libraryRequest:matchingStoreIDAndName:]E3$_2"))
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -885,15 +885,15 @@ void __56__MPStoreLibraryPersonalizationRequestOperation_execute__block_invoke_4
 
 + (void)_personalizedArtistResponseForStoreID:modelObject:groupingKey:personalizationStyle:personalizationProperties:libraryView:libraryRequest:matchingStoreIDAndName:
 {
-  v6 = mlcore::ArtistPropertyPersistentID(a1);
+  v6 = mlcore::ArtistPropertyPersistentID(self);
   v7 = MPMediaLibraryPropertyCacheValueForProperty(v6, a2);
   [v7 longLongValue];
 
   v9 = mlcore::ArtistPropertyGroupingKey(v8);
   v10 = MPMediaLibraryPropertyCacheValueForProperty(v9, a2);
-  if (**(a1 + 8) != 1 || (v11 = **(a1 + 16), !(v11 | v10)) || [v11 isEqualToData:v10])
+  if (**(self + 8) != 1 || (v11 = **(self + 16), !(v11 | v10)) || [v11 isEqualToData:v10])
   {
-    v12 = **(a1 + 24);
+    v12 = **(self + 24);
     if (v12)
     {
       [v12 mlCoreView];
@@ -922,7 +922,7 @@ void __56__MPStoreLibraryPersonalizationRequestOperation_execute__block_invoke_4
     v15 = v14;
     if (v14)
     {
-      [v14 MLCorePropertiesForPropertySet:**(a1 + 40)];
+      [v14 MLCorePropertiesForPropertySet:**(self + 40)];
     }
 
     else
@@ -962,12 +962,12 @@ void __56__MPStoreLibraryPersonalizationRequestOperation_execute__block_invoke_4
     mlcore::PropertyCacheBase<long long,int,double,std::string,mediaplatform::Data>::~PropertyCacheBase(v23);
     if (v37)
     {
-      v16 = **(a1 + 40);
+      v16 = **(self + 40);
       v17 = (*(*v37 + 48))(v37);
       v18 = mlcore::Entity::propertyCache(v37);
-      v19 = [**(a1 + 56) personalizationTranslationContext];
-      v20 = [v15 objectForPropertySet:v16 entityClass:v17 propertyCache:v18 context:v19];
-      v21 = *(a1 + 48);
+      personalizationTranslationContext = [**(self + 56) personalizationTranslationContext];
+      v20 = [v15 objectForPropertySet:v16 entityClass:v17 propertyCache:v18 context:personalizationTranslationContext];
+      v21 = *(self + 48);
       v22 = *v21;
       *v21 = v20;
     }
@@ -985,41 +985,41 @@ void __56__MPStoreLibraryPersonalizationRequestOperation_execute__block_invoke_4
 + (__n128)_personalizedArtistResponseForStoreID:modelObject:groupingKey:personalizationStyle:personalizationProperties:libraryView:libraryRequest:matchingStoreIDAndName:
 {
   *a2 = &unk_1F14977C8;
-  result = *(a1 + 8);
-  v3 = *(a1 + 24);
-  v4 = *(a1 + 40);
-  *(a2 + 56) = *(a1 + 56);
+  result = *(self + 8);
+  v3 = *(self + 24);
+  v4 = *(self + 40);
+  *(a2 + 56) = *(self + 56);
   *(a2 + 40) = v4;
   *(a2 + 24) = v3;
   *(a2 + 8) = result;
   return result;
 }
 
-+ (id)personalizedResponseForContentDescriptor:(id)a3 requestedProperties:(id)a4 matchAlbumArtistOnStoreIdAndName:(BOOL)a5
++ (id)personalizedResponseForContentDescriptor:(id)descriptor requestedProperties:(id)properties matchAlbumArtistOnStoreIdAndName:(BOOL)name
 {
-  v5 = a5;
+  nameCopy = name;
   v85[9] = *MEMORY[0x1E69E9840];
-  v69 = a3;
-  v70 = a4;
-  v79 = [v69 model];
+  descriptorCopy = descriptor;
+  propertiesCopy = properties;
+  model = [descriptorCopy model];
   v78 = [MPMediaLibraryEntityTranslator translatorForMPModelClass:objc_opt_class()];
-  v7 = [v69 personalizationStyle];
-  v8 = v7;
+  personalizationStyle = [descriptorCopy personalizationStyle];
+  v8 = personalizationStyle;
   v77 = 0;
-  if ((v7 - 1) < 2)
+  if ((personalizationStyle - 1) < 2)
   {
     v9 = [MPStoreLibraryPersonalizationContentDescriptor lightweightPersonalizationPropertiesForModelClass:objc_opt_class()];
-    v10 = [v70 propertySetByIntersectingWithPropertySet:v9];
-    v11 = [MPStoreLibraryPersonalizationContentDescriptor requiredLightweightPersonalizationPropertiesForModelClass:objc_opt_class() requestedProperties:v70];
+    v10 = [propertiesCopy propertySetByIntersectingWithPropertySet:v9];
+    v11 = [MPStoreLibraryPersonalizationContentDescriptor requiredLightweightPersonalizationPropertiesForModelClass:objc_opt_class() requestedProperties:propertiesCopy];
     v12 = [v10 propertySetByCombiningWithPropertySet:v11];
     goto LABEL_5;
   }
 
-  if ((v7 - 3) < 2)
+  if ((personalizationStyle - 3) < 2)
   {
     v9 = [MPStoreLibraryPersonalizationContentDescriptor lightweightPersonalizationPropertiesForModelClass:objc_opt_class()];
-    v10 = [v70 propertySetByCombiningWithPropertySet:v9];
-    v11 = [MPStoreLibraryPersonalizationContentDescriptor requiredLightweightPersonalizationPropertiesForModelClass:objc_opt_class() requestedProperties:v70];
+    v10 = [propertiesCopy propertySetByCombiningWithPropertySet:v9];
+    v11 = [MPStoreLibraryPersonalizationContentDescriptor requiredLightweightPersonalizationPropertiesForModelClass:objc_opt_class() requestedProperties:propertiesCopy];
     v12 = [v10 propertySetByCombiningWithPropertySet:v11];
 LABEL_5:
     v13 = v77;
@@ -1038,7 +1038,7 @@ LABEL_5:
     v17 = [[MPModelResponse alloc] initWithRequest:v28];
     v29 = objc_alloc_init(MPMutableSectionedCollection);
     [(MPMutableSectionedCollection *)v29 appendSection:&stru_1F149ECA8];
-    [(MPMutableSectionedCollection *)v29 appendItem:v79];
+    [(MPMutableSectionedCollection *)v29 appendItem:model];
     [(MPModelResponse *)v17 setResults:v29];
 
     goto LABEL_30;
@@ -1048,12 +1048,12 @@ LABEL_6:
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v14 = [MEMORY[0x1E69E4680] activeAccount];
-    v15 = [MPStoreLibraryPersonalizationRequest libraryViewWithUserIdentity:v14];
+    activeAccount = [MEMORY[0x1E69E4680] activeAccount];
+    v15 = [MPStoreLibraryPersonalizationRequest libraryViewWithUserIdentity:activeAccount];
 
     v76 = objc_alloc_init(MPModelLibraryRequest);
-    v16 = [v15 library];
-    [(MPModelLibraryRequest *)v76 setMediaLibrary:v16];
+    library = [v15 library];
+    [(MPModelLibraryRequest *)v76 setMediaLibrary:library];
 
     -[MPModelLibraryRequest setFilteringOptions:](v76, "setFilteringOptions:", [v15 filteringOptions]);
     v17 = [[MPModelLibraryResponse alloc] initWithRequest:v76];
@@ -1061,21 +1061,21 @@ LABEL_6:
     v73 = 0;
     v74 = 0;
     v75 = 0;
-    v19 = [v79 identifiers];
-    v20 = [v19 universalStore];
-    v21 = [v20 adamID];
+    identifiers = [model identifiers];
+    universalStore = [identifiers universalStore];
+    adamID = [universalStore adamID];
 
-    v72 = v21;
-    if (v21)
+    v72 = adamID;
+    if (adamID)
     {
       std::vector<long long>::push_back[abi:ne200100](&v73, &v72);
     }
 
-    v22 = [v19 universalStore];
-    v23 = [v22 subscriptionAdamID];
+    universalStore2 = [identifiers universalStore];
+    subscriptionAdamID = [universalStore2 subscriptionAdamID];
 
-    v71 = v23;
-    if (v23)
+    v71 = subscriptionAdamID;
+    if (subscriptionAdamID)
     {
       std::vector<long long>::push_back[abi:ne200100](&v73, &v71);
     }
@@ -1125,50 +1125,50 @@ LABEL_6:
         goto LABEL_30;
       }
 
-      v40 = [MEMORY[0x1E69E4680] activeAccount];
-      v41 = [MPStoreLibraryPersonalizationRequest libraryViewWithUserIdentity:v40];
+      activeAccount2 = [MEMORY[0x1E69E4680] activeAccount];
+      v41 = [MPStoreLibraryPersonalizationRequest libraryViewWithUserIdentity:activeAccount2];
 
       v66 = v41;
       v42 = objc_alloc_init(MPModelLibraryRequest);
-      v43 = [v41 library];
-      [(MPModelLibraryRequest *)v42 setMediaLibrary:v43];
+      library2 = [v41 library];
+      [(MPModelLibraryRequest *)v42 setMediaLibrary:library2];
 
       -[MPModelLibraryRequest setFilteringOptions:](v42, "setFilteringOptions:", [v41 filteringOptions]);
-      v68 = v79;
-      v64 = [(__CFString *)v68 identifiers];
-      v44 = [v64 universalStore];
-      v45 = [v44 adamID];
+      v68 = model;
+      identifiers2 = [(__CFString *)v68 identifiers];
+      universalStore3 = [identifiers2 universalStore];
+      adamID2 = [universalStore3 adamID];
 
-      v67 = [(__CFString *)v68 name];
-      v46 = [MEMORY[0x1E69E4688] canAccessAccountStore];
+      name = [(__CFString *)v68 name];
+      canAccessAccountStore = [MEMORY[0x1E69E4688] canAccessAccountStore];
       v47 = MEMORY[0x1E69B34E0];
-      if (v46)
+      if (canAccessAccountStore)
       {
-        v48 = [MEMORY[0x1E69E4680] activeAccount];
-        v65 = [v47 musicLibraryForUserAccount:v48];
+        activeAccount3 = [MEMORY[0x1E69E4680] activeAccount];
+        autoupdatingSharedLibrary = [v47 musicLibraryForUserAccount:activeAccount3];
       }
 
       else
       {
-        v65 = [MEMORY[0x1E69B34E0] autoupdatingSharedLibrary];
+        autoupdatingSharedLibrary = [MEMORY[0x1E69B34E0] autoupdatingSharedLibrary];
       }
 
       v52 = [[MPModelLibraryResponse alloc] initWithRequest:v42];
       v53 = objc_alloc_init(MPMutableSectionedCollection);
       [(MPModelResponse *)v52 setResults:v53];
-      if (v45)
+      if (adamID2)
       {
-        if (!v5)
+        if (!nameCopy)
         {
           goto LABEL_51;
         }
 
-        if (v67 && [v67 length])
+        if (name && [name length])
         {
-          v54 = [v65 groupingKeyForString:v67];
+          v54 = [autoupdatingSharedLibrary groupingKeyForString:name];
 LABEL_52:
-          LOBYTE(v62) = v5;
-          v17 = [MPStoreLibraryPersonalizationRequestOperation _personalizedArtistResponseForStoreID:v45 modelObject:v79 groupingKey:v54 personalizationStyle:v8 personalizationProperties:v77 libraryView:v66 libraryRequest:v42 matchingStoreIDAndName:v62];
+          LOBYTE(v62) = nameCopy;
+          v17 = [MPStoreLibraryPersonalizationRequestOperation _personalizedArtistResponseForStoreID:adamID2 modelObject:model groupingKey:v54 personalizationStyle:v8 personalizationProperties:v77 libraryView:v66 libraryRequest:v42 matchingStoreIDAndName:v62];
 
           v55 = 0;
           goto LABEL_53;
@@ -1219,12 +1219,12 @@ LABEL_53:
     }
   }
 
-  v30 = [MEMORY[0x1E69E4680] activeAccount];
-  v80 = [MPStoreLibraryPersonalizationRequest libraryViewWithUserIdentity:v30];
+  activeAccount4 = [MEMORY[0x1E69E4680] activeAccount];
+  v80 = [MPStoreLibraryPersonalizationRequest libraryViewWithUserIdentity:activeAccount4];
 
   v76 = objc_alloc_init(MPModelLibraryRequest);
-  v31 = [v80 library];
-  [(MPModelLibraryRequest *)v76 setMediaLibrary:v31];
+  library3 = [v80 library];
+  [(MPModelLibraryRequest *)v76 setMediaLibrary:library3];
 
   -[MPModelLibraryRequest setFilteringOptions:](v76, "setFilteringOptions:", [v80 filteringOptions]);
   v17 = [[MPModelLibraryResponse alloc] initWithRequest:v76];
@@ -1232,21 +1232,21 @@ LABEL_53:
   v73 = 0;
   v74 = 0;
   v75 = 0;
-  v33 = [v79 identifiers];
-  v34 = [v33 universalStore];
-  v35 = [v34 adamID];
+  identifiers3 = [model identifiers];
+  universalStore4 = [identifiers3 universalStore];
+  adamID3 = [universalStore4 adamID];
 
-  v72 = v35;
-  if (v35)
+  v72 = adamID3;
+  if (adamID3)
   {
     std::vector<long long>::push_back[abi:ne200100](&v73, &v72);
   }
 
-  v36 = [v33 universalStore];
-  v37 = [v36 subscriptionAdamID];
+  universalStore5 = [identifiers3 universalStore];
+  subscriptionAdamID2 = [universalStore5 subscriptionAdamID];
 
-  v71 = v37;
-  if (v37)
+  v71 = subscriptionAdamID2;
+  if (subscriptionAdamID2)
   {
     std::vector<long long>::push_back[abi:ne200100](&v73, &v71);
   }
@@ -1274,7 +1274,7 @@ LABEL_30:
 {
   if (std::type_info::operator==[abi:ne200100](*(a2 + 8), "Z143+[MPStoreLibraryPersonalizationRequestOperation personalizedResponseForContentDescriptor:requestedProperties:matchAlbumArtistOnStoreIdAndName:]E3$_0"))
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -1285,18 +1285,18 @@ LABEL_30:
 
 + (void)personalizedResponseForContentDescriptor:requestedProperties:matchAlbumArtistOnStoreIdAndName:
 {
-  v6 = mlcore::ItemPropertyStoreID(a1);
+  v6 = mlcore::ItemPropertyStoreID(self);
   v7 = MPMediaLibraryPropertyCacheValueForProperty(v6, a2);
-  v8 = [v7 longLongValue];
+  longLongValue = [v7 longLongValue];
 
-  if (**(a1 + 8) == v8 || **(a1 + 16) == v8 || (v10 = mlcore::ItemPropertySubscriptionStoreItemID(v9), MPMediaLibraryPropertyCacheValueForProperty(v10, a2), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 longLongValue], v11, **(a1 + 8) == v12) || **(a1 + 16) == v12)
+  if (**(self + 8) == longLongValue || **(self + 16) == longLongValue || (v10 = mlcore::ItemPropertySubscriptionStoreItemID(v9), MPMediaLibraryPropertyCacheValueForProperty(v10, a2), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 longLongValue], v11, **(self + 8) == v12) || **(self + 16) == v12)
   {
-    v13 = [**(a1 + 24) entityClass];
-    v14 = **(a1 + 24);
-    v15 = **(a1 + 40);
-    v16 = [**(a1 + 48) personalizationTranslationContext];
-    v17 = [v14 objectForPropertySet:v15 entityClass:v13 propertyCache:a2 context:v16];
-    v18 = *(a1 + 32);
+    entityClass = [**(self + 24) entityClass];
+    v14 = **(self + 24);
+    v15 = **(self + 40);
+    personalizationTranslationContext = [**(self + 48) personalizationTranslationContext];
+    v17 = [v14 objectForPropertySet:v15 entityClass:entityClass propertyCache:a2 context:personalizationTranslationContext];
+    v18 = *(self + 32);
     v19 = *v18;
     *v18 = v17;
 
@@ -1307,17 +1307,17 @@ LABEL_30:
 + (__n128)personalizedResponseForContentDescriptor:requestedProperties:matchAlbumArtistOnStoreIdAndName:
 {
   *a2 = &unk_1F14976B8;
-  result = *(a1 + 8);
-  v3 = *(a1 + 24);
-  *(a2 + 40) = *(a1 + 40);
+  result = *(self + 8);
+  v3 = *(self + 24);
+  *(a2 + 40) = *(self + 40);
   *(a2 + 24) = v3;
   *(a2 + 8) = result;
   return result;
 }
 
-+ (id)personalizedResponseForContentDescriptor:(id)a3 requestedProperties:(id)a4
++ (id)personalizedResponseForContentDescriptor:(id)descriptor requestedProperties:(id)properties
 {
-  v4 = [MPStoreLibraryPersonalizationRequestOperation personalizedResponseForContentDescriptor:a3 requestedProperties:a4 matchAlbumArtistOnStoreIdAndName:1];
+  v4 = [MPStoreLibraryPersonalizationRequestOperation personalizedResponseForContentDescriptor:descriptor requestedProperties:properties matchAlbumArtistOnStoreIdAndName:1];
 
   return v4;
 }

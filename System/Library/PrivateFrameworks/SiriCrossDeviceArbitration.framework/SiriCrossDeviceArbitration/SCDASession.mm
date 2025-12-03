@@ -1,54 +1,54 @@
 @interface SCDASession
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SCDASession)initWithBuilder:(id)a3;
-- (SCDASession)initWithCoder:(id)a3;
-- (SCDASession)initWithGeneration:(unint64_t)a3 sessionId:(id)a4 currentElectionAdvertisementId:(id)a5 currentElectionAdvertisementData:(id)a6 electionAdvertisementDataByIds:(id)a7;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (SCDASession)initWithBuilder:(id)builder;
+- (SCDASession)initWithCoder:(id)coder;
+- (SCDASession)initWithGeneration:(unint64_t)generation sessionId:(id)id currentElectionAdvertisementId:(id)advertisementId currentElectionAdvertisementData:(id)data electionAdvertisementDataByIds:(id)ids;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SCDASession
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   generation = self->_generation;
-  v7 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedLongLong:generation];
-  [v7 encodeObject:v6 forKey:@"SCDASession::generation"];
+  [coderCopy encodeObject:v6 forKey:@"SCDASession::generation"];
 
-  [v7 encodeObject:self->_sessionId forKey:@"SCDASession::sessionId"];
-  [v7 encodeObject:self->_currentElectionAdvertisementId forKey:@"SCDASession::currentElectionAdvertisementId"];
-  [v7 encodeObject:self->_currentElectionAdvertisementData forKey:@"SCDASession::currentElectionAdvertisementData"];
-  [v7 encodeObject:self->_electionAdvertisementDataByIds forKey:@"SCDASession::electionAdvertisementDataByIds"];
+  [coderCopy encodeObject:self->_sessionId forKey:@"SCDASession::sessionId"];
+  [coderCopy encodeObject:self->_currentElectionAdvertisementId forKey:@"SCDASession::currentElectionAdvertisementId"];
+  [coderCopy encodeObject:self->_currentElectionAdvertisementData forKey:@"SCDASession::currentElectionAdvertisementData"];
+  [coderCopy encodeObject:self->_electionAdvertisementDataByIds forKey:@"SCDASession::electionAdvertisementDataByIds"];
 }
 
-- (SCDASession)initWithCoder:(id)a3
+- (SCDASession)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SCDASession::generation"];
-  v6 = [v5 unsignedLongLongValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SCDASession::generation"];
+  unsignedLongLongValue = [v5 unsignedLongLongValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SCDASession::sessionId"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SCDASession::currentElectionAdvertisementId"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SCDASession::currentElectionAdvertisementData"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SCDASession::sessionId"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SCDASession::currentElectionAdvertisementId"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SCDASession::currentElectionAdvertisementData"];
   v10 = MEMORY[0x1E695DFD8];
   v11 = objc_opt_class();
   v12 = objc_opt_class();
   v13 = [v10 setWithObjects:{v11, v12, objc_opt_class(), 0}];
-  v14 = [v4 decodeObjectOfClasses:v13 forKey:@"SCDASession::electionAdvertisementDataByIds"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"SCDASession::electionAdvertisementDataByIds"];
 
-  v15 = [(SCDASession *)self initWithGeneration:v6 sessionId:v7 currentElectionAdvertisementId:v8 currentElectionAdvertisementData:v9 electionAdvertisementDataByIds:v14];
+  v15 = [(SCDASession *)self initWithGeneration:unsignedLongLongValue sessionId:v7 currentElectionAdvertisementId:v8 currentElectionAdvertisementData:v9 electionAdvertisementDataByIds:v14];
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
@@ -58,25 +58,25 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       generation = self->_generation;
       if (generation == [(SCDASession *)v5 generation])
       {
-        v7 = [(SCDASession *)v5 sessionId];
+        sessionId = [(SCDASession *)v5 sessionId];
         sessionId = self->_sessionId;
-        if (sessionId == v7 || [(NSUUID *)sessionId isEqual:v7])
+        if (sessionId == sessionId || [(NSUUID *)sessionId isEqual:sessionId])
         {
-          v9 = [(SCDASession *)v5 currentElectionAdvertisementId];
+          currentElectionAdvertisementId = [(SCDASession *)v5 currentElectionAdvertisementId];
           currentElectionAdvertisementId = self->_currentElectionAdvertisementId;
-          if (currentElectionAdvertisementId == v9 || [(NSUUID *)currentElectionAdvertisementId isEqual:v9])
+          if (currentElectionAdvertisementId == currentElectionAdvertisementId || [(NSUUID *)currentElectionAdvertisementId isEqual:currentElectionAdvertisementId])
           {
-            v11 = [(SCDASession *)v5 currentElectionAdvertisementData];
+            currentElectionAdvertisementData = [(SCDASession *)v5 currentElectionAdvertisementData];
             currentElectionAdvertisementData = self->_currentElectionAdvertisementData;
-            if (currentElectionAdvertisementData == v11 || [(NSData *)currentElectionAdvertisementData isEqual:v11])
+            if (currentElectionAdvertisementData == currentElectionAdvertisementData || [(NSData *)currentElectionAdvertisementData isEqual:currentElectionAdvertisementData])
             {
-              v13 = [(SCDASession *)v5 electionAdvertisementDataByIds];
+              electionAdvertisementDataByIds = [(SCDASession *)v5 electionAdvertisementDataByIds];
               electionAdvertisementDataByIds = self->_electionAdvertisementDataByIds;
-              v15 = electionAdvertisementDataByIds == v13 || [(NSDictionary *)electionAdvertisementDataByIds isEqual:v13];
+              v15 = electionAdvertisementDataByIds == electionAdvertisementDataByIds || [(NSDictionary *)electionAdvertisementDataByIds isEqual:electionAdvertisementDataByIds];
             }
 
             else
@@ -124,7 +124,7 @@
   return v7 ^ v8;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v8.receiver = self;
@@ -135,25 +135,25 @@
   return v6;
 }
 
-- (SCDASession)initWithGeneration:(unint64_t)a3 sessionId:(id)a4 currentElectionAdvertisementId:(id)a5 currentElectionAdvertisementData:(id)a6 electionAdvertisementDataByIds:(id)a7
+- (SCDASession)initWithGeneration:(unint64_t)generation sessionId:(id)id currentElectionAdvertisementId:(id)advertisementId currentElectionAdvertisementData:(id)data electionAdvertisementDataByIds:(id)ids
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  idCopy = id;
+  advertisementIdCopy = advertisementId;
+  dataCopy = data;
+  idsCopy = ids;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __139__SCDASession_initWithGeneration_sessionId_currentElectionAdvertisementId_currentElectionAdvertisementData_electionAdvertisementDataByIds___block_invoke;
   v22[3] = &unk_1E85D2C60;
-  v26 = v15;
-  v27 = a3;
-  v23 = v12;
-  v24 = v13;
-  v25 = v14;
-  v16 = v15;
-  v17 = v14;
-  v18 = v13;
-  v19 = v12;
+  v26 = idsCopy;
+  generationCopy = generation;
+  v23 = idCopy;
+  v24 = advertisementIdCopy;
+  v25 = dataCopy;
+  v16 = idsCopy;
+  v17 = dataCopy;
+  v18 = advertisementIdCopy;
+  v19 = idCopy;
   v20 = [(SCDASession *)self initWithBuilder:v22];
 
   return v20;
@@ -170,37 +170,37 @@ void __139__SCDASession_initWithGeneration_sessionId_currentElectionAdvertisemen
   [v4 setElectionAdvertisementDataByIds:a1[7]];
 }
 
-- (SCDASession)initWithBuilder:(id)a3
+- (SCDASession)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v21.receiver = self;
   v21.super_class = SCDASession;
   v5 = [(SCDASession *)&v21 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_SCDASessionMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_SCDASessionMutation *)v7 isDirty])
     {
       v6->_generation = [(_SCDASessionMutation *)v7 getGeneration];
-      v8 = [(_SCDASessionMutation *)v7 getSessionId];
-      v9 = [v8 copy];
+      getSessionId = [(_SCDASessionMutation *)v7 getSessionId];
+      v9 = [getSessionId copy];
       sessionId = v6->_sessionId;
       v6->_sessionId = v9;
 
-      v11 = [(_SCDASessionMutation *)v7 getCurrentElectionAdvertisementId];
-      v12 = [v11 copy];
+      getCurrentElectionAdvertisementId = [(_SCDASessionMutation *)v7 getCurrentElectionAdvertisementId];
+      v12 = [getCurrentElectionAdvertisementId copy];
       currentElectionAdvertisementId = v6->_currentElectionAdvertisementId;
       v6->_currentElectionAdvertisementId = v12;
 
-      v14 = [(_SCDASessionMutation *)v7 getCurrentElectionAdvertisementData];
-      v15 = [v14 copy];
+      getCurrentElectionAdvertisementData = [(_SCDASessionMutation *)v7 getCurrentElectionAdvertisementData];
+      v15 = [getCurrentElectionAdvertisementData copy];
       currentElectionAdvertisementData = v6->_currentElectionAdvertisementData;
       v6->_currentElectionAdvertisementData = v15;
 
-      v17 = [(_SCDASessionMutation *)v7 getElectionAdvertisementDataByIds];
-      v18 = [v17 copy];
+      getElectionAdvertisementDataByIds = [(_SCDASessionMutation *)v7 getElectionAdvertisementDataByIds];
+      v18 = [getElectionAdvertisementDataByIds copy];
       electionAdvertisementDataByIds = v6->_electionAdvertisementDataByIds;
       v6->_electionAdvertisementDataByIds = v18;
     }
@@ -209,42 +209,42 @@ void __139__SCDASession_initWithGeneration_sessionId_currentElectionAdvertisemen
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_SCDASessionMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_SCDASessionMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(SCDASession);
       v6->_generation = [(_SCDASessionMutation *)v5 getGeneration];
-      v7 = [(_SCDASessionMutation *)v5 getSessionId];
-      v8 = [v7 copy];
+      getSessionId = [(_SCDASessionMutation *)v5 getSessionId];
+      v8 = [getSessionId copy];
       sessionId = v6->_sessionId;
       v6->_sessionId = v8;
 
-      v10 = [(_SCDASessionMutation *)v5 getCurrentElectionAdvertisementId];
-      v11 = [v10 copy];
+      getCurrentElectionAdvertisementId = [(_SCDASessionMutation *)v5 getCurrentElectionAdvertisementId];
+      v11 = [getCurrentElectionAdvertisementId copy];
       currentElectionAdvertisementId = v6->_currentElectionAdvertisementId;
       v6->_currentElectionAdvertisementId = v11;
 
-      v13 = [(_SCDASessionMutation *)v5 getCurrentElectionAdvertisementData];
-      v14 = [v13 copy];
+      getCurrentElectionAdvertisementData = [(_SCDASessionMutation *)v5 getCurrentElectionAdvertisementData];
+      v14 = [getCurrentElectionAdvertisementData copy];
       currentElectionAdvertisementData = v6->_currentElectionAdvertisementData;
       v6->_currentElectionAdvertisementData = v14;
 
-      v16 = [(_SCDASessionMutation *)v5 getElectionAdvertisementDataByIds];
-      v17 = [v16 copy];
+      getElectionAdvertisementDataByIds = [(_SCDASessionMutation *)v5 getElectionAdvertisementDataByIds];
+      v17 = [getElectionAdvertisementDataByIds copy];
       electionAdvertisementDataByIds = v6->_electionAdvertisementDataByIds;
       v6->_electionAdvertisementDataByIds = v17;
     }

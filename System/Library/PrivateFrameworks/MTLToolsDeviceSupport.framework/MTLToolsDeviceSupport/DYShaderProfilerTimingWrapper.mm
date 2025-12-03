@@ -2,7 +2,7 @@
 - (DYShaderProfilerTiming)timing;
 - (DYShaderProfilerTimingWrapper)init;
 - (id).cxx_construct;
-- (void)setTiming:(DYShaderProfilerTiming *)a3;
+- (void)setTiming:(DYShaderProfilerTiming *)timing;
 @end
 
 @implementation DYShaderProfilerTimingWrapper
@@ -30,11 +30,11 @@
   return self;
 }
 
-- (void)setTiming:(DYShaderProfilerTiming *)a3
+- (void)setTiming:(DYShaderProfilerTiming *)timing
 {
-  v3 = *&a3->_cycle.average;
-  v4 = *&a3->_cycle.max;
-  *&self->_timing._time.min = *&a3->_time.min;
+  v3 = *&timing->_cycle.average;
+  v4 = *&timing->_cycle.max;
+  *&self->_timing._time.min = *&timing->_time.min;
   *&self->_timing._cycle.max = v4;
   *&self->_timing._cycle.average = v3;
 }

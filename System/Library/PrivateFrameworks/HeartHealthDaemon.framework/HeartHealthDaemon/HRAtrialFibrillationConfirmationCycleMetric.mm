@@ -1,20 +1,20 @@
 @interface HRAtrialFibrillationConfirmationCycleMetric
-- (HRAtrialFibrillationConfirmationCycleMetric)initWithAgeBin:(unint64_t)a3 numberOfPositiveTachograms:(int64_t)a4 numberOfNegativeTachograms:(int64_t)a5 algorithmVersion:(int64_t)a6 biologicalSex:(int64_t)a7 userShouldBeAlerted:(BOOL)a8 cycleDuration:(double)a9 additionalMetrics:(id)a10;
+- (HRAtrialFibrillationConfirmationCycleMetric)initWithAgeBin:(unint64_t)bin numberOfPositiveTachograms:(int64_t)tachograms numberOfNegativeTachograms:(int64_t)negativeTachograms algorithmVersion:(int64_t)version biologicalSex:(int64_t)sex userShouldBeAlerted:(BOOL)alerted cycleDuration:(double)duration additionalMetrics:(id)self0;
 - (NSDictionary)payload;
 @end
 
 @implementation HRAtrialFibrillationConfirmationCycleMetric
 
-- (HRAtrialFibrillationConfirmationCycleMetric)initWithAgeBin:(unint64_t)a3 numberOfPositiveTachograms:(int64_t)a4 numberOfNegativeTachograms:(int64_t)a5 algorithmVersion:(int64_t)a6 biologicalSex:(int64_t)a7 userShouldBeAlerted:(BOOL)a8 cycleDuration:(double)a9 additionalMetrics:(id)a10
+- (HRAtrialFibrillationConfirmationCycleMetric)initWithAgeBin:(unint64_t)bin numberOfPositiveTachograms:(int64_t)tachograms numberOfNegativeTachograms:(int64_t)negativeTachograms algorithmVersion:(int64_t)version biologicalSex:(int64_t)sex userShouldBeAlerted:(BOOL)alerted cycleDuration:(double)duration additionalMetrics:(id)self0
 {
-  v11 = a8;
-  v17 = a10;
+  alertedCopy = alerted;
+  metricsCopy = metrics;
   v32.receiver = self;
   v32.super_class = HRAtrialFibrillationConfirmationCycleMetric;
   v18 = [(HRAtrialFibrillationConfirmationCycleMetric *)&v32 init];
   if (v18)
   {
-    if (a4 >= 1)
+    if (tachograms >= 1)
     {
       v19 = 0;
     }
@@ -24,7 +24,7 @@
       v19 = -1;
     }
 
-    if (v11)
+    if (alertedCopy)
     {
       v20 = 1;
     }
@@ -34,39 +34,39 @@
       v20 = v19;
     }
 
-    v21 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v17];
+    v21 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:metricsCopy];
     eventPayload = v18->_eventPayload;
     v18->_eventPayload = v21;
 
     v23 = NSStringFromHKHRAnalyticsAgeBin();
     [(NSMutableDictionary *)v18->_eventPayload setObject:v23 forKeyedSubscript:@"age"];
 
-    v24 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v24 = [MEMORY[0x277CCABB0] numberWithInteger:tachograms];
     [(NSMutableDictionary *)v18->_eventPayload setObject:v24 forKeyedSubscript:@"numberOfPositiveTachograms"];
 
-    v25 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+    v25 = [MEMORY[0x277CCABB0] numberWithInteger:negativeTachograms];
     [(NSMutableDictionary *)v18->_eventPayload setObject:v25 forKeyedSubscript:@"numberOfNegativeTachograms"];
 
-    v26 = [MEMORY[0x277CCABB0] numberWithInteger:a6];
+    v26 = [MEMORY[0x277CCABB0] numberWithInteger:version];
     [(NSMutableDictionary *)v18->_eventPayload setObject:v26 forKeyedSubscript:@"algorithmVersionIRN"];
 
-    if (a7 > 3)
+    if (sex > 3)
     {
       v27 = @"Unknown";
     }
 
     else
     {
-      v27 = off_2786605D8[a7];
+      v27 = off_2786605D8[sex];
     }
 
     [(NSMutableDictionary *)v18->_eventPayload setObject:v27 forKeyedSubscript:@"sex"];
     v28 = [MEMORY[0x277CCABB0] numberWithInteger:v20];
     [(NSMutableDictionary *)v18->_eventPayload setObject:v28 forKeyedSubscript:@"cycleResult"];
 
-    if (a4 > 0 || v11)
+    if (tachograms > 0 || alertedCopy)
     {
-      v29 = (a9 / 60.0);
+      v29 = (duration / 60.0);
     }
 
     else
@@ -84,8 +84,8 @@
 - (NSDictionary)payload
 {
   v2 = MEMORY[0x277CBEAC0];
-  v3 = [(HRAtrialFibrillationConfirmationCycleMetric *)self eventPayload];
-  v4 = [v2 dictionaryWithDictionary:v3];
+  eventPayload = [(HRAtrialFibrillationConfirmationCycleMetric *)self eventPayload];
+  v4 = [v2 dictionaryWithDictionary:eventPayload];
 
   return v4;
 }

@@ -1,7 +1,7 @@
 @interface UIPlatformGlassFlexInteraction
-- (BOOL)flexInteraction:(id)a3 shouldBeginAtPoint:(CGPoint)a4;
+- (BOOL)flexInteraction:(id)interaction shouldBeginAtPoint:(CGPoint)point;
 - (_TtC5UIKitP33_F83AB3ECBB2C378B4FCEB681A4D7DB7430UIPlatformGlassFlexInteraction)init;
-- (void)flexInteraction:(id)a3 didIssueUpdate:(id)a4;
+- (void)flexInteraction:(id)interaction didIssueUpdate:(id)update;
 @end
 
 @implementation UIPlatformGlassFlexInteraction
@@ -21,24 +21,24 @@
   return [(_UIFlexInteraction *)&v8 init];
 }
 
-- (void)flexInteraction:(id)a3 didIssueUpdate:(id)a4
+- (void)flexInteraction:(id)interaction didIssueUpdate:(id)update
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1890A450C(v7);
+  interactionCopy = interaction;
+  updateCopy = update;
+  selfCopy = self;
+  sub_1890A450C(updateCopy);
 }
 
-- (BOOL)flexInteraction:(id)a3 shouldBeginAtPoint:(CGPoint)a4
+- (BOOL)flexInteraction:(id)interaction shouldBeginAtPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = self;
-  v7 = [(_UIFlexInteraction *)v6 view];
-  if (v7)
+  y = point.y;
+  x = point.x;
+  selfCopy = self;
+  view = [(_UIFlexInteraction *)selfCopy view];
+  if (view)
   {
-    v8 = v7;
-    [(UIView *)v7 bounds];
+    v8 = view;
+    [(UIView *)view bounds];
     v12.size.width = 0.0;
     v12.size.height = 0.0;
     v12.origin.x = x;

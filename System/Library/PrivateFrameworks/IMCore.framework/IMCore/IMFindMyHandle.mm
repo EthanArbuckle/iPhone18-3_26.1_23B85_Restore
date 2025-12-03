@@ -1,19 +1,19 @@
 @interface IMFindMyHandle
-+ (id)handleWithFMFHandle:(id)a3;
-+ (id)handleWithFMLHandle:(id)a3;
-+ (id)handleWithIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (IMFindMyHandle)initWithIdentifier:(id)a3;
++ (id)handleWithFMFHandle:(id)handle;
++ (id)handleWithFMLHandle:(id)handle;
++ (id)handleWithIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (IMFindMyHandle)initWithIdentifier:(id)identifier;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation IMFindMyHandle
 
-+ (id)handleWithFMFHandle:(id)a3
++ (id)handleWithFMFHandle:(id)handle
 {
-  v3 = a3;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && (objc_msgSend_identifier(v3, v4, v5), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  handleCopy = handle;
+  if ((objc_opt_respondsToSelector() & 1) != 0 && (objc_msgSend_identifier(handleCopy, v4, v5), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v8 = v6;
     v9 = objc_msgSend_handleWithIdentifier_(IMFindMyHandle, v7, v6);
@@ -27,10 +27,10 @@
   return v9;
 }
 
-+ (id)handleWithFMLHandle:(id)a3
++ (id)handleWithFMLHandle:(id)handle
 {
-  v3 = a3;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && (objc_msgSend_identifier(v3, v4, v5), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  handleCopy = handle;
+  if ((objc_opt_respondsToSelector() & 1) != 0 && (objc_msgSend_identifier(handleCopy, v4, v5), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v8 = v6;
     v9 = objc_msgSend_handleWithIdentifier_(IMFindMyHandle, v7, v6);
@@ -44,25 +44,25 @@
   return v9;
 }
 
-+ (id)handleWithIdentifier:(id)a3
++ (id)handleWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = [IMFindMyHandle alloc];
-  v6 = objc_msgSend_initWithIdentifier_(v4, v5, v3);
+  v6 = objc_msgSend_initWithIdentifier_(v4, v5, identifierCopy);
 
   return v6;
 }
 
-- (IMFindMyHandle)initWithIdentifier:(id)a3
+- (IMFindMyHandle)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v24.receiver = self;
   v24.super_class = IMFindMyHandle;
   v6 = [(IMFindMyHandle *)&v24 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
     v10 = objc_msgSend_sharedFeatureFlags(MEMORY[0x1E69A8070], v8, v9);
     SessionEnabled = objc_msgSend_isFindMyLocateSessionEnabled(v10, v11, v12);
 
@@ -74,7 +74,7 @@
         v15 = v14;
         if (objc_opt_respondsToSelector())
         {
-          v17 = objc_msgSend_handleWithIdentifier_(v15, v16, v5);
+          v17 = objc_msgSend_handleWithIdentifier_(v15, v16, identifierCopy);
           v18 = 24;
 LABEL_9:
           v22 = *(&v7->super.isa + v18);
@@ -91,7 +91,7 @@ LABEL_9:
         v20 = v19;
         if (objc_opt_respondsToSelector())
         {
-          v17 = objc_msgSend_handleWithId_(v20, v21, v5);
+          v17 = objc_msgSend_handleWithId_(v20, v21, identifierCopy);
           v18 = 16;
           goto LABEL_9;
         }
@@ -102,10 +102,10 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     isEqualToString = 1;
   }
@@ -115,7 +115,7 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = equalCopy;
       v11 = objc_msgSend_identifier(self, v7, v8);
       if (v11 || (objc_msgSend_identifier(v6, v9, v10), (v3 = objc_claimAutoreleasedReturnValue()) != 0))
       {

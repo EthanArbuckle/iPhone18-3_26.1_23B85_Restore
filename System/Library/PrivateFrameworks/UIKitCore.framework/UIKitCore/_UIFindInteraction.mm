@@ -2,10 +2,10 @@
 - (UIView)view;
 - (_UIFindInteraction)init;
 - (_UITextSearching)searchableObject;
-- (id)findInteraction:(id)a3 sessionForView:(id)a4;
-- (void)didMoveToView:(id)a3;
-- (void)findInteraction:(id)a3 didBeginFindSession:(id)a4;
-- (void)findInteraction:(id)a3 didEndFindSession:(id)a4;
+- (id)findInteraction:(id)interaction sessionForView:(id)view;
+- (void)didMoveToView:(id)view;
+- (void)findInteraction:(id)interaction didBeginFindSession:(id)session;
+- (void)findInteraction:(id)interaction didEndFindSession:(id)session;
 @end
 
 @implementation _UIFindInteraction
@@ -17,10 +17,10 @@
   return [(_UIFindInteraction *)&v3 init];
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v7 = a3;
-  objc_storeWeak(&self->_view, v7);
+  viewCopy = view;
+  objc_storeWeak(&self->_view, viewCopy);
   wrappedFindInteraction = self->_wrappedFindInteraction;
   if (!wrappedFindInteraction)
   {
@@ -31,10 +31,10 @@
     wrappedFindInteraction = self->_wrappedFindInteraction;
   }
 
-  [(UIFindInteraction *)wrappedFindInteraction didMoveToView:v7];
+  [(UIFindInteraction *)wrappedFindInteraction didMoveToView:viewCopy];
 }
 
-- (id)findInteraction:(id)a3 sessionForView:(id)a4
+- (id)findInteraction:(id)interaction sessionForView:(id)view
 {
   v5 = [UITextSearchingFindSession alloc];
   WeakRetained = objc_loadWeakRetained(&self->_searchableObject);
@@ -43,7 +43,7 @@
   return v7;
 }
 
-- (void)findInteraction:(id)a3 didBeginFindSession:(id)a4
+- (void)findInteraction:(id)interaction didBeginFindSession:(id)session
 {
   WeakRetained = objc_loadWeakRetained(&self->_searchableObject);
   v6 = objc_opt_respondsToSelector();
@@ -55,7 +55,7 @@
   }
 }
 
-- (void)findInteraction:(id)a3 didEndFindSession:(id)a4
+- (void)findInteraction:(id)interaction didEndFindSession:(id)session
 {
   WeakRetained = objc_loadWeakRetained(&self->_searchableObject);
   v6 = objc_opt_respondsToSelector();

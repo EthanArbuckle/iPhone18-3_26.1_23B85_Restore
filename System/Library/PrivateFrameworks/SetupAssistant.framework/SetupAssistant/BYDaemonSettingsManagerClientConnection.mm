@@ -1,15 +1,15 @@
 @interface BYDaemonSettingsManagerClientConnection
-- (void)hasStashedValuesOnDisk:(id)a3;
+- (void)hasStashedValuesOnDisk:(id)disk;
 @end
 
 @implementation BYDaemonSettingsManagerClientConnection
 
-- (void)hasStashedValuesOnDisk:(id)a3
+- (void)hasStashedValuesOnDisk:(id)disk
 {
-  if (a3)
+  if (disk)
   {
-    v4 = a3;
-    (*(a3 + 2))(v4, +[BFFSettingsManager hasStashedValuesOnDisk]);
+    diskCopy = disk;
+    (*(disk + 2))(diskCopy, +[BFFSettingsManager hasStashedValuesOnDisk]);
   }
 }
 

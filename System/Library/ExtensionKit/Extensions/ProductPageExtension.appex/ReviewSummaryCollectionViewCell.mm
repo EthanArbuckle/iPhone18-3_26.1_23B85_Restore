@@ -1,12 +1,12 @@
 @interface ReviewSummaryCollectionViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC20ProductPageExtension31ReviewSummaryCollectionViewCell)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC20ProductPageExtension31ReviewSummaryCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation ReviewSummaryCollectionViewCell
 
-- (_TtC20ProductPageExtension31ReviewSummaryCollectionViewCell)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension31ReviewSummaryCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC20ProductPageExtension31ReviewSummaryCollectionViewCell_itemLayoutContext;
   v5 = sub_10076341C();
@@ -24,7 +24,7 @@
   v12.super_class = type metadata accessor for ReviewSummaryCollectionViewCell();
   v2 = v12.receiver;
   [(ReviewSummaryCollectionViewCell *)&v12 layoutSubviews];
-  v3 = [v2 contentView];
+  contentView = [v2 contentView];
   sub_1000ACA5C();
   sub_10076422C();
   v5 = v4;
@@ -35,10 +35,10 @@
   [*&v2[OBJC_IVAR____TtC20ProductPageExtension31ReviewSummaryCollectionViewCell_reviewSummaryView] setFrame:{v5, v7, v9, v11}];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
-  v4 = [(ReviewSummaryCollectionViewCell *)v3 traitCollection];
+  selfCopy = self;
+  traitCollection = [(ReviewSummaryCollectionViewCell *)selfCopy traitCollection];
   v5 = sub_1003D8880();
   v7 = v6;
 

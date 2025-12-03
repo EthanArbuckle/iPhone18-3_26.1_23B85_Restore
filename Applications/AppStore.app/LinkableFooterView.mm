@@ -1,15 +1,15 @@
 @interface LinkableFooterView
-- (_TtC8AppStoreP33_4C3663C3DFD2A515EF9390A728D5E4B118LinkableFooterView)initWithCoder:(id)a3;
-- (_TtC8AppStoreP33_4C3663C3DFD2A515EF9390A728D5E4B118LinkableFooterView)initWithReuseIdentifier:(id)a3;
+- (_TtC8AppStoreP33_4C3663C3DFD2A515EF9390A728D5E4B118LinkableFooterView)initWithCoder:(id)coder;
+- (_TtC8AppStoreP33_4C3663C3DFD2A515EF9390A728D5E4B118LinkableFooterView)initWithReuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation LinkableFooterView
 
-- (_TtC8AppStoreP33_4C3663C3DFD2A515EF9390A728D5E4B118LinkableFooterView)initWithReuseIdentifier:(id)a3
+- (_TtC8AppStoreP33_4C3663C3DFD2A515EF9390A728D5E4B118LinkableFooterView)initWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -23,7 +23,7 @@
   return sub_10060F2EC(v3, v4);
 }
 
-- (_TtC8AppStoreP33_4C3663C3DFD2A515EF9390A728D5E4B118LinkableFooterView)initWithCoder:(id)a3
+- (_TtC8AppStoreP33_4C3663C3DFD2A515EF9390A728D5E4B118LinkableFooterView)initWithCoder:(id)coder
 {
   v4 = type metadata accessor for FontUseCase();
   v5 = *(v4 - 8);
@@ -46,15 +46,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10060F774();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_10060FA0C(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_10060FA0C(change);
 }
 
 @end

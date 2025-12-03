@@ -1,21 +1,21 @@
 @interface ABSPBSyncObject
-- (ABSPBSyncObject)initWithMemo:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ABSPBSyncObject)initWithMemo:(id)memo;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSequenceNumber:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSequenceNumber:(BOOL)number;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ABSPBSyncObject
 
-- (void)setHasSequenceNumber:(BOOL)a3
+- (void)setHasSequenceNumber:(BOOL)number
 {
-  if (a3)
+  if (number)
   {
     v3 = 2;
   }
@@ -33,8 +33,8 @@
   v7.receiver = self;
   v7.super_class = ABSPBSyncObject;
   v3 = [(ABSPBSyncObject *)&v7 description];
-  v4 = [(ABSPBSyncObject *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(ABSPBSyncObject *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -45,29 +45,29 @@
   contactWrapper = self->_contactWrapper;
   if (contactWrapper)
   {
-    v5 = [(ABSPBContactWrapper *)contactWrapper dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"contactWrapper"];
+    dictionaryRepresentation = [(ABSPBContactWrapper *)contactWrapper dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"contactWrapper"];
   }
 
   deleteWrapper = self->_deleteWrapper;
   if (deleteWrapper)
   {
-    v7 = [(ABSPBDeleteWrapper *)deleteWrapper dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"deleteWrapper"];
+    dictionaryRepresentation2 = [(ABSPBDeleteWrapper *)deleteWrapper dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"deleteWrapper"];
   }
 
   favoritesSyncObject = self->_favoritesSyncObject;
   if (favoritesSyncObject)
   {
-    v9 = [(ABSPBFavoritesSyncObject *)favoritesSyncObject dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"favoritesSyncObject"];
+    dictionaryRepresentation3 = [(ABSPBFavoritesSyncObject *)favoritesSyncObject dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation3 forKey:@"favoritesSyncObject"];
   }
 
   countValidationObject = self->_countValidationObject;
   if (countValidationObject)
   {
-    v11 = [(ABSPBCountValidationObject *)countValidationObject dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"countValidationObject"];
+    dictionaryRepresentation4 = [(ABSPBCountValidationObject *)countValidationObject dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation4 forKey:@"countValidationObject"];
   }
 
   has = self->_has;
@@ -88,53 +88,53 @@
   accountsSyncObject = self->_accountsSyncObject;
   if (accountsSyncObject)
   {
-    v16 = [(ABSPBAccountsSyncObject *)accountsSyncObject dictionaryRepresentation];
-    [v3 setObject:v16 forKey:@"accountsSyncObject"];
+    dictionaryRepresentation5 = [(ABSPBAccountsSyncObject *)accountsSyncObject dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation5 forKey:@"accountsSyncObject"];
   }
 
   containerSyncObject = self->_containerSyncObject;
   if (containerSyncObject)
   {
-    v18 = [(ABSPBContainerAttributes *)containerSyncObject dictionaryRepresentation];
-    [v3 setObject:v18 forKey:@"containerSyncObject"];
+    dictionaryRepresentation6 = [(ABSPBContainerAttributes *)containerSyncObject dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation6 forKey:@"containerSyncObject"];
   }
 
   lmaSyncData = self->_lmaSyncData;
   if (lmaSyncData)
   {
-    v20 = [(ABSPBLimitedAccessSyncData *)lmaSyncData dictionaryRepresentation];
-    [v3 setObject:v20 forKey:@"lmaSyncData"];
+    dictionaryRepresentation7 = [(ABSPBLimitedAccessSyncData *)lmaSyncData dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation7 forKey:@"lmaSyncData"];
   }
 
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_contactWrapper)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_deleteWrapper)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_favoritesSyncObject)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_countValidationObject)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -142,7 +142,7 @@
   {
     sequenceNumber = self->_sequenceNumber;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -150,105 +150,105 @@
   {
     sendTimestamp = self->_sendTimestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_accountsSyncObject)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_containerSyncObject)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_lmaSyncData)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_contactWrapper)
   {
-    [v4 setContactWrapper:?];
-    v4 = v6;
+    [toCopy setContactWrapper:?];
+    toCopy = v6;
   }
 
   if (self->_deleteWrapper)
   {
     [v6 setDeleteWrapper:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_favoritesSyncObject)
   {
     [v6 setFavoritesSyncObject:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_countValidationObject)
   {
     [v6 setCountValidationObject:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 18) = self->_sequenceNumber;
-    *(v4 + 76) |= 2u;
+    *(toCopy + 18) = self->_sequenceNumber;
+    *(toCopy + 76) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = *&self->_sendTimestamp;
-    *(v4 + 76) |= 1u;
+    *(toCopy + 1) = *&self->_sendTimestamp;
+    *(toCopy + 76) |= 1u;
   }
 
   if (self->_accountsSyncObject)
   {
     [v6 setAccountsSyncObject:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_containerSyncObject)
   {
     [v6 setContainerSyncObject:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_lmaSyncData)
   {
     [v6 setLmaSyncData:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(ABSPBContactWrapper *)self->_contactWrapper copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(ABSPBContactWrapper *)self->_contactWrapper copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(ABSPBDeleteWrapper *)self->_deleteWrapper copyWithZone:a3];
+  v8 = [(ABSPBDeleteWrapper *)self->_deleteWrapper copyWithZone:zone];
   v9 = v5[6];
   v5[6] = v8;
 
-  v10 = [(ABSPBFavoritesSyncObject *)self->_favoritesSyncObject copyWithZone:a3];
+  v10 = [(ABSPBFavoritesSyncObject *)self->_favoritesSyncObject copyWithZone:zone];
   v11 = v5[7];
   v5[7] = v10;
 
-  v12 = [(ABSPBCountValidationObject *)self->_countValidationObject copyWithZone:a3];
+  v12 = [(ABSPBCountValidationObject *)self->_countValidationObject copyWithZone:zone];
   v13 = v5[5];
   v5[5] = v12;
 
@@ -266,31 +266,31 @@
     *(v5 + 76) |= 1u;
   }
 
-  v15 = [(ABSPBAccountsSyncObject *)self->_accountsSyncObject copyWithZone:a3];
+  v15 = [(ABSPBAccountsSyncObject *)self->_accountsSyncObject copyWithZone:zone];
   v16 = v5[2];
   v5[2] = v15;
 
-  v17 = [(ABSPBContainerAttributes *)self->_containerSyncObject copyWithZone:a3];
+  v17 = [(ABSPBContainerAttributes *)self->_containerSyncObject copyWithZone:zone];
   v18 = v5[4];
   v5[4] = v17;
 
-  v19 = [(ABSPBLimitedAccessSyncData *)self->_lmaSyncData copyWithZone:a3];
+  v19 = [(ABSPBLimitedAccessSyncData *)self->_lmaSyncData copyWithZone:zone];
   v20 = v5[8];
   v5[8] = v19;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   contactWrapper = self->_contactWrapper;
-  if (contactWrapper | *(v4 + 3))
+  if (contactWrapper | *(equalCopy + 3))
   {
     if (![(ABSPBContactWrapper *)contactWrapper isEqual:?])
     {
@@ -299,7 +299,7 @@
   }
 
   deleteWrapper = self->_deleteWrapper;
-  if (deleteWrapper | *(v4 + 6))
+  if (deleteWrapper | *(equalCopy + 6))
   {
     if (![(ABSPBDeleteWrapper *)deleteWrapper isEqual:?])
     {
@@ -308,7 +308,7 @@
   }
 
   favoritesSyncObject = self->_favoritesSyncObject;
-  if (favoritesSyncObject | *(v4 + 7))
+  if (favoritesSyncObject | *(equalCopy + 7))
   {
     if (![(ABSPBFavoritesSyncObject *)favoritesSyncObject isEqual:?])
     {
@@ -317,7 +317,7 @@
   }
 
   countValidationObject = self->_countValidationObject;
-  if (countValidationObject | *(v4 + 5))
+  if (countValidationObject | *(equalCopy + 5))
   {
     if (![(ABSPBCountValidationObject *)countValidationObject isEqual:?])
     {
@@ -325,16 +325,16 @@
     }
   }
 
-  v9 = *(v4 + 76);
+  v9 = *(equalCopy + 76);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 76) & 2) == 0 || self->_sequenceNumber != *(v4 + 18))
+    if ((*(equalCopy + 76) & 2) == 0 || self->_sequenceNumber != *(equalCopy + 18))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 76) & 2) != 0)
+  else if ((*(equalCopy + 76) & 2) != 0)
   {
 LABEL_26:
     v13 = 0;
@@ -343,25 +343,25 @@ LABEL_26:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 76) & 1) == 0 || self->_sendTimestamp != *(v4 + 1))
+    if ((*(equalCopy + 76) & 1) == 0 || self->_sendTimestamp != *(equalCopy + 1))
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 76))
+  else if (*(equalCopy + 76))
   {
     goto LABEL_26;
   }
 
   accountsSyncObject = self->_accountsSyncObject;
-  if (accountsSyncObject | *(v4 + 2) && ![(ABSPBAccountsSyncObject *)accountsSyncObject isEqual:?])
+  if (accountsSyncObject | *(equalCopy + 2) && ![(ABSPBAccountsSyncObject *)accountsSyncObject isEqual:?])
   {
     goto LABEL_26;
   }
 
   containerSyncObject = self->_containerSyncObject;
-  if (containerSyncObject | *(v4 + 4))
+  if (containerSyncObject | *(equalCopy + 4))
   {
     if (![(ABSPBContainerAttributes *)containerSyncObject isEqual:?])
     {
@@ -370,7 +370,7 @@ LABEL_26:
   }
 
   lmaSyncData = self->_lmaSyncData;
-  if (lmaSyncData | *(v4 + 8))
+  if (lmaSyncData | *(equalCopy + 8))
   {
     v13 = [(ABSPBLimitedAccessSyncData *)lmaSyncData isEqual:?];
   }
@@ -443,12 +443,12 @@ LABEL_9:
   return v16 ^ [(ABSPBLimitedAccessSyncData *)self->_lmaSyncData hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   contactWrapper = self->_contactWrapper;
-  v6 = *(v4 + 3);
-  v20 = v4;
+  v6 = *(fromCopy + 3);
+  v20 = fromCopy;
   if (contactWrapper)
   {
     if (!v6)
@@ -469,10 +469,10 @@ LABEL_9:
     [(ABSPBSyncObject *)self setContactWrapper:?];
   }
 
-  v4 = v20;
+  fromCopy = v20;
 LABEL_7:
   deleteWrapper = self->_deleteWrapper;
-  v8 = *(v4 + 6);
+  v8 = *(fromCopy + 6);
   if (deleteWrapper)
   {
     if (!v8)
@@ -493,10 +493,10 @@ LABEL_7:
     [(ABSPBSyncObject *)self setDeleteWrapper:?];
   }
 
-  v4 = v20;
+  fromCopy = v20;
 LABEL_13:
   favoritesSyncObject = self->_favoritesSyncObject;
-  v10 = *(v4 + 7);
+  v10 = *(fromCopy + 7);
   if (favoritesSyncObject)
   {
     if (!v10)
@@ -517,10 +517,10 @@ LABEL_13:
     [(ABSPBSyncObject *)self setFavoritesSyncObject:?];
   }
 
-  v4 = v20;
+  fromCopy = v20;
 LABEL_19:
   countValidationObject = self->_countValidationObject;
-  v12 = *(v4 + 5);
+  v12 = *(fromCopy + 5);
   if (countValidationObject)
   {
     if (!v12)
@@ -541,24 +541,24 @@ LABEL_19:
     [(ABSPBSyncObject *)self setCountValidationObject:?];
   }
 
-  v4 = v20;
+  fromCopy = v20;
 LABEL_25:
-  v13 = *(v4 + 76);
+  v13 = *(fromCopy + 76);
   if ((v13 & 2) != 0)
   {
-    self->_sequenceNumber = *(v4 + 18);
+    self->_sequenceNumber = *(fromCopy + 18);
     *&self->_has |= 2u;
-    v13 = *(v4 + 76);
+    v13 = *(fromCopy + 76);
   }
 
   if (v13)
   {
-    self->_sendTimestamp = *(v4 + 1);
+    self->_sendTimestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
   accountsSyncObject = self->_accountsSyncObject;
-  v15 = *(v4 + 2);
+  v15 = *(fromCopy + 2);
   if (accountsSyncObject)
   {
     if (!v15)
@@ -579,10 +579,10 @@ LABEL_25:
     [(ABSPBSyncObject *)self setAccountsSyncObject:?];
   }
 
-  v4 = v20;
+  fromCopy = v20;
 LABEL_35:
   containerSyncObject = self->_containerSyncObject;
-  v17 = *(v4 + 4);
+  v17 = *(fromCopy + 4);
   if (containerSyncObject)
   {
     if (!v17)
@@ -603,10 +603,10 @@ LABEL_35:
     [(ABSPBSyncObject *)self setContainerSyncObject:?];
   }
 
-  v4 = v20;
+  fromCopy = v20;
 LABEL_41:
   lmaSyncData = self->_lmaSyncData;
-  v19 = *(v4 + 8);
+  v19 = *(fromCopy + 8);
   if (lmaSyncData)
   {
     if (v19)
@@ -623,9 +623,9 @@ LABEL_41:
   _objc_release_x1();
 }
 
-- (ABSPBSyncObject)initWithMemo:(id)a3
+- (ABSPBSyncObject)initWithMemo:(id)memo
 {
-  v4 = a3;
+  memoCopy = memo;
   v11.receiver = self;
   v11.super_class = ABSPBSyncObject;
   v5 = [(ABSPBSyncObject *)&v11 init];
@@ -636,17 +636,17 @@ LABEL_41:
     [v6 timeIntervalSinceReferenceDate];
     [(ABSPBSyncObject *)v5 setSendTimestamp:?];
 
-    v7 = [(ABSPBSyncObject *)v5 sequenceNumber];
-    v8 = [(ABSPBSyncObject *)v5 sequenceNumber];
+    sequenceNumber = [(ABSPBSyncObject *)v5 sequenceNumber];
+    sequenceNumber2 = [(ABSPBSyncObject *)v5 sequenceNumber];
     v9 = *(qword_100071D00 + 8);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109634;
-      v13 = HIWORD(v7);
+      v13 = HIWORD(sequenceNumber);
       v14 = 1024;
-      v15 = v8;
+      v15 = sequenceNumber2;
       v16 = 2114;
-      v17 = v4;
+      v17 = memoCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "S_PKT_NUM: %04x_%04x (%{public}@)", buf, 0x18u);
     }
   }

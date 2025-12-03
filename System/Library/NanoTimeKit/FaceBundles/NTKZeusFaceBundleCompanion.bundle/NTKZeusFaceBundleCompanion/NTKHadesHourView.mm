@@ -1,28 +1,28 @@
 @interface NTKHadesHourView
-+ (id)_assetForHour:(unint64_t)a3 rotation:(unint64_t)a4 statusIcon:(BOOL)a5;
-+ (id)imageForRotation:(unint64_t)a3 palette:(id)a4 hour:(unint64_t)a5 size:(CGSize)a6;
-- (NTKHadesHourView)initWithDevice:(id)a3;
++ (id)_assetForHour:(unint64_t)hour rotation:(unint64_t)rotation statusIcon:(BOOL)icon;
++ (id)imageForRotation:(unint64_t)rotation palette:(id)palette hour:(unint64_t)hour size:(CGSize)size;
+- (NTKHadesHourView)initWithDevice:(id)device;
 - (void)_updateAsset;
 - (void)_updatePalette;
-- (void)applyFraction:(double)a3 fromRotation:(unint64_t)a4 toRotation:(unint64_t)a5;
+- (void)applyFraction:(double)fraction fromRotation:(unint64_t)rotation toRotation:(unint64_t)toRotation;
 - (void)layoutSubviews;
-- (void)setHour:(unint64_t)a3;
-- (void)setPalette:(id)a3;
-- (void)setShowingStatusIcon:(BOOL)a3;
+- (void)setHour:(unint64_t)hour;
+- (void)setPalette:(id)palette;
+- (void)setShowingStatusIcon:(BOOL)icon;
 @end
 
 @implementation NTKHadesHourView
 
-- (NTKHadesHourView)initWithDevice:(id)a3
+- (NTKHadesHourView)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v11.receiver = self;
   v11.super_class = NTKHadesHourView;
   v6 = [(NTKHadesHourView *)&v11 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v7->_rotation = 2;
     v7->_hour = -1;
     v8 = objc_opt_new();
@@ -36,7 +36,7 @@
   return v7;
 }
 
-- (void)applyFraction:(double)a3 fromRotation:(unint64_t)a4 toRotation:(unint64_t)a5
+- (void)applyFraction:(double)fraction fromRotation:(unint64_t)rotation toRotation:(unint64_t)toRotation
 {
   if ([(NTKHadesHourView *)self _isFractionAtEnd:?])
   {
@@ -46,17 +46,17 @@
     v25 = v10;
     v26 = *&CGAffineTransformIdentity.tx;
     [(UIImageView *)hourImageView setTransform:&v24];
-    if (a3 == 0.0)
+    if (fraction == 0.0)
     {
-      v11 = a4;
+      toRotationCopy = rotation;
     }
 
     else
     {
-      v11 = a5;
+      toRotationCopy = toRotation;
     }
 
-    self->_rotation = v11;
+    self->_rotation = toRotationCopy;
     [(NTKHadesHourView *)self _updateAsset];
   }
 
@@ -65,8 +65,8 @@
     v25 = 0u;
     v26 = 0u;
     v24 = 0u;
-    v12 = [(NTKHadesHourView *)self device];
-    sub_16240(v12, &v24);
+    device = [(NTKHadesHourView *)self device];
+    sub_16240(device, &v24);
 
     self->_rotation = 0;
     [(NTKHadesHourView *)self _updateAsset];
@@ -86,16 +86,16 @@
   }
 }
 
-- (void)setPalette:(id)a3
+- (void)setPalette:(id)palette
 {
-  objc_storeStrong(&self->_palette, a3);
+  objc_storeStrong(&self->_palette, palette);
 
   [(NTKHadesHourView *)self _updatePalette];
 }
 
-- (void)setHour:(unint64_t)a3
+- (void)setHour:(unint64_t)hour
 {
-  v3 = (a3 + 11) % 0xC + 1;
+  v3 = (hour + 11) % 0xC + 1;
   if (v3 != self->_hour)
   {
     self->_hour = v3;
@@ -117,22 +117,22 @@
   _objc_release_x1();
 }
 
-- (void)setShowingStatusIcon:(BOOL)a3
+- (void)setShowingStatusIcon:(BOOL)icon
 {
-  if (self->_showingStatusIcon != a3)
+  if (self->_showingStatusIcon != icon)
   {
-    self->_showingStatusIcon = a3;
+    self->_showingStatusIcon = icon;
     [(NTKHadesHourView *)self _updateAsset];
   }
 }
 
 - (void)_updatePalette
 {
-  v3 = [(NTKHadesColorPalette *)self->_palette background];
-  [(NTKHadesHourView *)self setBackgroundColor:v3];
+  background = [(NTKHadesColorPalette *)self->_palette background];
+  [(NTKHadesHourView *)self setBackgroundColor:background];
 
-  v4 = [(NTKHadesColorPalette *)self->_palette numbers];
-  [(UIImageView *)self->_hourImageView setTintColor:v4];
+  numbers = [(NTKHadesColorPalette *)self->_palette numbers];
+  [(UIImageView *)self->_hourImageView setTintColor:numbers];
 }
 
 - (void)layoutSubviews
@@ -144,12 +144,12 @@
   [(UIImageView *)self->_hourImageView ntk_setBoundsAndPositionFromFrame:?];
 }
 
-+ (id)_assetForHour:(unint64_t)a3 rotation:(unint64_t)a4 statusIcon:(BOOL)a5
++ (id)_assetForHour:(unint64_t)hour rotation:(unint64_t)rotation statusIcon:(BOOL)icon
 {
   v5 = 0;
-  if (a3 <= 0xC && a4 <= 1)
+  if (hour <= 0xC && rotation <= 1)
   {
-    if (a4 == 1)
+    if (rotation == 1)
     {
       v7 = @"Twisted";
     }
@@ -159,24 +159,24 @@
       v7 = @"Straight";
     }
 
-    if (a4 != 1 && a5)
+    if (rotation != 1 && icon)
     {
       v7 = [@"Straight" stringByAppendingString:@"-Inset"];
     }
 
-    v8 = [NSString stringWithFormat:@"Hades%@-%d", v7, a3];
-    v5 = [NTKHadesFaceBundle imageWithName:v8];
+    hour = [NSString stringWithFormat:@"Hades%@-%d", v7, hour];
+    v5 = [NTKHadesFaceBundle imageWithName:hour];
   }
 
   return v5;
 }
 
-+ (id)imageForRotation:(unint64_t)a3 palette:(id)a4 hour:(unint64_t)a5 size:(CGSize)a6
++ (id)imageForRotation:(unint64_t)rotation palette:(id)palette hour:(unint64_t)hour size:(CGSize)size
 {
-  height = a6.height;
-  width = a6.width;
-  v11 = a4;
-  v12 = [a1 _assetForHour:a5 rotation:a3 statusIcon:0];
+  height = size.height;
+  width = size.width;
+  paletteCopy = palette;
+  v12 = [self _assetForHour:hour rotation:rotation statusIcon:0];
   if (v12)
   {
     v13 = [[UIGraphicsImageRenderer alloc] initWithSize:{width, height}];
@@ -184,7 +184,7 @@
     v16[1] = 3221225472;
     v16[2] = sub_1607C;
     v16[3] = &unk_45050;
-    v17 = v11;
+    v17 = paletteCopy;
     v18 = v12;
     v14 = [v13 imageWithActions:v16];
   }

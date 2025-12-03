@@ -1,28 +1,28 @@
 @interface FSFileSystemBasis
-+ (void)wipeResource:(id)a3 extension:(id)a4 completionHandler:(id)a5;
++ (void)wipeResource:(id)resource extension:(id)extension completionHandler:(id)handler;
 @end
 
 @implementation FSFileSystemBasis
 
-+ (void)wipeResource:(id)a3 extension:(id)a4 completionHandler:(id)a5
++ (void)wipeResource:(id)resource extension:(id)extension completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  resourceCopy = resource;
+  extensionCopy = extension;
+  handlerCopy = handler;
   v10 = fskit_std_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     [FSFileSystemBasis wipeResource:v10 extension:? completionHandler:?];
   }
 
-  if (v8)
+  if (extensionCopy)
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __62__FSFileSystemBasis_wipeResource_extension_completionHandler___block_invoke;
     v14[3] = &unk_278FECE20;
-    v15 = v9;
-    [v8 sendWipeResource:v7 replyHandler:v14];
+    v15 = handlerCopy;
+    [extensionCopy sendWipeResource:resourceCopy replyHandler:v14];
     v11 = v15;
   }
 
@@ -35,7 +35,7 @@
     }
 
     v11 = fs_errorForPOSIXError(45);
-    (*(v9 + 2))(v9, v11);
+    (*(handlerCopy + 2))(handlerCopy, v11);
   }
 
   v13 = fskit_std_log();

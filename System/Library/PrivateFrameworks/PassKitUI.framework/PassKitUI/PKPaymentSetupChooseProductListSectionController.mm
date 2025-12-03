@@ -1,29 +1,29 @@
 @interface PKPaymentSetupChooseProductListSectionController
-- (PKPaymentSetupChooseProductListSectionController)initWithImage:(id)a3 digitalIssuanceMetadata:(id)a4;
+- (PKPaymentSetupChooseProductListSectionController)initWithImage:(id)image digitalIssuanceMetadata:(id)metadata;
 - (PKPaymentSetupChooseProductListSectionControllerDelegate)delegate;
 - (id)defaultListLayout;
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
 - (void)_generateItems;
-- (void)configureSupplementaryRegistration:(id)a3 elementKind:(id)a4 sectionIdentifier:(id)a5;
-- (void)didSelectItem:(id)a3;
-- (void)showLoadingIndicatorsForItemIdentifier:(id)a3 show:(BOOL)a4;
+- (void)configureSupplementaryRegistration:(id)registration elementKind:(id)kind sectionIdentifier:(id)identifier;
+- (void)didSelectItem:(id)item;
+- (void)showLoadingIndicatorsForItemIdentifier:(id)identifier show:(BOOL)show;
 @end
 
 @implementation PKPaymentSetupChooseProductListSectionController
 
-- (PKPaymentSetupChooseProductListSectionController)initWithImage:(id)a3 digitalIssuanceMetadata:(id)a4
+- (PKPaymentSetupChooseProductListSectionController)initWithImage:(id)image digitalIssuanceMetadata:(id)metadata
 {
-  v7 = a3;
-  v8 = a4;
+  imageCopy = image;
+  metadataCopy = metadata;
   v13.receiver = self;
   v13.super_class = PKPaymentSetupChooseProductListSectionController;
   v9 = [(PKPaymentSetupChooseProductListSectionController *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_digitalIssuanceMetadata, a4);
-    objc_storeStrong(&v10->_cardImage, a3);
+    objc_storeStrong(&v9->_digitalIssuanceMetadata, metadata);
+    objc_storeStrong(&v10->_cardImage, image);
     [(PKPaymentSetupChooseProductListSectionController *)v10 _generateItems];
     v11 = [MEMORY[0x1E69DC800] registrationWithCellClass:objc_opt_class() configurationHandler:&__block_literal_global_233];
     [(PKPaymentSetupChooseProductListSectionController *)v10 setCellRegistration:v11];
@@ -98,17 +98,17 @@ void __90__PKPaymentSetupChooseProductListSectionController_initWithImage_digita
 {
   v39 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PKPaymentDigitalIssuanceMetadata *)self->_digitalIssuanceMetadata autoTopUpProduct];
-  v5 = [(PKPaymentDigitalIssuanceMetadata *)self->_digitalIssuanceMetadata serviceProviderProducts];
-  v6 = [v5 count];
+  autoTopUpProduct = [(PKPaymentDigitalIssuanceMetadata *)self->_digitalIssuanceMetadata autoTopUpProduct];
+  serviceProviderProducts = [(PKPaymentDigitalIssuanceMetadata *)self->_digitalIssuanceMetadata serviceProviderProducts];
+  v6 = [serviceProviderProducts count];
 
-  if (v4)
+  if (autoTopUpProduct)
   {
-    v7 = [v4 localizedDisplayName];
-    v8 = v7;
-    if (v7)
+    localizedDisplayName = [autoTopUpProduct localizedDisplayName];
+    v8 = localizedDisplayName;
+    if (localizedDisplayName)
     {
-      v9 = v7;
+      v9 = localizedDisplayName;
     }
 
     else
@@ -118,11 +118,11 @@ void __90__PKPaymentSetupChooseProductListSectionController_initWithImage_digita
 
     v10 = v9;
 
-    v11 = [v4 localizedDescription];
-    v12 = v11;
-    if (v11)
+    localizedDescription = [autoTopUpProduct localizedDescription];
+    v12 = localizedDescription;
+    if (localizedDescription)
     {
-      v13 = v11;
+      v13 = localizedDescription;
     }
 
     else
@@ -139,15 +139,15 @@ void __90__PKPaymentSetupChooseProductListSectionController_initWithImage_digita
     [v3 addObject:@"AutoTopUpSectionIdentifier"];
   }
 
-  v17 = [(PKPaymentDigitalIssuanceMetadata *)self->_digitalIssuanceMetadata balanceIdentifier];
+  balanceIdentifier = [(PKPaymentDigitalIssuanceMetadata *)self->_digitalIssuanceMetadata balanceIdentifier];
 
-  if (v17)
+  if (balanceIdentifier)
   {
-    v18 = [(PKPaymentDigitalIssuanceMetadata *)self->_digitalIssuanceMetadata balanceLocalizedDisplayName];
-    v19 = v18;
-    if (v18)
+    balanceLocalizedDisplayName = [(PKPaymentDigitalIssuanceMetadata *)self->_digitalIssuanceMetadata balanceLocalizedDisplayName];
+    v19 = balanceLocalizedDisplayName;
+    if (balanceLocalizedDisplayName)
     {
-      v20 = v18;
+      v20 = balanceLocalizedDisplayName;
     }
 
     else
@@ -157,11 +157,11 @@ void __90__PKPaymentSetupChooseProductListSectionController_initWithImage_digita
 
     v21 = v20;
 
-    v22 = [(PKPaymentDigitalIssuanceMetadata *)self->_digitalIssuanceMetadata balanceLocalizedDescription];
-    v23 = v22;
-    if (v22)
+    balanceLocalizedDescription = [(PKPaymentDigitalIssuanceMetadata *)self->_digitalIssuanceMetadata balanceLocalizedDescription];
+    v23 = balanceLocalizedDescription;
+    if (balanceLocalizedDescription)
     {
-      v24 = v22;
+      v24 = balanceLocalizedDescription;
     }
 
     else
@@ -177,11 +177,11 @@ void __90__PKPaymentSetupChooseProductListSectionController_initWithImage_digita
 
   if (v6)
   {
-    v27 = [(PKPaymentDigitalIssuanceMetadata *)self->_digitalIssuanceMetadata serviceProviderProductsLocalizedDisplayName];
-    v28 = v27;
-    if (v27)
+    serviceProviderProductsLocalizedDisplayName = [(PKPaymentDigitalIssuanceMetadata *)self->_digitalIssuanceMetadata serviceProviderProductsLocalizedDisplayName];
+    v28 = serviceProviderProductsLocalizedDisplayName;
+    if (serviceProviderProductsLocalizedDisplayName)
     {
-      v29 = v27;
+      v29 = serviceProviderProductsLocalizedDisplayName;
     }
 
     else
@@ -191,11 +191,11 @@ void __90__PKPaymentSetupChooseProductListSectionController_initWithImage_digita
 
     v30 = v29;
 
-    v31 = [(PKPaymentDigitalIssuanceMetadata *)self->_digitalIssuanceMetadata serviceProviderProductsLocalizedDescription];
-    v32 = v31;
-    if (v31)
+    serviceProviderProductsLocalizedDescription = [(PKPaymentDigitalIssuanceMetadata *)self->_digitalIssuanceMetadata serviceProviderProductsLocalizedDescription];
+    v32 = serviceProviderProductsLocalizedDescription;
+    if (serviceProviderProductsLocalizedDescription)
     {
-      v33 = v31;
+      v33 = serviceProviderProductsLocalizedDescription;
     }
 
     else
@@ -222,19 +222,19 @@ void __90__PKPaymentSetupChooseProductListSectionController_initWithImage_digita
   [(PKDynamicListSectionController *)self setIdentifiers:v38];
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
-  if ([v5 isEqualToString:@"AutoTopUpSectionIdentifier"])
+  if ([identifierCopy isEqualToString:@"AutoTopUpSectionIdentifier"])
   {
     v9[0] = self->_autoTopUpItem;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
     [v6 appendItems:v7];
   }
 
-  else if ([v5 isEqualToString:@"BalanceAndCommutePlansSectionIdentifier"])
+  else if ([identifierCopy isEqualToString:@"BalanceAndCommutePlansSectionIdentifier"])
   {
     [v6 appendItems:self->_balanceAndCommutePlansItems];
   }
@@ -242,11 +242,11 @@ void __90__PKPaymentSetupChooseProductListSectionController_initWithImage_digita
   return v6;
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained didSelectPKPaymentSetupChooseProductListItem:v4];
+  [WeakRetained didSelectPKPaymentSetupChooseProductListItem:itemCopy];
 }
 
 - (id)defaultListLayout
@@ -258,48 +258,48 @@ void __90__PKPaymentSetupChooseProductListSectionController_initWithImage_digita
   return v2;
 }
 
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKPaymentSetupChooseProductListSectionController *)self defaultListLayout];
-  if (([v7 isEqualToString:@"PostpPaidSectionIdentifier"] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"AutoTopUpSectionIdentifier") && !self->_postPaidItem || objc_msgSend(v7, "isEqualToString:", @"BalanceAndCommutePlansSectionIdentifier") && !self->_postPaidItem && !self->_autoTopUpItem)
+  environmentCopy = environment;
+  identifierCopy = identifier;
+  defaultListLayout = [(PKPaymentSetupChooseProductListSectionController *)self defaultListLayout];
+  if (([identifierCopy isEqualToString:@"PostpPaidSectionIdentifier"] & 1) != 0 || objc_msgSend(identifierCopy, "isEqualToString:", @"AutoTopUpSectionIdentifier") && !self->_postPaidItem || objc_msgSend(identifierCopy, "isEqualToString:", @"BalanceAndCommutePlansSectionIdentifier") && !self->_postPaidItem && !self->_autoTopUpItem)
   {
-    [v8 setHeaderMode:1];
+    [defaultListLayout setHeaderMode:1];
   }
 
-  v9 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v8 layoutEnvironment:v6];
+  v9 = [MEMORY[0x1E6995580] sectionWithListConfiguration:defaultListLayout layoutEnvironment:environmentCopy];
   [v9 contentInsets];
   [v9 setContentInsets:PKSetupViewConstantsListSectionInset(v10)];
 
   return v9;
 }
 
-- (void)configureSupplementaryRegistration:(id)a3 elementKind:(id)a4 sectionIdentifier:(id)a5
+- (void)configureSupplementaryRegistration:(id)registration elementKind:(id)kind sectionIdentifier:(id)identifier
 {
   cardImage = self->_cardImage;
-  v6 = a3;
+  registrationCopy = registration;
   v7 = PKLocalizedPaymentString(&cfstr_TransitChooseF.isa);
   v8 = PKLocalizedPaymentString(&cfstr_TransitChooseF_0.isa);
-  [v6 configureWithUIImage:cardImage title:v7 subtitle:v8];
+  [registrationCopy configureWithUIImage:cardImage title:v7 subtitle:v8];
 
   v9 = PKProvisioningBackgroundColor();
-  [v6 setBackgroundColor:v9];
+  [registrationCopy setBackgroundColor:v9];
 }
 
-- (void)showLoadingIndicatorsForItemIdentifier:(id)a3 show:(BOOL)a4
+- (void)showLoadingIndicatorsForItemIdentifier:(id)identifier show:(BOOL)show
 {
-  v4 = a4;
-  v8 = a3;
-  if (!v4)
+  showCopy = show;
+  identifierCopy = identifier;
+  if (!showCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained deselectCells];
   }
 
-  if ([v8 isEqualToString:@"AutoTopUpItemIdentifier"])
+  if ([identifierCopy isEqualToString:@"AutoTopUpItemIdentifier"])
   {
-    [(PKPaymentSetupChooseProductListItem *)self->_autoTopUpItem setLoadingIndicatorVisible:v4];
+    [(PKPaymentSetupChooseProductListItem *)self->_autoTopUpItem setLoadingIndicatorVisible:showCopy];
     v7 = objc_loadWeakRetained(&self->_delegate);
     [v7 reloadItem:self->_autoTopUpItem animated:1];
   }

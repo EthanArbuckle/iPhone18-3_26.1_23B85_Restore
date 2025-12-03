@@ -1,26 +1,26 @@
 @interface NLLexiconCursor
 - (BOOL)hasChildren;
 - (BOOL)hasEntries;
-- (NLLexiconCursor)initWithLexicon:(id)a3 cursor:(_LXCursor *)a4;
-- (NLLexiconCursor)initWithLexicon:(id)a3 string:(id)a4;
+- (NLLexiconCursor)initWithLexicon:(id)lexicon cursor:(_LXCursor *)cursor;
+- (NLLexiconCursor)initWithLexicon:(id)lexicon string:(id)string;
 - (NSString)traversedString;
 - (double)prefixProbability;
 - (double)terminationProbability;
-- (id)cursorByAdvancingWithString:(id)a3;
-- (void)_enumerateEntriesUsingBlock:(id)a3;
+- (id)cursorByAdvancingWithString:(id)string;
+- (void)_enumerateEntriesUsingBlock:(id)block;
 - (void)dealloc;
-- (void)enumerateChildrenUsingBlock:(id)a3;
-- (void)enumerateCompletionsUsingBlock:(id)a3;
-- (void)enumerateEntriesUsingBlock:(id)a3;
+- (void)enumerateChildrenUsingBlock:(id)block;
+- (void)enumerateCompletionsUsingBlock:(id)block;
+- (void)enumerateEntriesUsingBlock:(id)block;
 @end
 
 @implementation NLLexiconCursor
 
-- (NLLexiconCursor)initWithLexicon:(id)a3 cursor:(_LXCursor *)a4
+- (NLLexiconCursor)initWithLexicon:(id)lexicon cursor:(_LXCursor *)cursor
 {
-  v7 = a3;
-  v8 = 0;
-  if (v7 && a4)
+  lexiconCopy = lexicon;
+  selfCopy = 0;
+  if (lexiconCopy && cursor)
   {
     v12.receiver = self;
     v12.super_class = NLLexiconCursor;
@@ -28,25 +28,25 @@
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_lexicon, a3);
-      v10->_cursor = CFRetain(a4);
+      objc_storeStrong(&v9->_lexicon, lexicon);
+      v10->_cursor = CFRetain(cursor);
     }
 
     self = v10;
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (NLLexiconCursor)initWithLexicon:(id)a3 string:(id)a4
+- (NLLexiconCursor)initWithLexicon:(id)lexicon string:(id)string
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 lexicon])
+  lexiconCopy = lexicon;
+  stringCopy = string;
+  if ([lexiconCopy lexicon])
   {
     RootCursor = LXLexiconCreateRootCursor();
-    if ([v7 length] && RootCursor)
+    if ([stringCopy length] && RootCursor)
     {
       v9 = LXCursorCreateByAdvancing();
       CFRelease(RootCursor);
@@ -59,7 +59,7 @@
     RootCursor = 0;
   }
 
-  v10 = [(NLLexiconCursor *)self initWithLexicon:v6 cursor:RootCursor];
+  v10 = [(NLLexiconCursor *)self initWithLexicon:lexiconCopy cursor:RootCursor];
   if (RootCursor)
   {
     CFRelease(RootCursor);
@@ -81,10 +81,10 @@
   [(NLLexiconCursor *)&v4 dealloc];
 }
 
-- (id)cursorByAdvancingWithString:(id)a3
+- (id)cursorByAdvancingWithString:(id)string
 {
-  v4 = a3;
-  if ([v4 length] && self->_cursor && (v5 = LXCursorCreateByAdvancing()) != 0)
+  stringCopy = string;
+  if ([stringCopy length] && self->_cursor && (v5 = LXCursorCreateByAdvancing()) != 0)
   {
     v6 = v5;
     v7 = [[NLLexiconCursor alloc] initWithLexicon:self->_lexicon cursor:v5];
@@ -160,13 +160,13 @@
   return v3;
 }
 
-- (void)enumerateChildrenUsingBlock:(id)a3
+- (void)enumerateChildrenUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
+  blockCopy = block;
+  v5 = blockCopy;
   if (self->_cursor)
   {
-    v6 = v4;
+    v6 = blockCopy;
     LXCursorEnumerateChildren();
   }
 }
@@ -177,13 +177,13 @@ void __47__NLLexiconCursor_enumerateChildrenUsingBlock___block_invoke(uint64_t a
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_enumerateEntriesUsingBlock:(id)a3
+- (void)_enumerateEntriesUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
+  blockCopy = block;
+  v5 = blockCopy;
   if (self->_cursor)
   {
-    v6 = v4;
+    v6 = blockCopy;
     LXCursorEnumerateEntries();
   }
 }
@@ -202,15 +202,15 @@ void __47__NLLexiconCursor__enumerateEntriesUsingBlock___block_invoke(uint64_t a
   }
 }
 
-- (void)enumerateEntriesUsingBlock:(id)a3
+- (void)enumerateEntriesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__NLLexiconCursor_enumerateEntriesUsingBlock___block_invoke;
   v6[3] = &unk_1E7629120;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(NLLexiconCursor *)self _enumerateEntriesUsingBlock:v6];
 }
 
@@ -220,13 +220,13 @@ void __46__NLLexiconCursor_enumerateEntriesUsingBlock___block_invoke(uint64_t a1
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)enumerateCompletionsUsingBlock:(id)a3
+- (void)enumerateCompletionsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
+  blockCopy = block;
+  v5 = blockCopy;
   if (self->_cursor)
   {
-    v6 = v4;
+    v6 = blockCopy;
     LXCursorEnumerateEntriesRecursively();
   }
 }

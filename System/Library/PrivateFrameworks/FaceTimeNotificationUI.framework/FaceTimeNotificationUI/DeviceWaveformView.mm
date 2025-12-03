@@ -1,11 +1,11 @@
 @interface DeviceWaveformView
-- (_TtC22FaceTimeNotificationUIP33_5E4BFF483B7A95AA7E6FD0B9F3B21C1818DeviceWaveformView)initWithCoder:(id)a3;
+- (_TtC22FaceTimeNotificationUIP33_5E4BFF483B7A95AA7E6FD0B9F3B21C1818DeviceWaveformView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation DeviceWaveformView
 
-- (_TtC22FaceTimeNotificationUIP33_5E4BFF483B7A95AA7E6FD0B9F3B21C1818DeviceWaveformView)initWithCoder:(id)a3
+- (_TtC22FaceTimeNotificationUIP33_5E4BFF483B7A95AA7E6FD0B9F3B21C1818DeviceWaveformView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC22FaceTimeNotificationUIP33_5E4BFF483B7A95AA7E6FD0B9F3B21C1818DeviceWaveformView_barColor;
   *(&self->super.super.super.isa + v4) = [objc_opt_self() systemGreenColor];
@@ -19,7 +19,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24AA67B98();
 }
 

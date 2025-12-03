@@ -7,20 +7,20 @@
 
 - (id)localizedStatusDisplayString
 {
-  v1 = [a1 status];
-  v2 = [v1 localizedPreferredName];
+  status = [self status];
+  localizedPreferredName = [status localizedPreferredName];
 
-  return v2;
+  return localizedPreferredName;
 }
 
 - (id)displayItems
 {
   v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = [a1 recordItem];
-  [v2 hk_addNonNilObject:v3];
+  recordItem = [self recordItem];
+  [v2 hk_addNonNilObject:recordItem];
 
-  v4 = [a1 statusItem];
-  [v2 hk_addNonNilObject:v4];
+  statusItem = [self statusItem];
+  [v2 hk_addNonNilObject:statusItem];
 
   v5 = [v2 copy];
 

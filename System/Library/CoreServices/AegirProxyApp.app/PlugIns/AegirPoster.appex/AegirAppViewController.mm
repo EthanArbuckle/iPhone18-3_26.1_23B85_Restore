@@ -1,14 +1,14 @@
 @interface AegirAppViewController
-- (_TtC11AegirPoster22AegirAppViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC11AegirPoster22AegirAppViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (uint64_t)astronomyVistaViewContentsAnimationFinished:;
 - (void)dealloc;
-- (void)didTapView:(id)a3;
+- (void)didTapView:(id)view;
 - (void)onDeviceOrientationDidChange;
-- (void)preferencePaneDidChangeWithPreference:(id)a3;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
+- (void)preferencePaneDidChangeWithPreference:(id)preference;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
 - (void)viewDidLoad;
 @end
 
@@ -16,80 +16,80 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10002DF0C();
 }
 
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver:v4];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver:selfCopy];
 
-  v6 = [objc_opt_self() currentDevice];
-  [v6 endGeneratingDeviceOrientationNotifications];
+  currentDevice = [objc_opt_self() currentDevice];
+  [currentDevice endGeneratingDeviceOrientationNotifications];
 
   sub_10002EAFC();
-  v7.receiver = v4;
+  v7.receiver = selfCopy;
   v7.super_class = type metadata accessor for AegirAppViewController();
   [(AegirAppViewController *)&v7 dealloc];
 }
 
 - (void)onDeviceOrientationDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_10002E41C();
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  sub_10002EF94(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  sub_10002EF94(scrollCopy);
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
-  v5 = self;
-  sub_10002F25C(v4);
+  deceleratingCopy = decelerating;
+  selfCopy = self;
+  sub_10002F25C(deceleratingCopy);
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
-    v5 = self;
+    selfCopy = self;
     sub_10002F544();
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  x = a4.x;
-  v8 = a3;
-  v9 = self;
-  sub_100031C94(v8, a5, x);
+  x = velocity.x;
+  draggingCopy = dragging;
+  selfCopy = self;
+  sub_100031C94(draggingCopy, offset, x);
 }
 
-- (void)didTapView:(id)a3
+- (void)didTapView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_10002FB7C(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_10002FB7C(viewCopy);
 }
 
-- (void)preferencePaneDidChangeWithPreference:(id)a3
+- (void)preferencePaneDidChangeWithPreference:(id)preference
 {
-  v4 = a3;
-  v5 = self;
+  preferenceCopy = preference;
+  selfCopy = self;
   sub_100030EEC();
 }
 
-- (_TtC11AegirPoster22AegirAppViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11AegirPoster22AegirAppViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_1000349B4();
     v7 = v6;
@@ -101,8 +101,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_10003106C(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_10003106C(v5, v7, bundle);
 }
 
 - (uint64_t)astronomyVistaViewContentsAnimationFinished:

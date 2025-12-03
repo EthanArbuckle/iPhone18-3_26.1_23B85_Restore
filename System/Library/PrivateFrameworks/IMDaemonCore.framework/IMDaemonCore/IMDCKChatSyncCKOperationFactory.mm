@@ -1,77 +1,77 @@
 @interface IMDCKChatSyncCKOperationFactory
-- (id)_chatFetchRecordZoneChangesCKConfiguration:(id)a3;
-- (id)_chatFetchRecordZoneChangesOptionsDictionaryUsingToken:(id)a3 zoneID:(id)a4 resultsLimit:(unint64_t)a5;
-- (id)_chatSyncOperationGroupWithName:(id)a3;
-- (id)_chatWriteRecordsCKConfiguration:(id)a3;
-- (id)deleteChatCKOperationUsingRecordIDstoDelete:(id)a3;
-- (id)fetchChatCKOperationUsingRecordIDs:(id)a3;
-- (id)fetchChatZoneChangesCKOperationUsingToken:(id)a3 zone:(id)a4 resultsLimit:(unint64_t)a5 groupName:(id)a6 activity:(id)a7;
-- (id)saveChatsCKOperationUsingRecordsToSave:(id)a3 activity:(id)a4;
+- (id)_chatFetchRecordZoneChangesCKConfiguration:(id)configuration;
+- (id)_chatFetchRecordZoneChangesOptionsDictionaryUsingToken:(id)token zoneID:(id)d resultsLimit:(unint64_t)limit;
+- (id)_chatSyncOperationGroupWithName:(id)name;
+- (id)_chatWriteRecordsCKConfiguration:(id)configuration;
+- (id)deleteChatCKOperationUsingRecordIDstoDelete:(id)delete;
+- (id)fetchChatCKOperationUsingRecordIDs:(id)ds;
+- (id)fetchChatZoneChangesCKOperationUsingToken:(id)token zone:(id)zone resultsLimit:(unint64_t)limit groupName:(id)name activity:(id)activity;
+- (id)saveChatsCKOperationUsingRecordsToSave:(id)save activity:(id)activity;
 @end
 
 @implementation IMDCKChatSyncCKOperationFactory
 
-- (id)_chatFetchRecordZoneChangesOptionsDictionaryUsingToken:(id)a3 zoneID:(id)a4 resultsLimit:(unint64_t)a5
+- (id)_chatFetchRecordZoneChangesOptionsDictionaryUsingToken:(id)token zoneID:(id)d resultsLimit:(unint64_t)limit
 {
   v7 = MEMORY[0x277CBEB38];
-  v8 = a4;
-  v9 = a3;
+  dCopy = d;
+  tokenCopy = token;
   v10 = objc_alloc_init(v7);
   v11 = objc_alloc_init(MEMORY[0x277CBC3A0]);
   [v11 setDesiredKeys:0];
-  [v11 setPreviousServerChangeToken:v9];
+  [v11 setPreviousServerChangeToken:tokenCopy];
 
-  [v11 setResultsLimit:a5];
-  [v10 setObject:v11 forKey:v8];
+  [v11 setResultsLimit:limit];
+  [v10 setObject:v11 forKey:dCopy];
 
   return v10;
 }
 
-- (id)_chatFetchRecordZoneChangesCKConfiguration:(id)a3
+- (id)_chatFetchRecordZoneChangesCKConfiguration:(id)configuration
 {
   v3 = MEMORY[0x277CBC4F0];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = objc_alloc_init(v3);
   [v5 setQualityOfService:17];
   [v5 setAllowsCellularAccess:1];
-  [v5 im_setActivity:v4];
+  [v5 im_setActivity:configurationCopy];
 
   return v5;
 }
 
-- (id)_chatSyncOperationGroupWithName:(id)a3
+- (id)_chatSyncOperationGroupWithName:(id)name
 {
-  v3 = a3;
-  if (![(__CFString *)v3 length])
+  nameCopy = name;
+  if (![(__CFString *)nameCopy length])
   {
 
-    v3 = @"ChatSync";
+    nameCopy = @"ChatSync";
   }
 
   v4 = objc_alloc_init(MEMORY[0x277CBC4F8]);
-  [v4 setName:v3];
+  [v4 setName:nameCopy];
 
   return v4;
 }
 
-- (id)fetchChatZoneChangesCKOperationUsingToken:(id)a3 zone:(id)a4 resultsLimit:(unint64_t)a5 groupName:(id)a6 activity:(id)a7
+- (id)fetchChatZoneChangesCKOperationUsingToken:(id)token zone:(id)zone resultsLimit:(unint64_t)limit groupName:(id)name activity:(id)activity
 {
   v29 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  if (v13)
+  tokenCopy = token;
+  zoneCopy = zone;
+  nameCopy = name;
+  activityCopy = activity;
+  if (zoneCopy)
   {
     v16 = objc_alloc(MEMORY[0x277CBC3B8]);
     v17 = IMSingleObjectArray();
-    v18 = [(IMDCKChatSyncCKOperationFactory *)self _chatFetchRecordZoneChangesOptionsDictionaryUsingToken:v12 zoneID:v13 resultsLimit:a5];
+    v18 = [(IMDCKChatSyncCKOperationFactory *)self _chatFetchRecordZoneChangesOptionsDictionaryUsingToken:tokenCopy zoneID:zoneCopy resultsLimit:limit];
     v19 = [v16 initWithRecordZoneIDs:v17 configurationsByRecordZoneID:v18];
 
-    v20 = [(IMDCKChatSyncCKOperationFactory *)self _chatFetchRecordZoneChangesCKConfiguration:v15];
+    v20 = [(IMDCKChatSyncCKOperationFactory *)self _chatFetchRecordZoneChangesCKConfiguration:activityCopy];
     [v19 setConfiguration:v20];
 
-    v21 = [(IMDCKChatSyncCKOperationFactory *)self _chatSyncOperationGroupWithName:v14];
+    v21 = [(IMDCKChatSyncCKOperationFactory *)self _chatSyncOperationGroupWithName:nameCopy];
     [v19 setGroup:v21];
 
     [v19 setFetchAllChanges:1];
@@ -80,9 +80,9 @@
       v22 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
-        v23 = [v19 operationID];
+        operationID = [v19 operationID];
         v27 = 138412290;
-        v28 = v23;
+        v28 = operationID;
         _os_log_impl(&dword_22B4CC000, v22, OS_LOG_TYPE_INFO, "Created fetch chat operation ID %@", &v27, 0xCu);
       }
     }
@@ -108,45 +108,45 @@
   return v19;
 }
 
-- (id)_chatWriteRecordsCKConfiguration:(id)a3
+- (id)_chatWriteRecordsCKConfiguration:(id)configuration
 {
   v3 = MEMORY[0x277CBC4F0];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = objc_alloc_init(v3);
   [v5 setQualityOfService:17];
   [v5 setAllowsCellularAccess:1];
-  [v5 im_setActivity:v4];
+  [v5 im_setActivity:configurationCopy];
 
   return v5;
 }
 
-- (id)saveChatsCKOperationUsingRecordsToSave:(id)a3 activity:(id)a4
+- (id)saveChatsCKOperationUsingRecordsToSave:(id)save activity:(id)activity
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  saveCopy = save;
+  activityCopy = activity;
+  if (saveCopy)
   {
-    v8 = [objc_alloc(MEMORY[0x277CBC4A0]) initWithRecordsToSave:v6 recordIDsToDelete:0];
+    v8 = [objc_alloc(MEMORY[0x277CBC4A0]) initWithRecordsToSave:saveCopy recordIDsToDelete:0];
     [v8 setAtomic:1];
     [v8 setSavePolicy:1];
-    v9 = [(IMDCKChatSyncCKOperationFactory *)self _chatWriteRecordsCKConfiguration:v7];
+    v9 = [(IMDCKChatSyncCKOperationFactory *)self _chatWriteRecordsCKConfiguration:activityCopy];
     [v8 setConfiguration:v9];
 
-    v10 = [(IMDCKChatSyncCKOperationFactory *)self _chatSyncOperationGroup];
-    [v8 setGroup:v10];
+    _chatSyncOperationGroup = [(IMDCKChatSyncCKOperationFactory *)self _chatSyncOperationGroup];
+    [v8 setGroup:_chatSyncOperationGroup];
 
-    v11 = [v8 group];
-    [v11 setQuantity:{objc_msgSend(v6, "count")}];
+    group = [v8 group];
+    [group setQuantity:{objc_msgSend(saveCopy, "count")}];
 
     if (IMOSLoggingEnabled())
     {
       v12 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
-        v13 = [v8 operationID];
+        operationID = [v8 operationID];
         v17 = 138412290;
-        v18 = v13;
+        v18 = operationID;
         _os_log_impl(&dword_22B4CC000, v12, OS_LOG_TYPE_INFO, "Created modify chat operation ID %@", &v17, 0xCu);
       }
     }
@@ -172,27 +172,27 @@
   return v8;
 }
 
-- (id)deleteChatCKOperationUsingRecordIDstoDelete:(id)a3
+- (id)deleteChatCKOperationUsingRecordIDstoDelete:(id)delete
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CBC4A0]) initWithRecordsToSave:0 recordIDsToDelete:v4];
+  deleteCopy = delete;
+  v5 = [objc_alloc(MEMORY[0x277CBC4A0]) initWithRecordsToSave:0 recordIDsToDelete:deleteCopy];
   [v5 setAtomic:0];
   v6 = objc_alloc_init(MEMORY[0x277CBC4F0]);
   [v6 setQualityOfService:17];
   [v6 setAllowsCellularAccess:1];
-  v7 = [(IMDCKChatSyncCKOperationFactory *)self _chatSyncOperationGroup];
-  [v7 setQuantity:{objc_msgSend(v4, "count")}];
+  _chatSyncOperationGroup = [(IMDCKChatSyncCKOperationFactory *)self _chatSyncOperationGroup];
+  [_chatSyncOperationGroup setQuantity:{objc_msgSend(deleteCopy, "count")}];
   [v5 setConfiguration:v6];
-  [v5 setGroup:v7];
+  [v5 setGroup:_chatSyncOperationGroup];
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [v5 operationID];
+      operationID = [v5 operationID];
       v12 = 138412290;
-      v13 = v9;
+      v13 = operationID;
       _os_log_impl(&dword_22B4CC000, v8, OS_LOG_TYPE_INFO, "Created deleted chat operation ID %@", &v12, 0xCu);
     }
   }
@@ -202,26 +202,26 @@
   return v5;
 }
 
-- (id)fetchChatCKOperationUsingRecordIDs:(id)a3
+- (id)fetchChatCKOperationUsingRecordIDs:(id)ds
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CBC3E0]) initWithRecordIDs:v4];
+  dsCopy = ds;
+  v5 = [objc_alloc(MEMORY[0x277CBC3E0]) initWithRecordIDs:dsCopy];
   v6 = objc_alloc_init(MEMORY[0x277CBC4F0]);
   [v6 setQualityOfService:17];
   [v6 setAllowsCellularAccess:1];
-  v7 = [(IMDCKChatSyncCKOperationFactory *)self _chatSyncOperationGroup];
-  [v7 setQuantity:{objc_msgSend(v4, "count")}];
+  _chatSyncOperationGroup = [(IMDCKChatSyncCKOperationFactory *)self _chatSyncOperationGroup];
+  [_chatSyncOperationGroup setQuantity:{objc_msgSend(dsCopy, "count")}];
   [v5 setConfiguration:v6];
-  [v5 setGroup:v7];
+  [v5 setGroup:_chatSyncOperationGroup];
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [v5 operationID];
+      operationID = [v5 operationID];
       v12 = 138412290;
-      v13 = v9;
+      v13 = operationID;
       _os_log_impl(&dword_22B4CC000, v8, OS_LOG_TYPE_INFO, "Created fetch chat operation ID %@", &v12, 0xCu);
     }
   }

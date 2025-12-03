@@ -1,28 +1,28 @@
 @interface TPSCollectionViewLayoutAttributes
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)edgeParallaxOffset;
 - (CGPoint)parallaxOffset;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TPSCollectionViewLayoutAttributes
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = TPSCollectionViewLayoutAttributes;
-  v4 = [(TPSCollectionViewLayoutAttributes *)&v6 copyWithZone:a3];
+  v4 = [(TPSCollectionViewLayoutAttributes *)&v6 copyWithZone:zone];
   [v4 setParallaxOffset:{self->_parallaxOffset.x, self->_parallaxOffset.y}];
   [v4 setEdgeParallaxOffset:{self->_edgeParallaxOffset.x, self->_edgeParallaxOffset.y}];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v13.receiver = self;
   v13.super_class = TPSCollectionViewLayoutAttributes;
-  if (![(TPSCollectionViewLayoutAttributes *)&v13 isEqual:v4])
+  if (![(TPSCollectionViewLayoutAttributes *)&v13 isEqual:equalCopy])
   {
     goto LABEL_7;
   }
@@ -34,11 +34,11 @@
     goto LABEL_12;
   }
 
-  [v4 parallaxOffset];
+  [equalCopy parallaxOffset];
   if (self->_parallaxOffset.x == v6 && self->_parallaxOffset.y == v5)
   {
     p_edgeParallaxOffset = &self->_edgeParallaxOffset;
-    [v4 edgeParallaxOffset];
+    [equalCopy edgeParallaxOffset];
     v8 = p_edgeParallaxOffset->y == v11 && p_edgeParallaxOffset->x == v10;
   }
 

@@ -1,34 +1,34 @@
 @interface HMDHomeAccessCodeModel
-+ (id)modelUUIDForHomeUUID:(id)a3 accessCodeValue:(id)a4;
++ (id)modelUUIDForHomeUUID:(id)d accessCodeValue:(id)value;
 + (id)properties;
-- (HMDHomeAccessCodeModel)initWithHomeUUID:(id)a3 value:(id)a4 label:(id)a5;
+- (HMDHomeAccessCodeModel)initWithHomeUUID:(id)d value:(id)value label:(id)label;
 @end
 
 @implementation HMDHomeAccessCodeModel
 
-- (HMDHomeAccessCodeModel)initWithHomeUUID:(id)a3 value:(id)a4 label:(id)a5
+- (HMDHomeAccessCodeModel)initWithHomeUUID:(id)d value:(id)value label:(id)label
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [HMDHomeAccessCodeModel modelUUIDForHomeUUID:v10 accessCodeValue:v8];
-  v12 = [(HMDBackingStoreModelObject *)self initWithObjectChangeType:1 uuid:v11 parentUUID:v10];
+  valueCopy = value;
+  labelCopy = label;
+  dCopy = d;
+  v11 = [HMDHomeAccessCodeModel modelUUIDForHomeUUID:dCopy accessCodeValue:valueCopy];
+  v12 = [(HMDBackingStoreModelObject *)self initWithObjectChangeType:1 uuid:v11 parentUUID:dCopy];
 
   if (v12)
   {
-    [(HMDHomeAccessCodeModel *)v12 setValue:v8];
-    [(HMDHomeAccessCodeModel *)v12 setLabel:v9];
+    [(HMDHomeAccessCodeModel *)v12 setValue:valueCopy];
+    [(HMDHomeAccessCodeModel *)v12 setLabel:labelCopy];
   }
 
   return v12;
 }
 
-+ (id)modelUUIDForHomeUUID:(id)a3 accessCodeValue:(id)a4
++ (id)modelUUIDForHomeUUID:(id)d accessCodeValue:(id)value
 {
   v5 = MEMORY[0x277CCAD78];
-  v6 = a3;
-  v7 = [a4 dataUsingEncoding:4];
-  v8 = [v5 hmf_UUIDWithNamespace:v6 data:v7];
+  dCopy = d;
+  v7 = [value dataUsingEncoding:4];
+  v8 = [v5 hmf_UUIDWithNamespace:dCopy data:v7];
 
   return v8;
 }

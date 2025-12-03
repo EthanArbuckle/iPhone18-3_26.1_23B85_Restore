@@ -1,27 +1,27 @@
 @interface SYFormFillingDocumentAttributes
-+ (BOOL)removeFormFillingDocumentAttributesForFileAtURL:(id)a3 error:(id *)a4;
++ (BOOL)removeFormFillingDocumentAttributesForFileAtURL:(id)l error:(id *)error;
 + (id)dictionaryRepresentationWithNullValues;
-+ (id)formFillingDocumentAttributesForFileAtURL:(id)a3 error:(id *)a4;
-+ (void)_removeFormFillingDocumentAttributesForFileAtURL:(void *)a3 completion:;
-+ (void)formFillingDocumentAttributesForFileAtURL:(id)a3 completion:(id)a4;
-- (BOOL)saveToFileURL:(id)a3 error:(id *)a4;
-- (SYFormFillingDocumentAttributes)initWithFormFillingCoachingDisabled:(BOOL)a3;
++ (id)formFillingDocumentAttributesForFileAtURL:(id)l error:(id *)error;
++ (void)_removeFormFillingDocumentAttributesForFileAtURL:(void *)l completion:;
++ (void)formFillingDocumentAttributesForFileAtURL:(id)l completion:(id)completion;
+- (BOOL)saveToFileURL:(id)l error:(id *)error;
+- (SYFormFillingDocumentAttributes)initWithFormFillingCoachingDisabled:(BOOL)disabled;
 - (id)dictionaryRepresentation;
-- (uint64_t)_formFillingCoachingDisabledValueFromDictionary:(uint64_t)a1;
+- (uint64_t)_formFillingCoachingDisabledValueFromDictionary:(uint64_t)dictionary;
 - (uint64_t)initWithDictionary:(uint64_t)result;
-- (void)_saveToFileURL:(void *)a3 completion:;
+- (void)_saveToFileURL:(void *)l completion:;
 @end
 
 @implementation SYFormFillingDocumentAttributes
 
-- (SYFormFillingDocumentAttributes)initWithFormFillingCoachingDisabled:(BOOL)a3
+- (SYFormFillingDocumentAttributes)initWithFormFillingCoachingDisabled:(BOOL)disabled
 {
   v5.receiver = self;
   v5.super_class = SYFormFillingDocumentAttributes;
   result = [(SYFormFillingDocumentAttributes *)&v5 init];
   if (result)
   {
-    result->_formFillingCoachingDisabled = a3;
+    result->_formFillingCoachingDisabled = disabled;
   }
 
   return result;
@@ -39,10 +39,10 @@
   return v0;
 }
 
-+ (id)formFillingDocumentAttributesForFileAtURL:(id)a3 error:(id *)a4
++ (id)formFillingDocumentAttributesForFileAtURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  lCopy = l;
+  if (lCopy)
   {
     v7 = dispatch_semaphore_create(0);
     *buf = 0;
@@ -65,14 +65,14 @@
     v15 = &v16;
     v8 = v7;
     v13 = v8;
-    [a1 formFillingDocumentAttributesForFileAtURL:v6 completion:v12];
+    [self formFillingDocumentAttributesForFileAtURL:lCopy completion:v12];
     dispatch_semaphore_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
-    if (a4)
+    if (error)
     {
       v9 = v17[5];
       if (v9)
       {
-        *a4 = v9;
+        *error = v9;
       }
     }
 
@@ -113,16 +113,16 @@ void __83__SYFormFillingDocumentAttributes_formFillingDocumentAttributesForFileA
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (void)formFillingDocumentAttributesForFileAtURL:(id)a3 completion:(id)a4
++ (void)formFillingDocumentAttributesForFileAtURL:(id)l completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  lCopy = l;
+  completionCopy = completion;
+  if (!lCopy)
     v9 = {;
     objc_exception_throw(v9);
   }
 
-  v7 = v6;
+  v7 = completionCopy;
   if (!os_variant_has_internal_diagnostics() || ([SYFormFillingDocumentAttributes formFillingDocumentAttributesForFileAtURL:v7 completion:&v12]& 1) != 0)
   {
     v10[0] = MEMORY[0x277D85DD0];
@@ -130,7 +130,7 @@ void __83__SYFormFillingDocumentAttributes_formFillingDocumentAttributesForFileA
     v10[2] = __88__SYFormFillingDocumentAttributes_formFillingDocumentAttributesForFileAtURL_completion___block_invoke;
     v10[3] = &unk_27856C1B8;
     v11 = v7;
-    [SYFileExtendedAttributes fetchPrivateAttributesForFileURL:v5 completion:v10];
+    [SYFileExtendedAttributes fetchPrivateAttributesForFileURL:lCopy completion:v10];
     v8 = v11;
   }
 
@@ -140,9 +140,9 @@ void __83__SYFormFillingDocumentAttributes_formFillingDocumentAttributesForFileA
   }
 }
 
-- (BOOL)saveToFileURL:(id)a3 error:(id *)a4
+- (BOOL)saveToFileURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v7 = dispatch_semaphore_create(0);
   v22 = 0;
   v23 = &v22;
@@ -162,14 +162,14 @@ void __83__SYFormFillingDocumentAttributes_formFillingDocumentAttributesForFileA
   v15 = &v16;
   v8 = v7;
   v13 = v8;
-  [(SYFormFillingDocumentAttributes *)self _saveToFileURL:v6 completion:v12];
+  [(SYFormFillingDocumentAttributes *)self _saveToFileURL:lCopy completion:v12];
   dispatch_semaphore_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
-  if (a4)
+  if (error)
   {
     v9 = v17[5];
     if (v9)
     {
-      *a4 = v9;
+      *error = v9;
     }
   }
 
@@ -215,10 +215,10 @@ void __61__SYFormFillingDocumentAttributes__saveToFileURL_completion___block_inv
   (*(*(a1 + 40) + 16))();
 }
 
-+ (BOOL)removeFormFillingDocumentAttributesForFileAtURL:(id)a3 error:(id *)a4
++ (BOOL)removeFormFillingDocumentAttributesForFileAtURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  lCopy = l;
+  if (lCopy)
   {
     v7 = dispatch_semaphore_create(0);
     v22 = 0;
@@ -239,14 +239,14 @@ void __61__SYFormFillingDocumentAttributes__saveToFileURL_completion___block_inv
     v15 = buf;
     v8 = v7;
     v13 = v8;
-    [(SYFormFillingDocumentAttributes *)a1 _removeFormFillingDocumentAttributesForFileAtURL:v6 completion:v12];
+    [(SYFormFillingDocumentAttributes *)self _removeFormFillingDocumentAttributesForFileAtURL:lCopy completion:v12];
     dispatch_semaphore_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
-    if (a4)
+    if (error)
     {
       v9 = *(v17 + 5);
       if (v9)
       {
-        *a4 = v9;
+        *error = v9;
       }
     }
 
@@ -278,10 +278,10 @@ void __89__SYFormFillingDocumentAttributes_removeFormFillingDocumentAttributesFo
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (void)_removeFormFillingDocumentAttributesForFileAtURL:(void *)a3 completion:
++ (void)_removeFormFillingDocumentAttributesForFileAtURL:(void *)l completion:
 {
   v4 = a2;
-  v5 = a3;
+  lCopy = l;
   objc_opt_self();
   v6 = +[SYFormFillingDocumentAttributes dictionaryRepresentationWithNullValues];
   v9[0] = MEMORY[0x277D85DD0];
@@ -289,8 +289,8 @@ void __89__SYFormFillingDocumentAttributes_removeFormFillingDocumentAttributesFo
   v9[2] = __95__SYFormFillingDocumentAttributes__removeFormFillingDocumentAttributesForFileAtURL_completion___block_invoke;
   v9[3] = &unk_27856B6E8;
   v10 = v4;
-  v11 = v5;
-  v7 = v5;
+  v11 = lCopy;
+  v7 = lCopy;
   v8 = v4;
   [SYFileExtendedAttributes setPrivateAttributes:v6 forFileURL:v8 completion:v9];
 }
@@ -327,9 +327,9 @@ void __95__SYFormFillingDocumentAttributes__removeFormFillingDocumentAttributesF
   return result;
 }
 
-- (uint64_t)_formFillingCoachingDisabledValueFromDictionary:(uint64_t)a1
+- (uint64_t)_formFillingCoachingDisabledValueFromDictionary:(uint64_t)dictionary
 {
-  if (!a1)
+  if (!dictionary)
   {
     return 0;
   }
@@ -340,9 +340,9 @@ void __95__SYFormFillingDocumentAttributes__removeFormFillingDocumentAttributesF
     goto LABEL_7;
   }
 
-  v3 = [MEMORY[0x277CBEB68] null];
-  v4 = v3;
-  if (v2 == v3)
+  null = [MEMORY[0x277CBEB68] null];
+  v4 = null;
+  if (v2 == null)
   {
 
     goto LABEL_7;
@@ -367,23 +367,23 @@ LABEL_8:
 - (id)dictionaryRepresentation
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v5 = @"SYFormFillingCoachingDisabled";
-    v1 = [a1 formFillingCoachingDisabled];
+    formFillingCoachingDisabled = [self formFillingCoachingDisabled];
     v2 = @"0";
-    if (v1)
+    if (formFillingCoachingDisabled)
     {
       v2 = @"1";
     }
 
     v6[0] = v2;
-    a1 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v6 forKeys:&v5 count:1];
+    self = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v6 forKeys:&v5 count:1];
   }
 
   v3 = *MEMORY[0x277D85DE8];
 
-  return a1;
+  return self;
 }
 
 void __88__SYFormFillingDocumentAttributes_formFillingDocumentAttributesForFileAtURL_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -404,20 +404,20 @@ void __88__SYFormFillingDocumentAttributes_formFillingDocumentAttributesForFileA
   }
 }
 
-- (void)_saveToFileURL:(void *)a3 completion:
+- (void)_saveToFileURL:(void *)l completion:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  lCopy = l;
+  v7 = lCopy;
+  if (self)
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __61__SYFormFillingDocumentAttributes__saveToFileURL_completion___block_invoke;
     v14[3] = &unk_27856B4C0;
-    v15 = v6;
+    v15 = lCopy;
     v8 = MEMORY[0x22AA6A360](v14);
-    v9 = [(SYFormFillingDocumentAttributes *)a1 dictionaryRepresentation];
+    dictionaryRepresentation = [(SYFormFillingDocumentAttributes *)self dictionaryRepresentation];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __61__SYFormFillingDocumentAttributes__saveToFileURL_completion___block_invoke_2;
@@ -425,7 +425,7 @@ void __88__SYFormFillingDocumentAttributes_formFillingDocumentAttributesForFileA
     v12 = v5;
     v13 = v8;
     v10 = v8;
-    [SYFileExtendedAttributes setPrivateAttributes:v9 forFileURL:v12 completion:v11];
+    [SYFileExtendedAttributes setPrivateAttributes:dictionaryRepresentation forFileURL:v12 completion:v11];
   }
 }
 

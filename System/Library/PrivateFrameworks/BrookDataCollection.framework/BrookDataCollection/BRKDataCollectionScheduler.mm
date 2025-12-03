@@ -1,8 +1,8 @@
 @interface BRKDataCollectionScheduler
 - (BRKDataCollectionScheduler)init;
-- (void)_queue_schedule:(id)a3;
+- (void)_queue_schedule:(id)_queue_schedule;
 - (void)_queue_setSchedulerCriteria;
-- (void)schedule:(id)a3;
+- (void)schedule:(id)schedule;
 @end
 
 @implementation BRKDataCollectionScheduler
@@ -60,17 +60,17 @@
   dispatch_semaphore_signal(self->_sema);
 }
 
-- (void)schedule:(id)a3
+- (void)schedule:(id)schedule
 {
-  v4 = a3;
+  scheduleCopy = schedule;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39__BRKDataCollectionScheduler_schedule___block_invoke;
   block[3] = &unk_278D27E10;
   block[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = scheduleCopy;
+  v6 = scheduleCopy;
   dispatch_async(queue, block);
   v7 = BRKLoggingObjectForDomain();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -89,9 +89,9 @@ uint64_t __39__BRKDataCollectionScheduler_schedule___block_invoke(uint64_t a1)
   return [v2 _queue_schedule:v3];
 }
 
-- (void)_queue_schedule:(id)a3
+- (void)_queue_schedule:(id)_queue_schedule
 {
-  v4 = a3;
+  _queue_scheduleCopy = _queue_schedule;
   dispatch_assert_queue_V2(self->_queue);
   sema = self->_sema;
   v6 = dispatch_time(0xFFFFFFFFFFFFFFFELL, 300);
@@ -126,7 +126,7 @@ uint64_t __39__BRKDataCollectionScheduler_schedule___block_invoke(uint64_t a1)
     v12[1] = 3221225472;
     v12[2] = __46__BRKDataCollectionScheduler__queue_schedule___block_invoke;
     v12[3] = &unk_278D27E38;
-    v13 = v4;
+    v13 = _queue_scheduleCopy;
     [(NSBackgroundActivityScheduler *)scheduler scheduleWithBlock:v12];
     v10 = v13;
   }

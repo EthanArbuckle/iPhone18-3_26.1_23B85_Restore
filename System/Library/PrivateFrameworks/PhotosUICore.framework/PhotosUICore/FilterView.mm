@@ -1,7 +1,7 @@
 @interface FilterView
-- (_TtC12PhotosUICoreP33_1A021748C2E8715B5DBBC8A539A4122610FilterView)initWithCoder:(id)a3;
-- (_TtC12PhotosUICoreP33_1A021748C2E8715B5DBBC8A539A4122610FilterView)initWithFrame:(CGRect)a3;
-- (void)handleTap:(id)a3;
+- (_TtC12PhotosUICoreP33_1A021748C2E8715B5DBBC8A539A4122610FilterView)initWithCoder:(id)coder;
+- (_TtC12PhotosUICoreP33_1A021748C2E8715B5DBBC8A539A4122610FilterView)initWithFrame:(CGRect)frame;
+- (void)handleTap:(id)tap;
 - (void)layoutSubviews;
 @end
 
@@ -19,13 +19,13 @@
   [*&v2[OBJC_IVAR____TtC12PhotosUICoreP33_1A021748C2E8715B5DBBC8A539A4122610FilterView_button] _setCornerRadius_];
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  v4 = a3;
-  v8 = self;
-  if ([v4 state] == 3 && (v5 = *(&v8->super.super.super.isa + OBJC_IVAR____TtC12PhotosUICoreP33_1A021748C2E8715B5DBBC8A539A4122610FilterView_onShowDetails)) != 0)
+  tapCopy = tap;
+  selfCopy = self;
+  if ([tapCopy state] == 3 && (v5 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC12PhotosUICoreP33_1A021748C2E8715B5DBBC8A539A4122610FilterView_onShowDetails)) != 0)
   {
-    v6 = *(&v8->super.super._responderFlags + OBJC_IVAR____TtC12PhotosUICoreP33_1A021748C2E8715B5DBBC8A539A4122610FilterView_onShowDetails);
+    v6 = *(&selfCopy->super.super._responderFlags + OBJC_IVAR____TtC12PhotosUICoreP33_1A021748C2E8715B5DBBC8A539A4122610FilterView_onShowDetails);
 
     v5(v7);
 
@@ -37,7 +37,7 @@
   }
 }
 
-- (_TtC12PhotosUICoreP33_1A021748C2E8715B5DBBC8A539A4122610FilterView)initWithCoder:(id)a3
+- (_TtC12PhotosUICoreP33_1A021748C2E8715B5DBBC8A539A4122610FilterView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC12PhotosUICoreP33_1A021748C2E8715B5DBBC8A539A4122610FilterView_onToggle);
   *v3 = 0;
@@ -53,7 +53,7 @@
   return result;
 }
 
-- (_TtC12PhotosUICoreP33_1A021748C2E8715B5DBBC8A539A4122610FilterView)initWithFrame:(CGRect)a3
+- (_TtC12PhotosUICoreP33_1A021748C2E8715B5DBBC8A539A4122610FilterView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

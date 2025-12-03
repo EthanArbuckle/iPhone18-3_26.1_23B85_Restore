@@ -6,14 +6,14 @@
 
 + (id)getLastMidnightDate
 {
-  v0 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v1 = [MEMORY[0x1E695DF00] date];
-  v2 = [v0 components:28 fromDate:v1];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  date = [MEMORY[0x1E695DF00] date];
+  v2 = [currentCalendar components:28 fromDate:date];
   [v2 setHour:0];
   [v2 setMinute:0];
   [v2 setSecond:0];
   [v2 setNanosecond:0];
-  v3 = [v0 dateFromComponents:v2];
+  v3 = [currentCalendar dateFromComponents:v2];
 
   return v3;
 }

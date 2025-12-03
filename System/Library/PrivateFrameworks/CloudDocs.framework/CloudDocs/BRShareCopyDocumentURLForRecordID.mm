@@ -1,39 +1,39 @@
 @interface BRShareCopyDocumentURLForRecordID
-- (BRShareCopyDocumentURLForRecordID)initWithRecordID:(id)a3 fileURL:(id)a4 withServerLookup:(BOOL)a5;
-- (BRShareCopyDocumentURLForRecordID)initWithRecordID:(id)a3 withServerLookup:(BOOL)a4;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (BRShareCopyDocumentURLForRecordID)initWithRecordID:(id)d fileURL:(id)l withServerLookup:(BOOL)lookup;
+- (BRShareCopyDocumentURLForRecordID)initWithRecordID:(id)d withServerLookup:(BOOL)lookup;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)main;
 @end
 
 @implementation BRShareCopyDocumentURLForRecordID
 
-- (BRShareCopyDocumentURLForRecordID)initWithRecordID:(id)a3 withServerLookup:(BOOL)a4
+- (BRShareCopyDocumentURLForRecordID)initWithRecordID:(id)d withServerLookup:(BOOL)lookup
 {
-  v7 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = BRShareCopyDocumentURLForRecordID;
-  v8 = [(BRShareOperation *)&v11 initWithDirectConnection];
-  v9 = v8;
-  if (v8)
+  initWithDirectConnection = [(BRShareOperation *)&v11 initWithDirectConnection];
+  v9 = initWithDirectConnection;
+  if (initWithDirectConnection)
   {
-    objc_storeStrong(&v8->_recordID, a3);
-    v9->_withServerLookup = a4;
+    objc_storeStrong(&initWithDirectConnection->_recordID, d);
+    v9->_withServerLookup = lookup;
   }
 
   return v9;
 }
 
-- (BRShareCopyDocumentURLForRecordID)initWithRecordID:(id)a3 fileURL:(id)a4 withServerLookup:(BOOL)a5
+- (BRShareCopyDocumentURLForRecordID)initWithRecordID:(id)d fileURL:(id)l withServerLookup:(BOOL)lookup
 {
-  v8 = a3;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = BRShareCopyDocumentURLForRecordID;
-  v9 = [(BRShareOperation *)&v12 initWithDirectConnection];
-  v10 = v9;
-  if (v9)
+  initWithDirectConnection = [(BRShareOperation *)&v12 initWithDirectConnection];
+  v10 = initWithDirectConnection;
+  if (initWithDirectConnection)
   {
-    objc_storeStrong(&v9->_recordID, a3);
-    v10->_withServerLookup = a5;
+    objc_storeStrong(&initWithDirectConnection->_recordID, d);
+    v10->_withServerLookup = lookup;
   }
 
   return v10;
@@ -42,8 +42,8 @@
 - (void)main
 {
   v8 = *MEMORY[0x1E69E9840];
-  *(a1 + 352);
-  v7 = *(a1 + 344);
+  *(self + 352);
+  v7 = *(self + 344);
   OUTLINED_FUNCTION_3_0();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0x20u);
   v6 = *MEMORY[0x1E69E9840];
@@ -57,21 +57,21 @@ void __41__BRShareCopyDocumentURLForRecordID_main__block_invoke(uint64_t a1, voi
   [v4 completedWithResult:v6 error:v5];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BRShareCopyDocumentURLForRecordID *)self copyDocumentURLCompletionBlock];
-  v9 = v8;
-  if (v8)
+  resultCopy = result;
+  errorCopy = error;
+  copyDocumentURLCompletionBlock = [(BRShareCopyDocumentURLForRecordID *)self copyDocumentURLCompletionBlock];
+  v9 = copyDocumentURLCompletionBlock;
+  if (copyDocumentURLCompletionBlock)
   {
-    (*(v8 + 16))(v8, v6, v7);
+    (*(copyDocumentURLCompletionBlock + 16))(copyDocumentURLCompletionBlock, resultCopy, errorCopy);
     [(BRShareCopyDocumentURLForRecordID *)self setCopyDocumentURLCompletionBlock:0];
   }
 
   v10.receiver = self;
   v10.super_class = BRShareCopyDocumentURLForRecordID;
-  [(BROperation *)&v10 finishWithResult:v6 error:v7];
+  [(BROperation *)&v10 finishWithResult:resultCopy error:errorCopy];
 }
 
 @end

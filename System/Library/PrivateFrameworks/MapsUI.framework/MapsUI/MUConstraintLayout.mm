@@ -1,13 +1,13 @@
 @interface MUConstraintLayout
-- (MUConstraintLayout)initWithInternal:(id)a3;
+- (MUConstraintLayout)initWithInternal:(id)internal;
 @end
 
 @implementation MUConstraintLayout
 
-- (MUConstraintLayout)initWithInternal:(id)a3
+- (MUConstraintLayout)initWithInternal:(id)internal
 {
-  v5 = a3;
-  if (v5)
+  internalCopy = internal;
+  if (internalCopy)
   {
     v10.receiver = self;
     v10.super_class = MUConstraintLayout;
@@ -15,19 +15,19 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_internal, a3);
+      objc_storeStrong(&v6->_internal, internal);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

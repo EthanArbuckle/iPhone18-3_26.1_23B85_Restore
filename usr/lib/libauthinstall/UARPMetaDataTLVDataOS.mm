@@ -1,6 +1,6 @@
 @interface UARPMetaDataTLVDataOS
 - (UARPMetaDataTLVDataOS)init;
-- (id)generateTLV:(unsigned int)a3 tlvValue:(id)a4;
+- (id)generateTLV:(unsigned int)v tlvValue:(id)value;
 @end
 
 @implementation UARPMetaDataTLVDataOS
@@ -12,16 +12,16 @@
   return [(UARPMetaDataTLVOS *)&v3 init];
 }
 
-- (id)generateTLV:(unsigned int)a3 tlvValue:(id)a4
+- (id)generateTLV:(unsigned int)v tlvValue:(id)value
 {
   v5 = MEMORY[0x29EDB8DF8];
-  v6 = a4;
+  valueCopy = value;
   v7 = objc_alloc_init(v5);
-  v11 = uarpHtonl(a3);
+  v11 = uarpHtonl(v);
   [v7 appendBytes:&v11 length:4];
-  v10 = uarpHtonl([v6 length]);
+  v10 = uarpHtonl([valueCopy length]);
   [v7 appendBytes:&v10 length:4];
-  [v7 appendData:v6];
+  [v7 appendData:valueCopy];
 
   v8 = [MEMORY[0x29EDB8DA0] dataWithData:v7];
 

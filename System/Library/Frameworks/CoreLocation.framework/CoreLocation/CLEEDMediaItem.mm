@@ -1,18 +1,18 @@
 @interface CLEEDMediaItem
-+ (id)createMediaItemFromDict:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CLEEDMediaItem)initWithCoder:(id)a3;
-- (CLEEDMediaItem)initWithURL:(id)a3 assetIdentifier:(id)a4 sandboxExtension:(id)a5 mediaType:(int64_t)a6;
-- (CLEEDMediaItem)initWithURL:(id)a3 sandboxExtension:(id)a4 mediaType:(int64_t)a5;
++ (id)createMediaItemFromDict:(id)dict;
+- (BOOL)isEqual:(id)equal;
+- (CLEEDMediaItem)initWithCoder:(id)coder;
+- (CLEEDMediaItem)initWithURL:(id)l assetIdentifier:(id)identifier sandboxExtension:(id)extension mediaType:(int64_t)type;
+- (CLEEDMediaItem)initWithURL:(id)l sandboxExtension:(id)extension mediaType:(int64_t)type;
 - (id)createMediaItemDict;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLEEDMediaItem
 
-- (CLEEDMediaItem)initWithURL:(id)a3 sandboxExtension:(id)a4 mediaType:(int64_t)a5
+- (CLEEDMediaItem)initWithURL:(id)l sandboxExtension:(id)extension mediaType:(int64_t)type
 {
   v22 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46E0 != -1)
@@ -26,11 +26,11 @@
     *buf = 136446978;
     v15 = "[CLEEDMediaItem initWithURL:sandboxExtension:mediaType:]";
     v16 = 2114;
-    v17 = a3;
+    lCopy = l;
     v18 = 2114;
-    v19 = a4;
+    extensionCopy = extension;
     v20 = 2050;
-    v21 = a5;
+    typeCopy = type;
     _os_log_impl(&dword_19B873000, v9, OS_LOG_TYPE_DEBUG, "#EED2FWK,%{public}s[URL:%{public}@,Token:%{public}@,Type:%{public}lu]", buf, 0x2Au);
   }
 
@@ -51,12 +51,12 @@
     }
   }
 
-  result = [(CLEEDMediaItem *)self initWithURL:a3 assetIdentifier:0 sandboxExtension:a4 mediaType:a5];
+  result = [(CLEEDMediaItem *)self initWithURL:l assetIdentifier:0 sandboxExtension:extension mediaType:type];
   v13 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (CLEEDMediaItem)initWithURL:(id)a3 assetIdentifier:(id)a4 sandboxExtension:(id)a5 mediaType:(int64_t)a6
+- (CLEEDMediaItem)initWithURL:(id)l assetIdentifier:(id)identifier sandboxExtension:(id)extension mediaType:(int64_t)type
 {
   v40 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46E0 != -1)
@@ -70,13 +70,13 @@
     *buf = 136447234;
     v31 = "[CLEEDMediaItem initWithURL:assetIdentifier:sandboxExtension:mediaType:]";
     v32 = 2114;
-    v33 = a3;
+    lCopy = l;
     v34 = 2114;
-    v35 = a4;
+    identifierCopy = identifier;
     v36 = 2114;
-    v37 = a5;
+    extensionCopy = extension;
     v38 = 2050;
-    v39 = a6;
+    typeCopy = type;
     _os_log_impl(&dword_19B873000, v11, OS_LOG_TYPE_DEBUG, "#EED2FWK,%{public}s[URL:%{public}@,assetIdentifier:%{public}@,Token:%{public}@,Type:%{public}lu]", buf, 0x34u);
   }
 
@@ -92,13 +92,13 @@
     v20 = 136447234;
     v21 = "[CLEEDMediaItem initWithURL:assetIdentifier:sandboxExtension:mediaType:]";
     v22 = 2114;
-    v23 = a3;
+    lCopy2 = l;
     v24 = 2114;
-    v25 = a4;
+    identifierCopy2 = identifier;
     v26 = 2114;
-    v27 = a5;
+    extensionCopy2 = extension;
     v28 = 2050;
-    v29 = a6;
+    typeCopy2 = type;
     v13 = _os_log_send_and_compose_impl();
     sub_19B885924("Generic", 1, 0, 2, "[CLEEDMediaItem initWithURL:assetIdentifier:sandboxExtension:mediaType:]", "CoreLocation: %s\n", v13);
     if (v13 != buf)
@@ -112,10 +112,10 @@
   v14 = [(CLEEDMediaItem *)&v19 init];
   if (v14)
   {
-    *(v14 + 4) = a3;
-    *(v14 + 6) = a5;
-    *(v14 + 5) = a4;
-    *(v14 + 2) = a6;
+    *(v14 + 4) = l;
+    *(v14 + 6) = extension;
+    *(v14 + 5) = identifier;
+    *(v14 + 2) = type;
     *(v14 + 3) = 0;
     *(v14 + 56) = 0u;
     *(v14 + 72) = 0u;
@@ -143,67 +143,67 @@
   [(CLEEDMediaItem *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_URL forKey:@"placeholderURL"];
-  [a3 encodeObject:self->_stagingURL forKey:@"stagingURL"];
-  [a3 encodeObject:self->_encryptedFileURL forKey:@"encryptedURL"];
-  [a3 encodeObject:self->_authTag forKey:@"authTag"];
-  [a3 encodeObject:self->_assetIdentifier forKey:@"assetIdentifier"];
-  [a3 encodeObject:self->_mediaItemID forKey:@"mediaUUID"];
-  [a3 encodeObject:self->_sandboxExtension forKey:@"sandboxExtension"];
-  [a3 encodeInteger:self->_type forKey:@"mediaType"];
-  [a3 encodeInteger:self->_uploadStatus forKey:@"uploadStatus"];
-  [a3 encodeObject:self->_mediaItemFormat forKey:@"mediaItemFormat"];
-  [a3 encodeInteger:self->_mediaItemSizeBytes forKey:@"mediaItemSizeBytes"];
-  [a3 encodeInteger:self->_originalSizeBytes forKey:@"originalSizeBytes"];
-  [a3 encodeInteger:self->_serverUploadStatus forKey:@"serverUploadStatus"];
-  [a3 encodeInteger:self->_uploadAttempts forKey:@"uploadAttempts"];
-  [a3 encodeInteger:self->_durationCopyMs forKey:@"durationCopyMs"];
-  [a3 encodeInteger:self->_durationTranscodeMs forKey:@"durationTranscodeMs"];
-  [a3 encodeInteger:self->_durationEncryptionMs forKey:@"durationEncryptionMs"];
-  [a3 encodeInteger:self->_durationUploadMs forKey:@"durationUploadMs"];
-  [a3 encodeBool:self->_metricProcessed forKey:@"metricProcessed"];
+  [coder encodeObject:self->_URL forKey:@"placeholderURL"];
+  [coder encodeObject:self->_stagingURL forKey:@"stagingURL"];
+  [coder encodeObject:self->_encryptedFileURL forKey:@"encryptedURL"];
+  [coder encodeObject:self->_authTag forKey:@"authTag"];
+  [coder encodeObject:self->_assetIdentifier forKey:@"assetIdentifier"];
+  [coder encodeObject:self->_mediaItemID forKey:@"mediaUUID"];
+  [coder encodeObject:self->_sandboxExtension forKey:@"sandboxExtension"];
+  [coder encodeInteger:self->_type forKey:@"mediaType"];
+  [coder encodeInteger:self->_uploadStatus forKey:@"uploadStatus"];
+  [coder encodeObject:self->_mediaItemFormat forKey:@"mediaItemFormat"];
+  [coder encodeInteger:self->_mediaItemSizeBytes forKey:@"mediaItemSizeBytes"];
+  [coder encodeInteger:self->_originalSizeBytes forKey:@"originalSizeBytes"];
+  [coder encodeInteger:self->_serverUploadStatus forKey:@"serverUploadStatus"];
+  [coder encodeInteger:self->_uploadAttempts forKey:@"uploadAttempts"];
+  [coder encodeInteger:self->_durationCopyMs forKey:@"durationCopyMs"];
+  [coder encodeInteger:self->_durationTranscodeMs forKey:@"durationTranscodeMs"];
+  [coder encodeInteger:self->_durationEncryptionMs forKey:@"durationEncryptionMs"];
+  [coder encodeInteger:self->_durationUploadMs forKey:@"durationUploadMs"];
+  [coder encodeBool:self->_metricProcessed forKey:@"metricProcessed"];
   didApplyDelayMitigation = self->_didApplyDelayMitigation;
 
-  [a3 encodeBool:didApplyDelayMitigation forKey:@"didApplyDelayMitigation"];
+  [coder encodeBool:didApplyDelayMitigation forKey:@"didApplyDelayMitigation"];
 }
 
-- (CLEEDMediaItem)initWithCoder:(id)a3
+- (CLEEDMediaItem)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CLEEDMediaItem;
   v4 = [(CLEEDMediaItem *)&v6 init];
   if (v4)
   {
-    v4->_URL = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"placeholderURL"];
-    v4->_stagingURL = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"stagingURL"];
-    v4->_encryptedFileURL = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"encryptedURL"];
-    v4->_authTag = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"authTag"];
-    v4->_assetIdentifier = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"assetIdentifier"];
-    v4->_mediaItemID = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"mediaUUID"];
-    v4->_sandboxExtension = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"sandboxExtension"];
-    v4->_type = [a3 decodeIntegerForKey:@"mediaType"];
-    v4->_uploadStatus = [a3 decodeIntegerForKey:@"uploadStatus"];
-    v4->_serverUploadStatus = [a3 decodeIntegerForKey:@"serverUploadStatus"];
-    v4->_mediaItemFormat = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"mediaItemFormat"];
-    v4->_mediaItemSizeBytes = [a3 decodeIntegerForKey:@"mediaItemSizeBytes"];
-    v4->_originalSizeBytes = [a3 decodeIntegerForKey:@"originalSizeBytes"];
-    v4->_uploadAttempts = [a3 decodeIntegerForKey:@"uploadAttempts"];
-    v4->_durationCopyMs = [a3 decodeIntegerForKey:@"durationCopyMs"];
-    v4->_durationTranscodeMs = [a3 decodeIntegerForKey:@"durationTranscodeMs"];
-    v4->_durationEncryptionMs = [a3 decodeIntegerForKey:@"durationEncryptionMs"];
-    v4->_durationUploadMs = [a3 decodeIntegerForKey:@"durationUploadMs"];
-    v4->_metricProcessed = [a3 decodeBoolForKey:@"metricProcessed"];
-    v4->_didApplyDelayMitigation = [a3 decodeBoolForKey:@"didApplyDelayMitigation"];
+    v4->_URL = [coder decodeObjectOfClass:objc_opt_class() forKey:@"placeholderURL"];
+    v4->_stagingURL = [coder decodeObjectOfClass:objc_opt_class() forKey:@"stagingURL"];
+    v4->_encryptedFileURL = [coder decodeObjectOfClass:objc_opt_class() forKey:@"encryptedURL"];
+    v4->_authTag = [coder decodeObjectOfClass:objc_opt_class() forKey:@"authTag"];
+    v4->_assetIdentifier = [coder decodeObjectOfClass:objc_opt_class() forKey:@"assetIdentifier"];
+    v4->_mediaItemID = [coder decodeObjectOfClass:objc_opt_class() forKey:@"mediaUUID"];
+    v4->_sandboxExtension = [coder decodeObjectOfClass:objc_opt_class() forKey:@"sandboxExtension"];
+    v4->_type = [coder decodeIntegerForKey:@"mediaType"];
+    v4->_uploadStatus = [coder decodeIntegerForKey:@"uploadStatus"];
+    v4->_serverUploadStatus = [coder decodeIntegerForKey:@"serverUploadStatus"];
+    v4->_mediaItemFormat = [coder decodeObjectOfClass:objc_opt_class() forKey:@"mediaItemFormat"];
+    v4->_mediaItemSizeBytes = [coder decodeIntegerForKey:@"mediaItemSizeBytes"];
+    v4->_originalSizeBytes = [coder decodeIntegerForKey:@"originalSizeBytes"];
+    v4->_uploadAttempts = [coder decodeIntegerForKey:@"uploadAttempts"];
+    v4->_durationCopyMs = [coder decodeIntegerForKey:@"durationCopyMs"];
+    v4->_durationTranscodeMs = [coder decodeIntegerForKey:@"durationTranscodeMs"];
+    v4->_durationEncryptionMs = [coder decodeIntegerForKey:@"durationEncryptionMs"];
+    v4->_durationUploadMs = [coder decodeIntegerForKey:@"durationUploadMs"];
+    v4->_metricProcessed = [coder decodeBoolForKey:@"metricProcessed"];
+    v4->_didApplyDelayMitigation = [coder decodeBoolForKey:@"didApplyDelayMitigation"];
   }
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -214,12 +214,12 @@
   {
     if ([(CLEEDMediaItem *)self assetIdentifier])
     {
-      if ([a3 assetIdentifier])
+      if ([equal assetIdentifier])
       {
-        if (-[NSString isEqualToString:](-[CLEEDMediaItem assetIdentifier](self, "assetIdentifier"), "isEqualToString:", [a3 assetIdentifier]))
+        if (-[NSString isEqualToString:](-[CLEEDMediaItem assetIdentifier](self, "assetIdentifier"), "isEqualToString:", [equal assetIdentifier]))
         {
-          v5 = [(CLEEDMediaItem *)self type];
-          if (v5 == [a3 type])
+          type = [(CLEEDMediaItem *)self type];
+          if (type == [equal type])
           {
             return 1;
           }
@@ -233,9 +233,9 @@
 
 - (unint64_t)hash
 {
-  v2 = [(CLEEDMediaItem *)self assetIdentifier];
+  assetIdentifier = [(CLEEDMediaItem *)self assetIdentifier];
 
-  return [(NSString *)v2 hash];
+  return [(NSString *)assetIdentifier hash];
 }
 
 - (id)createMediaItemDict
@@ -303,10 +303,10 @@
   return v3;
 }
 
-+ (id)createMediaItemFromDict:(id)a3
++ (id)createMediaItemFromDict:(id)dict
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = [a3 valueForKey:@"placeholderURL"];
+  v4 = [dict valueForKey:@"placeholderURL"];
   v5 = objc_alloc(MEMORY[0x1E695DFF8]);
   if (v4)
   {
@@ -320,9 +320,9 @@
 
   v7 = [v5 initWithString:v6];
   v8 = v7;
-  v9 = [a3 valueForKey:@"assetIdentifier"];
-  v10 = [a3 valueForKey:@"sandboxExtension"];
-  v11 = [objc_msgSend(a3 valueForKey:{@"mediaType", "intValue"}];
+  v9 = [dict valueForKey:@"assetIdentifier"];
+  v10 = [dict valueForKey:@"sandboxExtension"];
+  v11 = [objc_msgSend(dict valueForKey:{@"mediaType", "intValue"}];
   if (v7)
   {
     v12 = v10 == 0;
@@ -375,8 +375,8 @@
   else
   {
     v16 = [[CLEEDMediaItem alloc] initWithURL:v7 assetIdentifier:v9 sandboxExtension:v10 mediaType:v11];
-    -[CLEEDMediaItem setUploadStatus:](v16, "setUploadStatus:", [objc_msgSend(a3 valueForKey:{@"uploadStatus", "intValue"}]);
-    v17 = [a3 valueForKey:@"stagingURL"];
+    -[CLEEDMediaItem setUploadStatus:](v16, "setUploadStatus:", [objc_msgSend(dict valueForKey:{@"uploadStatus", "intValue"}]);
+    v17 = [dict valueForKey:@"stagingURL"];
     if (v17)
     {
       v18 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v17];
@@ -388,7 +388,7 @@
     }
 
     [(CLEEDMediaItem *)v16 setStagingURL:v18];
-    v19 = [a3 valueForKey:@"encryptedURL"];
+    v19 = [dict valueForKey:@"encryptedURL"];
     if (v19)
     {
       v20 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v19];
@@ -400,8 +400,8 @@
     }
 
     [(CLEEDMediaItem *)v16 setEncryptedFileURL:v20];
-    -[CLEEDMediaItem setAuthTag:](v16, "setAuthTag:", [a3 valueForKey:@"authTag"]);
-    v21 = [a3 valueForKey:@"mediaUUID"];
+    -[CLEEDMediaItem setAuthTag:](v16, "setAuthTag:", [dict valueForKey:@"authTag"]);
+    v21 = [dict valueForKey:@"mediaUUID"];
     if (v21)
     {
       v22 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v21];
@@ -413,17 +413,17 @@
     }
 
     [(CLEEDMediaItem *)v16 setMediaItemID:v22];
-    -[CLEEDMediaItem setMediaItemFormat:](v16, "setMediaItemFormat:", [a3 valueForKey:@"mediaItemFormat"]);
-    -[CLEEDMediaItem setServerUploadStatus:](v16, "setServerUploadStatus:", [objc_msgSend(a3 valueForKey:{@"serverUploadStatus", "integerValue"}]);
-    -[CLEEDMediaItem setMediaItemSizeBytes:](v16, "setMediaItemSizeBytes:", [objc_msgSend(a3 valueForKey:{@"mediaItemSizeBytes", "unsignedIntegerValue"}]);
-    -[CLEEDMediaItem setOriginalSizeBytes:](v16, "setOriginalSizeBytes:", [objc_msgSend(a3 valueForKey:{@"originalSizeBytes", "unsignedIntegerValue"}]);
-    -[CLEEDMediaItem setUploadAttempts:](v16, "setUploadAttempts:", [objc_msgSend(a3 valueForKey:{@"uploadAttempts", "unsignedIntegerValue"}]);
-    -[CLEEDMediaItem setDurationCopyMs:](v16, "setDurationCopyMs:", [objc_msgSend(a3 valueForKey:{@"durationCopyMs", "integerValue"}]);
-    -[CLEEDMediaItem setDurationTranscodeMs:](v16, "setDurationTranscodeMs:", [objc_msgSend(a3 valueForKey:{@"durationTranscodeMs", "integerValue"}]);
-    -[CLEEDMediaItem setDurationUploadMs:](v16, "setDurationUploadMs:", [objc_msgSend(a3 valueForKey:{@"durationUploadMs", "integerValue"}]);
-    -[CLEEDMediaItem setDurationEncryptionMs:](v16, "setDurationEncryptionMs:", [objc_msgSend(a3 valueForKey:{@"durationEncryptionMs", "integerValue"}]);
-    -[CLEEDMediaItem setMetricProcessed:](v16, "setMetricProcessed:", [objc_msgSend(a3 valueForKey:{@"metricProcessed", "BOOLValue"}]);
-    -[CLEEDMediaItem setDidApplyDelayMitigation:](v16, "setDidApplyDelayMitigation:", [objc_msgSend(a3 valueForKey:{@"didApplyDelayMitigation", "BOOLValue"}]);
+    -[CLEEDMediaItem setMediaItemFormat:](v16, "setMediaItemFormat:", [dict valueForKey:@"mediaItemFormat"]);
+    -[CLEEDMediaItem setServerUploadStatus:](v16, "setServerUploadStatus:", [objc_msgSend(dict valueForKey:{@"serverUploadStatus", "integerValue"}]);
+    -[CLEEDMediaItem setMediaItemSizeBytes:](v16, "setMediaItemSizeBytes:", [objc_msgSend(dict valueForKey:{@"mediaItemSizeBytes", "unsignedIntegerValue"}]);
+    -[CLEEDMediaItem setOriginalSizeBytes:](v16, "setOriginalSizeBytes:", [objc_msgSend(dict valueForKey:{@"originalSizeBytes", "unsignedIntegerValue"}]);
+    -[CLEEDMediaItem setUploadAttempts:](v16, "setUploadAttempts:", [objc_msgSend(dict valueForKey:{@"uploadAttempts", "unsignedIntegerValue"}]);
+    -[CLEEDMediaItem setDurationCopyMs:](v16, "setDurationCopyMs:", [objc_msgSend(dict valueForKey:{@"durationCopyMs", "integerValue"}]);
+    -[CLEEDMediaItem setDurationTranscodeMs:](v16, "setDurationTranscodeMs:", [objc_msgSend(dict valueForKey:{@"durationTranscodeMs", "integerValue"}]);
+    -[CLEEDMediaItem setDurationUploadMs:](v16, "setDurationUploadMs:", [objc_msgSend(dict valueForKey:{@"durationUploadMs", "integerValue"}]);
+    -[CLEEDMediaItem setDurationEncryptionMs:](v16, "setDurationEncryptionMs:", [objc_msgSend(dict valueForKey:{@"durationEncryptionMs", "integerValue"}]);
+    -[CLEEDMediaItem setMetricProcessed:](v16, "setMetricProcessed:", [objc_msgSend(dict valueForKey:{@"metricProcessed", "BOOLValue"}]);
+    -[CLEEDMediaItem setDidApplyDelayMitigation:](v16, "setDidApplyDelayMitigation:", [objc_msgSend(dict valueForKey:{@"didApplyDelayMitigation", "BOOLValue"}]);
   }
 
   v23 = *MEMORY[0x1E69E9840];

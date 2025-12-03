@@ -1,61 +1,61 @@
 @interface PLEntryDefinition
-+ (BOOL)cacheSQLPrepareStatementForEntryDefinition:(id)a3;
-+ (BOOL)cacheSQLPrepareStatementForEntryKey:(id)a3;
-+ (BOOL)filterEntryLoggingForEntryDefinition:(id)a3;
-+ (BOOL)filterEntryLoggingForEntryKey:(id)a3;
-+ (BOOL)hasAppIdentifierKeysForEntryDefinition:(id)a3;
-+ (BOOL)hasArrayKeysForEntryDefinition:(id)a3;
-+ (BOOL)hasArrayKeysForEntryKey:(id)a3;
-+ (BOOL)hasDMAKeysForEntryDefinition:(id)a3;
-+ (BOOL)hasDMAKeysForEntryKey:(id)a3;
-+ (BOOL)hasDynamicKeysForEntryDefinition:(id)a3;
-+ (BOOL)hasDynamicKeysForEntryKey:(id)a3;
-+ (BOOL)hasTaskModeKeyForEntryDefinition:(id)a3;
-+ (BOOL)hasTaskModeKeyInConfig:(id)a3;
-+ (BOOL)isAggregateForEntryDefinition:(id)a3;
-+ (BOOL)isAggregateForEntryKey:(id)a3;
-+ (BOOL)isAggregateWallClockBucket:(id)a3;
-+ (BOOL)isAggregateWallClockBucketForEntryDefinition:(id)a3;
-+ (BOOL)isNonEmptyDictionary:(id)a3;
-+ (BOOL)isOnDemandQueryableForEntryDefinition:(id)a3;
-+ (BOOL)isOnDemandQueryableForEntryKey:(id)a3;
-+ (BOOL)overridesEntryDateForEntryDefinition:(id)a3;
-+ (BOOL)overridesEntryDateForEntryKey:(id)a3;
-+ (double)schemaVersionForEntryDefinition:(id)a3;
-+ (double)schemaVersionForEntryKey:(id)a3;
-+ (id)DMAKeysForEntryDefinition:(id)a3;
-+ (id)aggregateBucketDefinitionsForEntryKey:(id)a3;
-+ (id)allAggregateKeysForEntryKey:(id)a3;
-+ (id)allAggregatePrimaryKeysForEntryDefinition:(id)a3;
-+ (id)allAggregatePrimaryKeysForEntryKey:(id)a3;
-+ (id)allDynamicKeysForEntryDefinition:(id)a3;
-+ (id)allDynamicKeysForEntryKey:(id)a3;
-+ (id)allIndexKeysForEntryKey:(id)a3;
-+ (id)allKeysForEntryDefinition:(id)a3;
-+ (id)allKeysForEntryKey:(id)a3;
-+ (id)arrayKeyConfigsForEntryKey:(id)a3;
-+ (id)arrayKeysForEntryKey:(id)a3;
-+ (id)configsForEntryKey:(id)a3;
-+ (id)constructEntryDefinition:(id)a3;
-+ (id)definitionForEntryKey:(id)a3;
-+ (id)dynamicKeyConfigsForEntryKey:(id)a3;
-+ (id)entryDefinitionsForOperator:(id)a3;
-+ (id)entryDefinitionsForOperatorClass:(Class)a3;
-+ (id)keyConfigsForEntryKey:(id)a3;
-+ (id)logSelectorStringForEnteryKey:(id)a3;
-+ (id)logSelectorStringForEntryDefinition:(id)a3;
-+ (id)manualSortOrderForEntryDefinition:(id)a3;
-+ (id)manualSortOrderForEntryKey:(id)a3;
-+ (id)notificationNameForEntryKey:(id)a3 withFilterDefintion:(id)a4;
++ (BOOL)cacheSQLPrepareStatementForEntryDefinition:(id)definition;
++ (BOOL)cacheSQLPrepareStatementForEntryKey:(id)key;
++ (BOOL)filterEntryLoggingForEntryDefinition:(id)definition;
++ (BOOL)filterEntryLoggingForEntryKey:(id)key;
++ (BOOL)hasAppIdentifierKeysForEntryDefinition:(id)definition;
++ (BOOL)hasArrayKeysForEntryDefinition:(id)definition;
++ (BOOL)hasArrayKeysForEntryKey:(id)key;
++ (BOOL)hasDMAKeysForEntryDefinition:(id)definition;
++ (BOOL)hasDMAKeysForEntryKey:(id)key;
++ (BOOL)hasDynamicKeysForEntryDefinition:(id)definition;
++ (BOOL)hasDynamicKeysForEntryKey:(id)key;
++ (BOOL)hasTaskModeKeyForEntryDefinition:(id)definition;
++ (BOOL)hasTaskModeKeyInConfig:(id)config;
++ (BOOL)isAggregateForEntryDefinition:(id)definition;
++ (BOOL)isAggregateForEntryKey:(id)key;
++ (BOOL)isAggregateWallClockBucket:(id)bucket;
++ (BOOL)isAggregateWallClockBucketForEntryDefinition:(id)definition;
++ (BOOL)isNonEmptyDictionary:(id)dictionary;
++ (BOOL)isOnDemandQueryableForEntryDefinition:(id)definition;
++ (BOOL)isOnDemandQueryableForEntryKey:(id)key;
++ (BOOL)overridesEntryDateForEntryDefinition:(id)definition;
++ (BOOL)overridesEntryDateForEntryKey:(id)key;
++ (double)schemaVersionForEntryDefinition:(id)definition;
++ (double)schemaVersionForEntryKey:(id)key;
++ (id)DMAKeysForEntryDefinition:(id)definition;
++ (id)aggregateBucketDefinitionsForEntryKey:(id)key;
++ (id)allAggregateKeysForEntryKey:(id)key;
++ (id)allAggregatePrimaryKeysForEntryDefinition:(id)definition;
++ (id)allAggregatePrimaryKeysForEntryKey:(id)key;
++ (id)allDynamicKeysForEntryDefinition:(id)definition;
++ (id)allDynamicKeysForEntryKey:(id)key;
++ (id)allIndexKeysForEntryKey:(id)key;
++ (id)allKeysForEntryDefinition:(id)definition;
++ (id)allKeysForEntryKey:(id)key;
++ (id)arrayKeyConfigsForEntryKey:(id)key;
++ (id)arrayKeysForEntryKey:(id)key;
++ (id)configsForEntryKey:(id)key;
++ (id)constructEntryDefinition:(id)definition;
++ (id)definitionForEntryKey:(id)key;
++ (id)dynamicKeyConfigsForEntryKey:(id)key;
++ (id)entryDefinitionsForOperator:(id)operator;
++ (id)entryDefinitionsForOperatorClass:(Class)class;
++ (id)keyConfigsForEntryKey:(id)key;
++ (id)logSelectorStringForEnteryKey:(id)key;
++ (id)logSelectorStringForEntryDefinition:(id)definition;
++ (id)manualSortOrderForEntryDefinition:(id)definition;
++ (id)manualSortOrderForEntryKey:(id)key;
++ (id)notificationNameForEntryKey:(id)key withFilterDefintion:(id)defintion;
 + (id)sharedInstance;
-+ (id)sortedKeysFromEntryDefinition:(id)a3;
-+ (id)subEntryKeyKeyForEntryDefinition:(id)a3;
-+ (id)subEntryKeyKeyForEntryKey:(id)a3;
-+ (int)cacheCountForEntryDefition:(id)a3;
-+ (int)cacheCountForEntryKey:(id)a3;
-+ (int)limitOfType:(id)a3 forEntryDefinition:(id)a4;
-+ (int)limitOfType:(id)a3 forEntryKey:(id)a4;
-+ (signed)aggregateFunctionForEntryDefinition:(id)a3 forKey:(id)a4;
++ (id)sortedKeysFromEntryDefinition:(id)definition;
++ (id)subEntryKeyKeyForEntryDefinition:(id)definition;
++ (id)subEntryKeyKeyForEntryKey:(id)key;
++ (int)cacheCountForEntryDefition:(id)defition;
++ (int)cacheCountForEntryKey:(id)key;
++ (int)limitOfType:(id)type forEntryDefinition:(id)definition;
++ (int)limitOfType:(id)type forEntryKey:(id)key;
++ (signed)aggregateFunctionForEntryDefinition:(id)definition forKey:(id)key;
 - (id)commonTypeDict_BoolFormat;
 - (id)commonTypeDict_DateFormat;
 - (id)commonTypeDict_DateFormat_isCFAbsoluteTime;
@@ -85,13 +85,13 @@
 
 @implementation PLEntryDefinition
 
-+ (id)entryDefinitionsForOperatorClass:(Class)a3
++ (id)entryDefinitionsForOperatorClass:(Class)class
 {
   v29[6] = *MEMORY[0x1E69E9840];
   if (entryDefinitionsForOperatorClass__onceToken != -1)
   {
     +[PLEntryDefinition entryDefinitionsForOperatorClass:];
-    if (a3)
+    if (class)
     {
       goto LABEL_3;
     }
@@ -101,14 +101,14 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!a3)
+  if (!class)
   {
     goto LABEL_14;
   }
 
 LABEL_3:
   dispatch_semaphore_wait(entryDefinitionsForOperatorClass__entryDefinitionsSem, 0xFFFFFFFFFFFFFFFFLL);
-  v5 = [entryDefinitionsForOperatorClass__entryDefinitions objectForKeyedSubscript:a3];
+  v5 = [entryDefinitionsForOperatorClass__entryDefinitions objectForKeyedSubscript:class];
   if (!v5)
   {
     if (+[PLDefaults debugEnabled])
@@ -126,11 +126,11 @@ LABEL_3:
 
       if (entryDefinitionsForOperatorClass__classDebugEnabled == 1)
       {
-        v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"setting up entry Definitions for %@", a3];
+        v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"setting up entry Definitions for %@", class];
         v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLEntryDefinition.m"];
-        v9 = [v8 lastPathComponent];
+        lastPathComponent = [v8 lastPathComponent];
         v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PLEntryDefinition entryDefinitionsForOperatorClass:]"];
-        [PLCoreStorage logMessage:v7 fromFile:v9 fromFunction:v10 fromLineNumber:116];
+        [PLCoreStorage logMessage:v7 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:116];
 
         v11 = PLLogCommon();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -141,33 +141,33 @@ LABEL_3:
     }
 
     v28[0] = @"EventPoint";
-    v26 = [(objc_class *)a3 entryEventPointDefinitions];
-    v25 = [a1 constructEntryDefinition:v26];
+    entryEventPointDefinitions = [(objc_class *)class entryEventPointDefinitions];
+    v25 = [self constructEntryDefinition:entryEventPointDefinitions];
     v29[0] = v25;
     v28[1] = @"EventForward";
-    v24 = [(objc_class *)a3 entryEventForwardDefinitions];
-    v23 = [a1 constructEntryDefinition:v24];
+    entryEventForwardDefinitions = [(objc_class *)class entryEventForwardDefinitions];
+    v23 = [self constructEntryDefinition:entryEventForwardDefinitions];
     v29[1] = v23;
     v28[2] = @"EventBackward";
-    v12 = [(objc_class *)a3 entryEventBackwardDefinitions];
-    v13 = [a1 constructEntryDefinition:v12];
+    entryEventBackwardDefinitions = [(objc_class *)class entryEventBackwardDefinitions];
+    v13 = [self constructEntryDefinition:entryEventBackwardDefinitions];
     v29[2] = v13;
     v28[3] = @"EventInterval";
-    v14 = [(objc_class *)a3 entryEventIntervalDefinitions];
-    v15 = [a1 constructEntryDefinition:v14];
+    entryEventIntervalDefinitions = [(objc_class *)class entryEventIntervalDefinitions];
+    v15 = [self constructEntryDefinition:entryEventIntervalDefinitions];
     v29[3] = v15;
     v28[4] = @"EventNone";
-    v16 = [(objc_class *)a3 entryEventNoneDefinitions];
-    v17 = [a1 constructEntryDefinition:v16];
+    entryEventNoneDefinitions = [(objc_class *)class entryEventNoneDefinitions];
+    v17 = [self constructEntryDefinition:entryEventNoneDefinitions];
     v29[4] = v17;
     v28[5] = @"Aggregate";
-    v18 = [(objc_class *)a3 entryAggregateDefinitions];
-    v19 = [a1 constructEntryDefinition:v18];
+    entryAggregateDefinitions = [(objc_class *)class entryAggregateDefinitions];
+    v19 = [self constructEntryDefinition:entryAggregateDefinitions];
     v29[5] = v19;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:6];
-    [entryDefinitionsForOperatorClass__entryDefinitions setObject:v20 forKeyedSubscript:a3];
+    [entryDefinitionsForOperatorClass__entryDefinitions setObject:v20 forKeyedSubscript:class];
 
-    v5 = [entryDefinitionsForOperatorClass__entryDefinitions objectForKeyedSubscript:a3];
+    v5 = [entryDefinitionsForOperatorClass__entryDefinitions objectForKeyedSubscript:class];
   }
 
   dispatch_semaphore_signal(entryDefinitionsForOperatorClass__entryDefinitionsSem);
@@ -195,35 +195,35 @@ BOOL __54__PLEntryDefinition_entryDefinitionsForOperatorClass___block_invoke_2(u
   return result;
 }
 
-+ (BOOL)isNonEmptyDictionary:(id)a3
++ (BOOL)isNonEmptyDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
-  v4 = (objc_opt_isKindOfClass() & 1) == 0 || [v3 count];
+  v4 = (objc_opt_isKindOfClass() & 1) == 0 || [dictionaryCopy count];
 
   return v4;
 }
 
-+ (BOOL)hasTaskModeKeyInConfig:(id)a3
++ (BOOL)hasTaskModeKeyInConfig:(id)config
 {
-  v4 = a3;
-  v5 = +[PLDefaults liteMode](PLDefaults, "liteMode") && ([a1 hasTaskModeKeyForEntryDefinition:v4] & 1) != 0;
+  configCopy = config;
+  v5 = +[PLDefaults liteMode](PLDefaults, "liteMode") && ([self hasTaskModeKeyForEntryDefinition:configCopy] & 1) != 0;
 
   return v5;
 }
 
-+ (id)constructEntryDefinition:(id)a3
++ (id)constructEntryDefinition:(id)definition
 {
-  v4 = a3;
+  definitionCopy = definition;
   v5 = objc_opt_new();
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __46__PLEntryDefinition_constructEntryDefinition___block_invoke;
   v8[3] = &unk_1E8519900;
-  v10 = a1;
+  selfCopy = self;
   v6 = v5;
   v9 = v6;
-  [v4 enumerateKeysAndObjectsUsingBlock:v8];
+  [definitionCopy enumerateKeysAndObjectsUsingBlock:v8];
 
   return v6;
 }
@@ -238,265 +238,265 @@ void __46__PLEntryDefinition_constructEntryDefinition___block_invoke(uint64_t a1
   }
 }
 
-+ (id)entryDefinitionsForOperator:(id)a3
++ (id)entryDefinitionsForOperator:(id)operator
 {
   v4 = objc_opt_class();
 
-  return [a1 entryDefinitionsForOperatorClass:v4];
+  return [self entryDefinitionsForOperatorClass:v4];
 }
 
-+ (id)definitionForEntryKey:(id)a3
++ (id)definitionForEntryKey:(id)key
 {
-  v4 = [PLEntryKey PLEntryKeyForEntryKey:a3];
-  v5 = [a1 entryDefinitionsForOperatorClass:{objc_msgSend(v4, "operatorClass")}];
-  v6 = [v4 entryType];
-  v7 = [v5 objectForKeyedSubscript:v6];
-  v8 = [v4 entryName];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  v4 = [PLEntryKey PLEntryKeyForEntryKey:key];
+  v5 = [self entryDefinitionsForOperatorClass:{objc_msgSend(v4, "operatorClass")}];
+  entryType = [v4 entryType];
+  v7 = [v5 objectForKeyedSubscript:entryType];
+  entryName = [v4 entryName];
+  v9 = [v7 objectForKeyedSubscript:entryName];
 
   return v9;
 }
 
-+ (id)configsForEntryKey:(id)a3
++ (id)configsForEntryKey:(id)key
 {
-  v4 = [a1 definitionForEntryKey:a3];
-  v5 = [a1 configsForEntryDefinition:v4];
+  v4 = [self definitionForEntryKey:key];
+  v5 = [self configsForEntryDefinition:v4];
 
   return v5;
 }
 
-+ (id)keyConfigsForEntryKey:(id)a3
++ (id)keyConfigsForEntryKey:(id)key
 {
-  v4 = [a1 definitionForEntryKey:a3];
-  v5 = [a1 keyConfigsForEntryDefinition:v4];
+  v4 = [self definitionForEntryKey:key];
+  v5 = [self keyConfigsForEntryDefinition:v4];
 
   return v5;
 }
 
-+ (id)dynamicKeyConfigsForEntryKey:(id)a3
++ (id)dynamicKeyConfigsForEntryKey:(id)key
 {
-  v4 = a3;
-  if ([PPSEntryKey PPSEnabled:v4])
+  keyCopy = key;
+  if ([PPSEntryKey PPSEnabled:keyCopy])
   {
-    v5 = [PPSEntryKey dynamicMetricsForEntryKey:v4];
+    v5 = [PPSEntryKey dynamicMetricsForEntryKey:keyCopy];
   }
 
   else
   {
-    v6 = [a1 definitionForEntryKey:v4];
+    v6 = [self definitionForEntryKey:keyCopy];
 
-    v5 = [a1 dynamicKeyConfigsForEntryDefinition:v6];
-    v4 = v6;
+    v5 = [self dynamicKeyConfigsForEntryDefinition:v6];
+    keyCopy = v6;
   }
 
   return v5;
 }
 
-+ (id)arrayKeyConfigsForEntryKey:(id)a3
++ (id)arrayKeyConfigsForEntryKey:(id)key
 {
-  v4 = a3;
-  if ([PPSEntryKey PPSEnabled:v4])
+  keyCopy = key;
+  if ([PPSEntryKey PPSEnabled:keyCopy])
   {
-    v5 = [PPSEntryKey arrayMetricsForEntryKey:v4];
+    v5 = [PPSEntryKey arrayMetricsForEntryKey:keyCopy];
   }
 
   else
   {
-    v6 = [a1 definitionForEntryKey:v4];
+    v6 = [self definitionForEntryKey:keyCopy];
 
-    v5 = [a1 dynamicKeyConfigsForEntryDefinition:v6];
-    v4 = v6;
+    v5 = [self dynamicKeyConfigsForEntryDefinition:v6];
+    keyCopy = v6;
   }
 
   return v5;
 }
 
-+ (id)arrayKeysForEntryKey:(id)a3
++ (id)arrayKeysForEntryKey:(id)key
 {
-  v4 = [a1 definitionForEntryKey:a3];
-  v5 = [a1 arrayKeysForEntryDefinition:v4];
+  v4 = [self definitionForEntryKey:key];
+  v5 = [self arrayKeysForEntryDefinition:v4];
 
   return v5;
 }
 
-+ (id)aggregateBucketDefinitionsForEntryKey:(id)a3
++ (id)aggregateBucketDefinitionsForEntryKey:(id)key
 {
-  v4 = [a1 definitionForEntryKey:a3];
-  v5 = [a1 aggregateBucketDefinitionsForEntryDefinition:v4];
+  v4 = [self definitionForEntryKey:key];
+  v5 = [self aggregateBucketDefinitionsForEntryDefinition:v4];
 
   return v5;
 }
 
-+ (id)allKeysForEntryKey:(id)a3
++ (id)allKeysForEntryKey:(id)key
 {
-  v4 = [a1 definitionForEntryKey:a3];
-  v5 = [a1 allKeysForEntryDefinition:v4];
+  v4 = [self definitionForEntryKey:key];
+  v5 = [self allKeysForEntryDefinition:v4];
 
   return v5;
 }
 
-+ (id)subEntryKeyKeyForEntryKey:(id)a3
++ (id)subEntryKeyKeyForEntryKey:(id)key
 {
-  v4 = [a1 definitionForEntryKey:a3];
-  v5 = [a1 subEntryKeyKeyForEntryDefinition:v4];
+  v4 = [self definitionForEntryKey:key];
+  v5 = [self subEntryKeyKeyForEntryDefinition:v4];
 
   return v5;
 }
 
-+ (id)allDynamicKeysForEntryKey:(id)a3
++ (id)allDynamicKeysForEntryKey:(id)key
 {
-  v4 = [a1 definitionForEntryKey:a3];
-  v5 = [a1 allDynamicKeysForEntryDefinition:v4];
+  v4 = [self definitionForEntryKey:key];
+  v5 = [self allDynamicKeysForEntryDefinition:v4];
 
   return v5;
 }
 
-+ (id)allAggregateKeysForEntryKey:(id)a3
++ (id)allAggregateKeysForEntryKey:(id)key
 {
-  v4 = [a1 definitionForEntryKey:a3];
-  v5 = [a1 allAggregateKeysForEntryDefinition:v4];
+  v4 = [self definitionForEntryKey:key];
+  v5 = [self allAggregateKeysForEntryDefinition:v4];
 
   return v5;
 }
 
-+ (id)allIndexKeysForEntryKey:(id)a3
++ (id)allIndexKeysForEntryKey:(id)key
 {
-  v4 = [a1 definitionForEntryKey:a3];
-  v5 = [a1 allIndexKeysForEntryDefinition:v4];
+  v4 = [self definitionForEntryKey:key];
+  v5 = [self allIndexKeysForEntryDefinition:v4];
 
   return v5;
 }
 
-+ (id)allAggregatePrimaryKeysForEntryKey:(id)a3
++ (id)allAggregatePrimaryKeysForEntryKey:(id)key
 {
-  v4 = [a1 definitionForEntryKey:a3];
-  v5 = [a1 allAggregatePrimaryKeysForEntryDefinition:v4];
+  v4 = [self definitionForEntryKey:key];
+  v5 = [self allAggregatePrimaryKeysForEntryDefinition:v4];
 
   return v5;
 }
 
-+ (BOOL)hasDynamicKeysForEntryKey:(id)a3
++ (BOOL)hasDynamicKeysForEntryKey:(id)key
 {
-  v3 = a1;
-  v4 = [a1 definitionForEntryKey:a3];
-  LOBYTE(v3) = [v3 hasDynamicKeysForEntryDefinition:v4];
+  selfCopy = self;
+  v4 = [self definitionForEntryKey:key];
+  LOBYTE(selfCopy) = [selfCopy hasDynamicKeysForEntryDefinition:v4];
 
-  return v3;
+  return selfCopy;
 }
 
-+ (BOOL)hasArrayKeysForEntryKey:(id)a3
++ (BOOL)hasArrayKeysForEntryKey:(id)key
 {
-  v3 = a1;
-  v4 = [a1 definitionForEntryKey:a3];
-  LOBYTE(v3) = [v3 hasArrayKeysForEntryDefinition:v4];
+  selfCopy = self;
+  v4 = [self definitionForEntryKey:key];
+  LOBYTE(selfCopy) = [selfCopy hasArrayKeysForEntryDefinition:v4];
 
-  return v3;
+  return selfCopy;
 }
 
-+ (BOOL)hasDMAKeysForEntryKey:(id)a3
++ (BOOL)hasDMAKeysForEntryKey:(id)key
 {
-  v3 = a1;
-  v4 = [a1 definitionForEntryKey:a3];
-  LOBYTE(v3) = [v3 hasDMAKeysForEntryDefinition:v4];
+  selfCopy = self;
+  v4 = [self definitionForEntryKey:key];
+  LOBYTE(selfCopy) = [selfCopy hasDMAKeysForEntryDefinition:v4];
 
-  return v3;
+  return selfCopy;
 }
 
-+ (BOOL)isOnDemandQueryableForEntryKey:(id)a3
++ (BOOL)isOnDemandQueryableForEntryKey:(id)key
 {
-  v3 = a1;
-  v4 = [a1 definitionForEntryKey:a3];
-  LOBYTE(v3) = [v3 isOnDemandQueryableForEntryDefinition:v4];
+  selfCopy = self;
+  v4 = [self definitionForEntryKey:key];
+  LOBYTE(selfCopy) = [selfCopy isOnDemandQueryableForEntryDefinition:v4];
 
-  return v3;
+  return selfCopy;
 }
 
-+ (BOOL)filterEntryLoggingForEntryKey:(id)a3
++ (BOOL)filterEntryLoggingForEntryKey:(id)key
 {
-  v3 = a1;
-  v4 = [a1 definitionForEntryKey:a3];
-  LOBYTE(v3) = [v3 filterEntryLoggingForEntryDefinition:v4];
+  selfCopy = self;
+  v4 = [self definitionForEntryKey:key];
+  LOBYTE(selfCopy) = [selfCopy filterEntryLoggingForEntryDefinition:v4];
 
-  return v3;
+  return selfCopy;
 }
 
-+ (BOOL)isAggregateForEntryKey:(id)a3
++ (BOOL)isAggregateForEntryKey:(id)key
 {
-  v3 = a1;
-  v4 = [a1 definitionForEntryKey:a3];
-  LOBYTE(v3) = [v3 isAggregateForEntryDefinition:v4];
+  selfCopy = self;
+  v4 = [self definitionForEntryKey:key];
+  LOBYTE(selfCopy) = [selfCopy isAggregateForEntryDefinition:v4];
 
-  return v3;
+  return selfCopy;
 }
 
-+ (BOOL)isAggregateWallClockBucket:(id)a3
++ (BOOL)isAggregateWallClockBucket:(id)bucket
 {
-  v3 = a1;
-  v4 = [a1 definitionForEntryKey:a3];
-  LOBYTE(v3) = [v3 isAggregateWallClockBucketForEntryDefinition:v4];
+  selfCopy = self;
+  v4 = [self definitionForEntryKey:bucket];
+  LOBYTE(selfCopy) = [selfCopy isAggregateWallClockBucketForEntryDefinition:v4];
 
-  return v3;
+  return selfCopy;
 }
 
-+ (BOOL)overridesEntryDateForEntryKey:(id)a3
++ (BOOL)overridesEntryDateForEntryKey:(id)key
 {
-  v3 = a1;
-  v4 = [a1 definitionForEntryKey:a3];
-  LOBYTE(v3) = [v3 overridesEntryDateForEntryDefinition:v4];
+  selfCopy = self;
+  v4 = [self definitionForEntryKey:key];
+  LOBYTE(selfCopy) = [selfCopy overridesEntryDateForEntryDefinition:v4];
 
-  return v3;
+  return selfCopy;
 }
 
-+ (double)schemaVersionForEntryKey:(id)a3
++ (double)schemaVersionForEntryKey:(id)key
 {
-  v4 = [a1 definitionForEntryKey:a3];
-  [a1 schemaVersionForEntryDefinition:v4];
+  v4 = [self definitionForEntryKey:key];
+  [self schemaVersionForEntryDefinition:v4];
   v6 = v5;
 
   return v6;
 }
 
-+ (int)cacheCountForEntryKey:(id)a3
++ (int)cacheCountForEntryKey:(id)key
 {
-  v3 = a1;
-  v4 = [a1 definitionForEntryKey:a3];
-  LODWORD(v3) = [v3 cacheCountForEntryDefition:v4];
+  selfCopy = self;
+  v4 = [self definitionForEntryKey:key];
+  LODWORD(selfCopy) = [selfCopy cacheCountForEntryDefition:v4];
 
-  return v3;
+  return selfCopy;
 }
 
-+ (BOOL)cacheSQLPrepareStatementForEntryKey:(id)a3
++ (BOOL)cacheSQLPrepareStatementForEntryKey:(id)key
 {
-  v4 = a3;
-  if ([PPSEntryKey PPSEnabled:v4])
+  keyCopy = key;
+  if ([PPSEntryKey PPSEnabled:keyCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [a1 definitionForEntryKey:v4];
-    v5 = [a1 cacheSQLPrepareStatementForEntryDefinition:v6];
+    v6 = [self definitionForEntryKey:keyCopy];
+    v5 = [self cacheSQLPrepareStatementForEntryDefinition:v6];
   }
 
   return v5;
 }
 
-+ (id)manualSortOrderForEntryKey:(id)a3
++ (id)manualSortOrderForEntryKey:(id)key
 {
-  v4 = [a1 definitionForEntryKey:a3];
-  v5 = [a1 manualSortOrderForEntryDefinition:v4];
+  v4 = [self definitionForEntryKey:key];
+  v5 = [self manualSortOrderForEntryDefinition:v4];
 
   return v5;
 }
 
-+ (id)logSelectorStringForEnteryKey:(id)a3
++ (id)logSelectorStringForEnteryKey:(id)key
 {
-  v4 = a3;
-  if ([a1 isOnDemandQueryableForEntryKey:v4])
+  keyCopy = key;
+  if ([self isOnDemandQueryableForEntryKey:keyCopy])
   {
-    v5 = [a1 definitionForEntryKey:v4];
-    v6 = [a1 logSelectorStringForEntryDefinition:v5];
+    v5 = [self definitionForEntryKey:keyCopy];
+    v6 = [self logSelectorStringForEntryDefinition:v5];
 
     if (v6)
     {
@@ -505,11 +505,11 @@ void __46__PLEntryDefinition_constructEntryDefinition___block_invoke(uint64_t a1
 
     else
     {
-      v8 = [PLEntryKey PLEntryKeyForEntryKey:v4];
+      v8 = [PLEntryKey PLEntryKeyForEntryKey:keyCopy];
       v9 = MEMORY[0x1E696AEC0];
-      v10 = [v8 entryType];
-      v11 = [v8 entryName];
-      v7 = [v9 stringWithFormat:@"log%@%@", v10, v11];
+      entryType = [v8 entryType];
+      entryName = [v8 entryName];
+      v7 = [v9 stringWithFormat:@"log%@%@", entryType, entryName];
     }
   }
 
@@ -521,205 +521,205 @@ void __46__PLEntryDefinition_constructEntryDefinition___block_invoke(uint64_t a1
   return v7;
 }
 
-+ (int)limitOfType:(id)a3 forEntryKey:(id)a4
++ (int)limitOfType:(id)type forEntryKey:(id)key
 {
-  v6 = a3;
-  v7 = [a1 definitionForEntryKey:a4];
-  LODWORD(a1) = [a1 limitOfType:v6 forEntryDefinition:v7];
+  typeCopy = type;
+  v7 = [self definitionForEntryKey:key];
+  LODWORD(self) = [self limitOfType:typeCopy forEntryDefinition:v7];
 
-  return a1;
+  return self;
 }
 
-+ (id)DMAKeysForEntryDefinition:(id)a3
++ (id)DMAKeysForEntryDefinition:(id)definition
 {
-  v3 = [a1 configsForEntryDefinition:a3];
+  v3 = [self configsForEntryDefinition:definition];
   v4 = [v3 objectForKeyedSubscript:@"DMACompliantKeys"];
 
   return v4;
 }
 
-+ (id)allKeysForEntryDefinition:(id)a3
++ (id)allKeysForEntryDefinition:(id)definition
 {
-  v3 = [a1 keyConfigsForEntryDefinition:a3];
-  v4 = [v3 allKeys];
-  v5 = [v4 sortedArrayUsingSelector:sel_compare_];
+  v3 = [self keyConfigsForEntryDefinition:definition];
+  allKeys = [v3 allKeys];
+  v5 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   return v5;
 }
 
-+ (id)subEntryKeyKeyForEntryDefinition:(id)a3
++ (id)subEntryKeyKeyForEntryDefinition:(id)definition
 {
-  v3 = [a1 configsForEntryDefinition:a3];
+  v3 = [self configsForEntryDefinition:definition];
   v4 = [v3 objectForKeyedSubscript:@"SubEntryKey"];
 
   return v4;
 }
 
-+ (id)allDynamicKeysForEntryDefinition:(id)a3
++ (id)allDynamicKeysForEntryDefinition:(id)definition
 {
-  v3 = [a1 dynamicKeyConfigsForEntryDefinition:a3];
-  v4 = [v3 allKeys];
+  v3 = [self dynamicKeyConfigsForEntryDefinition:definition];
+  allKeys = [v3 allKeys];
 
-  return v4;
+  return allKeys;
 }
 
-+ (id)allAggregatePrimaryKeysForEntryDefinition:(id)a3
++ (id)allAggregatePrimaryKeysForEntryDefinition:(id)definition
 {
-  v4 = a3;
-  v5 = [a1 allKeysForEntryDefinition:v4];
+  definitionCopy = definition;
+  v5 = [self allKeysForEntryDefinition:definitionCopy];
   v6 = [v5 mutableCopy];
 
-  v7 = [a1 allAggregateKeysForEntryDefinition:v4];
+  v7 = [self allAggregateKeysForEntryDefinition:definitionCopy];
 
   [v6 removeObjectsInArray:v7];
 
   return v6;
 }
 
-+ (BOOL)hasTaskModeKeyForEntryDefinition:(id)a3
++ (BOOL)hasTaskModeKeyForEntryDefinition:(id)definition
 {
-  v3 = [a1 configsForEntryDefinition:a3];
+  v3 = [self configsForEntryDefinition:definition];
   v4 = [v3 objectForKey:@"TaskModeTable"];
 
   if (v4)
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-+ (BOOL)hasDynamicKeysForEntryDefinition:(id)a3
++ (BOOL)hasDynamicKeysForEntryDefinition:(id)definition
 {
-  v3 = [a1 configsForEntryDefinition:a3];
+  v3 = [self configsForEntryDefinition:definition];
   v4 = [v3 objectForKey:@"DynamicDefinition"];
 
   if (v4)
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-+ (BOOL)hasArrayKeysForEntryDefinition:(id)a3
++ (BOOL)hasArrayKeysForEntryDefinition:(id)definition
 {
-  v3 = [a1 arrayKeysForEntryDefinition:a3];
+  v3 = [self arrayKeysForEntryDefinition:definition];
   v4 = [v3 count] != 0;
 
   return v4;
 }
 
-+ (BOOL)hasDMAKeysForEntryDefinition:(id)a3
++ (BOOL)hasDMAKeysForEntryDefinition:(id)definition
 {
-  v3 = [a1 DMAKeysForEntryDefinition:a3];
+  v3 = [self DMAKeysForEntryDefinition:definition];
   v4 = [v3 count] != 0;
 
   return v4;
 }
 
-+ (BOOL)hasAppIdentifierKeysForEntryDefinition:(id)a3
++ (BOOL)hasAppIdentifierKeysForEntryDefinition:(id)definition
 {
-  v3 = [a1 configsForEntryDefinition:a3];
+  v3 = [self configsForEntryDefinition:definition];
   v4 = [v3 objectForKey:@"AppIdentifierKeys"];
 
   LOBYTE(v3) = [v4 BOOLValue];
   return v3;
 }
 
-+ (BOOL)isOnDemandQueryableForEntryDefinition:(id)a3
++ (BOOL)isOnDemandQueryableForEntryDefinition:(id)definition
 {
-  v3 = [a1 configsForEntryDefinition:a3];
+  v3 = [self configsForEntryDefinition:definition];
   v4 = [v3 objectForKey:@"OnDemandQuery"];
 
   if (v4)
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-+ (BOOL)filterEntryLoggingForEntryDefinition:(id)a3
++ (BOOL)filterEntryLoggingForEntryDefinition:(id)definition
 {
-  v3 = [a1 configsForEntryDefinition:a3];
+  v3 = [self configsForEntryDefinition:definition];
   v4 = [v3 objectForKey:@"FilterEntryLogging"];
 
   if (v4)
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-+ (BOOL)isAggregateForEntryDefinition:(id)a3
++ (BOOL)isAggregateForEntryDefinition:(id)definition
 {
-  v3 = [a1 aggregateBucketDefinitionsForEntryDefinition:a3];
+  v3 = [self aggregateBucketDefinitionsForEntryDefinition:definition];
   v4 = v3 != 0;
 
   return v4;
 }
 
-+ (BOOL)isAggregateWallClockBucketForEntryDefinition:(id)a3
++ (BOOL)isAggregateWallClockBucketForEntryDefinition:(id)definition
 {
-  v3 = [a1 configsForEntryDefinition:a3];
+  v3 = [self configsForEntryDefinition:definition];
   v4 = [v3 objectForKey:@"AggregateWallClockBucket"];
 
   if (v4)
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-+ (BOOL)overridesEntryDateForEntryDefinition:(id)a3
++ (BOOL)overridesEntryDateForEntryDefinition:(id)definition
 {
-  v3 = [a1 configsForEntryDefinition:a3];
+  v3 = [self configsForEntryDefinition:definition];
   v4 = [v3 objectForKey:@"OverridesEntryDate"];
 
   if (v4)
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-+ (double)schemaVersionForEntryDefinition:(id)a3
++ (double)schemaVersionForEntryDefinition:(id)definition
 {
-  v3 = [a3 objectForKeyedSubscript:@"Configs"];
+  v3 = [definition objectForKeyedSubscript:@"Configs"];
   v4 = [v3 objectForKeyedSubscript:@"SchemaVersion"];
   [v4 doubleValue];
   v6 = v5;
@@ -727,53 +727,53 @@ void __46__PLEntryDefinition_constructEntryDefinition___block_invoke(uint64_t a1
   return v6;
 }
 
-+ (int)cacheCountForEntryDefition:(id)a3
++ (int)cacheCountForEntryDefition:(id)defition
 {
-  v3 = [a3 objectForKeyedSubscript:@"Configs"];
+  v3 = [defition objectForKeyedSubscript:@"Configs"];
   v4 = [v3 objectForKeyedSubscript:@"EntryCaching"];
 
   if (v4)
   {
-    v5 = [v4 intValue];
+    intValue = [v4 intValue];
   }
 
   else
   {
-    v5 = 0;
+    intValue = 0;
   }
 
-  return v5;
+  return intValue;
 }
 
-+ (BOOL)cacheSQLPrepareStatementForEntryDefinition:(id)a3
++ (BOOL)cacheSQLPrepareStatementForEntryDefinition:(id)definition
 {
-  v3 = [a1 configsForEntryDefinition:a3];
+  v3 = [self configsForEntryDefinition:definition];
   v4 = [v3 objectForKey:@"SQLPrepareStatementCaching"];
 
   if (v4)
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-+ (id)manualSortOrderForEntryDefinition:(id)a3
++ (id)manualSortOrderForEntryDefinition:(id)definition
 {
-  v4 = a3;
-  v5 = [a1 configsForEntryDefinition:v4];
+  definitionCopy = definition;
+  v5 = [self configsForEntryDefinition:definitionCopy];
   v6 = [v5 objectForKey:@"SortOrderManual"];
 
   if (v6)
   {
     v7 = [MEMORY[0x1E695DFA8] setWithArray:v6];
     v8 = MEMORY[0x1E695DFD8];
-    v9 = [a1 allKeysForEntryDefinition:v4];
+    v9 = [self allKeysForEntryDefinition:definitionCopy];
     v10 = [v8 setWithArray:v9];
     [v7 minusSet:v10];
 
@@ -787,46 +787,46 @@ void __46__PLEntryDefinition_constructEntryDefinition___block_invoke(uint64_t a1
 
       v12 = [MEMORY[0x1E695DFA8] setWithArray:v6];
       [v12 minusSet:v7];
-      v13 = [v12 allObjects];
+      allObjects = [v12 allObjects];
     }
 
     else
     {
-      v13 = v6;
+      allObjects = v6;
     }
   }
 
   else
   {
-    v13 = 0;
+    allObjects = 0;
   }
 
-  return v13;
+  return allObjects;
 }
 
-+ (id)sortedKeysFromEntryDefinition:(id)a3
++ (id)sortedKeysFromEntryDefinition:(id)definition
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
-  v6 = [a1 allKeysForEntryDefinition:v5];
+  definitionCopy = definition;
+  v6 = [self allKeysForEntryDefinition:definitionCopy];
   v7 = [v4 arrayWithArray:v6];
 
-  v8 = [a1 manualSortOrderForEntryDefinition:v5];
-  v9 = [v5 objectForKey:@"Configs"];
+  v8 = [self manualSortOrderForEntryDefinition:definitionCopy];
+  v9 = [definitionCopy objectForKey:@"Configs"];
 
   v10 = [v9 objectForKey:@"SortOrderAuto"];
-  v11 = [v10 intValue];
+  intValue = [v10 intValue];
 
   v12 = objc_opt_new();
   [v12 addObjectsFromArray:v8];
   [v7 removeObjectsInArray:v8];
-  if ((v11 & 0xFFFE) == 0)
+  if ((intValue & 0xFFFE) == 0)
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __51__PLEntryDefinition_sortedKeysFromEntryDefinition___block_invoke;
     v15[3] = &__block_descriptor_34_e11_q24__0_8_16l;
-    v16 = v11;
+    v16 = intValue;
     v13 = [v7 sortedArrayUsingComparator:v15];
   }
 
@@ -863,51 +863,51 @@ LABEL_7:
   return v9;
 }
 
-+ (signed)aggregateFunctionForEntryDefinition:(id)a3 forKey:(id)a4
++ (signed)aggregateFunctionForEntryDefinition:(id)definition forKey:(id)key
 {
-  v5 = a4;
-  v6 = [a3 objectForKeyedSubscript:@"Keys"];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  keyCopy = key;
+  v6 = [definition objectForKeyedSubscript:@"Keys"];
+  v7 = [v6 objectForKeyedSubscript:keyCopy];
 
   v8 = [v7 objectForKeyedSubscript:@"AggregateFunction"];
-  v9 = [v8 shortValue];
+  shortValue = [v8 shortValue];
 
-  return v9;
+  return shortValue;
 }
 
-+ (id)logSelectorStringForEntryDefinition:(id)a3
++ (id)logSelectorStringForEntryDefinition:(id)definition
 {
-  v3 = [a1 configsForEntryDefinition:a3];
+  v3 = [self configsForEntryDefinition:definition];
   v4 = [v3 objectForKey:@"LogSelector"];
 
   return v4;
 }
 
-+ (int)limitOfType:(id)a3 forEntryDefinition:(id)a4
++ (int)limitOfType:(id)type forEntryDefinition:(id)definition
 {
-  v6 = a3;
-  v7 = [a1 configsForEntryDefinition:a4];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  typeCopy = type;
+  v7 = [self configsForEntryDefinition:definition];
+  v8 = [v7 objectForKeyedSubscript:typeCopy];
 
   if (v8)
   {
-    v9 = [v7 objectForKeyedSubscript:v6];
-    v10 = [v9 intValue];
+    v9 = [v7 objectForKeyedSubscript:typeCopy];
+    intValue = [v9 intValue];
   }
 
   else
   {
-    if ([v6 isEqualToString:@"RateLimit"])
+    if ([typeCopy isEqualToString:@"RateLimit"])
     {
       v11 = 50;
     }
 
-    else if ([v6 isEqualToString:@"WarningLimit"])
+    else if ([typeCopy isEqualToString:@"WarningLimit"])
     {
       v11 = 3;
     }
 
-    else if ([v6 isEqualToString:@"SafetyDropLimit"])
+    else if ([typeCopy isEqualToString:@"SafetyDropLimit"])
     {
       v11 = 3;
     }
@@ -917,20 +917,20 @@ LABEL_7:
       v11 = 0;
     }
 
-    v10 = [PLDefaults longForKey:v6 ifNotSet:v11];
+    intValue = [PLDefaults longForKey:typeCopy ifNotSet:v11];
   }
 
-  return v10;
+  return intValue;
 }
 
-+ (id)notificationNameForEntryKey:(id)a3 withFilterDefintion:(id)a4
++ (id)notificationNameForEntryKey:(id)key withFilterDefintion:(id)defintion
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [MEMORY[0x1E696AD60] stringWithFormat:@"%@.filtered", a3];
-  v25 = v5;
-  v7 = [v5 allKeys];
-  v8 = [v7 sortedArrayUsingSelector:?];
+  defintionCopy = defintion;
+  v6 = [MEMORY[0x1E696AD60] stringWithFormat:@"%@.filtered", key];
+  v25 = defintionCopy;
+  allKeys = [defintionCopy allKeys];
+  v8 = [allKeys sortedArrayUsingSelector:?];
 
   v34 = 0u;
   v35 = 0u;
@@ -954,8 +954,8 @@ LABEL_7:
         v27 = v9;
         v10 = *(*(&v32 + 1) + 8 * v9);
         v11 = [v25 objectForKeyedSubscript:v10];
-        v12 = [v11 allKeys];
-        v13 = [v12 sortedArrayUsingSelector:sel_compare_];
+        allKeys2 = [v11 allKeys];
+        v13 = [allKeys2 sortedArrayUsingSelector:sel_compare_];
 
         v30 = 0u;
         v31 = 0u;

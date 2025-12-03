@@ -1,8 +1,8 @@
 @interface KTFixupRemoveMacAppSupportFiles
 + (NSString)fixupName;
-+ (void)setFixupName:(id)a3;
++ (void)setFixupName:(id)name;
 - (_TtC13transparencyd31KTFixupRemoveMacAppSupportFiles)init;
-- (_TtC13transparencyd31KTFixupRemoveMacAppSupportFiles)initWithDependencies:(id)a3;
+- (_TtC13transparencyd31KTFixupRemoveMacAppSupportFiles)initWithDependencies:(id)dependencies;
 @end
 
 @implementation KTFixupRemoveMacAppSupportFiles
@@ -16,7 +16,7 @@
   return v2;
 }
 
-+ (void)setFixupName:(id)a3
++ (void)setFixupName:(id)name
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = v4;
@@ -25,12 +25,12 @@
   off_100387A18 = v5;
 }
 
-- (_TtC13transparencyd31KTFixupRemoveMacAppSupportFiles)initWithDependencies:(id)a3
+- (_TtC13transparencyd31KTFixupRemoveMacAppSupportFiles)initWithDependencies:(id)dependencies
 {
-  *(&self->super.isa + OBJC_IVAR____TtC13transparencyd31KTFixupRemoveMacAppSupportFiles_deps) = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC13transparencyd31KTFixupRemoveMacAppSupportFiles_deps) = dependencies;
   v6.receiver = self;
   v6.super_class = type metadata accessor for KTFixupRemoveMacAppSupportFiles();
-  v4 = a3;
+  dependenciesCopy = dependencies;
   return [(KTFixupRemoveMacAppSupportFiles *)&v6 init];
 }
 

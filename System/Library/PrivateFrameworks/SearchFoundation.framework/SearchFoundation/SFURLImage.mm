@@ -1,14 +1,14 @@
 @interface SFURLImage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
 - (NSString)description;
-- (SFURLImage)initWithCoder:(id)a3;
-- (SFURLImage)initWithProtobuf:(id)a3;
-- (SFURLImage)initWithURL:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFURLImage)initWithCoder:(id)coder;
+- (SFURLImage)initWithProtobuf:(id)protobuf;
+- (SFURLImage)initWithURL:(id)l;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFURLImage
@@ -18,34 +18,34 @@
   v9.receiver = self;
   v9.super_class = SFURLImage;
   v3 = [(SFImage *)&v9 hash];
-  v4 = [(SFURLImage *)self urlValue];
-  v5 = [v4 hash];
-  v6 = [(SFURLImage *)self darkUrlValue];
-  v7 = v5 ^ [v6 hash];
+  urlValue = [(SFURLImage *)self urlValue];
+  v5 = [urlValue hash];
+  darkUrlValue = [(SFURLImage *)self darkUrlValue];
+  v7 = v5 ^ [darkUrlValue hash];
 
   return v7 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFURLImage *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFURLImage *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v22.receiver = self;
       v22.super_class = SFURLImage;
-      if ([(SFImage *)&v22 isEqual:v5])
+      if ([(SFImage *)&v22 isEqual:equalCopy])
       {
-        v6 = v5;
-        v7 = [(SFURLImage *)self urlValue];
-        v8 = [(SFURLImage *)v6 urlValue];
-        if ((v7 != 0) == (v8 == 0))
+        v6 = equalCopy;
+        urlValue = [(SFURLImage *)self urlValue];
+        urlValue2 = [(SFURLImage *)v6 urlValue];
+        if ((urlValue != 0) == (urlValue2 == 0))
         {
           v11 = 0;
 LABEL_20:
@@ -53,12 +53,12 @@ LABEL_20:
           goto LABEL_21;
         }
 
-        v9 = [(SFURLImage *)self urlValue];
-        if (v9)
+        urlValue3 = [(SFURLImage *)self urlValue];
+        if (urlValue3)
         {
-          v3 = [(SFURLImage *)self urlValue];
-          v10 = [(SFURLImage *)v6 urlValue];
-          if (![v3 isEqual:v10])
+          urlValue4 = [(SFURLImage *)self urlValue];
+          urlValue5 = [(SFURLImage *)v6 urlValue];
+          if (![urlValue4 isEqual:urlValue5])
           {
             v11 = 0;
 LABEL_18:
@@ -67,13 +67,13 @@ LABEL_19:
             goto LABEL_20;
           }
 
-          v21 = v10;
+          v21 = urlValue5;
         }
 
-        v12 = [(SFURLImage *)self darkUrlValue];
-        v13 = [(SFURLImage *)v6 darkUrlValue];
-        v14 = v13;
-        if ((v12 != 0) == (v13 == 0))
+        darkUrlValue = [(SFURLImage *)self darkUrlValue];
+        darkUrlValue2 = [(SFURLImage *)v6 darkUrlValue];
+        v14 = darkUrlValue2;
+        if ((darkUrlValue != 0) == (darkUrlValue2 == 0))
         {
 
           v11 = 0;
@@ -81,16 +81,16 @@ LABEL_19:
 
         else
         {
-          v15 = [(SFURLImage *)self darkUrlValue];
-          if (v15)
+          darkUrlValue3 = [(SFURLImage *)self darkUrlValue];
+          if (darkUrlValue3)
           {
-            v16 = v15;
-            v19 = [(SFURLImage *)self darkUrlValue];
+            v16 = darkUrlValue3;
+            darkUrlValue4 = [(SFURLImage *)self darkUrlValue];
             [(SFURLImage *)v6 darkUrlValue];
-            v17 = v20 = v3;
-            v11 = [v19 isEqual:v17];
+            v17 = v20 = urlValue4;
+            v11 = [darkUrlValue4 isEqual:v17];
 
-            v3 = v20;
+            urlValue4 = v20;
           }
 
           else
@@ -100,8 +100,8 @@ LABEL_19:
           }
         }
 
-        v10 = v21;
-        if (!v9)
+        urlValue5 = v21;
+        if (!urlValue3)
         {
           goto LABEL_19;
         }
@@ -118,17 +118,17 @@ LABEL_21:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = SFURLImage;
-  v4 = [(SFImage *)&v10 copyWithZone:a3];
-  v5 = [(SFURLImage *)self urlValue];
-  v6 = [v5 copy];
+  v4 = [(SFImage *)&v10 copyWithZone:zone];
+  urlValue = [(SFURLImage *)self urlValue];
+  v6 = [urlValue copy];
   [v4 setUrlValue:v6];
 
-  v7 = [(SFURLImage *)self darkUrlValue];
-  v8 = [v7 copy];
+  darkUrlValue = [(SFURLImage *)self darkUrlValue];
+  v8 = [darkUrlValue copy];
   [v4 setDarkUrlValue:v8];
 
   return v4;
@@ -137,31 +137,31 @@ LABEL_21:
 - (NSData)jsonData
 {
   v2 = [[_SFPBURLImage alloc] initWithFacade:self];
-  v3 = [(_SFPBURLImage *)v2 jsonData];
+  jsonData = [(_SFPBURLImage *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBURLImage alloc] initWithFacade:self];
-  v3 = [(_SFPBURLImage *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBURLImage *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBImage alloc] initWithFacade:self];
-  v5 = [(_SFPBImage *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBImage *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFURLImage)initWithCoder:(id)a3
+- (SFURLImage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBImage alloc] initWithData:v5];
   v9.receiver = self;
@@ -171,29 +171,29 @@ LABEL_21:
   return v7;
 }
 
-- (SFURLImage)initWithProtobuf:(id)a3
+- (SFURLImage)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v14.receiver = self;
   v14.super_class = SFURLImage;
   v5 = [(SFURLImage *)&v14 init];
   if (v5)
   {
-    v6 = [v4 urlValue];
+    urlValue = [protobufCopy urlValue];
 
-    if (v6)
+    if (urlValue)
     {
-      v7 = [v4 urlValue];
-      v8 = _SFPBURLHandwrittenTranslator(v7);
+      urlValue2 = [protobufCopy urlValue];
+      v8 = _SFPBURLHandwrittenTranslator(urlValue2);
       [(SFURLImage *)v5 setUrlValue:v8];
     }
 
-    v9 = [v4 darkUrlValue];
+    darkUrlValue = [protobufCopy darkUrlValue];
 
-    if (v9)
+    if (darkUrlValue)
     {
-      v10 = [v4 darkUrlValue];
-      v11 = _SFPBURLHandwrittenTranslator(v10);
+      darkUrlValue2 = [protobufCopy darkUrlValue];
+      v11 = _SFPBURLHandwrittenTranslator(darkUrlValue2);
       [(SFURLImage *)v5 setDarkUrlValue:v11];
     }
 
@@ -209,23 +209,23 @@ LABEL_21:
   v9.receiver = self;
   v9.super_class = SFURLImage;
   v4 = [(SFURLImage *)&v9 description];
-  v5 = [(SFURLImage *)self urlValue];
-  v6 = [v5 absoluteString];
-  v7 = [v3 stringWithFormat:@"%@ - %@", v4, v6];
+  urlValue = [(SFURLImage *)self urlValue];
+  absoluteString = [urlValue absoluteString];
+  v7 = [v3 stringWithFormat:@"%@ - %@", v4, absoluteString];
 
   return v7;
 }
 
-- (SFURLImage)initWithURL:(id)a3
+- (SFURLImage)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = SFURLImage;
   v5 = [(SFURLImage *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(SFURLImage *)v5 setUrlValue:v4];
+    [(SFURLImage *)v5 setUrlValue:lCopy];
     v7 = v6;
   }
 

@@ -3,7 +3,7 @@
 - (BOOL)isValidationModeUsingPreflight;
 - (IDSCTPNRValidationMechanism)preflightShortCircuitMechanismOverride;
 - (IDSPhoneNumberValidationModeArbiter)init;
-- (IDSPhoneNumberValidationModeArbiter)initWithServerBag:(id)a3;
+- (IDSPhoneNumberValidationModeArbiter)initWithServerBag:(id)bag;
 - (NSString)preflightTestDataOverride;
 - (double)minimumIntervalBetweenValidationAttempts;
 - (int64_t)validationMode;
@@ -22,16 +22,16 @@
   return v4;
 }
 
-- (IDSPhoneNumberValidationModeArbiter)initWithServerBag:(id)a3
+- (IDSPhoneNumberValidationModeArbiter)initWithServerBag:(id)bag
 {
-  v5 = a3;
+  bagCopy = bag;
   v9.receiver = self;
   v9.super_class = IDSPhoneNumberValidationModeArbiter;
   v6 = [(IDSPhoneNumberValidationModeArbiter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_serverBag, a3);
+    objc_storeStrong(&v6->_serverBag, bag);
   }
 
   return v7;
@@ -39,13 +39,13 @@
 
 - (BOOL)isValidationModeUsingPreflight
 {
-  v3 = [(IDSPhoneNumberValidationModeArbiter *)self validationMode];
-  if (v3 != 1)
+  validationMode = [(IDSPhoneNumberValidationModeArbiter *)self validationMode];
+  if (validationMode != 1)
   {
-    LOBYTE(v3) = [(IDSPhoneNumberValidationModeArbiter *)self validationMode]== 3;
+    LOBYTE(validationMode) = [(IDSPhoneNumberValidationModeArbiter *)self validationMode]== 3;
   }
 
-  return v3;
+  return validationMode;
 }
 
 - (int64_t)validationMode
@@ -54,16 +54,16 @@
   v4 = +[IMLockdownManager sharedInstance];
   if ([v4 isInternalInstall])
   {
-    v5 = 1;
+    isCarrierInstall = 1;
   }
 
   else
   {
     v6 = +[IMLockdownManager sharedInstance];
-    v5 = [v6 isCarrierInstall];
+    isCarrierInstall = [v6 isCarrierInstall];
   }
 
-  if (v5 && v3)
+  if (isCarrierInstall && v3)
   {
     v7 = +[IMRGLog sms];
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -119,15 +119,15 @@ LABEL_16:
   v2 = [(IDSServerBag *)self->_serverBag objectForKey:@"preflight-enabled"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 1;
+    bOOLValue = 1;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (IDSCTPNRValidationMechanism)preflightShortCircuitMechanismOverride
@@ -139,8 +139,8 @@ LABEL_16:
 
   else if ([(IDSPhoneNumberValidationModeArbiter *)self validationMode]== 5)
   {
-    v4 = [(IDSPhoneNumberValidationModeArbiter *)self preflightTestDataOverride];
-    v3 = [IDSCTPNRValidationMechanism SMSMechanismWithContext:v4];
+    preflightTestDataOverride = [(IDSPhoneNumberValidationModeArbiter *)self preflightTestDataOverride];
+    v3 = [IDSCTPNRValidationMechanism SMSMechanismWithContext:preflightTestDataOverride];
   }
 
   else
@@ -168,8 +168,8 @@ LABEL_16:
 
 - (double)minimumIntervalBetweenValidationAttempts
 {
-  v3 = [(IDSPhoneNumberValidationModeArbiter *)self serverBag];
-  v4 = [v3 objectForKey:@"preflight-mechanism-delay"];
+  serverBag = [(IDSPhoneNumberValidationModeArbiter *)self serverBag];
+  v4 = [serverBag objectForKey:@"preflight-mechanism-delay"];
 
   v5 = 360.0;
   if (v4 && ![(IDSPhoneNumberValidationModeArbiter *)self isValidationModeLegacy])
@@ -183,28 +183,28 @@ LABEL_16:
 
 - (unsigned)maxAllowableNumberOfPreflightRequests
 {
-  v2 = [(IDSPhoneNumberValidationModeArbiter *)self serverBag];
-  v3 = [v2 objectForKey:@"preflight-request-limit"];
+  serverBag = [(IDSPhoneNumberValidationModeArbiter *)self serverBag];
+  v3 = [serverBag objectForKey:@"preflight-request-limit"];
 
   if (v3)
   {
-    v4 = [v3 unsignedIntValue];
+    unsignedIntValue = [v3 unsignedIntValue];
   }
 
   else
   {
-    v4 = 5;
+    unsignedIntValue = 5;
   }
 
-  return v4;
+  return unsignedIntValue;
 }
 
 - (unsigned)maxAllowableNumberOfSuccessfullySentVerifications
 {
   v3 = +[IMLockdownManager sharedInstance];
-  v4 = [v3 isInternalInstall];
+  isInternalInstall = [v3 isInternalInstall];
 
-  if (v4 && (v5 = IMGetCachedDomainIntForKeyWithDefaultValue(), v5 >= 1))
+  if (isInternalInstall && (v5 = IMGetCachedDomainIntForKeyWithDefaultValue(), v5 >= 1))
   {
     v6 = v5;
     v7 = +[IMRGLog sms];
@@ -237,9 +237,9 @@ LABEL_16:
 - (unsigned)maxAllowableNumberOfValidationAttemptsWhileNoneHaveSentSuccessfully
 {
   v3 = +[IMLockdownManager sharedInstance];
-  v4 = [v3 isInternalInstall];
+  isInternalInstall = [v3 isInternalInstall];
 
-  if (v4 && (v5 = IMGetCachedDomainIntForKeyWithDefaultValue(), v5 >= 1))
+  if (isInternalInstall && (v5 = IMGetCachedDomainIntForKeyWithDefaultValue(), v5 >= 1))
   {
     v6 = v5;
     v7 = +[IMRGLog sms];

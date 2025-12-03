@@ -10,11 +10,11 @@
 + (BOOL)wantsEnablement
 {
   v2 = +[HTPrefs sharedPrefs];
-  v3 = [v2 pdseWorkflowResponsivenessPeriodDays];
+  pdseWorkflowResponsivenessPeriodDays = [v2 pdseWorkflowResponsivenessPeriodDays];
   v4 = sub_10000BE10(@"PDSEWorkflowResponsiveness");
-  LOBYTE(v3) = sub_10000BB68(v3, 1, v4);
+  LOBYTE(pdseWorkflowResponsivenessPeriodDays) = sub_10000BB68(pdseWorkflowResponsivenessPeriodDays, 1, v4);
 
-  return v3;
+  return pdseWorkflowResponsivenessPeriodDays;
 }
 
 + (BOOL)willEnableDiagnostics

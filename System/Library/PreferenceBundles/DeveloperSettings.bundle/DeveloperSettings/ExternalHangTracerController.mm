@@ -1,37 +1,37 @@
 @interface ExternalHangTracerController
-- (BOOL)shouldDeferPushForSpecifierID:(id)a3 urlDictionary:(id)a4;
+- (BOOL)shouldDeferPushForSpecifierID:(id)d urlDictionary:(id)dictionary;
 - (BOOL)shouldEnableSelectButtonItem;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path;
 - (ExternalHangTracerController)init;
-- (id)developerAppsSpecifiersFromList:(id)a3;
-- (id)hangEventDetails:(id)a3;
-- (id)hangEventsSpecifiersForDict:(id)a3;
+- (id)developerAppsSpecifiersFromList:(id)list;
+- (id)hangEventDetails:(id)details;
+- (id)hangEventsSpecifiersForDict:(id)dict;
 - (id)hangTracerThreshold;
 - (id)isHangTracerEnabled;
 - (id)specifiers;
 - (id)specifiersOnlyWhenEnabled;
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5;
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point;
 - (id)thresholdSpecifiers;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (void)delayedAsyncLoadSpecifiersWithCompletion:(id)a3;
-- (void)developerAppsDidChangeForFinder:(id)a3;
-- (void)enableHangTracer:(id)a3 forSpecifier:(id)a4;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (void)delayedAsyncLoadSpecifiersWithCompletion:(id)completion;
+- (void)developerAppsDidChangeForFinder:(id)finder;
+- (void)enableHangTracer:(id)tracer forSpecifier:(id)specifier;
 - (void)goToNextLogsState;
-- (void)markGroup:(id)a3 asLoading:(BOOL)a4;
-- (void)presentErrorWithTitle:(id)a3 message:(id)a4;
-- (void)reloadAsyncSpecifiersWithCompletion:(id)a3;
+- (void)markGroup:(id)group asLoading:(BOOL)loading;
+- (void)presentErrorWithTitle:(id)title message:(id)message;
+- (void)reloadAsyncSpecifiersWithCompletion:(id)completion;
 - (void)reloadSpecifiers;
-- (void)setHangTracerThreshold:(id)a3 forSpecifier:(id)a4;
-- (void)shareLogs:(id)a3 sender:(id)a4;
-- (void)shareSelectedHangs:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateDeveloperAppsWithCompletion:(id)a3;
-- (void)updateFromHangEventSpecifiers:(id)a3 toSpecifiers:(id)a4;
-- (void)updateHangEventsWithCompletion:(id)a3;
-- (void)updateProcessingHangEventsWithCompletion:(id)a3;
+- (void)setHangTracerThreshold:(id)threshold forSpecifier:(id)specifier;
+- (void)shareLogs:(id)logs sender:(id)sender;
+- (void)shareSelectedHangs:(id)hangs;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateDeveloperAppsWithCompletion:(id)completion;
+- (void)updateFromHangEventSpecifiers:(id)specifiers toSpecifiers:(id)toSpecifiers;
+- (void)updateHangEventsWithCompletion:(id)completion;
+- (void)updateProcessingHangEventsWithCompletion:(id)completion;
 - (void)updateShareButtonEnabled;
-- (void)updateSpecifiersWithHangEvents:(id)a3 processingHangEvents:(id)a4;
+- (void)updateSpecifiersWithHangEvents:(id)events processingHangEvents:(id)hangEvents;
 - (void)viewDidLoad;
 @end
 
@@ -161,26 +161,26 @@
   self->_logsState = v2;
 }
 
-- (void)markGroup:(id)a3 asLoading:(BOOL)a4
+- (void)markGroup:(id)group asLoading:(BOOL)loading
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_4218;
   block[3] = &unk_3D088;
   block[4] = self;
-  v7 = a3;
-  v8 = a4;
-  v5 = v7;
+  groupCopy = group;
+  loadingCopy = loading;
+  v5 = groupCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)updateHangEventsWithCompletion:(id)a3
+- (void)updateHangEventsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ExternalHangTracerController *)self isHangTracerEnabled];
-  v6 = [v5 BOOLValue];
+  completionCopy = completion;
+  isHangTracerEnabled = [(ExternalHangTracerController *)self isHangTracerEnabled];
+  bOOLValue = [isHangTracerEnabled BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     objc_initWeak(&location, self);
     if (!self->_logsState)
@@ -188,14 +188,14 @@
       [(ExternalHangTracerController *)self markGroup:@"HANGTRACER_EXTERNAL_HANG_EVENTS" asLoading:1];
     }
 
-    v7 = [(ExternalHangTracerController *)self hangsDataFinder];
+    hangsDataFinder = [(ExternalHangTracerController *)self hangsDataFinder];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_4474;
     v8[3] = &unk_3D0B0;
     objc_copyWeak(&v10, &location);
-    v9 = v4;
-    [v7 findEventsFilteringDeveloperApps:1 completionHandler:v8];
+    v9 = completionCopy;
+    [hangsDataFinder findEventsFilteringDeveloperApps:1 completionHandler:v8];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
@@ -203,17 +203,17 @@
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)updateDeveloperAppsWithCompletion:(id)a3
+- (void)updateDeveloperAppsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ExternalHangTracerController *)self isHangTracerEnabled];
-  v6 = [v5 BOOLValue];
+  completionCopy = completion;
+  isHangTracerEnabled = [(ExternalHangTracerController *)self isHangTracerEnabled];
+  bOOLValue = [isHangTracerEnabled BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     objc_initWeak(&location, self);
     if (!self->_appsState)
@@ -221,15 +221,15 @@
       [(ExternalHangTracerController *)self markGroup:@"HANGTRACER_EXTERNAL_DEVELOPER_APPS" asLoading:1];
     }
 
-    v7 = [(ExternalHangTracerController *)self appsFinder];
+    appsFinder = [(ExternalHangTracerController *)self appsFinder];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_4688;
     v8[3] = &unk_3D0D8;
     objc_copyWeak(&v10, &location);
     v8[4] = self;
-    v9 = v4;
-    [v7 findApps:v8];
+    v9 = completionCopy;
+    [appsFinder findApps:v8];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
@@ -237,13 +237,13 @@
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)updateProcessingHangEventsWithCompletion:(id)a3
+- (void)updateProcessingHangEventsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   if (!self->_logsState)
   {
@@ -256,7 +256,7 @@
   v7[2] = sub_4B28;
   v7[3] = &unk_3D0B0;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
   [(HTHangsDataFinder *)hangsDataFinder findProcessingEventsFilteringDeveloperApps:1 completionHandler:v7];
 
@@ -264,12 +264,12 @@
   objc_destroyWeak(&location);
 }
 
-- (void)updateSpecifiersWithHangEvents:(id)a3 processingHangEvents:(id)a4
+- (void)updateSpecifiersWithHangEvents:(id)events processingHangEvents:(id)hangEvents
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [v6 mutableCopy];
-  [v7 setValuesForKeysWithDictionary:v13];
+  eventsCopy = events;
+  hangEventsCopy = hangEvents;
+  v7 = [hangEventsCopy mutableCopy];
+  [v7 setValuesForKeysWithDictionary:eventsCopy];
   v8 = +[NSMutableArray array];
   [(ExternalHangTracerController *)self goToNextLogsState];
   [(ExternalHangTracerController *)self markGroup:@"HANGTRACER_EXTERNAL_HANG_EVENTS" asLoading:self->_logsState != 2];
@@ -289,13 +289,13 @@
     v8 = v11;
   }
 
-  v12 = [(ExternalHangTracerController *)self cachedHangEventsSpecifiers];
-  [(ExternalHangTracerController *)self setHangsEvents:v13];
-  [(ExternalHangTracerController *)self setProcessingHangsEvents:v6];
+  cachedHangEventsSpecifiers = [(ExternalHangTracerController *)self cachedHangEventsSpecifiers];
+  [(ExternalHangTracerController *)self setHangsEvents:eventsCopy];
+  [(ExternalHangTracerController *)self setProcessingHangsEvents:hangEventsCopy];
 
   [(ExternalHangTracerController *)self setUnifiedHangsEvents:v7];
   [(ExternalHangTracerController *)self setCachedHangEventsSpecifiers:v8];
-  [(ExternalHangTracerController *)self updateFromHangEventSpecifiers:v12 toSpecifiers:v8];
+  [(ExternalHangTracerController *)self updateFromHangEventSpecifiers:cachedHangEventsSpecifiers toSpecifiers:v8];
   [(UIBarButtonItem *)self->_selectButtonItem setEnabled:[(ExternalHangTracerController *)self shouldEnableSelectButtonItem]];
   [(ExternalHangTracerController *)self updateShareButtonEnabled];
   if ([(ExternalHangTracerController *)self isEditing]&& ![(ExternalHangTracerController *)self shouldEnableSelectButtonItem])
@@ -304,22 +304,22 @@
   }
 }
 
-- (void)updateFromHangEventSpecifiers:(id)a3 toSpecifiers:(id)a4
+- (void)updateFromHangEventSpecifiers:(id)specifiers toSpecifiers:(id)toSpecifiers
 {
-  v6 = a3;
-  v7 = a4;
+  specifiersCopy = specifiers;
+  toSpecifiersCopy = toSpecifiers;
   v8 = [(ExternalHangTracerController *)self indexOfSpecifierID:@"HANGTRACER_EXTERNAL_HANG_EVENTS"];
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = v8;
-    v10 = [v7 differenceFromArray:v6 withOptions:0 usingEquivalenceTest:&stru_3D118];
+    v10 = [toSpecifiersCopy differenceFromArray:specifiersCopy withOptions:0 usingEquivalenceTest:&stru_3D118];
     v11 = OBJC_IVAR___PSListController__specifiers;
     v12 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] mutableCopy];
-    if ([v6 count])
+    if ([specifiersCopy count])
     {
       v13 = *&self->PSListController_opaque[v11];
-      v14 = [v6 firstObject];
-      v15 = [v13 indexOfObject:v14];
+      firstObject = [specifiersCopy firstObject];
+      v15 = [v13 indexOfObject:firstObject];
     }
 
     else
@@ -327,19 +327,19 @@
       v15 = (v9 + 1);
     }
 
-    v42 = v7;
-    [v12 replaceObjectsInRange:v15 withObjectsFromArray:{objc_msgSend(v6, "count"), v7}];
+    v42 = toSpecifiersCopy;
+    [v12 replaceObjectsInRange:v15 withObjectsFromArray:{objc_msgSend(specifiersCopy, "count"), toSpecifiersCopy}];
     v41 = v12;
     v16 = [v12 copy];
     v17 = *&self->PSListController_opaque[v11];
     *&self->PSListController_opaque[v11] = v16;
 
-    v18 = [(ExternalHangTracerController *)self table];
-    [v18 beginUpdates];
+    table = [(ExternalHangTracerController *)self table];
+    [table beginUpdates];
 
     v19 = &v15[~v9];
-    v20 = [v10 insertions];
-    v21 = [v20 count];
+    insertions = [v10 insertions];
+    v21 = [insertions count];
 
     v43 = v10;
     if (v21)
@@ -349,8 +349,8 @@
       v49 = 0u;
       v50 = 0u;
       v51 = 0u;
-      v23 = [v10 insertions];
-      v24 = [v23 countByEnumeratingWithState:&v48 objects:v53 count:16];
+      insertions2 = [v10 insertions];
+      v24 = [insertions2 countByEnumeratingWithState:&v48 objects:v53 count:16];
       if (v24)
       {
         v25 = v24;
@@ -361,27 +361,27 @@
           {
             if (*v49 != v26)
             {
-              objc_enumerationMutation(v23);
+              objc_enumerationMutation(insertions2);
             }
 
             v28 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", &v19[[*(*(&v48 + 1) + 8 * i) index]], 3);
             [v22 addObject:v28];
           }
 
-          v25 = [v23 countByEnumeratingWithState:&v48 objects:v53 count:16];
+          v25 = [insertions2 countByEnumeratingWithState:&v48 objects:v53 count:16];
         }
 
         while (v25);
       }
 
-      v29 = [(ExternalHangTracerController *)self table];
-      [v29 insertRowsAtIndexPaths:v22 withRowAnimation:0];
+      table2 = [(ExternalHangTracerController *)self table];
+      [table2 insertRowsAtIndexPaths:v22 withRowAnimation:0];
 
       v10 = v43;
     }
 
-    v30 = [v10 removals];
-    v31 = [v30 count];
+    removals = [v10 removals];
+    v31 = [removals count];
 
     if (v31)
     {
@@ -390,8 +390,8 @@
       v45 = 0u;
       v46 = 0u;
       v47 = 0u;
-      v33 = [v10 removals];
-      v34 = [v33 countByEnumeratingWithState:&v44 objects:v52 count:16];
+      removals2 = [v10 removals];
+      v34 = [removals2 countByEnumeratingWithState:&v44 objects:v52 count:16];
       if (v34)
       {
         v35 = v34;
@@ -402,44 +402,44 @@
           {
             if (*v45 != v36)
             {
-              objc_enumerationMutation(v33);
+              objc_enumerationMutation(removals2);
             }
 
             v38 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", &v19[[*(*(&v44 + 1) + 8 * j) index]], 3);
             [v32 addObject:v38];
           }
 
-          v35 = [v33 countByEnumeratingWithState:&v44 objects:v52 count:16];
+          v35 = [removals2 countByEnumeratingWithState:&v44 objects:v52 count:16];
         }
 
         while (v35);
       }
 
-      v39 = [(ExternalHangTracerController *)self table];
-      [v39 deleteRowsAtIndexPaths:v32 withRowAnimation:0];
+      table3 = [(ExternalHangTracerController *)self table];
+      [table3 deleteRowsAtIndexPaths:v32 withRowAnimation:0];
 
       v10 = v43;
     }
 
-    v40 = [(ExternalHangTracerController *)self table];
-    [v40 endUpdates];
+    table4 = [(ExternalHangTracerController *)self table];
+    [table4 endUpdates];
 
     [(ExternalHangTracerController *)self prepareSpecifiersMetadata];
-    v7 = v42;
+    toSpecifiersCopy = v42;
   }
 }
 
-- (void)presentErrorWithTitle:(id)a3 message:(id)a4
+- (void)presentErrorWithTitle:(id)title message:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  messageCopy = message;
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x3042000000;
   v15[3] = sub_5534;
   v15[4] = sub_5540;
   objc_initWeak(&v16, self);
-  v8 = [UIAlertController alertControllerWithTitle:v6 message:v7 preferredStyle:1];
+  v8 = [UIAlertController alertControllerWithTitle:titleCopy message:messageCopy preferredStyle:1];
   v9 = HTUIDialogOKButton();
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
@@ -462,9 +462,9 @@
   objc_destroyWeak(&v16);
 }
 
-- (void)reloadAsyncSpecifiersWithCompletion:(id)a3
+- (void)reloadAsyncSpecifiersWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x3042000000;
@@ -502,8 +502,8 @@
   v10[1] = 3221225472;
   v10[2] = sub_5954;
   v10[3] = &unk_3D1B8;
-  v11 = v4;
-  v9 = v4;
+  v11 = completionCopy;
+  v9 = completionCopy;
   dispatch_group_notify(v8, &_dispatch_main_q, v10);
 
   _Block_object_dispose(v20, 8);
@@ -512,8 +512,8 @@
 
 - (BOOL)shouldEnableSelectButtonItem
 {
-  v2 = [(ExternalHangTracerController *)self unifiedHangsEvents];
-  v3 = [v2 count] != 0;
+  unifiedHangsEvents = [(ExternalHangTracerController *)self unifiedHangsEvents];
+  v3 = [unifiedHangsEvents count] != 0;
 
   return v3;
 }
@@ -522,9 +522,9 @@
 {
   if (([(ExternalHangTracerController *)self isEditing]& 1) != 0)
   {
-    v5 = [(ExternalHangTracerController *)self table];
-    v3 = [v5 indexPathsForSelectedRows];
-    -[UIBarButtonItem setEnabled:](self->_shareButtonItem, "setEnabled:", [v3 count] != 0);
+    table = [(ExternalHangTracerController *)self table];
+    indexPathsForSelectedRows = [table indexPathsForSelectedRows];
+    -[UIBarButtonItem setEnabled:](self->_shareButtonItem, "setEnabled:", [indexPathsForSelectedRows count] != 0);
   }
 
   else
@@ -535,19 +535,19 @@
   }
 }
 
-- (void)shareSelectedHangs:(id)a3
+- (void)shareSelectedHangs:(id)hangs
 {
-  v16 = a3;
-  v19 = self;
-  v4 = [(ExternalHangTracerController *)self table];
-  v5 = [v4 indexPathsForSelectedRows];
+  hangsCopy = hangs;
+  selfCopy = self;
+  table = [(ExternalHangTracerController *)self table];
+  indexPathsForSelectedRows = [table indexPathsForSelectedRows];
 
   v6 = +[NSMutableArray array];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v5;
+  obj = indexPathsForSelectedRows;
   v20 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v20)
   {
@@ -561,7 +561,7 @@
           objc_enumerationMutation(obj);
         }
 
-        v8 = [(ExternalHangTracerController *)v19 specifierAtIndexPath:*(*(&v26 + 1) + 8 * i)];
+        v8 = [(ExternalHangTracerController *)selfCopy specifierAtIndexPath:*(*(&v26 + 1) + 8 * i)];
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
@@ -582,8 +582,8 @@
                 objc_enumerationMutation(v9);
               }
 
-              v14 = [*(*(&v22 + 1) + 8 * j) path];
-              v15 = [NSURL fileURLWithPath:v14];
+              path = [*(*(&v22 + 1) + 8 * j) path];
+              v15 = [NSURL fileURLWithPath:path];
 
               [v6 addObject:v15];
               +[HTHangsAnalytics sendLogSharedEvent];
@@ -602,32 +602,32 @@
     while (v20);
   }
 
-  [(ExternalHangTracerController *)v19 shareLogs:v6 sender:v16];
+  [(ExternalHangTracerController *)selfCopy shareLogs:v6 sender:hangsCopy];
 }
 
-- (void)shareLogs:(id)a3 sender:(id)a4
+- (void)shareLogs:(id)logs sender:(id)sender
 {
-  v9 = a4;
-  v6 = a3;
-  v7 = [[UIActivityViewController alloc] initWithActivityItems:v6 applicationActivities:0];
+  senderCopy = sender;
+  logsCopy = logs;
+  v7 = [[UIActivityViewController alloc] initWithActivityItems:logsCopy applicationActivities:0];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v7 popoverPresentationController];
-    [v8 setBarButtonItem:v9];
+    popoverPresentationController = [v7 popoverPresentationController];
+    [popoverPresentationController setBarButtonItem:senderCopy];
   }
 
   [(ExternalHangTracerController *)self presentViewController:v7 animated:1 completion:0];
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v5 = [(ExternalHangTracerController *)self specifierAtIndexPath:a4];
+  v5 = [(ExternalHangTracerController *)self specifierAtIndexPath:path];
   v6 = [v5 objectForKeyedSubscript:@"HangsDataControllerIsProcessing"];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
     v8 = 0;
   }
@@ -646,24 +646,24 @@
   return v8;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   [(ExternalHangTracerController *)self updateShareButtonEnabled];
   if (([(ExternalHangTracerController *)self isEditing]& 1) == 0)
   {
     v8.receiver = self;
     v8.super_class = ExternalHangTracerController;
-    [(ExternalHangTracerController *)&v8 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(ExternalHangTracerController *)&v8 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(ExternalHangTracerController *)self isEditing]&& [(ExternalHangTracerController *)self tableView:v6 shouldHighlightRowAtIndexPath:v7])
+  viewCopy = view;
+  pathCopy = path;
+  if ([(ExternalHangTracerController *)self isEditing]&& [(ExternalHangTracerController *)self tableView:viewCopy shouldHighlightRowAtIndexPath:pathCopy])
   {
     v8 = 3;
   }
@@ -676,19 +676,19 @@
   return v8;
 }
 
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path
 {
-  v4 = [(ExternalHangTracerController *)self specifierAtIndexPath:a4];
+  v4 = [(ExternalHangTracerController *)self specifierAtIndexPath:path];
   v5 = [v4 objectForKeyedSubscript:@"HangsDataControllerHangEvent"];
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point
 {
-  v21 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if (([(ExternalHangTracerController *)self isEditing]& 1) != 0)
   {
     v8 = 0;
@@ -696,13 +696,13 @@
 
   else
   {
-    v22 = [(ExternalHangTracerController *)self specifierAtIndexPath:v7];
+    v22 = [(ExternalHangTracerController *)self specifierAtIndexPath:pathCopy];
     v20 = [v22 objectForKeyedSubscript:@"HangsDataControllerHangEvent"];
     v9 = [v22 objectForKeyedSubscript:@"HangsDataControllerIsProcessing"];
-    v10 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
 
     v8 = 0;
-    if ((v10 & 1) == 0 && v20)
+    if ((bOOLValue & 1) == 0 && v20)
     {
       v11 = +[NSMutableArray array];
       v29 = 0u;
@@ -723,8 +723,8 @@
               objc_enumerationMutation(v12);
             }
 
-            v16 = [*(*(&v27 + 1) + 8 * i) path];
-            v17 = [NSURL fileURLWithPath:v16];
+            path = [*(*(&v27 + 1) + 8 * i) path];
+            v17 = [NSURL fileURLWithPath:path];
             [v11 addObject:v17];
           }
 
@@ -752,7 +752,7 @@
   return v8;
 }
 
-- (void)developerAppsDidChangeForFinder:(id)a3
+- (void)developerAppsDidChangeForFinder:(id)finder
 {
   v4[0] = 0;
   v4[1] = v4;
@@ -777,9 +777,9 @@
 
   [v4 setIdentifier:@"HANGTRACER_EXTERNAL_HANG_THRESHOLD"];
   [v4 setObject:objc_opt_class() forKeyedSubscript:PSCellClassKey];
-  v5 = [(HTDeveloperSettings *)self->_hangTracerSettings availableThresholdsValues];
-  v6 = [(HTDeveloperSettings *)self->_hangTracerSettings availableThresholdsShortNames];
-  [v4 setValues:v5 titles:v6];
+  availableThresholdsValues = [(HTDeveloperSettings *)self->_hangTracerSettings availableThresholdsValues];
+  availableThresholdsShortNames = [(HTDeveloperSettings *)self->_hangTracerSettings availableThresholdsShortNames];
+  [v4 setValues:availableThresholdsValues titles:availableThresholdsShortNames];
   v7 = HTUILogsThresholdSelectorTitle();
   v8 = [PSSpecifier groupSpecifierWithID:@"HANGTRACER_EXTERNAL_HANG_THRESHOLD_GROUP" name:v7];
   v11[0] = v8;
@@ -792,8 +792,8 @@
 - (id)specifiersOnlyWhenEnabled
 {
   v3 = +[NSMutableArray array];
-  v4 = [(ExternalHangTracerController *)self thresholdSpecifiers];
-  [v3 addObjectsFromArray:v4];
+  thresholdSpecifiers = [(ExternalHangTracerController *)self thresholdSpecifiers];
+  [v3 addObjectsFromArray:thresholdSpecifiers];
 
   v5 = HTUIAppsSectionTitle();
   v6 = [PSSpecifier groupSpecifierWithID:@"HANGTRACER_EXTERNAL_DEVELOPER_APPS" name:v5];
@@ -852,13 +852,13 @@
     v10 = [NSArray arrayWithObjects:v17 count:2];
     v11 = [NSMutableArray arrayWithArray:v10];
 
-    v12 = [(ExternalHangTracerController *)self isHangTracerEnabled];
-    v13 = [v12 BOOLValue];
+    isHangTracerEnabled = [(ExternalHangTracerController *)self isHangTracerEnabled];
+    bOOLValue = [isHangTracerEnabled BOOLValue];
 
-    if (v13)
+    if (bOOLValue)
     {
-      v14 = [(ExternalHangTracerController *)self specifiersOnlyWhenEnabled];
-      [v11 addObjectsFromArray:v14];
+      specifiersOnlyWhenEnabled = [(ExternalHangTracerController *)self specifiersOnlyWhenEnabled];
+      [v11 addObjectsFromArray:specifiersOnlyWhenEnabled];
     }
 
     v15 = *&self->PSListController_opaque[v3];
@@ -870,15 +870,15 @@
   return v4;
 }
 
-- (id)developerAppsSpecifiersFromList:(id)a3
+- (id)developerAppsSpecifiersFromList:(id)list
 {
-  v3 = a3;
+  listCopy = list;
   v4 = +[NSMutableArray array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v3;
+  obj = listCopy;
   v5 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
@@ -896,14 +896,14 @@
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 name];
-        v13 = [PSSpecifier preferenceSpecifierNamed:v12 target:0 set:0 get:0 detail:0 cell:4 edit:0];
+        name = [v11 name];
+        v13 = [PSSpecifier preferenceSpecifierNamed:name target:0 set:0 get:0 detail:0 cell:4 edit:0];
 
-        v14 = [v11 bundleID];
-        [v13 setIdentifier:v14];
+        bundleID = [v11 bundleID];
+        [v13 setIdentifier:bundleID];
 
-        v15 = [v11 bundleID];
-        [v13 setObject:v15 forKeyedSubscript:v8];
+        bundleID2 = [v11 bundleID];
+        [v13 setObject:bundleID2 forKeyedSubscript:v8];
 
         [v13 setObject:&__kCFBooleanTrue forKeyedSubscript:v9];
         [v4 addObject:v13];
@@ -918,11 +918,11 @@
   return v4;
 }
 
-- (id)hangEventsSpecifiersForDict:(id)a3
+- (id)hangEventsSpecifiersForDict:(id)dict
 {
-  v4 = a3;
+  dictCopy = dict;
   v29 = +[NSMutableArray array];
-  [HTHangsDataEntry sortedHangIDsByCreationDate:v4];
+  [HTHangsDataEntry sortedHangIDsByCreationDate:dictCopy];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -942,11 +942,11 @@
         }
 
         v6 = *(*(&v31 + 1) + 8 * i);
-        v7 = [v4 objectForKeyedSubscript:v6];
-        v8 = [v7 firstObject];
+        v7 = [dictCopy objectForKeyedSubscript:v6];
+        firstObject = [v7 firstObject];
 
-        v9 = [v8 displayName];
-        if ([v8 isBeingProcessed])
+        displayName = [firstObject displayName];
+        if ([firstObject isBeingProcessed])
         {
           v10 = 0;
         }
@@ -956,7 +956,7 @@
           v10 = objc_opt_class();
         }
 
-        if ([v8 isBeingProcessed])
+        if ([firstObject isBeingProcessed])
         {
           v11 = 15;
         }
@@ -966,31 +966,31 @@
           v11 = 2;
         }
 
-        v12 = [PSSpecifier preferenceSpecifierNamed:v9 target:self set:0 get:"hangEventDetails:" detail:v10 cell:v11 edit:0];
+        v12 = [PSSpecifier preferenceSpecifierNamed:displayName target:self set:0 get:"hangEventDetails:" detail:v10 cell:v11 edit:0];
 
-        v13 = [v8 hangID];
-        [v12 setIdentifier:v13];
+        hangID = [firstObject hangID];
+        [v12 setIdentifier:hangID];
 
         [v12 setObject:objc_opt_class() forKeyedSubscript:v27];
         [v12 setObject:v6 forKeyedSubscript:@"HangsDataControllerHangEvent"];
-        v14 = [v4 objectForKeyedSubscript:v6];
+        v14 = [dictCopy objectForKeyedSubscript:v6];
         [v12 setObject:v14 forKeyedSubscript:@"HangsDataControllerHangData"];
 
-        v15 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v8 isBeingProcessed]);
+        v15 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [firstObject isBeingProcessed]);
         [v12 setObject:v15 forKeyedSubscript:@"HangsDataControllerIsProcessing"];
 
-        [v8 duration];
+        [firstObject duration];
         v16 = [NSNumber numberWithDouble:?];
         [v12 setObject:v16 forKeyedSubscript:@"HangsDataControllerDuration"];
 
-        v17 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v8 durationLevel]);
+        v17 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [firstObject durationLevel]);
         [v12 setObject:v17 forKeyedSubscript:@"HangsDataControllerDurationLevel"];
 
-        [v8 duration];
+        [firstObject duration];
         if (v18 > 0.0)
         {
           v19 = [NSMeasurement alloc];
-          [v8 duration];
+          [firstObject duration];
           v21 = v20;
           v22 = +[NSUnitDuration milliseconds];
           v23 = [v19 initWithDoubleValue:v22 unit:v21];
@@ -1011,22 +1011,22 @@
   return v29;
 }
 
-- (id)hangEventDetails:(id)a3
+- (id)hangEventDetails:(id)details
 {
-  v4 = [a3 objectForKeyedSubscript:@"HangsDataControllerHangEvent"];
+  v4 = [details objectForKeyedSubscript:@"HangsDataControllerHangEvent"];
   if (v4)
   {
-    v5 = [(ExternalHangTracerController *)self unifiedHangsEvents];
-    v6 = [v5 objectForKeyedSubscript:v4];
-    v7 = [v6 firstObject];
+    unifiedHangsEvents = [(ExternalHangTracerController *)self unifiedHangsEvents];
+    v6 = [unifiedHangsEvents objectForKeyedSubscript:v4];
+    firstObject = [v6 firstObject];
 
-    v8 = [v7 creationDate];
+    creationDate = [firstObject creationDate];
 
-    if (v8)
+    if (creationDate)
     {
       formatter = self->_formatter;
-      v10 = [v7 creationDate];
-      v11 = [(NSDateFormatter *)formatter stringFromDate:v10];
+      creationDate2 = [firstObject creationDate];
+      v11 = [(NSDateFormatter *)formatter stringFromDate:creationDate2];
     }
 
     else
@@ -1043,36 +1043,36 @@
   return v11;
 }
 
-- (void)setHangTracerThreshold:(id)a3 forSpecifier:(id)a4
+- (void)setHangTracerThreshold:(id)threshold forSpecifier:(id)specifier
 {
-  v5 = [a3 intValue];
-  NSLog(@"Setting external hang tracer threshold to %ld", v5);
-  [HTHangsAnalytics sendHangThresholdChangedEvent:v5];
-  v6 = [(ExternalHangTracerController *)self hangTracerSettings];
-  [v6 setHangTracerThreshold:v5];
+  intValue = [threshold intValue];
+  NSLog(@"Setting external hang tracer threshold to %ld", intValue);
+  [HTHangsAnalytics sendHangThresholdChangedEvent:intValue];
+  hangTracerSettings = [(ExternalHangTracerController *)self hangTracerSettings];
+  [hangTracerSettings setHangTracerThreshold:intValue];
 }
 
 - (id)hangTracerThreshold
 {
-  v2 = [(ExternalHangTracerController *)self hangTracerSettings];
-  v3 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v2 hangTracerThreshold]);
+  hangTracerSettings = [(ExternalHangTracerController *)self hangTracerSettings];
+  v3 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [hangTracerSettings hangTracerThreshold]);
 
   return v3;
 }
 
-- (void)enableHangTracer:(id)a3 forSpecifier:(id)a4
+- (void)enableHangTracer:(id)tracer forSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 BOOLValue];
-  NSLog(@"Setting external hang tracer enabled to %d", v8);
-  v9 = [(ExternalHangTracerController *)self hangTracerSettings];
-  [v9 setEnabled:v8];
+  tracerCopy = tracer;
+  specifierCopy = specifier;
+  bOOLValue = [tracerCopy BOOLValue];
+  NSLog(@"Setting external hang tracer enabled to %d", bOOLValue);
+  hangTracerSettings = [(ExternalHangTracerController *)self hangTracerSettings];
+  [hangTracerSettings setEnabled:bOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
-    v10 = [(ExternalHangTracerController *)self specifiersOnlyWhenEnabled];
-    [(ExternalHangTracerController *)self insertContiguousSpecifiers:v10 afterSpecifierID:@"HANGTRACER_EXTERNAL_HANG_TOGGLE" animated:1];
+    specifiersOnlyWhenEnabled = [(ExternalHangTracerController *)self specifiersOnlyWhenEnabled];
+    [(ExternalHangTracerController *)self insertContiguousSpecifiers:specifiersOnlyWhenEnabled afterSpecifierID:@"HANGTRACER_EXTERNAL_HANG_TOGGLE" animated:1];
 
     v16[0] = 0;
     v16[1] = v16;
@@ -1093,8 +1093,8 @@
 
   else
   {
-    v11 = [(ExternalHangTracerController *)self developerApps];
-    v12 = [v11 count];
+    developerApps = [(ExternalHangTracerController *)self developerApps];
+    v12 = [developerApps count];
 
     [HTHangsAnalytics sendActivationEvent:0 developerAppCount:v12];
     [(ExternalHangTracerController *)self setDeveloperApps:&__NSArray0__struct];
@@ -1115,15 +1115,15 @@
 
 - (id)isHangTracerEnabled
 {
-  v2 = [(ExternalHangTracerController *)self hangTracerSettings];
-  v3 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v2 isEnabled]);
+  hangTracerSettings = [(ExternalHangTracerController *)self hangTracerSettings];
+  v3 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [hangTracerSettings isEnabled]);
 
   return v3;
 }
 
-- (void)delayedAsyncLoadSpecifiersWithCompletion:(id)a3
+- (void)delayedAsyncLoadSpecifiersWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x3042000000;
@@ -1135,7 +1135,7 @@
   v6[2] = sub_7C4C;
   v6[3] = &unk_3D2E8;
   v8 = v9;
-  v5 = v4;
+  v5 = completionCopy;
   v7 = v5;
   [(ExternalHangTracerController *)self reloadAsyncSpecifiersWithCompletion:v6];
 
@@ -1151,13 +1151,13 @@
   [(ExternalHangTracerController *)self delayedAsyncLoadSpecifiersWithCompletion:0];
 }
 
-- (BOOL)shouldDeferPushForSpecifierID:(id)a3 urlDictionary:(id)a4
+- (BOOL)shouldDeferPushForSpecifierID:(id)d urlDictionary:(id)dictionary
 {
-  v5 = a3;
-  v6 = [[NSUUID alloc] initWithUUIDString:v5];
+  dCopy = d;
+  v6 = [[NSUUID alloc] initWithUUIDString:dCopy];
   if (v6)
   {
-    v7 = [(ExternalHangTracerController *)self specifierForID:v5];
+    v7 = [(ExternalHangTracerController *)self specifierForID:dCopy];
     v8 = v7 == 0;
   }
 

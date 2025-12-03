@@ -1,13 +1,13 @@
 @interface RestaurantReservationsConfirmationHeaderCell
 - (NSString)accessoryButtonTitle;
-- (RestaurantReservationsConfirmationHeaderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (RestaurantReservationsConfirmationHeaderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (RestaurantReservationsConfirmationHeaderCellDelegate)actionDelegate;
-- (void)accessoryButtonTapped:(id)a3;
+- (void)accessoryButtonTapped:(id)tapped;
 - (void)initConstraints;
-- (void)reservationLabelDidLayout:(id)a3;
-- (void)setAccessoryButtonTitle:(id)a3;
-- (void)setAutomaticallyHidesChevron:(BOOL)a3;
-- (void)setSubtitleType:(unint64_t)a3;
+- (void)reservationLabelDidLayout:(id)layout;
+- (void)setAccessoryButtonTitle:(id)title;
+- (void)setAutomaticallyHidesChevron:(BOOL)chevron;
+- (void)setSubtitleType:(unint64_t)type;
 - (void)updateConstraints;
 - (void)updateSubtitleLabel;
 @end
@@ -21,43 +21,43 @@
   return WeakRetained;
 }
 
-- (void)setAutomaticallyHidesChevron:(BOOL)a3
+- (void)setAutomaticallyHidesChevron:(BOOL)chevron
 {
-  if (self->_automaticallyHidesChevron == !a3)
+  if (self->_automaticallyHidesChevron == !chevron)
   {
-    self->_automaticallyHidesChevron = a3;
+    self->_automaticallyHidesChevron = chevron;
     [(RestaurantReservationsConfirmationHeaderCell *)self setNeedsLayout];
   }
 }
 
-- (void)setAccessoryButtonTitle:(id)a3
+- (void)setAccessoryButtonTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(RestaurantReservationsConfirmationHeaderCell *)self accessoryButton];
-  [v5 setTitle:v4 forState:0];
+  titleCopy = title;
+  accessoryButton = [(RestaurantReservationsConfirmationHeaderCell *)self accessoryButton];
+  [accessoryButton setTitle:titleCopy forState:0];
 
   [(RestaurantReservationsConfirmationHeaderCell *)self setNeedsUpdateConstraints];
 }
 
 - (NSString)accessoryButtonTitle
 {
-  v2 = [(RestaurantReservationsConfirmationHeaderCell *)self accessoryButton];
-  v3 = [v2 titleForState:0];
+  accessoryButton = [(RestaurantReservationsConfirmationHeaderCell *)self accessoryButton];
+  v3 = [accessoryButton titleForState:0];
 
   return v3;
 }
 
 - (void)updateConstraints
 {
-  v5 = [(RestaurantReservationsConfirmationHeaderCell *)self accessoryButton];
-  v6 = [v5 titleLabel];
-  v7 = [v6 text];
-  v8 = [v7 length];
+  accessoryButton = [(RestaurantReservationsConfirmationHeaderCell *)self accessoryButton];
+  titleLabel = [accessoryButton titleLabel];
+  text = [titleLabel text];
+  v8 = [text length];
   if (v8)
   {
-    v2 = [(RestaurantReservationsConfirmationHeaderCell *)self subLabel];
-    v3 = [v2 font];
-    [v3 lineHeight];
+    subLabel = [(RestaurantReservationsConfirmationHeaderCell *)self subLabel];
+    font = [subLabel font];
+    [font lineHeight];
     v10 = ceil(v9);
   }
 
@@ -66,8 +66,8 @@
     v10 = 0.0;
   }
 
-  v11 = [(RestaurantReservationsConfirmationHeaderCell *)self buttonBottomConstraint];
-  [v11 setConstant:v10];
+  buttonBottomConstraint = [(RestaurantReservationsConfirmationHeaderCell *)self buttonBottomConstraint];
+  [buttonBottomConstraint setConstant:v10];
 
   if (v8)
   {
@@ -78,17 +78,17 @@
   [(RestaurantReservationsConfirmationHeaderCell *)&v12 updateConstraints];
 }
 
-- (void)accessoryButtonTapped:(id)a3
+- (void)accessoryButtonTapped:(id)tapped
 {
-  v4 = [(RestaurantReservationsConfirmationHeaderCell *)self actionDelegate];
-  [v4 reservationConfirmationHeaderCellAccessoryButtonWasTapped:self];
+  actionDelegate = [(RestaurantReservationsConfirmationHeaderCell *)self actionDelegate];
+  [actionDelegate reservationConfirmationHeaderCellAccessoryButtonWasTapped:self];
 }
 
-- (void)setSubtitleType:(unint64_t)a3
+- (void)setSubtitleType:(unint64_t)type
 {
-  if (self->_subtitleType != a3)
+  if (self->_subtitleType != type)
   {
-    self->_subtitleType = a3;
+    self->_subtitleType = type;
     [(RestaurantReservationsConfirmationHeaderCell *)self updateSubtitleLabel];
   }
 }
@@ -98,80 +98,80 @@
   [(UILabel *)self->_mainLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(ReservationLabel *)self->_subLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIButton *)self->_accessoryButton setTranslatesAutoresizingMaskIntoConstraints:0];
-  v3 = [(RestaurantReservationsConfirmationHeaderCell *)self mainLabel];
-  v4 = [v3 leadingAnchor];
-  v5 = [(RestaurantReservationsConfirmationHeaderCell *)self contentView];
-  v6 = [v5 layoutMarginsGuide];
-  v7 = [v6 leadingAnchor];
-  v58 = [v4 constraintEqualToAnchor:v7];
+  mainLabel = [(RestaurantReservationsConfirmationHeaderCell *)self mainLabel];
+  leadingAnchor = [mainLabel leadingAnchor];
+  contentView = [(RestaurantReservationsConfirmationHeaderCell *)self contentView];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v58 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
-  v8 = [(RestaurantReservationsConfirmationHeaderCell *)self mainLabel];
-  v9 = [v8 trailingAnchor];
-  v10 = [(RestaurantReservationsConfirmationHeaderCell *)self contentView];
-  v11 = [v10 layoutMarginsGuide];
-  v12 = [v11 trailingAnchor];
-  v57 = [v9 constraintEqualToAnchor:v12];
+  mainLabel2 = [(RestaurantReservationsConfirmationHeaderCell *)self mainLabel];
+  trailingAnchor = [mainLabel2 trailingAnchor];
+  contentView2 = [(RestaurantReservationsConfirmationHeaderCell *)self contentView];
+  layoutMarginsGuide2 = [contentView2 layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v57 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
-  v13 = [(RestaurantReservationsConfirmationHeaderCell *)self mainLabel];
-  v14 = [v13 topAnchor];
-  v15 = [(RestaurantReservationsConfirmationHeaderCell *)self contentView];
-  v16 = [v15 layoutMarginsGuide];
-  v17 = [v16 topAnchor];
-  v56 = [v14 constraintEqualToAnchor:v17 constant:10.0];
+  mainLabel3 = [(RestaurantReservationsConfirmationHeaderCell *)self mainLabel];
+  topAnchor = [mainLabel3 topAnchor];
+  contentView3 = [(RestaurantReservationsConfirmationHeaderCell *)self contentView];
+  layoutMarginsGuide3 = [contentView3 layoutMarginsGuide];
+  topAnchor2 = [layoutMarginsGuide3 topAnchor];
+  v56 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:10.0];
 
-  v18 = [(RestaurantReservationsConfirmationHeaderCell *)self subLabel];
-  v19 = [v18 leadingAnchor];
-  v20 = [(RestaurantReservationsConfirmationHeaderCell *)self mainLabel];
-  v21 = [v20 leadingAnchor];
-  v55 = [v19 constraintEqualToAnchor:v21];
+  subLabel = [(RestaurantReservationsConfirmationHeaderCell *)self subLabel];
+  leadingAnchor3 = [subLabel leadingAnchor];
+  mainLabel4 = [(RestaurantReservationsConfirmationHeaderCell *)self mainLabel];
+  leadingAnchor4 = [mainLabel4 leadingAnchor];
+  v55 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
 
-  v22 = [(RestaurantReservationsConfirmationHeaderCell *)self subLabel];
-  v23 = [v22 trailingAnchor];
-  v24 = [(RestaurantReservationsConfirmationHeaderCell *)self mainLabel];
-  v25 = [v24 trailingAnchor];
-  v54 = [v23 constraintEqualToAnchor:v25];
+  subLabel2 = [(RestaurantReservationsConfirmationHeaderCell *)self subLabel];
+  trailingAnchor3 = [subLabel2 trailingAnchor];
+  mainLabel5 = [(RestaurantReservationsConfirmationHeaderCell *)self mainLabel];
+  trailingAnchor4 = [mainLabel5 trailingAnchor];
+  v54 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
 
-  v26 = [(RestaurantReservationsConfirmationHeaderCell *)self subLabel];
-  v27 = [v26 firstBaselineAnchor];
-  v28 = [(RestaurantReservationsConfirmationHeaderCell *)self mainLabel];
-  v29 = [v28 firstBaselineAnchor];
-  v30 = [v27 constraintEqualToAnchor:v29 constant:20.0];
+  subLabel3 = [(RestaurantReservationsConfirmationHeaderCell *)self subLabel];
+  firstBaselineAnchor = [subLabel3 firstBaselineAnchor];
+  mainLabel6 = [(RestaurantReservationsConfirmationHeaderCell *)self mainLabel];
+  firstBaselineAnchor2 = [mainLabel6 firstBaselineAnchor];
+  v30 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2 constant:20.0];
   [(RestaurantReservationsConfirmationHeaderCell *)self setMainToSublabelConstraint:v30];
 
-  v31 = [(RestaurantReservationsConfirmationHeaderCell *)self accessoryButton];
-  v32 = [v31 leadingAnchor];
-  v33 = [(RestaurantReservationsConfirmationHeaderCell *)self contentView];
-  v34 = [v33 layoutMarginsGuide];
-  v35 = [v34 leadingAnchor];
-  v53 = [v32 constraintEqualToAnchor:v35];
+  accessoryButton = [(RestaurantReservationsConfirmationHeaderCell *)self accessoryButton];
+  leadingAnchor5 = [accessoryButton leadingAnchor];
+  contentView4 = [(RestaurantReservationsConfirmationHeaderCell *)self contentView];
+  layoutMarginsGuide4 = [contentView4 layoutMarginsGuide];
+  leadingAnchor6 = [layoutMarginsGuide4 leadingAnchor];
+  v53 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
 
-  v36 = [(RestaurantReservationsConfirmationHeaderCell *)self accessoryButton];
-  v37 = [v36 firstBaselineAnchor];
-  v38 = [(RestaurantReservationsConfirmationHeaderCell *)self subLabel];
-  v39 = [v38 lastBaselineAnchor];
-  v40 = [(RestaurantReservationsConfirmationHeaderCell *)self subLabel];
-  v41 = [v40 font];
-  [v41 lineHeight];
-  v43 = [v37 constraintEqualToAnchor:v39 constant:ceil(v42)];
+  accessoryButton2 = [(RestaurantReservationsConfirmationHeaderCell *)self accessoryButton];
+  firstBaselineAnchor3 = [accessoryButton2 firstBaselineAnchor];
+  subLabel4 = [(RestaurantReservationsConfirmationHeaderCell *)self subLabel];
+  lastBaselineAnchor = [subLabel4 lastBaselineAnchor];
+  subLabel5 = [(RestaurantReservationsConfirmationHeaderCell *)self subLabel];
+  font = [subLabel5 font];
+  [font lineHeight];
+  v43 = [firstBaselineAnchor3 constraintEqualToAnchor:lastBaselineAnchor constant:ceil(v42)];
   [(RestaurantReservationsConfirmationHeaderCell *)self setButtonBottomConstraint:v43];
 
-  v44 = [(RestaurantReservationsConfirmationHeaderCell *)self contentView];
-  v45 = [v44 layoutMarginsGuide];
-  v46 = [v45 bottomAnchor];
-  v47 = [(RestaurantReservationsConfirmationHeaderCell *)self accessoryButton];
-  v48 = [v47 lastBaselineAnchor];
-  v49 = [v46 constraintEqualToAnchor:v48];
+  contentView5 = [(RestaurantReservationsConfirmationHeaderCell *)self contentView];
+  layoutMarginsGuide5 = [contentView5 layoutMarginsGuide];
+  bottomAnchor = [layoutMarginsGuide5 bottomAnchor];
+  accessoryButton3 = [(RestaurantReservationsConfirmationHeaderCell *)self accessoryButton];
+  lastBaselineAnchor2 = [accessoryButton3 lastBaselineAnchor];
+  v49 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor2];
 
   v59[0] = v58;
   v59[1] = v57;
   v59[2] = v56;
   v59[3] = v55;
   v59[4] = v54;
-  v50 = [(RestaurantReservationsConfirmationHeaderCell *)self mainToSublabelConstraint];
-  v59[5] = v50;
+  mainToSublabelConstraint = [(RestaurantReservationsConfirmationHeaderCell *)self mainToSublabelConstraint];
+  v59[5] = mainToSublabelConstraint;
   v59[6] = v53;
-  v51 = [(RestaurantReservationsConfirmationHeaderCell *)self buttonBottomConstraint];
-  v59[7] = v51;
+  buttonBottomConstraint = [(RestaurantReservationsConfirmationHeaderCell *)self buttonBottomConstraint];
+  v59[7] = buttonBottomConstraint;
   v59[8] = v49;
   v52 = [NSArray arrayWithObjects:v59 count:9];
   [NSLayoutConstraint activateConstraints:v52];
@@ -179,10 +179,10 @@
 
 - (void)updateSubtitleLabel
 {
-  v3 = [(RestaurantReservationsConfirmationHeaderCell *)self subtitleType];
-  if (v3)
+  subtitleType = [(RestaurantReservationsConfirmationHeaderCell *)self subtitleType];
+  if (subtitleType)
   {
-    if (v3 != 1)
+    if (subtitleType != 1)
     {
       goto LABEL_6;
     }
@@ -198,26 +198,26 @@
   }
 
   v6 = [UIFont preferredFontForTextStyle:*v5];
-  v7 = [(RestaurantReservationsConfirmationHeaderCell *)self subLabel];
-  [v7 setFont:v6];
+  subLabel = [(RestaurantReservationsConfirmationHeaderCell *)self subLabel];
+  [subLabel setFont:v6];
 
-  v8 = [(RestaurantReservationsConfirmationHeaderCell *)self subLabel];
-  v9 = [v8 font];
-  [v9 _mapkit_scaledValueForValue:v4];
+  subLabel2 = [(RestaurantReservationsConfirmationHeaderCell *)self subLabel];
+  font = [subLabel2 font];
+  [font _mapkit_scaledValueForValue:v4];
   v11 = v10;
-  v12 = [(RestaurantReservationsConfirmationHeaderCell *)self mainToSublabelConstraint];
-  [v12 setConstant:v11];
+  mainToSublabelConstraint = [(RestaurantReservationsConfirmationHeaderCell *)self mainToSublabelConstraint];
+  [mainToSublabelConstraint setConstant:v11];
 
 LABEL_6:
 
   [(RestaurantReservationsConfirmationHeaderCell *)self setNeedsLayout];
 }
 
-- (void)reservationLabelDidLayout:(id)a3
+- (void)reservationLabelDidLayout:(id)layout
 {
   if ([(RestaurantReservationsConfirmationHeaderCell *)self automaticallyHidesChevron]&& [(ReservationLabel *)self->_subLabel textFits])
   {
-    v4 = self;
+    selfCopy2 = self;
     v5 = 0;
   }
 
@@ -228,18 +228,18 @@ LABEL_6:
       return;
     }
 
-    v4 = self;
+    selfCopy2 = self;
     v5 = 1;
   }
 
-  [(RestaurantReservationsConfirmationHeaderCell *)v4 setAccessoryType:v5];
+  [(RestaurantReservationsConfirmationHeaderCell *)selfCopy2 setAccessoryType:v5];
 }
 
-- (RestaurantReservationsConfirmationHeaderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (RestaurantReservationsConfirmationHeaderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v21.receiver = self;
   v21.super_class = RestaurantReservationsConfirmationHeaderCell;
-  v4 = [(RestaurantReservationsConfirmationHeaderCell *)&v21 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(RestaurantReservationsConfirmationHeaderCell *)&v21 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_opt_new();
@@ -269,19 +269,19 @@ LABEL_6:
     accessoryButton = v4->_accessoryButton;
     v4->_accessoryButton = v13;
 
-    v15 = [(ReservationLabel *)v4->_subLabel font];
-    v16 = [(UIButton *)v4->_accessoryButton titleLabel];
-    [v16 setFont:v15];
+    font = [(ReservationLabel *)v4->_subLabel font];
+    titleLabel = [(UIButton *)v4->_accessoryButton titleLabel];
+    [titleLabel setFont:font];
 
     [(UIButton *)v4->_accessoryButton addTarget:v4 action:"accessoryButtonTapped:" forControlEvents:64];
-    v17 = [(RestaurantReservationsConfirmationHeaderCell *)v4 contentView];
-    [v17 addSubview:v4->_mainLabel];
+    contentView = [(RestaurantReservationsConfirmationHeaderCell *)v4 contentView];
+    [contentView addSubview:v4->_mainLabel];
 
-    v18 = [(RestaurantReservationsConfirmationHeaderCell *)v4 contentView];
-    [v18 addSubview:v4->_subLabel];
+    contentView2 = [(RestaurantReservationsConfirmationHeaderCell *)v4 contentView];
+    [contentView2 addSubview:v4->_subLabel];
 
-    v19 = [(RestaurantReservationsConfirmationHeaderCell *)v4 contentView];
-    [v19 addSubview:v4->_accessoryButton];
+    contentView3 = [(RestaurantReservationsConfirmationHeaderCell *)v4 contentView];
+    [contentView3 addSubview:v4->_accessoryButton];
 
     [(RestaurantReservationsConfirmationHeaderCell *)v4 initConstraints];
     [(RestaurantReservationsConfirmationHeaderCell *)v4 updateSubtitleLabel];

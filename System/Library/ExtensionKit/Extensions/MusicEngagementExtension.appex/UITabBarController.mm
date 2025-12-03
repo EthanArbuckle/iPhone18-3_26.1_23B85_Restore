@@ -1,13 +1,13 @@
 @interface UITabBarController
-- (id)playActivityFeatureNamesWithSourceChildViewController:(id)a3;
+- (id)playActivityFeatureNamesWithSourceChildViewController:(id)controller;
 @end
 
 @implementation UITabBarController
 
-- (id)playActivityFeatureNamesWithSourceChildViewController:(id)a3
+- (id)playActivityFeatureNamesWithSourceChildViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   specialized UITabBarController.playActivityFeatureNames(sourceChildViewController:)();
 
   v6.super.isa = Array._bridgeToObjectiveC()().super.isa;

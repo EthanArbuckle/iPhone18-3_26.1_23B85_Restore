@@ -1,17 +1,17 @@
 @interface TSCH3DLineExtrusionGeometry
-+ (id)lineFromXValues:(const void *)a3 yValues:(const void *)a4;
++ (id)lineFromXValues:(const void *)values yValues:(const void *)yValues;
 - (TSCH3DLineExtrusionGeometry)init;
 - (id).cxx_construct;
 - (id)selectionKnobPositions;
-- (tmat3x3<float>)p_rotationMatrixForCrossSectionIndex:(SEL)a3;
-- (tmat4x4<float>)matrixAtXPosition:(SEL)a3 returningXRangeInfo:(float)a4;
+- (tmat3x3<float>)p_rotationMatrixForCrossSectionIndex:(SEL)index;
+- (tmat4x4<float>)matrixAtXPosition:(SEL)position returningXRangeInfo:(float)info;
 - (void)generateArrays;
-- (void)setSpine:(const void *)a3;
+- (void)setSpine:(const void *)spine;
 @end
 
 @implementation TSCH3DLineExtrusionGeometry
 
-+ (id)lineFromXValues:(const void *)a3 yValues:(const void *)a4
++ (id)lineFromXValues:(const void *)values yValues:(const void *)yValues
 {
   v44 = 0;
   v45 = 0;
@@ -19,11 +19,11 @@
   v42 = 0;
   v43 = 0;
   __p = 0;
-  sub_2761F3E14(&__p, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 2);
+  sub_2761F3E14(&__p, *values, *(values + 1), (*(values + 1) - *values) >> 2);
   v38 = 0;
   v39 = 0;
   v40 = 0;
-  sub_2761F3E14(&v38, *a4, *(a4 + 1), (*(a4 + 1) - *a4) >> 2);
+  sub_2761F3E14(&v38, *yValues, *(yValues + 1), (*(yValues + 1) - *yValues) >> 2);
   v5 = v38;
   if (v39 == v38)
   {
@@ -129,7 +129,7 @@ LABEL_7:
   return v3;
 }
 
-- (void)setSpine:(const void *)a3
+- (void)setSpine:(const void *)spine
 {
   v5 = *(&self->super._spineDirectionBias + 3);
   var0 = self->_ylimits.var0.var0;
@@ -139,7 +139,7 @@ LABEL_7:
     v11 = 0;
     v12 = 0;
     sub_2761F2844(v9, v5, var0);
-    sub_2761F2A18(v9, a3, &v10);
+    sub_2761F2A18(v9, spine, &v10);
     v8.receiver = self;
     v8.super_class = TSCH3DLineExtrusionGeometry;
     [(TSCH3DExtrusionGeometry *)&v8 setSpine:&v10];
@@ -154,7 +154,7 @@ LABEL_7:
   {
     v7.receiver = self;
     v7.super_class = TSCH3DLineExtrusionGeometry;
-    [(TSCH3DExtrusionGeometry *)&v7 setSpine:a3];
+    [(TSCH3DExtrusionGeometry *)&v7 setSpine:spine];
   }
 }
 
@@ -179,9 +179,9 @@ LABEL_7:
   objc_msgSend_transformArrays_(self, v6, 0.0, COERCE_DOUBLE(COERCE_UNSIGNED_INT(v5 * 0.0)), v4, &v7);
 }
 
-- (tmat3x3<float>)p_rotationMatrixForCrossSectionIndex:(SEL)a3
+- (tmat3x3<float>)p_rotationMatrixForCrossSectionIndex:(SEL)index
 {
-  v11 = objc_msgSend_spine(self, a3, v4, v5, v6);
+  v11 = objc_msgSend_spine(self, index, v4, v5, v6);
   v15 = 0xAAAAAAAAAAAAAAABLL * ((*(v11 + 8) - *v11) >> 2);
   if (v15 <= 1)
   {
@@ -315,9 +315,9 @@ LABEL_18:
   return result;
 }
 
-- (tmat4x4<float>)matrixAtXPosition:(SEL)a3 returningXRangeInfo:(float)a4
+- (tmat4x4<float>)matrixAtXPosition:(SEL)position returningXRangeInfo:(float)info
 {
-  result = objc_msgSend_spine(self, a3, *&a4, v5, v6);
+  result = objc_msgSend_spine(self, position, *&info, v5, v6);
   v14 = 0;
   v15 = 0xAAAAAAAAAAAAAAABLL * ((*&result->value[0].var2.var0 - *&result->value[0].var0.var0) >> 2) - 1;
   v16 = v15 & ~(v15 >> 63);
@@ -333,7 +333,7 @@ LABEL_18:
     ++v14;
     v19 = *v17;
     v17 += 3;
-    if (v19 >= a4)
+    if (v19 >= info)
     {
       v16 = v18;
       break;
@@ -364,7 +364,7 @@ LABEL_18:
     v23 = 0.0;
     if (v22 > 0.0)
     {
-      v23 = (a4 - *v20) / v22;
+      v23 = (info - *v20) / v22;
     }
 
     v86 = v23;

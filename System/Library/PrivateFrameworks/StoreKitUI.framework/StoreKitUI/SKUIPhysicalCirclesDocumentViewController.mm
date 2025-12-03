@@ -1,33 +1,33 @@
 @interface SKUIPhysicalCirclesDocumentViewController
-- (SKUIPhysicalCirclesDocumentViewController)initWithPhysicalCirclesTemplateViewElement:(id)a3;
-- (id)_affiliationItemsWithCircleItemElements:(id)a3;
+- (SKUIPhysicalCirclesDocumentViewController)initWithPhysicalCirclesTemplateViewElement:(id)element;
+- (id)_affiliationItemsWithCircleItemElements:(id)elements;
 - (id)_leftFooterButtonElement;
 - (id)_profileImageElement;
 - (id)_rightFooterButtonElement;
-- (void)_footerLeftButtonAction:(id)a3;
-- (void)_footerRightButtonAction:(id)a3;
-- (void)_loadImagesWithReason:(int64_t)a3;
-- (void)_reloadFooterViewAnimated:(BOOL)a3;
+- (void)_footerLeftButtonAction:(id)action;
+- (void)_footerRightButtonAction:(id)action;
+- (void)_loadImagesWithReason:(int64_t)reason;
+- (void)_reloadFooterViewAnimated:(BOOL)animated;
 - (void)_reloadInstructionsView;
-- (void)_styleAttributedString:(id)a3 withStyle:(id)a4;
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4;
+- (void)_styleAttributedString:(id)string withStyle:(id)style;
+- (void)artworkRequest:(id)request didLoadImage:(id)image;
 - (void)dealloc;
-- (void)documentDidUpdate:(id)a3;
+- (void)documentDidUpdate:(id)update;
 - (void)loadView;
-- (void)onboardingCircles:(id)a3 didRemoveAffiliationItem:(id)a4;
-- (void)onboardingCircles:(id)a3 didSelectAffiliationItem:(id)a4 atIndex:(int64_t)a5;
-- (void)physicalCirclesDOMFeature:(id)a3 didRequestAnimation:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)onboardingCircles:(id)circles didRemoveAffiliationItem:(id)item;
+- (void)onboardingCircles:(id)circles didSelectAffiliationItem:(id)item atIndex:(int64_t)index;
+- (void)physicalCirclesDOMFeature:(id)feature didRequestAnimation:(id)animation;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SKUIPhysicalCirclesDocumentViewController
 
-- (SKUIPhysicalCirclesDocumentViewController)initWithPhysicalCirclesTemplateViewElement:(id)a3
+- (SKUIPhysicalCirclesDocumentViewController)initWithPhysicalCirclesTemplateViewElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIPhysicalCirclesDocumentViewController initWithPhysicalCirclesTemplateViewElement:];
@@ -39,9 +39,9 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_templateElement, a3);
-    v8 = [(SKUIPhysicalCirclesTemplateViewElement *)v7->_templateElement scriptInterface];
-    [v8 setDelegate:v7];
+    objc_storeStrong(&v6->_templateElement, element);
+    scriptInterface = [(SKUIPhysicalCirclesTemplateViewElement *)v7->_templateElement scriptInterface];
+    [scriptInterface setDelegate:v7];
   }
 
   return v7;
@@ -49,22 +49,22 @@
 
 - (void)dealloc
 {
-  v3 = [(UIGestureRecognizer *)self->_interactivePopGestureRecognizer delegate];
+  delegate = [(UIGestureRecognizer *)self->_interactivePopGestureRecognizer delegate];
 
-  if (v3 == self)
+  if (delegate == self)
   {
     [(UIGestureRecognizer *)self->_interactivePopGestureRecognizer setDelegate:0];
   }
 
   [(SKUIOnboardingAffiliationCirclesViewController *)self->_circlesViewController setDelegate:0];
-  v4 = [(SKUIOnboardingFooterView *)self->_footerView leftButton];
-  [v4 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
+  leftButton = [(SKUIOnboardingFooterView *)self->_footerView leftButton];
+  [leftButton removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
 
-  v5 = [(SKUIOnboardingFooterView *)self->_footerView rightButton];
-  [v5 removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
+  rightButton = [(SKUIOnboardingFooterView *)self->_footerView rightButton];
+  [rightButton removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
 
-  v6 = [(SKUIPhysicalCirclesTemplateViewElement *)self->_templateElement scriptInterface];
-  [v6 setDelegate:0];
+  scriptInterface = [(SKUIPhysicalCirclesTemplateViewElement *)self->_templateElement scriptInterface];
+  [scriptInterface setDelegate:0];
 
   v7.receiver = self;
   v7.super_class = SKUIPhysicalCirclesDocumentViewController;
@@ -74,16 +74,16 @@
 - (void)loadView
 {
   v24 = objc_alloc_init(MEMORY[0x277D75D18]);
-  v3 = [(SKUIPhysicalCirclesTemplateViewElement *)self->_templateElement style];
-  v4 = [v3 ikBackgroundColor];
-  v5 = [v4 color];
+  style = [(SKUIPhysicalCirclesTemplateViewElement *)self->_templateElement style];
+  ikBackgroundColor = [style ikBackgroundColor];
+  color = [ikBackgroundColor color];
 
-  if (!v5)
+  if (!color)
   {
-    v5 = [MEMORY[0x277D75348] whiteColor];
+    color = [MEMORY[0x277D75348] whiteColor];
   }
 
-  [v24 setBackgroundColor:v5];
+  [v24 setBackgroundColor:color];
   [(SKUIPhysicalCirclesDocumentViewController *)self setView:v24];
   if (!self->_circlesViewController)
   {
@@ -92,13 +92,13 @@
     self->_circlesViewController = v6;
 
     v8 = self->_circlesViewController;
-    v9 = [(SKUIPhysicalCirclesTemplateViewElement *)self->_templateElement circleItemElements];
-    v10 = [(SKUIPhysicalCirclesDocumentViewController *)self _affiliationItemsWithCircleItemElements:v9];
+    circleItemElements = [(SKUIPhysicalCirclesTemplateViewElement *)self->_templateElement circleItemElements];
+    v10 = [(SKUIPhysicalCirclesDocumentViewController *)self _affiliationItemsWithCircleItemElements:circleItemElements];
     [(SKUIOnboardingAffiliationCirclesViewController *)v8 setAffiliationItems:v10];
 
     v11 = self->_circlesViewController;
-    v12 = [(SKUIViewController *)self clientContext];
-    [(SKUIOnboardingAffiliationCirclesViewController *)v11 setClientContext:v12];
+    clientContext = [(SKUIViewController *)self clientContext];
+    [(SKUIOnboardingAffiliationCirclesViewController *)v11 setClientContext:clientContext];
 
     [(SKUIOnboardingAffiliationCirclesViewController *)self->_circlesViewController setDelegate:self];
     [(SKUIPhysicalCirclesDocumentViewController *)self addChildViewController:self->_circlesViewController];
@@ -112,14 +112,14 @@
     self->_footerView = v13;
 
     v15 = self->_footerView;
-    v16 = [MEMORY[0x277D75348] clearColor];
-    [(SKUIOnboardingFooterView *)v15 setBackgroundColor:v16];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SKUIOnboardingFooterView *)v15 setBackgroundColor:clearColor];
 
-    v17 = [(SKUIOnboardingFooterView *)self->_footerView leftButton];
-    [v17 addTarget:self action:sel__footerLeftButtonAction_ forControlEvents:64];
+    leftButton = [(SKUIOnboardingFooterView *)self->_footerView leftButton];
+    [leftButton addTarget:self action:sel__footerLeftButtonAction_ forControlEvents:64];
 
-    v18 = [(SKUIOnboardingFooterView *)self->_footerView rightButton];
-    [v18 addTarget:self action:sel__footerRightButtonAction_ forControlEvents:64];
+    rightButton = [(SKUIOnboardingFooterView *)self->_footerView rightButton];
+    [rightButton addTarget:self action:sel__footerRightButtonAction_ forControlEvents:64];
 
     [(SKUIOnboardingAffiliationCirclesViewController *)self->_circlesViewController setFooterView:self->_footerView];
   }
@@ -131,43 +131,43 @@
     self->_progressView = v19;
 
     v21 = self->_progressView;
-    v22 = [MEMORY[0x277D75348] clearColor];
-    [(SKUIOnboardingProgressView *)v21 setBackgroundColor:v22];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(SKUIOnboardingProgressView *)v21 setBackgroundColor:clearColor2];
 
-    [(SKUIOnboardingProgressView *)self->_progressView setFillColor:v5];
+    [(SKUIOnboardingProgressView *)self->_progressView setFillColor:color];
     [(SKUIOnboardingProgressView *)self->_progressView sizeToFit];
     [(SKUIOnboardingFooterView *)self->_footerView setProgressView:self->_progressView];
   }
 
   [(SKUIPhysicalCirclesDocumentViewController *)self _reloadFooterViewAnimated:0];
   [(SKUIPhysicalCirclesDocumentViewController *)self _reloadInstructionsView];
-  v23 = [(SKUIOnboardingAffiliationCirclesViewController *)self->_circlesViewController view];
-  [v23 setAutoresizingMask:18];
+  view = [(SKUIOnboardingAffiliationCirclesViewController *)self->_circlesViewController view];
+  [view setAutoresizingMask:18];
   [v24 bounds];
-  [v23 setFrame:?];
-  [v24 addSubview:v23];
+  [view setFrame:?];
+  [v24 addSubview:view];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(SKUIResourceLoader *)self->_resourceLoader enterForeground];
   if (!self->_resourceLoader)
   {
     [(SKUIPhysicalCirclesDocumentViewController *)self _loadImagesWithReason:0];
   }
 
-  v5 = [(UIGestureRecognizer *)self->_interactivePopGestureRecognizer delegate];
+  delegate = [(UIGestureRecognizer *)self->_interactivePopGestureRecognizer delegate];
 
-  if (v5 == self)
+  if (delegate == self)
   {
     [(UIGestureRecognizer *)self->_interactivePopGestureRecognizer setDelegate:0];
   }
 
-  v6 = [(SKUIPhysicalCirclesDocumentViewController *)self navigationController];
-  v7 = [v6 interactivePopGestureRecognizer];
+  navigationController = [(SKUIPhysicalCirclesDocumentViewController *)self navigationController];
+  interactivePopGestureRecognizer = [navigationController interactivePopGestureRecognizer];
   interactivePopGestureRecognizer = self->_interactivePopGestureRecognizer;
-  self->_interactivePopGestureRecognizer = v7;
+  self->_interactivePopGestureRecognizer = interactivePopGestureRecognizer;
 
   v9 = self->_interactivePopGestureRecognizer;
   if (v9)
@@ -177,15 +177,15 @@
 
   v10.receiver = self;
   v10.super_class = SKUIPhysicalCirclesDocumentViewController;
-  [(SKUIPhysicalCirclesDocumentViewController *)&v10 viewDidAppear:v3];
+  [(SKUIPhysicalCirclesDocumentViewController *)&v10 viewDidAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [(UIGestureRecognizer *)self->_interactivePopGestureRecognizer delegate];
+  disappearCopy = disappear;
+  delegate = [(UIGestureRecognizer *)self->_interactivePopGestureRecognizer delegate];
 
-  if (v5 == self)
+  if (delegate == self)
   {
     [(UIGestureRecognizer *)self->_interactivePopGestureRecognizer setDelegate:0];
   }
@@ -195,81 +195,81 @@
 
   v7.receiver = self;
   v7.super_class = SKUIPhysicalCirclesDocumentViewController;
-  [(SKUIPhysicalCirclesDocumentViewController *)&v7 viewWillDisappear:v3];
+  [(SKUIPhysicalCirclesDocumentViewController *)&v7 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SKUIPhysicalCirclesDocumentViewController;
-  [(SKUIPhysicalCirclesDocumentViewController *)&v4 viewDidDisappear:a3];
+  [(SKUIPhysicalCirclesDocumentViewController *)&v4 viewDidDisappear:disappear];
   [(SKUIResourceLoader *)self->_resourceLoader enterBackground];
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(SKUIPhysicalCirclesDocumentViewController *)self topLayoutGuide];
-  [v3 length];
+  topLayoutGuide = [(SKUIPhysicalCirclesDocumentViewController *)self topLayoutGuide];
+  [topLayoutGuide length];
   v5 = v4;
 
-  v6 = [(SKUIPhysicalCirclesDocumentViewController *)self bottomLayoutGuide];
-  [v6 length];
+  bottomLayoutGuide = [(SKUIPhysicalCirclesDocumentViewController *)self bottomLayoutGuide];
+  [bottomLayoutGuide length];
   v8 = v7;
 
-  v9 = [(SKUIPhysicalCirclesDocumentViewController *)self view];
-  [v9 bounds];
+  view = [(SKUIPhysicalCirclesDocumentViewController *)self view];
+  [view bounds];
   v10 = CGRectGetHeight(v15) - v5 - v8;
 
-  v11 = [(SKUIPhysicalCirclesDocumentViewController *)self view];
-  [v11 bounds];
+  view2 = [(SKUIPhysicalCirclesDocumentViewController *)self view];
+  [view2 bounds];
   Width = CGRectGetWidth(v16);
 
-  v13 = [(SKUIOnboardingAffiliationCirclesViewController *)self->_circlesViewController view];
-  [v13 setFrame:{0.0, v5, Width, v10}];
+  view3 = [(SKUIOnboardingAffiliationCirclesViewController *)self->_circlesViewController view];
+  [view3 setFrame:{0.0, v5, Width, v10}];
 
   v14.receiver = self;
   v14.super_class = SKUIPhysicalCirclesDocumentViewController;
   [(SKUIPhysicalCirclesDocumentViewController *)&v14 viewDidLayoutSubviews];
 }
 
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4
+- (void)artworkRequest:(id)request didLoadImage:(id)image
 {
-  v6 = a4;
+  imageCopy = image;
   v7 = MEMORY[0x277CCABB0];
-  v8 = a3;
+  requestCopy = request;
   v9 = [v7 alloc];
-  v10 = [v8 requestIdentifier];
+  requestIdentifier = [requestCopy requestIdentifier];
 
-  v11 = [v9 initWithUnsignedLongLong:v10];
-  v12 = [(SKUIPhysicalCirclesDocumentViewController *)self _profileImageElement];
-  v13 = v12;
-  if (!v12)
+  v11 = [v9 initWithUnsignedLongLong:requestIdentifier];
+  _profileImageElement = [(SKUIPhysicalCirclesDocumentViewController *)self _profileImageElement];
+  v13 = _profileImageElement;
+  if (!_profileImageElement)
   {
     goto LABEL_5;
   }
 
   imageRequests = self->_imageRequests;
-  v15 = [v12 resourceCacheKey];
-  v16 = [(NSMapTable *)imageRequests objectForKey:v15];
+  resourceCacheKey = [_profileImageElement resourceCacheKey];
+  v16 = [(NSMapTable *)imageRequests objectForKey:resourceCacheKey];
 
   if (![v16 isEqualToNumber:v11])
   {
 
 LABEL_5:
-    v17 = [(SKUIOnboardingAffiliationCirclesViewController *)self->_circlesViewController affiliationItems];
+    affiliationItems = [(SKUIOnboardingAffiliationCirclesViewController *)self->_circlesViewController affiliationItems];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __73__SKUIPhysicalCirclesDocumentViewController_artworkRequest_didLoadImage___block_invoke;
     v18[3] = &unk_2781F8478;
     v18[4] = self;
     v19 = v11;
-    v20 = v6;
-    [v17 enumerateObjectsUsingBlock:v18];
+    v20 = imageCopy;
+    [affiliationItems enumerateObjectsUsingBlock:v18];
 
     goto LABEL_6;
   }
 
-  [(SKUIOnboardingProgressView *)self->_progressView setImage:v6];
+  [(SKUIOnboardingProgressView *)self->_progressView setImage:imageCopy];
 
 LABEL_6:
 }
@@ -289,28 +289,28 @@ void __73__SKUIPhysicalCirclesDocumentViewController_artworkRequest_didLoadImage
   }
 }
 
-- (void)documentDidUpdate:(id)a3
+- (void)documentDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = dispatch_group_create();
-  v6 = [v4 templateElement];
+  templateElement = [updateCopy templateElement];
 
   templateElement = self->_templateElement;
-  if (templateElement != v6)
+  if (templateElement != templateElement)
   {
-    v8 = [(SKUIPhysicalCirclesTemplateViewElement *)templateElement scriptInterface];
-    [v8 setDelegate:0];
+    scriptInterface = [(SKUIPhysicalCirclesTemplateViewElement *)templateElement scriptInterface];
+    [scriptInterface setDelegate:0];
 
-    objc_storeStrong(&self->_templateElement, v6);
-    v9 = [(SKUIPhysicalCirclesTemplateViewElement *)self->_templateElement scriptInterface];
-    [v9 setDelegate:self];
+    objc_storeStrong(&self->_templateElement, templateElement);
+    scriptInterface2 = [(SKUIPhysicalCirclesTemplateViewElement *)self->_templateElement scriptInterface];
+    [scriptInterface2 setDelegate:self];
   }
 
   [(SKUIPhysicalCirclesDocumentViewController *)self _reloadFooterViewAnimated:1];
   [(SKUIPhysicalCirclesDocumentViewController *)self _reloadInstructionsView];
-  v10 = [(SKUIOnboardingAffiliationCirclesViewController *)self->_circlesViewController affiliationItems];
-  v11 = [(SKUIPhysicalCirclesTemplateViewElement *)self->_templateElement circleItemElements];
-  v12 = [(SKUIPhysicalCirclesDocumentViewController *)self _affiliationItemsWithCircleItemElements:v11];
+  affiliationItems = [(SKUIOnboardingAffiliationCirclesViewController *)self->_circlesViewController affiliationItems];
+  circleItemElements = [(SKUIPhysicalCirclesTemplateViewElement *)self->_templateElement circleItemElements];
+  v12 = [(SKUIPhysicalCirclesDocumentViewController *)self _affiliationItemsWithCircleItemElements:circleItemElements];
 
   v13 = objc_alloc_init(MEMORY[0x277CCAB58]);
   v26[0] = MEMORY[0x277D85DD0];
@@ -323,8 +323,8 @@ void __73__SKUIPhysicalCirclesDocumentViewController_artworkRequest_didLoadImage
   v28 = v15;
   v16 = v5;
   v29 = v16;
-  v30 = self;
-  [v10 enumerateObjectsUsingBlock:v26];
+  selfCopy = self;
+  [affiliationItems enumerateObjectsUsingBlock:v26];
   if ([v15 count])
   {
     dispatch_group_enter(v16);
@@ -346,8 +346,8 @@ void __73__SKUIPhysicalCirclesDocumentViewController_artworkRequest_didLoadImage
   v20 = 3221225472;
   v21 = __63__SKUIPhysicalCirclesDocumentViewController_documentDidUpdate___block_invoke_4;
   v22 = &unk_2781F80F0;
-  v23 = v6;
-  v18 = v6;
+  v23 = templateElement;
+  v18 = templateElement;
   dispatch_group_notify(v16, MEMORY[0x277D85CD0], &v19);
   [(SKUIPhysicalCirclesDocumentViewController *)self _loadImagesWithReason:0, v19, v20, v21, v22];
 }
@@ -389,18 +389,18 @@ void __63__SKUIPhysicalCirclesDocumentViewController_documentDidUpdate___block_i
   [v1 finishDOMUpdates];
 }
 
-- (void)onboardingCircles:(id)a3 didRemoveAffiliationItem:(id)a4
+- (void)onboardingCircles:(id)circles didRemoveAffiliationItem:(id)item
 {
-  v5 = [a4 identifier];
-  v6 = [(SKUIPhysicalCirclesTemplateViewElement *)self->_templateElement circleItemElements];
+  identifier = [item identifier];
+  circleItemElements = [(SKUIPhysicalCirclesTemplateViewElement *)self->_templateElement circleItemElements];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __88__SKUIPhysicalCirclesDocumentViewController_onboardingCircles_didRemoveAffiliationItem___block_invoke;
   v8[3] = &unk_2781F84F0;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
-  [v6 enumerateObjectsUsingBlock:v8];
+  v9 = identifier;
+  selfCopy = self;
+  v7 = identifier;
+  [circleItemElements enumerateObjectsUsingBlock:v8];
 }
 
 void __88__SKUIPhysicalCirclesDocumentViewController_onboardingCircles_didRemoveAffiliationItem___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -416,17 +416,17 @@ void __88__SKUIPhysicalCirclesDocumentViewController_onboardingCircles_didRemove
   }
 }
 
-- (void)onboardingCircles:(id)a3 didSelectAffiliationItem:(id)a4 atIndex:(int64_t)a5
+- (void)onboardingCircles:(id)circles didSelectAffiliationItem:(id)item atIndex:(int64_t)index
 {
-  v6 = [a4 identifier];
-  v7 = [(SKUIPhysicalCirclesTemplateViewElement *)self->_templateElement circleItemElements];
+  identifier = [item identifier];
+  circleItemElements = [(SKUIPhysicalCirclesTemplateViewElement *)self->_templateElement circleItemElements];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __96__SKUIPhysicalCirclesDocumentViewController_onboardingCircles_didSelectAffiliationItem_atIndex___block_invoke;
   v9[3] = &unk_2781F8518;
-  v10 = v6;
-  v8 = v6;
-  [v7 enumerateObjectsUsingBlock:v9];
+  v10 = identifier;
+  v8 = identifier;
+  [circleItemElements enumerateObjectsUsingBlock:v9];
 }
 
 void __96__SKUIPhysicalCirclesDocumentViewController_onboardingCircles_didSelectAffiliationItem_atIndex___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -442,11 +442,11 @@ void __96__SKUIPhysicalCirclesDocumentViewController_onboardingCircles_didSelect
   }
 }
 
-- (void)physicalCirclesDOMFeature:(id)a3 didRequestAnimation:(id)a4
+- (void)physicalCirclesDOMFeature:(id)feature didRequestAnimation:(id)animation
 {
-  v5 = a4;
-  v6 = [v5 animationType];
-  if (v6 == 1)
+  animationCopy = animation;
+  animationType = [animationCopy animationType];
+  if (animationType == 1)
   {
     circlesViewController = self->_circlesViewController;
     v10[0] = MEMORY[0x277D85DD0];
@@ -454,12 +454,12 @@ void __96__SKUIPhysicalCirclesDocumentViewController_onboardingCircles_didSelect
     v10[2] = __91__SKUIPhysicalCirclesDocumentViewController_physicalCirclesDOMFeature_didRequestAnimation___block_invoke_2;
     v10[3] = &unk_2781F84A0;
     v8 = &v11;
-    v11 = v5;
+    v11 = animationCopy;
     [(SKUIOnboardingAffiliationCirclesViewController *)circlesViewController resetWithAffiliationItems:0 animated:1 completionBlock:v10];
     goto LABEL_5;
   }
 
-  if (!v6)
+  if (!animationType)
   {
     v7 = self->_circlesViewController;
     v12[0] = MEMORY[0x277D85DD0];
@@ -467,36 +467,36 @@ void __96__SKUIPhysicalCirclesDocumentViewController_onboardingCircles_didSelect
     v12[2] = __91__SKUIPhysicalCirclesDocumentViewController_physicalCirclesDOMFeature_didRequestAnimation___block_invoke;
     v12[3] = &unk_2781F8540;
     v8 = &v13;
-    v13 = v5;
+    v13 = animationCopy;
     [(SKUIOnboardingAffiliationCirclesViewController *)v7 performFinishAnimationWithCompletionBlock:v12];
 LABEL_5:
   }
 }
 
-- (void)_footerLeftButtonAction:(id)a3
+- (void)_footerLeftButtonAction:(id)action
 {
-  v3 = [(SKUIPhysicalCirclesDocumentViewController *)self _leftFooterButtonElement];
-  [v3 dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
+  _leftFooterButtonElement = [(SKUIPhysicalCirclesDocumentViewController *)self _leftFooterButtonElement];
+  [_leftFooterButtonElement dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
 }
 
-- (void)_footerRightButtonAction:(id)a3
+- (void)_footerRightButtonAction:(id)action
 {
-  v3 = [(SKUIPhysicalCirclesDocumentViewController *)self _rightFooterButtonElement];
-  [v3 dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
+  _rightFooterButtonElement = [(SKUIPhysicalCirclesDocumentViewController *)self _rightFooterButtonElement];
+  [_rightFooterButtonElement dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
 }
 
-- (id)_affiliationItemsWithCircleItemElements:(id)a3
+- (id)_affiliationItemsWithCircleItemElements:(id)elements
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = a3;
-  v5 = [v3 array];
+  elementsCopy = elements;
+  array = [v3 array];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __85__SKUIPhysicalCirclesDocumentViewController__affiliationItemsWithCircleItemElements___block_invoke;
   v8[3] = &unk_2781F8518;
-  v6 = v5;
+  v6 = array;
   v9 = v6;
-  [v4 enumerateObjectsUsingBlock:v8];
+  [elementsCopy enumerateObjectsUsingBlock:v8];
 
   return v6;
 }
@@ -551,13 +551,13 @@ void __85__SKUIPhysicalCirclesDocumentViewController__affiliationItemsWithCircle
   v9 = __Block_byref_object_copy_;
   v10 = __Block_byref_object_dispose_;
   v11 = 0;
-  v2 = [(SKUIPhysicalCirclesTemplateViewElement *)self->_templateElement footerPaletteElement];
+  footerPaletteElement = [(SKUIPhysicalCirclesTemplateViewElement *)self->_templateElement footerPaletteElement];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __69__SKUIPhysicalCirclesDocumentViewController__leftFooterButtonElement__block_invoke;
   v5[3] = &unk_2781F8568;
   v5[4] = &v6;
-  [v2 enumerateChildrenUsingBlock:v5];
+  [footerPaletteElement enumerateChildrenUsingBlock:v5];
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -582,7 +582,7 @@ void __69__SKUIPhysicalCirclesDocumentViewController__leftFooterButtonElement__b
 LABEL_5:
 }
 
-- (void)_loadImagesWithReason:(int64_t)a3
+- (void)_loadImagesWithReason:(int64_t)reason
 {
   v55 = *MEMORY[0x277D85DE8];
   if (!self->_imageRequests)
@@ -595,32 +595,32 @@ LABEL_5:
   if (!self->_resourceLoader)
   {
     v6 = [SKUIResourceLoader alloc];
-    v7 = [(SKUIViewController *)self operationQueue];
-    v8 = [(SKUIViewController *)self clientContext];
-    v9 = [(SKUIResourceLoader *)v6 initWithOperationQueue:v7 clientContext:v8];
+    operationQueue = [(SKUIViewController *)self operationQueue];
+    clientContext = [(SKUIViewController *)self clientContext];
+    v9 = [(SKUIResourceLoader *)v6 initWithOperationQueue:operationQueue clientContext:clientContext];
     resourceLoader = self->_resourceLoader;
     self->_resourceLoader = v9;
   }
 
-  v11 = [(SKUIPhysicalCirclesDocumentViewController *)self _profileImageElement];
-  v12 = v11;
-  if (v11)
+  _profileImageElement = [(SKUIPhysicalCirclesDocumentViewController *)self _profileImageElement];
+  v12 = _profileImageElement;
+  if (_profileImageElement)
   {
-    v13 = [v11 resourceCacheKey];
-    v14 = [(NSMapTable *)self->_imageRequests objectForKey:v13];
+    resourceCacheKey = [_profileImageElement resourceCacheKey];
+    v14 = [(NSMapTable *)self->_imageRequests objectForKey:resourceCacheKey];
     v15 = v14;
-    if (!v14 || !-[SKUIResourceLoader trySetReason:forRequestWithIdentifier:](self->_resourceLoader, "trySetReason:forRequestWithIdentifier:", a3, [v14 unsignedIntegerValue]))
+    if (!v14 || !-[SKUIResourceLoader trySetReason:forRequestWithIdentifier:](self->_resourceLoader, "trySetReason:forRequestWithIdentifier:", reason, [v14 unsignedIntegerValue]))
     {
       v16 = objc_alloc_init(SKUIArtworkRequest);
-      [(SKUIResourceRequest *)v16 setCacheKey:v13];
+      [(SKUIResourceRequest *)v16 setCacheKey:resourceCacheKey];
       [(SKUIArtworkRequest *)v16 setDelegate:self];
       v17 = [v12 URL];
       [(SKUIArtworkRequest *)v16 setURL:v17];
 
-      v18 = [(SKUIPhysicalCirclesDocumentViewController *)self traitCollection];
-      v19 = [v18 userInterfaceIdiom];
+      traitCollection = [(SKUIPhysicalCirclesDocumentViewController *)self traitCollection];
+      userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-      if (v19 == 1)
+      if (userInterfaceIdiom == 1)
       {
         v20 = 120.0;
       }
@@ -635,15 +635,15 @@ LABEL_5:
       [(SKUIOnboardingCircleImageDataConsumer *)v21 setOutputSize:?];
       [(SKUIArtworkRequest *)v16 setDataConsumer:v21];
       v22 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:{-[SKUIResourceRequest requestIdentifier](v16, "requestIdentifier")}];
-      [(NSMapTable *)self->_imageRequests setObject:v22 forKey:v13];
-      [(SKUIResourceLoader *)self->_resourceLoader loadResourceWithRequest:v16 reason:a3];
+      [(NSMapTable *)self->_imageRequests setObject:v22 forKey:resourceCacheKey];
+      [(SKUIResourceLoader *)self->_resourceLoader loadResourceWithRequest:v16 reason:reason];
     }
   }
 
   v44 = v12;
-  v23 = [(SKUIOnboardingAffiliationCirclesViewController *)self->_circlesViewController affiliationItems];
-  v24 = [(SKUIPhysicalCirclesDocumentViewController *)self view];
-  v45 = [v24 tintColor];
+  affiliationItems = [(SKUIOnboardingAffiliationCirclesViewController *)self->_circlesViewController affiliationItems];
+  view = [(SKUIPhysicalCirclesDocumentViewController *)self view];
+  tintColor = [view tintColor];
 
   [(SKUIOnboardingAffiliationCirclesViewController *)self->_circlesViewController maximumCircleDiameter];
   v26 = v25;
@@ -651,7 +651,7 @@ LABEL_5:
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  obj = v23;
+  obj = affiliationItems;
   v48 = [obj countByEnumeratingWithState:&v50 objects:v54 count:16];
   if (v48)
   {
@@ -666,42 +666,42 @@ LABEL_5:
         }
 
         v28 = *(*(&v50 + 1) + 8 * i);
-        v29 = [v28 identifier];
-        v30 = [(NSMapTable *)self->_imageRequests objectForKey:v29];
+        identifier = [v28 identifier];
+        v30 = [(NSMapTable *)self->_imageRequests objectForKey:identifier];
         v31 = v30;
-        if (!v30 || !-[SKUIResourceLoader trySetReason:forRequestWithIdentifier:](self->_resourceLoader, "trySetReason:forRequestWithIdentifier:", a3, [v30 unsignedIntegerValue]))
+        if (!v30 || !-[SKUIResourceLoader trySetReason:forRequestWithIdentifier:](self->_resourceLoader, "trySetReason:forRequestWithIdentifier:", reason, [v30 unsignedIntegerValue]))
         {
           v32 = objc_alloc_init(SKUIArtworkRequest);
           [(SKUIArtworkRequest *)v32 setDelegate:self];
-          v33 = [v28 imageName];
-          if (v33)
+          imageName = [v28 imageName];
+          if (imageName)
           {
-            [(SKUIArtworkRequest *)v32 setImageName:v33];
+            [(SKUIArtworkRequest *)v32 setImageName:imageName];
           }
 
           else
           {
-            v34 = [v28 imageURL];
-            [(SKUIArtworkRequest *)v32 setURL:v34];
+            imageURL = [v28 imageURL];
+            [(SKUIArtworkRequest *)v32 setURL:imageURL];
           }
 
           v35 = objc_alloc_init(SKUIOnboardingCircleImageDataConsumer);
           [(SKUIOnboardingCircleImageDataConsumer *)v35 setOutputSize:v26, v26];
-          v36 = [v28 imageTreatment];
-          v37 = [v36 isEqualToString:0x282809088];
+          imageTreatment = [v28 imageTreatment];
+          v37 = [imageTreatment isEqualToString:0x282809088];
 
           if (v37)
           {
-            v38 = [v28 fillColor];
-            v39 = v38;
-            if (v38)
+            fillColor = [v28 fillColor];
+            v39 = fillColor;
+            if (fillColor)
             {
-              v40 = v38;
+              v40 = fillColor;
             }
 
             else
             {
-              v40 = v45;
+              v40 = tintColor;
             }
 
             [(SKUIOnboardingCircleImageDataConsumer *)v35 setTintColor:v40];
@@ -712,10 +712,10 @@ LABEL_5:
           [(SKUIArtworkRequest *)v32 setDataConsumer:v35];
           v41 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:{-[SKUIResourceRequest requestIdentifier](v32, "requestIdentifier")}];
           v42 = self->_imageRequests;
-          v43 = [v28 identifier];
-          [(NSMapTable *)v42 setObject:v41 forKey:v43];
+          identifier2 = [v28 identifier];
+          [(NSMapTable *)v42 setObject:v41 forKey:identifier2];
 
-          [(SKUIResourceLoader *)self->_resourceLoader loadResourceWithRequest:v32 reason:a3];
+          [(SKUIResourceLoader *)self->_resourceLoader loadResourceWithRequest:v32 reason:reason];
         }
       }
 
@@ -728,25 +728,25 @@ LABEL_5:
 
 - (id)_profileImageElement
 {
-  v2 = [(SKUIPhysicalCirclesTemplateViewElement *)self->_templateElement footerPaletteElement];
-  v3 = [v2 firstChildForElementType:95];
+  footerPaletteElement = [(SKUIPhysicalCirclesTemplateViewElement *)self->_templateElement footerPaletteElement];
+  v3 = [footerPaletteElement firstChildForElementType:95];
 
   v4 = [v3 firstChildForElementType:49];
 
   return v4;
 }
 
-- (void)_reloadFooterViewAnimated:(BOOL)a3
+- (void)_reloadFooterViewAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(SKUIPhysicalCirclesDocumentViewController *)self _leftFooterButtonElement];
+  animatedCopy = animated;
+  _leftFooterButtonElement = [(SKUIPhysicalCirclesDocumentViewController *)self _leftFooterButtonElement];
   footerView = self->_footerView;
-  v26 = v5;
-  if (v5)
+  v26 = _leftFooterButtonElement;
+  if (_leftFooterButtonElement)
   {
-    v7 = [v5 buttonText];
-    v8 = [v7 string];
-    if (v3)
+    buttonText = [_leftFooterButtonElement buttonText];
+    string = [buttonText string];
+    if (animatedCopy)
     {
       v9 = 2;
     }
@@ -756,25 +756,25 @@ LABEL_5:
       v9 = 1;
     }
 
-    [(SKUIOnboardingFooterView *)footerView showLeftButtonWithTitle:v8 animation:v9];
+    [(SKUIOnboardingFooterView *)footerView showLeftButtonWithTitle:string animation:v9];
 
-    v10 = [(SKUIOnboardingFooterView *)self->_footerView leftButton];
-    [v10 setEnabled:{objc_msgSend(v26, "isEnabled")}];
+    leftButton = [(SKUIOnboardingFooterView *)self->_footerView leftButton];
+    [leftButton setEnabled:{objc_msgSend(v26, "isEnabled")}];
   }
 
   else
   {
-    [(SKUIOnboardingFooterView *)footerView hideLeftButtonWithAnimation:v3 ^ 1];
+    [(SKUIOnboardingFooterView *)footerView hideLeftButtonWithAnimation:animatedCopy ^ 1];
   }
 
-  v11 = [(SKUIPhysicalCirclesDocumentViewController *)self _rightFooterButtonElement];
-  v12 = v11;
+  _rightFooterButtonElement = [(SKUIPhysicalCirclesDocumentViewController *)self _rightFooterButtonElement];
+  v12 = _rightFooterButtonElement;
   v13 = self->_footerView;
-  if (v11)
+  if (_rightFooterButtonElement)
   {
-    v14 = [v11 buttonText];
-    v15 = [v14 string];
-    if (v3)
+    buttonText2 = [_rightFooterButtonElement buttonText];
+    string2 = [buttonText2 string];
+    if (animatedCopy)
     {
       v16 = 2;
     }
@@ -784,43 +784,43 @@ LABEL_5:
       v16 = 1;
     }
 
-    [(SKUIOnboardingFooterView *)v13 showRightButtonWithTitle:v15 animation:v16];
+    [(SKUIOnboardingFooterView *)v13 showRightButtonWithTitle:string2 animation:v16];
 
-    v17 = [(SKUIOnboardingFooterView *)self->_footerView rightButton];
-    [v17 setEnabled:{objc_msgSend(v12, "isEnabled")}];
+    rightButton = [(SKUIOnboardingFooterView *)self->_footerView rightButton];
+    [rightButton setEnabled:{objc_msgSend(v12, "isEnabled")}];
   }
 
   else
   {
-    [(SKUIOnboardingFooterView *)self->_footerView hideRightButtonWithAnimation:v3 ^ 1];
+    [(SKUIOnboardingFooterView *)self->_footerView hideRightButtonWithAnimation:animatedCopy ^ 1];
   }
 
-  v18 = [(SKUIPhysicalCirclesTemplateViewElement *)self->_templateElement footerPaletteElement];
-  v19 = [v18 firstChildForElementType:95];
+  footerPaletteElement = [(SKUIPhysicalCirclesTemplateViewElement *)self->_templateElement footerPaletteElement];
+  v19 = [footerPaletteElement firstChildForElementType:95];
 
   v20 = [v19 firstChildForElementType:138];
   progressView = self->_progressView;
   [v19 value];
-  [(SKUIOnboardingProgressView *)progressView setProgress:v3 animated:v22];
+  [(SKUIOnboardingProgressView *)progressView setProgress:animatedCopy animated:v22];
   v23 = self->_progressView;
-  v24 = [v20 text];
-  v25 = [v24 string];
-  [(SKUIOnboardingProgressView *)v23 setTitle:v25];
+  text = [v20 text];
+  string3 = [text string];
+  [(SKUIOnboardingProgressView *)v23 setTitle:string3];
 }
 
 - (void)_reloadInstructionsView
 {
-  v17 = [(SKUIOnboardingAffiliationCirclesViewController *)self->_circlesViewController instructionsView];
-  v3 = [(SKUIPhysicalCirclesTemplateViewElement *)self->_templateElement titleElement];
-  if (v3)
+  instructionsView = [(SKUIOnboardingAffiliationCirclesViewController *)self->_circlesViewController instructionsView];
+  titleElement = [(SKUIPhysicalCirclesTemplateViewElement *)self->_templateElement titleElement];
+  if (titleElement)
   {
     v4 = objc_opt_class();
-    v5 = [v3 text];
-    v6 = [v5 string];
-    v7 = [v4 titleAttributedStringWithString:v6];
+    text = [titleElement text];
+    string = [text string];
+    v7 = [v4 titleAttributedStringWithString:string];
 
-    v8 = [v3 style];
-    [(SKUIPhysicalCirclesDocumentViewController *)self _styleAttributedString:v7 withStyle:v8];
+    style = [titleElement style];
+    [(SKUIPhysicalCirclesDocumentViewController *)self _styleAttributedString:v7 withStyle:style];
   }
 
   else
@@ -828,19 +828,19 @@ LABEL_5:
     v7 = 0;
   }
 
-  v9 = [v17 titleLabel];
-  [v9 setAttributedText:v7];
+  titleLabel = [instructionsView titleLabel];
+  [titleLabel setAttributedText:v7];
 
-  v10 = [(SKUIPhysicalCirclesTemplateViewElement *)self->_templateElement subtitleElement];
-  if (v10)
+  subtitleElement = [(SKUIPhysicalCirclesTemplateViewElement *)self->_templateElement subtitleElement];
+  if (subtitleElement)
   {
     v11 = objc_opt_class();
-    v12 = [v10 text];
-    v13 = [v12 string];
-    v14 = [v11 explanationAttributedStringWithString:v13];
+    text2 = [subtitleElement text];
+    string2 = [text2 string];
+    v14 = [v11 explanationAttributedStringWithString:string2];
 
-    v15 = [v10 style];
-    [(SKUIPhysicalCirclesDocumentViewController *)self _styleAttributedString:v14 withStyle:v15];
+    style2 = [subtitleElement style];
+    [(SKUIPhysicalCirclesDocumentViewController *)self _styleAttributedString:v14 withStyle:style2];
   }
 
   else
@@ -848,10 +848,10 @@ LABEL_5:
     v14 = 0;
   }
 
-  v16 = [v17 explanationLabel];
-  [v16 setAttributedText:v14];
+  explanationLabel = [instructionsView explanationLabel];
+  [explanationLabel setAttributedText:v14];
 
-  [v17 setNeedsLayout];
+  [instructionsView setNeedsLayout];
 }
 
 - (id)_rightFooterButtonElement
@@ -868,14 +868,14 @@ LABEL_5:
   v9 = __Block_byref_object_copy_;
   v10 = __Block_byref_object_dispose_;
   v11 = 0;
-  v2 = [(SKUIPhysicalCirclesTemplateViewElement *)self->_templateElement footerPaletteElement];
+  footerPaletteElement = [(SKUIPhysicalCirclesTemplateViewElement *)self->_templateElement footerPaletteElement];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __70__SKUIPhysicalCirclesDocumentViewController__rightFooterButtonElement__block_invoke;
   v5[3] = &unk_2781F8590;
   v5[4] = v12;
   v5[5] = &v6;
-  [v2 enumerateChildrenUsingBlock:v5];
+  [footerPaletteElement enumerateChildrenUsingBlock:v5];
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -902,24 +902,24 @@ void __70__SKUIPhysicalCirclesDocumentViewController__rightFooterButtonElement__
   }
 }
 
-- (void)_styleAttributedString:(id)a3 withStyle:(id)a4
+- (void)_styleAttributedString:(id)string withStyle:(id)style
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = SKUIViewElementFontWithStyle(v6);
+  stringCopy = string;
+  styleCopy = style;
+  v7 = SKUIViewElementFontWithStyle(styleCopy);
   if (v7)
   {
-    [v12 addAttribute:*MEMORY[0x277D740A8] value:v7 range:{0, objc_msgSend(v12, "length")}];
+    [stringCopy addAttribute:*MEMORY[0x277D740A8] value:v7 range:{0, objc_msgSend(stringCopy, "length")}];
   }
 
-  v8 = [v6 ikColor];
-  v9 = [(SKUIPhysicalCirclesDocumentViewController *)self view];
-  v10 = [v9 tintColor];
-  v11 = SKUIViewElementPlainColorWithIKColor(v8, v10);
+  ikColor = [styleCopy ikColor];
+  view = [(SKUIPhysicalCirclesDocumentViewController *)self view];
+  tintColor = [view tintColor];
+  v11 = SKUIViewElementPlainColorWithIKColor(ikColor, tintColor);
 
   if (v11)
   {
-    [v12 addAttribute:*MEMORY[0x277D740C0] value:v11 range:{0, objc_msgSend(v12, "length")}];
+    [stringCopy addAttribute:*MEMORY[0x277D740C0] value:v11 range:{0, objc_msgSend(stringCopy, "length")}];
   }
 }
 

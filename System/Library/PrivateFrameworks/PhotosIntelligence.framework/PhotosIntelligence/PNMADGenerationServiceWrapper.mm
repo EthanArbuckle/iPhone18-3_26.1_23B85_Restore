@@ -1,40 +1,40 @@
 @interface PNMADGenerationServiceWrapper
 - (PNMADGenerationServiceWrapper)init;
-- (void)requestAlchemistProcessingForPixelBuffer:(__CVBuffer *)a3 options:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6;
-- (void)requestAlchemistProcessingForURL:(id)a3 options:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6;
+- (void)requestAlchemistProcessingForPixelBuffer:(__CVBuffer *)buffer options:(id)options progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)requestAlchemistProcessingForURL:(id)l options:(id)options progressHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation PNMADGenerationServiceWrapper
 
-- (void)requestAlchemistProcessingForPixelBuffer:(__CVBuffer *)a3 options:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6
+- (void)requestAlchemistProcessingForPixelBuffer:(__CVBuffer *)buffer options:(id)options progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [(PNMADGenerationServiceWrapper *)self generationService];
+  completionHandlerCopy = completionHandler;
+  handlerCopy = handler;
+  optionsCopy = options;
+  generationService = [(PNMADGenerationServiceWrapper *)self generationService];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __116__PNMADGenerationServiceWrapper_requestAlchemistProcessingForPixelBuffer_options_progressHandler_completionHandler___block_invoke;
   v15[3] = &unk_1E82A2600;
-  v16 = v10;
-  v14 = v10;
-  [v13 requestAlchemistProcessingForPixelBuffer:a3 options:v12 progressHandler:v11 completionHandler:v15];
+  v16 = completionHandlerCopy;
+  v14 = completionHandlerCopy;
+  [generationService requestAlchemistProcessingForPixelBuffer:buffer options:optionsCopy progressHandler:handlerCopy completionHandler:v15];
 }
 
-- (void)requestAlchemistProcessingForURL:(id)a3 options:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6
+- (void)requestAlchemistProcessingForURL:(id)l options:(id)options progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(PNMADGenerationServiceWrapper *)self generationService];
+  completionHandlerCopy = completionHandler;
+  handlerCopy = handler;
+  optionsCopy = options;
+  lCopy = l;
+  generationService = [(PNMADGenerationServiceWrapper *)self generationService];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __108__PNMADGenerationServiceWrapper_requestAlchemistProcessingForURL_options_progressHandler_completionHandler___block_invoke;
   v16[3] = &unk_1E82A2600;
-  v17 = v10;
-  v15 = v10;
-  [v14 requestAlchemistProcessingForURL:v13 options:v12 progressHandler:v11 completionHandler:v16];
+  v17 = completionHandlerCopy;
+  v15 = completionHandlerCopy;
+  [generationService requestAlchemistProcessingForURL:lCopy options:optionsCopy progressHandler:handlerCopy completionHandler:v16];
 }
 
 - (PNMADGenerationServiceWrapper)init
@@ -62,9 +62,9 @@
 
     v4 = v3;
     _Block_object_dispose(&v10, 8);
-    v5 = [v3 service];
+    service = [v3 service];
     generationService = v2->_generationService;
-    v2->_generationService = v5;
+    v2->_generationService = service;
   }
 
   return v2;

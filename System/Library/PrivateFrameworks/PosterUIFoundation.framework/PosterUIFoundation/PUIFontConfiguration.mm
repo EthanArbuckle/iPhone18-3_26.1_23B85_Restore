@@ -1,33 +1,33 @@
 @interface PUIFontConfiguration
 + (PUIFontConfiguration)defaultFontConfiguration;
-+ (PUIFontConfiguration)fontConfigurationWithPUIFont:(id)a3 extensionBundleIdentifier:(id)a4 systemItem:(BOOL)a5;
-+ (PUIFontConfiguration)fontConfigurationWithPUIFont:(id)a3 extensionBundleURL:(id)a4 systemItem:(BOOL)a5;
++ (PUIFontConfiguration)fontConfigurationWithPUIFont:(id)font extensionBundleIdentifier:(id)identifier systemItem:(BOOL)item;
++ (PUIFontConfiguration)fontConfigurationWithPUIFont:(id)font extensionBundleURL:(id)l systemItem:(BOOL)item;
 - (NSString)description;
 - (PUIFontConfiguration)init;
-- (id)PUIFontWithExtensionBundle:(id)a3;
-- (id)PUIFontWithExtensionBundleIdentifier:(id)a3;
+- (id)PUIFontWithExtensionBundle:(id)bundle;
+- (id)PUIFontWithExtensionBundleIdentifier:(id)identifier;
 @end
 
 @implementation PUIFontConfiguration
 
-+ (PUIFontConfiguration)fontConfigurationWithPUIFont:(id)a3 extensionBundleURL:(id)a4 systemItem:(BOOL)a5
++ (PUIFontConfiguration)fontConfigurationWithPUIFont:(id)font extensionBundleURL:(id)l systemItem:(BOOL)item
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 fontIdentifier];
-  [v7 weight];
-  if (v9)
+  itemCopy = item;
+  fontCopy = font;
+  lCopy = l;
+  fontIdentifier = [fontCopy fontIdentifier];
+  [fontCopy weight];
+  if (fontIdentifier)
   {
-    v11 = [[PUISystemFontConfiguration alloc] initWithFontIdentifier:v9 weight:v5 systemItem:v10];
+    v11 = [[PUISystemFontConfiguration alloc] initWithFontIdentifier:fontIdentifier weight:itemCopy systemItem:v10];
   }
 
   else
   {
-    v12 = [v7 customFont];
-    if (v12)
+    customFont = [fontCopy customFont];
+    if (customFont)
     {
-      v11 = [[PUICustomFontConfiguration alloc] initWithFont:v12 extensionBundleURL:v8];
+      v11 = [[PUICustomFontConfiguration alloc] initWithFont:customFont extensionBundleURL:lCopy];
     }
 
     else
@@ -39,18 +39,18 @@
   return v11;
 }
 
-+ (PUIFontConfiguration)fontConfigurationWithPUIFont:(id)a3 extensionBundleIdentifier:(id)a4 systemItem:(BOOL)a5
++ (PUIFontConfiguration)fontConfigurationWithPUIFont:(id)font extensionBundleIdentifier:(id)identifier systemItem:(BOOL)item
 {
-  v5 = a5;
-  v8 = a3;
+  itemCopy = item;
+  fontCopy = font;
   v9 = MEMORY[0x1E69635D0];
-  v10 = a4;
-  v11 = [[v9 alloc] initWithBundleIdentifier:v10 error:0];
+  identifierCopy = identifier;
+  v11 = [[v9 alloc] initWithBundleIdentifier:identifierCopy error:0];
 
   v12 = [v11 URL];
   if (v12)
   {
-    v13 = [a1 fontConfigurationWithPUIFont:v8 extensionBundleURL:v12 systemItem:v5];
+    v13 = [self fontConfigurationWithPUIFont:fontCopy extensionBundleURL:v12 systemItem:itemCopy];
   }
 
   else
@@ -68,19 +68,19 @@
   return v2;
 }
 
-- (id)PUIFontWithExtensionBundle:(id)a3
+- (id)PUIFontWithExtensionBundle:(id)bundle
 {
-  v4 = [a3 bundleURL];
-  v5 = [(PUIFontConfiguration *)self PUIFontWithExtensionBundleURL:v4];
+  bundleURL = [bundle bundleURL];
+  v5 = [(PUIFontConfiguration *)self PUIFontWithExtensionBundleURL:bundleURL];
 
   return v5;
 }
 
-- (id)PUIFontWithExtensionBundleIdentifier:(id)a3
+- (id)PUIFontWithExtensionBundleIdentifier:(id)identifier
 {
   v4 = MEMORY[0x1E69635D0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithBundleIdentifier:v5 error:0];
+  identifierCopy = identifier;
+  v6 = [[v4 alloc] initWithBundleIdentifier:identifierCopy error:0];
 
   v7 = [v6 URL];
   if (v7)
@@ -126,7 +126,7 @@
   v8 = 3221225472;
   v9 = __35__PUIFontConfiguration_description__block_invoke;
   v10 = &unk_1E78548A0;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:self block:&v7];

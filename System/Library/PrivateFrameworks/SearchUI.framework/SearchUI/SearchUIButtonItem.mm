@@ -1,11 +1,11 @@
 @interface SearchUIButtonItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (Class)searchUI_viewControllerClass;
-- (SearchUIButtonItem)initWithSFButtonItem:(id)a3;
+- (SearchUIButtonItem)initWithSFButtonItem:(id)item;
 - (SearchUIButtonItemDelegate)delegate;
 - (id)buttonAppearance;
 - (id)command;
-- (id)commandForStatus:(unint64_t)a3;
+- (id)commandForStatus:(unint64_t)status;
 - (id)defaultSymbolNameForCommand;
 - (id)fallbackImage;
 - (id)image;
@@ -19,13 +19,13 @@
 
 @implementation SearchUIButtonItem
 
-- (SearchUIButtonItem)initWithSFButtonItem:(id)a3
+- (SearchUIButtonItem)initWithSFButtonItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = itemCopy;
   }
 
   else
@@ -35,24 +35,24 @@
     v5 = [(SearchUIButtonItem *)&v13 init];
     if (v5)
     {
-      [(SearchUIButtonItem *)v5 setUniqueId:[(SearchUIButtonItem *)v4 uniqueId]];
-      [(SearchUIButtonItem *)v5 setSfButtonItem:v4];
+      [(SearchUIButtonItem *)v5 setUniqueId:[(SearchUIButtonItem *)itemCopy uniqueId]];
+      [(SearchUIButtonItem *)v5 setSfButtonItem:itemCopy];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v6 = v4;
-        v7 = [(SearchUIButtonItem *)v6 command];
-        [(SearchUIButtonItem *)v5 setCommand:v7];
+        v6 = itemCopy;
+        command = [(SearchUIButtonItem *)v6 command];
+        [(SearchUIButtonItem *)v5 setCommand:command];
 
-        v8 = [(SearchUIButtonItem *)v6 image];
-        [(SearchUIButtonItem *)v5 setImage:v8];
+        image = [(SearchUIButtonItem *)v6 image];
+        [(SearchUIButtonItem *)v5 setImage:image];
 
-        v9 = [(SearchUIButtonItem *)v6 title];
-        [(SearchUIButtonItem *)v5 setTitle:v9];
+        title = [(SearchUIButtonItem *)v6 title];
+        [(SearchUIButtonItem *)v5 setTitle:title];
 
-        v10 = [(SearchUIButtonItem *)v6 previewButtonItems];
+        previewButtonItems = [(SearchUIButtonItem *)v6 previewButtonItems];
 
-        [(SearchUIButtonItem *)v5 setPreviewButtonItems:v10];
+        [(SearchUIButtonItem *)v5 setPreviewButtonItems:previewButtonItems];
       }
 
       [(SearchUIButtonItem *)v5 setUseDefaultSymbolFillStyle:1];
@@ -66,94 +66,94 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(SearchUIButtonItem *)self title];
-    v7 = [v5 title];
-    if (v6 == v7)
+    v5 = equalCopy;
+    title = [(SearchUIButtonItem *)self title];
+    title2 = [v5 title];
+    if (title == title2)
     {
       v37 = 0;
     }
 
     else
     {
-      v8 = [(SearchUIButtonItem *)self title];
-      v9 = [v5 title];
-      v10 = [v8 isEqual:v9];
+      title3 = [(SearchUIButtonItem *)self title];
+      title4 = [v5 title];
+      v10 = [title3 isEqual:title4];
 
       v37 = v10 ^ 1;
     }
 
-    v12 = [(SearchUIButtonItem *)self image];
-    v13 = [v5 image];
-    if (v12 == v13)
+    image = [(SearchUIButtonItem *)self image];
+    image2 = [v5 image];
+    if (image == image2)
     {
       v17 = 0;
     }
 
     else
     {
-      v14 = [(SearchUIButtonItem *)self image];
-      v15 = [v5 image];
-      v16 = [v14 isEqual:v15];
+      image3 = [(SearchUIButtonItem *)self image];
+      image4 = [v5 image];
+      v16 = [image3 isEqual:image4];
 
       v17 = v16 ^ 1;
     }
 
-    v18 = [(SearchUIButtonItem *)self command];
-    v19 = [v5 command];
-    if (v18 == v19)
+    command = [(SearchUIButtonItem *)self command];
+    command2 = [v5 command];
+    if (command == command2)
     {
       v23 = 0;
     }
 
     else
     {
-      v20 = [(SearchUIButtonItem *)self command];
-      v21 = [v5 command];
-      v22 = [v20 isEqual:v21];
+      command3 = [(SearchUIButtonItem *)self command];
+      command4 = [v5 command];
+      v22 = [command3 isEqual:command4];
 
       v23 = v22 ^ 1;
     }
 
-    v24 = [(SearchUIButtonItem *)self previewButtonItems];
-    v25 = [v5 previewButtonItems];
-    if (v24 == v25)
+    previewButtonItems = [(SearchUIButtonItem *)self previewButtonItems];
+    previewButtonItems2 = [v5 previewButtonItems];
+    if (previewButtonItems == previewButtonItems2)
     {
       v29 = 0;
     }
 
     else
     {
-      v26 = [(SearchUIButtonItem *)self previewButtonItems];
-      v27 = [v5 previewButtonItems];
-      v28 = [v26 isEqualToArray:v27];
+      previewButtonItems3 = [(SearchUIButtonItem *)self previewButtonItems];
+      previewButtonItems4 = [v5 previewButtonItems];
+      v28 = [previewButtonItems3 isEqualToArray:previewButtonItems4];
 
       v29 = v28 ^ 1;
     }
 
-    v30 = [(SearchUIButtonItem *)self showsMenuAsPrimaryAction];
-    v31 = [v5 showsMenuAsPrimaryAction];
+    showsMenuAsPrimaryAction = [(SearchUIButtonItem *)self showsMenuAsPrimaryAction];
+    showsMenuAsPrimaryAction2 = [v5 showsMenuAsPrimaryAction];
     v11 = 0;
-    if (((v37 | v17 | v23) & 1) == 0 && (v29 & 1) == 0 && ((v30 ^ v31) & 1) == 0)
+    if (((v37 | v17 | v23) & 1) == 0 && (v29 & 1) == 0 && ((showsMenuAsPrimaryAction ^ showsMenuAsPrimaryAction2) & 1) == 0)
     {
-      v32 = [(SearchUIButtonItem *)self sfButtonItem];
-      v33 = [v5 sfButtonItem];
-      if (v32 == v33)
+      sfButtonItem = [(SearchUIButtonItem *)self sfButtonItem];
+      sfButtonItem2 = [v5 sfButtonItem];
+      if (sfButtonItem == sfButtonItem2)
       {
         v11 = 1;
       }
 
       else
       {
-        v34 = [(SearchUIButtonItem *)self sfButtonItem];
-        v35 = [v5 sfButtonItem];
-        v11 = [v34 isEqual:v35];
+        sfButtonItem3 = [(SearchUIButtonItem *)self sfButtonItem];
+        sfButtonItem4 = [v5 sfButtonItem];
+        v11 = [sfButtonItem3 isEqual:sfButtonItem4];
       }
     }
   }
@@ -168,14 +168,14 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SearchUIButtonItem *)self title];
-  v4 = [v3 hash];
-  v5 = [(SearchUIButtonItem *)self image];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(SearchUIButtonItem *)self command];
-  v8 = [v7 hash];
-  v9 = [(SearchUIButtonItem *)self previewButtonItems];
-  v10 = v6 ^ v8 ^ [v9 hash];
+  title = [(SearchUIButtonItem *)self title];
+  v4 = [title hash];
+  image = [(SearchUIButtonItem *)self image];
+  v6 = [image hash] ^ v4;
+  command = [(SearchUIButtonItem *)self command];
+  v8 = [command hash];
+  previewButtonItems = [(SearchUIButtonItem *)self previewButtonItems];
+  v10 = v6 ^ v8 ^ [previewButtonItems hash];
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[SearchUIButtonItem showsMenuAsPrimaryAction](self, "showsMenuAsPrimaryAction")}];
   v12 = [v11 hash];
 
@@ -186,28 +186,28 @@
 {
   v4.receiver = self;
   v4.super_class = SearchUIButtonItem;
-  v2 = [(SearchUIButtonItem *)&v4 title];
+  title = [(SearchUIButtonItem *)&v4 title];
 
-  return v2;
+  return title;
 }
 
 - (id)onStateTitle
 {
   v4.receiver = self;
   v4.super_class = SearchUIButtonItem;
-  v2 = [(SearchUIButtonItem *)&v4 title];
+  title = [(SearchUIButtonItem *)&v4 title];
 
-  return v2;
+  return title;
 }
 
 - (id)title
 {
-  v3 = [(SearchUIButtonItem *)self status];
-  if (v3)
+  status = [(SearchUIButtonItem *)self status];
+  if (status)
   {
-    if (v3 == 1)
+    if (status == 1)
     {
-      v4 = [(SearchUIButtonItem *)self onStateTitle];
+      onStateTitle = [(SearchUIButtonItem *)self onStateTitle];
     }
 
     else
@@ -218,52 +218,52 @@
         [SearchUIButtonItem title];
       }
 
-      v4 = 0;
+      onStateTitle = 0;
     }
   }
 
   else
   {
-    v4 = [(SearchUIButtonItem *)self offStateTitle];
+    onStateTitle = [(SearchUIButtonItem *)self offStateTitle];
   }
 
-  return v4;
+  return onStateTitle;
 }
 
 - (id)defaultSymbolNameForCommand
 {
   v2 = [SearchUICommandHandler handlerForButton:self rowModel:0 environment:0];
-  v3 = [v2 defaultSymbolName];
+  defaultSymbolName = [v2 defaultSymbolName];
 
-  return v3;
+  return defaultSymbolName;
 }
 
 - (id)offStateImage
 {
   v4.receiver = self;
   v4.super_class = SearchUIButtonItem;
-  v2 = [(SearchUIButtonItem *)&v4 image];
+  image = [(SearchUIButtonItem *)&v4 image];
 
-  return v2;
+  return image;
 }
 
 - (id)onStateImage
 {
   v4.receiver = self;
   v4.super_class = SearchUIButtonItem;
-  v2 = [(SearchUIButtonItem *)&v4 image];
+  image = [(SearchUIButtonItem *)&v4 image];
 
-  return v2;
+  return image;
 }
 
 - (id)image
 {
-  v3 = [(SearchUIButtonItem *)self status];
-  if (v3)
+  status = [(SearchUIButtonItem *)self status];
+  if (status)
   {
-    if (v3 == 1)
+    if (status == 1)
     {
-      v4 = [(SearchUIButtonItem *)self onStateImage];
+      onStateImage = [(SearchUIButtonItem *)self onStateImage];
     }
 
     else
@@ -274,24 +274,24 @@
         [SearchUIButtonItem image];
       }
 
-      v4 = 0;
+      onStateImage = 0;
     }
   }
 
   else
   {
-    v4 = [(SearchUIButtonItem *)self offStateImage];
+    onStateImage = [(SearchUIButtonItem *)self offStateImage];
   }
 
-  return v4;
+  return onStateImage;
 }
 
 - (id)fallbackImage
 {
-  v3 = [(SearchUIButtonItem *)self status];
-  if (v3)
+  status = [(SearchUIButtonItem *)self status];
+  if (status)
   {
-    if (v3 != 1)
+    if (status != 1)
     {
       v5 = SearchUIButtonItemLog();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -303,18 +303,18 @@
       goto LABEL_10;
     }
 
-    v4 = [(SearchUIButtonItem *)self onStateSymbolName];
+    onStateSymbolName = [(SearchUIButtonItem *)self onStateSymbolName];
   }
 
   else
   {
-    v4 = [(SearchUIButtonItem *)self offStateSymbolName];
+    onStateSymbolName = [(SearchUIButtonItem *)self offStateSymbolName];
   }
 
-  v5 = v4;
-  if (v4)
+  v5 = onStateSymbolName;
+  if (onStateSymbolName)
   {
-    v6 = [[SearchUISymbolImage alloc] initWithSymbolName:v4];
+    v6 = [[SearchUISymbolImage alloc] initWithSymbolName:onStateSymbolName];
 LABEL_10:
 
     goto LABEL_12;
@@ -328,12 +328,12 @@ LABEL_12:
 
 - (id)command
 {
-  v3 = [(SearchUIButtonItem *)self status];
-  if (v3)
+  status = [(SearchUIButtonItem *)self status];
+  if (status)
   {
-    if (v3 == 1)
+    if (status == 1)
     {
-      v4 = [(SearchUIButtonItem *)self onStateCommand];
+      onStateCommand = [(SearchUIButtonItem *)self onStateCommand];
     }
 
     else
@@ -344,45 +344,45 @@ LABEL_12:
         [SearchUIButtonItem command];
       }
 
-      v4 = 0;
+      onStateCommand = 0;
     }
   }
 
   else
   {
-    v4 = [(SearchUIButtonItem *)self offStateCommand];
+    onStateCommand = [(SearchUIButtonItem *)self offStateCommand];
   }
 
-  return v4;
+  return onStateCommand;
 }
 
-- (id)commandForStatus:(unint64_t)a3
+- (id)commandForStatus:(unint64_t)status
 {
   v5.receiver = self;
   v5.super_class = SearchUIButtonItem;
-  v3 = [(SearchUIButtonItem *)&v5 command];
+  command = [(SearchUIButtonItem *)&v5 command];
 
-  return v3;
+  return command;
 }
 
 - (id)buttonAppearance
 {
   v8.receiver = self;
   v8.super_class = SearchUIButtonItem;
-  v3 = [(SearchUIButtonItem *)&v8 buttonAppearance];
-  v4 = v3;
-  if (v3)
+  buttonAppearance = [(SearchUIButtonItem *)&v8 buttonAppearance];
+  v4 = buttonAppearance;
+  if (buttonAppearance)
   {
-    v5 = v3;
+    buttonAppearance2 = buttonAppearance;
   }
 
   else
   {
-    v6 = [(SearchUIButtonItem *)self sfButtonItem];
-    v5 = [v6 buttonAppearance];
+    sfButtonItem = [(SearchUIButtonItem *)self sfButtonItem];
+    buttonAppearance2 = [sfButtonItem buttonAppearance];
   }
 
-  return v5;
+  return buttonAppearance2;
 }
 
 - (SearchUIButtonItemDelegate)delegate
@@ -394,21 +394,21 @@ LABEL_12:
 
 - (Class)searchUI_viewControllerClass
 {
-  v3 = [(SearchUIButtonItem *)self sfButtonItem];
-  if (v3)
+  sfButtonItem = [(SearchUIButtonItem *)self sfButtonItem];
+  if (sfButtonItem)
   {
-    v4 = [(SearchUIButtonItem *)self sfButtonItem];
-    v5 = [v4 searchUI_viewControllerClass];
+    sfButtonItem2 = [(SearchUIButtonItem *)self sfButtonItem];
+    searchUI_viewControllerClass = [sfButtonItem2 searchUI_viewControllerClass];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = SearchUIButtonItem;
-    v5 = [(SFButtonItem *)&v7 searchUI_viewControllerClass];
+    searchUI_viewControllerClass = [(SFButtonItem *)&v7 searchUI_viewControllerClass];
   }
 
-  return v5;
+  return searchUI_viewControllerClass;
 }
 
 @end

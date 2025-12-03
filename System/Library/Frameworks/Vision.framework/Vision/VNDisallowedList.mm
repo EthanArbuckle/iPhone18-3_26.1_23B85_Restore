@@ -1,9 +1,9 @@
 @interface VNDisallowedList
-+ (id)disallowedListFromUTF8StringArray:(const char *)a3;
++ (id)disallowedListFromUTF8StringArray:(const char *)array;
 + (id)sceneNetV3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSSet)allIdentifiers;
-- (VNDisallowedList)initWithIdentifiers:(id)a3;
+- (VNDisallowedList)initWithIdentifiers:(id)identifiers;
 @end
 
 @implementation VNDisallowedList
@@ -27,10 +27,10 @@ uint64_t __40__VNDisallowedList_SceneNet__sceneNetV3__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -38,7 +38,7 @@ uint64_t __40__VNDisallowedList_SceneNet__sceneNetV3__block_invoke()
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSSet *)self->_identifiers isEqualToSet:v4->_identifiers];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSSet *)self->_identifiers isEqualToSet:equalCopy->_identifiers];
   }
 
   return v5;
@@ -51,15 +51,15 @@ uint64_t __40__VNDisallowedList_SceneNet__sceneNetV3__block_invoke()
   return v2;
 }
 
-- (VNDisallowedList)initWithIdentifiers:(id)a3
+- (VNDisallowedList)initWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v9.receiver = self;
   v9.super_class = VNDisallowedList;
   v5 = [(VNDisallowedList *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifiersCopy copy];
     identifiers = v5->_identifiers;
     v5->_identifiers = v6;
   }
@@ -67,12 +67,12 @@ uint64_t __40__VNDisallowedList_SceneNet__sceneNetV3__block_invoke()
   return v5;
 }
 
-+ (id)disallowedListFromUTF8StringArray:(const char *)a3
++ (id)disallowedListFromUTF8StringArray:(const char *)array
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  if (a3 && *a3)
+  if (array && *array)
   {
-    v6 = a3 + 1;
+    v6 = array + 1;
     do
     {
       v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:*(v6 - 1)];
@@ -82,7 +82,7 @@ uint64_t __40__VNDisallowedList_SceneNet__sceneNetV3__block_invoke()
     while (*v6++);
   }
 
-  v9 = [[a1 alloc] initWithIdentifiers:v5];
+  v9 = [[self alloc] initWithIdentifiers:v5];
 
   return v9;
 }

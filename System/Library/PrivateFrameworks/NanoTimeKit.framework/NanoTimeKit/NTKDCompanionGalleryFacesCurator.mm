@@ -2,10 +2,10 @@
 + (id)sharedInstance;
 - (NTKDCompanionGalleryFacesCurator)init;
 - (id)_collectionIdentifier;
-- (id)_getVersionAppropriateFacesForStore:(id)a3;
-- (void)_addFacesToStore:(id)a3;
-- (void)_removeAllFacesFromStore:(id)a3;
-- (void)curateCollectionStore:(id)a3 completion:(id)a4;
+- (id)_getVersionAppropriateFacesForStore:(id)store;
+- (void)_addFacesToStore:(id)store;
+- (void)_removeAllFacesFromStore:(id)store;
+- (void)curateCollectionStore:(id)store completion:(id)completion;
 @end
 
 @implementation NTKDCompanionGalleryFacesCurator
@@ -46,37 +46,37 @@
   if (v2)
   {
     v3 = +[NTKDCollectionCoordinator sharedInstance];
-    v4 = [(NTKDCompanionGalleryFacesCurator *)v2 _collectionIdentifier];
-    [v3 registerCurator:v2 forCollectionIdentifier:v4];
+    _collectionIdentifier = [(NTKDCompanionGalleryFacesCurator *)v2 _collectionIdentifier];
+    [v3 registerCurator:v2 forCollectionIdentifier:_collectionIdentifier];
   }
 
   return v2;
 }
 
-- (void)curateCollectionStore:(id)a3 completion:(id)a4
+- (void)curateCollectionStore:(id)store completion:(id)completion
 {
-  v7 = a3;
-  v6 = a4;
-  if (![v7 isInitialSetupComplete] || (objc_msgSend(v7, "isEmpty") & 1) != 0 || objc_msgSend(v7, "isBuildVersionOutdated"))
+  storeCopy = store;
+  completionCopy = completion;
+  if (![storeCopy isInitialSetupComplete] || (objc_msgSend(storeCopy, "isEmpty") & 1) != 0 || objc_msgSend(storeCopy, "isBuildVersionOutdated"))
   {
-    [(NTKDCompanionGalleryFacesCurator *)self _removeAllFacesFromStore:v7];
-    [(NTKDCompanionGalleryFacesCurator *)self _addFacesToStore:v7];
-    [v7 persistCurrentBuildVersion];
-    [v7 markInitialSetupComplete];
+    [(NTKDCompanionGalleryFacesCurator *)self _removeAllFacesFromStore:storeCopy];
+    [(NTKDCompanionGalleryFacesCurator *)self _addFacesToStore:storeCopy];
+    [storeCopy persistCurrentBuildVersion];
+    [storeCopy markInitialSetupComplete];
   }
 
-  v6[2](v6);
+  completionCopy[2](completionCopy);
 }
 
-- (void)_removeAllFacesFromStore:(id)a3
+- (void)_removeAllFacesFromStore:(id)store
 {
-  v3 = a3;
+  storeCopy = store;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 orderedUUIDs];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  orderedUUIDs = [storeCopy orderedUUIDs];
+  v5 = [orderedUUIDs countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -88,25 +88,25 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(orderedUUIDs);
         }
 
-        [v3 removeFaceForUUID:*(*(&v9 + 1) + 8 * v8)];
+        [storeCopy removeFaceForUUID:*(*(&v9 + 1) + 8 * v8)];
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [orderedUUIDs countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_addFacesToStore:(id)a3
+- (void)_addFacesToStore:(id)store
 {
-  v4 = a3;
-  v5 = [(NTKDCompanionGalleryFacesCurator *)self _getVersionAppropriateFacesForStore:v4];
+  storeCopy = store;
+  v5 = [(NTKDCompanionGalleryFacesCurator *)self _getVersionAppropriateFacesForStore:storeCopy];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -128,7 +128,7 @@
 
         v10 = *(*(&v12 + 1) + 8 * v9);
         v11 = +[NSUUID UUID];
-        [v4 addFace:v10 forUUID:v11];
+        [storeCopy addFace:v10 forUUID:v11];
 
         v9 = v9 + 1;
       }
@@ -141,25 +141,25 @@
   }
 }
 
-- (id)_getVersionAppropriateFacesForStore:(id)a3
+- (id)_getVersionAppropriateFacesForStore:(id)store
 {
-  v4 = a3;
-  v5 = [v4 deviceUUID];
-  v6 = [CLKDevice deviceForPairingID:v5];
+  storeCopy = store;
+  deviceUUID = [storeCopy deviceUUID];
+  v6 = [CLKDevice deviceForPairingID:deviceUUID];
 
   if ([v6 supportsPDRCapability:2919474315])
   {
-    v7 = [(NTKDCompanionGalleryFacesCurator *)self _hunterDefaultFacesForStore:v4];
+    v7 = [(NTKDCompanionGalleryFacesCurator *)self _hunterDefaultFacesForStore:storeCopy];
   }
 
   else if ([v6 supportsPDRCapability:3503302961])
   {
-    v7 = [(NTKDCompanionGalleryFacesCurator *)self _graceFDefaultFacesForStore:v4];
+    v7 = [(NTKDCompanionGalleryFacesCurator *)self _graceFDefaultFacesForStore:storeCopy];
   }
 
   else if ([v6 supportsPDRCapability:753405533])
   {
-    v7 = [(NTKDCompanionGalleryFacesCurator *)self _graceEDefaultFacesForStore:v4];
+    v7 = [(NTKDCompanionGalleryFacesCurator *)self _graceEDefaultFacesForStore:storeCopy];
   }
 
   else if ([v6 pdrDeviceVersion] <= 0x5FFFF)
@@ -172,37 +172,37 @@
         {
           if ([v6 pdrDeviceVersion] <= 0x4FFFF)
           {
-            [(NTKDCompanionGalleryFacesCurator *)self _legacyDefaultFacesForStore:v4];
+            [(NTKDCompanionGalleryFacesCurator *)self _legacyDefaultFacesForStore:storeCopy];
           }
 
           else
           {
-            [(NTKDCompanionGalleryFacesCurator *)self _gloryDefaultFacesForStore:v4];
+            [(NTKDCompanionGalleryFacesCurator *)self _gloryDefaultFacesForStore:storeCopy];
           }
           v7 = ;
         }
 
         else
         {
-          v7 = [(NTKDCompanionGalleryFacesCurator *)self _gloryBDefaultFacesForStore:v4];
+          v7 = [(NTKDCompanionGalleryFacesCurator *)self _gloryBDefaultFacesForStore:storeCopy];
         }
       }
 
       else
       {
-        v7 = [(NTKDCompanionGalleryFacesCurator *)self _gloryEDefaultFacesForStore:v4];
+        v7 = [(NTKDCompanionGalleryFacesCurator *)self _gloryEDefaultFacesForStore:storeCopy];
       }
     }
 
     else
     {
-      v7 = [(NTKDCompanionGalleryFacesCurator *)self _gloryFDefaultFacesForStore:v4];
+      v7 = [(NTKDCompanionGalleryFacesCurator *)self _gloryFDefaultFacesForStore:storeCopy];
     }
   }
 
   else
   {
-    v7 = [(NTKDCompanionGalleryFacesCurator *)self _graceDefaultFacesForStore:v4];
+    v7 = [(NTKDCompanionGalleryFacesCurator *)self _graceDefaultFacesForStore:storeCopy];
   }
 
   v8 = v7;

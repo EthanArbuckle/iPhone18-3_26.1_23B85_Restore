@@ -1,15 +1,15 @@
 @interface SFUCryptor
-- (BOOL)cryptDataFromBuffer:(const char *)a3 length:(unint64_t)a4 toStream:(id)a5 finished:(BOOL)a6 crc32:(unsigned int *)a7 error:(id *)a8;
-- (BOOL)cryptDataFromStream:(id)a3 toBuffer:(char *)a4 length:(unint64_t)a5 bytesRead:(unint64_t *)a6 error:(id *)a7;
-- (SFUCryptor)initWithKey:(id)a3 operation:(int)a4 iv:(const char *)a5 ivLength:(unint64_t)a6 usePKCS7Padding:(BOOL)a7;
+- (BOOL)cryptDataFromBuffer:(const char *)buffer length:(unint64_t)length toStream:(id)stream finished:(BOOL)finished crc32:(unsigned int *)crc32 error:(id *)error;
+- (BOOL)cryptDataFromStream:(id)stream toBuffer:(char *)buffer length:(unint64_t)length bytesRead:(unint64_t *)read error:(id *)error;
+- (SFUCryptor)initWithKey:(id)key operation:(int)operation iv:(const char *)iv ivLength:(unint64_t)length usePKCS7Padding:(BOOL)padding;
 - (void)dealloc;
 @end
 
 @implementation SFUCryptor
 
-- (SFUCryptor)initWithKey:(id)a3 operation:(int)a4 iv:(const char *)a5 ivLength:(unint64_t)a6 usePKCS7Padding:(BOOL)a7
+- (SFUCryptor)initWithKey:(id)key operation:(int)operation iv:(const char *)iv ivLength:(unint64_t)length usePKCS7Padding:(BOOL)padding
 {
-  v7 = a7;
+  paddingCopy = padding;
   v19.receiver = self;
   v19.super_class = SFUCryptor;
   v12 = [(SFUCryptor *)&v19 init];
@@ -18,7 +18,7 @@
     return v12;
   }
 
-  if (!a3)
+  if (!key)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -35,9 +35,9 @@
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  if (![a3 keyType])
+  if (![key keyType])
   {
-    if (a6 != 16)
+    if (length != 16)
     {
       +[TSUAssertionHandler _atomicIncrementAssertCount];
       if (TSUAssertCat_init_token != -1)
@@ -50,11 +50,11 @@
         sub_10015EA28();
       }
 
-      [TSUAssertionHandler handleFailureInFunction:[NSString stringWithUTF8String:"[SFUCryptor initWithKey:operation:iv:ivLength:usePKCS7Padding:]"] file:[NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkXPC/shared/utility/sf/SFUCryptor.m"] lineNumber:62 isFatal:0 description:"Incorrect iv length (%lu, should be %d)", a6, 16];
+      [TSUAssertionHandler handleFailureInFunction:[NSString stringWithUTF8String:"[SFUCryptor initWithKey:operation:iv:ivLength:usePKCS7Padding:]"] file:[NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkXPC/shared/utility/sf/SFUCryptor.m"] lineNumber:62 isFatal:0 description:"Incorrect iv length (%lu, should be %d)", length, 16];
       +[TSUAssertionHandler logBacktraceThrottled];
     }
 
-    if (!a5)
+    if (!iv)
     {
       +[TSUAssertionHandler _atomicIncrementAssertCount];
       if (TSUAssertCat_init_token != -1)
@@ -71,7 +71,7 @@
       +[TSUAssertionHandler logBacktraceThrottled];
     }
 
-    v14 = CCCryptorCreate(a4 == 1, 0, v7, [a3 keyData], objc_msgSend(a3, "keyLength"), a5, &v12->mCryptor);
+    v14 = CCCryptorCreate(operation == 1, 0, paddingCopy, [key keyData], objc_msgSend(key, "keyLength"), iv, &v12->mCryptor);
     if (v14)
     {
       v15 = v14;
@@ -114,7 +114,7 @@ LABEL_35:
     return 0;
   }
 
-  v12->mOperation = a4;
+  v12->mOperation = operation;
   v13 = malloc_type_malloc(0x20000uLL, 0x100004077774924uLL);
   v12->mOutputBuffer = v13;
   v12->mOutputBufferPos = v13;
@@ -147,10 +147,10 @@ LABEL_35:
   [(SFUCryptor *)&v5 dealloc];
 }
 
-- (BOOL)cryptDataFromBuffer:(const char *)a3 length:(unint64_t)a4 toStream:(id)a5 finished:(BOOL)a6 crc32:(unsigned int *)a7 error:(id *)a8
+- (BOOL)cryptDataFromBuffer:(const char *)buffer length:(unint64_t)length toStream:(id)stream finished:(BOOL)finished crc32:(unsigned int *)crc32 error:(id *)error
 {
-  v8 = a8;
-  v10 = a6;
+  errorCopy2 = error;
+  finishedCopy = finished;
   if (self->mOperation)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
@@ -166,17 +166,17 @@ LABEL_35:
 
     [TSUAssertionHandler handleFailureInFunction:[NSString stringWithUTF8String:"[SFUCryptor cryptDataFromBuffer:length:toStream:finished:crc32:error:]"] file:[NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkXPC/shared/utility/sf/SFUCryptor.m"] lineNumber:118 isFatal:0 description:"Decryption to stream not supported"];
     +[TSUAssertionHandler logBacktraceThrottled];
-    v8 = a8;
+    errorCopy2 = error;
   }
 
-  if (a4)
+  if (length)
   {
     while (1)
     {
       mCryptor = self->mCryptor;
-      v16 = a4 >= 0x20000 - self->mBlockSize ? 0x20000 - self->mBlockSize : a4;
+      v16 = length >= 0x20000 - self->mBlockSize ? 0x20000 - self->mBlockSize : length;
       dataOutMoved = 0;
-      v17 = CCCryptorUpdate(mCryptor, a3, v16, self->mOutputBuffer, 0x20000uLL, &dataOutMoved);
+      v17 = CCCryptorUpdate(mCryptor, buffer, v16, self->mOutputBuffer, 0x20000uLL, &dataOutMoved);
       if (v17)
       {
         break;
@@ -184,8 +184,8 @@ LABEL_35:
 
       if (dataOutMoved)
       {
-        [a5 writeBuffer:self->mOutputBuffer size:?];
-        if (a7)
+        [stream writeBuffer:self->mOutputBuffer size:?];
+        if (crc32)
         {
           if (HIDWORD(dataOutMoved))
           {
@@ -207,19 +207,19 @@ LABEL_35:
             goto LABEL_40;
           }
 
-          *a7 = crc32(*a7, self->mOutputBuffer, dataOutMoved);
+          *crc32 = crc32(*crc32, self->mOutputBuffer, dataOutMoved);
         }
       }
 
-      a3 += v16;
-      a4 -= v16;
-      if (!a4)
+      buffer += v16;
+      length -= v16;
+      if (!length)
       {
         goto LABEL_17;
       }
     }
 
-    if (!v8)
+    if (!errorCopy2)
     {
       return 0;
     }
@@ -230,7 +230,7 @@ LABEL_35:
   }
 
 LABEL_17:
-  if (v10)
+  if (finishedCopy)
   {
     dataOutMoved = 0;
     mOutputBuffer = self->mOutputBuffer;
@@ -240,7 +240,7 @@ LABEL_17:
       v20 = malloc_type_malloc(OutputLength, 0x100004077774924uLL);
       if (!v20)
       {
-        if (!v8)
+        if (!errorCopy2)
         {
           return 0;
         }
@@ -248,7 +248,7 @@ LABEL_17:
         v22 = NSOSStatusErrorDomain;
         v23 = -4301;
 LABEL_44:
-        *v8 = [NSError errorWithDomain:v22 code:v23 userInfo:0];
+        *errorCopy2 = [NSError errorWithDomain:v22 code:v23 userInfo:0];
         return 0;
       }
 
@@ -256,9 +256,9 @@ LABEL_44:
       v21 = CCCryptorFinal(self->mCryptor, v20, OutputLength, &dataOutMoved);
       if (v21)
       {
-        if (v8)
+        if (errorCopy2)
         {
-          *v8 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v21 userInfo:0];
+          *errorCopy2 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v21 userInfo:0];
         }
 
         free(mOutputBuffer);
@@ -275,8 +275,8 @@ LABEL_44:
 
     if (dataOutMoved)
     {
-      [a5 writeBuffer:mOutputBuffer size:?];
-      if (a7)
+      [stream writeBuffer:mOutputBuffer size:?];
+      if (crc32)
       {
         if (HIDWORD(dataOutMoved))
         {
@@ -298,7 +298,7 @@ LABEL_44:
 LABEL_40:
           [TSUAssertionHandler handleFailureInFunction:v27 file:v26 lineNumber:v28 isFatal:0 description:"overflow in cryptDataFromBuffer:length:toStream:finished:crc32:error:"];
           +[TSUAssertionHandler logBacktraceThrottled];
-          if (!v8)
+          if (!errorCopy2)
           {
             return 0;
           }
@@ -308,7 +308,7 @@ LABEL_40:
           goto LABEL_44;
         }
 
-        *a7 = crc32(*a7, mOutputBuffer, dataOutMoved);
+        *crc32 = crc32(*crc32, mOutputBuffer, dataOutMoved);
       }
     }
 
@@ -321,7 +321,7 @@ LABEL_40:
   return 1;
 }
 
-- (BOOL)cryptDataFromStream:(id)a3 toBuffer:(char *)a4 length:(unint64_t)a5 bytesRead:(unint64_t *)a6 error:(id *)a7
+- (BOOL)cryptDataFromStream:(id)stream toBuffer:(char *)buffer length:(unint64_t)length bytesRead:(unint64_t *)read error:(id *)error
 {
   if (self->mOperation != 1)
   {
@@ -343,43 +343,43 @@ LABEL_40:
   mOutputBufferAvailable = self->mOutputBufferAvailable;
   if (mOutputBufferAvailable)
   {
-    if (mOutputBufferAvailable >= a5)
+    if (mOutputBufferAvailable >= length)
     {
-      v14 = a5;
+      lengthCopy = length;
     }
 
     else
     {
-      v14 = self->mOutputBufferAvailable;
+      lengthCopy = self->mOutputBufferAvailable;
     }
 
-    memcpy(a4, self->mOutputBufferPos, v14);
-    v15 = self->mOutputBufferAvailable - v14;
-    self->mOutputBufferPos += v14;
+    memcpy(buffer, self->mOutputBufferPos, lengthCopy);
+    v15 = self->mOutputBufferAvailable - lengthCopy;
+    self->mOutputBufferPos += lengthCopy;
     self->mOutputBufferAvailable = v15;
-    v16 = &a4[v14];
-    a5 -= v14;
+    bufferCopy = &buffer[lengthCopy];
+    length -= lengthCopy;
   }
 
   else
   {
-    v16 = a4;
+    bufferCopy = buffer;
   }
 
   if (self->mFinished)
   {
-    v17 = v16 - a4;
+    v17 = bufferCopy - buffer;
 LABEL_15:
-    *a6 = v17;
+    *read = v17;
     return 1;
   }
 
-  if (a5)
+  if (length)
   {
-    v26 = a7;
+    errorCopy = error;
     while (1)
     {
-      v18 = [a3 readToBuffer:self->mDecryptionInputBuffer size:{0x20000 - self->mBlockSize, v26}];
+      v18 = [stream readToBuffer:self->mDecryptionInputBuffer size:{0x20000 - self->mBlockSize, errorCopy}];
       if (!v18)
       {
         break;
@@ -389,28 +389,28 @@ LABEL_15:
       v19 = CCCryptorUpdate(self->mCryptor, self->mDecryptionInputBuffer, v18, self->mOutputBuffer, 0x20000uLL, &dataOutMoved);
       if (v19)
       {
-        a7 = v26;
+        error = errorCopy;
         goto LABEL_40;
       }
 
       v20 = dataOutMoved;
-      if (a5 >= dataOutMoved)
+      if (length >= dataOutMoved)
       {
-        v21 = dataOutMoved;
+        lengthCopy2 = dataOutMoved;
       }
 
       else
       {
-        v21 = a5;
+        lengthCopy2 = length;
       }
 
-      memcpy(v16, self->mOutputBuffer, v21);
-      v16 += v21;
-      a5 -= v21;
-      self->mOutputBufferPos = &self->mOutputBuffer[v21];
-      self->mOutputBufferAvailable = v20 - v21;
-      v22 = a5 != 0;
-      if (!a5)
+      memcpy(bufferCopy, self->mOutputBuffer, lengthCopy2);
+      bufferCopy += lengthCopy2;
+      length -= lengthCopy2;
+      self->mOutputBufferPos = &self->mOutputBuffer[lengthCopy2];
+      self->mOutputBufferAvailable = v20 - lengthCopy2;
+      v22 = length != 0;
+      if (!length)
       {
         goto LABEL_27;
       }
@@ -423,7 +423,7 @@ LABEL_27:
       v22 = 0;
     }
 
-    a7 = v26;
+    error = errorCopy;
   }
 
   else
@@ -431,9 +431,9 @@ LABEL_27:
     v22 = 0;
   }
 
-  if (v16 != a4 && !v22)
+  if (bufferCopy != buffer && !v22)
   {
-    *a6 = v16 - a4;
+    *read = bufferCopy - buffer;
     return 1;
   }
 
@@ -442,28 +442,28 @@ LABEL_27:
   v19 = CCCryptorFinal(self->mCryptor, self->mOutputBuffer, 0x20000uLL, &dataOutMoved);
   if (!v19)
   {
-    if (a5 >= dataOutMoved)
+    if (length >= dataOutMoved)
     {
-      v24 = dataOutMoved;
+      lengthCopy3 = dataOutMoved;
     }
 
     else
     {
-      v24 = a5;
+      lengthCopy3 = length;
     }
 
-    memcpy(v16, self->mOutputBuffer, v24);
-    v25 = dataOutMoved - v24;
-    self->mOutputBufferPos = &self->mOutputBuffer[v24];
+    memcpy(bufferCopy, self->mOutputBuffer, lengthCopy3);
+    v25 = dataOutMoved - lengthCopy3;
+    self->mOutputBufferPos = &self->mOutputBuffer[lengthCopy3];
     self->mOutputBufferAvailable = v25;
-    v17 = &v16[v24] - a4;
+    v17 = &bufferCopy[lengthCopy3] - buffer;
     goto LABEL_15;
   }
 
 LABEL_40:
-  if (a7)
+  if (error)
   {
-    *a7 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v19 userInfo:0];
+    *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:v19 userInfo:0];
   }
 
   return 0;

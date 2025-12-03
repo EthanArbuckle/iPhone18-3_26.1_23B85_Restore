@@ -1,5 +1,5 @@
 @interface CAMDrawerHDRButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
@@ -8,16 +8,16 @@
 
 @implementation CAMDrawerHDRButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMDrawerHDRButton" hasInstanceMethod:@"hdrMode" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"_itemLabels" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"_cachedMenuItems" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMDrawerHDRButton" isKindOfClass:@"CAMControlDrawerButton"];
-  [v3 validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CAMControlDrawerMenuItem" hasInstanceMethod:@"value" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMDrawerHDRButton" isKindOfClass:@"CAMControlDrawerMenuButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMDrawerHDRButton" hasInstanceMethod:@"hdrMode" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"_itemLabels" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"_cachedMenuItems" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMDrawerHDRButton" isKindOfClass:@"CAMControlDrawerButton"];
+  [validationsCopy validateClass:@"CAMControlDrawerMenuButton" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CAMControlDrawerMenuItem" hasInstanceMethod:@"value" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMDrawerHDRButton" isKindOfClass:@"CAMControlDrawerMenuButton"];
 }
 
 - (BOOL)accessibilityActivate
@@ -35,7 +35,7 @@
       v4 = 1;
     }
 
-    v11 = self;
+    selfCopy = self;
     v12 = v4;
     AXPerformSafeBlock();
     return 1;
@@ -59,16 +59,16 @@ void __56__CAMDrawerHDRButtonAccessibility_accessibilityActivate__block_invoke(u
 - (id)accessibilityValue
 {
   v2 = [(CAMDrawerHDRButtonAccessibility *)self safeValueForKey:@"hdrMode"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  if (v3 > 2)
+  if (integerValue > 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = accessibilityCameraUILocalizedString(off_29F2AD0D8[v3]);
+    v4 = accessibilityCameraUILocalizedString(off_29F2AD0D8[integerValue]);
   }
 
   return v4;

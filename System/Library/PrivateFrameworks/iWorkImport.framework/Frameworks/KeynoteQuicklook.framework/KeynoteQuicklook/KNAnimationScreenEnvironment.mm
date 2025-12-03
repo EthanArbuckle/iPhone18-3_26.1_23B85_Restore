@@ -1,13 +1,13 @@
 @interface KNAnimationScreenEnvironment
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)supportsHDR;
 - (KNAnimationScreenEnvironment)init;
 - (double)currentEDRHeadroom;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)setColorSpace:(CGColorSpace *)a3;
+- (void)setColorSpace:(CGColorSpace *)space;
 @end
 
 @implementation KNAnimationScreenEnvironment
@@ -88,16 +88,16 @@
   return v32;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v28) = 1;
   }
 
   else
   {
-    v4 = a3;
+    equalCopy = equal;
     objc_opt_class();
     v5 = TSUDynamicCast();
 
@@ -138,7 +138,7 @@
   return v29;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(KNAnimationScreenEnvironment);
   v7 = objc_msgSend_colorSpace(self, v5, v6);
@@ -155,13 +155,13 @@
   return v4;
 }
 
-- (void)setColorSpace:(CGColorSpace *)a3
+- (void)setColorSpace:(CGColorSpace *)space
 {
-  if (self->_colorSpace != a3)
+  if (self->_colorSpace != space)
   {
-    CGColorSpaceRetain(a3);
+    CGColorSpaceRetain(space);
     CGColorSpaceRelease(self->_colorSpace);
-    self->_colorSpace = a3;
+    self->_colorSpace = space;
   }
 }
 

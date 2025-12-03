@@ -1,64 +1,64 @@
 @interface JFXEffectTextEditingProperties
-+ (id)textEditingPropertiesWithTextEffect:(id)a3 withText:(id)a4 relativeTo:(CGRect)a5 atTime:(id *)a6 index:(unint64_t)a7 moveBeforeScalingToAvoidKeyboard:(BOOL)a8;
++ (id)textEditingPropertiesWithTextEffect:(id)effect withText:(id)text relativeTo:(CGRect)to atTime:(id *)time index:(unint64_t)index moveBeforeScalingToAvoidKeyboard:(BOOL)keyboard;
 - (CGAffineTransform)partialTransformNoScaleNoTranslation;
 - (CGPoint)scale;
 - (CGRect)bounds;
 - (CGRect)cachedBounds;
 - (CGRect)cachedFrame;
 - (CGRect)frame;
-- (JFXEffectTextEditingProperties)initWithTextEffect:(id)a3 withText:(id)a4 relativeTo:(CGRect)a5 atTime:(id *)a6 index:(unint64_t)a7 moveBeforeScalingToAvoidKeyboard:(BOOL)a8;
+- (JFXEffectTextEditingProperties)initWithTextEffect:(id)effect withText:(id)text relativeTo:(CGRect)to atTime:(id *)time index:(unint64_t)index moveBeforeScalingToAvoidKeyboard:(BOOL)keyboard;
 - (double)rotation;
 - (id)description;
-- (void)JFX_configureWithAttributedString:(id)a3 text:(id)a4;
-- (void)JFX_configureWithDefaultTypingAttributes:(id)a3;
-- (void)JFX_configureWithEffect:(id)a3;
-- (void)JFX_modifyAttributedString:(id)a3;
-- (void)JFX_modifyEntireAttributedString:(id)a3 forTargetSize:(CGSize)a4 fontColor:(id)a5;
-- (void)JFX_modifyRangesOfAttributedString:(id)a3 isOutlineDisabled:(BOOL)a4;
+- (void)JFX_configureWithAttributedString:(id)string text:(id)text;
+- (void)JFX_configureWithDefaultTypingAttributes:(id)attributes;
+- (void)JFX_configureWithEffect:(id)effect;
+- (void)JFX_modifyAttributedString:(id)string;
+- (void)JFX_modifyEntireAttributedString:(id)string forTargetSize:(CGSize)size fontColor:(id)color;
+- (void)JFX_modifyRangesOfAttributedString:(id)string isOutlineDisabled:(BOOL)disabled;
 @end
 
 @implementation JFXEffectTextEditingProperties
 
-+ (id)textEditingPropertiesWithTextEffect:(id)a3 withText:(id)a4 relativeTo:(CGRect)a5 atTime:(id *)a6 index:(unint64_t)a7 moveBeforeScalingToAvoidKeyboard:(BOOL)a8
++ (id)textEditingPropertiesWithTextEffect:(id)effect withText:(id)text relativeTo:(CGRect)to atTime:(id *)time index:(unint64_t)index moveBeforeScalingToAvoidKeyboard:(BOOL)keyboard
 {
-  v8 = a8;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v17 = a4;
-  v18 = a3;
-  v19 = [a1 alloc];
-  v22 = *a6;
-  v20 = [v19 initWithTextEffect:v18 withText:v17 relativeTo:&v22 atTime:a7 index:v8 moveBeforeScalingToAvoidKeyboard:{x, y, width, height}];
+  keyboardCopy = keyboard;
+  height = to.size.height;
+  width = to.size.width;
+  y = to.origin.y;
+  x = to.origin.x;
+  textCopy = text;
+  effectCopy = effect;
+  v19 = [self alloc];
+  v22 = *time;
+  v20 = [v19 initWithTextEffect:effectCopy withText:textCopy relativeTo:&v22 atTime:index index:keyboardCopy moveBeforeScalingToAvoidKeyboard:{x, y, width, height}];
 
   return v20;
 }
 
-- (JFXEffectTextEditingProperties)initWithTextEffect:(id)a3 withText:(id)a4 relativeTo:(CGRect)a5 atTime:(id *)a6 index:(unint64_t)a7 moveBeforeScalingToAvoidKeyboard:(BOOL)a8
+- (JFXEffectTextEditingProperties)initWithTextEffect:(id)effect withText:(id)text relativeTo:(CGRect)to atTime:(id *)time index:(unint64_t)index moveBeforeScalingToAvoidKeyboard:(BOOL)keyboard
 {
-  v8 = a8;
-  height = a5.size.height;
-  width = a5.size.width;
-  v15 = a3;
-  v16 = a4;
-  v17 = [v15 strings];
-  if ([v17 count] <= a7)
+  keyboardCopy = keyboard;
+  height = to.size.height;
+  width = to.size.width;
+  effectCopy = effect;
+  textCopy = text;
+  strings = [effectCopy strings];
+  if ([strings count] <= index)
   {
-    v34 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v37 = *&a6->var0;
-    var3 = a6->var3;
-    v18 = [JFXTextEffectFrame frameWithEffect:v15 relativeToSize:1 origin:&v37 time:0 forcePosterFrame:0 includeDropShadow:1 includeTextFrames:width, height];
-    v19 = [v18 textFrames];
-    v20 = [v19 count];
+    v37 = *&time->var0;
+    var3 = time->var3;
+    height = [JFXTextEffectFrame frameWithEffect:effectCopy relativeToSize:1 origin:&v37 time:0 forcePosterFrame:0 includeDropShadow:1 includeTextFrames:width, height];
+    textFrames = [height textFrames];
+    v20 = [textFrames count];
 
-    if (v20 <= a7)
+    if (v20 <= index)
     {
-      v34 = 0;
+      selfCopy = 0;
     }
 
     else
@@ -68,8 +68,8 @@
       v21 = [(JFXEffectTextEditingProperties *)&v36 init];
       if (v21)
       {
-        v22 = [v15 effectID];
-        -[JFXEffectTextEditingProperties setIsSpecialCaseForGameOverPoster:](v21, "setIsSpecialCaseForGameOverPoster:", [v22 isEqualToString:*MEMORY[0x277D419A8]]);
+        effectID = [effectCopy effectID];
+        -[JFXEffectTextEditingProperties setIsSpecialCaseForGameOverPoster:](v21, "setIsSpecialCaseForGameOverPoster:", [effectID isEqualToString:*MEMORY[0x277D419A8]]);
 
         v23 = *MEMORY[0x277CBF398];
         v24 = *(MEMORY[0x277CBF398] + 8);
@@ -77,55 +77,55 @@
         v26 = *(MEMORY[0x277CBF398] + 24);
         [(JFXEffectTextEditingProperties *)v21 setCachedFrame:*MEMORY[0x277CBF398], v24, v25, v26];
         [(JFXEffectTextEditingProperties *)v21 setCachedBounds:v23, v24, v25, v26];
-        [(JFXEffectTextEditingProperties *)v21 setMoveBeforeScalingToAvoidKeyboard:v8];
-        [(JFXEffectTextEditingProperties *)v21 JFX_configureWithEffect:v15];
-        v27 = [v15 indexOfTextObjectUsedForEditViewTransform];
-        v28 = [v18 textFrames];
-        v29 = [v28 objectAtIndexedSubscript:v27];
+        [(JFXEffectTextEditingProperties *)v21 setMoveBeforeScalingToAvoidKeyboard:keyboardCopy];
+        [(JFXEffectTextEditingProperties *)v21 JFX_configureWithEffect:effectCopy];
+        indexOfTextObjectUsedForEditViewTransform = [effectCopy indexOfTextObjectUsedForEditViewTransform];
+        textFrames2 = [height textFrames];
+        v29 = [textFrames2 objectAtIndexedSubscript:indexOfTextObjectUsedForEditViewTransform];
         [(JFXEffectTextEditingProperties *)v21 setEffectFrame:v29];
 
-        v30 = [v17 objectAtIndexedSubscript:a7];
-        [(JFXEffectTextEditingProperties *)v21 JFX_configureWithAttributedString:v30 text:v16];
+        v30 = [strings objectAtIndexedSubscript:index];
+        [(JFXEffectTextEditingProperties *)v21 JFX_configureWithAttributedString:v30 text:textCopy];
 
-        v31 = [v15 defaultTypingAttributes:a7];
+        v31 = [effectCopy defaultTypingAttributes:index];
         [(JFXEffectTextEditingProperties *)v21 JFX_configureWithDefaultTypingAttributes:v31];
 
         v32 = MEMORY[0x277D415F8];
-        v33 = [(JFXEffectTextEditingProperties *)v21 defaultTypingAttributes];
-        -[JFXEffectTextEditingProperties setIsAllCaps:](v21, "setIsAllCaps:", [v32 isAllCapsFromAttributes:v33]);
+        defaultTypingAttributes = [(JFXEffectTextEditingProperties *)v21 defaultTypingAttributes];
+        -[JFXEffectTextEditingProperties setIsAllCaps:](v21, "setIsAllCaps:", [v32 isAllCapsFromAttributes:defaultTypingAttributes]);
       }
 
       self = v21;
-      v34 = self;
+      selfCopy = self;
     }
   }
 
-  return v34;
+  return selfCopy;
 }
 
-- (void)JFX_configureWithEffect:(id)a3
+- (void)JFX_configureWithEffect:(id)effect
 {
-  v10 = a3;
-  v4 = [v10 effectID];
-  [(JFXEffectTextEditingProperties *)self setUseFullTransform:[JFXEffectEditingUtilities shouldUseFullTransformWhileEditingTextForEffectID:v4]];
+  effectCopy = effect;
+  effectID = [effectCopy effectID];
+  [(JFXEffectTextEditingProperties *)self setUseFullTransform:[JFXEffectEditingUtilities shouldUseFullTransformWhileEditingTextForEffectID:effectID]];
 
-  v5 = [v10 customTextEditColor];
-  [(JFXEffectTextEditingProperties *)self setCustomTextColor:v5];
+  customTextEditColor = [effectCopy customTextEditColor];
+  [(JFXEffectTextEditingProperties *)self setCustomTextColor:customTextEditColor];
 
-  v6 = [v10 customTextEditTintColor];
-  [(JFXEffectTextEditingProperties *)self setCustomTextEditTintColor:v6];
+  customTextEditTintColor = [effectCopy customTextEditTintColor];
+  [(JFXEffectTextEditingProperties *)self setCustomTextEditTintColor:customTextEditTintColor];
 
-  v7 = [v10 effectID];
-  [(JFXEffectTextEditingProperties *)self setOutlineDisabled:[JFXEffectEditingUtilities shouldDisableTextOutlineWhileEditingTextForEffectID:v7]];
+  effectID2 = [effectCopy effectID];
+  [(JFXEffectTextEditingProperties *)self setOutlineDisabled:[JFXEffectEditingUtilities shouldDisableTextOutlineWhileEditingTextForEffectID:effectID2]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v10;
+    v8 = effectCopy;
     -[JFXEffectTextEditingProperties setIsEmoji:](self, "setIsEmoji:", [v8 isEmoji]);
-    v9 = [v8 isTextFlipped];
+    isTextFlipped = [v8 isTextFlipped];
 
-    [(JFXEffectTextEditingProperties *)self setIsTextFlipped:v9];
+    [(JFXEffectTextEditingProperties *)self setIsTextFlipped:isTextFlipped];
   }
 
   else
@@ -134,14 +134,14 @@
   }
 }
 
-- (void)JFX_configureWithAttributedString:(id)a3 text:(id)a4
+- (void)JFX_configureWithAttributedString:(id)string text:(id)text
 {
-  v13 = a3;
-  v6 = a4;
-  if (v6 && [v13 length])
+  stringCopy = string;
+  textCopy = text;
+  if (textCopy && [stringCopy length])
   {
-    v7 = [v6 length];
-    v8 = [v13 length];
+    v7 = [textCopy length];
+    v8 = [stringCopy length];
     if (v7 >= v8)
     {
       v9 = v8;
@@ -152,13 +152,13 @@
       v9 = v7;
     }
 
-    v10 = [v13 attributesAtIndex:0 longestEffectiveRange:0 inRange:{0, v9}];
-    v11 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v6 attributes:v10];
+    v10 = [stringCopy attributesAtIndex:0 longestEffectiveRange:0 inRange:{0, v9}];
+    v11 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:textCopy attributes:v10];
   }
 
   else
   {
-    v11 = [objc_alloc(MEMORY[0x277CCAB48]) initWithAttributedString:v13];
+    v11 = [objc_alloc(MEMORY[0x277CCAB48]) initWithAttributedString:stringCopy];
   }
 
   [MEMORY[0x277D415F8] baselineOffsetFromAttributedString:v11];
@@ -178,45 +178,45 @@
   [(JFXEffectTextEditingProperties *)self setAttributedText:v11];
 }
 
-- (void)JFX_configureWithDefaultTypingAttributes:(id)a3
+- (void)JFX_configureWithDefaultTypingAttributes:(id)attributes
 {
   v4 = MEMORY[0x277CCAB48];
-  v5 = a3;
-  v10 = [[v4 alloc] initWithString:@" " attributes:v5];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D740C0]];
+  attributesCopy = attributes;
+  v10 = [[v4 alloc] initWithString:@" " attributes:attributesCopy];
+  v6 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x277D740C0]];
 
   [(JFXEffectTextEditingProperties *)self setDefaultTextColor:v6];
   [(JFXEffectTextEditingProperties *)self JFX_modifyAttributedString:v10];
   v7 = [v10 attributesAtIndex:0 effectiveRange:0];
   [(JFXEffectTextEditingProperties *)self setDefaultTypingAttributes:v7];
 
-  v8 = [(JFXEffectTextEditingProperties *)self defaultTypingAttributes];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277D74118]];
+  defaultTypingAttributes = [(JFXEffectTextEditingProperties *)self defaultTypingAttributes];
+  v9 = [defaultTypingAttributes objectForKeyedSubscript:*MEMORY[0x277D74118]];
 
   -[JFXEffectTextEditingProperties setTextAlignment:](self, "setTextAlignment:", [v9 alignment]);
 }
 
-- (void)JFX_modifyAttributedString:(id)a3
+- (void)JFX_modifyAttributedString:(id)string
 {
-  v9 = a3;
-  if ([v9 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    [v9 size];
+    [stringCopy size];
     v5 = v4;
     v7 = v6;
-    [v9 beginEditing];
-    [(JFXEffectTextEditingProperties *)self JFX_modifyRangesOfAttributedString:v9 isOutlineDisabled:[(JFXEffectTextEditingProperties *)self isOutlineDisabled]];
-    v8 = [(JFXEffectTextEditingProperties *)self customTextColor];
-    [(JFXEffectTextEditingProperties *)self JFX_modifyEntireAttributedString:v9 forTargetSize:v8 fontColor:v5, v7];
+    [stringCopy beginEditing];
+    [(JFXEffectTextEditingProperties *)self JFX_modifyRangesOfAttributedString:stringCopy isOutlineDisabled:[(JFXEffectTextEditingProperties *)self isOutlineDisabled]];
+    customTextColor = [(JFXEffectTextEditingProperties *)self customTextColor];
+    [(JFXEffectTextEditingProperties *)self JFX_modifyEntireAttributedString:stringCopy forTargetSize:customTextColor fontColor:v5, v7];
 
-    [v9 endEditing];
+    [stringCopy endEditing];
   }
 }
 
-- (void)JFX_modifyRangesOfAttributedString:(id)a3 isOutlineDisabled:(BOOL)a4
+- (void)JFX_modifyRangesOfAttributedString:(id)string isOutlineDisabled:(BOOL)disabled
 {
-  v6 = a3;
-  if ([v6 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     v7 = 1.0;
     v8 = 1.0;
@@ -227,15 +227,15 @@
       v8 = v10;
     }
 
-    v11 = [v6 length];
+    v11 = [stringCopy length];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __87__JFXEffectTextEditingProperties_JFX_modifyRangesOfAttributedString_isOutlineDisabled___block_invoke;
     v12[3] = &unk_278D7BF40;
-    v13 = v6;
+    v13 = stringCopy;
     v14 = v7;
     v15 = v8;
-    v16 = a4;
+    disabledCopy = disabled;
     [v13 enumerateAttributesInRange:0 options:v11 usingBlock:{0, v12}];
   }
 }
@@ -256,13 +256,13 @@ void __87__JFXEffectTextEditingProperties_JFX_modifyRangesOfAttributedString_isO
   }
 }
 
-- (void)JFX_modifyEntireAttributedString:(id)a3 forTargetSize:(CGSize)a4 fontColor:(id)a5
+- (void)JFX_modifyEntireAttributedString:(id)string forTargetSize:(CGSize)size fontColor:(id)color
 {
-  height = a4.height;
-  width = a4.width;
-  v20 = a3;
-  v9 = a5;
-  if ([v20 length])
+  height = size.height;
+  width = size.width;
+  stringCopy = string;
+  colorCopy = color;
+  if ([stringCopy length])
   {
     v10 = 1.0;
     v11 = 1.0;
@@ -273,31 +273,31 @@ void __87__JFXEffectTextEditingProperties_JFX_modifyRangesOfAttributedString_isO
       v11 = v13;
     }
 
-    v14 = [(JFXEffectTextEditingProperties *)self isSpecialCaseForGameOverPoster];
+    isSpecialCaseForGameOverPoster = [(JFXEffectTextEditingProperties *)self isSpecialCaseForGameOverPoster];
     v15 = v10 * 0.73;
-    if (v14)
+    if (isSpecialCaseForGameOverPoster)
     {
       v11 = v11 * 0.73;
       v10 = v10 * 0.73;
     }
 
-    [MEMORY[0x277D415F8] modifyAttributedStringByAdjustingFontSize:v20 scale:{v10, v15}];
-    [v20 removeAttribute:*MEMORY[0x277D74078] range:{0, objc_msgSend(v20, "length")}];
-    [MEMORY[0x277D415F8] modifyAttributedStringByAdjustingForNegativeLineSpacing:v20 scale:v10];
+    [MEMORY[0x277D415F8] modifyAttributedStringByAdjustingFontSize:stringCopy scale:{v10, v15}];
+    [stringCopy removeAttribute:*MEMORY[0x277D74078] range:{0, objc_msgSend(stringCopy, "length")}];
+    [MEMORY[0x277D415F8] modifyAttributedStringByAdjustingForNegativeLineSpacing:stringCopy scale:v10];
     v16 = MEMORY[0x277D415F8];
     [(JFXEffectTextEditingProperties *)self rotation];
-    [v16 modifyAttributedStringByAdjustingShadow:v20 scale:v10 rotation:v17];
-    if (v9)
+    [v16 modifyAttributedStringByAdjustingShadow:stringCopy scale:v10 rotation:v17];
+    if (colorCopy)
     {
-      v18 = [v20 length];
+      v18 = [stringCopy length];
       v19 = *MEMORY[0x277D740C0];
-      [v20 removeAttribute:*MEMORY[0x277D740C0] range:{0, v18}];
-      [v20 addAttribute:v19 value:v9 range:{0, v18}];
+      [stringCopy removeAttribute:*MEMORY[0x277D740C0] range:{0, v18}];
+      [stringCopy addAttribute:v19 value:colorCopy range:{0, v18}];
     }
 
     if (![(JFXEffectTextEditingProperties *)self isSpecialCaseForGameOverPoster])
     {
-      [MEMORY[0x277D415F8] modifyAttributedStringByAdjustingFont:v20 toFitSize:{width * v10, height * v11}];
+      [MEMORY[0x277D415F8] modifyAttributedStringByAdjustingFont:stringCopy toFitSize:{width * v10, height * v11}];
     }
   }
 }
@@ -307,8 +307,8 @@ void __87__JFXEffectTextEditingProperties_JFX_modifyRangesOfAttributedString_isO
   [(JFXEffectTextEditingProperties *)self cachedFrame];
   if (CGRectIsNull(v44))
   {
-    v3 = [(JFXEffectTextEditingProperties *)self effectFrame];
-    [v3 center];
+    effectFrame = [(JFXEffectTextEditingProperties *)self effectFrame];
+    [effectFrame center];
     v5 = v4;
     v7 = v6;
 
@@ -327,11 +327,11 @@ void __87__JFXEffectTextEditingProperties_JFX_modifyRangesOfAttributedString_isO
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v9 = [(JFXEffectTextEditingProperties *)self effectFrame];
-    v10 = v9;
-    if (v9)
+    effectFrame2 = [(JFXEffectTextEditingProperties *)self effectFrame];
+    v10 = effectFrame2;
+    if (effectFrame2)
     {
-      [v9 cornerPoints];
+      [effectFrame2 cornerPoints];
     }
 
     else
@@ -446,12 +446,12 @@ uint64_t __39__JFXEffectTextEditingProperties_frame__block_invoke(uint64_t a1, d
 
 - (CGPoint)scale
 {
-  v3 = [(JFXEffectTextEditingProperties *)self cachedScale];
+  cachedScale = [(JFXEffectTextEditingProperties *)self cachedScale];
 
-  if (v3)
+  if (cachedScale)
   {
-    v4 = [(JFXEffectTextEditingProperties *)self cachedScale];
-    [v4 CGPointValue];
+    cachedScale2 = [(JFXEffectTextEditingProperties *)self cachedScale];
+    [cachedScale2 CGPointValue];
     v18 = v5;
     v7 = v6;
   }
@@ -459,11 +459,11 @@ uint64_t __39__JFXEffectTextEditingProperties_frame__block_invoke(uint64_t a1, d
   else
   {
     v19 = 0u;
-    v8 = [(JFXEffectTextEditingProperties *)self effectFrame];
-    v9 = v8;
-    if (v8)
+    effectFrame = [(JFXEffectTextEditingProperties *)self effectFrame];
+    v9 = effectFrame;
+    if (effectFrame)
     {
-      [v8 transformInfo];
+      [effectFrame transformInfo];
     }
 
     else
@@ -471,9 +471,9 @@ uint64_t __39__JFXEffectTextEditingProperties_frame__block_invoke(uint64_t a1, d
       v19 = 0u;
     }
 
-    v10 = [(JFXEffectTextEditingProperties *)self isSpecialCaseForGameOverPoster];
+    isSpecialCaseForGameOverPoster = [(JFXEffectTextEditingProperties *)self isSpecialCaseForGameOverPoster];
     v11 = vmaxnmq_f64(vabsq_f64(v19), vdupq_n_s64(0x3F50624DD2F1A9FCuLL));
-    v12 = vdup_n_s32(v10);
+    v12 = vdup_n_s32(isSpecialCaseForGameOverPoster);
     v13.i64[0] = v12.u32[0];
     v13.i64[1] = v12.u32[1];
     v14 = vbslq_s8(vcltzq_s64(vshlq_n_s64(v13, 0x3FuLL)), vmulq_f64(v11, vdupq_n_s64(0x3FE75C28F5C28F5CuLL)), v11);
@@ -492,12 +492,12 @@ uint64_t __39__JFXEffectTextEditingProperties_frame__block_invoke(uint64_t a1, d
 
 - (double)rotation
 {
-  v3 = [(JFXEffectTextEditingProperties *)self cachedRotation];
+  cachedRotation = [(JFXEffectTextEditingProperties *)self cachedRotation];
 
-  if (v3)
+  if (cachedRotation)
   {
-    v4 = [(JFXEffectTextEditingProperties *)self cachedRotation];
-    [v4 doubleValue];
+    cachedRotation2 = [(JFXEffectTextEditingProperties *)self cachedRotation];
+    [cachedRotation2 doubleValue];
     v6 = v5;
   }
 
@@ -505,11 +505,11 @@ uint64_t __39__JFXEffectTextEditingProperties_frame__block_invoke(uint64_t a1, d
   {
     v11 = 0u;
     v12 = 0u;
-    v7 = [(JFXEffectTextEditingProperties *)self effectFrame];
-    v8 = v7;
-    if (v7)
+    effectFrame = [(JFXEffectTextEditingProperties *)self effectFrame];
+    v8 = effectFrame;
+    if (effectFrame)
     {
-      [v7 transformInfo];
+      [effectFrame transformInfo];
     }
 
     else
@@ -546,15 +546,15 @@ uint64_t __39__JFXEffectTextEditingProperties_frame__block_invoke(uint64_t a1, d
 
   else
   {
-    v8 = [(JFXEffectTextEditingProperties *)self cachedPartialTransformNoScaleNoTranslation];
+    cachedPartialTransformNoScaleNoTranslation = [(JFXEffectTextEditingProperties *)self cachedPartialTransformNoScaleNoTranslation];
 
-    if (v8)
+    if (cachedPartialTransformNoScaleNoTranslation)
     {
-      v9 = [(JFXEffectTextEditingProperties *)self cachedPartialTransformNoScaleNoTranslation];
-      v10 = v9;
-      if (v9)
+      cachedPartialTransformNoScaleNoTranslation2 = [(JFXEffectTextEditingProperties *)self cachedPartialTransformNoScaleNoTranslation];
+      v10 = cachedPartialTransformNoScaleNoTranslation2;
+      if (cachedPartialTransformNoScaleNoTranslation2)
       {
-        [v9 SIMDDouble4x4];
+        [cachedPartialTransformNoScaleNoTranslation2 SIMDDouble4x4];
         v11 = v53;
         v12 = v55;
         v13 = v59;
@@ -582,11 +582,11 @@ uint64_t __39__JFXEffectTextEditingProperties_frame__block_invoke(uint64_t a1, d
       v48 = 0u;
       v45 = 0u;
       v46 = 0u;
-      v14 = [(JFXEffectTextEditingProperties *)self effectFrame];
-      v15 = v14;
-      if (v14)
+      effectFrame = [(JFXEffectTextEditingProperties *)self effectFrame];
+      v15 = effectFrame;
+      if (effectFrame)
       {
-        [v14 transform];
+        [effectFrame transform];
       }
 
       else
@@ -676,8 +676,8 @@ uint64_t __39__JFXEffectTextEditingProperties_frame__block_invoke(uint64_t a1, d
   v26.receiver = self;
   v26.super_class = JFXEffectTextEditingProperties;
   v19 = [(JFXEffectTextEditingProperties *)&v26 description];
-  v24 = [(JFXEffectTextEditingProperties *)self attributedText];
-  v23 = [(JFXEffectTextEditingProperties *)self defaultTypingAttributes];
+  attributedText = [(JFXEffectTextEditingProperties *)self attributedText];
+  defaultTypingAttributes = [(JFXEffectTextEditingProperties *)self defaultTypingAttributes];
   [(JFXEffectTextEditingProperties *)self bounds];
   v18 = NSStringFromCGRect(v28);
   [(JFXEffectTextEditingProperties *)self frame];
@@ -695,10 +695,10 @@ uint64_t __39__JFXEffectTextEditingProperties_frame__block_invoke(uint64_t a1, d
   v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[JFXEffectTextEditingProperties isEmoji](self, "isEmoji")}];
   v8 = [MEMORY[0x277CCABB0] numberWithBool:{-[JFXEffectTextEditingProperties isTextFlipped](self, "isTextFlipped")}];
   v9 = [MEMORY[0x277CCABB0] numberWithBool:{-[JFXEffectTextEditingProperties isOutlineDisabled](self, "isOutlineDisabled")}];
-  v10 = [(JFXEffectTextEditingProperties *)self customTextEditTintColor];
-  v11 = [(JFXEffectTextEditingProperties *)self customTextColor];
-  v12 = [(JFXEffectTextEditingProperties *)self effectFrame];
-  v21 = [v20 stringWithFormat:@"%@\n    attributedText: %@\n    defaultTypingAttributes: %@\n    bounds: %@\n    frame: %@\n    scale: %@\n    rotation: %@\n    useFullTransform: %@\n    isAllCaps: %@\n    isEmoji: %@\n    isTextFlipped: %@\n    isOutlineDisabled: %@\n    customTextEditTintColor: %@\n    customTextColor: %@\n    effectFrame:\n%@\n", v19, v24, v23, v18, v17, v22, v15, v16, v14, v7, v8, v9, v10, v11, v12];
+  customTextEditTintColor = [(JFXEffectTextEditingProperties *)self customTextEditTintColor];
+  customTextColor = [(JFXEffectTextEditingProperties *)self customTextColor];
+  effectFrame = [(JFXEffectTextEditingProperties *)self effectFrame];
+  v21 = [v20 stringWithFormat:@"%@\n    attributedText: %@\n    defaultTypingAttributes: %@\n    bounds: %@\n    frame: %@\n    scale: %@\n    rotation: %@\n    useFullTransform: %@\n    isAllCaps: %@\n    isEmoji: %@\n    isTextFlipped: %@\n    isOutlineDisabled: %@\n    customTextEditTintColor: %@\n    customTextColor: %@\n    effectFrame:\n%@\n", v19, attributedText, defaultTypingAttributes, v18, v17, v22, v15, v16, v14, v7, v8, v9, customTextEditTintColor, customTextColor, effectFrame];
 
   return v21;
 }

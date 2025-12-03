@@ -1,29 +1,29 @@
 @interface VFXAuthoringEnvironment
-+ (id)authoringEnvironmentForWorldRenderer:(id)a3 createIfNeeded:(BOOL)a4;
-+ (id)rendererForWorldRenderer:(id)a3;
-- (BOOL)didTapAtPoint:(CGPoint)a3;
++ (id)authoringEnvironmentForWorldRenderer:(id)renderer createIfNeeded:(BOOL)needed;
++ (id)rendererForWorldRenderer:(id)renderer;
+- (BOOL)didTapAtPoint:(CGPoint)point;
 - (BOOL)selectionIsReadonly;
 - (VFXNode)authoringOverlayLayer;
 - (__n128)viewMatrix;
-- (id)_initWithEngineContext:(__CFXEngineContext *)a3;
+- (id)_initWithEngineContext:(__CFXEngineContext *)context;
 - (id)authoringEnvironment2;
 - (id)renderer;
-- (void)_setupAuthoringEnv2:(id)a3;
-- (void)beginEditingNodes:(id)a3;
+- (void)_setupAuthoringEnv2:(id)env2;
+- (void)beginEditingNodes:(id)nodes;
 - (void)dealloc;
-- (void)drawLineFromPoint:(VFXAuthoringEnvironment *)self toPoint:(SEL)a2 color:(id)a3;
-- (void)drawString:(id)a3 atPoint:(CGPoint)a4 color:(id)a5;
+- (void)drawLineFromPoint:(VFXAuthoringEnvironment *)self toPoint:(SEL)point color:(id)color;
+- (void)drawString:(id)string atPoint:(CGPoint)point color:(id)color;
 - (void)saveInitialSelection;
-- (void)setEditingSpace:(int64_t)a3;
-- (void)setSelectionIsReadonly:(BOOL)a3;
+- (void)setEditingSpace:(int64_t)space;
+- (void)setSelectionIsReadonly:(BOOL)readonly;
 - (void)setupAuthoringEnv2;
 - (void)update;
-- (void)worldDidChange:(id)a3;
+- (void)worldDidChange:(id)change;
 @end
 
 @implementation VFXAuthoringEnvironment
 
-- (id)_initWithEngineContext:(__CFXEngineContext *)a3
+- (id)_initWithEngineContext:(__CFXEngineContext *)context
 {
   v5.receiver = self;
   v5.super_class = VFXAuthoringEnvironment;
@@ -37,12 +37,12 @@
   return 0;
 }
 
-+ (id)rendererForWorldRenderer:(id)a3
++ (id)rendererForWorldRenderer:(id)renderer
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return a3;
+    return renderer;
   }
 
   if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -56,19 +56,19 @@
     return 0;
   }
 
-  return objc_msgSend_renderer(a3, v4, v5, v6);
+  return objc_msgSend_renderer(renderer, v4, v5, v6);
 }
 
-+ (id)authoringEnvironmentForWorldRenderer:(id)a3 createIfNeeded:(BOOL)a4
++ (id)authoringEnvironmentForWorldRenderer:(id)renderer createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v6 = objc_msgSend_rendererForWorldRenderer_(a1, a2, a3, a4);
+  neededCopy = needed;
+  v6 = objc_msgSend_rendererForWorldRenderer_(self, a2, renderer, needed);
   v10 = objc_msgSend__engineContext(v6, v7, v8, v9);
-  v11 = sub_1AF12EE9C(v10, v4);
+  v11 = sub_1AF12EE9C(v10, neededCopy);
   v12 = v11;
   if (v11)
   {
-    *(v11 + 16) = a3;
+    *(v11 + 16) = renderer;
     objc_opt_class();
     v12[24] = objc_opt_isKindOfClass() & 1;
   }
@@ -86,7 +86,7 @@
 
 - (__n128)viewMatrix
 {
-  v1 = *(a1 + 8);
+  v1 = *(self + 8);
   if (v1)
   {
     v2 = sub_1AF13050C(v1, 1);
@@ -107,30 +107,30 @@
   return objc_msgSend_readonly(v4, v5, v6, v7);
 }
 
-- (void)setSelectionIsReadonly:(BOOL)a3
+- (void)setSelectionIsReadonly:(BOOL)readonly
 {
-  v4 = a3;
-  v5 = objc_msgSend_manipulator(self[1].super.isa, a2, a3, v3);
+  readonlyCopy = readonly;
+  v5 = objc_msgSend_manipulator(self[1].super.isa, a2, readonly, v3);
 
-  MEMORY[0x1EEE66B58](v5, sel_setReadonly_, v4, v6);
+  MEMORY[0x1EEE66B58](v5, sel_setReadonly_, readonlyCopy, v6);
 }
 
-- (void)setEditingSpace:(int64_t)a3
+- (void)setEditingSpace:(int64_t)space
 {
-  if (self->_editingSpace != a3)
+  if (self->_editingSpace != space)
   {
-    self->_editingSpace = a3;
-    v5 = objc_msgSend_manipulator(self, a2, a3, v3);
+    self->_editingSpace = space;
+    v5 = objc_msgSend_manipulator(self, a2, space, v3);
 
     MEMORY[0x1EEE66B58](v5, sel_editingSpaceChanged, v6, v7);
   }
 }
 
-- (void)_setupAuthoringEnv2:(id)a3
+- (void)_setupAuthoringEnv2:(id)env2
 {
   if (!self[1].super.isa)
   {
-    self[1].super.isa = objc_msgSend_authoringEnvironmentForWorld_createIfNeeded_(VFXAuthoringEnvironment2, a2, a3, 1);
+    self[1].super.isa = objc_msgSend_authoringEnvironmentForWorld_createIfNeeded_(VFXAuthoringEnvironment2, a2, env2, 1);
   }
 }
 
@@ -170,15 +170,15 @@
   }
 }
 
-- (void)worldDidChange:(id)a3
+- (void)worldDidChange:(id)change
 {
-  v6 = objc_msgSend_authoringEnvironment2(self, a2, a3, v3);
+  v6 = objc_msgSend_authoringEnvironment2(self, a2, change, v3);
   v10 = objc_msgSend_manipulator(v6, v7, v8, v9);
   objc_msgSend__setAuthoringEnvironment_(v10, v11, 0, v12);
 
   self[1].super.isa = 0;
 
-  MEMORY[0x1EEE66B58](self, sel__setupAuthoringEnv2_, a3, v13);
+  MEMORY[0x1EEE66B58](self, sel__setupAuthoringEnv2_, change, v13);
 }
 
 - (VFXNode)authoringOverlayLayer
@@ -188,30 +188,30 @@
   return objc_msgSend_authoringOverlayLayer(v4, v5, v6, v7);
 }
 
-- (void)beginEditingNodes:(id)a3
+- (void)beginEditingNodes:(id)nodes
 {
   v6 = &self->_timedRecordingBuffer[63664];
-  v7 = objc_msgSend_count(self->_selectedNodes, a2, a3, v3);
+  v7 = objc_msgSend_count(self->_selectedNodes, a2, nodes, v3);
   v11 = objc_msgSend_authoringEnvironment2(self, v8, v9, v10);
   v15 = objc_msgSend_manipulator(v11, v12, v13, v14);
   objc_msgSend__setAuthoringEnvironment_(v15, v16, self, v17);
-  objc_msgSend_selectNodes_(*(v6 + 177), v18, a3, v19);
+  objc_msgSend_selectNodes_(*(v6 + 177), v18, nodes, v19);
   objc_sync_enter(self);
   v20 = sub_1AF12DDCC(self->_engineContext);
   sub_1AF102C88(*(v6 + 52), v20, 0);
 
-  v24 = objc_msgSend_copy(a3, v21, v22, v23);
+  v24 = objc_msgSend_copy(nodes, v21, v22, v23);
   *(v6 + 52) = v24;
   sub_1AF102C88(v24, v20, 1);
   v25 = MEMORY[0x1E695DF70];
-  v29 = objc_msgSend_count(a3, v26, v27, v28);
+  v29 = objc_msgSend_count(nodes, v26, v27, v28);
   v32 = objc_msgSend_arrayWithCapacity_(v25, v30, v29, v31);
   v48[0] = MEMORY[0x1E69E9820];
   v48[1] = 3221225472;
   v48[2] = sub_1AF102FA4;
   v48[3] = &unk_1E7A796D8;
   v48[4] = v32;
-  objc_msgSend_enumerateObjectsUsingBlock_(a3, v33, v48, v34);
+  objc_msgSend_enumerateObjectsUsingBlock_(nodes, v33, v48, v34);
 
   v35 = objc_alloc(MEMORY[0x1E695DFA0]);
   *(v6 + 51) = objc_msgSend_initWithArray_(v35, v36, v32, v37);
@@ -243,7 +243,7 @@
   self->_selection = objc_msgSend_copy(v10, v11, v12, v13);
 }
 
-- (BOOL)didTapAtPoint:(CGPoint)a3
+- (BOOL)didTapAtPoint:(CGPoint)point
 {
   v3 = &self->_timedRecordingBuffer[63664];
   if (!LOBYTE(self->_statisticsInfo.waitDisplayLinkTime))
@@ -251,8 +251,8 @@
     goto LABEL_12;
   }
 
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v17 = 0;
   sub_1AF103B5C(0, &v17, 0, @"$1$", 0, &self->_boldTextInfo, 0, 0);
   v16 = *&v17;
@@ -314,24 +314,24 @@ LABEL_12:
   return v14;
 }
 
-- (void)drawLineFromPoint:(VFXAuthoringEnvironment *)self toPoint:(SEL)a2 color:(id)a3
+- (void)drawLineFromPoint:(VFXAuthoringEnvironment *)self toPoint:(SEL)point color:(id)color
 {
   v7 = v3;
   v8 = v4;
-  v9[0] = sub_1AF371798(a3, 0);
+  v9[0] = sub_1AF371798(color, 0);
   v9[1] = v6;
   sub_1AF0FE080(self, 0, v9, 0, v7, v8);
 }
 
-- (void)drawString:(id)a3 atPoint:(CGPoint)a4 color:(id)a5
+- (void)drawString:(id)string atPoint:(CGPoint)point color:(id)color
 {
-  x = a4.x;
-  y = a4.y;
-  v12[0] = sub_1AF371798(a5, 0);
+  x = point.x;
+  y = point.y;
+  v12[0] = sub_1AF371798(color, 0);
   v12[1] = v7;
   v8.f64[0] = x;
   v8.f64[1] = y;
-  sub_1AF100BB8(self, a3, v12, v9, COERCE_DOUBLE(vcvt_f32_f64(v8)));
+  sub_1AF100BB8(self, string, v12, v9, COERCE_DOUBLE(vcvt_f32_f64(v8)));
 }
 
 - (void)dealloc

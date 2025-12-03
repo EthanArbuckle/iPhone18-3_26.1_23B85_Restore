@@ -1,17 +1,17 @@
 @interface CLEEDCoexMonitorThermal
-- (CLEEDCoexMonitorThermal)initWithQueue:(id)a3 mitigationConfig:(MitigationsConfig *)a4 cachedCoexMetricData:(id)a5 eventCB:(id)a6 coexMetricUpdateCB:(id)a7;
+- (CLEEDCoexMonitorThermal)initWithQueue:(id)queue mitigationConfig:(MitigationsConfig *)config cachedCoexMetricData:(id)data eventCB:(id)b coexMetricUpdateCB:(id)cB;
 - (id).cxx_construct;
 - (id)getMitigationForCurrentlevel;
 - (void)computeThermalLevelDurationForCA;
 - (void)dealloc;
-- (void)processThermalLevelForCA:(int)a3;
+- (void)processThermalLevelForCA:(int)a;
 - (void)queryThermalLevel;
-- (void)updateCoexMetricDict:(id *)a3 forCASubmission:(BOOL)a4;
+- (void)updateCoexMetricDict:(id *)dict forCASubmission:(BOOL)submission;
 @end
 
 @implementation CLEEDCoexMonitorThermal
 
-- (CLEEDCoexMonitorThermal)initWithQueue:(id)a3 mitigationConfig:(MitigationsConfig *)a4 cachedCoexMetricData:(id)a5 eventCB:(id)a6 coexMetricUpdateCB:(id)a7
+- (CLEEDCoexMonitorThermal)initWithQueue:(id)queue mitigationConfig:(MitigationsConfig *)config cachedCoexMetricData:(id)data eventCB:(id)b coexMetricUpdateCB:(id)cB
 {
   if (qword_1025D4660 != -1)
   {
@@ -26,11 +26,11 @@
     *buf = 136446978;
     v46 = "[CLEEDCoexMonitorThermal initWithQueue:mitigationConfig:cachedCoexMetricData:eventCB:coexMetricUpdateCB:]";
     v47 = 2114;
-    v48 = a3;
+    queueCopy = queue;
     v49 = 2082;
     v50 = v14;
     v51 = 2114;
-    v52 = a6;
+    bCopy = b;
     _os_log_impl(dword_100000000, v13, OS_LOG_TYPE_DEFAULT, "#EED2CXTH,%{public}s[queue:%{public}@,thermalConfig:%{public}s,mitigationCB:%{public}@]", buf, 0x2Au);
     if (SHIBYTE(v41) < 0)
     {
@@ -60,11 +60,11 @@
     *__p = 136446978;
     *&__p[4] = "[CLEEDCoexMonitorThermal initWithQueue:mitigationConfig:cachedCoexMetricData:eventCB:coexMetricUpdateCB:]";
     v39 = 2114;
-    v40 = a3;
+    queueCopy2 = queue;
     v41 = 2082;
     v42 = v28;
     v43 = 2114;
-    v44 = a6;
+    bCopy2 = b;
     v29 = _os_log_send_and_compose_impl();
     if (v37 < 0)
     {
@@ -83,29 +83,29 @@
   v15 = [(CLEEDCoexMonitorThermal *)&v35 init];
   if (v15)
   {
-    dispatch_assert_queue_V2(a3);
-    *(v15 + 1) = a3;
-    *(v15 + 2) = _Block_copy(a6);
-    *(v15 + 25) = _Block_copy(a7);
+    dispatch_assert_queue_V2(queue);
+    *(v15 + 1) = queue;
+    *(v15 + 2) = _Block_copy(b);
+    *(v15 + 25) = _Block_copy(cB);
     *(v15 + 24) = 0;
-    v16 = *&a4->cellular.enabled;
-    *(v15 + 2) = a4->nominal;
+    v16 = *&config->cellular.enabled;
+    *(v15 + 2) = config->nominal;
     *(v15 + 3) = v16;
-    v17 = *&a4->cellular.rsrpSamplesToAvg;
-    v18 = *&a4->cellular.belowThresholdParams.maxStreamingBitrateKbps;
-    v19 = *&a4->thermal.moderate.maxFramerateFps;
-    *(v15 + 6) = *&a4->thermal.light.maxFramerateFps;
+    v17 = *&config->cellular.rsrpSamplesToAvg;
+    v18 = *&config->cellular.belowThresholdParams.maxStreamingBitrateKbps;
+    v19 = *&config->thermal.moderate.maxFramerateFps;
+    *(v15 + 6) = *&config->thermal.light.maxFramerateFps;
     *(v15 + 7) = v19;
     *(v15 + 4) = v17;
     *(v15 + 5) = v18;
-    v20 = *&a4->thermal.heavyAndGreater.maxFramerateFps;
-    light = a4->peakPower.light;
-    heavyAndGreater = a4->peakPower.heavyAndGreater;
-    *(v15 + 10) = a4->peakPower.moderate;
+    v20 = *&config->thermal.heavyAndGreater.maxFramerateFps;
+    light = config->peakPower.light;
+    heavyAndGreater = config->peakPower.heavyAndGreater;
+    *(v15 + 10) = config->peakPower.moderate;
     *(v15 + 11) = heavyAndGreater;
     *(v15 + 8) = v20;
     *(v15 + 9) = light;
-    *(v15 + 26) = [[CLEEDCoexThermalForCA alloc] initWithCoexMetricDict:a5];
+    *(v15 + 26) = [[CLEEDCoexThermalForCA alloc] initWithCoexMetricDict:data];
     if ((*(v15 + 88) & 1) == 0)
     {
       v23 = *(v15 + 1);
@@ -295,10 +295,10 @@
   p_fMitigationConfig = &self->fMitigationConfig;
   if (self->fMitigationConfig.thermal.enabled)
   {
-    v4 = [(CLEEDCoexMonitorThermal *)self currentThermalLevel];
-    if (v4 > 29)
+    currentThermalLevel = [(CLEEDCoexMonitorThermal *)self currentThermalLevel];
+    if (currentThermalLevel > 29)
     {
-      if (v4 == 30 || v4 == 40 || v4 == 50)
+      if (currentThermalLevel == 30 || currentThermalLevel == 40 || currentThermalLevel == 50)
       {
         p_fMitigationConfig = &self->fMitigationConfig.thermal.heavyAndGreater;
         goto LABEL_18;
@@ -307,7 +307,7 @@
 
     else
     {
-      switch(v4)
+      switch(currentThermalLevel)
       {
         case 0:
           goto LABEL_18;
@@ -350,11 +350,11 @@ LABEL_18:
   v8 = qword_1025D4668;
   if (os_log_type_enabled(qword_1025D4668, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(CLEEDCoexMonitorThermal *)self currentThermalLevel];
+    currentThermalLevel2 = [(CLEEDCoexMonitorThermal *)self currentThermalLevel];
     *buf = 136446722;
     v12 = "[CLEEDCoexMonitorThermal getMitigationForCurrentlevel]";
     v13 = 1026;
-    v14 = v9;
+    v14 = currentThermalLevel2;
     v15 = 2114;
     v16 = v6;
     _os_log_impl(dword_100000000, v8, OS_LOG_TYPE_DEFAULT, "#EED2CXTH,%{public}s ThermalState:%{public}u, Mitigation:%{public}@", buf, 0x1Cu);
@@ -368,18 +368,18 @@ LABEL_18:
   return v6;
 }
 
-- (void)processThermalLevelForCA:(int)a3
+- (void)processThermalLevelForCA:(int)a
 {
-  v3 = *&a3;
+  v3 = *&a;
   if (!self->fInitialValueReceived)
   {
-    [(CLEEDCoexThermalForCA *)[(CLEEDCoexMonitorThermal *)self fCoexTermalForCA] setThermalLevelAtStartOfCall:*&a3];
+    [(CLEEDCoexThermalForCA *)[(CLEEDCoexMonitorThermal *)self fCoexTermalForCA] setThermalLevelAtStartOfCall:*&a];
 LABEL_6:
     [(CLEEDCoexThermalForCA *)[(CLEEDCoexMonitorThermal *)self fCoexTermalForCA] setMaxThermalLevelInCall:v3];
     goto LABEL_7;
   }
 
-  if ([(CLEEDCoexMonitorThermal *)self currentThermalLevel]== a3)
+  if ([(CLEEDCoexMonitorThermal *)self currentThermalLevel]== a)
   {
     goto LABEL_8;
   }
@@ -404,10 +404,10 @@ LABEL_8:
 
 - (void)computeThermalLevelDurationForCA
 {
-  v3 = [(CLEEDCoexMonitorThermal *)self currentThermalLevel];
-  if (v3 > 29)
+  currentThermalLevel = [(CLEEDCoexMonitorThermal *)self currentThermalLevel];
+  if (currentThermalLevel > 29)
   {
-    switch(v3)
+    switch(currentThermalLevel)
     {
       case 30:
         [(CLEEDCoexThermalForCA *)[(CLEEDCoexMonitorThermal *)self fCoexTermalForCA] currentThermalLevelStartTime];
@@ -418,9 +418,9 @@ LABEL_8:
           Current = CFAbsoluteTimeGetCurrent();
           [(CLEEDCoexThermalForCA *)[(CLEEDCoexMonitorThermal *)self fCoexTermalForCA] currentThermalLevelStartTime];
           v30 = v27 + vabdd_f64(Current, v29);
-          v31 = [(CLEEDCoexMonitorThermal *)self fCoexTermalForCA];
+          fCoexTermalForCA = [(CLEEDCoexMonitorThermal *)self fCoexTermalForCA];
 
-          [(CLEEDCoexThermalForCA *)v31 setThermalHeavyDuration:v30];
+          [(CLEEDCoexThermalForCA *)fCoexTermalForCA setThermalHeavyDuration:v30];
         }
 
         break;
@@ -433,9 +433,9 @@ LABEL_8:
           v42 = CFAbsoluteTimeGetCurrent();
           [(CLEEDCoexThermalForCA *)[(CLEEDCoexMonitorThermal *)self fCoexTermalForCA] currentThermalLevelStartTime];
           v44 = v41 + vabdd_f64(v42, v43);
-          v45 = [(CLEEDCoexMonitorThermal *)self fCoexTermalForCA];
+          fCoexTermalForCA2 = [(CLEEDCoexMonitorThermal *)self fCoexTermalForCA];
 
-          [(CLEEDCoexThermalForCA *)v45 setThermalTrappingDuration:v44];
+          [(CLEEDCoexThermalForCA *)fCoexTermalForCA2 setThermalTrappingDuration:v44];
         }
 
         break;
@@ -448,18 +448,18 @@ LABEL_8:
           v14 = CFAbsoluteTimeGetCurrent();
           [(CLEEDCoexThermalForCA *)[(CLEEDCoexMonitorThermal *)self fCoexTermalForCA] currentThermalLevelStartTime];
           v16 = v13 + vabdd_f64(v14, v15);
-          v17 = [(CLEEDCoexMonitorThermal *)self fCoexTermalForCA];
+          fCoexTermalForCA3 = [(CLEEDCoexMonitorThermal *)self fCoexTermalForCA];
 
-          [(CLEEDCoexThermalForCA *)v17 setThermalSleepingDuration:v16];
+          [(CLEEDCoexThermalForCA *)fCoexTermalForCA3 setThermalSleepingDuration:v16];
         }
 
         break;
     }
   }
 
-  else if (v3)
+  else if (currentThermalLevel)
   {
-    if (v3 == 10)
+    if (currentThermalLevel == 10)
     {
       [(CLEEDCoexThermalForCA *)[(CLEEDCoexMonitorThermal *)self fCoexTermalForCA] currentThermalLevelStartTime];
       if (v32 > 0.0)
@@ -469,13 +469,13 @@ LABEL_8:
         v35 = CFAbsoluteTimeGetCurrent();
         [(CLEEDCoexThermalForCA *)[(CLEEDCoexMonitorThermal *)self fCoexTermalForCA] currentThermalLevelStartTime];
         v37 = v34 + vabdd_f64(v35, v36);
-        v38 = [(CLEEDCoexMonitorThermal *)self fCoexTermalForCA];
+        fCoexTermalForCA4 = [(CLEEDCoexMonitorThermal *)self fCoexTermalForCA];
 
-        [(CLEEDCoexThermalForCA *)v38 setThermalLightDuration:v37];
+        [(CLEEDCoexThermalForCA *)fCoexTermalForCA4 setThermalLightDuration:v37];
       }
     }
 
-    else if (v3 == 20)
+    else if (currentThermalLevel == 20)
     {
       [(CLEEDCoexThermalForCA *)[(CLEEDCoexMonitorThermal *)self fCoexTermalForCA] currentThermalLevelStartTime];
       if (v4 > 0.0)
@@ -485,9 +485,9 @@ LABEL_8:
         v7 = CFAbsoluteTimeGetCurrent();
         [(CLEEDCoexThermalForCA *)[(CLEEDCoexMonitorThermal *)self fCoexTermalForCA] currentThermalLevelStartTime];
         v9 = v6 + vabdd_f64(v7, v8);
-        v10 = [(CLEEDCoexMonitorThermal *)self fCoexTermalForCA];
+        fCoexTermalForCA5 = [(CLEEDCoexMonitorThermal *)self fCoexTermalForCA];
 
-        [(CLEEDCoexThermalForCA *)v10 setThermalModerateDuration:v9];
+        [(CLEEDCoexThermalForCA *)fCoexTermalForCA5 setThermalModerateDuration:v9];
       }
     }
   }
@@ -502,44 +502,44 @@ LABEL_8:
       v21 = CFAbsoluteTimeGetCurrent();
       [(CLEEDCoexThermalForCA *)[(CLEEDCoexMonitorThermal *)self fCoexTermalForCA] currentThermalLevelStartTime];
       v23 = v20 + vabdd_f64(v21, v22);
-      v24 = [(CLEEDCoexMonitorThermal *)self fCoexTermalForCA];
+      fCoexTermalForCA6 = [(CLEEDCoexMonitorThermal *)self fCoexTermalForCA];
 
-      [(CLEEDCoexThermalForCA *)v24 setThermalNominalDuration:v23];
+      [(CLEEDCoexThermalForCA *)fCoexTermalForCA6 setThermalNominalDuration:v23];
     }
   }
 }
 
-- (void)updateCoexMetricDict:(id *)a3 forCASubmission:(BOOL)a4
+- (void)updateCoexMetricDict:(id *)dict forCASubmission:(BOOL)submission
 {
-  if (a3 && *a3)
+  if (dict && *dict)
   {
-    v5 = a4;
+    submissionCopy = submission;
     if ([(CLEEDCoexMonitorThermal *)self fCoexTermalForCA])
     {
-      if (v5)
+      if (submissionCopy)
       {
         [(CLEEDCoexMonitorThermal *)self computeThermalLevelDurationForCA];
-        v7 = *a3;
+        v7 = *dict;
         [(CLEEDCoexThermalForCA *)[(CLEEDCoexMonitorThermal *)self fCoexTermalForCA] thermalNominalDuration];
         LODWORD(v9) = vcvtpd_s64_f64(v8 * 1000.0);
         [v7 setValue:+[NSNumber numberWithInt:](NSNumber forKey:{"numberWithInt:", v9), @"thermalNominalDuration"}];
-        v10 = *a3;
+        v10 = *dict;
         [(CLEEDCoexThermalForCA *)[(CLEEDCoexMonitorThermal *)self fCoexTermalForCA] thermalLightDuration];
         LODWORD(v12) = vcvtpd_s64_f64(v11 * 1000.0);
         [v10 setValue:+[NSNumber numberWithInt:](NSNumber forKey:{"numberWithInt:", v12), @"thermalLightDuration"}];
-        v13 = *a3;
+        v13 = *dict;
         [(CLEEDCoexThermalForCA *)[(CLEEDCoexMonitorThermal *)self fCoexTermalForCA] thermalModerateDuration];
         LODWORD(v15) = vcvtpd_s64_f64(v14 * 1000.0);
         [v13 setValue:+[NSNumber numberWithInt:](NSNumber forKey:{"numberWithInt:", v15), @"thermalModerateDuration"}];
-        v16 = *a3;
+        v16 = *dict;
         [(CLEEDCoexThermalForCA *)[(CLEEDCoexMonitorThermal *)self fCoexTermalForCA] thermalHeavyDuration];
         LODWORD(v18) = vcvtpd_s64_f64(v17 * 1000.0);
         [v16 setValue:+[NSNumber numberWithInt:](NSNumber forKey:{"numberWithInt:", v18), @"thermalHeavyDuration"}];
-        v19 = *a3;
+        v19 = *dict;
         [(CLEEDCoexThermalForCA *)[(CLEEDCoexMonitorThermal *)self fCoexTermalForCA] thermalTrappingDuration];
         LODWORD(v21) = vcvtpd_s64_f64(v20 * 1000.0);
         [v19 setValue:+[NSNumber numberWithInt:](NSNumber forKey:{"numberWithInt:", v21), @"thermalTrappingDuration"}];
-        v22 = *a3;
+        v22 = *dict;
         [(CLEEDCoexThermalForCA *)[(CLEEDCoexMonitorThermal *)self fCoexTermalForCA] thermalSleepingDuration];
         LODWORD(v24) = vcvtpd_s64_f64(v23 * 1000.0);
         v25 = [NSNumber numberWithInt:v24];
@@ -548,34 +548,34 @@ LABEL_8:
 
       else
       {
-        v29 = *a3;
+        v29 = *dict;
         [(CLEEDCoexThermalForCA *)[(CLEEDCoexMonitorThermal *)self fCoexTermalForCA] thermalNominalDuration];
         [v29 setValue:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"thermalNominalDuration"}];
-        v30 = *a3;
+        v30 = *dict;
         [(CLEEDCoexThermalForCA *)[(CLEEDCoexMonitorThermal *)self fCoexTermalForCA] thermalLightDuration];
         [v30 setValue:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"thermalLightDuration"}];
-        v31 = *a3;
+        v31 = *dict;
         [(CLEEDCoexThermalForCA *)[(CLEEDCoexMonitorThermal *)self fCoexTermalForCA] thermalModerateDuration];
         [v31 setValue:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"thermalModerateDuration"}];
-        v32 = *a3;
+        v32 = *dict;
         [(CLEEDCoexThermalForCA *)[(CLEEDCoexMonitorThermal *)self fCoexTermalForCA] thermalHeavyDuration];
         [v32 setValue:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"thermalHeavyDuration"}];
-        v33 = *a3;
+        v33 = *dict;
         [(CLEEDCoexThermalForCA *)[(CLEEDCoexMonitorThermal *)self fCoexTermalForCA] thermalTrappingDuration];
         [v33 setValue:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"thermalTrappingDuration"}];
-        v34 = *a3;
+        v34 = *dict;
         [(CLEEDCoexThermalForCA *)[(CLEEDCoexMonitorThermal *)self fCoexTermalForCA] thermalSleepingDuration];
         [v34 setValue:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"thermalSleepingDuration"}];
-        v22 = *a3;
+        v22 = *dict;
         [(CLEEDCoexThermalForCA *)[(CLEEDCoexMonitorThermal *)self fCoexTermalForCA] currentThermalLevelStartTime];
         v25 = [NSNumber numberWithDouble:?];
         v26 = @"currentThermalLevelStartTime";
       }
 
       [v22 setValue:v25 forKey:v26];
-      [*a3 setValue:+[NSNumber numberWithInt:](NSNumber forKey:{"numberWithInt:", -[CLEEDCoexThermalForCA thermalLevelAtStartOfCall](-[CLEEDCoexMonitorThermal fCoexTermalForCA](self, "fCoexTermalForCA"), "thermalLevelAtStartOfCall")), @"thermalLevelAtStartOfCall"}];
-      [*a3 setValue:+[NSNumber numberWithInt:](NSNumber forKey:{"numberWithInt:", -[CLEEDCoexThermalForCA maxThermalLevelInCall](-[CLEEDCoexMonitorThermal fCoexTermalForCA](self, "fCoexTermalForCA"), "maxThermalLevelInCall")), @"maxThermalLevelInCall"}];
-      v35 = *a3;
+      [*dict setValue:+[NSNumber numberWithInt:](NSNumber forKey:{"numberWithInt:", -[CLEEDCoexThermalForCA thermalLevelAtStartOfCall](-[CLEEDCoexMonitorThermal fCoexTermalForCA](self, "fCoexTermalForCA"), "thermalLevelAtStartOfCall")), @"thermalLevelAtStartOfCall"}];
+      [*dict setValue:+[NSNumber numberWithInt:](NSNumber forKey:{"numberWithInt:", -[CLEEDCoexThermalForCA maxThermalLevelInCall](-[CLEEDCoexMonitorThermal fCoexTermalForCA](self, "fCoexTermalForCA"), "maxThermalLevelInCall")), @"maxThermalLevelInCall"}];
+      v35 = *dict;
       v36 = [NSNumber numberWithInt:[(CLEEDCoexThermalForCA *)[(CLEEDCoexMonitorThermal *)self fCoexTermalForCA] thermalLevelAtEndOfCall]];
 
       [v35 setValue:v36 forKey:@"thermalLevelAtEndOfCall"];

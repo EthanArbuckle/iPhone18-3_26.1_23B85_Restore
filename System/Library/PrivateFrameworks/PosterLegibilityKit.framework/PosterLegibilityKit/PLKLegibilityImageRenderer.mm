@@ -1,20 +1,20 @@
 @interface PLKLegibilityImageRenderer
-- (id)renderLegibilityImageDecoratingImage:(id)a3 actions:(id)a4;
-- (id)renderLegibilityImageForImage:(id)a3 legibilityDescriptor:(id)a4;
+- (id)renderLegibilityImageDecoratingImage:(id)image actions:(id)actions;
+- (id)renderLegibilityImageForImage:(id)image legibilityDescriptor:(id)descriptor;
 @end
 
 @implementation PLKLegibilityImageRenderer
 
-- (id)renderLegibilityImageForImage:(id)a3 legibilityDescriptor:(id)a4
+- (id)renderLegibilityImageForImage:(id)image legibilityDescriptor:(id)descriptor
 {
-  v6 = a4;
+  descriptorCopy = descriptor;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __81__PLKLegibilityImageRenderer_renderLegibilityImageForImage_legibilityDescriptor___block_invoke;
   v10[3] = &unk_27835B6C8;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(PLKLegibilityImageRenderer *)self renderLegibilityImageDecoratingImage:a3 actions:v10];
+  v11 = descriptorCopy;
+  v7 = descriptorCopy;
+  v8 = [(PLKLegibilityImageRenderer *)self renderLegibilityImageDecoratingImage:image actions:v10];
 
   return v8;
 }
@@ -27,12 +27,12 @@ void __81__PLKLegibilityImageRenderer_renderLegibilityImageForImage_legibilityDe
   [v4 plk_renderWithContext:v3];
 }
 
-- (id)renderLegibilityImageDecoratingImage:(id)a3 actions:(id)a4
+- (id)renderLegibilityImageDecoratingImage:(id)image actions:(id)actions
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  imageCopy = image;
+  actionsCopy = actions;
+  v8 = actionsCopy;
+  if (imageCopy && actionsCopy)
   {
     if (renderLegibilityImageDecoratingImage_actions__onceToken != -1)
     {
@@ -48,9 +48,9 @@ void __81__PLKLegibilityImageRenderer_renderLegibilityImageForImage_legibilityDe
       _os_signpost_emit_with_name_impl(&dword_21E5D5000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v11, "PLK:renderLegibilityImageDecoratingImage:actions:", &unk_21E5F550D, buf, 2u);
     }
 
-    v12 = [(UIGraphicsRenderer *)self format];
-    [v12 bounds];
-    [v6 size];
+    format = [(UIGraphicsRenderer *)self format];
+    [format bounds];
+    [imageCopy size];
     BSRectWithSize();
     UIRectCenteredRect();
     v22[0] = MEMORY[0x277D85DD0];
@@ -61,7 +61,7 @@ void __81__PLKLegibilityImageRenderer_renderLegibilityImageForImage_legibilityDe
     v26 = v14;
     v27 = v15;
     v28 = v16;
-    v23 = v6;
+    v23 = imageCopy;
     v24 = v8;
     v17 = [(PLKImageRenderer *)self imageWithActions:v22];
     v18 = PLKLogRendering();

@@ -1,20 +1,20 @@
 @interface LAUITouchIDGlyph
-- (LAUITouchIDGlyph)initWithStyle:(int64_t)a3;
+- (LAUITouchIDGlyph)initWithStyle:(int64_t)style;
 - (void)dealloc;
-- (void)setState:(int64_t)a3;
+- (void)setState:(int64_t)state;
 - (void)shake;
 @end
 
 @implementation LAUITouchIDGlyph
 
-- (LAUITouchIDGlyph)initWithStyle:(int64_t)a3
+- (LAUITouchIDGlyph)initWithStyle:(int64_t)style
 {
   v10.receiver = self;
   v10.super_class = LAUITouchIDGlyph;
   v4 = [(LAUITouchIDGlyph *)&v10 init];
   if (v4)
   {
-    v5 = [LAUIPKGlyphWrapper glyphWithStyle:a3 frame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+    v5 = [LAUIPKGlyphWrapper glyphWithStyle:style frame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
     glyph = v4->_glyph;
     v4->_glyph = v5;
 
@@ -30,25 +30,25 @@
 
 - (void)dealloc
 {
-  v3 = [(LAUIPKGlyphWrapper *)self->_glyph view];
-  [v3 removeFromSuperview];
+  view = [(LAUIPKGlyphWrapper *)self->_glyph view];
+  [view removeFromSuperview];
 
   v4.receiver = self;
   v4.super_class = LAUITouchIDGlyph;
   [(LAUITouchIDGlyph *)&v4 dealloc];
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  self->_state = a3;
-  if (a3 == 2)
+  self->_state = state;
+  if (state == 2)
   {
     v3 = 11;
   }
 
   else
   {
-    v3 = a3 == 1;
+    v3 = state == 1;
   }
 
   [(LAUIPKGlyphWrapper *)self->_glyph setState:v3 idleTouchID:0 animated:1 completionHandler:&__block_literal_global_4];
@@ -72,9 +72,9 @@ uint64_t __29__LAUITouchIDGlyph_setState___block_invoke(uint64_t a1)
 {
   [(UIImpactFeedbackGenerator *)self->_hapticGenerator impactOccurred];
   CGAffineTransformMakeTranslation(&v6, 20.0, 0.0);
-  v3 = [(LAUITouchIDGlyph *)self view];
+  view = [(LAUITouchIDGlyph *)self view];
   v5 = v6;
-  [v3 setTransform:&v5];
+  [view setTransform:&v5];
 
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;

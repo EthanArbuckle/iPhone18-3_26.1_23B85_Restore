@@ -1,19 +1,19 @@
 @interface INIdentifyIncomingCallerIntentResponse
-+ (int)_typeFromCode:(int64_t)a3;
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5;
-- (INIdentifyIncomingCallerIntentResponse)initWithBackingStore:(id)a3;
-- (INIdentifyIncomingCallerIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (INIdentifyIncomingCallerIntentResponse)initWithCoder:(id)a3;
++ (int)_typeFromCode:(int64_t)code;
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested;
+- (INIdentifyIncomingCallerIntentResponse)initWithBackingStore:(id)store;
+- (INIdentifyIncomingCallerIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity;
+- (INIdentifyIncomingCallerIntentResponse)initWithCoder:(id)coder;
 - (NSArray)callRecords;
 - (id)_dictionaryRepresentation;
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (int64_t)_codeWithName:(id)a3;
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity;
+- (int64_t)_codeWithName:(id)name;
 - (int64_t)_intentResponseCode;
 - (int64_t)code;
 - (int64_t)statusCode;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCallRecords:(id)a3;
-- (void)setStatusCode:(int64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCallRecords:(id)records;
+- (void)setStatusCode:(int64_t)code;
 @end
 
 @implementation INIdentifyIncomingCallerIntentResponse
@@ -22,30 +22,30 @@
 {
   v16[3] = *MEMORY[0x1E69E9840];
   v15[0] = @"code";
-  v3 = [(INIdentifyIncomingCallerIntentResponse *)self code];
-  v4 = v3;
-  if (v3 < 7)
+  code = [(INIdentifyIncomingCallerIntentResponse *)self code];
+  v4 = code;
+  if (code < 7)
   {
-    v5 = off_1E7286E38[v3];
-    v6 = v5;
+    null = off_1E7286E38[code];
+    v6 = null;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v6 = 0;
   }
 
-  v16[0] = v5;
+  v16[0] = null;
   v15[1] = @"statusCode";
-  v7 = [(INIdentifyIncomingCallerIntentResponse *)self statusCode];
+  statusCode = [(INIdentifyIncomingCallerIntentResponse *)self statusCode];
   v8 = @"unknown";
-  if (v7 == 2)
+  if (statusCode == 2)
   {
     v8 = @"incomingCall";
   }
 
-  if (v7 == 1)
+  if (statusCode == 1)
   {
     v8 = @"noIncomingCall";
   }
@@ -53,16 +53,16 @@
   v9 = v8;
   v16[1] = v9;
   v15[2] = @"callRecords";
-  v10 = [(INIdentifyIncomingCallerIntentResponse *)self callRecords];
-  v11 = v10;
-  if (!v10)
+  callRecords = [(INIdentifyIncomingCallerIntentResponse *)self callRecords];
+  null2 = callRecords;
+  if (!callRecords)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[2] = v11;
+  v16[2] = null2;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:3];
-  if (!v10)
+  if (!callRecords)
   {
   }
 
@@ -75,21 +75,21 @@
   return v12;
 }
 
-- (void)setCallRecords:(id)a3
+- (void)setCallRecords:(id)records
 {
-  v4 = a3;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v6 = INIntentSlotValueTransformToCallRecordValues(v4);
+  recordsCopy = records;
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  v6 = INIntentSlotValueTransformToCallRecordValues(recordsCopy);
 
-  [v5 setCallRecords:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setCallRecords:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
-- (void)setStatusCode:(int64_t)a3
+- (void)setStatusCode:(int64_t)code
 {
-  if (a3 == 1)
+  if (code == 1)
   {
     v4 = 1;
   }
@@ -99,7 +99,7 @@
     v4 = 0x7FFFFFFF;
   }
 
-  if (a3 == 2)
+  if (code == 2)
   {
     v5 = 2;
   }
@@ -109,45 +109,45 @@
     v5 = v4;
   }
 
-  v6 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = v6;
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  v7 = _responseMessagePBRepresentation;
   if (v5 == 0x7FFFFFFF)
   {
-    [v6 setHasStatusCode:0];
+    [_responseMessagePBRepresentation setHasStatusCode:0];
   }
 
   else
   {
-    [v6 setStatusCode:v5];
+    [_responseMessagePBRepresentation setStatusCode:v5];
   }
 
-  v9 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v8 = [v9 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v8];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (NSArray)callRecords
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 callRecords];
-  v4 = INIntentSlotValueTransformFromCallRecordValues(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  callRecords = [_responseMessagePBRepresentation callRecords];
+  v4 = INIntentSlotValueTransformFromCallRecordValues(callRecords);
 
   return v4;
 }
 
 - (int64_t)statusCode
 {
-  v3 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v4 = [v3 hasStatusCode];
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v6 = [v5 statusCode];
-  v7 = 2 * (v6 == 2);
-  if (v6 == 1)
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  hasStatusCode = [_responseMessagePBRepresentation hasStatusCode];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  statusCode = [_responseMessagePBRepresentation2 statusCode];
+  v7 = 2 * (statusCode == 2);
+  if (statusCode == 1)
   {
     v7 = 1;
   }
 
-  if (v4)
+  if (hasStatusCode)
   {
     v8 = v7;
   }
@@ -160,22 +160,22 @@
   return v8;
 }
 
-- (int64_t)_codeWithName:(id)a3
+- (int64_t)_codeWithName:(id)name
 {
-  v3 = a3;
-  [v3 isEqualToString:@"INIdentifyIncomingCallerIntentResponseCodeUnspecified"];
-  v4 = [v3 isEqualToString:@"INIdentifyIncomingCallerIntentResponseCodeReady"];
-  if ([v3 isEqualToString:@"INIdentifyIncomingCallerIntentResponseCodeInProgress"])
+  nameCopy = name;
+  [nameCopy isEqualToString:@"INIdentifyIncomingCallerIntentResponseCodeUnspecified"];
+  v4 = [nameCopy isEqualToString:@"INIdentifyIncomingCallerIntentResponseCodeReady"];
+  if ([nameCopy isEqualToString:@"INIdentifyIncomingCallerIntentResponseCodeInProgress"])
   {
     v4 = 2;
   }
 
-  if ([v3 isEqualToString:@"INIdentifyIncomingCallerIntentResponseCodeSuccess"])
+  if ([nameCopy isEqualToString:@"INIdentifyIncomingCallerIntentResponseCodeSuccess"])
   {
     v4 = 3;
   }
 
-  if ([v3 isEqualToString:@"INIdentifyIncomingCallerIntentResponseCodeFailure"])
+  if ([nameCopy isEqualToString:@"INIdentifyIncomingCallerIntentResponseCodeFailure"])
   {
     v5 = 4;
   }
@@ -185,7 +185,7 @@
     v5 = v4;
   }
 
-  v6 = [v3 isEqualToString:@"INIdentifyIncomingCallerIntentResponseCodeFailureRequiringAppLaunch"];
+  v6 = [nameCopy isEqualToString:@"INIdentifyIncomingCallerIntentResponseCodeFailureRequiringAppLaunch"];
 
   if (v6)
   {
@@ -200,30 +200,30 @@
 
 - (int64_t)_intentResponseCode
 {
-  v2 = [(INIdentifyIncomingCallerIntentResponse *)self code];
-  if ((v2 - 1) > 4)
+  code = [(INIdentifyIncomingCallerIntentResponse *)self code];
+  if ((code - 1) > 4)
   {
     return 0;
   }
 
   else
   {
-    return qword_18EE5FDC8[v2 - 1];
+    return qword_18EE5FDC8[code - 1];
   }
 }
 
-- (INIdentifyIncomingCallerIntentResponse)initWithCoder:(id)a3
+- (INIdentifyIncomingCallerIntentResponse)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = INIdentifyIncomingCallerIntentResponse;
-  return [(INIntentResponse *)&v4 initWithCoder:a3];
+  return [(INIntentResponse *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = INIdentifyIncomingCallerIntentResponse;
-  [(INIntentResponse *)&v3 encodeWithCoder:a3];
+  [(INIntentResponse *)&v3 encodeWithCoder:coder];
 }
 
 - (int64_t)code
@@ -233,97 +233,97 @@
   return [(INIntentResponse *)&v3 code];
 }
 
-- (INIdentifyIncomingCallerIntentResponse)initWithBackingStore:(id)a3
+- (INIdentifyIncomingCallerIntentResponse)initWithBackingStore:(id)store
 {
   v4.receiver = self;
   v4.super_class = INIdentifyIncomingCallerIntentResponse;
-  return [(INIntentResponse *)&v4 initWithBackingStore:a3];
+  return [(INIntentResponse *)&v4 initWithBackingStore:store];
 }
 
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity
 {
   v5.receiver = self;
   v5.super_class = INIdentifyIncomingCallerIntentResponse;
-  return [(INIntentResponse *)&v5 _initWithCode:a3 userActivity:a4];
+  return [(INIntentResponse *)&v5 _initWithCode:code userActivity:activity];
 }
 
-- (INIdentifyIncomingCallerIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4
+- (INIdentifyIncomingCallerIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  activityCopy = activity;
   v7 = INSiriLogContextIntents;
   if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO))
   {
     v8 = v7;
-    if (a3 > 6)
+    if (code > 6)
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = off_1E7286E38[a3];
+      v9 = off_1E7286E38[code];
     }
 
     v10 = v9;
     *buf = 136315906;
     v16 = "[INIdentifyIncomingCallerIntentResponse initWithCode:userActivity:]";
     v17 = 2048;
-    v18 = a3;
+    codeCopy = code;
     v19 = 2112;
     v20 = v10;
     v21 = 2112;
-    v22 = v6;
+    v22 = activityCopy;
     _os_log_impl(&dword_18E991000, v8, OS_LOG_TYPE_INFO, "%s code = %zd (%@), userActivity = %@", buf, 0x2Au);
   }
 
   v14.receiver = self;
   v14.super_class = INIdentifyIncomingCallerIntentResponse;
-  v11 = [(INIntentResponse *)&v14 _initWithCode:a3 userActivity:v6];
+  v11 = [(INIntentResponse *)&v14 _initWithCode:code userActivity:activityCopy];
 
   v12 = *MEMORY[0x1E69E9840];
   return v11;
 }
 
-+ (int)_typeFromCode:(int64_t)a3
++ (int)_typeFromCode:(int64_t)code
 {
-  if ((a3 - 1) > 4)
+  if ((code - 1) > 4)
   {
     return 3;
   }
 
   else
   {
-    return dword_18EE5FDB0[a3 - 1];
+    return dword_18EE5FDB0[code - 1];
   }
 }
 
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested
 {
   v5 = 2;
-  if (a3 != 2)
+  if (type != 2)
   {
-    v5 = a3 == 5;
+    v5 = type == 5;
   }
 
   v6 = 3;
   v7 = 4;
-  if (a5)
+  if (requested)
   {
     v7 = 5;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
     v7 = 0;
   }
 
-  if (a3)
+  if (type)
   {
     v6 = v7;
   }
 
-  if (a3 <= 1)
+  if (type <= 1)
   {
     return v6;
   }

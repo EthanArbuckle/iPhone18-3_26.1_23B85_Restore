@@ -1,27 +1,27 @@
 @interface PICompositionSerializerFormatVersion
-+ (BOOL)adjustmentHasPerspective:(id)a3 settings:(id)a4;
-+ (BOOL)adjustmentHasRetouchStyleCleanupOperations:(id)a3 settings:(id)a4;
++ (BOOL)adjustmentHasPerspective:(id)perspective settings:(id)settings;
++ (BOOL)adjustmentHasRetouchStyleCleanupOperations:(id)operations settings:(id)settings;
 + (id)_versionRules;
-+ (id)adjustmentDataFormatVersionForComposition:(id)a3;
-+ (id)formatVersionForAdjustment:(id)a3 identifier:(id)a4;
++ (id)adjustmentDataFormatVersionForComposition:(id)composition;
++ (id)formatVersionForAdjustment:(id)adjustment identifier:(id)identifier;
 + (id)locallySupportedFormatVersions;
 + (id)versionRules;
 @end
 
 @implementation PICompositionSerializerFormatVersion
 
-+ (id)adjustmentDataFormatVersionForComposition:(id)a3
++ (id)adjustmentDataFormatVersionForComposition:(id)composition
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 schema];
-  v6 = [v5 contents];
-  v7 = [v6 allKeys];
+  compositionCopy = composition;
+  schema = [compositionCopy schema];
+  contents = [schema contents];
+  allKeys = [contents allKeys];
 
   v8 = @"1.4";
-  if ([v4 mediaType] == 2)
+  if ([compositionCopy mediaType] == 2)
   {
-    v9 = [v4 objectForKeyedSubscript:@"autoLoop"];
+    v9 = [compositionCopy objectForKeyedSubscript:@"autoLoop"];
 
     if (!v9)
     {
@@ -29,15 +29,15 @@
     }
   }
 
-  v10 = [a1 locallySupportedFormatVersions];
+  locallySupportedFormatVersions = [self locallySupportedFormatVersions];
   v24 = v8;
-  v11 = [v10 indexOfObject:v8];
+  v11 = [locallySupportedFormatVersions indexOfObject:v8];
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v7;
+  obj = allKeys;
   v12 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v12)
   {
@@ -53,12 +53,12 @@
         }
 
         v16 = *(*(&v25 + 1) + 8 * i);
-        v17 = [v4 objectForKeyedSubscript:v16];
+        v17 = [compositionCopy objectForKeyedSubscript:v16];
         if (v17)
         {
-          v18 = [a1 formatVersionForAdjustment:v17 identifier:v16];
-          v19 = [a1 locallySupportedFormatVersions];
-          v20 = [v19 indexOfObject:v18];
+          v18 = [self formatVersionForAdjustment:v17 identifier:v16];
+          locallySupportedFormatVersions2 = [self locallySupportedFormatVersions];
+          v20 = [locallySupportedFormatVersions2 indexOfObject:v18];
 
           if (v11 != 0x7FFFFFFFFFFFFFFFLL && v11 < v20)
           {
@@ -79,17 +79,17 @@
   return v24;
 }
 
-+ (id)formatVersionForAdjustment:(id)a3 identifier:(id)a4
++ (id)formatVersionForAdjustment:(id)adjustment identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 versionRules];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  adjustmentCopy = adjustment;
+  identifierCopy = identifier;
+  versionRules = [self versionRules];
+  v9 = [versionRules objectForKeyedSubscript:identifierCopy];
 
   if (v9)
   {
-    v10 = [v9 objectForKeyedSubscript:@"version"];
-    if (v10)
+    currentFormatVersion = [v9 objectForKeyedSubscript:@"version"];
+    if (currentFormatVersion)
     {
       goto LABEL_8;
     }
@@ -98,20 +98,20 @@
     v12 = v11;
     if (v11)
     {
-      v13 = (*(v11 + 16))(v11, v6);
+      v13 = (*(v11 + 16))(v11, adjustmentCopy);
       if (v13)
       {
-        v10 = v13;
+        currentFormatVersion = v13;
 
         goto LABEL_8;
       }
     }
   }
 
-  v10 = [a1 currentFormatVersion];
+  currentFormatVersion = [self currentFormatVersion];
 LABEL_8:
 
-  return v10;
+  return currentFormatVersion;
 }
 
 + (id)versionRules
@@ -120,7 +120,7 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = __52__PICompositionSerializerFormatVersion_versionRules__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (versionRules_onceToken != -1)
   {
     dispatch_once(&versionRules_onceToken, block);
@@ -159,7 +159,7 @@ uint64_t __52__PICompositionSerializerFormatVersion_versionRules__block_invoke(u
   v47[1] = 3221225472;
   v47[2] = __53__PICompositionSerializerFormatVersion__versionRules__block_invoke;
   v47[3] = &__block_descriptor_40_e32___NSString_16__0__NUAdjustment_8l;
-  v47[4] = a1;
+  v47[4] = self;
   v43 = MEMORY[0x1CCA61740](v47);
   v121 = v43;
   v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v121 forKeys:&v120 count:1];
@@ -250,7 +250,7 @@ uint64_t __52__PICompositionSerializerFormatVersion_versionRules__block_invoke(u
   v46[1] = 3221225472;
   v46[2] = __53__PICompositionSerializerFormatVersion__versionRules__block_invoke_9;
   v46[3] = &__block_descriptor_40_e32___NSString_16__0__NUAdjustment_8l;
-  v46[4] = a1;
+  v46[4] = self;
   v25 = MEMORY[0x1CCA61740](v46);
   v87 = v25;
   v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v87 forKeys:&v86 count:1];
@@ -729,23 +729,23 @@ __CFString *__53__PICompositionSerializerFormatVersion__versionRules__block_invo
   return v6;
 }
 
-+ (BOOL)adjustmentHasRetouchStyleCleanupOperations:(id)a3 settings:(id)a4
++ (BOOL)adjustmentHasRetouchStyleCleanupOperations:(id)operations settings:(id)settings
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  if ([a3 isEqualToString:@"Cleanup"])
+  settingsCopy = settings;
+  if ([operations isEqualToString:@"Cleanup"])
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = [v5 objectForKeyedSubscript:@"operations"];
+    v6 = [settingsCopy objectForKeyedSubscript:@"operations"];
     v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v7)
     {
       v8 = v7;
       v9 = *v20;
-      v18 = v5;
+      v18 = settingsCopy;
       while (2)
       {
         for (i = 0; i != v8; ++i)
@@ -763,7 +763,7 @@ __CFString *__53__PICompositionSerializerFormatVersion__versionRules__block_invo
 
 LABEL_15:
             v16 = 1;
-            v5 = v18;
+            settingsCopy = v18;
             goto LABEL_16;
           }
 
@@ -778,7 +778,7 @@ LABEL_15:
 
         v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
         v16 = 0;
-        v5 = v18;
+        settingsCopy = v18;
         if (v8)
         {
           continue;
@@ -804,39 +804,39 @@ LABEL_16:
   return v16;
 }
 
-+ (BOOL)adjustmentHasPerspective:(id)a3 settings:(id)a4
++ (BOOL)adjustmentHasPerspective:(id)perspective settings:(id)settings
 {
-  v5 = a4;
-  if ([a3 isEqualToString:@"Crop"])
+  settingsCopy = settings;
+  if ([perspective isEqualToString:@"Crop"])
   {
-    v6 = [v5 objectForKeyedSubscript:@"pitch"];
-    if (v6 && (v7 = v6, [v5 objectForKeyedSubscript:@"pitch"], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "floatValue"), v9 = NUIsRoughlyEqual(), v8, v7, !v9) || (objc_msgSend(v5, "objectForKeyedSubscript:", @"yaw"), (v10 = objc_claimAutoreleasedReturnValue()) != 0) && (v11 = v10, objc_msgSend(v5, "objectForKeyedSubscript:", @"yaw"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "floatValue"), v13 = NUIsRoughlyEqual(), v12, v11, !v13))
+    v6 = [settingsCopy objectForKeyedSubscript:@"pitch"];
+    if (v6 && (v7 = v6, [settingsCopy objectForKeyedSubscript:@"pitch"], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "floatValue"), v9 = NUIsRoughlyEqual(), v8, v7, !v9) || (objc_msgSend(settingsCopy, "objectForKeyedSubscript:", @"yaw"), (v10 = objc_claimAutoreleasedReturnValue()) != 0) && (v11 = v10, objc_msgSend(settingsCopy, "objectForKeyedSubscript:", @"yaw"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "floatValue"), v13 = NUIsRoughlyEqual(), v12, v11, !v13))
     {
-      v16 = 1;
+      bOOLValue = 1;
     }
 
     else
     {
-      v14 = [v5 objectForKeyedSubscript:@"smart"];
+      v14 = [settingsCopy objectForKeyedSubscript:@"smart"];
       if (v14)
       {
-        v15 = [v5 objectForKeyedSubscript:@"smart"];
-        v16 = [v15 BOOLValue];
+        v15 = [settingsCopy objectForKeyedSubscript:@"smart"];
+        bOOLValue = [v15 BOOLValue];
       }
 
       else
       {
-        v16 = 0;
+        bOOLValue = 0;
       }
     }
   }
 
   else
   {
-    v16 = 0;
+    bOOLValue = 0;
   }
 
-  return v16;
+  return bOOLValue;
 }
 
 + (id)locallySupportedFormatVersions

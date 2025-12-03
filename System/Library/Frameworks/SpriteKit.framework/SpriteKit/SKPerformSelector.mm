@@ -1,12 +1,12 @@
 @interface SKPerformSelector
-+ (id)perfromSelector:(SEL)a3 onTarget:(id)a4;
++ (id)perfromSelector:(SEL)selector onTarget:(id)target;
 - (SKPerformSelector)init;
-- (SKPerformSelector)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SKPerformSelector)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)reversedAction;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithTarget:(id)a3 forTime:(double)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithTarget:(id)target forTime:(double)time;
 @end
 
 @implementation SKPerformSelector
@@ -41,24 +41,24 @@
   [(SKAction *)&v4 dealloc];
 }
 
-- (SKPerformSelector)initWithCoder:(id)a3
+- (SKPerformSelector)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = SKPerformSelector;
-  v5 = [(SKAction *)&v12 initWithCoder:v4];
+  v5 = [(SKAction *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     if (!SKGetLinkedOnOrAfter(786432))
     {
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_target"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_target"];
       strongTarget = v5->_strongTarget;
       v5->_strongTarget = v8;
 
       objc_storeWeak(&v5->_weakTarget, v5->_strongTarget);
     }
 
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_selector"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_selector"];
     v7 = NSSelectorFromString(v6);
     if (v7)
     {
@@ -76,9 +76,9 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   {
     [SKPerformSelector encodeWithCoder:]::sdk_version = dyld_get_program_sdk_version();
   }
@@ -87,9 +87,9 @@
   {
     v9.receiver = self;
     v9.super_class = SKPerformSelector;
-    [(SKAction *)&v9 encodeWithCoder:v4];
+    [(SKAction *)&v9 encodeWithCoder:coderCopy];
     WeakRetained = objc_loadWeakRetained(&self->_weakTarget);
-    [v4 encodeObject:WeakRetained forKey:@"_target"];
+    [coderCopy encodeObject:WeakRetained forKey:@"_target"];
 
     if (self->_selector)
     {
@@ -102,14 +102,14 @@
     }
 
     v8 = NSStringFromSelector(selector);
-    [v4 encodeObject:v8 forKey:@"_selector"];
+    [coderCopy encodeObject:v8 forKey:@"_selector"];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = SKPerformSelector;
-    [(SKAction *)&v10 encodeWithCoder:v4];
+    [(SKAction *)&v10 encodeWithCoder:coderCopy];
     if (self->_selector)
     {
       v5 = self->_selector;
@@ -121,13 +121,13 @@
     }
 
     v8 = NSStringFromSelector(v5);
-    [v4 encodeObject:v8 forKey:@"_selector"];
+    [coderCopy encodeObject:v8 forKey:@"_selector"];
   }
 }
 
-- (void)updateWithTarget:(id)a3 forTime:(double)a4
+- (void)updateWithTarget:(id)target forTime:(double)time
 {
-  v9 = a3;
+  targetCopy = target;
   if (![(SKAction *)self finished])
   {
     [(SKAction *)self setFinished:1];
@@ -147,18 +147,18 @@
   }
 }
 
-+ (id)perfromSelector:(SEL)a3 onTarget:(id)a4
++ (id)perfromSelector:(SEL)selector onTarget:(id)target
 {
-  v6 = a4;
-  v7 = v6;
+  targetCopy = target;
+  v7 = targetCopy;
   v8 = 0;
-  if (a3 && v6)
+  if (selector && targetCopy)
   {
     if (objc_opt_respondsToSelector())
     {
       v8 = objc_alloc_init(SKPerformSelector);
-      v8->_selector = a3;
-      objc_storeStrong(&v8->_strongTarget, a4);
+      v8->_selector = selector;
+      objc_storeStrong(&v8->_strongTarget, target);
       objc_storeWeak(&v8->_weakTarget, v7);
     }
 
@@ -171,11 +171,11 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = SKPerformSelector;
-  v4 = [(SKAction *)&v7 copyWithZone:a3];
+  v4 = [(SKAction *)&v7 copyWithZone:zone];
   *(v4 + 2) = self->_selector;
   WeakRetained = objc_loadWeakRetained(&self->_weakTarget);
   objc_storeWeak(v4 + 3, WeakRetained);

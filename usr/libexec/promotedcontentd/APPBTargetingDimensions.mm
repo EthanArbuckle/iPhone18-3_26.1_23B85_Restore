@@ -1,51 +1,51 @@
 @interface APPBTargetingDimensions
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addExclusionCriteria:(id)a3;
-- (void)addInclusionCriteria:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addExclusionCriteria:(id)criteria;
+- (void)addInclusionCriteria:(id)criteria;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBTargetingDimensions
 
-- (void)addInclusionCriteria:(id)a3
+- (void)addInclusionCriteria:(id)criteria
 {
-  v4 = a3;
+  criteriaCopy = criteria;
   inclusionCriterias = self->_inclusionCriterias;
-  v8 = v4;
+  v8 = criteriaCopy;
   if (!inclusionCriterias)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_inclusionCriterias;
     self->_inclusionCriterias = v6;
 
-    v4 = v8;
+    criteriaCopy = v8;
     inclusionCriterias = self->_inclusionCriterias;
   }
 
-  [(NSMutableArray *)inclusionCriterias addObject:v4];
+  [(NSMutableArray *)inclusionCriterias addObject:criteriaCopy];
 }
 
-- (void)addExclusionCriteria:(id)a3
+- (void)addExclusionCriteria:(id)criteria
 {
-  v4 = a3;
+  criteriaCopy = criteria;
   exclusionCriterias = self->_exclusionCriterias;
-  v8 = v4;
+  v8 = criteriaCopy;
   if (!exclusionCriterias)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_exclusionCriterias;
     self->_exclusionCriterias = v6;
 
-    v4 = v8;
+    criteriaCopy = v8;
     exclusionCriterias = self->_exclusionCriterias;
   }
 
-  [(NSMutableArray *)exclusionCriterias addObject:v4];
+  [(NSMutableArray *)exclusionCriterias addObject:criteriaCopy];
 }
 
 - (id)description
@@ -53,8 +53,8 @@
   v7.receiver = self;
   v7.super_class = APPBTargetingDimensions;
   v3 = [(APPBTargetingDimensions *)&v7 description];
-  v4 = [(APPBTargetingDimensions *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBTargetingDimensions *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -84,8 +84,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v23 objects:v28 count:16];
@@ -119,8 +119,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v19 + 1) + 8 * j) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation2 = [*(*(&v19 + 1) + 8 * j) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation2];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
@@ -135,9 +135,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -201,43 +201,43 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if ([(APPBTargetingDimensions *)self inclusionCriteriasCount])
   {
-    [v12 clearInclusionCriterias];
-    v4 = [(APPBTargetingDimensions *)self inclusionCriteriasCount];
-    if (v4)
+    [toCopy clearInclusionCriterias];
+    inclusionCriteriasCount = [(APPBTargetingDimensions *)self inclusionCriteriasCount];
+    if (inclusionCriteriasCount)
     {
-      v5 = v4;
+      v5 = inclusionCriteriasCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(APPBTargetingDimensions *)self inclusionCriteriaAtIndex:i];
-        [v12 addInclusionCriteria:v7];
+        [toCopy addInclusionCriteria:v7];
       }
     }
   }
 
   if ([(APPBTargetingDimensions *)self exclusionCriteriasCount])
   {
-    [v12 clearExclusionCriterias];
-    v8 = [(APPBTargetingDimensions *)self exclusionCriteriasCount];
-    if (v8)
+    [toCopy clearExclusionCriterias];
+    exclusionCriteriasCount = [(APPBTargetingDimensions *)self exclusionCriteriasCount];
+    if (exclusionCriteriasCount)
     {
-      v9 = v8;
+      v9 = exclusionCriteriasCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(APPBTargetingDimensions *)self exclusionCriteriaAtIndex:j];
-        [v12 addExclusionCriteria:v11];
+        [toCopy addExclusionCriteria:v11];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -258,7 +258,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v23 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v23 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addInclusionCriteria:v11];
 
         v10 = v10 + 1;
@@ -291,7 +291,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v19 + 1) + 8 * v16) copyWithZone:{a3, v19}];
+        v17 = [*(*(&v19 + 1) + 8 * v16) copyWithZone:{zone, v19}];
         [v5 addExclusionCriteria:v17];
 
         v16 = v16 + 1;
@@ -307,13 +307,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((inclusionCriterias = self->_inclusionCriterias, !(inclusionCriterias | v4[2])) || -[NSMutableArray isEqual:](inclusionCriterias, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((inclusionCriterias = self->_inclusionCriterias, !(inclusionCriterias | equalCopy[2])) || -[NSMutableArray isEqual:](inclusionCriterias, "isEqual:")))
   {
     exclusionCriterias = self->_exclusionCriterias;
-    if (exclusionCriterias | v4[1])
+    if (exclusionCriterias | equalCopy[1])
     {
       v7 = [(NSMutableArray *)exclusionCriterias isEqual:?];
     }
@@ -332,14 +332,14 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v4[2];
+  v5 = fromCopy[2];
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v6)
   {
@@ -370,7 +370,7 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v10 = v4[1];
+  v10 = fromCopy[1];
   v11 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v11)
   {

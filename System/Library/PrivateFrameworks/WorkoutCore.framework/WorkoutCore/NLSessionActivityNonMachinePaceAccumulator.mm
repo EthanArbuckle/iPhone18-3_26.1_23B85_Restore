@@ -1,60 +1,60 @@
 @interface NLSessionActivityNonMachinePaceAccumulator
-- (NLSessionActivityNonMachinePaceAccumulator)initWithBuilder:(id)a3 activityType:(id)a4 activityMoveMode:(int64_t)a5;
+- (NLSessionActivityNonMachinePaceAccumulator)initWithBuilder:(id)builder activityType:(id)type activityMoveMode:(int64_t)mode;
 - (NLSessionActivityPaceAccumulatorDelegate)paceDelegate;
 - (double)averagePaceInMetersPerSecond;
 - (double)currentPaceInMetersPerSecond;
 - (double)fastestPaceInMetersPerSecond;
-- (void)_callUpdateHandlerWithCurrentPaceInMetersPerSecond:(double)a3;
+- (void)_callUpdateHandlerWithCurrentPaceInMetersPerSecond:(double)second;
 - (void)_fakeCurrentPaceTimerFired;
-- (void)_receivedPaceInMetersPerSecond:(double)a3;
-- (void)accumulatorDidStartWithStartDate:(id)a3 handler:(id)a4;
+- (void)_receivedPaceInMetersPerSecond:(double)second;
+- (void)accumulatorDidStartWithStartDate:(id)date handler:(id)handler;
 - (void)accumulatorDidStop;
 - (void)dealloc;
-- (void)odometer:(id)a3 didUpdateGpsAvailability:(BOOL)a4;
-- (void)setCurrentPaceInMetersPerSecond:(double)a3;
-- (void)updateAveragePaceWithElapsedTime:(double)a3;
-- (void)updateAveragePaceWithStatistics:(id)a3 duration:(double)a4;
-- (void)updateCurrentSpeedWithStatistics:(id)a3 duration:(double)a4;
+- (void)odometer:(id)odometer didUpdateGpsAvailability:(BOOL)availability;
+- (void)setCurrentPaceInMetersPerSecond:(double)second;
+- (void)updateAveragePaceWithElapsedTime:(double)time;
+- (void)updateAveragePaceWithStatistics:(id)statistics duration:(double)duration;
+- (void)updateCurrentSpeedWithStatistics:(id)statistics duration:(double)duration;
 @end
 
 @implementation NLSessionActivityNonMachinePaceAccumulator
 
-- (NLSessionActivityNonMachinePaceAccumulator)initWithBuilder:(id)a3 activityType:(id)a4 activityMoveMode:(int64_t)a5
+- (NLSessionActivityNonMachinePaceAccumulator)initWithBuilder:(id)builder activityType:(id)type activityMoveMode:(int64_t)mode
 {
   v34 = *MEMORY[0x277D85DE8];
-  v32 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, builder);
   v30 = 0;
-  objc_storeStrong(&v30, a4);
-  v29 = a5;
-  v5 = v32;
-  v32 = 0;
+  objc_storeStrong(&v30, type);
+  modeCopy = mode;
+  v5 = selfCopy;
+  selfCopy = 0;
   v28.receiver = v5;
   v28.super_class = NLSessionActivityNonMachinePaceAccumulator;
   v23 = [(NLSessionActivityBuilderAccumulator *)&v28 initWithBuilder:location[0]];
-  v32 = v23;
-  objc_storeStrong(&v32, v23);
+  selfCopy = v23;
+  objc_storeStrong(&selfCopy, v23);
   if (v23)
   {
-    objc_storeStrong(&v32->_activityType, v30);
-    v32->_activityMoveMode = v29;
-    v6 = [MEMORY[0x277CCDAB0] meterUnit];
-    meterUnit = v32->_meterUnit;
-    v32->_meterUnit = v6;
+    objc_storeStrong(&selfCopy->_activityType, v30);
+    selfCopy->_activityMoveMode = modeCopy;
+    meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+    meterUnit = selfCopy->_meterUnit;
+    selfCopy->_meterUnit = meterUnit;
     v8 = [MEMORY[0x277CCDAB0] unitFromString:{@"m/s", MEMORY[0x277D82BD8](meterUnit).n128_f64[0]}];
-    mpsUnit = v32->_mpsUnit;
-    v32->_mpsUnit = v8;
+    mpsUnit = selfCopy->_mpsUnit;
+    selfCopy->_mpsUnit = v8;
     *&v10 = MEMORY[0x277D82BD8](mpsUnit).n128_u64[0];
-    v27 = [MEMORY[0x277CCDBE8] fiui_supportedMetricsForActivityType:v32->_activityType activityMoveMode:{v32->_activityMoveMode, v10}];
+    v27 = [MEMORY[0x277CCDBE8] fiui_supportedMetricsForActivityType:selfCopy->_activityType activityMoveMode:{selfCopy->_activityMoveMode, v10}];
     v20 = 1;
     if (([v27 containsObject:&unk_282279CA0] & 1) == 0)
     {
       v20 = [v27 containsObject:&unk_282279CB8];
     }
 
-    v32->_paceAvailable = v20 & 1;
+    selfCopy->_paceAvailable = v20 & 1;
     objc_storeStrong(&v27, 0);
   }
 
@@ -65,12 +65,12 @@
   {
     log = v26;
     type = v25;
-    v16 = v32;
-    activityMoveMode = v32->_activityMoveMode;
+    v16 = selfCopy;
+    activityMoveMode = selfCopy->_activityMoveMode;
     v19 = NLHKActivityMoveModeString();
     v12 = MEMORY[0x277D82BE0](v19);
     v24 = v12;
-    if (v32->_paceAvailable)
+    if (selfCopy->_paceAvailable)
     {
       v13 = @"YES";
     }
@@ -80,53 +80,53 @@
       v13 = @"NO";
     }
 
-    __os_log_helper_16_2_4_8_64_8_64_8_64_8_64(v33, v16, v12, v13, v32->_activityType);
+    __os_log_helper_16_2_4_8_64_8_64_8_64_8_64(v33, v16, v12, v13, selfCopy->_activityType);
     _os_log_impl(&dword_20AEA4000, log, type, "Pace accumulator %@ init, activityMoveMode: %@, paceAvailable: %@, activityType: %@", v33, 0x2Au);
     MEMORY[0x277D82BD8](v19);
     objc_storeStrong(&v24, 0);
   }
 
   objc_storeStrong(&v26, 0);
-  v15 = MEMORY[0x277D82BE0](v32);
+  v15 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v30, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v32, 0);
+  objc_storeStrong(&selfCopy, 0);
   *MEMORY[0x277D85DE8];
   return v15;
 }
 
-- (void)accumulatorDidStartWithStartDate:(id)a3 handler:(id)a4
+- (void)accumulatorDidStartWithStartDate:(id)date handler:(id)handler
 {
   v41 = *MEMORY[0x277D85DE8];
-  v36 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, date);
   v34 = 0;
-  objc_storeStrong(&v34, a4);
-  objc_initWeak(&from, v36);
-  if ([WOWorkoutSupport shouldTrackPaceWithOdometerFor:v36->_activityType])
+  objc_storeStrong(&v34, handler);
+  objc_initWeak(&from, selfCopy);
+  if ([WOWorkoutSupport shouldTrackPaceWithOdometerFor:selfCopy->_activityType])
   {
     v10 = objc_alloc_init(MEMORY[0x277CC1CF0]);
-    odometer = v36->_odometer;
-    v36->_odometer = v10;
+    odometer = selfCopy->_odometer;
+    selfCopy->_odometer = v10;
     MEMORY[0x277D82BD8](odometer);
-    v9 = v36->_odometer;
+    v9 = selfCopy->_odometer;
     v26 = MEMORY[0x277D85DD0];
     v27 = -1073741824;
     v28 = 0;
     v29 = __87__NLSessionActivityNonMachinePaceAccumulator_accumulatorDidStartWithStartDate_handler___block_invoke;
     v30 = &unk_277D89280;
-    v31 = MEMORY[0x277D82BE0](v36);
+    v31 = MEMORY[0x277D82BE0](selfCopy);
     objc_copyWeak(v32, &from);
     [(CMOdometer *)v9 startOdometerUpdatesForActivity:2 withHandler:&v26];
-    [(CMOdometer *)v36->_odometer setDelegate:v36];
+    [(CMOdometer *)selfCopy->_odometer setDelegate:selfCopy];
     _HKInitializeLogging();
     v25 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
     type = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_2_8_64_8_64(v40, v36, v36->_activityType);
+      __os_log_helper_16_2_2_8_64_8_64(v40, selfCopy, selfCopy->_activityType);
       _os_log_impl(&dword_20AEA4000, v25, type, "Pace accumulator %@ is observing CMOdometer for activityType: %@", v40, 0x16u);
     }
 
@@ -135,20 +135,20 @@
     objc_storeStrong(&v31, 0);
   }
 
-  else if ([WOWorkoutSupport shouldTrackPaceWithPedometerFor:v36->_activityType])
+  else if ([WOWorkoutSupport shouldTrackPaceWithPedometerFor:selfCopy->_activityType])
   {
     v8 = objc_alloc_init(MEMORY[0x277CC1D18]);
-    pedometer = v36->_pedometer;
-    v36->_pedometer = v8;
+    pedometer = selfCopy->_pedometer;
+    selfCopy->_pedometer = v8;
     MEMORY[0x277D82BD8](pedometer);
-    v6 = v36->_pedometer;
+    v6 = selfCopy->_pedometer;
     v7 = location[0];
     v17 = MEMORY[0x277D85DD0];
     v18 = -1073741824;
     v19 = 0;
     v20 = __87__NLSessionActivityNonMachinePaceAccumulator_accumulatorDidStartWithStartDate_handler___block_invoke_318;
     v21 = &unk_277D892A8;
-    v22 = MEMORY[0x277D82BE0](v36);
+    v22 = MEMORY[0x277D82BE0](selfCopy);
     objc_copyWeak(&v23, &from);
     [(CMPedometer *)v6 startPedometerUpdatesFromDate:v7 withHandler:&v17];
     _HKInitializeLogging();
@@ -156,7 +156,7 @@
     v15 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_2_8_64_8_64(v39, v36, v36->_activityType);
+      __os_log_helper_16_2_2_8_64_8_64(v39, selfCopy, selfCopy->_activityType);
       _os_log_impl(&dword_20AEA4000, oslog, v15, "Pace accumulator %@ is observing CMPedometer for activityType: %@", v39, 0x16u);
     }
 
@@ -172,7 +172,7 @@
     v13 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_2_8_64_8_64(v38, v36, v36->_activityType);
+      __os_log_helper_16_2_2_8_64_8_64(v38, selfCopy, selfCopy->_activityType);
       _os_log_impl(&dword_20AEA4000, v14, v13, "Pace accumulator %@ is not observing CMOdometer or CMPedometer for activityType: %@", v38, 0x16u);
     }
 
@@ -183,7 +183,7 @@
   v12 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_2_3_8_64_8_64_8_64(v37, v36, location[0], v36->_activityType);
+    __os_log_helper_16_2_3_8_64_8_64_8_64(v37, selfCopy, location[0], selfCopy->_activityType);
     _os_log_impl(&dword_20AEA4000, v12, OS_LOG_TYPE_DEFAULT, "Pace accumulator %@ did start with start date: %@, activityType: %@", v37, 0x20u);
   }
 
@@ -304,12 +304,12 @@ void __87__NLSessionActivityNonMachinePaceAccumulator_accumulatorDidStartWithSta
   [(NLSessionActivityNonMachinePaceAccumulator *)self _receivedPaceInMetersPerSecond:v2];
 }
 
-- (void)_receivedPaceInMetersPerSecond:(double)a3
+- (void)_receivedPaceInMetersPerSecond:(double)second
 {
-  v12 = self;
+  selfCopy = self;
   v11[2] = a2;
-  v11[1] = *&a3;
-  [(NLSessionActivityNonMachinePaceAccumulator *)self _callUpdateHandlerWithCurrentPaceInMetersPerSecond:a3];
+  v11[1] = *&second;
+  [(NLSessionActivityNonMachinePaceAccumulator *)self _callUpdateHandlerWithCurrentPaceInMetersPerSecond:second];
   v4 = MEMORY[0x277D85CD0];
   v3 = MEMORY[0x277D85CD0];
   queue = v4;
@@ -318,7 +318,7 @@ void __87__NLSessionActivityNonMachinePaceAccumulator_accumulatorDidStartWithSta
   v8 = 0;
   v9 = __77__NLSessionActivityNonMachinePaceAccumulator__receivedPaceInMetersPerSecond___block_invoke;
   v10 = &unk_277D88890;
-  v11[0] = MEMORY[0x277D82BE0](v12);
+  v11[0] = MEMORY[0x277D82BE0](selfCopy);
   dispatch_async(queue, &v6);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(v11, 0);
@@ -340,11 +340,11 @@ double __77__NLSessionActivityNonMachinePaceAccumulator__receivedPaceInMetersPer
   return result;
 }
 
-- (void)_callUpdateHandlerWithCurrentPaceInMetersPerSecond:(double)a3
+- (void)_callUpdateHandlerWithCurrentPaceInMetersPerSecond:(double)second
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
+  secondCopy = second;
   v4 = MEMORY[0x277D85CD0];
   v3 = MEMORY[0x277D85CD0];
   queue = v4;
@@ -353,8 +353,8 @@ double __77__NLSessionActivityNonMachinePaceAccumulator__receivedPaceInMetersPer
   v8 = 0;
   v9 = __97__NLSessionActivityNonMachinePaceAccumulator__callUpdateHandlerWithCurrentPaceInMetersPerSecond___block_invoke;
   v10 = &unk_277D88DB8;
-  v11[0] = MEMORY[0x277D82BE0](v14);
-  v11[1] = *&v12;
+  v11[0] = MEMORY[0x277D82BE0](selfCopy);
+  v11[1] = *&secondCopy;
   dispatch_async(queue, &v6);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(v11, 0);
@@ -379,16 +379,16 @@ double __97__NLSessionActivityNonMachinePaceAccumulator__callUpdateHandlerWithCu
 - (void)accumulatorDidStop
 {
   v5 = *MEMORY[0x277D85DE8];
-  v3 = self;
+  selfCopy = self;
   oslog[1] = a2;
   [(CMPedometer *)self->_pedometer stopPedometerUpdates];
-  [(CMOdometer *)v3->_odometer stopOdometerUpdates];
-  [(NSTimer *)v3->_fakeCurrentPaceTimer invalidate];
+  [(CMOdometer *)selfCopy->_odometer stopOdometerUpdates];
+  [(NSTimer *)selfCopy->_fakeCurrentPaceTimer invalidate];
   _HKInitializeLogging();
   oslog[0] = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_2_2_8_64_8_64(v4, v3, v3->_activityType);
+    __os_log_helper_16_2_2_8_64_8_64(v4, selfCopy, selfCopy->_activityType);
     _os_log_impl(&dword_20AEA4000, oslog[0], OS_LOG_TYPE_DEFAULT, "Pace accumulator %@ did stop, activityType: %@", v4, 0x16u);
   }
 
@@ -399,35 +399,35 @@ double __97__NLSessionActivityNonMachinePaceAccumulator__callUpdateHandlerWithCu
 - (void)dealloc
 {
   v7 = *MEMORY[0x277D85DE8];
-  v5 = self;
+  selfCopy = self;
   oslog[1] = a2;
   _HKInitializeLogging();
   oslog[0] = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   type = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_2_2_8_64_8_64(v6, v5, v5[4]);
+    __os_log_helper_16_2_2_8_64_8_64(v6, selfCopy, selfCopy[4]);
     _os_log_impl(&dword_20AEA4000, oslog[0], type, "Pace accumulator %@ dealloc, activityType: %@", v6, 0x16u);
   }
 
   objc_storeStrong(oslog, 0);
-  v2.receiver = v5;
+  v2.receiver = selfCopy;
   v2.super_class = NLSessionActivityNonMachinePaceAccumulator;
   [(NLSessionActivityNonMachinePaceAccumulator *)&v2 dealloc];
   *MEMORY[0x277D85DE8];
 }
 
-- (void)setCurrentPaceInMetersPerSecond:(double)a3
+- (void)setCurrentPaceInMetersPerSecond:(double)second
 {
-  self->_currentPaceInMetersPerSecond = a3;
-  if (self->_fastestPaceInMetersPerSecond >= a3)
+  self->_currentPaceInMetersPerSecond = second;
+  if (self->_fastestPaceInMetersPerSecond >= second)
   {
     fastestPaceInMetersPerSecond = self->_fastestPaceInMetersPerSecond;
   }
 
   else
   {
-    fastestPaceInMetersPerSecond = a3;
+    fastestPaceInMetersPerSecond = second;
   }
 
   self->_fastestPaceInMetersPerSecond = fastestPaceInMetersPerSecond;
@@ -456,35 +456,35 @@ double __97__NLSessionActivityNonMachinePaceAccumulator__callUpdateHandlerWithCu
   return v2;
 }
 
-- (void)updateAveragePaceWithStatistics:(id)a3 duration:(double)a4
+- (void)updateAveragePaceWithStatistics:(id)statistics duration:(double)duration
 {
   v22 = *MEMORY[0x277D85DE8];
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v18 = a4;
-  [(FIUIWorkoutActivityType *)v20->_activityType effectiveTypeIdentifier];
+  objc_storeStrong(location, statistics);
+  durationCopy = duration;
+  [(FIUIWorkoutActivityType *)selfCopy->_activityType effectiveTypeIdentifier];
   v17 = _HKWorkoutDistanceTypeForActivityType();
-  v16 = [location[0] quantityType];
-  if ([v16 isEqual:v17])
+  quantityType = [location[0] quantityType];
+  if ([quantityType isEqual:v17])
   {
     obj = [location[0] sumQuantity];
-    if ([obj isEqual:v20->_distanceQuantity])
+    if ([obj isEqual:selfCopy->_distanceQuantity])
     {
       v13 = 1;
     }
 
     else
     {
-      objc_storeStrong(&v20->_distanceQuantity, obj);
-      if (v20->_distanceQuantity)
+      objc_storeStrong(&selfCopy->_distanceQuantity, obj);
+      if (selfCopy->_distanceQuantity)
       {
-        v20->_accumulatedDistanceDuration = v18;
-        v4 = [(HKQuantity *)v20->_distanceQuantity doubleValueForUnit:v20->_meterUnit];
-        accumulatedDistanceDuration = v20->_accumulatedDistanceDuration;
+        selfCopy->_accumulatedDistanceDuration = durationCopy;
+        v4 = [(HKQuantity *)selfCopy->_distanceQuantity doubleValueForUnit:selfCopy->_meterUnit];
+        accumulatedDistanceDuration = selfCopy->_accumulatedDistanceDuration;
         MEMORY[0x20F2E8430](v4);
-        [(NLSessionActivityNonMachinePaceAccumulator *)v20 setAveragePaceInMetersPerSecond:?];
+        [(NLSessionActivityNonMachinePaceAccumulator *)selfCopy setAveragePaceInMetersPerSecond:?];
       }
 
       else
@@ -501,7 +501,7 @@ double __97__NLSessionActivityNonMachinePaceAccumulator__callUpdateHandlerWithCu
         }
 
         objc_storeStrong(&oslog, 0);
-        [(NLSessionActivityNonMachinePaceAccumulator *)v20 setAveragePaceInMetersPerSecond:0.0];
+        [(NLSessionActivityNonMachinePaceAccumulator *)selfCopy setAveragePaceInMetersPerSecond:0.0];
       }
 
       v13 = 0;
@@ -517,7 +517,7 @@ double __97__NLSessionActivityNonMachinePaceAccumulator__callUpdateHandlerWithCu
     v14 = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      __os_log_helper_16_2_2_8_64_8_64(v21, v16, v17);
+      __os_log_helper_16_2_2_8_64_8_64(v21, quantityType, v17);
       _os_log_error_impl(&dword_20AEA4000, v15, v14, "Received pace distance quantity type %@, expected %@", v21, 0x16u);
     }
 
@@ -525,45 +525,45 @@ double __97__NLSessionActivityNonMachinePaceAccumulator__callUpdateHandlerWithCu
     v13 = 1;
   }
 
-  objc_storeStrong(&v16, 0);
+  objc_storeStrong(&quantityType, 0);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)updateAveragePaceWithElapsedTime:(double)a3
+- (void)updateAveragePaceWithElapsedTime:(double)time
 {
-  if (a3 - self->_accumulatedDistanceDuration >= 10.0)
+  if (time - self->_accumulatedDistanceDuration >= 10.0)
   {
     MEMORY[0x20F2E8430]([(HKQuantity *)self->_distanceQuantity doubleValueForUnit:self->_meterUnit]);
     [(NLSessionActivityNonMachinePaceAccumulator *)self setAveragePaceInMetersPerSecond:?];
   }
 }
 
-- (void)updateCurrentSpeedWithStatistics:(id)a3 duration:(double)a4
+- (void)updateCurrentSpeedWithStatistics:(id)statistics duration:(double)duration
 {
   v35 = *MEMORY[0x277D85DE8];
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v28 = a4;
-  [(FIUIWorkoutActivityType *)v30->_activityType effectiveTypeIdentifier];
+  objc_storeStrong(location, statistics);
+  durationCopy = duration;
+  [(FIUIWorkoutActivityType *)selfCopy->_activityType effectiveTypeIdentifier];
   v27 = _HKWorkoutSpeedTypeForActivityType();
-  v26 = [location[0] quantityType];
-  if ([v26 isEqual:v27])
+  quantityType = [location[0] quantityType];
+  if ([quantityType isEqual:v27])
   {
     v13 = [MEMORY[0x277CCD720] quantityTypeForIdentifier:*MEMORY[0x277CCC9C8]];
     v14 = [v27 isEqual:?];
     *&v4 = MEMORY[0x277D82BD8](v13).n128_u64[0];
-    if ((v14 & 1) != 0 && [(FIUIWorkoutActivityType *)v30->_activityType identifier]== 13 && ![(FIUIWorkoutActivityType *)v30->_activityType isIndoor])
+    if ((v14 & 1) != 0 && [(FIUIWorkoutActivityType *)selfCopy->_activityType identifier]== 13 && ![(FIUIWorkoutActivityType *)selfCopy->_activityType isIndoor])
     {
       _HKInitializeLogging();
       v22 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
       v21 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
-        __os_log_helper_16_2_1_8_64(v33, v30->_activityType);
+        __os_log_helper_16_2_1_8_64(v33, selfCopy->_activityType);
         _os_log_error_impl(&dword_20AEA4000, v22, v21, "[Speed] ignoring cycling speed sample update for current activity: %@, supported only for Indoor Cycling", v33, 0xCu);
       }
 
@@ -571,21 +571,21 @@ double __97__NLSessionActivityNonMachinePaceAccumulator__callUpdateHandlerWithCu
       v23 = 1;
     }
 
-    else if (v28 >= v30->_accumulatedCurrentSpeedDuration)
+    else if (durationCopy >= selfCopy->_accumulatedCurrentSpeedDuration)
     {
-      v8 = [location[0] mostRecentQuantity];
-      [v8 doubleValueForUnit:v30->_mpsUnit];
+      mostRecentQuantity = [location[0] mostRecentQuantity];
+      [mostRecentQuantity doubleValueForUnit:selfCopy->_mpsUnit];
       v9 = v5;
-      MEMORY[0x277D82BD8](v8);
+      MEMORY[0x277D82BD8](mostRecentQuantity);
       v18 = *&v9;
-      [(NLSessionActivityNonMachinePaceAccumulator *)v30 _receivedPaceInMetersPerSecond:v9];
-      v30->_accumulatedCurrentSpeedDuration = v28;
+      [(NLSessionActivityNonMachinePaceAccumulator *)selfCopy _receivedPaceInMetersPerSecond:v9];
+      selfCopy->_accumulatedCurrentSpeedDuration = durationCopy;
       [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
       v11 = v6;
-      v10 = [location[0] endDate];
-      [v10 timeIntervalSinceReferenceDate];
+      endDate = [location[0] endDate];
+      [endDate timeIntervalSinceReferenceDate];
       v12 = v11 - v7;
-      MEMORY[0x277D82BD8](v10);
+      MEMORY[0x277D82BD8](endDate);
       v17 = *&v12;
       _HKInitializeLogging();
       oslog = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
@@ -606,7 +606,7 @@ double __97__NLSessionActivityNonMachinePaceAccumulator__callUpdateHandlerWithCu
       v19 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        __os_log_helper_16_0_2_8_0_8_0(v32, *&v28, *&v30->_accumulatedCurrentSpeedDuration);
+        __os_log_helper_16_0_2_8_0_8_0(v32, *&durationCopy, *&selfCopy->_accumulatedCurrentSpeedDuration);
         _os_log_error_impl(&dword_20AEA4000, v20, v19, "[Speed] ignoring speed update at workout_time=%f because it's less than current known workout_time=%f", v32, 0x16u);
       }
 
@@ -622,7 +622,7 @@ double __97__NLSessionActivityNonMachinePaceAccumulator__callUpdateHandlerWithCu
     v24 = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      __os_log_helper_16_2_2_8_64_8_64(v34, v26, v27);
+      __os_log_helper_16_2_2_8_64_8_64(v34, quantityType, v27);
       _os_log_error_impl(&dword_20AEA4000, v25, v24, "[Speed] ignoring speed quantity_type=%@, expected_quantity_type=%@", v34, 0x16u);
     }
 
@@ -630,7 +630,7 @@ double __97__NLSessionActivityNonMachinePaceAccumulator__callUpdateHandlerWithCu
     v23 = 1;
   }
 
-  objc_storeStrong(&v26, 0);
+  objc_storeStrong(&quantityType, 0);
   objc_storeStrong(&v27, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
@@ -647,20 +647,20 @@ double __97__NLSessionActivityNonMachinePaceAccumulator__callUpdateHandlerWithCu
   return v2;
 }
 
-- (void)odometer:(id)a3 didUpdateGpsAvailability:(BOOL)a4
+- (void)odometer:(id)odometer didUpdateGpsAvailability:(BOOL)availability
 {
   v21 = *MEMORY[0x277D85DE8];
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v17 = a4;
+  objc_storeStrong(location, odometer);
+  availabilityCopy = availability;
   _HKInitializeLogging();
   v16 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   v15 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_0_1_4_0(v20, v17);
+    __os_log_helper_16_0_1_4_0(v20, availabilityCopy);
     _os_log_impl(&dword_20AEA4000, v16, v15, "Odometer updated GPS availability: %d", v20, 8u);
   }
 
@@ -673,8 +673,8 @@ double __97__NLSessionActivityNonMachinePaceAccumulator__callUpdateHandlerWithCu
   v10 = 0;
   v11 = __80__NLSessionActivityNonMachinePaceAccumulator_odometer_didUpdateGpsAvailability___block_invoke;
   v12 = &unk_277D88868;
-  v13 = MEMORY[0x277D82BE0](v19);
-  v14 = v17;
+  v13 = MEMORY[0x277D82BE0](selfCopy);
+  v14 = availabilityCopy;
   dispatch_async(queue, &v8);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(&v13, 0);

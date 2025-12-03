@@ -1,55 +1,55 @@
 @interface NTKDialView
-- (BOOL)shouldHideMarkerAtIndex:(int64_t)a3;
-- (CGPoint)centerPointForAngle:(double)a3 radius:(int64_t)a4;
-- (CGPoint)positionForMarkerAtIndex:(unint64_t)a3;
-- (NTKDialView)initWithNumberOfMarkers:(unint64_t)a3 markersFactory:(id)a4 angleProvider:(id)a5;
-- (double)angleForIndex:(double)a3;
-- (double)searchForClosestMarkerAngleAtAngle:(double)a3;
+- (BOOL)shouldHideMarkerAtIndex:(int64_t)index;
+- (CGPoint)centerPointForAngle:(double)angle radius:(int64_t)radius;
+- (CGPoint)positionForMarkerAtIndex:(unint64_t)index;
+- (NTKDialView)initWithNumberOfMarkers:(unint64_t)markers markersFactory:(id)factory angleProvider:(id)provider;
+- (double)angleForIndex:(double)index;
+- (double)searchForClosestMarkerAngleAtAngle:(double)angle;
 - (double)totalDiameter;
-- (id)markerAtIndex:(unint64_t)a3;
-- (unint64_t)searchForClosestIndexAtAngle:(double)a3;
-- (void)_layoutCurvedLabel:(id)a3 rotationAngle:(double)a4;
-- (void)enumerateMarkers:(id)a3;
+- (id)markerAtIndex:(unint64_t)index;
+- (unint64_t)searchForClosestIndexAtAngle:(double)angle;
+- (void)_layoutCurvedLabel:(id)label rotationAngle:(double)angle;
+- (void)enumerateMarkers:(id)markers;
 - (void)layoutMarkers;
 - (void)layoutSubviews;
 - (void)reloadMarkers;
-- (void)replaceMarker:(id)a3 atIndex:(int64_t)a4;
-- (void)setAngleOffset:(double)a3;
-- (void)setContentInset:(double)a3;
-- (void)setDiameter:(double)a3;
-- (void)setDisableLayout:(BOOL)a3;
-- (void)setHidingMaskEndAngle:(id)a3;
-- (void)setHidingMaskStartAngle:(id)a3;
-- (void)setMarkerRotationProvider:(id)a3;
+- (void)replaceMarker:(id)marker atIndex:(int64_t)index;
+- (void)setAngleOffset:(double)offset;
+- (void)setContentInset:(double)inset;
+- (void)setDiameter:(double)diameter;
+- (void)setDisableLayout:(BOOL)layout;
+- (void)setHidingMaskEndAngle:(id)angle;
+- (void)setHidingMaskStartAngle:(id)angle;
+- (void)setMarkerRotationProvider:(id)provider;
 - (void)updateMarkersVisibility;
 @end
 
 @implementation NTKDialView
 
-- (NTKDialView)initWithNumberOfMarkers:(unint64_t)a3 markersFactory:(id)a4 angleProvider:(id)a5
+- (NTKDialView)initWithNumberOfMarkers:(unint64_t)markers markersFactory:(id)factory angleProvider:(id)provider
 {
-  v8 = a4;
-  v9 = a5;
+  factoryCopy = factory;
+  providerCopy = provider;
   v24.receiver = self;
   v24.super_class = NTKDialView;
   v10 = [(NTKDialView *)&v24 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   if (v10)
   {
     v11 = +[(CLKRenderingContext *)NTKFaceViewRenderingContext];
-    v12 = [v11 device];
+    device = [v11 device];
     device = v10->_device;
-    v10->_device = v12;
+    v10->_device = device;
 
-    v14 = _Block_copy(v9);
+    v14 = _Block_copy(providerCopy);
     angleProvider = v10->_angleProvider;
     v10->_angleProvider = v14;
 
-    v10->_numberOfMarkers = a3;
-    v16 = _Block_copy(v8);
+    v10->_numberOfMarkers = markers;
+    v16 = _Block_copy(factoryCopy);
     markersFactory = v10->_markersFactory;
     v10->_markersFactory = v16;
 
-    v18 = [MEMORY[0x277CBEB18] arrayWithCapacity:a3];
+    v18 = [MEMORY[0x277CBEB18] arrayWithCapacity:markers];
     markers = v10->_markers;
     v10->_markers = v18;
 
@@ -57,8 +57,8 @@
     markerContainerView = v10->_markerContainerView;
     v10->_markerContainerView = v20;
 
-    v22 = [MEMORY[0x277D75348] clearColor];
-    [(UIView *)v10->_markerContainerView setBackgroundColor:v22];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UIView *)v10->_markerContainerView setBackgroundColor:clearColor];
 
     [(NTKDialView *)v10 addSubview:v10->_markerContainerView];
     v10->_shouldPixelAlignCenterPoints = 1;
@@ -91,15 +91,15 @@
   }
 }
 
-- (void)replaceMarker:(id)a3 atIndex:(int64_t)a4
+- (void)replaceMarker:(id)marker atIndex:(int64_t)index
 {
-  v7 = a3;
-  if ([(NSMutableArray *)self->_markers count]> a4)
+  markerCopy = marker;
+  if ([(NSMutableArray *)self->_markers count]> index)
   {
-    v6 = [(NSMutableArray *)self->_markers objectAtIndexedSubscript:a4];
+    v6 = [(NSMutableArray *)self->_markers objectAtIndexedSubscript:index];
     [v6 removeFromParent];
-    [(NSMutableArray *)self->_markers setObject:v7 atIndexedSubscript:a4];
-    [v7 addToParentView:self->_markerContainerView];
+    [(NSMutableArray *)self->_markers setObject:markerCopy atIndexedSubscript:index];
+    [markerCopy addToParentView:self->_markerContainerView];
     [(NTKDialView *)self layoutMarkers];
   }
 }
@@ -112,16 +112,16 @@
   [(NTKDialView *)self layoutMarkers];
 }
 
-- (void)enumerateMarkers:(id)a3
+- (void)enumerateMarkers:(id)markers
 {
-  v4 = a3;
+  markersCopy = markers;
   markers = self->_markers;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __32__NTKDialView_enumerateMarkers___block_invoke;
   v7[3] = &unk_27877F880;
-  v8 = v4;
-  v6 = v4;
+  v8 = markersCopy;
+  v6 = markersCopy;
   [(NSMutableArray *)markers enumerateObjectsUsingBlock:v7];
 }
 
@@ -138,11 +138,11 @@ void __32__NTKDialView_enumerateMarkers___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)setDiameter:(double)a3
+- (void)setDiameter:(double)diameter
 {
   if ((CLKFloatEqualsFloat() & 1) == 0)
   {
-    self->_diameter = a3;
+    self->_diameter = diameter;
     [(NTKDialView *)self totalDiameter];
     if (v5 > 0.0)
     {
@@ -152,11 +152,11 @@ void __32__NTKDialView_enumerateMarkers___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)setContentInset:(double)a3
+- (void)setContentInset:(double)inset
 {
   if ((CLKFloatEqualsFloat() & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
     self->_needsLayoutMarkers = 1;
 
     [(NTKDialView *)self setNeedsLayout];
@@ -174,11 +174,11 @@ void __32__NTKDialView_enumerateMarkers___block_invoke(uint64_t a1, void *a2)
   return diameter - self->_contentInset;
 }
 
-- (void)setAngleOffset:(double)a3
+- (void)setAngleOffset:(double)offset
 {
-  if (self->_angleOffset != a3)
+  if (self->_angleOffset != offset)
   {
-    self->_angleOffset = a3;
+    self->_angleOffset = offset;
     [(NTKDialView *)self totalDiameter];
     if (v4 > 0.0)
     {
@@ -188,34 +188,34 @@ void __32__NTKDialView_enumerateMarkers___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (double)searchForClosestMarkerAngleAtAngle:(double)a3
+- (double)searchForClosestMarkerAngleAtAngle:(double)angle
 {
-  v4 = [(NTKDialView *)self searchForClosestIndexAtAngle:a3];
+  v4 = [(NTKDialView *)self searchForClosestIndexAtAngle:angle];
 
   [(NTKDialView *)self angleForIndex:v4];
   return result;
 }
 
-- (unint64_t)searchForClosestIndexAtAngle:(double)a3
+- (unint64_t)searchForClosestIndexAtAngle:(double)angle
 {
   v4 = 360.0 / [(NTKDialView *)self numberOfMarkers];
-  if (v4 - a3 % v4 > a3 % v4)
+  if (v4 - angle % v4 > angle % v4)
   {
-    v5 = a3 / v4;
+    v5 = angle / v4;
   }
 
   else
   {
-    v5 = a3 / v4 + 1;
+    v5 = angle / v4 + 1;
   }
 
   return (v5 % 24) & ~((v5 % 24) >> 63);
 }
 
-- (void)setDisableLayout:(BOOL)a3
+- (void)setDisableLayout:(BOOL)layout
 {
-  self->_disableLayout = a3;
-  if (!a3 && self->_needsLayoutMarkers)
+  self->_disableLayout = layout;
+  if (!layout && self->_needsLayoutMarkers)
   {
     self->_needsLayoutMarkers = 0;
     [(NTKDialView *)self layoutMarkers];
@@ -290,9 +290,9 @@ LABEL_36:
     if (objc_opt_isKindOfClass())
     {
       v26 = v23;
-      v27 = [v26 interior];
+      interior = [v26 interior];
       v28 = v25 + v21;
-      if (!v27)
+      if (!interior)
       {
         v28 = v25;
       }
@@ -311,7 +311,7 @@ LABEL_35:
     v31 = v66.f64[1];
     if ([(NTKDialView *)self shouldPixelAlignCenterPoints])
     {
-      v32 = [(NTKDialView *)self device];
+      device = [(NTKDialView *)self device];
       CLKPointRoundForDevice();
       v66.f64[0] = v33;
       v31 = v34;
@@ -322,22 +322,22 @@ LABEL_35:
     v36 = v31 - v15;
     if ([(NTKDialView *)self shouldPixelAlignCenterPoints])
     {
-      v37 = [(NTKDialView *)self device];
+      device2 = [(NTKDialView *)self device];
       CLKRoundForDevice();
       v35 = v38;
 
-      v39 = [(NTKDialView *)self device];
+      device3 = [(NTKDialView *)self device];
       CLKRoundForDevice();
       v36 = v40;
     }
 
     memset(&v69, 0, sizeof(v69));
     CGAffineTransformMakeTranslation(&v69, v35, v36);
-    v41 = [(NTKDialView *)self shouldRotateMarkers];
-    if (v41)
+    shouldRotateMarkers = [(NTKDialView *)self shouldRotateMarkers];
+    if (shouldRotateMarkers)
     {
-      v2 = [(NTKDialView *)self markersToRotateIndexSet];
-      if (([v2 containsIndex:v16] & 1) == 0)
+      markersToRotateIndexSet = [(NTKDialView *)self markersToRotateIndexSet];
+      if (([markersToRotateIndexSet containsIndex:v16] & 1) == 0)
       {
 
         goto LABEL_28;
@@ -366,7 +366,7 @@ LABEL_32:
         v53 = v18;
         v54 = v17;
         v56 = v55;
-        v57 = [(NTKDialView *)self device];
+        device4 = [(NTKDialView *)self device];
         CLKPointRoundForDevice();
         v59 = v58;
         v61 = v60;
@@ -387,10 +387,10 @@ LABEL_32:
       goto LABEL_31;
     }
 
-    v42 = [(NTKDialView *)self markersToRotateIndexSet];
-    v43 = [v42 containsIndex:v16];
+    markersToRotateIndexSet2 = [(NTKDialView *)self markersToRotateIndexSet];
+    v43 = [markersToRotateIndexSet2 containsIndex:v16];
 
-    if (v41)
+    if (shouldRotateMarkers)
     {
 
       v20 = &OBJC_IVAR____NTKPhotosPhotoFaceUpgradeContext__bottomComplication;
@@ -410,12 +410,12 @@ LABEL_32:
     }
 
 LABEL_28:
-    v44 = [(NTKDialView *)self markerRotationProvider];
+    markerRotationProvider = [(NTKDialView *)self markerRotationProvider];
 
-    if (v44)
+    if (markerRotationProvider)
     {
-      v45 = [(NTKDialView *)self markerRotationProvider];
-      v45[2](v45, v16);
+      markerRotationProvider2 = [(NTKDialView *)self markerRotationProvider];
+      markerRotationProvider2[2](markerRotationProvider2, v16);
     }
 
     CLKDegreesToRadians();
@@ -430,28 +430,28 @@ LABEL_37:
   [MEMORY[0x277CD9FF0] setDisableActions:0];
 }
 
-- (void)_layoutCurvedLabel:(id)a3 rotationAngle:(double)a4
+- (void)_layoutCurvedLabel:(id)label rotationAngle:(double)angle
 {
   v5 = *(MEMORY[0x277CBF2C0] + 16);
   *&v24.a = *MEMORY[0x277CBF2C0];
   *&v24.c = v5;
   *&v24.tx = *(MEMORY[0x277CBF2C0] + 32);
-  v6 = a3;
-  [v6 setTransform:&v24];
-  [v6 frame];
-  [v6 sizeThatFits:{v7, v8}];
-  [v6 setFrame:{0.0, 0.0, v9, v10}];
+  labelCopy = label;
+  [labelCopy setTransform:&v24];
+  [labelCopy frame];
+  [labelCopy sizeThatFits:{v7, v8}];
+  [labelCopy setFrame:{0.0, 0.0, v9, v10}];
   v11 = MEMORY[0x2318D8E70]([(NTKDialView *)self bounds]);
   v13 = v12;
   v23 = *MEMORY[0x277CBF348];
-  [v6 getTextCenter:&v23 startAngle:0 endAngle:0];
+  [labelCopy getTextCenter:&v23 startAngle:0 endAngle:0];
   v14 = v23;
   v15 = v11 - *&v23;
   v16 = v13 - *(&v23 + 1);
-  [v6 frame];
+  [labelCopy frame];
   v17 = *&v14 - CGRectGetMidX(v25);
   v18 = *(&v23 + 1);
-  [v6 frame];
+  [labelCopy frame];
   v19 = v18 - CGRectGetMidY(v26);
   memset(&v24, 0, sizeof(v24));
   CGAffineTransformMakeTranslation(&v24, v15, v16);
@@ -465,25 +465,25 @@ LABEL_37:
   v21 = v22;
   CGAffineTransformTranslate(&v22, &v21, -v17, -v19);
   v24 = v22;
-  [v6 setTransform:&v22];
+  [labelCopy setTransform:&v22];
 }
 
-- (void)setMarkerRotationProvider:(id)a3
+- (void)setMarkerRotationProvider:(id)provider
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(provider);
   markerRotationProvider = self->_markerRotationProvider;
   self->_markerRotationProvider = v4;
 
   [(NTKDialView *)self layoutMarkers];
 }
 
-- (void)setHidingMaskStartAngle:(id)a3
+- (void)setHidingMaskStartAngle:(id)angle
 {
-  v7 = a3;
+  angleCopy = angle;
   if (![(NSNumber *)self->_hidingMaskStartAngle isEqualToNumber:?])
   {
     v4 = MEMORY[0x277CCABB0];
-    [v7 floatValue];
+    [angleCopy floatValue];
     NTKNormalizeAngle();
     v5 = [v4 numberWithDouble:?];
     hidingMaskStartAngle = self->_hidingMaskStartAngle;
@@ -493,13 +493,13 @@ LABEL_37:
   }
 }
 
-- (void)setHidingMaskEndAngle:(id)a3
+- (void)setHidingMaskEndAngle:(id)angle
 {
-  v7 = a3;
+  angleCopy = angle;
   if (![(NSNumber *)self->_hidingMaskEndAngle isEqualToNumber:?])
   {
     v4 = MEMORY[0x277CCABB0];
-    [v7 floatValue];
+    [angleCopy floatValue];
     NTKNormalizeAngle();
     v5 = [v4 numberWithDouble:?];
     hidingMaskEndAngle = self->_hidingMaskEndAngle;
@@ -534,14 +534,14 @@ LABEL_37:
   }
 }
 
-- (BOOL)shouldHideMarkerAtIndex:(int64_t)a3
+- (BOOL)shouldHideMarkerAtIndex:(int64_t)index
 {
   if (!self->_hidingMaskStartAngle && !self->_hidingMaskEndAngle)
   {
     return 0;
   }
 
-  [(NTKDialView *)self angleForIndex:a3];
+  [(NTKDialView *)self angleForIndex:index];
   v5 = v4;
   [(NSNumber *)self->_hidingMaskStartAngle floatValue];
   v7 = v6;
@@ -561,35 +561,35 @@ LABEL_37:
   return v5 <= v13;
 }
 
-- (id)markerAtIndex:(unint64_t)a3
+- (id)markerAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_markers count]<= a3)
+  if ([(NSMutableArray *)self->_markers count]<= index)
   {
-    v5 = [(NTKDialView *)self markersFactory];
-    v6 = v5[2](v5, a3);
+    markersFactory = [(NTKDialView *)self markersFactory];
+    v6 = markersFactory[2](markersFactory, index);
 
     if (v6)
     {
-      v7 = [(NTKDialView *)self markers];
-      [v7 addObject:v6];
+      markers = [(NTKDialView *)self markers];
+      [markers addObject:v6];
 
       [v6 addToParentView:self->_markerContainerView];
     }
 
     else
     {
-      v8 = [MEMORY[0x277CBEB68] null];
-      v9 = [(NTKDialView *)self markers];
-      [v9 addObject:v8];
+      null = [MEMORY[0x277CBEB68] null];
+      markers2 = [(NTKDialView *)self markers];
+      [markers2 addObject:null];
     }
   }
 
-  v10 = [(NTKDialView *)self markers];
-  v11 = [v10 objectAtIndexedSubscript:a3];
+  markers3 = [(NTKDialView *)self markers];
+  v11 = [markers3 objectAtIndexedSubscript:index];
 
-  v12 = [MEMORY[0x277CBEB68] null];
+  null2 = [MEMORY[0x277CBEB68] null];
 
-  if (v11 == v12)
+  if (v11 == null2)
   {
     v13 = 0;
   }
@@ -602,11 +602,11 @@ LABEL_37:
   return v13;
 }
 
-- (double)angleForIndex:(double)a3
+- (double)angleForIndex:(double)index
 {
-  v5 = [(NTKDialView *)self angleProvider];
+  angleProvider = [(NTKDialView *)self angleProvider];
 
-  if (v5 && ([(NTKDialView *)self angleProvider], v6 = objc_claimAutoreleasedReturnValue(), v6[2](v6, a3), v7 = objc_claimAutoreleasedReturnValue(), v6, v7))
+  if (angleProvider && ([(NTKDialView *)self angleProvider], v6 = objc_claimAutoreleasedReturnValue(), v6[2](v6, index), v7 = objc_claimAutoreleasedReturnValue(), v6, v7))
   {
     [v7 floatValue];
     NTKNormalizeAngle();
@@ -625,12 +625,12 @@ LABEL_37:
   return result;
 }
 
-- (CGPoint)positionForMarkerAtIndex:(unint64_t)a3
+- (CGPoint)positionForMarkerAtIndex:(unint64_t)index
 {
-  v5 = [(NTKDialView *)self markers];
-  v6 = [v5 count];
+  markers = [(NTKDialView *)self markers];
+  v6 = [markers count];
 
-  if (v6 > a3 && ([(NTKDialView *)self markerAtIndex:a3], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (v6 > index && ([(NTKDialView *)self markerAtIndex:index], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v8 = v7;
     [v7 position];
@@ -652,12 +652,12 @@ LABEL_37:
   return result;
 }
 
-- (CGPoint)centerPointForAngle:(double)a3 radius:(int64_t)a4
+- (CGPoint)centerPointForAngle:(double)angle radius:(int64_t)radius
 {
   CLKDegreesToRadians();
   memset(&v8, 0, sizeof(v8));
   CGAffineTransformMakeRotation(&v8, v5);
-  v6 = vaddq_f64(*&v8.tx, vmlaq_f64(vmulq_n_f64(*&v8.c, -a4), 0, *&v8.a));
+  v6 = vaddq_f64(*&v8.tx, vmlaq_f64(vmulq_n_f64(*&v8.c, -radius), 0, *&v8.a));
   v7 = v6.f64[1];
   result.x = v6.f64[0];
   result.y = v7;

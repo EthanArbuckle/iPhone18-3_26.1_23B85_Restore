@@ -9,13 +9,13 @@
 
 - (void)threeDToggleDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B3730F18();
 }
 
 - (void)createAndStartToast
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B373124C();
 }
 

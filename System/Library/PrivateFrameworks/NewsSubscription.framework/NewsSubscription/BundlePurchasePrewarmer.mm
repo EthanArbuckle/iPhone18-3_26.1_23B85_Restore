@@ -1,7 +1,7 @@
 @interface BundlePurchasePrewarmer
 - (_TtC16NewsSubscription23BundlePurchasePrewarmer)init;
-- (void)bundleSubscriptionDidExpire:(id)a3;
-- (void)networkReachabilityDidChange:(id)a3;
+- (void)bundleSubscriptionDidExpire:(id)expire;
+- (void)networkReachabilityDidChange:(id)change;
 @end
 
 @implementation BundlePurchasePrewarmer
@@ -13,11 +13,11 @@
   return result;
 }
 
-- (void)networkReachabilityDidChange:(id)a3
+- (void)networkReachabilityDidChange:(id)change
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  if ([a3 isNetworkReachable])
+  selfCopy = self;
+  if ([change isNetworkReachable])
   {
     sub_1D7756490();
   }
@@ -25,9 +25,9 @@
   swift_unknownObjectRelease();
 }
 
-- (void)bundleSubscriptionDidExpire:(id)a3
+- (void)bundleSubscriptionDidExpire:(id)expire
 {
-  v3 = self;
+  selfCopy = self;
   sub_1D7756490();
 }
 

@@ -1,27 +1,27 @@
 @interface WFPlayMusicContextualAction
 + (WFContextualActionParameter)disambiguationParameter;
 + (WFTopHitItemContextualAction)disambiguationAction;
-+ (id)disambiguationSummaryStringForCollection:(id)a3;
-+ (id)disambiguationSummaryStringWithParameterDefined:(BOOL)a3;
-+ (void)_unsafeDisambiguationEntriesForCollection:(id)a3 limit:(int64_t)a4 completionHandler:(id)a5;
-- (WFPlayMusicContextualAction)initWithCoder:(id)a3;
-- (WFPlayMusicContextualAction)initWithIntent:(id)a3 artwork:(id)a4 namedQueryInfo:(id)a5;
++ (id)disambiguationSummaryStringForCollection:(id)collection;
++ (id)disambiguationSummaryStringWithParameterDefined:(BOOL)defined;
++ (void)_unsafeDisambiguationEntriesForCollection:(id)collection limit:(int64_t)limit completionHandler:(id)handler;
+- (WFPlayMusicContextualAction)initWithCoder:(id)coder;
+- (WFPlayMusicContextualAction)initWithIntent:(id)intent artwork:(id)artwork namedQueryInfo:(id)info;
 - (id)_staticDisplayStringForDecoding;
 - (id)uniqueIdentifier;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFPlayMusicContextualAction
 
-- (WFPlayMusicContextualAction)initWithCoder:(id)a3
+- (WFPlayMusicContextualAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WFPlayMusicContextualAction;
-  v5 = [(WFContextualAction *)&v10 initWithCoder:v4];
+  v5 = [(WFContextualAction *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"intent"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"intent"];
     intent = v5->_intent;
     v5->_intent = v6;
 
@@ -31,33 +31,33 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = WFPlayMusicContextualAction;
-  v4 = a3;
-  [(WFContextualAction *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFContextualAction *)&v6 encodeWithCoder:coderCopy];
   v5 = [(WFPlayMusicContextualAction *)self intent:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"intent"];
+  [coderCopy encodeObject:v5 forKey:@"intent"];
 }
 
-- (WFPlayMusicContextualAction)initWithIntent:(id)a3 artwork:(id)a4 namedQueryInfo:(id)a5
+- (WFPlayMusicContextualAction)initWithIntent:(id)intent artwork:(id)artwork namedQueryInfo:(id)info
 {
-  v9 = a3;
-  v35 = a4;
-  v10 = a5;
-  if (!v9)
+  intentCopy = intent;
+  artworkCopy = artwork;
+  infoCopy = info;
+  if (!intentCopy)
   {
     [MEMORY[0x1E696AAA8] currentHandler];
-    v31 = v30 = v10;
+    v31 = v30 = infoCopy;
     [v31 handleFailureInMethod:a2 object:self file:@"WFPlayMusicContextualAction.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"intent"}];
 
-    v10 = v30;
+    infoCopy = v30;
   }
 
-  if (v35)
+  if (artworkCopy)
   {
-    v11 = [[WFContextualActionIcon alloc] initWithImageData:v35 scale:0 displayStyle:2.0];
+    v11 = [[WFContextualActionIcon alloc] initWithImageData:artworkCopy scale:0 displayStyle:2.0];
   }
 
   else
@@ -66,59 +66,59 @@
   }
 
   v34 = v11;
-  v12 = MEMORY[0x1E696AEC0];
+  firstObject2 = MEMORY[0x1E696AEC0];
   v13 = WFLocalizedString(@"Play %@");
-  v14 = [v9 mediaContainer];
-  v15 = [v14 title];
-  v16 = v15;
-  if (v15)
+  mediaContainer = [intentCopy mediaContainer];
+  title = [mediaContainer title];
+  v16 = title;
+  if (title)
   {
-    v17 = [v12 localizedStringWithFormat:v13, v15];
+    v17 = [firstObject2 localizedStringWithFormat:v13, title];
   }
 
   else
   {
-    v32 = self;
-    v33 = v10;
-    v18 = [v9 mediaItems];
-    v19 = [v18 firstObject];
-    v20 = [v19 title];
-    v21 = v20;
-    if (v20)
+    selfCopy = self;
+    mediaItems2 = infoCopy;
+    mediaItems = [intentCopy mediaItems];
+    firstObject = [mediaItems firstObject];
+    title2 = [firstObject title];
+    v21 = title2;
+    if (title2)
     {
-      v17 = [v12 localizedStringWithFormat:v13, v20];
+      v17 = [firstObject2 localizedStringWithFormat:v13, title2];
     }
 
     else
     {
       v22 = WFLocalizedString(@"Music");
-      v17 = [v12 localizedStringWithFormat:v13, v22];
+      v17 = [firstObject2 localizedStringWithFormat:v13, v22];
     }
 
-    self = v32;
-    v10 = v33;
+    self = selfCopy;
+    infoCopy = mediaItems2;
   }
 
   v23 = WFLocalizedString(@"Play Music");
-  v24 = [v9 mediaContainer];
-  v25 = [v24 title];
-  v26 = v25;
-  if (!v25)
+  mediaContainer2 = [intentCopy mediaContainer];
+  title3 = [mediaContainer2 title];
+  title4 = title3;
+  if (!title3)
   {
-    v33 = [v9 mediaItems];
-    v12 = [v33 firstObject];
-    v26 = [v12 title];
+    mediaItems2 = [intentCopy mediaItems];
+    firstObject2 = [mediaItems2 firstObject];
+    title4 = [firstObject2 title];
   }
 
   v36.receiver = self;
   v36.super_class = WFPlayMusicContextualAction;
-  v27 = v10;
-  v28 = [(WFTopHitItemContextualAction *)&v36 initWithItem:v9 identifier:@"is.workflow.actions.playmusic" wfActionIdentifier:@"is.workflow.actions.playmusic" associatedAppBundleIdentifier:@"com.apple.Music" parameters:MEMORY[0x1E695E0F0] displayString:v17 title:v23 subtitle:v26 primaryColor:0 icon:v34 accessoryIcon:0 namedQueryInfo:v10];
-  if (!v25)
+  v27 = infoCopy;
+  v28 = [(WFTopHitItemContextualAction *)&v36 initWithItem:intentCopy identifier:@"is.workflow.actions.playmusic" wfActionIdentifier:@"is.workflow.actions.playmusic" associatedAppBundleIdentifier:@"com.apple.Music" parameters:MEMORY[0x1E695E0F0] displayString:v17 title:v23 subtitle:title4 primaryColor:0 icon:v34 accessoryIcon:0 namedQueryInfo:infoCopy];
+  if (!title3)
   {
   }
 
-  [(WFPlayMusicContextualAction *)v28 setIntent:v9];
+  [(WFPlayMusicContextualAction *)v28 setIntent:intentCopy];
   return v28;
 }
 
@@ -126,25 +126,25 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = WFLocalizedString(@"Play %@");
-  v5 = [(WFPlayMusicContextualAction *)self intent];
-  v6 = [v5 mediaContainer];
-  v7 = [v6 title];
-  v8 = v7;
-  if (v7)
+  intent = [(WFPlayMusicContextualAction *)self intent];
+  mediaContainer = [intent mediaContainer];
+  title = [mediaContainer title];
+  v8 = title;
+  if (title)
   {
-    v9 = [v3 localizedStringWithFormat:v4, v7];
+    v9 = [v3 localizedStringWithFormat:v4, title];
   }
 
   else
   {
-    v10 = [(WFPlayMusicContextualAction *)self intent];
-    v11 = [v10 mediaItems];
-    v12 = [v11 firstObject];
-    v13 = [v12 title];
-    v14 = v13;
-    if (v13)
+    intent2 = [(WFPlayMusicContextualAction *)self intent];
+    mediaItems = [intent2 mediaItems];
+    firstObject = [mediaItems firstObject];
+    title2 = [firstObject title];
+    v14 = title2;
+    if (title2)
     {
-      v9 = [v3 localizedStringWithFormat:v4, v13];
+      v9 = [v3 localizedStringWithFormat:v4, title2];
     }
 
     else
@@ -159,18 +159,18 @@
 
 - (id)uniqueIdentifier
 {
-  v3 = [(WFContextualAction *)self identifier];
-  v4 = [(WFPlayMusicContextualAction *)self intent];
-  v5 = [v4 mediaContainer];
-  v6 = [v5 identifier];
-  v7 = [v3 stringByAppendingFormat:@":%@", v6];
+  identifier = [(WFContextualAction *)self identifier];
+  intent = [(WFPlayMusicContextualAction *)self intent];
+  mediaContainer = [intent mediaContainer];
+  identifier2 = [mediaContainer identifier];
+  v7 = [identifier stringByAppendingFormat:@":%@", identifier2];
 
   return v7;
 }
 
-+ (id)disambiguationSummaryStringWithParameterDefined:(BOOL)a3
++ (id)disambiguationSummaryStringWithParameterDefined:(BOOL)defined
 {
-  if (a3)
+  if (defined)
   {
     v3 = @"Populated Play Specific Music (Title)";
     v4 = @"Play ${WFMediaItems}";
@@ -187,9 +187,9 @@
   return v5;
 }
 
-+ (id)disambiguationSummaryStringForCollection:(id)a3
++ (id)disambiguationSummaryStringForCollection:(id)collection
 {
-  if ([a3 isEqualToString:@"Suggested"])
+  if ([collection isEqualToString:@"Suggested"])
   {
     v3 = WFLocalizedStringWithKey(@"Recently Played (Disambiguation Action Title)", @"Recently Played");
   }
@@ -202,12 +202,12 @@
   return v3;
 }
 
-+ (void)_unsafeDisambiguationEntriesForCollection:(id)a3 limit:(int64_t)a4 completionHandler:(id)a5
++ (void)_unsafeDisambiguationEntriesForCollection:(id)collection limit:(int64_t)limit completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  collectionCopy = collection;
+  handlerCopy = handler;
   v9 = +[VCVoiceShortcutClient standardClient];
-  v10 = v7;
+  v10 = collectionCopy;
   v11 = v10;
   if (v10 == @"Suggested" || v10 && (v12 = [(__CFString *)v10 isEqualToString:@"Suggested"], v11, (v12 & 1) != 0))
   {
@@ -215,14 +215,14 @@
     v14[1] = 3221225472;
     v14[2] = __97__WFPlayMusicContextualAction__unsafeDisambiguationEntriesForCollection_limit_completionHandler___block_invoke;
     v14[3] = &unk_1E7B026A8;
-    v15 = v8;
-    [v9 getUpcomingMediaForBundleIdentifier:@"com.apple.Music" limit:a4 completion:v14];
+    v15 = handlerCopy;
+    [v9 getUpcomingMediaForBundleIdentifier:@"com.apple.Music" limit:limit completion:v14];
   }
 
   else
   {
     v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"TopHitItemContextualActionError" code:0 userInfo:0];
-    (*(v8 + 2))(v8, 0, v13);
+    (*(handlerCopy + 2))(handlerCopy, 0, v13);
   }
 }
 
@@ -270,8 +270,8 @@ WFPlayMusicContextualAction *__97__WFPlayMusicContextualAction__unsafeDisambigua
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v3 = [WFPlayMusicContextualAction alloc];
-  v4 = [a1 disambiguationParameter];
-  v12[0] = v4;
+  disambiguationParameter = [self disambiguationParameter];
+  v12[0] = disambiguationParameter;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   v6 = WFLocalizedStringWithKey(@"Recently Played Music (Display Format String)", @"Play %@");
   v7 = WFLocalizedStringWithKey(@"Recently Played (Title)", @"Recently Played");

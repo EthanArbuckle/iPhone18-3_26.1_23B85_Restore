@@ -1,30 +1,30 @@
 @interface VKRoadFeatureAccessibilityElement
-- (AXVKFeaturePointIndices)featureAndPointIndicesForPoint:(CGPoint)a3;
-- (BOOL)_accessibilityRoadContainsTrackingPoint:(CGPoint)a3;
-- (BOOL)pointInside:(CGPoint)a3;
+- (AXVKFeaturePointIndices)featureAndPointIndicesForPoint:(CGPoint)point;
+- (BOOL)_accessibilityRoadContainsTrackingPoint:(CGPoint)point;
+- (BOOL)pointInside:(CGPoint)inside;
 - (CGRect)accessibilityFrame;
 - (NSArray)consolidatedAndOrderedFeatures;
 - (NSArray)originalPaths;
-- (_NSRange)_roadSuffixRangeForCommonRoadAbbreviations:(id)a3 replacement:(id *)a4;
-- (float)_accessibilityDistance:(CGPoint)a3 forAngle:(float)a4 toRoad:(id)a5;
-- (float)_accessibilityDistanceFromEndOfRoad:(CGPoint)a3 forAngle:(float)a4;
-- (id)_accessibilityUpcomingRoadsForPoint:(CGPoint)a3 forAngle:(float)a4;
+- (_NSRange)_roadSuffixRangeForCommonRoadAbbreviations:(id)abbreviations replacement:(id *)replacement;
+- (float)_accessibilityDistance:(CGPoint)distance forAngle:(float)angle toRoad:(id)road;
+- (float)_accessibilityDistanceFromEndOfRoad:(CGPoint)road forAngle:(float)angle;
+- (id)_accessibilityUpcomingRoadsForPoint:(CGPoint)point forAngle:(float)angle;
 - (id)_axRoadPrefix;
 - (id)_axRoadSuffix;
-- (id)_nearestIntersectionForPoint:(CGPoint)a3;
+- (id)_nearestIntersectionForPoint:(CGPoint)point;
 - (id)_roadDirectionDescription;
 - (id)_roadLength;
 - (id)accessibilityLabel;
 - (id)accessibilityPaths;
-- (id)accessibilitySortedIntersectorsForPoint:(CGPoint)a3;
-- (id)accessibilityViableIntersectorsForPoint:(CGPoint)a3 fromSortedArray:(id)a4 isStart:(BOOL)a5;
-- (id)adjacentIntersectorsForPoint:(CGPoint)a3 isStart:(BOOL)a4;
-- (id)consolidatedAndOrderedFeaturesFromAllFeaturePoints:(id)a3;
-- (id)detailedFeatureElementInfoAtPoint:(CGPoint)a3;
+- (id)accessibilitySortedIntersectorsForPoint:(CGPoint)point;
+- (id)accessibilityViableIntersectorsForPoint:(CGPoint)point fromSortedArray:(id)array isStart:(BOOL)start;
+- (id)adjacentIntersectorsForPoint:(CGPoint)point isStart:(BOOL)start;
+- (id)consolidatedAndOrderedFeaturesFromAllFeaturePoints:(id)points;
+- (id)detailedFeatureElementInfoAtPoint:(CGPoint)point;
 - (id)trueLabel;
 - (int64_t)_accessibilityMapRoadType;
 - (void)_accessibilityMapsExplorationBeginFromCurrentElement;
-- (void)_combineRoadPaths:(id)a3;
+- (void)_combineRoadPaths:(id)paths;
 - (void)_updatePath;
 @end
 
@@ -50,9 +50,9 @@
 {
   v4.receiver = self;
   v4.super_class = VKRoadFeatureAccessibilityElement;
-  v2 = [(VKFeatureAccessibilityElement *)&v4 accessibilityLabel];
+  accessibilityLabel = [(VKFeatureAccessibilityElement *)&v4 accessibilityLabel];
 
-  return v2;
+  return accessibilityLabel;
 }
 
 - (id)_axRoadSuffix
@@ -72,44 +72,44 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(VKRoadFeatureAccessibilityElement *)self _axRoadPrefix];
-  if (v3)
+  _axRoadPrefix = [(VKRoadFeatureAccessibilityElement *)self _axRoadPrefix];
+  if (_axRoadPrefix)
   {
-    v4 = v3;
-    v5 = [(VKFeatureAccessibilityElement *)self shieldText];
+    v4 = _axRoadPrefix;
+    shieldText = [(VKFeatureAccessibilityElement *)self shieldText];
 
-    if (v5)
+    if (shieldText)
     {
       v6 = MEMORY[0x29EDBA0F8];
-      v7 = [(VKFeatureAccessibilityElement *)self shieldText];
-      v8 = [v6 stringWithFormat:@"%@ %@", v4, v7];
+      shieldText2 = [(VKFeatureAccessibilityElement *)self shieldText];
+      v8 = [v6 stringWithFormat:@"%@ %@", v4, shieldText2];
 
       v4 = v8;
     }
 
     v21.receiver = self;
     v21.super_class = VKRoadFeatureAccessibilityElement;
-    v9 = [(VKFeatureAccessibilityElement *)&v21 accessibilityLabel];
+    accessibilityLabel = [(VKFeatureAccessibilityElement *)&v21 accessibilityLabel];
     v10 = __UIAXStringForVariables();
     goto LABEL_5;
   }
 
   v20.receiver = self;
   v20.super_class = VKRoadFeatureAccessibilityElement;
-  v12 = [(VKFeatureAccessibilityElement *)&v20 accessibilityLabel];
-  if (!v12)
+  accessibilityLabel2 = [(VKFeatureAccessibilityElement *)&v20 accessibilityLabel];
+  if (!accessibilityLabel2)
   {
-    v12 = [(VKFeatureAccessibilityElement *)self shieldText];
+    accessibilityLabel2 = [(VKFeatureAccessibilityElement *)self shieldText];
   }
 
-  v13 = [(VKRoadFeatureAccessibilityElement *)self _axRoadSuffix];
-  v18 = [(VKRoadFeatureAccessibilityElement *)self _roadDirectionDescription];
-  v9 = __UIAXStringForVariables();
+  _axRoadSuffix = [(VKRoadFeatureAccessibilityElement *)self _axRoadSuffix];
+  _roadDirectionDescription = [(VKRoadFeatureAccessibilityElement *)self _roadDirectionDescription];
+  accessibilityLabel = __UIAXStringForVariables();
 
   if (!AXDoesRequestingClientDeserveAutomation())
   {
     v19 = 0;
-    v15 = [(VKRoadFeatureAccessibilityElement *)self _roadSuffixRangeForCommonRoadAbbreviations:v9 replacement:&v19, v13, v18, @"__AXStringForVariablesSentinel"];
+    v15 = [(VKRoadFeatureAccessibilityElement *)self _roadSuffixRangeForCommonRoadAbbreviations:accessibilityLabel replacement:&v19, _axRoadSuffix, _roadDirectionDescription, @"__AXStringForVariablesSentinel"];
     v17 = v16;
     v4 = v19;
     if (v15 == 0x7FFFFFFFFFFFFFFFLL)
@@ -117,20 +117,20 @@
       goto LABEL_6;
     }
 
-    v10 = [v9 stringByReplacingCharactersInRange:v15 withString:{v17, v4}];
+    v10 = [accessibilityLabel stringByReplacingCharactersInRange:v15 withString:{v17, v4}];
 LABEL_5:
     v11 = v10;
 
-    v9 = v11;
+    accessibilityLabel = v11;
 LABEL_6:
   }
 
-  return v9;
+  return accessibilityLabel;
 }
 
-- (_NSRange)_roadSuffixRangeForCommonRoadAbbreviations:(id)a3 replacement:(id *)a4
+- (_NSRange)_roadSuffixRangeForCommonRoadAbbreviations:(id)abbreviations replacement:(id *)replacement
 {
-  v5 = a3;
+  abbreviationsCopy = abbreviations;
   if ([VKRoadFeatureAccessibilityElement _roadSuffixRangeForCommonRoadAbbreviations:replacement:]::onceToken != -1)
   {
     [VKRoadFeatureAccessibilityElement _roadSuffixRangeForCommonRoadAbbreviations:replacement:];
@@ -143,22 +143,22 @@ LABEL_6:
   v23 = __Block_byref_object_dispose__0;
   v24 = &unk_29C723C02;
   v25 = xmmword_29C71B610;
-  v6 = [MEMORY[0x29EDBDF80] sharedInstance];
-  v7 = [v6 dialectForSystemLanguage];
-  v8 = [v7 specificLanguageID];
-  v9 = [v8 stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
+  mEMORY[0x29EDBDF80] = [MEMORY[0x29EDBDF80] sharedInstance];
+  dialectForSystemLanguage = [mEMORY[0x29EDBDF80] dialectForSystemLanguage];
+  specificLanguageID = [dialectForSystemLanguage specificLanguageID];
+  v9 = [specificLanguageID stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
 
   if ([-[VKRoadFeatureAccessibilityElement _roadSuffixRangeForCommonRoadAbbreviations:replacement:]::SupportedLangs containsObject:v9])
   {
-    v10 = [v5 length];
+    v10 = [abbreviationsCopy length];
     v15[0] = MEMORY[0x29EDCA5F8];
     v15[1] = 3221225472;
     v15[2] = __92__VKRoadFeatureAccessibilityElement__roadSuffixRangeForCommonRoadAbbreviations_replacement___block_invoke_622;
     v15[3] = &unk_29F318560;
     v16 = v9;
     v17 = &v19;
-    v18 = a4;
-    [v5 enumerateSubstringsInRange:0 options:v10 usingBlock:{3, v15}];
+    replacementCopy = replacement;
+    [abbreviationsCopy enumerateSubstringsInRange:0 options:v10 usingBlock:{3, v15}];
     v11 = v20[6];
     v12 = v20[7];
   }
@@ -219,15 +219,15 @@ void __92__VKRoadFeatureAccessibilityElement__roadSuffixRangeForCommonRoadAbbrev
 
 - (int64_t)_accessibilityMapRoadType
 {
-  v2 = [(VKFeatureAccessibilityElement *)self shieldType];
-  if (v2 <= 5449)
+  shieldType = [(VKFeatureAccessibilityElement *)self shieldType];
+  if (shieldType <= 5449)
   {
-    if (v2 == 1045)
+    if (shieldType == 1045)
     {
       return 3;
     }
 
-    if (v2 == 5400)
+    if (shieldType == 5400)
     {
       return 1;
     }
@@ -235,7 +235,7 @@ void __92__VKRoadFeatureAccessibilityElement__roadSuffixRangeForCommonRoadAbbrev
 
   else
   {
-    switch(v2)
+    switch(shieldType)
     {
       case 5450:
         return 2;
@@ -261,24 +261,24 @@ void __92__VKRoadFeatureAccessibilityElement__roadSuffixRangeForCommonRoadAbbrev
   return originalPaths;
 }
 
-- (void)_combineRoadPaths:(id)a3
+- (void)_combineRoadPaths:(id)paths
 {
-  v65 = a3;
-  objc_storeStrong(&self->_allPoints, a3);
-  if ([v65 count] >= 2)
+  pathsCopy = paths;
+  objc_storeStrong(&self->_allPoints, paths);
+  if ([pathsCopy count] >= 2)
   {
-    for (i = 0; i < [v65 count]; ++i)
+    for (i = 0; i < [pathsCopy count]; ++i)
     {
-      v6 = [v65 objectAtIndex:i];
+      v6 = [pathsCopy objectAtIndex:i];
       v7 = [(NSArray *)v6 objectAtIndex:0];
       [v7 CGPointValue];
       v9 = v8;
       v11 = v10;
 
-      v12 = [(NSArray *)v6 lastObject];
+      lastObject = [(NSArray *)v6 lastObject];
       v63 = v11;
       v64 = v9;
-      [v12 CGPointValue];
+      [lastObject CGPointValue];
       v14 = v13;
       v16 = v15;
 
@@ -290,16 +290,16 @@ void __92__VKRoadFeatureAccessibilityElement__roadSuffixRangeForCommonRoadAbbrev
       v67 = 3.4028e38;
       v21 = -1;
       v62 = v16;
-      while (v19 < [v65 count])
+      while (v19 < [pathsCopy count])
       {
-        v22 = [v65 objectAtIndex:v19];
+        v22 = [pathsCopy objectAtIndex:v19];
         v23 = [v22 objectAtIndex:0];
         [v23 CGPointValue];
         v25 = v24;
         v27 = v26;
 
-        v28 = [v22 lastObject];
-        [v28 CGPointValue];
+        lastObject2 = [v22 lastObject];
+        [lastObject2 CGPointValue];
         v30 = v29;
         v32 = v31;
         v33 = v14;
@@ -324,10 +324,10 @@ void __92__VKRoadFeatureAccessibilityElement__roadSuffixRangeForCommonRoadAbbrev
 
         else
         {
-          v38 = [v22 reverseObjectEnumerator];
-          v39 = [v38 allObjects];
+          reverseObjectEnumerator = [v22 reverseObjectEnumerator];
+          allObjects = [reverseObjectEnumerator allObjects];
 
-          v18 = v39;
+          v18 = allObjects;
           v21 = v19;
         }
 
@@ -380,11 +380,11 @@ void __92__VKRoadFeatureAccessibilityElement__roadSuffixRangeForCommonRoadAbbrev
 
         else
         {
-          v47 = [v22 reverseObjectEnumerator];
+          reverseObjectEnumerator2 = [v22 reverseObjectEnumerator];
           v14 = v33;
-          v48 = [v47 allObjects];
+          allObjects2 = [reverseObjectEnumerator2 allObjects];
 
-          v17 = v48;
+          v17 = allObjects2;
           v20 = v19;
         }
 
@@ -411,13 +411,13 @@ void __92__VKRoadFeatureAccessibilityElement__roadSuffixRangeForCommonRoadAbbrev
         else
         {
           v54 = [(NSArray *)v18 arrayByAddingObjectsFromArray:v6];
-          [v65 replaceObjectAtIndex:i withObject:v54];
+          [pathsCopy replaceObjectAtIndex:i withObject:v54];
           v51 = v54;
 
           v6 = v51;
         }
 
-        [v65 removeObjectAtIndex:v21];
+        [pathsCopy removeObjectAtIndex:v21];
         v20 -= v21 < v20;
         --i;
       }
@@ -453,8 +453,8 @@ void __92__VKRoadFeatureAccessibilityElement__roadSuffixRangeForCommonRoadAbbrev
         v58 = v60;
 
         v61 = i + (v50 ^ 1u);
-        [v65 replaceObjectAtIndex:v61 withObject:v58];
-        [v65 removeObjectAtIndex:v20];
+        [pathsCopy replaceObjectAtIndex:v61 withObject:v58];
+        [pathsCopy removeObjectAtIndex:v20];
         i = v61 - 1;
       }
     }
@@ -483,21 +483,21 @@ void __92__VKRoadFeatureAccessibilityElement__roadSuffixRangeForCommonRoadAbbrev
     }
 
     [(VKFeatureAccessibilityElement *)self setHitTestPaths:0];
-    v76 = self;
-    v10 = [(VKFeatureAccessibilityElement *)self paths];
-    [v10 removeAllObjects];
+    selfCopy = self;
+    paths = [(VKFeatureAccessibilityElement *)self paths];
+    [paths removeAllObjects];
 
-    [(NSMutableArray *)v76->_originalPaths removeAllObjects];
-    [(NSMutableArray *)v76->_expandedPaths removeAllObjects];
-    [(NSMutableArray *)v76->_gutterPaths removeAllObjects];
-    v70 = [MEMORY[0x29EDB8DE8] array];
+    [(NSMutableArray *)selfCopy->_originalPaths removeAllObjects];
+    [(NSMutableArray *)selfCopy->_expandedPaths removeAllObjects];
+    [(NSMutableArray *)selfCopy->_gutterPaths removeAllObjects];
+    array = [MEMORY[0x29EDB8DE8] array];
     v101 = 0u;
     v102 = 0u;
     v99 = 0u;
     v100 = 0u;
-    v11 = v76;
-    v12 = [(VKFeatureAccessibilityElement *)v76 featureSet];
-    v13 = [v12 countByEnumeratingWithState:&v99 objects:v104 count:16];
+    v11 = selfCopy;
+    featureSet = [(VKFeatureAccessibilityElement *)selfCopy featureSet];
+    v13 = [featureSet countByEnumeratingWithState:&v99 objects:v104 count:16];
     if (v13)
     {
       v14 = *v100;
@@ -507,33 +507,33 @@ void __92__VKRoadFeatureAccessibilityElement__roadSuffixRangeForCommonRoadAbbrev
         {
           if (*v100 != v14)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(featureSet);
           }
 
           v16 = [(VKFeatureAccessibilityElement *)v11 pointsFromFeatureWrapper:*(*(&v99 + 1) + 8 * i)];
           if ([v16 count])
           {
-            [v70 addObject:v16];
+            [array addObject:v16];
           }
 
-          v11 = v76;
+          v11 = selfCopy;
         }
 
-        v13 = [v12 countByEnumeratingWithState:&v99 objects:v104 count:16];
+        v13 = [featureSet countByEnumeratingWithState:&v99 objects:v104 count:16];
       }
 
       while (v13);
     }
 
-    [(VKRoadFeatureAccessibilityElement *)v76 _combineRoadPaths:v70];
-    v17 = [(VKRoadFeatureAccessibilityElement *)v76 accessibilityContainer];
-    [v17 accessibilityClearVisibleAXBoundsFrame];
+    [(VKRoadFeatureAccessibilityElement *)selfCopy _combineRoadPaths:array];
+    accessibilityContainer = [(VKRoadFeatureAccessibilityElement *)selfCopy accessibilityContainer];
+    [accessibilityContainer accessibilityClearVisibleAXBoundsFrame];
 
     v97 = 0u;
     v98 = 0u;
     v95 = 0u;
     v96 = 0u;
-    obj = v70;
+    obj = array;
     v72 = [obj countByEnumeratingWithState:&v95 objects:v103 count:16];
     if (v72)
     {
@@ -563,7 +563,7 @@ void __92__VKRoadFeatureAccessibilityElement__roadSuffixRangeForCommonRoadAbbrev
           v93[4] = __Block_byref_object_dispose__634;
           v93[5] = &unk_29C723C02;
           v94 = *MEMORY[0x29EDB90B8];
-          [(VKFeatureAccessibilityElement *)v76 strokeWidth];
+          [(VKFeatureAccessibilityElement *)selfCopy strokeWidth];
           v26 = v25 + 4.0;
           v91[0] = 0;
           v91[1] = v91;
@@ -579,7 +579,7 @@ void __92__VKRoadFeatureAccessibilityElement__roadSuffixRangeForCommonRoadAbbrev
           v78[3] = &unk_29F318588;
           v80 = v93;
           v81 = v89;
-          v78[4] = v76;
+          v78[4] = selfCopy;
           v78[5] = v18;
           v82 = v91;
           v83 = v21;
@@ -720,17 +720,17 @@ void __92__VKRoadFeatureAccessibilityElement__roadSuffixRangeForCommonRoadAbbrev
           }
 
           [v19 setFlatness:0.6];
-          v44 = [(VKFeatureAccessibilityElement *)v76 paths];
+          paths2 = [(VKFeatureAccessibilityElement *)selfCopy paths];
           v45 = v19;
-          [v44 addObject:{objc_msgSend(v19, "CGPath")}];
+          [paths2 addObject:{objc_msgSend(v19, "CGPath")}];
 
-          v46 = v76->_expandedPaths;
+          v46 = selfCopy->_expandedPaths;
           v47 = v77;
           -[NSMutableArray addObject:](v46, "addObject:", [v77 CGPath]);
-          v48 = v76->_originalPaths;
+          v48 = selfCopy->_originalPaths;
           v49 = v75;
           -[NSMutableArray addObject:](v48, "addObject:", [v75 CGPath]);
-          v50 = v76->_gutterPaths;
+          v50 = selfCopy->_gutterPaths;
           v51 = v20;
           -[NSMutableArray addObject:](v50, "addObject:", [v20 CGPath]);
           v52 = v19;
@@ -739,7 +739,7 @@ void __92__VKRoadFeatureAccessibilityElement__roadSuffixRangeForCommonRoadAbbrev
           y = PathBoundingBox.origin.y;
           width = PathBoundingBox.size.width;
           height = PathBoundingBox.size.height;
-          [(VKRoadFeatureAccessibilityElement *)v76 accessibilityFrame];
+          [(VKRoadFeatureAccessibilityElement *)selfCopy accessibilityFrame];
           v58 = v57;
           v60 = v59;
           v62 = v61;
@@ -765,7 +765,7 @@ void __92__VKRoadFeatureAccessibilityElement__roadSuffixRangeForCommonRoadAbbrev
             height = v108.size.height;
           }
 
-          [(VKRoadFeatureAccessibilityElement *)v76 setAccessibilityFrame:x, y, width, height];
+          [(VKRoadFeatureAccessibilityElement *)selfCopy setAccessibilityFrame:x, y, width, height];
           if (v22)
           {
             CFRelease(v22);
@@ -792,9 +792,9 @@ void __92__VKRoadFeatureAccessibilityElement__roadSuffixRangeForCommonRoadAbbrev
       while (v72);
     }
 
-    [(VKFeatureAccessibilityElement *)v76 _mergePaths];
-    v65 = [(VKRoadFeatureAccessibilityElement *)v76 accessibilityContainer];
-    [v65 accessibilityClearVisibleAXBoundsFrame];
+    [(VKFeatureAccessibilityElement *)selfCopy _mergePaths];
+    accessibilityContainer2 = [(VKRoadFeatureAccessibilityElement *)selfCopy accessibilityContainer];
+    [accessibilityContainer2 accessibilityClearVisibleAXBoundsFrame];
   }
 }
 
@@ -1016,8 +1016,8 @@ LABEL_43:
 
 - (id)accessibilityPaths
 {
-  v3 = [(VKFeatureAccessibilityElement *)self paths];
-  v4 = [v3 count];
+  paths = [(VKFeatureAccessibilityElement *)self paths];
+  v4 = [paths count];
 
   if (!v4)
   {
@@ -1029,8 +1029,8 @@ LABEL_43:
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(VKFeatureAccessibilityElement *)self paths];
-  v4 = [v3 count];
+  paths = [(VKFeatureAccessibilityElement *)self paths];
+  v4 = [paths count];
 
   if (!v4)
   {
@@ -1039,8 +1039,8 @@ LABEL_43:
 
   v18.receiver = self;
   v18.super_class = VKRoadFeatureAccessibilityElement;
-  v5 = [(VKRoadFeatureAccessibilityElement *)&v18 accessibilityUserDefinedFrame];
-  [v5 CGRectValue];
+  accessibilityUserDefinedFrame = [(VKRoadFeatureAccessibilityElement *)&v18 accessibilityUserDefinedFrame];
+  [accessibilityUserDefinedFrame CGRectValue];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -1057,35 +1057,35 @@ LABEL_43:
   return result;
 }
 
-- (float)_accessibilityDistance:(CGPoint)a3 forAngle:(float)a4 toRoad:(id)a5
+- (float)_accessibilityDistance:(CGPoint)distance forAngle:(float)angle toRoad:(id)road
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a5;
-  v10 = [(VKRoadFeatureAccessibilityElement *)self accessibilityContainer];
-  *&v11 = a4;
-  [v10 accessibilityDistance:v9 forAngle:self toRoad:x withElement:{y, v11}];
+  y = distance.y;
+  x = distance.x;
+  roadCopy = road;
+  accessibilityContainer = [(VKRoadFeatureAccessibilityElement *)self accessibilityContainer];
+  *&v11 = angle;
+  [accessibilityContainer accessibilityDistance:roadCopy forAngle:self toRoad:x withElement:{y, v11}];
   v13 = v12;
 
   return v13;
 }
 
-- (id)_accessibilityUpcomingRoadsForPoint:(CGPoint)a3 forAngle:(float)a4
+- (id)_accessibilityUpcomingRoadsForPoint:(CGPoint)point forAngle:(float)angle
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = [(VKRoadFeatureAccessibilityElement *)self accessibilityContainer];
-  *&v9 = a4;
-  v10 = [v8 accessibilityUpcomingRoadsForPoint:self forAngle:x withElement:{y, v9}];
+  y = point.y;
+  x = point.x;
+  accessibilityContainer = [(VKRoadFeatureAccessibilityElement *)self accessibilityContainer];
+  *&v9 = angle;
+  v10 = [accessibilityContainer accessibilityUpcomingRoadsForPoint:self forAngle:x withElement:{y, v9}];
 
   return v10;
 }
 
 - (void)_accessibilityMapsExplorationBeginFromCurrentElement
 {
-  v4 = [(VKRoadFeatureAccessibilityElement *)self accessibilityContainer];
-  v3 = [v4 accessibilityElementManager];
-  [v3 accessibilityMapsExplorationBeginFromRoad:self];
+  accessibilityContainer = [(VKRoadFeatureAccessibilityElement *)self accessibilityContainer];
+  accessibilityElementManager = [accessibilityContainer accessibilityElementManager];
+  [accessibilityElementManager accessibilityMapsExplorationBeginFromRoad:self];
 }
 
 - (NSArray)consolidatedAndOrderedFeatures
@@ -1104,9 +1104,9 @@ LABEL_43:
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v5 = [(VKFeatureAccessibilityElement *)self featureSet];
-    obj = v5;
-    v6 = [v5 countByEnumeratingWithState:&v28 objects:v33 count:16];
+    featureSet = [(VKFeatureAccessibilityElement *)self featureSet];
+    obj = featureSet;
+    v6 = [featureSet countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v6)
     {
       v22 = *v29;
@@ -1146,8 +1146,8 @@ LABEL_43:
                   }
 
                   v15 = *(*(&v24 + 1) + 8 * j);
-                  v16 = [(VKFeatureAccessibilityElement *)self pointToFeatureDict];
-                  [v16 setObject:v8 forKey:v15];
+                  pointToFeatureDict = [(VKFeatureAccessibilityElement *)self pointToFeatureDict];
+                  [pointToFeatureDict setObject:v8 forKey:v15];
                 }
 
                 v12 = [v11 countByEnumeratingWithState:&v24 objects:v32 count:16];
@@ -1158,7 +1158,7 @@ LABEL_43:
           }
         }
 
-        v5 = obj;
+        featureSet = obj;
         v6 = [obj countByEnumeratingWithState:&v28 objects:v33 count:16];
       }
 
@@ -1175,22 +1175,22 @@ LABEL_43:
   return v3;
 }
 
-- (id)consolidatedAndOrderedFeaturesFromAllFeaturePoints:(id)a3
+- (id)consolidatedAndOrderedFeaturesFromAllFeaturePoints:(id)points
 {
   v49 = *MEMORY[0x29EDCA608];
-  v43 = a3;
+  pointsCopy = points;
   v42 = objc_opt_new();
 LABEL_2:
-  if ([v43 count])
+  if ([pointsCopy count])
   {
-    v3 = [v43 firstObject];
-    [v43 removeObject:v3];
+    firstObject = [pointsCopy firstObject];
+    [pointsCopy removeObject:firstObject];
     v4 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v5 = v43;
+    v5 = pointsCopy;
     v6 = [v5 countByEnumeratingWithState:&v44 objects:v48 count:16];
     if (!v6)
     {
@@ -1209,31 +1209,31 @@ LABEL_2:
         }
 
         v9 = *(*(&v44 + 1) + 8 * v8);
-        v10 = [v3 firstObject];
-        [v10 CGPointValue];
+        v3FirstObject = [firstObject firstObject];
+        [v3FirstObject CGPointValue];
         v12 = v11;
         v14 = v13;
 
-        v15 = [v3 lastObject];
-        [v15 CGPointValue];
+        lastObject = [firstObject lastObject];
+        [lastObject CGPointValue];
         v17 = v16;
         v19 = v18;
 
-        v20 = [v9 firstObject];
-        [v20 CGPointValue];
+        firstObject2 = [v9 firstObject];
+        [firstObject2 CGPointValue];
         v22 = v21;
         v24 = v23;
 
-        v25 = [v9 lastObject];
-        [v25 CGPointValue];
+        lastObject2 = [v9 lastObject];
+        [lastObject2 CGPointValue];
         v27 = v26;
         v29 = v28;
 
         if (v12 == v22 && v14 == v24)
         {
-          v30 = [v3 reverseObjectEnumerator];
-          v31 = [v30 allObjects];
-          v32 = [v31 mutableCopy];
+          reverseObjectEnumerator = [firstObject reverseObjectEnumerator];
+          allObjects = [reverseObjectEnumerator allObjects];
+          v32 = [allObjects mutableCopy];
 
           v33 = v9;
           goto LABEL_14;
@@ -1241,19 +1241,19 @@ LABEL_2:
 
         if (v12 == v27 && v14 == v29)
         {
-          v34 = [v3 reverseObjectEnumerator];
-          v35 = [v34 allObjects];
-          v32 = [v35 mutableCopy];
+          reverseObjectEnumerator2 = [firstObject reverseObjectEnumerator];
+          allObjects2 = [reverseObjectEnumerator2 allObjects];
+          v32 = [allObjects2 mutableCopy];
 
-          v36 = [v9 reverseObjectEnumerator];
-          v37 = [v36 allObjects];
-          v33 = [v37 mutableCopy];
+          reverseObjectEnumerator3 = [v9 reverseObjectEnumerator];
+          allObjects3 = [reverseObjectEnumerator3 allObjects];
+          v33 = [allObjects3 mutableCopy];
 
 LABEL_14:
-          v3 = v32;
+          firstObject = v32;
 LABEL_15:
           [v33 removeObjectAtIndex:0];
-          [v3 addObjectsFromArray:v33];
+          [firstObject addObjectsFromArray:v33];
           [v4 addObject:v9];
           goto LABEL_16;
         }
@@ -1267,9 +1267,9 @@ LABEL_15:
         v33 = 0;
         if (v17 == v27 && v19 == v29)
         {
-          v38 = [v9 reverseObjectEnumerator];
-          v39 = [v38 allObjects];
-          v33 = [v39 mutableCopy];
+          reverseObjectEnumerator4 = [v9 reverseObjectEnumerator];
+          allObjects4 = [reverseObjectEnumerator4 allObjects];
+          v33 = [allObjects4 mutableCopy];
 
           goto LABEL_15;
         }
@@ -1287,7 +1287,7 @@ LABEL_16:
 LABEL_25:
 
         [v5 removeObjectsInArray:v4];
-        [v42 addObject:v3];
+        [v42 addObject:firstObject];
 
         goto LABEL_2;
       }
@@ -1297,12 +1297,12 @@ LABEL_25:
   return v42;
 }
 
-- (AXVKFeaturePointIndices)featureAndPointIndicesForPoint:(CGPoint)a3
+- (AXVKFeaturePointIndices)featureAndPointIndicesForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(VKRoadFeatureAccessibilityElement *)self consolidatedAndOrderedFeatures];
-  v7 = [v6 count];
+  y = point.y;
+  x = point.x;
+  consolidatedAndOrderedFeatures = [(VKRoadFeatureAccessibilityElement *)self consolidatedAndOrderedFeatures];
+  v7 = [consolidatedAndOrderedFeatures count];
   if (v7 < 1)
   {
     v9 = -1;
@@ -1317,7 +1317,7 @@ LABEL_25:
     v11 = -1;
     while (1)
     {
-      v12 = [v6 objectAtIndex:v8];
+      v12 = [consolidatedAndOrderedFeatures objectAtIndex:v8];
       v13 = [v12 count];
       if (v13 >= 1)
       {
@@ -1345,8 +1345,8 @@ LABEL_10:
         break;
       }
 
-      v20 = [(VKRoadFeatureAccessibilityElement *)self accessibilityContainer];
-      [v20 accessibilityRealDistanceBetweenPoint:x screenPoint2:{y, v17, v19}];
+      accessibilityContainer = [(VKRoadFeatureAccessibilityElement *)self accessibilityContainer];
+      [accessibilityContainer accessibilityRealDistanceBetweenPoint:x screenPoint2:{y, v17, v19}];
       v22 = v21;
 
       if (v10 > v22)
@@ -1375,23 +1375,23 @@ LABEL_14:
   return result;
 }
 
-- (id)adjacentIntersectorsForPoint:(CGPoint)a3 isStart:(BOOL)a4
+- (id)adjacentIntersectorsForPoint:(CGPoint)point isStart:(BOOL)start
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  startCopy = start;
+  y = point.y;
+  x = point.x;
   v8 = [(VKRoadFeatureAccessibilityElement *)self accessibilitySortedIntersectorsForPoint:?];
-  v9 = [(VKRoadFeatureAccessibilityElement *)self accessibilityViableIntersectorsForPoint:v8 fromSortedArray:v4 isStart:x, y];
+  v9 = [(VKRoadFeatureAccessibilityElement *)self accessibilityViableIntersectorsForPoint:v8 fromSortedArray:startCopy isStart:x, y];
 
   return v9;
 }
 
-- (id)accessibilitySortedIntersectorsForPoint:(CGPoint)a3
+- (id)accessibilitySortedIntersectorsForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(VKRoadFeatureAccessibilityElement *)self accessibilityContainer];
-  v7 = [v6 accessibilityIntersectorsForRoad:self withPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  accessibilityContainer = [(VKRoadFeatureAccessibilityElement *)self accessibilityContainer];
+  v7 = [accessibilityContainer accessibilityIntersectorsForRoad:self withPoint:{x, y}];
 
   v10[0] = MEMORY[0x29EDCA5F8];
   v10[1] = 3221225472;
@@ -1449,17 +1449,17 @@ uint64_t __77__VKRoadFeatureAccessibilityElement_accessibilitySortedIntersectors
   return v7;
 }
 
-- (id)accessibilityViableIntersectorsForPoint:(CGPoint)a3 fromSortedArray:(id)a4 isStart:(BOOL)a5
+- (id)accessibilityViableIntersectorsForPoint:(CGPoint)point fromSortedArray:(id)array isStart:(BOOL)start
 {
-  v33 = a5;
-  y = a3.y;
-  x = a3.x;
+  startCopy = start;
+  y = point.y;
+  x = point.x;
   v40 = *MEMORY[0x29EDCA608];
-  obj = a4;
+  obj = array;
   v8 = objc_opt_new();
   if ([obj count])
   {
-    v9 = [obj subarrayWithRange:{!v33, objc_msgSend(obj, "count") - !v33}];
+    v9 = [obj subarrayWithRange:{!startCopy, objc_msgSend(obj, "count") - !startCopy}];
 
     v10 = [(VKRoadFeatureAccessibilityElement *)self featureAndPointIndicesForPoint:x, y];
     v12 = v11;
@@ -1483,9 +1483,9 @@ uint64_t __77__VKRoadFeatureAccessibilityElement_accessibilitySortedIntersectors
           }
 
           v17 = *(*(&v35 + 1) + 8 * i);
-          v18 = [(VKRoadFeatureAccessibilityElement *)self accessibilityContainer];
+          accessibilityContainer = [(VKRoadFeatureAccessibilityElement *)self accessibilityContainer];
           [v17 coordinates];
-          [v18 accessibilityConvertCoordinateToWindow:?];
+          [accessibilityContainer accessibilityConvertCoordinateToWindow:?];
           v20 = v19;
           v22 = v21;
 
@@ -1495,17 +1495,17 @@ uint64_t __77__VKRoadFeatureAccessibilityElement_accessibilitySortedIntersectors
             if ([v8 count] != 1 || (v15 <= v12 || v24 <= v12) && (v15 >= v12 || v24 >= v12))
             {
               [v8 addObject:v17];
-              if (v33 && [v8 count] || objc_msgSend(v8, "count") == 2)
+              if (startCopy && [v8 count] || objc_msgSend(v8, "count") == 2)
               {
                 goto LABEL_22;
               }
 
               if ([v8 count] == 1)
               {
-                v25 = [v8 firstObject];
-                v26 = [(VKRoadFeatureAccessibilityElement *)self accessibilityContainer];
-                [v25 coordinates];
-                [v26 accessibilityConvertCoordinateToWindow:?];
+                firstObject = [v8 firstObject];
+                accessibilityContainer2 = [(VKRoadFeatureAccessibilityElement *)self accessibilityContainer];
+                [firstObject coordinates];
+                [accessibilityContainer2 accessibilityConvertCoordinateToWindow:?];
                 v28 = v27;
                 v30 = v29;
 
@@ -1528,22 +1528,22 @@ LABEL_22:
   return v8;
 }
 
-- (float)_accessibilityDistanceFromEndOfRoad:(CGPoint)a3 forAngle:(float)a4
+- (float)_accessibilityDistanceFromEndOfRoad:(CGPoint)road forAngle:(float)angle
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = [(VKRoadFeatureAccessibilityElement *)self accessibilityContainer];
-  *&v9 = a4;
-  [v8 accessibilityDistanceToEndOfRoad:self forAngle:x withElement:{y, v9}];
+  y = road.y;
+  x = road.x;
+  accessibilityContainer = [(VKRoadFeatureAccessibilityElement *)self accessibilityContainer];
+  *&v9 = angle;
+  [accessibilityContainer accessibilityDistanceToEndOfRoad:self forAngle:x withElement:{y, v9}];
   v11 = v10;
 
   return v11;
 }
 
-- (BOOL)_accessibilityRoadContainsTrackingPoint:(CGPoint)a3
+- (BOOL)_accessibilityRoadContainsTrackingPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v24 = *MEMORY[0x29EDCA608];
   self->_lastHitTestNearBorder = 0;
   v18 = 0u;
@@ -1633,8 +1633,8 @@ LABEL_20:
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v3 = [(VKFeatureAccessibilityElement *)self featureSet];
-  v4 = [v3 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  featureSet = [(VKFeatureAccessibilityElement *)self featureSet];
+  v4 = [featureSet countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v4)
   {
     v5 = *v26;
@@ -1645,24 +1645,24 @@ LABEL_20:
       {
         if (*v26 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(featureSet);
         }
 
         v8 = [(VKFeatureAccessibilityElement *)self pointsFromFeatureWrapper:*(*(&v25 + 1) + 8 * i)];
-        v9 = [(VKRoadFeatureAccessibilityElement *)self accessibilityContainer];
+        accessibilityContainer = [(VKRoadFeatureAccessibilityElement *)self accessibilityContainer];
         v10 = [v8 objectAtIndex:0];
         [v10 CGPointValue];
         v12 = v11;
         v14 = v13;
-        v15 = [v8 lastObject];
-        [v15 CGPointValue];
-        [v9 accessibilityRealDistanceBetweenPoint:v12 screenPoint2:{v14, v16, v17}];
+        lastObject = [v8 lastObject];
+        [lastObject CGPointValue];
+        [accessibilityContainer accessibilityRealDistanceBetweenPoint:v12 screenPoint2:{v14, v16, v17}];
         LODWORD(v12) = v18;
 
         v6 = v6 + *&v12;
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v4 = [featureSet countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v4);
@@ -1673,10 +1673,10 @@ LABEL_20:
     v6 = 0.0;
   }
 
-  v19 = [MEMORY[0x29EDB8DE0] currentLocale];
-  v20 = [v19 _navigation_distanceUsesMetricSystem];
+  currentLocale = [MEMORY[0x29EDB8DE0] currentLocale];
+  _navigation_distanceUsesMetricSystem = [currentLocale _navigation_distanceUsesMetricSystem];
 
-  if (v20)
+  if (_navigation_distanceUsesMetricSystem)
   {
     v21 = AXVectorKitLocString(@"ROAD_DISTANCE_KM");
     v22 = v6 / 1000.0;
@@ -1693,22 +1693,22 @@ LABEL_20:
   return v23;
 }
 
-- (id)detailedFeatureElementInfoAtPoint:(CGPoint)a3
+- (id)detailedFeatureElementInfoAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = [(VKRoadFeatureAccessibilityElement *)self _nearestIntersectionForPoint:?];
-  v7 = [(VKRoadFeatureAccessibilityElement *)self _roadLength];
+  _roadLength = [(VKRoadFeatureAccessibilityElement *)self _roadLength];
   v10 = [(VKRoadFeatureAccessibilityElement *)self _nearestPOIsForPoint:x, y];
   v8 = __UIAXStringForVariables();
 
   return v8;
 }
 
-- (BOOL)pointInside:(CGPoint)a3
+- (BOOL)pointInside:(CGPoint)inside
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v16 = *MEMORY[0x29EDCA608];
   [(VKRoadFeatureAccessibilityElement *)self accessibilityFrame];
   v20 = CGRectInset(v19, -40.0, -40.0);
@@ -1722,8 +1722,8 @@ LABEL_20:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v6 = [(VKFeatureAccessibilityElement *)self paths];
-    v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    paths = [(VKFeatureAccessibilityElement *)self paths];
+    v7 = [paths countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
       v8 = *v12;
@@ -1733,7 +1733,7 @@ LABEL_20:
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(paths);
           }
 
           v17.x = x;
@@ -1745,7 +1745,7 @@ LABEL_20:
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [paths countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v7)
         {
           continue;
@@ -1766,10 +1766,10 @@ LABEL_13:
   return v7;
 }
 
-- (id)_nearestIntersectionForPoint:(CGPoint)a3
+- (id)_nearestIntersectionForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v28 = *MEMORY[0x29EDCA608];
   [(VKRoadFeatureAccessibilityElement *)self intersectingRoads];
   v25 = 0u;
@@ -1824,8 +1824,8 @@ LABEL_13:
   {
     v19 = MEMORY[0x29EDBA0F8];
     v20 = AXVectorKitLocString(@"NEAREST_INTERSECTION");
-    v21 = [v7 accessibilityLabel];
-    v6 = [v19 localizedStringWithFormat:v20, v21];
+    accessibilityLabel = [v7 accessibilityLabel];
+    v6 = [v19 localizedStringWithFormat:v20, accessibilityLabel];
 
 LABEL_13:
     goto LABEL_15;
@@ -1839,25 +1839,25 @@ LABEL_15:
 
 - (id)_roadDirectionDescription
 {
-  v3 = [(VKRoadFeatureAccessibilityElement *)self roadDirection];
+  roadDirection = [(VKRoadFeatureAccessibilityElement *)self roadDirection];
 
-  if (v3)
+  if (roadDirection)
   {
     goto LABEL_30;
   }
 
-  v4 = [MEMORY[0x29EDB8DE8] array];
-  v5 = [(VKFeatureAccessibilityElement *)self featureSet];
+  array = [MEMORY[0x29EDB8DE8] array];
+  featureSet = [(VKFeatureAccessibilityElement *)self featureSet];
   v31[0] = MEMORY[0x29EDCA5F8];
   v31[1] = 3221225472;
   v31[2] = __62__VKRoadFeatureAccessibilityElement__roadDirectionDescription__block_invoke;
   v31[3] = &unk_29F3185D8;
   v31[4] = self;
-  v6 = v4;
+  v6 = array;
   v32 = v6;
-  [v5 enumerateObjectsUsingBlock:v31];
+  [featureSet enumerateObjectsUsingBlock:v31];
 
-  v7 = [(VKRoadFeatureAccessibilityElement *)self accessibilityContainer];
+  accessibilityContainer = [(VKRoadFeatureAccessibilityElement *)self accessibilityContainer];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if ((isKindOfClass & 1) == 0)
@@ -1868,7 +1868,7 @@ LABEL_15:
     goto LABEL_29;
   }
 
-  [v7 accessibilityYaw];
+  [accessibilityContainer accessibilityYaw];
   if (v9 < 0.0)
   {
     v9 = v9 + 360.0;
@@ -1957,9 +1957,9 @@ LABEL_25:
   }
 
 LABEL_26:
-  v17 = [(VKRoadFeatureAccessibilityElement *)self roadDirection];
+  roadDirection2 = [(VKRoadFeatureAccessibilityElement *)self roadDirection];
 
-  if (!v17)
+  if (!roadDirection2)
   {
     [(VKRoadFeatureAccessibilityElement *)self setRoadDirection:&stru_2A2395E90];
   }

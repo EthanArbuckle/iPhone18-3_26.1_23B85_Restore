@@ -8,12 +8,12 @@
 - (void)dealloc;
 - (void)loadPlayerLayerViewIfNeeded;
 - (void)loadView;
-- (void)setContentView:(id)a3;
-- (void)setDebugText:(id)a3;
-- (void)setInitialScreenBoundsHint:(CGRect)a3;
-- (void)setPlayingOnSecondScreen:(BOOL)a3;
-- (void)setSourcePlayerLayer:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setContentView:(id)view;
+- (void)setDebugText:(id)text;
+- (void)setInitialScreenBoundsHint:(CGRect)hint;
+- (void)setPlayingOnSecondScreen:(BOOL)screen;
+- (void)setSourcePlayerLayer:(id)layer;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -42,61 +42,61 @@
 
 - (void)_updateLayout
 {
-  v3 = [(AVSecondScreenViewController *)self playerLayerView];
-  v4 = [(AVSecondScreenViewController *)self view];
-  [v4 bounds];
-  [v3 setFrame:?];
+  playerLayerView = [(AVSecondScreenViewController *)self playerLayerView];
+  view = [(AVSecondScreenViewController *)self view];
+  [view bounds];
+  [playerLayerView setFrame:?];
 
-  v5 = [(AVSecondScreenViewController *)self contentView];
-  v6 = [(AVSecondScreenViewController *)self view];
-  [v6 bounds];
-  [v5 setFrame:?];
+  contentView = [(AVSecondScreenViewController *)self contentView];
+  view2 = [(AVSecondScreenViewController *)self view];
+  [view2 bounds];
+  [contentView setFrame:?];
 
   debugLabel = self->_debugLabel;
   v8 = MEMORY[0x1E69DB878];
-  v9 = [(AVSecondScreenViewController *)self view];
-  [v9 frame];
+  view3 = [(AVSecondScreenViewController *)self view];
+  [view3 frame];
   v11 = [v8 monospacedDigitSystemFontOfSize:v10 * 0.025 weight:*MEMORY[0x1E69DB960]];
   [(UILabel *)debugLabel setFont:v11];
 
-  v12 = [(AVSecondScreenViewController *)self debugLabel];
-  [v12 sizeToFit];
+  debugLabel = [(AVSecondScreenViewController *)self debugLabel];
+  [debugLabel sizeToFit];
 
-  v13 = [(AVSecondScreenViewController *)self debugLabel];
-  [v13 frame];
+  debugLabel2 = [(AVSecondScreenViewController *)self debugLabel];
+  [debugLabel2 frame];
   v15 = v14;
 
-  v16 = [(AVSecondScreenViewController *)self view];
-  [v16 frame];
+  view4 = [(AVSecondScreenViewController *)self view];
+  [view4 frame];
   v18 = v17 + -40.0;
 
-  v19 = [(AVSecondScreenViewController *)self view];
-  [v19 frame];
+  view5 = [(AVSecondScreenViewController *)self view];
+  [view5 frame];
   v21 = v20 + -20.0;
-  v22 = [(AVSecondScreenViewController *)self debugLabel];
-  [v22 frame];
+  debugLabel3 = [(AVSecondScreenViewController *)self debugLabel];
+  [debugLabel3 frame];
   v24 = v21 - v23;
   v25 = 20.0;
   if (v24 >= 20.0)
   {
-    v26 = [(AVSecondScreenViewController *)self view];
-    [v26 frame];
+    view6 = [(AVSecondScreenViewController *)self view];
+    [view6 frame];
     v28 = v27 + -20.0;
-    v29 = [(AVSecondScreenViewController *)self debugLabel];
-    [v29 frame];
+    debugLabel4 = [(AVSecondScreenViewController *)self debugLabel];
+    [debugLabel4 frame];
     v25 = v28 - v30;
   }
 
-  v31 = [(AVSecondScreenViewController *)self debugLabel];
-  [v31 setFrame:{20.0, v25, v18, v15}];
+  debugLabel5 = [(AVSecondScreenViewController *)self debugLabel];
+  [debugLabel5 setFrame:{20.0, v25, v18, v15}];
 
-  v32 = [(AVSecondScreenViewController *)self debugLabel];
+  debugLabel6 = [(AVSecondScreenViewController *)self debugLabel];
 
-  if (v32)
+  if (debugLabel6)
   {
-    v34 = [(AVSecondScreenViewController *)self view];
-    v33 = [(AVSecondScreenViewController *)self debugLabel];
-    [v34 bringSubviewToFront:v33];
+    view7 = [(AVSecondScreenViewController *)self view];
+    debugLabel7 = [(AVSecondScreenViewController *)self debugLabel];
+    [view7 bringSubviewToFront:debugLabel7];
   }
 }
 
@@ -105,57 +105,57 @@
   if ([(AVSecondScreenViewController *)self isPlayingOnSecondScreen])
   {
     [(AVSecondScreenViewController *)self loadViewIfNeeded];
-    v3 = [(AVSecondScreenViewController *)self sourcePlayerLayer];
+    sourcePlayerLayer = [(AVSecondScreenViewController *)self sourcePlayerLayer];
 
-    if (!v3)
+    if (!sourcePlayerLayer)
     {
-      v4 = [(AVSecondScreenViewController *)self playerLayerView];
-      [v4 stopShowingContentFromActiveSourcePlayerLayer];
+      playerLayerView = [(AVSecondScreenViewController *)self playerLayerView];
+      [playerLayerView stopShowingContentFromActiveSourcePlayerLayer];
     }
 
-    v5 = [(AVSecondScreenViewController *)self contentView];
-    if (v5 && (v6 = v5, [(AVSecondScreenViewController *)self sourcePlayerLayer], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, !v7))
+    contentView = [(AVSecondScreenViewController *)self contentView];
+    if (contentView && (v6 = contentView, [(AVSecondScreenViewController *)self sourcePlayerLayer], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, !v7))
     {
-      v21 = [(AVSecondScreenViewController *)self playerLayerView];
-      v22 = [(AVSecondScreenViewController *)self view];
-      v23 = [v21 isDescendantOfView:v22];
+      playerLayerView2 = [(AVSecondScreenViewController *)self playerLayerView];
+      view = [(AVSecondScreenViewController *)self view];
+      v23 = [playerLayerView2 isDescendantOfView:view];
 
       if (v23)
       {
-        v24 = [(AVSecondScreenViewController *)self playerLayerView];
-        [v24 removeFromSuperview];
+        playerLayerView3 = [(AVSecondScreenViewController *)self playerLayerView];
+        [playerLayerView3 removeFromSuperview];
       }
 
-      v11 = [(AVSecondScreenViewController *)self contentView];
-      v12 = [(AVSecondScreenViewController *)self view];
-      if (![v11 isDescendantOfView:v12])
+      contentView2 = [(AVSecondScreenViewController *)self contentView];
+      view2 = [(AVSecondScreenViewController *)self view];
+      if (![contentView2 isDescendantOfView:view2])
       {
-        v25 = [(AVSecondScreenViewController *)self view];
-        v26 = [v25 window];
-        v27 = [v26 windowScene];
-        v28 = [v27 avkit_isForeground];
+        view3 = [(AVSecondScreenViewController *)self view];
+        window = [view3 window];
+        windowScene = [window windowScene];
+        avkit_isForeground = [windowScene avkit_isForeground];
 
-        if (v28)
+        if (avkit_isForeground)
         {
-          v29 = [MEMORY[0x1E696AD88] defaultCenter];
-          [v29 removeObserver:self name:*MEMORY[0x1E69DE338] object:0];
+          defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+          [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE338] object:0];
 
           [MEMORY[0x1E6979518] begin];
           [MEMORY[0x1E6979518] setDisableActions:1];
-          v30 = [(AVSecondScreenViewController *)self view];
-          v31 = [(AVSecondScreenViewController *)self contentView];
-          [v30 insertSubview:v31 atIndex:0];
+          view4 = [(AVSecondScreenViewController *)self view];
+          contentView3 = [(AVSecondScreenViewController *)self contentView];
+          [view4 insertSubview:contentView3 atIndex:0];
 
-          v32 = [(AVSecondScreenViewController *)self contentView];
-          v33 = [(AVSecondScreenViewController *)self view];
-          [v33 bounds];
-          [v32 setFrame:?];
+          contentView4 = [(AVSecondScreenViewController *)self contentView];
+          view5 = [(AVSecondScreenViewController *)self view];
+          [view5 bounds];
+          [contentView4 setFrame:?];
 
-          v34 = [(AVSecondScreenViewController *)self contentView];
-          [v34 setNeedsLayout];
+          contentView5 = [(AVSecondScreenViewController *)self contentView];
+          [contentView5 setNeedsLayout];
 
-          v35 = [(AVSecondScreenViewController *)self contentView];
-          [v35 layoutIfNeeded];
+          contentView6 = [(AVSecondScreenViewController *)self contentView];
+          [contentView6 layoutIfNeeded];
 
           [MEMORY[0x1E6979518] commit];
         }
@@ -166,8 +166,8 @@
 
     else
     {
-      v8 = [(AVSecondScreenViewController *)self sourcePlayerLayer];
-      if (!v8 || (v9 = v8, [(AVSecondScreenViewController *)self contentView], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v10))
+      sourcePlayerLayer2 = [(AVSecondScreenViewController *)self sourcePlayerLayer];
+      if (!sourcePlayerLayer2 || (v9 = sourcePlayerLayer2, [(AVSecondScreenViewController *)self contentView], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v10))
       {
 LABEL_22:
 
@@ -176,57 +176,57 @@ LABEL_22:
       }
 
       [(AVSecondScreenViewController *)self loadPlayerLayerViewIfNeeded];
-      v11 = [(AVSecondScreenViewController *)self playerLayerView];
-      v12 = [(AVSecondScreenViewController *)self sourcePlayerLayer];
-      [v11 startShowingContentFromSourcePlayerLayer:v12];
+      contentView2 = [(AVSecondScreenViewController *)self playerLayerView];
+      view2 = [(AVSecondScreenViewController *)self sourcePlayerLayer];
+      [contentView2 startShowingContentFromSourcePlayerLayer:view2];
     }
 
     goto LABEL_22;
   }
 
-  v13 = [(AVSecondScreenViewController *)self contentView];
-  v14 = [(AVSecondScreenViewController *)self viewIfLoaded];
-  v15 = [v13 isDescendantOfView:v14];
+  contentView7 = [(AVSecondScreenViewController *)self contentView];
+  viewIfLoaded = [(AVSecondScreenViewController *)self viewIfLoaded];
+  v15 = [contentView7 isDescendantOfView:viewIfLoaded];
 
   if (v15)
   {
-    v36 = [(AVSecondScreenViewController *)self contentView];
-    [v36 removeFromSuperview];
+    contentView8 = [(AVSecondScreenViewController *)self contentView];
+    [contentView8 removeFromSuperview];
   }
 
   else
   {
-    v16 = [(AVSecondScreenViewController *)self sourcePlayerLayer];
-    if (!v16)
+    sourcePlayerLayer3 = [(AVSecondScreenViewController *)self sourcePlayerLayer];
+    if (!sourcePlayerLayer3)
     {
       return;
     }
 
-    v17 = v16;
-    v18 = [(AVSecondScreenViewController *)self playerLayerView];
-    v19 = [(AVSecondScreenViewController *)self viewIfLoaded];
-    v20 = [v18 isDescendantOfView:v19];
+    v17 = sourcePlayerLayer3;
+    playerLayerView4 = [(AVSecondScreenViewController *)self playerLayerView];
+    viewIfLoaded2 = [(AVSecondScreenViewController *)self viewIfLoaded];
+    v20 = [playerLayerView4 isDescendantOfView:viewIfLoaded2];
 
     if (!v20)
     {
       return;
     }
 
-    v36 = [(AVSecondScreenViewController *)self playerLayerView];
-    [v36 stopShowingContentFromActiveSourcePlayerLayer];
+    contentView8 = [(AVSecondScreenViewController *)self playerLayerView];
+    [contentView8 stopShowingContentFromActiveSourcePlayerLayer];
   }
 }
 
-- (void)setDebugText:(id)a3
+- (void)setDebugText:(id)text
 {
-  v7 = a3;
-  v4 = [(AVSecondScreenViewController *)self debugText];
-  v5 = [v7 isEqualToString:v4];
+  textCopy = text;
+  debugText = [(AVSecondScreenViewController *)self debugText];
+  v5 = [textCopy isEqualToString:debugText];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(AVSecondScreenViewController *)self debugLabel];
-    [v6 setText:v7];
+    debugLabel = [(AVSecondScreenViewController *)self debugLabel];
+    [debugLabel setText:textCopy];
 
     [(AVSecondScreenViewController *)self _updateLayout];
   }
@@ -235,31 +235,31 @@ LABEL_22:
 - (id)debugText
 {
   [(AVSecondScreenViewController *)self loadViewIfNeeded];
-  v3 = [(AVSecondScreenViewController *)self debugLabel];
-  v4 = [v3 text];
+  debugLabel = [(AVSecondScreenViewController *)self debugLabel];
+  text = [debugLabel text];
 
-  return v4;
+  return text;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = AVSecondScreenViewController;
-  [(AVSecondScreenViewController *)&v10 viewDidAppear:a3];
+  [(AVSecondScreenViewController *)&v10 viewDidAppear:appear];
   [(AVSecondScreenViewController *)self _updateContentViewIfNeeded];
   [(AVSecondScreenViewController *)self _updateLayout];
-  v4 = [(AVSecondScreenViewController *)self contentView];
-  if (v4)
+  contentView = [(AVSecondScreenViewController *)self contentView];
+  if (contentView)
   {
-    v5 = v4;
-    v6 = [(AVSecondScreenViewController *)self contentView];
-    v7 = [(AVSecondScreenViewController *)self view];
-    v8 = [v6 isDescendantOfView:v7];
+    v5 = contentView;
+    contentView2 = [(AVSecondScreenViewController *)self contentView];
+    view = [(AVSecondScreenViewController *)self view];
+    v8 = [contentView2 isDescendantOfView:view];
 
     if ((v8 & 1) == 0)
     {
-      v9 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v9 addObserver:self selector:sel__updateContentViewIfNeeded name:*MEMORY[0x1E69DE338] object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__updateContentViewIfNeeded name:*MEMORY[0x1E69DE338] object:0];
     }
   }
 }
@@ -292,18 +292,18 @@ LABEL_22:
     [(UILabel *)self->_debugLabel setTextAlignment:2];
     [(UILabel *)self->_debugLabel setNumberOfLines:0];
     v5 = self->_debugLabel;
-    v6 = [MEMORY[0x1E69DC888] systemYellowColor];
-    [(UILabel *)v5 setTextColor:v6];
+    systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+    [(UILabel *)v5 setTextColor:systemYellowColor];
 
     v7 = self->_debugLabel;
     v8 = MEMORY[0x1E69DB878];
-    v9 = [(AVSecondScreenViewController *)self view];
-    [v9 frame];
+    view = [(AVSecondScreenViewController *)self view];
+    [view frame];
     v11 = [v8 monospacedDigitSystemFontOfSize:v10 * 0.025 weight:*MEMORY[0x1E69DB960]];
     [(UILabel *)v7 setFont:v11];
 
-    v12 = [(AVSecondScreenViewController *)self view];
-    [v12 addSubview:self->_debugLabel];
+    view2 = [(AVSecondScreenViewController *)self view];
+    [view2 addSubview:self->_debugLabel];
   }
 }
 
@@ -314,18 +314,18 @@ LABEL_22:
   v4 = [v3 initWithFrame:?];
   [(AVSecondScreenViewController *)self setView:v4];
 
-  v5 = [(AVSecondScreenViewController *)self view];
-  [v5 setAutoresizingMask:18];
+  view = [(AVSecondScreenViewController *)self view];
+  [view setAutoresizingMask:18];
 }
 
-- (void)setInitialScreenBoundsHint:(CGRect)a3
+- (void)setInitialScreenBoundsHint:(CGRect)hint
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = hint.size.height;
+  width = hint.size.width;
+  y = hint.origin.y;
+  x = hint.origin.x;
   p_initialScreenBoundsHint = &self->_initialScreenBoundsHint;
-  if (CGRectIsInfinite(a3) || (v9.origin.x = x, v9.origin.y = y, v9.size.width = width, v9.size.height = height, CGRectIsNull(v9)))
+  if (CGRectIsInfinite(hint) || (v9.origin.x = x, v9.origin.y = y, v9.size.width = width, v9.size.height = height, CGRectIsNull(v9)))
   {
     v8 = *(MEMORY[0x1E695F058] + 16);
     p_initialScreenBoundsHint->origin = *MEMORY[0x1E695F058];
@@ -343,9 +343,9 @@ LABEL_22:
 
 - (CGSize)videoDisplaySize
 {
-  v2 = [(AVSecondScreenViewController *)self playerLayerView];
-  v3 = [v2 layer];
-  [v3 videoRect];
+  playerLayerView = [(AVSecondScreenViewController *)self playerLayerView];
+  layer = [playerLayerView layer];
+  [layer videoRect];
   v5 = v4;
   v7 = v6;
 
@@ -356,9 +356,9 @@ LABEL_22:
   return result;
 }
 
-- (void)setSourcePlayerLayer:(id)a3
+- (void)setSourcePlayerLayer:(id)layer
 {
-  obj = a3;
+  obj = layer;
   WeakRetained = objc_loadWeakRetained(&self->_sourcePlayerLayer);
 
   v5 = obj;
@@ -370,13 +370,13 @@ LABEL_22:
   }
 }
 
-- (void)setPlayingOnSecondScreen:(BOOL)a3
+- (void)setPlayingOnSecondScreen:(BOOL)screen
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (self->_playingOnSecondScreen != a3)
+  if (self->_playingOnSecondScreen != screen)
   {
-    v3 = a3;
-    self->_playingOnSecondScreen = a3;
+    screenCopy = screen;
+    self->_playingOnSecondScreen = screen;
     v5 = _AVLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -385,7 +385,7 @@ LABEL_22:
       v8 = "[AVSecondScreenViewController setPlayingOnSecondScreen:]";
       v10 = "playingOnSecondScreen";
       v9 = 2080;
-      if (v3)
+      if (screenCopy)
       {
         v6 = "YES";
       }
@@ -399,24 +399,24 @@ LABEL_22:
   }
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v10 = a3;
-  v5 = [(AVSecondScreenViewController *)self contentView];
+  viewCopy = view;
+  contentView = [(AVSecondScreenViewController *)self contentView];
 
-  if (v5 != v10)
+  if (contentView != viewCopy)
   {
-    v6 = [(AVSecondScreenViewController *)self contentView];
-    v7 = [(AVSecondScreenViewController *)self viewIfLoaded];
-    v8 = [v6 isDescendantOfView:v7];
+    contentView2 = [(AVSecondScreenViewController *)self contentView];
+    viewIfLoaded = [(AVSecondScreenViewController *)self viewIfLoaded];
+    v8 = [contentView2 isDescendantOfView:viewIfLoaded];
 
     if (v8)
     {
-      v9 = [(AVSecondScreenViewController *)self contentView];
-      [v9 removeFromSuperview];
+      contentView3 = [(AVSecondScreenViewController *)self contentView];
+      [contentView3 removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_contentView, a3);
+    objc_storeStrong(&self->_contentView, view);
     [(AVSecondScreenViewController *)self _updateContentViewIfNeeded];
   }
 }
@@ -426,14 +426,14 @@ LABEL_22:
   if (!self->_playerLayerView)
   {
     v3 = [AVSecondScreenPlayerLayerView alloc];
-    v4 = [(AVSecondScreenViewController *)self view];
-    [v4 bounds];
+    view = [(AVSecondScreenViewController *)self view];
+    [view bounds];
     v5 = [(AVSecondScreenPlayerLayerView *)v3 initWithFrame:?];
     playerLayerView = self->_playerLayerView;
     self->_playerLayerView = v5;
 
-    v7 = [(AVSecondScreenViewController *)self view];
-    [v7 insertSubview:self->_playerLayerView atIndex:0];
+    view2 = [(AVSecondScreenViewController *)self view];
+    [view2 insertSubview:self->_playerLayerView atIndex:0];
   }
 }
 

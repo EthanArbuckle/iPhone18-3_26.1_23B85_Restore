@@ -1,40 +1,40 @@
 @interface RTSettledStateTransitionStore
-- (void)_purgeSettledStateTransitionsPredating:(id)a3 handler:(id)a4;
-- (void)clearWithHandler:(id)a3;
-- (void)enumerateStoredSettledStateTransitionsWithOptions:(id)a3 enumerationBlock:(id)a4;
-- (void)purgeSettledStateTransitionsPredating:(id)a3 handler:(id)a4;
+- (void)_purgeSettledStateTransitionsPredating:(id)predating handler:(id)handler;
+- (void)clearWithHandler:(id)handler;
+- (void)enumerateStoredSettledStateTransitionsWithOptions:(id)options enumerationBlock:(id)block;
+- (void)purgeSettledStateTransitionsPredating:(id)predating handler:(id)handler;
 @end
 
 @implementation RTSettledStateTransitionStore
 
-- (void)enumerateStoredSettledStateTransitionsWithOptions:(id)a3 enumerationBlock:(id)a4
+- (void)enumerateStoredSettledStateTransitionsWithOptions:(id)options enumerationBlock:(id)block
 {
   v43[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  optionsCopy = options;
+  blockCopy = block;
+  if (blockCopy)
   {
     v35 = 1;
-    if (v7)
+    if (optionsCopy)
     {
       v9 = +[RTSettledStateTransitionMO fetchRequest];
-      v10 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"date" ascending:{objc_msgSend(v7, "ascending")}];
+      v10 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"date" ascending:{objc_msgSend(optionsCopy, "ascending")}];
       v37 = v10;
       v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v37 count:1];
       [v9 setSortDescriptors:v11];
 
-      v12 = [v7 dateInterval];
+      dateInterval = [optionsCopy dateInterval];
 
-      if (v12)
+      if (dateInterval)
       {
         v13 = MEMORY[0x277CCA920];
         v14 = MEMORY[0x277CCAC30];
-        v15 = [v7 dateInterval];
-        v16 = [v15 startDate];
-        [v7 dateInterval];
+        dateInterval2 = [optionsCopy dateInterval];
+        startDate = [dateInterval2 startDate];
+        [optionsCopy dateInterval];
         v17 = v32 = self;
-        v18 = [v17 endDate];
-        v19 = [v14 predicateWithFormat:@"%K >= %@ AND %K <= %@", @"date", v16, @"date", v18];
+        endDate = [v17 endDate];
+        v19 = [v14 predicateWithFormat:@"%K >= %@ AND %K <= %@", @"date", startDate, @"date", endDate];
         v36 = v19;
         v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v36 count:1];
         v21 = [v13 orPredicateWithSubpredicates:v20];
@@ -43,25 +43,25 @@
         self = v32;
       }
 
-      v22 = [v7 limit];
+      limit = [optionsCopy limit];
 
-      if (v22)
+      if (limit)
       {
-        v23 = [v7 limit];
-        -[NSObject setFetchLimit:](v9, "setFetchLimit:", [v23 unsignedIntegerValue]);
+        limit2 = [optionsCopy limit];
+        -[NSObject setFetchLimit:](v9, "setFetchLimit:", [limit2 unsignedIntegerValue]);
       }
 
-      if ([v7 batchSize])
+      if ([optionsCopy batchSize])
       {
-        v24 = [v7 batchSize];
-        if (v24 >= 0x400)
+        batchSize = [optionsCopy batchSize];
+        if (batchSize >= 0x400)
         {
           v25 = 1024;
         }
 
         else
         {
-          v25 = v24;
+          v25 = batchSize;
         }
       }
 
@@ -76,7 +76,7 @@
       aBlock[1] = 3221225472;
       aBlock[2] = __100__RTSettledStateTransitionStore_enumerateStoredSettledStateTransitionsWithOptions_enumerationBlock___block_invoke;
       aBlock[3] = &unk_2788CCC20;
-      v34 = v8;
+      v34 = blockCopy;
       v30 = _Block_copy(aBlock);
       [(RTStore *)self enumerateType:objc_opt_class() fetchRequest:v9 enumerationBlock:v30];
     }
@@ -101,7 +101,7 @@
         _os_log_error_impl(&dword_2304B3000, v29, OS_LOG_TYPE_ERROR, "%@, error, %@", buf, 0x16u);
       }
 
-      (*(v8 + 2))(v8, 0, v9, &v35);
+      (*(blockCopy + 2))(blockCopy, 0, v9, &v35);
     }
   }
 
@@ -116,21 +116,21 @@
   }
 }
 
-- (void)clearWithHandler:(id)a3
+- (void)clearWithHandler:(id)handler
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = objc_opt_class();
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
-  [(RTStore *)self removeAll:v5 handler:v4];
+  [(RTStore *)self removeAll:v5 handler:handlerCopy];
 }
 
-- (void)_purgeSettledStateTransitionsPredating:(id)a3 handler:(id)a4
+- (void)_purgeSettledStateTransitionsPredating:(id)predating handler:(id)handler
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  predatingCopy = predating;
+  handlerCopy = handler;
+  if (predatingCopy)
   {
     v12 = @"date";
     v11 = objc_opt_class();
@@ -138,7 +138,7 @@
     v13[0] = v8;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
 
-    [(RTStore *)self purgePredating:v6 predicateMappings:v9 handler:v7];
+    [(RTStore *)self purgePredating:predatingCopy predicateMappings:v9 handler:handlerCopy];
   }
 
   else
@@ -152,21 +152,21 @@
   }
 }
 
-- (void)purgeSettledStateTransitionsPredating:(id)a3 handler:(id)a4
+- (void)purgeSettledStateTransitionsPredating:(id)predating handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  predatingCopy = predating;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __79__RTSettledStateTransitionStore_purgeSettledStateTransitionsPredating_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = predatingCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = predatingCopy;
+  dispatch_async(queue, block);
 }
 
 @end

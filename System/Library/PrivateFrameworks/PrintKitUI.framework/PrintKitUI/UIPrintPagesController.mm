@@ -1,35 +1,35 @@
 @interface UIPrintPagesController
-- (CGSize)sizeForPageNum:(int64_t)a3;
-- (UIPrintPagesController)initWithPrintInfo:(id)a3 delegate:(id)a4 usingWebKitFormatter:(BOOL)a5;
+- (CGSize)sizeForPageNum:(int64_t)num;
+- (UIPrintPagesController)initWithPrintInfo:(id)info delegate:(id)delegate usingWebKitFormatter:(BOOL)formatter;
 - (UIPrintPagesControllerDelegate)delegate;
-- (id)baseImageForPageNum:(int64_t)a3;
-- (id)imageForPageNum:(int64_t)a3 showingPageView:(BOOL)a4;
-- (void)clearCacheForPageNum:(int64_t)a3;
+- (id)baseImageForPageNum:(int64_t)num;
+- (id)imageForPageNum:(int64_t)num showingPageView:(BOOL)view;
+- (void)clearCacheForPageNum:(int64_t)num;
 - (void)clearPagesCache;
 - (void)createPDFForAllPages;
 - (void)dealloc;
-- (void)drawBorderAtRect:(CGRect)a3 context:(CGContext *)a4;
-- (void)generateWebKitThumbnailsWithCompletionBlock:(id)a3;
+- (void)drawBorderAtRect:(CGRect)rect context:(CGContext *)context;
+- (void)generateWebKitThumbnailsWithCompletionBlock:(id)block;
 - (void)recalculateWebKitPageCount;
 - (void)removeWebKitThumbnailPDF;
 @end
 
 @implementation UIPrintPagesController
 
-- (UIPrintPagesController)initWithPrintInfo:(id)a3 delegate:(id)a4 usingWebKitFormatter:(BOOL)a5
+- (UIPrintPagesController)initWithPrintInfo:(id)info delegate:(id)delegate usingWebKitFormatter:(BOOL)formatter
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  formatterCopy = formatter;
+  infoCopy = info;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = UIPrintPagesController;
   v10 = [(UIPrintPagesController *)&v18 init];
   v11 = v10;
   if (v10)
   {
-    [(UIPrintPagesController *)v10 setPrintInfo:v8];
-    [(UIPrintPagesController *)v11 setDelegate:v9];
-    [(UIPrintPagesController *)v11 setUsingWebKitFormatter:v5];
+    [(UIPrintPagesController *)v10 setPrintInfo:infoCopy];
+    [(UIPrintPagesController *)v11 setDelegate:delegateCopy];
+    [(UIPrintPagesController *)v11 setUsingWebKitFormatter:formatterCopy];
     v12 = objc_alloc_init(MEMORY[0x277CBEA78]);
     [(UIPrintPagesController *)v11 setCachedPageSizes:v12];
 
@@ -39,11 +39,11 @@
     v14 = objc_alloc_init(MEMORY[0x277CCABD8]);
     [(UIPrintPagesController *)v11 setWebKitPrintingOperationsQueue:v14];
 
-    v15 = [(UIPrintPagesController *)v11 webKitPrintingOperationsQueue];
-    [v15 setMaxConcurrentOperationCount:1];
+    webKitPrintingOperationsQueue = [(UIPrintPagesController *)v11 webKitPrintingOperationsQueue];
+    [webKitPrintingOperationsQueue setMaxConcurrentOperationCount:1];
 
-    v16 = [(UIPrintPagesController *)v11 webKitPrintingOperationsQueue];
-    [v16 setName:@"com.apple.UIKit.UIPrintPreviewViewController.webKitThumbnailGenerationQueue"];
+    webKitPrintingOperationsQueue2 = [(UIPrintPagesController *)v11 webKitPrintingOperationsQueue];
+    [webKitPrintingOperationsQueue2 setName:@"com.apple.UIKit.UIPrintPreviewViewController.webKitThumbnailGenerationQueue"];
   }
 
   return v11;
@@ -51,11 +51,11 @@
 
 - (void)dealloc
 {
-  v3 = [(UIPrintPagesController *)self webKitPrintingOperationsQueue];
-  [v3 cancelAllOperations];
+  webKitPrintingOperationsQueue = [(UIPrintPagesController *)self webKitPrintingOperationsQueue];
+  [webKitPrintingOperationsQueue cancelAllOperations];
 
-  v4 = [(UIPrintPagesController *)self webKitThumbnailGenerationThread];
-  [v4 cancel];
+  webKitThumbnailGenerationThread = [(UIPrintPagesController *)self webKitThumbnailGenerationThread];
+  [webKitThumbnailGenerationThread cancel];
 
   [(UIPrintPagesController *)self clearPagesCache];
   [(UIPrintPagesController *)self removeWebKitThumbnailPDF];
@@ -64,23 +64,23 @@
   [(UIPrintPagesController *)&v5 dealloc];
 }
 
-- (CGSize)sizeForPageNum:(int64_t)a3
+- (CGSize)sizeForPageNum:(int64_t)num
 {
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:?];
-  v6 = [(UIPrintPagesController *)self cachedPageSizes];
-  v7 = [v6 objectForKey:v5];
+  cachedPageSizes = [(UIPrintPagesController *)self cachedPageSizes];
+  cachedPageSizes2 = [cachedPageSizes objectForKey:v5];
 
-  if (v7)
+  if (cachedPageSizes2)
   {
-    [v7 CGSizeValue];
+    [cachedPageSizes2 CGSizeValue];
     v9 = v8;
     v11 = v10;
   }
 
   else
   {
-    v12 = [(UIPrintPagesController *)self delegate];
-    [v12 paperSizeForPageNum:a3];
+    delegate = [(UIPrintPagesController *)self delegate];
+    [delegate paperSizeForPageNum:num];
     v14 = v13;
     v16 = v15;
 
@@ -88,19 +88,19 @@
     {
       v9 = *MEMORY[0x277CBF3A8];
       v11 = *(MEMORY[0x277CBF3A8] + 8);
-      v7 = [(UIPrintPagesController *)self cachedPageSizes];
-      [v7 removeObjectForKey:v5];
+      cachedPageSizes2 = [(UIPrintPagesController *)self cachedPageSizes];
+      [cachedPageSizes2 removeObjectForKey:v5];
     }
 
     else
     {
       v17 = v14 / v16;
-      v18 = [MEMORY[0x277D759A0] mainScreen];
-      [v18 bounds];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen bounds];
       v11 = v19;
 
-      v20 = [MEMORY[0x277D759A0] mainScreen];
-      [v20 bounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 bounds];
       v22 = v21;
 
       if (v11 >= v22)
@@ -119,9 +119,9 @@
         v11 = ceil(v11 / v17);
       }
 
-      v7 = [MEMORY[0x277CCAE60] valueWithCGSize:{v9, v11}];
-      v23 = [(UIPrintPagesController *)self cachedPageSizes];
-      [v23 setObject:v7 forKey:v5];
+      cachedPageSizes2 = [MEMORY[0x277CCAE60] valueWithCGSize:{v9, v11}];
+      cachedPageSizes3 = [(UIPrintPagesController *)self cachedPageSizes];
+      [cachedPageSizes3 setObject:cachedPageSizes2 forKey:v5];
     }
   }
 
@@ -132,26 +132,26 @@
   return result;
 }
 
-- (id)baseImageForPageNum:(int64_t)a3
+- (id)baseImageForPageNum:(int64_t)num
 {
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:?];
-  v6 = [(UIPrintPagesController *)self cachedBasePageImages];
-  v7 = [v6 objectForKey:v5];
+  cachedBasePageImages = [(UIPrintPagesController *)self cachedBasePageImages];
+  v7 = [cachedBasePageImages objectForKey:v5];
 
   if (!v7)
   {
-    [(UIPrintPagesController *)self sizeForPageNum:a3];
+    [(UIPrintPagesController *)self sizeForPageNum:num];
     if (v8 > 0.0)
     {
       v10 = v9;
       if (v9 > 0.0)
       {
         v11 = v8;
-        v12 = [MEMORY[0x277D759A0] mainScreen];
-        [v12 scale];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen scale];
         v14 = v11 * v13;
-        v15 = [MEMORY[0x277D759A0] mainScreen];
-        [v15 scale];
+        mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen2 scale];
         v17 = v10 * v16;
 
         DeviceRGB = CGColorSpaceCreateDeviceRGB();
@@ -160,15 +160,15 @@
         eraseCGBitmapContext(v19);
         if ([(UIPrintPagesController *)self usingWebKitFormatter])
         {
-          v20 = [(UIPrintPagesController *)self webKitThumbnailPDFURL];
-          objc_sync_enter(v20);
+          webKitThumbnailPDFURL = [(UIPrintPagesController *)self webKitThumbnailPDFURL];
+          objc_sync_enter(webKitThumbnailPDFURL);
           if ([(UIPrintPagesController *)self webKitThumbnailPDFDocumentRef])
           {
-            Page = CGPDFDocumentGetPage([(UIPrintPagesController *)self webKitThumbnailPDFDocumentRef], a3);
+            Page = CGPDFDocumentGetPage([(UIPrintPagesController *)self webKitThumbnailPDFDocumentRef], num);
             if (Page)
             {
-              v22 = [(UIPrintPagesController *)self delegate];
-              [v22 paperSizeForPageNum:a3];
+              delegate = [(UIPrintPagesController *)self delegate];
+              [delegate paperSizeForPageNum:num];
               v24 = v23;
               v25 = ceil(v17);
 
@@ -176,10 +176,10 @@
               CGAffineTransformMakeScale(&v32, v25 / v24, v25 / v24);
               v31 = v32;
               CGContextConcatCTM(v19, &v31);
-              v26 = [(UIPrintPagesController *)self printInfo];
-              LODWORD(v22) = [v26 imagePDFAnnotations];
+              printInfo = [(UIPrintPagesController *)self printInfo];
+              LODWORD(delegate) = [printInfo imagePDFAnnotations];
 
-              if (v22)
+              if (delegate)
               {
                 CGContextDrawPDFPageWithAnnotations();
               }
@@ -191,29 +191,29 @@
             }
           }
 
-          objc_sync_exit(v20);
+          objc_sync_exit(webKitThumbnailPDFURL);
         }
 
         else
         {
-          v20 = [(UIPrintPagesController *)self delegate];
-          [v20 drawImageForPageNum:a3 toContext:v19 sheetSize:{v14, v17}];
+          webKitThumbnailPDFURL = [(UIPrintPagesController *)self delegate];
+          [webKitThumbnailPDFURL drawImageForPageNum:num toContext:v19 sheetSize:{v14, v17}];
         }
 
         Image = CGBitmapContextCreateImage(v19);
         v7 = [MEMORY[0x277D755B8] imageWithCGImage:Image];
         CGImageRelease(Image);
         CGContextRelease(v19);
-        v28 = [(UIPrintPagesController *)self cachedBasePageImages];
-        v29 = v28;
+        cachedBasePageImages2 = [(UIPrintPagesController *)self cachedBasePageImages];
+        v29 = cachedBasePageImages2;
         if (v7)
         {
-          [v28 setObject:v7 forKey:v5];
+          [cachedBasePageImages2 setObject:v7 forKey:v5];
         }
 
         else
         {
-          [v28 removeObjectForKey:v5];
+          [cachedBasePageImages2 removeObjectForKey:v5];
         }
       }
     }
@@ -222,10 +222,10 @@
   return v7;
 }
 
-- (id)imageForPageNum:(int64_t)a3 showingPageView:(BOOL)a4
+- (id)imageForPageNum:(int64_t)num showingPageView:(BOOL)view
 {
-  v4 = a4;
-  v6 = [(UIPrintPagesController *)self baseImageForPageNum:a3];
+  viewCopy = view;
+  v6 = [(UIPrintPagesController *)self baseImageForPageNum:num];
   v7 = v6;
   if (!v6)
   {
@@ -233,7 +233,7 @@
     goto LABEL_16;
   }
 
-  v8 = [v6 CGImage];
+  cGImage = [v6 CGImage];
   [v7 size];
   v10 = v9;
   [v7 size];
@@ -243,22 +243,22 @@
     v13 = v11;
     if (v11 > 0.0)
     {
-      v14 = [(UIPrintPagesController *)self printInfo];
-      if ([v14 outputType] != 2)
+      printInfo = [(UIPrintPagesController *)self printInfo];
+      if ([printInfo outputType] != 2)
       {
-        v15 = [(UIPrintPagesController *)self printInfo];
-        if ([v15 outputType] != 3)
+        printInfo2 = [(UIPrintPagesController *)self printInfo];
+        if ([printInfo2 outputType] != 3)
         {
-          v27 = [(UIPrintPagesController *)self printInfo];
-          v28 = [v27 currentPrinter];
-          if (v28)
+          printInfo3 = [(UIPrintPagesController *)self printInfo];
+          currentPrinter = [printInfo3 currentPrinter];
+          if (currentPrinter)
           {
-            v29 = v28;
-            v30 = [(UIPrintPagesController *)self printInfo];
-            v31 = [v30 currentPrinter];
-            v32 = [v31 supportsColor];
+            v29 = currentPrinter;
+            printInfo4 = [(UIPrintPagesController *)self printInfo];
+            currentPrinter2 = [printInfo4 currentPrinter];
+            supportsColor = [currentPrinter2 supportsColor];
 
-            if ((v32 & 1) == 0)
+            if ((supportsColor & 1) == 0)
             {
               goto LABEL_8;
             }
@@ -277,20 +277,20 @@ LABEL_8:
       DeviceRGB = CGColorSpaceCreateDeviceGray();
 LABEL_9:
       v17 = DeviceRGB;
-      BitsPerComponent = CGImageGetBitsPerComponent(v8);
-      BytesPerRow = CGImageGetBytesPerRow(v8);
-      BitmapInfo = CGImageGetBitmapInfo(v8);
+      BitsPerComponent = CGImageGetBitsPerComponent(cGImage);
+      BytesPerRow = CGImageGetBytesPerRow(cGImage);
+      BitmapInfo = CGImageGetBitmapInfo(cGImage);
       v21 = CGBitmapContextCreate(0, v10, v13, BitsPerComponent, BytesPerRow, v17, BitmapInfo);
       CGColorSpaceRelease(v17);
       eraseCGBitmapContext(v21);
       CGContextSaveGState(v21);
-      v22 = [(UIPrintPagesController *)self printInfo];
-      if ([v22 flipHorizontal])
+      printInfo5 = [(UIPrintPagesController *)self printInfo];
+      if ([printInfo5 flipHorizontal])
       {
-        v23 = [(UIPrintPagesController *)self printInfo];
-        v24 = [v23 nUpActive];
+        printInfo6 = [(UIPrintPagesController *)self printInfo];
+        nUpActive = [printInfo6 nUpActive];
 
-        if (!v24 || v4)
+        if (!nUpActive || viewCopy)
         {
           CGContextTranslateCTM(v21, v10, 0.0);
           CGContextScaleCTM(v21, -1.0, 1.0);
@@ -305,7 +305,7 @@ LABEL_9:
       v34.origin.y = 0.0;
       v34.size.width = v10;
       v34.size.height = v13;
-      CGContextDrawImage(v21, v34, v8);
+      CGContextDrawImage(v21, v34, cGImage);
       CGContextRestoreGState(v21);
       [(UIPrintPagesController *)self drawBorderAtRect:v21 context:0.0, 0.0, v10, v13];
       Image = CGBitmapContextCreateImage(v21);
@@ -320,24 +320,24 @@ LABEL_16:
   return v12;
 }
 
-- (void)drawBorderAtRect:(CGRect)a3 context:(CGContext *)a4
+- (void)drawBorderAtRect:(CGRect)rect context:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  v8 = [(UIPrintPagesController *)self printInfo:a3.origin.x];
-  v9 = [v8 borderType];
+  height = rect.size.height;
+  width = rect.size.width;
+  v8 = [(UIPrintPagesController *)self printInfo:rect.origin.x];
+  borderType = [v8 borderType];
 
-  if (v9)
+  if (borderType)
   {
-    v10 = [(UIPrintPagesController *)self printInfo];
-    v11 = [v10 printPaper];
-    [v11 paperSize];
+    printInfo = [(UIPrintPagesController *)self printInfo];
+    printPaper = [printInfo printPaper];
+    [printPaper paperSize];
     v13 = v12;
     v15 = v14;
 
-    v16 = [(UIPrintPagesController *)self printInfo];
-    v17 = [v16 printPaper];
-    [v17 printableRect];
+    printInfo2 = [(UIPrintPagesController *)self printInfo];
+    printPaper2 = [printInfo2 printPaper];
+    [printPaper2 printableRect];
     v19 = v18;
     v21 = v20;
     v23 = v22;
@@ -371,7 +371,7 @@ LABEL_16:
     v32 = ceil(v27 * v30);
     v33 = width - ceil(v26 * v30) - v31;
     v34 = height - v32 - ceil(v28 * v30);
-    if ((v9 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+    if ((borderType & 0xFFFFFFFFFFFFFFFDLL) == 1)
     {
       v35 = 0.24;
     }
@@ -381,54 +381,54 @@ LABEL_16:
       v35 = 0.5;
     }
 
-    CGContextSaveGState(a4);
-    CGContextSetLineWidth(a4, v35);
-    v36 = [MEMORY[0x277D75348] blackColor];
-    CGContextSetStrokeColorWithColor(a4, [v36 CGColor]);
+    CGContextSaveGState(context);
+    CGContextSetLineWidth(context, v35);
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    CGContextSetStrokeColorWithColor(context, [blackColor CGColor]);
 
     v38.origin.x = v31;
     v38.origin.y = v32;
     v38.size.width = v33;
     v38.size.height = v34;
     v39 = CGRectInset(v38, 2.0, 2.0);
-    CGContextStrokeRect(a4, v39);
-    if ((v9 - 3) <= 1)
+    CGContextStrokeRect(context, v39);
+    if ((borderType - 3) <= 1)
     {
       v40.origin.x = v31;
       v40.origin.y = v32;
       v40.size.width = v33;
       v40.size.height = v34;
       v41 = CGRectInset(v40, 6.0, 6.0);
-      CGContextStrokeRect(a4, v41);
+      CGContextStrokeRect(context, v41);
     }
 
-    CGContextRestoreGState(a4);
+    CGContextRestoreGState(context);
   }
 }
 
 - (void)clearPagesCache
 {
-  v3 = [(UIPrintPagesController *)self cachedPageSizes];
-  [v3 removeAllObjects];
+  cachedPageSizes = [(UIPrintPagesController *)self cachedPageSizes];
+  [cachedPageSizes removeAllObjects];
 
-  v4 = [(UIPrintPagesController *)self cachedBasePageImages];
-  [v4 removeAllObjects];
+  cachedBasePageImages = [(UIPrintPagesController *)self cachedBasePageImages];
+  [cachedBasePageImages removeAllObjects];
 }
 
-- (void)clearCacheForPageNum:(int64_t)a3
+- (void)clearCacheForPageNum:(int64_t)num
 {
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v4 = [(UIPrintPagesController *)self cachedPageSizes];
-  v5 = [v4 objectForKey:v7];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:num];
+  cachedPageSizes = [(UIPrintPagesController *)self cachedPageSizes];
+  v5 = [cachedPageSizes objectForKey:v7];
 
-  v6 = [(UIPrintPagesController *)self cachedBasePageImages];
-  [v6 removeObjectForKey:v7];
+  cachedBasePageImages = [(UIPrintPagesController *)self cachedBasePageImages];
+  [cachedBasePageImages removeObjectForKey:v7];
 }
 
 - (void)removeWebKitThumbnailPDF
 {
-  v3 = [(UIPrintPagesController *)self webKitThumbnailPDFURL];
-  objc_sync_enter(v3);
+  webKitThumbnailPDFURL = [(UIPrintPagesController *)self webKitThumbnailPDFURL];
+  objc_sync_enter(webKitThumbnailPDFURL);
   webKitThumbnailPDFDocumentRef = self->_webKitThumbnailPDFDocumentRef;
   if (webKitThumbnailPDFDocumentRef)
   {
@@ -436,20 +436,20 @@ LABEL_16:
     self->_webKitThumbnailPDFDocumentRef = 0;
   }
 
-  v5 = [(UIPrintPagesController *)self webKitThumbnailPDFURL];
+  webKitThumbnailPDFURL2 = [(UIPrintPagesController *)self webKitThumbnailPDFURL];
 
-  if (v5)
+  if (webKitThumbnailPDFURL2)
   {
     v6 = objc_opt_new();
-    v7 = [(UIPrintPagesController *)self webKitThumbnailPDFURL];
-    v8 = [v7 path];
-    v9 = [v6 fileExistsAtPath:v8];
+    webKitThumbnailPDFURL3 = [(UIPrintPagesController *)self webKitThumbnailPDFURL];
+    path = [webKitThumbnailPDFURL3 path];
+    v9 = [v6 fileExistsAtPath:path];
 
     if (v9)
     {
-      v10 = [(UIPrintPagesController *)self webKitThumbnailPDFURL];
+      webKitThumbnailPDFURL4 = [(UIPrintPagesController *)self webKitThumbnailPDFURL];
       v13 = 0;
-      v11 = [v6 removeItemAtURL:v10 error:&v13];
+      v11 = [v6 removeItemAtURL:webKitThumbnailPDFURL4 error:&v13];
       v12 = v13;
 
       if ((v11 & 1) == 0)
@@ -461,28 +461,28 @@ LABEL_16:
     [(UIPrintPagesController *)self setWebKitThumbnailPDFURL:0];
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(webKitThumbnailPDFURL);
 }
 
 - (void)createPDFForAllPages
 {
-  v3 = [MEMORY[0x277CCACC8] currentThread];
-  v4 = [v3 isCancelled];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  isCancelled = [currentThread isCancelled];
 
-  if ((v4 & 1) == 0)
+  if ((isCancelled & 1) == 0)
   {
-    v5 = [(UIPrintPagesController *)self delegate];
-    url = [v5 createWebKitPDFForAllPages];
+    delegate = [(UIPrintPagesController *)self delegate];
+    url = [delegate createWebKitPDFForAllPages];
 
     if (url)
     {
-      v6 = [MEMORY[0x277CCACC8] currentThread];
-      v7 = [v6 isCancelled];
+      currentThread2 = [MEMORY[0x277CCACC8] currentThread];
+      isCancelled2 = [currentThread2 isCancelled];
 
-      if ((v7 & 1) == 0)
+      if ((isCancelled2 & 1) == 0)
       {
-        v8 = [(UIPrintPagesController *)self webKitThumbnailPDFURL];
-        objc_sync_enter(v8);
+        webKitThumbnailPDFURL = [(UIPrintPagesController *)self webKitThumbnailPDFURL];
+        objc_sync_enter(webKitThumbnailPDFURL);
         [(UIPrintPagesController *)self setWebKitThumbnailPDFURL:url];
         webKitThumbnailPDFDocumentRef = self->_webKitThumbnailPDFDocumentRef;
         if (webKitThumbnailPDFDocumentRef)
@@ -492,8 +492,8 @@ LABEL_16:
         }
 
         self->_webKitThumbnailPDFDocumentRef = CGPDFDocumentCreateWithURL(url);
-        v10 = [MEMORY[0x277CCACC8] currentThread];
-        if ([v10 isCancelled])
+        currentThread3 = [MEMORY[0x277CCACC8] currentThread];
+        if ([currentThread3 isCancelled])
         {
           v11 = self->_webKitThumbnailPDFDocumentRef;
 
@@ -508,7 +508,7 @@ LABEL_16:
         {
         }
 
-        objc_sync_exit(v8);
+        objc_sync_exit(webKitThumbnailPDFURL);
 
         [(UIPrintPagesController *)self clearPagesCache];
       }
@@ -516,15 +516,15 @@ LABEL_16:
   }
 }
 
-- (void)generateWebKitThumbnailsWithCompletionBlock:(id)a3
+- (void)generateWebKitThumbnailsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(UIPrintPagesController *)self setUsingWebKitFormatter:1];
-  v5 = [(UIPrintPagesController *)self webKitPrintingOperationsQueue];
-  [v5 cancelAllOperations];
+  webKitPrintingOperationsQueue = [(UIPrintPagesController *)self webKitPrintingOperationsQueue];
+  [webKitPrintingOperationsQueue cancelAllOperations];
 
-  v6 = [(UIPrintPagesController *)self webKitThumbnailGenerationThread];
-  [v6 cancel];
+  webKitThumbnailGenerationThread = [(UIPrintPagesController *)self webKitThumbnailGenerationThread];
+  [webKitThumbnailGenerationThread cancel];
 
   [(UIPrintPagesController *)self removeWebKitThumbnailPDF];
   [(UIPrintPagesController *)self clearPagesCache];
@@ -534,7 +534,7 @@ LABEL_16:
   v16[2] = __70__UIPrintPagesController_generateWebKitThumbnailsWithCompletionBlock___block_invoke;
   v16[3] = &unk_279A9C428;
   objc_copyWeak(&v18, &location);
-  v7 = v4;
+  v7 = blockCopy;
   v17 = v7;
   v8 = MEMORY[0x25F8E54A0](v16);
   v13[0] = MEMORY[0x277D85DD0];
@@ -547,8 +547,8 @@ LABEL_16:
   v10 = MEMORY[0x25F8E54A0](v13);
   v11 = [[UIPrintWebKitThumbnailGenerationOperation alloc] initWithPagesController:self];
   [(NSBlockOperation *)v11 addExecutionBlock:v10];
-  v12 = [(UIPrintPagesController *)self webKitPrintingOperationsQueue];
-  [v12 addOperation:v11];
+  webKitPrintingOperationsQueue2 = [(UIPrintPagesController *)self webKitPrintingOperationsQueue];
+  [webKitPrintingOperationsQueue2 addOperation:v11];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&v18);
@@ -587,8 +587,8 @@ void __70__UIPrintPagesController_generateWebKitThumbnailsWithCompletionBlock___
   v4 = [UIPrintWebKitThumbnailGenerationOperation alloc];
   v5 = [(UIPrintWebKitThumbnailGenerationOperation *)v4 initWithPagesController:self, v7, v8, v9, v10];
   [(NSBlockOperation *)v5 addExecutionBlock:v3];
-  v6 = [(UIPrintPagesController *)self webKitPrintingOperationsQueue];
-  [v6 addOperation:v5];
+  webKitPrintingOperationsQueue = [(UIPrintPagesController *)self webKitPrintingOperationsQueue];
+  [webKitPrintingOperationsQueue addOperation:v5];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);

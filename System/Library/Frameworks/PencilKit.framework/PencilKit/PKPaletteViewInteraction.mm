@@ -1,16 +1,16 @@
 @interface PKPaletteViewInteraction
-+ (BOOL)isHostedWindow:(id)a3;
-+ (id)existingPaletteViewInteractionForWindowScene:(id)a3;
-+ (id)paletteViewInteractionForWindow:(id)a3 windowScene:(id)a4;
++ (BOOL)isHostedWindow:(id)window;
++ (id)existingPaletteViewInteractionForWindowScene:(id)scene;
++ (id)paletteViewInteractionForWindow:(id)window windowScene:(id)scene;
 - (BOOL)_isCompactHostedWindow;
 - (BOOL)_shouldDeferPaletteVisibilityUpdate;
 - (BOOL)isActive;
 - (BOOL)isPaletteVisible;
-- (CGRect)_sceneBoundsForUpdateWithFollowsHostingWindowOut:(BOOL *)a3;
+- (CGRect)_sceneBoundsForUpdateWithFollowsHostingWindowOut:(BOOL *)out;
 - (CGRect)sceneBounds;
 - (CGRect)textEffectsWindowFrame;
-- (PKPaletteViewInteraction)initWithScene:(id)a3;
-- (PKPaletteViewInteraction)initWithWindowSize:(CGSize)a3;
+- (PKPaletteViewInteraction)initWithScene:(id)scene;
+- (PKPaletteViewInteraction)initWithWindowSize:(CGSize)size;
 - (PKPaletteViewInteractionDelegate)delegate;
 - (UIScene)_scene;
 - (UIView)view;
@@ -18,38 +18,38 @@
 - (id)_traitCollectionForHostingWindow;
 - (id)_viewControllerForPalette;
 - (id)hostingWindow;
-- (id)paletteTapToRadarCommandConfiguration:(id)a3;
-- (void)_sceneDidActivateNotification:(id)a3;
-- (void)_sceneWillEnterForegroundNotification:(id)a3;
-- (void)_sceneWillInvalidate:(id)a3;
-- (void)_setPaletteVisible:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)_updateForRotation:(id)a3;
-- (void)_updateForWillRotate:(id)a3;
-- (void)_updatePalettePopoverWithUIStyle:(int64_t)a3;
-- (void)_updatePaletteTraitCollection:(id)a3;
-- (void)_updatePaletteUserInterfaceStyle:(int64_t)a3;
+- (id)paletteTapToRadarCommandConfiguration:(id)configuration;
+- (void)_sceneDidActivateNotification:(id)notification;
+- (void)_sceneWillEnterForegroundNotification:(id)notification;
+- (void)_sceneWillInvalidate:(id)invalidate;
+- (void)_setPaletteVisible:(BOOL)visible animated:(BOOL)animated completion:(id)completion;
+- (void)_updateForRotation:(id)rotation;
+- (void)_updateForWillRotate:(id)rotate;
+- (void)_updatePalettePopoverWithUIStyle:(int64_t)style;
+- (void)_updatePaletteTraitCollection:(id)collection;
+- (void)_updatePaletteUserInterfaceStyle:(int64_t)style;
 - (void)_updateSceneBounds;
 - (void)_updateTraitCollection;
-- (void)_updateUIWithSceneBounds:(CGRect)a3;
-- (void)didMoveToView:(id)a3;
-- (void)hidePaletteViewAnimated:(BOOL)a3 completion:(id)a4;
-- (void)keyboardSceneDelegate:(id)a3 inputViewSetVisibilityDidChange:(BOOL)a4 includedReset:(BOOL)a5;
-- (void)setWindowScene:(id)a3;
-- (void)showPaletteViewAnimated:(BOOL)a3 completion:(id)a4;
-- (void)textEffectsWindowDidChangeKeyWindowBounds:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (void)_updateUIWithSceneBounds:(CGRect)bounds;
+- (void)didMoveToView:(id)view;
+- (void)hidePaletteViewAnimated:(BOOL)animated completion:(id)completion;
+- (void)keyboardSceneDelegate:(id)delegate inputViewSetVisibilityDidChange:(BOOL)change includedReset:(BOOL)reset;
+- (void)setWindowScene:(id)scene;
+- (void)showPaletteViewAnimated:(BOOL)animated completion:(id)completion;
+- (void)textEffectsWindowDidChangeKeyWindowBounds:(id)bounds;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation PKPaletteViewInteraction
 
-+ (id)existingPaletteViewInteractionForWindowScene:(id)a3
++ (id)existingPaletteViewInteractionForWindowScene:(id)scene
 {
-  v3 = a3;
-  if (v3)
+  sceneCopy = scene;
+  if (sceneCopy)
   {
     v4 = _perCanvasInteractions;
     objc_sync_enter(v4);
-    v5 = [_perCanvasInteractions objectForKey:v3];
+    v5 = [_perCanvasInteractions objectForKey:sceneCopy];
     objc_sync_exit(v4);
   }
 
@@ -61,23 +61,23 @@
   return v5;
 }
 
-+ (id)paletteViewInteractionForWindow:(id)a3 windowScene:(id)a4
++ (id)paletteViewInteractionForWindow:(id)window windowScene:(id)scene
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  windowCopy = window;
+  sceneCopy = scene;
+  v7 = sceneCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (windowCopy && sceneCopy)
   {
     v9 = _perCanvasInteractions;
     objc_sync_enter(v9);
     v10 = _perCanvasInteractions;
     if (!_perCanvasInteractions)
     {
-      v11 = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
+      weakToWeakObjectsMapTable = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
       v12 = _perCanvasInteractions;
-      _perCanvasInteractions = v11;
+      _perCanvasInteractions = weakToWeakObjectsMapTable;
 
       v10 = _perCanvasInteractions;
     }
@@ -89,7 +89,7 @@
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         v28 = 138412546;
-        v29 = v5;
+        v29 = windowCopy;
         v30 = 2112;
         v31 = v7;
         _os_log_impl(&dword_1C7CCA000, v13, OS_LOG_TYPE_INFO, "Create new palette view interaction for window: %@, windowScene: %@", &v28, 0x16u);
@@ -99,11 +99,11 @@
       NSClassFromString(&cfstr_Uisecurehosted.isa);
       if ((objc_opt_isKindOfClass() & 1) != 0 && ![PKPaletteViewInteraction isHostedWindow:v14])
       {
-        v15 = os_log_create("com.apple.pencilkit", "");
-        if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
+        editingOverlayContainerView = os_log_create("com.apple.pencilkit", "");
+        if (os_log_type_enabled(editingOverlayContainerView, OS_LOG_TYPE_FAULT))
         {
           LOWORD(v28) = 0;
-          _os_log_fault_impl(&dword_1C7CCA000, v15, OS_LOG_TYPE_FAULT, "Got a UITextEffectsWindow for an extension when we should have gotten a UITextEffectsWindowHosted", &v28, 2u);
+          _os_log_fault_impl(&dword_1C7CCA000, editingOverlayContainerView, OS_LOG_TYPE_FAULT, "Got a UITextEffectsWindow for an extension when we should have gotten a UITextEffectsWindowHosted", &v28, 2u);
         }
 
         v8 = 0;
@@ -111,8 +111,8 @@
 
       else
       {
-        v15 = [v14 editingOverlayContainerView];
-        if (!v15)
+        editingOverlayContainerView = [v14 editingOverlayContainerView];
+        if (!editingOverlayContainerView)
         {
           v16 = os_log_create("com.apple.pencilkit", "");
           if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
@@ -123,23 +123,23 @@
         }
 
         v17 = [PKPaletteViewInteraction alloc];
-        [v5 bounds];
+        [windowCopy bounds];
         v8 = [(PKPaletteViewInteraction *)v17 initWithWindowSize:v18, v19];
         [(PKPaletteViewInteraction *)v8 setWindowScene:v7];
-        v20 = [MEMORY[0x1E696AAE8] mainBundle];
-        v21 = [v20 bundleIdentifier];
-        v22 = [v21 isEqualToString:@"com.apple.ScreenshotServicesService"];
+        mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+        bundleIdentifier = [mainBundle bundleIdentifier];
+        v22 = [bundleIdentifier isEqualToString:@"com.apple.ScreenshotServicesService"];
 
         if ((v22 & 1) != 0 || _UIApplicationIsExtension())
         {
           v23 = [[PKTextEffectsWindowObserver alloc] initWithTextEffectsWindow:v14];
           [(PKPaletteViewInteraction *)v8 setTextEffectsWindowObserver:v23];
 
-          v24 = [(PKPaletteViewInteraction *)v8 textEffectsWindowObserver];
-          v25 = v24;
-          if (v24)
+          textEffectsWindowObserver = [(PKPaletteViewInteraction *)v8 textEffectsWindowObserver];
+          v25 = textEffectsWindowObserver;
+          if (textEffectsWindowObserver)
           {
-            objc_storeWeak((v24 + 48), v8);
+            objc_storeWeak((textEffectsWindowObserver + 48), v8);
           }
         }
 
@@ -147,20 +147,20 @@
         [v7 _registerSceneComponent:v8 forKey:@"PKPaletteViewInteractionSceneComponentKey"];
         if (objc_opt_respondsToSelector())
         {
-          v26 = [v7 keyboardSceneDelegate];
+          keyboardSceneDelegate = [v7 keyboardSceneDelegate];
         }
 
         else
         {
-          v26 = 0;
+          keyboardSceneDelegate = 0;
         }
 
         if (objc_opt_respondsToSelector())
         {
-          [v26 addVisibilityObserver:v8];
+          [keyboardSceneDelegate addVisibilityObserver:v8];
         }
 
-        [v15 addInteraction:v8];
+        [editingOverlayContainerView addInteraction:v8];
       }
     }
 
@@ -170,14 +170,14 @@
   return v8;
 }
 
-- (PKPaletteViewInteraction)initWithScene:(id)a3
+- (PKPaletteViewInteraction)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 coordinateSpace];
-    [v5 bounds];
+    coordinateSpace = [sceneCopy coordinateSpace];
+    [coordinateSpace bounds];
     v7 = v6;
     v9 = v8;
   }
@@ -200,17 +200,17 @@
   return WeakRetained;
 }
 
-- (void)_sceneWillInvalidate:(id)a3
+- (void)_sceneWillInvalidate:(id)invalidate
 {
   [(PKPaletteViewInteraction *)self willMoveToView:0];
 
   [(PKPaletteViewInteraction *)self didMoveToView:0];
 }
 
-- (PKPaletteViewInteraction)initWithWindowSize:(CGSize)a3
+- (PKPaletteViewInteraction)initWithWindowSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = PKPaletteViewInteraction;
   v5 = [(PKPaletteViewInteraction *)&v9 init];
@@ -230,78 +230,78 @@
   return v6;
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  if (!a3)
+  if (!view)
   {
-    v5 = [(PKPaletteViewInteraction *)self paletteHostView];
-    [v5 removeFromSuperview];
+    paletteHostView = [(PKPaletteViewInteraction *)self paletteHostView];
+    [paletteHostView removeFromSuperview];
 
     [(PKPaletteViewInteraction *)self setPaletteHostView:0];
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 removeObserver:self name:*MEMORY[0x1E69DE5B0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE5B0] object:0];
 
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 removeObserver:self name:*MEMORY[0x1E69DE5A0] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 removeObserver:self name:*MEMORY[0x1E69DE5A0] object:0];
   }
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
   v54 = *MEMORY[0x1E69E9840];
   [(PKPaletteViewInteraction *)self setView:?];
-  if (a3)
+  if (view)
   {
-    v5 = [(PKPaletteViewInteraction *)self paletteHostView];
+    paletteHostView = [(PKPaletteViewInteraction *)self paletteHostView];
 
-    if (!v5)
+    if (!paletteHostView)
     {
       v6 = objc_alloc_init(PKDrawingPaletteView);
       [(PKPaletteViewInteraction *)self setPaletteView:v6];
 
       v7 = [[PKPaletteTapToRadarCommand alloc] initWithDelegate:self];
-      v8 = [(PKPaletteViewInteraction *)self paletteView];
-      [v8 setTapToRadarCommand:v7];
+      paletteView = [(PKPaletteViewInteraction *)self paletteView];
+      [paletteView setTapToRadarCommand:v7];
 
       v9 = [PKPaletteHostView alloc];
-      v10 = [(PKPaletteViewInteraction *)self paletteView];
-      v11 = [(PKPaletteHostView *)v9 initWithPaletteView:v10];
+      paletteView2 = [(PKPaletteViewInteraction *)self paletteView];
+      v11 = [(PKPaletteHostView *)v9 initWithPaletteView:paletteView2];
       [(PKPaletteViewInteraction *)self setPaletteHostView:v11];
 
-      v12 = [(PKPaletteViewInteraction *)self paletteHostView];
-      [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+      paletteHostView2 = [(PKPaletteViewInteraction *)self paletteHostView];
+      [paletteHostView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v13 = [(PKPaletteViewInteraction *)self view];
-      v14 = [(PKPaletteViewInteraction *)self paletteHostView];
-      [v13 addSubview:v14];
+      view = [(PKPaletteViewInteraction *)self view];
+      paletteHostView3 = [(PKPaletteViewInteraction *)self paletteHostView];
+      [view addSubview:paletteHostView3];
 
-      v15 = [(PKPaletteViewInteraction *)self paletteHostView];
-      v16 = [v15 topAnchor];
-      v17 = [(PKPaletteViewInteraction *)self view];
-      v18 = [v17 topAnchor];
-      v19 = [v16 constraintEqualToAnchor:v18];
+      paletteHostView4 = [(PKPaletteViewInteraction *)self paletteHostView];
+      topAnchor = [paletteHostView4 topAnchor];
+      view2 = [(PKPaletteViewInteraction *)self view];
+      topAnchor2 = [view2 topAnchor];
+      v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
       paletteHostViewTopConstraint = self->_paletteHostViewTopConstraint;
       self->_paletteHostViewTopConstraint = v19;
 
-      v21 = [(PKPaletteViewInteraction *)self paletteHostView];
-      v22 = [v21 leftAnchor];
-      v23 = [(PKPaletteViewInteraction *)self view];
-      v24 = [v23 leftAnchor];
-      v25 = [v22 constraintEqualToAnchor:v24];
+      paletteHostView5 = [(PKPaletteViewInteraction *)self paletteHostView];
+      leftAnchor = [paletteHostView5 leftAnchor];
+      view3 = [(PKPaletteViewInteraction *)self view];
+      leftAnchor2 = [view3 leftAnchor];
+      v25 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
       paletteHostViewLeftConstraint = self->_paletteHostViewLeftConstraint;
       self->_paletteHostViewLeftConstraint = v25;
 
-      v27 = [(PKPaletteViewInteraction *)self paletteHostView];
-      v28 = [v27 widthAnchor];
+      paletteHostView6 = [(PKPaletteViewInteraction *)self paletteHostView];
+      widthAnchor = [paletteHostView6 widthAnchor];
       [(PKPaletteViewInteraction *)self sceneBounds];
-      v30 = [v28 constraintEqualToConstant:v29];
+      v30 = [widthAnchor constraintEqualToConstant:v29];
       paletteHostViewWidthConstraint = self->_paletteHostViewWidthConstraint;
       self->_paletteHostViewWidthConstraint = v30;
 
-      v32 = [(PKPaletteViewInteraction *)self paletteHostView];
-      v33 = [v32 heightAnchor];
+      paletteHostView7 = [(PKPaletteViewInteraction *)self paletteHostView];
+      heightAnchor = [paletteHostView7 heightAnchor];
       [(PKPaletteViewInteraction *)self sceneBounds];
-      v35 = [v33 constraintEqualToConstant:v34];
+      v35 = [heightAnchor constraintEqualToConstant:v34];
       paletteHostViewHeightConstraint = self->_paletteHostViewHeightConstraint;
       self->_paletteHostViewHeightConstraint = v35;
 
@@ -314,18 +314,18 @@
       [v37 activateConstraints:v39];
 
       [(PKPaletteViewInteraction *)self _updateSceneBounds];
-      v40 = [(PKPaletteViewInteraction *)self paletteView];
-      [v40 paletteHostingWindowSceneDidChangeBounds:self];
+      paletteView3 = [(PKPaletteViewInteraction *)self paletteView];
+      [paletteView3 paletteHostingWindowSceneDidChangeBounds:self];
 
-      v41 = [(PKPaletteViewInteraction *)self _viewControllerForPalette];
-      v42 = [(PKPaletteViewInteraction *)self paletteView];
-      [v42 setPalettePopoverPresentingController:v41];
+      _viewControllerForPalette = [(PKPaletteViewInteraction *)self _viewControllerForPalette];
+      paletteView4 = [(PKPaletteViewInteraction *)self paletteView];
+      [paletteView4 setPalettePopoverPresentingController:_viewControllerForPalette];
 
-      v43 = [(PKPaletteViewInteraction *)self paletteHostView];
-      [v43 setNeedsLayout];
+      paletteHostView8 = [(PKPaletteViewInteraction *)self paletteHostView];
+      [paletteHostView8 setNeedsLayout];
 
-      v44 = [(PKPaletteViewInteraction *)self paletteHostView];
-      [v44 layoutIfNeeded];
+      paletteHostView9 = [(PKPaletteViewInteraction *)self paletteHostView];
+      [paletteHostView9 layoutIfNeeded];
 
       WeakRetained = objc_loadWeakRetained(&self->_windowScene);
       if (WeakRetained)
@@ -334,19 +334,19 @@
         v47 = objc_loadWeakRetained(&self->_windowScene);
         v48 = [v46 sharedTextEffectsWindowForWindowScene:v47];
 
-        v49 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v49 addObserver:self selector:sel__updateForWillRotate_ name:*MEMORY[0x1E69DE5B0] object:0];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter addObserver:self selector:sel__updateForWillRotate_ name:*MEMORY[0x1E69DE5B0] object:0];
 
-        v50 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v50 addObserver:self selector:sel__updateForRotation_ name:*MEMORY[0x1E69DE5A0] object:v48];
+        defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter2 addObserver:self selector:sel__updateForRotation_ name:*MEMORY[0x1E69DE5A0] object:v48];
       }
     }
   }
 }
 
-- (void)setWindowScene:(id)a3
+- (void)setWindowScene:(id)scene
 {
-  obj = a3;
+  obj = scene;
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
 
   if (WeakRetained != obj)
@@ -357,15 +357,15 @@
     v7 = MEMORY[0x1E69DE360];
     if (v5)
     {
-      v8 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
       v9 = *v6;
       v10 = objc_loadWeakRetained(&self->_windowScene);
-      [v8 removeObserver:self name:v9 object:v10];
+      [defaultCenter removeObserver:self name:v9 object:v10];
 
-      v11 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
       v12 = *v7;
       v13 = objc_loadWeakRetained(&self->_windowScene);
-      [v11 removeObserver:self name:v12 object:v13];
+      [defaultCenter2 removeObserver:self name:v12 object:v13];
 
       v14 = objc_loadWeakRetained(&self->_windowScene);
       [v14 _unregisterSceneComponentForKey:@"PKPaletteViewInteractionSceneComponentKey"];
@@ -375,15 +375,15 @@
 
     if (obj)
     {
-      v16 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
       v17 = *v6;
       v18 = objc_loadWeakRetained(&self->_windowScene);
-      [v16 addObserver:self selector:sel__sceneDidActivateNotification_ name:v17 object:v18];
+      [defaultCenter3 addObserver:self selector:sel__sceneDidActivateNotification_ name:v17 object:v18];
 
-      v19 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
       v20 = *v7;
       v21 = objc_loadWeakRetained(&self->_windowScene);
-      [v19 addObserver:self selector:sel__sceneWillEnterForegroundNotification_ name:v20 object:v21];
+      [defaultCenter4 addObserver:self selector:sel__sceneWillEnterForegroundNotification_ name:v20 object:v21];
 
       v22 = objc_loadWeakRetained(&self->_windowScene);
       [v22 _registerSceneComponent:self forKey:@"PKPaletteViewInteractionSceneComponentKey"];
@@ -393,20 +393,20 @@
 
 - (BOOL)isActive
 {
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v3 bundleIdentifier];
-  v5 = [v4 isEqualToString:@"com.apple.ScreenshotServicesService"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v5 = [bundleIdentifier isEqualToString:@"com.apple.ScreenshotServicesService"];
 
   if (v5 & 1) != 0 || (_UIApplicationIsExtension())
   {
     return 1;
   }
 
-  v7 = [(PKPaletteViewInteraction *)self windowScene];
-  if (v7)
+  windowScene = [(PKPaletteViewInteraction *)self windowScene];
+  if (windowScene)
   {
-    v8 = [(PKPaletteViewInteraction *)self windowScene];
-    v6 = [v8 activationState] == 0;
+    windowScene2 = [(PKPaletteViewInteraction *)self windowScene];
+    v6 = [windowScene2 activationState] == 0;
   }
 
   else
@@ -419,59 +419,59 @@
 
 - (BOOL)isPaletteVisible
 {
-  v2 = [(PKPaletteViewInteraction *)self paletteHostView];
-  v3 = [v2 isPaletteVisible];
+  paletteHostView = [(PKPaletteViewInteraction *)self paletteHostView];
+  isPaletteVisible = [paletteHostView isPaletteVisible];
 
-  return v3;
+  return isPaletteVisible;
 }
 
-- (void)showPaletteViewAnimated:(BOOL)a3 completion:(id)a4
+- (void)showPaletteViewAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v9 = a4;
-  v6 = [(PKPaletteViewInteraction *)self view];
-  if (v6)
+  animatedCopy = animated;
+  completionCopy = completion;
+  view = [(PKPaletteViewInteraction *)self view];
+  if (view)
   {
-    v7 = [(PKPaletteViewInteraction *)self paletteHostView];
-    [v7 setHidden:0];
+    paletteHostView = [(PKPaletteViewInteraction *)self paletteHostView];
+    [paletteHostView setHidden:0];
 
-    v8 = [v6 window];
-    [v8 bounds];
+    window = [view window];
+    [window bounds];
     [(PKPaletteViewInteraction *)self setTextEffectsWindowFrame:?];
 
     [(PKPaletteViewInteraction *)self _updateSceneBounds];
-    [(PKPaletteViewInteraction *)self _setPaletteVisible:1 animated:v4 completion:v9];
+    [(PKPaletteViewInteraction *)self _setPaletteVisible:1 animated:animatedCopy completion:completionCopy];
   }
 }
 
-- (void)_setPaletteVisible:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_setPaletteVisible:(BOOL)visible animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a3;
-  v8 = a5;
+  visibleCopy = visible;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __67__PKPaletteViewInteraction__setPaletteVisible_animated_completion___block_invoke;
   aBlock[3] = &unk_1E82DA140;
-  v15 = v6;
-  v16 = a4;
+  v15 = visibleCopy;
+  animatedCopy = animated;
   aBlock[4] = self;
-  v14 = v8;
-  v9 = v8;
+  v14 = completionCopy;
+  v9 = completionCopy;
   v10 = _Block_copy(aBlock);
-  if (v6)
+  if (visibleCopy)
   {
-    v11 = [(PKPaletteViewInteraction *)self hostingWindow];
+    hostingWindow = [(PKPaletteViewInteraction *)self hostingWindow];
   }
 
   else
   {
-    v11 = 0;
+    hostingWindow = 0;
   }
 
-  v12 = [(PKPaletteViewInteraction *)self paletteView];
-  [v12 set_hostingWindow:v11];
+  paletteView = [(PKPaletteViewInteraction *)self paletteView];
+  [paletteView set_hostingWindow:hostingWindow];
 
-  if (v6)
+  if (visibleCopy)
   {
   }
 
@@ -529,27 +529,27 @@ void __67__PKPaletteViewInteraction__setPaletteVisible_animated_completion___blo
   }
 }
 
-- (void)hidePaletteViewAnimated:(BOOL)a3 completion:(id)a4
+- (void)hidePaletteViewAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v7 = a4;
-  v6 = [(PKPaletteViewInteraction *)self paletteView];
-  [v6 dismissPalettePopoverWithCompletion:0];
+  animatedCopy = animated;
+  completionCopy = completion;
+  paletteView = [(PKPaletteViewInteraction *)self paletteView];
+  [paletteView dismissPalettePopoverWithCompletion:0];
 
-  [(PKPaletteViewInteraction *)self _setPaletteVisible:0 animated:v4 completion:v7];
+  [(PKPaletteViewInteraction *)self _setPaletteVisible:0 animated:animatedCopy completion:completionCopy];
 }
 
 - (BOOL)_shouldDeferPaletteVisibilityUpdate
 {
-  v3 = [(PKPaletteViewInteraction *)self _traitCollectionForHostingWindow];
-  v4 = [(PKPaletteViewInteraction *)self paletteHostView];
-  v5 = [v4 traitCollection];
+  _traitCollectionForHostingWindow = [(PKPaletteViewInteraction *)self _traitCollectionForHostingWindow];
+  paletteHostView = [(PKPaletteViewInteraction *)self paletteHostView];
+  traitCollection = [paletteHostView traitCollection];
 
-  v6 = [v3 horizontalSizeClass];
-  if (v6 == [v5 horizontalSizeClass])
+  horizontalSizeClass = [_traitCollectionForHostingWindow horizontalSizeClass];
+  if (horizontalSizeClass == [traitCollection horizontalSizeClass])
   {
-    v7 = [v3 verticalSizeClass];
-    v8 = v7 != [v5 verticalSizeClass];
+    verticalSizeClass = [_traitCollectionForHostingWindow verticalSizeClass];
+    v8 = verticalSizeClass != [traitCollection verticalSizeClass];
   }
 
   else
@@ -562,45 +562,45 @@ void __67__PKPaletteViewInteraction__setPaletteVisible_animated_completion___blo
   return v9 & 1;
 }
 
-- (void)keyboardSceneDelegate:(id)a3 inputViewSetVisibilityDidChange:(BOOL)a4 includedReset:(BOOL)a5
+- (void)keyboardSceneDelegate:(id)delegate inputViewSetVisibilityDidChange:(BOOL)change includedReset:(BOOL)reset
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  v9 = [(PKPaletteViewInteraction *)self delegate];
-  [v9 keyboardSceneDelegate:v8 inputViewSetVisibilityDidChange:v6 includedReset:v5];
+  resetCopy = reset;
+  changeCopy = change;
+  delegateCopy = delegate;
+  delegate = [(PKPaletteViewInteraction *)self delegate];
+  [delegate keyboardSceneDelegate:delegateCopy inputViewSetVisibilityDidChange:changeCopy includedReset:resetCopy];
 }
 
-- (void)_sceneDidActivateNotification:(id)a3
+- (void)_sceneDidActivateNotification:(id)notification
 {
   [(PKPaletteViewInteraction *)self _updateSceneBounds];
-  v4 = [(PKPaletteViewInteraction *)self delegate];
-  [v4 paletteViewInteractionDidActivate:self];
+  delegate = [(PKPaletteViewInteraction *)self delegate];
+  [delegate paletteViewInteractionDidActivate:self];
 }
 
-- (void)_sceneWillEnterForegroundNotification:(id)a3
+- (void)_sceneWillEnterForegroundNotification:(id)notification
 {
-  v4 = [(PKPaletteViewInteraction *)self delegate];
-  [v4 paletteViewInteractionWillEnterForeground:self];
+  delegate = [(PKPaletteViewInteraction *)self delegate];
+  [delegate paletteViewInteractionWillEnterForeground:self];
 }
 
-- (void)_updateForWillRotate:(id)a3
+- (void)_updateForWillRotate:(id)rotate
 {
-  v4 = [a3 object];
-  v5 = [v4 view];
-  v6 = [v5 window];
+  object = [rotate object];
+  view = [object view];
+  window = [view window];
 
-  v7 = [v6 windowScene];
-  v8 = [(PKPaletteViewInteraction *)self view];
-  v9 = [v8 window];
-  v10 = [v9 windowScene];
+  windowScene = [window windowScene];
+  view2 = [(PKPaletteViewInteraction *)self view];
+  window2 = [view2 window];
+  windowScene2 = [window2 windowScene];
 
-  if (v7 == v10)
+  if (windowScene == windowScene2)
   {
-    v11 = [(PKPaletteViewInteraction *)self paletteView];
-    [v11 dismissPalettePopoverWithCompletion:0];
+    paletteView = [(PKPaletteViewInteraction *)self paletteView];
+    [paletteView dismissPalettePopoverWithCompletion:0];
 
-    [v6 frame];
+    [window frame];
     v13 = v12;
     v15 = v14;
     v17 = v16;
@@ -630,18 +630,18 @@ void __67__PKPaletteViewInteraction__setPaletteVisible_animated_completion___blo
   }
 }
 
-- (void)_updateForRotation:(id)a3
+- (void)_updateForRotation:(id)rotation
 {
   v22 = 0;
-  v4 = a3;
+  rotationCopy = rotation;
   [(PKPaletteViewInteraction *)self _sceneBoundsForUpdateWithFollowsHostingWindowOut:&v22];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [v4 object];
+  object = [rotationCopy object];
 
-  [v13 frame];
+  [object frame];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -654,9 +654,9 @@ void __67__PKPaletteViewInteraction__setPaletteVisible_animated_completion___blo
   }
 }
 
-+ (BOOL)isHostedWindow:(id)a3
++ (BOOL)isHostedWindow:(id)window
 {
-  v3 = a3;
+  windowCopy = window;
   NSClassFromString(&cfstr_Uitexteffectsw.isa);
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -665,36 +665,36 @@ void __67__PKPaletteViewInteraction__setPaletteVisible_animated_completion___blo
 
 - (id)_viewControllerForPalette
 {
-  v2 = [(PKPaletteViewInteraction *)self paletteHostView];
-  v3 = [v2 window];
-  v4 = [v3 rootViewController];
-  v5 = [v4 childViewControllers];
-  v6 = [v5 firstObject];
+  paletteHostView = [(PKPaletteViewInteraction *)self paletteHostView];
+  window = [paletteHostView window];
+  rootViewController = [window rootViewController];
+  childViewControllers = [rootViewController childViewControllers];
+  firstObject = [childViewControllers firstObject];
 
-  return v6;
+  return firstObject;
 }
 
-- (CGRect)_sceneBoundsForUpdateWithFollowsHostingWindowOut:(BOOL *)a3
+- (CGRect)_sceneBoundsForUpdateWithFollowsHostingWindowOut:(BOOL *)out
 {
-  v5 = [(PKPaletteViewInteraction *)self view];
-  v6 = [v5 window];
+  view = [(PKPaletteViewInteraction *)self view];
+  window = [view window];
 
-  v7 = [MEMORY[0x1E696AAE8] mainBundle];
-  v8 = [v7 bundleIdentifier];
-  v9 = [v8 isEqualToString:@"com.apple.ScreenshotServicesService"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v9 = [bundleIdentifier isEqualToString:@"com.apple.ScreenshotServicesService"];
 
   if (v9)
   {
-    v10 = [(PKPaletteViewInteraction *)self view];
-    v11 = [v10 window];
-    [v11 bounds];
+    view2 = [(PKPaletteViewInteraction *)self view];
+    window2 = [view2 window];
+    [window2 bounds];
     v13 = v12;
     v15 = v14;
     v17 = v16;
     v19 = v18;
 
     v20 = 0;
-    if (!a3)
+    if (!out)
     {
       goto LABEL_9;
     }
@@ -702,20 +702,20 @@ void __67__PKPaletteViewInteraction__setPaletteVisible_animated_completion___blo
     goto LABEL_8;
   }
 
-  v21 = [(PKPaletteViewInteraction *)self view];
-  v22 = [v21 window];
-  v23 = [PKPaletteViewInteraction isHostedWindow:v22];
+  view3 = [(PKPaletteViewInteraction *)self view];
+  window3 = [view3 window];
+  v23 = [PKPaletteViewInteraction isHostedWindow:window3];
 
   if (v23)
   {
-    [v6 hostedViewSize];
+    [window hostedViewSize];
     v17 = v24;
-    [v6 hostedViewSize];
+    [window hostedViewSize];
     v19 = v25;
     v20 = 0;
     v13 = 0.0;
     v15 = 0.0;
-    if (!a3)
+    if (!out)
     {
       goto LABEL_9;
     }
@@ -723,18 +723,18 @@ void __67__PKPaletteViewInteraction__setPaletteVisible_animated_completion___blo
     goto LABEL_8;
   }
 
-  v26 = [(PKPaletteViewInteraction *)self hostingWindow];
-  [v26 bounds];
+  hostingWindow = [(PKPaletteViewInteraction *)self hostingWindow];
+  [hostingWindow bounds];
   v13 = v27;
   v15 = v28;
   v17 = v29;
   v19 = v30;
 
   v20 = 1;
-  if (a3)
+  if (out)
   {
 LABEL_8:
-    *a3 = v20;
+    *out = v20;
   }
 
 LABEL_9:
@@ -757,13 +757,13 @@ LABEL_9:
   [(PKPaletteViewInteraction *)self _updateUIWithSceneBounds:?];
 }
 
-- (void)_updateUIWithSceneBounds:(CGRect)a3
+- (void)_updateUIWithSceneBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(self->_sceneBounds, a3))
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  if (!CGRectEqualToRect(self->_sceneBounds, bounds))
   {
     self->_sceneBounds.origin.x = x;
     self->_sceneBounds.origin.y = y;
@@ -793,27 +793,27 @@ LABEL_9:
       [v9 _performWithoutRetargetingAnimations:v23];
     }
 
-    v12 = [(PKPaletteViewInteraction *)self paletteView];
-    [v12 paletteHostingWindowSceneDidChangeBounds:self];
+    paletteView = [(PKPaletteViewInteraction *)self paletteView];
+    [paletteView paletteHostingWindowSceneDidChangeBounds:self];
   }
 
   [(PKPaletteViewInteraction *)self _updateTraitCollection];
   v13 = objc_opt_class();
-  v14 = [(PKPaletteViewInteraction *)self view];
-  v15 = [v14 window];
-  LODWORD(v13) = [v13 isHostedWindow:v15];
+  view = [(PKPaletteViewInteraction *)self view];
+  window = [view window];
+  LODWORD(v13) = [v13 isHostedWindow:window];
 
   if (v13)
   {
-    v16 = [(PKPaletteViewInteraction *)self view];
-    v17 = [v16 window];
-    [v17 frame];
+    view2 = [(PKPaletteViewInteraction *)self view];
+    window2 = [view2 window];
+    [window2 frame];
     v19 = v18;
     [(PKPaletteViewInteraction *)self sceneBounds];
     v21 = v19 - v20 + 10.0;
 
-    v22 = [(PKPaletteViewInteraction *)self paletteView];
-    [v22 setPalettePopoverLayoutSceneMargins:{10.0, 10.0, 10.0, v21}];
+    paletteView2 = [(PKPaletteViewInteraction *)self paletteView];
+    [paletteView2 setPalettePopoverLayoutSceneMargins:{10.0, 10.0, 10.0, v21}];
   }
 }
 
@@ -837,22 +837,22 @@ void __53__PKPaletteViewInteraction__updateUIWithSceneBounds___block_invoke_2(ui
 
 - (void)_updateTraitCollection
 {
-  v3 = [(PKPaletteViewInteraction *)self _traitCollectionForHostingWindow];
-  [(PKPaletteViewInteraction *)self _updatePaletteTraitCollection:v3];
-  -[PKPaletteViewInteraction _updatePalettePopoverWithUIStyle:](self, "_updatePalettePopoverWithUIStyle:", [v3 userInterfaceStyle]);
+  _traitCollectionForHostingWindow = [(PKPaletteViewInteraction *)self _traitCollectionForHostingWindow];
+  [(PKPaletteViewInteraction *)self _updatePaletteTraitCollection:_traitCollectionForHostingWindow];
+  -[PKPaletteViewInteraction _updatePalettePopoverWithUIStyle:](self, "_updatePalettePopoverWithUIStyle:", [_traitCollectionForHostingWindow userInterfaceStyle]);
 }
 
-- (void)_updatePaletteUserInterfaceStyle:(int64_t)a3
+- (void)_updatePaletteUserInterfaceStyle:(int64_t)style
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceStyle:a3];
-  v5 = [(PKPaletteViewInteraction *)self paletteHostView];
-  v6 = [v5 _localOverrideTraitCollection];
+  v4 = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceStyle:style];
+  paletteHostView = [(PKPaletteViewInteraction *)self paletteHostView];
+  _localOverrideTraitCollection = [paletteHostView _localOverrideTraitCollection];
 
-  if (v6)
+  if (_localOverrideTraitCollection)
   {
     v7 = MEMORY[0x1E69DD1B8];
-    v11[0] = v6;
+    v11[0] = _localOverrideTraitCollection;
     v11[1] = v4;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];
     v9 = [v7 traitCollectionWithTraitsFromCollections:v8];
@@ -863,19 +863,19 @@ void __53__PKPaletteViewInteraction__updateUIWithSceneBounds___block_invoke_2(ui
     v9 = v4;
   }
 
-  v10 = [(PKPaletteViewInteraction *)self paletteHostView];
-  [v10 _setLocalOverrideTraitCollection:v9];
+  paletteHostView2 = [(PKPaletteViewInteraction *)self paletteHostView];
+  [paletteHostView2 _setLocalOverrideTraitCollection:v9];
 
   -[PKPaletteViewInteraction _updatePalettePopoverWithUIStyle:](self, "_updatePalettePopoverWithUIStyle:", [v9 userInterfaceStyle]);
 }
 
-- (void)_updatePaletteTraitCollection:(id)a3
+- (void)_updatePaletteTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   [(PKPaletteViewInteraction *)self textEffectsWindowFrame];
   if (CGRectEqualToRect(v7, *MEMORY[0x1E695F058]))
   {
-    -[PKPaletteViewInteraction _updatePaletteUserInterfaceStyle:](self, "_updatePaletteUserInterfaceStyle:", [v4 userInterfaceStyle]);
+    -[PKPaletteViewInteraction _updatePaletteUserInterfaceStyle:](self, "_updatePaletteUserInterfaceStyle:", [collectionCopy userInterfaceStyle]);
   }
 
   else
@@ -885,7 +885,7 @@ void __53__PKPaletteViewInteraction__updateUIWithSceneBounds___block_invoke_2(ui
     v5[2] = __58__PKPaletteViewInteraction__updatePaletteTraitCollection___block_invoke;
     v5[3] = &unk_1E82D6E70;
     v5[4] = self;
-    v6 = v4;
+    v6 = collectionCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v5);
   }
 }
@@ -896,42 +896,42 @@ void __58__PKPaletteViewInteraction__updatePaletteTraitCollection___block_invoke
   [v2 _setLocalOverrideTraitCollection:*(a1 + 40)];
 }
 
-- (void)_updatePalettePopoverWithUIStyle:(int64_t)a3
+- (void)_updatePalettePopoverWithUIStyle:(int64_t)style
 {
-  v6 = [(PKPaletteViewInteraction *)self paletteView];
-  v4 = [v6 palettePopoverPresentingController];
-  v5 = [v4 presentedViewController];
-  [v5 setOverrideUserInterfaceStyle:a3];
+  paletteView = [(PKPaletteViewInteraction *)self paletteView];
+  palettePopoverPresentingController = [paletteView palettePopoverPresentingController];
+  presentedViewController = [palettePopoverPresentingController presentedViewController];
+  [presentedViewController setOverrideUserInterfaceStyle:style];
 }
 
 - (BOOL)_isCompactHostedWindow
 {
-  v3 = [(PKPaletteViewInteraction *)self hostingWindow];
-  v4 = [v3 traitCollection];
-  v5 = [v4 horizontalSizeClass];
+  hostingWindow = [(PKPaletteViewInteraction *)self hostingWindow];
+  traitCollection = [hostingWindow traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  v6 = [(PKPaletteViewInteraction *)self view];
-  v7 = [v6 window];
-  v8 = [PKPaletteViewInteraction isHostedWindow:v7];
+  view = [(PKPaletteViewInteraction *)self view];
+  window = [view window];
+  v8 = [PKPaletteViewInteraction isHostedWindow:window];
 
   v9 = 0;
-  if (v8 && v5 != 1)
+  if (v8 && horizontalSizeClass != 1)
   {
-    v10 = [(PKPaletteViewInteraction *)self view];
-    v11 = [v10 window];
+    view2 = [(PKPaletteViewInteraction *)self view];
+    window2 = [view2 window];
 
-    v12 = [MEMORY[0x1E696AAE8] mainBundle];
-    v13 = [v12 bundleIdentifier];
-    v14 = [v13 isEqualToString:@"com.apple.ScreenshotServicesService"];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v14 = [bundleIdentifier isEqualToString:@"com.apple.ScreenshotServicesService"];
 
-    if (v14 && ([v11 hostedViewSize], v16 == *MEMORY[0x1E695F060]) && v15 == *(MEMORY[0x1E695F060] + 8))
+    if (v14 && ([window2 hostedViewSize], v16 == *MEMORY[0x1E695F060]) && v15 == *(MEMORY[0x1E695F060] + 8))
     {
-      [v11 bounds];
+      [window2 bounds];
     }
 
     else
     {
-      [v11 hostedViewSize];
+      [window2 hostedViewSize];
     }
 
     v9 = _UIUserInterfaceSizeClassForWidth() == 1;
@@ -943,38 +943,38 @@ void __58__PKPaletteViewInteraction__updatePaletteTraitCollection___block_invoke
 - (id)_traitCollectionForHostingWindow
 {
   v28[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PKPaletteViewInteraction *)self hostingWindow];
-  v4 = [v3 traitCollection];
+  hostingWindow = [(PKPaletteViewInteraction *)self hostingWindow];
+  traitCollection = [hostingWindow traitCollection];
 
-  v5 = [(PKPaletteViewInteraction *)self hostingWindow];
-  v6 = [v5 traitCollection];
-  v7 = [v6 userInterfaceIdiom];
+  hostingWindow2 = [(PKPaletteViewInteraction *)self hostingWindow];
+  traitCollection2 = [hostingWindow2 traitCollection];
+  userInterfaceIdiom = [traitCollection2 userInterfaceIdiom];
 
-  if (v7 == 1 && ([(PKPaletteViewInteraction *)self _isCompactHostedWindow]|| _UISolariumEnabled()))
+  if (userInterfaceIdiom == 1 && ([(PKPaletteViewInteraction *)self _isCompactHostedWindow]|| _UISolariumEnabled()))
   {
-    v8 = [(PKPaletteViewInteraction *)self view];
-    v9 = [v8 window];
+    view = [(PKPaletteViewInteraction *)self view];
+    window = [view window];
 
     if ([(PKPaletteViewInteraction *)self _isCompactHostedWindow])
     {
-      [v9 hostedViewSize];
+      [window hostedViewSize];
       v11 = v10;
       v13 = v12;
     }
 
     else
     {
-      v14 = [(PKPaletteViewInteraction *)self hostingWindow];
-      [v14 bounds];
+      hostingWindow3 = [(PKPaletteViewInteraction *)self hostingWindow];
+      [hostingWindow3 bounds];
       v11 = v15;
       v13 = v16;
     }
 
     v17 = _UIUserInterfaceSizeClassForWidth();
-    v18 = [(PKPaletteViewInteraction *)self paletteView];
-    v19 = [v18 paletteScaleFactorPolicy];
-    v20 = [(PKPaletteViewInteraction *)self paletteView];
-    [v19 scaleFactorForWindowBounds:v20 paletteView:{0.0, 0.0, v11, v13}];
+    paletteView = [(PKPaletteViewInteraction *)self paletteView];
+    paletteScaleFactorPolicy = [paletteView paletteScaleFactorPolicy];
+    paletteView2 = [(PKPaletteViewInteraction *)self paletteView];
+    [paletteScaleFactorPolicy scaleFactorForWindowBounds:paletteView2 paletteView:{0.0, 0.0, v11, v13}];
     v22 = v21;
 
     if (v22 < 0.65 || _UISolariumEnabled() && v11 <= 375.0 && v17 != 1)
@@ -984,29 +984,29 @@ void __58__PKPaletteViewInteraction__updatePaletteTraitCollection___block_invoke
 
     v23 = [MEMORY[0x1E69DD1B8] traitCollectionWithHorizontalSizeClass:v17];
     v24 = MEMORY[0x1E69DD1B8];
-    v28[0] = v4;
+    v28[0] = traitCollection;
     v28[1] = v23;
     v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:2];
     v26 = [v24 traitCollectionWithTraitsFromCollections:v25];
 
-    v4 = v26;
+    traitCollection = v26;
   }
 
-  return v4;
+  return traitCollection;
 }
 
 - (id)hostingWindow
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = [(PKPaletteViewInteraction *)self view];
-  v4 = [v3 window];
-  if (![PKPaletteViewInteraction isHostedWindow:v4])
+  view = [(PKPaletteViewInteraction *)self view];
+  window = [view window];
+  if (![PKPaletteViewInteraction isHostedWindow:window])
   {
 
     goto LABEL_15;
   }
 
-  v5 = [(PKPaletteViewInteraction *)self windowScene];
+  windowScene = [(PKPaletteViewInteraction *)self windowScene];
   v6 = objc_opt_respondsToSelector();
 
   if ((v6 & 1) == 0)
@@ -1016,10 +1016,10 @@ LABEL_15:
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v17 = [(PKPaletteViewInteraction *)self windowScene];
-    v18 = [v17 windows];
+    windowScene2 = [(PKPaletteViewInteraction *)self windowScene];
+    windows = [windowScene2 windows];
 
-    v19 = [v18 countByEnumeratingWithState:&v27 objects:v37 count:16];
+    v19 = [windows countByEnumeratingWithState:&v27 objects:v37 count:16];
     if (v19)
     {
       v20 = v19;
@@ -1030,7 +1030,7 @@ LABEL_17:
       {
         if (*v28 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(windows);
         }
 
         v23 = *(*(&v27 + 1) + 8 * v22);
@@ -1041,7 +1041,7 @@ LABEL_17:
 
         if (v20 == ++v22)
         {
-          v20 = [v18 countByEnumeratingWithState:&v27 objects:v37 count:16];
+          v20 = [windows countByEnumeratingWithState:&v27 objects:v37 count:16];
           if (v20)
           {
             goto LABEL_17;
@@ -1051,9 +1051,9 @@ LABEL_17:
         }
       }
 
-      v12 = v23;
+      lastObject = v23;
 
-      if (v12)
+      if (lastObject)
       {
         goto LABEL_33;
       }
@@ -1067,18 +1067,18 @@ LABEL_23:
     v9 = os_log_create("com.apple.pencilkit", "");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
-      v26 = [(PKPaletteViewInteraction *)self windowScene];
+      windowScene3 = [(PKPaletteViewInteraction *)self windowScene];
       *buf = 138412290;
-      v36 = v26;
+      v36 = windowScene3;
       _os_log_fault_impl(&dword_1C7CCA000, v9, OS_LOG_TYPE_FAULT, "Unable to find application window in windowScene: %@", buf, 0xCu);
     }
 
-    v12 = 0;
+    lastObject = 0;
     goto LABEL_32;
   }
 
-  v7 = [(PKPaletteViewInteraction *)self windowScene];
-  v8 = [v7 performSelector:sel__visibleWindows];
+  windowScene4 = [(PKPaletteViewInteraction *)self windowScene];
+  v8 = [windowScene4 performSelector:sel__visibleWindows];
 
   v33 = 0u;
   v34 = 0u;
@@ -1089,7 +1089,7 @@ LABEL_23:
   if (v10)
   {
     v11 = v10;
-    v12 = 0;
+    lastObject = 0;
     v13 = *v32;
     do
     {
@@ -1105,7 +1105,7 @@ LABEL_23:
         {
           v16 = v15;
 
-          v12 = v16;
+          lastObject = v16;
         }
       }
 
@@ -1114,7 +1114,7 @@ LABEL_23:
 
     while (v11);
 
-    if (v12)
+    if (lastObject)
     {
       goto LABEL_32;
     }
@@ -1131,32 +1131,32 @@ LABEL_23:
     _os_log_debug_impl(&dword_1C7CCA000, v24, OS_LOG_TYPE_DEBUG, "No window in _visibleWindows was key, just take the last window object", buf, 2u);
   }
 
-  v12 = [v9 lastObject];
+  lastObject = [v9 lastObject];
 LABEL_32:
 
 LABEL_33:
 
-  return v12;
+  return lastObject;
 }
 
-- (id)paletteTapToRadarCommandConfiguration:(id)a3
+- (id)paletteTapToRadarCommandConfiguration:(id)configuration
 {
-  v4 = [(PKPaletteViewInteraction *)self view];
-  v5 = [v4 window];
-  v6 = [PKToolPicker activeToolPickerForWindow:v5];
+  view = [(PKPaletteViewInteraction *)self view];
+  window = [view window];
+  v6 = [PKToolPicker activeToolPickerForWindow:window];
 
   if ([v6 _isHandwritingToolSelected])
   {
-    v7 = [(PKPaletteViewInteraction *)self windowScene];
-    v8 = [PKTextInputInteraction interactionForScene:v7];
+    windowScene = [(PKPaletteViewInteraction *)self windowScene];
+    v8 = [PKTextInputInteraction interactionForScene:windowScene];
 
-    v9 = [v8 debugLogController];
-    v10 = [(PKTextInputDebugLogController *)v9 sharpenerLogWithCurrentContent];
+    debugLogController = [v8 debugLogController];
+    sharpenerLogWithCurrentContent = [(PKTextInputDebugLogController *)debugLogController sharpenerLogWithCurrentContent];
 
     v11 = objc_alloc_init(PKPaletteTapToRadarConfiguration);
-    if ([v10 hasContent])
+    if ([sharpenerLogWithCurrentContent hasContent])
     {
-      v12 = v10;
+      v12 = sharpenerLogWithCurrentContent;
     }
 
     else
@@ -1165,8 +1165,8 @@ LABEL_33:
     }
 
     [(PKPaletteTapToRadarConfiguration *)v11 setDebugSharpenerLog:v12];
-    v13 = [(PKPaletteViewInteraction *)self _viewControllerForPalette];
-    [(PKPaletteTapToRadarConfiguration *)v11 setPresentationViewController:v13];
+    _viewControllerForPalette = [(PKPaletteViewInteraction *)self _viewControllerForPalette];
+    [(PKPaletteTapToRadarConfiguration *)v11 setPresentationViewController:_viewControllerForPalette];
   }
 
   else
@@ -1177,7 +1177,7 @@ LABEL_33:
   return v11;
 }
 
-- (void)textEffectsWindowDidChangeKeyWindowBounds:(id)a3
+- (void)textEffectsWindowDidChangeKeyWindowBounds:(id)bounds
 {
   if (_UISolariumEnabled())
   {

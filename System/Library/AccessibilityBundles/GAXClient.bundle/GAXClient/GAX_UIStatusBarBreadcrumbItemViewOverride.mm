@@ -1,16 +1,16 @@
 @interface GAX_UIStatusBarBreadcrumbItemViewOverride
-- (void)userDidActivateButton:(id)a3;
+- (void)userDidActivateButton:(id)button;
 @end
 
 @implementation GAX_UIStatusBarBreadcrumbItemViewOverride
 
-- (void)userDidActivateButton:(id)a3
+- (void)userDidActivateButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   v5 = +[GAXClient sharedInstance];
-  v6 = [v5 isActive];
+  isActive = [v5 isActive];
 
-  if (v6)
+  if (isActive)
   {
     v7 = GAXLogCommon();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -24,7 +24,7 @@
   {
     v8.receiver = self;
     v8.super_class = GAX_UIStatusBarBreadcrumbItemViewOverride;
-    [(GAX_UIStatusBarBreadcrumbItemViewOverride *)&v8 userDidActivateButton:v4];
+    [(GAX_UIStatusBarBreadcrumbItemViewOverride *)&v8 userDidActivateButton:buttonCopy];
   }
 }
 

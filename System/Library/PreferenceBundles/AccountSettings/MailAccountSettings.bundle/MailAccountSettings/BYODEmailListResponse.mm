@@ -1,19 +1,19 @@
 @interface BYODEmailListResponse
-- (BYODEmailListResponse)initWithDictionary:(id)a3;
+- (BYODEmailListResponse)initWithDictionary:(id)dictionary;
 @end
 
 @implementation BYODEmailListResponse
 
-- (BYODEmailListResponse)initWithDictionary:(id)a3
+- (BYODEmailListResponse)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = BYODEmailListResponse;
-  v5 = [(BYODBaseResponse *)&v11 initWithDictionary:v4];
+  v5 = [(BYODBaseResponse *)&v11 initWithDictionary:dictionaryCopy];
   if (v5)
   {
     v6 = [BYODEmailListResult alloc];
-    v7 = [v4 objectForKey:@"result"];
+    v7 = [dictionaryCopy objectForKey:@"result"];
     v8 = [(BYODEmailListResult *)v6 initWithDictionary:v7];
     v9 = v5->_result;
     v5->_result = v8;

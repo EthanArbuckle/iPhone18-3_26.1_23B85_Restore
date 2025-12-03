@@ -1,37 +1,37 @@
 @interface ICSearchQueryOperation
 + (NSOperationQueue)searchSuggestionsQueue;
-+ (id)exactMatchingQueryStringForTitleSearchString:(id)a3;
-+ (id)fetchModernNoteSearchableItemAttributesFromCoreDataForObjectIDURIs:(id)a3 context:(id)a4;
-+ (id)highlightStringForAttributedInputs:(id)a3;
-+ (id)newOperationQueueWithName:(id)a3;
++ (id)exactMatchingQueryStringForTitleSearchString:(id)string;
++ (id)fetchModernNoteSearchableItemAttributesFromCoreDataForObjectIDURIs:(id)is context:(id)context;
++ (id)highlightStringForAttributedInputs:(id)inputs;
++ (id)newOperationQueueWithName:(id)name;
 + (id)nlpSerialQueue;
-+ (id)prefixMatchingQueryStringTitleForSearchString:(id)a3;
-+ (id)searchableItemsFromSortableItems:(id)a3;
-+ (id)tokensQueryStringFromTokens:(id)a3;
++ (id)prefixMatchingQueryStringTitleForSearchString:(id)string;
++ (id)searchableItemsFromSortableItems:(id)items;
++ (id)tokensQueryStringFromTokens:(id)tokens;
 + (void)initialize;
-+ (void)nlSearchQueryWithSearchString:(id)a3 queryString:(id *)a4 rankingQueries:(id *)a5 highlightString:(id *)a6;
++ (void)nlSearchQueryWithSearchString:(id)string queryString:(id *)queryString rankingQueries:(id *)queries highlightString:(id *)highlightString;
 + (void)nlpParser;
-+ (void)suggestionSearchResultsWithLinkSuggestionQuery:(ICLinkSuggestionQuery *)a3 completionHandler:(id)a4;
++ (void)suggestionSearchResultsWithLinkSuggestionQuery:(ICLinkSuggestionQuery *)query completionHandler:(id)handler;
 - (BOOL)useSearchSuggestions;
 - (ICSearchQuery)defaultQuery;
 - (ICSearchQuery)fuzzyQuery;
 - (ICSearchQueryOperation)init;
-- (ICSearchQueryOperation)initWithLinkSuggestionQuery:(id)a3;
-- (ICSearchQueryOperation)initWithQueryString:(id)a3 rankingQueries:(id)a4 performTopHitSearch:(BOOL)a5 modernResultsOnly:(BOOL)a6 attributes:(id)a7;
-- (ICSearchQueryOperation)initWithSearchSuggestionsResponder:(id)a3 searchString:(id)a4 performNLSearch:(BOOL)a5 performTopHitSearch:(BOOL)a6 tokens:(id)a7 modernResultsOnly:(BOOL)a8;
+- (ICSearchQueryOperation)initWithLinkSuggestionQuery:(id)query;
+- (ICSearchQueryOperation)initWithQueryString:(id)string rankingQueries:(id)queries performTopHitSearch:(BOOL)search modernResultsOnly:(BOOL)only attributes:(id)attributes;
+- (ICSearchQueryOperation)initWithSearchSuggestionsResponder:(id)responder searchString:(id)string performNLSearch:(BOOL)search performTopHitSearch:(BOOL)hitSearch tokens:(id)tokens modernResultsOnly:(BOOL)only;
 - (id)createPrefixMatchingQuery;
-- (id)jointQueryWithSuggestions:(id)a3;
-- (id)retrieveNotesOfFoundAttachmentsForSearchResults:(id)a3;
-- (id)runICSearchQuery:(id)a3;
+- (id)jointQueryWithSuggestions:(id)suggestions;
+- (id)retrieveNotesOfFoundAttachmentsForSearchResults:(id)results;
+- (id)runICSearchQuery:(id)query;
 - (unint64_t)countOfNonSpaceCharsInSearchString;
-- (void)appendSortableSearchableItemsToResults:(id)a3;
+- (void)appendSortableSearchableItemsToResults:(id)results;
 - (void)cancel;
 - (void)main;
 - (void)performPrefixAndFuzzyAndSubstringQueries;
 - (void)performRelatedWordQueriesIfNeeded;
 - (void)performSpellCheckerAPIQueryIfNeeded;
 - (void)performTopHitSearchQuery;
-- (void)processTopHits:(id)a3;
+- (void)processTopHits:(id)hits;
 @end
 
 @implementation ICSearchQueryOperation
@@ -43,21 +43,21 @@
   return 0;
 }
 
-- (ICSearchQueryOperation)initWithSearchSuggestionsResponder:(id)a3 searchString:(id)a4 performNLSearch:(BOOL)a5 performTopHitSearch:(BOOL)a6 tokens:(id)a7 modernResultsOnly:(BOOL)a8
+- (ICSearchQueryOperation)initWithSearchSuggestionsResponder:(id)responder searchString:(id)string performNLSearch:(BOOL)search performTopHitSearch:(BOOL)hitSearch tokens:(id)tokens modernResultsOnly:(BOOL)only
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
+  responderCopy = responder;
+  stringCopy = string;
+  tokensCopy = tokens;
   v24.receiver = self;
   v24.super_class = ICSearchQueryOperation;
   v18 = [(ICSearchQueryOperation *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_searchSuggestionsResponder, a3);
-    if (v16)
+    objc_storeStrong(&v18->_searchSuggestionsResponder, responder);
+    if (stringCopy)
     {
-      v20 = v16;
+      v20 = stringCopy;
     }
 
     else
@@ -66,25 +66,25 @@
     }
 
     objc_storeStrong(&v19->_searchString, v20);
-    v19->_performNLSearch = a5;
-    v19->_performTopHitSearch = a6;
-    objc_storeStrong(&v19->_searchTokens, a7);
-    v21 = [ICSearchQueryOperation tokensQueryStringFromTokens:v17];
+    v19->_performNLSearch = search;
+    v19->_performTopHitSearch = hitSearch;
+    objc_storeStrong(&v19->_searchTokens, tokens);
+    v21 = [ICSearchQueryOperation tokensQueryStringFromTokens:tokensCopy];
     tokensQueryString = v19->_tokensQueryString;
     v19->_tokensQueryString = v21;
 
-    v19->_modernResultsOnly = a8;
+    v19->_modernResultsOnly = only;
   }
 
   return v19;
 }
 
-- (ICSearchQueryOperation)initWithQueryString:(id)a3 rankingQueries:(id)a4 performTopHitSearch:(BOOL)a5 modernResultsOnly:(BOOL)a6 attributes:(id)a7
+- (ICSearchQueryOperation)initWithQueryString:(id)string rankingQueries:(id)queries performTopHitSearch:(BOOL)search modernResultsOnly:(BOOL)only attributes:(id)attributes
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  onlyCopy = only;
+  stringCopy = string;
+  queriesCopy = queries;
+  attributesCopy = attributes;
   v22.receiver = self;
   v22.super_class = ICSearchQueryOperation;
   v15 = [(ICSearchQueryOperation *)&v22 init];
@@ -95,29 +95,29 @@
     v15->_searchSuggestionsResponder = 0;
 
     v18 = [ICSearchResultsQuery alloc];
-    if (v14)
+    if (attributesCopy)
     {
-      v19 = [(ICSearchResultsQuery *)v18 initWithQueryString:v12 externalRankingQueries:v13 modernResultsOnly:v8 attributes:v14];
+      v19 = [(ICSearchResultsQuery *)v18 initWithQueryString:stringCopy externalRankingQueries:queriesCopy modernResultsOnly:onlyCopy attributes:attributesCopy];
     }
 
     else
     {
-      v19 = [(ICSearchResultsQuery *)v18 initWithQueryString:v12 externalRankingQueries:v13 modernResultsOnly:v8];
+      v19 = [(ICSearchResultsQuery *)v18 initWithQueryString:stringCopy externalRankingQueries:queriesCopy modernResultsOnly:onlyCopy];
     }
 
     defaultQuery = v16->_defaultQuery;
     v16->_defaultQuery = v19;
 
     v16->_allowEmptySearchString = 1;
-    v16->_performTopHitSearch = a5;
+    v16->_performTopHitSearch = search;
   }
 
   return v16;
 }
 
-- (ICSearchQueryOperation)initWithLinkSuggestionQuery:(id)a3
+- (ICSearchQueryOperation)initWithLinkSuggestionQuery:(id)query
 {
-  v5 = a3;
+  queryCopy = query;
   v12.receiver = self;
   v12.super_class = ICSearchQueryOperation;
   v6 = [(ICSearchQueryOperation *)&v12 init];
@@ -127,10 +127,10 @@
     searchSuggestionsResponder = v6->_searchSuggestionsResponder;
     v6->_searchSuggestionsResponder = 0;
 
-    objc_storeStrong(&v7->_defaultQuery, a3);
-    v9 = [v5 queryString];
+    objc_storeStrong(&v7->_defaultQuery, query);
+    queryString = [queryCopy queryString];
     searchString = v7->_searchString;
-    v7->_searchString = v9;
+    v7->_searchString = queryString;
 
     v7->_allowEmptySearchString = 0;
     v7->_performTopHitSearch = 0;
@@ -143,55 +143,55 @@
 + (void)initialize
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___ICSearchQueryOperation;
   objc_msgSendSuper2(&v7, sel_initialize);
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
     v10 = *MEMORY[0x277D36340];
     v11[0] = &unk_282748148;
     v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-    [v3 registerDefaults:v4];
+    [standardUserDefaults registerDefaults:v4];
 
-    v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
     v8 = *MEMORY[0x277D36338];
     v9 = &unk_282747C58;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v9 forKeys:&v8 count:1];
-    [v5 registerDefaults:v6];
+    [standardUserDefaults2 registerDefaults:v6];
   }
 }
 
-- (id)jointQueryWithSuggestions:(id)a3
+- (id)jointQueryWithSuggestions:(id)suggestions
 {
-  v4 = a3;
-  v5 = [(ICSearchQueryOperation *)self tokensQueryString];
-  v6 = v5;
-  if (v4)
+  suggestionsCopy = suggestions;
+  tokensQueryString = [(ICSearchQueryOperation *)self tokensQueryString];
+  suggestionsCopy = tokensQueryString;
+  if (suggestionsCopy)
   {
 
-    if (v6)
+    if (suggestionsCopy)
     {
       v7 = objc_alloc(MEMORY[0x277CCACA8]);
-      v8 = [(ICSearchQueryOperation *)self tokensQueryString];
-      v6 = [v7 initWithFormat:@"(%@) && (%@)", v8, v4];
+      tokensQueryString2 = [(ICSearchQueryOperation *)self tokensQueryString];
+      suggestionsCopy = [v7 initWithFormat:@"(%@) && (%@)", tokensQueryString2, suggestionsCopy];
     }
 
     else
     {
-      v6 = v4;
+      suggestionsCopy = suggestionsCopy;
     }
   }
 
-  return v6;
+  return suggestionsCopy;
 }
 
 - (unint64_t)countOfNonSpaceCharsInSearchString
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [(ICSearchQueryOperation *)self searchString];
-  v3 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v4 = [v2 componentsSeparatedByCharactersInSet:v3];
+  searchString = [(ICSearchQueryOperation *)self searchString];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v4 = [searchString componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   v14 = 0u;
   v15 = 0u;
@@ -237,8 +237,8 @@
     return 0;
   }
 
-  v3 = [(ICSearchQueryOperation *)self searchSuggestionsResponder];
-  v4 = v3 != 0;
+  searchSuggestionsResponder = [(ICSearchQueryOperation *)self searchSuggestionsResponder];
+  v4 = searchSuggestionsResponder != 0;
 
   return v4;
 }
@@ -246,32 +246,32 @@
 - (id)createPrefixMatchingQuery
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v4 = [(ICSearchQueryOperation *)self searchString];
-  v5 = [(ICSearchQueryOperation *)self keyboardLanguage];
+  searchString = [(ICSearchQueryOperation *)self searchString];
+  keyboardLanguage = [(ICSearchQueryOperation *)self keyboardLanguage];
   v28 = 0;
-  v6 = [ICSearchQueryParser prefixMatchingQueryStringForSearchString:v4 enableSpellCheckSPI:1 languageForSpellchecking:v5 expandedTokens:&v28];
+  v6 = [ICSearchQueryParser prefixMatchingQueryStringForSearchString:searchString enableSpellCheckSPI:1 languageForSpellchecking:keyboardLanguage expandedTokens:&v28];
   v7 = v28;
 
   v8 = [(ICSearchQueryOperation *)self jointQueryWithSuggestions:v6];
 
   v9 = [[ICRankingQueriesDefinition alloc] initWithExpandedTokens:v7 rankingQueryType:0 rankingQueryFlags:@"cwd"];
   v10 = objc_opt_class();
-  v11 = [(ICSearchQueryOperation *)self searchString];
-  v12 = [v10 substringMatchingQueryStringForSearchString:v11];
+  searchString2 = [(ICSearchQueryOperation *)self searchString];
+  v12 = [v10 substringMatchingQueryStringForSearchString:searchString2];
 
   if ([(ICSearchQueryOperation *)self useSearchSuggestions])
   {
     v13 = +[ICCloudConfiguration sharedConfiguration];
-    v14 = [v13 searchSubstringMatchingEnabled];
+    searchSubstringMatchingEnabled = [v13 searchSubstringMatchingEnabled];
 
-    if ((v14 & 1) == 0)
+    if ((searchSubstringMatchingEnabled & 1) == 0)
     {
 
       v12 = 0;
     }
 
-    v15 = [(ICSearchQueryOperation *)self searchString];
-    v16 = [v15 length];
+    searchString3 = [(ICSearchQueryOperation *)self searchString];
+    v16 = [searchString3 length];
 
     v26 = v8;
     v27 = v7;
@@ -282,13 +282,13 @@
     }
 
     v25 = [ICSearchSuggestionsQuery alloc];
-    v17 = [(ICSearchQueryOperation *)self searchString];
-    v18 = [(ICSearchQueryOperation *)self searchTokens];
-    v19 = [(ICSearchQueryOperation *)self tokensQueryString];
-    if (v19)
+    searchString4 = [(ICSearchQueryOperation *)self searchString];
+    searchTokens = [(ICSearchQueryOperation *)self searchTokens];
+    tokensQueryString = [(ICSearchQueryOperation *)self tokensQueryString];
+    if (tokensQueryString)
     {
-      v2 = [(ICSearchQueryOperation *)self tokensQueryString];
-      v29[0] = v2;
+      tokensQueryString2 = [(ICSearchQueryOperation *)self tokensQueryString];
+      v29[0] = tokensQueryString2;
       v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:1];
     }
 
@@ -297,11 +297,11 @@
       v20 = MEMORY[0x277CBEBF8];
     }
 
-    v22 = [(ICSearchQueryOperation *)self modernResultsOnly];
-    v23 = [(ICSearchQueryOperation *)self searchSuggestionsResponder];
-    v21 = [(ICSearchSuggestionsQuery *)v25 initWithSearchString:v17 additionalLiteralSearchString:v12 searchTokens:v18 filterQueries:v20 rankingQueriesDefinition:v9 modernResultsOnly:v22 suggestionsResponder:v23];
+    modernResultsOnly = [(ICSearchQueryOperation *)self modernResultsOnly];
+    searchSuggestionsResponder = [(ICSearchQueryOperation *)self searchSuggestionsResponder];
+    v21 = [(ICSearchSuggestionsQuery *)v25 initWithSearchString:searchString4 additionalLiteralSearchString:v12 searchTokens:searchTokens filterQueries:v20 rankingQueriesDefinition:v9 modernResultsOnly:modernResultsOnly suggestionsResponder:searchSuggestionsResponder];
 
-    if (v19)
+    if (tokensQueryString)
     {
     }
 
@@ -322,9 +322,9 @@
   defaultQuery = self->_defaultQuery;
   if (!defaultQuery)
   {
-    v4 = [(ICSearchQueryOperation *)self createPrefixMatchingQuery];
+    createPrefixMatchingQuery = [(ICSearchQueryOperation *)self createPrefixMatchingQuery];
     v5 = self->_defaultQuery;
-    self->_defaultQuery = v4;
+    self->_defaultQuery = createPrefixMatchingQuery;
 
     defaultQuery = self->_defaultQuery;
   }
@@ -338,14 +338,14 @@
   if (!fuzzyQuery)
   {
     v4 = objc_opt_class();
-    v5 = [(ICSearchQueryOperation *)self searchString];
-    v6 = [v4 fuzzyMatchingQueryStringForSearchString:v5];
+    searchString = [(ICSearchQueryOperation *)self searchString];
+    v6 = [v4 fuzzyMatchingQueryStringForSearchString:searchString];
 
     v7 = [(ICSearchQueryOperation *)self jointQueryWithSuggestions:v6];
 
     v8 = [ICRankingQueriesDefinition alloc];
-    v9 = [(ICSearchQueryOperation *)self searchString];
-    v10 = [(ICRankingQueriesDefinition *)v8 initWithSearchString:v9 rankingQueryType:1 rankingQueryFlags:@"cwdt"];
+    searchString2 = [(ICSearchQueryOperation *)self searchString];
+    v10 = [(ICRankingQueriesDefinition *)v8 initWithSearchString:searchString2 rankingQueryType:1 rankingQueryFlags:@"cwdt"];
 
     v11 = [[ICSearchResultsQuery alloc] initWithQueryString:v7 rankingQueriesDefinition:v10 modernResultsOnly:[(ICSearchQueryOperation *)self modernResultsOnly]];
     v12 = self->_fuzzyQuery;
@@ -362,22 +362,22 @@
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"Prefix query start"];
   [ICSearchProfiler logProfilingWithMessage:v3 searchQueryOperation:self];
 
-  v4 = [(ICSearchQueryOperation *)self defaultQuery];
-  v5 = [(ICSearchQueryOperation *)self runICSearchQuery:v4];
+  defaultQuery = [(ICSearchQueryOperation *)self defaultQuery];
+  v5 = [(ICSearchQueryOperation *)self runICSearchQuery:defaultQuery];
 
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Prefix query end"];
   [ICSearchProfiler logProfilingWithMessage:v6 searchQueryOperation:self];
 
-  v7 = [(ICSearchQueryOperation *)self defaultQuery];
-  if ([v7 wasForceStopped])
+  defaultQuery2 = [(ICSearchQueryOperation *)self defaultQuery];
+  if ([defaultQuery2 wasForceStopped])
   {
 
     goto LABEL_4;
   }
 
-  v8 = [(ICSearchQueryOperation *)self isCancelled];
+  isCancelled = [(ICSearchQueryOperation *)self isCancelled];
 
-  if (v8)
+  if (isCancelled)
   {
 LABEL_4:
     v9 = os_log_create("com.apple.notes", "SearchIndexer");
@@ -393,30 +393,30 @@ LABEL_6:
 
   if ([(ICSearchQueryOperation *)self countOfNonSpaceCharsInSearchString]>= 3)
   {
-    v10 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v11 = [v10 BOOLForKey:*MEMORY[0x277D36318]];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v11 = [standardUserDefaults BOOLForKey:*MEMORY[0x277D36318]];
 
     if (v11)
     {
       v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Fuzzy query start"];
       [ICSearchProfiler logProfilingWithMessage:v12 searchQueryOperation:self];
 
-      v13 = [(ICSearchQueryOperation *)self fuzzyQuery];
-      v14 = [(ICSearchQueryOperation *)self runICSearchQuery:v13];
+      fuzzyQuery = [(ICSearchQueryOperation *)self fuzzyQuery];
+      v14 = [(ICSearchQueryOperation *)self runICSearchQuery:fuzzyQuery];
 
       v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Fuzzy query end"];
       [ICSearchProfiler logProfilingWithMessage:v15 searchQueryOperation:self];
 
-      v16 = [(ICSearchQueryOperation *)self fuzzyQuery];
-      if ([v16 wasForceStopped])
+      fuzzyQuery2 = [(ICSearchQueryOperation *)self fuzzyQuery];
+      if ([fuzzyQuery2 wasForceStopped])
       {
 
         goto LABEL_13;
       }
 
-      v17 = [(ICSearchQueryOperation *)self isCancelled];
+      isCancelled2 = [(ICSearchQueryOperation *)self isCancelled];
 
-      if (v17)
+      if (isCancelled2)
       {
 LABEL_13:
         v9 = os_log_create("com.apple.notes", "SearchIndexer");
@@ -428,19 +428,19 @@ LABEL_13:
         goto LABEL_6;
       }
 
-      v18 = [(ICSearchQueryOperation *)self substringQuery];
+      substringQuery = [(ICSearchQueryOperation *)self substringQuery];
 
-      if (!v18)
+      if (!substringQuery)
       {
         v19 = objc_opt_class();
-        v20 = [(ICSearchQueryOperation *)self searchString];
-        v21 = [v19 substringMatchingQueryStringForSearchString:v20];
+        searchString = [(ICSearchQueryOperation *)self searchString];
+        v21 = [v19 substringMatchingQueryStringForSearchString:searchString];
 
         v22 = [(ICSearchQueryOperation *)self jointQueryWithSuggestions:v21];
 
         v23 = [ICRankingQueriesDefinition alloc];
-        v24 = [(ICSearchQueryOperation *)self searchString];
-        v25 = [(ICRankingQueriesDefinition *)v23 initWithSearchString:v24 rankingQueryType:2 rankingQueryFlags:@"cwdt"];
+        searchString2 = [(ICSearchQueryOperation *)self searchString];
+        v25 = [(ICRankingQueriesDefinition *)v23 initWithSearchString:searchString2 rankingQueryType:2 rankingQueryFlags:@"cwdt"];
 
         v26 = [[ICSearchResultsQuery alloc] initWithQueryString:v22 rankingQueriesDefinition:v25 modernResultsOnly:[(ICSearchQueryOperation *)self modernResultsOnly]];
         [(ICSearchQueryOperation *)self setSubstringQuery:v26];
@@ -449,22 +449,22 @@ LABEL_13:
       v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"Substring query start"];
       [ICSearchProfiler logProfilingWithMessage:v27 searchQueryOperation:self];
 
-      v28 = [(ICSearchQueryOperation *)self substringQuery];
-      v29 = [(ICSearchQueryOperation *)self runICSearchQuery:v28];
+      substringQuery2 = [(ICSearchQueryOperation *)self substringQuery];
+      v29 = [(ICSearchQueryOperation *)self runICSearchQuery:substringQuery2];
 
       v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"Substring query end"];
       [ICSearchProfiler logProfilingWithMessage:v30 searchQueryOperation:self];
 
-      v31 = [(ICSearchQueryOperation *)self substringQuery];
-      if ([v31 wasForceStopped])
+      substringQuery3 = [(ICSearchQueryOperation *)self substringQuery];
+      if ([substringQuery3 wasForceStopped])
       {
 
         goto LABEL_20;
       }
 
-      v32 = [(ICSearchQueryOperation *)self isCancelled];
+      isCancelled3 = [(ICSearchQueryOperation *)self isCancelled];
 
-      if (v32)
+      if (isCancelled3)
       {
 LABEL_20:
         v9 = os_log_create("com.apple.notes", "SearchIndexer");
@@ -481,57 +481,57 @@ LABEL_20:
 
 - (void)performSpellCheckerAPIQueryIfNeeded
 {
-  v42 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  if (([v42 BOOLForKey:*MEMORY[0x277D36348]] & 1) == 0)
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  if (([standardUserDefaults BOOLForKey:*MEMORY[0x277D36348]] & 1) == 0)
   {
 
     return;
   }
 
-  v3 = [(ICSearchQueryOperation *)self searchString];
-  v4 = [v3 length];
+  searchString = [(ICSearchQueryOperation *)self searchString];
+  v4 = [searchString length];
 
   if (!v4)
   {
     return;
   }
 
-  v5 = [(ICSearchQueryOperation *)self searchString];
+  searchString2 = [(ICSearchQueryOperation *)self searchString];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(ICSearchQueryOperation *)self searchString];
-    v8 = [v7 ic_guessedWords];
+    searchString3 = [(ICSearchQueryOperation *)self searchString];
+    ic_guessedWords = [searchString3 ic_guessedWords];
 
-    v9 = [v8 firstObject];
-    if (v9)
+    firstObject = [ic_guessedWords firstObject];
+    if (firstObject)
     {
-      v10 = [(ICSearchQueryOperation *)self spellingQuery];
+      spellingQuery = [(ICSearchQueryOperation *)self spellingQuery];
 
-      if (!v10)
+      if (!spellingQuery)
       {
-        v11 = [ICSearchQueryParser queryStringForSearchString:v9 queryFields:0 matchType:0];
+        v11 = [ICSearchQueryParser queryStringForSearchString:firstObject queryFields:0 matchType:0];
         v12 = [(ICSearchQueryOperation *)self jointQueryWithSuggestions:v11];
 
-        v13 = [[ICRankingQueriesDefinition alloc] initWithSearchString:v9 rankingQueryType:0 rankingQueryFlags:@"cwdt"];
+        v13 = [[ICRankingQueriesDefinition alloc] initWithSearchString:firstObject rankingQueryType:0 rankingQueryFlags:@"cwdt"];
         v14 = [[ICSearchResultsQuery alloc] initWithQueryString:v12 rankingQueriesDefinition:v13 modernResultsOnly:[(ICSearchQueryOperation *)self modernResultsOnly]];
         [(ICSearchQueryOperation *)self setSpellingQuery:v14];
 
-        v15 = [(ICSearchQueryOperation *)self spellingQuery];
-        v16 = [(ICSearchQueryOperation *)self runICSearchQuery:v15];
+        spellingQuery2 = [(ICSearchQueryOperation *)self spellingQuery];
+        v16 = [(ICSearchQueryOperation *)self runICSearchQuery:spellingQuery2];
       }
     }
   }
 
-  v17 = [(ICSearchQueryOperation *)self spellingQuery];
+  spellingQuery3 = [(ICSearchQueryOperation *)self spellingQuery];
 
-  if (!v17)
+  if (!spellingQuery3)
   {
     v18 = MEMORY[0x277CCAAE8];
-    v19 = [MEMORY[0x277CBEAF8] preferredLanguages];
-    v20 = [v19 firstObject];
-    v21 = [v18 availableTagSchemesForLanguage:v20];
+    preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+    firstObject2 = [preferredLanguages firstObject];
+    v21 = [v18 availableTagSchemesForLanguage:firstObject2];
 
     v22 = *MEMORY[0x277CCA3E0];
     if (![v21 containsObject:*MEMORY[0x277CCA3E0]])
@@ -544,39 +544,39 @@ LABEL_16:
     v43 = 0;
     v44 = 0;
     v23 = MEMORY[0x277CCABF8];
-    v24 = [MEMORY[0x277CBEAF8] preferredLanguages];
-    v25 = [v24 firstObject];
-    v26 = [v23 defaultOrthographyForLanguage:v25];
+    preferredLanguages2 = [MEMORY[0x277CBEAF8] preferredLanguages];
+    firstObject3 = [preferredLanguages2 firstObject];
+    v26 = [v23 defaultOrthographyForLanguage:firstObject3];
 
     v27 = MEMORY[0x277CCAAE8];
-    v28 = [(ICSearchQueryOperation *)self searchString];
-    v29 = [v27 tagForString:v28 atIndex:0 unit:0 scheme:v22 orthography:v26 tokenRange:&v43];
+    searchString4 = [(ICSearchQueryOperation *)self searchString];
+    v29 = [v27 tagForString:searchString4 atIndex:0 unit:0 scheme:v22 orthography:v26 tokenRange:&v43];
 
     if (v29)
     {
       v30 = v44;
-      v31 = [(ICSearchQueryOperation *)self searchString];
-      if (v30 != [v31 length])
+      searchString5 = [(ICSearchQueryOperation *)self searchString];
+      if (v30 != [searchString5 length])
       {
 LABEL_14:
 
         goto LABEL_15;
       }
 
-      v32 = [(ICSearchQueryOperation *)self searchString];
-      v33 = [v29 isEqualToString:v32];
+      searchString6 = [(ICSearchQueryOperation *)self searchString];
+      v33 = [v29 isEqualToString:searchString6];
 
       if ((v33 & 1) == 0)
       {
         v34 = [ICSearchQueryParser queryStringForSearchString:v29 queryFields:0 matchType:0];
-        v31 = [(ICSearchQueryOperation *)self jointQueryWithSuggestions:v34];
+        searchString5 = [(ICSearchQueryOperation *)self jointQueryWithSuggestions:v34];
 
         v35 = [[ICRankingQueriesDefinition alloc] initWithSearchString:v29 rankingQueryType:0 rankingQueryFlags:@"cwdt"];
-        v36 = [[ICSearchResultsQuery alloc] initWithQueryString:v31 rankingQueriesDefinition:v35 modernResultsOnly:[(ICSearchQueryOperation *)self modernResultsOnly]];
+        v36 = [[ICSearchResultsQuery alloc] initWithQueryString:searchString5 rankingQueriesDefinition:v35 modernResultsOnly:[(ICSearchQueryOperation *)self modernResultsOnly]];
         [(ICSearchQueryOperation *)self setSpellingQuery:v36];
 
-        v37 = [(ICSearchQueryOperation *)self spellingQuery];
-        v38 = [(ICSearchQueryOperation *)self runICSearchQuery:v37];
+        spellingQuery4 = [(ICSearchQueryOperation *)self spellingQuery];
+        v38 = [(ICSearchQueryOperation *)self runICSearchQuery:spellingQuery4];
 
         goto LABEL_14;
       }
@@ -588,16 +588,16 @@ LABEL_15:
   }
 
 LABEL_17:
-  v39 = [(ICSearchQueryOperation *)self spellingQuery];
-  if ([v39 wasForceStopped])
+  spellingQuery5 = [(ICSearchQueryOperation *)self spellingQuery];
+  if ([spellingQuery5 wasForceStopped])
   {
   }
 
   else
   {
-    v40 = [(ICSearchQueryOperation *)self isCancelled];
+    isCancelled = [(ICSearchQueryOperation *)self isCancelled];
 
-    if ((v40 & 1) == 0)
+    if ((isCancelled & 1) == 0)
     {
       return;
     }
@@ -613,31 +613,31 @@ LABEL_17:
 - (void)performRelatedWordQueriesIfNeeded
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 BOOLForKey:*MEMORY[0x277D36330]];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:*MEMORY[0x277D36330]];
 
   if (v4)
   {
-    v5 = [MEMORY[0x277CBEAF8] preferredLanguages];
-    v6 = [v5 firstObject];
+    preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+    firstObject = [preferredLanguages firstObject];
 
     Helper_x8__OBJC_CLASS___NLEmbedding = gotLoadHelper_x8__OBJC_CLASS___NLEmbedding(v7);
-    v10 = [*(v9 + 2480) wordEmbeddingForLanguage:{v6, Helper_x8__OBJC_CLASS___NLEmbedding}];
-    v11 = [(ICSearchQueryOperation *)self searchString];
-    v12 = [v11 lowercaseString];
+    v10 = [*(v9 + 2480) wordEmbeddingForLanguage:{firstObject, Helper_x8__OBJC_CLASS___NLEmbedding}];
+    searchString = [(ICSearchQueryOperation *)self searchString];
+    lowercaseString = [searchString lowercaseString];
 
-    if ([v10 containsString:v12])
+    if ([v10 containsString:lowercaseString])
     {
-      v32 = v6;
-      v13 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      [v13 doubleForKey:*MEMORY[0x277D36340]];
+      v32 = firstObject;
+      standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      [standardUserDefaults2 doubleForKey:*MEMORY[0x277D36340]];
       v15 = v14;
 
-      v16 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      v17 = [v16 integerForKey:*MEMORY[0x277D36338]];
+      standardUserDefaults3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      v17 = [standardUserDefaults3 integerForKey:*MEMORY[0x277D36338]];
 
       v31 = v10;
-      v18 = [v10 neighborsForString:v12 maximumCount:v17 maximumDistance:0 distanceType:v15];
+      v18 = [v10 neighborsForString:lowercaseString maximumCount:v17 maximumDistance:0 distanceType:v15];
       v19 = [MEMORY[0x277CBEB18] arrayWithCapacity:v17];
       [(ICSearchQueryOperation *)self setRelatedWordQueries:v19];
 
@@ -666,8 +666,8 @@ LABEL_17:
 
             v27 = [[ICRankingQueriesDefinition alloc] initWithSearchString:v24 rankingQueryType:0 rankingQueryFlags:@"cwdt"];
             v28 = [[ICSearchResultsQuery alloc] initWithQueryString:v26 rankingQueriesDefinition:v27 modernResultsOnly:[(ICSearchQueryOperation *)self modernResultsOnly]];
-            v29 = [(ICSearchQueryOperation *)self relatedWordQueries];
-            [v29 addObject:v28];
+            relatedWordQueries = [(ICSearchQueryOperation *)self relatedWordQueries];
+            [relatedWordQueries addObject:v28];
 
             v30 = [(ICSearchQueryOperation *)self runICSearchQuery:v28];
           }
@@ -679,7 +679,7 @@ LABEL_17:
       }
 
       v10 = v31;
-      v6 = v32;
+      firstObject = v32;
     }
   }
 }
@@ -691,20 +691,20 @@ LABEL_17:
   _os_log_error_impl(&dword_214D51000, v0, OS_LOG_TYPE_ERROR, "Top Hit Search Query error: %@", v1, 0xCu);
 }
 
-- (void)processTopHits:(id)a3
+- (void)processTopHits:(id)hits
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  hitsCopy = hits;
+  if (hitsCopy)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v21 = v4;
+    v21 = hitsCopy;
     v22 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    obj = v4;
+    obj = hitsCopy;
     v6 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v6)
     {
@@ -722,9 +722,9 @@ LABEL_17:
 
           v10 = *(*(&v24 + 1) + 8 * v9);
           v11 = MEMORY[0x277CBEAC0];
-          v12 = [(ICSearchQueryOperation *)self searchString];
-          v13 = [(ICSearchQueryOperation *)self keyboardLanguage];
-          v14 = [v11 highlightInfoForSearchStringWithPrefixMatchInAllFields:v12 language:v13];
+          searchString = [(ICSearchQueryOperation *)self searchString];
+          keyboardLanguage = [(ICSearchQueryOperation *)self keyboardLanguage];
+          v14 = [v11 highlightInfoForSearchStringWithPrefixMatchInAllFields:searchString language:keyboardLanguage];
 
           v15 = [[ICSortableSearchableItem alloc] initWithSearchableItem:v10 highlightInfo:v14 rankingScore:0 attachmentUniqueIdentifiers:0.0];
           [v5 addObject:v15];
@@ -735,9 +735,9 @@ LABEL_17:
 
           else
           {
-            v16 = [(ICSearchQueryOperation *)self resultsDictionary];
-            v17 = [v10 uniqueIdentifier];
-            [v16 setObject:v15 forKeyedSubscript:v17];
+            resultsDictionary = [(ICSearchQueryOperation *)self resultsDictionary];
+            uniqueIdentifier = [v10 uniqueIdentifier];
+            [resultsDictionary setObject:v15 forKeyedSubscript:uniqueIdentifier];
           }
 
           ++v9;
@@ -757,27 +757,27 @@ LABEL_17:
     }
 
     [(ICSearchQueryOperation *)self appendSortableSearchableItemsToResults:v5];
-    v19 = [(ICSearchQueryOperation *)self foundItemsHandler];
+    foundItemsHandler = [(ICSearchQueryOperation *)self foundItemsHandler];
 
-    if (v19)
+    if (foundItemsHandler)
     {
-      v20 = [(ICSearchQueryOperation *)self foundItemsHandler];
-      (v20)[2](v20, v5, 1);
+      foundItemsHandler2 = [(ICSearchQueryOperation *)self foundItemsHandler];
+      (foundItemsHandler2)[2](foundItemsHandler2, v5, 1);
     }
 
-    v4 = v21;
+    hitsCopy = v21;
   }
 }
 
-- (void)appendSortableSearchableItemsToResults:(id)a3
+- (void)appendSortableSearchableItemsToResults:(id)results
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultsCopy = results;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [resultsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -789,19 +789,19 @@ LABEL_17:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(resultsCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * v8);
-        v10 = [(ICSearchQueryOperation *)self results];
-        v11 = [v9 searchableItem];
-        [v10 addObject:v11];
+        results = [(ICSearchQueryOperation *)self results];
+        searchableItem = [v9 searchableItem];
+        [results addObject:searchableItem];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [resultsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -812,11 +812,11 @@ LABEL_17:
 {
   if (+[ICSearchSuggestionsContext supportsSearchSuggestions])
   {
-    v3 = [(ICSearchQueryOperation *)self searchSuggestionsResponder];
-    v4 = [v3 searchContext];
-    v5 = [v4 searchSuggestion];
-    v6 = [v5 currentTokens];
-    v7 = [v6 count] == 0;
+    searchSuggestionsResponder = [(ICSearchQueryOperation *)self searchSuggestionsResponder];
+    searchContext = [searchSuggestionsResponder searchContext];
+    searchSuggestion = [searchContext searchSuggestion];
+    currentTokens = [searchSuggestion currentTokens];
+    v7 = [currentTokens count] == 0;
   }
 
   else
@@ -826,8 +826,8 @@ LABEL_17:
 
   if (![(ICSearchQueryOperation *)self allowEmptySearchString]&& ![(ICSearchQueryOperation *)self countOfNonSpaceCharsInSearchString])
   {
-    v8 = [(ICSearchQueryOperation *)self tokensQueryString];
-    v9 = v8 == 0 && v7;
+    tokensQueryString = [(ICSearchQueryOperation *)self tokensQueryString];
+    v9 = tokensQueryString == 0 && v7;
 
     if (v9 == 1)
     {
@@ -893,14 +893,14 @@ LABEL_18:
     goto LABEL_27;
   }
 
-  v15 = [(ICSearchQueryOperation *)self tokensQueryString];
+  tokensQueryString2 = [(ICSearchQueryOperation *)self tokensQueryString];
 
   if (([(ICSearchQueryOperation *)self isCancelled]& 1) != 0)
   {
     goto LABEL_18;
   }
 
-  if (!v15)
+  if (!tokensQueryString2)
   {
     [(ICSearchQueryOperation *)self performTopHitSearchQuery];
   }
@@ -932,11 +932,11 @@ LABEL_21:
   if ([(ICSearchQueryOperation *)self performNLSearch])
   {
     v16 = objc_opt_class();
-    v17 = [(ICSearchQueryOperation *)self searchString];
+    searchString = [(ICSearchQueryOperation *)self searchString];
     v31 = 0;
     v32 = 0;
     v30 = 0;
-    [v16 nlSearchQueryWithSearchString:v17 queryString:&v32 rankingQueries:&v31 highlightString:&v30];
+    [v16 nlSearchQueryWithSearchString:searchString queryString:&v32 rankingQueries:&v31 highlightString:&v30];
     v18 = v32;
     v19 = v31;
     v20 = v30;
@@ -972,22 +972,22 @@ LABEL_41:
       v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"NL query start"];
       [ICSearchProfiler logProfilingWithMessage:v24 searchQueryOperation:self];
 
-      v25 = [(ICSearchQueryOperation *)self nlQuery];
-      v26 = [(ICSearchQueryOperation *)self runICSearchQuery:v25];
+      nlQuery = [(ICSearchQueryOperation *)self nlQuery];
+      v26 = [(ICSearchQueryOperation *)self runICSearchQuery:nlQuery];
 
       v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"NL query end"];
       [ICSearchProfiler logProfilingWithMessage:v27 searchQueryOperation:self];
 
-      v28 = [(ICSearchQueryOperation *)self nlQuery];
-      if ([v28 wasForceStopped])
+      nlQuery2 = [(ICSearchQueryOperation *)self nlQuery];
+      if ([nlQuery2 wasForceStopped])
       {
 
         goto LABEL_39;
       }
 
-      v29 = [(ICSearchQueryOperation *)self isCancelled];
+      isCancelled = [(ICSearchQueryOperation *)self isCancelled];
 
-      if (v29)
+      if (isCancelled)
       {
 LABEL_39:
         v23 = os_log_create("com.apple.notes", "SearchIndexer");
@@ -1005,20 +1005,20 @@ LABEL_39:
   [(ICSearchQueryOperation *)self performRelatedWordQueriesIfNeeded];
 }
 
-- (id)retrieveNotesOfFoundAttachmentsForSearchResults:(id)a3
+- (id)retrieveNotesOfFoundAttachmentsForSearchResults:(id)results
 {
   v90 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB40] orderedSet];
-  v64 = v4;
-  v74 = self;
-  if ([v4 count])
+  resultsCopy = results;
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+  v64 = resultsCopy;
+  selfCopy = self;
+  if ([resultsCopy count])
   {
     v85 = 0u;
     v86 = 0u;
     v83 = 0u;
     v84 = 0u;
-    obj = v4;
+    obj = resultsCopy;
     v6 = [obj countByEnumeratingWithState:&v83 objects:v89 count:16];
     if (v6)
     {
@@ -1034,36 +1034,36 @@ LABEL_39:
           }
 
           v10 = *(*(&v83 + 1) + 8 * i);
-          v11 = [v10 searchableItem];
-          v12 = [v11 attributeSet];
+          searchableItem = [v10 searchableItem];
+          attributeSet = [searchableItem attributeSet];
 
-          if ([v12 ic_searchResultType] == 1)
+          if ([attributeSet ic_searchResultType] == 1)
           {
-            v13 = [v12 ic_relatedModernNoteUniqueIdentifier];
-            [v5 ic_addNonNilObject:v13];
-            v14 = [v10 searchableItem];
-            v15 = [v14 uniqueIdentifier];
+            ic_relatedModernNoteUniqueIdentifier = [attributeSet ic_relatedModernNoteUniqueIdentifier];
+            [orderedSet ic_addNonNilObject:ic_relatedModernNoteUniqueIdentifier];
+            searchableItem2 = [v10 searchableItem];
+            uniqueIdentifier = [searchableItem2 uniqueIdentifier];
 
-            if (v13)
+            if (ic_relatedModernNoteUniqueIdentifier)
             {
               [(ICSearchQueryOperation *)self uniqueIdentifiersOfAttachmentsFoundInNotes];
               v17 = v16 = self;
-              v18 = [v17 objectForKeyedSubscript:v13];
+              array = [v17 objectForKeyedSubscript:ic_relatedModernNoteUniqueIdentifier];
 
-              if (v18)
+              if (array)
               {
-                [v18 ic_addNonNilObject:v15];
+                [array ic_addNonNilObject:uniqueIdentifier];
               }
 
               else
               {
-                v18 = [MEMORY[0x277CBEB18] array];
-                [v18 ic_addNonNilObject:v15];
-                v19 = [(ICSearchQueryOperation *)v16 uniqueIdentifiersOfAttachmentsFoundInNotes];
-                [v19 ic_setNonNilObject:v18 forNonNilKey:v13];
+                array = [MEMORY[0x277CBEB18] array];
+                [array ic_addNonNilObject:uniqueIdentifier];
+                uniqueIdentifiersOfAttachmentsFoundInNotes = [(ICSearchQueryOperation *)v16 uniqueIdentifiersOfAttachmentsFoundInNotes];
+                [uniqueIdentifiersOfAttachmentsFoundInNotes ic_setNonNilObject:array forNonNilKey:ic_relatedModernNoteUniqueIdentifier];
               }
 
-              self = v74;
+              self = selfCopy;
             }
           }
         }
@@ -1075,11 +1075,11 @@ LABEL_39:
     }
   }
 
-  v65 = v5;
+  v65 = orderedSet;
   v20 = MEMORY[0x277CBEB98];
-  v21 = [(ICSearchQueryOperation *)self resultsDictionary];
-  v22 = [v21 allKeys];
-  v23 = [v20 setWithArray:v22];
+  resultsDictionary = [(ICSearchQueryOperation *)self resultsDictionary];
+  allKeys = [resultsDictionary allKeys];
+  v23 = [v20 setWithArray:allKeys];
   [v65 minusSet:v23];
 
   v24 = v65;
@@ -1092,11 +1092,11 @@ LABEL_39:
     }
 
     v26 = +[ICNoteContext sharedContext];
-    v27 = [v26 workerManagedObjectContext];
+    workerManagedObjectContext = [v26 workerManagedObjectContext];
 
-    v28 = [v65 array];
-    v63 = v27;
-    v29 = [ICSearchQueryOperation fetchModernNoteSearchableItemAttributesFromCoreDataForObjectIDURIs:v28 context:v27];
+    array2 = [v65 array];
+    v63 = workerManagedObjectContext;
+    v29 = [ICSearchQueryOperation fetchModernNoteSearchableItemAttributesFromCoreDataForObjectIDURIs:array2 context:workerManagedObjectContext];
 
     v30 = objc_alloc_init(MEMORY[0x277CBEB18]);
     if ([v29 count])
@@ -1127,9 +1127,9 @@ LABEL_39:
           }
 
           v34 = *(*(&v79 + 1) + 8 * j);
-          v35 = [(ICSearchQueryOperation *)self uniqueIdentifiersOfAttachmentsFoundInNotes];
-          v36 = [v34 uniqueIdentifier];
-          v37 = [v35 objectForKeyedSubscript:v36];
+          uniqueIdentifiersOfAttachmentsFoundInNotes2 = [(ICSearchQueryOperation *)self uniqueIdentifiersOfAttachmentsFoundInNotes];
+          uniqueIdentifier2 = [v34 uniqueIdentifier];
+          v37 = [uniqueIdentifiersOfAttachmentsFoundInNotes2 objectForKeyedSubscript:uniqueIdentifier2];
 
           v38 = 0.0;
           obja = v37;
@@ -1150,9 +1150,9 @@ LABEL_39:
 
 LABEL_39:
             v55 = MEMORY[0x277CBEAC0];
-            v56 = [(ICSearchQueryOperation *)self searchString];
-            v57 = [(ICSearchQueryOperation *)self keyboardLanguage];
-            v42 = [v55 highlightInfoForSearchStringWithPrefixMatchInAllFields:v56 language:v57];
+            searchString = [(ICSearchQueryOperation *)self searchString];
+            keyboardLanguage = [(ICSearchQueryOperation *)self keyboardLanguage];
+            v42 = [v55 highlightInfoForSearchStringWithPrefixMatchInAllFields:searchString language:keyboardLanguage];
 
             goto LABEL_40;
           }
@@ -1173,8 +1173,8 @@ LABEL_39:
               }
 
               v46 = *(*(&v75 + 1) + 8 * v44);
-              v47 = [(ICSearchQueryOperation *)self resultsDictionary];
-              v48 = [v47 objectForKeyedSubscript:v46];
+              resultsDictionary2 = [(ICSearchQueryOperation *)self resultsDictionary];
+              v48 = [resultsDictionary2 objectForKeyedSubscript:v46];
               [v48 rankingScore];
               v50 = v49;
 
@@ -1184,12 +1184,12 @@ LABEL_39:
               }
 
               v51 = MEMORY[0x277CBEAC0];
-              v52 = [(ICSearchQueryOperation *)self resultsDictionary];
-              v53 = [v52 objectForKeyedSubscript:v46];
-              v54 = [v53 highlightInfo];
-              v42 = [v51 mergeHighlightInfo:v45 withHighlighInfo:v54];
+              resultsDictionary3 = [(ICSearchQueryOperation *)self resultsDictionary];
+              v53 = [resultsDictionary3 objectForKeyedSubscript:v46];
+              highlightInfo = [v53 highlightInfo];
+              v42 = [v51 mergeHighlightInfo:v45 withHighlighInfo:highlightInfo];
 
-              self = v74;
+              self = selfCopy;
               ++v44;
               v45 = v42;
             }
@@ -1212,9 +1212,9 @@ LABEL_39:
 
 LABEL_40:
           v58 = [objc_alloc(*(v32 + 3936)) initWithSearchableItem:v34 highlightInfo:v42 rankingScore:obja attachmentUniqueIdentifiers:v38];
-          v59 = [(ICSearchQueryOperation *)self resultsDictionary];
-          v60 = [v34 uniqueIdentifier];
-          [v59 setObject:v58 forKeyedSubscript:v60];
+          resultsDictionary4 = [(ICSearchQueryOperation *)self resultsDictionary];
+          uniqueIdentifier3 = [v34 uniqueIdentifier];
+          [resultsDictionary4 setObject:v58 forKeyedSubscript:uniqueIdentifier3];
 
           [v30 addObject:v58];
         }
@@ -1241,10 +1241,10 @@ LABEL_42:
   return v30;
 }
 
-- (id)runICSearchQuery:(id)a3
+- (id)runICSearchQuery:(id)query
 {
-  v4 = a3;
-  if (!v4)
+  queryCopy = query;
+  if (!queryCopy)
   {
     v5 = os_log_create("com.apple.notes", "SearchIndexer");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -1268,8 +1268,8 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  [v4 run:0];
-  if (([v4 wasForceStopped] & 1) != 0 || -[ICSearchQueryOperation isCancelled](self, "isCancelled"))
+  [queryCopy run:0];
+  if (([queryCopy wasForceStopped] & 1) != 0 || -[ICSearchQueryOperation isCancelled](self, "isCancelled"))
   {
     v5 = os_log_create("com.apple.notes", "SearchIndexer");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -1285,19 +1285,19 @@ LABEL_11:
   {
     objc_opt_class();
     v8 = ICDynamicCast();
-    v9 = [v8 topHits];
-    [(ICSearchQueryOperation *)self processTopHits:v9];
+    topHits = [v8 topHits];
+    [(ICSearchQueryOperation *)self processTopHits:topHits];
   }
 
-  v10 = [v4 queryResults];
+  queryResults = [queryCopy queryResults];
   v11 = MEMORY[0x277CBEB58];
-  v12 = [v10 allKeys];
-  v13 = [v11 setWithArray:v12];
+  allKeys = [queryResults allKeys];
+  v13 = [v11 setWithArray:allKeys];
 
   v14 = MEMORY[0x277CBEB98];
-  v15 = [(ICSearchQueryOperation *)self resultsDictionary];
-  v16 = [v15 allKeys];
-  v17 = [v14 setWithArray:v16];
+  resultsDictionary = [(ICSearchQueryOperation *)self resultsDictionary];
+  allKeys2 = [resultsDictionary allKeys];
+  v17 = [v14 setWithArray:allKeys2];
 
   [v13 minusSet:v17];
   v18 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -1305,10 +1305,10 @@ LABEL_11:
   v27 = 3221225472;
   v28 = __43__ICSearchQueryOperation_runICSearchQuery___block_invoke;
   v29 = &unk_278197B00;
-  v5 = v10;
+  v5 = queryResults;
   v30 = v5;
-  v31 = v4;
-  v32 = self;
+  v31 = queryCopy;
+  selfCopy = self;
   v19 = v18;
   v33 = v19;
   [v13 enumerateObjectsUsingBlock:&v26];
@@ -1335,12 +1335,12 @@ LABEL_11:
 
   else
   {
-    v24 = [(ICSearchQueryOperation *)self foundItemsHandler];
+    foundItemsHandler = [(ICSearchQueryOperation *)self foundItemsHandler];
 
-    if (v24)
+    if (foundItemsHandler)
     {
-      v25 = [(ICSearchQueryOperation *)self foundItemsHandler];
-      (v25)[2](v25, v22, 0);
+      foundItemsHandler2 = [(ICSearchQueryOperation *)self foundItemsHandler];
+      (foundItemsHandler2)[2](foundItemsHandler2, v22, 0);
     }
 
     v6 = [v19 copy];
@@ -1394,8 +1394,8 @@ void __43__ICSearchQueryOperation_runICSearchQuery___block_invoke(uint64_t a1, v
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v4 = [(ICSearchQueryOperation *)self relatedWordQueries];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v14 count:16];
+  relatedWordQueries = [(ICSearchQueryOperation *)self relatedWordQueries];
+  v5 = [relatedWordQueries countByEnumeratingWithState:&v9 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1407,40 +1407,40 @@ void __43__ICSearchQueryOperation_runICSearchQuery___block_invoke(uint64_t a1, v
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(relatedWordQueries);
         }
 
         [*(*(&v9 + 1) + 8 * v8++) cancel];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v14 count:16];
+      v6 = [relatedWordQueries countByEnumeratingWithState:&v9 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-+ (id)exactMatchingQueryStringForTitleSearchString:(id)a3
++ (id)exactMatchingQueryStringForTitleSearchString:(id)string
 {
   v9 = *MEMORY[0x277D85DE8];
   v8 = @"_ICItemDisplayName";
   v3 = MEMORY[0x277CBEA60];
-  v4 = a3;
+  stringCopy = string;
   v5 = [v3 arrayWithObjects:&v8 count:1];
-  v6 = [ICSearchQueryParser queryStringForSearchString:v4 queryFields:v5 matchType:0, v8, v9];
+  v6 = [ICSearchQueryParser queryStringForSearchString:stringCopy queryFields:v5 matchType:0, v8, v9];
 
   return v6;
 }
 
-+ (id)prefixMatchingQueryStringTitleForSearchString:(id)a3
++ (id)prefixMatchingQueryStringTitleForSearchString:(id)string
 {
   v9 = *MEMORY[0x277D85DE8];
   v8 = @"_ICItemDisplayName";
   v3 = MEMORY[0x277CBEA60];
-  v4 = a3;
+  stringCopy = string;
   v5 = [v3 arrayWithObjects:&v8 count:1];
-  v6 = [ICSearchQueryParser queryStringForSearchString:v4 queryFields:v5 matchType:1, v8, v9];
+  v6 = [ICSearchQueryParser queryStringForSearchString:stringCopy queryFields:v5 matchType:1, v8, v9];
 
   return v6;
 }
@@ -1485,11 +1485,11 @@ void __35__ICSearchQueryOperation_nlpParser__block_invoke(double a1)
   nlpParser_nlpParser = NLSearchParserCreate_delayInitStub(v4);
 }
 
-+ (void)nlSearchQueryWithSearchString:(id)a3 queryString:(id *)a4 rankingQueries:(id *)a5 highlightString:(id *)a6
++ (void)nlSearchQueryWithSearchString:(id)string queryString:(id *)queryString rankingQueries:(id *)queries highlightString:(id *)highlightString
 {
   v50 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  if (!a4)
+  stringCopy = string;
+  if (!queryString)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"queryStringResult != ((void*)0)" functionName:"+[ICSearchQueryOperation nlSearchQueryWithSearchString:queryString:rankingQueries:highlightString:]" simulateCrash:1 showAlert:0 format:@"queryStringResult is NULL. It cannot be NULL otherwise we don't have the result returned."];
   }
@@ -1521,8 +1521,8 @@ void __35__ICSearchQueryOperation_nlpParser__block_invoke(double a1)
   block[1] = 3221225472;
   block[2] = __99__ICSearchQueryOperation_nlSearchQueryWithSearchString_queryString_rankingQueries_highlightString___block_invoke;
   block[3] = &unk_278197B28;
-  v11 = v9;
-  v26 = a5 != 0;
+  v11 = stringCopy;
+  v26 = queries != 0;
   v21 = v11;
   v22 = &v43;
   v23 = &v37;
@@ -1533,7 +1533,7 @@ void __35__ICSearchQueryOperation_nlpParser__block_invoke(double a1)
   if (*(v28 + 6))
   {
     v12 = v44[5];
-    if (a5)
+    if (queries)
     {
       v13 = [v38[5] keysSortedByValueUsingComparator:&__block_literal_global_96];
       v14 = [v13 mutableCopy];
@@ -1552,12 +1552,12 @@ void __35__ICSearchQueryOperation_nlpParser__block_invoke(double a1)
   }
 
   v15 = v12;
-  *a4 = v12;
-  *a6 = [a1 highlightStringForAttributedInputs:v32[5]];
-  if (a5)
+  *queryString = v12;
+  *highlightString = [self highlightStringForAttributedInputs:v32[5]];
+  if (queries)
   {
     v16 = v14;
-    *a5 = v14;
+    *queries = v14;
   }
 
   v17 = os_log_create("com.apple.notes", "NLP");
@@ -1640,10 +1640,10 @@ uint64_t __99__ICSearchQueryOperation_nlSearchQueryWithSearchString_queryString_
   return v7;
 }
 
-+ (id)highlightStringForAttributedInputs:(id)a3
++ (id)highlightStringForAttributedInputs:(id)inputs
 {
   v3 = MEMORY[0x277CBEB58];
-  v4 = a3;
+  inputsCopy = inputs;
   v5 = objc_alloc_init(v3);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -1651,12 +1651,12 @@ uint64_t __99__ICSearchQueryOperation_nlSearchQueryWithSearchString_queryString_
   v10[3] = &unk_278197B98;
   v6 = v5;
   v11 = v6;
-  [v4 enumerateObjectsUsingBlock:v10];
+  [inputsCopy enumerateObjectsUsingBlock:v10];
 
   if ([v6 count])
   {
-    v7 = [v6 allObjects];
-    v8 = [v7 componentsJoinedByString:@" "];
+    allObjects = [v6 allObjects];
+    v8 = [allObjects componentsJoinedByString:@" "];
   }
 
   else
@@ -1717,28 +1717,28 @@ void __61__ICSearchQueryOperation_highlightStringForAttributedInputs___block_inv
   }
 }
 
-+ (id)newOperationQueueWithName:(id)a3
++ (id)newOperationQueueWithName:(id)name
 {
   v3 = MEMORY[0x277CCABD8];
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_alloc_init(v3);
-  [v5 setName:v4];
+  [v5 setName:nameCopy];
 
   [v5 setMaxConcurrentOperationCount:1];
   [v5 setQualityOfService:25];
   return v5;
 }
 
-+ (id)searchableItemsFromSortableItems:(id)a3
++ (id)searchableItemsFromSortableItems:(id)items
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemsCopy = items;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -1753,8 +1753,8 @@ void __61__ICSearchQueryOperation_highlightStringForAttributedInputs___block_inv
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) searchableItem];
-        [v4 addObject:v10];
+        searchableItem = [*(*(&v13 + 1) + 8 * i) searchableItem];
+        [v4 addObject:searchableItem];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -1768,9 +1768,9 @@ void __61__ICSearchQueryOperation_highlightStringForAttributedInputs___block_inv
   return v11;
 }
 
-+ (id)tokensQueryStringFromTokens:(id)a3
++ (id)tokensQueryStringFromTokens:(id)tokens
 {
-  v3 = [a3 ic_compactMap:&__block_literal_global_113];
+  v3 = [tokens ic_compactMap:&__block_literal_global_113];
   if ([v3 count])
   {
     v4 = [v3 componentsJoinedByString:@" && "];
@@ -1799,18 +1799,18 @@ id __54__ICSearchQueryOperation_tokensQueryStringFromTokens___block_invoke(uint6
   return v3;
 }
 
-+ (id)fetchModernNoteSearchableItemAttributesFromCoreDataForObjectIDURIs:(id)a3 context:(id)a4
++ (id)fetchModernNoteSearchableItemAttributesFromCoreDataForObjectIDURIs:(id)is context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  isCopy = is;
+  contextCopy = context;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __101__ICSearchQueryOperation_fetchModernNoteSearchableItemAttributesFromCoreDataForObjectIDURIs_context___block_invoke;
   v18[3] = &unk_278197BE0;
-  v8 = v6;
+  v8 = contextCopy;
   v19 = v8;
-  v9 = [v5 ic_compactMap:v18];
+  v9 = [isCopy ic_compactMap:v18];
   if ([v9 count])
   {
     v13[0] = MEMORY[0x277D85DD0];
@@ -1819,7 +1819,7 @@ id __54__ICSearchQueryOperation_tokensQueryStringFromTokens___block_invoke(uint6
     v13[3] = &unk_278195AC8;
     v14 = v9;
     v15 = v8;
-    v16 = v5;
+    v16 = isCopy;
     v10 = v7;
     v17 = v10;
     [v15 performBlockAndWait:v13];
@@ -1952,16 +1952,16 @@ void __101__ICSearchQueryOperation_fetchModernNoteSearchableItemAttributesFromCo
   return v3;
 }
 
-+ (void)suggestionSearchResultsWithLinkSuggestionQuery:(ICLinkSuggestionQuery *)a3 completionHandler:(id)a4
++ (void)suggestionSearchResultsWithLinkSuggestionQuery:(ICLinkSuggestionQuery *)query completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CA41E50);
   MEMORY[0x28223BE20](v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = query;
   v11[3] = v10;
-  v11[4] = a1;
+  v11[4] = self;
   v12 = sub_2150A5120();
   (*(*(v12 - 8) + 56))(v9, 1, 1, v12);
   v13 = swift_allocObject();
@@ -1974,7 +1974,7 @@ void __101__ICSearchQueryOperation_fetchModernNoteSearchableItemAttributesFromCo
   v14[3] = 0;
   v14[4] = &unk_2150C8AD0;
   v14[5] = v13;
-  v15 = a3;
+  queryCopy = query;
   sub_21501779C(0, 0, v9, &unk_2150C8AD8, v14);
 }
 

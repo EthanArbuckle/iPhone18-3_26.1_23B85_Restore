@@ -1,14 +1,14 @@
 @interface CAMVideoThumbnailOutputEnabledCommand
-- (CAMVideoThumbnailOutputEnabledCommand)initWithCoder:(id)a3;
-- (CAMVideoThumbnailOutputEnabledCommand)initWithVideoThumbnailOutputEnabled:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMVideoThumbnailOutputEnabledCommand)initWithCoder:(id)coder;
+- (CAMVideoThumbnailOutputEnabledCommand)initWithVideoThumbnailOutputEnabled:(BOOL)enabled;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMVideoThumbnailOutputEnabledCommand
 
-- (CAMVideoThumbnailOutputEnabledCommand)initWithVideoThumbnailOutputEnabled:(BOOL)a3
+- (CAMVideoThumbnailOutputEnabledCommand)initWithVideoThumbnailOutputEnabled:(BOOL)enabled
 {
   v8.receiver = self;
   v8.super_class = CAMVideoThumbnailOutputEnabledCommand;
@@ -16,59 +16,59 @@
   v5 = v4;
   if (v4)
   {
-    v4->__enabled = a3;
+    v4->__enabled = enabled;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (CAMVideoThumbnailOutputEnabledCommand)initWithCoder:(id)a3
+- (CAMVideoThumbnailOutputEnabledCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CAMVideoThumbnailOutputEnabledCommand;
   v5 = [(CAMCaptureCommand *)&v8 init];
   if (v5)
   {
-    v5->__enabled = [v4 decodeBoolForKey:@"CAMVideoThumbnailOutputEnabled"];
+    v5->__enabled = [coderCopy decodeBoolForKey:@"CAMVideoThumbnailOutputEnabled"];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CAMVideoThumbnailOutputEnabledCommand;
-  v4 = a3;
-  [(CAMCaptureCommand *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:-[CAMVideoThumbnailOutputEnabledCommand _isEnabled](self forKey:{"_isEnabled", v5.receiver, v5.super_class), @"CAMVideoThumbnailOutputEnabled"}];
+  coderCopy = coder;
+  [(CAMCaptureCommand *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:-[CAMVideoThumbnailOutputEnabledCommand _isEnabled](self forKey:{"_isEnabled", v5.receiver, v5.super_class), @"CAMVideoThumbnailOutputEnabled"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CAMVideoThumbnailOutputEnabledCommand;
-  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:a3];
+  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:zone];
   v4[24] = [(CAMVideoThumbnailOutputEnabledCommand *)self _isEnabled];
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   LOBYTE(self) = [(CAMVideoThumbnailOutputEnabledCommand *)self _isEnabled];
-  v5 = [v4 currentVideoThumbnailOutput];
+  currentVideoThumbnailOutput = [contextCopy currentVideoThumbnailOutput];
 
-  v6 = [v5 connections];
+  connections = [currentVideoThumbnailOutput connections];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__CAMVideoThumbnailOutputEnabledCommand_executeWithContext___block_invoke;
   v7[3] = &__block_descriptor_33_e36_v32__0__AVCaptureConnection_8Q16_B24l;
-  v8 = self;
-  [v6 enumerateObjectsUsingBlock:v7];
+  selfCopy = self;
+  [connections enumerateObjectsUsingBlock:v7];
 }
 
 void __60__CAMVideoThumbnailOutputEnabledCommand_executeWithContext___block_invoke(uint64_t a1, void *a2)

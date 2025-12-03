@@ -3,7 +3,7 @@
 - (CGSize)estimatedSize;
 - (CLLocationCoordinate2D)centerCoordinate;
 - (MKMapView)mapView;
-- (POIShapeCustomFeatureAnnotation)initWithMapView:(id)a3 customFeatureAnnotation:(id)a4;
+- (POIShapeCustomFeatureAnnotation)initWithMapView:(id)view customFeatureAnnotation:(id)annotation;
 - (id)_labelMarker;
 @end
 
@@ -20,13 +20,13 @@
 {
   if (!self->_labelMarker)
   {
-    v3 = [(VKCustomFeatureAnnotation *)self->_customFeatureAnnotation feature];
-    v4 = [v3 dataSource];
+    feature = [(VKCustomFeatureAnnotation *)self->_customFeatureAnnotation feature];
+    dataSource = [feature dataSource];
 
-    if (v4)
+    if (dataSource)
     {
-      v5 = [(POIShapeCustomFeatureAnnotation *)self mapView];
-      v6 = [v5 _labelMarkerForCustomFeatureAnnotation:self->_customFeatureAnnotation];
+      mapView = [(POIShapeCustomFeatureAnnotation *)self mapView];
+      v6 = [mapView _labelMarkerForCustomFeatureAnnotation:self->_customFeatureAnnotation];
       labelMarker = self->_labelMarker;
       self->_labelMarker = v6;
     }
@@ -39,10 +39,10 @@
 
 - (CGSize)estimatedSize
 {
-  v2 = [(POIShapeCustomFeatureAnnotation *)self _labelMarker];
-  if ([v2 isVisible])
+  _labelMarker = [(POIShapeCustomFeatureAnnotation *)self _labelMarker];
+  if ([_labelMarker isVisible])
   {
-    [v2 screenCollisionBounds];
+    [_labelMarker screenCollisionBounds];
     v4 = v3;
     v6 = v5;
   }
@@ -62,27 +62,27 @@
 
 - (CGRect)currentFrameInMapView
 {
-  v3 = [(POIShapeCustomFeatureAnnotation *)self _labelMarker];
-  if ([v3 isVisible])
+  _labelMarker = [(POIShapeCustomFeatureAnnotation *)self _labelMarker];
+  if ([_labelMarker isVisible])
   {
-    v4 = [(POIShapeCustomFeatureAnnotation *)self mapView];
-    [v3 screenCollisionBounds];
-    [v4 convertRect:0 fromView:?];
+    mapView = [(POIShapeCustomFeatureAnnotation *)self mapView];
+    [_labelMarker screenCollisionBounds];
+    [mapView convertRect:0 fromView:?];
 
-    v5 = [(POIShapeCustomFeatureAnnotation *)self mapView];
-    v6 = [v5 window];
-    v7 = [v6 screen];
-    if (v7)
+    mapView2 = [(POIShapeCustomFeatureAnnotation *)self mapView];
+    window = [mapView2 window];
+    screen = [window screen];
+    if (screen)
     {
-      v8 = [v5 window];
-      v9 = [v8 screen];
-      [v9 nativeScale];
+      window2 = [mapView2 window];
+      screen2 = [window2 screen];
+      [screen2 nativeScale];
     }
 
     else
     {
-      v8 = +[UIScreen mainScreen];
-      [v8 nativeScale];
+      window2 = +[UIScreen mainScreen];
+      [window2 nativeScale];
     }
 
     UIRectIntegralWithScale();
@@ -113,11 +113,11 @@
 
 - (CLLocationCoordinate2D)centerCoordinate
 {
-  v3 = [(POIShapeCustomFeatureAnnotation *)self customFeatureAnnotation];
-  [v3 coordinate];
+  customFeatureAnnotation = [(POIShapeCustomFeatureAnnotation *)self customFeatureAnnotation];
+  [customFeatureAnnotation coordinate];
   v5 = v4;
-  v6 = [(POIShapeCustomFeatureAnnotation *)self customFeatureAnnotation];
-  [v6 coordinate];
+  customFeatureAnnotation2 = [(POIShapeCustomFeatureAnnotation *)self customFeatureAnnotation];
+  [customFeatureAnnotation2 coordinate];
   v8 = CLLocationCoordinate2DMake(v5, v7);
 
   latitude = v8.latitude;
@@ -127,18 +127,18 @@
   return result;
 }
 
-- (POIShapeCustomFeatureAnnotation)initWithMapView:(id)a3 customFeatureAnnotation:(id)a4
+- (POIShapeCustomFeatureAnnotation)initWithMapView:(id)view customFeatureAnnotation:(id)annotation
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  annotationCopy = annotation;
   v12.receiver = self;
   v12.super_class = POIShapeCustomFeatureAnnotation;
   v8 = [(POIShapeCustomFeatureAnnotation *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_mapView, v6);
-    objc_storeStrong(&v9->_customFeatureAnnotation, a4);
+    objc_storeWeak(&v8->_mapView, viewCopy);
+    objc_storeStrong(&v9->_customFeatureAnnotation, annotation);
     v10 = v9;
   }
 

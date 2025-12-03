@@ -1,50 +1,50 @@
 @interface CSAnomalyEventService
-+ (id)generateMslUrl:(id)a3 andSessionType:(int)a4 ttrManagedMsl:(BOOL)a5;
++ (id)generateMslUrl:(id)url andSessionType:(int)type ttrManagedMsl:(BOOL)msl;
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
-+ (void)enqueueHeldRecordingForUpload:(id)a3;
-+ (void)getFileUrlsForRecording:(id)a3 metadataUrl:(id *)a4 mslUrl:(id *)a5 withError:(id *)a6;
-+ (void)removeHeldRecording:(id)a3;
-+ (void)setAPFSPurgeability:(id)a3;
-- (BOOL)isKappaTrigger:(id)a3;
-- (BOOL)isMartyTrigger:(id)a3;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
++ (void)enqueueHeldRecordingForUpload:(id)upload;
++ (void)getFileUrlsForRecording:(id)recording metadataUrl:(id *)url mslUrl:(id *)mslUrl withError:(id *)error;
++ (void)removeHeldRecording:(id)recording;
++ (void)setAPFSPurgeability:(id)purgeability;
+- (BOOL)isKappaTrigger:(id)trigger;
+- (BOOL)isMartyTrigger:(id)trigger;
 - (CSAnomalyEventService)init;
 - (void)abortSession;
 - (void)beginService;
-- (void)didInitWithUnprocessedCrash:(id)a3 withCompanionUUID:(id)a4;
-- (void)didReceiveSOSAck:(int64_t)a3 forMode:(unsigned __int8)a4;
+- (void)didInitWithUnprocessedCrash:(id)crash withCompanionUUID:(id)d;
+- (void)didReceiveSOSAck:(int64_t)ack forMode:(unsigned __int8)mode;
 - (void)endService;
-- (void)enqueueHeldRecordingForUploadWithConsent:(id)a3 withError:(id *)a4;
-- (void)feedSortedSamples:(id)a3;
+- (void)enqueueHeldRecordingForUploadWithConsent:(id)consent withError:(id *)error;
+- (void)feedSortedSamples:(id)samples;
 - (void)finishSession;
-- (void)handleConnection:(id)a3;
-- (void)holdRecordingUntilFeedbackConsent:(id)a3 withError:(id *)a4;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didReportVisit:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManager:(id)a3 didVisit:(id)a4;
-- (void)onCompanionStatusUpdate:(BOOL)a3 pairedDevice:(id)a4 updatedTimestamp:(double)a5;
+- (void)handleConnection:(id)connection;
+- (void)holdRecordingUntilFeedbackConsent:(id)consent withError:(id *)error;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didReportVisit:(id)visit;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManager:(id)manager didVisit:(id)visit;
+- (void)onCompanionStatusUpdate:(BOOL)update pairedDevice:(id)device updatedTimestamp:(double)timestamp;
 - (void)replyToXPCMessage;
-- (void)requestLocation:(int)a3;
-- (void)setForcedCompanionTrigger:(unsigned __int8)a3;
+- (void)requestLocation:(int)location;
+- (void)setForcedCompanionTrigger:(unsigned __int8)trigger;
 - (void)setPreTriggerForcedCompanionTrigger;
 - (void)setupXPCHandler;
 - (void)sosActivated;
 - (void)startIgneousUploader;
 - (void)startUploader;
-- (void)triggered:(id)a3;
-- (void)uploadRecording:(id)a3;
+- (void)triggered:(id)triggered;
+- (void)uploadRecording:(id)recording;
 @end
 
 @implementation CSAnomalyEventService
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v6 = a3;
-  v5 = a4 + 1;
-  if (v5 < [v6 count])
+  blockedCopy = blocked;
+  v5 = index + 1;
+  if (v5 < [blockedCopy count])
   {
-    [objc_msgSend(v6 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", v6, v5}];
+    [objc_msgSend(blockedCopy objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blockedCopy, v5}];
   }
 }
 
@@ -114,9 +114,9 @@
   }
 }
 
-- (void)handleConnection:(id)a3
+- (void)handleConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
   if (qword_100456958 != -1)
   {
@@ -135,8 +135,8 @@
   handler[2] = sub_1002C6D00;
   handler[3] = &unk_10042ECB0;
   objc_copyWeak(&v7, &location);
-  xpc_connection_set_event_handler(v4, handler);
-  xpc_connection_activate(v4);
+  xpc_connection_set_event_handler(connectionCopy, handler);
+  xpc_connection_activate(connectionCopy);
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 }
@@ -217,47 +217,47 @@
   }
 }
 
-- (BOOL)isKappaTrigger:(id)a3
+- (BOOL)isKappaTrigger:(id)trigger
 {
-  v3 = a3;
-  if ((*([v3 c_struct] + 1) & 1) != 0 || (*(objc_msgSend(v3, "c_struct") + 1) & 2) != 0 || (*(objc_msgSend(v3, "c_struct") + 1) & 4) != 0)
+  triggerCopy = trigger;
+  if ((*([triggerCopy c_struct] + 1) & 1) != 0 || (*(objc_msgSend(triggerCopy, "c_struct") + 1) & 2) != 0 || (*(objc_msgSend(triggerCopy, "c_struct") + 1) & 4) != 0)
   {
     LOBYTE(v4) = 1;
   }
 
   else
   {
-    v4 = (*([v3 c_struct] + 1) >> 3) & 1;
+    v4 = (*([triggerCopy c_struct] + 1) >> 3) & 1;
   }
 
   return v4;
 }
 
-- (BOOL)isMartyTrigger:(id)a3
+- (BOOL)isMartyTrigger:(id)trigger
 {
-  v3 = a3;
-  if ((*([v3 c_struct] + 46) & 4) != 0 || (*(objc_msgSend(v3, "c_struct") + 46) & 8) != 0)
+  triggerCopy = trigger;
+  if ((*([triggerCopy c_struct] + 46) & 4) != 0 || (*(objc_msgSend(triggerCopy, "c_struct") + 46) & 8) != 0)
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = *([v3 c_struct] + 46) & 1;
+    v4 = *([triggerCopy c_struct] + 46) & 1;
   }
 
   return v4;
 }
 
-+ (id)generateMslUrl:(id)a3 andSessionType:(int)a4 ttrManagedMsl:(BOOL)a5
++ (id)generateMslUrl:(id)url andSessionType:(int)type ttrManagedMsl:(BOOL)msl
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  if ((v6 & 3) != 0)
+  mslCopy = msl;
+  typeCopy = type;
+  urlCopy = url;
+  if ((typeCopy & 3) != 0)
   {
     NSTemporaryDirectory();
-    if (v5)
+    if (mslCopy)
       v8 = {;
       v9 = [NSURL URLWithString:v8];
 
@@ -275,7 +275,7 @@
 
   else
   {
-    if ((v6 & 4) == 0)
+    if ((typeCopy & 4) == 0)
     {
       v10 = 0;
       goto LABEL_10;
@@ -290,18 +290,18 @@
   }
 
 LABEL_10:
-  v15 = [v10 URLByAppendingPathComponent:v7 isDirectory:0];
+  v15 = [v10 URLByAppendingPathComponent:urlCopy isDirectory:0];
   v16 = [v15 URLByAppendingPathExtension:@"msl"];
 
   return v16;
 }
 
-- (void)triggered:(id)a3
+- (void)triggered:(id)triggered
 {
-  v4 = a3;
-  v5 = *([v4 c_struct] + 1);
-  v6 = *([v4 c_struct] + 46);
-  v7 = *([v4 c_struct] + 64);
+  triggeredCopy = triggered;
+  v5 = *([triggeredCopy c_struct] + 1);
+  v6 = *([triggeredCopy c_struct] + 46);
+  v7 = *([triggeredCopy c_struct] + 64);
   [(CSAnomalyEventService *)self setPreTriggerForcedCompanionTrigger];
   if (qword_1004567D8 != -1)
   {
@@ -314,12 +314,12 @@ LABEL_10:
     v57 = v7;
     v9 = v5;
     v10 = v6;
-    v11 = *([v4 c_struct] + 1);
-    v12 = *([v4 c_struct] + 46);
-    v13 = *([v4 c_struct] + 64);
-    v14 = *([v4 c_struct] + 47);
-    v15 = *([v4 c_struct] + 93);
-    v16 = *([v4 c_struct] + 92);
+    v11 = *([triggeredCopy c_struct] + 1);
+    v12 = *([triggeredCopy c_struct] + 46);
+    v13 = *([triggeredCopy c_struct] + 64);
+    v14 = *([triggeredCopy c_struct] + 47);
+    v15 = *([triggeredCopy c_struct] + 93);
+    v16 = *([triggeredCopy c_struct] + 92);
     *buf = 67110400;
     LODWORD(v63) = v11;
     WORD2(v63) = 1024;
@@ -341,15 +341,15 @@ LABEL_10:
   v17 = +[CSPermissions sharedInstance];
   if (v7)
   {
-    v18 = [v17 isAuthorizedToCollectDataIgneous];
+    isAuthorizedToCollectDataIgneous = [v17 isAuthorizedToCollectDataIgneous];
   }
 
   else
   {
-    v18 = [v17 isAuthorizedToCollectData];
+    isAuthorizedToCollectDataIgneous = [v17 isAuthorizedToCollectData];
   }
 
-  *(self->_details.__ptr_ + 26) = v18;
+  *(self->_details.__ptr_ + 26) = isAuthorizedToCollectDataIgneous;
 
   v19 = +[CSPermissions sharedInstance];
   *(self->_details.__ptr_ + 28) = [v19 isAuthorizedForIS];
@@ -357,7 +357,7 @@ LABEL_10:
   v20 = +[CSPlatformInfo sharedInstance];
   *(self->_details.__ptr_ + 27) = [v20 isInternalInstall];
 
-  if (v5 && [(CSAnomalyEventService *)self isKappaTrigger:v4])
+  if (v5 && [(CSAnomalyEventService *)self isKappaTrigger:triggeredCopy])
   {
     v21 = 0;
     v22 = 1;
@@ -470,33 +470,33 @@ LABEL_59:
           {
             if (v39 == 4)
             {
-              if (*([v4 c_struct] + 64))
+              if (*([triggeredCopy c_struct] + 64))
               {
                 v49 = sub_1002C7914();
                 if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
                 {
-                  v50 = *([v4 c_struct] + 64);
-                  v51 = [v4 c_struct];
+                  v50 = *([triggeredCopy c_struct] + 64);
+                  c_struct = [triggeredCopy c_struct];
                   *buf = 67109378;
                   LODWORD(v63) = v50;
                   WORD2(v63) = 2080;
-                  *(&v63 + 6) = v51 + 65;
+                  *(&v63 + 6) = c_struct + 65;
                   _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_DEFAULT, "igneous trigger path %d with guid %s", buf, 0x12u);
                 }
 
                 mslRecording = self->_mslRecording;
                 v60[0] = @"igneousGUID";
-                v53 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", [v4 c_struct] + 65);
+                v53 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", [triggeredCopy c_struct] + 65);
                 v61[0] = v53;
                 v60[1] = @"igneousPath";
-                v54 = +[NSNumber numberWithUnsignedChar:](NSNumber, "numberWithUnsignedChar:", *([v4 c_struct] + 64));
+                v54 = +[NSNumber numberWithUnsignedChar:](NSNumber, "numberWithUnsignedChar:", *([triggeredCopy c_struct] + 64));
                 v60[2] = @"shouldUploadIndependentlyOfSOS";
                 v61[1] = v54;
                 v61[2] = &off_10043D528;
                 v55 = [NSDictionary dictionaryWithObjects:v61 forKeys:v60 count:3];
                 [(CSMSLDataRecording *)mslRecording updateMetadata:v55];
 
-                self->_igneousPath = *([v4 c_struct] + 64);
+                self->_igneousPath = *([triggeredCopy c_struct] + 64);
                 v56 = +[CSPower sharedInstance];
                 [v56 powerlogActivity:8 event:1 isActive:CFAbsoluteTimeGetCurrent()];
               }
@@ -525,7 +525,7 @@ LABEL_74:
               v45 = qword_1004567E0;
               if (os_log_type_enabled(v45, OS_LOG_TYPE_DEBUG))
               {
-                v46 = *([v4 c_struct] + 1);
+                v46 = *([triggeredCopy c_struct] + 1);
                 *buf = 67109120;
                 LODWORD(v63) = v46;
                 _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEBUG, "got a trigger path %d", buf, 8u);
@@ -653,18 +653,18 @@ LABEL_79:
   v47 = self->_sessionType;
   if (v47 == 1)
   {
-    if ([(CSAnomalyEventService *)self isKappaTrigger:v4])
+    if ([(CSAnomalyEventService *)self isKappaTrigger:triggeredCopy])
     {
       v48 = &OBJC_IVAR___CSAnomalyEventService__kappaDetectionService;
 LABEL_86:
-      [*&self->CLIntersiloService_opaque[*v48] triggered:v4];
+      [*&self->CLIntersiloService_opaque[*v48] triggered:triggeredCopy];
       goto LABEL_87;
     }
 
     v47 = self->_sessionType;
   }
 
-  if (v47 == 2 && [(CSAnomalyEventService *)self isMartyTrigger:v4])
+  if (v47 == 2 && [(CSAnomalyEventService *)self isMartyTrigger:triggeredCopy])
   {
     v48 = &OBJC_IVAR___CSAnomalyEventService__martyDetectionService;
     goto LABEL_86;
@@ -681,9 +681,9 @@ LABEL_87:
   [(CSMartyDetectionService *)martyDetectionService sosActivated];
 }
 
-- (void)feedSortedSamples:(id)a3
+- (void)feedSortedSamples:(id)samples
 {
-  v4 = a3;
+  samplesCopy = samples;
   sessionType = self->_sessionType;
   if (sessionType == 4)
   {
@@ -695,7 +695,7 @@ LABEL_87:
     if (sessionType == 2)
     {
       p_martyDetectionService = &self->_martyDetectionService;
-      v7 = [(CSMartyDetectionService *)self->_martyDetectionService isIdle];
+      isIdle = [(CSMartyDetectionService *)self->_martyDetectionService isIdle];
     }
 
     else
@@ -706,17 +706,17 @@ LABEL_87:
       }
 
       p_martyDetectionService = &self->_kappaDetectionService;
-      v7 = [(CSKappaDetectionService *)self->_kappaDetectionService isIdle];
+      isIdle = [(CSKappaDetectionService *)self->_kappaDetectionService isIdle];
     }
 
-    if (v7)
+    if (isIdle)
     {
       self->_stopClientDetection = 1;
     }
 
     else
     {
-      [*p_martyDetectionService feedSortedSamples:v4];
+      [*p_martyDetectionService feedSortedSamples:samplesCopy];
     }
   }
 
@@ -860,9 +860,9 @@ LABEL_10:
   }
 }
 
-+ (void)getFileUrlsForRecording:(id)a3 metadataUrl:(id *)a4 mslUrl:(id *)a5 withError:(id *)a6
++ (void)getFileUrlsForRecording:(id)recording metadataUrl:(id *)url mslUrl:(id *)mslUrl withError:(id *)error
 {
-  v8 = a3;
+  recordingCopy = recording;
   v9 = [NSURL alloc];
   v10 = NSTemporaryDirectory();
   v11 = [v10 stringByAppendingPathComponent:@"feedbackAssistantHolding"];
@@ -870,8 +870,8 @@ LABEL_10:
 
   if (v12)
   {
-    v13 = [v12 URLByAppendingPathComponent:v8 isDirectory:0];
-    *a4 = [v13 URLByAppendingPathExtension:@"msl.protodata"];
+    v13 = [v12 URLByAppendingPathComponent:recordingCopy isDirectory:0];
+    *url = [v13 URLByAppendingPathExtension:@"msl.protodata"];
   }
 
   else
@@ -896,8 +896,8 @@ LABEL_10:
 
   if (v18)
   {
-    v19 = [v18 URLByAppendingPathComponent:v8 isDirectory:0];
-    *a5 = [v19 URLByAppendingPathExtension:@"msl"];
+    v19 = [v18 URLByAppendingPathComponent:recordingCopy isDirectory:0];
+    *mslUrl = [v19 URLByAppendingPathExtension:@"msl"];
   }
 
   else
@@ -916,10 +916,10 @@ LABEL_10:
   }
 }
 
-+ (void)enqueueHeldRecordingForUpload:(id)a3
++ (void)enqueueHeldRecordingForUpload:(id)upload
 {
-  v4 = a3;
-  if (v4)
+  uploadCopy = upload;
+  if (uploadCopy)
   {
     if (qword_1004567D8 != -1)
     {
@@ -930,7 +930,7 @@ LABEL_10:
     if (os_log_type_enabled(qword_1004567E0, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v31 = v4;
+      v31 = uploadCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[fba] Enqueuing held recording: %@", buf, 0xCu);
     }
 
@@ -938,7 +938,7 @@ LABEL_10:
     v28 = 0;
     v29 = 0;
     v27 = 0;
-    [a1 getFileUrlsForRecording:v4 metadataUrl:&v29 mslUrl:&v28 withError:&v27];
+    [self getFileUrlsForRecording:uploadCopy metadataUrl:&v29 mslUrl:&v28 withError:&v27];
     v6 = v29;
     v7 = v28;
     v8 = v27;
@@ -953,8 +953,8 @@ LABEL_10:
       v13 = NSTemporaryDirectory();
       v14 = [v13 stringByAppendingPathComponent:@"studiesServerUploaderSpooler"];
       v15 = [v12 initFileURLWithPath:v14];
-      v16 = [v6 lastPathComponent];
-      v17 = [v15 URLByAppendingPathComponent:v16];
+      lastPathComponent = [v6 lastPathComponent];
+      v17 = [v15 URLByAppendingPathComponent:lastPathComponent];
 
       if (qword_1004567D8 != -1)
       {
@@ -1029,10 +1029,10 @@ LABEL_10:
   }
 }
 
-- (void)enqueueHeldRecordingForUploadWithConsent:(id)a3 withError:(id *)a4
+- (void)enqueueHeldRecordingForUploadWithConsent:(id)consent withError:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  consentCopy = consent;
+  if (consentCopy)
   {
     if (qword_1004567D8 != -1)
     {
@@ -1043,14 +1043,14 @@ LABEL_10:
     if (os_log_type_enabled(qword_1004567E0, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v43 = v6;
+      v43 = consentCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[fba] Appending consent field to held recording: %@", buf, 0xCu);
     }
 
     v40 = 0;
     v41 = 0;
     v39 = 0;
-    [CSAnomalyEventService getFileUrlsForRecording:v6 metadataUrl:&v41 mslUrl:&v40 withError:&v39];
+    [CSAnomalyEventService getFileUrlsForRecording:consentCopy metadataUrl:&v41 mslUrl:&v40 withError:&v39];
     v8 = v41;
     v9 = v40;
     v10 = v39;
@@ -1077,32 +1077,32 @@ LABEL_10:
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "[fba] Error unarchiving metadata, %@", buf, 0xCu);
         }
 
-        if (a4)
+        if (error)
         {
           v14 = v11;
-          *a4 = v11;
+          *error = v11;
         }
       }
 
       else
       {
         v33 = [v36 decodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
-        v19 = [v33 keyValuePairs];
-        v34 = [NSMutableDictionary dictionaryWithDictionary:v19];
+        keyValuePairs = [v33 keyValuePairs];
+        v34 = [NSMutableDictionary dictionaryWithDictionary:keyValuePairs];
 
         [v34 setObject:@"1" forKey:@"providedFeedbackAssistantConsent"];
         v20 = [CSStudiesServerUploadMetadata alloc];
-        v21 = [v33 payloadType];
-        v22 = [v33 channel];
-        v32 = [(CSStudiesServerUploadMetadata *)v20 initWithPayloadType:v21 channel:v22 keyValuePairs:v34];
+        payloadType = [v33 payloadType];
+        channel = [v33 channel];
+        v32 = [(CSStudiesServerUploadMetadata *)v20 initWithPayloadType:payloadType channel:channel keyValuePairs:v34];
 
         v23 = [v36 decodeBoolForKey:@"spooled"];
         [v36 decodeDoubleForKey:@"enqueueTime"];
         v25 = v24;
-        v26 = [v8 URLByDeletingLastPathComponent];
+        uRLByDeletingLastPathComponent = [v8 URLByDeletingLastPathComponent];
         uploader = self->_uploader;
         v37 = 0;
-        [(CSStudiesServerUploader *)uploader persistToDiskWithSpooledFile:v23 spoolerDir:v26 fileURL:v9 enqueueTime:v32 metadata:&v37 error:v25];
+        [(CSStudiesServerUploader *)uploader persistToDiskWithSpooledFile:v23 spoolerDir:uRLByDeletingLastPathComponent fileURL:v9 enqueueTime:v32 metadata:&v37 error:v25];
         v28 = v37;
         if (v28)
         {
@@ -1121,17 +1121,17 @@ LABEL_10:
             _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "[fba] Error persisting new metadata, %@", buf, 0xCu);
           }
 
-          if (a4)
+          if (error)
           {
             v31 = v11;
-            *a4 = v11;
+            *error = v11;
           }
         }
 
         else
         {
 
-          [CSAnomalyEventService enqueueHeldRecordingForUpload:v6];
+          [CSAnomalyEventService enqueueHeldRecordingForUpload:consentCopy];
           v11 = 0;
         }
       }
@@ -1153,10 +1153,10 @@ LABEL_10:
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "[fba] Error retrieving metadata / msl file paths, %@", buf, 0xCu);
       }
 
-      if (a4)
+      if (error)
       {
         v18 = v10;
-        *a4 = v10;
+        *error = v10;
       }
 
       v11 = v10;
@@ -1179,9 +1179,9 @@ LABEL_10:
   }
 }
 
-+ (void)removeHeldRecording:(id)a3
++ (void)removeHeldRecording:(id)recording
 {
-  v4 = a3;
+  recordingCopy = recording;
   if (qword_1004567D8 != -1)
   {
     sub_1002CD4A0();
@@ -1191,7 +1191,7 @@ LABEL_10:
   if (os_log_type_enabled(qword_1004567E0, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v28 = v4;
+    v28 = recordingCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[fba] Removing held recording for: %@", buf, 0xCu);
   }
 
@@ -1199,7 +1199,7 @@ LABEL_10:
   v25 = 0;
   v26 = 0;
   v24 = 0;
-  [a1 getFileUrlsForRecording:v4 metadataUrl:&v26 mslUrl:&v25 withError:&v24];
+  [self getFileUrlsForRecording:recordingCopy metadataUrl:&v26 mslUrl:&v25 withError:&v24];
   v7 = v26;
   v8 = v25;
   v9 = v24;
@@ -1252,10 +1252,10 @@ LABEL_10:
     v14 = qword_1004567E0;
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v15 = [v7 absoluteString];
+      absoluteString = [v7 absoluteString];
       v16 = [v12 description];
       *buf = 138412546;
-      v28 = v15;
+      v28 = absoluteString;
       v29 = 2112;
       v30 = v16;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "[fba] Couldn't remove metadata file at %@, error,%@", buf, 0x16u);
@@ -1294,12 +1294,12 @@ LABEL_28:
 LABEL_29:
 }
 
-- (void)holdRecordingUntilFeedbackConsent:(id)a3 withError:(id *)a4
+- (void)holdRecordingUntilFeedbackConsent:(id)consent withError:(id *)error
 {
-  v5 = a3;
-  if (v5)
+  consentCopy = consent;
+  if (consentCopy)
   {
-    v40 = self;
+    selfCopy = self;
     if (qword_1004567D8 != -1)
     {
       sub_1002CD4A0();
@@ -1308,7 +1308,7 @@ LABEL_29:
     v6 = qword_1004567E0;
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v5 url];
+      v7 = [consentCopy url];
       *buf = 138412290;
       v51 = v7;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[fba] Holding recording: %@", buf, 0xCu);
@@ -1320,20 +1320,20 @@ LABEL_29:
     v42 = [v8 initFileURLWithPath:v10 isDirectory:1];
 
     v11 = +[NSFileManager defaultManager];
-    LOBYTE(v8) = [v11 createDirectoryAtURL:v42 withIntermediateDirectories:1 attributes:0 error:a4];
+    LOBYTE(v8) = [v11 createDirectoryAtURL:v42 withIntermediateDirectories:1 attributes:0 error:error];
 
     if (v8)
     {
       v12 = [NSMutableDictionary alloc];
-      v13 = [v5 metadata];
-      v14 = [v12 initWithCapacity:{objc_msgSend(v13, "count")}];
+      metadata = [consentCopy metadata];
+      v14 = [v12 initWithCapacity:{objc_msgSend(metadata, "count")}];
 
       v45 = 0u;
       v46 = 0u;
       v43 = 0u;
       v44 = 0u;
-      v15 = [v5 metadata];
-      v16 = [v15 countByEnumeratingWithState:&v43 objects:v49 count:16];
+      metadata2 = [consentCopy metadata];
+      v16 = [metadata2 countByEnumeratingWithState:&v43 objects:v49 count:16];
       if (v16)
       {
         v17 = *v44;
@@ -1343,29 +1343,29 @@ LABEL_29:
           {
             if (*v44 != v17)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(metadata2);
             }
 
             v19 = *(*(&v43 + 1) + 8 * i);
-            v20 = [v5 metadata];
-            v21 = [v20 objectForKey:v19];
+            metadata3 = [consentCopy metadata];
+            v21 = [metadata3 objectForKey:v19];
             v22 = [v21 description];
             [v14 setObject:v22 forKeyedSubscript:v19];
           }
 
-          v16 = [v15 countByEnumeratingWithState:&v43 objects:v49 count:16];
+          v16 = [metadata2 countByEnumeratingWithState:&v43 objects:v49 count:16];
         }
 
         while (v16);
       }
 
-      v23 = v40;
-      if ((v40->_sessionType - 1) > 1)
+      v23 = selfCopy;
+      if ((selfCopy->_sessionType - 1) > 1)
       {
         if (qword_1004567D8 != -1)
         {
           sub_1002CD4B4();
-          v23 = v40;
+          v23 = selfCopy;
         }
 
         v36 = qword_1004567E0;
@@ -1381,22 +1381,22 @@ LABEL_29:
       else
       {
         v39 = [[CSStudiesServerUploadMetadata alloc] initWithPayloadType:@"KappaMSL" channel:@"DetectionService" keyValuePairs:v14];
-        v24 = [v5 url];
+        v24 = [consentCopy url];
         v25 = +[NSFileManager defaultManager];
-        v26 = [v24 absoluteString];
-        v27 = [v25 fileExistsAtPath:v26];
+        absoluteString = [v24 absoluteString];
+        v27 = [v25 fileExistsAtPath:absoluteString];
 
         if (v27)
         {
-          v28 = [v24 URLByDeletingLastPathComponent];
-          v29 = [v28 absoluteString];
-          v30 = [v42 absoluteString];
-          v31 = [v29 isEqualToString:v30];
+          uRLByDeletingLastPathComponent = [v24 URLByDeletingLastPathComponent];
+          absoluteString2 = [uRLByDeletingLastPathComponent absoluteString];
+          absoluteString3 = [v42 absoluteString];
+          v31 = [absoluteString2 isEqualToString:absoluteString3];
 
-          uploader = v40->_uploader;
+          uploader = selfCopy->_uploader;
           v33 = +[NSDate now];
           [v33 timeIntervalSinceReferenceDate];
-          [(CSStudiesServerUploader *)uploader persistToDiskWithSpooledFile:v31 spoolerDir:v42 fileURL:v24 enqueueTime:v39 metadata:a4 error:?];
+          [(CSStudiesServerUploader *)uploader persistToDiskWithSpooledFile:v31 spoolerDir:v42 fileURL:v24 enqueueTime:v39 metadata:error error:?];
         }
 
         else
@@ -1405,7 +1405,7 @@ LABEL_29:
           v33 = [NSString stringWithFormat:@"While enqueuing for feedback assistant holding, file doesnt exist: %@", v24];
           v48 = v33;
           v38 = [NSDictionary dictionaryWithObjects:&v48 forKeys:&v47 count:1];
-          *a4 = [NSError errorWithDomain:NSPOSIXErrorDomain code:2 userInfo:v38];
+          *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:2 userInfo:v38];
         }
       }
     }
@@ -1420,7 +1420,7 @@ LABEL_29:
       v14 = qword_1004567E0;
       if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
       {
-        v35 = [*a4 description];
+        v35 = [*error description];
         *buf = 138412290;
         v51 = v35;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_FAULT, "[fba] Error creating directory: %@", buf, 0xCu);
@@ -1444,21 +1444,21 @@ LABEL_29:
   }
 }
 
-- (void)uploadRecording:(id)a3
+- (void)uploadRecording:(id)recording
 {
-  v3 = a3;
-  if (v3)
+  recordingCopy = recording;
+  if (recordingCopy)
   {
     v4 = [NSMutableDictionary alloc];
-    v5 = [v3 metadata];
-    v6 = [v4 initWithCapacity:{objc_msgSend(v5, "count")}];
+    metadata = [recordingCopy metadata];
+    v6 = [v4 initWithCapacity:{objc_msgSend(metadata, "count")}];
 
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v7 = [v3 metadata];
-    v8 = [v7 countByEnumeratingWithState:&v38 objects:v44 count:16];
+    metadata2 = [recordingCopy metadata];
+    v8 = [metadata2 countByEnumeratingWithState:&v38 objects:v44 count:16];
     if (v8)
     {
       v9 = *v39;
@@ -1468,17 +1468,17 @@ LABEL_29:
         {
           if (*v39 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(metadata2);
           }
 
           v11 = *(*(&v38 + 1) + 8 * i);
-          v12 = [v3 metadata];
-          v13 = [v12 objectForKey:v11];
+          metadata3 = [recordingCopy metadata];
+          v13 = [metadata3 objectForKey:v11];
           v14 = [v13 description];
           [v6 setObject:v14 forKeyedSubscript:v11];
         }
 
-        v8 = [v7 countByEnumeratingWithState:&v38 objects:v44 count:16];
+        v8 = [metadata2 countByEnumeratingWithState:&v38 objects:v44 count:16];
       }
 
       while (v8);
@@ -1559,42 +1559,42 @@ LABEL_42:
       }
 
       igneousUploader = self->_igneousUploader;
-      v26 = [v3 url];
-      v27 = [v26 path];
+      v26 = [recordingCopy url];
+      path = [v26 path];
       v36 = 0;
-      v28 = [(CSStudiesServerUploader *)igneousUploader enqueueFileWithFilename:v27 andMetadata:v19 error:&v36];
+      v28 = [(CSStudiesServerUploader *)igneousUploader enqueueFileWithFilename:path andMetadata:v19 error:&v36];
       v29 = v36;
 
-      v22 = [v3 url];
-      [CSAnomalyEventService setAPFSPurgeability:v22];
+      path2 = [recordingCopy url];
+      [CSAnomalyEventService setAPFSPurgeability:path2];
     }
 
     else
     {
-      v21 = [v3 url];
-      v22 = [v21 path];
+      v21 = [recordingCopy url];
+      path2 = [v21 path];
 
       if (self->_sessionType == 2)
       {
-        v23 = [v3 urlToCopyToOnStop];
-        if (v23)
+        urlToCopyToOnStop = [recordingCopy urlToCopyToOnStop];
+        if (urlToCopyToOnStop)
         {
-          [v3 urlToCopyToOnStop];
+          [recordingCopy urlToCopyToOnStop];
         }
 
         else
         {
-          [v3 url];
+          [recordingCopy url];
         }
         v24 = ;
-        v31 = [v24 path];
+        path3 = [v24 path];
 
-        v22 = v31;
+        path2 = path3;
       }
 
       uploader = self->_uploader;
       v37 = 0;
-      v28 = [(CSStudiesServerUploader *)uploader enqueueFileWithFilename:v22 andMetadata:v19 error:&v37];
+      v28 = [(CSStudiesServerUploader *)uploader enqueueFileWithFilename:path2 andMetadata:v19 error:&v37];
       v29 = v37;
     }
 
@@ -1616,13 +1616,13 @@ LABEL_42:
 LABEL_43:
 }
 
-+ (void)setAPFSPurgeability:(id)a3
++ (void)setAPFSPurgeability:(id)purgeability
 {
-  v3 = a3;
-  v4 = [v3 path];
-  v5 = [v4 UTF8String];
+  purgeabilityCopy = purgeability;
+  path = [purgeabilityCopy path];
+  uTF8String = [path UTF8String];
 
-  v6 = open(v5, 0);
+  v6 = open(uTF8String, 0);
   v7 = v6;
   if (v6 < 0)
   {
@@ -1634,9 +1634,9 @@ LABEL_43:
     v10 = qword_1004567E0;
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v11 = [v3 path];
+      path2 = [purgeabilityCopy path];
       *buf = 138412290;
-      v17 = v11;
+      v17 = path2;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "setAPFSPurgeability,not able to open %@", buf, 0xCu);
     }
   }
@@ -1654,9 +1654,9 @@ LABEL_43:
       v8 = qword_1004567E0;
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v9 = [v3 path];
+        path3 = [purgeabilityCopy path];
         *buf = 138412290;
-        v17 = v9;
+        v17 = path3;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "setAPFSPurgeability,failed,%@", buf, 0xCu);
       }
     }
@@ -1671,9 +1671,9 @@ LABEL_43:
       v8 = qword_1004567E0;
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v3 path];
+        path4 = [purgeabilityCopy path];
         *buf = 138412290;
-        v17 = v12;
+        v17 = path4;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "setAPFSPurgeability,succeeded,%@", buf, 0xCu);
       }
     }
@@ -1688,9 +1688,9 @@ LABEL_43:
       v13 = qword_1004567E0;
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v14 = [v3 path];
+        path5 = [purgeabilityCopy path];
         *buf = 138412290;
-        v17 = v14;
+        v17 = path5;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "setAPFSPurgeability,not able to close %@", buf, 0xCu);
       }
     }
@@ -1823,9 +1823,9 @@ LABEL_43:
     [(CSMSLDataRecording *)v25 stopAndKeep:1];
     [(CSMSLDataRecording *)self->_mslRecording dumpMetadata];
     v26 = +[CSPlatformInfo sharedInstance];
-    v27 = [v26 isFeedbackAssistantEligible];
+    isFeedbackAssistantEligible = [v26 isFeedbackAssistantEligible];
 
-    if (v27)
+    if (isFeedbackAssistantEligible)
     {
       v28 = self->_mslRecording;
       v42 = 0;
@@ -1860,9 +1860,9 @@ LABEL_43:
       if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
       {
         v33 = [(CSMSLDataRecording *)self->_mslRecording url];
-        v34 = [v33 path];
+        path = [v33 path];
         *buf = 138412290;
-        v44 = v34;
+        v44 = path;
         _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_INFO, "enqueuing recording %@", buf, 0xCu);
       }
 
@@ -1880,10 +1880,10 @@ LABEL_43:
   operator new();
 }
 
-- (void)onCompanionStatusUpdate:(BOOL)a3 pairedDevice:(id)a4 updatedTimestamp:(double)a5
+- (void)onCompanionStatusUpdate:(BOOL)update pairedDevice:(id)device updatedTimestamp:(double)timestamp
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  deviceCopy = device;
   if (qword_1004567D8 != -1)
   {
     sub_1002CD4A0();
@@ -1893,9 +1893,9 @@ LABEL_43:
   if (os_log_type_enabled(qword_1004567E0, OS_LOG_TYPE_DEBUG))
   {
     v16 = 67109376;
-    *v17 = v6;
+    *v17 = updateCopy;
     *&v17[4] = 2048;
-    *&v17[6] = a5;
+    *&v17[6] = timestamp;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "onCompanionStatusUpdate: isConnected: %d, updatedTimestamp: %f", &v16, 0x12u);
   }
 
@@ -1907,33 +1907,33 @@ LABEL_43:
   v9 = qword_1004567E0;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [v7 name];
-    v11 = v10;
-    v12 = [v10 UTF8String];
-    v13 = [v7 isNearby];
-    v14 = [v7 isDefaultPairedDevice];
-    v15 = [v7 isConnected];
+    name = [deviceCopy name];
+    v11 = name;
+    uTF8String = [name UTF8String];
+    isNearby = [deviceCopy isNearby];
+    isDefaultPairedDevice = [deviceCopy isDefaultPairedDevice];
+    isConnected = [deviceCopy isConnected];
     v16 = 136315906;
-    *v17 = v12;
+    *v17 = uTF8String;
     *&v17[8] = 1024;
-    *&v17[10] = v13;
+    *&v17[10] = isNearby;
     v18 = 1024;
-    v19 = v14;
+    v19 = isDefaultPairedDevice;
     v20 = 1024;
-    v21 = v15;
+    v21 = isConnected;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "Paired device info: name %s, isNearby %d, isDefaultPairedDevice %d, isConnected %d", &v16, 0x1Eu);
   }
 }
 
-- (void)setForcedCompanionTrigger:(unsigned __int8)a3
+- (void)setForcedCompanionTrigger:(unsigned __int8)trigger
 {
-  v3 = a3;
+  triggerCopy = trigger;
   Current = CFAbsoluteTimeGetCurrent();
   if (*(self->_details.__ptr_ + 25) == 1)
   {
-    if (v3 != 2)
+    if (triggerCopy != 2)
     {
-      if (v3 == 1)
+      if (triggerCopy == 1)
       {
         if (qword_1004567D8 != -1)
         {
@@ -1976,7 +1976,7 @@ LABEL_27:
   else
   {
     v7 = Current;
-    if (v3 == 2)
+    if (triggerCopy == 2)
     {
       if (qword_1004567D8 != -1)
       {
@@ -1995,7 +1995,7 @@ LABEL_27:
 
     else
     {
-      if (v3 != 1)
+      if (triggerCopy != 1)
       {
         goto LABEL_27;
       }
@@ -2063,15 +2063,15 @@ LABEL_27:
   }
 }
 
-- (void)requestLocation:(int)a3
+- (void)requestLocation:(int)location
 {
   v5 = +[CSPermissions sharedInstance];
   v21 = v5;
-  if (a3 == 4)
+  if (location == 4)
   {
-    v6 = [v5 isAuthorizedToCollectDataIgneous];
+    isAuthorizedToCollectDataIgneous = [v5 isAuthorizedToCollectDataIgneous];
 
-    if ((v6 & 1) == 0)
+    if ((isAuthorizedToCollectDataIgneous & 1) == 0)
     {
       if (qword_1004567D8 != -1)
       {
@@ -2110,9 +2110,9 @@ LABEL_8:
     v14 = [v13 URLByAppendingPathComponent:@"Emergency SOS.bundle"];
     v15 = [CLLocationManager alloc];
     v16 = [NSBundle bundleWithURL:v14];
-    v17 = [(CSAnomalyEventService *)self silo];
-    v18 = [v17 queue];
-    v19 = [v15 initWithEffectiveBundle:v16 delegate:self onQueue:v18];
+    silo = [(CSAnomalyEventService *)self silo];
+    queue = [silo queue];
+    v19 = [v15 initWithEffectiveBundle:v16 delegate:self onQueue:queue];
     locationManager = self->_locationManager;
     self->_locationManager = v19;
 
@@ -2124,9 +2124,9 @@ LABEL_8:
     return;
   }
 
-  v9 = [v5 isAuthorizedToCollectData];
+  isAuthorizedToCollectData = [v5 isAuthorizedToCollectData];
 
-  if (v9)
+  if (isAuthorizedToCollectData)
   {
     goto LABEL_8;
   }
@@ -2145,10 +2145,10 @@ LABEL_8:
   }
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  locationsCopy = locations;
   if (qword_1004567D8 != -1)
   {
     sub_1002CD4A0();
@@ -2157,9 +2157,9 @@ LABEL_8:
   v8 = qword_1004567E0;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v7 firstObject];
+    firstObject = [locationsCopy firstObject];
     *buf = 138739971;
-    v33 = v9;
+    v33 = firstObject;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Received location update: %{sensitive}@", buf, 0xCu);
   }
 
@@ -2172,7 +2172,7 @@ LABEL_8:
     case 1:
       v12 = &OBJC_IVAR___CSAnomalyEventService__kappaDetectionService;
 LABEL_14:
-      [*&self->CLIntersiloService_opaque[*v12] feedLocationManagerResults:v7];
+      [*&self->CLIntersiloService_opaque[*v12] feedLocationManagerResults:locationsCopy];
       break;
     case 0:
       if (qword_1004567D8 != -1)
@@ -2190,12 +2190,12 @@ LABEL_14:
       goto LABEL_18;
   }
 
-  v13 = [v7 firstObject];
-  [v13 coordinate];
+  firstObject2 = [locationsCopy firstObject];
+  [firstObject2 coordinate];
   v15 = v14;
 
-  v16 = [v7 firstObject];
-  [v16 coordinate];
+  firstObject3 = [locationsCopy firstObject];
+  [firstObject3 coordinate];
   v18 = v17;
 
   v21.f32[0] = v15;
@@ -2222,10 +2222,10 @@ LABEL_14:
 LABEL_18:
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v5 = a3;
-  v6 = a4;
+  managerCopy = manager;
+  errorCopy = error;
   if (qword_1004567D8 != -1)
   {
     sub_1002CD4A0();
@@ -2235,17 +2235,17 @@ LABEL_18:
   if (os_log_type_enabled(qword_1004567E0, OS_LOG_TYPE_ERROR))
   {
     v8 = 138543362;
-    v9 = v6;
+    v9 = errorCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Error updating location: %{public}@", &v8, 0xCu);
   }
 }
 
-- (void)locationManager:(id)a3 didReportVisit:(id)a4
+- (void)locationManager:(id)manager didReportVisit:(id)visit
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7 && [v7 hasArrivalDate] && (objc_msgSend(v8, "hasDepartureDate") & 1) == 0)
+  managerCopy = manager;
+  visitCopy = visit;
+  v8 = visitCopy;
+  if (visitCopy && [visitCopy hasArrivalDate] && (objc_msgSend(v8, "hasDepartureDate") & 1) == 0)
   {
     if (qword_1004567D8 != -1)
     {
@@ -2282,10 +2282,10 @@ LABEL_18:
   [(CSMSLDataRecording *)self->_mslRecording updateMetadata:v10];
 }
 
-- (void)locationManager:(id)a3 didVisit:(id)a4
+- (void)locationManager:(id)manager didVisit:(id)visit
 {
-  v5 = a4;
-  if ([v5 hasArrivalDate] && (objc_msgSend(v5, "hasDepartureDate") & 1) == 0)
+  visitCopy = visit;
+  if ([visitCopy hasArrivalDate] && (objc_msgSend(visitCopy, "hasDepartureDate") & 1) == 0)
   {
     if (qword_1004567D8 != -1)
     {
@@ -2322,10 +2322,10 @@ LABEL_18:
   [(CSMSLDataRecording *)self->_mslRecording updateMetadata:v7];
 }
 
-- (void)didInitWithUnprocessedCrash:(id)a3 withCompanionUUID:(id)a4
+- (void)didInitWithUnprocessedCrash:(id)crash withCompanionUUID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  crashCopy = crash;
+  dCopy = d;
   if (qword_1004567D8 != -1)
   {
     sub_1002CD4A0();
@@ -2335,16 +2335,16 @@ LABEL_18:
   if (os_log_type_enabled(qword_1004567E0, OS_LOG_TYPE_DEBUG))
   {
     v8 = 138412546;
-    v9 = v5;
+    v9 = crashCopy;
     v10 = 2112;
-    v11 = v6;
+    v11 = dCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "didInitWithUnprocessedCrash recoveredLocalUUID:%@ recoveredCompanionUUID:%@", &v8, 0x16u);
   }
 }
 
-- (void)didReceiveSOSAck:(int64_t)a3 forMode:(unsigned __int8)a4
+- (void)didReceiveSOSAck:(int64_t)ack forMode:(unsigned __int8)mode
 {
-  if (a4 == 2)
+  if (mode == 2)
   {
     martyDetectionService = self->_martyDetectionService;
     if (martyDetectionService)
@@ -2354,14 +2354,14 @@ LABEL_18:
     }
   }
 
-  else if (a4 == 1)
+  else if (mode == 1)
   {
     martyDetectionService = self->_kappaDetectionService;
     if (martyDetectionService)
     {
       v5 = 1;
 LABEL_5:
-      [martyDetectionService didReceiveSOSAck:a3 forMode:v5];
+      [martyDetectionService didReceiveSOSAck:ack forMode:v5];
     }
   }
 }

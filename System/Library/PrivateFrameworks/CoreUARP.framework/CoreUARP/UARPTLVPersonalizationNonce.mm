@@ -1,11 +1,11 @@
 @interface UARPTLVPersonalizationNonce
 + (id)metaDataTableEntry;
-+ (id)tlvFromPropertyListValue:(id)a3;
-+ (id)tlvWithLength:(unint64_t)a3 value:(void *)a4;
++ (id)tlvFromPropertyListValue:(id)value;
++ (id)tlvWithLength:(unint64_t)length value:(void *)value;
 - (UARPTLVPersonalizationNonce)init;
 - (id)description;
 - (id)generateTLV;
-- (void)setNonce:(id)a3;
+- (void)setNonce:(id)nonce;
 @end
 
 @implementation UARPTLVPersonalizationNonce
@@ -17,16 +17,16 @@
   return [(UARPMetaDataTLVData *)&v3 init];
 }
 
-- (void)setNonce:(id)a3
+- (void)setNonce:(id)nonce
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v7 copy];
-  nonce = v4->_nonce;
-  v4->_nonce = v5;
+  nonceCopy = nonce;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [nonceCopy copy];
+  nonce = selfCopy->_nonce;
+  selfCopy->_nonce = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)description
@@ -65,14 +65,14 @@
   return v3;
 }
 
-+ (id)tlvFromPropertyListValue:(id)a3
++ (id)tlvFromPropertyListValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = objc_opt_new();
-    [v4 setNonce:v3];
+    [v4 setNonce:valueCopy];
   }
 
   else
@@ -83,10 +83,10 @@
   return v4;
 }
 
-+ (id)tlvWithLength:(unint64_t)a3 value:(void *)a4
++ (id)tlvWithLength:(unint64_t)length value:(void *)value
 {
   v6 = objc_opt_new();
-  v7 = [MEMORY[0x277CBEA90] dataWithBytes:a4 length:a3];
+  v7 = [MEMORY[0x277CBEA90] dataWithBytes:value length:length];
   [v6 setNonce:v7];
 
   return v6;

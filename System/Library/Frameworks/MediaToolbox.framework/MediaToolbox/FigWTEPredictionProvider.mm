@@ -1,35 +1,35 @@
 @interface FigWTEPredictionProvider
-- (FigWTEPredictionProvider)initWithError:(id *)a3;
+- (FigWTEPredictionProvider)initWithError:(id *)error;
 - (id)copyWTEPredictionStats;
 - (void)dealloc;
-- (void)servicePredictionProvider:(id)a3 didUpdateServicePredictions:(id)a4;
-- (void)withPredictionProviderMutex:(id)a3;
+- (void)servicePredictionProvider:(id)provider didUpdateServicePredictions:(id)predictions;
+- (void)withPredictionProviderMutex:(id)mutex;
 @end
 
 @implementation FigWTEPredictionProvider
 
-- (void)withPredictionProviderMutex:(id)a3
+- (void)withPredictionProviderMutex:(id)mutex
 {
-  v3 = a3;
+  mutexCopy = mutex;
   if (FigSimpleMutexLock())
   {
     [FigWTEPredictionProvider withPredictionProviderMutex:];
   }
 
-  v3[2]();
+  mutexCopy[2]();
   if (FigSimpleMutexUnlock())
   {
     [FigWTEPredictionProvider withPredictionProviderMutex:];
   }
 }
 
-- (void)servicePredictionProvider:(id)a3 didUpdateServicePredictions:(id)a4
+- (void)servicePredictionProvider:(id)provider didUpdateServicePredictions:(id)predictions
 {
-  v5 = a4;
-  v6 = [v5 count];
+  predictionsCopy = predictions;
+  v6 = [predictionsCopy count];
   if (v6)
   {
-    v7 = [v5 objectAtIndexedSubscript:v6 - 1];
+    v7 = [predictionsCopy objectAtIndexedSubscript:v6 - 1];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __82__FigWTEPredictionProvider_servicePredictionProvider_didUpdateServicePredictions___block_invoke;
@@ -79,7 +79,7 @@ void __82__FigWTEPredictionProvider_servicePredictionProvider_didUpdateServicePr
   return v3;
 }
 
-- (FigWTEPredictionProvider)initWithError:(id *)a3
+- (FigWTEPredictionProvider)initWithError:(id *)error
 {
   v11.receiver = self;
   v11.super_class = FigWTEPredictionProvider;
@@ -104,7 +104,7 @@ void __82__FigWTEPredictionProvider_servicePredictionProvider_didUpdateServicePr
     v9 = CFRetain(cf);
   }
 
-  *a3 = v9;
+  *error = v9;
   if (cf)
   {
     CFRelease(cf);

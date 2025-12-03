@@ -1,6 +1,6 @@
 @interface CHStrokeVisualization
-- (void)drawStrokesFromStrokeProvider:(id)a3 inRect:(CGRect)a4 context:(CGContext *)a5;
-- (void)drawVisualizationInRect:(CGRect)a3 context:(CGContext *)a4 viewBounds:(CGRect)a5;
+- (void)drawStrokesFromStrokeProvider:(id)provider inRect:(CGRect)rect context:(CGContext *)context;
+- (void)drawVisualizationInRect:(CGRect)rect context:(CGContext *)context viewBounds:(CGRect)bounds;
 - (void)recognitionSessionDidUpdateRecognitionResult;
 @end
 
@@ -134,15 +134,15 @@ LABEL_20:
   }
 }
 
-- (void)drawVisualizationInRect:(CGRect)a3 context:(CGContext *)a4 viewBounds:(CGRect)a5
+- (void)drawVisualizationInRect:(CGRect)rect context:(CGContext *)context viewBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v27.receiver = self;
   v27.super_class = CHStrokeVisualization;
-  [(CHVisualization *)&v27 drawVisualizationInRect:a3.origin.x context:a3.origin.y viewBounds:a3.size.width, a3.size.height, a5.origin.x, a5.origin.y, a5.size.width, a5.size.height];
+  [(CHVisualization *)&v27 drawVisualizationInRect:rect.origin.x context:rect.origin.y viewBounds:rect.size.width, rect.size.height, bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   if (self)
   {
     strokeProviderDrawn = self->__strokeProviderDrawn;
@@ -161,36 +161,36 @@ LABEL_20:
 
     strokeProviderDrawn = self->__strokeProviderDrawn;
 LABEL_5:
-    objc_msgSend_drawStrokesFromStrokeProvider_inRect_context_(self, v11, strokeProviderDrawn, a4, v14, v15, x, y, width, height);
+    objc_msgSend_drawStrokesFromStrokeProvider_inRect_context_(self, v11, strokeProviderDrawn, context, v14, v15, x, y, width, height);
     return;
   }
 
-  objc_msgSend_drawStrokesFromStrokeProvider_inRect_context_(0, v24, 0, a4, v25, v26, x, y, width, height);
+  objc_msgSend_drawStrokesFromStrokeProvider_inRect_context_(0, v24, 0, context, v25, v26, x, y, width, height);
 }
 
-- (void)drawStrokesFromStrokeProvider:(id)a3 inRect:(CGRect)a4 context:(CGContext *)a5
+- (void)drawStrokesFromStrokeProvider:(id)provider inRect:(CGRect)rect context:(CGContext *)context
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v42 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  providerCopy = provider;
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   *components = xmmword_1839DA110;
   v41 = unk_1839DA120;
   v12 = CGColorCreate(DeviceRGB, components);
-  CGContextSetStrokeColorWithColor(a5, v12);
+  CGContextSetStrokeColorWithColor(context, v12);
   CGColorRelease(v12);
   CGColorSpaceRelease(DeviceRGB);
-  CGContextSetLineWidth(a5, 1.0);
+  CGContextSetLineWidth(context, 1.0);
   *lengths = xmmword_1839CE6F0;
-  CGContextSetLineDash(a5, 0.0, lengths, 2uLL);
+  CGContextSetLineDash(context, 0.0, lengths, 2uLL);
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v18 = objc_msgSend_orderedStrokes(v10, v13, v14, v15, v16, v17, 0);
+  v18 = objc_msgSend_orderedStrokes(providerCopy, v13, v14, v15, v16, v17, 0);
   v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(v18, v19, &v34, v38, 16, v20);
   if (v21)
   {
@@ -221,7 +221,7 @@ LABEL_5:
           v44.origin.y = v31;
           v44.size.width = v32;
           v44.size.height = v33;
-          CGContextStrokeRect(a5, v44);
+          CGContextStrokeRect(context, v44);
         }
 
         ++v29;

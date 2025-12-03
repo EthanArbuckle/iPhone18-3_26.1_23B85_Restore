@@ -1,11 +1,11 @@
 @interface GAXInterestAreaView
-- (BOOL)_shouldDisableSmartLayoutRelativeToEdgesForInterestAreaPathAtIndex:(unint64_t)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)_shouldDisableSmartLayoutRelativeToEdgesForInterestAreaPathAtIndex:(unint64_t)index;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (BOOL)isAccessibilityElement;
 - (CGPoint)accessibilityActivationPoint;
 - (CGPoint)buttonBeingDraggedInitialCenter;
-- (CGPoint)centerForBackgroundOfInterestAreaClippedView:(id)a3;
-- (CGRect)_constrainedFrameForInsetFrame:(CGRect)a3 forInterestAreaPathAtIndex:(unint64_t)a4;
+- (CGPoint)centerForBackgroundOfInterestAreaClippedView:(id)view;
+- (CGRect)_constrainedFrameForInsetFrame:(CGRect)frame forInterestAreaPathAtIndex:(unint64_t)index;
 - (CGRect)accessibilityFrame;
 - (CGRect)contentsBounds;
 - (CGRect)savedFrame;
@@ -14,49 +14,49 @@
 - (UIColor)backgroundStripesPatternColor;
 - (double)_scaleFactorForSpecialControls;
 - (double)contentsCornerRadius;
-- (id)_interestAreaPathAtIndex:(unint64_t)a3;
-- (id)_specialControlButtonAtLocation:(CGPoint)a3 passingTest:(id)a4;
+- (id)_interestAreaPathAtIndex:(unint64_t)index;
+- (id)_specialControlButtonAtLocation:(CGPoint)location passingTest:(id)test;
 - (id)accessibilityHint;
 - (id)accessibilityValue;
-- (id)interestAreaFingerPathView:(id)a3 interestAreaPathAtIndex:(unint64_t)a4;
+- (id)interestAreaFingerPathView:(id)view interestAreaPathAtIndex:(unint64_t)index;
 - (int64_t)accessibilityContainerType;
 - (unint64_t)_numberOfInterestAreaPaths;
 - (unint64_t)accessibilityTraits;
-- (unint64_t)numberOfInterestAreaPathsForInterestAreaFingerPathView:(id)a3;
+- (unint64_t)numberOfInterestAreaPathsForInterestAreaFingerPathView:(id)view;
 - (void)_commonInit;
 - (void)_ensureBackgroundSizeOfBackgroundViewCoveringEverythingIsSet;
-- (void)_enumerateInterestAreaPathsWithOptions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)_enumerateSpecialControlPropertiesForInterestAreaPath:(id)a3 visibleKnobPositions:(unint64_t)a4 hasCloseButton:(BOOL)a5 usingBlock:(id)a6;
-- (void)_enumerateSpecialControlsUsingBlock:(id)a3;
-- (void)_getClippedViewPropertiesForInterestAreaPathAtIndex:(unint64_t)a3 frame:(CGRect *)a4 constrainedFrame:(CGRect *)a5 adjustedClippingPath:(id *)a6;
-- (void)_handlePan:(id)a3;
-- (void)_handleTap:(id)a3;
-- (void)_insertClippedViewForInterestAreaPathAtIndex:(unint64_t)a3;
+- (void)_enumerateInterestAreaPathsWithOptions:(unint64_t)options usingBlock:(id)block;
+- (void)_enumerateSpecialControlPropertiesForInterestAreaPath:(id)path visibleKnobPositions:(unint64_t)positions hasCloseButton:(BOOL)button usingBlock:(id)block;
+- (void)_enumerateSpecialControlsUsingBlock:(id)block;
+- (void)_getClippedViewPropertiesForInterestAreaPathAtIndex:(unint64_t)index frame:(CGRect *)frame constrainedFrame:(CGRect *)constrainedFrame adjustedClippingPath:(id *)path;
+- (void)_handlePan:(id)pan;
+- (void)_handleTap:(id)tap;
+- (void)_insertClippedViewForInterestAreaPathAtIndex:(unint64_t)index;
 - (void)_resetAllSpecialControls;
-- (void)adjustOutOfBoundsDrawingToCoverView:(id)a3 edgeInsets:(UIEdgeInsets)a4;
+- (void)adjustOutOfBoundsDrawingToCoverView:(id)view edgeInsets:(UIEdgeInsets)insets;
 - (void)dealloc;
-- (void)deleteDynamicInterestAreaPathAtIndices:(id)a3;
-- (void)deleteInterestAreaPathsAtIndices:(id)a3;
+- (void)deleteDynamicInterestAreaPathAtIndices:(id)indices;
+- (void)deleteInterestAreaPathsAtIndices:(id)indices;
 - (void)didMoveToWindow;
-- (void)insertDynamicInterestAreaPathAtIndex:(unint64_t)a3;
-- (void)insertInterestAreaPathAtIndex:(unint64_t)a3;
+- (void)insertDynamicInterestAreaPathAtIndex:(unint64_t)index;
+- (void)insertInterestAreaPathAtIndex:(unint64_t)index;
 - (void)layoutSubviews;
 - (void)reloadAllInterestAreaPaths;
-- (void)reloadDynamicInterestAreaPathAtIndex:(unint64_t)a3;
-- (void)reloadFrameOfInterestAreaPathAtIndex:(unint64_t)a3;
-- (void)reloadInterestAreaPathAtIndex:(unint64_t)a3;
-- (void)setBackgroundPatternScaleFactor:(double)a3;
-- (void)setBackgroundShouldCoverEverything:(BOOL)a3 animated:(BOOL)a4;
-- (void)setBackgroundStyle:(int)a3 animated:(BOOL)a4;
-- (void)setBounds:(CGRect)a3;
-- (void)setContentsBounds:(CGRect)a3;
-- (void)setContentsCornerRadius:(double)a3;
-- (void)setDataSource:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setSpecialControlsVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)setStyleProvider:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)reloadDynamicInterestAreaPathAtIndex:(unint64_t)index;
+- (void)reloadFrameOfInterestAreaPathAtIndex:(unint64_t)index;
+- (void)reloadInterestAreaPathAtIndex:(unint64_t)index;
+- (void)setBackgroundPatternScaleFactor:(double)factor;
+- (void)setBackgroundShouldCoverEverything:(BOOL)everything animated:(BOOL)animated;
+- (void)setBackgroundStyle:(int)style animated:(BOOL)animated;
+- (void)setBounds:(CGRect)bounds;
+- (void)setContentsBounds:(CGRect)bounds;
+- (void)setContentsCornerRadius:(double)radius;
+- (void)setDataSource:(id)source;
+- (void)setDelegate:(id)delegate;
+- (void)setFrame:(CGRect)frame;
+- (void)setSpecialControlsVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)setStyleProvider:(id)provider;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation GAXInterestAreaView
@@ -75,15 +75,15 @@
   v8 = v7;
   v10 = v9;
   v11 = [[UIView alloc] initWithFrame:{v3, v5, v7, v9}];
-  v12 = [v11 layer];
-  [v12 setMasksToBounds:1];
+  layer = [v11 layer];
+  [layer setMasksToBounds:1];
 
   v13 = [UIView alloc];
   [v11 bounds];
   v14 = [v13 initWithFrame:?];
   [v14 setAutoresizingMask:18];
-  v15 = [v14 layer];
-  [v15 setAllowsGroupOpacity:1];
+  layer2 = [v14 layer];
+  [layer2 setAllowsGroupOpacity:1];
 
   [v11 addSubview:v14];
   [(GAXInterestAreaView *)self setBackgroundContainerView:v14];
@@ -107,8 +107,8 @@
   [(GAXInterestAreaView *)self setCloseButtons:v19];
   v20 = objc_opt_new();
   [(GAXInterestAreaView *)self setResizingKnobButtons:v20];
-  v21 = [(GAXInterestAreaView *)self backgroundContainerView];
-  [v21 setAlpha:0.0];
+  backgroundContainerView = [(GAXInterestAreaView *)self backgroundContainerView];
+  [backgroundContainerView setAlpha:0.0];
 
   [(GAXInterestAreaView *)self setIndexOfInterestAreaPathBeingDragged:0x7FFFFFFFFFFFFFFFLL];
   [(GAXInterestAreaView *)self setBackgroundPatternScaleFactor:1.0];
@@ -116,15 +116,15 @@
 
 - (void)dealloc
 {
-  v3 = [(GAXInterestAreaView *)self fingerPathView];
-  [v3 setDataSource:0];
+  fingerPathView = [(GAXInterestAreaView *)self fingerPathView];
+  [fingerPathView setDataSource:0];
 
-  v4 = [(GAXInterestAreaView *)self clippedViews];
+  clippedViews = [(GAXInterestAreaView *)self clippedViews];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  v5 = [clippedViews countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v5)
   {
     v6 = v5;
@@ -135,27 +135,27 @@
       {
         if (*v22 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(clippedViews);
         }
 
         [*(*(&v21 + 1) + 8 * i) setDelegate:0];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v6 = [clippedViews countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v6);
   }
 
-  v9 = [(GAXInterestAreaView *)self backgroundViewCoveringEverything];
-  [v9 setDelegate:0];
+  backgroundViewCoveringEverything = [(GAXInterestAreaView *)self backgroundViewCoveringEverything];
+  [backgroundViewCoveringEverything setDelegate:0];
 
-  v10 = [(GAXInterestAreaView *)self gestureRecognizers];
+  gestureRecognizers = [(GAXInterestAreaView *)self gestureRecognizers];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v11 = [v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  v11 = [gestureRecognizers countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v11)
   {
     v12 = v11;
@@ -166,7 +166,7 @@
       {
         if (*v18 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(gestureRecognizers);
         }
 
         v15 = *(*(&v17 + 1) + 8 * j);
@@ -174,7 +174,7 @@
         [v15 removeTarget:self action:0];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      v12 = [gestureRecognizers countByEnumeratingWithState:&v17 objects:v25 count:16];
     }
 
     while (v12);
@@ -185,9 +185,9 @@
   [(GAXInterestAreaView *)&v16 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -199,9 +199,9 @@
   }
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
   v5 = obj;
@@ -213,26 +213,26 @@
   }
 }
 
-- (void)setStyleProvider:(id)a3
+- (void)setStyleProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_styleProvider != v5)
+  providerCopy = provider;
+  if (self->_styleProvider != providerCopy)
   {
-    v12 = v5;
-    objc_storeStrong(&self->_styleProvider, a3);
+    v12 = providerCopy;
+    objc_storeStrong(&self->_styleProvider, provider);
     if (!v12)
     {
 LABEL_9:
-      v11 = [(GAXInterestAreaView *)self fingerPathView];
-      [v11 setStyleProvider:v12];
+      fingerPathView = [(GAXInterestAreaView *)self fingerPathView];
+      [fingerPathView setStyleProvider:v12];
 
-      v5 = v12;
+      providerCopy = v12;
       goto LABEL_10;
     }
 
     [(GAXInterestAreaView *)self _refreshBackgroundStripesPatternColor];
-    v6 = [(GAXInterestAreaView *)self backgroundStyle];
-    if (v6 == 2)
+    backgroundStyle = [(GAXInterestAreaView *)self backgroundStyle];
+    if (backgroundStyle == 2)
     {
       [(GAXStyleProvider *)v12 interestAreaViewBackgroundStripePatternAlpha];
       v8 = v9;
@@ -240,7 +240,7 @@ LABEL_9:
 
     else
     {
-      if (v6 != 1)
+      if (backgroundStyle != 1)
       {
 LABEL_8:
         [(GAXInterestAreaView *)self reloadAllInterestAreaPaths];
@@ -251,8 +251,8 @@ LABEL_8:
       v8 = v7 * 0.5;
     }
 
-    v10 = [(GAXInterestAreaView *)self backgroundContainerView];
-    [v10 setAlpha:v8];
+    backgroundContainerView = [(GAXInterestAreaView *)self backgroundContainerView];
+    [backgroundContainerView setAlpha:v8];
 
     goto LABEL_8;
   }
@@ -262,8 +262,8 @@ LABEL_10:
 
 - (CGRect)contentsBounds
 {
-  v2 = [(GAXInterestAreaView *)self contentsView];
-  [v2 frame];
+  contentsView = [(GAXInterestAreaView *)self contentsView];
+  [contentsView frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -280,44 +280,44 @@ LABEL_10:
   return result;
 }
 
-- (void)setContentsBounds:(CGRect)a3
+- (void)setContentsBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(GAXInterestAreaView *)self contentsView];
-  [v7 setFrame:{x, y, width, height}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  contentsView = [(GAXInterestAreaView *)self contentsView];
+  [contentsView setFrame:{x, y, width, height}];
 }
 
 - (double)contentsCornerRadius
 {
-  v2 = [(GAXInterestAreaView *)self contentsView];
-  v3 = [v2 layer];
-  [v3 cornerRadius];
+  contentsView = [(GAXInterestAreaView *)self contentsView];
+  layer = [contentsView layer];
+  [layer cornerRadius];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setContentsCornerRadius:(double)a3
+- (void)setContentsCornerRadius:(double)radius
 {
-  v5 = [(GAXInterestAreaView *)self contentsView];
-  v4 = [v5 layer];
-  [v4 setCornerRadius:a3];
+  contentsView = [(GAXInterestAreaView *)self contentsView];
+  layer = [contentsView layer];
+  [layer setCornerRadius:radius];
 }
 
-- (void)setBackgroundPatternScaleFactor:(double)a3
+- (void)setBackgroundPatternScaleFactor:(double)factor
 {
-  if (self->_backgroundPatternScaleFactor != a3)
+  if (self->_backgroundPatternScaleFactor != factor)
   {
-    self->_backgroundPatternScaleFactor = a3;
-    v5 = [(GAXInterestAreaView *)self clippedViews];
+    self->_backgroundPatternScaleFactor = factor;
+    clippedViews = [(GAXInterestAreaView *)self clippedViews];
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v6 = [clippedViews countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -328,20 +328,20 @@ LABEL_10:
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(clippedViews);
           }
 
-          [*(*(&v11 + 1) + 8 * i) setBackgroundPatternScaleFactor:a3];
+          [*(*(&v11 + 1) + 8 * i) setBackgroundPatternScaleFactor:factor];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [clippedViews countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
     }
 
-    v10 = [(GAXInterestAreaView *)self backgroundViewCoveringEverything];
-    [v10 setBackgroundPatternScaleFactor:a3];
+    backgroundViewCoveringEverything = [(GAXInterestAreaView *)self backgroundViewCoveringEverything];
+    [backgroundViewCoveringEverything setBackgroundPatternScaleFactor:factor];
   }
 }
 
@@ -350,31 +350,31 @@ LABEL_10:
   backgroundStripesPatternColor = self->_backgroundStripesPatternColor;
   if (!backgroundStripesPatternColor)
   {
-    v4 = [(GAXInterestAreaView *)self styleProvider];
-    v5 = [(GAXInterestAreaView *)self window];
-    v6 = [v5 screen];
+    styleProvider = [(GAXInterestAreaView *)self styleProvider];
+    window = [(GAXInterestAreaView *)self window];
+    screen = [window screen];
 
-    if (v4 && v6)
+    if (styleProvider && screen)
     {
-      v7 = [v4 interestAreaViewBackgroundColor];
-      v8 = [v4 interestAreaViewBackgroundHatchingTexture];
-      [v4 interestAreaViewBackgroundHatchingTextureAlpha];
+      interestAreaViewBackgroundColor = [styleProvider interestAreaViewBackgroundColor];
+      interestAreaViewBackgroundHatchingTexture = [styleProvider interestAreaViewBackgroundHatchingTexture];
+      [styleProvider interestAreaViewBackgroundHatchingTextureAlpha];
       v10 = v9;
-      [v8 size];
+      [interestAreaViewBackgroundHatchingTexture size];
       v12 = v11;
       v14 = v13;
-      [v6 scale];
+      [screen scale];
       v16 = v15;
-      [v8 size];
+      [interestAreaViewBackgroundHatchingTexture size];
       UIGraphicsBeginImageContextWithOptions(v23, 1, v16);
       CurrentContext = UIGraphicsGetCurrentContext();
-      CGContextSetFillColorWithColor(CurrentContext, [v7 CGColor]);
+      CGContextSetFillColorWithColor(CurrentContext, [interestAreaViewBackgroundColor CGColor]);
       v24.origin.x = 0.0;
       v24.origin.y = 0.0;
       v24.size.width = v12;
       v24.size.height = v14;
       CGContextFillRect(CurrentContext, v24);
-      [v8 drawAtPoint:0 blendMode:CGPointZero.x alpha:{CGPointZero.y, v10}];
+      [interestAreaViewBackgroundHatchingTexture drawAtPoint:0 blendMode:CGPointZero.x alpha:{CGPointZero.y, v10}];
       v18 = UIGraphicsGetImageFromCurrentImageContext();
       v19 = [[UIColor alloc] initWithPatternImage:v18];
       v20 = self->_backgroundStripesPatternColor;
@@ -389,23 +389,23 @@ LABEL_10:
   return backgroundStripesPatternColor;
 }
 
-- (void)setBackgroundStyle:(int)a3 animated:(BOOL)a4
+- (void)setBackgroundStyle:(int)style animated:(BOOL)animated
 {
-  if (self->_backgroundStyle != a3)
+  if (self->_backgroundStyle != style)
   {
     v30 = v7;
     v31 = v6;
     v32 = v4;
     v33 = v5;
-    v8 = a4;
-    self->_backgroundStyle = a3;
-    v11 = [(GAXInterestAreaView *)self styleProvider];
-    v12 = [(GAXInterestAreaView *)self backgroundContainerView];
-    v13 = v12;
-    if (a3)
+    animatedCopy = animated;
+    self->_backgroundStyle = style;
+    styleProvider = [(GAXInterestAreaView *)self styleProvider];
+    backgroundContainerView = [(GAXInterestAreaView *)self backgroundContainerView];
+    v13 = backgroundContainerView;
+    if (style)
     {
-      [v11 interestAreaViewBackgroundStripePatternAlpha];
-      if (a3 == 1)
+      [styleProvider interestAreaViewBackgroundStripePatternAlpha];
+      if (style == 1)
       {
         v15 = v14 * 0.5;
       }
@@ -415,10 +415,10 @@ LABEL_10:
         v15 = v14;
       }
 
-      if (v8)
+      if (animatedCopy)
       {
         [v13 setHidden:0];
-        [v11 defaultAnimationDuration];
+        [styleProvider defaultAnimationDuration];
         v17 = v16;
         v27[0] = _NSConcreteStackBlock;
         v27[1] = 3221225472;
@@ -441,9 +441,9 @@ LABEL_14:
 
     else
     {
-      if (v8)
+      if (animatedCopy)
       {
-        [v11 defaultAnimationDuration];
+        [styleProvider defaultAnimationDuration];
         v20 = v19;
         v25[0] = _NSConcreteStackBlock;
         v25[1] = 3221225472;
@@ -461,7 +461,7 @@ LABEL_14:
         goto LABEL_10;
       }
 
-      [v12 setAlpha:0.0];
+      [backgroundContainerView setAlpha:0.0];
       v21 = v13;
       v22 = 1;
     }
@@ -471,23 +471,23 @@ LABEL_14:
   }
 }
 
-- (void)setSpecialControlsVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setSpecialControlsVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (self->_specialControlsVisible != a3)
+  if (self->_specialControlsVisible != visible)
   {
-    v4 = a4;
-    self->_specialControlsVisible = a3;
-    if (a3)
+    animatedCopy = animated;
+    self->_specialControlsVisible = visible;
+    if (visible)
     {
       [(GAXInterestAreaView *)self _resetAllSpecialControls];
-      if (!v4)
+      if (!animatedCopy)
       {
         return;
       }
 
       [(GAXInterestAreaView *)self _enumerateSpecialControlsUsingBlock:&stru_5D120];
-      v6 = [(GAXInterestAreaView *)self styleProvider];
-      [v6 defaultAnimationDuration];
+      styleProvider = [(GAXInterestAreaView *)self styleProvider];
+      [styleProvider defaultAnimationDuration];
       v9[0] = _NSConcreteStackBlock;
       v9[1] = 3221225472;
       v9[2] = sub_F1B8;
@@ -497,10 +497,10 @@ LABEL_14:
       goto LABEL_7;
     }
 
-    if (a4)
+    if (animated)
     {
-      v6 = [(GAXInterestAreaView *)self styleProvider];
-      [v6 defaultAnimationDuration];
+      styleProvider = [(GAXInterestAreaView *)self styleProvider];
+      [styleProvider defaultAnimationDuration];
       v8[0] = _NSConcreteStackBlock;
       v8[1] = 3221225472;
       v8[2] = sub_F1D4;
@@ -521,49 +521,49 @@ LABEL_7:
   }
 }
 
-- (void)setBackgroundShouldCoverEverything:(BOOL)a3 animated:(BOOL)a4
+- (void)setBackgroundShouldCoverEverything:(BOOL)everything animated:(BOOL)animated
 {
-  if (self->_backgroundShouldCoverEverything != a3)
+  if (self->_backgroundShouldCoverEverything != everything)
   {
-    v4 = a4;
-    v5 = a3;
-    self->_backgroundShouldCoverEverything = a3;
-    v7 = [(GAXInterestAreaView *)self backgroundViewCoveringEverything];
-    v8 = [(GAXInterestAreaView *)self styleProvider];
-    if (v5)
+    animatedCopy = animated;
+    everythingCopy = everything;
+    self->_backgroundShouldCoverEverything = everything;
+    backgroundViewCoveringEverything = [(GAXInterestAreaView *)self backgroundViewCoveringEverything];
+    styleProvider = [(GAXInterestAreaView *)self styleProvider];
+    if (everythingCopy)
     {
-      if (!v7)
+      if (!backgroundViewCoveringEverything)
       {
-        v9 = [(GAXInterestAreaView *)self backgroundContainerView];
-        [v9 bounds];
+        backgroundContainerView = [(GAXInterestAreaView *)self backgroundContainerView];
+        [backgroundContainerView bounds];
         v11 = v10;
         v13 = v12;
         v15 = v14;
         v17 = v16;
-        v7 = [[GAXInterestAreaClippedView alloc] initWithFrame:v10, v12, v14, v16];
-        [(GAXInterestAreaClippedView *)v7 setAutoresizingMask:18];
+        backgroundViewCoveringEverything = [[GAXInterestAreaClippedView alloc] initWithFrame:v10, v12, v14, v16];
+        [(GAXInterestAreaClippedView *)backgroundViewCoveringEverything setAutoresizingMask:18];
         [(GAXInterestAreaView *)self bounds];
-        [(GAXInterestAreaClippedView *)v7 setBackgroundSize:v18, v19];
-        v20 = [(GAXInterestAreaView *)self backgroundStripesPatternColor];
-        [(GAXInterestAreaClippedView *)v7 setBackgroundColor:v20];
+        [(GAXInterestAreaClippedView *)backgroundViewCoveringEverything setBackgroundSize:v18, v19];
+        backgroundStripesPatternColor = [(GAXInterestAreaView *)self backgroundStripesPatternColor];
+        [(GAXInterestAreaClippedView *)backgroundViewCoveringEverything setBackgroundColor:backgroundStripesPatternColor];
 
         [(GAXInterestAreaView *)self backgroundPatternScaleFactor];
-        [(GAXInterestAreaClippedView *)v7 setBackgroundPatternScaleFactor:?];
+        [(GAXInterestAreaClippedView *)backgroundViewCoveringEverything setBackgroundPatternScaleFactor:?];
         v21 = [UIBezierPath bezierPathWithRect:v11, v13, v15, v17];
-        [(GAXInterestAreaClippedView *)v7 setClippingPath:v21];
+        [(GAXInterestAreaClippedView *)backgroundViewCoveringEverything setClippingPath:v21];
 
-        [(GAXInterestAreaClippedView *)v7 setDelegate:self];
-        [(GAXInterestAreaClippedView *)v7 setAlpha:0.0];
-        [(GAXInterestAreaClippedView *)v7 setHidden:1];
-        [v9 addSubview:v7];
-        [(GAXInterestAreaView *)self setBackgroundViewCoveringEverything:v7];
+        [(GAXInterestAreaClippedView *)backgroundViewCoveringEverything setDelegate:self];
+        [(GAXInterestAreaClippedView *)backgroundViewCoveringEverything setAlpha:0.0];
+        [(GAXInterestAreaClippedView *)backgroundViewCoveringEverything setHidden:1];
+        [backgroundContainerView addSubview:backgroundViewCoveringEverything];
+        [(GAXInterestAreaView *)self setBackgroundViewCoveringEverything:backgroundViewCoveringEverything];
       }
 
-      [(GAXInterestAreaClippedView *)v7 setHidden:0];
+      [(GAXInterestAreaClippedView *)backgroundViewCoveringEverything setHidden:0];
       v22 = 0.0;
-      if (v4)
+      if (animatedCopy)
       {
-        [v8 defaultAnimationDuration];
+        [styleProvider defaultAnimationDuration];
         v22 = v23;
       }
 
@@ -571,26 +571,26 @@ LABEL_7:
       v42[1] = 3221225472;
       v42[2] = sub_F640;
       v42[3] = &unk_5CED0;
-      v24 = v7;
+      v24 = backgroundViewCoveringEverything;
       v43 = v24;
-      v44 = self;
+      selfCopy = self;
       v41[0] = _NSConcreteStackBlock;
       v41[1] = 3221225472;
       v41[2] = sub_F694;
       v41[3] = &unk_5CC18;
       v41[4] = self;
       [UIView animateWithDuration:v42 animations:v41 completion:v22];
-      v25 = v43;
+      clippedViews = v43;
     }
 
     else
     {
-      v25 = [(GAXInterestAreaView *)self clippedViews];
+      clippedViews = [(GAXInterestAreaView *)self clippedViews];
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
       v40 = 0u;
-      v26 = [v25 countByEnumeratingWithState:&v37 objects:v45 count:16];
+      v26 = [clippedViews countByEnumeratingWithState:&v37 objects:v45 count:16];
       if (v26)
       {
         v27 = v26;
@@ -601,13 +601,13 @@ LABEL_7:
           {
             if (*v38 != v28)
             {
-              objc_enumerationMutation(v25);
+              objc_enumerationMutation(clippedViews);
             }
 
             [*(*(&v37 + 1) + 8 * i) setHidden:0];
           }
 
-          v27 = [v25 countByEnumeratingWithState:&v37 objects:v45 count:16];
+          v27 = [clippedViews countByEnumeratingWithState:&v37 objects:v45 count:16];
         }
 
         while (v27);
@@ -615,9 +615,9 @@ LABEL_7:
 
       [(GAXInterestAreaView *)self _enumerateSpecialControlsUsingBlock:&stru_5D200];
       v30 = 0.0;
-      if (v4)
+      if (animatedCopy)
       {
-        [v8 defaultAnimationDuration];
+        [styleProvider defaultAnimationDuration];
         v30 = v31;
       }
 
@@ -625,8 +625,8 @@ LABEL_7:
       v34[1] = 3221225472;
       v34[2] = sub_F7B8;
       v34[3] = &unk_5CED0;
-      v35 = v7;
-      v36 = self;
+      v35 = backgroundViewCoveringEverything;
+      selfCopy2 = self;
       v32[0] = _NSConcreteStackBlock;
       v32[1] = 3221225472;
       v32[2] = sub_F80C;
@@ -638,17 +638,17 @@ LABEL_7:
   }
 }
 
-- (void)adjustOutOfBoundsDrawingToCoverView:(id)a3 edgeInsets:(UIEdgeInsets)a4
+- (void)adjustOutOfBoundsDrawingToCoverView:(id)view edgeInsets:(UIEdgeInsets)insets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v9 = a3;
-  v29 = v9;
-  if (v9)
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  viewCopy = view;
+  v29 = viewCopy;
+  if (viewCopy)
   {
-    [v9 bounds];
+    [viewCopy bounds];
     [v29 convertRect:self toView:{left + v10, top + v11, v12 - (left + right), v13 - (top + bottom)}];
     x = v14;
     y = v16;
@@ -675,9 +675,9 @@ LABEL_7:
     MidY = CGRectGetMidY(v32);
   }
 
-  v28 = [(GAXInterestAreaView *)self fingerPathView];
-  [v28 setBounds:{x, y, width, height}];
-  [v28 setCenter:{MidX, MidY}];
+  fingerPathView = [(GAXInterestAreaView *)self fingerPathView];
+  [fingerPathView setBounds:{x, y, width, height}];
+  [fingerPathView setCenter:{MidX, MidY}];
 }
 
 - (void)layoutSubviews
@@ -688,67 +688,67 @@ LABEL_7:
   [(GAXInterestAreaView *)self _resetAllSpecialControls];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = GAXInterestAreaView;
-  [(GAXInterestAreaView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(GAXInterestAreaView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(GAXInterestAreaView *)self _ensureBackgroundSizeOfBackgroundViewCoveringEverythingIsSet];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = GAXInterestAreaView;
-  [(GAXInterestAreaView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(GAXInterestAreaView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(GAXInterestAreaView *)self _ensureBackgroundSizeOfBackgroundViewCoveringEverythingIsSet];
 }
 
-- (void)insertInterestAreaPathAtIndex:(unint64_t)a3
+- (void)insertInterestAreaPathAtIndex:(unint64_t)index
 {
   v5 = [(GAXInterestAreaView *)self _interestAreaPathAtIndex:?];
   if (v5 && ([v5 isEmpty] & 1) == 0)
   {
-    [(GAXInterestAreaView *)self _insertClippedViewForInterestAreaPathAtIndex:a3];
+    [(GAXInterestAreaView *)self _insertClippedViewForInterestAreaPathAtIndex:index];
     [(GAXInterestAreaView *)self setNeedsLayout];
-    v6 = [(GAXInterestAreaView *)self buttonBeingDragged];
-    v7 = v6;
-    if (v6)
+    buttonBeingDragged = [(GAXInterestAreaView *)self buttonBeingDragged];
+    v7 = buttonBeingDragged;
+    if (buttonBeingDragged)
     {
-      v8 = [v6 associatedInterestAreaPathIndex];
-      if (v8 >= a3)
+      associatedInterestAreaPathIndex = [buttonBeingDragged associatedInterestAreaPathIndex];
+      if (associatedInterestAreaPathIndex >= index)
       {
-        [v7 setAssociatedInterestAreaPathIndex:v8 + 1];
+        [v7 setAssociatedInterestAreaPathIndex:associatedInterestAreaPathIndex + 1];
       }
     }
 
-    v9 = [(GAXInterestAreaView *)self indexOfInterestAreaPathBeingDragged];
-    if (v9 != 0x7FFFFFFFFFFFFFFFLL && v9 >= a3)
+    indexOfInterestAreaPathBeingDragged = [(GAXInterestAreaView *)self indexOfInterestAreaPathBeingDragged];
+    if (indexOfInterestAreaPathBeingDragged != 0x7FFFFFFFFFFFFFFFLL && indexOfInterestAreaPathBeingDragged >= index)
     {
-      [(GAXInterestAreaView *)self setIndexOfInterestAreaPathBeingDragged:v9 + 1];
+      [(GAXInterestAreaView *)self setIndexOfInterestAreaPathBeingDragged:indexOfInterestAreaPathBeingDragged + 1];
     }
   }
 
   _objc_release_x1();
 }
 
-- (void)reloadFrameOfInterestAreaPathAtIndex:(unint64_t)a3
+- (void)reloadFrameOfInterestAreaPathAtIndex:(unint64_t)index
 {
   size = CGRectZero.size;
   origin = CGRectZero.origin;
   v10 = size;
-  [(GAXInterestAreaView *)self _getClippedViewPropertiesForInterestAreaPathAtIndex:a3 frame:0 constrainedFrame:&origin adjustedClippingPath:0];
-  v6 = [(GAXInterestAreaView *)self clippedViews];
-  v7 = [v6 objectAtIndex:a3];
+  [(GAXInterestAreaView *)self _getClippedViewPropertiesForInterestAreaPathAtIndex:index frame:0 constrainedFrame:&origin adjustedClippingPath:0];
+  clippedViews = [(GAXInterestAreaView *)self clippedViews];
+  v7 = [clippedViews objectAtIndex:index];
 
-  v8 = [(GAXInterestAreaView *)self backgroundContainerView];
-  [(GAXInterestAreaView *)self convertRect:v8 toView:origin, v10];
+  backgroundContainerView = [(GAXInterestAreaView *)self backgroundContainerView];
+  [(GAXInterestAreaView *)self convertRect:backgroundContainerView toView:origin, v10];
   [v7 setFrame:?];
 
   [(GAXInterestAreaView *)self setNeedsLayout];
 }
 
-- (void)reloadInterestAreaPathAtIndex:(unint64_t)a3
+- (void)reloadInterestAreaPathAtIndex:(unint64_t)index
 {
   size = CGRectZero.size;
   origin = CGRectZero.origin;
@@ -756,65 +756,65 @@ LABEL_7:
   v11 = origin;
   v12 = size;
   v10 = 0;
-  [(GAXInterestAreaView *)self _getClippedViewPropertiesForInterestAreaPathAtIndex:a3 frame:&origin constrainedFrame:&v11 adjustedClippingPath:&v10];
+  [(GAXInterestAreaView *)self _getClippedViewPropertiesForInterestAreaPathAtIndex:index frame:&origin constrainedFrame:&v11 adjustedClippingPath:&v10];
   v6 = v10;
-  v7 = [(GAXInterestAreaView *)self backgroundContainerView];
-  v8 = [(GAXInterestAreaView *)self clippedViews];
-  v9 = [v8 objectAtIndex:a3];
+  backgroundContainerView = [(GAXInterestAreaView *)self backgroundContainerView];
+  clippedViews = [(GAXInterestAreaView *)self clippedViews];
+  v9 = [clippedViews objectAtIndex:index];
 
-  [(GAXInterestAreaView *)self convertRect:v7 toView:origin, v14];
+  [(GAXInterestAreaView *)self convertRect:backgroundContainerView toView:origin, v14];
   [v9 setFrame:?];
   [v9 setClippingPath:v6];
 
-  [(GAXInterestAreaView *)self convertRect:v7 toView:v11, v12];
+  [(GAXInterestAreaView *)self convertRect:backgroundContainerView toView:v11, v12];
   [v9 setFrame:?];
 }
 
-- (void)deleteInterestAreaPathsAtIndices:(id)a3
+- (void)deleteInterestAreaPathsAtIndices:(id)indices
 {
-  v4 = a3;
-  v37 = self;
-  v35 = [(GAXInterestAreaView *)self styleProvider];
+  indicesCopy = indices;
+  selfCopy = self;
+  styleProvider = [(GAXInterestAreaView *)self styleProvider];
   v5 = [UIView alloc];
-  [(GAXInterestAreaView *)v37 bounds];
+  [(GAXInterestAreaView *)selfCopy bounds];
   v39 = [v5 initWithFrame:?];
-  v6 = [v39 layer];
-  [v6 setAllowsGroupOpacity:1];
+  layer = [v39 layer];
+  [layer setAllowsGroupOpacity:1];
 
   v7 = [UIView alloc];
-  [(GAXInterestAreaView *)v37 contentsBounds];
+  [(GAXInterestAreaView *)selfCopy contentsBounds];
   v36 = [v7 initWithFrame:?];
-  v34 = [v36 layer];
-  [v34 setMasksToBounds:1];
-  [(GAXInterestAreaView *)v37 contentsCornerRadius];
-  [v34 setCornerRadius:?];
+  layer2 = [v36 layer];
+  [layer2 setMasksToBounds:1];
+  [(GAXInterestAreaView *)selfCopy contentsCornerRadius];
+  [layer2 setCornerRadius:?];
   [v39 addSubview:v36];
   v8 = [UIView alloc];
   [v36 bounds];
   v9 = [v8 initWithFrame:?];
   [v9 setAutoresizingMask:18];
-  v10 = [v9 layer];
-  [v10 setAllowsGroupOpacity:1];
+  layer3 = [v9 layer];
+  [layer3 setAllowsGroupOpacity:1];
 
-  v11 = [(GAXInterestAreaView *)v37 backgroundStyle];
-  if (v11 == 1)
+  backgroundStyle = [(GAXInterestAreaView *)selfCopy backgroundStyle];
+  if (backgroundStyle == 1)
   {
-    [v35 interestAreaViewBackgroundStripePatternAlpha];
+    [styleProvider interestAreaViewBackgroundStripePatternAlpha];
     v12 = v13 * 0.5;
   }
 
   else
   {
     v12 = 0.0;
-    if (v11 == 2)
+    if (backgroundStyle == 2)
     {
-      [v35 interestAreaViewBackgroundStripePatternAlpha];
+      [styleProvider interestAreaViewBackgroundStripePatternAlpha];
     }
   }
 
   [v9 setAlpha:v12];
   [v36 addSubview:v9];
-  [(GAXInterestAreaView *)v37 clippedViews];
+  [(GAXInterestAreaView *)selfCopy clippedViews];
   v54[0] = _NSConcreteStackBlock;
   v54[1] = 3221225472;
   v54[2] = sub_10330;
@@ -822,11 +822,11 @@ LABEL_7:
   v55 = v33;
   v32 = v9;
   v56 = v32;
-  [v4 enumerateIndexesUsingBlock:v54];
-  [v33 removeObjectsAtIndexes:v4];
-  v58 = [(GAXInterestAreaView *)v37 closeButtons];
-  v59 = [(GAXInterestAreaView *)v37 resizingKnobButtons];
-  v14 = &v58;
+  [indicesCopy enumerateIndexesUsingBlock:v54];
+  [v33 removeObjectsAtIndexes:indicesCopy];
+  closeButtons = [(GAXInterestAreaView *)selfCopy closeButtons];
+  resizingKnobButtons = [(GAXInterestAreaView *)selfCopy resizingKnobButtons];
+  v14 = &closeButtons;
   v15 = 1;
   do
   {
@@ -853,10 +853,10 @@ LABEL_7:
           }
 
           v23 = *(*(&v50 + 1) + 8 * i);
-          v24 = [v23 superview];
-          if (v24)
+          superview = [v23 superview];
+          if (superview)
           {
-            v25 = [v4 containsIndex:{objc_msgSend(v23, "associatedInterestAreaPathIndex")}];
+            v25 = [indicesCopy containsIndex:{objc_msgSend(v23, "associatedInterestAreaPathIndex")}];
 
             if (v25)
             {
@@ -877,12 +877,12 @@ LABEL_7:
 
     [v18 removeObjectsAtIndexes:v17];
     v15 = 0;
-    v14 = &v59;
+    v14 = &resizingKnobButtons;
   }
 
   while ((v38 & 1) != 0);
-  [(GAXInterestAreaView *)v37 insertSubview:v39 atIndex:0];
-  [v35 defaultAnimationDuration];
+  [(GAXInterestAreaView *)selfCopy insertSubview:v39 atIndex:0];
+  [styleProvider defaultAnimationDuration];
   v27 = v26;
   v48[0] = _NSConcreteStackBlock;
   v48[1] = 3221225472;
@@ -896,21 +896,21 @@ LABEL_7:
   v28 = v49;
   v47 = v28;
   [UIView animateWithDuration:v48 animations:v46 completion:v27];
-  [(GAXInterestAreaView *)v37 setNeedsLayout];
-  v29 = [(GAXInterestAreaView *)v37 buttonBeingDragged];
-  v30 = v29;
-  if (v29)
+  [(GAXInterestAreaView *)selfCopy setNeedsLayout];
+  buttonBeingDragged = [(GAXInterestAreaView *)selfCopy buttonBeingDragged];
+  v30 = buttonBeingDragged;
+  if (buttonBeingDragged)
   {
     v42 = 0;
     v43 = &v42;
     v44 = 0x2020000000;
-    v45 = [v29 associatedInterestAreaPathIndex];
+    associatedInterestAreaPathIndex = [buttonBeingDragged associatedInterestAreaPathIndex];
     v41[0] = _NSConcreteStackBlock;
     v41[1] = 3221225472;
     v41[2] = sub_103AC;
     v41[3] = &unk_5D270;
     v41[4] = &v42;
-    [v4 enumerateIndexesWithOptions:2 usingBlock:v41];
+    [indicesCopy enumerateIndexesWithOptions:2 usingBlock:v41];
     [v30 setAssociatedInterestAreaPathIndex:v43[3]];
     _Block_object_dispose(&v42, 8);
   }
@@ -918,7 +918,7 @@ LABEL_7:
   v42 = 0;
   v43 = &v42;
   v44 = 0x2020000000;
-  v45 = [(GAXInterestAreaView *)v37 indexOfInterestAreaPathBeingDragged];
+  associatedInterestAreaPathIndex = [(GAXInterestAreaView *)selfCopy indexOfInterestAreaPathBeingDragged];
   if (v43[3] != 0x7FFFFFFFFFFFFFFFLL)
   {
     v40[0] = _NSConcreteStackBlock;
@@ -926,8 +926,8 @@ LABEL_7:
     v40[2] = sub_103CC;
     v40[3] = &unk_5D270;
     v40[4] = &v42;
-    [v4 enumerateIndexesWithOptions:2 usingBlock:v40];
-    [(GAXInterestAreaView *)v37 setIndexOfInterestAreaPathBeingDragged:v43[3]];
+    [indicesCopy enumerateIndexesWithOptions:2 usingBlock:v40];
+    [(GAXInterestAreaView *)selfCopy setIndexOfInterestAreaPathBeingDragged:v43[3]];
   }
 
   _Block_object_dispose(&v42, 8);
@@ -937,37 +937,37 @@ LABEL_7:
   }
 }
 
-- (void)insertDynamicInterestAreaPathAtIndex:(unint64_t)a3
+- (void)insertDynamicInterestAreaPathAtIndex:(unint64_t)index
 {
-  v3 = [(GAXInterestAreaView *)self fingerPathView];
-  [v3 reloadAllInterestAreaPaths];
-  [v3 setHidden:0];
+  fingerPathView = [(GAXInterestAreaView *)self fingerPathView];
+  [fingerPathView reloadAllInterestAreaPaths];
+  [fingerPathView setHidden:0];
 }
 
-- (void)reloadDynamicInterestAreaPathAtIndex:(unint64_t)a3
+- (void)reloadDynamicInterestAreaPathAtIndex:(unint64_t)index
 {
-  v3 = [(GAXInterestAreaView *)self fingerPathView];
-  [v3 reloadAllInterestAreaPaths];
+  fingerPathView = [(GAXInterestAreaView *)self fingerPathView];
+  [fingerPathView reloadAllInterestAreaPaths];
 }
 
-- (void)deleteDynamicInterestAreaPathAtIndices:(id)a3
+- (void)deleteDynamicInterestAreaPathAtIndices:(id)indices
 {
-  v4 = [(GAXInterestAreaView *)self fingerPathView];
-  [v4 reloadAllInterestAreaPaths];
-  if (![(GAXInterestAreaView *)self numberOfInterestAreaPathsForInterestAreaFingerPathView:v4])
+  fingerPathView = [(GAXInterestAreaView *)self fingerPathView];
+  [fingerPathView reloadAllInterestAreaPaths];
+  if (![(GAXInterestAreaView *)self numberOfInterestAreaPathsForInterestAreaFingerPathView:fingerPathView])
   {
-    [v4 setHidden:1];
+    [fingerPathView setHidden:1];
   }
 }
 
 - (void)reloadAllInterestAreaPaths
 {
-  v3 = [(GAXInterestAreaView *)self clippedViews];
+  clippedViews = [(GAXInterestAreaView *)self clippedViews];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [clippedViews countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -979,7 +979,7 @@ LABEL_7:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(clippedViews);
         }
 
         [*(*(&v11 + 1) + 8 * v7) removeFromSuperview];
@@ -987,17 +987,17 @@ LABEL_7:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [clippedViews countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
   }
 
-  [v3 removeAllObjects];
-  v8 = [(GAXInterestAreaView *)self _numberOfInterestAreaPaths];
-  if (v8)
+  [clippedViews removeAllObjects];
+  _numberOfInterestAreaPaths = [(GAXInterestAreaView *)self _numberOfInterestAreaPaths];
+  if (_numberOfInterestAreaPaths)
   {
-    v9 = v8;
+    v9 = _numberOfInterestAreaPaths;
     for (i = 0; i != v9; ++i)
     {
       [(GAXInterestAreaView *)self insertInterestAreaPathAtIndex:i];
@@ -1009,10 +1009,10 @@ LABEL_7:
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(GAXInterestAreaView *)self delegate];
+  delegate = [(GAXInterestAreaView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 interestAreaViewIsAccessibilityElement:self];
+    v4 = [delegate interestAreaViewIsAccessibilityElement:self];
   }
 
   else
@@ -1020,7 +1020,7 @@ LABEL_7:
     v4 = 1;
   }
 
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v3 canInteractWithInterestAreaView:self] & 1) == 0)
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([delegate canInteractWithInterestAreaView:self] & 1) == 0)
   {
     v4 = 1;
   }
@@ -1039,43 +1039,43 @@ LABEL_7:
 
 - (int64_t)accessibilityContainerType
 {
-  v3 = [(GAXInterestAreaView *)self delegate];
-  if (objc_opt_respondsToSelector() & 1) != 0 && ([v3 canInteractWithInterestAreaView:self])
+  delegate = [(GAXInterestAreaView *)self delegate];
+  if (objc_opt_respondsToSelector() & 1) != 0 && ([delegate canInteractWithInterestAreaView:self])
   {
-    v4 = &dword_4;
+    accessibilityContainerType = &dword_4;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = GAXInterestAreaView;
-    v4 = [(GAXInterestAreaView *)&v6 accessibilityContainerType];
+    accessibilityContainerType = [(GAXInterestAreaView *)&v6 accessibilityContainerType];
   }
 
-  return v4;
+  return accessibilityContainerType;
 }
 
 - (unint64_t)accessibilityTraits
 {
   v6.receiver = self;
   v6.super_class = GAXInterestAreaView;
-  v3 = [(GAXInterestAreaView *)&v6 accessibilityTraits];
-  v4 = [(GAXInterestAreaView *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v4 canInteractWithInterestAreaView:self] & 1) == 0)
+  accessibilityTraits = [(GAXInterestAreaView *)&v6 accessibilityTraits];
+  delegate = [(GAXInterestAreaView *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([delegate canInteractWithInterestAreaView:self] & 1) == 0)
   {
-    v3 |= UIAccessibilityTraitNotEnabled;
+    accessibilityTraits |= UIAccessibilityTraitNotEnabled;
   }
 
-  return v3;
+  return accessibilityTraits;
 }
 
 - (id)accessibilityValue
 {
-  v3 = [(GAXInterestAreaView *)self dataSource];
+  dataSource = [(GAXInterestAreaView *)self dataSource];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(GAXInterestAreaView *)self dataSource];
-    v5 = [v4 numberOfInterestAreaPathsForInterestAreaView:self];
+    dataSource2 = [(GAXInterestAreaView *)self dataSource];
+    v5 = [dataSource2 numberOfInterestAreaPathsForInterestAreaView:self];
   }
 
   else
@@ -1091,8 +1091,8 @@ LABEL_7:
 
 - (id)accessibilityHint
 {
-  v3 = [(GAXInterestAreaView *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v3 canInteractWithInterestAreaView:self])
+  delegate = [(GAXInterestAreaView *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [delegate canInteractWithInterestAreaView:self])
   {
     v4 = GAXLocString(@"HELP_INTEREST_AREA");
   }
@@ -1107,8 +1107,8 @@ LABEL_7:
 
 - (CGRect)accessibilityFrame
 {
-  v2 = [(GAXInterestAreaView *)self contentsView];
-  [v2 accessibilityFrame];
+  contentsView = [(GAXInterestAreaView *)self contentsView];
+  [contentsView accessibilityFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -1125,14 +1125,14 @@ LABEL_7:
   return result;
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   [(GAXInterestAreaView *)self frame];
   [(GAXInterestAreaView *)self setSavedFrame:?];
   v5.receiver = self;
   v5.super_class = GAXInterestAreaView;
-  [(GAXInterestAreaView *)&v5 willMoveToWindow:v4];
+  [(GAXInterestAreaView *)&v5 willMoveToWindow:windowCopy];
 }
 
 - (void)didMoveToWindow
@@ -1144,15 +1144,15 @@ LABEL_7:
   [(GAXInterestAreaView *)self setFrame:?];
   [(GAXInterestAreaView *)self setSavedFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   [(GAXInterestAreaView *)self _refreshBackgroundStripesPatternColor];
-  v3 = [(GAXInterestAreaView *)self backgroundStripesPatternColor];
-  if (v3)
+  backgroundStripesPatternColor = [(GAXInterestAreaView *)self backgroundStripesPatternColor];
+  if (backgroundStripesPatternColor)
   {
-    v4 = [(GAXInterestAreaView *)self clippedViews];
+    clippedViews = [(GAXInterestAreaView *)self clippedViews];
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+    v5 = [clippedViews countByEnumeratingWithState:&v10 objects:v15 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1164,41 +1164,41 @@ LABEL_7:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(clippedViews);
           }
 
-          [*(*(&v10 + 1) + 8 * v8) setBackgroundColor:v3];
+          [*(*(&v10 + 1) + 8 * v8) setBackgroundColor:backgroundStripesPatternColor];
           v8 = v8 + 1;
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+        v6 = [clippedViews countByEnumeratingWithState:&v10 objects:v15 count:16];
       }
 
       while (v6);
     }
 
-    v9 = [(GAXInterestAreaView *)self backgroundViewCoveringEverything];
-    [v9 setBackgroundColor:v3];
+    backgroundViewCoveringEverything = [(GAXInterestAreaView *)self backgroundViewCoveringEverything];
+    [backgroundViewCoveringEverything setBackgroundColor:backgroundStripesPatternColor];
   }
 }
 
-- (void)_handlePan:(id)a3
+- (void)_handlePan:(id)pan
 {
-  v4 = a3;
-  v5 = [v4 state];
-  if (v5 - 1 <= 1)
+  panCopy = pan;
+  state = [panCopy state];
+  if (state - 1 <= 1)
   {
-    v6 = [(GAXInterestAreaView *)self delegate];
-    v7 = [(GAXInterestAreaView *)self buttonBeingDragged];
+    delegate = [(GAXInterestAreaView *)self delegate];
+    buttonBeingDragged = [(GAXInterestAreaView *)self buttonBeingDragged];
     v32 = 0;
     v33 = &v32;
     v34 = 0x2020000000;
-    v35 = [(GAXInterestAreaView *)self indexOfInterestAreaPathBeingDragged];
-    if (v7)
+    indexOfInterestAreaPathBeingDragged = [(GAXInterestAreaView *)self indexOfInterestAreaPathBeingDragged];
+    if (buttonBeingDragged)
     {
 LABEL_3:
-      [v4 translationInView:self];
+      [panCopy translationInView:self];
       v9 = v8;
       v11 = v10;
       [(GAXInterestAreaView *)self buttonBeingDraggedInitialCenter];
@@ -1208,12 +1208,12 @@ LABEL_3:
       v30 = v15;
       if (objc_opt_respondsToSelector())
       {
-        [v6 interestAreaView:self resizingKnobAtPosition:objc_msgSend(v7 wasMovedToPoint:"knobPosition") forInterestAreaPathAtIndex:objc_msgSend(v7 constrainedResizingKnobCenter:{"associatedInterestAreaPathIndex"), &v29, v13, v15}];
+        [delegate interestAreaView:self resizingKnobAtPosition:objc_msgSend(buttonBeingDragged wasMovedToPoint:"knobPosition") forInterestAreaPathAtIndex:objc_msgSend(buttonBeingDragged constrainedResizingKnobCenter:{"associatedInterestAreaPathIndex"), &v29, v13, v15}];
         v13 = v29;
         v15 = v30;
       }
 
-      [v7 gax_setCenter:1 alignWithGrid:{v13, v15}];
+      [buttonBeingDragged gax_setCenter:1 alignWithGrid:{v13, v15}];
 
 LABEL_6:
       _Block_object_dispose(&v32, 8);
@@ -1224,20 +1224,20 @@ LABEL_23:
 
     if (v33[3] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v4 locationInView:self];
+      [panCopy locationInView:self];
       v19 = v18;
       v21 = v20;
       v22 = [(GAXInterestAreaView *)self _specialControlButtonAtLocation:?];
-      v7 = v22;
+      buttonBeingDragged = v22;
       if (v22)
       {
         [v22 setHighlighted:1];
-        [(GAXInterestAreaView *)self setButtonBeingDragged:v7];
-        [v7 center];
+        [(GAXInterestAreaView *)self setButtonBeingDragged:buttonBeingDragged];
+        [buttonBeingDragged center];
         [(GAXInterestAreaView *)self setButtonBeingDraggedInitialCenter:?];
         if (objc_opt_respondsToSelector())
         {
-          [v6 interestAreaView:self willBeginMovingResizingKnobAtPosition:objc_msgSend(v7 forInterestAreaPathAtIndex:{"knobPosition"), objc_msgSend(v7, "associatedInterestAreaPathIndex")}];
+          [delegate interestAreaView:self willBeginMovingResizingKnobAtPosition:objc_msgSend(buttonBeingDragged forInterestAreaPathAtIndex:{"knobPosition"), objc_msgSend(buttonBeingDragged, "associatedInterestAreaPathIndex")}];
         }
 
         goto LABEL_3;
@@ -1259,14 +1259,14 @@ LABEL_23:
         v26 = v33;
         if (v27)
         {
-          [v6 interestAreaView:self willBeginMovingInterestAreaPathAtIndex:v33[3]];
+          [delegate interestAreaView:self willBeginMovingInterestAreaPathAtIndex:v33[3]];
           v26 = v33;
         }
       }
 
       if (v26[3] == 0x7FFFFFFFFFFFFFFFLL)
       {
-        [v4 setEnabled:0];
+        [panCopy setEnabled:0];
         if (v33[3] == 0x7FFFFFFFFFFFFFFFLL)
         {
           goto LABEL_6;
@@ -1277,49 +1277,49 @@ LABEL_23:
     if (objc_opt_respondsToSelector())
     {
       v28 = v33[3];
-      [v4 translationInView:self];
-      [v6 interestAreaView:self interestAreaPathAtIndex:v28 wasMovedWithTranslation:?];
+      [panCopy translationInView:self];
+      [delegate interestAreaView:self interestAreaPathAtIndex:v28 wasMovedWithTranslation:?];
     }
 
     goto LABEL_6;
   }
 
-  if (v5 - 3 <= 1)
+  if (state - 3 <= 1)
   {
-    if (v5 == &dword_4 && ([v4 isEnabled] & 1) == 0)
+    if (state == &dword_4 && ([panCopy isEnabled] & 1) == 0)
     {
-      [v4 setEnabled:1];
+      [panCopy setEnabled:1];
     }
 
-    v16 = [(GAXInterestAreaView *)self buttonBeingDragged];
-    v6 = v16;
-    if (v16)
+    buttonBeingDragged2 = [(GAXInterestAreaView *)self buttonBeingDragged];
+    delegate = buttonBeingDragged2;
+    if (buttonBeingDragged2)
     {
-      [v16 setHighlighted:0];
-      v17 = [(GAXInterestAreaView *)self delegate];
+      [buttonBeingDragged2 setHighlighted:0];
+      delegate2 = [(GAXInterestAreaView *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        [v17 interestAreaView:self didFinishMovingResizingKnobAtPosition:objc_msgSend(v6 forInterestAreaPathAtIndex:{"knobPosition"), objc_msgSend(v6, "associatedInterestAreaPathIndex")}];
+        [delegate2 interestAreaView:self didFinishMovingResizingKnobAtPosition:objc_msgSend(delegate forInterestAreaPathAtIndex:{"knobPosition"), objc_msgSend(delegate, "associatedInterestAreaPathIndex")}];
       }
 
       [(GAXInterestAreaView *)self setButtonBeingDragged:0];
       [(GAXInterestAreaView *)self setButtonBeingDraggedInitialCenter:CGPointZero.x, CGPointZero.y];
-      -[GAXInterestAreaView reloadInterestAreaPathAtIndex:](self, "reloadInterestAreaPathAtIndex:", [v6 associatedInterestAreaPathIndex]);
+      -[GAXInterestAreaView reloadInterestAreaPathAtIndex:](self, "reloadInterestAreaPathAtIndex:", [delegate associatedInterestAreaPathIndex]);
 
       [(GAXInterestAreaView *)self indexOfInterestAreaPathBeingDragged];
     }
 
     else
     {
-      v23 = [(GAXInterestAreaView *)self indexOfInterestAreaPathBeingDragged];
-      if (v23 != 0x7FFFFFFFFFFFFFFFLL)
+      indexOfInterestAreaPathBeingDragged2 = [(GAXInterestAreaView *)self indexOfInterestAreaPathBeingDragged];
+      if (indexOfInterestAreaPathBeingDragged2 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v24 = v23;
+        v24 = indexOfInterestAreaPathBeingDragged2;
         [(GAXInterestAreaView *)self setIndexOfInterestAreaPathBeingDragged:0x7FFFFFFFFFFFFFFFLL];
-        v25 = [(GAXInterestAreaView *)self delegate];
+        delegate3 = [(GAXInterestAreaView *)self delegate];
         if (objc_opt_respondsToSelector())
         {
-          [v25 interestAreaView:self didFinishMovingInterestAreaPathAtIndex:v24];
+          [delegate3 interestAreaView:self didFinishMovingInterestAreaPathAtIndex:v24];
         }
       }
     }
@@ -1330,31 +1330,31 @@ LABEL_23:
 LABEL_24:
 }
 
-- (void)_handleTap:(id)a3
+- (void)_handleTap:(id)tap
 {
-  v8 = a3;
-  v4 = [v8 state] == &dword_0 + 3;
-  v5 = v8;
+  tapCopy = tap;
+  v4 = [tapCopy state] == &dword_0 + 3;
+  v5 = tapCopy;
   if (v4)
   {
-    [v8 locationInView:self];
+    [tapCopy locationInView:self];
     v6 = [(GAXInterestAreaView *)self _specialControlButtonAtLocation:&stru_5D2D8 passingTest:?];
-    [v8 locationInView:self];
+    [tapCopy locationInView:self];
     [v6 convertPoint:self fromView:?];
     if ([v6 pointInside:0 withEvent:?])
     {
-      v7 = [(GAXInterestAreaView *)self delegate];
+      delegate = [(GAXInterestAreaView *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        [v7 interestAreaView:self didActivateCloseButtonForInterestAreaPathAtIndex:{objc_msgSend(v6, "associatedInterestAreaPathIndex")}];
+        [delegate interestAreaView:self didActivateCloseButtonForInterestAreaPathAtIndex:{objc_msgSend(v6, "associatedInterestAreaPathIndex")}];
       }
     }
 
-    v5 = v8;
+    v5 = tapCopy;
   }
 }
 
-- (void)_getClippedViewPropertiesForInterestAreaPathAtIndex:(unint64_t)a3 frame:(CGRect *)a4 constrainedFrame:(CGRect *)a5 adjustedClippingPath:(id *)a6
+- (void)_getClippedViewPropertiesForInterestAreaPathAtIndex:(unint64_t)index frame:(CGRect *)frame constrainedFrame:(CGRect *)constrainedFrame adjustedClippingPath:(id *)path
 {
   v11 = [(GAXInterestAreaView *)self _interestAreaPathAtIndex:?];
   [v11 bounds];
@@ -1362,27 +1362,27 @@ LABEL_24:
   v17 = v13;
   v18 = v14;
   v19 = v15;
-  if (a4)
+  if (frame)
   {
-    a4->origin.x = v12;
-    a4->origin.y = v13;
-    a4->size.width = v14;
-    a4->size.height = v15;
+    frame->origin.x = v12;
+    frame->origin.y = v13;
+    frame->size.width = v14;
+    frame->size.height = v15;
   }
 
-  if (a5)
+  if (constrainedFrame)
   {
-    [(GAXInterestAreaView *)self _constrainedFrameForInsetFrame:a3 forInterestAreaPathAtIndex:v12, v13, v14, v15];
-    a5->origin.x = v20;
-    a5->origin.y = v21;
-    a5->size.width = v22;
-    a5->size.height = v23;
+    [(GAXInterestAreaView *)self _constrainedFrameForInsetFrame:index forInterestAreaPathAtIndex:v12, v13, v14, v15];
+    constrainedFrame->origin.x = v20;
+    constrainedFrame->origin.y = v21;
+    constrainedFrame->size.width = v22;
+    constrainedFrame->size.height = v23;
   }
 
-  if (a6)
+  if (path)
   {
     v24 = [v11 copy];
-    *a6 = v24;
+    *path = v24;
     v28.origin.x = v16;
     v28.origin.y = v17;
     v28.size.width = v18;
@@ -1398,24 +1398,24 @@ LABEL_24:
   }
 }
 
-- (void)_insertClippedViewForInterestAreaPathAtIndex:(unint64_t)a3
+- (void)_insertClippedViewForInterestAreaPathAtIndex:(unint64_t)index
 {
-  v5 = [(GAXInterestAreaView *)self backgroundContainerView];
-  v6 = [(GAXInterestAreaView *)self clippedViews];
-  if (!v6)
+  backgroundContainerView = [(GAXInterestAreaView *)self backgroundContainerView];
+  clippedViews = [(GAXInterestAreaView *)self clippedViews];
+  if (!clippedViews)
   {
-    v6 = objc_opt_new();
-    [(GAXInterestAreaView *)self setClippedViews:v6];
+    clippedViews = objc_opt_new();
+    [(GAXInterestAreaView *)self setClippedViews:clippedViews];
   }
 
-  v7 = [v6 count];
-  if (v7 < a3)
+  v7 = [clippedViews count];
+  if (v7 < index)
   {
     _AXAssert();
     goto LABEL_12;
   }
 
-  if (v6 && v5)
+  if (clippedViews && backgroundContainerView)
   {
     v8 = v7;
     size = CGRectZero.size;
@@ -1424,53 +1424,53 @@ LABEL_24:
     v18 = origin;
     v19 = size;
     v17 = 0;
-    [(GAXInterestAreaView *)self _getClippedViewPropertiesForInterestAreaPathAtIndex:a3 frame:&origin constrainedFrame:&v18 adjustedClippingPath:&v17];
+    [(GAXInterestAreaView *)self _getClippedViewPropertiesForInterestAreaPathAtIndex:index frame:&origin constrainedFrame:&v18 adjustedClippingPath:&v17];
     v10 = v17;
     v11 = [GAXInterestAreaClippedView alloc];
-    [(GAXInterestAreaView *)self convertRect:v5 toView:origin, v21];
+    [(GAXInterestAreaView *)self convertRect:backgroundContainerView toView:origin, v21];
     v12 = [(GAXInterestAreaClippedView *)v11 initWithFrame:?];
     [(GAXInterestAreaView *)self bounds];
     [(GAXInterestAreaClippedView *)v12 setBackgroundSize:v13, v14];
-    v15 = [(GAXInterestAreaView *)self backgroundStripesPatternColor];
-    [(GAXInterestAreaClippedView *)v12 setBackgroundColor:v15];
+    backgroundStripesPatternColor = [(GAXInterestAreaView *)self backgroundStripesPatternColor];
+    [(GAXInterestAreaClippedView *)v12 setBackgroundColor:backgroundStripesPatternColor];
 
     [(GAXInterestAreaView *)self backgroundPatternScaleFactor];
     [(GAXInterestAreaClippedView *)v12 setBackgroundPatternScaleFactor:?];
     [(GAXInterestAreaClippedView *)v12 setClippingPath:v10];
 
     [(GAXInterestAreaClippedView *)v12 setDelegate:self];
-    [(GAXInterestAreaView *)self convertRect:v5 toView:v18, v19];
+    [(GAXInterestAreaView *)self convertRect:backgroundContainerView toView:v18, v19];
     [(GAXInterestAreaClippedView *)v12 setFrame:?];
-    if (v8 <= a3)
+    if (v8 <= index)
     {
-      v16 = [(GAXInterestAreaView *)self backgroundViewCoveringEverything];
-      if (!v16)
+      backgroundViewCoveringEverything = [(GAXInterestAreaView *)self backgroundViewCoveringEverything];
+      if (!backgroundViewCoveringEverything)
       {
-        [v5 addSubview:v12];
+        [backgroundContainerView addSubview:v12];
         goto LABEL_11;
       }
     }
 
     else
     {
-      v16 = [v6 objectAtIndex:a3];
+      backgroundViewCoveringEverything = [clippedViews objectAtIndex:index];
     }
 
-    [v5 insertSubview:v12 belowSubview:v16];
+    [backgroundContainerView insertSubview:v12 belowSubview:backgroundViewCoveringEverything];
 LABEL_11:
 
-    [v6 insertObject:v12 atIndex:a3];
+    [clippedViews insertObject:v12 atIndex:index];
   }
 
 LABEL_12:
 }
 
-- (CGRect)_constrainedFrameForInsetFrame:(CGRect)a3 forInterestAreaPathAtIndex:(unint64_t)a4
+- (CGRect)_constrainedFrameForInsetFrame:(CGRect)frame forInterestAreaPathAtIndex:(unint64_t)index
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (![(GAXInterestAreaView *)self _shouldDisableSmartLayoutRelativeToEdgesForInterestAreaPathAtIndex:?])
   {
     [(GAXInterestAreaView *)self contentsBounds];
@@ -1482,7 +1482,7 @@ LABEL_12:
     v40 = v14;
     v17 = v16;
     rect = v16;
-    v18 = [(GAXInterestAreaView *)self _interestAreaPathAtIndex:a4];
+    v18 = [(GAXInterestAreaView *)self _interestAreaPathAtIndex:index];
     [v18 bounds];
     v47 = width;
     v48 = height;
@@ -1578,28 +1578,28 @@ LABEL_12:
 
 - (void)_resetAllSpecialControls
 {
-  v3 = [(GAXInterestAreaView *)self closeButtons];
-  v4 = [(GAXInterestAreaView *)self resizingKnobButtons];
-  v5 = [(GAXInterestAreaView *)self areSpecialControlsVisible];
+  closeButtons = [(GAXInterestAreaView *)self closeButtons];
+  resizingKnobButtons = [(GAXInterestAreaView *)self resizingKnobButtons];
+  areSpecialControlsVisible = [(GAXInterestAreaView *)self areSpecialControlsVisible];
   [(GAXInterestAreaView *)self buttonBeingDragged];
   v47[0] = _NSConcreteStackBlock;
   v47[1] = 3221225472;
   v47[2] = sub_11AB4;
   v47[3] = &unk_5D300;
-  v6 = v49 = v5;
+  v6 = v49 = areSpecialControlsVisible;
   v48 = v6;
   [(GAXInterestAreaView *)self _enumerateSpecialControlsUsingBlock:v47];
-  if (v5)
+  if (areSpecialControlsVisible)
   {
-    v7 = [(GAXInterestAreaView *)self delegate];
+    delegate = [(GAXInterestAreaView *)self delegate];
     if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
     {
-      v8 = [(GAXInterestAreaView *)self styleProvider];
-      v9 = [(GAXInterestAreaView *)self backgroundShouldCoverEverything];
+      styleProvider = [(GAXInterestAreaView *)self styleProvider];
+      backgroundShouldCoverEverything = [(GAXInterestAreaView *)self backgroundShouldCoverEverything];
       v43[0] = 0;
       v43[1] = v43;
       v43[3] = &unk_545BF;
-      if (v9)
+      if (backgroundShouldCoverEverything)
       {
         v10 = 0.0;
       }
@@ -1621,7 +1621,7 @@ LABEL_12:
       v40[0] = 0;
       v40[1] = v40;
       v40[2] = 0x2020000000;
-      v40[3] = [v3 count];
+      v40[3] = [closeButtons count];
       v39[0] = 0;
       v39[1] = v39;
       v39[2] = 0x2020000000;
@@ -1629,7 +1629,7 @@ LABEL_12:
       v38[0] = 0;
       v38[1] = v38;
       v38[2] = 0x2020000000;
-      v38[3] = [v4 count];
+      v38[3] = [resizingKnobButtons count];
       v37[0] = 0;
       v37[1] = v37;
       v37[2] = 0x2020000000;
@@ -1653,16 +1653,16 @@ LABEL_12:
       v19 = v6;
       v24 = v37;
       v25 = v38;
-      v20 = v4;
+      v20 = resizingKnobButtons;
       v26 = v33;
-      v12 = v8;
+      v12 = styleProvider;
       v21 = v12;
       v27 = v39;
       v28 = v40;
       v29 = v35;
       v30 = v41;
-      v22 = v3;
-      v23 = self;
+      v22 = closeButtons;
+      selfCopy = self;
       v31 = v43;
       v32 = v10;
       v13 = objc_retainBlock(v18);
@@ -1671,7 +1671,7 @@ LABEL_12:
       v15[2] = sub_11EEC;
       v15[3] = &unk_5D378;
       v15[4] = self;
-      v16 = v7;
+      v16 = delegate;
       v14 = v13;
       v17 = v14;
       [(GAXInterestAreaView *)self _enumerateInterestAreaPathsUsingBlock:v15];
@@ -1689,15 +1689,15 @@ LABEL_12:
   }
 }
 
-- (void)_enumerateSpecialControlsUsingBlock:(id)a3
+- (void)_enumerateSpecialControlsUsingBlock:(id)block
 {
-  v4 = a3;
-  v22 = [(GAXInterestAreaView *)self closeButtons];
-  v5 = [(GAXInterestAreaView *)self resizingKnobButtons];
+  blockCopy = block;
+  closeButtons = [(GAXInterestAreaView *)self closeButtons];
+  resizingKnobButtons = [(GAXInterestAreaView *)self resizingKnobButtons];
   v6 = 0;
   v7 = 0;
-  v8 = &v22;
-  v23 = v5;
+  v8 = &closeButtons;
+  v23 = resizingKnobButtons;
   v20 = 0;
   do
   {
@@ -1720,7 +1720,7 @@ LABEL_4:
           objc_enumerationMutation(v10);
         }
 
-        v4[2](v4, *(*(&v16 + 1) + 8 * v13), v6, &v20);
+        blockCopy[2](blockCopy, *(*(&v16 + 1) + 8 * v13), v6, &v20);
         if (v20)
         {
           break;
@@ -1751,20 +1751,20 @@ LABEL_4:
   }
 }
 
-- (void)_enumerateSpecialControlPropertiesForInterestAreaPath:(id)a3 visibleKnobPositions:(unint64_t)a4 hasCloseButton:(BOOL)a5 usingBlock:(id)a6
+- (void)_enumerateSpecialControlPropertiesForInterestAreaPath:(id)path visibleKnobPositions:(unint64_t)positions hasCloseButton:(BOOL)button usingBlock:(id)block
 {
-  v7 = a5;
-  v8 = a4;
-  v10 = a3;
-  v9 = a6;
-  if (v8)
+  buttonCopy = button;
+  positionsCopy = positions;
+  pathCopy = path;
+  blockCopy = block;
+  if (positionsCopy)
   {
-    [v10 topLeftPointOnPath];
-    v9[2](v9, 1, v7);
-    if ((v8 & 2) == 0)
+    [pathCopy topLeftPointOnPath];
+    blockCopy[2](blockCopy, 1, buttonCopy);
+    if ((positionsCopy & 2) == 0)
     {
 LABEL_3:
-      if ((v8 & 4) == 0)
+      if ((positionsCopy & 4) == 0)
       {
         goto LABEL_4;
       }
@@ -1773,17 +1773,17 @@ LABEL_3:
     }
   }
 
-  else if ((v8 & 2) == 0)
+  else if ((positionsCopy & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  [v10 topRightPointOnPath];
-  v9[2](v9, 2, 0);
-  if ((v8 & 4) == 0)
+  [pathCopy topRightPointOnPath];
+  blockCopy[2](blockCopy, 2, 0);
+  if ((positionsCopy & 4) == 0)
   {
 LABEL_4:
-    if ((v8 & 8) == 0)
+    if ((positionsCopy & 8) == 0)
     {
       goto LABEL_6;
     }
@@ -1792,22 +1792,22 @@ LABEL_4:
   }
 
 LABEL_11:
-  [v10 bottomRightPointOnPath];
-  v9[2](v9, 4, 0);
-  if ((v8 & 8) != 0)
+  [pathCopy bottomRightPointOnPath];
+  blockCopy[2](blockCopy, 4, 0);
+  if ((positionsCopy & 8) != 0)
   {
 LABEL_5:
-    [v10 bottomLeftPointOnPath];
-    v9[2](v9, 8, 0);
+    [pathCopy bottomLeftPointOnPath];
+    blockCopy[2](blockCopy, 8, 0);
   }
 
 LABEL_6:
 }
 
-- (id)_specialControlButtonAtLocation:(CGPoint)a3 passingTest:(id)a4
+- (id)_specialControlButtonAtLocation:(CGPoint)location passingTest:(id)test
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v27[0] = 0;
   v27[1] = v27;
   v27[2] = 0x2020000000;
@@ -1822,16 +1822,16 @@ LABEL_6:
   v12 = 3221225472;
   v13 = sub_1246C;
   v14 = &unk_5D3C0;
-  v15 = self;
-  v7 = a4;
+  selfCopy = self;
+  testCopy = test;
   v19 = x;
   v20 = y;
-  v16 = v7;
+  v16 = testCopy;
   v17 = &v21;
   v18 = v27;
-  [(GAXInterestAreaView *)v15 _enumerateSpecialControlsUsingBlock:&v11];
+  [(GAXInterestAreaView *)selfCopy _enumerateSpecialControlsUsingBlock:&v11];
   v8 = v22[5];
-  [v8 convertPoint:self fromView:{x, y, v11, v12, v13, v14, v15}];
+  [v8 convertPoint:self fromView:{x, y, v11, v12, v13, v14, selfCopy}];
   if ([v8 pointInside:0 withEvent:?])
   {
     v9 = v22[5];
@@ -1850,10 +1850,10 @@ LABEL_6:
 
 - (unint64_t)_numberOfInterestAreaPaths
 {
-  v3 = [(GAXInterestAreaView *)self dataSource];
+  dataSource = [(GAXInterestAreaView *)self dataSource];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 numberOfInterestAreaPathsForInterestAreaView:self];
+    v4 = [dataSource numberOfInterestAreaPathsForInterestAreaView:self];
   }
 
   else
@@ -1864,12 +1864,12 @@ LABEL_6:
   return v4;
 }
 
-- (id)_interestAreaPathAtIndex:(unint64_t)a3
+- (id)_interestAreaPathAtIndex:(unint64_t)index
 {
-  v5 = [(GAXInterestAreaView *)self dataSource];
+  dataSource = [(GAXInterestAreaView *)self dataSource];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 interestAreaView:self interestAreaPathAtIndex:a3];
+    v6 = [dataSource interestAreaView:self interestAreaPathAtIndex:index];
   }
 
   else
@@ -1880,15 +1880,15 @@ LABEL_6:
   return v6;
 }
 
-- (void)_enumerateInterestAreaPathsWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)_enumerateInterestAreaPathsWithOptions:(unint64_t)options usingBlock:(id)block
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(GAXInterestAreaView *)self dataSource];
+  optionsCopy = options;
+  blockCopy = block;
+  dataSource = [(GAXInterestAreaView *)self dataSource];
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
     v14 = 0;
-    v8 = [v7 numberOfInterestAreaPathsForInterestAreaView:self];
+    v8 = [dataSource numberOfInterestAreaPathsForInterestAreaView:self];
     if (v8)
     {
       v9 = v8;
@@ -1896,7 +1896,7 @@ LABEL_6:
       v11 = 1;
       do
       {
-        if ((v4 & 2) != 0)
+        if ((optionsCopy & 2) != 0)
         {
           v12 = v10;
         }
@@ -1906,8 +1906,8 @@ LABEL_6:
           v12 = v11 - 1;
         }
 
-        v13 = [v7 interestAreaView:self interestAreaPathAtIndex:v12];
-        v6[2](v6, v13, v12, &v14);
+        v13 = [dataSource interestAreaView:self interestAreaPathAtIndex:v12];
+        blockCopy[2](blockCopy, v13, v12, &v14);
 
         if (v11 >= v9)
         {
@@ -1925,11 +1925,11 @@ LABEL_6:
 
 - (double)_scaleFactorForSpecialControls
 {
-  v3 = [(GAXInterestAreaView *)self delegate];
+  delegate = [(GAXInterestAreaView *)self delegate];
   v4 = 1.0;
   if (objc_opt_respondsToSelector())
   {
-    [v3 scaleForSpecialControlsInInterestAreaView:self];
+    [delegate scaleForSpecialControlsInInterestAreaView:self];
     if (v5 != 0.0)
     {
       v4 = v5;
@@ -1939,12 +1939,12 @@ LABEL_6:
   return v4;
 }
 
-- (BOOL)_shouldDisableSmartLayoutRelativeToEdgesForInterestAreaPathAtIndex:(unint64_t)a3
+- (BOOL)_shouldDisableSmartLayoutRelativeToEdgesForInterestAreaPathAtIndex:(unint64_t)index
 {
-  v5 = [(GAXInterestAreaView *)self delegate];
+  delegate = [(GAXInterestAreaView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 interestAreaView:self shouldDisableSmartLayoutRelativeToEdgesForInterestAreaPathAtIndex:a3];
+    v6 = [delegate interestAreaView:self shouldDisableSmartLayoutRelativeToEdgesForInterestAreaPathAtIndex:index];
   }
 
   else
@@ -1957,21 +1957,21 @@ LABEL_6:
 
 - (void)_ensureBackgroundSizeOfBackgroundViewCoveringEverythingIsSet
 {
-  v8 = [(GAXInterestAreaView *)self backgroundViewCoveringEverything];
-  [v8 backgroundSize];
+  backgroundViewCoveringEverything = [(GAXInterestAreaView *)self backgroundViewCoveringEverything];
+  [backgroundViewCoveringEverything backgroundSize];
   if (v4 == CGSizeZero.width && v3 == CGSizeZero.height)
   {
     [(GAXInterestAreaView *)self bounds];
-    [v8 setBackgroundSize:{v6, v7}];
+    [backgroundViewCoveringEverything setBackgroundSize:{v6, v7}];
   }
 }
 
-- (unint64_t)numberOfInterestAreaPathsForInterestAreaFingerPathView:(id)a3
+- (unint64_t)numberOfInterestAreaPathsForInterestAreaFingerPathView:(id)view
 {
-  v4 = [(GAXInterestAreaView *)self dataSource];
+  dataSource = [(GAXInterestAreaView *)self dataSource];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 numberOfDynamicInterestAreaPathsForInterestAreaView:self];
+    v5 = [dataSource numberOfDynamicInterestAreaPathsForInterestAreaView:self];
   }
 
   else
@@ -1982,12 +1982,12 @@ LABEL_6:
   return v5;
 }
 
-- (id)interestAreaFingerPathView:(id)a3 interestAreaPathAtIndex:(unint64_t)a4
+- (id)interestAreaFingerPathView:(id)view interestAreaPathAtIndex:(unint64_t)index
 {
-  v6 = [(GAXInterestAreaView *)self dataSource];
+  dataSource = [(GAXInterestAreaView *)self dataSource];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 interestAreaView:self dynamicInterestAreaPathAtIndex:a4];
+    v7 = [dataSource interestAreaView:self dynamicInterestAreaPathAtIndex:index];
   }
 
   else
@@ -1998,11 +1998,11 @@ LABEL_6:
   return v7;
 }
 
-- (CGPoint)centerForBackgroundOfInterestAreaClippedView:(id)a3
+- (CGPoint)centerForBackgroundOfInterestAreaClippedView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(GAXInterestAreaView *)self center];
-  [(GAXInterestAreaView *)self convertPoint:v4 toView:?];
+  [(GAXInterestAreaView *)self convertPoint:viewCopy toView:?];
   v6 = v5;
   v8 = v7;
 
@@ -2013,10 +2013,10 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  touchCopy = touch;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -2030,9 +2030,9 @@ LABEL_6:
       goto LABEL_10;
     }
 
-    [v7 locationInView:self];
-    v8 = [(GAXInterestAreaView *)self _specialControlButtonAtLocation:&stru_5D3E0 passingTest:?];
-    if (!v8)
+    [touchCopy locationInView:self];
+    buttonBeingDragged = [(GAXInterestAreaView *)self _specialControlButtonAtLocation:&stru_5D3E0 passingTest:?];
+    if (!buttonBeingDragged)
     {
       *(v18 + 24) = 0;
     }
@@ -2042,15 +2042,15 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v8 = [(GAXInterestAreaView *)self buttonBeingDragged];
-  if (v8)
+  buttonBeingDragged = [(GAXInterestAreaView *)self buttonBeingDragged];
+  if (buttonBeingDragged)
   {
     goto LABEL_9;
   }
 
   if ([(GAXInterestAreaView *)self indexOfInterestAreaPathBeingDragged]== 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v7 locationInView:self];
+    [touchCopy locationInView:self];
     v10 = v9;
     v12 = v11;
     v13 = [(GAXInterestAreaView *)self _specialControlButtonAtLocation:?];

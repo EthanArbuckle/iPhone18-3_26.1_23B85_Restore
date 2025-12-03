@@ -8,7 +8,7 @@
 
 - (JSValue)userProfile
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_216A70470();
 
   return v3;
@@ -16,7 +16,7 @@
 
 - (id)fetchUserSocialProfile
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_216A70470();
 
   return v3;
@@ -24,7 +24,7 @@
 
 - (id)fetchIsCloudAndMediaAccountIdentical
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_216A70470();
 
   return v3;

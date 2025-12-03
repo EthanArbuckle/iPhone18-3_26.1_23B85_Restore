@@ -1,28 +1,28 @@
 @interface CKFilteringListController
 - (BOOL)deviceSupportsSMSFilteringExtensions;
-- (BOOL)enableSpamForExtensionID:(id)a3 withName:(id)a4;
+- (BOOL)enableSpamForExtensionID:(id)d withName:(id)name;
 - (BOOL)verifyCurrentExtensionIDValidity;
 - (CKFilteringListController)init;
 - (id)_syncManager;
 - (id)getDefaultExtension;
 - (id)getSpamSpecifiers;
-- (id)isConversationListFilteringEnabled:(id)a3;
+- (id)isConversationListFilteringEnabled:(id)enabled;
 - (id)specifiers;
 - (void)_checkAndUpdateExtensionIDArray;
-- (void)appendAboutWiFiCallingFooterToGroupSpecifier:(id)a3;
+- (void)appendAboutWiFiCallingFooterToGroupSpecifier:(id)specifier;
 - (void)applicationDidResume;
 - (void)applicationWillSuspend;
-- (void)checkSMSFilteringExtensionIfNecessary:(id)a3;
+- (void)checkSMSFilteringExtensionIfNecessary:(id)necessary;
 - (void)dealloc;
 - (void)disableSpamFiltering;
-- (void)enableSpamFiltering:(id)a3;
+- (void)enableSpamFiltering:(id)filtering;
 - (void)endMatchingExtensions;
 - (void)findSpamExtensions;
-- (void)grayOutSMSFilteringExtensionIfNecessary:(id)a3;
-- (void)setConversationListFilteringEnabled:(id)a3 specifier:(id)a4;
+- (void)grayOutSMSFilteringExtensionIfNecessary:(id)necessary;
+- (void)setConversationListFilteringEnabled:(id)enabled specifier:(id)specifier;
 - (void)setIsSpamFilteringDefaultEnabled;
-- (void)setSpamAppEnabled:(id)a3;
-- (void)showPrivacyAccessWarningAndChangeSpamAppIfNeeded:(id)a3 completion:(id)a4;
+- (void)setSpamAppEnabled:(id)enabled;
+- (void)showPrivacyAccessWarningAndChangeSpamAppIfNeeded:(id)needed completion:(id)completion;
 - (void)showPrivacyLegalVC;
 - (void)userChangedSpamFilteringSettings;
 @end
@@ -107,12 +107,12 @@
   }
 }
 
-- (id)isConversationListFilteringEnabled:(id)a3
+- (id)isConversationListFilteringEnabled:(id)enabled
 {
-  v3 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  v4 = [v3 isIntroductionsEnabled];
+  mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  isIntroductionsEnabled = [mEMORY[0x277D1A9B8] isIntroductionsEnabled];
 
-  if (v4)
+  if (isIntroductionsEnabled)
   {
     v5 = +[CKSettingsMessagesController syncedSettingsManager];
     v6 = [v5 settingValueForKey:4];
@@ -143,13 +143,13 @@
   return v6;
 }
 
-- (void)setConversationListFilteringEnabled:(id)a3 specifier:(id)a4
+- (void)setConversationListFilteringEnabled:(id)enabled specifier:(id)specifier
 {
-  value = a3;
-  v5 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  v6 = [v5 isIntroductionsEnabled];
+  value = enabled;
+  mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  isIntroductionsEnabled = [mEMORY[0x277D1A9B8] isIntroductionsEnabled];
 
-  if (v6)
+  if (isIntroductionsEnabled)
   {
     v7 = +[CKSettingsMessagesController syncedSettingsManager];
     [v7 setSettingValue:value forKey:4];
@@ -177,50 +177,50 @@
   }
 
   [(CKFilteringListController *)self reloadSpecifiers];
-  v11 = [(CKFilteringListController *)self _syncManager];
+  _syncManager = [(CKFilteringListController *)self _syncManager];
   v12 = [MEMORY[0x277CBEB98] setWithObjects:{@"IncomingMessageAlertFiltration", @"IncomingMessageAlertFiltrationForcedOn", @"MessageFilteringSettingsConfirmed", 0}];
-  [v11 synchronizeUserDefaultsDomain:@"com.apple.MobileSMS" keys:v12];
+  [_syncManager synchronizeUserDefaultsDomain:@"com.apple.MobileSMS" keys:v12];
 }
 
-- (void)enableSpamFiltering:(id)a3
+- (void)enableSpamFiltering:(id)filtering
 {
-  v4 = a3;
-  CFPreferencesSetAppValue(@"IncomingMessageAlertSpamFiltration", v4, @"com.apple.MobileSMS");
+  filteringCopy = filtering;
+  CFPreferencesSetAppValue(@"IncomingMessageAlertSpamFiltration", filteringCopy, @"com.apple.MobileSMS");
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.MobileSMS.IncomingMessageAlertSpamFiltration.changed", 0, 0, 1u);
-  v6 = [v4 integerValue];
+  integerValue = [filteringCopy integerValue];
 
-  self->_spamFilterState = v6;
+  self->_spamFilterState = integerValue;
 }
 
-- (void)showPrivacyAccessWarningAndChangeSpamAppIfNeeded:(id)a3 completion:(id)a4
+- (void)showPrivacyAccessWarningAndChangeSpamAppIfNeeded:(id)needed completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
-  if ([v8 isEqualToString:@"noFilter"])
+  neededCopy = needed;
+  completionCopy = completion;
+  identifier = [neededCopy identifier];
+  if ([identifier isEqualToString:@"noFilter"])
   {
 
 LABEL_4:
-    v7[2](v7, 1);
+    completionCopy[2](completionCopy, 1);
     goto LABEL_15;
   }
 
-  v9 = [v6 identifier];
-  v10 = [v9 isEqualToString:@"com.apple.smsFilter.extension"];
+  identifier2 = [neededCopy identifier];
+  v10 = [identifier2 isEqualToString:@"com.apple.smsFilter.extension"];
 
   if (v10)
   {
     goto LABEL_4;
   }
 
-  v11 = [v6 name];
-  v36 = v11;
-  v12 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  v13 = [v12 isIntroductionsEnabled];
+  name = [neededCopy name];
+  v36 = name;
+  mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  isIntroductionsEnabled = [mEMORY[0x277D1A9B8] isIntroductionsEnabled];
 
   v14 = MEMORY[0x277CCACA8];
-  if (v13)
+  if (isIntroductionsEnabled)
   {
     v15 = @"USE_APP_TO_FILTER_YOUR_MESSAGES";
   }
@@ -231,17 +231,17 @@ LABEL_4:
   }
 
   v16 = MessagesSettingsLocalizedString(v15);
-  v17 = [v14 localizedStringWithFormat:v16, v11];
+  v17 = [v14 localizedStringWithFormat:v16, name];
   v35 = v17;
 
   v18 = MEMORY[0x277CCACA8];
   v19 = MessagesSettingsLocalizedString(@"PRIVACY_WARNING_TEXT");
-  v20 = [v18 localizedStringWithFormat:v19, v11];
+  v20 = [v18 localizedStringWithFormat:v19, name];
 
-  v21 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  v22 = [v21 isIntroductionsEnabled];
+  mEMORY[0x277D1A9B8]2 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  isIntroductionsEnabled2 = [mEMORY[0x277D1A9B8]2 isIntroductionsEnabled];
 
-  if (v22)
+  if (isIntroductionsEnabled2)
   {
     v23 = @"DONT_USE";
   }
@@ -252,10 +252,10 @@ LABEL_4:
   }
 
   v24 = MessagesSettingsLocalizedString(v23);
-  v25 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  v26 = [v25 isIntroductionsEnabled];
+  mEMORY[0x277D1A9B8]3 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  isIntroductionsEnabled3 = [mEMORY[0x277D1A9B8]3 isIntroductionsEnabled];
 
-  if (v26)
+  if (isIntroductionsEnabled3)
   {
     v27 = @"USE";
   }
@@ -272,7 +272,7 @@ LABEL_4:
   v39[1] = 3221225472;
   v39[2] = __89__CKFilteringListController_showPrivacyAccessWarningAndChangeSpamAppIfNeeded_completion___block_invoke;
   v39[3] = &unk_278DE8230;
-  v31 = v7;
+  v31 = completionCopy;
   v40 = v31;
   v32 = [v30 actionWithTitle:v24 style:1 handler:v39];
   [v29 addAction:v32];
@@ -290,16 +290,16 @@ LABEL_4:
 LABEL_15:
 }
 
-- (BOOL)enableSpamForExtensionID:(id)a3 withName:(id)a4
+- (BOOL)enableSpamForExtensionID:(id)d withName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7 && [v7 length])
+  dCopy = d;
+  nameCopy = name;
+  if (dCopy && [dCopy length])
   {
-    CFPreferencesSetAppValue(@"spamFiltrationExtensionID", v7, @"com.apple.MobileSMS");
-    CFPreferencesSetAppValue(@"spamFiltrationExtensionName", v8, @"com.apple.MobileSMS");
+    CFPreferencesSetAppValue(@"spamFiltrationExtensionID", dCopy, @"com.apple.MobileSMS");
+    CFPreferencesSetAppValue(@"spamFiltrationExtensionName", nameCopy, @"com.apple.MobileSMS");
     [(CKFilteringListController *)self enableSpamFiltering:&unk_2856EB988];
-    objc_storeStrong(&self->_currentExtensionID, a3);
+    objc_storeStrong(&self->_currentExtensionID, d);
     [(CKFilteringListController *)self _updateSMSFilteringParams];
     v9 = 1;
   }
@@ -354,9 +354,9 @@ LABEL_15:
   }
 }
 
-- (void)setSpamAppEnabled:(id)a3
+- (void)setSpamAppEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   if (self->_currentExtensionID)
   {
     currentExtensionID = self->_currentExtensionID;
@@ -375,15 +375,15 @@ LABEL_15:
   v16[4] = self;
   v7 = v6;
   v17 = v7;
-  v8 = v4;
+  v8 = enabledCopy;
   v18 = v8;
   v9 = MEMORY[0x245D4D850](v16);
-  v10 = [v8 identifier];
+  identifier = [v8 identifier];
 
-  if (v10)
+  if (identifier)
   {
-    v11 = [v8 identifier];
-    v12 = [v11 isEqualToString:self->_currentExtensionID];
+    identifier2 = [v8 identifier];
+    v12 = [identifier2 isEqualToString:self->_currentExtensionID];
 
     if ((v12 & 1) == 0)
     {
@@ -575,7 +575,7 @@ LABEL_8:
   v18 = *MEMORY[0x277D85DE8];
   if (self->_spamFilterState == 1)
   {
-    v3 = [(CKFilteringListController *)self getDefaultExtension];
+    getDefaultExtension = [(CKFilteringListController *)self getDefaultExtension];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
@@ -596,8 +596,8 @@ LABEL_8:
             objc_enumerationMutation(v4);
           }
 
-          v9 = [*(*(&v13 + 1) + 8 * v8) identifier];
-          v10 = [v9 isEqualToString:self->_currentExtensionID];
+          identifier = [*(*(&v13 + 1) + 8 * v8) identifier];
+          v10 = [identifier isEqualToString:self->_currentExtensionID];
 
           if (v10)
           {
@@ -634,29 +634,29 @@ LABEL_12:
   return result;
 }
 
-- (void)appendAboutWiFiCallingFooterToGroupSpecifier:(id)a3
+- (void)appendAboutWiFiCallingFooterToGroupSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v14 = MessagesSettingsLocalizedString(@"SPAM_EXTENSION_DESCRIPTION");
   v5 = MEMORY[0x277D37668];
   v6 = [MEMORY[0x277D37630] bundleWithIdentifier:@"com.apple.onboarding.smsfiltering"];
   v7 = [v5 flowWithBundle:v6];
-  v8 = [v7 localizedButtonTitle];
+  localizedButtonTitle = [v7 localizedButtonTitle];
 
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n\n%@", v14, v8];
+  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n\n%@", v14, localizedButtonTitle];
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  [v4 setProperty:v11 forKey:*MEMORY[0x277D3FF48]];
+  [specifierCopy setProperty:v11 forKey:*MEMORY[0x277D3FF48]];
 
-  [v4 setProperty:v9 forKey:*MEMORY[0x277D3FF70]];
-  v16.location = [v9 rangeOfString:v8];
+  [specifierCopy setProperty:v9 forKey:*MEMORY[0x277D3FF70]];
+  v16.location = [v9 rangeOfString:localizedButtonTitle];
   v12 = NSStringFromRange(v16);
-  [v4 setProperty:v12 forKey:*MEMORY[0x277D3FF58]];
+  [specifierCopy setProperty:v12 forKey:*MEMORY[0x277D3FF58]];
 
   v13 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:self];
-  [v4 setProperty:v13 forKey:*MEMORY[0x277D3FF68]];
+  [specifierCopy setProperty:v13 forKey:*MEMORY[0x277D3FF68]];
 
-  [v4 setProperty:@"showPrivacyLegalVC" forKey:*MEMORY[0x277D3FF50]];
+  [specifierCopy setProperty:@"showPrivacyLegalVC" forKey:*MEMORY[0x277D3FF50]];
 }
 
 - (void)showPrivacyLegalVC
@@ -670,7 +670,7 @@ LABEL_12:
 {
   if ([(CKFilteringListController *)self deviceSupportsSMSFilteringExtensions])
   {
-    v3 = [(CKFilteringListController *)self getDefaultExtension];
+    getDefaultExtension = [(CKFilteringListController *)self getDefaultExtension];
     v4 = [(CKFilteringListController *)self isConversationListFilteringEnabled:0];
     v5 = [v4 isEqual:MEMORY[0x277CBEC28]];
 
@@ -680,10 +680,10 @@ LABEL_12:
     }
 
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v7 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-    v8 = [v7 isIntroductionsEnabled];
+    mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+    isIntroductionsEnabled = [mEMORY[0x277D1A9B8] isIntroductionsEnabled];
 
-    if (v8)
+    if (isIntroductionsEnabled)
     {
       v9 = 0;
     }
@@ -705,10 +705,10 @@ LABEL_12:
     [(CKFilteringListController *)self grayOutSMSFilteringExtensionIfNecessary:v14];
     [(CKFilteringListController *)self checkSMSFilteringExtensionIfNecessary:v14];
     v15 = self->_extensionIDArray;
-    v16 = [(NSArray *)v15 firstObject];
+    firstObject = [(NSArray *)v15 firstObject];
     v17 = MEMORY[0x277D755B8];
-    v18 = [v16 identifier];
-    v19 = [v17 _applicationIconImageForBundleIdentifier:v18 format:0];
+    identifier = [firstObject identifier];
+    v19 = [v17 _applicationIconImageForBundleIdentifier:identifier format:0];
 
     [v19 size];
     v21 = v20;
@@ -767,9 +767,9 @@ void __46__CKFilteringListController_getSpamSpecifiers__block_invoke(uint64_t a1
   [*(a1 + 40) addObject:v11];
 }
 
-- (void)grayOutSMSFilteringExtensionIfNecessary:(id)a3
+- (void)grayOutSMSFilteringExtensionIfNecessary:(id)necessary
 {
-  v8 = a3;
+  necessaryCopy = necessary;
   v4 = [(CKFilteringListController *)self isConversationListFilteringEnabled:0];
   v5 = MEMORY[0x277CBEC28];
   v6 = [v4 isEqual:MEMORY[0x277CBEC28]];
@@ -784,17 +784,17 @@ void __46__CKFilteringListController_getSpamSpecifiers__block_invoke(uint64_t a1
     v7 = MEMORY[0x277CBEC38];
   }
 
-  [v8 setProperty:v7 forKey:*MEMORY[0x277D3FF38]];
+  [necessaryCopy setProperty:v7 forKey:*MEMORY[0x277D3FF38]];
 }
 
-- (void)checkSMSFilteringExtensionIfNecessary:(id)a3
+- (void)checkSMSFilteringExtensionIfNecessary:(id)necessary
 {
-  v9 = a3;
-  v4 = [v9 identifier];
-  if (![v4 isEqualToString:@"noFilter"] || self->_currentExtensionID && self->_spamFilterState == 1)
+  necessaryCopy = necessary;
+  identifier = [necessaryCopy identifier];
+  if (![identifier isEqualToString:@"noFilter"] || self->_currentExtensionID && self->_spamFilterState == 1)
   {
-    v5 = [v9 identifier];
-    v6 = [v5 isEqualToString:self->_currentExtensionID];
+    identifier2 = [necessaryCopy identifier];
+    v6 = [identifier2 isEqualToString:self->_currentExtensionID];
 
     if (!v6)
     {
@@ -810,7 +810,7 @@ void __46__CKFilteringListController_getSpamSpecifiers__block_invoke(uint64_t a1
   v7 = 3;
 LABEL_8:
   v8 = [MEMORY[0x277CCABB0] numberWithInteger:v7];
-  [v9 setObject:v8 forKeyedSubscript:*MEMORY[0x277D3FD68]];
+  [necessaryCopy setObject:v8 forKeyedSubscript:*MEMORY[0x277D3FD68]];
 }
 
 - (id)specifiers
@@ -820,10 +820,10 @@ LABEL_8:
   if (!v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v6 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-    v7 = [v6 isIntroductionsEnabled];
+    mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+    isIntroductionsEnabled = [mEMORY[0x277D1A9B8] isIntroductionsEnabled];
 
-    if ((v7 & 1) == 0)
+    if ((isIntroductionsEnabled & 1) == 0)
     {
       v8 = MessagesSettingsLocalizedString(@"MESSAGES_FILTERING_LABEL");
       v9 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"IMESSAGE_FILTERING_GROUP" name:v8];
@@ -839,10 +839,10 @@ LABEL_8:
       [v5 addObject:v13];
     }
 
-    v14 = [(CKFilteringListController *)self getSpamSpecifiers];
-    if (v14)
+    getSpamSpecifiers = [(CKFilteringListController *)self getSpamSpecifiers];
+    if (getSpamSpecifiers)
     {
-      [v5 addObjectsFromArray:v14];
+      [v5 addObjectsFromArray:getSpamSpecifiers];
     }
 
     v15 = *(&self->super.super.super.super.super.isa + v3);
@@ -856,8 +856,8 @@ LABEL_8:
 
 - (BOOL)deviceSupportsSMSFilteringExtensions
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom] == 0;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v3 = [currentDevice userInterfaceIdiom] == 0;
 
   return v3;
 }

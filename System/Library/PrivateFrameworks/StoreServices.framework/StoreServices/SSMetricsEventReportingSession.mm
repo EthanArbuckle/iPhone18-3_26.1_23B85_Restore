@@ -1,26 +1,26 @@
 @interface SSMetricsEventReportingSession
 - (BOOL)anyUnreportedEvents;
 - (BOOL)markEventsAsReported;
-- (SSMetricsEventReportingSession)initWithReportingURL:(id)a3 insertTimestamp:(int64_t)a4 eventController:(id)a5;
-- (SSMetricsEventReportingSession)initWithReportingURL:(id)a3 insertTimestamp:(int64_t)a4 suppressUserInfo:(BOOL)a5 eventController:(id)a6;
+- (SSMetricsEventReportingSession)initWithReportingURL:(id)l insertTimestamp:(int64_t)timestamp eventController:(id)controller;
+- (SSMetricsEventReportingSession)initWithReportingURL:(id)l insertTimestamp:(int64_t)timestamp suppressUserInfo:(BOOL)info eventController:(id)controller;
 - (id)_unreportedEvents;
 - (id)sessionCanaryIdentifier;
-- (id)writeEventsToStream:(id)a3 uncompressedMaxSize:(int64_t)a4;
-- (int64_t)_estimateSizeOfJsonObject:(id)a3;
-- (void)_writeString:(id)a3 toData:(id)a4;
+- (id)writeEventsToStream:(id)stream uncompressedMaxSize:(int64_t)size;
+- (int64_t)_estimateSizeOfJsonObject:(id)object;
+- (void)_writeString:(id)string toData:(id)data;
 @end
 
 @implementation SSMetricsEventReportingSession
 
-- (SSMetricsEventReportingSession)initWithReportingURL:(id)a3 insertTimestamp:(int64_t)a4 eventController:(id)a5
+- (SSMetricsEventReportingSession)initWithReportingURL:(id)l insertTimestamp:(int64_t)timestamp eventController:(id)controller
 {
-  v9 = a3;
-  v10 = a5;
+  lCopy = l;
+  controllerCopy = controller;
   v11 = [(SSMetricsEventReportingSession *)self init];
   v12 = v11;
   if (v11)
   {
-    v11->_insertTimestamp = a4;
+    v11->_insertTimestamp = timestamp;
     unreportedEvents = v11->_unreportedEvents;
     v11->_unreportedEvents = 0;
 
@@ -28,19 +28,19 @@
     unreportedEventPIDs = v12->_unreportedEventPIDs;
     v12->_unreportedEventPIDs = v14;
 
-    objc_storeStrong(&v12->_eventController, a5);
-    objc_storeStrong(&v12->_reportingURL, a3);
+    objc_storeStrong(&v12->_eventController, controller);
+    objc_storeStrong(&v12->_reportingURL, l);
   }
 
   return v12;
 }
 
-- (SSMetricsEventReportingSession)initWithReportingURL:(id)a3 insertTimestamp:(int64_t)a4 suppressUserInfo:(BOOL)a5 eventController:(id)a6
+- (SSMetricsEventReportingSession)initWithReportingURL:(id)l insertTimestamp:(int64_t)timestamp suppressUserInfo:(BOOL)info eventController:(id)controller
 {
-  result = [(SSMetricsEventReportingSession *)self initWithReportingURL:a3 insertTimestamp:a4 eventController:a6];
+  result = [(SSMetricsEventReportingSession *)self initWithReportingURL:l insertTimestamp:timestamp eventController:controller];
   if (result)
   {
-    result->_suppressUserInfo = a5;
+    result->_suppressUserInfo = info;
   }
 
   return result;
@@ -48,8 +48,8 @@
 
 - (BOOL)anyUnreportedEvents
 {
-  v2 = [(SSMetricsEventReportingSession *)self _unreportedEvents];
-  v3 = [v2 count] != 0;
+  _unreportedEvents = [(SSMetricsEventReportingSession *)self _unreportedEvents];
+  v3 = [_unreportedEvents count] != 0;
 
   return v3;
 }
@@ -63,19 +63,19 @@
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 &= 2u;
   }
@@ -97,9 +97,9 @@
       goto LABEL_12;
     }
 
-    v6 = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v22, v21}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v22, v21}];
     free(v10);
-    SSFileLog(v3, @"%@", v11, v12, v13, v14, v15, v16, v6);
+    SSFileLog(v3, @"%@", v11, v12, v13, v14, v15, v16, oSLogObject);
   }
 
 LABEL_12:
@@ -148,8 +148,8 @@ LABEL_5:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * v9) reportingDictionary];
-        v11 = [v10 objectForKey:@"canary"];
+        reportingDictionary = [*(*(&v15 + 1) + 8 * v9) reportingDictionary];
+        v11 = [reportingDictionary objectForKey:@"canary"];
 
         if (v11)
         {
@@ -185,24 +185,24 @@ LABEL_11:
   return v3;
 }
 
-- (id)writeEventsToStream:(id)a3 uncompressedMaxSize:(int64_t)a4
+- (id)writeEventsToStream:(id)stream uncompressedMaxSize:(int64_t)size
 {
   v108 = *MEMORY[0x1E69E9840];
-  v89 = a3;
-  v5 = [(SSMetricsEventReportingSession *)self _unreportedEvents];
+  streamCopy = stream;
+  _unreportedEvents = [(SSMetricsEventReportingSession *)self _unreportedEvents];
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   unreportedEventPIDs = self->_unreportedEventPIDs;
   self->_unreportedEventPIDs = v6;
 
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v9 = [(SSMetricsEventReportingSession *)self sessionCanaryIdentifier];
+  sessionCanaryIdentifier = [(SSMetricsEventReportingSession *)self sessionCanaryIdentifier];
   v97 = 0u;
   v98 = 0u;
   v99 = 0u;
   v100 = 0u;
-  obj = v5;
+  obj = _unreportedEvents;
   v90 = v8;
-  v91 = self;
+  selfCopy = self;
   v94 = [obj countByEnumeratingWithState:&v97 objects:v107 count:16];
   if (v94)
   {
@@ -218,15 +218,15 @@ LABEL_3:
       }
 
       v12 = *(*(&v97 + 1) + 8 * v11);
-      if ((a4 & 0x8000000000000000) == 0 && v10 > a4)
+      if ((size & 0x8000000000000000) == 0 && v10 > size)
       {
         goto LABEL_27;
       }
 
-      v13 = [*(*(&v97 + 1) + 8 * v11) reportingDictionary];
-      v14 = [v13 objectForKey:@"canary"];
+      reportingDictionary = [*(*(&v97 + 1) + 8 * v11) reportingDictionary];
+      v14 = [reportingDictionary objectForKey:@"canary"];
       v15 = v14;
-      if (v14 && ![v14 isEqualToString:v9])
+      if (v14 && ![v14 isEqualToString:sessionCanaryIdentifier])
       {
 
         goto LABEL_27;
@@ -236,14 +236,14 @@ LABEL_3:
       v17 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v12, "persistentID")}];
       [(NSMutableArray *)v16 addObject:v17];
 
-      v18 = [(SSMetricsEventReportingSession *)self _estimateSizeOfJsonObject:v13];
+      v18 = [(SSMetricsEventReportingSession *)self _estimateSizeOfJsonObject:reportingDictionary];
       if (v18 < 0)
       {
         break;
       }
 
       v10 += v18;
-      [v8 addObject:v13];
+      [v8 addObject:reportingDictionary];
 LABEL_23:
 
       if (v94 == ++v11)
@@ -258,27 +258,27 @@ LABEL_23:
       }
     }
 
-    v19 = v9;
-    v20 = [v13 objectForKeyedSubscript:@"topic"];
+    v19 = sessionCanaryIdentifier;
+    v20 = [reportingDictionary objectForKeyedSubscript:@"topic"];
     v21 = +[SSLogConfig sharedStoreServicesConfig];
     if (!v21)
     {
       v21 = +[SSLogConfig sharedConfig];
     }
 
-    v22 = [v21 shouldLog];
+    shouldLog = [v21 shouldLog];
     if ([v21 shouldLogToDisk])
     {
-      v22 |= 2u;
+      shouldLog |= 2u;
     }
 
-    v23 = [v21 OSLogObject];
-    if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v21 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
-      v22 &= 2u;
+      shouldLog &= 2u;
     }
 
-    if (v22)
+    if (shouldLog)
     {
       v24 = objc_opt_class();
       v101 = 138412546;
@@ -295,14 +295,14 @@ LABEL_23:
       {
 LABEL_22:
 
-        v9 = v19;
-        self = v91;
+        sessionCanaryIdentifier = v19;
+        self = selfCopy;
         goto LABEL_23;
       }
 
-      v23 = [MEMORY[0x1E696AEC0] stringWithCString:v26 encoding:{4, &v101, v88}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v26 encoding:{4, &v101, v88}];
       free(v26);
-      SSFileLog(v21, @"%@", v27, v28, v29, v30, v31, v32, v23);
+      SSFileLog(v21, @"%@", v27, v28, v29, v30, v31, v32, oSLogObject);
     }
 
     goto LABEL_22;
@@ -316,8 +316,8 @@ LABEL_27:
     v105[0] = @"deliveryVersion";
     v105[1] = @"postTime";
     v33 = MEMORY[0x1E696AD98];
-    v34 = [MEMORY[0x1E695DF00] date];
-    [v34 timeIntervalSince1970];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSince1970];
     v36 = [v33 numberWithInteger:(v35 * 1000.0)];
     v105[2] = @"events";
     v106[1] = v36;
@@ -326,31 +326,31 @@ LABEL_27:
 
     v96 = 0;
     v38 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v37 options:0 error:&v96];
-    v39 = v96;
-    if (v39)
+    oSLogObject4 = v96;
+    if (oSLogObject4)
     {
       v40 = +[SSLogConfig sharedStoreServicesConfig];
-      v41 = v89;
+      v41 = streamCopy;
       if (!v40)
       {
         v40 = +[SSLogConfig sharedConfig];
       }
 
-      v42 = [v40 shouldLog];
+      shouldLog2 = [v40 shouldLog];
       if ([v40 shouldLogToDisk])
       {
-        v42 |= 2u;
+        shouldLog2 |= 2u;
       }
 
-      v43 = [v40 OSLogObject];
-      if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [v40 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
-        v44 = v42;
+        v44 = shouldLog2;
       }
 
       else
       {
-        v44 = v42 & 2;
+        v44 = shouldLog2 & 2;
       }
 
       if (!v44)
@@ -375,9 +375,9 @@ LABEL_27:
       goto LABEL_73;
     }
 
-    v58 = v9;
-    v41 = v89;
-    v59 = [v89 write:objc_msgSend(v38 maxLength:{"bytes"), objc_msgSend(v38, "length")}];
+    v58 = sessionCanaryIdentifier;
+    v41 = streamCopy;
+    v59 = [streamCopy write:objc_msgSend(v38 maxLength:{"bytes"), objc_msgSend(v38, "length")}];
     v60 = [v38 length];
     v61 = +[SSLogConfig sharedStoreServicesConfig];
     v40 = v61;
@@ -388,26 +388,26 @@ LABEL_27:
         v40 = +[SSLogConfig sharedConfig];
       }
 
-      v75 = [v40 shouldLog];
+      shouldLog3 = [v40 shouldLog];
       if ([v40 shouldLogToDisk])
       {
-        v75 |= 2u;
+        shouldLog3 |= 2u;
       }
 
-      v43 = [v40 OSLogObject];
-      if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [v40 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
-        v76 = v75;
+        v76 = shouldLog3;
       }
 
       else
       {
-        v76 = v75 & 2;
+        v76 = shouldLog3 & 2;
       }
 
       if (!v76)
       {
-        v9 = v58;
+        sessionCanaryIdentifier = v58;
         goto LABEL_74;
       }
 
@@ -423,8 +423,8 @@ LABEL_27:
       LODWORD(v88) = 28;
       v47 = _os_log_send_and_compose_impl();
 
-      v41 = v89;
-      v9 = v58;
+      v41 = streamCopy;
+      sessionCanaryIdentifier = v58;
       if (!v47)
       {
 LABEL_75:
@@ -437,9 +437,9 @@ LABEL_76:
       }
 
 LABEL_73:
-      v43 = [MEMORY[0x1E696AEC0] stringWithCString:v47 encoding:{4, &v101, v88}];
+      oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v47 encoding:{4, &v101, v88}];
       free(v47);
-      SSFileLog(v40, @"%@", v80, v81, v82, v83, v84, v85, v43);
+      SSFileLog(v40, @"%@", v80, v81, v82, v83, v84, v85, oSLogObject2);
 LABEL_74:
 
       goto LABEL_75;
@@ -450,21 +450,21 @@ LABEL_74:
       v40 = +[SSLogConfig sharedConfig];
     }
 
-    v62 = [v40 shouldLog];
+    shouldLog4 = [v40 shouldLog];
     if ([v40 shouldLogToDisk])
     {
-      v62 |= 2u;
+      shouldLog4 |= 2u;
     }
 
-    v63 = [v40 OSLogObject];
-    if (os_log_type_enabled(v63, OS_LOG_TYPE_INFO))
+    oSLogObject3 = [v40 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_INFO))
     {
-      v64 = v62;
+      v64 = shouldLog4;
     }
 
     else
     {
-      v64 = v62 & 2;
+      v64 = shouldLog4 & 2;
     }
 
     if (v64)
@@ -493,13 +493,13 @@ LABEL_60:
           v51 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:v51 length:20];
         }
 
-        v9 = v58;
+        sessionCanaryIdentifier = v58;
         goto LABEL_76;
       }
 
-      v63 = [MEMORY[0x1E696AEC0] stringWithCString:v67 encoding:{4, &v101, v88}];
+      oSLogObject3 = [MEMORY[0x1E696AEC0] stringWithCString:v67 encoding:{4, &v101, v88}];
       free(v67);
-      SSFileLog(v40, @"%@", v68, v69, v70, v71, v72, v73, v63);
+      SSFileLog(v40, @"%@", v68, v69, v70, v71, v72, v73, oSLogObject3);
     }
 
     goto LABEL_60;
@@ -511,19 +511,19 @@ LABEL_60:
     v37 = +[SSLogConfig sharedConfig];
   }
 
-  v48 = [v37 shouldLog];
+  shouldLog5 = [v37 shouldLog];
   if ([v37 shouldLogToDisk])
   {
-    v48 |= 2u;
+    shouldLog5 |= 2u;
   }
 
-  v39 = [v37 OSLogObject];
-  if (!os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
+  oSLogObject4 = [v37 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
   {
-    v48 &= 2u;
+    shouldLog5 &= 2u;
   }
 
-  if (v48)
+  if (shouldLog5)
   {
     v49 = objc_opt_class();
     v101 = 138543362;
@@ -532,22 +532,22 @@ LABEL_60:
     LODWORD(v88) = 12;
     v51 = _os_log_send_and_compose_impl();
 
-    v41 = v89;
+    v41 = streamCopy;
     if (!v51)
     {
       goto LABEL_78;
     }
 
-    v39 = [MEMORY[0x1E696AEC0] stringWithCString:v51 encoding:{4, &v101, v88}];
+    oSLogObject4 = [MEMORY[0x1E696AEC0] stringWithCString:v51 encoding:{4, &v101, v88}];
     free(v51);
-    SSFileLog(v37, @"%@", v52, v53, v54, v55, v56, v57, v39);
+    SSFileLog(v37, @"%@", v52, v53, v54, v55, v56, v57, oSLogObject4);
     v51 = 0;
   }
 
   else
   {
     v51 = 0;
-    v41 = v89;
+    v41 = streamCopy;
   }
 
 LABEL_77:
@@ -557,13 +557,13 @@ LABEL_78:
   return v51;
 }
 
-- (int64_t)_estimateSizeOfJsonObject:(id)a3
+- (int64_t)_estimateSizeOfJsonObject:(id)object
 {
   v51 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  objectCopy = object;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v32 = v3;
-  [v4 addObject:v3];
+  v32 = objectCopy;
+  [v4 addObject:objectCopy];
   v41 = 0;
   v42 = &v41;
   v43 = 0x2020000000;
@@ -593,8 +593,8 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v6 stringValue];
-      v11 = [v10 lengthOfBytesUsingEncoding:4];
+      stringValue = [v6 stringValue];
+      v11 = [stringValue lengthOfBytesUsingEncoding:4];
       v42[3] += v11;
 
       goto LABEL_8;
@@ -650,21 +650,21 @@ LABEL_8:
     v14 = +[SSLogConfig sharedConfig];
   }
 
-  v15 = [v14 shouldLog];
-  v16 = [v14 shouldLogToDisk];
-  v17 = [v14 OSLogObject];
-  v18 = v17;
-  if (v16)
+  shouldLog = [v14 shouldLog];
+  shouldLogToDisk = [v14 shouldLogToDisk];
+  oSLogObject = [v14 OSLogObject];
+  v18 = oSLogObject;
+  if (shouldLogToDisk)
   {
-    v19 = v15 | 2;
+    v19 = shouldLog | 2;
   }
 
   else
   {
-    v19 = v15;
+    v19 = shouldLog;
   }
 
-  if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v20 = v19;
   }
@@ -749,19 +749,19 @@ uint64_t __60__SSMetricsEventReportingSession__estimateSizeOfJsonObject___block_
       v6 = +[SSLogConfig sharedConfig];
     }
 
-    v7 = [v6 shouldLog];
+    shouldLog = [v6 shouldLog];
     if ([v6 shouldLogToDisk])
     {
-      v8 = v7 | 2;
+      v8 = shouldLog | 2;
     }
 
     else
     {
-      v8 = v7;
+      v8 = shouldLog;
     }
 
-    v9 = [v6 OSLogObject];
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+    oSLogObject = [v6 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v8 &= 2u;
     }
@@ -786,9 +786,9 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v9 = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v22, v21}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v22, v21}];
       free(v13);
-      SSFileLog(v6, @"%@", v14, v15, v16, v17, v18, v19, v9);
+      SSFileLog(v6, @"%@", v14, v15, v16, v17, v18, v19, oSLogObject);
     }
 
     goto LABEL_13;
@@ -799,13 +799,13 @@ LABEL_14:
   return unreportedEvents;
 }
 
-- (void)_writeString:(id)a3 toData:(id)a4
+- (void)_writeString:(id)string toData:(id)data
 {
-  v8 = a3;
-  v5 = a4;
+  stringCopy = string;
+  dataCopy = data;
   v6 = objc_autoreleasePoolPush();
-  v7 = [v8 dataUsingEncoding:4];
-  [v5 appendData:v7];
+  v7 = [stringCopy dataUsingEncoding:4];
+  [dataCopy appendData:v7];
 
   objc_autoreleasePoolPop(v6);
 }

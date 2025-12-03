@@ -2,28 +2,28 @@
 - ($9433BFB5400FDC760880D1BFD6845728)boundingMapRect;
 - (CLLocationCoordinate2D)coordinate;
 - (_MKDynamicTileOverlay)init;
-- (void)_cancelLoadingTileAtPath:(id *)a3;
+- (void)_cancelLoadingTileAtPath:(id *)path;
 - (void)dealloc;
-- (void)loadTileAtPath:(id *)a3 result:(id)a4;
+- (void)loadTileAtPath:(id *)path result:(id)result;
 @end
 
 @implementation _MKDynamicTileOverlay
 
-- (void)_cancelLoadingTileAtPath:(id *)a3
+- (void)_cancelLoadingTileAtPath:(id *)path
 {
-  v3 = *&a3->var2;
-  v4[0] = *&a3->var0;
+  v3 = *&path->var2;
+  v4[0] = *&path->var0;
   v4[1] = v3;
   [(_MKDynamicTileOverlay *)self cancelLoadingTileAtPath:v4];
 }
 
-- (void)loadTileAtPath:(id *)a3 result:(id)a4
+- (void)loadTileAtPath:(id *)path result:(id)result
 {
   v5 = MEMORY[0x1E696ABC0];
   v6 = MKErrorDomain;
-  v7 = a4;
+  resultCopy = result;
   v8 = [v5 errorWithDomain:v6 code:1 userInfo:0];
-  (*(a4 + 2))(v7, 0, v8);
+  (*(result + 2))(resultCopy, 0, v8);
 }
 
 - (CLLocationCoordinate2D)coordinate

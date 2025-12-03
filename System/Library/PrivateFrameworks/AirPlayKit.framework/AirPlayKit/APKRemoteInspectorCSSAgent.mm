@@ -1,20 +1,20 @@
 @interface APKRemoteInspectorCSSAgent
-- (APKRemoteInspectorCSSAgent)initWithDispatcher:(id)a3;
+- (APKRemoteInspectorCSSAgent)initWithDispatcher:(id)dispatcher;
 - (APKRemoteInspectorCSSAgentDelegate)delegate;
 @end
 
 @implementation APKRemoteInspectorCSSAgent
 
-- (APKRemoteInspectorCSSAgent)initWithDispatcher:(id)a3
+- (APKRemoteInspectorCSSAgent)initWithDispatcher:(id)dispatcher
 {
-  v5 = a3;
+  dispatcherCopy = dispatcher;
   v9.receiver = self;
   v9.super_class = APKRemoteInspectorCSSAgent;
   v6 = [(APKRemoteInspectorCSSAgent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dispatcher, a3);
+    objc_storeStrong(&v6->_dispatcher, dispatcher);
   }
 
   return v7;

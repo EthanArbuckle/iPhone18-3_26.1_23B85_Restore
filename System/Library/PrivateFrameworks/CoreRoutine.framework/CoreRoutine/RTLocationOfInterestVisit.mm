@@ -1,22 +1,22 @@
 @interface RTLocationOfInterestVisit
-- (BOOL)isEqual:(id)a3;
-- (RTLocationOfInterestVisit)initWithCoder:(id)a3;
-- (RTLocationOfInterestVisit)initWithIdentifier:(id)a3 entry:(id)a4 exit:(id)a5 location:(id)a6 locationOfInterestConfidence:(double)a7 locationOfInterestSource:(unint64_t)a8;
+- (BOOL)isEqual:(id)equal;
+- (RTLocationOfInterestVisit)initWithCoder:(id)coder;
+- (RTLocationOfInterestVisit)initWithIdentifier:(id)identifier entry:(id)entry exit:(id)exit location:(id)location locationOfInterestConfidence:(double)confidence locationOfInterestSource:(unint64_t)source;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTLocationOfInterestVisit
 
-- (RTLocationOfInterestVisit)initWithIdentifier:(id)a3 entry:(id)a4 exit:(id)a5 location:(id)a6 locationOfInterestConfidence:(double)a7 locationOfInterestSource:(unint64_t)a8
+- (RTLocationOfInterestVisit)initWithIdentifier:(id)identifier entry:(id)entry exit:(id)exit location:(id)location locationOfInterestConfidence:(double)confidence locationOfInterestSource:(unint64_t)source
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = v17;
-  if (!v14)
+  identifierCopy = identifier;
+  entryCopy = entry;
+  exitCopy = exit;
+  locationCopy = location;
+  v18 = locationCopy;
+  if (!identifierCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -31,7 +31,7 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (!v15)
+  if (!entryCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -44,7 +44,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if (!v16)
+  if (!exitCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -57,7 +57,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if (!v17)
+  if (!locationCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -70,7 +70,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if (a7 < 0.0 || a7 > 1.0)
+  if (confidence < 0.0 || confidence > 1.0)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -85,10 +85,10 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if ((a8 & 0xFFFFFFFFFFC00020) != 0)
+  if ((source & 0xFFFFFFFFFFC00020) != 0)
   {
 LABEL_23:
-    v26 = 0;
+    selfCopy = 0;
     goto LABEL_24;
   }
 
@@ -97,35 +97,35 @@ LABEL_23:
   v19 = [(RTLocationOfInterestVisit *)&v30 init];
   if (v19)
   {
-    v20 = [v14 copy];
+    v20 = [identifierCopy copy];
     identifier = v19->_identifier;
     v19->_identifier = v20;
 
-    v22 = [v15 copy];
+    v22 = [entryCopy copy];
     entryDate = v19->_entryDate;
     v19->_entryDate = v22;
 
-    v24 = [v16 copy];
+    v24 = [exitCopy copy];
     exitDate = v19->_exitDate;
     v19->_exitDate = v24;
 
-    objc_storeStrong(&v19->_location, a6);
-    v19->_locationOfInterestConfidence = a7;
-    v19->_locationOfInterestSource = a8;
+    objc_storeStrong(&v19->_location, location);
+    v19->_locationOfInterestConfidence = confidence;
+    v19->_locationOfInterestSource = source;
   }
 
   self = v19;
-  v26 = self;
+  selfCopy = self;
 LABEL_24:
 
-  return v26;
+  return selfCopy;
 }
 
-- (RTLocationOfInterestVisit)initWithCoder:(id)a3
+- (RTLocationOfInterestVisit)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"entryDate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entryDate"];
   v7 = v6;
   if (v6)
   {
@@ -134,7 +134,7 @@ LABEL_24:
 
   else
   {
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"entry"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entry"];
     v10 = v9;
     if (v9)
     {
@@ -143,13 +143,13 @@ LABEL_24:
 
     else
     {
-      v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"entryTime"];
+      v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entryTime"];
     }
 
     v8 = v11;
   }
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"exitDate"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"exitDate"];
   v13 = v12;
   if (v12)
   {
@@ -158,7 +158,7 @@ LABEL_24:
 
   else
   {
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"exit"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"exit"];
     v16 = v15;
     if (v15)
     {
@@ -167,56 +167,56 @@ LABEL_24:
 
     else
     {
-      v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"exitTime"];
+      v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"exitTime"];
     }
 
     v14 = v17;
   }
 
-  v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"location"];
-  [v4 decodeDoubleForKey:@"locationOfInterestConfidence"];
-  v20 = -[RTLocationOfInterestVisit initWithIdentifier:entry:exit:location:locationOfInterestConfidence:locationOfInterestSource:](self, "initWithIdentifier:entry:exit:location:locationOfInterestConfidence:locationOfInterestSource:", v5, v8, v14, v18, [v4 decodeIntegerForKey:@"locationOfInterestSource"], v19);
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"location"];
+  [coderCopy decodeDoubleForKey:@"locationOfInterestConfidence"];
+  v20 = -[RTLocationOfInterestVisit initWithIdentifier:entry:exit:location:locationOfInterestConfidence:locationOfInterestSource:](self, "initWithIdentifier:entry:exit:location:locationOfInterestConfidence:locationOfInterestSource:", v5, v8, v14, v18, [coderCopy decodeIntegerForKey:@"locationOfInterestSource"], v19);
 
   return v20;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_entryDate forKey:@"entryDate"];
-  [v5 encodeObject:self->_exitDate forKey:@"exitDate"];
-  [v5 encodeObject:self->_location forKey:@"location"];
-  [v5 encodeDouble:@"locationOfInterestConfidence" forKey:self->_locationOfInterestConfidence];
-  [v5 encodeInteger:self->_locationOfInterestSource forKey:@"locationOfInterestSource"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_entryDate forKey:@"entryDate"];
+  [coderCopy encodeObject:self->_exitDate forKey:@"exitDate"];
+  [coderCopy encodeObject:self->_location forKey:@"location"];
+  [coderCopy encodeDouble:@"locationOfInterestConfidence" forKey:self->_locationOfInterestConfidence];
+  [coderCopy encodeInteger:self->_locationOfInterestSource forKey:@"locationOfInterestSource"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 == self)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
 
   else
   {
-    if (v5)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v7 = v6;
-        v8 = [(RTLocationOfInterestVisit *)self identifier];
-        if (v8 || ([(RTLocationOfInterestVisit *)v7 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+        identifier = [(RTLocationOfInterestVisit *)self identifier];
+        if (identifier || ([(RTLocationOfInterestVisit *)v7 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v9 = [(RTLocationOfInterestVisit *)self identifier];
-          v10 = [(RTLocationOfInterestVisit *)v7 identifier];
-          v11 = [v9 isEqual:v10];
+          identifier2 = [(RTLocationOfInterestVisit *)self identifier];
+          identifier3 = [(RTLocationOfInterestVisit *)v7 identifier];
+          v11 = [identifier2 isEqual:identifier3];
 
-          if (v8)
+          if (identifier)
           {
 LABEL_12:
 
@@ -243,8 +243,8 @@ LABEL_13:
 
 - (unint64_t)hash
 {
-  v2 = [(RTLocationOfInterestVisit *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(RTLocationOfInterestVisit *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
@@ -258,14 +258,14 @@ LABEL_13:
 
   v3 = MEMORY[0x1E696AEC0];
   v4 = _MergedGlobals_21;
-  v5 = [(RTLocationOfInterestVisit *)self entryDate];
-  v6 = [v4 stringFromDate:v5];
+  entryDate = [(RTLocationOfInterestVisit *)self entryDate];
+  v6 = [v4 stringFromDate:entryDate];
   v7 = _MergedGlobals_21;
-  v8 = [(RTLocationOfInterestVisit *)self exitDate];
-  v9 = [v7 stringFromDate:v8];
-  v10 = [(RTLocationOfInterestVisit *)self location];
+  exitDate = [(RTLocationOfInterestVisit *)self exitDate];
+  v9 = [v7 stringFromDate:exitDate];
+  location = [(RTLocationOfInterestVisit *)self location];
   [(RTLocationOfInterestVisit *)self locationOfInterestConfidence];
-  v12 = [v3 stringWithFormat:@"entry, %@, exit, %@, location, %@, loiConfidence, %f", v6, v9, v10, v11];
+  v12 = [v3 stringWithFormat:@"entry, %@, exit, %@, location, %@, loiConfidence, %f", v6, v9, location, v11];
 
   return v12;
 }

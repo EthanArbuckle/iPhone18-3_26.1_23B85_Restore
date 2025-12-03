@@ -1,6 +1,6 @@
 @interface EQKitMathMLMSpace
 - (const)mathMLAttributes;
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4;
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser;
 - (id)layoutSchemata;
 @end
 
@@ -10,17 +10,17 @@
 {
   *a2 = &unk_2884CB990;
   *(a2 + 8) = 24;
-  result = a1;
+  result = self;
   *(a2 + 16) = result;
   *(a2 + 24) = 0;
   return result;
 }
 
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser
 {
   v5.receiver = self;
   v5.super_class = EQKitMathMLMSpace;
-  return [(EQKitMathMLMSpace *)&v5 init:a3];
+  return [(EQKitMathMLMSpace *)&v5 init:node];
 }
 
 - (const)mathMLAttributes

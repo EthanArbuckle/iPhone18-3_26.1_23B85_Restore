@@ -1,75 +1,75 @@
 @interface HFSunriseSunsetCondition
-- (HFSunriseSunsetCondition)initWithPredicate:(id)a3;
-- (HFSunriseSunsetCondition)initWithSignificantEvent:(id)a3 offset:(id)a4 comparisonType:(unint64_t)a5;
+- (HFSunriseSunsetCondition)initWithPredicate:(id)predicate;
+- (HFSunriseSunsetCondition)initWithSignificantEvent:(id)event offset:(id)offset comparisonType:(unint64_t)type;
 - (NSString)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation HFSunriseSunsetCondition
 
-- (HFSunriseSunsetCondition)initWithPredicate:(id)a3
+- (HFSunriseSunsetCondition)initWithPredicate:(id)predicate
 {
   v32[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  predicateCopy = predicate;
   v31.receiver = self;
   v31.super_class = HFSunriseSunsetCondition;
-  v5 = [(HFCondition *)&v31 initWithPredicate:v4];
+  v5 = [(HFCondition *)&v31 initWithPredicate:predicateCopy];
   if (v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
-      v7 = [v6 predicateOperatorType];
-      if (v7 <= 3)
+      v6 = predicateCopy;
+      predicateOperatorType = [v6 predicateOperatorType];
+      if (predicateOperatorType <= 3)
       {
-        v5->_comparisonType = qword_20DD97800[v7];
-        v8 = [v6 leftExpression];
-        if ([v8 expressionType] == 3)
+        v5->_comparisonType = qword_20DD97800[predicateOperatorType];
+        leftExpression = [v6 leftExpression];
+        if ([leftExpression expressionType] == 3)
         {
           v9 = *MEMORY[0x277CD0FB0];
           v32[0] = *MEMORY[0x277CD0FA8];
           v32[1] = v9;
           v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:2];
-          v11 = [v8 keyPath];
-          v12 = [v10 containsObject:v11];
+          keyPath = [leftExpression keyPath];
+          v12 = [v10 containsObject:keyPath];
 
           if (v12)
           {
-            v13 = [v8 keyPath];
+            keyPath2 = [leftExpression keyPath];
             significantEvent = v5->_significantEvent;
-            v5->_significantEvent = v13;
+            v5->_significantEvent = keyPath2;
 
-            v15 = [v6 rightExpression];
-            if ([v15 expressionType] == 4)
+            rightExpression = [v6 rightExpression];
+            if ([rightExpression expressionType] == 4)
             {
-              v16 = [v15 function];
-              v17 = [v16 isEqualToString:@"add:to:"];
+              function = [rightExpression function];
+              v17 = [function isEqualToString:@"add:to:"];
 
               if (v17)
               {
-                v18 = [v15 arguments];
-                v19 = [v18 firstObject];
-                if ([v19 expressionType] == 4)
+                arguments = [rightExpression arguments];
+                firstObject = [arguments firstObject];
+                if ([firstObject expressionType] == 4)
                 {
-                  v20 = [v19 function];
-                  v21 = [v20 isEqualToString:@"now"];
+                  function2 = [firstObject function];
+                  v21 = [function2 isEqualToString:@"now"];
 
                   if (v21)
                   {
-                    v22 = [v18 lastObject];
-                    if (![v22 expressionType])
+                    lastObject = [arguments lastObject];
+                    if (![lastObject expressionType])
                     {
-                      v23 = [v22 constantValue];
+                      constantValue = [lastObject constantValue];
                       objc_opt_class();
                       isKindOfClass = objc_opt_isKindOfClass();
 
                       if (isKindOfClass)
                       {
-                        v25 = [v22 constantValue];
-                        v26 = [v25 hf_negativeValue];
+                        constantValue2 = [lastObject constantValue];
+                        hf_negativeValue = [constantValue2 hf_negativeValue];
                         offset = v5->_offset;
-                        v5->_offset = v26;
+                        v5->_offset = hf_negativeValue;
                       }
                     }
                   }
@@ -95,19 +95,19 @@ LABEL_20:
   return v28;
 }
 
-- (HFSunriseSunsetCondition)initWithSignificantEvent:(id)a3 offset:(id)a4 comparisonType:(unint64_t)a5
+- (HFSunriseSunsetCondition)initWithSignificantEvent:(id)event offset:(id)offset comparisonType:(unint64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  eventCopy = event;
+  offsetCopy = offset;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __75__HFSunriseSunsetCondition_initWithSignificantEvent_offset_comparisonType___block_invoke;
   v15[3] = &unk_277E010B0;
-  v16 = v8;
-  v17 = v9;
-  v18 = a5;
-  v10 = v9;
-  v11 = v8;
+  v16 = eventCopy;
+  v17 = offsetCopy;
+  typeCopy = type;
+  v10 = offsetCopy;
+  v11 = eventCopy;
   v12 = __75__HFSunriseSunsetCondition_initWithSignificantEvent_offset_comparisonType___block_invoke(v15);
   v13 = [(HFSunriseSunsetCondition *)self initWithPredicate:v12];
 
@@ -138,11 +138,11 @@ LABEL_7:
   return v5;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   objc_opt_class();
-  v5 = v4;
+  v5 = compareCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -160,13 +160,13 @@ LABEL_7:
     goto LABEL_11;
   }
 
-  v8 = [(HFSunriseSunsetCondition *)self significantEvent];
+  significantEvent = [(HFSunriseSunsetCondition *)self significantEvent];
   v9 = *MEMORY[0x277CD0FB0];
-  if ([v8 isEqualToString:*MEMORY[0x277CD0FB0]])
+  if ([significantEvent isEqualToString:*MEMORY[0x277CD0FB0]])
   {
-    v10 = [v7 significantEvent];
+    significantEvent2 = [v7 significantEvent];
     v11 = *MEMORY[0x277CD0FA8];
-    v12 = [v10 isEqualToString:*MEMORY[0x277CD0FA8]];
+    v12 = [significantEvent2 isEqualToString:*MEMORY[0x277CD0FA8]];
 
     if (v12)
     {
@@ -181,11 +181,11 @@ LABEL_7:
     v11 = *MEMORY[0x277CD0FA8];
   }
 
-  v14 = [(HFSunriseSunsetCondition *)self significantEvent];
-  if ([v14 isEqualToString:v11])
+  significantEvent3 = [(HFSunriseSunsetCondition *)self significantEvent];
+  if ([significantEvent3 isEqualToString:v11])
   {
-    v15 = [v7 significantEvent];
-    v16 = [v15 isEqualToString:v9];
+    significantEvent4 = [v7 significantEvent];
+    v16 = [significantEvent4 isEqualToString:v9];
 
     if (v16)
     {
@@ -199,21 +199,21 @@ LABEL_11:
   {
   }
 
-  v17 = [(HFSunriseSunsetCondition *)self offset];
+  offset = [(HFSunriseSunsetCondition *)self offset];
   v18 = 0.0;
   v19 = 0.0;
-  if (v17)
+  if (offset)
   {
-    v20 = [(HFSunriseSunsetCondition *)self offset];
-    [v20 hf_timeInterval];
+    offset2 = [(HFSunriseSunsetCondition *)self offset];
+    [offset2 hf_timeInterval];
     v19 = v21;
   }
 
-  v22 = [v7 offset];
-  if (v22)
+  offset3 = [v7 offset];
+  if (offset3)
   {
-    v23 = [v7 offset];
-    [v23 hf_timeInterval];
+    offset4 = [v7 offset];
+    [offset4 hf_timeInterval];
     v18 = v24;
   }
 
@@ -228,27 +228,27 @@ LABEL_18:
 - (NSString)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HFSunriseSunsetCondition *)self significantEvent];
-  v5 = [v3 appendObject:v4 withName:@"significantEvent"];
+  significantEvent = [(HFSunriseSunsetCondition *)self significantEvent];
+  v5 = [v3 appendObject:significantEvent withName:@"significantEvent"];
 
-  v6 = [(HFSunriseSunsetCondition *)self offset];
-  v7 = [v3 appendObject:v6 withName:@"offset"];
+  offset = [(HFSunriseSunsetCondition *)self offset];
+  v7 = [v3 appendObject:offset withName:@"offset"];
 
-  v8 = [(HFSunriseSunsetCondition *)self comparisonType];
-  if (v8 > 2)
+  comparisonType = [(HFSunriseSunsetCondition *)self comparisonType];
+  if (comparisonType > 2)
   {
     v9 = @"(unknown)";
   }
 
   else
   {
-    v9 = off_277E010F8[v8];
+    v9 = off_277E010F8[comparisonType];
   }
 
   [v3 appendString:v9 withName:@"comparisonType"];
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
 @end

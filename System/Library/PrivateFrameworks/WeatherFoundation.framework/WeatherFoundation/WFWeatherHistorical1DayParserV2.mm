@@ -1,23 +1,23 @@
 @interface WFWeatherHistorical1DayParserV2
-- (id)parseForecastConditionsFromObservations:(id)a3;
-- (id)parseForecastData:(id)a3 types:(unint64_t)a4 location:(id)a5 locale:(id)a6 date:(id)a7 error:(id *)a8 rules:(id)a9;
-- (id)parseHistoricalForecast:(id)a3 location:(id)a4 date:(id)a5 error:(id *)a6;
-- (id)parseHistoricalForecastConditionsFromObservations:(id)a3 forDate:(id)a4;
+- (id)parseForecastConditionsFromObservations:(id)observations;
+- (id)parseForecastData:(id)data types:(unint64_t)types location:(id)location locale:(id)locale date:(id)date error:(id *)error rules:(id)rules;
+- (id)parseHistoricalForecast:(id)forecast location:(id)location date:(id)date error:(id *)error;
+- (id)parseHistoricalForecastConditionsFromObservations:(id)observations forDate:(id)date;
 @end
 
 @implementation WFWeatherHistorical1DayParserV2
 
-- (id)parseForecastData:(id)a3 types:(unint64_t)a4 location:(id)a5 locale:(id)a6 date:(id)a7 error:(id *)a8 rules:(id)a9
+- (id)parseForecastData:(id)data types:(unint64_t)types location:(id)location locale:(id)locale date:(id)date error:(id *)error rules:(id)rules
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v13 = a5;
-  v14 = a7;
+  locationCopy = location;
+  dateCopy = date;
   v22 = 0;
-  v15 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a3 options:0 error:&v22];
+  v15 = [MEMORY[0x277CCAAA0] JSONObjectWithData:data options:0 error:&v22];
   v16 = v22;
   if (v15)
   {
-    v17 = [(WFWeatherHistorical1DayParserV2 *)self parseHistoricalForecast:v15 location:v13 date:v14 error:a8];
+    v17 = [(WFWeatherHistorical1DayParserV2 *)self parseHistoricalForecast:v15 location:locationCopy date:dateCopy error:error];
   }
 
   else
@@ -34,7 +34,7 @@
       v23 = *MEMORY[0x277CCA450];
       v24[0] = @"Failed to parse JSON historical 1 day forecast data";
       v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:&v23 count:1];
-      *a8 = [v19 wf_errorWithCode:1 encapsulatedError:v16 userInfo:v20];
+      *error = [v19 wf_errorWithCode:1 encapsulatedError:v16 userInfo:v20];
     }
 
     v17 = 0;
@@ -43,16 +43,16 @@
   return v17;
 }
 
-- (id)parseHistoricalForecast:(id)a3 location:(id)a4 date:(id)a5 error:(id *)a6
+- (id)parseHistoricalForecast:(id)forecast location:(id)location date:(id)date error:(id *)error
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = [a3 arrayForKey:@"observations"];
+  locationCopy = location;
+  dateCopy = date;
+  v11 = [forecast arrayForKey:@"observations"];
   if (v11)
   {
-    v12 = [(WFWeatherHistorical1DayParserV2 *)self parseHistoricalForecastConditionsFromObservations:v11 forDate:v10];
-    v13 = [v12 currentConditions];
-    [v13 setLocation:v9];
+    v12 = [(WFWeatherHistorical1DayParserV2 *)self parseHistoricalForecastConditionsFromObservations:v11 forDate:dateCopy];
+    currentConditions = [v12 currentConditions];
+    [currentConditions setLocation:locationCopy];
   }
 
   else
@@ -63,13 +63,13 @@
   return v12;
 }
 
-- (id)parseHistoricalForecastConditionsFromObservations:(id)a3 forDate:(id)a4
+- (id)parseHistoricalForecastConditionsFromObservations:(id)observations forDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  observationsCopy = observations;
+  dateCopy = date;
   v8 = objc_alloc_init(WFParsedForecastData);
-  v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
-  [v7 timeIntervalSince1970];
+  v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(observationsCopy, "count")}];
+  [dateCopy timeIntervalSince1970];
   v11 = v10;
   v51 = 0;
   v52 = &v51;
@@ -97,32 +97,32 @@
   v32[3] = &unk_279E6F548;
   v12 = v9;
   v33 = v12;
-  v34 = self;
+  selfCopy = self;
   v40 = v11;
   v35 = v50;
   v36 = &v51;
   v37 = &v45;
   v38 = &v41;
   v39 = v49;
-  [v6 enumerateObjectsUsingBlock:v32];
+  [observationsCopy enumerateObjectsUsingBlock:v32];
   [(WFParsedForecastData *)v8 setHourlyForecasts:v12];
   v13 = [v12 objectAtIndexedSubscript:v52[3]];
   [(WFParsedForecastData *)v8 setCurrentConditions:v13];
 
-  v14 = [(WFParsedForecastData *)v8 currentConditions];
-  v15 = [v14 objectForKeyedSubscript:@"WFWeatherForecastDateComponent"];
+  currentConditions = [(WFParsedForecastData *)v8 currentConditions];
+  v15 = [currentConditions objectForKeyedSubscript:@"WFWeatherForecastDateComponent"];
 
   if (!v15)
   {
-    v16 = [(WFParsedForecastData *)v8 currentConditions];
-    [v16 setObject:v7 forKeyedSubscript:@"WFWeatherForecastDateComponent"];
+    currentConditions2 = [(WFParsedForecastData *)v8 currentConditions];
+    [currentConditions2 setObject:dateCopy forKeyedSubscript:@"WFWeatherForecastDateComponent"];
   }
 
-  v17 = [v6 lastObject];
-  v18 = [v17 objectForKeyedSubscript:@"max_temp"];
+  lastObject = [observationsCopy lastObject];
+  v18 = [lastObject objectForKeyedSubscript:@"max_temp"];
 
-  v19 = [v6 lastObject];
-  v20 = [v19 objectForKeyedSubscript:@"min_temp"];
+  lastObject2 = [observationsCopy lastObject];
+  v20 = [lastObject2 objectForKeyedSubscript:@"min_temp"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
@@ -134,13 +134,13 @@
 
     v21 = [WFTemperature alloc];
     v22 = [(WFTemperature *)v21 initWithTemperatureUnit:2 value:v46[3]];
-    v23 = [(WFParsedForecastData *)v8 currentConditions];
-    [v23 setObject:v22 forKeyedSubscript:@"WFWeatherHighTemperatureComponent"];
+    currentConditions3 = [(WFParsedForecastData *)v8 currentConditions];
+    [currentConditions3 setObject:v22 forKeyedSubscript:@"WFWeatherHighTemperatureComponent"];
 
     v24 = [WFTemperature alloc];
     v25 = [(WFTemperature *)v24 initWithTemperatureUnit:2 value:v42[3]];
-    v26 = [(WFParsedForecastData *)v8 currentConditions];
-    [v26 setObject:v25 forKeyedSubscript:@"WFWeatherLowTemperatureComponent"];
+    currentConditions4 = [(WFParsedForecastData *)v8 currentConditions];
+    [currentConditions4 setObject:v25 forKeyedSubscript:@"WFWeatherLowTemperatureComponent"];
   }
 
   else
@@ -148,14 +148,14 @@
     v27 = [WFTemperature alloc];
     [v18 doubleValue];
     v28 = [(WFTemperature *)v27 initWithTemperatureUnit:2 value:?];
-    v29 = [(WFParsedForecastData *)v8 currentConditions];
-    [v29 setObject:v28 forKeyedSubscript:@"WFWeatherHighTemperatureComponent"];
+    currentConditions5 = [(WFParsedForecastData *)v8 currentConditions];
+    [currentConditions5 setObject:v28 forKeyedSubscript:@"WFWeatherHighTemperatureComponent"];
 
     v30 = [WFTemperature alloc];
     [v20 doubleValue];
     v25 = [(WFTemperature *)v30 initWithTemperatureUnit:2 value:?];
-    v26 = [(WFParsedForecastData *)v8 currentConditions];
-    [v26 setObject:v25 forKeyedSubscript:@"WFWeatherLowTemperatureComponent"];
+    currentConditions4 = [(WFParsedForecastData *)v8 currentConditions];
+    [currentConditions4 setObject:v25 forKeyedSubscript:@"WFWeatherLowTemperatureComponent"];
   }
 
 LABEL_9:
@@ -219,11 +219,11 @@ void __93__WFWeatherHistorical1DayParserV2_parseHistoricalForecastConditionsFrom
   }
 }
 
-- (id)parseForecastConditionsFromObservations:(id)a3
+- (id)parseForecastConditionsFromObservations:(id)observations
 {
-  v3 = a3;
+  observationsCopy = observations;
   v4 = objc_alloc_init(WFWeatherConditions);
-  v5 = [v3 numberForKey:@"valid_time_gmt"];
+  v5 = [observationsCopy numberForKey:@"valid_time_gmt"];
   v6 = v5;
   if (v5)
   {
@@ -231,7 +231,7 @@ void __93__WFWeatherHistorical1DayParserV2_parseHistoricalForecastConditionsFrom
     [(WFWeatherConditions *)v4 setObject:v7 forKeyedSubscript:@"WFWeatherForecastDateComponent"];
   }
 
-  v8 = [v3 numberForKey:@"expire_time_gmt"];
+  v8 = [observationsCopy numberForKey:@"expire_time_gmt"];
 
   if (v8)
   {
@@ -239,7 +239,7 @@ void __93__WFWeatherHistorical1DayParserV2_parseHistoricalForecastConditionsFrom
     [(WFWeatherConditions *)v4 setObject:v9 forKeyedSubscript:@"WFWeatherForecastExpirationDateComponent"];
   }
 
-  v10 = [v3 numberForKey:@"wx_icon"];
+  v10 = [observationsCopy numberForKey:@"wx_icon"];
   if (v10)
   {
     [(WFWeatherConditions *)v4 setObject:v10 forKeyedSubscript:@"__THIS_WILL_BE_DEPRECATED__WFWeatherLegacyConditionComponent"];
@@ -247,10 +247,10 @@ void __93__WFWeatherHistorical1DayParserV2_parseHistoricalForecastConditionsFrom
     [(WFWeatherConditions *)v4 setObject:v11 forKeyedSubscript:@"WFWeatherConditionComponent"];
   }
 
-  v12 = [v3 numberForKey:@"rh"];
+  v12 = [observationsCopy numberForKey:@"rh"];
   [(WFWeatherConditions *)v4 setObject:v12 forKeyedSubscript:@"WFWeatherHumidityComponent"];
 
-  v13 = [v3 numberForKey:@"dewPt"];
+  v13 = [observationsCopy numberForKey:@"dewPt"];
   if (v13)
   {
     [(WFWeatherConditions *)v4 setObject:v13 forKeyedSubscript:@"WFWeatherDewpointComponent"];
@@ -260,14 +260,14 @@ void __93__WFWeatherHistorical1DayParserV2_parseHistoricalForecastConditionsFrom
     [(WFWeatherConditions *)v4 setObject:v15 forKeyedSubscript:@"WFWeatherDewpointTemperatureComponent"];
   }
 
-  v16 = [v3 numberForKey:@"precip_hrly"];
-  if (v16 || ([v3 numberForKey:@"precip_total"], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
+  v16 = [observationsCopy numberForKey:@"precip_hrly"];
+  if (v16 || ([observationsCopy numberForKey:@"precip_total"], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v17 = v16;
     [(WFWeatherConditions *)v4 setObject:v16 forKeyedSubscript:@"WFWeatherPrecipitationAmountComponent"];
   }
 
-  v18 = [v3 numberForKey:@"temp"];
+  v18 = [observationsCopy numberForKey:@"temp"];
   if (v18)
   {
     v19 = [WFTemperature alloc];
@@ -276,7 +276,7 @@ void __93__WFWeatherHistorical1DayParserV2_parseHistoricalForecastConditionsFrom
     [(WFWeatherConditions *)v4 setObject:v20 forKeyedSubscript:@"WFWeatherTemperatureComponent"];
   }
 
-  v21 = [v3 numberForKey:@"feels_like"];
+  v21 = [observationsCopy numberForKey:@"feels_like"];
 
   if (v21)
   {
@@ -286,31 +286,31 @@ void __93__WFWeatherHistorical1DayParserV2_parseHistoricalForecastConditionsFrom
     [(WFWeatherConditions *)v4 setObject:v23 forKeyedSubscript:@"WFWeatherFeelsLikeTemperatureComponent"];
   }
 
-  v24 = [v3 numberForKey:@"uv_index"];
+  v24 = [observationsCopy numberForKey:@"uv_index"];
   [(WFWeatherConditions *)v4 setObject:v24 forKeyedSubscript:@"WFWeatherUVIndexComponent"];
 
-  v25 = [v3 numberForKey:@"vis"];
+  v25 = [observationsCopy numberForKey:@"vis"];
   if (v25)
   {
     [(WFWeatherConditions *)v4 setObject:v25 forKeyedSubscript:@"WFWeatherVisibilityComponent"];
   }
 
-  v26 = [v3 numberForKey:@"wdir"];
+  v26 = [observationsCopy numberForKey:@"wdir"];
   [(WFWeatherConditions *)v4 setObject:v26 forKeyedSubscript:@"WFWeatherWindDirectionComponent"];
 
-  v27 = [v3 numberForKey:@"wspd"];
+  v27 = [observationsCopy numberForKey:@"wspd"];
   if (v27)
   {
     [(WFWeatherConditions *)v4 setObject:v27 forKeyedSubscript:@"WFWeatherWindSpeedComponent"];
   }
 
-  v28 = [v3 numberForKey:@"pressure"];
+  v28 = [observationsCopy numberForKey:@"pressure"];
   if (v28)
   {
     [(WFWeatherConditions *)v4 setObject:v28 forKeyedSubscript:@"WFWeatherPressureComponent"];
   }
 
-  v29 = [v3 numberForKey:@"pressure_tend"];
+  v29 = [observationsCopy numberForKey:@"pressure_tend"];
   if (v29)
   {
     [(WFWeatherConditions *)v4 setObject:v29 forKeyedSubscript:@"WFWeatherPressureTrendComponent"];

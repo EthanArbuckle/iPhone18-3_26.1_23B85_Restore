@@ -1,23 +1,23 @@
 @interface CAMFont
-+ (BOOL)isExtraLongCharacterSet:(id)a3;
-+ (double)cameraModeDialFontSizeForContentSize:(id)a3;
++ (BOOL)isExtraLongCharacterSet:(id)set;
++ (double)cameraModeDialFontSizeForContentSize:(id)size;
 + (double)interpolatedAdditionalFontSizeForMainScreen;
-+ (id)cameraAltTypeFontOfSize:(double)a3 weight:(double)a4;
-+ (id)cameraFontForContentSize:(id)a3;
-+ (id)cameraFontOfSize:(double)a3 weight:(double)a4;
-+ (id)cameraKerningForFont:(id)a3;
-+ (id)cameraModeDialApproximateFontForContentSize:(id)a3;
-+ (id)cameraModeDialFontForContentSize:(id)a3 weight:(double)a4;
-+ (id)cameraPadModeDialFontForContentSize:(id)a3;
-+ (id)cameraTimerFontForContentSize:(id)a3 layoutStyle:(int64_t)a4;
++ (id)cameraAltTypeFontOfSize:(double)size weight:(double)weight;
++ (id)cameraFontForContentSize:(id)size;
++ (id)cameraFontOfSize:(double)size weight:(double)weight;
++ (id)cameraKerningForFont:(id)font;
++ (id)cameraModeDialApproximateFontForContentSize:(id)size;
++ (id)cameraModeDialFontForContentSize:(id)size weight:(double)weight;
++ (id)cameraPadModeDialFontForContentSize:(id)size;
++ (id)cameraTimerFontForContentSize:(id)size layoutStyle:(int64_t)style;
 @end
 
 @implementation CAMFont
 
-+ (id)cameraFontOfSize:(double)a3 weight:(double)a4
++ (id)cameraFontOfSize:(double)size weight:(double)weight
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"size=%f weight=%f", *&a3, *&a4];
+  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"size=%f weight=%f", *&size, *&weight];
   if (cameraFontOfSize_weight__onceToken != -1)
   {
     +[CAMFont cameraFontOfSize:weight:];
@@ -51,7 +51,7 @@ uint64_t __35__CAMFont_cameraFontOfSize_weight___block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (id)cameraAltTypeFontOfSize:(double)a3 weight:(double)a4
++ (id)cameraAltTypeFontOfSize:(double)size weight:(double)weight
 {
   v28[4] = *MEMORY[0x1E69E9840];
   v6 = *MEMORY[0x1E69DB900];
@@ -83,21 +83,21 @@ uint64_t __35__CAMFont_cameraFontOfSize_weight___block_invoke()
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:4];
 
   v12 = CEKFontOfSizeWeightStyle();
-  v13 = [v12 fontDescriptor];
+  fontDescriptor = [v12 fontDescriptor];
   v18 = *MEMORY[0x1E69DB8B0];
   v19 = v11;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
-  v15 = [v13 fontDescriptorByAddingAttributes:v14];
+  v15 = [fontDescriptor fontDescriptorByAddingAttributes:v14];
 
-  v16 = [MEMORY[0x1E69DB878] fontWithDescriptor:v15 size:a3];
+  v16 = [MEMORY[0x1E69DB878] fontWithDescriptor:v15 size:size];
 
   return v16;
 }
 
 + (double)interpolatedAdditionalFontSizeForMainScreen
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 _referenceBounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen _referenceBounds];
   Width = CGRectGetWidth(v5);
 
   result = 0.0;
@@ -109,20 +109,20 @@ uint64_t __35__CAMFont_cameraFontOfSize_weight___block_invoke()
   return result;
 }
 
-+ (id)cameraFontForContentSize:(id)a3
++ (id)cameraFontForContentSize:(id)size
 {
-  v4 = a3;
-  [a1 interpolatedAdditionalFontSizeForMainScreen];
+  sizeCopy = size;
+  [self interpolatedAdditionalFontSizeForMainScreen];
   v6 = v5;
-  v7 = [MEMORY[0x1E69DC938] currentDevice];
-  v8 = [v7 cam_initialLayoutStyle];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  cam_initialLayoutStyle = [currentDevice cam_initialLayoutStyle];
 
-  if (v8 == 1)
+  if (cam_initialLayoutStyle == 1)
   {
     v6 = v6 + 1.0;
   }
 
-  if (([v4 isEqualToString:*MEMORY[0x1E69DDC70]] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E69DDC68]) & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E69DDC88]) & 1) != 0 || objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E69DDC78]))
+  if (([sizeCopy isEqualToString:*MEMORY[0x1E69DDC70]] & 1) != 0 || (objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC68]) & 1) != 0 || (objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC88]) & 1) != 0 || objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC78]))
   {
     v9 = 12.0;
 LABEL_8:
@@ -130,39 +130,39 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69DDC60]])
+  if ([sizeCopy isEqualToString:*MEMORY[0x1E69DDC60]])
   {
     v9 = 13.0;
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69DDC58]])
+  if ([sizeCopy isEqualToString:*MEMORY[0x1E69DDC58]])
   {
     v9 = 15.0;
     goto LABEL_8;
   }
 
-  v13 = [v4 isEqualToString:*MEMORY[0x1E69DDC50]];
+  v13 = [sizeCopy isEqualToString:*MEMORY[0x1E69DDC50]];
   v10 = 17.0;
   if ((v13 & 1) == 0)
   {
-    v14 = [v4 isEqualToString:{*MEMORY[0x1E69DDC40], 17.0}];
+    v14 = [sizeCopy isEqualToString:{*MEMORY[0x1E69DDC40], 17.0}];
     v10 = 20.0;
     if ((v14 & 1) == 0)
     {
-      v15 = [v4 isEqualToString:{*MEMORY[0x1E69DDC38], 20.0}];
+      v15 = [sizeCopy isEqualToString:{*MEMORY[0x1E69DDC38], 20.0}];
       v10 = 22.0;
       if ((v15 & 1) == 0)
       {
-        v16 = [v4 isEqualToString:{*MEMORY[0x1E69DDC30], 22.0}];
+        v16 = [sizeCopy isEqualToString:{*MEMORY[0x1E69DDC30], 22.0}];
         v10 = 24.0;
         if ((v16 & 1) == 0)
         {
-          v17 = [v4 isEqualToString:{*MEMORY[0x1E69DDC28], 24.0}];
+          v17 = [sizeCopy isEqualToString:{*MEMORY[0x1E69DDC28], 24.0}];
           v10 = 27.0;
           if ((v17 & 1) == 0)
           {
-            v18 = [v4 isEqualToString:{*MEMORY[0x1E69DDC20], 27.0}];
+            v18 = [sizeCopy isEqualToString:{*MEMORY[0x1E69DDC20], 27.0}];
             v10 = 17.0;
             if (v18)
             {
@@ -175,18 +175,18 @@ LABEL_8:
   }
 
 LABEL_9:
-  v11 = [a1 cameraFontOfSize:v10];
+  v11 = [self cameraFontOfSize:v10];
 
   return v11;
 }
 
-+ (id)cameraTimerFontForContentSize:(id)a3 layoutStyle:(int64_t)a4
++ (id)cameraTimerFontForContentSize:(id)size layoutStyle:(int64_t)style
 {
-  v5 = a3;
-  [a1 interpolatedAdditionalFontSizeForMainScreen];
-  if (([v5 isEqualToString:*MEMORY[0x1E69DDC68]] & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", *MEMORY[0x1E69DDC88]) & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", *MEMORY[0x1E69DDC78]) & 1) == 0 && !objc_msgSend(v5, "isEqualToString:", *MEMORY[0x1E69DDC70]) && !objc_msgSend(v5, "isEqualToString:", *MEMORY[0x1E69DDC60]) && !objc_msgSend(v5, "isEqualToString:", *MEMORY[0x1E69DDC58]) && (objc_msgSend(v5, "isEqualToString:", *MEMORY[0x1E69DDC50]) & 1) == 0 && !objc_msgSend(v5, "isEqualToString:", *MEMORY[0x1E69DDC40]) && !objc_msgSend(v5, "isEqualToString:", *MEMORY[0x1E69DDC38]) && !objc_msgSend(v5, "isEqualToString:", *MEMORY[0x1E69DDC30]) && !objc_msgSend(v5, "isEqualToString:", *MEMORY[0x1E69DDC28]))
+  sizeCopy = size;
+  [self interpolatedAdditionalFontSizeForMainScreen];
+  if (([sizeCopy isEqualToString:*MEMORY[0x1E69DDC68]] & 1) == 0 && (objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC88]) & 1) == 0 && (objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC78]) & 1) == 0 && !objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC70]) && !objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC60]) && !objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC58]) && (objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC50]) & 1) == 0 && !objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC40]) && !objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC38]) && !objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC30]) && !objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC28]))
   {
-    [v5 isEqualToString:*MEMORY[0x1E69DDC20]];
+    [sizeCopy isEqualToString:*MEMORY[0x1E69DDC20]];
   }
 
   v6 = CEKMonospacedStylisticNumeralFontOfSizeAndStyle();
@@ -194,18 +194,18 @@ LABEL_9:
   return v6;
 }
 
-+ (double)cameraModeDialFontSizeForContentSize:(id)a3
++ (double)cameraModeDialFontSizeForContentSize:(id)size
 {
-  v4 = a3;
-  [a1 interpolatedAdditionalFontSizeForMainScreen];
+  sizeCopy = size;
+  [self interpolatedAdditionalFontSizeForMainScreen];
   v6 = v5;
   v7 = 13.0;
-  if (([v4 isEqualToString:*MEMORY[0x1E69DDC68]] & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E69DDC88]) & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E69DDC78]) & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E69DDC70]) & 1) == 0)
+  if (([sizeCopy isEqualToString:*MEMORY[0x1E69DDC68]] & 1) == 0 && (objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC88]) & 1) == 0 && (objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC78]) & 1) == 0 && (objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC70]) & 1) == 0)
   {
     v7 = 14.0;
-    if (([v4 isEqualToString:*MEMORY[0x1E69DDC60]] & 1) == 0)
+    if (([sizeCopy isEqualToString:*MEMORY[0x1E69DDC60]] & 1) == 0)
     {
-      if ([v4 isEqualToString:*MEMORY[0x1E69DDC58]])
+      if ([sizeCopy isEqualToString:*MEMORY[0x1E69DDC58]])
       {
         v7 = 16.0;
       }
@@ -220,26 +220,26 @@ LABEL_9:
   return v6 + v7;
 }
 
-+ (id)cameraModeDialFontForContentSize:(id)a3 weight:(double)a4
++ (id)cameraModeDialFontForContentSize:(id)size weight:(double)weight
 {
-  [a1 cameraModeDialFontSizeForContentSize:a3];
+  [self cameraModeDialFontSizeForContentSize:size];
 
-  return [a1 cameraFontOfSize:? weight:?];
+  return [self cameraFontOfSize:? weight:?];
 }
 
-+ (id)cameraModeDialApproximateFontForContentSize:(id)a3
++ (id)cameraModeDialApproximateFontForContentSize:(id)size
 {
-  v4 = a3;
-  [a1 interpolatedAdditionalFontSizeForMainScreen];
+  sizeCopy = size;
+  [self interpolatedAdditionalFontSizeForMainScreen];
   v6 = v5;
-  if (([v4 isEqualToString:*MEMORY[0x1E69DDC68]] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E69DDC88]) & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E69DDC78]) & 1) != 0 || objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E69DDC70]) || objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E69DDC60]))
+  if (([sizeCopy isEqualToString:*MEMORY[0x1E69DDC68]] & 1) != 0 || (objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC88]) & 1) != 0 || (objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC78]) & 1) != 0 || objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC70]) || objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC60]))
   {
     v7 = v6 + 22.0;
   }
 
   else
   {
-    v10 = [v4 isEqualToString:*MEMORY[0x1E69DDC58]];
+    v10 = [sizeCopy isEqualToString:*MEMORY[0x1E69DDC58]];
     v7 = v6 + 24.0;
     if (!v10)
     {
@@ -247,21 +247,21 @@ LABEL_9:
     }
   }
 
-  v8 = [a1 cameraFontOfSize:v7];
+  v8 = [self cameraFontOfSize:v7];
 
   return v8;
 }
 
-+ (id)cameraPadModeDialFontForContentSize:(id)a3
++ (id)cameraPadModeDialFontForContentSize:(id)size
 {
-  v4 = a3;
+  sizeCopy = size;
   v5 = 17.0;
-  if (([v4 isEqualToString:*MEMORY[0x1E69DDC68]] & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E69DDC88]) & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E69DDC78]) & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E69DDC70]) & 1) == 0)
+  if (([sizeCopy isEqualToString:*MEMORY[0x1E69DDC68]] & 1) == 0 && (objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC88]) & 1) == 0 && (objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC78]) & 1) == 0 && (objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC70]) & 1) == 0)
   {
     v5 = 18.0;
-    if (([v4 isEqualToString:*MEMORY[0x1E69DDC60]] & 1) == 0)
+    if (([sizeCopy isEqualToString:*MEMORY[0x1E69DDC60]] & 1) == 0)
     {
-      if ([v4 isEqualToString:*MEMORY[0x1E69DDC58]])
+      if ([sizeCopy isEqualToString:*MEMORY[0x1E69DDC58]])
       {
         v5 = 19.0;
       }
@@ -273,30 +273,30 @@ LABEL_9:
     }
   }
 
-  v6 = [a1 cameraFontOfSize:v5];
+  v6 = [self cameraFontOfSize:v5];
 
   return v6;
 }
 
-+ (id)cameraKerningForFont:(id)a3
++ (id)cameraKerningForFont:(id)font
 {
   v3 = MEMORY[0x1E696AD98];
-  [a3 pointSize];
+  [font pointSize];
   v5 = v4 * 25.0 / 1000.0;
 
   return [v3 numberWithDouble:v5];
 }
 
-+ (BOOL)isExtraLongCharacterSet:(id)a3
++ (BOOL)isExtraLongCharacterSet:(id)set
 {
   v3 = isExtraLongCharacterSet__onceToken;
-  v4 = a3;
+  setCopy = set;
   if (v3 != -1)
   {
     +[CAMFont isExtraLongCharacterSet:];
   }
 
-  [v4 rangeOfCharacterFromSet:isExtraLongCharacterSet__teluguCharSet];
+  [setCopy rangeOfCharacterFromSet:isExtraLongCharacterSet__teluguCharSet];
   v6 = v5;
 
   return v6 != 0;

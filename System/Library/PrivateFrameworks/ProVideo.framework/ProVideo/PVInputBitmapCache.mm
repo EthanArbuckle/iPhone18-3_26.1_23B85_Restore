@@ -1,10 +1,10 @@
 @interface PVInputBitmapCache
 - (PVInputBitmapCache)init;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 - (void)dealloc;
-- (void)didRecieveMemoryWarning:(id)a3;
-- (void)purge:(BOOL)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)didRecieveMemoryWarning:(id)warning;
+- (void)purge:(BOOL)purge;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation PVInputBitmapCache
@@ -21,8 +21,8 @@
     v2->_cache = v3;
 
     v2->_countLimit = 3;
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel_didRecieveMemoryWarning_ name:*MEMORY[0x277D76670] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_didRecieveMemoryWarning_ name:*MEMORY[0x277D76670] object:0];
   }
 
   return v2;
@@ -30,38 +30,38 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76670] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76670] object:0];
 
   v4.receiver = self;
   v4.super_class = PVInputBitmapCache;
   [(PVInputBitmapCache *)&v4 dealloc];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  [(NSMutableDictionary *)self->_cache setObject:a3 forKey:a4];
+  [(NSMutableDictionary *)self->_cache setObject:object forKey:key];
 
   [(PVInputBitmapCache *)self purge:0];
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v3 = [(NSMutableDictionary *)self->_cache objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_cache objectForKey:key];
 
   return v3;
 }
 
-- (void)purge:(BOOL)a3
+- (void)purge:(BOOL)purge
 {
-  v3 = a3;
+  purgeCopy = purge;
   v29 = *MEMORY[0x277D85DE8];
   p_cache = &self->_cache;
   v6 = [(NSMutableDictionary *)self->_cache keysSortedByValueUsingComparator:&__block_literal_global_7];
-  if ([(NSMutableDictionary *)*p_cache count]> self->_countLimit || v3)
+  if ([(NSMutableDictionary *)*p_cache count]> self->_countLimit || purgeCopy)
   {
     cache = self->_cache;
-    if (v3)
+    if (purgeCopy)
     {
       v9 = [(NSMutableDictionary *)cache count];
       if (!v9)
@@ -88,7 +88,7 @@
   }
 
 LABEL_11:
-  v13 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
@@ -112,8 +112,8 @@ LABEL_11:
         v20 = v19;
         if (v19)
         {
-          v21 = [v19 lastUsedTime];
-          [v13 timeIntervalSinceDate:v21];
+          lastUsedTime = [v19 lastUsedTime];
+          [date timeIntervalSinceDate:lastUsedTime];
           v23 = v22;
 
           if (v23 <= 1.0)
@@ -149,7 +149,7 @@ uint64_t __28__PVInputBitmapCache_purge___block_invoke(uint64_t a1, void *a2, vo
   return v7;
 }
 
-- (void)didRecieveMemoryWarning:(id)a3
+- (void)didRecieveMemoryWarning:(id)warning
 {
   [sInputBitmapCacheLock lock];
   [(PVInputBitmapCache *)self purge:1];

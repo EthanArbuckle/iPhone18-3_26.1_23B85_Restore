@@ -6,19 +6,19 @@
 + (UTType)importedTypeWithIdentifier:(NSString *)identifier;
 + (UTType)importedTypeWithIdentifier:(NSString *)identifier conformingToType:(UTType *)parentType;
 + (UTType)typeWithTag:(NSString *)tag tagClass:(NSString *)tagClass conformingToType:(UTType *)supertype;
-+ (id)_exportedTypeWithIdentifier:(id)a3 bundle:(id)a4 conformingToType:(id)a5;
-+ (id)_importedTypeWithIdentifier:(id)a3 bundle:(id)a4 conformingToType:(id)a5;
-+ (id)_typeOfItemAtFileURL:(id)a3 error:(id *)a4;
-+ (id)_typeOfPromiseAtFileURL:(id)a3 error:(id *)a4;
-+ (id)_typeWithDeviceModelCode:(id)a3;
-+ (id)_typeWithDeviceModelCode:(id)a3 enclosureColor:(UTHardwareColor)a4;
-+ (id)_typeWithDeviceModelCodeWithoutResolvingCurrentDevice:(id)a3;
-+ (id)_typeWithIdentifier:(id)a3 constantIndex:(int64_t)a4 error:(id *)a5;
-+ (id)_typeWithTypeRecord:(id)a3 detachTypeRecord:(BOOL)a4 findConstant:(BOOL)a5;
-+ (id)_typesWithIdentifiers:(id)a3;
-+ (void)_enumerateAllDeclaredTypesUsingBlock:(id)a3;
++ (id)_exportedTypeWithIdentifier:(id)identifier bundle:(id)bundle conformingToType:(id)type;
++ (id)_importedTypeWithIdentifier:(id)identifier bundle:(id)bundle conformingToType:(id)type;
++ (id)_typeOfItemAtFileURL:(id)l error:(id *)error;
++ (id)_typeOfPromiseAtFileURL:(id)l error:(id *)error;
++ (id)_typeWithDeviceModelCode:(id)code;
++ (id)_typeWithDeviceModelCode:(id)code enclosureColor:(UTHardwareColor)color;
++ (id)_typeWithDeviceModelCodeWithoutResolvingCurrentDevice:(id)device;
++ (id)_typeWithIdentifier:(id)identifier constantIndex:(int64_t)index error:(id *)error;
++ (id)_typeWithTypeRecord:(id)record detachTypeRecord:(BOOL)typeRecord findConstant:(BOOL)constant;
++ (id)_typesWithIdentifiers:(id)identifiers;
++ (void)_enumerateAllDeclaredTypesUsingBlock:(id)block;
 + (void)_unrealizeAllCoreTypes;
-- (BOOL)_getPreferredEnclosureColor:(UTHardwareColor *)a3;
+- (BOOL)_getPreferredEnclosureColor:(UTHardwareColor *)color;
 - (BOOL)_isCoreType;
 - (BOOL)_isExported;
 - (BOOL)_isImported;
@@ -26,7 +26,7 @@
 - (BOOL)conformsToType:(UTType *)type;
 - (BOOL)isDeclared;
 - (BOOL)isDynamic;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPublicType;
 - (BOOL)isSubtypeOfType:(UTType *)type;
 - (BOOL)isSupertypeOfType:(UTType *)type;
@@ -43,50 +43,50 @@
 - (NSString)localizedDescription;
 - (NSURL)referenceAccessoryURL;
 - (NSURL)referenceURL;
-- (UTType)initWithCoder:(id)a3;
-- (id)_initWithTypeRecord:(id)a3;
-- (id)_kindStringWithPreferredLocalizations:(id)a3;
-- (id)_localizedDescriptionWithPreferredLocalizations:(id)a3;
-- (id)_preferredTagOfClass:(id)a3;
+- (UTType)initWithCoder:(id)coder;
+- (id)_initWithTypeRecord:(id)record;
+- (id)_kindStringWithPreferredLocalizations:(id)localizations;
+- (id)_localizedDescriptionWithPreferredLocalizations:(id)localizations;
+- (id)_preferredTagOfClass:(id)class;
 - (id)debugDescription;
-- (unint64_t)_getEnclosureColors:(UTHardwareColor *)a3 count:(unint64_t)a4;
+- (unint64_t)_getEnclosureColors:(UTHardwareColor *)colors count:(unint64_t)count;
 - (unint64_t)hash;
-- (void)_setDefaultHandlerToApplicationRecord:(id)a3 completionHandler:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setDefaultHandlerToApplicationRecord:(id)record completionHandler:(id)handler;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UTType
 
 - (unint64_t)hash
 {
-  v2 = [(UTType *)self identifier];
-  HashCode = _UTIdentifierGetHashCode(v2);
+  identifier = [(UTType *)self identifier];
+  HashCode = _UTIdentifierGetHashCode(identifier);
 
   return HashCode;
 }
 
 - (NSString)identifier
 {
-  v2 = [(UTType *)self _typeRecord];
-  v3 = [v2 identifier];
+  _typeRecord = [(UTType *)self _typeRecord];
+  identifier = [_typeRecord identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (BOOL)isDeclared
 {
-  v2 = [(UTType *)self _typeRecord];
-  v3 = [v2 isDeclared];
+  _typeRecord = [(UTType *)self _typeRecord];
+  isDeclared = [_typeRecord isDeclared];
 
-  return v3;
+  return isDeclared;
 }
 
 - (BOOL)isDynamic
 {
-  v2 = [(UTType *)self _typeRecord];
-  v3 = [v2 isDynamic];
+  _typeRecord = [(UTType *)self _typeRecord];
+  isDynamic = [_typeRecord isDynamic];
 
-  return v3;
+  return isDynamic;
 }
 
 + (UTType)_typeOfCurrentDevice
@@ -200,13 +200,13 @@ void __48__UTType_DeviceModelCodes___typeOfCurrentDevice__block_invoke()
 
 - (NSDictionary)tags
 {
-  v2 = [(UTType *)self _typeRecord];
-  v3 = [v2 tagSpecification];
-  v4 = [v3 _expensiveDictionaryRepresentation];
-  v5 = v4;
-  if (v4)
+  _typeRecord = [(UTType *)self _typeRecord];
+  tagSpecification = [_typeRecord tagSpecification];
+  _expensiveDictionaryRepresentation = [tagSpecification _expensiveDictionaryRepresentation];
+  v5 = _expensiveDictionaryRepresentation;
+  if (_expensiveDictionaryRepresentation)
   {
-    v6 = v4;
+    v6 = _expensiveDictionaryRepresentation;
   }
 
   else
@@ -219,68 +219,68 @@ void __48__UTType_DeviceModelCodes___typeOfCurrentDevice__block_invoke()
   return v6;
 }
 
-+ (id)_typeWithDeviceModelCode:(id)a3
++ (id)_typeWithDeviceModelCode:(id)code
 {
-  if (!a3)
+  if (!code)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"UTModelCode.mm" lineNumber:89 description:{@"Invalid parameter not satisfying: %@", @"modelCode != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UTModelCode.mm" lineNumber:89 description:{@"Invalid parameter not satisfying: %@", @"modelCode != nil"}];
   }
 
   v9[0] = 0;
   v9[8] = 0;
-  v4 = UniformTypeIdentifiers::ModelCode::getDeviceTypeWithModelCode(a3, v9, 1);
+  v4 = UniformTypeIdentifiers::ModelCode::getDeviceTypeWithModelCode(code, v9, 1);
 
   return v4;
 }
 
-+ (id)_typeWithDeviceModelCode:(id)a3 enclosureColor:(UTHardwareColor)a4
++ (id)_typeWithDeviceModelCode:(id)code enclosureColor:(UTHardwareColor)color
 {
-  if (!a3)
+  if (!code)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"UTModelCode.mm" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"modelCode != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UTModelCode.mm" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"modelCode != nil"}];
   }
 
-  v11 = a4;
+  colorCopy = color;
   v12 = 1;
-  v6 = UniformTypeIdentifiers::ModelCode::getDeviceTypeWithModelCode(a3, &v11, 1);
+  v6 = UniformTypeIdentifiers::ModelCode::getDeviceTypeWithModelCode(code, &colorCopy, 1);
 
   return v6;
 }
 
-+ (id)_typeWithDeviceModelCodeWithoutResolvingCurrentDevice:(id)a3
++ (id)_typeWithDeviceModelCodeWithoutResolvingCurrentDevice:(id)device
 {
-  if (!a3)
+  if (!device)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"UTModelCode.mm" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"modelCode != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UTModelCode.mm" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"modelCode != nil"}];
   }
 
   v9[0] = 0;
   v9[8] = 0;
-  v4 = UniformTypeIdentifiers::ModelCode::getDeviceTypeWithModelCodeAndHardwareColorWithoutResolvingCurrentDevice(a3, v9);
+  v4 = UniformTypeIdentifiers::ModelCode::getDeviceTypeWithModelCodeAndHardwareColorWithoutResolvingCurrentDevice(device, v9);
 
   return v4;
 }
 
-- (BOOL)_getPreferredEnclosureColor:(UTHardwareColor *)a3
+- (BOOL)_getPreferredEnclosureColor:(UTHardwareColor *)color
 {
-  if (!a3)
+  if (!color)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UTModelCode.mm" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"outEnclosureColor != NULL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UTModelCode.mm" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"outEnclosureColor != NULL"}];
   }
 
-  return [(UTType *)self _getEnclosureColors:a3 count:1]== 1;
+  return [(UTType *)self _getEnclosureColors:color count:1]== 1;
 }
 
-- (unint64_t)_getEnclosureColors:(UTHardwareColor *)a3 count:(unint64_t)a4
+- (unint64_t)_getEnclosureColors:(UTHardwareColor *)colors count:(unint64_t)count
 {
   v49 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (colors)
   {
-    if (a4)
+    if (count)
     {
       goto LABEL_3;
     }
@@ -290,29 +290,29 @@ LABEL_54:
     goto LABEL_55;
   }
 
-  v4 = a4;
-  v37 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v37 handleFailureInMethod:a2 object:self file:@"UTModelCode.mm" lineNumber:119 description:{@"Invalid parameter not satisfying: %@", @"outEnclosureColors != NULL"}];
+  countCopy = count;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UTModelCode.mm" lineNumber:119 description:{@"Invalid parameter not satisfying: %@", @"outEnclosureColors != NULL"}];
 
-  a4 = v4;
-  if (!v4)
+  count = countCopy;
+  if (!countCopy)
   {
     goto LABEL_54;
   }
 
 LABEL_3:
-  v41 = a4;
+  countCopy2 = count;
   if (![(UTType *)self conformsToType:&off_1ED40D980])
   {
     v9 = 0;
     goto LABEL_31;
   }
 
-  v6 = [(UTType *)self identifier];
-  v7 = [v6 rangeOfString:@"-" options:4];
+  identifier = [(UTType *)self identifier];
+  v7 = [identifier rangeOfString:@"-" options:4];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = [v6 substringFromIndex:v7 + v8];
+    v10 = [identifier substringFromIndex:v7 + v8];
     v11 = [v10 length];
     v12 = 0;
     v13 = &byte_1E796E902;
@@ -324,7 +324,7 @@ LABEL_3:
       {
         if (CFEqual(v15, v10))
         {
-          v4 = (*(v13 - 2) << 24) | (*(v13 - 1) << 32) | (*v13 << 40);
+          countCopy = (*(v13 - 2) << 24) | (*(v13 - 1) << 32) | (*v13 << 40);
           if ((v12 & 1) == 0)
           {
             v12 = 1;
@@ -351,7 +351,7 @@ LABEL_29:
         }
 
 LABEL_26:
-        *a3 = (v16 | (v4 << 8));
+        *colors = (v16 | (countCopy << 8));
         v9 = 1;
         goto LABEL_29;
       }
@@ -373,7 +373,7 @@ LABEL_26:
       if (v20 == 1)
       {
 
-        v4 = v19 << 24;
+        countCopy = v19 << 24;
         v16 = 1;
         goto LABEL_26;
       }
@@ -386,7 +386,7 @@ LABEL_26:
       if (sscanf([v10 UTF8String], "%x%n", v47, &v46) == 1 && v46 == 6)
       {
         v16 = 0;
-        v4 = bswap64(v47[0] & 0xFFFFFF) >> 16;
+        countCopy = bswap64(v47[0] & 0xFFFFFF) >> 16;
         goto LABEL_26;
       }
     }
@@ -399,7 +399,7 @@ LABEL_26:
 LABEL_30:
 
 LABEL_31:
-  if (v9 >= v41)
+  if (v9 >= countCopy2)
   {
     v9 = 1;
   }
@@ -410,8 +410,8 @@ LABEL_31:
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v21 = [(UTType *)self tags];
-    v22 = [v21 objectForKeyedSubscript:@"com.apple.device-model-code"];
+    tags = [(UTType *)self tags];
+    v22 = [tags objectForKeyedSubscript:@"com.apple.device-model-code"];
 
     v23 = [v22 countByEnumeratingWithState:&v42 objects:v48 count:16];
     if (v23)
@@ -453,8 +453,8 @@ LABEL_31:
                 v34 = 1;
               }
 
-              a3[v9++] = (v34 | (v35 << 32));
-              if (v9 >= v41)
+              colors[v9++] = (v34 | (v35 << 32));
+              if (v9 >= countCopy2)
               {
 
                 goto LABEL_52;
@@ -483,43 +483,43 @@ LABEL_55:
 
 - (NSString)localizedDescription
 {
-  v2 = [(UTType *)self _typeRecord];
-  v3 = [v2 localizedDescription];
+  _typeRecord = [(UTType *)self _typeRecord];
+  localizedDescription = [_typeRecord localizedDescription];
 
-  return v3;
+  return localizedDescription;
 }
 
 - (NSNumber)version
 {
-  v2 = [(UTType *)self _typeRecord];
-  v3 = [v2 version];
+  _typeRecord = [(UTType *)self _typeRecord];
+  version = [_typeRecord version];
 
-  return v3;
+  return version;
 }
 
 - (NSURL)referenceURL
 {
-  v2 = [(UTType *)self _typeRecord];
-  v3 = [v2 referenceURL];
+  _typeRecord = [(UTType *)self _typeRecord];
+  referenceURL = [_typeRecord referenceURL];
 
-  return v3;
+  return referenceURL;
 }
 
 - (BOOL)isPublicType
 {
-  v2 = [(UTType *)self _typeRecord];
-  v3 = [v2 isInPublicDomain];
+  _typeRecord = [(UTType *)self _typeRecord];
+  isInPublicDomain = [_typeRecord isInPublicDomain];
 
-  return v3;
+  return isInPublicDomain;
 }
 
-+ (void)_enumerateAllDeclaredTypesUsingBlock:(id)a3
++ (void)_enumerateAllDeclaredTypesUsingBlock:(id)block
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!block)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"UTType.mm" lineNumber:204 description:{@"Invalid parameter not satisfying: %@", @"block != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UTType.mm" lineNumber:204 description:{@"Invalid parameter not satisfying: %@", @"block != nil"}];
   }
 
   v20 = 0;
@@ -527,8 +527,8 @@ LABEL_55:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [MEMORY[0x1E69636B0] enumerator];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v21 count:16];
+  enumerator = [MEMORY[0x1E69636B0] enumerator];
+  v5 = [enumerator countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v5)
   {
     v6 = *v17;
@@ -538,7 +538,7 @@ LABEL_5:
     {
       if (*v17 != v6)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(enumerator);
       }
 
       v8 = *(*(&v16 + 1) + 8 * v7);
@@ -546,7 +546,7 @@ LABEL_5:
       v10 = [UTType _typeWithTypeRecord:v8 detachTypeRecord:1 findConstant:1];
       if (v10)
       {
-        (*(a3 + 2))(a3, v10, &v20);
+        (*(block + 2))(block, v10, &v20);
       }
 
       v11 = v20;
@@ -558,7 +558,7 @@ LABEL_5:
 
       if (v5 == ++v7)
       {
-        v5 = [v4 countByEnumeratingWithState:&v16 objects:v21 count:16];
+        v5 = [enumerator countByEnumeratingWithState:&v16 objects:v21 count:16];
         if (v5)
         {
           goto LABEL_5;
@@ -572,7 +572,7 @@ LABEL_5:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_typesWithIdentifiers:(id)a3
++ (id)_typesWithIdentifiers:(id)identifiers
 {
   v41 = *MEMORY[0x1E69E9840];
   v32 = 0;
@@ -585,8 +585,8 @@ LABEL_5:
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v28 objects:v40 count:16];
+  identifiersCopy = identifiers;
+  v4 = [identifiersCopy countByEnumeratingWithState:&v28 objects:v40 count:16];
   if (v4)
   {
     v5 = 0;
@@ -597,7 +597,7 @@ LABEL_5:
       {
         if (*v29 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(identifiersCopy);
         }
 
         v8 = *(*(&v28 + 1) + 8 * i);
@@ -607,7 +607,7 @@ LABEL_5:
           v10 = v33[5];
           if (!v10)
           {
-            v11 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v3, "count")}];
+            v11 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
             v12 = v33[5];
             v33[5] = v11;
 
@@ -617,14 +617,14 @@ LABEL_5:
           [v10 setObject:v9 forKeyedSubscript:v8];
           if (!v5)
           {
-            v5 = [v3 mutableCopy];
+            v5 = [identifiersCopy mutableCopy];
           }
 
           [v5 removeObject:v8];
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v28 objects:v40 count:16];
+      v4 = [identifiersCopy countByEnumeratingWithState:&v28 objects:v40 count:16];
     }
 
     while (v4);
@@ -648,7 +648,7 @@ LABEL_5:
     v5 = 0;
   }
 
-  v14 = v3;
+  v14 = identifiersCopy;
 LABEL_19:
   v15 = [MEMORY[0x1E69636B0] typeRecordsWithIdentifiers:v14];
   v16 = v15;
@@ -661,7 +661,7 @@ LABEL_19:
     v27 = &v32;
     v17 = v15;
     v25 = v17;
-    v26 = v3;
+    v26 = identifiersCopy;
     [v17 enumerateKeysAndObjectsUsingBlock:v24];
     if (qword_1ED40DC18 != -1)
     {
@@ -738,23 +738,23 @@ void __32__UTType__typesWithIdentifiers___block_invoke(uint64_t a1, void *a2, ui
   }
 }
 
-- (id)_localizedDescriptionWithPreferredLocalizations:(id)a3
+- (id)_localizedDescriptionWithPreferredLocalizations:(id)localizations
 {
-  if (!a3)
+  if (!localizations)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"UTType.mm" lineNumber:278 description:{@"Invalid parameter not satisfying: %@", @"preferredLocalizations != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UTType.mm" lineNumber:278 description:{@"Invalid parameter not satisfying: %@", @"preferredLocalizations != nil"}];
   }
 
-  v5 = [(UTType *)self _typeRecord];
-  v6 = [v5 localizedDescriptionWithPreferredLocalizations:a3];
+  _typeRecord = [(UTType *)self _typeRecord];
+  v6 = [_typeRecord localizedDescriptionWithPreferredLocalizations:localizations];
 
   return v6;
 }
 
 - (NSDictionary)_localizedDescriptionDictionary
 {
-  v2 = [(UTType *)self identifier];
+  identifier = [(UTType *)self identifier];
   v3 = _UTTypeCopyDescriptionLocalizationDictionary();
 
   if (v3)
@@ -774,21 +774,21 @@ void __32__UTType__typesWithIdentifiers___block_invoke(uint64_t a1, void *a2, ui
 
 - (NSString)_kindString
 {
-  v2 = [(UTType *)self identifier];
+  identifier = [(UTType *)self identifier];
   v3 = _UTTypeCopyKindStringForNonMaterializedItem();
 
   return v3;
 }
 
-- (id)_kindStringWithPreferredLocalizations:(id)a3
+- (id)_kindStringWithPreferredLocalizations:(id)localizations
 {
-  if (!a3)
+  if (!localizations)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UTType.mm" lineNumber:305 description:{@"Invalid parameter not satisfying: %@", @"preferredLocalizations != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UTType.mm" lineNumber:305 description:{@"Invalid parameter not satisfying: %@", @"preferredLocalizations != nil"}];
   }
 
-  v4 = [(UTType *)self identifier];
+  identifier = [(UTType *)self identifier];
   v5 = _UTTypeCopyKindStringForNonMaterializedItem();
 
   return v5;
@@ -796,7 +796,7 @@ void __32__UTType__typesWithIdentifiers___block_invoke(uint64_t a1, void *a2, ui
 
 - (NSDictionary)_kindStringDictionary
 {
-  v2 = [(UTType *)self identifier];
+  identifier = [(UTType *)self identifier];
   v3 = _UTTypeCopyKindStringDictionaryForNonMaterializedItem();
   v4 = v3;
   if (v3)
@@ -814,16 +814,16 @@ void __32__UTType__typesWithIdentifiers___block_invoke(uint64_t a1, void *a2, ui
   return v5;
 }
 
-+ (id)_typeOfItemAtFileURL:(id)a3 error:(id *)a4
++ (id)_typeOfItemAtFileURL:(id)l error:(id *)error
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v15 = 0;
-  v6 = [a3 getResourceValue:&v15 forKey:*MEMORY[0x1E695DAA0] error:a4];
+  v6 = [l getResourceValue:&v15 forKey:*MEMORY[0x1E695DAA0] error:error];
   v7 = v15;
   v8 = v7;
   if (v6)
   {
-    v9 = a4 == 0;
+    v9 = error == 0;
   }
 
   else
@@ -835,9 +835,9 @@ void __32__UTType__typesWithIdentifiers___block_invoke(uint64_t a1, void *a2, ui
   {
     v11 = objc_alloc(MEMORY[0x1E696ABC0]);
     v16 = *MEMORY[0x1E696A998];
-    v17[0] = a3;
+    v17[0] = l;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-    *a4 = [v11 initWithDomain:*MEMORY[0x1E696A250] code:256 userInfo:v12];
+    *error = [v11 initWithDomain:*MEMORY[0x1E696A250] code:256 userInfo:v12];
   }
 
   v13 = *MEMORY[0x1E69E9840];
@@ -845,15 +845,15 @@ void __32__UTType__typesWithIdentifiers___block_invoke(uint64_t a1, void *a2, ui
   return v8;
 }
 
-+ (id)_typeOfPromiseAtFileURL:(id)a3 error:(id *)a4
++ (id)_typeOfPromiseAtFileURL:(id)l error:(id *)error
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  if (([a3 isFileURL] & 1) == 0)
+  if (([l isFileURL] & 1) == 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"UTType.mm" lineNumber:332 description:{@"Invalid parameter not satisfying: %@", @"promiseURL.fileURL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UTType.mm" lineNumber:332 description:{@"Invalid parameter not satisfying: %@", @"promiseURL.fileURL"}];
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_4;
     }
@@ -861,14 +861,14 @@ void __32__UTType__typesWithIdentifiers___block_invoke(uint64_t a1, void *a2, ui
     goto LABEL_3;
   }
 
-  if (a4)
+  if (error)
   {
 LABEL_3:
     v8 = objc_alloc(MEMORY[0x1E696ABC0]);
     v13 = *MEMORY[0x1E696A998];
-    v14[0] = a3;
+    v14[0] = l;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-    *a4 = [v8 initWithDomain:*MEMORY[0x1E696A250] code:3328 userInfo:v9];
+    *error = [v8 initWithDomain:*MEMORY[0x1E696A250] code:3328 userInfo:v9];
   }
 
 LABEL_4:
@@ -881,14 +881,14 @@ LABEL_4:
   v28 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DFA0]);
   v4 = objc_autoreleasePoolPush();
-  v5 = [(UTType *)self _typeRecord];
+  _typeRecord = [(UTType *)self _typeRecord];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __22__UTType__parentTypes__block_invoke;
   v20[3] = &unk_1E796EA08;
   v6 = v3;
   v21 = v6;
-  [v5 enumerateParentTypesWithBlock:v20];
+  [_typeRecord enumerateParentTypesWithBlock:v20];
 
   v7 = v6;
   if (qword_1ED40DC18 != -1)
@@ -931,10 +931,10 @@ LABEL_4:
             v15 = v14;
             if ((v14 & 0x8000000000000000) == 0 && [v14 _constantIndex] < 0)
             {
-              v16 = [v15 _typeRecord];
-              if (v16)
+              _typeRecord2 = [v15 _typeRecord];
+              if (_typeRecord2)
               {
-                v26[v11++] = v16;
+                v26[v11++] = _typeRecord2;
               }
             }
           }
@@ -977,14 +977,14 @@ void __22__UTType__parentTypes__block_invoke(uint64_t a1, uint64_t a2)
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v4 = objc_autoreleasePoolPush();
-  v5 = [(UTType *)self _typeRecord];
+  _typeRecord = [(UTType *)self _typeRecord];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __21__UTType__childTypes__block_invoke;
   v9[3] = &unk_1E796EA08;
   v6 = v3;
   v10 = v6;
-  [v5 enumerateChildTypesWithBlock:v9];
+  [_typeRecord enumerateChildTypesWithBlock:v9];
 
   UniformTypeIdentifiers::Type::detachTypeRecordsInTypes<NSMutableSet<UTType *> * {__strong}>(v6);
   objc_autoreleasePoolPop(v4);
@@ -1006,14 +1006,14 @@ void __21__UTType__childTypes__block_invoke(uint64_t a1, uint64_t a2)
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v4 = objc_autoreleasePoolPush();
-  v5 = [(UTType *)self _typeRecord];
+  _typeRecord = [(UTType *)self _typeRecord];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __19__UTType__subtypes__block_invoke;
   v9[3] = &unk_1E796EA08;
   v6 = v3;
   v10 = v6;
-  [v5 enumerateDescendantsWithBlock:v9];
+  [_typeRecord enumerateDescendantsWithBlock:v9];
 
   UniformTypeIdentifiers::Type::detachTypeRecordsInTypes<NSMutableSet<UTType *> * {__strong}>(v6);
   objc_autoreleasePoolPop(v4);
@@ -1033,69 +1033,69 @@ void __19__UTType__subtypes__block_invoke(uint64_t a1, uint64_t a2)
 
 - (BOOL)_isExported
 {
-  v2 = [(UTType *)self _typeRecord];
-  v3 = [v2 isExported];
+  _typeRecord = [(UTType *)self _typeRecord];
+  isExported = [_typeRecord isExported];
 
-  return v3;
+  return isExported;
 }
 
 - (BOOL)_isImported
 {
-  v2 = [(UTType *)self _typeRecord];
-  v3 = [v2 isImported];
+  _typeRecord = [(UTType *)self _typeRecord];
+  isImported = [_typeRecord isImported];
 
-  return v3;
+  return isImported;
 }
 
 - (BOOL)_isWildcard
 {
-  v2 = [(UTType *)self _typeRecord];
-  v3 = [v2 isWildcard];
+  _typeRecord = [(UTType *)self _typeRecord];
+  isWildcard = [_typeRecord isWildcard];
 
-  return v3;
+  return isWildcard;
 }
 
 - (BOOL)_isCoreType
 {
-  v2 = [(UTType *)self _typeRecord];
-  v3 = v2;
-  if (v2)
+  _typeRecord = [(UTType *)self _typeRecord];
+  v3 = _typeRecord;
+  if (_typeRecord)
   {
-    v4 = [v2 isCoreType];
+    isCoreType = [_typeRecord isCoreType];
   }
 
   else
   {
-    v4 = 0;
+    isCoreType = 0;
   }
 
-  return v4;
+  return isCoreType;
 }
 
-+ (id)_typeWithTypeRecord:(id)a3 detachTypeRecord:(BOOL)a4 findConstant:(BOOL)a5
++ (id)_typeWithTypeRecord:(id)record detachTypeRecord:(BOOL)typeRecord findConstant:(BOOL)constant
 {
-  v5 = a4;
-  v12 = a3;
-  if (!a3)
+  typeRecordCopy = typeRecord;
+  recordCopy = record;
+  if (!record)
   {
     goto LABEL_8;
   }
 
-  v6 = a5;
-  v8 = _UTTaggedTypeCreate(a3);
+  constantCopy = constant;
+  v8 = _UTTaggedTypeCreate(record);
   if (v8)
   {
     goto LABEL_12;
   }
 
-  if (!v6 || ([a3 identifier], v9 = objc_claimAutoreleasedReturnValue(), __UTFindCoreTypesConstantWithIdentifier(v9, 0x7FFFFFFFFFFFFFFFuLL), v8 = objc_claimAutoreleasedReturnValue(), v9, !v8))
+  if (!constantCopy || ([record identifier], v9 = objc_claimAutoreleasedReturnValue(), __UTFindCoreTypesConstantWithIdentifier(v9, 0x7FFFFFFFFFFFFFFFuLL), v8 = objc_claimAutoreleasedReturnValue(), v9, !v8))
   {
 LABEL_8:
-    v10 = [[UTType alloc] _initWithTypeRecord:v12];
-    if (v5 && v12)
+    v10 = [[UTType alloc] _initWithTypeRecord:recordCopy];
+    if (typeRecordCopy && recordCopy)
     {
       v8 = v10;
-      _UTDetachTypeRecords(&v12, 1);
+      _UTDetachTypeRecords(&recordCopy, 1);
     }
 
     else
@@ -1106,9 +1106,9 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  if (_UTCoreTypesConstantSetTypeRecordIfNil(v8, v12) && v5)
+  if (_UTCoreTypesConstantSetTypeRecordIfNil(v8, recordCopy) && typeRecordCopy)
   {
-    _UTDetachTypeRecords(&v12, 1);
+    _UTDetachTypeRecords(&recordCopy, 1);
   }
 
 LABEL_12:
@@ -1116,7 +1116,7 @@ LABEL_12:
   return v8;
 }
 
-- (id)_initWithTypeRecord:(id)a3
+- (id)_initWithTypeRecord:(id)record
 {
   v7.receiver = self;
   v7.super_class = UTType;
@@ -1124,7 +1124,7 @@ LABEL_12:
   v5 = v4;
   if (v4)
   {
-    objc_storeStrong(&v4->_typeRecord, a3);
+    objc_storeStrong(&v4->_typeRecord, record);
   }
 
   return v5;
@@ -1165,10 +1165,10 @@ LABEL_12:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_preferredTagOfClass:(id)a3
+- (id)_preferredTagOfClass:(id)class
 {
-  v4 = [(UTType *)self _typeRecord];
-  v5 = [v4 preferredTagOfClass:a3];
+  _typeRecord = [(UTType *)self _typeRecord];
+  v5 = [_typeRecord preferredTagOfClass:class];
 
   return v5;
 }
@@ -1177,11 +1177,11 @@ LABEL_12:
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   Class = object_getClass(self);
-  v5 = [(UTType *)self identifier];
-  v6 = [(UTType *)self isDynamic];
-  v7 = [(UTType *)self isDeclared];
+  identifier = [(UTType *)self identifier];
+  isDynamic = [(UTType *)self isDynamic];
+  isDeclared = [(UTType *)self isDeclared];
   v8 = @"not ";
-  if (v6)
+  if (isDynamic)
   {
     v9 = &stru_1F20ECC30;
   }
@@ -1191,67 +1191,67 @@ LABEL_12:
     v9 = @"not ";
   }
 
-  if (v7)
+  if (isDeclared)
   {
     v8 = &stru_1F20ECC30;
   }
 
-  v10 = [v3 initWithFormat:@"<%@ %p> %@ (%@dynamic, %@declared)", Class, self, v5, v9, v8];
+  v10 = [v3 initWithFormat:@"<%@ %p> %@ (%@dynamic, %@declared)", Class, self, identifier, v9, v8];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(equalCopy) = 1;
   }
 
   else
   {
-    v3 = a3;
-    if (a3)
+    equalCopy = equal;
+    if (equal)
     {
       if (objc_opt_isKindOfClass())
       {
-        v5 = [(UTType *)self identifier];
-        v6 = [v3 identifier];
-        LOBYTE(v3) = _UTIdentifiersAreEqual(v5, v6);
+        identifier = [(UTType *)self identifier];
+        identifier2 = [equalCopy identifier];
+        LOBYTE(equalCopy) = _UTIdentifiersAreEqual(identifier, identifier2);
       }
 
       else
       {
-        LOBYTE(v3) = 0;
+        LOBYTE(equalCopy) = 0;
       }
     }
   }
 
-  return v3;
+  return equalCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = [(UTType *)self identifier];
-  [a3 encodeObject:? forKey:?];
+  identifier = [(UTType *)self identifier];
+  [coder encodeObject:? forKey:?];
 
-  [a3 encodeInteger:-[UTType _constantIndex](self forKey:{"_constantIndex"), @"constantIndex"}];
+  [coder encodeInteger:-[UTType _constantIndex](self forKey:{"_constantIndex"), @"constantIndex"}];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[UTType isDeclared](self, "isDeclared")}];
-  [a3 encodeObject:? forKey:?];
+  [coder encodeObject:? forKey:?];
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[UTType isDynamic](self, "isDynamic")}];
-  [a3 encodeObject:? forKey:?];
+  [coder encodeObject:? forKey:?];
 }
 
-- (UTType)initWithCoder:(id)a3
+- (UTType)initWithCoder:(id)coder
 {
   v32[2] = *MEMORY[0x1E69E9840];
-  v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"declared"];
-  v7 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"dynamic"];
+  v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"declared"];
+  v7 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"dynamic"];
   if (_NSIsNSString())
   {
-    if (object_getClass(self) == UTType && (v20 = __UTFindCoreTypesConstantWithIdentifier(v5, [a3 decodeIntegerForKey:@"constantIndex"])) != 0)
+    if (object_getClass(self) == UTType && (v20 = __UTFindCoreTypesConstantWithIdentifier(v5, [coder decodeIntegerForKey:@"constantIndex"])) != 0)
     {
       v14 = v20;
     }
@@ -1301,7 +1301,7 @@ LABEL_12:
         v32[1] = v5;
         v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:2];
         v23 = [v21 initWithDomain:*MEMORY[0x1E696A250] code:4864 userInfo:v22];
-        [a3 failWithError:v23];
+        [coder failWithError:v23];
 
         v14 = 0;
       }
@@ -1320,7 +1320,7 @@ LABEL_12:
       v30[1] = v5;
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:2];
       v17 = [v15 initWithDomain:*MEMORY[0x1E696A250] code:4864 userInfo:v16];
-      [a3 failWithError:v17];
+      [coder failWithError:v17];
     }
 
     else
@@ -1329,7 +1329,7 @@ LABEL_12:
       v28 = @"Type identifier was not encoded.";
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
       v19 = [v15 initWithDomain:*MEMORY[0x1E696A250] code:4865 userInfo:v18];
-      [a3 failWithError:v19];
+      [coder failWithError:v19];
     }
 
     v14 = 0;
@@ -1343,8 +1343,8 @@ LABEL_12:
 {
   if (!type)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"UTType.mm" lineNumber:623 description:{@"Invalid parameter not satisfying: %@", @"type != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UTType.mm" lineNumber:623 description:{@"Invalid parameter not satisfying: %@", @"type != nil"}];
   }
 
   if (self == type)
@@ -1352,18 +1352,18 @@ LABEL_12:
     return 1;
   }
 
-  v5 = [(UTType *)self identifier];
-  v6 = [(UTType *)type identifier];
-  v7 = _UTIdentifiersAreEqual(v5, v6);
+  identifier = [(UTType *)self identifier];
+  identifier2 = [(UTType *)type identifier];
+  v7 = _UTIdentifiersAreEqual(identifier, identifier2);
 
   if (v7)
   {
     return 1;
   }
 
-  v9 = [(UTType *)self _typeRecord];
-  v10 = [(UTType *)type identifier];
-  v8 = [v9 conformsToTypeIdentifier:v10];
+  _typeRecord = [(UTType *)self _typeRecord];
+  identifier3 = [(UTType *)type identifier];
+  v8 = [_typeRecord conformsToTypeIdentifier:identifier3];
 
   return v8;
 }
@@ -1372,8 +1372,8 @@ LABEL_12:
 {
   if (!type)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UTType.mm" lineNumber:641 description:{@"Invalid parameter not satisfying: %@", @"type != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UTType.mm" lineNumber:641 description:{@"Invalid parameter not satisfying: %@", @"type != nil"}];
   }
 
   return [(UTType *)type isSubtypeOfType:self];
@@ -1383,8 +1383,8 @@ LABEL_12:
 {
   if (!type)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"UTType.mm" lineNumber:648 description:{@"Invalid parameter not satisfying: %@", @"type != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UTType.mm" lineNumber:648 description:{@"Invalid parameter not satisfying: %@", @"type != nil"}];
   }
 
   if (self == type)
@@ -1392,9 +1392,9 @@ LABEL_12:
     return 0;
   }
 
-  v5 = [(UTType *)self identifier];
-  v6 = [(UTType *)type identifier];
-  v7 = !_UTIdentifiersAreEqual(v5, v6) && [(UTType *)self conformsToType:type];
+  identifier = [(UTType *)self identifier];
+  identifier2 = [(UTType *)type identifier];
+  v7 = !_UTIdentifiersAreEqual(identifier, identifier2) && [(UTType *)self conformsToType:type];
 
   return v7;
 }
@@ -1403,14 +1403,14 @@ LABEL_12:
 {
   v26 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v4 = [(UTType *)self _typeRecord];
+  _typeRecord = [(UTType *)self _typeRecord];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __33__UTType_Conformance__supertypes__block_invoke;
   v18[3] = &unk_1E796EA08;
   v5 = v3;
   v19 = v5;
-  [v4 enumeratePedigreeWithBlock:v18];
+  [_typeRecord enumeratePedigreeWithBlock:v18];
 
   v6 = [v5 copy];
   if (qword_1ED40DC18 != -1)
@@ -1453,10 +1453,10 @@ LABEL_12:
             v14 = v13;
             if ((v13 & 0x8000000000000000) == 0 && [v13 _constantIndex] < 0)
             {
-              v15 = [v14 _typeRecord];
-              if (v15)
+              _typeRecord2 = [v14 _typeRecord];
+              if (_typeRecord2)
               {
-                v24[v10++] = v15;
+                v24[v10++] = _typeRecord2;
               }
             }
           }
@@ -1504,8 +1504,8 @@ void __33__UTType_Conformance__supertypes__block_invoke(uint64_t a1, uint64_t a2
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"UTType.mm" lineNumber:695 description:{@"Invalid parameter not satisfying: %@", @"tag != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UTType.mm" lineNumber:695 description:{@"Invalid parameter not satisfying: %@", @"tag != nil"}];
 
     if (tagClass)
     {
@@ -1513,15 +1513,15 @@ void __33__UTType_Conformance__supertypes__block_invoke(uint64_t a1, uint64_t a2
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:a1 file:@"UTType.mm" lineNumber:696 description:{@"Invalid parameter not satisfying: %@", @"tagClass != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"UTType.mm" lineNumber:696 description:{@"Invalid parameter not satisfying: %@", @"tagClass != nil"}];
 
 LABEL_3:
   if (UniformTypeIdentifiers::Type::isTagValid(tag, tagClass, tag))
   {
     v10 = MEMORY[0x1E69636B0];
-    v11 = [(UTType *)supertype identifier];
-    v12 = [v10 typeRecordWithTag:tag ofClass:tagClass conformingToIdentifier:v11];
+    identifier = [(UTType *)supertype identifier];
+    v12 = [v10 typeRecordWithTag:tag ofClass:tagClass conformingToIdentifier:identifier];
 
     if (v12)
     {
@@ -1555,8 +1555,8 @@ LABEL_3:
 
   else
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:a1 file:@"UTType.mm" lineNumber:711 description:{@"Invalid parameter not satisfying: %@", @"tag != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UTType.mm" lineNumber:711 description:{@"Invalid parameter not satisfying: %@", @"tag != nil"}];
 
     if (tagClass)
     {
@@ -1564,8 +1564,8 @@ LABEL_3:
     }
   }
 
-  v25 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v25 handleFailureInMethod:a2 object:a1 file:@"UTType.mm" lineNumber:712 description:{@"Invalid parameter not satisfying: %@", @"tagClass != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"UTType.mm" lineNumber:712 description:{@"Invalid parameter not satisfying: %@", @"tagClass != nil"}];
 
 LABEL_3:
   if (!UniformTypeIdentifiers::Type::isTagValid(tag, tagClass, tag))
@@ -1574,8 +1574,8 @@ LABEL_3:
   }
 
   v10 = MEMORY[0x1E69636B0];
-  v11 = [(UTType *)supertype identifier];
-  v12 = [v10 typeRecordsWithTag:tag ofClass:tagClass conformingToIdentifier:v11];
+  identifier = [(UTType *)supertype identifier];
+  v12 = [v10 typeRecordsWithTag:tag ofClass:tagClass conformingToIdentifier:identifier];
 
   if (!v12)
   {
@@ -1661,8 +1661,8 @@ LABEL_20:
 {
   if (!parentType)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"UTType.mm" lineNumber:751 description:{@"Invalid parameter not satisfying: %@", @"parentType != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UTType.mm" lineNumber:751 description:{@"Invalid parameter not satisfying: %@", @"parentType != nil"}];
   }
 
   v6 = __UTGetDeclarationStatusFromInfoPlist(identifier, 1, 0, v4);
@@ -1689,8 +1689,8 @@ LABEL_20:
 {
   if (!parentType)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"UTType.mm" lineNumber:765 description:{@"Invalid parameter not satisfying: %@", @"parentType != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UTType.mm" lineNumber:765 description:{@"Invalid parameter not satisfying: %@", @"parentType != nil"}];
   }
 
   v7 = __UTGetDeclarationStatusFromInfoPlist(identifier, 0, 0, v4);
@@ -1702,46 +1702,46 @@ LABEL_20:
   return UniformTypeIdentifiers::Type::getImportedType(identifier, &parentType->super.isa, 0, v8);
 }
 
-+ (id)_exportedTypeWithIdentifier:(id)a3 bundle:(id)a4 conformingToType:(id)a5
++ (id)_exportedTypeWithIdentifier:(id)identifier bundle:(id)bundle conformingToType:(id)type
 {
-  v8 = __UTGetDeclarationStatusFromInfoPlist(a3, 1, a4, v5);
+  v8 = __UTGetDeclarationStatusFromInfoPlist(identifier, 1, bundle, v5);
   if (v8)
   {
-    __UNIFORM_TYPE_IDENTIFIER_WAS_NOT_DECLARED_IN_INFO_PLIST_OF_BUNDLE__(a3, 1, a4, v8);
+    __UNIFORM_TYPE_IDENTIFIER_WAS_NOT_DECLARED_IN_INFO_PLIST_OF_BUNDLE__(identifier, 1, bundle, v8);
   }
 
-  return UniformTypeIdentifiers::Type::getExportedType(a3, a4, v9, v10);
+  return UniformTypeIdentifiers::Type::getExportedType(identifier, bundle, v9, v10);
 }
 
-+ (id)_importedTypeWithIdentifier:(id)a3 bundle:(id)a4 conformingToType:(id)a5
++ (id)_importedTypeWithIdentifier:(id)identifier bundle:(id)bundle conformingToType:(id)type
 {
-  v9 = __UTGetDeclarationStatusFromInfoPlist(a3, 0, a4, v5);
+  v9 = __UTGetDeclarationStatusFromInfoPlist(identifier, 0, bundle, v5);
   if (v9)
   {
-    __UNIFORM_TYPE_IDENTIFIER_WAS_NOT_DECLARED_IN_INFO_PLIST_OF_BUNDLE__(a3, 0, a4, v9);
+    __UNIFORM_TYPE_IDENTIFIER_WAS_NOT_DECLARED_IN_INFO_PLIST_OF_BUNDLE__(identifier, 0, bundle, v9);
   }
 
-  return UniformTypeIdentifiers::Type::getImportedType(a3, a5, a4, v10);
+  return UniformTypeIdentifiers::Type::getImportedType(identifier, type, bundle, v10);
 }
 
-+ (id)_typeWithIdentifier:(id)a3 constantIndex:(int64_t)a4 error:(id *)a5
++ (id)_typeWithIdentifier:(id)identifier constantIndex:(int64_t)index error:(id *)error
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!identifier)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"UTType.mm" lineNumber:916 description:{@"Invalid parameter not satisfying: %@", @"identifier != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UTType.mm" lineNumber:916 description:{@"Invalid parameter not satisfying: %@", @"identifier != nil"}];
   }
 
-  if (a1 == UTType)
+  if (self == UTType)
   {
-    v9 = __UTFindCoreTypesConstantWithIdentifier(a3, a4);
+    v9 = __UTFindCoreTypesConstantWithIdentifier(identifier, index);
     if (v9)
     {
       goto LABEL_8;
     }
 
-    v14 = [MEMORY[0x1E69636B0] typeRecordWithIdentifier:a3];
+    v14 = [MEMORY[0x1E69636B0] typeRecordWithIdentifier:identifier];
     if (v14)
     {
       v9 = [UTType _typeWithTypeRecord:v14 detachTypeRecord:1 findConstant:0];
@@ -1752,7 +1752,7 @@ LABEL_20:
       v9 = 0;
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -1760,8 +1760,8 @@ LABEL_20:
 
   else
   {
-    v9 = [a1 typeWithIdentifier:a3];
-    if (!a5)
+    v9 = [self typeWithIdentifier:identifier];
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -1773,9 +1773,9 @@ LABEL_20:
     v17[0] = *MEMORY[0x1E696A278];
     v17[1] = @"UTIdentifier";
     v18[0] = @"Unrecognized type identifier.";
-    v18[1] = a3;
+    v18[1] = identifier;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
-    *a5 = [v10 initWithDomain:*MEMORY[0x1E696A250] code:4864 userInfo:v11];
+    *error = [v10 initWithDomain:*MEMORY[0x1E696A250] code:4864 userInfo:v11];
 
     v9 = 0;
   }
@@ -1788,30 +1788,30 @@ LABEL_8:
 
 - (NSURL)referenceAccessoryURL
 {
-  v2 = [(UTType *)self _typeRecord];
-  v3 = [v2 referenceAccessoryURL];
+  _typeRecord = [(UTType *)self _typeRecord];
+  referenceAccessoryURL = [_typeRecord referenceAccessoryURL];
 
-  if (v3)
+  if (referenceAccessoryURL)
   {
-    v4 = [UTType _typeOfItemAtFileURL:v3 error:0];
+    v4 = [UTType _typeOfItemAtFileURL:referenceAccessoryURL error:0];
     v5 = [UTType typeWithIdentifier:@"com.apple.arkit.referenceaccessory"];
     v6 = [v4 conformsToType:v5];
 
     if ((v6 & 1) == 0)
     {
 
-      v3 = 0;
+      referenceAccessoryURL = 0;
     }
   }
 
-  return v3;
+  return referenceAccessoryURL;
 }
 
-- (void)_setDefaultHandlerToApplicationRecord:(id)a3 completionHandler:(id)a4
+- (void)_setDefaultHandlerToApplicationRecord:(id)record completionHandler:(id)handler
 {
-  v8 = [MEMORY[0x1E6963608] defaultWorkspace];
-  v7 = [(UTType *)self _typeRecord];
-  [v8 setDefaultHandlerForTypeRecord:v7 toApplicationRecord:a3 completionHandler:a4];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  _typeRecord = [(UTType *)self _typeRecord];
+  [defaultWorkspace setDefaultHandlerForTypeRecord:_typeRecord toApplicationRecord:record completionHandler:handler];
 }
 
 @end

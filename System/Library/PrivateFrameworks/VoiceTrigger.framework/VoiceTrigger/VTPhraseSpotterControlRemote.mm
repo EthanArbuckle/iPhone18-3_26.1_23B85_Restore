@@ -1,41 +1,41 @@
 @interface VTPhraseSpotterControlRemote
-- (VTPhraseSpotterControlRemote)initWithDelegate:(id)a3;
-- (void)remoteConnection:(id)a3 handleMessageType:(unint64_t)a4 completion:(id)a5;
+- (VTPhraseSpotterControlRemote)initWithDelegate:(id)delegate;
+- (void)remoteConnection:(id)connection handleMessageType:(unint64_t)type completion:(id)completion;
 @end
 
 @implementation VTPhraseSpotterControlRemote
 
-- (void)remoteConnection:(id)a3 handleMessageType:(unint64_t)a4 completion:(id)a5
+- (void)remoteConnection:(id)connection handleMessageType:(unint64_t)type completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = [VTPreferences sharedPreferences:a3];
-  v8 = [v7 voiceTriggerEnabled];
+  v7 = [VTPreferences sharedPreferences:connection];
+  voiceTriggerEnabled = [v7 voiceTriggerEnabled];
 
-  if (v8)
+  if (voiceTriggerEnabled)
   {
     v9 = VTLogContextFacilityVoiceTrigger;
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_INFO))
     {
       v10 = MEMORY[0x277CCABB0];
       v11 = v9;
-      v12 = [v10 numberWithUnsignedInteger:a4];
+      v12 = [v10 numberWithUnsignedInteger:type];
       v17 = 138543362;
       v18 = v12;
       _os_log_impl(&dword_223A31000, v11, OS_LOG_TYPE_INFO, "Remote received incoming IDS message: %{public}@", &v17, 0xCu);
     }
 
-    if (a4 <= 1)
+    if (type <= 1)
     {
-      if (a4)
+      if (type)
       {
-        if (a4 != 1)
+        if (type != 1)
         {
           return;
         }
 
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
         v13 = WeakRetained;
-        v15 = self;
+        selfCopy2 = self;
         v16 = 0;
       }
 
@@ -43,16 +43,16 @@
       {
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
         v13 = WeakRetained;
-        v15 = self;
+        selfCopy2 = self;
         v16 = 1;
       }
 
-      [WeakRetained phraseSpotterControl:v15 didUpdateEnabled:v16];
+      [WeakRetained phraseSpotterControl:selfCopy2 didUpdateEnabled:v16];
     }
 
     else
     {
-      switch(a4)
+      switch(type)
       {
         case 2uLL:
           v13 = objc_loadWeakRetained(&self->_delegate);
@@ -73,9 +73,9 @@
   }
 }
 
-- (VTPhraseSpotterControlRemote)initWithDelegate:(id)a3
+- (VTPhraseSpotterControlRemote)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = VTPhraseSpotterControlRemote;
   v5 = [(VTPhraseSpotterControlRemote *)&v11 init];
@@ -85,7 +85,7 @@
     queue = v5->_queue;
     v5->_queue = v6;
 
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v8 = [[VTPeerRemoteConnection alloc] initWithServiceIdentifier:@"com.apple.private.alloy.siri.phrasespotter"];
     peerConnection = v5->_peerConnection;
     v5->_peerConnection = v8;

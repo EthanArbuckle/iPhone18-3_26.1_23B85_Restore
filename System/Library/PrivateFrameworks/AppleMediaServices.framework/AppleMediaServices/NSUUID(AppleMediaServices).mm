@@ -9,7 +9,7 @@
   v8[2] = *MEMORY[0x1E69E9840];
   v8[0] = 0;
   v8[1] = 0;
-  [a1 getUUIDBytes:v8];
+  [self getUUIDBytes:v8];
   v1 = 0;
   v2 = v7;
   do

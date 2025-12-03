@@ -8,8 +8,8 @@
 - (id)requirementDescription
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(HKFeatureAvailabilityRequirementUserDefaultEvaluator *)self userDefaultsKey];
-  v4 = [v2 stringWithFormat:@"The value of the onboarding user defaults key %@ must be nil", v3];
+  userDefaultsKey = [(HKFeatureAvailabilityRequirementUserDefaultEvaluator *)self userDefaultsKey];
+  v4 = [v2 stringWithFormat:@"The value of the onboarding user defaults key %@ must be nil", userDefaultsKey];
 
   return v4;
 }

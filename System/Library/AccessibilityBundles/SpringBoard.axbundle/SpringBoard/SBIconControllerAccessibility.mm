@@ -1,5 +1,5 @@
 @interface SBIconControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsShowingAppLibrary;
 - (BOOL)_axIsSidebarPinned;
 - (BOOL)_axNeedsToDismissHomeScreenTodayView;
@@ -7,11 +7,11 @@
 - (id)_axCurrentPageControl;
 - (id)_axDragManager;
 - (id)_axIconScrollView;
-- (id)_axLabelForIcons:(id)a3;
+- (id)_axLabelForIcons:(id)icons;
 - (int64_t)_accessibilityCurrentPageIndex;
 - (int64_t)_accessibilityIconListCount;
 - (int64_t)_accessibilityIconListIndex;
-- (void)_accessibilityMarkIconAsAnimating:(id)a3;
+- (void)_accessibilityMarkIconAsAnimating:(id)animating;
 - (void)_accessibilitySwitchControlStatusChanged;
 - (void)_accessibilityVoiceOverStatusChanged;
 - (void)_axHideAppLibrary;
@@ -22,59 +22,59 @@
 
 @implementation SBIconControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBIconController" hasInstanceMethod:@"_currentFolderController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHomeScreenController" hasInstanceMethod:@"presentLibraryForIconManager:windowScene:animated:" withFullSignature:{"v", "@", "@", "B", 0}];
-  [v3 validateClass:@"SBHomeScreenController" hasInstanceMethod:@"presentTodayOverlayForIconManager:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SBHomeScreenController" hasInstanceMethod:@"dismissTodayOverlay" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SBHomeScreenController" hasInstanceMethod:@"dismissHomeScreenOverlaysAnimated:completion:" withFullSignature:{"v", "B", "@?", 0}];
-  [v3 validateClass:@"SBHomeScreenController" hasInstanceMethod:@"todayViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHomeScreenController" hasInstanceMethod:@"overlayLibraryViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHIconManager" hasInstanceMethod:@"isMainDisplayLibraryViewVisible" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBIconController" hasInstanceMethod:@"isTodayOverlayPresented" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBTodayViewController" isKindOfClass:@"SBHTodayViewController"];
-  [v3 validateClass:@"SBHTodayViewController" hasInstanceMethod:@"listView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHLibraryViewController" hasInstanceMethod:@"containerViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHLibrarySearchController" hasInstanceMethod:@"searchBar" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHSearchBar" hasInstanceMethod:@"searchTextField" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBIconListView" hasInstanceMethod:@"icons" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFolderController" hasInstanceMethod:@"currentPageIndex" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SBFolderController" hasInstanceMethod:@"minimumPageIndex" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SBIcon" hasInstanceMethod:@"isFolderIcon" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBIconListModel" hasInstanceMethod:@"isFull" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBIcon" hasInstanceMethod:@"isLeafIcon" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBIcon" hasInstanceMethod:@"nodeIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHIconManager" hasInstanceMethod:@"openedFolder" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHIconManager" hasInstanceMethod:@"closeFolderAnimated:withCompletion:" withFullSignature:{"v", "B", "@?", 0}];
-  [v3 validateClass:@"SBFolderIcon" hasInstanceVariable:@"_folder" withType:"SBFolder"];
-  [v3 validateClass:@"SBHomeScreenController" hasInstanceMethod:@"homeScreenViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHomeScreenViewController" hasInstanceMethod:@"iconContentView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHomeScreenController" hasInstanceMethod:@"iconDragManager" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBIconDragManager"];
-  [v3 validateClass:@"SBIconDragManager" hasInstanceMethod:@"performSpringLoadedInteractionForIconDragOnIconView:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SBFolder" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFolder" hasInstanceMethod:@"icon" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFolderController"];
-  [v3 validateClass:@"SBFolderController" hasInstanceVariable:@"_contentView" withType:"SBFolderView"];
-  [v3 validateClass:@"SBFolderController" hasInstanceMethod:@"setCurrentPageIndex:animated:" withFullSignature:{"B", "q", "B", 0}];
-  [v3 validateClass:@"SBFolderView"];
-  [v3 validateClass:@"SBFolderView" hasInstanceVariable:@"_pageControl" withType:"SBIconListPageControl"];
-  [v3 validateClass:@"SBIconController" hasInstanceMethod:@"iconManager" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHomeScreenController" hasInstanceMethod:@"_rootFolderController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBRootFolderController" hasInstanceMethod:@"rootFolderView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBRootFolderView" hasInstanceMethod:@"_overscrollScrollPanGestureRecognizerDidUpdate:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SBHomeScreenDefaults" hasInstanceMethod:@"isSidebarPinned" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBRootFolderView" hasInstanceMethod:@"_captureInitialSearchScrollTrackingState" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SBRootFolderView" hasInstanceMethod:@"_cleanUpAfterScrolling" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SBIconController" hasInstanceMethod:@"dndStateService" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHomeScreenController" hasInstanceMethod:@"isModalAppLibrarySupported" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBWindowScene" hasInstanceMethod:@"modalLibraryController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBModalLibraryController" hasProperty:@"libraryViewController" withType:"@"];
-  [v3 validateClass:@"SBDefaults"];
-  [v3 validateClass:@"SBDefaults" hasClassMethod:@"localDefaults" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBLocalDefaults" hasInstanceMethod:@"homeScreenDefaults" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBIconController" hasInstanceMethod:@"_currentFolderController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHomeScreenController" hasInstanceMethod:@"presentLibraryForIconManager:windowScene:animated:" withFullSignature:{"v", "@", "@", "B", 0}];
+  [validationsCopy validateClass:@"SBHomeScreenController" hasInstanceMethod:@"presentTodayOverlayForIconManager:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SBHomeScreenController" hasInstanceMethod:@"dismissTodayOverlay" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SBHomeScreenController" hasInstanceMethod:@"dismissHomeScreenOverlaysAnimated:completion:" withFullSignature:{"v", "B", "@?", 0}];
+  [validationsCopy validateClass:@"SBHomeScreenController" hasInstanceMethod:@"todayViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHomeScreenController" hasInstanceMethod:@"overlayLibraryViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHIconManager" hasInstanceMethod:@"isMainDisplayLibraryViewVisible" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBIconController" hasInstanceMethod:@"isTodayOverlayPresented" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBTodayViewController" isKindOfClass:@"SBHTodayViewController"];
+  [validationsCopy validateClass:@"SBHTodayViewController" hasInstanceMethod:@"listView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHLibraryViewController" hasInstanceMethod:@"containerViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHLibrarySearchController" hasInstanceMethod:@"searchBar" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHSearchBar" hasInstanceMethod:@"searchTextField" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceMethod:@"icons" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFolderController" hasInstanceMethod:@"currentPageIndex" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SBFolderController" hasInstanceMethod:@"minimumPageIndex" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SBIcon" hasInstanceMethod:@"isFolderIcon" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBIconListModel" hasInstanceMethod:@"isFull" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBIcon" hasInstanceMethod:@"isLeafIcon" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBIcon" hasInstanceMethod:@"nodeIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHIconManager" hasInstanceMethod:@"openedFolder" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHIconManager" hasInstanceMethod:@"closeFolderAnimated:withCompletion:" withFullSignature:{"v", "B", "@?", 0}];
+  [validationsCopy validateClass:@"SBFolderIcon" hasInstanceVariable:@"_folder" withType:"SBFolder"];
+  [validationsCopy validateClass:@"SBHomeScreenController" hasInstanceMethod:@"homeScreenViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHomeScreenViewController" hasInstanceMethod:@"iconContentView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHomeScreenController" hasInstanceMethod:@"iconDragManager" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBIconDragManager"];
+  [validationsCopy validateClass:@"SBIconDragManager" hasInstanceMethod:@"performSpringLoadedInteractionForIconDragOnIconView:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SBFolder" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFolder" hasInstanceMethod:@"icon" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFolderController"];
+  [validationsCopy validateClass:@"SBFolderController" hasInstanceVariable:@"_contentView" withType:"SBFolderView"];
+  [validationsCopy validateClass:@"SBFolderController" hasInstanceMethod:@"setCurrentPageIndex:animated:" withFullSignature:{"B", "q", "B", 0}];
+  [validationsCopy validateClass:@"SBFolderView"];
+  [validationsCopy validateClass:@"SBFolderView" hasInstanceVariable:@"_pageControl" withType:"SBIconListPageControl"];
+  [validationsCopy validateClass:@"SBIconController" hasInstanceMethod:@"iconManager" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHomeScreenController" hasInstanceMethod:@"_rootFolderController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBRootFolderController" hasInstanceMethod:@"rootFolderView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBRootFolderView" hasInstanceMethod:@"_overscrollScrollPanGestureRecognizerDidUpdate:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SBHomeScreenDefaults" hasInstanceMethod:@"isSidebarPinned" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBRootFolderView" hasInstanceMethod:@"_captureInitialSearchScrollTrackingState" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SBRootFolderView" hasInstanceMethod:@"_cleanUpAfterScrolling" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SBIconController" hasInstanceMethod:@"dndStateService" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHomeScreenController" hasInstanceMethod:@"isModalAppLibrarySupported" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBWindowScene" hasInstanceMethod:@"modalLibraryController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBModalLibraryController" hasProperty:@"libraryViewController" withType:"@"];
+  [validationsCopy validateClass:@"SBDefaults"];
+  [validationsCopy validateClass:@"SBDefaults" hasClassMethod:@"localDefaults" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBLocalDefaults" hasInstanceMethod:@"homeScreenDefaults" withFullSignature:{"@", 0}];
 }
 
 - (SBIconControllerAccessibility)init
@@ -84,11 +84,11 @@
   v2 = [(SBIconControllerAccessibility *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v3 addObserver:v2 selector:sel__accessibilityVoiceOverStatusChanged name:*MEMORY[0x29EDC8000] object:0];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__accessibilityVoiceOverStatusChanged name:*MEMORY[0x29EDC8000] object:0];
 
-    v4 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v4 addObserver:v2 selector:sel__accessibilitySwitchControlStatusChanged name:*MEMORY[0x29EDC7F48] object:0];
+    defaultCenter2 = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__accessibilitySwitchControlStatusChanged name:*MEMORY[0x29EDC7F48] object:0];
   }
 
   return v2;
@@ -112,15 +112,15 @@
   }
 }
 
-- (id)_axLabelForIcons:(id)a3
+- (id)_axLabelForIcons:(id)icons
 {
   v18 = *MEMORY[0x29EDCA608];
-  v3 = a3;
+  iconsCopy = icons;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v4 = [iconsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -134,10 +134,10 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(iconsCopy);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v8) accessibilityLabel];
+        accessibilityLabel = [*(*(&v13 + 1) + 8 * v8) accessibilityLabel];
         v12 = @"__AXStringForVariablesSentinel";
         v7 = __UIAXStringForVariables();
 
@@ -146,7 +146,7 @@
       }
 
       while (v5 != v8);
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:{16, v11, @"__AXStringForVariablesSentinel"}];
+      v5 = [iconsCopy countByEnumeratingWithState:&v13 objects:v17 count:{16, accessibilityLabel, @"__AXStringForVariablesSentinel"}];
     }
 
     while (v5);
@@ -160,22 +160,22 @@
   return v7;
 }
 
-- (void)_accessibilityMarkIconAsAnimating:(id)a3
+- (void)_accessibilityMarkIconAsAnimating:(id)animating
 {
-  v3 = a3;
+  animatingCopy = animating;
   v4 = SBAXDroppedIconsAnimatingIntoPlace;
-  v7 = v3;
+  v7 = animatingCopy;
   if (!SBAXDroppedIconsAnimatingIntoPlace)
   {
     v5 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
     v6 = SBAXDroppedIconsAnimatingIntoPlace;
     SBAXDroppedIconsAnimatingIntoPlace = v5;
 
-    v3 = v7;
+    animatingCopy = v7;
     v4 = SBAXDroppedIconsAnimatingIntoPlace;
   }
 
-  if (([v4 containsObject:v3] & 1) == 0)
+  if (([v4 containsObject:animatingCopy] & 1) == 0)
   {
     [SBAXDroppedIconsAnimatingIntoPlace axSafelyAddObject:v7];
   }
@@ -189,18 +189,18 @@ void __62__SBIconControllerAccessibility__accessibilityCloseOpenFolder__block_in
 
 - (int64_t)_accessibilityIconListIndex
 {
-  v2 = [(SBIconControllerAccessibility *)self _axCurrentPageControl];
-  v3 = [v2 currentPage];
+  _axCurrentPageControl = [(SBIconControllerAccessibility *)self _axCurrentPageControl];
+  currentPage = [_axCurrentPageControl currentPage];
 
-  return v3;
+  return currentPage;
 }
 
 - (int64_t)_accessibilityIconListCount
 {
-  v2 = [(SBIconControllerAccessibility *)self _axCurrentPageControl];
-  v3 = [v2 numberOfPages];
+  _axCurrentPageControl = [(SBIconControllerAccessibility *)self _axCurrentPageControl];
+  numberOfPages = [_axCurrentPageControl numberOfPages];
 
-  return v3;
+  return numberOfPages;
 }
 
 - (id)_axCurrentPageControl
@@ -259,9 +259,9 @@ void __49__SBIconControllerAccessibility__axShowTodayView__block_invoke()
   if ([(SBIconControllerAccessibility *)self _axIsShowingHomeScreenTodayView])
   {
     AXPerformSafeBlock();
-    v3 = [(SBIconControllerAccessibility *)self _accessibilityCurrentPageIndex];
+    _accessibilityCurrentPageIndex = [(SBIconControllerAccessibility *)self _accessibilityCurrentPageIndex];
     IsPad = AXDeviceIsPad();
-    v5 = AXSBScrollDescriptionForCurrentPage(v3 + IsPad);
+    v5 = AXSBScrollDescriptionForCurrentPage(_accessibilityCurrentPageIndex + IsPad);
     UIAccessibilitySpeakAndDoNotBeInterrupted();
   }
 }

@@ -5,7 +5,7 @@
 - (void)flush;
 - (void)flushInternal;
 - (void)newLine;
-- (void)writeWithInt:(int)a3;
+- (void)writeWithInt:(int)int;
 @end
 
 @implementation JavaIoBufferedWriter
@@ -84,9 +84,9 @@
   [(JavaIoWriter *)self writeWithNSString:v3];
 }
 
-- (void)writeWithInt:(int)a3
+- (void)writeWithInt:(int)int
 {
-  v3 = a3;
+  intCopy = int;
   lock = self->super.lock_;
   objc_sync_enter(lock);
   [JavaIoBufferedWriter checkNotClosed]_0(self);
@@ -121,7 +121,7 @@ LABEL_5:
     IOSArray_throwOutOfBoundsWithMsg(size, pos);
   }
 
-  *(&buf->super.size_ + pos + 2) = v3;
+  *(&buf->super.size_ + pos + 2) = intCopy;
 
   objc_sync_exit(lock);
 }

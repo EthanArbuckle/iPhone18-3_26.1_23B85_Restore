@@ -1,7 +1,7 @@
 @interface _CPSpotlightUsagePropensity
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPSpotlightUsagePropensity
@@ -138,160 +138,160 @@
   return *&veor_s8(*v80.i8, *&vextq_s8(v80, v80, 8uLL)) ^ v72 ^ v75 ^ v5 ^ v78 ^ v79 ^ v77 ^ v76;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_37;
   }
 
   appLaunch = self->_appLaunch;
-  [v4 appLaunch];
+  [equalCopy appLaunch];
   if (appLaunch != v6)
   {
     goto LABEL_37;
   }
 
   onDeviceAddressBookData = self->_onDeviceAddressBookData;
-  [v4 onDeviceAddressBookData];
+  [equalCopy onDeviceAddressBookData];
   if (onDeviceAddressBookData != v8)
   {
     goto LABEL_37;
   }
 
   onDeviceOtherPersonalData = self->_onDeviceOtherPersonalData;
-  [v4 onDeviceOtherPersonalData];
+  [equalCopy onDeviceOtherPersonalData];
   if (onDeviceOtherPersonalData != v10)
   {
     goto LABEL_37;
   }
 
   punchout = self->_punchout;
-  [v4 punchout];
+  [equalCopy punchout];
   if (punchout != v12)
   {
     goto LABEL_37;
   }
 
   thirdPartyInAppContent = self->_thirdPartyInAppContent;
-  [v4 thirdPartyInAppContent];
+  [equalCopy thirdPartyInAppContent];
   if (thirdPartyInAppContent != v14)
   {
     goto LABEL_37;
   }
 
   parsec = self->_parsec;
-  [v4 parsec];
+  [equalCopy parsec];
   if (parsec != v16)
   {
     goto LABEL_37;
   }
 
   querySuggestion = self->_querySuggestion;
-  [v4 querySuggestion];
+  [equalCopy querySuggestion];
   if (querySuggestion != v18)
   {
     goto LABEL_37;
   }
 
   other = self->_other;
-  [v4 other];
+  [equalCopy other];
   if (other != v20)
   {
     goto LABEL_37;
   }
 
   totalEngagements = self->_totalEngagements;
-  if (totalEngagements != [v4 totalEngagements])
+  if (totalEngagements != [equalCopy totalEngagements])
   {
     goto LABEL_37;
   }
 
   siriSuggestions = self->_siriSuggestions;
-  [v4 siriSuggestions];
+  [equalCopy siriSuggestions];
   if (siriSuggestions != v23)
   {
     goto LABEL_37;
   }
 
   parsecWeb = self->_parsecWeb;
-  [v4 parsecWeb];
+  [equalCopy parsecWeb];
   if (parsecWeb != v25)
   {
     goto LABEL_37;
   }
 
   parsecAppStore = self->_parsecAppStore;
-  [v4 parsecAppStore];
+  [equalCopy parsecAppStore];
   if (parsecAppStore != v27)
   {
     goto LABEL_37;
   }
 
   parsecMaps = self->_parsecMaps;
-  [v4 parsecMaps];
+  [equalCopy parsecMaps];
   if (parsecMaps != v29)
   {
     goto LABEL_37;
   }
 
   parsecWiki = self->_parsecWiki;
-  [v4 parsecWiki];
+  [equalCopy parsecWiki];
   if (parsecWiki != v31)
   {
     goto LABEL_37;
   }
 
   parsecNews = self->_parsecNews;
-  [v4 parsecNews];
+  [equalCopy parsecNews];
   if (parsecNews != v33)
   {
     goto LABEL_37;
   }
 
   parsecStocks = self->_parsecStocks;
-  [v4 parsecStocks];
+  [equalCopy parsecStocks];
   if (parsecStocks != v35)
   {
     goto LABEL_37;
   }
 
   parsecWeather = self->_parsecWeather;
-  [v4 parsecWeather];
+  [equalCopy parsecWeather];
   if (parsecWeather != v37)
   {
     goto LABEL_37;
   }
 
   parsecOther = self->_parsecOther;
-  [v4 parsecOther];
+  [equalCopy parsecOther];
   if (parsecOther != v39)
   {
     goto LABEL_37;
   }
 
   webSuggestions = self->_webSuggestions;
-  [v4 webSuggestions];
+  [equalCopy webSuggestions];
   if (webSuggestions != v41)
   {
     goto LABEL_37;
   }
 
-  v42 = [(_CPSpotlightUsagePropensity *)self topHitTriggerRatio];
-  v43 = [v4 topHitTriggerRatio];
-  if ((v42 != 0) == (v43 == 0))
+  topHitTriggerRatio = [(_CPSpotlightUsagePropensity *)self topHitTriggerRatio];
+  topHitTriggerRatio2 = [equalCopy topHitTriggerRatio];
+  if ((topHitTriggerRatio != 0) == (topHitTriggerRatio2 == 0))
   {
     goto LABEL_36;
   }
 
-  v44 = [(_CPSpotlightUsagePropensity *)self topHitTriggerRatio];
-  if (v44)
+  topHitTriggerRatio3 = [(_CPSpotlightUsagePropensity *)self topHitTriggerRatio];
+  if (topHitTriggerRatio3)
   {
-    v45 = v44;
-    v46 = [(_CPSpotlightUsagePropensity *)self topHitTriggerRatio];
-    v47 = [v4 topHitTriggerRatio];
-    v48 = [v46 isEqual:v47];
+    v45 = topHitTriggerRatio3;
+    topHitTriggerRatio4 = [(_CPSpotlightUsagePropensity *)self topHitTriggerRatio];
+    topHitTriggerRatio5 = [equalCopy topHitTriggerRatio];
+    v48 = [topHitTriggerRatio4 isEqual:topHitTriggerRatio5];
 
     if (!v48)
     {
@@ -303,20 +303,20 @@
   {
   }
 
-  v42 = [(_CPSpotlightUsagePropensity *)self querySuggestionTriggerRatio];
-  v43 = [v4 querySuggestionTriggerRatio];
-  if ((v42 != 0) == (v43 == 0))
+  topHitTriggerRatio = [(_CPSpotlightUsagePropensity *)self querySuggestionTriggerRatio];
+  topHitTriggerRatio2 = [equalCopy querySuggestionTriggerRatio];
+  if ((topHitTriggerRatio != 0) == (topHitTriggerRatio2 == 0))
   {
     goto LABEL_36;
   }
 
-  v49 = [(_CPSpotlightUsagePropensity *)self querySuggestionTriggerRatio];
-  if (v49)
+  querySuggestionTriggerRatio = [(_CPSpotlightUsagePropensity *)self querySuggestionTriggerRatio];
+  if (querySuggestionTriggerRatio)
   {
-    v50 = v49;
-    v51 = [(_CPSpotlightUsagePropensity *)self querySuggestionTriggerRatio];
-    v52 = [v4 querySuggestionTriggerRatio];
-    v53 = [v51 isEqual:v52];
+    v50 = querySuggestionTriggerRatio;
+    querySuggestionTriggerRatio2 = [(_CPSpotlightUsagePropensity *)self querySuggestionTriggerRatio];
+    querySuggestionTriggerRatio3 = [equalCopy querySuggestionTriggerRatio];
+    v53 = [querySuggestionTriggerRatio2 isEqual:querySuggestionTriggerRatio3];
 
     if (!v53)
     {
@@ -329,22 +329,22 @@
   }
 
   totalTopHitEngagements = self->_totalTopHitEngagements;
-  if (totalTopHitEngagements != [v4 totalTopHitEngagements])
+  if (totalTopHitEngagements != [equalCopy totalTopHitEngagements])
   {
     goto LABEL_37;
   }
 
-  v42 = [(_CPSpotlightUsagePropensity *)self engagementShareRatio];
-  v43 = [v4 engagementShareRatio];
-  if ((v42 != 0) == (v43 == 0))
+  topHitTriggerRatio = [(_CPSpotlightUsagePropensity *)self engagementShareRatio];
+  topHitTriggerRatio2 = [equalCopy engagementShareRatio];
+  if ((topHitTriggerRatio != 0) == (topHitTriggerRatio2 == 0))
   {
 LABEL_36:
 
     goto LABEL_37;
   }
 
-  v55 = [(_CPSpotlightUsagePropensity *)self engagementShareRatio];
-  if (!v55)
+  engagementShareRatio = [(_CPSpotlightUsagePropensity *)self engagementShareRatio];
+  if (!engagementShareRatio)
   {
 
 LABEL_40:
@@ -352,10 +352,10 @@ LABEL_40:
     goto LABEL_38;
   }
 
-  v56 = v55;
-  v57 = [(_CPSpotlightUsagePropensity *)self engagementShareRatio];
-  v58 = [v4 engagementShareRatio];
-  v59 = [v57 isEqual:v58];
+  v56 = engagementShareRatio;
+  engagementShareRatio2 = [(_CPSpotlightUsagePropensity *)self engagementShareRatio];
+  engagementShareRatio3 = [equalCopy engagementShareRatio];
+  v59 = [engagementShareRatio2 isEqual:engagementShareRatio3];
 
   if (v59)
   {
@@ -369,9 +369,9 @@ LABEL_38:
   return v60;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v49 = a3;
+  toCopy = to;
   [(_CPSpotlightUsagePropensity *)self appLaunch];
   if (v4 != 0.0)
   {
@@ -504,19 +504,19 @@ LABEL_38:
     PBDataWriterWriteFloatField();
   }
 
-  v41 = [(_CPSpotlightUsagePropensity *)self topHitTriggerRatio];
+  topHitTriggerRatio = [(_CPSpotlightUsagePropensity *)self topHitTriggerRatio];
 
-  if (v41)
+  if (topHitTriggerRatio)
   {
-    v42 = [(_CPSpotlightUsagePropensity *)self topHitTriggerRatio];
+    topHitTriggerRatio2 = [(_CPSpotlightUsagePropensity *)self topHitTriggerRatio];
     PBDataWriterWriteSubmessage();
   }
 
-  v43 = [(_CPSpotlightUsagePropensity *)self querySuggestionTriggerRatio];
+  querySuggestionTriggerRatio = [(_CPSpotlightUsagePropensity *)self querySuggestionTriggerRatio];
 
-  if (v43)
+  if (querySuggestionTriggerRatio)
   {
-    v44 = [(_CPSpotlightUsagePropensity *)self querySuggestionTriggerRatio];
+    querySuggestionTriggerRatio2 = [(_CPSpotlightUsagePropensity *)self querySuggestionTriggerRatio];
     PBDataWriterWriteSubmessage();
   }
 
@@ -526,15 +526,15 @@ LABEL_38:
     PBDataWriterWriteInt32Field();
   }
 
-  v46 = [(_CPSpotlightUsagePropensity *)self engagementShareRatio];
+  engagementShareRatio = [(_CPSpotlightUsagePropensity *)self engagementShareRatio];
 
-  v47 = v49;
-  if (v46)
+  v47 = toCopy;
+  if (engagementShareRatio)
   {
-    v48 = [(_CPSpotlightUsagePropensity *)self engagementShareRatio];
+    engagementShareRatio2 = [(_CPSpotlightUsagePropensity *)self engagementShareRatio];
     PBDataWriterWriteSubmessage();
 
-    v47 = v49;
+    v47 = toCopy;
   }
 }
 

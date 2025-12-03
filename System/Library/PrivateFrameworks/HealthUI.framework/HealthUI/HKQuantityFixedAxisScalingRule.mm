@@ -1,112 +1,112 @@
 @interface HKQuantityFixedAxisScalingRule
-+ (id)ruleWithDefaultAxisBounds:(id)a3 axisBoundsOverrides:(id)a4;
-+ (id)ruleWithDefaultAxisBounds:(id)a3 axisBoundsOverrides:(id)a4 minimumValue:(id)a5 maximumValue:(id)a6;
-+ (id)ruleWithDefaultAxisBounds:(id)a3 axisBoundsOverrides:(id)a4 minimumValue:(id)a5 maximumValue:(id)a6 noDataAxisBounds:(id)a7;
-+ (id)ruleWithDefaultAxisBounds:(id)a3 noDataAxisBounds:(id)a4;
-- (BOOL)isCompatibleWithQuantityType:(id)a3;
-- (id)_numberRangeFromQuantityRangeForUnit:(id)a3 quantityRange:(id)a4;
++ (id)ruleWithDefaultAxisBounds:(id)bounds axisBoundsOverrides:(id)overrides;
++ (id)ruleWithDefaultAxisBounds:(id)bounds axisBoundsOverrides:(id)overrides minimumValue:(id)value maximumValue:(id)maximumValue;
++ (id)ruleWithDefaultAxisBounds:(id)bounds axisBoundsOverrides:(id)overrides minimumValue:(id)value maximumValue:(id)maximumValue noDataAxisBounds:(id)axisBounds;
++ (id)ruleWithDefaultAxisBounds:(id)bounds noDataAxisBounds:(id)axisBounds;
+- (BOOL)isCompatibleWithQuantityType:(id)type;
+- (id)_numberRangeFromQuantityRangeForUnit:(id)unit quantityRange:(id)range;
 - (id)description;
 - (id)noDataStartingRange;
 - (void)_convertQuantityRanges;
-- (void)setUnit:(id)a3;
+- (void)setUnit:(id)unit;
 @end
 
 @implementation HKQuantityFixedAxisScalingRule
 
-+ (id)ruleWithDefaultAxisBounds:(id)a3 axisBoundsOverrides:(id)a4
++ (id)ruleWithDefaultAxisBounds:(id)bounds axisBoundsOverrides:(id)overrides
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() ruleWithDefaultAxisBounds:v6 axisBoundsOverrides:v5 minimumValue:0 maximumValue:0 noDataAxisBounds:0];
+  overridesCopy = overrides;
+  boundsCopy = bounds;
+  v7 = [objc_opt_class() ruleWithDefaultAxisBounds:boundsCopy axisBoundsOverrides:overridesCopy minimumValue:0 maximumValue:0 noDataAxisBounds:0];
 
   return v7;
 }
 
-+ (id)ruleWithDefaultAxisBounds:(id)a3 axisBoundsOverrides:(id)a4 minimumValue:(id)a5 maximumValue:(id)a6
++ (id)ruleWithDefaultAxisBounds:(id)bounds axisBoundsOverrides:(id)overrides minimumValue:(id)value maximumValue:(id)maximumValue
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [objc_opt_class() ruleWithDefaultAxisBounds:v12 axisBoundsOverrides:v11 minimumValue:v10 maximumValue:v9 noDataAxisBounds:0];
+  maximumValueCopy = maximumValue;
+  valueCopy = value;
+  overridesCopy = overrides;
+  boundsCopy = bounds;
+  v13 = [objc_opt_class() ruleWithDefaultAxisBounds:boundsCopy axisBoundsOverrides:overridesCopy minimumValue:valueCopy maximumValue:maximumValueCopy noDataAxisBounds:0];
 
   return v13;
 }
 
-+ (id)ruleWithDefaultAxisBounds:(id)a3 axisBoundsOverrides:(id)a4 minimumValue:(id)a5 maximumValue:(id)a6 noDataAxisBounds:(id)a7
++ (id)ruleWithDefaultAxisBounds:(id)bounds axisBoundsOverrides:(id)overrides minimumValue:(id)value maximumValue:(id)maximumValue noDataAxisBounds:(id)axisBounds
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  boundsCopy = bounds;
+  overridesCopy = overrides;
+  valueCopy = value;
+  maximumValueCopy = maximumValue;
+  axisBoundsCopy = axisBounds;
   v16 = objc_alloc_init(objc_opt_class());
   v17 = v16[6];
-  v16[6] = v11;
-  v18 = v11;
+  v16[6] = boundsCopy;
+  v18 = boundsCopy;
 
   v19 = v16[7];
-  v16[7] = v12;
-  v20 = v12;
+  v16[7] = overridesCopy;
+  v20 = overridesCopy;
 
   v21 = v16[8];
-  v16[8] = v13;
-  v22 = v13;
+  v16[8] = valueCopy;
+  v22 = valueCopy;
 
   v23 = v16[9];
-  v16[9] = v14;
+  v16[9] = maximumValueCopy;
 
-  [v16 setNoDataAxisBounds:v15];
+  [v16 setNoDataAxisBounds:axisBoundsCopy];
 
   return v16;
 }
 
-+ (id)ruleWithDefaultAxisBounds:(id)a3 noDataAxisBounds:(id)a4
++ (id)ruleWithDefaultAxisBounds:(id)bounds noDataAxisBounds:(id)axisBounds
 {
-  v5 = a3;
-  v6 = a4;
+  boundsCopy = bounds;
+  axisBoundsCopy = axisBounds;
   v7 = objc_alloc_init(objc_opt_class());
   v8 = v7[6];
-  v7[6] = v5;
+  v7[6] = boundsCopy;
 
-  [v7 setNoDataAxisBounds:v6];
+  [v7 setNoDataAxisBounds:axisBoundsCopy];
 
   return v7;
 }
 
-- (void)setUnit:(id)a3
+- (void)setUnit:(id)unit
 {
-  objc_storeStrong(&self->_unit, a3);
+  objc_storeStrong(&self->_unit, unit);
 
   [(HKQuantityFixedAxisScalingRule *)self _convertQuantityRanges];
 }
 
-- (BOOL)isCompatibleWithQuantityType:(id)a3
+- (BOOL)isCompatibleWithQuantityType:(id)type
 {
-  v4 = a3;
-  v5 = [(HKValueRange *)self->_defaultQuantityBounds minValue];
-  v6 = [v5 _unit];
-  v7 = v6;
-  if (v6)
+  typeCopy = type;
+  minValue = [(HKValueRange *)self->_defaultQuantityBounds minValue];
+  _unit = [minValue _unit];
+  v7 = _unit;
+  if (_unit)
   {
-    v8 = v6;
+    _unit2 = _unit;
   }
 
   else
   {
-    v9 = [(HKValueRange *)self->_defaultQuantityBounds maxValue];
-    v8 = [v9 _unit];
+    maxValue = [(HKValueRange *)self->_defaultQuantityBounds maxValue];
+    _unit2 = [maxValue _unit];
   }
 
-  if ([v4 isCompatibleWithUnit:v8])
+  if ([typeCopy isCompatibleWithUnit:_unit2])
   {
     v10 = 1;
   }
 
   else
   {
-    v11 = [v4 _unitForChangeInCanonicalUnit];
-    v10 = [v11 _isCompatibleWithUnit:v8];
+    _unitForChangeInCanonicalUnit = [typeCopy _unitForChangeInCanonicalUnit];
+    v10 = [_unitForChangeInCanonicalUnit _isCompatibleWithUnit:_unit2];
   }
 
   return v10;
@@ -171,20 +171,20 @@ void __56__HKQuantityFixedAxisScalingRule__convertQuantityRanges__block_invoke(u
   [*(a1 + 40) setObject:v8 forKeyedSubscript:v7];
 }
 
-- (id)_numberRangeFromQuantityRangeForUnit:(id)a3 quantityRange:(id)a4
+- (id)_numberRangeFromQuantityRangeForUnit:(id)unit quantityRange:(id)range
 {
-  if (a4)
+  if (range)
   {
-    v5 = a4;
-    v6 = a3;
-    v7 = [v5 minValue];
-    v8 = [v5 maxValue];
+    rangeCopy = range;
+    unitCopy = unit;
+    minValue = [rangeCopy minValue];
+    maxValue = [rangeCopy maxValue];
 
     v9 = MEMORY[0x1E696AD98];
-    [v7 doubleValueForUnit:v6];
+    [minValue doubleValueForUnit:unitCopy];
     v10 = [v9 numberWithDouble:?];
     v11 = MEMORY[0x1E696AD98];
-    [v8 doubleValueForUnit:v6];
+    [maxValue doubleValueForUnit:unitCopy];
     v13 = v12;
 
     v14 = [v11 numberWithDouble:v13];
@@ -205,13 +205,13 @@ void __56__HKQuantityFixedAxisScalingRule__convertQuantityRanges__block_invoke(u
   if (noDataAxisBounds)
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(HKValueRange *)noDataAxisBounds minValue];
-    [v5 doubleValueForUnit:self->_unit];
+    minValue = [(HKValueRange *)noDataAxisBounds minValue];
+    [minValue doubleValueForUnit:self->_unit];
     v6 = [v4 numberWithDouble:?];
 
     v7 = MEMORY[0x1E696AD98];
-    v8 = [(HKValueRange *)self->_noDataAxisBounds maxValue];
-    [v8 doubleValueForUnit:self->_unit];
+    maxValue = [(HKValueRange *)self->_noDataAxisBounds maxValue];
+    [maxValue doubleValueForUnit:self->_unit];
     v9 = [v7 numberWithDouble:?];
 
     v10 = [HKValueRange valueRangeWithMinValue:v6 maxValue:v9];

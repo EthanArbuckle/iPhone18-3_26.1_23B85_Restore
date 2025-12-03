@@ -1,29 +1,29 @@
 @interface _UIImageTextAttachment
-- (CGRect)attachmentBoundsForAttributes:(id)a3 location:(id)a4 textContainer:(id)a5 proposedLineFragment:(CGRect)a6 position:(CGPoint)a7;
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6;
-- (id)_deriveAttribute:(id)a3 inStorage:(id)a4 atIndex:(int64_t)a5;
-- (id)_imageAdaptedForTextAtIndex:(int64_t)a3 withAttributes:(id)a4 inContainer:(id)a5 sizeOnly:(BOOL)a6;
-- (id)_initWithImage:(id)a3;
+- (CGRect)attachmentBoundsForAttributes:(id)attributes location:(id)location textContainer:(id)container proposedLineFragment:(CGRect)fragment position:(CGPoint)position;
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index;
+- (id)_deriveAttribute:(id)attribute inStorage:(id)storage atIndex:(int64_t)index;
+- (id)_imageAdaptedForTextAtIndex:(int64_t)index withAttributes:(id)attributes inContainer:(id)container sizeOnly:(BOOL)only;
+- (id)_initWithImage:(id)image;
 @end
 
 @implementation _UIImageTextAttachment
 
-- (id)_initWithImage:(id)a3
+- (id)_initWithImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v8.receiver = self;
   v8.super_class = _UIImageTextAttachment;
   v5 = [(_UIImageTextAttachment *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(_UIImageTextAttachment *)v5 setImage:v4];
+    [(_UIImageTextAttachment *)v5 setImage:imageCopy];
   }
 
   return v6;
 }
 
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index
 {
   if (*&self->_flags)
   {
@@ -35,7 +35,7 @@
 
   else
   {
-    v6 = [(_UIImageTextAttachment *)self _imageAdaptedForTextAtIndex:a6 withAttributes:0 inContainer:a3 sizeOnly:1, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height, a5.x, a5.y];
+    v6 = [(_UIImageTextAttachment *)self _imageAdaptedForTextAtIndex:index withAttributes:0 inContainer:container sizeOnly:1, fragment.origin.x, fragment.origin.y, fragment.size.width, fragment.size.height, position.x, position.y];
     v7 = MEMORY[0x1E695EFF8];
     y = *(MEMORY[0x1E695EFF8] + 8);
     [v6 size];
@@ -61,7 +61,7 @@
   return result;
 }
 
-- (CGRect)attachmentBoundsForAttributes:(id)a3 location:(id)a4 textContainer:(id)a5 proposedLineFragment:(CGRect)a6 position:(CGPoint)a7
+- (CGRect)attachmentBoundsForAttributes:(id)attributes location:(id)location textContainer:(id)container proposedLineFragment:(CGRect)fragment position:(CGPoint)position
 {
   if (*&self->_flags)
   {
@@ -73,7 +73,7 @@
 
   else
   {
-    v7 = [(_UIImageTextAttachment *)self _imageAdaptedForTextAtIndex:0 withAttributes:a3 inContainer:a5 sizeOnly:1, a6.origin.x, a6.origin.y, a6.size.width, a6.size.height, a7.x, a7.y];
+    v7 = [(_UIImageTextAttachment *)self _imageAdaptedForTextAtIndex:0 withAttributes:attributes inContainer:container sizeOnly:1, fragment.origin.x, fragment.origin.y, fragment.size.width, fragment.size.height, position.x, position.y];
     v8 = MEMORY[0x1E695EFF8];
     y = *(MEMORY[0x1E695EFF8] + 8);
     [v7 size];
@@ -99,28 +99,28 @@
   return result;
 }
 
-- (id)_imageAdaptedForTextAtIndex:(int64_t)a3 withAttributes:(id)a4 inContainer:(id)a5 sizeOnly:(BOOL)a6
+- (id)_imageAdaptedForTextAtIndex:(int64_t)index withAttributes:(id)attributes inContainer:(id)container sizeOnly:(BOOL)only
 {
   v73[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = [(_UIImageTextAttachment *)self image];
-  v13 = [v11 textLayoutManager];
-  v14 = v13;
-  if (v13)
+  attributesCopy = attributes;
+  containerCopy = container;
+  image = [(_UIImageTextAttachment *)self image];
+  textLayoutManager = [containerCopy textLayoutManager];
+  v14 = textLayoutManager;
+  if (textLayoutManager)
   {
     v70[0] = MEMORY[0x1E69E9820];
     v70[1] = 3221225472;
     v70[2] = __90___UIImageTextAttachment__imageAdaptedForTextAtIndex_withAttributes_inContainer_sizeOnly___block_invoke;
     v70[3] = &unk_1E7125A48;
-    v71 = v13;
+    v71 = textLayoutManager;
     v15 = __90___UIImageTextAttachment__imageAdaptedForTextAtIndex_withAttributes_inContainer_sizeOnly___block_invoke(v70);
     if (v15)
     {
       v16 = v15;
-      v17 = [v15 textStorage];
+      textStorage = [v15 textStorage];
 
-      if (v17)
+      if (textStorage)
       {
         goto LABEL_7;
       }
@@ -131,68 +131,68 @@
     }
   }
 
-  v18 = [v11 layoutManager];
-  v17 = [v18 textStorage];
+  layoutManager = [containerCopy layoutManager];
+  textStorage = [layoutManager textStorage];
 
 LABEL_7:
-  if ([v12 _isSymbolImage])
+  if ([image _isSymbolImage])
   {
     v19 = *off_1E70EC918;
-    if (v10)
+    if (attributesCopy)
     {
-      [v10 objectForKeyedSubscript:v19];
+      [attributesCopy objectForKeyedSubscript:v19];
     }
 
     else
     {
-      [(_UIImageTextAttachment *)self _deriveAttribute:v19 inStorage:v17 atIndex:a3];
+      [(_UIImageTextAttachment *)self _deriveAttribute:v19 inStorage:textStorage atIndex:index];
     }
     v20 = ;
     if (v20)
     {
       v21 = [UIImageSymbolConfiguration configurationWithFont:v20];
       [UIImageConfiguration _completeConfiguration:v21 fromConfiguration:0];
-      v61 = self;
-      v22 = a6;
-      v23 = a3;
-      v24 = v11;
-      v25 = v17;
+      selfCopy = self;
+      onlyCopy = only;
+      indexCopy = index;
+      v24 = containerCopy;
+      v25 = textStorage;
       v26 = v14;
-      v28 = v27 = v10;
+      v28 = v27 = attributesCopy;
 
-      v29 = [v12 imageByApplyingSymbolConfiguration:v28];
+      v29 = [image imageByApplyingSymbolConfiguration:v28];
 
-      v10 = v27;
+      attributesCopy = v27;
       v14 = v26;
-      v17 = v25;
-      v11 = v24;
-      a3 = v23;
-      a6 = v22;
-      self = v61;
-      v12 = v29;
+      textStorage = v25;
+      containerCopy = v24;
+      index = indexCopy;
+      only = onlyCopy;
+      self = selfCopy;
+      image = v29;
     }
   }
 
-  if (!a6)
+  if (!only)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __90___UIImageTextAttachment__imageAdaptedForTextAtIndex_withAttributes_inContainer_sizeOnly___block_invoke_6;
     aBlock[3] = &unk_1E7125A70;
-    v12 = v12;
-    v65 = v12;
-    v66 = v10;
-    v67 = self;
-    v68 = v17;
-    v69 = a3;
+    image = image;
+    v65 = image;
+    v66 = attributesCopy;
+    selfCopy2 = self;
+    v68 = textStorage;
+    indexCopy2 = index;
     v30 = _Block_copy(aBlock);
-    v31 = [v12 symbolConfiguration];
-    v32 = [v12 _automaticSymbolConfiguration];
-    v33 = v32;
-    v63 = v17;
-    if (v32)
+    symbolConfiguration = [image symbolConfiguration];
+    _automaticSymbolConfiguration = [image _automaticSymbolConfiguration];
+    v33 = _automaticSymbolConfiguration;
+    v63 = textStorage;
+    if (_automaticSymbolConfiguration)
     {
-      v34 = v32;
+      v34 = _automaticSymbolConfiguration;
     }
 
     else
@@ -202,11 +202,11 @@ LABEL_7:
 
     v35 = v34;
 
-    v36 = [v35 configurationByApplyingConfiguration:v31];
+    v36 = [v35 configurationByApplyingConfiguration:symbolConfiguration];
 
-    v37 = [v12 _effectiveRenderingModeWithSymbolConfiguration:v36];
+    v37 = [image _effectiveRenderingModeWithSymbolConfiguration:v36];
     v62 = v35;
-    if ([v12 _isMultiColorSymbolImage])
+    if ([image _isMultiColorSymbolImage])
     {
       if (v37 != 1)
       {
@@ -218,11 +218,11 @@ LABEL_7:
         if (![v36 _prefersMulticolor])
         {
 LABEL_25:
-          v60 = v10;
-          if ((([v12 _isHierarchicalColorSymbolImage] & 1) != 0 || objc_msgSend(v12, "_isPaletteColorSymbolImage")) && v36 && v36[7] && (objc_msgSend(v11, "textView"), v47 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v47, "tintColor"), v48 = objc_claimAutoreleasedReturnValue(), v58[2](v58, v48), v40 = objc_claimAutoreleasedReturnValue(), v48, v47, v40))
+          v60 = attributesCopy;
+          if ((([image _isHierarchicalColorSymbolImage] & 1) != 0 || objc_msgSend(image, "_isPaletteColorSymbolImage")) && v36 && v36[7] && (objc_msgSend(containerCopy, "textView"), v47 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v47, "tintColor"), v48 = objc_claimAutoreleasedReturnValue(), v58[2](v58, v48), v40 = objc_claimAutoreleasedReturnValue(), v48, v47, v40))
           {
-            v49 = [v36 _colors];
-            v42 = [v49 mutableCopy];
+            _colors = [v36 _colors];
+            v42 = [_colors mutableCopy];
 
             if ([v42 count])
             {
@@ -245,31 +245,31 @@ LABEL_25:
 
             v53 = [v36 _configurationByReplacingColors:v42];
 
-            v54 = [v12 imageWithConfiguration:v53];
+            v54 = [image imageWithConfiguration:v53];
 
             v36 = v53;
-            v12 = v54;
-            v10 = v60;
-            v17 = v63;
+            image = v54;
+            attributesCopy = v60;
+            textStorage = v63;
           }
 
           else
           {
-            v55 = [v11 textView];
-            v56 = [v55 tintColor];
-            v40 = v58[2](v58, v56);
+            textView = [containerCopy textView];
+            tintColor = [textView tintColor];
+            v40 = v58[2](v58, tintColor);
 
-            v17 = v63;
+            textStorage = v63;
             if (!v40)
             {
               v30 = v58;
-              v10 = v60;
+              attributesCopy = v60;
               goto LABEL_41;
             }
 
-            [v12 imageWithTintColor:v40 renderingMode:1];
-            v12 = v42 = v12;
-            v10 = v60;
+            [image imageWithTintColor:v40 renderingMode:1];
+            image = v42 = image;
+            attributesCopy = v60;
           }
 
           v30 = v58;
@@ -277,12 +277,12 @@ LABEL_25:
         }
       }
 
-      [v11 textView];
-      v38 = v59 = v10;
-      v39 = [v38 tintColor];
-      v40 = v30[2](v30, v39);
+      [containerCopy textView];
+      v38 = v59 = attributesCopy;
+      tintColor2 = [v38 tintColor];
+      v40 = v30[2](v30, tintColor2);
 
-      v10 = v59;
+      attributesCopy = v59;
       if (v40)
       {
         v72 = @"tintColor";
@@ -290,15 +290,15 @@ LABEL_25:
         v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v73 forKeys:&v72 count:1];
         v42 = [UIImageSymbolConfiguration _configurationWithNamedColorStyles:v41];
 
-        v43 = [v12 configuration];
-        v44 = [v42 configurationByApplyingConfiguration:v43];
-        [v12 imageWithConfiguration:v44];
+        configuration = [image configuration];
+        v44 = [v42 configurationByApplyingConfiguration:configuration];
+        [image imageWithConfiguration:v44];
         v46 = v45 = v30;
 
-        v10 = v59;
-        v12 = v46;
+        attributesCopy = v59;
+        image = v46;
         v30 = v45;
-        v17 = v63;
+        textStorage = v63;
 LABEL_40:
 
         goto LABEL_41;
@@ -312,35 +312,35 @@ LABEL_40:
 
 LABEL_36:
     v40 = 0;
-    v17 = v63;
+    textStorage = v63;
 LABEL_41:
   }
 
-  return v12;
+  return image;
 }
 
-- (id)_deriveAttribute:(id)a3 inStorage:(id)a4 atIndex:(int64_t)a5
+- (id)_deriveAttribute:(id)attribute inStorage:(id)storage atIndex:(int64_t)index
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 attribute:v7 atIndex:a5 effectiveRange:0];
+  attributeCopy = attribute;
+  storageCopy = storage;
+  v9 = [storageCopy attribute:attributeCopy atIndex:index effectiveRange:0];
   v10 = v9;
-  if (a5 >= 2 && !v9)
+  if (index >= 2 && !v9)
   {
-    v10 = [v8 attribute:v7 atIndex:a5 - 1 effectiveRange:0];
+    v10 = [storageCopy attribute:attributeCopy atIndex:index - 1 effectiveRange:0];
   }
 
   if (!v10)
   {
-    v11 = a5 + 1;
-    if (v11 >= [v8 length])
+    v11 = index + 1;
+    if (v11 >= [storageCopy length])
     {
       v10 = 0;
     }
 
     else
     {
-      v10 = [v8 attribute:v7 atIndex:v11 effectiveRange:0];
+      v10 = [storageCopy attribute:attributeCopy atIndex:v11 effectiveRange:0];
     }
   }
 

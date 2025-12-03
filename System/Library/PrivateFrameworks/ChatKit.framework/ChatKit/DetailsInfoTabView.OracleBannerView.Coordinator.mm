@@ -1,24 +1,24 @@
 @interface DetailsInfoTabView.OracleBannerView.Coordinator
 - (_TtCVV7ChatKit18DetailsInfoTabView16OracleBannerView11Coordinator)init;
-- (void)sharedProfileBannerView:(id)a3 didDismissWithUpdatedContact:(id)a4 forAction:(unint64_t)a5;
-- (void)sharedProfileBannerView:(id)a3 didUpdateContact:(id)a4 forAction:(unint64_t)a5;
+- (void)sharedProfileBannerView:(id)view didDismissWithUpdatedContact:(id)contact forAction:(unint64_t)action;
+- (void)sharedProfileBannerView:(id)view didUpdateContact:(id)contact forAction:(unint64_t)action;
 @end
 
 @implementation DetailsInfoTabView.OracleBannerView.Coordinator
 
-- (void)sharedProfileBannerView:(id)a3 didUpdateContact:(id)a4 forAction:(unint64_t)a5
+- (void)sharedProfileBannerView:(id)view didUpdateContact:(id)contact forAction:(unint64_t)action
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  sub_19095CC58(v8, a5);
+  viewCopy = view;
+  contactCopy = contact;
+  selfCopy = self;
+  sub_19095CC58(viewCopy, action);
 }
 
-- (void)sharedProfileBannerView:(id)a3 didDismissWithUpdatedContact:(id)a4 forAction:(unint64_t)a5
+- (void)sharedProfileBannerView:(id)view didDismissWithUpdatedContact:(id)contact forAction:(unint64_t)action
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  viewCopy = view;
+  contactCopy = contact;
+  selfCopy = self;
   sub_19095CF44();
 }
 

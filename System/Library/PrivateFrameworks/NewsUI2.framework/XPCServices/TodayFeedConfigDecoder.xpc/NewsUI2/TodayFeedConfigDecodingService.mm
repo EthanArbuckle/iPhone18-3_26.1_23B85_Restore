@@ -1,15 +1,15 @@
 @interface TodayFeedConfigDecodingService
 - (_TtC22TodayFeedConfigDecoder30TodayFeedConfigDecodingService)init;
-- (void)decodeTodayFeedConfigData:(id)a3 completion:(id)a4;
+- (void)decodeTodayFeedConfigData:(id)data completion:(id)completion;
 @end
 
 @implementation TodayFeedConfigDecodingService
 
-- (void)decodeTodayFeedConfigData:(id)a3 completion:(id)a4
+- (void)decodeTodayFeedConfigData:(id)data completion:(id)completion
 {
-  v6 = _Block_copy(a4);
-  v7 = a3;
-  v8 = self;
+  v6 = _Block_copy(completion);
+  dataCopy = data;
+  selfCopy = self;
   v9 = sub_100007B7C();
   v11 = v10;
 

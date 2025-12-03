@@ -2,8 +2,8 @@
 + (CGSize)leftHandSideViewSize;
 - (id)leftHandSideView;
 - (void)prepareForReuse;
-- (void)setChat:(id)a3;
-- (void)setModelObject:(id)a3;
+- (void)setChat:(id)chat;
+- (void)setModelObject:(id)object;
 @end
 
 @implementation CKReviewLargeConversationsTableViewCell
@@ -17,13 +17,13 @@
   return result;
 }
 
-- (void)setModelObject:(id)a3
+- (void)setModelObject:(id)object
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  objectCopy = object;
+  v7 = objectCopy;
+  if (objectCopy)
   {
-    v5 = [v4 objectForKeyedSubscript:@"chat"];
+    v5 = [objectCopy objectForKeyedSubscript:@"chat"];
     [(CKReviewLargeConversationsTableViewCell *)self setChat:v5];
 
     v6 = [v7 objectForKeyedSubscript:@"size"];
@@ -39,9 +39,9 @@
 
 - (id)leftHandSideView
 {
-  v3 = [(CKReviewLargeConversationsTableViewCell *)self avatarView];
+  avatarView = [(CKReviewLargeConversationsTableViewCell *)self avatarView];
 
-  if (!v3)
+  if (!avatarView)
   {
     v4 = objc_alloc(MEMORY[0x1E695D0C0]);
     v5 = [v4 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -59,43 +59,43 @@
   [(CKReviewLargeConversationsTableViewCell *)self setChat:0];
 }
 
-- (void)setChat:(id)a3
+- (void)setChat:(id)chat
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_chat, a3);
-  if (!v5)
+  chatCopy = chat;
+  objc_storeStrong(&self->_chat, chat);
+  if (!chatCopy)
   {
     [(CKAbstractReviewTableViewCell *)self setMainText:0];
-    v12 = [(CKReviewLargeConversationsTableViewCell *)self avatarView];
-    [v12 setContacts:MEMORY[0x1E695E0F0]];
+    avatarView = [(CKReviewLargeConversationsTableViewCell *)self avatarView];
+    [avatarView setContacts:MEMORY[0x1E695E0F0]];
 
     [(CKAbstractReviewTableViewCell *)self setSubheadingText:0];
     goto LABEL_24;
   }
 
-  v6 = [v5 participants];
-  v34 = [v5 lastMessage];
-  v7 = [v5 displayName];
-  if (v7 && ([v5 displayName], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqualToString:", &stru_1F04268F8), v8, v7, (v9 & 1) == 0))
+  participants = [chatCopy participants];
+  lastMessage = [chatCopy lastMessage];
+  displayName = [chatCopy displayName];
+  if (displayName && ([chatCopy displayName], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqualToString:", &stru_1F04268F8), v8, displayName, (v9 & 1) == 0))
   {
-    v10 = [v5 displayName];
-    [(CKAbstractReviewTableViewCell *)self setMainText:v10];
+    displayName2 = [chatCopy displayName];
+    [(CKAbstractReviewTableViewCell *)self setMainText:displayName2];
   }
 
   else
   {
-    if ([v6 count] != 1)
+    if ([participants count] != 1)
     {
-      if ([v6 count] >= 2)
+      if ([participants count] >= 2)
       {
         v39[0] = MEMORY[0x1E69E9820];
         v39[1] = 3221225472;
         v39[2] = __51__CKReviewLargeConversationsTableViewCell_setChat___block_invoke;
         v39[3] = &unk_1E72EBA40;
-        v40 = v5;
-        v13 = [v6 __imArrayByApplyingBlock:v39];
-        v14 = [MEMORY[0x1E696AD60] string];
+        v40 = chatCopy;
+        v13 = [participants __imArrayByApplyingBlock:v39];
+        string = [MEMORY[0x1E696AD60] string];
         v38[0] = 0;
         v38[1] = v38;
         v38[2] = 0x2020000000;
@@ -104,7 +104,7 @@
         v35[1] = 3221225472;
         v35[2] = __51__CKReviewLargeConversationsTableViewCell_setChat___block_invoke_2;
         v35[3] = &unk_1E72EBA68;
-        v15 = v14;
+        v15 = string;
         v36 = v15;
         v37 = v38;
         [v13 enumerateObjectsUsingBlock:v35];
@@ -117,25 +117,25 @@
       goto LABEL_11;
     }
 
-    v10 = [v6 objectAtIndexedSubscript:0];
-    v11 = [v10 displayNameForChat:v5];
+    displayName2 = [participants objectAtIndexedSubscript:0];
+    v11 = [displayName2 displayNameForChat:chatCopy];
     [(CKAbstractReviewTableViewCell *)self setMainText:v11];
   }
 
 LABEL_11:
-  v17 = v6;
+  v17 = participants;
   v18 = v17;
   if ([v17 count] >= 2)
   {
     v18 = v17;
-    if (v34)
+    if (lastMessage)
     {
       v18 = v17;
-      if (([v34 isFromMe] & 1) == 0)
+      if (([lastMessage isFromMe] & 1) == 0)
       {
-        v19 = [v34 sender];
-        v20 = [MEMORY[0x1E695DEC8] arrayWithObject:v19];
-        v41[0] = v19;
+        sender = [lastMessage sender];
+        v20 = [MEMORY[0x1E695DEC8] arrayWithObject:sender];
+        v41[0] = sender;
         v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:1];
         v22 = [v17 arrayByExcludingObjectsInArray:v21];
         v18 = [v20 arrayByAddingObjectsFromArray:v22];
@@ -144,20 +144,20 @@ LABEL_11:
   }
 
   v23 = [v18 __imArrayByApplyingBlock:&__block_literal_global_0];
-  v24 = [(CKReviewLargeConversationsTableViewCell *)self avatarView];
-  [v24 setContacts:v23];
+  avatarView2 = [(CKReviewLargeConversationsTableViewCell *)self avatarView];
+  [avatarView2 setContacts:v23];
 
-  v25 = [v34 time];
-  if (v25)
+  time = [lastMessage time];
+  if (time)
   {
-    v26 = [MEMORY[0x1E695DEE8] currentCalendar];
-    if ([v26 isDateInToday:v25])
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    if ([currentCalendar isDateInToday:time])
     {
       v27 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
       v28 = [v27 localizedStringForKey:@"TODAY" value:&stru_1F04268F8 table:@"General"];
     }
 
-    else if ([v26 isDateInYesterday:v25])
+    else if ([currentCalendar isDateInYesterday:time])
     {
       v29 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
       v28 = [v29 localizedStringForKey:@"YESTERDAY" value:&stru_1F04268F8 table:@"General"];
@@ -165,7 +165,7 @@ LABEL_11:
 
     else
     {
-      v28 = [MEMORY[0x1E696AB78] localizedStringFromDate:v25 dateStyle:2 timeStyle:0];
+      v28 = [MEMORY[0x1E696AB78] localizedStringFromDate:time dateStyle:2 timeStyle:0];
     }
 
     v30 = MEMORY[0x1E696AEC0];

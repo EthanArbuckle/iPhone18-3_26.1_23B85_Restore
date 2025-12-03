@@ -1,6 +1,6 @@
 @interface MPSCNNLossDescriptor
 + (MPSCNNLossDescriptor)cnnLossDescriptorWithType:(MPSCNNLossType)lossType reductionType:(MPSCNNReductionType)reductionType;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (void)dealloc;
 - (void)setDelta:(float)delta;
@@ -15,18 +15,18 @@
 {
   if (labelSmoothing < 0.0 || labelSmoothing > 1.0)
   {
-    v9 = self;
+    selfCopy = self;
     v10 = labelSmoothing;
     v11 = MTLReportFailureTypeEnabled();
     labelSmoothing = v10;
     v12 = v11;
-    self = v9;
+    self = selfCopy;
     if (v12)
     {
       v13 = objc_opt_class();
       NSStringFromClass(v13);
       MTLReportFailure();
-      self = v9;
+      self = selfCopy;
       labelSmoothing = v10;
     }
   }
@@ -49,17 +49,17 @@
 {
   if (!numberOfClasses)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = MTLReportFailureTypeEnabled();
     numberOfClasses = 0;
     v5 = v4;
-    self = v3;
+    self = selfCopy;
     if (v5)
     {
       v6 = objc_opt_class();
       NSStringFromClass(v6);
       MTLReportFailure();
-      self = v3;
+      self = selfCopy;
       numberOfClasses = 0;
     }
   }
@@ -90,17 +90,17 @@
     v5 = MTLReportFailureTypeEnabled();
     v6 = epsilon;
     v7 = v5;
-    v8 = self;
+    selfCopy2 = self;
     if (v7)
     {
       v9 = objc_opt_class();
       NSStringFromClass(v9);
       MTLReportFailure();
-      v8 = self;
+      selfCopy2 = self;
       v6 = epsilon;
     }
 
-    v8->_epsilon = v6;
+    selfCopy2->_epsilon = v6;
   }
 }
 
@@ -116,17 +116,17 @@
     v5 = MTLReportFailureTypeEnabled();
     v6 = delta;
     v7 = v5;
-    v8 = self;
+    selfCopy2 = self;
     if (v7)
     {
       v9 = objc_opt_class();
       NSStringFromClass(v9);
       MTLReportFailure();
-      v8 = self;
+      selfCopy2 = self;
       v6 = delta;
     }
 
-    v8->_delta = v6;
+    selfCopy2->_delta = v6;
   }
 }
 
@@ -173,10 +173,10 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  result = objc_msgSend_allocWithZone_(v5, v6, a3, v7, v8, v9, v10, v11);
+  result = objc_msgSend_allocWithZone_(v5, v6, zone, v7, v8, v9, v10, v11);
   if (result)
   {
     *(result + 1) = *&self->_lossType;

@@ -2,41 +2,41 @@
 + (BOOL)reachabilitySupported;
 + (id)sharedInstance;
 - (BOOL)canActivateReachability;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)reachabilityEnabled;
 - (SBReachabilityManager)init;
-- (id)_attentionAwarenessConfigurationWithTimeout:(double)a3 tag:(id)a4;
-- (id)_sceneForWindow:(id)a3;
-- (void)_activateReachability:(id)a3;
+- (id)_attentionAwarenessConfigurationWithTimeout:(double)timeout tag:(id)tag;
+- (id)_sceneForWindow:(id)window;
+- (void)_activateReachability:(id)reachability;
 - (void)_applyInteractiveConfiguration;
 - (void)_applyNonInteractiveConfiguration;
 - (void)_calculateReachabilityBoundsInPixels;
 - (void)_invalidateJindoReason;
-- (void)_modifyDefaultPresentationContextHostTransformForWindow:(id)a3 fromTransform:(id)a4 toTransform:(id)a5;
+- (void)_modifyDefaultPresentationContextHostTransformForWindow:(id)window fromTransform:(id)transform toTransform:(id)toTransform;
 - (void)_notifyObserversDidEndReachabilityAnimation;
-- (void)_notifyObserversReachabilityModeActive:(BOOL)a3;
+- (void)_notifyObserversReachabilityModeActive:(BOOL)active;
 - (void)_notifyObserversReachabilityYOffsetDidChange;
 - (void)_notifyObserversWillBeginReachabilityAnimation;
-- (void)_panToDeactivateReachability:(id)a3;
+- (void)_panToDeactivateReachability:(id)reachability;
 - (void)_setKeepAliveTimer;
 - (void)_setupGestureRecognizers;
 - (void)_setupReachabilityWindowIfNecessary;
-- (void)_tapToDeactivateReachability:(id)a3;
+- (void)_tapToDeactivateReachability:(id)reachability;
 - (void)_tearDownReachabilityWindow;
-- (void)_transitionWithTransformer:(id)a3 fromTransform:(id)a4 toTransform:(id)a5;
-- (void)_updateReachabilityModeActive:(BOOL)a3 animated:(BOOL)a4;
-- (void)_updateReachabilityWindowForYOffset:(double)a3 mode:(int64_t)a4 completion:(id)a5;
-- (void)addObserver:(id)a3;
+- (void)_transitionWithTransformer:(id)transformer fromTransform:(id)transform toTransform:(id)toTransform;
+- (void)_updateReachabilityModeActive:(BOOL)active animated:(BOOL)animated;
+- (void)_updateReachabilityWindowForYOffset:(double)offset mode:(int64_t)mode completion:(id)completion;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)ignoreWindowForReachability:(id)a3;
-- (void)setReachabilityEnabled:(BOOL)a3;
-- (void)setReachabilityTemporarilyDisabled:(BOOL)a3 forReason:(id)a4;
-- (void)setReachabilityTemporarilyEnabled:(BOOL)a3 forReason:(id)a4;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)ignoreWindowForReachability:(id)reachability;
+- (void)setReachabilityEnabled:(BOOL)enabled;
+- (void)setReachabilityTemporarilyDisabled:(BOOL)disabled forReason:(id)reason;
+- (void)setReachabilityTemporarilyEnabled:(BOOL)enabled forReason:(id)reason;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 - (void)toggleReachability;
-- (void)zStackParticipant:(id)a3 updatePreferences:(id)a4;
+- (void)zStackParticipant:(id)participant updatePreferences:(id)preferences;
 @end
 
 @implementation SBReachabilityManager
@@ -64,8 +64,8 @@
   if ((reachabilitySupported_useReachability & 1) != 0 || (+[SBReachabilityDomain rootSettings](SBReachabilityDomain, "rootSettings"), v2 = objc_claimAutoreleasedReturnValue(), [v2 allowOnAllDevices]))
   {
     v4 = +[SBDefaults localDefaults];
-    v5 = [v4 accessibilityDefaults];
-    v6 = [v5 reallyDisableReachability] ^ 1;
+    accessibilityDefaults = [v4 accessibilityDefaults];
+    v6 = [accessibilityDefaults reallyDisableReachability] ^ 1;
 
     if (v3)
     {
@@ -111,19 +111,19 @@ uint64_t __39__SBReachabilityManager_sharedInstance__block_invoke()
   if (v2 && [objc_opt_class() reachabilitySupported])
   {
     v3 = +[SBDefaults localDefaults];
-    v4 = [v3 accessibilityDefaults];
-    v2->_reachabilityModeEnabled = [v4 allowReachability];
+    accessibilityDefaults = [v3 accessibilityDefaults];
+    v2->_reachabilityModeEnabled = [accessibilityDefaults allowReachability];
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel__screenDidDim name:*MEMORY[0x277D67A18] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__screenDidDim name:*MEMORY[0x277D67A18] object:0];
     v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
     temporaryDisabledReasons = v2->_temporaryDisabledReasons;
     v2->_temporaryDisabledReasons = v6;
 
     v2->_effectiveReachabilityYOffset = 0.0;
-    v8 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     ignoredWindows = v2->_ignoredWindows;
-    v2->_ignoredWindows = v8;
+    v2->_ignoredWindows = weakObjectsHashTable;
 
     [(SBReachabilityManager *)v2 _setupGestureRecognizers];
     v10 = +[SBReachabilityDomain rootSettings];
@@ -139,8 +139,8 @@ uint64_t __39__SBReachabilityManager_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4 = +[SBSystemGestureManager mainDisplayManager];
   [v4 removeGestureRecognizer:self->_reachabilityGestureRecognizer];
@@ -182,13 +182,13 @@ uint64_t __39__SBReachabilityManager_sharedInstance__block_invoke()
   }
 }
 
-- (void)setReachabilityEnabled:(BOOL)a3
+- (void)setReachabilityEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v13 = *MEMORY[0x277D85DE8];
   if (+[SBReachabilityManager reachabilitySupported])
   {
-    if (v3)
+    if (enabledCopy)
     {
       if (self->_reachabilityModeEnabled)
       {
@@ -197,8 +197,8 @@ uint64_t __39__SBReachabilityManager_sharedInstance__block_invoke()
 
       self->_reachabilityModeEnabled = 1;
       v10 = +[SBDefaults localDefaults];
-      v5 = [v10 accessibilityDefaults];
-      v6 = v5;
+      accessibilityDefaults = [v10 accessibilityDefaults];
+      v6 = accessibilityDefaults;
       v7 = 1;
     }
 
@@ -212,12 +212,12 @@ uint64_t __39__SBReachabilityManager_sharedInstance__block_invoke()
       [(SBReachabilityManager *)self deactivateReachability];
       self->_reachabilityModeEnabled = 0;
       v10 = +[SBDefaults localDefaults];
-      v5 = [v10 accessibilityDefaults];
-      v6 = v5;
+      accessibilityDefaults = [v10 accessibilityDefaults];
+      v6 = accessibilityDefaults;
       v7 = 0;
     }
 
-    [v5 setAllowReachability:v7];
+    [accessibilityDefaults setAllowReachability:v7];
   }
 
   else
@@ -226,7 +226,7 @@ uint64_t __39__SBReachabilityManager_sharedInstance__block_invoke()
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = @"disable";
-      if (v3)
+      if (enabledCopy)
       {
         v9 = @"enable";
       }
@@ -238,50 +238,50 @@ uint64_t __39__SBReachabilityManager_sharedInstance__block_invoke()
   }
 }
 
-- (void)setReachabilityTemporarilyDisabled:(BOOL)a3 forReason:(id)a4
+- (void)setReachabilityTemporarilyDisabled:(BOOL)disabled forReason:(id)reason
 {
-  v4 = a3;
+  disabledCopy = disabled;
   v11 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (v4)
+  reasonCopy = reason;
+  if (disabledCopy)
   {
     v7 = SBLogReachability();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = v6;
+      v10 = reasonCopy;
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Adding temporary reason for disabling reachability: %{public}@", &v9, 0xCu);
     }
 
-    [(NSMutableSet *)self->_temporaryDisabledReasons addObject:v6];
+    [(NSMutableSet *)self->_temporaryDisabledReasons addObject:reasonCopy];
   }
 
-  else if ([(NSMutableSet *)self->_temporaryDisabledReasons containsObject:v6])
+  else if ([(NSMutableSet *)self->_temporaryDisabledReasons containsObject:reasonCopy])
   {
     v8 = SBLogReachability();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = v6;
+      v10 = reasonCopy;
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Removing temporary reason for disabling reachability: %{public}@", &v9, 0xCu);
     }
 
-    [(NSMutableSet *)self->_temporaryDisabledReasons removeObject:v6];
+    [(NSMutableSet *)self->_temporaryDisabledReasons removeObject:reasonCopy];
   }
 }
 
-- (void)setReachabilityTemporarilyEnabled:(BOOL)a3 forReason:(id)a4
+- (void)setReachabilityTemporarilyEnabled:(BOOL)enabled forReason:(id)reason
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (v4)
+  reasonCopy = reason;
+  if (enabledCopy)
   {
     v7 = SBLogReachability();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138543362;
-      v13 = v6;
+      v13 = reasonCopy;
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Adding temporary reason for enabling reachability: %{public}@", &v12, 0xCu);
     }
 
@@ -295,39 +295,39 @@ uint64_t __39__SBReachabilityManager_sharedInstance__block_invoke()
       temporaryEnabledReasons = self->_temporaryEnabledReasons;
     }
 
-    [(NSMutableSet *)temporaryEnabledReasons addObject:v6];
+    [(NSMutableSet *)temporaryEnabledReasons addObject:reasonCopy];
   }
 
-  else if ([(NSMutableSet *)self->_temporaryEnabledReasons containsObject:v6])
+  else if ([(NSMutableSet *)self->_temporaryEnabledReasons containsObject:reasonCopy])
   {
     v11 = SBLogReachability();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138543362;
-      v13 = v6;
+      v13 = reasonCopy;
       _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "Removing temporary reason for enabling reachability: %{public}@", &v12, 0xCu);
     }
 
-    [(NSMutableSet *)self->_temporaryEnabledReasons removeObject:v6];
+    [(NSMutableSet *)self->_temporaryEnabledReasons removeObject:reasonCopy];
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
 - (void)toggleReachability
@@ -340,8 +340,8 @@ uint64_t __39__SBReachabilityManager_sharedInstance__block_invoke()
     v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
     v4 = MEMORY[0x277D65DD0];
     v5 = v3;
-    v6 = [v4 sharedInstance];
-    [v6 emitEvent:8 withPayload:v5];
+    sharedInstance = [v4 sharedInstance];
+    [sharedInstance emitEvent:8 withPayload:v5];
   }
 
   if ([(SBReachabilityManager *)self canActivateReachability])
@@ -350,23 +350,23 @@ uint64_t __39__SBReachabilityManager_sharedInstance__block_invoke()
   }
 }
 
-- (void)ignoreWindowForReachability:(id)a3
+- (void)ignoreWindowForReachability:(id)reachability
 {
-  v5 = a3;
+  reachabilityCopy = reachability;
   if (![(NSHashTable *)self->_ignoredWindows containsObject:?])
   {
-    [(NSHashTable *)self->_ignoredWindows addObject:v5];
+    [(NSHashTable *)self->_ignoredWindows addObject:reachabilityCopy];
     inverseReachabilityTransform = self->_inverseReachabilityTransform;
     if (inverseReachabilityTransform)
     {
-      [(SBReachabilityManager *)self _modifyDefaultPresentationContextHostTransformForWindow:v5 fromTransform:inverseReachabilityTransform toTransform:self->_inverseReachabilityTransform];
+      [(SBReachabilityManager *)self _modifyDefaultPresentationContextHostTransformForWindow:reachabilityCopy fromTransform:inverseReachabilityTransform toTransform:self->_inverseReachabilityTransform];
     }
   }
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  if (self->_settings == a3 && [a4 isEqualToString:@"yOffset"])
+  if (self->_settings == settings && [key isEqualToString:@"yOffset"])
   {
 
     [(SBReachabilityManager *)self _calculateReachabilityBoundsInPixels];
@@ -405,17 +405,17 @@ uint64_t __39__SBReachabilityManager_sharedInstance__block_invoke()
   self->_reachabilityBoundsInPixels = CGRectUnion(v18, v19);
 }
 
-- (void)_updateReachabilityModeActive:(BOOL)a3 animated:(BOOL)a4
+- (void)_updateReachabilityModeActive:(BOOL)active animated:(BOOL)animated
 {
-  if (self->_reachabilityModeActive != a3)
+  if (self->_reachabilityModeActive != active)
   {
     v27 = v7;
     v28 = v6;
     v29 = v4;
     v30 = v5;
-    v8 = a4;
-    v9 = a3;
-    self->_reachabilityModeActive = a3;
+    animatedCopy = animated;
+    activeCopy = active;
+    self->_reachabilityModeActive = active;
     if (self->_attentionAwarenessClient)
     {
       v11 = SBLogReachability();
@@ -430,17 +430,17 @@ uint64_t __39__SBReachabilityManager_sharedInstance__block_invoke()
       self->_attentionAwarenessClient = 0;
     }
 
-    v13 = [MEMORY[0x277D6A798] sharedInstance];
+    mEMORY[0x277D6A798] = [MEMORY[0x277D6A798] sharedInstance];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __64__SBReachabilityManager__updateReachabilityModeActive_animated___block_invoke;
     v24[3] = &__block_descriptor_33_e5__8__0l;
-    v25 = v9;
-    [v13 logBlock:v24];
+    v25 = activeCopy;
+    [mEMORY[0x277D6A798] logBlock:v24];
 
     v14 = SBLogReachability();
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-    if (v9)
+    if (activeCopy)
     {
       if (v15)
       {
@@ -449,8 +449,8 @@ uint64_t __39__SBReachabilityManager_sharedInstance__block_invoke()
       }
 
       [(SBReachabilityManager *)self _setKeepAliveTimer];
-      v16 = [(SBWindowScene *)self->_windowScene zStackResolver];
-      v17 = [v16 acquireParticipantWithIdentifier:25 delegate:self];
+      zStackResolver = [(SBWindowScene *)self->_windowScene zStackResolver];
+      v17 = [zStackResolver acquireParticipantWithIdentifier:25 delegate:self];
       zStackParticipant = self->_zStackParticipant;
       self->_zStackParticipant = v17;
 
@@ -466,17 +466,17 @@ uint64_t __39__SBReachabilityManager_sharedInstance__block_invoke()
       }
 
       [(SBFZStackParticipant *)self->_zStackParticipant invalidate];
-      v16 = self->_zStackParticipant;
+      zStackResolver = self->_zStackParticipant;
       self->_zStackParticipant = 0;
       v19 = 7;
     }
 
     [(SBReachabilityManager *)self _setupReachabilityWindowIfNecessary];
-    v20 = [MEMORY[0x277D65DD0] sharedInstance];
-    [v20 emitEvent:v19];
+    mEMORY[0x277D65DD0] = [MEMORY[0x277D65DD0] sharedInstance];
+    [mEMORY[0x277D65DD0] emitEvent:v19];
 
     v21 = 0;
-    if (v9)
+    if (activeCopy)
     {
       [(SBReachabilityManager *)self reachabilityYOffset];
     }
@@ -485,7 +485,7 @@ uint64_t __39__SBReachabilityManager_sharedInstance__block_invoke()
     v23[1] = 3221225472;
     v23[2] = __64__SBReachabilityManager__updateReachabilityModeActive_animated___block_invoke_55;
     v23[3] = &unk_2783A9158;
-    if (v8)
+    if (animatedCopy)
     {
       v22 = 3;
     }
@@ -532,23 +532,23 @@ _BYTE *__64__SBReachabilityManager__updateReachabilityModeActive_animated___bloc
   return result;
 }
 
-- (id)_attentionAwarenessConfigurationWithTimeout:(double)a3 tag:(id)a4
+- (id)_attentionAwarenessConfigurationWithTimeout:(double)timeout tag:(id)tag
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CEF768];
-  v6 = a4;
+  tagCopy = tag;
   v7 = objc_alloc_init(v5);
   [v7 setIdentifier:@"SBReachabilityManager"];
   [v7 setEventMask:3967];
   v11[0] = &unk_28336F968;
   v12[0] = @"initial";
-  v8 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithDouble:timeout];
   v11[1] = v8;
   v12[1] = @"interactive";
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
   [v7 setAttentionLostTimeoutDictionary:v9];
 
-  [v7 setTag:v6];
+  [v7 setTag:tagCopy];
 
   return v7;
 }
@@ -749,9 +749,9 @@ LABEL_26:
 LABEL_27:
 }
 
-- (void)_notifyObserversReachabilityModeActive:(BOOL)a3
+- (void)_notifyObserversReachabilityModeActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v21 = *MEMORY[0x277D85DE8];
   v4 = [(NSHashTable *)self->_observers copy];
   v14 = 0u;
@@ -784,7 +784,7 @@ LABEL_27:
           _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_INFO, "notifying observer of reachability state change: %{public}@", buf, 0xCu);
         }
 
-        if (v3)
+        if (activeCopy)
         {
           if (objc_opt_respondsToSelector())
           {
@@ -977,8 +977,8 @@ LABEL_27:
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "Can't enter reachability mode since it is disabled.", buf, 2u);
     }
 
-    v7 = [MEMORY[0x277D6A798] sharedInstance];
-    v8 = v7;
+    mEMORY[0x277D6A798] = [MEMORY[0x277D6A798] sharedInstance];
+    v8 = mEMORY[0x277D6A798];
     v9 = &__block_literal_global_101;
     goto LABEL_13;
   }
@@ -992,11 +992,11 @@ LABEL_27:
       _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "Can't enter reachability mode in a non-portrait orientation", buf, 2u);
     }
 
-    v7 = [MEMORY[0x277D6A798] sharedInstance];
-    v8 = v7;
+    mEMORY[0x277D6A798] = [MEMORY[0x277D6A798] sharedInstance];
+    v8 = mEMORY[0x277D6A798];
     v9 = &__block_literal_global_121;
 LABEL_13:
-    [v7 logBlock:v9];
+    [mEMORY[0x277D6A798] logBlock:v9];
 
     return 0;
   }
@@ -1012,22 +1012,22 @@ LABEL_13:
       _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "Can't enter reachability mode temporarily for these reasons: %{public}@", buf, 0xCu);
     }
 
-    v5 = [MEMORY[0x277D6A798] sharedInstance];
+    mEMORY[0x277D6A798]2 = [MEMORY[0x277D6A798] sharedInstance];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __48__SBReachabilityManager_canActivateReachability__block_invoke_133;
     v19[3] = &unk_2783A91C8;
     v19[4] = self;
-    [v5 logBlock:v19];
+    [mEMORY[0x277D6A798]2 logBlock:v19];
 
     return 0;
   }
 
   v13 = SBWorkspaceApplicationSceneHandlesInLockedOrUnlockedEnvironmentLayoutState();
-  v14 = [v13 anyObject];
+  anyObject = [v13 anyObject];
 
-  v15 = [v14 application];
-  if (v15 && ([v14 isReachabilitySupported] & 1) == 0)
+  application = [anyObject application];
+  if (application && ([anyObject isReachabilitySupported] & 1) == 0)
   {
     v17 = SBLogReachability();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -1036,16 +1036,16 @@ LABEL_13:
       _os_log_impl(&dword_21ED4E000, v17, OS_LOG_TYPE_DEFAULT, "Can't enter reachability mode because the app doesn't support reachability.", buf, 2u);
     }
 
-    v18 = [MEMORY[0x277D6A798] sharedInstance];
-    [v18 logBlock:&__block_literal_global_142];
+    mEMORY[0x277D6A798]3 = [MEMORY[0x277D6A798] sharedInstance];
+    [mEMORY[0x277D6A798]3 logBlock:&__block_literal_global_142];
 
     v11 = 0;
   }
 
   else
   {
-    v16 = [MEMORY[0x277D6A798] sharedInstance];
-    [v16 logBlock:&__block_literal_global_155];
+    mEMORY[0x277D6A798]4 = [MEMORY[0x277D6A798] sharedInstance];
+    [mEMORY[0x277D6A798]4 logBlock:&__block_literal_global_155];
 
     v11 = 1;
   }
@@ -1093,14 +1093,14 @@ id __48__SBReachabilityManager_canActivateReachability__block_invoke_133(uint64_
   [(SBScreenEdgePanGestureRecognizer *)self->_dismissEdgeGestureRecognizer setAllowedTouchTypes:&unk_28336DA70];
   if ((_SBF_Private_IsD16() & 1) != 0 || (_SBF_Private_IsD17() & 1) != 0 || (_SBF_Private_IsD63() & 1) != 0 || (_SBF_Private_IsD64() & 1) != 0 || _SBF_Private_IsV59())
   {
-    v8 = [MEMORY[0x277D02C20] rootSettings];
-    v9 = [v8 coverSheetDismissGestureSettings];
+    rootSettings = [MEMORY[0x277D02C20] rootSettings];
+    coverSheetDismissGestureSettings = [rootSettings coverSheetDismissGestureSettings];
 
     v10 = self->_dismissEdgeGestureRecognizer;
-    [v9 edgeRegionSize];
+    [coverSheetDismissGestureSettings edgeRegionSize];
     [(UIScreenEdgePanGestureRecognizer *)v10 _setEdgeRegionSize:?];
     v11 = self->_dismissEdgeGestureRecognizer;
-    [v9 edgeRegionSize];
+    [coverSheetDismissGestureSettings edgeRegionSize];
     [(UIScreenEdgePanGestureRecognizer *)v11 _setBottomEdgeRegionSize:?];
   }
 
@@ -1140,8 +1140,8 @@ id __48__SBReachabilityManager_canActivateReachability__block_invoke_133(uint64_
     v15[11] = v2;
     v15[12] = v3;
     v5 = +[SBCoverSheetPresentationManager sharedInstance];
-    v6 = [v5 uiLockStateProvider];
-    if ([v6 isUILocked])
+    uiLockStateProvider = [v5 uiLockStateProvider];
+    if ([uiLockStateProvider isUILocked])
     {
       v7 = 0;
     }
@@ -1160,19 +1160,19 @@ id __48__SBReachabilityManager_canActivateReachability__block_invoke_133(uint64_
 
       [(SBWindow *)self->_reachabilityWindow setHidden:0];
       v11 = [(SBReachabilityManager *)self _sceneForWindow:self->_reachabilityWindow];
-      v12 = [v11 uiPresentationManager];
+      uiPresentationManager = [v11 uiPresentationManager];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __60__SBReachabilityManager__setupReachabilityWindowIfNecessary__block_invoke;
       v15[3] = &unk_2783A9210;
       v15[4] = self;
-      [v12 modifyDefaultPresentationContext:v15];
+      [uiPresentationManager modifyDefaultPresentationContext:v15];
 
       reachabilityWindow = self->_reachabilityWindow;
     }
 
-    v13 = [(SBReachabilityWindow *)reachabilityWindow view];
-    [v13 setWallpaperVariant:v7];
+    view = [(SBReachabilityWindow *)reachabilityWindow view];
+    [view setWallpaperVariant:v7];
 
     v14 = +[SBOrientationLockManager sharedInstance];
     [v14 setLockOverrideEnabled:1 forReason:@"Reachability"];
@@ -1201,13 +1201,13 @@ void __60__SBReachabilityManager__setupReachabilityWindowIfNecessary__block_invo
   [(UITapGestureRecognizer *)self->_dismissTapGestureRecognizer setEnabled:0];
   [(UIPanGestureRecognizer *)self->_dismissPanGestureRecognizer setEnabled:0];
   v4 = [(SBReachabilityManager *)self _sceneForWindow:self->_reachabilityWindow];
-  v5 = [v4 uiPresentationManager];
+  uiPresentationManager = [v4 uiPresentationManager];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__SBReachabilityManager__tearDownReachabilityWindow__block_invoke;
   v7[3] = &unk_2783A9210;
   v7[4] = self;
-  [v5 modifyDefaultPresentationContext:v7];
+  [uiPresentationManager modifyDefaultPresentationContext:v7];
 
   [(SBWindow *)self->_reachabilityWindow setHidden:1];
   reachabilityWindow = self->_reachabilityWindow;
@@ -1223,25 +1223,25 @@ void __52__SBReachabilityManager__tearDownReachabilityWindow__block_invoke(uint6
   [v4 removeLayerPresentationOverrideForLayerTarget:v5];
 }
 
-- (void)_modifyDefaultPresentationContextHostTransformForWindow:(id)a3 fromTransform:(id)a4 toTransform:(id)a5
+- (void)_modifyDefaultPresentationContextHostTransformForWindow:(id)window fromTransform:(id)transform toTransform:(id)toTransform
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SBReachabilityManager *)self _sceneForWindow:v8];
-  v12 = [v11 uiPresentationManager];
+  windowCopy = window;
+  transformCopy = transform;
+  toTransformCopy = toTransform;
+  v11 = [(SBReachabilityManager *)self _sceneForWindow:windowCopy];
+  uiPresentationManager = [v11 uiPresentationManager];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __107__SBReachabilityManager__modifyDefaultPresentationContextHostTransformForWindow_fromTransform_toTransform___block_invoke;
   v16[3] = &unk_2783A9260;
-  v17 = v8;
-  v18 = v10;
-  v19 = self;
-  v20 = v9;
-  v13 = v9;
-  v14 = v10;
-  v15 = v8;
-  [v12 modifyDefaultPresentationContext:v16];
+  v17 = windowCopy;
+  v18 = toTransformCopy;
+  selfCopy = self;
+  v20 = transformCopy;
+  v13 = transformCopy;
+  v14 = toTransformCopy;
+  v15 = windowCopy;
+  [uiPresentationManager modifyDefaultPresentationContext:v16];
 }
 
 void __107__SBReachabilityManager__modifyDefaultPresentationContextHostTransformForWindow_fromTransform_toTransform___block_invoke(uint64_t a1, void *a2)
@@ -1299,43 +1299,43 @@ void __107__SBReachabilityManager__modifyDefaultPresentationContextHostTransform
   [v3 setTransformer:v7];
 }
 
-- (void)_transitionWithTransformer:(id)a3 fromTransform:(id)a4 toTransform:(id)a5
+- (void)_transitionWithTransformer:(id)transformer fromTransform:(id)transform toTransform:(id)toTransform
 {
-  v9 = a3;
-  v7 = a4;
-  v8 = a5;
-  if (v7)
+  transformerCopy = transformer;
+  transformCopy = transform;
+  toTransformCopy = toTransform;
+  if (transformCopy)
   {
-    [v9 removeTransform:v7];
+    [transformerCopy removeTransform:transformCopy];
   }
 
-  if (v8)
+  if (toTransformCopy)
   {
-    [v9 addTransform:v8 reason:@"reachability"];
+    [transformerCopy addTransform:toTransformCopy reason:@"reachability"];
   }
 }
 
-- (void)_updateReachabilityWindowForYOffset:(double)a3 mode:(int64_t)a4 completion:(id)a5
+- (void)_updateReachabilityWindowForYOffset:(double)offset mode:(int64_t)mode completion:(id)completion
 {
-  v8 = a5;
-  v9 = v8;
-  if (self->_effectiveReachabilityYOffset == a3)
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (self->_effectiveReachabilityYOffset == offset)
   {
-    if (v8)
+    if (completionCopy)
     {
-      (*(v8 + 2))(v8, 1, 0);
+      (*(completionCopy + 2))(completionCopy, 1, 0);
     }
   }
 
   else
   {
-    v10 = [(SBReachabilityWindow *)self->_reachabilityWindow view];
+    view = [(SBReachabilityWindow *)self->_reachabilityWindow view];
     v11 = MEMORY[0x277D75D18];
     v60[0] = MEMORY[0x277D85DD0];
     v60[1] = 3221225472;
     v60[2] = __77__SBReachabilityManager__updateReachabilityWindowForYOffset_mode_completion___block_invoke;
     v60[3] = &unk_2783A8C18;
-    v12 = v10;
+    v12 = view;
     v61 = v12;
     [v11 performWithoutAnimation:v60];
     animationsInFlight = self->_animationsInFlight;
@@ -1346,12 +1346,12 @@ void __107__SBReachabilityManager__modifyDefaultPresentationContextHostTransform
     }
 
     self->_animationsInFlight = animationsInFlight + 1;
-    self->_effectiveReachabilityYOffset = a3;
-    v14 = [(SBReachabilityWindow *)self->_reachabilityWindow windowScene];
-    v15 = [v14 _FBSScene];
-    v16 = [v15 settings];
-    v17 = [v16 displayConfiguration];
-    v18 = [v17 hardwareIdentifier];
+    self->_effectiveReachabilityYOffset = offset;
+    windowScene = [(SBReachabilityWindow *)self->_reachabilityWindow windowScene];
+    _FBSScene = [windowScene _FBSScene];
+    settings = [_FBSScene settings];
+    displayConfiguration = [settings displayConfiguration];
+    hardwareIdentifier = [displayConfiguration hardwareIdentifier];
     BKSDisplayServicesSetReachabilityBounds();
 
     v19 = self->_inverseReachabilityTransform;
@@ -1362,7 +1362,7 @@ void __107__SBReachabilityManager__modifyDefaultPresentationContextHostTransform
 
     else
     {
-      v20 = [MEMORY[0x277D75CD8] translation:{0.0, -a3}];
+      v20 = [MEMORY[0x277D75CD8] translation:{0.0, -offset}];
     }
 
     inverseReachabilityTransform = self->_inverseReachabilityTransform;
@@ -1376,30 +1376,30 @@ void __107__SBReachabilityManager__modifyDefaultPresentationContextHostTransform
 
     else
     {
-      v23 = [MEMORY[0x277D75CD8] translation:{0.0, a3}];
+      v23 = [MEMORY[0x277D75CD8] translation:{0.0, offset}];
     }
 
     reachabilityTransform = self->_reachabilityTransform;
     self->_reachabilityTransform = v23;
 
-    v25 = [(SBReachabilitySettings *)self->_settings animationSettings];
-    v46 = [MEMORY[0x277D75D18] areAnimationsEnabled];
+    animationSettings = [(SBReachabilitySettings *)self->_settings animationSettings];
+    areAnimationsEnabled = [MEMORY[0x277D75D18] areAnimationsEnabled];
     [MEMORY[0x277D75D18] setAnimationsEnabled:1];
     if (!self->_jindoInertAssertion)
     {
-      v26 = [SBApp systemApertureControllerForMainDisplay];
-      v27 = [v26 restrictSystemApertureToInertWithReason:@"Reachability"];
+      systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
+      v27 = [systemApertureControllerForMainDisplay restrictSystemApertureToInertWithReason:@"Reachability"];
       jindoInertAssertion = self->_jindoInertAssertion;
       self->_jindoInertAssertion = v27;
 
-      if (a4 != 5 && !self->_jindoInertTimer)
+      if (mode != 5 && !self->_jindoInertTimer)
       {
         v29 = [objc_alloc(MEMORY[0x277CF0BD8]) initWithIdentifier:@"com.apple.SBReachabilityManager.SystemApertureInertTimer"];
         jindoInertTimer = self->_jindoInertTimer;
         self->_jindoInertTimer = v29;
 
         objc_initWeak(&location, self);
-        [v25 settlingDuration];
+        [animationSettings settlingDuration];
         v32 = v31;
         [(SBReachabilitySettings *)self->_settings jindoInertDisableOffset];
         v34 = ((v32 - v33) & ~((v32 - v33) >> 31));
@@ -1428,17 +1428,17 @@ void __107__SBReachabilityManager__modifyDefaultPresentationContextHostTransform
     v54 = v19;
     v39 = v12;
     v55 = v39;
-    v56 = a3;
+    offsetCopy = offset;
     v49[0] = MEMORY[0x277D85DD0];
     v49[1] = 3221225472;
     v49[2] = __77__SBReachabilityManager__updateReachabilityWindowForYOffset_mode_completion___block_invoke_4;
     v49[3] = &unk_2783A92B0;
     v49[4] = self;
-    v51 = a4;
+    modeCopy = mode;
     v50 = v9;
     v40 = v19;
     v41 = v22;
-    [v38 sb_animateWithSettings:v25 mode:a4 animations:v52 completion:v49];
+    [v38 sb_animateWithSettings:animationSettings mode:mode animations:v52 completion:v49];
     v42 = 0.0;
     if (self->_reachabilityModeActive)
     {
@@ -1455,7 +1455,7 @@ void __107__SBReachabilityManager__modifyDefaultPresentationContextHostTransform
     v48 = v39;
     v45 = v39;
     [v44 animateWithSettings:v43 actions:v47];
-    [MEMORY[0x277D75D18] setAnimationsEnabled:v46];
+    [MEMORY[0x277D75D18] setAnimationsEnabled:areAnimationsEnabled];
   }
 }
 
@@ -1598,66 +1598,66 @@ uint64_t __77__SBReachabilityManager__updateReachabilityWindowForYOffset_mode_co
   return [v5 setChevronAlpha:v4];
 }
 
-- (id)_sceneForWindow:(id)a3
+- (id)_sceneForWindow:(id)window
 {
-  v3 = [a3 _scene];
-  v4 = [v3 identifier];
+  _scene = [window _scene];
+  identifier = [_scene identifier];
 
-  v5 = [MEMORY[0x277D0AAD8] sharedInstance];
-  v6 = [v5 sceneWithIdentifier:v4];
+  mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
+  v6 = [mEMORY[0x277D0AAD8] sceneWithIdentifier:identifier];
 
   return v6;
 }
 
-- (void)_activateReachability:(id)a3
+- (void)_activateReachability:(id)reachability
 {
-  if ([a3 state] == 3 && -[SBReachabilityManager canActivateReachability](self, "canActivateReachability"))
+  if ([reachability state] == 3 && -[SBReachabilityManager canActivateReachability](self, "canActivateReachability"))
   {
 
     [(SBReachabilityManager *)self _updateReachabilityModeActive:1];
   }
 }
 
-- (void)_tapToDeactivateReachability:(id)a3
+- (void)_tapToDeactivateReachability:(id)reachability
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  if ([a3 state] == 3)
+  if ([reachability state] == 3)
   {
     v8 = *MEMORY[0x277D67608];
     v9[0] = &unk_28336F9C8;
     v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
     v5 = MEMORY[0x277D65DD0];
     v6 = v4;
-    v7 = [v5 sharedInstance];
-    [v7 emitEvent:8 withPayload:v6];
+    sharedInstance = [v5 sharedInstance];
+    [sharedInstance emitEvent:8 withPayload:v6];
 
     [(SBReachabilityManager *)self deactivateReachability];
   }
 }
 
-- (void)_panToDeactivateReachability:(id)a3
+- (void)_panToDeactivateReachability:(id)reachability
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reachabilityCopy = reachability;
   [(SBReachabilityManager *)self reachabilityYOffset];
   v6 = v5;
-  v7 = [(UIPanGestureRecognizer *)v4 view];
-  v8 = [(UIPanGestureRecognizer *)v4 state];
-  if ((v8 - 1) > 1)
+  view = [(UIPanGestureRecognizer *)reachabilityCopy view];
+  state = [(UIPanGestureRecognizer *)reachabilityCopy state];
+  if ((state - 1) > 1)
   {
     reachabilityModeActive = self->_reachabilityModeActive;
-    if (v8 != 3)
+    if (state != 3)
     {
       goto LABEL_10;
     }
 
-    [(UIPanGestureRecognizer *)v4 velocityInView:v7];
+    [(UIPanGestureRecognizer *)reachabilityCopy velocityInView:view];
     v14 = v13;
-    [(UIPanGestureRecognizer *)v4 locationInView:v7];
+    [(UIPanGestureRecognizer *)reachabilityCopy locationInView:view];
     v16 = v15 + v14 * 0.15;
     [(SBReachabilityWindow *)self->_reachabilityWindow bounds];
     v18 = v17 + -100.0;
-    if (self->_reachabilityModeActive && self->_dismissPanGestureRecognizer == v4)
+    if (self->_reachabilityModeActive && self->_dismissPanGestureRecognizer == reachabilityCopy)
     {
       v18 = v18 - v6;
     }
@@ -1669,8 +1669,8 @@ uint64_t __77__SBReachabilityManager__updateReachabilityWindowForYOffset_mode_co
       v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:&v26 count:1];
       v20 = MEMORY[0x277D65DD0];
       v21 = v19;
-      v22 = [v20 sharedInstance];
-      [v22 emitEvent:8 withPayload:v21];
+      sharedInstance = [v20 sharedInstance];
+      [sharedInstance emitEvent:8 withPayload:v21];
 
       [(SBReachabilityManager *)self _updateReachabilityModeActive:0];
       v10 = 0.0;
@@ -1687,13 +1687,13 @@ LABEL_10:
       }
     }
 
-    v23 = self;
+    selfCopy2 = self;
     v24 = 3;
   }
 
   else
   {
-    [(UIPanGestureRecognizer *)v4 translationInView:v7];
+    [(UIPanGestureRecognizer *)reachabilityCopy translationInView:view];
     v10 = v6 + v9;
     if (v6 + v9 >= 0.0)
     {
@@ -1712,21 +1712,21 @@ LABEL_10:
       v10 = -v11;
     }
 
-    v23 = self;
+    selfCopy2 = self;
     v24 = 5;
   }
 
-  [(SBReachabilityManager *)v23 _updateReachabilityWindowForYOffset:v24 mode:0 completion:v10];
+  [(SBReachabilityManager *)selfCopy2 _updateReachabilityWindowForYOffset:v24 mode:0 completion:v10];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_dismissPanGestureRecognizer == v6 || self->_dismissTapGestureRecognizer == v6)
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  if (self->_dismissPanGestureRecognizer == recognizerCopy || self->_dismissTapGestureRecognizer == recognizerCopy)
   {
-    v9 = [(SBScreenEdgePanGestureRecognizer *)v6 view];
-    [v7 locationInView:v9];
+    view = [(SBScreenEdgePanGestureRecognizer *)recognizerCopy view];
+    [touchCopy locationInView:view];
     v11 = v10;
 
     v8 = self->_reachabilityModeActive && v11 < self->_effectiveReachabilityYOffset;
@@ -1734,54 +1734,54 @@ LABEL_10:
 
   else
   {
-    v8 = self->_dismissEdgeGestureRecognizer != v6 || self->_reachabilityModeActive;
+    v8 = self->_dismissEdgeGestureRecognizer != recognizerCopy || self->_reachabilityModeActive;
   }
 
   return v8;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_reachabilityGestureRecognizer == v4)
+  beginCopy = begin;
+  v5 = beginCopy;
+  if (self->_reachabilityGestureRecognizer == beginCopy)
   {
-    v6 = !self->_reachabilityModeActive;
+    ownsHomeGesture = !self->_reachabilityModeActive;
   }
 
-  else if (self->_dismissEdgeGestureRecognizer == v4 && (zStackParticipant = self->_zStackParticipant) != 0)
+  else if (self->_dismissEdgeGestureRecognizer == beginCopy && (zStackParticipant = self->_zStackParticipant) != 0)
   {
-    v6 = [(SBFZStackParticipant *)zStackParticipant ownsHomeGesture];
+    ownsHomeGesture = [(SBFZStackParticipant *)zStackParticipant ownsHomeGesture];
   }
 
   else
   {
-    v6 = 1;
+    ownsHomeGesture = 1;
   }
 
-  return v6 & 1;
+  return ownsHomeGesture & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  if (self->_reachabilityGestureRecognizer != a3)
+  if (self->_reachabilityGestureRecognizer != recognizer)
   {
     return 0;
   }
 
-  v5 = a4;
+  gestureRecognizerCopy = gestureRecognizer;
   v6 = objc_opt_class();
-  v7 = SBSafeCast(v6, v5);
+  v7 = SBSafeCast(v6, gestureRecognizerCopy);
 
   v4 = !v7 || [v7 edges] != 1;
   return v4;
 }
 
-- (void)zStackParticipant:(id)a3 updatePreferences:(id)a4
+- (void)zStackParticipant:(id)participant updatePreferences:(id)preferences
 {
-  v4 = a4;
-  [v4 setActivationPolicyForParticipantsBelow:0];
-  [v4 setHomeGestureConsumption:1];
+  preferencesCopy = preferences;
+  [preferencesCopy setActivationPolicyForParticipantsBelow:0];
+  [preferencesCopy setHomeGestureConsumption:1];
 }
 
 @end

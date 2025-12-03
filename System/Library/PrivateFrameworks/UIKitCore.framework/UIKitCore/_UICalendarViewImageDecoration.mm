@@ -1,34 +1,34 @@
 @interface _UICalendarViewImageDecoration
-- (_UICalendarViewImageDecoration)initWithImage:(id)a3 color:(id)a4 size:(int64_t)a5;
-- (id)_decorationViewForReuseView:(id)a3;
+- (_UICalendarViewImageDecoration)initWithImage:(id)image color:(id)color size:(int64_t)size;
+- (id)_decorationViewForReuseView:(id)view;
 - (id)_decorationViewReusableKey;
 - (id)defaultImage;
 @end
 
 @implementation _UICalendarViewImageDecoration
 
-- (_UICalendarViewImageDecoration)initWithImage:(id)a3 color:(id)a4 size:(int64_t)a5
+- (_UICalendarViewImageDecoration)initWithImage:(id)image color:(id)color size:(int64_t)size
 {
-  v9 = a3;
-  v10 = a4;
+  imageCopy = image;
+  colorCopy = color;
   v14.receiver = self;
   v14.super_class = _UICalendarViewImageDecoration;
   v11 = [(_UICalendarViewImageDecoration *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_image, a3);
-    objc_storeStrong(&v12->_color, a4);
-    v12->_size = a5;
+    objc_storeStrong(&v11->_image, image);
+    objc_storeStrong(&v12->_color, color);
+    v12->_size = size;
   }
 
   return v12;
 }
 
-- (id)_decorationViewForReuseView:(id)a3
+- (id)_decorationViewForReuseView:(id)view
 {
-  v4 = a3;
-  if (!v4 || (objc_opt_class(), v5 = v4, (objc_opt_isKindOfClass() & 1) == 0))
+  viewCopy = view;
+  if (!viewCopy || (objc_opt_class(), v5 = viewCopy, (objc_opt_isKindOfClass() & 1) == 0))
   {
     v5 = objc_alloc_init(_UICalendarDecorationImageView);
   }
@@ -41,8 +41,8 @@
 
   else
   {
-    v6 = [(_UICalendarViewImageDecoration *)self defaultImage];
-    [(UIImageView *)v5 setImage:v6];
+    defaultImage = [(_UICalendarViewImageDecoration *)self defaultImage];
+    [(UIImageView *)v5 setImage:defaultImage];
   }
 
   if (self->_color)

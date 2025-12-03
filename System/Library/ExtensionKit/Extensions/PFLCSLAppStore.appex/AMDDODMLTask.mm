@@ -1,27 +1,27 @@
 @interface AMDDODMLTask
-- (AMDDODMLTask)initWithErrorDomain:(id)a3;
-- (id)performTask:(id)a3 error:(id *)a4;
+- (AMDDODMLTask)initWithErrorDomain:(id)domain;
+- (id)performTask:(id)task error:(id *)error;
 @end
 
 @implementation AMDDODMLTask
 
-- (AMDDODMLTask)initWithErrorDomain:(id)a3
+- (AMDDODMLTask)initWithErrorDomain:(id)domain
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v8;
-  v8 = 0;
+  objc_storeStrong(location, domain);
+  v3 = selfCopy;
+  selfCopy = 0;
   v6.receiver = v3;
   v6.super_class = AMDDODMLTask;
   v5 = [(AMDDODMLTask *)&v6 init];
-  v8 = v5;
-  objc_storeStrong(&v8, v5);
+  selfCopy = v5;
+  objc_storeStrong(&selfCopy, v5);
   if (v5)
   {
-    [v8 setErrorDomain:location[0]];
-    v9 = v8;
+    [selfCopy setErrorDomain:location[0]];
+    v9 = selfCopy;
   }
 
   else
@@ -30,61 +30,61 @@
   }
 
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v9;
 }
 
-- (id)performTask:(id)a3 error:(id *)a4
+- (id)performTask:(id)task error:(id *)error
 {
-  v57 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v55 = a4;
-  v41 = [location[0] parameters];
-  v54 = [v41 objectForKeyedSubscript:AttachmentInstructions];
+  objc_storeStrong(location, task);
+  errorCopy = error;
+  parameters = [location[0] parameters];
+  v54 = [parameters objectForKeyedSubscript:AttachmentInstructions];
 
   v40 = [AMDDODMLAttachmentProcessor alloc];
-  v39 = [location[0] attachments];
-  v38 = [(AMDDODMLTask *)v57 errorDomain];
-  v53 = [(AMDDODMLAttachmentProcessor *)v40 initWithAttachmentURLs:v39 withInstructions:v54 error:a4 errorDomain:?];
+  attachments = [location[0] attachments];
+  errorDomain = [(AMDDODMLTask *)selfCopy errorDomain];
+  v53 = [(AMDDODMLAttachmentProcessor *)v40 initWithAttachmentURLs:attachments withInstructions:v54 error:error errorDomain:?];
 
   if (v53)
   {
-    v37 = [location[0] parameters];
-    v51 = [v37 objectForKeyedSubscript:DataProcessing];
+    parameters2 = [location[0] parameters];
+    v51 = [parameters2 objectForKeyedSubscript:DataProcessing];
 
     if (v51)
     {
       v50 = [[AMDDODMLDataProcessor alloc] initWithActionArray:v51 withAttachmentProcessor:v53];
       if (v50)
       {
-        v30 = [(AMDDODMLTask *)v57 errorDomain];
-        v49 = [v50 processRecipe:v55 errorDomain:?];
+        errorDomain2 = [(AMDDODMLTask *)selfCopy errorDomain];
+        v49 = [v50 processRecipe:errorCopy errorDomain:?];
 
         if (v49)
         {
           v29 = [AMDDODMLModelMetadata alloc];
           v28 = location[0];
-          v27 = [(AMDDODMLTask *)v57 errorDomain];
-          v48 = [(AMDDODMLModelMetadata *)v29 initModelMetadata:v28 error:v55 errorDomain:?];
+          errorDomain3 = [(AMDDODMLTask *)selfCopy errorDomain];
+          v48 = [(AMDDODMLModelMetadata *)v29 initModelMetadata:v28 error:errorCopy errorDomain:?];
 
           v47 = 0;
-          v25 = [v48 useCoreMLTrainer];
-          v26 = [v25 longValue];
+          useCoreMLTrainer = [v48 useCoreMLTrainer];
+          longValue = [useCoreMLTrainer longValue];
 
-          if (v26)
+          if (longValue)
           {
             v18 = [AMDCoreMLDataProvider alloc];
-            v17 = [v50 getInputSize];
-            v16 = [v50 getElementsInSampleDictionary];
-            v15 = [v50 getInputDictionary];
-            v44 = [(AMDCoreMLDataProvider *)v18 initWithInputs:v17 featureSizeMap:v16 inputDictionary:?];
+            getInputSize = [v50 getInputSize];
+            getElementsInSampleDictionary = [v50 getElementsInSampleDictionary];
+            getInputDictionary = [v50 getInputDictionary];
+            v44 = [(AMDCoreMLDataProvider *)v18 initWithInputs:getInputSize featureSizeMap:getElementsInSampleDictionary inputDictionary:?];
 
             v43 = objc_alloc_init(AMDCoreMLTrainer);
             v14 = location[0];
-            v13 = [(AMDDODMLTask *)v57 errorDomain];
-            v8 = [v43 runTask:v14 error:v55 errorDomain:? dataProvider:?];
+            errorDomain4 = [(AMDDODMLTask *)selfCopy errorDomain];
+            v8 = [v43 runTask:v14 error:errorCopy errorDomain:? dataProvider:?];
             v9 = v47;
             v47 = v8;
 
@@ -95,15 +95,15 @@
           else
           {
             v24 = [AMDDODMLEspressoDataProvider alloc];
-            v23 = [v50 getInputSize];
-            v22 = [v50 getElementsInSampleDictionary];
-            v21 = [v50 getInputDictionary];
-            v46 = [(AMDDODMLEspressoDataProvider *)v24 initWithInputs:v23 featureSizeMap:v22 inputDictionary:?];
+            getInputSize2 = [v50 getInputSize];
+            getElementsInSampleDictionary2 = [v50 getElementsInSampleDictionary];
+            getInputDictionary2 = [v50 getInputDictionary];
+            v46 = [(AMDDODMLEspressoDataProvider *)v24 initWithInputs:getInputSize2 featureSizeMap:getElementsInSampleDictionary2 inputDictionary:?];
 
             v45 = objc_alloc_init(AMDDODMLTrainer);
             v20 = location[0];
-            v19 = [(AMDDODMLTask *)v57 errorDomain];
-            v6 = [v45 runTask:v20 error:v55 errorDomain:? dataProvider:? attachmentProcessor:?];
+            errorDomain5 = [(AMDDODMLTask *)selfCopy errorDomain];
+            v6 = [v45 runTask:v20 error:errorCopy errorDomain:? dataProvider:? attachmentProcessor:?];
             v7 = v47;
             v47 = v6;
 
@@ -113,8 +113,8 @@
 
           if (v47)
           {
-            v12 = [v47 JSONResult];
-            NSLog(@"%@", v12);
+            jSONResult = [v47 JSONResult];
+            NSLog(@"%@", jSONResult);
           }
 
           else
@@ -140,10 +140,10 @@
       else
       {
         v33 = [NSError alloc];
-        v31 = [(AMDDODMLTask *)v57 errorDomain];
+        errorDomain6 = [(AMDDODMLTask *)selfCopy errorDomain];
         v32 = [v33 initWithDomain:? code:? userInfo:?];
         v5 = v32;
-        *v55 = v32;
+        *errorCopy = v32;
 
         v58 = 0;
         v52 = 1;
@@ -155,10 +155,10 @@
     else
     {
       v36 = [NSError alloc];
-      v34 = [(AMDDODMLTask *)v57 errorDomain];
+      errorDomain7 = [(AMDDODMLTask *)selfCopy errorDomain];
       v35 = [v36 initWithDomain:? code:? userInfo:?];
       v4 = v35;
-      *v55 = v35;
+      *errorCopy = v35;
 
       v58 = 0;
       v52 = 1;

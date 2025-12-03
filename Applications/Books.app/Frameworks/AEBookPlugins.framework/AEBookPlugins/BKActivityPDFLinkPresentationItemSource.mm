@@ -1,30 +1,30 @@
 @interface BKActivityPDFLinkPresentationItemSource
-- (BKActivityPDFLinkPresentationItemSource)initWithBookInfo:(id)a3;
-- (id)activityViewControllerLinkPresentationMetadata:(id)a3;
+- (BKActivityPDFLinkPresentationItemSource)initWithBookInfo:(id)info;
+- (id)activityViewControllerLinkPresentationMetadata:(id)metadata;
 @end
 
 @implementation BKActivityPDFLinkPresentationItemSource
 
-- (BKActivityPDFLinkPresentationItemSource)initWithBookInfo:(id)a3
+- (BKActivityPDFLinkPresentationItemSource)initWithBookInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v9.receiver = self;
   v9.super_class = BKActivityPDFLinkPresentationItemSource;
   v6 = [(BKActivityPDFLinkPresentationItemSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bookInfo, a3);
+    objc_storeStrong(&v6->_bookInfo, info);
   }
 
   return v7;
 }
 
-- (id)activityViewControllerLinkPresentationMetadata:(id)a3
+- (id)activityViewControllerLinkPresentationMetadata:(id)metadata
 {
-  v4 = [(BKActivityPDFLinkPresentationItemSource *)self bookInfo];
-  v5 = [v4 bookBundlePath];
-  v6 = [NSURL fileURLWithPath:v5];
+  bookInfo = [(BKActivityPDFLinkPresentationItemSource *)self bookInfo];
+  bookBundlePath = [bookInfo bookBundlePath];
+  v6 = [NSURL fileURLWithPath:bookBundlePath];
 
   v7 = +[AEPluginRegistry sharedInstance];
   v8 = [v7 pluginForURL:v6];
@@ -51,13 +51,13 @@ LABEL_8:
   [v13 setURL:v6];
   [v13 setOriginalURL:v6];
   v14 = objc_alloc_init(LPFileMetadata);
-  v15 = [(BKActivityPDFLinkPresentationItemSource *)self bookInfo];
-  v16 = [v15 bookTitle];
-  [v14 setName:v16];
+  bookInfo2 = [(BKActivityPDFLinkPresentationItemSource *)self bookInfo];
+  bookTitle = [bookInfo2 bookTitle];
+  [v14 setName:bookTitle];
 
-  v17 = [(BKActivityPDFLinkPresentationItemSource *)self bookInfo];
-  v18 = [v17 assetType];
-  v19 = [v18 lastPathComponent];
+  bookInfo3 = [(BKActivityPDFLinkPresentationItemSource *)self bookInfo];
+  assetType = [bookInfo3 assetType];
+  lastPathComponent = [assetType lastPathComponent];
   BCAssetContentTypeFromAssetTypeString();
 
   v20 = BCAssetUTIForContentType();

@@ -1,97 +1,97 @@
 @interface _UIScreenComplexBoundingPathUtilities
-+ (BOOL)isScreenSupported:(id)a3;
-- (_UIScreenComplexBoundingPathUtilities)initWithScreen:(id)a3;
-- (id)boundingPathForWindow:(id)a3;
-- (void)_loadBitmapForScreen:(id)a3 type:(int64_t)a4;
++ (BOOL)isScreenSupported:(id)supported;
+- (_UIScreenComplexBoundingPathUtilities)initWithScreen:(id)screen;
+- (id)boundingPathForWindow:(id)window;
+- (void)_loadBitmapForScreen:(id)screen type:(int64_t)type;
 @end
 
 @implementation _UIScreenComplexBoundingPathUtilities
 
-+ (BOOL)isScreenSupported:(id)a3
++ (BOOL)isScreenSupported:(id)supported
 {
-  v3 = a3;
-  v5 = [v3 _isEmbeddedScreen] && (v4 = objc_msgSend(v3, "_screenType"), v4 != -1) && _UIScreenCornerRadiusForType(v4) != 0.0;
+  supportedCopy = supported;
+  v5 = [supportedCopy _isEmbeddedScreen] && (v4 = objc_msgSend(supportedCopy, "_screenType"), v4 != -1) && _UIScreenCornerRadiusForType(v4) != 0.0;
 
   return v5;
 }
 
-- (_UIScreenComplexBoundingPathUtilities)initWithScreen:(id)a3
+- (_UIScreenComplexBoundingPathUtilities)initWithScreen:(id)screen
 {
-  v5 = a3;
+  screenCopy = screen;
   v12.receiver = self;
   v12.super_class = _UIScreenComplexBoundingPathUtilities;
-  v6 = [(_UIScreenBoundingPathUtilities *)&v12 initWithScreen:v5];
+  v6 = [(_UIScreenBoundingPathUtilities *)&v12 initWithScreen:screenCopy];
   if (v6)
   {
-    v7 = [v5 _screenType];
-    if (v7 == -1)
+    _screenType = [screenCopy _screenType];
+    if (_screenType == -1)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
-      [v9 handleFailureInMethod:a2 object:v6 file:@"_UIScreenComplexBoundingPathUtilities.m" lineNumber:129 description:{@"Attempted to initialize %@ with an unsupported screen: %@", v11, v5}];
+      [currentHandler handleFailureInMethod:a2 object:v6 file:@"_UIScreenComplexBoundingPathUtilities.m" lineNumber:129 description:{@"Attempted to initialize %@ with an unsupported screen: %@", v11, screenCopy}];
     }
 
-    v6->_type = v7;
-    [(_UIScreenComplexBoundingPathUtilities *)v6 _loadBitmapForScreen:v5 type:v7];
+    v6->_type = _screenType;
+    [(_UIScreenComplexBoundingPathUtilities *)v6 _loadBitmapForScreen:screenCopy type:_screenType];
   }
 
   return v6;
 }
 
-- (id)boundingPathForWindow:(id)a3
+- (id)boundingPathForWindow:(id)window
 {
   v203 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(_UIScreenBoundingPathUtilities *)self _screen];
-  v7 = [v5 screen];
+  windowCopy = window;
+  _screen = [(_UIScreenBoundingPathUtilities *)self _screen];
+  screen = [windowCopy screen];
 
-  if (v7 != v6)
+  if (screen != _screen)
   {
-    v162 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v162 handleFailureInMethod:a2 object:self file:@"_UIScreenComplexBoundingPathUtilities.m" lineNumber:237 description:@"Cannot provide the bounding path for a window associated with a different screen."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIScreenComplexBoundingPathUtilities.m" lineNumber:237 description:@"Cannot provide the bounding path for a window associated with a different screen."];
   }
 
-  v8 = [v6 coordinateSpace];
-  [v6 scale];
+  coordinateSpace = [_screen coordinateSpace];
+  [_screen scale];
   v10 = v9;
   if (v9 == 0.0)
   {
-    v163 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v164 = NSStringFromSelector(a2);
-    [v163 handleFailureInMethod:a2 object:self file:@"_UIScreenComplexBoundingPathUtilities.m" lineNumber:241 description:{@"Scale cannot be zero in %@", v164}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIScreenComplexBoundingPathUtilities.m" lineNumber:241 description:{@"Scale cannot be zero in %@", v164}];
   }
 
-  v195 = v8;
-  v192 = self;
-  if ([v6 _interfaceOrientation])
+  v195 = coordinateSpace;
+  selfCopy = self;
+  if ([_screen _interfaceOrientation])
   {
-    v196 = [v6 _interfaceOrientation];
+    _interfaceOrientation = [_screen _interfaceOrientation];
   }
 
   else
   {
-    v196 = 1;
+    _interfaceOrientation = 1;
   }
 
-  v11 = v5;
-  v12 = [v11 windowScene];
-  v13 = [v12 _effectiveSettings];
+  v11 = windowCopy;
+  windowScene = [v11 windowScene];
+  _effectiveSettings = [windowScene _effectiveSettings];
 
   v194 = v10;
-  if (([v13 isUISubclass] & 1) == 0)
+  if (([_effectiveSettings isUISubclass] & 1) == 0)
   {
 
     goto LABEL_34;
   }
 
-  [v13 frame];
+  [_effectiveSettings frame];
   v15 = v14;
   v184 = v17;
   v185 = v16;
   v19 = v18;
-  v20 = [v11 screen];
-  [v20 _referenceBounds];
+  screen2 = [v11 screen];
+  [screen2 _referenceBounds];
   v22 = v21;
   v24 = v23;
   v26 = v25;
@@ -99,12 +99,12 @@
 
   [v11 _currentScreenScale];
   v30 = v29;
-  v31 = [v11 screen];
-  [v31 _displayCornerRadius];
+  screen3 = [v11 screen];
+  [screen3 _displayCornerRadius];
   v33 = llround(v30 * v32);
 
-  v34 = [v13 cornerRadiusConfiguration];
-  [v34 topLeft];
+  cornerRadiusConfiguration = [_effectiveSettings cornerRadiusConfiguration];
+  [cornerRadiusConfiguration topLeft];
   v36 = llround(v30 * v35);
   v187 = v26;
   v189 = v24;
@@ -124,7 +124,7 @@
     v43 = v15;
   }
 
-  [v34 bottomLeft];
+  [cornerRadiusConfiguration bottomLeft];
   v45 = llround(v30 * v44);
   v182 = a2;
   if (v45 == v33)
@@ -156,7 +156,7 @@
     }
   }
 
-  [v34 bottomRight];
+  [cornerRadiusConfiguration bottomRight];
   v49 = llround(v30 * v48);
   if (v49 == v33)
   {
@@ -187,7 +187,7 @@
     }
   }
 
-  [v34 topRight];
+  [cornerRadiusConfiguration topRight];
   v53 = llround(v30 * v52);
   if (v53 == v33)
   {
@@ -240,13 +240,13 @@ LABEL_34:
     y = v225.origin.y;
     width = v225.size.width;
     height = v225.size.height;
-    bitmap = v192->_bitmap;
+    bitmap = selfCopy->_bitmap;
     if (bitmap)
     {
       [(_UIBoundingPathBitmap *)bitmap bitmapData];
-      v84 = v192->_bitmap;
+      v84 = selfCopy->_bitmap;
       v85 = v198;
-      v86 = v196;
+      v86 = _interfaceOrientation;
       if (v84)
       {
         [(_UIBoundingPathBitmap *)v84 bitmapData];
@@ -258,7 +258,7 @@ LABEL_34:
     else
     {
       v85 = 0.0;
-      v86 = v196;
+      v86 = _interfaceOrientation;
     }
 
     v87 = 0.0;
@@ -289,7 +289,7 @@ LABEL_39:
 
     if (!(v90 >> 15) && !(v91 >> 15) && v227.size.width + v88 < 0x8000 && v227.size.height + v89 < 0x8000)
     {
-      v92 = v192->_bitmap;
+      v92 = selfCopy->_bitmap;
       *&v202.a = v227.origin.x;
       *&v202.b = v227.origin.y;
       *&v202.c = v227.size.width;
@@ -314,16 +314,16 @@ LABEL_50:
       v236.size.width = v76;
       v236.size.height = v191;
       v97 = NSStringFromCGRect(v236);
-      v98 = [v11 windowScene];
-      v99 = [(UIWindow *)v11 _fbsScene];
+      windowScene2 = [v11 windowScene];
+      _fbsScene = [(UIWindow *)v11 _fbsScene];
       LODWORD(v202.a) = 138413058;
       *(&v202.a + 4) = v97;
       WORD2(v202.b) = 2112;
       *(&v202.b + 6) = v11;
       HIWORD(v202.c) = 2112;
-      *&v202.d = v98;
+      *&v202.d = windowScene2;
       LOWORD(v202.tx) = 2112;
-      *(&v202.tx + 2) = v99;
+      *(&v202.tx + 2) = _fbsScene;
       _os_log_fault_impl(&dword_188A29000, v96, OS_LOG_TYPE_FAULT, "Window bounds in screen %@ exceeds limits for bitmap data: %@ %@ %@", &v202, 0x2Au);
     }
 
@@ -343,16 +343,16 @@ LABEL_56:
       v228.size.width = v76;
       v228.size.height = v191;
       v97 = NSStringFromCGRect(v228);
-      v98 = [v11 windowScene];
-      v99 = [(UIWindow *)v11 _fbsScene];
+      windowScene2 = [v11 windowScene];
+      _fbsScene = [(UIWindow *)v11 _fbsScene];
       LODWORD(v202.a) = 138413058;
       *(&v202.a + 4) = v97;
       WORD2(v202.b) = 2112;
       *(&v202.b + 6) = v11;
       HIWORD(v202.c) = 2112;
-      *&v202.d = v98;
+      *&v202.d = windowScene2;
       LOWORD(v202.tx) = 2112;
-      *(&v202.tx + 2) = v99;
+      *(&v202.tx + 2) = _fbsScene;
       _os_log_impl(&dword_188A29000, v96, OS_LOG_TYPE_ERROR, "Window bounds in screen %@ exceeds limits for bitmap data: %@ %@ %@", &v202, 0x2Au);
     }
 
@@ -360,17 +360,17 @@ LABEL_55:
     goto LABEL_56;
   }
 
-  v56 = [v11 windowScene];
-  v57 = [v56 _effectiveSettings];
+  windowScene3 = [v11 windowScene];
+  _effectiveSettings2 = [windowScene3 _effectiveSettings];
 
-  if (([v57 isUISubclass] & 1) == 0)
+  if (([_effectiveSettings2 isUISubclass] & 1) == 0)
   {
-    v165 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v165 handleFailureInMethod:v182 object:v192 file:@"_UIScreenComplexBoundingPathUtilities.m" lineNumber:254 description:{@"Expected UIApplicationSceneSettings subclass but got %@", v57}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:v182 object:selfCopy file:@"_UIScreenComplexBoundingPathUtilities.m" lineNumber:254 description:{@"Expected UIApplicationSceneSettings subclass but got %@", _effectiveSettings2}];
   }
 
-  v190 = v57;
-  [v57 frame];
+  v190 = _effectiveSettings2;
+  [_effectiveSettings2 frame];
   v59 = v58;
   v61 = v60;
   v63 = v62;
@@ -384,7 +384,7 @@ LABEL_55:
   v223 = CGRectIntegral(v222);
   *&v66 = v223.origin.x;
   *&v67 = v223.origin.y;
-  if (v196 == 2)
+  if (_interfaceOrientation == 2)
   {
     v68 = v36;
     v69 = v53;
@@ -392,7 +392,7 @@ LABEL_55:
     v49 = v45;
   }
 
-  else if (v196 == 3)
+  else if (_interfaceOrientation == 3)
   {
     v68 = v53;
     v69 = v49;
@@ -404,7 +404,7 @@ LABEL_55:
   {
     v68 = v45;
     v69 = v36;
-    if (v196 != 4)
+    if (_interfaceOrientation != 4)
     {
       goto LABEL_60;
     }
@@ -447,14 +447,14 @@ LABEL_60:
         v238.size.width = v63;
         v238.size.height = v65;
         v174 = NSStringFromCGRect(v238);
-        v175 = [v11 windowScene];
-        v176 = [(UIWindow *)v11 _fbsScene];
+        windowScene4 = [v11 windowScene];
+        _fbsScene2 = [(UIWindow *)v11 _fbsScene];
         LODWORD(v202.a) = 138412802;
         *(&v202.a + 4) = v174;
         WORD2(v202.b) = 2112;
-        *(&v202.b + 6) = v175;
+        *(&v202.b + 6) = windowScene4;
         HIWORD(v202.c) = 2112;
-        *&v202.d = v176;
+        *&v202.d = _fbsScene2;
         _os_log_fault_impl(&dword_188A29000, v166, OS_LOG_TYPE_FAULT, "Scene frame %@ exceeds limits for bitmap data: %@ %@", &v202, 0x20u);
       }
 
@@ -475,14 +475,14 @@ LABEL_60:
         v230.size.width = v63;
         v230.size.height = v65;
         v118 = NSStringFromCGRect(v230);
-        v119 = [v11 windowScene];
-        v120 = [(UIWindow *)v11 _fbsScene];
+        windowScene5 = [v11 windowScene];
+        _fbsScene3 = [(UIWindow *)v11 _fbsScene];
         LODWORD(v202.a) = 138412802;
         *(&v202.a + 4) = v118;
         WORD2(v202.b) = 2112;
-        *(&v202.b + 6) = v119;
+        *(&v202.b + 6) = windowScene5;
         HIWORD(v202.c) = 2112;
-        *&v202.d = v120;
+        *&v202.d = _fbsScene3;
         _os_log_impl(&dword_188A29000, v117, OS_LOG_TYPE_ERROR, "Scene frame %@ exceeds limits for bitmap data: %@ %@", &v202, 0x20u);
       }
     }
@@ -514,7 +514,7 @@ LABEL_60:
 
     if (v103 + v104 <= *&v102 && (v36 <= v53 ? (v105 = v53) : (v105 = v36), v45 <= v49 ? (v106 = v49) : (v106 = v45), v105 + v106 <= v223.size.height))
     {
-      v121 = v192->_bitmap;
+      v121 = selfCopy->_bitmap;
       *&v202.a = v223.origin.x;
       *&v202.b = v223.origin.y;
       *&v202.c = v223.size.width;
@@ -535,16 +535,16 @@ LABEL_60:
         v168 = v167 = v102;
         [v190 frame];
         v169 = NSStringFromCGRect(v237);
-        v170 = [v190 cornerRadiusConfiguration];
-        v107 = v192;
-        [v168 handleFailureInMethod:v182 object:v192 file:@"_UIScreenComplexBoundingPathUtilities.m" lineNumber:284 description:{@"Invalid scene settings detected: the scene frame (%@) is too small to fit the scene's rounded corners: %@. Scene settings: %@", v169, v170, v190}];
+        cornerRadiusConfiguration2 = [v190 cornerRadiusConfiguration];
+        v107 = selfCopy;
+        [v168 handleFailureInMethod:v182 object:selfCopy file:@"_UIScreenComplexBoundingPathUtilities.m" lineNumber:284 description:{@"Invalid scene settings detected: the scene frame (%@) is too small to fit the scene's rounded corners: %@. Scene settings: %@", v169, cornerRadiusConfiguration2, v190}];
 
         v102 = v167;
       }
 
       else
       {
-        v107 = v192;
+        v107 = selfCopy;
         if (os_variant_has_internal_diagnostics())
         {
           v171 = v102;
@@ -553,17 +553,17 @@ LABEL_60:
           {
             [v190 frame];
             v177 = NSStringFromCGRect(v239);
-            v178 = [v190 cornerRadiusConfiguration];
+            cornerRadiusConfiguration3 = [v190 cornerRadiusConfiguration];
             LODWORD(v202.a) = 138412546;
             *(&v202.a + 4) = v177;
             WORD2(v202.b) = 2112;
-            *(&v202.b + 6) = v178;
+            *(&v202.b + 6) = cornerRadiusConfiguration3;
             _os_log_fault_impl(&dword_188A29000, v172, OS_LOG_TYPE_FAULT, "Invalid scene settings detected: the scene frame (%@) is too small to fit the scene's rounded corners: %@", &v202, 0x16u);
           }
 
           v10 = v194;
           v102 = v171;
-          v107 = v192;
+          v107 = selfCopy;
         }
 
         else
@@ -575,11 +575,11 @@ LABEL_60:
             [v190 frame];
             NSStringFromCGRect(v229);
             v111 = v110 = v102;
-            v112 = [v190 cornerRadiusConfiguration];
+            cornerRadiusConfiguration4 = [v190 cornerRadiusConfiguration];
             LODWORD(v202.a) = 138412546;
             *(&v202.a + 4) = v111;
             WORD2(v202.b) = 2112;
-            *(&v202.b + 6) = v112;
+            *(&v202.b + 6) = cornerRadiusConfiguration4;
             _os_log_impl(&dword_188A29000, v109, OS_LOG_TYPE_ERROR, "Invalid scene settings detected: the scene frame (%@) is too small to fit the scene's rounded corners: %@", &v202, 0x16u);
 
             v102 = v110;
@@ -597,9 +597,9 @@ LABEL_60:
 
     v122 = v114;
     v123 = v11;
-    v124 = [v123 layer];
+    layer = [v123 layer];
     [v123 bounds];
-    [v124 convertRect:0 toLayer:?];
+    [layer convertRect:0 toLayer:?];
     v126 = v125;
     v128 = v127;
     v130 = v129;
@@ -608,10 +608,10 @@ LABEL_60:
     [v123 _sceneReferenceBounds];
     v134 = v133;
     v136 = v135;
-    v137 = [v123 _sceneOrientation];
-    v138 = [v123 interfaceOrientation];
+    _sceneOrientation = [v123 _sceneOrientation];
+    interfaceOrientation = [v123 interfaceOrientation];
 
-    v139 = _UIWindowConvertRectFromOrientationToOrientation(v137, v138, v126, v128, v130, v132, v134, v136);
+    v139 = _UIWindowConvertRectFromOrientationToOrientation(_sceneOrientation, interfaceOrientation, v126, v128, v130, v132, v134, v136);
     v141 = v140;
     v143 = v142;
     v145 = v144;
@@ -642,8 +642,8 @@ LABEL_60:
     }
 
     v70 = v195;
-    v86 = v196;
-    v233.origin.x = _UIWindowConvertRectFromOrientationToOrientation(v196, 1, v146, v147, v148, v149, v150, v151);
+    v86 = _interfaceOrientation;
+    v233.origin.x = _UIWindowConvertRectFromOrientationToOrientation(_interfaceOrientation, 1, v146, v147, v148, v149, v150, v151);
     v234 = CGRectIntegral(v233);
     v152 = v234.origin.x;
     v153 = v234.origin.y;
@@ -688,16 +688,16 @@ LABEL_60:
         v240.size.width = v143;
         v240.size.height = v193;
         v179 = NSStringFromCGRect(v240);
-        v180 = [v123 windowScene];
-        v181 = [(UIWindow *)v123 _fbsScene];
+        windowScene6 = [v123 windowScene];
+        _fbsScene4 = [(UIWindow *)v123 _fbsScene];
         LODWORD(v202.a) = 138413058;
         *(&v202.a + 4) = v179;
         WORD2(v202.b) = 2112;
         *(&v202.b + 6) = v123;
         HIWORD(v202.c) = 2112;
-        *&v202.d = v180;
+        *&v202.d = windowScene6;
         LOWORD(v202.tx) = 2112;
-        *(&v202.tx + 2) = v181;
+        *(&v202.tx + 2) = _fbsScene4;
         _os_log_fault_impl(&dword_188A29000, v173, OS_LOG_TYPE_FAULT, "Window bounds in scene %@ exceeds limits for bitmap data: %@ %@ %@", &v202, 0x2Au);
       }
 
@@ -716,16 +716,16 @@ LABEL_60:
         v235.size.width = v143;
         v235.size.height = v193;
         v158 = NSStringFromCGRect(v235);
-        v159 = [v123 windowScene];
-        v160 = [(UIWindow *)v123 _fbsScene];
+        windowScene7 = [v123 windowScene];
+        _fbsScene5 = [(UIWindow *)v123 _fbsScene];
         LODWORD(v202.a) = 138413058;
         *(&v202.a + 4) = v158;
         WORD2(v202.b) = 2112;
         *(&v202.b + 6) = v123;
         HIWORD(v202.c) = 2112;
-        *&v202.d = v159;
+        *&v202.d = windowScene7;
         LOWORD(v202.tx) = 2112;
-        *(&v202.tx + 2) = v160;
+        *(&v202.tx + 2) = _fbsScene5;
         _os_log_impl(&dword_188A29000, v157, OS_LOG_TYPE_ERROR, "Window bounds in scene %@ exceeds limits for bitmap data: %@ %@ %@", &v202, 0x2Au);
 
         v70 = v195;
@@ -740,23 +740,23 @@ LABEL_113:
   return v94;
 }
 
-- (void)_loadBitmapForScreen:(id)a3 type:(int64_t)a4
+- (void)_loadBitmapForScreen:(id)screen type:(int64_t)type
 {
   v82[3] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  [v7 _referenceBounds];
+  screenCopy = screen;
+  [screenCopy _referenceBounds];
   v9 = v8;
   v11 = v10;
-  [v7 scale];
+  [screenCopy scale];
   v13 = v12;
 
   v14 = round(v13);
-  v15 = _UIScreenNativeDisplayBoundsSizeForType(a4);
+  v15 = _UIScreenNativeDisplayBoundsSizeForType(type);
   v17 = v16;
-  v18 = _UIScreenReferenceBoundsSizeForType(a4);
-  v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"BoundingPathBitmap-%ldx%ld-%ldx%ld-%.2fx", v15, v17, v18, v19, _UIScreenScaleForType(a4)];
+  v18 = _UIScreenReferenceBoundsSizeForType(type);
+  v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"BoundingPathBitmap-%ldx%ld-%ldx%ld-%.2fx", v15, v17, v18, v19, _UIScreenScaleForType(type)];
   v21 = v20;
-  if ((a4 - 17) < 6 || a4 == 42)
+  if ((type - 17) < 6 || type == 42)
   {
     v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", v20, @"A"];
   }
@@ -773,35 +773,35 @@ LABEL_113:
   v26 = __UIKitSharedBoundingPathDataManager();
   if (!v26)
   {
-    v43 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v43 handleFailureInMethod:a2 object:self file:@"_UIScreenComplexBoundingPathUtilities.m" lineNumber:357 description:@"The bounding path data manager should never be nil. This likely means that the BoundingPathData.bundle inside UIKitCore.framework is missing."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIScreenComplexBoundingPathUtilities.m" lineNumber:357 description:@"The bounding path data manager should never be nil. This likely means that the BoundingPathData.bundle inside UIKitCore.framework is missing."];
   }
 
   v59 = v24;
   v27 = v25;
   v28 = [v26 dataNamed:v23];
-  v29 = [v28 data];
+  data = [v28 data];
 
   v58 = a2;
-  if (v29)
+  if (data)
   {
     v79 = 0;
-    v30 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v29 error:&v79];
-    v31 = v79;
+    v30 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:data error:&v79];
+    currentHandler3 = v79;
     bitmap = self->_bitmap;
     self->_bitmap = v30;
 
-    if (!self->_bitmap || v31)
+    if (!self->_bitmap || currentHandler3)
     {
-      v47 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v47 handleFailureInMethod:a2 object:self file:@"_UIScreenComplexBoundingPathUtilities.m" lineNumber:363 description:{@"Failed to deserialize bounding path bitmap data. Error: %@", v31}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIScreenComplexBoundingPathUtilities.m" lineNumber:363 description:{@"Failed to deserialize bounding path bitmap data. Error: %@", currentHandler3}];
     }
   }
 
   else
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"_UIScreenComplexBoundingPathUtilities.m" lineNumber:359 description:{@"Failed to load bounding path bitmap data from the asset manager for asset name: %@", v23}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"_UIScreenComplexBoundingPathUtilities.m" lineNumber:359 description:{@"Failed to load bounding path bitmap data from the asset manager for asset name: %@", v23}];
   }
 
   v33 = v25;
@@ -913,8 +913,8 @@ LABEL_9:
   {
     if (os_variant_has_internal_diagnostics())
     {
-      v42 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v42 handleFailureInMethod:v58 object:self file:@"_UIScreenComplexBoundingPathUtilities.m" lineNumber:390 description:{@"The loaded bitmap does not match the expected size. Screen type = %ld; Asset name = '%@'; Expected size = {width=%ld, height=%ld}; Bitmap = %@", a4, v23, v59, v27, self->_bitmap}];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler4 handleFailureInMethod:v58 object:self file:@"_UIScreenComplexBoundingPathUtilities.m" lineNumber:390 description:{@"The loaded bitmap does not match the expected size. Screen type = %ld; Asset name = '%@'; Expected size = {width=%ld, height=%ld}; Bitmap = %@", type, v23, v59, v27, self->_bitmap}];
     }
 
     else
@@ -926,7 +926,7 @@ LABEL_9:
         {
           v57 = self->_bitmap;
           *buf = 134219010;
-          *&buf[4] = a4;
+          *&buf[4] = type;
           *&buf[12] = 2112;
           *&buf[14] = v23;
           *&buf[22] = 2048;
@@ -948,7 +948,7 @@ LABEL_9:
         {
           v39 = self->_bitmap;
           *buf = 134219010;
-          *&buf[4] = a4;
+          *&buf[4] = type;
           *&buf[12] = 2112;
           *&buf[14] = v23;
           *&buf[22] = 2048;
@@ -968,7 +968,7 @@ LABEL_9:
       v81 = v33;
       memset(v82, 0, 24);
       v41 = [(_UIBoundingPathBitmap *)v40 initWithBitmapData:buf];
-      v42 = self->_bitmap;
+      currentHandler4 = self->_bitmap;
       self->_bitmap = v41;
     }
   }

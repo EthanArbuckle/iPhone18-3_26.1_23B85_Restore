@@ -1,33 +1,33 @@
 @interface ICASActionMenuContextType
-- (ICASActionMenuContextType)initWithActionMenuContextType:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASActionMenuContextType)initWithActionMenuContextType:(int64_t)type;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASActionMenuContextType
 
-- (ICASActionMenuContextType)initWithActionMenuContextType:(int64_t)a3
+- (ICASActionMenuContextType)initWithActionMenuContextType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = ICASActionMenuContextType;
   result = [(ICASActionMenuContextType *)&v5 init];
   if (result)
   {
-    result->_actionMenuContextType = a3;
+    result->_actionMenuContextType = type;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASActionMenuContextType *)self actionMenuContextType];
+  actionMenuContextType = [(ICASActionMenuContextType *)self actionMenuContextType];
   v4 = @"unknown";
-  if (v3 == 1)
+  if (actionMenuContextType == 1)
   {
     v4 = @"note";
   }
 
-  if (v3 == 2)
+  if (actionMenuContextType == 2)
   {
     return @"folder";
   }

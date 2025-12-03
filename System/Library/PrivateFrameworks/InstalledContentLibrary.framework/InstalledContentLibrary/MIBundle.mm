@@ -1,43 +1,43 @@
 @interface MIBundle
-+ (BOOL)bundleIsInDenyList:(id)a3;
-+ (id)_URLOfFirstBundleInDirectory:(id)a3 withExtension:(id)a4 error:(id *)a5;
++ (BOOL)bundleIsInDenyList:(id)list;
++ (id)_URLOfFirstBundleInDirectory:(id)directory withExtension:(id)extension error:(id *)error;
 + (id)_infoPlistKeysToLoad;
-+ (id)bundleForURL:(id)a3 error:(id *)a4;
-+ (id)bundleForURL:(id)a3 platformHint:(unsigned int)a4 forceAsPlaceholder:(BOOL)a5 error:(id *)a6;
-+ (id)bundlesInParentBundle:(id)a3 subDirectory:(id)a4 matchingPredicate:(id)a5 error:(id *)a6;
-- (BOOL)_getBundleRootContainsOnlyContentsDirectory:(BOOL *)a3 error:(id *)a4;
-- (BOOL)_isMinimumOSVersion:(id)a3 applicableToOSVersion:(id)a4 requiredOS:(unint64_t)a5 error:(id *)a6;
-- (BOOL)_setBundleParentDirectoryURL:(id)a3 forBundleArray:(id)a4 error:(id *)a5;
-- (BOOL)_validateAppNSPrivacyTrackingDomainsWithError:(id *)a3;
-- (BOOL)_validateExtensions:(id)a3 error:(id *)a4;
-- (BOOL)_validateWithError:(id *)a3;
-- (BOOL)getIsBuiltForMacPlatform:(BOOL *)a3 error:(id *)a4;
-- (BOOL)getIsBuiltForiOSPlatform:(BOOL *)a3 error:(id *)a4;
-- (BOOL)isApplicableToCurrentDeviceCapabilitiesWithError:(id *)a3;
-- (BOOL)isApplicableToCurrentDeviceFamilyWithError:(id *)a3;
-- (BOOL)isApplicableToCurrentOSVersionWithError:(id *)a3;
-- (BOOL)isApplicableToOSVersion:(id)a3 error:(id *)a4;
-- (BOOL)isApplicableToOSVersionEarlierThan:(id)a3;
-- (BOOL)isCompatibleWithDeviceFamily:(int)a3;
++ (id)bundleForURL:(id)l error:(id *)error;
++ (id)bundleForURL:(id)l platformHint:(unsigned int)hint forceAsPlaceholder:(BOOL)placeholder error:(id *)error;
++ (id)bundlesInParentBundle:(id)bundle subDirectory:(id)directory matchingPredicate:(id)predicate error:(id *)error;
+- (BOOL)_getBundleRootContainsOnlyContentsDirectory:(BOOL *)directory error:(id *)error;
+- (BOOL)_isMinimumOSVersion:(id)version applicableToOSVersion:(id)sVersion requiredOS:(unint64_t)s error:(id *)error;
+- (BOOL)_setBundleParentDirectoryURL:(id)l forBundleArray:(id)array error:(id *)error;
+- (BOOL)_validateAppNSPrivacyTrackingDomainsWithError:(id *)error;
+- (BOOL)_validateExtensions:(id)extensions error:(id *)error;
+- (BOOL)_validateWithError:(id *)error;
+- (BOOL)getIsBuiltForMacPlatform:(BOOL *)platform error:(id *)error;
+- (BOOL)getIsBuiltForiOSPlatform:(BOOL *)platform error:(id *)error;
+- (BOOL)isApplicableToCurrentDeviceCapabilitiesWithError:(id *)error;
+- (BOOL)isApplicableToCurrentDeviceFamilyWithError:(id *)error;
+- (BOOL)isApplicableToCurrentOSVersionWithError:(id *)error;
+- (BOOL)isApplicableToOSVersion:(id)version error:(id *)error;
+- (BOOL)isApplicableToOSVersionEarlierThan:(id)than;
+- (BOOL)isCompatibleWithDeviceFamily:(int)family;
 - (BOOL)isDeletable;
 - (BOOL)isLaunchProhibited;
 - (BOOL)isPlaceholder;
 - (BOOL)isRemovableSystemApp;
 - (BOOL)isStaticContent;
 - (BOOL)mayHaveExecutableProgram;
-- (BOOL)sdkBuildVersionIsAtLeast:(id)a3;
-- (BOOL)setBundleParentDirectoryURL:(id)a3 error:(id *)a4;
-- (BOOL)setIsPlaceholderWithError:(id *)a3;
-- (BOOL)thinningMatchesCurrentDeviceWithError:(id *)a3;
-- (BOOL)validateAppMetadataWithError:(id *)a3;
-- (BOOL)validateDriverKitExtensionMetadataWithError:(id *)a3;
-- (BOOL)validateExtensionKitMetadataWithError:(id *)a3;
-- (BOOL)validatePluginKitMetadataWithError:(id *)a3;
-- (MIBundle)initWithBundleInDirectory:(id)a3 withExtension:(id)a4 error:(id *)a5;
-- (MIBundle)initWithBundleParentURL:(id)a3 parentSubdirectory:(id)a4 bundleName:(id)a5 platformHint:(unsigned int)a6 forceAsPlaceholder:(BOOL)a7 error:(id *)a8;
-- (MIBundle)initWithBundleURL:(id)a3 error:(id *)a4;
-- (MIBundle)initWithBundleURL:(id)a3 platformHint:(unsigned int)a4 forceAsPlaceholder:(BOOL)a5 error:(id *)a6;
-- (MIBundle)initWithParentBundle:(id)a3 parentSubdirectory:(id)a4 bundleName:(id)a5 platformHint:(unsigned int)a6 forceAsPlaceholder:(BOOL)a7 error:(id *)a8;
+- (BOOL)sdkBuildVersionIsAtLeast:(id)least;
+- (BOOL)setBundleParentDirectoryURL:(id)l error:(id *)error;
+- (BOOL)setIsPlaceholderWithError:(id *)error;
+- (BOOL)thinningMatchesCurrentDeviceWithError:(id *)error;
+- (BOOL)validateAppMetadataWithError:(id *)error;
+- (BOOL)validateDriverKitExtensionMetadataWithError:(id *)error;
+- (BOOL)validateExtensionKitMetadataWithError:(id *)error;
+- (BOOL)validatePluginKitMetadataWithError:(id *)error;
+- (MIBundle)initWithBundleInDirectory:(id)directory withExtension:(id)extension error:(id *)error;
+- (MIBundle)initWithBundleParentURL:(id)l parentSubdirectory:(id)subdirectory bundleName:(id)name platformHint:(unsigned int)hint forceAsPlaceholder:(BOOL)placeholder error:(id *)error;
+- (MIBundle)initWithBundleURL:(id)l error:(id *)error;
+- (MIBundle)initWithBundleURL:(id)l platformHint:(unsigned int)hint forceAsPlaceholder:(BOOL)placeholder error:(id *)error;
+- (MIBundle)initWithParentBundle:(id)bundle parentSubdirectory:(id)subdirectory bundleName:(id)name platformHint:(unsigned int)hint forceAsPlaceholder:(BOOL)placeholder error:(id *)error;
 - (MIBundle)parentBundle;
 - (NSArray)deviceFamilies;
 - (NSArray)supportedDevices;
@@ -56,41 +56,41 @@
 - (NSURL)contentsURL;
 - (NSURL)infoPlistURL;
 - (NSURL)plugInsDirectoryURL;
-- (id)_filterExtensionBundles:(id)a3 forValidationFlags:(unsigned __int8)a4;
-- (id)_filterExtensionBundlesNotInCacheIfNeeded:(id)a3;
-- (id)appExtensionBundlesPerformingPlatformValidation:(unsigned __int8)a3 withError:(id *)a4;
-- (id)currentOSVersionForValidationUsingPlatform:(unint64_t *)a3 withError:(id *)a4;
-- (id)denormalizedURLForCFBundleURL:(id)a3;
+- (id)_filterExtensionBundles:(id)bundles forValidationFlags:(unsigned __int8)flags;
+- (id)_filterExtensionBundlesNotInCacheIfNeeded:(id)needed;
+- (id)appExtensionBundlesPerformingPlatformValidation:(unsigned __int8)validation withError:(id *)error;
+- (id)currentOSVersionForValidationUsingPlatform:(unint64_t *)platform withError:(id *)error;
+- (id)denormalizedURLForCFBundleURL:(id)l;
 - (id)description;
-- (id)driverKitBundlesPerformingPlatformValidation:(unsigned __int8)a3 withError:(id *)a4;
-- (id)extensionKitBundlesPerformingPlatformValidation:(unsigned __int8)a3 withError:(id *)a4;
-- (id)frameworkBundlesWithError:(id *)a3;
-- (id)infoPlistHashWithError:(id *)a3;
+- (id)driverKitBundlesPerformingPlatformValidation:(unsigned __int8)validation withError:(id *)error;
+- (id)extensionKitBundlesPerformingPlatformValidation:(unsigned __int8)validation withError:(id *)error;
+- (id)frameworkBundlesWithError:(id *)error;
+- (id)infoPlistHashWithError:(id *)error;
 - (id)initForTesting;
-- (id)pluginKitBundlesPerformingPlatformValidation:(unsigned __int8)a3 withError:(id *)a4;
-- (id)thisBundleAndAllContainedBundlesWithError:(id *)a3;
-- (id)xpcServiceBundlesWithError:(id *)a3;
+- (id)pluginKitBundlesPerformingPlatformValidation:(unsigned __int8)validation withError:(id *)error;
+- (id)thisBundleAndAllContainedBundlesWithError:(id *)error;
+- (id)xpcServiceBundlesWithError:(id *)error;
 - (unsigned)bundleType;
 - (void)dealloc;
 @end
 
 @implementation MIBundle
 
-- (BOOL)_validateWithError:(id *)a3
+- (BOOL)_validateWithError:(id *)error
 {
-  v5 = [(MIBundle *)self bundleURL];
+  bundleURL = [(MIBundle *)self bundleURL];
   v30 = 0;
   v31 = 0;
-  v6 = MICreateCFBundleEnforcingInfoPlistSize(v5, 26214400, &v31, &v30);
+  v6 = MICreateCFBundleEnforcingInfoPlistSize(bundleURL, 26214400, &v31, &v30);
   v7 = v31;
   v8 = v30;
 
   if (v6)
   {
     self->_cfBundle = v6;
-    v9 = [objc_opt_class() _infoPlistKeysToLoad];
+    _infoPlistKeysToLoad = [objc_opt_class() _infoPlistKeysToLoad];
     v29 = v8;
-    v10 = MILoadInfoPlistFromBundleWithError(v6, v9, &v29);
+    v10 = MILoadInfoPlistFromBundleWithError(v6, _infoPlistKeysToLoad, &v29);
     v11 = v29;
 
     if (v10)
@@ -122,21 +122,21 @@
             goto LABEL_21;
           }
 
-          v16 = [(MIBundle *)self bundleURL];
-          v17 = [v16 path];
-          _CreateAndLogError("[MIBundle _validateWithError:]", 95, @"MIInstallerErrorDomain", 69, 0, &unk_1F2887B38, @"Bundle at path %@ had an invalid CFBundleIdentifier in its Info.plist: %@", v21, v17);
+          bundleURL2 = [(MIBundle *)self bundleURL];
+          path = [bundleURL2 path];
+          _CreateAndLogError("[MIBundle _validateWithError:]", 95, @"MIInstallerErrorDomain", 69, 0, &unk_1F2887B38, @"Bundle at path %@ had an invalid CFBundleIdentifier in its Info.plist: %@", v21, path);
         }
 
         else
         {
-          v16 = [(MIBundle *)self bundleURL];
-          v17 = [v16 path];
-          _CreateAndLogError("[MIBundle _validateWithError:]", 88, @"MIInstallerErrorDomain", 12, 0, &unk_1F2887B10, @"Bundle at path %@ did not have a CFBundleIdentifier in its Info.plist", v22, v17);
+          bundleURL2 = [(MIBundle *)self bundleURL];
+          path = [bundleURL2 path];
+          _CreateAndLogError("[MIBundle _validateWithError:]", 88, @"MIInstallerErrorDomain", 12, 0, &unk_1F2887B10, @"Bundle at path %@ did not have a CFBundleIdentifier in its Info.plist", v22, path);
         }
         v8 = ;
 LABEL_18:
 
-        if (a3)
+        if (error)
         {
           goto LABEL_19;
         }
@@ -144,20 +144,20 @@ LABEL_18:
         goto LABEL_7;
       }
 
-      v16 = [(MIBundle *)self bundleURL];
-      v17 = [v16 path];
+      bundleURL2 = [(MIBundle *)self bundleURL];
+      path = [bundleURL2 path];
       v18 = +[MIFileManager defaultManager];
       v28 = [v18 debugDescriptionForItemAtURL:v7];
-      v8 = _CreateAndLogError("[MIBundle _validateWithError:]", 82, @"MIInstallerErrorDomain", 35, 0, &unk_1F2887AE8, @"Info.plist from bundle at path %@ had none of the keys that we expect %@", v20, v17);;
+      v8 = _CreateAndLogError("[MIBundle _validateWithError:]", 82, @"MIInstallerErrorDomain", 35, 0, &unk_1F2887AE8, @"Info.plist from bundle at path %@ had none of the keys that we expect %@", v20, path);;
     }
 
     else
     {
-      v16 = [(MIBundle *)self bundleURL];
-      v17 = [v16 path];
+      bundleURL2 = [(MIBundle *)self bundleURL];
+      path = [bundleURL2 path];
       v18 = +[MIFileManager defaultManager];
       v27 = [v18 debugDescriptionForItemAtURL:v7];
-      v8 = _CreateAndLogError("[MIBundle _validateWithError:]", 77, @"MIInstallerErrorDomain", 35, v11, &unk_1F2887AC0, @"Failed to load Info.plist from bundle at path %@ %@", v19, v17);;
+      v8 = _CreateAndLogError("[MIBundle _validateWithError:]", 77, @"MIInstallerErrorDomain", 35, v11, &unk_1F2887AC0, @"Failed to load Info.plist from bundle at path %@ %@", v19, path);;
 
       v10 = 0;
     }
@@ -169,12 +169,12 @@ LABEL_18:
 
   v10 = 0;
   v14 = 0;
-  if (a3)
+  if (error)
   {
 LABEL_19:
     v23 = v8;
     v15 = 0;
-    *a3 = v8;
+    *error = v8;
     goto LABEL_20;
   }
 
@@ -208,12 +208,12 @@ LABEL_21:
   return [(MIBundle *)&v3 init];
 }
 
-- (MIBundle)initWithBundleParentURL:(id)a3 parentSubdirectory:(id)a4 bundleName:(id)a5 platformHint:(unsigned int)a6 forceAsPlaceholder:(BOOL)a7 error:(id *)a8
+- (MIBundle)initWithBundleParentURL:(id)l parentSubdirectory:(id)subdirectory bundleName:(id)name platformHint:(unsigned int)hint forceAsPlaceholder:(BOOL)placeholder error:(id *)error
 {
-  v9 = a7;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
+  placeholderCopy = placeholder;
+  lCopy = l;
+  subdirectoryCopy = subdirectory;
+  nameCopy = name;
   v23.receiver = self;
   v23.super_class = MIBundle;
   v18 = [(MIBundle *)&v23 init];
@@ -223,19 +223,19 @@ LABEL_21:
     goto LABEL_5;
   }
 
-  objc_storeStrong(&v18->_bundleName, a5);
-  objc_storeStrong(&v19->_bundleParentSubdirectory, a4);
-  objc_storeStrong(&v19->_bundleParentDirectoryURL, a3);
+  objc_storeStrong(&v18->_bundleName, name);
+  objc_storeStrong(&v19->_bundleParentSubdirectory, subdirectory);
+  objc_storeStrong(&v19->_bundleParentDirectoryURL, l);
   parentBundleID = v19->_parentBundleID;
   v19->_parentBundleID = 0;
 
-  v19->_platformHint = a6;
-  if (v9)
+  v19->_platformHint = hint;
+  if (placeholderCopy)
   {
     *&v19->_isPlaceholder = 257;
   }
 
-  if (![(MIBundle *)v19 _validateWithError:a8])
+  if (![(MIBundle *)v19 _validateWithError:error])
   {
     v21 = 0;
   }
@@ -249,12 +249,12 @@ LABEL_5:
   return v21;
 }
 
-- (MIBundle)initWithParentBundle:(id)a3 parentSubdirectory:(id)a4 bundleName:(id)a5 platformHint:(unsigned int)a6 forceAsPlaceholder:(BOOL)a7 error:(id *)a8
+- (MIBundle)initWithParentBundle:(id)bundle parentSubdirectory:(id)subdirectory bundleName:(id)name platformHint:(unsigned int)hint forceAsPlaceholder:(BOOL)placeholder error:(id *)error
 {
-  v9 = a7;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  placeholderCopy = placeholder;
+  bundleCopy = bundle;
+  subdirectoryCopy = subdirectory;
+  nameCopy = name;
   v25.receiver = self;
   v25.super_class = MIBundle;
   v17 = [(MIBundle *)&v25 init];
@@ -264,24 +264,24 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  objc_storeStrong(&v17->_bundleName, a5);
-  objc_storeStrong(&v18->_bundleParentSubdirectory, a4);
-  v19 = [v14 bundleURL];
+  objc_storeStrong(&v17->_bundleName, name);
+  objc_storeStrong(&v18->_bundleParentSubdirectory, subdirectory);
+  bundleURL = [bundleCopy bundleURL];
   bundleParentDirectoryURL = v18->_bundleParentDirectoryURL;
-  v18->_bundleParentDirectoryURL = v19;
+  v18->_bundleParentDirectoryURL = bundleURL;
 
-  v21 = [v14 identifier];
+  identifier = [bundleCopy identifier];
   parentBundleID = v18->_parentBundleID;
-  v18->_parentBundleID = v21;
+  v18->_parentBundleID = identifier;
 
-  objc_storeWeak(&v18->_parentBundle, v14);
-  v18->_platformHint = a6;
-  if (v9)
+  objc_storeWeak(&v18->_parentBundle, bundleCopy);
+  v18->_platformHint = hint;
+  if (placeholderCopy)
   {
     *&v18->_isPlaceholder = 257;
   }
 
-  if (![(MIBundle *)v18 _validateWithError:a8])
+  if (![(MIBundle *)v18 _validateWithError:error])
   {
     v23 = 0;
   }
@@ -295,50 +295,50 @@ LABEL_5:
   return v23;
 }
 
-- (MIBundle)initWithBundleURL:(id)a3 platformHint:(unsigned int)a4 forceAsPlaceholder:(BOOL)a5 error:(id *)a6
+- (MIBundle)initWithBundleURL:(id)l platformHint:(unsigned int)hint forceAsPlaceholder:(BOOL)placeholder error:(id *)error
 {
-  v7 = a5;
-  v8 = *&a4;
-  v10 = a3;
-  v11 = [v10 URLByDeletingLastPathComponent];
-  v12 = [v10 lastPathComponent];
+  placeholderCopy = placeholder;
+  v8 = *&hint;
+  lCopy = l;
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+  lastPathComponent = [lCopy lastPathComponent];
 
-  v13 = [(MIBundle *)self initWithBundleParentURL:v11 parentSubdirectory:0 bundleName:v12 platformHint:v8 forceAsPlaceholder:v7 error:a6];
+  v13 = [(MIBundle *)self initWithBundleParentURL:uRLByDeletingLastPathComponent parentSubdirectory:0 bundleName:lastPathComponent platformHint:v8 forceAsPlaceholder:placeholderCopy error:error];
   return v13;
 }
 
-- (MIBundle)initWithBundleURL:(id)a3 error:(id *)a4
+- (MIBundle)initWithBundleURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 URLByDeletingLastPathComponent];
-  v8 = [v6 lastPathComponent];
+  lCopy = l;
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+  lastPathComponent = [lCopy lastPathComponent];
 
-  v9 = [(MIBundle *)self initWithBundleParentURL:v7 parentSubdirectory:0 bundleName:v8 platformHint:0 forceAsPlaceholder:0 error:a4];
+  v9 = [(MIBundle *)self initWithBundleParentURL:uRLByDeletingLastPathComponent parentSubdirectory:0 bundleName:lastPathComponent platformHint:0 forceAsPlaceholder:0 error:error];
   return v9;
 }
 
-+ (id)bundleForURL:(id)a3 platformHint:(unsigned int)a4 forceAsPlaceholder:(BOOL)a5 error:(id *)a6
++ (id)bundleForURL:(id)l platformHint:(unsigned int)hint forceAsPlaceholder:(BOOL)placeholder error:(id *)error
 {
-  v7 = a5;
-  v8 = *&a4;
-  v9 = a3;
-  v10 = [objc_alloc(objc_opt_class()) initWithBundleURL:v9 platformHint:v8 forceAsPlaceholder:v7 error:a6];
+  placeholderCopy = placeholder;
+  v8 = *&hint;
+  lCopy = l;
+  v10 = [objc_alloc(objc_opt_class()) initWithBundleURL:lCopy platformHint:v8 forceAsPlaceholder:placeholderCopy error:error];
 
   return v10;
 }
 
-+ (id)bundleForURL:(id)a3 error:(id *)a4
++ (id)bundleForURL:(id)l error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(objc_opt_class()) initWithBundleURL:v5 platformHint:0 forceAsPlaceholder:0 error:a4];
+  lCopy = l;
+  v6 = [objc_alloc(objc_opt_class()) initWithBundleURL:lCopy platformHint:0 forceAsPlaceholder:0 error:error];
 
   return v6;
 }
 
-+ (id)_URLOfFirstBundleInDirectory:(id)a3 withExtension:(id)a4 error:(id *)a5
++ (id)_URLOfFirstBundleInDirectory:(id)directory withExtension:(id)extension error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  directoryCopy = directory;
+  extensionCopy = extension;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -350,22 +350,22 @@ LABEL_5:
   v19[1] = 3221225472;
   v19[2] = __61__MIBundle__URLOfFirstBundleInDirectory_withExtension_error___block_invoke;
   v19[3] = &unk_1E7AE1AC0;
-  v10 = v8;
+  v10 = extensionCopy;
   v20 = v10;
   v21 = &v22;
-  v11 = [v9 enumerateURLsForItemsInDirectoryAtURL:v7 ignoreSymlinks:1 withBlock:v19];
+  v11 = [v9 enumerateURLsForItemsInDirectoryAtURL:directoryCopy ignoreSymlinks:1 withBlock:v19];
 
   v12 = v23[5];
   if (!v12)
   {
-    v18 = [v7 path];
+    path = [directoryCopy path];
     v14 = _CreateAndLogError("+[MIBundle _URLOfFirstBundleInDirectory:withExtension:error:]", 213, @"MIInstallerErrorDomain", 36, 0, 0, @"Failed to locate a bundle with extension %@ in directory %@", v13, v10);
 
     v12 = v23[5];
-    if (a5 && !v12)
+    if (error && !v12)
     {
       v15 = v14;
-      *a5 = v14;
+      *error = v14;
       v12 = v23[5];
     }
 
@@ -403,31 +403,31 @@ uint64_t __61__MIBundle__URLOfFirstBundleInDirectory_withExtension_error___block
   return v10;
 }
 
-- (MIBundle)initWithBundleInDirectory:(id)a3 withExtension:(id)a4 error:(id *)a5
+- (MIBundle)initWithBundleInDirectory:(id)directory withExtension:(id)extension error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_opt_class() _URLOfFirstBundleInDirectory:v9 withExtension:v8 error:a5];
+  extensionCopy = extension;
+  directoryCopy = directory;
+  v10 = [objc_opt_class() _URLOfFirstBundleInDirectory:directoryCopy withExtension:extensionCopy error:error];
 
   if (v10)
   {
-    self = [(MIBundle *)self initWithBundleURL:v10 platformHint:0 forceAsPlaceholder:0 error:a5];
-    v11 = self;
+    self = [(MIBundle *)self initWithBundleURL:v10 platformHint:0 forceAsPlaceholder:0 error:error];
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (id)denormalizedURLForCFBundleURL:(id)a3
+- (id)denormalizedURLForCFBundleURL:(id)l
 {
-  v4 = a3;
-  v5 = [(MIBundle *)self bundleURL];
-  v6 = MIDenormalizedURLForCFBundleURL(v5, v4);
+  lCopy = l;
+  bundleURL = [(MIBundle *)self bundleURL];
+  v6 = MIDenormalizedURLForCFBundleURL(bundleURL, lCopy);
 
   return v6;
 }
@@ -478,8 +478,8 @@ uint64_t __32__MIBundle__infoPlistKeysToLoad__block_invoke()
 
 - (NSString)identifier
 {
-  v2 = [(MIBundle *)self infoPlistSubset];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E695E4F0]];
+  infoPlistSubset = [(MIBundle *)self infoPlistSubset];
+  v3 = [infoPlistSubset objectForKeyedSubscript:*MEMORY[0x1E695E4F0]];
   objc_opt_class();
   v4 = v3;
   if (objc_opt_isKindOfClass())
@@ -497,8 +497,8 @@ uint64_t __32__MIBundle__infoPlistKeysToLoad__block_invoke()
 
 - (NSString)bundleVersion
 {
-  v2 = [(MIBundle *)self infoPlistSubset];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E695E500]];
+  infoPlistSubset = [(MIBundle *)self infoPlistSubset];
+  v3 = [infoPlistSubset objectForKeyedSubscript:*MEMORY[0x1E695E500]];
   objc_opt_class();
   v4 = v3;
   if (objc_opt_isKindOfClass())
@@ -516,8 +516,8 @@ uint64_t __32__MIBundle__infoPlistKeysToLoad__block_invoke()
 
 - (NSString)bundleShortVersion
 {
-  v2 = [(MIBundle *)self infoPlistSubset];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E695E148]];
+  infoPlistSubset = [(MIBundle *)self infoPlistSubset];
+  v3 = [infoPlistSubset objectForKeyedSubscript:*MEMORY[0x1E695E148]];
   objc_opt_class();
   v4 = v3;
   if (objc_opt_isKindOfClass())
@@ -536,9 +536,9 @@ uint64_t __32__MIBundle__infoPlistKeysToLoad__block_invoke()
 - (BOOL)isRemovableSystemApp
 {
   v3 = +[MIDaemonConfiguration sharedInstance];
-  v4 = [v3 systemAppPlaceholderBundleIDToInfoMap];
-  v5 = [(MIBundle *)self identifier];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  systemAppPlaceholderBundleIDToInfoMap = [v3 systemAppPlaceholderBundleIDToInfoMap];
+  identifier = [(MIBundle *)self identifier];
+  v6 = [systemAppPlaceholderBundleIDToInfoMap objectForKeyedSubscript:identifier];
   v7 = v6 != 0;
 
   return v7;
@@ -546,36 +546,36 @@ uint64_t __32__MIBundle__infoPlistKeysToLoad__block_invoke()
 
 - (unsigned)bundleType
 {
-  v3 = [(MIBundle *)self identifier];
-  if (v3)
+  identifier = [(MIBundle *)self identifier];
+  if (identifier)
   {
     bundleType = self->_bundleType;
     if (!bundleType)
     {
-      v5 = [(MIBundle *)self bundleURL];
-      v6 = [v5 pathExtension];
+      bundleURL = [(MIBundle *)self bundleURL];
+      pathExtension = [bundleURL pathExtension];
 
       v7 = MIDiskImageManagerProxy();
-      if (![v6 isEqualToString:@"app"])
+      if (![pathExtension isEqualToString:@"app"])
       {
-        if ([v6 isEqualToString:@"appex"] || objc_msgSend(v6, "isEqualToString:", @"appex"))
+        if ([pathExtension isEqualToString:@"appex"] || objc_msgSend(pathExtension, "isEqualToString:", @"appex"))
         {
           v14 = 6;
         }
 
-        else if ([v6 isEqualToString:@"framework"])
+        else if ([pathExtension isEqualToString:@"framework"])
         {
           v14 = 7;
         }
 
-        else if ([v6 isEqualToString:@"xpc"])
+        else if ([pathExtension isEqualToString:@"xpc"])
         {
           v14 = 8;
         }
 
         else
         {
-          if (![v6 isEqualToString:@"dext"])
+          if (![pathExtension isEqualToString:@"dext"])
           {
             self->_bundleType = 0;
             goto LABEL_15;
@@ -591,12 +591,12 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v41 = [(MIBundle *)self bundleParentDirectoryURL];
-      v8 = [v41 path];
+      bundleParentDirectoryURL = [(MIBundle *)self bundleParentDirectoryURL];
+      path = [bundleParentDirectoryURL path];
       v9 = +[MIDaemonConfiguration sharedInstance];
-      v10 = [v9 systemAppsDirectory];
-      v11 = [v10 path];
-      v12 = [v8 isEqualToString:v11];
+      systemAppsDirectory = [v9 systemAppsDirectory];
+      path2 = [systemAppsDirectory path];
+      v12 = [path isEqualToString:path2];
 
       if (v12)
       {
@@ -604,9 +604,9 @@ LABEL_15:
       }
 
       v15 = +[MIDaemonConfiguration sharedInstance];
-      v16 = [v15 internalAppsDirectory];
-      v17 = [v16 path];
-      v18 = [v8 isEqualToString:v17];
+      internalAppsDirectory = [v15 internalAppsDirectory];
+      path3 = [internalAppsDirectory path];
+      v18 = [path isEqualToString:path3];
 
       if (v18)
       {
@@ -614,23 +614,23 @@ LABEL_15:
         goto LABEL_13;
       }
 
-      v19 = v41;
-      if ([v7 URLIsOnAttachedEntityType:1 at:v41])
+      v19 = bundleParentDirectoryURL;
+      if ([v7 URLIsOnAttachedEntityType:1 at:bundleParentDirectoryURL])
       {
         v13 = 3;
         goto LABEL_14;
       }
 
-      if ([v7 URLIsOnAttachedEntityType:2 at:v41])
+      if ([v7 URLIsOnAttachedEntityType:2 at:bundleParentDirectoryURL])
       {
         v13 = 12;
         goto LABEL_14;
       }
 
       v21 = +[MIDaemonConfiguration sharedInstance];
-      v22 = [v21 coreServicesDirectory];
-      v23 = [v22 path];
-      v24 = [v8 hasPrefix:v23];
+      coreServicesDirectory = [v21 coreServicesDirectory];
+      path4 = [coreServicesDirectory path];
+      v24 = [path hasPrefix:path4];
 
       if (v24)
       {
@@ -640,9 +640,9 @@ LABEL_28:
       }
 
       v25 = +[MIDaemonConfiguration sharedInstance];
-      v26 = [v25 systemAppPlaceholdersDirectory];
-      v27 = [v26 path];
-      v28 = [v8 hasPrefix:v27];
+      systemAppPlaceholdersDirectory = [v25 systemAppPlaceholdersDirectory];
+      path5 = [systemAppPlaceholdersDirectory path];
+      v28 = [path hasPrefix:path5];
 
       if (v28)
       {
@@ -651,8 +651,8 @@ LABEL_28:
       }
 
       v29 = +[MIDaemonConfiguration sharedInstance];
-      v30 = [v29 systemAppBundleIDToInfoMap];
-      v31 = [v30 objectForKeyedSubscript:v3];
+      systemAppBundleIDToInfoMap = [v29 systemAppBundleIDToInfoMap];
+      v31 = [systemAppBundleIDToInfoMap objectForKeyedSubscript:identifier];
       if (v31)
       {
       }
@@ -660,21 +660,21 @@ LABEL_28:
       else
       {
         v40 = +[MIDaemonConfiguration sharedInstance];
-        v32 = [v40 systemAppPlaceholderBundleIDToInfoMap];
-        v33 = [v32 objectForKeyedSubscript:v3];
+        systemAppPlaceholderBundleIDToInfoMap = [v40 systemAppPlaceholderBundleIDToInfoMap];
+        v33 = [systemAppPlaceholderBundleIDToInfoMap objectForKeyedSubscript:identifier];
 
         if (!v33)
         {
           v34 = +[MIDaemonConfiguration sharedInstance];
-          v35 = [v34 coreServicesAppBundleIDToInfoMap];
-          v36 = [v35 objectForKeyedSubscript:v3];
+          coreServicesAppBundleIDToInfoMap = [v34 coreServicesAppBundleIDToInfoMap];
+          v36 = [coreServicesAppBundleIDToInfoMap objectForKeyedSubscript:identifier];
 
-          v19 = v41;
+          v19 = bundleParentDirectoryURL;
           if (!v36)
           {
             v37 = +[MIDaemonConfiguration sharedInstance];
-            v38 = [v37 internalAppBundleIDToInfoMap];
-            v39 = [v38 objectForKeyedSubscript:v3];
+            internalAppBundleIDToInfoMap = [v37 internalAppBundleIDToInfoMap];
+            v39 = [internalAppBundleIDToInfoMap objectForKeyedSubscript:identifier];
 
             if (v39)
             {
@@ -682,12 +682,12 @@ LABEL_28:
               goto LABEL_14;
             }
 
-            if ([v7 bundleID:v3 isOnAttachedEntityType:1])
+            if ([v7 bundleID:identifier isOnAttachedEntityType:1])
             {
               v13 = 3;
             }
 
-            else if ([v7 bundleID:v3 isOnAttachedEntityType:2])
+            else if ([v7 bundleID:identifier isOnAttachedEntityType:2])
             {
               v13 = 12;
             }
@@ -707,7 +707,7 @@ LABEL_28:
 LABEL_5:
       v13 = 1;
 LABEL_13:
-      v19 = v41;
+      v19 = bundleParentDirectoryURL;
 LABEL_14:
       self->_bundleType = v13;
 
@@ -727,20 +727,20 @@ LABEL_16:
 
 - (BOOL)isStaticContent
 {
-  v6 = self;
+  selfCopy = self;
   v57 = *MEMORY[0x1E69E9840];
-  v2 = [(MIBundle *)self bundleParentDirectoryURL];
-  v3 = [v2 path];
+  bundleParentDirectoryURL = [(MIBundle *)self bundleParentDirectoryURL];
+  path = [bundleParentDirectoryURL path];
   v4 = MIDiskImageManagerProxy();
-  v5 = [v6 bundleType];
-  LOBYTE(v6) = 0;
-  if (v5 > 5)
+  bundleType = [selfCopy bundleType];
+  LOBYTE(selfCopy) = 0;
+  if (bundleType > 5)
   {
-    if (v5 > 7)
+    if (bundleType > 7)
     {
-      if (v5 != 8)
+      if (bundleType != 8)
       {
-        if (v5 != 12)
+        if (bundleType != 12)
         {
           goto LABEL_50;
         }
@@ -751,21 +751,21 @@ LABEL_16:
       }
     }
 
-    else if (v5 != 6)
+    else if (bundleType != 6)
     {
       v44 = 0u;
       v45 = 0u;
       v42 = 0u;
       v43 = 0u;
       v9 = +[MIDaemonConfiguration sharedInstance];
-      v6 = [v9 allFrameworksDirectories];
+      selfCopy = [v9 allFrameworksDirectories];
 
-      v10 = [v6 countByEnumeratingWithState:&v42 objects:v54 count:16];
+      v10 = [selfCopy countByEnumeratingWithState:&v42 objects:v54 count:16];
       if (!v10)
       {
 LABEL_16:
 
-        LOBYTE(v6) = 0;
+        LOBYTE(selfCopy) = 0;
         goto LABEL_50;
       }
 
@@ -777,11 +777,11 @@ LABEL_10:
       {
         if (*v43 != v12)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
-        v14 = [*(*(&v42 + 1) + 8 * v13) path];
-        v15 = [v3 hasPrefix:v14];
+        path2 = [*(*(&v42 + 1) + 8 * v13) path];
+        v15 = [path hasPrefix:path2];
 
         if (v15)
         {
@@ -790,7 +790,7 @@ LABEL_10:
 
         if (v11 == ++v13)
         {
-          v11 = [v6 countByEnumeratingWithState:&v42 objects:v54 count:16];
+          v11 = [selfCopy countByEnumeratingWithState:&v42 objects:v54 count:16];
           if (v11)
           {
             goto LABEL_10;
@@ -801,16 +801,16 @@ LABEL_10:
       }
     }
 
-    LOBYTE(v6) = 1;
-    if ([v4 URLIsOnAttachedEntityType:1 at:v2])
+    LOBYTE(selfCopy) = 1;
+    if ([v4 URLIsOnAttachedEntityType:1 at:bundleParentDirectoryURL])
     {
       goto LABEL_50;
     }
 
-    if ([v4 URLIsOnAttachedEntityType:2 at:v2])
+    if ([v4 URLIsOnAttachedEntityType:2 at:bundleParentDirectoryURL])
     {
 LABEL_49:
-      LOBYTE(v6) = 1;
+      LOBYTE(selfCopy) = 1;
       goto LABEL_50;
     }
 
@@ -819,59 +819,59 @@ LABEL_49:
     v50 = 0u;
     v51 = 0u;
     v21 = +[MIDaemonConfiguration sharedInstance];
-    v6 = [v21 allExtensionKitExtensionsDirectories];
+    selfCopy = [v21 allExtensionKitExtensionsDirectories];
 
-    v22 = [v6 countByEnumeratingWithState:&v50 objects:v56 count:16];
+    v22 = [selfCopy countByEnumeratingWithState:&v50 objects:v56 count:16];
     if (!v22)
     {
 LABEL_33:
 
       v28 = +[MIDaemonConfiguration sharedInstance];
-      v29 = [v28 allFrameworksDirectories];
-      v30 = [v29 mutableCopy];
+      allFrameworksDirectories = [v28 allFrameworksDirectories];
+      v30 = [allFrameworksDirectories mutableCopy];
 
       v31 = +[MIDaemonConfiguration sharedInstance];
-      v32 = [v31 systemAppsDirectory];
-      [v30 addObject:v32];
+      systemAppsDirectory = [v31 systemAppsDirectory];
+      [v30 addObject:systemAppsDirectory];
 
       v33 = +[MIDaemonConfiguration sharedInstance];
-      v34 = [v33 coreServicesDirectory];
-      [v30 addObject:v34];
+      coreServicesDirectory = [v33 coreServicesDirectory];
+      [v30 addObject:coreServicesDirectory];
 
       v35 = +[MIDaemonConfiguration sharedInstance];
-      v36 = [v35 internalAppsDirectory];
-      [v30 addObject:v36];
+      internalAppsDirectory = [v35 internalAppsDirectory];
+      [v30 addObject:internalAppsDirectory];
 
       v48 = 0u;
       v49 = 0u;
       v46 = 0u;
       v47 = 0u;
       v7 = v30;
-      v6 = [v7 countByEnumeratingWithState:&v46 objects:v55 count:16];
-      if (v6)
+      selfCopy = [v7 countByEnumeratingWithState:&v46 objects:v55 count:16];
+      if (selfCopy)
       {
         v37 = *v47;
         while (2)
         {
-          for (i = 0; i != v6; i = i + 1)
+          for (i = 0; i != selfCopy; i = i + 1)
           {
             if (*v47 != v37)
             {
               objc_enumerationMutation(v7);
             }
 
-            v39 = [*(*(&v46 + 1) + 8 * i) path];
-            v40 = [v3 hasPrefix:v39];
+            path3 = [*(*(&v46 + 1) + 8 * i) path];
+            v40 = [path hasPrefix:path3];
 
             if (v40)
             {
-              LOBYTE(v6) = 1;
+              LOBYTE(selfCopy) = 1;
               goto LABEL_52;
             }
           }
 
-          v6 = [v7 countByEnumeratingWithState:&v46 objects:v55 count:16];
-          if (v6)
+          selfCopy = [v7 countByEnumeratingWithState:&v46 objects:v55 count:16];
+          if (selfCopy)
           {
             continue;
           }
@@ -893,11 +893,11 @@ LABEL_27:
     {
       if (*v51 != v24)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(selfCopy);
       }
 
-      v26 = [*(*(&v50 + 1) + 8 * v25) path];
-      v27 = [v3 hasPrefix:v26];
+      path4 = [*(*(&v50 + 1) + 8 * v25) path];
+      v27 = [path hasPrefix:path4];
 
       if (v27)
       {
@@ -906,7 +906,7 @@ LABEL_27:
 
       if (v23 == ++v25)
       {
-        v23 = [v6 countByEnumeratingWithState:&v50 objects:v56 count:16];
+        v23 = [selfCopy countByEnumeratingWithState:&v50 objects:v56 count:16];
         if (v23)
         {
           goto LABEL_27;
@@ -921,18 +921,18 @@ LABEL_48:
     goto LABEL_49;
   }
 
-  if (v5 > 2)
+  if (bundleType > 2)
   {
-    if (v5 != 3)
+    if (bundleType != 3)
     {
-      if (v5 == 5)
+      if (bundleType == 5)
       {
         v7 = +[MIDaemonConfiguration sharedInstance];
-        v16 = [v7 coreServicesDirectory];
-        v17 = [v16 path];
-        v18 = [v3 isEqualToString:v17];
+        coreServicesDirectory2 = [v7 coreServicesDirectory];
+        path5 = [coreServicesDirectory2 path];
+        v18 = [path isEqualToString:path5];
 LABEL_44:
-        LOBYTE(v6) = v18;
+        LOBYTE(selfCopy) = v18;
 
 LABEL_45:
         goto LABEL_50;
@@ -944,31 +944,31 @@ LABEL_45:
     v19 = v4;
     v20 = 1;
 LABEL_47:
-    LOBYTE(v6) = [v19 URLIsOnAttachedEntityType:v20 at:v2];
+    LOBYTE(selfCopy) = [v19 URLIsOnAttachedEntityType:v20 at:bundleParentDirectoryURL];
     goto LABEL_50;
   }
 
-  if (v5 == 1)
+  if (bundleType == 1)
   {
     v7 = +[MIDaemonConfiguration sharedInstance];
-    v8 = [v7 systemAppsDirectory];
+    systemAppsDirectory2 = [v7 systemAppsDirectory];
     goto LABEL_43;
   }
 
-  if (v5 == 2)
+  if (bundleType == 2)
   {
     v7 = +[MIDaemonConfiguration sharedInstance];
-    v8 = [v7 internalAppsDirectory];
+    systemAppsDirectory2 = [v7 internalAppsDirectory];
 LABEL_43:
-    v16 = v8;
-    v17 = [v8 path];
-    v18 = [v3 isEqual:v17];
+    coreServicesDirectory2 = systemAppsDirectory2;
+    path5 = [systemAppsDirectory2 path];
+    v18 = [path isEqual:path5];
     goto LABEL_44;
   }
 
 LABEL_50:
 
-  return v6;
+  return selfCopy;
 }
 
 - (NSString)bundleTypeDescription
@@ -996,9 +996,9 @@ LABEL_50:
 
     else
     {
-      v3 = [(MIBundle *)self parentBundle];
-      v4 = v3;
-      if (v3 && [v3 isPlaceholder])
+      parentBundle = [(MIBundle *)self parentBundle];
+      v4 = parentBundle;
+      if (parentBundle && [parentBundle isPlaceholder])
       {
         self->_isPlaceholder = 1;
       }
@@ -1006,8 +1006,8 @@ LABEL_50:
       else
       {
         v5 = +[MIFileManager defaultManager];
-        v6 = [(MIBundle *)self bundleURL];
-        self->_isPlaceholder = [v5 bundleAtURLIsPlaceholder:v6];
+        bundleURL = [(MIBundle *)self bundleURL];
+        self->_isPlaceholder = [v5 bundleAtURLIsPlaceholder:bundleURL];
       }
     }
 
@@ -1017,11 +1017,11 @@ LABEL_50:
   return self->_isPlaceholder;
 }
 
-- (BOOL)setIsPlaceholderWithError:(id *)a3
+- (BOOL)setIsPlaceholderWithError:(id *)error
 {
   v5 = +[MIFileManager defaultManager];
-  v6 = [(MIBundle *)self bundleURL];
-  v7 = [v5 markBundleAsPlaceholder:v6 withError:a3];
+  bundleURL = [(MIBundle *)self bundleURL];
+  v7 = [v5 markBundleAsPlaceholder:bundleURL withError:error];
 
   if (v7)
   {
@@ -1032,11 +1032,11 @@ LABEL_50:
   return v7;
 }
 
-+ (id)bundlesInParentBundle:(id)a3 subDirectory:(id)a4 matchingPredicate:(id)a5 error:(id *)a6
++ (id)bundlesInParentBundle:(id)bundle subDirectory:(id)directory matchingPredicate:(id)predicate error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  bundleCopy = bundle;
+  directoryCopy = directory;
+  predicateCopy = predicate;
   v13 = objc_opt_new();
   v37 = 0;
   v38 = &v37;
@@ -1044,20 +1044,20 @@ LABEL_50:
   v40 = __Block_byref_object_copy__3;
   v41 = __Block_byref_object_dispose__3;
   v42 = 0;
-  v14 = [v10 bundleURL];
-  v15 = [v14 URLByAppendingPathComponent:v11 isDirectory:1];
+  bundleURL = [bundleCopy bundleURL];
+  v15 = [bundleURL URLByAppendingPathComponent:directoryCopy isDirectory:1];
 
   v16 = +[MIFileManager defaultManager];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __71__MIBundle_bundlesInParentBundle_subDirectory_matchingPredicate_error___block_invoke;
   v30[3] = &unk_1E7AE1AE8;
-  v17 = v12;
+  v17 = predicateCopy;
   v34 = v17;
-  v36 = a1;
-  v18 = v10;
+  selfCopy = self;
+  v18 = bundleCopy;
   v31 = v18;
-  v19 = v11;
+  v19 = directoryCopy;
   v32 = v19;
   v35 = &v37;
   v20 = v13;
@@ -1071,18 +1071,18 @@ LABEL_50:
       goto LABEL_6;
     }
 
-    v22 = [v21 domain];
-    if ([v22 isEqualToString:*MEMORY[0x1E696A798]])
+    domain = [v21 domain];
+    if ([domain isEqualToString:*MEMORY[0x1E696A798]])
     {
-      v23 = [v21 code];
+      code = [v21 code];
 
-      if (v23 == 2)
+      if (code == 2)
       {
 
 LABEL_6:
         v24 = [v20 copy];
         v21 = 0;
-        if (!a6)
+        if (!error)
         {
           goto LABEL_13;
         }
@@ -1095,14 +1095,14 @@ LABEL_6:
     {
     }
 
-    v25 = [v15 path];
-    v27 = _CreateAndLogError("+[MIBundle bundlesInParentBundle:subDirectory:matchingPredicate:error:]", 644, @"MIInstallerErrorDomain", 54, v21, 0, @"Failed to discover bundles in directory %@", v26, v25);
+    path = [v15 path];
+    v27 = _CreateAndLogError("+[MIBundle bundlesInParentBundle:subDirectory:matchingPredicate:error:]", 644, @"MIInstallerErrorDomain", 54, v21, 0, @"Failed to discover bundles in directory %@", v26, path);
     v28 = v38[5];
     v38[5] = v27;
   }
 
   v24 = 0;
-  if (!a6)
+  if (!error)
   {
     goto LABEL_13;
   }
@@ -1110,7 +1110,7 @@ LABEL_6:
 LABEL_11:
   if (!v24)
   {
-    *a6 = v38[5];
+    *error = v38[5];
   }
 
 LABEL_13:
@@ -1156,48 +1156,48 @@ BOOL __71__MIBundle_bundlesInParentBundle_subDirectory_matchingPredicate_error__
 
 - (BOOL)isDeletable
 {
-  v3 = [(MIBundle *)self bundleType];
-  v4 = [(MIBundle *)self bundleParentDirectoryURL];
-  v5 = [v4 path];
+  bundleType = [(MIBundle *)self bundleType];
+  bundleParentDirectoryURL = [(MIBundle *)self bundleParentDirectoryURL];
+  path = [bundleParentDirectoryURL path];
 
-  if (v3 == 4)
+  if (bundleType == 4)
   {
     goto LABEL_6;
   }
 
-  if (v3 == 2)
+  if (bundleType == 2)
   {
     v9 = +[MIDaemonConfiguration sharedInstance];
-    v10 = [v9 internalAppsDirectory];
-    v11 = [v10 path];
-    if (([v5 isEqualToString:v11] & 1) == 0)
+    internalAppsDirectory = [v9 internalAppsDirectory];
+    path2 = [internalAppsDirectory path];
+    if (([path isEqualToString:path2] & 1) == 0)
     {
 LABEL_10:
       v12 = +[MIDaemonConfiguration sharedInstance];
-      v8 = [v12 allowsInternalSecurityPolicy];
+      allowsInternalSecurityPolicy = [v12 allowsInternalSecurityPolicy];
 
       goto LABEL_11;
     }
 
 LABEL_9:
-    v8 = 0;
+    allowsInternalSecurityPolicy = 0;
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  if (v3 != 1 || (+[MIDaemonConfiguration sharedInstance](MIDaemonConfiguration, "sharedInstance"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 allowDeletableSystemApps], v6, !v7))
+  if (bundleType != 1 || (+[MIDaemonConfiguration sharedInstance](MIDaemonConfiguration, "sharedInstance"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 allowDeletableSystemApps], v6, !v7))
   {
-    v8 = 0;
+    allowsInternalSecurityPolicy = 0;
     goto LABEL_12;
   }
 
   if (![(MIBundle *)self isRemovableSystemApp])
   {
     v9 = +[MIDaemonConfiguration sharedInstance];
-    v10 = [v9 systemAppsDirectory];
-    v11 = [v10 path];
-    if (([v5 isEqualToString:v11] & 1) == 0)
+    internalAppsDirectory = [v9 systemAppsDirectory];
+    path2 = [internalAppsDirectory path];
+    if (([path isEqualToString:path2] & 1) == 0)
     {
       goto LABEL_10;
     }
@@ -1206,26 +1206,26 @@ LABEL_11:
   }
 
 LABEL_6:
-  v8 = 1;
+  allowsInternalSecurityPolicy = 1;
 LABEL_12:
 
-  return v8;
+  return allowsInternalSecurityPolicy;
 }
 
-- (id)_filterExtensionBundlesNotInCacheIfNeeded:(id)a3
+- (id)_filterExtensionBundlesNotInCacheIfNeeded:(id)needed
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  neededCopy = needed;
   if ([(MIBundle *)self allowsAppleAppExtensionsNotInExtensionCache])
   {
-    v21 = [(MIBundle *)self installsAppleAppExtensionsNotInExtensionCache];
+    installsAppleAppExtensionsNotInExtensionCache = [(MIBundle *)self installsAppleAppExtensionsNotInExtensionCache];
     v5 = objc_opt_new();
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v20 = v4;
-    v6 = v4;
+    v20 = neededCopy;
+    v6 = neededCopy;
     v7 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (!v7)
     {
@@ -1262,12 +1262,12 @@ LABEL_13:
           goto LABEL_13;
         }
 
-        v14 = [v13 domain];
-        if ([v14 isEqualToString:@"MIInstallerErrorDomain"])
+        domain = [v13 domain];
+        if ([domain isEqualToString:@"MIInstallerErrorDomain"])
         {
-          v15 = [v13 code];
+          code = [v13 code];
 
-          if (v15 == 45)
+          if (code == 45)
           {
             goto LABEL_13;
           }
@@ -1277,14 +1277,14 @@ LABEL_13:
         {
         }
 
-        if (v21 && ([v11 installableIfAppleAppExtensionsNotInExtensionCache] & 1) != 0)
+        if (installsAppleAppExtensionsNotInExtensionCache && ([v11 installableIfAppleAppExtensionsNotInExtensionCache] & 1) != 0)
         {
           goto LABEL_13;
         }
 
         if (!gLogHandle || *(gLogHandle + 44) >= 3)
         {
-          v19 = [v11 identifier];
+          identifier = [v11 identifier];
           MOLogWrite();
         }
 
@@ -1301,25 +1301,25 @@ LABEL_14:
 LABEL_23:
 
         v17 = [v5 copy];
-        v4 = v20;
+        neededCopy = v20;
         goto LABEL_25;
       }
     }
   }
 
-  v17 = v4;
+  v17 = neededCopy;
 LABEL_25:
 
   return v17;
 }
 
-- (id)_filterExtensionBundles:(id)a3 forValidationFlags:(unsigned __int8)a4
+- (id)_filterExtensionBundles:(id)bundles forValidationFlags:(unsigned __int8)flags
 {
-  v4 = a4;
+  flagsCopy = flags;
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (v4)
+  bundlesCopy = bundles;
+  v6 = bundlesCopy;
+  if (flagsCopy)
   {
     v7 = objc_opt_new();
     v30 = 0u;
@@ -1346,9 +1346,9 @@ LABEL_25:
         }
 
         v13 = *(*(&v30 + 1) + 8 * i);
-        if (v4 & 2) == 0 || ([*(*(&v30 + 1) + 8 * i) isApplicableToCurrentOSVersionWithError:0])
+        if (flagsCopy & 2) == 0 || ([*(*(&v30 + 1) + 8 * i) isApplicableToCurrentOSVersionWithError:0])
         {
-          if ((v4 & 1) == 0)
+          if ((flagsCopy & 1) == 0)
           {
             goto LABEL_12;
           }
@@ -1361,7 +1361,7 @@ LABEL_25:
 LABEL_11:
 
 LABEL_12:
-            [v7 addObject:{v13, v24, v25}];
+            [v7 addObject:{v13, v24, identifier}];
             continue;
           }
 
@@ -1371,15 +1371,15 @@ LABEL_12:
             goto LABEL_26;
           }
 
-          v18 = [v13 minimumOSVersion];
-          if ([v18 compare:@"8.2" options:64] == -1 && v15 != 0)
+          minimumOSVersion = [v13 minimumOSVersion];
+          if ([minimumOSVersion compare:@"8.2" options:64] == -1 && v15 != 0)
           {
-            v20 = [v15 domain];
-            if ([v20 isEqualToString:@"MIInstallerErrorDomain"])
+            domain = [v15 domain];
+            if ([domain isEqualToString:@"MIInstallerErrorDomain"])
             {
-              v28 = [v15 code];
+              code = [v15 code];
 
-              if (v28 == 66)
+              if (code == 66)
               {
                 goto LABEL_11;
               }
@@ -1391,10 +1391,10 @@ LABEL_12:
 LABEL_26:
           if (!gLogHandle || *(gLogHandle + 44) >= 5)
           {
-            v21 = [v13 bundleTypeDescription];
-            v25 = [v13 identifier];
+            bundleTypeDescription = [v13 bundleTypeDescription];
+            identifier = [v13 identifier];
             v26 = v15;
-            v24 = v21;
+            v24 = bundleTypeDescription;
             MOLogWrite();
           }
 
@@ -1403,10 +1403,10 @@ LABEL_26:
 
         if (!gLogHandle || *(gLogHandle + 44) >= 5)
         {
-          v16 = [v13 bundleTypeDescription];
-          v17 = [v13 bundleURL];
-          [v17 path];
-          v25 = v24 = v16;
+          bundleTypeDescription2 = [v13 bundleTypeDescription];
+          bundleURL = [v13 bundleURL];
+          [bundleURL path];
+          identifier = v24 = bundleTypeDescription2;
           MOLogWrite();
         }
       }
@@ -1423,20 +1423,20 @@ LABEL_32:
     }
   }
 
-  v22 = [v5 copy];
+  v22 = [bundlesCopy copy];
 LABEL_34:
 
   return v22;
 }
 
-- (id)pluginKitBundlesPerformingPlatformValidation:(unsigned __int8)a3 withError:(id *)a4
+- (id)pluginKitBundlesPerformingPlatformValidation:(unsigned __int8)validation withError:(id *)error
 {
-  v5 = a3;
+  validationCopy = validation;
   v45 = *MEMORY[0x1E69E9840];
-  v7 = [(MIBundle *)self pluginKitBundles];
-  if (v7)
+  pluginKitBundles = [(MIBundle *)self pluginKitBundles];
+  if (pluginKitBundles)
   {
-    v8 = v7;
+    v8 = pluginKitBundles;
     v9 = 0;
     goto LABEL_3;
   }
@@ -1453,17 +1453,17 @@ LABEL_34:
 
   if (v42 == 1)
   {
-    v15 = [(MIBundle *)self plugInsDirectoryURL];
-    v16 = [(MIBundle *)self bundleURL];
-    v17 = [v15 path];
-    v18 = [v16 path];
-    v19 = [v17 substringFromIndex:{objc_msgSend(v18, "length")}];
+    plugInsDirectoryURL = [(MIBundle *)self plugInsDirectoryURL];
+    bundleURL = [(MIBundle *)self bundleURL];
+    path = [plugInsDirectoryURL path];
+    path2 = [bundleURL path];
+    v19 = [path substringFromIndex:{objc_msgSend(path2, "length")}];
 
     v40 = v13;
     v8 = [MIPluginKitBundle bundlesInParentBundle:self subDirectory:v19 matchingPredicate:&__block_literal_global_199 error:&v40];
     v9 = v40;
 
-    v13 = v15;
+    v13 = plugInsDirectoryURL;
   }
 
   else
@@ -1520,16 +1520,16 @@ LABEL_14:
       }
 
       v43[0] = @"PlugIns";
-      v28 = [v24 bundleName];
-      v43[1] = v28;
+      bundleName = [v24 bundleName];
+      v43[1] = bundleName;
       v43[2] = @"PlugIns";
       v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:3];
 
       v33 = v29;
       v30 = [MEMORY[0x1E696AEC0] pathWithComponents:v29];
-      v31 = [v24 identifier];
+      identifier = [v24 identifier];
       v34 = v9;
-      v32 = [MIPluginKitBundle bundlesInParentBundle:self overrideParentBundleIDForValidation:v31 subDirectory:v30 matchingPredicate:&__block_literal_global_199 error:&v34];
+      v32 = [MIPluginKitBundle bundlesInParentBundle:self overrideParentBundleIDForValidation:identifier subDirectory:v30 matchingPredicate:&__block_literal_global_199 error:&v34];
       v13 = v34;
 
       if (v32)
@@ -1542,7 +1542,7 @@ LABEL_14:
 LABEL_22:
       v10 = 0;
       v11 = 0;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_25;
       }
@@ -1560,11 +1560,11 @@ LABEL_28:
 
   [(MIBundle *)self setPluginKitBundles:v8];
 LABEL_3:
-  v10 = [(MIBundle *)self _filterExtensionBundles:v8 forValidationFlags:v5];
+  v10 = [(MIBundle *)self _filterExtensionBundles:v8 forValidationFlags:validationCopy];
   v11 = [(MIBundle *)self _filterExtensionBundlesNotInCacheIfNeeded:v10];
   v12 = v8;
   v13 = v9;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_25;
   }
@@ -1573,7 +1573,7 @@ LABEL_23:
   if (!v11)
   {
     v25 = v13;
-    *a4 = v13;
+    *error = v13;
   }
 
 LABEL_25:
@@ -1590,16 +1590,16 @@ uint64_t __67__MIBundle_pluginKitBundlesPerformingPlatformValidation_withError__
   return v3;
 }
 
-- (BOOL)validatePluginKitMetadataWithError:(id *)a3
+- (BOOL)validatePluginKitMetadataWithError:(id *)error
 {
   v96 = *MEMORY[0x1E69E9840];
-  v5 = [(MIBundle *)self isLaunchProhibited];
-  v6 = [(MIBundle *)self identifier];
-  v7 = [v6 isEqualToString:@"com.apple.MapsExternalComponents"];
+  isLaunchProhibited = [(MIBundle *)self isLaunchProhibited];
+  identifier = [(MIBundle *)self identifier];
+  v7 = [identifier isEqualToString:@"com.apple.MapsExternalComponents"];
 
   v92 = 0;
   v8 = [(MIBundle *)self pluginKitBundlesWithError:&v92];
-  v9 = v92;
+  identifier2 = v92;
   if (!v8)
   {
     v78 = 0;
@@ -1607,12 +1607,12 @@ uint64_t __67__MIBundle_pluginKitBundlesPerformingPlatformValidation_withError__
     v11 = 0;
     v12 = 0;
     v13 = 0;
-    if (a3)
+    if (error)
     {
 LABEL_97:
-      v62 = v9;
+      v62 = identifier2;
       v14 = 0;
-      *a3 = v9;
+      *error = identifier2;
       goto LABEL_98;
     }
 
@@ -1631,22 +1631,22 @@ LABEL_5:
     v69 = 0;
   }
 
-  if (!-[MIBundle isPlaceholder](self, "isPlaceholder") && v5 && ![v8 count])
+  if (!-[MIBundle isPlaceholder](self, "isPlaceholder") && isLaunchProhibited && ![v8 count])
   {
     obj = [(MIBundle *)self identifier];
     v15 = _CreateAndLogError("[MIBundle validatePluginKitMetadataWithError:]", 904, @"MIInstallerErrorDomain", 122, 0, &unk_1F2887B60, @"The app extension stub app %@ must have at least one app extension, but none were found.", v46, obj);
-    v77 = 0;
+    identifier3 = 0;
     v78 = 0;
     v10 = 0;
-    v76 = 0;
+    identifier5 = 0;
     v12 = 0;
 LABEL_95:
 
 LABEL_96:
-    v9 = v15;
-    v11 = v76;
-    v13 = v77;
-    if (a3)
+    identifier2 = v15;
+    v11 = identifier5;
+    v13 = identifier3;
+    if (error)
     {
       goto LABEL_97;
     }
@@ -1662,24 +1662,24 @@ LABEL_96:
   v70 = [obj countByEnumeratingWithState:&v88 objects:v95 count:16];
   if (!v70)
   {
-    v77 = 0;
+    identifier3 = 0;
     v78 = 0;
     v10 = 0;
-    v75 = 0;
-    v76 = 0;
-    v15 = v9;
+    identifier7 = 0;
+    identifier5 = 0;
+    v15 = identifier2;
     goto LABEL_75;
   }
 
-  v77 = 0;
+  identifier3 = 0;
   v78 = 0;
   v10 = 0;
-  v75 = 0;
-  v76 = 0;
+  identifier7 = 0;
+  identifier5 = 0;
   v73 = *v89;
-  v72 = v5 & v7;
-  v71 = !v5 | v7;
-  v15 = v9;
+  v72 = isLaunchProhibited & v7;
+  v71 = !isLaunchProhibited | v7;
+  v15 = identifier2;
   while (2)
   {
     for (i = 0; i != v70; ++i)
@@ -1697,34 +1697,34 @@ LABEL_96:
 
       if (!v19)
       {
-        v12 = v75;
+        v12 = identifier7;
         goto LABEL_96;
       }
 
       if ([v18 isFileProviderNonUIExtension])
       {
-        if (v77)
+        if (identifier3)
         {
-          v9 = [v18 identifier];
-          _CreateAndLogError("[MIBundle validatePluginKitMetadataWithError:]", 918, @"MIInstallerErrorDomain", 62, 0, &unk_1F2887B88, @"Multiple file provider app extensions found in app but only one is allowed (found %@ ; already found %@)", v51, v9);
+          identifier2 = [v18 identifier];
+          _CreateAndLogError("[MIBundle validatePluginKitMetadataWithError:]", 918, @"MIInstallerErrorDomain", 62, 0, &unk_1F2887B88, @"Multiple file provider app extensions found in app but only one is allowed (found %@ ; already found %@)", v51, identifier2);
           goto LABEL_84;
         }
 
-        v77 = [v18 identifier];
+        identifier3 = [v18 identifier];
       }
 
       if (v72)
       {
         if (([v18 isMapsGeoServicesExtension] & 1) == 0)
         {
-          v20 = [(MIBundle *)self identifier];
-          v21 = [v20 isEqualToString:@"com.apple.MapsExternalComponents"];
+          identifier4 = [(MIBundle *)self identifier];
+          v21 = [identifier4 isEqualToString:@"com.apple.MapsExternalComponents"];
 
           if ((v21 & 1) == 0)
           {
-            v9 = [(MIBundle *)self identifier];
-            v65 = [v18 extensionPointIdentifier];
-            v59 = _CreateAndLogError("[MIBundle validatePluginKitMetadataWithError:]", 926, @"MIInstallerErrorDomain", 59, 0, &unk_1F2887BB0, @"App %@ is forbidden from providing an extension of type %@", v58, v9);
+            identifier2 = [(MIBundle *)self identifier];
+            extensionPointIdentifier = [v18 extensionPointIdentifier];
+            v59 = _CreateAndLogError("[MIBundle validatePluginKitMetadataWithError:]", 926, @"MIInstallerErrorDomain", 59, 0, &unk_1F2887BB0, @"App %@ is forbidden from providing an extension of type %@", v58, identifier2);
 
             v15 = v59;
             goto LABEL_94;
@@ -1734,9 +1734,9 @@ LABEL_96:
 
       if ((v71 & 1) == 0 && ([v18 isMessagePayloadProviderExtension] & 1) == 0)
       {
-        v9 = [v18 identifier];
-        v52 = [v18 extensionPointIdentifier];
-        _CreateAndLogError("[MIBundle validatePluginKitMetadataWithError:]", 933, @"MIInstallerErrorDomain", 123, 0, &unk_1F2887BD8, @"Messages stub apps may only have a single message payload provider app extension, but this stub app has an extension %@ of type %@", v53, v9);
+        identifier2 = [v18 identifier];
+        extensionPointIdentifier2 = [v18 extensionPointIdentifier];
+        _CreateAndLogError("[MIBundle validatePluginKitMetadataWithError:]", 933, @"MIInstallerErrorDomain", 123, 0, &unk_1F2887BD8, @"Messages stub apps may only have a single message payload provider app extension, but this stub app has an extension %@ of type %@", v53, identifier2);
         v55 = LABEL_88:;
 
         goto LABEL_93;
@@ -1744,14 +1744,14 @@ LABEL_96:
 
       if ([v18 isMessagePayloadProviderExtension])
       {
-        if (!v76)
+        if (!identifier5)
         {
-          v76 = [v18 identifier];
+          identifier5 = [v18 identifier];
           goto LABEL_27;
         }
 
-        v9 = [v18 identifier];
-        _CreateAndLogError("[MIBundle validatePluginKitMetadataWithError:]", 942, @"MIInstallerErrorDomain", 121, 0, &unk_1F2887C00, @"Multiple message payload provider extensions found in app but only one is allowed (found %@ ; already found %@)", v54, v9);
+        identifier2 = [v18 identifier];
+        _CreateAndLogError("[MIBundle validatePluginKitMetadataWithError:]", 942, @"MIInstallerErrorDomain", 121, 0, &unk_1F2887C00, @"Multiple message payload provider extensions found in app but only one is allowed (found %@ ; already found %@)", v54, identifier2);
         v55 = LABEL_84:;
 
         goto LABEL_93;
@@ -1762,14 +1762,14 @@ LABEL_27:
       {
         if (v69)
         {
-          v27 = [v18 bundleParentSubdirectory];
-          v28 = [v27 isEqualToString:@"PlugIns"];
+          bundleParentSubdirectory = [v18 bundleParentSubdirectory];
+          v28 = [bundleParentSubdirectory isEqualToString:@"PlugIns"];
 
           if (v28)
           {
-            v9 = [v18 bundleURL];
-            v52 = [v9 path];
-            _CreateAndLogError("[MIBundle validatePluginKitMetadataWithError:]", 985, @"MIInstallerErrorDomain", 118, 0, &unk_1F2887CC8, @"WatchKit 2 app contains a non-WatchKit extension at %@. WatchKit apps specifying a MinimumOSVersion earlier than 3.0 must have non-WatchKit extensions embedded within the WatchKit extension.", v60, v52);
+            identifier2 = [v18 bundleURL];
+            extensionPointIdentifier2 = [identifier2 path];
+            _CreateAndLogError("[MIBundle validatePluginKitMetadataWithError:]", 985, @"MIInstallerErrorDomain", 118, 0, &unk_1F2887CC8, @"WatchKit 2 app contains a non-WatchKit extension at %@. WatchKit apps specifying a MinimumOSVersion earlier than 3.0 must have non-WatchKit extensions embedded within the WatchKit extension.", v60, extensionPointIdentifier2);
             goto LABEL_88;
           }
         }
@@ -1781,16 +1781,16 @@ LABEL_27:
             v10 = objc_opt_new();
           }
 
-          v29 = [v18 extensionAttributes];
-          v9 = v29;
-          if (!v29)
+          extensionAttributes = [v18 extensionAttributes];
+          identifier2 = extensionAttributes;
+          if (!extensionAttributes)
           {
             goto LABEL_70;
           }
 
-          v67 = a3;
+          errorCopy2 = error;
           v68 = v8;
-          v30 = [v29 objectForKeyedSubscript:@"IntentsSupported"];
+          v30 = [extensionAttributes objectForKeyedSubscript:@"IntentsSupported"];
           v83 = 0u;
           v84 = 0u;
           v85 = 0u;
@@ -1812,8 +1812,8 @@ LABEL_27:
 
                 if ([v10 containsObject:*(*(&v83 + 1) + 8 * j)])
                 {
-                  v47 = [(MIBundle *)self identifier];
-                  _CreateAndLogError("[MIBundle validatePluginKitMetadataWithError:]", 1003, @"MIInstallerErrorDomain", 117, 0, &unk_1F2887CF0, @"More than one Siri Intents app extension in the app %@ declares the value %@ in the IntentsSupported array in the ExtensionAttributes dictionary in the NSExtensionDictionary in its Info.plist.", v48, v47);
+                  identifier6 = [(MIBundle *)self identifier];
+                  _CreateAndLogError("[MIBundle validatePluginKitMetadataWithError:]", 1003, @"MIInstallerErrorDomain", 117, 0, &unk_1F2887CF0, @"More than one Siri Intents app extension in the app %@ declares the value %@ in the IntentsSupported array in the ExtensionAttributes dictionary in the NSExtensionDictionary in its Info.plist.", v48, identifier6);
                   goto LABEL_79;
                 }
               }
@@ -1843,16 +1843,16 @@ LABEL_27:
             v78 = objc_opt_new();
           }
 
-          v37 = [v18 extensionAttributes];
-          v9 = v37;
-          if (!v37)
+          extensionAttributes2 = [v18 extensionAttributes];
+          identifier2 = extensionAttributes2;
+          if (!extensionAttributes2)
           {
             goto LABEL_70;
           }
 
-          v67 = a3;
+          errorCopy2 = error;
           v68 = v8;
-          v38 = [v37 objectForKeyedSubscript:@"IntentsSupported"];
+          v38 = [extensionAttributes2 objectForKeyedSubscript:@"IntentsSupported"];
           v79 = 0u;
           v80 = 0u;
           v81 = 0u;
@@ -1874,12 +1874,12 @@ LABEL_27:
 
                 if ([v78 containsObject:*(*(&v79 + 1) + 8 * k)])
                 {
-                  v47 = [(MIBundle *)self identifier];
-                  _CreateAndLogError("[MIBundle validatePluginKitMetadataWithError:]", 1023, @"MIInstallerErrorDomain", 117, 0, &unk_1F2887D18, @"More than one Siri Intents UI app extension in the app %@ declares the value %@ in the IntentsSupported array in the ExtensionAttributes dictionary in the NSExtensionDictionary in its Info.plist.", v49, v47);
+                  identifier6 = [(MIBundle *)self identifier];
+                  _CreateAndLogError("[MIBundle validatePluginKitMetadataWithError:]", 1023, @"MIInstallerErrorDomain", 117, 0, &unk_1F2887D18, @"More than one Siri Intents UI app extension in the app %@ declares the value %@ in the IntentsSupported array in the ExtensionAttributes dictionary in the NSExtensionDictionary in its Info.plist.", v49, identifier6);
                   v50 = LABEL_79:;
 
                   v15 = v50;
-                  a3 = v67;
+                  error = errorCopy2;
                   v8 = v68;
                   goto LABEL_94;
                 }
@@ -1900,38 +1900,38 @@ LABEL_27:
 
         [v36 addObjectsFromArray:v31];
 
-        a3 = v67;
+        error = errorCopy2;
         v8 = v68;
 LABEL_70:
 
         continue;
       }
 
-      if (v75)
+      if (identifier7)
       {
-        v9 = [v18 identifier];
-        v57 = _CreateAndLogError("[MIBundle validatePluginKitMetadataWithError:]", 953, @"MIInstallerErrorDomain", 82, 0, &unk_1F2887C28, @"Multiple WatchKit app extensions found in app but only one is allowed (found %@  already found %@)", v56, v9);;
+        identifier2 = [v18 identifier];
+        v57 = _CreateAndLogError("[MIBundle validatePluginKitMetadataWithError:]", 953, @"MIInstallerErrorDomain", 82, 0, &unk_1F2887C28, @"Multiple WatchKit app extensions found in app but only one is allowed (found %@  already found %@)", v56, identifier2);;
 
         v15 = v57;
-        v12 = v75;
+        v12 = identifier7;
         goto LABEL_95;
       }
 
-      v75 = [v18 identifier];
+      identifier7 = [v18 identifier];
       if (![(MIBundle *)self isPlaceholder])
       {
         if ([(MIBundle *)self isWatchApp])
         {
-          v22 = [v18 extensionAttributes];
-          if (!v22)
+          extensionAttributes3 = [v18 extensionAttributes];
+          if (!extensionAttributes3)
           {
             _CreateAndLogError("[MIBundle validatePluginKitMetadataWithError:]", 973, @"MIInstallerErrorDomain", 93, 0, &unk_1F2887CA0, @"WatchKit 2 app extension's NSExtension.NSExtensionAttributes dictionary is not present. It must contain a WKAppBundleIdentifier key set to the WatchKit app's bundle ID.", v23, v64);
-            v15 = v9 = v15;
+            v15 = identifier2 = v15;
             goto LABEL_94;
           }
 
-          v9 = v22;
-          v24 = [v22 objectForKeyedSubscript:@"WKAppBundleIdentifier"];
+          identifier2 = extensionAttributes3;
+          v24 = [extensionAttributes3 objectForKeyedSubscript:@"WKAppBundleIdentifier"];
           objc_opt_class();
           v25 = v24;
           if (objc_opt_isKindOfClass())
@@ -1950,21 +1950,21 @@ LABEL_70:
             goto LABEL_92;
           }
 
-          v44 = [(MIBundle *)self identifier];
-          v45 = [v26 isEqualToString:v44];
+          identifier8 = [(MIBundle *)self identifier];
+          v45 = [v26 isEqualToString:identifier8];
 
           if ((v45 & 1) == 0)
           {
-            v66 = [(MIBundle *)self identifier];
+            identifier9 = [(MIBundle *)self identifier];
             v55 = _CreateAndLogError("[MIBundle validatePluginKitMetadataWithError:]", 969, @"MIInstallerErrorDomain", 93, 0, &unk_1F2887C78, @"WatchKit 2 app extension's NSExtension.NSExtensionAttributes.WKAppBundleIdentifier value does not match WatchKit app's bundle ID (found %@ expected %@).", v61, v26);;
 
-            v15 = v66;
+            v15 = identifier9;
 LABEL_92:
 
 LABEL_93:
             v15 = v55;
 LABEL_94:
-            v12 = v75;
+            v12 = identifier7;
             goto LABEL_95;
           }
 
@@ -1973,7 +1973,7 @@ LABEL_94:
 
         if (!gLogHandle || *(gLogHandle + 44) >= 5)
         {
-          v64 = v75;
+          v64 = identifier7;
           MOLogWrite();
         }
       }
@@ -1991,28 +1991,28 @@ LABEL_94:
 LABEL_75:
 
   v14 = 1;
-  v9 = v15;
-  v12 = v75;
-  v11 = v76;
-  v13 = v77;
+  identifier2 = v15;
+  v12 = identifier7;
+  v11 = identifier5;
+  v13 = identifier3;
 LABEL_98:
 
   return v14;
 }
 
-- (id)extensionKitBundlesPerformingPlatformValidation:(unsigned __int8)a3 withError:(id *)a4
+- (id)extensionKitBundlesPerformingPlatformValidation:(unsigned __int8)validation withError:(id *)error
 {
-  v5 = a3;
-  v7 = [(MIBundle *)self extensionKitBundles];
-  if (v7)
+  validationCopy = validation;
+  extensionKitBundles = [(MIBundle *)self extensionKitBundles];
+  if (extensionKitBundles)
   {
-    v8 = v7;
+    v8 = extensionKitBundles;
     v9 = 0;
     goto LABEL_7;
   }
 
-  v10 = [(MIBundle *)self bundleURL];
-  v11 = [v10 URLByAppendingPathComponent:@"Extensions" isDirectory:1];
+  bundleURL = [(MIBundle *)self bundleURL];
+  v11 = [bundleURL URLByAppendingPathComponent:@"Extensions" isDirectory:1];
 
   v12 = +[MIFileManager defaultManager];
   v13 = [v12 itemDoesNotExistOrIsNotDirectoryAtURL:v11];
@@ -2025,9 +2025,9 @@ LABEL_6:
     [(MIBundle *)self setExtensionKitBundles:v8];
 
 LABEL_7:
-    v14 = [(MIBundle *)self _filterExtensionBundles:v8 forValidationFlags:v5];
+    v14 = [(MIBundle *)self _filterExtensionBundles:v8 forValidationFlags:validationCopy];
     v15 = [(MIBundle *)self _filterExtensionBundlesNotInCacheIfNeeded:v14];
-    if (!a4)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -2045,7 +2045,7 @@ LABEL_7:
 
   v14 = 0;
   v15 = 0;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_10;
   }
@@ -2054,7 +2054,7 @@ LABEL_8:
   if (!v15)
   {
     v16 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
 LABEL_10:
@@ -2071,15 +2071,15 @@ uint64_t __70__MIBundle_extensionKitBundlesPerformingPlatformValidation_withErro
   return v3;
 }
 
-- (BOOL)_validateExtensions:(id)a3 error:(id *)a4
+- (BOOL)_validateExtensions:(id)extensions error:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = a3;
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  extensionsCopy = extensions;
+  v6 = [extensionsCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2093,7 +2093,7 @@ uint64_t __70__MIBundle_extensionKitBundlesPerformingPlatformValidation_withErro
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(extensionsCopy);
         }
 
         v12 = *(*(&v18 + 1) + 8 * v10);
@@ -2104,11 +2104,11 @@ uint64_t __70__MIBundle_extensionKitBundlesPerformingPlatformValidation_withErro
         if (!v13)
         {
 
-          if (a4)
+          if (error)
           {
             v14 = v8;
             v15 = 0;
-            *a4 = v8;
+            *error = v8;
           }
 
           else
@@ -2124,7 +2124,7 @@ uint64_t __70__MIBundle_extensionKitBundlesPerformingPlatformValidation_withErro
       }
 
       while (v7 != v10);
-      v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v7 = [extensionsCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v7)
       {
         continue;
@@ -2145,7 +2145,7 @@ LABEL_15:
   return v15;
 }
 
-- (BOOL)validateExtensionKitMetadataWithError:(id *)a3
+- (BOOL)validateExtensionKitMetadataWithError:(id *)error
 {
   v13 = 0;
   v5 = [(MIBundle *)self extensionKitBundlesWithError:&v13];
@@ -2158,7 +2158,7 @@ LABEL_15:
     v9 = v12;
 
     v7 = v9;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -2167,7 +2167,7 @@ LABEL_15:
   else
   {
     v8 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -2176,7 +2176,7 @@ LABEL_15:
   if (!v8)
   {
     v10 = v7;
-    *a3 = v7;
+    *error = v7;
   }
 
 LABEL_7:
@@ -2184,14 +2184,14 @@ LABEL_7:
   return v8;
 }
 
-- (id)appExtensionBundlesPerformingPlatformValidation:(unsigned __int8)a3 withError:(id *)a4
+- (id)appExtensionBundlesPerformingPlatformValidation:(unsigned __int8)validation withError:(id *)error
 {
-  v5 = a3;
+  validationCopy = validation;
   v7 = objc_opt_new();
-  v8 = [(MIBundle *)self pluginKitBundlesPerformingPlatformValidation:v5 withError:a4];
+  v8 = [(MIBundle *)self pluginKitBundlesPerformingPlatformValidation:validationCopy withError:error];
   if (v8)
   {
-    v9 = [(MIBundle *)self extensionKitBundlesPerformingPlatformValidation:v5 withError:a4];
+    v9 = [(MIBundle *)self extensionKitBundlesPerformingPlatformValidation:validationCopy withError:error];
     if (v9)
     {
       [v7 addObjectsFromArray:v8];
@@ -2213,7 +2213,7 @@ LABEL_7:
   return v10;
 }
 
-- (BOOL)validateDriverKitExtensionMetadataWithError:(id *)a3
+- (BOOL)validateDriverKitExtensionMetadataWithError:(id *)error
 {
   v13 = 0;
   v5 = [(MIBundle *)self driverKitExtensionBundlesWithError:&v13];
@@ -2226,7 +2226,7 @@ LABEL_7:
     v9 = v12;
 
     v7 = v9;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -2235,7 +2235,7 @@ LABEL_7:
   else
   {
     v8 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -2244,7 +2244,7 @@ LABEL_7:
   if (!v8)
   {
     v10 = v7;
-    *a3 = v7;
+    *error = v7;
   }
 
 LABEL_7:
@@ -2252,14 +2252,14 @@ LABEL_7:
   return v8;
 }
 
-- (id)infoPlistHashWithError:(id *)a3
+- (id)infoPlistHashWithError:(id *)error
 {
-  v4 = [(MIBundle *)self infoPlistURL];
-  v6 = v4;
-  if (v4)
+  infoPlistURL = [(MIBundle *)self infoPlistURL];
+  v6 = infoPlistURL;
+  if (infoPlistURL)
   {
     v15 = 0;
-    v7 = MICreateSHA256Digest(v4, &v15);
+    v7 = MICreateSHA256Digest(infoPlistURL, &v15);
     v9 = v15;
     if (v7)
     {
@@ -2270,7 +2270,7 @@ LABEL_7:
     v12 = _CreateAndLogError("[MIBundle infoPlistHashWithError:]", 1196, @"MIInstallerErrorDomain", 4, 0, 0, @"Failed to compute hash for Info.plist at %@", v8, v6);
 
     v9 = v12;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -2278,12 +2278,12 @@ LABEL_7:
 LABEL_5:
     v11 = v9;
     v10 = 0;
-    *a3 = v9;
+    *error = v9;
     goto LABEL_8;
   }
 
   v9 = _CreateAndLogError("[MIBundle infoPlistHashWithError:]", 1190, @"MIInstallerErrorDomain", 4, 0, 0, @"Failed to get Info.plist path", v5, v14);
-  if (a3)
+  if (error)
   {
     goto LABEL_5;
   }
@@ -2295,21 +2295,21 @@ LABEL_8:
   return v10;
 }
 
-+ (BOOL)bundleIsInDenyList:(id)a3
++ (BOOL)bundleIsInDenyList:(id)list
 {
-  v3 = a3;
+  listCopy = list;
   if (bundleIsInDenyList__onceToken != -1)
   {
     +[MIBundle bundleIsInDenyList:];
   }
 
   v4 = bundleIsInDenyList__denylist;
-  v5 = [v3 path];
-  v6 = [v4 containsObject:v5];
+  path = [listCopy path];
+  v6 = [v4 containsObject:path];
 
   if (v6 && gLogHandle && *(gLogHandle + 44) >= 7)
   {
-    v8 = [v3 path];
+    path2 = [listCopy path];
     MOLogWrite();
   }
 
@@ -2323,11 +2323,11 @@ uint64_t __31__MIBundle_bundleIsInDenyList___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)frameworkBundlesWithError:(id *)a3
+- (id)frameworkBundlesWithError:(id *)error
 {
-  v5 = [(MIBundle *)self frameworkBundles];
+  frameworkBundles = [(MIBundle *)self frameworkBundles];
 
-  if (v5)
+  if (frameworkBundles)
   {
     v6 = 0;
   }
@@ -2346,8 +2346,8 @@ uint64_t __31__MIBundle_bundleIsInDenyList___block_invoke()
     if (!v8)
     {
 
-      v9 = 0;
-      if (!a3)
+      frameworkBundles2 = 0;
+      if (!error)
       {
         goto LABEL_8;
       }
@@ -2358,22 +2358,22 @@ uint64_t __31__MIBundle_bundleIsInDenyList___block_invoke()
     [(MIBundle *)self setFrameworkBundles:v8];
   }
 
-  v9 = [(MIBundle *)self frameworkBundles];
-  if (!a3)
+  frameworkBundles2 = [(MIBundle *)self frameworkBundles];
+  if (!error)
   {
     goto LABEL_8;
   }
 
 LABEL_6:
-  if (!v9)
+  if (!frameworkBundles2)
   {
     v10 = v6;
-    *a3 = v6;
+    *error = v6;
   }
 
 LABEL_8:
 
-  return v9;
+  return frameworkBundles2;
 }
 
 uint64_t __38__MIBundle_frameworkBundlesWithError___block_invoke(uint64_t a1, void *a2)
@@ -2393,11 +2393,11 @@ uint64_t __38__MIBundle_frameworkBundlesWithError___block_invoke(uint64_t a1, vo
   return v4;
 }
 
-- (id)xpcServiceBundlesWithError:(id *)a3
+- (id)xpcServiceBundlesWithError:(id *)error
 {
-  v5 = [(MIBundle *)self xpcServiceBundles];
+  xpcServiceBundles = [(MIBundle *)self xpcServiceBundles];
 
-  if (v5)
+  if (xpcServiceBundles)
   {
     v6 = 0;
   }
@@ -2409,8 +2409,8 @@ uint64_t __38__MIBundle_frameworkBundlesWithError___block_invoke(uint64_t a1, vo
     v6 = v11;
     if (!v7)
     {
-      v8 = 0;
-      if (!a3)
+      xpcServiceBundles2 = 0;
+      if (!error)
       {
         goto LABEL_8;
       }
@@ -2421,22 +2421,22 @@ uint64_t __38__MIBundle_frameworkBundlesWithError___block_invoke(uint64_t a1, vo
     [(MIBundle *)self setXpcServiceBundles:v7];
   }
 
-  v8 = [(MIBundle *)self xpcServiceBundles];
-  if (!a3)
+  xpcServiceBundles2 = [(MIBundle *)self xpcServiceBundles];
+  if (!error)
   {
     goto LABEL_8;
   }
 
 LABEL_6:
-  if (!v8)
+  if (!xpcServiceBundles2)
   {
     v9 = v6;
-    *a3 = v6;
+    *error = v6;
   }
 
 LABEL_8:
 
-  return v8;
+  return xpcServiceBundles2;
 }
 
 uint64_t __39__MIBundle_xpcServiceBundlesWithError___block_invoke(uint64_t a1, void *a2)
@@ -2447,12 +2447,12 @@ uint64_t __39__MIBundle_xpcServiceBundlesWithError___block_invoke(uint64_t a1, v
   return v3;
 }
 
-- (id)driverKitBundlesPerformingPlatformValidation:(unsigned __int8)a3 withError:(id *)a4
+- (id)driverKitBundlesPerformingPlatformValidation:(unsigned __int8)validation withError:(id *)error
 {
-  v7 = [(MIBundle *)self driverKitExtensionBundles];
-  if (v7)
+  driverKitExtensionBundles = [(MIBundle *)self driverKitExtensionBundles];
+  if (driverKitExtensionBundles)
   {
-    v8 = v7;
+    v8 = driverKitExtensionBundles;
     v9 = 0;
   }
 
@@ -2463,8 +2463,8 @@ uint64_t __39__MIBundle_xpcServiceBundlesWithError___block_invoke(uint64_t a1, v
     v9 = v13;
     if (!v8)
     {
-      v10 = 0;
-      if (!a4)
+      0xFE = 0;
+      if (!error)
       {
         goto LABEL_8;
       }
@@ -2475,22 +2475,22 @@ uint64_t __39__MIBundle_xpcServiceBundlesWithError___block_invoke(uint64_t a1, v
     [(MIBundle *)self setDriverKitExtensionBundles:v8];
   }
 
-  v10 = [(MIBundle *)self _filterExtensionBundles:v8 forValidationFlags:a3 & 0xFE];
-  if (!a4)
+  0xFE = [(MIBundle *)self _filterExtensionBundles:v8 forValidationFlags:validation & 0xFE];
+  if (!error)
   {
     goto LABEL_8;
   }
 
 LABEL_6:
-  if (!v10)
+  if (!0xFE)
   {
     v11 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
 LABEL_8:
 
-  return v10;
+  return 0xFE;
 }
 
 uint64_t __67__MIBundle_driverKitBundlesPerformingPlatformValidation_withError___block_invoke(uint64_t a1, void *a2)
@@ -2501,7 +2501,7 @@ uint64_t __67__MIBundle_driverKitBundlesPerformingPlatformValidation_withError__
   return v3;
 }
 
-- (id)thisBundleAndAllContainedBundlesWithError:(id *)a3
+- (id)thisBundleAndAllContainedBundlesWithError:(id *)error
 {
   v76 = *MEMORY[0x1E69E9840];
   v5 = objc_opt_new();
@@ -2587,7 +2587,7 @@ LABEL_49:
 
       v36 = 0;
       v7 = v18;
-      if (!a3)
+      if (!error)
       {
         goto LABEL_56;
       }
@@ -2595,7 +2595,7 @@ LABEL_49:
       goto LABEL_54;
     }
 
-    v47 = a3;
+    errorCopy = error;
     v63 = 0u;
     v64 = 0u;
     v61 = 0u;
@@ -2619,13 +2619,13 @@ LABEL_49:
 
           v25 = *(*(&v61 + 1) + 8 * v23);
           v60 = v24;
-          v26 = [v25 thisBundleAndAllContainedBundlesWithError:{&v60, v47}];
+          v26 = [v25 thisBundleAndAllContainedBundlesWithError:{&v60, errorCopy}];
           v18 = v60;
 
           if (!v26)
           {
 
-            a3 = v47;
+            error = errorCopy;
             goto LABEL_49;
           }
 
@@ -2655,8 +2655,8 @@ LABEL_49:
 LABEL_60:
 
       v36 = 0;
-      a3 = v47;
-      if (!v47)
+      error = errorCopy;
+      if (!errorCopy)
       {
         goto LABEL_56;
       }
@@ -2687,7 +2687,7 @@ LABEL_60:
 
           v34 = *(*(&v55 + 1) + 8 * v32);
           v54 = v33;
-          v35 = [v34 thisBundleAndAllContainedBundlesWithError:{&v54, v47}];
+          v35 = [v34 thisBundleAndAllContainedBundlesWithError:{&v54, errorCopy}];
           v7 = v54;
 
           if (!v35)
@@ -2714,7 +2714,7 @@ LABEL_60:
     }
 
     v16 = v7;
-    a3 = v47;
+    error = errorCopy;
   }
 
   if (![(MIBundle *)self mayContainFrameworks])
@@ -2780,7 +2780,7 @@ LABEL_60:
 
 LABEL_46:
     v36 = [v5 copy];
-    if (!a3)
+    if (!error)
     {
       goto LABEL_56;
     }
@@ -2789,7 +2789,7 @@ LABEL_46:
   }
 
 LABEL_53:
-  if (!a3)
+  if (!error)
   {
     goto LABEL_56;
   }
@@ -2798,7 +2798,7 @@ LABEL_54:
   if (!v36)
   {
     v45 = v7;
-    *a3 = v7;
+    *error = v7;
   }
 
 LABEL_56:
@@ -2808,47 +2808,47 @@ LABEL_56:
 
 - (NSString)relativePath
 {
-  v3 = [(MIBundle *)self parentBundle];
-  v4 = [v3 relativePath];
+  parentBundle = [(MIBundle *)self parentBundle];
+  relativePath = [parentBundle relativePath];
 
-  if (v4)
+  if (relativePath)
   {
-    v5 = [(MIBundle *)self bundleParentSubdirectory];
-    v6 = [v4 stringByAppendingPathComponent:v5];
-    v7 = [(MIBundle *)self bundleURL];
-    v8 = [v7 lastPathComponent];
-    v9 = [v6 stringByAppendingPathComponent:v8];
+    bundleParentSubdirectory = [(MIBundle *)self bundleParentSubdirectory];
+    v6 = [relativePath stringByAppendingPathComponent:bundleParentSubdirectory];
+    bundleURL = [(MIBundle *)self bundleURL];
+    lastPathComponent = [bundleURL lastPathComponent];
+    lastPathComponent2 = [v6 stringByAppendingPathComponent:lastPathComponent];
   }
 
   else
   {
-    v5 = [(MIBundle *)self bundleURL];
-    v9 = [v5 lastPathComponent];
+    bundleParentSubdirectory = [(MIBundle *)self bundleURL];
+    lastPathComponent2 = [bundleParentSubdirectory lastPathComponent];
   }
 
-  return v9;
+  return lastPathComponent2;
 }
 
 - (NSString)displayName
 {
-  v3 = [(MIBundle *)self infoPlistSubset];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E695E120]];
+  infoPlistSubset = [(MIBundle *)self infoPlistSubset];
+  v4 = [infoPlistSubset objectForKeyedSubscript:*MEMORY[0x1E695E120]];
   objc_opt_class();
   v5 = v4;
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    lastPathComponent = v5;
   }
 
   else
   {
-    v6 = 0;
+    lastPathComponent = 0;
   }
 
-  if (!v6 || ![v6 length])
+  if (!lastPathComponent || ![lastPathComponent length])
   {
-    v7 = [(MIBundle *)self infoPlistSubset];
-    v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E695E4F8]];
+    infoPlistSubset2 = [(MIBundle *)self infoPlistSubset];
+    v8 = [infoPlistSubset2 objectForKeyedSubscript:*MEMORY[0x1E695E4F8]];
     objc_opt_class();
     v9 = v8;
     if (objc_opt_isKindOfClass())
@@ -2863,32 +2863,32 @@ LABEL_56:
 
     if (v10 && [v10 length])
     {
-      v6 = v10;
+      lastPathComponent = v10;
     }
 
     else
     {
-      v11 = [(MIBundle *)self bundleURL];
-      v6 = [v11 lastPathComponent];
+      bundleURL = [(MIBundle *)self bundleURL];
+      lastPathComponent = [bundleURL lastPathComponent];
     }
   }
 
-  return v6;
+  return lastPathComponent;
 }
 
-- (BOOL)_setBundleParentDirectoryURL:(id)a3 forBundleArray:(id)a4 error:(id *)a5
+- (BOOL)_setBundleParentDirectoryURL:(id)l forBundleArray:(id)array error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v8)
+  lCopy = l;
+  arrayCopy = array;
+  v9 = arrayCopy;
+  if (arrayCopy)
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v10 = v8;
+    v10 = arrayCopy;
     v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v11)
     {
@@ -2908,17 +2908,17 @@ LABEL_56:
 
           v17 = *(*(&v23 + 1) + 8 * v15);
           v22 = v16;
-          v18 = [v17 setBundleParentDirectoryURL:v7 error:&v22];
+          v18 = [v17 setBundleParentDirectoryURL:lCopy error:&v22];
           v13 = v22;
 
           if (!v18)
           {
 
-            if (a5)
+            if (error)
             {
               v19 = v13;
               v20 = 0;
-              *a5 = v13;
+              *error = v13;
             }
 
             else
@@ -2961,11 +2961,11 @@ LABEL_17:
   return v20;
 }
 
-- (BOOL)setBundleParentDirectoryURL:(id)a3 error:(id *)a4
+- (BOOL)setBundleParentDirectoryURL:(id)l error:(id *)error
 {
-  v7 = a3;
-  objc_storeStrong(&self->_bundleParentDirectoryURL, a3);
-  v8 = [(MIBundle *)self bundleURL];
+  lCopy = l;
+  objc_storeStrong(&self->_bundleParentDirectoryURL, l);
+  bundleURL = [(MIBundle *)self bundleURL];
   cfBundle = self->_cfBundle;
   if (cfBundle)
   {
@@ -2974,14 +2974,14 @@ LABEL_17:
   }
 
   v31 = 0;
-  v10 = MICreateCFBundle(v8, 0, &v31);
+  v10 = MICreateCFBundle(bundleURL, 0, &v31);
   v11 = v31;
   if (v10)
   {
     self->_cfBundle = v10;
-    v12 = [(MIBundle *)self pluginKitBundles];
+    pluginKitBundles = [(MIBundle *)self pluginKitBundles];
     v30 = v11;
-    v13 = [(MIBundle *)self _setBundleParentDirectoryURL:v8 forBundleArray:v12 error:&v30];
+    v13 = [(MIBundle *)self _setBundleParentDirectoryURL:bundleURL forBundleArray:pluginKitBundles error:&v30];
     v14 = v30;
 
     if (!v13)
@@ -2989,9 +2989,9 @@ LABEL_17:
       goto LABEL_9;
     }
 
-    v15 = [(MIBundle *)self extensionKitBundles];
+    extensionKitBundles = [(MIBundle *)self extensionKitBundles];
     v29 = v14;
-    v16 = [(MIBundle *)self _setBundleParentDirectoryURL:v8 forBundleArray:v15 error:&v29];
+    v16 = [(MIBundle *)self _setBundleParentDirectoryURL:bundleURL forBundleArray:extensionKitBundles error:&v29];
     v11 = v29;
 
     if (!v16)
@@ -2999,9 +2999,9 @@ LABEL_17:
       goto LABEL_16;
     }
 
-    v17 = [(MIBundle *)self frameworkBundles];
+    frameworkBundles = [(MIBundle *)self frameworkBundles];
     v28 = v11;
-    v18 = [(MIBundle *)self _setBundleParentDirectoryURL:v8 forBundleArray:v17 error:&v28];
+    v18 = [(MIBundle *)self _setBundleParentDirectoryURL:bundleURL forBundleArray:frameworkBundles error:&v28];
     v14 = v28;
 
     if (!v18)
@@ -3009,7 +3009,7 @@ LABEL_17:
 LABEL_9:
       v22 = 0;
       v11 = v14;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_19;
       }
@@ -3017,16 +3017,16 @@ LABEL_9:
       goto LABEL_17;
     }
 
-    v19 = [(MIBundle *)self xpcServiceBundles];
+    xpcServiceBundles = [(MIBundle *)self xpcServiceBundles];
     v27 = v14;
-    v20 = [(MIBundle *)self _setBundleParentDirectoryURL:v8 forBundleArray:v19 error:&v27];
+    v20 = [(MIBundle *)self _setBundleParentDirectoryURL:bundleURL forBundleArray:xpcServiceBundles error:&v27];
     v11 = v27;
 
     if (v20)
     {
-      v21 = [(MIBundle *)self driverKitExtensionBundles];
+      driverKitExtensionBundles = [(MIBundle *)self driverKitExtensionBundles];
       v26 = v11;
-      v22 = [(MIBundle *)self _setBundleParentDirectoryURL:v8 forBundleArray:v21 error:&v26];
+      v22 = [(MIBundle *)self _setBundleParentDirectoryURL:bundleURL forBundleArray:driverKitExtensionBundles error:&v26];
       v23 = v26;
 
       v11 = v23;
@@ -3035,7 +3035,7 @@ LABEL_9:
 
 LABEL_16:
     v22 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -3048,12 +3048,12 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v21 = [v8 path];
+  driverKitExtensionBundles = [bundleURL path];
   MOLogWrite();
   v22 = 0;
 LABEL_14:
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_19;
   }
@@ -3062,7 +3062,7 @@ LABEL_17:
   if (!v22)
   {
     v24 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
 LABEL_19:
@@ -3072,35 +3072,35 @@ LABEL_19:
 
 - (NSURL)bundleURL
 {
-  v3 = [(MIBundle *)self bundleParentSubdirectory];
+  bundleParentSubdirectory = [(MIBundle *)self bundleParentSubdirectory];
 
-  v4 = [(MIBundle *)self bundleParentDirectoryURL];
-  if (v3)
+  bundleParentDirectoryURL = [(MIBundle *)self bundleParentDirectoryURL];
+  if (bundleParentSubdirectory)
   {
-    v5 = [(MIBundle *)self bundleParentSubdirectory];
-    v6 = [v4 URLByAppendingPathComponent:v5 isDirectory:1];
+    bundleParentSubdirectory2 = [(MIBundle *)self bundleParentSubdirectory];
+    v6 = [bundleParentDirectoryURL URLByAppendingPathComponent:bundleParentSubdirectory2 isDirectory:1];
 
-    v4 = v6;
+    bundleParentDirectoryURL = v6;
   }
 
-  v7 = [(MIBundle *)self bundleName];
-  v8 = [v4 URLByAppendingPathComponent:v7 isDirectory:1];
+  bundleName = [(MIBundle *)self bundleName];
+  v8 = [bundleParentDirectoryURL URLByAppendingPathComponent:bundleName isDirectory:1];
 
   return v8;
 }
 
 - (NSString)minimumOSVersion
 {
-  v2 = [(MIBundle *)self infoPlistSubset];
-  v3 = MIMinimumOSVersionForBundleInfoPlist(v2);
+  infoPlistSubset = [(MIBundle *)self infoPlistSubset];
+  v3 = MIMinimumOSVersionForBundleInfoPlist(infoPlistSubset);
 
   return v3;
 }
 
 - (NSArray)deviceFamilies
 {
-  v2 = [(MIBundle *)self infoPlistSubset];
-  v3 = [v2 objectForKeyedSubscript:@"UIDeviceFamily"];
+  infoPlistSubset = [(MIBundle *)self infoPlistSubset];
+  v3 = [infoPlistSubset objectForKeyedSubscript:@"UIDeviceFamily"];
   objc_opt_class();
   v4 = v3;
   if (objc_opt_isKindOfClass())
@@ -3118,13 +3118,13 @@ LABEL_19:
 
 - (BOOL)isLaunchProhibited
 {
-  v2 = [(MIBundle *)self infoPlistSubset];
-  v3 = [v2 objectForKeyedSubscript:@"LSApplicationLaunchProhibited"];
+  infoPlistSubset = [(MIBundle *)self infoPlistSubset];
+  v3 = [infoPlistSubset objectForKeyedSubscript:@"LSApplicationLaunchProhibited"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
@@ -3136,10 +3136,10 @@ LABEL_19:
       goto LABEL_7;
     }
 
-    v4 = [v3 isEqualToString:@"YES"];
+    bOOLValue = [v3 isEqualToString:@"YES"];
   }
 
-  v5 = v4;
+  v5 = bOOLValue;
 LABEL_7:
 
   return v5;
@@ -3147,15 +3147,15 @@ LABEL_7:
 
 - (BOOL)mayHaveExecutableProgram
 {
-  v2 = [(MIBundle *)self bundleType];
-  v4 = (v2 & 0xFE) == 8 || (v2 - 1) < 6;
-  return v2 == 11 || v4;
+  bundleType = [(MIBundle *)self bundleType];
+  v4 = (bundleType & 0xFE) == 8 || (bundleType - 1) < 6;
+  return bundleType == 11 || v4;
 }
 
 - (NSString)emergencyOffloadVersion
 {
-  v2 = [(MIBundle *)self infoPlistSubset];
-  v3 = [v2 objectForKeyedSubscript:@"CF_MIEmergencyOffloadVersion"];
+  infoPlistSubset = [(MIBundle *)self infoPlistSubset];
+  v3 = [infoPlistSubset objectForKeyedSubscript:@"CF_MIEmergencyOffloadVersion"];
   objc_opt_class();
   v4 = v3;
   if (objc_opt_isKindOfClass())
@@ -3175,9 +3175,9 @@ LABEL_7:
 {
   v36 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(MIBundle *)self infoPlistSubset];
+  infoPlistSubset = [(MIBundle *)self infoPlistSubset];
   v30 = *MEMORY[0x1E695E158];
-  v5 = [v4 objectForKeyedSubscript:?];
+  v5 = [infoPlistSubset objectForKeyedSubscript:?];
 
   objc_opt_class();
   v6 = v5;
@@ -3275,8 +3275,8 @@ LABEL_7:
 
   else
   {
-    v19 = [(MIBundle *)self infoPlistSubset];
-    v20 = [v19 objectForKeyedSubscript:@"DTPlatformName"];
+    infoPlistSubset2 = [(MIBundle *)self infoPlistSubset];
+    v20 = [infoPlistSubset2 objectForKeyedSubscript:@"DTPlatformName"];
     objc_opt_class();
     v21 = v20;
     if (objc_opt_isKindOfClass())
@@ -3319,21 +3319,21 @@ LABEL_7:
   return v18;
 }
 
-- (BOOL)getIsBuiltForiOSPlatform:(BOOL *)a3 error:(id *)a4
+- (BOOL)getIsBuiltForiOSPlatform:(BOOL *)platform error:(id *)error
 {
-  v6 = [MEMORY[0x1E695DFD8] setWithObjects:{&unk_1F2888CE8, a4, &unk_1F2888D00, 0}];
-  v7 = [(MIBundle *)self deviceFamilies];
-  v8 = MIIsCompatibleWithAtLeastOneDeviceFamily(v7, v6, 1);
+  v6 = [MEMORY[0x1E695DFD8] setWithObjects:{&unk_1F2888CE8, error, &unk_1F2888D00, 0}];
+  deviceFamilies = [(MIBundle *)self deviceFamilies];
+  v8 = MIIsCompatibleWithAtLeastOneDeviceFamily(deviceFamilies, v6, 1);
 
-  if (a3)
+  if (platform)
   {
-    *a3 = v8;
+    *platform = v8;
   }
 
   return 1;
 }
 
-- (BOOL)_getBundleRootContainsOnlyContentsDirectory:(BOOL *)a3 error:(id *)a4
+- (BOOL)_getBundleRootContainsOnlyContentsDirectory:(BOOL *)directory error:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -3344,21 +3344,21 @@ LABEL_7:
   v16 = 0x2020000000;
   v17 = 0;
   v7 = +[MIFileManager defaultManager];
-  v8 = [(MIBundle *)self bundleURL];
+  bundleURL = [(MIBundle *)self bundleURL];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __62__MIBundle__getBundleRootContainsOnlyContentsDirectory_error___block_invoke;
   v13[3] = &unk_1E7AE1B58;
   v13[4] = &v14;
   v13[5] = &v18;
-  v9 = [v7 enumerateURLsForItemsInDirectoryAtURL:v8 ignoreSymlinks:0 withBlock:v13];
+  v9 = [v7 enumerateURLsForItemsInDirectoryAtURL:bundleURL ignoreSymlinks:0 withBlock:v13];
 
-  if (!a3 || v9)
+  if (!directory || v9)
   {
-    if (a4 && v9)
+    if (error && v9)
     {
       v11 = v9;
-      *a4 = v9;
+      *error = v9;
     }
   }
 
@@ -3374,7 +3374,7 @@ LABEL_7:
       v10 = 0;
     }
 
-    *a3 = v10 & 1;
+    *directory = v10 & 1;
   }
 
   _Block_object_dispose(&v14, 8);
@@ -3404,17 +3404,17 @@ uint64_t __62__MIBundle__getBundleRootContainsOnlyContentsDirectory_error___bloc
   return v9;
 }
 
-- (BOOL)getIsBuiltForMacPlatform:(BOOL *)a3 error:(id *)a4
+- (BOOL)getIsBuiltForMacPlatform:(BOOL *)platform error:(id *)error
 {
-  v7 = [(MIBundle *)self bundleInfoPlistSupportedPlatforms];
-  v8 = v7;
-  if (v7)
+  bundleInfoPlistSupportedPlatforms = [(MIBundle *)self bundleInfoPlistSupportedPlatforms];
+  v8 = bundleInfoPlistSupportedPlatforms;
+  if (bundleInfoPlistSupportedPlatforms)
   {
-    if ([v7 containsObject:&unk_1F2888CE8])
+    if ([bundleInfoPlistSupportedPlatforms containsObject:&unk_1F2888CE8])
     {
       v9 = 0;
       v10 = 1;
-      if (!a3)
+      if (!platform)
       {
         goto LABEL_13;
       }
@@ -3424,7 +3424,7 @@ uint64_t __62__MIBundle__getBundleRootContainsOnlyContentsDirectory_error___bloc
     {
       v10 = [v8 containsObject:&unk_1F2888DD8];
       v9 = 0;
-      if (!a3)
+      if (!platform)
       {
         goto LABEL_13;
       }
@@ -3433,8 +3433,8 @@ uint64_t __62__MIBundle__getBundleRootContainsOnlyContentsDirectory_error___bloc
     goto LABEL_12;
   }
 
-  v11 = [(MIBundle *)self infoPlistSubset];
-  v12 = [v11 objectForKeyedSubscript:@"LSRequiresIPhoneOS"];
+  infoPlistSubset = [(MIBundle *)self infoPlistSubset];
+  v12 = [infoPlistSubset objectForKeyedSubscript:@"LSRequiresIPhoneOS"];
 
   if (v12)
   {
@@ -3443,11 +3443,11 @@ uint64_t __62__MIBundle__getBundleRootContainsOnlyContentsDirectory_error___bloc
     goto LABEL_11;
   }
 
-  v13 = [(MIBundle *)self platformHint];
-  if (v13)
+  platformHint = [(MIBundle *)self platformHint];
+  if (platformHint)
   {
     v9 = 0;
-    v10 = v13 == 1;
+    v10 = platformHint == 1;
     goto LABEL_11;
   }
 
@@ -3464,7 +3464,7 @@ uint64_t __62__MIBundle__getBundleRootContainsOnlyContentsDirectory_error___bloc
       if (gLogHandle && *(gLogHandle + 44) > 6)
       {
 LABEL_24:
-        v19 = [(MIBundle *)self identifier];
+        identifier = [(MIBundle *)self identifier];
         MOLogWrite();
       }
     }
@@ -3476,7 +3476,7 @@ LABEL_24:
 
 LABEL_11:
 
-    if (!a3)
+    if (!platform)
     {
 LABEL_13:
       v14 = 1;
@@ -3484,15 +3484,15 @@ LABEL_13:
     }
 
 LABEL_12:
-    *a3 = v10;
+    *platform = v10;
     goto LABEL_13;
   }
 
-  if (a4)
+  if (error)
   {
     v18 = v17;
     v14 = 0;
-    *a4 = v9;
+    *error = v9;
   }
 
   else
@@ -3505,49 +3505,49 @@ LABEL_14:
   return v14;
 }
 
-- (BOOL)isCompatibleWithDeviceFamily:(int)a3
+- (BOOL)isCompatibleWithDeviceFamily:(int)family
 {
-  v3 = *&a3;
-  v4 = [(MIBundle *)self deviceFamilies];
-  LOBYTE(v3) = MIIsCompatibleWithDeviceFamily(v4, v3);
+  v3 = *&family;
+  deviceFamilies = [(MIBundle *)self deviceFamilies];
+  LOBYTE(v3) = MIIsCompatibleWithDeviceFamily(deviceFamilies, v3);
 
   return v3;
 }
 
-- (BOOL)isApplicableToCurrentDeviceFamilyWithError:(id *)a3
+- (BOOL)isApplicableToCurrentDeviceFamilyWithError:(id *)error
 {
-  v4 = [(MIBundle *)self deviceFamilies];
-  LOBYTE(a3) = MIIsApplicableToCurrentDeviceFamilyWithError(v4, a3);
+  deviceFamilies = [(MIBundle *)self deviceFamilies];
+  LOBYTE(error) = MIIsApplicableToCurrentDeviceFamilyWithError(deviceFamilies, error);
 
-  return a3;
+  return error;
 }
 
-- (id)currentOSVersionForValidationUsingPlatform:(unint64_t *)a3 withError:(id *)a4
+- (id)currentOSVersionForValidationUsingPlatform:(unint64_t *)platform withError:(id *)error
 {
   v7 = MGCopyAnswer();
   if (v7)
   {
     v8 = 0;
-    if (a3)
+    if (platform)
     {
-      *a3 = 1;
+      *platform = 1;
     }
   }
 
   else
   {
     v8 = _CreateAndLogError("[MIBundle currentOSVersionForValidationUsingPlatform:withError:]", 1856, @"MIInstallerErrorDomain", 4, 0, 0, @"Could not get the product version from MobileGestalt.", v6, v10);
-    if (a4)
+    if (error)
     {
       v8 = v8;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
   return v7;
 }
 
-- (BOOL)isApplicableToCurrentOSVersionWithError:(id *)a3
+- (BOOL)isApplicableToCurrentOSVersionWithError:(id *)error
 {
   v13 = 0;
   v14 = 0;
@@ -3555,13 +3555,13 @@ LABEL_14:
   v6 = v13;
   if (v5)
   {
-    v7 = [(MIBundle *)self minimumOSVersion];
+    minimumOSVersion = [(MIBundle *)self minimumOSVersion];
     v12 = v6;
-    v8 = [(MIBundle *)self _isMinimumOSVersion:v7 applicableToOSVersion:v5 requiredOS:v14 error:&v12];
+    v8 = [(MIBundle *)self _isMinimumOSVersion:minimumOSVersion applicableToOSVersion:v5 requiredOS:v14 error:&v12];
     v9 = v12;
 
     v6 = v9;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -3570,7 +3570,7 @@ LABEL_14:
   else
   {
     v8 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -3579,7 +3579,7 @@ LABEL_14:
   if (!v8)
   {
     v10 = v6;
-    *a3 = v6;
+    *error = v6;
   }
 
 LABEL_7:
@@ -3587,32 +3587,32 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)isApplicableToOSVersion:(id)a3 error:(id *)a4
+- (BOOL)isApplicableToOSVersion:(id)version error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MIBundle *)self minimumOSVersion];
-  LOBYTE(a4) = [(MIBundle *)self isMinimumOSVersion:v7 applicableToOSVersion:v6 error:a4];
+  versionCopy = version;
+  minimumOSVersion = [(MIBundle *)self minimumOSVersion];
+  LOBYTE(error) = [(MIBundle *)self isMinimumOSVersion:minimumOSVersion applicableToOSVersion:versionCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)_isMinimumOSVersion:(id)a3 applicableToOSVersion:(id)a4 requiredOS:(unint64_t)a5 error:(id *)a6
+- (BOOL)_isMinimumOSVersion:(id)version applicableToOSVersion:(id)sVersion requiredOS:(unint64_t)s error:(id *)error
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = [(MIBundle *)self bundleURL];
-  LOBYTE(a6) = MIBundleHasMinimumOSApplicableToProductVersion(v12, v11, v10, a5, a6);
+  sVersionCopy = sVersion;
+  versionCopy = version;
+  bundleURL = [(MIBundle *)self bundleURL];
+  LOBYTE(error) = MIBundleHasMinimumOSApplicableToProductVersion(bundleURL, versionCopy, sVersionCopy, s, error);
 
-  return a6;
+  return error;
 }
 
-- (BOOL)isApplicableToOSVersionEarlierThan:(id)a3
+- (BOOL)isApplicableToOSVersionEarlierThan:(id)than
 {
-  v4 = a3;
-  v5 = [(MIBundle *)self minimumOSVersion];
-  if (v5)
+  thanCopy = than;
+  minimumOSVersion = [(MIBundle *)self minimumOSVersion];
+  if (minimumOSVersion)
   {
-    v6 = [v4 compare:v5 options:64] == 1;
+    v6 = [thanCopy compare:minimumOSVersion options:64] == 1;
   }
 
   else
@@ -3623,16 +3623,16 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)isApplicableToCurrentDeviceCapabilitiesWithError:(id *)a3
+- (BOOL)isApplicableToCurrentDeviceCapabilitiesWithError:(id *)error
 {
-  v4 = [(MIBundle *)self infoPlistSubset];
-  v5 = [v4 objectForKeyedSubscript:@"UIRequiredDeviceCapabilities"];
+  infoPlistSubset = [(MIBundle *)self infoPlistSubset];
+  v5 = [infoPlistSubset objectForKeyedSubscript:@"UIRequiredDeviceCapabilities"];
 
   if (!v5)
   {
     v7 = 0;
     v8 = 0;
-    v12 = 1;
+    bOOLValue = 1;
     goto LABEL_14;
   }
 
@@ -3643,8 +3643,8 @@ LABEL_7:
 
   if (!v7)
   {
-    v12 = 0;
-    if (!a3)
+    bOOLValue = 0;
+    if (!error)
     {
       goto LABEL_14;
     }
@@ -3665,34 +3665,34 @@ LABEL_7:
     v11 = 0;
   }
 
-  v12 = [v11 BOOLValue];
-  if ((v12 & 1) == 0)
+  bOOLValue = [v11 BOOLValue];
+  if ((bOOLValue & 1) == 0)
   {
     v14 = _CreateError("[MIBundle isApplicableToCurrentDeviceCapabilitiesWithError:]", 1981, @"MIInstallerErrorDomain", 67, 0, 0, @"Device capabilities do not match requirements: %@", v13, v7);
 
     v8 = v14;
   }
 
-  if (a3)
+  if (error)
   {
 LABEL_12:
-    if ((v12 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       v15 = v8;
-      v12 = 0;
-      *a3 = v8;
+      bOOLValue = 0;
+      *error = v8;
     }
   }
 
 LABEL_14:
 
-  return v12;
+  return bOOLValue;
 }
 
 - (NSArray)supportedDevices
 {
-  v3 = [(MIBundle *)self infoPlistSubset];
-  v4 = [v3 objectForKeyedSubscript:@"UISupportedDevices"];
+  infoPlistSubset = [(MIBundle *)self infoPlistSubset];
+  v4 = [infoPlistSubset objectForKeyedSubscript:@"UISupportedDevices"];
   objc_opt_class();
   v5 = v4;
   if (objc_opt_isKindOfClass())
@@ -3707,8 +3707,8 @@ LABEL_14:
 
   if (!v6)
   {
-    v7 = [(MIBundle *)self infoPlistSubset];
-    v8 = [v7 objectForKeyedSubscript:@"SupportedDevices"];
+    infoPlistSubset2 = [(MIBundle *)self infoPlistSubset];
+    v8 = [infoPlistSubset2 objectForKeyedSubscript:@"SupportedDevices"];
     objc_opt_class();
     v9 = v8;
     if (objc_opt_isKindOfClass())
@@ -3725,16 +3725,16 @@ LABEL_14:
   return v6;
 }
 
-- (BOOL)thinningMatchesCurrentDeviceWithError:(id *)a3
+- (BOOL)thinningMatchesCurrentDeviceWithError:(id *)error
 {
-  v5 = [(MIBundle *)self supportedDevices];
-  if (!v5)
+  supportedDevices = [(MIBundle *)self supportedDevices];
+  if (!supportedDevices)
   {
     goto LABEL_4;
   }
 
-  v6 = [(MIBundle *)self bundleType];
-  if ((v6 - 1) >= 5 && v6 != 9)
+  bundleType = [(MIBundle *)self bundleType];
+  if ((bundleType - 1) >= 5 && bundleType != 9)
   {
     _CreateAndLogError("[MIBundle thinningMatchesCurrentDeviceWithError:]", 2019, @"MIInstallerErrorDomain", 4, 0, 0, @"Unexpectedly asked to validate thinning on a non-app bundle %@", v7, self);
     v10 = LABEL_14:;
@@ -3743,9 +3743,9 @@ LABEL_14:
   }
 
   v8 = +[MIDaemonConfiguration sharedInstance];
-  v9 = [v8 skipThinningCheck];
+  skipThinningCheck = [v8 skipThinningCheck];
 
-  if (v9)
+  if (skipThinningCheck)
   {
 LABEL_4:
     v10 = 0;
@@ -3756,7 +3756,7 @@ LABEL_5:
   }
 
   objc_opt_class();
-  if ((MIArrayContainsOnlyClass(v5) & 1) == 0)
+  if ((MIArrayContainsOnlyClass(supportedDevices) & 1) == 0)
   {
     _CreateAndLogError("[MIBundle thinningMatchesCurrentDeviceWithError:]", 2029, @"MIInstallerErrorDomain", 87, 0, &unk_1F2887D90, @"The value of the UISupportedDevices key in this app's Info.plist key must contain only string values.", v14, v22);
     goto LABEL_14;
@@ -3768,7 +3768,7 @@ LABEL_5:
     v10 = _CreateAndLogError("[MIBundle thinningMatchesCurrentDeviceWithError:]", 2039, @"MIInstallerErrorDomain", 4, 0, 0, @"MGCopyAnswer for kMGOCompatibleAppVariants returned NULL", v15, v22);
 LABEL_15:
     v12 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_6;
     }
@@ -3776,7 +3776,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v16 = [v5 firstObjectCommonWithArray:v11];
+  v16 = [supportedDevices firstObjectCommonWithArray:v11];
 
   if (v16)
   {
@@ -3785,9 +3785,9 @@ LABEL_15:
   }
 
   v18 = +[MIDaemonConfiguration sharedInstance];
-  v19 = [v18 alternateThinningModelIdentifier];
+  alternateThinningModelIdentifier = [v18 alternateThinningModelIdentifier];
 
-  if (v19 && [v5 containsObject:v19])
+  if (alternateThinningModelIdentifier && [supportedDevices containsObject:alternateThinningModelIdentifier])
   {
     if (gLogHandle && *(gLogHandle + 44) >= 7)
     {
@@ -3800,21 +3800,21 @@ LABEL_15:
 
   else
   {
-    v20 = [v5 componentsJoinedByString:{@", "}];
+    v20 = [supportedDevices componentsJoinedByString:{@", "}];
     v23 = [v11 componentsJoinedByString:{@", "}];
     v10 = _CreateAndLogError("[MIBundle thinningMatchesCurrentDeviceWithError:]", 2054, @"MIInstallerErrorDomain", 86, 0, &unk_1F2887DB8, @"This app is not compatibile with this device. This app specifies a value for UISupportedDevices in its Info.plist as [%@], but none of the identifiers in this device's compatibility list are present in this app's supported devices. This device is compatible with [%@].", v21, v20);
 
     v12 = 0;
   }
 
-  if (a3)
+  if (error)
   {
 LABEL_16:
     if (!v12)
     {
       v17 = v10;
       v12 = 0;
-      *a3 = v10;
+      *error = v10;
     }
   }
 
@@ -3828,11 +3828,11 @@ LABEL_6:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MIBundle *)self bundleURL];
-  v7 = [v6 path];
-  v8 = [(MIBundle *)self identifier];
-  v9 = [(MIBundle *)self bundleTypeDescription];
-  v10 = [v3 stringWithFormat:@"<%@ : path = %@ identifier = %@ type = %@>", v5, v7, v8, v9];
+  bundleURL = [(MIBundle *)self bundleURL];
+  path = [bundleURL path];
+  identifier = [(MIBundle *)self identifier];
+  bundleTypeDescription = [(MIBundle *)self bundleTypeDescription];
+  v10 = [v3 stringWithFormat:@"<%@ : path = %@ identifier = %@ type = %@>", v5, path, identifier, bundleTypeDescription];
 
   return v10;
 }
@@ -3876,11 +3876,11 @@ LABEL_6:
               v9 = objc_opt_new();
             }
 
-            v13 = [v12 extensionAttributes];
-            v14 = v13;
-            if (v13)
+            extensionAttributes = [v12 extensionAttributes];
+            v14 = extensionAttributes;
+            if (extensionAttributes)
             {
-              v15 = [v13 objectForKeyedSubscript:@"IntentsSupported"];
+              v15 = [extensionAttributes objectForKeyedSubscript:@"IntentsSupported"];
               if (v15)
               {
                 [v9 addObjectsFromArray:v15];
@@ -3908,7 +3908,7 @@ LABEL_6:
   {
     if (!gLogHandle || *(gLogHandle + 44) >= 3)
     {
-      v22 = self;
+      selfCopy = self;
       v24 = v4;
       MOLogWrite();
     }
@@ -3916,7 +3916,7 @@ LABEL_6:
     v9 = 0;
   }
 
-  v16 = [(MIBundle *)self infoPlistSubset:v22];
+  v16 = [(MIBundle *)self infoPlistSubset:selfCopy];
   v17 = [v16 objectForKeyedSubscript:@"INIntentsSupported"];
   objc_opt_class();
   v18 = v17;
@@ -3945,7 +3945,7 @@ LABEL_6:
 
     else if (!gLogHandle || *(gLogHandle + 44) >= 3)
     {
-      v23 = self;
+      selfCopy2 = self;
       v25 = v19;
       MOLogWrite();
     }
@@ -3956,11 +3956,11 @@ LABEL_6:
   return v20;
 }
 
-- (BOOL)_validateAppNSPrivacyTrackingDomainsWithError:(id *)a3
+- (BOOL)_validateAppNSPrivacyTrackingDomainsWithError:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = [(MIBundle *)self infoPlistSubset];
-  v5 = [v4 objectForKeyedSubscript:@"NSPrivacyTrackingDomains"];
+  infoPlistSubset = [(MIBundle *)self infoPlistSubset];
+  v5 = [infoPlistSubset objectForKeyedSubscript:@"NSPrivacyTrackingDomains"];
 
   if (!v5)
   {
@@ -4014,7 +4014,7 @@ LABEL_5:
       v18 = NSStringFromClass(v17);
       v11 = _CreateAndLogError("[MIBundle _validateAppNSPrivacyTrackingDomainsWithError:]", 2130, @"MIInstallerErrorDomain", 193, 0, 0, @"The NSPrivacyTrackingDomains key in the app's Info.plist must have an array value containing strings. An entry was found in that array of non-string type: %@", v19, v18);
 
-      if (a3)
+      if (error)
       {
         goto LABEL_14;
       }
@@ -4031,7 +4031,7 @@ LABEL_11:
   v14 = NSStringFromClass(v13);
   v11 = _CreateAndLogError("[MIBundle _validateAppNSPrivacyTrackingDomainsWithError:]", 2123, @"MIInstallerErrorDomain", 193, 0, 0, @"The NSPrivacyTrackingDomains key in the app's Info.plist must have an array value. An entry was found of non-array type %@.", v15, v14);
 
-  if (!a3)
+  if (!error)
   {
 LABEL_16:
     v12 = 0;
@@ -4041,16 +4041,16 @@ LABEL_16:
 LABEL_14:
   v16 = v11;
   v12 = 0;
-  *a3 = v11;
+  *error = v11;
 LABEL_17:
 
   return v12;
 }
 
-- (BOOL)validateAppMetadataWithError:(id *)a3
+- (BOOL)validateAppMetadataWithError:(id *)error
 {
-  v5 = [(MIBundle *)self infoPlistSubset];
-  v6 = [v5 objectForKeyedSubscript:@"INAlternativeAppNames"];
+  infoPlistSubset = [(MIBundle *)self infoPlistSubset];
+  v6 = [infoPlistSubset objectForKeyedSubscript:@"INAlternativeAppNames"];
   objc_opt_class();
   v7 = v6;
   if (objc_opt_isKindOfClass())
@@ -4065,22 +4065,22 @@ LABEL_17:
 
   if ([v8 count] >= 4)
   {
-    v9 = [(MIBundle *)self bundleURL];
-    v10 = [v9 path];
-    v12 = _CreateAndLogError("[MIBundle validateAppMetadataWithError:]", 2156, @"MIInstallerErrorDomain", 132, 0, &unk_1F2887DE0, @"Bundle at path %@ has %lu %@ in its Info.plist, maximum of %lu allowed", v11, v10);
+    bundleURL = [(MIBundle *)self bundleURL];
+    path = [bundleURL path];
+    v12 = _CreateAndLogError("[MIBundle validateAppMetadataWithError:]", 2156, @"MIInstallerErrorDomain", 132, 0, &unk_1F2887DE0, @"Bundle at path %@ has %lu %@ in its Info.plist, maximum of %lu allowed", v11, path);
 
     goto LABEL_8;
   }
 
-  v13 = [(MIBundle *)self infoPlistSubset];
-  v14 = [v13 objectForKeyedSubscript:@"ITSWatchOnlyContainer"];
+  infoPlistSubset2 = [(MIBundle *)self infoPlistSubset];
+  v14 = [infoPlistSubset2 objectForKeyedSubscript:@"ITSWatchOnlyContainer"];
 
   if (v14)
   {
     v12 = _CreateAndLogError("[MIBundle validateAppMetadataWithError:]", 2161, @"MIInstallerErrorDomain", 137, 0, &unk_1F2887E08, @"This app has the %@ key set in its Info.plist, which identifies it as a shell app surrounding a Watch-only app these are not installable.", v15, @"ITSWatchOnlyContainer");;
 LABEL_8:
     v16 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -4091,7 +4091,7 @@ LABEL_8:
   v19 = 0;
   v16 = [(MIBundle *)self _validateAppNSPrivacyTrackingDomainsWithError:&v19];
   v12 = v19;
-  if (!a3)
+  if (!error)
   {
     goto LABEL_11;
   }
@@ -4100,7 +4100,7 @@ LABEL_9:
   if (!v16)
   {
     v17 = v12;
-    *a3 = v12;
+    *error = v12;
   }
 
 LABEL_11:
@@ -4110,8 +4110,8 @@ LABEL_11:
 
 - (NSString)sdkBuildVersion
 {
-  v2 = [(MIBundle *)self infoPlistSubset];
-  v3 = [v2 objectForKeyedSubscript:@"DTSDKBuild"];
+  infoPlistSubset = [(MIBundle *)self infoPlistSubset];
+  v3 = [infoPlistSubset objectForKeyedSubscript:@"DTSDKBuild"];
   objc_opt_class();
   v4 = v3;
   if (objc_opt_isKindOfClass())
@@ -4127,14 +4127,14 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)sdkBuildVersionIsAtLeast:(id)a3
+- (BOOL)sdkBuildVersionIsAtLeast:(id)least
 {
-  v4 = a3;
-  v5 = [(MIBundle *)self sdkBuildVersion];
-  v6 = v5;
-  if (v5)
+  leastCopy = least;
+  sdkBuildVersion = [(MIBundle *)self sdkBuildVersion];
+  v6 = sdkBuildVersion;
+  if (sdkBuildVersion)
   {
-    v7 = [v5 compare:v4 options:64] != -1;
+    v7 = [sdkBuildVersion compare:leastCopy options:64] != -1;
   }
 
   else

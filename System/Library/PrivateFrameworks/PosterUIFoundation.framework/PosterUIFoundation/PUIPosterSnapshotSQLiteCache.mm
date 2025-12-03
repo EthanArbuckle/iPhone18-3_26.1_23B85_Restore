@@ -1,41 +1,41 @@
 @interface PUIPosterSnapshotSQLiteCache
-- (BOOL)checkCacheIsReachableWithError:(id *)a3;
-- (BOOL)hasSnapshotsWithError:(uint64_t)a1;
-- (PUIPosterSnapshotSQLiteCache)initWithURL:(id)a3 fileManager:(id)a4 options:(int64_t)a5 error:(id *)a6;
-- (_PUIPosterSnapshotSQLiteCacheInstance)_accessCacheImplementationSyncWithReason:(void *)a3 outError:;
-- (id)_accessCacheImplementationWithReason:(uint64_t)a1;
-- (id)cacheSnapshotBundle:(id)a3 options:(id)a4;
-- (id)cacheSnapshotBundle:(id)a3 options:(id)a4 outError:(id *)a5;
+- (BOOL)checkCacheIsReachableWithError:(id *)error;
+- (BOOL)hasSnapshotsWithError:(uint64_t)error;
+- (PUIPosterSnapshotSQLiteCache)initWithURL:(id)l fileManager:(id)manager options:(int64_t)options error:(id *)error;
+- (_PUIPosterSnapshotSQLiteCacheInstance)_accessCacheImplementationSyncWithReason:(void *)reason outError:;
+- (id)_accessCacheImplementationWithReason:(uint64_t)reason;
+- (id)cacheSnapshotBundle:(id)bundle options:(id)options;
+- (id)cacheSnapshotBundle:(id)bundle options:(id)options outError:(id *)error;
 - (id)cleanup;
-- (id)cleanupWithError:(id *)a3;
-- (id)discardSnapshotBundlesMatchingPredicate:(id)a3;
-- (id)discardSnapshotBundlesMatchingPredicate:(id)a3 outError:(id *)a4;
-- (id)discardSnapshotBundlesMatchingSQLPredicate:(id)a3;
-- (id)discardSnapshotBundlesMatchingSQLPredicate:(id)a3 outError:(id *)a4;
-- (id)latestSnapshotBundleMatchingPredicate:(id)a3;
-- (id)latestSnapshotBundleMatchingPredicate:(id)a3 outError:(id *)a4;
+- (id)cleanupWithError:(id *)error;
+- (id)discardSnapshotBundlesMatchingPredicate:(id)predicate;
+- (id)discardSnapshotBundlesMatchingPredicate:(id)predicate outError:(id *)error;
+- (id)discardSnapshotBundlesMatchingSQLPredicate:(id)predicate;
+- (id)discardSnapshotBundlesMatchingSQLPredicate:(id)predicate outError:(id *)error;
+- (id)latestSnapshotBundleMatchingPredicate:(id)predicate;
+- (id)latestSnapshotBundleMatchingPredicate:(id)predicate outError:(id *)error;
 - (id)reachableCacheFuture;
-- (id)snapshotBundlesMatchingPredicate:(void *)a3 orderedBy:(void *)a4 limit:;
-- (id)snapshotBundlesMatchingPredicate:(void *)a3 orderedBy:(void *)a4 limit:(void *)a5 outError:;
-- (id)snapshotDestinationFutureForPath:(id)a3 clientAuditToken:(id)a4;
+- (id)snapshotBundlesMatchingPredicate:(void *)predicate orderedBy:(void *)by limit:;
+- (id)snapshotBundlesMatchingPredicate:(void *)predicate orderedBy:(void *)by limit:(void *)limit outError:;
+- (id)snapshotDestinationFutureForPath:(id)path clientAuditToken:(id)token;
 - (uint64_t)_invalidateReason:(uint64_t)result;
-- (void)_cacheImplementationLock_teardownSync:(uint64_t)a1;
+- (void)_cacheImplementationLock_teardownSync:(uint64_t)sync;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation PUIPosterSnapshotSQLiteCache
 
-- (PUIPosterSnapshotSQLiteCache)initWithURL:(id)a3 fileManager:(id)a4 options:(int64_t)a5 error:(id *)a6
+- (PUIPosterSnapshotSQLiteCache)initWithURL:(id)l fileManager:(id)manager options:(int64_t)options error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  if (!v11)
+  lCopy = l;
+  managerCopy = manager;
+  if (!lCopy)
   {
     [PUIPosterSnapshotSQLiteCache initWithURL:a2 fileManager:? options:? error:?];
   }
 
-  v13 = v12;
+  v13 = managerCopy;
   v38.receiver = self;
   v38.super_class = PUIPosterSnapshotSQLiteCache;
   v14 = [(PUIPosterSnapshotSQLiteCache *)&v38 init];
@@ -45,18 +45,18 @@
     invalidationFlag = v14->_invalidationFlag;
     v14->_invalidationFlag = v15;
 
-    objc_storeStrong(&v14->_cacheURL, a3);
-    v14->_options = a5;
+    objc_storeStrong(&v14->_cacheURL, l);
+    v14->_options = options;
     v17 = objc_opt_new();
     cacheImplementationLock_inUseReasons = v14->_cacheImplementationLock_inUseReasons;
     v14->_cacheImplementationLock_inUseReasons = v17;
 
     v19 = MEMORY[0x1E696AEC0];
-    v20 = [MEMORY[0x1E696AAE8] mainBundle];
-    v21 = [v20 bundleIdentifier];
-    v22 = [v21 lastPathComponent];
-    v23 = [v11 lastPathComponent];
-    v24 = [v19 stringWithFormat:@"%@:%@:%p", v22, v23, v14];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    lastPathComponent = [bundleIdentifier lastPathComponent];
+    lastPathComponent2 = [lCopy lastPathComponent];
+    v24 = [v19 stringWithFormat:@"%@:%@:%p", lastPathComponent, lastPathComponent2, v14];
     cacheLogIdentifier = v14->_cacheLogIdentifier;
     v14->_cacheLogIdentifier = v24;
 
@@ -78,8 +78,8 @@
     v14->_fileManager = v28;
 
     v30 = [(NSString *)v14->_cacheLogIdentifier stringByAppendingFormat:@"Processing-%@", @"PostersSQLiteCacheQueue"];
-    v31 = [MEMORY[0x1E698E698] serial];
-    v32 = [v31 serviceClass:25];
+    serial = [MEMORY[0x1E698E698] serial];
+    v32 = [serial serviceClass:25];
     v33 = BSDispatchQueueCreate();
     cacheQueue = v14->_cacheQueue;
     v14->_cacheQueue = v33;
@@ -131,14 +131,14 @@
   return v6;
 }
 
-- (id)_accessCacheImplementationWithReason:(uint64_t)a1
+- (id)_accessCacheImplementationWithReason:(uint64_t)reason
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (reason)
   {
-    v4 = *(a1 + 16);
-    objc_initWeak(&location, a1);
+    v4 = *(reason + 16);
+    objc_initWeak(&location, reason);
     v5 = MEMORY[0x1E69C5258];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
@@ -149,7 +149,7 @@
     v12 = v6;
     v7 = v3;
     v13 = v7;
-    a1 = [v5 futureWithBlock:v11 scheduler:*(a1 + 40)];
+    reason = [v5 futureWithBlock:v11 scheduler:*(reason + 40)];
     v16 = @"cacheAccessReason";
     if (v7)
     {
@@ -163,13 +163,13 @@
 
     v17[0] = v8;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-    [a1 setUserInfo:v9];
+    [reason setUserInfo:v9];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
   }
 
-  return a1;
+  return reason;
 }
 
 id __52__PUIPosterSnapshotSQLiteCache_reachableCacheFuture__block_invoke(uint64_t a1, void *a2)
@@ -207,13 +207,13 @@ id __52__PUIPosterSnapshotSQLiteCache_reachableCacheFuture__block_invoke(uint64_
   return v10;
 }
 
-- (BOOL)checkCacheIsReachableWithError:(id *)a3
+- (BOOL)checkCacheIsReachableWithError:(id *)error
 {
-  v4 = [(PUIPosterSnapshotSQLiteCache *)self reachableCacheFuture];
-  v5 = [v4 result:a3];
-  LOBYTE(a3) = v5 != 0;
+  reachableCacheFuture = [(PUIPosterSnapshotSQLiteCache *)self reachableCacheFuture];
+  v5 = [reachableCacheFuture result:error];
+  LOBYTE(error) = v5 != 0;
 
-  return a3;
+  return error;
 }
 
 id __70__PUIPosterSnapshotSQLiteCache_latestSnapshotBundleMatchingPredicate___block_invoke(uint64_t a1, void *a2)
@@ -241,10 +241,10 @@ id __70__PUIPosterSnapshotSQLiteCache_latestSnapshotBundleMatchingPredicate___bl
   return v6;
 }
 
-- (id)discardSnapshotBundlesMatchingPredicate:(id)a3
+- (id)discardSnapshotBundlesMatchingPredicate:(id)predicate
 {
-  v4 = [a3 SQLitePredicate];
-  v5 = [(PUIPosterSnapshotSQLiteCache *)self discardSnapshotBundlesMatchingSQLPredicate:v4];
+  sQLitePredicate = [predicate SQLitePredicate];
+  v5 = [(PUIPosterSnapshotSQLiteCache *)self discardSnapshotBundlesMatchingSQLPredicate:sQLitePredicate];
 
   return v5;
 }
@@ -252,10 +252,10 @@ id __70__PUIPosterSnapshotSQLiteCache_latestSnapshotBundleMatchingPredicate___bl
 - (id)cleanup
 {
   v3 = objc_opt_new();
-  v4 = [v3 SQLitePredicate];
-  v5 = [v4 notPredicate];
+  sQLitePredicate = [v3 SQLitePredicate];
+  notPredicate = [sQLitePredicate notPredicate];
 
-  v6 = [(PUIPosterSnapshotSQLiteCache *)self discardSnapshotBundlesMatchingSQLPredicate:v5];
+  v6 = [(PUIPosterSnapshotSQLiteCache *)self discardSnapshotBundlesMatchingSQLPredicate:notPredicate];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __39__PUIPosterSnapshotSQLiteCache_cleanup__block_invoke;
@@ -266,10 +266,10 @@ id __70__PUIPosterSnapshotSQLiteCache_latestSnapshotBundleMatchingPredicate___bl
   return v7;
 }
 
-- (id)discardSnapshotBundlesMatchingSQLPredicate:(id)a3
+- (id)discardSnapshotBundlesMatchingSQLPredicate:(id)predicate
 {
-  v5 = a3;
-  if (v5)
+  predicateCopy = predicate;
+  if (predicateCopy)
   {
     v6 = NSStringFromSelector(a2);
     v7 = [(PUIPosterSnapshotSQLiteCache *)self _accessCacheImplementationWithReason:v6];
@@ -279,7 +279,7 @@ id __70__PUIPosterSnapshotSQLiteCache_latestSnapshotBundleMatchingPredicate___bl
     v14[3] = &unk_1E78551F8;
     v16 = a2;
     v14[4] = self;
-    v15 = v5;
+    v15 = predicateCopy;
     v8 = [v7 flatMap:v14];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
@@ -347,28 +347,28 @@ id __75__PUIPosterSnapshotSQLiteCache_discardSnapshotBundlesMatchingSQLPredicate
   return v9;
 }
 
-- (id)cacheSnapshotBundle:(id)a3 options:(id)a4
+- (id)cacheSnapshotBundle:(id)bundle options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  bundleCopy = bundle;
+  optionsCopy = options;
+  if (!bundleCopy)
   {
     [PUIPosterSnapshotSQLiteCache cacheSnapshotBundle:a2 options:?];
   }
 
-  v9 = v8;
+  v9 = optionsCopy;
   v10 = NSStringFromSelector(a2);
   v11 = [(PUIPosterSnapshotSQLiteCache *)self _accessCacheImplementationWithReason:v10];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __60__PUIPosterSnapshotSQLiteCache_cacheSnapshotBundle_options___block_invoke;
   v18[3] = &unk_1E7855220;
-  v19 = v7;
-  v20 = self;
+  v19 = bundleCopy;
+  selfCopy = self;
   v21 = v9;
   v22 = a2;
   v12 = v9;
-  v13 = v7;
+  v13 = bundleCopy;
   v14 = [v11 flatMap:v18];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -686,9 +686,9 @@ uint64_t __70__PUIPosterSnapshotSQLiteCache__cacheImplementationLock_teardownSyn
   return [v2 invalidate];
 }
 
-- (id)snapshotDestinationFutureForPath:(id)a3 clientAuditToken:(id)a4
+- (id)snapshotDestinationFutureForPath:(id)path clientAuditToken:(id)token
 {
-  v5 = a4;
+  tokenCopy = token;
   if ([(BSAtomicSignal *)self->_invalidationFlag hasBeenSignalled])
   {
     v6 = MEMORY[0x1E69C5258];
@@ -700,7 +700,7 @@ uint64_t __70__PUIPosterSnapshotSQLiteCache__cacheImplementationLock_teardownSyn
   else
   {
     v17 = 0;
-    v10 = [PUIPosterSnapshotDestination destinationForCache:self clientAuditToken:v5 error:&v17];
+    v10 = [PUIPosterSnapshotDestination destinationForCache:self clientAuditToken:tokenCopy error:&v17];
     v11 = v17;
     if (v11)
     {
@@ -734,51 +734,51 @@ uint64_t __70__PUIPosterSnapshotSQLiteCache__cacheImplementationLock_teardownSyn
   return v9;
 }
 
-- (id)latestSnapshotBundleMatchingPredicate:(id)a3 outError:(id *)a4
+- (id)latestSnapshotBundleMatchingPredicate:(id)predicate outError:(id *)error
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  predicateCopy = predicate;
   v7 = +[_PUIPosterSnapshotCacheRecord pf_sqliteCodingDescriptor];
   v8 = objc_alloc(MEMORY[0x1E69C51C0]);
   v9 = [v7 columnForName:@"_dateCreated"];
   v10 = [v8 initWithColumn:v9 comparison:1];
   v11 = [MEMORY[0x1E69C51B8] limit:1];
-  v12 = [(PUIPosterSnapshotSQLiteCache *)self snapshotBundlesMatchingPredicate:v6 orderedBy:v10 limit:v11 outError:a4];
+  v12 = [(PUIPosterSnapshotSQLiteCache *)self snapshotBundlesMatchingPredicate:predicateCopy orderedBy:v10 limit:v11 outError:error];
 
   if ([v12 count])
   {
-    a4 = [v12 firstObject];
+    error = [v12 firstObject];
   }
 
-  else if (a4)
+  else if (error)
   {
     v13 = MEMORY[0x1E696ABC0];
     v16 = *MEMORY[0x1E696A588];
     v17[0] = @"No snapshot bundles available";
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-    *a4 = [v13 pui_errorWithCode:3 userInfo:v14];
+    *error = [v13 pui_errorWithCode:3 userInfo:v14];
 
-    a4 = 0;
+    error = 0;
   }
 
-  return a4;
+  return error;
 }
 
-- (id)snapshotBundlesMatchingPredicate:(void *)a3 orderedBy:(void *)a4 limit:(void *)a5 outError:
+- (id)snapshotBundlesMatchingPredicate:(void *)predicate orderedBy:(void *)by limit:(void *)limit outError:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  if (a1)
+  predicateCopy = predicate;
+  byCopy = by;
+  if (self)
   {
     v12 = NSStringFromSelector(sel_snapshotBundlesMatchingPredicate_orderedBy_limit_outError_);
-    v13 = [(PUIPosterSnapshotSQLiteCache *)a1 _accessCacheImplementationSyncWithReason:v12 outError:a5];
+    v13 = [(PUIPosterSnapshotSQLiteCache *)self _accessCacheImplementationSyncWithReason:v12 outError:limit];
 
     if (v13)
     {
-      v14 = [v13 impl];
+      impl = [v13 impl];
       v15 = objc_opt_class();
-      v16 = v14;
+      v16 = impl;
       if (v15)
       {
         if (objc_opt_isKindOfClass())
@@ -804,8 +804,8 @@ uint64_t __70__PUIPosterSnapshotSQLiteCache__cacheImplementationLock_teardownSyn
         [PUIPosterSnapshotSQLiteCache snapshotBundlesMatchingPredicate:? orderedBy:? limit:? outError:?];
       }
 
-      v20 = [v9 SQLitePredicate];
-      v18 = [v19 snapshotBundlesMatchingSQLPredicate:v20 orderedBy:v10 limit:v11 outError:a5];
+      sQLitePredicate = [v9 SQLitePredicate];
+      v18 = [v19 snapshotBundlesMatchingSQLPredicate:sQLitePredicate orderedBy:predicateCopy limit:byCopy outError:limit];
 
       [v13 invalidate];
     }
@@ -824,21 +824,21 @@ uint64_t __70__PUIPosterSnapshotSQLiteCache__cacheImplementationLock_teardownSyn
   return v18;
 }
 
-- (id)discardSnapshotBundlesMatchingPredicate:(id)a3 outError:(id *)a4
+- (id)discardSnapshotBundlesMatchingPredicate:(id)predicate outError:(id *)error
 {
-  v6 = [a3 SQLitePredicate];
-  v7 = [(PUIPosterSnapshotSQLiteCache *)self discardSnapshotBundlesMatchingSQLPredicate:v6 outError:a4];
+  sQLitePredicate = [predicate SQLitePredicate];
+  v7 = [(PUIPosterSnapshotSQLiteCache *)self discardSnapshotBundlesMatchingSQLPredicate:sQLitePredicate outError:error];
 
   return v7;
 }
 
-- (id)cleanupWithError:(id *)a3
+- (id)cleanupWithError:(id *)error
 {
   v5 = objc_opt_new();
-  v6 = [v5 SQLitePredicate];
-  v7 = [v6 notPredicate];
+  sQLitePredicate = [v5 SQLitePredicate];
+  notPredicate = [sQLitePredicate notPredicate];
 
-  v8 = [(PUIPosterSnapshotSQLiteCache *)self discardSnapshotBundlesMatchingSQLPredicate:v7 outError:a3];
+  v8 = [(PUIPosterSnapshotSQLiteCache *)self discardSnapshotBundlesMatchingSQLPredicate:notPredicate outError:error];
 
   return v8;
 }
@@ -851,24 +851,24 @@ uint64_t __82__PUIPosterSnapshotSQLiteCache__accessCacheImplementationSyncWithRe
   return [v2 invalidate];
 }
 
-- (void)_cacheImplementationLock_teardownSync:(uint64_t)a1
+- (void)_cacheImplementationLock_teardownSync:(uint64_t)sync
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (sync)
   {
-    [*(a1 + 56) assertOwner];
+    [*(sync + 56) assertOwner];
     v4 = PUILogSnapshotCache();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134218240;
-      v15 = a1;
+      syncCopy = sync;
       v16 = 1024;
       v17 = a2;
       _os_log_debug_impl(&dword_1A8C85000, v4, OS_LOG_TYPE_DEBUG, "<%p> invalidate teardown sync....: %d", buf, 0x12u);
     }
 
-    v5 = *(a1 + 72);
-    v6 = *(a1 + 64);
+    v5 = *(sync + 72);
+    v6 = *(sync + 64);
     if (v5 | v6)
     {
       OUTLINED_FUNCTION_6();
@@ -878,7 +878,7 @@ uint64_t __82__PUIPosterSnapshotSQLiteCache__accessCacheImplementationSyncWithRe
       v12 = v5;
       v13 = v6;
       v7 = MEMORY[0x1AC5769F0](v11);
-      v8 = *(a1 + 32);
+      v8 = *(sync + 32);
       if (a2)
       {
         dispatch_assert_queue_V2(v8);
@@ -891,86 +891,86 @@ uint64_t __82__PUIPosterSnapshotSQLiteCache__accessCacheImplementationSyncWithRe
       }
     }
 
-    v9 = *(a1 + 72);
-    *(a1 + 72) = 0;
+    v9 = *(sync + 72);
+    *(sync + 72) = 0;
 
-    v10 = *(a1 + 64);
-    *(a1 + 64) = 0;
+    v10 = *(sync + 64);
+    *(sync + 64) = 0;
   }
 }
 
-- (BOOL)hasSnapshotsWithError:(uint64_t)a1
+- (BOOL)hasSnapshotsWithError:(uint64_t)error
 {
-  v2 = a1;
-  if (a1)
+  errorCopy = error;
+  if (error)
   {
-    v4 = *(a1 + 16);
+    v4 = *(error + 16);
     if ([v4 hasBeenSignalled])
     {
       if (a2)
       {
         [MEMORY[0x1E696ABC0] pui_errorWithCode:5];
-        *a2 = v2 = 0;
+        *a2 = errorCopy = 0;
       }
 
       else
       {
-        v2 = 0;
+        errorCopy = 0;
       }
     }
 
     else
     {
       v6 = [MEMORY[0x1E69C51B8] limit:1];
-      v7 = [(PUIPosterSnapshotSQLiteCache *)v2 snapshotBundlesMatchingPredicate:0 orderedBy:v6 limit:?];
+      v7 = [(PUIPosterSnapshotSQLiteCache *)errorCopy snapshotBundlesMatchingPredicate:0 orderedBy:v6 limit:?];
 
       v8 = [v7 result:a2];
-      v2 = [v8 count] != 0;
+      errorCopy = [v8 count] != 0;
     }
   }
 
-  return v2;
+  return errorCopy;
 }
 
-- (id)snapshotBundlesMatchingPredicate:(void *)a3 orderedBy:(void *)a4 limit:
+- (id)snapshotBundlesMatchingPredicate:(void *)predicate orderedBy:(void *)by limit:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  predicateCopy = predicate;
+  byCopy = by;
+  if (self)
   {
     v10 = NSStringFromSelector(sel_snapshotBundlesMatchingPredicate_orderedBy_limit_);
-    v11 = [(PUIPosterSnapshotSQLiteCache *)a1 _accessCacheImplementationWithReason:v10];
+    v11 = [(PUIPosterSnapshotSQLiteCache *)self _accessCacheImplementationWithReason:v10];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __81__PUIPosterSnapshotSQLiteCache_snapshotBundlesMatchingPredicate_orderedBy_limit___block_invoke;
     v16[3] = &unk_1E7855298;
     v20 = sel_snapshotBundlesMatchingPredicate_orderedBy_limit_;
-    v16[4] = a1;
+    v16[4] = self;
     v17 = v7;
-    v18 = v8;
-    v19 = v9;
+    v18 = predicateCopy;
+    v19 = byCopy;
     v12 = [v11 flatMap:v16];
     OUTLINED_FUNCTION_6();
     v15[1] = 3221225472;
     v15[2] = __81__PUIPosterSnapshotSQLiteCache_snapshotBundlesMatchingPredicate_orderedBy_limit___block_invoke_60;
     v15[3] = &unk_1E78551A8;
-    v15[4] = a1;
-    a1 = [v13 flatMap:v15];
+    v15[4] = self;
+    self = [v13 flatMap:v15];
   }
 
-  return a1;
+  return self;
 }
 
-- (id)latestSnapshotBundleMatchingPredicate:(id)a3
+- (id)latestSnapshotBundleMatchingPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = +[_PUIPosterSnapshotCacheRecord pf_sqliteCodingDescriptor];
   v6 = objc_alloc(MEMORY[0x1E69C51C0]);
   v7 = [v5 columnForName:@"_dateCreated"];
   v8 = [v6 initWithColumn:v7 comparison:1];
   v9 = [MEMORY[0x1E69C51B8] limit:1];
-  v10 = [(PUIPosterSnapshotSQLiteCache *)self snapshotBundlesMatchingPredicate:v4 orderedBy:v8 limit:v9];
+  v10 = [(PUIPosterSnapshotSQLiteCache *)self snapshotBundlesMatchingPredicate:predicateCopy orderedBy:v8 limit:v9];
 
   v11 = [v10 flatMap:&__block_literal_global_19];
 
@@ -1000,24 +1000,24 @@ uint64_t __82__PUIPosterSnapshotSQLiteCache__accessCacheImplementationSyncWithRe
   return result;
 }
 
-- (_PUIPosterSnapshotSQLiteCacheInstance)_accessCacheImplementationSyncWithReason:(void *)a3 outError:
+- (_PUIPosterSnapshotSQLiteCacheInstance)_accessCacheImplementationSyncWithReason:(void *)reason outError:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = [[_PUIPosterSnapshotSQLiteCacheSyncImplementation alloc] initWithURL:a1[11] fileManager:a1[1] options:a1[12] error:a3];
+    v6 = [[_PUIPosterSnapshotSQLiteCacheSyncImplementation alloc] initWithURL:self[11] fileManager:self[1] options:self[12] error:reason];
     v7 = v6;
-    if (!v6 || (~*(a1 + 24) & 6) != 0 || [(_PUIPosterSnapshotSQLiteCacheImplementation *)v6 checkCacheIsReachableWithError:a3])
+    if (!v6 || (~*(self + 24) & 6) != 0 || [(_PUIPosterSnapshotSQLiteCacheImplementation *)v6 checkCacheIsReachableWithError:reason])
     {
       v23 = 0;
       [(_PUIPosterSnapshotSQLiteCacheImplementation *)v7 prepareCacheWithError:&v23];
       v8 = v23;
       if (v23)
       {
-        if (a3)
+        if (reason)
         {
           v9 = v23;
-          *a3 = v8;
+          *reason = v8;
         }
 
         v10 = v8;
@@ -1030,7 +1030,7 @@ uint64_t __82__PUIPosterSnapshotSQLiteCache__accessCacheImplementationSyncWithRe
         v12 = MEMORY[0x1E69C7548];
         v13 = 0;
         v14 = [v12 pf_finishTaskInterruptableWithExplanation:@"finish sqlite cache operation synchronously" invalidationHandler:0];
-        [v14 acquireWithError:a3];
+        [v14 acquireWithError:reason];
         v15 = objc_alloc(MEMORY[0x1E698E778]);
         v20[0] = MEMORY[0x1E69E9820];
         v20[1] = 3221225472;
@@ -1060,17 +1060,17 @@ uint64_t __82__PUIPosterSnapshotSQLiteCache__accessCacheImplementationSyncWithRe
   return v11;
 }
 
-- (id)discardSnapshotBundlesMatchingSQLPredicate:(id)a3 outError:(id *)a4
+- (id)discardSnapshotBundlesMatchingSQLPredicate:(id)predicate outError:(id *)error
 {
-  v7 = a3;
+  predicateCopy = predicate;
   v8 = NSStringFromSelector(a2);
-  v9 = [(PUIPosterSnapshotSQLiteCache *)self _accessCacheImplementationSyncWithReason:v8 outError:a4];
+  v9 = [(PUIPosterSnapshotSQLiteCache *)self _accessCacheImplementationSyncWithReason:v8 outError:error];
 
   if (v9)
   {
-    v10 = [v9 impl];
+    impl = [v9 impl];
     v11 = objc_opt_class();
-    v12 = v10;
+    v12 = impl;
     if (v11)
     {
       if (objc_opt_isKindOfClass())
@@ -1109,7 +1109,7 @@ uint64_t __82__PUIPosterSnapshotSQLiteCache__accessCacheImplementationSyncWithRe
       JUMPOUT(0x1A8D132D4);
     }
 
-    v14 = [v15 discardSnapshotBundlesMatchingSQLPredicate:v7 outError:a4];
+    v14 = [v15 discardSnapshotBundlesMatchingSQLPredicate:predicateCopy outError:error];
     [v9 invalidate];
   }
 
@@ -1121,13 +1121,13 @@ uint64_t __82__PUIPosterSnapshotSQLiteCache__accessCacheImplementationSyncWithRe
   return v14;
 }
 
-- (id)cacheSnapshotBundle:(id)a3 options:(id)a4 outError:(id *)a5
+- (id)cacheSnapshotBundle:(id)bundle options:(id)options outError:(id *)error
 {
   v47[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  bundleCopy = bundle;
+  optionsCopy = options;
   v11 = NSStringFromSelector(a2);
-  v12 = [(PUIPosterSnapshotSQLiteCache *)self _accessCacheImplementationSyncWithReason:v11 outError:a5];
+  v12 = [(PUIPosterSnapshotSQLiteCache *)self _accessCacheImplementationSyncWithReason:v11 outError:error];
 
   if (!v12)
   {
@@ -1135,16 +1135,16 @@ uint64_t __82__PUIPosterSnapshotSQLiteCache__accessCacheImplementationSyncWithRe
     goto LABEL_17;
   }
 
-  v13 = [v9 bundleURL];
+  bundleURL = [bundleCopy bundleURL];
   v37 = 0;
-  v14 = [v13 checkResourceIsReachableAndReturnError:&v37];
+  v14 = [bundleURL checkResourceIsReachableAndReturnError:&v37];
   v15 = v37;
 
   if (v14)
   {
-    v16 = [v12 impl];
+    impl = [v12 impl];
     v17 = objc_opt_class();
-    v18 = v16;
+    v18 = impl;
     if (v17)
     {
       if (objc_opt_isKindOfClass())
@@ -1174,7 +1174,7 @@ uint64_t __82__PUIPosterSnapshotSQLiteCache__accessCacheImplementationSyncWithRe
         v29 = objc_opt_class();
         v30 = NSStringFromClass(v29);
         OUTLINED_FUNCTION_2_1();
-        v39 = self;
+        selfCopy = self;
         v40 = v31;
         v41 = @"PUIPosterSnapshotSQLiteCache.m";
         v42 = 1024;
@@ -1190,14 +1190,14 @@ uint64_t __82__PUIPosterSnapshotSQLiteCache__accessCacheImplementationSyncWithRe
       JUMPOUT(0x1A8D135D8);
     }
 
-    v20 = [v22 cacheSnapshotBundle:v9 options:v10 outError:a5];
+    v20 = [v22 cacheSnapshotBundle:bundleCopy options:optionsCopy outError:error];
     [v12 invalidate];
 
     goto LABEL_16;
   }
 
   [v12 invalidate];
-  if (!a5)
+  if (!error)
   {
     goto LABEL_15;
   }
@@ -1209,7 +1209,7 @@ uint64_t __82__PUIPosterSnapshotSQLiteCache__accessCacheImplementationSyncWithRe
     v47[0] = @"Snapshot bundle is not valid.";
     v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v47 forKeys:&v46 count:1];
     v25 = [v23 pui_errorWithCode:3 userInfo:v24];
-    *a5 = v25;
+    *error = v25;
 
 LABEL_15:
     v20 = 0;
@@ -1218,7 +1218,7 @@ LABEL_15:
 
   v21 = v15;
   v20 = 0;
-  *a5 = v15;
+  *error = v15;
 LABEL_16:
 
 LABEL_17:

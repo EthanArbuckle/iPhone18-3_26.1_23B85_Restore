@@ -3,9 +3,9 @@
 - (id)elementBuilder;
 - (id)g_genericToSpecificPropertyMapBar;
 - (id)userInterfaceName;
-- (id)userInterfaceNameForLabelPosition:(id)a3;
-- (unsigned)adjustLabelPosition:(unsigned int)a3 forAxisValue:(double)a4 intercept:(double)a5;
-- (unsigned)filterChartLabelPosition:(unsigned int)a3;
+- (id)userInterfaceNameForLabelPosition:(id)position;
+- (unsigned)adjustLabelPosition:(unsigned int)position forAxisValue:(double)value intercept:(double)intercept;
+- (unsigned)filterChartLabelPosition:(unsigned int)position;
 @end
 
 @implementation TSCHChartSeriesTypeBar
@@ -30,10 +30,10 @@
   return v2;
 }
 
-- (id)userInterfaceNameForLabelPosition:(id)a3
+- (id)userInterfaceNameForLabelPosition:(id)position
 {
-  v4 = a3;
-  v9 = objc_msgSend_intValue(v4, v5, v6, v7, v8);
+  positionCopy = position;
+  v9 = objc_msgSend_intValue(positionCopy, v5, v6, v7, v8);
   v14 = objc_msgSend_filterChartLabelPosition_(self, v10, v11, v12, v13, v9);
   if (v14 == objc_msgSend_filterChartLabelPosition_(self, v15, v16, v17, v18, 5))
   {
@@ -72,12 +72,12 @@ LABEL_10:
   return v52;
 }
 
-- (unsigned)filterChartLabelPosition:(unsigned int)a3
+- (unsigned)filterChartLabelPosition:(unsigned int)position
 {
-  v3 = a3 & 0xFFFFFF8F;
-  if ((a3 & 4) != 0)
+  v3 = position & 0xFFFFFF8F;
+  if ((position & 4) != 0)
   {
-    v3 = a3 & 0xFFFFFF8B | 0x20;
+    v3 = position & 0xFFFFFF8B | 0x20;
   }
 
   if ((v3 & 8) != 0)
@@ -106,33 +106,33 @@ LABEL_10:
   }
 }
 
-- (unsigned)adjustLabelPosition:(unsigned int)a3 forAxisValue:(double)a4 intercept:(double)a5
+- (unsigned)adjustLabelPosition:(unsigned int)position forAxisValue:(double)value intercept:(double)intercept
 {
-  v5 = a3 & 0xFFFFFFCF | 0x10;
-  if ((a3 & 0x20) == 0)
+  positionCopy = position & 0xFFFFFFCF | 0x10;
+  if ((position & 0x20) == 0)
   {
-    v5 = a3;
+    positionCopy = position;
   }
 
-  v6 = a3 & 0xFFFFFFCF | 0x20;
-  if ((a3 & 0x10) == 0)
+  positionCopy2 = position & 0xFFFFFFCF | 0x20;
+  if ((position & 0x10) == 0)
   {
-    v6 = v5;
+    positionCopy2 = positionCopy;
   }
 
-  if (a4 >= a5)
+  if (value >= intercept)
   {
-    v6 = a3;
+    positionCopy2 = position;
   }
 
-  if ((a3 & 2) != 0)
+  if ((position & 2) != 0)
   {
-    return v6;
+    return positionCopy2;
   }
 
   else
   {
-    return a3;
+    return position;
   }
 }
 

@@ -1,48 +1,48 @@
 @interface CRLAssertionHandler
-+ (id)p_performBlockIgnoringAssertions:(id)a3 onlyFatal:(BOOL)a4;
++ (id)p_performBlockIgnoringAssertions:(id)assertions onlyFatal:(BOOL)fatal;
 + (id)packedBacktraceString;
-+ (id)packedBacktraceStringWithReturnAddresses:(id)a3;
-+ (id)performBlockIgnoringAssertions:(id)a3;
-+ (id)performBlockIgnoringFatalAssertions:(id)a3;
-+ (id)performBlockIgnoringQAFatalAssertions:(id)a3;
-+ (void)_logBacktraceWithCallStackSymbols:(id)a3;
-+ (void)handleFailureInFunction:(id)a3 file:(id)a4 lineNumber:(int64_t)a5 isFatal:(BOOL)a6 description:(const char *)a7;
-+ (void)handleFailureInFunction:(id)a3 file:(id)a4 lineNumber:(int64_t)a5 isFatal:(BOOL)a6 format:(id)a7 args:(char *)a8;
++ (id)packedBacktraceStringWithReturnAddresses:(id)addresses;
++ (id)performBlockIgnoringAssertions:(id)assertions;
++ (id)performBlockIgnoringFatalAssertions:(id)assertions;
++ (id)performBlockIgnoringQAFatalAssertions:(id)assertions;
++ (void)_logBacktraceWithCallStackSymbols:(id)symbols;
++ (void)handleFailureInFunction:(id)function file:(id)file lineNumber:(int64_t)number isFatal:(BOOL)fatal description:(const char *)description;
++ (void)handleFailureInFunction:(id)function file:(id)file lineNumber:(int64_t)number isFatal:(BOOL)fatal format:(id)format args:(char *)args;
 + (void)logFullBacktrace;
-+ (void)simulateCrashWithMessage:(id)a3;
++ (void)simulateCrashWithMessage:(id)message;
 @end
 
 @implementation CRLAssertionHandler
 
-+ (id)performBlockIgnoringAssertions:(id)a3
++ (id)performBlockIgnoringAssertions:(id)assertions
 {
-  v3 = [a1 p_performBlockIgnoringAssertions:a3 onlyFatal:0];
-  v4 = [v3 lastObject];
+  v3 = [self p_performBlockIgnoringAssertions:assertions onlyFatal:0];
+  lastObject = [v3 lastObject];
 
-  return v4;
+  return lastObject;
 }
 
-+ (id)performBlockIgnoringFatalAssertions:(id)a3
++ (id)performBlockIgnoringFatalAssertions:(id)assertions
 {
-  v3 = [a1 p_performBlockIgnoringAssertions:a3 onlyFatal:1];
-  v4 = [v3 lastObject];
+  v3 = [self p_performBlockIgnoringAssertions:assertions onlyFatal:1];
+  lastObject = [v3 lastObject];
 
-  return v4;
+  return lastObject;
 }
 
-+ (id)performBlockIgnoringQAFatalAssertions:(id)a3
++ (id)performBlockIgnoringQAFatalAssertions:(id)assertions
 {
-  v4 = a3;
-  v5 = [a1 p_performBlockIgnoringAssertions:v4 onlyFatal:{objc_msgSend(a1, "isQAFatalAssertionsEnabled")}];
+  assertionsCopy = assertions;
+  v5 = [self p_performBlockIgnoringAssertions:assertionsCopy onlyFatal:{objc_msgSend(self, "isQAFatalAssertionsEnabled")}];
 
-  v6 = [v5 lastObject];
+  lastObject = [v5 lastObject];
 
-  return v6;
+  return lastObject;
 }
 
-+ (id)p_performBlockIgnoringAssertions:(id)a3 onlyFatal:(BOOL)a4
++ (id)p_performBlockIgnoringAssertions:(id)assertions onlyFatal:(BOOL)fatal
 {
-  v5 = a3;
+  assertionsCopy = assertions;
   v6 = +[NSMutableArray array];
   v15[0] = 0;
   v15[1] = v15;
@@ -54,14 +54,14 @@
   v13[1] = 3221225472;
   v13[2] = sub_100014AD8;
   v13[3] = &unk_1000A7060;
-  v14 = a4;
+  fatalCopy = fatal;
   v13[4] = v6;
   v13[5] = v15;
   v8 = objc_retainBlock(v13);
   v9 = qword_1000B4D10;
   qword_1000B4D10 = v8;
 
-  v5[2](v5);
+  assertionsCopy[2](assertionsCopy);
   v10 = objc_retainBlock(v7);
   v11 = qword_1000B4D10;
   qword_1000B4D10 = v10;
@@ -84,12 +84,12 @@
     sub_10007D8D4(v3);
   }
 
-  [a1 simulateCrashWithMessage:@"+[CRLAssert logBacktrace]"];
+  [self simulateCrashWithMessage:@"+[CRLAssert logBacktrace]"];
 }
 
-+ (void)_logBacktraceWithCallStackSymbols:(id)a3
++ (void)_logBacktraceWithCallStackSymbols:(id)symbols
 {
-  v4 = a3;
+  symbolsCopy = symbols;
   if (CRLAssertCat_init_token != -1)
   {
     sub_10007D980();
@@ -98,23 +98,23 @@
   v5 = CRLAssertCat_log_t;
   if (os_log_type_enabled(CRLAssertCat_log_t, OS_LOG_TYPE_ERROR))
   {
-    sub_10007D994(v5, v4);
+    sub_10007D994(v5, symbolsCopy);
   }
 
-  [a1 simulateCrashWithMessage:@"+[CRLAssert logBacktrace]"];
+  [self simulateCrashWithMessage:@"+[CRLAssert logBacktrace]"];
 }
 
 + (id)packedBacktraceString
 {
   v3 = +[NSThread callStackReturnAddresses];
-  v4 = [a1 packedBacktraceStringWithReturnAddresses:v3];
+  v4 = [self packedBacktraceStringWithReturnAddresses:v3];
 
   return v4;
 }
 
-+ (id)packedBacktraceStringWithReturnAddresses:(id)a3
++ (id)packedBacktraceStringWithReturnAddresses:(id)addresses
 {
-  v3 = a3;
+  addressesCopy = addresses;
   v4 = +[NSMutableData data];
   v5 = +[NSMutableSet set];
   if (qword_1000B4D18 != -1)
@@ -128,7 +128,7 @@
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
-  obj = v3;
+  obj = addressesCopy;
   v7 = [obj countByEnumeratingWithState:&v73 objects:v81 count:16];
   if (v7)
   {
@@ -143,9 +143,9 @@
           objc_enumerationMutation(obj);
         }
 
-        v11 = [*(*(&v73 + 1) + 8 * i) pointerValue];
+        pointerValue = [*(*(&v73 + 1) + 8 * i) pointerValue];
         memset(&v80, 0, sizeof(v80));
-        if (dladdr(v11, &v80))
+        if (dladdr(pointerValue, &v80))
         {
           v12 = [NSValue valueWithPointer:v80.dli_fbase];
           if (([v5 containsObject:v12] & 1) == 0)
@@ -198,10 +198,10 @@
         }
 
         v21 = *(*(&v69 + 1) + 8 * j);
-        v22 = [v21 pointerValue];
-        magic = v22->magic;
+        pointerValue2 = [v21 pointerValue];
+        magic = pointerValue2->magic;
         v24 = 28;
-        if (v22->magic > -17958195)
+        if (pointerValue2->magic > -17958195)
         {
           if (magic == -17958194)
           {
@@ -228,10 +228,10 @@
 
         v24 = 32;
 LABEL_29:
-        ncmds = v22->ncmds;
+        ncmds = pointerValue2->ncmds;
         if (ncmds)
         {
-          v27 = (&v22->magic + v24);
+          v27 = (&pointerValue2->magic + v24);
           v28 = 1;
           while (1)
           {
@@ -260,7 +260,7 @@ LABEL_29:
           }
 
           v80.dli_fname = 0;
-          v32 = getsegmentdata(v22, "__TEXT", &v80);
+          v32 = getsegmentdata(pointerValue2, "__TEXT", &v80);
           if (v32)
           {
             v33 = v32;
@@ -320,9 +320,9 @@ LABEL_43:
         [v43 getUUIDBytes:&v80];
 
         v44 = [v42 objectForKeyedSubscript:@"loadaddr"];
-        v45 = [v44 pointerValue];
+        pointerValue3 = [v44 pointerValue];
 
-        v62 = v45;
+        v62 = pointerValue3;
         [v4 appendBytes:&v80 length:16];
         [v4 appendBytes:&v62 length:8];
       }
@@ -374,33 +374,33 @@ LABEL_43:
   return v53;
 }
 
-+ (void)simulateCrashWithMessage:(id)a3
++ (void)simulateCrashWithMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   if (qword_1000B4D40 != -1)
   {
-    v7 = v3;
+    v7 = messageCopy;
     sub_10007DA4C();
-    v3 = v7;
+    messageCopy = v7;
   }
 
   v4 = off_1000B4D38;
   if (off_1000B4D38)
   {
-    v6 = v3;
+    v6 = messageCopy;
     v5 = getpid();
     v4(v5, 0, v6);
-    v3 = v6;
+    messageCopy = v6;
   }
 }
 
-+ (void)handleFailureInFunction:(id)a3 file:(id)a4 lineNumber:(int64_t)a5 isFatal:(BOOL)a6 format:(id)a7 args:(char *)a8
++ (void)handleFailureInFunction:(id)function file:(id)file lineNumber:(int64_t)number isFatal:(BOOL)fatal format:(id)format args:(char *)args
 {
-  v10 = a6;
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = [[NSString alloc] crl_initUnRedactedWithFormat:v16 arguments:a8];
+  fatalCopy = fatal;
+  functionCopy = function;
+  fileCopy = file;
+  formatCopy = format;
+  v17 = [[NSString alloc] crl_initUnRedactedWithFormat:formatCopy arguments:args];
 
   if (qword_1000B4D10)
   {
@@ -412,33 +412,33 @@ LABEL_43:
     v24[0] = @"CRLAssertNotificationDescriptionKey";
     v24[1] = @"CRLAssertNotificationFileKey";
     v25[0] = v17;
-    v25[1] = v15;
+    v25[1] = fileCopy;
     v24[2] = @"CRLAssertNotificationLineNumberKey";
-    v18 = [NSNumber numberWithInteger:a5];
+    v18 = [NSNumber numberWithInteger:number];
     v25[2] = v18;
-    v25[3] = v14;
+    v25[3] = functionCopy;
     v24[3] = @"CRLAssertNotificationFunctionNameKey";
     v24[4] = @"CRLAssertNotificationAssertionCountKey";
     v19 = atomic_load(dword_1000B4D48);
     v20 = [NSNumber numberWithInt:v19];
     v25[4] = v20;
     v24[5] = @"CRLAssertNotificationFatalnessNameKey";
-    v21 = [NSNumber numberWithBool:v10];
+    v21 = [NSNumber numberWithBool:fatalCopy];
     v25[5] = v21;
     v22 = [NSDictionary dictionaryWithObjects:v25 forKeys:v24 count:6];
 
     v23 = +[NSNotificationCenter defaultCenter];
-    [v23 postNotificationName:@"CRLAssertNotification" object:a1 userInfo:v22];
+    [v23 postNotificationName:@"CRLAssertNotification" object:self userInfo:v22];
   }
 }
 
-+ (void)handleFailureInFunction:(id)a3 file:(id)a4 lineNumber:(int64_t)a5 isFatal:(BOOL)a6 description:(const char *)a7
++ (void)handleFailureInFunction:(id)function file:(id)file lineNumber:(int64_t)number isFatal:(BOOL)fatal description:(const char *)description
 {
-  v8 = a6;
-  v12 = a4;
-  v13 = a3;
-  v14 = [NSString stringWithUTF8String:a7];
-  [a1 handleFailureInFunction:v13 file:v12 lineNumber:a5 isFatal:v8 format:v14 args:&v15];
+  fatalCopy = fatal;
+  fileCopy = file;
+  functionCopy = function;
+  v14 = [NSString stringWithUTF8String:description];
+  [self handleFailureInFunction:functionCopy file:fileCopy lineNumber:number isFatal:fatalCopy format:v14 args:&v15];
 }
 
 @end

@@ -1,26 +1,26 @@
 @interface DNDAppAction
-+ (BOOL)archivingIsSupported:(id *)a3;
-+ (BOOL)runtimeIsSupported:(id *)a3;
-+ (id)appActionFromDictionaryRepresentation:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (DNDAppAction)initWithCoder:(id)a3;
++ (BOOL)archivingIsSupported:(id *)supported;
++ (BOOL)runtimeIsSupported:(id *)supported;
++ (id)appActionFromDictionaryRepresentation:(id)representation;
+- (BOOL)isEqual:(id)equal;
+- (DNDAppAction)initWithCoder:(id)coder;
 - (LNAction)action;
 - (NSData)encodedAction;
 - (NSString)identifier;
-- (id)_initWithAction:(id)a3 bundleIdentifier:(id)a4 actionIdentifier:(id)a5 encodedAction:(id)a6 enabled:(BOOL)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithAction:(id)action bundleIdentifier:(id)identifier actionIdentifier:(id)actionIdentifier encodedAction:(id)encodedAction enabled:(BOOL)enabled;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)action;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)encodedAction;
 @end
 
 @implementation DNDAppAction
 
-+ (BOOL)runtimeIsSupported:(id *)a3
++ (BOOL)runtimeIsSupported:(id *)supported
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v4 = NSClassFromString(&cfstr_Lnaction.isa);
@@ -29,7 +29,7 @@
     if (os_log_type_enabled(DNDLogAppConfiguration, OS_LOG_TYPE_ERROR))
     {
       +[DNDAppAction runtimeIsSupported:];
-      if (!a3)
+      if (!supported)
       {
         goto LABEL_5;
       }
@@ -37,14 +37,14 @@
       goto LABEL_4;
     }
 
-    if (a3)
+    if (supported)
     {
 LABEL_4:
       v5 = MEMORY[0x277CCA9B8];
       v9 = *MEMORY[0x277CCA450];
       v10[0] = @"Failed to encode/decode app action: LinkServices framework is not loaded.";
       v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-      *a3 = [v5 errorWithDomain:@"DNDErrorDomain" code:1006 userInfo:v6];
+      *supported = [v5 errorWithDomain:@"DNDErrorDomain" code:1006 userInfo:v6];
     }
   }
 
@@ -54,7 +54,7 @@ LABEL_5:
   return result;
 }
 
-+ (BOOL)archivingIsSupported:(id *)a3
++ (BOOL)archivingIsSupported:(id *)supported
 {
   v9[1] = *MEMORY[0x277D85DE8];
   if (!NSClassFromString(&cfstr_Wfappintentarc.isa) || !NSClassFromString(&cfstr_Lnfullyqualifi.isa))
@@ -62,13 +62,13 @@ LABEL_5:
     if (os_log_type_enabled(DNDLogAppConfiguration, OS_LOG_TYPE_ERROR))
     {
       +[DNDAppAction archivingIsSupported:];
-      if (!a3)
+      if (!supported)
       {
         goto LABEL_7;
       }
     }
 
-    else if (!a3)
+    else if (!supported)
     {
 LABEL_7:
       result = 0;
@@ -79,7 +79,7 @@ LABEL_7:
     v8 = *MEMORY[0x277CCA450];
     v9[0] = @"Failed to (un)archive action: VoiceShortcut or LinkServices framework is not loaded.";
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-    *a3 = [v5 errorWithDomain:@"DNDErrorDomain" code:1006 userInfo:v6];
+    *supported = [v5 errorWithDomain:@"DNDErrorDomain" code:1006 userInfo:v6];
 
     goto LABEL_7;
   }
@@ -90,12 +90,12 @@ LABEL_8:
   return result;
 }
 
-- (id)_initWithAction:(id)a3 bundleIdentifier:(id)a4 actionIdentifier:(id)a5 encodedAction:(id)a6 enabled:(BOOL)a7
+- (id)_initWithAction:(id)action bundleIdentifier:(id)identifier actionIdentifier:(id)actionIdentifier encodedAction:(id)encodedAction enabled:(BOOL)enabled
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  actionCopy = action;
+  identifierCopy = identifier;
+  actionIdentifierCopy = actionIdentifier;
+  encodedActionCopy = encodedAction;
   if (([objc_opt_class() runtimeIsSupported:0] & 1) != 0 || objc_msgSend(objc_opt_class(), "archivingIsSupported:", 0))
   {
     v29.receiver = self;
@@ -103,39 +103,39 @@ LABEL_8:
     v16 = [(DNDAppAction *)&v29 init];
     if (v16)
     {
-      v17 = [v12 copy];
+      v17 = [actionCopy copy];
       rawAction = v16->_rawAction;
       v16->_rawAction = v17;
 
-      v19 = [v12 identifier];
+      identifier = [actionCopy identifier];
       identifier = v16->_identifier;
-      v16->_identifier = v19;
+      v16->_identifier = identifier;
 
-      v21 = [v14 copy];
+      v21 = [actionIdentifierCopy copy];
       v22 = v16->_identifier;
       v16->_identifier = v21;
 
-      v23 = [v15 copy];
+      v23 = [encodedActionCopy copy];
       encodedAction = v16->_encodedAction;
       v16->_encodedAction = v23;
 
-      v25 = [v13 copy];
+      v25 = [identifierCopy copy];
       bundleIdentifier = v16->_bundleIdentifier;
       v16->_bundleIdentifier = v25;
 
-      v16->_enabled = a7;
+      v16->_enabled = enabled;
     }
 
     self = v16;
-    v27 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v27 = 0;
+    selfCopy = 0;
   }
 
-  return v27;
+  return selfCopy;
 }
 
 - (NSString)identifier
@@ -143,15 +143,15 @@ LABEL_8:
   identifier = self->_identifier;
   if (identifier)
   {
-    v3 = identifier;
+    identifier = identifier;
   }
 
   else
   {
-    v3 = [(LNAction *)self->_rawAction identifier];
+    identifier = [(LNAction *)self->_rawAction identifier];
   }
 
-  return v3;
+  return identifier;
 }
 
 - (LNAction)action
@@ -162,11 +162,11 @@ LABEL_8:
   {
     if ([objc_opt_class() archivingIsSupported:0])
     {
-      v4 = [(DNDAppAction *)self effectiveBundleIdentifier];
-      if (v4)
+      effectiveBundleIdentifier = [(DNDAppAction *)self effectiveBundleIdentifier];
+      if (effectiveBundleIdentifier)
       {
-        v5 = v4;
-        v6 = [objc_alloc(NSClassFromString(&cfstr_Lnfullyqualifi.isa)) initWithActionIdentifier:self->_identifier bundleIdentifier:v4];
+        v5 = effectiveBundleIdentifier;
+        v6 = [objc_alloc(NSClassFromString(&cfstr_Lnfullyqualifi.isa)) initWithActionIdentifier:self->_identifier bundleIdentifier:effectiveBundleIdentifier];
         v7 = [objc_alloc(NSClassFromString(&cfstr_Wfappintentarc.isa)) initWithIdentifier:v6 actionMetadata:0];
         encodedAction = self->_encodedAction;
         v23 = 0;
@@ -242,24 +242,24 @@ LABEL_8:
   if (encodedAction)
   {
 LABEL_2:
-    v3 = encodedAction;
+    effectiveBundleIdentifier = encodedAction;
     goto LABEL_11;
   }
 
   if ([objc_opt_class() archivingIsSupported:0])
   {
-    v3 = [(DNDAppAction *)self effectiveBundleIdentifier];
-    if (v3)
+    effectiveBundleIdentifier = [(DNDAppAction *)self effectiveBundleIdentifier];
+    if (effectiveBundleIdentifier)
     {
-      v5 = v3;
+      v5 = effectiveBundleIdentifier;
       v6 = objc_alloc(NSClassFromString(&cfstr_Lnfullyqualifi.isa));
-      v7 = [(DNDAppAction *)self identifier];
-      v8 = [v6 initWithActionIdentifier:v7 bundleIdentifier:v5];
+      identifier = [(DNDAppAction *)self identifier];
+      v8 = [v6 initWithActionIdentifier:identifier bundleIdentifier:v5];
 
       v9 = [objc_alloc(NSClassFromString(&cfstr_Wfappintentarc.isa)) initWithIdentifier:v8 actionMetadata:0];
-      v10 = [(DNDAppAction *)self rawAction];
+      rawAction = [(DNDAppAction *)self rawAction];
       v15 = 0;
-      v11 = [v9 archiveAction:v10 error:&v15];
+      v11 = [v9 archiveAction:rawAction error:&v15];
       v12 = v15;
 
       if ((!v11 || v12) && os_log_type_enabled(DNDLogAppConfiguration, OS_LOG_TYPE_ERROR))
@@ -277,71 +277,71 @@ LABEL_2:
 
   else
   {
-    v3 = 0;
+    effectiveBundleIdentifier = 0;
   }
 
 LABEL_11:
 
-  return v3;
+  return effectiveBundleIdentifier;
 }
 
-- (DNDAppAction)initWithCoder:(id)a3
+- (DNDAppAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if ([objc_opt_class() runtimeIsSupported:0])
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DNDActionEnabled"];
-    v6 = [v5 BOOLValue];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DNDActionEncodedAction"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DNDActionActionIdentifier"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DNDActionBundleIdentifierKey"];
-    v10 = [v4 decodeObjectOfClass:NSClassFromString(&cfstr_Lnaction.isa) forKey:@"DNDActionAction"];
-    self = [(DNDAppAction *)self _initWithAction:v10 bundleIdentifier:v9 actionIdentifier:v8 encodedAction:v7 enabled:v6];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DNDActionEnabled"];
+    bOOLValue = [v5 BOOLValue];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DNDActionEncodedAction"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DNDActionActionIdentifier"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DNDActionBundleIdentifierKey"];
+    v10 = [coderCopy decodeObjectOfClass:NSClassFromString(&cfstr_Lnaction.isa) forKey:@"DNDActionAction"];
+    self = [(DNDAppAction *)self _initWithAction:v10 bundleIdentifier:v9 actionIdentifier:v8 encodedAction:v7 enabled:bOOLValue];
 
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
   enabled = self->_enabled;
-  v7 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithBool:enabled];
-  [v7 encodeObject:v6 forKey:@"DNDActionEnabled"];
+  [coderCopy encodeObject:v6 forKey:@"DNDActionEnabled"];
 
-  [v7 encodeObject:self->_rawAction forKey:@"DNDActionAction"];
-  [v7 encodeObject:self->_encodedAction forKey:@"DNDActionEncodedAction"];
-  [v7 encodeObject:self->_bundleIdentifier forKey:@"DNDActionBundleIdentifierKey"];
-  [v7 encodeObject:self->_identifier forKey:@"DNDActionActionIdentifier"];
+  [coderCopy encodeObject:self->_rawAction forKey:@"DNDActionAction"];
+  [coderCopy encodeObject:self->_encodedAction forKey:@"DNDActionEncodedAction"];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"DNDActionBundleIdentifierKey"];
+  [coderCopy encodeObject:self->_identifier forKey:@"DNDActionActionIdentifier"];
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithBool:self->_enabled];
-  [v3 setObject:v4 forKeyedSubscript:@"DNDActionEnabled"];
+  [dictionary setObject:v4 forKeyedSubscript:@"DNDActionEnabled"];
 
-  v5 = [(DNDAppAction *)self encodedAction];
-  [v3 setObject:v5 forKeyedSubscript:@"DNDActionEncodedAction"];
+  encodedAction = [(DNDAppAction *)self encodedAction];
+  [dictionary setObject:encodedAction forKeyedSubscript:@"DNDActionEncodedAction"];
 
-  v6 = [(DNDAppAction *)self bundleIdentifier];
-  [v3 setObject:v6 forKeyedSubscript:@"DNDActionBundleIdentifierKey"];
+  bundleIdentifier = [(DNDAppAction *)self bundleIdentifier];
+  [dictionary setObject:bundleIdentifier forKeyedSubscript:@"DNDActionBundleIdentifierKey"];
 
-  v7 = [(DNDAppAction *)self identifier];
-  [v3 setObject:v7 forKeyedSubscript:@"DNDActionActionIdentifier"];
+  identifier = [(DNDAppAction *)self identifier];
+  [dictionary setObject:identifier forKeyedSubscript:@"DNDActionActionIdentifier"];
 
   v8 = MEMORY[0x277CCAAB0];
-  v9 = [(DNDAppAction *)self action];
+  action = [(DNDAppAction *)self action];
   v14 = 0;
-  v10 = [v8 archivedDataWithRootObject:v9 requiringSecureCoding:1 error:&v14];
+  v10 = [v8 archivedDataWithRootObject:action requiringSecureCoding:1 error:&v14];
   v11 = v14;
 
   if (v11 && os_log_type_enabled(DNDLogAppConfiguration, OS_LOG_TYPE_ERROR))
@@ -349,47 +349,47 @@ LABEL_11:
     [DNDAppAction encodedAction];
   }
 
-  [v3 setObject:v10 forKeyedSubscript:@"AppConfigurationActionPayload"];
-  v12 = [v3 copy];
+  [dictionary setObject:v10 forKeyedSubscript:@"AppConfigurationActionPayload"];
+  v12 = [dictionary copy];
 
   return v12;
 }
 
-+ (id)appActionFromDictionaryRepresentation:(id)a3
++ (id)appActionFromDictionaryRepresentation:(id)representation
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"DNDActionEnabled"];
-  v5 = [v4 BOOLValue];
+  representationCopy = representation;
+  v4 = [representationCopy objectForKeyedSubscript:@"DNDActionEnabled"];
+  bOOLValue = [v4 BOOLValue];
 
   v6 = [DNDAppAction alloc];
-  v7 = [v3 objectForKeyedSubscript:@"DNDActionEncodedAction"];
-  v8 = [v3 objectForKeyedSubscript:@"DNDActionActionIdentifier"];
-  v9 = [v3 objectForKeyedSubscript:@"DNDActionBundleIdentifierKey"];
+  v7 = [representationCopy objectForKeyedSubscript:@"DNDActionEncodedAction"];
+  v8 = [representationCopy objectForKeyedSubscript:@"DNDActionActionIdentifier"];
+  v9 = [representationCopy objectForKeyedSubscript:@"DNDActionBundleIdentifierKey"];
 
-  v10 = [(DNDAppAction *)v6 initWithEncodedAction:v7 actionIdentifier:v8 bundleIdentifier:v9 enabled:v5];
+  v10 = [(DNDAppAction *)v6 initWithEncodedAction:v7 actionIdentifier:v8 bundleIdentifier:v9 enabled:bOOLValue];
 
   return v10;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(DNDAppAction *)self rawAction];
-  v4 = [v3 hash];
-  v5 = [(DNDAppAction *)self encodedAction];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(DNDAppAction *)self bundleIdentifier];
-  v8 = [v7 hash];
-  v9 = [(DNDAppAction *)self identifier];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(DNDAppAction *)self isEnabled];
+  rawAction = [(DNDAppAction *)self rawAction];
+  v4 = [rawAction hash];
+  encodedAction = [(DNDAppAction *)self encodedAction];
+  v6 = [encodedAction hash] ^ v4;
+  bundleIdentifier = [(DNDAppAction *)self bundleIdentifier];
+  v8 = [bundleIdentifier hash];
+  identifier = [(DNDAppAction *)self identifier];
+  v10 = v6 ^ v8 ^ [identifier hash];
+  isEnabled = [(DNDAppAction *)self isEnabled];
 
-  return v10 ^ v11;
+  return v10 ^ isEnabled;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v13) = 1;
   }
@@ -399,21 +399,21 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(DNDAppAction *)self rawAction];
-      v8 = [(DNDAppAction *)v6 rawAction];
-      if (v7 != v8)
+      v6 = equalCopy;
+      rawAction = [(DNDAppAction *)self rawAction];
+      rawAction2 = [(DNDAppAction *)v6 rawAction];
+      if (rawAction != rawAction2)
       {
-        v9 = [(DNDAppAction *)self rawAction];
-        if (!v9)
+        rawAction3 = [(DNDAppAction *)self rawAction];
+        if (!rawAction3)
         {
           LOBYTE(v13) = 0;
           goto LABEL_54;
         }
 
-        v10 = v9;
-        v11 = [(DNDAppAction *)v6 rawAction];
-        if (!v11)
+        v10 = rawAction3;
+        rawAction4 = [(DNDAppAction *)v6 rawAction];
+        if (!rawAction4)
         {
           LOBYTE(v13) = 0;
 LABEL_53:
@@ -421,9 +421,9 @@ LABEL_53:
           goto LABEL_54;
         }
 
-        v3 = [(DNDAppAction *)self rawAction];
-        v12 = [(DNDAppAction *)v6 rawAction];
-        if (![v3 isEqual:v12])
+        rawAction5 = [(DNDAppAction *)self rawAction];
+        rawAction6 = [(DNDAppAction *)v6 rawAction];
+        if (![rawAction5 isEqual:rawAction6])
         {
           LOBYTE(v13) = 0;
 LABEL_52:
@@ -432,28 +432,28 @@ LABEL_52:
         }
 
         v47 = v10;
-        v48 = v12;
-        v49 = v3;
-        v50 = v11;
+        v48 = rawAction6;
+        v49 = rawAction5;
+        v50 = rawAction4;
       }
 
-      v14 = [(DNDAppAction *)self encodedAction];
-      v15 = [(DNDAppAction *)v6 encodedAction];
-      if (v14 != v15)
+      encodedAction = [(DNDAppAction *)self encodedAction];
+      encodedAction2 = [(DNDAppAction *)v6 encodedAction];
+      if (encodedAction != encodedAction2)
       {
-        v16 = [(DNDAppAction *)self encodedAction];
-        if (v16)
+        encodedAction3 = [(DNDAppAction *)self encodedAction];
+        if (encodedAction3)
         {
-          v17 = v16;
-          v18 = [(DNDAppAction *)v6 encodedAction];
-          if (v18)
+          v17 = encodedAction3;
+          encodedAction4 = [(DNDAppAction *)v6 encodedAction];
+          if (encodedAction4)
           {
-            v45 = v18;
-            v3 = [(DNDAppAction *)self encodedAction];
-            v19 = [(DNDAppAction *)v6 encodedAction];
-            if ([v3 isEqual:v19])
+            v45 = encodedAction4;
+            rawAction5 = [(DNDAppAction *)self encodedAction];
+            encodedAction5 = [(DNDAppAction *)v6 encodedAction];
+            if ([rawAction5 isEqual:encodedAction5])
             {
-              v41 = v19;
+              v41 = encodedAction5;
               v42 = v17;
               goto LABEL_16;
             }
@@ -465,32 +465,32 @@ LABEL_52:
       }
 
 LABEL_16:
-      v20 = [(DNDAppAction *)self bundleIdentifier];
-      v21 = [(DNDAppAction *)v6 bundleIdentifier];
-      v46 = v20;
-      if (v20 == v21)
+      bundleIdentifier = [(DNDAppAction *)self bundleIdentifier];
+      bundleIdentifier2 = [(DNDAppAction *)v6 bundleIdentifier];
+      v46 = bundleIdentifier;
+      if (bundleIdentifier == bundleIdentifier2)
       {
-        v44 = v3;
+        v44 = rawAction5;
       }
 
       else
       {
-        v22 = [(DNDAppAction *)self bundleIdentifier];
-        if (!v22)
+        bundleIdentifier3 = [(DNDAppAction *)self bundleIdentifier];
+        if (!bundleIdentifier3)
         {
 
           LOBYTE(v13) = 0;
 LABEL_48:
-          if (v14 != v15)
+          if (encodedAction != encodedAction2)
           {
           }
 
 LABEL_51:
-          v3 = v49;
-          v11 = v50;
-          v12 = v48;
+          rawAction5 = v49;
+          rawAction4 = v50;
+          rawAction6 = v48;
           v10 = v47;
-          if (v7 != v8)
+          if (rawAction != rawAction2)
           {
             goto LABEL_52;
           }
@@ -500,9 +500,9 @@ LABEL_54:
           goto LABEL_55;
         }
 
-        v43 = v22;
-        v23 = [(DNDAppAction *)v6 bundleIdentifier];
-        if (!v23)
+        v43 = bundleIdentifier3;
+        bundleIdentifier4 = [(DNDAppAction *)v6 bundleIdentifier];
+        if (!bundleIdentifier4)
         {
           LOBYTE(v13) = 0;
 LABEL_39:
@@ -510,11 +510,11 @@ LABEL_39:
           goto LABEL_48;
         }
 
-        v40 = v23;
-        v24 = [(DNDAppAction *)self bundleIdentifier];
-        v38 = [(DNDAppAction *)v6 bundleIdentifier];
-        v39 = v24;
-        if (![v24 isEqual:?])
+        v40 = bundleIdentifier4;
+        bundleIdentifier5 = [(DNDAppAction *)self bundleIdentifier];
+        bundleIdentifier6 = [(DNDAppAction *)v6 bundleIdentifier];
+        v39 = bundleIdentifier5;
+        if (![bundleIdentifier5 isEqual:?])
         {
           LOBYTE(v13) = 0;
 LABEL_38:
@@ -522,63 +522,63 @@ LABEL_38:
           goto LABEL_39;
         }
 
-        v44 = v3;
+        v44 = rawAction5;
       }
 
-      v25 = [(DNDAppAction *)self identifier];
-      v26 = [(DNDAppAction *)self identifier];
-      if (v25 != v26)
+      identifier = [(DNDAppAction *)self identifier];
+      identifier2 = [(DNDAppAction *)self identifier];
+      if (identifier != identifier2)
       {
-        v27 = [(DNDAppAction *)self identifier];
-        if (!v27)
+        identifier3 = [(DNDAppAction *)self identifier];
+        if (!identifier3)
         {
 
           LOBYTE(v13) = 0;
           goto LABEL_45;
         }
 
-        v37 = v27;
-        v28 = [(DNDAppAction *)self identifier];
-        if (!v28)
+        v37 = identifier3;
+        identifier4 = [(DNDAppAction *)self identifier];
+        if (!identifier4)
         {
           LOBYTE(v13) = 0;
 LABEL_44:
 
 LABEL_45:
           v31 = v46;
-          v3 = v44;
-          if (v46 != v21)
+          rawAction5 = v44;
+          if (v46 != bundleIdentifier2)
           {
           }
 
           goto LABEL_47;
         }
 
-        v33 = v25;
-        v36 = v28;
-        v29 = [(DNDAppAction *)self identifier];
-        v34 = [(DNDAppAction *)self identifier];
-        v35 = v29;
-        if (![v29 isEqual:?])
+        v33 = identifier;
+        v36 = identifier4;
+        identifier5 = [(DNDAppAction *)self identifier];
+        identifier6 = [(DNDAppAction *)self identifier];
+        v35 = identifier5;
+        if (![identifier5 isEqual:?])
         {
           LOBYTE(v13) = 0;
-          v25 = v33;
+          identifier = v33;
 LABEL_43:
 
           goto LABEL_44;
         }
 
-        v25 = v33;
+        identifier = v33;
       }
 
-      v30 = [(DNDAppAction *)self isEnabled];
-      v13 = v30 ^ [(DNDAppAction *)v6 isEnabled]^ 1;
-      if (v25 == v26)
+      isEnabled = [(DNDAppAction *)self isEnabled];
+      v13 = isEnabled ^ [(DNDAppAction *)v6 isEnabled]^ 1;
+      if (identifier == identifier2)
       {
 
         v31 = v46;
-        v3 = v44;
-        if (v46 == v21)
+        rawAction5 = v44;
+        if (v46 == bundleIdentifier2)
         {
 LABEL_47:
 
@@ -603,19 +603,19 @@ LABEL_55:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(DNDAppAction *)self identifier];
+  identifier = [(DNDAppAction *)self identifier];
   v6 = [MEMORY[0x277CCABB0] numberWithBool:{-[DNDAppAction isEnabled](self, "isEnabled")}];
-  v7 = [(DNDAppAction *)self rawAction];
+  rawAction = [(DNDAppAction *)self rawAction];
   v8 = [MEMORY[0x277CCABB0] numberWithInt:self->_encodedAction != 0];
-  v9 = [(DNDAppAction *)self bundleIdentifier];
-  v10 = [v3 stringWithFormat:@"<%@: %p identifier: %@; enabled: %@; action: %@; hasEncoded: %@; bundleIdentifier: %@>", v4, self, v5, v6, v7, v8, v9];;
+  bundleIdentifier = [(DNDAppAction *)self bundleIdentifier];
+  v10 = [v3 stringWithFormat:@"<%@: %p identifier: %@; enabled: %@; action: %@; hasEncoded: %@; bundleIdentifier: %@>", v4, self, identifier, v6, rawAction, v8, bundleIdentifier];;
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   rawAction = self->_rawAction;
   identifier = self->_identifier;
   bundleIdentifier = self->_bundleIdentifier;
@@ -625,9 +625,9 @@ LABEL_55:
   return [v4 _initWithAction:rawAction bundleIdentifier:bundleIdentifier actionIdentifier:identifier encodedAction:encodedAction enabled:enabled];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [DNDMutableAppAction allocWithZone:a3];
+  v4 = [DNDMutableAppAction allocWithZone:zone];
   rawAction = self->_rawAction;
   identifier = self->_identifier;
   bundleIdentifier = self->_bundleIdentifier;

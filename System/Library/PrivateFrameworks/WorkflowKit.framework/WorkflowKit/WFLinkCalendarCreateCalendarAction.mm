@@ -1,6 +1,6 @@
 @interface WFLinkCalendarCreateCalendarAction
-- (id)localizedDescriptionSummaryWithContext:(id)a3;
-- (id)localizedNameWithContext:(id)a3;
+- (id)localizedDescriptionSummaryWithContext:(id)context;
+- (id)localizedNameWithContext:(id)context;
 - (id)overrideLabelsByParameter;
 @end
 
@@ -19,20 +19,20 @@
   return v3;
 }
 
-- (id)localizedDescriptionSummaryWithContext:(id)a3
+- (id)localizedDescriptionSummaryWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Creates a new calendar in Calendar.", @"Creates a new calendar in Calendar.");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-- (id)localizedNameWithContext:(id)a3
+- (id)localizedNameWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Create Calendar", @"Create Calendar");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }

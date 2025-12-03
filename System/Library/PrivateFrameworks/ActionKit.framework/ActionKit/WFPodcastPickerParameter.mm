@@ -1,29 +1,29 @@
 @interface WFPodcastPickerParameter
-- (WFPodcastPickerParameter)initWithDefinition:(id)a3;
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4;
-- (id)localizedLabelForPossibleState:(id)a3;
-- (void)loadPossibleStatesForEnumeration:(id)a3 searchTerm:(id)a4 completionHandler:(id)a5;
+- (WFPodcastPickerParameter)initWithDefinition:(id)definition;
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state;
+- (id)localizedLabelForPossibleState:(id)state;
+- (void)loadPossibleStatesForEnumeration:(id)enumeration searchTerm:(id)term completionHandler:(id)handler;
 @end
 
 @implementation WFPodcastPickerParameter
 
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state
 {
-  v4 = [a4 value];
-  v5 = [v4 name];
+  value = [state value];
+  name = [value name];
 
-  return v5;
+  return name;
 }
 
-- (void)loadPossibleStatesForEnumeration:(id)a3 searchTerm:(id)a4 completionHandler:(id)a5
+- (void)loadPossibleStatesForEnumeration:(id)enumeration searchTerm:(id)term completionHandler:(id)handler
 {
-  v5 = a5;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __90__WFPodcastPickerParameter_loadPossibleStatesForEnumeration_searchTerm_completionHandler___block_invoke;
   v7[3] = &unk_278C20490;
-  v8 = v5;
-  v6 = v5;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [WFPodcastUtilities getPodcastsFromLibraryFetchingDetailsFromServer:0 withCompletion:v7];
 }
 
@@ -67,19 +67,19 @@ id __90__WFPodcastPickerParameter_loadPossibleStatesForEnumeration_searchTerm_co
   return v4;
 }
 
-- (id)localizedLabelForPossibleState:(id)a3
+- (id)localizedLabelForPossibleState:(id)state
 {
-  v3 = [a3 value];
-  v4 = [v3 name];
+  value = [state value];
+  name = [value name];
 
-  return v4;
+  return name;
 }
 
-- (WFPodcastPickerParameter)initWithDefinition:(id)a3
+- (WFPodcastPickerParameter)initWithDefinition:(id)definition
 {
   v7.receiver = self;
   v7.super_class = WFPodcastPickerParameter;
-  v3 = [(WFDynamicEnumerationParameter *)&v7 initWithDefinition:a3];
+  v3 = [(WFDynamicEnumerationParameter *)&v7 initWithDefinition:definition];
   v4 = v3;
   if (v3)
   {

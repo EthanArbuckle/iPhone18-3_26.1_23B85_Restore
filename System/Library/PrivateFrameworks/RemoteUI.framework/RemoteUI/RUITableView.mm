@@ -1,105 +1,105 @@
 @interface RUITableView
-- (BOOL)_becomeFirstResponderAtIndexPath:(id)a3;
+- (BOOL)_becomeFirstResponderAtIndexPath:(id)path;
 - (BOOL)isSearchEnabled;
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 canFocusRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 canPerformAction:(SEL)a4 forRowAtIndexPath:(id)a5 withSender:(id)a6;
-- (BOOL)tableView:(id)a3 shouldDrawTopSeparatorForSection:(int64_t)a4;
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 shouldShowMenuForRowAtIndexPath:(id)a4;
-- (BOOL)webViewOM:(id)a3 shouldStartLoadWithRequest:(id)a4 navigationType:(int64_t)a5;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view canFocusRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view canPerformAction:(SEL)action forRowAtIndexPath:(id)path withSender:(id)sender;
+- (BOOL)tableView:(id)view shouldDrawTopSeparatorForSection:(int64_t)section;
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view shouldShowMenuForRowAtIndexPath:(id)path;
+- (BOOL)webViewOM:(id)m shouldStartLoadWithRequest:(id)request navigationType:(int64_t)type;
 - (CGRect)_selectPickerFrame;
-- (CGRect)searchBarRectInPage:(id)a3;
-- (CGSize)_tableHeaderSizeForHeader:(id)a3;
-- (CGSize)scrollView:(id)a3 contentSizeForZoomScale:(double)a4 withProposedSize:(CGSize)a5;
-- (Class)tableCellClassForTableViewRow:(id)a3;
+- (CGRect)searchBarRectInPage:(id)page;
+- (CGSize)_tableHeaderSizeForHeader:(id)header;
+- (CGSize)scrollView:(id)view contentSizeForZoomScale:(double)scale withProposedSize:(CGSize)size;
+- (Class)tableCellClassForTableViewRow:(id)row;
 - (NSMutableArray)sections;
 - (RUIHeader)headerView;
 - (RUIObjectModel)objectModel;
 - (RUIPage)page;
-- (RUITableView)initWithAttributes:(id)a3 parent:(id)a4;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_objectModelIndexPathForIndexPath:(id)a3;
-- (id)filteredResultsWithSearchTerm:(id)a3;
-- (id)indexPathForPreferredFocusedViewInTableView:(id)a3;
-- (id)indexPathForRow:(id)a3;
-- (id)objectModelRowForIndexPath:(id)a3;
-- (id)rowWithIdentifier:(id)a3;
+- (RUITableView)initWithAttributes:(id)attributes parent:(id)parent;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_objectModelIndexPathForIndexPath:(id)path;
+- (id)filteredResultsWithSearchTerm:(id)term;
+- (id)indexPathForPreferredFocusedViewInTableView:(id)view;
+- (id)indexPathForRow:(id)row;
+- (id)objectModelRowForIndexPath:(id)path;
+- (id)rowWithIdentifier:(id)identifier;
 - (id)sourceURL;
 - (id)staticValues;
-- (id)subElementWithID:(id)a3;
-- (id)subElementsWithName:(id)a3;
+- (id)subElementWithID:(id)d;
+- (id)subElementsWithName:(id)name;
 - (id)tableView;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (id)textFieldRow:(id)a3 changeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (id)viewForElementIdentifier:(id)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 titleAlignmentForFooterInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 titleAlignmentForHeaderInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (id)textFieldRow:(id)row changeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (id)viewForElementIdentifier:(id)identifier;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (int64_t)tableView:(id)view titleAlignmentForFooterInSection:(int64_t)section;
+- (int64_t)tableView:(id)view titleAlignmentForHeaderInSection:(int64_t)section;
 - (int64_t)tableViewStyle;
 - (void)_clearPickers;
 - (void)_datePickerRevert;
-- (void)_enumerateRowsUsingBlock:(id)a3;
+- (void)_enumerateRowsUsingBlock:(id)block;
 - (void)_hideDatePickerNavBarButtonsIfNeeded;
 - (void)_hideLeftBarButtonItemForLabel;
 - (void)_hideRightBarButtonItemForLabel;
 - (void)_loadHeaderView;
-- (void)_registerForNotifications:(BOOL)a3;
-- (void)_setBottomInset:(float)a3;
-- (void)_setPickerInset:(double)a3;
-- (void)_showDatePickerNavBarButtonsIfNeededForRow:(id)a3;
+- (void)_registerForNotifications:(BOOL)notifications;
+- (void)_setBottomInset:(float)inset;
+- (void)_setPickerInset:(double)inset;
+- (void)_showDatePickerNavBarButtonsIfNeededForRow:(id)row;
 - (void)_showLeftBarButtonItemForLabel;
 - (void)_showRightBarButtonItemForLabel;
-- (void)_textChanged:(id)a3;
-- (void)_updateSectionContentInsetForSettingsWithAnimation:(BOOL)a3;
-- (void)activateRowAtIndexPath:(id)a3 animated:(BOOL)a4;
-- (void)addSearchBarToPage:(id)a3;
-- (void)datePickerCancel:(id)a3;
-- (void)datePickerDone:(id)a3;
+- (void)_textChanged:(id)changed;
+- (void)_updateSectionContentInsetForSettingsWithAnimation:(BOOL)animation;
+- (void)activateRowAtIndexPath:(id)path animated:(BOOL)animated;
+- (void)addSearchBarToPage:(id)page;
+- (void)datePickerCancel:(id)cancel;
+- (void)datePickerDone:(id)done;
 - (void)dealloc;
-- (void)hidePickerViewAnimated:(BOOL)a3;
-- (void)insertRow:(id)a3 atIndexPath:(id)a4;
-- (void)leftLabelDone:(id)a3;
-- (void)performAction:(int)a3 forElement:(id)a4 completion:(id)a5;
-- (void)populatePostbackDictionary:(id)a3;
-- (void)populateSelectionDictionary:(id)a3;
-- (void)reloadHeadersAndFootersForSection:(id)a3;
-- (void)reloadRow:(id)a3 atIndexPath:(id)a4;
-- (void)removeRowAtIndexPath:(id)a3;
-- (void)rightLabelDone:(id)a3;
-- (void)rowDidChange:(id)a3 action:(int)a4;
-- (void)rowDidEndEditing:(id)a3;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)setAttributes:(id)a3;
-- (void)setFooterViewAttributes:(id)a3;
-- (void)setHeaderViewAttributes:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setImageAlignment:(unint64_t)a3;
-- (void)setImageSize:(CGSize)a3;
-- (void)setSelectedRadioGroupRow:(id)a3;
-- (void)setTintColor:(id)a3;
-- (void)showPickerViewForRow:(id)a3 animated:(BOOL)a4;
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didUpdateFocusInContext:(id)a4 withAnimationCoordinator:(id)a5;
-- (void)tableView:(id)a3 performAction:(SEL)a4 forRowAtIndexPath:(id)a5 withSender:(id)a6;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)textFieldStartedEditing:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)hidePickerViewAnimated:(BOOL)animated;
+- (void)insertRow:(id)row atIndexPath:(id)path;
+- (void)leftLabelDone:(id)done;
+- (void)performAction:(int)action forElement:(id)element completion:(id)completion;
+- (void)populatePostbackDictionary:(id)dictionary;
+- (void)populateSelectionDictionary:(id)dictionary;
+- (void)reloadHeadersAndFootersForSection:(id)section;
+- (void)reloadRow:(id)row atIndexPath:(id)path;
+- (void)removeRowAtIndexPath:(id)path;
+- (void)rightLabelDone:(id)done;
+- (void)rowDidChange:(id)change action:(int)action;
+- (void)rowDidEndEditing:(id)editing;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)setAttributes:(id)attributes;
+- (void)setFooterViewAttributes:(id)attributes;
+- (void)setHeaderViewAttributes:(id)attributes;
+- (void)setImage:(id)image;
+- (void)setImageAlignment:(unint64_t)alignment;
+- (void)setImageSize:(CGSize)size;
+- (void)setSelectedRadioGroupRow:(id)row;
+- (void)setTintColor:(id)color;
+- (void)showPickerViewForRow:(id)row animated:(BOOL)animated;
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)tableView:(id)view performAction:(SEL)action forRowAtIndexPath:(id)path withSender:(id)sender;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)textFieldStartedEditing:(id)editing;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayout;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation RUITableView
@@ -124,11 +124,11 @@
   return v4;
 }
 
-- (RUITableView)initWithAttributes:(id)a3 parent:(id)a4
+- (RUITableView)initWithAttributes:(id)attributes parent:(id)parent
 {
   v8.receiver = self;
   v8.super_class = RUITableView;
-  v4 = [(RUIElement *)&v8 initWithAttributes:a3 parent:a4];
+  v4 = [(RUIElement *)&v8 initWithAttributes:attributes parent:parent];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -154,9 +154,9 @@
   return *(&self->super.super.isa + *v2);
 }
 
-- (void)_registerForNotifications:(BOOL)a3
+- (void)_registerForNotifications:(BOOL)notifications
 {
-  if (a3)
+  if (notifications)
   {
     if (self->_registeredForNotifications)
     {
@@ -164,14 +164,14 @@
     }
 
     self->_registeredForNotifications = 1;
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:self selector:sel__textChanged_ name:*MEMORY[0x277D770B0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__textChanged_ name:*MEMORY[0x277D770B0] object:0];
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:self selector:sel_automaticKeyboardDidShow_ name:*MEMORY[0x277D76BA8] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel_automaticKeyboardDidShow_ name:*MEMORY[0x277D76BA8] object:0];
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:self selector:sel_automaticKeyboardDidHide_ name:*MEMORY[0x277D76BA0] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:self selector:sel_automaticKeyboardDidHide_ name:*MEMORY[0x277D76BA0] object:0];
   }
 
   else
@@ -182,14 +182,14 @@
     }
 
     self->_registeredForNotifications = 0;
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 removeObserver:self name:*MEMORY[0x277D770B0] object:0];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter4 removeObserver:self name:*MEMORY[0x277D770B0] object:0];
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 removeObserver:self name:*MEMORY[0x277D76BA8] object:0];
+    defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter5 removeObserver:self name:*MEMORY[0x277D76BA8] object:0];
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 removeObserver:self name:*MEMORY[0x277D76BA0] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 removeObserver:self name:*MEMORY[0x277D76BA0] object:0];
   }
 }
 
@@ -205,39 +205,39 @@
 
 - (BOOL)isSearchEnabled
 {
-  v2 = [(RUIElement *)self attributes];
-  v3 = [v2 objectForKeyedSubscript:@"searchEnabled"];
-  v4 = [v3 BOOLValue];
+  attributes = [(RUIElement *)self attributes];
+  v3 = [attributes objectForKeyedSubscript:@"searchEnabled"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)addSearchBarToPage:(id)a3
+- (void)addSearchBarToPage:(id)page
 {
-  v17 = a3;
+  pageCopy = page;
   if ([(RUITableView *)self isSearchEnabled]&& !self->_searchBar)
   {
-    v4 = [(RUIElement *)self attributes];
-    v5 = [v4 objectForKeyedSubscript:@"searchBarInNavigationBar"];
-    v6 = [v5 BOOLValue];
+    attributes = [(RUIElement *)self attributes];
+    v5 = [attributes objectForKeyedSubscript:@"searchBarInNavigationBar"];
+    bOOLValue = [v5 BOOLValue];
 
-    if (v6)
+    if (bOOLValue)
     {
-      v7 = [objc_alloc(MEMORY[0x277D759F0]) initWithSearchResultsController:0];
-      [v7 setObscuresBackgroundDuringPresentation:0];
-      [v7 setAutomaticallyShowsSearchResultsController:0];
-      v8 = [(RUIElement *)self attributes];
-      v9 = [v8 objectForKeyedSubscript:@"hidesSearchBarWhenScrolling"];
-      v10 = [v9 BOOLValue];
-      v11 = [v17 navigationItem];
-      [v11 setHidesSearchBarWhenScrolling:v10];
+      view = [objc_alloc(MEMORY[0x277D759F0]) initWithSearchResultsController:0];
+      [view setObscuresBackgroundDuringPresentation:0];
+      [view setAutomaticallyShowsSearchResultsController:0];
+      attributes2 = [(RUIElement *)self attributes];
+      v9 = [attributes2 objectForKeyedSubscript:@"hidesSearchBarWhenScrolling"];
+      bOOLValue2 = [v9 BOOLValue];
+      navigationItem = [pageCopy navigationItem];
+      [navigationItem setHidesSearchBarWhenScrolling:bOOLValue2];
 
-      v12 = [v17 navigationItem];
-      [v12 setSearchController:v7];
+      navigationItem2 = [pageCopy navigationItem];
+      [navigationItem2 setSearchController:view];
 
-      v13 = [v7 searchBar];
+      searchBar = [view searchBar];
       searchBar = self->_searchBar;
-      self->_searchBar = v13;
+      self->_searchBar = searchBar;
     }
 
     else
@@ -246,17 +246,17 @@
       v16 = self->_searchBar;
       self->_searchBar = v15;
 
-      v7 = [v17 view];
-      [v7 addSubview:self->_searchBar];
+      view = [pageCopy view];
+      [view addSubview:self->_searchBar];
     }
 
     [(UISearchBar *)self->_searchBar setDelegate:self];
   }
 }
 
-- (CGRect)searchBarRectInPage:(id)a3
+- (CGRect)searchBarRectInPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   if (!self->_searchBar)
   {
     v8 = MEMORY[0x277CBF3A0];
@@ -264,13 +264,13 @@
     goto LABEL_5;
   }
 
-  v5 = [(RUIElement *)self attributes];
-  v6 = [v5 objectForKeyedSubscript:@"searchBarInNavigationBar"];
-  v7 = [v6 BOOLValue];
+  attributes = [(RUIElement *)self attributes];
+  v6 = [attributes objectForKeyedSubscript:@"searchBarInNavigationBar"];
+  bOOLValue = [v6 BOOLValue];
 
   v8 = MEMORY[0x277CBF3A0];
   v9 = *MEMORY[0x277CBF3A0];
-  if (v7)
+  if (bOOLValue)
   {
 LABEL_5:
     v20 = v8[1];
@@ -280,14 +280,14 @@ LABEL_5:
   }
 
   searchBar = self->_searchBar;
-  v11 = [v4 view];
-  [v11 bounds];
+  view = [pageCopy view];
+  [view bounds];
   [(UISearchBar *)searchBar sizeThatFits:v12, v13];
   v15 = v14;
   v17 = v16;
 
-  v18 = [v4 view];
-  [v18 safeAreaInsets];
+  view2 = [pageCopy view];
+  [view2 safeAreaInsets];
   v20 = v19;
 
 LABEL_6:
@@ -308,8 +308,8 @@ LABEL_6:
   if (!tableView)
   {
     v4 = objc_alloc(MEMORY[0x277D75B40]);
-    v5 = [(RUITableView *)self tableViewStyle];
-    v6 = [v4 initWithFrame:v5 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
+    tableViewStyle = [(RUITableView *)self tableViewStyle];
+    v6 = [v4 initWithFrame:tableViewStyle style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     v7 = self->_tableView;
     self->_tableView = v6;
 
@@ -319,8 +319,8 @@ LABEL_6:
     [(UITableView *)self->_tableView setDataSource:self];
     [(UITableView *)self->_tableView setDelegate:self];
     [(UITableView *)self->_tableView setCellLayoutMarginsFollowReadableWidth:1];
-    v8 = [(RUIElement *)self attributes];
-    v9 = [v8 objectForKey:@"sectionStyle"];
+    attributes = [(RUIElement *)self attributes];
+    v9 = [attributes objectForKey:@"sectionStyle"];
 
     if ([v9 isEqualToString:@"compact"])
     {
@@ -329,17 +329,17 @@ LABEL_6:
 
     [(UITableView *)self->_tableView layoutMargins];
     [(UITableView *)self->_tableView setLayoutMargins:?];
-    v10 = [(RUIElement *)self attributes];
-    v11 = [v10 objectForKeyedSubscript:@"editing"];
-    v12 = [v11 BOOLValue];
+    attributes2 = [(RUIElement *)self attributes];
+    v11 = [attributes2 objectForKeyedSubscript:@"editing"];
+    bOOLValue = [v11 BOOLValue];
 
-    if (v12)
+    if (bOOLValue)
     {
       [(UITableView *)self->_tableView setEditing:1 animated:0];
     }
 
-    v13 = [(RUIElement *)self attributes];
-    v14 = [v13 objectForKeyedSubscript:@"allowsMultipleSelectionDuringEditing"];
+    attributes3 = [(RUIElement *)self attributes];
+    v14 = [attributes3 objectForKeyedSubscript:@"allowsMultipleSelectionDuringEditing"];
     -[UITableView setAllowsMultipleSelectionDuringEditing:](self->_tableView, "setAllowsMultipleSelectionDuringEditing:", [v14 BOOLValue]);
 
     if (+[RUIPlatform isAppleTV])
@@ -355,59 +355,59 @@ LABEL_6:
 
 - (int64_t)tableViewStyle
 {
-  v3 = [(RUIElement *)self attributes];
-  v4 = [v3 objectForKey:@"style"];
+  attributes = [(RUIElement *)self attributes];
+  v4 = [attributes objectForKey:@"style"];
 
   if ([v4 isEqualToString:@"grouped"])
   {
-    v5 = 1;
+    tableViewStyle = 1;
   }
 
   else if ([v4 isEqualToString:@"plain"])
   {
-    v5 = 0;
+    tableViewStyle = 0;
   }
 
   else if ([v4 isEqualToString:@"insetGrouped"])
   {
-    v5 = 2;
+    tableViewStyle = 2;
   }
 
   else
   {
-    v6 = [(RUITableView *)self objectModel];
-    v7 = [v6 style];
-    v5 = [v7 tableViewStyle];
+    objectModel = [(RUITableView *)self objectModel];
+    style = [objectModel style];
+    tableViewStyle = [style tableViewStyle];
   }
 
-  return v5;
+  return tableViewStyle;
 }
 
-- (void)_updateSectionContentInsetForSettingsWithAnimation:(BOOL)a3
+- (void)_updateSectionContentInsetForSettingsWithAnimation:(BOOL)animation
 {
-  v3 = a3;
-  v5 = [(RUIElement *)self attributes];
-  v6 = [v5 objectForKey:@"style"];
+  animationCopy = animation;
+  attributes = [(RUIElement *)self attributes];
+  v6 = [attributes objectForKey:@"style"];
 
   if ([v6 isEqualToString:@"settings"])
   {
-    v7 = [(RUITableView *)self _isRegularWidth];
+    _isRegularWidth = [(RUITableView *)self _isRegularWidth];
     v8 = MEMORY[0x277D76F30];
-    if (v7)
+    if (_isRegularWidth)
     {
-      v9 = [(RUITableView *)self view];
-      [v9 layoutMargins];
+      view = [(RUITableView *)self view];
+      [view layoutMargins];
       v11 = v10;
 
-      v12 = [(RUITableView *)self view];
-      [v12 safeAreaInsets];
+      view2 = [(RUITableView *)self view];
+      [view2 safeAreaInsets];
       v14 = v13;
 
       v15 = 0.0;
       if (v14 <= 0.0)
       {
-        v16 = [(RUITableView *)self view];
-        [v16 layoutMargins];
+        view3 = [(RUITableView *)self view];
+        [view3 layoutMargins];
         v15 = v17;
       }
     }
@@ -422,7 +422,7 @@ LABEL_6:
     if (v11 != v19 || v15 != v18)
     {
       v21 = *v8;
-      if (v3 && self->_sectionContentInsetInitialized)
+      if (animationCopy && self->_sectionContentInsetInitialized)
       {
         [(UITableView *)self->_tableView _setSectionContentInset:v21, v11, *v8, v15];
       }
@@ -445,37 +445,37 @@ LABEL_6:
   }
 }
 
-- (void)setAttributes:(id)a3
+- (void)setAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(RUIElement *)self attributes];
+  attributesCopy = attributes;
+  attributes = [(RUIElement *)self attributes];
 
-  if (v5 != v4)
+  if (attributes != attributesCopy)
   {
     v17.receiver = self;
     v17.super_class = RUITableView;
-    [(RUIElement *)&v17 setAttributes:v4];
-    v6 = [(RUIElement *)self attributes];
-    v7 = [v6 objectForKey:@"scrollEnabled"];
+    [(RUIElement *)&v17 setAttributes:attributesCopy];
+    attributes2 = [(RUIElement *)self attributes];
+    v7 = [attributes2 objectForKey:@"scrollEnabled"];
 
     if ([v7 length] && (objc_msgSend(v7, "BOOLValue") & 1) == 0)
     {
-      v8 = [(RUITableView *)self tableView];
-      [v8 setScrollEnabled:0];
+      tableView = [(RUITableView *)self tableView];
+      [tableView setScrollEnabled:0];
     }
 
-    v9 = [(RUIElement *)self attributes];
-    v10 = [v9 objectForKeyedSubscript:@"backgroundColor"];
+    attributes3 = [(RUIElement *)self attributes];
+    v10 = [attributes3 objectForKeyedSubscript:@"backgroundColor"];
 
     if (v10)
     {
       v11 = [MEMORY[0x277D75348] _remoteUI_colorWithString:v10];
-      v12 = [(RUITableView *)self tableView];
-      [v12 setBackgroundColor:v11];
+      tableView2 = [(RUITableView *)self tableView];
+      [tableView2 setBackgroundColor:v11];
     }
 
-    v13 = [(RUIElement *)self attributes];
-    v14 = [v13 objectForKeyedSubscript:@"separatorStyle"];
+    attributes4 = [(RUIElement *)self attributes];
+    v14 = [attributes4 objectForKeyedSubscript:@"separatorStyle"];
 
     if (!v14)
     {
@@ -497,17 +497,17 @@ LABEL_6:
       v15 = 1;
     }
 
-    v16 = [(RUITableView *)self tableView];
-    [v16 setSeparatorStyle:v15];
+    tableView3 = [(RUITableView *)self tableView];
+    [tableView3 setSeparatorStyle:v15];
 
 LABEL_14:
   }
 }
 
-- (void)populatePostbackDictionary:(id)a3
+- (void)populatePostbackDictionary:(id)dictionary
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -528,7 +528,7 @@ LABEL_14:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) populatePostbackDictionary:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) populatePostbackDictionary:{dictionaryCopy, v10}];
       }
 
       while (v7 != v9);
@@ -538,24 +538,24 @@ LABEL_14:
     while (v7);
   }
 
-  [(RUITableView *)self populateSelectionDictionary:v4];
+  [(RUITableView *)self populateSelectionDictionary:dictionaryCopy];
 }
 
-- (void)populateSelectionDictionary:(id)a3
+- (void)populateSelectionDictionary:(id)dictionary
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(RUIElement *)self identifier];
-  v6 = [v5 length];
+  dictionaryCopy = dictionary;
+  identifier = [(RUIElement *)self identifier];
+  v6 = [identifier length];
 
   if (v6)
   {
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v22 = self;
+    selfCopy = self;
     obj = self->_sections;
     v25 = [(NSMutableArray *)obj countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (!v25)
@@ -580,8 +580,8 @@ LABEL_14:
         v28 = 0u;
         v29 = 0u;
         v30 = 0u;
-        v10 = [v9 rows];
-        v11 = [v10 countByEnumeratingWithState:&v27 objects:v35 count:16];
+        rows = [v9 rows];
+        v11 = [rows countByEnumeratingWithState:&v27 objects:v35 count:16];
         if (v11)
         {
           v12 = v11;
@@ -592,32 +592,32 @@ LABEL_14:
             {
               if (*v28 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(rows);
               }
 
               v15 = *(*(&v27 + 1) + 8 * i);
-              v16 = [v15 tableCell];
-              if ([v16 isSelected])
+              tableCell = [v15 tableCell];
+              if ([tableCell isSelected])
               {
-                v17 = [v15 tableCell];
-                v18 = [v17 selectionStyle];
+                tableCell2 = [v15 tableCell];
+                selectionStyle = [tableCell2 selectionStyle];
 
-                if (!v18)
+                if (!selectionStyle)
                 {
                   continue;
                 }
 
-                v19 = [v15 attributes];
-                v16 = [v19 objectForKeyedSubscript:@"value"];
+                attributes = [v15 attributes];
+                tableCell = [attributes objectForKeyedSubscript:@"value"];
 
-                if (v16)
+                if (tableCell)
                 {
-                  [v7 addObject:v16];
+                  [array addObject:tableCell];
                 }
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v27 objects:v35 count:16];
+            v12 = [rows countByEnumeratingWithState:&v27 objects:v35 count:16];
           }
 
           while (v12);
@@ -632,9 +632,9 @@ LABEL_14:
       {
 LABEL_21:
 
-        v20 = [v7 copy];
-        v21 = [(RUIElement *)v22 identifier];
-        [v4 setObject:v20 forKeyedSubscript:v21];
+        v20 = [array copy];
+        identifier2 = [(RUIElement *)selfCopy identifier];
+        [dictionaryCopy setObject:v20 forKeyedSubscript:identifier2];
 
         break;
       }
@@ -642,10 +642,10 @@ LABEL_21:
   }
 }
 
-- (id)subElementWithID:(id)a3
+- (id)subElementWithID:(id)d
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -666,8 +666,8 @@ LABEL_21:
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        v12 = [v11 isEqualToString:v4];
+        identifier = [v10 identifier];
+        v12 = [identifier isEqualToString:dCopy];
 
         if (v12)
         {
@@ -677,7 +677,7 @@ LABEL_13:
           goto LABEL_14;
         }
 
-        v13 = [v10 subElementWithID:v4];
+        v13 = [v10 subElementWithID:dCopy];
         if (v13)
         {
           goto LABEL_13;
@@ -705,10 +705,10 @@ LABEL_14:
   return v14;
 }
 
-- (id)subElementsWithName:(id)a3
+- (id)subElementsWithName:(id)name
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
@@ -730,15 +730,15 @@ LABEL_14:
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 name];
-        v13 = [v12 isEqualToString:v4];
+        name = [v11 name];
+        v13 = [name isEqualToString:nameCopy];
 
         if (v13)
         {
           [v5 addObject:v11];
         }
 
-        v14 = [v11 subElementsWithName:v4];
+        v14 = [v11 subElementsWithName:nameCopy];
         [v5 addObjectsFromArray:v14];
       }
 
@@ -751,14 +751,14 @@ LABEL_14:
   return v5;
 }
 
-- (id)_objectModelIndexPathForIndexPath:(id)a3
+- (id)_objectModelIndexPathForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = v4;
+  pathCopy = path;
+  v5 = pathCopy;
   if (self->_embeddedPickerRowIndexPath)
   {
-    v6 = [v4 section];
-    if (v6 == [(NSIndexPath *)self->_embeddedPickerRowIndexPath section])
+    section = [pathCopy section];
+    if (section == [(NSIndexPath *)self->_embeddedPickerRowIndexPath section])
     {
       v7 = [v5 row];
       if (v7 > [(NSIndexPath *)self->_embeddedPickerRowIndexPath row])
@@ -773,51 +773,51 @@ LABEL_14:
   return v5;
 }
 
-- (id)objectModelRowForIndexPath:(id)a3
+- (id)objectModelRowForIndexPath:(id)path
 {
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
-    v5 = [(RUITableView *)self _objectModelIndexPathForIndexPath:v4];
+    v5 = [(RUITableView *)self _objectModelIndexPathForIndexPath:pathCopy];
 
-    v6 = [(RUITableView *)self sections];
-    v7 = [v6 objectAtIndex:{objc_msgSend(v5, "section")}];
+    sections = [(RUITableView *)self sections];
+    v7 = [sections objectAtIndex:{objc_msgSend(v5, "section")}];
 
     v8 = [v5 row];
-    v9 = [v7 rows];
-    v10 = [v9 count];
+    rows = [v7 rows];
+    v10 = [rows count];
 
     if (v8 >= v10)
     {
-      v4 = 0;
+      pathCopy = 0;
     }
 
     else
     {
-      v11 = [v7 rows];
-      v4 = [v11 objectAtIndex:{objc_msgSend(v5, "row")}];
+      rows2 = [v7 rows];
+      pathCopy = [rows2 objectAtIndex:{objc_msgSend(v5, "row")}];
     }
   }
 
-  return v4;
+  return pathCopy;
 }
 
-- (id)indexPathForRow:(id)a3
+- (id)indexPathForRow:(id)row
 {
-  v4 = a3;
-  v5 = [(RUITableView *)self sections];
-  v6 = [v5 count];
+  rowCopy = row;
+  sections = [(RUITableView *)self sections];
+  v6 = [sections count];
 
   if (v6)
   {
     v7 = 0;
     while (1)
     {
-      v8 = [(RUITableView *)self sections];
-      v9 = [v8 objectAtIndex:v7];
+      sections2 = [(RUITableView *)self sections];
+      v9 = [sections2 objectAtIndex:v7];
 
-      v10 = [v9 rows];
-      v11 = [v10 indexOfObject:v4];
+      rows = [v9 rows];
+      v11 = [rows indexOfObject:rowCopy];
 
       if (v11 != 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -842,16 +842,16 @@ LABEL_5:
   return v12;
 }
 
-- (id)rowWithIdentifier:(id)a3
+- (id)rowWithIdentifier:(id)identifier
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = [(RUITableView *)self sections];
-  v20 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  sections = [(RUITableView *)self sections];
+  v20 = [sections countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v20)
   {
     v6 = *v26;
@@ -862,7 +862,7 @@ LABEL_5:
       {
         if (*v26 != v6)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sections);
         }
 
         v8 = *(*(&v25 + 1) + 8 * i);
@@ -870,8 +870,8 @@ LABEL_5:
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v9 = [v8 rows];
-        v10 = [v9 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        rows = [v8 rows];
+        v10 = [rows countByEnumeratingWithState:&v21 objects:v29 count:16];
         if (v10)
         {
           v11 = v10;
@@ -882,12 +882,12 @@ LABEL_5:
             {
               if (*v22 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(rows);
               }
 
               v14 = *(*(&v21 + 1) + 8 * j);
-              v15 = [v14 identifier];
-              v16 = [v15 isEqualToString:v4];
+              identifier = [v14 identifier];
+              v16 = [identifier isEqualToString:identifierCopy];
 
               if (v16)
               {
@@ -897,7 +897,7 @@ LABEL_5:
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v21 objects:v29 count:16];
+            v11 = [rows countByEnumeratingWithState:&v21 objects:v29 count:16];
             if (v11)
             {
               continue;
@@ -911,7 +911,7 @@ LABEL_5:
       }
 
       v17 = 0;
-      v20 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v20 = [sections countByEnumeratingWithState:&v25 objects:v30 count:16];
     }
 
     while (v20);
@@ -936,14 +936,14 @@ LABEL_19:
   [(_UIBackdropView *)pickerBackdrop removeFromSuperview];
 }
 
-- (void)_setPickerInset:(double)a3
+- (void)_setPickerInset:(double)inset
 {
   [(UITableView *)self->_tableView contentInset];
   [(UITableView *)self->_tableView setContentInset:?];
-  self->_pickerInset = a3;
+  self->_pickerInset = inset;
 }
 
-- (void)_setBottomInset:(float)a3
+- (void)_setBottomInset:(float)inset
 {
   [(UITableView *)self->_tableView contentInset];
   tableView = self->_tableView;
@@ -951,15 +951,15 @@ LABEL_19:
   [(UITableView *)tableView setContentInset:?];
 }
 
-- (void)reloadHeadersAndFootersForSection:(id)a3
+- (void)reloadHeadersAndFootersForSection:(id)section
 {
-  v8 = a3;
-  v4 = [(RUITableView *)self sections];
-  v5 = [v4 indexOfObject:v8];
+  sectionCopy = section;
+  sections = [(RUITableView *)self sections];
+  v5 = [sections indexOfObject:sectionCopy];
 
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    NSLog(&cfstr_CannotFindSect.isa, v8);
+    NSLog(&cfstr_CannotFindSect.isa, sectionCopy);
   }
 
   else
@@ -973,18 +973,18 @@ LABEL_19:
   }
 }
 
-- (void)reloadRow:(id)a3 atIndexPath:(id)a4
+- (void)reloadRow:(id)row atIndexPath:(id)path
 {
   v13[1] = *MEMORY[0x277D85DE8];
   sections = self->_sections;
-  v7 = a4;
-  v8 = a3;
-  v9 = -[NSMutableArray objectAtIndexedSubscript:](sections, "objectAtIndexedSubscript:", [v7 section]);
-  [v9 removeRowAtIndex:{objc_msgSend(v7, "row")}];
-  [v9 insertRow:v8 atIndex:{objc_msgSend(v7, "row")}];
+  pathCopy = path;
+  rowCopy = row;
+  v9 = -[NSMutableArray objectAtIndexedSubscript:](sections, "objectAtIndexedSubscript:", [pathCopy section]);
+  [v9 removeRowAtIndex:{objc_msgSend(pathCopy, "row")}];
+  [v9 insertRow:rowCopy atIndex:{objc_msgSend(pathCopy, "row")}];
 
   tableView = self->_tableView;
-  v13[0] = v7;
+  v13[0] = pathCopy;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
   if (gAnimatedTransitions)
   {
@@ -999,17 +999,17 @@ LABEL_19:
   [(UITableView *)tableView reloadRowsAtIndexPaths:v11 withRowAnimation:v12];
 }
 
-- (void)insertRow:(id)a3 atIndexPath:(id)a4
+- (void)insertRow:(id)row atIndexPath:(id)path
 {
   v13[1] = *MEMORY[0x277D85DE8];
   sections = self->_sections;
-  v7 = a4;
-  v8 = a3;
-  v9 = -[NSMutableArray objectAtIndexedSubscript:](sections, "objectAtIndexedSubscript:", [v7 section]);
-  [v9 insertRow:v8 atIndex:{objc_msgSend(v7, "row")}];
+  pathCopy = path;
+  rowCopy = row;
+  v9 = -[NSMutableArray objectAtIndexedSubscript:](sections, "objectAtIndexedSubscript:", [pathCopy section]);
+  [v9 insertRow:rowCopy atIndex:{objc_msgSend(pathCopy, "row")}];
 
   tableView = self->_tableView;
-  v13[0] = v7;
+  v13[0] = pathCopy;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
   if (gAnimatedTransitions)
   {
@@ -1024,15 +1024,15 @@ LABEL_19:
   [(UITableView *)tableView insertRowsAtIndexPaths:v11 withRowAnimation:v12];
 }
 
-- (void)removeRowAtIndexPath:(id)a3
+- (void)removeRowAtIndexPath:(id)path
 {
   v10[1] = *MEMORY[0x277D85DE8];
   sections = self->_sections;
-  v5 = a3;
-  v6 = -[NSMutableArray objectAtIndexedSubscript:](sections, "objectAtIndexedSubscript:", [v5 section]);
-  [v6 removeRowAtIndex:{objc_msgSend(v5, "row")}];
+  pathCopy = path;
+  v6 = -[NSMutableArray objectAtIndexedSubscript:](sections, "objectAtIndexedSubscript:", [pathCopy section]);
+  [v6 removeRowAtIndex:{objc_msgSend(pathCopy, "row")}];
   tableView = self->_tableView;
-  v10[0] = v5;
+  v10[0] = pathCopy;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
   if (gAnimatedTransitions)
   {
@@ -1047,9 +1047,9 @@ LABEL_19:
   [(UITableView *)tableView deleteRowsAtIndexPaths:v8 withRowAnimation:v9];
 }
 
-- (id)viewForElementIdentifier:(id)a3
+- (id)viewForElementIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1062,7 +1062,7 @@ LABEL_19:
   v9[2] = __41__RUITableView_viewForElementIdentifier___block_invoke;
   v9[3] = &unk_2782E8DB0;
   v11 = &v12;
-  v6 = v4;
+  v6 = identifierCopy;
   v10 = v6;
   [(NSMutableArray *)sections enumerateObjectsUsingBlock:v9];
   v7 = v13[5];
@@ -1082,19 +1082,19 @@ void __41__RUITableView_viewForElementIdentifier___block_invoke(uint64_t a1, voi
   *a4 = *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-- (void)setHeaderViewAttributes:(id)a3
+- (void)setHeaderViewAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(RUIElement *)[RUIHeaderElement alloc] initWithAttributes:v4 parent:self];
+  attributesCopy = attributes;
+  v5 = [(RUIElement *)[RUIHeaderElement alloc] initWithAttributes:attributesCopy parent:self];
 
   header = self->_header;
   self->_header = v5;
 }
 
-- (void)setFooterViewAttributes:(id)a3
+- (void)setFooterViewAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(RUIElement *)[RUIFooterElement alloc] initWithAttributes:v4 parent:self];
+  attributesCopy = attributes;
+  v5 = [(RUIElement *)[RUIFooterElement alloc] initWithAttributes:attributesCopy parent:self];
 
   footer = self->_footer;
   self->_footer = v5;
@@ -1112,17 +1112,17 @@ void __41__RUITableView_viewForElementIdentifier___block_invoke(uint64_t a1, voi
   return headerView;
 }
 
-- (CGSize)_tableHeaderSizeForHeader:(id)a3
+- (CGSize)_tableHeaderSizeForHeader:(id)header
 {
-  v4 = a3;
-  v5 = [(RUITableView *)self tableView];
-  v6 = [v5 readableContentGuide];
-  [v6 layoutFrame];
+  headerCopy = header;
+  tableView = [(RUITableView *)self tableView];
+  readableContentGuide = [tableView readableContentGuide];
+  [readableContentGuide layoutFrame];
   v8 = v7;
 
   if (objc_opt_respondsToSelector())
   {
-    [v4 headerHeightForWidth:self->_tableView inView:v8];
+    [headerCopy headerHeightForWidth:self->_tableView inView:v8];
 LABEL_5:
     v10 = v9;
     goto LABEL_6;
@@ -1130,26 +1130,26 @@ LABEL_5:
 
   if (objc_opt_respondsToSelector())
   {
-    [v4 headerHeightForWidth:self->_tableView inTableView:v8];
+    [headerCopy headerHeightForWidth:self->_tableView inTableView:v8];
     goto LABEL_5;
   }
 
-  if ([v4 _wantsAutolayout])
+  if ([headerCopy _wantsAutolayout])
   {
     v10 = *(MEMORY[0x277CBF3A8] + 8);
     v13 = *(MEMORY[0x277D76C78] + 8);
-    v14 = [(RUITableView *)self tableView];
-    v15 = [v14 readableContentGuide];
-    [v15 layoutFrame];
+    tableView2 = [(RUITableView *)self tableView];
+    readableContentGuide2 = [tableView2 readableContentGuide];
+    [readableContentGuide2 layoutFrame];
     v17 = v16;
 
-    [v4 systemLayoutSizeFittingSize:{v17, v13}];
+    [headerCopy systemLayoutSizeFittingSize:{v17, v13}];
   }
 
   else
   {
     [(UITableView *)self->_tableView frame];
-    [v4 sizeThatFits:{v18, v19}];
+    [headerCopy sizeThatFits:{v18, v19}];
     v8 = v20;
     v10 = v21;
   }
@@ -1168,14 +1168,14 @@ LABEL_6:
   v50[4] = *MEMORY[0x277D85DE8];
   if (self->_header || self->_subHeader || self->_headerTitle || [(RUIElement *)self hasImage])
   {
-    v3 = [(RUITableView *)self tableView];
-    v4 = [v3 tableHeaderView];
+    tableView = [(RUITableView *)self tableView];
+    tableHeaderView = [tableView tableHeaderView];
 
-    if (!v4)
+    if (!tableHeaderView)
     {
       WeakRetained = objc_loadWeakRetained(&self->_objectModel);
-      v6 = [(RUIElement *)self->_header attributes];
-      v7 = [WeakRetained tableHeaderViewForAttributes:v6];
+      attributes = [(RUIElement *)self->_header attributes];
+      v7 = [WeakRetained tableHeaderViewForAttributes:attributes];
 
       if (v7 && ([v7 conformsToProtocol:&unk_282D84FE8] & 1) == 0)
       {
@@ -1189,11 +1189,11 @@ LABEL_6:
       else
       {
         v8 = v7;
-        v9 = [(RUITableView *)self page];
-        v10 = [v9 showsTitlesAsHeaderViews];
+        page = [(RUITableView *)self page];
+        showsTitlesAsHeaderViews = [page showsTitlesAsHeaderViews];
 
         v48 = v7;
-        if (v10)
+        if (showsTitlesAsHeaderViews)
         {
           if (_isInternalInstall())
           {
@@ -1229,21 +1229,21 @@ LABEL_6:
           }
 
           [(RUIHeaderView *)v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-          v14 = [(RUIElement *)self style];
-          [v14 subHeaderTopMargin];
+          style = [(RUIElement *)self style];
+          [style subHeaderTopMargin];
           [(RUIHeaderView *)v8 setSubHeaderTopMargin:?];
 
-          v15 = [(RUIElement *)self style];
-          [v15 headerImagePadding];
+          style2 = [(RUIElement *)self style];
+          [style2 headerImagePadding];
           [(RUIHeaderView *)v8 setImageLabelPadding:?];
 
-          v16 = [(RUIElement *)self style];
-          [v16 headerMargin];
+          style3 = [(RUIElement *)self style];
+          [style3 headerMargin];
           [(RUIHeaderView *)v8 setHeaderMargin:?];
 
-          v17 = [(RUIElement *)self style];
-          v18 = [v17 headerLabelTextColor];
-          [(RUIHeaderView *)v8 setHeaderColor:v18];
+          style4 = [(RUIElement *)self style];
+          headerLabelTextColor = [style4 headerLabelTextColor];
+          [(RUIHeaderView *)v8 setHeaderColor:headerLabelTextColor];
 
           v13 = v8;
         }
@@ -1253,34 +1253,34 @@ LABEL_6:
         v23 = objc_alloc_init(RUIReadableContentContainer);
         [(RUIReadableContentContainer *)v23 setPreservesSuperviewLayoutMargins:1];
         v24 = objc_loadWeakRetained(&self->_objectModel);
-        v25 = [v24 style];
-        [v25 headerContainerSideMargin];
+        style5 = [v24 style];
+        [style5 headerContainerSideMargin];
         v27 = v26;
         v28 = objc_loadWeakRetained(&self->_objectModel);
-        v29 = [v28 style];
-        [v29 headerContainerSideMargin];
+        style6 = [v28 style];
+        [style6 headerContainerSideMargin];
         [(RUIReadableContentContainer *)v23 setDirectionalLayoutMargins:0.0, v27, 0.0, v30];
 
         [(RUIReadableContentContainer *)v23 addSubview:v13];
         [(UITableView *)self->_tableView setTableHeaderView:v23];
         v41 = MEMORY[0x277CCAAD0];
-        v47 = [(RUIReadableContentContainer *)v23 topAnchor];
-        v46 = [(RUIModernHeaderView *)v13 topAnchor];
-        v45 = [v47 constraintEqualToAnchor:v46];
+        topAnchor = [(RUIReadableContentContainer *)v23 topAnchor];
+        topAnchor2 = [(RUIModernHeaderView *)v13 topAnchor];
+        v45 = [topAnchor constraintEqualToAnchor:topAnchor2];
         v50[0] = v45;
-        v44 = [(RUIReadableContentContainer *)v23 bottomAnchor];
-        v43 = [(RUIModernHeaderView *)v13 bottomAnchor];
-        v42 = [v44 constraintEqualToAnchor:v43];
+        bottomAnchor = [(RUIReadableContentContainer *)v23 bottomAnchor];
+        bottomAnchor2 = [(RUIModernHeaderView *)v13 bottomAnchor];
+        v42 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
         v50[1] = v42;
-        v40 = [(RUIReadableContentContainer *)v23 readableContentGuide];
-        v39 = [v40 leadingAnchor];
-        v31 = [(RUIModernHeaderView *)v13 leadingAnchor];
-        v32 = [v39 constraintEqualToAnchor:v31];
+        readableContentGuide = [(RUIReadableContentContainer *)v23 readableContentGuide];
+        leadingAnchor = [readableContentGuide leadingAnchor];
+        leadingAnchor2 = [(RUIModernHeaderView *)v13 leadingAnchor];
+        v32 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
         v50[2] = v32;
-        v33 = [(RUIReadableContentContainer *)v23 readableContentGuide];
-        v34 = [v33 trailingAnchor];
-        v35 = [(RUIModernHeaderView *)v13 trailingAnchor];
-        v36 = [v34 constraintEqualToAnchor:v35];
+        readableContentGuide2 = [(RUIReadableContentContainer *)v23 readableContentGuide];
+        trailingAnchor = [readableContentGuide2 trailingAnchor];
+        trailingAnchor2 = [(RUIModernHeaderView *)v13 trailingAnchor];
+        v36 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
         v50[3] = v36;
         v37 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:4];
         [v41 activateConstraints:v37];
@@ -1295,85 +1295,85 @@ LABEL_6:
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v5 = +[RUIHeaderView symbolConfiguration];
-  v10 = [v4 imageByApplyingSymbolConfiguration:v5];
+  v10 = [imageCopy imageByApplyingSymbolConfiguration:v5];
 
-  v6 = [(RUITableView *)self page];
-  LODWORD(v4) = [v6 showsTitlesAsHeaderViews];
+  page = [(RUITableView *)self page];
+  LODWORD(imageCopy) = [page showsTitlesAsHeaderViews];
 
-  v7 = [(RUITableView *)self headerView];
-  v8 = v7;
-  if (v4)
+  headerView = [(RUITableView *)self headerView];
+  v8 = headerView;
+  if (imageCopy)
   {
-    [v7 setIcon:v10 accessibilityLabel:0];
+    [headerView setIcon:v10 accessibilityLabel:0];
   }
 
   else
   {
-    [v7 setIconImage:v10];
+    [headerView setIconImage:v10];
   }
 
-  v9 = [(RUITableView *)self headerView];
-  [v9 layoutIfNeeded];
+  headerView2 = [(RUITableView *)self headerView];
+  [headerView2 layoutIfNeeded];
 
   [(RUITableView *)self viewDidLayout];
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  v4 = a3;
-  v5 = [(RUITableView *)self headerView];
-  [v5 setTintColor:v4];
+  colorCopy = color;
+  headerView = [(RUITableView *)self headerView];
+  [headerView setTintColor:colorCopy];
 }
 
-- (void)setImageSize:(CGSize)a3
+- (void)setImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(RUITableView *)self page];
-  v7 = [v6 showsTitlesAsHeaderViews];
+  height = size.height;
+  width = size.width;
+  page = [(RUITableView *)self page];
+  showsTitlesAsHeaderViews = [page showsTitlesAsHeaderViews];
 
-  if ((v7 & 1) == 0)
+  if ((showsTitlesAsHeaderViews & 1) == 0)
   {
-    v8 = [(RUITableView *)self headerView];
-    [v8 setImageSize:{width, height}];
+    headerView = [(RUITableView *)self headerView];
+    [headerView setImageSize:{width, height}];
   }
 
-  v9 = [(RUITableView *)self headerView];
-  [v9 layoutIfNeeded];
+  headerView2 = [(RUITableView *)self headerView];
+  [headerView2 layoutIfNeeded];
 
   [(RUITableView *)self viewDidLayout];
 }
 
-- (void)setImageAlignment:(unint64_t)a3
+- (void)setImageAlignment:(unint64_t)alignment
 {
-  v5 = [(RUITableView *)self page];
-  v6 = [v5 showsTitlesAsHeaderViews];
+  page = [(RUITableView *)self page];
+  showsTitlesAsHeaderViews = [page showsTitlesAsHeaderViews];
 
-  if ((v6 & 1) == 0)
+  if ((showsTitlesAsHeaderViews & 1) == 0)
   {
-    v7 = [(RUITableView *)self headerView];
-    [v7 setImageAlignment:a3];
+    headerView = [(RUITableView *)self headerView];
+    [headerView setImageAlignment:alignment];
   }
 
-  v8 = [(RUITableView *)self headerView];
-  [v8 layoutIfNeeded];
+  headerView2 = [(RUITableView *)self headerView];
+  [headerView2 layoutIfNeeded];
 
   [(RUITableView *)self viewDidLayout];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = [(UITableView *)self->_tableView superview];
+  superview = [(UITableView *)self->_tableView superview];
   [(UITableView *)self->_tableView frame];
   x = v26.origin.x;
   y = v26.origin.y;
-  if (CGRectIsEmpty(v26) && v4 != 0)
+  if (CGRectIsEmpty(v26) && superview != 0)
   {
-    [v4 bounds];
+    [superview bounds];
     [(UITableView *)self->_tableView setFrame:x, y];
   }
 
@@ -1383,13 +1383,13 @@ LABEL_6:
   [(RUITableView *)self _loadHeaderView];
   if (self->_footer)
   {
-    v9 = [(UITableView *)self->_tableView tableFooterView];
+    tableFooterView = [(UITableView *)self->_tableView tableFooterView];
 
-    if (!v9)
+    if (!tableFooterView)
     {
       v10 = objc_loadWeakRetained(&self->_objectModel);
-      v11 = [(RUIElement *)self->_footer attributes];
-      v12 = [v10 tableFooterViewForAttributes:v11];
+      attributes = [(RUIElement *)self->_footer attributes];
+      v12 = [v10 tableFooterViewForAttributes:attributes];
 
       if (v12)
       {
@@ -1407,15 +1407,15 @@ LABEL_6:
   v19 = objc_loadWeakRetained(&self->_objectModel);
   [v19 tableViewOMDidChange:self];
 
-  v20 = [(UITableView *)self->_tableView dataSource];
+  dataSource = [(UITableView *)self->_tableView dataSource];
   v21 = MEMORY[0x277D75D18];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __31__RUITableView_viewWillAppear___block_invoke;
   v23[3] = &unk_2782E84F8;
-  v24 = v20;
-  v25 = self;
-  v22 = v20;
+  v24 = dataSource;
+  selfCopy = self;
+  v22 = dataSource;
   [v21 performWithoutAnimation:v23];
 }
 
@@ -1434,24 +1434,24 @@ uint64_t __31__RUITableView_viewWillAppear___block_invoke(uint64_t result)
   return result;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = [(RUIElement *)self pageElement];
-  [v4 reportInternalRenderEvent];
+  pageElement = [(RUIElement *)self pageElement];
+  [pageElement reportInternalRenderEvent];
 
-  v5 = [(RUITableView *)self tableView];
-  [(RUIElement *)self configureAccessiblityWithTarget:v5];
+  tableView = [(RUITableView *)self tableView];
+  [(RUIElement *)self configureAccessiblityWithTarget:tableView];
 
   [(RUIElement *)self reportInternalRenderEvent];
-  v6 = [(RUITableView *)self sections];
-  [v6 enumerateObjectsUsingBlock:&__block_literal_global_7];
+  sections = [(RUITableView *)self sections];
+  [sections enumerateObjectsUsingBlock:&__block_literal_global_7];
 
-  v7 = [(RUITableView *)self defaultFirstResponderRow];
+  defaultFirstResponderRow = [(RUITableView *)self defaultFirstResponderRow];
 
-  if (v7)
+  if (defaultFirstResponderRow)
   {
-    v8 = [(RUITableView *)self defaultFirstResponderRow];
-    v9 = [(RUITableView *)self indexPathForRow:v8];
+    defaultFirstResponderRow2 = [(RUITableView *)self defaultFirstResponderRow];
+    v9 = [(RUITableView *)self indexPathForRow:defaultFirstResponderRow2];
 
     [(UITableView *)self->_tableView selectRowAtIndexPath:v9 animated:0 scrollPosition:0];
     [(RUITableView *)self activateRowAtIndexPath:v9 animated:0];
@@ -1459,19 +1459,19 @@ uint64_t __31__RUITableView_viewWillAppear___block_invoke(uint64_t result)
   }
 
   tableView = self->_tableView;
-  v11 = [(RUIElement *)self attributes];
-  v12 = [v11 objectForKeyedSubscript:@"editing"];
+  attributes = [(RUIElement *)self attributes];
+  v12 = [attributes objectForKeyedSubscript:@"editing"];
   [(UITableView *)tableView setEditing:v12 != 0 animated:0];
 
-  v13 = [(UITableView *)self->_tableView dataSource];
+  dataSource = [(UITableView *)self->_tableView dataSource];
   v14 = MEMORY[0x277D75D18];
   v16 = MEMORY[0x277D85DD0];
   v17 = 3221225472;
   v18 = __30__RUITableView_viewDidAppear___block_invoke_2;
   v19 = &unk_2782E84F8;
-  v20 = v13;
-  v21 = self;
-  v15 = v13;
+  v20 = dataSource;
+  selfCopy = self;
+  v15 = dataSource;
   [v14 performWithoutAnimation:&v16];
   [(UITableView *)self->_tableView flashScrollIndicators:v16];
 }
@@ -1494,17 +1494,17 @@ uint64_t __30__RUITableView_viewDidAppear___block_invoke_2(uint64_t result)
 - (void)viewDidLayout
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = [(RUITableView *)self tableView];
-  v4 = [v3 traitCollection];
-  v5 = [v4 horizontalSizeClass];
+  tableView = [(RUITableView *)self tableView];
+  traitCollection = [tableView traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  v6 = [(UITableView *)self->_tableView dataSource];
+  dataSource = [(UITableView *)self->_tableView dataSource];
   [(UITableView *)self->_tableView bounds];
   v9 = v8;
   if (self->_lastLayoutWidth != v9)
   {
     v10 = v7;
-    if (v5 == 1)
+    if (horizontalSizeClass == 1)
     {
       v11 = 20.0;
     }
@@ -1523,8 +1523,8 @@ uint64_t __30__RUITableView_viewDidAppear___block_invoke_2(uint64_t result)
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v15 = [(RUITableView *)self sections];
-    v16 = [v15 countByEnumeratingWithState:&v34 objects:v39 count:16];
+    sections = [(RUITableView *)self sections];
+    v16 = [sections countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v16)
     {
       v17 = v16;
@@ -1535,7 +1535,7 @@ uint64_t __30__RUITableView_viewDidAppear___block_invoke_2(uint64_t result)
         {
           if (*v35 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(sections);
           }
 
           v20 = *(*(&v34 + 1) + 8 * i);
@@ -1543,8 +1543,8 @@ uint64_t __30__RUITableView_viewDidAppear___block_invoke_2(uint64_t result)
           v31 = 0u;
           v32 = 0u;
           v33 = 0u;
-          v21 = [v20 rows];
-          v22 = [v21 countByEnumeratingWithState:&v30 objects:v38 count:16];
+          rows = [v20 rows];
+          v22 = [rows countByEnumeratingWithState:&v30 objects:v38 count:16];
           if (v22)
           {
             v23 = v22;
@@ -1555,20 +1555,20 @@ uint64_t __30__RUITableView_viewDidAppear___block_invoke_2(uint64_t result)
               {
                 if (*v31 != v24)
                 {
-                  objc_enumerationMutation(v21);
+                  objc_enumerationMutation(rows);
                 }
 
                 [*(*(&v30 + 1) + 8 * j) clearCachedHeight];
               }
 
-              v23 = [v21 countByEnumeratingWithState:&v30 objects:v38 count:16];
+              v23 = [rows countByEnumeratingWithState:&v30 objects:v38 count:16];
             }
 
             while (v23);
           }
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v34 objects:v39 count:16];
+        v17 = [sections countByEnumeratingWithState:&v34 objects:v39 count:16];
       }
 
       while (v17);
@@ -1581,8 +1581,8 @@ uint64_t __30__RUITableView_viewDidAppear___block_invoke_2(uint64_t result)
   v28[2] = __29__RUITableView_viewDidLayout__block_invoke;
   v28[3] = &unk_2782E84F8;
   v28[4] = self;
-  v29 = v6;
-  v27 = v6;
+  v29 = dataSource;
+  v27 = dataSource;
   [v26 performWithoutAnimation:v28];
   self->_lastLayoutWidth = v9;
   [(RUITableView *)self _updateSectionContentInsetForSettingsWithAnimation:0];
@@ -1646,12 +1646,12 @@ void __29__RUITableView_viewDidLayout__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setSelectedRadioGroupRow:(id)a3
+- (void)setSelectedRadioGroupRow:(id)row
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 attributes];
-  v6 = [v5 objectForKeyedSubscript:@"radioGroup"];
+  rowCopy = row;
+  attributes = [rowCopy attributes];
+  v6 = [attributes objectForKeyedSubscript:@"radioGroup"];
 
   if ([v6 length])
   {
@@ -1680,8 +1680,8 @@ void __29__RUITableView_viewDidLayout__block_invoke(uint64_t a1)
           v22 = 0u;
           v23 = 0u;
           v24 = 0u;
-          v9 = [v8 rows];
-          v10 = [v9 countByEnumeratingWithState:&v21 objects:v29 count:16];
+          rows = [v8 rows];
+          v10 = [rows countByEnumeratingWithState:&v21 objects:v29 count:16];
           if (v10)
           {
             v11 = v10;
@@ -1692,20 +1692,20 @@ void __29__RUITableView_viewDidLayout__block_invoke(uint64_t a1)
               {
                 if (*v22 != v12)
                 {
-                  objc_enumerationMutation(v9);
+                  objc_enumerationMutation(rows);
                 }
 
                 v14 = *(*(&v21 + 1) + 8 * i);
-                v15 = [v14 attributes];
-                v16 = [v15 objectForKey:@"radioGroup"];
+                attributes2 = [v14 attributes];
+                v16 = [attributes2 objectForKey:@"radioGroup"];
 
-                if (v14 != v4 && [v16 isEqualToString:v6])
+                if (v14 != rowCopy && [v16 isEqualToString:v6])
                 {
                   [v14 setSelected:0];
                 }
               }
 
-              v11 = [v9 countByEnumeratingWithState:&v21 objects:v29 count:16];
+              v11 = [rows countByEnumeratingWithState:&v21 objects:v29 count:16];
             }
 
             while (v11);
@@ -1721,33 +1721,33 @@ void __29__RUITableView_viewDidLayout__block_invoke(uint64_t a1)
       while (v19);
     }
 
-    [v4 setSelected:1];
+    [rowCopy setSelected:1];
   }
 }
 
 - (void)_showLeftBarButtonItemForLabel
 {
   WeakRetained = objc_loadWeakRetained(&self->_objectModel);
-  v4 = [WeakRetained displayedPages];
-  v9 = [v4 lastObject];
+  displayedPages = [WeakRetained displayedPages];
+  lastObject = [displayedPages lastObject];
 
   [(RUITableView *)self _hideLeftBarButtonItemForLabel];
   self->_showingLeftLabelNavBarButtons = 1;
-  v5 = [v9 leftNavigationBarButtonItem];
+  leftNavigationBarButtonItem = [lastObject leftNavigationBarButtonItem];
   oldLeftBarButtonItemForLabel = self->_oldLeftBarButtonItemForLabel;
-  self->_oldLeftBarButtonItemForLabel = v5;
+  self->_oldLeftBarButtonItemForLabel = leftNavigationBarButtonItem;
 
   v7 = objc_opt_new();
   v8 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_leftLabelDone_];
-  [v9 setLeftNavigationBarButtonItem:v7 barButtonItem:v8];
+  [lastObject setLeftNavigationBarButtonItem:v7 barButtonItem:v8];
 }
 
-- (void)leftLabelDone:(id)a3
+- (void)leftLabelDone:(id)done
 {
   WeakRetained = objc_loadWeakRetained(&self->_objectModel);
-  v5 = [WeakRetained visiblePage];
-  v6 = [v5 view];
-  [v6 endEditing:0];
+  visiblePage = [WeakRetained visiblePage];
+  view = [visiblePage view];
+  [view endEditing:0];
 
   [(RUITableView *)self _hideLeftBarButtonItemForLabel];
 }
@@ -1757,10 +1757,10 @@ void __29__RUITableView_viewDidLayout__block_invoke(uint64_t a1)
   if (self->_showingLeftLabelNavBarButtons)
   {
     WeakRetained = objc_loadWeakRetained(&self->_objectModel);
-    v4 = [WeakRetained displayedPages];
-    v6 = [v4 lastObject];
+    displayedPages = [WeakRetained displayedPages];
+    lastObject = [displayedPages lastObject];
 
-    [v6 setLeftNavigationBarButtonItem:self->_oldLeftBarButtonItemForLabel];
+    [lastObject setLeftNavigationBarButtonItem:self->_oldLeftBarButtonItemForLabel];
     oldLeftBarButtonItemForLabel = self->_oldLeftBarButtonItemForLabel;
     self->_oldLeftBarButtonItemForLabel = 0;
 
@@ -1771,26 +1771,26 @@ void __29__RUITableView_viewDidLayout__block_invoke(uint64_t a1)
 - (void)_showRightBarButtonItemForLabel
 {
   WeakRetained = objc_loadWeakRetained(&self->_objectModel);
-  v4 = [WeakRetained displayedPages];
-  v9 = [v4 lastObject];
+  displayedPages = [WeakRetained displayedPages];
+  lastObject = [displayedPages lastObject];
 
   [(RUITableView *)self _hideRightBarButtonItemForLabel];
   self->_showingRightLabelNavBarButtons = 1;
-  v5 = [v9 rightNavigationBarButtonItem];
+  rightNavigationBarButtonItem = [lastObject rightNavigationBarButtonItem];
   oldRightBarButtonItemForLabel = self->_oldRightBarButtonItemForLabel;
-  self->_oldRightBarButtonItemForLabel = v5;
+  self->_oldRightBarButtonItemForLabel = rightNavigationBarButtonItem;
 
   v7 = objc_opt_new();
   v8 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_rightLabelDone_];
-  [v9 setRightNavigationBarButtonItem:v7 barButtonItem:v8];
+  [lastObject setRightNavigationBarButtonItem:v7 barButtonItem:v8];
 }
 
-- (void)rightLabelDone:(id)a3
+- (void)rightLabelDone:(id)done
 {
   WeakRetained = objc_loadWeakRetained(&self->_objectModel);
-  v5 = [WeakRetained visiblePage];
-  v6 = [v5 view];
-  [v6 endEditing:0];
+  visiblePage = [WeakRetained visiblePage];
+  view = [visiblePage view];
+  [view endEditing:0];
 
   [(RUITableView *)self _hideRightBarButtonItemForLabel];
 }
@@ -1800,10 +1800,10 @@ void __29__RUITableView_viewDidLayout__block_invoke(uint64_t a1)
   if (self->_showingRightLabelNavBarButtons)
   {
     WeakRetained = objc_loadWeakRetained(&self->_objectModel);
-    v4 = [WeakRetained displayedPages];
-    v6 = [v4 lastObject];
+    displayedPages = [WeakRetained displayedPages];
+    lastObject = [displayedPages lastObject];
 
-    [v6 setRightNavigationBarButtonItem:self->_oldRightBarButtonItemForLabel];
+    [lastObject setRightNavigationBarButtonItem:self->_oldRightBarButtonItemForLabel];
     oldRightBarButtonItemForLabel = self->_oldRightBarButtonItemForLabel;
     self->_oldRightBarButtonItemForLabel = 0;
 
@@ -1821,7 +1821,7 @@ void __29__RUITableView_viewDidLayout__block_invoke(uint64_t a1)
   }
 }
 
-- (void)datePickerCancel:(id)a3
+- (void)datePickerCancel:(id)cancel
 {
   [(RUITableView *)self _datePickerRevert];
   v4 = (gAnimatedTransitions & 1) == 0;
@@ -1829,7 +1829,7 @@ void __29__RUITableView_viewDidLayout__block_invoke(uint64_t a1)
   [(RUITableView *)self hidePickerViewAnimated:v4];
 }
 
-- (void)datePickerDone:(id)a3
+- (void)datePickerDone:(id)done
 {
   v5 = [(RUITableView *)self objectModelRowForIndexPath:self->_pickerRowIndexPath];
   WeakRetained = objc_loadWeakRetained(&self->_objectModel);
@@ -1838,29 +1838,29 @@ void __29__RUITableView_viewDidLayout__block_invoke(uint64_t a1)
   [(RUITableView *)self hidePickerViewAnimated:(gAnimatedTransitions & 1) == 0];
 }
 
-- (void)_showDatePickerNavBarButtonsIfNeededForRow:(id)a3
+- (void)_showDatePickerNavBarButtonsIfNeededForRow:(id)row
 {
-  v4 = [a3 attributes];
-  v5 = [v4 objectForKeyedSubscript:@"url"];
+  attributes = [row attributes];
+  v5 = [attributes objectForKeyedSubscript:@"url"];
 
   if (v5)
   {
-    v6 = [(UIDatePicker *)self->_datePicker date];
+    date = [(UIDatePicker *)self->_datePicker date];
     oldPickerDate = self->_oldPickerDate;
-    self->_oldPickerDate = v6;
+    self->_oldPickerDate = date;
 
     WeakRetained = objc_loadWeakRetained(&self->_objectModel);
-    v9 = [WeakRetained displayedPages];
-    v24 = [v9 lastObject];
+    displayedPages = [WeakRetained displayedPages];
+    lastObject = [displayedPages lastObject];
 
     self->_showingPickerNavBarButtons = 1;
-    v10 = [v24 leftNavigationBarButtonItem];
+    leftNavigationBarButtonItem = [lastObject leftNavigationBarButtonItem];
     oldLeftBarButtonItemForPicker = self->_oldLeftBarButtonItemForPicker;
-    self->_oldLeftBarButtonItemForPicker = v10;
+    self->_oldLeftBarButtonItemForPicker = leftNavigationBarButtonItem;
 
-    v12 = [v24 rightNavigationBarButtonItem];
+    rightNavigationBarButtonItem = [lastObject rightNavigationBarButtonItem];
     oldRightBarButtonItemForPicker = self->_oldRightBarButtonItemForPicker;
-    self->_oldRightBarButtonItemForPicker = v12;
+    self->_oldRightBarButtonItemForPicker = rightNavigationBarButtonItem;
 
     v14 = objc_opt_new();
     v15 = objc_alloc(MEMORY[0x277D751E0]);
@@ -1868,14 +1868,14 @@ void __29__RUITableView_viewDidLayout__block_invoke(uint64_t a1)
     v17 = [v16 localizedStringForKey:@"CANCEL" value:&stru_282D68F58 table:@"Localizable"];
     v18 = [v15 initWithTitle:v17 style:0 target:self action:sel_datePickerCancel_];
 
-    [v24 setLeftNavigationBarButtonItem:v14 barButtonItem:v18];
+    [lastObject setLeftNavigationBarButtonItem:v14 barButtonItem:v18];
     v19 = objc_opt_new();
     v20 = objc_alloc(MEMORY[0x277D751E0]);
     v21 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v22 = [v21 localizedStringForKey:@"DONE" value:&stru_282D68F58 table:@"Localizable"];
     v23 = [v20 initWithTitle:v22 style:2 target:self action:sel_datePickerDone_];
 
-    [v24 setRightNavigationBarButtonItem:v19 barButtonItem:v23];
+    [lastObject setRightNavigationBarButtonItem:v19 barButtonItem:v23];
   }
 }
 
@@ -1884,11 +1884,11 @@ void __29__RUITableView_viewDidLayout__block_invoke(uint64_t a1)
   if (self->_showingPickerNavBarButtons)
   {
     WeakRetained = objc_loadWeakRetained(&self->_objectModel);
-    v4 = [WeakRetained displayedPages];
-    v7 = [v4 lastObject];
+    displayedPages = [WeakRetained displayedPages];
+    lastObject = [displayedPages lastObject];
 
-    [v7 setLeftNavigationBarButtonItem:self->_oldLeftBarButtonItemForPicker];
-    [v7 setRightNavigationBarButtonItem:self->_oldRightBarButtonItemForPicker];
+    [lastObject setLeftNavigationBarButtonItem:self->_oldLeftBarButtonItemForPicker];
+    [lastObject setRightNavigationBarButtonItem:self->_oldRightBarButtonItemForPicker];
     oldLeftBarButtonItemForPicker = self->_oldLeftBarButtonItemForPicker;
     self->_oldLeftBarButtonItemForPicker = 0;
 
@@ -1899,11 +1899,11 @@ void __29__RUITableView_viewDidLayout__block_invoke(uint64_t a1)
   }
 }
 
-- (void)showPickerViewForRow:(id)a3 animated:(BOOL)a4
+- (void)showPickerViewForRow:(id)row animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v91 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  rowCopy = row;
   [(RUITableView *)self _datePickerRevert];
   [(RUITableView *)self _hideDatePickerNavBarButtonsIfNeeded];
   [(RUITableView *)self _selectPickerFrame];
@@ -1911,24 +1911,24 @@ void __29__RUITableView_viewDidLayout__block_invoke(uint64_t a1)
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [v6 attributes];
-  v16 = [v15 objectForKeyedSubscript:@"class"];
+  attributes = [rowCopy attributes];
+  v16 = [attributes objectForKeyedSubscript:@"class"];
 
-  v17 = [v6 attributes];
-  v18 = [v17 objectForKey:@"inline"];
-  v19 = [v18 BOOLValue];
+  attributes2 = [rowCopy attributes];
+  v18 = [attributes2 objectForKey:@"inline"];
+  bOOLValue = [v18 BOOLValue];
 
   if (self->_embeddedPickerRowIndexPath)
   {
-    [(RUITableView *)self hidePickerViewAnimated:v4];
+    [(RUITableView *)self hidePickerViewAnimated:animatedCopy];
   }
 
-  v69 = [(RUITableView *)self indexPathForRow:v6];
+  v69 = [(RUITableView *)self indexPathForRow:rowCopy];
   objc_storeStrong(&self->_pickerRowIndexPath, v69);
-  v20 = [(UITableView *)self->_tableView firstResponder];
-  [v20 resignFirstResponder];
+  firstResponder = [(UITableView *)self->_tableView firstResponder];
+  [firstResponder resignFirstResponder];
 
-  if (v4)
+  if (animatedCopy)
   {
     UIKeyboardOrderOutAutomatic();
   }
@@ -1946,18 +1946,18 @@ void __29__RUITableView_viewDidLayout__block_invoke(uint64_t a1)
       goto LABEL_50;
     }
 
-    v68 = v4;
+    v68 = animatedCopy;
     v67 = v16;
     self->_showDatePicker = 1;
     datePicker = self->_datePicker;
     if (datePicker)
     {
-      v23 = [(UIDatePicker *)datePicker allTargets];
+      allTargets = [(UIDatePicker *)datePicker allTargets];
       v85 = 0u;
       v86 = 0u;
       v87 = 0u;
       v88 = 0u;
-      v24 = [v23 countByEnumeratingWithState:&v85 objects:v90 count:16];
+      v24 = [allTargets countByEnumeratingWithState:&v85 objects:v90 count:16];
       if (v24)
       {
         v25 = v24;
@@ -1968,13 +1968,13 @@ void __29__RUITableView_viewDidLayout__block_invoke(uint64_t a1)
           {
             if (*v86 != v26)
             {
-              objc_enumerationMutation(v23);
+              objc_enumerationMutation(allTargets);
             }
 
             [(UIDatePicker *)self->_datePicker removeTarget:*(*(&v85 + 1) + 8 * i) action:0 forControlEvents:0xFFFFFFFFLL];
           }
 
-          v25 = [v23 countByEnumeratingWithState:&v85 objects:v90 count:16];
+          v25 = [allTargets countByEnumeratingWithState:&v85 objects:v90 count:16];
         }
 
         while (v25);
@@ -1990,11 +1990,11 @@ void __29__RUITableView_viewDidLayout__block_invoke(uint64_t a1)
       self->_pickerBackdrop = v28;
     }
 
-    v30 = [v6 dateFormatterCalendarIdentifier];
-    v66 = v30;
-    if (v30)
+    dateFormatterCalendarIdentifier = [rowCopy dateFormatterCalendarIdentifier];
+    v66 = dateFormatterCalendarIdentifier;
+    if (dateFormatterCalendarIdentifier)
     {
-      [MEMORY[0x277CBEA80] calendarWithIdentifier:v30];
+      [MEMORY[0x277CBEA80] calendarWithIdentifier:dateFormatterCalendarIdentifier];
     }
 
     else
@@ -2006,21 +2006,21 @@ void __29__RUITableView_viewDidLayout__block_invoke(uint64_t a1)
     v65 = v41;
     [v41 setTimeZone:v42];
 
-    v43 = [v6 newConfiguredDatePicker];
+    newConfiguredDatePicker = [rowCopy newConfiguredDatePicker];
     v44 = self->_datePicker;
-    self->_datePicker = v43;
+    self->_datePicker = newConfiguredDatePicker;
 
     [(UIDatePicker *)self->_datePicker setFrame:v8, v10, v12, v14];
     v31 = self->_datePicker;
-    v45 = [v6 datePickerMode];
+    datePickerMode = [rowCopy datePickerMode];
     v46 = 1;
-    if ((v45 - 3) >= 2 && (v45 - 4270) >= 2)
+    if ((datePickerMode - 3) >= 2 && (datePickerMode - 4270) >= 2)
     {
       if ([(UIDatePicker *)self->_datePicker datePickerStyle]!= UIDatePickerStyleCompact)
       {
 LABEL_38:
-        -[UIDatePicker setDatePickerMode:](self->_datePicker, "setDatePickerMode:", [v6 datePickerMode]);
-        v47 = ([(UIDatePicker *)self->_datePicker datePickerStyle]== UIDatePickerStyleInline) | v19;
+        -[UIDatePicker setDatePickerMode:](self->_datePicker, "setDatePickerMode:", [rowCopy datePickerMode]);
+        v47 = ([(UIDatePicker *)self->_datePicker datePickerStyle]== UIDatePickerStyleInline) | bOOLValue;
         if (v47)
         {
           [(UIDatePicker *)self->_datePicker removeFromSuperview];
@@ -2030,11 +2030,11 @@ LABEL_38:
 
         else
         {
-          v49 = [(UITableView *)self->_tableView superview];
-          [v49 addSubview:self->_pickerBackdrop];
+          superview = [(UITableView *)self->_tableView superview];
+          [superview addSubview:self->_pickerBackdrop];
 
-          v50 = [(UITableView *)self->_tableView superview];
-          [v50 addSubview:self->_datePicker];
+          superview2 = [(UITableView *)self->_tableView superview];
+          [superview2 addSubview:self->_datePicker];
 
           v48 = 0;
         }
@@ -2042,9 +2042,9 @@ LABEL_38:
         embeddedPickerRowIndexPath = self->_embeddedPickerRowIndexPath;
         self->_embeddedPickerRowIndexPath = v48;
 
-        [(RUITableView *)self _showDatePickerNavBarButtonsIfNeededForRow:v6];
+        [(RUITableView *)self _showDatePickerNavBarButtonsIfNeededForRow:rowCopy];
         v16 = v67;
-        LOBYTE(v19) = v47;
+        LOBYTE(bOOLValue) = v47;
         if (!v31)
         {
           goto LABEL_50;
@@ -2060,12 +2060,12 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  v68 = v4;
+  v68 = animatedCopy;
   self->_showSelectPicker = 1;
   selectPicker = self->_selectPicker;
   if (selectPicker)
   {
-    [(UIPickerView *)selectPicker setDelegate:v6];
+    [(UIPickerView *)selectPicker setDelegate:rowCopy];
     [(UIPickerView *)self->_selectPicker reloadAllComponents];
   }
 
@@ -2083,12 +2083,12 @@ LABEL_38:
     self->_selectPicker = v34;
 
     [(UIPickerView *)self->_selectPicker setAutoresizingMask:10];
-    [(UIPickerView *)self->_selectPicker setDelegate:v6];
+    [(UIPickerView *)self->_selectPicker setDelegate:rowCopy];
     [(UIPickerView *)self->_selectPicker setShowsSelectionIndicator:1];
   }
 
   v31 = self->_selectPicker;
-  if (v19)
+  if (bOOLValue)
   {
     [(_UIBackdropView *)self->_pickerBackdrop removeFromSuperview];
     v36 = [v69 copy];
@@ -2096,11 +2096,11 @@ LABEL_38:
 
   else
   {
-    v37 = [(UITableView *)self->_tableView superview];
-    [v37 addSubview:self->_pickerBackdrop];
+    superview3 = [(UITableView *)self->_tableView superview];
+    [superview3 addSubview:self->_pickerBackdrop];
 
-    v38 = [(UITableView *)self->_tableView superview];
-    [v38 addSubview:self->_selectPicker];
+    superview4 = [(UITableView *)self->_tableView superview];
+    [superview4 addSubview:self->_selectPicker];
 
     v36 = 0;
   }
@@ -2108,14 +2108,14 @@ LABEL_38:
   v39 = self->_embeddedPickerRowIndexPath;
   self->_embeddedPickerRowIndexPath = v36;
 
-  v40 = [v6 selectedRow];
-  if (v40 == -1)
+  selectedRow = [rowCopy selectedRow];
+  if (selectedRow == -1)
   {
-    [v6 pickerView:self->_selectPicker didSelectRow:0 inComponent:0];
-    v40 = 0;
+    [rowCopy pickerView:self->_selectPicker didSelectRow:0 inComponent:0];
+    selectedRow = 0;
   }
 
-  [(UIPickerView *)self->_selectPicker selectRow:v40 inColumn:0 animated:0];
+  [(UIPickerView *)self->_selectPicker selectRow:selectedRow inColumn:0 animated:0];
   if (v31)
   {
 LABEL_42:
@@ -2125,7 +2125,7 @@ LABEL_42:
     aBlock[3] = &unk_2782E7F30;
     aBlock[4] = self;
     v52 = _Block_copy(aBlock);
-    v53 = [(RUITableView *)self tableView];
+    tableView = [(RUITableView *)self tableView];
     v77[0] = MEMORY[0x277D85DD0];
     v77[1] = 3221225472;
     v77[2] = __46__RUITableView_showPickerViewForRow_animated___block_invoke_2;
@@ -2137,11 +2137,11 @@ LABEL_42:
     v83 = v14;
     v31 = v31;
     v78 = v31;
-    v54 = v53;
+    v54 = tableView;
     v79 = v54;
     v55 = _Block_copy(v77);
     v56 = v69;
-    if (v19)
+    if (bOOLValue)
     {
       v89 = self->_embeddedPickerRowIndexPath;
       [MEMORY[0x277CBEA60] arrayWithObjects:&v89 count:1];
@@ -2257,9 +2257,9 @@ void __46__RUITableView_showPickerViewForRow_animated___block_invoke_2(uint64_t 
   }
 }
 
-- (void)hidePickerViewAnimated:(BOOL)a3
+- (void)hidePickerViewAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v47[1] = *MEMORY[0x277D85DE8];
   [(RUITableView *)self _selectPickerFrame];
   v6 = v5;
@@ -2298,8 +2298,8 @@ void __46__RUITableView_showPickerViewForRow_animated___block_invoke_2(uint64_t 
   else
   {
     v19 = v8 + v12;
-    v20 = [(RUITableView *)self tableView];
-    if (v3)
+    tableView = [(RUITableView *)self tableView];
+    if (animatedCopy)
     {
       v21 = MEMORY[0x277D75D18];
       v38[0] = MEMORY[0x277D85DD0];
@@ -2312,7 +2312,7 @@ void __46__RUITableView_showPickerViewForRow_animated___block_invoke_2(uint64_t 
       v43 = v10;
       v44 = v12;
       v39 = v14;
-      v40 = v20;
+      v40 = tableView;
       v36[0] = MEMORY[0x277D85DD0];
       v36[1] = 3221225472;
       v36[2] = __39__RUITableView_hidePickerViewAnimated___block_invoke_3;
@@ -2332,10 +2332,10 @@ void __46__RUITableView_showPickerViewForRow_animated___block_invoke_2(uint64_t 
       v32 = 0u;
       v33 = 0u;
       WeakRetained = objc_loadWeakRetained(&self->_objectModel);
-      v23 = [WeakRetained visiblePage];
-      v24 = [v23 accessoryViews];
+      visiblePage = [WeakRetained visiblePage];
+      accessoryViews = [visiblePage accessoryViews];
 
-      v25 = [v24 countByEnumeratingWithState:&v32 objects:v46 count:16];
+      v25 = [accessoryViews countByEnumeratingWithState:&v32 objects:v46 count:16];
       if (v25)
       {
         v26 = v25;
@@ -2346,30 +2346,30 @@ void __46__RUITableView_showPickerViewForRow_animated___block_invoke_2(uint64_t 
           {
             if (*v33 != v27)
             {
-              objc_enumerationMutation(v24);
+              objc_enumerationMutation(accessoryViews);
             }
 
             v29 = *(*(&v32 + 1) + 8 * i);
             if (objc_opt_respondsToSelector())
             {
-              [v29 tableViewDidUpdateContentInset:v20];
+              [v29 tableViewDidUpdateContentInset:tableView];
             }
           }
 
-          v26 = [v24 countByEnumeratingWithState:&v32 objects:v46 count:16];
+          v26 = [accessoryViews countByEnumeratingWithState:&v32 objects:v46 count:16];
         }
 
         while (v26);
       }
 
       v15[2](v15);
-      v3 = 0;
+      animatedCopy = 0;
       v14 = v31;
     }
   }
 
   [(RUITableView *)self _hideDatePickerNavBarButtonsIfNeeded];
-  [(UITableView *)self->_tableView deselectRowAtIndexPath:self->_pickerRowIndexPath animated:v3];
+  [(UITableView *)self->_tableView deselectRowAtIndexPath:self->_pickerRowIndexPath animated:animatedCopy];
   pickerRowIndexPath = self->_pickerRowIndexPath;
   self->_pickerRowIndexPath = 0;
 }
@@ -2438,32 +2438,32 @@ void __39__RUITableView_hidePickerViewAnimated___block_invoke_2(uint64_t a1)
   }
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(RUITableView *)self sections];
-  v4 = [v3 count];
+  sections = [(RUITableView *)self sections];
+  v4 = [sections count];
 
   return v4;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = [(RUITableView *)self sections];
-  v7 = [v6 objectAtIndex:a4];
+  sections = [(RUITableView *)self sections];
+  v7 = [sections objectAtIndex:section];
 
   if (([v7 configured] & 1) == 0)
   {
-    v8 = [(RUITableView *)self objectModel];
-    [v8 configureSection:v7];
+    objectModel = [(RUITableView *)self objectModel];
+    [objectModel configureSection:v7];
 
     [v7 setConfigured:1];
   }
 
-  v9 = [v7 rows];
-  v10 = [v9 count];
+  rows = [v7 rows];
+  v10 = [rows count];
 
   embeddedPickerRowIndexPath = self->_embeddedPickerRowIndexPath;
-  if (embeddedPickerRowIndexPath && [(NSIndexPath *)embeddedPickerRowIndexPath section]== a4)
+  if (embeddedPickerRowIndexPath && [(NSIndexPath *)embeddedPickerRowIndexPath section]== section)
   {
     ++v10;
   }
@@ -2471,25 +2471,25 @@ void __39__RUITableView_hidePickerViewAnimated___block_invoke_2(uint64_t a1)
   return v10;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v37[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RUITableView *)self objectModelRowForIndexPath:v7];
-  if ([v7 isEqual:self->_embeddedPickerRowIndexPath])
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(RUITableView *)self objectModelRowForIndexPath:pathCopy];
+  if ([pathCopy isEqual:self->_embeddedPickerRowIndexPath])
   {
-    v9 = [v6 dequeueReusableCellWithIdentifier:@"embeddedPickerCell"];
-    if (!v9)
+    tableCell = [viewCopy dequeueReusableCellWithIdentifier:@"embeddedPickerCell"];
+    if (!tableCell)
     {
-      v9 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:@"embeddedPickerCell"];
+      tableCell = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:@"embeddedPickerCell"];
     }
 
-    v35 = v7;
-    v36 = v6;
-    [v9 setAccessibilityIdentifier:@"embeddedPickerCell"];
+    v35 = pathCopy;
+    v36 = viewCopy;
+    [tableCell setAccessibilityIdentifier:@"embeddedPickerCell"];
     v34 = v8;
-    [v8 configureAccessiblityWithTarget:v9];
+    [v8 configureAccessiblityWithTarget:tableCell];
     datePicker = self->_datePicker;
     if (!datePicker)
     {
@@ -2497,36 +2497,36 @@ void __39__RUITableView_hidePickerViewAnimated___block_invoke_2(uint64_t a1)
     }
 
     v11 = datePicker;
-    v12 = [v9 contentView];
-    [v12 addSubview:v11];
+    contentView = [tableCell contentView];
+    [contentView addSubview:v11];
 
     [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
     v27 = MEMORY[0x277CCAAD0];
-    v32 = [v11 topAnchor];
-    v33 = [v9 contentView];
-    v31 = [v33 topAnchor];
-    v30 = [v32 constraintEqualToAnchor:v31 constant:0.0];
+    topAnchor = [v11 topAnchor];
+    contentView2 = [tableCell contentView];
+    topAnchor2 = [contentView2 topAnchor];
+    v30 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
     v37[0] = v30;
-    v28 = [v11 bottomAnchor];
-    v29 = [v9 contentView];
-    v26 = [v29 bottomAnchor];
-    v25 = [v28 constraintEqualToAnchor:v26 constant:0.0];
+    bottomAnchor = [v11 bottomAnchor];
+    contentView3 = [tableCell contentView];
+    bottomAnchor2 = [contentView3 bottomAnchor];
+    v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
     v37[1] = v25;
-    v24 = [v11 leadingAnchor];
-    v13 = [v9 contentView];
-    v14 = [v13 leadingAnchor];
-    v15 = [v24 constraintEqualToAnchor:v14 constant:0.0];
+    leadingAnchor = [v11 leadingAnchor];
+    contentView4 = [tableCell contentView];
+    leadingAnchor2 = [contentView4 leadingAnchor];
+    v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:0.0];
     v37[2] = v15;
-    v16 = [v11 trailingAnchor];
-    v17 = [v9 contentView];
-    v18 = [v17 trailingAnchor];
-    v19 = [v16 constraintEqualToAnchor:v18 constant:0.0];
+    trailingAnchor = [v11 trailingAnchor];
+    contentView5 = [tableCell contentView];
+    trailingAnchor2 = [contentView5 trailingAnchor];
+    v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:0.0];
     v37[3] = v19;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:4];
     [v27 activateConstraints:v20];
 
-    v7 = v35;
-    v6 = v36;
+    pathCopy = v35;
+    viewCopy = v36;
     v8 = v34;
   }
 
@@ -2534,52 +2534,52 @@ void __39__RUITableView_hidePickerViewAnimated___block_invoke_2(uint64_t a1)
   {
     if (([v8 configured] & 1) == 0)
     {
-      v21 = [(RUITableView *)self objectModel];
-      [v21 configureRow:v8];
+      objectModel = [(RUITableView *)self objectModel];
+      [objectModel configureRow:v8];
     }
 
-    v9 = [v8 tableCell];
-    [v8 configureAccessiblityWithTarget:v9];
-    if (-[RUITableView tableView:numberOfRowsInSection:](self, "tableView:numberOfRowsInSection:", v6, [v7 section]) == 1)
+    tableCell = [v8 tableCell];
+    [v8 configureAccessiblityWithTarget:tableCell];
+    if (-[RUITableView tableView:numberOfRowsInSection:](self, "tableView:numberOfRowsInSection:", viewCopy, [pathCopy section]) == 1)
     {
-      [v9 setTextFieldOffset:0.0];
+      [tableCell setTextFieldOffset:0.0];
     }
   }
 
-  v22 = v9;
+  v22 = tableCell;
 
-  return v9;
+  return tableCell;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v17 = a4;
-  v7 = a5;
+  cellCopy = cell;
+  pathCopy = path;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(RUITableView *)self objectModelRowForIndexPath:v7];
-    v9 = [v8 tableCell];
-    if (v9 == v17)
+    v8 = [(RUITableView *)self objectModelRowForIndexPath:pathCopy];
+    tableCell = [v8 tableCell];
+    if (tableCell == cellCopy)
     {
-      v10 = [v8 attributes];
-      v11 = [v10 objectForKeyedSubscript:@"labelBold"];
-      v12 = [v11 BOOLValue];
+      attributes = [v8 attributes];
+      v11 = [attributes objectForKeyedSubscript:@"labelBold"];
+      bOOLValue = [v11 BOOLValue];
 
-      if (!v12)
+      if (!bOOLValue)
       {
 LABEL_6:
 
         goto LABEL_7;
       }
 
-      v9 = [v17 ruiTextLabel];
+      tableCell = [cellCopy ruiTextLabel];
       v13 = MEMORY[0x277D74300];
-      v14 = [v17 ruiTextLabel];
-      v15 = [v14 font];
-      [v15 pointSize];
+      ruiTextLabel = [cellCopy ruiTextLabel];
+      font = [ruiTextLabel font];
+      [font pointSize];
       v16 = [v13 boldSystemFontOfSize:?];
-      [v9 setFont:v16];
+      [tableCell setFont:v16];
     }
 
     goto LABEL_6;
@@ -2588,105 +2588,105 @@ LABEL_6:
 LABEL_7:
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(RUITableView *)self sections];
-  v6 = [v5 objectAtIndex:a4];
+  sections = [(RUITableView *)self sections];
+  v6 = [sections objectAtIndex:section];
 
   if ([v6 hasCustomHeader])
   {
-    v7 = 0;
+    body = 0;
   }
 
   else
   {
-    v8 = [v6 header];
-    v7 = [v8 body];
+    header = [v6 header];
+    body = [header body];
   }
 
-  return v7;
+  return body;
 }
 
-- (int64_t)tableView:(id)a3 titleAlignmentForHeaderInSection:(int64_t)a4
+- (int64_t)tableView:(id)view titleAlignmentForHeaderInSection:(int64_t)section
 {
-  v5 = [(RUITableView *)self sections];
-  v6 = [v5 objectAtIndex:a4];
+  sections = [(RUITableView *)self sections];
+  v6 = [sections objectAtIndex:section];
 
-  v7 = [v6 header];
+  header = [v6 header];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v9 = [v6 header];
-    v10 = [v9 labelAlignment];
+    header2 = [v6 header];
+    labelAlignment = [header2 labelAlignment];
   }
 
   else
   {
-    v10 = 4;
+    labelAlignment = 4;
   }
 
-  return v10;
+  return labelAlignment;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v5 = [(RUITableView *)self sections];
-  v6 = [v5 objectAtIndex:a4];
+  sections = [(RUITableView *)self sections];
+  v6 = [sections objectAtIndex:section];
 
   if ([v6 hasCustomFooter])
   {
-    v7 = 0;
+    body = 0;
   }
 
   else
   {
-    v8 = [v6 footer];
-    v7 = [v8 body];
+    footer = [v6 footer];
+    body = [footer body];
   }
 
-  return v7;
+  return body;
 }
 
-- (int64_t)tableView:(id)a3 titleAlignmentForFooterInSection:(int64_t)a4
+- (int64_t)tableView:(id)view titleAlignmentForFooterInSection:(int64_t)section
 {
-  v5 = [(RUITableView *)self sections];
-  v6 = [v5 objectAtIndex:a4];
+  sections = [(RUITableView *)self sections];
+  v6 = [sections objectAtIndex:section];
 
-  v7 = [v6 footer];
+  footer = [v6 footer];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v9 = [v6 footer];
-    v10 = [v9 labelAlignment];
+    footer2 = [v6 footer];
+    labelAlignment = [footer2 labelAlignment];
   }
 
   else
   {
-    v10 = 4;
+    labelAlignment = 4;
   }
 
-  return v10;
+  return labelAlignment;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = [(RUITableView *)self sections];
-  v7 = [v6 objectAtIndex:a4];
+  sections = [(RUITableView *)self sections];
+  v7 = [sections objectAtIndex:section];
 
-  v8 = [v7 header];
+  header = [v7 header];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [v7 header];
-    [v10 loadElementIfNeeded];
-    v11 = [v10 view];
-    [v11 intrinsicContentSize];
+    header2 = [v7 header];
+    [header2 loadElementIfNeeded];
+    view = [header2 view];
+    [view intrinsicContentSize];
     v13 = v12;
   }
 
@@ -2697,15 +2697,15 @@ LABEL_7:
 
   else
   {
-    v14 = [(RUIElement *)self style];
-    [v14 sectionSpacing];
+    style = [(RUIElement *)self style];
+    [style sectionSpacing];
     v16 = v15;
 
-    v17 = [(RUIElement *)self style];
-    v18 = v17;
-    if (a4 < 1 || v16 == 0.0)
+    style2 = [(RUIElement *)self style];
+    v18 = style2;
+    if (section < 1 || v16 == 0.0)
     {
-      [v17 firstSectionSpacing];
+      [style2 firstSectionSpacing];
       v21 = v20;
 
       if (v21 == -1.0)
@@ -2715,27 +2715,27 @@ LABEL_7:
 
       else
       {
-        v22 = [(RUIElement *)self style];
-        [v22 firstSectionSpacing];
+        style3 = [(RUIElement *)self style];
+        [style3 firstSectionSpacing];
         v13 = v23;
       }
 
-      v24 = [v7 header];
-      if (v24)
+      header3 = [v7 header];
+      if (header3)
       {
         v25 = 0;
       }
 
       else
       {
-        v26 = [v7 headerView];
-        v25 = v26 == 0;
+        headerView = [v7 headerView];
+        v25 = headerView == 0;
       }
 
-      if (a4 || v25)
+      if (section || v25)
       {
         [v7 headerHeight];
-        if (a4 || v27 != 0.0)
+        if (section || v27 != 0.0)
         {
           [v7 headerHeight];
           v13 = v28;
@@ -2745,7 +2745,7 @@ LABEL_7:
 
     else
     {
-      [v17 sectionSpacing];
+      [style2 sectionSpacing];
       v13 = v19;
     }
   }
@@ -2753,43 +2753,43 @@ LABEL_7:
   return v13;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(RUITableView *)self sections];
-  v8 = [v7 objectAtIndex:a4];
+  viewCopy = view;
+  sections = [(RUITableView *)self sections];
+  v8 = [sections objectAtIndex:section];
 
-  v9 = [v8 header];
+  header = [v8 header];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v11 = [v8 header];
-    v12 = [v11 view];
-    [v12 setBackgroundColor:0];
+    header2 = [v8 header];
+    view = [header2 view];
+    [view setBackgroundColor:0];
 
-    [v11 loadElementIfNeeded];
+    [header2 loadElementIfNeeded];
     v24[0] = 0;
     v24[1] = v24;
     v24[2] = 0x3010000000;
     v25 = 0;
     v26 = 0;
     v24[3] = &unk_21BACC44D;
-    v13 = [v11 view];
-    [v13 intrinsicContentSize];
+    view2 = [header2 view];
+    [view2 intrinsicContentSize];
     v25 = v14;
     v26 = v15;
 
-    objc_initWeak(&location, v6);
+    objc_initWeak(&location, viewCopy);
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __49__RUITableView_tableView_viewForHeaderInSection___block_invoke;
     v21[3] = &unk_2782E8E20;
     objc_copyWeak(&v22, &location);
     v21[4] = v24;
-    [v11 setDidLayoutSubviewsHandler:v21];
-    v16 = [v11 view];
+    [header2 setDidLayoutSubviewsHandler:v21];
+    view3 = [header2 view];
     objc_destroyWeak(&v22);
     objc_destroyWeak(&location);
     _Block_object_dispose(v24, 8);
@@ -2797,29 +2797,29 @@ LABEL_7:
 
   else if ([v8 hasCustomHeader])
   {
-    v16 = [v8 containerizedHeaderView];
-    v17 = [v16 headerView];
+    view3 = [v8 containerizedHeaderView];
+    headerView = [view3 headerView];
     v18 = objc_opt_respondsToSelector();
 
     if (v18)
     {
-      v19 = [v16 headerView];
-      [v19 setSectionIsFirst:a4 == 0];
+      headerView2 = [view3 headerView];
+      [headerView2 setSectionIsFirst:section == 0];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v16 setTableView:v6];
+      [view3 setTableView:viewCopy];
     }
   }
 
   else
   {
-    v16 = 0;
+    view3 = 0;
   }
 
-  return v16;
+  return view3;
 }
 
 void __49__RUITableView_tableView_viewForHeaderInSection___block_invoke(uint64_t a1, void *a2)
@@ -2842,37 +2842,37 @@ void __49__RUITableView_tableView_viewForHeaderInSection___block_invoke(uint64_t
   }
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(RUITableView *)self sections];
-  v8 = [v7 objectAtIndex:a4];
+  viewCopy = view;
+  sections = [(RUITableView *)self sections];
+  v8 = [sections objectAtIndex:section];
 
-  v9 = [v8 header];
+  header = [v8 header];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_4;
   }
 
-  v10 = [v8 rows];
-  if ([v10 count])
+  rows = [v8 rows];
+  if ([rows count])
   {
 
 LABEL_4:
     goto LABEL_5;
   }
 
-  v16 = [v8 footer];
+  footer = [v8 footer];
 
-  if (!v16)
+  if (!footer)
   {
     v15 = 0.0;
     goto LABEL_11;
   }
 
 LABEL_5:
-  if ([v8 hasCustomFooter] && (objc_msgSend(v6, "readableContentGuide"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "layoutFrame"), v13 = v12, v11, v13 > 0.0))
+  if ([v8 hasCustomFooter] && (objc_msgSend(viewCopy, "readableContentGuide"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "layoutFrame"), v13 = v12, v11, v13 > 0.0))
   {
     v15 = *MEMORY[0x277D76F30];
   }
@@ -2888,43 +2888,43 @@ LABEL_11:
   return v15;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(RUITableView *)self sections];
-  v8 = [v7 objectAtIndex:a4];
+  viewCopy = view;
+  sections = [(RUITableView *)self sections];
+  v8 = [sections objectAtIndex:section];
 
-  v9 = [v8 footer];
+  footer = [v8 footer];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v11 = [v8 footer];
-    v12 = [v11 view];
-    [v12 setBackgroundColor:0];
+    footer2 = [v8 footer];
+    view = [footer2 view];
+    [view setBackgroundColor:0];
 
-    [v11 loadElementIfNeeded];
+    [footer2 loadElementIfNeeded];
     v21[0] = 0;
     v21[1] = v21;
     v21[2] = 0x3010000000;
     v22 = 0;
     v23 = 0;
     v21[3] = &unk_21BACC44D;
-    v13 = [v11 view];
-    [v13 intrinsicContentSize];
+    view2 = [footer2 view];
+    [view2 intrinsicContentSize];
     v22 = v14;
     v23 = v15;
 
-    objc_initWeak(&location, v6);
+    objc_initWeak(&location, viewCopy);
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __49__RUITableView_tableView_viewForFooterInSection___block_invoke;
     v18[3] = &unk_2782E8E20;
     objc_copyWeak(&v19, &location);
     v18[4] = v21;
-    [v11 setDidLayoutSubviewsHandler:v18];
-    v16 = [v11 view];
+    [footer2 setDidLayoutSubviewsHandler:v18];
+    view3 = [footer2 view];
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);
     _Block_object_dispose(v21, 8);
@@ -2932,20 +2932,20 @@ LABEL_11:
 
   else if ([v8 hasCustomFooter])
   {
-    v16 = [v8 containerizedFooterView];
+    view3 = [v8 containerizedFooterView];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v16 setTableView:v6];
+      [view3 setTableView:viewCopy];
     }
   }
 
   else
   {
-    v16 = 0;
+    view3 = 0;
   }
 
-  return v16;
+  return view3;
 }
 
 void __49__RUITableView_tableView_viewForFooterInSection___block_invoke(uint64_t a1, void *a2)
@@ -2970,8 +2970,8 @@ void __49__RUITableView_tableView_viewForFooterInSection___block_invoke(uint64_t
 
 - (CGRect)_selectPickerFrame
 {
-  v2 = [(UITableView *)self->_tableView superview];
-  [v2 bounds];
+  superview = [(UITableView *)self->_tableView superview];
+  [superview bounds];
   v4 = v3;
   v6 = v5;
 
@@ -2986,48 +2986,48 @@ void __49__RUITableView_tableView_viewForFooterInSection___block_invoke(uint64_t
   return result;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 beginUpdates];
-  [(RUITableView *)self activateRowAtIndexPath:v6 animated:(gAnimatedTransitions & 1) == 0];
-  v8 = [(RUITableView *)self objectModelRowForIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  [viewCopy beginUpdates];
+  [(RUITableView *)self activateRowAtIndexPath:pathCopy animated:(gAnimatedTransitions & 1) == 0];
+  v8 = [(RUITableView *)self objectModelRowForIndexPath:pathCopy];
 
   [v8 didBecomeSelected];
-  [v7 endUpdates];
+  [viewCopy endUpdates];
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
-  v13 = a4;
-  v6 = a3;
-  [v6 beginUpdates];
-  v7 = [(RUITableView *)self tableView];
-  v8 = [v7 allowsMultipleSelectionDuringEditing];
-  v9 = [(RUITableView *)self tableView];
-  v10 = [v9 isEditing];
+  pathCopy = path;
+  viewCopy = view;
+  [viewCopy beginUpdates];
+  tableView = [(RUITableView *)self tableView];
+  allowsMultipleSelectionDuringEditing = [tableView allowsMultipleSelectionDuringEditing];
+  tableView2 = [(RUITableView *)self tableView];
+  isEditing = [tableView2 isEditing];
 
-  if (v8 && v10)
+  if (allowsMultipleSelectionDuringEditing && isEditing)
   {
-    v11 = [(RUITableView *)self objectModel];
-    [v11 tableViewOMDidChange:self];
+    objectModel = [(RUITableView *)self objectModel];
+    [objectModel tableViewOMDidChange:self];
   }
 
-  v12 = [(RUITableView *)self objectModelRowForIndexPath:v13];
+  v12 = [(RUITableView *)self objectModelRowForIndexPath:pathCopy];
   [v12 didBecomeDeselected];
-  [v6 endUpdates];
+  [viewCopy endUpdates];
 }
 
-- (void)activateRowAtIndexPath:(id)a3 animated:(BOOL)a4
+- (void)activateRowAtIndexPath:(id)path animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v53 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  pathCopy = path;
   [(UITableView *)self->_tableView beginUpdates];
-  v7 = [(RUITableView *)self objectModelRowForIndexPath:v6];
-  v8 = [v7 attributes];
-  v9 = [v8 objectForKey:@"class"];
+  v7 = [(RUITableView *)self objectModelRowForIndexPath:pathCopy];
+  attributes = [v7 attributes];
+  v9 = [attributes objectForKey:@"class"];
 
   if (![v7 enabled])
   {
@@ -3035,8 +3035,8 @@ void __49__RUITableView_tableView_viewForFooterInSection___block_invoke(uint64_t
   }
 
   self->_showSelectPicker = 0;
-  v10 = [(RUITableView *)self sections];
-  v11 = [v10 objectAtIndex:{objc_msgSend(v6, "section")}];
+  sections = [(RUITableView *)self sections];
+  v11 = [sections objectAtIndex:{objc_msgSend(pathCopy, "section")}];
 
   v46 = v11;
   if (![v9 isEqualToString:@"select"])
@@ -3046,33 +3046,33 @@ void __49__RUITableView_tableView_viewForFooterInSection___block_invoke(uint64_t
       if (([v9 isEqualToString:@"editableText"] & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"numberPicker"))
       {
         [(RUITableView *)self hidePickerViewAnimated:1];
-        v12 = [v7 tableCell];
-        v13 = [v12 editableTextField];
-        v14 = [v13 isFirstResponder];
+        tableCell = [v7 tableCell];
+        editableTextField = [tableCell editableTextField];
+        isFirstResponder = [editableTextField isFirstResponder];
 
-        if (v14)
+        if (isFirstResponder)
         {
           goto LABEL_17;
         }
 
-        v15 = [v7 tableCell];
-        v16 = [v15 editableTextField];
-        [v16 becomeFirstResponder];
+        tableCell2 = [v7 tableCell];
+        editableTextField2 = [tableCell2 editableTextField];
+        [editableTextField2 becomeFirstResponder];
       }
 
       else
       {
-        v17 = [v11 showAllRow];
+        showAllRow = [v11 showAllRow];
 
         [(RUITableView *)self hidePickerViewAnimated:1];
-        if (v7 == v17)
+        if (v7 == showAllRow)
         {
           [v11 tappedShowAllRowWithTable:self->_tableView];
           goto LABEL_17;
         }
 
-        v15 = [(UITableView *)self->_tableView firstResponder];
-        [v15 resignFirstResponder];
+        tableCell2 = [(UITableView *)self->_tableView firstResponder];
+        [tableCell2 resignFirstResponder];
       }
 
       goto LABEL_17;
@@ -3081,7 +3081,7 @@ void __49__RUITableView_tableView_viewForFooterInSection___block_invoke(uint64_t
     if ([v7 datePickerStyle] == 2)
     {
       [v7 activateDatePicker];
-      [(UITableView *)self->_tableView deselectRowAtIndexPath:v6 animated:v4];
+      [(UITableView *)self->_tableView deselectRowAtIndexPath:pathCopy animated:animatedCopy];
       goto LABEL_17;
     }
 
@@ -3094,58 +3094,58 @@ void __49__RUITableView_tableView_viewForFooterInSection___block_invoke(uint64_t
     goto LABEL_4;
   }
 
-  if (([(NSIndexPath *)self->_pickerRowIndexPath isEqual:v6]& 1) == 0)
+  if (([(NSIndexPath *)self->_pickerRowIndexPath isEqual:pathCopy]& 1) == 0)
   {
 LABEL_4:
-    [(RUITableView *)self showPickerViewForRow:v7 animated:v4];
+    [(RUITableView *)self showPickerViewForRow:v7 animated:animatedCopy];
   }
 
 LABEL_17:
   if (self->_datePicker && !self->_showDatePicker || self->_selectPicker && !self->_showSelectPicker)
   {
-    [(RUITableView *)self hidePickerViewAnimated:v4];
+    [(RUITableView *)self hidePickerViewAnimated:animatedCopy];
   }
 
   if ([v9 isEqualToString:@"selectPage"])
   {
     WeakRetained = objc_loadWeakRetained(&self->_objectModel);
-    v19 = [v7 linkedPage];
-    [WeakRetained _displaySupplementalPage:v19];
+    linkedPage = [v7 linkedPage];
+    [WeakRetained _displaySupplementalPage:linkedPage];
 
-    [(UITableView *)self->_tableView deselectRowAtIndexPath:v6 animated:(gAnimatedTransitions & 1) == 0];
+    [(UITableView *)self->_tableView deselectRowAtIndexPath:pathCopy animated:(gAnimatedTransitions & 1) == 0];
   }
 
   if (([v9 isEqualToString:@"button"] & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"htmlButton"))
   {
-    [(UITableView *)self->_tableView deselectRowAtIndexPath:v6 animated:(gAnimatedTransitions & 1) == 0];
+    [(UITableView *)self->_tableView deselectRowAtIndexPath:pathCopy animated:(gAnimatedTransitions & 1) == 0];
     v20 = objc_loadWeakRetained(&self->_objectModel);
     [v20 tableViewOM:self elementDidChange:v7 action:2 completion:0];
   }
 
   else if (([v9 isEqualToString:@"link"] & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"htmlLink"))
   {
-    [(UITableView *)self->_tableView deselectRowAtIndexPath:v6 animated:(gAnimatedTransitions & 1) == 0];
+    [(UITableView *)self->_tableView deselectRowAtIndexPath:pathCopy animated:(gAnimatedTransitions & 1) == 0];
     [(RUITableView *)self rowDidChange:v7 action:2];
   }
 
   else
   {
-    v30 = [v7 attributes];
-    v31 = [v30 objectForKey:@"radioGroup"];
+    attributes2 = [v7 attributes];
+    v31 = [attributes2 objectForKey:@"radioGroup"];
 
     if ([v31 length])
     {
       [(RUITableView *)self setSelectedRadioGroupRow:v7];
-      [(UITableView *)self->_tableView deselectRowAtIndexPath:v6 animated:(gAnimatedTransitions & 1) == 0];
+      [(UITableView *)self->_tableView deselectRowAtIndexPath:pathCopy animated:(gAnimatedTransitions & 1) == 0];
       [(RUITableView *)self rowDidChange:v7 action:2];
-      v32 = [(RUITableView *)self objectModel];
-      v33 = [v32 visiblePage];
-      v34 = [v33 parentPage];
+      objectModel = [(RUITableView *)self objectModel];
+      visiblePage = [objectModel visiblePage];
+      parentPage = [visiblePage parentPage];
 
-      if (v34)
+      if (parentPage)
       {
         v43 = v31;
-        v44 = v32;
+        v44 = objectModel;
         v49 = 0u;
         v50 = 0u;
         v47 = 0u;
@@ -3166,11 +3166,11 @@ LABEL_17:
               }
 
               v39 = *(*(&v47 + 1) + 8 * i);
-              v40 = [v39 rows];
-              if ([v40 containsObject:v7])
+              rows = [v39 rows];
+              if ([rows containsObject:v7])
               {
-                v41 = [v39 attributes];
-                v42 = [v41 objectForKey:@"autoGoBack"];
+                attributes3 = [v39 attributes];
+                v42 = [attributes3 objectForKey:@"autoGoBack"];
 
                 if (v42)
                 {
@@ -3193,32 +3193,32 @@ LABEL_17:
 LABEL_52:
 
         v31 = v43;
-        v32 = v44;
+        objectModel = v44;
       }
     }
   }
 
-  v21 = [v7 attributes];
-  v22 = [v21 objectForKeyedSubscript:@"alternateDetailLabel"];
+  attributes4 = [v7 attributes];
+  v22 = [attributes4 objectForKeyedSubscript:@"alternateDetailLabel"];
 
   if (v22)
   {
     [v7 setShowAlternateDetailLabel:{objc_msgSend(v7, "showAlternateDetailLabel") ^ 1}];
     tableView = self->_tableView;
-    v51 = v6;
+    v51 = pathCopy;
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v51 count:1];
     [(UITableView *)tableView reloadRowsAtIndexPaths:v24 withRowAnimation:5];
   }
 
-  v25 = [(RUITableView *)self tableView];
-  v26 = [v25 allowsMultipleSelectionDuringEditing];
-  v27 = [(RUITableView *)self tableView];
-  v28 = [v27 isEditing];
+  tableView = [(RUITableView *)self tableView];
+  allowsMultipleSelectionDuringEditing = [tableView allowsMultipleSelectionDuringEditing];
+  tableView2 = [(RUITableView *)self tableView];
+  isEditing = [tableView2 isEditing];
 
-  if (v26 && v28)
+  if (allowsMultipleSelectionDuringEditing && isEditing)
   {
-    v29 = [(RUITableView *)self objectModel];
-    [v29 tableViewOMDidChange:self];
+    objectModel2 = [(RUITableView *)self objectModel];
+    [objectModel2 tableViewOMDidChange:self];
   }
 
   [(UITableView *)self->_tableView endUpdates];
@@ -3226,12 +3226,12 @@ LABEL_52:
 LABEL_33:
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RUITableView *)self objectModelRowForIndexPath:v7];
-  v9 = [v8 tableCell];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(RUITableView *)self objectModelRowForIndexPath:pathCopy];
+  tableCell = [v8 tableCell];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -3240,7 +3240,7 @@ LABEL_33:
     v11 = *MEMORY[0x277D76F30];
   }
 
-  else if ([(NSIndexPath *)self->_embeddedPickerRowIndexPath isEqual:v7])
+  else if ([(NSIndexPath *)self->_embeddedPickerRowIndexPath isEqual:pathCopy])
   {
     datePicker = self->_datePicker;
     if (!datePicker)
@@ -3258,7 +3258,7 @@ LABEL_33:
   {
     LODWORD(v12) = 2139095040;
     LODWORD(v13) = 2139095040;
-    [v8 rowHeightWithMax:v6 peggedHeight:v7 tableView:v12 indexPath:v13];
+    [v8 rowHeightWithMax:viewCopy peggedHeight:pathCopy tableView:v12 indexPath:v13];
     if (v17 == -1.0)
     {
       v18 = *MEMORY[0x277D76F30];
@@ -3271,37 +3271,37 @@ LABEL_33:
   return v11;
 }
 
-- (BOOL)tableView:(id)a3 canFocusRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canFocusRowAtIndexPath:(id)path
 {
-  v4 = [(RUITableView *)self objectModelRowForIndexPath:a4];
+  v4 = [(RUITableView *)self objectModelRowForIndexPath:path];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return (isKindOfClass & 1) == 0;
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v4 = [(RUITableView *)self objectModelRowForIndexPath:a4];
-  v5 = [v4 isEditingEnabled];
+  v4 = [(RUITableView *)self objectModelRowForIndexPath:path];
+  isEditingEnabled = [v4 isEditingEnabled];
 
-  return v5;
+  return isEditingEnabled;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RUITableView *)self objectModelRowForIndexPath:v7];
-  v9 = [v8 deleteAction];
-  if (v9)
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(RUITableView *)self objectModelRowForIndexPath:pathCopy];
+  deleteAction = [v8 deleteAction];
+  if (deleteAction)
   {
   }
 
   else
   {
-    v10 = [v8 attributes];
-    v11 = [v10 objectForKeyedSubscript:@"deletionFunction"];
+    attributes = [v8 attributes];
+    v11 = [attributes objectForKeyedSubscript:@"deletionFunction"];
 
     if (!v11)
     {
@@ -3316,12 +3316,12 @@ LABEL_5:
   return v12;
 }
 
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RUITableView *)self objectModelRowForIndexPath:v6];
-  v9 = [(RUITableView *)self tableView:v7 editingStyleForRowAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(RUITableView *)self objectModelRowForIndexPath:pathCopy];
+  v9 = [(RUITableView *)self tableView:viewCopy editingStyleForRowAtIndexPath:pathCopy];
 
   if (v9 != 1)
   {
@@ -3331,22 +3331,22 @@ LABEL_5:
   return v9;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v14 = a5;
-  if (a4 == 1)
+  pathCopy = path;
+  if (style == 1)
   {
     WeakRetained = objc_loadWeakRetained(&self->_objectModel);
-    v8 = [WeakRetained tableViewOM:self deleteRowAtIndexPath:v14];
+    v8 = [WeakRetained tableViewOM:self deleteRowAtIndexPath:pathCopy];
 
     if (v8)
     {
-      v9 = [(RUITableView *)self sections];
-      v10 = [v9 objectAtIndex:{objc_msgSend(v14, "section")}];
+      sections = [(RUITableView *)self sections];
+      v10 = [sections objectAtIndex:{objc_msgSend(pathCopy, "section")}];
 
-      [v10 removeRowAtIndex:{objc_msgSend(v14, "row")}];
+      [v10 removeRowAtIndex:{objc_msgSend(pathCopy, "row")}];
       tableView = self->_tableView;
-      v12 = [MEMORY[0x277CBEA60] arrayWithObject:v14];
+      v12 = [MEMORY[0x277CBEA60] arrayWithObject:pathCopy];
       if (gAnimatedTransitions)
       {
         v13 = 5;
@@ -3362,58 +3362,58 @@ LABEL_5:
   }
 }
 
-- (BOOL)tableView:(id)a3 shouldDrawTopSeparatorForSection:(int64_t)a4
+- (BOOL)tableView:(id)view shouldDrawTopSeparatorForSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(RUITableView *)self sections];
-  v8 = [v7 objectAtIndex:a4];
+  viewCopy = view;
+  sections = [(RUITableView *)self sections];
+  v8 = [sections objectAtIndex:section];
 
   if ([v8 hasValueForDrawsTopSeparator])
   {
-    v9 = [v8 drawTopSeparator];
+    drawTopSeparator = [v8 drawTopSeparator];
   }
 
   else
   {
-    v9 = [v6 _drawsSeparatorAtTopOfSections];
+    drawTopSeparator = [viewCopy _drawsSeparatorAtTopOfSections];
   }
 
-  v10 = v9;
+  v10 = drawTopSeparator;
 
   return v10;
 }
 
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(RUITableView *)self sections];
-  v12 = [v6 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
+  pathCopy = path;
+  sections = [(RUITableView *)self sections];
+  v12 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v7 = [v12 rows];
-  v8 = [v5 row];
+  rows = [v12 rows];
+  v8 = [pathCopy row];
 
-  v9 = [v7 objectAtIndexedSubscript:v8];
+  v9 = [rows objectAtIndexedSubscript:v8];
 
-  v10 = [v9 detailButton];
+  detailButton = [v9 detailButton];
 
-  if (v10)
+  if (detailButton)
   {
-    v11 = [v9 detailButton];
-    [(RUITableView *)self performAction:2 forElement:v11 completion:0];
+    detailButton2 = [v9 detailButton];
+    [(RUITableView *)self performAction:2 forElement:detailButton2 completion:0];
   }
 }
 
-- (BOOL)tableView:(id)a3 shouldShowMenuForRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldShowMenuForRowAtIndexPath:(id)path
 {
-  v4 = [(RUITableView *)self objectModelRowForIndexPath:a4];
-  v5 = [v4 isCopyable];
+  v4 = [(RUITableView *)self objectModelRowForIndexPath:path];
+  isCopyable = [v4 isCopyable];
 
-  return v5;
+  return isCopyable;
 }
 
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point
 {
-  v5 = [(RUITableView *)self objectModelRowForIndexPath:a4, a5.x, a5.y];
+  v5 = [(RUITableView *)self objectModelRowForIndexPath:path, point.x, point.y];
   if ([v5 isCopyable])
   {
     v6 = MEMORY[0x277D753B0];
@@ -3477,23 +3477,23 @@ void __74__RUITableView_tableView_contextMenuConfigurationForRowAtIndexPath_poin
   [v3 setString:v2];
 }
 
-- (BOOL)tableView:(id)a3 canPerformAction:(SEL)a4 forRowAtIndexPath:(id)a5 withSender:(id)a6
+- (BOOL)tableView:(id)view canPerformAction:(SEL)action forRowAtIndexPath:(id)path withSender:(id)sender
 {
-  v7 = [(RUITableView *)self objectModelRowForIndexPath:a5];
+  v7 = [(RUITableView *)self objectModelRowForIndexPath:path];
   v8 = v7;
-  v9 = sel_copy_ == a4 && ([v7 isCopyable] & 1) != 0;
+  v9 = sel_copy_ == action && ([v7 isCopyable] & 1) != 0;
 
   return v9;
 }
 
-- (void)tableView:(id)a3 performAction:(SEL)a4 forRowAtIndexPath:(id)a5 withSender:(id)a6
+- (void)tableView:(id)view performAction:(SEL)action forRowAtIndexPath:(id)path withSender:(id)sender
 {
-  if (sel_copy_ == a4)
+  if (sel_copy_ == action)
   {
-    v9 = [(RUITableView *)self objectModelRowForIndexPath:a5];
-    v7 = [MEMORY[0x277D75810] generalPasteboard];
-    v8 = [v9 copyText];
-    [v7 setString:v8];
+    v9 = [(RUITableView *)self objectModelRowForIndexPath:path];
+    generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
+    copyText = [v9 copyText];
+    [generalPasteboard setString:copyText];
   }
 
   else
@@ -3506,10 +3506,10 @@ void __74__RUITableView_tableView_contextMenuConfigurationForRowAtIndexPath_poin
   }
 }
 
-- (id)indexPathForPreferredFocusedViewInTableView:(id)a3
+- (id)indexPathForPreferredFocusedViewInTableView:(id)view
 {
-  v3 = a3;
-  if ([v3 numberOfSections] < 1 || objc_msgSend(v3, "numberOfRowsInSection:", 0) < 1)
+  viewCopy = view;
+  if ([viewCopy numberOfSections] < 1 || objc_msgSend(viewCopy, "numberOfRowsInSection:", 0) < 1)
   {
     v4 = 0;
   }
@@ -3522,48 +3522,48 @@ void __74__RUITableView_tableView_contextMenuConfigurationForRowAtIndexPath_poin
   return v4;
 }
 
-- (void)tableView:(id)a3 didUpdateFocusInContext:(id)a4 withAnimationCoordinator:(id)a5
+- (void)tableView:(id)view didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v12 = a4;
-  v6 = [v12 previouslyFocusedIndexPath];
+  contextCopy = context;
+  previouslyFocusedIndexPath = [contextCopy previouslyFocusedIndexPath];
 
-  if (v6)
+  if (previouslyFocusedIndexPath)
   {
-    v7 = [v12 previouslyFocusedIndexPath];
-    v8 = [(RUITableView *)self objectModelRowForIndexPath:v7];
+    previouslyFocusedIndexPath2 = [contextCopy previouslyFocusedIndexPath];
+    v8 = [(RUITableView *)self objectModelRowForIndexPath:previouslyFocusedIndexPath2];
 
     [v8 setFocused:0];
   }
 
-  v9 = [v12 nextFocusedIndexPath];
+  nextFocusedIndexPath = [contextCopy nextFocusedIndexPath];
 
-  if (v9)
+  if (nextFocusedIndexPath)
   {
-    v10 = [v12 nextFocusedIndexPath];
-    v11 = [(RUITableView *)self objectModelRowForIndexPath:v10];
+    nextFocusedIndexPath2 = [contextCopy nextFocusedIndexPath];
+    v11 = [(RUITableView *)self objectModelRowForIndexPath:nextFocusedIndexPath2];
 
     [v11 setFocused:1];
   }
 }
 
-- (void)performAction:(int)a3 forElement:(id)a4 completion:(id)a5
+- (void)performAction:(int)action forElement:(id)element completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
+  completionCopy = completion;
+  elementCopy = element;
   WeakRetained = objc_loadWeakRetained(&self->_objectModel);
-  [WeakRetained activateElement:v8 completion:v7];
+  [WeakRetained activateElement:elementCopy completion:completionCopy];
 }
 
-- (void)textFieldStartedEditing:(id)a3
+- (void)textFieldStartedEditing:(id)editing
 {
-  v4 = a3;
-  v5 = [(UITableView *)self->_tableView indexPathsForSelectedRows];
+  editingCopy = editing;
+  indexPathsForSelectedRows = [(UITableView *)self->_tableView indexPathsForSelectedRows];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __40__RUITableView_textFieldStartedEditing___block_invoke;
   v27[3] = &unk_2782E8E98;
   v27[4] = self;
-  [v5 enumerateObjectsUsingBlock:v27];
+  [indexPathsForSelectedRows enumerateObjectsUsingBlock:v27];
 
   v6 = &qword_27CD9FEF0[34];
   [(UITableView *)self->_tableView selectRowAtIndexPath:0 animated:(gAnimatedTransitions & 1) == 0 scrollPosition:0];
@@ -3577,47 +3577,47 @@ void __74__RUITableView_tableView_contextMenuConfigurationForRowAtIndexPath_poin
     [(RUITableView *)self _hideLeftBarButtonItemForLabel];
   }
 
-  v7 = v4;
+  v7 = editingCopy;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v9 = v7 == 0;
-  v10 = v7;
+  superview = v7;
   if ((isKindOfClass & 1) == 0 && v7)
   {
-    v10 = v7;
+    superview = v7;
     do
     {
-      v11 = v10;
-      v10 = [v10 superview];
+      v11 = superview;
+      superview = [superview superview];
 
       objc_opt_class();
       v12 = objc_opt_isKindOfClass();
-      v9 = v10 == 0;
+      v9 = superview == 0;
     }
 
-    while ((v12 & 1) == 0 && v10);
+    while ((v12 & 1) == 0 && superview);
   }
 
   if (!v9)
   {
-    v13 = [(UITableView *)self->_tableView indexPathForCell:v10];
+    v13 = [(UITableView *)self->_tableView indexPathForCell:superview];
     if (v13)
     {
       v14 = v13;
       v15 = [(RUITableView *)self objectModelRowForIndexPath:v13];
-      v16 = [v15 attributes];
-      v17 = [v16 objectForKeyedSubscript:@"class"];
+      attributes = [v15 attributes];
+      v17 = [attributes objectForKeyedSubscript:@"class"];
       if ([v17 isEqualToString:@"editableText"])
       {
-        v18 = [v15 attributes];
-        v19 = [v18 objectForKeyedSubscript:@"changeNavButtonBarOnEdit"];
+        attributes2 = [v15 attributes];
+        v19 = [attributes2 objectForKeyedSubscript:@"changeNavButtonBarOnEdit"];
         v20 = [v19 isEqualToString:@"true"];
 
         v6 = qword_27CD9FEF0 + 272;
         if (v20)
         {
-          v21 = [v15 attributes];
-          v22 = [v21 objectForKeyedSubscript:@"navButtonBarPosition"];
+          attributes3 = [v15 attributes];
+          v22 = [attributes3 objectForKeyedSubscript:@"navButtonBarPosition"];
           v23 = [v22 isEqualToString:@"right"];
 
           if (v23)
@@ -3627,8 +3627,8 @@ void __74__RUITableView_tableView_contextMenuConfigurationForRowAtIndexPath_poin
 
           else
           {
-            v24 = [v15 attributes];
-            v25 = [v24 objectForKeyedSubscript:@"navButtonBarPosition"];
+            attributes4 = [v15 attributes];
+            v25 = [attributes4 objectForKeyedSubscript:@"navButtonBarPosition"];
             v26 = [v25 isEqualToString:@"left"];
 
             if (v26)
@@ -3654,57 +3654,57 @@ void __40__RUITableView_textFieldStartedEditing___block_invoke(uint64_t a1, uint
   [v2 didBecomeDeselected];
 }
 
-- (void)_textChanged:(id)a3
+- (void)_textChanged:(id)changed
 {
   WeakRetained = objc_loadWeakRetained(&self->_objectModel);
   [WeakRetained tableViewOMDidChange:self];
 }
 
-- (BOOL)webViewOM:(id)a3 shouldStartLoadWithRequest:(id)a4 navigationType:(int64_t)a5
+- (BOOL)webViewOM:(id)m shouldStartLoadWithRequest:(id)request navigationType:(int64_t)type
 {
-  v8 = a4;
-  v9 = a3;
+  requestCopy = request;
+  mCopy = m;
   WeakRetained = objc_loadWeakRetained(&self->_objectModel);
-  LOBYTE(a5) = [WeakRetained webViewOM:v9 shouldStartLoadWithRequest:v8 navigationType:a5];
+  LOBYTE(type) = [WeakRetained webViewOM:mCopy shouldStartLoadWithRequest:requestCopy navigationType:type];
 
-  return a5;
+  return type;
 }
 
 - (id)sourceURL
 {
   WeakRetained = objc_loadWeakRetained(&self->_objectModel);
-  v3 = [WeakRetained sourceURL];
+  sourceURL = [WeakRetained sourceURL];
 
-  return v3;
+  return sourceURL;
 }
 
-- (void)_enumerateRowsUsingBlock:(id)a3
+- (void)_enumerateRowsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = 0;
   v6 = 0;
   v16 = 0;
   do
   {
-    v7 = [(RUITableView *)self sections];
-    v8 = [v7 count];
+    sections = [(RUITableView *)self sections];
+    v8 = [sections count];
 
     if (v5 >= v8)
     {
       break;
     }
 
-    v9 = [(RUITableView *)self sections];
-    v10 = [v9 objectAtIndexedSubscript:v5];
+    sections2 = [(RUITableView *)self sections];
+    v10 = [sections2 objectAtIndexedSubscript:v5];
 
-    v11 = [v10 rows];
-    v12 = [v11 count];
+    rows = [v10 rows];
+    v12 = [rows count];
 
     if (v6 < v12)
     {
       v13 = [MEMORY[0x277CCAA70] indexPathForRow:v6 inSection:v5];
       v14 = [(RUITableView *)self objectModelRowForIndexPath:v13];
-      v4[2](v4, v14, v13, &v16);
+      blockCopy[2](blockCopy, v14, v13, &v16);
     }
 
     v15 = v6 + 1 >= v12;
@@ -3727,14 +3727,14 @@ void __40__RUITableView_textFieldStartedEditing___block_invoke(uint64_t a1, uint
   while (v16 != 1);
 }
 
-- (void)rowDidEndEditing:(id)a3
+- (void)rowDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = [v4 attributes];
-  v6 = [v5 objectForKey:@"nextKeyField"];
+  editingCopy = editing;
+  attributes = [editingCopy attributes];
+  v6 = [attributes objectForKey:@"nextKeyField"];
 
-  v7 = [v6 lowercaseString];
-  v8 = [v7 isEqualToString:@"false"];
+  lowercaseString = [v6 lowercaseString];
+  v8 = [lowercaseString isEqualToString:@"false"];
 
   if ((v8 & 1) == 0)
   {
@@ -3763,27 +3763,27 @@ void __40__RUITableView_textFieldStartedEditing___block_invoke(uint64_t a1, uint
 
     else
     {
-      v9 = [(RUITableView *)self indexPathForRow:v4];
-      v10 = [v9 section];
+      v9 = [(RUITableView *)self indexPathForRow:editingCopy];
+      section = [v9 section];
       v22 = [v9 row];
-      v11 = [(RUITableView *)self sections];
-      v12 = [v11 count];
+      sections = [(RUITableView *)self sections];
+      v12 = [sections count];
 
       while (--v12 >= 0)
       {
-        v13 = [(RUITableView *)self sections];
-        v14 = [v13 objectAtIndexedSubscript:v12];
-        v15 = [v14 rows];
-        v16 = [v15 count];
+        sections2 = [(RUITableView *)self sections];
+        v14 = [sections2 objectAtIndexedSubscript:v12];
+        rows = [v14 rows];
+        v16 = [rows count];
 
         if (v16)
         {
-          if (v10 == v12)
+          if (section == v12)
           {
-            v17 = [(RUITableView *)self sections];
-            v18 = [v17 objectAtIndexedSubscript:v10];
-            v19 = [v18 rows];
-            v20 = [v19 count] - 1;
+            sections3 = [(RUITableView *)self sections];
+            v18 = [sections3 objectAtIndexedSubscript:section];
+            rows2 = [v18 rows];
+            v20 = [rows2 count] - 1;
 
             if (v22 == v20)
             {
@@ -3804,7 +3804,7 @@ void __40__RUITableView_textFieldStartedEditing___block_invoke(uint64_t a1, uint
       v23[1] = 3221225472;
       v23[2] = __33__RUITableView_rowDidEndEditing___block_invoke_2;
       v23[3] = &unk_2782E8EE8;
-      v23[5] = v10;
+      v23[5] = section;
       v23[6] = v22;
       v23[4] = self;
       [(RUITableView *)self _enumerateRowsUsingBlock:v23];
@@ -3836,23 +3836,23 @@ void __33__RUITableView_rowDidEndEditing___block_invoke_2(uint64_t a1, uint64_t 
   }
 }
 
-- (BOOL)_becomeFirstResponderAtIndexPath:(id)a3
+- (BOOL)_becomeFirstResponderAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(RUITableView *)self objectModelRowForIndexPath:v4];
-  v6 = [v5 tableCell];
-  v7 = [v6 editableTextField];
-  if (v7)
+  pathCopy = path;
+  v5 = [(RUITableView *)self objectModelRowForIndexPath:pathCopy];
+  tableCell = [v5 tableCell];
+  editableTextField = [tableCell editableTextField];
+  if (editableTextField)
   {
     v8 = 1;
-    [(RUITableView *)self activateRowAtIndexPath:v4 animated:(gAnimatedTransitions & 1) == 0];
+    [(RUITableView *)self activateRowAtIndexPath:pathCopy animated:(gAnimatedTransitions & 1) == 0];
   }
 
   else if ([v5 supportsAutomaticSelection])
   {
     v8 = 1;
-    [(UITableView *)self->_tableView selectRowAtIndexPath:v4 animated:(gAnimatedTransitions & 1) == 0 scrollPosition:0];
-    [(RUITableView *)self tableView:self->_tableView didSelectRowAtIndexPath:v4];
+    [(UITableView *)self->_tableView selectRowAtIndexPath:pathCopy animated:(gAnimatedTransitions & 1) == 0 scrollPosition:0];
+    [(RUITableView *)self tableView:self->_tableView didSelectRowAtIndexPath:pathCopy];
   }
 
   else
@@ -3863,44 +3863,44 @@ void __33__RUITableView_rowDidEndEditing___block_invoke_2(uint64_t a1, uint64_t 
   return v8;
 }
 
-- (void)rowDidChange:(id)a3 action:(int)a4
+- (void)rowDidChange:(id)change action:(int)action
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&action;
+  changeCopy = change;
   WeakRetained = objc_loadWeakRetained(&self->_objectModel);
   [WeakRetained tableViewOMDidChange:self];
 
-  v8 = [v6 attributes];
-  v9 = [v8 objectForKeyedSubscript:@"class"];
+  attributes = [changeCopy attributes];
+  v9 = [attributes objectForKeyedSubscript:@"class"];
   if (([v9 isEqualToString:@"switch"] & 1) == 0)
   {
 
     goto LABEL_6;
   }
 
-  v10 = [v6 attributes];
-  v11 = [v10 objectForKeyedSubscript:@"url"];
+  attributes2 = [changeCopy attributes];
+  v11 = [attributes2 objectForKeyedSubscript:@"url"];
 
   if (v11)
   {
-    v12 = [v6 attributes];
-    v13 = [v12 objectForKeyedSubscript:@"httpMethod"];
+    attributes3 = [changeCopy attributes];
+    v13 = [attributes3 objectForKeyedSubscript:@"httpMethod"];
 
     if (!v13)
     {
-      v14 = [v6 attributes];
-      v8 = [v14 mutableCopy];
+      attributes4 = [changeCopy attributes];
+      attributes = [attributes4 mutableCopy];
 
-      [v8 setObject:@"POST" forKeyedSubscript:@"httpMethod"];
-      [v6 setAttributes:v8];
+      [attributes setObject:@"POST" forKeyedSubscript:@"httpMethod"];
+      [changeCopy setAttributes:attributes];
 LABEL_6:
     }
   }
 
-  [v6 startActivityIndicator];
-  v15 = [v6 tableCell];
+  [changeCopy startActivityIndicator];
+  tableCell = [changeCopy tableCell];
   v16 = objc_loadWeakRetained(&self->_objectModel);
-  [v16 setPopoverSourceItem:v15];
+  [v16 setPopoverSourceItem:tableCell];
 
   v17 = objc_loadWeakRetained(&self->_objectModel);
   LOBYTE(v16) = objc_opt_respondsToSelector();
@@ -3912,7 +3912,7 @@ LABEL_6:
     v19[1] = 3221225472;
     v19[2] = __36__RUITableView_rowDidChange_action___block_invoke;
     v19[3] = &unk_2782E8018;
-    v20 = v6;
+    v20 = changeCopy;
     [v18 tableViewOM:self elementDidChange:v20 action:v4 completion:v19];
   }
 }
@@ -3947,23 +3947,23 @@ uint64_t __36__RUITableView_rowDidChange_action___block_invoke_2(uint64_t a1)
   return [v5 stopActivityIndicator];
 }
 
-- (id)textFieldRow:(id)a3 changeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (id)textFieldRow:(id)row changeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a5;
-  v10 = a3;
-  v11 = [v10 attributes];
-  v12 = [v11 objectForKey:@"changeCharactersFunction"];
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  rowCopy = row;
+  attributes = [rowCopy attributes];
+  v12 = [attributes objectForKey:@"changeCharactersFunction"];
 
-  v13 = [v10 tableCell];
+  tableCell = [rowCopy tableCell];
 
-  v14 = [v13 ruiEditableTextField];
-  v15 = [v14 text];
+  ruiEditableTextField = [tableCell ruiEditableTextField];
+  text = [ruiEditableTextField text];
 
-  if (v15)
+  if (text)
   {
-    v16 = v15;
+    v16 = text;
   }
 
   else
@@ -3971,9 +3971,9 @@ uint64_t __36__RUITableView_rowDidChange_action___block_invoke_2(uint64_t a1)
     v16 = &stru_282D68F58;
   }
 
-  if (v9)
+  if (stringCopy)
   {
-    v17 = v9;
+    v17 = stringCopy;
   }
 
   else
@@ -3981,7 +3981,7 @@ uint64_t __36__RUITableView_rowDidChange_action___block_invoke_2(uint64_t a1)
     v17 = &stru_282D68F58;
   }
 
-  v18 = v9;
+  v18 = stringCopy;
   WeakRetained = objc_loadWeakRetained(&self->_objectModel);
   v20 = MEMORY[0x277CBEA60];
   v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:location];
@@ -3992,28 +3992,28 @@ uint64_t __36__RUITableView_rowDidChange_action___block_invoke_2(uint64_t a1)
   return v24;
 }
 
-- (Class)tableCellClassForTableViewRow:(id)a3
+- (Class)tableCellClassForTableViewRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   WeakRetained = objc_loadWeakRetained(&self->_objectModel);
-  v6 = [WeakRetained customTableCellClassForTableViewRow:v4];
+  v6 = [WeakRetained customTableCellClassForTableViewRow:rowCopy];
 
   return v6;
 }
 
-- (id)filteredResultsWithSearchTerm:(id)a3
+- (id)filteredResultsWithSearchTerm:(id)term
 {
-  v4 = a3;
+  termCopy = term;
   v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableArray count](self->_sections, "count")}];
   sections = self->_sections;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __46__RUITableView_filteredResultsWithSearchTerm___block_invoke;
   v12[3] = &unk_2782E8F60;
-  v13 = v4;
+  v13 = termCopy;
   v7 = v5;
   v14 = v7;
-  v8 = v4;
+  v8 = termCopy;
   [(NSMutableArray *)sections enumerateObjectsUsingBlock:v12];
   v9 = v14;
   v10 = v7;
@@ -4054,11 +4054,11 @@ void __46__RUITableView_filteredResultsWithSearchTerm___block_invoke_2(uint64_t 
   }
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  v5 = [a3 text];
-  v6 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v10 = [v5 stringByTrimmingCharactersInSet:v6];
+  text = [bar text];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v10 = [text stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   v7 = [v10 length];
   if (v7)
@@ -4075,35 +4075,35 @@ void __46__RUITableView_filteredResultsWithSearchTerm___block_invoke_2(uint64_t 
   filteredSections = self->_filteredSections;
   self->_filteredSections = v7;
 
-  v9 = [(RUITableView *)self tableView];
-  [v9 reloadData];
+  tableView = [(RUITableView *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
   self->_isSearching = 0;
   filteredSections = self->_filteredSections;
   self->_filteredSections = 0;
-  v5 = a3;
+  clickedCopy = clicked;
 
-  [v5 setText:&stru_282D68F58];
-  v6 = [(RUITableView *)self tableView];
-  [v6 reloadData];
+  [clickedCopy setText:&stru_282D68F58];
+  tableView = [(RUITableView *)self tableView];
+  [tableView reloadData];
 }
 
-- (CGSize)scrollView:(id)a3 contentSizeForZoomScale:(double)a4 withProposedSize:(CGSize)a5
+- (CGSize)scrollView:(id)view contentSizeForZoomScale:(double)scale withProposedSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   p_cachedContentSize = &self->_cachedContentSize;
   v9 = FASizeRoundMetrics(self->_cachedContentSize.width);
   v11 = v10;
   if (v9 != FASizeRoundMetrics(width) || v11 != v12)
   {
-    v14 = [(RUIElement *)self pageElement];
-    v15 = [v14 page];
-    v16 = [v15 view];
-    [v16 setNeedsLayout];
+    pageElement = [(RUIElement *)self pageElement];
+    page = [pageElement page];
+    view = [page view];
+    [view setNeedsLayout];
   }
 
   p_cachedContentSize->width = width;

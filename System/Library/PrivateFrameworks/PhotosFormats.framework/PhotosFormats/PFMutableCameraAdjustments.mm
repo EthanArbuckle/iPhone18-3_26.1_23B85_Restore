@@ -1,25 +1,25 @@
 @interface PFMutableCameraAdjustments
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)setCinematicVideoRenderingVersion:(unint64_t)a3;
-- (void)setCropRect:(CGRect)a3;
-- (void)setDepthEnabled:(BOOL)a3;
-- (void)setEffectFilterName:(id)a3;
-- (void)setIsEligibleForCinematicAudioEffectProcessing:(BOOL)a3;
-- (void)setPortraitEffectFilterName:(id)a3;
-- (void)setPortraitMetadata:(id)a3;
-- (void)setSloMoEnabled:(BOOL)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)setCinematicVideoRenderingVersion:(unint64_t)version;
+- (void)setCropRect:(CGRect)rect;
+- (void)setDepthEnabled:(BOOL)enabled;
+- (void)setEffectFilterName:(id)name;
+- (void)setIsEligibleForCinematicAudioEffectProcessing:(BOOL)processing;
+- (void)setPortraitEffectFilterName:(id)name;
+- (void)setPortraitMetadata:(id)metadata;
+- (void)setSloMoEnabled:(BOOL)enabled;
 @end
 
 @implementation PFMutableCameraAdjustments
 
-- (void)setCropRect:(CGRect)a3
+- (void)setCropRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(a3, self->super._cropRect))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (!CGRectEqualToRect(rect, self->super._cropRect))
   {
     self->super._cropRect.origin.x = x;
     self->super._cropRect.origin.y = y;
@@ -28,79 +28,79 @@
   }
 }
 
-- (void)setCinematicVideoRenderingVersion:(unint64_t)a3
+- (void)setCinematicVideoRenderingVersion:(unint64_t)version
 {
-  if (self->super._cinematicVideoRenderingVersion != a3)
+  if (self->super._cinematicVideoRenderingVersion != version)
   {
-    self->super._cinematicVideoRenderingVersion = a3;
+    self->super._cinematicVideoRenderingVersion = version;
   }
 }
 
-- (void)setIsEligibleForCinematicAudioEffectProcessing:(BOOL)a3
+- (void)setIsEligibleForCinematicAudioEffectProcessing:(BOOL)processing
 {
-  if (self->super._isEligibleForCinematicAudioEffectProcessing != a3)
+  if (self->super._isEligibleForCinematicAudioEffectProcessing != processing)
   {
-    self->super._isEligibleForCinematicAudioEffectProcessing = a3;
+    self->super._isEligibleForCinematicAudioEffectProcessing = processing;
   }
 }
 
-- (void)setSloMoEnabled:(BOOL)a3
+- (void)setSloMoEnabled:(BOOL)enabled
 {
-  if (self->super._sloMoEnabled != a3)
+  if (self->super._sloMoEnabled != enabled)
   {
-    self->super._sloMoEnabled = a3;
+    self->super._sloMoEnabled = enabled;
   }
 }
 
-- (void)setDepthEnabled:(BOOL)a3
+- (void)setDepthEnabled:(BOOL)enabled
 {
-  if (self->super._depthEnabled != a3)
+  if (self->super._depthEnabled != enabled)
   {
-    self->super._depthEnabled = a3;
+    self->super._depthEnabled = enabled;
   }
 }
 
-- (void)setPortraitMetadata:(id)a3
+- (void)setPortraitMetadata:(id)metadata
 {
-  v5 = a3;
+  metadataCopy = metadata;
   portraitMetadata = self->super._portraitMetadata;
   p_portraitMetadata = &self->super._portraitMetadata;
-  if (portraitMetadata != v5)
+  if (portraitMetadata != metadataCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_portraitMetadata, a3);
-    v5 = v8;
+    v8 = metadataCopy;
+    objc_storeStrong(p_portraitMetadata, metadata);
+    metadataCopy = v8;
   }
 }
 
-- (void)setPortraitEffectFilterName:(id)a3
+- (void)setPortraitEffectFilterName:(id)name
 {
-  if (self->super._portraitEffectFilterName != a3)
+  if (self->super._portraitEffectFilterName != name)
   {
-    self->super._portraitEffectFilterName = [a3 copy];
+    self->super._portraitEffectFilterName = [name copy];
 
     MEMORY[0x1EEE66BB8]();
   }
 }
 
-- (void)setEffectFilterName:(id)a3
+- (void)setEffectFilterName:(id)name
 {
-  if (self->super._effectFilterName != a3)
+  if (self->super._effectFilterName != name)
   {
-    self->super._effectFilterName = [a3 copy];
+    self->super._effectFilterName = [name copy];
 
     MEMORY[0x1EEE66BB8]();
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
   return [v4 initWithAdjustments:self];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PFCameraAdjustments alloc];
 

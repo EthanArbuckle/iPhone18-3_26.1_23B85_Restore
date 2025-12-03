@@ -1,8 +1,8 @@
 @interface ULDataContainer
-- (BOOL)_consumeSandboxExtensionForContainer:(container_object_s *)a3;
+- (BOOL)_consumeSandboxExtensionForContainer:(container_object_s *)container;
 - (ULDataContainer)init;
-- (const)_getContainerPathWithSandboxAccessForQuery:(container_query_s *)a3;
-- (container_object_s)_getContainerForQuery:(container_query_s *)a3;
+- (const)_getContainerPathWithSandboxAccessForQuery:(container_query_s *)query;
+- (container_object_s)_getContainerForQuery:(container_query_s *)query;
 - (id)getContainerPathWithSandboxAccess;
 - (void)_releaseExtensionHandle;
 - (void)dealloc;
@@ -72,14 +72,14 @@
   return v5;
 }
 
-- (container_object_s)_getContainerForQuery:(container_query_s *)a3
+- (container_object_s)_getContainerForQuery:(container_query_s *)query
 {
   v13 = *MEMORY[0x277D85DE8];
   container_query_set_class();
   container_query_operation_set_flags();
   v5 = *MEMORY[0x277D85ED0];
   container_query_set_persona_unique_string();
-  v6 = [(ULDataContainer *)self _getContainerSingleResultForQuery:a3];
+  v6 = [(ULDataContainer *)self _getContainerSingleResultForQuery:query];
   if (!v6)
   {
     container_query_get_last_error();
@@ -104,7 +104,7 @@
   return v6;
 }
 
-- (BOOL)_consumeSandboxExtensionForContainer:(container_object_s *)a3
+- (BOOL)_consumeSandboxExtensionForContainer:(container_object_s *)container
 {
   v13 = *MEMORY[0x277D85DE8];
   v4 = container_copy_sandbox_token();
@@ -158,10 +158,10 @@ LABEL_14:
   return v6;
 }
 
-- (const)_getContainerPathWithSandboxAccessForQuery:(container_query_s *)a3
+- (const)_getContainerPathWithSandboxAccessForQuery:(container_query_s *)query
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = [(ULDataContainer *)self _getContainerForQuery:a3];
+  v4 = [(ULDataContainer *)self _getContainerForQuery:query];
   if (!v4)
   {
     goto LABEL_7;

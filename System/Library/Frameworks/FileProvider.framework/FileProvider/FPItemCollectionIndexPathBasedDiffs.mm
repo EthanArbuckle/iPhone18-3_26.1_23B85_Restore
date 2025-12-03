@@ -6,16 +6,16 @@
 
 - (BOOL)containsChanges
 {
-  v3 = [(FPItemCollectionIndexPathBasedDiffs *)self movedSourceIndexPaths];
-  v4 = [v3 count];
-  v5 = [(FPItemCollectionIndexPathBasedDiffs *)self movedDestinationIndexPaths];
-  v6 = [v5 count] + v4;
-  v7 = [(FPItemCollectionIndexPathBasedDiffs *)self deletedIndexes];
-  v8 = [v7 count];
-  v9 = [(FPItemCollectionIndexPathBasedDiffs *)self insertedIndexes];
-  v10 = v6 + v8 + [v9 count];
-  v11 = [(FPItemCollectionIndexPathBasedDiffs *)self updatedIndexes];
-  LOBYTE(v10) = v10 + [v11 count] != 0;
+  movedSourceIndexPaths = [(FPItemCollectionIndexPathBasedDiffs *)self movedSourceIndexPaths];
+  v4 = [movedSourceIndexPaths count];
+  movedDestinationIndexPaths = [(FPItemCollectionIndexPathBasedDiffs *)self movedDestinationIndexPaths];
+  v6 = [movedDestinationIndexPaths count] + v4;
+  deletedIndexes = [(FPItemCollectionIndexPathBasedDiffs *)self deletedIndexes];
+  v8 = [deletedIndexes count];
+  insertedIndexes = [(FPItemCollectionIndexPathBasedDiffs *)self insertedIndexes];
+  v10 = v6 + v8 + [insertedIndexes count];
+  updatedIndexes = [(FPItemCollectionIndexPathBasedDiffs *)self updatedIndexes];
+  LOBYTE(v10) = v10 + [updatedIndexes count] != 0;
 
   return v10;
 }

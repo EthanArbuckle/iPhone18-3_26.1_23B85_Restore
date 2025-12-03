@@ -9,17 +9,17 @@
 
 - (id)_musicKit_self_resetTracklistCommand
 {
-  if ([a1 conformsToProtocol:&unk_1F50DD660])
+  if ([self conformsToProtocol:&unk_1F50DD660])
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = 0;
+    selfCopy = 0;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)musicKit_resetTracklistCommand_replaceCommandRequestWithPlaybackIntent:()MusicKit_SoftLinking_MPCPlayerResetTracklistCommand replaceIntent:
@@ -35,28 +35,28 @@
   }
 
   v6 = a3;
-  v7 = [a1 _musicKit_self_resetTracklistCommand];
-  v8 = [v6 _underlyingPlaybackIntent];
+  _musicKit_self_resetTracklistCommand = [self _musicKit_self_resetTracklistCommand];
+  _underlyingPlaybackIntent = [v6 _underlyingPlaybackIntent];
 
-  v9 = [v7 replaceWithPlaybackIntent:v8 replaceIntent:v5];
+  v9 = [_musicKit_self_resetTracklistCommand replaceWithPlaybackIntent:_underlyingPlaybackIntent replaceIntent:v5];
 
   return v9;
 }
 
 - (id)musicKit_resetTracklistCommand_clearCommandRequest
 {
-  v1 = [a1 _musicKit_self_resetTracklistCommand];
-  v2 = [v1 clear];
+  _musicKit_self_resetTracklistCommand = [self _musicKit_self_resetTracklistCommand];
+  clear = [_musicKit_self_resetTracklistCommand clear];
 
-  return v2;
+  return clear;
 }
 
 - (id)musicKit_resetTracklistCommand_clearUpNextItemsCommandRequest
 {
-  v1 = [a1 _musicKit_self_resetTracklistCommand];
-  v2 = [v1 clearUpNextItems];
+  _musicKit_self_resetTracklistCommand = [self _musicKit_self_resetTracklistCommand];
+  clearUpNextItems = [_musicKit_self_resetTracklistCommand clearUpNextItems];
 
-  return v2;
+  return clearUpNextItems;
 }
 
 @end

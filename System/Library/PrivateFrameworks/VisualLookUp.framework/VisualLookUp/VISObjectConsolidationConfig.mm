@@ -1,18 +1,18 @@
 @interface VISObjectConsolidationConfig
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (VISObjectConsolidationConfig)initWithDictionary:(id)a3;
-- (VISObjectConsolidationConfig)initWithJSON:(id)a3;
+- (VISObjectConsolidationConfig)initWithDictionary:(id)dictionary;
+- (VISObjectConsolidationConfig)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VISObjectConsolidationConfig
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v21 = a3;
+  toCopy = to;
   [(VISObjectConsolidationConfig *)self frame_object_iou_threshold];
   if (v4 != 0.0)
   {
@@ -119,21 +119,21 @@
   }
 
   [(VISObjectConsolidationConfig *)self pixel_distance_threshold];
-  v19 = v21;
+  v19 = toCopy;
   if (v20 != 0.0)
   {
     PBDataWriterWriteFloatField();
-    v19 = v21;
+    v19 = toCopy;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (frame_object_iou_threshold = self->_frame_object_iou_threshold, objc_msgSend(v4, "frame_object_iou_threshold"), frame_object_iou_threshold == v6) && (enable_packaged_products = self->_enable_packaged_products, enable_packaged_products == objc_msgSend(v4, "enable_packaged_products")) && (enable_text_from_object_detection = self->_enable_text_from_object_detection, enable_text_from_object_detection == objc_msgSend(v4, "enable_text_from_object_detection")) && (nearest_object_distance_threshold = self->_nearest_object_distance_threshold, objc_msgSend(v4, "nearest_object_distance_threshold"), nearest_object_distance_threshold == v10) && (object_distance_update_threshold = self->_object_distance_update_threshold, objc_msgSend(v4, "object_distance_update_threshold"), object_distance_update_threshold == v12) && (adaptive_object_distance_threshold_ratio = self->_adaptive_object_distance_threshold_ratio, objc_msgSend(v4, "adaptive_object_distance_threshold_ratio"), adaptive_object_distance_threshold_ratio == v14) && (minimal_adaptive_object_distance_threshold = self->_minimal_adaptive_object_distance_threshold, objc_msgSend(v4, "minimal_adaptive_object_distance_threshold"), minimal_adaptive_object_distance_threshold == v16) && (nearest_object_iou_threshold = self->_nearest_object_iou_threshold, objc_msgSend(v4, "nearest_object_iou_threshold"), nearest_object_iou_threshold == v18) && (object_iou_update_threshold = self->_object_iou_update_threshold, objc_msgSend(v4, "object_iou_update_threshold"), object_iou_update_threshold == v20) && (label_prob_dist_threshold = self->_label_prob_dist_threshold, objc_msgSend(v4, "label_prob_dist_threshold"), label_prob_dist_threshold == v22) && (sharpness_threshold = self->_sharpness_threshold, objc_msgSend(v4, "sharpness_threshold"), sharpness_threshold == v24) && (enable_visual_distance = self->_enable_visual_distance, enable_visual_distance == objc_msgSend(v4, "enable_visual_distance")) && (tracked_decay_rate = self->_tracked_decay_rate, objc_msgSend(v4, "tracked_decay_rate"), tracked_decay_rate == v27) && (boundary_object_padding_threshold = self->_boundary_object_padding_threshold, objc_msgSend(v4, "boundary_object_padding_threshold"), boundary_object_padding_threshold == v29) && (boundary_object_size_threshold = self->_boundary_object_size_threshold, objc_msgSend(v4, "boundary_object_size_threshold"), boundary_object_size_threshold == v31) && (normal_decay_rate = self->_normal_decay_rate, objc_msgSend(v4, "normal_decay_rate"), normal_decay_rate == v33) && (depth_distance_threshold = self->_depth_distance_threshold, objc_msgSend(v4, "depth_distance_threshold"), depth_distance_threshold == v35) && (reticle_padding = self->_reticle_padding, objc_msgSend(v4, "reticle_padding"), reticle_padding == v37))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (frame_object_iou_threshold = self->_frame_object_iou_threshold, objc_msgSend(equalCopy, "frame_object_iou_threshold"), frame_object_iou_threshold == v6) && (enable_packaged_products = self->_enable_packaged_products, enable_packaged_products == objc_msgSend(equalCopy, "enable_packaged_products")) && (enable_text_from_object_detection = self->_enable_text_from_object_detection, enable_text_from_object_detection == objc_msgSend(equalCopy, "enable_text_from_object_detection")) && (nearest_object_distance_threshold = self->_nearest_object_distance_threshold, objc_msgSend(equalCopy, "nearest_object_distance_threshold"), nearest_object_distance_threshold == v10) && (object_distance_update_threshold = self->_object_distance_update_threshold, objc_msgSend(equalCopy, "object_distance_update_threshold"), object_distance_update_threshold == v12) && (adaptive_object_distance_threshold_ratio = self->_adaptive_object_distance_threshold_ratio, objc_msgSend(equalCopy, "adaptive_object_distance_threshold_ratio"), adaptive_object_distance_threshold_ratio == v14) && (minimal_adaptive_object_distance_threshold = self->_minimal_adaptive_object_distance_threshold, objc_msgSend(equalCopy, "minimal_adaptive_object_distance_threshold"), minimal_adaptive_object_distance_threshold == v16) && (nearest_object_iou_threshold = self->_nearest_object_iou_threshold, objc_msgSend(equalCopy, "nearest_object_iou_threshold"), nearest_object_iou_threshold == v18) && (object_iou_update_threshold = self->_object_iou_update_threshold, objc_msgSend(equalCopy, "object_iou_update_threshold"), object_iou_update_threshold == v20) && (label_prob_dist_threshold = self->_label_prob_dist_threshold, objc_msgSend(equalCopy, "label_prob_dist_threshold"), label_prob_dist_threshold == v22) && (sharpness_threshold = self->_sharpness_threshold, objc_msgSend(equalCopy, "sharpness_threshold"), sharpness_threshold == v24) && (enable_visual_distance = self->_enable_visual_distance, enable_visual_distance == objc_msgSend(equalCopy, "enable_visual_distance")) && (tracked_decay_rate = self->_tracked_decay_rate, objc_msgSend(equalCopy, "tracked_decay_rate"), tracked_decay_rate == v27) && (boundary_object_padding_threshold = self->_boundary_object_padding_threshold, objc_msgSend(equalCopy, "boundary_object_padding_threshold"), boundary_object_padding_threshold == v29) && (boundary_object_size_threshold = self->_boundary_object_size_threshold, objc_msgSend(equalCopy, "boundary_object_size_threshold"), boundary_object_size_threshold == v31) && (normal_decay_rate = self->_normal_decay_rate, objc_msgSend(equalCopy, "normal_decay_rate"), normal_decay_rate == v33) && (depth_distance_threshold = self->_depth_distance_threshold, objc_msgSend(equalCopy, "depth_distance_threshold"), depth_distance_threshold == v35) && (reticle_padding = self->_reticle_padding, objc_msgSend(equalCopy, "reticle_padding"), reticle_padding == v37))
   {
     pixel_distance_threshold = self->_pixel_distance_threshold;
-    [v4 pixel_distance_threshold];
+    [equalCopy pixel_distance_threshold];
     v38 = pixel_distance_threshold == v41;
   }
 
@@ -756,13 +756,13 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_adaptive_object_distance_threshold_ratio != 0.0)
   {
     v4 = MEMORY[0x1E696AD98];
     [(VISObjectConsolidationConfig *)self adaptive_object_distance_threshold_ratio];
     v5 = [v4 numberWithFloat:?];
-    [v3 setObject:v5 forKeyedSubscript:@"adaptiveObjectDistanceThresholdRatio"];
+    [dictionary setObject:v5 forKeyedSubscript:@"adaptiveObjectDistanceThresholdRatio"];
   }
 
   if (self->_boundary_object_padding_threshold != 0.0)
@@ -770,7 +770,7 @@
     v6 = MEMORY[0x1E696AD98];
     [(VISObjectConsolidationConfig *)self boundary_object_padding_threshold];
     v7 = [v6 numberWithFloat:?];
-    [v3 setObject:v7 forKeyedSubscript:@"boundaryObjectPaddingThreshold"];
+    [dictionary setObject:v7 forKeyedSubscript:@"boundaryObjectPaddingThreshold"];
   }
 
   if (self->_boundary_object_size_threshold != 0.0)
@@ -778,7 +778,7 @@
     v8 = MEMORY[0x1E696AD98];
     [(VISObjectConsolidationConfig *)self boundary_object_size_threshold];
     v9 = [v8 numberWithFloat:?];
-    [v3 setObject:v9 forKeyedSubscript:@"boundaryObjectSizeThreshold"];
+    [dictionary setObject:v9 forKeyedSubscript:@"boundaryObjectSizeThreshold"];
   }
 
   if (self->_depth_distance_threshold != 0.0)
@@ -786,25 +786,25 @@
     v10 = MEMORY[0x1E696AD98];
     [(VISObjectConsolidationConfig *)self depth_distance_threshold];
     v11 = [v10 numberWithFloat:?];
-    [v3 setObject:v11 forKeyedSubscript:@"depthDistanceThreshold"];
+    [dictionary setObject:v11 forKeyedSubscript:@"depthDistanceThreshold"];
   }
 
   if (self->_enable_packaged_products)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[VISObjectConsolidationConfig enable_packaged_products](self, "enable_packaged_products")}];
-    [v3 setObject:v12 forKeyedSubscript:@"enablePackagedProducts"];
+    [dictionary setObject:v12 forKeyedSubscript:@"enablePackagedProducts"];
   }
 
   if (self->_enable_text_from_object_detection)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithBool:{-[VISObjectConsolidationConfig enable_text_from_object_detection](self, "enable_text_from_object_detection")}];
-    [v3 setObject:v13 forKeyedSubscript:@"enableTextFromObjectDetection"];
+    [dictionary setObject:v13 forKeyedSubscript:@"enableTextFromObjectDetection"];
   }
 
   if (self->_enable_visual_distance)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[VISObjectConsolidationConfig enable_visual_distance](self, "enable_visual_distance")}];
-    [v3 setObject:v14 forKeyedSubscript:@"enableVisualDistance"];
+    [dictionary setObject:v14 forKeyedSubscript:@"enableVisualDistance"];
   }
 
   if (self->_frame_object_iou_threshold != 0.0)
@@ -812,7 +812,7 @@
     v15 = MEMORY[0x1E696AD98];
     [(VISObjectConsolidationConfig *)self frame_object_iou_threshold];
     v16 = [v15 numberWithFloat:?];
-    [v3 setObject:v16 forKeyedSubscript:@"frameObjectIouThreshold"];
+    [dictionary setObject:v16 forKeyedSubscript:@"frameObjectIouThreshold"];
   }
 
   if (self->_label_prob_dist_threshold != 0.0)
@@ -820,7 +820,7 @@
     v17 = MEMORY[0x1E696AD98];
     [(VISObjectConsolidationConfig *)self label_prob_dist_threshold];
     v18 = [v17 numberWithFloat:?];
-    [v3 setObject:v18 forKeyedSubscript:@"labelProbDistThreshold"];
+    [dictionary setObject:v18 forKeyedSubscript:@"labelProbDistThreshold"];
   }
 
   if (self->_minimal_adaptive_object_distance_threshold != 0.0)
@@ -828,7 +828,7 @@
     v19 = MEMORY[0x1E696AD98];
     [(VISObjectConsolidationConfig *)self minimal_adaptive_object_distance_threshold];
     v20 = [v19 numberWithFloat:?];
-    [v3 setObject:v20 forKeyedSubscript:@"minimalAdaptiveObjectDistanceThreshold"];
+    [dictionary setObject:v20 forKeyedSubscript:@"minimalAdaptiveObjectDistanceThreshold"];
   }
 
   if (self->_nearest_object_distance_threshold != 0.0)
@@ -836,7 +836,7 @@
     v21 = MEMORY[0x1E696AD98];
     [(VISObjectConsolidationConfig *)self nearest_object_distance_threshold];
     v22 = [v21 numberWithFloat:?];
-    [v3 setObject:v22 forKeyedSubscript:@"nearestObjectDistanceThreshold"];
+    [dictionary setObject:v22 forKeyedSubscript:@"nearestObjectDistanceThreshold"];
   }
 
   if (self->_nearest_object_iou_threshold != 0.0)
@@ -844,7 +844,7 @@
     v23 = MEMORY[0x1E696AD98];
     [(VISObjectConsolidationConfig *)self nearest_object_iou_threshold];
     v24 = [v23 numberWithFloat:?];
-    [v3 setObject:v24 forKeyedSubscript:@"nearestObjectIouThreshold"];
+    [dictionary setObject:v24 forKeyedSubscript:@"nearestObjectIouThreshold"];
   }
 
   if (self->_normal_decay_rate != 0.0)
@@ -852,7 +852,7 @@
     v25 = MEMORY[0x1E696AD98];
     [(VISObjectConsolidationConfig *)self normal_decay_rate];
     v26 = [v25 numberWithFloat:?];
-    [v3 setObject:v26 forKeyedSubscript:@"normalDecayRate"];
+    [dictionary setObject:v26 forKeyedSubscript:@"normalDecayRate"];
   }
 
   if (self->_object_distance_update_threshold != 0.0)
@@ -860,7 +860,7 @@
     v27 = MEMORY[0x1E696AD98];
     [(VISObjectConsolidationConfig *)self object_distance_update_threshold];
     v28 = [v27 numberWithFloat:?];
-    [v3 setObject:v28 forKeyedSubscript:@"objectDistanceUpdateThreshold"];
+    [dictionary setObject:v28 forKeyedSubscript:@"objectDistanceUpdateThreshold"];
   }
 
   if (self->_object_iou_update_threshold != 0.0)
@@ -868,7 +868,7 @@
     v29 = MEMORY[0x1E696AD98];
     [(VISObjectConsolidationConfig *)self object_iou_update_threshold];
     v30 = [v29 numberWithFloat:?];
-    [v3 setObject:v30 forKeyedSubscript:@"objectIouUpdateThreshold"];
+    [dictionary setObject:v30 forKeyedSubscript:@"objectIouUpdateThreshold"];
   }
 
   if (self->_pixel_distance_threshold != 0.0)
@@ -876,7 +876,7 @@
     v31 = MEMORY[0x1E696AD98];
     [(VISObjectConsolidationConfig *)self pixel_distance_threshold];
     v32 = [v31 numberWithFloat:?];
-    [v3 setObject:v32 forKeyedSubscript:@"pixelDistanceThreshold"];
+    [dictionary setObject:v32 forKeyedSubscript:@"pixelDistanceThreshold"];
   }
 
   if (self->_reticle_padding != 0.0)
@@ -884,7 +884,7 @@
     v33 = MEMORY[0x1E696AD98];
     [(VISObjectConsolidationConfig *)self reticle_padding];
     v34 = [v33 numberWithFloat:?];
-    [v3 setObject:v34 forKeyedSubscript:@"reticlePadding"];
+    [dictionary setObject:v34 forKeyedSubscript:@"reticlePadding"];
   }
 
   if (self->_sharpness_threshold != 0.0)
@@ -892,7 +892,7 @@
     v35 = MEMORY[0x1E696AD98];
     [(VISObjectConsolidationConfig *)self sharpness_threshold];
     v36 = [v35 numberWithFloat:?];
-    [v3 setObject:v36 forKeyedSubscript:@"sharpnessThreshold"];
+    [dictionary setObject:v36 forKeyedSubscript:@"sharpnessThreshold"];
   }
 
   if (self->_tracked_decay_rate != 0.0)
@@ -900,18 +900,18 @@
     v37 = MEMORY[0x1E696AD98];
     [(VISObjectConsolidationConfig *)self tracked_decay_rate];
     v38 = [v37 numberWithFloat:?];
-    [v3 setObject:v38 forKeyedSubscript:@"trackedDecayRate"];
+    [dictionary setObject:v38 forKeyedSubscript:@"trackedDecayRate"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(VISObjectConsolidationConfig *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(VISObjectConsolidationConfig *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -922,33 +922,33 @@
   return v3;
 }
 
-- (VISObjectConsolidationConfig)initWithJSON:(id)a3
+- (VISObjectConsolidationConfig)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(VISObjectConsolidationConfig *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (VISObjectConsolidationConfig)initWithDictionary:(id)a3
+- (VISObjectConsolidationConfig)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v44.receiver = self;
   v44.super_class = VISObjectConsolidationConfig;
   v5 = [(VISObjectConsolidationConfig *)&v44 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"frameObjectIouThreshold"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"frameObjectIouThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -956,14 +956,14 @@
       [(VISObjectConsolidationConfig *)v5 setFrame_object_iou_threshold:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"enablePackagedProducts"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"enablePackagedProducts"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[VISObjectConsolidationConfig setEnable_packaged_products:](v5, "setEnable_packaged_products:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"enableTextFromObjectDetection"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"enableTextFromObjectDetection"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -971,7 +971,7 @@
     }
 
     v33 = v8;
-    v9 = [v4 objectForKeyedSubscript:@"nearestObjectDistanceThreshold"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"nearestObjectDistanceThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -980,7 +980,7 @@
     }
 
     v37 = v9;
-    v10 = [v4 objectForKeyedSubscript:@"objectDistanceUpdateThreshold"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"objectDistanceUpdateThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -989,7 +989,7 @@
     }
 
     v11 = v7;
-    v12 = [v4 objectForKeyedSubscript:@"adaptiveObjectDistanceThresholdRatio"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"adaptiveObjectDistanceThresholdRatio"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -998,7 +998,7 @@
     }
 
     v13 = v6;
-    v14 = [v4 objectForKeyedSubscript:@"minimalAdaptiveObjectDistanceThreshold"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"minimalAdaptiveObjectDistanceThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1006,7 +1006,7 @@
       [(VISObjectConsolidationConfig *)v5 setMinimal_adaptive_object_distance_threshold:?];
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"nearestObjectIouThreshold"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"nearestObjectIouThreshold"];
     objc_opt_class();
     v43 = v15;
     if (objc_opt_isKindOfClass())
@@ -1015,7 +1015,7 @@
       [(VISObjectConsolidationConfig *)v5 setNearest_object_iou_threshold:?];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"objectIouUpdateThreshold"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"objectIouUpdateThreshold"];
     objc_opt_class();
     v42 = v16;
     v17 = v13;
@@ -1025,7 +1025,7 @@
       [(VISObjectConsolidationConfig *)v5 setObject_iou_update_threshold:?];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"labelProbDistThreshold"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"labelProbDistThreshold"];
     objc_opt_class();
     v41 = v18;
     v19 = v11;
@@ -1035,7 +1035,7 @@
       [(VISObjectConsolidationConfig *)v5 setLabel_prob_dist_threshold:?];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"sharpnessThreshold"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"sharpnessThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1043,7 +1043,7 @@
       [(VISObjectConsolidationConfig *)v5 setSharpness_threshold:?];
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"enableVisualDistance"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"enableVisualDistance"];
     objc_opt_class();
     v40 = v21;
     if (objc_opt_isKindOfClass())
@@ -1052,7 +1052,7 @@
     }
 
     v36 = v10;
-    v22 = [v4 objectForKeyedSubscript:@"trackedDecayRate"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"trackedDecayRate"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1061,7 +1061,7 @@
     }
 
     v35 = v12;
-    v23 = [v4 objectForKeyedSubscript:@"boundaryObjectPaddingThreshold"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"boundaryObjectPaddingThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1070,7 +1070,7 @@
     }
 
     v34 = v14;
-    v24 = [v4 objectForKeyedSubscript:@"boundaryObjectSizeThreshold"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"boundaryObjectSizeThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1079,7 +1079,7 @@
     }
 
     v39 = v17;
-    v25 = [v4 objectForKeyedSubscript:@"normalDecayRate"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"normalDecayRate"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1088,7 +1088,7 @@
     }
 
     v38 = v19;
-    v26 = [v4 objectForKeyedSubscript:{@"depthDistanceThreshold", v22}];
+    v26 = [dictionaryCopy objectForKeyedSubscript:{@"depthDistanceThreshold", v22}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1097,7 +1097,7 @@
     }
 
     v27 = v20;
-    v28 = [v4 objectForKeyedSubscript:@"reticlePadding"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"reticlePadding"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1105,7 +1105,7 @@
       [(VISObjectConsolidationConfig *)v5 setReticle_padding:?];
     }
 
-    v29 = [v4 objectForKeyedSubscript:@"pixelDistanceThreshold"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"pixelDistanceThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

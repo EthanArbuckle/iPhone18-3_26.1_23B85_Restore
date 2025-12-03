@@ -1,9 +1,9 @@
 @interface SBRelocateFloatingAppLayoutSwitcherModifier
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (SBRelocateFloatingAppLayoutSwitcherModifier)initWithTransitionID:(id)a3 floatingAppLayout:(id)a4 floatingConfiguration:(int64_t)a5 direction:(int64_t)a6 mixedGridModifier:(id)a7;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (double)scaleForIndex:(unint64_t)a3;
-- (id)handleTimerEvent:(id)a3;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (SBRelocateFloatingAppLayoutSwitcherModifier)initWithTransitionID:(id)d floatingAppLayout:(id)layout floatingConfiguration:(int64_t)configuration direction:(int64_t)direction mixedGridModifier:(id)modifier;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (double)scaleForIndex:(unint64_t)index;
+- (id)handleTimerEvent:(id)event;
 - (id)transitionDidEnd;
 - (id)transitionWillBegin;
 - (id)transitionWillUpdate;
@@ -11,20 +11,20 @@
 
 @implementation SBRelocateFloatingAppLayoutSwitcherModifier
 
-- (SBRelocateFloatingAppLayoutSwitcherModifier)initWithTransitionID:(id)a3 floatingAppLayout:(id)a4 floatingConfiguration:(int64_t)a5 direction:(int64_t)a6 mixedGridModifier:(id)a7
+- (SBRelocateFloatingAppLayoutSwitcherModifier)initWithTransitionID:(id)d floatingAppLayout:(id)layout floatingConfiguration:(int64_t)configuration direction:(int64_t)direction mixedGridModifier:(id)modifier
 {
-  v13 = a4;
-  v14 = a7;
+  layoutCopy = layout;
+  modifierCopy = modifier;
   v18.receiver = self;
   v18.super_class = SBRelocateFloatingAppLayoutSwitcherModifier;
-  v15 = [(SBTransitionSwitcherModifier *)&v18 initWithTransitionID:a3];
+  v15 = [(SBTransitionSwitcherModifier *)&v18 initWithTransitionID:d];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_floatingAppLayout, a4);
-    v16->_floatingConfiguration = a5;
-    v16->_direction = a6;
-    objc_storeStrong(&v16->_mixedGridModifier, a7);
+    objc_storeStrong(&v15->_floatingAppLayout, layout);
+    v16->_floatingConfiguration = configuration;
+    v16->_direction = direction;
+    objc_storeStrong(&v16->_mixedGridModifier, modifier);
     v16->_moveFloatingAppToLeadingSide = 0;
   }
 
@@ -35,74 +35,74 @@
 {
   v7.receiver = self;
   v7.super_class = SBRelocateFloatingAppLayoutSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v7 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v7 transitionWillBegin];
   if ([(SBRelocateFloatingAppLayoutSwitcherModifier *)self _goingToSwitcherWithLeadingFloatingApp])
   {
     v4 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:4 updateMode:2];
-    v5 = SBAppendSwitcherModifierResponse(v4, v3);
+    v5 = SBAppendSwitcherModifierResponse(v4, transitionWillBegin);
 
-    v3 = v5;
+    transitionWillBegin = v5;
   }
 
-  return v3;
+  return transitionWillBegin;
 }
 
 - (id)transitionWillUpdate
 {
   v10.receiver = self;
   v10.super_class = SBRelocateFloatingAppLayoutSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v10 transitionWillUpdate];
+  transitionWillUpdate = [(SBTransitionSwitcherModifier *)&v10 transitionWillUpdate];
   if ([(SBRelocateFloatingAppLayoutSwitcherModifier *)self _comingFromSwitcherWithLeadingFloatingApp])
   {
-    v4 = [(SBRelocateFloatingAppLayoutSwitcherModifier *)self medusaSettings];
-    [v4 leadingSlideOverRelocationDelay];
+    medusaSettings = [(SBRelocateFloatingAppLayoutSwitcherModifier *)self medusaSettings];
+    [medusaSettings leadingSlideOverRelocationDelay];
     v6 = v5;
 
     v7 = [[SBTimerEventSwitcherEventResponse alloc] initWithDelay:0 validator:@"SBRelocateFloatingAppLayoutSwitcherModifierTimerReason" reason:v6];
-    v8 = SBAppendSwitcherModifierResponse(v7, v3);
+    v8 = SBAppendSwitcherModifierResponse(v7, transitionWillUpdate);
 
-    v3 = v8;
+    transitionWillUpdate = v8;
   }
 
-  return v3;
+  return transitionWillUpdate;
 }
 
 - (id)transitionDidEnd
 {
   v7.receiver = self;
   v7.super_class = SBRelocateFloatingAppLayoutSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v7 transitionDidEnd];
+  transitionDidEnd = [(SBTransitionSwitcherModifier *)&v7 transitionDidEnd];
   if ([(SBRelocateFloatingAppLayoutSwitcherModifier *)self _comingFromSwitcherWithLeadingFloatingApp])
   {
     v4 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:12 updateMode:3];
-    v5 = SBAppendSwitcherModifierResponse(v4, v3);
+    v5 = SBAppendSwitcherModifierResponse(v4, transitionDidEnd);
 
-    v3 = v5;
+    transitionDidEnd = v5;
   }
 
-  return v3;
+  return transitionDidEnd;
 }
 
-- (id)handleTimerEvent:(id)a3
+- (id)handleTimerEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = SBRelocateFloatingAppLayoutSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBTransitionSwitcherModifier *)&v10 handleTimerEvent:v4];
-  v6 = [v4 reason];
+  eventCopy = event;
+  v5 = [(SBTransitionSwitcherModifier *)&v10 handleTimerEvent:eventCopy];
+  reason = [eventCopy reason];
 
-  if ([(SBUpdateLayoutSwitcherEventResponse *)v6 isEqualToString:@"SBRelocateFloatingAppLayoutSwitcherModifierTimerReason"])
+  if ([(SBUpdateLayoutSwitcherEventResponse *)reason isEqualToString:@"SBRelocateFloatingAppLayoutSwitcherModifierTimerReason"])
   {
-    v7 = [(SBRelocateFloatingAppLayoutSwitcherModifier *)self _comingFromSwitcherWithLeadingFloatingApp];
+    _comingFromSwitcherWithLeadingFloatingApp = [(SBRelocateFloatingAppLayoutSwitcherModifier *)self _comingFromSwitcherWithLeadingFloatingApp];
 
-    if (!v7)
+    if (!_comingFromSwitcherWithLeadingFloatingApp)
     {
       goto LABEL_5;
     }
 
     self->_moveFloatingAppToLeadingSide = 1;
-    v6 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:4 updateMode:2];
-    v8 = SBAppendSwitcherModifierResponse(v6, v5);
+    reason = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:4 updateMode:2];
+    v8 = SBAppendSwitcherModifierResponse(reason, v5);
 
     v5 = v8;
   }
@@ -112,10 +112,10 @@ LABEL_5:
   return v5;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
-  v5 = [(SBRelocateFloatingAppLayoutSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBRelocateFloatingAppLayoutSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (v6 != self->_floatingAppLayout)
   {
@@ -132,7 +132,7 @@ LABEL_5:
 
   if ([(SBRelocateFloatingAppLayoutSwitcherModifier *)self _comingFromSwitcherWithLeadingFloatingApp])
   {
-    v19 = [(SBRelocateFloatingAppLayoutSwitcherModifier *)self switcherInterfaceOrientation];
+    switcherInterfaceOrientation = [(SBRelocateFloatingAppLayoutSwitcherModifier *)self switcherInterfaceOrientation];
     if (!self->_moveFloatingAppToLeadingSide)
     {
       v24 = 0;
@@ -148,7 +148,7 @@ LABEL_5:
       v23[3] = &unk_2783AA618;
       v23[4] = self;
       v23[5] = &v24;
-      v23[6] = a3;
+      v23[6] = index;
       [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:mixedGridModifier usingBlock:v23];
       v11 = v25[4];
       v12 = v25[5];
@@ -160,7 +160,7 @@ LABEL_5:
 
     v22.receiver = self;
     v22.super_class = SBRelocateFloatingAppLayoutSwitcherModifier;
-    [(SBRelocateFloatingAppLayoutSwitcherModifier *)&v22 floatingApplicationFrameInInterfaceOrientation:v19 floatingConfiguration:3];
+    [(SBRelocateFloatingAppLayoutSwitcherModifier *)&v22 floatingApplicationFrameInInterfaceOrientation:switcherInterfaceOrientation floatingConfiguration:3];
   }
 
   else
@@ -168,7 +168,7 @@ LABEL_5:
 LABEL_2:
     v21.receiver = self;
     v21.super_class = SBRelocateFloatingAppLayoutSwitcherModifier;
-    [(SBRelocateFloatingAppLayoutSwitcherModifier *)&v21 frameForIndex:a3];
+    [(SBRelocateFloatingAppLayoutSwitcherModifier *)&v21 frameForIndex:index];
   }
 
 LABEL_3:
@@ -211,10 +211,10 @@ void __61__SBRelocateFloatingAppLayoutSwitcherModifier_frameForIndex___block_inv
   *(*(*(a1 + 40) + 8) + 32) = Width;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v8 = a4;
-  if (self->_floatingAppLayout == v8 && [(SBRelocateFloatingAppLayoutSwitcherModifier *)self _comingFromSwitcherWithLeadingFloatingApp]&& !self->_moveFloatingAppToLeadingSide)
+  layoutCopy = layout;
+  if (self->_floatingAppLayout == layoutCopy && [(SBRelocateFloatingAppLayoutSwitcherModifier *)self _comingFromSwitcherWithLeadingFloatingApp]&& !self->_moveFloatingAppToLeadingSide)
   {
     if ([(SBTransitionSwitcherModifier *)self isPreparingLayout])
     {
@@ -231,17 +231,17 @@ void __61__SBRelocateFloatingAppLayoutSwitcherModifier_frameForIndex___block_inv
   {
     v12.receiver = self;
     v12.super_class = SBRelocateFloatingAppLayoutSwitcherModifier;
-    [(SBRelocateFloatingAppLayoutSwitcherModifier *)&v12 opacityForLayoutRole:a3 inAppLayout:v8 atIndex:a5];
+    [(SBRelocateFloatingAppLayoutSwitcherModifier *)&v12 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index];
     v10 = v9;
   }
 
   return v10;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
-  v5 = [(SBRelocateFloatingAppLayoutSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBRelocateFloatingAppLayoutSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (v6 == self->_floatingAppLayout && [(SBRelocateFloatingAppLayoutSwitcherModifier *)self _comingFromSwitcherWithLeadingFloatingApp]&& !self->_moveFloatingAppToLeadingSide)
   {
@@ -256,7 +256,7 @@ void __61__SBRelocateFloatingAppLayoutSwitcherModifier_frameForIndex___block_inv
     v12[3] = &unk_2783AA618;
     v12[4] = self;
     v12[5] = &v13;
-    v12[6] = a3;
+    v12[6] = index;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:mixedGridModifier usingBlock:v12];
     v8 = v14[3];
     _Block_object_dispose(&v13, 8);
@@ -266,7 +266,7 @@ void __61__SBRelocateFloatingAppLayoutSwitcherModifier_frameForIndex___block_inv
   {
     v11.receiver = self;
     v11.super_class = SBRelocateFloatingAppLayoutSwitcherModifier;
-    [(SBRelocateFloatingAppLayoutSwitcherModifier *)&v11 scaleForIndex:a3];
+    [(SBRelocateFloatingAppLayoutSwitcherModifier *)&v11 scaleForIndex:index];
     v8 = v7;
   }
 

@@ -1,6 +1,6 @@
 @interface MTRSwitchClusterInitialPressEvent
 - (MTRSwitchClusterInitialPressEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -21,11 +21,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRSwitchClusterInitialPressEvent);
-  v5 = [(MTRSwitchClusterInitialPressEvent *)self getNewPosition];
-  [(MTRSwitchClusterInitialPressEvent *)v4 setNewPosition:v5];
+  getNewPosition = [(MTRSwitchClusterInitialPressEvent *)self getNewPosition];
+  [(MTRSwitchClusterInitialPressEvent *)v4 setNewPosition:getNewPosition];
 
   return v4;
 }

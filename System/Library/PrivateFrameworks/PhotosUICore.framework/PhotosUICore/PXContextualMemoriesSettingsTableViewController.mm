@@ -1,83 +1,83 @@
 @interface PXContextualMemoriesSettingsTableViewController
 + (id)title;
-- (BOOL)_isDatePickerCellAtIndexPath:(id)a3;
-- (BOOL)_isLocationPickerCellAtIndexPath:(id)a3;
-- (BOOL)_isPeopleValueCellAtIndexPath:(id)a3;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
+- (BOOL)_isDatePickerCellAtIndexPath:(id)path;
+- (BOOL)_isLocationPickerCellAtIndexPath:(id)path;
+- (BOOL)_isPeopleValueCellAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
 - (PXContextualMemoriesSettingsTableViewController)init;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)_indexPathForDatePicker;
 - (id)_indexPathForDateValue;
 - (id)_indexPathForLocationPicker;
 - (id)_indexPathForLocationValue;
 - (id)_indexPathForPeopleValue;
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
+- (id)mapView:(id)view viewForAnnotation:(id)annotation;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
 - (int64_t)_sectionForDate;
 - (int64_t)_sectionForLocation;
 - (int64_t)_sectionForPeople;
-- (int64_t)_sectionForSettingOfClass:(Class)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_didChangeDatePicker:(id)a3;
-- (void)_didPressResetAll:(id)a3;
-- (void)_handleLongPress:(id)a3;
+- (int64_t)_sectionForSettingOfClass:(Class)class;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_didChangeDatePicker:(id)picker;
+- (void)_didPressResetAll:(id)all;
+- (void)_handleLongPress:(id)press;
 - (void)_installProgressIndicatorView;
-- (void)_reloadRowAndRestoreSelectionIfNeededAtIndexPath:(id)a3;
+- (void)_reloadRowAndRestoreSelectionIfNeededAtIndexPath:(id)path;
 - (void)_showContactsPicker;
-- (void)_tableView:(id)a3 selectionDidUpdateForRowAtIndexPath:(id)a4;
+- (void)_tableView:(id)view selectionDidUpdateForRowAtIndexPath:(id)path;
 - (void)_updateDatePickerHidden;
 - (void)_updateLocationPickerHidden;
-- (void)contactPicker:(id)a3 didSelectContacts:(id)a4;
-- (void)contactPickerDidCancel:(id)a3;
+- (void)contactPicker:(id)picker didSelectContacts:(id)contacts;
+- (void)contactPickerDidCancel:(id)cancel;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PXContextualMemoriesSettingsTableViewController
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6 == &kPXContextualMemoriesSettingsKVOContextKeyDate)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (context == &kPXContextualMemoriesSettingsKVOContextKeyDate)
   {
     v24 = MEMORY[0x1E69E9820];
     v25 = 3221225472;
     v26 = __98__PXContextualMemoriesSettingsTableViewController_observeValueForKeyPath_ofObject_change_context___block_invoke;
     v27 = &unk_1E774C648;
-    v28 = self;
+    selfCopy = self;
     goto LABEL_9;
   }
 
-  if (a6 == &kPXContextualMemoriesSettingsKVOContextKeyCoordinate || a6 == &kPXContextualMemoriesSettingsKVOContextKeyPlacemark)
+  if (context == &kPXContextualMemoriesSettingsKVOContextKeyCoordinate || context == &kPXContextualMemoriesSettingsKVOContextKeyPlacemark)
   {
     v19 = MEMORY[0x1E69E9820];
     v20 = 3221225472;
     v21 = __98__PXContextualMemoriesSettingsTableViewController_observeValueForKeyPath_ofObject_change_context___block_invoke_2;
     v22 = &unk_1E774C648;
-    v23 = self;
+    selfCopy2 = self;
     goto LABEL_9;
   }
 
-  if (a6 == &kPXContextualMemoriesSettingsKVOContextKeyPeople)
+  if (context == &kPXContextualMemoriesSettingsKVOContextKeyPeople)
   {
     v14 = MEMORY[0x1E69E9820];
     v15 = 3221225472;
     v16 = __98__PXContextualMemoriesSettingsTableViewController_observeValueForKeyPath_ofObject_change_context___block_invoke_3;
     v17 = &unk_1E774C648;
-    v18 = self;
+    selfCopy3 = self;
 LABEL_9:
     px_dispatch_on_main_queue();
   }
 
   v13.receiver = self;
   v13.super_class = PXContextualMemoriesSettingsTableViewController;
-  [(PXContextualMemoriesSettingsTableViewController *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+  [(PXContextualMemoriesSettingsTableViewController *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
 }
 
 void __98__PXContextualMemoriesSettingsTableViewController_observeValueForKeyPath_ofObject_change_context___block_invoke(uint64_t a1)
@@ -114,17 +114,17 @@ void __98__PXContextualMemoriesSettingsTableViewController_observeValueForKeyPat
   [v3 reloadRowsAtIndexPaths:v4 withRowAnimation:100];
 }
 
-- (void)contactPicker:(id)a3 didSelectContacts:(id)a4
+- (void)contactPicker:(id)picker didSelectContacts:(id)contacts
 {
   v30 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v5 = a4;
-  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  pickerCopy = picker;
+  contactsCopy = contacts;
+  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(contactsCopy, "count")}];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = v5;
+  v7 = contactsCopy;
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v29 count:16];
   if (v8)
   {
@@ -158,7 +158,7 @@ void __98__PXContextualMemoriesSettingsTableViewController_observeValueForKeyPat
 
         v13 = v12;
         _Block_object_dispose(&v25, 8);
-        v14 = [v12 stringFromContact:v11 style:{0, v18}];
+        v14 = [v12 stringFromContact:v11 style:{0, pickerCopy}];
         if ([v14 length])
         {
           [v6 addObject:v14];
@@ -174,44 +174,44 @@ void __98__PXContextualMemoriesSettingsTableViewController_observeValueForKeyPat
     while (v8);
   }
 
-  v15 = [(PXContextualMemoriesSettings *)self->_settings peopleSetting];
-  [v15 setPeopleNames:v6];
+  peopleSetting = [(PXContextualMemoriesSettings *)self->_settings peopleSetting];
+  [peopleSetting setPeopleNames:v6];
 
-  v16 = [(PXContextualMemoriesSettingsTableViewController *)self _indexPathForPeopleValue];
-  v17 = [(PXContextualMemoriesSettingsTableViewController *)self tableView];
-  [v17 deselectRowAtIndexPath:v16 animated:1];
+  _indexPathForPeopleValue = [(PXContextualMemoriesSettingsTableViewController *)self _indexPathForPeopleValue];
+  tableView = [(PXContextualMemoriesSettingsTableViewController *)self tableView];
+  [tableView deselectRowAtIndexPath:_indexPathForPeopleValue animated:1];
 }
 
-- (void)contactPickerDidCancel:(id)a3
+- (void)contactPickerDidCancel:(id)cancel
 {
-  v5 = [(PXContextualMemoriesSettingsTableViewController *)self _indexPathForPeopleValue];
-  v4 = [(PXContextualMemoriesSettingsTableViewController *)self tableView];
-  [v4 deselectRowAtIndexPath:v5 animated:1];
+  _indexPathForPeopleValue = [(PXContextualMemoriesSettingsTableViewController *)self _indexPathForPeopleValue];
+  tableView = [(PXContextualMemoriesSettingsTableViewController *)self tableView];
+  [tableView deselectRowAtIndexPath:_indexPathForPeopleValue animated:1];
 }
 
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4
+- (id)mapView:(id)view viewForAnnotation:(id)annotation
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 userLocation];
+  viewCopy = view;
+  annotationCopy = annotation;
+  userLocation = [viewCopy userLocation];
 
-  if (v7 == v6)
+  if (userLocation == annotationCopy)
   {
     v9 = 0;
   }
 
   else
   {
-    v8 = [v5 dequeueReusableAnnotationViewWithIdentifier:@"pin"];
+    v8 = [viewCopy dequeueReusableAnnotationViewWithIdentifier:@"pin"];
     if (v8)
     {
       v9 = v8;
-      [(MKAnnotationView *)v9 setAnnotation:v6];
+      [(MKAnnotationView *)v9 setAnnotation:annotationCopy];
     }
 
     else
     {
-      v9 = [(MKPinAnnotationView *)[PXPlacesPinAnnotationView alloc] initWithAnnotation:v6 reuseIdentifier:@"pin"];
+      v9 = [(MKPinAnnotationView *)[PXPlacesPinAnnotationView alloc] initWithAnnotation:annotationCopy reuseIdentifier:@"pin"];
       [(MKPinAnnotationView *)v9 setAnimatesDrop:1];
       [(MKAnnotationView *)v9 setCanShowCallout:1];
       [(MKAnnotationView *)v9 setDraggable:1];
@@ -266,9 +266,9 @@ void __98__PXContextualMemoriesSettingsTableViewController_observeValueForKeyPat
   _Block_object_dispose(&v25, 8);
   if (!v6)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getCNContactGivenNameKey(void)"];
-    [v16 handleFailureInFunction:v17 file:@"PXContextualMemoriesSettingsTableViewController.m" lineNumber:40 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v17 file:@"PXContextualMemoriesSettingsTableViewController.m" lineNumber:40 description:{@"%s", dlerror()}];
 
     goto LABEL_12;
   }
@@ -297,9 +297,9 @@ void __98__PXContextualMemoriesSettingsTableViewController_observeValueForKeyPat
   _Block_object_dispose(&v25, 8);
   if (!v10)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getCNContactFamilyNameKey(void)"];
-    [v18 handleFailureInFunction:v19 file:@"PXContextualMemoriesSettingsTableViewController.m" lineNumber:39 description:{@"%s", dlerror()}];
+    [currentHandler2 handleFailureInFunction:v19 file:@"PXContextualMemoriesSettingsTableViewController.m" lineNumber:39 description:{@"%s", dlerror()}];
 
 LABEL_12:
     __break(1u);
@@ -314,14 +314,14 @@ LABEL_12:
   [(PXContextualMemoriesSettingsTableViewController *)self presentViewController:v5 animated:1 completion:0];
 }
 
-- (void)_didPressResetAll:(id)a3
+- (void)_didPressResetAll:(id)all
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(PXContextualMemoriesSettings *)self->_settings settings:a3];
+  v3 = [(PXContextualMemoriesSettings *)self->_settings settings:all];
   v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
@@ -348,37 +348,37 @@ LABEL_12:
   }
 }
 
-- (void)_handleLongPress:(id)a3
+- (void)_handleLongPress:(id)press
 {
-  v10 = a3;
-  if ([v10 state] == 1)
+  pressCopy = press;
+  if ([pressCopy state] == 1)
   {
-    v4 = [v10 view];
-    [v10 locationInView:v4];
-    [v4 convertPoint:v4 toCoordinateFromView:?];
+    view = [pressCopy view];
+    [pressCopy locationInView:view];
+    [view convertPoint:view toCoordinateFromView:?];
     v6 = v5;
     v8 = v7;
-    v9 = [(PXContextualMemoriesSettings *)self->_settings locationSetting];
-    [v9 setCoordinate:{v6, v8}];
+    locationSetting = [(PXContextualMemoriesSettings *)self->_settings locationSetting];
+    [locationSetting setCoordinate:{v6, v8}];
   }
 }
 
-- (void)_didChangeDatePicker:(id)a3
+- (void)_didChangeDatePicker:(id)picker
 {
-  v5 = [a3 date];
-  v4 = [(PXContextualMemoriesSettings *)self->_settings timeSetting];
-  [v4 setDate:v5];
+  date = [picker date];
+  timeSetting = [(PXContextualMemoriesSettings *)self->_settings timeSetting];
+  [timeSetting setDate:date];
 }
 
-- (BOOL)_isPeopleValueCellAtIndexPath:(id)a3
+- (BOOL)_isPeopleValueCellAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PXContextualMemoriesSettingsTableViewController *)self _indexPathForPeopleValue];
-  v6 = [v4 section];
-  if (v6 == [v5 section])
+  pathCopy = path;
+  _indexPathForPeopleValue = [(PXContextualMemoriesSettingsTableViewController *)self _indexPathForPeopleValue];
+  section = [pathCopy section];
+  if (section == [_indexPathForPeopleValue section])
   {
-    v7 = [v4 row];
-    v8 = v7 == [v5 row];
+    v7 = [pathCopy row];
+    v8 = v7 == [_indexPathForPeopleValue row];
   }
 
   else
@@ -389,15 +389,15 @@ LABEL_12:
   return v8;
 }
 
-- (BOOL)_isLocationPickerCellAtIndexPath:(id)a3
+- (BOOL)_isLocationPickerCellAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PXContextualMemoriesSettingsTableViewController *)self _indexPathForLocationPicker];
-  v6 = [v4 section];
-  if (v6 == [v5 section])
+  pathCopy = path;
+  _indexPathForLocationPicker = [(PXContextualMemoriesSettingsTableViewController *)self _indexPathForLocationPicker];
+  section = [pathCopy section];
+  if (section == [_indexPathForLocationPicker section])
   {
-    v7 = [v4 row];
-    v8 = v7 == [v5 row];
+    v7 = [pathCopy row];
+    v8 = v7 == [_indexPathForLocationPicker row];
   }
 
   else
@@ -408,15 +408,15 @@ LABEL_12:
   return v8;
 }
 
-- (BOOL)_isDatePickerCellAtIndexPath:(id)a3
+- (BOOL)_isDatePickerCellAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PXContextualMemoriesSettingsTableViewController *)self _indexPathForDatePicker];
-  v6 = [v4 section];
-  if (v6 == [v5 section])
+  pathCopy = path;
+  _indexPathForDatePicker = [(PXContextualMemoriesSettingsTableViewController *)self _indexPathForDatePicker];
+  section = [pathCopy section];
+  if (section == [_indexPathForDatePicker section])
   {
-    v7 = [v4 row];
-    v8 = v7 == [v5 row];
+    v7 = [pathCopy row];
+    v8 = v7 == [_indexPathForDatePicker row];
   }
 
   else
@@ -430,41 +430,41 @@ LABEL_12:
 - (id)_indexPathForLocationPicker
 {
   v2 = MEMORY[0x1E696AC88];
-  v3 = [(PXContextualMemoriesSettingsTableViewController *)self _sectionForLocation];
+  _sectionForLocation = [(PXContextualMemoriesSettingsTableViewController *)self _sectionForLocation];
 
-  return [v2 indexPathForRow:1 inSection:v3];
+  return [v2 indexPathForRow:1 inSection:_sectionForLocation];
 }
 
 - (id)_indexPathForDatePicker
 {
   v2 = MEMORY[0x1E696AC88];
-  v3 = [(PXContextualMemoriesSettingsTableViewController *)self _sectionForDate];
+  _sectionForDate = [(PXContextualMemoriesSettingsTableViewController *)self _sectionForDate];
 
-  return [v2 indexPathForRow:1 inSection:v3];
+  return [v2 indexPathForRow:1 inSection:_sectionForDate];
 }
 
 - (id)_indexPathForPeopleValue
 {
   v2 = MEMORY[0x1E696AC88];
-  v3 = [(PXContextualMemoriesSettingsTableViewController *)self _sectionForPeople];
+  _sectionForPeople = [(PXContextualMemoriesSettingsTableViewController *)self _sectionForPeople];
 
-  return [v2 indexPathForRow:0 inSection:v3];
+  return [v2 indexPathForRow:0 inSection:_sectionForPeople];
 }
 
 - (id)_indexPathForLocationValue
 {
   v2 = MEMORY[0x1E696AC88];
-  v3 = [(PXContextualMemoriesSettingsTableViewController *)self _sectionForLocation];
+  _sectionForLocation = [(PXContextualMemoriesSettingsTableViewController *)self _sectionForLocation];
 
-  return [v2 indexPathForRow:0 inSection:v3];
+  return [v2 indexPathForRow:0 inSection:_sectionForLocation];
 }
 
 - (id)_indexPathForDateValue
 {
   v2 = MEMORY[0x1E696AC88];
-  v3 = [(PXContextualMemoriesSettingsTableViewController *)self _sectionForDate];
+  _sectionForDate = [(PXContextualMemoriesSettingsTableViewController *)self _sectionForDate];
 
-  return [v2 indexPathForRow:0 inSection:v3];
+  return [v2 indexPathForRow:0 inSection:_sectionForDate];
 }
 
 - (int64_t)_sectionForPeople
@@ -488,23 +488,23 @@ LABEL_12:
   return [(PXContextualMemoriesSettingsTableViewController *)self _sectionForSettingOfClass:v3];
 }
 
-- (void)_reloadRowAndRestoreSelectionIfNeededAtIndexPath:(id)a3
+- (void)_reloadRowAndRestoreSelectionIfNeededAtIndexPath:(id)path
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXContextualMemoriesSettingsTableViewController *)self tableView];
-  v6 = [v5 indexPathsForSelectedRows];
+  pathCopy = path;
+  tableView = [(PXContextualMemoriesSettingsTableViewController *)self tableView];
+  indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
 
-  v7 = [(PXContextualMemoriesSettingsTableViewController *)self tableView];
-  v20[0] = v4;
+  tableView2 = [(PXContextualMemoriesSettingsTableViewController *)self tableView];
+  v20[0] = pathCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
-  [v7 reloadRowsAtIndexPaths:v8 withRowAnimation:5];
+  [tableView2 reloadRowsAtIndexPaths:v8 withRowAnimation:5];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = v6;
+  v9 = indexPathsForSelectedRows;
   v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
@@ -520,10 +520,10 @@ LABEL_12:
           objc_enumerationMutation(v9);
         }
 
-        if ([*(*(&v15 + 1) + 8 * v13) isEqual:{v4, v15}])
+        if ([*(*(&v15 + 1) + 8 * v13) isEqual:{pathCopy, v15}])
         {
-          v14 = [(PXContextualMemoriesSettingsTableViewController *)self tableView];
-          [v14 selectRowAtIndexPath:v4 animated:0 scrollPosition:0];
+          tableView3 = [(PXContextualMemoriesSettingsTableViewController *)self tableView];
+          [tableView3 selectRowAtIndexPath:pathCopy animated:0 scrollPosition:0];
         }
 
         ++v13;
@@ -537,15 +537,15 @@ LABEL_12:
   }
 }
 
-- (int64_t)_sectionForSettingOfClass:(Class)a3
+- (int64_t)_sectionForSettingOfClass:(Class)class
 {
-  v4 = [(PXContextualMemoriesSettings *)self->_settings settings];
+  settings = [(PXContextualMemoriesSettings *)self->_settings settings];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __77__PXContextualMemoriesSettingsTableViewController__sectionForSettingOfClass___block_invoke;
   v7[3] = &__block_descriptor_40_e46_B32__0___PXContextualMemoriesSetting__8Q16_B24lu32l8;
-  v7[4] = a3;
-  v5 = [v4 indexOfObjectPassingTest:v7];
+  v7[4] = class;
+  v5 = [settings indexOfObjectPassingTest:v7];
 
   return v5;
 }
@@ -565,165 +565,165 @@ uint64_t __77__PXContextualMemoriesSettingsTableViewController__sectionForSettin
 {
   v11[1] = *MEMORY[0x1E69E9840];
   showsLocationPicker = self->_showsLocationPicker;
-  v4 = [(PXContextualMemoriesSettingsTableViewController *)self tableView];
-  [v4 beginUpdates];
+  tableView = [(PXContextualMemoriesSettingsTableViewController *)self tableView];
+  [tableView beginUpdates];
 
   self->_showsLocationPicker ^= 1u;
-  v5 = [(PXContextualMemoriesSettingsTableViewController *)self tableView];
-  v6 = [(PXContextualMemoriesSettingsTableViewController *)self _indexPathForLocationPicker];
-  v7 = v6;
+  tableView2 = [(PXContextualMemoriesSettingsTableViewController *)self tableView];
+  _indexPathForLocationPicker = [(PXContextualMemoriesSettingsTableViewController *)self _indexPathForLocationPicker];
+  v7 = _indexPathForLocationPicker;
   if (showsLocationPicker)
   {
-    v11[0] = v6;
+    v11[0] = _indexPathForLocationPicker;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-    [v5 deleteRowsAtIndexPaths:v8 withRowAnimation:0];
+    [tableView2 deleteRowsAtIndexPaths:v8 withRowAnimation:0];
   }
 
   else
   {
-    v10 = v6;
+    v10 = _indexPathForLocationPicker;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v10 count:1];
-    [v5 insertRowsAtIndexPaths:v8 withRowAnimation:0];
+    [tableView2 insertRowsAtIndexPaths:v8 withRowAnimation:0];
   }
 
-  v9 = [(PXContextualMemoriesSettingsTableViewController *)self tableView];
-  [v9 endUpdates];
+  tableView3 = [(PXContextualMemoriesSettingsTableViewController *)self tableView];
+  [tableView3 endUpdates];
 }
 
 - (void)_updateDatePickerHidden
 {
   v11[1] = *MEMORY[0x1E69E9840];
   showsDatePicker = self->_showsDatePicker;
-  v4 = [(PXContextualMemoriesSettingsTableViewController *)self tableView];
-  [v4 beginUpdates];
+  tableView = [(PXContextualMemoriesSettingsTableViewController *)self tableView];
+  [tableView beginUpdates];
 
   self->_showsDatePicker ^= 1u;
-  v5 = [(PXContextualMemoriesSettingsTableViewController *)self tableView];
-  v6 = [(PXContextualMemoriesSettingsTableViewController *)self _indexPathForDatePicker];
-  v7 = v6;
+  tableView2 = [(PXContextualMemoriesSettingsTableViewController *)self tableView];
+  _indexPathForDatePicker = [(PXContextualMemoriesSettingsTableViewController *)self _indexPathForDatePicker];
+  v7 = _indexPathForDatePicker;
   if (showsDatePicker)
   {
-    v11[0] = v6;
+    v11[0] = _indexPathForDatePicker;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-    [v5 deleteRowsAtIndexPaths:v8 withRowAnimation:0];
+    [tableView2 deleteRowsAtIndexPaths:v8 withRowAnimation:0];
   }
 
   else
   {
-    v10 = v6;
+    v10 = _indexPathForDatePicker;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v10 count:1];
-    [v5 insertRowsAtIndexPaths:v8 withRowAnimation:0];
+    [tableView2 insertRowsAtIndexPaths:v8 withRowAnimation:0];
   }
 
-  v9 = [(PXContextualMemoriesSettingsTableViewController *)self tableView];
-  [v9 endUpdates];
+  tableView3 = [(PXContextualMemoriesSettingsTableViewController *)self tableView];
+  [tableView3 endUpdates];
 }
 
-- (void)_tableView:(id)a3 selectionDidUpdateForRowAtIndexPath:(id)a4
+- (void)_tableView:(id)view selectionDidUpdateForRowAtIndexPath:(id)path
 {
-  v8 = a4;
-  v5 = [(PXContextualMemoriesSettingsTableViewController *)self _indexPathForDateValue];
-  v6 = [(PXContextualMemoriesSettingsTableViewController *)self _indexPathForLocationValue];
-  v7 = [(PXContextualMemoriesSettingsTableViewController *)self _indexPathForPeopleValue];
-  if ([v5 isEqual:v8])
+  pathCopy = path;
+  _indexPathForDateValue = [(PXContextualMemoriesSettingsTableViewController *)self _indexPathForDateValue];
+  _indexPathForLocationValue = [(PXContextualMemoriesSettingsTableViewController *)self _indexPathForLocationValue];
+  _indexPathForPeopleValue = [(PXContextualMemoriesSettingsTableViewController *)self _indexPathForPeopleValue];
+  if ([_indexPathForDateValue isEqual:pathCopy])
   {
     [(PXContextualMemoriesSettingsTableViewController *)self _updateDatePickerHidden];
   }
 
-  else if ([v6 isEqual:v8])
+  else if ([_indexPathForLocationValue isEqual:pathCopy])
   {
     [(PXContextualMemoriesSettingsTableViewController *)self _updateLocationPickerHidden];
   }
 
-  else if ([v7 isEqual:v8])
+  else if ([_indexPathForPeopleValue isEqual:pathCopy])
   {
     [(PXContextualMemoriesSettingsTableViewController *)self _showContactsPicker];
   }
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([(PXContextualMemoriesSettingsTableViewController *)self _isDatePickerCellAtIndexPath:v5])
+  pathCopy = path;
+  if ([(PXContextualMemoriesSettingsTableViewController *)self _isDatePickerCellAtIndexPath:pathCopy])
   {
     LOBYTE(v6) = 0;
   }
 
   else
   {
-    v6 = ![(PXContextualMemoriesSettingsTableViewController *)self _isLocationPickerCellAtIndexPath:v5];
+    v6 = ![(PXContextualMemoriesSettingsTableViewController *)self _isLocationPickerCellAtIndexPath:pathCopy];
   }
 
   return v6;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(PXContextualMemoriesSettingsTableViewController *)self _isDatePickerCellAtIndexPath:v7])
+  viewCopy = view;
+  pathCopy = path;
+  if ([(PXContextualMemoriesSettingsTableViewController *)self _isDatePickerCellAtIndexPath:pathCopy])
   {
     v8 = 200.0;
   }
 
-  else if ([(PXContextualMemoriesSettingsTableViewController *)self _isLocationPickerCellAtIndexPath:v7])
+  else if ([(PXContextualMemoriesSettingsTableViewController *)self _isLocationPickerCellAtIndexPath:pathCopy])
   {
     v8 = 250.0;
   }
 
   else
   {
-    [v6 rowHeight];
+    [viewCopy rowHeight];
     v8 = v9;
   }
 
   return v8;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(PXContextualMemoriesSettings *)self->_settings settings];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  settings = [(PXContextualMemoriesSettings *)self->_settings settings];
+  v6 = [settings objectAtIndexedSubscript:section];
 
-  v7 = [v6 headerTitle];
+  headerTitle = [v6 headerTitle];
 
-  return v7;
+  return headerTitle;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXContextualMemoriesSettingsTableViewController *)self _isDatePickerCellAtIndexPath:v7];
-  v9 = [(PXContextualMemoriesSettingsTableViewController *)self _isLocationPickerCellAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(PXContextualMemoriesSettingsTableViewController *)self _isDatePickerCellAtIndexPath:pathCopy];
+  v9 = [(PXContextualMemoriesSettingsTableViewController *)self _isLocationPickerCellAtIndexPath:pathCopy];
   if (v8)
   {
     v10 = @"PXContextualMemoriesSettingsDatePickerTableViewCell";
     v11 = @"PXContextualMemoriesSettingsDatePickerTableViewCell";
-    v12 = [v6 dequeueReusableCellWithIdentifier:@"PXContextualMemoriesSettingsDatePickerTableViewCell" forIndexPath:v7];
-    v13 = [v12 datePicker];
-    v14 = [(PXContextualMemoriesSettings *)self->_settings timeSetting];
-    v15 = [v14 date];
-    [v13 setDate:v15 animated:0];
+    v12 = [viewCopy dequeueReusableCellWithIdentifier:@"PXContextualMemoriesSettingsDatePickerTableViewCell" forIndexPath:pathCopy];
+    datePicker = [v12 datePicker];
+    timeSetting = [(PXContextualMemoriesSettings *)self->_settings timeSetting];
+    date = [timeSetting date];
+    [datePicker setDate:date animated:0];
 
-    v16 = [v12 datePicker];
+    datePicker2 = [v12 datePicker];
 
-    [v16 addTarget:self action:sel__didChangeDatePicker_ forControlEvents:4096];
+    [datePicker2 addTarget:self action:sel__didChangeDatePicker_ forControlEvents:4096];
   }
 
   else if (v9)
   {
     v17 = @"PXContextualMemoriesSettingsLocationPickerTableViewCell";
-    v12 = [v6 dequeueReusableCellWithIdentifier:@"PXContextualMemoriesSettingsLocationPickerTableViewCell" forIndexPath:v7];
-    v18 = [v12 mapView];
-    [v18 setMapViewDelegate:self];
+    v12 = [viewCopy dequeueReusableCellWithIdentifier:@"PXContextualMemoriesSettingsLocationPickerTableViewCell" forIndexPath:pathCopy];
+    mapView = [v12 mapView];
+    [mapView setMapViewDelegate:self];
     v19 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:self action:sel__handleLongPress_];
-    [v18 addGestureRecognizer:v19];
-    v20 = [(PXContextualMemoriesSettings *)self->_settings locationSetting];
-    [v18 addAnnotation:v20];
+    [mapView addGestureRecognizer:v19];
+    locationSetting = [(PXContextualMemoriesSettings *)self->_settings locationSetting];
+    [mapView addAnnotation:locationSetting];
 
-    v21 = [(PXContextualMemoriesSettings *)self->_settings locationSetting];
-    [v21 coordinate];
+    locationSetting2 = [(PXContextualMemoriesSettings *)self->_settings locationSetting];
+    [locationSetting2 coordinate];
     v23 = v22;
     v25 = v24;
 
@@ -732,7 +732,7 @@ uint64_t __77__PXContextualMemoriesSettingsTableViewController__sectionForSettin
     if (CLLocationCoordinate2DIsValid(v39))
     {
       [(PXContextualMemoriesSettingsTableViewController *)self _regionForLocationCoordinate:v23, v25];
-      [v18 setRegion:0 animated:?];
+      [mapView setRegion:0 animated:?];
     }
 
     v10 = @"PXContextualMemoriesSettingsLocationPickerTableViewCell";
@@ -741,25 +741,25 @@ uint64_t __77__PXContextualMemoriesSettingsTableViewController__sectionForSettin
   else
   {
     v26 = @"PXContextualMemoriesSettingsValueTableViewCell";
-    v27 = [v6 dequeueReusableCellWithIdentifier:@"PXContextualMemoriesSettingsValueTableViewCell" forIndexPath:v7];
-    v28 = [(PXContextualMemoriesSettings *)self->_settings settings];
-    v29 = [v28 objectAtIndexedSubscript:{objc_msgSend(v7, "section")}];
+    v27 = [viewCopy dequeueReusableCellWithIdentifier:@"PXContextualMemoriesSettingsValueTableViewCell" forIndexPath:pathCopy];
+    settings = [(PXContextualMemoriesSettings *)self->_settings settings];
+    v29 = [settings objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
     v12 = v27;
-    v30 = [v29 title];
-    v31 = [v30 length];
+    title = [v29 title];
+    v31 = [title length];
     if (v31)
     {
-      v32 = [v29 title];
+      title2 = [v29 title];
     }
 
     else
     {
-      v32 = @" ";
+      title2 = @" ";
     }
 
-    v33 = [v12 valueLabel];
-    [v33 setText:v32];
+    valueLabel = [v12 valueLabel];
+    [valueLabel setText:title2];
 
     if (v31)
     {
@@ -781,10 +781,10 @@ uint64_t __77__PXContextualMemoriesSettingsTableViewController__sectionForSettin
   return v12;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = [(PXContextualMemoriesSettings *)self->_settings settings];
-  v7 = [v6 objectAtIndexedSubscript:a4];
+  settings = [(PXContextualMemoriesSettings *)self->_settings settings];
+  v7 = [settings objectAtIndexedSubscript:section];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && self->_showsDatePicker || (objc_opt_class(), (objc_opt_isKindOfClass()) && self->_showsLocationPicker)
@@ -800,19 +800,19 @@ uint64_t __77__PXContextualMemoriesSettingsTableViewController__sectionForSettin
   return v8;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(PXContextualMemoriesSettings *)self->_settings settings];
-  v4 = [v3 count];
+  settings = [(PXContextualMemoriesSettings *)self->_settings settings];
+  v4 = [settings count];
 
   return v4;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = PXContextualMemoriesSettingsTableViewController;
-  [(PXContextualMemoriesSettingsTableViewController *)&v6 viewWillAppear:a3];
+  [(PXContextualMemoriesSettingsTableViewController *)&v6 viewWillAppear:appear];
   [(PXContextualMemoriesSettingsTableViewController *)self _installProgressIndicatorView];
   v4 = +[PXContextualMemoriesSettingsController sharedController];
   v5[0] = MEMORY[0x1E69E9820];
@@ -853,30 +853,30 @@ void __66__PXContextualMemoriesSettingsTableViewController_viewWillAppear___bloc
   v15.super_class = PXContextualMemoriesSettingsTableViewController;
   [(PXContextualMemoriesSettingsTableViewController *)&v15 viewDidLoad];
   v3 = objc_alloc(MEMORY[0x1E69DC708]);
-  v4 = [MEMORY[0x1E696AAE8] mainBundle];
-  v5 = [v4 localizedStringForKey:@"Reset all" value:&stru_1F1741150 table:0];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  v5 = [mainBundle localizedStringForKey:@"Reset all" value:&stru_1F1741150 table:0];
   v6 = [v3 initWithTitle:v5 style:0 target:self action:sel__didPressResetAll_];
-  v7 = [(PXContextualMemoriesSettingsTableViewController *)self navigationItem];
-  [v7 setRightBarButtonItem:v6];
+  navigationItem = [(PXContextualMemoriesSettingsTableViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v6];
 
   v8 = *MEMORY[0x1E69DE3D0];
-  v9 = [(PXContextualMemoriesSettingsTableViewController *)self tableView];
-  [v9 setRowHeight:v8];
+  tableView = [(PXContextualMemoriesSettingsTableViewController *)self tableView];
+  [tableView setRowHeight:v8];
 
-  v10 = [(PXContextualMemoriesSettingsTableViewController *)self tableView];
-  [v10 setEstimatedRowHeight:44.0];
+  tableView2 = [(PXContextualMemoriesSettingsTableViewController *)self tableView];
+  [tableView2 setEstimatedRowHeight:44.0];
 
-  v11 = [(PXContextualMemoriesSettingsTableViewController *)self tableView];
-  [v11 setAllowsMultipleSelection:1];
+  tableView3 = [(PXContextualMemoriesSettingsTableViewController *)self tableView];
+  [tableView3 setAllowsMultipleSelection:1];
 
-  v12 = [(PXContextualMemoriesSettingsTableViewController *)self tableView];
-  [v12 registerClass:objc_opt_class() forCellReuseIdentifier:@"PXContextualMemoriesSettingsValueTableViewCell"];
+  tableView4 = [(PXContextualMemoriesSettingsTableViewController *)self tableView];
+  [tableView4 registerClass:objc_opt_class() forCellReuseIdentifier:@"PXContextualMemoriesSettingsValueTableViewCell"];
 
-  v13 = [(PXContextualMemoriesSettingsTableViewController *)self tableView];
-  [v13 registerClass:objc_opt_class() forCellReuseIdentifier:@"PXContextualMemoriesSettingsDatePickerTableViewCell"];
+  tableView5 = [(PXContextualMemoriesSettingsTableViewController *)self tableView];
+  [tableView5 registerClass:objc_opt_class() forCellReuseIdentifier:@"PXContextualMemoriesSettingsDatePickerTableViewCell"];
 
-  v14 = [(PXContextualMemoriesSettingsTableViewController *)self tableView];
-  [v14 registerClass:objc_opt_class() forCellReuseIdentifier:@"PXContextualMemoriesSettingsLocationPickerTableViewCell"];
+  tableView6 = [(PXContextualMemoriesSettingsTableViewController *)self tableView];
+  [tableView6 registerClass:objc_opt_class() forCellReuseIdentifier:@"PXContextualMemoriesSettingsLocationPickerTableViewCell"];
 }
 
 - (void)_installProgressIndicatorView
@@ -892,57 +892,57 @@ void __66__PXContextualMemoriesSettingsTableViewController_viewWillAppear___bloc
 
   [v3 setTextAlignment:1];
   [v27 addSubview:v3];
-  v5 = [v3 widthAnchor];
-  v6 = [v27 widthAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  widthAnchor = [v3 widthAnchor];
+  widthAnchor2 = [v27 widthAnchor];
+  v7 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   [v7 setActive:1];
 
-  v8 = [v3 centerXAnchor];
-  v9 = [v27 centerXAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  centerXAnchor = [v3 centerXAnchor];
+  centerXAnchor2 = [v27 centerXAnchor];
+  v10 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v10 setActive:1];
 
-  v11 = [v3 centerYAnchor];
-  v12 = [v27 centerYAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  centerYAnchor = [v3 centerYAnchor];
+  centerYAnchor2 = [v27 centerYAnchor];
+  v13 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v13 setActive:1];
 
-  v14 = [(PXContextualMemoriesSettingsTableViewController *)self view];
-  [v14 addSubview:v27];
-  v15 = [v27 widthAnchor];
-  v16 = [v14 widthAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  view = [(PXContextualMemoriesSettingsTableViewController *)self view];
+  [view addSubview:v27];
+  widthAnchor3 = [v27 widthAnchor];
+  widthAnchor4 = [view widthAnchor];
+  v17 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
   [v17 setActive:1];
 
-  v18 = [v27 heightAnchor];
-  v19 = [v14 heightAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19];
+  heightAnchor = [v27 heightAnchor];
+  heightAnchor2 = [view heightAnchor];
+  v20 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   [v20 setActive:1];
 
-  v21 = [v27 centerXAnchor];
-  v22 = [v14 centerXAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22];
+  centerXAnchor3 = [v27 centerXAnchor];
+  centerXAnchor4 = [view centerXAnchor];
+  v23 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   [v23 setActive:1];
 
-  v24 = [v27 centerYAnchor];
-  v25 = [v14 centerYAnchor];
-  v26 = [v24 constraintEqualToAnchor:v25];
+  centerYAnchor3 = [v27 centerYAnchor];
+  centerYAnchor4 = [view centerYAnchor];
+  v26 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   [v26 setActive:1];
 }
 
 - (void)dealloc
 {
-  v3 = [(PXContextualMemoriesSettings *)self->_settings timeSetting];
-  [v3 removeObserver:self forKeyPath:@"date" context:&kPXContextualMemoriesSettingsKVOContextKeyDate];
+  timeSetting = [(PXContextualMemoriesSettings *)self->_settings timeSetting];
+  [timeSetting removeObserver:self forKeyPath:@"date" context:&kPXContextualMemoriesSettingsKVOContextKeyDate];
 
-  v4 = [(PXContextualMemoriesSettings *)self->_settings locationSetting];
-  [v4 removeObserver:self forKeyPath:@"coordinate" context:&kPXContextualMemoriesSettingsKVOContextKeyCoordinate];
+  locationSetting = [(PXContextualMemoriesSettings *)self->_settings locationSetting];
+  [locationSetting removeObserver:self forKeyPath:@"coordinate" context:&kPXContextualMemoriesSettingsKVOContextKeyCoordinate];
 
-  v5 = [(PXContextualMemoriesSettings *)self->_settings locationSetting];
-  [v5 removeObserver:self forKeyPath:@"placemark" context:&kPXContextualMemoriesSettingsKVOContextKeyPlacemark];
+  locationSetting2 = [(PXContextualMemoriesSettings *)self->_settings locationSetting];
+  [locationSetting2 removeObserver:self forKeyPath:@"placemark" context:&kPXContextualMemoriesSettingsKVOContextKeyPlacemark];
 
-  v6 = [(PXContextualMemoriesSettings *)self->_settings peopleSetting];
-  [v6 removeObserver:self forKeyPath:@"peopleNames" context:&kPXContextualMemoriesSettingsKVOContextKeyPeople];
+  peopleSetting = [(PXContextualMemoriesSettings *)self->_settings peopleSetting];
+  [peopleSetting removeObserver:self forKeyPath:@"peopleNames" context:&kPXContextualMemoriesSettingsKVOContextKeyPeople];
 
   v7.receiver = self;
   v7.super_class = PXContextualMemoriesSettingsTableViewController;
@@ -956,8 +956,8 @@ void __66__PXContextualMemoriesSettingsTableViewController_viewWillAppear___bloc
   v2 = [(PXContextualMemoriesSettingsTableViewController *)&v5 initWithStyle:1];
   if (v2)
   {
-    v3 = [objc_opt_class() title];
-    [(PXContextualMemoriesSettingsTableViewController *)v2 setTitle:v3];
+    title = [objc_opt_class() title];
+    [(PXContextualMemoriesSettingsTableViewController *)v2 setTitle:title];
   }
 
   return v2;
@@ -965,8 +965,8 @@ void __66__PXContextualMemoriesSettingsTableViewController_viewWillAppear___bloc
 
 + (id)title
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"Contextual Settings" value:&stru_1F1741150 table:0];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Contextual Settings" value:&stru_1F1741150 table:0];
 
   return v3;
 }

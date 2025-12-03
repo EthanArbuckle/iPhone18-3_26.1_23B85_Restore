@@ -1,52 +1,52 @@
 @interface IMTextMessageProcessingPipelineComponent
-- (BOOL)_shouldFindAssociatedMessagePartTextForMessageItem:(id)a3;
-- (IMTextMessageProcessingPipelineComponent)initWithMessageStore:(id)a3;
-- (id)_findAssociatedMessagePartTextForMessageItem:(id)a3 associatedMessageItem:(id)a4;
-- (id)_findMessageItemForAssociatedMessageItem:(id)a3;
-- (id)_messagePartMatchingAssociatedMessageGUID:(id)a3 associatedMessageItem:(id)a4;
-- (id)createMessageItemWithInput:(id)a3;
-- (id)runIndividuallyWithInput:(id)a3;
-- (unint64_t)computeFlagsForInput:(id)a3;
-- (void)_configureAccountForMessageItem:(id)a3 input:(id)a4;
+- (BOOL)_shouldFindAssociatedMessagePartTextForMessageItem:(id)item;
+- (IMTextMessageProcessingPipelineComponent)initWithMessageStore:(id)store;
+- (id)_findAssociatedMessagePartTextForMessageItem:(id)item associatedMessageItem:(id)messageItem;
+- (id)_findMessageItemForAssociatedMessageItem:(id)item;
+- (id)_messagePartMatchingAssociatedMessageGUID:(id)d associatedMessageItem:(id)item;
+- (id)createMessageItemWithInput:(id)input;
+- (id)runIndividuallyWithInput:(id)input;
+- (unint64_t)computeFlagsForInput:(id)input;
+- (void)_configureAccountForMessageItem:(id)item input:(id)input;
 @end
 
 @implementation IMTextMessageProcessingPipelineComponent
 
-- (IMTextMessageProcessingPipelineComponent)initWithMessageStore:(id)a3
+- (IMTextMessageProcessingPipelineComponent)initWithMessageStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = IMTextMessageProcessingPipelineComponent;
   v6 = [(IMTextMessageProcessingPipelineComponent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_messageStore, a3);
+    objc_storeStrong(&v6->_messageStore, store);
   }
 
   return v7;
 }
 
-- (unint64_t)computeFlagsForInput:(id)a3
+- (unint64_t)computeFlagsForInput:(id)input
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  inputCopy = input;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
   v30 = 0;
-  if ([v4 isFromMe])
+  if ([inputCopy isFromMe])
   {
     v28[3] |= 0x8004uLL;
-    v5 = [v4 chat];
-    if ([v5 style] == 45)
+    chat = [inputCopy chat];
+    if ([chat style] == 45)
     {
     }
 
     else
     {
-      v6 = [v4 participantIdentifiers];
-      v7 = [v6 count] < 3;
+      participantIdentifiers = [inputCopy participantIdentifiers];
+      v7 = [participantIdentifiers count] < 3;
 
       if (!v7)
       {
@@ -58,8 +58,8 @@
   }
 
 LABEL_6:
-  v8 = [v4 GUID];
-  if ([(IMDMessageStore *)self->_messageStore popReadReceiptForMissingGUID:v8])
+  gUID = [inputCopy GUID];
+  if ([(IMDMessageStore *)self->_messageStore popReadReceiptForMissingGUID:gUID])
   {
     if (IMOSLoggingEnabled())
     {
@@ -67,7 +67,7 @@ LABEL_6:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v32 = v8;
+        v32 = gUID;
         _os_log_impl(&dword_22B4CC000, v9, OS_LOG_TYPE_INFO, "Message guid was in readReceiptsForMissingMessage cache: %@", buf, 0xCu);
       }
     }
@@ -84,19 +84,19 @@ LABEL_6:
   }
 
   v10[3] = v11 | 1;
-  v12 = [v4 richBody];
-  v13 = [v12 length];
+  richBody = [inputCopy richBody];
+  v13 = [richBody length];
 
-  v14 = [v4 richBody];
+  richBody2 = [inputCopy richBody];
   v15 = *MEMORY[0x277D19F28];
   v21 = MEMORY[0x277D85DD0];
   v22 = 3221225472;
   v23 = sub_22B656BB0;
   v24 = &unk_278707128;
-  v16 = v4;
+  v16 = inputCopy;
   v25 = v16;
   v26 = &v27;
-  [v14 enumerateAttribute:v15 inRange:0 options:v13 usingBlock:{0, &v21}];
+  [richBody2 enumerateAttribute:v15 inRange:0 options:v13 usingBlock:{0, &v21}];
 
   if ([v16 isExpirable])
   {
@@ -118,9 +118,9 @@ LABEL_6:
     v28[3] |= 0x8000000000uLL;
   }
 
-  v17 = [v16 isCritical];
+  isCritical = [v16 isCritical];
   v18 = v28[3];
-  if (v17)
+  if (isCritical)
   {
     v18 |= 0x4000000000uLL;
     v28[3] = v18;
@@ -131,41 +131,41 @@ LABEL_6:
   return v18;
 }
 
-- (id)createMessageItemWithInput:(id)a3
+- (id)createMessageItemWithInput:(id)input
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v31 = [v4 richBody];
-  v5 = [(IMTextMessageProcessingPipelineComponent *)self computeFlagsForInput:v4];
+  inputCopy = input;
+  richBody = [inputCopy richBody];
+  v5 = [(IMTextMessageProcessingPipelineComponent *)self computeFlagsForInput:inputCopy];
   v6 = objc_alloc(MEMORY[0x277D1AA70]);
-  v7 = [v4 fromIdentifier];
-  v8 = [v7 _stripFZIDPrefix];
+  fromIdentifier = [inputCopy fromIdentifier];
+  _stripFZIDPrefix = [fromIdentifier _stripFZIDPrefix];
   v9 = MEMORY[0x277CBEAA8];
-  v10 = [v4 timestamp];
-  v11 = [v9 __im_iMessageDateFromTimeStamp:v10];
-  v12 = [v4 fileTransferGUIDs];
-  v13 = [v4 GUID];
-  v14 = [v4 threadIdentifierGUID];
-  v15 = [v6 initWithSender:v8 time:v11 body:v31 attributes:0 fileTransferGUIDs:v12 flags:v5 error:0 guid:v13 threadIdentifier:v14];
+  timestamp = [inputCopy timestamp];
+  v11 = [v9 __im_iMessageDateFromTimeStamp:timestamp];
+  fileTransferGUIDs = [inputCopy fileTransferGUIDs];
+  gUID = [inputCopy GUID];
+  threadIdentifierGUID = [inputCopy threadIdentifierGUID];
+  v15 = [v6 initWithSender:_stripFZIDPrefix time:v11 body:richBody attributes:0 fileTransferGUIDs:fileTransferGUIDs flags:v5 error:0 guid:gUID threadIdentifier:threadIdentifierGUID];
 
-  v16 = [v4 plainTextSubject];
-  [v15 setSubject:v16];
+  plainTextSubject = [inputCopy plainTextSubject];
+  [v15 setSubject:plainTextSubject];
 
-  v17 = [v4 messageSummaryInfo];
-  [v15 setMessageSummaryInfo:v17];
+  messageSummaryInfo = [inputCopy messageSummaryInfo];
+  [v15 setMessageSummaryInfo:messageSummaryInfo];
 
-  v18 = [v4 expressiveSendStyleIdentifier];
-  [v15 setExpressiveSendStyleID:v18];
+  expressiveSendStyleIdentifier = [inputCopy expressiveSendStyleIdentifier];
+  [v15 setExpressiveSendStyleID:expressiveSendStyleIdentifier];
 
-  v19 = [v4 replicatedFallbackGUIDs];
-  [v15 setReplicatedFallbackGUIDs:v19];
+  replicatedFallbackGUIDs = [inputCopy replicatedFallbackGUIDs];
+  [v15 setReplicatedFallbackGUIDs:replicatedFallbackGUIDs];
 
-  if ([v4 scheduleType] == 2 && objc_msgSend(v15, "isFromMe"))
+  if ([inputCopy scheduleType] == 2 && objc_msgSend(v15, "isFromMe"))
   {
-    [v15 setScheduleType:{objc_msgSend(v4, "scheduleType")}];
+    [v15 setScheduleType:{objc_msgSend(inputCopy, "scheduleType")}];
     [v15 setScheduleState:2];
-    v20 = [v4 scheduledDate];
-    [v15 setTime:v20];
+    scheduledDate = [inputCopy scheduledDate];
+    [v15 setTime:scheduledDate];
   }
 
   if ([v15 wasDetonated] && IMOSLoggingEnabled())
@@ -173,27 +173,27 @@ LABEL_6:
     v21 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
-      v22 = [v15 guid];
+      guid = [v15 guid];
       *buf = 138412290;
-      v33 = v22;
+      v33 = guid;
       _os_log_impl(&dword_22B4CC000, v21, OS_LOG_TYPE_INFO, "createMessageItemWithInput created a detonated message for guid: %@", buf, 0xCu);
     }
   }
 
-  if ([v4 isBIA])
+  if ([inputCopy isBIA])
   {
-    v23 = [v4 biaReferenceID];
-    [v15 setBiaReferenceID:v23];
+    biaReferenceID = [inputCopy biaReferenceID];
+    [v15 setBiaReferenceID:biaReferenceID];
 
-    v24 = [v4 chat];
+    chat = [inputCopy chat];
 
-    if (v24)
+    if (chat)
     {
-      v25 = [v4 chat];
-      v26 = [v4 toIdentifier];
-      v27 = [v26 _stripFZIDPrefix];
-      v28 = [v15 biaReferenceID];
-      [v25 addBIAContextWithUserID:v27 referenceID:v28];
+      chat2 = [inputCopy chat];
+      toIdentifier = [inputCopy toIdentifier];
+      _stripFZIDPrefix2 = [toIdentifier _stripFZIDPrefix];
+      biaReferenceID2 = [v15 biaReferenceID];
+      [chat2 addBIAContextWithUserID:_stripFZIDPrefix2 referenceID:biaReferenceID2];
     }
   }
 
@@ -202,31 +202,31 @@ LABEL_6:
   return v15;
 }
 
-- (id)_findAssociatedMessagePartTextForMessageItem:(id)a3 associatedMessageItem:(id)a4
+- (id)_findAssociatedMessagePartTextForMessageItem:(id)item associatedMessageItem:(id)messageItem
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(IMTextMessageProcessingPipelineComponent *)self _shouldFindAssociatedMessagePartTextForMessageItem:v6])
+  itemCopy = item;
+  messageItemCopy = messageItem;
+  if ([(IMTextMessageProcessingPipelineComponent *)self _shouldFindAssociatedMessagePartTextForMessageItem:itemCopy])
   {
-    v8 = [v6 associatedMessageGUID];
-    if ([v8 length])
+    associatedMessageGUID = [itemCopy associatedMessageGUID];
+    if ([associatedMessageGUID length])
     {
-      v9 = [(IMTextMessageProcessingPipelineComponent *)self _messagePartMatchingAssociatedMessageGUID:v8 associatedMessageItem:v7];
+      v9 = [(IMTextMessageProcessingPipelineComponent *)self _messagePartMatchingAssociatedMessageGUID:associatedMessageGUID associatedMessageItem:messageItemCopy];
       v10 = v9;
       if (v9)
       {
-        v11 = [v9 messagePartBody];
+        messagePartBody = [v9 messagePartBody];
       }
 
       else
       {
-        v11 = 0;
+        messagePartBody = 0;
       }
     }
 
     else
     {
-      v11 = 0;
+      messagePartBody = 0;
     }
   }
 
@@ -239,16 +239,16 @@ LABEL_6:
       _os_log_impl(&dword_22B4CC000, v12, OS_LOG_TYPE_INFO, "Do not need to find associatedMessagePartText for received associated message", v14, 2u);
     }
 
-    v11 = 0;
+    messagePartBody = 0;
   }
 
-  return v11;
+  return messagePartBody;
 }
 
-- (id)_findMessageItemForAssociatedMessageItem:(id)a3
+- (id)_findMessageItemForAssociatedMessageItem:(id)item
 {
-  v4 = [a3 associatedMessageGUID];
-  if ([v4 length])
+  associatedMessageGUID = [item associatedMessageGUID];
+  if ([associatedMessageGUID length])
   {
     v5 = IMAssociatedMessageDecodeGUID();
     v6 = [(IMDMessageStore *)self->_messageStore messageWithGUID:v5];
@@ -262,13 +262,13 @@ LABEL_6:
   return v6;
 }
 
-- (id)_messagePartMatchingAssociatedMessageGUID:(id)a3 associatedMessageItem:(id)a4
+- (id)_messagePartMatchingAssociatedMessageGUID:(id)d associatedMessageItem:(id)item
 {
-  v5 = a3;
-  v6 = a4;
-  if (![v5 length])
+  dCopy = d;
+  itemCopy = item;
+  if (![dCopy length])
   {
-    v18 = 0;
+    firstObject = 0;
     goto LABEL_21;
   }
 
@@ -276,10 +276,10 @@ LABEL_6:
   v8 = IMAssociatedMessageDecodePartIndex();
   if (![v7 length])
   {
-    v9 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    messageParts = IMLogHandleForCategory();
+    if (os_log_type_enabled(messageParts, OS_LOG_TYPE_ERROR))
     {
-      sub_22B7D800C(v9, v19, v20, v21, v22, v23, v24, v25);
+      sub_22B7D800C(messageParts, v19, v20, v21, v22, v23, v24, v25);
     }
 
     goto LABEL_18;
@@ -287,12 +287,12 @@ LABEL_6:
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = [v6 messageParts];
-    if ([v9 count]< 2)
+    messageParts = [itemCopy messageParts];
+    if ([messageParts count]< 2)
     {
-      if ([v9 count]== 1)
+      if ([messageParts count]== 1)
       {
-        v18 = [v9 firstObject];
+        firstObject = [messageParts firstObject];
 LABEL_19:
 
         goto LABEL_20;
@@ -315,18 +315,18 @@ LABEL_19:
     }
 
 LABEL_18:
-    v18 = 0;
+    firstObject = 0;
     goto LABEL_19;
   }
 
-  v18 = [v6 messagePartMatchingPartIndex:v8];
-  if (!v18)
+  firstObject = [itemCopy messagePartMatchingPartIndex:v8];
+  if (!firstObject)
   {
-    v9 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+    messageParts = IMLogHandleForCategory();
+    if (os_log_type_enabled(messageParts, OS_LOG_TYPE_INFO))
     {
       *v34 = 0;
-      _os_log_impl(&dword_22B4CC000, v9, OS_LOG_TYPE_INFO, "Could not find message part matching message part index, possibly retracted part or malformed", v34, 2u);
+      _os_log_impl(&dword_22B4CC000, messageParts, OS_LOG_TYPE_INFO, "Could not find message part matching message part index, possibly retracted part or malformed", v34, 2u);
     }
 
     goto LABEL_18;
@@ -336,72 +336,72 @@ LABEL_20:
 
 LABEL_21:
 
-  return v18;
+  return firstObject;
 }
 
-- (BOOL)_shouldFindAssociatedMessagePartTextForMessageItem:(id)a3
+- (BOOL)_shouldFindAssociatedMessagePartTextForMessageItem:(id)item
 {
-  v3 = [a3 messageSummaryInfo];
-  v4 = [v3 __im_associatedMessageContentType];
-  v5 = [v4 integerValue];
+  messageSummaryInfo = [item messageSummaryInfo];
+  __im_associatedMessageContentType = [messageSummaryInfo __im_associatedMessageContentType];
+  integerValue = [__im_associatedMessageContentType integerValue];
 
-  return v5 == 1;
+  return integerValue == 1;
 }
 
-- (void)_configureAccountForMessageItem:(id)a3 input:(id)a4
+- (void)_configureAccountForMessageItem:(id)item input:(id)input
 {
-  v19 = a3;
-  v5 = a4;
-  v6 = [v5 account];
-  v7 = [v6 accountID];
-  [v19 setAccountID:v7];
+  itemCopy = item;
+  inputCopy = input;
+  account = [inputCopy account];
+  accountID = [account accountID];
+  [itemCopy setAccountID:accountID];
 
-  v8 = [v6 service];
-  v9 = [v8 internalName];
-  [v19 setService:v9];
+  service = [account service];
+  internalName = [service internalName];
+  [itemCopy setService:internalName];
 
-  v10 = [v6 loginID];
-  v11 = [v10 lowercaseString];
-  [v19 setAccount:v11];
+  loginID = [account loginID];
+  lowercaseString = [loginID lowercaseString];
+  [itemCopy setAccount:lowercaseString];
 
-  v12 = [v5 toIdentifier];
-  v13 = [v12 _stripFZIDPrefix];
-  [v19 setDestinationCallerID:v13];
+  toIdentifier = [inputCopy toIdentifier];
+  _stripFZIDPrefix = [toIdentifier _stripFZIDPrefix];
+  [itemCopy setDestinationCallerID:_stripFZIDPrefix];
 
   v14 = +[IMDServiceController sharedController];
-  v15 = [v5 replicationSourceServiceName];
-  v16 = [v14 serviceWithName:v15];
-  v17 = [v16 serviceProperties];
-  v18 = [v17 objectForKeyedSubscript:*MEMORY[0x277D1A688]];
+  replicationSourceServiceName = [inputCopy replicationSourceServiceName];
+  v16 = [v14 serviceWithName:replicationSourceServiceName];
+  serviceProperties = [v16 serviceProperties];
+  v18 = [serviceProperties objectForKeyedSubscript:*MEMORY[0x277D1A688]];
 
-  LODWORD(v14) = [v5 isFromMe];
+  LODWORD(v14) = [inputCopy isFromMe];
   if (v14 && [v18 containsObject:*MEMORY[0x277D1A620]])
   {
-    [v19 setNeedsRepeatForRelayReplication:1];
+    [itemCopy setNeedsRepeatForRelayReplication:1];
   }
 }
 
-- (id)runIndividuallyWithInput:(id)a3
+- (id)runIndividuallyWithInput:(id)input
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  inputCopy = input;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = objc_opt_class();
-      v7 = [v4 GUID];
+      gUID = [inputCopy GUID];
       *buf = 138412546;
       v37 = v6;
       v38 = 2112;
-      v39 = v7;
+      v39 = gUID;
       _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "<%@> Started processing for Message GUID: %@", buf, 0x16u);
     }
   }
 
-  v8 = [v4 fromIdentifier];
-  v9 = [v8 length] == 0;
+  fromIdentifier = [inputCopy fromIdentifier];
+  v9 = [fromIdentifier length] == 0;
 
   if (v9)
   {
@@ -418,8 +418,8 @@ LABEL_21:
     goto LABEL_19;
   }
 
-  v10 = [v4 toIdentifier];
-  v11 = [v10 length] == 0;
+  toIdentifier = [inputCopy toIdentifier];
+  v11 = [toIdentifier length] == 0;
 
   if (v11)
   {
@@ -435,22 +435,22 @@ LABEL_21:
 
 LABEL_19:
     v29 = objc_alloc(MEMORY[0x277CCA9B8]);
-    v20 = [v29 initWithDomain:*MEMORY[0x277D18DF8] code:7 userInfo:0];
-    v30 = [objc_alloc(MEMORY[0x277D18E08]) initWithError:v20];
+    firstObject = [v29 initWithDomain:*MEMORY[0x277D18DF8] code:7 userInfo:0];
+    v30 = [objc_alloc(MEMORY[0x277D18E08]) initWithError:firstObject];
 LABEL_27:
     v27 = v30;
     goto LABEL_28;
   }
 
-  v12 = [v4 associatedMessageGUID];
-  if (!v12)
+  associatedMessageGUID = [inputCopy associatedMessageGUID];
+  if (!associatedMessageGUID)
   {
     goto LABEL_26;
   }
 
-  v13 = [v4 associatedMessageGUID];
-  v14 = [v4 GUID];
-  v15 = [v13 isEqualToString:v14];
+  associatedMessageGUID2 = [inputCopy associatedMessageGUID];
+  gUID2 = [inputCopy GUID];
+  v15 = [associatedMessageGUID2 isEqualToString:gUID2];
 
   if (v15)
   {
@@ -458,25 +458,25 @@ LABEL_27:
   }
 
   messageStore = self->_messageStore;
-  v17 = [v4 associatedMessageGUID];
-  v18 = [v4 chat];
-  v19 = [(IMDMessageStore *)messageStore sortedMessageItemsWithFallbackHash:v17 inChat:v18 limit:1];
-  v20 = [v19 firstObject];
+  associatedMessageGUID3 = [inputCopy associatedMessageGUID];
+  chat = [inputCopy chat];
+  v19 = [(IMDMessageStore *)messageStore sortedMessageItemsWithFallbackHash:associatedMessageGUID3 inChat:chat limit:1];
+  firstObject = [v19 firstObject];
 
-  v21 = [v20 service];
-  LODWORD(v18) = [v21 isEqualToString:*MEMORY[0x277D1A628]];
+  service = [firstObject service];
+  LODWORD(chat) = [service isEqualToString:*MEMORY[0x277D1A628]];
 
-  if (!v18)
+  if (!chat)
   {
 
 LABEL_26:
-    v20 = [(IMTextMessageProcessingPipelineComponent *)self createMessageItemWithInput:v4];
-    [(IMTextMessageProcessingPipelineComponent *)self _configureAccountForMessageItem:v20 input:v4];
-    v35 = v20;
+    firstObject = [(IMTextMessageProcessingPipelineComponent *)self createMessageItemWithInput:inputCopy];
+    [(IMTextMessageProcessingPipelineComponent *)self _configureAccountForMessageItem:firstObject input:inputCopy];
+    v35 = firstObject;
     v32 = [MEMORY[0x277CBEA60] arrayWithObjects:&v35 count:1];
-    [v4 setMessageItems:v32];
+    [inputCopy setMessageItems:v32];
 
-    v30 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v4];
+    v30 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
     goto LABEL_27;
   }
 
@@ -485,12 +485,12 @@ LABEL_26:
     v22 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
-      v23 = [v4 associatedMessageGUID];
-      v24 = [v4 GUID];
+      associatedMessageGUID4 = [inputCopy associatedMessageGUID];
+      gUID3 = [inputCopy GUID];
       *buf = 138412546;
-      v37 = v23;
+      v37 = associatedMessageGUID4;
       v38 = 2112;
-      v39 = v24;
+      v39 = gUID3;
       _os_log_impl(&dword_22B4CC000, v22, OS_LOG_TYPE_INFO, "<IMTextMessageProcessingPipelineComponent> Found associated GUID %@ for %@. Cross Service Association message has already binded this message to an IML. Dropping.", buf, 0x16u);
     }
   }

@@ -1,74 +1,74 @@
 @interface CCSetVersionedMergeable
 + (id)emptyStateVector;
-+ (id)readOnlyInstanceForSet:(id)a3 mergeableDeltasFileURL:(id)a4 database:(id)a5;
-+ (id)writeOnlyInstanceForSet:(id)a3 donateServiceProvider:(id)a4;
-- (BOOL)_donateRemoteUpdateWithType:(unsigned __int8)a3 fromPeerDeviceUUID:(id)a4 peerDeviceSite:(id)a5 relayedDeviceSites:(id)a6 mergeableDelta:(id)a7;
-- (BOOL)_loadCachedDeviceMapping:(id *)a3;
++ (id)readOnlyInstanceForSet:(id)set mergeableDeltasFileURL:(id)l database:(id)database;
++ (id)writeOnlyInstanceForSet:(id)set donateServiceProvider:(id)provider;
+- (BOOL)_donateRemoteUpdateWithType:(unsigned __int8)type fromPeerDeviceUUID:(id)d peerDeviceSite:(id)site relayedDeviceSites:(id)sites mergeableDelta:(id)delta;
+- (BOOL)_loadCachedDeviceMapping:(id *)mapping;
 - (BOOL)hasNoPresentContent;
-- (BOOL)mergeDeltas:(id)a3 error:(id *)a4;
-- (BOOL)mergeUpdateFromPeerDeviceUUID:(id)a3 deviceSite:(id)a4 relayedDeviceSites:(id)a5 mergeableDelta:(id)a6;
-- (CCSetVersionedMergeable)initWithSet:(id)a3 readAccess:(id)a4 donateServiceProvider:(id)a5 mergeableDeltasFileURL:(id)a6;
-- (id)localDeviceSiteAddingExpirationDate:(id)a3;
-- (id)mergeableDeltasForMetadata:(id)a3 atomBatchVersion:(unsigned __int8)a4 error:(id *)a5;
-- (id)relayedDeviceSitesExcludingRequestingDeviceUUID:(id)a3;
+- (BOOL)mergeDeltas:(id)deltas error:(id *)error;
+- (BOOL)mergeUpdateFromPeerDeviceUUID:(id)d deviceSite:(id)site relayedDeviceSites:(id)sites mergeableDelta:(id)delta;
+- (CCSetVersionedMergeable)initWithSet:(id)set readAccess:(id)access donateServiceProvider:(id)provider mergeableDeltasFileURL:(id)l;
+- (id)localDeviceSiteAddingExpirationDate:(id)date;
+- (id)mergeableDeltasForMetadata:(id)metadata atomBatchVersion:(unsigned __int8)version error:(id *)error;
+- (id)relayedDeviceSitesExcludingRequestingDeviceUUID:(id)d;
 - (id)stateVector;
-- (id)storedActiveDeviceSiteWithDeviceUUID:(id)a3;
+- (id)storedActiveDeviceSiteWithDeviceUUID:(id)d;
 - (void)hasNoPresentContent;
 - (void)stateVector;
 @end
 
 @implementation CCSetVersionedMergeable
 
-+ (id)readOnlyInstanceForSet:(id)a3 mergeableDeltasFileURL:(id)a4 database:(id)a5
++ (id)readOnlyInstanceForSet:(id)set mergeableDeltasFileURL:(id)l database:(id)database
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_alloc(objc_opt_class()) initWithSet:v9 readAccess:v7 donateServiceProvider:0 mergeableDeltasFileURL:v8];
+  databaseCopy = database;
+  lCopy = l;
+  setCopy = set;
+  v10 = [objc_alloc(objc_opt_class()) initWithSet:setCopy readAccess:databaseCopy donateServiceProvider:0 mergeableDeltasFileURL:lCopy];
 
   return v10;
 }
 
-+ (id)writeOnlyInstanceForSet:(id)a3 donateServiceProvider:(id)a4
++ (id)writeOnlyInstanceForSet:(id)set donateServiceProvider:(id)provider
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) initWithSet:v6 readAccess:0 donateServiceProvider:v5 mergeableDeltasFileURL:0];
+  providerCopy = provider;
+  setCopy = set;
+  v7 = [objc_alloc(objc_opt_class()) initWithSet:setCopy readAccess:0 donateServiceProvider:providerCopy mergeableDeltasFileURL:0];
 
   return v7;
 }
 
-- (CCSetVersionedMergeable)initWithSet:(id)a3 readAccess:(id)a4 donateServiceProvider:(id)a5 mergeableDeltasFileURL:(id)a6
+- (CCSetVersionedMergeable)initWithSet:(id)set readAccess:(id)access donateServiceProvider:(id)provider mergeableDeltasFileURL:(id)l
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  setCopy = set;
+  accessCopy = access;
+  providerCopy = provider;
+  lCopy = l;
   v20.receiver = self;
   v20.super_class = CCSetVersionedMergeable;
   v15 = [(CCSetVersionedMergeable *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_set, a3);
-    v17 = [objc_alloc(MEMORY[0x1E69939D0]) initWithDatabaseAccess:v12 siteIdentifierFormat:1];
+    objc_storeStrong(&v15->_set, set);
+    v17 = [objc_alloc(MEMORY[0x1E69939D0]) initWithDatabaseAccess:accessCopy siteIdentifierFormat:1];
     stateReader = v16->_stateReader;
     v16->_stateReader = v17;
 
-    objc_storeStrong(&v16->_donateServiceProvider, a5);
-    objc_storeStrong(&v16->_mergeableDeltasFileURL, a6);
+    objc_storeStrong(&v16->_donateServiceProvider, provider);
+    objc_storeStrong(&v16->_mergeableDeltasFileURL, l);
   }
 
   return v16;
 }
 
-- (BOOL)mergeUpdateFromPeerDeviceUUID:(id)a3 deviceSite:(id)a4 relayedDeviceSites:(id)a5 mergeableDelta:(id)a6
+- (BOOL)mergeUpdateFromPeerDeviceUUID:(id)d deviceSite:(id)site relayedDeviceSites:(id)sites mergeableDelta:(id)delta
 {
-  v10 = a4;
-  v11 = a5;
-  if (a6)
+  siteCopy = site;
+  sitesCopy = sites;
+  if (delta)
   {
-    v12 = [(CCSetVersionedMergeable *)self _donateRemoteUpdateWithType:1 fromPeerDeviceUUID:a3 peerDeviceSite:v10 relayedDeviceSites:v11 mergeableDelta:a6];
+    v12 = [(CCSetVersionedMergeable *)self _donateRemoteUpdateWithType:1 fromPeerDeviceUUID:d peerDeviceSite:siteCopy relayedDeviceSites:sitesCopy mergeableDelta:delta];
   }
 
   else
@@ -85,13 +85,13 @@
   return v12;
 }
 
-- (BOOL)_donateRemoteUpdateWithType:(unsigned __int8)a3 fromPeerDeviceUUID:(id)a4 peerDeviceSite:(id)a5 relayedDeviceSites:(id)a6 mergeableDelta:(id)a7
+- (BOOL)_donateRemoteUpdateWithType:(unsigned __int8)type fromPeerDeviceUUID:(id)d peerDeviceSite:(id)site relayedDeviceSites:(id)sites mergeableDelta:(id)delta
 {
   v66 = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v44 = a6;
-  v13 = a7;
+  dCopy = d;
+  siteCopy = site;
+  sitesCopy = sites;
+  deltaCopy = delta;
   v14 = dispatch_semaphore_create(0);
   v56 = 0;
   v57 = &v56;
@@ -102,7 +102,7 @@
   v52[2] = __123__CCSetVersionedMergeable__donateRemoteUpdateWithType_fromPeerDeviceUUID_peerDeviceSite_relayedDeviceSites_mergeableDelta___block_invoke;
   v52[3] = &unk_1E85C2F90;
   v55 = &v56;
-  v15 = v13;
+  v15 = deltaCopy;
   v53 = v15;
   v16 = v14;
   v54 = v16;
@@ -114,14 +114,14 @@
     *buf = 138412546;
     v61 = v19;
     v62 = 2112;
-    v63 = v11;
+    v63 = dCopy;
     _os_log_impl(&dword_1DA444000, v18, OS_LOG_TYPE_DEFAULT, "Requesting donation for remote update (%@) from deviceUUID: %@", buf, 0x16u);
   }
 
-  v20 = v12;
+  v20 = siteCopy;
   v21 = MEMORY[0x1E6993A80];
-  v22 = [(CCSet *)self->_set itemType];
-  v23 = [(CCSet *)self->_set descriptors];
+  itemType = [(CCSet *)self->_set itemType];
+  descriptors = [(CCSet *)self->_set descriptors];
   donateServiceProvider = self->_donateServiceProvider;
   v46[0] = MEMORY[0x1E69E9820];
   v46[1] = 3221225472;
@@ -130,14 +130,14 @@
   v46[4] = self;
   v43 = v17;
   v50 = v43;
-  v25 = v11;
+  v25 = dCopy;
   v47 = v25;
-  v51 = a3;
+  typeCopy = type;
   v26 = v15;
   v48 = v26;
   v42 = v20;
   v49 = v42;
-  [v21 remoteCRDTSetDonationWithItemType:v22 descriptors:v23 serviceProvider:donateServiceProvider completion:v46];
+  [v21 remoteCRDTSetDonationWithItemType:itemType descriptors:descriptors serviceProvider:donateServiceProvider completion:v46];
 
   v27 = dispatch_time(0, 240000000000);
   if (dispatch_semaphore_wait(v16, v27))
@@ -248,15 +248,15 @@ LABEL_11:
 LABEL_12:
 }
 
-- (BOOL)mergeDeltas:(id)a3 error:(id *)a4
+- (BOOL)mergeDeltas:(id)deltas error:(id *)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  deltasCopy = deltas;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [deltasCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -265,12 +265,12 @@ LABEL_12:
     {
       if (*v11 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(deltasCopy);
       }
 
       if (!--v6)
       {
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [deltasCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
         if (!v6)
         {
           break;
@@ -283,22 +283,22 @@ LABEL_12:
   return 1;
 }
 
-- (id)mergeableDeltasForMetadata:(id)a3 atomBatchVersion:(unsigned __int8)a4 error:(id *)a5
+- (id)mergeableDeltasForMetadata:(id)metadata atomBatchVersion:(unsigned __int8)version error:(id *)error
 {
-  v5 = a4;
+  versionCopy = version;
   v55 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [v7 vectors];
-  v9 = [v8 contents];
-  v10 = [v9 timestampCount];
+  metadataCopy = metadata;
+  vectors = [metadataCopy vectors];
+  contents = [vectors contents];
+  timestampCount = [contents timestampCount];
 
-  if (!v10)
+  if (!timestampCount)
   {
     v11 = __biome_log_for_category();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v54 = v7;
+      v54 = metadataCopy;
       _os_log_impl(&dword_1DA444000, v11, OS_LOG_TYPE_DEFAULT, "Mergeable deltas contents vector is empty %@", buf, 0xCu);
     }
   }
@@ -308,13 +308,13 @@ LABEL_12:
   v13 = v51;
   if (v12)
   {
-    v43 = v5;
-    v14 = [(CCSet *)self->_set encodedDescriptors];
+    v43 = versionCopy;
+    encodedDescriptors = [(CCSet *)self->_set encodedDescriptors];
     v15 = objc_alloc(MEMORY[0x1E695B9A0]);
     v16 = MEMORY[0x1E696AEC0];
     v17 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{-[CCSet itemType](self->_set, "itemType")}];
-    v45 = v14;
-    v18 = [v16 stringWithFormat:@"(%@, %@)", v17, v14];
+    v45 = encodedDescriptors;
+    v18 = [v16 stringWithFormat:@"(%@, %@)", v17, encodedDescriptors];
     v19 = [v15 initWithName:v18];
 
     v20 = objc_alloc(MEMORY[0x1E6994940]);
@@ -326,22 +326,22 @@ LABEL_12:
       mergeableDeltasFileURL = self->_mergeableDeltasFileURL;
       v22 = MEMORY[0x1E696AEC0];
       v23 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{-[CCSet itemType](self->_set, "itemType")}];
-      v24 = [MEMORY[0x1E696AFB0] UUID];
-      v25 = [v24 UUIDString];
-      v26 = [v22 stringWithFormat:@"%@-%@.batch", v23, v25];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
+      v26 = [v22 stringWithFormat:@"%@-%@.batch", v23, uUIDString];
       v27 = [(NSURL *)mergeableDeltasFileURL URLByAppendingPathComponent:v26];
 
-      v28 = [objc_alloc(MEMORY[0x1E6994940]) initWriterWithMergeableValueID:v19 metadata:v7 formatVersion:v43 fileURL:v27 error:0];
+      v28 = [objc_alloc(MEMORY[0x1E6994940]) initWriterWithMergeableValueID:v19 metadata:metadataCopy formatVersion:v43 fileURL:v27 error:0];
     }
 
     else
     {
-      v28 = [objc_alloc(MEMORY[0x1E6994940]) initWriterWithMergeableValueID:v19 metadata:v7 formatVersion:v5 error:0];
+      v28 = [objc_alloc(MEMORY[0x1E6994940]) initWriterWithMergeableValueID:v19 metadata:metadataCopy formatVersion:versionCopy error:0];
     }
 
     stateReader = self->_stateReader;
-    v32 = [v7 vectors];
-    v33 = [v32 contents];
+    vectors2 = [metadataCopy vectors];
+    contents2 = [vectors2 contents];
     cachedDeviceMapping = self->_cachedDeviceMapping;
     v50 = v13;
     v48[0] = MEMORY[0x1E69E9820];
@@ -351,7 +351,7 @@ LABEL_12:
     v48[4] = self;
     v35 = v28;
     v49 = v35;
-    [(CCDatabaseSetStateReader *)stateReader enumerateProvenanceRecordsForStateVector:v33 withType:0 selectAtomsInState:1 skipOverAtomsInState:2 deviceMapping:cachedDeviceMapping error:&v50 usingBlock:v48];
+    [(CCDatabaseSetStateReader *)stateReader enumerateProvenanceRecordsForStateVector:contents2 withType:0 selectAtomsInState:1 skipOverAtomsInState:2 deviceMapping:cachedDeviceMapping error:&v50 usingBlock:v48];
     v36 = v50;
 
     v47 = v36;
@@ -489,7 +489,7 @@ void __77__CCSetVersionedMergeable_mergeableDeltasForMetadata_atomBatchVersion_e
     v18 = v4;
     v19 = 0;
     v7 = [(CCDatabaseSetStateReader *)stateReader constructStateVectorsFromDatabaseWithDeviceMapping:cachedDeviceMapping outContent:&v19 outMetaContent:0 error:&v18];
-    v8 = v19;
+    emptyStateVector2 = v19;
     v9 = v18;
 
     v10 = __biome_log_for_category();
@@ -503,7 +503,7 @@ void __77__CCSetVersionedMergeable_mergeableDeltasForMetadata_atomBatchVersion_e
         *buf = 138412802;
         v22 = set;
         v23 = 2112;
-        v24 = v8;
+        v24 = emptyStateVector2;
         v25 = 2112;
         v26 = v13;
         _os_log_impl(&dword_1DA444000, v11, OS_LOG_TYPE_DEFAULT, "Constructed content state vector from database for set: %@: %@ with device mapping: %@", buf, 0x20u);
@@ -519,10 +519,10 @@ void __77__CCSetVersionedMergeable_mergeableDeltasForMetadata_atomBatchVersion_e
         [CCSetVersionedMergeable stateVector];
       }
 
-      v15 = [objc_opt_class() emptyStateVector];
+      emptyStateVector = [objc_opt_class() emptyStateVector];
 
       v4 = v9;
-      v8 = v15;
+      emptyStateVector2 = emptyStateVector;
     }
   }
 
@@ -534,12 +534,12 @@ void __77__CCSetVersionedMergeable_mergeableDeltasForMetadata_atomBatchVersion_e
       [CCSetVersionedMergeable stateVector];
     }
 
-    v8 = [objc_opt_class() emptyStateVector];
+    emptyStateVector2 = [objc_opt_class() emptyStateVector];
   }
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return emptyStateVector2;
 }
 
 + (id)emptyStateVector
@@ -567,10 +567,10 @@ void __77__CCSetVersionedMergeable_mergeableDeltasForMetadata_atomBatchVersion_e
   return v4;
 }
 
-- (id)relayedDeviceSitesExcludingRequestingDeviceUUID:(id)a3
+- (id)relayedDeviceSitesExcludingRequestingDeviceUUID:(id)d
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v24 = 0;
   v5 = [(CCSetVersionedMergeable *)self _loadCachedDeviceMapping:&v24];
   v6 = v24;
@@ -581,8 +581,8 @@ void __77__CCSetVersionedMergeable_mergeableDeltasForMetadata_atomBatchVersion_e
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v8 = [(CCDatabaseDeviceMapping *)self->_cachedDeviceMapping allActiveDeviceSites];
-    v9 = [v8 countByEnumeratingWithState:&v20 objects:v25 count:16];
+    allActiveDeviceSites = [(CCDatabaseDeviceMapping *)self->_cachedDeviceMapping allActiveDeviceSites];
+    v9 = [allActiveDeviceSites countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v9)
     {
       v10 = v9;
@@ -594,15 +594,15 @@ void __77__CCSetVersionedMergeable_mergeableDeltasForMetadata_atomBatchVersion_e
         {
           if (*v21 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allActiveDeviceSites);
           }
 
           v13 = *(*(&v20 + 1) + 8 * i);
-          v14 = [v13 device];
-          if (([v14 options] & 1) == 0)
+          device = [v13 device];
+          if (([device options] & 1) == 0)
           {
-            v15 = [v14 deviceUUID];
-            v16 = [v15 isEqual:v4];
+            deviceUUID = [device deviceUUID];
+            v16 = [deviceUUID isEqual:dCopy];
 
             if ((v16 & 1) == 0)
             {
@@ -611,7 +611,7 @@ void __77__CCSetVersionedMergeable_mergeableDeltasForMetadata_atomBatchVersion_e
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v20 objects:v25 count:16];
+        v10 = [allActiveDeviceSites countByEnumeratingWithState:&v20 objects:v25 count:16];
       }
 
       while (v10);
@@ -621,8 +621,8 @@ void __77__CCSetVersionedMergeable_mergeableDeltasForMetadata_atomBatchVersion_e
 
   else
   {
-    v8 = __biome_log_for_category();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    allActiveDeviceSites = __biome_log_for_category();
+    if (os_log_type_enabled(allActiveDeviceSites, OS_LOG_TYPE_ERROR))
     {
       [CCSetVersionedMergeable relayedDeviceSitesExcludingRequestingDeviceUUID:];
     }
@@ -635,22 +635,22 @@ void __77__CCSetVersionedMergeable_mergeableDeltasForMetadata_atomBatchVersion_e
   return v7;
 }
 
-- (id)localDeviceSiteAddingExpirationDate:(id)a3
+- (id)localDeviceSiteAddingExpirationDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v10 = 0;
   v5 = [(CCSetVersionedMergeable *)self _loadCachedDeviceMapping:&v10];
   v6 = v10;
   if (v5)
   {
-    v7 = [(CCDatabaseDeviceMapping *)self->_cachedDeviceMapping localDeviceSite];
-    v8 = [v7 copyWithExpirationDate:v4];
+    localDeviceSite = [(CCDatabaseDeviceMapping *)self->_cachedDeviceMapping localDeviceSite];
+    v8 = [localDeviceSite copyWithExpirationDate:dateCopy];
   }
 
   else
   {
-    v7 = __biome_log_for_category();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    localDeviceSite = __biome_log_for_category();
+    if (os_log_type_enabled(localDeviceSite, OS_LOG_TYPE_ERROR))
     {
       [CCSetVersionedMergeable localDeviceSiteAddingExpirationDate:];
     }
@@ -661,15 +661,15 @@ void __77__CCSetVersionedMergeable_mergeableDeltasForMetadata_atomBatchVersion_e
   return v8;
 }
 
-- (id)storedActiveDeviceSiteWithDeviceUUID:(id)a3
+- (id)storedActiveDeviceSiteWithDeviceUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v10 = 0;
   v5 = [(CCSetVersionedMergeable *)self _loadCachedDeviceMapping:&v10];
   v6 = v10;
   if (v5)
   {
-    v7 = [(CCDatabaseDeviceMapping *)self->_cachedDeviceMapping activeDeviceSiteWithDeviceUUID:v4];
+    v7 = [(CCDatabaseDeviceMapping *)self->_cachedDeviceMapping activeDeviceSiteWithDeviceUUID:dCopy];
   }
 
   else
@@ -704,8 +704,8 @@ void __77__CCSetVersionedMergeable_mergeableDeltasForMetadata_atomBatchVersion_e
 
   p_cachedDeviceMapping = &self->_cachedDeviceMapping;
   cachedDeviceMapping = self->_cachedDeviceMapping;
-  v7 = [(CCDatabaseDeviceMapping *)cachedDeviceMapping localDeviceSite];
-  v8 = [(CCDatabaseDeviceMapping *)cachedDeviceMapping deviceRowIdForDeviceSite:v7];
+  localDeviceSite = [(CCDatabaseDeviceMapping *)cachedDeviceMapping localDeviceSite];
+  v8 = [(CCDatabaseDeviceMapping *)cachedDeviceMapping deviceRowIdForDeviceSite:localDeviceSite];
 
   if (!v8)
   {
@@ -748,14 +748,14 @@ LABEL_15:
   return v12 & 1;
 }
 
-- (BOOL)_loadCachedDeviceMapping:(id *)a3
+- (BOOL)_loadCachedDeviceMapping:(id *)mapping
 {
   if (self->_cachedDeviceMapping)
   {
     return 1;
   }
 
-  v5 = [(CCDatabaseSetStateReader *)self->_stateReader constructDeviceMapping:a3];
+  v5 = [(CCDatabaseSetStateReader *)self->_stateReader constructDeviceMapping:mapping];
   cachedDeviceMapping = self->_cachedDeviceMapping;
   self->_cachedDeviceMapping = v5;
 
@@ -874,7 +874,7 @@ void __123__CCSetVersionedMergeable__donateRemoteUpdateWithType_fromPeerDeviceUU
 - (void)hasNoPresentContent
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = HIDWORD(*a1);
+  v9 = HIDWORD(*self);
   OUTLINED_FUNCTION_2_0(&dword_1DA444000, a2, a3, "Failed to resolve local device rowId from mapping: %@", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x1E69E9840];
 }

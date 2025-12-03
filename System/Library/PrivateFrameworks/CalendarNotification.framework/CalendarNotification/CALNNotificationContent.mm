@@ -1,94 +1,94 @@
 @interface CALNNotificationContent
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualForDiffingPurposesToContent:(id)a3;
-- (BOOL)isEqualToContent:(id)a3;
-- (CALNNotificationContent)initWithCoder:(id)a3;
-- (id)_initWithTitle:(id)a3 subtitle:(id)a4 body:(id)a5 categoryIdentifier:(id)a6 sectionIdentifier:(id)a7 date:(id)a8 expirationDate:(id)a9 defaultActionURL:(id)a10 iconIdentifier:(id)a11 shouldHideTime:(BOOL)a12 shouldSuppressSyncDismissalWhenRemoved:(BOOL)a13 peopleIdentifiers:(id)a14 sound:(id)a15 userInfo:(id)a16 threadIdentifier:(id)a17 interruptionLevel:(unint64_t)a18 filterCriteria:(id)a19;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualForDiffingPurposesToContent:(id)content;
+- (BOOL)isEqualToContent:(id)content;
+- (CALNNotificationContent)initWithCoder:(id)coder;
+- (id)_initWithTitle:(id)title subtitle:(id)subtitle body:(id)body categoryIdentifier:(id)identifier sectionIdentifier:(id)sectionIdentifier date:(id)date expirationDate:(id)expirationDate defaultActionURL:(id)self0 iconIdentifier:(id)self1 shouldHideTime:(BOOL)self2 shouldSuppressSyncDismissalWhenRemoved:(BOOL)self3 peopleIdentifiers:(id)self4 sound:(id)self5 userInfo:(id)self6 threadIdentifier:(id)self7 interruptionLevel:(unint64_t)self8 filterCriteria:(id)self9;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CALNNotificationContent
 
-- (id)_initWithTitle:(id)a3 subtitle:(id)a4 body:(id)a5 categoryIdentifier:(id)a6 sectionIdentifier:(id)a7 date:(id)a8 expirationDate:(id)a9 defaultActionURL:(id)a10 iconIdentifier:(id)a11 shouldHideTime:(BOOL)a12 shouldSuppressSyncDismissalWhenRemoved:(BOOL)a13 peopleIdentifiers:(id)a14 sound:(id)a15 userInfo:(id)a16 threadIdentifier:(id)a17 interruptionLevel:(unint64_t)a18 filterCriteria:(id)a19
+- (id)_initWithTitle:(id)title subtitle:(id)subtitle body:(id)body categoryIdentifier:(id)identifier sectionIdentifier:(id)sectionIdentifier date:(id)date expirationDate:(id)expirationDate defaultActionURL:(id)self0 iconIdentifier:(id)self1 shouldHideTime:(BOOL)self2 shouldSuppressSyncDismissalWhenRemoved:(BOOL)self3 peopleIdentifiers:(id)self4 sound:(id)self5 userInfo:(id)self6 threadIdentifier:(id)self7 interruptionLevel:(unint64_t)self8 filterCriteria:(id)self9
 {
-  v63 = a3;
-  v62 = a4;
-  v68 = a5;
-  v67 = a6;
-  v66 = a7;
-  v65 = a8;
-  v64 = a9;
-  v25 = a10;
-  v26 = a11;
-  v27 = a14;
-  v28 = a15;
-  v29 = a16;
-  v30 = a17;
-  v31 = a19;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  bodyCopy = body;
+  identifierCopy = identifier;
+  sectionIdentifierCopy = sectionIdentifier;
+  dateCopy = date;
+  expirationDateCopy = expirationDate;
+  lCopy = l;
+  iconIdentifierCopy = iconIdentifier;
+  identifiersCopy = identifiers;
+  soundCopy = sound;
+  infoCopy = info;
+  threadIdentifierCopy = threadIdentifier;
+  criteriaCopy = criteria;
   v69.receiver = self;
   v69.super_class = CALNNotificationContent;
   v32 = [(CALNNotificationContent *)&v69 init];
   if (v32)
   {
-    v33 = [v63 copy];
+    v33 = [titleCopy copy];
     title = v32->_title;
     v32->_title = v33;
 
-    v35 = [v62 copy];
+    v35 = [subtitleCopy copy];
     subtitle = v32->_subtitle;
     v32->_subtitle = v35;
 
-    v37 = [v68 copy];
+    v37 = [bodyCopy copy];
     body = v32->_body;
     v32->_body = v37;
 
-    v39 = [v67 copy];
+    v39 = [identifierCopy copy];
     categoryIdentifier = v32->_categoryIdentifier;
     v32->_categoryIdentifier = v39;
 
-    v41 = [v66 copy];
+    v41 = [sectionIdentifierCopy copy];
     sectionIdentifier = v32->_sectionIdentifier;
     v32->_sectionIdentifier = v41;
 
-    v43 = [v65 copy];
+    v43 = [dateCopy copy];
     date = v32->_date;
     v32->_date = v43;
 
-    v45 = [v64 copy];
+    v45 = [expirationDateCopy copy];
     expirationDate = v32->_expirationDate;
     v32->_expirationDate = v45;
 
-    v47 = [v25 copy];
+    v47 = [lCopy copy];
     defaultActionURL = v32->_defaultActionURL;
     v32->_defaultActionURL = v47;
 
-    v49 = [v26 copy];
+    v49 = [iconIdentifierCopy copy];
     iconIdentifier = v32->_iconIdentifier;
     v32->_iconIdentifier = v49;
 
-    v32->_shouldHideTime = a12;
-    v32->_shouldSuppressSyncDismissalWhenRemoved = a13;
-    v51 = [v27 copy];
+    v32->_shouldHideTime = time;
+    v32->_shouldSuppressSyncDismissalWhenRemoved = removed;
+    v51 = [identifiersCopy copy];
     peopleIdentifiers = v32->_peopleIdentifiers;
     v32->_peopleIdentifiers = v51;
 
-    v53 = [v28 copy];
+    v53 = [soundCopy copy];
     sound = v32->_sound;
     v32->_sound = v53;
 
-    v55 = [v29 copy];
+    v55 = [infoCopy copy];
     userInfo = v32->_userInfo;
     v32->_userInfo = v55;
 
-    v57 = [v30 copy];
+    v57 = [threadIdentifierCopy copy];
     threadIdentifier = v32->_threadIdentifier;
     v32->_threadIdentifier = v57;
 
-    v32->_interruptionLevel = a18;
-    v59 = [v31 copy];
+    v32->_interruptionLevel = level;
+    v59 = [criteriaCopy copy];
     filterCriteria = v32->_filterCriteria;
     v32->_filterCriteria = v59;
   }
@@ -100,51 +100,51 @@
 {
   v20 = MEMORY[0x277CCACA8];
   v19 = objc_opt_class();
-  v23 = [(CALNNotificationContent *)self title];
+  title = [(CALNNotificationContent *)self title];
   v26 = ICSRedactString();
-  v22 = [(CALNNotificationContent *)self subtitle];
+  subtitle = [(CALNNotificationContent *)self subtitle];
   v24 = ICSRedactString();
-  v21 = [(CALNNotificationContent *)self body];
+  body = [(CALNNotificationContent *)self body];
   v25 = ICSRedactString();
-  v18 = [(CALNNotificationContent *)self categoryIdentifier];
-  v17 = [(CALNNotificationContent *)self sectionIdentifier];
-  v16 = [(CALNNotificationContent *)self date];
-  v15 = [(CALNNotificationContent *)self expirationDate];
-  v13 = [(CALNNotificationContent *)self defaultActionURL];
-  v14 = [(CALNNotificationContent *)self iconIdentifier];
+  categoryIdentifier = [(CALNNotificationContent *)self categoryIdentifier];
+  sectionIdentifier = [(CALNNotificationContent *)self sectionIdentifier];
+  date = [(CALNNotificationContent *)self date];
+  expirationDate = [(CALNNotificationContent *)self expirationDate];
+  defaultActionURL = [(CALNNotificationContent *)self defaultActionURL];
+  iconIdentifier = [(CALNNotificationContent *)self iconIdentifier];
   v12 = [MEMORY[0x277CCABB0] numberWithBool:{-[CALNNotificationContent shouldHideTime](self, "shouldHideTime")}];
   v11 = [MEMORY[0x277CCABB0] numberWithBool:{-[CALNNotificationContent shouldSuppressSyncDismissalWhenRemoved](self, "shouldSuppressSyncDismissalWhenRemoved")}];
-  v10 = [(CALNNotificationContent *)self peopleIdentifiers];
-  v3 = [(CALNNotificationContent *)self sound];
-  v4 = [(CALNNotificationContent *)self threadIdentifier];
-  v5 = [(CALNNotificationContent *)self interruptionLevel];
-  v6 = [(CALNNotificationContent *)self filterCriteria];
-  v7 = [(CALNNotificationContent *)self userInfo];
-  v8 = [v20 stringWithFormat:@"<%@: %p>(title = %@, subtitle = %@, body = %@, categoryIdentifier = %@, sectionIdentifier = %@, date = %@, expirationDate = %@, defaultActionURL = %@, iconIdentifier = %@, shouldHideTime = %@, shouldSuppressSyncDismissalWhenRemoved = %@, peopleIdentifiers = %@, sound = %@, threadIdentifier = %@, interruptionLevel = %lu, filterCriteria = %@, userInfo = %@)", v19, self, v26, v24, v25, v18, v17, v16, v15, v13, v14, v12, v11, v10, v3, v4, v5, v6, v7];
+  peopleIdentifiers = [(CALNNotificationContent *)self peopleIdentifiers];
+  sound = [(CALNNotificationContent *)self sound];
+  threadIdentifier = [(CALNNotificationContent *)self threadIdentifier];
+  interruptionLevel = [(CALNNotificationContent *)self interruptionLevel];
+  filterCriteria = [(CALNNotificationContent *)self filterCriteria];
+  userInfo = [(CALNNotificationContent *)self userInfo];
+  v8 = [v20 stringWithFormat:@"<%@: %p>(title = %@, subtitle = %@, body = %@, categoryIdentifier = %@, sectionIdentifier = %@, date = %@, expirationDate = %@, defaultActionURL = %@, iconIdentifier = %@, shouldHideTime = %@, shouldSuppressSyncDismissalWhenRemoved = %@, peopleIdentifiers = %@, sound = %@, threadIdentifier = %@, interruptionLevel = %lu, filterCriteria = %@, userInfo = %@)", v19, self, v26, v24, v25, categoryIdentifier, sectionIdentifier, date, expirationDate, defaultActionURL, iconIdentifier, v12, v11, peopleIdentifiers, sound, threadIdentifier, interruptionLevel, filterCriteria, userInfo];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CALNNotificationContent *)self isEqualToContent:v4];
+  equalCopy = equal;
+  v5 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CALNNotificationContent *)self isEqualToContent:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToContent:(id)a3
+- (BOOL)isEqualToContent:(id)content
 {
-  v4 = a3;
-  if (self == v4)
+  contentCopy = content;
+  if (self == contentCopy)
   {
     v7 = 1;
   }
 
-  else if ([(CALNNotificationContent *)self isEqualForDiffingPurposesToContent:v4])
+  else if ([(CALNNotificationContent *)self isEqualForDiffingPurposesToContent:contentCopy])
   {
-    v5 = [(CALNNotificationContent *)self expirationDate];
-    v6 = [(CALNNotificationContent *)v4 expirationDate];
+    expirationDate = [(CALNNotificationContent *)self expirationDate];
+    expirationDate2 = [(CALNNotificationContent *)contentCopy expirationDate];
     v7 = CalEqualObjects();
   }
 
@@ -156,18 +156,18 @@
   return v7;
 }
 
-- (BOOL)isEqualForDiffingPurposesToContent:(id)a3
+- (BOOL)isEqualForDiffingPurposesToContent:(id)content
 {
-  v4 = a3;
-  if (self == v4)
+  contentCopy = content;
+  if (self == contentCopy)
   {
     v46 = 1;
   }
 
   else
   {
-    v5 = [(CALNNotificationContent *)self title];
-    v6 = [(CALNNotificationContent *)v4 title];
+    title = [(CALNNotificationContent *)self title];
+    title2 = [(CALNNotificationContent *)contentCopy title];
     v7 = CalEqualStrings();
 
     if (!v7)
@@ -175,8 +175,8 @@
       goto LABEL_18;
     }
 
-    v8 = [(CALNNotificationContent *)self subtitle];
-    v9 = [(CALNNotificationContent *)v4 subtitle];
+    subtitle = [(CALNNotificationContent *)self subtitle];
+    subtitle2 = [(CALNNotificationContent *)contentCopy subtitle];
     v10 = CalEqualStrings();
 
     if (!v10)
@@ -184,8 +184,8 @@
       goto LABEL_18;
     }
 
-    v11 = [(CALNNotificationContent *)self body];
-    v12 = [(CALNNotificationContent *)v4 body];
+    body = [(CALNNotificationContent *)self body];
+    body2 = [(CALNNotificationContent *)contentCopy body];
     v13 = CalEqualStrings();
 
     if (!v13)
@@ -193,8 +193,8 @@
       goto LABEL_18;
     }
 
-    v14 = [(CALNNotificationContent *)self categoryIdentifier];
-    v15 = [(CALNNotificationContent *)v4 categoryIdentifier];
+    categoryIdentifier = [(CALNNotificationContent *)self categoryIdentifier];
+    categoryIdentifier2 = [(CALNNotificationContent *)contentCopy categoryIdentifier];
     v16 = CalEqualStrings();
 
     if (!v16)
@@ -202,8 +202,8 @@
       goto LABEL_18;
     }
 
-    v17 = [(CALNNotificationContent *)self sectionIdentifier];
-    v18 = [(CALNNotificationContent *)v4 sectionIdentifier];
+    sectionIdentifier = [(CALNNotificationContent *)self sectionIdentifier];
+    sectionIdentifier2 = [(CALNNotificationContent *)contentCopy sectionIdentifier];
     v19 = CalEqualStrings();
 
     if (!v19)
@@ -211,8 +211,8 @@
       goto LABEL_18;
     }
 
-    v20 = [(CALNNotificationContent *)self date];
-    v21 = [(CALNNotificationContent *)v4 date];
+    date = [(CALNNotificationContent *)self date];
+    date2 = [(CALNNotificationContent *)contentCopy date];
     v22 = CalEqualObjects();
 
     if (!v22)
@@ -220,8 +220,8 @@
       goto LABEL_18;
     }
 
-    v23 = [(CALNNotificationContent *)self defaultActionURL];
-    v24 = [(CALNNotificationContent *)v4 defaultActionURL];
+    defaultActionURL = [(CALNNotificationContent *)self defaultActionURL];
+    defaultActionURL2 = [(CALNNotificationContent *)contentCopy defaultActionURL];
     v25 = CalEqualObjects();
 
     if (!v25)
@@ -229,8 +229,8 @@
       goto LABEL_18;
     }
 
-    v26 = [(CALNNotificationContent *)self iconIdentifier];
-    v27 = [(CALNNotificationContent *)v4 iconIdentifier];
+    iconIdentifier = [(CALNNotificationContent *)self iconIdentifier];
+    iconIdentifier2 = [(CALNNotificationContent *)contentCopy iconIdentifier];
     v28 = CalEqualStrings();
 
     if (!v28)
@@ -238,20 +238,20 @@
       goto LABEL_18;
     }
 
-    v29 = [(CALNNotificationContent *)self shouldHideTime];
-    if (v29 != [(CALNNotificationContent *)v4 shouldHideTime])
+    shouldHideTime = [(CALNNotificationContent *)self shouldHideTime];
+    if (shouldHideTime != [(CALNNotificationContent *)contentCopy shouldHideTime])
     {
       goto LABEL_18;
     }
 
-    v30 = [(CALNNotificationContent *)self shouldSuppressSyncDismissalWhenRemoved];
-    if (v30 != [(CALNNotificationContent *)v4 shouldSuppressSyncDismissalWhenRemoved])
+    shouldSuppressSyncDismissalWhenRemoved = [(CALNNotificationContent *)self shouldSuppressSyncDismissalWhenRemoved];
+    if (shouldSuppressSyncDismissalWhenRemoved != [(CALNNotificationContent *)contentCopy shouldSuppressSyncDismissalWhenRemoved])
     {
       goto LABEL_18;
     }
 
-    v31 = [(CALNNotificationContent *)self peopleIdentifiers];
-    v32 = [(CALNNotificationContent *)v4 peopleIdentifiers];
+    peopleIdentifiers = [(CALNNotificationContent *)self peopleIdentifiers];
+    peopleIdentifiers2 = [(CALNNotificationContent *)contentCopy peopleIdentifiers];
     v33 = CalEqualObjects();
 
     if (!v33)
@@ -259,8 +259,8 @@
       goto LABEL_18;
     }
 
-    v34 = [(CALNNotificationContent *)self sound];
-    v35 = [(CALNNotificationContent *)v4 sound];
+    sound = [(CALNNotificationContent *)self sound];
+    sound2 = [(CALNNotificationContent *)contentCopy sound];
     v36 = CalEqualObjects();
 
     if (!v36)
@@ -268,8 +268,8 @@
       goto LABEL_18;
     }
 
-    v37 = [(CALNNotificationContent *)self userInfo];
-    v38 = [(CALNNotificationContent *)v4 userInfo];
+    userInfo = [(CALNNotificationContent *)self userInfo];
+    userInfo2 = [(CALNNotificationContent *)contentCopy userInfo];
     v39 = CalEqualObjects();
 
     if (!v39)
@@ -277,8 +277,8 @@
       goto LABEL_18;
     }
 
-    v40 = [(CALNNotificationContent *)self threadIdentifier];
-    v41 = [(CALNNotificationContent *)v4 threadIdentifier];
+    threadIdentifier = [(CALNNotificationContent *)self threadIdentifier];
+    threadIdentifier2 = [(CALNNotificationContent *)contentCopy threadIdentifier];
     v42 = CalEqualStrings();
 
     if (!v42)
@@ -286,11 +286,11 @@
       goto LABEL_18;
     }
 
-    v43 = [(CALNNotificationContent *)self interruptionLevel];
-    if (v43 == [(CALNNotificationContent *)v4 interruptionLevel])
+    interruptionLevel = [(CALNNotificationContent *)self interruptionLevel];
+    if (interruptionLevel == [(CALNNotificationContent *)contentCopy interruptionLevel])
     {
-      v44 = [(CALNNotificationContent *)self filterCriteria];
-      v45 = [(CALNNotificationContent *)v4 filterCriteria];
+      filterCriteria = [(CALNNotificationContent *)self filterCriteria];
+      filterCriteria2 = [(CALNNotificationContent *)contentCopy filterCriteria];
       v46 = CalEqualStrings();
     }
 
@@ -306,53 +306,53 @@ LABEL_18:
 
 - (unint64_t)hash
 {
-  v3 = [(CALNNotificationContent *)self title];
-  v4 = [v3 hash];
+  title = [(CALNNotificationContent *)self title];
+  v4 = [title hash];
 
-  v5 = [(CALNNotificationContent *)self subtitle];
-  v6 = [v5 hash] ^ v4;
+  subtitle = [(CALNNotificationContent *)self subtitle];
+  v6 = [subtitle hash] ^ v4;
 
-  v7 = [(CALNNotificationContent *)self body];
-  v8 = [v7 hash];
+  body = [(CALNNotificationContent *)self body];
+  v8 = [body hash];
 
-  v9 = [(CALNNotificationContent *)self categoryIdentifier];
-  v10 = v6 ^ v8 ^ [v9 hash];
+  categoryIdentifier = [(CALNNotificationContent *)self categoryIdentifier];
+  v10 = v6 ^ v8 ^ [categoryIdentifier hash];
 
-  v11 = [(CALNNotificationContent *)self sectionIdentifier];
-  v12 = [v11 hash];
+  sectionIdentifier = [(CALNNotificationContent *)self sectionIdentifier];
+  v12 = [sectionIdentifier hash];
 
-  v13 = [(CALNNotificationContent *)self date];
-  v14 = v12 ^ [v13 hash];
+  date = [(CALNNotificationContent *)self date];
+  v14 = v12 ^ [date hash];
 
-  v15 = [(CALNNotificationContent *)self expirationDate];
-  v16 = v10 ^ v14 ^ [v15 hash];
+  expirationDate = [(CALNNotificationContent *)self expirationDate];
+  v16 = v10 ^ v14 ^ [expirationDate hash];
 
-  v17 = [(CALNNotificationContent *)self defaultActionURL];
-  v18 = [v17 hash];
+  defaultActionURL = [(CALNNotificationContent *)self defaultActionURL];
+  v18 = [defaultActionURL hash];
 
-  v19 = [(CALNNotificationContent *)self iconIdentifier];
-  v20 = v18 ^ [v19 hash];
+  iconIdentifier = [(CALNNotificationContent *)self iconIdentifier];
+  v20 = v18 ^ [iconIdentifier hash];
 
-  v21 = [(CALNNotificationContent *)self sound];
-  v22 = v20 ^ [v21 hash];
+  sound = [(CALNNotificationContent *)self sound];
+  v22 = v20 ^ [sound hash];
 
-  v23 = [(CALNNotificationContent *)self userInfo];
-  v24 = v16 ^ v22 ^ [v23 hash];
+  userInfo = [(CALNNotificationContent *)self userInfo];
+  v24 = v16 ^ v22 ^ [userInfo hash];
 
-  v25 = [(CALNNotificationContent *)self shouldHideTime];
-  v26 = [(CALNNotificationContent *)self peopleIdentifiers];
-  v27 = v25 ^ [v26 hash];
+  shouldHideTime = [(CALNNotificationContent *)self shouldHideTime];
+  peopleIdentifiers = [(CALNNotificationContent *)self peopleIdentifiers];
+  v27 = shouldHideTime ^ [peopleIdentifiers hash];
 
-  v28 = [(CALNNotificationContent *)self threadIdentifier];
-  v29 = v27 ^ [v28 hash];
+  threadIdentifier = [(CALNNotificationContent *)self threadIdentifier];
+  v29 = v27 ^ [threadIdentifier hash];
 
   v30 = v24 ^ v29 ^ [(CALNNotificationContent *)self interruptionLevel];
-  v31 = [(CALNNotificationContent *)self filterCriteria];
-  v32 = [v31 hash];
+  filterCriteria = [(CALNNotificationContent *)self filterCriteria];
+  v32 = [filterCriteria hash];
 
-  v33 = [(CALNNotificationContent *)self shouldSuppressSyncDismissalWhenRemoved];
+  shouldSuppressSyncDismissalWhenRemoved = [(CALNNotificationContent *)self shouldSuppressSyncDismissalWhenRemoved];
   v34 = 2;
-  if (!v33)
+  if (!shouldSuppressSyncDismissalWhenRemoved)
   {
     v34 = 0;
   }
@@ -360,103 +360,103 @@ LABEL_18:
   return v30 ^ v32 ^ v34;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v20 = [CALNMutableNotificationContent allocWithZone:a3];
-  v24 = [(CALNNotificationContent *)self title];
-  v23 = [(CALNNotificationContent *)self subtitle];
-  v22 = [(CALNNotificationContent *)self body];
-  v19 = [(CALNNotificationContent *)self categoryIdentifier];
-  v18 = [(CALNNotificationContent *)self sectionIdentifier];
-  v17 = [(CALNNotificationContent *)self date];
-  v15 = [(CALNNotificationContent *)self expirationDate];
-  v13 = [(CALNNotificationContent *)self defaultActionURL];
-  v12 = [(CALNNotificationContent *)self iconIdentifier];
-  v16 = [(CALNNotificationContent *)self shouldHideTime];
-  v14 = [(CALNNotificationContent *)self shouldSuppressSyncDismissalWhenRemoved];
-  v4 = [(CALNNotificationContent *)self peopleIdentifiers];
-  v5 = [(CALNNotificationContent *)self sound];
-  v6 = [(CALNNotificationContent *)self userInfo];
-  v7 = [(CALNNotificationContent *)self threadIdentifier];
-  v8 = [(CALNNotificationContent *)self interruptionLevel];
-  v9 = [(CALNNotificationContent *)self filterCriteria];
-  BYTE1(v11) = v14;
-  LOBYTE(v11) = v16;
-  v21 = [(CALNNotificationContent *)v20 _initWithTitle:v24 subtitle:v23 body:v22 categoryIdentifier:v19 sectionIdentifier:v18 date:v17 expirationDate:v15 defaultActionURL:v13 iconIdentifier:v12 shouldHideTime:v11 shouldSuppressSyncDismissalWhenRemoved:v4 peopleIdentifiers:v5 sound:v6 userInfo:v7 threadIdentifier:v8 interruptionLevel:v9 filterCriteria:?];
+  v20 = [CALNMutableNotificationContent allocWithZone:zone];
+  title = [(CALNNotificationContent *)self title];
+  subtitle = [(CALNNotificationContent *)self subtitle];
+  body = [(CALNNotificationContent *)self body];
+  categoryIdentifier = [(CALNNotificationContent *)self categoryIdentifier];
+  sectionIdentifier = [(CALNNotificationContent *)self sectionIdentifier];
+  date = [(CALNNotificationContent *)self date];
+  expirationDate = [(CALNNotificationContent *)self expirationDate];
+  defaultActionURL = [(CALNNotificationContent *)self defaultActionURL];
+  iconIdentifier = [(CALNNotificationContent *)self iconIdentifier];
+  shouldHideTime = [(CALNNotificationContent *)self shouldHideTime];
+  shouldSuppressSyncDismissalWhenRemoved = [(CALNNotificationContent *)self shouldSuppressSyncDismissalWhenRemoved];
+  peopleIdentifiers = [(CALNNotificationContent *)self peopleIdentifiers];
+  sound = [(CALNNotificationContent *)self sound];
+  userInfo = [(CALNNotificationContent *)self userInfo];
+  threadIdentifier = [(CALNNotificationContent *)self threadIdentifier];
+  interruptionLevel = [(CALNNotificationContent *)self interruptionLevel];
+  filterCriteria = [(CALNNotificationContent *)self filterCriteria];
+  BYTE1(v11) = shouldSuppressSyncDismissalWhenRemoved;
+  LOBYTE(v11) = shouldHideTime;
+  v21 = [(CALNNotificationContent *)v20 _initWithTitle:title subtitle:subtitle body:body categoryIdentifier:categoryIdentifier sectionIdentifier:sectionIdentifier date:date expirationDate:expirationDate defaultActionURL:defaultActionURL iconIdentifier:iconIdentifier shouldHideTime:v11 shouldSuppressSyncDismissalWhenRemoved:peopleIdentifiers peopleIdentifiers:sound sound:userInfo userInfo:threadIdentifier threadIdentifier:interruptionLevel interruptionLevel:filterCriteria filterCriteria:?];
 
   return v21;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CALNNotificationContent *)self body];
-  [v4 encodeObject:v5 forKey:@"body"];
+  coderCopy = coder;
+  body = [(CALNNotificationContent *)self body];
+  [coderCopy encodeObject:body forKey:@"body"];
 
-  v6 = [(CALNNotificationContent *)self subtitle];
-  [v4 encodeObject:v6 forKey:@"subtitle"];
+  subtitle = [(CALNNotificationContent *)self subtitle];
+  [coderCopy encodeObject:subtitle forKey:@"subtitle"];
 
-  v7 = [(CALNNotificationContent *)self title];
-  [v4 encodeObject:v7 forKey:@"title"];
+  title = [(CALNNotificationContent *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v8 = [(CALNNotificationContent *)self categoryIdentifier];
-  [v4 encodeObject:v8 forKey:@"categoryIdentifier"];
+  categoryIdentifier = [(CALNNotificationContent *)self categoryIdentifier];
+  [coderCopy encodeObject:categoryIdentifier forKey:@"categoryIdentifier"];
 
-  v9 = [(CALNNotificationContent *)self sectionIdentifier];
-  [v4 encodeObject:v9 forKey:@"sectionIdentifier"];
+  sectionIdentifier = [(CALNNotificationContent *)self sectionIdentifier];
+  [coderCopy encodeObject:sectionIdentifier forKey:@"sectionIdentifier"];
 
-  v10 = [(CALNNotificationContent *)self date];
-  [v4 encodeObject:v10 forKey:@"date"];
+  date = [(CALNNotificationContent *)self date];
+  [coderCopy encodeObject:date forKey:@"date"];
 
-  v11 = [(CALNNotificationContent *)self iconIdentifier];
-  [v4 encodeObject:v11 forKey:@"iconIdentifier"];
+  iconIdentifier = [(CALNNotificationContent *)self iconIdentifier];
+  [coderCopy encodeObject:iconIdentifier forKey:@"iconIdentifier"];
 
-  v12 = [(CALNNotificationContent *)self expirationDate];
-  [v4 encodeObject:v12 forKey:@"expirationDate"];
+  expirationDate = [(CALNNotificationContent *)self expirationDate];
+  [coderCopy encodeObject:expirationDate forKey:@"expirationDate"];
 
-  v13 = [(CALNNotificationContent *)self defaultActionURL];
-  [v4 encodeObject:v13 forKey:@"defaultActionURL"];
+  defaultActionURL = [(CALNNotificationContent *)self defaultActionURL];
+  [coderCopy encodeObject:defaultActionURL forKey:@"defaultActionURL"];
 
-  [v4 encodeBool:-[CALNNotificationContent shouldHideTime](self forKey:{"shouldHideTime"), @"shouldHideTime"}];
-  [v4 encodeBool:-[CALNNotificationContent shouldSuppressSyncDismissalWhenRemoved](self forKey:{"shouldSuppressSyncDismissalWhenRemoved"), @"shouldSuppressSyncDismissalWhenRemoved"}];
-  v14 = [(CALNNotificationContent *)self peopleIdentifiers];
-  [v4 encodeObject:v14 forKey:@"peopleIdentifiers"];
+  [coderCopy encodeBool:-[CALNNotificationContent shouldHideTime](self forKey:{"shouldHideTime"), @"shouldHideTime"}];
+  [coderCopy encodeBool:-[CALNNotificationContent shouldSuppressSyncDismissalWhenRemoved](self forKey:{"shouldSuppressSyncDismissalWhenRemoved"), @"shouldSuppressSyncDismissalWhenRemoved"}];
+  peopleIdentifiers = [(CALNNotificationContent *)self peopleIdentifiers];
+  [coderCopy encodeObject:peopleIdentifiers forKey:@"peopleIdentifiers"];
 
-  v15 = [(CALNNotificationContent *)self sound];
-  [v4 encodeObject:v15 forKey:@"sound"];
+  sound = [(CALNNotificationContent *)self sound];
+  [coderCopy encodeObject:sound forKey:@"sound"];
 
-  v16 = [(CALNNotificationContent *)self userInfo];
-  [v4 encodeObject:v16 forKey:@"userInfo"];
+  userInfo = [(CALNNotificationContent *)self userInfo];
+  [coderCopy encodeObject:userInfo forKey:@"userInfo"];
 
-  v17 = [(CALNNotificationContent *)self threadIdentifier];
-  [v4 encodeObject:v17 forKey:@"threadIdentifier"];
+  threadIdentifier = [(CALNNotificationContent *)self threadIdentifier];
+  [coderCopy encodeObject:threadIdentifier forKey:@"threadIdentifier"];
 
-  [v4 encodeInteger:-[CALNNotificationContent interruptionLevel](self forKey:{"interruptionLevel"), @"interruptionLevel"}];
-  v18 = [(CALNNotificationContent *)self filterCriteria];
-  [v4 encodeObject:v18 forKey:@"filterCriteria"];
+  [coderCopy encodeInteger:-[CALNNotificationContent interruptionLevel](self forKey:{"interruptionLevel"), @"interruptionLevel"}];
+  filterCriteria = [(CALNNotificationContent *)self filterCriteria];
+  [coderCopy encodeObject:filterCriteria forKey:@"filterCriteria"];
 }
 
-- (CALNNotificationContent)initWithCoder:(id)a3
+- (CALNNotificationContent)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v32 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"body"];
-  v31 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
-  v30 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
-  v26 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"categoryIdentifier"];
-  v25 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"sectionIdentifier"];
-  v24 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
-  v29 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
-  v23 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"defaultActionURL"];
-  v22 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"iconIdentifier"];
-  v21 = [v3 decodeBoolForKey:@"shouldHideTime"];
-  v20 = [v3 decodeBoolForKey:@"shouldSuppressSyncDismissalWhenRemoved"];
+  coderCopy = coder;
+  v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"body"];
+  v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+  v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+  v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"categoryIdentifier"];
+  v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sectionIdentifier"];
+  v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+  v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"defaultActionURL"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iconIdentifier"];
+  v21 = [coderCopy decodeBoolForKey:@"shouldHideTime"];
+  v20 = [coderCopy decodeBoolForKey:@"shouldSuppressSyncDismissalWhenRemoved"];
   if (initWithCoder__onceToken != -1)
   {
     [CALNNotificationContent initWithCoder:];
   }
 
-  v19 = [v3 decodeObjectOfClasses:initWithCoder__peopleIdentifiersClasses forKey:@"peopleIdentifiers"];
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"sound"];
+  v19 = [coderCopy decodeObjectOfClasses:initWithCoder__peopleIdentifiersClasses forKey:@"peopleIdentifiers"];
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sound"];
   v5 = MEMORY[0x277CBEB98];
   v6 = objc_opt_class();
   v7 = objc_opt_class();
@@ -465,11 +465,11 @@ LABEL_18:
   v10 = objc_opt_class();
   v11 = objc_opt_class();
   v12 = [v5 setWithObjects:{v6, v7, v8, v9, v10, v11, objc_opt_class(), 0}];
-  v18 = [v3 decodeObjectOfClasses:v12 forKey:@"userInfo"];
+  v18 = [coderCopy decodeObjectOfClasses:v12 forKey:@"userInfo"];
 
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"threadIdentifier"];
-  v14 = [v3 decodeIntegerForKey:@"interruptionLevel"];
-  v15 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"filterCriteria"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"threadIdentifier"];
+  v14 = [coderCopy decodeIntegerForKey:@"interruptionLevel"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"filterCriteria"];
   BYTE1(v17) = v20;
   LOBYTE(v17) = v21;
   v28 = [(CALNNotificationContent *)self _initWithTitle:v30 subtitle:v31 body:v32 categoryIdentifier:v26 sectionIdentifier:v25 date:v24 expirationDate:v29 defaultActionURL:v23 iconIdentifier:v22 shouldHideTime:v17 shouldSuppressSyncDismissalWhenRemoved:v19 peopleIdentifiers:v4 sound:v18 userInfo:v13 threadIdentifier:v14 interruptionLevel:v15 filterCriteria:?];

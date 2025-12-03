@@ -33,73 +33,73 @@
   v5 = [v4 mutableCopy];
 
   [v5 setObject:@"http://schema.org/FoodEstablishmentReservation" forKeyedSubscript:@"@type"];
-  v6 = [v3 reservationDuration];
+  reservationDuration = [v3 reservationDuration];
 
-  if (v6)
+  if (reservationDuration)
   {
-    v7 = [v3 reservationDuration];
-    v8 = [v7 startDateComponents];
+    reservationDuration2 = [v3 reservationDuration];
+    startDateComponents = [reservationDuration2 startDateComponents];
 
-    if (v8)
+    if (startDateComponents)
     {
-      v9 = [v8 schema];
-      [v5 setObject:v9 forKeyedSubscript:@"startTime"];
+      schema = [startDateComponents schema];
+      [v5 setObject:schema forKeyedSubscript:@"startTime"];
     }
 
-    v10 = [v3 reservationDuration];
-    v11 = [v10 endDateComponents];
+    reservationDuration3 = [v3 reservationDuration];
+    endDateComponents = [reservationDuration3 endDateComponents];
 
-    if (v11)
+    if (endDateComponents)
     {
-      v12 = [v11 schema];
-      [v5 setObject:v12 forKeyedSubscript:@"endTime"];
+      schema2 = [endDateComponents schema];
+      [v5 setObject:schema2 forKeyedSubscript:@"endTime"];
     }
   }
 
-  v13 = [v3 partySize];
+  partySize = [v3 partySize];
 
-  if (v13)
+  if (partySize)
   {
-    v14 = [v3 partySize];
-    [v5 setObject:v14 forKeyedSubscript:@"partySize"];
+    partySize2 = [v3 partySize];
+    [v5 setObject:partySize2 forKeyedSubscript:@"partySize"];
   }
 
   v15 = objc_opt_new();
   [v15 setObject:@"http://schema.org/FoodEstablishment" forKeyedSubscript:@"@type"];
-  v16 = [v3 restaurantLocation];
-  v17 = [v16 name];
+  restaurantLocation = [v3 restaurantLocation];
+  name = [restaurantLocation name];
 
-  if (v17)
+  if (name)
   {
-    v18 = [v3 restaurantLocation];
-    v19 = [v18 name];
-    [v15 setObject:v19 forKeyedSubscript:@"name"];
+    restaurantLocation2 = [v3 restaurantLocation];
+    name2 = [restaurantLocation2 name];
+    [v15 setObject:name2 forKeyedSubscript:@"name"];
   }
 
-  v20 = [v3 restaurantLocation];
+  restaurantLocation3 = [v3 restaurantLocation];
 
-  if (v20)
+  if (restaurantLocation3)
   {
-    v21 = [v3 restaurantLocation];
-    v22 = [v21 postalAddress];
+    restaurantLocation4 = [v3 restaurantLocation];
+    postalAddress = [restaurantLocation4 postalAddress];
 
-    if (v22)
+    if (postalAddress)
     {
-      v23 = [v3 restaurantLocation];
-      v24 = [v23 postalAddress];
-      v25 = [v24 schema];
-      [v15 setObject:v25 forKeyedSubscript:@"address"];
+      restaurantLocation5 = [v3 restaurantLocation];
+      postalAddress2 = [restaurantLocation5 postalAddress];
+      schema3 = [postalAddress2 schema];
+      [v15 setObject:schema3 forKeyedSubscript:@"address"];
     }
 
-    v26 = [v3 restaurantLocation];
-    v27 = [v26 location];
+    restaurantLocation6 = [v3 restaurantLocation];
+    location = [restaurantLocation6 location];
 
-    if (v27)
+    if (location)
     {
-      v28 = [v3 restaurantLocation];
-      v29 = [v28 location];
-      v30 = [v29 schema];
-      [v15 setObject:v30 forKeyedSubscript:@"geo"];
+      restaurantLocation7 = [v3 restaurantLocation];
+      location2 = [restaurantLocation7 location];
+      schema4 = [location2 schema];
+      [v15 setObject:schema4 forKeyedSubscript:@"geo"];
     }
   }
 
@@ -124,8 +124,8 @@
   v9 = [MEMORY[0x277CBFC40] fromSchema:v8];
   v10 = objc_alloc(MEMORY[0x277CD4188]);
   v11 = objc_opt_new();
-  v12 = [v11 UUIDString];
-  v13 = [v10 initWithVocabularyIdentifier:v12 spokenPhrase:@"Restaurant" pronunciationHint:0];
+  uUIDString = [v11 UUIDString];
+  v13 = [v10 initWithVocabularyIdentifier:uUIDString spokenPhrase:@"Restaurant" pronunciationHint:0];
 
   v14 = objc_alloc(MEMORY[0x277CD3FA0]);
   v15 = [MEMORY[0x277CD3FA0] partySizeFromReservationSchema:v4];

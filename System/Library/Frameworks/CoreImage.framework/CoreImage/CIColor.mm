@@ -3,68 +3,68 @@
 + (CIColor)colorWithRed:(CGFloat)r green:(CGFloat)g blue:(CGFloat)b alpha:(CGFloat)a;
 + (CIColor)colorWithRed:(CGFloat)r green:(CGFloat)g blue:(CGFloat)b alpha:(CGFloat)a colorSpace:(CGColorSpaceRef)colorSpace;
 + (CIColor)colorWithString:(NSString *)representation;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGColor)rgbColor;
 - (CGFloat)blue;
 - (CGFloat)green;
 - (CGFloat)red;
 - (CIColor)initWithCGColor:(CGColorRef)c;
-- (CIColor)initWithCoder:(id)a3;
+- (CIColor)initWithCoder:(id)coder;
 - (CIColor)initWithRed:(CGFloat)r green:(CGFloat)g blue:(CGFloat)b alpha:(CGFloat)a;
 - (CIColor)initWithRed:(CGFloat)r green:(CGFloat)g blue:(CGFloat)b alpha:(CGFloat)a colorSpace:(CGColorSpaceRef)colorSpace;
-- (CIColor)initWithString:(id)a3;
+- (CIColor)initWithString:(id)string;
 - (NSString)stringRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugQuickLookObject;
 - (id)description;
 - (uint64_t)rgbColor;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CIColor
 
 + (CIColor)colorWithCGColor:(CGColorRef)c
 {
-  v3 = [[a1 alloc] initWithCGColor:c];
+  v3 = [[self alloc] initWithCGColor:c];
 
   return v3;
 }
 
 + (CIColor)colorWithRed:(CGFloat)r green:(CGFloat)g blue:(CGFloat)b alpha:(CGFloat)a
 {
-  v6 = [[a1 alloc] initWithRed:r green:g blue:b alpha:a];
+  v6 = [[self alloc] initWithRed:r green:g blue:b alpha:a];
 
   return v6;
 }
 
 + (CIColor)colorWithRed:(CGFloat)r green:(CGFloat)g blue:(CGFloat)b alpha:(CGFloat)a colorSpace:(CGColorSpaceRef)colorSpace
 {
-  v7 = [[a1 alloc] initWithRed:colorSpace green:r blue:g alpha:b colorSpace:a];
+  v7 = [[self alloc] initWithRed:colorSpace green:r blue:g alpha:b colorSpace:a];
 
   return v7;
 }
 
 + (CIColor)colorWithString:(NSString *)representation
 {
-  v3 = [[a1 alloc] initWithString:representation];
+  v3 = [[self alloc] initWithString:representation];
 
   return v3;
 }
 
-- (CIColor)initWithString:(id)a3
+- (CIColor)initWithString:(id)string
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = [a3 UTF8String];
-  if (v4)
+  uTF8String = [string UTF8String];
+  if (uTF8String)
   {
-    v5 = v4;
+    v5 = uTF8String;
     v10 = 0;
-    v6 = *v4;
+    v6 = *uTF8String;
     if (v6 == 91 || v6 == 40)
     {
-      v5 = v4 + 1;
+      v5 = uTF8String + 1;
     }
 
     v7 = 0;
@@ -114,7 +114,7 @@
 
 - (CIColor)initWithCGColor:(CGColorRef)c
 {
-  v3 = self;
+  selfCopy = self;
   v12 = *MEMORY[0x1E69E9840];
   if (!c)
   {
@@ -132,7 +132,7 @@
   v9.receiver = self;
   v9.super_class = CIColor;
   v5 = [(CIColor *)&v9 init];
-  v3 = v5;
+  selfCopy = v5;
   if (v5)
   {
     priv = v5->_priv;
@@ -143,10 +143,10 @@
 
     v7 = CGColorRetain(c);
 LABEL_9:
-    v3->_priv = v7;
+    selfCopy->_priv = v7;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (CIColor)initWithRed:(CGFloat)r green:(CGFloat)g blue:(CGFloat)b alpha:(CGFloat)a
@@ -200,11 +200,11 @@ LABEL_9:
 
 - (CGColor)rgbColor
 {
-  v3 = [(CIColor *)self cgColor];
-  ColorSpace = CGColorGetColorSpace(v3);
+  cgColor = [(CIColor *)self cgColor];
+  ColorSpace = CGColorGetColorSpace(cgColor);
   if (CGColorSpaceGetModel(ColorSpace) == kCGColorSpaceModelRGB)
   {
-    return v3;
+    return cgColor;
   }
 
   result = self->_pad[0];
@@ -225,10 +225,10 @@ LABEL_9:
 
 - (CGFloat)red
 {
-  v2 = [(CIColor *)self rgbColor];
-  if (v2)
+  rgbColor = [(CIColor *)self rgbColor];
+  if (rgbColor)
   {
-    return *CGColorGetComponents(v2);
+    return *CGColorGetComponents(rgbColor);
   }
 
   else
@@ -239,10 +239,10 @@ LABEL_9:
 
 - (CGFloat)green
 {
-  v2 = [(CIColor *)self rgbColor];
-  if (v2)
+  rgbColor = [(CIColor *)self rgbColor];
+  if (rgbColor)
   {
-    return CGColorGetComponents(v2)[1];
+    return CGColorGetComponents(rgbColor)[1];
   }
 
   else
@@ -253,10 +253,10 @@ LABEL_9:
 
 - (CGFloat)blue
 {
-  v2 = [(CIColor *)self rgbColor];
-  if (v2)
+  rgbColor = [(CIColor *)self rgbColor];
+  if (rgbColor)
   {
-    return CGColorGetComponents(v2)[2];
+    return CGColorGetComponents(rgbColor)[2];
   }
 
   else
@@ -278,7 +278,7 @@ LABEL_9:
   return [v3 stringWithFormat:@"%g %g %g %g", v5, v7, v9, v10];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -286,10 +286,10 @@ LABEL_9:
     return 0;
   }
 
-  v5 = [(CIColor *)self cgColor];
-  v6 = [a3 cgColor];
+  cgColor = [(CIColor *)self cgColor];
+  cgColor2 = [equal cgColor];
 
-  return CGColorEqualToColor(v5, v6);
+  return CGColorEqualToColor(cgColor, cgColor2);
 }
 
 - (unint64_t)hash
@@ -314,54 +314,54 @@ LABEL_9:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CIColor allocWithZone:a3];
+  v4 = [CIColor allocWithZone:zone];
   priv = self->_priv;
 
   return [(CIColor *)v4 initWithCGColor:priv];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = [(CIColor *)self rgbColor];
-  if (v4)
+  rgbColor = [(CIColor *)self rgbColor];
+  if (rgbColor)
   {
-    v5 = v4;
-    Components = CGColorGetComponents(v4);
+    v5 = rgbColor;
+    Components = CGColorGetComponents(rgbColor);
     v7 = *Components;
     *&v7 = *Components;
-    [a3 encodeFloat:@"red" forKey:v7];
+    [coder encodeFloat:@"red" forKey:v7];
     v8 = Components[1];
     *&v8 = v8;
-    [a3 encodeFloat:@"green" forKey:v8];
+    [coder encodeFloat:@"green" forKey:v8];
     v9 = Components[2];
     *&v9 = v9;
-    [a3 encodeFloat:@"blue" forKey:v9];
+    [coder encodeFloat:@"blue" forKey:v9];
     v10 = Components[3];
     *&v10 = v10;
-    [a3 encodeFloat:@"alpha" forKey:v10];
+    [coder encodeFloat:@"alpha" forKey:v10];
     CGColorGetColorSpace(v5);
     ID = CGColorSpaceGetID();
     if (ID)
     {
 
-      [a3 encodeInt:ID forKey:@"csid"];
+      [coder encodeInt:ID forKey:@"csid"];
     }
   }
 }
 
-- (CIColor)initWithCoder:(id)a3
+- (CIColor)initWithCoder:(id)coder
 {
-  [a3 decodeFloatForKey:@"red"];
+  [coder decodeFloatForKey:@"red"];
   v6 = v5;
-  [a3 decodeFloatForKey:@"green"];
+  [coder decodeFloatForKey:@"green"];
   v8 = v7;
-  [a3 decodeFloatForKey:@"blue"];
+  [coder decodeFloatForKey:@"blue"];
   v10 = v9;
-  [a3 decodeFloatForKey:@"alpha"];
+  [coder decodeFloatForKey:@"alpha"];
   v12 = v11;
-  if ([a3 decodeIntForKey:@"csid"] && (v13 = CGColorSpaceCreateWithID()) != 0)
+  if ([coder decodeIntForKey:@"csid"] && (v13 = CGColorSpaceCreateWithID()) != 0)
   {
     v14 = v13;
     v15 = [(CIColor *)self initWithRed:v13 green:v6 blue:v8 alpha:v10 colorSpace:v12];

@@ -1,39 +1,39 @@
 @interface CLSRoutineService
 - (BOOL)hasLocationsOfInterestInformation;
-- (BOOL)isRemoteLocation:(id)a3 inDateInterval:(id)a4;
-- (CLSRoutineService)initWithFetchDateInterval:(id)a3 locationCache:(id)a4;
-- (double)_disambiguationDistanceForDevicePlacementType:(unint64_t)a3;
-- (id)_fetchHomeAndWorkLocationsOfInterestWithRoutineManager:(id)a3;
-- (id)_fetchLocationOfInterestTransitionsWithinDateInterval:(id)a3 routineManager:(id)a4;
-- (id)_fetchLocationsOfInterestWithinDateInterval:(id)a3 routineManager:(id)a4;
-- (id)_placemarksFromLocationsOfInterest:(id)a3;
+- (BOOL)isRemoteLocation:(id)location inDateInterval:(id)interval;
+- (CLSRoutineService)initWithFetchDateInterval:(id)interval locationCache:(id)cache;
+- (double)_disambiguationDistanceForDevicePlacementType:(unint64_t)type;
+- (id)_fetchHomeAndWorkLocationsOfInterestWithRoutineManager:(id)manager;
+- (id)_fetchLocationOfInterestTransitionsWithinDateInterval:(id)interval routineManager:(id)manager;
+- (id)_fetchLocationsOfInterestWithinDateInterval:(id)interval routineManager:(id)manager;
+- (id)_placemarksFromLocationsOfInterest:(id)interest;
 - (id)lastLocationOfInterestVisit;
-- (id)locationOfInterestAtLocation:(id)a3;
-- (id)locationOfInterestCloseToLocation:(id)a3 inDateInterval:(id)a4;
-- (id)locationOfInterestVisitsAtLocation:(id)a3 inDateInterval:(id)a4;
-- (id)locationOfInterestVisitsInDateInterval:(id)a3;
-- (id)locationsOfInterestOfType:(int64_t)a3;
-- (id)placemarksOfInterestOfType:(int64_t)a3;
+- (id)locationOfInterestAtLocation:(id)location;
+- (id)locationOfInterestCloseToLocation:(id)location inDateInterval:(id)interval;
+- (id)locationOfInterestVisitsAtLocation:(id)location inDateInterval:(id)interval;
+- (id)locationOfInterestVisitsInDateInterval:(id)interval;
+- (id)locationsOfInterestOfType:(int64_t)type;
+- (id)placemarksOfInterestOfType:(int64_t)type;
 - (id)visitsCache;
-- (int64_t)predominantTransportationModeForDateInterval:(id)a3 confidence:(double *)a4;
-- (unint64_t)_devicePlacementTypeForLocationsOfInterestVisits:(id)a3;
-- (unint64_t)_fetchFinerGranularityMapItemForVisitIdentifier:(id)a3 routineManager:(id)a4;
-- (unint64_t)fetchFinerGranularityBusinessItemNumberForVisitIdentifier:(id)a3;
+- (int64_t)predominantTransportationModeForDateInterval:(id)interval confidence:(double *)confidence;
+- (unint64_t)_devicePlacementTypeForLocationsOfInterestVisits:(id)visits;
+- (unint64_t)_fetchFinerGranularityMapItemForVisitIdentifier:(id)identifier routineManager:(id)manager;
+- (unint64_t)fetchFinerGranularityBusinessItemNumberForVisitIdentifier:(id)identifier;
 - (void)_buildLocationsOfInterestCache;
 - (void)_pinPendingVisits;
-- (void)cacheLocationOfInterest:(id)a3;
+- (void)cacheLocationOfInterest:(id)interest;
 - (void)invalidateLocationsOfInterest;
 @end
 
 @implementation CLSRoutineService
 
-- (unint64_t)_fetchFinerGranularityMapItemForVisitIdentifier:(id)a3 routineManager:(id)a4
+- (unint64_t)_fetchFinerGranularityMapItemForVisitIdentifier:(id)identifier routineManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  managerCopy = manager;
   if (self->_routineIsAvailable)
   {
-    v8 = dispatch_block_create(0, &__block_literal_global_16);
+    loggingConnection3 = dispatch_block_create(0, &__block_literal_global_16);
     *buf = 0;
     v25 = buf;
     v26 = 0x3032000000;
@@ -42,27 +42,27 @@
     v29 = 0;
     if (objc_opt_respondsToSelector())
     {
-      v9 = v7;
+      v9 = managerCopy;
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
       aBlock[2] = __84__CLSRoutineService__fetchFinerGranularityMapItemForVisitIdentifier_routineManager___block_invoke_2;
       aBlock[3] = &unk_2788A8048;
       v23 = buf;
-      v10 = v8;
+      v10 = loggingConnection3;
       v22 = v10;
       v11 = _Block_copy(aBlock);
-      [v9 fetchFinerGranularityInferredMapItemWithVisitIdentifier:v6 handler:v11];
+      [v9 fetchFinerGranularityInferredMapItemWithVisitIdentifier:identifierCopy handler:v11];
 
       v12 = dispatch_time(0, 2000000000);
       if (dispatch_block_wait(v10, v12))
       {
         v13 = +[CLSLogging sharedLogging];
-        v14 = [v13 loggingConnection];
+        loggingConnection = [v13 loggingConnection];
 
-        if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
         {
           *v20 = 0;
-          _os_log_error_impl(&dword_22F907000, v14, OS_LOG_TYPE_ERROR, "[RoutineLocationIngest] Timeout getting Finer granularity map item from CoreRoutine", v20, 2u);
+          _os_log_error_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_ERROR, "[RoutineLocationIngest] Timeout getting Finer granularity map item from CoreRoutine", v20, 2u);
         }
 
         self->_routineIsAvailable = 0;
@@ -70,27 +70,27 @@
 
       if ([*(v25 + 5) validMUID])
       {
-        v15 = [*(v25 + 5) muid];
+        muid = [*(v25 + 5) muid];
       }
 
       else
       {
         v17 = +[CLSLogging sharedLogging];
-        v18 = [v17 loggingConnection];
+        loggingConnection2 = [v17 loggingConnection];
 
-        if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_DEFAULT))
         {
           *v20 = 0;
-          _os_log_impl(&dword_22F907000, v18, OS_LOG_TYPE_DEFAULT, "[RoutineLocationIngest] Finer Granularity Map Item is invalid. Returning unknown MUID", v20, 2u);
+          _os_log_impl(&dword_22F907000, loggingConnection2, OS_LOG_TYPE_DEFAULT, "[RoutineLocationIngest] Finer Granularity Map Item is invalid. Returning unknown MUID", v20, 2u);
         }
 
-        v15 = 0;
+        muid = 0;
       }
     }
 
     else
     {
-      v15 = 0;
+      muid = 0;
     }
 
     _Block_object_dispose(buf, 8);
@@ -99,18 +99,18 @@
   else
   {
     v16 = +[CLSLogging sharedLogging];
-    v8 = [v16 loggingConnection];
+    loggingConnection3 = [v16 loggingConnection];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection3, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_22F907000, v8, OS_LOG_TYPE_ERROR, "[RoutineLocationIngest] Core Routine is not available", buf, 2u);
+      _os_log_error_impl(&dword_22F907000, loggingConnection3, OS_LOG_TYPE_ERROR, "[RoutineLocationIngest] Core Routine is not available", buf, 2u);
     }
 
-    v15 = 0;
+    muid = 0;
   }
 
-  return v15;
+  return muid;
 }
 
 void __84__CLSRoutineService__fetchFinerGranularityMapItemForVisitIdentifier_routineManager___block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -188,14 +188,14 @@ LABEL_18:
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)_placemarksFromLocationsOfInterest:(id)a3
+- (id)_placemarksFromLocationsOfInterest:(id)interest
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  interestCopy = interest;
+  v5 = interestCopy;
+  if (interestCopy)
   {
-    v6 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v4, "count")}];
+    v6 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(interestCopy, "count")}];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
@@ -244,18 +244,18 @@ LABEL_18:
   if (self->_routineIsAvailable && v3 != 0)
   {
     v5 = v3;
-    v6 = [(CLSRoutineService *)self visitsCache];
+    visitsCache = [(CLSRoutineService *)self visitsCache];
     v7 = v5;
-    v8 = [v6 numberOfLocationsOfInterestVisits];
-    if (v8 * 0.8 <= v5)
+    numberOfLocationsOfInterestVisits = [visitsCache numberOfLocationsOfInterestVisits];
+    if (numberOfLocationsOfInterestVisits * 0.8 <= v5)
     {
-      v9 = [v6 locationsOfInterestOfType:0];
+      defaultManager = [visitsCache locationsOfInterestOfType:0];
       v43 = 0u;
       v44 = 0u;
       v41 = 0u;
       v42 = 0u;
       v10 = 0;
-      v11 = [v9 countByEnumeratingWithState:&v41 objects:v48 count:16];
+      v11 = [defaultManager countByEnumeratingWithState:&v41 objects:v48 count:16];
       if (v11)
       {
         v12 = *v42;
@@ -265,22 +265,22 @@ LABEL_18:
           {
             if (*v42 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(defaultManager);
             }
 
-            v14 = [*(*(&v41 + 1) + 8 * i) visits];
-            v15 = [v14 count];
+            visits = [*(*(&v41 + 1) + 8 * i) visits];
+            v15 = [visits count];
 
             v10 += v15;
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v41 objects:v48 count:16];
+          v11 = [defaultManager countByEnumeratingWithState:&v41 objects:v48 count:16];
         }
 
         while (v11);
       }
 
-      v16 = [v6 locationsOfInterestOfType:1];
+      v16 = [visitsCache locationsOfInterestOfType:1];
       v39 = 0u;
       v40 = 0u;
       v37 = 0u;
@@ -298,8 +298,8 @@ LABEL_18:
               objc_enumerationMutation(v16);
             }
 
-            v20 = [*(*(&v37 + 1) + 8 * j) visits];
-            v21 = [v20 count];
+            visits2 = [*(*(&v37 + 1) + 8 * j) visits];
+            v21 = [visits2 count];
 
             v10 += v21;
           }
@@ -310,18 +310,18 @@ LABEL_18:
         while (v17);
       }
 
-      if (v8 * 0.9 > v10)
+      if (numberOfLocationsOfInterestVisits * 0.9 > v10)
       {
         v22 = +[CLSLogging sharedLogging];
-        v23 = [v22 loggingConnection];
+        loggingConnection = [v22 loggingConnection];
 
-        if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
+        if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
         {
           *buf = 134218240;
-          *&buf[4] = v7 / v8;
+          *&buf[4] = v7 / numberOfLocationsOfInterestVisits;
           *&buf[12] = 2048;
-          *&buf[14] = v10 / v8;
-          _os_log_impl(&dword_22F907000, v23, OS_LOG_TYPE_INFO, "Safeguard Pinning. Not pinning any visits. total %f, homeWork %f", buf, 0x16u);
+          *&buf[14] = v10 / numberOfLocationsOfInterestVisits;
+          _os_log_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_INFO, "Safeguard Pinning. Not pinning any visits. total %f, homeWork %f", buf, 0x16u);
         }
 
         v24 = [MEMORY[0x277CBEB58] set];
@@ -333,7 +333,7 @@ LABEL_30:
       }
     }
 
-    v9 = [MEMORY[0x277D01280] defaultManager];
+    defaultManager = [MEMORY[0x277D01280] defaultManager];
     v26 = dispatch_semaphore_create(0);
     *buf = 0;
     *&buf[8] = buf;
@@ -348,18 +348,18 @@ LABEL_30:
     v34[4] = self;
     v16 = v26;
     v35 = v16;
-    [v9 extendLifetimeOfVisitsWithIdentifiers:v27 handler:v34];
+    [defaultManager extendLifetimeOfVisitsWithIdentifiers:v27 handler:v34];
     v28 = dispatch_time(0, 2000000000);
     if (dispatch_semaphore_wait(v16, v28))
     {
       *(*&buf[8] + 24) = 0;
       v29 = +[CLSLogging sharedLogging];
-      v30 = [v29 loggingConnection];
+      loggingConnection2 = [v29 loggingConnection];
 
-      if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
       {
         *v33 = 0;
-        _os_log_error_impl(&dword_22F907000, v30, OS_LOG_TYPE_ERROR, "Timeout pinning visits CoreRoutine", v33, 2u);
+        _os_log_error_impl(&dword_22F907000, loggingConnection2, OS_LOG_TYPE_ERROR, "Timeout pinning visits CoreRoutine", v33, 2u);
       }
     }
 
@@ -397,11 +397,11 @@ void __38__CLSRoutineService__pinPendingVisits__block_invoke(uint64_t a1, void *
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (id)_fetchLocationOfInterestTransitionsWithinDateInterval:(id)a3 routineManager:(id)a4
+- (id)_fetchLocationOfInterestTransitionsWithinDateInterval:(id)interval routineManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  intervalCopy = interval;
+  managerCopy = manager;
+  if (intervalCopy)
   {
     v21 = 0;
     v22 = &v21;
@@ -410,8 +410,8 @@ void __38__CLSRoutineService__pinPendingVisits__block_invoke(uint64_t a1, void *
     v25 = __Block_byref_object_dispose__4315;
     v26 = 0;
     v8 = dispatch_block_create(0, &__block_literal_global_13);
-    v9 = [v6 startDate];
-    v10 = [v6 endDate];
+    startDate = [intervalCopy startDate];
+    endDate = [intervalCopy endDate];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __90__CLSRoutineService__fetchLocationOfInterestTransitionsWithinDateInterval_routineManager___block_invoke_2;
@@ -420,18 +420,18 @@ void __38__CLSRoutineService__pinPendingVisits__block_invoke(uint64_t a1, void *
     v18[4] = self;
     v11 = v8;
     v19 = v11;
-    [v7 fetchTransitionsBetweenStartDate:v9 endDate:v10 handler:v18];
+    [managerCopy fetchTransitionsBetweenStartDate:startDate endDate:endDate handler:v18];
 
     v12 = dispatch_time(0, 2000000000);
     if (dispatch_block_wait(v11, v12))
     {
       v13 = +[CLSLogging sharedLogging];
-      v14 = [v13 loggingConnection];
+      loggingConnection = [v13 loggingConnection];
 
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         *v17 = 0;
-        _os_log_error_impl(&dword_22F907000, v14, OS_LOG_TYPE_ERROR, "Timeout getting loi transitions from CoreRoutine", v17, 2u);
+        _os_log_error_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_ERROR, "Timeout getting loi transitions from CoreRoutine", v17, 2u);
       }
 
       v15 = 0;
@@ -497,16 +497,16 @@ void __90__CLSRoutineService__fetchLocationOfInterestTransitionsWithinDateInterv
   (*(a1[5] + 16))();
 }
 
-- (id)_fetchHomeAndWorkLocationsOfInterestWithRoutineManager:(id)a3
+- (id)_fetchHomeAndWorkLocationsOfInterestWithRoutineManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __76__CLSRoutineService__fetchHomeAndWorkLocationsOfInterestWithRoutineManager___block_invoke;
   v14 = &unk_2788A7FD0;
-  v15 = v4;
-  v16 = self;
-  v5 = v4;
+  v15 = managerCopy;
+  selfCopy = self;
+  v5 = managerCopy;
   v6 = _Block_copy(&v11);
   v7 = v6[2](v6, 0);
   if (self->_routineIsAvailable)
@@ -615,51 +615,51 @@ void __76__CLSRoutineService__fetchHomeAndWorkLocationsOfInterestWithRoutineMana
   (*(a1[5] + 16))();
 }
 
-- (id)_fetchLocationsOfInterestWithinDateInterval:(id)a3 routineManager:(id)a4
+- (id)_fetchLocationsOfInterestWithinDateInterval:(id)interval routineManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CLSRoutineService *)self _fetchHomeAndWorkLocationsOfInterestWithRoutineManager:v7];
+  intervalCopy = interval;
+  managerCopy = manager;
+  v8 = [(CLSRoutineService *)self _fetchHomeAndWorkLocationsOfInterestWithRoutineManager:managerCopy];
   v9 = v8;
   if (self->_routineIsAvailable)
   {
     if (v8)
     {
-      v10 = [v8 mutableCopy];
+      array = [v8 mutableCopy];
     }
 
     else
     {
-      v10 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
     }
 
-    v11 = v10;
-    if (v6)
+    v11 = array;
+    if (intervalCopy)
     {
       v12 = dispatch_block_create(0, &__block_literal_global_4341);
-      v13 = [v6 startDate];
-      v14 = [v6 endDate];
+      startDate = [intervalCopy startDate];
+      endDate = [intervalCopy endDate];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __80__CLSRoutineService__fetchLocationsOfInterestWithinDateInterval_routineManager___block_invoke_2;
       v21[3] = &unk_2788A7F80;
       v11 = v11;
       v22 = v11;
-      v23 = self;
+      selfCopy = self;
       v15 = v12;
       v24 = v15;
-      [v7 fetchLocationsOfInterestVisitedBetweenStartDate:v13 endDate:v14 withHandler:v21];
+      [managerCopy fetchLocationsOfInterestVisitedBetweenStartDate:startDate endDate:endDate withHandler:v21];
 
       v16 = dispatch_time(0, 2000000000);
       if (dispatch_block_wait(v15, v16))
       {
         v17 = +[CLSLogging sharedLogging];
-        v18 = [v17 loggingConnection];
+        loggingConnection = [v17 loggingConnection];
 
-        if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
         {
           *v20 = 0;
-          _os_log_error_impl(&dword_22F907000, v18, OS_LOG_TYPE_ERROR, "Timeout getting loi information from CoreRoutine", v20, 2u);
+          _os_log_error_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_ERROR, "Timeout getting loi information from CoreRoutine", v20, 2u);
         }
 
         self->_routineIsAvailable = 0;
@@ -718,17 +718,17 @@ void __80__CLSRoutineService__fetchLocationsOfInterestWithinDateInterval_routine
   v93 = *MEMORY[0x277D85DE8];
   if (self->_routineIsAvailable)
   {
-    v2 = self;
+    selfCopy = self;
     v76 = [[CLSLocationOfInterestCache alloc] initWithLocationCache:self->_locationCache];
     v3 = objc_autoreleasePoolPush();
-    v4 = [MEMORY[0x277D01280] defaultManager];
-    v5 = [(CLSRoutineService *)v2 _fetchLocationsOfInterestWithinDateInterval:v2->_fetchDateInterval routineManager:v4];
-    if (v2->_routineIsAvailable)
+    defaultManager = [MEMORY[0x277D01280] defaultManager];
+    v5 = [(CLSRoutineService *)selfCopy _fetchLocationsOfInterestWithinDateInterval:selfCopy->_fetchDateInterval routineManager:defaultManager];
+    if (selfCopy->_routineIsAvailable)
     {
       v62 = v3;
       v63 = v5;
-      v64 = v4;
-      v65 = v2;
+      v64 = defaultManager;
+      v65 = selfCopy;
       if (v5)
       {
         v83 = 0u;
@@ -753,34 +753,34 @@ void __80__CLSRoutineService__fetchLocationsOfInterestWithinDateInterval_routine
               v7 = *(*(&v81 + 1) + 8 * v6);
               v8 = objc_autoreleasePoolPush();
               v9 = v7;
-              v10 = [v9 mapItem];
-              if ([v10 validMUID])
+              mapItem = [v9 mapItem];
+              if ([mapItem validMUID])
               {
-                v11 = [v10 muid];
+                muid = [mapItem muid];
               }
 
               else
               {
-                v11 = 0;
+                muid = 0;
               }
 
-              v12 = [[CLSLitePlacemark alloc] initWithRTMapItem:v10];
-              v13 = [v9 type];
-              v14 = v13 + 1;
+              v12 = [[CLSLitePlacemark alloc] initWithRTMapItem:mapItem];
+              type = [v9 type];
+              v14 = type + 1;
               context = v8;
               v75 = v6;
-              v71 = v10;
-              if ((v13 + 1) >= 5)
+              v71 = mapItem;
+              if ((type + 1) >= 5)
               {
-                v17 = v13;
+                v17 = type;
                 v18 = +[CLSLogging sharedLogging];
-                v19 = [v18 loggingConnection];
+                loggingConnection = [v18 loggingConnection];
 
-                if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+                if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 134217984;
                   v92 = v17;
-                  _os_log_error_impl(&dword_22F907000, v19, OS_LOG_TYPE_ERROR, "Undefined LocationOfInterestType %lu. File a radar against Photos Media Mining.", buf, 0xCu);
+                  _os_log_error_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_ERROR, "Undefined LocationOfInterestType %lu. File a radar against Photos Media Mining.", buf, 0xCu);
                 }
 
                 v15 = -1;
@@ -793,21 +793,21 @@ void __80__CLSRoutineService__fetchLocationsOfInterestWithinDateInterval_routine
                 v16 = dbl_22F992858[v14];
               }
 
-              v20 = [(CLSLitePlacemark *)v12 location];
+              location = [(CLSLitePlacemark *)v12 location];
               v21 = [CLSLocationOfInterest alloc];
-              v22 = [v9 identifier];
+              identifier = [v9 identifier];
               v70 = v12;
-              v23 = [(CLSLitePlacemark *)v12 region];
-              v69 = v20;
-              v24 = [(CLSLocationOfInterest *)v21 initWithIdentifier:v22 locationOfInterestType:v15 location:v20 placemarkRegion:v23 businessItemMuid:v11 radius:v16];
+              region = [(CLSLitePlacemark *)v12 region];
+              v69 = location;
+              v24 = [(CLSLocationOfInterest *)v21 initWithIdentifier:identifier locationOfInterestType:v15 location:location placemarkRegion:region businessItemMuid:muid radius:v16];
 
               v87 = 0u;
               v88 = 0u;
               v85 = 0u;
               v86 = 0u;
               v72 = v9;
-              v25 = [v9 visits];
-              v26 = [v25 countByEnumeratingWithState:&v85 objects:buf count:16];
+              visits = [v9 visits];
+              v26 = [visits countByEnumeratingWithState:&v85 objects:buf count:16];
               if (v26)
               {
                 v27 = v26;
@@ -818,25 +818,25 @@ void __80__CLSRoutineService__fetchLocationsOfInterestWithinDateInterval_routine
                   {
                     if (*v86 != v28)
                     {
-                      objc_enumerationMutation(v25);
+                      objc_enumerationMutation(visits);
                     }
 
                     v30 = *(*(&v85 + 1) + 8 * i);
                     v31 = objc_alloc(MEMORY[0x277CCA970]);
-                    v32 = [v30 entryDate];
-                    v33 = [v30 exitDate];
-                    v34 = [v31 initWithStartDate:v32 endDate:v33];
+                    entryDate = [v30 entryDate];
+                    exitDate = [v30 exitDate];
+                    v34 = [v31 initWithStartDate:entryDate endDate:exitDate];
 
                     [v30 locationOfInterestConfidence];
                     v36 = v35;
                     v37 = [CLSLocationOfInterestVisit alloc];
-                    v38 = [v30 identifier];
-                    v39 = [(CLSLocationOfInterestVisit *)v37 initWithIdentifier:v38 visitInterval:v34 confidence:v36];
+                    identifier2 = [v30 identifier];
+                    v39 = [(CLSLocationOfInterestVisit *)v37 initWithIdentifier:identifier2 visitInterval:v34 confidence:v36];
 
                     [(CLSLocationOfInterest *)v24 addVisit:v39];
                   }
 
-                  v27 = [v25 countByEnumeratingWithState:&v85 objects:buf count:16];
+                  v27 = [visits countByEnumeratingWithState:&v85 objects:buf count:16];
                 }
 
                 while (v27);
@@ -854,11 +854,11 @@ void __80__CLSRoutineService__fetchLocationsOfInterestWithinDateInterval_routine
           while (v68);
         }
 
-        v2 = v65;
+        selfCopy = v65;
       }
 
       contexta = objc_autoreleasePoolPush();
-      [(CLSRoutineService *)v2 _fetchLocationOfInterestTransitionsWithinDateInterval:v2->_fetchDateInterval routineManager:v4];
+      [(CLSRoutineService *)selfCopy _fetchLocationOfInterestTransitionsWithinDateInterval:selfCopy->_fetchDateInterval routineManager:defaultManager];
       v77 = 0u;
       v78 = 0u;
       v79 = 0u;
@@ -882,22 +882,22 @@ void __80__CLSRoutineService__fetchLocationsOfInterestWithinDateInterval_routine
             v46 = objc_autoreleasePoolPush();
             v47 = v45;
             v48 = objc_alloc(MEMORY[0x277CCA970]);
-            v49 = [v47 startDate];
-            v50 = [v47 stopDate];
-            v51 = [v48 initWithStartDate:v49 endDate:v50];
+            startDate = [v47 startDate];
+            stopDate = [v47 stopDate];
+            v51 = [v48 initWithStartDate:startDate endDate:stopDate];
 
-            v52 = [v47 modeOfTransportation];
-            v53 = v52;
-            if (v52 >= 4)
+            modeOfTransportation = [v47 modeOfTransportation];
+            v53 = modeOfTransportation;
+            if (modeOfTransportation >= 4)
             {
               v55 = +[CLSLogging sharedLogging];
-              v56 = [v55 loggingConnection];
+              loggingConnection2 = [v55 loggingConnection];
 
-              if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
+              if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
               {
                 *buf = 134217984;
                 v92 = v53;
-                _os_log_error_impl(&dword_22F907000, v56, OS_LOG_TYPE_ERROR, "Undefined ModeOfTransportation %lu. File a radar against Photos Media Mining.", buf, 0xCu);
+                _os_log_error_impl(&dword_22F907000, loggingConnection2, OS_LOG_TYPE_ERROR, "Undefined ModeOfTransportation %lu. File a radar against Photos Media Mining.", buf, 0xCu);
               }
 
               v54 = -1;
@@ -905,12 +905,12 @@ void __80__CLSRoutineService__fetchLocationsOfInterestWithinDateInterval_routine
 
             else
             {
-              v54 = v52 - 1;
+              v54 = modeOfTransportation - 1;
             }
 
             v57 = [CLSLocationOfInterestTransition alloc];
-            v58 = [v47 identifier];
-            v59 = [(CLSLocationOfInterestTransition *)v57 initWithIdentifier:v58 transitionInterval:v51 transportationMode:v54];
+            identifier3 = [v47 identifier];
+            v59 = [(CLSLocationOfInterestTransition *)v57 initWithIdentifier:identifier3 transitionInterval:v51 transportationMode:v54];
 
             [(CLSLocationOfInterestCache *)v76 addLocationOfInterestTransition:v59];
             objc_autoreleasePoolPop(v46);
@@ -925,15 +925,15 @@ void __80__CLSRoutineService__fetchLocationsOfInterestWithinDateInterval_routine
       }
 
       objc_autoreleasePoolPop(contexta);
-      v4 = v64;
-      v2 = v65;
+      defaultManager = v64;
+      selfCopy = v65;
       v3 = v62;
       v5 = v63;
     }
 
     objc_autoreleasePoolPop(v3);
-    visitsCache = v2->_visitsCache;
-    v2->_visitsCache = v76;
+    visitsCache = selfCopy->_visitsCache;
+    selfCopy->_visitsCache = v76;
     v61 = v76;
 
     [(CLSLocationOfInterestCache *)v61 numberOfLocationsOfInterest];
@@ -942,13 +942,13 @@ void __80__CLSRoutineService__fetchLocationsOfInterestWithinDateInterval_routine
   }
 }
 
-- (int64_t)predominantTransportationModeForDateInterval:(id)a3 confidence:(double *)a4
+- (int64_t)predominantTransportationModeForDateInterval:(id)interval confidence:(double *)confidence
 {
   v50 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v38 = [(CLSRoutineService *)self visitsCache];
-  v6 = [v38 locationsOfInterestTransitionInDateInterval:v5];
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  intervalCopy = interval;
+  visitsCache = [(CLSRoutineService *)self visitsCache];
+  v6 = [visitsCache locationsOfInterestTransitionInDateInterval:intervalCopy];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
@@ -969,19 +969,19 @@ void __80__CLSRoutineService__fetchLocationsOfInterestWithinDateInterval_routine
         }
 
         v13 = *(*(&v44 + 1) + 8 * i);
-        v14 = [v13 transportationMode];
-        v15 = [v13 transitionInterval];
-        [v15 duration];
+        transportationMode = [v13 transportationMode];
+        transitionInterval = [v13 transitionInterval];
+        [transitionInterval duration];
         v17 = v16;
 
-        v18 = [MEMORY[0x277CCABB0] numberWithInteger:v14];
-        v19 = [v7 objectForKeyedSubscript:v18];
+        v18 = [MEMORY[0x277CCABB0] numberWithInteger:transportationMode];
+        v19 = [dictionary objectForKeyedSubscript:v18];
         [v19 doubleValue];
         v21 = v20;
 
         v22 = [MEMORY[0x277CCABB0] numberWithDouble:v17 + v21];
-        v23 = [MEMORY[0x277CCABB0] numberWithInteger:v14];
-        [v7 setObject:v22 forKeyedSubscript:v23];
+        v23 = [MEMORY[0x277CCABB0] numberWithInteger:transportationMode];
+        [dictionary setObject:v22 forKeyedSubscript:v23];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v44 objects:v49 count:16];
@@ -994,13 +994,13 @@ void __80__CLSRoutineService__fetchLocationsOfInterestWithinDateInterval_routine
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v24 = v7;
+  v24 = dictionary;
   v25 = [v24 countByEnumeratingWithState:&v40 objects:v48 count:16];
   if (v25)
   {
     v26 = v25;
     v27 = *v41;
-    v28 = -1;
+    unsignedIntegerValue = -1;
     v29 = -1.79769313e308;
     do
     {
@@ -1018,7 +1018,7 @@ void __80__CLSRoutineService__fetchLocationsOfInterestWithinDateInterval_routine
 
         if (v34 > v29)
         {
-          v28 = [v31 unsignedIntegerValue];
+          unsignedIntegerValue = [v31 unsignedIntegerValue];
           v29 = v34;
         }
       }
@@ -1031,7 +1031,7 @@ void __80__CLSRoutineService__fetchLocationsOfInterestWithinDateInterval_routine
     v35 = 1.0;
     if (v29 != -1.79769313e308)
     {
-      [v5 duration];
+      [intervalCopy duration];
       if (v36 > 0.0)
       {
         v35 = fmin(v29 / v36, 1.0);
@@ -1043,26 +1043,26 @@ void __80__CLSRoutineService__fetchLocationsOfInterestWithinDateInterval_routine
   {
 
     v35 = 1.0;
-    v28 = -1;
+    unsignedIntegerValue = -1;
   }
 
-  if (a4)
+  if (confidence)
   {
-    *a4 = v35;
+    *confidence = v35;
   }
 
-  return v28;
+  return unsignedIntegerValue;
 }
 
-- (double)_disambiguationDistanceForDevicePlacementType:(unint64_t)a3
+- (double)_disambiguationDistanceForDevicePlacementType:(unint64_t)type
 {
   result = 1.79769313e308;
-  if (a3 == 2)
+  if (type == 2)
   {
     result = 200000.0;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     return 50000.0;
   }
@@ -1070,17 +1070,17 @@ void __80__CLSRoutineService__fetchLocationsOfInterestWithinDateInterval_routine
   return result;
 }
 
-- (unint64_t)_devicePlacementTypeForLocationsOfInterestVisits:(id)a3
+- (unint64_t)_devicePlacementTypeForLocationsOfInterestVisits:(id)visits
 {
-  v3 = a3;
-  v4 = [v3 count];
+  visitsCopy = visits;
+  v4 = [visitsCopy count];
   if (v4)
   {
     if (v4 <= 2)
     {
-      v6 = [v3 anyObject];
-      v7 = [v6 visitInterval];
-      [v7 duration];
+      anyObject = [visitsCopy anyObject];
+      visitInterval = [anyObject visitInterval];
+      [visitInterval duration];
       v9 = v8;
 
       if (v9 >= 43200.0)
@@ -1124,30 +1124,30 @@ void __80__CLSRoutineService__fetchLocationsOfInterestWithinDateInterval_routine
   return v5;
 }
 
-- (BOOL)isRemoteLocation:(id)a3 inDateInterval:(id)a4
+- (BOOL)isRemoteLocation:(id)location inDateInterval:(id)interval
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  intervalCopy = interval;
   ++self->_statistics.numberOfMatchRequests;
-  v8 = [(CLSRoutineService *)self visitsCache];
-  v9 = [v8 locationsOfInterestVisitsInDateInterval:v7];
+  visitsCache = [(CLSRoutineService *)self visitsCache];
+  v9 = [visitsCache locationsOfInterestVisitsInDateInterval:intervalCopy];
   if (![v9 count])
   {
     goto LABEL_3;
   }
 
-  v10 = [v8 earliestVisitStartDate];
-  v11 = [v7 startDate];
-  v12 = [v10 compare:v11];
+  earliestVisitStartDate = [visitsCache earliestVisitStartDate];
+  startDate = [intervalCopy startDate];
+  v12 = [earliestVisitStartDate compare:startDate];
 
   if (v12 == 1)
   {
     goto LABEL_3;
   }
 
-  v34 = v8;
-  v35 = v7;
+  v34 = visitsCache;
+  v35 = intervalCopy;
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
@@ -1171,14 +1171,14 @@ void __80__CLSRoutineService__fetchLocationsOfInterestWithinDateInterval_routine
 
         v20 = *(*(&v36 + 1) + 8 * i);
         pendingPinningVisitIdentifiers = self->_pendingPinningVisitIdentifiers;
-        v22 = [v20 identifier];
-        [(NSMutableSet *)pendingPinningVisitIdentifiers addObject:v22];
+        identifier = [v20 identifier];
+        [(NSMutableSet *)pendingPinningVisitIdentifiers addObject:identifier];
 
-        v23 = [v20 locationOfInterest];
-        v24 = [v23 location];
-        [v24 distanceFromLocation:v6];
+        locationOfInterest = [v20 locationOfInterest];
+        location = [locationOfInterest location];
+        [location distanceFromLocation:locationCopy];
         v26 = v25;
-        [v23 placemarkLocationDistanceFromLocation:v24 locationCache:self->_locationCache];
+        [locationOfInterest placemarkLocationDistanceFromLocation:location locationCache:self->_locationCache];
         v28 = fmin(v26, v27);
         if (v28 <= 200.0)
         {
@@ -1209,30 +1209,30 @@ void __80__CLSRoutineService__fetchLocationsOfInterestWithinDateInterval_routine
   if (v17)
   {
     v13 = 0;
-    v7 = v35;
+    intervalCopy = v35;
 LABEL_23:
     v9 = v33;
-    v8 = v34;
+    visitsCache = v34;
     goto LABEL_24;
   }
 
   v30 = [(CLSRoutineService *)self _devicePlacementTypeForLocationsOfInterestVisits:v14];
   v13 = 0;
-  v7 = v35;
+  intervalCopy = v35;
   if (!v30)
   {
     goto LABEL_23;
   }
 
   v9 = v33;
-  v8 = v34;
+  visitsCache = v34;
   if (v30 == 3)
   {
     goto LABEL_24;
   }
 
   [(CLSRoutineService *)self _disambiguationDistanceForDevicePlacementType:v30];
-  v31 = [v34 closestLocationOfInterestVisitToLocation:v6 withinDistance:v35 inDateInterval:?];
+  v31 = [v34 closestLocationOfInterestVisitToLocation:locationCopy withinDistance:v35 inDateInterval:?];
 
   if (!v31)
   {
@@ -1248,107 +1248,107 @@ LABEL_24:
   return v13;
 }
 
-- (id)locationOfInterestVisitsInDateInterval:(id)a3
+- (id)locationOfInterestVisitsInDateInterval:(id)interval
 {
-  v4 = a3;
-  v5 = [(CLSRoutineService *)self visitsCache];
-  v6 = [v5 locationsOfInterestVisitsAtLocation:0 inDateInterval:v4];
+  intervalCopy = interval;
+  visitsCache = [(CLSRoutineService *)self visitsCache];
+  v6 = [visitsCache locationsOfInterestVisitsAtLocation:0 inDateInterval:intervalCopy];
 
   return v6;
 }
 
-- (unint64_t)fetchFinerGranularityBusinessItemNumberForVisitIdentifier:(id)a3
+- (unint64_t)fetchFinerGranularityBusinessItemNumberForVisitIdentifier:(id)identifier
 {
   v4 = MEMORY[0x277D01280];
-  v5 = a3;
-  v6 = [v4 defaultManager];
-  v7 = [(CLSRoutineService *)self _fetchFinerGranularityMapItemForVisitIdentifier:v5 routineManager:v6];
+  identifierCopy = identifier;
+  defaultManager = [v4 defaultManager];
+  v7 = [(CLSRoutineService *)self _fetchFinerGranularityMapItemForVisitIdentifier:identifierCopy routineManager:defaultManager];
 
   return v7;
 }
 
-- (id)locationOfInterestVisitsAtLocation:(id)a3 inDateInterval:(id)a4
+- (id)locationOfInterestVisitsAtLocation:(id)location inDateInterval:(id)interval
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CLSRoutineService *)self visitsCache];
-  v9 = [v8 locationsOfInterestVisitsAtLocation:v7 inDateInterval:v6];
+  intervalCopy = interval;
+  locationCopy = location;
+  visitsCache = [(CLSRoutineService *)self visitsCache];
+  v9 = [visitsCache locationsOfInterestVisitsAtLocation:locationCopy inDateInterval:intervalCopy];
 
   return v9;
 }
 
-- (id)locationOfInterestAtLocation:(id)a3
+- (id)locationOfInterestAtLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(CLSRoutineService *)self visitsCache];
-  v6 = [v5 locationOfInterestAtLocation:v4];
+  locationCopy = location;
+  visitsCache = [(CLSRoutineService *)self visitsCache];
+  v6 = [visitsCache locationOfInterestAtLocation:locationCopy];
 
   return v6;
 }
 
-- (id)locationOfInterestCloseToLocation:(id)a3 inDateInterval:(id)a4
+- (id)locationOfInterestCloseToLocation:(id)location inDateInterval:(id)interval
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CLSRoutineService *)self visitsCache];
-  v9 = [v8 closestLocationOfInterestVisitToLocation:v7 withinDistance:v6 inDateInterval:200.0];
+  intervalCopy = interval;
+  locationCopy = location;
+  visitsCache = [(CLSRoutineService *)self visitsCache];
+  v9 = [visitsCache closestLocationOfInterestVisitToLocation:locationCopy withinDistance:intervalCopy inDateInterval:200.0];
 
-  v10 = [v9 locationOfInterest];
+  locationOfInterest = [v9 locationOfInterest];
 
-  return v10;
+  return locationOfInterest;
 }
 
-- (id)placemarksOfInterestOfType:(int64_t)a3
+- (id)placemarksOfInterestOfType:(int64_t)type
 {
-  v4 = [(CLSRoutineService *)self locationsOfInterestOfType:a3];
+  v4 = [(CLSRoutineService *)self locationsOfInterestOfType:type];
   v5 = [(CLSRoutineService *)self _placemarksFromLocationsOfInterest:v4];
 
   return v5;
 }
 
-- (id)locationsOfInterestOfType:(int64_t)a3
+- (id)locationsOfInterestOfType:(int64_t)type
 {
-  v4 = [(CLSRoutineService *)self visitsCache];
-  v5 = [v4 locationsOfInterestOfType:a3];
+  visitsCache = [(CLSRoutineService *)self visitsCache];
+  v5 = [visitsCache locationsOfInterestOfType:type];
 
   return v5;
 }
 
-- (void)cacheLocationOfInterest:(id)a3
+- (void)cacheLocationOfInterest:(id)interest
 {
-  v4 = a3;
-  v5 = [(CLSRoutineService *)self visitsCache];
-  [v5 addLocationOfInterest:v4];
+  interestCopy = interest;
+  visitsCache = [(CLSRoutineService *)self visitsCache];
+  [visitsCache addLocationOfInterest:interestCopy];
 }
 
 - (id)visitsCache
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_visitsCache)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_visitsCache)
   {
-    [(CLSRoutineService *)v2 _buildLocationsOfInterestCache];
+    [(CLSRoutineService *)selfCopy _buildLocationsOfInterestCache];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  visitsCache = v2->_visitsCache;
+  visitsCache = selfCopy->_visitsCache;
 
   return visitsCache;
 }
 
 - (id)lastLocationOfInterestVisit
 {
-  v2 = [(CLSRoutineService *)self visitsCache];
-  v3 = [v2 lastLocationOfInterestVisit];
+  visitsCache = [(CLSRoutineService *)self visitsCache];
+  lastLocationOfInterestVisit = [visitsCache lastLocationOfInterestVisit];
 
-  return v3;
+  return lastLocationOfInterestVisit;
 }
 
 - (BOOL)hasLocationsOfInterestInformation
 {
-  v2 = [(CLSRoutineService *)self visitsCache];
-  v3 = [v2 numberOfLocationsOfInterest] != 0;
+  visitsCache = [(CLSRoutineService *)self visitsCache];
+  v3 = [visitsCache numberOfLocationsOfInterest] != 0;
 
   return v3;
 }
@@ -1368,10 +1368,10 @@ LABEL_24:
   MEMORY[0x2821F96F8]();
 }
 
-- (CLSRoutineService)initWithFetchDateInterval:(id)a3 locationCache:(id)a4
+- (CLSRoutineService)initWithFetchDateInterval:(id)interval locationCache:(id)cache
 {
-  v7 = a3;
-  v8 = a4;
+  intervalCopy = interval;
+  cacheCopy = cache;
   v12.receiver = self;
   v12.super_class = CLSRoutineService;
   v9 = [(CLSRoutineService *)&v12 init];
@@ -1379,8 +1379,8 @@ LABEL_24:
   if (v9)
   {
     v9->_routineIsAvailable = 1;
-    objc_storeStrong(&v9->_fetchDateInterval, a3);
-    objc_storeStrong(&v10->_locationCache, a4);
+    objc_storeStrong(&v9->_fetchDateInterval, interval);
+    objc_storeStrong(&v10->_locationCache, cache);
     [(CLSRoutineService *)v10 invalidateLocationsOfInterest];
   }
 

@@ -1,41 +1,41 @@
 @interface ICCalculateStringScanner
-- (ICCalculateStringScanner)initWithTextStorage:(id)a3;
+- (ICCalculateStringScanner)initWithTextStorage:(id)storage;
 - (ICTTTextStorage)textStorage;
-- (id)offsetsForInlineAttachment:(id)a3;
-- (id)replacementForAttachment:(id)a3;
-- (id)scanStringforRange:(_NSRange)a3 previewedExpressionString:(id)a4;
+- (id)offsetsForInlineAttachment:(id)attachment;
+- (id)replacementForAttachment:(id)attachment;
+- (id)scanStringforRange:(_NSRange)range previewedExpressionString:(id)string;
 @end
 
 @implementation ICCalculateStringScanner
 
-- (ICCalculateStringScanner)initWithTextStorage:(id)a3
+- (ICCalculateStringScanner)initWithTextStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   v8.receiver = self;
   v8.super_class = ICCalculateStringScanner;
   v5 = [(ICCalculateStringScanner *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ICCalculateStringScanner *)v5 setTextStorage:v4];
+    [(ICCalculateStringScanner *)v5 setTextStorage:storageCopy];
   }
 
   return v6;
 }
 
-- (id)scanStringforRange:(_NSRange)a3 previewedExpressionString:(id)a4
+- (id)scanStringforRange:(_NSRange)range previewedExpressionString:(id)string
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
   v38 = __Block_byref_object_copy__40;
   v39 = __Block_byref_object_dispose__40;
-  v8 = [(ICCalculateStringScanner *)self textStorage];
-  v9 = [v8 string];
-  v10 = [v9 substringWithRange:{location, length}];
+  textStorage = [(ICCalculateStringScanner *)self textStorage];
+  string = [textStorage string];
+  v10 = [string substringWithRange:{location, length}];
   v40 = [v10 mutableCopy];
 
   v29 = 0;
@@ -48,12 +48,12 @@
   v28[1] = v28;
   v28[2] = 0x2020000000;
   v28[3] = 0;
-  v25 = v7;
-  if (v7)
+  v25 = stringCopy;
+  if (stringCopy)
   {
-    if ([v7 length])
+    if ([stringCopy length])
     {
-      v11 = [v36[5] rangeOfString:v7];
+      v11 = [v36[5] rangeOfString:stringCopy];
       v13 = v11;
       if (v11 != 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -64,8 +64,8 @@
           do
           {
             v16 = [v36[5] ic_substringWithRange:{v13, 1, v25}];
-            v17 = [MEMORY[0x1E696AEC0] ic_equalsSignCharacterString];
-            v18 = [v16 isEqualToString:v17];
+            ic_equalsSignCharacterString = [MEMORY[0x1E696AEC0] ic_equalsSignCharacterString];
+            v18 = [v16 isEqualToString:ic_equalsSignCharacterString];
 
             v19 = v13;
             if ((v18 & 1) == 0)
@@ -94,7 +94,7 @@
     }
   }
 
-  v21 = [(ICCalculateStringScanner *)self textStorage];
+  textStorage2 = [(ICCalculateStringScanner *)self textStorage];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __73__ICCalculateStringScanner_scanStringforRange_previewedExpressionString___block_invoke;
@@ -105,7 +105,7 @@
   v27[5] = v28;
   v27[6] = &v35;
   v27[7] = &v29;
-  [v21 enumerateAttributesInRange:location options:length usingBlock:{0, v27}];
+  [textStorage2 enumerateAttributesInRange:location options:length usingBlock:{0, v27}];
 
   v22 = objc_alloc(MEMORY[0x1E69B7AC8]);
   v23 = [v22 initWithFirstObject:v36[5] secondObject:v30[5]];
@@ -202,20 +202,20 @@ uint64_t __73__ICCalculateStringScanner_scanStringforRange_previewedExpressionSt
   return [v2 numberWithInteger:v4];
 }
 
-- (id)replacementForAttachment:(id)a3
+- (id)replacementForAttachment:(id)attachment
 {
-  v3 = a3;
-  if ([v3 isCalculateResultAttachment])
+  attachmentCopy = attachment;
+  if ([attachmentCopy isCalculateResultAttachment])
   {
     v4 = @"=? ";
   }
 
-  else if ([v3 isCalculateGraphExpressionAttachment])
+  else if ([attachmentCopy isCalculateGraphExpressionAttachment])
   {
     v5 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v6 = [v3 displayText];
-    v7 = [v6 ic_trailingTrimmedString];
-    v4 = [v5 initWithFormat:@" %@", v7];
+    displayText = [attachmentCopy displayText];
+    ic_trailingTrimmedString = [displayText ic_trailingTrimmedString];
+    v4 = [v5 initWithFormat:@" %@", ic_trailingTrimmedString];
   }
 
   else
@@ -226,18 +226,18 @@ uint64_t __73__ICCalculateStringScanner_scanStringforRange_previewedExpressionSt
   return v4;
 }
 
-- (id)offsetsForInlineAttachment:(id)a3
+- (id)offsetsForInlineAttachment:(id)attachment
 {
-  v4 = a3;
-  if ([v4 isCalculateResultAttachment])
+  attachmentCopy = attachment;
+  if ([attachmentCopy isCalculateResultAttachment])
   {
     v5 = &unk_1F4FC3B10;
   }
 
-  else if ([v4 isCalculateGraphExpressionAttachment])
+  else if ([attachmentCopy isCalculateGraphExpressionAttachment])
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v6 = [(ICCalculateStringScanner *)self replacementForAttachment:v4];
+    v6 = [(ICCalculateStringScanner *)self replacementForAttachment:attachmentCopy];
     if ([v6 length])
     {
       v7 = 0;

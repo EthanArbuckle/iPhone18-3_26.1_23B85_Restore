@@ -1,10 +1,10 @@
 @interface _SFSettingsAlertItem
-+ (id)buttonWithTitle:(id)a3 textStyle:(id)a4 icon:(id)a5 action:(int64_t)a6 handler:(id)a7;
-+ (id)optionGroupOptionWithAttributedTitle:(id)a3 textStyle:(id)a4 icon:(id)a5 action:(int64_t)a6 handler:(id)a7;
-+ (id)optionsGroupWithTitle:(id)a3 action:(int64_t)a4 subItemAction:(int64_t)a5 controller:(id)a6;
-+ (id)paletteWithAction:(int64_t)a3 controller:(id)a4;
-+ (id)singleLineButtonWithTitle:(id)a3 textStyle:(id)a4 icon:(id)a5 action:(int64_t)a6 handler:(id)a7;
-+ (id)stepperWithController:(id)a3 action:(int64_t)a4 handler:(id)a5;
++ (id)buttonWithTitle:(id)title textStyle:(id)style icon:(id)icon action:(int64_t)action handler:(id)handler;
++ (id)optionGroupOptionWithAttributedTitle:(id)title textStyle:(id)style icon:(id)icon action:(int64_t)action handler:(id)handler;
++ (id)optionsGroupWithTitle:(id)title action:(int64_t)action subItemAction:(int64_t)itemAction controller:(id)controller;
++ (id)paletteWithAction:(int64_t)action controller:(id)controller;
++ (id)singleLineButtonWithTitle:(id)title textStyle:(id)style icon:(id)icon action:(int64_t)action handler:(id)handler;
++ (id)stepperWithController:(id)controller action:(int64_t)action handler:(id)handler;
 - (BOOL)isConfigurable;
 - (BOOL)isFavorited;
 - (NSString)menuAction;
@@ -13,34 +13,34 @@
 - (UIColor)overrideColor;
 - (_SFSettingsAlertButton)viewAsButton;
 - (_SFSettingsAlertItem)group;
-- (_SFSettingsAlertItem)initWithType:(int64_t)a3 action:(int64_t)a4;
-- (void)_buttonCommonInitWithTextStyle:(id)a3 icon:(id)a4 handler:(id)a5;
+- (_SFSettingsAlertItem)initWithType:(int64_t)type action:(int64_t)action;
+- (void)_buttonCommonInitWithTextStyle:(id)style icon:(id)icon handler:(id)handler;
 - (void)_updateButtonSubtitle;
 - (void)_updateButtonTitle;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)notifyObserversItemDidUpdate;
-- (void)setAccessibilityIdentifier:(id)a3;
-- (void)setAttributedSubtitle:(id)a3;
-- (void)setAttributedTitle:(id)a3;
-- (void)setBadgeView:(id)a3;
-- (void)setComponentsArrangement:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFavorited:(BOOL)a3;
-- (void)setIcon:(id)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setShowsIndicatorDot:(BOOL)a3;
-- (void)setStatusImageView:(id)a3;
-- (void)setSubItems:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setUpSelectionHandlerIfNeededWithViewController:(id)a3;
-- (void)setView:(id)a3;
+- (void)setAccessibilityIdentifier:(id)identifier;
+- (void)setAttributedSubtitle:(id)subtitle;
+- (void)setAttributedTitle:(id)title;
+- (void)setBadgeView:(id)view;
+- (void)setComponentsArrangement:(id)arrangement;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFavorited:(BOOL)favorited;
+- (void)setIcon:(id)icon;
+- (void)setSelected:(BOOL)selected;
+- (void)setShowsIndicatorDot:(BOOL)dot;
+- (void)setStatusImageView:(id)view;
+- (void)setSubItems:(id)items;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
+- (void)setUpSelectionHandlerIfNeededWithViewController:(id)controller;
+- (void)setView:(id)view;
 - (void)updateOptionsGroupDetailLabel;
 @end
 
 @implementation _SFSettingsAlertItem
 
-- (_SFSettingsAlertItem)initWithType:(int64_t)a3 action:(int64_t)a4
+- (_SFSettingsAlertItem)initWithType:(int64_t)type action:(int64_t)action
 {
   v10.receiver = self;
   v10.super_class = _SFSettingsAlertItem;
@@ -48,8 +48,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_type = a3;
-    v6->_actionType = a4;
+    v6->_type = type;
+    v6->_actionType = action;
     v6->_enabled = 1;
     v8 = v6;
   }
@@ -57,88 +57,88 @@
   return v7;
 }
 
-- (void)_buttonCommonInitWithTextStyle:(id)a3 icon:(id)a4 handler:(id)a5
+- (void)_buttonCommonInitWithTextStyle:(id)style icon:(id)icon handler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  [(_SFSettingsAlertItem *)self setTextStyle:a3];
-  [(_SFSettingsAlertItem *)self setIcon:v9];
+  handlerCopy = handler;
+  iconCopy = icon;
+  [(_SFSettingsAlertItem *)self setTextStyle:style];
+  [(_SFSettingsAlertItem *)self setIcon:iconCopy];
 
-  [(_SFSettingsAlertItem *)self setHandler:v8];
-  v10 = [MEMORY[0x1E69DC888] labelColor];
-  [(_SFSettingsAlertItem *)self setTintColor:v10];
+  [(_SFSettingsAlertItem *)self setHandler:handlerCopy];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [(_SFSettingsAlertItem *)self setTintColor:labelColor];
 }
 
-+ (id)buttonWithTitle:(id)a3 textStyle:(id)a4 icon:(id)a5 action:(int64_t)a6 handler:(id)a7
++ (id)buttonWithTitle:(id)title textStyle:(id)style icon:(id)icon action:(int64_t)action handler:(id)handler
 {
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [[a1 alloc] initWithType:0 action:a6];
-  [v16 setTitle:v15];
+  handlerCopy = handler;
+  iconCopy = icon;
+  styleCopy = style;
+  titleCopy = title;
+  v16 = [[self alloc] initWithType:0 action:action];
+  [v16 setTitle:titleCopy];
 
-  [v16 _buttonCommonInitWithTextStyle:v14 icon:v13 handler:v12];
+  [v16 _buttonCommonInitWithTextStyle:styleCopy icon:iconCopy handler:handlerCopy];
 
   return v16;
 }
 
-+ (id)singleLineButtonWithTitle:(id)a3 textStyle:(id)a4 icon:(id)a5 action:(int64_t)a6 handler:(id)a7
++ (id)singleLineButtonWithTitle:(id)title textStyle:(id)style icon:(id)icon action:(int64_t)action handler:(id)handler
 {
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [[a1 alloc] initWithType:1 action:a6];
-  [v16 setTitle:v15];
+  handlerCopy = handler;
+  iconCopy = icon;
+  styleCopy = style;
+  titleCopy = title;
+  v16 = [[self alloc] initWithType:1 action:action];
+  [v16 setTitle:titleCopy];
 
-  [v16 _buttonCommonInitWithTextStyle:v14 icon:v13 handler:v12];
+  [v16 _buttonCommonInitWithTextStyle:styleCopy icon:iconCopy handler:handlerCopy];
 
   return v16;
 }
 
-+ (id)stepperWithController:(id)a3 action:(int64_t)a4 handler:(id)a5
++ (id)stepperWithController:(id)controller action:(int64_t)action handler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithType:2 action:a4];
-  [v10 setController:v9];
+  handlerCopy = handler;
+  controllerCopy = controller;
+  v10 = [[self alloc] initWithType:2 action:action];
+  [v10 setController:controllerCopy];
 
-  [v10 setHandler:v8];
+  [v10 setHandler:handlerCopy];
 
   return v10;
 }
 
-+ (id)optionsGroupWithTitle:(id)a3 action:(int64_t)a4 subItemAction:(int64_t)a5 controller:(id)a6
++ (id)optionsGroupWithTitle:(id)title action:(int64_t)action subItemAction:(int64_t)itemAction controller:(id)controller
 {
-  v10 = a6;
-  v11 = a3;
-  v12 = [[a1 alloc] initWithType:3 action:a4];
-  [v12 setTitle:v11];
+  controllerCopy = controller;
+  titleCopy = title;
+  v12 = [[self alloc] initWithType:3 action:action];
+  [v12 setTitle:titleCopy];
 
   v13 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"checkmark"];
-  v14 = [v10 values];
+  values = [controllerCopy values];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __78___SFSettingsAlertItem_optionsGroupWithTitle_action_subItemAction_controller___block_invoke;
   v24[3] = &unk_1E8493C28;
-  v25 = v10;
+  v25 = controllerCopy;
   v26 = v13;
-  v27 = a5;
+  itemActionCopy = itemAction;
   v15 = v13;
-  v16 = v10;
-  v17 = [v14 safari_mapAndFilterObjectsUsingBlock:v24];
+  v16 = controllerCopy;
+  v17 = [values safari_mapAndFilterObjectsUsingBlock:v24];
   [v12 setSubItems:v17];
 
   [v12 setHandler:&__block_literal_global_40];
   v18 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"chevron.forward"];
-  v19 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-  v20 = [v18 flattenedImageWithColor:v19];
+  tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+  v20 = [v18 flattenedImageWithColor:tertiaryLabelColor];
   v21 = [v20 imageWithRenderingMode:1];
   [v12 setIcon:v21];
 
-  v22 = [MEMORY[0x1E69DC888] labelColor];
-  [v12 setTintColor:v22];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [v12 setTintColor:labelColor];
 
   [v12 setController:v16];
   [v12 setTextStyle:*MEMORY[0x1E69DDCF8]];
@@ -147,71 +147,71 @@
   return v12;
 }
 
-+ (id)optionGroupOptionWithAttributedTitle:(id)a3 textStyle:(id)a4 icon:(id)a5 action:(int64_t)a6 handler:(id)a7
++ (id)optionGroupOptionWithAttributedTitle:(id)title textStyle:(id)style icon:(id)icon action:(int64_t)action handler:(id)handler
 {
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [[a1 alloc] initWithType:4 action:a6];
-  [v16 setAttributedTitle:v15];
+  handlerCopy = handler;
+  iconCopy = icon;
+  styleCopy = style;
+  titleCopy = title;
+  v16 = [[self alloc] initWithType:4 action:action];
+  [v16 setAttributedTitle:titleCopy];
 
-  [v16 _buttonCommonInitWithTextStyle:v14 icon:v13 handler:v12];
+  [v16 _buttonCommonInitWithTextStyle:styleCopy icon:iconCopy handler:handlerCopy];
 
   return v16;
 }
 
-+ (id)paletteWithAction:(int64_t)a3 controller:(id)a4
++ (id)paletteWithAction:(int64_t)action controller:(id)controller
 {
-  v6 = a4;
-  v7 = [[a1 alloc] initWithType:5 action:a3];
-  [v7 setController:v6];
+  controllerCopy = controller;
+  v7 = [[self alloc] initWithType:5 action:action];
+  [v7 setController:controllerCopy];
 
   return v7;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  self->_selected = a3;
-  v4 = [(_SFSettingsAlertItem *)self view];
-  [v4 setSelected:v3];
+  selectedCopy = selected;
+  self->_selected = selected;
+  view = [(_SFSettingsAlertItem *)self view];
+  [view setSelected:selectedCopy];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    v4 = a3;
-    self->_enabled = a3;
-    v5 = [(_SFSettingsAlertItem *)self view];
-    [v5 setEnabled:v4];
+    enabledCopy = enabled;
+    self->_enabled = enabled;
+    view = [(_SFSettingsAlertItem *)self view];
+    [view setEnabled:enabledCopy];
   }
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_view);
   if ((WBSIsEqual() & 1) == 0)
   {
     objc_storeWeak(&self->_view, obj);
     [obj setEnabled:{-[_SFSettingsAlertItem isEnabled](self, "isEnabled")}];
     [obj setSelected:{-[_SFSettingsAlertItem isSelected](self, "isSelected")}];
-    v5 = [(_SFSettingsAlertItem *)self accessibilityIdentifier];
-    v6 = [(_SFSettingsAlertItem *)self viewAsUIView];
-    [v6 setAccessibilityIdentifier:v5];
+    accessibilityIdentifier = [(_SFSettingsAlertItem *)self accessibilityIdentifier];
+    viewAsUIView = [(_SFSettingsAlertItem *)self viewAsUIView];
+    [viewAsUIView setAccessibilityIdentifier:accessibilityIdentifier];
   }
 }
 
-- (void)setSubItems:(id)a3
+- (void)setSubItems:(id)items
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   subItems = self->_subItems;
-  if (subItems != v4 && ![(NSArray *)subItems isEqualToArray:v4])
+  if (subItems != itemsCopy && ![(NSArray *)subItems isEqualToArray:itemsCopy])
   {
-    v6 = [(NSArray *)v4 copy];
+    v6 = [(NSArray *)itemsCopy copy];
     v7 = self->_subItems;
     self->_subItems = v6;
 
@@ -219,7 +219,7 @@
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v8 = v4;
+    v8 = itemsCopy;
     v9 = [(NSArray *)v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v9)
     {
@@ -247,15 +247,15 @@
   }
 }
 
-- (void)setAccessibilityIdentifier:(id)a3
+- (void)setAccessibilityIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  identifierCopy = identifier;
+  v5 = [identifierCopy copy];
   accessibilityIdentifier = self->_accessibilityIdentifier;
   self->_accessibilityIdentifier = v5;
 
-  v7 = [(_SFSettingsAlertItem *)self viewAsUIView];
-  [v7 setAccessibilityIdentifier:v4];
+  viewAsUIView = [(_SFSettingsAlertItem *)self viewAsUIView];
+  [viewAsUIView setAccessibilityIdentifier:identifierCopy];
 }
 
 - (void)updateOptionsGroupDetailLabel
@@ -265,53 +265,53 @@
     v18 = v2;
     v19 = v3;
     v5 = self->_controller;
-    v6 = [v5 values];
+    values = [v5 values];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __53___SFSettingsAlertItem_updateOptionsGroupDetailLabel__block_invoke;
     v16[3] = &unk_1E8493C90;
     v7 = v5;
     v17 = v7;
-    v8 = [v6 safari_firstObjectPassingTest:v16];
+    v8 = [values safari_firstObjectPassingTest:v16];
 
-    v9 = [(_SFSettingsAlertItem *)self viewAsButton];
-    v10 = [v9 accessoryView];
+    viewAsButton = [(_SFSettingsAlertItem *)self viewAsButton];
+    accessoryView = [viewAsButton accessoryView];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v12 = [v9 accessoryView];
+      accessoryView2 = [viewAsButton accessoryView];
     }
 
     else
     {
-      v12 = objc_alloc_init(_SFOptionsGroupDetailLabel);
-      [(_SFOptionsGroupDetailLabel *)v12 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v13 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-      [(_SFOptionsGroupDetailLabel *)v12 setTextColor:v13];
+      accessoryView2 = objc_alloc_init(_SFOptionsGroupDetailLabel);
+      [(_SFOptionsGroupDetailLabel *)accessoryView2 setTranslatesAutoresizingMaskIntoConstraints:0];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      [(_SFOptionsGroupDetailLabel *)accessoryView2 setTextColor:secondaryLabelColor];
 
-      [(_SFOptionsGroupDetailLabel *)v12 setUserInteractionEnabled:0];
-      [(_SFOptionsGroupDetailLabel *)v12 setNumberOfLines:0];
+      [(_SFOptionsGroupDetailLabel *)accessoryView2 setUserInteractionEnabled:0];
+      [(_SFOptionsGroupDetailLabel *)accessoryView2 setNumberOfLines:0];
       LODWORD(v14) = 1144733696;
-      [(_SFOptionsGroupDetailLabel *)v12 setContentCompressionResistancePriority:0 forAxis:v14];
-      [v9 setAccessoryView:v12];
+      [(_SFOptionsGroupDetailLabel *)accessoryView2 setContentCompressionResistancePriority:0 forAxis:v14];
+      [viewAsButton setAccessoryView:accessoryView2];
     }
 
     v15 = [v7 attributedStringForValue:v8];
-    [(_SFOptionsGroupDetailLabel *)v12 setAttributedText:v15];
+    [(_SFOptionsGroupDetailLabel *)accessoryView2 setAttributedText:v15];
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   title = self->_title;
-  if (title != v4)
+  if (title != titleCopy)
   {
-    v10 = v4;
-    v6 = [(NSString *)title isEqualToString:v4];
-    v4 = v10;
+    v10 = titleCopy;
+    v6 = [(NSString *)title isEqualToString:titleCopy];
+    titleCopy = v10;
     if (!v6)
     {
       v7 = [(NSString *)v10 copy];
@@ -322,60 +322,60 @@
       self->_attributedTitle = 0;
 
       [(_SFSettingsAlertItem *)self _updateButtonTitle];
-      v4 = v10;
+      titleCopy = v10;
     }
   }
 }
 
-- (void)setAttributedTitle:(id)a3
+- (void)setAttributedTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   attributedTitle = self->_attributedTitle;
-  if (attributedTitle != v4)
+  if (attributedTitle != titleCopy)
   {
-    v11 = v4;
-    v6 = [(NSAttributedString *)attributedTitle isEqualToAttributedString:v4];
-    v4 = v11;
+    v11 = titleCopy;
+    v6 = [(NSAttributedString *)attributedTitle isEqualToAttributedString:titleCopy];
+    titleCopy = v11;
     if (!v6)
     {
-      v7 = [(NSAttributedString *)v11 string];
+      string = [(NSAttributedString *)v11 string];
       title = self->_title;
-      self->_title = v7;
+      self->_title = string;
 
       v9 = [(NSAttributedString *)v11 copy];
       v10 = self->_attributedTitle;
       self->_attributedTitle = v9;
 
       [(_SFSettingsAlertItem *)self _updateButtonTitle];
-      v4 = v11;
+      titleCopy = v11;
     }
   }
 }
 
 - (void)_updateButtonTitle
 {
-  v3 = [(_SFSettingsAlertItem *)self view];
-  v4 = v3;
+  view = [(_SFSettingsAlertItem *)self view];
+  v4 = view;
   if (self->_attributedTitle)
   {
-    [v3 setAttributedText:?];
+    [view setAttributedText:?];
   }
 
   else
   {
-    [v3 setText:self->_title];
+    [view setText:self->_title];
   }
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v4 = a3;
+  subtitleCopy = subtitle;
   subtitle = self->_subtitle;
-  if (subtitle != v4)
+  if (subtitle != subtitleCopy)
   {
-    v12 = v4;
-    v6 = [(NSString *)subtitle isEqualToString:v4];
-    v4 = v12;
+    v12 = subtitleCopy;
+    v6 = [(NSString *)subtitle isEqualToString:subtitleCopy];
+    subtitleCopy = v12;
     if (!v6)
     {
       v7 = [(NSString *)v12 copy];
@@ -386,24 +386,24 @@
       self->_attributedSubtitle = 0;
 
       v10 = self->_subtitle;
-      v11 = [(_SFSettingsAlertItem *)self view];
-      [v11 setDetailText:v10];
+      view = [(_SFSettingsAlertItem *)self view];
+      [view setDetailText:v10];
 
-      v4 = v12;
+      subtitleCopy = v12;
     }
   }
 }
 
-- (void)setAttributedSubtitle:(id)a3
+- (void)setAttributedSubtitle:(id)subtitle
 {
-  v8 = a3;
+  subtitleCopy = subtitle;
   if ((WBSIsEqual() & 1) == 0)
   {
-    v4 = [v8 string];
+    string = [subtitleCopy string];
     subtitle = self->_subtitle;
-    self->_subtitle = v4;
+    self->_subtitle = string;
 
-    v6 = [v8 copy];
+    v6 = [subtitleCopy copy];
     attributedSubtitle = self->_attributedSubtitle;
     self->_attributedSubtitle = v6;
 
@@ -413,16 +413,16 @@
 
 - (void)_updateButtonSubtitle
 {
-  v3 = [(_SFSettingsAlertItem *)self view];
-  v4 = v3;
+  view = [(_SFSettingsAlertItem *)self view];
+  v4 = view;
   if (self->_attributedSubtitle)
   {
-    [v3 setAttributedDetailText:?];
+    [view setAttributedDetailText:?];
   }
 
   else
   {
-    [v3 setDetailText:self->_subtitle];
+    [view setDetailText:self->_subtitle];
   }
 }
 
@@ -460,47 +460,47 @@
   return v3;
 }
 
-- (void)setBadgeView:(id)a3
+- (void)setBadgeView:(id)view
 {
-  objc_storeStrong(&self->_badgeView, a3);
-  v5 = a3;
-  v6 = [(_SFSettingsAlertItem *)self viewAsButton];
-  [v6 setAccessoryView:v5];
+  objc_storeStrong(&self->_badgeView, view);
+  viewCopy = view;
+  viewAsButton = [(_SFSettingsAlertItem *)self viewAsButton];
+  [viewAsButton setAccessoryView:viewCopy];
 }
 
-- (void)setStatusImageView:(id)a3
+- (void)setStatusImageView:(id)view
 {
-  objc_storeStrong(&self->_statusImageView, a3);
-  v5 = a3;
-  v6 = [(_SFSettingsAlertItem *)self viewAsButton];
-  [v6 setStatusImageView:v5];
+  objc_storeStrong(&self->_statusImageView, view);
+  viewCopy = view;
+  viewAsButton = [(_SFSettingsAlertItem *)self viewAsButton];
+  [viewAsButton setStatusImageView:viewCopy];
 }
 
-- (void)setComponentsArrangement:(id)a3
+- (void)setComponentsArrangement:(id)arrangement
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  arrangementCopy = arrangement;
+  v5 = [arrangementCopy copy];
   componentsArrangement = self->_componentsArrangement;
   self->_componentsArrangement = v5;
 
-  v7 = [(_SFSettingsAlertItem *)self viewAsButton];
-  [v7 setComponentsArrangement:v4];
+  viewAsButton = [(_SFSettingsAlertItem *)self viewAsButton];
+  [viewAsButton setComponentsArrangement:arrangementCopy];
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  objc_storeStrong(&self->_icon, a3);
-  v5 = a3;
-  v6 = [(_SFSettingsAlertItem *)self view];
-  [v6 setImage:v5];
+  objc_storeStrong(&self->_icon, icon);
+  iconCopy = icon;
+  view = [(_SFSettingsAlertItem *)self view];
+  [view setImage:iconCopy];
 }
 
-- (void)setShowsIndicatorDot:(BOOL)a3
+- (void)setShowsIndicatorDot:(BOOL)dot
 {
-  v3 = a3;
-  self->_showsIndicatorDot = a3;
-  v4 = [(_SFSettingsAlertItem *)self viewAsButton];
-  [v4 setShowsIndicatorDot:v3];
+  dotCopy = dot;
+  self->_showsIndicatorDot = dot;
+  viewAsButton = [(_SFSettingsAlertItem *)self viewAsButton];
+  [viewAsButton setShowsIndicatorDot:dotCopy];
 }
 
 - (NSString)menuAction
@@ -521,7 +521,7 @@
 
 - (BOOL)isConfigurable
 {
-  v2 = [(_SFSettingsAlertItem *)self menuAction];
+  menuAction = [(_SFSettingsAlertItem *)self menuAction];
   v3 = SFIsMenuActionConfigurable();
 
   return v3;
@@ -529,30 +529,30 @@
 
 - (BOOL)isFavorited
 {
-  v3 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v4 = [(_SFSettingsAlertItem *)self menuAction];
-  v5 = [v3 browsingAssistant_isMenuActionFavorited:v4];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  menuAction = [(_SFSettingsAlertItem *)self menuAction];
+  v5 = [safari_browserDefaults browsingAssistant_isMenuActionFavorited:menuAction];
 
   return v5;
 }
 
-- (void)setFavorited:(BOOL)a3
+- (void)setFavorited:(BOOL)favorited
 {
-  v3 = a3;
-  v6 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v5 = [(_SFSettingsAlertItem *)self menuAction];
-  [v6 browsingAssistant_setMenuActionFavorited:v5 favorited:v3];
+  favoritedCopy = favorited;
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  menuAction = [(_SFSettingsAlertItem *)self menuAction];
+  [safari_browserDefaults browsingAssistant_setMenuActionFavorited:menuAction favorited:favoritedCopy];
 }
 
-- (void)setUpSelectionHandlerIfNeededWithViewController:(id)a3
+- (void)setUpSelectionHandlerIfNeededWithViewController:(id)controller
 {
   if (!self->_selectionHandler)
   {
     v13[3] = v3;
     v13[4] = v4;
-    v6 = a3;
+    controllerCopy = controller;
     objc_initWeak(v13, self);
-    objc_initWeak(&v12, v6);
+    objc_initWeak(&v12, controllerCopy);
 
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
@@ -574,8 +574,8 @@
 - (UIColor)overrideColor
 {
   tintColor = self->_tintColor;
-  v4 = [MEMORY[0x1E69DC888] labelColor];
-  if (([(UIColor *)tintColor isEqual:v4]& 1) != 0)
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  if (([(UIColor *)tintColor isEqual:labelColor]& 1) != 0)
   {
     v5 = 0;
   }
@@ -597,8 +597,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSPointerArray *)self->_observers allObjects];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allObjects = [(NSPointerArray *)self->_observers allObjects];
+  v4 = [allObjects countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -610,36 +610,36 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allObjects);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) menuItemDidUpdate:self];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allObjects countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+    weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsPointerArray;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSPointerArray *)observers addPointer:v4];
+  [(NSPointerArray *)observers addPointer:observerCopy];
 }
 
 - (SFSettingsAlertItemView)view

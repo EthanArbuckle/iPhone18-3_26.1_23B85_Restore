@@ -1,55 +1,55 @@
 @interface NLActivityTimelineEntryModel
-+ (id)_LocalizedStringWithActiveEnergy:(id)a3;
-- (NLActivityTimelineEntryModel)initWithDataModel:(id)a3;
-- (id)_activityTemplateWithFamily:(int64_t)a3;
++ (id)_LocalizedStringWithActiveEnergy:(id)energy;
+- (NLActivityTimelineEntryModel)initWithDataModel:(id)model;
+- (id)_activityTemplateWithFamily:(int64_t)family;
 - (id)_largeModularTemplate;
 - (id)_largeUtilityTemplate;
-- (id)_newLargeModularTemplateWithRow1Col2TextProvider:(id)a3 row2Col2TextProvider:(id)a4 row3Col2TextProvider:(id)a5;
+- (id)_newLargeModularTemplateWithRow1Col2TextProvider:(id)provider row2Col2TextProvider:(id)textProvider row3Col2TextProvider:(id)col2TextProvider;
 - (id)_signatureBezelTemplate;
 - (id)_signatureCircularTemplate;
 - (id)_signatureCornerTemplate;
 - (id)_signatureExtraLargeTemplate;
 - (id)_signatureRectangleTemplate;
-- (id)templateForComplicationFamily:(int64_t)a3;
+- (id)templateForComplicationFamily:(int64_t)family;
 - (int64_t)availabilityState;
 @end
 
 @implementation NLActivityTimelineEntryModel
 
-- (NLActivityTimelineEntryModel)initWithDataModel:(id)a3
+- (NLActivityTimelineEntryModel)initWithDataModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v10.receiver = self;
   v10.super_class = NLActivityTimelineEntryModel;
   v6 = [(NLActivityTimelineEntryModel *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataModel, a3);
-    v8 = [v5 date];
-    [(NLActivityTimelineEntryModel *)v7 setEntryDate:v8];
+    objc_storeStrong(&v6->_dataModel, model);
+    date = [modelCopy date];
+    [(NLActivityTimelineEntryModel *)v7 setEntryDate:date];
   }
 
   return v7;
 }
 
-- (id)templateForComplicationFamily:(int64_t)a3
+- (id)templateForComplicationFamily:(int64_t)family
 {
   v5 = 0;
-  if (a3 > 6)
+  if (family > 6)
   {
-    if (a3 > 9)
+    if (family > 9)
     {
-      switch(a3)
+      switch(family)
       {
         case 10:
-          v6 = [(NLActivityTimelineEntryModel *)self _signatureCircularTemplate];
+          _signatureCircularTemplate = [(NLActivityTimelineEntryModel *)self _signatureCircularTemplate];
           break;
         case 11:
-          v6 = [(NLActivityTimelineEntryModel *)self _signatureRectangleTemplate];
+          _signatureCircularTemplate = [(NLActivityTimelineEntryModel *)self _signatureRectangleTemplate];
           break;
         case 12:
-          v6 = [(NLActivityTimelineEntryModel *)self _signatureExtraLargeTemplate];
+          _signatureCircularTemplate = [(NLActivityTimelineEntryModel *)self _signatureExtraLargeTemplate];
           break;
         default:
           goto LABEL_21;
@@ -58,9 +58,9 @@
       goto LABEL_20;
     }
 
-    if (a3 != 7)
+    if (family != 7)
     {
-      if (a3 == 8)
+      if (family == 8)
       {
         [(NLActivityTimelineEntryModel *)self _signatureCornerTemplate];
       }
@@ -69,48 +69,48 @@
       {
         [(NLActivityTimelineEntryModel *)self _signatureBezelTemplate];
       }
-      v6 = ;
+      _signatureCircularTemplate = ;
       goto LABEL_20;
     }
 
     goto LABEL_19;
   }
 
-  if (a3 <= 1)
+  if (family <= 1)
   {
-    if (a3)
+    if (family)
     {
-      if (a3 != 1)
+      if (family != 1)
       {
         goto LABEL_21;
       }
 
-      v6 = [(NLActivityTimelineEntryModel *)self _largeModularTemplate];
+      _signatureCircularTemplate = [(NLActivityTimelineEntryModel *)self _largeModularTemplate];
       goto LABEL_20;
     }
 
     goto LABEL_19;
   }
 
-  switch(a3)
+  switch(family)
   {
     case 2:
       goto LABEL_19;
     case 3:
-      v6 = [(NLActivityTimelineEntryModel *)self _largeUtilityTemplate];
+      _signatureCircularTemplate = [(NLActivityTimelineEntryModel *)self _largeUtilityTemplate];
       goto LABEL_20;
     case 4:
 LABEL_19:
-      v6 = [(NLActivityTimelineEntryModel *)self _activityTemplateWithFamily:a3];
+      _signatureCircularTemplate = [(NLActivityTimelineEntryModel *)self _activityTemplateWithFamily:family];
 LABEL_20:
-      v5 = v6;
+      v5 = _signatureCircularTemplate;
       break;
   }
 
 LABEL_21:
-  if (CLKComplicationFamilyCircularMedium == a3)
+  if (CLKComplicationFamilyCircularMedium == family)
   {
-    v7 = [(NLActivityTimelineEntryModel *)self _activityTemplateWithFamily:a3];
+    v7 = [(NLActivityTimelineEntryModel *)self _activityTemplateWithFamily:family];
 
     v5 = v7;
   }
@@ -118,9 +118,9 @@ LABEL_21:
   return v5;
 }
 
-- (id)_activityTemplateWithFamily:(int64_t)a3
+- (id)_activityTemplateWithFamily:(int64_t)family
 {
-  v4 = [CLKComplicationTemplateActivity activityTemplateWithFamily:a3];
+  v4 = [CLKComplicationTemplateActivity activityTemplateWithFamily:family];
   if ([(NLActivityTimelineEntryModel *)self availabilityState])
   {
     [v4 setHideDots:1];
@@ -128,9 +128,9 @@ LABEL_21:
 
   else
   {
-    v5 = [(FIUIActivityDataModel *)self->_dataModel activityMoveMode];
+    activityMoveMode = [(FIUIActivityDataModel *)self->_dataModel activityMoveMode];
     dataModel = self->_dataModel;
-    if (v5 == &dword_0 + 2)
+    if (activityMoveMode == &dword_0 + 2)
     {
       [(FIUIActivityDataModel *)dataModel appleMoveTimeCompletionPercentage];
     }
@@ -154,11 +154,11 @@ LABEL_21:
 
 - (id)_largeModularTemplate
 {
-  v3 = [(NLActivityTimelineEntryModel *)self availabilityState];
+  availabilityState = [(NLActivityTimelineEntryModel *)self availabilityState];
   v4 = 0;
-  if (v3 <= 1)
+  if (availabilityState <= 1)
   {
-    if (!v3)
+    if (!availabilityState)
     {
       if ([(FIUIActivityDataModel *)self->_dataModel activityMoveMode]== &dword_0 + 2)
       {
@@ -173,12 +173,12 @@ LABEL_21:
       else
       {
         v18 = objc_opt_class();
-        v19 = [(FIUIActivityDataModel *)self->_dataModel activeEnergyTotal];
-        v11 = [v18 _LocalizedStringWithActiveEnergy:v19];
+        activeEnergyTotal = [(FIUIActivityDataModel *)self->_dataModel activeEnergyTotal];
+        v11 = [v18 _LocalizedStringWithActiveEnergy:activeEnergyTotal];
 
         v20 = objc_opt_class();
-        v21 = [(FIUIActivityDataModel *)self->_dataModel activeEnergyGoal];
-        v14 = [v20 _LocalizedStringWithActiveEnergy:v21];
+        activeEnergyGoal = [(FIUIActivityDataModel *)self->_dataModel activeEnergyGoal];
+        v14 = [v20 _LocalizedStringWithActiveEnergy:activeEnergyGoal];
       }
 
       v6 = NTKFractionStringBasedOnCurrentLocaleNumberSystem();
@@ -203,7 +203,7 @@ LABEL_21:
       goto LABEL_14;
     }
 
-    if (v3 != 1)
+    if (availabilityState != 1)
     {
       goto LABEL_15;
     }
@@ -215,7 +215,7 @@ LABEL_21:
     goto LABEL_11;
   }
 
-  if (v3 == 3)
+  if (availabilityState == 3)
   {
     v15 = NLActivityComplicationLocalizedString(@"ACTIVITY_TITLE_LARGE_MODULAR");
     v6 = [CLKSimpleTextProvider textProviderWithText:v15];
@@ -230,7 +230,7 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  if (v3 != 2)
+  if (availabilityState != 2)
   {
     goto LABEL_15;
   }
@@ -247,12 +247,12 @@ LABEL_15:
   return v4;
 }
 
-- (id)_newLargeModularTemplateWithRow1Col2TextProvider:(id)a3 row2Col2TextProvider:(id)a4 row3Col2TextProvider:(id)a5
+- (id)_newLargeModularTemplateWithRow1Col2TextProvider:(id)provider row2Col2TextProvider:(id)textProvider row3Col2TextProvider:(id)col2TextProvider
 {
   dataModel = self->_dataModel;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  col2TextProviderCopy = col2TextProvider;
+  textProviderCopy = textProvider;
+  providerCopy = provider;
   if ([(FIUIActivityDataModel *)dataModel activityMoveMode]== &dword_0 + 2)
   {
     v11 = NLActivityComplicationLocalizedString(@"ACTIVITY_TITLE_MIN");
@@ -283,25 +283,25 @@ LABEL_15:
   v21 = NTKStandNonGradientTextColor();
   [v20 setTintColor:v21];
 
-  v22 = [CLKComplicationTemplateModularLargeColumns templateWithRow1Column1TextProvider:v12 row1Column2TextProvider:v10 row2Column1TextProvider:v17 row2Column2TextProvider:v9 row3Column1TextProvider:v20 row3Column2TextProvider:v8];
+  v22 = [CLKComplicationTemplateModularLargeColumns templateWithRow1Column1TextProvider:v12 row1Column2TextProvider:providerCopy row2Column1TextProvider:v17 row2Column2TextProvider:textProviderCopy row3Column1TextProvider:v20 row3Column2TextProvider:col2TextProviderCopy];
 
   return v22;
 }
 
 - (id)_largeUtilityTemplate
 {
-  v3 = [(NLActivityTimelineEntryModel *)self availabilityState];
+  availabilityState = [(NLActivityTimelineEntryModel *)self availabilityState];
   v4 = 0;
-  if (v3 > 1)
+  if (availabilityState > 1)
   {
-    if (v3 == 3)
+    if (availabilityState == 3)
     {
       v5 = @"ACTIVITY_PROMPT_SETUP_LONG_UTILITY";
     }
 
     else
     {
-      if (v3 != 2)
+      if (availabilityState != 2)
       {
         goto LABEL_26;
       }
@@ -312,9 +312,9 @@ LABEL_15:
     goto LABEL_12;
   }
 
-  if (v3)
+  if (availabilityState)
   {
-    if (v3 != 1)
+    if (availabilityState != 1)
     {
       goto LABEL_26;
     }
@@ -327,9 +327,9 @@ LABEL_12:
     goto LABEL_26;
   }
 
-  v6 = [(FIUIActivityDataModel *)self->_dataModel activityMoveMode];
+  activityMoveMode = [(FIUIActivityDataModel *)self->_dataModel activityMoveMode];
   dataModel = self->_dataModel;
-  if (v6 == &dword_0 + 2)
+  if (activityMoveMode == &dword_0 + 2)
   {
     [(FIUIActivityDataModel *)dataModel appleMoveTimeTotal];
     if (v8 >= 0.0)
@@ -342,16 +342,16 @@ LABEL_12:
       NLActivityComplicationLocalizedString(@"ACTIVITY_MIN_INVALID_DATA");
     }
     v11 = ;
-    v10 = NLActivityComplicationLocalizedString(@"ACTIVITY_TITLE_MIN");
-    v12 = [v11 stringByAppendingString:v10];
+    activeEnergyTotal = NLActivityComplicationLocalizedString(@"ACTIVITY_TITLE_MIN");
+    v12 = [v11 stringByAppendingString:activeEnergyTotal];
   }
 
   else
   {
-    v10 = [(FIUIActivityDataModel *)dataModel activeEnergyTotal];
-    if (v10)
+    activeEnergyTotal = [(FIUIActivityDataModel *)dataModel activeEnergyTotal];
+    if (activeEnergyTotal)
     {
-      [objc_opt_class() _LocalizedStringWithActiveEnergy:v10];
+      [objc_opt_class() _LocalizedStringWithActiveEnergy:activeEnergyTotal];
     }
 
     else
@@ -379,16 +379,16 @@ LABEL_12:
   v18 = NLActivityComplicationLocalizedString(@"ACTIVITY_TITLE_MIN");
   v19 = [v17 stringByAppendingString:v18];
 
-  v20 = [(FIUIActivityDataModel *)self->_dataModel appleStandHoursTotal];
+  appleStandHoursTotal = [(FIUIActivityDataModel *)self->_dataModel appleStandHoursTotal];
   v21 = [NSString localizedStringWithFormat:@"%d", [(FIUIActivityDataModel *)self->_dataModel appleStandHoursGoal]];
-  if ((v20 & 0x8000000000000000) != 0)
+  if ((appleStandHoursTotal & 0x8000000000000000) != 0)
   {
     NLActivityComplicationLocalizedString(@"ACTIVITY_HOUR_INVALID_DATA");
   }
 
   else
   {
-    [NSString localizedStringWithFormat:@"%d", v20];
+    [NSString localizedStringWithFormat:@"%d", appleStandHoursTotal];
   }
   v22 = ;
   v23 = NTKFractionStringBasedOnCurrentLocaleNumberSystem();
@@ -442,11 +442,11 @@ LABEL_26:
 
 - (id)_signatureCornerTemplate
 {
-  v3 = [(NLActivityTimelineEntryModel *)self availabilityState];
+  availabilityState = [(NLActivityTimelineEntryModel *)self availabilityState];
   v4 = 0;
-  if (v3 > 1)
+  if (availabilityState > 1)
   {
-    if (v3 == 3)
+    if (availabilityState == 3)
     {
       v6 = NLActivityComplicationLocalizedString(@"ACTIVITY_SIGNATURE_CORNER_PROMPT_SETUP");
       v10 = NLActivityComplicationLocalizedString(@"ACTIVITY_SIGNATURE_CORNER_PROMPT_SETUP_SHORT");
@@ -455,7 +455,7 @@ LABEL_26:
       goto LABEL_26;
     }
 
-    if (v3 != 2)
+    if (availabilityState != 2)
     {
       goto LABEL_27;
     }
@@ -465,11 +465,11 @@ LABEL_26:
 
   else
   {
-    if (!v3)
+    if (!availabilityState)
     {
-      v7 = [(FIUIActivityDataModel *)self->_dataModel activityMoveMode];
+      activityMoveMode = [(FIUIActivityDataModel *)self->_dataModel activityMoveMode];
       dataModel = self->_dataModel;
-      if (v7 == &dword_0 + 2)
+      if (activityMoveMode == &dword_0 + 2)
       {
         [(FIUIActivityDataModel *)dataModel appleMoveTimeCompletionPercentage];
       }
@@ -497,7 +497,7 @@ LABEL_26:
 
       else
       {
-        if (v7 == &dword_0 + 2)
+        if (activityMoveMode == &dword_0 + 2)
         {
           [(FIUIActivityDataModel *)self->_dataModel appleMoveTimeTotal];
           v24 = v23;
@@ -506,11 +506,11 @@ LABEL_26:
         else
         {
           v25 = +[FIUIActivityDataModel formattingManager];
-          v26 = [v25 unitManager];
-          v27 = [v26 userActiveEnergyBurnedUnit];
+          unitManager = [v25 unitManager];
+          userActiveEnergyBurnedUnit = [unitManager userActiveEnergyBurnedUnit];
 
-          v28 = [(FIUIActivityDataModel *)self->_dataModel activeEnergyTotal];
-          [v28 doubleValueForUnit:v27];
+          activeEnergyTotal = [(FIUIActivityDataModel *)self->_dataModel activeEnergyTotal];
+          [activeEnergyTotal doubleValueForUnit:userActiveEnergyBurnedUnit];
           v24 = floor(v29);
         }
 
@@ -567,7 +567,7 @@ LABEL_26:
       goto LABEL_26;
     }
 
-    if (v3 != 1)
+    if (availabilityState != 1)
     {
       goto LABEL_27;
     }
@@ -594,18 +594,18 @@ LABEL_27:
 
 - (id)_signatureBezelTemplate
 {
-  v3 = [(NLActivityTimelineEntryModel *)self availabilityState];
-  v4 = 0;
-  if (v3 > 1)
+  availabilityState = [(NLActivityTimelineEntryModel *)self availabilityState];
+  lowercaseString = 0;
+  if (availabilityState > 1)
   {
-    if (v3 == 3)
+    if (availabilityState == 3)
     {
       v5 = @"ACTIVITY_PROMPT_SETUP_LONG_UTILITY";
     }
 
     else
     {
-      if (v3 != 2)
+      if (availabilityState != 2)
       {
         goto LABEL_26;
       }
@@ -616,22 +616,22 @@ LABEL_27:
     goto LABEL_12;
   }
 
-  if (v3)
+  if (availabilityState)
   {
-    if (v3 != 1)
+    if (availabilityState != 1)
     {
       goto LABEL_26;
     }
 
     v5 = @"ACTIVITY_LOADING_LONG_UTILITY";
 LABEL_12:
-    v4 = NLActivityComplicationLocalizedString(v5);
+    lowercaseString = NLActivityComplicationLocalizedString(v5);
     goto LABEL_26;
   }
 
-  v6 = [(FIUIActivityDataModel *)self->_dataModel activityMoveMode];
+  activityMoveMode = [(FIUIActivityDataModel *)self->_dataModel activityMoveMode];
   dataModel = self->_dataModel;
-  if (v6 == &dword_0 + 2)
+  if (activityMoveMode == &dword_0 + 2)
   {
     [(FIUIActivityDataModel *)dataModel appleMoveTimeTotal];
     if (v8 >= 0.0)
@@ -644,16 +644,16 @@ LABEL_12:
       NLActivityComplicationLocalizedString(@"ACTIVITY_MIN_INVALID_DATA");
     }
     v10 = ;
-    v9 = NLActivityComplicationLocalizedString(@"ACTIVITY_TITLE_MIN");
-    v11 = [v10 stringByAppendingString:v9];
+    activeEnergyTotal = NLActivityComplicationLocalizedString(@"ACTIVITY_TITLE_MIN");
+    v11 = [v10 stringByAppendingString:activeEnergyTotal];
   }
 
   else
   {
-    v9 = [(FIUIActivityDataModel *)dataModel activeEnergyTotal];
-    if (v9)
+    activeEnergyTotal = [(FIUIActivityDataModel *)dataModel activeEnergyTotal];
+    if (activeEnergyTotal)
     {
-      [objc_opt_class() _LocalizedStringWithActiveEnergy:v9];
+      [objc_opt_class() _LocalizedStringWithActiveEnergy:activeEnergyTotal];
     }
 
     else
@@ -681,16 +681,16 @@ LABEL_12:
   v17 = NLActivityComplicationLocalizedString(@"ACTIVITY_TITLE_MIN");
   v18 = [v16 stringByAppendingString:v17];
 
-  v19 = [(FIUIActivityDataModel *)self->_dataModel appleStandHoursTotal];
+  appleStandHoursTotal = [(FIUIActivityDataModel *)self->_dataModel appleStandHoursTotal];
   v20 = [NSString localizedStringWithFormat:@"%d", [(FIUIActivityDataModel *)self->_dataModel appleStandHoursGoal]];
-  if ((v19 & 0x8000000000000000) != 0)
+  if ((appleStandHoursTotal & 0x8000000000000000) != 0)
   {
     NLActivityComplicationLocalizedString(@"ACTIVITY_HOUR_INVALID_DATA");
   }
 
   else
   {
-    [NSString localizedStringWithFormat:@"%d", v19];
+    [NSString localizedStringWithFormat:@"%d", appleStandHoursTotal];
   }
   v21 = ;
   v22 = NTKFractionStringBasedOnCurrentLocaleNumberSystem();
@@ -701,10 +701,10 @@ LABEL_12:
   v23 = [NSArray arrayWithObjects:v35 count:3];
   v24 = NLActivityComplicationLocalizedString(@"ACTIVITY_LONG_ANALOG_SEPARATOR");
   v25 = [v23 componentsJoinedByString:v24];
-  v4 = [v25 lowercaseString];
+  lowercaseString = [v25 lowercaseString];
 
 LABEL_26:
-  v26 = [CLKSimpleTextProvider textProviderWithText:v4];
+  v26 = [CLKSimpleTextProvider textProviderWithText:lowercaseString];
   v27 = [CLKFullColorImageProvider fullColorImageProviderWithImageViewClass:objc_opt_class()];
   v33 = @"NLActivityRichComplicationActivityTemplateKey";
   v28 = [(NLActivityTimelineEntryModel *)self _activityTemplateWithFamily:9];
@@ -725,18 +725,18 @@ LABEL_26:
   [v3 setObject:&__NSArray0__struct forKeyedSubscript:@"NLActivityRichComplicationRectangularViewExerciseChartData"];
   [v3 setObject:&__NSArray0__struct forKeyedSubscript:@"NLActivityRichComplicationRectangularViewStandChartData"];
   v4 = [UIColor colorWithRed:0.501960784 green:0.501960784 blue:0.501960784 alpha:1.0];
-  v5 = [(NLActivityTimelineEntryModel *)self availabilityState];
+  availabilityState = [(NLActivityTimelineEntryModel *)self availabilityState];
   v6 = 1;
-  if (v5 > 1)
+  if (availabilityState > 1)
   {
-    if (v5 == 3)
+    if (availabilityState == 3)
     {
       v7 = @"ACTIVITY_SIGNATURE_RECTANGLE_SETUP";
     }
 
     else
     {
-      if (v5 != 2)
+      if (availabilityState != 2)
       {
         goto LABEL_36;
       }
@@ -747,7 +747,7 @@ LABEL_26:
     goto LABEL_12;
   }
 
-  if (!v5)
+  if (!availabilityState)
   {
     v61 = v4;
     v8 = NLActivityComplicationLocalizedString(@"ACTIVITY_SIGNATURE_RECTANGLE_ACTIVITY");
@@ -759,18 +759,18 @@ LABEL_26:
 
     [v3 setObject:v10 forKeyedSubscript:@"NLActivityRichComplicationRectangularViewActivityText"];
     v62 = sub_83C0();
-    v12 = [(FIUIActivityDataModel *)self->_dataModel activityMoveMode];
-    v13 = [NSNumber numberWithInteger:v12];
+    activityMoveMode = [(FIUIActivityDataModel *)self->_dataModel activityMoveMode];
+    v13 = [NSNumber numberWithInteger:activityMoveMode];
     [v3 setObject:v13 forKeyedSubscript:@"NLActivityRichComplicationRectangularViewActivityMoveMode"];
 
     dataModel = self->_dataModel;
-    if (v12 == &dword_0 + 2)
+    if (activityMoveMode == &dword_0 + 2)
     {
       [(FIUIActivityDataModel *)dataModel appleMoveTimeTotal];
       if (v15 < 0.0)
       {
-        v16 = NLActivityComplicationLocalizedString(@"ACTIVITY_MIN_INVALID_DATA");
-        v17 = [v16 stringByAppendingString:@" "];
+        activeEnergyTotal = NLActivityComplicationLocalizedString(@"ACTIVITY_MIN_INVALID_DATA");
+        v17 = [activeEnergyTotal stringByAppendingString:@" "];
 LABEL_19:
 
         v60 = v17;
@@ -801,8 +801,8 @@ LABEL_19:
 
         v57 = v34;
         [v3 setObject:v34 forKeyedSubscript:@"NLActivityRichComplicationRectangularViewExerciseText"];
-        v36 = [(FIUIActivityDataModel *)self->_dataModel appleStandHoursTotal];
-        if ((v36 & 0x8000000000000000) != 0)
+        appleStandHoursTotal = [(FIUIActivityDataModel *)self->_dataModel appleStandHoursTotal];
+        if ((appleStandHoursTotal & 0x8000000000000000) != 0)
         {
           v37 = NLActivityComplicationLocalizedString(@"ACTIVITY_MIN_INVALID_DATA");
           v40 = [v37 stringByAppendingString:@" "];
@@ -810,7 +810,7 @@ LABEL_19:
 
         else
         {
-          v37 = [NSNumber numberWithDouble:v36];
+          v37 = [NSNumber numberWithDouble:appleStandHoursTotal];
           v38 = [v62 stringFromNumber:v37];
           v39 = [v38 stringByAppendingString:@" "];
 
@@ -826,13 +826,13 @@ LABEL_19:
         v44 = [NSNumber numberWithBool:[(FIUIActivityDataModel *)self->_dataModel wheelchairUser]];
         [v3 setObject:v44 forKeyedSubscript:@"NLActivityRichComplicationRectangularViewWheelchairUseKey"];
 
-        v45 = [(FIUIActivityDataModel *)self->_dataModel activeEnergyChartData];
+        activeEnergyChartData = [(FIUIActivityDataModel *)self->_dataModel activeEnergyChartData];
 
-        if (v45)
+        if (activeEnergyChartData)
         {
-          v46 = [(FIUIActivityDataModel *)self->_dataModel activityMoveMode];
+          activityMoveMode2 = [(FIUIActivityDataModel *)self->_dataModel activityMoveMode];
           v47 = self->_dataModel;
-          if (v46 == &dword_0 + 2)
+          if (activityMoveMode2 == &dword_0 + 2)
           {
             [(FIUIActivityDataModel *)v47 appleMoveTimeChartData];
           }
@@ -845,20 +845,20 @@ LABEL_19:
           [v3 setObject:v48 forKeyedSubscript:@"NLActivityRichComplicationRectangularViewMoveChartData"];
         }
 
-        v49 = [(FIUIActivityDataModel *)self->_dataModel appleExerciseTimeChartData];
+        appleExerciseTimeChartData = [(FIUIActivityDataModel *)self->_dataModel appleExerciseTimeChartData];
 
-        if (v49)
+        if (appleExerciseTimeChartData)
         {
-          v50 = [(FIUIActivityDataModel *)self->_dataModel appleExerciseTimeChartData];
-          [v3 setObject:v50 forKeyedSubscript:@"NLActivityRichComplicationRectangularViewExerciseChartData"];
+          appleExerciseTimeChartData2 = [(FIUIActivityDataModel *)self->_dataModel appleExerciseTimeChartData];
+          [v3 setObject:appleExerciseTimeChartData2 forKeyedSubscript:@"NLActivityRichComplicationRectangularViewExerciseChartData"];
         }
 
-        v51 = [(FIUIActivityDataModel *)self->_dataModel appleStandHourChartData];
+        appleStandHourChartData = [(FIUIActivityDataModel *)self->_dataModel appleStandHourChartData];
 
-        if (v51)
+        if (appleStandHourChartData)
         {
-          v52 = [(FIUIActivityDataModel *)self->_dataModel appleStandHourChartData];
-          [v3 setObject:v52 forKeyedSubscript:@"NLActivityRichComplicationRectangularViewStandChartData"];
+          appleStandHourChartData2 = [(FIUIActivityDataModel *)self->_dataModel appleStandHourChartData];
+          [v3 setObject:appleStandHourChartData2 forKeyedSubscript:@"NLActivityRichComplicationRectangularViewStandChartData"];
         }
 
         v6 = 0;
@@ -867,19 +867,19 @@ LABEL_19:
         goto LABEL_35;
       }
 
-      v16 = [NSNumber numberWithDouble:?];
-      v27 = [v62 stringFromNumber:v16];
+      activeEnergyTotal = [NSNumber numberWithDouble:?];
+      v27 = [v62 stringFromNumber:activeEnergyTotal];
     }
 
     else
     {
-      v16 = [(FIUIActivityDataModel *)dataModel activeEnergyTotal];
-      if (v16)
+      activeEnergyTotal = [(FIUIActivityDataModel *)dataModel activeEnergyTotal];
+      if (activeEnergyTotal)
       {
         v20 = +[FIUIActivityDataModel formattingManager];
-        v21 = [v20 unitManager];
-        v22 = [v21 userActiveEnergyBurnedUnit];
-        [v16 doubleValueForUnit:v22];
+        unitManager = [v20 unitManager];
+        userActiveEnergyBurnedUnit = [unitManager userActiveEnergyBurnedUnit];
+        [activeEnergyTotal doubleValueForUnit:userActiveEnergyBurnedUnit];
         v24 = floor(v23);
 
         v25 = [NSNumber numberWithDouble:v24];
@@ -898,7 +898,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (v5 != 1)
+  if (availabilityState != 1)
   {
     goto LABEL_36;
   }
@@ -962,11 +962,11 @@ LABEL_36:
 
   else
   {
-    v12 = [(FIUIActivityDataModel *)self->_dataModel userHasDoneActivitySetup];
+    userHasDoneActivitySetup = [(FIUIActivityDataModel *)self->_dataModel userHasDoneActivitySetup];
     _HKInitializeLogging();
     v13 = HKLogActivity;
     v14 = os_log_type_enabled(HKLogActivity, OS_LOG_TYPE_DEFAULT);
-    if (v12)
+    if (userHasDoneActivitySetup)
     {
       if (v14)
       {
@@ -998,11 +998,11 @@ LABEL_36:
   }
 }
 
-+ (id)_LocalizedStringWithActiveEnergy:(id)a3
++ (id)_LocalizedStringWithActiveEnergy:(id)energy
 {
-  v3 = a3;
+  energyCopy = energy;
   v4 = +[FIUIActivityDataModel formattingManager];
-  v5 = [v4 localizedStringWithActiveEnergy:v3];
+  v5 = [v4 localizedStringWithActiveEnergy:energyCopy];
 
   return v5;
 }

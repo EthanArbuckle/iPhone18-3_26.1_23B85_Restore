@@ -1,11 +1,11 @@
 @interface NWAccumulation
 - (NSMutableDictionary)durations;
-- (NWAccumulation)initWithName:(id)a3;
+- (NWAccumulation)initWithName:(id)name;
 - (id)description;
 - (id)snapshot;
 - (void)dealloc;
 - (void)reset;
-- (void)updateWithState:(id)a3 atTime:(double)a4;
+- (void)updateWithState:(id)state atTime:(double)time;
 @end
 
 @implementation NWAccumulation
@@ -61,12 +61,12 @@
 {
   v28 = *MEMORY[0x1E69E9840];
   v3 = [NWAccumulation alloc];
-  v4 = [(NWAccumulation *)self name];
-  v5 = [(NWAccumulation *)v3 initWithName:v4];
+  name = [(NWAccumulation *)self name];
+  v5 = [(NWAccumulation *)v3 initWithName:name];
 
   [(NWAccumulation *)v5 setIsSnapshot:1];
-  v6 = [(NWAccumulation *)self durations];
-  v7 = [v6 mutableCopy];
+  durations = [(NWAccumulation *)self durations];
+  v7 = [durations mutableCopy];
   [(NWAccumulation *)v5 setDurations:v7];
 
   v16 = 0;
@@ -99,7 +99,7 @@
     *buf = 136446722;
     v23 = "[NWAccumulation snapshot]";
     v24 = 2112;
-    v25 = self;
+    selfCopy = self;
     v26 = 2112;
     v27 = v5;
     _os_log_impl(&dword_181A37000, v8, OS_LOG_TYPE_DEBUG, "%{public}s %@ created snapshot: %@", buf, 0x20u);
@@ -144,10 +144,10 @@ uint64_t __23__NWAccumulation_reset__block_invoke(uint64_t a1)
   return [v4 removeAllObjects];
 }
 
-- (void)updateWithState:(id)a3 atTime:(double)a4
+- (void)updateWithState:(id)state atTime:(double)time
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  stateCopy = state;
   if ([(NWAccumulation *)self isSnapshot])
   {
     pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
@@ -158,11 +158,11 @@ uint64_t __23__NWAccumulation_reset__block_invoke(uint64_t a1)
       *buf = 136446978;
       v12 = "[NWAccumulation updateWithState:atTime:]";
       v13 = 2112;
-      v14 = self;
+      selfCopy = self;
       v15 = 2112;
-      v16 = v6;
+      v16 = stateCopy;
       v17 = 2048;
-      v18 = a4;
+      timeCopy = time;
       _os_log_impl(&dword_181A37000, v7, OS_LOG_TYPE_DEBUG, "%{public}s %@ skipping update for snapshot (state: %@ at time %f)", buf, 0x2Au);
     }
   }
@@ -174,8 +174,8 @@ uint64_t __23__NWAccumulation_reset__block_invoke(uint64_t a1)
     v8[2] = __41__NWAccumulation_updateWithState_atTime___block_invoke;
     v8[3] = &unk_1E6A3BCF0;
     v8[4] = self;
-    v9 = v6;
-    v10 = a4;
+    v9 = stateCopy;
+    timeCopy2 = time;
     os_unfair_lock_lock(&self->_lock);
     __41__NWAccumulation_updateWithState_atTime___block_invoke(v8);
     os_unfair_lock_unlock(&self->_lock);
@@ -521,8 +521,8 @@ LABEL_14:
     v4 = "";
   }
 
-  v5 = [(NWAccumulation *)self name];
-  v6 = [v3 stringWithFormat:@"<NWAccumulation%s %@, states: %@>", v4, v5, self->_durations];
+  name = [(NWAccumulation *)self name];
+  v6 = [v3 stringWithFormat:@"<NWAccumulation%s %@, states: %@>", v4, name, self->_durations];
 
   return v6;
 }
@@ -550,10 +550,10 @@ void __25__NWAccumulation_dealloc__block_invoke(uint64_t a1)
   *(v2 + 24) = 0;
 }
 
-- (NWAccumulation)initWithName:(id)a3
+- (NWAccumulation)initWithName:(id)name
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = NWAccumulation;
   v6 = [(NWAccumulation *)&v14 init];
@@ -561,7 +561,7 @@ void __25__NWAccumulation_dealloc__block_invoke(uint64_t a1)
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_name, a3);
+    objc_storeStrong(&v6->_name, name);
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
     durations = v7->_durations;
     v7->_durations = v8;
@@ -575,11 +575,11 @@ void __25__NWAccumulation_dealloc__block_invoke(uint64_t a1)
     v11 = gLogObj;
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      v12 = [(NWAccumulation *)v7 name];
+      name = [(NWAccumulation *)v7 name];
       *buf = 136446466;
       v16 = "[NWAccumulation initWithName:]";
       v17 = 2112;
-      v18 = v12;
+      v18 = name;
       _os_log_impl(&dword_181A37000, v11, OS_LOG_TYPE_DEBUG, "%{public}s NWAccumulation init %@", buf, 0x16u);
     }
   }

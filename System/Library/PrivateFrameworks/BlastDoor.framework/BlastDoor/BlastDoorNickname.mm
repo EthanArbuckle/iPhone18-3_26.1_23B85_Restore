@@ -10,7 +10,7 @@
 
 - (BlastDoorAvatarImage)avatar
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_214569594();
 
   return v3;
@@ -18,7 +18,7 @@
 
 - (BlastDoorWallpaper)wallpaper
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2145696F4();
 
   return v3;
@@ -77,7 +77,7 @@
     v18 = *(v6 + 40);
     v19 = *(v6 + 56);
     v20 = *(v6 + 36);
-    v10 = self;
+    selfCopy = self;
     sub_213FB2E54(v21, v16, &qword_27C9143A0, &qword_21474BF00);
     v11 = sub_214487890();
     v13 = v12;

@@ -1,23 +1,23 @@
 @interface HAHermitNotificationAlgorithms
-+ (HAHypertensivePatternAnalysis)analyzeMeasurements:(id)a3 forDateInterval:(id)a4;
++ (HAHypertensivePatternAnalysis)analyzeMeasurements:(id)measurements forDateInterval:(id)interval;
 @end
 
 @implementation HAHermitNotificationAlgorithms
 
-+ (HAHypertensivePatternAnalysis)analyzeMeasurements:(id)a3 forDateInterval:(id)a4
++ (HAHypertensivePatternAnalysis)analyzeMeasurements:(id)measurements forDateInterval:(id)interval
 {
   v64 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v47 = a4;
+  measurementsCopy = measurements;
+  intervalCopy = interval;
   __src = 0;
   v54 = 0;
   v55 = 0;
-  std::vector<HermitNotification::HSReport>::reserve(&__src, [v5 count]);
+  std::vector<HermitNotification::HSReport>::reserve(&__src, [measurementsCopy count]);
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v6 = v5;
+  v6 = measurementsCopy;
   v7 = [v6 countByEnumeratingWithState:&v49 objects:v63 count:16];
   if (v7)
   {
@@ -37,16 +37,16 @@
         {
           [v10 value];
           v28 = v27;
-          v29 = [v10 date];
+          date = [v10 date];
           *buf = 134545923;
           v61 = v28;
           *v62 = 2114;
-          *&v62[2] = v29;
+          *&v62[2] = date;
           _os_log_debug_impl(&dword_251282000, v11, OS_LOG_TYPE_DEBUG, "%{sensitive}lf on %{public}@", buf, 0x16u);
         }
 
-        v12 = [v10 date];
-        [v12 timeIntervalSince1970];
+        date2 = [v10 date];
+        [date2 timeIntervalSince1970];
         v14 = v13;
 
         [v10 value];
@@ -116,12 +116,12 @@
   }
 
   HermitNotification::Processor::Processor(v48);
-  v30 = [v47 startDate];
-  [v30 timeIntervalSince1970];
+  startDate = [intervalCopy startDate];
+  [startDate timeIntervalSince1970];
   v32 = v31;
 
-  v33 = [v47 endDate];
-  [v33 timeIntervalSince1970];
+  endDate = [intervalCopy endDate];
+  [endDate timeIntervalSince1970];
   v35 = v34;
 
   HermitNotification::Processor::process(buf, v48, &__src, v32, v35);

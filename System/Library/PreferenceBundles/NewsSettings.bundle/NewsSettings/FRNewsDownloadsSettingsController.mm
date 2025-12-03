@@ -1,11 +1,11 @@
 @interface FRNewsDownloadsSettingsController
 - (FRNewsDownloadsSettingsController)init;
-- (id)localizedStringResourceWithKey:(id)a3;
+- (id)localizedStringResourceWithKey:(id)key;
 - (id)optimizeStorageDescription;
 - (id)specifiers;
-- (void)prepUndoAndSetPreferenceValue:(id)a3 specifier:(id)a4;
-- (void)setOptimizedStorageEnabled:(id)a3 forSpecifier:(id)a4;
-- (void)setValue:(id)a3 forSpecifier:(id)a4;
+- (void)prepUndoAndSetPreferenceValue:(id)value specifier:(id)specifier;
+- (void)setOptimizedStorageEnabled:(id)enabled forSpecifier:(id)specifier;
+- (void)setValue:(id)value forSpecifier:(id)specifier;
 @end
 
 @implementation FRNewsDownloadsSettingsController
@@ -22,8 +22,8 @@
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = [(FRNewsDownloadsSettingsController *)v2 specifiers];
-    v5 = [v4 countByEnumeratingWithState:&v13 objects:v18 count:16];
+    specifiers = [(FRNewsDownloadsSettingsController *)v2 specifiers];
+    v5 = [specifiers countByEnumeratingWithState:&v13 objects:v18 count:16];
     if (v5)
     {
       v6 = v5;
@@ -36,7 +36,7 @@
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(specifiers);
           }
 
           v10 = [*(*(&v13 + 1) + 8 * v9) propertyForKey:v8];
@@ -50,7 +50,7 @@
         }
 
         while (v6 != v9);
-        v6 = [v4 countByEnumeratingWithState:&v13 objects:v18 count:16];
+        v6 = [specifiers countByEnumeratingWithState:&v13 objects:v18 count:16];
       }
 
       while (v6);
@@ -110,7 +110,7 @@
     v75 = v66;
     v18 = v12;
     v76 = v18;
-    v68 = self;
+    selfCopy = self;
     [(FRNewsDownloadsSettingsController *)self pe_registerUndoActionName:v16 associatedDeepLink:v17 undoAction:v74];
 
     *&v18[OBJC_IVAR___PSSpecifier_setter] = "setValue:forSpecifier:";
@@ -221,8 +221,8 @@
     }
 
     v50 = [PSSpecifier groupSpecifierWithID:@"Optimize Storage Group"];
-    v51 = [(FRNewsDownloadsSettingsController *)v68 optimizeStorageDescription];
-    [v50 setProperty:v51 forKey:PSFooterTextGroupKey];
+    optimizeStorageDescription = [(FRNewsDownloadsSettingsController *)selfCopy optimizeStorageDescription];
+    [v50 setProperty:optimizeStorageDescription forKey:PSFooterTextGroupKey];
 
     [v60 addObject:v50];
     v52 = [NSBundle bundleForClass:objc_opt_class()];
@@ -235,35 +235,35 @@
     [v55 setObject:v71 forKeyedSubscript:v59];
     [v55 setIdentifier:v54];
     [v60 addObject:v55];
-    v56 = *&v68->PSListController_opaque[v70];
-    *&v68->PSListController_opaque[v70] = v60;
+    v56 = *&selfCopy->PSListController_opaque[v70];
+    *&selfCopy->PSListController_opaque[v70] = v60;
     v57 = v60;
 
-    v3 = *&v68->PSListController_opaque[v70];
+    v3 = *&selfCopy->PSListController_opaque[v70];
   }
 
   return v3;
 }
 
-- (void)setValue:(id)a3 forSpecifier:(id)a4
+- (void)setValue:(id)value forSpecifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
-  [(FRNewsDownloadsSettingsController *)self setPreferenceValue:v7 specifier:v6];
-  [v6 setObject:v7 forKeyedSubscript:PSValueKey];
+  specifierCopy = specifier;
+  valueCopy = value;
+  [(FRNewsDownloadsSettingsController *)self setPreferenceValue:valueCopy specifier:specifierCopy];
+  [specifierCopy setObject:valueCopy forKeyedSubscript:PSValueKey];
 
   [(FRNewsDownloadsSettingsController *)self reloadSpecifiers];
 }
 
-- (void)setOptimizedStorageEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setOptimizedStorageEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v6 = a4;
+  specifierCopy = specifier;
   v20.receiver = self;
   v20.super_class = FRNewsDownloadsSettingsController;
-  v7 = a3;
-  v8 = [(FRNewsDownloadsSettingsController *)&v20 readPreferenceValue:v6];
-  v9 = [v6 name];
-  v10 = [(FRNewsDownloadsSettingsController *)self localizedStringResourceWithKey:v9];
+  enabledCopy = enabled;
+  v8 = [(FRNewsDownloadsSettingsController *)&v20 readPreferenceValue:specifierCopy];
+  name = [specifierCopy name];
+  v10 = [(FRNewsDownloadsSettingsController *)self localizedStringResourceWithKey:name];
   v11 = [NSURL URLWithString:@"prefs://root=NEWS"];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
@@ -271,15 +271,15 @@
   v17[3] = &unk_10898;
   v17[4] = self;
   v18 = v8;
-  v19 = v6;
-  v12 = v6;
+  v19 = specifierCopy;
+  v12 = specifierCopy;
   v13 = v8;
   [(FRNewsDownloadsSettingsController *)self pe_registerUndoActionName:v10 associatedDeepLink:v11 undoAction:v17];
-  [(FRNewsDownloadsSettingsController *)self setPreferenceValue:v7 specifier:v12];
-  [v12 setObject:v7 forKeyedSubscript:PSValueKey];
+  [(FRNewsDownloadsSettingsController *)self setPreferenceValue:enabledCopy specifier:v12];
+  [v12 setObject:enabledCopy forKeyedSubscript:PSValueKey];
   [(FRNewsDownloadsSettingsController *)self reloadSpecifier:v12 animated:1];
   v14 = NewsCoreUserDefaults();
-  [v14 setValue:v7 forKey:FCOptimizedStorageEnabledKey];
+  [v14 setValue:enabledCopy forKey:FCOptimizedStorageEnabledKey];
 
   v15 = NewsCoreUserDefaults();
   v16 = +[NSDate date];
@@ -289,9 +289,9 @@
 - (id)optimizeStorageDescription
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  if (v3 == &dword_4 + 2)
+  if (userInterfaceIdiom == &dword_4 + 2)
   {
     v4 = [NSBundle bundleForClass:objc_opt_class()];
     v5 = v4;
@@ -299,7 +299,7 @@
     goto LABEL_7;
   }
 
-  if (v3 == &dword_0 + 1)
+  if (userInterfaceIdiom == &dword_0 + 1)
   {
     v4 = [NSBundle bundleForClass:objc_opt_class()];
     v5 = v4;
@@ -307,7 +307,7 @@
     goto LABEL_7;
   }
 
-  if (!v3)
+  if (!userInterfaceIdiom)
   {
     v4 = [NSBundle bundleForClass:objc_opt_class()];
     v5 = v4;
@@ -329,15 +329,15 @@ LABEL_11:
   return v7;
 }
 
-- (void)prepUndoAndSetPreferenceValue:(id)a3 specifier:(id)a4
+- (void)prepUndoAndSetPreferenceValue:(id)value specifier:(id)specifier
 {
-  v6 = a4;
+  specifierCopy = specifier;
   v18.receiver = self;
   v18.super_class = FRNewsDownloadsSettingsController;
-  v7 = a3;
-  v8 = [(FRNewsDownloadsSettingsController *)&v18 readPreferenceValue:v6];
-  v9 = [v6 name];
-  v10 = [(FRNewsDownloadsSettingsController *)self localizedStringResourceWithKey:v9];
+  valueCopy = value;
+  v8 = [(FRNewsDownloadsSettingsController *)&v18 readPreferenceValue:specifierCopy];
+  name = [specifierCopy name];
+  v10 = [(FRNewsDownloadsSettingsController *)self localizedStringResourceWithKey:name];
   v11 = [NSURL URLWithString:@"prefs://root=NEWS"];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
@@ -345,29 +345,29 @@ LABEL_11:
   v15[3] = &unk_10898;
   v15[4] = self;
   v16 = v8;
-  v17 = v6;
-  v12 = v6;
+  v17 = specifierCopy;
+  v12 = specifierCopy;
   v13 = v8;
   [(FRNewsDownloadsSettingsController *)self pe_registerUndoActionName:v10 associatedDeepLink:v11 undoAction:v15];
   v14.receiver = self;
   v14.super_class = FRNewsDownloadsSettingsController;
-  [(FRNewsDownloadsSettingsController *)&v14 setPreferenceValue:v7 specifier:v12];
-  [v12 setObject:v7 forKeyedSubscript:PSValueKey];
+  [(FRNewsDownloadsSettingsController *)&v14 setPreferenceValue:valueCopy specifier:v12];
+  [v12 setObject:valueCopy forKeyedSubscript:PSValueKey];
 
   [(FRNewsDownloadsSettingsController *)self reloadSpecifier:v12 animated:1];
 }
 
-- (id)localizedStringResourceWithKey:(id)a3
+- (id)localizedStringResourceWithKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = [NSBundle bundleForClass:objc_opt_class()];
-  v5 = [v4 bundleURL];
+  bundleURL = [v4 bundleURL];
 
   v6 = [_NSLocalizedStringResource alloc];
   v7 = +[NSLocale currentLocale];
   v8 = [NSBundle bundleForClass:objc_opt_class()];
-  v9 = [v8 bundleURL];
-  v10 = [v6 initWithKey:v3 table:0 locale:v7 bundleURL:v9];
+  bundleURL2 = [v8 bundleURL];
+  v10 = [v6 initWithKey:keyCopy table:0 locale:v7 bundleURL:bundleURL2];
 
   return v10;
 }

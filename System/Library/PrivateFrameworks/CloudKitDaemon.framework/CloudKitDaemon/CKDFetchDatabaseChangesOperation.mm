@@ -1,12 +1,12 @@
 @interface CKDFetchDatabaseChangesOperation
 - (BOOL)shouldReturnServerChangeTokensToAdopter;
-- (CKDFetchDatabaseChangesOperation)initWithOperationInfo:(id)a3 container:(id)a4;
+- (CKDFetchDatabaseChangesOperation)initWithOperationInfo:(id)info container:(id)container;
 - (id)activityCreate;
 - (id)analyticsPayload;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
-- (void)_handleAnonymousZoneDataObjects:(id)a3 schedulerInfo:(id)a4;
-- (void)_handleFetchDatabaseChangesRequestFinishedWithSchedulerInfo:(id)a3;
-- (void)_sendFetchDatabaseChangesRequestWithChangeToken:(id)a3 previousRequestSchedulerInfo:(id)a4;
+- (void)_finishOnCallbackQueueWithError:(id)error;
+- (void)_handleAnonymousZoneDataObjects:(id)objects schedulerInfo:(id)info;
+- (void)_handleFetchDatabaseChangesRequestFinishedWithSchedulerInfo:(id)info;
+- (void)_sendFetchDatabaseChangesRequestWithChangeToken:(id)token previousRequestSchedulerInfo:(id)info;
 - (void)main;
 @end
 
@@ -87,36 +87,36 @@ LABEL_9:
 {
   v26.receiver = self;
   v26.super_class = CKDFetchDatabaseChangesOperation;
-  v3 = [(CKDDatabaseOperation *)&v26 analyticsPayload];
+  analyticsPayload = [(CKDDatabaseOperation *)&v26 analyticsPayload];
   v4 = MEMORY[0x277CCABB0];
   v7 = objc_msgSend_previousServerChangeToken(self, v5, v6);
   v9 = objc_msgSend_numberWithInt_(v4, v8, v7 != 0);
-  objc_msgSend_setObject_forKeyedSubscript_(v3, v10, v9, 0x28387E7C0);
+  objc_msgSend_setObject_forKeyedSubscript_(analyticsPayload, v10, v9, 0x28387E7C0);
 
   v11 = MEMORY[0x277CCABB0];
   AllChanges = objc_msgSend_fetchAllChanges(self, v12, v13);
   v16 = objc_msgSend_numberWithBool_(v11, v15, AllChanges);
-  objc_msgSend_setObject_forKeyedSubscript_(v3, v17, v16, 0x283869100);
+  objc_msgSend_setObject_forKeyedSubscript_(analyticsPayload, v17, v16, 0x283869100);
 
   v18 = MEMORY[0x277CCABB0];
   v21 = objc_msgSend_resultsLimit(self, v19, v20);
   v23 = objc_msgSend_numberWithUnsignedInteger_(v18, v22, v21);
-  objc_msgSend_setObject_forKeyedSubscript_(v3, v24, v23, 0x28387E7E0);
+  objc_msgSend_setObject_forKeyedSubscript_(analyticsPayload, v24, v23, 0x28387E7E0);
 
-  return v3;
+  return analyticsPayload;
 }
 
-- (CKDFetchDatabaseChangesOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDFetchDatabaseChangesOperation)initWithOperationInfo:(id)info container:(id)container
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  containerCopy = container;
   v36.receiver = self;
   v36.super_class = CKDFetchDatabaseChangesOperation;
-  v10 = [(CKDDatabaseOperation *)&v36 initWithOperationInfo:v6 container:v7];
+  v10 = [(CKDDatabaseOperation *)&v36 initWithOperationInfo:infoCopy container:containerCopy];
   if (v10)
   {
-    v11 = objc_msgSend_options(v7, v8, v9);
+    v11 = objc_msgSend_options(containerCopy, v8, v9);
     if (objc_msgSend_useAnonymousToServerShareParticipants(v11, v12, v13))
     {
       v16 = objc_msgSend_databaseScope(v10, v14, v15);
@@ -146,13 +146,13 @@ LABEL_9:
     {
     }
 
-    v26 = objc_msgSend_previousServerChangeToken(v6, v17, v18);
+    v26 = objc_msgSend_previousServerChangeToken(infoCopy, v17, v18);
     previousServerChangeToken = v10->_previousServerChangeToken;
     v10->_previousServerChangeToken = v26;
 
 LABEL_10:
-    v10->_resultsLimit = objc_msgSend_resultsLimit(v6, v20, v21);
-    v10->_fetchAllChanges = objc_msgSend_fetchAllChanges(v6, v28, v29);
+    v10->_resultsLimit = objc_msgSend_resultsLimit(infoCopy, v20, v21);
+    v10->_fetchAllChanges = objc_msgSend_fetchAllChanges(infoCopy, v28, v29);
     v10->_numRequestsSent = 0;
     v30 = dispatch_group_create();
     fetchZonesGroup = v10->_fetchZonesGroup;
@@ -167,11 +167,11 @@ LABEL_10:
   return v10;
 }
 
-- (void)_handleFetchDatabaseChangesRequestFinishedWithSchedulerInfo:(id)a3
+- (void)_handleFetchDatabaseChangesRequestFinishedWithSchedulerInfo:(id)info
 {
-  v4 = a3;
-  v7 = objc_msgSend_request(v4, v5, v6);
-  objc_msgSend_setRequest_(v4, v8, 0);
+  infoCopy = info;
+  v7 = objc_msgSend_request(infoCopy, v5, v6);
+  objc_msgSend_setRequest_(infoCopy, v8, 0);
   v11 = objc_msgSend_serverChangeTokenData(v7, v9, v10);
 
   if (v11)
@@ -185,26 +185,26 @@ LABEL_10:
   v22 = objc_msgSend_fetchZonesGroup(self, v20, v21);
   dispatch_group_enter(v22);
 
-  v25 = objc_msgSend_perRequestCallbackGroup(v4, v23, v24);
-  v28 = objc_msgSend_perRequestCallbackQueue(v4, v26, v27);
+  v25 = objc_msgSend_perRequestCallbackGroup(infoCopy, v23, v24);
+  v28 = objc_msgSend_perRequestCallbackQueue(infoCopy, v26, v27);
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = sub_225243158;
   v31[3] = &unk_278546BB8;
   v31[4] = self;
   v32 = v11;
-  v33 = v4;
+  v33 = infoCopy;
   v34 = v19;
-  v29 = v4;
+  v29 = infoCopy;
   v30 = v11;
   dispatch_group_notify(v25, v28, v31);
 }
 
-- (void)_sendFetchDatabaseChangesRequestWithChangeToken:(id)a3 previousRequestSchedulerInfo:(id)a4
+- (void)_sendFetchDatabaseChangesRequestWithChangeToken:(id)token previousRequestSchedulerInfo:(id)info
 {
   v97 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  infoCopy = info;
   if (*MEMORY[0x277CBC880] != -1)
   {
     dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -214,12 +214,12 @@ LABEL_10:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v96 = v6;
+    v96 = tokenCopy;
     _os_log_impl(&dword_22506F000, v8, OS_LOG_TYPE_INFO, "Fetching database changes from the server with change token %{public}@", buf, 0xCu);
   }
 
   v9 = [CKDFetchDatabaseChangesURLRequest alloc];
-  v11 = objc_msgSend_initWithOperation_previousServerChangeTokenData_(v9, v10, self, v6);
+  v11 = objc_msgSend_initWithOperation_previousServerChangeTokenData_(v9, v10, self, tokenCopy);
   v14 = objc_msgSend_resultsLimit(self, v12, v13);
   objc_msgSend_setResultsLimit_(v11, v15, v14);
   objc_initWeak(buf, self);
@@ -247,9 +247,9 @@ LABEL_10:
   v33 = objc_msgSend_perRequestGroup(v18, v31, v32);
   dispatch_group_enter(v33);
 
-  if (v7)
+  if (infoCopy)
   {
-    v36 = objc_msgSend_perRequestGroup(v7, v34, v35);
+    v36 = objc_msgSend_perRequestGroup(infoCopy, v34, v35);
   }
 
   else
@@ -361,11 +361,11 @@ LABEL_10:
   v71 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleAnonymousZoneDataObjects:(id)a3 schedulerInfo:(id)a4
+- (void)_handleAnonymousZoneDataObjects:(id)objects schedulerInfo:(id)info
 {
   location[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  objectsCopy = objects;
+  infoCopy = info;
   if (*MEMORY[0x277CBC880] != -1)
   {
     dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -376,7 +376,7 @@ LABEL_10:
   {
     v30 = v8;
     LODWORD(location[0]) = 134217984;
-    *(location + 4) = objc_msgSend_count(v6, v31, v32);
+    *(location + 4) = objc_msgSend_count(objectsCopy, v31, v32);
     _os_log_debug_impl(&dword_22506F000, v30, OS_LOG_TYPE_DEBUG, "Handling encrypted anonymous share processing for: %lu number of anonymous zone data objects", location, 0xCu);
   }
 
@@ -384,7 +384,7 @@ LABEL_10:
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v6;
+  obj = objectsCopy;
   v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v9, &v40, v44, 16);
   if (v12)
   {
@@ -402,7 +402,7 @@ LABEL_10:
         v15 = objc_msgSend_fetchZonesGroup(self, v10, v11);
         dispatch_group_enter(v15);
 
-        v18 = objc_msgSend_perRequestCallbackGroup(v7, v16, v17);
+        v18 = objc_msgSend_perRequestCallbackGroup(infoCopy, v16, v17);
         dispatch_group_enter(v18);
 
         objc_initWeak(location, self);
@@ -413,8 +413,8 @@ LABEL_10:
         v35[1] = 3221225472;
         v35[2] = sub_2252451CC;
         v35[3] = &unk_27854AEE0;
-        v36 = v7;
-        v37 = self;
+        v36 = infoCopy;
+        selfCopy = self;
         objc_copyWeak(&v39, location);
         v38 = v14;
         objc_msgSend_decryptShareTuple_withCompletionBlock_(v24, v28, v27, v35);
@@ -432,16 +432,16 @@ LABEL_10:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   objc_msgSend_setRecordZoneWithIDChangedBlock_(self, v5, 0);
   objc_msgSend_setRecordZoneWithIDWasDeletedBlock_(self, v6, 0);
   objc_msgSend_setRecordZoneWithIDWasPurgedBlock_(self, v7, 0);
   objc_msgSend_setRecordZoneWithIDWasDeletedDueToEncryptedDataResetBlock_(self, v8, 0);
   v9.receiver = self;
   v9.super_class = CKDFetchDatabaseChangesOperation;
-  [(CKDOperation *)&v9 _finishOnCallbackQueueWithError:v4];
+  [(CKDOperation *)&v9 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 @end

@@ -1,38 +1,38 @@
 @interface VUIChannelBannerView
 - (BOOL)_isSubscribed;
-- (CGSize)_layoutSubviewsWithSize:(CGSize)a3 computationOnly:(BOOL)a4;
-- (VUIChannelBannerView)initWithFrame:(CGRect)a3;
+- (CGSize)_layoutSubviewsWithSize:(CGSize)size computationOnly:(BOOL)only;
+- (VUIChannelBannerView)initWithFrame:(CGRect)frame;
 - (double)_subscribeButtonHeight;
 - (double)topThreshold;
-- (void)_layoutLabels:(id)a3 withOrigin:(CGPoint)a4 maxWidth:(double)a5;
-- (void)setAppleTVChannelLogoView:(id)a3;
-- (void)setBgColorView:(id)a3;
-- (void)setBgImageView:(id)a3;
-- (void)setDescriptionTextView:(id)a3;
-- (void)setDisclaimerTextLabel:(id)a3;
-- (void)setHeight:(double)a3;
-- (void)setSeparatorView:(id)a3;
-- (void)setSubscribeButton:(id)a3;
-- (void)setTextLabels:(id)a3;
-- (void)setVuiBackgroundColor:(id)a3;
+- (void)_layoutLabels:(id)labels withOrigin:(CGPoint)origin maxWidth:(double)width;
+- (void)setAppleTVChannelLogoView:(id)view;
+- (void)setBgColorView:(id)view;
+- (void)setBgImageView:(id)view;
+- (void)setDescriptionTextView:(id)view;
+- (void)setDisclaimerTextLabel:(id)label;
+- (void)setHeight:(double)height;
+- (void)setSeparatorView:(id)view;
+- (void)setSubscribeButton:(id)button;
+- (void)setTextLabels:(id)labels;
+- (void)setVuiBackgroundColor:(id)color;
 @end
 
 @implementation VUIChannelBannerView
 
-- (VUIChannelBannerView)initWithFrame:(CGRect)a3
+- (VUIChannelBannerView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = VUIChannelBannerView;
-  v3 = [(VUIChannelBannerView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VUIChannelBannerView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(VUISeparatorView);
-    v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v5 nativeScale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen nativeScale];
     v7 = 1.0 / v6;
 
-    v8 = [MEMORY[0x1E69DC888] whiteColor];
-    [(VUISeparatorView *)v4 setDarkColor:v8];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(VUISeparatorView *)v4 setDarkColor:whiteColor];
 
     [(VUISeparatorView *)v4 setLineHeight:v7];
     [(VUIChannelBannerView *)v3 setSeparatorView:v4];
@@ -43,61 +43,61 @@
   return v3;
 }
 
-- (void)setVuiBackgroundColor:(id)a3
+- (void)setVuiBackgroundColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = VUIChannelBannerView;
-  v4 = a3;
-  [(VUIChannelBannerView *)&v5 setVuiBackgroundColor:v4];
-  [(UIView *)self->_bgColorView setVuiBackgroundColor:v4, v5.receiver, v5.super_class];
+  colorCopy = color;
+  [(VUIChannelBannerView *)&v5 setVuiBackgroundColor:colorCopy];
+  [(UIView *)self->_bgColorView setVuiBackgroundColor:colorCopy, v5.receiver, v5.super_class];
 }
 
-- (void)setBgColorView:(id)a3
+- (void)setBgColorView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   bgColorView = self->_bgColorView;
-  if (bgColorView != v5)
+  if (bgColorView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)bgColorView removeFromSuperview];
     if (v7 && ![(UIView *)v7 isDescendantOfView:self])
     {
       [(VUIChannelBannerView *)self addSubview:v7];
     }
 
-    objc_storeStrong(&self->_bgColorView, a3);
+    objc_storeStrong(&self->_bgColorView, view);
     [(VUIChannelBannerView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (void)setAppleTVChannelLogoView:(id)a3
+- (void)setAppleTVChannelLogoView:(id)view
 {
-  v5 = a3;
-  [(VUIChannelBannerView *)self vui_addSubview:v5 oldView:self->_appleTVChannelLogoView];
-  if (self->_appleTVChannelLogoView != v5)
+  viewCopy = view;
+  [(VUIChannelBannerView *)self vui_addSubview:viewCopy oldView:self->_appleTVChannelLogoView];
+  if (self->_appleTVChannelLogoView != viewCopy)
   {
-    objc_storeStrong(&self->_appleTVChannelLogoView, a3);
+    objc_storeStrong(&self->_appleTVChannelLogoView, view);
     [(VUIChannelBannerView *)self vui_setNeedsLayout];
   }
 }
 
-- (void)setSeparatorView:(id)a3
+- (void)setSeparatorView:(id)view
 {
-  v5 = a3;
-  [(VUIChannelBannerView *)self vui_addSubview:v5 oldView:self->_separatorView];
-  if (self->_separatorView != v5)
+  viewCopy = view;
+  [(VUIChannelBannerView *)self vui_addSubview:viewCopy oldView:self->_separatorView];
+  if (self->_separatorView != viewCopy)
   {
-    objc_storeStrong(&self->_separatorView, a3);
+    objc_storeStrong(&self->_separatorView, view);
     [(VUIChannelBannerView *)self vui_setNeedsLayout];
   }
 }
 
-- (void)setTextLabels:(id)a3
+- (void)setTextLabels:(id)labels
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 count] || -[NSArray count](self->_textLabels, "count"))
+  labelsCopy = labels;
+  if ([labelsCopy count] || -[NSArray count](self->_textLabels, "count"))
   {
     v22 = 0u;
     v23 = 0u;
@@ -129,7 +129,7 @@
       while (v8);
     }
 
-    objc_storeStrong(&self->_textLabels, a3);
+    objc_storeStrong(&self->_textLabels, labels);
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
@@ -164,62 +164,62 @@
   }
 }
 
-- (void)setDescriptionTextView:(id)a3
+- (void)setDescriptionTextView:(id)view
 {
-  v5 = a3;
-  [(VUIChannelBannerView *)self vui_addSubview:v5 oldView:self->_descriptionTextView];
-  if (self->_descriptionTextView != v5)
+  viewCopy = view;
+  [(VUIChannelBannerView *)self vui_addSubview:viewCopy oldView:self->_descriptionTextView];
+  if (self->_descriptionTextView != viewCopy)
   {
-    objc_storeStrong(&self->_descriptionTextView, a3);
+    objc_storeStrong(&self->_descriptionTextView, view);
     [(VUIChannelBannerView *)self vui_setNeedsLayout];
   }
 }
 
-- (void)setSubscribeButton:(id)a3
+- (void)setSubscribeButton:(id)button
 {
-  v5 = a3;
-  [(VUIChannelBannerView *)self vui_addSubview:v5 oldView:self->_subscribeButton];
-  if (self->_subscribeButton != v5)
+  buttonCopy = button;
+  [(VUIChannelBannerView *)self vui_addSubview:buttonCopy oldView:self->_subscribeButton];
+  if (self->_subscribeButton != buttonCopy)
   {
-    objc_storeStrong(&self->_subscribeButton, a3);
+    objc_storeStrong(&self->_subscribeButton, button);
     [(VUIChannelBannerView *)self vui_setNeedsLayout];
   }
 }
 
-- (void)setDisclaimerTextLabel:(id)a3
+- (void)setDisclaimerTextLabel:(id)label
 {
-  v5 = a3;
-  [(VUIChannelBannerView *)self vui_addSubview:v5 oldView:self->_disclaimerTextLabel];
-  if (self->_disclaimerTextLabel != v5)
+  labelCopy = label;
+  [(VUIChannelBannerView *)self vui_addSubview:labelCopy oldView:self->_disclaimerTextLabel];
+  if (self->_disclaimerTextLabel != labelCopy)
   {
-    objc_storeStrong(&self->_disclaimerTextLabel, a3);
+    objc_storeStrong(&self->_disclaimerTextLabel, label);
     [(VUIChannelBannerView *)self vui_setNeedsLayout];
   }
 }
 
-- (void)setBgImageView:(id)a3
+- (void)setBgImageView:(id)view
 {
-  v5 = a3;
-  if (self->_bgImageView != v5)
+  viewCopy = view;
+  if (self->_bgImageView != viewCopy)
   {
-    v6 = v5;
-    [(VUIChannelBannerView *)self vui_addSubview:v5 oldView:?];
+    v6 = viewCopy;
+    [(VUIChannelBannerView *)self vui_addSubview:viewCopy oldView:?];
     if (self->_bgImageView != v6)
     {
-      objc_storeStrong(&self->_bgImageView, a3);
+      objc_storeStrong(&self->_bgImageView, view);
     }
 
     [(VUIChannelBannerView *)self vui_sendSubviewToBack:v6];
     [(VUIChannelBannerView *)self vui_setNeedsLayout];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
-- (void)setHeight:(double)a3
+- (void)setHeight:(double)height
 {
-  if (self->_height != a3)
+  if (self->_height != height)
   {
-    self->_height = a3;
+    self->_height = height;
     [(VUIChannelBannerView *)self vui_setNeedsLayout];
   }
 }
@@ -231,19 +231,19 @@
   return CGRectGetMinY(*&v2);
 }
 
-- (CGSize)_layoutSubviewsWithSize:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)_layoutSubviewsWithSize:(CGSize)size computationOnly:(BOOL)only
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v280 = *MEMORY[0x1E69E9840];
-  v7 = [(VUIChannelBannerView *)self vuiTraitCollection];
-  v8 = [v7 isAXEnabled];
+  vuiTraitCollection = [(VUIChannelBannerView *)self vuiTraitCollection];
+  isAXEnabled = [vuiTraitCollection isAXEnabled];
 
   v9 = [MEMORY[0x1E69DD2E8] vui_currentSizeClassForWindowWidth:width];
-  v10 = [MEMORY[0x1E69DF6F0] isMac];
-  v11 = v10;
-  v12 = (v9 < 3) | v8;
-  if (v10)
+  isMac = [MEMORY[0x1E69DF6F0] isMac];
+  v11 = isMac;
+  v12 = (v9 < 3) | isAXEnabled;
+  if (isMac)
   {
     v13 = 20.0;
   }
@@ -253,12 +253,12 @@
     v13 = 16.0;
   }
 
-  v14 = v10 ^ 1;
+  v14 = isMac ^ 1;
   [MEMORY[0x1E69DD2E8] vui_paddingForWindowWidth:width];
   v16 = v15;
   v18 = v17;
-  v19 = [MEMORY[0x1E69DF6F0] isTV];
-  v20 = v19;
+  isTV = [MEMORY[0x1E69DF6F0] isTV];
+  v20 = isTV;
   v253 = v16;
   v21 = width - v16;
   v22 = 36.0;
@@ -267,7 +267,7 @@
     v22 = 40.0;
   }
 
-  if (v19)
+  if (isTV)
   {
     v23 = 68.0;
   }
@@ -277,7 +277,7 @@
     v23 = v22;
   }
 
-  if (v19)
+  if (isTV)
   {
     v24 = 38.0;
   }
@@ -287,7 +287,7 @@
     v24 = v13;
   }
 
-  if (v11 | v19)
+  if (v11 | isTV)
   {
     v25 = 32.0;
   }
@@ -301,11 +301,11 @@
   v251 = v26;
   if (v20)
   {
-    v27 = [(VUIChannelBannerView *)self _isSubscribed];
-    v28 = !v27;
+    _isSubscribed = [(VUIChannelBannerView *)self _isSubscribed];
+    v28 = !_isSubscribed;
     v29 = 58.0;
     v30 = 44.0;
-    if (v27)
+    if (_isSubscribed)
     {
       v29 = 44.0;
     }
@@ -481,9 +481,9 @@
     v108 = 0.0;
     if (separatorView)
     {
-      v109 = [(VUISeparatorView *)separatorView isHidden];
+      isHidden = [(VUISeparatorView *)separatorView isHidden];
       v110 = v250;
-      if ((v109 & 1) == 0)
+      if ((isHidden & 1) == 0)
       {
         v286.size.height = 0.0;
         v286.origin.x = v253;
@@ -772,7 +772,7 @@ LABEL_79:
     if (textLabels)
     {
       v215 = v111;
-      v217 = a4;
+      onlyCopy = only;
       v172 = v235;
       v267 = 0u;
       v268 = 0u;
@@ -800,12 +800,12 @@ LABEL_79:
 
             v182 = *(*(&v265 + 1) + 8 * v180);
             [v182 setHidden:{0, v215}];
-            v183 = [v182 textLayout];
-            [v183 margin];
+            textLayout = [v182 textLayout];
+            [textLayout margin];
             v185 = v184;
-            v186 = [(NSArray *)self->_textLabels firstObject];
+            firstObject = [(NSArray *)self->_textLabels firstObject];
 
-            if (v186 == v182)
+            if (firstObject == v182)
             {
               v187 = v23;
             }
@@ -819,9 +819,9 @@ LABEL_79:
             v189 = v188;
             [v182 sizeThatFits:{v53, 0.0}];
             v191 = v190;
-            v192 = [(NSArray *)self->_textLabels firstObject];
+            firstObject2 = [(NSArray *)self->_textLabels firstObject];
 
-            if (v192 == v182)
+            if (firstObject2 == v182)
             {
               v302.origin.x = v255;
               v302.size.height = v257;
@@ -839,9 +839,9 @@ LABEL_79:
             v177 = v182;
 
             v179 = v191 + v179;
-            v193 = [(NSArray *)self->_textLabels lastObject];
+            lastObject = [(NSArray *)self->_textLabels lastObject];
 
-            if (v193 == v177)
+            if (lastObject == v177)
             {
               [v177 bottomMarginWithBaselineMargin:v262];
               v179 = v179 + v194;
@@ -874,7 +874,7 @@ LABEL_79:
       v238 = v195;
 
       width = v229;
-      a4 = v217;
+      only = onlyCopy;
       v111 = v215;
     }
 
@@ -1012,7 +1012,7 @@ LABEL_79:
 
   else if (self->_textLabels)
   {
-    v216 = a4;
+    onlyCopy2 = only;
     v86 = v235;
     [(UIView *)self->_descriptionTextView setHidden:1];
     v271 = 0u;
@@ -1038,12 +1038,12 @@ LABEL_79:
 
           v93 = *(*(&v269 + 1) + 8 * j);
           [v93 setHidden:0];
-          v94 = [v93 textLayout];
-          [v94 margin];
+          textLayout2 = [v93 textLayout];
+          [textLayout2 margin];
           v96 = v95;
-          v97 = [(NSArray *)self->_textLabels firstObject];
+          firstObject3 = [(NSArray *)self->_textLabels firstObject];
 
-          if (v97 == v93)
+          if (firstObject3 == v93)
           {
             v98 = v23;
           }
@@ -1058,9 +1058,9 @@ LABEL_79:
           v101 = v34;
           [v93 sizeThatFits:{v34, 0.0}];
           v103 = v102;
-          v104 = [(NSArray *)self->_textLabels firstObject];
+          firstObject4 = [(NSArray *)self->_textLabels firstObject];
 
-          if (v104 == v93)
+          if (firstObject4 == v93)
           {
             v285.origin.x = v254;
             v285.size.width = v256;
@@ -1111,7 +1111,7 @@ LABEL_79:
     v83 = v248;
     v85 = v226;
     width = v229;
-    a4 = v216;
+    only = onlyCopy2;
   }
 
   else
@@ -1234,7 +1234,7 @@ LABEL_151:
   else
   {
     v197 = v196;
-    if (a4)
+    if (only)
     {
       v198 = v235;
     }
@@ -1345,7 +1345,7 @@ LABEL_151:
     v207 = v249;
   }
 
-  if (!a4)
+  if (!only)
   {
     if (v197 >= height)
     {
@@ -1447,19 +1447,19 @@ LABEL_151:
     if (objc_opt_isKindOfClass())
     {
       v4 = self->_subscribeButton;
-      v5 = [(UIView *)v4 textContentView];
-      v6 = v5;
-      if (v5)
+      textContentView = [(UIView *)v4 textContentView];
+      v6 = textContentView;
+      if (textContentView)
       {
-        v7 = [v5 textLayout];
-        v8 = [v7 maximumContentSizeCategory];
+        textLayout = [textContentView textLayout];
+        maximumContentSizeCategory = [textLayout maximumContentSizeCategory];
 
 LABEL_10:
         v9 = MEMORY[0x1E69DF6D0];
         [(UIView *)v4 height];
         v11 = v10;
-        v12 = [(VUIChannelBannerView *)self vuiTraitCollection];
-        [v9 scaleContentSizeValue:v12 forTraitCollection:v8 maximumContentSizeCategory:v11];
+        vuiTraitCollection = [(VUIChannelBannerView *)self vuiTraitCollection];
+        [v9 scaleContentSizeValue:vuiTraitCollection forTraitCollection:maximumContentSizeCategory maximumContentSizeCategory:v11];
         v14 = v13;
 
         return v14;
@@ -1472,7 +1472,7 @@ LABEL_10:
       v6 = 0;
     }
 
-    v8 = 0;
+    maximumContentSizeCategory = 0;
     goto LABEL_10;
   }
 
@@ -1480,17 +1480,17 @@ LABEL_10:
   return result;
 }
 
-- (void)_layoutLabels:(id)a3 withOrigin:(CGPoint)a4 maxWidth:(double)a5
+- (void)_layoutLabels:(id)labels withOrigin:(CGPoint)origin maxWidth:(double)width
 {
-  y = a4.y;
-  x = a4.x;
+  y = origin.y;
+  x = origin.x;
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  labelsCopy = labels;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  v9 = [labelsCopy countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1505,18 +1505,18 @@ LABEL_10:
       {
         if (*v27 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(labelsCopy);
         }
 
         v16 = *(*(&v26 + 1) + 8 * v14);
-        v17 = [v16 textLayout];
-        [v17 margin];
+        textLayout = [v16 textLayout];
+        [textLayout margin];
         v19 = v18;
-        [v16 vui_sizeThatFits:{a5, 0.0}];
+        [v16 vui_sizeThatFits:{width, 0.0}];
         v21 = v20;
-        v22 = [v8 firstObject];
+        firstObject = [labelsCopy firstObject];
 
-        if (v22 == v16)
+        if (firstObject == v16)
         {
           v24 = y;
         }
@@ -1538,7 +1538,7 @@ LABEL_10:
           v24 = v25;
         }
 
-        [v16 setFrame:{x, v24, a5, v21}];
+        [v16 setFrame:{x, v24, width, v21}];
         v11 = v16;
 
         v13 = v21 + v13;
@@ -1547,7 +1547,7 @@ LABEL_10:
       }
 
       while (v10 != v14);
-      v10 = [v8 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v10 = [labelsCopy countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v10);

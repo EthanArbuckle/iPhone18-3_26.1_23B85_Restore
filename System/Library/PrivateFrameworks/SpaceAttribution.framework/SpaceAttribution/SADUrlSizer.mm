@@ -1,35 +1,35 @@
 @interface SADUrlSizer
-+ (id)newWithOptions:(unint64_t)a3;
-- (SADUrlSizer)initWithOptions:(unint64_t)a3;
-- (void)scanURLs:(id)a3 withSizer:(id)a4;
++ (id)newWithOptions:(unint64_t)options;
+- (SADUrlSizer)initWithOptions:(unint64_t)options;
+- (void)scanURLs:(id)ls withSizer:(id)sizer;
 @end
 
 @implementation SADUrlSizer
 
-- (SADUrlSizer)initWithOptions:(unint64_t)a3
+- (SADUrlSizer)initWithOptions:(unint64_t)options
 {
   v5.receiver = self;
   v5.super_class = SADUrlSizer;
   result = [(SADUrlSizer *)&v5 init];
   if (result)
   {
-    result->_scanOptions = a3;
+    result->_scanOptions = options;
   }
 
   return result;
 }
 
-+ (id)newWithOptions:(unint64_t)a3
++ (id)newWithOptions:(unint64_t)options
 {
-  v4 = [a1 alloc];
+  v4 = [self alloc];
 
-  return [v4 initWithOptions:a3];
+  return [v4 initWithOptions:options];
 }
 
-- (void)scanURLs:(id)a3 withSizer:(id)a4
+- (void)scanURLs:(id)ls withSizer:(id)sizer
 {
-  v5 = a3;
-  v24 = a4;
+  lsCopy = ls;
+  sizerCopy = sizer;
   v6 = objc_opt_new();
   v27 = objc_opt_new();
   v7 = SALog();
@@ -42,7 +42,7 @@
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v5;
+  obj = lsCopy;
   v8 = [obj countByEnumeratingWithState:&v28 objects:v42 count:16];
   if (v8)
   {
@@ -62,33 +62,33 @@
 
         v14 = *(*(&v28 + 1) + 8 * v12);
         v15 = objc_autoreleasePoolPush();
-        v16 = [v14 path];
-        v17 = [v27 getItemSizeAtPath:v16];
+        path = [v14 path];
+        v17 = [v27 getItemSizeAtPath:path];
 
         v10 = +[SAURLSize newWithSize:mayBePartOfCloneChain:](SAURLSize, "newWithSize:mayBePartOfCloneChain:", [v17 dataSize], objc_msgSend(v17, "cloneSize") > 0);
         [v6 addURL:v14 withSizeInfo:v10];
         if ((self->_scanOptions & 2) != 0)
         {
-          [v24 callHandlerWithResults:v6 error:0];
+          [sizerCopy callHandlerWithResults:v6 error:0];
         }
 
         v18 = SALog();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
         {
-          v19 = [v14 path];
-          v23 = [v17 dataSize];
-          v20 = [v17 cloneSize];
-          v21 = [v17 purgeableSize];
+          path2 = [v14 path];
+          dataSize = [v17 dataSize];
+          cloneSize = [v17 cloneSize];
+          purgeableSize = [v17 purgeableSize];
           *buf = 136316162;
           v33 = "[SADUrlSizer scanURLs:withSizer:]";
           v34 = 2112;
-          v35 = v19;
+          v35 = path2;
           v36 = 2048;
-          v37 = v23;
+          v37 = dataSize;
           v38 = 2048;
-          v39 = v20;
+          v39 = cloneSize;
           v40 = 2048;
-          v41 = v21;
+          v41 = purgeableSize;
           _os_log_debug_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "%s path %@, data %llu, clone %llu, purge %llu", buf, 0x34u);
         }
 
@@ -106,7 +106,7 @@
 
   if (self->_scanOptions)
   {
-    [v24 callHandlerWithResults:v6 error:0];
+    [sizerCopy callHandlerWithResults:v6 error:0];
   }
 
   v22 = SALog();

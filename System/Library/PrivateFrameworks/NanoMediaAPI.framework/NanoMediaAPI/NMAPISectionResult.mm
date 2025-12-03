@@ -1,30 +1,30 @@
 @interface NMAPISectionResult
-- (NMAPISectionResult)initWithSectionIdentifier:(id)a3 sectionDictionary:(id)a4 itemsArray:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NMAPISectionResult)initWithSectionIdentifier:(id)identifier sectionDictionary:(id)dictionary itemsArray:(id)array;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation NMAPISectionResult
 
-- (NMAPISectionResult)initWithSectionIdentifier:(id)a3 sectionDictionary:(id)a4 itemsArray:(id)a5
+- (NMAPISectionResult)initWithSectionIdentifier:(id)identifier sectionDictionary:(id)dictionary itemsArray:(id)array
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  dictionaryCopy = dictionary;
+  arrayCopy = array;
   v15.receiver = self;
   v15.super_class = NMAPISectionResult;
   v12 = [(NMAPISectionResult *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_sectionIdentifier, a3);
-    objc_storeStrong(&v13->_sectionDictionary, a4);
-    objc_storeStrong(&v13->_itemsArray, a5);
+    objc_storeStrong(&v12->_sectionIdentifier, identifier);
+    objc_storeStrong(&v13->_sectionDictionary, dictionary);
+    objc_storeStrong(&v13->_itemsArray, array);
   }
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(NMAPISectionResult);
   p_isa = &v4->super.isa;

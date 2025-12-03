@@ -1,11 +1,11 @@
 @interface TextualRepresentationBridge
-+ (id)formatMTEPageTags:(id)a3 report:(id)a4;
++ (id)formatMTEPageTags:(id)tags report:(id)report;
 - (_TtC15CoreDiagnostics27TextualRepresentationBridge)init;
 @end
 
 @implementation TextualRepresentationBridge
 
-+ (id)formatMTEPageTags:(id)a3 report:(id)a4
++ (id)formatMTEPageTags:(id)tags report:(id)report
 {
   v4 = sub_1D9849FF4();
   v5 = sub_1D9849DB4();

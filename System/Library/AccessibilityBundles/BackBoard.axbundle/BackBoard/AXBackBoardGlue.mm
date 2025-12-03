@@ -1,18 +1,18 @@
 @interface AXBackBoardGlue
-+ (CGPoint)displayConvertFromCAScreen:(CGPoint)a3 withDisplayIntegerId:(unsigned int)a4;
-+ (CGPoint)displayConvertToCAScreen:(CGPoint)a3 withDisplayIntegerId:(unsigned int)a4;
++ (CGPoint)displayConvertFromCAScreen:(CGPoint)screen withDisplayIntegerId:(unsigned int)id;
++ (CGPoint)displayConvertToCAScreen:(CGPoint)screen withDisplayIntegerId:(unsigned int)id;
 + (int)inputUIPid;
-+ (void)_applyExtendedHitTestInformationForCAScreenCoordinates:(CGPoint)a3 displayUUID:(id)a4 toPathAttributes:(id)a5 secureName:(unsigned int)a6 excludeContextIDs:(id)a7;
++ (void)_applyExtendedHitTestInformationForCAScreenCoordinates:(CGPoint)coordinates displayUUID:(id)d toPathAttributes:(id)attributes secureName:(unsigned int)name excludeContextIDs:(id)ds;
 + (void)_repeatAggregateStatistics;
 + (void)initialize;
 + (void)kickoffAggregateStatistics;
 + (void)sendUserEventOccurred;
-+ (void)setLockScreenDimTimerEnabled:(BOOL)a3;
-- (unsigned)contextIdForDisplayPoint:(CGPoint)a3;
-- (void)setAccessibilityUIServerPid:(int)a3;
-- (void)setAssistiveTouchPid:(int)a3;
-- (void)setFullKeyboardAccessDaemonPID:(int)a3;
-- (void)setIsSpeakScreenHighlightVisible:(BOOL)a3;
++ (void)setLockScreenDimTimerEnabled:(BOOL)enabled;
+- (unsigned)contextIdForDisplayPoint:(CGPoint)point;
+- (void)setAccessibilityUIServerPid:(int)pid;
+- (void)setAssistiveTouchPid:(int)pid;
+- (void)setFullKeyboardAccessDaemonPID:(int)d;
+- (void)setIsSpeakScreenHighlightVisible:(BOOL)visible;
 - (void)userEventOccurred;
 - (void)zoomListenerRegistered;
 @end
@@ -25,7 +25,7 @@
   block[1] = 3221225472;
   block[2] = __29__AXBackBoardGlue_initialize__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (initialize_onceToken != -1)
   {
     dispatch_once(&initialize_onceToken, block);
@@ -256,7 +256,7 @@ void __29__AXBackBoardGlue_initialize__block_invoke_5_359(uint64_t a1, void *a2)
   block[1] = 3221225472;
   block[2] = __45__AXBackBoardGlue__repeatAggregateStatistics__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   dispatch_after(v3, v4, block);
 }
 
@@ -293,12 +293,12 @@ void __45__AXBackBoardGlue__repeatAggregateStatistics__block_invoke(uint64_t a1)
 + (void)kickoffAggregateStatistics
 {
   v13 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDBD6A8] sharedInstance];
-  v4 = [v3 ignoreLogging];
+  mEMORY[0x29EDBD6A8] = [MEMORY[0x29EDBD6A8] sharedInstance];
+  ignoreLogging = [mEMORY[0x29EDBD6A8] ignoreLogging];
 
-  if ((v4 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v5 = [MEMORY[0x29EDBD6A8] identifier];
+    identifier = [MEMORY[0x29EDBD6A8] identifier];
     v6 = AXLoggerForFacility();
 
     v7 = AXOSLogLevelFromAXLogLevel();
@@ -316,7 +316,7 @@ void __45__AXBackBoardGlue__repeatAggregateStatistics__block_invoke(uint64_t a1)
   }
 
   [MEMORY[0x29EDBD5F0] updateStatistics];
-  [a1 _repeatAggregateStatistics];
+  [self _repeatAggregateStatistics];
   v10 = *MEMORY[0x29EDCA608];
 }
 
@@ -329,9 +329,9 @@ void __45__AXBackBoardGlue__repeatAggregateStatistics__block_invoke(uint64_t a1)
 
   v2 = [sendUserEventOccurred_BKUserEventTimerClass safeValueForKey:@"sharedInstance"];
   v3 = [v2 safeValueForKey:@"_currentMode"];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
-  if (v4 == 1)
+  if (intValue == 1)
   {
     v8 = v2;
     AXPerformSafeBlock();
@@ -350,14 +350,14 @@ Class __40__AXBackBoardGlue_sendUserEventOccurred__block_invoke()
   return result;
 }
 
-+ (CGPoint)displayConvertFromCAScreen:(CGPoint)a3 withDisplayIntegerId:(unsigned int)a4
++ (CGPoint)displayConvertFromCAScreen:(CGPoint)screen withDisplayIntegerId:(unsigned int)id
 {
-  if (!a4)
+  if (!id)
   {
-    v4 = [MEMORY[0x29EDBBAE0] server];
-    v5 = [v4 displays];
-    v6 = [v5 firstObject];
-    [v6 displayId];
+    server = [MEMORY[0x29EDBBAE0] server];
+    displays = [server displays];
+    firstObject = [displays firstObject];
+    [firstObject displayId];
   }
 
   v11 = 0;
@@ -395,14 +395,14 @@ uint64_t __67__AXBackBoardGlue_displayConvertFromCAScreen_withDisplayIntegerId__
   return result;
 }
 
-+ (CGPoint)displayConvertToCAScreen:(CGPoint)a3 withDisplayIntegerId:(unsigned int)a4
++ (CGPoint)displayConvertToCAScreen:(CGPoint)screen withDisplayIntegerId:(unsigned int)id
 {
-  if (!a4)
+  if (!id)
   {
-    v4 = [MEMORY[0x29EDBBAE0] server];
-    v5 = [v4 displays];
-    v6 = [v5 firstObject];
-    [v6 displayId];
+    server = [MEMORY[0x29EDBBAE0] server];
+    displays = [server displays];
+    firstObject = [displays firstObject];
+    [firstObject displayId];
   }
 
   v11 = 0;
@@ -440,53 +440,53 @@ uint64_t __65__AXBackBoardGlue_displayConvertToCAScreen_withDisplayIntegerId___b
   return result;
 }
 
-+ (void)_applyExtendedHitTestInformationForCAScreenCoordinates:(CGPoint)a3 displayUUID:(id)a4 toPathAttributes:(id)a5 secureName:(unsigned int)a6 excludeContextIDs:(id)a7
++ (void)_applyExtendedHitTestInformationForCAScreenCoordinates:(CGPoint)coordinates displayUUID:(id)d toPathAttributes:(id)attributes secureName:(unsigned int)name excludeContextIDs:(id)ds
 {
-  v9 = a4;
-  v13 = a5;
-  v14 = a7;
-  v10 = v14;
-  v11 = v13;
-  v12 = v9;
+  dCopy = d;
+  attributesCopy = attributes;
+  dsCopy = ds;
+  v10 = dsCopy;
+  v11 = attributesCopy;
+  v12 = dCopy;
   AXPerformSafeBlock();
 }
 
-- (void)setAssistiveTouchPid:(int)a3
+- (void)setAssistiveTouchPid:(int)pid
 {
-  AssistiveTouchPID = a3;
+  AssistiveTouchPID = pid;
   v3 = +[AXBAccessibilityManager sharedManager];
   [v3 resetAssistiveTouchHitPort];
 }
 
-- (void)setFullKeyboardAccessDaemonPID:(int)a3
+- (void)setFullKeyboardAccessDaemonPID:(int)d
 {
   v7 = *MEMORY[0x29EDCA608];
   v4 = FKALogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v6[0] = 67109120;
-    v6[1] = a3;
+    v6[1] = d;
     _os_log_impl(&dword_29BBBD000, v4, OS_LOG_TYPE_INFO, "FKA pid: %d", v6, 8u);
   }
 
-  FullKeyboardAccessDaemonPID = a3;
+  FullKeyboardAccessDaemonPID = d;
   v5 = *MEMORY[0x29EDCA608];
 }
 
-- (void)setAccessibilityUIServerPid:(int)a3
+- (void)setAccessibilityUIServerPid:(int)pid
 {
-  AccessibilityUIServerPID = a3;
+  AccessibilityUIServerPID = pid;
   v3 = +[AXBAccessibilityManager sharedManager];
   [v3 resetAccessibilityUIHitPort];
 
   +[AXBSpeakThisManager didUpdateAccessibilityUIServerPID];
 }
 
-+ (void)setLockScreenDimTimerEnabled:(BOOL)a3
++ (void)setLockScreenDimTimerEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = [NSClassFromString(&cfstr_Bkusereventtim.isa) safeValueForKey:@"sharedInstance"];
-  [v4 _axSetTimerDisabled:!v3];
+  [v4 _axSetTimerDisabled:!enabledCopy];
 }
 
 + (int)inputUIPid
@@ -500,14 +500,14 @@ uint64_t __65__AXBackBoardGlue_displayConvertToCAScreen_withDisplayIntegerId___b
 
 - (void)zoomListenerRegistered
 {
-  v2 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v2 postNotificationName:@"ZoomListenerRegistered" object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter postNotificationName:@"ZoomListenerRegistered" object:0];
 }
 
-- (unsigned)contextIdForDisplayPoint:(CGPoint)a3
+- (unsigned)contextIdForDisplayPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v5 = +[AXBEventManager sharedManager];
   v6 = [v5 contextIdForPosition:0 displayId:{x, y}];
 
@@ -521,19 +521,19 @@ uint64_t __65__AXBackBoardGlue_displayConvertToCAScreen_withDisplayIntegerId___b
   [v2 sendUserEventOccurred];
 }
 
-- (void)setIsSpeakScreenHighlightVisible:(BOOL)a3
+- (void)setIsSpeakScreenHighlightVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v10 = *MEMORY[0x29EDCA608];
-  v4 = [(AXBackBoardGlue *)self accessibilityUIServerPid];
+  accessibilityUIServerPid = [(AXBackBoardGlue *)self accessibilityUIServerPid];
   v5 = AXLogSpeakScreen();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (accessibilityUIServerPid)
   {
     if (v6)
     {
       v8 = 67109120;
-      v9 = v3;
+      v9 = visibleCopy;
       _os_log_impl(&dword_29BBBD000, v5, OS_LOG_TYPE_DEFAULT, "Setting highlight state to visible: %i.", &v8, 8u);
     }
   }
@@ -541,7 +541,7 @@ uint64_t __65__AXBackBoardGlue_displayConvertToCAScreen_withDisplayIntegerId___b
   else if (v6)
   {
     v8 = 67109120;
-    v9 = v3;
+    v9 = visibleCopy;
     _os_log_impl(&dword_29BBBD000, v5, OS_LOG_TYPE_DEFAULT, "Asked to set highlight state to visible %i, but AXUIServer PID wasn't registered. Clearing highlight state.", &v8, 8u);
   }
 

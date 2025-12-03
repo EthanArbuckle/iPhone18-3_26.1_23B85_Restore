@@ -4,22 +4,22 @@
 - (BOOL)isRegisteredForCapture;
 - (BOOL)isSecureElement;
 - (BOOL)preventsInteractiveDismissal;
-- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)a3 containerSize:(CGSize)a4;
+- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)size containerSize:(CGSize)containerSize;
 - (NSArray)recordableConfigurations;
 - (NSDictionary)preferredComponentStates;
 - (NSString)preferredConfiguration;
 - (void)_checkDismissalCompletion;
 - (void)_dispatchElementUpdateAfterMinDisplayTime;
-- (void)presentOnParentViewController:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5;
-- (void)presentableDidAppearAsBanner:(id)a3;
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4;
-- (void)presentableWillAppearAsBanner:(id)a3;
-- (void)presentableWillDisappearAsBanner:(id)a3 withReason:(id)a4;
-- (void)presentableWillNotAppearAsBanner:(id)a3 withReason:(id)a4;
-- (void)revokePresentableWithCompletionHandler:(id)a3;
+- (void)presentOnParentViewController:(id)controller animated:(BOOL)animated completionHandler:(id)handler;
+- (void)presentableDidAppearAsBanner:(id)banner;
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason;
+- (void)presentableWillAppearAsBanner:(id)banner;
+- (void)presentableWillDisappearAsBanner:(id)banner withReason:(id)reason;
+- (void)presentableWillNotAppearAsBanner:(id)banner withReason:(id)reason;
+- (void)revokePresentableWithCompletionHandler:(id)handler;
 - (void)shake;
-- (void)userInteractionDidEndForBannerForPresentable:(id)a3;
-- (void)userInteractionWillBeginForBannerForPresentable:(id)a3;
+- (void)userInteractionDidEndForBannerForPresentable:(id)presentable;
+- (void)userInteractionWillBeginForBannerForPresentable:(id)presentable;
 - (void)viewDidLoad;
 @end
 
@@ -37,22 +37,22 @@
 
 - (BOOL)isSecureElement
 {
-  v2 = [(PresentationViewController *)self isDynamicIslandAvailable];
-  if (v2)
+  isDynamicIslandAvailable = [(PresentationViewController *)self isDynamicIslandAvailable];
+  if (isDynamicIslandAvailable)
   {
     v3 = +[LACSecureFaceIDUIUtilities sharedInstance];
-    v4 = [v3 isActive];
+    isActive = [v3 isActive];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(isDynamicIslandAvailable) = isActive;
   }
 
-  return v2;
+  return isDynamicIslandAvailable;
 }
 
-- (void)presentOnParentViewController:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5
+- (void)presentOnParentViewController:(id)controller animated:(BOOL)animated completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  controllerCopy = controller;
+  handlerCopy = handler;
   if ([(PresentationViewController *)self isDynamicIslandAvailable])
   {
     v25[0] = kSBUIPresentableSystemApertureSupportingUserInfoKey;
@@ -63,15 +63,15 @@
     v11 = LACLogFaceIDUI();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(PresentationViewController *)self requestIdentifier];
+      requestIdentifier = [(PresentationViewController *)self requestIdentifier];
       *buf = 138543362;
-      v24 = v12;
+      v24 = requestIdentifier;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Posting %{public}@", buf, 0xCu);
     }
 
-    v13 = [(PresentationViewController *)self bannerSource];
+    bannerSource = [(PresentationViewController *)self bannerSource];
     v17 = 0;
-    v14 = [v13 postPresentable:self options:1 userInfo:v10 error:&v17];
+    v14 = [bannerSource postPresentable:self options:1 userInfo:v10 error:&v17];
     v15 = v17;
 
     if ((v14 & 1) == 0)
@@ -83,9 +83,9 @@
       }
     }
 
-    if (v9)
+    if (handlerCopy)
     {
-      v9[2](v9);
+      handlerCopy[2](handlerCopy);
     }
   }
 
@@ -97,9 +97,9 @@
     block[2] = sub_10001AFBC;
     block[3] = &unk_1000968F8;
     objc_copyWeak(&v21, buf);
-    v19 = v8;
-    v22 = a4;
-    v20 = v9;
+    v19 = controllerCopy;
+    animatedCopy = animated;
+    v20 = handlerCopy;
     dispatch_async(&_dispatch_main_q, block);
 
     objc_destroyWeak(&v21);
@@ -107,34 +107,34 @@
   }
 }
 
-- (void)revokePresentableWithCompletionHandler:(id)a3
+- (void)revokePresentableWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (![(PresentationViewController *)self isRevokingPresentable])
   {
     v8 = LACLogFaceIDUI();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(PresentationViewController *)self requestIdentifier];
+      requestIdentifier = [(PresentationViewController *)self requestIdentifier];
       *buf = 138543362;
-      v20 = v9;
+      v20 = requestIdentifier;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Revoking %{public}@", buf, 0xCu);
     }
 
     [(PresentationViewController *)self setIsRevokingPresentable:1];
-    v10 = [(PresentationViewController *)self bannerSource];
-    v11 = [(PresentationViewController *)self requestIdentifier];
+    bannerSource = [(PresentationViewController *)self bannerSource];
+    requestIdentifier2 = [(PresentationViewController *)self requestIdentifier];
     v12 = [NSString stringWithFormat:@"dismissing %@", self];
     v18 = 0;
-    v13 = [v10 revokePresentableWithRequestIdentifier:v11 reason:v12 animated:1 userInfo:0 error:&v18];
+    v13 = [bannerSource revokePresentableWithRequestIdentifier:requestIdentifier2 reason:v12 animated:1 userInfo:0 error:&v18];
     v7 = v18;
 
     if (v13)
     {
-      if (v4)
+      if (handlerCopy)
       {
         dismissCompletionHandlers = self->_dismissCompletionHandlers;
-        v15 = objc_retainBlock(v4);
+        v15 = objc_retainBlock(handlerCopy);
         [(NSMutableArray *)dismissCompletionHandlers addObject:v15];
 
         v16 = LACLogFaceIDUI();
@@ -154,19 +154,19 @@
       }
 
       [(PresentationViewController *)self setIsRevokingPresentable:0];
-      if (v4)
+      if (handlerCopy)
       {
-        v4[2](v4);
+        handlerCopy[2](handlerCopy);
       }
     }
 
     goto LABEL_16;
   }
 
-  if (v4)
+  if (handlerCopy)
   {
     v5 = self->_dismissCompletionHandlers;
-    v6 = objc_retainBlock(v4);
+    v6 = objc_retainBlock(handlerCopy);
     [(NSMutableArray *)v5 addObject:v6];
 
     v7 = LACLogFaceIDUI();
@@ -184,8 +184,8 @@ LABEL_16:
   bannerSource = self->_bannerSource;
   if (!bannerSource)
   {
-    v4 = [(PresentationViewController *)self requesterIdentifier];
-    v5 = [BNBannerSource bannerSourceForDestination:0 forRequesterIdentifier:v4];
+    requesterIdentifier = [(PresentationViewController *)self requesterIdentifier];
+    v5 = [BNBannerSource bannerSourceForDestination:0 forRequesterIdentifier:requesterIdentifier];
     v6 = self->_bannerSource;
     self->_bannerSource = v5;
 
@@ -195,26 +195,26 @@ LABEL_16:
   return bannerSource;
 }
 
-- (void)presentableWillAppearAsBanner:(id)a3
+- (void)presentableWillAppearAsBanner:(id)banner
 {
-  v3 = a3;
+  bannerCopy = banner;
   v4 = LACLogFaceIDUI();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = v3;
+    v6 = bannerCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "presentableWillAppearAsBanner:%{public}@", &v5, 0xCu);
   }
 }
 
-- (void)presentableDidAppearAsBanner:(id)a3
+- (void)presentableDidAppearAsBanner:(id)banner
 {
-  v4 = a3;
+  bannerCopy = banner;
   v5 = LACLogFaceIDUI();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = bannerCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "presentableDidAppearAsBanner:%{public}@", &v6, 0xCu);
   }
 
@@ -227,9 +227,9 @@ LABEL_16:
 {
   if (self->_preventingInteractiveDismissal)
   {
-    v3 = [(PresentationViewController *)self glyphView];
-    v4 = [v3 remainingMinDisplayTimeInterval];
-    [v4 doubleValue];
+    glyphView = [(PresentationViewController *)self glyphView];
+    remainingMinDisplayTimeInterval = [glyphView remainingMinDisplayTimeInterval];
+    [remainingMinDisplayTimeInterval doubleValue];
     v6 = v5;
 
     v7 = LACLogFaceIDUI();
@@ -239,12 +239,12 @@ LABEL_16:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v17 = self;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ will allow interactive dismissal after remaining min display time was fulfilled", buf, 0xCu);
       }
 
-      v13 = [(PresentationViewController *)self systemApertureElementContext];
-      [v13 setElementNeedsUpdate];
+      systemApertureElementContext = [(PresentationViewController *)self systemApertureElementContext];
+      [systemApertureElementContext setElementNeedsUpdate];
     }
 
     else
@@ -252,16 +252,16 @@ LABEL_16:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         *buf = 138543618;
-        v17 = self;
+        selfCopy2 = self;
         v18 = 2048;
         v19 = v6;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%{public}@ will re-check dismissal prevention after remainingMinDisplayTime: %.3f", buf, 0x16u);
       }
 
       objc_initWeak(buf, self);
-      v9 = [(PresentationViewController *)self glyphView];
-      v10 = [v9 remainingMinDisplayTimeInterval];
-      [v10 doubleValue];
+      glyphView2 = [(PresentationViewController *)self glyphView];
+      remainingMinDisplayTimeInterval2 = [glyphView2 remainingMinDisplayTimeInterval];
+      [remainingMinDisplayTimeInterval2 doubleValue];
       v12 = dispatch_time(0, (v11 * 1000000000.0));
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
@@ -276,17 +276,17 @@ LABEL_16:
   }
 }
 
-- (void)presentableWillDisappearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableWillDisappearAsBanner:(id)banner withReason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  bannerCopy = banner;
+  reasonCopy = reason;
   v8 = LACLogFaceIDUI();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543618;
-    v10 = v6;
+    v10 = bannerCopy;
     v11 = 2114;
-    v12 = v7;
+    v12 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "presentableWillDisappearAsBanner:%{public}@ withReason:%{public}@", &v9, 0x16u);
   }
 
@@ -294,34 +294,34 @@ LABEL_16:
   byte_1000B0368 = 0;
 }
 
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  bannerCopy = banner;
+  reasonCopy = reason;
   v8 = LACLogFaceIDUI();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543618;
-    v10 = v6;
+    v10 = bannerCopy;
     v11 = 2114;
-    v12 = v7;
+    v12 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "presentableDidDisappearAsBanner:%{public}@ withReason:%{public}@", &v9, 0x16u);
   }
 
   [(PresentationViewController *)self _checkDismissalCompletion];
 }
 
-- (void)presentableWillNotAppearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableWillNotAppearAsBanner:(id)banner withReason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  bannerCopy = banner;
+  reasonCopy = reason;
   v8 = LACLogFaceIDUI();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543618;
-    v10 = v6;
+    v10 = bannerCopy;
     v11 = 2114;
-    v12 = v7;
+    v12 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "presentableWillNotAppearAsBanner:%{public}@ withReason:%{public}@", &v9, 0x16u);
   }
 
@@ -342,7 +342,7 @@ LABEL_16:
       {
         v7 = [(NSMutableArray *)self->_dismissCompletionHandlers count];
         *buf = v8;
-        v10 = self;
+        selfCopy = self;
         v11 = 1024;
         v12 = v4 + 1;
         v13 = 1024;
@@ -363,38 +363,38 @@ LABEL_16:
   [(PresentationViewController *)self setIsRevokingPresentable:0];
 }
 
-- (void)userInteractionWillBeginForBannerForPresentable:(id)a3
+- (void)userInteractionWillBeginForBannerForPresentable:(id)presentable
 {
-  v3 = a3;
+  presentableCopy = presentable;
   v4 = LACLogFaceIDUI();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = v3;
+    v6 = presentableCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "userInteractionWillBeginForPresentable:%{public}@", &v5, 0xCu);
   }
 }
 
-- (void)userInteractionDidEndForBannerForPresentable:(id)a3
+- (void)userInteractionDidEndForBannerForPresentable:(id)presentable
 {
-  v3 = a3;
+  presentableCopy = presentable;
   v4 = LACLogFaceIDUI();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = v3;
+    v6 = presentableCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "userInteractionDidEndForPresentable:%{public}@", &v5, 0xCu);
   }
 }
 
 - (BOOL)preventsInteractiveDismissal
 {
-  v3 = [(PresentationViewController *)self glyphView];
-  v4 = [v3 remainingMinDisplayTimeInterval];
+  glyphView = [(PresentationViewController *)self glyphView];
+  remainingMinDisplayTimeInterval = [glyphView remainingMinDisplayTimeInterval];
 
-  if (v4)
+  if (remainingMinDisplayTimeInterval)
   {
-    [v4 doubleValue];
+    [remainingMinDisplayTimeInterval doubleValue];
     v6 = v5 > 0.0;
   }
 
@@ -410,10 +410,10 @@ LABEL_16:
 
 - (BOOL)isRegisteredForCapture
 {
-  v2 = [(PresentationViewController *)self secureUIController];
-  v3 = [v2 isRecording];
+  secureUIController = [(PresentationViewController *)self secureUIController];
+  isRecording = [secureUIController isRecording];
 
-  return v3;
+  return isRecording;
 }
 
 - (NSArray)recordableConfigurations
@@ -423,10 +423,10 @@ LABEL_16:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(PresentationViewController *)self secureUIController];
-  v5 = [v4 supportedConfigurations];
+  secureUIController = [(PresentationViewController *)self secureUIController];
+  supportedConfigurations = [secureUIController supportedConfigurations];
 
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [supportedConfigurations countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -437,14 +437,14 @@ LABEL_16:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(supportedConfigurations);
         }
 
         v10 = [[SecureUIFlipBookElementConfigurationDynamicIsland alloc] initWithConfiguration:*(*(&v12 + 1) + 8 * i)];
         [v3 addObject:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [supportedConfigurations countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -455,34 +455,34 @@ LABEL_16:
 
 - (NSString)preferredConfiguration
 {
-  v2 = [(PresentationViewController *)self secureUIController];
-  v3 = [v2 currentConfiguration];
-  v4 = [v3 name];
+  secureUIController = [(PresentationViewController *)self secureUIController];
+  currentConfiguration = [secureUIController currentConfiguration];
+  name = [currentConfiguration name];
 
-  return v4;
+  return name;
 }
 
 - (NSDictionary)preferredComponentStates
 {
-  v3 = [(PresentationViewController *)self secureUIController];
-  v4 = [v3 currentStates];
+  secureUIController = [(PresentationViewController *)self secureUIController];
+  currentStates = [secureUIController currentStates];
 
   v5 = LACLogFaceIDUI();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v4;
+    v10 = currentStates;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ preferredComponentStates: %@", &v7, 0x16u);
   }
 
-  return v4;
+  return currentStates;
 }
 
-- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)a3 containerSize:(CGSize)a4
+- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)size containerSize:(CGSize)containerSize
 {
-  [(PresentationViewController *)self preferredContentSize:a3.width];
+  [(PresentationViewController *)self preferredContentSize:size.width];
   result.height = v5;
   result.width = v4;
   return result;
@@ -503,16 +503,16 @@ LABEL_16:
   v3 = LACLogFaceIDUI();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PresentationViewController *)self systemApertureElementContext];
+    systemApertureElementContext = [(PresentationViewController *)self systemApertureElementContext];
     v6 = 138543618;
-    v7 = self;
+    selfCopy = self;
     v8 = 2114;
-    v9 = v4;
+    v9 = systemApertureElementContext;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ will shake via %{public}@", &v6, 0x16u);
   }
 
-  v5 = [(PresentationViewController *)self systemApertureElementContext];
-  [v5 requestNegativeResponseAnimation];
+  systemApertureElementContext2 = [(PresentationViewController *)self systemApertureElementContext];
+  [systemApertureElementContext2 requestNegativeResponseAnimation];
 }
 
 @end

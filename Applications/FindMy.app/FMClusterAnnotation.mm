@@ -1,14 +1,14 @@
 @interface FMClusterAnnotation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation FMClusterAnnotation
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -17,7 +17,7 @@
   else
   {
     memset(v11, 0, sizeof(v11));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_10017EE08(v11, v9);

@@ -1,7 +1,7 @@
 @interface PaidBundleChangeNotificationModifier
 - (_TtC7NewsUI236PaidBundleChangeNotificationModifier)init;
-- (void)bundleSubscriptionDidExpire:(id)a3;
-- (void)bundleSubscriptionDidSubscribe:(id)a3;
+- (void)bundleSubscriptionDidExpire:(id)expire;
+- (void)bundleSubscriptionDidSubscribe:(id)subscribe;
 @end
 
 @implementation PaidBundleChangeNotificationModifier
@@ -13,16 +13,16 @@
   return result;
 }
 
-- (void)bundleSubscriptionDidSubscribe:(id)a3
+- (void)bundleSubscriptionDidSubscribe:(id)subscribe
 {
-  v4 = a3;
-  v5 = self;
+  subscribeCopy = subscribe;
+  selfCopy = self;
   sub_219606968();
 }
 
-- (void)bundleSubscriptionDidExpire:(id)a3
+- (void)bundleSubscriptionDidExpire:(id)expire
 {
-  v3 = self;
+  selfCopy = self;
   sub_2196061EC(1);
 }
 

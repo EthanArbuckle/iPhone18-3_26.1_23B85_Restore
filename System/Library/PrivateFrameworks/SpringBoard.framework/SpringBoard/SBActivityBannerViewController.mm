@@ -5,28 +5,28 @@
 - (BOOL)_shouldHaveBackgroundTint;
 - (BOOL)_shouldSetDefaultBackground;
 - (BOOL)_shouldShowSystemApertureUI;
-- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)a3 containerSize:(CGSize)a4;
+- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)size containerSize:(CGSize)containerSize;
 - (NSSet)preferredBackgroundActivitiesToSuppress;
 - (NSString)requestIdentifier;
 - (NSString)requesterIdentifier;
 - (SBActivityBannerViewControllerDelegate)bannerDelegate;
 - (id)_activityIdentifier;
-- (id)_backgroundTintColorForUserInterfaceStyle:(int64_t)a3;
+- (id)_backgroundTintColorForUserInterfaceStyle:(int64_t)style;
 - (void)_dismiss;
-- (void)_enumerateObserversRespondingToSelector:(SEL)a3 usingBlock:(id)a4;
+- (void)_enumerateObserversRespondingToSelector:(SEL)selector usingBlock:(id)block;
 - (void)_extendDismissalTimer;
 - (void)_layoutSubviews;
 - (void)_updateAppStatusBarSettingsAssertion;
-- (void)activityHostViewControllerBackgroundTintColorDidChange:(id)a3;
-- (void)addPresentableObserver:(id)a3;
-- (void)presentableDidAppearAsBanner:(id)a3;
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4;
-- (void)presentableWillAppearAsBanner:(id)a3;
-- (void)presentableWillDisappearAsBanner:(id)a3 withReason:(id)a4;
-- (void)removePresentableObserver:(id)a3;
-- (void)userInteractionDidEndForBannerForPresentable:(id)a3;
-- (void)userInteractionWillBeginForBannerForPresentable:(id)a3;
-- (void)userInterfaceStyleChangedForEnvironment:(id)a3 previousTraitCollection:(id)a4;
+- (void)activityHostViewControllerBackgroundTintColorDidChange:(id)change;
+- (void)addPresentableObserver:(id)observer;
+- (void)presentableDidAppearAsBanner:(id)banner;
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason;
+- (void)presentableWillAppearAsBanner:(id)banner;
+- (void)presentableWillDisappearAsBanner:(id)banner withReason:(id)reason;
+- (void)removePresentableObserver:(id)observer;
+- (void)userInteractionDidEndForBannerForPresentable:(id)presentable;
+- (void)userInteractionWillBeginForBannerForPresentable:(id)presentable;
+- (void)userInterfaceStyleChangedForEnvironment:(id)environment previousTraitCollection:(id)collection;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -36,10 +36,10 @@
 - (NSSet)preferredBackgroundActivitiesToSuppress
 {
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(SBActivityViewController *)self activityItem];
-  v5 = [v4 descriptor];
-  v6 = [v5 platterTargetBundleIdentifier];
-  v7 = [v6 isEqualToString:@"com.apple.VoiceMemos"];
+  activityItem = [(SBActivityViewController *)self activityItem];
+  descriptor = [activityItem descriptor];
+  platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
+  v7 = [platterTargetBundleIdentifier isEqualToString:@"com.apple.VoiceMemos"];
 
   if (v7)
   {
@@ -58,40 +58,40 @@
 
 - (NSString)requestIdentifier
 {
-  v3 = [(SBActivityViewController *)self activityItem];
-  v4 = [v3 descriptor];
+  activityItem = [(SBActivityViewController *)self activityItem];
+  descriptor = [activityItem descriptor];
 
   v5 = objc_alloc(MEMORY[0x277CCACA8]);
-  v6 = [v4 platterTargetBundleIdentifier];
-  v7 = [(SBActivityBannerViewController *)self _activityIdentifier];
-  v8 = [v5 initWithFormat:@"%@.%@", v6, v7];
+  platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
+  _activityIdentifier = [(SBActivityBannerViewController *)self _activityIdentifier];
+  v8 = [v5 initWithFormat:@"%@.%@", platterTargetBundleIdentifier, _activityIdentifier];
 
   return v8;
 }
 
 - (id)_activityIdentifier
 {
-  v2 = [(SBActivityViewController *)self activityItem];
-  v3 = [v2 descriptor];
-  v4 = [v3 activityIdentifier];
+  activityItem = [(SBActivityViewController *)self activityItem];
+  descriptor = [activityItem descriptor];
+  activityIdentifier = [descriptor activityIdentifier];
 
-  return v4;
+  return activityIdentifier;
 }
 
 - (BOOL)_canShowWhileLocked
 {
-  v2 = [(SBActivityViewController *)self activityItem];
-  v3 = [v2 descriptor];
-  v4 = [v3 presentationOptions];
-  v5 = [v4 shouldSuppressAlertContentOnLockScreen];
+  activityItem = [(SBActivityViewController *)self activityItem];
+  descriptor = [activityItem descriptor];
+  presentationOptions = [descriptor presentationOptions];
+  shouldSuppressAlertContentOnLockScreen = [presentationOptions shouldSuppressAlertContentOnLockScreen];
 
-  return v5 ^ 1;
+  return shouldSuppressAlertContentOnLockScreen ^ 1;
 }
 
-- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)a3 containerSize:(CGSize)a4
+- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)size containerSize:(CGSize)containerSize
 {
-  width = a4.width;
-  if ([(SBActivityBannerViewController *)self _isActionButtonInitiated:a3.width]|| [(SBActivityBannerViewController *)self _shouldShowSystemApertureUI])
+  width = containerSize.width;
+  if ([(SBActivityBannerViewController *)self _isActionButtonInitiated:size.width]|| [(SBActivityBannerViewController *)self _shouldShowSystemApertureUI])
   {
     [(SBActivityViewController *)self preferredActivityContentSize];
     if (width >= v6)
@@ -117,18 +117,18 @@
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:1];
   v4 = [(SBActivityBannerViewController *)self registerForTraitChanges:v3 withAction:sel_userInterfaceStyleChangedForEnvironment_previousTraitCollection_];
 
-  v5 = [(SBActivityViewController *)self activityHostViewController];
-  v6 = [v5 backgroundTintColor];
+  activityHostViewController = [(SBActivityViewController *)self activityHostViewController];
+  backgroundTintColor = [activityHostViewController backgroundTintColor];
 
   if ([(SBActivityBannerViewController *)self _shouldSetDefaultBackground])
   {
-    v7 = [(SBActivityBannerViewController *)self traitCollection];
-    v8 = -[SBActivityBannerViewController _backgroundTintColorForUserInterfaceStyle:](self, "_backgroundTintColorForUserInterfaceStyle:", [v7 userInterfaceStyle]);
+    traitCollection = [(SBActivityBannerViewController *)self traitCollection];
+    v8 = -[SBActivityBannerViewController _backgroundTintColorForUserInterfaceStyle:](self, "_backgroundTintColorForUserInterfaceStyle:", [traitCollection userInterfaceStyle]);
 
-    v6 = v8;
+    backgroundTintColor = v8;
   }
 
-  if (v6)
+  if (backgroundTintColor)
   {
     v9 = 22;
   }
@@ -138,14 +138,14 @@
     v9 = 1;
   }
 
-  v10 = [(SBActivityBannerViewController *)self traitCollection];
-  v11 = [v10 userInterfaceStyle];
+  traitCollection2 = [(SBActivityBannerViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection2 userInterfaceStyle];
 
   if ([(SBActivityBannerViewController *)self _isActionButtonInitiated])
   {
     v12 = @"SBSystemActionSimplePreviewMaterialGroup";
     v9 = 54;
-    v11 = 2;
+    userInterfaceStyle = 2;
   }
 
   else
@@ -170,20 +170,20 @@
   self->_platterView = v16;
 
   [(PLPlatterView *)self->_platterView setUsesBackgroundView:v13 ^ 1u];
-  [(PLPlatterView *)self->_platterView setOverrideUserInterfaceStyle:v11];
+  [(PLPlatterView *)self->_platterView setOverrideUserInterfaceStyle:userInterfaceStyle];
   [(SBActivityBannerViewController *)self setMaterialGroupNameBase:v12];
   [(PLPlatterView *)self->_platterView setHasShadow:v13 ^ 1u];
-  v18 = [(SBActivityViewController *)self activityHostViewController];
-  v19 = [v18 activitySceneDescriptor];
+  activityHostViewController2 = [(SBActivityViewController *)self activityHostViewController];
+  activitySceneDescriptor = [activityHostViewController2 activitySceneDescriptor];
 
-  v20 = [v19 metricsRequest];
-  v21 = [v20 lockScreenMetrics];
-  [v21 cornerRadius];
+  metricsRequest = [activitySceneDescriptor metricsRequest];
+  lockScreenMetrics = [metricsRequest lockScreenMetrics];
+  [lockScreenMetrics cornerRadius];
   v23 = v22;
 
   [(PLPlatterView *)self->_platterView _setContinuousCornerRadius:v23];
-  v24 = [(PLPlatterView *)self->_platterView customContentView];
-  [v24 _setContinuousCornerRadius:v23];
+  customContentView = [(PLPlatterView *)self->_platterView customContentView];
+  [customContentView _setContinuousCornerRadius:v23];
 
   if ([(SBActivityBannerViewController *)self _shouldHaveBackgroundTint]&& (v13 & 1) == 0)
   {
@@ -192,12 +192,12 @@
     self->_backgroundTintView = v25;
 
     [(UIView *)self->_backgroundTintView _setContinuousCornerRadius:v23];
-    [(UIView *)self->_backgroundTintView setBackgroundColor:v6];
-    v27 = [(SBActivityBannerViewController *)self view];
-    [v27 addSubview:self->_backgroundTintView];
+    [(UIView *)self->_backgroundTintView setBackgroundColor:backgroundTintColor];
+    view = [(SBActivityBannerViewController *)self view];
+    [view addSubview:self->_backgroundTintView];
 
-    v28 = [(SBActivityBannerViewController *)self view];
-    [v28 sendSubviewToBack:self->_backgroundTintView];
+    view2 = [(SBActivityBannerViewController *)self view];
+    [view2 sendSubviewToBack:self->_backgroundTintView];
   }
 
   if (v13)
@@ -206,9 +206,9 @@
     glassView = self->_glassView;
     self->_glassView = v29;
 
-    if (v6 && [(SBActivityBannerViewController *)self _shouldHaveBackgroundTint])
+    if (backgroundTintColor && [(SBActivityBannerViewController *)self _shouldHaveBackgroundTint])
     {
-      [(_UIViewGlass *)self->_glassView setTintColor:v6];
+      [(_UIViewGlass *)self->_glassView setTintColor:backgroundTintColor];
     }
 
     else if ([(SBActivityBannerViewController *)self _isActionButtonInitiated])
@@ -218,15 +218,15 @@
       [(_UIViewGlass *)v31 setTintColor:v32];
     }
 
-    v33 = [(PLPlatterView *)self->_platterView customContentView];
-    [v33 _setBackground:self->_glassView];
+    customContentView2 = [(PLPlatterView *)self->_platterView customContentView];
+    [customContentView2 _setBackground:self->_glassView];
   }
 
-  v34 = [(SBActivityBannerViewController *)self view];
-  [v34 addSubview:self->_platterView];
+  view3 = [(SBActivityBannerViewController *)self view];
+  [view3 addSubview:self->_platterView];
 
-  v35 = [(SBActivityBannerViewController *)self view];
-  [v35 sendSubviewToBack:self->_platterView];
+  view4 = [(SBActivityBannerViewController *)self view];
+  [view4 sendSubviewToBack:self->_platterView];
 }
 
 - (void)viewWillLayoutSubviews
@@ -239,8 +239,8 @@
 
 - (void)_layoutSubviews
 {
-  v3 = [(SBActivityBannerViewController *)self view];
-  [v3 bounds];
+  view = [(SBActivityBannerViewController *)self view];
+  [view bounds];
   v5 = v4;
 
   [(SBActivityViewController *)self preferredActivityContentSize];
@@ -254,34 +254,34 @@
   [(PLPlatterView *)self->_platterView setFrame:v9, 0.0, v5, v7];
   if (![(SBActivityBannerViewController *)self _isActionButtonInitiated])
   {
-    v10 = [(SBActivityBannerViewController *)self traitCollection];
-    v11 = [v10 userInterfaceStyle];
+    traitCollection = [(SBActivityBannerViewController *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    [(PLPlatterView *)self->_platterView setOverrideUserInterfaceStyle:v11];
+    [(PLPlatterView *)self->_platterView setOverrideUserInterfaceStyle:userInterfaceStyle];
   }
 
   if ([(SBActivityBannerViewController *)self _shouldHaveBackgroundTint])
   {
-    v12 = [(SBActivityViewController *)self activityHostViewController];
-    v13 = [v12 backgroundTintColor];
+    activityHostViewController = [(SBActivityViewController *)self activityHostViewController];
+    backgroundTintColor = [activityHostViewController backgroundTintColor];
 
     if ([(SBActivityBannerViewController *)self _shouldSetDefaultBackground])
     {
-      v14 = [(SBActivityBannerViewController *)self traitCollection];
-      v15 = -[SBActivityBannerViewController _backgroundTintColorForUserInterfaceStyle:](self, "_backgroundTintColorForUserInterfaceStyle:", [v14 userInterfaceStyle]);
+      traitCollection2 = [(SBActivityBannerViewController *)self traitCollection];
+      v15 = -[SBActivityBannerViewController _backgroundTintColorForUserInterfaceStyle:](self, "_backgroundTintColorForUserInterfaceStyle:", [traitCollection2 userInterfaceStyle]);
 
-      v13 = v15;
+      backgroundTintColor = v15;
     }
 
     if (_UISolariumEnabled())
     {
-      v16 = [(_UIViewGlass *)self->_glassView tintColor];
+      tintColor = [(_UIViewGlass *)self->_glassView tintColor];
 
-      if (v16 != v13)
+      if (tintColor != backgroundTintColor)
       {
-        [(_UIViewGlass *)self->_glassView setTintColor:v13];
-        v17 = [(PLPlatterView *)self->_platterView customContentView];
-        [v17 _setBackground:self->_glassView];
+        [(_UIViewGlass *)self->_glassView setTintColor:backgroundTintColor];
+        customContentView = [(PLPlatterView *)self->_platterView customContentView];
+        [customContentView _setBackground:self->_glassView];
       }
     }
 
@@ -294,17 +294,17 @@
         v20 = self->_backgroundTintView;
         self->_backgroundTintView = v19;
 
-        v21 = [(SBActivityBannerViewController *)self view];
-        [v21 addSubview:self->_backgroundTintView];
+        view2 = [(SBActivityBannerViewController *)self view];
+        [view2 addSubview:self->_backgroundTintView];
 
-        v22 = [(SBActivityBannerViewController *)self view];
-        [v22 sendSubviewToBack:self->_backgroundTintView];
+        view3 = [(SBActivityBannerViewController *)self view];
+        [view3 sendSubviewToBack:self->_backgroundTintView];
 
         [(UIView *)self->_backgroundTintView bringSubviewToFront:self->_platterView];
         backgroundTintView = self->_backgroundTintView;
       }
 
-      [(UIView *)backgroundTintView setBackgroundColor:v13];
+      [(UIView *)backgroundTintView setBackgroundColor:backgroundTintColor];
       [(UIView *)self->_backgroundTintView setBounds:v9, 0.0, v5, v8];
       [(UIView *)self->_backgroundTintView setFrame:v9, 0.0, v5, v8];
     }
@@ -317,11 +317,11 @@
     v26 = v25;
     v28 = v27;
     v30 = v29;
-    v31 = [(SBActivityBannerViewController *)self view];
-    [v31 setBounds:{v24, v26, v28, v30}];
+    view4 = [(SBActivityBannerViewController *)self view];
+    [view4 setBounds:{v24, v26, v28, v30}];
 
-    v32 = [(SBActivityBannerViewController *)self view];
-    [v32 setClipsToBounds:1];
+    view5 = [(SBActivityBannerViewController *)self view];
+    [view5 setClipsToBounds:1];
 
     v33 = v30 * 0.5;
     if (v28 * 0.5 < v30 * 0.5)
@@ -330,12 +330,12 @@
     }
 
     v34 = fmin(v33, 44.0);
-    v35 = [MEMORY[0x277D67D08] defaultMetrics];
-    v36 = [v35 lockScreenMetrics];
-    [v36 cornerRadius];
+    defaultMetrics = [MEMORY[0x277D67D08] defaultMetrics];
+    lockScreenMetrics = [defaultMetrics lockScreenMetrics];
+    [lockScreenMetrics cornerRadius];
     v38 = v37;
 
-    v39 = [(SBActivityBannerViewController *)self view];
+    view6 = [(SBActivityBannerViewController *)self view];
     if ([(SBActivityBannerViewController *)self _isActionButtonInitiated])
     {
       v40 = v34;
@@ -346,7 +346,7 @@
       v40 = v38;
     }
 
-    [v39 _setContinuousCornerRadius:v40];
+    [view6 _setContinuousCornerRadius:v40];
 
     platterView = self->_platterView;
     if ([(SBActivityBannerViewController *)self _isActionButtonInitiated])
@@ -370,9 +370,9 @@
     return 0;
   }
 
-  v4 = [(SBActivityViewController *)self activityHostViewController];
-  v5 = [v4 backgroundTintColor];
-  v3 = v5 != 0;
+  activityHostViewController = [(SBActivityViewController *)self activityHostViewController];
+  backgroundTintColor = [activityHostViewController backgroundTintColor];
+  v3 = backgroundTintColor != 0;
 
   return v3;
 }
@@ -384,9 +384,9 @@
     return 0;
   }
 
-  v4 = [(SBActivityViewController *)self activityItem];
-  v5 = [v4 descriptor];
-  v3 = [v5 contentType] == 0;
+  activityItem = [(SBActivityViewController *)self activityItem];
+  descriptor = [activityItem descriptor];
+  v3 = [descriptor contentType] == 0;
 
   return v3;
 }
@@ -408,50 +408,50 @@
 
 - (BOOL)_isActionButtonInitiated
 {
-  v2 = [(SBActivityViewController *)self activityItem];
-  v3 = [v2 descriptor];
+  activityItem = [(SBActivityViewController *)self activityItem];
+  descriptor = [activityItem descriptor];
 
-  v4 = [v3 presentationOptions];
-  v5 = [v4 isActionButtonInitiated];
+  presentationOptions = [descriptor presentationOptions];
+  isActionButtonInitiated = [presentationOptions isActionButtonInitiated];
 
-  return v5;
+  return isActionButtonInitiated;
 }
 
 - (BOOL)_shouldShowSystemApertureUI
 {
-  v2 = [(SBActivityViewController *)self activityItem];
-  v3 = [v2 descriptor];
+  activityItem = [(SBActivityViewController *)self activityItem];
+  descriptor = [activityItem descriptor];
 
-  v4 = [v3 presentationOptions];
+  presentationOptions = [descriptor presentationOptions];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [v3 presentationOptions];
-    v7 = [v6 shouldShowSystemAperture];
+    presentationOptions2 = [descriptor presentationOptions];
+    shouldShowSystemAperture = [presentationOptions2 shouldShowSystemAperture];
   }
 
   else
   {
-    v7 = 0;
+    shouldShowSystemAperture = 0;
   }
 
-  return v7;
+  return shouldShowSystemAperture;
 }
 
-- (void)presentableWillAppearAsBanner:(id)a3
+- (void)presentableWillAppearAsBanner:(id)banner
 {
-  v4 = [(SBActivityViewController *)self activityHostViewController];
+  activityHostViewController = [(SBActivityViewController *)self activityHostViewController];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SBActivityViewController *)self activityHostViewController];
-    [v6 setSceneDeactivationReasons:0];
+    activityHostViewController2 = [(SBActivityViewController *)self activityHostViewController];
+    [activityHostViewController2 setSceneDeactivationReasons:0];
   }
 }
 
-- (void)presentableDidAppearAsBanner:(id)a3
+- (void)presentableDidAppearAsBanner:(id)banner
 {
   if ([(SBActivityBannerViewController *)self _isActionButtonInitiated])
   {
@@ -461,17 +461,17 @@
   }
 }
 
-- (void)presentableWillDisappearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableWillDisappearAsBanner:(id)banner withReason:(id)reason
 {
-  if ([a4 isEqualToString:*MEMORY[0x277CF0A50]])
+  if ([reason isEqualToString:*MEMORY[0x277CF0A50]])
   {
-    v5 = [(SBActivityViewController *)self activityHostViewController];
+    activityHostViewController = [(SBActivityViewController *)self activityHostViewController];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(SBActivityViewController *)self activityHostViewController];
-      [v7 setSceneDeactivationReasons:64];
+      activityHostViewController2 = [(SBActivityViewController *)self activityHostViewController];
+      [activityHostViewController2 setSceneDeactivationReasons:64];
     }
   }
 
@@ -481,44 +481,44 @@
     dismissalTimer = self->_dismissalTimer;
     self->_dismissalTimer = 0;
 
-    v10 = [(SBActivityBannerViewController *)self bannerDelegate];
+    bannerDelegate = [(SBActivityBannerViewController *)self bannerDelegate];
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(SBActivityBannerViewController *)self _activityIdentifier];
-      [v10 activityBannerWillDisappear:self activityIdentifier:v9];
+      _activityIdentifier = [(SBActivityBannerViewController *)self _activityIdentifier];
+      [bannerDelegate activityBannerWillDisappear:self activityIdentifier:_activityIdentifier];
     }
   }
 }
 
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = [(SBActivityBannerViewController *)self bannerDelegate:a3];
+  v5 = [(SBActivityBannerViewController *)self bannerDelegate:banner];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(SBActivityBannerViewController *)self _activityIdentifier];
-    [v5 activityBannerDidDisappear:self activityIdentifier:v6];
+    _activityIdentifier = [(SBActivityBannerViewController *)self _activityIdentifier];
+    [v5 activityBannerDidDisappear:self activityIdentifier:_activityIdentifier];
   }
 
-  v7 = [(SBActivityViewController *)self activityItem];
-  v8 = [v7 descriptor];
-  v9 = [v8 isMomentary];
+  activityItem = [(SBActivityViewController *)self activityItem];
+  descriptor = [activityItem descriptor];
+  isMomentary = [descriptor isMomentary];
 
-  if (v9)
+  if (isMomentary)
   {
-    v10 = [(SBActivityViewController *)self activityItem];
-    v11 = [v10 identifier];
+    activityItem2 = [(SBActivityViewController *)self activityItem];
+    identifier = [activityItem2 identifier];
 
     v12 = SBLogActivity();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138543362;
-      v15 = v11;
+      v15 = identifier;
       _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@] banner dismissed but is momentary so ending activity", &v14, 0xCu);
     }
 
     v13 = objc_alloc_init(MEMORY[0x277CB98A0]);
-    [v13 endActivity:v11];
+    [v13 endActivity:identifier];
   }
 
   if ([(SBActivityBannerViewController *)self _isActionButtonInitiated])
@@ -527,37 +527,37 @@
   }
 }
 
-- (void)userInteractionWillBeginForBannerForPresentable:(id)a3
+- (void)userInteractionWillBeginForBannerForPresentable:(id)presentable
 {
-  v4 = a3;
+  presentableCopy = presentable;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __82__SBActivityBannerViewController_userInteractionWillBeginForBannerForPresentable___block_invoke;
   v6[3] = &unk_2783AD8E0;
-  v7 = v4;
-  v5 = v4;
+  v7 = presentableCopy;
+  v5 = presentableCopy;
   [(SBActivityBannerViewController *)self _enumerateObserversRespondingToSelector:sel_userInteractionWillBeginForBannerForPresentable_ usingBlock:v6];
 }
 
-- (void)userInteractionDidEndForBannerForPresentable:(id)a3
+- (void)userInteractionDidEndForBannerForPresentable:(id)presentable
 {
-  v4 = a3;
+  presentableCopy = presentable;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __79__SBActivityBannerViewController_userInteractionDidEndForBannerForPresentable___block_invoke;
   v6[3] = &unk_2783AD8E0;
-  v7 = v4;
-  v5 = v4;
+  v7 = presentableCopy;
+  v5 = presentableCopy;
   [(SBActivityBannerViewController *)self _enumerateObserversRespondingToSelector:sel_userInteractionDidEndForBannerForPresentable_ usingBlock:v6];
 }
 
-- (void)addPresentableObserver:(id)a3
+- (void)addPresentableObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
     observers = self->_observers;
-    v8 = v4;
+    v8 = observerCopy;
     if (!observers)
     {
       v6 = [MEMORY[0x277CCAA50] hashTableWithOptions:517];
@@ -568,13 +568,13 @@
     }
 
     [(NSHashTable *)observers addObject:v8];
-    v4 = v8;
+    observerCopy = v8;
   }
 }
 
-- (void)removePresentableObserver:(id)a3
+- (void)removePresentableObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     observers = self->_observers;
     if (observers)
@@ -584,11 +584,11 @@
   }
 }
 
-- (void)_enumerateObserversRespondingToSelector:(SEL)a3 usingBlock:(id)a4
+- (void)_enumerateObserversRespondingToSelector:(SEL)selector usingBlock:(id)block
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if (v5 && [(NSHashTable *)self->_observers count])
+  blockCopy = block;
+  if (blockCopy && [(NSHashTable *)self->_observers count])
   {
     v14 = 0u;
     v15 = 0u;
@@ -613,7 +613,7 @@
           v11 = *(*(&v12 + 1) + 8 * v10);
           if (objc_opt_respondsToSelector())
           {
-            v5[2](v5, v11);
+            blockCopy[2](blockCopy, v11);
           }
 
           ++v10;
@@ -628,84 +628,84 @@
   }
 }
 
-- (void)activityHostViewControllerBackgroundTintColorDidChange:(id)a3
+- (void)activityHostViewControllerBackgroundTintColorDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = SBActivityBannerViewController;
-  [(SBActivityViewController *)&v6 activityHostViewControllerBackgroundTintColorDidChange:a3];
-  v4 = [(SBActivityBannerViewController *)self view];
-  [v4 setNeedsLayout];
+  [(SBActivityViewController *)&v6 activityHostViewControllerBackgroundTintColorDidChange:change];
+  view = [(SBActivityBannerViewController *)self view];
+  [view setNeedsLayout];
 
-  v5 = [(SBActivityBannerViewController *)self view];
-  [v5 layoutIfNeeded];
+  view2 = [(SBActivityBannerViewController *)self view];
+  [view2 layoutIfNeeded];
 }
 
-- (id)_backgroundTintColorForUserInterfaceStyle:(int64_t)a3
+- (id)_backgroundTintColorForUserInterfaceStyle:(int64_t)style
 {
-  v4 = self;
+  selfCopy = self;
   if ([(SBActivityBannerViewController *)self _hasBackgroundTintColor])
   {
-    v5 = [v4 activityHostViewController];
-    v4 = [v5 backgroundTintColor];
+    activityHostViewController = [selfCopy activityHostViewController];
+    selfCopy = [activityHostViewController backgroundTintColor];
 
     goto LABEL_9;
   }
 
-  if (!a3 || a3 == 2)
+  if (!style || style == 2)
   {
-    v6 = [MEMORY[0x277D75348] systemBlackColor];
+    systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
   }
 
   else
   {
-    if (a3 != 1)
+    if (style != 1)
     {
       goto LABEL_9;
     }
 
-    v6 = [MEMORY[0x277D75348] systemWhiteColor];
+    systemBlackColor = [MEMORY[0x277D75348] systemWhiteColor];
   }
 
-  v4 = v6;
+  selfCopy = systemBlackColor;
 LABEL_9:
 
-  return v4;
+  return selfCopy;
 }
 
-- (void)userInterfaceStyleChangedForEnvironment:(id)a3 previousTraitCollection:(id)a4
+- (void)userInterfaceStyleChangedForEnvironment:(id)environment previousTraitCollection:(id)collection
 {
-  v5 = a4;
-  v6 = [(SBActivityBannerViewController *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  collectionCopy = collection;
+  traitCollection = [(SBActivityBannerViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  v8 = [v5 userInterfaceStyle];
-  if (v8 != v7)
+  userInterfaceStyle2 = [collectionCopy userInterfaceStyle];
+  if (userInterfaceStyle2 != userInterfaceStyle)
   {
-    v9 = [(SBActivityBannerViewController *)self view];
-    [v9 setNeedsLayout];
+    view = [(SBActivityBannerViewController *)self view];
+    [view setNeedsLayout];
   }
 }
 
 - (void)_updateAppStatusBarSettingsAssertion
 {
-  v15 = [(SBActivityBannerViewController *)self preferredBackgroundActivitiesToSuppress];
-  if ([v15 count] && -[SBActivityBannerViewController bs_isAppearingOrAppeared](self, "bs_isAppearingOrAppeared"))
+  preferredBackgroundActivitiesToSuppress = [(SBActivityBannerViewController *)self preferredBackgroundActivitiesToSuppress];
+  if ([preferredBackgroundActivitiesToSuppress count] && -[SBActivityBannerViewController bs_isAppearingOrAppeared](self, "bs_isAppearingOrAppeared"))
   {
-    v3 = [(UIViewController *)self _sbWindowScene];
-    v4 = [v3 statusBarManager];
-    v5 = [v4 assertionManager];
+    _sbWindowScene = [(UIViewController *)self _sbWindowScene];
+    statusBarManager = [_sbWindowScene statusBarManager];
+    assertionManager = [statusBarManager assertionManager];
 
     v6 = objc_alloc_init(SBMutableStatusBarSettings);
-    [(SBMutableStatusBarSettings *)v6 setBackgroundActivitiesToSuppress:v15];
+    [(SBMutableStatusBarSettings *)v6 setBackgroundActivitiesToSuppress:preferredBackgroundActivitiesToSuppress];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = [v5 newSettingsAssertionWithSettings:v6 atLevel:8 reason:v8];
+    v9 = [assertionManager newSettingsAssertionWithSettings:v6 atLevel:8 reason:v8];
     appStatusBarSettingsAssertion = self->_appStatusBarSettingsAssertion;
     self->_appStatusBarSettingsAssertion = v9;
 
     v11 = self->_appStatusBarSettingsAssertion;
-    v12 = [objc_alloc(MEMORY[0x277D75AA0]) initWithDefaultParameters];
-    [(SBWindowSceneStatusBarSettingsAssertion *)v11 acquireWithAnimationParameters:v12];
+    initWithDefaultParameters = [objc_alloc(MEMORY[0x277D75AA0]) initWithDefaultParameters];
+    [(SBWindowSceneStatusBarSettingsAssertion *)v11 acquireWithAnimationParameters:initWithDefaultParameters];
   }
 
   else
@@ -716,10 +716,10 @@ LABEL_9:
       goto LABEL_7;
     }
 
-    v14 = [objc_alloc(MEMORY[0x277D75AA0]) initWithDefaultParameters];
-    [(SBWindowSceneStatusBarSettingsAssertion *)v13 invalidateWithAnimationParameters:v14];
+    initWithDefaultParameters2 = [objc_alloc(MEMORY[0x277D75AA0]) initWithDefaultParameters];
+    [(SBWindowSceneStatusBarSettingsAssertion *)v13 invalidateWithAnimationParameters:initWithDefaultParameters2];
 
-    v5 = self->_appStatusBarSettingsAssertion;
+    assertionManager = self->_appStatusBarSettingsAssertion;
     self->_appStatusBarSettingsAssertion = 0;
   }
 
@@ -728,11 +728,11 @@ LABEL_7:
 
 - (void)_dismiss
 {
-  v4 = [(SBActivityBannerViewController *)self bannerDelegate];
+  bannerDelegate = [(SBActivityBannerViewController *)self bannerDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(SBActivityBannerViewController *)self _activityIdentifier];
-    [v4 activityBannerWantsToBeDismissed:self activityIdentifier:v3];
+    _activityIdentifier = [(SBActivityBannerViewController *)self _activityIdentifier];
+    [bannerDelegate activityBannerWantsToBeDismissed:self activityIdentifier:_activityIdentifier];
   }
 }
 

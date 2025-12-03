@@ -1,8 +1,8 @@
 @interface COSUsageController
-+ (id)capacityBarCategoriesForUsageData:(id)a3;
-+ (id)prettyUsageString:(float)a3;
++ (id)capacityBarCategoriesForUsageData:(id)data;
++ (id)prettyUsageString:(float)string;
 - (COSUsageController)init;
-- (id)appUsage:(id)a3;
+- (id)appUsage:(id)usage;
 - (id)specifiers;
 - (void)initControls;
 @end
@@ -52,10 +52,10 @@
 
 - (void)initControls
 {
-  v4 = [(COSUsageController *)self navigationItem];
+  navigationItem = [(COSUsageController *)self navigationItem];
   v2 = +[NSBundle mainBundle];
   v3 = [v2 localizedStringForKey:@"TITLE" value:&stru_10026E598 table:@"Usage"];
-  [v4 setTitle:v3];
+  [navigationItem setTitle:v3];
 }
 
 - (id)specifiers
@@ -107,8 +107,8 @@
   [v37 setProperty:v10 forKey:PSCapacityBarDataKey];
   v39 = +[NanoResourceGrabber sharedInstance];
   v12 = +[UIScreen mainScreen];
-  v13 = [v12 traitCollection];
-  [v13 displayScale];
+  traitCollection = [v12 traitCollection];
+  [traitCollection displayScale];
   if (v14 <= 2.0)
   {
     v15 = 47;
@@ -127,20 +127,20 @@
   v16 = +[PSSpecifier emptyGroupSpecifier];
   [v36 addObject:v16];
 
-  v17 = self;
+  selfCopy2 = self;
   if (self->_usageDataPending)
   {
     v18 = [PSSpecifier preferenceSpecifierNamed:"preferenceSpecifierNamed:target:set:get:detail:cell:edit:" target:0 set:0 get:? detail:? cell:? edit:?];
     [v36 addObject:v18];
 
-    v17 = self;
+    selfCopy2 = self;
   }
 
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  obj = [(NSSUsageData *)v17->_usageData appBundleUsage];
+  obj = [(NSSUsageData *)selfCopy2->_usageData appBundleUsage];
   v19 = [obj countByEnumeratingWithState:&v49 objects:v53 count:16];
   if (v19)
   {
@@ -160,14 +160,14 @@
         v24 = [v23 size];
         if ([v24 userTotal] >= 1000000)
         {
-          v25 = [v23 bundleIdentifier];
-          v26 = [v23 name];
-          v27 = [PSSpecifier preferenceSpecifierNamed:v26 target:self set:0 get:"appUsage:" detail:objc_opt_class() cell:2 edit:0];
+          bundleIdentifier = [v23 bundleIdentifier];
+          name = [v23 name];
+          v27 = [PSSpecifier preferenceSpecifierNamed:name target:self set:0 get:"appUsage:" detail:objc_opt_class() cell:2 edit:0];
 
           [v27 setProperty:&__kCFBooleanTrue forKey:v40];
           [v27 setUserInfo:v23];
-          [v27 setIdentifier:v25];
-          if ([v25 isEqualToString:@"com.apple.MobileAddressBook"])
+          [v27 setIdentifier:bundleIdentifier];
+          if ([bundleIdentifier isEqualToString:@"com.apple.MobileAddressBook"])
           {
             v28 = BPSLocalIconName();
             v29 = [UIImage imageNamed:v28];
@@ -190,7 +190,7 @@
             v44[3] = &unk_100269040;
             objc_copyWeak(&v47, &location);
             v45 = v27;
-            v46 = v25;
+            v46 = bundleIdentifier;
             [v39 getIconForBundleID:v46 iconVariant:v38 queue:&_dispatch_main_q block:v44 timeout:-1.0];
 
             objc_destroyWeak(&v47);
@@ -217,35 +217,35 @@
   return v36;
 }
 
-- (id)appUsage:(id)a3
+- (id)appUsage:(id)usage
 {
-  v4 = a3;
-  v5 = [v4 propertyForKey:@"TOTAL_SIZE"];
+  usageCopy = usage;
+  v5 = [usageCopy propertyForKey:@"TOTAL_SIZE"];
   v6 = v5;
   if (!v5 || [v5 integerValue] == -1)
   {
-    v12 = [(COSUsageController *)self dash];
+    dash = [(COSUsageController *)self dash];
   }
 
   else
   {
-    v7 = [v4 propertyForKey:@"TOTAL_SIZE"];
+    v7 = [usageCopy propertyForKey:@"TOTAL_SIZE"];
     [v7 floatValue];
     v9 = v8;
 
     v10 = objc_opt_class();
     LODWORD(v11) = v9;
-    v12 = [v10 prettyUsageString:v11];
+    dash = [v10 prettyUsageString:v11];
   }
 
-  v13 = v12;
+  v13 = dash;
 
   return v13;
 }
 
-+ (id)prettyUsageString:(float)a3
++ (id)prettyUsageString:(float)string
 {
-  if (a3 > 0.0)
+  if (string > 0.0)
   {
     v4 = NSLocalizedFileSizeDescription();
   }
@@ -259,9 +259,9 @@
   return v4;
 }
 
-+ (id)capacityBarCategoriesForUsageData:(id)a3
++ (id)capacityBarCategoriesForUsageData:(id)data
 {
-  v29 = a3;
+  dataCopy = data;
   v3 = +[NSMutableArray array];
   v36[0] = NSCategoryAppsKey;
   v4 = +[UIColor systemPinkColor];
@@ -293,7 +293,7 @@
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = [v29 categories];
+  obj = [dataCopy categories];
   v13 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v13)
   {
@@ -309,19 +309,19 @@
         }
 
         v17 = *(*(&v31 + 1) + 8 * i);
-        v18 = [v17 categoryIdentifier];
-        v19 = [v17 name];
-        if (!v19)
+        categoryIdentifier = [v17 categoryIdentifier];
+        name = [v17 name];
+        if (!name)
         {
           v20 = +[NSBundle mainBundle];
-          v21 = [v17 categoryIdentifier];
-          v19 = [v20 localizedStringForKey:v21 value:&stru_10026E598 table:@"Usage"];
+          categoryIdentifier2 = [v17 categoryIdentifier];
+          name = [v20 localizedStringForKey:categoryIdentifier2 value:&stru_10026E598 table:@"Usage"];
         }
 
         v22 = [PSCapacityBarCategory alloc];
-        v23 = [v12 objectForKeyedSubscript:v18];
+        v23 = [v12 objectForKeyedSubscript:categoryIdentifier];
         v24 = [v17 size];
-        v25 = [v22 initWithIdentifier:v18 title:v19 color:v23 bytes:{objc_msgSend(v24, "userTotal")}];
+        v25 = [v22 initWithIdentifier:categoryIdentifier title:name color:v23 bytes:{objc_msgSend(v24, "userTotal")}];
 
         [v3 addObject:v25];
       }

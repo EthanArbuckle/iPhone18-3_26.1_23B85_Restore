@@ -1,46 +1,46 @@
 @interface WLAppSearchRequest
-- (WLAppSearchRequest)initWithAndroidIdentifiers:(id)a3;
-- (void)search:(id)a3;
+- (WLAppSearchRequest)initWithAndroidIdentifiers:(id)identifiers;
+- (void)search:(id)search;
 @end
 
 @implementation WLAppSearchRequest
 
-- (WLAppSearchRequest)initWithAndroidIdentifiers:(id)a3
+- (WLAppSearchRequest)initWithAndroidIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v8.receiver = self;
   v8.super_class = WLAppSearchRequest;
   v5 = [(WLAppSearchRequest *)&v8 init];
   if (v5)
   {
-    v6 = [v4 componentsJoinedByString:{@", "}];
+    v6 = [identifiersCopy componentsJoinedByString:{@", "}];
     [(WLAppSearchRequest *)v5 setIdentifiers:v6];
   }
 
   return v5;
 }
 
-- (void)search:(id)a3
+- (void)search:(id)search
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  searchCopy = search;
   if ([(NSString *)self->_identifiers length])
   {
-    v5 = [MEMORY[0x277CEE570] createBagForSubProfile];
-    v6 = [objc_alloc(MEMORY[0x277CEE570]) initWithType:0 clientIdentifier:@"com.apple.welcomemat" clientVersion:@"1" bag:v5];
+    createBagForSubProfile = [MEMORY[0x277CEE570] createBagForSubProfile];
+    v6 = [objc_alloc(MEMORY[0x277CEE570]) initWithType:0 clientIdentifier:@"com.apple.welcomemat" clientVersion:@"1" bag:createBagForSubProfile];
     identifiers = self->_identifiers;
     v16 = @"androidAppId";
     v17 = identifiers;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v17 forKeys:&v16 count:1];
     [v6 setFilters:v8];
 
-    v9 = [v6 perform];
+    perform = [v6 perform];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __29__WLAppSearchRequest_search___block_invoke;
     v14[3] = &unk_279EB56A0;
-    v15 = v4;
-    [v9 addFinishBlock:v14];
+    v15 = searchCopy;
+    [perform addFinishBlock:v14];
   }
 
   else
@@ -50,11 +50,11 @@
     v18 = *MEMORY[0x277CCA450];
     v19[0] = @"WLAppSearchRequest could not search identifiers because the request was empty.";
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
-    v5 = [v10 errorWithDomain:v11 code:1 userInfo:v12];
+    createBagForSubProfile = [v10 errorWithDomain:v11 code:1 userInfo:v12];
 
-    if (v4)
+    if (searchCopy)
     {
-      (*(v4 + 2))(v4, 0, v5);
+      (*(searchCopy + 2))(searchCopy, 0, createBagForSubProfile);
     }
   }
 

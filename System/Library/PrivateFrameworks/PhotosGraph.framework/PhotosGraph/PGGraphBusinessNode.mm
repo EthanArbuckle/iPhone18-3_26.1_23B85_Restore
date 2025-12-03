@@ -3,14 +3,14 @@
 + (MARelation)momentOfBusiness;
 + (MARelation)publicEventOfBusiness;
 + (id)filter;
-+ (id)filterWithMuid:(unint64_t)a3;
-- (BOOL)hasProperties:(id)a3;
++ (id)filterWithMuid:(unint64_t)muid;
+- (BOOL)hasProperties:(id)properties;
 - (CLLocationCoordinate2D)coordinates;
 - (NSSet)businessCategories;
 - (NSSet)publicEventNodes;
 - (NSString)featureIdentifier;
-- (PGGraphBusinessNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5;
-- (PGGraphBusinessNode)initWithMuid:(unint64_t)a3 name:(id)a4 venueCapacity:(int64_t)a5 coordinates:(CLLocationCoordinate2D)a6 radius:(double)a7;
+- (PGGraphBusinessNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties;
+- (PGGraphBusinessNode)initWithMuid:(unint64_t)muid name:(id)name venueCapacity:(int64_t)capacity coordinates:(CLLocationCoordinate2D)coordinates radius:(double)radius;
 - (PGGraphBusinessNodeCollection)collection;
 - (PPNamedEntity)pg_namedEntity;
 - (id)associatedNodesForRemoval;
@@ -22,14 +22,14 @@
 
 - (PPNamedEntity)pg_namedEntity
 {
-  v2 = [(PGGraphBusinessNode *)self name];
-  v3 = v2;
-  if (v2 && [v2 length])
+  name = [(PGGraphBusinessNode *)self name];
+  v3 = name;
+  if (name && [name length])
   {
-    v4 = [MEMORY[0x277CBEAF8] currentLocale];
-    v5 = [v4 localeIdentifier];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    localeIdentifier = [currentLocale localeIdentifier];
 
-    v6 = [objc_alloc(MEMORY[0x277D3A420]) initWithName:v3 category:2 language:v5];
+    v6 = [objc_alloc(MEMORY[0x277D3A420]) initWithName:v3 category:2 language:localeIdentifier];
   }
 
   else
@@ -54,8 +54,8 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PGGraphBusinessNode *)self UUID];
-  v7 = [v3 stringWithFormat:@"%@|%@", v5, v6];
+  uUID = [(PGGraphBusinessNode *)self UUID];
+  v7 = [v3 stringWithFormat:@"%@|%@", v5, uUID];
 
   return v7;
 }
@@ -93,27 +93,27 @@ void __48__PGGraphBusinessNode_associatedNodesForRemoval__block_invoke(uint64_t 
 - (id)keywordDescription
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v3 = [(PGGraphBusinessNode *)self businessCategories];
+  businessCategories = [(PGGraphBusinessNode *)self businessCategories];
   v4 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:0 ascending:1 selector:sel_localizedCompare_];
   v15[0] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
-  v6 = [v3 sortedArrayUsingDescriptors:v5];
+  v6 = [businessCategories sortedArrayUsingDescriptors:v5];
 
-  v7 = [(PGGraphBusinessNode *)self venueCapacity];
-  if (v7 == 0x7FFFFFFFFFFFFFFFLL)
+  venueCapacity = [(PGGraphBusinessNode *)self venueCapacity];
+  if (venueCapacity == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = @"N/A";
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v7];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", venueCapacity];
   }
 
   v9 = MEMORY[0x277CCACA8];
-  v10 = [(PGGraphBusinessNode *)self name];
+  name = [(PGGraphBusinessNode *)self name];
   v11 = [v6 componentsJoinedByString:{@", "}];
-  v12 = [v9 stringWithFormat:@"%@ [%@] [cap:%@]", v10, v11, v8];
+  v12 = [v9 stringWithFormat:@"%@ [%@] [cap:%@]", name, v11, v8];
 
   v13 = *MEMORY[0x277D85DE8];
 
@@ -122,20 +122,20 @@ void __48__PGGraphBusinessNode_associatedNodesForRemoval__block_invoke(uint64_t 
 
 - (NSSet)publicEventNodes
 {
-  v2 = [(PGGraphBusinessNode *)self collection];
-  v3 = [v2 publicEventNodes];
-  v4 = [v3 temporarySet];
+  collection = [(PGGraphBusinessNode *)self collection];
+  publicEventNodes = [collection publicEventNodes];
+  temporarySet = [publicEventNodes temporarySet];
 
-  return v4;
+  return temporarySet;
 }
 
 - (NSSet)businessCategories
 {
-  v2 = [(PGGraphBusinessNode *)self collection];
-  v3 = [v2 categoryNodes];
-  v4 = [v3 labels];
+  collection = [(PGGraphBusinessNode *)self collection];
+  categoryNodes = [collection categoryNodes];
+  labels = [categoryNodes labels];
 
-  return v4;
+  return labels;
 }
 
 - (id)propertyDictionary
@@ -166,11 +166,11 @@ void __48__PGGraphBusinessNode_associatedNodesForRemoval__block_invoke(uint64_t 
   return v9;
 }
 
-- (BOOL)hasProperties:(id)a3
+- (BOOL)hasProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
+  if (propertiesCopy && [propertiesCopy count])
   {
     v6 = [v5 objectForKeyedSubscript:@"muid"];
     v7 = v6;
@@ -243,30 +243,30 @@ LABEL_15:
   return v16;
 }
 
-- (PGGraphBusinessNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5
+- (PGGraphBusinessNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties
 {
-  v6 = a5;
-  v7 = [v6 objectForKeyedSubscript:@"muid"];
-  v8 = [v7 unsignedIntegerValue];
+  propertiesCopy = properties;
+  v7 = [propertiesCopy objectForKeyedSubscript:@"muid"];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  v9 = [v6 objectForKeyedSubscript:@"name"];
-  v10 = [v6 objectForKeyedSubscript:@"venueCapacity"];
-  v11 = [v10 integerValue];
+  v9 = [propertiesCopy objectForKeyedSubscript:@"name"];
+  v10 = [propertiesCopy objectForKeyedSubscript:@"venueCapacity"];
+  integerValue = [v10 integerValue];
 
   if ([(__CFString *)v9 length])
   {
-    v12 = [v6 objectForKeyedSubscript:@"latitude"];
+    v12 = [propertiesCopy objectForKeyedSubscript:@"latitude"];
     [v12 doubleValue];
     v14 = v13;
 
-    v15 = [v6 objectForKeyedSubscript:@"longitude"];
+    v15 = [propertiesCopy objectForKeyedSubscript:@"longitude"];
     [v15 doubleValue];
     v17 = v16;
 
     v18 = CLLocationCoordinate2DMake(v14, v17);
     latitude = v18.latitude;
     longitude = v18.longitude;
-    v21 = [v6 objectForKeyedSubscript:@"radius"];
+    v21 = [propertiesCopy objectForKeyedSubscript:@"radius"];
     [v21 doubleValue];
     v23 = v22;
   }
@@ -280,27 +280,27 @@ LABEL_15:
     v23 = 0.0;
   }
 
-  v24 = [(PGGraphBusinessNode *)self initWithMuid:v8 name:v9 venueCapacity:v11 coordinates:latitude radius:longitude, v23];
+  v24 = [(PGGraphBusinessNode *)self initWithMuid:unsignedIntegerValue name:v9 venueCapacity:integerValue coordinates:latitude radius:longitude, v23];
   return v24;
 }
 
-- (PGGraphBusinessNode)initWithMuid:(unint64_t)a3 name:(id)a4 venueCapacity:(int64_t)a5 coordinates:(CLLocationCoordinate2D)a6 radius:(double)a7
+- (PGGraphBusinessNode)initWithMuid:(unint64_t)muid name:(id)name venueCapacity:(int64_t)capacity coordinates:(CLLocationCoordinate2D)coordinates radius:(double)radius
 {
-  longitude = a6.longitude;
-  latitude = a6.latitude;
-  v14 = a4;
+  longitude = coordinates.longitude;
+  latitude = coordinates.latitude;
+  nameCopy = name;
   v18.receiver = self;
   v18.super_class = PGGraphBusinessNode;
   v15 = [(PGGraphNode *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    v15->_muid = a3;
-    objc_storeStrong(&v15->_name, a4);
-    v16->_venueCapacity = a5;
+    v15->_muid = muid;
+    objc_storeStrong(&v15->_name, name);
+    v16->_venueCapacity = capacity;
     v16->_coordinates.latitude = latitude;
     v16->_coordinates.longitude = longitude;
-    v16->_radius = a7;
+    v16->_radius = radius;
   }
 
   return v16;
@@ -309,36 +309,36 @@ LABEL_15:
 + (MARelation)momentOfBusiness
 {
   v2 = +[PGGraphPlaceBusinessEdge filter];
-  v3 = [v2 inRelation];
+  inRelation = [v2 inRelation];
 
-  return v3;
+  return inRelation;
 }
 
 + (MARelation)publicEventOfBusiness
 {
   v2 = +[PGGraphPublicEventBusinessEdge filter];
-  v3 = [v2 inRelation];
+  inRelation = [v2 inRelation];
 
-  return v3;
+  return inRelation;
 }
 
 + (MARelation)categoryOfBusiness
 {
   v2 = +[PGGraphBusinessCategoryEdge filter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
-+ (id)filterWithMuid:(unint64_t)a3
++ (id)filterWithMuid:(unint64_t)muid
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = [a1 filter];
+  filter = [self filter];
   v10 = @"muid";
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:muid];
   v11[0] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  v7 = [v4 filterBySettingProperties:v6];
+  v7 = [filter filterBySettingProperties:v6];
 
   v8 = *MEMORY[0x277D85DE8];
 

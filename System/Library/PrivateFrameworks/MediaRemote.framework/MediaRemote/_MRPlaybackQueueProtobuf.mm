@@ -1,41 +1,41 @@
 @interface _MRPlaybackQueueProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addContentItem:(id)a3;
-- (void)addHomeUserIdentifiers:(id)a3;
-- (void)addParticipants:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSendingPlaybackQueueTransaction:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addContentItem:(id)item;
+- (void)addHomeUserIdentifiers:(id)identifiers;
+- (void)addParticipants:(id)participants;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSendingPlaybackQueueTransaction:(BOOL)transaction;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRPlaybackQueueProtobuf
 
-- (void)addContentItem:(id)a3
+- (void)addContentItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   contentItems = self->_contentItems;
-  v8 = v4;
+  v8 = itemCopy;
   if (!contentItems)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_contentItems;
     self->_contentItems = v6;
 
-    v4 = v8;
+    itemCopy = v8;
     contentItems = self->_contentItems;
   }
 
-  [(NSMutableArray *)contentItems addObject:v4];
+  [(NSMutableArray *)contentItems addObject:itemCopy];
 }
 
-- (void)setHasSendingPlaybackQueueTransaction:(BOOL)a3
+- (void)setHasSendingPlaybackQueueTransaction:(BOOL)transaction
 {
-  if (a3)
+  if (transaction)
   {
     v3 = 2;
   }
@@ -48,40 +48,40 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addParticipants:(id)a3
+- (void)addParticipants:(id)participants
 {
-  v4 = a3;
+  participantsCopy = participants;
   participants = self->_participants;
-  v8 = v4;
+  v8 = participantsCopy;
   if (!participants)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_participants;
     self->_participants = v6;
 
-    v4 = v8;
+    participantsCopy = v8;
     participants = self->_participants;
   }
 
-  [(NSMutableArray *)participants addObject:v4];
+  [(NSMutableArray *)participants addObject:participantsCopy];
 }
 
-- (void)addHomeUserIdentifiers:(id)a3
+- (void)addHomeUserIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   homeUserIdentifiers = self->_homeUserIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!homeUserIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_homeUserIdentifiers;
     self->_homeUserIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     homeUserIdentifiers = self->_homeUserIdentifiers;
   }
 
-  [(NSMutableArray *)homeUserIdentifiers addObject:v4];
+  [(NSMutableArray *)homeUserIdentifiers addObject:identifiersCopy];
 }
 
 - (id)description
@@ -90,8 +90,8 @@
   v8.receiver = self;
   v8.super_class = _MRPlaybackQueueProtobuf;
   v4 = [(_MRPlaybackQueueProtobuf *)&v8 description];
-  v5 = [(_MRPlaybackQueueProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRPlaybackQueueProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -99,11 +99,11 @@
 - (id)dictionaryRepresentation
 {
   v43 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInt:self->_location];
-    [v3 setObject:v4 forKey:@"location"];
+    [dictionary setObject:v4 forKey:@"location"];
   }
 
   if ([(NSMutableArray *)self->_contentItems count])
@@ -128,8 +128,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v37 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v37 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v37 objects:v42 count:16];
@@ -138,39 +138,39 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"contentItem"];
+    [dictionary setObject:v5 forKey:@"contentItem"];
   }
 
   context = self->_context;
   if (context)
   {
-    v13 = [(_MRPlaybackQueueContextProtobuf *)context dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"context"];
+    dictionaryRepresentation2 = [(_MRPlaybackQueueContextProtobuf *)context dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"context"];
   }
 
   requestID = self->_requestID;
   if (requestID)
   {
-    [v3 setObject:requestID forKey:@"requestID"];
+    [dictionary setObject:requestID forKey:@"requestID"];
   }
 
   resolvedPlayerPath = self->_resolvedPlayerPath;
   if (resolvedPlayerPath)
   {
-    v16 = [(_MRNowPlayingPlayerPathProtobuf *)resolvedPlayerPath dictionaryRepresentation];
-    [v3 setObject:v16 forKey:@"resolvedPlayerPath"];
+    dictionaryRepresentation3 = [(_MRNowPlayingPlayerPathProtobuf *)resolvedPlayerPath dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"resolvedPlayerPath"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v17 = [MEMORY[0x1E696AD98] numberWithBool:self->_sendingPlaybackQueueTransaction];
-    [v3 setObject:v17 forKey:@"sendingPlaybackQueueTransaction"];
+    [dictionary setObject:v17 forKey:@"sendingPlaybackQueueTransaction"];
   }
 
   queueIdentifier = self->_queueIdentifier;
   if (queueIdentifier)
   {
-    [v3 setObject:queueIdentifier forKey:@"queueIdentifier"];
+    [dictionary setObject:queueIdentifier forKey:@"queueIdentifier"];
   }
 
   if ([(NSMutableArray *)self->_participants count])
@@ -195,8 +195,8 @@
             objc_enumerationMutation(v20);
           }
 
-          v25 = [*(*(&v33 + 1) + 8 * j) dictionaryRepresentation];
-          [v19 addObject:v25];
+          dictionaryRepresentation4 = [*(*(&v33 + 1) + 8 * j) dictionaryRepresentation];
+          [v19 addObject:dictionaryRepresentation4];
         }
 
         v22 = [(NSMutableArray *)v20 countByEnumeratingWithState:&v33 objects:v41 count:16];
@@ -205,38 +205,38 @@
       while (v22);
     }
 
-    [v3 setObject:v19 forKey:@"participants"];
+    [dictionary setObject:v19 forKey:@"participants"];
   }
 
   homeUserIdentifiers = self->_homeUserIdentifiers;
   if (homeUserIdentifiers)
   {
-    [v3 setObject:homeUserIdentifiers forKey:@"homeUserIdentifiers"];
+    [dictionary setObject:homeUserIdentifiers forKey:@"homeUserIdentifiers"];
   }
 
   properties = self->_properties;
   if (properties)
   {
-    v28 = [(_MRDictionaryProtobuf *)properties dictionaryRepresentation];
-    [v3 setObject:v28 forKey:@"properties"];
+    dictionaryRepresentation5 = [(_MRDictionaryProtobuf *)properties dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"properties"];
   }
 
   auxiliaryNowPlayingInfo = self->_auxiliaryNowPlayingInfo;
   if (auxiliaryNowPlayingInfo)
   {
-    v30 = [(_MRDictionaryProtobuf *)auxiliaryNowPlayingInfo dictionaryRepresentation];
-    [v3 setObject:v30 forKey:@"auxiliaryNowPlayingInfo"];
+    dictionaryRepresentation6 = [(_MRDictionaryProtobuf *)auxiliaryNowPlayingInfo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation6 forKey:@"auxiliaryNowPlayingInfo"];
   }
 
   v31 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     location = self->_location;
@@ -378,23 +378,23 @@
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[10] = self->_location;
-    *(v4 + 92) |= 1u;
+    toCopy[10] = self->_location;
+    *(toCopy + 92) |= 1u;
   }
 
-  v18 = v4;
+  v18 = toCopy;
   if ([(_MRPlaybackQueueProtobuf *)self contentItemsCount])
   {
     [v18 clearContentItems];
-    v5 = [(_MRPlaybackQueueProtobuf *)self contentItemsCount];
-    if (v5)
+    contentItemsCount = [(_MRPlaybackQueueProtobuf *)self contentItemsCount];
+    if (contentItemsCount)
     {
-      v6 = v5;
+      v6 = contentItemsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(_MRPlaybackQueueProtobuf *)self contentItemAtIndex:i];
@@ -432,10 +432,10 @@
   if ([(_MRPlaybackQueueProtobuf *)self participantsCount])
   {
     [v18 clearParticipants];
-    v9 = [(_MRPlaybackQueueProtobuf *)self participantsCount];
-    if (v9)
+    participantsCount = [(_MRPlaybackQueueProtobuf *)self participantsCount];
+    if (participantsCount)
     {
-      v10 = v9;
+      v10 = participantsCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(_MRPlaybackQueueProtobuf *)self participantsAtIndex:j];
@@ -447,10 +447,10 @@
   if ([(_MRPlaybackQueueProtobuf *)self homeUserIdentifiersCount])
   {
     [v18 clearHomeUserIdentifiers];
-    v13 = [(_MRPlaybackQueueProtobuf *)self homeUserIdentifiersCount];
-    if (v13)
+    homeUserIdentifiersCount = [(_MRPlaybackQueueProtobuf *)self homeUserIdentifiersCount];
+    if (homeUserIdentifiersCount)
     {
-      v14 = v13;
+      v14 = homeUserIdentifiersCount;
       for (k = 0; k != v14; ++k)
       {
         v16 = [(_MRPlaybackQueueProtobuf *)self homeUserIdentifiersAtIndex:k];
@@ -472,10 +472,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v54 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -503,7 +503,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v47 + 1) + 8 * v11) copyWithZone:a3];
+        v12 = [*(*(&v47 + 1) + 8 * v11) copyWithZone:zone];
         [v6 addContentItem:v12];
 
         ++v11;
@@ -516,15 +516,15 @@
     while (v9);
   }
 
-  v13 = [(_MRPlaybackQueueContextProtobuf *)self->_context copyWithZone:a3];
+  v13 = [(_MRPlaybackQueueContextProtobuf *)self->_context copyWithZone:zone];
   v14 = *(v6 + 24);
   *(v6 + 24) = v13;
 
-  v15 = [(NSString *)self->_requestID copyWithZone:a3];
+  v15 = [(NSString *)self->_requestID copyWithZone:zone];
   v16 = *(v6 + 72);
   *(v6 + 72) = v15;
 
-  v17 = [(_MRNowPlayingPlayerPathProtobuf *)self->_resolvedPlayerPath copyWithZone:a3];
+  v17 = [(_MRNowPlayingPlayerPathProtobuf *)self->_resolvedPlayerPath copyWithZone:zone];
   v18 = *(v6 + 80);
   *(v6 + 80) = v17;
 
@@ -534,7 +534,7 @@
     *(v6 + 92) |= 2u;
   }
 
-  v19 = [(NSString *)self->_queueIdentifier copyWithZone:a3];
+  v19 = [(NSString *)self->_queueIdentifier copyWithZone:zone];
   v20 = *(v6 + 64);
   *(v6 + 64) = v19;
 
@@ -558,7 +558,7 @@
           objc_enumerationMutation(v21);
         }
 
-        v26 = [*(*(&v43 + 1) + 8 * v25) copyWithZone:a3];
+        v26 = [*(*(&v43 + 1) + 8 * v25) copyWithZone:zone];
         [v6 addParticipants:v26];
 
         ++v25;
@@ -591,7 +591,7 @@
           objc_enumerationMutation(v27);
         }
 
-        v32 = [*(*(&v39 + 1) + 8 * v31) copyWithZone:{a3, v39}];
+        v32 = [*(*(&v39 + 1) + 8 * v31) copyWithZone:{zone, v39}];
         [v6 addHomeUserIdentifiers:v32];
 
         ++v31;
@@ -604,11 +604,11 @@
     while (v29);
   }
 
-  v33 = [(_MRDictionaryProtobuf *)self->_properties copyWithZone:a3];
+  v33 = [(_MRDictionaryProtobuf *)self->_properties copyWithZone:zone];
   v34 = *(v6 + 56);
   *(v6 + 56) = v33;
 
-  v35 = [(_MRDictionaryProtobuf *)self->_auxiliaryNowPlayingInfo copyWithZone:a3];
+  v35 = [(_MRDictionaryProtobuf *)self->_auxiliaryNowPlayingInfo copyWithZone:zone];
   v36 = *(v6 + 8);
   *(v6 + 8) = v35;
 
@@ -616,36 +616,36 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
-  v5 = *(v4 + 92);
+  v5 = *(equalCopy + 92);
   if (*&self->_has)
   {
-    if ((*(v4 + 92) & 1) == 0 || self->_location != *(v4 + 10))
+    if ((*(equalCopy + 92) & 1) == 0 || self->_location != *(equalCopy + 10))
     {
       goto LABEL_28;
     }
   }
 
-  else if (*(v4 + 92))
+  else if (*(equalCopy + 92))
   {
     goto LABEL_28;
   }
 
   contentItems = self->_contentItems;
-  if (contentItems | *(v4 + 2) && ![(NSMutableArray *)contentItems isEqual:?])
+  if (contentItems | *(equalCopy + 2) && ![(NSMutableArray *)contentItems isEqual:?])
   {
     goto LABEL_28;
   }
 
   context = self->_context;
-  if (context | *(v4 + 3))
+  if (context | *(equalCopy + 3))
   {
     if (![(_MRPlaybackQueueContextProtobuf *)context isEqual:?])
     {
@@ -654,7 +654,7 @@
   }
 
   requestID = self->_requestID;
-  if (requestID | *(v4 + 9))
+  if (requestID | *(equalCopy + 9))
   {
     if (![(NSString *)requestID isEqual:?])
     {
@@ -663,7 +663,7 @@
   }
 
   resolvedPlayerPath = self->_resolvedPlayerPath;
-  if (resolvedPlayerPath | *(v4 + 10))
+  if (resolvedPlayerPath | *(equalCopy + 10))
   {
     if (![(_MRNowPlayingPlayerPathProtobuf *)resolvedPlayerPath isEqual:?])
     {
@@ -671,10 +671,10 @@
     }
   }
 
-  v10 = *(v4 + 92);
+  v10 = *(equalCopy + 92);
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 92) & 2) == 0)
+    if ((*(equalCopy + 92) & 2) == 0)
     {
       goto LABEL_17;
     }
@@ -684,34 +684,34 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if ((*(v4 + 92) & 2) == 0)
+  if ((*(equalCopy + 92) & 2) == 0)
   {
     goto LABEL_28;
   }
 
-  v18 = *(v4 + 88);
+  v18 = *(equalCopy + 88);
   if (self->_sendingPlaybackQueueTransaction)
   {
-    if ((*(v4 + 88) & 1) == 0)
+    if ((*(equalCopy + 88) & 1) == 0)
     {
       goto LABEL_28;
     }
   }
 
-  else if (*(v4 + 88))
+  else if (*(equalCopy + 88))
   {
     goto LABEL_28;
   }
 
 LABEL_17:
   queueIdentifier = self->_queueIdentifier;
-  if (queueIdentifier | *(v4 + 8) && ![(NSString *)queueIdentifier isEqual:?])
+  if (queueIdentifier | *(equalCopy + 8) && ![(NSString *)queueIdentifier isEqual:?])
   {
     goto LABEL_28;
   }
 
   participants = self->_participants;
-  if (participants | *(v4 + 6))
+  if (participants | *(equalCopy + 6))
   {
     if (![(NSMutableArray *)participants isEqual:?])
     {
@@ -720,7 +720,7 @@ LABEL_17:
   }
 
   homeUserIdentifiers = self->_homeUserIdentifiers;
-  if (homeUserIdentifiers | *(v4 + 4))
+  if (homeUserIdentifiers | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)homeUserIdentifiers isEqual:?])
     {
@@ -729,7 +729,7 @@ LABEL_17:
   }
 
   properties = self->_properties;
-  if (properties | *(v4 + 7))
+  if (properties | *(equalCopy + 7))
   {
     if (![(_MRDictionaryProtobuf *)properties isEqual:?])
     {
@@ -738,7 +738,7 @@ LABEL_17:
   }
 
   auxiliaryNowPlayingInfo = self->_auxiliaryNowPlayingInfo;
-  if (auxiliaryNowPlayingInfo | *(v4 + 1))
+  if (auxiliaryNowPlayingInfo | *(equalCopy + 1))
   {
     v16 = [(_MRDictionaryProtobuf *)auxiliaryNowPlayingInfo isEqual:?];
   }
@@ -786,14 +786,14 @@ LABEL_29:
   return v9 ^ v12 ^ [(_MRDictionaryProtobuf *)self->_auxiliaryNowPlayingInfo hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 92))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 92))
   {
-    self->_location = *(v4 + 10);
+    self->_location = *(fromCopy + 10);
     *&self->_has |= 1u;
   }
 
@@ -801,7 +801,7 @@ LABEL_29:
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   v7 = [v6 countByEnumeratingWithState:&v38 objects:v44 count:16];
   if (v7)
   {

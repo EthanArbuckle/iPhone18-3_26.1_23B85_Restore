@@ -1,16 +1,16 @@
 @interface SBHardwareButtonDropletAnimationEvent
-- (SBHardwareButtonDropletAnimationEvent)initWithPreludeToken:(id)a3 zoomUpToken:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (SBHardwareButtonDropletAnimationEvent)initWithPreludeToken:(id)token zoomUpToken:(id)upToken;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 @end
 
 @implementation SBHardwareButtonDropletAnimationEvent
 
-- (SBHardwareButtonDropletAnimationEvent)initWithPreludeToken:(id)a3 zoomUpToken:(id)a4
+- (SBHardwareButtonDropletAnimationEvent)initWithPreludeToken:(id)token zoomUpToken:(id)upToken
 {
-  v8 = a3;
-  v9 = a4;
-  if ((v8 != 0) != (v9 == 0))
+  tokenCopy = token;
+  upTokenCopy = upToken;
+  if ((tokenCopy != 0) != (upTokenCopy == 0))
   {
     [SBHardwareButtonDropletAnimationEvent initWithPreludeToken:a2 zoomUpToken:self];
   }
@@ -21,14 +21,14 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_preludeToken, a3);
-    objc_storeStrong(&v11->_zoomUpToken, a4);
+    objc_storeStrong(&v10->_preludeToken, token);
+    objc_storeStrong(&v11->_zoomUpToken, upToken);
   }
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SBHardwareButtonDropletAnimationEvent alloc];
   preludeToken = self->_preludeToken;
@@ -37,11 +37,11 @@
   return [(SBHardwareButtonDropletAnimationEvent *)v4 initWithPreludeToken:preludeToken zoomUpToken:zoomUpToken];
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v8.receiver = self;
   v8.super_class = SBHardwareButtonDropletAnimationEvent;
-  v4 = [(SBSwitcherModifierEvent *)&v8 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(SBSwitcherModifierEvent *)&v8 descriptionBuilderWithMultilinePrefix:prefix];
   v5 = [v4 appendObject:self->_preludeToken withName:@"preludeToken"];
   v6 = [v4 appendObject:self->_zoomUpToken withName:@"zoomUpToken"];
 

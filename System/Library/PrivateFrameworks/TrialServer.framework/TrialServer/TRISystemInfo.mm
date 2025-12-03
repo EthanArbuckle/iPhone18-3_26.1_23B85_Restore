@@ -10,66 +10,66 @@
 + (id)_iCloudIdentifier;
 + (id)_persistentSystemInfoPath;
 + (id)_sysEnabledInputModeIdentifiers;
-+ (id)createSystemInfoWithFactorProvider:(id)a3;
++ (id)createSystemInfoWithFactorProvider:(id)provider;
 + (id)info;
 + (id)loadSystemInfo;
-+ (id)systemInfoFromFile:(id)a3;
-+ (int64_t)_appleIntelligenceState:(id)a3;
++ (id)systemInfoFromFile:(id)file;
++ (int64_t)_appleIntelligenceState:(id)state;
 - (BOOL)save;
-- (BOOL)saveToFile:(id)a3;
-- (TRISystemInfo)initWithCoder:(id)a3;
+- (BOOL)saveToFile:(id)file;
+- (TRISystemInfo)initWithCoder:(id)coder;
 - (id)_getSiriDeviceAggregationIdRotationDate;
 - (id)externalParamManager;
-- (id)initFromSystemWithFactorProvider:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)initFromSystemWithFactorProvider:(id)provider;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRISystemInfo
 
 + (id)_persistentSystemInfoPath
 {
-  v2 = [MEMORY[0x277D737E0] sharedPaths];
-  v3 = [v2 systemDataFile];
+  mEMORY[0x277D737E0] = [MEMORY[0x277D737E0] sharedPaths];
+  systemDataFile = [mEMORY[0x277D737E0] systemDataFile];
 
-  return v3;
+  return systemDataFile;
 }
 
 + (id)info
 {
-  v3 = [a1 loadSystemInfo];
-  if (!v3)
+  loadSystemInfo = [self loadSystemInfo];
+  if (!loadSystemInfo)
   {
     if (([MEMORY[0x277D737A8] hostingProcessIsTriald] & 1) != 0 || objc_msgSend(MEMORY[0x277D737A8], "hostingProcessIsTrialdSystem"))
     {
-      v3 = [a1 createSystemInfoWithFactorProvider:0];
+      loadSystemInfo = [self createSystemInfoWithFactorProvider:0];
     }
 
     else
     {
-      v3 = 0;
+      loadSystemInfo = 0;
     }
   }
 
-  return v3;
+  return loadSystemInfo;
 }
 
 + (id)loadSystemInfo
 {
-  v3 = [a1 _persistentSystemInfoPath];
-  v4 = [a1 systemInfoFromFile:v3];
+  _persistentSystemInfoPath = [self _persistentSystemInfoPath];
+  v4 = [self systemInfoFromFile:_persistentSystemInfoPath];
 
   return v4;
 }
 
-+ (id)systemInfoFromFile:(id)a3
++ (id)systemInfoFromFile:(id)file
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  if ([v4 fileExistsAtPath:v3])
+  fileCopy = file;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if ([defaultManager fileExistsAtPath:fileCopy])
   {
     v12 = 0;
-    v5 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v3 options:2 error:&v12];
+    v5 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:fileCopy options:2 error:&v12];
     v6 = v12;
     if (v5)
     {
@@ -85,7 +85,7 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v14 = v3;
+        v14 = fileCopy;
         v15 = 2112;
         v16 = v6;
         _os_log_error_impl(&dword_26F567000, v8, OS_LOG_TYPE_ERROR, "failed to read system info from file %@: %@", buf, 0x16u);
@@ -105,15 +105,15 @@
   return v7;
 }
 
-+ (id)createSystemInfoWithFactorProvider:(id)a3
++ (id)createSystemInfoWithFactorProvider:(id)provider
 {
-  v3 = a3;
-  v4 = [[TRISystemInfo alloc] initFromSystemWithFactorProvider:v3];
+  providerCopy = provider;
+  v4 = [[TRISystemInfo alloc] initFromSystemWithFactorProvider:providerCopy];
 
   return v4;
 }
 
-- (id)initFromSystemWithFactorProvider:(id)a3
+- (id)initFromSystemWithFactorProvider:(id)provider
 {
   v20.receiver = self;
   v20.super_class = TRISystemInfo;
@@ -122,32 +122,32 @@
   {
     v4 = objc_alloc_init(TRIXPCCovariateFetcher);
     v3->_isEnrolledInBetaProgram = [objc_opt_class() _sysIsEnrolledInBetaProgram];
-    v5 = [objc_opt_class() _sysEnabledInputModeIdentifiers];
+    _sysEnabledInputModeIdentifiers = [objc_opt_class() _sysEnabledInputModeIdentifiers];
     enabledInputModeIdentifiers = v3->_enabledInputModeIdentifiers;
-    v3->_enabledInputModeIdentifiers = v5;
+    v3->_enabledInputModeIdentifiers = _sysEnabledInputModeIdentifiers;
 
-    v7 = [objc_opt_class() _carrierBundleIdentifier];
+    _carrierBundleIdentifier = [objc_opt_class() _carrierBundleIdentifier];
     carrierBundleIdentifier = v3->_carrierBundleIdentifier;
-    v3->_carrierBundleIdentifier = v7;
+    v3->_carrierBundleIdentifier = _carrierBundleIdentifier;
 
-    v9 = [objc_opt_class() _carrierCountryIsoCode];
+    _carrierCountryIsoCode = [objc_opt_class() _carrierCountryIsoCode];
     carrierCountryIsoCode = v3->_carrierCountryIsoCode;
-    v3->_carrierCountryIsoCode = v9;
+    v3->_carrierCountryIsoCode = _carrierCountryIsoCode;
 
-    v11 = [objc_opt_class() _iCloudIdentifier];
+    _iCloudIdentifier = [objc_opt_class() _iCloudIdentifier];
     iCloudIdentifier = v3->_iCloudIdentifier;
-    v3->_iCloudIdentifier = v11;
+    v3->_iCloudIdentifier = _iCloudIdentifier;
 
     v3->_isDiagnosticsAndUsageEnabled = [objc_opt_class() _isDiagnosticsAndUsageEnabled];
     v3->_hasAne = [objc_opt_class() _hasAne];
-    v13 = [objc_opt_class() _aneVersion];
+    _aneVersion = [objc_opt_class() _aneVersion];
     aneVersion = v3->_aneVersion;
-    v3->_aneVersion = v13;
+    v3->_aneVersion = _aneVersion;
 
     v3->_isAutomatedTestDevice = [objc_opt_class() _isAutomatedTestDevice];
-    v15 = [(TRISystemInfo *)v3 _getSiriDeviceAggregationIdRotationDate];
+    _getSiriDeviceAggregationIdRotationDate = [(TRISystemInfo *)v3 _getSiriDeviceAggregationIdRotationDate];
     siriDeviceAggregationIdRotationDate = v3->_siriDeviceAggregationIdRotationDate;
-    v3->_siriDeviceAggregationIdRotationDate = v15;
+    v3->_siriDeviceAggregationIdRotationDate = _getSiriDeviceAggregationIdRotationDate;
 
     v3->_appleIntelligenceState = [objc_opt_class() _appleIntelligenceState:v4];
     v17 = [objc_opt_class() _mapsBucketId:v4];
@@ -158,60 +158,60 @@
   return v3;
 }
 
-- (TRISystemInfo)initWithCoder:(id)a3
+- (TRISystemInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v31.receiver = self;
   v31.super_class = TRISystemInfo;
   v5 = [(TRISystemInfo *)&v31 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isBetaUser"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isBetaUser"];
     v5->_isEnrolledInBetaProgram = [v6 BOOLValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"carrierBundleIdentifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"carrierBundleIdentifier"];
     carrierBundleIdentifier = v5->_carrierBundleIdentifier;
     v5->_carrierBundleIdentifier = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"carrierCountryIsoCode"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"carrierCountryIsoCode"];
     carrierCountryIsoCode = v5->_carrierCountryIsoCode;
     v5->_carrierCountryIsoCode = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cloudIdentifier"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cloudIdentifier"];
     iCloudIdentifier = v5->_iCloudIdentifier;
     v5->_iCloudIdentifier = v11;
 
-    v5->_isDiagnosticsAndUsageEnabled = [v4 decodeBoolForKey:@"isDiagnosticsAndUsageEnabled"];
-    v5->_hasAne = [v4 decodeBoolForKey:@"hasAne"];
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"aneVersion"];
+    v5->_isDiagnosticsAndUsageEnabled = [coderCopy decodeBoolForKey:@"isDiagnosticsAndUsageEnabled"];
+    v5->_hasAne = [coderCopy decodeBoolForKey:@"hasAne"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"aneVersion"];
     aneVersion = v5->_aneVersion;
     v5->_aneVersion = v13;
 
     v15 = MEMORY[0x277CBEB98];
     v16 = objc_opt_class();
     v17 = [v15 setWithObjects:{v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"enabledInputModeIdentifiers"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"enabledInputModeIdentifiers"];
     enabledInputModeIdentifiers = v5->_enabledInputModeIdentifiers;
     v5->_enabledInputModeIdentifiers = v18;
 
-    v20 = [v4 containsValueForKey:@"logUserSettingsRegionCode"];
+    v20 = [coderCopy containsValueForKey:@"logUserSettingsRegionCode"];
     if (v20)
     {
-      LOBYTE(v20) = [v4 decodeBoolForKey:@"logUserSettingsRegionCode"];
+      LOBYTE(v20) = [coderCopy decodeBoolForKey:@"logUserSettingsRegionCode"];
     }
 
     v5->_logUserSettingsRegionCode = v20;
-    v21 = [v4 containsValueForKey:@"logUserSettingsLanguageCode"];
+    v21 = [coderCopy containsValueForKey:@"logUserSettingsLanguageCode"];
     if (v21)
     {
-      LOBYTE(v21) = [v4 decodeBoolForKey:@"logUserSettingsLanguageCode"];
+      LOBYTE(v21) = [coderCopy decodeBoolForKey:@"logUserSettingsLanguageCode"];
     }
 
     v5->_logUserSettingsLanguageCode = v21;
-    v22 = [v4 containsValueForKey:@"logUserKeyboardEnabledInputMode"];
+    v22 = [coderCopy containsValueForKey:@"logUserKeyboardEnabledInputMode"];
     if (v22)
     {
-      LOBYTE(v22) = [v4 decodeBoolForKey:@"logUserKeyboardEnabledInputMode"];
+      LOBYTE(v22) = [coderCopy decodeBoolForKey:@"logUserKeyboardEnabledInputMode"];
     }
 
     v5->_logUserKeyboardEnabledInputMode = v22;
@@ -228,13 +228,13 @@
       v5->_enabledInputModeIdentifiers = MEMORY[0x277CBEBF8];
     }
 
-    v5->_isAutomatedTestDevice = [v4 decodeBoolForKey:@"isAutomatedTestDevice"];
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"siriDeviceAggregationIdRotationDate"];
+    v5->_isAutomatedTestDevice = [coderCopy decodeBoolForKey:@"isAutomatedTestDevice"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"siriDeviceAggregationIdRotationDate"];
     siriDeviceAggregationIdRotationDate = v5->_siriDeviceAggregationIdRotationDate;
     v5->_siriDeviceAggregationIdRotationDate = v25;
 
-    v5->_appleIntelligenceState = [v4 decodeIntegerForKey:@"appleIntelligenceState"];
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mapsBucketId"];
+    v5->_appleIntelligenceState = [coderCopy decodeIntegerForKey:@"appleIntelligenceState"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mapsBucketId"];
     mapsBucketId = v5->_mapsBucketId;
     v5->_mapsBucketId = v27;
   }
@@ -242,12 +242,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TRISystemInfo *)self enabledInputModeIdentifiers];
+  coderCopy = coder;
+  enabledInputModeIdentifiers = [(TRISystemInfo *)self enabledInputModeIdentifiers];
 
-  if (!v5)
+  if (!enabledInputModeIdentifiers)
   {
     v6 = TRILogCategory_ClientFramework();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -258,24 +258,24 @@
   }
 
   v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[TRISystemInfo isEnrolledInBetaProgram](self, "isEnrolledInBetaProgram")}];
-  [v4 encodeObject:v7 forKey:@"isBetaUser"];
+  [coderCopy encodeObject:v7 forKey:@"isBetaUser"];
 
-  v8 = [(TRISystemInfo *)self carrierBundleIdentifier];
-  [v4 encodeObject:v8 forKey:@"carrierBundleIdentifier"];
+  carrierBundleIdentifier = [(TRISystemInfo *)self carrierBundleIdentifier];
+  [coderCopy encodeObject:carrierBundleIdentifier forKey:@"carrierBundleIdentifier"];
 
-  v9 = [(TRISystemInfo *)self carrierCountryIsoCode];
-  [v4 encodeObject:v9 forKey:@"carrierCountryIsoCode"];
+  carrierCountryIsoCode = [(TRISystemInfo *)self carrierCountryIsoCode];
+  [coderCopy encodeObject:carrierCountryIsoCode forKey:@"carrierCountryIsoCode"];
 
-  [v4 encodeBool:-[TRISystemInfo isDiagnosticsAndUsageEnabled](self forKey:{"isDiagnosticsAndUsageEnabled"), @"isDiagnosticsAndUsageEnabled"}];
-  [v4 encodeBool:-[TRISystemInfo hasAne](self forKey:{"hasAne"), @"hasAne"}];
-  v10 = [(TRISystemInfo *)self aneVersion];
-  [v4 encodeObject:v10 forKey:@"aneVersion"];
+  [coderCopy encodeBool:-[TRISystemInfo isDiagnosticsAndUsageEnabled](self forKey:{"isDiagnosticsAndUsageEnabled"), @"isDiagnosticsAndUsageEnabled"}];
+  [coderCopy encodeBool:-[TRISystemInfo hasAne](self forKey:{"hasAne"), @"hasAne"}];
+  aneVersion = [(TRISystemInfo *)self aneVersion];
+  [coderCopy encodeObject:aneVersion forKey:@"aneVersion"];
 
-  v11 = [(TRISystemInfo *)self enabledInputModeIdentifiers];
-  v12 = v11;
-  if (v11)
+  enabledInputModeIdentifiers2 = [(TRISystemInfo *)self enabledInputModeIdentifiers];
+  v12 = enabledInputModeIdentifiers2;
+  if (enabledInputModeIdentifiers2)
   {
-    v13 = v11;
+    v13 = enabledInputModeIdentifiers2;
   }
 
   else
@@ -283,35 +283,35 @@
     v13 = MEMORY[0x277CBEBF8];
   }
 
-  [v4 encodeObject:v13 forKey:@"enabledInputModeIdentifiers"];
+  [coderCopy encodeObject:v13 forKey:@"enabledInputModeIdentifiers"];
 
-  [v4 encodeBool:-[TRISystemInfo logUserSettingsRegionCode](self forKey:{"logUserSettingsRegionCode"), @"logUserSettingsRegionCode"}];
-  [v4 encodeBool:-[TRISystemInfo logUserSettingsLanguageCode](self forKey:{"logUserSettingsLanguageCode"), @"logUserSettingsLanguageCode"}];
-  [v4 encodeBool:-[TRISystemInfo logUserKeyboardEnabledInputMode](self forKey:{"logUserKeyboardEnabledInputMode"), @"logUserKeyboardEnabledInputMode"}];
-  [v4 encodeBool:-[TRISystemInfo isAutomatedTestDevice](self forKey:{"isAutomatedTestDevice"), @"isAutomatedTestDevice"}];
-  v14 = [(TRISystemInfo *)self siriDeviceAggregationIdRotationDate];
-  [v4 encodeObject:v14 forKey:@"siriDeviceAggregationIdRotationDate"];
+  [coderCopy encodeBool:-[TRISystemInfo logUserSettingsRegionCode](self forKey:{"logUserSettingsRegionCode"), @"logUserSettingsRegionCode"}];
+  [coderCopy encodeBool:-[TRISystemInfo logUserSettingsLanguageCode](self forKey:{"logUserSettingsLanguageCode"), @"logUserSettingsLanguageCode"}];
+  [coderCopy encodeBool:-[TRISystemInfo logUserKeyboardEnabledInputMode](self forKey:{"logUserKeyboardEnabledInputMode"), @"logUserKeyboardEnabledInputMode"}];
+  [coderCopy encodeBool:-[TRISystemInfo isAutomatedTestDevice](self forKey:{"isAutomatedTestDevice"), @"isAutomatedTestDevice"}];
+  siriDeviceAggregationIdRotationDate = [(TRISystemInfo *)self siriDeviceAggregationIdRotationDate];
+  [coderCopy encodeObject:siriDeviceAggregationIdRotationDate forKey:@"siriDeviceAggregationIdRotationDate"];
 
-  v15 = [(TRISystemInfo *)self iCloudIdentifier];
-  [v4 encodeObject:v15 forKey:@"cloudIdentifier"];
+  iCloudIdentifier = [(TRISystemInfo *)self iCloudIdentifier];
+  [coderCopy encodeObject:iCloudIdentifier forKey:@"cloudIdentifier"];
 
-  [v4 encodeInteger:-[TRISystemInfo appleIntelligenceState](self forKey:{"appleIntelligenceState"), @"appleIntelligenceState"}];
-  v16 = [(TRISystemInfo *)self mapsBucketId];
-  [v4 encodeObject:v16 forKey:@"mapsBucketId"];
+  [coderCopy encodeInteger:-[TRISystemInfo appleIntelligenceState](self forKey:{"appleIntelligenceState"), @"appleIntelligenceState"}];
+  mapsBucketId = [(TRISystemInfo *)self mapsBucketId];
+  [coderCopy encodeObject:mapsBucketId forKey:@"mapsBucketId"];
 }
 
 - (BOOL)save
 {
-  v3 = [objc_opt_class() _persistentSystemInfoPath];
-  LOBYTE(self) = [(TRISystemInfo *)self saveToFile:v3];
+  _persistentSystemInfoPath = [objc_opt_class() _persistentSystemInfoPath];
+  LOBYTE(self) = [(TRISystemInfo *)self saveToFile:_persistentSystemInfoPath];
 
   return self;
 }
 
-- (BOOL)saveToFile:(id)a3
+- (BOOL)saveToFile:(id)file
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fileCopy = file;
   v20 = 0;
   v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self requiringSecureCoding:1 error:&v20];
   v6 = v20;
@@ -334,9 +334,9 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v19 = v6;
-  v8 = [v7 triCreateDirectoryForPath:v4 isDirectory:0 error:&v19];
+  v8 = [defaultManager triCreateDirectoryForPath:fileCopy isDirectory:0 error:&v19];
   v9 = v19;
 
   if (!v8)
@@ -345,7 +345,7 @@ LABEL_12:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v22 = v4;
+      v22 = fileCopy;
       v23 = 2112;
       v24 = v9;
       _os_log_error_impl(&dword_26F567000, v12, OS_LOG_TYPE_ERROR, "failed to create directory for path %@ -- %@", buf, 0x16u);
@@ -357,7 +357,7 @@ LABEL_12:
 
   v18 = v9;
   v10 = 1;
-  v11 = [v5 writeToFile:v4 options:1 error:&v18];
+  v11 = [v5 writeToFile:fileCopy options:1 error:&v18];
   v6 = v18;
 
   if ((v11 & 1) == 0)
@@ -366,7 +366,7 @@ LABEL_12:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v22 = v4;
+      v22 = fileCopy;
       v23 = 2112;
       v24 = v6;
       v13 = "failed to write system info to path %@ -- %@";
@@ -410,26 +410,26 @@ void __37__TRISystemInfo_externalParamManager__block_invoke()
 
 - (id)_getSiriDeviceAggregationIdRotationDate
 {
-  v2 = [(TRISystemInfo *)self externalParamManager];
-  v3 = [v2 siriDeviceAggregationIdRotationDate];
+  externalParamManager = [(TRISystemInfo *)self externalParamManager];
+  siriDeviceAggregationIdRotationDate = [externalParamManager siriDeviceAggregationIdRotationDate];
 
-  return v3;
+  return siriDeviceAggregationIdRotationDate;
 }
 
-+ (int64_t)_appleIntelligenceState:(id)a3
++ (int64_t)_appleIntelligenceState:(id)state
 {
-  v5 = a3;
-  v3 = [v5 appleIntelligenceState];
+  stateCopy = state;
+  appleIntelligenceState = [stateCopy appleIntelligenceState];
 
-  return v3;
+  return appleIntelligenceState;
 }
 
 + (BOOL)_sysIsEnrolledInBetaProgram
 {
-  v2 = [a1 _isSeedBuild];
+  _isSeedBuild = [self _isSeedBuild];
   v3 = TRILogCategory_ClientFramework();
   v4 = os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT);
-  if (v2)
+  if (_isSeedBuild)
   {
     if (v4)
     {
@@ -449,7 +449,7 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  return v2;
+  return _isSeedBuild;
 }
 
 + (id)_sysEnabledInputModeIdentifiers
@@ -506,17 +506,17 @@ void __48__TRISystemInfo__sysEnabledInputModeIdentifiers__block_invoke_2(uint64_
 + (id)_carrierBundleIdentifier
 {
   v2 = +[TRICellularParameterManager sharedInstance];
-  v3 = [v2 carrierBundleIdentifier];
+  carrierBundleIdentifier = [v2 carrierBundleIdentifier];
 
-  return v3;
+  return carrierBundleIdentifier;
 }
 
 + (id)_carrierCountryIsoCode
 {
   v2 = +[TRICellularParameterManager sharedInstance];
-  v3 = [v2 carrierCountryIsoCode];
+  carrierCountryIsoCode = [v2 carrierCountryIsoCode];
 
-  return v3;
+  return carrierCountryIsoCode;
 }
 
 + (id)_iCloudIdentifier
@@ -528,22 +528,22 @@ void __48__TRISystemInfo__sysEnabledInputModeIdentifiers__block_invoke_2(uint64_
   }
 
   Helper_x8__OBJC_CLASS___ACAccountStore = gotLoadHelper_x8__OBJC_CLASS___ACAccountStore(v2);
-  v5 = [*(v4 + 3912) defaultStore];
+  defaultStore = [*(v4 + 3912) defaultStore];
   v6 = TRILogCategory_ClientFramework();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 aa_primaryAppleAccount];
+    aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
     v12 = 138412290;
-    v13 = v7;
+    v13 = aa_primaryAppleAccount;
     _os_log_impl(&dword_26F567000, v6, OS_LOG_TYPE_DEFAULT, "Updating iCloudID using Alt. DSID of account: %@", &v12, 0xCu);
   }
 
-  v8 = [v5 aa_primaryAppleAccount];
-  v9 = [v8 aa_altDSID];
+  aa_primaryAppleAccount2 = [defaultStore aa_primaryAppleAccount];
+  aa_altDSID = [aa_primaryAppleAccount2 aa_altDSID];
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return aa_altDSID;
 }
 
 void __34__TRISystemInfo__iCloudIdentifier__block_invoke()
@@ -557,10 +557,10 @@ void __34__TRISystemInfo__iCloudIdentifier__block_invoke()
 
 + (BOOL)_isDiagnosticsAndUsageEnabled
 {
-  v2 = [MEMORY[0x277D36B80] sharedInstance];
-  v3 = [v2 optInApple];
+  mEMORY[0x277D36B80] = [MEMORY[0x277D36B80] sharedInstance];
+  optInApple = [mEMORY[0x277D36B80] optInApple];
 
-  return v3;
+  return optInApple;
 }
 
 + (BOOL)_hasAne
@@ -625,18 +625,18 @@ void __28__TRISystemInfo__aneVersion__block_invoke()
 
 + (BOOL)_isAutomatedTestDevice
 {
-  v3 = [MEMORY[0x277D36B80] automatedDeviceGroup];
-  if (v3)
+  automatedDeviceGroup = [MEMORY[0x277D36B80] automatedDeviceGroup];
+  if (automatedDeviceGroup)
   {
-    v4 = 1;
+    _isVirtualMachine = 1;
   }
 
   else
   {
-    v4 = [a1 _isVirtualMachine];
+    _isVirtualMachine = [self _isVirtualMachine];
   }
 
-  return v4;
+  return _isVirtualMachine;
 }
 
 + (BOOL)_isVirtualMachine

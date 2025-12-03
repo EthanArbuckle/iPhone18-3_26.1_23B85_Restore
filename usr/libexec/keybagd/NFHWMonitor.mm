@@ -1,6 +1,6 @@
 @interface NFHWMonitor
 - (NFHWMonitor)init;
-- (int64_t)waitForNotificationOrTimeout:(unsigned int)a3;
+- (int64_t)waitForNotificationOrTimeout:(unsigned int)timeout;
 - (void)dealloc;
 - (void)hardwareStateDidChange;
 @end
@@ -36,10 +36,10 @@
   dispatch_semaphore_signal(sem);
 }
 
-- (int64_t)waitForNotificationOrTimeout:(unsigned int)a3
+- (int64_t)waitForNotificationOrTimeout:(unsigned int)timeout
 {
   sem = self->sem;
-  v4 = dispatch_time(0, 1000000000 * a3);
+  v4 = dispatch_time(0, 1000000000 * timeout);
 
   return dispatch_semaphore_wait(sem, v4);
 }

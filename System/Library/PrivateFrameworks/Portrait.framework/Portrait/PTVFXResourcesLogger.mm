@@ -1,18 +1,18 @@
 @interface PTVFXResourcesLogger
-- (PTVFXResourcesLogger)initWithName:(id)a3 index:(int)a4;
+- (PTVFXResourcesLogger)initWithName:(id)name index:(int)index;
 - (id)progressHandler;
 @end
 
 @implementation PTVFXResourcesLogger
 
-- (PTVFXResourcesLogger)initWithName:(id)a3 index:(int)a4
+- (PTVFXResourcesLogger)initWithName:(id)name index:(int)index
 {
-  v7 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = PTVFXResourcesLogger;
   v8 = [(PTVFXResourcesLogger *)&v11 init];
-  objc_storeStrong(&v8->_name, a3);
-  v8->_index = a4;
+  objc_storeStrong(&v8->_name, name);
+  v8->_index = index;
   v8->_verboseLogging = 0;
   kdebug_trace();
   if (v8->_verboseLogging)
@@ -20,7 +20,7 @@
     v9 = _PTLogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [PTVFXResourcesLogger initWithName:v7 index:v9];
+      [PTVFXResourcesLogger initWithName:nameCopy index:v9];
     }
   }
 

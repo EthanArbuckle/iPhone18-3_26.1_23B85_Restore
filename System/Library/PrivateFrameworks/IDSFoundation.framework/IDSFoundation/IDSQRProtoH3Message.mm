@@ -1,458 +1,458 @@
 @interface IDSQRProtoH3Message
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)innerMessageAsString:(int)a3;
-- (int)StringAsInnerMessage:(id)a3;
+- (id)innerMessageAsString:(int)string;
+- (int)StringAsInnerMessage:(id)message;
 - (int)innerMessage;
 - (unint64_t)hash;
 - (void)clearOneofValuesForInnerMessage;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setAllocbindRequest:(id)a3;
-- (void)setAllocbindResponse:(id)a3;
-- (void)setCallmodeupdateRequest:(id)a3;
-- (void)setCallmodeupdateResponse:(id)a3;
-- (void)setChannelconfigRequest:(id)a3;
-- (void)setChannelconfigResponse:(id)a3;
-- (void)setDiagnosticIndication:(id)a3;
-- (void)setErrorIndication:(id)a3;
-- (void)setGetmaterialRequest:(id)a3;
-- (void)setGetmaterialResponse:(id)a3;
-- (void)setGoawayIndication:(id)a3;
-- (void)setInfoRequest:(id)a3;
-- (void)setInfoResponse:(id)a3;
-- (void)setParticipantupdateIndication:(id)a3;
-- (void)setParticipantupdateRequest:(id)a3;
-- (void)setParticipantupdateResponse:(id)a3;
-- (void)setPlugincontrolIndication:(id)a3;
-- (void)setPlugincontrolRequest:(id)a3;
-- (void)setPlugincontrolResponse:(id)a3;
-- (void)setPutmaterialIndication:(id)a3;
-- (void)setPutmaterialRequest:(id)a3;
-- (void)setPutmaterialResponse:(id)a3;
-- (void)setReallocateIndication:(id)a3;
-- (void)setRegisterAckRequest:(id)a3;
-- (void)setRegisterAckResponse:(id)a3;
-- (void)setRegisterIndication:(id)a3;
-- (void)setRegisterRequest:(id)a3;
-- (void)setRegisterResponse:(id)a3;
-- (void)setSessioninfoIndication:(id)a3;
-- (void)setSessioninfoRequest:(id)a3;
-- (void)setSessioninfoResponse:(id)a3;
-- (void)setStatsRequest:(id)a3;
-- (void)setStatsResponse:(id)a3;
-- (void)setTestRequest:(id)a3;
-- (void)setTestResponse:(id)a3;
-- (void)setUnallocbindRequest:(id)a3;
-- (void)setUnallocbindResponse:(id)a3;
-- (void)setUnregisterIndication:(id)a3;
-- (void)setUnregisterRequest:(id)a3;
-- (void)setUnregisterResponse:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setAllocbindRequest:(id)request;
+- (void)setAllocbindResponse:(id)response;
+- (void)setCallmodeupdateRequest:(id)request;
+- (void)setCallmodeupdateResponse:(id)response;
+- (void)setChannelconfigRequest:(id)request;
+- (void)setChannelconfigResponse:(id)response;
+- (void)setDiagnosticIndication:(id)indication;
+- (void)setErrorIndication:(id)indication;
+- (void)setGetmaterialRequest:(id)request;
+- (void)setGetmaterialResponse:(id)response;
+- (void)setGoawayIndication:(id)indication;
+- (void)setInfoRequest:(id)request;
+- (void)setInfoResponse:(id)response;
+- (void)setParticipantupdateIndication:(id)indication;
+- (void)setParticipantupdateRequest:(id)request;
+- (void)setParticipantupdateResponse:(id)response;
+- (void)setPlugincontrolIndication:(id)indication;
+- (void)setPlugincontrolRequest:(id)request;
+- (void)setPlugincontrolResponse:(id)response;
+- (void)setPutmaterialIndication:(id)indication;
+- (void)setPutmaterialRequest:(id)request;
+- (void)setPutmaterialResponse:(id)response;
+- (void)setReallocateIndication:(id)indication;
+- (void)setRegisterAckRequest:(id)request;
+- (void)setRegisterAckResponse:(id)response;
+- (void)setRegisterIndication:(id)indication;
+- (void)setRegisterRequest:(id)request;
+- (void)setRegisterResponse:(id)response;
+- (void)setSessioninfoIndication:(id)indication;
+- (void)setSessioninfoRequest:(id)request;
+- (void)setSessioninfoResponse:(id)response;
+- (void)setStatsRequest:(id)request;
+- (void)setStatsResponse:(id)response;
+- (void)setTestRequest:(id)request;
+- (void)setTestResponse:(id)response;
+- (void)setUnallocbindRequest:(id)request;
+- (void)setUnallocbindResponse:(id)response;
+- (void)setUnregisterIndication:(id)indication;
+- (void)setUnregisterRequest:(id)request;
+- (void)setUnregisterResponse:(id)response;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IDSQRProtoH3Message
 
-- (void)setAllocbindRequest:(id)a3
+- (void)setAllocbindRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 1;
   allocbindRequest = self->_allocbindRequest;
-  self->_allocbindRequest = v4;
+  self->_allocbindRequest = requestCopy;
 }
 
-- (void)setAllocbindResponse:(id)a3
+- (void)setAllocbindResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 2;
   allocbindResponse = self->_allocbindResponse;
-  self->_allocbindResponse = v4;
+  self->_allocbindResponse = responseCopy;
 }
 
-- (void)setDiagnosticIndication:(id)a3
+- (void)setDiagnosticIndication:(id)indication
 {
-  v4 = a3;
+  indicationCopy = indication;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 3;
   diagnosticIndication = self->_diagnosticIndication;
-  self->_diagnosticIndication = v4;
+  self->_diagnosticIndication = indicationCopy;
 }
 
-- (void)setGoawayIndication:(id)a3
+- (void)setGoawayIndication:(id)indication
 {
-  v4 = a3;
+  indicationCopy = indication;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 4;
   goawayIndication = self->_goawayIndication;
-  self->_goawayIndication = v4;
+  self->_goawayIndication = indicationCopy;
 }
 
-- (void)setInfoRequest:(id)a3
+- (void)setInfoRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 5;
   infoRequest = self->_infoRequest;
-  self->_infoRequest = v4;
+  self->_infoRequest = requestCopy;
 }
 
-- (void)setInfoResponse:(id)a3
+- (void)setInfoResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 6;
   infoResponse = self->_infoResponse;
-  self->_infoResponse = v4;
+  self->_infoResponse = responseCopy;
 }
 
-- (void)setParticipantupdateRequest:(id)a3
+- (void)setParticipantupdateRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 7;
   participantupdateRequest = self->_participantupdateRequest;
-  self->_participantupdateRequest = v4;
+  self->_participantupdateRequest = requestCopy;
 }
 
-- (void)setParticipantupdateResponse:(id)a3
+- (void)setParticipantupdateResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 8;
   participantupdateResponse = self->_participantupdateResponse;
-  self->_participantupdateResponse = v4;
+  self->_participantupdateResponse = responseCopy;
 }
 
-- (void)setParticipantupdateIndication:(id)a3
+- (void)setParticipantupdateIndication:(id)indication
 {
-  v4 = a3;
+  indicationCopy = indication;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 9;
   participantupdateIndication = self->_participantupdateIndication;
-  self->_participantupdateIndication = v4;
+  self->_participantupdateIndication = indicationCopy;
 }
 
-- (void)setPlugincontrolRequest:(id)a3
+- (void)setPlugincontrolRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 10;
   plugincontrolRequest = self->_plugincontrolRequest;
-  self->_plugincontrolRequest = v4;
+  self->_plugincontrolRequest = requestCopy;
 }
 
-- (void)setPlugincontrolResponse:(id)a3
+- (void)setPlugincontrolResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 11;
   plugincontrolResponse = self->_plugincontrolResponse;
-  self->_plugincontrolResponse = v4;
+  self->_plugincontrolResponse = responseCopy;
 }
 
-- (void)setPlugincontrolIndication:(id)a3
+- (void)setPlugincontrolIndication:(id)indication
 {
-  v4 = a3;
+  indicationCopy = indication;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 12;
   plugincontrolIndication = self->_plugincontrolIndication;
-  self->_plugincontrolIndication = v4;
+  self->_plugincontrolIndication = indicationCopy;
 }
 
-- (void)setErrorIndication:(id)a3
+- (void)setErrorIndication:(id)indication
 {
-  v4 = a3;
+  indicationCopy = indication;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 13;
   errorIndication = self->_errorIndication;
-  self->_errorIndication = v4;
+  self->_errorIndication = indicationCopy;
 }
 
-- (void)setReallocateIndication:(id)a3
+- (void)setReallocateIndication:(id)indication
 {
-  v4 = a3;
+  indicationCopy = indication;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 14;
   reallocateIndication = self->_reallocateIndication;
-  self->_reallocateIndication = v4;
+  self->_reallocateIndication = indicationCopy;
 }
 
-- (void)setSessioninfoRequest:(id)a3
+- (void)setSessioninfoRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 15;
   sessioninfoRequest = self->_sessioninfoRequest;
-  self->_sessioninfoRequest = v4;
+  self->_sessioninfoRequest = requestCopy;
 }
 
-- (void)setSessioninfoResponse:(id)a3
+- (void)setSessioninfoResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 16;
   sessioninfoResponse = self->_sessioninfoResponse;
-  self->_sessioninfoResponse = v4;
+  self->_sessioninfoResponse = responseCopy;
 }
 
-- (void)setSessioninfoIndication:(id)a3
+- (void)setSessioninfoIndication:(id)indication
 {
-  v4 = a3;
+  indicationCopy = indication;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 17;
   sessioninfoIndication = self->_sessioninfoIndication;
-  self->_sessioninfoIndication = v4;
+  self->_sessioninfoIndication = indicationCopy;
 }
 
-- (void)setStatsRequest:(id)a3
+- (void)setStatsRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 18;
   statsRequest = self->_statsRequest;
-  self->_statsRequest = v4;
+  self->_statsRequest = requestCopy;
 }
 
-- (void)setStatsResponse:(id)a3
+- (void)setStatsResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 19;
   statsResponse = self->_statsResponse;
-  self->_statsResponse = v4;
+  self->_statsResponse = responseCopy;
 }
 
-- (void)setTestRequest:(id)a3
+- (void)setTestRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 20;
   testRequest = self->_testRequest;
-  self->_testRequest = v4;
+  self->_testRequest = requestCopy;
 }
 
-- (void)setTestResponse:(id)a3
+- (void)setTestResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 21;
   testResponse = self->_testResponse;
-  self->_testResponse = v4;
+  self->_testResponse = responseCopy;
 }
 
-- (void)setUnallocbindRequest:(id)a3
+- (void)setUnallocbindRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 22;
   unallocbindRequest = self->_unallocbindRequest;
-  self->_unallocbindRequest = v4;
+  self->_unallocbindRequest = requestCopy;
 }
 
-- (void)setUnallocbindResponse:(id)a3
+- (void)setUnallocbindResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 23;
   unallocbindResponse = self->_unallocbindResponse;
-  self->_unallocbindResponse = v4;
+  self->_unallocbindResponse = responseCopy;
 }
 
-- (void)setPutmaterialRequest:(id)a3
+- (void)setPutmaterialRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 24;
   putmaterialRequest = self->_putmaterialRequest;
-  self->_putmaterialRequest = v4;
+  self->_putmaterialRequest = requestCopy;
 }
 
-- (void)setPutmaterialResponse:(id)a3
+- (void)setPutmaterialResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 25;
   putmaterialResponse = self->_putmaterialResponse;
-  self->_putmaterialResponse = v4;
+  self->_putmaterialResponse = responseCopy;
 }
 
-- (void)setPutmaterialIndication:(id)a3
+- (void)setPutmaterialIndication:(id)indication
 {
-  v4 = a3;
+  indicationCopy = indication;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 26;
   putmaterialIndication = self->_putmaterialIndication;
-  self->_putmaterialIndication = v4;
+  self->_putmaterialIndication = indicationCopy;
 }
 
-- (void)setGetmaterialRequest:(id)a3
+- (void)setGetmaterialRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 27;
   getmaterialRequest = self->_getmaterialRequest;
-  self->_getmaterialRequest = v4;
+  self->_getmaterialRequest = requestCopy;
 }
 
-- (void)setGetmaterialResponse:(id)a3
+- (void)setGetmaterialResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 28;
   getmaterialResponse = self->_getmaterialResponse;
-  self->_getmaterialResponse = v4;
+  self->_getmaterialResponse = responseCopy;
 }
 
-- (void)setRegisterRequest:(id)a3
+- (void)setRegisterRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 29;
   registerRequest = self->_registerRequest;
-  self->_registerRequest = v4;
+  self->_registerRequest = requestCopy;
 }
 
-- (void)setRegisterResponse:(id)a3
+- (void)setRegisterResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 30;
   registerResponse = self->_registerResponse;
-  self->_registerResponse = v4;
+  self->_registerResponse = responseCopy;
 }
 
-- (void)setRegisterIndication:(id)a3
+- (void)setRegisterIndication:(id)indication
 {
-  v4 = a3;
+  indicationCopy = indication;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 31;
   registerIndication = self->_registerIndication;
-  self->_registerIndication = v4;
+  self->_registerIndication = indicationCopy;
 }
 
-- (void)setRegisterAckRequest:(id)a3
+- (void)setRegisterAckRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 32;
   registerAckRequest = self->_registerAckRequest;
-  self->_registerAckRequest = v4;
+  self->_registerAckRequest = requestCopy;
 }
 
-- (void)setRegisterAckResponse:(id)a3
+- (void)setRegisterAckResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 33;
   registerAckResponse = self->_registerAckResponse;
-  self->_registerAckResponse = v4;
+  self->_registerAckResponse = responseCopy;
 }
 
-- (void)setUnregisterRequest:(id)a3
+- (void)setUnregisterRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 34;
   unregisterRequest = self->_unregisterRequest;
-  self->_unregisterRequest = v4;
+  self->_unregisterRequest = requestCopy;
 }
 
-- (void)setUnregisterResponse:(id)a3
+- (void)setUnregisterResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 35;
   unregisterResponse = self->_unregisterResponse;
-  self->_unregisterResponse = v4;
+  self->_unregisterResponse = responseCopy;
 }
 
-- (void)setUnregisterIndication:(id)a3
+- (void)setUnregisterIndication:(id)indication
 {
-  v4 = a3;
+  indicationCopy = indication;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 36;
   unregisterIndication = self->_unregisterIndication;
-  self->_unregisterIndication = v4;
+  self->_unregisterIndication = indicationCopy;
 }
 
-- (void)setCallmodeupdateRequest:(id)a3
+- (void)setCallmodeupdateRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 37;
   callmodeupdateRequest = self->_callmodeupdateRequest;
-  self->_callmodeupdateRequest = v4;
+  self->_callmodeupdateRequest = requestCopy;
 }
 
-- (void)setCallmodeupdateResponse:(id)a3
+- (void)setCallmodeupdateResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 38;
   callmodeupdateResponse = self->_callmodeupdateResponse;
-  self->_callmodeupdateResponse = v4;
+  self->_callmodeupdateResponse = responseCopy;
 }
 
-- (void)setChannelconfigRequest:(id)a3
+- (void)setChannelconfigRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 39;
   channelconfigRequest = self->_channelconfigRequest;
-  self->_channelconfigRequest = v4;
+  self->_channelconfigRequest = requestCopy;
 }
 
-- (void)setChannelconfigResponse:(id)a3
+- (void)setChannelconfigResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   [(IDSQRProtoH3Message *)self clearOneofValuesForInnerMessage];
   *&self->_has |= 1u;
   self->_innerMessage = 40;
   channelconfigResponse = self->_channelconfigResponse;
-  self->_channelconfigResponse = v4;
+  self->_channelconfigResponse = responseCopy;
 }
 
 - (int)innerMessage
@@ -468,225 +468,225 @@
   }
 }
 
-- (id)innerMessageAsString:(int)a3
+- (id)innerMessageAsString:(int)string
 {
-  if (a3 >= 0x29)
+  if (string >= 0x29)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E77E1C18[a3];
+    v4 = off_1E77E1C18[string];
   }
 
   return v4;
 }
 
-- (int)StringAsInnerMessage:(id)a3
+- (int)StringAsInnerMessage:(id)message
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PBUNSET"])
+  messageCopy = message;
+  if ([messageCopy isEqualToString:@"PBUNSET"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"allocbind_request"])
+  else if ([messageCopy isEqualToString:@"allocbind_request"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"allocbind_response"])
+  else if ([messageCopy isEqualToString:@"allocbind_response"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"diagnostic_indication"])
+  else if ([messageCopy isEqualToString:@"diagnostic_indication"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"goaway_indication"])
+  else if ([messageCopy isEqualToString:@"goaway_indication"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"info_request"])
+  else if ([messageCopy isEqualToString:@"info_request"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"info_response"])
+  else if ([messageCopy isEqualToString:@"info_response"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"participantupdate_request"])
+  else if ([messageCopy isEqualToString:@"participantupdate_request"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"participantupdate_response"])
+  else if ([messageCopy isEqualToString:@"participantupdate_response"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"participantupdate_indication"])
+  else if ([messageCopy isEqualToString:@"participantupdate_indication"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"plugincontrol_request"])
+  else if ([messageCopy isEqualToString:@"plugincontrol_request"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"plugincontrol_response"])
+  else if ([messageCopy isEqualToString:@"plugincontrol_response"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"plugincontrol_indication"])
+  else if ([messageCopy isEqualToString:@"plugincontrol_indication"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"error_indication"])
+  else if ([messageCopy isEqualToString:@"error_indication"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"reallocate_indication"])
+  else if ([messageCopy isEqualToString:@"reallocate_indication"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"sessioninfo_request"])
+  else if ([messageCopy isEqualToString:@"sessioninfo_request"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"sessioninfo_response"])
+  else if ([messageCopy isEqualToString:@"sessioninfo_response"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"sessioninfo_indication"])
+  else if ([messageCopy isEqualToString:@"sessioninfo_indication"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"stats_request"])
+  else if ([messageCopy isEqualToString:@"stats_request"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"stats_response"])
+  else if ([messageCopy isEqualToString:@"stats_response"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"test_request"])
+  else if ([messageCopy isEqualToString:@"test_request"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"test_response"])
+  else if ([messageCopy isEqualToString:@"test_response"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"unallocbind_request"])
+  else if ([messageCopy isEqualToString:@"unallocbind_request"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"unallocbind_response"])
+  else if ([messageCopy isEqualToString:@"unallocbind_response"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"putmaterial_request"])
+  else if ([messageCopy isEqualToString:@"putmaterial_request"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"putmaterial_response"])
+  else if ([messageCopy isEqualToString:@"putmaterial_response"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"putmaterial_indication"])
+  else if ([messageCopy isEqualToString:@"putmaterial_indication"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"getmaterial_request"])
+  else if ([messageCopy isEqualToString:@"getmaterial_request"])
   {
     v4 = 27;
   }
 
-  else if ([v3 isEqualToString:@"getmaterial_response"])
+  else if ([messageCopy isEqualToString:@"getmaterial_response"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"register_request"])
+  else if ([messageCopy isEqualToString:@"register_request"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"register_response"])
+  else if ([messageCopy isEqualToString:@"register_response"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"register_indication"])
+  else if ([messageCopy isEqualToString:@"register_indication"])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqualToString:@"registerAck_request"])
+  else if ([messageCopy isEqualToString:@"registerAck_request"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"registerAck_response"])
+  else if ([messageCopy isEqualToString:@"registerAck_response"])
   {
     v4 = 33;
   }
 
-  else if ([v3 isEqualToString:@"unregister_request"])
+  else if ([messageCopy isEqualToString:@"unregister_request"])
   {
     v4 = 34;
   }
 
-  else if ([v3 isEqualToString:@"unregister_response"])
+  else if ([messageCopy isEqualToString:@"unregister_response"])
   {
     v4 = 35;
   }
 
-  else if ([v3 isEqualToString:@"unregister_indication"])
+  else if ([messageCopy isEqualToString:@"unregister_indication"])
   {
     v4 = 36;
   }
 
-  else if ([v3 isEqualToString:@"callmodeupdate_request"])
+  else if ([messageCopy isEqualToString:@"callmodeupdate_request"])
   {
     v4 = 37;
   }
 
-  else if ([v3 isEqualToString:@"callmodeupdate_response"])
+  else if ([messageCopy isEqualToString:@"callmodeupdate_response"])
   {
     v4 = 38;
   }
 
-  else if ([v3 isEqualToString:@"channelconfig_request"])
+  else if ([messageCopy isEqualToString:@"channelconfig_request"])
   {
     v4 = 39;
   }
 
-  else if ([v3 isEqualToString:@"channelconfig_response"])
+  else if ([messageCopy isEqualToString:@"channelconfig_response"])
   {
     v4 = 40;
   }
@@ -830,293 +830,293 @@
   v8.receiver = self;
   v8.super_class = IDSQRProtoH3Message;
   v4 = [(IDSQRProtoH3Message *)&v8 description];
-  v5 = [(IDSQRProtoH3Message *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(IDSQRProtoH3Message *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   allocbindRequest = self->_allocbindRequest;
   if (allocbindRequest)
   {
-    v5 = [(IDSQRProtoAllocBindRequest *)allocbindRequest dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"allocbind_request"];
+    dictionaryRepresentation = [(IDSQRProtoAllocBindRequest *)allocbindRequest dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"allocbind_request"];
   }
 
   allocbindResponse = self->_allocbindResponse;
   if (allocbindResponse)
   {
-    v7 = [(IDSQRProtoAllocBindResponse *)allocbindResponse dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"allocbind_response"];
+    dictionaryRepresentation2 = [(IDSQRProtoAllocBindResponse *)allocbindResponse dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"allocbind_response"];
   }
 
   diagnosticIndication = self->_diagnosticIndication;
   if (diagnosticIndication)
   {
-    v9 = [(IDSQRProtoDiagnosticIndication *)diagnosticIndication dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"diagnostic_indication"];
+    dictionaryRepresentation3 = [(IDSQRProtoDiagnosticIndication *)diagnosticIndication dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"diagnostic_indication"];
   }
 
   goawayIndication = self->_goawayIndication;
   if (goawayIndication)
   {
-    v11 = [(IDSQRProtoGoAwayIndication *)goawayIndication dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"goaway_indication"];
+    dictionaryRepresentation4 = [(IDSQRProtoGoAwayIndication *)goawayIndication dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"goaway_indication"];
   }
 
   infoRequest = self->_infoRequest;
   if (infoRequest)
   {
-    v13 = [(IDSQRProtoInfoRequest *)infoRequest dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"info_request"];
+    dictionaryRepresentation5 = [(IDSQRProtoInfoRequest *)infoRequest dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"info_request"];
   }
 
   infoResponse = self->_infoResponse;
   if (infoResponse)
   {
-    v15 = [(IDSQRProtoInfoResponse *)infoResponse dictionaryRepresentation];
-    [v3 setObject:v15 forKey:@"info_response"];
+    dictionaryRepresentation6 = [(IDSQRProtoInfoResponse *)infoResponse dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation6 forKey:@"info_response"];
   }
 
   participantupdateRequest = self->_participantupdateRequest;
   if (participantupdateRequest)
   {
-    v17 = [(IDSQRProtoParticipantUpdateRequest *)participantupdateRequest dictionaryRepresentation];
-    [v3 setObject:v17 forKey:@"participantupdate_request"];
+    dictionaryRepresentation7 = [(IDSQRProtoParticipantUpdateRequest *)participantupdateRequest dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation7 forKey:@"participantupdate_request"];
   }
 
   participantupdateResponse = self->_participantupdateResponse;
   if (participantupdateResponse)
   {
-    v19 = [(IDSQRProtoParticipantUpdateResponse *)participantupdateResponse dictionaryRepresentation];
-    [v3 setObject:v19 forKey:@"participantupdate_response"];
+    dictionaryRepresentation8 = [(IDSQRProtoParticipantUpdateResponse *)participantupdateResponse dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation8 forKey:@"participantupdate_response"];
   }
 
   participantupdateIndication = self->_participantupdateIndication;
   if (participantupdateIndication)
   {
-    v21 = [(IDSQRProtoParticipantUpdateIndication *)participantupdateIndication dictionaryRepresentation];
-    [v3 setObject:v21 forKey:@"participantupdate_indication"];
+    dictionaryRepresentation9 = [(IDSQRProtoParticipantUpdateIndication *)participantupdateIndication dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation9 forKey:@"participantupdate_indication"];
   }
 
   plugincontrolRequest = self->_plugincontrolRequest;
   if (plugincontrolRequest)
   {
-    v23 = [(IDSQRProtoPluginControlRequest *)plugincontrolRequest dictionaryRepresentation];
-    [v3 setObject:v23 forKey:@"plugincontrol_request"];
+    dictionaryRepresentation10 = [(IDSQRProtoPluginControlRequest *)plugincontrolRequest dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation10 forKey:@"plugincontrol_request"];
   }
 
   plugincontrolResponse = self->_plugincontrolResponse;
   if (plugincontrolResponse)
   {
-    v25 = [(IDSQRProtoPluginControlResponse *)plugincontrolResponse dictionaryRepresentation];
-    [v3 setObject:v25 forKey:@"plugincontrol_response"];
+    dictionaryRepresentation11 = [(IDSQRProtoPluginControlResponse *)plugincontrolResponse dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation11 forKey:@"plugincontrol_response"];
   }
 
   plugincontrolIndication = self->_plugincontrolIndication;
   if (plugincontrolIndication)
   {
-    v27 = [(IDSQRProtoPluginControlIndication *)plugincontrolIndication dictionaryRepresentation];
-    [v3 setObject:v27 forKey:@"plugincontrol_indication"];
+    dictionaryRepresentation12 = [(IDSQRProtoPluginControlIndication *)plugincontrolIndication dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation12 forKey:@"plugincontrol_indication"];
   }
 
   errorIndication = self->_errorIndication;
   if (errorIndication)
   {
-    v29 = [(IDSQRProtoErrorIndication *)errorIndication dictionaryRepresentation];
-    [v3 setObject:v29 forKey:@"error_indication"];
+    dictionaryRepresentation13 = [(IDSQRProtoErrorIndication *)errorIndication dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation13 forKey:@"error_indication"];
   }
 
   reallocateIndication = self->_reallocateIndication;
   if (reallocateIndication)
   {
-    v31 = [(IDSQRProtoReallocateIndication *)reallocateIndication dictionaryRepresentation];
-    [v3 setObject:v31 forKey:@"reallocate_indication"];
+    dictionaryRepresentation14 = [(IDSQRProtoReallocateIndication *)reallocateIndication dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation14 forKey:@"reallocate_indication"];
   }
 
   sessioninfoRequest = self->_sessioninfoRequest;
   if (sessioninfoRequest)
   {
-    v33 = [(IDSQRProtoSessionInfoRequest *)sessioninfoRequest dictionaryRepresentation];
-    [v3 setObject:v33 forKey:@"sessioninfo_request"];
+    dictionaryRepresentation15 = [(IDSQRProtoSessionInfoRequest *)sessioninfoRequest dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation15 forKey:@"sessioninfo_request"];
   }
 
   sessioninfoResponse = self->_sessioninfoResponse;
   if (sessioninfoResponse)
   {
-    v35 = [(IDSQRProtoSessionInfoResponse *)sessioninfoResponse dictionaryRepresentation];
-    [v3 setObject:v35 forKey:@"sessioninfo_response"];
+    dictionaryRepresentation16 = [(IDSQRProtoSessionInfoResponse *)sessioninfoResponse dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation16 forKey:@"sessioninfo_response"];
   }
 
   sessioninfoIndication = self->_sessioninfoIndication;
   if (sessioninfoIndication)
   {
-    v37 = [(IDSQRProtoSessionInfoIndication *)sessioninfoIndication dictionaryRepresentation];
-    [v3 setObject:v37 forKey:@"sessioninfo_indication"];
+    dictionaryRepresentation17 = [(IDSQRProtoSessionInfoIndication *)sessioninfoIndication dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation17 forKey:@"sessioninfo_indication"];
   }
 
   statsRequest = self->_statsRequest;
   if (statsRequest)
   {
-    v39 = [(IDSQRProtoStatsRequest *)statsRequest dictionaryRepresentation];
-    [v3 setObject:v39 forKey:@"stats_request"];
+    dictionaryRepresentation18 = [(IDSQRProtoStatsRequest *)statsRequest dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation18 forKey:@"stats_request"];
   }
 
   statsResponse = self->_statsResponse;
   if (statsResponse)
   {
-    v41 = [(IDSQRProtoStatsResponse *)statsResponse dictionaryRepresentation];
-    [v3 setObject:v41 forKey:@"stats_response"];
+    dictionaryRepresentation19 = [(IDSQRProtoStatsResponse *)statsResponse dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation19 forKey:@"stats_response"];
   }
 
   testRequest = self->_testRequest;
   if (testRequest)
   {
-    v43 = [(IDSQRProtoTestRequest *)testRequest dictionaryRepresentation];
-    [v3 setObject:v43 forKey:@"test_request"];
+    dictionaryRepresentation20 = [(IDSQRProtoTestRequest *)testRequest dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation20 forKey:@"test_request"];
   }
 
   testResponse = self->_testResponse;
   if (testResponse)
   {
-    v45 = [(IDSQRProtoTestResponse *)testResponse dictionaryRepresentation];
-    [v3 setObject:v45 forKey:@"test_response"];
+    dictionaryRepresentation21 = [(IDSQRProtoTestResponse *)testResponse dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation21 forKey:@"test_response"];
   }
 
   unallocbindRequest = self->_unallocbindRequest;
   if (unallocbindRequest)
   {
-    v47 = [(IDSQRProtoUnAllocBindRequest *)unallocbindRequest dictionaryRepresentation];
-    [v3 setObject:v47 forKey:@"unallocbind_request"];
+    dictionaryRepresentation22 = [(IDSQRProtoUnAllocBindRequest *)unallocbindRequest dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation22 forKey:@"unallocbind_request"];
   }
 
   unallocbindResponse = self->_unallocbindResponse;
   if (unallocbindResponse)
   {
-    v49 = [(IDSQRProtoUnAllocBindResponse *)unallocbindResponse dictionaryRepresentation];
-    [v3 setObject:v49 forKey:@"unallocbind_response"];
+    dictionaryRepresentation23 = [(IDSQRProtoUnAllocBindResponse *)unallocbindResponse dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation23 forKey:@"unallocbind_response"];
   }
 
   putmaterialRequest = self->_putmaterialRequest;
   if (putmaterialRequest)
   {
-    v51 = [(IDSQRProtoPutMaterialRequest *)putmaterialRequest dictionaryRepresentation];
-    [v3 setObject:v51 forKey:@"putmaterial_request"];
+    dictionaryRepresentation24 = [(IDSQRProtoPutMaterialRequest *)putmaterialRequest dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation24 forKey:@"putmaterial_request"];
   }
 
   putmaterialResponse = self->_putmaterialResponse;
   if (putmaterialResponse)
   {
-    v53 = [(IDSQRProtoPutMaterialResponse *)putmaterialResponse dictionaryRepresentation];
-    [v3 setObject:v53 forKey:@"putmaterial_response"];
+    dictionaryRepresentation25 = [(IDSQRProtoPutMaterialResponse *)putmaterialResponse dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation25 forKey:@"putmaterial_response"];
   }
 
   putmaterialIndication = self->_putmaterialIndication;
   if (putmaterialIndication)
   {
-    v55 = [(IDSQRProtoPutMaterialIndication *)putmaterialIndication dictionaryRepresentation];
-    [v3 setObject:v55 forKey:@"putmaterial_indication"];
+    dictionaryRepresentation26 = [(IDSQRProtoPutMaterialIndication *)putmaterialIndication dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation26 forKey:@"putmaterial_indication"];
   }
 
   getmaterialRequest = self->_getmaterialRequest;
   if (getmaterialRequest)
   {
-    v57 = [(IDSQRProtoGetMaterialRequest *)getmaterialRequest dictionaryRepresentation];
-    [v3 setObject:v57 forKey:@"getmaterial_request"];
+    dictionaryRepresentation27 = [(IDSQRProtoGetMaterialRequest *)getmaterialRequest dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation27 forKey:@"getmaterial_request"];
   }
 
   getmaterialResponse = self->_getmaterialResponse;
   if (getmaterialResponse)
   {
-    v59 = [(IDSQRProtoGetMaterialResponse *)getmaterialResponse dictionaryRepresentation];
-    [v3 setObject:v59 forKey:@"getmaterial_response"];
+    dictionaryRepresentation28 = [(IDSQRProtoGetMaterialResponse *)getmaterialResponse dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation28 forKey:@"getmaterial_response"];
   }
 
   registerRequest = self->_registerRequest;
   if (registerRequest)
   {
-    v61 = [(IDSQRProtoH3EndToEndChannelRegisterRequest *)registerRequest dictionaryRepresentation];
-    [v3 setObject:v61 forKey:@"register_request"];
+    dictionaryRepresentation29 = [(IDSQRProtoH3EndToEndChannelRegisterRequest *)registerRequest dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation29 forKey:@"register_request"];
   }
 
   registerResponse = self->_registerResponse;
   if (registerResponse)
   {
-    v63 = [(IDSQRProtoH3EndToEndChannelRegisterResponse *)registerResponse dictionaryRepresentation];
-    [v3 setObject:v63 forKey:@"register_response"];
+    dictionaryRepresentation30 = [(IDSQRProtoH3EndToEndChannelRegisterResponse *)registerResponse dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation30 forKey:@"register_response"];
   }
 
   registerIndication = self->_registerIndication;
   if (registerIndication)
   {
-    v65 = [(IDSQRProtoH3EndToEndChannelRegisterIndication *)registerIndication dictionaryRepresentation];
-    [v3 setObject:v65 forKey:@"register_indication"];
+    dictionaryRepresentation31 = [(IDSQRProtoH3EndToEndChannelRegisterIndication *)registerIndication dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation31 forKey:@"register_indication"];
   }
 
   registerAckRequest = self->_registerAckRequest;
   if (registerAckRequest)
   {
-    v67 = [(IDSQRProtoH3EndToEndChannelRegisterAckRequest *)registerAckRequest dictionaryRepresentation];
-    [v3 setObject:v67 forKey:@"registerAck_request"];
+    dictionaryRepresentation32 = [(IDSQRProtoH3EndToEndChannelRegisterAckRequest *)registerAckRequest dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation32 forKey:@"registerAck_request"];
   }
 
   registerAckResponse = self->_registerAckResponse;
   if (registerAckResponse)
   {
-    v69 = [(IDSQRProtoH3EndToEndChannelRegisterAckResponse *)registerAckResponse dictionaryRepresentation];
-    [v3 setObject:v69 forKey:@"registerAck_response"];
+    dictionaryRepresentation33 = [(IDSQRProtoH3EndToEndChannelRegisterAckResponse *)registerAckResponse dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation33 forKey:@"registerAck_response"];
   }
 
   unregisterRequest = self->_unregisterRequest;
   if (unregisterRequest)
   {
-    v71 = [(IDSQRProtoH3EndToEndChannelUnRegisterRequest *)unregisterRequest dictionaryRepresentation];
-    [v3 setObject:v71 forKey:@"unregister_request"];
+    dictionaryRepresentation34 = [(IDSQRProtoH3EndToEndChannelUnRegisterRequest *)unregisterRequest dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation34 forKey:@"unregister_request"];
   }
 
   unregisterResponse = self->_unregisterResponse;
   if (unregisterResponse)
   {
-    v73 = [(IDSQRProtoH3EndToEndChannelUnRegisterResponse *)unregisterResponse dictionaryRepresentation];
-    [v3 setObject:v73 forKey:@"unregister_response"];
+    dictionaryRepresentation35 = [(IDSQRProtoH3EndToEndChannelUnRegisterResponse *)unregisterResponse dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation35 forKey:@"unregister_response"];
   }
 
   unregisterIndication = self->_unregisterIndication;
   if (unregisterIndication)
   {
-    v75 = [(IDSQRProtoH3EndToEndChannelUnRegisterIndication *)unregisterIndication dictionaryRepresentation];
-    [v3 setObject:v75 forKey:@"unregister_indication"];
+    dictionaryRepresentation36 = [(IDSQRProtoH3EndToEndChannelUnRegisterIndication *)unregisterIndication dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation36 forKey:@"unregister_indication"];
   }
 
   callmodeupdateRequest = self->_callmodeupdateRequest;
   if (callmodeupdateRequest)
   {
-    v77 = [(IDSQRProtoCallModeUpdateRequest *)callmodeupdateRequest dictionaryRepresentation];
-    [v3 setObject:v77 forKey:@"callmodeupdate_request"];
+    dictionaryRepresentation37 = [(IDSQRProtoCallModeUpdateRequest *)callmodeupdateRequest dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation37 forKey:@"callmodeupdate_request"];
   }
 
   callmodeupdateResponse = self->_callmodeupdateResponse;
   if (callmodeupdateResponse)
   {
-    v79 = [(IDSQRProtoCallModeUpdateResponse *)callmodeupdateResponse dictionaryRepresentation];
-    [v3 setObject:v79 forKey:@"callmodeupdate_response"];
+    dictionaryRepresentation38 = [(IDSQRProtoCallModeUpdateResponse *)callmodeupdateResponse dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation38 forKey:@"callmodeupdate_response"];
   }
 
   channelconfigRequest = self->_channelconfigRequest;
   if (channelconfigRequest)
   {
-    v81 = [(IDSQRH3ChannelConfigRequest *)channelconfigRequest dictionaryRepresentation];
-    [v3 setObject:v81 forKey:@"channelconfig_request"];
+    dictionaryRepresentation39 = [(IDSQRH3ChannelConfigRequest *)channelconfigRequest dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation39 forKey:@"channelconfig_request"];
   }
 
   channelconfigResponse = self->_channelconfigResponse;
   if (channelconfigResponse)
   {
-    v83 = [(IDSQRH3ChannelConfigResponse *)channelconfigResponse dictionaryRepresentation];
-    [v3 setObject:v83 forKey:@"channelconfig_response"];
+    dictionaryRepresentation40 = [(IDSQRH3ChannelConfigResponse *)channelconfigResponse dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation40 forKey:@"channelconfig_response"];
   }
 
   if (*&self->_has)
@@ -1132,513 +1132,513 @@
       v85 = off_1E77E1C18[innerMessage];
     }
 
-    [v3 setObject:v85 forKey:@"inner_message"];
+    [dictionary setObject:v85 forKey:@"inner_message"];
   }
 
-  v86 = v3;
+  v86 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_allocbindRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_allocbindResponse)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_diagnosticIndication)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_goawayIndication)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_infoRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_infoResponse)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_participantupdateRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_participantupdateResponse)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_participantupdateIndication)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_plugincontrolRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_plugincontrolResponse)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_plugincontrolIndication)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_errorIndication)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_reallocateIndication)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_sessioninfoRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_sessioninfoResponse)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_sessioninfoIndication)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_statsRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_statsResponse)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_testRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_testResponse)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_unallocbindRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_unallocbindResponse)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_putmaterialRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_putmaterialResponse)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_putmaterialIndication)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_getmaterialRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_getmaterialResponse)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_registerRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_registerResponse)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_registerIndication)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_registerAckRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_registerAckResponse)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_unregisterRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_unregisterResponse)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_unregisterIndication)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_callmodeupdateRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_callmodeupdateResponse)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_channelconfigRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_channelconfigResponse)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[28] = self->_innerMessage;
-    *(v4 + 336) |= 1u;
+    toCopy[28] = self->_innerMessage;
+    *(toCopy + 336) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_allocbindRequest)
   {
-    [v4 setAllocbindRequest:?];
-    v4 = v5;
+    [toCopy setAllocbindRequest:?];
+    toCopy = v5;
   }
 
   if (self->_allocbindResponse)
   {
     [v5 setAllocbindResponse:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_diagnosticIndication)
   {
     [v5 setDiagnosticIndication:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_goawayIndication)
   {
     [v5 setGoawayIndication:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_infoRequest)
   {
     [v5 setInfoRequest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_infoResponse)
   {
     [v5 setInfoResponse:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_participantupdateRequest)
   {
     [v5 setParticipantupdateRequest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_participantupdateResponse)
   {
     [v5 setParticipantupdateResponse:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_participantupdateIndication)
   {
     [v5 setParticipantupdateIndication:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_plugincontrolRequest)
   {
     [v5 setPlugincontrolRequest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_plugincontrolResponse)
   {
     [v5 setPlugincontrolResponse:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_plugincontrolIndication)
   {
     [v5 setPlugincontrolIndication:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_errorIndication)
   {
     [v5 setErrorIndication:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_reallocateIndication)
   {
     [v5 setReallocateIndication:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_sessioninfoRequest)
   {
     [v5 setSessioninfoRequest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_sessioninfoResponse)
   {
     [v5 setSessioninfoResponse:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_sessioninfoIndication)
   {
     [v5 setSessioninfoIndication:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_statsRequest)
   {
     [v5 setStatsRequest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_statsResponse)
   {
     [v5 setStatsResponse:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_testRequest)
   {
     [v5 setTestRequest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_testResponse)
   {
     [v5 setTestResponse:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_unallocbindRequest)
   {
     [v5 setUnallocbindRequest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_unallocbindResponse)
   {
     [v5 setUnallocbindResponse:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_putmaterialRequest)
   {
     [v5 setPutmaterialRequest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_putmaterialResponse)
   {
     [v5 setPutmaterialResponse:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_putmaterialIndication)
   {
     [v5 setPutmaterialIndication:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_getmaterialRequest)
   {
     [v5 setGetmaterialRequest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_getmaterialResponse)
   {
     [v5 setGetmaterialResponse:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_registerRequest)
   {
     [v5 setRegisterRequest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_registerResponse)
   {
     [v5 setRegisterResponse:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_registerIndication)
   {
     [v5 setRegisterIndication:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_registerAckRequest)
   {
     [v5 setRegisterAckRequest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_registerAckResponse)
   {
     [v5 setRegisterAckResponse:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_unregisterRequest)
   {
     [v5 setUnregisterRequest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_unregisterResponse)
   {
     [v5 setUnregisterResponse:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_unregisterIndication)
   {
     [v5 setUnregisterIndication:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_callmodeupdateRequest)
   {
     [v5 setCallmodeupdateRequest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_callmodeupdateResponse)
   {
     [v5 setCallmodeupdateResponse:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_channelconfigRequest)
   {
     [v5 setChannelconfigRequest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_channelconfigResponse)
   {
     [v5 setChannelconfigResponse:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -1646,186 +1646,186 @@
     *(v5 + 336) |= 1u;
   }
 
-  v7 = [(IDSQRProtoAllocBindRequest *)self->_allocbindRequest copyWithZone:a3];
+  v7 = [(IDSQRProtoAllocBindRequest *)self->_allocbindRequest copyWithZone:zone];
   v8 = v6[1];
   v6[1] = v7;
 
-  v9 = [(IDSQRProtoAllocBindResponse *)self->_allocbindResponse copyWithZone:a3];
+  v9 = [(IDSQRProtoAllocBindResponse *)self->_allocbindResponse copyWithZone:zone];
   v10 = v6[2];
   v6[2] = v9;
 
-  v11 = [(IDSQRProtoDiagnosticIndication *)self->_diagnosticIndication copyWithZone:a3];
+  v11 = [(IDSQRProtoDiagnosticIndication *)self->_diagnosticIndication copyWithZone:zone];
   v12 = v6[7];
   v6[7] = v11;
 
-  v13 = [(IDSQRProtoGoAwayIndication *)self->_goawayIndication copyWithZone:a3];
+  v13 = [(IDSQRProtoGoAwayIndication *)self->_goawayIndication copyWithZone:zone];
   v14 = v6[11];
   v6[11] = v13;
 
-  v15 = [(IDSQRProtoInfoRequest *)self->_infoRequest copyWithZone:a3];
+  v15 = [(IDSQRProtoInfoRequest *)self->_infoRequest copyWithZone:zone];
   v16 = v6[12];
   v6[12] = v15;
 
-  v17 = [(IDSQRProtoInfoResponse *)self->_infoResponse copyWithZone:a3];
+  v17 = [(IDSQRProtoInfoResponse *)self->_infoResponse copyWithZone:zone];
   v18 = v6[13];
   v6[13] = v17;
 
-  v19 = [(IDSQRProtoParticipantUpdateRequest *)self->_participantupdateRequest copyWithZone:a3];
+  v19 = [(IDSQRProtoParticipantUpdateRequest *)self->_participantupdateRequest copyWithZone:zone];
   v20 = v6[16];
   v6[16] = v19;
 
-  v21 = [(IDSQRProtoParticipantUpdateResponse *)self->_participantupdateResponse copyWithZone:a3];
+  v21 = [(IDSQRProtoParticipantUpdateResponse *)self->_participantupdateResponse copyWithZone:zone];
   v22 = v6[17];
   v6[17] = v21;
 
-  v23 = [(IDSQRProtoParticipantUpdateIndication *)self->_participantupdateIndication copyWithZone:a3];
+  v23 = [(IDSQRProtoParticipantUpdateIndication *)self->_participantupdateIndication copyWithZone:zone];
   v24 = v6[15];
   v6[15] = v23;
 
-  v25 = [(IDSQRProtoPluginControlRequest *)self->_plugincontrolRequest copyWithZone:a3];
+  v25 = [(IDSQRProtoPluginControlRequest *)self->_plugincontrolRequest copyWithZone:zone];
   v26 = v6[19];
   v6[19] = v25;
 
-  v27 = [(IDSQRProtoPluginControlResponse *)self->_plugincontrolResponse copyWithZone:a3];
+  v27 = [(IDSQRProtoPluginControlResponse *)self->_plugincontrolResponse copyWithZone:zone];
   v28 = v6[20];
   v6[20] = v27;
 
-  v29 = [(IDSQRProtoPluginControlIndication *)self->_plugincontrolIndication copyWithZone:a3];
+  v29 = [(IDSQRProtoPluginControlIndication *)self->_plugincontrolIndication copyWithZone:zone];
   v30 = v6[18];
   v6[18] = v29;
 
-  v31 = [(IDSQRProtoErrorIndication *)self->_errorIndication copyWithZone:a3];
+  v31 = [(IDSQRProtoErrorIndication *)self->_errorIndication copyWithZone:zone];
   v32 = v6[8];
   v6[8] = v31;
 
-  v33 = [(IDSQRProtoReallocateIndication *)self->_reallocateIndication copyWithZone:a3];
+  v33 = [(IDSQRProtoReallocateIndication *)self->_reallocateIndication copyWithZone:zone];
   v34 = v6[24];
   v6[24] = v33;
 
-  v35 = [(IDSQRProtoSessionInfoRequest *)self->_sessioninfoRequest copyWithZone:a3];
+  v35 = [(IDSQRProtoSessionInfoRequest *)self->_sessioninfoRequest copyWithZone:zone];
   v36 = v6[31];
   v6[31] = v35;
 
-  v37 = [(IDSQRProtoSessionInfoResponse *)self->_sessioninfoResponse copyWithZone:a3];
+  v37 = [(IDSQRProtoSessionInfoResponse *)self->_sessioninfoResponse copyWithZone:zone];
   v38 = v6[32];
   v6[32] = v37;
 
-  v39 = [(IDSQRProtoSessionInfoIndication *)self->_sessioninfoIndication copyWithZone:a3];
+  v39 = [(IDSQRProtoSessionInfoIndication *)self->_sessioninfoIndication copyWithZone:zone];
   v40 = v6[30];
   v6[30] = v39;
 
-  v41 = [(IDSQRProtoStatsRequest *)self->_statsRequest copyWithZone:a3];
+  v41 = [(IDSQRProtoStatsRequest *)self->_statsRequest copyWithZone:zone];
   v42 = v6[33];
   v6[33] = v41;
 
-  v43 = [(IDSQRProtoStatsResponse *)self->_statsResponse copyWithZone:a3];
+  v43 = [(IDSQRProtoStatsResponse *)self->_statsResponse copyWithZone:zone];
   v44 = v6[34];
   v6[34] = v43;
 
-  v45 = [(IDSQRProtoTestRequest *)self->_testRequest copyWithZone:a3];
+  v45 = [(IDSQRProtoTestRequest *)self->_testRequest copyWithZone:zone];
   v46 = v6[35];
   v6[35] = v45;
 
-  v47 = [(IDSQRProtoTestResponse *)self->_testResponse copyWithZone:a3];
+  v47 = [(IDSQRProtoTestResponse *)self->_testResponse copyWithZone:zone];
   v48 = v6[36];
   v6[36] = v47;
 
-  v49 = [(IDSQRProtoUnAllocBindRequest *)self->_unallocbindRequest copyWithZone:a3];
+  v49 = [(IDSQRProtoUnAllocBindRequest *)self->_unallocbindRequest copyWithZone:zone];
   v50 = v6[37];
   v6[37] = v49;
 
-  v51 = [(IDSQRProtoUnAllocBindResponse *)self->_unallocbindResponse copyWithZone:a3];
+  v51 = [(IDSQRProtoUnAllocBindResponse *)self->_unallocbindResponse copyWithZone:zone];
   v52 = v6[38];
   v6[38] = v51;
 
-  v53 = [(IDSQRProtoPutMaterialRequest *)self->_putmaterialRequest copyWithZone:a3];
+  v53 = [(IDSQRProtoPutMaterialRequest *)self->_putmaterialRequest copyWithZone:zone];
   v54 = v6[22];
   v6[22] = v53;
 
-  v55 = [(IDSQRProtoPutMaterialResponse *)self->_putmaterialResponse copyWithZone:a3];
+  v55 = [(IDSQRProtoPutMaterialResponse *)self->_putmaterialResponse copyWithZone:zone];
   v56 = v6[23];
   v6[23] = v55;
 
-  v57 = [(IDSQRProtoPutMaterialIndication *)self->_putmaterialIndication copyWithZone:a3];
+  v57 = [(IDSQRProtoPutMaterialIndication *)self->_putmaterialIndication copyWithZone:zone];
   v58 = v6[21];
   v6[21] = v57;
 
-  v59 = [(IDSQRProtoGetMaterialRequest *)self->_getmaterialRequest copyWithZone:a3];
+  v59 = [(IDSQRProtoGetMaterialRequest *)self->_getmaterialRequest copyWithZone:zone];
   v60 = v6[9];
   v6[9] = v59;
 
-  v61 = [(IDSQRProtoGetMaterialResponse *)self->_getmaterialResponse copyWithZone:a3];
+  v61 = [(IDSQRProtoGetMaterialResponse *)self->_getmaterialResponse copyWithZone:zone];
   v62 = v6[10];
   v6[10] = v61;
 
-  v63 = [(IDSQRProtoH3EndToEndChannelRegisterRequest *)self->_registerRequest copyWithZone:a3];
+  v63 = [(IDSQRProtoH3EndToEndChannelRegisterRequest *)self->_registerRequest copyWithZone:zone];
   v64 = v6[28];
   v6[28] = v63;
 
-  v65 = [(IDSQRProtoH3EndToEndChannelRegisterResponse *)self->_registerResponse copyWithZone:a3];
+  v65 = [(IDSQRProtoH3EndToEndChannelRegisterResponse *)self->_registerResponse copyWithZone:zone];
   v66 = v6[29];
   v6[29] = v65;
 
-  v67 = [(IDSQRProtoH3EndToEndChannelRegisterIndication *)self->_registerIndication copyWithZone:a3];
+  v67 = [(IDSQRProtoH3EndToEndChannelRegisterIndication *)self->_registerIndication copyWithZone:zone];
   v68 = v6[27];
   v6[27] = v67;
 
-  v69 = [(IDSQRProtoH3EndToEndChannelRegisterAckRequest *)self->_registerAckRequest copyWithZone:a3];
+  v69 = [(IDSQRProtoH3EndToEndChannelRegisterAckRequest *)self->_registerAckRequest copyWithZone:zone];
   v70 = v6[25];
   v6[25] = v69;
 
-  v71 = [(IDSQRProtoH3EndToEndChannelRegisterAckResponse *)self->_registerAckResponse copyWithZone:a3];
+  v71 = [(IDSQRProtoH3EndToEndChannelRegisterAckResponse *)self->_registerAckResponse copyWithZone:zone];
   v72 = v6[26];
   v6[26] = v71;
 
-  v73 = [(IDSQRProtoH3EndToEndChannelUnRegisterRequest *)self->_unregisterRequest copyWithZone:a3];
+  v73 = [(IDSQRProtoH3EndToEndChannelUnRegisterRequest *)self->_unregisterRequest copyWithZone:zone];
   v74 = v6[40];
   v6[40] = v73;
 
-  v75 = [(IDSQRProtoH3EndToEndChannelUnRegisterResponse *)self->_unregisterResponse copyWithZone:a3];
+  v75 = [(IDSQRProtoH3EndToEndChannelUnRegisterResponse *)self->_unregisterResponse copyWithZone:zone];
   v76 = v6[41];
   v6[41] = v75;
 
-  v77 = [(IDSQRProtoH3EndToEndChannelUnRegisterIndication *)self->_unregisterIndication copyWithZone:a3];
+  v77 = [(IDSQRProtoH3EndToEndChannelUnRegisterIndication *)self->_unregisterIndication copyWithZone:zone];
   v78 = v6[39];
   v6[39] = v77;
 
-  v79 = [(IDSQRProtoCallModeUpdateRequest *)self->_callmodeupdateRequest copyWithZone:a3];
+  v79 = [(IDSQRProtoCallModeUpdateRequest *)self->_callmodeupdateRequest copyWithZone:zone];
   v80 = v6[3];
   v6[3] = v79;
 
-  v81 = [(IDSQRProtoCallModeUpdateResponse *)self->_callmodeupdateResponse copyWithZone:a3];
+  v81 = [(IDSQRProtoCallModeUpdateResponse *)self->_callmodeupdateResponse copyWithZone:zone];
   v82 = v6[4];
   v6[4] = v81;
 
-  v83 = [(IDSQRH3ChannelConfigRequest *)self->_channelconfigRequest copyWithZone:a3];
+  v83 = [(IDSQRH3ChannelConfigRequest *)self->_channelconfigRequest copyWithZone:zone];
   v84 = v6[5];
   v6[5] = v83;
 
-  v85 = [(IDSQRH3ChannelConfigResponse *)self->_channelconfigResponse copyWithZone:a3];
+  v85 = [(IDSQRH3ChannelConfigResponse *)self->_channelconfigResponse copyWithZone:zone];
   v86 = v6[6];
   v6[6] = v85;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_87;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 336) & 1) == 0 || self->_innerMessage != *(v4 + 28))
+    if ((*(equalCopy + 336) & 1) == 0 || self->_innerMessage != *(equalCopy + 28))
     {
       goto LABEL_87;
     }
   }
 
-  else if (*(v4 + 336))
+  else if (*(equalCopy + 336))
   {
 LABEL_87:
     v45 = 0;
@@ -1833,13 +1833,13 @@ LABEL_87:
   }
 
   allocbindRequest = self->_allocbindRequest;
-  if (allocbindRequest | *(v4 + 1) && ![(IDSQRProtoAllocBindRequest *)allocbindRequest isEqual:?])
+  if (allocbindRequest | *(equalCopy + 1) && ![(IDSQRProtoAllocBindRequest *)allocbindRequest isEqual:?])
   {
     goto LABEL_87;
   }
 
   allocbindResponse = self->_allocbindResponse;
-  if (allocbindResponse | *(v4 + 2))
+  if (allocbindResponse | *(equalCopy + 2))
   {
     if (![(IDSQRProtoAllocBindResponse *)allocbindResponse isEqual:?])
     {
@@ -1848,7 +1848,7 @@ LABEL_87:
   }
 
   diagnosticIndication = self->_diagnosticIndication;
-  if (diagnosticIndication | *(v4 + 7))
+  if (diagnosticIndication | *(equalCopy + 7))
   {
     if (![(IDSQRProtoDiagnosticIndication *)diagnosticIndication isEqual:?])
     {
@@ -1857,7 +1857,7 @@ LABEL_87:
   }
 
   goawayIndication = self->_goawayIndication;
-  if (goawayIndication | *(v4 + 11))
+  if (goawayIndication | *(equalCopy + 11))
   {
     if (![(IDSQRProtoGoAwayIndication *)goawayIndication isEqual:?])
     {
@@ -1866,7 +1866,7 @@ LABEL_87:
   }
 
   infoRequest = self->_infoRequest;
-  if (infoRequest | *(v4 + 12))
+  if (infoRequest | *(equalCopy + 12))
   {
     if (![(IDSQRProtoInfoRequest *)infoRequest isEqual:?])
     {
@@ -1875,7 +1875,7 @@ LABEL_87:
   }
 
   infoResponse = self->_infoResponse;
-  if (infoResponse | *(v4 + 13))
+  if (infoResponse | *(equalCopy + 13))
   {
     if (![(IDSQRProtoInfoResponse *)infoResponse isEqual:?])
     {
@@ -1884,7 +1884,7 @@ LABEL_87:
   }
 
   participantupdateRequest = self->_participantupdateRequest;
-  if (participantupdateRequest | *(v4 + 16))
+  if (participantupdateRequest | *(equalCopy + 16))
   {
     if (![(IDSQRProtoParticipantUpdateRequest *)participantupdateRequest isEqual:?])
     {
@@ -1893,7 +1893,7 @@ LABEL_87:
   }
 
   participantupdateResponse = self->_participantupdateResponse;
-  if (participantupdateResponse | *(v4 + 17))
+  if (participantupdateResponse | *(equalCopy + 17))
   {
     if (![(IDSQRProtoParticipantUpdateResponse *)participantupdateResponse isEqual:?])
     {
@@ -1902,7 +1902,7 @@ LABEL_87:
   }
 
   participantupdateIndication = self->_participantupdateIndication;
-  if (participantupdateIndication | *(v4 + 15))
+  if (participantupdateIndication | *(equalCopy + 15))
   {
     if (![(IDSQRProtoParticipantUpdateIndication *)participantupdateIndication isEqual:?])
     {
@@ -1911,7 +1911,7 @@ LABEL_87:
   }
 
   plugincontrolRequest = self->_plugincontrolRequest;
-  if (plugincontrolRequest | *(v4 + 19))
+  if (plugincontrolRequest | *(equalCopy + 19))
   {
     if (![(IDSQRProtoPluginControlRequest *)plugincontrolRequest isEqual:?])
     {
@@ -1920,7 +1920,7 @@ LABEL_87:
   }
 
   plugincontrolResponse = self->_plugincontrolResponse;
-  if (plugincontrolResponse | *(v4 + 20))
+  if (plugincontrolResponse | *(equalCopy + 20))
   {
     if (![(IDSQRProtoPluginControlResponse *)plugincontrolResponse isEqual:?])
     {
@@ -1929,7 +1929,7 @@ LABEL_87:
   }
 
   plugincontrolIndication = self->_plugincontrolIndication;
-  if (plugincontrolIndication | *(v4 + 18))
+  if (plugincontrolIndication | *(equalCopy + 18))
   {
     if (![(IDSQRProtoPluginControlIndication *)plugincontrolIndication isEqual:?])
     {
@@ -1938,7 +1938,7 @@ LABEL_87:
   }
 
   errorIndication = self->_errorIndication;
-  if (errorIndication | *(v4 + 8))
+  if (errorIndication | *(equalCopy + 8))
   {
     if (![(IDSQRProtoErrorIndication *)errorIndication isEqual:?])
     {
@@ -1947,7 +1947,7 @@ LABEL_87:
   }
 
   reallocateIndication = self->_reallocateIndication;
-  if (reallocateIndication | *(v4 + 24))
+  if (reallocateIndication | *(equalCopy + 24))
   {
     if (![(IDSQRProtoReallocateIndication *)reallocateIndication isEqual:?])
     {
@@ -1956,7 +1956,7 @@ LABEL_87:
   }
 
   sessioninfoRequest = self->_sessioninfoRequest;
-  if (sessioninfoRequest | *(v4 + 31))
+  if (sessioninfoRequest | *(equalCopy + 31))
   {
     if (![(IDSQRProtoSessionInfoRequest *)sessioninfoRequest isEqual:?])
     {
@@ -1965,7 +1965,7 @@ LABEL_87:
   }
 
   sessioninfoResponse = self->_sessioninfoResponse;
-  if (sessioninfoResponse | *(v4 + 32))
+  if (sessioninfoResponse | *(equalCopy + 32))
   {
     if (![(IDSQRProtoSessionInfoResponse *)sessioninfoResponse isEqual:?])
     {
@@ -1974,7 +1974,7 @@ LABEL_87:
   }
 
   sessioninfoIndication = self->_sessioninfoIndication;
-  if (sessioninfoIndication | *(v4 + 30))
+  if (sessioninfoIndication | *(equalCopy + 30))
   {
     if (![(IDSQRProtoSessionInfoIndication *)sessioninfoIndication isEqual:?])
     {
@@ -1983,7 +1983,7 @@ LABEL_87:
   }
 
   statsRequest = self->_statsRequest;
-  if (statsRequest | *(v4 + 33))
+  if (statsRequest | *(equalCopy + 33))
   {
     if (![(IDSQRProtoStatsRequest *)statsRequest isEqual:?])
     {
@@ -1992,7 +1992,7 @@ LABEL_87:
   }
 
   statsResponse = self->_statsResponse;
-  if (statsResponse | *(v4 + 34))
+  if (statsResponse | *(equalCopy + 34))
   {
     if (![(IDSQRProtoStatsResponse *)statsResponse isEqual:?])
     {
@@ -2001,7 +2001,7 @@ LABEL_87:
   }
 
   testRequest = self->_testRequest;
-  if (testRequest | *(v4 + 35))
+  if (testRequest | *(equalCopy + 35))
   {
     if (![(IDSQRProtoTestRequest *)testRequest isEqual:?])
     {
@@ -2010,7 +2010,7 @@ LABEL_87:
   }
 
   testResponse = self->_testResponse;
-  if (testResponse | *(v4 + 36))
+  if (testResponse | *(equalCopy + 36))
   {
     if (![(IDSQRProtoTestResponse *)testResponse isEqual:?])
     {
@@ -2019,7 +2019,7 @@ LABEL_87:
   }
 
   unallocbindRequest = self->_unallocbindRequest;
-  if (unallocbindRequest | *(v4 + 37))
+  if (unallocbindRequest | *(equalCopy + 37))
   {
     if (![(IDSQRProtoUnAllocBindRequest *)unallocbindRequest isEqual:?])
     {
@@ -2028,7 +2028,7 @@ LABEL_87:
   }
 
   unallocbindResponse = self->_unallocbindResponse;
-  if (unallocbindResponse | *(v4 + 38))
+  if (unallocbindResponse | *(equalCopy + 38))
   {
     if (![(IDSQRProtoUnAllocBindResponse *)unallocbindResponse isEqual:?])
     {
@@ -2037,7 +2037,7 @@ LABEL_87:
   }
 
   putmaterialRequest = self->_putmaterialRequest;
-  if (putmaterialRequest | *(v4 + 22))
+  if (putmaterialRequest | *(equalCopy + 22))
   {
     if (![(IDSQRProtoPutMaterialRequest *)putmaterialRequest isEqual:?])
     {
@@ -2046,7 +2046,7 @@ LABEL_87:
   }
 
   putmaterialResponse = self->_putmaterialResponse;
-  if (putmaterialResponse | *(v4 + 23))
+  if (putmaterialResponse | *(equalCopy + 23))
   {
     if (![(IDSQRProtoPutMaterialResponse *)putmaterialResponse isEqual:?])
     {
@@ -2055,7 +2055,7 @@ LABEL_87:
   }
 
   putmaterialIndication = self->_putmaterialIndication;
-  if (putmaterialIndication | *(v4 + 21))
+  if (putmaterialIndication | *(equalCopy + 21))
   {
     if (![(IDSQRProtoPutMaterialIndication *)putmaterialIndication isEqual:?])
     {
@@ -2064,7 +2064,7 @@ LABEL_87:
   }
 
   getmaterialRequest = self->_getmaterialRequest;
-  if (getmaterialRequest | *(v4 + 9))
+  if (getmaterialRequest | *(equalCopy + 9))
   {
     if (![(IDSQRProtoGetMaterialRequest *)getmaterialRequest isEqual:?])
     {
@@ -2073,7 +2073,7 @@ LABEL_87:
   }
 
   getmaterialResponse = self->_getmaterialResponse;
-  if (getmaterialResponse | *(v4 + 10))
+  if (getmaterialResponse | *(equalCopy + 10))
   {
     if (![(IDSQRProtoGetMaterialResponse *)getmaterialResponse isEqual:?])
     {
@@ -2082,7 +2082,7 @@ LABEL_87:
   }
 
   registerRequest = self->_registerRequest;
-  if (registerRequest | *(v4 + 28))
+  if (registerRequest | *(equalCopy + 28))
   {
     if (![(IDSQRProtoH3EndToEndChannelRegisterRequest *)registerRequest isEqual:?])
     {
@@ -2091,7 +2091,7 @@ LABEL_87:
   }
 
   registerResponse = self->_registerResponse;
-  if (registerResponse | *(v4 + 29))
+  if (registerResponse | *(equalCopy + 29))
   {
     if (![(IDSQRProtoH3EndToEndChannelRegisterResponse *)registerResponse isEqual:?])
     {
@@ -2100,7 +2100,7 @@ LABEL_87:
   }
 
   registerIndication = self->_registerIndication;
-  if (registerIndication | *(v4 + 27))
+  if (registerIndication | *(equalCopy + 27))
   {
     if (![(IDSQRProtoH3EndToEndChannelRegisterIndication *)registerIndication isEqual:?])
     {
@@ -2109,7 +2109,7 @@ LABEL_87:
   }
 
   registerAckRequest = self->_registerAckRequest;
-  if (registerAckRequest | *(v4 + 25))
+  if (registerAckRequest | *(equalCopy + 25))
   {
     if (![(IDSQRProtoH3EndToEndChannelRegisterAckRequest *)registerAckRequest isEqual:?])
     {
@@ -2118,7 +2118,7 @@ LABEL_87:
   }
 
   registerAckResponse = self->_registerAckResponse;
-  if (registerAckResponse | *(v4 + 26))
+  if (registerAckResponse | *(equalCopy + 26))
   {
     if (![(IDSQRProtoH3EndToEndChannelRegisterAckResponse *)registerAckResponse isEqual:?])
     {
@@ -2127,7 +2127,7 @@ LABEL_87:
   }
 
   unregisterRequest = self->_unregisterRequest;
-  if (unregisterRequest | *(v4 + 40))
+  if (unregisterRequest | *(equalCopy + 40))
   {
     if (![(IDSQRProtoH3EndToEndChannelUnRegisterRequest *)unregisterRequest isEqual:?])
     {
@@ -2136,7 +2136,7 @@ LABEL_87:
   }
 
   unregisterResponse = self->_unregisterResponse;
-  if (unregisterResponse | *(v4 + 41))
+  if (unregisterResponse | *(equalCopy + 41))
   {
     if (![(IDSQRProtoH3EndToEndChannelUnRegisterResponse *)unregisterResponse isEqual:?])
     {
@@ -2145,7 +2145,7 @@ LABEL_87:
   }
 
   unregisterIndication = self->_unregisterIndication;
-  if (unregisterIndication | *(v4 + 39))
+  if (unregisterIndication | *(equalCopy + 39))
   {
     if (![(IDSQRProtoH3EndToEndChannelUnRegisterIndication *)unregisterIndication isEqual:?])
     {
@@ -2154,7 +2154,7 @@ LABEL_87:
   }
 
   callmodeupdateRequest = self->_callmodeupdateRequest;
-  if (callmodeupdateRequest | *(v4 + 3))
+  if (callmodeupdateRequest | *(equalCopy + 3))
   {
     if (![(IDSQRProtoCallModeUpdateRequest *)callmodeupdateRequest isEqual:?])
     {
@@ -2163,7 +2163,7 @@ LABEL_87:
   }
 
   callmodeupdateResponse = self->_callmodeupdateResponse;
-  if (callmodeupdateResponse | *(v4 + 4))
+  if (callmodeupdateResponse | *(equalCopy + 4))
   {
     if (![(IDSQRProtoCallModeUpdateResponse *)callmodeupdateResponse isEqual:?])
     {
@@ -2172,7 +2172,7 @@ LABEL_87:
   }
 
   channelconfigRequest = self->_channelconfigRequest;
-  if (channelconfigRequest | *(v4 + 5))
+  if (channelconfigRequest | *(equalCopy + 5))
   {
     if (![(IDSQRH3ChannelConfigRequest *)channelconfigRequest isEqual:?])
     {
@@ -2181,7 +2181,7 @@ LABEL_87:
   }
 
   channelconfigResponse = self->_channelconfigResponse;
-  if (channelconfigResponse | *(v4 + 6))
+  if (channelconfigResponse | *(equalCopy + 6))
   {
     v45 = [(IDSQRH3ChannelConfigResponse *)channelconfigResponse isEqual:?];
   }
@@ -2250,13 +2250,13 @@ LABEL_88:
   return v39 ^ v42 ^ [(IDSQRH3ChannelConfigResponse *)self->_channelconfigResponse hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 336))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 336))
   {
-    self->_innerMessage = *(v4 + 28);
+    self->_innerMessage = *(fromCopy + 28);
     *&self->_has |= 1u;
   }
 

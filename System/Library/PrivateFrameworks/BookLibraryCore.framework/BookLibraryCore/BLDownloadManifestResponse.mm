@@ -1,14 +1,14 @@
 @interface BLDownloadManifestResponse
-- (BLDownloadManifestResponse)initWithCoder:(id)a3;
+- (BLDownloadManifestResponse)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BLDownloadManifestResponse
 
-- (BLDownloadManifestResponse)initWithCoder:(id)a3
+- (BLDownloadManifestResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = BLDownloadManifestResponse;
   v5 = [(BLDownloadManifestResponse *)&v12 init];
@@ -17,7 +17,7 @@
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"validDownloadIDs"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"validDownloadIDs"];
     validDownloadIDs = v5->_validDownloadIDs;
     v5->_validDownloadIDs = v9;
   }
@@ -25,18 +25,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BLDownloadManifestResponse *)self validDownloadIDs];
-  [v4 encodeObject:v5 forKey:@"validDownloadIDs"];
+  coderCopy = coder;
+  validDownloadIDs = [(BLDownloadManifestResponse *)self validDownloadIDs];
+  [coderCopy encodeObject:validDownloadIDs forKey:@"validDownloadIDs"];
 }
 
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(BLDownloadManifestResponse *)self validDownloadIDs];
-  v4 = [v2 stringWithFormat:@"Valid Download Ids: %@", v3];
+  validDownloadIDs = [(BLDownloadManifestResponse *)self validDownloadIDs];
+  v4 = [v2 stringWithFormat:@"Valid Download Ids: %@", validDownloadIDs];
 
   return v4;
 }

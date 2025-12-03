@@ -1,71 +1,71 @@
 @interface SFAnalyticsMatchingRule
-- (BOOL)isSubsetMatch:(id)a3 target:(id)a4;
-- (BOOL)matchAttributes:(id)a3 eventClass:(int64_t)a4 processName:(id)a5 logger:(id)a6;
-- (BOOL)valueMatch:(id)a3 target:(id)a4;
-- (SFAnalyticsMatchingRule)initWithSFARule:(id)a3 logger:(id)a4;
+- (BOOL)isSubsetMatch:(id)match target:(id)target;
+- (BOOL)matchAttributes:(id)attributes eventClass:(int64_t)class processName:(id)name logger:(id)logger;
+- (BOOL)valueMatch:(id)match target:(id)target;
+- (SFAnalyticsMatchingRule)initWithSFARule:(id)rule logger:(id)logger;
 - (id)armKey;
 - (id)cachedMatchDictionary;
 - (id)description;
 - (id)lastMatchTimeKey;
-- (unsigned)doAction:(id)a3 attributes:(id)a4 logger:(id)a5;
+- (unsigned)doAction:(id)action attributes:(id)attributes logger:(id)logger;
 @end
 
 @implementation SFAnalyticsMatchingRule
 
-- (unsigned)doAction:(id)a3 attributes:(id)a4 logger:(id)a5
+- (unsigned)doAction:(id)action attributes:(id)attributes logger:(id)logger
 {
   v54 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SFAnalyticsMatchingRule *)self rule];
-  v12 = [v11 action];
+  actionCopy = action;
+  attributesCopy = attributes;
+  loggerCopy = logger;
+  rule = [(SFAnalyticsMatchingRule *)self rule];
+  action = [rule action];
 
-  if (v12)
+  if (action)
   {
-    if ([v12 hasTtr])
+    if ([action hasTtr])
     {
-      v13 = [v8 shouldRatelimit:v10 rule:self];
+      v13 = [actionCopy shouldRatelimit:loggerCopy rule:self];
       v14 = getOSLog();
-      v15 = v14;
+      drop = v14;
       if (!v13)
       {
-        v48 = v10;
-        v49 = v9;
+        v48 = loggerCopy;
+        v49 = attributesCopy;
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          v26 = [(SFAnalyticsMatchingRule *)self rule];
-          v27 = [v26 eventType];
-          v28 = [(SFAnalyticsMatchingRule *)self cachedMatchDictionary];
+          rule2 = [(SFAnalyticsMatchingRule *)self rule];
+          eventType = [rule2 eventType];
+          cachedMatchDictionary = [(SFAnalyticsMatchingRule *)self cachedMatchDictionary];
           *buf = 138412546;
-          v51 = v27;
+          v51 = eventType;
           v52 = 2112;
-          v53 = v28;
-          _os_log_impl(&dword_1887D2000, v15, OS_LOG_TYPE_DEFAULT, "SFACollection action trigger ttr: %@: %@", buf, 0x16u);
+          v53 = cachedMatchDictionary;
+          _os_log_impl(&dword_1887D2000, drop, OS_LOG_TYPE_DEFAULT, "SFACollection action trigger ttr: %@: %@", buf, 0x16u);
         }
 
-        v15 = [v12 ttr];
-        v29 = [v15 alert];
-        v30 = [v15 description];
-        v31 = [v12 radarnumber];
-        v32 = [v15 componentName];
-        v33 = [v15 componentVersion];
-        v34 = [v15 componentID];
-        v9 = v49;
-        [v8 tapToRadar:v29 description:v30 radar:v31 componentName:v32 componentVersion:v33 componentID:v34 attributes:v49];
+        drop = [action ttr];
+        alert = [drop alert];
+        v30 = [drop description];
+        radarnumber = [action radarnumber];
+        componentName = [drop componentName];
+        componentVersion = [drop componentVersion];
+        componentID = [drop componentID];
+        attributesCopy = v49;
+        [actionCopy tapToRadar:alert description:v30 radar:radarnumber componentName:componentName componentVersion:componentVersion componentID:componentID attributes:v49];
 
         v18 = 0;
-        v10 = v48;
+        loggerCopy = v48;
         goto LABEL_31;
       }
 
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
-        v16 = [(SFAnalyticsMatchingRule *)self rule];
-        v17 = [v16 eventType];
+        rule3 = [(SFAnalyticsMatchingRule *)self rule];
+        eventType2 = [rule3 eventType];
         *buf = 138412290;
-        v51 = v17;
-        _os_log_impl(&dword_1887D2000, v15, OS_LOG_TYPE_INFO, "SFACollection ratelimit ttr: %@", buf, 0xCu);
+        v51 = eventType2;
+        _os_log_impl(&dword_1887D2000, drop, OS_LOG_TYPE_INFO, "SFACollection ratelimit ttr: %@", buf, 0xCu);
       }
 
 LABEL_30:
@@ -75,45 +75,45 @@ LABEL_31:
       goto LABEL_32;
     }
 
-    if ([v12 hasAbc])
+    if ([action hasAbc])
     {
-      v19 = [v8 shouldRatelimit:v10 rule:self];
+      v19 = [actionCopy shouldRatelimit:loggerCopy rule:self];
       v20 = getOSLog();
-      v15 = v20;
+      drop = v20;
       if (!v19)
       {
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
-          v40 = [(SFAnalyticsMatchingRule *)self rule];
-          v41 = [v40 eventType];
-          v42 = [(SFAnalyticsMatchingRule *)self cachedMatchDictionary];
+          rule4 = [(SFAnalyticsMatchingRule *)self rule];
+          eventType3 = [rule4 eventType];
+          cachedMatchDictionary2 = [(SFAnalyticsMatchingRule *)self cachedMatchDictionary];
           *buf = 138412546;
-          v51 = v41;
+          v51 = eventType3;
           v52 = 2112;
-          v53 = v42;
-          _os_log_impl(&dword_1887D2000, v15, OS_LOG_TYPE_DEFAULT, "SFACollection action trigger abc: %@ %@", buf, 0x16u);
+          v53 = cachedMatchDictionary2;
+          _os_log_impl(&dword_1887D2000, drop, OS_LOG_TYPE_DEFAULT, "SFACollection action trigger abc: %@ %@", buf, 0x16u);
         }
 
-        v15 = [v12 abc];
-        v43 = [v15 domain];
-        if (v43)
+        drop = [action abc];
+        domain = [drop domain];
+        if (domain)
         {
         }
 
         else
         {
-          v44 = [v15 type];
+          type = [drop type];
 
-          if (!v44)
+          if (!type)
           {
             goto LABEL_30;
           }
         }
 
-        v21 = [v15 type];
-        v22 = [v15 subtype];
-        v45 = [v15 domain];
-        [v8 autoBugCaptureWithType:v21 subType:v22 domain:v45];
+        type2 = [drop type];
+        subtype = [drop subtype];
+        domain2 = [drop domain];
+        [actionCopy autoBugCaptureWithType:type2 subType:subtype domain:domain2];
 
 LABEL_29:
         goto LABEL_30;
@@ -124,41 +124,41 @@ LABEL_29:
         goto LABEL_30;
       }
 
-      v21 = [(SFAnalyticsMatchingRule *)self rule];
-      v22 = [v21 eventType];
+      type2 = [(SFAnalyticsMatchingRule *)self rule];
+      subtype = [type2 eventType];
       *buf = 138412290;
-      v51 = v22;
+      v51 = subtype;
       v23 = "SFACollection ratelimit abc: %@";
-      v24 = v15;
+      v24 = drop;
       v25 = OS_LOG_TYPE_INFO;
     }
 
     else
     {
-      v35 = [v12 hasDrop];
-      v15 = getOSLog();
-      v36 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-      if (v35)
+      hasDrop = [action hasDrop];
+      drop = getOSLog();
+      v36 = os_log_type_enabled(drop, OS_LOG_TYPE_DEFAULT);
+      if (hasDrop)
       {
         if (v36)
         {
-          v37 = [(SFAnalyticsMatchingRule *)self rule];
-          v38 = [v37 eventType];
+          rule5 = [(SFAnalyticsMatchingRule *)self rule];
+          eventType4 = [rule5 eventType];
           *buf = 138412290;
-          v51 = v38;
-          _os_log_impl(&dword_1887D2000, v15, OS_LOG_TYPE_DEFAULT, "SFACollection action trigger drop: %@", buf, 0xCu);
+          v51 = eventType4;
+          _os_log_impl(&dword_1887D2000, drop, OS_LOG_TYPE_DEFAULT, "SFACollection action trigger drop: %@", buf, 0xCu);
         }
 
-        v15 = [v12 drop];
-        v39 = [v15 excludeEvent];
-        if ([v15 excludeCount])
+        drop = [action drop];
+        excludeEvent = [drop excludeEvent];
+        if ([drop excludeCount])
         {
-          v18 = v39 | 2;
+          v18 = excludeEvent | 2;
         }
 
         else
         {
-          v18 = v39;
+          v18 = excludeEvent;
         }
 
         goto LABEL_31;
@@ -169,12 +169,12 @@ LABEL_29:
         goto LABEL_30;
       }
 
-      v21 = [(SFAnalyticsMatchingRule *)self rule];
-      v22 = [v21 eventType];
+      type2 = [(SFAnalyticsMatchingRule *)self rule];
+      subtype = [type2 eventType];
       *buf = 138412290;
-      v51 = v22;
+      v51 = subtype;
       v23 = "SFACollection unknown action: %@";
-      v24 = v15;
+      v24 = drop;
       v25 = OS_LOG_TYPE_DEFAULT;
     }
 
@@ -189,19 +189,19 @@ LABEL_32:
   return v18;
 }
 
-- (BOOL)matchAttributes:(id)a3 eventClass:(int64_t)a4 processName:(id)a5 logger:(id)a6
+- (BOOL)matchAttributes:(id)attributes eventClass:(int64_t)class processName:(id)name logger:(id)logger
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(SFAnalyticsMatchingRule *)self rule];
-  v14 = [v13 processName];
+  attributesCopy = attributes;
+  nameCopy = name;
+  loggerCopy = logger;
+  rule = [(SFAnalyticsMatchingRule *)self rule];
+  processName = [rule processName];
 
-  if (v14)
+  if (processName)
   {
-    v15 = [(SFAnalyticsMatchingRule *)self rule];
-    v16 = [v15 processName];
-    v17 = [v11 isEqual:v16];
+    rule2 = [(SFAnalyticsMatchingRule *)self rule];
+    processName2 = [rule2 processName];
+    v17 = [nameCopy isEqual:processName2];
 
     if (!v17)
     {
@@ -209,30 +209,30 @@ LABEL_32:
     }
   }
 
-  v18 = [(SFAnalyticsMatchingRule *)self rule];
-  v19 = [v18 matchOnFirstFailure];
+  rule3 = [(SFAnalyticsMatchingRule *)self rule];
+  matchOnFirstFailure = [rule3 matchOnFirstFailure];
 
-  if (!a4 && v19 && ![(SFAnalyticsMatchingRule *)self firstMatchArmed])
+  if (!class && matchOnFirstFailure && ![(SFAnalyticsMatchingRule *)self firstMatchArmed])
   {
-    v20 = [(SFAnalyticsMatchingRule *)self armKey];
-    [v12 setNumberProperty:MEMORY[0x1E695E118] forKey:v20];
+    armKey = [(SFAnalyticsMatchingRule *)self armKey];
+    [loggerCopy setNumberProperty:MEMORY[0x1E695E118] forKey:armKey];
 
     [(SFAnalyticsMatchingRule *)self setFirstMatchArmed:1];
   }
 
-  v21 = [(SFAnalyticsMatchingRule *)self rule];
-  v22 = [v21 hasMatch];
+  rule4 = [(SFAnalyticsMatchingRule *)self rule];
+  hasMatch = [rule4 hasMatch];
 
-  if (v22)
+  if (hasMatch)
   {
-    v23 = [(SFAnalyticsMatchingRule *)self cachedMatchDictionary];
-    if (!v23)
+    cachedMatchDictionary = [(SFAnalyticsMatchingRule *)self cachedMatchDictionary];
+    if (!cachedMatchDictionary)
     {
       goto LABEL_25;
     }
 
-    v24 = v23;
-    v25 = [(SFAnalyticsMatchingRule *)self isSubsetMatch:v23 target:v10];
+    v24 = cachedMatchDictionary;
+    v25 = [(SFAnalyticsMatchingRule *)self isSubsetMatch:cachedMatchDictionary target:attributesCopy];
 
     if (!v25)
     {
@@ -240,39 +240,39 @@ LABEL_32:
     }
   }
 
-  v26 = [(SFAnalyticsMatchingRule *)self rule];
-  v27 = [v26 matchOnFirstFailure];
+  rule5 = [(SFAnalyticsMatchingRule *)self rule];
+  matchOnFirstFailure2 = [rule5 matchOnFirstFailure];
 
-  if ((a4 - 1) <= 1 && v27)
+  if ((class - 1) <= 1 && matchOnFirstFailure2)
   {
-    v28 = [(SFAnalyticsMatchingRule *)self armKey];
+    armKey2 = [(SFAnalyticsMatchingRule *)self armKey];
     if (![(SFAnalyticsMatchingRule *)self firstMatchArmed])
     {
 
       goto LABEL_25;
     }
 
-    [v12 setNumberProperty:0 forKey:v28];
+    [loggerCopy setNumberProperty:0 forKey:armKey2];
     [(SFAnalyticsMatchingRule *)self setFirstMatchArmed:0];
   }
 
-  v29 = [(SFAnalyticsMatchingRule *)self rule];
-  v30 = [v29 eventClass];
+  rule6 = [(SFAnalyticsMatchingRule *)self rule];
+  eventClass = [rule6 eventClass];
 
   v31 = 0;
-  if (v30 > 10)
+  if (eventClass > 10)
   {
-    if (v30 <= 12)
+    if (eventClass <= 12)
     {
-      if (v30 == 11)
+      if (eventClass == 11)
       {
-        if (a4 == 1)
+        if (class == 1)
         {
           goto LABEL_36;
         }
       }
 
-      else if (a4 == 2)
+      else if (class == 2)
       {
         goto LABEL_36;
       }
@@ -280,14 +280,14 @@ LABEL_32:
       goto LABEL_25;
     }
 
-    if (v30 != 13)
+    if (eventClass != 13)
     {
-      if (v30 != 14)
+      if (eventClass != 14)
       {
         goto LABEL_26;
       }
 
-      if (a4 == 4)
+      if (class == 4)
       {
         goto LABEL_36;
       }
@@ -295,7 +295,7 @@ LABEL_32:
       goto LABEL_25;
     }
 
-    if (a4 == 3)
+    if (class == 3)
     {
 LABEL_36:
       v31 = 1;
@@ -307,10 +307,10 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  switch(v30)
+  switch(eventClass)
   {
     case 0:
-      if ((a4 - 3) >= 0xFFFFFFFFFFFFFFFELL)
+      if ((class - 3) >= 0xFFFFFFFFFFFFFFFELL)
       {
         goto LABEL_36;
       }
@@ -319,7 +319,7 @@ LABEL_25:
     case 1:
       goto LABEL_36;
     case 10:
-      if (!a4)
+      if (!class)
       {
         goto LABEL_36;
       }
@@ -335,8 +335,8 @@ LABEL_26:
 - (id)armKey
 {
   v3 = objc_opt_class();
-  v4 = [(SFAnalyticsMatchingRule *)self eventName];
-  v5 = [v3 armKeyForEventName:v4];
+  eventName = [(SFAnalyticsMatchingRule *)self eventName];
+  v5 = [v3 armKeyForEventName:eventName];
 
   return v5;
 }
@@ -344,20 +344,20 @@ LABEL_26:
 - (id)cachedMatchDictionary
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(SFAnalyticsMatchingRule *)v2 matchingDictionary];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  matchingDictionary = [(SFAnalyticsMatchingRule *)selfCopy matchingDictionary];
 
-  if (v3)
+  if (matchingDictionary)
   {
     goto LABEL_2;
   }
 
   v5 = MEMORY[0x1E696AE40];
-  v6 = [(SFAnalyticsMatchingRule *)v2 rule];
-  v7 = [v6 match];
+  rule = [(SFAnalyticsMatchingRule *)selfCopy rule];
+  match = [rule match];
   v16 = 0;
-  v8 = [v5 propertyListWithData:v7 options:0 format:0 error:&v16];
+  v8 = [v5 propertyListWithData:match options:0 format:0 error:&v16];
   v9 = v16;
 
   if (!v8 || v9)
@@ -381,12 +381,12 @@ LABEL_15:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SFAnalyticsMatchingRule *)v2 setMatchingDictionary:v8];
+    [(SFAnalyticsMatchingRule *)selfCopy setMatchingDictionary:v8];
 
 LABEL_2:
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
 
-    v4 = [(SFAnalyticsMatchingRule *)v2 matchingDictionary];
+    matchingDictionary2 = [(SFAnalyticsMatchingRule *)selfCopy matchingDictionary];
     goto LABEL_11;
   }
 
@@ -402,37 +402,37 @@ LABEL_2:
 
 LABEL_10:
 
-  objc_sync_exit(v2);
-  v4 = 0;
+  objc_sync_exit(selfCopy);
+  matchingDictionary2 = 0;
 LABEL_11:
   v14 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return matchingDictionary2;
 }
 
 - (id)lastMatchTimeKey
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(SFAnalyticsMatchingRule *)self rule];
-  v4 = [v3 eventType];
-  v5 = [v2 stringWithFormat:@"SFA-LastMatchRule-%@-", v4];
+  rule = [(SFAnalyticsMatchingRule *)self rule];
+  eventType = [rule eventType];
+  v5 = [v2 stringWithFormat:@"SFA-LastMatchRule-%@-", eventType];
 
   return v5;
 }
 
-- (BOOL)isSubsetMatch:(id)a3 target:(id)a4
+- (BOOL)isSubsetMatch:(id)match target:(id)target
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 count];
-  if (v8 <= [v7 count])
+  matchCopy = match;
+  targetCopy = target;
+  v8 = [matchCopy count];
+  if (v8 <= [targetCopy count])
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v10 = v6;
+    v10 = matchCopy;
     v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v11)
     {
@@ -448,7 +448,7 @@ LABEL_11:
           }
 
           v15 = *(*(&v21 + 1) + 8 * i);
-          v16 = [v7 objectForKeyedSubscript:{v15, v21}];
+          v16 = [targetCopy objectForKeyedSubscript:{v15, v21}];
           v17 = [v10 objectForKeyedSubscript:v15];
           v18 = [(SFAnalyticsMatchingRule *)self valueMatch:v17 target:v16];
 
@@ -482,15 +482,15 @@ LABEL_13:
   return v9;
 }
 
-- (BOOL)valueMatch:(id)a3 target:(id)a4
+- (BOOL)valueMatch:(id)match target:(id)target
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  matchCopy = match;
+  targetCopy = target;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v8 = [v6 isEqual:v7];
+    v8 = [matchCopy isEqual:targetCopy];
 LABEL_4:
     v9 = v8;
     goto LABEL_5;
@@ -499,15 +499,15 @@ LABEL_4:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(SFAnalyticsMatchingRule *)self isSubsetMatch:v6 target:v7];
+    v8 = [(SFAnalyticsMatchingRule *)self isSubsetMatch:matchCopy target:targetCopy];
     goto LABEL_4;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v6;
-    v24 = v7;
+    v12 = matchCopy;
+    v24 = targetCopy;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -600,33 +600,33 @@ LABEL_5:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(SFAnalyticsMatchingRule *)self eventName];
-  v5 = [(SFAnalyticsMatchingRule *)self cachedMatchDictionary];
-  v6 = [(SFAnalyticsMatchingRule *)self lastMatch];
-  v7 = [v3 stringWithFormat:@"<SFAnalyticsMatchingRule: %@ match: %@ %@>", v4, v5, v6];
+  eventName = [(SFAnalyticsMatchingRule *)self eventName];
+  cachedMatchDictionary = [(SFAnalyticsMatchingRule *)self cachedMatchDictionary];
+  lastMatch = [(SFAnalyticsMatchingRule *)self lastMatch];
+  v7 = [v3 stringWithFormat:@"<SFAnalyticsMatchingRule: %@ match: %@ %@>", eventName, cachedMatchDictionary, lastMatch];
 
   return v7;
 }
 
-- (SFAnalyticsMatchingRule)initWithSFARule:(id)a3 logger:(id)a4
+- (SFAnalyticsMatchingRule)initWithSFARule:(id)rule logger:(id)logger
 {
-  v6 = a3;
-  v7 = a4;
+  ruleCopy = rule;
+  loggerCopy = logger;
   v16.receiver = self;
   v16.super_class = SFAnalyticsMatchingRule;
   v8 = [(SFAnalyticsMatchingRule *)&v16 init];
   if (v8)
   {
-    v9 = [v6 eventType];
-    [(SFAnalyticsMatchingRule *)v8 setEventName:v9];
+    eventType = [ruleCopy eventType];
+    [(SFAnalyticsMatchingRule *)v8 setEventName:eventType];
 
-    [(SFAnalyticsMatchingRule *)v8 setRule:v6];
-    v10 = [(SFAnalyticsMatchingRule *)v8 lastMatchTimeKey];
-    v11 = [v7 datePropertyForKey:v10];
+    [(SFAnalyticsMatchingRule *)v8 setRule:ruleCopy];
+    lastMatchTimeKey = [(SFAnalyticsMatchingRule *)v8 lastMatchTimeKey];
+    v11 = [loggerCopy datePropertyForKey:lastMatchTimeKey];
     [(SFAnalyticsMatchingRule *)v8 setLastMatch:v11];
 
-    v12 = [(SFAnalyticsMatchingRule *)v8 armKey];
-    v13 = [v7 numberPropertyForKey:v12];
+    armKey = [(SFAnalyticsMatchingRule *)v8 armKey];
+    v13 = [loggerCopy numberPropertyForKey:armKey];
 
     if (v13)
     {

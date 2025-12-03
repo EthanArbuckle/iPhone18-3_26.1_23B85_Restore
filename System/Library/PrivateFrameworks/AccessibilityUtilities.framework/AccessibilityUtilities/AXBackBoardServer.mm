@@ -10,80 +10,80 @@
 - (BOOL)inPreboardMode;
 - (BOOL)isGuidedAccessActive;
 - (BOOL)isGuidedAccessInWorkspace;
-- (BOOL)isGuidedAccessSelfLockedToApp:(id)a3;
+- (BOOL)isGuidedAccessSelfLockedToApp:(id)app;
 - (BOOL)isGuidedAccessUnmanagedSelfLocked;
 - (BOOL)isRestrictedForAAC;
 - (BOOL)loadGAXBundleForUnmanagedASAM;
 - (BOOL)supportsAccessibilityDisplayFilters;
 - (BOOL)supportsAdaptation;
 - (BOOL)tripleClickHomeButtonPress;
-- (CGPoint)convertPoint:(CGPoint)a3 fromContextId:(unsigned int)a4;
-- (CGPoint)convertPoint:(CGPoint)a3 fromContextId:(unsigned int)a4 displayId:(unsigned int)a5;
-- (CGPoint)convertPoint:(CGPoint)a3 toContextId:(unsigned int)a4;
-- (CGPoint)convertPoint:(CGPoint)a3 toContextId:(unsigned int)a4 displayId:(unsigned int)a5;
-- (CGRect)convertFrame:(CGRect)a3 fromContextId:(unsigned int)a4;
-- (CGRect)convertFrame:(CGRect)a3 fromContextId:(unsigned int)a4 displayId:(unsigned int)a5;
-- (CGRect)convertFrame:(CGRect)a3 fromContextId:(unsigned int)a4 toContextId:(unsigned int)a5;
-- (CGRect)convertFrame:(CGRect)a3 fromContextId:(unsigned int)a4 toContextId:(unsigned int)a5 displayId:(unsigned int)a6;
-- (CGRect)convertFrame:(CGRect)a3 toContextId:(unsigned int)a4;
-- (CGRect)convertFrame:(CGRect)a3 toContextId:(unsigned int)a4 displayId:(unsigned int)a5;
-- (CGRect)zoomInitialFocusRectWithQueryingContext:(unsigned int)a3;
+- (CGPoint)convertPoint:(CGPoint)point fromContextId:(unsigned int)id;
+- (CGPoint)convertPoint:(CGPoint)point fromContextId:(unsigned int)id displayId:(unsigned int)displayId;
+- (CGPoint)convertPoint:(CGPoint)point toContextId:(unsigned int)id;
+- (CGPoint)convertPoint:(CGPoint)point toContextId:(unsigned int)id displayId:(unsigned int)displayId;
+- (CGRect)convertFrame:(CGRect)frame fromContextId:(unsigned int)id;
+- (CGRect)convertFrame:(CGRect)frame fromContextId:(unsigned int)id displayId:(unsigned int)displayId;
+- (CGRect)convertFrame:(CGRect)frame fromContextId:(unsigned int)id toContextId:(unsigned int)contextId;
+- (CGRect)convertFrame:(CGRect)frame fromContextId:(unsigned int)id toContextId:(unsigned int)contextId displayId:(unsigned int)displayId;
+- (CGRect)convertFrame:(CGRect)frame toContextId:(unsigned int)id;
+- (CGRect)convertFrame:(CGRect)frame toContextId:(unsigned int)id displayId:(unsigned int)displayId;
+- (CGRect)zoomInitialFocusRectWithQueryingContext:(unsigned int)context;
 - (id)_springboardParametersForGuidedAccessAvailability;
-- (id)accessibilityPreferenceAsMobile:(id)a3 domain:(id)a4;
+- (id)accessibilityPreferenceAsMobile:(id)mobile domain:(id)domain;
 - (id)backboardServiceInstance;
 - (id)guidedAccessEffectiveAppBundleIdentifier;
 - (id)guidedAccessIgnoredRegions;
-- (id)performGuidedAccessAutomationCommand:(id)a3 error:(id *)a4;
+- (id)performGuidedAccessAutomationCommand:(id)command error:(id *)error;
 - (int)accessibilityAssistiveTouchPID;
 - (int)accessibilityFullKeyboardAccessDaemonPID;
 - (int)accessibilityLiveCaptionsPID;
 - (int)accessibilityUIServicePID;
 - (int)hearingAidServerPID;
-- (unint64_t)currentGuidedAccessModeAndSessionApp:(id *)a3;
+- (unint64_t)currentGuidedAccessModeAndSessionApp:(id *)app;
 - (unint64_t)guidedAccessAvailability;
-- (unsigned)contextIdForPosition:(CGPoint)a3;
-- (unsigned)contextIdHostingContextId:(unsigned int)a3;
+- (unsigned)contextIdForPosition:(CGPoint)position;
+- (unsigned)contextIdHostingContextId:(unsigned int)id;
 - (void)_initializeCheckerboardNotify;
 - (void)_initializePreboardNotify;
-- (void)_sendRequestGuidedAccessSessionMessage:(id)a3 numberOfRetryAttempts:(unint64_t)a4 completion:(id)a5;
-- (void)adjustSystemZoom:(int)a3;
+- (void)_sendRequestGuidedAccessSessionMessage:(id)message numberOfRetryAttempts:(unint64_t)attempts completion:(id)completion;
+- (void)adjustSystemZoom:(int)zoom;
 - (void)colorFilterFromLastUpdate;
 - (void)dealloc;
 - (void)disableBrightnessFilters;
-- (void)guidedAccessEffectiveAppBundleIdentifier:(id)a3;
+- (void)guidedAccessEffectiveAppBundleIdentifier:(id)identifier;
 - (void)homeClickSwallowedForGuidedAccess;
 - (void)jetsamThirdPartyApps;
-- (void)postEvent:(id)a3 afterNamedTap:(id)a4 includeTaps:(id)a5;
-- (void)postEvent:(id)a3 systemEvent:(BOOL)a4;
-- (void)registerAccessibilityUIServicePID:(int)a3;
-- (void)registerAssistiveTouchPID:(int)a3;
-- (void)registerFullKeyboardAccessDaemonPID:(int)a3;
-- (void)registerGestureConflictWithZoom:(id)a3;
-- (void)registerHearingAidServerPID:(int)a3;
-- (void)registerLiveCaptionsPID:(int)a3;
-- (void)registerSiriViewServicePID:(int)a3;
-- (void)requestGuidedAccessSessionEndWithCompletion:(id)a3;
-- (void)requestGuidedAccessSessionStartWithConfigurationDictionary:(id)a3 completion:(id)a4;
+- (void)postEvent:(id)event afterNamedTap:(id)tap includeTaps:(id)taps;
+- (void)postEvent:(id)event systemEvent:(BOOL)systemEvent;
+- (void)registerAccessibilityUIServicePID:(int)d;
+- (void)registerAssistiveTouchPID:(int)d;
+- (void)registerFullKeyboardAccessDaemonPID:(int)d;
+- (void)registerGestureConflictWithZoom:(id)zoom;
+- (void)registerHearingAidServerPID:(int)d;
+- (void)registerLiveCaptionsPID:(int)d;
+- (void)registerSiriViewServicePID:(int)d;
+- (void)requestGuidedAccessSessionEndWithCompletion:(id)completion;
+- (void)requestGuidedAccessSessionStartWithConfigurationDictionary:(id)dictionary completion:(id)completion;
 - (void)resetAccessibilityFeatures;
 - (void)restoreCachedBrightnessFilters;
-- (void)sessionIsLoginSessionWithResult:(id)a3;
-- (void)setAccessibilityPreferenceAsMobile:(id)a3 value:(id)a4 notification:(id)a5;
-- (void)setCapsLockLightOn:(BOOL)a3;
-- (void)setClarityUIAdminPasscode:(id)a3;
-- (void)setDeviceOrientation:(int64_t)a3;
-- (void)setHearingAidControlIsVisible:(BOOL)a3;
-- (void)setInCheckerBoardMode:(BOOL)a3;
-- (void)setInPreboardMode:(BOOL)a3;
-- (void)setInvertColorsEnabled:(BOOL)a3;
-- (void)setIsSpeakScreenHighlightVisible:(BOOL)a3;
-- (void)setLockScreenDimTimerEnabled:(BOOL)a3;
-- (void)setSessionIsLoginSession:(BOOL)a3;
-- (void)setSwitchControlHasScreenSwitch:(BOOL)a3;
-- (void)setSwitchControlRendersDeviceUnusable:(BOOL)a3;
-- (void)setZoomInitialFocusRect:(CGRect)a3 fromContext:(unsigned int)a4;
+- (void)sessionIsLoginSessionWithResult:(id)result;
+- (void)setAccessibilityPreferenceAsMobile:(id)mobile value:(id)value notification:(id)notification;
+- (void)setCapsLockLightOn:(BOOL)on;
+- (void)setClarityUIAdminPasscode:(id)passcode;
+- (void)setDeviceOrientation:(int64_t)orientation;
+- (void)setHearingAidControlIsVisible:(BOOL)visible;
+- (void)setInCheckerBoardMode:(BOOL)mode;
+- (void)setInPreboardMode:(BOOL)mode;
+- (void)setInvertColorsEnabled:(BOOL)enabled;
+- (void)setIsSpeakScreenHighlightVisible:(BOOL)visible;
+- (void)setLockScreenDimTimerEnabled:(BOOL)enabled;
+- (void)setSessionIsLoginSession:(BOOL)session;
+- (void)setSwitchControlHasScreenSwitch:(BOOL)switch;
+- (void)setSwitchControlRendersDeviceUnusable:(BOOL)unusable;
+- (void)setZoomInitialFocusRect:(CGRect)rect fromContext:(unsigned int)context;
 - (void)toggleGuidedAccess;
 - (void)userEventOccurred;
-- (void)validateClarityUIAdminPasscode:(id)a3 completion:(id)a4;
+- (void)validateClarityUIAdminPasscode:(id)passcode completion:(id)completion;
 @end
 
 @implementation AXBackBoardServer
@@ -164,27 +164,27 @@ uint64_t __27__AXBackBoardServer_server__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [(AXServer *)self client];
-  [v3 setPortDeathHandler:0];
+  client = [(AXServer *)self client];
+  [client setPortDeathHandler:0];
 
   v4.receiver = self;
   v4.super_class = AXBackBoardServer;
   [(AXServer *)&v4 dealloc];
 }
 
-- (void)registerGestureConflictWithZoom:(id)a3
+- (void)registerGestureConflictWithZoom:(id)zoom
 {
-  v4 = a3;
+  zoomCopy = zoom;
   [(AXServer *)self _connectIfNecessary];
-  v6 = [[AXIPCMessage alloc] initWithKey:2000 payload:v4];
+  v6 = [[AXIPCMessage alloc] initWithKey:2000 payload:zoomCopy];
 
-  v5 = [(AXServer *)self client];
-  [v5 sendSimpleMessage:v6];
+  client = [(AXServer *)self client];
+  [client sendSimpleMessage:v6];
 }
 
-- (void)adjustSystemZoom:(int)a3
+- (void)adjustSystemZoom:(int)zoom
 {
-  v3 = *&a3;
+  v3 = *&zoom;
   v11[1] = *MEMORY[0x1E69E9840];
   [(AXServer *)self _connectIfNecessary];
   v5 = [AXIPCMessage alloc];
@@ -194,29 +194,29 @@ uint64_t __27__AXBackBoardServer_server__block_invoke()
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v8 = [(AXIPCMessage *)v5 initWithKey:2024 payload:v7];
 
-  v9 = [(AXServer *)self client];
-  [v9 sendSimpleMessage:v8];
+  client = [(AXServer *)self client];
+  [client sendSimpleMessage:v8];
 }
 
-- (void)setLockScreenDimTimerEnabled:(BOOL)a3
+- (void)setLockScreenDimTimerEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v11[1] = *MEMORY[0x1E69E9840];
   [(AXServer *)self _connectIfNecessary];
   v5 = [AXIPCMessage alloc];
   v10 = @"enabled";
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
   v11[0] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v8 = [(AXIPCMessage *)v5 initWithKey:2019 payload:v7];
 
-  v9 = [(AXServer *)self client];
-  [v9 sendSimpleMessage:v8];
+  client = [(AXServer *)self client];
+  [client sendSimpleMessage:v8];
 }
 
-- (void)registerSiriViewServicePID:(int)a3
+- (void)registerSiriViewServicePID:(int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v11[1] = *MEMORY[0x1E69E9840];
   if ([(AXServer *)self _connectIfNecessary])
   {
@@ -227,8 +227,8 @@ uint64_t __27__AXBackBoardServer_server__block_invoke()
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
     v8 = [(AXIPCMessage *)v5 initWithKey:2016 payload:v7];
 
-    v9 = [(AXServer *)self client];
-    [v9 sendSimpleMessage:v8];
+    client = [(AXServer *)self client];
+    [client sendSimpleMessage:v8];
   }
 
   else
@@ -241,47 +241,47 @@ uint64_t __27__AXBackBoardServer_server__block_invoke()
 {
   [(AXServer *)self _connectIfNecessary];
   v3 = [[AXIPCMessage alloc] initWithKey:2063 payload:0];
-  v4 = [(AXServer *)self client];
-  v5 = [v4 sendMessage:v3 withError:0];
+  client = [(AXServer *)self client];
+  v5 = [client sendMessage:v3 withError:0];
 
-  v6 = [v5 payload];
-  v7 = [v6 objectForKey:@"pid"];
-  v8 = [v7 unsignedIntValue];
+  payload = [v5 payload];
+  v7 = [payload objectForKey:@"pid"];
+  unsignedIntValue = [v7 unsignedIntValue];
 
-  return v8;
+  return unsignedIntValue;
 }
 
 - (int)accessibilityFullKeyboardAccessDaemonPID
 {
   [(AXServer *)self _connectIfNecessary];
   v3 = [[AXIPCMessage alloc] initWithKey:2070 payload:0];
-  v4 = [(AXServer *)self client];
-  v5 = [v4 sendMessage:v3 withError:0];
+  client = [(AXServer *)self client];
+  v5 = [client sendMessage:v3 withError:0];
 
-  v6 = [v5 payload];
-  v7 = [v6 objectForKey:@"pid"];
-  v8 = [v7 unsignedIntValue];
+  payload = [v5 payload];
+  v7 = [payload objectForKey:@"pid"];
+  unsignedIntValue = [v7 unsignedIntValue];
 
-  return v8;
+  return unsignedIntValue;
 }
 
 - (int)accessibilityUIServicePID
 {
   [(AXServer *)self _connectIfNecessary];
   v3 = [[AXIPCMessage alloc] initWithKey:2033 payload:0];
-  v4 = [(AXServer *)self client];
-  v5 = [v4 sendMessage:v3 withError:0];
+  client = [(AXServer *)self client];
+  v5 = [client sendMessage:v3 withError:0];
 
-  v6 = [v5 payload];
-  v7 = [v6 objectForKey:@"pid"];
-  v8 = [v7 unsignedIntValue];
+  payload = [v5 payload];
+  v7 = [payload objectForKey:@"pid"];
+  unsignedIntValue = [v7 unsignedIntValue];
 
-  return v8;
+  return unsignedIntValue;
 }
 
-- (void)registerFullKeyboardAccessDaemonPID:(int)a3
+- (void)registerFullKeyboardAccessDaemonPID:(int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v15 = *MEMORY[0x1E69E9840];
   if ([(AXServer *)self _connectIfNecessary])
   {
@@ -300,8 +300,8 @@ uint64_t __27__AXBackBoardServer_server__block_invoke()
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v12 forKeys:&v11 count:1];
     v9 = [(AXIPCMessage *)v6 initWithKey:2071 payload:v8];
 
-    v10 = [(AXServer *)self client];
-    [v10 sendSimpleMessage:v9];
+    client = [(AXServer *)self client];
+    [client sendSimpleMessage:v9];
   }
 
   else
@@ -310,9 +310,9 @@ uint64_t __27__AXBackBoardServer_server__block_invoke()
   }
 }
 
-- (void)registerAccessibilityUIServicePID:(int)a3
+- (void)registerAccessibilityUIServicePID:(int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v11[1] = *MEMORY[0x1E69E9840];
   if ([(AXServer *)self _connectIfNecessary])
   {
@@ -323,8 +323,8 @@ uint64_t __27__AXBackBoardServer_server__block_invoke()
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
     v8 = [(AXIPCMessage *)v5 initWithKey:2015 payload:v7];
 
-    v9 = [(AXServer *)self client];
-    [v9 sendSimpleMessage:v8];
+    client = [(AXServer *)self client];
+    [client sendSimpleMessage:v8];
   }
 
   else
@@ -337,19 +337,19 @@ uint64_t __27__AXBackBoardServer_server__block_invoke()
 {
   [(AXServer *)self _connectIfNecessary];
   v3 = [[AXIPCMessage alloc] initWithKey:2073 payload:0];
-  v4 = [(AXServer *)self client];
-  v5 = [v4 sendMessage:v3 withError:0];
+  client = [(AXServer *)self client];
+  v5 = [client sendMessage:v3 withError:0];
 
-  v6 = [v5 payload];
-  v7 = [v6 objectForKey:@"pid"];
-  v8 = [v7 unsignedIntValue];
+  payload = [v5 payload];
+  v7 = [payload objectForKey:@"pid"];
+  unsignedIntValue = [v7 unsignedIntValue];
 
-  return v8;
+  return unsignedIntValue;
 }
 
-- (void)registerHearingAidServerPID:(int)a3
+- (void)registerHearingAidServerPID:(int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v11[1] = *MEMORY[0x1E69E9840];
   if ([(AXServer *)self _connectIfNecessary])
   {
@@ -360,8 +360,8 @@ uint64_t __27__AXBackBoardServer_server__block_invoke()
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
     v8 = [(AXIPCMessage *)v5 initWithKey:2017 payload:v7];
 
-    v9 = [(AXServer *)self client];
-    [v9 sendSimpleMessage:v8];
+    client = [(AXServer *)self client];
+    [client sendSimpleMessage:v8];
   }
 
   else
@@ -378,21 +378,21 @@ uint64_t __27__AXBackBoardServer_server__block_invoke()
   }
 }
 
-- (void)setInPreboardMode:(BOOL)a3
+- (void)setInPreboardMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   [(AXBackBoardServer *)self _initializePreboardNotify];
-  notify_set_state(self->_preboardNotifyState, v3);
+  notify_set_state(self->_preboardNotifyState, modeCopy);
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"AXInternalInPreBoardModeUpdatedNotification", 0, 0, 1u);
 }
 
-- (void)setInCheckerBoardMode:(BOOL)a3
+- (void)setInCheckerBoardMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   [(AXBackBoardServer *)self _initializeCheckerboardNotify];
-  notify_set_state(self->_checkerBoardNotifyState, v3);
+  notify_set_state(self->_checkerBoardNotifyState, modeCopy);
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"AXInternalInCheckerBoardModeUpdatedNotification", 0, 0, 1u);
@@ -442,21 +442,21 @@ uint64_t __43__AXBackBoardServer__shouldDispatchLocally__block_invoke()
   return state64 == 1;
 }
 
-- (void)setSessionIsLoginSession:(BOOL)a3
+- (void)setSessionIsLoginSession:(BOOL)session
 {
-  v3 = a3;
+  sessionCopy = session;
   v11[1] = *MEMORY[0x1E69E9840];
   if ([(AXServer *)self _connectIfNecessary])
   {
     v5 = [AXIPCMessage alloc];
     v10 = @"sesionIsLoginSession";
-    v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+    v6 = [MEMORY[0x1E696AD98] numberWithBool:sessionCopy];
     v11[0] = v6;
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
     v8 = [(AXIPCMessage *)v5 initWithKey:2044 payload:v7];
 
-    v9 = [(AXServer *)self client];
-    [v9 sendSimpleMessage:v8];
+    client = [(AXServer *)self client];
+    [client sendSimpleMessage:v8];
   }
 
   else
@@ -465,16 +465,16 @@ uint64_t __43__AXBackBoardServer__shouldDispatchLocally__block_invoke()
   }
 }
 
-- (void)sessionIsLoginSessionWithResult:(id)a3
+- (void)sessionIsLoginSessionWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   if ([(AXBackBoardServer *)self _shouldDispatchLocally])
   {
-    v5 = [(AXBackBoardServer *)self backboardServiceInstance];
-    v6 = [v5 _sessionIsLoginSession];
-    if (v4)
+    backboardServiceInstance = [(AXBackBoardServer *)self backboardServiceInstance];
+    _sessionIsLoginSession = [backboardServiceInstance _sessionIsLoginSession];
+    if (resultCopy)
     {
-      v4[2](v4, v6);
+      resultCopy[2](resultCopy, _sessionIsLoginSession);
     }
   }
 
@@ -485,7 +485,7 @@ uint64_t __43__AXBackBoardServer__shouldDispatchLocally__block_invoke()
     v8[1] = 3221225472;
     v8[2] = __53__AXBackBoardServer_sessionIsLoginSessionWithResult___block_invoke;
     v8[3] = &unk_1E71EA340;
-    v9 = v4;
+    v9 = resultCopy;
     [(AXServer *)self sendAsynchronousMessage:v7 replyOnQueue:MEMORY[0x1E69E96A0] handler:v8];
   }
 }
@@ -516,9 +516,9 @@ void __53__AXBackBoardServer_sessionIsLoginSessionWithResult___block_invoke(uint
   }
 }
 
-- (void)registerAssistiveTouchPID:(int)a3
+- (void)registerAssistiveTouchPID:(int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v11[1] = *MEMORY[0x1E69E9840];
   if ([(AXServer *)self _connectIfNecessary])
   {
@@ -529,8 +529,8 @@ void __53__AXBackBoardServer_sessionIsLoginSessionWithResult___block_invoke(uint
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
     v8 = [(AXIPCMessage *)v5 initWithKey:2014 payload:v7];
 
-    v9 = [(AXServer *)self client];
-    [v9 sendSimpleMessage:v8];
+    client = [(AXServer *)self client];
+    [client sendSimpleMessage:v8];
   }
 
   else
@@ -539,9 +539,9 @@ void __53__AXBackBoardServer_sessionIsLoginSessionWithResult___block_invoke(uint
   }
 }
 
-- (void)registerLiveCaptionsPID:(int)a3
+- (void)registerLiveCaptionsPID:(int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v11[1] = *MEMORY[0x1E69E9840];
   if ([(AXServer *)self _connectIfNecessary])
   {
@@ -552,8 +552,8 @@ void __53__AXBackBoardServer_sessionIsLoginSessionWithResult___block_invoke(uint
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
     v8 = [(AXIPCMessage *)v5 initWithKey:2018 payload:v7];
 
-    v9 = [(AXServer *)self client];
-    [v9 sendSimpleMessage:v8];
+    client = [(AXServer *)self client];
+    [client sendSimpleMessage:v8];
   }
 
   else
@@ -566,83 +566,83 @@ void __53__AXBackBoardServer_sessionIsLoginSessionWithResult___block_invoke(uint
 {
   [(AXServer *)self _connectIfNecessary];
   v3 = [[AXIPCMessage alloc] initWithKey:2078 payload:0];
-  v4 = [(AXServer *)self client];
-  v5 = [v4 sendMessage:v3 withError:0];
+  client = [(AXServer *)self client];
+  v5 = [client sendMessage:v3 withError:0];
 
-  v6 = [v5 payload];
-  v7 = [v6 objectForKey:@"pid"];
-  v8 = [v7 unsignedIntValue];
+  payload = [v5 payload];
+  v7 = [payload objectForKey:@"pid"];
+  unsignedIntValue = [v7 unsignedIntValue];
 
-  return v8;
+  return unsignedIntValue;
 }
 
-- (void)setInvertColorsEnabled:(BOOL)a3
+- (void)setInvertColorsEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v11[1] = *MEMORY[0x1E69E9840];
   [(AXServer *)self _connectIfNecessary];
   v5 = [AXIPCMessage alloc];
   v10 = @"enabled";
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
   v11[0] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v8 = [(AXIPCMessage *)v5 initWithKey:2025 payload:v7];
 
-  v9 = [(AXServer *)self client];
-  [v9 sendSimpleMessage:v8 withError:0];
+  client = [(AXServer *)self client];
+  [client sendSimpleMessage:v8 withError:0];
 }
 
-- (void)postEvent:(id)a3 afterNamedTap:(id)a4 includeTaps:(id)a5
+- (void)postEvent:(id)event afterNamedTap:(id)tap includeTaps:(id)taps
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
+  eventCopy = event;
+  tapCopy = tap;
+  tapsCopy = taps;
   [(AXServer *)self _connectIfNecessary];
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v11 = v10;
-  if (v14)
+  if (eventCopy)
   {
-    [v10 setObject:v14 forKeyedSubscript:@"record"];
+    [v10 setObject:eventCopy forKeyedSubscript:@"record"];
   }
 
-  if (v9)
+  if (tapsCopy)
   {
-    [v11 setObject:v9 forKeyedSubscript:@"namedTaps"];
+    [v11 setObject:tapsCopy forKeyedSubscript:@"namedTaps"];
   }
 
-  if (v8)
+  if (tapCopy)
   {
-    [v11 setObject:v8 forKeyedSubscript:@"afterNamedTap"];
+    [v11 setObject:tapCopy forKeyedSubscript:@"afterNamedTap"];
   }
 
   v12 = [[AXIPCMessage alloc] initWithKey:2009 payload:v11];
-  v13 = [(AXServer *)self client];
-  [v13 sendSimpleMessage:v12];
+  client = [(AXServer *)self client];
+  [client sendSimpleMessage:v12];
 }
 
-- (void)postEvent:(id)a3 systemEvent:(BOOL)a4
+- (void)postEvent:(id)event systemEvent:(BOOL)systemEvent
 {
-  v4 = a4;
-  v11 = a3;
+  systemEventCopy = systemEvent;
+  eventCopy = event;
   [(AXServer *)self _connectIfNecessary];
   v6 = MEMORY[0x1E695DF90];
-  v7 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+  v7 = [MEMORY[0x1E696AD98] numberWithBool:systemEventCopy];
   v8 = [v6 dictionaryWithObject:v7 forKey:@"systemEvent"];
 
-  if (v11)
+  if (eventCopy)
   {
-    [v8 setObject:v11 forKeyedSubscript:@"record"];
+    [v8 setObject:eventCopy forKeyedSubscript:@"record"];
   }
 
   v9 = [[AXIPCMessage alloc] initWithKey:2009 payload:v8];
-  v10 = [(AXServer *)self client];
-  [v10 sendSimpleMessage:v9];
+  client = [(AXServer *)self client];
+  [client sendSimpleMessage:v9];
 }
 
-- (unsigned)contextIdForPosition:(CGPoint)a3
+- (unsigned)contextIdForPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   v15[1] = *MEMORY[0x1E69E9840];
   [(AXServer *)self _connectIfNecessary];
   v14 = @"displayPoint";
@@ -653,19 +653,19 @@ void __53__AXBackBoardServer_sessionIsLoginSessionWithResult___block_invoke(uint
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
 
   v8 = [[AXIPCMessage alloc] initWithKey:2032 payload:v7];
-  v9 = [(AXServer *)self client];
-  v10 = [v9 sendMessage:v8 withError:0];
+  client = [(AXServer *)self client];
+  v10 = [client sendMessage:v8 withError:0];
 
-  v11 = [v10 payload];
-  v12 = [v11 objectForKey:@"result"];
-  LODWORD(v9) = [v12 unsignedIntValue];
+  payload = [v10 payload];
+  v12 = [payload objectForKey:@"result"];
+  LODWORD(client) = [v12 unsignedIntValue];
 
-  return v9;
+  return client;
 }
 
-- (unsigned)contextIdHostingContextId:(unsigned int)a3
+- (unsigned)contextIdHostingContextId:(unsigned int)id
 {
-  v3 = *&a3;
+  v3 = *&id;
   v14[1] = *MEMORY[0x1E69E9840];
   [(AXServer *)self _connectIfNecessary];
   v13 = @"contextId";
@@ -674,19 +674,19 @@ void __53__AXBackBoardServer_sessionIsLoginSessionWithResult___block_invoke(uint
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
 
   v7 = [[AXIPCMessage alloc] initWithKey:2031 payload:v6];
-  v8 = [(AXServer *)self client];
-  v9 = [v8 sendMessage:v7 withError:0];
+  client = [(AXServer *)self client];
+  v9 = [client sendMessage:v7 withError:0];
 
-  v10 = [v9 payload];
-  v11 = [v10 objectForKey:@"result"];
-  LODWORD(v8) = [v11 unsignedIntValue];
+  payload = [v9 payload];
+  v11 = [payload objectForKey:@"result"];
+  LODWORD(client) = [v11 unsignedIntValue];
 
-  return v8;
+  return client;
 }
 
-- (CGRect)convertFrame:(CGRect)a3 fromContextId:(unsigned int)a4 toContextId:(unsigned int)a5
+- (CGRect)convertFrame:(CGRect)frame fromContextId:(unsigned int)id toContextId:(unsigned int)contextId
 {
-  [(AXBackBoardServer *)self convertFrame:*&a4 fromContextId:*&a5 toContextId:0 displayId:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(AXBackBoardServer *)self convertFrame:*&id fromContextId:*&contextId toContextId:0 displayId:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -694,9 +694,9 @@ void __53__AXBackBoardServer_sessionIsLoginSessionWithResult___block_invoke(uint
   return result;
 }
 
-- (CGRect)convertFrame:(CGRect)a3 toContextId:(unsigned int)a4
+- (CGRect)convertFrame:(CGRect)frame toContextId:(unsigned int)id
 {
-  [(AXBackBoardServer *)self convertFrame:*&a4 toContextId:0 displayId:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(AXBackBoardServer *)self convertFrame:*&id toContextId:0 displayId:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -704,9 +704,9 @@ void __53__AXBackBoardServer_sessionIsLoginSessionWithResult___block_invoke(uint
   return result;
 }
 
-- (CGRect)convertFrame:(CGRect)a3 fromContextId:(unsigned int)a4
+- (CGRect)convertFrame:(CGRect)frame fromContextId:(unsigned int)id
 {
-  [(AXBackBoardServer *)self convertFrame:*&a4 fromContextId:0 displayId:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(AXBackBoardServer *)self convertFrame:*&id fromContextId:0 displayId:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -714,15 +714,15 @@ void __53__AXBackBoardServer_sessionIsLoginSessionWithResult___block_invoke(uint
   return result;
 }
 
-- (CGRect)convertFrame:(CGRect)a3 fromContextId:(unsigned int)a4 toContextId:(unsigned int)a5 displayId:(unsigned int)a6
+- (CGRect)convertFrame:(CGRect)frame fromContextId:(unsigned int)id toContextId:(unsigned int)contextId displayId:(unsigned int)displayId
 {
-  v6 = *&a6;
-  v7 = *&a5;
-  v8 = *&a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  v6 = *&displayId;
+  v7 = *&contextId;
+  v8 = *&id;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v36[4] = *MEMORY[0x1E69E9840];
   [(AXServer *)self _connectIfNecessary];
   v35[0] = @"fromContextId";
@@ -744,9 +744,9 @@ void __53__AXBackBoardServer_sessionIsLoginSessionWithResult___block_invoke(uint
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:4];
 
   v19 = [[AXIPCMessage alloc] initWithKey:2042 payload:v18];
-  v20 = [(AXServer *)self client];
+  client = [(AXServer *)self client];
   v34 = 0;
-  v21 = [v20 sendMessage:v19 withError:&v34];
+  v21 = [client sendMessage:v19 withError:&v34];
   v22 = v34;
 
   if (v22)
@@ -766,8 +766,8 @@ void __53__AXBackBoardServer_sessionIsLoginSessionWithResult___block_invoke(uint
 
   else
   {
-    v27 = [v21 payload];
-    v28 = [v27 objectForKeyedSubscript:@"frame"];
+    payload = [v21 payload];
+    v28 = [payload objectForKeyedSubscript:@"frame"];
     v39 = NSRectFromString(v28);
     v23 = v39.origin.x;
     v24 = v39.origin.y;
@@ -786,14 +786,14 @@ void __53__AXBackBoardServer_sessionIsLoginSessionWithResult___block_invoke(uint
   return result;
 }
 
-- (CGRect)convertFrame:(CGRect)a3 toContextId:(unsigned int)a4 displayId:(unsigned int)a5
+- (CGRect)convertFrame:(CGRect)frame toContextId:(unsigned int)id displayId:(unsigned int)displayId
 {
-  v5 = *&a5;
-  v6 = *&a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  v5 = *&displayId;
+  v6 = *&id;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v30[3] = *MEMORY[0x1E69E9840];
   [(AXServer *)self _connectIfNecessary];
   v29[0] = @"contextId";
@@ -812,11 +812,11 @@ void __53__AXBackBoardServer_sessionIsLoginSessionWithResult___block_invoke(uint
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:3];
 
   v16 = [[AXIPCMessage alloc] initWithKey:2008 payload:v15];
-  v17 = [(AXServer *)self client];
-  v18 = [v17 sendMessage:v16 withError:0];
+  client = [(AXServer *)self client];
+  v18 = [client sendMessage:v16 withError:0];
 
-  v19 = [v18 payload];
-  v20 = [v19 objectForKey:@"frame"];
+  payload = [v18 payload];
+  v20 = [payload objectForKey:@"frame"];
   v32 = NSRectFromString(v20);
   v21 = v32.origin.x;
   v22 = v32.origin.y;
@@ -834,23 +834,23 @@ void __53__AXBackBoardServer_sessionIsLoginSessionWithResult___block_invoke(uint
   return result;
 }
 
-- (CGRect)convertFrame:(CGRect)a3 fromContextId:(unsigned int)a4 displayId:(unsigned int)a5
+- (CGRect)convertFrame:(CGRect)frame fromContextId:(unsigned int)id displayId:(unsigned int)displayId
 {
-  v5 = *&a5;
-  v6 = *&a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  v5 = *&displayId;
+  v6 = *&id;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v37[3] = *MEMORY[0x1E69E9840];
   if ([(AXBackBoardServer *)self _shouldDispatchLocally])
   {
-    v12 = [(AXBackBoardServer *)self backboardServiceInstance];
-    v13 = [v12 delegate];
+    backboardServiceInstance = [(AXBackBoardServer *)self backboardServiceInstance];
+    delegate = [backboardServiceInstance delegate];
     v14 = &unk_1EFECA850;
-    if ([v13 conformsToProtocol:v14])
+    if ([delegate conformsToProtocol:v14])
     {
-      [v13 convertFrame:v6 fromContextId:0 displayId:{x, y, width, height}];
+      [delegate convertFrame:v6 fromContextId:0 displayId:{x, y, width, height}];
       v16 = v15;
       v18 = v17;
       v20 = v19;
@@ -887,11 +887,11 @@ void __53__AXBackBoardServer_sessionIsLoginSessionWithResult___block_invoke(uint
     v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:v36 count:3];
 
     v27 = [[AXIPCMessage alloc] initWithKey:2007 payload:v26];
-    v28 = [(AXServer *)self client];
-    v29 = [v28 sendMessage:v27 withError:0];
+    client = [(AXServer *)self client];
+    v29 = [client sendMessage:v27 withError:0];
 
-    v30 = [v29 payload];
-    v31 = [v30 objectForKey:@"frame"];
+    payload = [v29 payload];
+    v31 = [payload objectForKey:@"frame"];
     v39 = NSRectFromString(v31);
     v16 = v39.origin.x;
     v18 = v39.origin.y;
@@ -910,28 +910,28 @@ void __53__AXBackBoardServer_sessionIsLoginSessionWithResult___block_invoke(uint
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 fromContextId:(unsigned int)a4
+- (CGPoint)convertPoint:(CGPoint)point fromContextId:(unsigned int)id
 {
-  [(AXBackBoardServer *)self convertPoint:*&a4 fromContextId:0 displayId:a3.x, a3.y];
+  [(AXBackBoardServer *)self convertPoint:*&id fromContextId:0 displayId:point.x, point.y];
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 toContextId:(unsigned int)a4
+- (CGPoint)convertPoint:(CGPoint)point toContextId:(unsigned int)id
 {
-  [(AXBackBoardServer *)self convertPoint:*&a4 toContextId:0 displayId:a3.x, a3.y];
+  [(AXBackBoardServer *)self convertPoint:*&id toContextId:0 displayId:point.x, point.y];
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 fromContextId:(unsigned int)a4 displayId:(unsigned int)a5
+- (CGPoint)convertPoint:(CGPoint)point fromContextId:(unsigned int)id displayId:(unsigned int)displayId
 {
-  v5 = *&a5;
-  v6 = *&a4;
-  y = a3.y;
-  x = a3.x;
+  v5 = *&displayId;
+  v6 = *&id;
+  y = point.y;
+  x = point.x;
   v23[3] = *MEMORY[0x1E69E9840];
   [(AXServer *)self _connectIfNecessary];
   v22[0] = @"contextId";
@@ -948,11 +948,11 @@ void __53__AXBackBoardServer_sessionIsLoginSessionWithResult___block_invoke(uint
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:3];
 
   v14 = [[AXIPCMessage alloc] initWithKey:2068 payload:v13];
-  v15 = [(AXServer *)self client];
-  v16 = [v15 sendMessage:v14 withError:0];
+  client = [(AXServer *)self client];
+  v16 = [client sendMessage:v14 withError:0];
 
-  v17 = [v16 payload];
-  v18 = [v17 objectForKey:@"point"];
+  payload = [v16 payload];
+  v18 = [payload objectForKey:@"point"];
   v19 = NSPointFromString(v18);
 
   v20 = v19.x;
@@ -962,12 +962,12 @@ void __53__AXBackBoardServer_sessionIsLoginSessionWithResult___block_invoke(uint
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 toContextId:(unsigned int)a4 displayId:(unsigned int)a5
+- (CGPoint)convertPoint:(CGPoint)point toContextId:(unsigned int)id displayId:(unsigned int)displayId
 {
-  v5 = *&a5;
-  v6 = *&a4;
-  y = a3.y;
-  x = a3.x;
+  v5 = *&displayId;
+  v6 = *&id;
+  y = point.y;
+  x = point.x;
   v23[3] = *MEMORY[0x1E69E9840];
   [(AXServer *)self _connectIfNecessary];
   v22[0] = @"contextId";
@@ -984,11 +984,11 @@ void __53__AXBackBoardServer_sessionIsLoginSessionWithResult___block_invoke(uint
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:3];
 
   v14 = [[AXIPCMessage alloc] initWithKey:2069 payload:v13];
-  v15 = [(AXServer *)self client];
-  v16 = [v15 sendMessage:v14 withError:0];
+  client = [(AXServer *)self client];
+  v16 = [client sendMessage:v14 withError:0];
 
-  v17 = [v16 payload];
-  v18 = [v17 objectForKey:@"point"];
+  payload = [v16 payload];
+  v18 = [payload objectForKey:@"point"];
   v19 = NSPointFromString(v18);
 
   v20 = v19.x;
@@ -1002,91 +1002,91 @@ void __53__AXBackBoardServer_sessionIsLoginSessionWithResult___block_invoke(uint
 {
   [(AXServer *)self _connectIfNecessary];
   v4 = [[AXIPCMessage alloc] initWithKey:2011 payload:0];
-  v3 = [(AXServer *)self client];
-  [v3 sendSimpleMessage:v4];
+  client = [(AXServer *)self client];
+  [client sendSimpleMessage:v4];
 }
 
-- (void)setCapsLockLightOn:(BOOL)a3
+- (void)setCapsLockLightOn:(BOOL)on
 {
-  v3 = a3;
+  onCopy = on;
   v11[1] = *MEMORY[0x1E69E9840];
   [(AXServer *)self _connectIfNecessary];
   v5 = [AXIPCMessage alloc];
   v10 = @"on";
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:onCopy];
   v11[0] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v8 = [(AXIPCMessage *)v5 initWithKey:2043 payload:v7];
 
-  v9 = [(AXServer *)self client];
-  [v9 sendSimpleMessage:v8];
+  client = [(AXServer *)self client];
+  [client sendSimpleMessage:v8];
 }
 
-- (void)setHearingAidControlIsVisible:(BOOL)a3
+- (void)setHearingAidControlIsVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v11[1] = *MEMORY[0x1E69E9840];
   [(AXServer *)self _connectIfNecessary];
   v5 = [AXIPCMessage alloc];
   v10 = @"result";
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:visibleCopy];
   v11[0] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v8 = [(AXIPCMessage *)v5 initWithKey:2023 payload:v7];
 
-  v9 = [(AXServer *)self client];
-  [v9 sendSimpleMessage:v8];
+  client = [(AXServer *)self client];
+  [client sendSimpleMessage:v8];
 }
 
-- (void)setSwitchControlRendersDeviceUnusable:(BOOL)a3
+- (void)setSwitchControlRendersDeviceUnusable:(BOOL)unusable
 {
-  v3 = a3;
+  unusableCopy = unusable;
   v11[1] = *MEMORY[0x1E69E9840];
   [(AXServer *)self _connectIfNecessary];
   v5 = [AXIPCMessage alloc];
   v10 = @"result";
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:unusableCopy];
   v11[0] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v8 = [(AXIPCMessage *)v5 initWithKey:2036 payload:v7];
 
-  v9 = [(AXServer *)self client];
-  [v9 sendSimpleMessage:v8];
+  client = [(AXServer *)self client];
+  [client sendSimpleMessage:v8];
 }
 
-- (void)setSwitchControlHasScreenSwitch:(BOOL)a3
+- (void)setSwitchControlHasScreenSwitch:(BOOL)switch
 {
-  v3 = a3;
+  switchCopy = switch;
   v11[1] = *MEMORY[0x1E69E9840];
   [(AXServer *)self _connectIfNecessary];
   v5 = [AXIPCMessage alloc];
   v10 = @"result";
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:switchCopy];
   v11[0] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v8 = [(AXIPCMessage *)v5 initWithKey:2062 payload:v7];
 
-  v9 = [(AXServer *)self client];
-  [v9 sendSimpleMessage:v8];
+  client = [(AXServer *)self client];
+  [client sendSimpleMessage:v8];
 }
 
-- (id)accessibilityPreferenceAsMobile:(id)a3 domain:(id)a4
+- (id)accessibilityPreferenceAsMobile:(id)mobile domain:(id)domain
 {
   v46[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  mobileCopy = mobile;
+  domainCopy = domain;
+  if (mobileCopy)
   {
     [(AXServer *)self _connectIfNecessary];
     v45[0] = @"preference";
     v45[1] = @"domain";
     v8 = &stru_1EFE6D570;
-    if (v7)
+    if (domainCopy)
     {
-      v8 = v7;
+      v8 = domainCopy;
     }
 
-    v46[0] = v6;
+    v46[0] = mobileCopy;
     v46[1] = v8;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v46 forKeys:v45 count:2];
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -1095,7 +1095,7 @@ void __53__AXBackBoardServer_sessionIsLoginSessionWithResult___block_invoke(uint
     aBlock[3] = &unk_1E71EAD88;
     v10 = v9;
     v39 = v10;
-    v40 = self;
+    selfCopy = self;
     v11 = _Block_copy(aBlock);
     v32 = 0;
     v33 = &v32;
@@ -1110,11 +1110,11 @@ void __53__AXBackBoardServer_sessionIsLoginSessionWithResult___block_invoke(uint
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v42 = v6;
+        v42 = mobileCopy;
         _os_log_impl(&dword_18B15E000, v13, OS_LOG_TYPE_DEFAULT, "Requiring valid connection before requesting preference %@", buf, 0xCu);
       }
 
-      v14 = [(AXServer *)self client];
+      client = [(AXServer *)self client];
       v28[0] = MEMORY[0x1E69E9820];
       v28[1] = 3221225472;
       v28[2] = __60__AXBackBoardServer_accessibilityPreferenceAsMobile_domain___block_invoke_198;
@@ -1123,14 +1123,14 @@ void __53__AXBackBoardServer_sessionIsLoginSessionWithResult___block_invoke(uint
       v30 = v11;
       v15 = v12;
       v29 = v15;
-      [v14 establishConnectionWithTimeout:v28 completion:10000.0];
+      [client establishConnectionWithTimeout:v28 completion:10000.0];
 
       dispatch_semaphore_wait(v15, 0xFFFFFFFFFFFFFFFFLL);
       v16 = AXLogBackboardServer();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [v33[5] payload];
-        v18 = [v17 objectForKeyedSubscript:@"value"];
+        payload = [v33[5] payload];
+        v18 = [payload objectForKeyedSubscript:@"value"];
         *buf = 138412290;
         v42 = v18;
         _os_log_impl(&dword_18B15E000, v16, OS_LOG_TYPE_DEFAULT, "Made connection and result: %@", buf, 0xCu);
@@ -1159,8 +1159,8 @@ void __53__AXBackBoardServer_sessionIsLoginSessionWithResult___block_invoke(uint
       }
     }
 
-    v25 = [v33[5] payload];
-    v20 = [v25 objectForKeyedSubscript:@"value"];
+    payload2 = [v33[5] payload];
+    v20 = [payload2 objectForKeyedSubscript:@"value"];
 
     _Block_object_dispose(&v32, 8);
   }
@@ -1224,31 +1224,31 @@ intptr_t __60__AXBackBoardServer_accessibilityPreferenceAsMobile_domain___block_
   return dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)setAccessibilityPreferenceAsMobile:(id)a3 value:(id)a4 notification:(id)a5
+- (void)setAccessibilityPreferenceAsMobile:(id)mobile value:(id)value notification:(id)notification
 {
   v17[3] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8)
+  mobileCopy = mobile;
+  valueCopy = value;
+  notificationCopy = notification;
+  null = notificationCopy;
+  if (mobileCopy)
   {
-    if (v9)
+    if (valueCopy)
     {
-      if (v10)
+      if (notificationCopy)
       {
 LABEL_4:
         [(AXServer *)self _connectIfNecessary];
         v16[0] = @"preference";
         v16[1] = @"value";
-        v17[0] = v8;
-        v17[1] = v9;
+        v17[0] = mobileCopy;
+        v17[1] = valueCopy;
         v16[2] = @"notification";
-        v17[2] = v11;
+        v17[2] = null;
         v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:3];
         v13 = [[AXIPCMessage alloc] initWithKey:2027 payload:v12];
-        v14 = [(AXServer *)self client];
-        v15 = [v14 sendMessage:v13 withError:0];
+        client = [(AXServer *)self client];
+        v15 = [client sendMessage:v13 withError:0];
 
         goto LABEL_5;
       }
@@ -1256,27 +1256,27 @@ LABEL_4:
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      if (v11)
+      valueCopy = [MEMORY[0x1E695DFB0] null];
+      if (null)
       {
         goto LABEL_4;
       }
     }
 
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     goto LABEL_4;
   }
 
 LABEL_5:
 }
 
-- (void)setZoomInitialFocusRect:(CGRect)a3 fromContext:(unsigned int)a4
+- (void)setZoomInitialFocusRect:(CGRect)rect fromContext:(unsigned int)context
 {
-  v4 = *&a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  v4 = *&context;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v16[2] = *MEMORY[0x1E69E9840];
   [(AXServer *)self _connectIfNecessary];
   v15[0] = @"rect";
@@ -1292,13 +1292,13 @@ LABEL_5:
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:2];
 
   v13 = [[AXIPCMessage alloc] initWithKey:2040 payload:v12];
-  v14 = [(AXServer *)self client];
-  [v14 sendSimpleMessage:v13];
+  client = [(AXServer *)self client];
+  [client sendSimpleMessage:v13];
 }
 
-- (CGRect)zoomInitialFocusRectWithQueryingContext:(unsigned int)a3
+- (CGRect)zoomInitialFocusRectWithQueryingContext:(unsigned int)context
 {
-  v3 = *&a3;
+  v3 = *&context;
   v24[1] = *MEMORY[0x1E69E9840];
   [(AXServer *)self _connectIfNecessary];
   v5 = [AXIPCMessage alloc];
@@ -1308,9 +1308,9 @@ LABEL_5:
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
   v8 = [(AXIPCMessage *)v5 initWithKey:2041 payload:v7];
 
-  v9 = [(AXServer *)self client];
+  client = [(AXServer *)self client];
   v22 = 0;
-  v10 = [v9 sendMessage:v8 withError:&v22];
+  v10 = [client sendMessage:v8 withError:&v22];
   v11 = v22;
 
   if (v11)
@@ -1324,8 +1324,8 @@ LABEL_5:
 
   else
   {
-    v16 = [v10 payload];
-    v17 = [v16 objectForKeyedSubscript:@"rect"];
+    payload = [v10 payload];
+    v17 = [payload objectForKeyedSubscript:@"rect"];
     v25 = NSRectFromString(v17);
     x = v25.origin.x;
     y = v25.origin.y;
@@ -1346,12 +1346,12 @@ LABEL_5:
 
 - (BOOL)tripleClickHomeButtonPress
 {
-  v2 = self;
+  selfCopy = self;
   [(AXServer *)self _connectIfNecessary];
   v3 = [[AXIPCMessage alloc] initWithKey:2055 payload:0];
-  LOBYTE(v2) = [(AXServer *)v2 sendSimpleMessageWithResult:v3];
+  LOBYTE(selfCopy) = [(AXServer *)selfCopy sendSimpleMessageWithResult:v3];
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)homeClickSwallowedForGuidedAccess
@@ -1365,17 +1365,17 @@ LABEL_5:
 {
   v12[3] = *MEMORY[0x1E69E9840];
   v2 = +[AXSpringBoardServer server];
-  v3 = [v2 isAppSwitcherVisible];
-  v4 = [v2 isSystemAppFrontmostExludingSiri];
-  v5 = [v2 isSyncingRestoringResettingOrUpdating];
+  isAppSwitcherVisible = [v2 isAppSwitcherVisible];
+  isSystemAppFrontmostExludingSiri = [v2 isSystemAppFrontmostExludingSiri];
+  isSyncingRestoringResettingOrUpdating = [v2 isSyncingRestoringResettingOrUpdating];
   v11[0] = @"isSpringBoardFrontmost";
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:isSystemAppFrontmostExludingSiri];
   v12[0] = v6;
   v11[1] = @"isSyncingRestoringResettingOrUpdating";
-  v7 = [MEMORY[0x1E696AD98] numberWithBool:v5];
+  v7 = [MEMORY[0x1E696AD98] numberWithBool:isSyncingRestoringResettingOrUpdating];
   v12[1] = v7;
   v11[2] = @"isAppSwitcherVisible";
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:isAppSwitcherVisible];
   v12[2] = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:3];
 
@@ -1384,22 +1384,22 @@ LABEL_5:
 
 - (BOOL)isGuidedAccessActive
 {
-  v2 = self;
+  selfCopy = self;
   [(AXServer *)self _connectIfNecessary];
   v3 = [[AXIPCMessage alloc] initWithKey:2030 payload:0];
-  LOBYTE(v2) = [(AXServer *)v2 sendSimpleMessageWithResult:v3];
+  LOBYTE(selfCopy) = [(AXServer *)selfCopy sendSimpleMessageWithResult:v3];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isGuidedAccessInWorkspace
 {
-  v2 = self;
+  selfCopy = self;
   [(AXServer *)self _connectIfNecessary];
   v3 = [[AXIPCMessage alloc] initWithKey:2034 payload:0];
-  LOBYTE(v2) = [(AXServer *)v2 sendSimpleMessageWithResult:v3];
+  LOBYTE(selfCopy) = [(AXServer *)selfCopy sendSimpleMessageWithResult:v3];
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)guidedAccessEffectiveAppBundleIdentifier
@@ -1418,17 +1418,17 @@ LABEL_5:
   return v5;
 }
 
-- (void)guidedAccessEffectiveAppBundleIdentifier:(id)a3
+- (void)guidedAccessEffectiveAppBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(AXServer *)self _connectIfNecessary];
   v5 = [[AXIPCMessage alloc] initWithKey:2060 payload:0];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__AXBackBoardServer_guidedAccessEffectiveAppBundleIdentifier___block_invoke;
   v7[3] = &unk_1E71EA340;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   [(AXServer *)self sendAsynchronousMessage:v5 replyOnQueue:MEMORY[0x1E69E96A0] handler:v7];
 }
 
@@ -1451,30 +1451,30 @@ uint64_t __62__AXBackBoardServer_guidedAccessEffectiveAppBundleIdentifier___bloc
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)performGuidedAccessAutomationCommand:(id)a3 error:(id *)a4
+- (id)performGuidedAccessAutomationCommand:(id)command error:(id *)error
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  commandCopy = command;
   [(AXServer *)self _connectIfNecessary];
   v7 = [AXIPCMessage alloc];
   v17 = @"command";
-  v18[0] = v6;
+  v18[0] = commandCopy;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
 
   v9 = [(AXIPCMessage *)v7 initWithKey:2037 payload:v8];
   v10 = [(AXServer *)self sendMessage:v9];
 
-  if (a4)
+  if (error)
   {
-    v11 = [v10 payload];
-    v12 = [v11 objectForKey:@"error"];
+    payload = [v10 payload];
+    v12 = [payload objectForKey:@"error"];
 
     v13 = v12;
-    *a4 = v12;
+    *error = v12;
   }
 
-  v14 = [v10 payload];
-  v15 = [v14 objectForKey:@"result"];
+  payload2 = [v10 payload];
+  v15 = [payload2 objectForKey:@"result"];
 
   return v15;
 }
@@ -1483,51 +1483,51 @@ uint64_t __62__AXBackBoardServer_guidedAccessEffectiveAppBundleIdentifier___bloc
 {
   [(AXServer *)self _connectIfNecessary];
   v3 = [AXIPCMessage alloc];
-  v4 = [(AXBackBoardServer *)self _springboardParametersForGuidedAccessAvailability];
-  v5 = [(AXIPCMessage *)v3 initWithKey:2020 payload:v4];
+  _springboardParametersForGuidedAccessAvailability = [(AXBackBoardServer *)self _springboardParametersForGuidedAccessAvailability];
+  v5 = [(AXIPCMessage *)v3 initWithKey:2020 payload:_springboardParametersForGuidedAccessAvailability];
 
-  v6 = [(AXServer *)self client];
+  client = [(AXServer *)self client];
   v13 = 0;
-  v7 = [v6 sendMessage:v5 withError:&v13];
+  v7 = [client sendMessage:v5 withError:&v13];
   v8 = v13;
 
   if (v8)
   {
-    v9 = GAXLogCommon();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    payload = GAXLogCommon();
+    if (os_log_type_enabled(payload, OS_LOG_TYPE_ERROR))
     {
       [AXBackBoardServer guidedAccessAvailability];
     }
 
-    v10 = 12;
+    unsignedIntegerValue = 12;
   }
 
   else
   {
-    v9 = [v7 payload];
-    v11 = [v9 objectForKey:@"availability"];
-    v10 = [v11 unsignedIntegerValue];
+    payload = [v7 payload];
+    v11 = [payload objectForKey:@"availability"];
+    unsignedIntegerValue = [v11 unsignedIntegerValue];
   }
 
-  return v10;
+  return unsignedIntegerValue;
 }
 
-- (void)_sendRequestGuidedAccessSessionMessage:(id)a3 numberOfRetryAttempts:(unint64_t)a4 completion:(id)a5
+- (void)_sendRequestGuidedAccessSessionMessage:(id)message numberOfRetryAttempts:(unint64_t)attempts completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(AXServer *)self client];
+  messageCopy = message;
+  completionCopy = completion;
+  client = [(AXServer *)self client];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __93__AXBackBoardServer__sendRequestGuidedAccessSessionMessage_numberOfRetryAttempts_completion___block_invoke;
   v13[3] = &unk_1E71EAE00;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
-  [v10 sendAsyncMessage:v12 withReplyHandler:v13];
+  v14 = messageCopy;
+  v15 = completionCopy;
+  attemptsCopy = attempts;
+  v11 = completionCopy;
+  v12 = messageCopy;
+  [client sendAsyncMessage:v12 withReplyHandler:v13];
 }
 
 void __93__AXBackBoardServer__sendRequestGuidedAccessSessionMessage_numberOfRetryAttempts_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1577,40 +1577,40 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)requestGuidedAccessSessionStartWithConfigurationDictionary:(id)a3 completion:(id)a4
+- (void)requestGuidedAccessSessionStartWithConfigurationDictionary:(id)dictionary completion:(id)completion
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dictionaryCopy = dictionary;
   [(AXServer *)self _connectIfNecessary];
   v11[0] = @"AXGuidedAccessPayloadKeyRequestingAppSetGAXEnabled";
   v11[1] = @"AXGuidedAccessPayloadKeyGAXConfiguration";
   v12[0] = MEMORY[0x1E695E118];
-  v12[1] = v7;
+  v12[1] = dictionaryCopy;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];
   v9 = [AXIPCMessage alloc];
 
   v10 = [(AXIPCMessage *)v9 initWithKey:2022 payload:v8];
-  [(AXBackBoardServer *)self _sendRequestGuidedAccessSessionMessage:v10 numberOfRetryAttempts:5 completion:v6];
+  [(AXBackBoardServer *)self _sendRequestGuidedAccessSessionMessage:v10 numberOfRetryAttempts:5 completion:completionCopy];
 }
 
-- (void)requestGuidedAccessSessionEndWithCompletion:(id)a3
+- (void)requestGuidedAccessSessionEndWithCompletion:(id)completion
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   [(AXServer *)self _connectIfNecessary];
   v11 = @"AXGuidedAccessPayloadKeyRequestingAppSetGAXEnabled";
   v12[0] = MEMORY[0x1E695E110];
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   v6 = [[AXIPCMessage alloc] initWithKey:2022 payload:v5];
-  v7 = [(AXServer *)self client];
+  client = [(AXServer *)self client];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __65__AXBackBoardServer_requestGuidedAccessSessionEndWithCompletion___block_invoke;
   v9[3] = &unk_1E71EA340;
-  v10 = v4;
-  v8 = v4;
-  [v7 sendAsyncMessage:v6 withReplyHandler:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [client sendAsyncMessage:v6 withReplyHandler:v9];
 }
 
 void __65__AXBackBoardServer_requestGuidedAccessSessionEndWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1635,79 +1635,79 @@ void __65__AXBackBoardServer_requestGuidedAccessSessionEndWithCompletion___block
   (*(*(a1 + 32) + 16))();
 }
 
-- (BOOL)isGuidedAccessSelfLockedToApp:(id)a3
+- (BOOL)isGuidedAccessSelfLockedToApp:(id)app
 {
-  if (!a3)
+  if (!app)
   {
     return 0;
   }
 
   [(AXServer *)self _connectIfNecessary];
   v4 = [[AXIPCMessage alloc] initWithKey:2021 payload:0];
-  v5 = [(AXServer *)self client];
+  client = [(AXServer *)self client];
   v12 = 0;
-  v6 = [v5 sendMessage:v4 withError:&v12];
+  v6 = [client sendMessage:v4 withError:&v12];
   v7 = v12;
 
   if (v7)
   {
-    v8 = GAXLogCommon();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    payload = GAXLogCommon();
+    if (os_log_type_enabled(payload, OS_LOG_TYPE_ERROR))
     {
       [AXBackBoardServer isGuidedAccessSelfLockedToApp:];
     }
 
-    v9 = 0;
+    bOOLValue = 0;
   }
 
   else
   {
-    v8 = [v6 payload];
-    v10 = [v8 objectForKey:@"AXGuidedAccessPayloadKeyRequestingAppSetGAXEnabled"];
-    v9 = [v10 BOOLValue];
+    payload = [v6 payload];
+    v10 = [payload objectForKey:@"AXGuidedAccessPayloadKeyRequestingAppSetGAXEnabled"];
+    bOOLValue = [v10 BOOLValue];
   }
 
-  return v9;
+  return bOOLValue;
 }
 
 - (BOOL)isGuidedAccessUnmanagedSelfLocked
 {
   [(AXServer *)self _connectIfNecessary];
   v3 = [[AXIPCMessage alloc] initWithKey:2054 payload:0];
-  v4 = [(AXServer *)self client];
+  client = [(AXServer *)self client];
   v11 = 0;
-  v5 = [v4 sendMessage:v3 withError:&v11];
+  v5 = [client sendMessage:v3 withError:&v11];
   v6 = v11;
 
   if (v6)
   {
-    v7 = GAXLogCommon();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    payload = GAXLogCommon();
+    if (os_log_type_enabled(payload, OS_LOG_TYPE_ERROR))
     {
       [AXBackBoardServer isGuidedAccessUnmanagedSelfLocked];
     }
 
-    v8 = 0;
+    bOOLValue = 0;
   }
 
   else
   {
-    v7 = [v5 payload];
-    v9 = [v7 objectForKeyedSubscript:@"result"];
-    v8 = [v9 BOOLValue];
+    payload = [v5 payload];
+    v9 = [payload objectForKeyedSubscript:@"result"];
+    bOOLValue = [v9 BOOLValue];
   }
 
-  return v8;
+  return bOOLValue;
 }
 
 - (BOOL)isRestrictedForAAC
 {
-  v2 = self;
+  selfCopy = self;
   [(AXServer *)self _connectIfNecessary];
   v3 = [[AXIPCMessage alloc] initWithKey:2072 payload:0];
-  LOBYTE(v2) = [(AXServer *)v2 sendSimpleMessageWithResult:v3];
+  LOBYTE(selfCopy) = [(AXServer *)selfCopy sendSimpleMessageWithResult:v3];
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)toggleGuidedAccess
@@ -1728,8 +1728,8 @@ void __65__AXBackBoardServer_requestGuidedAccessSessionEndWithCompletion___block
 
   [(AXServer *)self _connectIfNecessary];
   v5 = [[AXIPCMessage alloc] initWithKey:2058 payload:0];
-  v6 = [(AXServer *)self client];
-  [v6 sendSimpleMessage:v5];
+  client = [(AXServer *)self client];
+  [client sendSimpleMessage:v5];
 }
 
 - (id)guidedAccessIgnoredRegions
@@ -1785,53 +1785,53 @@ void __65__AXBackBoardServer_requestGuidedAccessSessionEndWithCompletion___block
   return v5;
 }
 
-- (unint64_t)currentGuidedAccessModeAndSessionApp:(id *)a3
+- (unint64_t)currentGuidedAccessModeAndSessionApp:(id *)app
 {
   [(AXServer *)self _connectIfNecessary];
   v5 = [[AXIPCMessage alloc] initWithKey:2061 payload:0];
   v6 = [(AXServer *)self sendMessage:v5];
-  v7 = [v6 payload];
+  payload = [v6 payload];
 
-  v8 = [v7 objectForKeyedSubscript:@"AXGuidedAccessPayloadKeyGAXMode"];
-  v9 = [v8 unsignedIntegerValue];
+  v8 = [payload objectForKeyedSubscript:@"AXGuidedAccessPayloadKeyGAXMode"];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-  if (a3)
+  if (app)
   {
-    if (v9)
+    if (unsignedIntegerValue)
     {
-      v10 = [v7 objectForKeyedSubscript:@"AXGuidedAccessPayloadKeySessionApp"];
-      *a3 = v10;
+      v10 = [payload objectForKeyedSubscript:@"AXGuidedAccessPayloadKeySessionApp"];
+      *app = v10;
     }
 
     else
     {
-      *a3 = 0;
+      *app = 0;
     }
   }
 
-  return v9;
+  return unsignedIntegerValue;
 }
 
 - (void)jetsamThirdPartyApps
 {
   [(AXServer *)self _connectIfNecessary];
   v4 = [[AXIPCMessage alloc] initWithKey:2026 payload:0];
-  v3 = [(AXServer *)self client];
-  [v3 sendSimpleMessage:v4];
+  client = [(AXServer *)self client];
+  [client sendSimpleMessage:v4];
 }
 
 - (void)disableBrightnessFilters
 {
   if ([(AXBackBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXBackBoardServer *)self backboardServiceInstance];
-    [(AXIPCMessage *)v3 disableBrightnessFilters];
+    backboardServiceInstance = [(AXBackBoardServer *)self backboardServiceInstance];
+    [(AXIPCMessage *)backboardServiceInstance disableBrightnessFilters];
   }
 
   else
   {
     [(AXServer *)self _connectIfNecessary];
-    v3 = [[AXIPCMessage alloc] initWithKey:2047 payload:0];
+    backboardServiceInstance = [[AXIPCMessage alloc] initWithKey:2047 payload:0];
     [(AXServer *)self sendSimpleMessage:?];
   }
 }
@@ -1840,18 +1840,18 @@ void __65__AXBackBoardServer_requestGuidedAccessSessionEndWithCompletion___block
 {
   if ([(AXBackBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXBackBoardServer *)self backboardServiceInstance];
-    v4 = [(AXIPCMessage *)v3 brightnessFiltersEnabled];
+    backboardServiceInstance = [(AXBackBoardServer *)self backboardServiceInstance];
+    brightnessFiltersEnabled = [(AXIPCMessage *)backboardServiceInstance brightnessFiltersEnabled];
   }
 
   else
   {
     [(AXServer *)self _connectIfNecessary];
-    v3 = [[AXIPCMessage alloc] initWithKey:2048 payload:0];
-    v4 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    backboardServiceInstance = [[AXIPCMessage alloc] initWithKey:2048 payload:0];
+    brightnessFiltersEnabled = [(AXServer *)self sendSimpleMessageWithResult:backboardServiceInstance];
   }
 
-  v5 = v4;
+  v5 = brightnessFiltersEnabled;
 
   return v5;
 }
@@ -1860,18 +1860,18 @@ void __65__AXBackBoardServer_requestGuidedAccessSessionEndWithCompletion___block
 {
   if ([(AXBackBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXBackBoardServer *)self backboardServiceInstance];
-    v4 = [(AXIPCMessage *)v3 blueLightStatusEnabled];
+    backboardServiceInstance = [(AXBackBoardServer *)self backboardServiceInstance];
+    blueLightStatusEnabled = [(AXIPCMessage *)backboardServiceInstance blueLightStatusEnabled];
   }
 
   else
   {
     [(AXServer *)self _connectIfNecessary];
-    v3 = [[AXIPCMessage alloc] initWithKey:2049 payload:0];
-    v4 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    backboardServiceInstance = [[AXIPCMessage alloc] initWithKey:2049 payload:0];
+    blueLightStatusEnabled = [(AXServer *)self sendSimpleMessageWithResult:backboardServiceInstance];
   }
 
-  v5 = v4;
+  v5 = blueLightStatusEnabled;
 
   return v5;
 }
@@ -1880,14 +1880,14 @@ void __65__AXBackBoardServer_requestGuidedAccessSessionEndWithCompletion___block
 {
   if ([(AXBackBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXBackBoardServer *)self backboardServiceInstance];
-    [(AXIPCMessage *)v3 restoreCachedBrightnessFilters];
+    backboardServiceInstance = [(AXBackBoardServer *)self backboardServiceInstance];
+    [(AXIPCMessage *)backboardServiceInstance restoreCachedBrightnessFilters];
   }
 
   else
   {
     [(AXServer *)self _connectIfNecessary];
-    v3 = [[AXIPCMessage alloc] initWithKey:2050 payload:0];
+    backboardServiceInstance = [[AXIPCMessage alloc] initWithKey:2050 payload:0];
     [(AXServer *)self sendSimpleMessage:?];
   }
 }
@@ -1896,18 +1896,18 @@ void __65__AXBackBoardServer_requestGuidedAccessSessionEndWithCompletion___block
 {
   if ([(AXBackBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXBackBoardServer *)self backboardServiceInstance];
-    v4 = [(AXIPCMessage *)v3 adaptationEnabled];
+    backboardServiceInstance = [(AXBackBoardServer *)self backboardServiceInstance];
+    adaptationEnabled = [(AXIPCMessage *)backboardServiceInstance adaptationEnabled];
   }
 
   else
   {
     [(AXServer *)self _connectIfNecessary];
-    v3 = [[AXIPCMessage alloc] initWithKey:2051 payload:0];
-    v4 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    backboardServiceInstance = [[AXIPCMessage alloc] initWithKey:2051 payload:0];
+    adaptationEnabled = [(AXServer *)self sendSimpleMessageWithResult:backboardServiceInstance];
   }
 
-  v5 = v4;
+  v5 = adaptationEnabled;
 
   return v5;
 }
@@ -1916,18 +1916,18 @@ void __65__AXBackBoardServer_requestGuidedAccessSessionEndWithCompletion___block
 {
   if ([(AXBackBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXBackBoardServer *)self backboardServiceInstance];
-    v4 = [(AXIPCMessage *)v3 supportsAdaptation];
+    backboardServiceInstance = [(AXBackBoardServer *)self backboardServiceInstance];
+    supportsAdaptation = [(AXIPCMessage *)backboardServiceInstance supportsAdaptation];
   }
 
   else
   {
     [(AXServer *)self _connectIfNecessary];
-    v3 = [[AXIPCMessage alloc] initWithKey:2052 payload:0];
-    v4 = [(AXServer *)self sendSimpleMessageWithResult:v3];
+    backboardServiceInstance = [[AXIPCMessage alloc] initWithKey:2052 payload:0];
+    supportsAdaptation = [(AXServer *)self sendSimpleMessageWithResult:backboardServiceInstance];
   }
 
-  v5 = v4;
+  v5 = supportsAdaptation;
 
   return v5;
 }
@@ -1935,17 +1935,17 @@ void __65__AXBackBoardServer_requestGuidedAccessSessionEndWithCompletion___block
 - (BOOL)supportsAccessibilityDisplayFilters
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 supportsAdvancedDisplayFilters];
+  supportsAdvancedDisplayFilters = [v2 supportsAdvancedDisplayFilters];
 
-  return v3;
+  return supportsAdvancedDisplayFilters;
 }
 
 - (BOOL)loadGAXBundleForUnmanagedASAM
 {
   if ([(AXBackBoardServer *)self _shouldDispatchLocally])
   {
-    v3 = [(AXBackBoardServer *)self backboardServiceInstance];
-    [v3 forceLoadGAXBundle];
+    backboardServiceInstance = [(AXBackBoardServer *)self backboardServiceInstance];
+    [backboardServiceInstance forceLoadGAXBundle];
 
     return 1;
   }
@@ -1954,9 +1954,9 @@ void __65__AXBackBoardServer_requestGuidedAccessSessionEndWithCompletion___block
   {
     [(AXServer *)self _connectIfNecessary];
     v5 = [[AXIPCMessage alloc] initWithKey:2053 payload:0];
-    v6 = [(AXServer *)self client];
+    client = [(AXServer *)self client];
     v10 = 0;
-    v7 = [v6 sendMessage:v5 withError:&v10];
+    v7 = [client sendMessage:v5 withError:&v10];
     v8 = v10;
 
     v4 = v8 == 0;
@@ -1969,17 +1969,17 @@ void __65__AXBackBoardServer_requestGuidedAccessSessionEndWithCompletion___block
 {
   if ([(AXBackBoardServer *)self _shouldDispatchLocally])
   {
-    v7 = [(AXBackBoardServer *)self backboardServiceInstance];
-    [v7 resetAccessibilityFeatures];
+    backboardServiceInstance = [(AXBackBoardServer *)self backboardServiceInstance];
+    [backboardServiceInstance resetAccessibilityFeatures];
   }
 
   else
   {
     [(AXServer *)self _connectIfNecessary];
     v3 = [[AXIPCMessage alloc] initWithKey:2057 payload:0];
-    v4 = [(AXServer *)self client];
+    client = [(AXServer *)self client];
     v8 = 0;
-    v5 = [v4 sendMessage:v3 withError:&v8];
+    v5 = [client sendMessage:v3 withError:&v8];
     v6 = v8;
 
     if (v6)
@@ -1993,12 +1993,12 @@ void __65__AXBackBoardServer_requestGuidedAccessSessionEndWithCompletion___block
 {
   if ([(AXBackBoardServer *)self _shouldDispatchLocally])
   {
-    v5 = [(AXBackBoardServer *)self backboardServiceInstance];
-    if (v5)
+    backboardServiceInstance = [(AXBackBoardServer *)self backboardServiceInstance];
+    if (backboardServiceInstance)
     {
-      v19 = v5;
-      [v5 colorFilterFromLastUpdate];
-      v5 = v19;
+      v19 = backboardServiceInstance;
+      [backboardServiceInstance colorFilterFromLastUpdate];
+      backboardServiceInstance = v19;
     }
 
     else
@@ -2020,9 +2020,9 @@ void __65__AXBackBoardServer_requestGuidedAccessSessionEndWithCompletion___block
     *&retstr->var0[0][2] = 0u;
     [(AXServer *)self _connectIfNecessary];
     v6 = [[AXIPCMessage alloc] initWithKey:2066 payload:0];
-    v7 = [(AXServer *)self client];
+    client = [(AXServer *)self client];
     v20 = 0;
-    v8 = [v7 sendMessage:v6 withError:&v20];
+    v8 = [client sendMessage:v6 withError:&v20];
     v9 = v20;
 
     if (v9)
@@ -2034,17 +2034,17 @@ void __65__AXBackBoardServer_requestGuidedAccessSessionEndWithCompletion___block
       }
     }
 
-    v11 = [v8 payload];
-    v12 = [v11 objectForKeyedSubscript:@"filterData"];
+    payload = [v8 payload];
+    v12 = [payload objectForKeyedSubscript:@"filterData"];
 
     if ([v12 length] == 72)
     {
-      v13 = [v12 bytes];
-      *&retstr->var0[0][0] = *v13;
-      v15 = *(v13 + 32);
-      v14 = *(v13 + 48);
-      v16 = *(v13 + 16);
-      retstr->var0[2][2] = *(v13 + 64);
+      bytes = [v12 bytes];
+      *&retstr->var0[0][0] = *bytes;
+      v15 = *(bytes + 32);
+      v14 = *(bytes + 48);
+      v16 = *(bytes + 16);
+      retstr->var0[2][2] = *(bytes + 64);
       *&retstr->var0[1][1] = v15;
       *&retstr->var0[2][0] = v14;
       *&retstr->var0[0][2] = v16;
@@ -2063,61 +2063,61 @@ void __65__AXBackBoardServer_requestGuidedAccessSessionEndWithCompletion___block
   return result;
 }
 
-- (void)setIsSpeakScreenHighlightVisible:(BOOL)a3
+- (void)setIsSpeakScreenHighlightVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v11[1] = *MEMORY[0x1E69E9840];
   [(AXServer *)self _connectIfNecessary];
   v5 = [AXIPCMessage alloc];
   v10 = @"visible";
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:visibleCopy];
   v11[0] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v8 = [(AXIPCMessage *)v5 initWithKey:2074 payload:v7];
 
-  v9 = [(AXServer *)self client];
-  [v9 sendSimpleMessage:v8 withError:0];
+  client = [(AXServer *)self client];
+  [client sendSimpleMessage:v8 withError:0];
 }
 
-- (void)setDeviceOrientation:(int64_t)a3
+- (void)setDeviceOrientation:(int64_t)orientation
 {
   v11[1] = *MEMORY[0x1E69E9840];
   [(AXServer *)self _connectIfNecessary];
   v5 = [AXIPCMessage alloc];
   v10 = @"deviceOrientation";
-  v6 = [MEMORY[0x1E696AD98] numberWithLong:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithLong:orientation];
   v11[0] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v8 = [(AXIPCMessage *)v5 initWithKey:2075 payload:v7];
 
-  v9 = [(AXServer *)self client];
-  [v9 sendSimpleMessage:v8 withError:0];
+  client = [(AXServer *)self client];
+  [client sendSimpleMessage:v8 withError:0];
 }
 
-- (void)setClarityUIAdminPasscode:(id)a3
+- (void)setClarityUIAdminPasscode:(id)passcode
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  passcodeCopy = passcode;
   [(AXServer *)self _connectIfNecessary];
   v5 = [AXIPCMessage alloc];
   v9 = @"passcode";
-  v10[0] = v4;
+  v10[0] = passcodeCopy;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
   v7 = [(AXIPCMessage *)v5 initWithKey:2076 payload:v6];
-  v8 = [(AXServer *)self client];
-  [v8 sendSimpleMessage:v7 withError:0];
+  client = [(AXServer *)self client];
+  [client sendSimpleMessage:v7 withError:0];
 }
 
-- (void)validateClarityUIAdminPasscode:(id)a3 completion:(id)a4
+- (void)validateClarityUIAdminPasscode:(id)passcode completion:(id)completion
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  passcodeCopy = passcode;
   [(AXServer *)self _connectIfNecessary];
   v8 = [AXIPCMessage alloc];
   v14 = @"passcode";
-  v15[0] = v7;
+  v15[0] = passcodeCopy;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
   v10 = [(AXIPCMessage *)v8 initWithKey:2077 payload:v9];
 
@@ -2125,8 +2125,8 @@ void __65__AXBackBoardServer_requestGuidedAccessSessionEndWithCompletion___block
   v12[1] = 3221225472;
   v12[2] = __63__AXBackBoardServer_validateClarityUIAdminPasscode_completion___block_invoke;
   v12[3] = &unk_1E71EAE28;
-  v13 = v6;
-  v11 = v6;
+  v13 = completionCopy;
+  v11 = completionCopy;
   [(AXServer *)self sendAsynchronousMessage:v10 replyOnQueue:MEMORY[0x1E69E96A0] BOOLResultHandler:v12];
 }
 
@@ -2144,7 +2144,7 @@ uint64_t __63__AXBackBoardServer_validateClarityUIAdminPasscode_completion___blo
 - (void)colorFilterFromLastUpdate
 {
   v4 = *MEMORY[0x1E69E9840];
-  [a1 length];
+  [self length];
   OUTLINED_FUNCTION_1_1();
   _os_log_error_impl(&dword_18B15E000, a2, OS_LOG_TYPE_ERROR, "bogus length of color filter description %zu", v3, 0xCu);
 }

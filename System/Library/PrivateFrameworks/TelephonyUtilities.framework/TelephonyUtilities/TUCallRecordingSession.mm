@@ -1,26 +1,26 @@
 @interface TUCallRecordingSession
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRecordingSession:(id)a3;
-- (TUCallRecordingSession)initWithCoder:(id)a3;
-- (TUCallRecordingSession)initWithUUID:(id)a3 state:(int)a4 callUUID:(id)a5 requestUUID:(id)a6 recordingStartedDate:(id)a7 recordingEndedDate:(id)a8 destinationBundleIdentifier:(id)a9 isRedisclosing:(BOOL)a10;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRecordingSession:(id)session;
+- (TUCallRecordingSession)initWithCoder:(id)coder;
+- (TUCallRecordingSession)initWithUUID:(id)d state:(int)state callUUID:(id)iD requestUUID:(id)uID recordingStartedDate:(id)date recordingEndedDate:(id)endedDate destinationBundleIdentifier:(id)identifier isRedisclosing:(BOOL)self0;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUCallRecordingSession
 
-- (TUCallRecordingSession)initWithUUID:(id)a3 state:(int)a4 callUUID:(id)a5 requestUUID:(id)a6 recordingStartedDate:(id)a7 recordingEndedDate:(id)a8 destinationBundleIdentifier:(id)a9 isRedisclosing:(BOOL)a10
+- (TUCallRecordingSession)initWithUUID:(id)d state:(int)state callUUID:(id)iD requestUUID:(id)uID recordingStartedDate:(id)date recordingEndedDate:(id)endedDate destinationBundleIdentifier:(id)identifier isRedisclosing:(BOOL)self0
 {
-  v17 = a9;
+  identifierCopy = identifier;
   v21.receiver = self;
   v21.super_class = TUCallRecordingSession;
-  v18 = [(TUCallRecordingSessionBase *)&v21 initWithUUID:a3 callUUID:a5 requestUUID:a6 recordingStartedDate:a7 recordingEndedDate:a8 isRedisclosing:a10];
+  v18 = [(TUCallRecordingSessionBase *)&v21 initWithUUID:d callUUID:iD requestUUID:uID recordingStartedDate:date recordingEndedDate:endedDate isRedisclosing:redisclosing];
   v19 = v18;
   if (v18)
   {
-    v18->_recordingState = a4;
-    objc_storeStrong(&v18->_destinationBundleIdentifier, a9);
+    v18->_recordingState = state;
+    objc_storeStrong(&v18->_destinationBundleIdentifier, identifier);
   }
 
   return v19;
@@ -35,34 +35,34 @@
   v5 = [v3 stringWithString:v4];
 
   [v5 appendFormat:@" state=%d", -[TUCallRecordingSession recordingState](self, "recordingState")];
-  v6 = [(TUCallRecordingSession *)self destinationBundleIdentifier];
-  [v5 appendFormat:@" destinationBundleIdentifier=%@", v6];
+  destinationBundleIdentifier = [(TUCallRecordingSession *)self destinationBundleIdentifier];
+  [v5 appendFormat:@" destinationBundleIdentifier=%@", destinationBundleIdentifier];
 
   [v5 appendString:@">"];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = TUCallRecordingSession;
-  v4 = a3;
-  [(TUCallRecordingSessionBase *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt:self->_recordingState forKey:{@"recordingState", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_destinationBundleIdentifier forKey:@"destinationBundleIdentifier"];
+  coderCopy = coder;
+  [(TUCallRecordingSessionBase *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt:self->_recordingState forKey:{@"recordingState", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_destinationBundleIdentifier forKey:@"destinationBundleIdentifier"];
 }
 
-- (TUCallRecordingSession)initWithCoder:(id)a3
+- (TUCallRecordingSession)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TUCallRecordingSession;
-  v5 = [(TUCallRecordingSessionBase *)&v9 initWithCoder:v4];
+  v5 = [(TUCallRecordingSessionBase *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_recordingState = [v4 decodeIntForKey:@"recordingState"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"destinationBundleIdentifier"];
+    v5->_recordingState = [coderCopy decodeIntForKey:@"recordingState"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"destinationBundleIdentifier"];
     destinationBundleIdentifier = v5->_destinationBundleIdentifier;
     v5->_destinationBundleIdentifier = v6;
   }
@@ -70,22 +70,22 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = TUCallRecordingSession;
-  v4 = [(TUCallRecordingSessionBase *)&v7 copyWithZone:a3];
+  v4 = [(TUCallRecordingSessionBase *)&v7 copyWithZone:zone];
   [v4 setRecordingState:{-[TUCallRecordingSession recordingState](self, "recordingState")}];
-  v5 = [(TUCallRecordingSession *)self destinationBundleIdentifier];
-  [v4 setDestinationBundleIdentifier:v5];
+  destinationBundleIdentifier = [(TUCallRecordingSession *)self destinationBundleIdentifier];
+  [v4 setDestinationBundleIdentifier:destinationBundleIdentifier];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -93,22 +93,22 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUCallRecordingSession *)self isEqualToRecordingSession:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUCallRecordingSession *)self isEqualToRecordingSession:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToRecordingSession:(id)a3
+- (BOOL)isEqualToRecordingSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v10.receiver = self;
   v10.super_class = TUCallRecordingSession;
-  if (-[TUCallRecordingSessionBase isEqual:](&v10, sel_isEqual_, v4) && (v5 = -[TUCallRecordingSession recordingState](self, "recordingState"), v5 == [v4 recordingState]))
+  if (-[TUCallRecordingSessionBase isEqual:](&v10, sel_isEqual_, sessionCopy) && (v5 = -[TUCallRecordingSession recordingState](self, "recordingState"), v5 == [sessionCopy recordingState]))
   {
-    v6 = [(TUCallRecordingSession *)self destinationBundleIdentifier];
-    v7 = [v4 destinationBundleIdentifier];
-    v8 = [v6 isEqual:v7];
+    destinationBundleIdentifier = [(TUCallRecordingSession *)self destinationBundleIdentifier];
+    destinationBundleIdentifier2 = [sessionCopy destinationBundleIdentifier];
+    v8 = [destinationBundleIdentifier isEqual:destinationBundleIdentifier2];
   }
 
   else

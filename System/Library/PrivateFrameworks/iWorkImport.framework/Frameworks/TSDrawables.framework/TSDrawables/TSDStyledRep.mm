@@ -1,34 +1,34 @@
 @interface TSDStyledRep
 - (BOOL)shouldShowReflection;
 - (BOOL)shouldShowShadow;
-- (CGImage)newShadowImageWithSize:(CGSize)a3 unflipped:(BOOL)a4 withChildren:(BOOL)a5;
-- (CGImage)p_newReflectionImageWithSize:(CGSize)a3 applyOpacity:(BOOL)a4 viewScale:(double)a5 withBlock:(id)a6;
+- (CGImage)newShadowImageWithSize:(CGSize)size unflipped:(BOOL)unflipped withChildren:(BOOL)children;
+- (CGImage)p_newReflectionImageWithSize:(CGSize)size applyOpacity:(BOOL)opacity viewScale:(double)scale withBlock:(id)block;
 - (CGRect)clipRect;
 - (CGRect)p_baseReflectionFrameInRootForClipping;
-- (CGRect)p_clipRectInRootForTransform:(CGAffineTransform *)a3 includeShadow:(BOOL)a4 includeReflection:(BOOL)a5;
-- (CGRect)p_rectWithEffectsAppliedToRect:(CGRect)a3 additionalTransform:(CGAffineTransform *)a4 includeShadow:(BOOL)a5 includeReflection:(BOOL)a6;
+- (CGRect)p_clipRectInRootForTransform:(CGAffineTransform *)transform includeShadow:(BOOL)shadow includeReflection:(BOOL)reflection;
+- (CGRect)p_rectWithEffectsAppliedToRect:(CGRect)rect additionalTransform:(CGAffineTransform *)transform includeShadow:(BOOL)shadow includeReflection:(BOOL)reflection;
 - (CGRect)p_reflectionRenderableFrameInRoot;
-- (CGRect)rectWithEffectsAppliedToRect:(CGRect)a3;
+- (CGRect)rectWithEffectsAppliedToRect:(CGRect)rect;
 - (NSString)description;
 - (TSDReflection)reflection;
 - (TSDShadow)shadow;
 - (TSDStyledInfo)styledInfo;
 - (double)opacity;
 - (id)blockToExcludeCaptionsAndDescendantsOfCaptions;
-- (id)textureForDescription:(id)a3;
-- (void)calculateTextureClipBounds:(CGRect *)a3 andOffset:(CGPoint *)a4 withTransform:(CGAffineTransform *)a5 andRectOnCanvas:(CGRect *)a6 textureDescription:(id)a7 isUsingImageTexture:(BOOL)a8;
+- (id)textureForDescription:(id)description;
+- (void)calculateTextureClipBounds:(CGRect *)bounds andOffset:(CGPoint *)offset withTransform:(CGAffineTransform *)transform andRectOnCanvas:(CGRect *)canvas textureDescription:(id)description isUsingImageTexture:(BOOL)texture;
 - (void)dealloc;
-- (void)drawGradientWithAlphaOverReflection:(CGContext *)a3 applyingOpacity:(BOOL)a4 reflectionSize:(CGSize)a5;
-- (void)drawInContext:(CGContext *)a3;
-- (void)drawInContextWithoutEffects:(CGContext *)a3 withContent:(BOOL)a4 strokeDrawOptions:(unint64_t)a5 withOpacity:(BOOL)a6 forAlphaOnly:(BOOL)a7 drawChildren:(BOOL)a8 keepingChildrenPassingTest:(id)a9;
-- (void)drawInContextWithoutEffectsForAlphaOnly:(CGContext *)a3;
-- (void)drawReflectionInContext:(CGContext *)a3 drawChildren:(BOOL)a4;
-- (void)drawReflectionInContext:(CGContext *)a3 withTransparencyLayer:(BOOL)a4 applyingOpacity:(BOOL)a5 shouldClipGradient:(BOOL)a6 withBlock:(id)a7;
-- (void)drawReflectionIntoReflectionFrameInContext:(CGContext *)a3 withTransparencyLayer:(BOOL)a4 applyingOpacity:(BOOL)a5 drawChildren:(BOOL)a6;
-- (void)drawShadowInContext:(CGContext *)a3 withChildren:(BOOL)a4 withDrawableOpacity:(BOOL)a5;
-- (void)p_drawReflectionInContext:(CGContext *)a3;
-- (void)p_drawReflectionIntoReflectionFrameInContext:(CGContext *)a3 withTransparencyLayer:(BOOL)a4 applyingOpacity:(BOOL)a5 shouldClipGradient:(BOOL)a6 withBlock:(id)a7;
-- (void)setTextureAttributes:(id)a3 textureBounds:(CGRect)a4;
+- (void)drawGradientWithAlphaOverReflection:(CGContext *)reflection applyingOpacity:(BOOL)opacity reflectionSize:(CGSize)size;
+- (void)drawInContext:(CGContext *)context;
+- (void)drawInContextWithoutEffects:(CGContext *)effects withContent:(BOOL)content strokeDrawOptions:(unint64_t)options withOpacity:(BOOL)opacity forAlphaOnly:(BOOL)only drawChildren:(BOOL)children keepingChildrenPassingTest:(id)test;
+- (void)drawInContextWithoutEffectsForAlphaOnly:(CGContext *)only;
+- (void)drawReflectionInContext:(CGContext *)context drawChildren:(BOOL)children;
+- (void)drawReflectionInContext:(CGContext *)context withTransparencyLayer:(BOOL)layer applyingOpacity:(BOOL)opacity shouldClipGradient:(BOOL)gradient withBlock:(id)block;
+- (void)drawReflectionIntoReflectionFrameInContext:(CGContext *)context withTransparencyLayer:(BOOL)layer applyingOpacity:(BOOL)opacity drawChildren:(BOOL)children;
+- (void)drawShadowInContext:(CGContext *)context withChildren:(BOOL)children withDrawableOpacity:(BOOL)opacity;
+- (void)p_drawReflectionInContext:(CGContext *)context;
+- (void)p_drawReflectionIntoReflectionFrameInContext:(CGContext *)context withTransparencyLayer:(BOOL)layer applyingOpacity:(BOOL)opacity shouldClipGradient:(BOOL)gradient withBlock:(id)block;
+- (void)setTextureAttributes:(id)attributes textureBounds:(CGRect)bounds;
 @end
 
 @implementation TSDStyledRep
@@ -80,21 +80,21 @@
   return result;
 }
 
-- (CGRect)p_clipRectInRootForTransform:(CGAffineTransform *)a3 includeShadow:(BOOL)a4 includeReflection:(BOOL)a5
+- (CGRect)p_clipRectInRootForTransform:(CGAffineTransform *)transform includeShadow:(BOOL)shadow includeReflection:(BOOL)reflection
 {
-  v5 = a5;
-  v6 = a4;
-  objc_msgSend_clipRectWithoutEffects(self, a2, a3);
-  v9 = *&a3->c;
-  *&v16.a = *&a3->a;
+  reflectionCopy = reflection;
+  shadowCopy = shadow;
+  objc_msgSend_clipRectWithoutEffects(self, a2, transform);
+  v9 = *&transform->c;
+  *&v16.a = *&transform->a;
   *&v16.c = v9;
-  *&v16.tx = *&a3->tx;
+  *&v16.tx = *&transform->tx;
   v18 = CGRectApplyAffineTransform(v17, &v16);
   v10 = *(MEMORY[0x277CBF2C0] + 16);
   *&v16.a = *MEMORY[0x277CBF2C0];
   *&v16.c = v10;
   *&v16.tx = *(MEMORY[0x277CBF2C0] + 32);
-  objc_msgSend_p_rectWithEffectsAppliedToRect_additionalTransform_includeShadow_includeReflection_(self, v11, &v16, v6, v5, v18.origin.x, v18.origin.y, v18.size.width, v18.size.height);
+  objc_msgSend_p_rectWithEffectsAppliedToRect_additionalTransform_includeShadow_includeReflection_(self, v11, &v16, shadowCopy, reflectionCopy, v18.origin.x, v18.origin.y, v18.size.width, v18.size.height);
   result.size.height = v15;
   result.size.width = v14;
   result.origin.y = v13;
@@ -123,15 +123,15 @@
   return result;
 }
 
-- (void)p_drawReflectionInContext:(CGContext *)a3
+- (void)p_drawReflectionInContext:(CGContext *)context
 {
-  v5 = objc_msgSend_canvas(self, a2, a3);
+  v5 = objc_msgSend_canvas(self, a2, context);
   objc_msgSend_contentsScale(v5, v6, v7);
-  TSDSetCGContextInfo(a3, 0, 0, 1, 0, v8);
+  TSDSetCGContextInfo(context, 0, 0, 1, 0, v8);
 
   v11 = objc_msgSend_canvas(self, v9, v10);
   v14 = objc_msgSend_supportsHDR(v11, v12, v13);
-  TSDCGContextSetShouldRenderHDRContent(a3, v14);
+  TSDCGContextSetShouldRenderHDRContent(context, v14);
 
   objc_msgSend_p_reflectionRenderableFrameInRoot(self, v15, v16);
   objc_msgSend_reflectionFrameInRootForClipping(self, v17, v18);
@@ -140,21 +140,21 @@
   TSUMultiplyRectScalar();
 
   TSUSubtractPoints();
-  CGContextTranslateCTM(a3, v24, v25);
+  CGContextTranslateCTM(context, v24, v25);
   objc_msgSend_p_baseReflectionFrameInRootForClipping(self, v26, v27);
   v30 = objc_msgSend_canvas(self, v28, v29);
   objc_msgSend_viewScale(v30, v31, v32);
   TSUMultiplyRectScalar();
 
   TSUSubtractPoints();
-  CGContextTranslateCTM(a3, v33, v34);
+  CGContextTranslateCTM(context, v33, v34);
   v37 = objc_msgSend_canvas(self, v35, v36);
   objc_msgSend_viewScale(v37, v38, v39);
   v41 = v40;
 
-  CGContextScaleCTM(a3, v41, v41);
+  CGContextScaleCTM(context, v41, v41);
 
-  MEMORY[0x2821F9670](self, sel_drawReflectionIntoReflectionFrameInContext_withTransparencyLayer_applyingOpacity_drawChildren_, a3);
+  MEMORY[0x2821F9670](self, sel_drawReflectionIntoReflectionFrameInContext_withTransparencyLayer_applyingOpacity_drawChildren_, context);
 }
 
 - (double)opacity
@@ -166,12 +166,12 @@
   return v7;
 }
 
-- (CGRect)rectWithEffectsAppliedToRect:(CGRect)a3
+- (CGRect)rectWithEffectsAppliedToRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v9 = objc_msgSend_layout(self, a2, v3);
   v12 = v9;
   if (v9)
@@ -202,28 +202,28 @@
   return result;
 }
 
-- (CGRect)p_rectWithEffectsAppliedToRect:(CGRect)a3 additionalTransform:(CGAffineTransform *)a4 includeShadow:(BOOL)a5 includeReflection:(BOOL)a6
+- (CGRect)p_rectWithEffectsAppliedToRect:(CGRect)rect additionalTransform:(CGAffineTransform *)transform includeShadow:(BOOL)shadow includeReflection:(BOOL)reflection
 {
-  v6 = a6;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (a5)
+  reflectionCopy = reflection;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (shadow)
   {
-    v13 = objc_msgSend_info(self, a2, a4);
+    v13 = objc_msgSend_info(self, a2, transform);
     v14 = objc_opt_respondsToSelector();
 
     if (v14)
     {
-      v15 = objc_msgSend_shadow(self, a2, a4);
+      v15 = objc_msgSend_shadow(self, a2, transform);
       v18 = v15;
       if (v15 && objc_msgSend_isEnabled(v15, v16, v17))
       {
-        v20 = *&a4->c;
-        *&v66.a = *&a4->a;
+        v20 = *&transform->c;
+        *&v66.a = *&transform->a;
         *&v66.c = v20;
-        *&v66.tx = *&a4->tx;
+        *&v66.tx = *&transform->tx;
         objc_msgSend_shadowBoundsForRect_additionalTransform_(v18, v19, &v66, x, y, width, height);
         x = v21;
         y = v22;
@@ -233,9 +233,9 @@
     }
   }
 
-  if (v6)
+  if (reflectionCopy)
   {
-    v27 = objc_msgSend_reflection(self, a2, a4);
+    v27 = objc_msgSend_reflection(self, a2, transform);
     if (v27)
     {
       v28 = objc_msgSend_styledLayout(self, v25, v26);
@@ -260,10 +260,10 @@
         v34 = v57;
       }
 
-      v58 = *&a4->c;
-      *&v66.a = *&a4->a;
+      v58 = *&transform->c;
+      *&v66.a = *&transform->a;
       *&v66.c = v58;
-      *&v66.tx = *&a4->tx;
+      *&v66.tx = *&transform->tx;
       v59 = v32;
       *&v58 = v34;
       v60 = v36;
@@ -352,28 +352,28 @@
   return CGRectIntegral(*&v17);
 }
 
-- (CGImage)newShadowImageWithSize:(CGSize)a3 unflipped:(BOOL)a4 withChildren:(BOOL)a5
+- (CGImage)newShadowImageWithSize:(CGSize)size unflipped:(BOOL)unflipped withChildren:(BOOL)children
 {
-  v5 = a4;
-  height = a3.height;
-  width = a3.width;
+  unflippedCopy = unflipped;
+  height = size.height;
+  width = size.width;
   v9 = &selRef_drawInContextWithoutEffectsForAlphaOnly_;
-  if (!a5)
+  if (!children)
   {
     v9 = &selRef_drawInContextWithoutEffectsOrChildrenForAlphaOnly_;
   }
 
   v10 = *v9;
-  v11 = objc_msgSend_shadow(self, a2, a4);
-  v13 = objc_msgSend_newShadowImageWithSize_shadow_drawSelector_unflipped_(self, v12, v11, v10, v5, width, height);
+  v11 = objc_msgSend_shadow(self, a2, unflipped);
+  v13 = objc_msgSend_newShadowImageWithSize_shadow_drawSelector_unflipped_(self, v12, v11, v10, unflippedCopy, width, height);
 
   return v13;
 }
 
-- (CGImage)p_newReflectionImageWithSize:(CGSize)a3 applyOpacity:(BOOL)a4 viewScale:(double)a5 withBlock:(id)a6
+- (CGImage)p_newReflectionImageWithSize:(CGSize)size applyOpacity:(BOOL)opacity viewScale:(double)scale withBlock:(id)block
 {
-  v7 = a4;
-  v9 = a6;
+  opacityCopy = opacity;
+  blockCopy = block;
   TSUCeilSize();
   Image = 0;
   if (v10 > 0.0 && v11 > 0.0)
@@ -382,7 +382,7 @@
     if (v13)
     {
       v14 = v13;
-      CGContextScaleCTM(v13, a5, a5);
+      CGContextScaleCTM(v13, scale, scale);
       v17 = objc_msgSend_canvas(self, v15, v16);
       isPrinting = objc_msgSend_isPrinting(v17, v18, v19);
       v23 = objc_msgSend_canvas(self, v21, v22);
@@ -391,7 +391,7 @@
       shouldSuppressBackgrounds = objc_msgSend_shouldSuppressBackgrounds(v29, v30, v31);
       TSDSetCGContextInfo(v14, isPrinting, isDrawingIntoPDF, 0, shouldSuppressBackgrounds, 1.0);
 
-      objc_msgSend_p_drawReflectionIntoReflectionFrameInContext_withTransparencyLayer_applyingOpacity_shouldClipGradient_withBlock_(self, v33, v14, 0, v7, 0, v9);
+      objc_msgSend_p_drawReflectionIntoReflectionFrameInContext_withTransparencyLayer_applyingOpacity_shouldClipGradient_withBlock_(self, v33, v14, 0, opacityCopy, 0, blockCopy);
       Image = CGBitmapContextCreateImage(v14);
       CGContextRelease(v14);
     }
@@ -405,13 +405,13 @@
   return Image;
 }
 
-- (void)drawGradientWithAlphaOverReflection:(CGContext *)a3 applyingOpacity:(BOOL)a4 reflectionSize:(CGSize)a5
+- (void)drawGradientWithAlphaOverReflection:(CGContext *)reflection applyingOpacity:(BOOL)opacity reflectionSize:(CGSize)size
 {
-  height = a5.height;
+  height = size.height;
   v28 = *MEMORY[0x277D85DE8];
   v9 = malloc_type_malloc(0x10uLL, 0x1000040451B5BE8uLL);
   v12 = v9;
-  if (a4)
+  if (opacity)
   {
     v13 = objc_msgSend_reflection(self, v10, v11);
     objc_msgSend_opacity(v13, v14, v15);
@@ -436,35 +436,35 @@
   v29.x = 0.0;
   v29.y = height;
   Axial = CGShadingCreateAxial(v22, *MEMORY[0x277CBF348], v29, v21, 1, 1);
-  CGContextSetBlendMode(a3, kCGBlendModeDestinationIn);
-  CGContextDrawShading(a3, Axial);
+  CGContextSetBlendMode(reflection, kCGBlendModeDestinationIn);
+  CGContextDrawShading(reflection, Axial);
   CGShadingRelease(Axial);
   CGFunctionRelease(v21);
 }
 
-- (void)p_drawReflectionIntoReflectionFrameInContext:(CGContext *)a3 withTransparencyLayer:(BOOL)a4 applyingOpacity:(BOOL)a5 shouldClipGradient:(BOOL)a6 withBlock:(id)a7
+- (void)p_drawReflectionIntoReflectionFrameInContext:(CGContext *)context withTransparencyLayer:(BOOL)layer applyingOpacity:(BOOL)opacity shouldClipGradient:(BOOL)gradient withBlock:(id)block
 {
-  v7 = a6;
-  v8 = a5;
-  v9 = a4;
-  v12 = a7;
+  gradientCopy = gradient;
+  opacityCopy = opacity;
+  layerCopy = layer;
+  blockCopy = block;
   v15 = objc_msgSend_styledLayout(self, v13, v14);
   objc_msgSend_reflectionFrame(v15, v16, v17);
   v19 = v18;
   v21 = v20;
-  CGContextSaveGState(a3);
-  if (v9)
+  CGContextSaveGState(context);
+  if (layerCopy)
   {
     TSURectWithSize();
-    CGContextBeginTransparencyLayerWithRect(a3, v72, 0);
+    CGContextBeginTransparencyLayerWithRect(context, v72, 0);
   }
 
   v24 = objc_msgSend_canvas(self, v22, v23, v21, v19);
   objc_msgSend_viewScale(v24, v25, v26);
-  v28 = v27 * TSDCGContextAssociatedScreenScale(a3);
+  v28 = v27 * TSDCGContextAssociatedScreenScale(context);
 
   TSUAliasRound();
-  CGContextTranslateCTM(a3, 0.0, v29 / v28);
+  CGContextTranslateCTM(context, 0.0, v29 / v28);
   v32 = objc_msgSend_layout(self, v30, v31);
   objc_msgSend_alignmentFrame(v32, v33, v34);
   v36 = v35;
@@ -489,15 +489,15 @@
   v74.size.width = v40;
   v74.size.height = v42;
   v57 = CGRectGetMaxY(v74);
-  CGContextTranslateCTM(a3, 0.0, MaxY - v57 + MaxY - v57);
+  CGContextTranslateCTM(context, 0.0, MaxY - v57 + MaxY - v57);
   objc_msgSend_alignmentFrameInRoot(v15, v58, v59);
   v61 = v60;
   v63 = v62;
   v65 = v64;
-  CGContextSaveGState(a3);
-  CGContextTranslateCTM(a3, 0.0, v65);
-  CGContextScaleCTM(a3, 1.0, -1.0);
-  CGContextTranslateCTM(a3, -v61, -v63);
+  CGContextSaveGState(context);
+  CGContextTranslateCTM(context, 0.0, v65);
+  CGContextScaleCTM(context, 1.0, -1.0);
+  CGContextTranslateCTM(context, -v61, -v63);
   if (v15)
   {
     objc_msgSend_transformInRoot(v15, v66, v67);
@@ -508,35 +508,35 @@
     memset(&transform, 0, sizeof(transform));
   }
 
-  CGContextConcatCTM(a3, &transform);
-  sub_276647B34(a3, 1);
-  v12[2](v12, a3);
+  CGContextConcatCTM(context, &transform);
+  sub_276647B34(context, 1);
+  blockCopy[2](blockCopy, context);
 
-  sub_276647B34(a3, 0);
-  CGContextRestoreGState(a3);
-  if (v7)
+  sub_276647B34(context, 0);
+  CGContextRestoreGState(context);
+  if (gradientCopy)
   {
     CGContextClipToRectSafe();
   }
 
-  objc_msgSend_drawGradientWithAlphaOverReflection_applyingOpacity_reflectionSize_(self, v68, a3, v8, v70, v69);
-  if (v9)
+  objc_msgSend_drawGradientWithAlphaOverReflection_applyingOpacity_reflectionSize_(self, v68, context, opacityCopy, v70, v69);
+  if (layerCopy)
   {
-    CGContextEndTransparencyLayer(a3);
+    CGContextEndTransparencyLayer(context);
   }
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
-- (void)drawReflectionIntoReflectionFrameInContext:(CGContext *)a3 withTransparencyLayer:(BOOL)a4 applyingOpacity:(BOOL)a5 drawChildren:(BOOL)a6
+- (void)drawReflectionIntoReflectionFrameInContext:(CGContext *)context withTransparencyLayer:(BOOL)layer applyingOpacity:(BOOL)opacity drawChildren:(BOOL)children
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = sub_2766DE260;
   v6[3] = &unk_27A6CCED8;
   v6[4] = self;
-  v7 = a6;
-  objc_msgSend_p_drawReflectionIntoReflectionFrameInContext_withTransparencyLayer_applyingOpacity_shouldClipGradient_withBlock_(self, a2, a3, a4, a5, 0, v6);
+  childrenCopy = children;
+  objc_msgSend_p_drawReflectionIntoReflectionFrameInContext_withTransparencyLayer_applyingOpacity_shouldClipGradient_withBlock_(self, a2, context, layer, opacity, 0, v6);
 }
 
 - (id)blockToExcludeCaptionsAndDescendantsOfCaptions
@@ -552,11 +552,11 @@
   return v3;
 }
 
-- (void)drawShadowInContext:(CGContext *)a3 withChildren:(BOOL)a4 withDrawableOpacity:(BOOL)a5
+- (void)drawShadowInContext:(CGContext *)context withChildren:(BOOL)children withDrawableOpacity:(BOOL)opacity
 {
-  v5 = a5;
-  v6 = a4;
-  v9 = objc_msgSend_shadow(self, a2, a3);
+  opacityCopy = opacity;
+  childrenCopy = children;
+  v9 = objc_msgSend_shadow(self, a2, context);
   v12 = v9;
   if (v9)
   {
@@ -569,14 +569,14 @@
         y = v18;
         width = v20;
         height = v22;
-        v25 = objc_msgSend_newShadowImageWithSize_unflipped_withChildren_(self, v24, 0, v6, v20, v22);
+        v25 = objc_msgSend_newShadowImageWithSize_unflipped_withChildren_(self, v24, 0, childrenCopy, v20, v22);
         if (v25)
         {
           v26 = v25;
-          CGContextSaveGState(a3);
+          CGContextSaveGState(context);
           objc_msgSend_opacity(v12, v27, v28);
           v32 = v31;
-          if (v5)
+          if (opacityCopy)
           {
             objc_msgSend_opacity(self, v29, v30);
             v32 = v32 * v33;
@@ -584,7 +584,7 @@
 
           if (v32 < 1.0)
           {
-            CGContextSetAlpha(a3, v32);
+            CGContextSetAlpha(context, v32);
           }
 
           if (objc_msgSend_isDropShadow(v12, v29, v30))
@@ -644,13 +644,13 @@
               }
 
               CGAffineTransformInvert(&transform, &v107);
-              CGContextConcatCTM(a3, &transform);
+              CGContextConcatCTM(context, &transform);
 
-              CGContextTranslateCTM(a3, v55, v57);
+              CGContextTranslateCTM(context, v55, v57);
               objc_msgSend_offset(v12, v97, v98);
-              CGContextTranslateCTM(a3, 0.0, v48 + v99);
-              CGContextTranslateCTM(a3, 0.0, v48);
-              CGContextScaleCTM(a3, 1.0, -1.0);
+              CGContextTranslateCTM(context, 0.0, v48 + v99);
+              CGContextTranslateCTM(context, 0.0, v48);
+              CGContextScaleCTM(context, 1.0, -1.0);
               goto LABEL_25;
             }
 
@@ -661,9 +661,9 @@ LABEL_25:
               v111.origin.y = y;
               v111.size.width = width;
               v111.size.height = height;
-              CGContextDrawImage(a3, v111, v26);
+              CGContextDrawImage(context, v111, v26);
               CGImageRelease(v26);
-              CGContextRestoreGState(a3);
+              CGContextRestoreGState(context);
               goto LABEL_26;
             }
 
@@ -697,17 +697,17 @@ LABEL_25:
             }
 
             CGAffineTransformInvert(&transform, &v107);
-            CGContextConcatCTM(a3, &transform);
+            CGContextConcatCTM(context, &transform);
 
-            CGContextTranslateCTM(a3, v73, v75);
+            CGContextTranslateCTM(context, v73, v75);
             objc_msgSend_offsetDelta(v12, v100, v101);
             v103 = v102;
             objc_msgSend_offsetDelta(v12, v104, v105);
-            CGContextTranslateCTM(a3, v103, v106);
+            CGContextTranslateCTM(context, v103, v106);
           }
 
           TSUAffineTransformForFlips();
-          CGContextConcatCTM(a3, &transform);
+          CGContextConcatCTM(context, &transform);
           goto LABEL_25;
         }
       }
@@ -717,12 +717,12 @@ LABEL_25:
 LABEL_26:
 }
 
-- (void)drawReflectionInContext:(CGContext *)a3 withTransparencyLayer:(BOOL)a4 applyingOpacity:(BOOL)a5 shouldClipGradient:(BOOL)a6 withBlock:(id)a7
+- (void)drawReflectionInContext:(CGContext *)context withTransparencyLayer:(BOOL)layer applyingOpacity:(BOOL)opacity shouldClipGradient:(BOOL)gradient withBlock:(id)block
 {
-  v7 = a6;
-  v8 = a5;
-  v9 = a4;
-  v12 = a7;
+  gradientCopy = gradient;
+  opacityCopy = opacity;
+  layerCopy = layer;
+  blockCopy = block;
   v17 = objc_msgSend_reflection(self, v13, v14);
   if (v17 && objc_msgSend_shouldShowReflection(self, v15, v16))
   {
@@ -739,7 +739,7 @@ LABEL_26:
     }
 
     CGAffineTransformInvert(&transform, &v68);
-    CGContextConcatCTM(a3, &transform);
+    CGContextConcatCTM(context, &transform);
     objc_msgSend_reflectionFrame(v23, v24, v25);
     v27 = v26;
     v29 = v28;
@@ -751,7 +751,7 @@ LABEL_26:
     if (isDrawingIntoPDF)
     {
       TSUMultiplySizeScalar();
-      v41 = objc_msgSend_p_newReflectionImageWithSize_applyOpacity_viewScale_withBlock_(self, v40, v8, v12);
+      v41 = objc_msgSend_p_newReflectionImageWithSize_applyOpacity_viewScale_withBlock_(self, v40, opacityCopy, blockCopy);
       if (v41)
       {
         v44 = v41;
@@ -777,73 +777,73 @@ LABEL_26:
         v71.size.width = v31;
         v71.size.height = v33;
         MaxY = CGRectGetMaxY(v71);
-        CGContextTranslateCTM(a3, 0.0, MinY + MaxY);
-        CGContextScaleCTM(a3, 1.0, -1.0);
+        CGContextTranslateCTM(context, 0.0, MinY + MaxY);
+        CGContextScaleCTM(context, 1.0, -1.0);
         v72.origin.x = v27;
         v72.origin.y = v29;
         v72.size.width = v31;
         v72.size.height = v33;
-        CGContextDrawImage(a3, v72, v44);
+        CGContextDrawImage(context, v72, v44);
         CGImageRelease(v44);
       }
     }
 
     else
     {
-      CGContextTranslateCTM(a3, v27, v29);
+      CGContextTranslateCTM(context, v27, v29);
       v60 = objc_msgSend_parent(v23, v58, v59);
       objc_msgSend_frameInRoot(v60, v61, v62);
       v64 = v63;
       v66 = v65;
 
-      CGContextTranslateCTM(a3, v64, v66);
-      objc_msgSend_p_drawReflectionIntoReflectionFrameInContext_withTransparencyLayer_applyingOpacity_shouldClipGradient_withBlock_(self, v67, a3, v9, v8, v7, v12);
+      CGContextTranslateCTM(context, v64, v66);
+      objc_msgSend_p_drawReflectionIntoReflectionFrameInContext_withTransparencyLayer_applyingOpacity_shouldClipGradient_withBlock_(self, v67, context, layerCopy, opacityCopy, gradientCopy, blockCopy);
     }
   }
 }
 
-- (void)drawReflectionInContext:(CGContext *)a3 drawChildren:(BOOL)a4
+- (void)drawReflectionInContext:(CGContext *)context drawChildren:(BOOL)children
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = sub_2766DEB30;
   v4[3] = &unk_27A6CCED8;
   v4[4] = self;
-  v5 = a4;
-  objc_msgSend_drawReflectionInContext_withTransparencyLayer_applyingOpacity_shouldClipGradient_withBlock_(self, a2, a3, 1, 1, 0, v4);
+  childrenCopy = children;
+  objc_msgSend_drawReflectionInContext_withTransparencyLayer_applyingOpacity_shouldClipGradient_withBlock_(self, a2, context, 1, 1, 0, v4);
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  v5 = objc_msgSend_styledLayout(self, a2, a3);
+  v5 = objc_msgSend_styledLayout(self, a2, context);
   isInvisible = objc_msgSend_isInvisible(v5, v6, v7);
 
   if ((isInvisible & 1) == 0)
   {
-    objc_msgSend_drawShadowInContext_withChildren_withDrawableOpacity_(self, v9, a3, 1, 1);
-    objc_msgSend_drawInContextWithoutEffects_withContent_strokeDrawOptions_withOpacity_forAlphaOnly_drawChildren_keepingChildrenPassingTest_(self, v10, a3, 1, 7, 1, 0, 0, 0);
+    objc_msgSend_drawShadowInContext_withChildren_withDrawableOpacity_(self, v9, context, 1, 1);
+    objc_msgSend_drawInContextWithoutEffects_withContent_strokeDrawOptions_withOpacity_forAlphaOnly_drawChildren_keepingChildrenPassingTest_(self, v10, context, 1, 7, 1, 0, 0, 0);
     objc_msgSend_opacity(self, v11, v12);
     v15 = v14;
     if (v14 == 1.0)
     {
 
-      objc_msgSend_drawReflectionInContext_drawChildren_(self, v13, a3, 1);
+      objc_msgSend_drawReflectionInContext_drawChildren_(self, v13, context, 1);
     }
 
     else
     {
-      CGContextSaveGState(a3);
-      CGContextSetAlpha(a3, v15);
-      objc_msgSend_drawReflectionInContext_drawChildren_(self, v16, a3, 1);
+      CGContextSaveGState(context);
+      CGContextSetAlpha(context, v15);
+      objc_msgSend_drawReflectionInContext_drawChildren_(self, v16, context, 1);
 
-      CGContextRestoreGState(a3);
+      CGContextRestoreGState(context);
     }
   }
 }
 
-- (void)drawInContextWithoutEffects:(CGContext *)a3 withContent:(BOOL)a4 strokeDrawOptions:(unint64_t)a5 withOpacity:(BOOL)a6 forAlphaOnly:(BOOL)a7 drawChildren:(BOOL)a8 keepingChildrenPassingTest:(id)a9
+- (void)drawInContextWithoutEffects:(CGContext *)effects withContent:(BOOL)content strokeDrawOptions:(unint64_t)options withOpacity:(BOOL)opacity forAlphaOnly:(BOOL)only drawChildren:(BOOL)children keepingChildrenPassingTest:(id)test
 {
-  v9 = a9;
+  testCopy = test;
   v10 = MEMORY[0x277D81150];
   v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "[TSDStyledRep drawInContextWithoutEffects:withContent:strokeDrawOptions:withOpacity:forAlphaOnly:drawChildren:keepingChildrenPassingTest:]");
   v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDStyledRep.m");
@@ -864,9 +864,9 @@ LABEL_26:
   objc_exception_throw(v28);
 }
 
-- (void)drawInContextWithoutEffectsForAlphaOnly:(CGContext *)a3
+- (void)drawInContextWithoutEffectsForAlphaOnly:(CGContext *)only
 {
-  if (TSDCGContextIsShadowContext(a3))
+  if (TSDCGContextIsShadowContext(only))
   {
     v7 = objc_msgSend_blockToExcludeCaptionsAndDescendantsOfCaptions(self, v5, v6);
   }
@@ -877,19 +877,19 @@ LABEL_26:
   }
 
   v8 = v7;
-  objc_msgSend_drawInContextWithoutEffects_withContent_strokeDrawOptions_withOpacity_forAlphaOnly_drawChildren_keepingChildrenPassingTest_(self, v5, a3, 1, 7, 0, 1, 1, v7);
+  objc_msgSend_drawInContextWithoutEffects_withContent_strokeDrawOptions_withOpacity_forAlphaOnly_drawChildren_keepingChildrenPassingTest_(self, v5, only, 1, 7, 0, 1, 1, v7);
 }
 
-- (void)setTextureAttributes:(id)a3 textureBounds:(CGRect)a4
+- (void)setTextureAttributes:(id)attributes textureBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v28.receiver = self;
   v28.super_class = TSDStyledRep;
-  v9 = a3;
-  [(TSDRep *)&v28 setTextureAttributes:v9 textureBounds:x, y, width, height];
+  attributesCopy = attributes;
+  [(TSDRep *)&v28 setTextureAttributes:attributesCopy textureBounds:x, y, width, height];
   v12 = objc_msgSend_layout(self, v10, v11);
   v15 = v12;
   if (v12)
@@ -898,19 +898,19 @@ LABEL_26:
   }
 
   TSUTransformAngleInRadians();
-  objc_msgSend_setTextureAngle_(v9, v17, v18, -v16);
+  objc_msgSend_setTextureAngle_(attributesCopy, v17, v18, -v16);
 
   v21 = objc_msgSend_canvas(self, v19, v20);
   v24 = objc_msgSend_topLevelReps(v21, v22, v23);
   v26 = objc_msgSend_indexOfObject_(v24, v25, self);
-  objc_msgSend_setTextureZOrder_(v9, v27, v26);
+  objc_msgSend_setTextureZOrder_(attributesCopy, v27, v26);
 }
 
-- (void)calculateTextureClipBounds:(CGRect *)a3 andOffset:(CGPoint *)a4 withTransform:(CGAffineTransform *)a5 andRectOnCanvas:(CGRect *)a6 textureDescription:(id)a7 isUsingImageTexture:(BOOL)a8
+- (void)calculateTextureClipBounds:(CGRect *)bounds andOffset:(CGPoint *)offset withTransform:(CGAffineTransform *)transform andRectOnCanvas:(CGRect *)canvas textureDescription:(id)description isUsingImageTexture:(BOOL)texture
 {
-  v14 = a7;
-  v17 = v14;
-  if (!a5)
+  descriptionCopy = description;
+  v17 = descriptionCopy;
+  if (!transform)
   {
     v64 = MEMORY[0x277D81150];
     v65 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "[TSDStyledRep calculateTextureClipBounds:andOffset:withTransform:andRectOnCanvas:textureDescription:isUsingImageTexture:]");
@@ -921,28 +921,28 @@ LABEL_26:
     goto LABEL_16;
   }
 
-  isMagicMove = objc_msgSend_isMagicMove(v14, v15, v16);
+  isMagicMove = objc_msgSend_isMagicMove(descriptionCopy, v15, v16);
   v21 = objc_msgSend_canvas(self, v19, v20);
   objc_msgSend_viewScale(v21, v22, v23);
 
   if (isMagicMove)
   {
-    v26 = *&a5->c;
-    v77[0] = *&a5->a;
+    v26 = *&transform->c;
+    v77[0] = *&transform->a;
     v77[1] = v26;
-    v77[2] = *&a5->tx;
+    v77[2] = *&transform->tx;
     objc_msgSend_unRotatedTransform_(self, v24, v77);
     v27 = *&v78.c;
-    *&a5->a = *&v78.a;
-    *&a5->c = v27;
-    *&a5->tx = *&v78.tx;
+    *&transform->a = *&v78.a;
+    *&transform->c = v27;
+    *&transform->tx = *&v78.tx;
   }
 
   objc_msgSend_naturalBounds(self, v24, v25);
-  v28 = *&a5->c;
-  *&v78.a = *&a5->a;
+  v28 = *&transform->c;
+  *&v78.a = *&transform->a;
   *&v78.c = v28;
-  *&v78.tx = *&a5->tx;
+  *&v78.tx = *&transform->tx;
   CGRectApplyAffineTransform(v79, &v78);
   TSUMultiplyRectScalar();
   v75 = v30;
@@ -951,20 +951,20 @@ LABEL_26:
   v74 = v31;
   shouldSeparateShadow = objc_msgSend_shouldSeparateShadow(v17, v33, v34);
   shouldSeparateReflection = objc_msgSend_shouldSeparateReflection(v17, v36, v37);
-  v39 = *&a5->c;
-  *&v78.a = *&a5->a;
+  v39 = *&transform->c;
+  *&v78.a = *&transform->a;
   *&v78.c = v39;
-  *&v78.tx = *&a5->tx;
+  *&v78.tx = *&transform->tx;
   objc_msgSend_p_clipRectInRootForTransform_includeShadow_includeReflection_(self, v40, &v78, shouldSeparateShadow ^ 1u, shouldSeparateReflection ^ 1u);
   v42 = v41;
   v44 = v43;
   v46 = v45;
   v48 = v47;
   objc_msgSend_clipRectWithoutEffects(self, v49, v50);
-  v51 = *&a5->c;
-  *&v78.a = *&a5->a;
+  v51 = *&transform->c;
+  *&v78.a = *&transform->a;
   *&v78.c = v51;
-  *&v78.tx = *&a5->tx;
+  *&v78.tx = *&transform->tx;
   v81 = CGRectApplyAffineTransform(v80, &v78);
   x = v81.origin.x;
   y = v81.origin.y;
@@ -988,10 +988,10 @@ LABEL_26:
   }
 
   TSUMultiplyRectScalar();
-  if (a8)
+  if (texture)
   {
     TSURoundedRect();
-    if (!a3)
+    if (!bounds)
     {
       goto LABEL_12;
     }
@@ -1001,40 +1001,40 @@ LABEL_26:
 
   v82 = CGRectIntegral(*&v56);
   *&v60 = CGRectInset(v82, -1.0, -1.0);
-  if (a3)
+  if (bounds)
   {
 LABEL_11:
-    a3->origin.x = v60;
-    a3->origin.y = v61;
-    a3->size.width = v62;
-    a3->size.height = v63;
+    bounds->origin.x = v60;
+    bounds->origin.y = v61;
+    bounds->size.width = v62;
+    bounds->size.height = v63;
   }
 
 LABEL_12:
-  if (a4)
+  if (offset)
   {
     TSUSubtractPoints();
-    a4->x = v71;
-    a4->y = v72;
+    offset->x = v71;
+    offset->y = v72;
   }
 
-  if (a6)
+  if (canvas)
   {
-    a6->origin.x = v76;
-    a6->origin.y = v75;
-    a6->size.width = v74;
-    a6->size.height = v73;
+    canvas->origin.x = v76;
+    canvas->origin.y = v75;
+    canvas->size.width = v74;
+    canvas->size.height = v73;
   }
 
 LABEL_16:
 }
 
-- (id)textureForDescription:(id)a3
+- (id)textureForDescription:(id)description
 {
-  v4 = a3;
-  isMagicMove = objc_msgSend_isMagicMove(v4, v5, v6);
-  shouldAddMagicMoveObjectOnly = objc_msgSend_shouldAddMagicMoveObjectOnly(v4, v8, v9);
-  shouldNotAddContainedReps = objc_msgSend_shouldNotAddContainedReps(v4, v10, v11);
+  descriptionCopy = description;
+  isMagicMove = objc_msgSend_isMagicMove(descriptionCopy, v5, v6);
+  shouldAddMagicMoveObjectOnly = objc_msgSend_shouldAddMagicMoveObjectOnly(descriptionCopy, v8, v9);
+  shouldNotAddContainedReps = objc_msgSend_shouldNotAddContainedReps(descriptionCopy, v10, v11);
   v346[0] = MEMORY[0x277D85DD0];
   v346[1] = 3221225472;
   v346[2] = sub_2766E034C;
@@ -1052,14 +1052,14 @@ LABEL_16:
   objc_msgSend_setIsMagicMove_(v26, v28, isMagicMove);
   objc_msgSend_setObjectType_(v26, v29, 1);
   v284 = shouldNotAddContainedReps;
-  if (!objc_msgSend_shouldSeparateShadow(v4, v30, v31) || !v18 || shouldAddMagicMoveObjectOnly & 1 | ((objc_msgSend_isEnabled(v18, v32, v33) & 1) == 0))
+  if (!objc_msgSend_shouldSeparateShadow(descriptionCopy, v30, v31) || !v18 || shouldAddMagicMoveObjectOnly & 1 | ((objc_msgSend_isEnabled(v18, v32, v33) & 1) == 0))
   {
     goto LABEL_16;
   }
 
   v309.b = 0.0;
   v309.a = 0.0;
-  v34 = objc_msgSend_shouldNotAddContainedReps(v4, v32, v33) ^ 1;
+  v34 = objc_msgSend_shouldNotAddContainedReps(descriptionCopy, v32, v33) ^ 1;
   v37 = objc_msgSend_shadow(self, v35, v36);
   objc_msgSend_boundsForRep_(v37, v38, self);
 
@@ -1241,7 +1241,7 @@ LABEL_16:
   v326 = 0.0;
   v324 = 0u;
   v325 = 0u;
-  objc_msgSend_calculateTextureClipBounds_andOffset_withTransform_andRectOnCanvas_textureDescription_isUsingImageTexture_(self, v125, &v328, &v326, &v330, &v324, v4, 0);
+  objc_msgSend_calculateTextureClipBounds_andOffset_withTransform_andRectOnCanvas_textureDescription_isUsingImageTexture_(self, v125, &v328, &v326, &v330, &v324, descriptionCopy, 0);
   objc_msgSend_naturalBounds(self, v126, v127);
   v309 = v330;
   CGRectApplyAffineTransform(v348, &v309);
@@ -1252,7 +1252,7 @@ LABEL_16:
   v133 = v132;
   v135 = v134;
   v280 = v18;
-  if (objc_msgSend_shouldAddVideoBackgroundFill(v4, v136, v137))
+  if (objc_msgSend_shouldAddVideoBackgroundFill(descriptionCopy, v136, v137))
   {
     v309 = v330;
     v139 = objc_msgSend_newVideoBackgroundFillTextureWithClipBounds_offset_transform_contentRect_(self, v138, &v309, v328, v329, v326, v327, *&v129, *&v131, *&v133, *&v135);
@@ -1275,7 +1275,7 @@ LABEL_16:
   v319 = v329;
   v320 = v25;
   v321 = v330;
-  v143 = v4;
+  v143 = descriptionCopy;
   v316 = v143;
   v323 = shouldNotAddContainedReps ^ 1;
   v144 = v13;

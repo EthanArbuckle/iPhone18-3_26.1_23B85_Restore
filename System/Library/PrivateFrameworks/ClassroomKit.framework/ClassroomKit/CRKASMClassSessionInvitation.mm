@@ -1,41 +1,41 @@
 @interface CRKASMClassSessionInvitation
-+ (id)instanceWithDictionary:(id)a3;
-- (CRKASMClassSessionInvitation)initWithInvitationIdentifier:(id)a3 instructorIdentifier:(id)a4 sessionIdentifier:(id)a5;
-- (CRKASMClassSessionInvitation)initWithSessionIdentifier:(id)a3 instructorIdentifier:(id)a4;
++ (id)instanceWithDictionary:(id)dictionary;
+- (CRKASMClassSessionInvitation)initWithInvitationIdentifier:(id)identifier instructorIdentifier:(id)instructorIdentifier sessionIdentifier:(id)sessionIdentifier;
+- (CRKASMClassSessionInvitation)initWithSessionIdentifier:(id)identifier instructorIdentifier:(id)instructorIdentifier;
 - (NSDictionary)dictionaryValue;
 @end
 
 @implementation CRKASMClassSessionInvitation
 
-- (CRKASMClassSessionInvitation)initWithInvitationIdentifier:(id)a3 instructorIdentifier:(id)a4 sessionIdentifier:(id)a5
+- (CRKASMClassSessionInvitation)initWithInvitationIdentifier:(id)identifier instructorIdentifier:(id)instructorIdentifier sessionIdentifier:(id)sessionIdentifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  instructorIdentifierCopy = instructorIdentifier;
+  sessionIdentifierCopy = sessionIdentifier;
   v17.receiver = self;
   v17.super_class = CRKASMClassSessionInvitation;
   v12 = [(CRKASMClassSessionInvitation *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_invitationIdentifier, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_invitationIdentifier, identifier);
+    v14 = [instructorIdentifierCopy copy];
     instructorIdentifier = v13->_instructorIdentifier;
     v13->_instructorIdentifier = v14;
 
-    objc_storeStrong(&v13->_sessionIdentifier, a5);
+    objc_storeStrong(&v13->_sessionIdentifier, sessionIdentifier);
   }
 
   return v13;
 }
 
-- (CRKASMClassSessionInvitation)initWithSessionIdentifier:(id)a3 instructorIdentifier:(id)a4
+- (CRKASMClassSessionInvitation)initWithSessionIdentifier:(id)identifier instructorIdentifier:(id)instructorIdentifier
 {
   v6 = MEMORY[0x277CCAD78];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 UUID];
-  v10 = [(CRKASMClassSessionInvitation *)self initWithInvitationIdentifier:v9 instructorIdentifier:v7 sessionIdentifier:v8];
+  instructorIdentifierCopy = instructorIdentifier;
+  identifierCopy = identifier;
+  uUID = [v6 UUID];
+  v10 = [(CRKASMClassSessionInvitation *)self initWithInvitationIdentifier:uUID instructorIdentifier:instructorIdentifierCopy sessionIdentifier:identifierCopy];
 
   return v10;
 }
@@ -44,25 +44,25 @@
 {
   v11[3] = *MEMORY[0x277D85DE8];
   v10[0] = @"SessionIdentifier";
-  v3 = [(CRKASMClassSessionInvitation *)self sessionIdentifier];
-  v4 = [v3 stringValue];
-  v11[0] = v4;
+  sessionIdentifier = [(CRKASMClassSessionInvitation *)self sessionIdentifier];
+  stringValue = [sessionIdentifier stringValue];
+  v11[0] = stringValue;
   v10[1] = @"InstructorIdentifier";
-  v5 = [(CRKASMClassSessionInvitation *)self instructorIdentifier];
-  v11[1] = v5;
+  instructorIdentifier = [(CRKASMClassSessionInvitation *)self instructorIdentifier];
+  v11[1] = instructorIdentifier;
   v10[2] = @"InvitationIdentifier";
-  v6 = [(CRKASMClassSessionInvitation *)self invitationIdentifier];
-  v7 = [v6 UUIDString];
-  v11[2] = v7;
+  invitationIdentifier = [(CRKASMClassSessionInvitation *)self invitationIdentifier];
+  uUIDString = [invitationIdentifier UUIDString];
+  v11[2] = uUIDString;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:3];
 
   return v8;
 }
 
-+ (id)instanceWithDictionary:(id)a3
++ (id)instanceWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"SessionIdentifier"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"SessionIdentifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -76,7 +76,7 @@
 
   v7 = v6;
 
-  v8 = [v4 objectForKeyedSubscript:@"InstructorIdentifier"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"InstructorIdentifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -90,7 +90,7 @@
 
   v10 = v9;
 
-  v11 = [v4 objectForKeyedSubscript:@"InvitationIdentifier"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"InvitationIdentifier"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -114,7 +114,7 @@
     v14 = 0;
     if (v15 && v16)
     {
-      v14 = [[a1 alloc] initWithInvitationIdentifier:v16 instructorIdentifier:v10 sessionIdentifier:v15];
+      v14 = [[self alloc] initWithInvitationIdentifier:v16 instructorIdentifier:v10 sessionIdentifier:v15];
     }
   }
 

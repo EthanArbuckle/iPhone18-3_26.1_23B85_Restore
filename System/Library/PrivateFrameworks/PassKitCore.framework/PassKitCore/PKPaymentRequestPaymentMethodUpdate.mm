@@ -1,7 +1,7 @@
 @interface PKPaymentRequestPaymentMethodUpdate
-- (PKPaymentRequestPaymentMethodUpdate)initWithCoder:(id)a3;
+- (PKPaymentRequestPaymentMethodUpdate)initWithCoder:(id)coder;
 - (PKPaymentRequestPaymentMethodUpdate)initWithErrors:(NSArray *)errors paymentSummaryItems:(NSArray *)paymentSummaryItems;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setErrors:(NSArray *)errors;
 @end
 
@@ -57,19 +57,19 @@
   }
 }
 
-- (PKPaymentRequestPaymentMethodUpdate)initWithCoder:(id)a3
+- (PKPaymentRequestPaymentMethodUpdate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKPaymentRequestPaymentMethodUpdate;
-  v5 = [(PKPaymentRequestUpdate *)&v11 initWithCoder:v4];
+  v5 = [(PKPaymentRequestUpdate *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"peerPaymentQuote"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"peerPaymentQuote"];
     peerPaymentQuote = v5->_peerPaymentQuote;
     v5->_peerPaymentQuote = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installmentGroupIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installmentGroupIdentifier"];
     installmentGroupIdentifier = v5->_installmentGroupIdentifier;
     v5->_installmentGroupIdentifier = v8;
   }
@@ -77,14 +77,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPaymentRequestPaymentMethodUpdate;
-  v4 = a3;
-  [(PKPaymentRequestUpdate *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_peerPaymentQuote forKey:{@"peerPaymentQuote", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_installmentGroupIdentifier forKey:@"installmentGroupIdentifier"];
+  coderCopy = coder;
+  [(PKPaymentRequestUpdate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_peerPaymentQuote forKey:{@"peerPaymentQuote", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_installmentGroupIdentifier forKey:@"installmentGroupIdentifier"];
 }
 
 @end

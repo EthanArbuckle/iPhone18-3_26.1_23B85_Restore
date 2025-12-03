@@ -1,13 +1,13 @@
 @interface CNContactAddToGroupAction
 + (id)os_log;
-- (BOOL)groupPicker:(id)a3 shouldEnableGroupWithIdentifier:(id)a4;
+- (BOOL)groupPicker:(id)picker shouldEnableGroupWithIdentifier:(id)identifier;
 - (CNManagedConfiguration)managedConfiguration;
 - (CNUIGroupsAndContainersSaveManager)groupsAndContainersSaveManager;
 - (id)sourceAccountExternalIdentifiers;
-- (void)groupPicker:(id)a3 didSelectGroup:(id)a4;
-- (void)groupPickerDidCancel:(id)a3;
-- (void)performActionWithSender:(id)a3;
-- (void)setContactParentGroups:(id)a3;
+- (void)groupPicker:(id)picker didSelectGroup:(id)group;
+- (void)groupPickerDidCancel:(id)cancel;
+- (void)performActionWithSender:(id)sender;
+- (void)setContactParentGroups:(id)groups;
 @end
 
 @implementation CNContactAddToGroupAction
@@ -33,43 +33,43 @@ uint64_t __35__CNContactAddToGroupAction_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (void)groupPickerDidCancel:(id)a3
+- (void)groupPickerDidCancel:(id)cancel
 {
-  v5 = [(CNContactAction *)self delegate];
-  v4 = [(CNContactAddToGroupAction *)self groupPickerNavigationViewController];
-  [v5 action:self dismissViewController:v4 sender:self];
+  delegate = [(CNContactAction *)self delegate];
+  groupPickerNavigationViewController = [(CNContactAddToGroupAction *)self groupPickerNavigationViewController];
+  [delegate action:self dismissViewController:groupPickerNavigationViewController sender:self];
 }
 
-- (void)groupPicker:(id)a3 didSelectGroup:(id)a4
+- (void)groupPicker:(id)picker didSelectGroup:(id)group
 {
-  [(CNContactAddToGroupAction *)self setSelectedGroup:a4];
-  v5 = [(CNContactAction *)self delegate];
-  [v5 actionDidFinish:self];
+  [(CNContactAddToGroupAction *)self setSelectedGroup:group];
+  delegate = [(CNContactAction *)self delegate];
+  [delegate actionDidFinish:self];
 
-  v7 = [(CNContactAction *)self delegate];
-  v6 = [(CNContactAddToGroupAction *)self groupPickerNavigationViewController];
-  [v7 action:self dismissViewController:v6 sender:self];
+  delegate2 = [(CNContactAction *)self delegate];
+  groupPickerNavigationViewController = [(CNContactAddToGroupAction *)self groupPickerNavigationViewController];
+  [delegate2 action:self dismissViewController:groupPickerNavigationViewController sender:self];
 }
 
-- (BOOL)groupPicker:(id)a3 shouldEnableGroupWithIdentifier:(id)a4
+- (BOOL)groupPicker:(id)picker shouldEnableGroupWithIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [(CNContactAddToGroupAction *)self contactParentGroupIdentifiers];
-  v7 = [v6 containsObject:v5];
+  identifierCopy = identifier;
+  contactParentGroupIdentifiers = [(CNContactAddToGroupAction *)self contactParentGroupIdentifiers];
+  v7 = [contactParentGroupIdentifiers containsObject:identifierCopy];
 
   return v7 ^ 1;
 }
 
 - (id)sourceAccountExternalIdentifiers
 {
-  v3 = [(CNContactAddToGroupAction *)self managedConfiguration];
-  v4 = [v3 deviceHasManagementRestrictions];
+  managedConfiguration = [(CNContactAddToGroupAction *)self managedConfiguration];
+  deviceHasManagementRestrictions = [managedConfiguration deviceHasManagementRestrictions];
 
-  if (v4)
+  if (deviceHasManagementRestrictions)
   {
-    v5 = [(CNContactAddToGroupAction *)self groupsAndContainersSaveManager];
-    v6 = [(CNContactAction *)self contact];
-    v7 = [v5 parentAccountExternalIdentifiersForContact:v6];
+    groupsAndContainersSaveManager = [(CNContactAddToGroupAction *)self groupsAndContainersSaveManager];
+    contact = [(CNContactAction *)self contact];
+    v7 = [groupsAndContainersSaveManager parentAccountExternalIdentifiersForContact:contact];
   }
 
   else
@@ -86,8 +86,8 @@ uint64_t __35__CNContactAddToGroupAction_os_log__block_invoke()
   if (!groupsAndContainersSaveManager)
   {
     v4 = [CNUIGroupsAndContainersSaveManager alloc];
-    v5 = [(CNContactAddToGroupAction *)self contactStore];
-    v6 = [(CNUIGroupsAndContainersSaveManager *)v4 initWithContactStore:v5];
+    contactStore = [(CNContactAddToGroupAction *)self contactStore];
+    v6 = [(CNUIGroupsAndContainersSaveManager *)v4 initWithContactStore:contactStore];
     v7 = self->_groupsAndContainersSaveManager;
     self->_groupsAndContainersSaveManager = v6;
 
@@ -102,12 +102,12 @@ uint64_t __35__CNContactAddToGroupAction_os_log__block_invoke()
   managedConfiguration = self->_managedConfiguration;
   if (!managedConfiguration)
   {
-    v4 = [MEMORY[0x1E696AAE8] mainBundle];
-    v5 = [v4 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
     v6 = objc_alloc(MEMORY[0x1E6996760]);
-    v7 = [MEMORY[0x1E6996768] sharedConnection];
-    v8 = [v6 initWithBundleIdentifier:v5 managedProfileConnection:v7];
+    mEMORY[0x1E6996768] = [MEMORY[0x1E6996768] sharedConnection];
+    v8 = [v6 initWithBundleIdentifier:bundleIdentifier managedProfileConnection:mEMORY[0x1E6996768]];
     v9 = self->_managedConfiguration;
     self->_managedConfiguration = v8;
 
@@ -117,44 +117,44 @@ uint64_t __35__CNContactAddToGroupAction_os_log__block_invoke()
   return managedConfiguration;
 }
 
-- (void)setContactParentGroups:(id)a3
+- (void)setContactParentGroups:(id)groups
 {
-  v6 = a3;
+  groupsCopy = groups;
   if (![(NSArray *)self->_contactParentGroups isEqualToArray:?])
   {
-    objc_storeStrong(&self->_contactParentGroups, a3);
-    v5 = [v6 _cn_map:&__block_literal_global_6_10400];
+    objc_storeStrong(&self->_contactParentGroups, groups);
+    v5 = [groupsCopy _cn_map:&__block_literal_global_6_10400];
     [(CNContactAddToGroupAction *)self setContactParentGroupIdentifiers:v5];
   }
 }
 
-- (void)performActionWithSender:(id)a3
+- (void)performActionWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = [(CNContactAddToGroupAction *)self contactStore];
+  senderCopy = sender;
+  contactStore = [(CNContactAddToGroupAction *)self contactStore];
 
-  if (v5)
+  if (contactStore)
   {
     [(CNContactAddToGroupAction *)self setSelectedGroup:0];
     v6 = [CNContactGroupPickerViewController alloc];
-    v7 = [(CNContactAddToGroupAction *)self contactStore];
-    v8 = [(CNContactAddToGroupAction *)self sourceAccountExternalIdentifiers];
-    v9 = [(CNContactGroupPickerViewController *)v6 initWithContactStore:v7 sourceAccountExternalIdentifiers:v8];
+    contactStore2 = [(CNContactAddToGroupAction *)self contactStore];
+    sourceAccountExternalIdentifiers = [(CNContactAddToGroupAction *)self sourceAccountExternalIdentifiers];
+    v9 = [(CNContactGroupPickerViewController *)v6 initWithContactStore:contactStore2 sourceAccountExternalIdentifiers:sourceAccountExternalIdentifiers];
 
     [(CNContactGroupPickerViewController *)v9 setDelegate:self];
     v10 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v9];
     [(CNContactAddToGroupAction *)self setGroupPickerNavigationViewController:v10];
-    v11 = [(CNContactAction *)self delegate];
-    [v11 action:self presentViewController:v10 sender:v4];
+    delegate = [(CNContactAction *)self delegate];
+    [delegate action:self presentViewController:v10 sender:senderCopy];
   }
 
   else
   {
-    v12 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
       *v13 = 0;
-      _os_log_error_impl(&dword_199A75000, v12, OS_LOG_TYPE_ERROR, "add to group action requires a contact store", v13, 2u);
+      _os_log_error_impl(&dword_199A75000, os_log, OS_LOG_TYPE_ERROR, "add to group action requires a contact store", v13, 2u);
     }
   }
 }

@@ -1,9 +1,9 @@
 @interface AllRefinementsMultiSelectElementCell
 + (NSString)reuseIdentifier;
-- (_TtC4Maps36AllRefinementsMultiSelectElementCell)initWithCoder:(id)a3;
-- (_TtC4Maps36AllRefinementsMultiSelectElementCell)initWithFrame:(CGRect)a3;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
-- (void)setDisplayName:(id)a3 isSelected:(BOOL)a4 labelWidth:(double)a5 maxWidth:(double)a6 allowSelection:(id)a7 tapHandler:(id)a8;
+- (_TtC4Maps36AllRefinementsMultiSelectElementCell)initWithCoder:(id)coder;
+- (_TtC4Maps36AllRefinementsMultiSelectElementCell)initWithFrame:(CGRect)frame;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
+- (void)setDisplayName:(id)name isSelected:(BOOL)selected labelWidth:(double)width maxWidth:(double)maxWidth allowSelection:(id)selection tapHandler:(id)handler;
 @end
 
 @implementation AllRefinementsMultiSelectElementCell
@@ -18,11 +18,11 @@
   return v2;
 }
 
-- (void)setDisplayName:(id)a3 isSelected:(BOOL)a4 labelWidth:(double)a5 maxWidth:(double)a6 allowSelection:(id)a7 tapHandler:(id)a8
+- (void)setDisplayName:(id)name isSelected:(BOOL)selected labelWidth:(double)width maxWidth:(double)maxWidth allowSelection:(id)selection tapHandler:(id)handler
 {
-  v11 = a4;
-  v13 = _Block_copy(a7);
-  v14 = _Block_copy(a8);
+  selectedCopy = selected;
+  v13 = _Block_copy(selection);
+  v14 = _Block_copy(handler);
   v15 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v17 = v16;
   v18 = swift_allocObject();
@@ -39,43 +39,43 @@
     v19 = 0;
   }
 
-  v20 = self;
-  sub_100263DA4(v15, v17, a5, a6, v11, sub_1002647F0, v18, v14, v19);
+  selfCopy = self;
+  sub_100263DA4(v15, v17, width, maxWidth, selectedCopy, sub_1002647F0, v18, v14, v19);
   sub_1000D3B90(v14, v19);
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = type metadata accessor for UICellConfigurationState();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_10026416C();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (_TtC4Maps36AllRefinementsMultiSelectElementCell)initWithFrame:(CGRect)a3
+- (_TtC4Maps36AllRefinementsMultiSelectElementCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC4Maps36AllRefinementsMultiSelectElementCell_viewModel) = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for AllRefinementsMultiSelectElementCell();
   return [(AllRefinementsMultiSelectElementCell *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC4Maps36AllRefinementsMultiSelectElementCell)initWithCoder:(id)a3
+- (_TtC4Maps36AllRefinementsMultiSelectElementCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC4Maps36AllRefinementsMultiSelectElementCell_viewModel) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for AllRefinementsMultiSelectElementCell();
-  v4 = a3;
-  v5 = [(AllRefinementsMultiSelectElementCell *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(AllRefinementsMultiSelectElementCell *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

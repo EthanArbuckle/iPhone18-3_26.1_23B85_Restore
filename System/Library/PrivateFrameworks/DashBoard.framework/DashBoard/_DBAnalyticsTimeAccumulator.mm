@@ -1,11 +1,11 @@
 @interface _DBAnalyticsTimeAccumulator
 - (BOOL)isAccumulatingTimeForAnyKey;
-- (BOOL)isAccumulatingTimeForKey:(id)a3;
+- (BOOL)isAccumulatingTimeForKey:(id)key;
 - (_DBAnalyticsTimeAccumulator)init;
-- (double)accumulatedTimeForKey:(id)a3;
-- (void)startCountingTimeForKey:(id)a3;
+- (double)accumulatedTimeForKey:(id)key;
+- (void)startCountingTimeForKey:(id)key;
 - (void)stopCountingTimeForAllKeys;
-- (void)stopCountingTimeForKey:(id)a3;
+- (void)stopCountingTimeForKey:(id)key;
 @end
 
 @implementation _DBAnalyticsTimeAccumulator
@@ -17,52 +17,52 @@
   v2 = [(_DBAnalyticsTimeAccumulator *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     dateStorage = v2->_dateStorage;
-    v2->_dateStorage = v3;
+    v2->_dateStorage = dictionary;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     accumulatedTimeStorage = v2->_accumulatedTimeStorage;
-    v2->_accumulatedTimeStorage = v5;
+    v2->_accumulatedTimeStorage = dictionary2;
   }
 
   return v2;
 }
 
-- (BOOL)isAccumulatingTimeForKey:(id)a3
+- (BOOL)isAccumulatingTimeForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(_DBAnalyticsTimeAccumulator *)self dateStorage];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  dateStorage = [(_DBAnalyticsTimeAccumulator *)self dateStorage];
+  v6 = [dateStorage objectForKeyedSubscript:keyCopy];
 
   return v6 != 0;
 }
 
 - (BOOL)isAccumulatingTimeForAnyKey
 {
-  v2 = [(_DBAnalyticsTimeAccumulator *)self dateStorage];
-  v3 = [v2 count] != 0;
+  dateStorage = [(_DBAnalyticsTimeAccumulator *)self dateStorage];
+  v3 = [dateStorage count] != 0;
 
   return v3;
 }
 
-- (void)startCountingTimeForKey:(id)a3
+- (void)startCountingTimeForKey:(id)key
 {
-  v6 = a3;
+  keyCopy = key;
   if (![(_DBAnalyticsTimeAccumulator *)self isAccumulatingTimeForKey:?])
   {
-    v4 = [MEMORY[0x277CBEAA8] date];
-    v5 = [(_DBAnalyticsTimeAccumulator *)self dateStorage];
-    [v5 setObject:v4 forKeyedSubscript:v6];
+    date = [MEMORY[0x277CBEAA8] date];
+    dateStorage = [(_DBAnalyticsTimeAccumulator *)self dateStorage];
+    [dateStorage setObject:date forKeyedSubscript:keyCopy];
   }
 }
 
 - (void)stopCountingTimeForAllKeys
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(_DBAnalyticsTimeAccumulator *)self dateStorage];
-  v4 = [v3 allKeys];
-  v5 = [v4 copy];
+  dateStorage = [(_DBAnalyticsTimeAccumulator *)self dateStorage];
+  allKeys = [dateStorage allKeys];
+  v5 = [allKeys copy];
 
   v13 = 0u;
   v14 = 0u;
@@ -95,34 +95,34 @@
   }
 }
 
-- (void)stopCountingTimeForKey:(id)a3
+- (void)stopCountingTimeForKey:(id)key
 {
-  v14 = a3;
-  v4 = [(_DBAnalyticsTimeAccumulator *)self dateStorage];
-  v5 = [v4 objectForKeyedSubscript:v14];
+  keyCopy = key;
+  dateStorage = [(_DBAnalyticsTimeAccumulator *)self dateStorage];
+  v5 = [dateStorage objectForKeyedSubscript:keyCopy];
 
   if (v5)
   {
-    [(_DBAnalyticsTimeAccumulator *)self accumulatedTimeForKey:v14];
+    [(_DBAnalyticsTimeAccumulator *)self accumulatedTimeForKey:keyCopy];
     v7 = v6;
-    v8 = [MEMORY[0x277CBEAA8] date];
-    [v5 DBSecondsToDate:v8];
+    date = [MEMORY[0x277CBEAA8] date];
+    [v5 DBSecondsToDate:date];
     v10 = v7 + v9;
 
     v11 = [MEMORY[0x277CCABB0] numberWithDouble:v10];
-    v12 = [(_DBAnalyticsTimeAccumulator *)self accumulatedTimeStorage];
-    [v12 setObject:v11 forKeyedSubscript:v14];
+    accumulatedTimeStorage = [(_DBAnalyticsTimeAccumulator *)self accumulatedTimeStorage];
+    [accumulatedTimeStorage setObject:v11 forKeyedSubscript:keyCopy];
 
-    v13 = [(_DBAnalyticsTimeAccumulator *)self dateStorage];
-    [v13 setObject:0 forKeyedSubscript:v14];
+    dateStorage2 = [(_DBAnalyticsTimeAccumulator *)self dateStorage];
+    [dateStorage2 setObject:0 forKeyedSubscript:keyCopy];
   }
 }
 
-- (double)accumulatedTimeForKey:(id)a3
+- (double)accumulatedTimeForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(_DBAnalyticsTimeAccumulator *)self accumulatedTimeStorage];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  accumulatedTimeStorage = [(_DBAnalyticsTimeAccumulator *)self accumulatedTimeStorage];
+  v6 = [accumulatedTimeStorage objectForKeyedSubscript:keyCopy];
 
   [v6 floatValue];
   v8 = v7;

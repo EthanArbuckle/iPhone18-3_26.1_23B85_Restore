@@ -1,22 +1,22 @@
 @interface PXStoryMomentsAdjacentThresholdClustering
-- (id)performWithDataset:(id)a3 progressBlock:(id)a4;
+- (id)performWithDataset:(id)dataset progressBlock:(id)block;
 @end
 
 @implementation PXStoryMomentsAdjacentThresholdClustering
 
-- (id)performWithDataset:(id)a3 progressBlock:(id)a4
+- (id)performWithDataset:(id)dataset progressBlock:(id)block
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a3;
-  if (![v8 count])
+  blockCopy = block;
+  datasetCopy = dataset;
+  if (![datasetCopy count])
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PXStoryAutoEditMomentsProvider.m" lineNumber:117 description:{@"Invalid parameter not satisfying: %@", @"dataset.count > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryAutoEditMomentsProvider.m" lineNumber:117 description:{@"Invalid parameter not satisfying: %@", @"dataset.count > 0"}];
   }
 
   v20 = 0;
-  v9 = [v8 count];
+  v9 = [datasetCopy count];
   v10 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:v9];
   progress = self->_progress;
   self->_progress = v10;
@@ -31,14 +31,14 @@
   v22[1] = v14;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:2];
 
-  v16 = [(PLDataClustering *)self distanceBlock];
-  v17 = PXStoryClusteringAlgorithmCutAdjacentWithAssetIndicesOptionsAndDistanceBlock(v8, v15, v16);
+  distanceBlock = [(PLDataClustering *)self distanceBlock];
+  v17 = PXStoryClusteringAlgorithmCutAdjacentWithAssetIndicesOptionsAndDistanceBlock(datasetCopy, v15, distanceBlock);
 
   [(NSProgress *)self->_progress setCompletedUnitCount:v9];
-  if (v7)
+  if (blockCopy)
   {
     [(NSProgress *)self->_progress fractionCompleted];
-    v7[2](v7, &v20);
+    blockCopy[2](blockCopy, &v20);
   }
 
   return v17;

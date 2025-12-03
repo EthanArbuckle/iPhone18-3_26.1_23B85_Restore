@@ -1,24 +1,24 @@
 @interface SKGJournalReader
-+ (BOOL)processJournalRecordWithFd:(int)a3 atOffset:(unint64_t)a4 withSize:(unint64_t)a5 addBlock:(id)a6 delBlock:(id)a7;
-- (BOOL)enumerateItemsOfJournalAtPath:(id)a3 itemAdds:(id)a4 itemUpdates:(id)a5 itemDeletes:(id)a6 cancelBlock:(id)a7;
-- (BOOL)removeJournalPath:(id)a3 error:(id *)a4;
-- (SKGJournalReader)initWithResourceDirectoryPath:(id)a3;
++ (BOOL)processJournalRecordWithFd:(int)fd atOffset:(unint64_t)offset withSize:(unint64_t)size addBlock:(id)block delBlock:(id)delBlock;
+- (BOOL)enumerateItemsOfJournalAtPath:(id)path itemAdds:(id)adds itemUpdates:(id)updates itemDeletes:(id)deletes cancelBlock:(id)block;
+- (BOOL)removeJournalPath:(id)path error:(id *)error;
+- (SKGJournalReader)initWithResourceDirectoryPath:(id)path;
 - (id)eventJournalPaths;
 - (id)journalPaths;
 @end
 
 @implementation SKGJournalReader
 
-- (SKGJournalReader)initWithResourceDirectoryPath:(id)a3
+- (SKGJournalReader)initWithResourceDirectoryPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = SKGJournalReader;
   v6 = [(SKGJournalReader *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_resourcePath, a3);
+    objc_storeStrong(&v6->_resourcePath, path);
   }
 
   return v7;
@@ -31,14 +31,14 @@
   v28 = &v27;
   v29 = 0x2020000000;
   v30 = 1;
-  v20 = [(SKGJournalReader *)self journalReaderResourcePath];
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [v2 isReadableFileAtPath:v20];
+  journalReaderResourcePath = [(SKGJournalReader *)self journalReaderResourcePath];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v3 = [defaultManager isReadableFileAtPath:journalReaderResourcePath];
 
   if (v3)
   {
-    v19 = [MEMORY[0x277CBEBC0] URLWithString:v20];
-    v4 = [MEMORY[0x277CCAA00] defaultManager];
+    v19 = [MEMORY[0x277CBEBC0] URLWithString:journalReaderResourcePath];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v5 = *MEMORY[0x277CBE7C0];
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:{*MEMORY[0x277CBE8E8], *MEMORY[0x277CBE7C0], 0}];
     v26[0] = MEMORY[0x277D85DD0];
@@ -46,7 +46,7 @@
     v26[2] = __32__SKGJournalReader_journalPaths__block_invoke;
     v26[3] = &unk_27893D8D8;
     v26[4] = &v27;
-    v18 = [v4 enumeratorAtURL:v19 includingPropertiesForKeys:v6 options:4 errorHandler:v26];
+    v18 = [defaultManager2 enumeratorAtURL:v19 includingPropertiesForKeys:v6 options:4 errorHandler:v26];
 
     if (*(v28 + 24) == 1)
     {
@@ -70,8 +70,8 @@
             }
 
             v12 = *(*(&v22 + 1) + 8 * i);
-            v13 = [v12 lastPathComponent];
-            v14 = [v13 hasPrefix:@"skg_"];
+            lastPathComponent = [v12 lastPathComponent];
+            v14 = [lastPathComponent hasPrefix:@"skg_"];
 
             if (v14)
             {
@@ -123,15 +123,15 @@ BOOL __32__SKGJournalReader_journalPaths__block_invoke(uint64_t a1, uint64_t a2,
   v28 = &v27;
   v29 = 0x2020000000;
   v30 = 1;
-  v2 = [(SKGJournalReader *)self journalReaderResourcePath];
-  v20 = [MEMORY[0x277CBEBC0] URLWithString:v2];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [v3 isReadableFileAtPath:v2];
-  v19 = v2;
+  journalReaderResourcePath = [(SKGJournalReader *)self journalReaderResourcePath];
+  v20 = [MEMORY[0x277CBEBC0] URLWithString:journalReaderResourcePath];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v4 = [defaultManager isReadableFileAtPath:journalReaderResourcePath];
+  v19 = journalReaderResourcePath;
 
   if (v4)
   {
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v32[0] = *MEMORY[0x277CBE8E8];
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:1];
     v26[0] = MEMORY[0x277D85DD0];
@@ -139,7 +139,7 @@ BOOL __32__SKGJournalReader_journalPaths__block_invoke(uint64_t a1, uint64_t a2,
     v26[2] = __37__SKGJournalReader_eventJournalPaths__block_invoke;
     v26[3] = &unk_27893D8D8;
     v26[4] = &v27;
-    v7 = [v5 enumeratorAtURL:v20 includingPropertiesForKeys:v6 options:4 errorHandler:v26];
+    v7 = [defaultManager2 enumeratorAtURL:v20 includingPropertiesForKeys:v6 options:4 errorHandler:v26];
 
     v21 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v24 = 0u;
@@ -161,11 +161,11 @@ BOOL __32__SKGJournalReader_journalPaths__block_invoke(uint64_t a1, uint64_t a2,
           }
 
           v12 = *(*(&v22 + 1) + 8 * i);
-          v13 = [v12 path];
-          v14 = [v13 lastPathComponent];
-          if ([v14 hasPrefix:@"evt_"])
+          path = [v12 path];
+          lastPathComponent = [path lastPathComponent];
+          if ([lastPathComponent hasPrefix:@"evt_"])
           {
-            v15 = [v13 hasSuffix:@".journal"];
+            v15 = [path hasSuffix:@".journal"];
 
             if (v15)
             {
@@ -206,25 +206,25 @@ BOOL __32__SKGJournalReader_journalPaths__block_invoke(uint64_t a1, uint64_t a2,
   return v16;
 }
 
-- (BOOL)enumerateItemsOfJournalAtPath:(id)a3 itemAdds:(id)a4 itemUpdates:(id)a5 itemDeletes:(id)a6 cancelBlock:(id)a7
+- (BOOL)enumerateItemsOfJournalAtPath:(id)path itemAdds:(id)adds itemUpdates:(id)updates itemDeletes:(id)deletes cancelBlock:(id)block
 {
   v60 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  pathCopy = path;
+  addsCopy = adds;
+  updatesCopy = updates;
+  deletesCopy = deletes;
+  blockCopy = block;
   v53[0] = 0;
   v53[1] = v53;
   v53[2] = 0x2020000000;
   v54 = 0;
   makeThreadId();
-  v16 = [v11 path];
-  v17 = [v16 UTF8String];
+  path = [pathCopy path];
+  uTF8String = [path UTF8String];
 
-  v18 = open(v17, 0);
-  v19 = v12;
-  v20 = v13;
+  v18 = open(uTF8String, 0);
+  v19 = addsCopy;
+  v20 = updatesCopy;
   if (v18 == -1)
   {
     if (SKGLogGetCurrentLoggingLevel() >= 2)
@@ -233,7 +233,7 @@ BOOL __32__SKGJournalReader_journalPaths__block_invoke(uint64_t a1, uint64_t a2,
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
         v32 = __error();
-        [SKGJournalReader enumerateItemsOfJournalAtPath:v32 itemAdds:v17 itemUpdates:&v59 itemDeletes:v31 cancelBlock:?];
+        [SKGJournalReader enumerateItemsOfJournalAtPath:v32 itemAdds:uTF8String itemUpdates:&v59 itemDeletes:v31 cancelBlock:?];
       }
     }
 
@@ -312,7 +312,7 @@ LABEL_40:
         {
           v49 = v19;
           v48 = v20;
-          v47 = v14;
+          v47 = deletesCopy;
           v39 = MDJournalReaderProcessWithBytes() != 0;
           v52 = 1;
           v40 = *(MEMORY[0x277D29508] + 72 * *buf + 8) + 320 * v50;
@@ -410,35 +410,35 @@ uint64_t __95__SKGJournalReader_enumerateItemsOfJournalAtPath_itemAdds_itemUpdat
   return result;
 }
 
-- (BOOL)removeJournalPath:(id)a3 error:(id *)a4
+- (BOOL)removeJournalPath:(id)path error:(id *)error
 {
   v5 = MEMORY[0x277CCAA00];
-  v6 = a3;
-  v7 = [v5 defaultManager];
+  pathCopy = path;
+  defaultManager = [v5 defaultManager];
   v11 = 0;
-  [v7 removeItemAtURL:v6 error:&v11];
+  [defaultManager removeItemAtURL:pathCopy error:&v11];
 
   v8 = v11;
-  if (a4 && v8)
+  if (error && v8)
   {
     v9 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   return v8 == 0;
 }
 
-+ (BOOL)processJournalRecordWithFd:(int)a3 atOffset:(unint64_t)a4 withSize:(unint64_t)a5 addBlock:(id)a6 delBlock:(id)a7
++ (BOOL)processJournalRecordWithFd:(int)fd atOffset:(unint64_t)offset withSize:(unint64_t)size addBlock:(id)block delBlock:(id)delBlock
 {
-  v11 = a6;
-  v12 = a7;
+  blockCopy = block;
+  delBlockCopy = delBlock;
   v13 = -*MEMORY[0x277D85FA0];
-  v14 = ((a4 + a5 + *MEMORY[0x277D85FA0] - 1) & v13) + (v13 & a4);
+  v14 = ((offset + size + *MEMORY[0x277D85FA0] - 1) & v13) + (v13 & offset);
   v34 = 0;
-  v15 = mmap(0, v14, 1, 1, a3, v13 & a4);
+  v15 = mmap(0, v14, 1, 1, fd, v13 & offset);
   if (v15 != -1)
   {
-    v27 = v11;
+    v27 = blockCopy;
     v16 = v15;
     makeThreadId();
     v26 = v14;
@@ -488,7 +488,7 @@ uint64_t __95__SKGJournalReader_enumerateItemsOfJournalAtPath_itemAdds_itemUpdat
       dropThreadId();
     }
 
-    v11 = v27;
+    blockCopy = v27;
     munmap(v16, v26);
   }
 

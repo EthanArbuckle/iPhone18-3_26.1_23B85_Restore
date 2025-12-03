@@ -1,5 +1,5 @@
 @interface TSScreenLockObserver
-- (TSScreenLockObserver)initWithDelegate:(id)a3;
+- (TSScreenLockObserver)initWithDelegate:(id)delegate;
 - (TSScreenLockObserverDelegate)delegate;
 - (void)registerForLockNotifications;
 - (void)unregisterFromLockNotifications;
@@ -7,16 +7,16 @@
 
 @implementation TSScreenLockObserver
 
-- (TSScreenLockObserver)initWithDelegate:(id)a3
+- (TSScreenLockObserver)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = TSScreenLockObserver;
   v5 = [(TSScreenLockObserver *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(TSScreenLockObserver *)v5 setDelegate:v4];
+    [(TSScreenLockObserver *)v5 setDelegate:delegateCopy];
     v6->_notifyToken = -1;
   }
 

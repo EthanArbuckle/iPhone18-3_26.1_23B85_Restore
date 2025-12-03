@@ -5,7 +5,7 @@
 - (void)_handlePrefsChanged;
 - (void)_notifyClientsOfChange;
 - (void)dealloc;
-- (void)setNotificationsIndicatorEnabled:(BOOL)a3;
+- (void)setNotificationsIndicatorEnabled:(BOOL)enabled;
 @end
 
 @implementation NTKClockStatusBarSettings
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __43__NTKClockStatusBarSettings_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_6 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_6, block);
@@ -73,13 +73,13 @@ void __43__NTKClockStatusBarSettings_sharedInstance__block_invoke(uint64_t a1)
   return v4 & 1;
 }
 
-- (void)setNotificationsIndicatorEnabled:(BOOL)a3
+- (void)setNotificationsIndicatorEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  self->_notificationsIndicatorEnabled = a3;
+  enabledCopy = enabled;
+  self->_notificationsIndicatorEnabled = enabled;
   v10 = [objc_alloc(MEMORY[0x277D2BA58]) initWithDomain:@"com.apple.NanoTimeKit"];
-  [v10 setBool:v3 forKey:@"notificationsIndicatorEnabled"];
-  v5 = [v10 synchronize];
+  [v10 setBool:enabledCopy forKey:@"notificationsIndicatorEnabled"];
+  synchronize = [v10 synchronize];
   npsManager = self->_npsManager;
   if (!npsManager)
   {
@@ -120,8 +120,8 @@ void __48__NTKClockStatusBarSettings__handlePrefsChanged__block_invoke(uint64_t 
 
 - (void)_notifyClientsOfChange
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"NTKClockStatusBarSettingsDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"NTKClockStatusBarSettingsDidChangeNotification" object:self];
 }
 
 @end

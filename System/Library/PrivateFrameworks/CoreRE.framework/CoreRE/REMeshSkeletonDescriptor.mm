@@ -1,21 +1,21 @@
 @interface REMeshSkeletonDescriptor
-- (BOOL)validateWithError:(id *)a3;
+- (BOOL)validateWithError:(id *)error;
 - (MeshAssetSkeleton)meshAssetSkeleton;
-- (REMeshSkeletonDescriptor)initWithCoder:(id)a3;
-- (REMeshSkeletonDescriptor)initWithMeshAssetSkeleton:(const void *)a3;
-- (REMeshSkeletonDescriptor)initWithMeshSkeletonDefinition:(const void *)a3;
-- (REMeshSkeletonDescriptor)initWithName:(id)a3 jointNames:(id)a4 parentIndices:(id)a5 localRestPoseScales:localRestPoseRotations:localRestPoseTranslations:inverseBindPose:;
+- (REMeshSkeletonDescriptor)initWithCoder:(id)coder;
+- (REMeshSkeletonDescriptor)initWithMeshAssetSkeleton:(const void *)skeleton;
+- (REMeshSkeletonDescriptor)initWithMeshSkeletonDefinition:(const void *)definition;
+- (REMeshSkeletonDescriptor)initWithName:(id)name jointNames:(id)names parentIndices:(id)indices localRestPoseScales:localRestPoseRotations:localRestPoseTranslations:inverseBindPose:;
 - (id).cxx_construct;
 - (unint64_t)estimateContainerSize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMeshSkeletonDescriptor
 
-- (REMeshSkeletonDescriptor)initWithMeshAssetSkeleton:(const void *)a3
+- (REMeshSkeletonDescriptor)initWithMeshAssetSkeleton:(const void *)skeleton
 {
-  v4 = *(a3 + 3);
-  if (v4 != *(a3 + 6))
+  v4 = *(skeleton + 3);
+  if (v4 != *(skeleton + 6))
   {
     re::internal::assertLog(4, a2, "assertion failure: '%s' (%s:line %i) ", "jointCount == skeleton.parentIndices.size()", "[REMeshSkeletonDescriptor(REMeshAssetRuntime) initWithMeshAssetSkeleton:]", 1604);
     _os_crash();
@@ -23,7 +23,7 @@
     goto LABEL_23;
   }
 
-  if (v4 != *(a3 + 9))
+  if (v4 != *(skeleton + 9))
   {
 LABEL_23:
     re::internal::assertLog(4, a2, "assertion failure: '%s' (%s:line %i) ", "jointCount == skeleton.localBindPoses.size()", "[REMeshSkeletonDescriptor(REMeshAssetRuntime) initWithMeshAssetSkeleton:]", 1605);
@@ -32,7 +32,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (v4 != *(a3 + 12))
+  if (v4 != *(skeleton + 12))
   {
 LABEL_24:
     re::internal::assertLog(4, a2, "assertion failure: '%s' (%s:line %i) ", "jointCount == skeleton.inverseBindPoses.size()", "[REMeshSkeletonDescriptor(REMeshAssetRuntime) initWithMeshAssetSkeleton:]", 1606);
@@ -68,7 +68,7 @@ LABEL_27:
     return result;
   }
 
-  v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:*(a3 + 1)];
+  v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:*(skeleton + 1)];
   v9 = v8 = objc_claimAutoreleasedReturnValue();
   v10 = v19;
   v11 = v22;
@@ -114,10 +114,10 @@ LABEL_27:
   return v14;
 }
 
-- (REMeshSkeletonDescriptor)initWithMeshSkeletonDefinition:(const void *)a3
+- (REMeshSkeletonDescriptor)initWithMeshSkeletonDefinition:(const void *)definition
 {
-  v4 = *(a3 + 6);
-  if (v4 != *(a3 + 9))
+  v4 = *(definition + 6);
+  if (v4 != *(definition + 9))
   {
     re::internal::assertLog(4, a2, "assertion failure: '%s' (%s:line %i) ", "jointCount == skeleton.parentIndices.size()", "[REMeshSkeletonDescriptor(REMeshAssetRuntime) initWithMeshSkeletonDefinition:]", 1625);
     _os_crash();
@@ -125,7 +125,7 @@ LABEL_27:
     goto LABEL_23;
   }
 
-  if (v4 != *(a3 + 12))
+  if (v4 != *(definition + 12))
   {
 LABEL_23:
     re::internal::assertLog(4, a2, "assertion failure: '%s' (%s:line %i) ", "jointCount == skeleton.localRestPose.size()", "[REMeshSkeletonDescriptor(REMeshAssetRuntime) initWithMeshSkeletonDefinition:]", 1626);
@@ -134,7 +134,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (v4 != *(a3 + 15))
+  if (v4 != *(definition + 15))
   {
 LABEL_24:
     re::internal::assertLog(4, a2, "assertion failure: '%s' (%s:line %i) ", "jointCount == skeleton.inverseBindPoses.size()", "[REMeshSkeletonDescriptor(REMeshAssetRuntime) initWithMeshSkeletonDefinition:]", 1627);
@@ -170,7 +170,7 @@ LABEL_27:
     return result;
   }
 
-  v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:*(a3 + 4)];
+  v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:*(definition + 4)];
   v9 = v8 = objc_claimAutoreleasedReturnValue();
   v10 = v19;
   v11 = v22;
@@ -219,19 +219,19 @@ LABEL_27:
 - (MeshAssetSkeleton)meshAssetSkeleton
 {
   v69 = *MEMORY[0x1E69E9840];
-  v4 = [(REMeshSkeletonDescriptor *)self jointNames];
-  v45 = [v4 count];
+  jointNames = [(REMeshSkeletonDescriptor *)self jointNames];
+  v45 = [jointNames count];
 
-  v43 = [(REMeshSkeletonDescriptor *)self name];
-  v5 = [v43 UTF8String];
+  name = [(REMeshSkeletonDescriptor *)self name];
+  uTF8String = [name UTF8String];
   *&retstr->var0.var0 = 0;
   retstr->var0.var1 = &str_67;
-  v6 = [(REMeshSkeletonDescriptor *)self jointNames];
+  jointNames2 = [(REMeshSkeletonDescriptor *)self jointNames];
   retstr->var1.var1 = 0;
   retstr->var1.var2 = 0;
   retstr->var1.var0 = 0;
-  v42 = v6;
-  v7 = [v6 count];
+  v42 = jointNames2;
+  v7 = [jointNames2 count];
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
@@ -253,7 +253,7 @@ LABEL_27:
           objc_enumerationMutation(v8);
         }
 
-        v14 = [*(*(&v49 + 1) + 8 * v12) UTF8String];
+        uTF8String2 = [*(*(&v49 + 1) + 8 * v12) UTF8String];
         v46 = 0;
         v47 = &str_67;
         var1 = retstr->var1.var1;
@@ -393,16 +393,16 @@ LABEL_36:
     while (v9);
   }
 
-  v17 = [(REMeshSkeletonDescriptor *)self parentIndices];
+  parentIndices = [(REMeshSkeletonDescriptor *)self parentIndices];
   retstr->var2.var1 = 0;
   retstr->var2.var2 = 0;
   retstr->var2.var0 = 0;
-  v18 = [v17 count];
+  v18 = [parentIndices count];
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v19 = v17;
+  v19 = parentIndices;
   v20 = [v19 countByEnumeratingWithState:&v49 objects:&v53 count:16];
   if (v20)
   {
@@ -417,14 +417,14 @@ LABEL_36:
           objc_enumerationMutation(v19);
         }
 
-        v24 = [*(*(&v49 + 1) + 8 * i) unsignedIntValue];
+        unsignedIntValue = [*(*(&v49 + 1) + 8 * i) unsignedIntValue];
         v25 = retstr->var2.var1;
         if (v25 <= v21)
         {
           goto LABEL_32;
         }
 
-        retstr->var2.var2[v21++] = v24;
+        retstr->var2.var2[v21++] = unsignedIntValue;
       }
 
       v20 = [v19 countByEnumeratingWithState:&v49 objects:&v53 count:16];
@@ -433,9 +433,9 @@ LABEL_36:
     while (v20);
   }
 
-  v26 = [(REMeshSkeletonDescriptor *)self localRestPoseScales];
-  v27 = [(REMeshSkeletonDescriptor *)self localRestPoseRotations];
-  v28 = [(REMeshSkeletonDescriptor *)self localRestPoseTranslations];
+  localRestPoseScales = [(REMeshSkeletonDescriptor *)self localRestPoseScales];
+  localRestPoseRotations = [(REMeshSkeletonDescriptor *)self localRestPoseRotations];
+  localRestPoseTranslations = [(REMeshSkeletonDescriptor *)self localRestPoseTranslations];
   retstr->var3.var0 = 0;
   retstr->var3.var1 = 0;
   retstr->var3.var2 = 0;
@@ -451,38 +451,38 @@ LABEL_36:
         goto LABEL_34;
       }
 
-      *(retstr->var3.var2 + v29) = *(v26 + 16 * v30);
+      *(retstr->var3.var2 + v29) = *(localRestPoseScales + 16 * v30);
       v21 = retstr->var3.var1;
       if (v21 <= v30)
       {
         goto LABEL_35;
       }
 
-      *(retstr->var3.var2 + v29 + 16) = *(v27 + v30);
+      *(retstr->var3.var2 + v29 + 16) = *(localRestPoseRotations + v30);
       v21 = retstr->var3.var1;
       if (v21 <= v30)
       {
         goto LABEL_36;
       }
 
-      *(retstr->var3.var2 + v29 + 32) = *(v28 + v30++);
+      *(retstr->var3.var2 + v29 + 32) = *(localRestPoseTranslations + v30++);
       v29 += 48;
     }
 
     while (v45 != v30);
   }
 
-  v31 = [(REMeshSkeletonDescriptor *)self inverseBindPose];
-  v32 = [(REMeshSkeletonDescriptor *)self inverseBindPose];
-  v33 = (v32 + 64 * v45);
-  v34 = (v33 - v31) >> 6;
+  inverseBindPose = [(REMeshSkeletonDescriptor *)self inverseBindPose];
+  inverseBindPose2 = [(REMeshSkeletonDescriptor *)self inverseBindPose];
+  v33 = (inverseBindPose2 + 64 * v45);
+  v34 = (v33 - inverseBindPose) >> 6;
   retstr->var4.var0 = 0;
   retstr->var4.var1 = 0;
   retstr->var4.var2 = 0;
-  if (v33 != v31)
+  if (v33 != inverseBindPose)
   {
     v21 = 0;
-    v35 = (v31 + 32);
+    v35 = (inverseBindPose + 32);
     v36 = 32;
     do
     {
@@ -511,26 +511,26 @@ LABEL_36:
   return result;
 }
 
-- (REMeshSkeletonDescriptor)initWithName:(id)a3 jointNames:(id)a4 parentIndices:(id)a5 localRestPoseScales:localRestPoseRotations:localRestPoseTranslations:inverseBindPose:
+- (REMeshSkeletonDescriptor)initWithName:(id)name jointNames:(id)names parentIndices:(id)indices localRestPoseScales:localRestPoseRotations:localRestPoseTranslations:inverseBindPose:
 {
   v8 = v7;
   v9 = v6;
   v10 = v5;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  nameCopy = name;
+  namesCopy = names;
+  indicesCopy = indices;
   v40.receiver = self;
   v40.super_class = REMeshSkeletonDescriptor;
   v17 = [(REMeshSkeletonDescriptor *)&v40 init];
   if (v17)
   {
-    v18 = [v14 copy];
+    v18 = [nameCopy copy];
     v19 = *(v17 + 13);
     *(v17 + 13) = v18;
 
-    objc_storeStrong(v17 + 14, a4);
-    objc_storeStrong(v17 + 15, a5);
-    v20 = [v15 count];
+    objc_storeStrong(v17 + 14, names);
+    objc_storeStrong(v17 + 15, indices);
+    v20 = [namesCopy count];
     _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE6resizeEm(v17 + 1, v20);
     v21 = *(v17 + 4);
     v22 = *(v17 + 5);
@@ -645,26 +645,26 @@ LABEL_29:
   return v17;
 }
 
-- (REMeshSkeletonDescriptor)initWithCoder:(id)a3
+- (REMeshSkeletonDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
   name = self->_name;
   self->_name = v5;
 
-  v7 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"jointNames"];
+  v7 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"jointNames"];
   jointNames = self->_jointNames;
   self->_jointNames = v7;
 
-  v9 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"parentIndices"];
+  v9 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"parentIndices"];
   parentIndices = self->_parentIndices;
   self->_parentIndices = v9;
 
   v11 = [(NSArray *)self->_jointNames count];
   v23 = 0;
-  v12 = [v4 decodeBytesForKey:@"localRestPose.scale" returnedLength:&v23];
+  v12 = [coderCopy decodeBytesForKey:@"localRestPose.scale" returnedLength:&v23];
   v13 = validateLocalRestPoseFloat3(v11, v12, v23, self->_anon_8);
-  [v4 decodeBytesForKey:@"localRestPose.rotation" returnedLength:&v23];
+  [coderCopy decodeBytesForKey:@"localRestPose.rotation" returnedLength:&v23];
   if (v13)
   {
     if (v23 == 16 * v11)
@@ -698,7 +698,7 @@ LABEL_29:
     }
   }
 
-  v15 = [v4 decodeBytesForKey:@"localRestPose.translation" returnedLength:&v23];
+  v15 = [coderCopy decodeBytesForKey:@"localRestPose.translation" returnedLength:&v23];
   if (v13)
   {
     v16 = validateLocalRestPoseFloat3(v11, v15, v23, self->_anon_38);
@@ -709,7 +709,7 @@ LABEL_29:
     v16 = 0;
   }
 
-  v17 = [v4 decodeBytesForKey:@"inverseBindPose" returnedLength:&v23];
+  v17 = [coderCopy decodeBytesForKey:@"inverseBindPose" returnedLength:&v23];
   if (v16 && v23 == v11 << 6)
   {
     if (v11)
@@ -733,32 +733,32 @@ LABEL_29:
     self->_inverseBindPose.__begin_ = 0;
     self->_inverseBindPose.__end_ = 0;
     self->_inverseBindPose.__cap_ = 0;
-    v20 = self;
+    selfCopy = self;
   }
 
   else
     v19 = {;
-    [v4 failWithError:v19];
+    [coderCopy failWithError:v19];
 
-    v20 = 0;
+    selfCopy = 0;
   }
 
-  return v20;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_name forKey:@"name"];
-  [v4 encodeObject:self->_jointNames forKey:@"jointNames"];
-  [v4 encodeObject:self->_parentIndices forKey:@"parentIndices"];
-  [v4 encodeBytes:*self->_anon_8 length:*&self->_anon_8[8] - *self->_anon_8 forKey:@"localRestPose.scale"];
-  [v4 encodeBytes:self->_localRestPoseRotations.__begin_ length:self->_localRestPoseRotations.__end_ - self->_localRestPoseRotations.__begin_ forKey:@"localRestPose.rotation"];
-  [v4 encodeBytes:*self->_anon_38 length:*&self->_anon_38[8] - *self->_anon_38 forKey:@"localRestPose.translation"];
-  [v4 encodeBytes:self->_inverseBindPose.__begin_ length:self->_inverseBindPose.__end_ - self->_inverseBindPose.__begin_ forKey:@"inverseBindPose"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeObject:self->_jointNames forKey:@"jointNames"];
+  [coderCopy encodeObject:self->_parentIndices forKey:@"parentIndices"];
+  [coderCopy encodeBytes:*self->_anon_8 length:*&self->_anon_8[8] - *self->_anon_8 forKey:@"localRestPose.scale"];
+  [coderCopy encodeBytes:self->_localRestPoseRotations.__begin_ length:self->_localRestPoseRotations.__end_ - self->_localRestPoseRotations.__begin_ forKey:@"localRestPose.rotation"];
+  [coderCopy encodeBytes:*self->_anon_38 length:*&self->_anon_38[8] - *self->_anon_38 forKey:@"localRestPose.translation"];
+  [coderCopy encodeBytes:self->_inverseBindPose.__begin_ length:self->_inverseBindPose.__end_ - self->_inverseBindPose.__begin_ forKey:@"inverseBindPose"];
 }
 
-- (BOOL)validateWithError:(id *)a3
+- (BOOL)validateWithError:(id *)error
 {
   v5 = [(NSArray *)self->_jointNames count];
   if ([(NSArray *)self->_parentIndices count]== v5 && v5 == (*&self->_anon_8[8] - *self->_anon_8) >> 4 && v5 == (self->_localRestPoseRotations.__end_ - self->_localRestPoseRotations.__begin_) >> 4 && v5 == (*&self->_anon_38[8] - *self->_anon_38) >> 4 && v5 == (self->_inverseBindPose.__end_ - self->_inverseBindPose.__begin_) >> 6)

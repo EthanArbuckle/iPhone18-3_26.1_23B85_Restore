@@ -1,17 +1,17 @@
 @interface SUUIProductPagePlaceholderView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SUUIProductPagePlaceholderView)initWithPlaceholderString:(id)a3 isPad:(BOOL)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SUUIProductPagePlaceholderView)initWithPlaceholderString:(id)string isPad:(BOOL)pad;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setTextColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setTextColor:(id)color;
 @end
 
 @implementation SUUIProductPagePlaceholderView
 
-- (SUUIProductPagePlaceholderView)initWithPlaceholderString:(id)a3 isPad:(BOOL)a4
+- (SUUIProductPagePlaceholderView)initWithPlaceholderString:(id)string isPad:(BOOL)pad
 {
-  v4 = a4;
-  v6 = a3;
+  padCopy = pad;
+  stringCopy = string;
   v21.receiver = self;
   v21.super_class = SUUIProductPagePlaceholderView;
   v7 = [(SUUIProductPagePlaceholderView *)&v21 init];
@@ -29,14 +29,14 @@
     label = v7->_label;
     v7->_label = v13;
 
-    [(UILabel *)v7->_label setText:v6];
+    [(UILabel *)v7->_label setText:stringCopy];
     v15 = v7->_label;
     v16 = [MEMORY[0x277D75348] colorWithWhite:0.384313732 alpha:1.0];
     [(UILabel *)v15 setTextColor:v16];
 
     v17 = v7->_label;
     v18 = 12.0;
-    if (v4)
+    if (padCopy)
     {
       v18 = 18.0;
     }
@@ -51,10 +51,10 @@
   return v7;
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v7 = a3;
-  objc_storeStrong(&self->_textColor, a3);
+  colorCopy = color;
+  objc_storeStrong(&self->_textColor, color);
   label = self->_label;
   if (self->_textColor)
   {
@@ -95,21 +95,21 @@
   [(UILabel *)label setFrame:v20, v16];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   imageView = self->_imageView;
-  v5 = a3;
-  [(UIImageView *)imageView setBackgroundColor:v5];
-  [(UILabel *)self->_label setBackgroundColor:v5];
+  colorCopy = color;
+  [(UIImageView *)imageView setBackgroundColor:colorCopy];
+  [(UILabel *)self->_label setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SUUIProductPagePlaceholderView;
-  [(SUUIProductPagePlaceholderView *)&v6 setBackgroundColor:v5];
+  [(SUUIProductPagePlaceholderView *)&v6 setBackgroundColor:colorCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(UIImageView *)self->_imageView frame:a3.width];
+  width = fits.width;
+  [(UIImageView *)self->_imageView frame:fits.width];
   v6 = v5 + 7.0;
   [(UILabel *)self->_label frame];
   v8 = v6 + v7;

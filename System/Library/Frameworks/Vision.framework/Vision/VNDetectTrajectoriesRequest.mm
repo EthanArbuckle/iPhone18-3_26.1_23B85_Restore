@@ -1,15 +1,15 @@
 @interface VNDetectTrajectoriesRequest
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration;
 - (CMTime)targetFrameTime;
 - (NSInteger)trajectoryLength;
 - (VNDetectTrajectoriesRequest)initWithFrameAnalysisSpacing:(CMTime *)frameAnalysisSpacing trajectoryLength:(NSInteger)trajectoryLength completionHandler:(VNRequestCompletionHandler)completionHandler;
 - (float)objectMaximumNormalizedRadius;
 - (float)objectMinimumNormalizedRadius;
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4;
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session;
 - (id)newDuplicateInstance;
-- (id)supportedComputeStageDevicesAndReturnError:(id *)a3;
-- (void)applyConfigurationOfRequest:(id)a3;
+- (id)supportedComputeStageDevicesAndReturnError:(id *)error;
+- (void)applyConfigurationOfRequest:(id)request;
 - (void)setObjectMaximumNormalizedRadius:(float)objectMaximumNormalizedRadius;
 - (void)setObjectMinimumNormalizedRadius:(float)objectMinimumNormalizedRadius;
 - (void)setTargetFrameTime:(CMTime *)targetFrameTime;
@@ -17,10 +17,10 @@
 
 @implementation VNDetectTrajectoriesRequest
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
-  v8 = a4;
-  v9 = [v8 imageBufferAndReturnError:a5];
+  contextCopy = context;
+  v9 = [contextCopy imageBufferAndReturnError:error];
   v10 = v9;
   if (!v9)
   {
@@ -30,10 +30,10 @@
   [v9 timingInfo];
   if ((v28 & 1) == 0)
   {
-    if (a5)
+    if (error)
     {
       [VNError errorWithCode:18 message:@"No valid presentationTimeStamp was available for this image"];
-      *a5 = v11 = 0;
+      *error = v11 = 0;
       goto LABEL_12;
     }
 
@@ -42,8 +42,8 @@ LABEL_5:
     goto LABEL_12;
   }
 
-  v12 = [v8 session];
-  v13 = [(VNDetectTrajectoriesRequest *)self newDefaultDetectorOptionsForRequestRevision:a3 session:v12];
+  session = [contextCopy session];
+  v13 = [(VNDetectTrajectoriesRequest *)self newDefaultDetectorOptionsForRequestRevision:revision session:session];
 
   trajectoryProcessor = self->_trajectoryProcessor;
   [(VNImageBasedRequest *)self regionOfInterest];
@@ -51,13 +51,13 @@ LABEL_5:
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [(VNStatefulRequest *)self requestUUID];
-  v24 = [(VNTrajectoryProcessor *)trajectoryProcessor processVNImageBuffer:v10 regionOfInterest:v13 withOptions:self warningRecorder:v23 requestUUID:a5 error:v16, v18, v20, v22];
+  requestUUID = [(VNStatefulRequest *)self requestUUID];
+  v24 = [(VNTrajectoryProcessor *)trajectoryProcessor processVNImageBuffer:v10 regionOfInterest:v13 withOptions:self warningRecorder:requestUUID requestUUID:error error:v16, v18, v20, v22];
 
   v11 = v24 != 0;
   if (v24)
   {
-    if (a3 == 1 && [(VisionCoreRuntimeUtilities *)VNRuntimeUtilities linkTimeOrRunTimeBeforeVersion:393216])
+    if (revision == 1 && [(VisionCoreRuntimeUtilities *)VNRuntimeUtilities linkTimeOrRunTimeBeforeVersion:393216])
     {
       v25 = &__block_literal_global_125;
       v26 = [v24 sortedArrayWithOptions:16 usingComparator:&__block_literal_global_125];
@@ -72,11 +72,11 @@ LABEL_12:
   return v11;
 }
 
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session
 {
   v13.receiver = self;
   v13.super_class = VNDetectTrajectoriesRequest;
-  v5 = [(VNRequest *)&v13 newDefaultDetectorOptionsForRequestRevision:a3 session:a4];
+  v5 = [(VNRequest *)&v13 newDefaultDetectorOptionsForRequestRevision:revision session:session];
   [v5 setObject:self->_state forKeyedSubscript:@"VNTrajectoryProcessorOption_RequestState"];
   v6 = MEMORY[0x1E696AD98];
   [(VNDetectTrajectoriesRequest *)self objectMinimumNormalizedRadius];
@@ -96,17 +96,17 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   [(VNDetectTrajectoriesRequest *)self objectMinimumNormalizedRadius];
   v6 = v5;
-  [v4 objectMinimumNormalizedRadius];
-  if (v6 >= v7 && (-[VNDetectTrajectoriesRequest objectMaximumNormalizedRadius](self, "objectMaximumNormalizedRadius"), v9 = v8, [v4 objectMaximumNormalizedRadius], v9 <= v10))
+  [configurationCopy objectMinimumNormalizedRadius];
+  if (v6 >= v7 && (-[VNDetectTrajectoriesRequest objectMaximumNormalizedRadius](self, "objectMaximumNormalizedRadius"), v9 = v8, [configurationCopy objectMaximumNormalizedRadius], v9 <= v10))
   {
     v13.receiver = self;
     v13.super_class = VNDetectTrajectoriesRequest;
-    v11 = [(VNImageBasedRequest *)&v13 willAcceptCachedResultsFromRequestWithConfiguration:v4];
+    v11 = [(VNImageBasedRequest *)&v13 willAcceptCachedResultsFromRequestWithConfiguration:configurationCopy];
   }
 
   else
@@ -117,20 +117,20 @@ LABEL_12:
   return v11;
 }
 
-- (void)applyConfigurationOfRequest:(id)a3
+- (void)applyConfigurationOfRequest:(id)request
 {
-  v4 = a3;
-  if (self != v4)
+  requestCopy = request;
+  if (self != requestCopy)
   {
     v5.receiver = self;
     v5.super_class = VNDetectTrajectoriesRequest;
-    [(VNImageBasedRequest *)&v5 applyConfigurationOfRequest:v4];
+    [(VNImageBasedRequest *)&v5 applyConfigurationOfRequest:requestCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(VNDetectTrajectoriesRequest *)v4 objectMinimumNormalizedRadius];
+      [(VNDetectTrajectoriesRequest *)requestCopy objectMinimumNormalizedRadius];
       [(VNDetectTrajectoriesRequest *)self setObjectMinimumNormalizedRadius:?];
-      [(VNDetectTrajectoriesRequest *)v4 objectMaximumNormalizedRadius];
+      [(VNDetectTrajectoriesRequest *)requestCopy objectMaximumNormalizedRadius];
       [(VNDetectTrajectoriesRequest *)self setObjectMaximumNormalizedRadius:?];
     }
   }
@@ -140,14 +140,14 @@ LABEL_12:
 {
   v3 = objc_alloc(objc_opt_class());
   [(VNStatefulRequest *)self frameAnalysisSpacing];
-  v4 = [(VNDetectTrajectoriesRequest *)self trajectoryLength];
-  v5 = [(VNRequest *)self completionHandler];
-  v6 = [v3 initWithFrameAnalysisSpacing:v8 trajectoryLength:v4 completionHandler:v5];
+  trajectoryLength = [(VNDetectTrajectoriesRequest *)self trajectoryLength];
+  completionHandler = [(VNRequest *)self completionHandler];
+  v6 = [v3 initWithFrameAnalysisSpacing:v8 trajectoryLength:trajectoryLength completionHandler:completionHandler];
 
   return v6;
 }
 
-- (id)supportedComputeStageDevicesAndReturnError:(id *)a3
+- (id)supportedComputeStageDevicesAndReturnError:(id *)error
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v6 = @"VNComputeStageMain";
@@ -160,19 +160,19 @@ LABEL_12:
 
 - (void)setTargetFrameTime:(CMTime *)targetFrameTime
 {
-  v4 = [(VNRequest *)self configuration];
+  configuration = [(VNRequest *)self configuration];
   v5 = *targetFrameTime;
-  [v4 setTargetFrameTime:&v5];
+  [configuration setTargetFrameTime:&v5];
 }
 
 - (CMTime)targetFrameTime
 {
-  v4 = [(VNRequest *)self configuration];
-  if (v4)
+  configuration = [(VNRequest *)self configuration];
+  if (configuration)
   {
-    v6 = v4;
-    [v4 targetFrameTime];
-    v4 = v6;
+    v6 = configuration;
+    [configuration targetFrameTime];
+    configuration = v6;
   }
 
   else
@@ -187,15 +187,15 @@ LABEL_12:
 
 - (void)setObjectMaximumNormalizedRadius:(float)objectMaximumNormalizedRadius
 {
-  v5 = [(VNRequest *)self configuration];
+  configuration = [(VNRequest *)self configuration];
   *&v4 = objectMaximumNormalizedRadius;
-  [v5 setObjectMaximumNormalizedRadius:v4];
+  [configuration setObjectMaximumNormalizedRadius:v4];
 }
 
 - (float)objectMaximumNormalizedRadius
 {
-  v2 = [(VNRequest *)self configuration];
-  [v2 objectMaximumNormalizedRadius];
+  configuration = [(VNRequest *)self configuration];
+  [configuration objectMaximumNormalizedRadius];
   v4 = v3;
 
   return v4;
@@ -203,15 +203,15 @@ LABEL_12:
 
 - (void)setObjectMinimumNormalizedRadius:(float)objectMinimumNormalizedRadius
 {
-  v5 = [(VNRequest *)self configuration];
+  configuration = [(VNRequest *)self configuration];
   *&v4 = objectMinimumNormalizedRadius;
-  [v5 setObjectMinimumNormalizedRadius:v4];
+  [configuration setObjectMinimumNormalizedRadius:v4];
 }
 
 - (float)objectMinimumNormalizedRadius
 {
-  v2 = [(VNRequest *)self configuration];
-  [v2 objectMinimumNormalizedRadius];
+  configuration = [(VNRequest *)self configuration];
+  [configuration objectMinimumNormalizedRadius];
   v4 = v3;
 
   return v4;
@@ -219,10 +219,10 @@ LABEL_12:
 
 - (NSInteger)trajectoryLength
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 trajectoryLength];
+  configuration = [(VNRequest *)self configuration];
+  trajectoryLength = [configuration trajectoryLength];
 
-  return v3;
+  return trajectoryLength;
 }
 
 - (VNDetectTrajectoriesRequest)initWithFrameAnalysisSpacing:(CMTime *)frameAnalysisSpacing trajectoryLength:(NSInteger)trajectoryLength completionHandler:(VNRequestCompletionHandler)completionHandler
@@ -253,8 +253,8 @@ LABEL_6:
   v16 = v15;
   if (v15)
   {
-    v17 = [(VNRequest *)v15 configuration];
-    [v17 setTrajectoryLength:trajectoryLength];
+    configuration = [(VNRequest *)v15 configuration];
+    [configuration setTrajectoryLength:trajectoryLength];
     v18 = [VNTrajectoryProcessor alloc];
     v24 = *&frameAnalysisSpacing->value;
     epoch = frameAnalysisSpacing->epoch;

@@ -1,23 +1,23 @@
 @interface CRLCanvasZoomTracker
 - (CGRect)visibleUnscaledBoundsAtEndOfZoom;
-- (CRLCanvasZoomTracker)initWithCanvasLayer:(id)a3;
+- (CRLCanvasZoomTracker)initWithCanvasLayer:(id)layer;
 - (CRLCanvasZoomTrackerDelegate)delegate;
-- (void)p_finishZoomWithFinalScaleFactor:(double)a3 contentOffset:(CGPoint)a4;
-- (void)zoomWithScale:(double)a3 velocity:(double)a4 locationInView:(CGPoint)a5 phase:(int64_t)a6;
+- (void)p_finishZoomWithFinalScaleFactor:(double)factor contentOffset:(CGPoint)offset;
+- (void)zoomWithScale:(double)scale velocity:(double)velocity locationInView:(CGPoint)view phase:(int64_t)phase;
 @end
 
 @implementation CRLCanvasZoomTracker
 
-- (CRLCanvasZoomTracker)initWithCanvasLayer:(id)a3
+- (CRLCanvasZoomTracker)initWithCanvasLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   v8.receiver = self;
   v8.super_class = CRLCanvasZoomTracker;
   v5 = [(CRLCanvasZoomTracker *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_canvasLayer, v4);
+    objc_storeWeak(&v5->_canvasLayer, layerCopy);
     *&v6->_fastPinchSnapsViewScale = 257;
     v6->_animateTransform = 1;
   }
@@ -25,15 +25,15 @@
   return v6;
 }
 
-- (void)zoomWithScale:(double)a3 velocity:(double)a4 locationInView:(CGPoint)a5 phase:(int64_t)a6
+- (void)zoomWithScale:(double)scale velocity:(double)velocity locationInView:(CGPoint)view phase:(int64_t)phase
 {
-  ty = a5.x;
-  tx = a5.y;
+  ty = view.x;
+  tx = view.y;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [NSObject cancelPreviousPerformRequestsWithTarget:"cancelPreviousPerformRequestsWithTarget:selector:object:" selector:WeakRetained object:?];
 
   v11 = &unk_101AD5000;
-  if (a6 == 2)
+  if (phase == 2)
   {
     if (qword_101AD5C48 != -1)
     {
@@ -49,14 +49,14 @@
 
   self->_gestureIsFastPinch = 0;
   v13 = objc_loadWeakRetained(&self->_canvasLayer);
-  v14 = [v13 controller];
+  controller = [v13 controller];
 
   v15 = objc_loadWeakRetained(&self->_canvasLayer);
-  v16 = [v15 canvasView];
-  v17 = [v16 enclosingScrollView];
+  canvasView = [v15 canvasView];
+  enclosingScrollView = [canvasView enclosingScrollView];
 
-  v18 = [v14 shouldCanvasScrollingSizeGrowToFitBoardContent];
-  switch(a6)
+  shouldCanvasScrollingSizeGrowToFitBoardContent = [controller shouldCanvasScrollingSizeGrowToFitBoardContent];
+  switch(phase)
   {
     case 0:
 LABEL_18:
@@ -77,12 +77,12 @@ LABEL_18:
       *&self->_savedTransform.c = v27;
       *&self->_savedTransform.tx = *&transform.m21;
 
-      [v17 contentOffset];
+      [enclosingScrollView contentOffset];
       self->_savedContentOffset.x = v28;
       self->_savedContentOffset.y = v29;
       self->_hasGestureOrigin = 0;
       self->_gestureOffset = CGPointZero;
-      [v14 i_viewWillBeginZooming];
+      [controller i_viewWillBeginZooming];
       self->_isZooming = 1;
       self->_zoomVelocitySampleCount = 0;
       self->_zoomVelocity = 0.0;
@@ -149,13 +149,13 @@ LABEL_18:
       [v21 setAffineTransform:&transform];
 
       v22 = objc_loadWeakRetained(&self->_canvasLayer);
-      v23 = [v22 associatedBackgroundLayer];
+      associatedBackgroundLayer = [v22 associatedBackgroundLayer];
       *&transform.m11 = *txc;
       *&transform.m13 = *tyb;
       *&transform.m21 = v435;
-      [v23 setDynamicTransform:&transform];
+      [associatedBackgroundLayer setDynamicTransform:&transform];
 
-      [v14 viewDidEndZooming];
+      [controller viewDidEndZooming];
       v24 = objc_loadWeakRetained(&self->_delegate);
       [v24 canvasZoomTrackerDidFinish:self];
 
@@ -163,7 +163,7 @@ LABEL_18:
   }
 
   zoomVelocitySampleCount = self->_zoomVelocitySampleCount;
-  v33 = a4 + zoomVelocitySampleCount++ * self->_zoomVelocity;
+  v33 = velocity + zoomVelocitySampleCount++ * self->_zoomVelocity;
   self->_zoomVelocity = v33 / zoomVelocitySampleCount;
   self->_zoomVelocitySampleCount = zoomVelocitySampleCount;
   v34 = objc_loadWeakRetained(&self->_canvasLayer);
@@ -180,18 +180,18 @@ LABEL_18:
 
   +[NSDate timeIntervalSinceReferenceDate];
   v44 = v43 - self->_zoomStartTime;
-  if (a6 != 2 || v44 >= 0.2 || fabs(self->_zoomVelocity) <= 0.5)
+  if (phase != 2 || v44 >= 0.2 || fabs(self->_zoomVelocity) <= 0.5)
   {
-    v47 = v36 * a3;
+    v47 = v36 * scale;
     if (v44 <= 0.2 || self->_isShowingZoomHUD)
     {
       goto LABEL_38;
     }
 
     v51 = objc_loadWeakRetained(&self->_canvasLayer);
-    v52 = [v51 showsScaleFeedback];
+    showsScaleFeedback = [v51 showsScaleFeedback];
 
-    if (!v52)
+    if (!showsScaleFeedback)
     {
       goto LABEL_37;
     }
@@ -203,7 +203,7 @@ LABEL_18:
   self->_gestureIsFastPinch = 1;
   v45 = objc_loadWeakRetained(&self->_canvasLayer);
   [v45 viewScale];
-  [v14 i_nextCanvasViewScaleDetentForProposedViewScale:self->_zoomVelocity > 0.0 greater:self->_gestureIsFastPinch isFastPinch:?];
+  [controller i_nextCanvasViewScaleDetentForProposedViewScale:self->_zoomVelocity > 0.0 greater:self->_gestureIsFastPinch isFastPinch:?];
   v47 = v46;
 
   if (self->_isShowingZoomHUD)
@@ -212,9 +212,9 @@ LABEL_18:
   }
 
   v48 = objc_loadWeakRetained(&self->_canvasLayer);
-  v49 = [v48 showsScaleFeedback];
+  showsScaleFeedback2 = [v48 showsScaleFeedback];
 
-  if (v49)
+  if (showsScaleFeedback2)
   {
     v50 = 1;
 LABEL_36:
@@ -232,7 +232,7 @@ LABEL_38:
   {
     v55 = objc_loadWeakRetained(&self->_canvasLayer);
     [v55 viewScale];
-    [v14 i_viewScaleForProposedViewScale:self->_gestureIsFastPinch originalViewScale:v54 isFastPinch:v56];
+    [controller i_viewScaleForProposedViewScale:self->_gestureIsFastPinch originalViewScale:v54 isFastPinch:v56];
     v58 = v57;
 
     v59 = v58 != v54 || self->_gestureIsFastPinch;
@@ -245,11 +245,11 @@ LABEL_38:
     self->_currentlySnappingViewScale = 0;
   }
 
-  if (a6 == 2)
+  if (phase == 2)
   {
     v60 = objc_loadWeakRetained(&self->_canvasLayer);
     [v60 viewScale];
-    [v14 i_canvasCenterOffsetForProposedViewScale:v54 originalViewScale:v61];
+    [controller i_canvasCenterOffsetForProposedViewScale:v54 originalViewScale:v61];
     width = v62;
     height = v63;
 
@@ -301,12 +301,12 @@ LABEL_38:
   v81 = v80;
 
   v82 = objc_loadWeakRetained(&self->_canvasLayer);
-  v83 = [v82 controller];
-  v84 = [v83 canvas];
-  v85 = [v84 isAnchoredAtRight];
+  controller2 = [v82 controller];
+  canvas = [controller2 canvas];
+  isAnchoredAtRight = [canvas isAnchoredAtRight];
 
   v86 = v75 - v79;
-  if (!v85)
+  if (!isAnchoredAtRight)
   {
     v86 = v75;
   }
@@ -316,11 +316,11 @@ LABEL_38:
   v405 = v88;
   v408 = v87;
   v89 = objc_loadWeakRetained(&self->_canvasLayer);
-  v90 = [v89 canvasView];
+  canvasView2 = [v89 canvasView];
   v91 = objc_loadWeakRetained(&self->_canvasLayer);
-  v92 = [v91 canvasView];
-  v93 = [v92 superview];
-  [v90 convertPoint:v93 toView:{ty, tx}];
+  canvasView3 = [v91 canvasView];
+  superview = [canvasView3 superview];
+  [canvasView2 convertPoint:superview toView:{ty, tx}];
   v95 = v94;
   v97 = v96;
 
@@ -377,19 +377,19 @@ LABEL_38:
 
   y = self->_scaledZoomOrigin.y;
   x = self->_scaledZoomOrigin.x;
-  if (a6 != 2)
+  if (phase != 2)
   {
     self->_gestureOffset.x = sub_10011F31C(v95, v97, self->_gestureOrigin.x);
     self->_gestureOffset.y = v102;
   }
 
-  [v17 bounds];
+  [enclosingScrollView bounds];
   v103 = sub_10011ECB4();
   v416 = v105;
   v417 = v103;
   v107 = v106;
   v414 = v104;
-  if ((v18 & 1) == 0)
+  if ((shouldCanvasScrollingSizeGrowToFitBoardContent & 1) == 0)
   {
     v108 = v104;
     v109 = objc_loadWeakRetained(&self->_canvasLayer);
@@ -399,7 +399,7 @@ LABEL_38:
 
     v115 = fmax((v112 - v108) * 0.5, 0.0);
     v116 = fmax((v114 - v107) * 0.5, 0.0);
-    if (a6 == 2)
+    if (phase == 2)
     {
       self->_gestureOffset.x = sub_1004C3240(self->_gestureOffset.x, -v115, v115);
       self->_gestureOffset.y = sub_1004C3240(self->_gestureOffset.y, -v116, v116);
@@ -408,9 +408,9 @@ LABEL_38:
     else
     {
       v117 = objc_loadWeakRetained(&self->_canvasLayer);
-      v118 = [v117 isInfinite];
+      isInfinite = [v117 isInfinite];
 
-      if ((v118 & 1) == 0)
+      if ((isInfinite & 1) == 0)
       {
         v119 = v54;
         if ([(CRLCanvasZoomTracker *)self alwaysUsesTranslationSprings])
@@ -506,7 +506,7 @@ LABEL_38:
   v433 = v153;
   txb = sub_10011F31C(v153, v432, v160);
   tya = v162;
-  if (a6 == 2)
+  if (phase == 2)
   {
     if (v98[393] != -1)
     {
@@ -609,7 +609,7 @@ LABEL_38:
   [v175 viewScale];
   v177 = v176;
 
-  [v17 contentOffset];
+  [enclosingScrollView contentOffset];
   v179 = v178;
   point = v180;
   if (v98[393] != -1)
@@ -770,7 +770,7 @@ LABEL_38:
     sub_10132EE88(&v467);
   }
 
-  if (a6 != 2)
+  if (phase != 2)
   {
     memset(&transform, 0, sizeof(transform));
     *&t1.m11 = *&v467.a;
@@ -785,14 +785,14 @@ LABEL_38:
 
     v464 = v467;
     v287 = objc_loadWeakRetained(&self->_canvasLayer);
-    v288 = [v287 associatedBackgroundLayer];
+    associatedBackgroundLayer2 = [v287 associatedBackgroundLayer];
     *&t1.m11 = *&v464.a;
     *&t1.m13 = *&v464.c;
     *&t1.m21 = *&v464.tx;
-    [v288 setDynamicTransform:&t1];
+    [associatedBackgroundLayer2 setDynamicTransform:&t1];
 
-    [v14 i_viewIsZoomingAtPoint:{x, y}];
-    [v14 i_viewDidZoomToViewScale:1 notify:v422];
+    [controller i_viewIsZoomingAtPoint:{x, y}];
+    [controller i_viewDidZoomToViewScale:1 notify:v422];
     goto LABEL_272;
   }
 
@@ -976,7 +976,7 @@ LABEL_38:
   v235 = v226 - (v230 + v234);
   v237 = v227 - (v232 + v236);
 
-  [v17 adjustedContentInset];
+  [enclosingScrollView adjustedContentInset];
   v239 = v238;
   v241 = v240;
   v244 = -v243 - v240;
@@ -1040,14 +1040,14 @@ LABEL_38:
   v488.size.width = v251;
   v488.size.height = v252;
   MaxX = CGRectGetMaxX(v488);
-  [v17 adjustedContentInset];
+  [enclosingScrollView adjustedContentInset];
   v256 = v255;
   v489.origin.x = v249;
   v489.origin.y = v250;
   v489.size.width = v251;
   v489.size.height = v252;
   MaxY = CGRectGetMaxY(v489);
-  [v17 adjustedContentInset];
+  [enclosingScrollView adjustedContentInset];
   v259 = v258;
   if (v98[393] != -1)
   {
@@ -1076,14 +1076,14 @@ LABEL_38:
 
   v407 = MaxY - v259;
 
-  [v17 contentOffset];
-  v261 = [v14 sizeOfScrollViewEnclosingCanvas];
-  v470 = SyncEvent.FetchedRecordZoneChanges.Deletion.init(recordID:recordType:)(v261, v262);
+  [enclosingScrollView contentOffset];
+  sizeOfScrollViewEnclosingCanvas = [controller sizeOfScrollViewEnclosingCanvas];
+  v470 = SyncEvent.FetchedRecordZoneChanges.Deletion.init(recordID:recordType:)(sizeOfScrollViewEnclosingCanvas, v262);
   v264 = v263;
   v266 = v265;
   v268 = v267;
   v270 = v269;
-  [v17 adjustedContentInset];
+  [enclosingScrollView adjustedContentInset];
   v275 = sub_100120414(v264 + v274, v266 + v271, v268 - (v274 + v272), v270 - (v271 + v273));
   v277 = sub_10011F334(v275, v276, width);
   v279 = v278;
@@ -1116,15 +1116,15 @@ LABEL_38:
     _os_log_debug_impl(&_mh_execute_header, v281, OS_LOG_TYPE_DEBUG, "adjustedTransform before horizontal and vertical clamping %@", &transform, 0xCu);
   }
 
-  if ((v18 & 1) == 0)
+  if ((shouldCanvasScrollingSizeGrowToFitBoardContent & 1) == 0)
   {
     v289 = objc_loadWeakRetained(&self->_canvasLayer);
     v290 = v289;
     if (rect_24 < v251)
     {
-      v296 = [v289 horizontallyCenteredInScrollView];
+      horizontallyCenteredInScrollView = [v289 horizontallyCenteredInScrollView];
 
-      if (v296)
+      if (horizontallyCenteredInScrollView)
       {
         v285 = v277 - v398;
         v282 = v413;
@@ -1133,12 +1133,12 @@ LABEL_38:
       else
       {
         v301 = objc_loadWeakRetained(&self->_canvasLayer);
-        v302 = [v301 controller];
-        v303 = [v302 canvas];
-        v304 = [v303 isAnchoredAtRight];
+        controller3 = [v301 controller];
+        canvas2 = [controller3 canvas];
+        isAnchoredAtRight2 = [canvas2 isAnchoredAtRight];
 
         v282 = v413;
-        if (v304)
+        if (isAnchoredAtRight2)
         {
           v490.origin = rect;
           v295 = rect_16;
@@ -1156,9 +1156,9 @@ LABEL_215:
       if (v295 < v252)
       {
         v312 = objc_loadWeakRetained(&self->_canvasLayer);
-        v313 = [v312 verticallyCenteredInScrollView];
+        verticallyCenteredInScrollView = [v312 verticallyCenteredInScrollView];
 
-        if (v313)
+        if (verticallyCenteredInScrollView)
         {
           v284 = v279 - v399;
         }
@@ -1199,11 +1199,11 @@ LABEL_215:
       goto LABEL_226;
     }
 
-    v291 = [v289 controller];
-    v292 = [v291 canvas];
-    v293 = [v292 isAnchoredAtRight];
+    controller4 = [v289 controller];
+    canvas3 = [controller4 canvas];
+    isAnchoredAtRight3 = [canvas3 isAnchoredAtRight];
 
-    if (v293)
+    if (isAnchoredAtRight3)
     {
       v282 = v413;
       v294 = v420;
@@ -1222,12 +1222,12 @@ LABEL_215:
       else if (v415.x < v410)
       {
         v297 = objc_loadWeakRetained(&self->_canvasLayer);
-        v298 = [v297 controller];
-        v299 = [v298 canvas];
-        v300 = [v299 isAnchoredAtRight];
+        controller5 = [v297 controller];
+        canvas4 = [controller5 canvas];
+        isAnchoredAtRight4 = [canvas4 isAnchoredAtRight];
 
         v282 = v413;
-        if ((v300 & 1) == 0)
+        if ((isAnchoredAtRight4 & 1) == 0)
         {
           v294 = v420 + v410 - v415.x;
         }
@@ -1376,8 +1376,8 @@ LABEL_226:
     _os_log_debug_impl(&_mh_execute_header, v333, OS_LOG_TYPE_DEBUG, "finalBounds taking into account canvasCenterOffset %@", &transform, 0xCu);
   }
 
-  v335 = [v14 canvas];
-  [v335 contentsScale];
+  canvas5 = [controller canvas];
+  [canvas5 contentsScale];
   v337 = sub_1001221E8(v329, v330, v331, v332, v336);
   v339 = v338;
   v341 = v340;
@@ -1492,7 +1492,7 @@ LABEL_226:
       v450[2] = sub_1001DB058;
       v450[3] = &unk_101846DB0;
       v450[4] = self;
-      v359 = v14;
+      v359 = controller;
       v451 = v359;
       v453 = v422;
       v360 = objc_retainBlock(v450);
@@ -1502,21 +1502,21 @@ LABEL_226:
       v444[3] = &unk_101846DD8;
       v361 = v357;
       v445 = v361;
-      v446 = self;
+      selfCopy = self;
       v447 = v424;
       v448 = v344;
       v449 = -v339;
       v362 = objc_retainBlock(v444);
       [v359 beginAnimations:&stru_1018BCA28];
       v363 = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
-      v364 = [v359 i_currentAnimation];
-      [v364 setTimingFunction:v363];
+      i_currentAnimation = [v359 i_currentAnimation];
+      [i_currentAnimation setTimingFunction:v363];
 
-      v365 = [v359 i_currentAnimation];
-      [v365 setDuration:0.2];
+      i_currentAnimation2 = [v359 i_currentAnimation];
+      [i_currentAnimation2 setDuration:0.2];
 
-      v366 = [v359 i_currentAnimation];
-      [v366 setCompletionBlock:v362];
+      i_currentAnimation3 = [v359 i_currentAnimation];
+      [i_currentAnimation3 setCompletionBlock:v362];
 
       (v360[2])(v360);
       [v359 commitAnimations];
@@ -1557,12 +1557,12 @@ LABEL_226:
 LABEL_272:
 }
 
-- (void)p_finishZoomWithFinalScaleFactor:(double)a3 contentOffset:(CGPoint)a4
+- (void)p_finishZoomWithFinalScaleFactor:(double)factor contentOffset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   WeakRetained = objc_loadWeakRetained(&self->_canvasLayer);
-  v9 = [WeakRetained associatedBackgroundLayer];
+  associatedBackgroundLayer = [WeakRetained associatedBackgroundLayer];
   v10 = *&CGAffineTransformIdentity.c;
   v85 = *&CGAffineTransformIdentity.a;
   *&v87.m11 = *&CGAffineTransformIdentity.a;
@@ -1570,15 +1570,15 @@ LABEL_272:
   v83 = v10;
   *&v87.m13 = v10;
   *&v87.m21 = v81;
-  [v9 setDynamicTransform:&v87];
+  [associatedBackgroundLayer setDynamicTransform:&v87];
 
   v11 = objc_loadWeakRetained(&self->_canvasLayer);
-  v12 = [v11 canvasView];
+  canvasView = [v11 canvasView];
 
   v13 = objc_loadWeakRetained(&self->_canvasLayer);
-  v14 = [v13 controller];
+  controller = [v13 controller];
 
-  [v14 visibleUnscaledRect];
+  [controller visibleUnscaledRect];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -1614,16 +1614,16 @@ LABEL_272:
   [v29 setAffineTransform:&v87];
 
   v30 = objc_loadWeakRetained(&self->_canvasLayer);
-  [v30 setViewScale:a3];
+  [v30 setViewScale:factor];
 
   v31 = objc_loadWeakRetained(&self->_canvasLayer);
-  v32 = [v31 controller];
-  v33 = [v32 canvas];
-  v34 = [v33 isAnchoredAtRight];
+  controller2 = [v31 controller];
+  canvas = [controller2 canvas];
+  isAnchoredAtRight = [canvas isAnchoredAtRight];
 
   v35 = objc_loadWeakRetained(&self->_canvasLayer);
   v36 = v35;
-  if (v34)
+  if (isAnchoredAtRight)
   {
     [v35 contentInset];
     v38 = y - v37;
@@ -1640,16 +1640,16 @@ LABEL_272:
     v38 = v42;
   }
 
-  v43 = [v12 enclosingScrollView];
+  enclosingScrollView = [canvasView enclosingScrollView];
   v86 = v38;
   v84 = v40;
-  if ([v14 shouldCanvasScrollingSizeGrowToFitBoardContent])
+  if ([controller shouldCanvasScrollingSizeGrowToFitBoardContent])
   {
-    [v43 convertPoint:v12 toView:{v40, v38}];
+    [enclosingScrollView convertPoint:canvasView toView:{v40, v38}];
     v45 = v44;
     v47 = v46;
-    [v43 adjustedContentInset];
-    [v14 convertBoundsToUnscaledPoint:{sub_10011F334(v45, v47, v48)}];
+    [enclosingScrollView adjustedContentInset];
+    [controller convertBoundsToUnscaledPoint:{sub_10011F334(v45, v47, v48)}];
     v80 = v50;
     v82 = v49;
     self->_visibleUnscaledBoundsAtEndOfZoom.origin.x = v49;
@@ -1664,19 +1664,19 @@ LABEL_272:
     v82 = v25;
   }
 
-  [v43 adjustedContentInset];
+  [enclosingScrollView adjustedContentInset];
   v52 = v51;
   v54 = v53;
   v56 = -v55;
   v58 = -v57;
-  [v43 contentSize];
+  [enclosingScrollView contentSize];
   v60 = v59;
   v62 = v61;
   v63 = sub_10011ECB4() - v54;
   v65 = v64 - v52;
   v67 = v66 - (v58 - v54);
   v69 = v68 - (v56 - v52);
-  [v43 scrollableAreaBounds];
+  [enclosingScrollView scrollableAreaBounds];
   if (v70 <= v60)
   {
     v72 = v70;
@@ -1718,14 +1718,14 @@ LABEL_272:
   v94.size.width = v67;
   v94.size.height = v69;
   MaxY = CGRectGetMaxY(v94);
-  [v43 setContentOffset:{v76, sub_1004C3240(v86, MinY, MaxY - v73)}];
-  [v14 viewDidEndZooming];
-  if ([v14 shouldCanvasScrollingSizeGrowToFitBoardContent])
+  [enclosingScrollView setContentOffset:{v76, sub_1004C3240(v86, MinY, MaxY - v73)}];
+  [controller viewDidEndZooming];
+  if ([controller shouldCanvasScrollingSizeGrowToFitBoardContent])
   {
-    [v14 setContentOffset:0 scrollOptions:{v82, v80}];
+    [controller setContentOffset:0 scrollOptions:{v82, v80}];
   }
 
-  [v14 i_recordUserViewScale];
+  [controller i_recordUserViewScale];
   self->_isZooming = 0;
   v79 = objc_loadWeakRetained(&self->_delegate);
   [v79 canvasZoomTrackerDidFinish:self];

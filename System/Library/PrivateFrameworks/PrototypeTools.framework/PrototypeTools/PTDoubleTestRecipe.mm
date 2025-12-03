@@ -1,36 +1,36 @@
 @interface PTDoubleTestRecipe
-+ (id)recipeWithTitle:(id)a3 prepareBlock:(id)a4 increaseAction:(id)a5 decreaseAction:(id)a6 cleanupBlock:(id)a7;
-- (void)_handleEvent:(int64_t)a3;
++ (id)recipeWithTitle:(id)title prepareBlock:(id)block increaseAction:(id)action decreaseAction:(id)decreaseAction cleanupBlock:(id)cleanupBlock;
+- (void)_handleEvent:(int64_t)event;
 - (void)invalidate;
 @end
 
 @implementation PTDoubleTestRecipe
 
-+ (id)recipeWithTitle:(id)a3 prepareBlock:(id)a4 increaseAction:(id)a5 decreaseAction:(id)a6 cleanupBlock:(id)a7
++ (id)recipeWithTitle:(id)title prepareBlock:(id)block increaseAction:(id)action decreaseAction:(id)decreaseAction cleanupBlock:(id)cleanupBlock
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[a1 alloc] _initWithTitle:v16 prepareBlock:v15 cleanupBlock:v12];
+  cleanupBlockCopy = cleanupBlock;
+  decreaseActionCopy = decreaseAction;
+  actionCopy = action;
+  blockCopy = block;
+  titleCopy = title;
+  v17 = [[self alloc] _initWithTitle:titleCopy prepareBlock:blockCopy cleanupBlock:cleanupBlockCopy];
 
-  [v17 setIncreaseAction:v14];
-  [v17 setDecreaseAction:v13];
+  [v17 setIncreaseAction:actionCopy];
+  [v17 setDecreaseAction:decreaseActionCopy];
 
   return v17;
 }
 
-- (void)_handleEvent:(int64_t)a3
+- (void)_handleEvent:(int64_t)event
 {
-  if (a3 == 2)
+  if (event == 2)
   {
     v3 = 56;
   }
 
   else
   {
-    if (a3 != 1)
+    if (event != 1)
     {
       return;
     }

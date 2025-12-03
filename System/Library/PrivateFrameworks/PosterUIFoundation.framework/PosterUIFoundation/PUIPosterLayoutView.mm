@@ -1,29 +1,29 @@
 @interface PUIPosterLayoutView
-- (PUIPosterLayoutView)initWithFrame:(CGRect)a3;
+- (PUIPosterLayoutView)initWithFrame:(CGRect)frame;
 - (id)_dequeueImageView;
 - (id)containerViews;
-- (void)_recycleView:(id)a3;
+- (void)_recycleView:(id)view;
 - (void)layoutSubviews;
 - (void)resetAllViews;
-- (void)setBackdropView:(id)a3;
-- (void)setBackgroundView:(id)a3;
-- (void)setCompositeView:(id)a3;
-- (void)setFloatingUnderView:(id)a3;
-- (void)setFloatingView:(id)a3;
-- (void)setForegroundView:(id)a3;
-- (void)setModalView:(id)a3;
-- (void)setTimeView:(id)a3;
-- (void)updateViewWithBlock:(id)a3 animated:(unint64_t)a4;
+- (void)setBackdropView:(id)view;
+- (void)setBackgroundView:(id)view;
+- (void)setCompositeView:(id)view;
+- (void)setFloatingUnderView:(id)view;
+- (void)setFloatingView:(id)view;
+- (void)setForegroundView:(id)view;
+- (void)setModalView:(id)view;
+- (void)setTimeView:(id)view;
+- (void)updateViewWithBlock:(id)block animated:(unint64_t)animated;
 @end
 
 @implementation PUIPosterLayoutView
 
-- (PUIPosterLayoutView)initWithFrame:(CGRect)a3
+- (PUIPosterLayoutView)initWithFrame:(CGRect)frame
 {
   v46 = *MEMORY[0x1E69E9840];
   v44.receiver = self;
   v44.super_class = PUIPosterLayoutView;
-  v3 = [(PUIPosterLayoutView *)&v44 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUIPosterLayoutView *)&v44 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -84,8 +84,8 @@
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v33 = [(PUIPosterLayoutView *)v4 containerViews];
-    v34 = [v33 countByEnumeratingWithState:&v40 objects:v45 count:16];
+    containerViews = [(PUIPosterLayoutView *)v4 containerViews];
+    v34 = [containerViews countByEnumeratingWithState:&v40 objects:v45 count:16];
     if (v34)
     {
       v35 = v34;
@@ -96,7 +96,7 @@
         {
           if (*v41 != v36)
           {
-            objc_enumerationMutation(v33);
+            objc_enumerationMutation(containerViews);
           }
 
           v38 = *(*(&v40 + 1) + 8 * i);
@@ -104,7 +104,7 @@
           [(PUIPosterLayoutView *)v4 addSubview:v38];
         }
 
-        v35 = [v33 countByEnumeratingWithState:&v40 objects:v45 count:16];
+        v35 = [containerViews countByEnumeratingWithState:&v40 objects:v45 count:16];
       }
 
       while (v35);
@@ -141,7 +141,7 @@
 {
   v26 = *MEMORY[0x1E69E9840];
   BSDispatchQueueAssertMain();
-  v3 = [(PUIPosterLayoutView *)self reusableViewMap];
+  reusableViewMap = [(PUIPosterLayoutView *)self reusableViewMap];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -165,8 +165,8 @@
         v17 = 0u;
         v18 = 0u;
         v19 = 0u;
-        v6 = [v5 subviews];
-        v7 = [v6 countByEnumeratingWithState:&v16 objects:v24 count:16];
+        subviews = [v5 subviews];
+        v7 = [subviews countByEnumeratingWithState:&v16 objects:v24 count:16];
         if (v7)
         {
           v8 = v7;
@@ -177,11 +177,11 @@
             {
               if (*v17 != v9)
               {
-                objc_enumerationMutation(v6);
+                objc_enumerationMutation(subviews);
               }
 
               v11 = *(*(&v16 + 1) + 8 * j);
-              if ([v11 tag] != 3333333 || v3 == 0)
+              if ([v11 tag] != 3333333 || reusableViewMap == 0)
               {
                 if (objc_opt_respondsToSelector())
                 {
@@ -193,11 +193,11 @@
 
               else
               {
-                [v3 recycleView:v11];
+                [reusableViewMap recycleView:v11];
               }
             }
 
-            v8 = [v6 countByEnumeratingWithState:&v16 objects:v24 count:16];
+            v8 = [subviews countByEnumeratingWithState:&v16 objects:v24 count:16];
           }
 
           while (v8);
@@ -221,7 +221,7 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PUIPosterLayoutView *)self containerViews];
+  containerViews = [(PUIPosterLayoutView *)self containerViews];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __37__PUIPosterLayoutView_layoutSubviews__block_invoke;
@@ -230,18 +230,18 @@
   v12[5] = v6;
   v12[6] = v8;
   v12[7] = v10;
-  [v11 enumerateObjectsUsingBlock:v12];
+  [containerViews enumerateObjectsUsingBlock:v12];
 }
 
-- (void)setBackdropView:(id)a3
+- (void)setBackdropView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   backdropView = self->_backdropView;
-  if (backdropView != v5)
+  if (backdropView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(PUIReusableView *)backdropView removeFromSuperview];
-    objc_storeStrong(&self->_backdropView, a3);
+    objc_storeStrong(&self->_backdropView, view);
     if (v7)
     {
       [(PUIPosterLayoutView *)self bounds];
@@ -253,15 +253,15 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setBackgroundView:(id)a3
+- (void)setBackgroundView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   backgroundView = self->_backgroundView;
-  if (backgroundView != v5)
+  if (backgroundView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(PUIReusableView *)backgroundView removeFromSuperview];
-    objc_storeStrong(&self->_backgroundView, a3);
+    objc_storeStrong(&self->_backgroundView, view);
     if (v7)
     {
       [(PUIPosterLayoutView *)self bounds];
@@ -273,15 +273,15 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setForegroundView:(id)a3
+- (void)setForegroundView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   foregroundView = self->_foregroundView;
-  if (foregroundView != v5)
+  if (foregroundView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(PUIReusableView *)foregroundView removeFromSuperview];
-    objc_storeStrong(&self->_foregroundView, a3);
+    objc_storeStrong(&self->_foregroundView, view);
     if (v7)
     {
       [(PUIPosterLayoutView *)self bounds];
@@ -293,15 +293,15 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setFloatingUnderView:(id)a3
+- (void)setFloatingUnderView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   floatingUnderView = self->_floatingUnderView;
-  if (floatingUnderView != v5)
+  if (floatingUnderView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(PUIReusableView *)floatingUnderView removeFromSuperview];
-    objc_storeStrong(&self->_floatingUnderView, a3);
+    objc_storeStrong(&self->_floatingUnderView, view);
     if (v7)
     {
       [(PUIPosterLayoutView *)self bounds];
@@ -313,15 +313,15 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setTimeView:(id)a3
+- (void)setTimeView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   timeView = self->_timeView;
-  if (timeView != v5)
+  if (timeView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(PUIReusableView *)timeView removeFromSuperview];
-    objc_storeStrong(&self->_timeView, a3);
+    objc_storeStrong(&self->_timeView, view);
     if (v7)
     {
       [(PUIPosterLayoutView *)self bounds];
@@ -333,15 +333,15 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setFloatingView:(id)a3
+- (void)setFloatingView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   floatingView = self->_floatingView;
-  if (floatingView != v5)
+  if (floatingView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(PUIReusableView *)floatingView removeFromSuperview];
-    objc_storeStrong(&self->_floatingView, a3);
+    objc_storeStrong(&self->_floatingView, view);
     if (v7)
     {
       [(PUIPosterLayoutView *)self bounds];
@@ -353,15 +353,15 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setCompositeView:(id)a3
+- (void)setCompositeView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   compositeView = self->_compositeView;
-  if (compositeView != v5)
+  if (compositeView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(PUIReusableView *)compositeView removeFromSuperview];
-    objc_storeStrong(&self->_compositeView, a3);
+    objc_storeStrong(&self->_compositeView, view);
     if (v7)
     {
       [(PUIPosterLayoutView *)self bounds];
@@ -373,15 +373,15 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setModalView:(id)a3
+- (void)setModalView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   modalView = self->_modalView;
-  if (modalView != v5)
+  if (modalView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(PUIReusableView *)modalView removeFromSuperview];
-    objc_storeStrong(&self->_modalView, a3);
+    objc_storeStrong(&self->_modalView, view);
     if (v7)
     {
       [(PUIPosterLayoutView *)self bounds];
@@ -393,53 +393,53 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)updateViewWithBlock:(id)a3 animated:(unint64_t)a4
+- (void)updateViewWithBlock:(id)block animated:(unint64_t)animated
 {
-  v6 = a3;
-  if (v6)
+  blockCopy = block;
+  if (blockCopy)
   {
     if ([MEMORY[0x1E69DD250] areAnimationsEnabled])
     {
-      if (a4 == 2)
+      if (animated == 2)
       {
-        v7 = [MEMORY[0x1E6979538] animation];
-        [v7 setDuration:0.5];
-        [v7 setType:*MEMORY[0x1E697A030]];
+        animation = [MEMORY[0x1E6979538] animation];
+        [animation setDuration:0.5];
+        [animation setType:*MEMORY[0x1E697A030]];
         v10 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
-        [v7 setTimingFunction:v10];
+        [animation setTimingFunction:v10];
 
-        v11 = [(PUIPosterLayoutView *)self traitCollection];
-        v12 = [v11 userInterfaceStyle];
+        traitCollection = [(PUIPosterLayoutView *)self traitCollection];
+        userInterfaceStyle = [traitCollection userInterfaceStyle];
 
         v8 = MEMORY[0x1E6979ED0];
-        if (v12 == 1)
+        if (userInterfaceStyle == 1)
         {
           v8 = MEMORY[0x1E6979EB0];
         }
 
 LABEL_10:
         v13 = [MEMORY[0x1E69793D0] functionWithName:*v8];
-        [v7 setTimingFunction:v13];
+        [animation setTimingFunction:v13];
 
         [MEMORY[0x1E6979518] begin];
-        if (v7)
+        if (animation)
         {
-          v6[2](v6, self);
-          v14 = [(PUIPosterLayoutView *)self containerViews];
+          blockCopy[2](blockCopy, self);
+          containerViews = [(PUIPosterLayoutView *)self containerViews];
           v15[0] = MEMORY[0x1E69E9820];
           v15[1] = 3221225472;
           v15[2] = __52__PUIPosterLayoutView_updateViewWithBlock_animated___block_invoke;
           v15[3] = &unk_1E7854E68;
-          v9 = v7;
+          v9 = animation;
           v16 = v9;
-          [v14 enumerateObjectsUsingBlock:v15];
+          [containerViews enumerateObjectsUsingBlock:v15];
 
           goto LABEL_12;
         }
 
 LABEL_7:
         [MEMORY[0x1E6979518] setDisableActions:1];
-        v6[2](v6, self);
+        blockCopy[2](blockCopy, self);
         v9 = 0;
 LABEL_12:
         [MEMORY[0x1E6979518] commit];
@@ -447,11 +447,11 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      if (a4 == 1)
+      if (animated == 1)
       {
-        v7 = [MEMORY[0x1E6979538] animation];
-        [v7 setDuration:0.33];
-        [v7 setType:*MEMORY[0x1E697A030]];
+        animation = [MEMORY[0x1E6979538] animation];
+        [animation setDuration:0.33];
+        [animation setType:*MEMORY[0x1E697A030]];
         v8 = MEMORY[0x1E6979EB8];
         goto LABEL_10;
       }
@@ -472,9 +472,9 @@ void __52__PUIPosterLayoutView_updateViewWithBlock_animated___block_invoke(uint6
 
 - (id)_dequeueImageView
 {
-  v2 = [(PUIPosterLayoutView *)self reusableViewMap];
+  reusableViewMap = [(PUIPosterLayoutView *)self reusableViewMap];
   v3 = objc_opt_self();
-  v4 = [v2 viewOfClass:v3];
+  v4 = [reusableViewMap viewOfClass:v3];
 
   if (!v4)
   {
@@ -487,24 +487,24 @@ void __52__PUIPosterLayoutView_updateViewWithBlock_animated___block_invoke(uint6
   return v4;
 }
 
-- (void)_recycleView:(id)a3
+- (void)_recycleView:(id)view
 {
-  v4 = a3;
-  if (v4)
+  viewCopy = view;
+  if (viewCopy)
   {
-    v7 = v4;
-    if ([v4 tag] == 3333333)
+    v7 = viewCopy;
+    if ([viewCopy tag] == 3333333)
     {
       [v7 setTag:0];
       [v7 setImage:0];
     }
 
-    v5 = [(PUIPosterLayoutView *)self reusableViewMap];
+    reusableViewMap = [(PUIPosterLayoutView *)self reusableViewMap];
 
-    if (v5)
+    if (reusableViewMap)
     {
-      v6 = [(PUIPosterLayoutView *)self reusableViewMap];
-      [v6 recycleView:v7];
+      reusableViewMap2 = [(PUIPosterLayoutView *)self reusableViewMap];
+      [reusableViewMap2 recycleView:v7];
     }
 
     else
@@ -512,7 +512,7 @@ void __52__PUIPosterLayoutView_updateViewWithBlock_animated___block_invoke(uint6
       [v7 removeFromSuperview];
     }
 
-    v4 = v7;
+    viewCopy = v7;
   }
 }
 

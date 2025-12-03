@@ -3,33 +3,33 @@
 + (id)detectionEnabledDefaultsKey;
 + (id)footerText;
 + (id)localizedThresholdHeartRateString;
-+ (id)localizedThresholdHeartRateStringWithValue:(int64_t)a3;
++ (id)localizedThresholdHeartRateStringWithValue:(int64_t)value;
 + (id)paneTitleLocalizationKey;
 + (id)specifierIdentifier;
 + (id)thresholdHeartRateDefaultsKey;
 + (id)thresholdHeartRateOptions;
 + (int64_t)thresholdHeartRate;
 + (int64_t)thresholdHeartRateDefault;
-+ (void)saveThresholdValue:(id)a3;
++ (void)saveThresholdValue:(id)value;
 - (HPRFHeartRateThresholdController)init;
 - (id)applicationBundleIdentifier;
 - (id)bundle;
 - (id)localizedPaneTitle;
 - (id)specifiers;
-- (void)didSelectThresholdValue:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)didSelectThresholdValue:(id)value;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation HPRFHeartRateThresholdController
 
-+ (id)localizedThresholdHeartRateStringWithValue:(int64_t)a3
++ (id)localizedThresholdHeartRateStringWithValue:(int64_t)value
 {
   if (qword_1E380 != -1)
   {
     sub_BC20();
   }
 
-  v4 = [HKQuantity _quantityWithBeatsPerMinute:a3];
+  v4 = [HKQuantity _quantityWithBeatsPerMinute:value];
   v5 = [[HKGenericQuantityDataProviderCurrentValue alloc] initWithQuantity:v4];
   v6 = [v5 stringWithDisplayType:qword_1E370 unitController:qword_1E378];
 
@@ -38,9 +38,9 @@
 
 + (id)localizedThresholdHeartRateString
 {
-  if (+[_HKHeartSettingsUtilities isHeartRateEnabled](_HKHeartSettingsUtilities, "isHeartRateEnabled") && +[_HKHeartSettingsUtilities isWristDetectionEnabled](_HKHeartSettingsUtilities, "isWristDetectionEnabled") && ([a1 isDetectionEnabled] & 1) != 0)
+  if (+[_HKHeartSettingsUtilities isHeartRateEnabled](_HKHeartSettingsUtilities, "isHeartRateEnabled") && +[_HKHeartSettingsUtilities isWristDetectionEnabled](_HKHeartSettingsUtilities, "isWristDetectionEnabled") && ([self isDetectionEnabled] & 1) != 0)
   {
-    v3 = [a1 localizedThresholdHeartRateStringWithValue:{objc_msgSend(a1, "thresholdHeartRate")}];
+    v3 = [self localizedThresholdHeartRateStringWithValue:{objc_msgSend(self, "thresholdHeartRate")}];
   }
 
   else
@@ -68,7 +68,7 @@
 
 - (id)localizedPaneTitle
 {
-  v2 = [objc_opt_class() paneTitleLocalizationKey];
+  paneTitleLocalizationKey = [objc_opt_class() paneTitleLocalizationKey];
   v3 = HKHeartRateLocalizedString();
 
   return v3;
@@ -83,10 +83,10 @@
 
 - (id)applicationBundleIdentifier
 {
-  v2 = [(HPRFHeartRateThresholdController *)self bundle];
-  v3 = [v2 bundleIdentifier];
+  bundle = [(HPRFHeartRateThresholdController *)self bundle];
+  bundleIdentifier = [bundle bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (id)specifiers
@@ -95,8 +95,8 @@
   if (!v3)
   {
     v26 = OBJC_IVAR___PSListController__specifiers;
-    v4 = [(HPRFHeartRateThresholdController *)self localizedPaneTitle];
-    [(HPRFHeartRateThresholdController *)self setTitle:v4];
+    localizedPaneTitle = [(HPRFHeartRateThresholdController *)self localizedPaneTitle];
+    [(HPRFHeartRateThresholdController *)self setTitle:localizedPaneTitle];
 
     v5 = +[NSMutableArray array];
     v6 = [PSSpecifier groupSpecifierWithID:@"THRESHOLD_HEART_RATE_GROUP_ID"];
@@ -113,9 +113,9 @@
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v27 = self;
-    v9 = [objc_opt_class() thresholdHeartRateOptions];
-    v10 = [v9 countByEnumeratingWithState:&v28 objects:v32 count:16];
+    selfCopy = self;
+    thresholdHeartRateOptions = [objc_opt_class() thresholdHeartRateOptions];
+    v10 = [thresholdHeartRateOptions countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v10)
     {
       v11 = v10;
@@ -126,7 +126,7 @@
         {
           if (*v29 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(thresholdHeartRateOptions);
           }
 
           v14 = *(*(&v28 + 1) + 8 * i);
@@ -137,40 +137,40 @@
           [v5 addObject:v17];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v28 objects:v32 count:16];
+        v11 = [thresholdHeartRateOptions countByEnumeratingWithState:&v28 objects:v32 count:16];
       }
 
       while (v11);
     }
 
-    objc_storeStrong(&v27->PSListController_opaque[v26], v5);
+    objc_storeStrong(&selfCopy->PSListController_opaque[v26], v5);
     v18 = v24;
     v19 = v18;
     if ([objc_opt_class() isDetectionEnabled])
     {
-      v20 = *&v27->PSListController_opaque[v26];
+      v20 = *&selfCopy->PSListController_opaque[v26];
       v21 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@%ld", @"ID_BPM_", [objc_opt_class() thresholdHeartRate]);
       v19 = [v20 specifierForID:v21];
     }
 
     [v25 setObject:v19 forKeyedSubscript:PSRadioGroupCheckedSpecifierKey];
-    v22 = [objc_opt_class() footerText];
-    [v25 setObject:v22 forKeyedSubscript:PSFooterTextGroupKey];
+    footerText = [objc_opt_class() footerText];
+    [v25 setObject:footerText forKeyedSubscript:PSFooterTextGroupKey];
 
-    v3 = *&v27->PSListController_opaque[v26];
+    v3 = *&selfCopy->PSListController_opaque[v26];
   }
 
   return v3;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HPRFHeartRateThresholdController *)self indexForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(HPRFHeartRateThresholdController *)self indexForIndexPath:pathCopy];
   v9 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
-  v10 = [v9 identifier];
-  v11 = [v10 isEqualToString:@"OFF"];
+  identifier = [v9 identifier];
+  v11 = [identifier isEqualToString:@"OFF"];
 
   if (v11)
   {
@@ -179,13 +179,13 @@
 
   else
   {
-    v22 = v7;
-    v23 = v6;
+    v22 = pathCopy;
+    v23 = viewCopy;
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v21 = self;
+    selfCopy = self;
     obj = [objc_opt_class() thresholdHeartRateOptions];
     v12 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v12)
@@ -203,13 +203,13 @@
 
           v16 = *(*(&v25 + 1) + 8 * i);
           v17 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@%ld", @"ID_BPM_", [v16 integerValue]);
-          v18 = [v9 identifier];
-          v19 = [v17 isEqualToString:v18];
+          identifier2 = [v9 identifier];
+          v19 = [v17 isEqualToString:identifier2];
 
           if (v19)
           {
             v20 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v16 integerValue]);
-            [(HPRFHeartRateThresholdController *)v21 didSelectThresholdValue:v20];
+            [(HPRFHeartRateThresholdController *)selfCopy didSelectThresholdValue:v20];
 
             goto LABEL_13;
           }
@@ -227,22 +227,22 @@
 
 LABEL_13:
 
-    v7 = v22;
-    v6 = v23;
+    pathCopy = v22;
+    viewCopy = v23;
   }
 
-  [v6 deselectRowAtIndexPath:v7 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (void)didSelectThresholdValue:(id)a3
+- (void)didSelectThresholdValue:(id)value
 {
-  v4 = a3;
-  [objc_opt_class() saveThresholdValue:v4];
+  valueCopy = value;
+  [objc_opt_class() saveThresholdValue:valueCopy];
 
   [(HPRFHeartRateThresholdController *)self reloadSpecifiers];
   WeakRetained = objc_loadWeakRetained(&self->PSListController_opaque[OBJC_IVAR___PSViewController__parentController]);
-  v5 = [(HPRFHeartRateThresholdController *)self specifier];
-  [WeakRetained reloadSpecifier:v5];
+  specifier = [(HPRFHeartRateThresholdController *)self specifier];
+  [WeakRetained reloadSpecifier:specifier];
 }
 
 + (BOOL)isDetectionEnabled
@@ -293,7 +293,7 @@ LABEL_13:
   return 0;
 }
 
-+ (void)saveThresholdValue:(id)a3
++ (void)saveThresholdValue:(id)value
 {
   sub_21BC();
   sub_21AC();

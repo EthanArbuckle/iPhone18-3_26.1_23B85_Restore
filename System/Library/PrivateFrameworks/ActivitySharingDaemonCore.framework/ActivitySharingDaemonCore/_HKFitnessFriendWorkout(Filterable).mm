@@ -7,10 +7,10 @@
 - (id)filter_description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [a1 UUID];
-  v4 = [a1 workoutActivityType];
-  [a1 duration];
-  v6 = [v2 stringWithFormat:@"_HKFitnessFriendWorkout: %@, type: %ld, duration: %f, watch workout: %d", v3, v4, v5, objc_msgSend(a1, "isWatchWorkout")];
+  uUID = [self UUID];
+  workoutActivityType = [self workoutActivityType];
+  [self duration];
+  v6 = [v2 stringWithFormat:@"_HKFitnessFriendWorkout: %@, type: %ld, duration: %f, watch workout: %d", uUID, workoutActivityType, v5, objc_msgSend(self, "isWatchWorkout")];
 
   return v6;
 }

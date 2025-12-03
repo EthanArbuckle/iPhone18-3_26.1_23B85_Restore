@@ -1,44 +1,44 @@
 @interface _DASActivityCompletionDependencyGroup
-+ (id)groupFromPersistence:(id)a3;
-+ (id)groupFromPersistenceWithoutCreation:(id)a3;
-+ (void)resetDependenciesContainingSubstring:(id)a3;
-- (BOOL)isDependencySatisfiedForActivity:(id)a3;
-- (BOOL)isPersistenceAvailableWithFileProtection:(id)a3;
++ (id)groupFromPersistence:(id)persistence;
++ (id)groupFromPersistenceWithoutCreation:(id)creation;
++ (void)resetDependenciesContainingSubstring:(id)substring;
+- (BOOL)isDependencySatisfiedForActivity:(id)activity;
+- (BOOL)isPersistenceAvailableWithFileProtection:(id)protection;
 - (NSString)debugDescription;
 - (NSString)description;
-- (_DASActivityCompletionDependencyGroup)initWithTrackedActivityIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_DASActivityCompletionDependencyGroup)initWithTrackedActivityIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionary;
-- (void)deregisterDependent:(id)a3;
-- (void)handleActivitySubmission:(id)a3;
-- (void)persistActivityDidConsume:(id)a3;
-- (void)persistTrackedActivityDidRun:(id)a3;
+- (void)deregisterDependent:(id)dependent;
+- (void)handleActivitySubmission:(id)submission;
+- (void)persistActivityDidConsume:(id)consume;
+- (void)persistTrackedActivityDidRun:(id)run;
 - (void)pruneStreamOfGroup;
-- (void)reportDependentActivityDidRun:(id)a3;
-- (void)reportTrackedActivityDidRun:(id)a3;
+- (void)reportDependentActivityDidRun:(id)run;
+- (void)reportTrackedActivityDidRun:(id)run;
 - (void)resetAccumulation;
-- (void)updateStreamForTrackedActivityDidRun:(id)a3;
+- (void)updateStreamForTrackedActivityDidRun:(id)run;
 @end
 
 @implementation _DASActivityCompletionDependencyGroup
 
-+ (id)groupFromPersistence:(id)a3
++ (id)groupFromPersistence:(id)persistence
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithTrackedActivityIdentifier:v3];
+  persistenceCopy = persistence;
+  v4 = [objc_alloc(objc_opt_class()) initWithTrackedActivityIdentifier:persistenceCopy];
   v5 = [_DASDaemonLogger logForCategory:@"DependencyGroupPersistence"];
   v6 = BiomeLibrary();
-  v7 = [v6 ActivityScheduler];
-  v8 = [v7 Dependency];
-  v9 = [v8 Completion];
-  v10 = [v9 publisher];
+  activityScheduler = [v6 ActivityScheduler];
+  dependency = [activityScheduler Dependency];
+  completion = [dependency Completion];
+  publisher = [completion publisher];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_1000C094C;
   v24[3] = &unk_1001B7298;
-  v25 = v3;
-  v11 = v3;
-  v12 = [v10 filterWithIsIncluded:v24];
+  v25 = persistenceCopy;
+  v11 = persistenceCopy;
+  v12 = [publisher filterWithIsIncluded:v24];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_1000C09A8;
@@ -60,16 +60,16 @@
   return v13;
 }
 
-- (_DASActivityCompletionDependencyGroup)initWithTrackedActivityIdentifier:(id)a3
+- (_DASActivityCompletionDependencyGroup)initWithTrackedActivityIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v25.receiver = self;
   v25.super_class = _DASActivityCompletionDependencyGroup;
   v6 = [(_DASActivityCompletionDependencyGroup *)&v25 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_trackedActivityIdentifier, a3);
+    objc_storeStrong(&v6->_trackedActivityIdentifier, identifier);
     v8 = +[NSMutableSet set];
     dependents = v7->_dependents;
     v7->_dependents = v8;
@@ -80,16 +80,16 @@
 
     v7->_hasDependencyRun = 0;
     v12 = BiomeLibrary();
-    v13 = [v12 ActivityScheduler];
-    v14 = [v13 Dependency];
-    v15 = [v14 Completion];
+    activityScheduler = [v12 ActivityScheduler];
+    dependency = [activityScheduler Dependency];
+    completion = [dependency Completion];
     completionStream = v7->_completionStream;
-    v7->_completionStream = v15;
+    v7->_completionStream = completion;
 
-    v17 = [NSString stringWithFormat:@"com.apple.dasd.CompletionDependencyGroup.%@", v5];
-    v18 = [v17 UTF8String];
+    identifierCopy = [NSString stringWithFormat:@"com.apple.dasd.CompletionDependencyGroup.%@", identifierCopy];
+    uTF8String = [identifierCopy UTF8String];
     v19 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v20 = dispatch_queue_create(v18, v19);
+    v20 = dispatch_queue_create(uTF8String, v19);
     queue = v7->_queue;
     v7->_queue = v20;
 
@@ -101,21 +101,21 @@
   return v7;
 }
 
-- (BOOL)isPersistenceAvailableWithFileProtection:(id)a3
+- (BOOL)isPersistenceAvailableWithFileProtection:(id)protection
 {
   completionStream = self->_completionStream;
-  v4 = a3;
-  v5 = [(BMStream *)completionStream configuration];
-  v6 = [v5 storeConfig];
-  v7 = [v6 protectionClass];
+  protectionCopy = protection;
+  configuration = [(BMStream *)completionStream configuration];
+  storeConfig = [configuration storeConfig];
+  protectionClass = [storeConfig protectionClass];
 
-  v8 = [v4 asBiomeProtectionClass];
-  return v8 <= v7;
+  asBiomeProtectionClass = [protectionCopy asBiomeProtectionClass];
+  return asBiomeProtectionClass <= protectionClass;
 }
 
-- (void)handleActivitySubmission:(id)a3
+- (void)handleActivitySubmission:(id)submission
 {
-  v4 = a3;
+  submissionCopy = submission;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
@@ -123,7 +123,7 @@
     *buf = 136315650;
     v12 = "[_DASActivityCompletionDependencyGroup handleActivitySubmission:]";
     v13 = 2112;
-    v14 = v4;
+    v14 = submissionCopy;
     v15 = 2112;
     v16 = trackedActivityIdentifier;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "%s: Adding %@ to tracked dependents for %@", buf, 0x20u);
@@ -135,14 +135,14 @@
   v9[2] = sub_1000C0E18;
   v9[3] = &unk_1001B56E0;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = submissionCopy;
+  v8 = submissionCopy;
   dispatch_sync(queue, v9);
 }
 
-- (void)deregisterDependent:(id)a3
+- (void)deregisterDependent:(id)dependent
 {
-  v4 = a3;
+  dependentCopy = dependent;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
@@ -150,7 +150,7 @@
     *buf = 136315650;
     v12 = "[_DASActivityCompletionDependencyGroup deregisterDependent:]";
     v13 = 2112;
-    v14 = v4;
+    v14 = dependentCopy;
     v15 = 2112;
     v16 = trackedActivityIdentifier;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "%s: Removing %@ from tracked dependents for %@", buf, 0x20u);
@@ -162,42 +162,42 @@
   v9[2] = sub_1000C0F5C;
   v9[3] = &unk_1001B56E0;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = dependentCopy;
+  v8 = dependentCopy;
   dispatch_sync(queue, v9);
 }
 
-- (void)reportTrackedActivityDidRun:(id)a3
+- (void)reportTrackedActivityDidRun:(id)run
 {
-  v4 = a3;
+  runCopy = run;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000C1000;
   v7[3] = &unk_1001B56E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = runCopy;
+  v6 = runCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)reportDependentActivityDidRun:(id)a3
+- (void)reportDependentActivityDidRun:(id)run
 {
-  v4 = a3;
+  runCopy = run;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000C10E4;
   v7[3] = &unk_1001B56E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = runCopy;
+  v6 = runCopy;
   dispatch_sync(queue, v7);
 }
 
-- (BOOL)isDependencySatisfiedForActivity:(id)a3
+- (BOOL)isDependencySatisfiedForActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -209,7 +209,7 @@
   block[3] = &unk_1001B5D98;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = activityCopy;
   v10 = v6;
   dispatch_sync(queue, block);
   hasDependencyRun = 0;
@@ -242,7 +242,7 @@
   v13 = 3221225472;
   v14 = sub_1000C14F0;
   v15 = &unk_1001B56B8;
-  v16 = self;
+  selfCopy = self;
   v17 = v3;
   v18 = v4;
   v6 = v4;
@@ -256,75 +256,75 @@
   v20[2] = v6;
   v19[2] = @"haveRunIdentifiers";
   v19[3] = @"hasDependencyRun";
-  v9 = [NSNumber numberWithBool:self->_hasDependencyRun, v12, v13, v14, v15, v16];
-  v20[3] = v9;
+  selfCopy = [NSNumber numberWithBool:self->_hasDependencyRun, v12, v13, v14, v15, selfCopy];
+  v20[3] = selfCopy;
   v10 = [NSDictionary dictionaryWithObjects:v20 forKeys:v19 count:4];
 
   return v10;
 }
 
-+ (void)resetDependenciesContainingSubstring:(id)a3
++ (void)resetDependenciesContainingSubstring:(id)substring
 {
-  v3 = a3;
+  substringCopy = substring;
   v4 = BiomeLibrary();
-  v5 = [v4 ActivityScheduler];
-  v6 = [v5 Dependency];
-  v7 = [v6 Completion];
+  activityScheduler = [v4 ActivityScheduler];
+  dependency = [activityScheduler Dependency];
+  completion = [dependency Completion];
 
-  v8 = [v7 pruner];
+  pruner = [completion pruner];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000C1794;
   v10[3] = &unk_1001B7F68;
-  v11 = v3;
-  v9 = v3;
-  [v8 deleteEventsPassingTest:v10];
+  v11 = substringCopy;
+  v9 = substringCopy;
+  [pruner deleteEventsPassingTest:v10];
 }
 
-- (void)updateStreamForTrackedActivityDidRun:(id)a3
+- (void)updateStreamForTrackedActivityDidRun:(id)run
 {
-  v4 = a3;
+  runCopy = run;
   [(_DASActivityCompletionDependencyGroup *)self pruneStreamOfGroup];
-  [(_DASActivityCompletionDependencyGroup *)self persistTrackedActivityDidRun:v4];
+  [(_DASActivityCompletionDependencyGroup *)self persistTrackedActivityDidRun:runCopy];
 }
 
 - (void)pruneStreamOfGroup
 {
-  v3 = [(BMStream *)self->_completionStream pruner];
+  pruner = [(BMStream *)self->_completionStream pruner];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000C191C;
   v4[3] = &unk_1001B7F68;
   v4[4] = self;
-  [v3 deleteEventsPassingTest:v4];
+  [pruner deleteEventsPassingTest:v4];
 }
 
-- (void)persistTrackedActivityDidRun:(id)a3
+- (void)persistTrackedActivityDidRun:(id)run
 {
   v5 = [[BMActivitySchedulerDependencyCompletion alloc] initWithIdentifier:self->_trackedActivityIdentifier consumerIdentifier:0 type:1];
-  v4 = [(BMStream *)self->_completionStream source];
-  [v4 sendEvent:v5];
+  source = [(BMStream *)self->_completionStream source];
+  [source sendEvent:v5];
 }
 
-- (void)persistActivityDidConsume:(id)a3
+- (void)persistActivityDidConsume:(id)consume
 {
-  v4 = a3;
+  consumeCopy = consume;
   v5 = [BMActivitySchedulerDependencyCompletion alloc];
   trackedActivityIdentifier = self->_trackedActivityIdentifier;
-  v7 = [v4 identifier];
+  identifier = [consumeCopy identifier];
 
-  v9 = [v5 initWithIdentifier:trackedActivityIdentifier consumerIdentifier:v7 type:2];
-  v8 = [(BMStream *)self->_completionStream source];
-  [v8 sendEvent:v9];
+  v9 = [v5 initWithIdentifier:trackedActivityIdentifier consumerIdentifier:identifier type:2];
+  source = [(BMStream *)self->_completionStream source];
+  [source sendEvent:v9];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithTrackedActivityIdentifier:", self->_trackedActivityIdentifier}];
-  v6 = [(NSMutableSet *)self->_dependents copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithTrackedActivityIdentifier:", self->_trackedActivityIdentifier}];
+  v6 = [(NSMutableSet *)self->_dependents copyWithZone:zone];
   [v5 setDependents:v6];
 
-  v7 = [(NSMutableSet *)self->_haveRunActivities copyWithZone:a3];
+  v7 = [(NSMutableSet *)self->_haveRunActivities copyWithZone:zone];
   [v5 setHaveRunActivities:v7];
 
   [v5 setHasDependencyRun:self->_hasDependencyRun];
@@ -341,7 +341,7 @@
   block[3] = &unk_1001B56E0;
   v5 = v3;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   dispatch_sync(queue, block);
   v6 = v5;
 
@@ -358,33 +358,33 @@
   block[3] = &unk_1001B56E0;
   v5 = v3;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   dispatch_sync(queue, block);
   v6 = v5;
 
   return v5;
 }
 
-+ (id)groupFromPersistenceWithoutCreation:(id)a3
++ (id)groupFromPersistenceWithoutCreation:(id)creation
 {
-  v3 = a3;
+  creationCopy = creation;
   v4 = [_DASDaemonLogger logForCategory:@"DependencyGroupPersistence"];
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
   v5 = BiomeLibrary();
-  v6 = [v5 ActivityScheduler];
-  v7 = [v6 Dependency];
-  v8 = [v7 Completion];
-  v9 = [v8 publisher];
+  activityScheduler = [v5 ActivityScheduler];
+  dependency = [activityScheduler Dependency];
+  completion = [dependency Completion];
+  publisher = [completion publisher];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_1000C213C;
   v19[3] = &unk_1001B7298;
-  v10 = v3;
+  v10 = creationCopy;
   v20 = v10;
-  v11 = [v9 filterWithIsIncluded:v19];
+  v11 = [publisher filterWithIsIncluded:v19];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1000C2198;

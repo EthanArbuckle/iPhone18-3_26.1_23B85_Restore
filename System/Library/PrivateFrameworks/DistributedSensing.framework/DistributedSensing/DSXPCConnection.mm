@@ -1,18 +1,18 @@
 @interface DSXPCConnection
-- (void)_activateKappaSessionMessage:(id)a3;
-- (void)_activateMotionSessionMessage:(id)a3;
-- (void)_checkEntitlement:(const char *)a3 error:(id *)a4;
-- (void)_deviceChangedHandler:(id)a3;
-- (void)_deviceFoundHandler:(id)a3;
-- (void)_deviceLostHandler:(id)a3;
-- (void)_handleXPCMessage:(id)a3;
-- (void)_printCohortMessage:(id)a3;
-- (void)_updateCoordinationStatusMessage:(id)a3;
-- (void)_updateVehicleStateMessage:(id)a3;
-- (void)_xpcCohortDeviceMessage:(id)a3 type:(const char *)a4;
-- (void)_xpcConnectionSendEvent:(id)a3;
-- (void)_xpcEventHandler:(id)a3;
-- (void)_xpcSendReplyForMessage:(id)a3 error:(id)a4;
+- (void)_activateKappaSessionMessage:(id)message;
+- (void)_activateMotionSessionMessage:(id)message;
+- (void)_checkEntitlement:(const char *)entitlement error:(id *)error;
+- (void)_deviceChangedHandler:(id)handler;
+- (void)_deviceFoundHandler:(id)handler;
+- (void)_deviceLostHandler:(id)handler;
+- (void)_handleXPCMessage:(id)message;
+- (void)_printCohortMessage:(id)message;
+- (void)_updateCoordinationStatusMessage:(id)message;
+- (void)_updateVehicleStateMessage:(id)message;
+- (void)_xpcCohortDeviceMessage:(id)message type:(const char *)type;
+- (void)_xpcConnectionSendEvent:(id)event;
+- (void)_xpcEventHandler:(id)handler;
+- (void)_xpcSendReplyForMessage:(id)message error:(id)error;
 - (void)activate;
 - (void)invalidate;
 @end
@@ -106,12 +106,12 @@ LABEL_10:
   [(DSXPCServer *)xpcDaemonServer removeXPCConnection:self];
 }
 
-- (void)_xpcEventHandler:(id)a3
+- (void)_xpcEventHandler:(id)handler
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 == MEMORY[0x277D863F8])
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy == MEMORY[0x277D863F8])
   {
     if (onceTokenDSXPCConnection != -1)
     {
@@ -133,7 +133,7 @@ LABEL_10:
     [(DSXPCConnection *)self invalidate];
   }
 
-  else if (MEMORY[0x24C1EF810](v4) == MEMORY[0x277D86468])
+  else if (MEMORY[0x24C1EF810](handlerCopy) == MEMORY[0x277D86468])
   {
     [(DSXPCConnection *)self _handleXPCMessage:v5];
   }
@@ -158,11 +158,11 @@ LABEL_10:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleXPCMessage:(id)a3
+- (void)_handleXPCMessage:(id)message
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  string = xpc_dictionary_get_string(v4, "kDSXPCMsg");
+  messageCopy = message;
+  string = xpc_dictionary_get_string(messageCopy, "kDSXPCMsg");
   if (!string)
   {
     if (onceTokenDSXPCConnection != -1)
@@ -186,31 +186,31 @@ LABEL_10:
   v6 = string;
   if (!strcmp(string, "kDSKappaActivate"))
   {
-    [(DSXPCConnection *)self _activateKappaSessionMessage:v4];
+    [(DSXPCConnection *)self _activateKappaSessionMessage:messageCopy];
     goto LABEL_22;
   }
 
   if (!strcmp(v6, "kDSKappaUpdate"))
   {
-    [(DSXPCConnection *)self _updateCoordinationStatusMessage:v4];
+    [(DSXPCConnection *)self _updateCoordinationStatusMessage:messageCopy];
     goto LABEL_22;
   }
 
   if (!strcmp(v6, "kDSMotionActivate"))
   {
-    [(DSXPCConnection *)self _activateMotionSessionMessage:v4];
+    [(DSXPCConnection *)self _activateMotionSessionMessage:messageCopy];
     goto LABEL_22;
   }
 
   if (!strcmp(v6, "kDSMotionUpdate"))
   {
-    [(DSXPCConnection *)self _updateVehicleStateMessage:v4];
+    [(DSXPCConnection *)self _updateVehicleStateMessage:messageCopy];
     goto LABEL_22;
   }
 
   if (!strcmp(v6, "kDSCohortPrint"))
   {
-    [(DSXPCConnection *)self _printCohortMessage:v4];
+    [(DSXPCConnection *)self _printCohortMessage:messageCopy];
     goto LABEL_22;
   }
 
@@ -233,28 +233,28 @@ LABEL_15:
 
 LABEL_16:
   v12 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DSErrorDomain" code:1 userInfo:{0, *v14}];
-  [(DSXPCConnection *)self _xpcSendReplyForMessage:v4 error:v12];
+  [(DSXPCConnection *)self _xpcSendReplyForMessage:messageCopy error:v12];
 
 LABEL_22:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_xpcSendReplyForMessage:(id)a3 error:(id)a4
+- (void)_xpcSendReplyForMessage:(id)message error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  errorCopy = error;
   if (xpc_dictionary_expects_reply())
   {
     if (self->_xpcConnection)
     {
-      reply = xpc_dictionary_create_reply(v6);
+      reply = xpc_dictionary_create_reply(messageCopy);
       v9 = reply;
       if (reply)
       {
-        if (v7)
+        if (errorCopy)
         {
-          v20 = v7;
-          v10 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v20];
+          v20 = errorCopy;
+          v10 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:errorCopy requiringSecureCoding:1 error:&v20];
           v11 = v20;
 
           if (v10)
@@ -273,7 +273,7 @@ LABEL_22:
         }
 
         xpc_connection_send_message(self->_xpcConnection, v9);
-        v7 = v11;
+        errorCopy = v11;
       }
 
       else
@@ -334,13 +334,13 @@ LABEL_16:
 LABEL_24:
 }
 
-- (void)_xpcConnectionSendEvent:(id)a3
+- (void)_xpcConnectionSendEvent:(id)event
 {
   xpcConnection = self->_xpcConnection;
   if (xpcConnection)
   {
 
-    xpc_connection_send_message(xpcConnection, a3);
+    xpc_connection_send_message(xpcConnection, event);
   }
 
   else
@@ -349,7 +349,7 @@ LABEL_24:
   }
 }
 
-- (void)_checkEntitlement:(const char *)a3 error:(id *)a4
+- (void)_checkEntitlement:(const char *)entitlement error:(id *)error
 {
   v19[1] = *MEMORY[0x277D85DE8];
   *&v7 = 0xAAAAAAAAAAAAAAAALL;
@@ -360,14 +360,14 @@ LABEL_24:
   xpc_connection_get_audit_token();
   v9 = xpc_copy_entitlement_for_token();
   v10 = v9;
-  if (v9 && xpc_dictionary_get_BOOL(v9, a3))
+  if (v9 && xpc_dictionary_get_BOOL(v9, entitlement))
   {
-    if (!strcmp(a3, "com.apple.distributedsensingd-kappa"))
+    if (!strcmp(entitlement, "com.apple.distributedsensingd-kappa"))
     {
       self->_isEntitledForKappa = 1;
     }
 
-    else if (!strcmp(a3, "com.apple.distributedsensingd-motionState"))
+    else if (!strcmp(entitlement, "com.apple.distributedsensingd-motionState"))
     {
       self->_isEntitledForMotion = 1;
     }
@@ -381,19 +381,19 @@ LABEL_24:
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:{1, v16, v17}];
     v13 = [v11 errorWithDomain:@"DSErrorDomain" code:3 userInfo:v12];
 
-    if (a4)
+    if (error)
     {
       v14 = v13;
-      *a4 = v13;
+      *error = v13;
     }
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_activateKappaSessionMessage:(id)a3
+- (void)_activateKappaSessionMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __48__DSXPCConnection__activateKappaSessionMessage___block_invoke;
@@ -418,7 +418,7 @@ LABEL_24:
   if (self->_isEntitledForKappa)
   {
     v15 = v8;
-    v9 = [[DSKappaSession alloc] initWithXPCObject:v4 error:&v15];
+    v9 = [[DSKappaSession alloc] initWithXPCObject:messageCopy error:&v15];
     v10 = v15;
 
     if (v9)
@@ -427,13 +427,13 @@ LABEL_24:
       [(DSKappaSession *)v9 setDeviceLostHandler:v6];
       [(DSKappaSession *)v9 setDeviceChangedHandler:v7];
       objc_storeStrong(&self->_kappaSession, v9);
-      v11 = [(DSKappaSession *)v9 coordinationStatus];
-      v12 = [(DSXPCServer *)self->_xpcDaemonServer myDeviceContext];
-      [v12 setCoordinationStatus:v11];
+      coordinationStatus = [(DSKappaSession *)v9 coordinationStatus];
+      myDeviceContext = [(DSXPCServer *)self->_xpcDaemonServer myDeviceContext];
+      [myDeviceContext setCoordinationStatus:coordinationStatus];
 
-      v13 = [(DSKappaSession *)v9 tiebreaker];
-      v14 = [(DSXPCServer *)self->_xpcDaemonServer myDeviceContext];
-      [v14 setTiebreaker:v13];
+      tiebreaker = [(DSKappaSession *)v9 tiebreaker];
+      myDeviceContext2 = [(DSXPCServer *)self->_xpcDaemonServer myDeviceContext];
+      [myDeviceContext2 setTiebreaker:tiebreaker];
 
       [(DSXPCServer *)self->_xpcDaemonServer updateAdvertiser];
       [(DSXPCServer *)self->_xpcDaemonServer updateScanner];
@@ -453,13 +453,13 @@ LABEL_24:
     v9 = 0;
   }
 
-  [(DSXPCConnection *)self _xpcSendReplyForMessage:v4 error:v8];
+  [(DSXPCConnection *)self _xpcSendReplyForMessage:messageCopy error:v8];
 }
 
-- (void)_updateCoordinationStatusMessage:(id)a3
+- (void)_updateCoordinationStatusMessage:(id)message
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   if (!self->_isEntitledForKappa)
   {
     p_super = DSLogObjectForCategory_DSXPCConnection();
@@ -479,7 +479,7 @@ LABEL_9:
     goto LABEL_4;
   }
 
-  v5 = [[DSKappaSession alloc] initWithXPCObject:v4 error:0];
+  v5 = [[DSKappaSession alloc] initWithXPCObject:messageCopy error:0];
   if (!v5)
   {
     p_super = DSLogObjectForCategory_DSXPCConnection();
@@ -500,9 +500,9 @@ LABEL_9:
 
   p_super = &v5->super;
   [(DSKappaSession *)self->_kappaSession setCoordinationStatus:[(DSKappaSession *)v5 coordinationStatus]];
-  v7 = [p_super coordinationStatus];
-  v8 = [(DSXPCServer *)self->_xpcDaemonServer myDeviceContext];
-  [v8 setCoordinationStatus:v7];
+  coordinationStatus = [p_super coordinationStatus];
+  myDeviceContext = [(DSXPCServer *)self->_xpcDaemonServer myDeviceContext];
+  [myDeviceContext setCoordinationStatus:coordinationStatus];
 
   [(DSXPCServer *)self->_xpcDaemonServer updateAdvertiser];
 LABEL_4:
@@ -510,10 +510,10 @@ LABEL_4:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_activateMotionSessionMessage:(id)a3
+- (void)_activateMotionSessionMessage:(id)message
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __49__DSXPCConnection__activateMotionSessionMessage___block_invoke;
@@ -538,7 +538,7 @@ LABEL_4:
   if (self->_isEntitledForMotion)
   {
     v34 = v8;
-    v9 = [[DSMotionSession alloc] initWithXPCObject:v4 error:&v34];
+    v9 = [[DSMotionSession alloc] initWithXPCObject:messageCopy error:&v34];
     v10 = v34;
 
     if (v9)
@@ -547,13 +547,13 @@ LABEL_4:
       [(DSMotionSession *)v9 setDeviceLostHandler:v7];
       [(DSMotionSession *)v9 setDeviceChangedHandler:v6];
       objc_storeStrong(&self->_motionSession, v9);
-      v11 = [(DSMotionSession *)v9 vehicleState];
-      v12 = [(DSXPCServer *)self->_xpcDaemonServer myDeviceContext];
-      [v12 setVehicleState:v11];
+      vehicleState = [(DSMotionSession *)v9 vehicleState];
+      myDeviceContext = [(DSXPCServer *)self->_xpcDaemonServer myDeviceContext];
+      [myDeviceContext setVehicleState:vehicleState];
 
-      v13 = [(DSMotionSession *)v9 vehicleConfidence];
-      v14 = [(DSXPCServer *)self->_xpcDaemonServer myDeviceContext];
-      [v14 setVehicleConfidence:v13];
+      vehicleConfidence = [(DSMotionSession *)v9 vehicleConfidence];
+      myDeviceContext2 = [(DSXPCServer *)self->_xpcDaemonServer myDeviceContext];
+      [myDeviceContext2 setVehicleConfidence:vehicleConfidence];
 
       [(DSXPCServer *)self->_xpcDaemonServer updateAdvertiser];
       [(DSXPCServer *)self->_xpcDaemonServer updateScanner];
@@ -573,21 +573,21 @@ LABEL_4:
     v9 = 0;
   }
 
-  [(DSXPCConnection *)self _xpcSendReplyForMessage:v4 error:v8];
+  [(DSXPCConnection *)self _xpcSendReplyForMessage:messageCopy error:v8];
   if (!v8)
   {
     v26 = v7;
     v27 = v6;
     v28 = v5;
-    v29 = v4;
+    v29 = messageCopy;
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v15 = [(DSXPCServer *)self->_xpcDaemonServer cohortManager];
-    v16 = [v15 devices];
+    cohortManager = [(DSXPCServer *)self->_xpcDaemonServer cohortManager];
+    devices = [cohortManager devices];
 
-    v17 = [v16 countByEnumeratingWithState:&v30 objects:v39 count:16];
+    v17 = [devices countByEnumeratingWithState:&v30 objects:v39 count:16];
     if (v17)
     {
       v18 = v17;
@@ -599,27 +599,27 @@ LABEL_4:
         {
           if (*v31 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(devices);
           }
 
           v21 = *(*(&v30 + 1) + 8 * v20);
-          v22 = [(DSXPCServer *)self->_xpcDaemonServer cohortManager];
-          v23 = [v22 devices];
-          v24 = [v23 objectForKeyedSubscript:v21];
+          cohortManager2 = [(DSXPCServer *)self->_xpcDaemonServer cohortManager];
+          devices2 = [cohortManager2 devices];
+          v24 = [devices2 objectForKeyedSubscript:v21];
           [(DSXPCConnection *)self _deviceFoundHandler:v24];
 
           ++v20;
         }
 
         while (v18 != v20);
-        v18 = [v16 countByEnumeratingWithState:&v30 objects:v39 count:16];
+        v18 = [devices countByEnumeratingWithState:&v30 objects:v39 count:16];
       }
 
       while (v18);
     }
 
     v5 = v28;
-    v4 = v29;
+    messageCopy = v29;
     v7 = v26;
     v6 = v27;
   }
@@ -627,10 +627,10 @@ LABEL_4:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateVehicleStateMessage:(id)a3
+- (void)_updateVehicleStateMessage:(id)message
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   if (!self->_isEntitledForMotion)
   {
     p_super = DSLogObjectForCategory_DSXPCConnection();
@@ -650,7 +650,7 @@ LABEL_9:
     goto LABEL_4;
   }
 
-  v5 = [[DSMotionSession alloc] initWithXPCObject:v4 error:0];
+  v5 = [[DSMotionSession alloc] initWithXPCObject:messageCopy error:0];
   if (!v5)
   {
     p_super = DSLogObjectForCategory_DSXPCConnection();
@@ -670,13 +670,13 @@ LABEL_9:
   }
 
   p_super = &v5->super;
-  v7 = [(DSMotionSession *)v5 vehicleState];
-  v8 = [(DSXPCServer *)self->_xpcDaemonServer myDeviceContext];
-  [v8 setVehicleState:v7];
+  vehicleState = [(DSMotionSession *)v5 vehicleState];
+  myDeviceContext = [(DSXPCServer *)self->_xpcDaemonServer myDeviceContext];
+  [myDeviceContext setVehicleState:vehicleState];
 
-  v9 = [p_super vehicleConfidence];
-  v10 = [(DSXPCServer *)self->_xpcDaemonServer myDeviceContext];
-  [v10 setVehicleConfidence:v9];
+  vehicleConfidence = [p_super vehicleConfidence];
+  myDeviceContext2 = [(DSXPCServer *)self->_xpcDaemonServer myDeviceContext];
+  [myDeviceContext2 setVehicleConfidence:vehicleConfidence];
 
   [(DSXPCServer *)self->_xpcDaemonServer updateAdvertiser];
 LABEL_4:
@@ -684,10 +684,10 @@ LABEL_4:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_printCohortMessage:(id)a3
+- (void)_printCohortMessage:(id)message
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   if (onceTokenDSXPCConnection != -1)
   {
     [DSXPCConnection activate];
@@ -702,28 +702,28 @@ LABEL_4:
 
   if (self->_isEntitledForMotion)
   {
-    v6 = [(DSXPCServer *)self->_xpcDaemonServer cohortManager];
-    [v6 printConsensusData];
+    cohortManager = [(DSXPCServer *)self->_xpcDaemonServer cohortManager];
+    [cohortManager printConsensusData];
   }
 
   else
   {
-    v6 = DSLogObjectForCategory_DSXPCConnection();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    cohortManager = DSLogObjectForCategory_DSXPCConnection();
+    if (os_log_type_enabled(cohortManager, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 136315138;
       v9 = "com.apple.distributedsensingd-motionState";
-      _os_log_impl(&dword_249027000, v6, OS_LOG_TYPE_DEFAULT, "Missing entitlement :%s", &v8, 0xCu);
+      _os_log_impl(&dword_249027000, cohortManager, OS_LOG_TYPE_DEFAULT, "Missing entitlement :%s", &v8, 0xCu);
     }
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_xpcCohortDeviceMessage:(id)a3 type:(const char *)a4
+- (void)_xpcCohortDeviceMessage:(id)message type:(const char *)type
 {
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  messageCopy = message;
   if (onceTokenDSXPCConnection != -1)
   {
     [DSXPCConnection activate];
@@ -733,23 +733,23 @@ LABEL_4:
   if (os_log_type_enabled(logObjDSXPCConnection, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136315138;
-    v11 = a4;
+    typeCopy = type;
     _os_log_impl(&dword_249027000, v7, OS_LOG_TYPE_DEFAULT, "xpc send message: %s", &v10, 0xCu);
   }
 
   v8 = xpc_dictionary_create(0, 0, 0);
-  xpc_dictionary_set_string(v8, "kDSXPCMsg", a4);
-  [v6 encodeSelf:v8];
+  xpc_dictionary_set_string(v8, "kDSXPCMsg", type);
+  [messageCopy encodeSelf:v8];
   [(DSXPCConnection *)self _xpcConnectionSendEvent:v8];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_deviceFoundHandler:(id)a3
+- (void)_deviceFoundHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  if (v5)
+  handlerCopy = handler;
+  identifier = [handlerCopy identifier];
+  if (identifier)
   {
     deviceDictionary = self->_deviceDictionary;
     if (!deviceDictionary)
@@ -761,8 +761,8 @@ LABEL_4:
       deviceDictionary = self->_deviceDictionary;
     }
 
-    [(NSMutableDictionary *)deviceDictionary setObject:v4 forKeyedSubscript:v5];
-    [(DSXPCConnection *)self _xpcCohortDeviceMessage:v4 type:"kDSXPCDeviceFound"];
+    [(NSMutableDictionary *)deviceDictionary setObject:handlerCopy forKeyedSubscript:identifier];
+    [(DSXPCConnection *)self _xpcCohortDeviceMessage:handlerCopy type:"kDSXPCDeviceFound"];
   }
 
   else
@@ -781,18 +781,18 @@ LABEL_4:
   }
 }
 
-- (void)_deviceChangedHandler:(id)a3
+- (void)_deviceChangedHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  if (v5)
+  handlerCopy = handler;
+  identifier = [handlerCopy identifier];
+  if (identifier)
   {
-    v6 = [(NSMutableDictionary *)self->_deviceDictionary objectForKeyedSubscript:v5];
+    v6 = [(NSMutableDictionary *)self->_deviceDictionary objectForKeyedSubscript:identifier];
 
     deviceDictionary = self->_deviceDictionary;
     if (v6)
     {
-      [(NSMutableDictionary *)deviceDictionary setObject:v4 forKeyedSubscript:v5];
+      [(NSMutableDictionary *)deviceDictionary setObject:handlerCopy forKeyedSubscript:identifier];
       v8 = "kDSXPCDeviceChanged";
     }
 
@@ -807,11 +807,11 @@ LABEL_4:
         deviceDictionary = self->_deviceDictionary;
       }
 
-      [(NSMutableDictionary *)deviceDictionary setObject:v4 forKeyedSubscript:v5];
+      [(NSMutableDictionary *)deviceDictionary setObject:handlerCopy forKeyedSubscript:identifier];
       v8 = "kDSXPCDeviceFound";
     }
 
-    [(DSXPCConnection *)self _xpcCohortDeviceMessage:v4 type:v8];
+    [(DSXPCConnection *)self _xpcCohortDeviceMessage:handlerCopy type:v8];
   }
 
   else
@@ -830,18 +830,18 @@ LABEL_4:
   }
 }
 
-- (void)_deviceLostHandler:(id)a3
+- (void)_deviceLostHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  if (v5)
+  handlerCopy = handler;
+  identifier = [handlerCopy identifier];
+  if (identifier)
   {
-    v6 = [(NSMutableDictionary *)self->_deviceDictionary objectForKeyedSubscript:v5];
+    v6 = [(NSMutableDictionary *)self->_deviceDictionary objectForKeyedSubscript:identifier];
 
     if (v6)
     {
-      [(NSMutableDictionary *)self->_deviceDictionary setObject:0 forKeyedSubscript:v5];
-      [(DSXPCConnection *)self _xpcCohortDeviceMessage:v4 type:"kDSXPCDeviceLost"];
+      [(NSMutableDictionary *)self->_deviceDictionary setObject:0 forKeyedSubscript:identifier];
+      [(DSXPCConnection *)self _xpcCohortDeviceMessage:handlerCopy type:"kDSXPCDeviceLost"];
     }
   }
 

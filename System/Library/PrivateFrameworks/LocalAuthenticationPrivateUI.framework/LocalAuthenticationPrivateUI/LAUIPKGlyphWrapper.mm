@@ -1,29 +1,29 @@
 @interface LAUIPKGlyphWrapper
-+ (Class)_loadClassFromString:(id)a3;
-+ (id)glyphWithStyle:(int64_t)a3 frame:(CGRect)a4;
++ (Class)_loadClassFromString:(id)string;
++ (id)glyphWithStyle:(int64_t)style frame:(CGRect)frame;
 + (void)_loadPKUI;
-- (LAUIPKGlyphWrapper)initWithGlyphView:(id)a3;
-- (double)_minimumAnimationDurationForState:(int64_t)a3;
-- (void)setGrayedOut:(BOOL)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setState:(int64_t)a3 idleTouchID:(BOOL)a4 animated:(BOOL)a5 completionHandler:(id)a6;
+- (LAUIPKGlyphWrapper)initWithGlyphView:(id)view;
+- (double)_minimumAnimationDurationForState:(int64_t)state;
+- (void)setGrayedOut:(BOOL)out;
+- (void)setHidden:(BOOL)hidden;
+- (void)setState:(int64_t)state idleTouchID:(BOOL)d animated:(BOOL)animated completionHandler:(id)handler;
 @end
 
 @implementation LAUIPKGlyphWrapper
 
-+ (id)glyphWithStyle:(int64_t)a3 frame:(CGRect)a4
++ (id)glyphWithStyle:(int64_t)style frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9 = [LAUIPKGlyphWrapper _loadClassFromString:@"PKGlyphView"];
-  if (a3 >= 4)
+  if (style >= 4)
   {
     v11 = LA_LOG_LAUIPKGlyphWrapper();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [LAUIPKGlyphWrapper glyphWithStyle:a3 frame:v11];
+      [LAUIPKGlyphWrapper glyphWithStyle:style frame:v11];
     }
 
     v10 = 1;
@@ -31,7 +31,7 @@
 
   else
   {
-    v10 = qword_25611CE80[a3];
+    v10 = qword_25611CE80[style];
   }
 
   v12 = [[v9 alloc] initWithStyle:v10];
@@ -41,17 +41,17 @@
   return v13;
 }
 
-- (LAUIPKGlyphWrapper)initWithGlyphView:(id)a3
+- (LAUIPKGlyphWrapper)initWithGlyphView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v13.receiver = self;
   v13.super_class = LAUIPKGlyphWrapper;
   v6 = [(LAUIPKGlyphWrapper *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_glyphView, a3);
-    objc_storeStrong(&v7->_view, a3);
+    objc_storeStrong(&v6->_glyphView, view);
+    objc_storeStrong(&v7->_view, view);
     v8 = MEMORY[0x277D24028];
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v10 = [v8 createDefaultQueueWithIdentifier:@"glyphQueue" concurrencyAttribute:v9];
@@ -62,15 +62,15 @@
   return v7;
 }
 
-- (double)_minimumAnimationDurationForState:(int64_t)a3
+- (double)_minimumAnimationDurationForState:(int64_t)state
 {
   result = 0.15;
-  if (a3 == 1)
+  if (state == 1)
   {
     result = 0.75;
   }
 
-  if (a3 == 5)
+  if (state == 5)
   {
     return 0.5;
   }
@@ -78,25 +78,25 @@
   return result;
 }
 
-- (void)setState:(int64_t)a3 idleTouchID:(BOOL)a4 animated:(BOOL)a5 completionHandler:(id)a6
+- (void)setState:(int64_t)state idleTouchID:(BOOL)d animated:(BOOL)animated completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = [(LAUIPKGlyphWrapper *)self fastAnimations];
+  handlerCopy = handler;
+  fastAnimations = [(LAUIPKGlyphWrapper *)self fastAnimations];
   objc_initWeak(&location, self);
-  v12 = [(LAUIPKGlyphWrapper *)self glyphQueue];
+  glyphQueue = [(LAUIPKGlyphWrapper *)self glyphQueue];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __70__LAUIPKGlyphWrapper_setState_idleTouchID_animated_completionHandler___block_invoke;
   v14[3] = &unk_2798216D0;
-  v17 = !v11;
-  v18 = a4;
+  v17 = !fastAnimations;
+  dCopy = d;
   v14[4] = self;
-  v16[1] = a3;
+  v16[1] = state;
   objc_copyWeak(v16, &location);
-  v19 = a5;
-  v15 = v10;
-  v13 = v10;
-  dispatch_async(v12, v14);
+  animatedCopy = animated;
+  v15 = handlerCopy;
+  v13 = handlerCopy;
+  dispatch_async(glyphQueue, v14);
 
   objc_destroyWeak(v16);
   objc_destroyWeak(&location);
@@ -296,12 +296,12 @@ void *__31__LAUIPKGlyphWrapper__loadPKUI__block_invoke()
   return result;
 }
 
-+ (Class)_loadClassFromString:(id)a3
++ (Class)_loadClassFromString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   if (+[LAUIPKGlyphWrapper _loadPKUI])
   {
-    v4 = NSClassFromString(v3);
+    v4 = NSClassFromString(stringCopy);
   }
 
   else
@@ -314,16 +314,16 @@ void *__31__LAUIPKGlyphWrapper__loadPKUI__block_invoke()
   return v4;
 }
 
-- (void)setGrayedOut:(BOOL)a3
+- (void)setGrayedOut:(BOOL)out
 {
-  v3 = a3;
+  outCopy = out;
   v5 = LA_LOG_LAUIPKGlyphWrapper();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(LAUIPKGlyphWrapper *)v3 setGrayedOut:v5, v6, v7, v8, v9, v10, v11];
+    [(LAUIPKGlyphWrapper *)outCopy setGrayedOut:v5, v6, v7, v8, v9, v10, v11];
   }
 
-  if (v3)
+  if (outCopy)
   {
     v12 = 0.5;
   }
@@ -333,21 +333,21 @@ void *__31__LAUIPKGlyphWrapper__loadPKUI__block_invoke()
     v12 = 1.0;
   }
 
-  v13 = [(LAUIPKGlyphWrapper *)self glyphView];
-  [v13 setAlpha:v12];
+  glyphView = [(LAUIPKGlyphWrapper *)self glyphView];
+  [glyphView setAlpha:v12];
 
-  self->_grayedOut = v3;
+  self->_grayedOut = outCopy;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
-  self->_hidden = a3;
-  v5 = [(LAUIPKGlyphWrapper *)self glyphView];
-  [v5 setHidden:v3];
+  hiddenCopy = hidden;
+  self->_hidden = hidden;
+  glyphView = [(LAUIPKGlyphWrapper *)self glyphView];
+  [glyphView setHidden:hiddenCopy];
 
-  v6 = [(LAUIPKGlyphWrapper *)self idleTouchID];
-  [v6 setHidden:v3];
+  idleTouchID = [(LAUIPKGlyphWrapper *)self idleTouchID];
+  [idleTouchID setHidden:hiddenCopy];
 }
 
 + (void)glyphWithStyle:(int)a1 frame:(NSObject *)a2 .cold.1(int a1, NSObject *a2)

@@ -1,27 +1,27 @@
 @interface AMSPurchaseSIWAResult
-- (AMSPurchaseSIWAResult)initWithCoder:(id)a3;
-- (AMSPurchaseSIWAResult)initWithPurchaseResult:(id)a3 authorizationResult:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPurchaseSIWAResult:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AMSPurchaseSIWAResult)initWithCoder:(id)coder;
+- (AMSPurchaseSIWAResult)initWithPurchaseResult:(id)result authorizationResult:(id)authorizationResult;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPurchaseSIWAResult:(id)result;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSPurchaseSIWAResult
 
-- (AMSPurchaseSIWAResult)initWithPurchaseResult:(id)a3 authorizationResult:(id)a4
+- (AMSPurchaseSIWAResult)initWithPurchaseResult:(id)result authorizationResult:(id)authorizationResult
 {
-  v7 = a3;
-  v8 = a4;
+  resultCopy = result;
+  authorizationResultCopy = authorizationResult;
   v12.receiver = self;
   v12.super_class = AMSPurchaseSIWAResult;
   v9 = [(AMSPurchaseSIWAResult *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_authorizationResult, a4);
-    objc_storeStrong(&v10->_purchaseResult, a3);
+    objc_storeStrong(&v9->_authorizationResult, authorizationResult);
+    objc_storeStrong(&v10->_purchaseResult, result);
   }
 
   return v10;
@@ -29,18 +29,18 @@
 
 - (unint64_t)hash
 {
-  v3 = [(AMSPurchaseSIWAResult *)self purchaseResult];
-  v4 = [v3 hash];
-  v5 = [(AMSPurchaseSIWAResult *)self authorizationResult];
-  v6 = [v5 hash];
+  purchaseResult = [(AMSPurchaseSIWAResult *)self purchaseResult];
+  v4 = [purchaseResult hash];
+  authorizationResult = [(AMSPurchaseSIWAResult *)self authorizationResult];
+  v6 = [authorizationResult hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -48,26 +48,26 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AMSPurchaseSIWAResult *)self isEqualToPurchaseSIWAResult:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AMSPurchaseSIWAResult *)self isEqualToPurchaseSIWAResult:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToPurchaseSIWAResult:(id)a3
+- (BOOL)isEqualToPurchaseSIWAResult:(id)result
 {
-  v7 = a3;
-  v8 = [(AMSPurchaseSIWAResult *)self authorizationResult];
-  if (!v8)
+  resultCopy = result;
+  authorizationResult = [(AMSPurchaseSIWAResult *)self authorizationResult];
+  if (!authorizationResult)
   {
-    v3 = [v7 authorizationResult];
-    if (!v3)
+    authorizationResult2 = [resultCopy authorizationResult];
+    if (!authorizationResult2)
     {
       v9 = 0;
 LABEL_7:
-      v11 = [(AMSPurchaseSIWAResult *)self purchaseResult];
-      v12 = [v7 purchaseResult];
-      v10 = [v11 isEqualToPurchaseResult:v12];
+      purchaseResult = [(AMSPurchaseSIWAResult *)self purchaseResult];
+      purchaseResult2 = [resultCopy purchaseResult];
+      v10 = [purchaseResult isEqualToPurchaseResult:purchaseResult2];
 
       if (!v9)
       {
@@ -78,9 +78,9 @@ LABEL_7:
     }
   }
 
-  v4 = [(AMSPurchaseSIWAResult *)self authorizationResult];
-  v5 = [v7 authorizationResult];
-  if ([v4 isEqual:v5])
+  authorizationResult3 = [(AMSPurchaseSIWAResult *)self authorizationResult];
+  authorizationResult4 = [resultCopy authorizationResult];
+  if ([authorizationResult3 isEqual:authorizationResult4])
   {
     v9 = 1;
     goto LABEL_7;
@@ -90,52 +90,52 @@ LABEL_7:
 LABEL_8:
 
 LABEL_9:
-  if (!v8)
+  if (!authorizationResult)
   {
   }
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(AMSPurchaseSIWAResult);
-  v5 = [(AMSPurchaseSIWAResult *)self authorizationResult];
-  v6 = [v5 copy];
+  authorizationResult = [(AMSPurchaseSIWAResult *)self authorizationResult];
+  v6 = [authorizationResult copy];
   authorizationResult = v4->_authorizationResult;
   v4->_authorizationResult = v6;
 
-  v8 = [(AMSPurchaseSIWAResult *)self purchaseResult];
-  v9 = [v8 copy];
+  purchaseResult = [(AMSPurchaseSIWAResult *)self purchaseResult];
+  v9 = [purchaseResult copy];
   purchaseResult = v4->_purchaseResult;
   v4->_purchaseResult = v9;
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AMSPurchaseSIWAResult *)self authorizationResult];
-  [v4 encodeObject:v5 forKey:@"authorizationResult"];
+  coderCopy = coder;
+  authorizationResult = [(AMSPurchaseSIWAResult *)self authorizationResult];
+  [coderCopy encodeObject:authorizationResult forKey:@"authorizationResult"];
 
-  v6 = [(AMSPurchaseSIWAResult *)self purchaseResult];
-  [v4 encodeObject:v6 forKey:@"purchaseResult"];
+  purchaseResult = [(AMSPurchaseSIWAResult *)self purchaseResult];
+  [coderCopy encodeObject:purchaseResult forKey:@"purchaseResult"];
 }
 
-- (AMSPurchaseSIWAResult)initWithCoder:(id)a3
+- (AMSPurchaseSIWAResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = AMSPurchaseSIWAResult;
   v5 = [(AMSPurchaseSIWAResult *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"authorizationResult"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"authorizationResult"];
     authorizationResult = v5->_authorizationResult;
     v5->_authorizationResult = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"purchaseResult"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"purchaseResult"];
     purchaseResult = v5->_purchaseResult;
     v5->_purchaseResult = v8;
   }

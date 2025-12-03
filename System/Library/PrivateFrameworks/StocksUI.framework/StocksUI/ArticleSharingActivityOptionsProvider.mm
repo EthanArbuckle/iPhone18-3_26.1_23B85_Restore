@@ -1,10 +1,10 @@
 @interface ArticleSharingActivityOptionsProvider
-- (int64_t)articleActivityOptionsForHeadline:(id)a3;
+- (int64_t)articleActivityOptionsForHeadline:(id)headline;
 @end
 
 @implementation ArticleSharingActivityOptionsProvider
 
-- (int64_t)articleActivityOptionsForHeadline:(id)a3
+- (int64_t)articleActivityOptionsForHeadline:(id)headline
 {
   __swift_project_boxed_opaque_existential_1(self->featureAvailability, *&self->featureAvailability[24]);
 

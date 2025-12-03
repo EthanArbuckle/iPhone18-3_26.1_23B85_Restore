@@ -1,6 +1,6 @@
 @interface RootContainerViewController
-- (_TtC20PeopleMessageService27RootContainerViewController)initWithCoder:(id)a3;
-- (_TtC20PeopleMessageService27RootContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC20PeopleMessageService27RootContainerViewController)initWithCoder:(id)coder;
+- (_TtC20PeopleMessageService27RootContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 @end
 
@@ -9,41 +9,41 @@
 - (void)loadView
 {
   v3 = objc_opt_self();
-  v6 = self;
+  selfCopy = self;
   v4 = [v3 effectWithStyle:8];
   v5 = [objc_allocWithZone(UIVisualEffectView) initWithEffect:v4];
 
-  [(RootContainerViewController *)v6 setView:v5];
+  [(RootContainerViewController *)selfCopy setView:v5];
 }
 
-- (_TtC20PeopleMessageService27RootContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC20PeopleMessageService27RootContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = String._bridgeToObjectiveC()();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for RootContainerViewController();
-  v9 = [(RootContainerViewController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(RootContainerViewController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC20PeopleMessageService27RootContainerViewController)initWithCoder:(id)a3
+- (_TtC20PeopleMessageService27RootContainerViewController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for RootContainerViewController();
-  v4 = a3;
-  v5 = [(RootContainerViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(RootContainerViewController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

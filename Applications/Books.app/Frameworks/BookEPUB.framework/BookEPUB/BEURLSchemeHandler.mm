@@ -1,15 +1,15 @@
 @interface BEURLSchemeHandler
-+ (id)schemeHandlerForCacheItem:(id)a3;
++ (id)schemeHandlerForCacheItem:(id)item;
 - (BEURLSchemeHandler)init;
-- (id)_taskForHandler:(id)a3;
-- (void)_executeBlockWithLock:(id)a3;
-- (void)_removeTaskForHandler:(id)a3;
-- (void)urlHandler:(id)a3 didFailWithError:(id)a4;
-- (void)urlHandler:(id)a3 didReceiveData:(id)a4;
-- (void)urlHandler:(id)a3 didReceiveResponse:(id)a4;
-- (void)urlHandlerDidFinish:(id)a3;
-- (void)webView:(id)a3 startURLSchemeTask:(id)a4;
-- (void)webView:(id)a3 stopURLSchemeTask:(id)a4;
+- (id)_taskForHandler:(id)handler;
+- (void)_executeBlockWithLock:(id)lock;
+- (void)_removeTaskForHandler:(id)handler;
+- (void)urlHandler:(id)handler didFailWithError:(id)error;
+- (void)urlHandler:(id)handler didReceiveData:(id)data;
+- (void)urlHandler:(id)handler didReceiveResponse:(id)response;
+- (void)urlHandlerDidFinish:(id)finish;
+- (void)webView:(id)view startURLSchemeTask:(id)task;
+- (void)webView:(id)view stopURLSchemeTask:(id)task;
 @end
 
 @implementation BEURLSchemeHandler
@@ -35,21 +35,21 @@
   return v2;
 }
 
-+ (id)schemeHandlerForCacheItem:(id)a3
++ (id)schemeHandlerForCacheItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = objc_alloc_init(BEURLSchemeHandler);
-  [(BEURLSchemeHandler *)v4 setCacheItem:v3];
+  [(BEURLSchemeHandler *)v4 setCacheItem:itemCopy];
 
   return v4;
 }
 
-- (void)webView:(id)a3 startURLSchemeTask:(id)a4
+- (void)webView:(id)view startURLSchemeTask:(id)task
 {
-  v5 = a4;
+  taskCopy = task;
   v6 = [BEURLHandler alloc];
-  v7 = [(BEURLSchemeHandler *)self cacheItem];
-  v8 = [(BEURLHandler *)v6 initWithQueueMode:1 cacheItem:v7];
+  cacheItem = [(BEURLSchemeHandler *)self cacheItem];
+  v8 = [(BEURLHandler *)v6 initWithQueueMode:1 cacheItem:cacheItem];
 
   [(BEURLHandler *)v8 setDelegate:self];
   v12[0] = _NSConcreteStackBlock;
@@ -57,18 +57,18 @@
   v12[2] = sub_2AA78;
   v12[3] = &unk_3281E8;
   v12[4] = self;
-  v13 = v5;
+  v13 = taskCopy;
   v14 = v8;
   v9 = v8;
-  v10 = v5;
+  v10 = taskCopy;
   [(BEURLSchemeHandler *)self _executeBlockWithLock:v12];
-  v11 = [v10 request];
-  [(BEURLHandler *)v9 loadRequest:v11];
+  request = [v10 request];
+  [(BEURLHandler *)v9 loadRequest:request];
 }
 
-- (void)webView:(id)a3 stopURLSchemeTask:(id)a4
+- (void)webView:(id)view stopURLSchemeTask:(id)task
 {
-  v6 = a3;
+  viewCopy = view;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -81,69 +81,69 @@
   v8[3] = &unk_328F18;
   v8[4] = self;
   v10 = &v11;
-  v7 = a4;
-  v9 = v7;
+  taskCopy = task;
+  v9 = taskCopy;
   [(BEURLSchemeHandler *)self _executeBlockWithLock:v8];
   [v12[5] stopLoading];
 
   _Block_object_dispose(&v11, 8);
 }
 
-- (void)urlHandler:(id)a3 didReceiveResponse:(id)a4
+- (void)urlHandler:(id)handler didReceiveResponse:(id)response
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_2AD88;
   block[3] = &unk_3281E8;
   block[4] = self;
-  v8 = a3;
-  v9 = a4;
-  v5 = v9;
-  v6 = v8;
+  handlerCopy = handler;
+  responseCopy = response;
+  v5 = responseCopy;
+  v6 = handlerCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)urlHandler:(id)a3 didReceiveData:(id)a4
+- (void)urlHandler:(id)handler didReceiveData:(id)data
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_2AEA4;
   block[3] = &unk_3281E8;
   block[4] = self;
-  v8 = a3;
-  v9 = a4;
-  v5 = v9;
-  v6 = v8;
+  handlerCopy = handler;
+  dataCopy = data;
+  v5 = dataCopy;
+  v6 = handlerCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)urlHandlerDidFinish:(id)a3
+- (void)urlHandlerDidFinish:(id)finish
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_2AF94;
   v4[3] = &unk_328358;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  finishCopy = finish;
+  v3 = finishCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)urlHandler:(id)a3 didFailWithError:(id)a4
+- (void)urlHandler:(id)handler didFailWithError:(id)error
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_2B0B4;
   block[3] = &unk_3281E8;
   block[4] = self;
-  v8 = a3;
-  v9 = a4;
-  v5 = v9;
-  v6 = v8;
+  handlerCopy = handler;
+  errorCopy = error;
+  v5 = errorCopy;
+  v6 = handlerCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (id)_taskForHandler:(id)a3
+- (id)_taskForHandler:(id)handler
 {
   v12 = 0;
   v13 = &v12;
@@ -156,10 +156,10 @@
   v8[2] = sub_2B2D0;
   v8[3] = &unk_3281C0;
   v11 = &v12;
-  v9 = self;
-  v3 = a3;
-  v10 = v3;
-  [(BEURLSchemeHandler *)v9 _executeBlockWithLock:v8];
+  selfCopy = self;
+  handlerCopy = handler;
+  v10 = handlerCopy;
+  [(BEURLSchemeHandler *)selfCopy _executeBlockWithLock:v8];
   v4 = v13[5];
   if (!v4)
   {
@@ -167,7 +167,7 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v19 = v3;
+      v19 = handlerCopy;
     }
 
     v4 = v13[5];
@@ -180,25 +180,25 @@
   return v6;
 }
 
-- (void)_removeTaskForHandler:(id)a3
+- (void)_removeTaskForHandler:(id)handler
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_2B3D0;
   v4[3] = &unk_328358;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(BEURLSchemeHandler *)v5 _executeBlockWithLock:v4];
+  selfCopy = self;
+  handlerCopy = handler;
+  v3 = handlerCopy;
+  [(BEURLSchemeHandler *)selfCopy _executeBlockWithLock:v4];
 }
 
-- (void)_executeBlockWithLock:(id)a3
+- (void)_executeBlockWithLock:(id)lock
 {
-  if (a3)
+  if (lock)
   {
-    v4 = a3;
+    lockCopy = lock;
     os_unfair_lock_lock(&self->_accessLock);
-    v4[2](v4);
+    lockCopy[2](lockCopy);
 
     os_unfair_lock_unlock(&self->_accessLock);
   }

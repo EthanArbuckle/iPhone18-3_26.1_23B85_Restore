@@ -1,45 +1,45 @@
 @interface PKNavigationItemController
-- (_BYTE)initWithDelegate:(_BYTE *)a1;
-- (id)_redeemVoucher:(void *)a3 forProvider:(void *)a4 usingHandle:;
-- (id)isActiveVoucher:(_BOOL8)a1;
+- (_BYTE)initWithDelegate:(_BYTE *)delegate;
+- (id)_redeemVoucher:(void *)voucher forProvider:(void *)provider usingHandle:;
+- (id)isActiveVoucher:(_BOOL8)voucher;
 - (void)_activate;
-- (void)_consumeHandle:(uint64_t)a1;
-- (void)_disconnectHandle:(uint64_t)a1;
-- (void)_disconnectVoucher:(uint64_t)a1;
+- (void)_consumeHandle:(uint64_t)handle;
+- (void)_disconnectHandle:(uint64_t)handle;
+- (void)_disconnectVoucher:(uint64_t)voucher;
 - (void)_ensure;
 - (void)_interrupt;
 - (void)_recover;
-- (void)_updateItemWithConfiguration:(void *)a3 forHandle:;
+- (void)_updateItemWithConfiguration:(void *)configuration forHandle:;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation PKNavigationItemController
 
-- (_BYTE)initWithDelegate:(_BYTE *)a1
+- (_BYTE)initWithDelegate:(_BYTE *)delegate
 {
   result = a2;
   v4 = result;
-  if (!a1)
+  if (!delegate)
   {
     goto LABEL_5;
   }
 
   if (result)
   {
-    v6.receiver = a1;
+    v6.receiver = delegate;
     v6.super_class = PKNavigationItemController;
     v5 = objc_msgSendSuper2(&v6, sel_init);
-    a1 = v5;
+    delegate = v5;
     if (v5)
     {
       objc_storeWeak(v5 + 1, v4);
-      a1[16] = 1;
+      delegate[16] = 1;
     }
 
 LABEL_5:
 
-    return a1;
+    return delegate;
   }
 
   __break(1u);
@@ -84,34 +84,34 @@ void __37__PKNavigationItemController_dealloc__block_invoke(uint64_t a1)
 
 - (void)_activate
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 56) != 1)
+    if (*(self + 56) != 1)
     {
-      if (*(a1 + 57))
+      if (*(self + 57))
       {
         return;
       }
 
-      *(a1 + 56) = 1;
-      WeakRetained = objc_loadWeakRetained((a1 + 8));
-      [WeakRetained willActivateNavigationItemController:a1];
+      *(self + 56) = 1;
+      WeakRetained = objc_loadWeakRetained((self + 8));
+      [WeakRetained willActivateNavigationItemController:self];
 
-      v3 = objc_loadWeakRetained((a1 + 48));
+      v3 = objc_loadWeakRetained((self + 48));
       if (v3)
       {
       }
 
       else
       {
-        v4 = objc_loadWeakRetained((a1 + 40));
+        v4 = objc_loadWeakRetained((self + 40));
 
         if (!v4)
         {
-          v5 = [[PKNavigationItemVoucher alloc] _initForController:a1];
+          v5 = [[PKNavigationItemVoucher alloc] _initForController:self];
           if (v5)
           {
-            objc_storeWeak((a1 + 48), v5);
+            objc_storeWeak((self + 48), v5);
             return;
           }
         }
@@ -124,19 +124,19 @@ void __37__PKNavigationItemController_dealloc__block_invoke(uint64_t a1)
 
 - (void)_interrupt
 {
-  if (a1 && (*(a1 + 57) & 1) == 0)
+  if (self && (*(self + 57) & 1) == 0)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 40));
+    WeakRetained = objc_loadWeakRetained((self + 40));
 
     if (!WeakRetained)
     {
-      if (*(a1 + 56) != 1)
+      if (*(self + 56) != 1)
       {
         return;
       }
 
-      v3 = objc_loadWeakRetained((a1 + 32));
-      v4 = objc_loadWeakRetained((a1 + 48));
+      v3 = objc_loadWeakRetained((self + 32));
+      v4 = objc_loadWeakRetained((self + 48));
       v5 = v4;
       if (!v3 || !v4)
       {
@@ -151,14 +151,14 @@ LABEL_14:
         if (v4)
         {
           [(PKNavigationItemVoucher *)v4 _invalidateFromDisconnect:?];
-          objc_storeWeak((a1 + 48), 0);
+          objc_storeWeak((self + 48), 0);
         }
 
-        v6 = [[PKNavigationItemVoucher alloc] _initForController:a1];
+        v6 = [[PKNavigationItemVoucher alloc] _initForController:self];
 
         if (v6)
         {
-          objc_storeWeak((a1 + 48), v6);
+          objc_storeWeak((self + 48), v6);
           v5 = v6;
           goto LABEL_14;
         }
@@ -171,45 +171,45 @@ LABEL_14:
 
 - (void)_ensure
 {
-  if (a1 && (*(a1 + 57) & 1) == 0)
+  if (self && (*(self + 57) & 1) == 0)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 40));
+    WeakRetained = objc_loadWeakRetained((self + 40));
 
     if (WeakRetained)
     {
       __break(1u);
     }
 
-    else if (*(a1 + 56) == 1)
+    else if (*(self + 56) == 1)
     {
 
-      [(PKNavigationItemController *)a1 _interrupt];
+      [(PKNavigationItemController *)self _interrupt];
     }
 
     else
     {
 
-      [(PKNavigationItemController *)a1 _activate];
+      [(PKNavigationItemController *)self _activate];
     }
   }
 }
 
-- (id)isActiveVoucher:(_BOOL8)a1
+- (id)isActiveVoucher:(_BOOL8)voucher
 {
   result = a2;
   v4 = result;
-  if (!a1)
+  if (!voucher)
   {
     goto LABEL_5;
   }
 
   if (result && *(result + 16) != 1)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 48));
-    a1 = WeakRetained == v4;
+    WeakRetained = objc_loadWeakRetained((voucher + 48));
+    voucher = WeakRetained == v4;
 
 LABEL_5:
-    return a1;
+    return voucher;
   }
 
   __break(1u);
@@ -218,16 +218,16 @@ LABEL_5:
 
 - (void)invalidate
 {
-  if (a1 && (*(a1 + 57) & 1) == 0)
+  if (self && (*(self + 57) & 1) == 0)
   {
-    *(a1 + 57) = 1;
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v2 = objc_loadWeakRetained((a1 + 32));
-    v3 = objc_loadWeakRetained((a1 + 48));
-    objc_storeWeak((a1 + 8), 0);
-    objc_storeWeak((a1 + 32), 0);
-    objc_storeWeak((a1 + 40), 0);
-    objc_storeWeak((a1 + 48), 0);
+    *(self + 57) = 1;
+    WeakRetained = objc_loadWeakRetained((self + 8));
+    v2 = objc_loadWeakRetained((self + 32));
+    v3 = objc_loadWeakRetained((self + 48));
+    objc_storeWeak((self + 8), 0);
+    objc_storeWeak((self + 32), 0);
+    objc_storeWeak((self + 40), 0);
+    objc_storeWeak((self + 48), 0);
     if (v2)
     {
       [(PKNavigationItemHandle *)v2 _deactivateFromDisconnect:?];
@@ -238,46 +238,46 @@ LABEL_5:
       [(PKNavigationItemVoucher *)v3 _invalidateFromDisconnect:?];
     }
 
-    if (*(a1 + 56) == 1)
+    if (*(self + 56) == 1)
     {
-      *(a1 + 56) = 0;
-      [WeakRetained didDeactivateNavigationItemController:a1 dirty:(*(a1 + 16) & 1) == 0];
-      *(a1 + 16) = 0;
-      objc_storeWeak((a1 + 24), 0);
+      *(self + 56) = 0;
+      [WeakRetained didDeactivateNavigationItemController:self dirty:(*(self + 16) & 1) == 0];
+      *(self + 16) = 0;
+      objc_storeWeak((self + 24), 0);
     }
   }
 }
 
 - (void)_recover
 {
-  if (a1 && (*(a1 + 57) & 1) == 0 && *(a1 + 56) == 1)
+  if (self && (*(self + 57) & 1) == 0 && *(self + 56) == 1)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 32));
-    v2 = objc_loadWeakRetained((a1 + 48));
+    WeakRetained = objc_loadWeakRetained((self + 32));
+    v2 = objc_loadWeakRetained((self + 48));
     if (!(WeakRetained | v2))
     {
-      v3 = objc_loadWeakRetained((a1 + 8));
+      v3 = objc_loadWeakRetained((self + 8));
       if (v3)
       {
-        *(a1 + 56) = 0;
-        v4 = *(a1 + 16);
-        *(a1 + 16) = 0;
-        objc_storeWeak((a1 + 24), 0);
-        [v3 didDeactivateNavigationItemController:a1 dirty:(v4 & 1) == 0];
+        *(self + 56) = 0;
+        v4 = *(self + 16);
+        *(self + 16) = 0;
+        objc_storeWeak((self + 24), 0);
+        [v3 didDeactivateNavigationItemController:self dirty:(v4 & 1) == 0];
       }
 
       else
       {
-        [(PKNavigationItemController *)a1 invalidate];
+        [(PKNavigationItemController *)self invalidate];
       }
     }
   }
 }
 
-- (void)_disconnectHandle:(uint64_t)a1
+- (void)_disconnectHandle:(uint64_t)handle
 {
   v3 = a2;
-  if (a1)
+  if (handle)
   {
     v4 = v3;
     if (!v3)
@@ -286,16 +286,16 @@ LABEL_5:
       return;
     }
 
-    objc_storeWeak((a1 + 32), 0);
-    [(PKNavigationItemController *)a1 _recover];
+    objc_storeWeak((handle + 32), 0);
+    [(PKNavigationItemController *)handle _recover];
     v3 = v4;
   }
 }
 
-- (void)_disconnectVoucher:(uint64_t)a1
+- (void)_disconnectVoucher:(uint64_t)voucher
 {
   v3 = a2;
-  if (a1)
+  if (voucher)
   {
     v4 = v3;
     if (!v3)
@@ -304,43 +304,43 @@ LABEL_5:
       return;
     }
 
-    objc_storeWeak((a1 + 48), 0);
-    [(PKNavigationItemController *)a1 _recover];
+    objc_storeWeak((voucher + 48), 0);
+    [(PKNavigationItemController *)voucher _recover];
     v3 = v4;
   }
 }
 
-- (void)_consumeHandle:(uint64_t)a1
+- (void)_consumeHandle:(uint64_t)handle
 {
   v3 = a2;
   v4 = v3;
-  if (!a1)
+  if (!handle)
   {
     goto LABEL_10;
   }
 
   if (v3)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 32));
+    WeakRetained = objc_loadWeakRetained((handle + 32));
 
-    if (WeakRetained == v4 && (*(a1 + 57) & 1) == 0 && *(a1 + 56) == 1)
+    if (WeakRetained == v4 && (*(handle + 57) & 1) == 0 && *(handle + 56) == 1)
     {
-      v6 = objc_loadWeakRetained((a1 + 40));
+      v6 = objc_loadWeakRetained((handle + 40));
       if (v6)
       {
       }
 
       else
       {
-        v7 = objc_loadWeakRetained((a1 + 48));
+        v7 = objc_loadWeakRetained((handle + 48));
 
         if (!v7)
         {
-          objc_storeWeak((a1 + 32), 0);
-          v8 = [[PKNavigationItemVoucher alloc] _initForController:a1];
+          objc_storeWeak((handle + 32), 0);
+          v8 = [[PKNavigationItemVoucher alloc] _initForController:handle];
           if (v8)
           {
-            objc_storeWeak((a1 + 48), v8);
+            objc_storeWeak((handle + 48), v8);
 LABEL_10:
 
             return;
@@ -353,68 +353,68 @@ LABEL_10:
   __break(1u);
 }
 
-- (id)_redeemVoucher:(void *)a3 forProvider:(void *)a4 usingHandle:
+- (id)_redeemVoucher:(void *)voucher forProvider:(void *)provider usingHandle:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!a1)
+  voucherCopy = voucher;
+  providerCopy = provider;
+  selfCopy = providerCopy;
+  if (!self)
   {
     goto LABEL_35;
   }
 
-  if (!v7 || v9 && *(v9 + 24) == 1)
+  if (!v7 || providerCopy && *(providerCopy + 24) == 1)
   {
     goto LABEL_36;
   }
 
-  if (*(a1 + 57))
+  if (*(self + 57))
   {
     goto LABEL_34;
   }
 
-  WeakRetained = objc_loadWeakRetained(a1 + 6);
+  WeakRetained = objc_loadWeakRetained(self + 6);
 
   if (WeakRetained != v7)
   {
     goto LABEL_36;
   }
 
-  v12 = objc_loadWeakRetained(a1 + 4);
+  v12 = objc_loadWeakRetained(self + 4);
 
   if (v12)
   {
     goto LABEL_36;
   }
 
-  v13 = objc_loadWeakRetained(a1 + 5);
+  v13 = objc_loadWeakRetained(self + 5);
 
   if (v13)
   {
     goto LABEL_36;
   }
 
-  if (!v8)
+  if (!voucherCopy)
   {
-    v14 = objc_loadWeakRetained(a1 + 1);
-    v8 = [v14 providerForNavigationItemController:a1];
+    v14 = objc_loadWeakRetained(self + 1);
+    voucherCopy = [v14 providerForNavigationItemController:self];
 
-    if (!v8)
+    if (!voucherCopy)
     {
-      [(PKNavigationItemController *)a1 invalidate];
+      [(PKNavigationItemController *)self invalidate];
       goto LABEL_34;
     }
   }
 
-  if (![v8 willActivateNavigationItemHandleWithVoucher:v7])
+  if (![voucherCopy willActivateNavigationItemHandleWithVoucher:v7])
   {
 LABEL_34:
-    a1 = 0;
+    self = 0;
     goto LABEL_35;
   }
 
-  if (!v10)
+  if (!selfCopy)
   {
     v15 = [PKNavigationItemHandle alloc];
     if (!v15)
@@ -424,28 +424,28 @@ LABEL_34:
 
     v35.receiver = v15;
     v35.super_class = PKNavigationItemHandle;
-    v10 = objc_msgSendSuper2(&v35, sel_init);
+    selfCopy = objc_msgSendSuper2(&v35, sel_init);
   }
 
   while (1)
   {
-    objc_storeWeak(a1 + 5, v10);
-    v16 = objc_loadWeakRetained(a1 + 3);
+    objc_storeWeak(self + 5, selfCopy);
+    v16 = objc_loadWeakRetained(self + 3);
     v17 = v7;
-    v8 = v8;
+    voucherCopy = voucherCopy;
     v18 = v16;
-    if (!v10)
+    if (!selfCopy)
     {
       break;
     }
 
-    if (*(v10 + 24) != 1)
+    if (*(selfCopy + 24) != 1)
     {
-      v19 = objc_loadWeakRetained(v10 + 1);
+      v19 = objc_loadWeakRetained(selfCopy + 1);
 
       if (!v19)
       {
-        v20 = v10;
+        v20 = selfCopy;
         if (*(v17 + 16) != 1)
         {
           v21 = v20;
@@ -473,16 +473,16 @@ LABEL_34:
                   objc_storeWeak(v23 + 5, 0);
                   objc_storeWeak(v23 + 4, v25);
                   v29 = v23;
-                  if (*(v10 + 24) != 1)
+                  if (*(selfCopy + 24) != 1)
                   {
                     v30 = v29;
-                    *(v10 + 24) = 1;
-                    objc_storeWeak(v10 + 1, v29);
+                    *(selfCopy + 24) = 1;
+                    objc_storeWeak(selfCopy + 1, v29);
 
                     v31 = v30;
-                    if (*(v10 + 24) == 1)
+                    if (*(selfCopy + 24) == 1)
                     {
-                      v32 = objc_loadWeakRetained(v10 + 1);
+                      v32 = objc_loadWeakRetained(selfCopy + 1);
 
                       if (v32 == v31)
                       {
@@ -490,9 +490,9 @@ LABEL_34:
 
                         if (!v33)
                         {
-                          objc_storeWeak(v25 + 2, v8);
-                          [v8 beginProvidingForNavigationItemHandle:v25 withConsumedVoucher:v24];
-                          if (v8 != v18)
+                          objc_storeWeak(v25 + 2, voucherCopy);
+                          [voucherCopy beginProvidingForNavigationItemHandle:v25 withConsumedVoucher:v24];
+                          if (voucherCopy != v18)
                           {
                             [(PKNavigationItemHandle *)v25 updateItem];
                           }
@@ -513,23 +513,23 @@ LABEL_34:
 LABEL_36:
     __break(1u);
 LABEL_37:
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  objc_storeWeak(a1 + 3, v8);
-  a1 = v10;
-  v10 = a1;
+  objc_storeWeak(self + 3, voucherCopy);
+  self = selfCopy;
+  selfCopy = self;
 LABEL_35:
 
-  return a1;
+  return self;
 }
 
-- (void)_updateItemWithConfiguration:(void *)a3 forHandle:
+- (void)_updateItemWithConfiguration:(void *)configuration forHandle:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (!a1)
+  configurationCopy = configuration;
+  v7 = configurationCopy;
+  if (!self)
   {
 LABEL_13:
 
@@ -538,33 +538,33 @@ LABEL_13:
 
   if (v5)
   {
-    if (v6)
+    if (configurationCopy)
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 32));
+      WeakRetained = objc_loadWeakRetained((self + 32));
 
-      if (WeakRetained == v7 && (*(a1 + 57) & 1) == 0 && *(a1 + 56) == 1)
+      if (WeakRetained == v7 && (*(self + 57) & 1) == 0 && *(self + 56) == 1)
       {
-        v9 = objc_loadWeakRetained((a1 + 40));
+        v9 = objc_loadWeakRetained((self + 40));
         if (v9)
         {
         }
 
         else
         {
-          v10 = objc_loadWeakRetained((a1 + 48));
+          v10 = objc_loadWeakRetained((self + 48));
 
           if (!v10)
           {
-            v11 = objc_loadWeakRetained((a1 + 8));
+            v11 = objc_loadWeakRetained((self + 8));
             v12 = v11;
             if (v11)
             {
-              [v11 navigationItemController:a1 updateItemWithConfiguration:v5];
+              [v11 navigationItemController:self updateItemWithConfiguration:v5];
             }
 
             else
             {
-              [(PKNavigationItemController *)a1 invalidate];
+              [(PKNavigationItemController *)self invalidate];
             }
 
             goto LABEL_13;

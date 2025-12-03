@@ -1,17 +1,17 @@
 @interface ABPKMLNetworkBufferV2
-- (ABPKMLNetworkBufferV2)initWithName:(id)a3 operation:(e5rt_execution_stream_operation *)a4 bindMode:(int64_t)a5 useSurface:(BOOL)a6;
+- (ABPKMLNetworkBufferV2)initWithName:(id)name operation:(e5rt_execution_stream_operation *)operation bindMode:(int64_t)mode useSurface:(BOOL)surface;
 - (BOOL)_readSurfaceDescriptor;
 - (BOOL)_readTensorDescriptor;
 - (void)dealloc;
-- (void)setInput:(id)a3 FromIOSurface:(__IOSurface *)a4;
+- (void)setInput:(id)input FromIOSurface:(__IOSurface *)surface;
 @end
 
 @implementation ABPKMLNetworkBufferV2
 
-- (ABPKMLNetworkBufferV2)initWithName:(id)a3 operation:(e5rt_execution_stream_operation *)a4 bindMode:(int64_t)a5 useSurface:(BOOL)a6
+- (ABPKMLNetworkBufferV2)initWithName:(id)name operation:(e5rt_execution_stream_operation *)operation bindMode:(int64_t)mode useSurface:(BOOL)surface
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  nameCopy = name;
   v28.receiver = self;
   v28.super_class = ABPKMLNetworkBufferV2;
   v11 = [(ABPKMLNetworkBufferV2 *)&v28 init];
@@ -23,11 +23,11 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  objc_storeStrong(&v11->_name, a3);
-  v12->_useSurface = a6;
-  if (a5)
+  objc_storeStrong(&v11->_name, name);
+  v12->_useSurface = surface;
+  if (mode)
   {
-    [v10 UTF8String];
+    [nameCopy UTF8String];
     if (e5rt_execution_stream_operation_retain_output_port())
     {
       goto LABEL_29;
@@ -158,9 +158,9 @@ LABEL_28:
   return 1;
 }
 
-- (void)setInput:(id)a3 FromIOSurface:(__IOSurface *)a4
+- (void)setInput:(id)input FromIOSurface:(__IOSurface *)surface
 {
-  v8 = a3;
+  inputCopy = input;
   if (self->_surfaceObject && e5rt_surface_object_release() || e5rt_surface_object_create_from_iosurface() || (port = self->_port, surfaceObject = self->_surfaceObject, e5rt_io_port_bind_surface_object()))
   {
     last_error_message = e5rt_get_last_error_message();

@@ -1,7 +1,7 @@
 @interface SDASharedItemsFactory
-+ (id)plainItemsFromItemSources:(id)a3;
++ (id)plainItemsFromItemSources:(id)sources;
 + (id)sharedFactory;
-+ (id)sharedItemsInCategory:(int64_t)a3 ofType:(int64_t)a4;
++ (id)sharedItemsInCategory:(int64_t)category ofType:(int64_t)type;
 - (NSArray)attributedStrings;
 - (NSArray)iLifeLinks;
 - (NSArray)iTunesStoreLinks;
@@ -17,8 +17,8 @@
 - (SDASharedItemsFactory)init;
 - (id)dataDocuments;
 - (id)findMyFriendsLink;
-- (id)itemSourcesForFileNames:(id)a3 previewImageBaseName:(id)a4 fakeItemDuration:(float)a5 fakeItemBytes:(int64_t)a6 fakeBundleID:(id)a7;
-- (id)itemSourcesForNonFileURLDictionaries:(id)a3 fakeItemDuration:(float)a4 fakeItemBytes:(int64_t)a5 fakeBundleID:(id)a6;
+- (id)itemSourcesForFileNames:(id)names previewImageBaseName:(id)name fakeItemDuration:(float)duration fakeItemBytes:(int64_t)bytes fakeBundleID:(id)d;
+- (id)itemSourcesForNonFileURLDictionaries:(id)dictionaries fakeItemDuration:(float)duration fakeItemBytes:(int64_t)bytes fakeBundleID:(id)d;
 - (id)keynoteLiveLinks;
 @end
 
@@ -26,8 +26,8 @@
 
 + (id)sharedFactory
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = qword_10098A220;
   if (!qword_10098A220)
   {
@@ -39,7 +39,7 @@
   }
 
   v6 = v3;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
@@ -435,184 +435,184 @@
   return v3;
 }
 
-- (id)itemSourcesForNonFileURLDictionaries:(id)a3 fakeItemDuration:(float)a4 fakeItemBytes:(int64_t)a5 fakeBundleID:(id)a6
+- (id)itemSourcesForNonFileURLDictionaries:(id)dictionaries fakeItemDuration:(float)duration fakeItemBytes:(int64_t)bytes fakeBundleID:(id)d
 {
-  v9 = a6;
-  v10 = a3;
-  +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v10 count]);
+  dCopy = d;
+  dictionariesCopy = dictionaries;
+  +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [dictionariesCopy count]);
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_1001F5DEC;
   v20 = v18 = &unk_1008D3FB8;
-  v21 = a5;
-  v22 = a4;
-  v19 = v9;
+  bytesCopy = bytes;
+  durationCopy = duration;
+  v19 = dCopy;
   v11 = v20;
-  v12 = v9;
-  [v10 enumerateObjectsUsingBlock:&v15];
+  v12 = dCopy;
+  [dictionariesCopy enumerateObjectsUsingBlock:&v15];
 
   v13 = [v11 copy];
 
   return v13;
 }
 
-- (id)itemSourcesForFileNames:(id)a3 previewImageBaseName:(id)a4 fakeItemDuration:(float)a5 fakeItemBytes:(int64_t)a6 fakeBundleID:(id)a7
+- (id)itemSourcesForFileNames:(id)names previewImageBaseName:(id)name fakeItemDuration:(float)duration fakeItemBytes:(int64_t)bytes fakeBundleID:(id)d
 {
-  v12 = a4;
-  v13 = a7;
-  v14 = a3;
-  +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v14 count]);
+  nameCopy = name;
+  dCopy = d;
+  namesCopy = names;
+  +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [namesCopy count]);
   v20 = _NSConcreteStackBlock;
   v21 = 3221225472;
   v22 = sub_1001F608C;
   v23 = &unk_1008D3FE0;
-  v24 = self;
-  v27 = v25 = v12;
-  v28 = a6;
-  v29 = a5;
-  v26 = v13;
+  selfCopy = self;
+  v27 = v25 = nameCopy;
+  bytesCopy = bytes;
+  durationCopy = duration;
+  v26 = dCopy;
   v15 = v27;
-  v16 = v13;
-  v17 = v12;
-  [v14 enumerateObjectsUsingBlock:&v20];
+  v16 = dCopy;
+  v17 = nameCopy;
+  [namesCopy enumerateObjectsUsingBlock:&v20];
 
   v18 = [v15 copy];
 
   return v18;
 }
 
-+ (id)plainItemsFromItemSources:(id)a3
++ (id)plainItemsFromItemSources:(id)sources
 {
-  v3 = a3;
-  +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  sourcesCopy = sources;
+  +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [sourcesCopy count]);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001F6380;
   v8 = v7[3] = &unk_1008D4008;
   v4 = v8;
-  [v3 enumerateObjectsUsingBlock:v7];
+  [sourcesCopy enumerateObjectsUsingBlock:v7];
 
   v5 = [v4 copy];
 
   return v5;
 }
 
-+ (id)sharedItemsInCategory:(int64_t)a3 ofType:(int64_t)a4
++ (id)sharedItemsInCategory:(int64_t)category ofType:(int64_t)type
 {
-  v6 = [a1 sharedFactory];
-  if (!v6)
+  sharedFactory = [self sharedFactory];
+  if (!sharedFactory)
   {
     sub_1001F75D8();
   }
 
   v7 = 0;
-  if (a3 > 3)
+  if (category > 3)
   {
-    if (a3 > 5)
+    if (category > 5)
     {
-      switch(a3)
+      switch(category)
       {
         case 6:
           v7 = 0;
-          if (a4 <= 4)
+          if (type <= 4)
           {
-            if (a4 <= 1)
+            if (type <= 1)
             {
-              if (a4)
+              if (type)
               {
-                if (a4 != 1)
+                if (type != 1)
                 {
                   goto LABEL_114;
                 }
 
-                v8 = [v6 findMyFriendsLink];
-                v9 = [v8 objectAtIndexedSubscript:0];
+                findMyFriendsLink = [sharedFactory findMyFriendsLink];
+                v9 = [findMyFriendsLink objectAtIndexedSubscript:0];
                 v31 = v9;
                 v13 = &v31;
               }
 
               else
               {
-                v8 = [v6 telephoneLinks];
-                v9 = [v8 objectAtIndexedSubscript:0];
+                findMyFriendsLink = [sharedFactory telephoneLinks];
+                v9 = [findMyFriendsLink objectAtIndexedSubscript:0];
                 v32 = v9;
                 v13 = &v32;
               }
             }
 
-            else if (a4 == 2)
+            else if (type == 2)
             {
-              v8 = [v6 yelpLinks];
-              v9 = [v8 objectAtIndexedSubscript:0];
+              findMyFriendsLink = [sharedFactory yelpLinks];
+              v9 = [findMyFriendsLink objectAtIndexedSubscript:0];
               v30 = v9;
               v13 = &v30;
             }
 
             else
             {
-              if (a4 == 3)
+              if (type == 3)
               {
-                v8 = [v6 webLinks];
-                v9 = [v8 objectAtIndexedSubscript:0];
+                findMyFriendsLink = [sharedFactory webLinks];
+                v9 = [findMyFriendsLink objectAtIndexedSubscript:0];
                 v29[0] = v9;
-                v10 = [v6 yelpLinks];
-                v11 = [v10 objectAtIndexedSubscript:0];
+                yelpLinks = [sharedFactory yelpLinks];
+                v11 = [yelpLinks objectAtIndexedSubscript:0];
                 v29[1] = v11;
                 v12 = v29;
                 goto LABEL_96;
               }
 
-              v8 = [v6 iLifeLinks];
-              v9 = [v8 objectAtIndexedSubscript:0];
+              findMyFriendsLink = [sharedFactory iLifeLinks];
+              v9 = [findMyFriendsLink objectAtIndexedSubscript:0];
               v28 = v9;
               v13 = &v28;
             }
           }
 
-          else if (a4 > 7)
+          else if (type > 7)
           {
-            switch(a4)
+            switch(type)
             {
               case 8:
-                v8 = [v6 sharediCloudDocumentsLinks];
-                v9 = [v8 objectAtIndexedSubscript:1];
+                findMyFriendsLink = [sharedFactory sharediCloudDocumentsLinks];
+                v9 = [findMyFriendsLink objectAtIndexedSubscript:1];
                 v24 = v9;
                 v13 = &v24;
                 break;
               case 9:
-                v8 = [v6 sharediCloudDocumentsLinks];
-                v9 = [v8 objectAtIndexedSubscript:2];
+                findMyFriendsLink = [sharedFactory sharediCloudDocumentsLinks];
+                v9 = [findMyFriendsLink objectAtIndexedSubscript:2];
                 v23 = v9;
                 v13 = &v23;
                 break;
               case 10:
-                v16 = [v6 sharediCloudDocumentsLinks];
+                sharediCloudDocumentsLinks = [sharedFactory sharediCloudDocumentsLinks];
                 goto LABEL_109;
               default:
                 goto LABEL_114;
             }
           }
 
-          else if (a4 == 5)
+          else if (type == 5)
           {
-            v8 = [v6 iWorkLinks];
-            v9 = [v8 objectAtIndexedSubscript:0];
+            findMyFriendsLink = [sharedFactory iWorkLinks];
+            v9 = [findMyFriendsLink objectAtIndexedSubscript:0];
             v27 = v9;
             v13 = &v27;
           }
 
-          else if (a4 == 6)
+          else if (type == 6)
           {
-            v8 = [v6 keynoteLiveLinks];
-            v9 = [v8 objectAtIndexedSubscript:0];
+            findMyFriendsLink = [sharedFactory keynoteLiveLinks];
+            v9 = [findMyFriendsLink objectAtIndexedSubscript:0];
             v26 = v9;
             v13 = &v26;
           }
 
           else
           {
-            v8 = [v6 sharediCloudDocumentsLinks];
-            v9 = [v8 objectAtIndexedSubscript:0];
+            findMyFriendsLink = [sharedFactory sharediCloudDocumentsLinks];
+            v9 = [findMyFriendsLink objectAtIndexedSubscript:0];
             v25 = v9;
             v13 = &v25;
           }
@@ -620,53 +620,53 @@
           break;
         case 7:
           v7 = 0;
-          if (a4 > 1)
+          if (type > 1)
           {
-            if (a4 != 2)
+            if (type != 2)
             {
-              if (a4 != 3)
+              if (type != 3)
               {
                 goto LABEL_114;
               }
 
-              v16 = [v6 dataDocuments];
+              sharediCloudDocumentsLinks = [sharedFactory dataDocuments];
               goto LABEL_109;
             }
 
-            v8 = [v6 attributedStrings];
-            v9 = [v8 objectAtIndexedSubscript:0];
+            findMyFriendsLink = [sharedFactory attributedStrings];
+            v9 = [findMyFriendsLink objectAtIndexedSubscript:0];
             v21 = v9;
             v13 = &v21;
           }
 
           else
           {
-            if (a4)
+            if (type)
             {
-              if (a4 != 1)
+              if (type != 1)
               {
                 goto LABEL_114;
               }
 
-              v16 = [v6 strings];
+              sharediCloudDocumentsLinks = [sharedFactory strings];
               goto LABEL_109;
             }
 
-            v8 = [v6 strings];
-            v9 = [v8 objectAtIndexedSubscript:0];
+            findMyFriendsLink = [sharedFactory strings];
+            v9 = [findMyFriendsLink objectAtIndexedSubscript:0];
             v22 = v9;
             v13 = &v22;
           }
 
           break;
         case 8:
-          if (!a4)
+          if (!type)
           {
-            v8 = [v6 strings];
-            v9 = [v8 objectAtIndexedSubscript:0];
+            findMyFriendsLink = [sharedFactory strings];
+            v9 = [findMyFriendsLink objectAtIndexedSubscript:0];
             v20[0] = v9;
-            v10 = [v6 images];
-            v11 = [v10 objectAtIndexedSubscript:0];
+            yelpLinks = [sharedFactory images];
+            v11 = [yelpLinks objectAtIndexedSubscript:0];
             v20[1] = v11;
             v12 = v20;
 LABEL_96:
@@ -686,28 +686,28 @@ LABEL_112:
       goto LABEL_113;
     }
 
-    if (a3 == 4)
+    if (category == 4)
     {
       v7 = 0;
-      if (a4 > 1)
+      if (type > 1)
       {
-        if (a4 == 2)
+        if (type == 2)
         {
-          v8 = [v6 webLinkStrings];
-          v9 = [v8 objectAtIndexedSubscript:0];
+          findMyFriendsLink = [sharedFactory webLinkStrings];
+          v9 = [findMyFriendsLink objectAtIndexedSubscript:0];
           v38 = v9;
           v13 = &v38;
         }
 
         else
         {
-          if (a4 != 3)
+          if (type != 3)
           {
             goto LABEL_114;
           }
 
-          v8 = [v6 webLinkStringBlocks];
-          v9 = [v8 objectAtIndexedSubscript:0];
+          findMyFriendsLink = [sharedFactory webLinkStringBlocks];
+          v9 = [findMyFriendsLink objectAtIndexedSubscript:0];
           v37 = v9;
           v13 = &v37;
         }
@@ -715,197 +715,197 @@ LABEL_112:
         goto LABEL_112;
       }
 
-      if (!a4)
+      if (!type)
       {
-        v8 = [v6 webLinks];
-        v9 = [v8 objectAtIndexedSubscript:0];
+        findMyFriendsLink = [sharedFactory webLinks];
+        v9 = [findMyFriendsLink objectAtIndexedSubscript:0];
         v39 = v9;
         v13 = &v39;
         goto LABEL_112;
       }
 
-      if (a4 != 1)
+      if (type != 1)
       {
         goto LABEL_114;
       }
 
-      v16 = [v6 webLinks];
+      sharediCloudDocumentsLinks = [sharedFactory webLinks];
     }
 
     else
     {
       v7 = 0;
-      if (a4 > 2)
+      if (type > 2)
       {
-        if (a4 != 3)
+        if (type != 3)
         {
-          if (a4 == 4)
+          if (type == 4)
           {
-            v8 = [v6 pdfs];
-            v9 = [v8 objectAtIndexedSubscript:0];
+            findMyFriendsLink = [sharedFactory pdfs];
+            v9 = [findMyFriendsLink objectAtIndexedSubscript:0];
             v34[0] = v9;
-            v10 = [v6 pages];
-            v11 = [v10 objectAtIndexedSubscript:0];
+            yelpLinks = [sharedFactory pages];
+            v11 = [yelpLinks objectAtIndexedSubscript:0];
             v34[1] = v11;
             v12 = v34;
             goto LABEL_96;
           }
 
-          if (a4 != 5)
+          if (type != 5)
           {
             goto LABEL_114;
           }
 
-          v8 = [v6 sharingDrawingDocuments];
-          v9 = [v8 objectAtIndexedSubscript:0];
+          findMyFriendsLink = [sharedFactory sharingDrawingDocuments];
+          v9 = [findMyFriendsLink objectAtIndexedSubscript:0];
           v33 = v9;
           v13 = &v33;
           goto LABEL_112;
         }
 
-        v16 = [v6 pages];
+        sharediCloudDocumentsLinks = [sharedFactory pages];
       }
 
       else
       {
-        if (!a4)
+        if (!type)
         {
-          v8 = [v6 pdfs];
-          v9 = [v8 objectAtIndexedSubscript:0];
+          findMyFriendsLink = [sharedFactory pdfs];
+          v9 = [findMyFriendsLink objectAtIndexedSubscript:0];
           v36 = v9;
           v13 = &v36;
           goto LABEL_112;
         }
 
-        if (a4 != 1)
+        if (type != 1)
         {
-          if (a4 != 2)
+          if (type != 2)
           {
             goto LABEL_114;
           }
 
-          v8 = [v6 pages];
-          v9 = [v8 objectAtIndexedSubscript:0];
+          findMyFriendsLink = [sharedFactory pages];
+          v9 = [findMyFriendsLink objectAtIndexedSubscript:0];
           v35 = v9;
           v13 = &v35;
           goto LABEL_112;
         }
 
-        v16 = [v6 pdfs];
+        sharediCloudDocumentsLinks = [sharedFactory pdfs];
       }
     }
 
 LABEL_109:
-    v7 = v16;
+    v7 = sharediCloudDocumentsLinks;
     goto LABEL_114;
   }
 
-  if (a3 > 1)
+  if (category > 1)
   {
-    if (a3 == 2)
+    if (category == 2)
     {
-      v14 = [v6 iTunesStoreLinks];
-      v15 = [v14 objectAtIndexedSubscript:a4];
+      iTunesStoreLinks = [sharedFactory iTunesStoreLinks];
+      v15 = [iTunesStoreLinks objectAtIndexedSubscript:type];
       v41 = v15;
       v7 = [NSArray arrayWithObjects:&v41 count:1];
 
       goto LABEL_114;
     }
 
-    if (a4)
+    if (type)
     {
       goto LABEL_21;
     }
 
-    v8 = [v6 mapsLinks];
-    v9 = [v8 objectAtIndexedSubscript:0];
+    findMyFriendsLink = [sharedFactory mapsLinks];
+    v9 = [findMyFriendsLink objectAtIndexedSubscript:0];
     v40 = v9;
     v13 = &v40;
     goto LABEL_112;
   }
 
-  if (a3)
+  if (category)
   {
-    if (a3 != 1)
+    if (category != 1)
     {
       goto LABEL_114;
     }
 
     v7 = 0;
-    if (a4 > 5)
+    if (type > 5)
     {
-      if (a4 > 8)
+      if (type > 8)
       {
-        if (a4 != 9)
+        if (type != 9)
         {
-          if (a4 != 10)
+          if (type != 10)
           {
-            if (a4 != 11)
+            if (type != 11)
             {
               goto LABEL_114;
             }
 
-            v16 = [v6 textDocuments];
+            sharediCloudDocumentsLinks = [sharedFactory textDocuments];
             goto LABEL_109;
           }
 
-          v8 = [v6 textDocuments];
-          v9 = [v8 objectAtIndexedSubscript:0];
+          findMyFriendsLink = [sharedFactory textDocuments];
+          v9 = [findMyFriendsLink objectAtIndexedSubscript:0];
           v42 = v9;
           v13 = &v42;
           goto LABEL_112;
         }
 
-        v16 = [v6 voiceMemos];
+        sharediCloudDocumentsLinks = [sharedFactory voiceMemos];
       }
 
       else
       {
-        if (a4 == 6)
+        if (type == 6)
         {
-          v8 = [v6 passes];
-          v9 = [v8 objectAtIndexedSubscript:0];
+          findMyFriendsLink = [sharedFactory passes];
+          v9 = [findMyFriendsLink objectAtIndexedSubscript:0];
           v44 = v9;
           v13 = &v44;
           goto LABEL_112;
         }
 
-        if (a4 != 7)
+        if (type != 7)
         {
-          v8 = [v6 voiceMemos];
-          v9 = [v8 objectAtIndexedSubscript:0];
+          findMyFriendsLink = [sharedFactory voiceMemos];
+          v9 = [findMyFriendsLink objectAtIndexedSubscript:0];
           v43 = v9;
           v13 = &v43;
           goto LABEL_112;
         }
 
-        v16 = [v6 passes];
+        sharediCloudDocumentsLinks = [sharedFactory passes];
       }
     }
 
     else
     {
-      if (a4 <= 2)
+      if (type <= 2)
       {
-        if (a4)
+        if (type)
         {
-          if (a4 == 1)
+          if (type == 1)
           {
-            v8 = [v6 contacts];
-            v9 = [v8 objectAtIndexedSubscript:1];
+            findMyFriendsLink = [sharedFactory contacts];
+            v9 = [findMyFriendsLink objectAtIndexedSubscript:1];
             v47 = v9;
             v13 = &v47;
           }
 
           else
           {
-            if (a4 != 2)
+            if (type != 2)
             {
               goto LABEL_114;
             }
 
-            v8 = [v6 contacts];
-            v9 = [v8 objectAtIndexedSubscript:2];
+            findMyFriendsLink = [sharedFactory contacts];
+            v9 = [findMyFriendsLink objectAtIndexedSubscript:2];
             v46 = v9;
             v13 = &v46;
           }
@@ -913,8 +913,8 @@ LABEL_109:
 
         else
         {
-          v8 = [v6 contacts];
-          v9 = [v8 objectAtIndexedSubscript:0];
+          findMyFriendsLink = [sharedFactory contacts];
+          v9 = [findMyFriendsLink objectAtIndexedSubscript:0];
           v48 = v9;
           v13 = &v48;
         }
@@ -922,23 +922,23 @@ LABEL_109:
         goto LABEL_112;
       }
 
-      if (a4 == 3)
+      if (type == 3)
       {
-        v16 = [v6 contacts];
+        sharediCloudDocumentsLinks = [sharedFactory contacts];
       }
 
       else
       {
-        if (a4 == 4)
+        if (type == 4)
         {
-          v8 = [v6 calendarEvents];
-          v9 = [v8 objectAtIndexedSubscript:0];
+          findMyFriendsLink = [sharedFactory calendarEvents];
+          v9 = [findMyFriendsLink objectAtIndexedSubscript:0];
           v45 = v9;
           v13 = &v45;
           goto LABEL_112;
         }
 
-        v16 = [v6 calendarEvents];
+        sharediCloudDocumentsLinks = [sharedFactory calendarEvents];
       }
     }
 
@@ -946,57 +946,57 @@ LABEL_109:
   }
 
   v7 = 0;
-  if (a4 <= 1)
+  if (type <= 1)
   {
-    if (a4)
+    if (type)
     {
-      if (a4 != 1)
+      if (type != 1)
       {
         goto LABEL_114;
       }
 
-      v16 = [v6 images];
+      sharediCloudDocumentsLinks = [sharedFactory images];
       goto LABEL_109;
     }
 
-    v8 = [v6 images];
-    v9 = [v8 objectAtIndexedSubscript:0];
+    findMyFriendsLink = [sharedFactory images];
+    v9 = [findMyFriendsLink objectAtIndexedSubscript:0];
     v52 = v9;
     v13 = &v52;
     goto LABEL_112;
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
-    v8 = [v6 videos];
-    v9 = [v8 objectAtIndexedSubscript:0];
+    findMyFriendsLink = [sharedFactory videos];
+    v9 = [findMyFriendsLink objectAtIndexedSubscript:0];
     v51 = v9;
     v13 = &v51;
     goto LABEL_112;
   }
 
-  if (a4 != 3)
+  if (type != 3)
   {
-    if (a4 != 4)
+    if (type != 4)
     {
       goto LABEL_114;
     }
 
-    v8 = [v6 svgImages];
-    v9 = [v8 objectAtIndexedSubscript:0];
+    findMyFriendsLink = [sharedFactory svgImages];
+    v9 = [findMyFriendsLink objectAtIndexedSubscript:0];
     v49 = v9;
     v13 = &v49;
     goto LABEL_112;
   }
 
-  v8 = [v6 images];
-  v9 = [v8 objectAtIndexedSubscript:0];
+  findMyFriendsLink = [sharedFactory images];
+  v9 = [findMyFriendsLink objectAtIndexedSubscript:0];
   v50[0] = v9;
-  v10 = [v6 images];
-  v11 = [v10 objectAtIndexedSubscript:1];
+  yelpLinks = [sharedFactory images];
+  v11 = [yelpLinks objectAtIndexedSubscript:1];
   v50[1] = v11;
-  v17 = [v6 videos];
-  v18 = [v17 objectAtIndexedSubscript:0];
+  videos = [sharedFactory videos];
+  v18 = [videos objectAtIndexedSubscript:0];
   v50[2] = v18;
   v7 = [NSArray arrayWithObjects:v50 count:3];
 

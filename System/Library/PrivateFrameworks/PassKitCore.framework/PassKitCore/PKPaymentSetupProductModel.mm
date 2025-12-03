@@ -1,24 +1,24 @@
 @interface PKPaymentSetupProductModel
 - (PKPaymentSetupProductModel)init;
-- (id)_paymentSetupProductsWithProducts:(id)a3 existingPaymentSetupProducts:(id)a4;
+- (id)_paymentSetupProductsWithProducts:(id)products existingPaymentSetupProducts:(id)setupProducts;
 - (id)allSections;
-- (id)availableProductsForFeatureIdentifier:(unint64_t)a3;
-- (id)availableProductsForProductIdentifiers:(id)a3;
+- (id)availableProductsForFeatureIdentifier:(unint64_t)identifier;
+- (id)availableProductsForProductIdentifiers:(id)identifiers;
 - (id)description;
-- (id)filteredPaymentSetupProductModel:(id)a3 mobileCarrierRegion:(id)a4 deviceRegion:(id)a5 cardOnFiles:(id)a6;
-- (id)identityProductForState:(id)a3 country:(id)a4;
-- (id)productsForFeatureIdentifier:(unint64_t)a3;
-- (id)productsForProductIdentifiers:(id)a3;
-- (id)setupProductsOfType:(unint64_t)a3;
-- (void)_updatePaymentSetupProduct:(id)a3 displayName:(id)a4 localizedDescription:(id)a5 longLocalizedDescription:(id)a6 partnerArray:(id)a7 productIdentifier:(id)a8 paymentOptions:(id)a9 termsURL:(id)a10 provisioningMethodDetailsList:(id)a11 readerModeMetadata:(id)a12 requiredFields:(id)a13 imageAssets:(id)a14 minimumOSVersion:(id)a15 region:(id)a16 regionData:(id)a17 hsa2Requirement:(id)a18 suppressPendingPurchases:(id)a19 supportedTransitNetworkIdentifiers:(id)a20 onboardingItems:(id)a21 actionBaseURL:(id)a22 productState:(id)a23 minimumProductAge:(id)a24 maximumProductAge:(id)a25 minimumTargetUserSupportedAge:(id)a26 associatedStoreIdentifiers:(id)a27 appLaunchURL:(id)a28 regionIdentifier:(id)a29 type:(id)a30 localizedNotificationTitle:(id)a31 localizedNotificationMessage:(id)a32 discoveryCardIdentifier:(id)a33 clientInfo:(id)a34 searchTerms:(id)a35 featureIdentifier:(id)a36 criteriaIdentifier:(id)a37 showOtherProviders:(id)a38;
+- (id)filteredPaymentSetupProductModel:(id)model mobileCarrierRegion:(id)region deviceRegion:(id)deviceRegion cardOnFiles:(id)files;
+- (id)identityProductForState:(id)state country:(id)country;
+- (id)productsForFeatureIdentifier:(unint64_t)identifier;
+- (id)productsForProductIdentifiers:(id)identifiers;
+- (id)setupProductsOfType:(unint64_t)type;
+- (void)_updatePaymentSetupProduct:(id)product displayName:(id)name localizedDescription:(id)description longLocalizedDescription:(id)localizedDescription partnerArray:(id)array productIdentifier:(id)identifier paymentOptions:(id)options termsURL:(id)self0 provisioningMethodDetailsList:(id)self1 readerModeMetadata:(id)self2 requiredFields:(id)self3 imageAssets:(id)self4 minimumOSVersion:(id)self5 region:(id)self6 regionData:(id)self7 hsa2Requirement:(id)self8 suppressPendingPurchases:(id)self9 supportedTransitNetworkIdentifiers:(id)identifiers onboardingItems:(id)items actionBaseURL:(id)rL productState:(id)state minimumProductAge:(id)age maximumProductAge:(id)productAge minimumTargetUserSupportedAge:(id)supportedAge associatedStoreIdentifiers:(id)storeIdentifiers appLaunchURL:(id)uRL regionIdentifier:(id)regionIdentifier type:(id)product0 localizedNotificationTitle:(id)product1 localizedNotificationMessage:(id)product2 discoveryCardIdentifier:(id)product3 clientInfo:(id)product4 searchTerms:(id)product5 featureIdentifier:(id)product6 criteriaIdentifier:(id)product7 showOtherProviders:(id)product8;
 - (void)addCarKeyCategory;
-- (void)addManualEntrySection:(id)a3;
+- (void)addManualEntrySection:(id)section;
 - (void)removeCarKeyCategory;
-- (void)removePaymentSetupProducts:(id)a3;
-- (void)setAllSections:(id)a3;
-- (void)setPaymentSetupProducts:(id)a3;
-- (void)updatePaymentSetupProducts:(id)a3;
-- (void)updateWithPaymentSetupProductsResponse:(id)a3 productsFilter:(id)a4 sectionsFilter:(id)a5;
+- (void)removePaymentSetupProducts:(id)products;
+- (void)setAllSections:(id)sections;
+- (void)setPaymentSetupProducts:(id)products;
+- (void)updatePaymentSetupProducts:(id)products;
+- (void)updateWithPaymentSetupProductsResponse:(id)response productsFilter:(id)filter sectionsFilter:(id)sectionsFilter;
 @end
 
 @implementation PKPaymentSetupProductModel
@@ -49,22 +49,22 @@
   return v2;
 }
 
-- (void)setAllSections:(id)a3
+- (void)setAllSections:(id)sections
 {
-  v4 = [a3 mutableCopy];
+  v4 = [sections mutableCopy];
   allSections = self->_allSections;
   self->_allSections = v4;
 }
 
-- (void)updatePaymentSetupProducts:(id)a3
+- (void)updatePaymentSetupProducts:(id)products
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  productsCopy = products;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [productsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -75,31 +75,31 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(productsCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
         paymentSetupProducts = self->_paymentSetupProducts;
-        v11 = [v9 productIdentifier];
-        [(NSMutableDictionary *)paymentSetupProducts safelySetObject:v9 forKey:v11];
+        productIdentifier = [v9 productIdentifier];
+        [(NSMutableDictionary *)paymentSetupProducts safelySetObject:v9 forKey:productIdentifier];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [productsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)removePaymentSetupProducts:(id)a3
+- (void)removePaymentSetupProducts:(id)products
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  productsCopy = products;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [productsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -111,33 +111,33 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(productsCopy);
         }
 
         paymentSetupProducts = self->_paymentSetupProducts;
-        v10 = [*(*(&v11 + 1) + 8 * v8) productIdentifier];
-        [(NSMutableDictionary *)paymentSetupProducts removeObjectForKey:v10];
+        productIdentifier = [*(*(&v11 + 1) + 8 * v8) productIdentifier];
+        [(NSMutableDictionary *)paymentSetupProducts removeObjectForKey:productIdentifier];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [productsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)setPaymentSetupProducts:(id)a3
+- (void)setPaymentSetupProducts:(id)products
 {
   paymentSetupProducts = self->_paymentSetupProducts;
-  v5 = a3;
+  productsCopy = products;
   [(NSMutableDictionary *)paymentSetupProducts removeAllObjects];
-  [(PKPaymentSetupProductModel *)self updatePaymentSetupProducts:v5];
+  [(PKPaymentSetupProductModel *)self updatePaymentSetupProducts:productsCopy];
 }
 
-- (id)setupProductsOfType:(unint64_t)a3
+- (id)setupProductsOfType:(unint64_t)type
 {
   v21 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -145,8 +145,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(NSMutableDictionary *)self->_paymentSetupProducts allValues];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allValues = [(NSMutableDictionary *)self->_paymentSetupProducts allValues];
+  v7 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -157,20 +157,20 @@
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 configuration];
-        v13 = [v12 type];
+        configuration = [v11 configuration];
+        type = [configuration type];
 
-        if (v13 == a3)
+        if (type == type)
         {
           [v5 addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -181,16 +181,16 @@
   return v14;
 }
 
-- (id)productsForProductIdentifiers:(id)a3
+- (id)productsForProductIdentifiers:(id)identifiers
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = identifiersCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -220,16 +220,16 @@
   return v12;
 }
 
-- (id)availableProductsForProductIdentifiers:(id)a3
+- (id)availableProductsForProductIdentifiers:(id)identifiers
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = identifiersCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -245,10 +245,10 @@
         }
 
         v11 = [(NSMutableDictionary *)self->_paymentSetupProducts objectForKey:*(*(&v16 + 1) + 8 * i), v16];
-        v12 = [v11 configuration];
-        v13 = [v12 state];
+        configuration = [v11 configuration];
+        state = [configuration state];
 
-        if (v13 != 2)
+        if (state != 2)
         {
           [v5 safelyAddObject:v11];
         }
@@ -265,7 +265,7 @@
   return v14;
 }
 
-- (id)productsForFeatureIdentifier:(unint64_t)a3
+- (id)productsForFeatureIdentifier:(unint64_t)identifier
 {
   v21 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -273,8 +273,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(NSMutableDictionary *)self->_paymentSetupProducts allValues];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allValues = [(NSMutableDictionary *)self->_paymentSetupProducts allValues];
+  v7 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -285,20 +285,20 @@
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 configuration];
-        v13 = [v12 featureIdentifier];
+        configuration = [v11 configuration];
+        featureIdentifier = [configuration featureIdentifier];
 
-        if (v13 == a3)
+        if (featureIdentifier == identifier)
         {
           [v5 addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -309,7 +309,7 @@
   return v14;
 }
 
-- (id)availableProductsForFeatureIdentifier:(unint64_t)a3
+- (id)availableProductsForFeatureIdentifier:(unint64_t)identifier
 {
   v23 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -317,8 +317,8 @@
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [(NSMutableDictionary *)self->_paymentSetupProducts allValues];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  allValues = [(NSMutableDictionary *)self->_paymentSetupProducts allValues];
+  v7 = [allValues countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -329,29 +329,29 @@
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 configuration];
-        v13 = [v12 state];
+        configuration = [v11 configuration];
+        state = [configuration state];
 
-        v14 = [v11 configuration];
-        if ([v14 featureIdentifier] != a3 || v13 == 2)
+        configuration2 = [v11 configuration];
+        if ([configuration2 featureIdentifier] != identifier || state == 2)
         {
         }
 
         else
         {
 
-          if (v13)
+          if (state)
           {
             [v5 addObject:v11];
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);
@@ -362,11 +362,11 @@
   return v16;
 }
 
-- (id)identityProductForState:(id)a3 country:(id)a4
+- (id)identityProductForState:(id)state country:(id)country
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v27 = a4;
+  stateCopy = state;
+  countryCopy = country;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -387,29 +387,29 @@ LABEL_3:
       }
 
       v11 = *(*(&v29 + 1) + 8 * v10);
-      v12 = [v11 configuration];
-      v13 = [v12 type];
+      configuration = [v11 configuration];
+      type = [configuration type];
 
-      if (v13 != 10)
+      if (type != 10)
       {
         goto LABEL_21;
       }
 
-      v14 = [v11 clientInfo];
-      v15 = [v14 PKStringForKey:@"administrativeArea"];
+      clientInfo = [v11 clientInfo];
+      v15 = [clientInfo PKStringForKey:@"administrativeArea"];
 
-      v16 = [v11 clientInfo];
-      v17 = [v16 PKStringForKey:@"country"];
+      clientInfo2 = [v11 clientInfo];
+      v17 = [clientInfo2 PKStringForKey:@"country"];
 
       v18 = v15;
-      v19 = v6;
+      v19 = stateCopy;
       v20 = v19;
       if (v18 == v19)
       {
         break;
       }
 
-      if (v6 && v18)
+      if (stateCopy && v18)
       {
         v21 = [v18 isEqualToString:v19];
 
@@ -440,7 +440,7 @@ LABEL_21:
 
 LABEL_13:
     v22 = v17;
-    v23 = v27;
+    v23 = countryCopy;
     v20 = v23;
     if (v22 == v23)
     {
@@ -451,7 +451,7 @@ LABEL_25:
       goto LABEL_26;
     }
 
-    if (v27 && v22)
+    if (countryCopy && v22)
     {
       v24 = [v22 isEqualToString:v23];
 
@@ -473,17 +473,17 @@ LABEL_26:
   return v25;
 }
 
-- (void)updateWithPaymentSetupProductsResponse:(id)a3 productsFilter:(id)a4 sectionsFilter:(id)a5
+- (void)updateWithPaymentSetupProductsResponse:(id)response productsFilter:(id)filter sectionsFilter:(id)sectionsFilter
 {
   v104 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v65 = a4;
-  v64 = a5;
-  v66 = v8;
-  v9 = [v8 objectForKeyedSubscript:@"products"];
+  responseCopy = response;
+  filterCopy = filter;
+  sectionsFilterCopy = sectionsFilter;
+  v66 = responseCopy;
+  v9 = [responseCopy objectForKeyedSubscript:@"products"];
   objc_opt_class();
   v63 = v9;
-  v73 = self;
+  selfCopy = self;
   if (objc_opt_isKindOfClass())
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -491,8 +491,8 @@ LABEL_26:
     v94 = 0u;
     v95 = 0u;
     v96 = 0u;
-    v11 = [(NSMutableDictionary *)self->_paymentSetupProducts allValues];
-    v12 = [v11 countByEnumeratingWithState:&v93 objects:v103 count:16];
+    allValues = [(NSMutableDictionary *)self->_paymentSetupProducts allValues];
+    v12 = [allValues countByEnumeratingWithState:&v93 objects:v103 count:16];
     if (v12)
     {
       v13 = v12;
@@ -503,27 +503,27 @@ LABEL_26:
         {
           if (*v94 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(allValues);
           }
 
           v16 = *(*(&v93 + 1) + 8 * i);
           if (([v16 isServerDriven] & 1) == 0)
           {
-            v17 = [v16 productIdentifier];
-            [(NSMutableDictionary *)v10 safelySetObject:v16 forKey:v17];
+            productIdentifier = [v16 productIdentifier];
+            [(NSMutableDictionary *)v10 safelySetObject:v16 forKey:productIdentifier];
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v93 objects:v103 count:16];
+        v13 = [allValues countByEnumeratingWithState:&v93 objects:v103 count:16];
       }
 
       while (v13);
     }
 
-    v18 = [(PKPaymentSetupProductModel *)v73 _paymentSetupProductsWithProducts:v63 existingPaymentSetupProducts:v73->_paymentSetupProducts];
-    if (v65)
+    v18 = [(PKPaymentSetupProductModel *)selfCopy _paymentSetupProductsWithProducts:v63 existingPaymentSetupProducts:selfCopy->_paymentSetupProducts];
+    if (filterCopy)
     {
-      v19 = v65[2]();
+      v19 = filterCopy[2]();
     }
 
     else
@@ -551,8 +551,8 @@ LABEL_26:
           }
 
           v26 = *(*(&v89 + 1) + 8 * j);
-          v27 = [v26 productIdentifier];
-          [(NSMutableDictionary *)v10 safelySetObject:v26 forKey:v27];
+          productIdentifier2 = [v26 productIdentifier];
+          [(NSMutableDictionary *)v10 safelySetObject:v26 forKey:productIdentifier2];
         }
 
         v23 = [v21 countByEnumeratingWithState:&v89 objects:v102 count:16];
@@ -561,9 +561,9 @@ LABEL_26:
       while (v23);
     }
 
-    self = v73;
-    paymentSetupProducts = v73->_paymentSetupProducts;
-    v73->_paymentSetupProducts = v10;
+    self = selfCopy;
+    paymentSetupProducts = selfCopy->_paymentSetupProducts;
+    selfCopy->_paymentSetupProducts = v10;
   }
 
   else
@@ -621,8 +621,8 @@ LABEL_26:
         v82 = 0u;
         v83 = 0u;
         v84 = 0u;
-        v72 = [(PKPaymentSetupProductSection *)v35 categories];
-        v75 = [v72 countByEnumeratingWithState:&v81 objects:v100 count:16];
+        categories = [(PKPaymentSetupProductSection *)v35 categories];
+        v75 = [categories countByEnumeratingWithState:&v81 objects:v100 count:16];
         if (!v75)
         {
           goto LABEL_74;
@@ -635,66 +635,66 @@ LABEL_26:
           {
             if (*v82 != v74)
             {
-              objc_enumerationMutation(v72);
+              objc_enumerationMutation(categories);
             }
 
             v38 = *(*(&v81 + 1) + 8 * m);
-            v39 = [v38 identifier];
-            if ([v39 isEqualToString:@"transit"])
+            identifier = [v38 identifier];
+            if ([identifier isEqualToString:@"transit"])
             {
-              v40 = self;
+              selfCopy9 = self;
               v41 = 3;
 LABEL_43:
-              v42 = [(PKPaymentSetupProductModel *)v40 setupProductsOfType:v41];
+              v42 = [(PKPaymentSetupProductModel *)selfCopy9 setupProductsOfType:v41];
               goto LABEL_44;
             }
 
-            if ([v39 isEqualToString:@"carKey"])
+            if ([identifier isEqualToString:@"carKey"])
             {
-              v40 = self;
+              selfCopy9 = self;
               v41 = 11;
               goto LABEL_43;
             }
 
-            if ([v39 isEqualToString:@"identity"])
+            if ([identifier isEqualToString:@"identity"])
             {
-              v40 = self;
+              selfCopy9 = self;
               v41 = 10;
               goto LABEL_43;
             }
 
-            if ([v39 isEqualToString:@"eMoney"])
+            if ([identifier isEqualToString:@"eMoney"])
             {
-              v40 = self;
+              selfCopy9 = self;
               v41 = 4;
               goto LABEL_43;
             }
 
-            if ([v39 isEqualToString:@"appleCard"])
+            if ([identifier isEqualToString:@"appleCard"])
             {
-              v51 = self;
+              selfCopy10 = self;
               v52 = 2;
             }
 
             else
             {
-              if (![v39 isEqualToString:@"asp"])
+              if (![identifier isEqualToString:@"asp"])
               {
-                if ([v39 isEqualToString:@"creditDebit"])
+                if ([identifier isEqualToString:@"creditDebit"])
                 {
-                  v40 = self;
+                  selfCopy9 = self;
                   v41 = 5;
                 }
 
-                else if ([v39 isEqualToString:@"Barcode"])
+                else if ([identifier isEqualToString:@"Barcode"])
                 {
-                  v40 = self;
+                  selfCopy9 = self;
                   v41 = 9;
                 }
 
                 else
                 {
-                  if (![v39 isEqualToString:@"issuerInstallments"])
+                  if (![identifier isEqualToString:@"issuerInstallments"])
                   {
                     v43 = 0;
 LABEL_65:
@@ -702,18 +702,18 @@ LABEL_65:
                     goto LABEL_66;
                   }
 
-                  v40 = self;
+                  selfCopy9 = self;
                   v41 = 12;
                 }
 
                 goto LABEL_43;
               }
 
-              v51 = self;
+              selfCopy10 = self;
               v52 = 4;
             }
 
-            v42 = [(PKPaymentSetupProductModel *)v51 productsForFeatureIdentifier:v52];
+            v42 = [(PKPaymentSetupProductModel *)selfCopy10 productsForFeatureIdentifier:v52];
 LABEL_44:
             v43 = v42;
             if (!v42)
@@ -721,7 +721,7 @@ LABEL_44:
               goto LABEL_65;
             }
 
-            v76 = v39;
+            v76 = identifier;
             v44 = v35;
             v45 = objc_alloc_init(MEMORY[0x1E695DFA8]);
             v77 = 0u;
@@ -743,8 +743,8 @@ LABEL_44:
                     objc_enumerationMutation(v43);
                   }
 
-                  v50 = [*(*(&v77 + 1) + 8 * n) productIdentifier];
-                  [v45 addObject:v50];
+                  productIdentifier3 = [*(*(&v77 + 1) + 8 * n) productIdentifier];
+                  [v45 addObject:productIdentifier3];
                 }
 
                 v47 = [v43 countByEnumeratingWithState:&v77 objects:v99 count:16];
@@ -753,12 +753,12 @@ LABEL_44:
               while (v47);
             }
 
-            self = v73;
+            self = selfCopy;
             v35 = v44;
-            v39 = v76;
+            identifier = v76;
 LABEL_66:
-            v53 = [v38 needsProducts];
-            if ([v45 count] || (v53 & 1) == 0)
+            needsProducts = [v38 needsProducts];
+            if ([v45 count] || (needsProducts & 1) == 0)
             {
               [v38 setProductIdentifiers:v45];
               [v36 addObject:v38];
@@ -769,9 +769,9 @@ LABEL_66:
               v54 = PKLogFacilityTypeGetObject(7uLL);
               if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
               {
-                v55 = [v38 identifier];
+                identifier2 = [v38 identifier];
                 *buf = 138412290;
-                v98 = v55;
+                v98 = identifier2;
                 _os_log_impl(&dword_1AD337000, v54, OS_LOG_TYPE_DEFAULT, "Dropping category: %@ as no matching products found", buf, 0xCu);
               }
             }
@@ -779,13 +779,13 @@ LABEL_66:
             [(PKPaymentSetupProductSection *)v35 setCategories:v36];
           }
 
-          v75 = [v72 countByEnumeratingWithState:&v81 objects:v100 count:16];
+          v75 = [categories countByEnumeratingWithState:&v81 objects:v100 count:16];
           if (!v75)
           {
 LABEL_74:
 
-            v56 = [(PKPaymentSetupProductSection *)v35 categories];
-            v57 = [v56 count];
+            categories2 = [(PKPaymentSetupProductSection *)v35 categories];
+            v57 = [categories2 count];
 
             if (v57)
             {
@@ -814,9 +814,9 @@ LABEL_74:
 
   while (v70);
 LABEL_82:
-  if (v64)
+  if (sectionsFilterCopy)
   {
-    v59 = v64[2]();
+    v59 = sectionsFilterCopy[2]();
   }
 
   else
@@ -832,10 +832,10 @@ LABEL_82:
 LABEL_87:
 }
 
-- (void)addManualEntrySection:(id)a3
+- (void)addManualEntrySection:(id)section
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sectionCopy = section;
   v5 = objc_alloc_init(PKPaymentSetupProductCategory);
   [(PKPaymentSetupProductCategory *)v5 setIdentifier:@"creditDebit"];
   v6 = objc_alloc_init(PKPaymentSetupProductSection);
@@ -844,9 +844,9 @@ LABEL_87:
   [(PKPaymentSetupProductSection *)v6 setCategories:v7];
 
   v8 = [MEMORY[0x1E695DF70] arrayWithObject:v6];
-  if (v4)
+  if (sectionCopy)
   {
-    v9 = v4[2](v4, v8);
+    v9 = sectionCopy[2](sectionCopy, v8);
 
     v8 = v9;
   }
@@ -867,32 +867,32 @@ LABEL_87:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(PKPaymentSetupProductModel *)self allSections];
-  v6 = [(PKPaymentSetupProductSection *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allSections = [(PKPaymentSetupProductModel *)self allSections];
+  v6 = [(PKPaymentSetupProductSection *)allSections countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
     v8 = *v16;
-    v14 = self;
+    selfCopy = self;
     while (2)
     {
       for (i = 0; i != v7; ++i)
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allSections);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 categories];
-        if ([v11 indexOfObjectPassingTest:&__block_literal_global_1119] != 0x7FFFFFFFFFFFFFFFLL)
+        categories = [v10 categories];
+        if ([categories indexOfObjectPassingTest:&__block_literal_global_1119] != 0x7FFFFFFFFFFFFFFFLL)
         {
           goto LABEL_12;
         }
 
-        if ([v11 indexOfObjectPassingTest:&__block_literal_global_1121] != 0x7FFFFFFFFFFFFFFFLL)
+        if ([categories indexOfObjectPassingTest:&__block_literal_global_1121] != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v13 = [v11 arrayByAddingObject:v3];
+          v13 = [categories arrayByAddingObject:v3];
           [v10 setCategories:v13];
 
 LABEL_12:
@@ -900,8 +900,8 @@ LABEL_12:
         }
       }
 
-      v7 = [(PKPaymentSetupProductSection *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
-      self = v14;
+      v7 = [(PKPaymentSetupProductSection *)allSections countByEnumeratingWithState:&v15 objects:v19 count:16];
+      self = selfCopy;
       if (v7)
       {
         continue;
@@ -911,11 +911,11 @@ LABEL_12:
     }
   }
 
-  v5 = objc_alloc_init(PKPaymentSetupProductSection);
+  allSections = objc_alloc_init(PKPaymentSetupProductSection);
   v12 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v3, 0}];
-  [(PKPaymentSetupProductSection *)v5 setCategories:v12];
+  [(PKPaymentSetupProductSection *)allSections setCategories:v12];
 
-  [(NSMutableArray *)self->_allSections addObject:v5];
+  [(NSMutableArray *)self->_allSections addObject:allSections];
 LABEL_13:
 }
 
@@ -942,8 +942,8 @@ uint64_t __47__PKPaymentSetupProductModel_addCarKeyCategory__block_invoke_2(uint
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(PKPaymentSetupProductModel *)self allSections];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allSections = [(PKPaymentSetupProductModel *)self allSections];
+  v3 = [allSections countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -954,12 +954,12 @@ uint64_t __47__PKPaymentSetupProductModel_addCarKeyCategory__block_invoke_2(uint
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allSections);
         }
 
         v7 = *(*(&v11 + 1) + 8 * i);
-        v8 = [v7 categories];
-        v9 = [v8 mutableCopy];
+        categories = [v7 categories];
+        v9 = [categories mutableCopy];
 
         v10 = [v9 indexOfObjectPassingTest:&__block_literal_global_1123_0];
         if (v10 != 0x7FFFFFFFFFFFFFFFLL)
@@ -971,7 +971,7 @@ uint64_t __47__PKPaymentSetupProductModel_addCarKeyCategory__block_invoke_2(uint
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [allSections countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v4)
       {
         continue;
@@ -992,17 +992,17 @@ uint64_t __50__PKPaymentSetupProductModel_removeCarKeyCategory__block_invoke(uin
   return v3;
 }
 
-- (id)filteredPaymentSetupProductModel:(id)a3 mobileCarrierRegion:(id)a4 deviceRegion:(id)a5 cardOnFiles:(id)a6
+- (id)filteredPaymentSetupProductModel:(id)model mobileCarrierRegion:(id)region deviceRegion:(id)deviceRegion cardOnFiles:(id)files
 {
   v99 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v79 = a4;
-  v84 = a5;
-  v83 = a6;
+  modelCopy = model;
+  regionCopy = region;
+  deviceRegionCopy = deviceRegion;
+  filesCopy = files;
   v76 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v11 = [v10 targetDevice];
-  v12 = [v11 deviceClass];
-  if (!v12)
+  targetDevice = [modelCopy targetDevice];
+  deviceClass = [targetDevice deviceClass];
+  if (!deviceClass)
   {
     v13 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -1011,11 +1011,11 @@ uint64_t __50__PKPaymentSetupProductModel_removeCarKeyCategory__block_invoke(uin
       _os_log_impl(&dword_1AD337000, v13, OS_LOG_TYPE_DEFAULT, "Filtering products for target device received no deviceClass. Falling back to PKDeviceClass().", buf, 2u);
     }
 
-    v12 = PKDeviceClass();
+    deviceClass = PKDeviceClass();
   }
 
-  v14 = [v11 deviceVersion];
-  v15 = [v14 versionForDeviceClass:v12];
+  deviceVersion = [targetDevice deviceVersion];
+  v15 = [deviceVersion versionForDeviceClass:deviceClass];
 
   v85 = v15;
   if (!v15)
@@ -1030,23 +1030,23 @@ uint64_t __50__PKPaymentSetupProductModel_removeCarKeyCategory__block_invoke(uin
     v85 = PKOSVersion();
   }
 
-  v17 = [v10 targetDevice];
-  v18 = [v17 appleAccountInformation];
-  v77 = [v18 isManagedAppleAccount];
+  targetDevice2 = [modelCopy targetDevice];
+  appleAccountInformation = [targetDevice2 appleAccountInformation];
+  isManagedAppleAccount = [appleAccountInformation isManagedAppleAccount];
 
-  v75 = v10;
-  v82 = [v10 paymentSetupSupportedInRegion];
+  v75 = modelCopy;
+  paymentSetupSupportedInRegion = [modelCopy paymentSetupSupportedInRegion];
   v91 = 0u;
   v92 = 0u;
   v93 = 0u;
   v94 = 0u;
   obj = [(PKPaymentSetupProductModel *)self allSetupProducts];
-  v19 = v84;
+  v19 = deviceRegionCopy;
   v86 = [obj countByEnumeratingWithState:&v91 objects:v98 count:16];
   if (v86)
   {
     v80 = *v92;
-    v81 = v12;
+    v81 = deviceClass;
     do
     {
       for (i = 0; i != v86; ++i)
@@ -1057,16 +1057,16 @@ uint64_t __50__PKPaymentSetupProductModel_removeCarKeyCategory__block_invoke(uin
         }
 
         v21 = *(*(&v91 + 1) + 8 * i);
-        v22 = [v83 containsObject:v21];
-        v23 = [v21 configuration];
-        v24 = [v23 type];
+        v22 = [filesCopy containsObject:v21];
+        configuration = [v21 configuration];
+        type = [configuration type];
 
-        v25 = [v11 deviceVersion];
-        v26 = [v21 updateSupportWithOSVersion:v85 deviceClass:v12 deviceRegion:v19 deviceVersion:v25];
+        deviceVersion2 = [targetDevice deviceVersion];
+        v26 = [v21 updateSupportWithOSVersion:v85 deviceClass:deviceClass deviceRegion:v19 deviceVersion:deviceVersion2];
 
         if (v26)
         {
-          v27 = v82;
+          v27 = paymentSetupSupportedInRegion;
           if ([v21 meetsAgeRequirements])
           {
             v28 = 1;
@@ -1076,9 +1076,9 @@ uint64_t __50__PKPaymentSetupProductModel_removeCarKeyCategory__block_invoke(uin
           v29 = PKLogFacilityTypeGetObject(7uLL);
           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
           {
-            v30 = [v21 displayName];
+            displayName = [v21 displayName];
             *buf = 138412290;
-            v97 = v30;
+            v97 = displayName;
             v31 = v29;
             v32 = "Product: %@ is not supported due to current user being a child account and the product requiring an age >= 13.";
             goto LABEL_21;
@@ -1088,12 +1088,12 @@ uint64_t __50__PKPaymentSetupProductModel_removeCarKeyCategory__block_invoke(uin
         else
         {
           v29 = PKLogFacilityTypeGetObject(7uLL);
-          v27 = v82;
+          v27 = paymentSetupSupportedInRegion;
           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
           {
-            v30 = [v21 displayName];
+            displayName = [v21 displayName];
             *buf = 138412290;
-            v97 = v30;
+            v97 = displayName;
             v31 = v29;
             v32 = "Product: %@ is not supported due to device OS version";
 LABEL_21:
@@ -1103,9 +1103,9 @@ LABEL_21:
 
         v28 = 0;
 LABEL_23:
-        v33 = [v21 regions];
-        v34 = v33;
-        if (v24 <= 0xB && ((1 << v24) & 0xC08) != 0 && v27 == 1)
+        regions = [v21 regions];
+        v34 = regions;
+        if (type <= 0xB && ((1 << type) & 0xC08) != 0 && v27 == 1)
         {
           v40 = 1;
           if (!v28)
@@ -1116,10 +1116,10 @@ LABEL_23:
 
         else
         {
-          v38 = v27 == 1 && v24 != 7;
+          v38 = v27 == 1 && type != 7;
           if (v19)
           {
-            v39 = [v33 containsObject:v19];
+            v39 = [regions containsObject:v19];
           }
 
           else
@@ -1128,7 +1128,7 @@ LABEL_23:
           }
 
           v42 = !v38;
-          if (!v79)
+          if (!regionCopy)
           {
             v42 = 1;
           }
@@ -1165,9 +1165,9 @@ LABEL_39:
         {
           if (v45)
           {
-            v46 = [v21 displayName];
+            displayName2 = [v21 displayName];
             *buf = 138412290;
-            v97 = v46;
+            v97 = displayName2;
             v47 = v44;
             v48 = "Product: %@ is supported due to matching card on file (device/cellular region check)";
 LABEL_54:
@@ -1177,9 +1177,9 @@ LABEL_54:
 
         else if (v45)
         {
-          v46 = [v21 displayName];
+          displayName2 = [v21 displayName];
           *buf = 138412290;
-          v97 = v46;
+          v97 = displayName2;
           v47 = v44;
           v48 = "Product: %@ is not supported in this device region";
           goto LABEL_54;
@@ -1189,11 +1189,11 @@ LABEL_54:
 
         v28 = v22;
 LABEL_56:
-        v49 = [v21 configuration];
-        if ([v49 type] == 7)
+        configuration2 = [v21 configuration];
+        if ([configuration2 type] == 7)
         {
-          v50 = [v21 configuration];
-          v51 = [v50 featureIdentifier] != 2;
+          configuration3 = [v21 configuration];
+          v51 = [configuration3 featureIdentifier] != 2;
         }
 
         else
@@ -1207,9 +1207,9 @@ LABEL_56:
           v53 = PKLogFacilityTypeGetObject(7uLL);
           if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
           {
-            v54 = [v21 displayName];
+            displayName3 = [v21 displayName];
             *buf = 138412290;
-            v97 = v54;
+            v97 = displayName3;
             v55 = v53;
             v56 = "Product: %@ feature application prevented";
             goto LABEL_85;
@@ -1226,9 +1226,9 @@ LABEL_56:
           {
             if (v57)
             {
-              v54 = [v21 displayName];
+              displayName3 = [v21 displayName];
               *buf = 138412290;
-              v97 = v54;
+              v97 = displayName3;
               v55 = v53;
               v56 = "Product: %@ is not supported due to lack of card on file and unknown provisioning method";
 LABEL_85:
@@ -1237,32 +1237,32 @@ LABEL_85:
 
 LABEL_86:
 
-            v59 = [v21 paymentOptions];
+            paymentOptions = [v21 paymentOptions];
             goto LABEL_99;
           }
 
           if (v57)
           {
-            v58 = [v21 displayName];
+            displayName4 = [v21 displayName];
             *buf = 138412290;
-            v97 = v58;
+            v97 = displayName4;
             _os_log_impl(&dword_1AD337000, v53, OS_LOG_TYPE_DEFAULT, "Product: %@ is supported due to matching card on file (provisioning method check)", buf, 0xCu);
           }
 
-          v59 = [v21 paymentOptions];
+          paymentOptions = [v21 paymentOptions];
           v41 = 0;
         }
 
         else
         {
-          v59 = [v21 paymentOptions];
+          paymentOptions = [v21 paymentOptions];
           if (!v28)
           {
             goto LABEL_99;
           }
         }
 
-        if ([v59 count])
+        if ([paymentOptions count])
         {
           if (objc_opt_respondsToSelector())
           {
@@ -1270,7 +1270,7 @@ LABEL_86:
             v90 = 0u;
             v87 = 0u;
             v88 = 0u;
-            v60 = v59;
+            v60 = paymentOptions;
             v61 = [v60 countByEnumeratingWithState:&v87 objects:v95 count:16];
             if (v61)
             {
@@ -1285,7 +1285,7 @@ LABEL_86:
                     objc_enumerationMutation(v60);
                   }
 
-                  if ([v11 supportsCredentialType:{objc_msgSend(*(*(&v87 + 1) + 8 * j), "cardType")}])
+                  if ([targetDevice supportsCredentialType:{objc_msgSend(*(*(&v87 + 1) + 8 * j), "cardType")}])
                   {
 
                     goto LABEL_88;
@@ -1306,9 +1306,9 @@ LABEL_86:
           v65 = PKLogFacilityTypeGetObject(7uLL);
           if (os_log_type_enabled(v65, OS_LOG_TYPE_DEFAULT))
           {
-            v66 = [v21 displayName];
+            displayName5 = [v21 displayName];
             *buf = 138412290;
-            v97 = v66;
+            v97 = displayName5;
             v67 = v65;
             v68 = "Product: %@ is not supported on device";
             goto LABEL_97;
@@ -1318,14 +1318,14 @@ LABEL_86:
         }
 
 LABEL_88:
-        if (v77 && ([v21 allowOnManagedAccount] & 1) == 0)
+        if (isManagedAppleAccount && ([v21 allowOnManagedAccount] & 1) == 0)
         {
           v65 = PKLogFacilityTypeGetObject(7uLL);
           if (os_log_type_enabled(v65, OS_LOG_TYPE_DEFAULT))
           {
-            v66 = [v21 displayName];
+            displayName5 = [v21 displayName];
             *buf = 138412290;
-            v97 = v66;
+            v97 = displayName5;
             v67 = v65;
             v68 = "Product: %@ is not supported on managed account";
 LABEL_97:
@@ -1338,9 +1338,9 @@ LABEL_99:
           v71 = PKLogFacilityTypeGetObject(7uLL);
           if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
           {
-            v72 = [v21 displayName];
+            displayName6 = [v21 displayName];
             *buf = 138412290;
-            v97 = v72;
+            v97 = displayName6;
             _os_log_impl(&dword_1AD337000, v71, OS_LOG_TYPE_DEFAULT, "Product: %@ is unsupported and will not be shown in the flow picker", buf, 0xCu);
           }
 
@@ -1352,18 +1352,18 @@ LABEL_99:
           v69 = PKLogFacilityTypeGetObject(7uLL);
           if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
           {
-            v70 = [v21 displayName];
+            displayName7 = [v21 displayName];
             *buf = 138412290;
-            v97 = v70;
+            v97 = displayName7;
             _os_log_impl(&dword_1AD337000, v69, OS_LOG_TYPE_DEFAULT, "Product: %@ is supported due to matching card but cannot be manually provisioned", buf, 0xCu);
           }
         }
 
         [v76 addObject:v21];
 LABEL_102:
-        v19 = v84;
+        v19 = deviceRegionCopy;
 
-        v12 = v81;
+        deviceClass = v81;
       }
 
       v86 = [obj countByEnumeratingWithState:&v91 objects:v98 count:16];
@@ -1377,11 +1377,11 @@ LABEL_102:
   return v73;
 }
 
-- (id)_paymentSetupProductsWithProducts:(id)a3 existingPaymentSetupProducts:(id)a4
+- (id)_paymentSetupProductsWithProducts:(id)products existingPaymentSetupProducts:(id)setupProducts
 {
   v130 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  productsCopy = products;
+  setupProductsCopy = setupProducts;
   if (os_variant_has_internal_ui())
   {
     v8 = PKGetPaymentSetupProductState();
@@ -1398,13 +1398,13 @@ LABEL_102:
   v119 = 0u;
   v120 = 0u;
   v121 = 0u;
-  obj = v6;
+  obj = productsCopy;
   v68 = [obj countByEnumeratingWithState:&v118 objects:v129 count:16];
   if (v68)
   {
     v65 = *v119;
-    v66 = v7;
-    v67 = self;
+    v66 = setupProductsCopy;
+    selfCopy = self;
     do
     {
       v9 = 0;
@@ -1514,9 +1514,9 @@ LABEL_102:
                 v28 = [v26 PKStringForKey:@"appLaunchURLScheme"];
                 v29 = [v26 PKStringForKey:@"appLaunchURLPath"];
                 v30 = [PKPaymentSetupProduct _inAppProvisioningURLWthScheme:v28 path:v29];
-                v31 = [v30 absoluteString];
+                absoluteString = [v30 absoluteString];
 
-                v23 = v31;
+                v23 = absoluteString;
               }
             }
 
@@ -1532,7 +1532,7 @@ LABEL_102:
         }
 
         v70 = [v10 PKStringForKey:@"registrationRegionIdentifier"];
-        v32 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         v110 = 0u;
         v111 = 0u;
         v112 = 0u;
@@ -1557,7 +1557,7 @@ LABEL_102:
               v40 = [v39 PKDictionaryForKey:v38];
 
               v41 = [PKPaymentSetupField paymentSetupFieldWithIdentifier:v38 configuration:v40];
-              [v32 safelyAddObject:v41];
+              [array safelyAddObject:v41];
             }
 
             v35 = [v33 countByEnumeratingWithState:&v110 objects:v127 count:16];
@@ -1574,7 +1574,7 @@ LABEL_102:
         v43 = v42;
         v44 = [v43 countByEnumeratingWithState:&v106 objects:v126 count:16];
         v45 = v43;
-        v7 = v66;
+        setupProductsCopy = v66;
         if (!v44)
         {
 LABEL_49:
@@ -1594,9 +1594,9 @@ LABEL_40:
           }
 
           v49 = [[PKPaymentSetupProductPaymentOption alloc] initWithPaymentOptionDictionary:*(*(&v106 + 1) + 8 * v48)];
-          v50 = [(PKPaymentSetupProductPaymentOption *)v49 cardType];
+          cardType = [(PKPaymentSetupProductPaymentOption *)v49 cardType];
 
-          if (v50 == 103)
+          if (cardType == 103)
           {
             break;
           }
@@ -1614,7 +1614,7 @@ LABEL_40:
           }
         }
 
-        if (([v32 pk_containsObjectPassingTest:&__block_literal_global_1130] & 1) == 0)
+        if (([array pk_containsObjectPassingTest:&__block_literal_global_1130] & 1) == 0)
         {
           v124[0] = @"fieldType";
           v51 = PKPaymentSetupFieldTypeToString(4);
@@ -1625,7 +1625,7 @@ LABEL_40:
           v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v125 forKeys:v124 count:2];
 
           v53 = [PKPaymentSetupField paymentSetupFieldWithIdentifier:@"suicaPrivacyFooter" configuration:v45];
-          [v32 safelyAddObject:v53];
+          [array safelyAddObject:v53];
 
           goto LABEL_49;
         }
@@ -1668,16 +1668,16 @@ LABEL_50:
             if (v54)
             {
 LABEL_57:
-              v56 = [MEMORY[0x1E696AFB0] UUID];
-              v57 = [v56 UUIDString];
+              uUID = [MEMORY[0x1E696AFB0] UUID];
+              uUIDString = [uUID UUIDString];
 
               goto LABEL_60;
             }
           }
 
-          v57 = v104;
+          uUIDString = v104;
 LABEL_60:
-          v58 = [v66 objectForKey:v57];
+          v58 = [v66 objectForKey:uUIDString];
           v59 = v58;
           if (v58)
           {
@@ -1691,7 +1691,7 @@ LABEL_60:
 
           v61 = v60;
 
-          [(PKPaymentSetupProductModel *)v67 _updatePaymentSetupProduct:v61 displayName:v102 localizedDescription:v79 longLocalizedDescription:v78 partnerArray:v101 productIdentifier:v57 paymentOptions:v80 termsURL:v95 provisioningMethodDetailsList:v105 readerModeMetadata:v96 requiredFields:v32 imageAssets:v94 minimumOSVersion:v93 region:v92 regionData:v91 hsa2Requirement:v90 suppressPendingPurchases:v89 supportedTransitNetworkIdentifiers:v88 onboardingItems:v87 actionBaseURL:v86 productState:v85 minimumProductAge:v76 maximumProductAge:v75 minimumTargetUserSupportedAge:v74 associatedStoreIdentifiers:v73 appLaunchURL:v23 regionIdentifier:v70 type:v100 localizedNotificationTitle:v99 localizedNotificationMessage:v98 discoveryCardIdentifier:v97 clientInfo:v77 searchTerms:v84 featureIdentifier:v83 criteriaIdentifier:v82 showOtherProviders:v81];
+          [(PKPaymentSetupProductModel *)selfCopy _updatePaymentSetupProduct:v61 displayName:v102 localizedDescription:v79 longLocalizedDescription:v78 partnerArray:v101 productIdentifier:uUIDString paymentOptions:v80 termsURL:v95 provisioningMethodDetailsList:v105 readerModeMetadata:v96 requiredFields:array imageAssets:v94 minimumOSVersion:v93 region:v92 regionData:v91 hsa2Requirement:v90 suppressPendingPurchases:v89 supportedTransitNetworkIdentifiers:v88 onboardingItems:v87 actionBaseURL:v86 productState:v85 minimumProductAge:v76 maximumProductAge:v75 minimumTargetUserSupportedAge:v74 associatedStoreIdentifiers:v73 appLaunchURL:v23 regionIdentifier:v70 type:v100 localizedNotificationTitle:v99 localizedNotificationMessage:v98 discoveryCardIdentifier:v97 clientInfo:v77 searchTerms:v84 featureIdentifier:v83 criteriaIdentifier:v82 showOtherProviders:v81];
           if (v103)
           {
             v62 = PKLogFacilityTypeGetObject(7uLL);
@@ -1729,45 +1729,45 @@ LABEL_60:
   return v72;
 }
 
-- (void)_updatePaymentSetupProduct:(id)a3 displayName:(id)a4 localizedDescription:(id)a5 longLocalizedDescription:(id)a6 partnerArray:(id)a7 productIdentifier:(id)a8 paymentOptions:(id)a9 termsURL:(id)a10 provisioningMethodDetailsList:(id)a11 readerModeMetadata:(id)a12 requiredFields:(id)a13 imageAssets:(id)a14 minimumOSVersion:(id)a15 region:(id)a16 regionData:(id)a17 hsa2Requirement:(id)a18 suppressPendingPurchases:(id)a19 supportedTransitNetworkIdentifiers:(id)a20 onboardingItems:(id)a21 actionBaseURL:(id)a22 productState:(id)a23 minimumProductAge:(id)a24 maximumProductAge:(id)a25 minimumTargetUserSupportedAge:(id)a26 associatedStoreIdentifiers:(id)a27 appLaunchURL:(id)a28 regionIdentifier:(id)a29 type:(id)a30 localizedNotificationTitle:(id)a31 localizedNotificationMessage:(id)a32 discoveryCardIdentifier:(id)a33 clientInfo:(id)a34 searchTerms:(id)a35 featureIdentifier:(id)a36 criteriaIdentifier:(id)a37 showOtherProviders:(id)a38
+- (void)_updatePaymentSetupProduct:(id)product displayName:(id)name localizedDescription:(id)description longLocalizedDescription:(id)localizedDescription partnerArray:(id)array productIdentifier:(id)identifier paymentOptions:(id)options termsURL:(id)self0 provisioningMethodDetailsList:(id)self1 readerModeMetadata:(id)self2 requiredFields:(id)self3 imageAssets:(id)self4 minimumOSVersion:(id)self5 region:(id)self6 regionData:(id)self7 hsa2Requirement:(id)self8 suppressPendingPurchases:(id)self9 supportedTransitNetworkIdentifiers:(id)identifiers onboardingItems:(id)items actionBaseURL:(id)rL productState:(id)state minimumProductAge:(id)age maximumProductAge:(id)productAge minimumTargetUserSupportedAge:(id)supportedAge associatedStoreIdentifiers:(id)storeIdentifiers appLaunchURL:(id)uRL regionIdentifier:(id)regionIdentifier type:(id)product0 localizedNotificationTitle:(id)product1 localizedNotificationMessage:(id)product2 discoveryCardIdentifier:(id)product3 clientInfo:(id)product4 searchTerms:(id)product5 featureIdentifier:(id)product6 criteriaIdentifier:(id)product7 showOtherProviders:(id)product8
 {
-  v83 = a3;
-  v43 = a4;
-  v82 = a5;
-  v81 = a6;
-  v44 = a7;
-  v80 = a8;
-  v79 = a9;
-  v45 = v44;
-  v78 = a10;
-  v77 = a11;
-  v76 = a12;
-  v46 = a13;
-  v75 = a14;
-  v74 = a15;
-  v73 = a16;
-  v72 = a17;
-  v71 = a18;
-  v70 = a19;
-  v69 = a20;
-  v68 = a21;
-  v67 = a22;
-  v66 = a23;
-  v65 = a24;
-  v64 = a25;
-  v63 = a26;
-  v62 = a27;
-  v61 = a28;
-  v60 = a29;
-  v59 = a30;
-  v58 = a31;
-  v57 = a32;
-  v47 = a33;
-  v48 = a34;
-  v49 = a35;
-  v50 = a36;
-  v51 = a37;
-  v55 = a38;
+  productCopy = product;
+  nameCopy = name;
+  descriptionCopy = description;
+  localizedDescriptionCopy = localizedDescription;
+  arrayCopy = array;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  v45 = arrayCopy;
+  lCopy = l;
+  listCopy = list;
+  metadataCopy = metadata;
+  fieldsCopy = fields;
+  assetsCopy = assets;
+  versionCopy = version;
+  regionCopy = region;
+  dataCopy = data;
+  requirementCopy = requirement;
+  purchasesCopy = purchases;
+  identifiersCopy = identifiers;
+  itemsCopy = items;
+  rLCopy = rL;
+  stateCopy = state;
+  ageCopy = age;
+  productAgeCopy = productAge;
+  supportedAgeCopy = supportedAge;
+  storeIdentifiersCopy = storeIdentifiers;
+  uRLCopy = uRL;
+  regionIdentifierCopy = regionIdentifier;
+  typeCopy = type;
+  titleCopy = title;
+  messageCopy = message;
+  cardIdentifierCopy = cardIdentifier;
+  infoCopy = info;
+  termsCopy = terms;
+  featureIdentifierCopy = featureIdentifier;
+  criteriaIdentifierCopy = criteriaIdentifier;
+  providersCopy = providers;
   v52 = objc_alloc_init(MEMORY[0x1E695DF90]);
   if ([v45 count])
   {
@@ -1775,185 +1775,185 @@ LABEL_60:
   }
 
   v56 = v45;
-  if ([v43 length])
+  if ([nameCopy length])
   {
-    [v52 setObject:v43 forKey:@"localizedProductName"];
+    [v52 setObject:nameCopy forKey:@"localizedProductName"];
   }
 
-  if ([v82 length])
+  if ([descriptionCopy length])
   {
-    [v52 setObject:v82 forKey:@"localizedDescription"];
+    [v52 setObject:descriptionCopy forKey:@"localizedDescription"];
   }
 
-  if ([v81 length])
+  if ([localizedDescriptionCopy length])
   {
-    [v52 setObject:v81 forKey:@"longLocalizedDescription"];
+    [v52 setObject:localizedDescriptionCopy forKey:@"longLocalizedDescription"];
   }
 
-  if ([v59 length])
+  if ([typeCopy length])
   {
-    [v52 setObject:v59 forKey:@"type"];
+    [v52 setObject:typeCopy forKey:@"type"];
   }
 
-  if ([v58 length])
+  if ([titleCopy length])
   {
-    [v52 setObject:v58 forKey:@"localizedNotificationTitle"];
+    [v52 setObject:titleCopy forKey:@"localizedNotificationTitle"];
   }
 
-  if ([v57 length])
+  if ([messageCopy length])
   {
-    [v52 setObject:v57 forKey:@"localizedNotificationMessage"];
+    [v52 setObject:messageCopy forKey:@"localizedNotificationMessage"];
   }
 
-  if ([v47 length])
+  if ([cardIdentifierCopy length])
   {
-    [v52 setObject:v47 forKey:@"discoveryCardIdentifier"];
+    [v52 setObject:cardIdentifierCopy forKey:@"discoveryCardIdentifier"];
   }
 
-  if ([v80 length])
+  if ([identifierCopy length])
   {
-    [v52 setObject:v80 forKey:@"productIdentifier"];
+    [v52 setObject:identifierCopy forKey:@"productIdentifier"];
   }
 
-  if ([v78 length])
+  if ([lCopy length])
   {
-    [v52 setObject:v78 forKey:@"termsURL"];
+    [v52 setObject:lCopy forKey:@"termsURL"];
   }
 
-  if ([v79 count])
+  if ([optionsCopy count])
   {
-    [v52 setObject:v79 forKey:@"paymentOptions"];
+    [v52 setObject:optionsCopy forKey:@"paymentOptions"];
   }
 
-  if ([v77 count])
+  if ([listCopy count])
   {
-    [v52 setObject:v77 forKey:@"provisioningMethodDetailsList"];
+    [v52 setObject:listCopy forKey:@"provisioningMethodDetailsList"];
   }
 
-  if (v76)
+  if (metadataCopy)
   {
-    [v52 setObject:v76 forKey:@"readerModeMetadata"];
+    [v52 setObject:metadataCopy forKey:@"readerModeMetadata"];
   }
 
-  if ([v46 count])
+  if ([fieldsCopy count])
   {
     [v52 removeObjectForKey:@"requiredFields"];
     [v52 removeObjectForKey:@"requiredFieldOptions"];
   }
 
-  if ([v75 count])
+  if ([assetsCopy count])
   {
-    [v52 setObject:v75 forKey:@"imageAssets"];
+    [v52 setObject:assetsCopy forKey:@"imageAssets"];
   }
 
-  if ([v74 count])
+  if ([versionCopy count])
   {
-    [v52 setObject:v74 forKey:@"minimumOSVersion"];
+    [v52 setObject:versionCopy forKey:@"minimumOSVersion"];
   }
 
-  if ([v73 length])
+  if ([regionCopy length])
   {
-    [v52 setObject:v73 forKey:@"region"];
+    [v52 setObject:regionCopy forKey:@"region"];
   }
 
-  if ([v72 count])
+  if ([dataCopy count])
   {
-    [v52 setObject:v72 forKey:@"regionData"];
+    [v52 setObject:dataCopy forKey:@"regionData"];
   }
 
-  if (v71)
+  if (requirementCopy)
   {
-    [v52 setObject:v71 forKey:@"hsa2Requirement"];
+    [v52 setObject:requirementCopy forKey:@"hsa2Requirement"];
   }
 
-  if (v70)
+  if (purchasesCopy)
   {
-    [v52 setObject:v70 forKey:@"suppressPendingPurchases"];
+    [v52 setObject:purchasesCopy forKey:@"suppressPendingPurchases"];
   }
 
-  if ([v69 count])
+  if ([identifiersCopy count])
   {
-    [v52 setObject:v69 forKey:@"supportedTransitNetworkIdentifiers"];
+    [v52 setObject:identifiersCopy forKey:@"supportedTransitNetworkIdentifiers"];
   }
 
-  if (v68)
+  if (itemsCopy)
   {
-    [v52 setObject:v68 forKey:@"onboardingItems"];
+    [v52 setObject:itemsCopy forKey:@"onboardingItems"];
   }
 
-  if (v67)
+  if (rLCopy)
   {
-    [v52 setObject:v67 forKey:@"actionBaseURL"];
+    [v52 setObject:rLCopy forKey:@"actionBaseURL"];
   }
 
-  if (v66)
+  if (stateCopy)
   {
-    [v52 setObject:v66 forKey:@"state"];
+    [v52 setObject:stateCopy forKey:@"state"];
   }
 
-  if (v65)
+  if (ageCopy)
   {
-    [v52 setObject:v65 forKey:@"minimumSupportedAge"];
+    [v52 setObject:ageCopy forKey:@"minimumSupportedAge"];
   }
 
-  if (v64)
+  if (productAgeCopy)
   {
-    [v52 setObject:v64 forKey:@"maximumSupportedAge"];
+    [v52 setObject:productAgeCopy forKey:@"maximumSupportedAge"];
   }
 
-  if (v63)
+  if (supportedAgeCopy)
   {
-    [v52 setObject:v63 forKey:@"minimumTargetUserSupportedAge"];
+    [v52 setObject:supportedAgeCopy forKey:@"minimumTargetUserSupportedAge"];
   }
 
-  if ([v62 count])
+  if ([storeIdentifiersCopy count])
   {
-    [v52 setObject:v62 forKey:@"associatedStoreIdentifiers"];
+    [v52 setObject:storeIdentifiersCopy forKey:@"associatedStoreIdentifiers"];
   }
 
-  if (v61)
+  if (uRLCopy)
   {
-    [v52 setObject:v61 forKey:@"appLaunchURL"];
+    [v52 setObject:uRLCopy forKey:@"appLaunchURL"];
   }
 
-  if ([v60 length])
+  if ([regionIdentifierCopy length])
   {
-    [v52 setObject:v60 forKey:@"registrationRegionIdentifier"];
+    [v52 setObject:regionIdentifierCopy forKey:@"registrationRegionIdentifier"];
   }
 
-  if (v48)
+  if (infoCopy)
   {
-    [v52 setObject:v48 forKey:@"clientInfo"];
+    [v52 setObject:infoCopy forKey:@"clientInfo"];
   }
 
-  if (v49)
+  if (termsCopy)
   {
-    [v52 setObject:v49 forKey:@"searchTerms"];
+    [v52 setObject:termsCopy forKey:@"searchTerms"];
   }
 
-  if (v50)
+  if (featureIdentifierCopy)
   {
-    [v52 setObject:v50 forKey:@"featureIdentifier"];
+    [v52 setObject:featureIdentifierCopy forKey:@"featureIdentifier"];
   }
 
-  if (v51)
+  if (criteriaIdentifierCopy)
   {
-    [v52 setObject:v51 forKey:@"criteriaIdentifier"];
+    [v52 setObject:criteriaIdentifierCopy forKey:@"criteriaIdentifier"];
   }
 
-  if (v55)
+  if (providersCopy)
   {
-    [v52 setObject:v55 forKey:@"showOtherProvidersForAppProvisioningMethod"];
+    [v52 setObject:providersCopy forKey:@"showOtherProvidersForAppProvisioningMethod"];
   }
 
-  if ([v46 count])
+  if ([fieldsCopy count])
   {
-    v53 = [v46 copy];
-    [v83 setRequiredFields:v53];
+    v53 = [fieldsCopy copy];
+    [productCopy setRequiredFields:v53];
   }
 
   v54 = [v52 copy];
-  [v83 updateWithProductDictionary:v54];
+  [productCopy updateWithProductDictionary:v54];
 }
 
 - (id)description

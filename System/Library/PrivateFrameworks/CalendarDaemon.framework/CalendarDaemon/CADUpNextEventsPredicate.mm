@@ -1,32 +1,32 @@
 @interface CADUpNextEventsPredicate
-+ (BOOL)_occurrencePassesFilter:(CalEventOccurrence *)a3 event:(void *)a4;
-+ (id)_descriptionForOccurrence:(CalEventOccurrence *)a3 ofEvent:(void *)a4;
-- (BOOL)isEqual:(id)a3;
-- (CADUpNextEventsPredicate)initWithCalendarIDs:(id)a3 startDate:(id)a4 endDate:(id)a5;
-- (CADUpNextEventsPredicate)initWithCoder:(id)a3;
-- (id)copyMatchingItemsWithDatabase:(CalDatabase *)a3;
++ (BOOL)_occurrencePassesFilter:(CalEventOccurrence *)filter event:(void *)event;
++ (id)_descriptionForOccurrence:(CalEventOccurrence *)occurrence ofEvent:(void *)event;
+- (BOOL)isEqual:(id)equal;
+- (CADUpNextEventsPredicate)initWithCalendarIDs:(id)ds startDate:(id)date endDate:(id)endDate;
+- (CADUpNextEventsPredicate)initWithCoder:(id)coder;
+- (id)copyMatchingItemsWithDatabase:(CalDatabase *)database;
 - (id)predicateFormat;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CADUpNextEventsPredicate
 
-- (CADUpNextEventsPredicate)initWithCalendarIDs:(id)a3 startDate:(id)a4 endDate:(id)a5
+- (CADUpNextEventsPredicate)initWithCalendarIDs:(id)ds startDate:(id)date endDate:(id)endDate
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
   v23.receiver = self;
   v23.super_class = CADUpNextEventsPredicate;
-  v10 = [(EKPredicate *)&v23 initWithCalendars:a3];
+  v10 = [(EKPredicate *)&v23 initWithCalendars:ds];
   if (!v10)
   {
     goto LABEL_12;
   }
 
-  if (v8 && v9)
+  if (dateCopy && endDateCopy)
   {
-    if ([v8 CalIsAfterDate:v9])
+    if ([dateCopy CalIsAfterDate:endDateCopy])
     {
       v11 = CADLogHandle;
       if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_ERROR))
@@ -37,9 +37,9 @@
         *buf = 138412802;
         v25 = v14;
         v26 = 2112;
-        v27 = v8;
+        v27 = dateCopy;
         v28 = 2112;
-        v29 = v9;
+        v29 = endDateCopy;
         v15 = "[%@] must be given a 'startDate' that occurs before the given 'endDate.'  startDate: [%@] endDate: [%@]";
         v16 = v12;
         v17 = 32;
@@ -52,8 +52,8 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    [(EKPredicate *)v10 setStartDate:v8];
-    [(EKPredicate *)v10 setEndDate:v9];
+    [(EKPredicate *)v10 setStartDate:dateCopy];
+    [(EKPredicate *)v10 setEndDate:endDateCopy];
 LABEL_12:
     v20 = v10;
     goto LABEL_13;
@@ -81,41 +81,41 @@ LABEL_13:
   return v20;
 }
 
-- (CADUpNextEventsPredicate)initWithCoder:(id)a3
+- (CADUpNextEventsPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CADUpNextEventsPredicate;
-  v5 = [(EKPredicate *)&v9 initWithCoder:v4];
+  v5 = [(EKPredicate *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
     [(EKPredicate *)v5 setStartDate:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
     [(EKPredicate *)v5 setEndDate:v7];
 
-    [v4 decodeDoubleForKey:@"startDateRestrictionThreshold"];
+    [coderCopy decodeDoubleForKey:@"startDateRestrictionThreshold"];
     [(CADUpNextEventsPredicate *)v5 setStartDateRestrictionThreshold:?];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CADUpNextEventsPredicate;
-  v4 = a3;
-  [(EKPredicate *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(EKPredicate *)&v7 encodeWithCoder:coderCopy];
   v5 = [(EKPredicate *)self startDate:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"startDate"];
+  [coderCopy encodeObject:v5 forKey:@"startDate"];
 
-  v6 = [(EKPredicate *)self endDate];
-  [v4 encodeObject:v6 forKey:@"endDate"];
+  endDate = [(EKPredicate *)self endDate];
+  [coderCopy encodeObject:endDate forKey:@"endDate"];
 
   [(CADUpNextEventsPredicate *)self startDateRestrictionThreshold];
-  [v4 encodeDouble:@"startDateRestrictionThreshold" forKey:?];
+  [coderCopy encodeDouble:@"startDateRestrictionThreshold" forKey:?];
 }
 
 - (id)predicateFormat
@@ -126,21 +126,21 @@ LABEL_13:
   v4 = MEMORY[0x277CCACA8];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [(EKPredicate *)self startDate];
-  v8 = [v3 stringFromDate:v7];
-  v9 = [(EKPredicate *)self endDate];
-  v10 = [v3 stringFromDate:v9];
-  v11 = [(EKPredicate *)self calendars];
-  v12 = [CADPredicate conciseCalendarList:v11];
+  startDate = [(EKPredicate *)self startDate];
+  v8 = [v3 stringFromDate:startDate];
+  endDate = [(EKPredicate *)self endDate];
+  v10 = [v3 stringFromDate:endDate];
+  calendars = [(EKPredicate *)self calendars];
+  v12 = [CADPredicate conciseCalendarList:calendars];
   v13 = [v4 stringWithFormat:@"[%@] start:%@ end:%@; cals:%@", v6, v8, v10, v12];;
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v17 = 1;
   }
@@ -148,28 +148,28 @@ LABEL_13:
   else
   {
     v5 = objc_opt_class();
-    if (v5 == objc_opt_class() && ([(CADUpNextEventsPredicate *)v4 startDateRestrictionThreshold], v7 = v6, [(CADUpNextEventsPredicate *)self startDateRestrictionThreshold], vabdd_f64(v7, v8) < 2.22044605e-16))
+    if (v5 == objc_opt_class() && ([(CADUpNextEventsPredicate *)equalCopy startDateRestrictionThreshold], v7 = v6, [(CADUpNextEventsPredicate *)self startDateRestrictionThreshold], vabdd_f64(v7, v8) < 2.22044605e-16))
     {
-      v9 = [(EKPredicate *)v4 startDate];
-      v10 = [(EKPredicate *)self startDate];
-      if ([v9 isEqual:v10])
+      startDate = [(EKPredicate *)equalCopy startDate];
+      startDate2 = [(EKPredicate *)self startDate];
+      if ([startDate isEqual:startDate2])
       {
-        v11 = [(EKPredicate *)v4 endDate];
-        v12 = [(EKPredicate *)self endDate];
-        if ([v11 isEqual:v12])
+        endDate = [(EKPredicate *)equalCopy endDate];
+        endDate2 = [(EKPredicate *)self endDate];
+        if ([endDate isEqual:endDate2])
         {
-          v13 = [(EKPredicate *)v4 calendars];
-          v14 = [(EKPredicate *)self calendars];
-          if (v13 == v14)
+          calendars = [(EKPredicate *)equalCopy calendars];
+          calendars2 = [(EKPredicate *)self calendars];
+          if (calendars == calendars2)
           {
             v17 = 1;
           }
 
           else
           {
-            v15 = [(EKPredicate *)v4 calendars];
-            v16 = [(EKPredicate *)self calendars];
-            v17 = [v15 isEqual:v16];
+            calendars3 = [(EKPredicate *)equalCopy calendars];
+            calendars4 = [(EKPredicate *)self calendars];
+            v17 = [calendars3 isEqual:calendars4];
           }
         }
 
@@ -194,12 +194,12 @@ LABEL_13:
   return v17;
 }
 
-- (id)copyMatchingItemsWithDatabase:(CalDatabase *)a3
+- (id)copyMatchingItemsWithDatabase:(CalDatabase *)database
 {
   v72 = *MEMORY[0x277D85DE8];
-  v4 = [(EKPredicate *)self startDate];
-  v5 = [(EKPredicate *)self endDate];
-  v6 = [v4 CalIsAfterDate:v5];
+  startDate = [(EKPredicate *)self startDate];
+  endDate = [(EKPredicate *)self endDate];
+  v6 = [startDate CalIsAfterDate:endDate];
 
   if (v6)
   {
@@ -207,14 +207,14 @@ LABEL_13:
     if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_ERROR))
     {
       v8 = v7;
-      v9 = [(EKPredicate *)self startDate];
-      v10 = [(EKPredicate *)self endDate];
+      startDate2 = [(EKPredicate *)self startDate];
+      endDate2 = [(EKPredicate *)self endDate];
       *buf = 138412802;
-      v63 = v9;
+      selfCopy2 = startDate2;
       v64 = 2112;
-      v65 = v10;
+      v65 = endDate2;
       v66 = 2112;
-      v67 = self;
+      selfCopy = self;
       _os_log_impl(&dword_22430B000, v8, OS_LOG_TYPE_ERROR, "Start date [%@] is after end date [%@].  Will not query for events for [%@]", buf, 0x20u);
     }
 
@@ -231,17 +231,17 @@ LABEL_13:
   if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v18 = v17;
-    v19 = [(EKPredicate *)self startDate];
-    v20 = [(EKPredicate *)self endDate];
+    startDate3 = [(EKPredicate *)self startDate];
+    endDate3 = [(EKPredicate *)self endDate];
     v21 = MEMORY[0x277CCABB0];
     [(CADUpNextEventsPredicate *)self startDateRestrictionThreshold];
     v22 = [v21 numberWithDouble:?];
     *buf = 138413314;
-    v63 = v19;
+    selfCopy2 = startDate3;
     v64 = 2112;
-    v65 = v20;
+    v65 = endDate3;
     v66 = 2112;
-    v67 = v14;
+    selfCopy = v14;
     v68 = 2112;
     v69 = v15;
     v70 = 2112;
@@ -249,9 +249,9 @@ LABEL_13:
     _os_log_impl(&dword_22430B000, v18, OS_LOG_TYPE_DEBUG, "Commencing up next event search with start date: [%@] end date: [%@] calendar object IDs: [%@] restricted calendar row IDs: [%@] startDateRestrictionThreshold: [%@]", buf, 0x34u);
   }
 
-  v23 = [(EKPredicate *)self startDate];
-  v24 = [(EKPredicate *)self endDate];
-  v25 = [MEMORY[0x277CBEBB0] defaultTimeZone];
+  startDate4 = [(EKPredicate *)self startDate];
+  endDate4 = [(EKPredicate *)self endDate];
+  defaultTimeZone = [MEMORY[0x277CBEBB0] defaultTimeZone];
   v26 = CalEventOccurrenceCacheCopyEventOccurrencesInDateRange();
 
   v27 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -262,7 +262,7 @@ LABEL_13:
     if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v63 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_22430B000, v49, OS_LOG_TYPE_DEBUG, "NULL occurrences array returned for [%@].", buf, 0xCu);
     }
 
@@ -276,7 +276,7 @@ LABEL_13:
   if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v63 = Count;
+    selfCopy2 = Count;
     _os_log_impl(&dword_22430B000, v29, OS_LOG_TYPE_DEBUG, "Found [%ld] up next event candidates.  Proceeding to sort and filter.", buf, 0xCu);
   }
 
@@ -285,7 +285,7 @@ LABEL_13:
   v58 = v14;
   v59 = v12;
   v30 = [(__CFArray *)v26 sortedArrayUsingComparator:&__block_literal_global_4];
-  v31 = [MEMORY[0x277CBEAA8] CalSimulatedDateForNow];
+  calSimulatedDateForNow = [MEMORY[0x277CBEAA8] CalSimulatedDateForNow];
   if (Count < 1)
   {
     v32 = 0;
@@ -305,14 +305,14 @@ LABEL_13:
       v37 = v36;
       v38 = [objc_opt_class() _descriptionForOccurrence:ValueAtIndex ofEvent:Event];
       *buf = 138412290;
-      v63 = v38;
+      selfCopy2 = v38;
       _os_log_impl(&dword_22430B000, v37, OS_LOG_TYPE_DEBUG, "Analyzing 'up next' candidate: [%@]", buf, 0xCu);
     }
 
     CalEventOccurrenceGetDate();
     v39 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:?];
     v40 = [v39 dateByAddingTimeInterval:CalEventGetDuration()];
-    if (![v40 CalIsBeforeDate:v31])
+    if (![v40 CalIsBeforeDate:calSimulatedDateForNow])
     {
       break;
     }
@@ -323,11 +323,11 @@ LABEL_13:
       v42 = v41;
       v43 = [objc_opt_class() _descriptionForOccurrence:ValueAtIndex ofEvent:Event];
       *buf = 138412802;
-      v63 = v31;
+      selfCopy2 = calSimulatedDateForNow;
       v64 = 2112;
       v65 = v40;
       v66 = 2112;
-      v67 = v43;
+      selfCopy = v43;
       v44 = v42;
       v45 = "Rejected 'up next' candidate because it ended before 'now' at [%@].  End date: [%@].  Candidate: [%@]";
       v46 = 32;
@@ -350,7 +350,7 @@ LABEL_30:
       [v60 addObject:ValueAtIndex];
       if (!v32)
       {
-        if ([v39 CalIsAfterOrSameAsDate:v31])
+        if ([v39 CalIsAfterOrSameAsDate:calSimulatedDateForNow])
         {
           v32 = v39;
         }
@@ -370,7 +370,7 @@ LABEL_30:
       v42 = v48;
       v43 = [objc_opt_class() _descriptionForOccurrence:ValueAtIndex ofEvent:Event];
       *buf = 138412290;
-      v63 = v43;
+      selfCopy2 = v43;
       v44 = v42;
       v45 = "Accepted 'up next' candidate: [%@]";
     }
@@ -386,7 +386,7 @@ LABEL_30:
       v42 = v47;
       v43 = [objc_opt_class() _descriptionForOccurrence:ValueAtIndex ofEvent:Event];
       *buf = 138412290;
-      v63 = v43;
+      selfCopy2 = v43;
       v44 = v42;
       v45 = "Rejected 'up next' candidate because it didn't pass the filter.  Candidate: [%@]";
     }
@@ -401,7 +401,7 @@ LABEL_30:
     v51 = v50;
     v52 = [objc_opt_class() _descriptionForOccurrence:ValueAtIndex ofEvent:Event];
     *buf = 138412546;
-    v63 = v32;
+    selfCopy2 = v32;
     v64 = 2112;
     v65 = v52;
     _os_log_impl(&dword_22430B000, v51, OS_LOG_TYPE_DEBUG, "Rejected 'up next' candidate because its start date is not equal to the earliest start date on or after now.  Earliest date: [%@]  Candidate: [%@]", buf, 0x16u);
@@ -447,10 +447,10 @@ uint64_t __58__CADUpNextEventsPredicate_copyMatchingItemsWithDatabase___block_in
   return v10;
 }
 
-+ (BOOL)_occurrencePassesFilter:(CalEventOccurrence *)a3 event:(void *)a4
++ (BOOL)_occurrencePassesFilter:(CalEventOccurrence *)filter event:(void *)event
 {
   v28 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (event)
   {
     if (CalEventIsAllDay())
     {
@@ -459,9 +459,9 @@ uint64_t __58__CADUpNextEventsPredicate_copyMatchingItemsWithDatabase___block_in
       if (v8)
       {
         v9 = v7;
-        v10 = [objc_opt_class() _descriptionForOccurrence:a3 ofEvent:a4];
+        v10 = [objc_opt_class() _descriptionForOccurrence:filter ofEvent:event];
         v26 = 138412290;
-        v27 = v10;
+        selfCopy = v10;
         v11 = "Occurrence does not pass filter since it is an all-day event.  Occurrence: [%@]";
 LABEL_10:
         _os_log_impl(&dword_22430B000, v9, OS_LOG_TYPE_DEBUG, v11, &v26, 0xCu);
@@ -499,9 +499,9 @@ LABEL_10:
                 }
 
                 v9 = v17;
-                v10 = [objc_opt_class() _descriptionForOccurrence:a3 ofEvent:a4];
+                v10 = [objc_opt_class() _descriptionForOccurrence:filter ofEvent:event];
                 v26 = 138412290;
-                v27 = v10;
+                selfCopy = v10;
                 v11 = "Occurrence does not pass filter since it is a declined event.  Occurrence: [%@]";
                 goto LABEL_10;
               }
@@ -529,9 +529,9 @@ LABEL_10:
               }
 
               v9 = v23;
-              v10 = [objc_opt_class() _descriptionForOccurrence:a3 ofEvent:a4];
+              v10 = [objc_opt_class() _descriptionForOccurrence:filter ofEvent:event];
               v26 = 138412290;
-              v27 = v10;
+              selfCopy = v10;
               v11 = "Occurrence does not pass filter since it is a birthday event.  Occurrence: [%@]";
               goto LABEL_10;
             }
@@ -552,9 +552,9 @@ LABEL_10:
       if (v8)
       {
         v9 = v13;
-        v10 = [objc_opt_class() _descriptionForOccurrence:a3 ofEvent:a4];
+        v10 = [objc_opt_class() _descriptionForOccurrence:filter ofEvent:event];
         v26 = 138412290;
-        v27 = v10;
+        selfCopy = v10;
         v11 = "Occurrence does not pass filter since it is a cancelled event.  Occurrence: [%@]";
         goto LABEL_10;
       }
@@ -568,7 +568,7 @@ LABEL_10:
     if (v8)
     {
       v26 = 138412290;
-      v27 = a1;
+      selfCopy = self;
       _os_log_impl(&dword_22430B000, v12, OS_LOG_TYPE_ERROR, "NULL 'event' given.  Will not check to see if the event passes the filter for [%@]", &v26, 0xCu);
 LABEL_11:
       LOBYTE(v8) = 0;
@@ -580,11 +580,11 @@ LABEL_27:
   return v8;
 }
 
-+ (id)_descriptionForOccurrence:(CalEventOccurrence *)a3 ofEvent:(void *)a4
++ (id)_descriptionForOccurrence:(CalEventOccurrence *)occurrence ofEvent:(void *)event
 {
-  if (a3)
+  if (occurrence)
   {
-    if (a4)
+    if (event)
     {
       v4 = CalCalendarItemCopySummary();
       v5 = MEMORY[0x277CBEAA8];

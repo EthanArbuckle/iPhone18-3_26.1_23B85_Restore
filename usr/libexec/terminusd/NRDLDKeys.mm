@@ -1,13 +1,13 @@
 @interface NRDLDKeys
-- (NRDLDKeys)initWithCoder:(id)a3;
+- (NRDLDKeys)initWithCoder:(id)coder;
 @end
 
 @implementation NRDLDKeys
 
-- (NRDLDKeys)initWithCoder:(id)a3
+- (NRDLDKeys)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"remotePublicKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remotePublicKey"];
   v6 = v5;
   if (v5)
   {
@@ -40,7 +40,7 @@
   {
   }
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localPublicKey"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localPublicKey"];
   v12 = v11;
   if (v11)
   {
@@ -73,7 +73,7 @@
   {
   }
 
-  v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localPrivateKey"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localPrivateKey"];
   v18 = v17;
   if (v17)
   {
@@ -106,7 +106,7 @@
   {
   }
 
-  v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sharedSecret"];
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sharedSecret"];
   v24 = v23;
   if (v23)
   {
@@ -139,7 +139,7 @@
   {
   }
 
-  v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dhLocalPublic"];
+  v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dhLocalPublic"];
   v30 = v29;
   if (v29)
   {
@@ -172,7 +172,7 @@
   {
   }
 
-  v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dhLocalPrivate"];
+  v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dhLocalPrivate"];
   v36 = v35;
   if (v35)
   {

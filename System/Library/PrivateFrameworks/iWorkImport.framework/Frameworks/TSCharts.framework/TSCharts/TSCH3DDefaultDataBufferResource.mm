@@ -1,6 +1,6 @@
 @interface TSCH3DDefaultDataBufferResource
 + (id)resource;
-+ (id)resourceWithBuffer:(id)a3;
++ (id)resourceWithBuffer:(id)buffer;
 - (TSCH3DDefaultDataBufferResource)init;
 @end
 
@@ -17,7 +17,7 @@
   return 0;
 }
 
-+ (id)resourceWithBuffer:(id)a3
++ (id)resourceWithBuffer:(id)buffer
 {
   v6 = MEMORY[0x277D81150];
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, "+[TSCH3DDefaultDataBufferResource resourceWithBuffer:]");

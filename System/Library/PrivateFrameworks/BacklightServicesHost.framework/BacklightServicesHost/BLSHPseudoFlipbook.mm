@@ -6,17 +6,17 @@
 - (BOOL)is1HzFlipbook;
 - (BOOL)isPowerSavingEnabled;
 - (NSArray)activeFrames;
-- (id)cancelAllFramesWithError:(id *)a3;
+- (id)cancelAllFramesWithError:(id *)error;
 - (uint64_t)lock_cullExpiredFrames;
 - (unint64_t)memoryUsage;
 - (void)collect;
 - (void)init;
 - (void)invalidate;
 - (void)purge;
-- (void)renderFrameForPresentation:(id)a3 dateSpecifier:(id)a4 onRenderBegin:(id)a5 onRenderComplete:(id)a6;
-- (void)set1HzFlipbook:(BOOL)a3;
-- (void)setCachesFramesOnExit:(BOOL)a3;
-- (void)setPowerSavingEnabled:(BOOL)a3;
+- (void)renderFrameForPresentation:(id)presentation dateSpecifier:(id)specifier onRenderBegin:(id)begin onRenderComplete:(id)complete;
+- (void)set1HzFlipbook:(BOOL)flipbook;
+- (void)setCachesFramesOnExit:(BOOL)exit;
+- (void)setPowerSavingEnabled:(BOOL)enabled;
 @end
 
 @implementation BLSHPseudoFlipbook
@@ -30,9 +30,9 @@
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     lock_activeFrames = v3->_lock_activeFrames;
-    v3->_lock_activeFrames = v4;
+    v3->_lock_activeFrames = array;
 
     v3->_lock_nextframeID = 1;
     v6 = bls_flipbook_log();
@@ -98,10 +98,10 @@
 
 - (BLSHRenderedFlipbookFrame)lastRenderedFrame
 {
-  v2 = [(BLSHPseudoFlipbook *)self activeFrames];
-  v3 = [v2 lastObject];
+  activeFrames = [(BLSHPseudoFlipbook *)self activeFrames];
+  lastObject = [activeFrames lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (NSArray)activeFrames
@@ -117,12 +117,12 @@
 - (unint64_t)memoryUsage
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = [(BLSHPseudoFlipbook *)self activeFrames];
+  activeFrames = [(BLSHPseudoFlipbook *)self activeFrames];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v3 = [activeFrames countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -134,7 +134,7 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(activeFrames);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -144,7 +144,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [activeFrames countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);
@@ -167,10 +167,10 @@
   return lock_powerSavingEnabled;
 }
 
-- (void)setPowerSavingEnabled:(BOOL)a3
+- (void)setPowerSavingEnabled:(BOOL)enabled
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_lock_powerSavingEnabled = a3;
+  self->_lock_powerSavingEnabled = enabled;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -183,10 +183,10 @@
   return lock_1HzFlipbook;
 }
 
-- (void)set1HzFlipbook:(BOOL)a3
+- (void)set1HzFlipbook:(BOOL)flipbook
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_lock_1HzFlipbook = a3;
+  self->_lock_1HzFlipbook = flipbook;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -199,15 +199,15 @@
   return lock_cachesFramesOnExit;
 }
 
-- (void)setCachesFramesOnExit:(BOOL)a3
+- (void)setCachesFramesOnExit:(BOOL)exit
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_lock_cachesFramesOnExit = a3;
+  self->_lock_cachesFramesOnExit = exit;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)cancelAllFramesWithError:(id *)a3
+- (id)cancelAllFramesWithError:(id *)error
 {
   os_unfair_lock_lock(&self->_lock);
   v6 = mach_continuous_time();
@@ -230,12 +230,12 @@
 
   [(NSMutableArray *)self->_lock_activeFrames removeAllObjects];
   os_unfair_lock_unlock(&self->_lock);
-  if (!a3)
+  if (!error)
   {
     [BLSHPseudoFlipbook cancelAllFramesWithError:a2];
   }
 
-  *a3 = 0;
+  *error = 0;
 
   return v9;
 }
@@ -245,7 +245,7 @@
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v3 = NSStringFromSelector(a1);
+    v3 = NSStringFromSelector(self);
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
     OUTLINED_FUNCTION_0_0();
@@ -262,7 +262,7 @@
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v3 = NSStringFromSelector(a1);
+    v3 = NSStringFromSelector(self);
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
     OUTLINED_FUNCTION_0_0();
@@ -317,33 +317,33 @@
   return result;
 }
 
-- (void)renderFrameForPresentation:(id)a3 dateSpecifier:(id)a4 onRenderBegin:(id)a5 onRenderComplete:(id)a6
+- (void)renderFrameForPresentation:(id)presentation dateSpecifier:(id)specifier onRenderBegin:(id)begin onRenderComplete:(id)complete
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
+  completeCopy = complete;
+  beginCopy = begin;
+  specifierCopy = specifier;
   os_unfair_lock_lock(&self->_lock);
   [(BLSHPseudoFlipbook *)self lock_cullExpiredFrames];
   v12 = [BLSHPseudoFlipbookFrame alloc];
-  v13 = [v11 presentationDate];
-  v14 = [v13 bls_machContinuousTime];
+  presentationDate = [specifierCopy presentationDate];
+  bls_machContinuousTime = [presentationDate bls_machContinuousTime];
   ++self->_lock_nextframeID;
-  v15 = [BLSHPseudoFlipbookFrame initWithPresentationTime:v12 frameId:"initWithPresentationTime:frameId:specifier:memoryUsage:" specifier:v14 memoryUsage:?];
+  v15 = [BLSHPseudoFlipbookFrame initWithPresentationTime:v12 frameId:"initWithPresentationTime:frameId:specifier:memoryUsage:" specifier:bls_machContinuousTime memoryUsage:?];
 
   [(NSMutableArray *)self->_lock_activeFrames addObject:v15];
   os_unfair_lock_unlock(&self->_lock);
-  v10[2](v10);
+  beginCopy[2](beginCopy);
 
-  v9[2](v9, v15, 0);
+  completeCopy[2](completeCopy, v15, 0);
 }
 
 - (void)init
 {
   v7 = *MEMORY[0x277D85DE8];
   v3 = 134218242;
-  v4 = a1;
+  selfCopy = self;
   v5 = 2114;
-  v6 = a1;
+  selfCopy2 = self;
   _os_log_debug_impl(&dword_21FD11000, a2, OS_LOG_TYPE_DEBUG, "%p created %{public}@", &v3, 0x16u);
   v2 = *MEMORY[0x277D85DE8];
 }

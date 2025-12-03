@@ -1,15 +1,15 @@
 @interface HAPDiscoveredBTLEAccessoryServerTuple
-+ (id)discoveredAccessoryServerTupleWithAccessoryServer:(id)a3;
++ (id)discoveredAccessoryServerTupleWithAccessoryServer:(id)server;
 @end
 
 @implementation HAPDiscoveredBTLEAccessoryServerTuple
 
-+ (id)discoveredAccessoryServerTupleWithAccessoryServer:(id)a3
++ (id)discoveredAccessoryServerTupleWithAccessoryServer:(id)server
 {
-  v3 = a3;
+  serverCopy = server;
   v4 = objc_alloc_init(HAPDiscoveredBTLEAccessoryServerTuple);
   accessoryServer = v4->_accessoryServer;
-  v4->_accessoryServer = v3;
+  v4->_accessoryServer = serverCopy;
 
   [(HAPDiscoveredBTLEAccessoryServerTuple *)v4 setLastSeen:CFAbsoluteTimeGetCurrent()];
 

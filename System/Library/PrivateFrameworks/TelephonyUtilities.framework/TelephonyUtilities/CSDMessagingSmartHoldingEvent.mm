@@ -1,47 +1,47 @@
 @interface CSDMessagingSmartHoldingEvent
-- (BOOL)isEqual:(id)a3;
-- (CSDMessagingSmartHoldingEvent)initWithEvent:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CSDMessagingSmartHoldingEvent)initWithEvent:(id)event;
 - (TUSmartHoldingEvent)tuSmartHoldingEvent;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsEventType:(id)a3;
+- (int)StringAsEventType:(id)type;
 - (int)eventType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDateSinceEpoch:(BOOL)a3;
-- (void)setHasEventType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDateSinceEpoch:(BOOL)epoch;
+- (void)setHasEventType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSDMessagingSmartHoldingEvent
 
-- (CSDMessagingSmartHoldingEvent)initWithEvent:(id)a3
+- (CSDMessagingSmartHoldingEvent)initWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v13.receiver = self;
   v13.super_class = CSDMessagingSmartHoldingEvent;
   v5 = [(CSDMessagingSmartHoldingEvent *)&v13 init];
   if (v5)
   {
-    v6 = [v4 eventType];
-    if (v6 <= 2)
+    eventType = [eventCopy eventType];
+    if (eventType <= 2)
     {
-      v5->_eventType = v6;
+      v5->_eventType = eventType;
     }
 
     *&v5->_has |= 4u;
-    v7 = [v4 text];
+    text = [eventCopy text];
     text = v5->_text;
-    v5->_text = v7;
+    v5->_text = text;
 
-    v9 = [v4 date];
-    [v9 timeIntervalSince1970];
+    date = [eventCopy date];
+    [date timeIntervalSince1970];
     v5->_dateSinceEpoch = v10;
 
     *&v5->_has |= 2u;
-    [v4 confidenceScore];
+    [eventCopy confidenceScore];
     v5->_confidenceScore = v11;
     *&v5->_has |= 1u;
   }
@@ -55,10 +55,10 @@
   [(CSDMessagingSmartHoldingEvent *)self dateSinceEpoch];
   v4 = [v3 initWithTimeIntervalSince1970:?];
   v5 = [TUSmartHoldingEvent alloc];
-  v6 = [(CSDMessagingSmartHoldingEvent *)self eventType];
-  v7 = [(CSDMessagingSmartHoldingEvent *)self text];
+  eventType = [(CSDMessagingSmartHoldingEvent *)self eventType];
+  text = [(CSDMessagingSmartHoldingEvent *)self text];
   [(CSDMessagingSmartHoldingEvent *)self confidenceScore];
-  v8 = [v5 initWithType:v6 text:v7 date:v4 confidenceScore:?];
+  v8 = [v5 initWithType:eventType text:text date:v4 confidenceScore:?];
 
   return v8;
 }
@@ -76,9 +76,9 @@
   }
 }
 
-- (void)setHasEventType:(BOOL)a3
+- (void)setHasEventType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -91,20 +91,20 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsEventType:(id)a3
+- (int)StringAsEventType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"RemoteUtterance"])
+  else if ([typeCopy isEqualToString:@"RemoteUtterance"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SoundTypeChanged"])
+  else if ([typeCopy isEqualToString:@"SoundTypeChanged"])
   {
     v4 = 2;
   }
@@ -117,9 +117,9 @@
   return v4;
 }
 
-- (void)setHasDateSinceEpoch:(BOOL)a3
+- (void)setHasDateSinceEpoch:(BOOL)epoch
 {
-  if (a3)
+  if (epoch)
   {
     v3 = 2;
   }
@@ -137,8 +137,8 @@
   v7.receiver = self;
   v7.super_class = CSDMessagingSmartHoldingEvent;
   v3 = [(CSDMessagingSmartHoldingEvent *)&v7 description];
-  v4 = [(CSDMessagingSmartHoldingEvent *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CSDMessagingSmartHoldingEvent *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -186,9 +186,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
     eventType = self->_eventType;
@@ -215,40 +215,40 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
-    v4[6] = self->_eventType;
-    *(v4 + 40) |= 4u;
+    toCopy[6] = self->_eventType;
+    *(toCopy + 40) |= 4u;
   }
 
   if (self->_text)
   {
-    v6 = v4;
-    [v4 setText:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setText:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = *&self->_dateSinceEpoch;
-    *(v4 + 40) |= 2u;
+    *(toCopy + 2) = *&self->_dateSinceEpoch;
+    *(toCopy + 40) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = *&self->_confidenceScore;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 1) = *&self->_confidenceScore;
+    *(toCopy + 40) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 4) != 0)
   {
@@ -256,7 +256,7 @@
     *(v5 + 40) |= 4u;
   }
 
-  v7 = [(NSString *)self->_text copyWithZone:a3];
+  v7 = [(NSString *)self->_text copyWithZone:zone];
   v8 = v6[4];
   v6[4] = v7;
 
@@ -277,31 +277,31 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   has = self->_has;
-  v6 = *(v4 + 40);
+  v6 = *(equalCopy + 40);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0 || self->_eventType != *(v4 + 6))
+    if ((*(equalCopy + 40) & 4) == 0 || self->_eventType != *(equalCopy + 6))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 40) & 4) != 0)
+  else if ((*(equalCopy + 40) & 4) != 0)
   {
     goto LABEL_19;
   }
 
   text = self->_text;
-  if (text | *(v4 + 4))
+  if (text | *(equalCopy + 4))
   {
     if (![(NSString *)text isEqual:?])
     {
@@ -315,21 +315,21 @@ LABEL_19:
 
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_dateSinceEpoch != *(v4 + 2))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_dateSinceEpoch != *(equalCopy + 2))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
     goto LABEL_19;
   }
 
-  v8 = (*(v4 + 40) & 1) == 0;
+  v8 = (*(equalCopy + 40) & 1) == 0;
   if (has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_confidenceScore != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_confidenceScore != *(equalCopy + 1))
     {
       goto LABEL_19;
     }
@@ -425,33 +425,33 @@ LABEL_20:
   return v4 ^ v3 ^ v7 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((*(v4 + 40) & 4) != 0)
+  fromCopy = from;
+  if ((*(fromCopy + 40) & 4) != 0)
   {
-    self->_eventType = *(v4 + 6);
+    self->_eventType = *(fromCopy + 6);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(CSDMessagingSmartHoldingEvent *)self setText:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 2) != 0)
   {
-    self->_dateSinceEpoch = *(v4 + 2);
+    self->_dateSinceEpoch = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 40);
+    v5 = *(fromCopy + 40);
   }
 
   if (v5)
   {
-    self->_confidenceScore = *(v4 + 1);
+    self->_confidenceScore = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 }

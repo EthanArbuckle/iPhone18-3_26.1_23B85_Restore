@@ -1,7 +1,7 @@
 @interface PRPosterPathModelObjectCache
-+ (id)modelObjectCacheForPath:(id)a3;
++ (id)modelObjectCacheForPath:(id)path;
 + (id)modelObjectCacheLock;
-+ (void)invalidateModelObjectCacheForPath:(id)a3;
++ (void)invalidateModelObjectCacheForPath:(id)path;
 - (ATXPosterDescriptorGalleryOptions)proactiveGalleryOptions;
 - (NSDictionary)userInfo;
 - (NSString)description;
@@ -19,8 +19,8 @@
 - (PRPosterRenderingConfiguration)renderingConfiguration;
 - (PRPosterSuggestionMetadata)suggestionMetadata;
 - (PRPosterTitleStyleConfiguration)titleStyleConfiguration;
-- (id)_initWithPath:(id)a3;
-- (id)homeScreenConfigurationOrError:(id *)a3;
+- (id)_initWithPath:(id)path;
+- (id)homeScreenConfigurationOrError:(id *)error;
 - (void)configuredProperties;
 - (void)dealloc;
 - (void)invalidate;
@@ -48,9 +48,9 @@
 - (NSDictionary)userInfo
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = self;
-  objc_sync_enter(v3);
-  if (v3->_userInfoLoadError)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_userInfoLoadError)
   {
     v4 = PRLogModel();
     v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
@@ -69,7 +69,7 @@
     v7 = 0;
   }
 
-  else if (v3->_userInfo)
+  else if (selfCopy->_userInfo)
   {
     v8 = PRLogModel();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
@@ -85,25 +85,25 @@
       }
     }
 
-    v7 = v3->_userInfo;
+    v7 = selfCopy->_userInfo;
   }
 
   else
   {
-    v11 = [PRPosterPathUtilities userInfoURLForPosterContentsURL:v3->_pathContentsURL];
+    v11 = [PRPosterPathUtilities userInfoURLForPosterContentsURL:selfCopy->_pathContentsURL];
     v21 = 0;
     v12 = [PRPosterPathUtilities loadUserInfoForURL:v11 error:&v21];
     v13 = v21;
     v14 = v21;
-    userInfo = v3->_userInfo;
-    v3->_userInfo = v12;
+    userInfo = selfCopy->_userInfo;
+    selfCopy->_userInfo = v12;
 
     v16 = PRLogModel();
     LODWORD(v12) = os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG);
 
     if (v12)
     {
-      if (v3->_userInfo)
+      if (selfCopy->_userInfo)
       {
         v17 = PRLogModel();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -119,7 +119,7 @@
         v17 = PRLogModel();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
-          logPreamble = v3->_logPreamble;
+          logPreamble = selfCopy->_logPreamble;
           v20 = NSStringFromSelector(a2);
           *buf = 138543874;
           v23 = logPreamble;
@@ -134,13 +134,13 @@
 
     if (v14)
     {
-      objc_storeStrong(&v3->_userInfoLoadError, v13);
+      objc_storeStrong(&selfCopy->_userInfoLoadError, v13);
     }
 
-    v7 = v3->_userInfo;
+    v7 = selfCopy->_userInfo;
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
@@ -166,29 +166,29 @@ uint64_t __52__PRPosterPathModelObjectCache_modelObjectCacheLock__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (id)modelObjectCacheForPath:(id)a3
++ (id)modelObjectCacheForPath:(id)path
 {
-  v4 = a3;
-  if ([v4 isServerPosterPath])
+  pathCopy = path;
+  if ([pathCopy isServerPosterPath])
   {
-    v5 = [v4 identity];
-    if (v5)
+    identity = [pathCopy identity];
+    if (identity)
     {
-      v6 = [a1 modelObjectCacheLock];
-      [v6 lock];
+      modelObjectCacheLock = [self modelObjectCacheLock];
+      [modelObjectCacheLock lock];
 
-      v7 = objc_getAssociatedObject(v5, "modelObjectCache");
+      v7 = objc_getAssociatedObject(identity, "modelObjectCache");
       if (!v7)
       {
-        v7 = [[PRPosterPathModelObjectCache alloc] _initWithPath:v4];
+        v7 = [[PRPosterPathModelObjectCache alloc] _initWithPath:pathCopy];
         if (v7)
         {
-          objc_setAssociatedObject(v5, "modelObjectCache", v7, 0x301);
+          objc_setAssociatedObject(identity, "modelObjectCache", v7, 0x301);
         }
       }
 
-      v8 = [a1 modelObjectCacheLock];
-      [v8 unlock];
+      modelObjectCacheLock2 = [self modelObjectCacheLock];
+      [modelObjectCacheLock2 unlock];
     }
 
     else
@@ -205,40 +205,40 @@ uint64_t __52__PRPosterPathModelObjectCache_modelObjectCacheLock__block_invoke()
   return v7;
 }
 
-+ (void)invalidateModelObjectCacheForPath:(id)a3
++ (void)invalidateModelObjectCacheForPath:(id)path
 {
-  v11 = a3;
-  v4 = [v11 isServerPosterPath];
-  v5 = v11;
-  if (v4)
+  pathCopy = path;
+  isServerPosterPath = [pathCopy isServerPosterPath];
+  v5 = pathCopy;
+  if (isServerPosterPath)
   {
-    v6 = [v11 identity];
-    if (v6)
+    identity = [pathCopy identity];
+    if (identity)
     {
-      v7 = [a1 modelObjectCacheLock];
-      [v7 lock];
+      modelObjectCacheLock = [self modelObjectCacheLock];
+      [modelObjectCacheLock lock];
 
-      v8 = objc_getAssociatedObject(v6, "modelObjectCache");
+      v8 = objc_getAssociatedObject(identity, "modelObjectCache");
       v9 = v8;
       if (v8)
       {
         [v8 invalidate];
       }
 
-      objc_setAssociatedObject(v6, "modelObjectCache", 0, 0x301);
-      v10 = [a1 modelObjectCacheLock];
-      [v10 unlock];
+      objc_setAssociatedObject(identity, "modelObjectCache", 0, 0x301);
+      modelObjectCacheLock2 = [self modelObjectCacheLock];
+      [modelObjectCacheLock2 unlock];
     }
 
-    v5 = v11;
+    v5 = pathCopy;
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](isServerPosterPath, v5);
 }
 
-- (id)_initWithPath:(id)a3
+- (id)_initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v44.receiver = self;
   v44.super_class = PRPosterPathModelObjectCache;
   v5 = [(PRPosterPathModelObjectCache *)&v44 init];
@@ -249,64 +249,64 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v6 = [v4 identity];
-  objc_storeWeak(&v5->_identity, v6);
+  identity = [pathCopy identity];
+  objc_storeWeak(&v5->_identity, identity);
 
-  v7 = [v4 role];
+  role = [pathCopy role];
   role = v5->_role;
-  v5->_role = v7;
+  v5->_role = role;
 
-  v9 = [v4 containerURL];
+  containerURL = [pathCopy containerURL];
   pathURL = v5->_pathURL;
-  v5->_pathURL = v9;
+  v5->_pathURL = containerURL;
 
-  v11 = [v4 instanceURL];
+  instanceURL = [pathCopy instanceURL];
   pathInstanceURL = v5->_pathInstanceURL;
-  v5->_pathInstanceURL = v11;
+  v5->_pathInstanceURL = instanceURL;
 
-  v13 = [v4 contentsURL];
+  contentsURL = [pathCopy contentsURL];
   pathContentsURL = v5->_pathContentsURL;
-  v5->_pathContentsURL = v13;
+  v5->_pathContentsURL = contentsURL;
 
-  v15 = [v4 identifierURL];
+  identifierURL = [pathCopy identifierURL];
   pathIdentifierURL = v5->_pathIdentifierURL;
-  v5->_pathIdentifierURL = v15;
+  v5->_pathIdentifierURL = identifierURL;
 
-  v17 = [v4 supplementURL];
+  supplementURL = [pathCopy supplementURL];
   pathSupplementURL = v5->_pathSupplementURL;
-  v5->_pathSupplementURL = v17;
+  v5->_pathSupplementURL = supplementURL;
 
-  v19 = [(NSURL *)v5->_pathInstanceURL path];
-  v20 = [v19 containsString:@"_STAGED_"];
+  path = [(NSURL *)v5->_pathInstanceURL path];
+  v20 = [path containsString:@"_STAGED_"];
 
   if ((v20 & 1) == 0)
   {
     v39 = MEMORY[0x1E696AEC0];
     WeakRetained = objc_loadWeakRetained(&v5->_identity);
-    v42 = [WeakRetained provider];
-    v37 = [v42 pathExtension];
+    provider = [WeakRetained provider];
+    pathExtension = [provider pathExtension];
     v41 = objc_loadWeakRetained(&v5->_identity);
     [v41 type];
     v35 = NSStringFromPFServerPosterType();
     v40 = objc_loadWeakRetained(&v5->_identity);
-    v34 = [v40 descriptorIdentifier];
+    descriptorIdentifier = [v40 descriptorIdentifier];
     v38 = objc_loadWeakRetained(&v5->_identity);
-    v36 = [v38 posterUUID];
-    v22 = [v36 UUIDString];
-    v23 = [v22 substringToIndex:7];
+    posterUUID = [v38 posterUUID];
+    uUIDString = [posterUUID UUIDString];
+    v23 = [uUIDString substringToIndex:7];
     v24 = objc_loadWeakRetained(&v5->_identity);
-    v25 = [v24 version];
+    version = [v24 version];
     v26 = objc_loadWeakRetained(&v5->_identity);
-    v27 = [v26 supplement];
+    supplement = [v26 supplement];
     v28 = [(NSString *)v5->_role stringByReplacingOccurrencesOfString:@"PRPosterRole" withString:&stru_1F1C13D90];
-    v29 = [v39 stringWithFormat:@"%@:%@:%@:%@:%llu_%llu:%@", v37, v35, v34, v23, v25, v27, v28];
+    v29 = [v39 stringWithFormat:@"%@:%@:%@:%@:%llu_%llu:%@", pathExtension, v35, descriptorIdentifier, v23, version, supplement, v28];
     logPreamble = v5->_logPreamble;
     v5->_logPreamble = v29;
 
     v31 = PRLogModel();
-    LODWORD(v22) = os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG);
+    LODWORD(uUIDString) = os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG);
 
-    if (v22)
+    if (uUIDString)
     {
       v32 = PRLogModel();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
@@ -348,96 +348,96 @@ LABEL_5:
   }
 
 LABEL_6:
-  v5 = self;
-  objc_sync_enter(v5);
-  configuredProperties = v5->_configuredProperties;
-  v5->_configuredProperties = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  configuredProperties = selfCopy->_configuredProperties;
+  selfCopy->_configuredProperties = 0;
 
-  userInfoLoadError = v5->_userInfoLoadError;
-  v5->_userInfoLoadError = 0;
+  userInfoLoadError = selfCopy->_userInfoLoadError;
+  selfCopy->_userInfoLoadError = 0;
 
-  userInfo = v5->_userInfo;
-  v5->_userInfo = 0;
+  userInfo = selfCopy->_userInfo;
+  selfCopy->_userInfo = 0;
 
-  titleStyleConfigurationLoadError = v5->_titleStyleConfigurationLoadError;
-  v5->_titleStyleConfigurationLoadError = 0;
+  titleStyleConfigurationLoadError = selfCopy->_titleStyleConfigurationLoadError;
+  selfCopy->_titleStyleConfigurationLoadError = 0;
 
-  titleStyleConfiguration = v5->_titleStyleConfiguration;
-  v5->_titleStyleConfiguration = 0;
+  titleStyleConfiguration = selfCopy->_titleStyleConfiguration;
+  selfCopy->_titleStyleConfiguration = 0;
 
-  renderingConfigurationLoadError = v5->_renderingConfigurationLoadError;
-  v5->_renderingConfigurationLoadError = 0;
+  renderingConfigurationLoadError = selfCopy->_renderingConfigurationLoadError;
+  selfCopy->_renderingConfigurationLoadError = 0;
 
-  renderingConfiguration = v5->_renderingConfiguration;
-  v5->_renderingConfiguration = 0;
+  renderingConfiguration = selfCopy->_renderingConfiguration;
+  selfCopy->_renderingConfiguration = 0;
 
-  configurableOptionsLoadError = v5->_configurableOptionsLoadError;
-  v5->_configurableOptionsLoadError = 0;
+  configurableOptionsLoadError = selfCopy->_configurableOptionsLoadError;
+  selfCopy->_configurableOptionsLoadError = 0;
 
-  configurableOptions = v5->_configurableOptions;
-  v5->_configurableOptions = 0;
+  configurableOptions = selfCopy->_configurableOptions;
+  selfCopy->_configurableOptions = 0;
 
-  homeScreenConfigurationLoadError = v5->_homeScreenConfigurationLoadError;
-  v5->_homeScreenConfigurationLoadError = 0;
+  homeScreenConfigurationLoadError = selfCopy->_homeScreenConfigurationLoadError;
+  selfCopy->_homeScreenConfigurationLoadError = 0;
 
-  homeScreenConfiguration = v5->_homeScreenConfiguration;
-  v5->_homeScreenConfiguration = 0;
+  homeScreenConfiguration = selfCopy->_homeScreenConfiguration;
+  selfCopy->_homeScreenConfiguration = 0;
 
-  focusConfigurationLoadError = v5->_focusConfigurationLoadError;
-  v5->_focusConfigurationLoadError = 0;
+  focusConfigurationLoadError = selfCopy->_focusConfigurationLoadError;
+  selfCopy->_focusConfigurationLoadError = 0;
 
-  focusConfiguration = v5->_focusConfiguration;
-  v5->_focusConfiguration = 0;
+  focusConfiguration = selfCopy->_focusConfiguration;
+  selfCopy->_focusConfiguration = 0;
 
-  complicationLayoutLoadError = v5->_complicationLayoutLoadError;
-  v5->_complicationLayoutLoadError = 0;
+  complicationLayoutLoadError = selfCopy->_complicationLayoutLoadError;
+  selfCopy->_complicationLayoutLoadError = 0;
 
-  complicationLayout = v5->_complicationLayout;
-  v5->_complicationLayout = 0;
+  complicationLayout = selfCopy->_complicationLayout;
+  selfCopy->_complicationLayout = 0;
 
-  colorVariationsConfigurationLoadError = v5->_colorVariationsConfigurationLoadError;
-  v5->_colorVariationsConfigurationLoadError = 0;
+  colorVariationsConfigurationLoadError = selfCopy->_colorVariationsConfigurationLoadError;
+  selfCopy->_colorVariationsConfigurationLoadError = 0;
 
-  colorVariationsConfiguration = v5->_colorVariationsConfiguration;
-  v5->_colorVariationsConfiguration = 0;
+  colorVariationsConfiguration = selfCopy->_colorVariationsConfiguration;
+  selfCopy->_colorVariationsConfiguration = 0;
 
-  quickActionsConfigurationLoadError = v5->_quickActionsConfigurationLoadError;
-  v5->_quickActionsConfigurationLoadError = 0;
+  quickActionsConfigurationLoadError = selfCopy->_quickActionsConfigurationLoadError;
+  selfCopy->_quickActionsConfigurationLoadError = 0;
 
-  quickActionsConfiguration = v5->_quickActionsConfiguration;
-  v5->_quickActionsConfiguration = 0;
+  quickActionsConfiguration = selfCopy->_quickActionsConfiguration;
+  selfCopy->_quickActionsConfiguration = 0;
 
-  suggestionMetadataLoadError = v5->_suggestionMetadataLoadError;
-  v5->_suggestionMetadataLoadError = 0;
+  suggestionMetadataLoadError = selfCopy->_suggestionMetadataLoadError;
+  selfCopy->_suggestionMetadataLoadError = 0;
 
-  suggestionMetadata = v5->_suggestionMetadata;
-  v5->_suggestionMetadata = 0;
+  suggestionMetadata = selfCopy->_suggestionMetadata;
+  selfCopy->_suggestionMetadata = 0;
 
-  otherMetadataLoadError = v5->_otherMetadataLoadError;
-  v5->_otherMetadataLoadError = 0;
+  otherMetadataLoadError = selfCopy->_otherMetadataLoadError;
+  selfCopy->_otherMetadataLoadError = 0;
 
-  otherMetadata = v5->_otherMetadata;
-  v5->_otherMetadata = 0;
+  otherMetadata = selfCopy->_otherMetadata;
+  selfCopy->_otherMetadata = 0;
 
-  galleryOptionsLoadError = v5->_galleryOptionsLoadError;
-  v5->_galleryOptionsLoadError = 0;
+  galleryOptionsLoadError = selfCopy->_galleryOptionsLoadError;
+  selfCopy->_galleryOptionsLoadError = 0;
 
-  galleryOptions = v5->_galleryOptions;
-  v5->_galleryOptions = 0;
+  galleryOptions = selfCopy->_galleryOptions;
+  selfCopy->_galleryOptions = 0;
 
-  ambientConfigurationLoadError = v5->_ambientConfigurationLoadError;
-  v5->_ambientConfigurationLoadError = 0;
+  ambientConfigurationLoadError = selfCopy->_ambientConfigurationLoadError;
+  selfCopy->_ambientConfigurationLoadError = 0;
 
-  ambientConfiguration = v5->_ambientConfiguration;
-  v5->_ambientConfiguration = 0;
+  ambientConfiguration = selfCopy->_ambientConfiguration;
+  selfCopy->_ambientConfiguration = 0;
 
-  ambientWidgetLayoutLoadError = v5->_ambientWidgetLayoutLoadError;
-  v5->_ambientWidgetLayoutLoadError = 0;
+  ambientWidgetLayoutLoadError = selfCopy->_ambientWidgetLayoutLoadError;
+  selfCopy->_ambientWidgetLayoutLoadError = 0;
 
-  ambientWidgetLayout = v5->_ambientWidgetLayout;
-  v5->_ambientWidgetLayout = 0;
+  ambientWidgetLayout = selfCopy->_ambientWidgetLayout;
+  selfCopy->_ambientWidgetLayout = 0;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)dealloc
@@ -461,9 +461,9 @@ LABEL_6:
 
 - (PRPosterConfiguredProperties)configuredProperties
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_configuredProperties)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_configuredProperties)
   {
     v3 = PRLogModel();
     v4 = os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG);
@@ -484,34 +484,34 @@ LABEL_6:
 
   else
   {
-    if ([(NSString *)v2->_role isEqual:@"PRPosterRoleAmbient"])
+    if ([(NSString *)selfCopy->_role isEqual:@"PRPosterRoleAmbient"])
     {
       v6 = [PRPosterConfiguredProperties alloc];
-      v24 = [(PRPosterPathModelObjectCache *)v2 ambientConfiguration];
-      v7 = [(PRPosterPathModelObjectCache *)v2 ambientWidgetLayout];
-      v8 = [(PRPosterPathModelObjectCache *)v2 otherMetadata];
-      v9 = [(PRPosterPathModelObjectCache *)v2 userInfo];
-      v10 = [(PRPosterConfiguredProperties *)v6 initWithAmbientConfiguration:v24 widgetLayout:v7 otherMetadata:v8 userInfo:v9];
-      configuredProperties = v2->_configuredProperties;
-      v2->_configuredProperties = v10;
+      ambientConfiguration = [(PRPosterPathModelObjectCache *)selfCopy ambientConfiguration];
+      ambientWidgetLayout = [(PRPosterPathModelObjectCache *)selfCopy ambientWidgetLayout];
+      otherMetadata = [(PRPosterPathModelObjectCache *)selfCopy otherMetadata];
+      userInfo = [(PRPosterPathModelObjectCache *)selfCopy userInfo];
+      v10 = [(PRPosterConfiguredProperties *)v6 initWithAmbientConfiguration:ambientConfiguration widgetLayout:ambientWidgetLayout otherMetadata:otherMetadata userInfo:userInfo];
+      configuredProperties = selfCopy->_configuredProperties;
+      selfCopy->_configuredProperties = v10;
     }
 
     else
     {
       v23 = [PRPosterConfiguredProperties alloc];
-      v24 = [(PRPosterPathModelObjectCache *)v2 titleStyleConfiguration];
-      v7 = [(PRPosterPathModelObjectCache *)v2 focusConfiguration];
-      v8 = [(PRPosterPathModelObjectCache *)v2 complicationLayout];
-      v9 = [(PRPosterPathModelObjectCache *)v2 renderingConfiguration];
-      configuredProperties = [(PRPosterPathModelObjectCache *)v2 homeScreenConfiguration];
-      v12 = [(PRPosterPathModelObjectCache *)v2 colorVariationsConfiguration];
-      v13 = [(PRPosterPathModelObjectCache *)v2 quickActionsConfiguration];
-      v14 = [(PRPosterPathModelObjectCache *)v2 suggestionMetadata];
-      v15 = [(PRPosterPathModelObjectCache *)v2 otherMetadata];
-      v16 = [(PRPosterPathModelObjectCache *)v2 userInfo];
-      v17 = [(PRPosterConfiguredProperties *)v23 initWithTitleStyleConfiguration:v24 focusConfiguration:v7 complicationLayout:v8 renderingConfiguration:v9 homeScreenConfiguration:configuredProperties colorVariationsConfiguration:v12 quickActionsConfiguration:v13 suggestionMetadata:v14 otherMetadata:v15 userInfo:v16];
-      v18 = v2->_configuredProperties;
-      v2->_configuredProperties = v17;
+      ambientConfiguration = [(PRPosterPathModelObjectCache *)selfCopy titleStyleConfiguration];
+      ambientWidgetLayout = [(PRPosterPathModelObjectCache *)selfCopy focusConfiguration];
+      otherMetadata = [(PRPosterPathModelObjectCache *)selfCopy complicationLayout];
+      userInfo = [(PRPosterPathModelObjectCache *)selfCopy renderingConfiguration];
+      configuredProperties = [(PRPosterPathModelObjectCache *)selfCopy homeScreenConfiguration];
+      colorVariationsConfiguration = [(PRPosterPathModelObjectCache *)selfCopy colorVariationsConfiguration];
+      quickActionsConfiguration = [(PRPosterPathModelObjectCache *)selfCopy quickActionsConfiguration];
+      suggestionMetadata = [(PRPosterPathModelObjectCache *)selfCopy suggestionMetadata];
+      otherMetadata2 = [(PRPosterPathModelObjectCache *)selfCopy otherMetadata];
+      userInfo2 = [(PRPosterPathModelObjectCache *)selfCopy userInfo];
+      v17 = [(PRPosterConfiguredProperties *)v23 initWithTitleStyleConfiguration:ambientConfiguration focusConfiguration:ambientWidgetLayout complicationLayout:otherMetadata renderingConfiguration:userInfo homeScreenConfiguration:configuredProperties colorVariationsConfiguration:colorVariationsConfiguration quickActionsConfiguration:quickActionsConfiguration suggestionMetadata:suggestionMetadata otherMetadata:otherMetadata2 userInfo:userInfo2];
+      v18 = selfCopy->_configuredProperties;
+      selfCopy->_configuredProperties = v17;
     }
 
     v19 = PRLogModel();
@@ -522,7 +522,7 @@ LABEL_6:
       goto LABEL_15;
     }
 
-    if (v2->_configuredProperties)
+    if (selfCopy->_configuredProperties)
     {
       v5 = PRLogModel();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -546,8 +546,8 @@ LABEL_6:
   }
 
 LABEL_15:
-  v21 = v2->_configuredProperties;
-  objc_sync_exit(v2);
+  v21 = selfCopy->_configuredProperties;
+  objc_sync_exit(selfCopy);
 
   return v21;
 }
@@ -555,7 +555,7 @@ LABEL_15:
 - (void)resetConfiguredProperties
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = *(a1 + 56);
+  v4 = *(self + 56);
   v5 = NSStringFromSelector(aSelector);
   v6 = 138543618;
   v7 = v4;
@@ -567,8 +567,8 @@ LABEL_15:
 - (NSString)description
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(PRPosterPathModelObjectCache *)self identity];
-  v5 = [v3 appendObject:v4 withName:@"identity"];
+  identity = [(PRPosterPathModelObjectCache *)self identity];
+  v5 = [v3 appendObject:identity withName:@"identity"];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -576,19 +576,19 @@ LABEL_15:
   v16[3] = &unk_1E7843070;
   v6 = v3;
   v17 = v6;
-  v18 = self;
+  selfCopy = self;
   [v6 appendBodySectionWithName:@"cached properties" multilinePrefix:@"\n" block:v16];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __43__PRPosterPathModelObjectCache_description__block_invoke_2;
   v13 = &unk_1E7843070;
   v14 = v6;
-  v15 = self;
+  selfCopy2 = self;
   v7 = v6;
   [v7 appendBodySectionWithName:@"cache property errors" multilinePrefix:@"\n" block:&v10];
-  v8 = [v7 build];
+  build = [v7 build];
 
-  return v8;
+  return build;
 }
 
 id __43__PRPosterPathModelObjectCache_description__block_invoke(uint64_t a1)
@@ -638,9 +638,9 @@ id __43__PRPosterPathModelObjectCache_description__block_invoke_2(uint64_t a1)
 - (PRPosterTitleStyleConfiguration)titleStyleConfiguration
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = self;
-  objc_sync_enter(v3);
-  if (v3->_titleStyleConfigurationLoadError)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_titleStyleConfigurationLoadError)
   {
     v4 = PRLogModel();
     v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
@@ -659,7 +659,7 @@ id __43__PRPosterPathModelObjectCache_description__block_invoke_2(uint64_t a1)
     v7 = 0;
   }
 
-  else if (v3->_titleStyleConfiguration)
+  else if (selfCopy->_titleStyleConfiguration)
   {
     v8 = PRLogModel();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
@@ -675,25 +675,25 @@ id __43__PRPosterPathModelObjectCache_description__block_invoke_2(uint64_t a1)
       }
     }
 
-    v7 = v3->_titleStyleConfiguration;
+    v7 = selfCopy->_titleStyleConfiguration;
   }
 
   else
   {
-    v11 = [PRPosterPathUtilities titleStyleConfigurationURLForPathInstanceURL:v3->_pathInstanceURL];
+    v11 = [PRPosterPathUtilities titleStyleConfigurationURLForPathInstanceURL:selfCopy->_pathInstanceURL];
     v21 = 0;
     v12 = [PRPosterPathUtilities loadUserObjectForURL:v11 expectedClass:objc_opt_class() strict:1 error:&v21];
     v13 = v21;
     v14 = v21;
-    titleStyleConfiguration = v3->_titleStyleConfiguration;
-    v3->_titleStyleConfiguration = v12;
+    titleStyleConfiguration = selfCopy->_titleStyleConfiguration;
+    selfCopy->_titleStyleConfiguration = v12;
 
     v16 = PRLogModel();
     LODWORD(v12) = os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG);
 
     if (v12)
     {
-      if (v3->_titleStyleConfiguration)
+      if (selfCopy->_titleStyleConfiguration)
       {
         v17 = PRLogModel();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -709,7 +709,7 @@ id __43__PRPosterPathModelObjectCache_description__block_invoke_2(uint64_t a1)
         v17 = PRLogModel();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
-          logPreamble = v3->_logPreamble;
+          logPreamble = selfCopy->_logPreamble;
           v20 = NSStringFromSelector(a2);
           *buf = 138543874;
           v23 = logPreamble;
@@ -724,21 +724,21 @@ id __43__PRPosterPathModelObjectCache_description__block_invoke_2(uint64_t a1)
 
     if (v14)
     {
-      objc_storeStrong(&v3->_titleStyleConfigurationLoadError, v13);
+      objc_storeStrong(&selfCopy->_titleStyleConfigurationLoadError, v13);
     }
 
-    v7 = v3->_titleStyleConfiguration;
+    v7 = selfCopy->_titleStyleConfiguration;
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
 - (void)resetTitleStyleConfiguration
 {
-  v3 = self;
-  objc_sync_enter(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v4 = PRLogModel();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
 
@@ -753,24 +753,24 @@ id __43__PRPosterPathModelObjectCache_description__block_invoke_2(uint64_t a1)
     }
   }
 
-  titleStyleConfiguration = v3->_titleStyleConfiguration;
-  v3->_titleStyleConfiguration = 0;
+  titleStyleConfiguration = selfCopy->_titleStyleConfiguration;
+  selfCopy->_titleStyleConfiguration = 0;
 
-  titleStyleConfigurationLoadError = v3->_titleStyleConfigurationLoadError;
-  v3->_titleStyleConfigurationLoadError = 0;
+  titleStyleConfigurationLoadError = selfCopy->_titleStyleConfigurationLoadError;
+  selfCopy->_titleStyleConfigurationLoadError = 0;
 
-  configuredProperties = v3->_configuredProperties;
-  v3->_configuredProperties = 0;
+  configuredProperties = selfCopy->_configuredProperties;
+  selfCopy->_configuredProperties = 0;
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 }
 
 - (PRPosterRenderingConfiguration)renderingConfiguration
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = self;
-  objc_sync_enter(v3);
-  if (v3->_renderingConfigurationLoadError)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_renderingConfigurationLoadError)
   {
     v4 = PRLogModel();
     v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
@@ -789,7 +789,7 @@ id __43__PRPosterPathModelObjectCache_description__block_invoke_2(uint64_t a1)
     v7 = 0;
   }
 
-  else if (v3->_renderingConfiguration)
+  else if (selfCopy->_renderingConfiguration)
   {
     v8 = PRLogModel();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
@@ -805,25 +805,25 @@ id __43__PRPosterPathModelObjectCache_description__block_invoke_2(uint64_t a1)
       }
     }
 
-    v7 = v3->_renderingConfiguration;
+    v7 = selfCopy->_renderingConfiguration;
   }
 
   else
   {
-    v11 = [PRPosterPathUtilities renderingConfigurationURLForPathInstanceURL:v3->_pathInstanceURL];
+    v11 = [PRPosterPathUtilities renderingConfigurationURLForPathInstanceURL:selfCopy->_pathInstanceURL];
     v21 = 0;
     v12 = [PRPosterPathUtilities loadUserObjectForURL:v11 expectedClass:objc_opt_class() strict:1 error:&v21];
     v13 = v21;
     v14 = v21;
-    renderingConfiguration = v3->_renderingConfiguration;
-    v3->_renderingConfiguration = v12;
+    renderingConfiguration = selfCopy->_renderingConfiguration;
+    selfCopy->_renderingConfiguration = v12;
 
     v16 = PRLogModel();
     LODWORD(v12) = os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG);
 
     if (v12)
     {
-      if (v3->_renderingConfiguration)
+      if (selfCopy->_renderingConfiguration)
       {
         v17 = PRLogModel();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -839,7 +839,7 @@ id __43__PRPosterPathModelObjectCache_description__block_invoke_2(uint64_t a1)
         v17 = PRLogModel();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
-          logPreamble = v3->_logPreamble;
+          logPreamble = selfCopy->_logPreamble;
           v20 = NSStringFromSelector(a2);
           *buf = 138543874;
           v23 = logPreamble;
@@ -854,21 +854,21 @@ id __43__PRPosterPathModelObjectCache_description__block_invoke_2(uint64_t a1)
 
     if (v14)
     {
-      objc_storeStrong(&v3->_renderingConfigurationLoadError, v13);
+      objc_storeStrong(&selfCopy->_renderingConfigurationLoadError, v13);
     }
 
-    v7 = v3->_renderingConfiguration;
+    v7 = selfCopy->_renderingConfiguration;
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
 - (void)resetRenderingConfiguration
 {
-  v3 = self;
-  objc_sync_enter(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v4 = PRLogModel();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
 
@@ -883,24 +883,24 @@ id __43__PRPosterPathModelObjectCache_description__block_invoke_2(uint64_t a1)
     }
   }
 
-  renderingConfiguration = v3->_renderingConfiguration;
-  v3->_renderingConfiguration = 0;
+  renderingConfiguration = selfCopy->_renderingConfiguration;
+  selfCopy->_renderingConfiguration = 0;
 
-  renderingConfigurationLoadError = v3->_renderingConfigurationLoadError;
-  v3->_renderingConfigurationLoadError = 0;
+  renderingConfigurationLoadError = selfCopy->_renderingConfigurationLoadError;
+  selfCopy->_renderingConfigurationLoadError = 0;
 
-  configuredProperties = v3->_configuredProperties;
-  v3->_configuredProperties = 0;
+  configuredProperties = selfCopy->_configuredProperties;
+  selfCopy->_configuredProperties = 0;
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 }
 
 - (PRPosterConfigurableOptions)configurableOptions
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = self;
-  objc_sync_enter(v3);
-  if (v3->_configurableOptionsLoadError)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_configurableOptionsLoadError)
   {
     v4 = PRLogModel();
     v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
@@ -919,7 +919,7 @@ id __43__PRPosterPathModelObjectCache_description__block_invoke_2(uint64_t a1)
     v7 = 0;
   }
 
-  else if (v3->_configurableOptions)
+  else if (selfCopy->_configurableOptions)
   {
     v8 = PRLogModel();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
@@ -935,25 +935,25 @@ id __43__PRPosterPathModelObjectCache_description__block_invoke_2(uint64_t a1)
       }
     }
 
-    v7 = v3->_configurableOptions;
+    v7 = selfCopy->_configurableOptions;
   }
 
   else
   {
-    v11 = [PRPosterPathUtilities configurableOptionsURLForContentsURL:v3->_pathContentsURL];
+    v11 = [PRPosterPathUtilities configurableOptionsURLForContentsURL:selfCopy->_pathContentsURL];
     v21 = 0;
     v12 = [PRPosterPathUtilities loadUserObjectForURL:v11 expectedClass:objc_opt_class() strict:1 error:&v21];
     v13 = v21;
     v14 = v21;
-    configurableOptions = v3->_configurableOptions;
-    v3->_configurableOptions = v12;
+    configurableOptions = selfCopy->_configurableOptions;
+    selfCopy->_configurableOptions = v12;
 
     v16 = PRLogModel();
     LODWORD(v12) = os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG);
 
     if (v12)
     {
-      if (v3->_configurableOptions)
+      if (selfCopy->_configurableOptions)
       {
         v17 = PRLogModel();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -969,7 +969,7 @@ id __43__PRPosterPathModelObjectCache_description__block_invoke_2(uint64_t a1)
         v17 = PRLogModel();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
-          logPreamble = v3->_logPreamble;
+          logPreamble = selfCopy->_logPreamble;
           v20 = NSStringFromSelector(a2);
           *buf = 138543874;
           v23 = logPreamble;
@@ -984,21 +984,21 @@ id __43__PRPosterPathModelObjectCache_description__block_invoke_2(uint64_t a1)
 
     if (v14)
     {
-      objc_storeStrong(&v3->_configurableOptionsLoadError, v13);
+      objc_storeStrong(&selfCopy->_configurableOptionsLoadError, v13);
     }
 
-    v7 = v3->_configurableOptions;
+    v7 = selfCopy->_configurableOptions;
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
 - (void)resetConfigurableOptions
 {
-  v3 = self;
-  objc_sync_enter(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v4 = PRLogModel();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
 
@@ -1013,25 +1013,25 @@ id __43__PRPosterPathModelObjectCache_description__block_invoke_2(uint64_t a1)
     }
   }
 
-  configurableOptions = v3->_configurableOptions;
-  v3->_configurableOptions = 0;
+  configurableOptions = selfCopy->_configurableOptions;
+  selfCopy->_configurableOptions = 0;
 
-  configurableOptionsLoadError = v3->_configurableOptionsLoadError;
-  v3->_configurableOptionsLoadError = 0;
+  configurableOptionsLoadError = selfCopy->_configurableOptionsLoadError;
+  selfCopy->_configurableOptionsLoadError = 0;
 
-  configuredProperties = v3->_configuredProperties;
-  v3->_configuredProperties = 0;
+  configuredProperties = selfCopy->_configuredProperties;
+  selfCopy->_configuredProperties = 0;
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)homeScreenConfigurationOrError:(id *)a3
+- (id)homeScreenConfigurationOrError:(id *)error
 {
   v42 = *MEMORY[0x1E69E9840];
-  v5 = self;
-  objc_sync_enter(v5);
-  p_homeScreenConfigurationLoadError = &v5->_homeScreenConfigurationLoadError;
-  if (v5->_homeScreenConfigurationLoadError)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  p_homeScreenConfigurationLoadError = &selfCopy->_homeScreenConfigurationLoadError;
+  if (selfCopy->_homeScreenConfigurationLoadError)
   {
     v7 = PRLogModel();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
@@ -1047,11 +1047,11 @@ id __43__PRPosterPathModelObjectCache_description__block_invoke_2(uint64_t a1)
       }
     }
 
-    if (a3 && ([*p_homeScreenConfigurationLoadError pf_isFileNotFoundError] & 1) == 0)
+    if (error && ([*p_homeScreenConfigurationLoadError pf_isFileNotFoundError] & 1) == 0)
     {
       v14 = [*p_homeScreenConfigurationLoadError copy];
       v10 = 0;
-      *a3 = v14;
+      *error = v14;
     }
 
     else
@@ -1062,7 +1062,7 @@ id __43__PRPosterPathModelObjectCache_description__block_invoke_2(uint64_t a1)
     goto LABEL_37;
   }
 
-  if (v5->_homeScreenConfiguration)
+  if (selfCopy->_homeScreenConfiguration)
   {
     v11 = PRLogModel();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG);
@@ -1078,30 +1078,30 @@ id __43__PRPosterPathModelObjectCache_description__block_invoke_2(uint64_t a1)
       }
     }
 
-    v10 = v5->_homeScreenConfiguration;
+    v10 = selfCopy->_homeScreenConfiguration;
     goto LABEL_37;
   }
 
-  v15 = [PRPosterPathUtilities homeScreenConfigurationURLForSupplementURL:v5->_pathSupplementURL];
+  v15 = [PRPosterPathUtilities homeScreenConfigurationURLForSupplementURL:selfCopy->_pathSupplementURL];
   v35 = 0;
   v16 = [PRPosterPathUtilities loadUserObjectForURL:v15 expectedClass:objc_opt_class() strict:0 error:&v35];
   v17 = v35;
-  homeScreenConfiguration = v5->_homeScreenConfiguration;
-  v5->_homeScreenConfiguration = v16;
+  homeScreenConfiguration = selfCopy->_homeScreenConfiguration;
+  selfCopy->_homeScreenConfiguration = v16;
 
-  if (v5->_homeScreenConfiguration)
+  if (selfCopy->_homeScreenConfiguration)
   {
     v19 = 0;
   }
 
   else
   {
-    v20 = [PRPosterPathUtilities oldHomeScreenConfigurationURLForIdentifierURL:v5->_pathIdentifierURL];
+    v20 = [PRPosterPathUtilities oldHomeScreenConfigurationURLForIdentifierURL:selfCopy->_pathIdentifierURL];
     v34 = 0;
     v21 = [PRPosterPathUtilities loadUserObjectForURL:v20 expectedClass:objc_opt_class() strict:0 error:&v34];
     v19 = v34;
-    v22 = v5->_homeScreenConfiguration;
-    v5->_homeScreenConfiguration = v21;
+    v22 = selfCopy->_homeScreenConfiguration;
+    selfCopy->_homeScreenConfiguration = v21;
   }
 
   if (v17)
@@ -1115,7 +1115,7 @@ id __43__PRPosterPathModelObjectCache_description__block_invoke_2(uint64_t a1)
   }
 
   v24 = v23;
-  if (!v5->_homeScreenConfiguration)
+  if (!selfCopy->_homeScreenConfiguration)
   {
     v28 = PRLogModel();
     v29 = os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG);
@@ -1125,7 +1125,7 @@ id __43__PRPosterPathModelObjectCache_description__block_invoke_2(uint64_t a1)
       v30 = PRLogModel();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
       {
-        logPreamble = v5->_logPreamble;
+        logPreamble = selfCopy->_logPreamble;
         v33 = NSStringFromSelector(a2);
         *buf = 138543874;
         v37 = logPreamble;
@@ -1170,21 +1170,21 @@ LABEL_33:
 LABEL_34:
   if (v24)
   {
-    objc_storeStrong(&v5->_homeScreenConfigurationLoadError, v23);
+    objc_storeStrong(&selfCopy->_homeScreenConfigurationLoadError, v23);
   }
 
-  v10 = v5->_homeScreenConfiguration;
+  v10 = selfCopy->_homeScreenConfiguration;
 
 LABEL_37:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v10;
 }
 
 - (void)resetHomeScreenConfiguration
 {
-  v3 = self;
-  objc_sync_enter(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v4 = PRLogModel();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
 
@@ -1199,24 +1199,24 @@ LABEL_37:
     }
   }
 
-  homeScreenConfiguration = v3->_homeScreenConfiguration;
-  v3->_homeScreenConfiguration = 0;
+  homeScreenConfiguration = selfCopy->_homeScreenConfiguration;
+  selfCopy->_homeScreenConfiguration = 0;
 
-  homeScreenConfigurationLoadError = v3->_homeScreenConfigurationLoadError;
-  v3->_homeScreenConfigurationLoadError = 0;
+  homeScreenConfigurationLoadError = selfCopy->_homeScreenConfigurationLoadError;
+  selfCopy->_homeScreenConfigurationLoadError = 0;
 
-  configuredProperties = v3->_configuredProperties;
-  v3->_configuredProperties = 0;
+  configuredProperties = selfCopy->_configuredProperties;
+  selfCopy->_configuredProperties = 0;
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 }
 
 - (PRPosterFocusConfiguration)focusConfiguration
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = self;
-  objc_sync_enter(v3);
-  if (v3->_focusConfigurationLoadError)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_focusConfigurationLoadError)
   {
     v4 = PRLogModel();
     v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
@@ -1235,7 +1235,7 @@ LABEL_37:
     v7 = 0;
   }
 
-  else if (v3->_focusConfiguration)
+  else if (selfCopy->_focusConfiguration)
   {
     v8 = PRLogModel();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
@@ -1251,25 +1251,25 @@ LABEL_37:
       }
     }
 
-    v7 = v3->_focusConfiguration;
+    v7 = selfCopy->_focusConfiguration;
   }
 
   else
   {
-    v11 = [PRPosterPathUtilities focusConfigurationURLForIdentifierURL:v3->_pathIdentifierURL];
+    v11 = [PRPosterPathUtilities focusConfigurationURLForIdentifierURL:selfCopy->_pathIdentifierURL];
     v21 = 0;
     v12 = [PRPosterPathUtilities loadUserObjectForURL:v11 expectedClass:objc_opt_class() strict:0 error:&v21];
     v13 = v21;
     v14 = v21;
-    focusConfiguration = v3->_focusConfiguration;
-    v3->_focusConfiguration = v12;
+    focusConfiguration = selfCopy->_focusConfiguration;
+    selfCopy->_focusConfiguration = v12;
 
     v16 = PRLogModel();
     LODWORD(v12) = os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG);
 
     if (v12)
     {
-      if (v3->_focusConfiguration)
+      if (selfCopy->_focusConfiguration)
       {
         v17 = PRLogModel();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -1285,7 +1285,7 @@ LABEL_37:
         v17 = PRLogModel();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
-          logPreamble = v3->_logPreamble;
+          logPreamble = selfCopy->_logPreamble;
           v20 = NSStringFromSelector(a2);
           *buf = 138543874;
           v23 = logPreamble;
@@ -1300,21 +1300,21 @@ LABEL_37:
 
     if (v14)
     {
-      objc_storeStrong(&v3->_focusConfigurationLoadError, v13);
+      objc_storeStrong(&selfCopy->_focusConfigurationLoadError, v13);
     }
 
-    v7 = v3->_focusConfiguration;
+    v7 = selfCopy->_focusConfiguration;
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
 - (void)resetFocusConfiguration
 {
-  v3 = self;
-  objc_sync_enter(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v4 = PRLogModel();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
 
@@ -1329,24 +1329,24 @@ LABEL_37:
     }
   }
 
-  focusConfiguration = v3->_focusConfiguration;
-  v3->_focusConfiguration = 0;
+  focusConfiguration = selfCopy->_focusConfiguration;
+  selfCopy->_focusConfiguration = 0;
 
-  focusConfigurationLoadError = v3->_focusConfigurationLoadError;
-  v3->_focusConfigurationLoadError = 0;
+  focusConfigurationLoadError = selfCopy->_focusConfigurationLoadError;
+  selfCopy->_focusConfigurationLoadError = 0;
 
-  configuredProperties = v3->_configuredProperties;
-  v3->_configuredProperties = 0;
+  configuredProperties = selfCopy->_configuredProperties;
+  selfCopy->_configuredProperties = 0;
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 }
 
 - (PRPosterComplicationLayout)complicationLayout
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = self;
-  objc_sync_enter(v3);
-  if (v3->_complicationLayoutLoadError)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_complicationLayoutLoadError)
   {
     v4 = PRLogModel();
     v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
@@ -1365,7 +1365,7 @@ LABEL_37:
     v7 = 0;
   }
 
-  else if (v3->_complicationLayout)
+  else if (selfCopy->_complicationLayout)
   {
     v8 = PRLogModel();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
@@ -1381,25 +1381,25 @@ LABEL_37:
       }
     }
 
-    v7 = v3->_complicationLayout;
+    v7 = selfCopy->_complicationLayout;
   }
 
   else
   {
-    v11 = [PRPosterPathUtilities complicationsLayoutURLForInstanceURL:v3->_pathInstanceURL];
+    v11 = [PRPosterPathUtilities complicationsLayoutURLForInstanceURL:selfCopy->_pathInstanceURL];
     v21 = 0;
     v12 = [PRPosterPathUtilities loadUserObjectForURL:v11 expectedClass:objc_opt_class() strict:0 error:&v21];
     v13 = v21;
     v14 = v21;
-    complicationLayout = v3->_complicationLayout;
-    v3->_complicationLayout = v12;
+    complicationLayout = selfCopy->_complicationLayout;
+    selfCopy->_complicationLayout = v12;
 
     v16 = PRLogModel();
     LODWORD(v12) = os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG);
 
     if (v12)
     {
-      if (v3->_complicationLayout)
+      if (selfCopy->_complicationLayout)
       {
         v17 = PRLogModel();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -1415,7 +1415,7 @@ LABEL_37:
         v17 = PRLogModel();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
-          logPreamble = v3->_logPreamble;
+          logPreamble = selfCopy->_logPreamble;
           v20 = NSStringFromSelector(a2);
           *buf = 138543874;
           v23 = logPreamble;
@@ -1430,21 +1430,21 @@ LABEL_37:
 
     if (v14)
     {
-      objc_storeStrong(&v3->_complicationLayoutLoadError, v13);
+      objc_storeStrong(&selfCopy->_complicationLayoutLoadError, v13);
     }
 
-    v7 = v3->_complicationLayout;
+    v7 = selfCopy->_complicationLayout;
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
 - (void)resetComplicationLayout
 {
-  v3 = self;
-  objc_sync_enter(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v4 = PRLogModel();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
 
@@ -1459,24 +1459,24 @@ LABEL_37:
     }
   }
 
-  complicationLayout = v3->_complicationLayout;
-  v3->_complicationLayout = 0;
+  complicationLayout = selfCopy->_complicationLayout;
+  selfCopy->_complicationLayout = 0;
 
-  complicationLayoutLoadError = v3->_complicationLayoutLoadError;
-  v3->_complicationLayoutLoadError = 0;
+  complicationLayoutLoadError = selfCopy->_complicationLayoutLoadError;
+  selfCopy->_complicationLayoutLoadError = 0;
 
-  configuredProperties = v3->_configuredProperties;
-  v3->_configuredProperties = 0;
+  configuredProperties = selfCopy->_configuredProperties;
+  selfCopy->_configuredProperties = 0;
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 }
 
 - (PRPosterColorVariationsConfiguration)colorVariationsConfiguration
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = self;
-  objc_sync_enter(v3);
-  if (v3->_colorVariationsConfigurationLoadError)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_colorVariationsConfigurationLoadError)
   {
     v4 = PRLogModel();
     v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
@@ -1495,7 +1495,7 @@ LABEL_37:
     v7 = 0;
   }
 
-  else if (v3->_colorVariationsConfiguration)
+  else if (selfCopy->_colorVariationsConfiguration)
   {
     v8 = PRLogModel();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
@@ -1511,25 +1511,25 @@ LABEL_37:
       }
     }
 
-    v7 = v3->_colorVariationsConfiguration;
+    v7 = selfCopy->_colorVariationsConfiguration;
   }
 
   else
   {
-    v11 = [PRPosterPathUtilities colorVariationsConfigurationURLForInstanceURL:v3->_pathInstanceURL];
+    v11 = [PRPosterPathUtilities colorVariationsConfigurationURLForInstanceURL:selfCopy->_pathInstanceURL];
     v21 = 0;
     v12 = [PRPosterPathUtilities loadUserObjectForURL:v11 expectedClass:objc_opt_class() strict:1 error:&v21];
     v13 = v21;
     v14 = v21;
-    colorVariationsConfiguration = v3->_colorVariationsConfiguration;
-    v3->_colorVariationsConfiguration = v12;
+    colorVariationsConfiguration = selfCopy->_colorVariationsConfiguration;
+    selfCopy->_colorVariationsConfiguration = v12;
 
     v16 = PRLogModel();
     LODWORD(v12) = os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG);
 
     if (v12)
     {
-      if (v3->_colorVariationsConfiguration)
+      if (selfCopy->_colorVariationsConfiguration)
       {
         v17 = PRLogModel();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -1545,7 +1545,7 @@ LABEL_37:
         v17 = PRLogModel();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
-          logPreamble = v3->_logPreamble;
+          logPreamble = selfCopy->_logPreamble;
           v20 = NSStringFromSelector(a2);
           *buf = 138543874;
           v23 = logPreamble;
@@ -1560,21 +1560,21 @@ LABEL_37:
 
     if (v14)
     {
-      objc_storeStrong(&v3->_colorVariationsConfigurationLoadError, v13);
+      objc_storeStrong(&selfCopy->_colorVariationsConfigurationLoadError, v13);
     }
 
-    v7 = v3->_colorVariationsConfiguration;
+    v7 = selfCopy->_colorVariationsConfiguration;
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
 - (void)resetColorVariationsConfiguration
 {
-  v3 = self;
-  objc_sync_enter(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v4 = PRLogModel();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
 
@@ -1589,24 +1589,24 @@ LABEL_37:
     }
   }
 
-  colorVariationsConfiguration = v3->_colorVariationsConfiguration;
-  v3->_colorVariationsConfiguration = 0;
+  colorVariationsConfiguration = selfCopy->_colorVariationsConfiguration;
+  selfCopy->_colorVariationsConfiguration = 0;
 
-  colorVariationsConfigurationLoadError = v3->_colorVariationsConfigurationLoadError;
-  v3->_colorVariationsConfigurationLoadError = 0;
+  colorVariationsConfigurationLoadError = selfCopy->_colorVariationsConfigurationLoadError;
+  selfCopy->_colorVariationsConfigurationLoadError = 0;
 
-  configuredProperties = v3->_configuredProperties;
-  v3->_configuredProperties = 0;
+  configuredProperties = selfCopy->_configuredProperties;
+  selfCopy->_configuredProperties = 0;
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 }
 
 - (PRPosterQuickActionsConfiguration)quickActionsConfiguration
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = self;
-  objc_sync_enter(v3);
-  if (v3->_quickActionsConfigurationLoadError)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_quickActionsConfigurationLoadError)
   {
     v4 = PRLogModel();
     v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
@@ -1625,7 +1625,7 @@ LABEL_37:
     v7 = 0;
   }
 
-  else if (v3->_quickActionsConfiguration)
+  else if (selfCopy->_quickActionsConfiguration)
   {
     v8 = PRLogModel();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
@@ -1641,25 +1641,25 @@ LABEL_37:
       }
     }
 
-    v7 = v3->_quickActionsConfiguration;
+    v7 = selfCopy->_quickActionsConfiguration;
   }
 
   else
   {
-    v11 = [PRPosterPathUtilities quickActionsConfigurationURLForInstanceURL:v3->_pathInstanceURL];
+    v11 = [PRPosterPathUtilities quickActionsConfigurationURLForInstanceURL:selfCopy->_pathInstanceURL];
     v21 = 0;
     v12 = [PRPosterPathUtilities loadUserObjectForURL:v11 expectedClass:objc_opt_class() strict:0 error:&v21];
     v13 = v21;
     v14 = v21;
-    quickActionsConfiguration = v3->_quickActionsConfiguration;
-    v3->_quickActionsConfiguration = v12;
+    quickActionsConfiguration = selfCopy->_quickActionsConfiguration;
+    selfCopy->_quickActionsConfiguration = v12;
 
     v16 = PRLogModel();
     LODWORD(v12) = os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG);
 
     if (v12)
     {
-      if (v3->_quickActionsConfiguration)
+      if (selfCopy->_quickActionsConfiguration)
       {
         v17 = PRLogModel();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -1675,7 +1675,7 @@ LABEL_37:
         v17 = PRLogModel();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
-          logPreamble = v3->_logPreamble;
+          logPreamble = selfCopy->_logPreamble;
           v20 = NSStringFromSelector(a2);
           *buf = 138543874;
           v23 = logPreamble;
@@ -1690,21 +1690,21 @@ LABEL_37:
 
     if (v14)
     {
-      objc_storeStrong(&v3->_quickActionsConfigurationLoadError, v13);
+      objc_storeStrong(&selfCopy->_quickActionsConfigurationLoadError, v13);
     }
 
-    v7 = v3->_quickActionsConfiguration;
+    v7 = selfCopy->_quickActionsConfiguration;
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
 - (void)resetQuickActionsConfiguration
 {
-  v3 = self;
-  objc_sync_enter(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v4 = PRLogModel();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
 
@@ -1719,24 +1719,24 @@ LABEL_37:
     }
   }
 
-  quickActionsConfiguration = v3->_quickActionsConfiguration;
-  v3->_quickActionsConfiguration = 0;
+  quickActionsConfiguration = selfCopy->_quickActionsConfiguration;
+  selfCopy->_quickActionsConfiguration = 0;
 
-  quickActionsConfigurationLoadError = v3->_quickActionsConfigurationLoadError;
-  v3->_quickActionsConfigurationLoadError = 0;
+  quickActionsConfigurationLoadError = selfCopy->_quickActionsConfigurationLoadError;
+  selfCopy->_quickActionsConfigurationLoadError = 0;
 
-  configuredProperties = v3->_configuredProperties;
-  v3->_configuredProperties = 0;
+  configuredProperties = selfCopy->_configuredProperties;
+  selfCopy->_configuredProperties = 0;
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 }
 
 - (PRPosterSuggestionMetadata)suggestionMetadata
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = self;
-  objc_sync_enter(v3);
-  if (v3->_suggestionMetadataLoadError)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_suggestionMetadataLoadError)
   {
     v4 = PRLogModel();
     v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
@@ -1755,7 +1755,7 @@ LABEL_37:
     v7 = 0;
   }
 
-  else if (v3->_suggestionMetadata)
+  else if (selfCopy->_suggestionMetadata)
   {
     v8 = PRLogModel();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
@@ -1771,25 +1771,25 @@ LABEL_37:
       }
     }
 
-    v7 = v3->_suggestionMetadata;
+    v7 = selfCopy->_suggestionMetadata;
   }
 
   else
   {
-    v11 = [PRPosterPathUtilities suggestionMetadataURLForIdentifierURL:v3->_pathIdentifierURL];
+    v11 = [PRPosterPathUtilities suggestionMetadataURLForIdentifierURL:selfCopy->_pathIdentifierURL];
     v21 = 0;
     v12 = [PRPosterPathUtilities loadUserObjectForURL:v11 expectedClass:objc_opt_class() strict:0 error:&v21];
     v13 = v21;
     v14 = v21;
-    suggestionMetadata = v3->_suggestionMetadata;
-    v3->_suggestionMetadata = v12;
+    suggestionMetadata = selfCopy->_suggestionMetadata;
+    selfCopy->_suggestionMetadata = v12;
 
     v16 = PRLogModel();
     LODWORD(v12) = os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG);
 
     if (v12)
     {
-      if (v3->_suggestionMetadata)
+      if (selfCopy->_suggestionMetadata)
       {
         v17 = PRLogModel();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -1805,7 +1805,7 @@ LABEL_37:
         v17 = PRLogModel();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
-          logPreamble = v3->_logPreamble;
+          logPreamble = selfCopy->_logPreamble;
           v20 = NSStringFromSelector(a2);
           *buf = 138543874;
           v23 = logPreamble;
@@ -1820,21 +1820,21 @@ LABEL_37:
 
     if (v14)
     {
-      objc_storeStrong(&v3->_suggestionMetadataLoadError, v13);
+      objc_storeStrong(&selfCopy->_suggestionMetadataLoadError, v13);
     }
 
-    v7 = v3->_suggestionMetadata;
+    v7 = selfCopy->_suggestionMetadata;
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
 - (void)resetSuggestionMetadata
 {
-  v3 = self;
-  objc_sync_enter(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v4 = PRLogModel();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
 
@@ -1849,24 +1849,24 @@ LABEL_37:
     }
   }
 
-  suggestionMetadata = v3->_suggestionMetadata;
-  v3->_suggestionMetadata = 0;
+  suggestionMetadata = selfCopy->_suggestionMetadata;
+  selfCopy->_suggestionMetadata = 0;
 
-  suggestionMetadataLoadError = v3->_suggestionMetadataLoadError;
-  v3->_suggestionMetadataLoadError = 0;
+  suggestionMetadataLoadError = selfCopy->_suggestionMetadataLoadError;
+  selfCopy->_suggestionMetadataLoadError = 0;
 
-  configuredProperties = v3->_configuredProperties;
-  v3->_configuredProperties = 0;
+  configuredProperties = selfCopy->_configuredProperties;
+  selfCopy->_configuredProperties = 0;
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 }
 
 - (PRPosterMetadata)otherMetadata
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = self;
-  objc_sync_enter(v3);
-  if (v3->_otherMetadataLoadError)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_otherMetadataLoadError)
   {
     v4 = PRLogModel();
     v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
@@ -1885,7 +1885,7 @@ LABEL_37:
     v7 = 0;
   }
 
-  else if (v3->_otherMetadata)
+  else if (selfCopy->_otherMetadata)
   {
     v8 = PRLogModel();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
@@ -1901,25 +1901,25 @@ LABEL_37:
       }
     }
 
-    v7 = v3->_otherMetadata;
+    v7 = selfCopy->_otherMetadata;
   }
 
   else
   {
-    v11 = [PRPosterPathUtilities otherMetadataURLForContentsURL:v3->_pathContentsURL];
+    v11 = [PRPosterPathUtilities otherMetadataURLForContentsURL:selfCopy->_pathContentsURL];
     v21 = 0;
     v12 = [PRPosterPathUtilities loadUserObjectForURL:v11 expectedClass:objc_opt_class() strict:1 error:&v21];
     v13 = v21;
     v14 = v21;
-    otherMetadata = v3->_otherMetadata;
-    v3->_otherMetadata = v12;
+    otherMetadata = selfCopy->_otherMetadata;
+    selfCopy->_otherMetadata = v12;
 
     v16 = PRLogModel();
     LODWORD(v12) = os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG);
 
     if (v12)
     {
-      if (v3->_otherMetadata)
+      if (selfCopy->_otherMetadata)
       {
         v17 = PRLogModel();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -1935,7 +1935,7 @@ LABEL_37:
         v17 = PRLogModel();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
-          logPreamble = v3->_logPreamble;
+          logPreamble = selfCopy->_logPreamble;
           v20 = NSStringFromSelector(a2);
           *buf = 138543874;
           v23 = logPreamble;
@@ -1950,21 +1950,21 @@ LABEL_37:
 
     if (v14)
     {
-      objc_storeStrong(&v3->_otherMetadataLoadError, v13);
+      objc_storeStrong(&selfCopy->_otherMetadataLoadError, v13);
     }
 
-    v7 = v3->_otherMetadata;
+    v7 = selfCopy->_otherMetadata;
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
 - (void)resetOtherMetadata
 {
-  v3 = self;
-  objc_sync_enter(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v4 = PRLogModel();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
 
@@ -1979,24 +1979,24 @@ LABEL_37:
     }
   }
 
-  otherMetadata = v3->_otherMetadata;
-  v3->_otherMetadata = 0;
+  otherMetadata = selfCopy->_otherMetadata;
+  selfCopy->_otherMetadata = 0;
 
-  otherMetadataLoadError = v3->_otherMetadataLoadError;
-  v3->_otherMetadataLoadError = 0;
+  otherMetadataLoadError = selfCopy->_otherMetadataLoadError;
+  selfCopy->_otherMetadataLoadError = 0;
 
-  configuredProperties = v3->_configuredProperties;
-  v3->_configuredProperties = 0;
+  configuredProperties = selfCopy->_configuredProperties;
+  selfCopy->_configuredProperties = 0;
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 }
 
 - (PRPosterDescriptorGalleryOptions)galleryOptions
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = self;
-  objc_sync_enter(v3);
-  if (v3->_galleryOptionsLoadError)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_galleryOptionsLoadError)
   {
     v4 = PRLogModel();
     v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
@@ -2015,7 +2015,7 @@ LABEL_37:
     v7 = 0;
   }
 
-  else if (v3->_galleryOptions)
+  else if (selfCopy->_galleryOptions)
   {
     v8 = PRLogModel();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
@@ -2031,25 +2031,25 @@ LABEL_37:
       }
     }
 
-    v7 = v3->_galleryOptions;
+    v7 = selfCopy->_galleryOptions;
   }
 
   else
   {
-    v11 = [PRPosterPathUtilities descriptorGalleryOptionsURLForContentsURL:v3->_pathContentsURL];
+    v11 = [PRPosterPathUtilities descriptorGalleryOptionsURLForContentsURL:selfCopy->_pathContentsURL];
     v21 = 0;
     v12 = [PRPosterPathUtilities loadUserObjectForURL:v11 expectedClass:objc_opt_class() strict:0 error:&v21];
     v13 = v21;
     v14 = v21;
-    galleryOptions = v3->_galleryOptions;
-    v3->_galleryOptions = v12;
+    galleryOptions = selfCopy->_galleryOptions;
+    selfCopy->_galleryOptions = v12;
 
     v16 = PRLogModel();
     LODWORD(v12) = os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG);
 
     if (v12)
     {
-      if (v3->_galleryOptions)
+      if (selfCopy->_galleryOptions)
       {
         v17 = PRLogModel();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -2065,7 +2065,7 @@ LABEL_37:
         v17 = PRLogModel();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
-          logPreamble = v3->_logPreamble;
+          logPreamble = selfCopy->_logPreamble;
           v20 = NSStringFromSelector(a2);
           *buf = 138543874;
           v23 = logPreamble;
@@ -2080,21 +2080,21 @@ LABEL_37:
 
     if (v14)
     {
-      objc_storeStrong(&v3->_galleryOptionsLoadError, v13);
+      objc_storeStrong(&selfCopy->_galleryOptionsLoadError, v13);
     }
 
-    v7 = v3->_galleryOptions;
+    v7 = selfCopy->_galleryOptions;
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
 - (void)resetGalleryOptions
 {
-  v3 = self;
-  objc_sync_enter(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v4 = PRLogModel();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
 
@@ -2109,24 +2109,24 @@ LABEL_37:
     }
   }
 
-  galleryOptions = v3->_galleryOptions;
-  v3->_galleryOptions = 0;
+  galleryOptions = selfCopy->_galleryOptions;
+  selfCopy->_galleryOptions = 0;
 
-  galleryOptionsLoadError = v3->_galleryOptionsLoadError;
-  v3->_galleryOptionsLoadError = 0;
+  galleryOptionsLoadError = selfCopy->_galleryOptionsLoadError;
+  selfCopy->_galleryOptionsLoadError = 0;
 
-  configuredProperties = v3->_configuredProperties;
-  v3->_configuredProperties = 0;
+  configuredProperties = selfCopy->_configuredProperties;
+  selfCopy->_configuredProperties = 0;
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 }
 
 - (ATXPosterDescriptorGalleryOptions)proactiveGalleryOptions
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = self;
-  objc_sync_enter(v3);
-  if (v3->_proactiveGalleryOptionsLoadError)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_proactiveGalleryOptionsLoadError)
   {
     v4 = PRLogModel();
     v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
@@ -2145,7 +2145,7 @@ LABEL_37:
     v7 = 0;
   }
 
-  else if (v3->_proactiveGalleryOptions)
+  else if (selfCopy->_proactiveGalleryOptions)
   {
     v8 = PRLogModel();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
@@ -2161,25 +2161,25 @@ LABEL_37:
       }
     }
 
-    v7 = v3->_proactiveGalleryOptions;
+    v7 = selfCopy->_proactiveGalleryOptions;
   }
 
   else
   {
-    v11 = [PRPosterPathUtilities proactiveGalleryOptionsURLForContentsURL:v3->_pathContentsURL];
+    v11 = [PRPosterPathUtilities proactiveGalleryOptionsURLForContentsURL:selfCopy->_pathContentsURL];
     v21 = 0;
     v12 = [PRPosterPathUtilities loadUserObjectForURL:v11 expectedClass:objc_opt_class() strict:0 error:&v21];
     v13 = v21;
     v14 = v21;
-    proactiveGalleryOptions = v3->_proactiveGalleryOptions;
-    v3->_proactiveGalleryOptions = v12;
+    proactiveGalleryOptions = selfCopy->_proactiveGalleryOptions;
+    selfCopy->_proactiveGalleryOptions = v12;
 
     v16 = PRLogModel();
     LODWORD(v12) = os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG);
 
     if (v12)
     {
-      if (v3->_proactiveGalleryOptions)
+      if (selfCopy->_proactiveGalleryOptions)
       {
         v17 = PRLogModel();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -2195,7 +2195,7 @@ LABEL_37:
         v17 = PRLogModel();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
-          logPreamble = v3->_logPreamble;
+          logPreamble = selfCopy->_logPreamble;
           v20 = NSStringFromSelector(a2);
           *buf = 138543874;
           v23 = logPreamble;
@@ -2210,21 +2210,21 @@ LABEL_37:
 
     if (v14)
     {
-      objc_storeStrong(&v3->_proactiveGalleryOptionsLoadError, v13);
+      objc_storeStrong(&selfCopy->_proactiveGalleryOptionsLoadError, v13);
     }
 
-    v7 = v3->_proactiveGalleryOptions;
+    v7 = selfCopy->_proactiveGalleryOptions;
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
 - (void)resetProactiveGalleryOptions
 {
-  v3 = self;
-  objc_sync_enter(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v4 = PRLogModel();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
 
@@ -2239,24 +2239,24 @@ LABEL_37:
     }
   }
 
-  proactiveGalleryOptions = v3->_proactiveGalleryOptions;
-  v3->_proactiveGalleryOptions = 0;
+  proactiveGalleryOptions = selfCopy->_proactiveGalleryOptions;
+  selfCopy->_proactiveGalleryOptions = 0;
 
-  proactiveGalleryOptionsLoadError = v3->_proactiveGalleryOptionsLoadError;
-  v3->_proactiveGalleryOptionsLoadError = 0;
+  proactiveGalleryOptionsLoadError = selfCopy->_proactiveGalleryOptionsLoadError;
+  selfCopy->_proactiveGalleryOptionsLoadError = 0;
 
-  configuredProperties = v3->_configuredProperties;
-  v3->_configuredProperties = 0;
+  configuredProperties = selfCopy->_configuredProperties;
+  selfCopy->_configuredProperties = 0;
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 }
 
 - (PRPosterAmbientConfiguration)ambientConfiguration
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = self;
-  objc_sync_enter(v3);
-  if (v3->_ambientConfigurationLoadError)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_ambientConfigurationLoadError)
   {
     v4 = PRLogModel();
     v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
@@ -2275,7 +2275,7 @@ LABEL_37:
     v7 = 0;
   }
 
-  else if (v3->_ambientConfiguration)
+  else if (selfCopy->_ambientConfiguration)
   {
     v8 = PRLogModel();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
@@ -2291,25 +2291,25 @@ LABEL_37:
       }
     }
 
-    v7 = v3->_ambientConfiguration;
+    v7 = selfCopy->_ambientConfiguration;
   }
 
   else
   {
-    v11 = [PRPosterPathUtilities ambientConfigurationURLForContentsURL:v3->_pathContentsURL];
+    v11 = [PRPosterPathUtilities ambientConfigurationURLForContentsURL:selfCopy->_pathContentsURL];
     v21 = 0;
     v12 = [PRPosterPathUtilities loadUserObjectForURL:v11 expectedClass:objc_opt_class() strict:0 error:&v21];
     v13 = v21;
     v14 = v21;
-    ambientConfiguration = v3->_ambientConfiguration;
-    v3->_ambientConfiguration = v12;
+    ambientConfiguration = selfCopy->_ambientConfiguration;
+    selfCopy->_ambientConfiguration = v12;
 
     v16 = PRLogModel();
     LODWORD(v12) = os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG);
 
     if (v12)
     {
-      if (v3->_ambientConfiguration)
+      if (selfCopy->_ambientConfiguration)
       {
         v17 = PRLogModel();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -2325,7 +2325,7 @@ LABEL_37:
         v17 = PRLogModel();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
-          logPreamble = v3->_logPreamble;
+          logPreamble = selfCopy->_logPreamble;
           v20 = NSStringFromSelector(a2);
           *buf = 138543874;
           v23 = logPreamble;
@@ -2340,21 +2340,21 @@ LABEL_37:
 
     if (v14)
     {
-      objc_storeStrong(&v3->_ambientConfigurationLoadError, v13);
+      objc_storeStrong(&selfCopy->_ambientConfigurationLoadError, v13);
     }
 
-    v7 = v3->_ambientConfiguration;
+    v7 = selfCopy->_ambientConfiguration;
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
 - (void)resetAmbientConfiguration
 {
-  v3 = self;
-  objc_sync_enter(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v4 = PRLogModel();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
 
@@ -2369,24 +2369,24 @@ LABEL_37:
     }
   }
 
-  ambientConfiguration = v3->_ambientConfiguration;
-  v3->_ambientConfiguration = 0;
+  ambientConfiguration = selfCopy->_ambientConfiguration;
+  selfCopy->_ambientConfiguration = 0;
 
-  ambientConfigurationLoadError = v3->_ambientConfigurationLoadError;
-  v3->_ambientConfigurationLoadError = 0;
+  ambientConfigurationLoadError = selfCopy->_ambientConfigurationLoadError;
+  selfCopy->_ambientConfigurationLoadError = 0;
 
-  configuredProperties = v3->_configuredProperties;
-  v3->_configuredProperties = 0;
+  configuredProperties = selfCopy->_configuredProperties;
+  selfCopy->_configuredProperties = 0;
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 }
 
 - (PRPosterAmbientWidgetLayout)ambientWidgetLayout
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = self;
-  objc_sync_enter(v3);
-  if (v3->_ambientWidgetLayoutLoadError)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_ambientWidgetLayoutLoadError)
   {
     v4 = PRLogModel();
     v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
@@ -2405,7 +2405,7 @@ LABEL_37:
     v7 = 0;
   }
 
-  else if (v3->_ambientWidgetLayout)
+  else if (selfCopy->_ambientWidgetLayout)
   {
     v8 = PRLogModel();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
@@ -2421,25 +2421,25 @@ LABEL_37:
       }
     }
 
-    v7 = v3->_ambientWidgetLayout;
+    v7 = selfCopy->_ambientWidgetLayout;
   }
 
   else
   {
-    v11 = [PRPosterPathUtilities ambientWidgetLayoutURLForInstanceURL:v3->_pathInstanceURL];
+    v11 = [PRPosterPathUtilities ambientWidgetLayoutURLForInstanceURL:selfCopy->_pathInstanceURL];
     v21 = 0;
     v12 = [PRPosterPathUtilities loadUserObjectForURL:v11 expectedClass:objc_opt_class() strict:0 error:&v21];
     v13 = v21;
     v14 = v21;
-    ambientWidgetLayout = v3->_ambientWidgetLayout;
-    v3->_ambientWidgetLayout = v12;
+    ambientWidgetLayout = selfCopy->_ambientWidgetLayout;
+    selfCopy->_ambientWidgetLayout = v12;
 
     v16 = PRLogModel();
     LODWORD(v12) = os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG);
 
     if (v12)
     {
-      if (v3->_ambientWidgetLayout)
+      if (selfCopy->_ambientWidgetLayout)
       {
         v17 = PRLogModel();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -2455,7 +2455,7 @@ LABEL_37:
         v17 = PRLogModel();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
-          logPreamble = v3->_logPreamble;
+          logPreamble = selfCopy->_logPreamble;
           v20 = NSStringFromSelector(a2);
           *buf = 138543874;
           v23 = logPreamble;
@@ -2470,21 +2470,21 @@ LABEL_37:
 
     if (v14)
     {
-      objc_storeStrong(&v3->_ambientWidgetLayoutLoadError, v13);
+      objc_storeStrong(&selfCopy->_ambientWidgetLayoutLoadError, v13);
     }
 
-    v7 = v3->_ambientWidgetLayout;
+    v7 = selfCopy->_ambientWidgetLayout;
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
 - (void)resetAmbientWidgetLayout
 {
-  v3 = self;
-  objc_sync_enter(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v4 = PRLogModel();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
 
@@ -2499,16 +2499,16 @@ LABEL_37:
     }
   }
 
-  ambientWidgetLayout = v3->_ambientWidgetLayout;
-  v3->_ambientWidgetLayout = 0;
+  ambientWidgetLayout = selfCopy->_ambientWidgetLayout;
+  selfCopy->_ambientWidgetLayout = 0;
 
-  ambientWidgetLayoutLoadError = v3->_ambientWidgetLayoutLoadError;
-  v3->_ambientWidgetLayoutLoadError = 0;
+  ambientWidgetLayoutLoadError = selfCopy->_ambientWidgetLayoutLoadError;
+  selfCopy->_ambientWidgetLayoutLoadError = 0;
 
-  configuredProperties = v3->_configuredProperties;
-  v3->_configuredProperties = 0;
+  configuredProperties = selfCopy->_configuredProperties;
+  selfCopy->_configuredProperties = 0;
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 }
 
 - (PFServerPosterIdentity)identity

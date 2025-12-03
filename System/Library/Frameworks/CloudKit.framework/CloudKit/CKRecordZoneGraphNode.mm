@@ -1,20 +1,20 @@
 @interface CKRecordZoneGraphNode
-- (CKRecordZoneGraphNode)initWithRecordZone:(id)a3;
+- (CKRecordZoneGraphNode)initWithRecordZone:(id)zone;
 - (id)itemID;
 @end
 
 @implementation CKRecordZoneGraphNode
 
-- (CKRecordZoneGraphNode)initWithRecordZone:(id)a3
+- (CKRecordZoneGraphNode)initWithRecordZone:(id)zone
 {
-  v5 = a3;
+  zoneCopy = zone;
   v9.receiver = self;
   v9.super_class = CKRecordZoneGraphNode;
-  v6 = [(CKGraphNode *)&v9 _initInternal];
-  v7 = v6;
-  if (v6)
+  _initInternal = [(CKGraphNode *)&v9 _initInternal];
+  v7 = _initInternal;
+  if (_initInternal)
   {
-    objc_storeStrong(v6 + 3, a3);
+    objc_storeStrong(_initInternal + 3, zone);
   }
 
   return v7;

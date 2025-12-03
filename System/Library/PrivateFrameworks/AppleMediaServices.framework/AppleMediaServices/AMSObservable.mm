@@ -1,78 +1,78 @@
 @interface AMSObservable
-- (AMSObservable)initWithNotification:(id)a3 object:(id)a4;
-- (AMSObservable)initWithObject:(id)a3 keyPath:(id)a4 options:(unint64_t)a5;
-- (AMSObservable)initWithObserver:(id)a3 behavior:(unint64_t)a4;
-- (AMSObservable)initWithObservers:(id)a3 behavior:(unint64_t)a4;
+- (AMSObservable)initWithNotification:(id)notification object:(id)object;
+- (AMSObservable)initWithObject:(id)object keyPath:(id)path options:(unint64_t)options;
+- (AMSObservable)initWithObserver:(id)observer behavior:(unint64_t)behavior;
+- (AMSObservable)initWithObservers:(id)observers behavior:(unint64_t)behavior;
 - (BOOL)_isComplete;
 - (BOOL)cancel;
 - (BOOL)isCancelled;
 - (BOOL)isComplete;
 - (BOOL)sendCompletion;
-- (BOOL)sendFailure:(id)a3;
-- (BOOL)sendResult:(id)a3;
-- (id)subscribeWithResultBlock:(id)a3;
-- (void)subscribe:(id)a3;
-- (void)unsubscribe:(id)a3;
+- (BOOL)sendFailure:(id)failure;
+- (BOOL)sendResult:(id)result;
+- (id)subscribeWithResultBlock:(id)block;
+- (void)subscribe:(id)subscribe;
+- (void)unsubscribe:(id)unsubscribe;
 - (void)unsubscribeAll;
 @end
 
 @implementation AMSObservable
 
-- (AMSObservable)initWithObject:(id)a3 keyPath:(id)a4 options:(unint64_t)a5
+- (AMSObservable)initWithObject:(id)object keyPath:(id)path options:(unint64_t)options
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [[_AMSKeyValueObservable alloc] initWithObject:v9 keyPath:v8 options:a5];
+  pathCopy = path;
+  objectCopy = object;
+  v10 = [[_AMSKeyValueObservable alloc] initWithObject:objectCopy keyPath:pathCopy options:options];
 
   return &v10->super;
 }
 
-- (AMSObservable)initWithNotification:(id)a3 object:(id)a4
+- (AMSObservable)initWithNotification:(id)notification object:(id)object
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[_AMSNotificationObservable alloc] initWithNotification:v7 object:v6];
+  objectCopy = object;
+  notificationCopy = notification;
+  v8 = [[_AMSNotificationObservable alloc] initWithNotification:notificationCopy object:objectCopy];
 
   return &v8->super;
 }
 
-- (AMSObservable)initWithObserver:(id)a3 behavior:(unint64_t)a4
+- (AMSObservable)initWithObserver:(id)observer behavior:(unint64_t)behavior
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  observerCopy = observer;
+  v7 = observerCopy;
+  if (observerCopy)
   {
-    v11[0] = v6;
+    v11[0] = observerCopy;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-    v9 = [(AMSObservable *)self initWithObservers:v8 behavior:a4];
+    v9 = [(AMSObservable *)self initWithObservers:v8 behavior:behavior];
   }
 
   else
   {
-    v9 = [(AMSObservable *)self initWithObservers:0 behavior:a4];
+    v9 = [(AMSObservable *)self initWithObservers:0 behavior:behavior];
   }
 
   return v9;
 }
 
-- (AMSObservable)initWithObservers:(id)a3 behavior:(unint64_t)a4
+- (AMSObservable)initWithObservers:(id)observers behavior:(unint64_t)behavior
 {
-  v6 = a3;
+  observersCopy = observers;
   v20.receiver = self;
   v20.super_class = AMSObservable;
   v7 = [(AMSObservable *)&v20 init];
   v8 = v7;
   if (v7)
   {
-    v7->_behavior = a4;
+    v7->_behavior = behavior;
     v9 = AMSGenerateLogCorrelationKey();
     logKey = v8->_logKey;
     v8->_logKey = v9;
 
-    if (v6)
+    if (observersCopy)
     {
-      v11 = [v6 mutableCopy];
+      v11 = [observersCopy mutableCopy];
     }
 
     else
@@ -101,36 +101,36 @@
 
 - (BOOL)isCancelled
 {
-  v3 = [(AMSObservable *)self stateLock];
-  [v3 lock];
+  stateLock = [(AMSObservable *)self stateLock];
+  [stateLock lock];
 
   if ([(AMSObservable *)self _isComplete])
   {
-    v4 = [(AMSObservable *)self failureError];
-    v5 = [v4 ams_isUserCancelledError];
+    failureError = [(AMSObservable *)self failureError];
+    ams_isUserCancelledError = [failureError ams_isUserCancelledError];
   }
 
   else
   {
-    v5 = 0;
+    ams_isUserCancelledError = 0;
   }
 
-  v6 = [(AMSObservable *)self stateLock];
-  [v6 unlock];
+  stateLock2 = [(AMSObservable *)self stateLock];
+  [stateLock2 unlock];
 
-  return v5;
+  return ams_isUserCancelledError;
 }
 
 - (BOOL)isComplete
 {
-  v3 = [(AMSObservable *)self stateLock];
-  [v3 lock];
+  stateLock = [(AMSObservable *)self stateLock];
+  [stateLock lock];
 
-  LOBYTE(v3) = [(AMSObservable *)self _isComplete];
-  v4 = [(AMSObservable *)self stateLock];
-  [v4 unlock];
+  LOBYTE(stateLock) = [(AMSObservable *)self _isComplete];
+  stateLock2 = [(AMSObservable *)self stateLock];
+  [stateLock2 unlock];
 
-  return v3;
+  return stateLock;
 }
 
 - (BOOL)cancel
@@ -144,13 +144,13 @@
 - (BOOL)sendCompletion
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSObservable *)self stateLock];
-  [v3 lock];
+  stateLock = [(AMSObservable *)self stateLock];
+  [stateLock lock];
 
-  v4 = [(AMSObservable *)self stateLock];
-  v5 = [v4 condition];
+  stateLock2 = [(AMSObservable *)self stateLock];
+  condition = [stateLock2 condition];
 
-  if (v5 == 1)
+  if (condition == 1)
   {
     v16 = +[AMSLogConfig sharedConfig];
     if (!v16)
@@ -158,37 +158,37 @@
       v16 = +[AMSLogConfig sharedConfig];
     }
 
-    v17 = [v16 OSLogObject];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v16 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v18 = objc_opt_class();
       v19 = v18;
-      v20 = [(AMSObservable *)self logKey];
+      logKey = [(AMSObservable *)self logKey];
       *buf = 138543618;
       v28 = v18;
       v29 = 2114;
-      v30 = v20;
-      _os_log_impl(&dword_192869000, v17, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Someone is attempting to send a completion from a completed AMSObservable.", buf, 0x16u);
+      v30 = logKey;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Someone is attempting to send a completion from a completed AMSObservable.", buf, 0x16u);
     }
 
-    v9 = [(AMSObservable *)self stateLock];
-    [v9 unlock];
+    stateLock3 = [(AMSObservable *)self stateLock];
+    [stateLock3 unlock];
   }
 
   else
   {
-    v6 = [(AMSObservable *)self observers];
-    v7 = [v6 copy];
+    observers = [(AMSObservable *)self observers];
+    v7 = [observers copy];
 
-    v8 = [(AMSObservable *)self stateLock];
-    [v8 unlockWithCondition:1];
+    stateLock4 = [(AMSObservable *)self stateLock];
+    [stateLock4 unlockWithCondition:1];
 
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v9 = v7;
-    v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    stateLock3 = v7;
+    v10 = [stateLock3 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v10)
     {
       v11 = v10;
@@ -200,38 +200,38 @@
         {
           if (*v23 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(stateLock3);
           }
 
           v14 = *(*(&v22 + 1) + 8 * v13);
-          v15 = [(AMSObservable *)self sendMessageQueue];
-          [v14 _sendCompletionUsingQueue:v15];
+          sendMessageQueue = [(AMSObservable *)self sendMessageQueue];
+          [v14 _sendCompletionUsingQueue:sendMessageQueue];
 
           ++v13;
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v11 = [stateLock3 countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v11);
     }
   }
 
-  return v5 != 1;
+  return condition != 1;
 }
 
-- (BOOL)sendFailure:(id)a3
+- (BOOL)sendFailure:(id)failure
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AMSObservable *)self stateLock];
-  [v5 lock];
+  failureCopy = failure;
+  stateLock = [(AMSObservable *)self stateLock];
+  [stateLock lock];
 
-  v6 = [(AMSObservable *)self stateLock];
-  v7 = [v6 condition];
+  stateLock2 = [(AMSObservable *)self stateLock];
+  condition = [stateLock2 condition];
 
-  if (v7 == 1)
+  if (condition == 1)
   {
     v18 = +[AMSLogConfig sharedConfig];
     if (!v18)
@@ -239,38 +239,38 @@
       v18 = +[AMSLogConfig sharedConfig];
     }
 
-    v19 = [v18 OSLogObject];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v18 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v20 = objc_opt_class();
       v21 = v20;
-      v22 = [(AMSObservable *)self logKey];
+      logKey = [(AMSObservable *)self logKey];
       *buf = 138543618;
       v30 = v20;
       v31 = 2114;
-      v32 = v22;
-      _os_log_impl(&dword_192869000, v19, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Someone is attempting to send a failure from a completed AMSObservable.", buf, 0x16u);
+      v32 = logKey;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Someone is attempting to send a failure from a completed AMSObservable.", buf, 0x16u);
     }
 
-    v11 = [(AMSObservable *)self stateLock];
-    [v11 unlock];
+    stateLock3 = [(AMSObservable *)self stateLock];
+    [stateLock3 unlock];
   }
 
   else
   {
-    [(AMSObservable *)self setFailureError:v4];
-    v8 = [(AMSObservable *)self observers];
-    v9 = [v8 copy];
+    [(AMSObservable *)self setFailureError:failureCopy];
+    observers = [(AMSObservable *)self observers];
+    v9 = [observers copy];
 
-    v10 = [(AMSObservable *)self stateLock];
-    [v10 unlockWithCondition:1];
+    stateLock4 = [(AMSObservable *)self stateLock];
+    [stateLock4 unlockWithCondition:1];
 
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v11 = v9;
-    v12 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    stateLock3 = v9;
+    v12 = [stateLock3 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v12)
     {
       v13 = v12;
@@ -282,38 +282,38 @@
         {
           if (*v25 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(stateLock3);
           }
 
           v16 = *(*(&v24 + 1) + 8 * v15);
-          v17 = [(AMSObservable *)self sendMessageQueue];
-          [v16 _sendFailure:v4 usingQueue:v17];
+          sendMessageQueue = [(AMSObservable *)self sendMessageQueue];
+          [v16 _sendFailure:failureCopy usingQueue:sendMessageQueue];
 
           ++v15;
         }
 
         while (v13 != v15);
-        v13 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v13 = [stateLock3 countByEnumeratingWithState:&v24 objects:v28 count:16];
       }
 
       while (v13);
     }
   }
 
-  return v7 != 1;
+  return condition != 1;
 }
 
-- (BOOL)sendResult:(id)a3
+- (BOOL)sendResult:(id)result
 {
   v68 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AMSObservable *)self stateLock];
-  [v5 lock];
+  resultCopy = result;
+  stateLock = [(AMSObservable *)self stateLock];
+  [stateLock lock];
 
-  v6 = [(AMSObservable *)self stateLock];
-  v7 = [v6 condition];
+  stateLock2 = [(AMSObservable *)self stateLock];
+  condition = [stateLock2 condition];
 
-  if (v7 == 1)
+  if (condition == 1)
   {
     v8 = +[AMSLogConfig sharedConfig];
     if (!v8)
@@ -321,85 +321,85 @@
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v10 = objc_opt_class();
       v11 = v10;
-      v12 = [(AMSObservable *)self logKey];
+      logKey = [(AMSObservable *)self logKey];
       *buf = 138543618;
       v65 = v10;
       v66 = 2114;
-      v67 = v12;
-      _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Someone is attempting to send a result from a completed AMSObservable.", buf, 0x16u);
+      v67 = logKey;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Someone is attempting to send a result from a completed AMSObservable.", buf, 0x16u);
     }
 
-    v13 = [(AMSObservable *)self stateLock];
-    [v13 unlock];
+    stateLock3 = [(AMSObservable *)self stateLock];
+    [stateLock3 unlock];
     v14 = 0;
     goto LABEL_37;
   }
 
-  v15 = [(AMSObservable *)self queuedResults];
-  [v15 addObject:v4];
+  queuedResults = [(AMSObservable *)self queuedResults];
+  [queuedResults addObject:resultCopy];
 
-  v16 = [(AMSObservable *)self queuedResults];
-  v13 = [v16 copy];
+  queuedResults2 = [(AMSObservable *)self queuedResults];
+  stateLock3 = [queuedResults2 copy];
 
-  v17 = [(AMSObservable *)self observers];
-  v18 = [v17 copy];
+  observers = [(AMSObservable *)self observers];
+  v18 = [observers copy];
 
   v53 = v18;
   if ([v18 count])
   {
-    v19 = +[AMSLogConfig sharedConfig];
-    if (!v19)
+    queuedResults3 = +[AMSLogConfig sharedConfig];
+    if (!queuedResults3)
     {
-      v19 = +[AMSLogConfig sharedConfig];
+      queuedResults3 = +[AMSLogConfig sharedConfig];
     }
 
-    v20 = [v19 OSLogObject];
-    if (!os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
+    oSLogObject2 = [queuedResults3 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
     {
       goto LABEL_13;
     }
 
-    v21 = v13;
+    v21 = stateLock3;
     v22 = objc_opt_class();
     v23 = v22;
-    v24 = [(AMSObservable *)self logKey];
+    logKey2 = [(AMSObservable *)self logKey];
     *buf = 138543618;
     v65 = v22;
-    v13 = v21;
+    stateLock3 = v21;
     v66 = 2114;
-    v67 = v24;
+    v67 = logKey2;
     v25 = "%{public}@: [%{public}@] There's at least one observer. Sending the result.";
     goto LABEL_12;
   }
 
-  v26 = [(AMSObservable *)self behavior];
+  behavior = [(AMSObservable *)self behavior];
   v27 = +[AMSLogConfig sharedConfig];
-  v19 = v27;
-  if (v26)
+  queuedResults3 = v27;
+  if (behavior)
   {
     if (!v27)
     {
-      v19 = +[AMSLogConfig sharedConfig];
+      queuedResults3 = +[AMSLogConfig sharedConfig];
     }
 
-    v28 = [v19 OSLogObject];
-    if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
+    oSLogObject3 = [queuedResults3 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEBUG))
     {
-      v29 = v13;
+      v29 = stateLock3;
       v30 = objc_opt_class();
       v31 = v30;
-      v32 = [(AMSObservable *)self logKey];
+      logKey3 = [(AMSObservable *)self logKey];
       *buf = 138543618;
       v65 = v30;
-      v13 = v29;
+      stateLock3 = v29;
       v66 = 2114;
-      v67 = v32;
-      _os_log_impl(&dword_192869000, v28, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] The are no observers. Queuing the result.", buf, 0x16u);
+      v67 = logKey3;
+      _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] The are no observers. Queuing the result.", buf, 0x16u);
     }
 
     goto LABEL_20;
@@ -407,46 +407,46 @@
 
   if (!v27)
   {
-    v19 = +[AMSLogConfig sharedConfig];
+    queuedResults3 = +[AMSLogConfig sharedConfig];
   }
 
-  v20 = [v19 OSLogObject];
-  if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
+  oSLogObject2 = [queuedResults3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
   {
-    v47 = v13;
+    v47 = stateLock3;
     v48 = objc_opt_class();
     v23 = v48;
-    v24 = [(AMSObservable *)self logKey];
+    logKey2 = [(AMSObservable *)self logKey];
     *buf = 138543618;
     v65 = v48;
-    v13 = v47;
+    stateLock3 = v47;
     v66 = 2114;
-    v67 = v24;
+    v67 = logKey2;
     v25 = "%{public}@: [%{public}@] The are no observers.";
 LABEL_12:
-    _os_log_impl(&dword_192869000, v20, OS_LOG_TYPE_DEBUG, v25, buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEBUG, v25, buf, 0x16u);
   }
 
 LABEL_13:
 
-  v19 = [(AMSObservable *)self queuedResults];
-  [v19 removeAllObjects];
+  queuedResults3 = [(AMSObservable *)self queuedResults];
+  [queuedResults3 removeAllObjects];
 LABEL_20:
 
-  v33 = [(AMSObservable *)self stateLock];
-  [v33 unlock];
+  stateLock4 = [(AMSObservable *)self stateLock];
+  [stateLock4 unlock];
 
   v34 = [v53 count];
   v14 = v34 != 0;
   if (v34)
   {
-    v49 = v13;
-    v50 = v4;
+    v49 = stateLock3;
+    v50 = resultCopy;
     v60 = 0u;
     v61 = 0u;
     v58 = 0u;
     v59 = 0u;
-    obj = v13;
+    obj = stateLock3;
     v35 = [obj countByEnumeratingWithState:&v58 objects:v63 count:16];
     if (v35)
     {
@@ -482,8 +482,8 @@ LABEL_20:
                 }
 
                 v44 = *(*(&v54 + 1) + 8 * j);
-                v45 = [(AMSObservable *)self sendMessageQueue];
-                [v44 _sendResult:v38 usingQueue:v45];
+                sendMessageQueue = [(AMSObservable *)self sendMessageQueue];
+                [v44 _sendResult:v38 usingQueue:sendMessageQueue];
               }
 
               v41 = [v39 countByEnumeratingWithState:&v54 objects:v62 count:16];
@@ -499,8 +499,8 @@ LABEL_20:
       while (v36);
     }
 
-    v13 = v49;
-    v4 = v50;
+    stateLock3 = v49;
+    resultCopy = v50;
     v14 = 1;
   }
 
@@ -508,17 +508,17 @@ LABEL_37:
   return v14;
 }
 
-- (void)subscribe:(id)a3
+- (void)subscribe:(id)subscribe
 {
   v58 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AMSObservable *)self stateLock];
-  [v5 lock];
+  subscribeCopy = subscribe;
+  stateLock = [(AMSObservable *)self stateLock];
+  [stateLock lock];
 
-  v6 = [(AMSObservable *)self stateLock];
-  v7 = [v6 condition];
+  stateLock2 = [(AMSObservable *)self stateLock];
+  condition = [stateLock2 condition];
 
-  if (v7 == 1)
+  if (condition == 1)
   {
     v8 = +[AMSLogConfig sharedConfig];
     if (!v8)
@@ -526,31 +526,31 @@ LABEL_37:
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v8 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       goto LABEL_12;
     }
 
     v10 = objc_opt_class();
     v11 = v10;
-    v12 = [(AMSObservable *)self logKey];
+    logKey = [(AMSObservable *)self logKey];
     *buf = 138543618;
     v55 = v10;
     v56 = 2114;
-    v57 = v12;
+    v57 = logKey;
     v13 = "%{public}@: [%{public}@] Someone is attempting to add an observer to a completed AMSObservable.";
 LABEL_11:
-    _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_DEBUG, v13, buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, v13, buf, 0x16u);
 
 LABEL_12:
-    v17 = [(AMSObservable *)self stateLock];
-    [v17 unlock];
+    stateLock3 = [(AMSObservable *)self stateLock];
+    [stateLock3 unlock];
     goto LABEL_35;
   }
 
-  v14 = [(AMSObservable *)self observers];
-  v15 = [v14 containsObject:v4];
+  observers = [(AMSObservable *)self observers];
+  v15 = [observers containsObject:subscribeCopy];
 
   if (v15)
   {
@@ -560,33 +560,33 @@ LABEL_12:
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v8 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       goto LABEL_12;
     }
 
     v16 = objc_opt_class();
     v11 = v16;
-    v12 = [(AMSObservable *)self logKey];
+    logKey = [(AMSObservable *)self logKey];
     *buf = 138543618;
     v55 = v16;
     v56 = 2114;
-    v57 = v12;
+    v57 = logKey;
     v13 = "%{public}@: [%{public}@] Someone is attempting to add an observer to a AMSObservable it's already observing.";
     goto LABEL_11;
   }
 
-  v18 = [(AMSObservable *)self observers];
-  [v18 addObject:v4];
+  observers2 = [(AMSObservable *)self observers];
+  [observers2 addObject:subscribeCopy];
 
-  v19 = [(AMSObservable *)self queuedResults];
-  v20 = [v19 copy];
+  queuedResults = [(AMSObservable *)self queuedResults];
+  v20 = [queuedResults copy];
 
-  v21 = [(AMSObservable *)self queuedResults];
-  [v21 removeAllObjects];
+  queuedResults2 = [(AMSObservable *)self queuedResults];
+  [queuedResults2 removeAllObjects];
 
-  v39 = v4;
+  v39 = subscribeCopy;
   if ([v20 count])
   {
     v22 = +[AMSLogConfig sharedConfig];
@@ -595,21 +595,21 @@ LABEL_12:
       v22 = +[AMSLogConfig sharedConfig];
     }
 
-    v23 = [v22 OSLogObject];
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
+    oSLogObject2 = [v22 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
     {
       v24 = objc_opt_class();
       v25 = v24;
-      v26 = [(AMSObservable *)self logKey];
+      logKey2 = [(AMSObservable *)self logKey];
       *buf = 138543618;
       v55 = v24;
       v56 = 2114;
-      v57 = v26;
-      _os_log_impl(&dword_192869000, v23, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] There are pending results. Sending them now that we have an observer.", buf, 0x16u);
+      v57 = logKey2;
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] There are pending results. Sending them now that we have an observer.", buf, 0x16u);
     }
 
-    v27 = [(AMSObservable *)self observers];
-    v42 = [v27 copy];
+    observers3 = [(AMSObservable *)self observers];
+    v42 = [observers3 copy];
   }
 
   else
@@ -617,18 +617,18 @@ LABEL_12:
     v42 = 0;
   }
 
-  v28 = [(AMSObservable *)self stateLock];
-  [v28 unlock];
+  stateLock4 = [(AMSObservable *)self stateLock];
+  [stateLock4 unlock];
 
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v17 = v20;
-  v43 = [v17 countByEnumeratingWithState:&v48 objects:v53 count:16];
+  stateLock3 = v20;
+  v43 = [stateLock3 countByEnumeratingWithState:&v48 objects:v53 count:16];
   if (v43)
   {
-    obj = v17;
+    obj = stateLock3;
     v41 = *v49;
     do
     {
@@ -661,8 +661,8 @@ LABEL_12:
 
               v36 = *(*(&v44 + 1) + 8 * j);
               v37 = [v30 copy];
-              v38 = [(AMSObservable *)self sendMessageQueue];
-              [v36 _sendResult:v37 usingQueue:v38];
+              sendMessageQueue = [(AMSObservable *)self sendMessageQueue];
+              [v36 _sendResult:v37 usingQueue:sendMessageQueue];
             }
 
             v33 = [v31 countByEnumeratingWithState:&v44 objects:v52 count:16];
@@ -672,112 +672,112 @@ LABEL_12:
         }
       }
 
-      v17 = obj;
+      stateLock3 = obj;
       v43 = [obj countByEnumeratingWithState:&v48 objects:v53 count:16];
     }
 
     while (v43);
   }
 
-  v4 = v39;
+  subscribeCopy = v39;
 LABEL_35:
 }
 
-- (id)subscribeWithResultBlock:(id)a3
+- (id)subscribeWithResultBlock:(id)block
 {
-  v4 = a3;
-  v5 = [[AMSObserver alloc] initWithResultBlock:v4];
+  blockCopy = block;
+  v5 = [[AMSObserver alloc] initWithResultBlock:blockCopy];
 
   [(AMSObservable *)self subscribe:v5];
 
   return v5;
 }
 
-- (void)unsubscribe:(id)a3
+- (void)unsubscribe:(id)unsubscribe
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AMSObservable *)self stateLock];
-  [v5 lock];
+  unsubscribeCopy = unsubscribe;
+  stateLock = [(AMSObservable *)self stateLock];
+  [stateLock lock];
 
-  v6 = [(AMSObservable *)self stateLock];
-  v7 = [v6 condition];
+  stateLock2 = [(AMSObservable *)self stateLock];
+  condition = [stateLock2 condition];
 
-  if (v7 == 1)
+  if (condition == 1)
   {
-    v8 = +[AMSLogConfig sharedConfig];
-    if (!v8)
+    observers2 = +[AMSLogConfig sharedConfig];
+    if (!observers2)
     {
-      v8 = +[AMSLogConfig sharedConfig];
+      observers2 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [observers2 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       goto LABEL_13;
     }
 
     v10 = objc_opt_class();
     v11 = v10;
-    v12 = [(AMSObservable *)self logKey];
+    logKey = [(AMSObservable *)self logKey];
     v18 = 138543618;
     v19 = v10;
     v20 = 2114;
-    v21 = v12;
+    v21 = logKey;
     v13 = "%{public}@: [%{public}@] Someone is attempting to remove an observer from a completed observable.";
 LABEL_12:
-    _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_DEBUG, v13, &v18, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, v13, &v18, 0x16u);
 
 LABEL_13:
     goto LABEL_14;
   }
 
-  v14 = [(AMSObservable *)self observers];
-  v15 = [v14 containsObject:v4];
+  observers = [(AMSObservable *)self observers];
+  v15 = [observers containsObject:unsubscribeCopy];
 
   if ((v15 & 1) == 0)
   {
-    v8 = +[AMSLogConfig sharedConfig];
-    if (!v8)
+    observers2 = +[AMSLogConfig sharedConfig];
+    if (!observers2)
     {
-      v8 = +[AMSLogConfig sharedConfig];
+      observers2 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [observers2 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       goto LABEL_13;
     }
 
     v16 = objc_opt_class();
     v11 = v16;
-    v12 = [(AMSObservable *)self logKey];
+    logKey = [(AMSObservable *)self logKey];
     v18 = 138543618;
     v19 = v16;
     v20 = 2114;
-    v21 = v12;
+    v21 = logKey;
     v13 = "%{public}@: [%{public}@] Someone is attempting to remove an observer from an observable it isn't subscribed to.";
     goto LABEL_12;
   }
 
-  v8 = [(AMSObservable *)self observers];
-  [v8 removeObject:v4];
+  observers2 = [(AMSObservable *)self observers];
+  [observers2 removeObject:unsubscribeCopy];
 LABEL_14:
 
-  v17 = [(AMSObservable *)self stateLock];
-  [v17 unlock];
+  stateLock3 = [(AMSObservable *)self stateLock];
+  [stateLock3 unlock];
 }
 
 - (void)unsubscribeAll
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSObservable *)self stateLock];
-  [v3 lock];
+  stateLock = [(AMSObservable *)self stateLock];
+  [stateLock lock];
 
-  v4 = [(AMSObservable *)self stateLock];
-  v5 = [v4 condition];
+  stateLock2 = [(AMSObservable *)self stateLock];
+  condition = [stateLock2 condition];
 
-  if (v5 == 1)
+  if (condition == 1)
   {
     v6 = +[AMSLogConfig sharedConfig];
     if (!v6)
@@ -785,37 +785,37 @@ LABEL_14:
       v6 = +[AMSLogConfig sharedConfig];
     }
 
-    v7 = [v6 OSLogObject];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v6 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v8 = objc_opt_class();
       v9 = v8;
-      v10 = [(AMSObservable *)self logKey];
+      logKey = [(AMSObservable *)self logKey];
       *buf = 138543618;
       v15 = v8;
       v16 = 2114;
-      v17 = v10;
-      _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Someone is attempting to remove all observers from a completed observable.", buf, 0x16u);
+      v17 = logKey;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Someone is attempting to remove all observers from a completed observable.", buf, 0x16u);
     }
 
-    v11 = [(AMSObservable *)self stateLock];
-    [v11 unlock];
+    stateLock3 = [(AMSObservable *)self stateLock];
+    [stateLock3 unlock];
   }
 
   else
   {
-    v12 = [(AMSObservable *)self observers];
-    [v12 removeAllObjects];
+    observers = [(AMSObservable *)self observers];
+    [observers removeAllObjects];
 
-    v13 = [(AMSObservable *)self stateLock];
-    [v13 unlock];
+    stateLock4 = [(AMSObservable *)self stateLock];
+    [stateLock4 unlock];
   }
 }
 
 - (BOOL)_isComplete
 {
-  v2 = [(AMSObservable *)self stateLock];
-  v3 = [v2 condition] == 1;
+  stateLock = [(AMSObservable *)self stateLock];
+  v3 = [stateLock condition] == 1;
 
   return v3;
 }

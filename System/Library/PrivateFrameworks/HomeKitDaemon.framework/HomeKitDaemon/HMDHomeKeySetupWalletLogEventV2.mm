@@ -2,8 +2,8 @@
 - (NSDictionary)coreAnalyticsEventDictionary;
 - (NSString)coreAnalyticsEventName;
 - (_TtC13HomeKitDaemon31HMDHomeKeySetupWalletLogEventV2)init;
-- (_TtC13HomeKitDaemon31HMDHomeKeySetupWalletLogEventV2)initWithStartTime:(double)a3;
-- (void)setCoreAnalyticsEventName:(id)a3;
+- (_TtC13HomeKitDaemon31HMDHomeKeySetupWalletLogEventV2)initWithStartTime:(double)time;
+- (void)setCoreAnalyticsEventName:(id)name;
 @end
 
 @implementation HMDHomeKeySetupWalletLogEventV2
@@ -18,7 +18,7 @@
   return v4;
 }
 
-- (void)setCoreAnalyticsEventName:(id)a3
+- (void)setCoreAnalyticsEventName:(id)name
 {
   v4 = sub_22A4DD5EC();
   v5 = (self + OBJC_IVAR____TtC13HomeKitDaemon31HMDHomeKeySetupWalletLogEventV2_coreAnalyticsEventName);
@@ -29,7 +29,7 @@
 
 - (NSDictionary)coreAnalyticsEventDictionary
 {
-  v2 = self;
+  selfCopy = self;
   sub_229565114();
 
   sub_22956540C();
@@ -50,7 +50,7 @@
   return [(HMMLogEvent *)&v4 init];
 }
 
-- (_TtC13HomeKitDaemon31HMDHomeKeySetupWalletLogEventV2)initWithStartTime:(double)a3
+- (_TtC13HomeKitDaemon31HMDHomeKeySetupWalletLogEventV2)initWithStartTime:(double)time
 {
   *(self + OBJC_IVAR____TtC13HomeKitDaemon31HMDHomeKeySetupWalletLogEventV2_success) = 0;
   v4 = (self + OBJC_IVAR____TtC13HomeKitDaemon31HMDHomeKeySetupWalletLogEventV2_coreAnalyticsEventName);
@@ -59,7 +59,7 @@
   *(self + OBJC_IVAR____TtC13HomeKitDaemon31HMDHomeKeySetupWalletLogEventV2_coreAnalyticsEventOptions) = 1;
   v6.receiver = self;
   v6.super_class = type metadata accessor for HMDHomeKeySetupWalletLogEventV2();
-  return [(HMMLogEvent *)&v6 initWithStartTime:a3];
+  return [(HMMLogEvent *)&v6 initWithStartTime:time];
 }
 
 @end

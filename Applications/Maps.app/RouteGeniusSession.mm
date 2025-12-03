@@ -4,12 +4,12 @@
 - (RouteGeniusSession)init;
 - (void)cleanupStateReplay;
 - (void)prepareToReplayCurrentState;
-- (void)registerObserver:(id)a3;
+- (void)registerObserver:(id)observer;
 - (void)replayCurrentState;
 - (void)resume;
-- (void)setSessionState:(unint64_t)a3;
+- (void)setSessionState:(unint64_t)state;
 - (void)suspend;
-- (void)unregisterObserver:(id)a3;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation RouteGeniusSession
@@ -21,42 +21,42 @@
   return WeakRetained;
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(RouteGeniusSession *)self observers];
-  [v5 unregisterObserver:v4];
+  observerCopy = observer;
+  observers = [(RouteGeniusSession *)self observers];
+  [observers unregisterObserver:observerCopy];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(RouteGeniusSession *)self observers];
-  [v5 registerObserver:v4];
+  observerCopy = observer;
+  observers = [(RouteGeniusSession *)self observers];
+  [observers registerObserver:observerCopy];
 }
 
 - (void)cleanupStateReplay
 {
-  v2 = [(RouteGeniusSession *)self observers];
-  [v2 clearSnapshottedObservers];
+  observers = [(RouteGeniusSession *)self observers];
+  [observers clearSnapshottedObservers];
 }
 
 - (void)replayCurrentState
 {
-  v3 = [(RouteGeniusSession *)self observers];
-  [v3 removeSnapshottedObservers];
+  observers = [(RouteGeniusSession *)self observers];
+  [observers removeSnapshottedObservers];
 
-  v4 = [(RouteGeniusSession *)self observers];
-  [v4 mapsSession:self didChangeState:{-[RouteGeniusSession sessionState](self, "sessionState")}];
+  observers2 = [(RouteGeniusSession *)self observers];
+  [observers2 mapsSession:self didChangeState:{-[RouteGeniusSession sessionState](self, "sessionState")}];
 
-  v5 = [(RouteGeniusSession *)self observers];
-  [v5 restoreOriginalObservers];
+  observers3 = [(RouteGeniusSession *)self observers];
+  [observers3 restoreOriginalObservers];
 }
 
 - (void)prepareToReplayCurrentState
 {
-  v2 = [(RouteGeniusSession *)self observers];
-  [v2 snapshotCurrentObservers];
+  observers = [(RouteGeniusSession *)self observers];
+  [observers snapshotCurrentObservers];
 }
 
 - (void)suspend
@@ -80,18 +80,18 @@
 - (MapsSuggestionsRouteGeniusEntry)routeGeniusEntry
 {
   v2 = +[CarRouteGeniusService sharedService];
-  v3 = [v2 suggestion];
+  suggestion = [v2 suggestion];
 
-  return v3;
+  return suggestion;
 }
 
-- (void)setSessionState:(unint64_t)a3
+- (void)setSessionState:(unint64_t)state
 {
-  if (self->_sessionState != a3)
+  if (self->_sessionState != state)
   {
-    self->_sessionState = a3;
-    v5 = [(RouteGeniusSession *)self observers];
-    [v5 mapsSession:self didChangeState:{-[RouteGeniusSession sessionState](self, "sessionState")}];
+    self->_sessionState = state;
+    observers = [(RouteGeniusSession *)self observers];
+    [observers mapsSession:self didChangeState:{-[RouteGeniusSession sessionState](self, "sessionState")}];
   }
 }
 

@@ -1,10 +1,10 @@
 @interface _SharedPKHMHomeManager
 + (id)sharedInstance;
-- (void)_performOperationWithHomeManager:(id)a3;
-- (void)_performOperationWithHomes:(id)a3;
+- (void)_performOperationWithHomeManager:(id)manager;
+- (void)_performOperationWithHomes:(id)homes;
 - (void)_withLock_cleanupHomeManagerIfNeeded;
 - (void)decrementReferenceCount;
-- (void)homeManagerDidUpdateHomes:(id)a3;
+- (void)homeManagerDidUpdateHomes:(id)homes;
 - (void)incrementReferenceCount;
 @end
 
@@ -22,10 +22,10 @@
   return v3;
 }
 
-- (void)_performOperationWithHomeManager:(id)a3
+- (void)_performOperationWithHomeManager:(id)manager
 {
-  v4 = a3;
-  if (v4)
+  managerCopy = manager;
+  if (managerCopy)
   {
     os_unfair_lock_lock(&self->_lock);
     manager = self->_manager;
@@ -39,9 +39,9 @@
         timerQueue = self->_timerQueue;
         self->_timerQueue = v16;
 
-        v6 = [objc_alloc(_MergedGlobals_177()) initWithOptions:524 cachePolicy:0];
-        [v6 setAdaptive:1];
-        v18 = [objc_alloc(off_1ED6D1120()) initWithConfiguration:v6];
+        managerCopy2 = [objc_alloc(_MergedGlobals_177()) initWithOptions:524 cachePolicy:0];
+        [managerCopy2 setAdaptive:1];
+        v18 = [objc_alloc(off_1ED6D1120()) initWithConfiguration:managerCopy2];
         v19 = self->_manager;
         self->_manager = v18;
 
@@ -71,7 +71,7 @@
       }
     }
 
-    v6 = manager;
+    managerCopy2 = manager;
     if (self->_didLoadData)
     {
       os_unfair_lock_unlock(&self->_lock);
@@ -81,7 +81,7 @@
       v28[2] = __59___SharedPKHMHomeManager__performOperationWithHomeManager___block_invoke;
       v28[3] = &unk_1E79C9D80;
       objc_copyWeak(&v29, location);
-      v4[2](v4, v6, v28);
+      managerCopy[2](managerCopy, managerCopy2, v28);
       objc_destroyWeak(&v29);
     }
 
@@ -106,7 +106,7 @@
         handler[2] = __59___SharedPKHMHomeManager__performOperationWithHomeManager___block_invoke_2;
         handler[3] = &unk_1E79C4DD8;
         handler[4] = self;
-        v27 = v6;
+        v27 = managerCopy2;
         dispatch_source_set_event_handler(v13, handler);
         dispatch_resume(self->_fetchTimeout);
       }
@@ -117,7 +117,7 @@
       aBlock[1] = 3221225472;
       aBlock[2] = __59___SharedPKHMHomeManager__performOperationWithHomeManager___block_invoke_16;
       aBlock[3] = &unk_1E79DDC00;
-      v24 = v4;
+      v24 = managerCopy;
       objc_copyWeak(&v25, location);
       v15 = _Block_copy(aBlock);
       [(NSMutableArray *)v14 addObject:v15];
@@ -131,15 +131,15 @@ LABEL_9:
   }
 }
 
-- (void)_performOperationWithHomes:(id)a3
+- (void)_performOperationWithHomes:(id)homes
 {
-  v4 = a3;
+  homesCopy = homes;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53___SharedPKHMHomeManager__performOperationWithHomes___block_invoke;
   v6[3] = &unk_1E79DDC28;
-  v7 = v4;
-  v5 = v4;
+  v7 = homesCopy;
+  v5 = homesCopy;
   [(_SharedPKHMHomeManager *)self _performOperationWithHomeManager:v6];
 }
 
@@ -170,21 +170,21 @@ LABEL_9:
   }
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  homesCopy = homes;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 homes];
+  homes = [homesCopy homes];
   v6 = PKLogFacilityTypeGetObject(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v27 = [v5 count];
+    v27 = [homes count];
     _os_log_impl(&dword_1AD337000, v6, OS_LOG_TYPE_DEFAULT, "_SharedPKHMHomeManager found %lu homes", buf, 0xCu);
   }
 
-  v17 = v5;
+  v17 = homes;
 
   v7 = self->_fetchCompletions;
   self->_didLoadData = 1;
@@ -225,7 +225,7 @@ LABEL_9:
         block[2] = __52___SharedPKHMHomeManager_homeManagerDidUpdateHomes___block_invoke;
         block[3] = &unk_1E79C44A0;
         v20 = v15;
-        v19 = v4;
+        v19 = homesCopy;
         dispatch_async(timerQueue, block);
 
         ++v14;

@@ -1,8 +1,8 @@
 @interface TKSmartCardUserInteraction
 - (TKSmartCardUserInteraction)init;
-- (TKSmartCardUserInteraction)initWithCoder:(id)a3;
+- (TKSmartCardUserInteraction)initWithCoder:(id)coder;
 - (id)delegate;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TKSmartCardUserInteraction
@@ -21,34 +21,34 @@
   return result;
 }
 
-- (TKSmartCardUserInteraction)initWithCoder:(id)a3
+- (TKSmartCardUserInteraction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TKSmartCardUserInteraction;
   v5 = [(TKSmartCardUserInteraction *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"initialTimeout"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"initialTimeout"];
     v5->_initialTimeout = [v6 integerValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"interactionTimeout"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"interactionTimeout"];
     v5->_interactionTimeout = [v7 integerValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   initialTimeout = self->_initialTimeout;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithDouble:initialTimeout];
-  [v6 encodeObject:v7 forKey:@"initialTimeout"];
+  [coderCopy encodeObject:v7 forKey:@"initialTimeout"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithDouble:self->_interactionTimeout];
-  [v6 encodeObject:v8 forKey:@"interactionTimeout"];
+  [coderCopy encodeObject:v8 forKey:@"interactionTimeout"];
 }
 
 - (id)delegate

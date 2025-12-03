@@ -1,15 +1,15 @@
 @interface TCBackgroundThreadManager
-- (TCBackgroundThreadManager)initWithCancelDelegate:(id)a3;
-- (void)addASyncBlock:(id)a3;
+- (TCBackgroundThreadManager)initWithCancelDelegate:(id)delegate;
+- (void)addASyncBlock:(id)block;
 - (void)dealloc;
 - (void)waitUntilComplete;
 @end
 
 @implementation TCBackgroundThreadManager
 
-- (TCBackgroundThreadManager)initWithCancelDelegate:(id)a3
+- (TCBackgroundThreadManager)initWithCancelDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = TCBackgroundThreadManager;
   v6 = [(TCBackgroundThreadManager *)&v20 init];
@@ -27,15 +27,15 @@
     mGroup = v6->mGroup;
     v6->mGroup = v11;
 
-    objc_storeStrong(&v6->mCancelDelegate, a3);
-    v13 = [MEMORY[0x277CCACC8] currentThread];
-    v14 = [v13 threadDictionary];
-    v15 = [v14 objectForKey:@"TCMessageContext Instance"];
+    objc_storeStrong(&v6->mCancelDelegate, delegate);
+    currentThread = [MEMORY[0x277CCACC8] currentThread];
+    threadDictionary = [currentThread threadDictionary];
+    v15 = [threadDictionary objectForKey:@"TCMessageContext Instance"];
     [(TCBackgroundThreadManager *)v6 setMessageContext:v15];
 
-    v16 = [MEMORY[0x277CCACC8] currentThread];
-    v17 = [v16 threadDictionary];
-    v18 = [v17 objectForKey:@"TCProgressContext Instance"];
+    currentThread2 = [MEMORY[0x277CCACC8] currentThread];
+    threadDictionary2 = [currentThread2 threadDictionary];
+    v18 = [threadDictionary2 objectForKey:@"TCProgressContext Instance"];
     [(TCBackgroundThreadManager *)v6 setProgressContext:v18];
   }
 
@@ -67,10 +67,10 @@
   [(TCBackgroundThreadManager *)&v6 dealloc];
 }
 
-- (void)addASyncBlock:(id)a3
+- (void)addASyncBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
+  blockCopy = block;
+  v5 = blockCopy;
   if (self->mIsWaiting)
   {
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TCBackgroundThreadManager addASyncBlock:]"];
@@ -90,7 +90,7 @@
     v10[2] = __43__TCBackgroundThreadManager_addASyncBlock___block_invoke;
     v10[3] = &unk_2799C6CB8;
     v10[4] = self;
-    v11 = v4;
+    v11 = blockCopy;
     dispatch_group_async(mGroup, mQueue, v10);
   }
 }

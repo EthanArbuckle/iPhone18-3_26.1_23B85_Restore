@@ -9,12 +9,12 @@
 + (uint64_t)skui_alertControllerForRequiredAuthorizationIfNeccesaryForBundle:()SensorKitUI authGroup:destructiveHandler:
 {
   v21 = *MEMORY[0x277D85DE8];
-  v9 = [a4 localizedDisplayName];
-  v10 = [a3 sk_appName];
-  v11 = [a3 srui_localizedStudyDataAlertTitleWithAuthGroupName:v9];
-  v12 = [a4 localizedRequiredAuthAlertDetail];
+  localizedDisplayName = [a4 localizedDisplayName];
+  sk_appName = [a3 sk_appName];
+  v11 = [a3 srui_localizedStudyDataAlertTitleWithAuthGroupName:localizedDisplayName];
+  localizedRequiredAuthAlertDetail = [a4 localizedRequiredAuthAlertDetail];
   v18 = 0;
-  v13 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v12 validFormatSpecifiers:@"%@%@" error:&v18, v10, v9];
+  v13 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:localizedRequiredAuthAlertDetail validFormatSpecifiers:@"%@%@" error:&v18, sk_appName, localizedDisplayName];
   if (!v13)
   {
     if (_MergedGlobals_10 != -1)
@@ -32,7 +32,7 @@
   }
 
   v15 = [MEMORY[0x277CCACA8] srui_localizedStringForCode:39];
-  result = [a1 skui_requiredAuthorizationAlertIfNeccesaryForBundle:a3 authGroup:a4 title:v11 message:v13 destructiveButtonTitle:v15 destructiveHandler:a5 cancelButtonTitle:objc_msgSend(MEMORY[0x277CCACA8] cancelHandler:{"srui_localizedStringForCode:", 40), 0}];
+  result = [self skui_requiredAuthorizationAlertIfNeccesaryForBundle:a3 authGroup:a4 title:v11 message:v13 destructiveButtonTitle:v15 destructiveHandler:a5 cancelButtonTitle:objc_msgSend(MEMORY[0x277CCACA8] cancelHandler:{"srui_localizedStringForCode:", 40), 0}];
   v17 = *MEMORY[0x277D85DE8];
   return result;
 }
@@ -55,11 +55,11 @@
 + (uint64_t)skui_alertControllerForRequiredAuthorizationIfNeccesaryForBundle:()SensorKitUI authGroup:tableView:indexPath:destructiveHandler:
 {
   v26 = *MEMORY[0x277D85DE8];
-  v13 = [a4 localizedDisplayName];
-  v14 = [a3 srui_localizedStudyDataAlertTitleWithAuthGroupName:v13];
-  v15 = [a4 localizedRevokeRequiredAuthAlertDetail];
+  localizedDisplayName = [a4 localizedDisplayName];
+  v14 = [a3 srui_localizedStudyDataAlertTitleWithAuthGroupName:localizedDisplayName];
+  localizedRevokeRequiredAuthAlertDetail = [a4 localizedRevokeRequiredAuthAlertDetail];
   v23 = 0;
-  v16 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v15 validFormatSpecifiers:@"%@" error:&v23, v13];
+  v16 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:localizedRevokeRequiredAuthAlertDetail validFormatSpecifiers:@"%@" error:&v23, localizedDisplayName];
   if (!v16)
   {
     if (_MergedGlobals_10 != -1)
@@ -84,7 +84,7 @@
   v22[3] = &unk_279B984D8;
   v22[4] = a5;
   v22[5] = a6;
-  result = [a1 skui_requiredAuthorizationAlertIfNeccesaryForBundle:a3 authGroup:a4 title:v14 message:v16 destructiveButtonTitle:v18 destructiveHandler:a7 cancelButtonTitle:v19 cancelHandler:v22];
+  result = [self skui_requiredAuthorizationAlertIfNeccesaryForBundle:a3 authGroup:a4 title:v14 message:v16 destructiveButtonTitle:v18 destructiveHandler:a7 cancelButtonTitle:v19 cancelHandler:v22];
   v21 = *MEMORY[0x277D85DE8];
   return result;
 }

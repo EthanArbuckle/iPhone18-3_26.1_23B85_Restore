@@ -1,20 +1,20 @@
 @interface IDSRegistrationControlChosenMetric
-- (IDSRegistrationControlChosenMetric)initWithControlRegistrationType:(int64_t)a3 registrationControlStatus:(int64_t)a4 isInterestingRegion:(BOOL)a5;
+- (IDSRegistrationControlChosenMetric)initWithControlRegistrationType:(int64_t)type registrationControlStatus:(int64_t)status isInterestingRegion:(BOOL)region;
 - (NSCopying)awdRepresentation;
 @end
 
 @implementation IDSRegistrationControlChosenMetric
 
-- (IDSRegistrationControlChosenMetric)initWithControlRegistrationType:(int64_t)a3 registrationControlStatus:(int64_t)a4 isInterestingRegion:(BOOL)a5
+- (IDSRegistrationControlChosenMetric)initWithControlRegistrationType:(int64_t)type registrationControlStatus:(int64_t)status isInterestingRegion:(BOOL)region
 {
   v9.receiver = self;
   v9.super_class = IDSRegistrationControlChosenMetric;
   result = [(IDSRegistrationControlChosenMetric *)&v9 init];
   if (result)
   {
-    result->_controlRegistrationType = a3;
-    result->_registrationControlStatus = a4;
-    result->_isInterestingRegion = a5;
+    result->_controlRegistrationType = type;
+    result->_registrationControlStatus = status;
+    result->_isInterestingRegion = region;
   }
 
   return result;

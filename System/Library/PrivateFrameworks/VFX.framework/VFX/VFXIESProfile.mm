@@ -1,9 +1,9 @@
 @interface VFXIESProfile
-+ (VFXIESProfile)profileWithURL:(id)a3;
-- (VFXIESProfile)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (VFXIESProfile)profileWithURL:(id)l;
+- (VFXIESProfile)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VFXIESProfile
@@ -18,10 +18,10 @@
   [(VFXIESProfile *)&v4 dealloc];
 }
 
-+ (VFXIESProfile)profileWithURL:(id)a3
++ (VFXIESProfile)profileWithURL:(id)l
 {
   v4 = objc_alloc_init(objc_opt_class());
-  if (sub_1AF195430(a3, (v4 + 1), v5, v6))
+  if (sub_1AF195430(l, (v4 + 1), v5, v6))
   {
     v10 = objc_msgSend_UUID(MEMORY[0x1E696AFB0], v7, v8, v9);
     v4[14] = objc_msgSend_UUIDString(v10, v11, v12, v13);
@@ -41,7 +41,7 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   anglesHCount = self->_iesInfo.anglesHCount;
@@ -74,7 +74,7 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   anglesHCount = self->_iesInfo.anglesHCount;
   anglesVCount = self->_iesInfo.anglesVCount;
@@ -93,14 +93,14 @@
   memcpy(v9 + 4 * anglesHCount + 72, self->_iesInfo.anglesV, 4 * anglesVCount);
   memcpy(v9 + 4 * anglesHCount + 4 * anglesVCount + 72, self->_iesInfo.candalaValues, v7);
   v14 = objc_msgSend_dataWithBytesNoCopy_length_freeWhenDone_(MEMORY[0x1E695DEF0], v13, v9, v8 + 72, 1);
-  objc_msgSend_encodeObject_forKey_(a3, v15, v14, @"iesData");
-  objc_msgSend_encodeObject_forKey_(a3, v16, self->_name, @"name");
+  objc_msgSend_encodeObject_forKey_(coder, v15, v14, @"iesData");
+  objc_msgSend_encodeObject_forKey_(coder, v16, self->_name, @"name");
   identifier = self->_identifier;
 
-  objc_msgSend_encodeObject_forKey_(a3, v17, identifier, @"identifier");
+  objc_msgSend_encodeObject_forKey_(coder, v17, identifier, @"identifier");
 }
 
-- (VFXIESProfile)initWithCoder:(id)a3
+- (VFXIESProfile)initWithCoder:(id)coder
 {
   v39.receiver = self;
   v39.super_class = VFXIESProfile;
@@ -108,12 +108,12 @@
   if (v4)
   {
     v5 = objc_opt_class();
-    v7 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v6, v5, @"name");
+    v7 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v6, v5, @"name");
     objc_msgSend_setName_(v4, v8, v7, v9);
     v10 = objc_opt_class();
-    *(v4 + 14) = objc_msgSend_decodeObjectOfClass_forKey_(a3, v11, v10, @"name");
+    *(v4 + 14) = objc_msgSend_decodeObjectOfClass_forKey_(coder, v11, v10, @"name");
     v12 = objc_opt_class();
-    v14 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v13, v12, @"iesData");
+    v14 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v13, v12, @"iesData");
     v18 = objc_msgSend_bytes(v14, v15, v16, v17);
     if (objc_msgSend_length(v14, v19, v20, v21) > 0x47)
     {

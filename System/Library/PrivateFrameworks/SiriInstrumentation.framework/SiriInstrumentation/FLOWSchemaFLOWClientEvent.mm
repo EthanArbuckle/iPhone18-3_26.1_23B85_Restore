@@ -1,9 +1,9 @@
 @interface FLOWSchemaFLOWClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (FLOWSchemaFLOWAppleMusicVoicePreviewOfferNotShown)appleMusicVoicePreviewOfferNotShown;
-- (FLOWSchemaFLOWClientEvent)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWClientEvent)initWithJSON:(id)a3;
+- (FLOWSchemaFLOWClientEvent)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWClientEvent)initWithJSON:(id)n;
 - (FLOWSchemaFLOWContactTier1)flowContactTier1;
 - (FLOWSchemaFLOWDomainExecutionContext)flowDomainExecutionContext;
 - (FLOWSchemaFLOWEntityContextTier1)flowEntityContextTier1;
@@ -15,7 +15,7 @@
 - (FLOWSchemaFLOWStep)flowStep;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -32,32 +32,32 @@
 - (void)deleteMediaPlayerRadioStationContextTier1;
 - (void)deletePegasusContextTier1;
 - (void)deleteSmsAttachmentMetadataTier1;
-- (void)setAppleMusicVoicePreviewOfferNotShown:(id)a3;
-- (void)setFlowContactTier1:(id)a3;
-- (void)setFlowDomainExecutionContext:(id)a3;
-- (void)setFlowEntityContextTier1:(id)a3;
-- (void)setFlowStep:(id)a3;
-- (void)setLocationAccessPermissionPromptContext:(id)a3;
-- (void)setMediaPlayerPlaybackContextTier1:(id)a3;
-- (void)setMediaPlayerRadioStationContextTier1:(id)a3;
-- (void)setPegasusContextTier1:(id)a3;
-- (void)setSmsAttachmentMetadataTier1:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setAppleMusicVoicePreviewOfferNotShown:(id)shown;
+- (void)setFlowContactTier1:(id)tier1;
+- (void)setFlowDomainExecutionContext:(id)context;
+- (void)setFlowEntityContextTier1:(id)tier1;
+- (void)setFlowStep:(id)step;
+- (void)setLocationAccessPermissionPromptContext:(id)context;
+- (void)setMediaPlayerPlaybackContextTier1:(id)tier1;
+- (void)setMediaPlayerRadioStationContextTier1:(id)tier1;
+- (void)setPegasusContextTier1:(id)tier1;
+- (void)setSmsAttachmentMetadataTier1:(id)tier1;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWClientEvent
 
 - (id)qualifiedMessageName
 {
-  v2 = [(FLOWSchemaFLOWClientEvent *)self whichEvent_Type];
-  if (v2 - 101 > 9)
+  whichEvent_Type = [(FLOWSchemaFLOWClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 9)
   {
     return @"com.apple.aiml.siri.flow.FLOWClientEvent";
   }
 
   else
   {
-    return off_1E78D50A8[v2 - 101];
+    return off_1E78D50A8[whichEvent_Type - 101];
   }
 }
 
@@ -211,15 +211,15 @@
   return v3;
 }
 
-- (FLOWSchemaFLOWClientEvent)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v35.receiver = self;
   v35.super_class = FLOWSchemaFLOWClientEvent;
   v5 = [(FLOWSchemaFLOWClientEvent *)&v35 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -227,7 +227,7 @@
       [(FLOWSchemaFLOWClientEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"flowStep"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"flowStep"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -235,7 +235,7 @@
       [(FLOWSchemaFLOWClientEvent *)v5 setFlowStep:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"flowEntityContextTier1"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"flowEntityContextTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -243,7 +243,7 @@
       [(FLOWSchemaFLOWClientEvent *)v5 setFlowEntityContextTier1:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"smsAttachmentMetadataTier1"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"smsAttachmentMetadataTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -252,7 +252,7 @@
     }
 
     v32 = v12;
-    v14 = [v4 objectForKeyedSubscript:@"appleMusicVoicePreviewOfferNotShown"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"appleMusicVoicePreviewOfferNotShown"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -260,7 +260,7 @@
       [(FLOWSchemaFLOWClientEvent *)v5 setAppleMusicVoicePreviewOfferNotShown:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:{@"pegasusContextTier1", v14}];
+    v16 = [dictionaryCopy objectForKeyedSubscript:{@"pegasusContextTier1", v14}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -268,7 +268,7 @@
       [(FLOWSchemaFLOWClientEvent *)v5 setPegasusContextTier1:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"mediaPlayerPlaybackContextTier1"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"mediaPlayerPlaybackContextTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -278,7 +278,7 @@
 
     v33 = v10;
     v34 = v6;
-    v20 = [v4 objectForKeyedSubscript:@"mediaPlayerRadioStationContextTier1"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"mediaPlayerRadioStationContextTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -287,7 +287,7 @@
     }
 
     v22 = v8;
-    v23 = [v4 objectForKeyedSubscript:@"flowDomainExecutionContext"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"flowDomainExecutionContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -295,7 +295,7 @@
       [(FLOWSchemaFLOWClientEvent *)v5 setFlowDomainExecutionContext:v24];
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"locationAccessPermissionPromptContext"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"locationAccessPermissionPromptContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -303,7 +303,7 @@
       [(FLOWSchemaFLOWClientEvent *)v5 setLocationAccessPermissionPromptContext:v26];
     }
 
-    v27 = [v4 objectForKeyedSubscript:@"flowContactTier1"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"flowContactTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -317,30 +317,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWClientEvent)initWithJSON:(id)a3
+- (FLOWSchemaFLOWClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -353,186 +353,186 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_appleMusicVoicePreviewOfferNotShown)
   {
-    v4 = [(FLOWSchemaFLOWClientEvent *)self appleMusicVoicePreviewOfferNotShown];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    appleMusicVoicePreviewOfferNotShown = [(FLOWSchemaFLOWClientEvent *)self appleMusicVoicePreviewOfferNotShown];
+    dictionaryRepresentation = [appleMusicVoicePreviewOfferNotShown dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"appleMusicVoicePreviewOfferNotShown"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"appleMusicVoicePreviewOfferNotShown"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"appleMusicVoicePreviewOfferNotShown"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"appleMusicVoicePreviewOfferNotShown"];
     }
   }
 
   if (self->_eventMetadata)
   {
-    v7 = [(FLOWSchemaFLOWClientEvent *)self eventMetadata];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    eventMetadata = [(FLOWSchemaFLOWClientEvent *)self eventMetadata];
+    dictionaryRepresentation2 = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"eventMetadata"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_flowContactTier1)
   {
-    v10 = [(FLOWSchemaFLOWClientEvent *)self flowContactTier1];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    flowContactTier1 = [(FLOWSchemaFLOWClientEvent *)self flowContactTier1];
+    dictionaryRepresentation3 = [flowContactTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"flowContactTier1"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"flowContactTier1"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"flowContactTier1"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"flowContactTier1"];
     }
   }
 
   if (self->_flowDomainExecutionContext)
   {
-    v13 = [(FLOWSchemaFLOWClientEvent *)self flowDomainExecutionContext];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    flowDomainExecutionContext = [(FLOWSchemaFLOWClientEvent *)self flowDomainExecutionContext];
+    dictionaryRepresentation4 = [flowDomainExecutionContext dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"flowDomainExecutionContext"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"flowDomainExecutionContext"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"flowDomainExecutionContext"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"flowDomainExecutionContext"];
     }
   }
 
   if (self->_flowEntityContextTier1)
   {
-    v16 = [(FLOWSchemaFLOWClientEvent *)self flowEntityContextTier1];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    flowEntityContextTier1 = [(FLOWSchemaFLOWClientEvent *)self flowEntityContextTier1];
+    dictionaryRepresentation5 = [flowEntityContextTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"flowEntityContextTier1"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"flowEntityContextTier1"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"flowEntityContextTier1"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"flowEntityContextTier1"];
     }
   }
 
   if (self->_flowStep)
   {
-    v19 = [(FLOWSchemaFLOWClientEvent *)self flowStep];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    flowStep = [(FLOWSchemaFLOWClientEvent *)self flowStep];
+    dictionaryRepresentation6 = [flowStep dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"flowStep"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"flowStep"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"flowStep"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"flowStep"];
     }
   }
 
   if (self->_locationAccessPermissionPromptContext)
   {
-    v22 = [(FLOWSchemaFLOWClientEvent *)self locationAccessPermissionPromptContext];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    locationAccessPermissionPromptContext = [(FLOWSchemaFLOWClientEvent *)self locationAccessPermissionPromptContext];
+    dictionaryRepresentation7 = [locationAccessPermissionPromptContext dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"locationAccessPermissionPromptContext"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"locationAccessPermissionPromptContext"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"locationAccessPermissionPromptContext"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"locationAccessPermissionPromptContext"];
     }
   }
 
   if (self->_mediaPlayerPlaybackContextTier1)
   {
-    v25 = [(FLOWSchemaFLOWClientEvent *)self mediaPlayerPlaybackContextTier1];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    mediaPlayerPlaybackContextTier1 = [(FLOWSchemaFLOWClientEvent *)self mediaPlayerPlaybackContextTier1];
+    dictionaryRepresentation8 = [mediaPlayerPlaybackContextTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"mediaPlayerPlaybackContextTier1"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"mediaPlayerPlaybackContextTier1"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"mediaPlayerPlaybackContextTier1"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"mediaPlayerPlaybackContextTier1"];
     }
   }
 
   if (self->_mediaPlayerRadioStationContextTier1)
   {
-    v28 = [(FLOWSchemaFLOWClientEvent *)self mediaPlayerRadioStationContextTier1];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    mediaPlayerRadioStationContextTier1 = [(FLOWSchemaFLOWClientEvent *)self mediaPlayerRadioStationContextTier1];
+    dictionaryRepresentation9 = [mediaPlayerRadioStationContextTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"mediaPlayerRadioStationContextTier1"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"mediaPlayerRadioStationContextTier1"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"mediaPlayerRadioStationContextTier1"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"mediaPlayerRadioStationContextTier1"];
     }
   }
 
   if (self->_pegasusContextTier1)
   {
-    v31 = [(FLOWSchemaFLOWClientEvent *)self pegasusContextTier1];
-    v32 = [v31 dictionaryRepresentation];
-    if (v32)
+    pegasusContextTier1 = [(FLOWSchemaFLOWClientEvent *)self pegasusContextTier1];
+    dictionaryRepresentation10 = [pegasusContextTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v32 forKeyedSubscript:@"pegasusContextTier1"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"pegasusContextTier1"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"pegasusContextTier1"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"pegasusContextTier1"];
     }
   }
 
   if (self->_smsAttachmentMetadataTier1)
   {
-    v34 = [(FLOWSchemaFLOWClientEvent *)self smsAttachmentMetadataTier1];
-    v35 = [v34 dictionaryRepresentation];
-    if (v35)
+    smsAttachmentMetadataTier1 = [(FLOWSchemaFLOWClientEvent *)self smsAttachmentMetadataTier1];
+    dictionaryRepresentation11 = [smsAttachmentMetadataTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation11)
     {
-      [v3 setObject:v35 forKeyedSubscript:@"smsAttachmentMetadataTier1"];
+      [dictionary setObject:dictionaryRepresentation11 forKeyedSubscript:@"smsAttachmentMetadataTier1"];
     }
 
     else
     {
-      v36 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v36 forKeyedSubscript:@"smsAttachmentMetadataTier1"];
+      null11 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null11 forKeyedSubscript:@"smsAttachmentMetadataTier1"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -550,34 +550,34 @@
   return v9 ^ v12 ^ [(FLOWSchemaFLOWContactTier1 *)self->_flowContactTier1 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_58;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_58;
   }
 
-  v6 = [(FLOWSchemaFLOWClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(FLOWSchemaFLOWClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_57;
   }
 
-  v8 = [(FLOWSchemaFLOWClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(FLOWSchemaFLOWClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(FLOWSchemaFLOWClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(FLOWSchemaFLOWClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -589,20 +589,20 @@
   {
   }
 
-  v6 = [(FLOWSchemaFLOWClientEvent *)self flowStep];
-  v7 = [v4 flowStep];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(FLOWSchemaFLOWClientEvent *)self flowStep];
+  eventMetadata2 = [equalCopy flowStep];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_57;
   }
 
-  v13 = [(FLOWSchemaFLOWClientEvent *)self flowStep];
-  if (v13)
+  flowStep = [(FLOWSchemaFLOWClientEvent *)self flowStep];
+  if (flowStep)
   {
-    v14 = v13;
-    v15 = [(FLOWSchemaFLOWClientEvent *)self flowStep];
-    v16 = [v4 flowStep];
-    v17 = [v15 isEqual:v16];
+    v14 = flowStep;
+    flowStep2 = [(FLOWSchemaFLOWClientEvent *)self flowStep];
+    flowStep3 = [equalCopy flowStep];
+    v17 = [flowStep2 isEqual:flowStep3];
 
     if (!v17)
     {
@@ -614,20 +614,20 @@
   {
   }
 
-  v6 = [(FLOWSchemaFLOWClientEvent *)self flowEntityContextTier1];
-  v7 = [v4 flowEntityContextTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(FLOWSchemaFLOWClientEvent *)self flowEntityContextTier1];
+  eventMetadata2 = [equalCopy flowEntityContextTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_57;
   }
 
-  v18 = [(FLOWSchemaFLOWClientEvent *)self flowEntityContextTier1];
-  if (v18)
+  flowEntityContextTier1 = [(FLOWSchemaFLOWClientEvent *)self flowEntityContextTier1];
+  if (flowEntityContextTier1)
   {
-    v19 = v18;
-    v20 = [(FLOWSchemaFLOWClientEvent *)self flowEntityContextTier1];
-    v21 = [v4 flowEntityContextTier1];
-    v22 = [v20 isEqual:v21];
+    v19 = flowEntityContextTier1;
+    flowEntityContextTier12 = [(FLOWSchemaFLOWClientEvent *)self flowEntityContextTier1];
+    flowEntityContextTier13 = [equalCopy flowEntityContextTier1];
+    v22 = [flowEntityContextTier12 isEqual:flowEntityContextTier13];
 
     if (!v22)
     {
@@ -639,20 +639,20 @@
   {
   }
 
-  v6 = [(FLOWSchemaFLOWClientEvent *)self smsAttachmentMetadataTier1];
-  v7 = [v4 smsAttachmentMetadataTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(FLOWSchemaFLOWClientEvent *)self smsAttachmentMetadataTier1];
+  eventMetadata2 = [equalCopy smsAttachmentMetadataTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_57;
   }
 
-  v23 = [(FLOWSchemaFLOWClientEvent *)self smsAttachmentMetadataTier1];
-  if (v23)
+  smsAttachmentMetadataTier1 = [(FLOWSchemaFLOWClientEvent *)self smsAttachmentMetadataTier1];
+  if (smsAttachmentMetadataTier1)
   {
-    v24 = v23;
-    v25 = [(FLOWSchemaFLOWClientEvent *)self smsAttachmentMetadataTier1];
-    v26 = [v4 smsAttachmentMetadataTier1];
-    v27 = [v25 isEqual:v26];
+    v24 = smsAttachmentMetadataTier1;
+    smsAttachmentMetadataTier12 = [(FLOWSchemaFLOWClientEvent *)self smsAttachmentMetadataTier1];
+    smsAttachmentMetadataTier13 = [equalCopy smsAttachmentMetadataTier1];
+    v27 = [smsAttachmentMetadataTier12 isEqual:smsAttachmentMetadataTier13];
 
     if (!v27)
     {
@@ -664,20 +664,20 @@
   {
   }
 
-  v6 = [(FLOWSchemaFLOWClientEvent *)self appleMusicVoicePreviewOfferNotShown];
-  v7 = [v4 appleMusicVoicePreviewOfferNotShown];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(FLOWSchemaFLOWClientEvent *)self appleMusicVoicePreviewOfferNotShown];
+  eventMetadata2 = [equalCopy appleMusicVoicePreviewOfferNotShown];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_57;
   }
 
-  v28 = [(FLOWSchemaFLOWClientEvent *)self appleMusicVoicePreviewOfferNotShown];
-  if (v28)
+  appleMusicVoicePreviewOfferNotShown = [(FLOWSchemaFLOWClientEvent *)self appleMusicVoicePreviewOfferNotShown];
+  if (appleMusicVoicePreviewOfferNotShown)
   {
-    v29 = v28;
-    v30 = [(FLOWSchemaFLOWClientEvent *)self appleMusicVoicePreviewOfferNotShown];
-    v31 = [v4 appleMusicVoicePreviewOfferNotShown];
-    v32 = [v30 isEqual:v31];
+    v29 = appleMusicVoicePreviewOfferNotShown;
+    appleMusicVoicePreviewOfferNotShown2 = [(FLOWSchemaFLOWClientEvent *)self appleMusicVoicePreviewOfferNotShown];
+    appleMusicVoicePreviewOfferNotShown3 = [equalCopy appleMusicVoicePreviewOfferNotShown];
+    v32 = [appleMusicVoicePreviewOfferNotShown2 isEqual:appleMusicVoicePreviewOfferNotShown3];
 
     if (!v32)
     {
@@ -689,20 +689,20 @@
   {
   }
 
-  v6 = [(FLOWSchemaFLOWClientEvent *)self pegasusContextTier1];
-  v7 = [v4 pegasusContextTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(FLOWSchemaFLOWClientEvent *)self pegasusContextTier1];
+  eventMetadata2 = [equalCopy pegasusContextTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_57;
   }
 
-  v33 = [(FLOWSchemaFLOWClientEvent *)self pegasusContextTier1];
-  if (v33)
+  pegasusContextTier1 = [(FLOWSchemaFLOWClientEvent *)self pegasusContextTier1];
+  if (pegasusContextTier1)
   {
-    v34 = v33;
-    v35 = [(FLOWSchemaFLOWClientEvent *)self pegasusContextTier1];
-    v36 = [v4 pegasusContextTier1];
-    v37 = [v35 isEqual:v36];
+    v34 = pegasusContextTier1;
+    pegasusContextTier12 = [(FLOWSchemaFLOWClientEvent *)self pegasusContextTier1];
+    pegasusContextTier13 = [equalCopy pegasusContextTier1];
+    v37 = [pegasusContextTier12 isEqual:pegasusContextTier13];
 
     if (!v37)
     {
@@ -714,20 +714,20 @@
   {
   }
 
-  v6 = [(FLOWSchemaFLOWClientEvent *)self mediaPlayerPlaybackContextTier1];
-  v7 = [v4 mediaPlayerPlaybackContextTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(FLOWSchemaFLOWClientEvent *)self mediaPlayerPlaybackContextTier1];
+  eventMetadata2 = [equalCopy mediaPlayerPlaybackContextTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_57;
   }
 
-  v38 = [(FLOWSchemaFLOWClientEvent *)self mediaPlayerPlaybackContextTier1];
-  if (v38)
+  mediaPlayerPlaybackContextTier1 = [(FLOWSchemaFLOWClientEvent *)self mediaPlayerPlaybackContextTier1];
+  if (mediaPlayerPlaybackContextTier1)
   {
-    v39 = v38;
-    v40 = [(FLOWSchemaFLOWClientEvent *)self mediaPlayerPlaybackContextTier1];
-    v41 = [v4 mediaPlayerPlaybackContextTier1];
-    v42 = [v40 isEqual:v41];
+    v39 = mediaPlayerPlaybackContextTier1;
+    mediaPlayerPlaybackContextTier12 = [(FLOWSchemaFLOWClientEvent *)self mediaPlayerPlaybackContextTier1];
+    mediaPlayerPlaybackContextTier13 = [equalCopy mediaPlayerPlaybackContextTier1];
+    v42 = [mediaPlayerPlaybackContextTier12 isEqual:mediaPlayerPlaybackContextTier13];
 
     if (!v42)
     {
@@ -739,20 +739,20 @@
   {
   }
 
-  v6 = [(FLOWSchemaFLOWClientEvent *)self mediaPlayerRadioStationContextTier1];
-  v7 = [v4 mediaPlayerRadioStationContextTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(FLOWSchemaFLOWClientEvent *)self mediaPlayerRadioStationContextTier1];
+  eventMetadata2 = [equalCopy mediaPlayerRadioStationContextTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_57;
   }
 
-  v43 = [(FLOWSchemaFLOWClientEvent *)self mediaPlayerRadioStationContextTier1];
-  if (v43)
+  mediaPlayerRadioStationContextTier1 = [(FLOWSchemaFLOWClientEvent *)self mediaPlayerRadioStationContextTier1];
+  if (mediaPlayerRadioStationContextTier1)
   {
-    v44 = v43;
-    v45 = [(FLOWSchemaFLOWClientEvent *)self mediaPlayerRadioStationContextTier1];
-    v46 = [v4 mediaPlayerRadioStationContextTier1];
-    v47 = [v45 isEqual:v46];
+    v44 = mediaPlayerRadioStationContextTier1;
+    mediaPlayerRadioStationContextTier12 = [(FLOWSchemaFLOWClientEvent *)self mediaPlayerRadioStationContextTier1];
+    mediaPlayerRadioStationContextTier13 = [equalCopy mediaPlayerRadioStationContextTier1];
+    v47 = [mediaPlayerRadioStationContextTier12 isEqual:mediaPlayerRadioStationContextTier13];
 
     if (!v47)
     {
@@ -764,20 +764,20 @@
   {
   }
 
-  v6 = [(FLOWSchemaFLOWClientEvent *)self flowDomainExecutionContext];
-  v7 = [v4 flowDomainExecutionContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(FLOWSchemaFLOWClientEvent *)self flowDomainExecutionContext];
+  eventMetadata2 = [equalCopy flowDomainExecutionContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_57;
   }
 
-  v48 = [(FLOWSchemaFLOWClientEvent *)self flowDomainExecutionContext];
-  if (v48)
+  flowDomainExecutionContext = [(FLOWSchemaFLOWClientEvent *)self flowDomainExecutionContext];
+  if (flowDomainExecutionContext)
   {
-    v49 = v48;
-    v50 = [(FLOWSchemaFLOWClientEvent *)self flowDomainExecutionContext];
-    v51 = [v4 flowDomainExecutionContext];
-    v52 = [v50 isEqual:v51];
+    v49 = flowDomainExecutionContext;
+    flowDomainExecutionContext2 = [(FLOWSchemaFLOWClientEvent *)self flowDomainExecutionContext];
+    flowDomainExecutionContext3 = [equalCopy flowDomainExecutionContext];
+    v52 = [flowDomainExecutionContext2 isEqual:flowDomainExecutionContext3];
 
     if (!v52)
     {
@@ -789,20 +789,20 @@
   {
   }
 
-  v6 = [(FLOWSchemaFLOWClientEvent *)self locationAccessPermissionPromptContext];
-  v7 = [v4 locationAccessPermissionPromptContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(FLOWSchemaFLOWClientEvent *)self locationAccessPermissionPromptContext];
+  eventMetadata2 = [equalCopy locationAccessPermissionPromptContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_57;
   }
 
-  v53 = [(FLOWSchemaFLOWClientEvent *)self locationAccessPermissionPromptContext];
-  if (v53)
+  locationAccessPermissionPromptContext = [(FLOWSchemaFLOWClientEvent *)self locationAccessPermissionPromptContext];
+  if (locationAccessPermissionPromptContext)
   {
-    v54 = v53;
-    v55 = [(FLOWSchemaFLOWClientEvent *)self locationAccessPermissionPromptContext];
-    v56 = [v4 locationAccessPermissionPromptContext];
-    v57 = [v55 isEqual:v56];
+    v54 = locationAccessPermissionPromptContext;
+    locationAccessPermissionPromptContext2 = [(FLOWSchemaFLOWClientEvent *)self locationAccessPermissionPromptContext];
+    locationAccessPermissionPromptContext3 = [equalCopy locationAccessPermissionPromptContext];
+    v57 = [locationAccessPermissionPromptContext2 isEqual:locationAccessPermissionPromptContext3];
 
     if (!v57)
     {
@@ -814,12 +814,12 @@
   {
   }
 
-  v6 = [(FLOWSchemaFLOWClientEvent *)self flowContactTier1];
-  v7 = [v4 flowContactTier1];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(FLOWSchemaFLOWClientEvent *)self flowContactTier1];
+  eventMetadata2 = [equalCopy flowContactTier1];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v58 = [(FLOWSchemaFLOWClientEvent *)self flowContactTier1];
-    if (!v58)
+    flowContactTier1 = [(FLOWSchemaFLOWClientEvent *)self flowContactTier1];
+    if (!flowContactTier1)
     {
 
 LABEL_61:
@@ -827,10 +827,10 @@ LABEL_61:
       goto LABEL_59;
     }
 
-    v59 = v58;
-    v60 = [(FLOWSchemaFLOWClientEvent *)self flowContactTier1];
-    v61 = [v4 flowContactTier1];
-    v62 = [v60 isEqual:v61];
+    v59 = flowContactTier1;
+    flowContactTier12 = [(FLOWSchemaFLOWClientEvent *)self flowContactTier1];
+    flowContactTier13 = [equalCopy flowContactTier1];
+    v62 = [flowContactTier12 isEqual:flowContactTier13];
 
     if (v62)
     {
@@ -850,98 +850,98 @@ LABEL_59:
   return v63;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v27 = a3;
-  v4 = [(FLOWSchemaFLOWClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(FLOWSchemaFLOWClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(FLOWSchemaFLOWClientEvent *)self eventMetadata];
+    eventMetadata2 = [(FLOWSchemaFLOWClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(FLOWSchemaFLOWClientEvent *)self flowStep];
+  flowStep = [(FLOWSchemaFLOWClientEvent *)self flowStep];
 
-  if (v6)
+  if (flowStep)
   {
-    v7 = [(FLOWSchemaFLOWClientEvent *)self flowStep];
+    flowStep2 = [(FLOWSchemaFLOWClientEvent *)self flowStep];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(FLOWSchemaFLOWClientEvent *)self flowEntityContextTier1];
+  flowEntityContextTier1 = [(FLOWSchemaFLOWClientEvent *)self flowEntityContextTier1];
 
-  if (v8)
+  if (flowEntityContextTier1)
   {
-    v9 = [(FLOWSchemaFLOWClientEvent *)self flowEntityContextTier1];
+    flowEntityContextTier12 = [(FLOWSchemaFLOWClientEvent *)self flowEntityContextTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(FLOWSchemaFLOWClientEvent *)self smsAttachmentMetadataTier1];
+  smsAttachmentMetadataTier1 = [(FLOWSchemaFLOWClientEvent *)self smsAttachmentMetadataTier1];
 
-  if (v10)
+  if (smsAttachmentMetadataTier1)
   {
-    v11 = [(FLOWSchemaFLOWClientEvent *)self smsAttachmentMetadataTier1];
+    smsAttachmentMetadataTier12 = [(FLOWSchemaFLOWClientEvent *)self smsAttachmentMetadataTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(FLOWSchemaFLOWClientEvent *)self appleMusicVoicePreviewOfferNotShown];
+  appleMusicVoicePreviewOfferNotShown = [(FLOWSchemaFLOWClientEvent *)self appleMusicVoicePreviewOfferNotShown];
 
-  if (v12)
+  if (appleMusicVoicePreviewOfferNotShown)
   {
-    v13 = [(FLOWSchemaFLOWClientEvent *)self appleMusicVoicePreviewOfferNotShown];
+    appleMusicVoicePreviewOfferNotShown2 = [(FLOWSchemaFLOWClientEvent *)self appleMusicVoicePreviewOfferNotShown];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(FLOWSchemaFLOWClientEvent *)self pegasusContextTier1];
+  pegasusContextTier1 = [(FLOWSchemaFLOWClientEvent *)self pegasusContextTier1];
 
-  if (v14)
+  if (pegasusContextTier1)
   {
-    v15 = [(FLOWSchemaFLOWClientEvent *)self pegasusContextTier1];
+    pegasusContextTier12 = [(FLOWSchemaFLOWClientEvent *)self pegasusContextTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(FLOWSchemaFLOWClientEvent *)self mediaPlayerPlaybackContextTier1];
+  mediaPlayerPlaybackContextTier1 = [(FLOWSchemaFLOWClientEvent *)self mediaPlayerPlaybackContextTier1];
 
-  if (v16)
+  if (mediaPlayerPlaybackContextTier1)
   {
-    v17 = [(FLOWSchemaFLOWClientEvent *)self mediaPlayerPlaybackContextTier1];
+    mediaPlayerPlaybackContextTier12 = [(FLOWSchemaFLOWClientEvent *)self mediaPlayerPlaybackContextTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(FLOWSchemaFLOWClientEvent *)self mediaPlayerRadioStationContextTier1];
+  mediaPlayerRadioStationContextTier1 = [(FLOWSchemaFLOWClientEvent *)self mediaPlayerRadioStationContextTier1];
 
-  if (v18)
+  if (mediaPlayerRadioStationContextTier1)
   {
-    v19 = [(FLOWSchemaFLOWClientEvent *)self mediaPlayerRadioStationContextTier1];
+    mediaPlayerRadioStationContextTier12 = [(FLOWSchemaFLOWClientEvent *)self mediaPlayerRadioStationContextTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(FLOWSchemaFLOWClientEvent *)self flowDomainExecutionContext];
+  flowDomainExecutionContext = [(FLOWSchemaFLOWClientEvent *)self flowDomainExecutionContext];
 
-  if (v20)
+  if (flowDomainExecutionContext)
   {
-    v21 = [(FLOWSchemaFLOWClientEvent *)self flowDomainExecutionContext];
+    flowDomainExecutionContext2 = [(FLOWSchemaFLOWClientEvent *)self flowDomainExecutionContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(FLOWSchemaFLOWClientEvent *)self locationAccessPermissionPromptContext];
+  locationAccessPermissionPromptContext = [(FLOWSchemaFLOWClientEvent *)self locationAccessPermissionPromptContext];
 
-  if (v22)
+  if (locationAccessPermissionPromptContext)
   {
-    v23 = [(FLOWSchemaFLOWClientEvent *)self locationAccessPermissionPromptContext];
+    locationAccessPermissionPromptContext2 = [(FLOWSchemaFLOWClientEvent *)self locationAccessPermissionPromptContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v24 = [(FLOWSchemaFLOWClientEvent *)self flowContactTier1];
+  flowContactTier1 = [(FLOWSchemaFLOWClientEvent *)self flowContactTier1];
 
-  v25 = v27;
-  if (v24)
+  v25 = toCopy;
+  if (flowContactTier1)
   {
-    v26 = [(FLOWSchemaFLOWClientEvent *)self flowContactTier1];
+    flowContactTier12 = [(FLOWSchemaFLOWClientEvent *)self flowContactTier1];
     PBDataWriterWriteSubmessage();
 
-    v25 = v27;
+    v25 = toCopy;
   }
 }
 
@@ -955,9 +955,9 @@ LABEL_59:
   }
 }
 
-- (void)setFlowContactTier1:(id)a3
+- (void)setFlowContactTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   flowStep = self->_flowStep;
   self->_flowStep = 0;
 
@@ -986,14 +986,14 @@ LABEL_59:
   self->_locationAccessPermissionPromptContext = 0;
 
   v14 = 110;
-  if (!v4)
+  if (!tier1Copy)
   {
     v14 = 0;
   }
 
   self->_whichEvent_Type = v14;
   flowContactTier1 = self->_flowContactTier1;
-  self->_flowContactTier1 = v4;
+  self->_flowContactTier1 = tier1Copy;
 }
 
 - (void)deleteLocationAccessPermissionPromptContext
@@ -1006,9 +1006,9 @@ LABEL_59:
   }
 }
 
-- (void)setLocationAccessPermissionPromptContext:(id)a3
+- (void)setLocationAccessPermissionPromptContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   flowStep = self->_flowStep;
   self->_flowStep = 0;
 
@@ -1037,14 +1037,14 @@ LABEL_59:
   self->_flowContactTier1 = 0;
 
   v14 = 109;
-  if (!v4)
+  if (!contextCopy)
   {
     v14 = 0;
   }
 
   self->_whichEvent_Type = v14;
   locationAccessPermissionPromptContext = self->_locationAccessPermissionPromptContext;
-  self->_locationAccessPermissionPromptContext = v4;
+  self->_locationAccessPermissionPromptContext = contextCopy;
 }
 
 - (void)deleteFlowDomainExecutionContext
@@ -1057,9 +1057,9 @@ LABEL_59:
   }
 }
 
-- (void)setFlowDomainExecutionContext:(id)a3
+- (void)setFlowDomainExecutionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   flowStep = self->_flowStep;
   self->_flowStep = 0;
 
@@ -1088,14 +1088,14 @@ LABEL_59:
   self->_flowContactTier1 = 0;
 
   v14 = 108;
-  if (!v4)
+  if (!contextCopy)
   {
     v14 = 0;
   }
 
   self->_whichEvent_Type = v14;
   flowDomainExecutionContext = self->_flowDomainExecutionContext;
-  self->_flowDomainExecutionContext = v4;
+  self->_flowDomainExecutionContext = contextCopy;
 }
 
 - (void)deleteMediaPlayerRadioStationContextTier1
@@ -1108,9 +1108,9 @@ LABEL_59:
   }
 }
 
-- (void)setMediaPlayerRadioStationContextTier1:(id)a3
+- (void)setMediaPlayerRadioStationContextTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   flowStep = self->_flowStep;
   self->_flowStep = 0;
 
@@ -1139,14 +1139,14 @@ LABEL_59:
   self->_flowContactTier1 = 0;
 
   v14 = 107;
-  if (!v4)
+  if (!tier1Copy)
   {
     v14 = 0;
   }
 
   self->_whichEvent_Type = v14;
   mediaPlayerRadioStationContextTier1 = self->_mediaPlayerRadioStationContextTier1;
-  self->_mediaPlayerRadioStationContextTier1 = v4;
+  self->_mediaPlayerRadioStationContextTier1 = tier1Copy;
 }
 
 - (void)deleteMediaPlayerPlaybackContextTier1
@@ -1159,9 +1159,9 @@ LABEL_59:
   }
 }
 
-- (void)setMediaPlayerPlaybackContextTier1:(id)a3
+- (void)setMediaPlayerPlaybackContextTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   flowStep = self->_flowStep;
   self->_flowStep = 0;
 
@@ -1190,14 +1190,14 @@ LABEL_59:
   self->_flowContactTier1 = 0;
 
   v14 = 106;
-  if (!v4)
+  if (!tier1Copy)
   {
     v14 = 0;
   }
 
   self->_whichEvent_Type = v14;
   mediaPlayerPlaybackContextTier1 = self->_mediaPlayerPlaybackContextTier1;
-  self->_mediaPlayerPlaybackContextTier1 = v4;
+  self->_mediaPlayerPlaybackContextTier1 = tier1Copy;
 }
 
 - (void)deletePegasusContextTier1
@@ -1210,9 +1210,9 @@ LABEL_59:
   }
 }
 
-- (void)setPegasusContextTier1:(id)a3
+- (void)setPegasusContextTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   flowStep = self->_flowStep;
   self->_flowStep = 0;
 
@@ -1241,14 +1241,14 @@ LABEL_59:
   self->_flowContactTier1 = 0;
 
   v14 = 105;
-  if (!v4)
+  if (!tier1Copy)
   {
     v14 = 0;
   }
 
   self->_whichEvent_Type = v14;
   pegasusContextTier1 = self->_pegasusContextTier1;
-  self->_pegasusContextTier1 = v4;
+  self->_pegasusContextTier1 = tier1Copy;
 }
 
 - (void)deleteAppleMusicVoicePreviewOfferNotShown
@@ -1261,9 +1261,9 @@ LABEL_59:
   }
 }
 
-- (void)setAppleMusicVoicePreviewOfferNotShown:(id)a3
+- (void)setAppleMusicVoicePreviewOfferNotShown:(id)shown
 {
-  v4 = a3;
+  shownCopy = shown;
   flowStep = self->_flowStep;
   self->_flowStep = 0;
 
@@ -1292,14 +1292,14 @@ LABEL_59:
   self->_flowContactTier1 = 0;
 
   v14 = 104;
-  if (!v4)
+  if (!shownCopy)
   {
     v14 = 0;
   }
 
   self->_whichEvent_Type = v14;
   appleMusicVoicePreviewOfferNotShown = self->_appleMusicVoicePreviewOfferNotShown;
-  self->_appleMusicVoicePreviewOfferNotShown = v4;
+  self->_appleMusicVoicePreviewOfferNotShown = shownCopy;
 }
 
 - (void)deleteSmsAttachmentMetadataTier1
@@ -1312,9 +1312,9 @@ LABEL_59:
   }
 }
 
-- (void)setSmsAttachmentMetadataTier1:(id)a3
+- (void)setSmsAttachmentMetadataTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   flowStep = self->_flowStep;
   self->_flowStep = 0;
 
@@ -1343,14 +1343,14 @@ LABEL_59:
   self->_flowContactTier1 = 0;
 
   v14 = 103;
-  if (!v4)
+  if (!tier1Copy)
   {
     v14 = 0;
   }
 
   self->_whichEvent_Type = v14;
   smsAttachmentMetadataTier1 = self->_smsAttachmentMetadataTier1;
-  self->_smsAttachmentMetadataTier1 = v4;
+  self->_smsAttachmentMetadataTier1 = tier1Copy;
 }
 
 - (void)deleteFlowEntityContextTier1
@@ -1363,9 +1363,9 @@ LABEL_59:
   }
 }
 
-- (void)setFlowEntityContextTier1:(id)a3
+- (void)setFlowEntityContextTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   flowStep = self->_flowStep;
   self->_flowStep = 0;
 
@@ -1394,14 +1394,14 @@ LABEL_59:
   self->_flowContactTier1 = 0;
 
   v14 = 102;
-  if (!v4)
+  if (!tier1Copy)
   {
     v14 = 0;
   }
 
   self->_whichEvent_Type = v14;
   flowEntityContextTier1 = self->_flowEntityContextTier1;
-  self->_flowEntityContextTier1 = v4;
+  self->_flowEntityContextTier1 = tier1Copy;
 }
 
 - (void)deleteFlowStep
@@ -1414,9 +1414,9 @@ LABEL_59:
   }
 }
 
-- (void)setFlowStep:(id)a3
+- (void)setFlowStep:(id)step
 {
-  v4 = a3;
+  stepCopy = step;
   flowEntityContextTier1 = self->_flowEntityContextTier1;
   self->_flowEntityContextTier1 = 0;
 
@@ -1445,23 +1445,23 @@ LABEL_59:
   self->_flowContactTier1 = 0;
 
   v14 = 101;
-  if (!v4)
+  if (!stepCopy)
   {
     v14 = 0;
   }
 
   self->_whichEvent_Type = v14;
   flowStep = self->_flowStep;
-  self->_flowStep = v4;
+  self->_flowStep = stepCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v40.receiver = self;
   v40.super_class = FLOWSchemaFLOWClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v40 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v40 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(FLOWSchemaFLOWClientEvent *)self deleteFlowEntityContextTier1];
     [(FLOWSchemaFLOWClientEvent *)self deletePegasusContextTier1];
@@ -1470,7 +1470,7 @@ LABEL_59:
     [(FLOWSchemaFLOWClientEvent *)self deleteFlowContactTier1];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(FLOWSchemaFLOWClientEvent *)self deleteFlowEntityContextTier1];
     [(FLOWSchemaFLOWClientEvent *)self deletePegasusContextTier1];
@@ -1479,7 +1479,7 @@ LABEL_59:
     [(FLOWSchemaFLOWClientEvent *)self deleteFlowContactTier1];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(FLOWSchemaFLOWClientEvent *)self deleteFlowEntityContextTier1];
     [(FLOWSchemaFLOWClientEvent *)self deletePegasusContextTier1];
@@ -1488,7 +1488,7 @@ LABEL_59:
     [(FLOWSchemaFLOWClientEvent *)self deleteFlowContactTier1];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(FLOWSchemaFLOWClientEvent *)self deleteFlowEntityContextTier1];
     [(FLOWSchemaFLOWClientEvent *)self deletePegasusContextTier1];
@@ -1497,7 +1497,7 @@ LABEL_59:
     [(FLOWSchemaFLOWClientEvent *)self deleteFlowContactTier1];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(FLOWSchemaFLOWClientEvent *)self deleteFlowEntityContextTier1];
     [(FLOWSchemaFLOWClientEvent *)self deletePegasusContextTier1];
@@ -1506,101 +1506,101 @@ LABEL_59:
     [(FLOWSchemaFLOWClientEvent *)self deleteFlowContactTier1];
   }
 
-  v6 = [(FLOWSchemaFLOWClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  eventMetadata = [(FLOWSchemaFLOWClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(FLOWSchemaFLOWClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(FLOWSchemaFLOWClientEvent *)self flowStep];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  flowStep = [(FLOWSchemaFLOWClientEvent *)self flowStep];
+  v10 = [flowStep applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(FLOWSchemaFLOWClientEvent *)self deleteFlowStep];
   }
 
-  v12 = [(FLOWSchemaFLOWClientEvent *)self flowEntityContextTier1];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  flowEntityContextTier1 = [(FLOWSchemaFLOWClientEvent *)self flowEntityContextTier1];
+  v13 = [flowEntityContextTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(FLOWSchemaFLOWClientEvent *)self deleteFlowEntityContextTier1];
   }
 
-  v15 = [(FLOWSchemaFLOWClientEvent *)self smsAttachmentMetadataTier1];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  smsAttachmentMetadataTier1 = [(FLOWSchemaFLOWClientEvent *)self smsAttachmentMetadataTier1];
+  v16 = [smsAttachmentMetadataTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(FLOWSchemaFLOWClientEvent *)self deleteSmsAttachmentMetadataTier1];
   }
 
-  v18 = [(FLOWSchemaFLOWClientEvent *)self appleMusicVoicePreviewOfferNotShown];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  appleMusicVoicePreviewOfferNotShown = [(FLOWSchemaFLOWClientEvent *)self appleMusicVoicePreviewOfferNotShown];
+  v19 = [appleMusicVoicePreviewOfferNotShown applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(FLOWSchemaFLOWClientEvent *)self deleteAppleMusicVoicePreviewOfferNotShown];
   }
 
-  v21 = [(FLOWSchemaFLOWClientEvent *)self pegasusContextTier1];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  pegasusContextTier1 = [(FLOWSchemaFLOWClientEvent *)self pegasusContextTier1];
+  v22 = [pegasusContextTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(FLOWSchemaFLOWClientEvent *)self deletePegasusContextTier1];
   }
 
-  v24 = [(FLOWSchemaFLOWClientEvent *)self mediaPlayerPlaybackContextTier1];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  mediaPlayerPlaybackContextTier1 = [(FLOWSchemaFLOWClientEvent *)self mediaPlayerPlaybackContextTier1];
+  v25 = [mediaPlayerPlaybackContextTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(FLOWSchemaFLOWClientEvent *)self deleteMediaPlayerPlaybackContextTier1];
   }
 
-  v27 = [(FLOWSchemaFLOWClientEvent *)self mediaPlayerRadioStationContextTier1];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  mediaPlayerRadioStationContextTier1 = [(FLOWSchemaFLOWClientEvent *)self mediaPlayerRadioStationContextTier1];
+  v28 = [mediaPlayerRadioStationContextTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(FLOWSchemaFLOWClientEvent *)self deleteMediaPlayerRadioStationContextTier1];
   }
 
-  v30 = [(FLOWSchemaFLOWClientEvent *)self flowDomainExecutionContext];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  flowDomainExecutionContext = [(FLOWSchemaFLOWClientEvent *)self flowDomainExecutionContext];
+  v31 = [flowDomainExecutionContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(FLOWSchemaFLOWClientEvent *)self deleteFlowDomainExecutionContext];
   }
 
-  v33 = [(FLOWSchemaFLOWClientEvent *)self locationAccessPermissionPromptContext];
-  v34 = [v33 applySensitiveConditionsPolicy:v4];
-  v35 = [v34 suppressMessage];
+  locationAccessPermissionPromptContext = [(FLOWSchemaFLOWClientEvent *)self locationAccessPermissionPromptContext];
+  v34 = [locationAccessPermissionPromptContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage10 = [v34 suppressMessage];
 
-  if (v35)
+  if (suppressMessage10)
   {
     [(FLOWSchemaFLOWClientEvent *)self deleteLocationAccessPermissionPromptContext];
   }
 
-  v36 = [(FLOWSchemaFLOWClientEvent *)self flowContactTier1];
-  v37 = [v36 applySensitiveConditionsPolicy:v4];
-  v38 = [v37 suppressMessage];
+  flowContactTier1 = [(FLOWSchemaFLOWClientEvent *)self flowContactTier1];
+  v37 = [flowContactTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage11 = [v37 suppressMessage];
 
-  if (v38)
+  if (suppressMessage11)
   {
     [(FLOWSchemaFLOWClientEvent *)self deleteFlowContactTier1];
   }
@@ -1618,73 +1618,73 @@ LABEL_59:
 
 - (int)componentName
 {
-  v3 = [(FLOWSchemaFLOWClientEvent *)self eventMetadata];
-  v4 = [v3 flowId];
+  eventMetadata = [(FLOWSchemaFLOWClientEvent *)self eventMetadata];
+  flowId = [eventMetadata flowId];
 
-  if (v4 && ([v4 value], (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (v6 = v5, objc_msgSend(v4, "value"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, v8))
+  if (flowId && ([flowId value], (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (v6 = v5, objc_msgSend(flowId, "value"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, v8))
   {
-    LODWORD(v9) = 3;
+    LODWORD(value) = 3;
   }
 
   else
   {
-    v10 = [(FLOWSchemaFLOWClientEvent *)self eventMetadata];
-    v11 = [v10 requestId];
+    eventMetadata2 = [(FLOWSchemaFLOWClientEvent *)self eventMetadata];
+    requestId = [eventMetadata2 requestId];
 
-    if (v11 && ([v11 value], (v12 = objc_claimAutoreleasedReturnValue()) != 0) && (v13 = v12, objc_msgSend(v11, "value"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "length"), v14, v13, v15))
+    if (requestId && ([requestId value], (v12 = objc_claimAutoreleasedReturnValue()) != 0) && (v13 = v12, objc_msgSend(requestId, "value"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "length"), v14, v13, v15))
     {
-      LODWORD(v9) = 1;
-      v4 = v11;
+      LODWORD(value) = 1;
+      flowId = requestId;
     }
 
     else
     {
-      v16 = [(FLOWSchemaFLOWClientEvent *)self eventMetadata];
-      v4 = [v16 subRequestId];
+      eventMetadata3 = [(FLOWSchemaFLOWClientEvent *)self eventMetadata];
+      flowId = [eventMetadata3 subRequestId];
 
-      if (v4)
+      if (flowId)
       {
-        v9 = [v4 value];
-        if (v9)
+        value = [flowId value];
+        if (value)
         {
-          v17 = [v4 value];
-          v18 = [v17 length];
+          value2 = [flowId value];
+          v18 = [value2 length];
 
           if (v18)
           {
-            LODWORD(v9) = 43;
+            LODWORD(value) = 43;
           }
 
           else
           {
-            LODWORD(v9) = 0;
+            LODWORD(value) = 0;
           }
         }
       }
 
       else
       {
-        LODWORD(v9) = 0;
+        LODWORD(value) = 0;
       }
     }
   }
 
-  return v9;
+  return value;
 }
 
 - (id)getComponentId
 {
-  v3 = [(FLOWSchemaFLOWClientEvent *)self eventMetadata];
-  v4 = [v3 flowId];
+  eventMetadata = [(FLOWSchemaFLOWClientEvent *)self eventMetadata];
+  flowId = [eventMetadata flowId];
 
-  if (v4)
+  if (flowId)
   {
-    v5 = [v4 value];
-    if (v5)
+    value = [flowId value];
+    if (value)
     {
-      v6 = v5;
-      v7 = [v4 value];
-      v8 = [v7 length];
+      v6 = value;
+      value2 = [flowId value];
+      v8 = [value2 length];
 
       if (v8)
       {
@@ -1693,42 +1693,42 @@ LABEL_59:
     }
   }
 
-  v9 = [(FLOWSchemaFLOWClientEvent *)self eventMetadata];
-  v10 = [v9 requestId];
+  eventMetadata2 = [(FLOWSchemaFLOWClientEvent *)self eventMetadata];
+  requestId = [eventMetadata2 requestId];
 
-  if (v10)
+  if (requestId)
   {
-    v11 = [v10 value];
-    if (v11)
+    value3 = [requestId value];
+    if (value3)
     {
-      v12 = v11;
-      v13 = [v10 value];
-      v14 = [v13 length];
+      v12 = value3;
+      value4 = [requestId value];
+      v14 = [value4 length];
 
       if (v14)
       {
-        v4 = v10;
+        flowId = requestId;
 LABEL_11:
-        v16 = v4;
-        v4 = v16;
+        value5 = flowId;
+        flowId = value5;
         goto LABEL_13;
       }
     }
   }
 
-  v15 = [(FLOWSchemaFLOWClientEvent *)self eventMetadata];
-  v4 = [v15 subRequestId];
+  eventMetadata3 = [(FLOWSchemaFLOWClientEvent *)self eventMetadata];
+  flowId = [eventMetadata3 subRequestId];
 
-  if (v4)
+  if (flowId)
   {
-    v16 = [v4 value];
-    if (!v16)
+    value5 = [flowId value];
+    if (!value5)
     {
       goto LABEL_13;
     }
 
-    v17 = [v4 value];
-    v18 = [v17 length];
+    value6 = [flowId value];
+    v18 = [value6 length];
 
     if (v18)
     {
@@ -1736,38 +1736,38 @@ LABEL_11:
     }
   }
 
-  v16 = 0;
+  value5 = 0;
 LABEL_13:
 
-  return v16;
+  return value5;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(FLOWSchemaFLOWClientEvent *)self whichEvent_Type];
-  if (v3 - 101 > 9)
+  whichEvent_Type = [(FLOWSchemaFLOWClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 9)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78E96A8[v3 - 101]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78E96A8[whichEvent_Type - 101]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 101 > 9)
+  if (tag - 101 > 9)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78E96F8[a3 - 101];
+    return off_1E78E96F8[tag - 101];
   }
 }
 

@@ -1,5 +1,5 @@
 @interface _AFServiceDeviceContextMutation
-- (_AFServiceDeviceContextMutation)initWithBase:(id)a3;
+- (_AFServiceDeviceContextMutation)initWithBase:(id)base;
 - (id)getAssistantIdentifier;
 - (id)getIdentifier;
 - (id)getMediaRouteIdentifier;
@@ -17,90 +17,90 @@
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_identifier;
+    identifier = self->_identifier;
   }
 
   else
   {
-    v2 = [(AFServiceDeviceContext *)self->_base identifier];
+    identifier = [(AFServiceDeviceContext *)self->_base identifier];
   }
 
-  return v2;
+  return identifier;
 }
 
 - (id)getAssistantIdentifier
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_assistantIdentifier;
+    assistantIdentifier = self->_assistantIdentifier;
   }
 
   else
   {
-    v2 = [(AFServiceDeviceContext *)self->_base assistantIdentifier];
+    assistantIdentifier = [(AFServiceDeviceContext *)self->_base assistantIdentifier];
   }
 
-  return v2;
+  return assistantIdentifier;
 }
 
 - (id)getMediaSystemIdentifier
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_mediaSystemIdentifier;
+    mediaSystemIdentifier = self->_mediaSystemIdentifier;
   }
 
   else
   {
-    v2 = [(AFServiceDeviceContext *)self->_base mediaSystemIdentifier];
+    mediaSystemIdentifier = [(AFServiceDeviceContext *)self->_base mediaSystemIdentifier];
   }
 
-  return v2;
+  return mediaSystemIdentifier;
 }
 
 - (id)getMediaRouteIdentifier
 {
   if ((*&self->_mutationFlags & 0x10) != 0)
   {
-    v2 = self->_mediaRouteIdentifier;
+    mediaRouteIdentifier = self->_mediaRouteIdentifier;
   }
 
   else
   {
-    v2 = [(AFServiceDeviceContext *)self->_base mediaRouteIdentifier];
+    mediaRouteIdentifier = [(AFServiceDeviceContext *)self->_base mediaRouteIdentifier];
   }
 
-  return v2;
+  return mediaRouteIdentifier;
 }
 
 - (id)getSharedUserID
 {
   if ((*&self->_mutationFlags & 0x20) != 0)
   {
-    v2 = self->_sharedUserID;
+    sharedUserID = self->_sharedUserID;
   }
 
   else
   {
-    v2 = [(AFServiceDeviceContext *)self->_base sharedUserID];
+    sharedUserID = [(AFServiceDeviceContext *)self->_base sharedUserID];
   }
 
-  return v2;
+  return sharedUserID;
 }
 
 - (id)getRoomName
 {
   if ((*&self->_mutationFlags & 0x40) != 0)
   {
-    v2 = self->_roomName;
+    roomName = self->_roomName;
   }
 
   else
   {
-    v2 = [(AFServiceDeviceContext *)self->_base roomName];
+    roomName = [(AFServiceDeviceContext *)self->_base roomName];
   }
 
-  return v2;
+  return roomName;
 }
 
 - (int64_t)getProximity
@@ -120,42 +120,42 @@
 {
   if ((*&self->_mutationFlags & 0x100) != 0)
   {
-    v2 = self->_serializedContextByKey;
+    serializedContextByKey = self->_serializedContextByKey;
   }
 
   else
   {
-    v2 = [(AFServiceDeviceContext *)self->_base serializedContextByKey];
+    serializedContextByKey = [(AFServiceDeviceContext *)self->_base serializedContextByKey];
   }
 
-  return v2;
+  return serializedContextByKey;
 }
 
 - (id)getMetricsContext
 {
   if ((*&self->_mutationFlags & 0x200) != 0)
   {
-    v2 = self->_metricsContext;
+    metricsContext = self->_metricsContext;
   }
 
   else
   {
-    v2 = [(AFServiceDeviceContext *)self->_base metricsContext];
+    metricsContext = [(AFServiceDeviceContext *)self->_base metricsContext];
   }
 
-  return v2;
+  return metricsContext;
 }
 
-- (_AFServiceDeviceContextMutation)initWithBase:(id)a3
+- (_AFServiceDeviceContextMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFServiceDeviceContextMutation;
   v6 = [(_AFServiceDeviceContextMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

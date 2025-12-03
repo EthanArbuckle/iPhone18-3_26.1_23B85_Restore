@@ -1,14 +1,14 @@
 @interface _RESmallSetFeatureValue
-- (_RESmallSetFeatureValue)initWithSet:(id)a3;
+- (_RESmallSetFeatureValue)initWithSet:(id)set;
 - (id)setValue;
 @end
 
 @implementation _RESmallSetFeatureValue
 
-- (_RESmallSetFeatureValue)initWithSet:(id)a3
+- (_RESmallSetFeatureValue)initWithSet:(id)set
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  setCopy = set;
   v22.receiver = self;
   v22.super_class = _RESmallSetFeatureValue;
   v5 = [(_RESmallSetFeatureValue *)&v22 init];
@@ -18,7 +18,7 @@
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = v4;
+    v6 = setCopy;
     v7 = [v6 countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (!v7)
     {

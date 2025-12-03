@@ -1,17 +1,17 @@
 @interface TSPComponentWriteChannelAdapter
-- (TSPComponentWriteChannelAdapter)initWithChannel:(id)a3 handler:(id)a4;
+- (TSPComponentWriteChannelAdapter)initWithChannel:(id)channel handler:(id)handler;
 - (void)_close;
 - (void)close;
-- (void)writeData:(id)a3;
+- (void)writeData:(id)data;
 @end
 
 @implementation TSPComponentWriteChannelAdapter
 
-- (TSPComponentWriteChannelAdapter)initWithChannel:(id)a3 handler:(id)a4
+- (TSPComponentWriteChannelAdapter)initWithChannel:(id)channel handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  channelCopy = channel;
+  handlerCopy = handler;
+  if (!channelCopy)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -44,11 +44,11 @@
     *(v8 + 1) = v10;
 
     dispatch_queue_set_specific(*(v8 + 1), off_1001E9368, off_1001E9368, 0);
-    v12 = objc_retainBlock(v7);
+    v12 = objc_retainBlock(handlerCopy);
     v13 = *(v8 + 3);
     *(v8 + 3) = v12;
 
-    v14 = v6;
+    v14 = channelCopy;
     self = *(v8 + 2);
     *(v8 + 2) = v14;
 LABEL_9:
@@ -57,17 +57,17 @@ LABEL_9:
   return v8;
 }
 
-- (void)writeData:(id)a3
+- (void)writeData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10004DB80;
   v7[3] = &unk_1001C52C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   dispatch_async(queue, v7);
 }
 

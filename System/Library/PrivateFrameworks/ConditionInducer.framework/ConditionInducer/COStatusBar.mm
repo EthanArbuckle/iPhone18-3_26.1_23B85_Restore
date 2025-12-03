@@ -1,24 +1,24 @@
 @interface COStatusBar
 - (BOOL)showStopConditionAlert;
-- (BOOL)statusBarCoordinator:(id)a3 receivedTapWithContext:(id)a4 completionBlock:(id)a5;
-- (COStatusBar)initWithConditionClass:(id)a3 profile:(id)a4 teardownBeganCb:(id)a5 teardownCompleteCb:(id)a6;
+- (BOOL)statusBarCoordinator:(id)coordinator receivedTapWithContext:(id)context completionBlock:(id)block;
+- (COStatusBar)initWithConditionClass:(id)class profile:(id)profile teardownBeganCb:(id)cb teardownCompleteCb:(id)completeCb;
 - (id)doTeardownOnStop;
 - (id)getDeviceType;
-- (void)acquireStatusBarWithCompletionHandler:(id)a3;
+- (void)acquireStatusBarWithCompletionHandler:(id)handler;
 - (void)clearStatusBar;
 - (void)dealloc;
 - (void)showConditionIsTearingDownAlert;
-- (void)statusBarCoordinator:(id)a3 invalidatedRegistrationWithError:(id)a4;
+- (void)statusBarCoordinator:(id)coordinator invalidatedRegistrationWithError:(id)error;
 @end
 
 @implementation COStatusBar
 
-- (COStatusBar)initWithConditionClass:(id)a3 profile:(id)a4 teardownBeganCb:(id)a5 teardownCompleteCb:(id)a6
+- (COStatusBar)initWithConditionClass:(id)class profile:(id)profile teardownBeganCb:(id)cb teardownCompleteCb:(id)completeCb
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  classCopy = class;
+  profileCopy = profile;
+  cbCopy = cb;
+  completeCbCopy = completeCb;
   v26.receiver = self;
   v26.super_class = COStatusBar;
   v15 = [(COStatusBar *)&v26 init];
@@ -30,13 +30,13 @@
       _os_log_impl(&dword_243E0F000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Creating statusbar assertion for ConditionInducer", v25, 2u);
     }
 
-    objc_storeStrong(&v15->_conditionClass, a3);
-    objc_storeStrong(&v15->_profileDescription, a4);
-    v16 = MEMORY[0x245D53520](v13);
+    objc_storeStrong(&v15->_conditionClass, class);
+    objc_storeStrong(&v15->_profileDescription, profile);
+    v16 = MEMORY[0x245D53520](cbCopy);
     terminationBeganCallback = v15->_terminationBeganCallback;
     v15->_terminationBeganCallback = v16;
 
-    v18 = MEMORY[0x245D53520](v14);
+    v18 = MEMORY[0x245D53520](completeCbCopy);
     terminationNotifyCallback = v15->_terminationNotifyCallback;
     v15->_terminationNotifyCallback = v18;
 
@@ -82,9 +82,9 @@ void __81__COStatusBar_initWithConditionClass_profile_teardownBeganCb_teardownCo
   }
 }
 
-- (void)acquireStatusBarWithCompletionHandler:(id)a3
+- (void)acquireStatusBarWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v5 = dispatch_get_global_queue(25, 0);
   v7[0] = MEMORY[0x277D85DD0];
@@ -92,8 +92,8 @@ void __81__COStatusBar_initWithConditionClass_profile_teardownBeganCb_teardownCo
   v7[2] = __53__COStatusBar_acquireStatusBarWithCompletionHandler___block_invoke;
   v7[3] = &unk_278DF7FE0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   objc_copyWeak(&v9, &location);
   dispatch_async(v5, v7);
 
@@ -123,8 +123,8 @@ void __53__COStatusBar_acquireStatusBarWithCompletionHandler___block_invoke_2(ui
 
 - (void)clearStatusBar
 {
-  v3 = [(COStatusBar *)self statusBarAssertion];
-  [v3 invalidate];
+  statusBarAssertion = [(COStatusBar *)self statusBarAssertion];
+  [statusBarAssertion invalidate];
 
   [(COStatusBar *)self setStatusBarAssertion:0];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -163,8 +163,8 @@ void __53__COStatusBar_acquireStatusBarWithCompletionHandler___block_invoke_2(ui
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = [v4 allKeys];
-    v6 = [v5 countByEnumeratingWithState:&v17 objects:v26 count:16];
+    allKeys = [v4 allKeys];
+    v6 = [allKeys countByEnumeratingWithState:&v17 objects:v26 count:16];
     if (v6)
     {
       v8 = v6;
@@ -178,7 +178,7 @@ void __53__COStatusBar_acquireStatusBarWithCompletionHandler___block_invoke_2(ui
         {
           if (*v18 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allKeys);
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
@@ -193,7 +193,7 @@ void __53__COStatusBar_acquireStatusBarWithCompletionHandler___block_invoke_2(ui
           }
         }
 
-        v8 = [v5 countByEnumeratingWithState:&v17 objects:v26 count:16];
+        v8 = [allKeys countByEnumeratingWithState:&v17 objects:v26 count:16];
       }
 
       while (v8);
@@ -209,13 +209,13 @@ void __53__COStatusBar_acquireStatusBarWithCompletionHandler___block_invoke_2(ui
 {
   v25[4] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(COStatusBar *)self conditionClass];
-  v5 = [v3 stringWithFormat:@"%@ Condition Active", v4];
+  conditionClass = [(COStatusBar *)self conditionClass];
+  v5 = [v3 stringWithFormat:@"%@ Condition Active", conditionClass];
 
   v6 = MEMORY[0x277CCACA8];
-  v7 = [(COStatusBar *)self profileDescription];
-  v8 = [(COStatusBar *)self getDeviceType];
-  v9 = [v6 stringWithFormat:@"%@ is active on this %@. Stop running this condition?", v7, v8];
+  profileDescription = [(COStatusBar *)self profileDescription];
+  getDeviceType = [(COStatusBar *)self getDeviceType];
+  v9 = [v6 stringWithFormat:@"%@ is active on this %@. Stop running this condition?", profileDescription, getDeviceType];
 
   v10 = *MEMORY[0x277CBF198];
   v24[0] = *MEMORY[0x277CBF188];
@@ -229,8 +229,8 @@ void __53__COStatusBar_acquireStatusBarWithCompletionHandler___block_invoke_2(ui
   v25[3] = @"Stop";
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:4];
   self->_userNotificationStopCondition = CFUserNotificationCreate(*MEMORY[0x277CBECE8], 0.0, 0, 0, v12);
-  v13 = [(COStatusBar *)self userNotificationStopCondition];
-  if (v13)
+  userNotificationStopCondition = [(COStatusBar *)self userNotificationStopCondition];
+  if (userNotificationStopCondition)
   {
     responseFlags = 0;
     CFUserNotificationReceiveResponse(self->_userNotificationStopCondition, 0.0, &responseFlags);
@@ -253,12 +253,12 @@ void __53__COStatusBar_acquireStatusBarWithCompletionHandler___block_invoke_2(ui
         break;
       case 0uLL:
         [(COStatusBar *)self setDidRequestTeardownOnce:1];
-        v14 = [(COStatusBar *)self terminationBeganCallback];
+        terminationBeganCallback = [(COStatusBar *)self terminationBeganCallback];
 
-        if (v14)
+        if (terminationBeganCallback)
         {
-          v15 = [(COStatusBar *)self terminationBeganCallback];
-          v15[2]();
+          terminationBeganCallback2 = [(COStatusBar *)self terminationBeganCallback];
+          terminationBeganCallback2[2]();
         }
 
         else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -267,11 +267,11 @@ void __53__COStatusBar_acquireStatusBarWithCompletionHandler___block_invoke_2(ui
           _os_log_impl(&dword_243E0F000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "We got a request, to terminate, but there's no termination began callback set", buf, 2u);
         }
 
-        v16 = [(COStatusBar *)self doTeardownOnStop];
-        v17 = [(COStatusBar *)self terminationNotifyCallback];
+        doTeardownOnStop = [(COStatusBar *)self doTeardownOnStop];
+        terminationNotifyCallback = [(COStatusBar *)self terminationNotifyCallback];
 
         v18 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
-        if (v17)
+        if (terminationNotifyCallback)
         {
           if (v18)
           {
@@ -279,8 +279,8 @@ void __53__COStatusBar_acquireStatusBarWithCompletionHandler___block_invoke_2(ui
             _os_log_impl(&dword_243E0F000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Invoking termination callback...", buf, 2u);
           }
 
-          v19 = [(COStatusBar *)self terminationNotifyCallback];
-          (v19)[2](v19, v16);
+          terminationNotifyCallback2 = [(COStatusBar *)self terminationNotifyCallback];
+          (terminationNotifyCallback2)[2](terminationNotifyCallback2, doTeardownOnStop);
         }
 
         else if (v18)
@@ -302,34 +302,34 @@ void __53__COStatusBar_acquireStatusBarWithCompletionHandler___block_invoke_2(ui
   }
 
   v20 = *MEMORY[0x277D85DE8];
-  return v13 != 0;
+  return userNotificationStopCondition != 0;
 }
 
 - (void)showConditionIsTearingDownAlert
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(COStatusBar *)self conditionClass];
-  alertHeader = [v3 stringWithFormat:@"%@ Condition Stopping", v4];
+  conditionClass = [(COStatusBar *)self conditionClass];
+  alertHeader = [v3 stringWithFormat:@"%@ Condition Stopping", conditionClass];
 
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(COStatusBar *)self profileDescription];
-  v7 = [v5 stringWithFormat:@"%@ may take a few moments to turn off.", v6];
+  profileDescription = [(COStatusBar *)self profileDescription];
+  v7 = [v5 stringWithFormat:@"%@ may take a few moments to turn off.", profileDescription];
 
   CFUserNotificationDisplayNotice(0.0, 2uLL, 0, 0, 0, alertHeader, v7, @"OK");
 }
 
-- (BOOL)statusBarCoordinator:(id)a3 receivedTapWithContext:(id)a4 completionBlock:(id)a5
+- (BOOL)statusBarCoordinator:(id)coordinator receivedTapWithContext:(id)context completionBlock:(id)block
 {
   v17 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  coordinatorCopy = coordinator;
+  contextCopy = context;
+  blockCopy = block;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v13 = 138412546;
-    v14 = self;
+    selfCopy = self;
     v15 = 1024;
-    v16 = [(COStatusBar *)self didRequestTeardownOnce];
+    didRequestTeardownOnce = [(COStatusBar *)self didRequestTeardownOnce];
     _os_log_impl(&dword_243E0F000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Received a tap on the status bar coordinator! Showing popup... %@, %d", &v13, 0x12u);
   }
 
@@ -343,13 +343,13 @@ void __53__COStatusBar_acquireStatusBarWithCompletionHandler___block_invoke_2(ui
     [(COStatusBar *)self showStopConditionAlert];
   }
 
-  v10[2](v10);
+  blockCopy[2](blockCopy);
 
   v11 = *MEMORY[0x277D85DE8];
   return 1;
 }
 
-- (void)statusBarCoordinator:(id)a3 invalidatedRegistrationWithError:(id)a4
+- (void)statusBarCoordinator:(id)coordinator invalidatedRegistrationWithError:(id)error
 {
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {

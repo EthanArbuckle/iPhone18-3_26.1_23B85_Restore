@@ -1,11 +1,11 @@
 @interface MediaControlsModuleBackgroundView
-- (_TtC13MediaControls33MediaControlsModuleBackgroundView)initWithCoder:(id)a3;
+- (_TtC13MediaControls33MediaControlsModuleBackgroundView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation MediaControlsModuleBackgroundView
 
-- (_TtC13MediaControls33MediaControlsModuleBackgroundView)initWithCoder:(id)a3
+- (_TtC13MediaControls33MediaControlsModuleBackgroundView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC13MediaControls33MediaControlsModuleBackgroundView_image) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC13MediaControls33MediaControlsModuleBackgroundView_layout) = 1;
@@ -19,7 +19,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A2222080();
 }
 

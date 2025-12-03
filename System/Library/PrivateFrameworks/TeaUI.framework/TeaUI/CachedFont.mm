@@ -1,10 +1,10 @@
 @interface CachedFont
-- (void)contentSizeCategoryDidChange:(id)a3;
+- (void)contentSizeCategoryDidChange:(id)change;
 @end
 
 @implementation CachedFont
 
-- (void)contentSizeCategoryDidChange:(id)a3
+- (void)contentSizeCategoryDidChange:(id)change
 {
   v3 = sub_1D818E454();
   v4 = *(v3 - 8);

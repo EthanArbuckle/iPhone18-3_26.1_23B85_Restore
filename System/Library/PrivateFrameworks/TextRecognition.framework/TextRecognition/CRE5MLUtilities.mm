@@ -1,36 +1,36 @@
 @interface CRE5MLUtilities
-+ (id)E5RTProgramLibraryCompilationOptionsForModelSource:(id)a3;
-+ (id)E5RTProgramLibraryForModelURL:(id)a3 error:(id *)a4;
-+ (id)newE5RTExecutionOutputsForFunctionDescriptor:(id)a3 error:(id *)a4;
-+ (id)newImageInputsForFunctionDescriptor:(id)a3 croppedPixelBuffer:(__CVBuffer *)a4 error:(id *)a5;
-+ (id)newInputsForFunctionDescriptor:(id)a3 surface:(__IOSurface *)a4 isImage:(BOOL)a5 error:(id *)a6;
++ (id)E5RTProgramLibraryCompilationOptionsForModelSource:(id)source;
++ (id)E5RTProgramLibraryForModelURL:(id)l error:(id *)error;
++ (id)newE5RTExecutionOutputsForFunctionDescriptor:(id)descriptor error:(id *)error;
++ (id)newImageInputsForFunctionDescriptor:(id)descriptor croppedPixelBuffer:(__CVBuffer *)buffer error:(id *)error;
++ (id)newInputsForFunctionDescriptor:(id)descriptor surface:(__IOSurface *)surface isImage:(BOOL)image error:(id *)error;
 @end
 
 @implementation CRE5MLUtilities
 
-+ (id)E5RTProgramLibraryForModelURL:(id)a3 error:(id *)a4
++ (id)E5RTProgramLibraryForModelURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  if ([MEMORY[0x1E69DF8F0] isProgramLibraryAtURL:v6])
+  lCopy = l;
+  if ([MEMORY[0x1E69DF8F0] isProgramLibraryAtURL:lCopy])
   {
-    v7 = [MEMORY[0x1E69DF8F0] programLibraryForURL:v6 error:a4];
+    v7 = [MEMORY[0x1E69DF8F0] programLibraryForURL:lCopy error:error];
   }
 
-  else if ([MEMORY[0x1E69DF8E8] isModelSourceURL:v6])
+  else if ([MEMORY[0x1E69DF8E8] isModelSourceURL:lCopy])
   {
-    v8 = [MEMORY[0x1E69DF8E8] modelSourceFromURL:v6 error:a4];
+    v8 = [MEMORY[0x1E69DF8E8] modelSourceFromURL:lCopy error:error];
     if (v8)
     {
-      v9 = [a1 E5RTProgramLibraryCompilationOptionsForModelSource:v8];
+      v9 = [self E5RTProgramLibraryCompilationOptionsForModelSource:v8];
       if (v9)
       {
-        v7 = [MEMORY[0x1E69DF8F0] compileModelSource:v8 options:v9 error:a4];
+        v7 = [MEMORY[0x1E69DF8F0] compileModelSource:v8 options:v9 error:error];
       }
 
-      else if (a4)
+      else if (error)
       {
         [CRImageReader errorWithErrorCode:-8];
-        *a4 = v7 = 0;
+        *error = v7 = 0;
       }
 
       else
@@ -53,29 +53,29 @@
   return v7;
 }
 
-+ (id)E5RTProgramLibraryCompilationOptionsForModelSource:(id)a3
++ (id)E5RTProgramLibraryCompilationOptionsForModelSource:(id)source
 {
   v3 = objc_alloc_init(MEMORY[0x1E69DF8F8]);
 
   return v3;
 }
 
-+ (id)newImageInputsForFunctionDescriptor:(id)a3 croppedPixelBuffer:(__CVBuffer *)a4 error:(id *)a5
++ (id)newImageInputsForFunctionDescriptor:(id)descriptor croppedPixelBuffer:(__CVBuffer *)buffer error:(id *)error
 {
-  v7 = a3;
+  descriptorCopy = descriptor;
   v8 = objc_alloc_init(MEMORY[0x1E69DF940]);
-  if (!a4)
+  if (!buffer)
   {
     goto LABEL_4;
   }
 
-  v9 = [v7 onlyInputImage];
-  if (!v9)
+  onlyInputImage = [descriptorCopy onlyInputImage];
+  if (!onlyInputImage)
   {
-    if (a5)
+    if (error)
     {
       [CRImageReader errorWithErrorCode:-8];
-      *a5 = v13 = 0;
+      *error = v13 = 0;
       goto LABEL_8;
     }
 
@@ -84,9 +84,9 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v10 = v9;
-  v11 = [v9 name];
-  v12 = [v8 assignPixelBuffer:a4 toName:v11 error:a5];
+  v10 = onlyInputImage;
+  name = [onlyInputImage name];
+  v12 = [v8 assignPixelBuffer:buffer toName:name error:error];
 
   if (!v12)
   {
@@ -100,17 +100,17 @@ LABEL_8:
   return v13;
 }
 
-+ (id)newInputsForFunctionDescriptor:(id)a3 surface:(__IOSurface *)a4 isImage:(BOOL)a5 error:(id *)a6
++ (id)newInputsForFunctionDescriptor:(id)descriptor surface:(__IOSurface *)surface isImage:(BOOL)image error:(id *)error
 {
-  v7 = a5;
-  v9 = a3;
+  imageCopy = image;
+  descriptorCopy = descriptor;
   v10 = objc_alloc_init(MEMORY[0x1E69DF940]);
-  if (a4)
+  if (surface)
   {
-    if (v7)
+    if (imageCopy)
     {
-      v11 = [v9 onlyInputImage];
-      if (!v11)
+      onlyInputImage = [descriptorCopy onlyInputImage];
+      if (!onlyInputImage)
       {
         goto LABEL_9;
       }
@@ -118,16 +118,16 @@ LABEL_8:
 
     else
     {
-      v12 = [v9 allInputs];
-      v13 = [v12 count];
+      allInputs = [descriptorCopy allInputs];
+      v13 = [allInputs count];
 
-      if (v13 != 1 || ([v9 allInputs], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "firstObject"), v11 = objc_claimAutoreleasedReturnValue(), v14, !v11))
+      if (v13 != 1 || ([descriptorCopy allInputs], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "firstObject"), onlyInputImage = objc_claimAutoreleasedReturnValue(), v14, !onlyInputImage))
       {
 LABEL_9:
-        if (a6)
+        if (error)
         {
           [CRImageReader errorWithErrorCode:-8];
-          *a6 = v17 = 0;
+          *error = v17 = 0;
           goto LABEL_12;
         }
 
@@ -137,8 +137,8 @@ LABEL_11:
       }
     }
 
-    v15 = [v11 name];
-    v16 = [v10 assignSurface:a4 toName:v15 error:a6];
+    name = [onlyInputImage name];
+    v16 = [v10 assignSurface:surface toName:name error:error];
 
     if (!v16)
     {
@@ -152,17 +152,17 @@ LABEL_12:
   return v17;
 }
 
-+ (id)newE5RTExecutionOutputsForFunctionDescriptor:(id)a3 error:(id *)a4
++ (id)newE5RTExecutionOutputsForFunctionDescriptor:(id)descriptor error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  descriptorCopy = descriptor;
   v6 = objc_alloc_init(MEMORY[0x1E69DF940]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [v5 allOutputs];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allOutputs = [descriptorCopy allOutputs];
+  v8 = [allOutputs countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -174,10 +174,10 @@ LABEL_12:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allOutputs);
         }
 
-        if (![*(*(&v14 + 1) + 8 * v11) E5RTExecutionContextAssignNewTensorInstanceToNamedObjects:v6 error:a4])
+        if (![*(*(&v14 + 1) + 8 * v11) E5RTExecutionContextAssignNewTensorInstanceToNamedObjects:v6 error:error])
         {
 
           v12 = 0;
@@ -188,7 +188,7 @@ LABEL_12:
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [allOutputs countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v9)
       {
         continue;

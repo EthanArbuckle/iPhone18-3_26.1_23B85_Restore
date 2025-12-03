@@ -1,33 +1,33 @@
 @interface PPFlightAirport
-- (BOOL)isEqualToPPFlightAirport:(id)a3;
-- (PPFlightAirport)initWithName:(id)a3 iataCode:(id)a4 role:(unsigned __int8)a5;
+- (BOOL)isEqualToPPFlightAirport:(id)airport;
+- (PPFlightAirport)initWithName:(id)name iataCode:(id)code role:(unsigned __int8)role;
 @end
 
 @implementation PPFlightAirport
 
-- (BOOL)isEqualToPPFlightAirport:(id)a3
+- (BOOL)isEqualToPPFlightAirport:(id)airport
 {
-  v4 = a3;
-  v5 = [(PPFlightAirport *)self iataCode];
-  v6 = [v4 iataCode];
+  airportCopy = airport;
+  iataCode = [(PPFlightAirport *)self iataCode];
+  iataCode2 = [airportCopy iataCode];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(airportCopy) = [iataCode isEqualToString:iataCode2];
+  return airportCopy;
 }
 
-- (PPFlightAirport)initWithName:(id)a3 iataCode:(id)a4 role:(unsigned __int8)a5
+- (PPFlightAirport)initWithName:(id)name iataCode:(id)code role:(unsigned __int8)role
 {
-  v9 = a3;
-  v10 = a4;
+  nameCopy = name;
+  codeCopy = code;
   v14.receiver = self;
   v14.super_class = PPFlightAirport;
   v11 = [(PPFlightAirport *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_name, a3);
-    objc_storeStrong(&v12->_iataCode, a4);
-    v12->_role = a5;
+    objc_storeStrong(&v11->_name, name);
+    objc_storeStrong(&v12->_iataCode, code);
+    v12->_role = role;
   }
 
   return v12;

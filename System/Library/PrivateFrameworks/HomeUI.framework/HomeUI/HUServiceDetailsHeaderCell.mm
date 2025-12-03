@@ -1,28 +1,28 @@
 @interface HUServiceDetailsHeaderCell
 - (HUResizableCellDelegate)resizingDelegate;
-- (HUServiceDetailsHeaderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HUServiceDetailsHeaderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)_hiddenMessageTextViewConstraints;
 - (id)_visibleMessageTextViewConstraints;
 - (void)_configureConstraints;
-- (void)_setContinuousCornerRadius:(double)a3;
-- (void)_setCornerRadius:(double)a3;
+- (void)_setContinuousCornerRadius:(double)radius;
+- (void)_setCornerRadius:(double)radius;
 - (void)_updateErrorLabelConstraints;
-- (void)setItem:(id)a3;
-- (void)updateUIWithAnimation:(BOOL)a3;
+- (void)setItem:(id)item;
+- (void)updateUIWithAnimation:(BOOL)animation;
 @end
 
 @implementation HUServiceDetailsHeaderCell
 
-- (HUServiceDetailsHeaderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HUServiceDetailsHeaderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v44[1] = *MEMORY[0x277D85DE8];
   v43.receiver = self;
   v43.super_class = HUServiceDetailsHeaderCell;
-  v4 = [(HUServiceDetailsHeaderCell *)&v43 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HUServiceDetailsHeaderCell *)&v43 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
-    v5 = [MEMORY[0x277D75348] clearColor];
-    [(HUServiceDetailsHeaderCell *)v4 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(HUServiceDetailsHeaderCell *)v4 setBackgroundColor:clearColor];
 
     v6 = objc_opt_new();
     messageTextView = v4->_messageTextView;
@@ -32,16 +32,16 @@
     [(UITextView *)v4->_messageTextView setEditable:0];
     [(UITextView *)v4->_messageTextView _setInteractiveTextSelectionDisabled:1];
     [(UITextView *)v4->_messageTextView setScrollEnabled:0];
-    v8 = [(UITextView *)v4->_messageTextView textContainer];
-    [v8 setLineFragmentPadding:0.0];
+    textContainer = [(UITextView *)v4->_messageTextView textContainer];
+    [textContainer setLineFragmentPadding:0.0];
 
-    v9 = [MEMORY[0x277D75348] clearColor];
-    [(UITextView *)v4->_messageTextView setBackgroundColor:v9];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(UITextView *)v4->_messageTextView setBackgroundColor:clearColor2];
 
     [(UITextView *)v4->_messageTextView setHidden:1];
-    v10 = [(HUServiceDetailsHeaderCell *)v4 contentView];
-    v11 = [(HUServiceDetailsHeaderCell *)v4 messageTextView];
-    [v10 addSubview:v11];
+    contentView = [(HUServiceDetailsHeaderCell *)v4 contentView];
+    messageTextView = [(HUServiceDetailsHeaderCell *)v4 messageTextView];
+    [contentView addSubview:messageTextView];
 
     v12 = objc_alloc_init(MEMORY[0x277D756B8]);
     titleLabel = v4->_titleLabel;
@@ -53,12 +53,12 @@
     [(UILabel *)v14 setFont:v15];
 
     v16 = v4->_titleLabel;
-    v17 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v16 setBackgroundColor:v17];
+    clearColor3 = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v16 setBackgroundColor:clearColor3];
 
     v18 = v4->_titleLabel;
-    v19 = [MEMORY[0x277D75348] systemGrayColor];
-    [(UILabel *)v18 setTextColor:v19];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [(UILabel *)v18 setTextColor:systemGrayColor];
 
     [(UILabel *)v4->_titleLabel setLineBreakMode:0];
     v20 = HFLocalizedString();
@@ -76,8 +76,8 @@
     [(UIStackView *)v4->_titleSpinnerStackView setAlignment:3];
     [(UIStackView *)v4->_titleSpinnerStackView setSpacing:8.0];
     [(UIStackView *)v4->_titleSpinnerStackView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v25 = [(HUServiceDetailsHeaderCell *)v4 contentView];
-    [v25 addSubview:v4->_titleSpinnerStackView];
+    contentView2 = [(HUServiceDetailsHeaderCell *)v4 contentView];
+    [contentView2 addSubview:v4->_titleSpinnerStackView];
 
     v26 = [MEMORY[0x277D75220] buttonWithType:0];
     actionButton = v4->_actionButton;
@@ -87,20 +87,20 @@
     v29 = v28;
     v31 = v30;
     v33 = v32;
-    v34 = [(HUServiceDetailsHeaderCell *)v4 defaultContentConfiguration];
-    [v34 directionalLayoutMargins];
+    defaultContentConfiguration = [(HUServiceDetailsHeaderCell *)v4 defaultContentConfiguration];
+    [defaultContentConfiguration directionalLayoutMargins];
     v36 = v35;
 
     [(UIButton *)v4->_actionButton setTitleEdgeInsets:v29, v36, v31, v33];
-    v37 = [MEMORY[0x277D75348] secondarySystemGroupedBackgroundColor];
-    [(UIButton *)v4->_actionButton setBackgroundColor:v37];
+    secondarySystemGroupedBackgroundColor = [MEMORY[0x277D75348] secondarySystemGroupedBackgroundColor];
+    [(UIButton *)v4->_actionButton setBackgroundColor:secondarySystemGroupedBackgroundColor];
 
     [(UIButton *)v4->_actionButton setContentHorizontalAlignment:1];
     [(UIButton *)v4->_actionButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    v38 = [MEMORY[0x277D75348] systemOrangeColor];
-    [(UIButton *)v4->_actionButton setTitleColor:v38 forState:0];
-    v39 = [(HUServiceDetailsHeaderCell *)v4 contentView];
-    [v39 addSubview:v4->_actionButton];
+    systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+    [(UIButton *)v4->_actionButton setTitleColor:systemOrangeColor forState:0];
+    contentView3 = [(HUServiceDetailsHeaderCell *)v4 contentView];
+    [contentView3 addSubview:v4->_actionButton];
 
     v40 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
     checkingForUpdateSpinner = v4->_checkingForUpdateSpinner;
@@ -113,42 +113,42 @@
   return v4;
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   v5.receiver = self;
   v5.super_class = HUServiceDetailsHeaderCell;
   [(HUServiceDetailsHeaderCell *)&v5 _setContinuousCornerRadius:?];
-  [(UIButton *)self->_actionButton _setContinuousCornerRadius:a3];
+  [(UIButton *)self->_actionButton _setContinuousCornerRadius:radius];
 }
 
-- (void)_setCornerRadius:(double)a3
+- (void)_setCornerRadius:(double)radius
 {
   v5.receiver = self;
   v5.super_class = HUServiceDetailsHeaderCell;
   [(HUServiceDetailsHeaderCell *)&v5 _setCornerRadius:?];
-  [(UIButton *)self->_actionButton _setCornerRadius:a3];
+  [(UIButton *)self->_actionButton _setCornerRadius:radius];
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  v5 = a3;
-  if (self->_item != v5)
+  itemCopy = item;
+  if (self->_item != itemCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_item, a3);
+    v6 = itemCopy;
+    objc_storeStrong(&self->_item, item);
     [(HUServiceDetailsHeaderCell *)self _configureConstraints];
-    v5 = v6;
+    itemCopy = v6;
   }
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
-  v4 = [(HUServiceDetailsHeaderCell *)self item];
-  v5 = [v4 latestResults];
+  item = [(HUServiceDetailsHeaderCell *)self item];
+  latestResults = [item latestResults];
 
-  v6 = [(HUServiceDetailsHeaderCell *)self item];
-  v7 = [v6 latestResults];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277D13E40]];
+  item2 = [(HUServiceDetailsHeaderCell *)self item];
+  latestResults2 = [item2 latestResults];
+  v8 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13E40]];
 
   if (_os_feature_enabled_impl())
   {
@@ -167,29 +167,29 @@
   v51[2] = __52__HUServiceDetailsHeaderCell_updateUIWithAnimation___block_invoke;
   v51[3] = &unk_277DBA678;
   v51[4] = self;
-  v11 = v5;
+  v11 = latestResults;
   v52 = v11;
   v12 = __52__HUServiceDetailsHeaderCell_updateUIWithAnimation___block_invoke(v51);
-  v13 = [(HUServiceDetailsHeaderCell *)self item];
-  v14 = [v13 latestResults];
-  v47 = [v14 objectForKeyedSubscript:*MEMORY[0x277D13E58]];
+  item3 = [(HUServiceDetailsHeaderCell *)self item];
+  latestResults3 = [item3 latestResults];
+  v47 = [latestResults3 objectForKeyedSubscript:*MEMORY[0x277D13E58]];
 
   v15 = [v11 objectForKeyedSubscript:*MEMORY[0x277D13E70]];
-  v16 = [(HUServiceDetailsHeaderCell *)self item];
-  v17 = [v16 latestResults];
-  v18 = [v17 objectForKeyedSubscript:*MEMORY[0x277D140F8]];
+  item4 = [(HUServiceDetailsHeaderCell *)self item];
+  latestResults4 = [item4 latestResults];
+  v18 = [latestResults4 objectForKeyedSubscript:*MEMORY[0x277D140F8]];
   v19 = v18;
   if (v18)
   {
-    v20 = v18;
+    text = v18;
   }
 
   else
   {
-    v20 = [(UILabel *)self->_titleLabel text];
+    text = [(UILabel *)self->_titleLabel text];
   }
 
-  v21 = v20;
+  v21 = text;
 
   v22 = v47;
   if (v8)
@@ -218,56 +218,56 @@
   v28 = v23;
   v50 = v28;
   v29 = __52__HUServiceDetailsHeaderCell_updateUIWithAnimation___block_invoke_2(v48);
-  v30 = [(HUServiceDetailsHeaderCell *)self messageTextView];
-  [v30 setAttributedText:v29];
+  messageTextView = [(HUServiceDetailsHeaderCell *)self messageTextView];
+  [messageTextView setAttributedText:v29];
 
-  v31 = [MEMORY[0x277D75348] labelColor];
-  v32 = [(HUServiceDetailsHeaderCell *)self messageTextView];
-  [v32 setTextColor:v31];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  messageTextView2 = [(HUServiceDetailsHeaderCell *)self messageTextView];
+  [messageTextView2 setTextColor:labelColor];
 
-  v33 = [(HUServiceDetailsHeaderCell *)self actionButton];
-  [v33 setTitle:v15 forState:0];
+  actionButton = [(HUServiceDetailsHeaderCell *)self actionButton];
+  [actionButton setTitle:v15 forState:0];
 
-  v34 = [(HUServiceDetailsHeaderCell *)self messageTextView];
-  [v34 setHidden:v29 == 0];
+  messageTextView3 = [(HUServiceDetailsHeaderCell *)self messageTextView];
+  [messageTextView3 setHidden:v29 == 0];
 
-  v35 = [(HUServiceDetailsHeaderCell *)self actionButton];
-  [v35 setHidden:v15 == 0];
+  actionButton2 = [(HUServiceDetailsHeaderCell *)self actionButton];
+  [actionButton2 setHidden:v15 == 0];
 
   v36 = [v11 objectForKeyedSubscript:*MEMORY[0x277D140F0]];
-  v37 = [v36 BOOLValue];
+  bOOLValue = [v36 BOOLValue];
 
-  v38 = [(HUServiceDetailsHeaderCell *)self titleLabel];
-  v39 = v38;
-  if (v37)
+  titleLabel = [(HUServiceDetailsHeaderCell *)self titleLabel];
+  v39 = titleLabel;
+  if (bOOLValue)
   {
-    [v38 setHidden:0];
+    [titleLabel setHidden:0];
 
-    v40 = [(HUServiceDetailsHeaderCell *)self titleLabel];
+    titleLabel2 = [(HUServiceDetailsHeaderCell *)self titleLabel];
     v41 = v46;
-    [v40 setText:v46];
+    [titleLabel2 setText:v46];
 
-    v42 = [(HUServiceDetailsHeaderCell *)self checkingForUpdateSpinner];
-    [v42 setHidden:0];
+    checkingForUpdateSpinner = [(HUServiceDetailsHeaderCell *)self checkingForUpdateSpinner];
+    [checkingForUpdateSpinner setHidden:0];
 
-    v43 = [(HUServiceDetailsHeaderCell *)self actionButton];
+    actionButton3 = [(HUServiceDetailsHeaderCell *)self actionButton];
   }
 
   else
   {
-    [v38 setHidden:1];
+    [titleLabel setHidden:1];
 
-    v43 = [(HUServiceDetailsHeaderCell *)self checkingForUpdateSpinner];
+    actionButton3 = [(HUServiceDetailsHeaderCell *)self checkingForUpdateSpinner];
     v41 = v46;
   }
 
-  [v43 setHidden:{1, v46}];
+  [actionButton3 setHidden:{1, v46}];
 
-  v44 = [(HUServiceDetailsHeaderCell *)self messageTextView];
-  [v44 sizeToFit];
+  messageTextView4 = [(HUServiceDetailsHeaderCell *)self messageTextView];
+  [messageTextView4 sizeToFit];
 
-  v45 = [(HUServiceDetailsHeaderCell *)self titleLabel];
-  [v45 sizeToFit];
+  titleLabel3 = [(HUServiceDetailsHeaderCell *)self titleLabel];
+  [titleLabel3 sizeToFit];
 
   [(HUServiceDetailsHeaderCell *)self _updateErrorLabelConstraints];
 }
@@ -387,61 +387,61 @@ LABEL_6:
 - (void)_configureConstraints
 {
   v3 = MEMORY[0x277CCAAD0];
-  v4 = [(HUServiceDetailsHeaderCell *)self constraints];
-  [v3 deactivateConstraints:v4];
+  constraints = [(HUServiceDetailsHeaderCell *)self constraints];
+  [v3 deactivateConstraints:constraints];
 
-  v5 = [(HUServiceDetailsHeaderCell *)self _hiddenMessageTextViewConstraints];
-  [(HUServiceDetailsHeaderCell *)self setHiddenMessageTextViewConstraints:v5];
+  _hiddenMessageTextViewConstraints = [(HUServiceDetailsHeaderCell *)self _hiddenMessageTextViewConstraints];
+  [(HUServiceDetailsHeaderCell *)self setHiddenMessageTextViewConstraints:_hiddenMessageTextViewConstraints];
 
-  v6 = [(HUServiceDetailsHeaderCell *)self _visibleMessageTextViewConstraints];
-  [(HUServiceDetailsHeaderCell *)self setVisibleMessageTextViewConstraints:v6];
+  _visibleMessageTextViewConstraints = [(HUServiceDetailsHeaderCell *)self _visibleMessageTextViewConstraints];
+  [(HUServiceDetailsHeaderCell *)self setVisibleMessageTextViewConstraints:_visibleMessageTextViewConstraints];
 
   [(HUServiceDetailsHeaderCell *)self _updateErrorLabelConstraints];
 }
 
 - (void)_updateErrorLabelConstraints
 {
-  v3 = [(HUServiceDetailsHeaderCell *)self messageTextView];
-  v4 = [v3 isHidden];
+  messageTextView = [(HUServiceDetailsHeaderCell *)self messageTextView];
+  isHidden = [messageTextView isHidden];
 
   v5 = MEMORY[0x277CCAAD0];
-  if (v4)
+  if (isHidden)
   {
-    v6 = [(HUServiceDetailsHeaderCell *)self visibleMessageTextViewConstraints];
-    [v5 deactivateConstraints:v6];
+    visibleMessageTextViewConstraints = [(HUServiceDetailsHeaderCell *)self visibleMessageTextViewConstraints];
+    [v5 deactivateConstraints:visibleMessageTextViewConstraints];
 
     v7 = MEMORY[0x277CCAAD0];
-    v8 = [(HUServiceDetailsHeaderCell *)self hiddenMessageTextViewConstraints];
-    [v7 activateConstraints:v8];
+    hiddenMessageTextViewConstraints = [(HUServiceDetailsHeaderCell *)self hiddenMessageTextViewConstraints];
+    [v7 activateConstraints:hiddenMessageTextViewConstraints];
 
-    v9 = [(HUServiceDetailsHeaderCell *)self messageBottomConstraint];
-    [v9 setActive:1];
+    messageBottomConstraint = [(HUServiceDetailsHeaderCell *)self messageBottomConstraint];
+    [messageBottomConstraint setActive:1];
 
-    v28 = [(HUServiceDetailsHeaderCell *)self spinnerBottomConstraint];
-    [v28 setActive:0];
+    spinnerBottomConstraint = [(HUServiceDetailsHeaderCell *)self spinnerBottomConstraint];
+    [spinnerBottomConstraint setActive:0];
   }
 
   else
   {
-    v10 = [(HUServiceDetailsHeaderCell *)self hiddenMessageTextViewConstraints];
-    [v5 deactivateConstraints:v10];
+    hiddenMessageTextViewConstraints2 = [(HUServiceDetailsHeaderCell *)self hiddenMessageTextViewConstraints];
+    [v5 deactivateConstraints:hiddenMessageTextViewConstraints2];
 
     v11 = MEMORY[0x277CCAAD0];
-    v12 = [(HUServiceDetailsHeaderCell *)self visibleMessageTextViewConstraints];
-    [v11 activateConstraints:v12];
+    visibleMessageTextViewConstraints2 = [(HUServiceDetailsHeaderCell *)self visibleMessageTextViewConstraints];
+    [v11 activateConstraints:visibleMessageTextViewConstraints2];
 
-    v13 = [(HUServiceDetailsHeaderCell *)self item];
-    v14 = [v13 latestResults];
-    v15 = [v14 objectForKeyedSubscript:*MEMORY[0x277D140F0]];
-    v16 = [v15 BOOLValue];
+    item = [(HUServiceDetailsHeaderCell *)self item];
+    latestResults = [item latestResults];
+    v15 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D140F0]];
+    bOOLValue = [v15 BOOLValue];
 
-    if (v16)
+    if (bOOLValue)
     {
-      v17 = [(HUServiceDetailsHeaderCell *)self messageBottomConstraint];
-      [v17 setActive:0];
+      messageBottomConstraint2 = [(HUServiceDetailsHeaderCell *)self messageBottomConstraint];
+      [messageBottomConstraint2 setActive:0];
 
-      v18 = [(HUServiceDetailsHeaderCell *)self spinnerBottomConstraint];
-      [v18 setActive:1];
+      spinnerBottomConstraint2 = [(HUServiceDetailsHeaderCell *)self spinnerBottomConstraint];
+      [spinnerBottomConstraint2 setActive:1];
 
       titleSpinnerStackView = self->_titleSpinnerStackView;
       checkingForUpdateSpinner = self->_checkingForUpdateSpinner;
@@ -451,17 +451,17 @@ LABEL_6:
 
     else
     {
-      v21 = [(HUServiceDetailsHeaderCell *)self actionButton];
-      v22 = [v21 isHidden];
+      actionButton = [(HUServiceDetailsHeaderCell *)self actionButton];
+      isHidden2 = [actionButton isHidden];
 
-      v23 = [(HUServiceDetailsHeaderCell *)self messageBottomConstraint];
-      [v23 setActive:v22];
+      messageBottomConstraint3 = [(HUServiceDetailsHeaderCell *)self messageBottomConstraint];
+      [messageBottomConstraint3 setActive:isHidden2];
 
-      v24 = [(HUServiceDetailsHeaderCell *)self actionBottomConstraint];
-      [v24 setActive:v22 ^ 1];
+      actionBottomConstraint = [(HUServiceDetailsHeaderCell *)self actionBottomConstraint];
+      [actionBottomConstraint setActive:isHidden2 ^ 1];
 
-      v25 = [(HUServiceDetailsHeaderCell *)self spinnerBottomConstraint];
-      [v25 setActive:0];
+      spinnerBottomConstraint3 = [(HUServiceDetailsHeaderCell *)self spinnerBottomConstraint];
+      [spinnerBottomConstraint3 setActive:0];
 
       v26 = self->_titleSpinnerStackView;
       v27 = self->_checkingForUpdateSpinner;
@@ -474,8 +474,8 @@ LABEL_6:
 - (id)_hiddenMessageTextViewConstraints
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  v2 = [(HUServiceDetailsHeaderCell *)self heightAnchor];
-  v3 = [v2 constraintEqualToConstant:0.0];
+  heightAnchor = [(HUServiceDetailsHeaderCell *)self heightAnchor];
+  v3 = [heightAnchor constraintEqualToConstant:0.0];
   v6[0] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
 
@@ -485,117 +485,117 @@ LABEL_6:
 - (id)_visibleMessageTextViewConstraints
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(HUServiceDetailsHeaderCell *)self messageTextView];
-  v5 = [v4 leadingAnchor];
-  v6 = [(HUServiceDetailsHeaderCell *)self contentView];
-  v7 = [v6 readableContentGuide];
-  v8 = [v7 leadingAnchor];
-  v9 = [v5 constraintEqualToAnchor:v8];
+  messageTextView = [(HUServiceDetailsHeaderCell *)self messageTextView];
+  leadingAnchor = [messageTextView leadingAnchor];
+  contentView = [(HUServiceDetailsHeaderCell *)self contentView];
+  readableContentGuide = [contentView readableContentGuide];
+  leadingAnchor2 = [readableContentGuide leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v3 addObject:v9];
 
-  v10 = [(HUServiceDetailsHeaderCell *)self messageTextView];
-  v11 = [v10 trailingAnchor];
-  v12 = [(HUServiceDetailsHeaderCell *)self contentView];
-  v13 = [v12 readableContentGuide];
-  v14 = [v13 trailingAnchor];
-  v15 = [v11 constraintEqualToAnchor:v14];
+  messageTextView2 = [(HUServiceDetailsHeaderCell *)self messageTextView];
+  trailingAnchor = [messageTextView2 trailingAnchor];
+  contentView2 = [(HUServiceDetailsHeaderCell *)self contentView];
+  readableContentGuide2 = [contentView2 readableContentGuide];
+  trailingAnchor2 = [readableContentGuide2 trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v3 addObject:v15];
 
-  v16 = [(HUServiceDetailsHeaderCell *)self actionButton];
-  v17 = [v16 leadingAnchor];
-  v18 = [(HUServiceDetailsHeaderCell *)self contentView];
-  v19 = [v18 leadingAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19];
+  actionButton = [(HUServiceDetailsHeaderCell *)self actionButton];
+  leadingAnchor3 = [actionButton leadingAnchor];
+  contentView3 = [(HUServiceDetailsHeaderCell *)self contentView];
+  leadingAnchor4 = [contentView3 leadingAnchor];
+  v20 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v3 addObject:v20];
 
-  v21 = [(HUServiceDetailsHeaderCell *)self actionButton];
-  v22 = [v21 trailingAnchor];
-  v23 = [(HUServiceDetailsHeaderCell *)self contentView];
-  v24 = [v23 trailingAnchor];
-  v25 = [v22 constraintEqualToAnchor:v24];
+  actionButton2 = [(HUServiceDetailsHeaderCell *)self actionButton];
+  trailingAnchor3 = [actionButton2 trailingAnchor];
+  contentView4 = [(HUServiceDetailsHeaderCell *)self contentView];
+  trailingAnchor4 = [contentView4 trailingAnchor];
+  v25 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v3 addObject:v25];
 
-  v26 = [(HUServiceDetailsHeaderCell *)self actionButton];
-  v27 = [v26 topAnchor];
-  v28 = [(HUServiceDetailsHeaderCell *)self messageTextView];
-  v29 = [v28 lastBaselineAnchor];
-  v30 = [v27 constraintEqualToAnchor:v29 constant:35.0];
+  actionButton3 = [(HUServiceDetailsHeaderCell *)self actionButton];
+  topAnchor = [actionButton3 topAnchor];
+  messageTextView3 = [(HUServiceDetailsHeaderCell *)self messageTextView];
+  lastBaselineAnchor = [messageTextView3 lastBaselineAnchor];
+  v30 = [topAnchor constraintEqualToAnchor:lastBaselineAnchor constant:35.0];
   [v3 addObject:v30];
 
-  v31 = [(HUServiceDetailsHeaderCell *)self actionButton];
-  v32 = [v31 centerXAnchor];
-  v33 = [(HUServiceDetailsHeaderCell *)self messageTextView];
-  v34 = [v33 centerXAnchor];
-  v35 = [v32 constraintEqualToAnchor:v34];
+  actionButton4 = [(HUServiceDetailsHeaderCell *)self actionButton];
+  centerXAnchor = [actionButton4 centerXAnchor];
+  messageTextView4 = [(HUServiceDetailsHeaderCell *)self messageTextView];
+  centerXAnchor2 = [messageTextView4 centerXAnchor];
+  v35 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v3 addObject:v35];
 
-  v36 = [(HUServiceDetailsHeaderCell *)self actionButton];
-  v37 = [v36 heightAnchor];
-  v38 = [v37 constraintGreaterThanOrEqualToConstant:44.0];
+  actionButton5 = [(HUServiceDetailsHeaderCell *)self actionButton];
+  heightAnchor = [actionButton5 heightAnchor];
+  v38 = [heightAnchor constraintGreaterThanOrEqualToConstant:44.0];
   [v3 addObject:v38];
 
-  v39 = [(HUServiceDetailsHeaderCell *)self messageTextView];
-  v40 = [v39 topAnchor];
-  v41 = [(HUServiceDetailsHeaderCell *)self contentView];
-  v42 = [v41 topAnchor];
-  v43 = [v40 constraintEqualToAnchor:v42];
+  messageTextView5 = [(HUServiceDetailsHeaderCell *)self messageTextView];
+  topAnchor2 = [messageTextView5 topAnchor];
+  contentView5 = [(HUServiceDetailsHeaderCell *)self contentView];
+  topAnchor3 = [contentView5 topAnchor];
+  v43 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
   [v3 addObject:v43];
 
-  v44 = [(HUServiceDetailsHeaderCell *)self titleSpinnerStackView];
-  v45 = [v44 topAnchor];
-  v46 = [(HUServiceDetailsHeaderCell *)self messageTextView];
-  v47 = [v46 lastBaselineAnchor];
-  v48 = [v45 constraintEqualToAnchor:v47 constant:35.0];
+  titleSpinnerStackView = [(HUServiceDetailsHeaderCell *)self titleSpinnerStackView];
+  topAnchor4 = [titleSpinnerStackView topAnchor];
+  messageTextView6 = [(HUServiceDetailsHeaderCell *)self messageTextView];
+  lastBaselineAnchor2 = [messageTextView6 lastBaselineAnchor];
+  v48 = [topAnchor4 constraintEqualToAnchor:lastBaselineAnchor2 constant:35.0];
   [v3 addObject:v48];
 
-  v49 = [(HUServiceDetailsHeaderCell *)self titleSpinnerStackView];
-  v50 = [v49 centerXAnchor];
-  v51 = [(HUServiceDetailsHeaderCell *)self messageTextView];
-  v52 = [v51 centerXAnchor];
-  v53 = [v50 constraintEqualToAnchor:v52];
+  titleSpinnerStackView2 = [(HUServiceDetailsHeaderCell *)self titleSpinnerStackView];
+  centerXAnchor3 = [titleSpinnerStackView2 centerXAnchor];
+  messageTextView7 = [(HUServiceDetailsHeaderCell *)self messageTextView];
+  centerXAnchor4 = [messageTextView7 centerXAnchor];
+  v53 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   [v3 addObject:v53];
 
-  v54 = [(HUServiceDetailsHeaderCell *)self messageTextView];
-  v55 = [v54 bottomAnchor];
-  v56 = [(HUServiceDetailsHeaderCell *)self contentView];
-  v57 = [v56 bottomAnchor];
-  v58 = [v55 constraintEqualToAnchor:v57 constant:-35.0];
+  messageTextView8 = [(HUServiceDetailsHeaderCell *)self messageTextView];
+  bottomAnchor = [messageTextView8 bottomAnchor];
+  contentView6 = [(HUServiceDetailsHeaderCell *)self contentView];
+  bottomAnchor2 = [contentView6 bottomAnchor];
+  v58 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-35.0];
   [(HUServiceDetailsHeaderCell *)self setMessageBottomConstraint:v58];
 
-  v59 = [(HUServiceDetailsHeaderCell *)self contentView];
-  v60 = [(HUServiceDetailsHeaderCell *)self messageBottomConstraint];
-  [v59 addConstraint:v60];
+  contentView7 = [(HUServiceDetailsHeaderCell *)self contentView];
+  messageBottomConstraint = [(HUServiceDetailsHeaderCell *)self messageBottomConstraint];
+  [contentView7 addConstraint:messageBottomConstraint];
 
-  v61 = [(HUServiceDetailsHeaderCell *)self messageBottomConstraint];
-  [v61 setActive:1];
+  messageBottomConstraint2 = [(HUServiceDetailsHeaderCell *)self messageBottomConstraint];
+  [messageBottomConstraint2 setActive:1];
 
-  v62 = [(HUServiceDetailsHeaderCell *)self actionButton];
-  v63 = [v62 bottomAnchor];
-  v64 = [(HUServiceDetailsHeaderCell *)self contentView];
-  v65 = [v64 bottomAnchor];
-  v66 = [v63 constraintEqualToAnchor:v65 constant:-35.0];
+  actionButton6 = [(HUServiceDetailsHeaderCell *)self actionButton];
+  bottomAnchor3 = [actionButton6 bottomAnchor];
+  contentView8 = [(HUServiceDetailsHeaderCell *)self contentView];
+  bottomAnchor4 = [contentView8 bottomAnchor];
+  v66 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-35.0];
   [(HUServiceDetailsHeaderCell *)self setActionBottomConstraint:v66];
 
-  v67 = [(HUServiceDetailsHeaderCell *)self contentView];
-  v68 = [(HUServiceDetailsHeaderCell *)self actionBottomConstraint];
-  [v67 addConstraint:v68];
+  contentView9 = [(HUServiceDetailsHeaderCell *)self contentView];
+  actionBottomConstraint = [(HUServiceDetailsHeaderCell *)self actionBottomConstraint];
+  [contentView9 addConstraint:actionBottomConstraint];
 
-  v69 = [(HUServiceDetailsHeaderCell *)self actionBottomConstraint];
-  [v69 setActive:0];
+  actionBottomConstraint2 = [(HUServiceDetailsHeaderCell *)self actionBottomConstraint];
+  [actionBottomConstraint2 setActive:0];
 
-  v70 = [(HUServiceDetailsHeaderCell *)self titleSpinnerStackView];
-  v71 = [v70 bottomAnchor];
-  v72 = [(HUServiceDetailsHeaderCell *)self contentView];
-  v73 = [v72 bottomAnchor];
-  v74 = [v71 constraintEqualToAnchor:v73 constant:-35.0];
+  titleSpinnerStackView3 = [(HUServiceDetailsHeaderCell *)self titleSpinnerStackView];
+  bottomAnchor5 = [titleSpinnerStackView3 bottomAnchor];
+  contentView10 = [(HUServiceDetailsHeaderCell *)self contentView];
+  bottomAnchor6 = [contentView10 bottomAnchor];
+  v74 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6 constant:-35.0];
   [(HUServiceDetailsHeaderCell *)self setSpinnerBottomConstraint:v74];
 
-  v75 = [(HUServiceDetailsHeaderCell *)self contentView];
-  v76 = [(HUServiceDetailsHeaderCell *)self spinnerBottomConstraint];
-  [v75 addConstraint:v76];
+  contentView11 = [(HUServiceDetailsHeaderCell *)self contentView];
+  spinnerBottomConstraint = [(HUServiceDetailsHeaderCell *)self spinnerBottomConstraint];
+  [contentView11 addConstraint:spinnerBottomConstraint];
 
-  v77 = [(HUServiceDetailsHeaderCell *)self spinnerBottomConstraint];
-  [v77 setActive:0];
+  spinnerBottomConstraint2 = [(HUServiceDetailsHeaderCell *)self spinnerBottomConstraint];
+  [spinnerBottomConstraint2 setActive:0];
 
   return v3;
 }

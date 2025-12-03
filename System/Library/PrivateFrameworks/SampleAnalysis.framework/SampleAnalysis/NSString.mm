@@ -6,12 +6,12 @@
 
 - (void)copyLastPathComponent
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 length];
+    v2 = [self length];
     v3 = malloc_type_malloc(2 * v2, 0x1000040BDFB0063uLL);
-    [v1 getCharacters:v3 range:{0, v2}];
+    [selfCopy getCharacters:v3 range:{0, v2}];
     if (v2 >= 2)
     {
       v5 = 0;
@@ -29,13 +29,13 @@
       }
     }
 
-    v4 = v1;
+    v4 = selfCopy;
 LABEL_8:
-    v1 = v4;
+    selfCopy = v4;
     free(v3);
   }
 
-  return v1;
+  return selfCopy;
 }
 
 @end

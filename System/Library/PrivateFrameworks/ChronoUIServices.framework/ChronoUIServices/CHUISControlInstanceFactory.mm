@@ -1,15 +1,15 @@
 @interface CHUISControlInstanceFactory
-+ (id)instanceOfType:(unint64_t)a3 instanceIdentity:(id)a4;
-+ (id)instanceWithControl:(id)a3 type:(unint64_t)a4 content:(unint64_t)a5;
-+ (id)instanceWithIdentity:(id)a3 type:(unint64_t)a4;
++ (id)instanceOfType:(unint64_t)type instanceIdentity:(id)identity;
++ (id)instanceWithControl:(id)control type:(unint64_t)type content:(unint64_t)content;
++ (id)instanceWithIdentity:(id)identity type:(unint64_t)type;
 - (CHUISControlInstanceFactory)init;
 @end
 
 @implementation CHUISControlInstanceFactory
 
-+ (id)instanceOfType:(unint64_t)a3 instanceIdentity:(id)a4
++ (id)instanceOfType:(unint64_t)type instanceIdentity:(id)identity
 {
-  if (a3 - 1 > 2)
+  if (type - 1 > 2)
   {
     result = sub_1D9328534();
     __break(1u);
@@ -17,29 +17,29 @@
 
   else
   {
-    v4 = [objc_allocWithZone(*off_1E8575F68[a3 - 1]) initWithInstanceIdentity_];
+    initWithInstanceIdentity_ = [objc_allocWithZone(*off_1E8575F68[type - 1]) initWithInstanceIdentity_];
 
-    return v4;
+    return initWithInstanceIdentity_;
   }
 
   return result;
 }
 
-+ (id)instanceWithControl:(id)a3 type:(unint64_t)a4 content:(unint64_t)a5
++ (id)instanceWithControl:(id)control type:(unint64_t)type content:(unint64_t)content
 {
   v9 = objc_allocWithZone(MEMORY[0x1E6994270]);
-  v10 = a3;
-  v11 = [v9 initWithControl:v10 contentType:a5 hostIdentifier:0 configurationIdentifier:0];
-  v12 = [a1 instanceOfType:a4 instanceIdentity:v11];
+  controlCopy = control;
+  v11 = [v9 initWithControl:controlCopy contentType:content hostIdentifier:0 configurationIdentifier:0];
+  v12 = [self instanceOfType:type instanceIdentity:v11];
 
   return v12;
 }
 
-+ (id)instanceWithIdentity:(id)a3 type:(unint64_t)a4
++ (id)instanceWithIdentity:(id)identity type:(unint64_t)type
 {
   swift_getObjCClassMetadata();
-  v6 = a3;
-  v7 = sub_1D92FDBD4(v6, a4);
+  identityCopy = identity;
+  v7 = sub_1D92FDBD4(identityCopy, type);
 
   return v7;
 }

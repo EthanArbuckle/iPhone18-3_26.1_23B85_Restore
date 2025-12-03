@@ -1,9 +1,9 @@
 @interface EXBorders
 + (id)borderStyleEnumMap;
-+ (id)edBorderFromXmlElement:(_xmlNode *)a3 diagonalType:(int)a4 state:(id)a5;
-+ (id)edBordersFromXmlBordersElement:(_xmlNode *)a3 state:(id)a4;
-+ (int)edBorderStyleFromXmlBorderStyleString:(id)a3;
-+ (int)edDiagStyleFromXmlElement:(_xmlNode *)a3;
++ (id)edBorderFromXmlElement:(_xmlNode *)element diagonalType:(int)type state:(id)state;
++ (id)edBordersFromXmlBordersElement:(_xmlNode *)element state:(id)state;
++ (int)edBorderStyleFromXmlBorderStyleString:(id)string;
++ (int)edDiagStyleFromXmlElement:(_xmlNode *)element;
 + (void)borderStyleEnumMap;
 @end
 
@@ -32,60 +32,60 @@ void __31__EXBorders_borderStyleEnumMap__block_invoke()
   +[EXBorders borderStyleEnumMap]::sBorderStyleEnumMap = v0;
 }
 
-+ (id)edBordersFromXmlBordersElement:(_xmlNode *)a3 state:(id)a4
++ (id)edBordersFromXmlBordersElement:(_xmlNode *)element state:(id)state
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3)
+  stateCopy = state;
+  v7 = stateCopy;
+  if (element)
   {
-    v8 = [v6 EXSpreadsheetMLNamespace];
-    v9 = OCXFindChild(a3, v8, "left");
+    eXSpreadsheetMLNamespace = [stateCopy EXSpreadsheetMLNamespace];
+    v9 = OCXFindChild(element, eXSpreadsheetMLNamespace, "left");
 
     if (!v9)
     {
-      v10 = [v7 EXSpreadsheetMLNamespace];
-      v9 = OCXFindChild(a3, v10, "start");
+      eXSpreadsheetMLNamespace2 = [v7 EXSpreadsheetMLNamespace];
+      v9 = OCXFindChild(element, eXSpreadsheetMLNamespace2, "start");
     }
 
-    v34 = [a1 edBorderFromXmlElement:v9 diagonalType:0 state:v7];
-    v11 = [v7 EXSpreadsheetMLNamespace];
-    v12 = OCXFindChild(a3, v11, "right");
+    v34 = [self edBorderFromXmlElement:v9 diagonalType:0 state:v7];
+    eXSpreadsheetMLNamespace3 = [v7 EXSpreadsheetMLNamespace];
+    v12 = OCXFindChild(element, eXSpreadsheetMLNamespace3, "right");
 
     if (!v12)
     {
-      v13 = [v7 EXSpreadsheetMLNamespace];
-      v12 = OCXFindChild(a3, v13, "end");
+      eXSpreadsheetMLNamespace4 = [v7 EXSpreadsheetMLNamespace];
+      v12 = OCXFindChild(element, eXSpreadsheetMLNamespace4, "end");
     }
 
-    v14 = [a1 edBorderFromXmlElement:v12 diagonalType:0 state:v7];
-    v15 = [v7 EXSpreadsheetMLNamespace];
-    v16 = OCXFindChild(a3, v15, "top");
+    v14 = [self edBorderFromXmlElement:v12 diagonalType:0 state:v7];
+    eXSpreadsheetMLNamespace5 = [v7 EXSpreadsheetMLNamespace];
+    v16 = OCXFindChild(element, eXSpreadsheetMLNamespace5, "top");
 
-    v17 = [a1 edBorderFromXmlElement:v16 diagonalType:0 state:v7];
-    v18 = [v7 EXSpreadsheetMLNamespace];
-    v19 = OCXFindChild(a3, v18, "bottom");
+    v17 = [self edBorderFromXmlElement:v16 diagonalType:0 state:v7];
+    eXSpreadsheetMLNamespace6 = [v7 EXSpreadsheetMLNamespace];
+    v19 = OCXFindChild(element, eXSpreadsheetMLNamespace6, "bottom");
 
-    v20 = [a1 edBorderFromXmlElement:v19 diagonalType:0 state:v7];
-    v21 = [v7 EXSpreadsheetMLNamespace];
-    v22 = OCXFindChild(a3, v21, "vertical");
+    v20 = [self edBorderFromXmlElement:v19 diagonalType:0 state:v7];
+    eXSpreadsheetMLNamespace7 = [v7 EXSpreadsheetMLNamespace];
+    v22 = OCXFindChild(element, eXSpreadsheetMLNamespace7, "vertical");
 
-    v23 = [a1 edBorderFromXmlElement:v22 diagonalType:0 state:v7];
-    v24 = [v7 EXSpreadsheetMLNamespace];
-    v25 = OCXFindChild(a3, v24, "horizontal");
+    v23 = [self edBorderFromXmlElement:v22 diagonalType:0 state:v7];
+    eXSpreadsheetMLNamespace8 = [v7 EXSpreadsheetMLNamespace];
+    v25 = OCXFindChild(element, eXSpreadsheetMLNamespace8, "horizontal");
 
-    v26 = [a1 edBorderFromXmlElement:v25 diagonalType:0 state:v7];
-    v27 = [v7 EXSpreadsheetMLNamespace];
-    v28 = OCXFindChild(a3, v27, "diagonal");
+    v26 = [self edBorderFromXmlElement:v25 diagonalType:0 state:v7];
+    eXSpreadsheetMLNamespace9 = [v7 EXSpreadsheetMLNamespace];
+    v28 = OCXFindChild(element, eXSpreadsheetMLNamespace9, "diagonal");
 
     if (!v28)
     {
-      v29 = [v7 EXSpreadsheetMLNamespace];
-      v28 = OCXFindChild(a3, v29, "diag");
+      eXSpreadsheetMLNamespace10 = [v7 EXSpreadsheetMLNamespace];
+      v28 = OCXFindChild(element, eXSpreadsheetMLNamespace10, "diag");
     }
 
-    v30 = [a1 edBorderFromXmlElement:v28 diagonalType:objc_msgSend(a1 state:{"edDiagStyleFromXmlElement:", a3), v7}];
-    v31 = [v7 resources];
-    v32 = [EDBorders bordersWithLeft:v34 right:v14 top:v17 bottom:v20 diagonal:v30 vertical:v23 horizontal:v26 resources:v31];
+    v30 = [self edBorderFromXmlElement:v28 diagonalType:objc_msgSend(self state:{"edDiagStyleFromXmlElement:", element), v7}];
+    resources = [v7 resources];
+    v32 = [EDBorders bordersWithLeft:v34 right:v14 top:v17 bottom:v20 diagonal:v30 vertical:v23 horizontal:v26 resources:resources];
   }
 
   else
@@ -96,22 +96,22 @@ void __31__EXBorders_borderStyleEnumMap__block_invoke()
   return v32;
 }
 
-+ (id)edBorderFromXmlElement:(_xmlNode *)a3 diagonalType:(int)a4 state:(id)a5
++ (id)edBorderFromXmlElement:(_xmlNode *)element diagonalType:(int)type state:(id)state
 {
-  v5 = *&a4;
-  v8 = a5;
-  if (a3)
+  v5 = *&type;
+  stateCopy = state;
+  if (element)
   {
     v17 = 0;
-    CXOptionalStringAttribute(a3, CXNoNamespace, "style", &v17);
+    CXOptionalStringAttribute(element, CXNoNamespace, "style", &v17);
     v9 = v17;
-    v10 = [a1 edBorderStyleFromXmlBorderStyleString:v9];
-    v11 = [v8 EXSpreadsheetMLNamespace];
-    v12 = OCXFindChild(a3, v11, "color");
+    v10 = [self edBorderStyleFromXmlBorderStyleString:v9];
+    eXSpreadsheetMLNamespace = [stateCopy EXSpreadsheetMLNamespace];
+    v12 = OCXFindChild(element, eXSpreadsheetMLNamespace, "color");
 
-    v13 = [EXColorReference edColorReferenceFromXmlColorElement:v12 callerClass:objc_opt_class() state:v8];
-    v14 = [v8 resources];
-    v15 = [EDBorder borderWithType:v10 colorReference:v13 diagonalType:v5 resources:v14];
+    v13 = [EXColorReference edColorReferenceFromXmlColorElement:v12 callerClass:objc_opt_class() state:stateCopy];
+    resources = [stateCopy resources];
+    v15 = [EDBorder borderWithType:v10 colorReference:v13 diagonalType:v5 resources:resources];
   }
 
   else
@@ -122,13 +122,13 @@ void __31__EXBorders_borderStyleEnumMap__block_invoke()
   return v15;
 }
 
-+ (int)edBorderStyleFromXmlBorderStyleString:(id)a3
++ (int)edBorderStyleFromXmlBorderStyleString:(id)string
 {
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v5 = [a1 borderStyleEnumMap];
-    v6 = [v5 valueForString:v4];
+    borderStyleEnumMap = [self borderStyleEnumMap];
+    v6 = [borderStyleEnumMap valueForString:stringCopy];
 
     if (v6 == -130883970)
     {
@@ -149,23 +149,23 @@ void __31__EXBorders_borderStyleEnumMap__block_invoke()
   return v7;
 }
 
-+ (int)edDiagStyleFromXmlElement:(_xmlNode *)a3
++ (int)edDiagStyleFromXmlElement:(_xmlNode *)element
 {
-  if (!a3)
+  if (!element)
   {
     return 0;
   }
 
   v7 = 0;
-  if (!CXOptionalBoolAttribute(a3, CXNoNamespace, "diagonalUp", &v7))
+  if (!CXOptionalBoolAttribute(element, CXNoNamespace, "diagonalUp", &v7))
   {
-    CXOptionalBoolAttribute(a3, CXNoNamespace, "diagUp", &v7);
+    CXOptionalBoolAttribute(element, CXNoNamespace, "diagUp", &v7);
   }
 
   v6 = 0;
-  if (!CXOptionalBoolAttribute(a3, CXNoNamespace, "diagonalDown", &v6))
+  if (!CXOptionalBoolAttribute(element, CXNoNamespace, "diagonalDown", &v6))
   {
-    CXOptionalBoolAttribute(a3, CXNoNamespace, "diagDown", &v6);
+    CXOptionalBoolAttribute(element, CXNoNamespace, "diagDown", &v6);
   }
 
   if (v6)

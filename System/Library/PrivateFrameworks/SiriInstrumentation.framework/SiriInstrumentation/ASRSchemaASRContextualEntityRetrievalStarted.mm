@@ -1,43 +1,43 @@
 @interface ASRSchemaASRContextualEntityRetrievalStarted
-- (ASRSchemaASRContextualEntityRetrievalStarted)initWithDictionary:(id)a3;
-- (ASRSchemaASRContextualEntityRetrievalStarted)initWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASRSchemaASRContextualEntityRetrievalStarted)initWithDictionary:(id)dictionary;
+- (ASRSchemaASRContextualEntityRetrievalStarted)initWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)enabledTasksAtIndex:(unint64_t)a3;
-- (int)rejectedContextTypesAtIndex:(unint64_t)a3;
+- (int)enabledTasksAtIndex:(unint64_t)index;
+- (int)rejectedContextTypesAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addEnabledTasks:(int)a3;
-- (void)addRejectedContextTypes:(int)a3;
-- (void)addRejectedEntityTypes:(id)a3;
-- (void)setHasMaxEntityChars:(BOOL)a3;
-- (void)setHasMaxEntityWords:(BOOL)a3;
-- (void)setHasRequestTask:(BOOL)a3;
-- (void)setHasRetrievalTimeout:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addEnabledTasks:(int)tasks;
+- (void)addRejectedContextTypes:(int)types;
+- (void)addRejectedEntityTypes:(id)types;
+- (void)setHasMaxEntityChars:(BOOL)chars;
+- (void)setHasMaxEntityWords:(BOOL)words;
+- (void)setHasRequestTask:(BOOL)task;
+- (void)setHasRetrievalTimeout:(BOOL)timeout;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASRSchemaASRContextualEntityRetrievalStarted
 
-- (ASRSchemaASRContextualEntityRetrievalStarted)initWithDictionary:(id)a3
+- (ASRSchemaASRContextualEntityRetrievalStarted)initWithDictionary:(id)dictionary
 {
   v57 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v53.receiver = self;
   v53.super_class = ASRSchemaASRContextualEntityRetrievalStarted;
   v5 = [(ASRSchemaASRContextualEntityRetrievalStarted *)&v53 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"maxEnrolled"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"maxEnrolled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRContextualEntityRetrievalStarted setMaxEnrolled:](v5, "setMaxEnrolled:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"retrievalTimeout"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"retrievalTimeout"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,7 +45,7 @@
       [(ASRSchemaASRContextualEntityRetrievalStarted *)v5 setRetrievalTimeout:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"maxEntityChars"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"maxEntityChars"];
     objc_opt_class();
     v40 = v8;
     if (objc_opt_isKindOfClass())
@@ -53,7 +53,7 @@
       -[ASRSchemaASRContextualEntityRetrievalStarted setMaxEntityChars:](v5, "setMaxEntityChars:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"maxEntityWords"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"maxEntityWords"];
     objc_opt_class();
     v39 = v9;
     if (objc_opt_isKindOfClass())
@@ -61,7 +61,7 @@
       -[ASRSchemaASRContextualEntityRetrievalStarted setMaxEntityWords:](v5, "setMaxEntityWords:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"enabledTasks"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"enabledTasks"];
     objc_opt_class();
     v38 = v10;
     if (objc_opt_isKindOfClass())
@@ -100,14 +100,14 @@
       }
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"requestTask"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"requestTask"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRContextualEntityRetrievalStarted setRequestTask:](v5, "setRequestTask:", [v17 intValue]);
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"rejectedContextTypes"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"rejectedContextTypes"];
     objc_opt_class();
     v36 = v18;
     v37 = v17;
@@ -150,7 +150,7 @@
       v17 = v37;
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"rejectedEntityTypes"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"rejectedEntityTypes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -200,30 +200,30 @@
   return v5;
 }
 
-- (ASRSchemaASRContextualEntityRetrievalStarted)initWithJSON:(id)a3
+- (ASRSchemaASRContextualEntityRetrievalStarted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ASRSchemaASRContextualEntityRetrievalStarted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ASRSchemaASRContextualEntityRetrievalStarted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ASRSchemaASRContextualEntityRetrievalStarted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -237,19 +237,19 @@
 - (id)dictionaryRepresentation
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_enabledTasks count])
   {
-    v4 = [(ASRSchemaASRContextualEntityRetrievalStarted *)self enabledTasks];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"enabledTasks"];
+    enabledTasks = [(ASRSchemaASRContextualEntityRetrievalStarted *)self enabledTasks];
+    v5 = [enabledTasks copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"enabledTasks"];
   }
 
   has = self->_has;
   if (has)
   {
     v21 = [MEMORY[0x1E696AD98] numberWithInt:{-[ASRSchemaASRContextualEntityRetrievalStarted maxEnrolled](self, "maxEnrolled")}];
-    [v3 setObject:v21 forKeyedSubscript:@"maxEnrolled"];
+    [dictionary setObject:v21 forKeyedSubscript:@"maxEnrolled"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -270,26 +270,26 @@ LABEL_5:
   }
 
   v22 = [MEMORY[0x1E696AD98] numberWithInt:{-[ASRSchemaASRContextualEntityRetrievalStarted maxEntityChars](self, "maxEntityChars")}];
-  [v3 setObject:v22 forKeyedSubscript:@"maxEntityChars"];
+  [dictionary setObject:v22 forKeyedSubscript:@"maxEntityChars"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_6:
     v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[ASRSchemaASRContextualEntityRetrievalStarted maxEntityWords](self, "maxEntityWords")}];
-    [v3 setObject:v7 forKeyedSubscript:@"maxEntityWords"];
+    [dictionary setObject:v7 forKeyedSubscript:@"maxEntityWords"];
   }
 
 LABEL_7:
   if ([(NSArray *)self->_rejectedContextTypes count])
   {
-    v8 = [(ASRSchemaASRContextualEntityRetrievalStarted *)self rejectedContextTypes];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"rejectedContextTypes"];
+    rejectedContextTypes = [(ASRSchemaASRContextualEntityRetrievalStarted *)self rejectedContextTypes];
+    v9 = [rejectedContextTypes copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"rejectedContextTypes"];
   }
 
   if ([(NSArray *)self->_rejectedEntityTypes count])
   {
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
@@ -309,16 +309,16 @@ LABEL_7:
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
-          if (v16)
+          dictionaryRepresentation = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v10 addObject:v16];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v17 = [MEMORY[0x1E695DFB0] null];
-            [v10 addObject:v17];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -328,7 +328,7 @@ LABEL_7:
       while (v13);
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"rejectedEntityTypes"];
+    [dictionary setObject:array forKeyedSubscript:@"rejectedEntityTypes"];
   }
 
   v18 = self->_has;
@@ -345,7 +345,7 @@ LABEL_7:
       v20 = off_1E78D1BF0[v19];
     }
 
-    [v3 setObject:v20 forKeyedSubscript:@"requestTask"];
+    [dictionary setObject:v20 forKeyedSubscript:@"requestTask"];
     v18 = self->_has;
   }
 
@@ -354,12 +354,12 @@ LABEL_7:
     v23 = MEMORY[0x1E696AD98];
     [(ASRSchemaASRContextualEntityRetrievalStarted *)self retrievalTimeout];
     v24 = [v23 numberWithDouble:?];
-    [v3 setObject:v24 forKeyedSubscript:@"retrievalTimeout"];
+    [dictionary setObject:v24 forKeyedSubscript:@"retrievalTimeout"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -448,16 +448,16 @@ LABEL_14:
   return v14 ^ v15 ^ [(NSArray *)self->_rejectedEntityTypes hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_35;
   }
 
   has = self->_has;
-  v6 = v4[64];
+  v6 = equalCopy[64];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_35;
@@ -466,13 +466,13 @@ LABEL_14:
   if (*&has)
   {
     maxEnrolled = self->_maxEnrolled;
-    if (maxEnrolled != [v4 maxEnrolled])
+    if (maxEnrolled != [equalCopy maxEnrolled])
     {
       goto LABEL_35;
     }
 
     has = self->_has;
-    v6 = v4[64];
+    v6 = equalCopy[64];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -481,14 +481,14 @@ LABEL_14:
     if (v8)
     {
       retrievalTimeout = self->_retrievalTimeout;
-      [v4 retrievalTimeout];
+      [equalCopy retrievalTimeout];
       if (retrievalTimeout != v10)
       {
         goto LABEL_35;
       }
 
       has = self->_has;
-      v6 = v4[64];
+      v6 = equalCopy[64];
     }
 
     v11 = (*&has >> 2) & 1;
@@ -497,13 +497,13 @@ LABEL_14:
       if (v11)
       {
         maxEntityChars = self->_maxEntityChars;
-        if (maxEntityChars != [v4 maxEntityChars])
+        if (maxEntityChars != [equalCopy maxEntityChars])
         {
           goto LABEL_35;
         }
 
         has = self->_has;
-        v6 = v4[64];
+        v6 = equalCopy[64];
       }
 
       v13 = (*&has >> 3) & 1;
@@ -515,26 +515,26 @@ LABEL_14:
       if (v13)
       {
         maxEntityWords = self->_maxEntityWords;
-        if (maxEntityWords != [v4 maxEntityWords])
+        if (maxEntityWords != [equalCopy maxEntityWords])
         {
           goto LABEL_35;
         }
       }
 
-      v15 = [(ASRSchemaASRContextualEntityRetrievalStarted *)self enabledTasks];
-      v16 = [v4 enabledTasks];
-      if ((v15 != 0) == (v16 == 0))
+      enabledTasks = [(ASRSchemaASRContextualEntityRetrievalStarted *)self enabledTasks];
+      enabledTasks2 = [equalCopy enabledTasks];
+      if ((enabledTasks != 0) == (enabledTasks2 == 0))
       {
         goto LABEL_34;
       }
 
-      v17 = [(ASRSchemaASRContextualEntityRetrievalStarted *)self enabledTasks];
-      if (v17)
+      enabledTasks3 = [(ASRSchemaASRContextualEntityRetrievalStarted *)self enabledTasks];
+      if (enabledTasks3)
       {
-        v18 = v17;
-        v19 = [(ASRSchemaASRContextualEntityRetrievalStarted *)self enabledTasks];
-        v20 = [v4 enabledTasks];
-        v21 = [v19 isEqual:v20];
+        v18 = enabledTasks3;
+        enabledTasks4 = [(ASRSchemaASRContextualEntityRetrievalStarted *)self enabledTasks];
+        enabledTasks5 = [equalCopy enabledTasks];
+        v21 = [enabledTasks4 isEqual:enabledTasks5];
 
         if (!v21)
         {
@@ -547,7 +547,7 @@ LABEL_14:
       }
 
       v22 = (*&self->_has >> 4) & 1;
-      if (v22 != ((v4[64] >> 4) & 1))
+      if (v22 != ((equalCopy[64] >> 4) & 1))
       {
         goto LABEL_35;
       }
@@ -555,26 +555,26 @@ LABEL_14:
       if (v22)
       {
         requestTask = self->_requestTask;
-        if (requestTask != [v4 requestTask])
+        if (requestTask != [equalCopy requestTask])
         {
           goto LABEL_35;
         }
       }
 
-      v15 = [(ASRSchemaASRContextualEntityRetrievalStarted *)self rejectedContextTypes];
-      v16 = [v4 rejectedContextTypes];
-      if ((v15 != 0) == (v16 == 0))
+      enabledTasks = [(ASRSchemaASRContextualEntityRetrievalStarted *)self rejectedContextTypes];
+      enabledTasks2 = [equalCopy rejectedContextTypes];
+      if ((enabledTasks != 0) == (enabledTasks2 == 0))
       {
         goto LABEL_34;
       }
 
-      v24 = [(ASRSchemaASRContextualEntityRetrievalStarted *)self rejectedContextTypes];
-      if (v24)
+      rejectedContextTypes = [(ASRSchemaASRContextualEntityRetrievalStarted *)self rejectedContextTypes];
+      if (rejectedContextTypes)
       {
-        v25 = v24;
-        v26 = [(ASRSchemaASRContextualEntityRetrievalStarted *)self rejectedContextTypes];
-        v27 = [v4 rejectedContextTypes];
-        v28 = [v26 isEqual:v27];
+        v25 = rejectedContextTypes;
+        rejectedContextTypes2 = [(ASRSchemaASRContextualEntityRetrievalStarted *)self rejectedContextTypes];
+        rejectedContextTypes3 = [equalCopy rejectedContextTypes];
+        v28 = [rejectedContextTypes2 isEqual:rejectedContextTypes3];
 
         if (!v28)
         {
@@ -586,12 +586,12 @@ LABEL_14:
       {
       }
 
-      v15 = [(ASRSchemaASRContextualEntityRetrievalStarted *)self rejectedEntityTypes];
-      v16 = [v4 rejectedEntityTypes];
-      if ((v15 != 0) != (v16 == 0))
+      enabledTasks = [(ASRSchemaASRContextualEntityRetrievalStarted *)self rejectedEntityTypes];
+      enabledTasks2 = [equalCopy rejectedEntityTypes];
+      if ((enabledTasks != 0) != (enabledTasks2 == 0))
       {
-        v29 = [(ASRSchemaASRContextualEntityRetrievalStarted *)self rejectedEntityTypes];
-        if (!v29)
+        rejectedEntityTypes = [(ASRSchemaASRContextualEntityRetrievalStarted *)self rejectedEntityTypes];
+        if (!rejectedEntityTypes)
         {
 
 LABEL_38:
@@ -599,10 +599,10 @@ LABEL_38:
           goto LABEL_36;
         }
 
-        v30 = v29;
-        v31 = [(ASRSchemaASRContextualEntityRetrievalStarted *)self rejectedEntityTypes];
-        v32 = [v4 rejectedEntityTypes];
-        v33 = [v31 isEqual:v32];
+        v30 = rejectedEntityTypes;
+        rejectedEntityTypes2 = [(ASRSchemaASRContextualEntityRetrievalStarted *)self rejectedEntityTypes];
+        rejectedEntityTypes3 = [equalCopy rejectedEntityTypes];
+        v33 = [rejectedEntityTypes2 isEqual:rejectedEntityTypes3];
 
         if (v33)
         {
@@ -624,10 +624,10 @@ LABEL_36:
   return v34;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -764,41 +764,41 @@ LABEL_6:
   }
 }
 
-- (void)addRejectedEntityTypes:(id)a3
+- (void)addRejectedEntityTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   rejectedEntityTypes = self->_rejectedEntityTypes;
-  v8 = v4;
+  v8 = typesCopy;
   if (!rejectedEntityTypes)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_rejectedEntityTypes;
-    self->_rejectedEntityTypes = v6;
+    self->_rejectedEntityTypes = array;
 
-    v4 = v8;
+    typesCopy = v8;
     rejectedEntityTypes = self->_rejectedEntityTypes;
   }
 
-  [(NSArray *)rejectedEntityTypes addObject:v4];
+  [(NSArray *)rejectedEntityTypes addObject:typesCopy];
 }
 
-- (int)rejectedContextTypesAtIndex:(unint64_t)a3
+- (int)rejectedContextTypesAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_rejectedContextTypes objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_rejectedContextTypes objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addRejectedContextTypes:(int)a3
+- (void)addRejectedContextTypes:(int)types
 {
-  v3 = *&a3;
+  v3 = *&types;
   rejectedContextTypes = self->_rejectedContextTypes;
   if (!rejectedContextTypes)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_rejectedContextTypes;
-    self->_rejectedContextTypes = v6;
+    self->_rejectedContextTypes = array;
 
     rejectedContextTypes = self->_rejectedContextTypes;
   }
@@ -807,9 +807,9 @@ LABEL_6:
   [(NSArray *)rejectedContextTypes addObject:v8];
 }
 
-- (void)setHasRequestTask:(BOOL)a3
+- (void)setHasRequestTask:(BOOL)task
 {
-  if (a3)
+  if (task)
   {
     v3 = 16;
   }
@@ -822,23 +822,23 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (int)enabledTasksAtIndex:(unint64_t)a3
+- (int)enabledTasksAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_enabledTasks objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_enabledTasks objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addEnabledTasks:(int)a3
+- (void)addEnabledTasks:(int)tasks
 {
-  v3 = *&a3;
+  v3 = *&tasks;
   enabledTasks = self->_enabledTasks;
   if (!enabledTasks)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_enabledTasks;
-    self->_enabledTasks = v6;
+    self->_enabledTasks = array;
 
     enabledTasks = self->_enabledTasks;
   }
@@ -847,9 +847,9 @@ LABEL_6:
   [(NSArray *)enabledTasks addObject:v8];
 }
 
-- (void)setHasMaxEntityWords:(BOOL)a3
+- (void)setHasMaxEntityWords:(BOOL)words
 {
-  if (a3)
+  if (words)
   {
     v3 = 8;
   }
@@ -862,9 +862,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasMaxEntityChars:(BOOL)a3
+- (void)setHasMaxEntityChars:(BOOL)chars
 {
-  if (a3)
+  if (chars)
   {
     v3 = 4;
   }
@@ -877,9 +877,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasRetrievalTimeout:(BOOL)a3
+- (void)setHasRetrievalTimeout:(BOOL)timeout
 {
-  if (a3)
+  if (timeout)
   {
     v3 = 2;
   }
@@ -892,14 +892,14 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = ASRSchemaASRContextualEntityRetrievalStarted;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(ASRSchemaASRContextualEntityRetrievalStarted *)self rejectedEntityTypes:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(ASRSchemaASRContextualEntityRetrievalStarted *)self setRejectedEntityTypes:v7];
 

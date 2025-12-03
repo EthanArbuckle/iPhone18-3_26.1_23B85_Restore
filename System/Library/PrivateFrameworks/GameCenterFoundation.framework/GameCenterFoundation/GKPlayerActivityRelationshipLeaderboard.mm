@@ -1,6 +1,6 @@
 @interface GKPlayerActivityRelationshipLeaderboard
 + (id)secureCodedPropertyKeys;
-- (GKPlayerActivityRelationshipLeaderboard)initWithDictionary:(id)a3;
+- (GKPlayerActivityRelationshipLeaderboard)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __66__GKPlayerActivityRelationshipLeaderboard_secureCodedPropertyKeys__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (secureCodedPropertyKeys_onceToken_527 != -1)
   {
     dispatch_once(&secureCodedPropertyKeys_onceToken_527, block);
@@ -47,16 +47,16 @@ void __66__GKPlayerActivityRelationshipLeaderboard_secureCodedPropertyKeys__bloc
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (GKPlayerActivityRelationshipLeaderboard)initWithDictionary:(id)a3
+- (GKPlayerActivityRelationshipLeaderboard)initWithDictionary:(id)dictionary
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v33.receiver = self;
   v33.super_class = GKPlayerActivityRelationshipLeaderboard;
-  v5 = [(GKPlayerActivityRelationshipBase *)&v33 initWithDictionary:v4];
+  v5 = [(GKPlayerActivityRelationshipBase *)&v33 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"type"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     if ([v6 isEqualToString:@"FRIENDS"])
     {
       v7 = 1;
@@ -69,7 +69,7 @@ void __66__GKPlayerActivityRelationshipLeaderboard_secureCodedPropertyKeys__bloc
 
     [(GKPlayerActivityRelationshipLeaderboard *)v5 setLeaderboardType:v7];
 
-    v8 = [v4 objectForKeyedSubscript:@"scores"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"scores"];
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v29 = 0u;
     v30 = 0u;
@@ -104,15 +104,15 @@ void __66__GKPlayerActivityRelationshipLeaderboard_secureCodedPropertyKeys__bloc
 
     [(GKPlayerActivityRelationshipLeaderboard *)v5 setScores:v9];
     v18 = objc_opt_new();
-    v19 = [(GKPlayerActivityRelationshipBase *)v5 identifier];
-    [v18 setBaseLeaderboardID:v19];
+    identifier = [(GKPlayerActivityRelationshipBase *)v5 identifier];
+    [v18 setBaseLeaderboardID:identifier];
 
-    v20 = [(GKPlayerActivityRelationshipBase *)v5 name];
-    [v18 setTitle:v20];
+    name = [(GKPlayerActivityRelationshipBase *)v5 name];
+    [v18 setTitle:name];
 
-    v21 = [v4 objectForKeyedSubscript:@"instance-id"];
-    v22 = [v4 objectForKeyedSubscript:@"start-date"];
-    v23 = [v4 objectForKeyedSubscript:@"duration"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"instance-id"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"start-date"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"duration"];
     v24 = v23;
     if (v21 && v22 && v23)
     {
@@ -127,8 +127,8 @@ void __66__GKPlayerActivityRelationshipLeaderboard_secureCodedPropertyKeys__bloc
 
     else
     {
-      v26 = [(GKPlayerActivityRelationshipBase *)v5 identifier];
-      [v18 setIdentifier:v26];
+      identifier2 = [(GKPlayerActivityRelationshipBase *)v5 identifier];
+      [v18 setIdentifier:identifier2];
 
       [v18 setType:0];
     }
@@ -146,11 +146,11 @@ void __66__GKPlayerActivityRelationshipLeaderboard_secureCodedPropertyKeys__bloc
   v11.receiver = self;
   v11.super_class = GKPlayerActivityRelationshipLeaderboard;
   v4 = [(GKPlayerActivityRelationshipBase *)&v11 description];
-  v5 = [(GKPlayerActivityRelationshipBase *)self name];
-  v6 = [(GKPlayerActivityRelationshipBase *)self image];
-  v7 = [(GKPlayerActivityRelationshipLeaderboard *)self scores];
-  v8 = [(GKPlayerActivityRelationshipLeaderboard *)self leaderboardInternal];
-  v9 = [v3 stringWithFormat:@"%@ \nname: %@ \nimage: %@, scores: %@, leaderboard: %@", v4, v5, v6, v7, v8];
+  name = [(GKPlayerActivityRelationshipBase *)self name];
+  image = [(GKPlayerActivityRelationshipBase *)self image];
+  scores = [(GKPlayerActivityRelationshipLeaderboard *)self scores];
+  leaderboardInternal = [(GKPlayerActivityRelationshipLeaderboard *)self leaderboardInternal];
+  v9 = [v3 stringWithFormat:@"%@ \nname: %@ \nimage: %@, scores: %@, leaderboard: %@", v4, name, image, scores, leaderboardInternal];
 
   return v9;
 }

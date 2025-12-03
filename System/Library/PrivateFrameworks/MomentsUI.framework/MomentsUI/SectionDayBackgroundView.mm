@@ -1,12 +1,12 @@
 @interface SectionDayBackgroundView
-- (_TtC9MomentsUI24SectionDayBackgroundView)initWithCoder:(id)a3;
+- (_TtC9MomentsUI24SectionDayBackgroundView)initWithCoder:(id)coder;
 - (void)handleTraitChange;
 - (void)layoutSubviews;
 @end
 
 @implementation SectionDayBackgroundView
 
-- (_TtC9MomentsUI24SectionDayBackgroundView)initWithCoder:(id)a3
+- (_TtC9MomentsUI24SectionDayBackgroundView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9MomentsUI24SectionDayBackgroundView_startColor;
   v5 = objc_opt_self();
@@ -32,7 +32,7 @@
 - (void)handleTraitChange
 {
   v2 = *((*MEMORY[0x277D85000] & self->super.super.super.super.isa) + 0x98);
-  v3 = self;
+  selfCopy = self;
   v2();
 }
 

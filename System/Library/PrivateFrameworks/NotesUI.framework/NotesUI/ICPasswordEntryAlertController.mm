@@ -1,37 +1,37 @@
 @interface ICPasswordEntryAlertController
-- (ICPasswordEntryAlertController)initWithDisplayWindow:(id)a3;
-- (id)passwordAlertControllerWithPrompt:(id)a3 passwordHandler:(id)a4 forgotHandler:(id)a5 cancelHandler:(id)a6;
-- (void)authenticateWithPrompt:(id)a3 completionHandler:(id)a4;
-- (void)didAuthenticateWithPassword:(id)a3 prompt:(id)a4 completionHandler:(id)a5;
+- (ICPasswordEntryAlertController)initWithDisplayWindow:(id)window;
+- (id)passwordAlertControllerWithPrompt:(id)prompt passwordHandler:(id)handler forgotHandler:(id)forgotHandler cancelHandler:(id)cancelHandler;
+- (void)authenticateWithPrompt:(id)prompt completionHandler:(id)handler;
+- (void)didAuthenticateWithPassword:(id)password prompt:(id)prompt completionHandler:(id)handler;
 @end
 
 @implementation ICPasswordEntryAlertController
 
-- (ICPasswordEntryAlertController)initWithDisplayWindow:(id)a3
+- (ICPasswordEntryAlertController)initWithDisplayWindow:(id)window
 {
-  v5 = a3;
+  windowCopy = window;
   v9.receiver = self;
   v9.super_class = ICPasswordEntryAlertController;
   v6 = [(ICPasswordEntryAlertController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_displayWindow, a3);
+    objc_storeStrong(&v6->_displayWindow, window);
   }
 
   return v7;
 }
 
-- (void)authenticateWithPrompt:(id)a3 completionHandler:(id)a4
+- (void)authenticateWithPrompt:(id)prompt completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  promptCopy = prompt;
+  handlerCopy = handler;
   if ([(ICPasswordEntryAlertController *)self isAuthenticating])
   {
     [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICPasswordEntryAlertController authenticateWithPrompt:completionHandler:]" simulateCrash:1 showAlert:0 format:@"This is a one-shot object — you can only call the authentication method once"];
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
@@ -43,14 +43,14 @@
     v21[2] = __75__ICPasswordEntryAlertController_authenticateWithPrompt_completionHandler___block_invoke;
     v21[3] = &unk_1E8469B10;
     v21[4] = self;
-    v22 = v6;
-    v23 = v7;
+    v22 = promptCopy;
+    v23 = handlerCopy;
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __75__ICPasswordEntryAlertController_authenticateWithPrompt_completionHandler___block_invoke_2;
     v17[3] = &unk_1E8469B60;
     v18 = v22;
-    v19 = self;
+    selfCopy = self;
     v20 = v23;
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
@@ -58,22 +58,22 @@
     v15[3] = &unk_1E84690D0;
     v16 = v20;
     v8 = [(ICPasswordEntryAlertController *)self passwordAlertControllerWithPrompt:v18 passwordHandler:v21 forgotHandler:v17 cancelHandler:v15];
-    v9 = [(ICPasswordEntryAlertController *)self displayWindow];
-    v10 = [v9 rootViewController];
-    v11 = [v10 presentedViewController];
-    v12 = v11;
-    if (v11)
+    displayWindow = [(ICPasswordEntryAlertController *)self displayWindow];
+    rootViewController = [displayWindow rootViewController];
+    presentedViewController = [rootViewController presentedViewController];
+    v12 = presentedViewController;
+    if (presentedViewController)
     {
-      v13 = v11;
+      rootViewController2 = presentedViewController;
     }
 
     else
     {
-      v14 = [(ICPasswordEntryAlertController *)self displayWindow];
-      v13 = [v14 rootViewController];
+      displayWindow2 = [(ICPasswordEntryAlertController *)self displayWindow];
+      rootViewController2 = [displayWindow2 rootViewController];
     }
 
-    [v13 presentViewController:v8 animated:1 completion:0];
+    [rootViewController2 presentViewController:v8 animated:1 completion:0];
   }
 }
 
@@ -143,17 +143,17 @@ uint64_t __75__ICPasswordEntryAlertController_authenticateWithPrompt_completionH
   return result;
 }
 
-- (void)didAuthenticateWithPassword:(id)a3 prompt:(id)a4 completionHandler:(id)a5
+- (void)didAuthenticateWithPassword:(id)password prompt:(id)prompt completionHandler:(id)handler
 {
   v81 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 account];
-  v12 = [v11 isPassphraseCorrect:v8];
+  passwordCopy = password;
+  promptCopy = prompt;
+  handlerCopy = handler;
+  account = [promptCopy account];
+  v12 = [account isPassphraseCorrect:passwordCopy];
 
-  v13 = [v9 authenticationObject];
-  v14 = [v13 isPassphraseCorrect:v8];
+  authenticationObject = [promptCopy authenticationObject];
+  v14 = [authenticationObject isPassphraseCorrect:passwordCopy];
 
   v15 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -177,22 +177,22 @@ uint64_t __75__ICPasswordEntryAlertController_authenticateWithPrompt_completionH
     _os_log_debug_impl(&dword_1D4171000, v15, OS_LOG_TYPE_DEBUG, "Authenticated with custom password {isCorrectForAccount: %@, isCorrectForObject: %@, #failedAttempts: %@, isPasswordDiverged: %@}%s:%d", buf, 0x3Au);
   }
 
-  if (v14 && ([MEMORY[0x1E69B76D0] sharedState], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "authenticationObject"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v16, "authenticateObject:withPassphrase:", v17, v8), v17, v16, v18))
+  if (v14 && ([MEMORY[0x1E69B76D0] sharedState], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(promptCopy, "authenticationObject"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v16, "authenticateObject:withPassphrase:", v17, passwordCopy), v17, v16, v18))
   {
     if ([(ICPasswordEntryAlertController *)self isPasswordDiverged])
     {
       v19 = +[ICPasswordUtilities sharedInstance];
-      v20 = [(ICPasswordEntryAlertController *)self divergedAccountPassword];
-      v21 = [v9 account];
-      v22 = [(ICPasswordEntryAlertController *)self displayWindow];
-      [v19 showUpdateDivergedPasswordForAccountPassword:v20 oldPassword:v8 account:v21 displayWindow:v22];
+      divergedAccountPassword = [(ICPasswordEntryAlertController *)self divergedAccountPassword];
+      account2 = [promptCopy account];
+      displayWindow = [(ICPasswordEntryAlertController *)self displayWindow];
+      [v19 showUpdateDivergedPasswordForAccountPassword:divergedAccountPassword oldPassword:passwordCopy account:account2 displayWindow:displayWindow];
     }
 
-    if ([v9 intent] == 7)
+    if ([promptCopy intent] == 7)
     {
       v23 = [ICLongRunningTaskController alloc];
-      v24 = [(ICPasswordEntryAlertController *)self displayWindow];
-      v25 = [(ICLongRunningTaskController *)v23 initWithWindow:v24 intervalBeforeOpeningProgressDialog:1.0];
+      displayWindow2 = [(ICPasswordEntryAlertController *)self displayWindow];
+      v25 = [(ICLongRunningTaskController *)v23 initWithWindow:displayWindow2 intervalBeforeOpeningProgressDialog:1.0];
 
       [(ICLongRunningTaskController *)v25 setIndeterminate:1];
       [(ICLongRunningTaskController *)v25 setShouldShowCircularProgress:1];
@@ -200,26 +200,26 @@ uint64_t __75__ICPasswordEntryAlertController_authenticateWithPrompt_completionH
       v66[1] = 3221225472;
       v66[2] = __87__ICPasswordEntryAlertController_didAuthenticateWithPassword_prompt_completionHandler___block_invoke;
       v66[3] = &unk_1E8469148;
-      v67 = v9;
-      v68 = v8;
+      v67 = promptCopy;
+      v68 = passwordCopy;
       v64[0] = MEMORY[0x1E69E9820];
       v64[1] = 3221225472;
       v64[2] = __87__ICPasswordEntryAlertController_didAuthenticateWithPassword_prompt_completionHandler___block_invoke_3;
       v64[3] = &unk_1E8469B88;
-      v65 = v10;
+      v65 = handlerCopy;
       [(ICLongRunningTaskController *)v25 startTask:v66 completionBlock:v64];
     }
 
-    else if ([v9 intent] == 1 && (objc_msgSend(v9, "note"), v47 = objc_claimAutoreleasedReturnValue(), v47, v47))
+    else if ([promptCopy intent] == 1 && (objc_msgSend(promptCopy, "note"), v47 = objc_claimAutoreleasedReturnValue(), v47, v47))
     {
       v48 = +[ICAuthenticationAlert updateDivergedCustomPasswordAttachmentsActionAlert];
       v60[0] = MEMORY[0x1E69E9820];
       v60[1] = 3221225472;
       v60[2] = __87__ICPasswordEntryAlertController_didAuthenticateWithPassword_prompt_completionHandler___block_invoke_4;
       v60[3] = &unk_1E8469BD8;
-      v61 = v9;
-      v62 = v8;
-      v49 = v10;
+      v61 = promptCopy;
+      v62 = passwordCopy;
+      v49 = handlerCopy;
       v63 = v49;
       [v48 setActionHandler:v60];
       v58[0] = MEMORY[0x1E69E9820];
@@ -228,62 +228,62 @@ uint64_t __75__ICPasswordEntryAlertController_authenticateWithPrompt_completionH
       v58[3] = &unk_1E8469B38;
       v59 = v49;
       [v48 setDismissHandler:v58];
-      v50 = [(ICPasswordEntryAlertController *)self displayWindow];
-      [v48 presentInWindow:v50 completionHandler:0];
+      displayWindow3 = [(ICPasswordEntryAlertController *)self displayWindow];
+      [v48 presentInWindow:displayWindow3 completionHandler:0];
     }
 
-    else if (v10)
+    else if (handlerCopy)
     {
-      (*(v10 + 2))(v10, 2);
+      (*(handlerCopy + 2))(handlerCopy, 2);
     }
   }
 
   else
   {
     [(ICPasswordEntryAlertController *)self setNumberOfFailedAttempts:[(ICPasswordEntryAlertController *)self numberOfFailedAttempts]+ 1];
-    v26 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v26 postNotificationName:@"ICPasswordEntryAlertControllerAttemptDidFailNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"ICPasswordEntryAlertControllerAttemptDidFailNotification" object:self];
 
-    if (![v9 intent])
+    if (![promptCopy intent])
     {
       if (v12)
       {
-        [(ICPasswordEntryAlertController *)self setDivergedAccountPassword:v8];
+        [(ICPasswordEntryAlertController *)self setDivergedAccountPassword:passwordCopy];
       }
 
       [(ICPasswordEntryAlertController *)self setPasswordDiverged:v12 | [(ICPasswordEntryAlertController *)self isPasswordDiverged]];
       v27 = MEMORY[0x1E69B7658];
-      v28 = [MEMORY[0x1E69B7800] sharedContext];
-      v29 = [v28 managedObjectContext];
-      v30 = [v27 allActiveAccountsInContext:v29];
+      mEMORY[0x1E69B7800] = [MEMORY[0x1E69B7800] sharedContext];
+      managedObjectContext = [mEMORY[0x1E69B7800] managedObjectContext];
+      v30 = [v27 allActiveAccountsInContext:managedObjectContext];
       v31 = ([v30 count] < 2) | v12;
 
       if ((v31 & 1) == 0)
       {
-        v32 = [v9 account];
-        v33 = [v32 accountName];
-        v54 = [v33 ic_trimmedString];
+        account3 = [promptCopy account];
+        accountName = [account3 accountName];
+        ic_trimmedString = [accountName ic_trimmedString];
 
         v34 = MEMORY[0x1E69B7658];
-        v35 = [MEMORY[0x1E69B7800] sharedContext];
-        v36 = [v35 managedObjectContext];
-        v37 = [v34 allActiveAccountsInContext:v36];
+        mEMORY[0x1E69B7800]2 = [MEMORY[0x1E69B7800] sharedContext];
+        managedObjectContext2 = [mEMORY[0x1E69B7800]2 managedObjectContext];
+        v37 = [v34 allActiveAccountsInContext:managedObjectContext2];
         v56[0] = MEMORY[0x1E69E9820];
         v56[1] = 3221225472;
         v56[2] = __87__ICPasswordEntryAlertController_didAuthenticateWithPassword_prompt_completionHandler___block_invoke_7;
         v56[3] = &unk_1E8469C00;
-        v57 = v8;
+        v57 = passwordCopy;
         v38 = [v37 ic_objectPassingTest:v56];
 
-        v39 = [v38 accountName];
-        v40 = [v39 ic_trimmedString];
+        accountName2 = [v38 accountName];
+        ic_trimmedString2 = [accountName2 ic_trimmedString];
 
-        v41 = [v9 account];
-        v42 = [v41 cryptoStrategy];
-        v43 = [v9 object];
-        v44 = [v42 hasSameKeyAsObject:v43];
+        account4 = [promptCopy account];
+        cryptoStrategy = [account4 cryptoStrategy];
+        object = [promptCopy object];
+        v44 = [cryptoStrategy hasSameKeyAsObject:object];
 
-        if (!v38 || !v44 || ![v54 length] || (v45 = objc_msgSend(v40, "length"), v46 = v40, !v45))
+        if (!v38 || !v44 || ![ic_trimmedString length] || (v45 = objc_msgSend(ic_trimmedString2, "length"), v46 = ic_trimmedString2, !v45))
         {
           v46 = 0;
         }
@@ -293,7 +293,7 @@ uint64_t __75__ICPasswordEntryAlertController_authenticateWithPrompt_completionH
     }
 
     [(ICPasswordEntryAlertController *)self setAuthenticating:0];
-    [(ICPasswordEntryAlertController *)self authenticateWithPrompt:v9 completionHandler:v10];
+    [(ICPasswordEntryAlertController *)self authenticateWithPrompt:promptCopy completionHandler:handlerCopy];
   }
 }
 
@@ -386,19 +386,19 @@ uint64_t __87__ICPasswordEntryAlertController_didAuthenticateWithPassword_prompt
   return result;
 }
 
-- (id)passwordAlertControllerWithPrompt:(id)a3 passwordHandler:(id)a4 forgotHandler:(id)a5 cancelHandler:(id)a6
+- (id)passwordAlertControllerWithPrompt:(id)prompt passwordHandler:(id)handler forgotHandler:(id)forgotHandler cancelHandler:(id)cancelHandler
 {
-  v10 = a3;
-  v43 = a4;
-  v44 = a5;
-  v45 = a6;
-  v11 = [v10 account];
-  v12 = [v11 accountName];
-  v46 = [v12 ic_trimmedString];
+  promptCopy = prompt;
+  handlerCopy = handler;
+  forgotHandlerCopy = forgotHandler;
+  cancelHandlerCopy = cancelHandler;
+  account = [promptCopy account];
+  accountName = [account accountName];
+  ic_trimmedString = [accountName ic_trimmedString];
 
-  v13 = [v10 title];
-  v14 = [v10 reason];
-  if ([v10 intent] == 7)
+  title = [promptCopy title];
+  reason = [promptCopy reason];
+  if ([promptCopy intent] == 7)
   {
     v15 = 1;
   }
@@ -408,12 +408,12 @@ uint64_t __87__ICPasswordEntryAlertController_didAuthenticateWithPassword_prompt
     v15 = 2;
   }
 
-  if (![v10 intent])
+  if (![promptCopy intent])
   {
-    v37 = [(ICPasswordEntryAlertController *)self wrongAccountName];
-    if ([v37 length])
+    wrongAccountName = [(ICPasswordEntryAlertController *)self wrongAccountName];
+    if ([wrongAccountName length])
     {
-      v38 = [v46 length];
+      v38 = [ic_trimmedString length];
 
       if (v38)
       {
@@ -421,11 +421,11 @@ uint64_t __87__ICPasswordEntryAlertController_didAuthenticateWithPassword_prompt
 
         v40 = __ICLocalizedFrameworkString_impl(@"You’ve entered your “%@” password. Enter your “%@” password.", @"You’ve entered your “%@” password. Enter your “%@” password.", 0, 1);
         v41 = MEMORY[0x1E696AEC0];
-        v42 = [(ICPasswordEntryAlertController *)self wrongAccountName];
-        v17 = [v41 localizedStringWithFormat:v40, v42, v46];
+        wrongAccountName2 = [(ICPasswordEntryAlertController *)self wrongAccountName];
+        v17 = [v41 localizedStringWithFormat:v40, wrongAccountName2, ic_trimmedString];
 
-        v14 = v40;
-        v13 = v39;
+        reason = v40;
+        title = v39;
         goto LABEL_10;
       }
     }
@@ -442,7 +442,7 @@ LABEL_9:
     v17 = __ICLocalizedFrameworkString_impl(v16, v16, 0, 1);
 LABEL_10:
 
-    v14 = v17;
+    reason = v17;
     goto LABEL_11;
   }
 
@@ -455,32 +455,32 @@ LABEL_10:
 LABEL_11:
   if ([(ICPasswordEntryAlertController *)self isPasswordDiverged]|| [(ICPasswordEntryAlertController *)self numberOfFailedAttempts]>= v15)
   {
-    v19 = [v10 authenticationObject];
-    v20 = [v19 passwordHint];
+    authenticationObject = [promptCopy authenticationObject];
+    passwordHint = [authenticationObject passwordHint];
 
-    if ([v20 length])
+    if ([passwordHint length])
     {
       v21 = __ICLocalizedFrameworkString_impl(@"Hint: %@", @"Hint: %@", 0, 1);
-      v22 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v21, v20];
-      v23 = [v14 stringByAppendingFormat:@"\n\n%@", v22];
+      v22 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v21, passwordHint];
+      v23 = [reason stringByAppendingFormat:@"\n\n%@", v22];
 
-      v14 = v23;
+      reason = v23;
     }
 
-    v18 = v45;
+    v18 = cancelHandlerCopy;
   }
 
   else
   {
-    v18 = v45;
+    v18 = cancelHandlerCopy;
   }
 
-  v24 = [ICAlertController alertControllerWithTitle:v13 message:v14 preferredStyle:1];
+  v24 = [ICAlertController alertControllerWithTitle:title message:reason preferredStyle:1];
   [v24 setCanAppearAbovePasswordEntryView:1];
   [v24 setDismissWithoutActionBlock:v18];
   objc_initWeak(location, v24);
   [v24 addTextFieldWithConfigurationHandler:&__block_literal_global_15];
-  if (-[ICPasswordEntryAlertController numberOfFailedAttempts](self, "numberOfFailedAttempts") >= v15 && [v10 intent] == 7)
+  if (-[ICPasswordEntryAlertController numberOfFailedAttempts](self, "numberOfFailedAttempts") >= v15 && [promptCopy intent] == 7)
   {
     v25 = MEMORY[0x1E69DC648];
     v26 = __ICLocalizedFrameworkString_impl(@"Forgot Password", @"Forgot Password", 0, 1);
@@ -489,12 +489,12 @@ LABEL_11:
     v53[2] = __112__ICPasswordEntryAlertController_passwordAlertControllerWithPrompt_passwordHandler_forgotHandler_cancelHandler___block_invoke_2;
     v53[3] = &unk_1E8469C48;
     objc_copyWeak(&v55, location);
-    v54 = v44;
+    v54 = forgotHandlerCopy;
     v27 = [v25 actionWithTitle:v26 style:0 handler:v53];
 
     [v24 addAction:v27];
     objc_destroyWeak(&v55);
-    v18 = v45;
+    v18 = cancelHandlerCopy;
   }
 
   v28 = MEMORY[0x1E69DC648];
@@ -516,7 +516,7 @@ LABEL_11:
   v47[2] = __112__ICPasswordEntryAlertController_passwordAlertControllerWithPrompt_passwordHandler_forgotHandler_cancelHandler___block_invoke_4;
   v47[3] = &unk_1E8469C48;
   objc_copyWeak(&v49, location);
-  v34 = v43;
+  v34 = handlerCopy;
   v48 = v34;
   v35 = [v32 actionWithTitle:v33 style:0 handler:v47];
 

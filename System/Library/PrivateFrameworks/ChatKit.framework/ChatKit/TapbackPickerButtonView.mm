@@ -1,22 +1,22 @@
 @interface TapbackPickerButtonView
 - (void)interfaceStyleChanged;
-- (void)longPressRecognized:(id)a3;
+- (void)longPressRecognized:(id)recognized;
 @end
 
 @implementation TapbackPickerButtonView
 
-- (void)longPressRecognized:(id)a3
+- (void)longPressRecognized:(id)recognized
 {
-  v4 = a3;
-  v5 = self;
-  sub_190C7EE64(v4);
+  recognizedCopy = recognized;
+  selfCopy = self;
+  sub_190C7EE64(recognizedCopy);
 }
 
 - (void)interfaceStyleChanged
 {
-  v3 = self;
-  v2 = [(TapbackPickerButtonView *)v3 traitCollection];
-  (*((*MEMORY[0x1E69E7D40] & v3->super.super.super.super.super.isa) + 0xF0))();
+  selfCopy = self;
+  traitCollection = [(TapbackPickerButtonView *)selfCopy traitCollection];
+  (*((*MEMORY[0x1E69E7D40] & selfCopy->super.super.super.super.super.isa) + 0xF0))();
 }
 
 @end

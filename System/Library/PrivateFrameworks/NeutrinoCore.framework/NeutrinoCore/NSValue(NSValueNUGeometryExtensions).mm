@@ -14,14 +14,14 @@
 {
   v2[0] = 0;
   v2[1] = 0;
-  [a1 getValue:v2 size:16];
+  [self getValue:v2 size:16];
   return *v2;
 }
 
 - (double)nu_CGRect
 {
   memset(v2, 0, sizeof(v2));
-  [a1 getValue:v2 size:32];
+  [self getValue:v2 size:32];
   return *v2;
 }
 
@@ -29,7 +29,7 @@
 {
   v2[0] = 0;
   v2[1] = 0;
-  [a1 getValue:v2 size:16];
+  [self getValue:v2 size:16];
   return v2[0];
 }
 
@@ -37,12 +37,12 @@
 {
   *x8_0 = 0u;
   x8_0[1] = 0u;
-  return [a1 getValue:x8_0 size:32];
+  return [self getValue:x8_0 size:32];
 }
 
 + (id)nu_valueWithCGPoint:()NSValueNUGeometryExtensions
 {
-  *v4 = a1;
+  *v4 = self;
   *&v4[1] = a2;
   v2 = [MEMORY[0x1E696B098] valueWithBytes:v4 objCType:"{CGPoint=dd}"];
 
@@ -60,7 +60,7 @@
 
 + (id)nu_valueWithCGRect:()NSValueNUGeometryExtensions
 {
-  *v6 = a1;
+  *v6 = self;
   *&v6[1] = a2;
   *&v6[2] = a3;
   *&v6[3] = a4;

@@ -1,23 +1,23 @@
 @interface TUContactImageResponse
-- (TUContactImageResponse)initWithCoder:(id)a3;
-- (TUContactImageResponse)initWithImageData:(id)a3 type:(int64_t)a4;
+- (TUContactImageResponse)initWithCoder:(id)coder;
+- (TUContactImageResponse)initWithImageData:(id)data type:(int64_t)type;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUContactImageResponse
 
-- (TUContactImageResponse)initWithImageData:(id)a3 type:(int64_t)a4
+- (TUContactImageResponse)initWithImageData:(id)data type:(int64_t)type
 {
-  v7 = a3;
+  dataCopy = data;
   v11.receiver = self;
   v11.super_class = TUContactImageResponse;
   v8 = [(TUContactImageResponse *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_imageData, a3);
-    v9->_imageType = a4;
+    objc_storeStrong(&v8->_imageData, data);
+    v9->_imageType = type;
   }
 
   return v9;
@@ -40,30 +40,30 @@
   return v8;
 }
 
-- (TUContactImageResponse)initWithCoder:(id)a3
+- (TUContactImageResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_imageData);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = NSStringFromSelector(sel_imageType);
-  v9 = [v4 decodeIntegerForKey:v8];
+  v9 = [coderCopy decodeIntegerForKey:v8];
 
   v10 = [(TUContactImageResponse *)self initWithImageData:v7 type:v9];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   imageData = self->_imageData;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_imageData);
-  [v5 encodeObject:imageData forKey:v6];
+  [coderCopy encodeObject:imageData forKey:v6];
 
   imageType = self->_imageType;
   v8 = NSStringFromSelector(sel_imageType);
-  [v5 encodeInteger:imageType forKey:v8];
+  [coderCopy encodeInteger:imageType forKey:v8];
 }
 
 @end

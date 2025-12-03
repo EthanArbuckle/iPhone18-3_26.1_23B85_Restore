@@ -1,12 +1,12 @@
 @interface StickerCollectionMoreButtonCell
-- (_TtC10StickersUI31StickerCollectionMoreButtonCell)initWithCoder:(id)a3;
-- (void)didPressButton:(id)a3;
+- (_TtC10StickersUI31StickerCollectionMoreButtonCell)initWithCoder:(id)coder;
+- (void)didPressButton:(id)button;
 - (void)layoutSubviews;
 @end
 
 @implementation StickerCollectionMoreButtonCell
 
-- (_TtC10StickersUI31StickerCollectionMoreButtonCell)initWithCoder:(id)a3
+- (_TtC10StickersUI31StickerCollectionMoreButtonCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC10StickersUI31StickerCollectionMoreButtonCell_circleView;
   *(&self->super.super.super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x277D75D18]) init];
@@ -26,8 +26,8 @@
   v7.super_class = type metadata accessor for StickerCollectionMoreButtonCell();
   v2 = v7.receiver;
   [(StickerCollectionMoreButtonCell *)&v7 layoutSubviews];
-  v3 = [v2 contentView];
-  [v3 bounds];
+  contentView = [v2 contentView];
+  [contentView bounds];
   v5 = v4;
 
   if (v5 > 40.0)
@@ -35,14 +35,14 @@
     v5 = 40.0;
   }
 
-  v6 = [*&v2[OBJC_IVAR____TtC10StickersUI31StickerCollectionMoreButtonCell_circleView] layer];
-  [v6 setCornerRadius_];
+  layer = [*&v2[OBJC_IVAR____TtC10StickersUI31StickerCollectionMoreButtonCell_circleView] layer];
+  [layer setCornerRadius_];
 }
 
-- (void)didPressButton:(id)a3
+- (void)didPressButton:(id)button
 {
   v3 = *((*MEMORY[0x277D85000] & self->super.super.super.super.super.isa) + 0x68);
-  v7 = self;
+  selfCopy = self;
   if (v3())
   {
     v5 = v4;

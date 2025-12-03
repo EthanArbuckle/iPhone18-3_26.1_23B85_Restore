@@ -2,7 +2,7 @@
 - (void)enterPowerMode;
 - (void)exitPowerMode;
 - (void)logStatusToPowerLog;
-- (void)restoreState:(id)a3;
+- (void)restoreState:(id)state;
 - (void)updatePowerTarget;
 - (void)updateSMCDebugKey;
 @end
@@ -147,10 +147,10 @@
   v18 = +[AnalyticsLogger logger];
   v19 = objc_opt_class();
   v20 = NSStringFromClass(v19);
-  v21 = [(PowerModeObjImpl *)self lastEntryTime];
-  v22 = [(PowerModeObjImpl *)self lastExitTime];
-  v23 = [(PowerModeObjImpl *)self startingSOC];
-  v24 = [(PowerModeObjImpl *)self endingSOC];
+  lastEntryTime = [(PowerModeObjImpl *)self lastEntryTime];
+  lastExitTime = [(PowerModeObjImpl *)self lastExitTime];
+  startingSOC = [(PowerModeObjImpl *)self startingSOC];
+  endingSOC = [(PowerModeObjImpl *)self endingSOC];
   v25 = [(PowerModeObjImpl *)self exitReason]- 1;
   if (v25 > 4)
   {
@@ -162,12 +162,12 @@
     v26 = off_10002C668[v25];
   }
 
-  [v18 logCAEventforMode:v20 startDate:v21 endDate:v22 startingSOC:v23 endingSOC:v24 exitReason:v26];
+  [v18 logCAEventforMode:v20 startDate:lastEntryTime endDate:lastExitTime startingSOC:startingSOC endingSOC:endingSOC exitReason:v26];
 }
 
-- (void)restoreState:(id)a3
+- (void)restoreState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
@@ -175,7 +175,7 @@
     *buf = 138412546;
     v22 = objc_opt_class();
     v23 = 2112;
-    v24 = v4;
+    v24 = stateCopy;
     v7 = v22;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Restoring state for %@: %@", buf, 0x16u);
   }
@@ -184,8 +184,8 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [v4 allKeys];
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allKeys = [stateCopy allKeys];
+  v9 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -196,24 +196,24 @@
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allKeys);
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
         if ([v13 isEqualToString:@"state"])
         {
-          v14 = [v4 objectForKeyedSubscript:@"state"];
+          v14 = [stateCopy objectForKeyedSubscript:@"state"];
           -[PowerModeObjImpl setState:](self, "setState:", [v14 BOOLValue]);
         }
 
         if ([v13 isEqualToString:@"lastExitTime"])
         {
-          v15 = [v4 objectForKeyedSubscript:@"lastExitTime"];
+          v15 = [stateCopy objectForKeyedSubscript:@"lastExitTime"];
           [(PowerModeObjImpl *)self setLastExitTime:v15];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v10);

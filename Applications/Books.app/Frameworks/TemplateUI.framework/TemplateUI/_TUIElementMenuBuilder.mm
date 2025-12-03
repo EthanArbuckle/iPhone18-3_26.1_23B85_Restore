@@ -1,19 +1,19 @@
 @interface _TUIElementMenuBuilder
 - (id)finalizeMenuItem;
-- (void)addImageModel:(id)a3 forRole:(id)a4;
-- (void)addMenuItem:(id)a3;
-- (void)addModel:(id)a3;
-- (void)addText:(id)a3 forRole:(id)a4;
+- (void)addImageModel:(id)model forRole:(id)role;
+- (void)addMenuItem:(id)item;
+- (void)addModel:(id)model;
+- (void)addText:(id)text forRole:(id)role;
 @end
 
 @implementation _TUIElementMenuBuilder
 
-- (void)addMenuItem:(id)a3
+- (void)addMenuItem:(id)item
 {
-  v4 = a3;
-  if (v4)
+  itemCopy = item;
+  if (itemCopy)
   {
-    v8 = v4;
+    v8 = itemCopy;
     if (!self->_children)
     {
       v5 = objc_opt_new();
@@ -24,17 +24,17 @@
     v7 = [[_TUIMenuItemContainer alloc] initWithModel:v8];
     [(NSMutableArray *)self->_children addObject:v7];
 
-    v4 = v8;
+    itemCopy = v8;
   }
 }
 
-- (void)addModel:(id)a3
+- (void)addModel:(id)model
 {
-  v4 = a3;
-  if (v4)
+  modelCopy = model;
+  if (modelCopy)
   {
     children = self->_children;
-    v8 = v4;
+    v8 = modelCopy;
     if (!children)
     {
       v6 = objc_opt_new();
@@ -45,7 +45,7 @@
     }
 
     [(NSMutableArray *)children addObject:v8];
-    v4 = v8;
+    modelCopy = v8;
   }
 }
 
@@ -66,27 +66,27 @@
   return v3;
 }
 
-- (void)addText:(id)a3 forRole:(id)a4
+- (void)addText:(id)text forRole:(id)role
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v6 || [v6 isEqualToString:@"title"])
+  textCopy = text;
+  roleCopy = role;
+  v7 = roleCopy;
+  if (!roleCopy || [roleCopy isEqualToString:@"title"])
   {
-    v8 = [v10 copy];
+    v8 = [textCopy copy];
     title = self->_title;
     self->_title = v8;
   }
 }
 
-- (void)addImageModel:(id)a3 forRole:(id)a4
+- (void)addImageModel:(id)model forRole:(id)role
 {
-  v9 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v7 || [v7 isEqualToString:@"image"])
+  modelCopy = model;
+  roleCopy = role;
+  v8 = roleCopy;
+  if (!roleCopy || [roleCopy isEqualToString:@"image"])
   {
-    objc_storeStrong(&self->_imageModel, a3);
+    objc_storeStrong(&self->_imageModel, model);
   }
 }
 

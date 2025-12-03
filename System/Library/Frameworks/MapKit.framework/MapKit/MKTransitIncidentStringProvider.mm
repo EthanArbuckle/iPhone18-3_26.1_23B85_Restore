@@ -1,47 +1,47 @@
 @interface MKTransitIncidentStringProvider
-+ (id)cellSecondaryTextForIncident:(id)a3;
++ (id)cellSecondaryTextForIncident:(id)incident;
 @end
 
 @implementation MKTransitIncidentStringProvider
 
-+ (id)cellSecondaryTextForIncident:(id)a3
++ (id)cellSecondaryTextForIncident:(id)incident
 {
-  v3 = a3;
-  v4 = [v3 messageForRoutePlanning];
-  if (![v4 length])
+  incidentCopy = incident;
+  messageForRoutePlanning = [incidentCopy messageForRoutePlanning];
+  if (![messageForRoutePlanning length])
   {
-    v5 = [v3 title];
-    if (v5 && (v6 = v5, [v3 summary], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
+    title = [incidentCopy title];
+    if (title && (v6 = title, [incidentCopy summary], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
     {
       v8 = MEMORY[0x1E696AEC0];
       v9 = _MKLocalizedStringFromThisBundle(@"Transit_Incident_Title_And_Summary");
-      v10 = [v3 title];
-      v11 = [v3 summary];
-      v12 = [v8 stringWithFormat:v9, v10, v11];
+      title2 = [incidentCopy title];
+      summary = [incidentCopy summary];
+      summary2 = [v8 stringWithFormat:v9, title2, summary];
 
-      v4 = v10;
+      messageForRoutePlanning = title2;
     }
 
     else
     {
-      v13 = [v3 title];
-      if (v13)
+      title3 = [incidentCopy title];
+      if (title3)
       {
-        v9 = v13;
-        v12 = v9;
+        v9 = title3;
+        summary2 = v9;
       }
 
       else
       {
-        v12 = [v3 summary];
+        summary2 = [incidentCopy summary];
         v9 = 0;
       }
     }
 
-    v4 = v12;
+    messageForRoutePlanning = summary2;
   }
 
-  return v4;
+  return messageForRoutePlanning;
 }
 
 @end

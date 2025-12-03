@@ -1,18 +1,18 @@
 @interface QuickActionMenuPresenter
 - (BOOL)_callEnabled;
-- (BOOL)_contextMenuInteractionShouldBegin:(id)a3;
+- (BOOL)_contextMenuInteractionShouldBegin:(id)begin;
 - (BOOL)_directionsEnabled;
 - (BOOL)_webEnabled;
 - (BOOL)isAdditionalStop;
 - (CGPoint)location;
 - (CLLocationCoordinate2D)coordinate;
 - (QuickActionMenuPresenter)init;
-- (QuickActionMenuPresenter)initWithView:(id)a3;
+- (QuickActionMenuPresenter)initWithView:(id)view;
 - (QuickActionMenuPresenterDelegate)delegate;
-- (id)_predicateToRemoveAction:(id)a3;
+- (id)_predicateToRemoveAction:(id)action;
 - (id)addStopAction;
 - (id)callAction;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 - (id)directionsAction;
 - (id)dropPinAction;
 - (id)removeDroppedPinAction;
@@ -23,21 +23,21 @@
 - (id)webAction;
 - (void)_prepareActions;
 - (void)_prepareData;
-- (void)_updateSearchResultWithMapItemIfNeeded:(id)a3;
+- (void)_updateSearchResultWithMapItemIfNeeded:(id)needed;
 - (void)cancelPresentationGesture;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
 - (void)handleTapPreview;
-- (void)performAction:(id)a3;
+- (void)performAction:(id)action;
 - (void)reset;
 - (void)resolveNearestTransitStation;
-- (void)setLabelMarker:(id)a3;
-- (void)setResolvedMapItem:(id)a3;
+- (void)setLabelMarker:(id)marker;
+- (void)setResolvedMapItem:(id)item;
 - (void)updateActionEnableStates;
-- (void)updateForLabelMarker:(id)a3;
-- (void)updateForParkedCar:(id)a3;
-- (void)updateForPlace:(id)a3;
-- (void)updateForSearchResult:(id)a3;
+- (void)updateForLabelMarker:(id)marker;
+- (void)updateForParkedCar:(id)car;
+- (void)updateForPlace:(id)place;
+- (void)updateForSearchResult:(id)result;
 @end
 
 @implementation QuickActionMenuPresenter
@@ -63,18 +63,18 @@
   if ([(VKLabelMarker *)self->_labelMarker _maps_numLines]== 1)
   {
     resetCounter = self->_resetCounter;
-    v4 = [(VKLabelMarker *)self->_labelMarker _maps_lineIdentifiers];
-    v5 = [v4 firstObject];
+    _maps_lineIdentifiers = [(VKLabelMarker *)self->_labelMarker _maps_lineIdentifiers];
+    firstObject = [_maps_lineIdentifiers firstObject];
 
     v6 = +[MKLocationManager sharedLocationManager];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1006438A4;
     v9[3] = &unk_101624A48;
-    v10 = v5;
+    v10 = firstObject;
     v11 = resetCounter;
     v9[4] = self;
-    v7 = v5;
+    v7 = firstObject;
     v8 = [v6 singleLocationUpdateWithHandler:v9];
 
     [v8 start];
@@ -119,72 +119,72 @@
   return result;
 }
 
-- (void)setResolvedMapItem:(id)a3
+- (void)setResolvedMapItem:(id)item
 {
-  v7 = a3;
-  objc_storeStrong(&self->_resolvedMapItem, a3);
-  if (v7 && !self->_searchResult)
+  itemCopy = item;
+  objc_storeStrong(&self->_resolvedMapItem, item);
+  if (itemCopy && !self->_searchResult)
   {
-    v5 = [[SearchResult alloc] initWithMapItem:v7];
+    v5 = [[SearchResult alloc] initWithMapItem:itemCopy];
     [(QuickActionMenuPresenter *)self setSearchResult:v5];
   }
 
   if (self->_parkedCar)
   {
-    v6 = [(QuickActionMenuPresenter *)self searchResult];
-    [v6 setReverseGeocoded:1];
+    searchResult = [(QuickActionMenuPresenter *)self searchResult];
+    [searchResult setReverseGeocoded:1];
   }
 
   [(QuickActionMenuPresenter *)self updateActionEnableStates];
 }
 
-- (void)setLabelMarker:(id)a3
+- (void)setLabelMarker:(id)marker
 {
-  v9 = a3;
-  objc_storeStrong(&self->_labelMarker, a3);
-  v5 = v9;
-  if (v9)
+  markerCopy = marker;
+  objc_storeStrong(&self->_labelMarker, marker);
+  v5 = markerCopy;
+  if (markerCopy)
   {
-    v6 = [v9 featureAnnotation];
-    v7 = v6;
-    if (v6 && [v6 conformsToProtocol:&OBJC_PROTOCOL___CustomPOIAnnotation])
+    featureAnnotation = [markerCopy featureAnnotation];
+    v7 = featureAnnotation;
+    if (featureAnnotation && [featureAnnotation conformsToProtocol:&OBJC_PROTOCOL___CustomPOIAnnotation])
     {
-      v8 = [v7 personalizedItem];
-      [(QuickActionMenuPresenter *)self setPlace:v8];
+      personalizedItem = [v7 personalizedItem];
+      [(QuickActionMenuPresenter *)self setPlace:personalizedItem];
     }
 
-    v5 = v9;
+    v5 = markerCopy;
   }
 }
 
-- (void)updateForPlace:(id)a3
+- (void)updateForPlace:(id)place
 {
-  v4 = a3;
-  [(QuickActionMenuPresenter *)self setPlace:v4];
+  placeCopy = place;
+  [(QuickActionMenuPresenter *)self setPlace:placeCopy];
   v5 = self->_resolveGroup;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ([v4 parkedCar], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([placeCopy parkedCar], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v7 = v6;
+    searchResult = v6;
     [(QuickActionMenuPresenter *)self updateForParkedCar:v6];
   }
 
   else
   {
-    v7 = [v4 searchResult];
-    [(QuickActionMenuPresenter *)self setSearchResult:v7];
-    v8 = [v4 mapItem];
-    [(QuickActionMenuPresenter *)self setResolvedMapItem:v8];
-    if (v7)
+    searchResult = [placeCopy searchResult];
+    [(QuickActionMenuPresenter *)self setSearchResult:searchResult];
+    mapItem = [placeCopy mapItem];
+    [(QuickActionMenuPresenter *)self setResolvedMapItem:mapItem];
+    if (searchResult)
     {
-      [(QuickActionMenuPresenter *)self updateForSearchResult:v7];
+      [(QuickActionMenuPresenter *)self updateForSearchResult:searchResult];
     }
 
-    else if (([v8 _hasResolvablePartialInformation] & 1) != 0 || objc_msgSend(v4, "mustRefineMapItem"))
+    else if (([mapItem _hasResolvablePartialInformation] & 1) != 0 || objc_msgSend(placeCopy, "mustRefineMapItem"))
     {
       v9 = +[MKMapService sharedService];
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       v11 = [WeakRetained mapServiceTraitsForQuickActionPresenter:self];
-      v12 = [v9 ticketForMapItemToRefine:v8 traits:v11];
+      v12 = [v9 ticketForMapItemToRefine:mapItem traits:v11];
 
       dispatch_group_enter(v5);
       v13[0] = _NSConcreteStackBlock;
@@ -198,29 +198,29 @@
   }
 }
 
-- (void)updateForLabelMarker:(id)a3
+- (void)updateForLabelMarker:(id)marker
 {
-  v5 = a3;
-  objc_storeStrong(&self->_labelMarker, a3);
-  [v5 coordinate];
+  markerCopy = marker;
+  objc_storeStrong(&self->_labelMarker, marker);
+  [markerCopy coordinate];
   v7 = v6;
-  [v5 coordinate];
+  [markerCopy coordinate];
   v9 = CLLocationCoordinate2DMake(v7, v8);
   v10 = [[CLLocation alloc] initWithLatitude:v9.latitude longitude:v9.longitude];
   v11 = [[MKMapItem alloc] initWithCLLocation:v10];
-  v12 = v5;
-  v13 = [v12 featureType];
-  if (v13 <= 9 && ((1 << v13) & 0x2C0) != 0)
+  v12 = markerCopy;
+  featureType = [v12 featureType];
+  if (featureType <= 9 && ((1 << featureType) & 0x2C0) != 0)
   {
-    v14 = [v12 title];
+    title = [v12 title];
   }
 
   else
   {
-    v14 = [v12 name];
+    title = [v12 name];
   }
 
-  v15 = v14;
+  v15 = title;
 
   [v11 setName:v15];
   v16 = self->_resolveGroup;
@@ -236,12 +236,12 @@
 
   else
   {
-    v17 = [(VKLabelMarker *)self->_labelMarker featureAnnotation];
-    v18 = v17;
-    if (v17 && [v17 conformsToProtocol:&OBJC_PROTOCOL___CustomPOIAnnotation])
+    featureAnnotation = [(VKLabelMarker *)self->_labelMarker featureAnnotation];
+    v18 = featureAnnotation;
+    if (featureAnnotation && [featureAnnotation conformsToProtocol:&OBJC_PROTOCOL___CustomPOIAnnotation])
     {
-      v19 = [v18 personalizedItem];
-      [(QuickActionMenuPresenter *)self setPlace:v19];
+      personalizedItem = [v18 personalizedItem];
+      [(QuickActionMenuPresenter *)self setPlace:personalizedItem];
     }
 
     else
@@ -260,12 +260,12 @@
         v46[4] = sub_100644348;
         v47 = 0;
         v23 = +[UIDevice currentDevice];
-        v24 = [v23 userInterfaceIdiom];
+        userInterfaceIdiom = [v23 userInterfaceIdiom];
 
-        v35 = v24 == 5;
+        v35 = userInterfaceIdiom == 5;
         v37 = v22;
-        v34 = v24;
-        if (v24 == 5)
+        v34 = userInterfaceIdiom;
+        if (userInterfaceIdiom == 5)
         {
           v36 = dispatch_get_global_queue(2, 0);
         }
@@ -286,8 +286,8 @@
         v44 = v20;
         v26 = objc_retainBlock(v43);
         v27 = +[UIApplication sharedMapsDelegate];
-        v28 = [v27 poiSearchManager];
-        v29 = [(VKLabelMarker *)self->_labelMarker identifier];
+        poiSearchManager = [v27 poiSearchManager];
+        identifier = [(VKLabelMarker *)self->_labelMarker identifier];
         v38[0] = _NSConcreteStackBlock;
         v38[1] = 3221225472;
         v38[2] = sub_1006443E8;
@@ -298,7 +298,7 @@
         v40 = v30;
         v31 = v16;
         v39 = v31;
-        [v28 searchForIdentifier:v29 allowExpired:1 traits:v37 completionHandler:v38 callbackQueue:v36];
+        [poiSearchManager searchForIdentifier:identifier allowExpired:1 traits:v37 completionHandler:v38 callbackQueue:v36];
 
         if (v34 == 5)
         {
@@ -315,28 +315,28 @@
   }
 }
 
-- (void)updateForParkedCar:(id)a3
+- (void)updateForParkedCar:(id)car
 {
   self->_parkedCar = 1;
-  v4 = [a3 mapItem];
-  [(QuickActionMenuPresenter *)self setResolvedMapItem:v4];
+  mapItem = [car mapItem];
+  [(QuickActionMenuPresenter *)self setResolvedMapItem:mapItem];
 }
 
-- (void)updateForSearchResult:(id)a3
+- (void)updateForSearchResult:(id)result
 {
-  v5 = a3;
-  objc_storeStrong(&self->_searchResult, a3);
+  resultCopy = result;
+  objc_storeStrong(&self->_searchResult, result);
   v6 = self->_resolveGroup;
   objc_initWeak(location, self);
-  if ([v5 hasIncompleteMetadata])
+  if ([resultCopy hasIncompleteMetadata])
   {
-    if ([v5 businessID])
+    if ([resultCopy businessID])
     {
       v7 = +[UIApplication sharedMapsDelegate];
-      v8 = [v7 poiSearchManager];
+      poiSearchManager = [v7 poiSearchManager];
 
-      v9 = [v5 identifier];
-      v10 = [v8 searchResultForIdentifier:v9];
+      identifier = [resultCopy identifier];
+      v10 = [poiSearchManager searchResultForIdentifier:identifier];
 
       if (v10 && ([v10 hasIncompleteMetadata] & 1) == 0)
       {
@@ -353,11 +353,11 @@
         v56[4] = sub_100644348;
         v57 = 0;
         v11 = +[UIDevice currentDevice];
-        v12 = [v11 userInterfaceIdiom];
+        userInterfaceIdiom = [v11 userInterfaceIdiom];
 
         v37 = v10;
-        v38 = v8;
-        if (v12 == 5)
+        v38 = poiSearchManager;
+        if (userInterfaceIdiom == 5)
         {
           v22 = dispatch_get_global_queue(2, 0);
         }
@@ -375,22 +375,22 @@
         v54[4] = v56;
         objc_copyWeak(&v55, location);
         v24 = objc_retainBlock(v54);
-        v25 = [v5 identifier];
-        v26 = [(QuickActionMenuPresenter *)self delegate];
-        v27 = [v26 mapServiceTraitsForQuickActionPresenter:self];
+        identifier2 = [resultCopy identifier];
+        delegate = [(QuickActionMenuPresenter *)self delegate];
+        v27 = [delegate mapServiceTraitsForQuickActionPresenter:self];
         v49[0] = _NSConcreteStackBlock;
         v49[1] = 3221225472;
         v49[2] = sub_100644CA8;
         v49[3] = &unk_1016249D0;
         v52 = v56;
-        v53 = v12 == 5;
+        v53 = userInterfaceIdiom == 5;
         v28 = v24;
         v51 = v28;
         v29 = v6;
         v50 = v29;
-        [v38 searchForIdentifier:v25 allowExpired:1 traits:v27 completionHandler:v49 callbackQueue:v22];
+        [v38 searchForIdentifier:identifier2 allowExpired:1 traits:v27 completionHandler:v49 callbackQueue:v22];
 
-        if (v12 == 5)
+        if (userInterfaceIdiom == 5)
         {
           v30 = dispatch_time(0, 5000000000);
           dispatch_group_wait(v29, v30);
@@ -401,20 +401,20 @@
         _Block_object_dispose(v56, 8);
 
         v10 = v37;
-        v8 = v38;
+        poiSearchManager = v38;
       }
 
-      -[GEOPlaceActionDetails setBusinessID:](self->_actionDetails, "setBusinessID:", [v5 businessID]);
-      -[GEOPlaceActionDetails setResultIndex:](self->_actionDetails, "setResultIndex:", [v5 resultIndex]);
+      -[GEOPlaceActionDetails setBusinessID:](self->_actionDetails, "setBusinessID:", [resultCopy businessID]);
+      -[GEOPlaceActionDetails setResultIndex:](self->_actionDetails, "setResultIndex:", [resultCopy resultIndex]);
 
       goto LABEL_21;
     }
 
-    v20 = [v5 address];
+    address = [resultCopy address];
 
-    if (v20)
+    if (address)
     {
-      v8 = [v5 address];
+      poiSearchManager = [resultCopy address];
       dispatch_group_enter(v6);
       v46[0] = _NSConcreteStackBlock;
       v46[1] = 3221225472;
@@ -422,7 +422,7 @@
       v46[3] = &unk_1016249F8;
       objc_copyWeak(&v48, location);
       v47 = v6;
-      [v8 forwardGeocodeAddress:v46];
+      [poiSearchManager forwardGeocodeAddress:v46];
 
       v21 = &v48;
 LABEL_20:
@@ -430,15 +430,15 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v31 = [v5 mapItem];
+    mapItem = [resultCopy mapItem];
 
-    if (v31)
+    if (mapItem)
     {
       v32 = +[MKMapService sharedService];
-      v33 = [v5 mapItem];
+      mapItem2 = [resultCopy mapItem];
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       v35 = [WeakRetained mapServiceTraitsForQuickActionPresenter:self];
-      v8 = [v32 ticketForMapItemToRefine:v33 traits:v35];
+      poiSearchManager = [v32 ticketForMapItemToRefine:mapItem2 traits:v35];
 
       dispatch_group_enter(v6);
       v43[0] = _NSConcreteStackBlock;
@@ -448,7 +448,7 @@ LABEL_20:
       objc_copyWeak(&v45, location);
       v44 = v6;
       v36 = &_dispatch_main_q;
-      [v8 submitWithHandler:v43 queue:&_dispatch_main_q networkActivity:0];
+      [poiSearchManager submitWithHandler:v43 queue:&_dispatch_main_q networkActivity:0];
 
       v21 = &v45;
       goto LABEL_20;
@@ -457,15 +457,15 @@ LABEL_20:
 
   else
   {
-    if ([v5 isDynamicCurrentLocation])
+    if ([resultCopy isDynamicCurrentLocation])
     {
       v13 = +[MKLocationManager sharedLocationManager];
-      v8 = [v13 lastLocation];
+      poiSearchManager = [v13 lastLocation];
 
       v14 = +[MKMapService sharedService];
       v15 = objc_loadWeakRetained(&self->_delegate);
       v16 = [v15 mapServiceTraitsForQuickActionPresenter:self];
-      v17 = [v14 ticketForReverseGeocodeLocation:v8 traits:v16];
+      v17 = [v14 ticketForReverseGeocodeLocation:poiSearchManager traits:v16];
 
       dispatch_group_enter(v6);
       v39[0] = _NSConcreteStackBlock;
@@ -473,7 +473,7 @@ LABEL_20:
       v39[2] = sub_100644E88;
       v39[3] = &unk_10165D328;
       objc_copyWeak(&v42, location);
-      v40 = v5;
+      v40 = resultCopy;
       v41 = v6;
       v18 = &_dispatch_main_q;
       [v17 submitWithHandler:v39 queue:&_dispatch_main_q networkActivity:0];
@@ -484,28 +484,28 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v19 = [v5 mapItem];
-    [(QuickActionMenuPresenter *)self setResolvedMapItem:v19];
+    mapItem3 = [resultCopy mapItem];
+    [(QuickActionMenuPresenter *)self setResolvedMapItem:mapItem3];
 
-    -[GEOPlaceActionDetails setBusinessID:](self->_actionDetails, "setBusinessID:", [v5 businessID]);
-    -[GEOPlaceActionDetails setResultIndex:](self->_actionDetails, "setResultIndex:", [v5 resultIndex]);
+    -[GEOPlaceActionDetails setBusinessID:](self->_actionDetails, "setBusinessID:", [resultCopy businessID]);
+    -[GEOPlaceActionDetails setResultIndex:](self->_actionDetails, "setResultIndex:", [resultCopy resultIndex]);
   }
 
 LABEL_22:
   objc_destroyWeak(location);
 }
 
-- (void)_updateSearchResultWithMapItemIfNeeded:(id)a3
+- (void)_updateSearchResultWithMapItemIfNeeded:(id)needed
 {
-  v8 = a3;
+  neededCopy = needed;
   if ([(SearchResultRepr *)self->_searchResult hasIncompleteMetadata]|| [(SearchResult *)self->_searchResult isDynamicCurrentLocation])
   {
-    v4 = [[SearchResult alloc] initWithMapItem:v8];
+    v4 = [[SearchResult alloc] initWithMapItem:neededCopy];
     if ([(SearchResult *)self->_searchResult isAddressBookResult])
     {
       v5 = [SearchResult alloc];
-      v6 = [(SearchResult *)self->_searchResult address];
-      v7 = [(SearchResult *)v5 initWithSearchResult:v4 address:v6];
+      address = [(SearchResult *)self->_searchResult address];
+      v7 = [(SearchResult *)v5 initWithSearchResult:v4 address:address];
 
       v4 = v7;
     }
@@ -517,8 +517,8 @@ LABEL_22:
 - (BOOL)isAdditionalStop
 {
   actions = self->_actions;
-  v3 = [(QuickActionMenuPresenter *)self addStopAction];
-  LOBYTE(actions) = [(NSArray *)actions containsObject:v3];
+  addStopAction = [(QuickActionMenuPresenter *)self addStopAction];
+  LOBYTE(actions) = [(NSArray *)actions containsObject:addStopAction];
 
   return actions;
 }
@@ -589,18 +589,18 @@ LABEL_22:
   }
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self->_resolveGroup)
+  actionCopy = action;
+  v5 = actionCopy;
+  if (actionCopy && self->_resolveGroup)
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1006453D4;
     v9[3] = &unk_101661A90;
     v9[4] = self;
-    v10 = v4;
+    v10 = actionCopy;
     v6 = objc_retainBlock(v9);
     v7 = v6;
     if (self->_resolvedMapItem || self->_place)
@@ -618,14 +618,14 @@ LABEL_22:
   }
 }
 
-- (id)_predicateToRemoveAction:(id)a3
+- (id)_predicateToRemoveAction:(id)action
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100645734;
   v6[3] = &unk_101656A98;
-  v7 = a3;
-  v3 = v7;
+  actionCopy = action;
+  v3 = actionCopy;
   v4 = [NSPredicate predicateWithBlock:v6];
 
   return v4;
@@ -633,20 +633,20 @@ LABEL_22:
 
 - (void)updateActionEnableStates
 {
-  v3 = [(QuickActionMenuPresenter *)self _callEnabled];
-  v4 = [(QuickActionMenuPresenter *)self _webEnabled];
-  v5 = [(QuickActionMenuPresenter *)self _directionsEnabled];
-  v6 = [(QuickActionMenuPresenter *)self _nearestStationEnabled];
+  _callEnabled = [(QuickActionMenuPresenter *)self _callEnabled];
+  _webEnabled = [(QuickActionMenuPresenter *)self _webEnabled];
+  _directionsEnabled = [(QuickActionMenuPresenter *)self _directionsEnabled];
+  _nearestStationEnabled = [(QuickActionMenuPresenter *)self _nearestStationEnabled];
   objc_initWeak(&location, self);
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_100645A2C;
   v23[3] = &unk_101624980;
   objc_copyWeak(&v24, &location);
-  v25 = v3;
-  v26 = v4;
-  v27 = v6;
-  v28 = v5;
+  v25 = _callEnabled;
+  v26 = _webEnabled;
+  v27 = _nearestStationEnabled;
+  v28 = _directionsEnabled;
   v7 = objc_retainBlock(v23);
   v8 = [NSMutableArray arrayWithCapacity:[(NSArray *)self->_actions count]];
   v21 = 0u;
@@ -709,17 +709,17 @@ LABEL_22:
   resolvedMapItem = self->_resolvedMapItem;
   if (resolvedMapItem || (searchResult = self->_searchResult) == 0)
   {
-    v4 = resolvedMapItem;
+    mapItem = resolvedMapItem;
   }
 
   else
   {
-    v4 = [(SearchResult *)searchResult mapItem];
+    mapItem = [(SearchResult *)searchResult mapItem];
   }
 
-  v6 = v4;
+  v6 = mapItem;
   v7 = +[MKLocationManager sharedLocationManager];
-  v8 = [v7 lastLocation];
+  lastLocation = [v7 lastLocation];
 
   [(QuickActionMenuPresenter *)self coordinate];
   v10 = v9;
@@ -731,7 +731,7 @@ LABEL_22:
 
   else
   {
-    v13 = v8;
+    v13 = lastLocation;
     if (v13 && (+[NSDate date](NSDate, "date"), v14 = objc_claimAutoreleasedReturnValue(), [v13 timestamp], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "timeIntervalSinceDate:", v15), v17 = v16, v15, v14, v17 <= 300.0))
     {
       [v13 coordinate];
@@ -768,24 +768,24 @@ LABEL_12:
   resolvedMapItem = self->_resolvedMapItem;
   if (resolvedMapItem || (searchResult = self->_searchResult) == 0)
   {
-    v4 = resolvedMapItem;
+    mapItem = resolvedMapItem;
   }
 
   else
   {
-    v4 = [(SearchResult *)searchResult mapItem];
+    mapItem = [(SearchResult *)searchResult mapItem];
   }
 
-  v6 = v4;
+  v6 = mapItem;
   if ([(SearchResult *)self->_searchResult isAddressBookResult])
   {
-    v7 = [(SearchResult *)self->_searchResult address];
-    v8 = [v7 contact];
+    address = [(SearchResult *)self->_searchResult address];
+    contact = [address contact];
   }
 
   else
   {
-    v8 = 0;
+    contact = 0;
   }
 
   v9 = [(MKMapItem *)v6 url];
@@ -796,9 +796,9 @@ LABEL_12:
 
   else
   {
-    v11 = [v8 urlAddresses];
-    v12 = [v11 lastObject];
-    v10 = v12 != 0;
+    urlAddresses = [contact urlAddresses];
+    lastObject = [urlAddresses lastObject];
+    v10 = lastObject != 0;
   }
 
   return v10;
@@ -809,38 +809,38 @@ LABEL_12:
   resolvedMapItem = self->_resolvedMapItem;
   if (resolvedMapItem || (searchResult = self->_searchResult) == 0)
   {
-    v4 = resolvedMapItem;
+    mapItem = resolvedMapItem;
   }
 
   else
   {
-    v4 = [(SearchResult *)searchResult mapItem];
+    mapItem = [(SearchResult *)searchResult mapItem];
   }
 
-  v6 = v4;
+  v6 = mapItem;
   if ([(SearchResult *)self->_searchResult isAddressBookResult])
   {
-    v7 = [(SearchResult *)self->_searchResult address];
-    v8 = [v7 contact];
+    address = [(SearchResult *)self->_searchResult address];
+    contact = [address contact];
   }
 
   else
   {
-    v8 = 0;
+    contact = 0;
   }
 
-  v9 = [(MKMapItem *)v6 phoneNumber];
-  v10 = v9;
-  if (v9 && [v9 length])
+  phoneNumber = [(MKMapItem *)v6 phoneNumber];
+  v10 = phoneNumber;
+  if (phoneNumber && [phoneNumber length])
   {
     v11 = 1;
   }
 
   else
   {
-    v12 = [v8 phoneNumbers];
-    v13 = [v12 lastObject];
-    v11 = v13 != 0;
+    phoneNumbers = [contact phoneNumbers];
+    lastObject = [phoneNumbers lastObject];
+    v11 = lastObject != 0;
   }
 
   return v11;
@@ -908,9 +908,9 @@ LABEL_12:
 - (id)sendMyLocationAction
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-  if (v4 == 5)
+  if (userInterfaceIdiom == 5)
   {
     v5 = [MapsMenuBuilder sendToDeviceAndShareMenuWithSendToDeviceEnabled:1];
   }
@@ -948,9 +948,9 @@ LABEL_12:
 - (id)shareAction
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-  if (v4 == 5)
+  if (userInterfaceIdiom == 5)
   {
     v5 = [MapsMenuBuilder sendToDeviceAndShareMenuWithSendToDeviceEnabled:1];
   }
@@ -1176,31 +1176,31 @@ LABEL_12:
   return v9;
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = [UIDevice currentDevice:a3];
-  v7 = [v6 userInterfaceIdiom];
+  v6 = [UIDevice currentDevice:interaction];
+  userInterfaceIdiom = [v6 userInterfaceIdiom];
 
-  if (v7 == 5)
+  if (userInterfaceIdiom == 5)
   {
 
     [(QuickActionMenuPresenter *)self reset];
   }
 }
 
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  [a5 setPreferredCommitStyle:{0, a4}];
+  [animator setPreferredCommitStyle:{0, configuration}];
 
   [(QuickActionMenuPresenter *)self handleTapPreview];
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  if ([(QuickActionMenuPresenter *)self _contextMenuInteractionShouldBegin:v7])
+  y = location.y;
+  x = location.x;
+  interactionCopy = interaction;
+  if ([(QuickActionMenuPresenter *)self _contextMenuInteractionShouldBegin:interactionCopy])
   {
     self->_actionsDisplayed = 0;
     self->_location.x = x;
@@ -1233,17 +1233,17 @@ LABEL_12:
   return v8;
 }
 
-- (BOOL)_contextMenuInteractionShouldBegin:(id)a3
+- (BOOL)_contextMenuInteractionShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   [(QuickActionMenuPresenter *)self reset];
   if ([(QuickActionMenuPresenter *)self enabled])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [v4 locationInView:self->_gestureView];
+    [beginCopy locationInView:self->_gestureView];
     if ([WeakRetained shouldQuickActionMenuPresenter:self presentAtLocation:self->_gestureView inView:?])
     {
-      [v4 locationInView:self->_gestureView];
+      [beginCopy locationInView:self->_gestureView];
       v6 = [(QuickActionMenuPresenter *)self shouldBeginOrbGestureAtLocation:self->_gestureView inView:?];
     }
 
@@ -1273,14 +1273,14 @@ LABEL_12:
   }
 
   v6 = +[MKLocationManager sharedLocationManager];
-  v7 = [v6 lastLocation];
+  lastLocation = [v6 lastLocation];
 
-  v17 = v7;
+  v17 = lastLocation;
   if (v17)
   {
     v8 = +[NSDate date];
-    v9 = [(CLLocation *)v17 timestamp];
-    [v8 timeIntervalSinceDate:v9];
+    timestamp = [(CLLocation *)v17 timestamp];
+    [v8 timeIntervalSinceDate:timestamp];
     v11 = v10;
 
     lastValidLocation = v17;
@@ -1333,10 +1333,10 @@ LABEL_9:
   {
     if ([(VKLabelMarker *)self->_labelMarker _maps_numLines]== 1)
     {
-      v4 = [(QuickActionMenuPresenter *)self transitLineDirectionsAction];
-      v38[0] = v4;
-      v5 = [(QuickActionMenuPresenter *)self transitLineViewOnMapAction];
-      v38[1] = v5;
+      transitLineDirectionsAction = [(QuickActionMenuPresenter *)self transitLineDirectionsAction];
+      v38[0] = transitLineDirectionsAction;
+      transitLineViewOnMapAction = [(QuickActionMenuPresenter *)self transitLineViewOnMapAction];
+      v38[1] = transitLineViewOnMapAction;
       v6 = v38;
 LABEL_5:
       v7 = [NSArray arrayWithObjects:v6 count:2];
@@ -1345,8 +1345,8 @@ LABEL_21:
       goto LABEL_24;
     }
 
-    v4 = [(QuickActionMenuPresenter *)self transitLineViewOnMapAction];
-    v37 = v4;
+    transitLineDirectionsAction = [(QuickActionMenuPresenter *)self transitLineViewOnMapAction];
+    v37 = transitLineDirectionsAction;
     v8 = &v37;
 LABEL_23:
     v7 = [NSArray arrayWithObjects:v8 count:1];
@@ -1358,8 +1358,8 @@ LABEL_23:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [(QuickActionMenuPresenter *)self sendMyLocationAction];
-      v36 = v4;
+      transitLineDirectionsAction = [(QuickActionMenuPresenter *)self sendMyLocationAction];
+      v36 = transitLineDirectionsAction;
       v8 = &v36;
       goto LABEL_23;
     }
@@ -1374,20 +1374,20 @@ LABEL_23:
 
         if (!v11)
         {
-          v4 = [(QuickActionMenuPresenter *)self dropPinAction];
-          v34[0] = v4;
-          v5 = [(QuickActionMenuPresenter *)self shareAction];
-          v34[1] = v5;
+          transitLineDirectionsAction = [(QuickActionMenuPresenter *)self dropPinAction];
+          v34[0] = transitLineDirectionsAction;
+          transitLineViewOnMapAction = [(QuickActionMenuPresenter *)self shareAction];
+          v34[1] = transitLineViewOnMapAction;
           v6 = v34;
           goto LABEL_5;
         }
 
-        v4 = [(QuickActionMenuPresenter *)self directionsAction];
-        v35[0] = v4;
-        v5 = [(QuickActionMenuPresenter *)self removeDroppedPinAction];
-        v35[1] = v5;
-        v12 = [(QuickActionMenuPresenter *)self shareAction];
-        v35[2] = v12;
+        transitLineDirectionsAction = [(QuickActionMenuPresenter *)self directionsAction];
+        v35[0] = transitLineDirectionsAction;
+        transitLineViewOnMapAction = [(QuickActionMenuPresenter *)self removeDroppedPinAction];
+        v35[1] = transitLineViewOnMapAction;
+        shareAction = [(QuickActionMenuPresenter *)self shareAction];
+        v35[2] = shareAction;
         v7 = [NSArray arrayWithObjects:v35 count:3];
 LABEL_20:
 
@@ -1398,14 +1398,14 @@ LABEL_20:
 
   if (!self->_place || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v4 = [(QuickActionMenuPresenter *)self directionsAction];
-    v30[0] = v4;
-    v5 = [(QuickActionMenuPresenter *)self callAction];
-    v30[1] = v5;
-    v12 = [(QuickActionMenuPresenter *)self webAction];
-    v30[2] = v12;
-    v16 = [(QuickActionMenuPresenter *)self shareAction];
-    v30[3] = v16;
+    transitLineDirectionsAction = [(QuickActionMenuPresenter *)self directionsAction];
+    v30[0] = transitLineDirectionsAction;
+    transitLineViewOnMapAction = [(QuickActionMenuPresenter *)self callAction];
+    v30[1] = transitLineViewOnMapAction;
+    shareAction = [(QuickActionMenuPresenter *)self webAction];
+    v30[2] = shareAction;
+    shareAction2 = [(QuickActionMenuPresenter *)self shareAction];
+    v30[3] = shareAction2;
     v17 = v30;
 LABEL_19:
     v7 = [NSArray arrayWithObjects:v17 count:4];
@@ -1415,20 +1415,20 @@ LABEL_19:
 
   if ([(PersonalizedItem *)self->_place suggestionType]!= 24)
   {
-    v4 = [(QuickActionMenuPresenter *)self directionsAction];
-    v31[0] = v4;
-    v5 = [(QuickActionMenuPresenter *)self callAction];
-    v31[1] = v5;
-    v12 = [(QuickActionMenuPresenter *)self webAction];
-    v31[2] = v12;
-    v16 = [(QuickActionMenuPresenter *)self shareAction];
-    v31[3] = v16;
+    transitLineDirectionsAction = [(QuickActionMenuPresenter *)self directionsAction];
+    v31[0] = transitLineDirectionsAction;
+    transitLineViewOnMapAction = [(QuickActionMenuPresenter *)self callAction];
+    v31[1] = transitLineViewOnMapAction;
+    shareAction = [(QuickActionMenuPresenter *)self webAction];
+    v31[2] = shareAction;
+    shareAction2 = [(QuickActionMenuPresenter *)self shareAction];
+    v31[3] = shareAction2;
     v17 = v31;
     goto LABEL_19;
   }
 
-  v13 = [(QuickActionMenuPresenter *)self shareAction];
-  v33 = v13;
+  shareAction3 = [(QuickActionMenuPresenter *)self shareAction];
+  v33 = shareAction3;
   v7 = [NSArray arrayWithObjects:&v33 count:1];
 
   if (![(QuickActionMenuPresenter *)self _directionsEnabled])
@@ -1436,27 +1436,27 @@ LABEL_19:
     goto LABEL_25;
   }
 
-  v4 = [(QuickActionMenuPresenter *)self directionsAction];
-  v32[0] = v4;
-  v14 = [(QuickActionMenuPresenter *)self shareAction];
-  v32[1] = v14;
+  transitLineDirectionsAction = [(QuickActionMenuPresenter *)self directionsAction];
+  v32[0] = transitLineDirectionsAction;
+  shareAction4 = [(QuickActionMenuPresenter *)self shareAction];
+  v32[1] = shareAction4;
   v15 = [NSArray arrayWithObjects:v32 count:2];
 
   v7 = v15;
 LABEL_24:
 
 LABEL_25:
-  v18 = [(QuickActionMenuPresenter *)self delegate];
-  v19 = [(QuickActionMenuPresenter *)self place];
-  v20 = [v18 shouldQuickActionMenuPresenter:self showDirectionsToPlace:v19];
+  delegate = [(QuickActionMenuPresenter *)self delegate];
+  place = [(QuickActionMenuPresenter *)self place];
+  v20 = [delegate shouldQuickActionMenuPresenter:self showDirectionsToPlace:place];
 
   if (v20)
   {
-    v21 = [(QuickActionMenuPresenter *)self delegate];
+    delegate2 = [(QuickActionMenuPresenter *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v22 = [(QuickActionMenuPresenter *)self delegate];
-      v23 = [v22 shouldShowAddStopForDirectionsInQuickActionMenuPresenter:self];
+      delegate3 = [(QuickActionMenuPresenter *)self delegate];
+      v23 = [delegate3 shouldShowAddStopForDirectionsInQuickActionMenuPresenter:self];
 
       if (v23)
       {
@@ -1478,8 +1478,8 @@ LABEL_25:
 
   else
   {
-    v25 = [(QuickActionMenuPresenter *)self directionsAction];
-    v26 = [(QuickActionMenuPresenter *)self _predicateToRemoveAction:v25];
+    directionsAction = [(QuickActionMenuPresenter *)self directionsAction];
+    v26 = [(QuickActionMenuPresenter *)self _predicateToRemoveAction:directionsAction];
     v27 = [(NSArray *)v7 filteredArrayUsingPredicate:v26];
 
     v7 = v27;
@@ -1498,16 +1498,16 @@ LABEL_25:
   [(UIView *)gestureView addInteraction:contextMenuInteraction];
 }
 
-- (QuickActionMenuPresenter)initWithView:(id)a3
+- (QuickActionMenuPresenter)initWithView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v11.receiver = self;
   v11.super_class = QuickActionMenuPresenter;
   v6 = [(QuickActionMenuPresenter *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_gestureView, a3);
+    objc_storeStrong(&v6->_gestureView, view);
     v7->_enabled = 1;
     v8 = [[UIContextMenuInteraction alloc] initWithDelegate:v7];
     contextMenuInteraction = v7->_contextMenuInteraction;

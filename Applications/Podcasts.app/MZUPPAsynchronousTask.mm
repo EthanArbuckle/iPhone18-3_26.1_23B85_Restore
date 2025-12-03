@@ -1,23 +1,23 @@
 @interface MZUPPAsynchronousTask
-- (MZUPPAsynchronousTask)initWithHandlerQueue:(id)a3 taskTimeout:(double)a4 assertionTimeout:(double)a5 debugDescription:(id)a6 reportMetrics:(BOOL)a7;
+- (MZUPPAsynchronousTask)initWithHandlerQueue:(id)queue taskTimeout:(double)timeout assertionTimeout:(double)assertionTimeout debugDescription:(id)description reportMetrics:(BOOL)metrics;
 - (void)beginTaskOperation;
-- (void)finishTaskOperationWithResult:(id)a3 error:(id)a4;
+- (void)finishTaskOperationWithResult:(id)result error:(id)error;
 @end
 
 @implementation MZUPPAsynchronousTask
 
-- (MZUPPAsynchronousTask)initWithHandlerQueue:(id)a3 taskTimeout:(double)a4 assertionTimeout:(double)a5 debugDescription:(id)a6 reportMetrics:(BOOL)a7
+- (MZUPPAsynchronousTask)initWithHandlerQueue:(id)queue taskTimeout:(double)timeout assertionTimeout:(double)assertionTimeout debugDescription:(id)description reportMetrics:(BOOL)metrics
 {
-  v7 = a7;
+  metricsCopy = metrics;
   v11.receiver = self;
   v11.super_class = MZUPPAsynchronousTask;
-  v8 = [(MZAsynchronousTask *)&v11 initWithHandlerQueue:a3 taskTimeout:a6 assertionTimeout:a4 debugDescription:a5];
+  v8 = [(MZAsynchronousTask *)&v11 initWithHandlerQueue:queue taskTimeout:description assertionTimeout:timeout debugDescription:assertionTimeout];
   if (v8)
   {
     v9 = objc_alloc_init(MZUPPMetrics);
     [(MZUPPAsynchronousTask *)v8 setMetrics:v9];
 
-    [(MZUPPAsynchronousTask *)v8 setReportMetrics:v7];
+    [(MZUPPAsynchronousTask *)v8 setReportMetrics:metricsCopy];
   }
 
   return v8;
@@ -30,47 +30,47 @@
   [(MZAsynchronousTask *)&v6 beginTaskOperation];
   +[NSDate timeIntervalSinceReferenceDate];
   v4 = v3;
-  v5 = [(MZUPPAsynchronousTask *)self metrics];
-  [v5 setSyncTaskStartTime:v4];
+  metrics = [(MZUPPAsynchronousTask *)self metrics];
+  [metrics setSyncTaskStartTime:v4];
 }
 
-- (void)finishTaskOperationWithResult:(id)a3 error:(id)a4
+- (void)finishTaskOperationWithResult:(id)result error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   v23.receiver = self;
   v23.super_class = MZUPPAsynchronousTask;
-  v7 = a3;
-  [(MZAsynchronousTask *)&v23 finishTaskOperationWithResult:v7 error:v6];
-  v8 = [v7 BOOLValue];
+  resultCopy = result;
+  [(MZAsynchronousTask *)&v23 finishTaskOperationWithResult:resultCopy error:errorCopy];
+  bOOLValue = [resultCopy BOOLValue];
 
-  v9 = [(MZUPPAsynchronousTask *)self metrics];
-  [v9 setSuccess:v8];
+  metrics = [(MZUPPAsynchronousTask *)self metrics];
+  [metrics setSuccess:bOOLValue];
 
-  if (v6)
+  if (errorCopy)
   {
-    v10 = [v6 domain];
-    v11 = [(MZUPPAsynchronousTask *)self metrics];
-    [v11 setErrorDomain:v10];
+    domain = [errorCopy domain];
+    metrics2 = [(MZUPPAsynchronousTask *)self metrics];
+    [metrics2 setErrorDomain:domain];
 
-    v12 = [v6 code];
-    v13 = [(MZUPPAsynchronousTask *)self metrics];
-    [v13 setErrorCode:v12];
+    code = [errorCopy code];
+    metrics3 = [(MZUPPAsynchronousTask *)self metrics];
+    [metrics3 setErrorCode:code];
   }
 
   +[NSDate timeIntervalSinceReferenceDate];
   v15 = v14;
-  v16 = [(MZUPPAsynchronousTask *)self metrics];
-  [v16 setSyncTaskEndTime:v15];
+  metrics4 = [(MZUPPAsynchronousTask *)self metrics];
+  [metrics4 setSyncTaskEndTime:v15];
 
-  v17 = [(MZUPPAsynchronousTask *)self metrics];
-  v18 = [v17 metricsDictionary];
+  metrics5 = [(MZUPPAsynchronousTask *)self metrics];
+  metricsDictionary = [metrics5 metricsDictionary];
 
   v19 = _MTLogCategoryUPPSync();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [(MZUPPAsynchronousTask *)self reportMetrics];
+    reportMetrics = [(MZUPPAsynchronousTask *)self reportMetrics];
     v21 = @"not ";
-    if (v20)
+    if (reportMetrics)
     {
       v21 = &stru_1004F3018;
     }
@@ -78,7 +78,7 @@
     *buf = 138412546;
     v25 = v21;
     v26 = 2112;
-    v27 = v18;
+    v27 = metricsDictionary;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Will %@report UPP metrics %@", buf, 0x16u);
   }
 
@@ -86,7 +86,7 @@
   {
     v22 = objc_alloc_init(IMAMSMetricsEvent);
     [v22 setEventType:@"uppsync"];
-    [v22 im_addPropertiesWithDictionary:v18];
+    [v22 im_addPropertiesWithDictionary:metricsDictionary];
     [IMMetrics recordEvent:v22 topic:@"xp_amp_podcasts_log"];
   }
 }

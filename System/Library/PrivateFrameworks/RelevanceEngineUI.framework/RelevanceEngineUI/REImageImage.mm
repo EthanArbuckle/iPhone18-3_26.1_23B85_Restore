@@ -1,52 +1,52 @@
 @interface REImageImage
-- (BOOL)isEqual:(id)a3;
-- (REImageImage)initWithCoder:(id)a3;
-- (REImageImage)initWithImage:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (REImageImage)initWithCoder:(id)coder;
+- (REImageImage)initWithImage:(id)image;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REImageImage
 
-- (REImageImage)initWithImage:(id)a3
+- (REImageImage)initWithImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   v9.receiver = self;
   v9.super_class = REImageImage;
   v6 = [(REImageImage *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_uiImage, a3);
+    objc_storeStrong(&v6->_uiImage, image);
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   uiImage = self->_uiImage;
 
   return [v4 initWithImage:uiImage];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 uiImage];
-    v6 = v5;
-    if (v5 == self->_uiImage)
+    uiImage = [equalCopy uiImage];
+    v6 = uiImage;
+    if (uiImage == self->_uiImage)
     {
       v7 = 1;
     }
 
     else
     {
-      v7 = [(UIImage *)v5 isEqual:?];
+      v7 = [(UIImage *)uiImage isEqual:?];
     }
   }
 
@@ -58,10 +58,10 @@
   return v7;
 }
 
-- (REImageImage)initWithCoder:(id)a3
+- (REImageImage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"encodedImage"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"encodedImage"];
 
   v6 = REDecodeImage(v5);
   v7 = [(REImageImage *)self initWithImage:v6];
@@ -69,12 +69,12 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   uiImage = self->_uiImage;
-  v4 = a3;
+  coderCopy = coder;
   v5 = REEncodeImage(uiImage);
-  [v4 encodeObject:v5 forKey:@"encodedImage"];
+  [coderCopy encodeObject:v5 forKey:@"encodedImage"];
 }
 
 @end

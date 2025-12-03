@@ -1,100 +1,100 @@
 @interface PHMemoryFeature
-+ (id)encodedBlockableFeatures:(id)a3 photoLibrary:(id)a4;
-+ (id)locationMemoryFeatureWithAreaForName:(id)a3;
-+ (id)locationMemoryFeatureWithLocation:(id)a3;
-+ (id)memoryFeatureWithData:(id)a3 photoLibrary:(id)a4;
-+ (id)peopleMemoryFeatureWithPersonLocalIdentifier:(id)a3;
-+ (id)stringForType:(unint64_t)a3;
-+ (id)timeMemoryFeatureWithDate:(id)a3;
-+ (id)timeMemoryFeatureWithDateInterval:(id)a3;
-+ (id)timeMemoryFeatureWithHolidayForName:(id)a3;
-- (BOOL)collidesWithAreaWithName:(id)a3;
-- (BOOL)collidesWithDate:(id)a3;
-- (BOOL)collidesWithDateInterval:(id)a3;
-- (BOOL)collidesWithFeature:(id)a3;
-- (BOOL)collidesWithHolidayWithName:(id)a3;
-- (BOOL)collidesWithLocationAtCoordinates:(CLLocationCoordinate2D)a3;
-- (BOOL)collidesWithPersonWithLocalIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PHMemoryFeature)initWithCoder:(id)a3;
++ (id)encodedBlockableFeatures:(id)features photoLibrary:(id)library;
++ (id)locationMemoryFeatureWithAreaForName:(id)name;
++ (id)locationMemoryFeatureWithLocation:(id)location;
++ (id)memoryFeatureWithData:(id)data photoLibrary:(id)library;
++ (id)peopleMemoryFeatureWithPersonLocalIdentifier:(id)identifier;
++ (id)stringForType:(unint64_t)type;
++ (id)timeMemoryFeatureWithDate:(id)date;
++ (id)timeMemoryFeatureWithDateInterval:(id)interval;
++ (id)timeMemoryFeatureWithHolidayForName:(id)name;
+- (BOOL)collidesWithAreaWithName:(id)name;
+- (BOOL)collidesWithDate:(id)date;
+- (BOOL)collidesWithDateInterval:(id)interval;
+- (BOOL)collidesWithFeature:(id)feature;
+- (BOOL)collidesWithHolidayWithName:(id)name;
+- (BOOL)collidesWithLocationAtCoordinates:(CLLocationCoordinate2D)coordinates;
+- (BOOL)collidesWithPersonWithLocalIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (PHMemoryFeature)initWithCoder:(id)coder;
 - (id)_personLocalIdentifierFromSubtypeSpecificAttribute;
 - (id)areaName;
 - (id)date;
 - (id)dateInterval;
 - (id)description;
-- (id)encodedDataWithPhotoLibrary:(id)a3;
+- (id)encodedDataWithPhotoLibrary:(id)library;
 - (id)holidayName;
 - (id)location;
 - (id)personLocalIdentifier;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PHMemoryFeature
 
-- (BOOL)collidesWithPersonWithLocalIdentifier:(id)a3
+- (BOOL)collidesWithPersonWithLocalIdentifier:(id)identifier
 {
   if (self->_type != 1)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(PHMemoryFeature *)self personLocalIdentifier];
-  v6 = [v4 isEqualToString:v5];
+  identifierCopy = identifier;
+  personLocalIdentifier = [(PHMemoryFeature *)self personLocalIdentifier];
+  v6 = [identifierCopy isEqualToString:personLocalIdentifier];
 
   return v6;
 }
 
-- (BOOL)collidesWithAreaWithName:(id)a3
+- (BOOL)collidesWithAreaWithName:(id)name
 {
   if (self->_type != 0x20000)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(PHMemoryFeature *)self areaName];
-  v6 = [v4 isEqualToString:v5];
+  nameCopy = name;
+  areaName = [(PHMemoryFeature *)self areaName];
+  v6 = [nameCopy isEqualToString:areaName];
 
   return v6;
 }
 
-- (BOOL)collidesWithLocationAtCoordinates:(CLLocationCoordinate2D)a3
+- (BOOL)collidesWithLocationAtCoordinates:(CLLocationCoordinate2D)coordinates
 {
   if (self->_type != 4096)
   {
     return 0;
   }
 
-  v3 = [(PHMemoryFeature *)self location];
-  [v3 coordinate];
+  location = [(PHMemoryFeature *)self location];
+  [location coordinate];
 
   CLLocationCoordinate2DGetDistanceFrom();
   return v4 <= 100.0;
 }
 
-- (BOOL)collidesWithHolidayWithName:(id)a3
+- (BOOL)collidesWithHolidayWithName:(id)name
 {
   if (self->_type != 32)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(PHMemoryFeature *)self holidayName];
-  v6 = [v4 isEqualToString:v5];
+  nameCopy = name;
+  holidayName = [(PHMemoryFeature *)self holidayName];
+  v6 = [nameCopy isEqualToString:holidayName];
 
   return v6;
 }
 
-- (BOOL)collidesWithDateInterval:(id)a3
+- (BOOL)collidesWithDateInterval:(id)interval
 {
-  v4 = a3;
+  intervalCopy = interval;
   type = self->_type;
   if (type == 512)
   {
-    v11 = [(PHMemoryFeature *)self dateInterval];
-    v13 = [v4 intersectsDateInterval:v11];
+    dateInterval = [(PHMemoryFeature *)self dateInterval];
+    v13 = [intervalCopy intersectsDateInterval:dateInterval];
   }
 
   else
@@ -106,28 +106,28 @@
     }
 
     v6 = objc_alloc(MEMORY[0x1E696AB80]);
-    v7 = [v4 startDate];
-    v8 = [v7 dateByAddingTimeInterval:-43200.0];
-    v9 = [v4 endDate];
-    v10 = [v9 dateByAddingTimeInterval:43200.0];
-    v11 = [v6 initWithStartDate:v8 endDate:v10];
+    startDate = [intervalCopy startDate];
+    v8 = [startDate dateByAddingTimeInterval:-43200.0];
+    endDate = [intervalCopy endDate];
+    v10 = [endDate dateByAddingTimeInterval:43200.0];
+    dateInterval = [v6 initWithStartDate:v8 endDate:v10];
 
-    v12 = [(PHMemoryFeature *)self date];
-    v13 = [v11 containsDate:v12];
+    date = [(PHMemoryFeature *)self date];
+    v13 = [dateInterval containsDate:date];
   }
 
 LABEL_7:
   return v13;
 }
 
-- (BOOL)collidesWithDate:(id)a3
+- (BOOL)collidesWithDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   type = self->_type;
   if (type == 512)
   {
-    v6 = [(PHMemoryFeature *)self dateInterval];
-    v8 = [v6 containsDate:v4];
+    dateInterval = [(PHMemoryFeature *)self dateInterval];
+    v8 = [dateInterval containsDate:dateCopy];
   }
 
   else
@@ -138,8 +138,8 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v6 = [(PHMemoryFeature *)self date];
-    [v6 timeIntervalSinceDate:v4];
+    dateInterval = [(PHMemoryFeature *)self date];
+    [dateInterval timeIntervalSinceDate:dateCopy];
     v8 = fabs(v7) <= 43200.0;
   }
 
@@ -147,10 +147,10 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)collidesWithFeature:(id)a3
+- (BOOL)collidesWithFeature:(id)feature
 {
-  v4 = a3;
-  type = v4->_type;
+  featureCopy = feature;
+  type = featureCopy->_type;
   v6 = self->_type;
   if (v6 != type)
   {
@@ -165,7 +165,7 @@ LABEL_7:
     }
   }
 
-  if (![(PHMemoryFeature *)self isEqual:v4])
+  if (![(PHMemoryFeature *)self isEqual:featureCopy])
   {
     v10 = self->_type;
     switch(v10)
@@ -173,8 +173,8 @@ LABEL_7:
       case 0x10uLL:
         if (type == 512)
         {
-          v11 = [(PHMemoryFeature *)self date];
-          v15 = v4;
+          date = [(PHMemoryFeature *)self date];
+          selfCopy = featureCopy;
           goto LABEL_26;
         }
 
@@ -185,9 +185,9 @@ LABEL_7:
 
         break;
       case 0x1000uLL:
-        v11 = [(PHMemoryFeature *)self location];
-        v13 = [(PHMemoryFeature *)v4 location];
-        [v11 distanceFromLocation:v13];
+        date = [(PHMemoryFeature *)self location];
+        location = [(PHMemoryFeature *)featureCopy location];
+        [date distanceFromLocation:location];
         v9 = v14 <= 100.0;
 
 LABEL_28:
@@ -197,8 +197,8 @@ LABEL_28:
         {
           if (type == 512)
           {
-            v11 = [(PHMemoryFeature *)v4 dateInterval];
-            v12 = [(PHMemoryFeature *)self collidesWithDateInterval:v11];
+            date = [(PHMemoryFeature *)featureCopy dateInterval];
+            v12 = [(PHMemoryFeature *)self collidesWithDateInterval:date];
 LABEL_27:
             v9 = v12;
             goto LABEL_28;
@@ -214,10 +214,10 @@ LABEL_24:
         goto LABEL_24;
     }
 
-    v11 = [(PHMemoryFeature *)v4 date];
-    v15 = self;
+    date = [(PHMemoryFeature *)featureCopy date];
+    selfCopy = self;
 LABEL_26:
-    v12 = [(PHMemoryFeature *)v15 collidesWithDate:v11];
+    v12 = [(PHMemoryFeature *)selfCopy collidesWithDate:date];
     goto LABEL_27;
   }
 
@@ -227,10 +227,10 @@ LABEL_29:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -240,7 +240,7 @@ LABEL_29:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       type = self->_type;
       if (type == v5->_type)
       {
@@ -292,36 +292,36 @@ LABEL_14:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_type];
-  [v7 encodeObject:v4 forKey:@"type"];
+  [coderCopy encodeObject:v4 forKey:@"type"];
 
-  [v7 encodeObject:self->_subtypeSpecificAttribute forKey:@"attribute"];
+  [coderCopy encodeObject:self->_subtypeSpecificAttribute forKey:@"attribute"];
   if (self->_type == 1)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v7 photoLibrary];
-      if (v5)
+      photoLibrary = [coderCopy photoLibrary];
+      if (photoLibrary)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v6 = [PHMemoryFeature personUniversalIdentifierForPersonLocalIdentifier:self->_subtypeSpecificAttribute photoLibrary:v5];
-          [v7 encodeObject:v6 forKey:@"personUniversalIdentifier"];
+          v6 = [PHMemoryFeature personUniversalIdentifierForPersonLocalIdentifier:self->_subtypeSpecificAttribute photoLibrary:photoLibrary];
+          [coderCopy encodeObject:v6 forKey:@"personUniversalIdentifier"];
         }
       }
     }
   }
 }
 
-- (PHMemoryFeature)initWithCoder:(id)a3
+- (PHMemoryFeature)initWithCoder:(id)coder
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = PHMemoryFeature;
   v5 = [(PHMemoryFeature *)&v25 init];
@@ -330,7 +330,7 @@ LABEL_14:
     goto LABEL_27;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
   v5->_type = [v6 unsignedIntegerValue];
 
   type = v5->_type;
@@ -369,7 +369,7 @@ LABEL_31:
     }
 
 LABEL_25:
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"attribute"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"attribute"];
     subtypeSpecificAttribute = v5->_subtypeSpecificAttribute;
     v5->_subtypeSpecificAttribute = v20;
 
@@ -379,13 +379,13 @@ LABEL_25:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"personUniversalIdentifier"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"personUniversalIdentifier"];
     if (v11)
     {
-      v12 = [v4 photoLibrary];
-      if (v12)
+      photoLibrary = [coderCopy photoLibrary];
+      if (photoLibrary)
       {
-        v13 = [PHMemoryFeature personLocalIdentifierForPersonUniversalIdentifier:v11 photoLibrary:v12];
+        v13 = [PHMemoryFeature personLocalIdentifierForPersonUniversalIdentifier:v11 photoLibrary:photoLibrary];
         if (v13)
         {
           objc_storeStrong(&v5->_subtypeSpecificAttribute, v13);
@@ -396,14 +396,14 @@ LABEL_25:
 
   if (!v5->_subtypeSpecificAttribute)
   {
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"attribute"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"attribute"];
     v15 = v5->_subtypeSpecificAttribute;
     v5->_subtypeSpecificAttribute = v14;
   }
 
-  v16 = [(PHMemoryFeature *)v5 _personLocalIdentifierFromSubtypeSpecificAttribute];
+  _personLocalIdentifierFromSubtypeSpecificAttribute = [(PHMemoryFeature *)v5 _personLocalIdentifierFromSubtypeSpecificAttribute];
 
-  if (!v16)
+  if (!_personLocalIdentifierFromSubtypeSpecificAttribute)
   {
     v8 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
@@ -699,38 +699,38 @@ LABEL_8:
   return [(PHMemoryFeature *)self _personLocalIdentifierFromSubtypeSpecificAttribute];
 }
 
-- (id)encodedDataWithPhotoLibrary:(id)a3
+- (id)encodedDataWithPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v5 = [[PHMemoryFeatureEncoder alloc] initRequiringSecureCoding:1];
-  [v5 setPhotoLibrary:v4];
+  [v5 setPhotoLibrary:libraryCopy];
 
   [v5 encodeObject:self forKey:*MEMORY[0x1E696A508]];
-  v6 = [v5 encodedData];
+  encodedData = [v5 encodedData];
 
-  return v6;
+  return encodedData;
 }
 
-+ (id)stringForType:(unint64_t)a3
++ (id)stringForType:(unint64_t)type
 {
-  if (!a3)
+  if (!type)
   {
     v4 = @"None";
     goto LABEL_119;
   }
 
-  v3 = a3;
-  if (a3 == -1)
+  typeCopy = type;
+  if (type == -1)
   {
     v4 = @"Any";
     goto LABEL_119;
   }
 
-  if ((~a3 & 3) == 0)
+  if ((~type & 3) == 0)
   {
     v4 = @"People";
 LABEL_7:
-    if ((~v3 & 0x3F0) == 0)
+    if ((~typeCopy & 0x3F0) == 0)
     {
       if (v4)
       {
@@ -745,13 +745,13 @@ LABEL_62:
       goto LABEL_13;
     }
 
-    if ((v3 & 0x10) == 0)
+    if ((typeCopy & 0x10) == 0)
     {
 LABEL_17:
-      if ((v3 & 0x200) == 0)
+      if ((typeCopy & 0x200) == 0)
       {
 LABEL_46:
-        if ((v3 & 0x20) == 0)
+        if ((typeCopy & 0x20) == 0)
         {
           goto LABEL_49;
         }
@@ -762,10 +762,10 @@ LABEL_46:
 
           v4 = v8;
 LABEL_49:
-          if ((v3 & 0x40) == 0)
+          if ((typeCopy & 0x40) == 0)
           {
 LABEL_54:
-            if ((v3 & 0x80) == 0)
+            if ((typeCopy & 0x80) == 0)
             {
               goto LABEL_57;
             }
@@ -776,7 +776,7 @@ LABEL_54:
 
               v4 = v10;
 LABEL_57:
-              if ((v3 & 0x100) == 0)
+              if ((typeCopy & 0x100) == 0)
               {
                 goto LABEL_63;
               }
@@ -795,7 +795,7 @@ LABEL_61:
 
 LABEL_60:
             v4 = @"Season";
-            if ((v3 & 0x100) == 0)
+            if ((typeCopy & 0x100) == 0)
             {
               goto LABEL_63;
             }
@@ -819,7 +819,7 @@ LABEL_53:
 
 LABEL_52:
         v4 = @"Holiday";
-        if ((v3 & 0x40) == 0)
+        if ((typeCopy & 0x40) == 0)
         {
           goto LABEL_54;
         }
@@ -851,7 +851,7 @@ LABEL_45:
 
 LABEL_44:
     v4 = @"Date";
-    if ((v3 & 0x200) == 0)
+    if ((typeCopy & 0x200) == 0)
     {
       goto LABEL_46;
     }
@@ -859,9 +859,9 @@ LABEL_44:
     goto LABEL_45;
   }
 
-  if (a3)
+  if (type)
   {
-    if ((a3 & 2) != 0)
+    if ((type & 2) != 0)
     {
       v4 = [@"Person" stringByAppendingString:@"+SocialGroup"];
     }
@@ -874,18 +874,18 @@ LABEL_44:
     goto LABEL_7;
   }
 
-  if ((a3 & 2) != 0)
+  if ((type & 2) != 0)
   {
     v4 = @"SocialGroup";
     goto LABEL_7;
   }
 
-  if ((~a3 & 0x3F0) == 0)
+  if ((~type & 0x3F0) == 0)
   {
 LABEL_13:
     v4 = @"Time";
 LABEL_63:
-    if ((~v3 & 0x7F000) == 0)
+    if ((~typeCopy & 0x7F000) == 0)
     {
       if (v4)
       {
@@ -900,13 +900,13 @@ LABEL_94:
       goto LABEL_72;
     }
 
-    if ((v3 & 0x1000) == 0)
+    if ((typeCopy & 0x1000) == 0)
     {
 LABEL_69:
-      if ((v3 & 0x2000) == 0)
+      if ((typeCopy & 0x2000) == 0)
       {
 LABEL_75:
-        if ((v3 & 0x4000) == 0)
+        if ((typeCopy & 0x4000) == 0)
         {
           goto LABEL_78;
         }
@@ -917,10 +917,10 @@ LABEL_75:
 
           v4 = v15;
 LABEL_78:
-          if ((v3 & 0x8000) == 0)
+          if ((typeCopy & 0x8000) == 0)
           {
 LABEL_83:
-            if ((v3 & 0x10000) == 0)
+            if ((typeCopy & 0x10000) == 0)
             {
               goto LABEL_86;
             }
@@ -931,10 +931,10 @@ LABEL_83:
 
               v4 = v17;
 LABEL_86:
-              if ((v3 & 0x40000) == 0)
+              if ((typeCopy & 0x40000) == 0)
               {
 LABEL_91:
-                if ((v3 & 0x20000) == 0)
+                if ((typeCopy & 0x20000) == 0)
                 {
                   goto LABEL_95;
                 }
@@ -966,7 +966,7 @@ LABEL_90:
 
 LABEL_89:
             v4 = @"Country";
-            if ((v3 & 0x40000) == 0)
+            if ((typeCopy & 0x40000) == 0)
             {
               goto LABEL_91;
             }
@@ -990,7 +990,7 @@ LABEL_82:
 
 LABEL_81:
         v4 = @"County";
-        if ((v3 & 0x8000) == 0)
+        if ((typeCopy & 0x8000) == 0)
         {
           goto LABEL_83;
         }
@@ -1022,7 +1022,7 @@ LABEL_74:
 
 LABEL_73:
     v4 = @"Address";
-    if ((v3 & 0x2000) == 0)
+    if ((typeCopy & 0x2000) == 0)
     {
       goto LABEL_75;
     }
@@ -1030,42 +1030,42 @@ LABEL_73:
     goto LABEL_74;
   }
 
-  if ((a3 & 0x10) != 0)
+  if ((type & 0x10) != 0)
   {
     goto LABEL_44;
   }
 
-  if ((a3 & 0x200) != 0)
+  if ((type & 0x200) != 0)
   {
     goto LABEL_19;
   }
 
-  if ((a3 & 0x20) != 0)
+  if ((type & 0x20) != 0)
   {
     goto LABEL_52;
   }
 
-  if ((a3 & 0x40) != 0)
+  if ((type & 0x40) != 0)
   {
     goto LABEL_51;
   }
 
-  if ((a3 & 0x80) != 0)
+  if ((type & 0x80) != 0)
   {
     goto LABEL_60;
   }
 
-  if ((a3 & 0x100) != 0)
+  if ((type & 0x100) != 0)
   {
     goto LABEL_59;
   }
 
-  if ((~a3 & 0x7F000) == 0)
+  if ((~type & 0x7F000) == 0)
   {
 LABEL_72:
     v4 = @"Location";
 LABEL_95:
-    if ((~v3 & 0x3000000) == 0)
+    if ((~typeCopy & 0x3000000) == 0)
     {
       if (v4)
       {
@@ -1080,16 +1080,16 @@ LABEL_108:
       goto LABEL_104;
     }
 
-    if ((v3 & 0x1000000) == 0)
+    if ((typeCopy & 0x1000000) == 0)
     {
 LABEL_101:
-      if ((v3 & 0x2000000) == 0)
+      if ((typeCopy & 0x2000000) == 0)
       {
 LABEL_109:
-        if ((v3 & 0x10000000) == 0)
+        if ((typeCopy & 0x10000000) == 0)
         {
 LABEL_112:
-          if ((v3 & 0x40000000) == 0)
+          if ((typeCopy & 0x40000000) == 0)
           {
             goto LABEL_117;
           }
@@ -1122,7 +1122,7 @@ LABEL_117:
 
 LABEL_115:
         v4 = @"Scene";
-        if ((v3 & 0x40000000) == 0)
+        if ((typeCopy & 0x40000000) == 0)
         {
           goto LABEL_119;
         }
@@ -1152,7 +1152,7 @@ LABEL_107:
 
 LABEL_106:
     v4 = @"POI";
-    if ((v3 & 0x2000000) == 0)
+    if ((typeCopy & 0x2000000) == 0)
     {
       goto LABEL_109;
     }
@@ -1160,64 +1160,64 @@ LABEL_106:
     goto LABEL_107;
   }
 
-  if ((a3 & 0x1000) != 0)
+  if ((type & 0x1000) != 0)
   {
     goto LABEL_73;
   }
 
-  if ((a3 & 0x2000) != 0)
+  if ((type & 0x2000) != 0)
   {
     goto LABEL_71;
   }
 
-  if ((a3 & 0x4000) != 0)
+  if ((type & 0x4000) != 0)
   {
     goto LABEL_81;
   }
 
-  if ((a3 & 0x8000) != 0)
+  if ((type & 0x8000) != 0)
   {
     goto LABEL_80;
   }
 
-  if ((a3 & 0x10000) != 0)
+  if ((type & 0x10000) != 0)
   {
     goto LABEL_89;
   }
 
-  if ((a3 & 0x40000) != 0)
+  if ((type & 0x40000) != 0)
   {
     goto LABEL_88;
   }
 
-  if ((a3 & 0x20000) != 0)
+  if ((type & 0x20000) != 0)
   {
     goto LABEL_105;
   }
 
-  if ((~a3 & 0x3000000) == 0)
+  if ((~type & 0x3000000) == 0)
   {
 LABEL_104:
     v4 = @"Place";
     goto LABEL_109;
   }
 
-  if ((a3 & 0x1000000) != 0)
+  if ((type & 0x1000000) != 0)
   {
     goto LABEL_106;
   }
 
-  if ((a3 & 0x2000000) != 0)
+  if ((type & 0x2000000) != 0)
   {
     goto LABEL_103;
   }
 
-  if ((a3 & 0x10000000) != 0)
+  if ((type & 0x10000000) != 0)
   {
     goto LABEL_115;
   }
 
-  if ((a3 & 0x40000000) != 0)
+  if ((type & 0x40000000) != 0)
   {
 LABEL_114:
     v4 = @"Meaning";
@@ -1231,17 +1231,17 @@ LABEL_119:
   return v4;
 }
 
-+ (id)encodedBlockableFeatures:(id)a3 photoLibrary:(id)a4
++ (id)encodedBlockableFeatures:(id)features photoLibrary:(id)library
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  featuresCopy = features;
+  libraryCopy = library;
+  v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(featuresCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v5;
+  v8 = featuresCopy;
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
@@ -1256,7 +1256,7 @@ LABEL_119:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * i) encodedDataWithPhotoLibrary:{v6, v15}];
+        v13 = [*(*(&v15 + 1) + 8 * i) encodedDataWithPhotoLibrary:{libraryCopy, v15}];
         [v7 addObject:v13];
       }
 
@@ -1269,18 +1269,18 @@ LABEL_119:
   return v7;
 }
 
-+ (id)memoryFeatureWithData:(id)a3 photoLibrary:(id)a4
++ (id)memoryFeatureWithData:(id)data photoLibrary:(id)library
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
+  libraryCopy = library;
+  dataCopy = data;
   v11 = 0;
-  v7 = [[PHMemoryFeatureDecoder alloc] initForReadingFromData:v6 error:&v11];
+  v7 = [[PHMemoryFeatureDecoder alloc] initForReadingFromData:dataCopy error:&v11];
 
   v8 = v11;
   if (v7)
   {
-    [v7 setPhotoLibrary:v5];
+    [v7 setPhotoLibrary:libraryCopy];
     v9 = [v7 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x1E696A508]];
   }
 
@@ -1299,15 +1299,15 @@ LABEL_119:
   return v9;
 }
 
-+ (id)locationMemoryFeatureWithAreaForName:(id)a3
++ (id)locationMemoryFeatureWithAreaForName:(id)name
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length])
+  nameCopy = name;
+  if ([nameCopy length])
   {
     v5 = objc_alloc_init(PHMemoryFeature);
     v5->_type = 0x20000;
-    objc_storeStrong(&v5->_subtypeSpecificAttribute, a3);
+    objc_storeStrong(&v5->_subtypeSpecificAttribute, name);
   }
 
   else
@@ -1316,7 +1316,7 @@ LABEL_119:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
       v8 = 138543362;
-      v9 = v4;
+      v9 = nameCopy;
       _os_log_impl(&dword_19C86F000, v6, OS_LOG_TYPE_FAULT, "+[PHMemoryFeature locationMemoryFeatureWithAreaForName:] Failed to generate feature with invalid areaName %{public}@.", &v8, 0xCu);
     }
 
@@ -1326,16 +1326,16 @@ LABEL_119:
   return v5;
 }
 
-+ (id)locationMemoryFeatureWithLocation:(id)a3
++ (id)locationMemoryFeatureWithLocation:(id)location
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 coordinate], CLLocationCoordinate2DIsValid(v13)))
+  locationCopy = location;
+  v5 = locationCopy;
+  if (locationCopy && ([locationCopy coordinate], CLLocationCoordinate2DIsValid(v13)))
   {
     v6 = objc_alloc_init(PHMemoryFeature);
     v6->_type = 4096;
-    objc_storeStrong(&v6->_subtypeSpecificAttribute, a3);
+    objc_storeStrong(&v6->_subtypeSpecificAttribute, location);
   }
 
   else
@@ -1354,15 +1354,15 @@ LABEL_119:
   return v6;
 }
 
-+ (id)timeMemoryFeatureWithHolidayForName:(id)a3
++ (id)timeMemoryFeatureWithHolidayForName:(id)name
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length])
+  nameCopy = name;
+  if ([nameCopy length])
   {
     v5 = objc_alloc_init(PHMemoryFeature);
     v5->_type = 32;
-    objc_storeStrong(&v5->_subtypeSpecificAttribute, a3);
+    objc_storeStrong(&v5->_subtypeSpecificAttribute, name);
   }
 
   else
@@ -1371,7 +1371,7 @@ LABEL_119:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
       v8 = 138543362;
-      v9 = v4;
+      v9 = nameCopy;
       _os_log_impl(&dword_19C86F000, v6, OS_LOG_TYPE_FAULT, "+[PHMemoryFeature timeMemoryFeatureWithHolidayForName:] Failed to generate feature with invalid holidayName %{public}@.", &v8, 0xCu);
     }
 
@@ -1381,14 +1381,14 @@ LABEL_119:
   return v5;
 }
 
-+ (id)timeMemoryFeatureWithDateInterval:(id)a3
++ (id)timeMemoryFeatureWithDateInterval:(id)interval
 {
-  v4 = a3;
-  if (v4)
+  intervalCopy = interval;
+  if (intervalCopy)
   {
     v5 = objc_alloc_init(PHMemoryFeature);
     v5->_type = 512;
-    objc_storeStrong(&v5->_subtypeSpecificAttribute, a3);
+    objc_storeStrong(&v5->_subtypeSpecificAttribute, interval);
   }
 
   else
@@ -1406,14 +1406,14 @@ LABEL_119:
   return v5;
 }
 
-+ (id)timeMemoryFeatureWithDate:(id)a3
++ (id)timeMemoryFeatureWithDate:(id)date
 {
-  v4 = a3;
-  if (v4)
+  dateCopy = date;
+  if (dateCopy)
   {
     v5 = objc_alloc_init(PHMemoryFeature);
     v5->_type = 16;
-    objc_storeStrong(&v5->_subtypeSpecificAttribute, a3);
+    objc_storeStrong(&v5->_subtypeSpecificAttribute, date);
   }
 
   else
@@ -1431,15 +1431,15 @@ LABEL_119:
   return v5;
 }
 
-+ (id)peopleMemoryFeatureWithPersonLocalIdentifier:(id)a3
++ (id)peopleMemoryFeatureWithPersonLocalIdentifier:(id)identifier
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
     v5 = objc_alloc_init(PHMemoryFeature);
     v5->_type = 1;
-    objc_storeStrong(&v5->_subtypeSpecificAttribute, a3);
+    objc_storeStrong(&v5->_subtypeSpecificAttribute, identifier);
   }
 
   else
@@ -1448,7 +1448,7 @@ LABEL_119:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
       v8 = 138543362;
-      v9 = v4;
+      v9 = identifierCopy;
       _os_log_impl(&dword_19C86F000, v6, OS_LOG_TYPE_FAULT, "+[PHMemoryFeature peopleMemoryFeatureWithPersonLocalIdentifier:] Failed to generate feature with invalid personLocalIdentifier %{public}@.", &v8, 0xCu);
     }
 

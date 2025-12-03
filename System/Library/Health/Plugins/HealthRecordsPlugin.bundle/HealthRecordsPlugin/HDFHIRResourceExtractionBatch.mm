@@ -1,6 +1,6 @@
 @interface HDFHIRResourceExtractionBatch
 - (HDFHIRResourceExtractionBatch)init;
-- (HDFHIRResourceExtractionBatch)initWithDocument:(id)a3 rulesVersion:(id)a4 highestRowID:(id)a5;
+- (HDFHIRResourceExtractionBatch)initWithDocument:(id)document rulesVersion:(id)version highestRowID:(id)d;
 @end
 
 @implementation HDFHIRResourceExtractionBatch
@@ -13,14 +13,14 @@
   return 0;
 }
 
-- (HDFHIRResourceExtractionBatch)initWithDocument:(id)a3 rulesVersion:(id)a4 highestRowID:(id)a5
+- (HDFHIRResourceExtractionBatch)initWithDocument:(id)document rulesVersion:(id)version highestRowID:(id)d
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  documentCopy = document;
+  versionCopy = version;
+  dCopy = d;
+  if (documentCopy)
   {
-    if (v11)
+    if (versionCopy)
     {
       goto LABEL_3;
     }
@@ -29,7 +29,7 @@
   else
   {
     sub_9E548(a2, self);
-    if (v11)
+    if (versionCopy)
     {
       goto LABEL_3;
     }
@@ -43,12 +43,12 @@ LABEL_3:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_document, a3);
-    v15 = [v11 copy];
+    objc_storeStrong(&v13->_document, document);
+    v15 = [versionCopy copy];
     rulesVersion = v14->_rulesVersion;
     v14->_rulesVersion = v15;
 
-    v17 = [v12 copy];
+    v17 = [dCopy copy];
     highestRowID = v14->_highestRowID;
     v14->_highestRowID = v17;
   }

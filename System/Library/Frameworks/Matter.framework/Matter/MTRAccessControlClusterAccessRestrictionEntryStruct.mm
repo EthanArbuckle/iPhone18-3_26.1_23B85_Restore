@@ -1,6 +1,6 @@
 @interface MTRAccessControlClusterAccessRestrictionEntryStruct
 - (MTRAccessControlClusterAccessRestrictionEntryStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -20,9 +20,9 @@
     cluster = v3->_cluster;
     v3->_cluster = &unk_284C3E588;
 
-    v6 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     restrictions = v3->_restrictions;
-    v3->_restrictions = v6;
+    v3->_restrictions = array;
 
     fabricIndex = v3->_fabricIndex;
     v3->_fabricIndex = &unk_284C3E588;
@@ -31,20 +31,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRAccessControlClusterAccessRestrictionEntryStruct);
-  v5 = [(MTRAccessControlClusterAccessRestrictionEntryStruct *)self endpoint];
-  [(MTRAccessControlClusterAccessRestrictionEntryStruct *)v4 setEndpoint:v5];
+  endpoint = [(MTRAccessControlClusterAccessRestrictionEntryStruct *)self endpoint];
+  [(MTRAccessControlClusterAccessRestrictionEntryStruct *)v4 setEndpoint:endpoint];
 
-  v6 = [(MTRAccessControlClusterAccessRestrictionEntryStruct *)self cluster];
-  [(MTRAccessControlClusterAccessRestrictionEntryStruct *)v4 setCluster:v6];
+  cluster = [(MTRAccessControlClusterAccessRestrictionEntryStruct *)self cluster];
+  [(MTRAccessControlClusterAccessRestrictionEntryStruct *)v4 setCluster:cluster];
 
-  v7 = [(MTRAccessControlClusterAccessRestrictionEntryStruct *)self restrictions];
-  [(MTRAccessControlClusterAccessRestrictionEntryStruct *)v4 setRestrictions:v7];
+  restrictions = [(MTRAccessControlClusterAccessRestrictionEntryStruct *)self restrictions];
+  [(MTRAccessControlClusterAccessRestrictionEntryStruct *)v4 setRestrictions:restrictions];
 
-  v8 = [(MTRAccessControlClusterAccessRestrictionEntryStruct *)self fabricIndex];
-  [(MTRAccessControlClusterAccessRestrictionEntryStruct *)v4 setFabricIndex:v8];
+  fabricIndex = [(MTRAccessControlClusterAccessRestrictionEntryStruct *)self fabricIndex];
+  [(MTRAccessControlClusterAccessRestrictionEntryStruct *)v4 setFabricIndex:fabricIndex];
 
   return v4;
 }

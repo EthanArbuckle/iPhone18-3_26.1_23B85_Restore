@@ -1,50 +1,50 @@
 @interface HUROARUpgradeView
 - (BOOL)_shouldShowMainButton;
-- (HUROARUpgradeView)initWithUpgradeViewReason:(unint64_t)a3 home:(id)a4;
+- (HUROARUpgradeView)initWithUpgradeViewReason:(unint64_t)reason home:(id)home;
 - (HUROARUpgradeViewDelegate)delegate;
 - (id)_mainButtonAction;
 - (id)_mainButtonString;
 - (id)_subtitleString;
 - (id)_supplementaryButtonAction;
 - (id)_titleString;
-- (void)homeKitDispatcher:(id)a3 manager:(id)a4 didChangeHome:(id)a5;
+- (void)homeKitDispatcher:(id)dispatcher manager:(id)manager didChangeHome:(id)home;
 - (void)layoutSubviews;
 - (void)updateScrollViewContentSize;
 @end
 
 @implementation HUROARUpgradeView
 
-- (HUROARUpgradeView)initWithUpgradeViewReason:(unint64_t)a3 home:(id)a4
+- (HUROARUpgradeView)initWithUpgradeViewReason:(unint64_t)reason home:(id)home
 {
   v64 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  homeCopy = home;
   v55.receiver = self;
   v55.super_class = HUROARUpgradeView;
   v8 = [(HUROARUpgradeView *)&v55 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_home, a4);
-    v10 = [MEMORY[0x277D146E8] sharedDispatcher];
-    [v10 addHomeManagerObserver:v9];
+    objc_storeStrong(&v8->_home, home);
+    mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+    [mEMORY[0x277D146E8] addHomeManagerObserver:v9];
 
     v11 = HFLogForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v7 uniqueIdentifier];
+      uniqueIdentifier = [homeCopy uniqueIdentifier];
       v13 = HF_HomeAccessNotAllowedReasonCodeString();
       *buf = 138413058;
-      v57 = v7;
+      v57 = homeCopy;
       v58 = 2114;
-      v59 = v12;
+      v59 = uniqueIdentifier;
       v60 = 2048;
-      v61 = a3;
+      reasonCopy = reason;
       v62 = 2114;
       v63 = v13;
       _os_log_impl(&dword_20CEB6000, v11, OS_LOG_TYPE_DEFAULT, "<HUROARUpgradeView:initWithUpgradeViewReason> home = %@ (uniqueIdentifier:%{public}@) | upgradeViewReason = %lu (%{public}@)", buf, 0x2Au);
     }
 
-    v9->_upgradeViewReason = a3;
+    v9->_upgradeViewReason = reason;
     v14 = objc_opt_new();
     scrollView = v9->_scrollView;
     v9->_scrollView = v14;
@@ -53,51 +53,51 @@
     [(UIScrollView *)v9->_scrollView _setHiddenPocketEdges:1];
     [(HUROARUpgradeView *)v9 addSubview:v9->_scrollView];
     v16 = 0x277D75000uLL;
-    if (a3 == 2)
+    if (reason == 2)
     {
-      v17 = [MEMORY[0x277CE1CB8] _typeOfCurrentDevice];
-      v53 = [v17 identifier];
+      _typeOfCurrentDevice = [MEMORY[0x277CE1CB8] _typeOfCurrentDevice];
+      identifier = [_typeOfCurrentDevice identifier];
       v54 = 0;
-      v18 = [MEMORY[0x277D1B1D8] symbolForTypeIdentifier:v53 error:&v54];
+      v18 = [MEMORY[0x277D1B1D8] symbolForTypeIdentifier:identifier error:&v54];
       v19 = objc_alloc_init(MEMORY[0x277D1B170]);
       [v19 setSymbolSize:3];
       v20 = [v18 imageForDescriptor:v19];
       [MEMORY[0x277D755B8] imageWithCGImage:{objc_msgSend(v20, "CGImage")}];
-      v22 = v21 = v7;
-      v23 = [MEMORY[0x277D75348] systemWhiteColor];
-      v24 = [v22 imageWithTintColor:v23];
+      v22 = v21 = homeCopy;
+      systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+      v24 = [v22 imageWithTintColor:systemWhiteColor];
 
       v16 = 0x277D75000;
-      v7 = v21;
+      homeCopy = v21;
     }
 
     else
     {
-      v17 = [MEMORY[0x277D755D0] configurationWithPointSize:4 weight:72.0];
-      v24 = [MEMORY[0x277D755B8] systemImageNamed:@"homekit" withConfiguration:v17];
+      _typeOfCurrentDevice = [MEMORY[0x277D755D0] configurationWithPointSize:4 weight:72.0];
+      v24 = [MEMORY[0x277D755B8] systemImageNamed:@"homekit" withConfiguration:_typeOfCurrentDevice];
     }
 
     v25 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v24];
     deviceImageView = v9->_deviceImageView;
     v9->_deviceImageView = v25;
 
-    v27 = [*(v16 + 840) systemWhiteColor];
-    [(UIImageView *)v9->_deviceImageView setTintColor:v27];
+    systemWhiteColor2 = [*(v16 + 840) systemWhiteColor];
+    [(UIImageView *)v9->_deviceImageView setTintColor:systemWhiteColor2];
 
     [(UIScrollView *)v9->_scrollView addSubview:v9->_deviceImageView];
     v28 = objc_alloc_init(MEMORY[0x277D756B8]);
     title = v9->_title;
     v9->_title = v28;
 
-    v30 = [(HUROARUpgradeView *)v9 _titleString];
-    [(UILabel *)v9->_title setText:v30];
+    _titleString = [(HUROARUpgradeView *)v9 _titleString];
+    [(UILabel *)v9->_title setText:_titleString];
 
     [(UILabel *)v9->_title setTextAlignment:1];
     v31 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76A08]];
     [(UILabel *)v9->_title setFont:v31];
 
-    v32 = [*(v16 + 840) systemWhiteColor];
-    [(UILabel *)v9->_title setTextColor:v32];
+    systemWhiteColor3 = [*(v16 + 840) systemWhiteColor];
+    [(UILabel *)v9->_title setTextColor:systemWhiteColor3];
 
     [(UILabel *)v9->_title setNumberOfLines:0];
     [(UILabel *)v9->_title setAdjustsFontForContentSizeCategory:1];
@@ -107,34 +107,34 @@
     subtitle = v9->_subtitle;
     v9->_subtitle = v33;
 
-    v35 = [(HUROARUpgradeView *)v9 _subtitleString];
-    [(UILabel *)v9->_subtitle setText:v35];
+    _subtitleString = [(HUROARUpgradeView *)v9 _subtitleString];
+    [(UILabel *)v9->_subtitle setText:_subtitleString];
 
     [(UILabel *)v9->_subtitle setTextAlignment:1];
     v36 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
     [(UILabel *)v9->_subtitle setFont:v36];
 
     [(UILabel *)v9->_subtitle setNumberOfLines:0];
-    v37 = [*(v16 + 840) systemWhiteColor];
-    [(UILabel *)v9->_subtitle setTextColor:v37];
+    systemWhiteColor4 = [*(v16 + 840) systemWhiteColor];
+    [(UILabel *)v9->_subtitle setTextColor:systemWhiteColor4];
 
     [(UILabel *)v9->_subtitle setAdjustsFontForContentSizeCategory:1];
     [(UILabel *)v9->_subtitle sizeToFit];
     [(UIScrollView *)v9->_scrollView addSubview:v9->_subtitle];
-    v38 = [MEMORY[0x277D75230] filledButtonConfiguration];
-    v39 = [(HUROARUpgradeView *)v9 _mainButtonString];
-    [v38 setTitle:v39];
+    filledButtonConfiguration = [MEMORY[0x277D75230] filledButtonConfiguration];
+    _mainButtonString = [(HUROARUpgradeView *)v9 _mainButtonString];
+    [filledButtonConfiguration setTitle:_mainButtonString];
 
-    [v38 setButtonSize:3];
-    [v38 setCornerStyle:3];
-    v40 = [*(v16 + 840) systemBlackColor];
-    [v38 setBaseForegroundColor:v40];
+    [filledButtonConfiguration setButtonSize:3];
+    [filledButtonConfiguration setCornerStyle:3];
+    systemBlackColor = [*(v16 + 840) systemBlackColor];
+    [filledButtonConfiguration setBaseForegroundColor:systemBlackColor];
 
-    v41 = [*(v16 + 840) systemWhiteColor];
-    [v38 setBaseBackgroundColor:v41];
+    systemWhiteColor5 = [*(v16 + 840) systemWhiteColor];
+    [filledButtonConfiguration setBaseBackgroundColor:systemWhiteColor5];
 
-    v42 = [(HUROARUpgradeView *)v9 _mainButtonAction];
-    v43 = [MEMORY[0x277D75220] buttonWithConfiguration:v38 primaryAction:v42];
+    _mainButtonAction = [(HUROARUpgradeView *)v9 _mainButtonAction];
+    v43 = [MEMORY[0x277D75220] buttonWithConfiguration:filledButtonConfiguration primaryAction:_mainButtonAction];
     button = v9->_button;
     v9->_button = v43;
 
@@ -142,19 +142,19 @@
     [(UIButton *)v9->_button setHidden:1];
     if ([(HUROARUpgradeView *)v9 _shouldShowSupplementaryButton])
     {
-      v45 = [MEMORY[0x277D75230] filledButtonConfiguration];
+      filledButtonConfiguration2 = [MEMORY[0x277D75230] filledButtonConfiguration];
       v46 = _HULocalizedStringWithDefaultValue(@"HULearnMoreTitle", @"HULearnMoreTitle", 1);
-      [v45 setTitle:v46];
+      [filledButtonConfiguration2 setTitle:v46];
 
-      [v45 setButtonSize:3];
-      v47 = [*(v16 + 840) systemWhiteColor];
-      [v45 setBaseForegroundColor:v47];
+      [filledButtonConfiguration2 setButtonSize:3];
+      systemWhiteColor6 = [*(v16 + 840) systemWhiteColor];
+      [filledButtonConfiguration2 setBaseForegroundColor:systemWhiteColor6];
 
-      v48 = [*(v16 + 840) clearColor];
-      [v45 setBaseBackgroundColor:v48];
+      clearColor = [*(v16 + 840) clearColor];
+      [filledButtonConfiguration2 setBaseBackgroundColor:clearColor];
 
-      v49 = [(HUROARUpgradeView *)v9 _supplementaryButtonAction];
-      v50 = [MEMORY[0x277D75220] buttonWithConfiguration:v45 primaryAction:v49];
+      _supplementaryButtonAction = [(HUROARUpgradeView *)v9 _supplementaryButtonAction];
+      v50 = [MEMORY[0x277D75220] buttonWithConfiguration:filledButtonConfiguration2 primaryAction:_supplementaryButtonAction];
       supplementaryButton = v9->_supplementaryButton;
       v9->_supplementaryButton = v50;
 
@@ -171,221 +171,221 @@
   v132.receiver = self;
   v132.super_class = HUROARUpgradeView;
   [(HUROARUpgradeView *)&v132 layoutSubviews];
-  v3 = [(HUROARUpgradeView *)self constraints];
+  constraints = [(HUROARUpgradeView *)self constraints];
 
-  if (!v3)
+  if (!constraints)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
-    v5 = [(HUROARUpgradeView *)self scrollView];
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+    array = [MEMORY[0x277CBEB18] array];
+    scrollView = [(HUROARUpgradeView *)self scrollView];
+    [scrollView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v6 = [(HUROARUpgradeView *)self deviceImageView];
-    [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+    deviceImageView = [(HUROARUpgradeView *)self deviceImageView];
+    [deviceImageView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v7 = [(HUROARUpgradeView *)self subtitle];
-    [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+    subtitle = [(HUROARUpgradeView *)self subtitle];
+    [subtitle setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v8 = [(HUROARUpgradeView *)self title];
-    [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+    title = [(HUROARUpgradeView *)self title];
+    [title setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v9 = [(HUROARUpgradeView *)self button];
-    [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+    button = [(HUROARUpgradeView *)self button];
+    [button setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v10 = [(HUROARUpgradeView *)self supplementaryButton];
-    [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+    supplementaryButton = [(HUROARUpgradeView *)self supplementaryButton];
+    [supplementaryButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
     if ([(HUROARUpgradeView *)self _shouldShowSupplementaryButton])
     {
-      v11 = [(HUROARUpgradeView *)self supplementaryButton];
-      v12 = [v11 bottomAnchor];
-      v13 = [(HUROARUpgradeView *)self layoutMarginsGuide];
-      v14 = [v13 bottomAnchor];
-      v15 = [v12 constraintEqualToAnchor:v14];
-      [v4 na_safeAddObject:v15];
+      supplementaryButton2 = [(HUROARUpgradeView *)self supplementaryButton];
+      bottomAnchor = [supplementaryButton2 bottomAnchor];
+      layoutMarginsGuide = [(HUROARUpgradeView *)self layoutMarginsGuide];
+      bottomAnchor2 = [layoutMarginsGuide bottomAnchor];
+      v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+      [array na_safeAddObject:v15];
 
-      v16 = [(HUROARUpgradeView *)self supplementaryButton];
-      v17 = [v16 leadingAnchor];
-      v18 = [(HUROARUpgradeView *)self leadingAnchor];
-      v19 = [v17 constraintEqualToAnchor:v18];
-      [v4 na_safeAddObject:v19];
+      supplementaryButton3 = [(HUROARUpgradeView *)self supplementaryButton];
+      leadingAnchor = [supplementaryButton3 leadingAnchor];
+      leadingAnchor2 = [(HUROARUpgradeView *)self leadingAnchor];
+      v19 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+      [array na_safeAddObject:v19];
 
-      v20 = [(HUROARUpgradeView *)self supplementaryButton];
-      v21 = [v20 trailingAnchor];
-      v22 = [(HUROARUpgradeView *)self trailingAnchor];
-      v23 = [v21 constraintEqualToAnchor:v22];
-      [v4 na_safeAddObject:v23];
+      supplementaryButton4 = [(HUROARUpgradeView *)self supplementaryButton];
+      trailingAnchor = [supplementaryButton4 trailingAnchor];
+      trailingAnchor2 = [(HUROARUpgradeView *)self trailingAnchor];
+      v23 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+      [array na_safeAddObject:v23];
 
-      v24 = [(HUROARUpgradeView *)self supplementaryButton];
-      v25 = [v24 centerXAnchor];
-      v26 = [(HUROARUpgradeView *)self centerXAnchor];
-      v27 = [v25 constraintEqualToAnchor:v26];
-      [v4 na_safeAddObject:v27];
+      supplementaryButton5 = [(HUROARUpgradeView *)self supplementaryButton];
+      centerXAnchor = [supplementaryButton5 centerXAnchor];
+      centerXAnchor2 = [(HUROARUpgradeView *)self centerXAnchor];
+      v27 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+      [array na_safeAddObject:v27];
 
-      v28 = [(HUROARUpgradeView *)self button];
-      v29 = [v28 bottomAnchor];
-      v30 = [(HUROARUpgradeView *)self supplementaryButton];
-      v31 = [v30 topAnchor];
-      v32 = [v29 constraintEqualToAnchor:v31 constant:-10.0];
-      [v4 na_safeAddObject:v32];
+      button2 = [(HUROARUpgradeView *)self button];
+      bottomAnchor3 = [button2 bottomAnchor];
+      supplementaryButton6 = [(HUROARUpgradeView *)self supplementaryButton];
+      topAnchor = [supplementaryButton6 topAnchor];
+      v32 = [bottomAnchor3 constraintEqualToAnchor:topAnchor constant:-10.0];
+      [array na_safeAddObject:v32];
 
-      v33 = [(HUROARUpgradeView *)self button];
-      v34 = [v33 leadingAnchor];
-      v35 = [(HUROARUpgradeView *)self leadingAnchor];
-      v36 = [v34 constraintEqualToAnchor:v35];
-      [v4 na_safeAddObject:v36];
+      button3 = [(HUROARUpgradeView *)self button];
+      leadingAnchor3 = [button3 leadingAnchor];
+      leadingAnchor4 = [(HUROARUpgradeView *)self leadingAnchor];
+      v36 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
+      [array na_safeAddObject:v36];
 
-      v37 = [(HUROARUpgradeView *)self button];
-      v38 = [v37 trailingAnchor];
-      v39 = [(HUROARUpgradeView *)self trailingAnchor];
-      v40 = [v38 constraintEqualToAnchor:v39];
-      [v4 na_safeAddObject:v40];
+      button4 = [(HUROARUpgradeView *)self button];
+      trailingAnchor3 = [button4 trailingAnchor];
+      trailingAnchor4 = [(HUROARUpgradeView *)self trailingAnchor];
+      v40 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
+      [array na_safeAddObject:v40];
 
-      v41 = [(HUROARUpgradeView *)self button];
-      v42 = [v41 centerXAnchor];
-      v43 = [(HUROARUpgradeView *)self centerXAnchor];
-      v44 = [v42 constraintEqualToAnchor:v43];
-      [v4 na_safeAddObject:v44];
+      button5 = [(HUROARUpgradeView *)self button];
+      centerXAnchor3 = [button5 centerXAnchor];
+      centerXAnchor4 = [(HUROARUpgradeView *)self centerXAnchor];
+      v44 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
+      [array na_safeAddObject:v44];
     }
 
     else
     {
-      v45 = [(HUROARUpgradeView *)self button];
-      v46 = [v45 bottomAnchor];
-      v47 = [(HUROARUpgradeView *)self layoutMarginsGuide];
-      v48 = [v47 bottomAnchor];
-      v49 = [v46 constraintEqualToAnchor:v48];
-      [v4 addObject:v49];
+      button6 = [(HUROARUpgradeView *)self button];
+      bottomAnchor4 = [button6 bottomAnchor];
+      layoutMarginsGuide2 = [(HUROARUpgradeView *)self layoutMarginsGuide];
+      bottomAnchor5 = [layoutMarginsGuide2 bottomAnchor];
+      v49 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
+      [array addObject:v49];
 
-      v50 = [(HUROARUpgradeView *)self button];
-      v51 = [v50 leadingAnchor];
-      v52 = [(HUROARUpgradeView *)self leadingAnchor];
-      v53 = [v51 constraintEqualToAnchor:v52];
-      [v4 addObject:v53];
+      button7 = [(HUROARUpgradeView *)self button];
+      leadingAnchor5 = [button7 leadingAnchor];
+      leadingAnchor6 = [(HUROARUpgradeView *)self leadingAnchor];
+      v53 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
+      [array addObject:v53];
 
-      v54 = [(HUROARUpgradeView *)self button];
-      v55 = [v54 trailingAnchor];
-      v56 = [(HUROARUpgradeView *)self trailingAnchor];
-      v57 = [v55 constraintEqualToAnchor:v56];
-      [v4 addObject:v57];
+      button8 = [(HUROARUpgradeView *)self button];
+      trailingAnchor5 = [button8 trailingAnchor];
+      trailingAnchor6 = [(HUROARUpgradeView *)self trailingAnchor];
+      v57 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
+      [array addObject:v57];
 
-      v41 = [(HUROARUpgradeView *)self button];
-      v42 = [v41 centerXAnchor];
-      v43 = [(HUROARUpgradeView *)self centerXAnchor];
-      v44 = [v42 constraintEqualToAnchor:v43];
-      [v4 addObject:v44];
+      button5 = [(HUROARUpgradeView *)self button];
+      centerXAnchor3 = [button5 centerXAnchor];
+      centerXAnchor4 = [(HUROARUpgradeView *)self centerXAnchor];
+      v44 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
+      [array addObject:v44];
     }
 
-    v58 = [(HUROARUpgradeView *)self scrollView];
-    v59 = [v58 leadingAnchor];
-    v60 = [(HUROARUpgradeView *)self leadingAnchor];
-    v61 = [v59 constraintEqualToAnchor:v60];
-    [v4 na_safeAddObject:v61];
+    scrollView2 = [(HUROARUpgradeView *)self scrollView];
+    leadingAnchor7 = [scrollView2 leadingAnchor];
+    leadingAnchor8 = [(HUROARUpgradeView *)self leadingAnchor];
+    v61 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
+    [array na_safeAddObject:v61];
 
-    v62 = [(HUROARUpgradeView *)self scrollView];
-    v63 = [v62 topAnchor];
-    v64 = [(HUROARUpgradeView *)self topAnchor];
-    v65 = [v63 constraintEqualToAnchor:v64 constant:50.0];
-    [v4 na_safeAddObject:v65];
+    scrollView3 = [(HUROARUpgradeView *)self scrollView];
+    topAnchor2 = [scrollView3 topAnchor];
+    topAnchor3 = [(HUROARUpgradeView *)self topAnchor];
+    v65 = [topAnchor2 constraintEqualToAnchor:topAnchor3 constant:50.0];
+    [array na_safeAddObject:v65];
 
-    v66 = [(HUROARUpgradeView *)self scrollView];
-    v67 = [v66 trailingAnchor];
-    v68 = [(HUROARUpgradeView *)self trailingAnchor];
-    v69 = [v67 constraintEqualToAnchor:v68];
-    [v4 na_safeAddObject:v69];
+    scrollView4 = [(HUROARUpgradeView *)self scrollView];
+    trailingAnchor7 = [scrollView4 trailingAnchor];
+    trailingAnchor8 = [(HUROARUpgradeView *)self trailingAnchor];
+    v69 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
+    [array na_safeAddObject:v69];
 
-    v70 = [(HUROARUpgradeView *)self scrollView];
-    v71 = [v70 bottomAnchor];
-    v72 = [(HUROARUpgradeView *)self button];
-    v73 = [v72 topAnchor];
-    v74 = [v71 constraintEqualToAnchor:v73];
-    [v4 na_safeAddObject:v74];
+    scrollView5 = [(HUROARUpgradeView *)self scrollView];
+    bottomAnchor6 = [scrollView5 bottomAnchor];
+    button9 = [(HUROARUpgradeView *)self button];
+    topAnchor4 = [button9 topAnchor];
+    v74 = [bottomAnchor6 constraintEqualToAnchor:topAnchor4];
+    [array na_safeAddObject:v74];
 
-    v75 = [(HUROARUpgradeView *)self deviceImageView];
-    v76 = [v75 centerXAnchor];
-    v77 = [(HUROARUpgradeView *)self scrollView];
-    v78 = [v77 centerXAnchor];
-    v79 = [v76 constraintEqualToAnchor:v78];
-    [v4 na_safeAddObject:v79];
+    deviceImageView2 = [(HUROARUpgradeView *)self deviceImageView];
+    centerXAnchor5 = [deviceImageView2 centerXAnchor];
+    scrollView6 = [(HUROARUpgradeView *)self scrollView];
+    centerXAnchor6 = [scrollView6 centerXAnchor];
+    v79 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
+    [array na_safeAddObject:v79];
 
-    v80 = [(HUROARUpgradeView *)self deviceImageView];
-    v81 = [v80 topAnchor];
-    v82 = [(HUROARUpgradeView *)self scrollView];
-    v83 = [v82 topAnchor];
-    v84 = [v81 constraintEqualToAnchor:v83 constant:50.0];
-    [v4 na_safeAddObject:v84];
+    deviceImageView3 = [(HUROARUpgradeView *)self deviceImageView];
+    topAnchor5 = [deviceImageView3 topAnchor];
+    scrollView7 = [(HUROARUpgradeView *)self scrollView];
+    topAnchor6 = [scrollView7 topAnchor];
+    v84 = [topAnchor5 constraintEqualToAnchor:topAnchor6 constant:50.0];
+    [array na_safeAddObject:v84];
 
-    v85 = [(HUROARUpgradeView *)self title];
-    v86 = [v85 leadingAnchor];
-    v87 = [(HUROARUpgradeView *)self scrollView];
-    v88 = [v87 leadingAnchor];
-    v89 = [v86 constraintEqualToAnchor:v88];
-    [v4 na_safeAddObject:v89];
+    title2 = [(HUROARUpgradeView *)self title];
+    leadingAnchor9 = [title2 leadingAnchor];
+    scrollView8 = [(HUROARUpgradeView *)self scrollView];
+    leadingAnchor10 = [scrollView8 leadingAnchor];
+    v89 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
+    [array na_safeAddObject:v89];
 
-    v90 = [(HUROARUpgradeView *)self title];
-    v91 = [v90 trailingAnchor];
-    v92 = [(HUROARUpgradeView *)self scrollView];
-    v93 = [v92 trailingAnchor];
-    v94 = [v91 constraintEqualToAnchor:v93];
-    [v4 na_safeAddObject:v94];
+    title3 = [(HUROARUpgradeView *)self title];
+    trailingAnchor9 = [title3 trailingAnchor];
+    scrollView9 = [(HUROARUpgradeView *)self scrollView];
+    trailingAnchor10 = [scrollView9 trailingAnchor];
+    v94 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
+    [array na_safeAddObject:v94];
 
-    v95 = [(HUROARUpgradeView *)self title];
-    v96 = [v95 centerXAnchor];
-    v97 = [(HUROARUpgradeView *)self scrollView];
-    v98 = [v97 centerXAnchor];
-    v99 = [v96 constraintEqualToAnchor:v98];
-    [v4 na_safeAddObject:v99];
+    title4 = [(HUROARUpgradeView *)self title];
+    centerXAnchor7 = [title4 centerXAnchor];
+    scrollView10 = [(HUROARUpgradeView *)self scrollView];
+    centerXAnchor8 = [scrollView10 centerXAnchor];
+    v99 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
+    [array na_safeAddObject:v99];
 
-    v100 = [(HUROARUpgradeView *)self title];
-    v101 = [v100 topAnchor];
-    v102 = [(HUROARUpgradeView *)self deviceImageView];
-    v103 = [v102 bottomAnchor];
-    v104 = [v101 constraintEqualToAnchor:v103 constant:10.0];
-    [v4 na_safeAddObject:v104];
+    title5 = [(HUROARUpgradeView *)self title];
+    topAnchor7 = [title5 topAnchor];
+    deviceImageView4 = [(HUROARUpgradeView *)self deviceImageView];
+    bottomAnchor7 = [deviceImageView4 bottomAnchor];
+    v104 = [topAnchor7 constraintEqualToAnchor:bottomAnchor7 constant:10.0];
+    [array na_safeAddObject:v104];
 
-    v105 = [(HUROARUpgradeView *)self subtitle];
-    v106 = [v105 topAnchor];
-    v107 = [(HUROARUpgradeView *)self title];
-    v108 = [v107 bottomAnchor];
-    v109 = [v106 constraintEqualToAnchor:v108 constant:5.0];
-    [v4 na_safeAddObject:v109];
+    subtitle2 = [(HUROARUpgradeView *)self subtitle];
+    topAnchor8 = [subtitle2 topAnchor];
+    title6 = [(HUROARUpgradeView *)self title];
+    bottomAnchor8 = [title6 bottomAnchor];
+    v109 = [topAnchor8 constraintEqualToAnchor:bottomAnchor8 constant:5.0];
+    [array na_safeAddObject:v109];
 
-    v110 = [(HUROARUpgradeView *)self subtitle];
-    v111 = [v110 leadingAnchor];
-    v112 = [(HUROARUpgradeView *)self scrollView];
-    v113 = [v112 leadingAnchor];
-    v114 = [v111 constraintEqualToAnchor:v113];
-    [v4 na_safeAddObject:v114];
+    subtitle3 = [(HUROARUpgradeView *)self subtitle];
+    leadingAnchor11 = [subtitle3 leadingAnchor];
+    scrollView11 = [(HUROARUpgradeView *)self scrollView];
+    leadingAnchor12 = [scrollView11 leadingAnchor];
+    v114 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12];
+    [array na_safeAddObject:v114];
 
-    v115 = [(HUROARUpgradeView *)self subtitle];
-    v116 = [v115 trailingAnchor];
-    v117 = [(HUROARUpgradeView *)self scrollView];
-    v118 = [v117 trailingAnchor];
-    v119 = [v116 constraintEqualToAnchor:v118];
-    [v4 na_safeAddObject:v119];
+    subtitle4 = [(HUROARUpgradeView *)self subtitle];
+    trailingAnchor11 = [subtitle4 trailingAnchor];
+    scrollView12 = [(HUROARUpgradeView *)self scrollView];
+    trailingAnchor12 = [scrollView12 trailingAnchor];
+    v119 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor12];
+    [array na_safeAddObject:v119];
 
-    v120 = [(HUROARUpgradeView *)self subtitle];
-    v121 = [v120 centerXAnchor];
-    v122 = [(HUROARUpgradeView *)self scrollView];
-    v123 = [v122 centerXAnchor];
-    v124 = [v121 constraintEqualToAnchor:v123];
-    [v4 na_safeAddObject:v124];
+    subtitle5 = [(HUROARUpgradeView *)self subtitle];
+    centerXAnchor9 = [subtitle5 centerXAnchor];
+    scrollView13 = [(HUROARUpgradeView *)self scrollView];
+    centerXAnchor10 = [scrollView13 centerXAnchor];
+    v124 = [centerXAnchor9 constraintEqualToAnchor:centerXAnchor10];
+    [array na_safeAddObject:v124];
 
-    [(HUROARUpgradeView *)self setConstraints:v4];
+    [(HUROARUpgradeView *)self setConstraints:array];
     v125 = MEMORY[0x277CCAAD0];
-    v126 = [(HUROARUpgradeView *)self constraints];
-    [v125 activateConstraints:v126];
+    constraints2 = [(HUROARUpgradeView *)self constraints];
+    [v125 activateConstraints:constraints2];
   }
 
-  v127 = [(HUROARUpgradeView *)self _shouldShowMainButton];
-  v128 = [(HUROARUpgradeView *)self button];
-  [v128 setHidden:!v127];
+  _shouldShowMainButton = [(HUROARUpgradeView *)self _shouldShowMainButton];
+  button10 = [(HUROARUpgradeView *)self button];
+  [button10 setHidden:!_shouldShowMainButton];
 
-  v129 = [(HUROARUpgradeView *)self _shouldShowSupplementaryButton];
-  v130 = [(HUROARUpgradeView *)self supplementaryButton];
-  [v130 setHidden:!v129];
+  _shouldShowSupplementaryButton = [(HUROARUpgradeView *)self _shouldShowSupplementaryButton];
+  supplementaryButton7 = [(HUROARUpgradeView *)self supplementaryButton];
+  [supplementaryButton7 setHidden:!_shouldShowSupplementaryButton];
 
-  v131 = [(HUROARUpgradeView *)self scrollView];
-  [v131 sizeToFit];
+  scrollView14 = [(HUROARUpgradeView *)self scrollView];
+  [scrollView14 sizeToFit];
 
   [(HUROARUpgradeView *)self updateScrollViewContentSize];
 }
@@ -393,30 +393,30 @@
 - (void)updateScrollViewContentSize
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = [(HUROARUpgradeView *)self deviceImageView];
-  [v3 frame];
+  deviceImageView = [(HUROARUpgradeView *)self deviceImageView];
+  [deviceImageView frame];
   v5 = v4;
-  v6 = [(HUROARUpgradeView *)self deviceImageView];
-  [v6 frame];
+  deviceImageView2 = [(HUROARUpgradeView *)self deviceImageView];
+  [deviceImageView2 frame];
   v8 = v5 + v7 + 50.0;
-  v9 = [(HUROARUpgradeView *)self title];
-  [v9 frame];
+  title = [(HUROARUpgradeView *)self title];
+  [title frame];
   v11 = v8 + v10 + 10.0;
-  v12 = [(HUROARUpgradeView *)self subtitle];
-  [v12 frame];
+  subtitle = [(HUROARUpgradeView *)self subtitle];
+  [subtitle frame];
   v14 = v11 + v13 + 5.0;
 
-  v15 = [(HUROARUpgradeView *)self scrollView];
-  [v15 contentSize];
+  scrollView = [(HUROARUpgradeView *)self scrollView];
+  [scrollView contentSize];
   v17 = v16;
   v19 = v18;
 
-  v20 = [(HUROARUpgradeView *)self scrollView];
-  [v20 frame];
+  scrollView2 = [(HUROARUpgradeView *)self scrollView];
+  [scrollView2 frame];
   v22 = fmax(v21, v14);
 
-  v23 = [(HUROARUpgradeView *)self scrollView];
-  [v23 frame];
+  scrollView3 = [(HUROARUpgradeView *)self scrollView];
+  [scrollView3 frame];
   v25 = v24;
 
   if (v25 == *MEMORY[0x277CBF3A8] && v22 == *(MEMORY[0x277CBF3A8] + 8))
@@ -451,8 +451,8 @@ LABEL_11:
 
   else
   {
-    v30 = [(HUROARUpgradeView *)self scrollView];
-    [v30 setContentSize:{v25, v22}];
+    scrollView4 = [(HUROARUpgradeView *)self scrollView];
+    [scrollView4 setContentSize:{v25, v22}];
 
     v26 = HFLogForCategory();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
@@ -493,10 +493,10 @@ LABEL_11:
   {
     v4 = _HULocalizedStringWithDefaultValue(@"HUROARRequired_Details_SupplementaryDescription_Default", @"HUROARRequired_Details_SupplementaryDescription_Default", 1);
 
-    v5 = [(HUROARUpgradeView *)self home];
-    v6 = [v5 hf_currentUserIsOwner];
+    home = [(HUROARUpgradeView *)self home];
+    hf_currentUserIsOwner = [home hf_currentUserIsOwner];
 
-    if (v6)
+    if (hf_currentUserIsOwner)
     {
       v7 = MEMORY[0x277CCACA8];
       v8 = _HULocalizedStringWithDefaultValue(@"HUROARRequired_Details_SupplementaryDescription_forOwner", @"HUROARRequired_Details_SupplementaryDescription_forOwner", 1);
@@ -646,11 +646,11 @@ void __47__HUROARUpgradeView__supplementaryButtonAction__block_invoke(uint64_t a
 
   else
   {
-    v4 = [(HUROARUpgradeView *)self home];
-    if (v4)
+    home = [(HUROARUpgradeView *)self home];
+    if (home)
     {
-      v5 = [(HUROARUpgradeView *)self home];
-      v3 = [v5 hf_currentUserIsOwner] ^ 1;
+      home2 = [(HUROARUpgradeView *)self home];
+      v3 = [home2 hf_currentUserIsOwner] ^ 1;
     }
 
     else
@@ -663,108 +663,108 @@ void __47__HUROARUpgradeView__supplementaryButtonAction__block_invoke(uint64_t a
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(HUROARUpgradeView *)self upgradeViewReason];
+    upgradeViewReason = [(HUROARUpgradeView *)self upgradeViewReason];
     [(HUROARUpgradeView *)self upgradeViewReason];
     v9 = HF_HomeAccessNotAllowedReasonCodeString();
-    v10 = [(HUROARUpgradeView *)self home];
-    v11 = [(HUROARUpgradeView *)self home];
-    v12 = [v11 uniqueIdentifier];
+    home3 = [(HUROARUpgradeView *)self home];
+    home4 = [(HUROARUpgradeView *)self home];
+    uniqueIdentifier = [home4 uniqueIdentifier];
     v14[0] = 67110146;
     v14[1] = v6 & 1;
     v15 = 2048;
-    v16 = v8;
+    v16 = upgradeViewReason;
     v17 = 2114;
     v18 = v9;
     v19 = 2112;
-    v20 = v10;
+    v20 = home3;
     v21 = 2114;
-    v22 = v12;
+    v22 = uniqueIdentifier;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "<HUROARUpgradeView:_shouldShowMainButton> result = %{BOOL}d | upgradeViewReason = %ld (%{public}@) | home = %@ (uniqueIdentifier: %{public}@)", v14, 0x30u);
   }
 
   return v6 & 1;
 }
 
-- (void)homeKitDispatcher:(id)a3 manager:(id)a4 didChangeHome:(id)a5
+- (void)homeKitDispatcher:(id)dispatcher manager:(id)manager didChangeHome:(id)home
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a5;
+  homeCopy = home;
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 uniqueIdentifier];
-    v9 = [(HUROARUpgradeView *)self home];
-    v10 = [(HUROARUpgradeView *)self home];
-    v11 = [v10 uniqueIdentifier];
+    uniqueIdentifier = [homeCopy uniqueIdentifier];
+    home = [(HUROARUpgradeView *)self home];
+    home2 = [(HUROARUpgradeView *)self home];
+    uniqueIdentifier2 = [home2 uniqueIdentifier];
     v33 = 138413058;
-    v34 = v6;
+    v34 = homeCopy;
     v35 = 2114;
-    v36 = v8;
+    v36 = uniqueIdentifier;
     v37 = 2112;
-    v38 = v9;
+    v38 = home;
     v39 = 2114;
-    v40 = v11;
+    v40 = uniqueIdentifier2;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "<HUROARUpgradeView:didChangeHome> Switched to new Home %@ (uniqueIdentifier: %{public}@) - previous Home %@ (uniqueIdentifier: %{public}@)", &v33, 0x2Au);
   }
 
-  v12 = [(HUROARUpgradeView *)self home];
+  home3 = [(HUROARUpgradeView *)self home];
 
-  if (v12 != v6)
+  if (home3 != homeCopy)
   {
-    [(HUROARUpgradeView *)self setHome:v6];
-    v13 = [(HUROARUpgradeView *)self home];
-    -[HUROARUpgradeView setUpgradeViewReason:](self, "setUpgradeViewReason:", [v13 hf_blockCurrentUserFromHomeReason]);
+    [(HUROARUpgradeView *)self setHome:homeCopy];
+    home4 = [(HUROARUpgradeView *)self home];
+    -[HUROARUpgradeView setUpgradeViewReason:](self, "setUpgradeViewReason:", [home4 hf_blockCurrentUserFromHomeReason]);
 
     v14 = HFLogForCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(HUROARUpgradeView *)self upgradeViewReason];
+      upgradeViewReason = [(HUROARUpgradeView *)self upgradeViewReason];
       [(HUROARUpgradeView *)self upgradeViewReason];
       v16 = HF_HomeAccessNotAllowedReasonCodeString();
-      v17 = [v6 hf_currentUserIsOwner];
+      hf_currentUserIsOwner = [homeCopy hf_currentUserIsOwner];
       v33 = 134218498;
-      v34 = v15;
+      v34 = upgradeViewReason;
       v35 = 2114;
       v36 = v16;
       v37 = 1024;
-      LODWORD(v38) = v17;
+      LODWORD(v38) = hf_currentUserIsOwner;
       _os_log_impl(&dword_20CEB6000, v14, OS_LOG_TYPE_DEFAULT, "<HUROARUpgradeView:didChangeHome> upgradeViewReason %lu (%{public}@) - currentUserIsOwner %{BOOL}d", &v33, 0x1Cu);
     }
 
-    v18 = [(HUROARUpgradeView *)self _titleString];
-    v19 = [(HUROARUpgradeView *)self title];
-    [v19 setText:v18];
+    _titleString = [(HUROARUpgradeView *)self _titleString];
+    title = [(HUROARUpgradeView *)self title];
+    [title setText:_titleString];
 
-    v20 = [(HUROARUpgradeView *)self _subtitleString];
-    v21 = [(HUROARUpgradeView *)self subtitle];
-    [v21 setText:v20];
+    _subtitleString = [(HUROARUpgradeView *)self _subtitleString];
+    subtitle = [(HUROARUpgradeView *)self subtitle];
+    [subtitle setText:_subtitleString];
 
     v22 = [(HUROARUpgradeView *)self _shouldShowMainButton]^ 1;
-    v23 = [(HUROARUpgradeView *)self button];
-    [v23 setHidden:v22];
+    button = [(HUROARUpgradeView *)self button];
+    [button setHidden:v22];
 
     if ((v22 & 1) == 0)
     {
-      v24 = [(HUROARUpgradeView *)self _mainButtonString];
-      v25 = [(HUROARUpgradeView *)self button];
-      v26 = [v25 configuration];
-      [v26 setTitle:v24];
+      _mainButtonString = [(HUROARUpgradeView *)self _mainButtonString];
+      button2 = [(HUROARUpgradeView *)self button];
+      configuration = [button2 configuration];
+      [configuration setTitle:_mainButtonString];
     }
 
     v27 = [(HUROARUpgradeView *)self _shouldShowSupplementaryButton]^ 1;
-    v28 = [(HUROARUpgradeView *)self supplementaryButton];
-    [v28 setHidden:v27];
+    supplementaryButton = [(HUROARUpgradeView *)self supplementaryButton];
+    [supplementaryButton setHidden:v27];
 
     if ((v27 & 1) == 0)
     {
       v29 = _HULocalizedStringWithDefaultValue(@"HULearnMoreTitle", @"HULearnMoreTitle", 1);
-      v30 = [(HUROARUpgradeView *)self supplementaryButton];
-      v31 = [v30 configuration];
-      [v31 setTitle:v29];
+      supplementaryButton2 = [(HUROARUpgradeView *)self supplementaryButton];
+      configuration2 = [supplementaryButton2 configuration];
+      [configuration2 setTitle:v29];
     }
 
-    v32 = [(HUROARUpgradeView *)self scrollView];
-    [v32 layoutIfNeeded];
+    scrollView = [(HUROARUpgradeView *)self scrollView];
+    [scrollView layoutIfNeeded];
 
     [(HUROARUpgradeView *)self updateScrollViewContentSize];
   }

@@ -1,37 +1,37 @@
 @interface VKCMockTextLine
-- (VKCMockTextLine)initWithWordsArray:(id)a3 startingIndex:(unint64_t)a4;
+- (VKCMockTextLine)initWithWordsArray:(id)array startingIndex:(unint64_t)index;
 - (_NSRange)range;
-- (void)loadWordsArrayFromWords:(id)a3 startingIndex:(unint64_t)a4;
+- (void)loadWordsArrayFromWords:(id)words startingIndex:(unint64_t)index;
 @end
 
 @implementation VKCMockTextLine
 
-- (VKCMockTextLine)initWithWordsArray:(id)a3 startingIndex:(unint64_t)a4
+- (VKCMockTextLine)initWithWordsArray:(id)array startingIndex:(unint64_t)index
 {
-  v6 = a3;
+  arrayCopy = array;
   v10.receiver = self;
   v10.super_class = VKCMockTextLine;
   v7 = [(VKCMockTextLine *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(VKCMockTextLine *)v7 loadWordsArrayFromWords:v6 startingIndex:a4];
+    [(VKCMockTextLine *)v7 loadWordsArrayFromWords:arrayCopy startingIndex:index];
   }
 
   return v8;
 }
 
-- (void)loadWordsArrayFromWords:(id)a3 startingIndex:(unint64_t)a4
+- (void)loadWordsArrayFromWords:(id)words startingIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
+  wordsCopy = words;
+  v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(wordsCopy, "count")}];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __57__VKCMockTextLine_loadWordsArrayFromWords_startingIndex___block_invoke;
   v34[3] = &unk_1E7BE6898;
   v8 = v7;
   v35 = v8;
-  [v6 enumerateObjectsUsingBlock:v34];
+  [wordsCopy enumerateObjectsUsingBlock:v34];
   v9 = [v8 copy];
   [(VKCMockTextLine *)self setWords:v9];
 
@@ -39,7 +39,7 @@
   v29 = &v28;
   v30 = 0x3010000000;
   v31 = &unk_1B44420A2;
-  v32 = a4;
+  indexCopy = index;
   v33 = 0;
   v10 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v22 = 0;
@@ -62,8 +62,8 @@
   [(VKCMockTextLine *)self setRange:v29[4], v29[5]];
   [(VKCMockTextLine *)self setQuad:v23[5]];
   [(VKCMockTextLine *)self setText:v11];
-  v13 = [(VKCMockTextLine *)self text];
-  v14 = [v13 length];
+  text = [(VKCMockTextLine *)self text];
+  v14 = [text length];
   [(VKCMockTextLine *)self range];
   v16 = v15;
 

@@ -1,8 +1,8 @@
 @interface VUIOutlineMenuCollectionViewCell
-- (void)_updateViewConfigurationsWithState:(unint64_t)a3;
+- (void)_updateViewConfigurationsWithState:(unint64_t)state;
 - (void)prepareForReuse;
-- (void)setImageName:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setImageName:(id)name;
+- (void)setTitle:(id)title;
 @end
 
 @implementation VUIOutlineMenuCollectionViewCell
@@ -22,50 +22,50 @@
   [(VUIOutlineMenuCollectionViewCell *)self setTrailingAccessoryConfigurations:MEMORY[0x1E695E0F0]];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  objc_storeStrong(&self->_title, a3);
+  objc_storeStrong(&self->_title, title);
 
   [(VUIOutlineMenuCollectionViewCell *)self _setNeedsConfigurationStateUpdate];
 }
 
-- (void)setImageName:(id)a3
+- (void)setImageName:(id)name
 {
-  objc_storeStrong(&self->_imageName, a3);
+  objc_storeStrong(&self->_imageName, name);
 
   [(VUIOutlineMenuCollectionViewCell *)self _setNeedsConfigurationStateUpdate];
 }
 
-- (void)_updateViewConfigurationsWithState:(unint64_t)a3
+- (void)_updateViewConfigurationsWithState:(unint64_t)state
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = VUIOutlineMenuCollectionViewCell;
-  [(VUIOutlineMenuCollectionViewCell *)&v10 _updateViewConfigurationsWithState:a3];
-  v4 = [MEMORY[0x1E69DD388] outlineCellConfiguration];
+  [(VUIOutlineMenuCollectionViewCell *)&v10 _updateViewConfigurationsWithState:state];
+  outlineCellConfiguration = [MEMORY[0x1E69DD388] outlineCellConfiguration];
   if (self->_shouldAppearAsHeader)
   {
-    v5 = [MEMORY[0x1E69DD388] outlineRootParentCellConfiguration];
+    outlineRootParentCellConfiguration = [MEMORY[0x1E69DD388] outlineRootParentCellConfiguration];
 
     v6 = [objc_alloc(MEMORY[0x1E69DD3D0]) initWithCellSelectionTogglesExpansionState:1];
     v11[0] = v6;
-    v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-    [(VUIOutlineMenuCollectionViewCell *)self setTrailingAccessoryConfigurations:v7];
-    v4 = v5;
+    imageView = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
+    [(VUIOutlineMenuCollectionViewCell *)self setTrailingAccessoryConfigurations:imageView];
+    outlineCellConfiguration = outlineRootParentCellConfiguration;
   }
 
   else
   {
     v6 = [MEMORY[0x1E69DCAB8] systemImageNamed:self->_imageName];
-    v7 = [v4 imageView];
-    [v7 setImage:v6];
+    imageView = [outlineCellConfiguration imageView];
+    [imageView setImage:v6];
   }
 
   title = self->_title;
-  v9 = [v4 textLabel];
-  [v9 setText:title];
+  textLabel = [outlineCellConfiguration textLabel];
+  [textLabel setText:title];
 
-  [(VUIOutlineMenuCollectionViewCell *)self _setContentViewConfiguration:v4];
+  [(VUIOutlineMenuCollectionViewCell *)self _setContentViewConfiguration:outlineCellConfiguration];
 }
 
 @end

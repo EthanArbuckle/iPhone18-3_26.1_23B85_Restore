@@ -1,16 +1,16 @@
 @interface ATXInterruptedAppSessionSummaryMetrics
-- (ATXInterruptedAppSessionSummaryMetrics)initWithDimensions:(id)a3;
+- (ATXInterruptedAppSessionSummaryMetrics)initWithDimensions:(id)dimensions;
 - (double)percentageInterruptedAppSessions;
 - (id)coreAnalyticsDictionary;
 @end
 
 @implementation ATXInterruptedAppSessionSummaryMetrics
 
-- (ATXInterruptedAppSessionSummaryMetrics)initWithDimensions:(id)a3
+- (ATXInterruptedAppSessionSummaryMetrics)initWithDimensions:(id)dimensions
 {
   v4.receiver = self;
   v4.super_class = ATXInterruptedAppSessionSummaryMetrics;
-  result = [(_ATXCoreAnalyticsMetric *)&v4 initWithDimensions:a3];
+  result = [(_ATXCoreAnalyticsMetric *)&v4 initWithDimensions:dimensions];
   if (result)
   {
     result->_totalAppSessions = 0;

@@ -1,21 +1,21 @@
 @interface CXSetRelayingCallAction
-- (CXSetRelayingCallAction)initWithCallUUID:(id)a3 relaying:(BOOL)a4;
-- (CXSetRelayingCallAction)initWithCoder:(id)a3;
+- (CXSetRelayingCallAction)initWithCallUUID:(id)d relaying:(BOOL)relaying;
+- (CXSetRelayingCallAction)initWithCoder:(id)coder;
 - (id)customDescription;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateCopy:(id)a3 withZone:(_NSZone *)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateCopy:(id)copy withZone:(_NSZone *)zone;
 @end
 
 @implementation CXSetRelayingCallAction
 
-- (CXSetRelayingCallAction)initWithCallUUID:(id)a3 relaying:(BOOL)a4
+- (CXSetRelayingCallAction)initWithCallUUID:(id)d relaying:(BOOL)relaying
 {
   v6.receiver = self;
   v6.super_class = CXSetRelayingCallAction;
-  result = [(CXCallAction *)&v6 initWithCallUUID:a3];
+  result = [(CXCallAction *)&v6 initWithCallUUID:d];
   if (result)
   {
-    result->_relaying = a4;
+    result->_relaying = relaying;
   }
 
   return result;
@@ -25,45 +25,45 @@
 {
   v5.receiver = self;
   v5.super_class = CXSetRelayingCallAction;
-  v3 = [(CXCallAction *)&v5 customDescription];
-  [v3 appendFormat:@" relaying=%d", -[CXSetRelayingCallAction isRelaying](self, "isRelaying")];
+  customDescription = [(CXCallAction *)&v5 customDescription];
+  [customDescription appendFormat:@" relaying=%d", -[CXSetRelayingCallAction isRelaying](self, "isRelaying")];
 
-  return v3;
+  return customDescription;
 }
 
-- (void)updateCopy:(id)a3 withZone:(_NSZone *)a4
+- (void)updateCopy:(id)copy withZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = CXSetRelayingCallAction;
-  v6 = a3;
-  [(CXAction *)&v7 updateCopy:v6 withZone:a4];
-  [v6 setRelaying:{-[CXSetRelayingCallAction isRelaying](self, "isRelaying", v7.receiver, v7.super_class)}];
+  copyCopy = copy;
+  [(CXAction *)&v7 updateCopy:copyCopy withZone:zone];
+  [copyCopy setRelaying:{-[CXSetRelayingCallAction isRelaying](self, "isRelaying", v7.receiver, v7.super_class)}];
 }
 
-- (CXSetRelayingCallAction)initWithCoder:(id)a3
+- (CXSetRelayingCallAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CXSetRelayingCallAction;
-  v5 = [(CXCallAction *)&v8 initWithCoder:v4];
+  v5 = [(CXCallAction *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = NSStringFromSelector(sel_isRelaying);
-    v5->_relaying = [v4 decodeBoolForKey:v6];
+    v5->_relaying = [coderCopy decodeBoolForKey:v6];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CXSetRelayingCallAction;
-  v4 = a3;
-  [(CXCallAction *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CXCallAction *)&v7 encodeWithCoder:coderCopy];
   v5 = [(CXSetRelayingCallAction *)self isRelaying:v7.receiver];
   v6 = NSStringFromSelector(sel_isRelaying);
-  [v4 encodeBool:v5 forKey:v6];
+  [coderCopy encodeBool:v5 forKey:v6];
 }
 
 @end

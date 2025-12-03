@@ -2,7 +2,7 @@
 - (CGSize)suggestedContentSize;
 - (id)expandViewController;
 - (id)menuActionClasses;
-- (void)setPreviewMode:(BOOL)a3;
+- (void)setPreviewMode:(BOOL)mode;
 @end
 
 @implementation DDFlightPreviewAction
@@ -11,26 +11,26 @@
 {
   v3 = [DDFlightAction alloc];
   v4 = [(DDAction *)self url];
-  v5 = [(DDAction *)self result];
-  v6 = [(DDAction *)self context];
-  v7 = [(DDAction *)v3 initWithURL:v4 result:v5 context:v6];
-  v8 = [(DDFlightAction *)v7 viewController];
+  result = [(DDAction *)self result];
+  context = [(DDAction *)self context];
+  v7 = [(DDAction *)v3 initWithURL:v4 result:result context:context];
+  viewController = [(DDFlightAction *)v7 viewController];
 
-  return v8;
+  return viewController;
 }
 
 - (id)menuActionClasses
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(DDFlightPreviewAction *)self previewActions];
-  if ([v4 count])
+  array = [MEMORY[0x277CBEB18] array];
+  previewActions = [(DDFlightPreviewAction *)self previewActions];
+  if ([previewActions count])
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = v4;
+    v5 = previewActions;
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
@@ -46,7 +46,7 @@
           }
 
           v10 = [MEMORY[0x277CBEA60] arrayWithObject:{*(*(&v14 + 1) + 8 * i), v14}];
-          [v3 addObject:v10];
+          [array addObject:v10];
         }
 
         v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -55,7 +55,7 @@
       while (v7);
     }
 
-    v11 = v3;
+    v11 = array;
   }
 
   else
@@ -77,18 +77,18 @@
   return result;
 }
 
-- (void)setPreviewMode:(BOOL)a3
+- (void)setPreviewMode:(BOOL)mode
 {
   v8.receiver = self;
   v8.super_class = DDFlightPreviewAction;
   [(DDRemoteAction *)&v8 setPreviewMode:?];
-  if (!self->_previewModeSet && !a3)
+  if (!self->_previewModeSet && !mode)
   {
     self->_previewModeSet = 1;
-    v5 = [MEMORY[0x277CBEB88] currentRunLoop];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
     v6 = *MEMORY[0x277CBE640];
-    v7 = [MEMORY[0x277CBEAA8] date];
-    [v5 runMode:v6 beforeDate:v7];
+    date = [MEMORY[0x277CBEAA8] date];
+    [currentRunLoop runMode:v6 beforeDate:date];
 
     usleep(0x7530u);
   }

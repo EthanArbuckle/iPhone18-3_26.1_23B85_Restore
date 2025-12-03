@@ -1,24 +1,24 @@
 @interface AKApplicationInformationController
 + (id)sharedController;
 - (id)_buildApplicationAuthorizationController;
-- (id)_buildApplicationMetadataServiceForAltDSID:(id)a3 client:(id)a4;
-- (void)_updatePrimaryApplicationsMetadataForAltDSID:(id)a3 metadataInfo:(id)a4;
-- (void)fetchAppInformationWithAltDSID:(id)a3 client:(id)a4 completion:(id)a5;
-- (void)fetchPrimaryApplicationInformationForAltDSID:(id)a3 appInformation:(id)a4 client:(id)a5 completion:(id)a6;
+- (id)_buildApplicationMetadataServiceForAltDSID:(id)d client:(id)client;
+- (void)_updatePrimaryApplicationsMetadataForAltDSID:(id)d metadataInfo:(id)info;
+- (void)fetchAppInformationWithAltDSID:(id)d client:(id)client completion:(id)completion;
+- (void)fetchPrimaryApplicationInformationForAltDSID:(id)d appInformation:(id)information client:(id)client completion:(id)completion;
 @end
 
 @implementation AKApplicationInformationController
 
 + (id)sharedController
 {
-  v11 = a1;
+  selfCopy = self;
   v10 = a2;
   obj = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1000CF0BC;
   v8 = &unk_100322AA0;
-  v9 = a1;
+  selfCopy2 = self;
   v13 = &unk_100374760;
   location = 0;
   objc_storeStrong(&location, &obj);
@@ -33,16 +33,16 @@
   return v2;
 }
 
-- (void)fetchAppInformationWithAltDSID:(id)a3 client:(id)a4 completion:(id)a5
+- (void)fetchAppInformationWithAltDSID:(id)d client:(id)client completion:(id)completion
 {
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v24 = 0;
-  objc_storeStrong(&v24, a4);
+  objc_storeStrong(&v24, client);
   v23 = 0;
-  objc_storeStrong(&v23, a5);
+  objc_storeStrong(&v23, completion);
   v22 = _AKLogSystem();
   v21 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -68,7 +68,7 @@
   v14 = &unk_10031F110;
   v17 = _objc_retain(v23);
   v15 = _objc_retain(location[0]);
-  v16 = _objc_retain(v26);
+  v16 = _objc_retain(selfCopy);
   [(AKServiceControllerImpl *)v7 executeRequestWithCompletion:&v10];
   objc_storeStrong(&v16, 0);
   objc_storeStrong(&v15, 0);
@@ -81,18 +81,18 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchPrimaryApplicationInformationForAltDSID:(id)a3 appInformation:(id)a4 client:(id)a5 completion:(id)a6
+- (void)fetchPrimaryApplicationInformationForAltDSID:(id)d appInformation:(id)information client:(id)client completion:(id)completion
 {
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v24 = 0;
-  objc_storeStrong(&v24, a4);
+  objc_storeStrong(&v24, information);
   v23 = 0;
-  objc_storeStrong(&v23, a5);
+  objc_storeStrong(&v23, client);
   v22 = 0;
-  objc_storeStrong(&v22, a6);
+  objc_storeStrong(&v22, completion);
   v21 = _AKLogSystem();
   v20 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -104,7 +104,7 @@
   }
 
   objc_storeStrong(&v21, 0);
-  v19 = [(AKApplicationInformationController *)v26 _buildApplicationMetadataServiceForAltDSID:location[0] client:v23];
+  v19 = [(AKApplicationInformationController *)selfCopy _buildApplicationMetadataServiceForAltDSID:location[0] client:v23];
   v6 = v19;
   v7 = [v24 objectForKeyedSubscript:@"client_id"];
   v12 = _NSConcreteStackBlock;
@@ -125,24 +125,24 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_updatePrimaryApplicationsMetadataForAltDSID:(id)a3 metadataInfo:(id)a4
+- (void)_updatePrimaryApplicationsMetadataForAltDSID:(id)d metadataInfo:(id)info
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, info);
   v11 = objc_alloc_init(AKMediaServicesController);
   v10 = +[AKAuthorizationStoreManager sharedInstance];
-  v9 = [(AKApplicationInformationController *)v14 _buildApplicationMetadataServiceForAltDSID:location[0] client:0];
+  v9 = [(AKApplicationInformationController *)selfCopy _buildApplicationMetadataServiceForAltDSID:location[0] client:0];
   v4 = [AKAccountsMetadataController alloc];
   v8 = [(AKAccountsMetadataController *)v4 initWithMediaServiceController:v11 localStorageController:v10 metadataService:v9];
-  v6 = [v12 teams];
-  v7 = [v6 allValues];
-  _objc_release(v6);
-  [(AKAccountsMetadataController *)v8 updatePrimaryAppsMetadataWithDeveloperTeams:v7 forAltDSID:location[0] completionHandler:&stru_100322AC0];
-  objc_storeStrong(&v7, 0);
+  teams = [v12 teams];
+  allValues = [teams allValues];
+  _objc_release(teams);
+  [(AKAccountsMetadataController *)v8 updatePrimaryAppsMetadataWithDeveloperTeams:allValues forAltDSID:location[0] completionHandler:&stru_100322AC0];
+  objc_storeStrong(&allValues, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
@@ -172,14 +172,14 @@
   return v8;
 }
 
-- (id)_buildApplicationMetadataServiceForAltDSID:(id)a3 client:(id)a4
+- (id)_buildApplicationMetadataServiceForAltDSID:(id)d client:(id)client
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, client);
   v12 = objc_opt_new();
   [v12 setAltDSID:location[0]];
   v4 = [AKApplicationMetadataRequestProvider alloc];

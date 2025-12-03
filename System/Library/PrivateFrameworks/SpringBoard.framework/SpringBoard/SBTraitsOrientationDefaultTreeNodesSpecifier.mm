@@ -1,22 +1,22 @@
 @interface SBTraitsOrientationDefaultTreeNodesSpecifier
-- (id)_activeOrientationOrderedNodesWithContext:(id)a3;
-- (id)updateStageTreeNodesSpecifications:(id)a3 stageParticipantsRoles:(id)a4 context:(id)a5;
+- (id)_activeOrientationOrderedNodesWithContext:(id)context;
+- (id)updateStageTreeNodesSpecifications:(id)specifications stageParticipantsRoles:(id)roles context:(id)context;
 @end
 
 @implementation SBTraitsOrientationDefaultTreeNodesSpecifier
 
-- (id)updateStageTreeNodesSpecifications:(id)a3 stageParticipantsRoles:(id)a4 context:(id)a5
+- (id)updateStageTreeNodesSpecifications:(id)specifications stageParticipantsRoles:(id)roles context:(id)context
 {
   v57 = *MEMORY[0x277D85DE8];
-  v6 = a5;
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  v8 = [MEMORY[0x277CBEB38] dictionary];
+  contextCopy = context;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v9 = [v6 acquiredParticipants];
-  v10 = [v9 countByEnumeratingWithState:&v51 objects:v56 count:16];
+  acquiredParticipants = [contextCopy acquiredParticipants];
+  v10 = [acquiredParticipants countByEnumeratingWithState:&v51 objects:v56 count:16];
   if (v10)
   {
     v11 = v10;
@@ -27,41 +27,41 @@
       {
         if (*v52 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(acquiredParticipants);
         }
 
         v14 = *(*(&v51 + 1) + 8 * i);
-        v15 = [v14 role];
-        [v7 setObject:v14 forKey:v15];
+        role = [v14 role];
+        [dictionary setObject:v14 forKey:role];
 
-        v16 = [v14 uniqueIdentifier];
-        [v8 setObject:v14 forKey:v16];
+        uniqueIdentifier = [v14 uniqueIdentifier];
+        [dictionary2 setObject:v14 forKey:uniqueIdentifier];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v51 objects:v56 count:16];
+      v11 = [acquiredParticipants countByEnumeratingWithState:&v51 objects:v56 count:16];
     }
 
     while (v11);
   }
 
-  v45 = v8;
-  v43 = v7;
+  v45 = dictionary2;
+  v43 = dictionary;
 
-  v41 = [(SBTraitsOrientationDefaultTreeNodesSpecifier *)self _activeOrientationOrderedNodesWithContext:v6];
-  v17 = [v41 reverseObjectEnumerator];
-  v18 = [v17 allObjects];
+  v41 = [(SBTraitsOrientationDefaultTreeNodesSpecifier *)self _activeOrientationOrderedNodesWithContext:contextCopy];
+  reverseObjectEnumerator = [v41 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
   v19 = MEMORY[0x277CBEB18];
-  v20 = [v6 acquiredParticipants];
-  v21 = [v19 arrayWithCapacity:{objc_msgSend(v20, "count")}];
+  acquiredParticipants2 = [contextCopy acquiredParticipants];
+  v21 = [v19 arrayWithCapacity:{objc_msgSend(acquiredParticipants2, "count")}];
 
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v42 = v6;
-  v22 = [v6 acquiredParticipants];
-  v46 = [v22 countByEnumeratingWithState:&v47 objects:v55 count:16];
+  v42 = contextCopy;
+  acquiredParticipants3 = [contextCopy acquiredParticipants];
+  v46 = [acquiredParticipants3 countByEnumeratingWithState:&v47 objects:v55 count:16];
   if (v46)
   {
     v23 = *v48;
@@ -73,33 +73,33 @@
       {
         if (*v48 != v23)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(acquiredParticipants3);
         }
 
         v26 = *(*(&v47 + 1) + 8 * j);
-        v27 = [v26 orientationResolutionPolicyInfo];
-        v28 = [v27 resolutionPolicy];
-        if (v28 != 2)
+        orientationResolutionPolicyInfo = [v26 orientationResolutionPolicyInfo];
+        resolutionPolicy = [orientationResolutionPolicyInfo resolutionPolicy];
+        if (resolutionPolicy != 2)
         {
-          if (v28 == 3)
+          if (resolutionPolicy == 3)
           {
-            v29 = [v27 associatedParticipantUniqueIdentifier];
+            associatedParticipantUniqueIdentifier = [orientationResolutionPolicyInfo associatedParticipantUniqueIdentifier];
 
-            if (v29)
+            if (associatedParticipantUniqueIdentifier)
             {
-              v30 = [v27 associatedParticipantUniqueIdentifier];
+              associatedParticipantUniqueIdentifier2 = [orientationResolutionPolicyInfo associatedParticipantUniqueIdentifier];
               v31 = v45;
 LABEL_25:
-              v35 = [v31 objectForKey:v30];
+              v35 = [v31 objectForKey:associatedParticipantUniqueIdentifier2];
 
               goto LABEL_27;
             }
 
-            v38 = [v27 associatedParticipantRole];
+            associatedParticipantRole = [orientationResolutionPolicyInfo associatedParticipantRole];
 
-            if (v38)
+            if (associatedParticipantRole)
             {
-              v30 = [v27 associatedParticipantRole];
+              associatedParticipantUniqueIdentifier2 = [orientationResolutionPolicyInfo associatedParticipantRole];
               v31 = v43;
               goto LABEL_25;
             }
@@ -110,26 +110,26 @@ LABEL_26:
           goto LABEL_27;
         }
 
-        v32 = [v18 indexOfObject:v26] + 1;
-        if (v32 >= [v18 count])
+        v32 = [allObjects indexOfObject:v26] + 1;
+        if (v32 >= [allObjects count])
         {
           goto LABEL_26;
         }
 
-        v33 = v22;
+        v33 = acquiredParticipants3;
         v34 = v21;
         while (1)
         {
-          v35 = [v18 objectAtIndex:v32];
-          v36 = [v35 orientationPreferences];
-          v37 = [v36 canDetermineActiveOrientation];
+          v35 = [allObjects objectAtIndex:v32];
+          orientationPreferences = [v35 orientationPreferences];
+          canDetermineActiveOrientation = [orientationPreferences canDetermineActiveOrientation];
 
-          if (v37)
+          if (canDetermineActiveOrientation)
           {
             break;
           }
 
-          if (++v32 >= [v18 count])
+          if (++v32 >= [allObjects count])
           {
             v35 = 0;
             break;
@@ -137,7 +137,7 @@ LABEL_26:
         }
 
         v21 = v34;
-        v22 = v33;
+        acquiredParticipants3 = v33;
         v23 = v44;
         v24 = 0x277D73000;
 LABEL_27:
@@ -145,7 +145,7 @@ LABEL_27:
         [v21 addObject:v39];
       }
 
-      v46 = [v22 countByEnumeratingWithState:&v47 objects:v55 count:16];
+      v46 = [acquiredParticipants3 countByEnumeratingWithState:&v47 objects:v55 count:16];
     }
 
     while (v46);
@@ -154,20 +154,20 @@ LABEL_27:
   return v21;
 }
 
-- (id)_activeOrientationOrderedNodesWithContext:(id)a3
+- (id)_activeOrientationOrderedNodesWithContext:(id)context
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  contextCopy = context;
   v4 = MEMORY[0x277CBEB18];
-  v5 = [v3 acquiredParticipants];
-  v26 = [v4 arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  acquiredParticipants = [contextCopy acquiredParticipants];
+  v26 = [v4 arrayWithCapacity:{objc_msgSend(acquiredParticipants, "count")}];
 
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v6 = [v3 acquiredParticipants];
-  v7 = [v6 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  acquiredParticipants2 = [contextCopy acquiredParticipants];
+  v7 = [acquiredParticipants2 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (!v7)
   {
     v9 = 0;
@@ -175,12 +175,12 @@ LABEL_27:
     goto LABEL_21;
   }
 
-  v25 = v3;
+  v25 = contextCopy;
   v8 = 0;
   v9 = 0;
   v27 = 0;
   v10 = *v30;
-  obj = v6;
+  obj = acquiredParticipants2;
   do
   {
     for (i = 0; i != v7; i = i + 1)
@@ -191,8 +191,8 @@ LABEL_27:
       }
 
       v12 = *(*(&v29 + 1) + 8 * i);
-      v13 = [v12 role];
-      v14 = [v13 isEqualToString:@"SBTraitsParticipantRoleCoverSheet"];
+      role = [v12 role];
+      v14 = [role isEqualToString:@"SBTraitsParticipantRoleCoverSheet"];
 
       if (v14)
       {
@@ -201,8 +201,8 @@ LABEL_27:
         v9 = v15;
       }
 
-      v16 = [v12 role];
-      v17 = [v16 isEqualToString:@"SBTraitsParticipantRoleCoverSheetCamera"];
+      role2 = [v12 role];
+      v17 = [role2 isEqualToString:@"SBTraitsParticipantRoleCoverSheetCamera"];
 
       if (v17)
       {
@@ -212,8 +212,8 @@ LABEL_27:
 
       else
       {
-        v19 = [v12 role];
-        v20 = [v19 isEqualToString:@"SBTraitsParticipantRoleSecureApp"];
+        role3 = [v12 role];
+        v20 = [role3 isEqualToString:@"SBTraitsParticipantRoleSecureApp"];
 
         if (v20)
         {
@@ -238,7 +238,7 @@ LABEL_27:
 
   if (v9)
   {
-    v3 = v25;
+    contextCopy = v25;
     v7 = v27;
     if (v8)
     {
@@ -248,22 +248,22 @@ LABEL_27:
 
     if (v27)
     {
-      v6 = [objc_alloc(MEMORY[0x277D734E0]) initWithParticipant:v27 parentParticipant:v9];
-      [v26 addObject:v6];
+      acquiredParticipants2 = [objc_alloc(MEMORY[0x277D734E0]) initWithParticipant:v27 parentParticipant:v9];
+      [v26 addObject:acquiredParticipants2];
 LABEL_21:
     }
   }
 
   else
   {
-    v3 = v25;
+    contextCopy = v25;
     v7 = v27;
   }
 
   v22 = [MEMORY[0x277D734D8] treeWithNodesSpecifications:v26 traversalType:0 debugName:@"Active Orientation Order"];
-  v23 = [v22 participantsTopologicalSort];
+  participantsTopologicalSort = [v22 participantsTopologicalSort];
 
-  return v23;
+  return participantsTopologicalSort;
 }
 
 @end

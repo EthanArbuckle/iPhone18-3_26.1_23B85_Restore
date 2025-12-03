@@ -1,57 +1,57 @@
 @interface SEFidoKeySearchParameters
-+ (id)withRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 fidoKeyHash:(id)a5;
-- (SEFidoKeySearchParameters)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)withRelyingParty:(id)party relyingPartyAccountHash:(id)hash fidoKeyHash:(id)keyHash;
+- (SEFidoKeySearchParameters)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SEFidoKeySearchParameters
 
-+ (id)withRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 fidoKeyHash:(id)a5
++ (id)withRelyingParty:(id)party relyingPartyAccountHash:(id)hash fidoKeyHash:(id)keyHash
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  partyCopy = party;
+  hashCopy = hash;
+  keyHashCopy = keyHash;
   v10 = objc_opt_new();
   v11 = v10[1];
-  v10[1] = v7;
-  v12 = v7;
+  v10[1] = partyCopy;
+  v12 = partyCopy;
 
   v13 = v10[2];
-  v10[2] = v8;
-  v14 = v8;
+  v10[2] = hashCopy;
+  v14 = hashCopy;
 
   v15 = v10[3];
-  v10[3] = v9;
+  v10[3] = keyHashCopy;
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   relyingParty = self->_relyingParty;
-  v5 = a3;
-  [v5 encodeObject:relyingParty forKey:@"relyingParty"];
-  [v5 encodeObject:self->_relyingPartyAccountHash forKey:@"relyingPartyAccountHash"];
-  [v5 encodeObject:self->_fidoKeyHash forKey:@"fidoKeyHash"];
+  coderCopy = coder;
+  [coderCopy encodeObject:relyingParty forKey:@"relyingParty"];
+  [coderCopy encodeObject:self->_relyingPartyAccountHash forKey:@"relyingPartyAccountHash"];
+  [coderCopy encodeObject:self->_fidoKeyHash forKey:@"fidoKeyHash"];
 }
 
-- (SEFidoKeySearchParameters)initWithCoder:(id)a3
+- (SEFidoKeySearchParameters)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = SEFidoKeySearchParameters;
   v5 = [(SEFidoKeySearchParameters *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"relyingParty"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"relyingParty"];
     relyingParty = v5->_relyingParty;
     v5->_relyingParty = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"relyingPartyAccountHash"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"relyingPartyAccountHash"];
     relyingPartyAccountHash = v5->_relyingPartyAccountHash;
     v5->_relyingPartyAccountHash = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fidoKeyHash"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fidoKeyHash"];
     fidoKeyHash = v5->_fidoKeyHash;
     v5->_fidoKeyHash = v10;
   }

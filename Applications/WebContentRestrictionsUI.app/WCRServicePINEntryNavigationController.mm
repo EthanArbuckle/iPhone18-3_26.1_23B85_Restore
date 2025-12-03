@@ -1,10 +1,10 @@
 @interface WCRServicePINEntryNavigationController
 - (unint64_t)supportedInterfaceOrientations;
 - (void)didAcceptEnteredPIN;
-- (void)getIsPINPresentWithCompletion:(id)a3;
-- (void)permitURLWithCompletion:(id)a3;
-- (void)setPageTitle:(id)a3;
-- (void)setURL:(id)a3;
+- (void)getIsPINPresentWithCompletion:(id)completion;
+- (void)permitURLWithCompletion:(id)completion;
+- (void)setPageTitle:(id)title;
+- (void)setURL:(id)l;
 - (void)viewDidLoad;
 @end
 
@@ -13,9 +13,9 @@
 - (void)viewDidLoad
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     [(WCRServicePINEntryNavigationController *)self setPreferredContentSize:320.0, 480.0];
     v5 = 16;
@@ -32,29 +32,29 @@
   self->_PINEntryViewController = v6;
 
   [(WCRServicePINEntryViewController *)self->_PINEntryViewController setDelegate:self];
-  v14 = [(WCRServicePINEntryNavigationController *)self view];
+  view = [(WCRServicePINEntryNavigationController *)self view];
   v8 = [[UINavigationController alloc] initWithRootViewController:self->_PINEntryViewController];
   navController = self->_navController;
   self->_navController = v8;
 
-  v10 = [(UINavigationController *)self->_navController view];
+  view2 = [(UINavigationController *)self->_navController view];
   [(WCRServicePINEntryNavigationController *)self addChildViewController:self->_navController];
-  [v14 addSubview:v10];
+  [view addSubview:view2];
   [(UINavigationController *)self->_navController didMoveToParentViewController:self];
   v11 = +[UIDevice currentDevice];
   [v11 userInterfaceIdiom];
 
-  v12 = [(WCRServicePINEntryNavigationController *)self _remoteViewControllerProxy];
+  _remoteViewControllerProxy = [(WCRServicePINEntryNavigationController *)self _remoteViewControllerProxy];
   remoteViewControllerProxy = self->_remoteViewControllerProxy;
-  self->_remoteViewControllerProxy = v12;
+  self->_remoteViewControllerProxy = _remoteViewControllerProxy;
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }
@@ -65,44 +65,44 @@
   }
 }
 
-- (void)setURL:(id)a3
+- (void)setURL:(id)l
 {
-  v12 = a3;
-  v4 = [(NSURL *)self->_URL host];
-  v5 = [v12 host];
-  v6 = [v4 isEqual:v5];
+  lCopy = l;
+  host = [(NSURL *)self->_URL host];
+  host2 = [lCopy host];
+  v6 = [host isEqual:host2];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [v12 scheme];
-    v8 = [v12 host];
-    v9 = [NSString stringWithFormat:@"%@://%@", v7, v8];
+    scheme = [lCopy scheme];
+    host3 = [lCopy host];
+    v9 = [NSString stringWithFormat:@"%@://%@", scheme, host3];
     v10 = [NSURL URLWithString:v9];
     URL = self->_URL;
     self->_URL = v10;
   }
 }
 
-- (void)setPageTitle:(id)a3
+- (void)setPageTitle:(id)title
 {
-  v6 = a3;
+  titleCopy = title;
   if (([(NSString *)self->_pageTitle isEqual:?]& 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [titleCopy copy];
     pageTitle = self->_pageTitle;
     self->_pageTitle = v4;
   }
 }
 
-- (void)getIsPINPresentWithCompletion:(id)a3
+- (void)getIsPINPresentWithCompletion:(id)completion
 {
-  v3 = a3;
-  v3[2](v3, +[WCRServicePINEntryViewController settingEnabled], 0);
+  completionCopy = completion;
+  completionCopy[2](completionCopy, +[WCRServicePINEntryViewController settingEnabled], 0);
 }
 
-- (void)permitURLWithCompletion:(id)a3
+- (void)permitURLWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_opt_new();
   URL = self->_URL;
   pageTitle = self->_pageTitle;
@@ -117,7 +117,7 @@
     v11 = v10;
   }
 
-  (v4)[2](v4, v11);
+  (completionCopy)[2](completionCopy, v11);
 }
 
 - (void)didAcceptEnteredPIN

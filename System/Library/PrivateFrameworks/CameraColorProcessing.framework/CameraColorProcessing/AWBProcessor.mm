@@ -1,6 +1,6 @@
 @interface AWBProcessor
-- (int)internalSetupWithFWPlatformID:(int)a3;
-- (int)prepareToProcess:(unsigned int)a3;
+- (int)internalSetupWithFWPlatformID:(int)d;
+- (int)prepareToProcess:(unsigned int)process;
 - (int)process;
 - (int)purgeResources;
 - (int)setup;
@@ -10,9 +10,9 @@
 
 @implementation AWBProcessor
 
-- (int)internalSetupWithFWPlatformID:(int)a3
+- (int)internalSetupWithFWPlatformID:(int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   FigKTraceInit();
   v5 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
@@ -37,15 +37,15 @@
   if (self->_metalContext)
   {
     v9 = objc_alloc(MEMORY[0x1E6991750]);
-    v10 = [(FigMetalContext *)self->_metalContext device];
-    v11 = [v9 initWithDevice:v10 allocatorType:2];
+    device = [(FigMetalContext *)self->_metalContext device];
+    v11 = [v9 initWithDevice:device allocatorType:2];
     [(FigMetalContext *)self->_metalContext setAllocator:v11];
 
     if (self->_metalContext)
     {
-      v12 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       stats = self->_stats;
-      self->_stats = v12;
+      self->_stats = dictionary;
 
       if (self->_stats)
       {
@@ -113,7 +113,7 @@ LABEL_11:
   return [(AWBProcessor *)self internalSetupWithFWPlatformID:v3];
 }
 
-- (int)prepareToProcess:(unsigned int)a3
+- (int)prepareToProcess:(unsigned int)process
 {
   v4 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
@@ -125,10 +125,10 @@ LABEL_11:
   {
 LABEL_13:
     awbAlgo = self->_awbAlgo;
-    v15 = [(AWBIBPParams *)self->_awbParams moduleConfig];
-    v16 = [(AWBIBPParams *)self->_awbParams metadata];
-    v17 = [(AWBIBPParams *)self->_awbParams cameraInfo];
-    v12 = [(AWBAlgorithm *)awbAlgo configWithModuleConfig:v15 metadata:v16 cameraInfo:v17 awbParams:self->_awbParams];
+    moduleConfig = [(AWBIBPParams *)self->_awbParams moduleConfig];
+    metadata = [(AWBIBPParams *)self->_awbParams metadata];
+    cameraInfo = [(AWBIBPParams *)self->_awbParams cameraInfo];
+    v12 = [(AWBAlgorithm *)awbAlgo configWithModuleConfig:moduleConfig metadata:metadata cameraInfo:cameraInfo awbParams:self->_awbParams];
 
     if (v12)
     {
@@ -138,10 +138,10 @@ LABEL_13:
     else
     {
       awbStats = self->_awbStats;
-      v19 = [(AWBIBPParams *)self->_awbParams moduleConfig];
-      v20 = [(AWBIBPParams *)self->_awbParams metadata];
-      v21 = [(AWBIBPParams *)self->_awbParams cameraInfo];
-      v12 = [(AWBStatistics *)awbStats configWithModuleConfig:v19 metadata:v20 cameraInfo:v21 awbParams:self->_awbParams];
+      moduleConfig2 = [(AWBIBPParams *)self->_awbParams moduleConfig];
+      metadata2 = [(AWBIBPParams *)self->_awbParams metadata];
+      cameraInfo2 = [(AWBIBPParams *)self->_awbParams cameraInfo];
+      v12 = [(AWBStatistics *)awbStats configWithModuleConfig:moduleConfig2 metadata:metadata2 cameraInfo:cameraInfo2 awbParams:self->_awbParams];
 
       if (!v12)
       {
@@ -173,15 +173,15 @@ LABEL_30:
   externalMemoryResource = self->_externalMemoryResource;
   if (externalMemoryResource)
   {
-    v9 = [(CMIExternalMemoryResource *)externalMemoryResource allocatorBackend];
-    v10 = v9;
-    if (v9)
+    allocatorBackend = [(CMIExternalMemoryResource *)externalMemoryResource allocatorBackend];
+    v10 = allocatorBackend;
+    if (allocatorBackend)
     {
-      if ([v9 memSize] >> 21)
+      if ([allocatorBackend memSize] >> 21)
       {
         [v7 setMemSize:{objc_msgSend(v10, "memSize")}];
-        v11 = [(FigMetalContext *)self->_metalContext allocator];
-        LODWORD(v12) = [v11 setupWithDescriptor:v7 allocatorBackend:v10];
+        allocator = [(FigMetalContext *)self->_metalContext allocator];
+        LODWORD(v12) = [allocator setupWithDescriptor:v7 allocatorBackend:v10];
 
         if (!v12)
         {
@@ -223,8 +223,8 @@ LABEL_36:
   }
 
   [v7 setMemSize:0x200000];
-  v13 = [(FigMetalContext *)self->_metalContext allocator];
-  v12 = [v13 setupWithDescriptor:v7];
+  allocator2 = [(FigMetalContext *)self->_metalContext allocator];
+  v12 = [allocator2 setupWithDescriptor:v7];
 
   if (!v12)
   {
@@ -303,7 +303,7 @@ LABEL_25:
 LABEL_26:
     v15 = 0;
     v16 = 0;
-    v13 = v57[0];
+    process = v57[0];
     goto LABEL_12;
   }
 
@@ -317,21 +317,21 @@ LABEL_26:
   v53 = v5;
   [(NSMutableDictionary *)self->_stats removeAllObjects];
   awbStats = self->_awbStats;
-  v51 = [(AWBIBPParams *)self->_awbParams imageTex];
-  v6 = [(AWBIBPParams *)self->_awbParams clippedTex];
-  v7 = [(AWBIBPParams *)self->_awbParams lscGainsTex];
-  v8 = [(AWBIBPParams *)self->_awbParams validRectInBufferCoords];
-  v9 = [(AWBIBPParams *)self->_awbParams validRectInSensorReadoutCoords];
-  v10 = [(AWBIBPParams *)self->_awbParams skinMask];
+  imageTex = [(AWBIBPParams *)self->_awbParams imageTex];
+  clippedTex = [(AWBIBPParams *)self->_awbParams clippedTex];
+  lscGainsTex = [(AWBIBPParams *)self->_awbParams lscGainsTex];
+  validRectInBufferCoords = [(AWBIBPParams *)self->_awbParams validRectInBufferCoords];
+  validRectInSensorReadoutCoords = [(AWBIBPParams *)self->_awbParams validRectInSensorReadoutCoords];
+  skinMask = [(AWBIBPParams *)self->_awbParams skinMask];
   v61 = 0;
-  v11 = [(AWBIBPParams *)self->_awbParams skyMask];
+  skyMask = [(AWBIBPParams *)self->_awbParams skyMask];
   v60 = 0;
-  v12 = [(AWBIBPParams *)self->_awbParams regionOfInterestRectInBufferCoords];
-  v13 = [(AWBStatistics *)awbStats process:v51 clipped:v6 lscGainsTex:v7 validRectInBufferCoords:v8 validRectInSensorReadoutCoords:v9 awbStatsBuffer:v4 awbTileStatsConfig:&v68 anstSkinMask:v10 anstSkinMaskData:&v61 skyMaskTex:v11 skyMaskData:&v60 regionOfInterestRectInBufferCoords:v12 downsizeFactor:&v67];
+  regionOfInterestRectInBufferCoords = [(AWBIBPParams *)self->_awbParams regionOfInterestRectInBufferCoords];
+  process = [(AWBStatistics *)awbStats process:imageTex clipped:clippedTex lscGainsTex:lscGainsTex validRectInBufferCoords:validRectInBufferCoords validRectInSensorReadoutCoords:validRectInSensorReadoutCoords awbStatsBuffer:v4 awbTileStatsConfig:&v68 anstSkinMask:skinMask anstSkinMaskData:&v61 skyMaskTex:skyMask skyMaskData:&v60 regionOfInterestRectInBufferCoords:regionOfInterestRectInBufferCoords downsizeFactor:&v67];
   v56 = v61;
   v54 = v60;
 
-  if (v13)
+  if (process)
   {
     [AWBProcessor process];
     v15 = 0;
@@ -351,44 +351,44 @@ LABEL_29:
   if (!v15)
   {
     [(AWBProcessor *)v57 process];
-    v13 = v57[0];
+    process = v57[0];
     goto LABEL_29;
   }
 
-  v17 = [v53 bytes];
-  v18 = [v15 bytes];
-  v19 = v18[3];
-  v21 = *v18;
-  v20 = v18[1];
-  v17[14] = v18[2];
-  v17[15] = v19;
-  v17[12] = v21;
-  v17[13] = v20;
-  v22 = v18[7];
-  v24 = v18[4];
-  v23 = v18[5];
-  v17[18] = v18[6];
-  v17[19] = v22;
-  v17[16] = v24;
-  v17[17] = v23;
-  v25 = v18[11];
-  v27 = v18[8];
-  v26 = v18[9];
-  v17[22] = v18[10];
-  v17[23] = v25;
-  v17[20] = v27;
-  v17[21] = v26;
+  bytes = [v53 bytes];
+  bytes2 = [v15 bytes];
+  v19 = bytes2[3];
+  v21 = *bytes2;
+  v20 = bytes2[1];
+  bytes[14] = bytes2[2];
+  bytes[15] = v19;
+  bytes[12] = v21;
+  bytes[13] = v20;
+  v22 = bytes2[7];
+  v24 = bytes2[4];
+  v23 = bytes2[5];
+  bytes[18] = bytes2[6];
+  bytes[19] = v22;
+  bytes[16] = v24;
+  bytes[17] = v23;
+  v25 = bytes2[11];
+  v27 = bytes2[8];
+  v26 = bytes2[9];
+  bytes[22] = bytes2[10];
+  bytes[23] = v25;
+  bytes[20] = v27;
+  bytes[21] = v26;
   [(NSMutableDictionary *)self->_stats setObject:v53 forKeyedSubscript:@"windowStats"];
   v28 = [MEMORY[0x1E695DEF0] dataWithBytes:objc_msgSend(v4 length:{"contents") + 65728, 0x4000}];
   [(NSMutableDictionary *)self->_stats setObject:v28 forKeyedSubscript:@"histStats"];
 
   v64 = *MEMORY[0x1E695EFF8];
   v52 = v64;
-  v29 = [(AWBIBPParams *)self->_awbParams imageTex];
-  *&v65 = [v29 width];
+  imageTex2 = [(AWBIBPParams *)self->_awbParams imageTex];
+  *&v65 = [imageTex2 width];
 
-  v30 = [(AWBIBPParams *)self->_awbParams imageTex];
-  *(&v65 + 1) = [v30 height];
+  imageTex3 = [(AWBIBPParams *)self->_awbParams imageTex];
+  *(&v65 + 1) = [imageTex3 height];
 
   v31 = [MEMORY[0x1E696B098] valueWithPointer:&v64];
   [(NSMutableDictionary *)self->_stats setObject:v31 forKeyedSubscript:@"FESOutputSize"];
@@ -396,11 +396,11 @@ LABEL_29:
   v4 = v56;
   [(NSMutableDictionary *)self->_stats setObject:v56 forKeyedSubscript:@"anstSkinMask"];
   v62 = v52;
-  v32 = [(AWBIBPParams *)self->_awbParams skyMask];
-  *&v63 = [v32 width];
+  skyMask2 = [(AWBIBPParams *)self->_awbParams skyMask];
+  *&v63 = [skyMask2 width];
 
-  v33 = [(AWBIBPParams *)self->_awbParams skyMask];
-  *(&v63 + 1) = [v33 height];
+  skyMask3 = [(AWBIBPParams *)self->_awbParams skyMask];
+  *(&v63 + 1) = [skyMask3 height];
 
   v34 = v54;
   [(NSMutableDictionary *)self->_stats setObject:v54 forKeyedSubscript:@"skyMaskData"];
@@ -409,32 +409,32 @@ LABEL_29:
 
   [(AWBAlgorithm *)self->_awbAlgo setTileStatsROIRect:SHIDWORD(v68), v69, ((HIDWORD(v69) - HIDWORD(v68)) & ~((HIDWORD(v69) - HIDWORD(v68)) >> 31)), ((v70 - v69) & ~((v70 - v69) >> 31))];
   [(AWBAlgorithm *)self->_awbAlgo setStats:self->_stats];
-  v36 = [(AWBIBPParams *)self->_awbParams outputMetadata];
-  [(AWBAlgorithm *)self->_awbAlgo setOutputMetadata:v36];
+  outputMetadata = [(AWBIBPParams *)self->_awbParams outputMetadata];
+  [(AWBAlgorithm *)self->_awbAlgo setOutputMetadata:outputMetadata];
 
-  v37 = [(AWBIBPParams *)self->_awbParams validRectInBufferCoords];
-  v38 = CGRectMakeWithDictionaryRepresentation(v37, &rect);
+  validRectInBufferCoords2 = [(AWBIBPParams *)self->_awbParams validRectInBufferCoords];
+  v38 = CGRectMakeWithDictionaryRepresentation(validRectInBufferCoords2, &rect);
 
   if (v38)
   {
     [(AWBAlgorithm *)self->_awbAlgo setWinRegionWidth:4 * (rect.size.width / v67)];
     [(AWBAlgorithm *)self->_awbAlgo setWinRegionHeight:4 * (rect.size.height / v67)];
-    v13 = [(AWBAlgorithm *)self->_awbAlgo process];
-    if (v13)
+    process = [(AWBAlgorithm *)self->_awbAlgo process];
+    if (process)
     {
       [AWBProcessor process];
     }
 
     else
     {
-      v39 = [(AWBAlgorithm *)self->_awbAlgo awbComboGains];
-      [(AWBIBPParams *)self->_awbParams setAwbComboGains:v39, v40];
-      v41 = [(AWBAlgorithm *)self->_awbAlgo awbComboGainsNormalized];
-      [(AWBIBPParams *)self->_awbParams setAwbComboGainsNormalized:v41, v42];
-      v43 = [(AWBAlgorithm *)self->_awbAlgo awbGains];
-      [(AWBIBPParams *)self->_awbParams setAwbGains:v43, v44];
-      v45 = [(AWBAlgorithm *)self->_awbAlgo outputMetadata];
-      [(AWBIBPParams *)self->_awbParams setOutputMetadata:v45];
+      awbComboGains = [(AWBAlgorithm *)self->_awbAlgo awbComboGains];
+      [(AWBIBPParams *)self->_awbParams setAwbComboGains:awbComboGains, v40];
+      awbComboGainsNormalized = [(AWBAlgorithm *)self->_awbAlgo awbComboGainsNormalized];
+      [(AWBIBPParams *)self->_awbParams setAwbComboGainsNormalized:awbComboGainsNormalized, v42];
+      awbGains = [(AWBAlgorithm *)self->_awbAlgo awbGains];
+      [(AWBIBPParams *)self->_awbParams setAwbGains:awbGains, v44];
+      outputMetadata2 = [(AWBAlgorithm *)self->_awbAlgo outputMetadata];
+      [(AWBIBPParams *)self->_awbParams setOutputMetadata:outputMetadata2];
 
       [(AWBAlgorithm *)self->_awbAlgo setOutputMetadata:0];
     }
@@ -443,7 +443,7 @@ LABEL_29:
   else
   {
     [(AWBProcessor *)v57 process];
-    v13 = v57[0];
+    process = v57[0];
   }
 
   v3 = MEMORY[0x1E695FF58];
@@ -454,10 +454,10 @@ LABEL_12:
     kdebug_trace();
   }
 
-  v46 = [(FigMetalContext *)self->_metalContext allocator];
-  [v46 usedSizeAll];
+  allocator = [(FigMetalContext *)self->_metalContext allocator];
+  [allocator usedSizeAll];
 
-  if (v13)
+  if (process)
   {
     FigDebugAssert3();
     if (dword_1EDD78228)
@@ -485,18 +485,18 @@ LABEL_12:
     }
   }
 
-  return v13;
+  return process;
 }
 
 - (int)purgeResources
 {
-  v3 = [(FigMetalContext *)self->_metalContext allocator];
-  [v3 reset];
+  allocator = [(FigMetalContext *)self->_metalContext allocator];
+  [allocator reset];
 
   if (!self->_externalMemoryResource)
   {
-    v4 = [(FigMetalContext *)self->_metalContext allocator];
-    [v4 purgeResources];
+    allocator2 = [(FigMetalContext *)self->_metalContext allocator];
+    [allocator2 purgeResources];
   }
 
   self->_allocatorSetupComplete = 0;
@@ -614,7 +614,7 @@ LABEL_12:
   OUTLINED_FUNCTION_2_0();
   FigDebugAssert3();
   result = FigSignalErrorAtGM();
-  *a1 = result;
+  *self = result;
   return result;
 }
 

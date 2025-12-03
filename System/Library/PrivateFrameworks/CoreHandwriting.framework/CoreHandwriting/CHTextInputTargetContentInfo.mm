@@ -1,36 +1,36 @@
 @interface CHTextInputTargetContentInfo
-- (CGRect)characterRectForAbsoluteCharacterIndex:(int64_t)a3;
-- (CGRect)characterRectForComposedCharacterAtIndex:(int64_t)a3;
-- (CGRect)characterRectForRelativeCharacterIndex:(int64_t)a3;
+- (CGRect)characterRectForAbsoluteCharacterIndex:(int64_t)index;
+- (CGRect)characterRectForComposedCharacterAtIndex:(int64_t)index;
+- (CGRect)characterRectForRelativeCharacterIndex:(int64_t)index;
 - (CGRect)unionCharacterRects;
-- (CGRect)visualCharacterRectForCharacterIndex:(int64_t)a3;
-- (CHTextInputTargetContentInfo)initWithTextInputTarget:(id)a3 contentLength:(int64_t)a4 referenceSubstring:(id)a5 referenceSubstringRange:(_NSRange)a6 charRectsInReferenceSubstring:(CGRect *)a7 strokeCoveredTextRange:(_NSRange)a8 selectedTextRange:(_NSRange)a9 activePreviewRange:(_NSRange)a10 contentType:(int)a11 lastCharacterLevelPosition:(int64_t)a12;
-- (CHTextInputTargetContentInfo)initWithTextInputTarget:(id)a3 contentLength:(int64_t)a4 referenceSubstring:(id)a5 referenceSubstringRange:(_NSRange)a6 charRectsInReferenceSubstring:(CGRect *)a7 strokeCoveredTextRange:(_NSRange)a8 selectedTextRange:(_NSRange)a9 activePreviewRange:(_NSRange)a10 lastCharacterLevelPosition:(int64_t)a11;
+- (CGRect)visualCharacterRectForCharacterIndex:(int64_t)index;
+- (CHTextInputTargetContentInfo)initWithTextInputTarget:(id)target contentLength:(int64_t)length referenceSubstring:(id)substring referenceSubstringRange:(_NSRange)range charRectsInReferenceSubstring:(CGRect *)referenceSubstring strokeCoveredTextRange:(_NSRange)textRange selectedTextRange:(_NSRange)selectedTextRange activePreviewRange:(_NSRange)self0 contentType:(int)self1 lastCharacterLevelPosition:(int64_t)self2;
+- (CHTextInputTargetContentInfo)initWithTextInputTarget:(id)target contentLength:(int64_t)length referenceSubstring:(id)substring referenceSubstringRange:(_NSRange)range charRectsInReferenceSubstring:(CGRect *)referenceSubstring strokeCoveredTextRange:(_NSRange)textRange selectedTextRange:(_NSRange)selectedTextRange activePreviewRange:(_NSRange)self0 lastCharacterLevelPosition:(int64_t)self1;
 - (_NSRange)activePreviewRange;
 - (_NSRange)referenceSubstringRange;
-- (_NSRange)referenceSubstringRangeOfComposedCharacterAtIndex:(int64_t)a3;
+- (_NSRange)referenceSubstringRangeOfComposedCharacterAtIndex:(int64_t)index;
 - (_NSRange)selectedTextRange;
 - (_NSRange)strokeCoveredTextRange;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)referenceSubstringInRange:(_NSRange)a3;
-- (int64_t)absoluteLocationFromRelativeLocation:(int64_t)a3;
-- (int64_t)relativeLocationFromAbsoluteLocation:(int64_t)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)referenceSubstringInRange:(_NSRange)range;
+- (int64_t)absoluteLocationFromRelativeLocation:(int64_t)location;
+- (int64_t)relativeLocationFromAbsoluteLocation:(int64_t)location;
 - (void)dealloc;
-- (void)enumerateCharacterRectsInRange:(_NSRange)a3 reverse:(BOOL)a4 block:(id)a5;
+- (void)enumerateCharacterRectsInRange:(_NSRange)range reverse:(BOOL)reverse block:(id)block;
 @end
 
 @implementation CHTextInputTargetContentInfo
 
-- (CHTextInputTargetContentInfo)initWithTextInputTarget:(id)a3 contentLength:(int64_t)a4 referenceSubstring:(id)a5 referenceSubstringRange:(_NSRange)a6 charRectsInReferenceSubstring:(CGRect *)a7 strokeCoveredTextRange:(_NSRange)a8 selectedTextRange:(_NSRange)a9 activePreviewRange:(_NSRange)a10 lastCharacterLevelPosition:(int64_t)a11
+- (CHTextInputTargetContentInfo)initWithTextInputTarget:(id)target contentLength:(int64_t)length referenceSubstring:(id)substring referenceSubstringRange:(_NSRange)range charRectsInReferenceSubstring:(CGRect *)referenceSubstring strokeCoveredTextRange:(_NSRange)textRange selectedTextRange:(_NSRange)selectedTextRange activePreviewRange:(_NSRange)self0 lastCharacterLevelPosition:(int64_t)self1
 {
-  length = a6.length;
-  location = a6.location;
-  v15 = a10.location;
+  length = range.length;
+  location = range.location;
+  v15 = previewRange.location;
   v105 = *MEMORY[0x1E69E9840];
-  v99 = a3;
-  v21 = a5;
-  if (a9.location != 0x7FFFFFFFFFFFFFFFLL && a9.location + a9.length > a4)
+  targetCopy = target;
+  substringCopy = substring;
+  if (selectedTextRange.location != 0x7FFFFFFFFFFFFFFFLL && selectedTextRange.location + selectedTextRange.length > length)
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -40,11 +40,11 @@
     v33 = qword_1EA84DC50[0];
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
-      v34 = NSStringFromRange(a9);
+      v34 = NSStringFromRange(selectedTextRange);
       *buf = 138412546;
       v102 = v34;
       v103 = 2048;
-      v104 = a4;
+      lengthCopy6 = length;
       _os_log_impl(&dword_18366B000, v33, OS_LOG_TYPE_ERROR, "selectedTextRange %@ beyond text length %ld", buf, 0x16u);
     }
 
@@ -56,15 +56,15 @@
     v35 = qword_1EA84DC50[0];
     if (os_log_type_enabled(v35, OS_LOG_TYPE_FAULT))
     {
-      v36 = NSStringFromRange(a9);
+      v36 = NSStringFromRange(selectedTextRange);
       *buf = 138412546;
       v102 = v36;
       v103 = 2048;
-      v104 = a4;
+      lengthCopy6 = length;
       _os_log_impl(&dword_18366B000, v35, OS_LOG_TYPE_FAULT, "selectedTextRange %@ beyond text length %ld", buf, 0x16u);
     }
 
-    v37 = a10.location != 0x7FFFFFFFFFFFFFFFLL && a10.location + a10.length > a4;
+    v37 = previewRange.location != 0x7FFFFFFFFFFFFFFFLL && previewRange.location + previewRange.length > length;
     v24 = &qword_1EA84D000;
     if (!v37)
     {
@@ -80,7 +80,7 @@ LABEL_9:
 
   else
   {
-    v23 = a10.location != 0x7FFFFFFFFFFFFFFFLL && a10.location + a10.length > a4;
+    v23 = previewRange.location != 0x7FFFFFFFFFFFFFFFLL && previewRange.location + previewRange.length > length;
     v24 = &qword_1EA84D000;
     if (!v23)
     {
@@ -104,11 +104,11 @@ LABEL_9:
   if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
   {
 LABEL_30:
-    v39 = NSStringFromRange(a10);
+    v39 = NSStringFromRange(previewRange);
     *buf = 138412546;
     v102 = v39;
     v103 = 2048;
-    v104 = a4;
+    lengthCopy6 = length;
     _os_log_impl(&dword_18366B000, v38, OS_LOG_TYPE_ERROR, "activePreviewRange %@ beyond text length %ld", buf, 0x16u);
   }
 
@@ -130,11 +130,11 @@ LABEL_31:
   if (os_log_type_enabled(v40, OS_LOG_TYPE_FAULT))
   {
 LABEL_33:
-    v41 = NSStringFromRange(a10);
+    v41 = NSStringFromRange(previewRange);
     *buf = 138412546;
     v102 = v41;
     v103 = 2048;
-    v104 = a4;
+    lengthCopy6 = length;
     _os_log_impl(&dword_18366B000, v40, OS_LOG_TYPE_FAULT, "activePreviewRange %@ beyond text length %ld", buf, 0x16u);
   }
 
@@ -143,9 +143,9 @@ LABEL_34:
   if (location != 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_10:
-    v96 = a10.length;
+    v96 = previewRange.length;
     v25 = location + length;
-    if (location + length <= a4)
+    if (location + length <= length)
     {
       goto LABEL_11;
     }
@@ -206,12 +206,12 @@ LABEL_40:
 
 LABEL_41:
 
-  v96 = a10.length;
+  v96 = previewRange.length;
   v25 = location + length;
-  if (location + length <= a4)
+  if (location + length <= length)
   {
 LABEL_11:
-    if (length == objc_msgSend_length(v21, v16, v17, v18, v19, v20))
+    if (length == objc_msgSend_length(substringCopy, v16, v17, v18, v19, v20))
     {
       goto LABEL_12;
     }
@@ -242,7 +242,7 @@ LABEL_44:
     *buf = 138412546;
     v102 = v47;
     v103 = 2048;
-    v104 = a4;
+    lengthCopy6 = length;
     _os_log_impl(&dword_18366B000, v46, OS_LOG_TYPE_ERROR, "referenceSubstringRange %@ beyond text length %ld", buf, 0x16u);
   }
 
@@ -270,17 +270,17 @@ LABEL_47:
     *buf = 138412546;
     v102 = v49;
     v103 = 2048;
-    v104 = a4;
+    lengthCopy6 = length;
     _os_log_impl(&dword_18366B000, v48, OS_LOG_TYPE_FAULT, "referenceSubstringRange %@ beyond text length %ld", buf, 0x16u);
   }
 
 LABEL_48:
 
-  if (length == objc_msgSend_length(v21, v50, v51, v52, v53, v54))
+  if (length == objc_msgSend_length(substringCopy, v50, v51, v52, v53, v54))
   {
 LABEL_12:
-    v31 = a8.location;
-    if (length == objc_msgSend_length(v21, v26, v27, v28, v29, v30))
+    v31 = textRange.location;
+    if (length == objc_msgSend_length(substringCopy, v26, v27, v28, v29, v30))
     {
       goto LABEL_13;
     }
@@ -303,7 +303,7 @@ LABEL_53:
       {
 LABEL_56:
 
-        v32 = a8.length;
+        v32 = textRange.length;
         if (v31 == 0x7FFFFFFFFFFFFFFFLL)
         {
           goto LABEL_65;
@@ -316,11 +316,11 @@ LABEL_56:
     v111.location = location;
     v111.length = length;
     v69 = NSStringFromRange(v111);
-    v75 = objc_msgSend_length(v21, v70, v71, v72, v73, v74);
+    v75 = objc_msgSend_length(substringCopy, v70, v71, v72, v73, v74);
     *buf = 138412546;
     v102 = v69;
     v103 = 2048;
-    v104 = v75;
+    lengthCopy6 = v75;
     _os_log_impl(&dword_18366B000, v68, OS_LOG_TYPE_FAULT, "Invalid referenceSubstringRange %@, length doesn't match string length %ld", buf, 0x16u);
 
     goto LABEL_56;
@@ -346,24 +346,24 @@ LABEL_51:
     v110.location = location;
     v110.length = length;
     v56 = NSStringFromRange(v110);
-    v62 = objc_msgSend_length(v21, v57, v58, v59, v60, v61);
+    v62 = objc_msgSend_length(substringCopy, v57, v58, v59, v60, v61);
     *buf = 138412546;
     v102 = v56;
     v103 = 2048;
-    v104 = v62;
+    lengthCopy6 = v62;
     _os_log_impl(&dword_18366B000, v55, OS_LOG_TYPE_ERROR, "Invalid referenceSubstringRange %@, length doesn't match string length %ld", buf, 0x16u);
   }
 
 LABEL_52:
 
-  v31 = a8.location;
-  if (length != objc_msgSend_length(v21, v63, v64, v65, v66, v67))
+  v31 = textRange.location;
+  if (length != objc_msgSend_length(substringCopy, v63, v64, v65, v66, v67))
   {
     goto LABEL_53;
   }
 
 LABEL_13:
-  v32 = a8.length;
+  v32 = textRange.length;
   if (v31 == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_65;
@@ -389,10 +389,10 @@ LABEL_57:
       *buf = 138412546;
       v102 = v77;
       v103 = 2112;
-      v104 = v78;
+      lengthCopy6 = v78;
       _os_log_impl(&dword_18366B000, v76, OS_LOG_TYPE_ERROR, "The strokeCoveredTextRange %@ must be within the referenceSubstringRange %@", buf, 0x16u);
 
-      v15 = a10.location;
+      v15 = previewRange.location;
     }
   }
 
@@ -403,9 +403,9 @@ LABEL_65:
   v80 = v79;
   if (v79)
   {
-    objc_storeStrong(&v79->_textInputTarget, a3);
-    v80->_textContentLength = a4;
-    v86 = objc_msgSend_copy(v21, v81, v82, v83, v84, v85);
+    objc_storeStrong(&v79->_textInputTarget, target);
+    v80->_textContentLength = length;
+    v86 = objc_msgSend_copy(substringCopy, v81, v82, v83, v84, v85);
     referenceSubstring = v80->_referenceSubstring;
     v80->_referenceSubstring = v86;
 
@@ -413,7 +413,7 @@ LABEL_65:
     v80->_referenceSubstringRange.length = length;
     v80->_strokeCoveredTextRange.location = v31;
     v80->_strokeCoveredTextRange.length = v32;
-    v80->_selectedTextRange = a9;
+    v80->_selectedTextRange = selectedTextRange;
     v80->_isCursorStrong = 1;
     v80->_activePreviewRange.location = v15;
     v80->_activePreviewRange.length = v96;
@@ -422,17 +422,17 @@ LABEL_65:
     *&v80->_isSingleLine = 255;
     LOBYTE(v80->_lastCharacterLevelPosition) = 1;
     isa = v80[1].super.isa;
-    v80->_protectedCharacterIndexes = a11;
+    v80->_protectedCharacterIndexes = position;
     v80[1].super.isa = 0;
 
     if (length)
     {
-      if (a7)
+      if (referenceSubstring)
       {
 LABEL_76:
         v93 = malloc_type_calloc(length, 0x20uLL, 0x1000040E0EAB150uLL);
         v80->_characterRectsInReferenceSubstring = v93;
-        memcpy(v93, a7, 32 * length);
+        memcpy(v93, referenceSubstring, 32 * length);
         goto LABEL_77;
       }
 
@@ -489,12 +489,12 @@ LABEL_77:
   return v80;
 }
 
-- (CHTextInputTargetContentInfo)initWithTextInputTarget:(id)a3 contentLength:(int64_t)a4 referenceSubstring:(id)a5 referenceSubstringRange:(_NSRange)a6 charRectsInReferenceSubstring:(CGRect *)a7 strokeCoveredTextRange:(_NSRange)a8 selectedTextRange:(_NSRange)a9 activePreviewRange:(_NSRange)a10 contentType:(int)a11 lastCharacterLevelPosition:(int64_t)a12
+- (CHTextInputTargetContentInfo)initWithTextInputTarget:(id)target contentLength:(int64_t)length referenceSubstring:(id)substring referenceSubstringRange:(_NSRange)range charRectsInReferenceSubstring:(CGRect *)referenceSubstring strokeCoveredTextRange:(_NSRange)textRange selectedTextRange:(_NSRange)selectedTextRange activePreviewRange:(_NSRange)self0 contentType:(int)self1 lastCharacterLevelPosition:(int64_t)self2
 {
   BYTE4(v14) = 1;
-  LODWORD(v14) = a11;
+  LODWORD(v14) = type;
   v13 = 1;
-  return objc_msgSend_initWithTextInputTarget_contentLength_referenceSubstring_referenceSubstringRange_charRectsInReferenceSubstring_strokeCoveredTextRange_selectedTextRange_isCursorStrong_activePreviewRange_contentType_isSingleLine_lastCharacterLevelPosition_(self, a2, a3, a4, a5, a6.location, a6.length, a7, a8.location, a8.length, a9.location, a9.length, v13, a10.location, a10.length, v14, a12);
+  return objc_msgSend_initWithTextInputTarget_contentLength_referenceSubstring_referenceSubstringRange_charRectsInReferenceSubstring_strokeCoveredTextRange_selectedTextRange_isCursorStrong_activePreviewRange_contentType_isSingleLine_lastCharacterLevelPosition_(self, a2, target, length, substring, range.location, range.length, referenceSubstring, textRange.location, textRange.length, selectedTextRange.location, selectedTextRange.length, v13, previewRange.location, previewRange.length, v14, position);
 }
 
 - (void)dealloc
@@ -662,7 +662,7 @@ LABEL_17:
   return v158;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CHMutableTextInputTargetContentInfo);
   v10 = objc_msgSend_referenceSubstring(self, v5, v6, v7, v8, v9);
@@ -704,35 +704,35 @@ LABEL_17:
   return v4;
 }
 
-- (int64_t)absoluteLocationFromRelativeLocation:(int64_t)a3
+- (int64_t)absoluteLocationFromRelativeLocation:(int64_t)location
 {
   result = 0x7FFFFFFFFFFFFFFFLL;
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (location != 0x7FFFFFFFFFFFFFFFLL)
   {
-    return self->_referenceSubstringRange.location + a3;
+    return self->_referenceSubstringRange.location + location;
   }
 
   return result;
 }
 
-- (int64_t)relativeLocationFromAbsoluteLocation:(int64_t)a3
+- (int64_t)relativeLocationFromAbsoluteLocation:(int64_t)location
 {
   result = 0x7FFFFFFFFFFFFFFFLL;
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (location != 0x7FFFFFFFFFFFFFFFLL)
   {
-    return a3 - self->_referenceSubstringRange.location;
+    return location - self->_referenceSubstringRange.location;
   }
 
   return result;
 }
 
-- (CGRect)characterRectForRelativeCharacterIndex:(int64_t)a3
+- (CGRect)characterRectForRelativeCharacterIndex:(int64_t)index
 {
   origin = *MEMORY[0x1E695F050];
   size = *(MEMORY[0x1E695F050] + 16);
-  if ((a3 & 0x8000000000000000) == 0 && self->_referenceSubstringRange.length > a3)
+  if ((index & 0x8000000000000000) == 0 && self->_referenceSubstringRange.length > index)
   {
-    v5 = &self->_characterRectsInReferenceSubstring[a3];
+    v5 = &self->_characterRectsInReferenceSubstring[index];
     origin = v5->origin;
     size = v5->size;
   }
@@ -746,12 +746,12 @@ LABEL_17:
   return result;
 }
 
-- (CGRect)characterRectForAbsoluteCharacterIndex:(int64_t)a3
+- (CGRect)characterRectForAbsoluteCharacterIndex:(int64_t)index
 {
   v7 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (index != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = a3 - self->_referenceSubstringRange.location;
+    v7 = index - self->_referenceSubstringRange.location;
   }
 
   objc_msgSend_characterRectForRelativeCharacterIndex_(self, a2, v7, v3, v4, v5);
@@ -762,9 +762,9 @@ LABEL_17:
   return result;
 }
 
-- (CGRect)visualCharacterRectForCharacterIndex:(int64_t)a3
+- (CGRect)visualCharacterRectForCharacterIndex:(int64_t)index
 {
-  objc_msgSend_characterRectForComposedCharacterAtIndex_(self, a2, a3, v3, v4, v5);
+  objc_msgSend_characterRectForComposedCharacterAtIndex_(self, a2, index, v3, v4, v5);
   x = v46.origin.x;
   y = v46.origin.y;
   width = v46.size.width;
@@ -777,7 +777,7 @@ LABEL_17:
   if (qword_1EA84CE28 == -1)
   {
     v17 = 0x7FFFFFFFFFFFFFFFLL;
-    if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+    if (index == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_5;
     }
@@ -787,10 +787,10 @@ LABEL_17:
 
   dispatch_once(&qword_1EA84CE28, &unk_1EF1BC5B8);
   v17 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (index != 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_4:
-    v17 = a3 - self->_referenceSubstringRange.location;
+    v17 = index - self->_referenceSubstringRange.location;
   }
 
 LABEL_5:
@@ -833,11 +833,11 @@ LABEL_11:
   return result;
 }
 
-- (void)enumerateCharacterRectsInRange:(_NSRange)a3 reverse:(BOOL)a4 block:(id)a5
+- (void)enumerateCharacterRectsInRange:(_NSRange)range reverse:(BOOL)reverse block:(id)block
 {
-  length = a3.length;
-  location = a3.location;
-  v14 = a5;
+  length = range.length;
+  location = range.location;
+  blockCopy = block;
   v15 = 0x7FFFFFFFFFFFFFFFLL;
   if (location != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -851,11 +851,11 @@ LABEL_11:
   v23[3] = &unk_1E6DDCF58;
   v25 = v16;
   v23[4] = self;
-  v17 = v14;
+  v17 = blockCopy;
   v24 = v17;
   v18 = MEMORY[0x1865E6810](v23);
   v22 = 0;
-  if (a4)
+  if (reverse)
   {
     v19 = length + v15 - 1;
     do
@@ -891,10 +891,10 @@ LABEL_11:
   }
 }
 
-- (id)referenceSubstringInRange:(_NSRange)a3
+- (id)referenceSubstringInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   referenceSubstringRange = self->_referenceSubstringRange;
   v20.location = location;
   v20.length = length;
@@ -921,12 +921,12 @@ LABEL_11:
   return v17;
 }
 
-- (_NSRange)referenceSubstringRangeOfComposedCharacterAtIndex:(int64_t)a3
+- (_NSRange)referenceSubstringRangeOfComposedCharacterAtIndex:(int64_t)index
 {
   v6 = 0x7FFFFFFFFFFFFFFFLL;
-  if ((a3 == 0x7FFFFFFFFFFFFFFFLL || (v6 = a3 - self->_referenceSubstringRange.location, v6 >= 0)) && (v7 = 0x7FFFFFFFFFFFFFFFLL, v6 < self->_referenceSubstringRange.length))
+  if ((index == 0x7FFFFFFFFFFFFFFFLL || (v6 = index - self->_referenceSubstringRange.location, v6 >= 0)) && (v7 = 0x7FFFFFFFFFFFFFFFLL, v6 < self->_referenceSubstringRange.length))
   {
-    v9 = objc_msgSend_referenceSubstring(self, a2, a3, v3, v4, v5);
+    v9 = objc_msgSend_referenceSubstring(self, a2, index, v3, v4, v5);
     v14 = objc_msgSend_rangeOfComposedCharacterSequenceAtIndex_(v9, v10, v6, v11, v12, v13);
     v16 = v15;
 
@@ -994,9 +994,9 @@ LABEL_11:
   return result;
 }
 
-- (CGRect)characterRectForComposedCharacterAtIndex:(int64_t)a3
+- (CGRect)characterRectForComposedCharacterAtIndex:(int64_t)index
 {
-  v7 = objc_msgSend_referenceSubstringRangeOfComposedCharacterAtIndex_(self, a2, a3, v3, v4, v5);
+  v7 = objc_msgSend_referenceSubstringRangeOfComposedCharacterAtIndex_(self, a2, index, v3, v4, v5);
   if (self)
   {
     v20 = 0;

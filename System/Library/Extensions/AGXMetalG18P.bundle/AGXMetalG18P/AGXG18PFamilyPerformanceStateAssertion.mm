@@ -1,5 +1,5 @@
 @interface AGXG18PFamilyPerformanceStateAssertion
-- (AGXG18PFamilyPerformanceStateAssertion)initWithDevice:(id)a3 level:(int)a4;
+- (AGXG18PFamilyPerformanceStateAssertion)initWithDevice:(id)device level:(int)level;
 - (BOOL)wasPerformanceStateAssertionMaintained;
 - (int64_t)requestedPerformanceState;
 - (void)dealloc;
@@ -37,15 +37,15 @@
   [(AGXG18PFamilyPerformanceStateAssertion *)&v3 dealloc];
 }
 
-- (AGXG18PFamilyPerformanceStateAssertion)initWithDevice:(id)a3 level:(int)a4
+- (AGXG18PFamilyPerformanceStateAssertion)initWithDevice:(id)device level:(int)level
 {
   v7.receiver = self;
   v7.super_class = AGXG18PFamilyPerformanceStateAssertion;
   result = [(AGXG18PFamilyPerformanceStateAssertion *)&v7 init];
   if (result)
   {
-    result->_device = a3;
-    result->_requestedLevel = a4;
+    result->_device = device;
+    result->_requestedLevel = level;
   }
 
   return result;

@@ -1,26 +1,26 @@
 @interface PCNativeButton
-- (id)initWithButton:(id)a3;
+- (id)initWithButton:(id)button;
 @end
 
 @implementation PCNativeButton
 
-- (id)initWithButton:(id)a3
+- (id)initWithButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   v5 = [(PCNativeButton *)self init];
   v6 = v5;
-  if (v4 && v5)
+  if (buttonCopy && v5)
   {
-    -[PCNativeButton setType:](v5, "setType:", [v4 predefined]);
-    v7 = [v4 text];
-    [(PCNativeButton *)v6 setText:v7];
+    -[PCNativeButton setType:](v5, "setType:", [buttonCopy predefined]);
+    text = [buttonCopy text];
+    [(PCNativeButton *)v6 setText:text];
 
-    v8 = [v4 accessText];
-    [(PCNativeButton *)v6 setAccessibleText:v8];
+    accessText = [buttonCopy accessText];
+    [(PCNativeButton *)v6 setAccessibleText:accessText];
 
     v9 = [PCNativeButtonStyle alloc];
-    v10 = [v4 buttonStyle];
-    v11 = [v9 initWithButtonStyle:v10];
+    buttonStyle = [buttonCopy buttonStyle];
+    v11 = [v9 initWithButtonStyle:buttonStyle];
     [(PCNativeButton *)v6 setStyle:v11];
   }
 

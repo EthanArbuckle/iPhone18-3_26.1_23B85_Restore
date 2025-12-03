@@ -1,85 +1,85 @@
 @interface CHHapticEngine
-+ (BOOL)resourceIsRegistered:(unint64_t)a3;
++ (BOOL)resourceIsRegistered:(unint64_t)registered;
 + (id)capabilitiesForHardware;
 + (void)clearResourceMap;
-+ (void)dispatchOnGlobal:(id)a3;
-- (BOOL)checkEngineRunning:(id *)a3;
-- (BOOL)checkEngineStateOnStart:(id *)a3;
-- (BOOL)doInitWithOptions:(id)a3 error:(id *)a4;
-- (BOOL)doPlayPattern:(id)a3 error:(id *)a4;
-- (BOOL)doReferenceAudioResourceByID:(unint64_t)a3;
-- (BOOL)doStartEngineAndWait:(id *)a3;
-- (BOOL)doStopEngineAndWait:(id *)a3;
-- (BOOL)doUnregisterAudioResource:(unint64_t)a3 fromPattern:(BOOL)a4 error:(id *)a5;
-- (BOOL)finishInit:(id *)a3;
-- (BOOL)hasPublicAudioResourceID:(unint64_t)a3;
-- (BOOL)isResourceLoopEnabled:(unint64_t)a3;
-- (BOOL)notifyPlayerStarted:(id)a3 atTime:(double)a4;
++ (void)dispatchOnGlobal:(id)global;
+- (BOOL)checkEngineRunning:(id *)running;
+- (BOOL)checkEngineStateOnStart:(id *)start;
+- (BOOL)doInitWithOptions:(id)options error:(id *)error;
+- (BOOL)doPlayPattern:(id)pattern error:(id *)error;
+- (BOOL)doReferenceAudioResourceByID:(unint64_t)d;
+- (BOOL)doStartEngineAndWait:(id *)wait;
+- (BOOL)doStopEngineAndWait:(id *)wait;
+- (BOOL)doUnregisterAudioResource:(unint64_t)resource fromPattern:(BOOL)pattern error:(id *)error;
+- (BOOL)finishInit:(id *)init;
+- (BOOL)hasPublicAudioResourceID:(unint64_t)d;
+- (BOOL)isResourceLoopEnabled:(unint64_t)enabled;
+- (BOOL)notifyPlayerStarted:(id)started atTime:(double)time;
 - (BOOL)playPatternFromData:(NSData *)data error:(NSError *)outError;
 - (BOOL)playPatternFromURL:(NSURL *)fileURL error:(NSError *)outError;
-- (BOOL)setupSystemSoundAudioSession:(id)a3 needsAudioPowerBudget:(BOOL)a4 error:(id *)a5;
-- (BOOL)setupUnsharedAudioSession:(id)a3 isConstantVolume:(BOOL)a4 needsAudioPowerBudget:(BOOL)a5 error:(id *)a6;
+- (BOOL)setupSystemSoundAudioSession:(id)session needsAudioPowerBudget:(BOOL)budget error:(id *)error;
+- (BOOL)setupUnsharedAudioSession:(id)session isConstantVolume:(BOOL)volume needsAudioPowerBudget:(BOOL)budget error:(id *)error;
 - (BOOL)startAndReturnError:(NSError *)outError;
 - (BOOL)unregisterAudioResource:(CHHapticAudioResourceID)resourceID error:(NSError *)outError;
 - (CHHapticAudioResourceID)registerAudioResource:(NSURL *)resourceURL options:(NSDictionary *)options error:(NSError *)outError;
 - (CHHapticEngine)initAndReturnError:(NSError *)error;
 - (CHHapticEngine)initWithAudioSession:(AVAudioSession *)audioSession error:(NSError *)error;
-- (CHHapticEngine)initWithOptions:(id)a3 error:(id *)a4;
+- (CHHapticEngine)initWithOptions:(id)options error:(id *)error;
 - (NSString)locality;
-- (__map_iterator<std::__tree_iterator<std::__value_type<unsigned)doFindPublicAudioResourceID:(unint64_t)a3;
-- (double)getDurationForResource:(unint64_t)a3;
+- (__map_iterator<std::__tree_iterator<std::__value_type<unsigned)doFindPublicAudioResourceID:(unint64_t)d;
+- (double)getDurationForResource:(unint64_t)resource;
 - (id).cxx_construct;
 - (id)createAdvancedPlayerWithPattern:(CHHapticPattern *)pattern error:(NSError *)outError;
-- (id)createAdvancedPlayerWithRingtoneData:(id)a3 error:(id *)a4;
-- (id)createAdvancedPlayerWithRingtonePattern:(id)a3 error:(id *)a4;
-- (id)createAdvancedPlayerWithVibePatternDictionary:(id)a3 error:(id *)a4;
-- (id)createHapticPlayerWithOptions:(id)a3;
+- (id)createAdvancedPlayerWithRingtoneData:(id)data error:(id *)error;
+- (id)createAdvancedPlayerWithRingtonePattern:(id)pattern error:(id *)error;
+- (id)createAdvancedPlayerWithVibePatternDictionary:(id)dictionary error:(id *)error;
+- (id)createHapticPlayerWithOptions:(id)options;
 - (id)createPlayerWithPattern:(CHHapticPattern *)pattern error:(NSError *)outError;
-- (id)createPrivilegedPlayerWithPlayable:(id)a3 error:(id *)a4;
-- (id)getAvailableChannel:(id *)a3;
-- (id)getMetricsForPlayer:(id)a3;
-- (id)getUsageCategory:(id)a3;
-- (int64_t)getReporterIDFromAVAudioSession:(id)a3;
-- (unint64_t)doRegisterAudioResource:(id)a3 options:(id)a4 fromPattern:(BOOL)a5 error:(id *)a6;
-- (unint64_t)idForPublicAudioResourceURL:(id)a3 withOptions:(id)a4;
-- (unsigned)getSessionIDFromAVAudioSession:(id)a3;
-- (void)addPublicAudioResourceID:(unint64_t)a3 withURL:(id)a4 options:(id)a5;
+- (id)createPrivilegedPlayerWithPlayable:(id)playable error:(id *)error;
+- (id)getAvailableChannel:(id *)channel;
+- (id)getMetricsForPlayer:(id)player;
+- (id)getUsageCategory:(id)category;
+- (int64_t)getReporterIDFromAVAudioSession:(id)session;
+- (unint64_t)doRegisterAudioResource:(id)resource options:(id)options fromPattern:(BOOL)pattern error:(id *)error;
+- (unint64_t)idForPublicAudioResourceURL:(id)l withOptions:(id)options;
+- (unsigned)getSessionIDFromAVAudioSession:(id)session;
+- (void)addPublicAudioResourceID:(unint64_t)d withURL:(id)l options:(id)options;
 - (void)beginIdleTimer;
 - (void)cancelIdleTimer;
-- (void)connectAudioSession:(id)a3;
+- (void)connectAudioSession:(id)session;
 - (void)createProcessTaskToken;
 - (void)dealloc;
 - (void)deallocateProcessTaskToken;
-- (void)disconnectAudioSession:(id)a3;
-- (void)dispatchOnLocal:(id)a3;
-- (void)dispatchSyncOnLocal:(id)a3;
-- (void)doStartWithCompletionHandler:(id)a3;
-- (void)doStopWithCompletionHandler:(id)a3;
+- (void)disconnectAudioSession:(id)session;
+- (void)dispatchOnLocal:(id)local;
+- (void)dispatchSyncOnLocal:(id)local;
+- (void)doStartWithCompletionHandler:(id)handler;
+- (void)doStopWithCompletionHandler:(id)handler;
 - (void)doUnregisterAllAudioResources;
 - (void)doUnregisterAllPublicAudioResources;
 - (void)handleConnectionError;
-- (void)handleFinish:(id)a3;
-- (void)handleMediaServerDeath:(id)a3;
-- (void)handleMediaServerRecovery:(id)a3;
-- (void)notifyPlayerStopped:(id)a3 atTime:(double)a4;
+- (void)handleFinish:(id)finish;
+- (void)handleMediaServerDeath:(id)death;
+- (void)handleMediaServerRecovery:(id)recovery;
+- (void)notifyPlayerStopped:(id)stopped atTime:(double)time;
 - (void)notifyWhenPlayersFinished:(CHHapticEngineFinishedHandler)finishedHandler;
-- (void)prewarmWithCompletionHandler:(id)a3;
+- (void)prewarmWithCompletionHandler:(id)handler;
 - (void)reconfigureAudioSession;
-- (void)releaseChannel:(id)a3;
-- (void)removePublicAudioResourceID:(unint64_t)a3;
+- (void)releaseChannel:(id)channel;
+- (void)removePublicAudioResourceID:(unint64_t)d;
 - (void)setAutoShutdownEnabled:(BOOL)autoShutdownEnabled;
-- (void)setAutoShutdownTimeout:(double)a3;
-- (void)setMuteHapticsWhileRecordingAudio:(BOOL)a3;
-- (void)startIdleTimerWithHandler:(id)a3;
+- (void)setAutoShutdownTimeout:(double)timeout;
+- (void)setMuteHapticsWhileRecordingAudio:(BOOL)audio;
+- (void)startIdleTimerWithHandler:(id)handler;
 - (void)startWithCompletionHandler:(CHHapticCompletionHandler)completionHandler;
 - (void)stopAndWait;
 - (void)stopPrewarm;
 - (void)stopWithCompletionHandler:(CHHapticCompletionHandler)completionHandler;
-- (void)storeOptions:(id)a3;
-- (void)toggleBehavior:(unint64_t)a3 set:(BOOL)a4;
-- (void)updateAudioConfigurations:(id)a3 session:(id)a4;
+- (void)storeOptions:(id)options;
+- (void)toggleBehavior:(unint64_t)behavior set:(BOOL)set;
+- (void)updateAudioConfigurations:(id)configurations session:(id)session;
 - (void)updateEngineBehavior;
-- (void)updateEngineBehaviorWithError:(id *)a3;
+- (void)updateEngineBehaviorWithError:(id *)error;
 @end
 
 @implementation CHHapticEngine
@@ -240,7 +240,7 @@ LABEL_10:
     v11 = 2080;
     v12 = "[CHHapticEngine updateEngineBehavior]";
     v13 = 1024;
-    v14 = [(CHHapticEngine *)self currentPlayerBehavior];
+    currentPlayerBehavior = [(CHHapticEngine *)self currentPlayerBehavior];
     _os_log_impl(&dword_21569A000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d %s: Setting player's behavior to 0x%x", &v7, 0x22u);
   }
 
@@ -266,8 +266,8 @@ LABEL_8:
   v14 = *MEMORY[0x277D85DE8];
   if ([(NSString *)self->_usageCategory isEqualToString:@"SystemSound"])
   {
-    v3 = [(CHHapticEngine *)self avAudioSession];
-    v4 = [v3 setCategory:*MEMORY[0x277CEFC78] withOptions:2 error:0];
+    avAudioSession = [(CHHapticEngine *)self avAudioSession];
+    v4 = [avAudioSession setCategory:*MEMORY[0x277CEFC78] withOptions:2 error:0];
 
     if ((v4 & 1) == 0)
     {
@@ -310,12 +310,12 @@ uint64_t __41__CHHapticEngine_capabilitiesForHardware__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)setupUnsharedAudioSession:(id)a3 isConstantVolume:(BOOL)a4 needsAudioPowerBudget:(BOOL)a5 error:(id *)a6
+- (BOOL)setupUnsharedAudioSession:(id)session isConstantVolume:(BOOL)volume needsAudioPowerBudget:(BOOL)budget error:(id *)error
 {
-  v7 = a5;
-  v8 = a4;
+  budgetCopy = budget;
+  volumeCopy = volume;
   v37 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  sessionCopy = session;
   if (kHAPIScope)
   {
     v10 = *kHAPIScope;
@@ -336,7 +336,7 @@ uint64_t __41__CHHapticEngine_capabilitiesForHardware__block_invoke()
     v12 = @"following ringer";
     *v32 = 136315906;
     *&v32[4] = "CHHapticEngineUsageCategory.mm";
-    if (v8)
+    if (volumeCopy)
     {
       v12 = @"with constant";
     }
@@ -352,17 +352,17 @@ uint64_t __41__CHHapticEngine_capabilitiesForHardware__block_invoke()
 
 LABEL_10:
   v13 = *MEMORY[0x277CEFC80];
-  if ([v9 setCategory:v13 error:a6])
+  if ([sessionCopy setCategory:v13 error:error])
   {
     v14 = *MEMORY[0x277CEFC88];
-    if (v8)
+    if (volumeCopy)
     {
       v15 = *MEMORY[0x277CEFC90];
 
       v14 = v15;
     }
 
-    if (([v9 setMode:v14 error:{a6, *v32}] & 1) == 0)
+    if (([sessionCopy setMode:v14 error:{error, *v32}] & 1) == 0)
     {
       if (kHAPIScope)
       {
@@ -394,7 +394,7 @@ LABEL_10:
     }
 
 LABEL_27:
-    if ([v9 setAudioHardwareControlFlags:1179648 error:a6])
+    if ([sessionCopy setAudioHardwareControlFlags:1179648 error:error])
     {
       goto LABEL_35;
     }
@@ -426,7 +426,7 @@ LABEL_27:
     }
 
 LABEL_35:
-    if ([v9 setPreferredIOBufferFrameSize:256 error:a6])
+    if ([sessionCopy setPreferredIOBufferFrameSize:256 error:error])
     {
       goto LABEL_43;
     }
@@ -460,11 +460,11 @@ LABEL_35:
     }
 
 LABEL_43:
-    if ([v9 enableNotifications:0 error:a6])
+    if ([sessionCopy enableNotifications:0 error:error])
     {
-      if ([v9 setParticipatesInNowPlayingAppPolicy:0 error:a6])
+      if ([sessionCopy setParticipatesInNowPlayingAppPolicy:0 error:error])
       {
-        if (!v7)
+        if (!budgetCopy)
         {
           goto LABEL_53;
         }
@@ -491,7 +491,7 @@ LABEL_43:
           }
         }
 
-        if ([v9 setNeedsHighPowerBudgeting:1 error:a6])
+        if ([sessionCopy setNeedsHighPowerBudgeting:1 error:error])
         {
 LABEL_53:
           LOBYTE(v17) = 1;
@@ -632,11 +632,11 @@ LABEL_70:
   return v17;
 }
 
-- (BOOL)setupSystemSoundAudioSession:(id)a3 needsAudioPowerBudget:(BOOL)a4 error:(id *)a5
+- (BOOL)setupSystemSoundAudioSession:(id)session needsAudioPowerBudget:(BOOL)budget error:(id *)error
 {
-  v6 = a4;
+  budgetCopy = budget;
   v40 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  sessionCopy = session;
   if (kHAPIScope)
   {
     v8 = *kHAPIScope;
@@ -664,7 +664,7 @@ LABEL_70:
   }
 
 LABEL_8:
-  if (([v7 setCategory:*MEMORY[0x277CEFC78] withOptions:2 error:a5] & 1) == 0)
+  if (([sessionCopy setCategory:*MEMORY[0x277CEFC78] withOptions:2 error:error] & 1) == 0)
   {
     if (kHAPIScope)
     {
@@ -696,7 +696,7 @@ LABEL_8:
     goto LABEL_42;
   }
 
-  if (([v7 setAudioHardwareControlFlags:18 error:a5] & 1) == 0)
+  if (([sessionCopy setAudioHardwareControlFlags:18 error:error] & 1) == 0)
   {
     if (kHAPIScope)
     {
@@ -726,7 +726,7 @@ LABEL_8:
   }
 
 LABEL_23:
-  if ([v7 setPreferredIOBufferFrameSize:512 error:a5])
+  if ([sessionCopy setPreferredIOBufferFrameSize:512 error:error])
   {
     goto LABEL_31;
   }
@@ -760,7 +760,7 @@ LABEL_23:
   }
 
 LABEL_31:
-  if (([v7 enableNotifications:0 error:a5] & 1) == 0)
+  if (([sessionCopy enableNotifications:0 error:error] & 1) == 0)
   {
     if (kHAPIScope)
     {
@@ -792,7 +792,7 @@ LABEL_31:
     goto LABEL_42;
   }
 
-  if (([v7 setPrefersNoDucking:1 error:a5] & 1) == 0)
+  if (([sessionCopy setPrefersNoDucking:1 error:error] & 1) == 0)
   {
     if (kHAPIScope)
     {
@@ -822,7 +822,7 @@ LABEL_31:
   }
 
 LABEL_48:
-  if ([v7 setParticipatesInNowPlayingAppPolicy:0 error:a5])
+  if ([sessionCopy setParticipatesInNowPlayingAppPolicy:0 error:error])
   {
     goto LABEL_56;
   }
@@ -856,7 +856,7 @@ LABEL_48:
 LABEL_56:
   LODWORD(v20) = 1036831949;
   v23 = [MEMORY[0x277CCABB0] numberWithFloat:v20];
-  v24 = [v7 setDuckToLevelScalar:v23 error:a5];
+  v24 = [sessionCopy setDuckToLevelScalar:v23 error:error];
 
   if ((v24 & 1) == 0)
   {
@@ -888,7 +888,7 @@ LABEL_56:
   }
 
 LABEL_64:
-  if (!v6)
+  if (!budgetCopy)
   {
     goto LABEL_72;
   }
@@ -915,7 +915,7 @@ LABEL_64:
     }
   }
 
-  if ([v7 setNeedsHighPowerBudgeting:1 error:a5])
+  if ([sessionCopy setNeedsHighPowerBudgeting:1 error:error])
   {
 LABEL_72:
     LOBYTE(v11) = 1;
@@ -959,13 +959,13 @@ LABEL_73:
   return v11;
 }
 
-- (id)getUsageCategory:(id)a3
+- (id)getUsageCategory:(id)category
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  categoryCopy = category;
+  v4 = categoryCopy;
+  if (categoryCopy)
   {
-    v5 = [v3 valueForKey:@"UsageCategory"];
+    v5 = [categoryCopy valueForKey:@"UsageCategory"];
   }
 
   else
@@ -976,12 +976,12 @@ LABEL_73:
   return v5;
 }
 
-- (void)updateAudioConfigurations:(id)a3 session:(id)a4
+- (void)updateAudioConfigurations:(id)configurations session:(id)session
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6 || ![v6 isEqualToString:@"iOSKeyboard"])
+  configurationsCopy = configurations;
+  sessionCopy = session;
+  if (!configurationsCopy || ![configurationsCopy isEqualToString:@"iOSKeyboard"])
   {
     goto LABEL_10;
   }
@@ -991,7 +991,7 @@ LABEL_73:
     if ([(CHHapticEngine *)self playsAudioOnly])
     {
       v15 = 0;
-      v8 = [v7 setPreferredIOBufferFrameSize:1024 error:&v15];
+      v8 = [sessionCopy setPreferredIOBufferFrameSize:1024 error:&v15];
       v9 = v15;
       if ((v8 & 1) == 0)
       {
@@ -1037,7 +1037,7 @@ LABEL_10:
   }
 
   v16 = 0;
-  v12 = [v7 setPreferredIOBufferFrameSize:256 error:&v16];
+  v12 = [sessionCopy setPreferredIOBufferFrameSize:256 error:&v16];
   v9 = v16;
   if ((v12 & 1) == 0)
   {
@@ -1125,26 +1125,26 @@ LABEL_10:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)toggleBehavior:(unint64_t)a3 set:(BOOL)a4
+- (void)toggleBehavior:(unint64_t)behavior set:(BOOL)set
 {
-  v4 = a4;
-  v7 = [(CHHapticEngine *)self currentPlayerBehavior];
-  if (v4)
+  setCopy = set;
+  currentPlayerBehavior = [(CHHapticEngine *)self currentPlayerBehavior];
+  if (setCopy)
   {
-    v8 = v7 | a3;
+    v8 = currentPlayerBehavior | behavior;
   }
 
   else
   {
-    v8 = v7 & ~a3;
+    v8 = currentPlayerBehavior & ~behavior;
   }
 
   [(CHHapticEngine *)self setCurrentPlayerBehavior:v8];
 }
 
-- (void)setMuteHapticsWhileRecordingAudio:(BOOL)a3
+- (void)setMuteHapticsWhileRecordingAudio:(BOOL)audio
 {
-  [(CHHapticEngine *)self toggleBehavior:512 set:!a3];
+  [(CHHapticEngine *)self toggleBehavior:512 set:!audio];
 
   [(CHHapticEngine *)self updateEngineBehavior];
 }
@@ -1156,11 +1156,11 @@ LABEL_10:
   {
     v3 = autoShutdownEnabled;
     self->_autoShutdownEnabled = autoShutdownEnabled;
-    v4 = self;
-    objc_sync_enter(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     if (v3)
     {
-      if ([(CHHapticEngine *)v4 running])
+      if ([(CHHapticEngine *)selfCopy running])
       {
         if (kHAPIScope)
         {
@@ -1168,14 +1168,14 @@ LABEL_10:
           if (!v5)
           {
 LABEL_19:
-            objc_initWeak(buf, v4);
-            v9 = [(CHHapticEngine *)v4 player];
+            objc_initWeak(buf, selfCopy);
+            player = [(CHHapticEngine *)selfCopy player];
             v12[0] = MEMORY[0x277D85DD0];
             v12[1] = 3221225472;
             v12[2] = __41__CHHapticEngine_setAutoShutdownEnabled___block_invoke;
             v12[3] = &unk_2781C8FE0;
             objc_copyWeak(&v13, buf);
-            [v9 finishWithCompletionHandler:v12];
+            [player finishWithCompletionHandler:v12];
 
             objc_destroyWeak(&v13);
             objc_destroyWeak(buf);
@@ -1204,7 +1204,7 @@ LABEL_19:
       }
 
 LABEL_20:
-      objc_sync_exit(v4);
+      objc_sync_exit(selfCopy);
 
       goto LABEL_21;
     }
@@ -1219,8 +1219,8 @@ LABEL_14:
         v11[1] = 3221225472;
         v11[2] = __41__CHHapticEngine_setAutoShutdownEnabled___block_invoke_160;
         v11[3] = &unk_2781C9700;
-        v11[4] = v4;
-        [(CHHapticEngine *)v4 dispatchOnLocal:v11];
+        v11[4] = selfCopy;
+        [(CHHapticEngine *)selfCopy dispatchOnLocal:v11];
         goto LABEL_20;
       }
     }
@@ -1348,18 +1348,18 @@ LABEL_23:
 
 - (NSString)locality
 {
-  v2 = [(CHHapticEngine *)self serverConfig];
-  v3 = [v2 currentLocality];
+  serverConfig = [(CHHapticEngine *)self serverConfig];
+  currentLocality = [serverConfig currentLocality];
 
-  return v3;
+  return currentLocality;
 }
 
-- (void)setAutoShutdownTimeout:(double)a3
+- (void)setAutoShutdownTimeout:(double)timeout
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (a3 >= 0.0)
+  if (timeout >= 0.0)
   {
-    self->_runTimeout = a3;
+    self->_runTimeout = timeout;
   }
 
   else
@@ -1388,7 +1388,7 @@ LABEL_23:
       v11 = 2080;
       v12 = "[CHHapticEngine setAutoShutdownTimeout:]";
       v13 = 2048;
-      v14 = a3;
+      timeoutCopy = timeout;
       _os_log_impl(&dword_21569A000, v4, OS_LOG_TYPE_ERROR, "%25s:%-5d %s: Invalid shutdown timeout (%f) being ignored", &v7, 0x26u);
     }
   }
@@ -1397,10 +1397,10 @@ LABEL_10:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleMediaServerDeath:(id)a3
+- (void)handleMediaServerDeath:(id)death
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deathCopy = death;
   if (kHAPIScope)
   {
     v5 = *kHAPIScope;
@@ -1425,14 +1425,14 @@ LABEL_10:
     v16 = 2080;
     v17 = "[CHHapticEngine handleMediaServerDeath:]";
     v18 = 2048;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21569A000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d %s: Engine %p was notified of server death", &v12, 0x26u);
   }
 
 LABEL_8:
   +[CHHapticEngine clearResourceMap];
-  v7 = self;
-  objc_sync_enter(v7);
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
   if (kHAPIScope)
   {
     v8 = *kHAPIScope;
@@ -1460,18 +1460,18 @@ LABEL_8:
   }
 
 LABEL_15:
-  std::__tree<std::__value_type<unsigned long,std::pair<NSURL * {__strong},NSDictionary * {__strong}>>,std::__map_value_compare<unsigned long,std::__value_type<unsigned long,std::pair<NSURL * {__strong},NSDictionary * {__strong}>>,std::less<unsigned long>,true>,std::allocator<std::__value_type<unsigned long,std::pair<NSURL * {__strong},NSDictionary * {__strong}>>>>::destroy(&v7->_publicAudioResources, v7->_publicAudioResources.__tree_.__end_node_.__left_);
-  player = v7->_player;
-  v7->_publicAudioResources.__tree_.__size_ = 0;
-  v7->_player = 0;
-  v7->_publicAudioResources.__tree_.__begin_node_ = &v7->_publicAudioResources.__tree_.__end_node_;
-  v7->_publicAudioResources.__tree_.__end_node_.__left_ = 0;
+  std::__tree<std::__value_type<unsigned long,std::pair<NSURL * {__strong},NSDictionary * {__strong}>>,std::__map_value_compare<unsigned long,std::__value_type<unsigned long,std::pair<NSURL * {__strong},NSDictionary * {__strong}>>,std::less<unsigned long>,true>,std::allocator<std::__value_type<unsigned long,std::pair<NSURL * {__strong},NSDictionary * {__strong}>>>>::destroy(&selfCopy2->_publicAudioResources, selfCopy2->_publicAudioResources.__tree_.__end_node_.__left_);
+  player = selfCopy2->_player;
+  selfCopy2->_publicAudioResources.__tree_.__size_ = 0;
+  selfCopy2->_player = 0;
+  selfCopy2->_publicAudioResources.__tree_.__begin_node_ = &selfCopy2->_publicAudioResources.__tree_.__end_node_;
+  selfCopy2->_publicAudioResources.__tree_.__end_node_.__left_ = 0;
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy2);
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleMediaServerRecovery:(id)a3
+- (void)handleMediaServerRecovery:(id)recovery
 {
   objc_initWeak(&location, self);
   v4[0] = MEMORY[0x277D85DD0];
@@ -1742,44 +1742,44 @@ LABEL_58:
   v43 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connectAudioSession:(id)a3
+- (void)connectAudioSession:(id)session
 {
-  v8 = a3;
-  if (v8)
+  sessionCopy = session;
+  if (sessionCopy)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    v5 = AVFASoftLink::getAVAudioSessionMediaServicesWereLostNotification(v4);
-    [(AVFASoftLink *)v4 addObserver:self selector:sel_handleMediaServerDeath_ name:v5 object:v8];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    v5 = AVFASoftLink::getAVAudioSessionMediaServicesWereLostNotification(defaultCenter);
+    [(AVFASoftLink *)defaultCenter addObserver:self selector:sel_handleMediaServerDeath_ name:v5 object:sessionCopy];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    v7 = AVFASoftLink::getAVAudioSessionMediaServicesWereResetNotification(v6);
-    [(AVFASoftLink *)v6 addObserver:self selector:sel_handleMediaServerRecovery_ name:v7 object:v8];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    v7 = AVFASoftLink::getAVAudioSessionMediaServicesWereResetNotification(defaultCenter2);
+    [(AVFASoftLink *)defaultCenter2 addObserver:self selector:sel_handleMediaServerRecovery_ name:v7 object:sessionCopy];
   }
 }
 
-- (void)disconnectAudioSession:(id)a3
+- (void)disconnectAudioSession:(id)session
 {
-  v8 = a3;
-  if (v8)
+  sessionCopy = session;
+  if (sessionCopy)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    v5 = AVFASoftLink::getAVAudioSessionMediaServicesWereResetNotification(v4);
-    [(AVFASoftLink *)v4 removeObserver:self name:v5 object:v8];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    v5 = AVFASoftLink::getAVAudioSessionMediaServicesWereResetNotification(defaultCenter);
+    [(AVFASoftLink *)defaultCenter removeObserver:self name:v5 object:sessionCopy];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    v7 = AVFASoftLink::getAVAudioSessionMediaServicesWereLostNotification(v6);
-    [(AVFASoftLink *)v6 removeObserver:self name:v7 object:v8];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    v7 = AVFASoftLink::getAVAudioSessionMediaServicesWereLostNotification(defaultCenter2);
+    [(AVFASoftLink *)defaultCenter2 removeObserver:self name:v7 object:sessionCopy];
   }
 }
 
-- (unsigned)getSessionIDFromAVAudioSession:(id)a3
+- (unsigned)getSessionIDFromAVAudioSession:(id)session
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  sessionCopy = session;
+  v4 = sessionCopy;
+  if (sessionCopy)
   {
-    AVFASoftLink::getAVAudioSession(v3);
+    AVFASoftLink::getAVAudioSession(sessionCopy);
     LODWORD(v5) = [(AVFASoftLink *)v4 opaqueSessionID];
   }
 
@@ -1820,19 +1820,19 @@ LABEL_10:
   return v5;
 }
 
-- (int64_t)getReporterIDFromAVAudioSession:(id)a3
+- (int64_t)getReporterIDFromAVAudioSession:(id)session
 {
-  v3 = a3;
-  AVFASoftLink::getAVAudioSession(v3);
-  v4 = [(AVFASoftLink *)v3 reporterID];
+  sessionCopy = session;
+  AVFASoftLink::getAVAudioSession(sessionCopy);
+  reporterID = [(AVFASoftLink *)sessionCopy reporterID];
 
-  return v4;
+  return reporterID;
 }
 
-- (id)createHapticPlayerWithOptions:(id)a3
+- (id)createHapticPlayerWithOptions:(id)options
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  optionsCopy = options;
   if (!kHAPIScope)
   {
     v4 = MEMORY[0x277D86220];
@@ -1898,7 +1898,7 @@ LABEL_5:
 LABEL_17:
     v13 = [AVHapticPlayer alloc];
     v21 = v7;
-    v14 = [(AVHapticPlayer *)v13 initWithOptions:v3 error:&v21];
+    v14 = [(AVHapticPlayer *)v13 initWithOptions:optionsCopy error:&v21];
     v15 = v21;
 
     if (v9 > 4)
@@ -1962,7 +1962,7 @@ LABEL_28:
   objc_sync_exit(obj);
 }
 
-- (BOOL)finishInit:(id *)a3
+- (BOOL)finishInit:(id *)init
 {
   v50 = *MEMORY[0x277D85DE8];
   objc_initWeak(&location, self);
@@ -1977,8 +1977,8 @@ LABEL_28:
   v35[2] = __29__CHHapticEngine_finishInit___block_invoke;
   v35[3] = &unk_2781C8FE0;
   objc_copyWeak(&v36, &location);
-  v5 = [(CHHapticEngine *)self player];
-  [v5 setConnectionErrorHandler:v35];
+  player = [(CHHapticEngine *)self player];
+  [player setConnectionErrorHandler:v35];
 
   v6 = dispatch_group_create();
   dispatch_group_enter(v6);
@@ -2009,7 +2009,7 @@ LABEL_28:
   }
 
 LABEL_8:
-  v9 = [(CHHapticEngine *)self player];
+  player2 = [(CHHapticEngine *)self player];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __29__CHHapticEngine_finishInit___block_invoke_185;
@@ -2017,7 +2017,7 @@ LABEL_8:
   v34 = &v37;
   v10 = v6;
   v33 = v10;
-  [v9 allocateRenderResourcesWithCompletionHandler:v32];
+  [player2 allocateRenderResourcesWithCompletionHandler:v32];
 
   if (kHAPIScope)
   {
@@ -2080,16 +2080,16 @@ LABEL_20:
   v38[5] = v16;
 
 LABEL_24:
-  if (a3)
+  if (init)
   {
-    *a3 = v38[5];
+    *init = v38[5];
   }
 
   v18 = v38[5];
   if (!v18)
   {
-    v19 = [(CHHapticEngine *)self sessionIsShared];
-    if (v19)
+    sessionIsShared = [(CHHapticEngine *)self sessionIsShared];
+    if (sessionIsShared)
     {
       if (kHAPIScope)
       {
@@ -2128,7 +2128,7 @@ LABEL_40:
         if (!v20)
         {
 LABEL_42:
-          [(CHHapticEngine *)self setFollowAudioRoute:v19];
+          [(CHHapticEngine *)self setFollowAudioRoute:sessionIsShared];
           [(CHHapticEngine *)self updateEngineBehavior];
           objc_storeWeak(&location, self);
           v30[0] = MEMORY[0x277D85DD0];
@@ -2137,8 +2137,8 @@ LABEL_42:
           v30[3] = &unk_2781C9778;
           objc_copyWeak(&v31, &location);
           v24 = MEMORY[0x21606F540](v30);
-          v25 = [(CHHapticEngine *)self player];
-          [v25 setStopRunningHandler:v24];
+          player3 = [(CHHapticEngine *)self player];
+          [player3 setStopRunningHandler:v24];
 
           if (kHAPIScope)
           {
@@ -2473,10 +2473,10 @@ LABEL_16:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startIdleTimerWithHandler:(id)a3
+- (void)startIdleTimerWithHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if (kHPWRScope)
   {
     v5 = *kHPWRScope;
@@ -2515,8 +2515,8 @@ LABEL_8:
   handler[1] = 3221225472;
   handler[2] = __44__CHHapticEngine_startIdleTimerWithHandler___block_invoke;
   handler[3] = &unk_2781C9260;
-  v19 = v4;
-  v12 = v4;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
   v13 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, dispatchQueue);
   if (v13)
   {
@@ -2732,9 +2732,9 @@ LABEL_10:
 - (void)cancelIdleTimer
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(CHHapticEngine *)self timer];
+  timer = [(CHHapticEngine *)self timer];
 
-  if (v3)
+  if (timer)
   {
     if (kHPWRScope)
     {
@@ -2742,8 +2742,8 @@ LABEL_10:
       if (!v4)
       {
 LABEL_9:
-        v6 = [(CHHapticEngine *)self timer];
-        dispatch_source_cancel(v6);
+        timer2 = [(CHHapticEngine *)self timer];
+        dispatch_source_cancel(timer2);
 
         [(CHHapticEngine *)self setTimer:0];
         goto LABEL_10;
@@ -2774,10 +2774,10 @@ LABEL_10:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleFinish:(id)a3
+- (void)handleFinish:(id)finish
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  finishCopy = finish;
   if (kHAPIScope)
   {
     v5 = *kHAPIScope;
@@ -2802,26 +2802,26 @@ LABEL_10:
     v25 = 2080;
     v26 = "[CHHapticEngine handleFinish:]";
     v27 = 2048;
-    v28 = self;
+    selfCopy = self;
     v29 = 2112;
-    v30 = v4;
+    v30 = finishCopy;
     _os_log_impl(&dword_21569A000, v5, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: Called on engine %p with error %@", buf, 0x30u);
   }
 
 LABEL_8:
   objc_initWeak(&location, self);
-  v7 = [(CHHapticEngine *)self clientFinishedHandler];
-  v8 = [(CHHapticEngine *)self stoppedHandler];
+  clientFinishedHandler = [(CHHapticEngine *)self clientFinishedHandler];
+  stoppedHandler = [(CHHapticEngine *)self stoppedHandler];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __31__CHHapticEngine_handleFinish___block_invoke;
   v15[3] = &unk_2781C97C8;
   objc_copyWeak(&v19, &location);
-  v9 = v7;
+  v9 = clientFinishedHandler;
   v17 = v9;
-  v10 = v4;
+  v10 = finishCopy;
   v16 = v10;
-  v11 = v8;
+  v11 = stoppedHandler;
   v18 = v11;
   [(CHHapticEngine *)self dispatchOnLocal:v15];
   if (kHAPIScope)
@@ -3237,7 +3237,7 @@ LABEL_10:
   return result;
 }
 
-- (void)updateEngineBehaviorWithError:(id *)a3
+- (void)updateEngineBehaviorWithError:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
   if (kHAPIScope)
@@ -3265,21 +3265,21 @@ LABEL_10:
     v13 = 2080;
     v14 = "[CHHapticEngine updateEngineBehaviorWithError:]";
     v15 = 1024;
-    v16 = [(CHHapticEngine *)self currentPlayerBehavior];
+    currentPlayerBehavior = [(CHHapticEngine *)self currentPlayerBehavior];
     _os_log_impl(&dword_21569A000, v7, OS_LOG_TYPE_DEFAULT, "%25s:%-5d %s: Setting player's behavior to 0x%x", &v9, 0x22u);
   }
 
 LABEL_8:
-  [(AVHapticPlayer *)self->_player setBehavior:[(CHHapticEngine *)self currentPlayerBehavior] error:a3];
+  [(AVHapticPlayer *)self->_player setBehavior:[(CHHapticEngine *)self currentPlayerBehavior] error:error];
   v8 = *MEMORY[0x277D85DE8];
 }
 
 - (void)stopAndWait
 {
   v23 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(CHHapticEngine *)v2 running])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(CHHapticEngine *)selfCopy running])
   {
     if (kHAPIScope)
     {
@@ -3287,17 +3287,17 @@ LABEL_8:
       if (!v3)
       {
 LABEL_12:
-        v7 = [(CHHapticEngine *)v2 stoppedHandler];
+        stoppedHandler = [(CHHapticEngine *)selfCopy stoppedHandler];
         v14 = 0;
-        [(CHHapticEngine *)v2 doStopEngineAndWait:&v14];
+        [(CHHapticEngine *)selfCopy doStopEngineAndWait:&v14];
         v4 = v14;
         v12[0] = MEMORY[0x277D85DD0];
         v12[1] = 3221225472;
         v12[2] = __29__CHHapticEngine_stopAndWait__block_invoke;
         v12[3] = &unk_2781C9260;
-        v8 = v7;
+        v8 = stoppedHandler;
         v13 = v8;
-        [(CHHapticEngine *)v2 dispatchOnLocal:v12];
+        [(CHHapticEngine *)selfCopy dispatchOnLocal:v12];
 
         goto LABEL_16;
       }
@@ -3311,7 +3311,7 @@ LABEL_12:
 
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
     {
-      player = v2->_player;
+      player = selfCopy->_player;
       *buf = 136315906;
       v16 = "CHHapticEngine.mm";
       v17 = 1024;
@@ -3343,7 +3343,7 @@ LABEL_12:
 
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    v10 = v2->_player;
+    v10 = selfCopy->_player;
     *buf = 136315906;
     v16 = "CHHapticEngine.mm";
     v17 = 1024;
@@ -3358,7 +3358,7 @@ LABEL_12:
 LABEL_16:
 
 LABEL_17:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -3432,14 +3432,14 @@ LABEL_10:
     v18 = 2080;
     v19 = "[CHHapticEngine dealloc]";
     v20 = 2048;
-    v21 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_21569A000, v3, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: synchronously stopping and destroying engine %p", buf, 0x26u);
   }
 
 LABEL_8:
   [(CHHapticEngine *)self stopAndWait];
-  v5 = [(CHHapticEngine *)self avAudioSession];
-  [(CHHapticEngine *)self disconnectAudioSession:v5];
+  avAudioSession = [(CHHapticEngine *)self avAudioSession];
+  [(CHHapticEngine *)self disconnectAudioSession:avAudioSession];
 
   [(CHHapticEngine *)self doUnregisterAllPublicAudioResources];
   [(CHHapticEngine *)self doUnregisterAllAudioResources];
@@ -3480,7 +3480,7 @@ LABEL_8:
     v18 = 2080;
     v19 = "[CHHapticEngine dealloc]";
     v20 = 2048;
-    v21 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_21569A000, v10, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: done destroying engine %p", buf, 0x26u);
   }
 
@@ -3491,14 +3491,14 @@ LABEL_15:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)storeOptions:(id)a3
+- (void)storeOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)v4 valueForKey:@"Priority"];
+  optionsCopy = options;
+  v5 = [(NSDictionary *)optionsCopy valueForKey:@"Priority"];
 
   if (v5)
   {
-    v6 = [(NSDictionary *)v4 valueForKey:@"Priority"];
+    v6 = [(NSDictionary *)optionsCopy valueForKey:@"Priority"];
   }
 
   else
@@ -3509,11 +3509,11 @@ LABEL_15:
   priority = self->_priority;
   self->_priority = &v6->isa;
 
-  v8 = [(NSDictionary *)v4 valueForKey:@"HapticPowerUsage"];
+  v8 = [(NSDictionary *)optionsCopy valueForKey:@"HapticPowerUsage"];
 
   if (v8)
   {
-    v9 = [(NSDictionary *)v4 valueForKey:@"HapticPowerUsage"];
+    v9 = [(NSDictionary *)optionsCopy valueForKey:@"HapticPowerUsage"];
   }
 
   else
@@ -3524,11 +3524,11 @@ LABEL_15:
   hapticPowerUsage = self->_hapticPowerUsage;
   self->_hapticPowerUsage = &v9->isa;
 
-  v11 = [(NSDictionary *)v4 valueForKey:@"AudioPowerUsage"];
+  v11 = [(NSDictionary *)optionsCopy valueForKey:@"AudioPowerUsage"];
 
   if (v11)
   {
-    v12 = [(NSDictionary *)v4 valueForKey:@"AudioPowerUsage"];
+    v12 = [(NSDictionary *)optionsCopy valueForKey:@"AudioPowerUsage"];
   }
 
   else
@@ -3541,18 +3541,18 @@ LABEL_15:
 
   if (!self->_usageCategory)
   {
-    v14 = [(NSDictionary *)v4 valueForKey:@"UsageCategory"];
+    v14 = [(NSDictionary *)optionsCopy valueForKey:@"UsageCategory"];
 
     if (v14)
     {
-      v15 = [(NSDictionary *)v4 valueForKey:@"UsageCategory"];
+      v15 = [(NSDictionary *)optionsCopy valueForKey:@"UsageCategory"];
       usageCategory = self->_usageCategory;
       self->_usageCategory = v15;
     }
   }
 
   storedOptions = self->_storedOptions;
-  self->_storedOptions = v4;
+  self->_storedOptions = optionsCopy;
 }
 
 - (void)deallocateProcessTaskToken
@@ -3629,12 +3629,12 @@ LABEL_15:
 
 LABEL_14:
   v12 = +[CHHapticEngine capabilitiesForHardware];
-  v13 = [v12 supportsHaptics];
-  if (v13 & 1) != 0 || (v13 = [v12 supportsAudio], (v13))
+  supportsHaptics = [v12 supportsHaptics];
+  if (supportsHaptics & 1) != 0 || (supportsHaptics = [v12 supportsAudio], (supportsHaptics))
   {
-    v14 = [AVFASoftLink::getAVAudioSession(v13) auxiliarySession];
+    auxiliarySession = [AVFASoftLink::getAVAudioSession(supportsHaptics) auxiliarySession];
     avAudioSession = v9->_avAudioSession;
-    v9->_avAudioSession = v14;
+    v9->_avAudioSession = auxiliarySession;
 
     objc_storeStrong(&v9->_usageCategory, @"Default");
     if ([(CHHapticEngine *)v9 setupEngineWithCategory:v9->_usageCategory session:v9->_avAudioSession needsAudioPowerBudget:[(CHHapticEngine *)v9 needsAudioPowerBudget] error:error]&& ([(CHHapticEngine *)v9 connectAudioSession:v9->_avAudioSession], v16 = [(CHHapticEngine *)v9 getSessionIDFromAVAudioSession:v9->_avAudioSession], [(CHHapticEngine *)v9 doInit:v16 sessionIsShared:0 options:0 bypassAudioSession:0 error:error]))
@@ -3774,9 +3774,9 @@ LABEL_27:
     }
 
 LABEL_32:
-    v24 = [AVFASoftLink::getAVAudioSession(v20) auxiliarySession];
+    auxiliarySession = [AVFASoftLink::getAVAudioSession(v20) auxiliarySession];
     avAudioSession = v14->_avAudioSession;
-    v14->_avAudioSession = v24;
+    v14->_avAudioSession = auxiliarySession;
 
     objc_storeStrong(&v14->_usageCategory, @"DefaultWithConstantVolume");
     if (![(CHHapticEngine *)v14 setupEngineWithCategory:v14->_usageCategory session:v14->_avAudioSession needsAudioPowerBudget:[(CHHapticEngine *)v14 needsAudioPowerBudget] error:error])
@@ -3794,7 +3794,7 @@ LABEL_38:
       }
 
       self = v16;
-      v19 = self;
+      selfCopy = self;
       goto LABEL_42;
     }
 
@@ -3833,17 +3833,17 @@ LABEL_33:
     _os_signpost_emit_with_name_impl(&dword_21569A000, v18, OS_SIGNPOST_INTERVAL_END, v9, "HapticEngine_initWithAudioSession", &unk_215703E5B, buf, 2u);
   }
 
-  v19 = 0;
+  selfCopy = 0;
 LABEL_42:
 
   v32 = *MEMORY[0x277D85DE8];
-  return v19;
+  return selfCopy;
 }
 
-- (BOOL)doInitWithOptions:(id)a3 error:(id *)a4
+- (BOOL)doInitWithOptions:(id)options error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  optionsCopy = options;
   if (kHAPIScope)
   {
     v7 = *kHAPIScope;
@@ -3868,7 +3868,7 @@ LABEL_42:
     v30 = 2080;
     v31 = "[CHHapticEngine doInitWithOptions:error:]";
     v32 = 2112;
-    v33 = v6;
+    v33 = optionsCopy;
     _os_log_impl(&dword_21569A000, v7, OS_LOG_TYPE_INFO, "%25s:%-5d %s: options: '%@'", &v26, 0x26u);
   }
 
@@ -3879,12 +3879,12 @@ LABEL_8:
 
   self->_audioSessionID = 0;
   self->_sessionIsShared = 0;
-  v11 = [(CHHapticEngine *)self createHapticPlayerWithOptions:v6];
+  v11 = [(CHHapticEngine *)self createHapticPlayerWithOptions:optionsCopy];
   player = self->_player;
   self->_player = v11;
 
   self->_runTimeout = 120.0;
-  v13 = [[HapticServerConfig alloc] initWithHapticPlayer:self->_player withOptions:v6 error:a4];
+  v13 = [[HapticServerConfig alloc] initWithHapticPlayer:self->_player withOptions:optionsCopy error:error];
   serverConfig = self->_serverConfig;
   self->_serverConfig = v13;
 
@@ -3895,19 +3895,19 @@ LABEL_8:
   }
 
   self->_currentPlayerBehavior = 2;
-  v15 = [(CHHapticEngine *)self serverConfig];
-  v16 = [v15 supportsHapticPlayback];
+  serverConfig = [(CHHapticEngine *)self serverConfig];
+  supportsHapticPlayback = [serverConfig supportsHapticPlayback];
 
-  if ((v16 & 1) == 0)
+  if ((supportsHapticPlayback & 1) == 0)
   {
     v19 = self->_currentPlayerBehavior | 0x10;
     goto LABEL_13;
   }
 
-  v17 = [(CHHapticEngine *)self serverConfig];
-  v18 = [v17 supportsAudioPlayback];
+  serverConfig2 = [(CHHapticEngine *)self serverConfig];
+  supportsAudioPlayback = [serverConfig2 supportsAudioPlayback];
 
-  if ((v18 & 1) == 0)
+  if ((supportsAudioPlayback & 1) == 0)
   {
     v19 = 1;
 LABEL_13:
@@ -3923,16 +3923,16 @@ LABEL_13:
   audioPowerUsage = self->_audioPowerUsage;
   self->_audioPowerUsage = @"HighPower";
 
-  v23 = [(CHHapticEngine *)self finishInit:a4];
+  v23 = [(CHHapticEngine *)self finishInit:error];
 LABEL_16:
 
   v24 = *MEMORY[0x277D85DE8];
   return v23;
 }
 
-- (CHHapticEngine)initWithOptions:(id)a3 error:(id *)a4
+- (CHHapticEngine)initWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   if (setupHapticLogScopes(void)::once != -1)
   {
     setupHapticLogScopes();
@@ -3953,7 +3953,7 @@ LABEL_16:
   v16.super_class = CHHapticEngine;
   v11 = [(CHHapticEngine *)&v16 init];
   v12 = v11;
-  if (v11 && ![(CHHapticEngine *)v11 doInitWithOptions:v6 error:a4])
+  if (v11 && ![(CHHapticEngine *)v11 doInitWithOptions:optionsCopy error:error])
   {
 
     v12 = 0;
@@ -3970,10 +3970,10 @@ LABEL_16:
   return v12;
 }
 
-- (void)prewarmWithCompletionHandler:(id)a3
+- (void)prewarmWithCompletionHandler:(id)handler
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = CALog::Scope::oslog(kHAPIScope);
   v6 = os_signpost_id_make_with_pointer(v5, self);
 
@@ -4027,7 +4027,7 @@ LABEL_11:
   v16[2] = __47__CHHapticEngine_prewarmWithCompletionHandler___block_invoke;
   v16[3] = &unk_2781C97F0;
   v18 = buf;
-  v12 = v4;
+  v12 = handlerCopy;
   v17 = v12;
   [(AVHapticPlayer *)player prewarmWithCompletionHandler:v16];
   v13 = CALog::Scope::oslog(kHAPIScope);
@@ -4129,10 +4129,10 @@ LABEL_20:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)doStartWithCompletionHandler:(id)a3
+- (void)doStartWithCompletionHandler:(id)handler
 {
   v19[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if (kHAPIScope)
   {
     v5 = *kHAPIScope;
@@ -4185,7 +4185,7 @@ LABEL_8:
   v10[3] = &unk_2781C9840;
   objc_copyWeak(&v13, &location);
   v12 = buf;
-  v8 = v4;
+  v8 = handlerCopy;
   v11 = v8;
   [(AVHapticPlayer *)player startRunningWithCompletionHandler:v10];
 
@@ -4440,7 +4440,7 @@ LABEL_10:
     v27 = 2080;
     v28 = "[CHHapticEngine startWithCompletionHandler:]";
     v29 = 2048;
-    v30 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21569A000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d %s: Called on engine %p", buf, 0x26u);
   }
 
@@ -4590,7 +4590,7 @@ LABEL_20:
   [v3 doStartWithCompletionHandler:v4];
 }
 
-- (BOOL)doStartEngineAndWait:(id *)a3
+- (BOOL)doStartEngineAndWait:(id *)wait
 {
   v36 = *MEMORY[0x277D85DE8];
   v24 = 0;
@@ -4704,9 +4704,9 @@ LABEL_21:
 
   [(CHHapticEngine *)self stopWithCompletionHandler:&__block_literal_global_228];
 LABEL_25:
-  if (a3)
+  if (wait)
   {
-    *a3 = v25[5];
+    *wait = v25[5];
   }
 
   if (kHAPIScope)
@@ -4870,7 +4870,7 @@ LABEL_9:
     v20 = 2080;
     v21 = "[CHHapticEngine startAndReturnError:]";
     v22 = 2048;
-    v23 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21569A000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d %s: Called on engine %p", &v16, 0x26u);
   }
 
@@ -4908,7 +4908,7 @@ LABEL_8:
   return v11;
 }
 
-- (BOOL)doStopEngineAndWait:(id *)a3
+- (BOOL)doStopEngineAndWait:(id *)wait
 {
   v37 = *MEMORY[0x277D85DE8];
   [(CHHapticEngine *)self setRunning:0];
@@ -5056,7 +5056,7 @@ LABEL_30:
     [(CHHapticEngine *)self cancelIdleTimer];
   }
 
-  *a3 = *(*&buf[8] + 40);
+  *wait = *(*&buf[8] + 40);
   v19 = *(*&buf[8] + 40) == 0;
 
   _Block_object_dispose(buf, 8);
@@ -5138,10 +5138,10 @@ LABEL_16:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)doStopWithCompletionHandler:(id)a3
+- (void)doStopWithCompletionHandler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   [(CHHapticEngine *)self setRunning:0];
   if (kHAPIScope)
   {
@@ -5177,7 +5177,7 @@ LABEL_8:
   v10[2] = __46__CHHapticEngine_doStopWithCompletionHandler___block_invoke;
   v10[3] = &unk_2781C9058;
   objc_copyWeak(&v12, buf);
-  v8 = v4;
+  v8 = handlerCopy;
   v11 = v8;
   [(AVHapticPlayer *)player stopRunningWithCompletionHandler:v10];
 
@@ -5414,7 +5414,7 @@ LABEL_10:
     v28 = 2080;
     v29 = "[CHHapticEngine stopWithCompletionHandler:]";
     v30 = 2048;
-    v31 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21569A000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d %s: Called on engine %p", buf, 0x26u);
   }
 
@@ -5586,7 +5586,7 @@ LABEL_19:
     v23 = 2080;
     v24 = "[CHHapticEngine notifyWhenPlayersFinished:]";
     v25 = 2048;
-    v26 = self;
+    selfCopy = self;
     v27 = 2048;
     v28 = v8;
     _os_log_impl(&dword_21569A000, v7, OS_LOG_TYPE_DEFAULT, "%25s:%-5d %s: Called on engine %p with finishedHandler %p", buf, 0x30u);
@@ -5595,21 +5595,21 @@ LABEL_19:
 LABEL_8:
   if (self->_player)
   {
-    v9 = self;
-    objc_sync_enter(v9);
-    [(CHHapticEngine *)v9 setClientFinishedHandler:v4];
-    objc_initWeak(buf, v9);
-    v10 = [(CHHapticEngine *)v9 player];
+    selfCopy2 = self;
+    objc_sync_enter(selfCopy2);
+    [(CHHapticEngine *)selfCopy2 setClientFinishedHandler:v4];
+    objc_initWeak(buf, selfCopy2);
+    player = [(CHHapticEngine *)selfCopy2 player];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __44__CHHapticEngine_notifyWhenPlayersFinished___block_invoke_2;
     v13[3] = &unk_2781C8FE0;
     objc_copyWeak(&v14, buf);
-    [v10 finishWithCompletionHandler:v13];
+    [player finishWithCompletionHandler:v13];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(buf);
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy2);
   }
 
   else
@@ -5623,7 +5623,7 @@ LABEL_8:
     v15[3] = &unk_2781C9030;
     v16 = v11;
     v17 = v4;
-    v9 = v11;
+    selfCopy2 = v11;
     [(CHHapticEngine *)self dispatchOnLocal:v15];
   }
 
@@ -5798,10 +5798,10 @@ LABEL_8:
   return v9;
 }
 
-- (id)createAdvancedPlayerWithRingtoneData:(id)a3 error:(id *)a4
+- (id)createAdvancedPlayerWithRingtoneData:(id)data error:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dataCopy = data;
   if (kHAPIScope)
   {
     v7 = *kHAPIScope;
@@ -5831,12 +5831,12 @@ LABEL_8:
 LABEL_8:
   if (self->_player)
   {
-    v9 = [[AdvancedPatternPlayer alloc] initWithRingtoneData:v6 engine:self error:a4];
+    v9 = [[AdvancedPatternPlayer alloc] initWithRingtoneData:dataCopy engine:self error:error];
   }
 
   else
   {
-    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticEngine.mm", 1601, "[CHHapticEngine createAdvancedPlayerWithRingtoneData:error:]", "_player != nil", -4810, a4);
+    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticEngine.mm", 1601, "[CHHapticEngine createAdvancedPlayerWithRingtoneData:error:]", "_player != nil", -4810, error);
     v9 = 0;
   }
 
@@ -5845,10 +5845,10 @@ LABEL_8:
   return v9;
 }
 
-- (id)createAdvancedPlayerWithVibePatternDictionary:(id)a3 error:(id *)a4
+- (id)createAdvancedPlayerWithVibePatternDictionary:(id)dictionary error:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   if (kHAPIScope)
   {
     v7 = *kHAPIScope;
@@ -5878,12 +5878,12 @@ LABEL_8:
 LABEL_8:
   if (self->_player)
   {
-    v9 = [[AdvancedPatternPlayer alloc] initWithVibePatternDictionary:v6 engine:self error:a4];
+    v9 = [[AdvancedPatternPlayer alloc] initWithVibePatternDictionary:dictionaryCopy engine:self error:error];
   }
 
   else
   {
-    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticEngine.mm", 1610, "[CHHapticEngine createAdvancedPlayerWithVibePatternDictionary:error:]", "_player != nil", -4810, a4);
+    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticEngine.mm", 1610, "[CHHapticEngine createAdvancedPlayerWithVibePatternDictionary:error:]", "_player != nil", -4810, error);
     v9 = 0;
   }
 
@@ -5892,10 +5892,10 @@ LABEL_8:
   return v9;
 }
 
-- (id)createAdvancedPlayerWithRingtonePattern:(id)a3 error:(id *)a4
+- (id)createAdvancedPlayerWithRingtonePattern:(id)pattern error:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  patternCopy = pattern;
   if (kHAPIScope)
   {
     v7 = *kHAPIScope;
@@ -5925,12 +5925,12 @@ LABEL_8:
 LABEL_8:
   if (self->_player)
   {
-    v9 = [[AdvancedPatternPlayer alloc] initWithPattern:v6 engine:self privileged:1 error:a4];
+    v9 = [[AdvancedPatternPlayer alloc] initWithPattern:patternCopy engine:self privileged:1 error:error];
   }
 
   else
   {
-    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticEngine.mm", 1618, "[CHHapticEngine createAdvancedPlayerWithRingtonePattern:error:]", "_player != nil", -4810, a4);
+    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticEngine.mm", 1618, "[CHHapticEngine createAdvancedPlayerWithRingtonePattern:error:]", "_player != nil", -4810, error);
     v9 = 0;
   }
 
@@ -5939,10 +5939,10 @@ LABEL_8:
   return v9;
 }
 
-- (id)createPrivilegedPlayerWithPlayable:(id)a3 error:(id *)a4
+- (id)createPrivilegedPlayerWithPlayable:(id)playable error:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  playableCopy = playable;
   if (kHAPIScope)
   {
     v7 = *kHAPIScope;
@@ -5972,12 +5972,12 @@ LABEL_8:
 LABEL_8:
   if (self->_player)
   {
-    v9 = [[PatternPlayer alloc] initWithPlayable:v6 engine:self privileged:1 error:a4];
+    v9 = [[PatternPlayer alloc] initWithPlayable:playableCopy engine:self privileged:1 error:error];
   }
 
   else
   {
-    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticEngine.mm", 1627, "[CHHapticEngine createPrivilegedPlayerWithPlayable:error:]", "_player != nil", -4810, a4);
+    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticEngine.mm", 1627, "[CHHapticEngine createPrivilegedPlayerWithPlayable:error:]", "_player != nil", -4810, error);
     v9 = 0;
   }
 
@@ -5986,13 +5986,13 @@ LABEL_8:
   return v9;
 }
 
-- (double)getDurationForResource:(unint64_t)a3
+- (double)getDurationForResource:(unint64_t)resource
 {
   v22 = *MEMORY[0x277D85DE8];
   v4 = _sResourceMutex;
   std::mutex::lock(_sResourceMutex);
   v6 = ResourceRegistry::instance(v5);
-  DurationForResource = ResourceRegistry::getDurationForResource(v6, a3);
+  DurationForResource = ResourceRegistry::getDurationForResource(v6, resource);
   if ((v8 & 1) == 0)
   {
     if (kHAPIScope)
@@ -6021,7 +6021,7 @@ LABEL_10:
       v18 = 2080;
       v19 = "[CHHapticEngine getDurationForResource:]";
       v20 = 1024;
-      v21 = a3;
+      resourceCopy = resource;
       _os_log_impl(&dword_21569A000, v10, OS_LOG_TYPE_ERROR, "%25s:%-5d %s: Cannot find resource referenced by ID %u. Returning 0.0", &v14, 0x22u);
     }
 
@@ -6035,13 +6035,13 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)isResourceLoopEnabled:(unint64_t)a3
+- (BOOL)isResourceLoopEnabled:(unint64_t)enabled
 {
   v20 = *MEMORY[0x277D85DE8];
   v4 = _sResourceMutex;
   std::mutex::lock(_sResourceMutex);
   v6 = ResourceRegistry::instance(v5);
-  isResourceLoopEnabled = ResourceRegistry::isResourceLoopEnabled(v6, a3);
+  isResourceLoopEnabled = ResourceRegistry::isResourceLoopEnabled(v6, enabled);
   LOBYTE(v8) = isResourceLoopEnabled;
   if ((isResourceLoopEnabled & 0x100) == 0)
   {
@@ -6069,7 +6069,7 @@ LABEL_11:
       v16 = 2080;
       v17 = "[CHHapticEngine isResourceLoopEnabled:]";
       v18 = 1024;
-      v19 = a3;
+      enabledCopy = enabled;
       _os_log_impl(&dword_21569A000, v8, OS_LOG_TYPE_ERROR, "%25s:%-5d %s: Cannot find resource referenced by ID %u. Returning FALSE", &v12, 0x22u);
     }
 
@@ -6082,14 +6082,14 @@ LABEL_9:
   return v8 & 1;
 }
 
-- (id)getMetricsForPlayer:(id)a3
+- (id)getMetricsForPlayer:(id)player
 {
-  v3 = [(CHMetrics *)self->_metrics getMetricsForPlayer:a3];
+  v3 = [(CHMetrics *)self->_metrics getMetricsForPlayer:player];
 
   return v3;
 }
 
-- (__map_iterator<std::__tree_iterator<std::__value_type<unsigned)doFindPublicAudioResourceID:(unint64_t)a3
+- (__map_iterator<std::__tree_iterator<std::__value_type<unsigned)doFindPublicAudioResourceID:(unint64_t)d
 {
   left = self->_publicAudioResources.__tree_.__end_node_.__left_;
   p_end_node = &self->_publicAudioResources.__tree_.__end_node_;
@@ -6103,8 +6103,8 @@ LABEL_9:
   do
   {
     v7 = v4[4];
-    v8 = v7 >= a3;
-    v9 = v7 < a3;
+    v8 = v7 >= d;
+    v9 = v7 < d;
     if (v8)
     {
       v6.var0.var0 = v4;
@@ -6114,7 +6114,7 @@ LABEL_9:
   }
 
   while (v4);
-  if (v6.var0.var0 == p_end_node || *(v6.var0.var0 + 4) > a3)
+  if (v6.var0.var0 == p_end_node || *(v6.var0.var0 + 4) > d)
   {
     return p_end_node;
   }
@@ -6122,13 +6122,13 @@ LABEL_9:
   return v6;
 }
 
-- (void)addPublicAudioResourceID:(unint64_t)a3 withURL:(id)a4 options:(id)a5
+- (void)addPublicAudioResourceID:(unint64_t)d withURL:(id)l options:(id)options
 {
-  v6 = a3;
+  dCopy = d;
   v23 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy2 = d;
+  lCopy = l;
+  optionsCopy = options;
   if (kHAPIScope)
   {
     v10 = *kHAPIScope;
@@ -6153,30 +6153,30 @@ LABEL_9:
     v17 = 2080;
     v18 = "[CHHapticEngine addPublicAudioResourceID:withURL:options:]";
     v19 = 2048;
-    v20 = self;
+    selfCopy = self;
     v21 = 1024;
-    v22 = v6;
+    v22 = dCopy;
     _os_log_impl(&dword_21569A000, v10, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: Engine %p adding resID %u to public resource list", buf, 0x2Cu);
   }
 
 LABEL_8:
-  if (&self->_publicAudioResources.__tree_.__end_node_ != [(CHHapticEngine *)self doFindPublicAudioResourceID:v15])
+  if (&self->_publicAudioResources.__tree_.__end_node_ != [(CHHapticEngine *)self doFindPublicAudioResourceID:dCopy2])
   {
     [CHHapticEngine addPublicAudioResourceID:withURL:options:];
   }
 
-  v12 = v8;
+  v12 = lCopy;
   *buf = v12;
-  v13 = v9;
+  v13 = optionsCopy;
   *&buf[8] = v13;
-  std::__tree<std::__value_type<unsigned long,std::pair<NSURL * {__strong},NSDictionary * {__strong}>>,std::__map_value_compare<unsigned long,std::__value_type<unsigned long,std::pair<NSURL * {__strong},NSDictionary * {__strong}>>,std::less<unsigned long>,true>,std::allocator<std::__value_type<unsigned long,std::pair<NSURL * {__strong},NSDictionary * {__strong}>>>>::__emplace_unique_key_args<unsigned long,unsigned long &,std::tuple<NSURL * {__strong},NSDictionary * {__strong}>>(&self->_publicAudioResources, &v15);
+  std::__tree<std::__value_type<unsigned long,std::pair<NSURL * {__strong},NSDictionary * {__strong}>>,std::__map_value_compare<unsigned long,std::__value_type<unsigned long,std::pair<NSURL * {__strong},NSDictionary * {__strong}>>,std::less<unsigned long>,true>,std::allocator<std::__value_type<unsigned long,std::pair<NSURL * {__strong},NSDictionary * {__strong}>>>>::__emplace_unique_key_args<unsigned long,unsigned long &,std::tuple<NSURL * {__strong},NSDictionary * {__strong}>>(&self->_publicAudioResources, &dCopy2);
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)hasPublicAudioResourceID:(unint64_t)a3
+- (BOOL)hasPublicAudioResourceID:(unint64_t)d
 {
-  v3 = a3;
+  dCopy = d;
   v24 = *MEMORY[0x277D85DE8];
   v5.var0.var0 = [(CHHapticEngine *)self doFindPublicAudioResourceID:?];
   p_end_node = &self->_publicAudioResources.__tree_.__end_node_;
@@ -6210,11 +6210,11 @@ LABEL_8:
     }
 
     v18 = 2048;
-    v19 = self;
+    selfCopy = self;
     v20 = 2080;
     v21 = v9;
     v22 = 1024;
-    v23 = v3;
+    v23 = dCopy;
     _os_log_impl(&dword_21569A000, v7, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: Engine %p %s resID %u", &v12, 0x36u);
   }
 
@@ -6224,10 +6224,10 @@ LABEL_10:
   return result;
 }
 
-- (unint64_t)idForPublicAudioResourceURL:(id)a3 withOptions:(id)a4
+- (unint64_t)idForPublicAudioResourceURL:(id)l withOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  optionsCopy = options;
   begin_node = self->_publicAudioResources.__tree_.__begin_node_;
   p_end_node = &self->_publicAudioResources.__tree_.__end_node_;
   if (begin_node != &self->_publicAudioResources.__tree_.__end_node_)
@@ -6237,11 +6237,11 @@ LABEL_10:
       left = begin_node[4].__left_;
       v11 = begin_node[5].__left_;
       v12 = begin_node[6].__left_;
-      v13 = [v11 absoluteString];
-      v14 = [v6 absoluteString];
-      if ([v13 isEqualToString:v14])
+      absoluteString = [v11 absoluteString];
+      absoluteString2 = [lCopy absoluteString];
+      if ([absoluteString isEqualToString:absoluteString2])
       {
-        v15 = [v12 isEqualToDictionary:v7];
+        v15 = [v12 isEqualToDictionary:optionsCopy];
 
         if (v15)
         {
@@ -6289,7 +6289,7 @@ LABEL_13:
   return left;
 }
 
-- (void)removePublicAudioResourceID:(unint64_t)a3
+- (void)removePublicAudioResourceID:(unint64_t)d
 {
   v19 = *MEMORY[0x277D85DE8];
   if (kHAPIScope)
@@ -6316,14 +6316,14 @@ LABEL_13:
     v13 = 2080;
     v14 = "[CHHapticEngine removePublicAudioResourceID:]";
     v15 = 2048;
-    v16 = self;
+    selfCopy = self;
     v17 = 1024;
-    v18 = a3;
+    dCopy = d;
     _os_log_impl(&dword_21569A000, v5, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: Engine %p removing resID %u from public resource list", &v9, 0x2Cu);
   }
 
 LABEL_8:
-  v7 = [(CHHapticEngine *)self doFindPublicAudioResourceID:a3];
+  v7 = [(CHHapticEngine *)self doFindPublicAudioResourceID:d];
   if (&self->_publicAudioResources.__tree_.__end_node_ == v7)
   {
     [CHHapticEngine removePublicAudioResourceID:];
@@ -6333,23 +6333,23 @@ LABEL_8:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)resourceIsRegistered:(unint64_t)a3
++ (BOOL)resourceIsRegistered:(unint64_t)registered
 {
   v4 = _sResourceMutex;
   std::mutex::lock(_sResourceMutex);
   v6 = ResourceRegistry::instance(v5);
-  LOBYTE(a3) = ResourceRegistry::isResourceRegistered(v6, a3);
+  LOBYTE(registered) = ResourceRegistry::isResourceRegistered(v6, registered);
   std::mutex::unlock(v4);
-  return a3;
+  return registered;
 }
 
 - (CHHapticAudioResourceID)registerAudioResource:(NSURL *)resourceURL options:(NSDictionary *)options error:(NSError *)outError
 {
   v8 = resourceURL;
   v9 = options;
-  v10 = [(CHHapticEngine *)self player];
+  player = [(CHHapticEngine *)self player];
 
-  if (v10)
+  if (player)
   {
     v11 = CALog::Scope::oslog(kHAPIScope);
     v12 = os_signpost_id_make_with_pointer(v11, self);
@@ -6362,8 +6362,8 @@ LABEL_8:
       _os_signpost_emit_with_name_impl(&dword_21569A000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "HapticEngine_registerAudioResource", " enableTelemetry=YES ", buf, 2u);
     }
 
-    v15 = self;
-    objc_sync_enter(v15);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v16 = MEMORY[0x277CBEC10];
     if (v9)
     {
@@ -6372,15 +6372,15 @@ LABEL_8:
 
     v17 = v16;
 
-    v18 = [(CHHapticEngine *)v15 idForPublicAudioResourceURL:v8 withOptions:v17];
+    v18 = [(CHHapticEngine *)selfCopy idForPublicAudioResourceURL:v8 withOptions:v17];
     if (!v18)
     {
       v25 = 0;
-      v18 = [(CHHapticEngine *)v15 doRegisterAudioResource:v8 options:v17 fromPattern:0 error:&v25];
+      v18 = [(CHHapticEngine *)selfCopy doRegisterAudioResource:v8 options:v17 fromPattern:0 error:&v25];
       v19 = v25;
       if (!v19 && v18)
       {
-        [(CHHapticEngine *)v15 addPublicAudioResourceID:v18 withURL:v8 options:v17];
+        [(CHHapticEngine *)selfCopy addPublicAudioResourceID:v18 withURL:v8 options:v17];
       }
 
       if (outError)
@@ -6390,7 +6390,7 @@ LABEL_8:
       }
     }
 
-    objc_sync_exit(v15);
+    objc_sync_exit(selfCopy);
 
     v21 = CALog::Scope::oslog(kHAPIScope);
     v22 = v21;
@@ -6414,9 +6414,9 @@ LABEL_8:
 - (BOOL)unregisterAudioResource:(CHHapticAudioResourceID)resourceID error:(NSError *)outError
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = [(CHHapticEngine *)self player];
+  player = [(CHHapticEngine *)self player];
 
-  if (!v7)
+  if (!player)
   {
     _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticEngine.mm", 1757, "[CHHapticEngine unregisterAudioResource:error:]", "self.player != nil", -4810, outError);
     v13 = 0;
@@ -6434,13 +6434,13 @@ LABEL_8:
     _os_signpost_emit_with_name_impl(&dword_21569A000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "HapticEngine_unregisterAudioResource", " enableTelemetry=YES ", &v20, 2u);
   }
 
-  v12 = self;
-  objc_sync_enter(v12);
-  if ([(CHHapticEngine *)v12 hasPublicAudioResourceID:resourceID])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(CHHapticEngine *)selfCopy hasPublicAudioResourceID:resourceID])
   {
-    if ([(CHHapticEngine *)v12 doUnregisterAudioResource:resourceID fromPattern:0 error:outError])
+    if ([(CHHapticEngine *)selfCopy doUnregisterAudioResource:resourceID fromPattern:0 error:outError])
     {
-      [(CHHapticEngine *)v12 removePublicAudioResourceID:resourceID];
+      [(CHHapticEngine *)selfCopy removePublicAudioResourceID:resourceID];
       v13 = 1;
       goto LABEL_19;
     }
@@ -6487,7 +6487,7 @@ LABEL_16:
 LABEL_18:
   v13 = 0;
 LABEL_19:
-  objc_sync_exit(v12);
+  objc_sync_exit(selfCopy);
 
   v16 = CALog::Scope::oslog(kHAPIScope);
   v17 = v16;
@@ -6587,12 +6587,12 @@ LABEL_9:
 - (void)doUnregisterAllAudioResources
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = [(CHHapticEngine *)self player];
+  player = [(CHHapticEngine *)self player];
   v4 = _sResourceMutex;
   std::mutex::lock(_sResourceMutex);
   v6 = ResourceRegistry::instance(v5);
   ResourceRegistry::cleanUpRefCountKey(v6, self, v20);
-  if (v3)
+  if (player)
   {
     for (i = v21; i; i = *i)
     {
@@ -6638,7 +6638,7 @@ LABEL_10:
       v19[2] = __47__CHHapticEngine_doUnregisterAllAudioResources__block_invoke;
       v19[3] = &unk_2781C93A8;
       v19[4] = buf;
-      if (([v3 releaseCustomAudioEvent:v11 reply:v19] & 1) == 0)
+      if (([player releaseCustomAudioEvent:v11 reply:v19] & 1) == 0)
       {
         if (!kHAPIScope)
         {
@@ -6650,7 +6650,7 @@ LABEL_15:
           if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
           {
             v16 = i[2];
-            v17 = [*(*&buf[8] + 40) localizedDescription];
+            localizedDescription = [*(*&buf[8] + 40) localizedDescription];
             *v22 = 136316162;
             v23 = "CHHapticEngine.mm";
             v24 = 1024;
@@ -6660,7 +6660,7 @@ LABEL_15:
             v28 = 1024;
             v29 = v16;
             v30 = 2112;
-            v31 = v17;
+            v31 = localizedDescription;
             _os_log_impl(&dword_21569A000, v15, OS_LOG_TYPE_ERROR, "%25s:%-5d %s: ERROR: unable to release server-side audio resource with ID %u: %@", v22, 0x2Cu);
           }
 
@@ -6711,9 +6711,9 @@ LABEL_18:
   {
     if ([(NSURL *)v6 isFileURL])
     {
-      v11 = [(NSURL *)v6 path];
-      v12 = [v11 pathExtension];
-      v13 = [v12 isEqualToString:@"plist"];
+      path = [(NSURL *)v6 path];
+      pathExtension = [path pathExtension];
+      v13 = [pathExtension isEqualToString:@"plist"];
 
       if (v13)
       {
@@ -7014,10 +7014,10 @@ LABEL_41:
   return v16;
 }
 
-- (BOOL)doPlayPattern:(id)a3 error:(id *)a4
+- (BOOL)doPlayPattern:(id)pattern error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  patternCopy = pattern;
   if (kHAPIScope)
   {
     v7 = *kHAPIScope;
@@ -7045,7 +7045,7 @@ LABEL_41:
   }
 
 LABEL_8:
-  v9 = [(CHHapticEngine *)self createPlayerWithPattern:v6 error:a4];
+  v9 = [(CHHapticEngine *)self createPlayerWithPattern:patternCopy error:error];
   if (!v9)
   {
     v11 = 0;
@@ -7103,10 +7103,10 @@ LABEL_14:
   v16 = dispatch_group_wait(v14, v15);
   v18 = (*&buf[8] + 40);
   v17 = *(*&buf[8] + 40);
-  if (a4 && v17)
+  if (error && v17)
   {
     v11 = 0;
-    *a4 = v17;
+    *error = v17;
   }
 
   else
@@ -7119,9 +7119,9 @@ LABEL_14:
       *(v30 + 24) = 0;
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = *(*&buf[8] + 40);
+      *error = *(*&buf[8] + 40);
     }
 
     v11 = *(v30 + 24);
@@ -7255,23 +7255,23 @@ LABEL_10:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)dispatchOnGlobal:(id)a3
++ (void)dispatchOnGlobal:(id)global
 {
-  v3 = a3;
+  globalCopy = global;
   v4 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__CHHapticEngine_CHHapticEngineInternal__dispatchOnGlobal___block_invoke;
   block[3] = &unk_2781C9260;
-  v7 = v3;
-  v5 = v3;
+  v7 = globalCopy;
+  v5 = globalCopy;
   dispatch_async(v4, block);
 }
 
-- (void)dispatchOnLocal:(id)a3
+- (void)dispatchOnLocal:(id)local
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  localCopy = local;
   if (kHAPIScope)
   {
     if (*(kHAPIScope + 8))
@@ -7282,7 +7282,7 @@ LABEL_10:
         v6 = v5;
         if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
         {
-          v7 = MEMORY[0x21606F540](v4);
+          v7 = MEMORY[0x21606F540](localCopy);
           *buf = 136315906;
           v14 = "CHHapticEngine.mm";
           v15 = 1024;
@@ -7307,8 +7307,8 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = __58__CHHapticEngine_CHHapticEngineInternal__dispatchOnLocal___block_invoke;
   block[3] = &unk_2781C9260;
-  v12 = v4;
-  v9 = v4;
+  v12 = localCopy;
+  v9 = localCopy;
   dispatch_async(dispatchQueue, block);
 
   v10 = *MEMORY[0x277D85DE8];
@@ -7343,10 +7343,10 @@ void __58__CHHapticEngine_CHHapticEngineInternal__dispatchOnLocal___block_invoke
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dispatchSyncOnLocal:(id)a3
+- (void)dispatchSyncOnLocal:(id)local
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  localCopy = local;
   if (kHAPIScope)
   {
     if (*(kHAPIScope + 8))
@@ -7357,7 +7357,7 @@ void __58__CHHapticEngine_CHHapticEngineInternal__dispatchOnLocal___block_invoke
         v6 = v5;
         if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
         {
-          v7 = MEMORY[0x21606F540](v4);
+          v7 = MEMORY[0x21606F540](localCopy);
           *buf = 136315906;
           v14 = "CHHapticEngine.mm";
           v15 = 1024;
@@ -7378,8 +7378,8 @@ void __58__CHHapticEngine_CHHapticEngineInternal__dispatchOnLocal___block_invoke
   block[1] = 3221225472;
   block[2] = __62__CHHapticEngine_CHHapticEngineInternal__dispatchSyncOnLocal___block_invoke;
   block[3] = &unk_2781C9260;
-  v12 = v4;
-  v9 = v4;
+  v12 = localCopy;
+  v9 = localCopy;
   dispatch_sync(dispatchQueue, block);
   in_dispatch_sync = 0;
 
@@ -7415,7 +7415,7 @@ void __62__CHHapticEngine_CHHapticEngineInternal__dispatchSyncOnLocal___block_in
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)checkEngineStateOnStart:(id *)a3
+- (BOOL)checkEngineStateOnStart:(id *)start
 {
   v15 = *MEMORY[0x277D85DE8];
   if ([(CHHapticEngine *)self isAutoShutdownEnabled]&& ![(CHHapticEngine *)self running])
@@ -7426,7 +7426,7 @@ void __62__CHHapticEngine_CHHapticEngineInternal__dispatchSyncOnLocal___block_in
       if (!v6)
       {
 LABEL_13:
-        result = [(CHHapticEngine *)self doStartEngineAndWait:a3];
+        result = [(CHHapticEngine *)self doStartEngineAndWait:start];
         goto LABEL_14;
       }
     }
@@ -7458,7 +7458,7 @@ LABEL_13:
 
   else
   {
-    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticEngine.mm", 2024, "[CHHapticEngine(CHHapticEngineInternal) checkEngineStateOnStart:]", "self.running", -4805, a3);
+    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticEngine.mm", 2024, "[CHHapticEngine(CHHapticEngineInternal) checkEngineStateOnStart:]", "self.running", -4805, start);
     result = 0;
   }
 
@@ -7467,40 +7467,40 @@ LABEL_14:
   return result;
 }
 
-- (BOOL)checkEngineRunning:(id *)a3
+- (BOOL)checkEngineRunning:(id *)running
 {
-  v4 = [(CHHapticEngine *)self running];
-  if (!v4)
+  running = [(CHHapticEngine *)self running];
+  if (!running)
   {
-    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticEngine.mm", 2031, "[CHHapticEngine(CHHapticEngineInternal) checkEngineRunning:]", "self.running", -4805, a3);
+    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticEngine.mm", 2031, "[CHHapticEngine(CHHapticEngineInternal) checkEngineRunning:]", "self.running", -4805, running);
   }
 
-  return v4;
+  return running;
 }
 
-- (BOOL)notifyPlayerStarted:(id)a3 atTime:(double)a4
+- (BOOL)notifyPlayerStarted:(id)started atTime:(double)time
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  objc_initWeak(&location, v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_initWeak(&location, selfCopy);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __69__CHHapticEngine_CHHapticEngineInternal__notifyPlayerStarted_atTime___block_invoke;
   v10[3] = &unk_2781C9420;
   objc_copyWeak(&v11, &location);
-  [(CHHapticEngine *)v4 dispatchOnLocal:v10];
-  v5 = [(CHHapticEngine *)v4 player];
+  [(CHHapticEngine *)selfCopy dispatchOnLocal:v10];
+  player = [(CHHapticEngine *)selfCopy player];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __69__CHHapticEngine_CHHapticEngineInternal__notifyPlayerStarted_atTime___block_invoke_2;
   v8[3] = &unk_2781C8FE0;
   objc_copyWeak(&v9, &location);
-  v6 = [v5 finishWithCompletionHandler:v8];
+  v6 = [player finishWithCompletionHandler:v8];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
@@ -7615,10 +7615,10 @@ LABEL_25:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyPlayerStopped:(id)a3 atTime:(double)a4
+- (void)notifyPlayerStopped:(id)stopped atTime:(double)time
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  stoppedCopy = stopped;
   if (kHAPIScope)
   {
     v6 = *kHAPIScope;
@@ -7643,9 +7643,9 @@ LABEL_25:
     v13 = 2080;
     v14 = "[CHHapticEngine(CHHapticEngineInternal) notifyPlayerStopped:atTime:]";
     v15 = 2048;
-    v16 = v5;
+    v16 = stoppedCopy;
     v17 = 2048;
-    v18 = a4;
+    timeCopy = time;
     _os_log_impl(&dword_21569A000, v6, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: player %p notified engine it will be stopping at time %.3f", &v9, 0x30u);
   }
 
@@ -7653,10 +7653,10 @@ LABEL_8:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getAvailableChannel:(id *)a3
+- (id)getAvailableChannel:(id *)channel
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(AVHapticPlayer *)self->_player addChannel:a3];
+  v3 = [(AVHapticPlayer *)self->_player addChannel:channel];
   if (!v3)
   {
     if (kHAPIScope)
@@ -7692,12 +7692,12 @@ LABEL_9:
   return v3;
 }
 
-- (void)releaseChannel:(id)a3
+- (void)releaseChannel:(id)channel
 {
   v16 = *MEMORY[0x277D85DE8];
   player = self->_player;
   v9 = 0;
-  v4 = [(AVHapticPlayer *)player removeChannel:a3 error:&v9];
+  v4 = [(AVHapticPlayer *)player removeChannel:channel error:&v9];
   v5 = v9;
   if (!v4)
   {
@@ -7733,7 +7733,7 @@ LABEL_9:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)doReferenceAudioResourceByID:(unint64_t)a3
+- (BOOL)doReferenceAudioResourceByID:(unint64_t)d
 {
   v25 = *MEMORY[0x277D85DE8];
   if (kHAPIScope)
@@ -7760,7 +7760,7 @@ LABEL_9:
     v21 = 2080;
     v22 = "[CHHapticEngine(CHHapticEngineInternal) doReferenceAudioResourceByID:]";
     v23 = 1024;
-    v24 = a3;
+    dCopy2 = d;
     _os_log_impl(&dword_21569A000, v5, OS_LOG_TYPE_INFO, "%25s:%-5d %s: Adding reference to audio resource ID %u from pattern", &v17, 0x22u);
   }
 
@@ -7768,7 +7768,7 @@ LABEL_8:
   v7 = _sResourceMutex;
   std::mutex::lock(_sResourceMutex);
   v9 = ResourceRegistry::instance(v8);
-  v10 = ResourceRegistry::incrementReferenceCountNoCreate(v9, a3, self);
+  v10 = ResourceRegistry::incrementReferenceCountNoCreate(v9, d, self);
   if (!v10)
   {
     if (kHAPIScope)
@@ -7798,7 +7798,7 @@ LABEL_8:
     v21 = 2080;
     v22 = "[CHHapticEngine(CHHapticEngineInternal) doReferenceAudioResourceByID:]";
     v23 = 1024;
-    v24 = a3;
+    dCopy2 = d;
     v13 = "%25s:%-5d %s: Resource ID %u not previously registered!";
     goto LABEL_21;
   }
@@ -7827,7 +7827,7 @@ LABEL_8:
     v21 = 2080;
     v22 = "[CHHapticEngine(CHHapticEngineInternal) doReferenceAudioResourceByID:]";
     v23 = 1024;
-    v24 = v10;
+    dCopy2 = v10;
     v13 = "%25s:%-5d %s:    found it - reference count now %u";
 LABEL_21:
     _os_log_impl(&dword_21569A000, v11, OS_LOG_TYPE_INFO, v13, &v17, 0x22u);
@@ -7841,14 +7841,14 @@ LABEL_23:
   return v10 != 0;
 }
 
-- (unint64_t)doRegisterAudioResource:(id)a3 options:(id)a4 fromPattern:(BOOL)a5 error:(id *)a6
+- (unint64_t)doRegisterAudioResource:(id)resource options:(id)options fromPattern:(BOOL)pattern error:(id *)error
 {
-  v6 = a5;
+  patternCopy = pattern;
   v77 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v64 = v9;
-  v56 = a4;
-  v55 = [(CHHapticEngine *)self player];
+  resourceCopy = resource;
+  v64 = resourceCopy;
+  optionsCopy = options;
+  player = [(CHHapticEngine *)self player];
   if (kHAPIScope)
   {
     v10 = *kHAPIScope;
@@ -7873,7 +7873,7 @@ LABEL_23:
     *&buf[14] = 2101;
     *&buf[20] = "[CHHapticEngine(CHHapticEngineInternal) doRegisterAudioResource:options:fromPattern:error:]";
     *&buf[18] = 2080;
-    if (v6)
+    if (patternCopy)
     {
       v12 = "Pattern";
     }
@@ -7881,7 +7881,7 @@ LABEL_23:
     *&buf[28] = 2080;
     *&buf[30] = v12;
     *&buf[38] = 2112;
-    v66 = v9;
+    v66 = resourceCopy;
     _os_log_impl(&dword_21569A000, v10, OS_LOG_TYPE_INFO, "%25s:%-5d %s: Registering %s audio resource '%@'", buf, 0x30u);
   }
 
@@ -7889,7 +7889,7 @@ LABEL_10:
   v52 = _sResourceMutex;
   std::mutex::lock(_sResourceMutex);
   v14 = ResourceRegistry::instance(v13);
-  IdealMatch = ResourceRegistry::findIdealMatch(v14, v64, v56, self);
+  IdealMatch = ResourceRegistry::findIdealMatch(v14, v64, optionsCopy, self);
   v17 = IdealMatch;
   if (v14 + 1 == IdealMatch)
   {
@@ -7950,7 +7950,7 @@ LABEL_36:
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
   {
     v25 = *v19;
-    v26 = [v25 absoluteString];
+    absoluteString = [v25 absoluteString];
     v27 = *(v17 + 4);
     *buf = 136316162;
     *&buf[4] = "CHHapticEngine.mm";
@@ -7959,7 +7959,7 @@ LABEL_36:
     *&buf[14] = 2112;
     *&buf[20] = "[CHHapticEngine(CHHapticEngineInternal) doRegisterAudioResource:options:fromPattern:error:]";
     *&buf[28] = 2112;
-    *&buf[30] = v26;
+    *&buf[30] = absoluteString;
     *&buf[38] = 1024;
     LODWORD(v66) = v27;
     _os_log_impl(&dword_21569A000, v24, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: -- Entry list has '%@' with ID %u", buf, 0x2Cu);
@@ -8015,7 +8015,7 @@ LABEL_41:
     v63[2] = __92__CHHapticEngine_CHHapticEngineInternal__doRegisterAudioResource_options_fromPattern_error___block_invoke;
     v63[3] = &unk_2781C93A8;
     v63[4] = buf;
-    if ([v55 referenceCustomAudioEvent:v33 reply:{v63, v52}])
+    if ([player referenceCustomAudioEvent:v33 reply:{v63, v52}])
     {
       goto LABEL_67;
     }
@@ -8038,7 +8038,7 @@ LABEL_41:
     v42 = v34;
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
     {
-      v43 = [*(*&buf[8] + 40) localizedDescription];
+      localizedDescription = [*(*&buf[8] + 40) localizedDescription];
       v67 = 136316162;
       v68 = "CHHapticEngine.mm";
       v69 = 1024;
@@ -8048,7 +8048,7 @@ LABEL_41:
       v73 = 1024;
       v74 = v33;
       v75 = 2112;
-      v76 = v43;
+      v76 = localizedDescription;
       _os_log_impl(&dword_21569A000, v42, OS_LOG_TYPE_ERROR, "%25s:%-5d %s: ERROR: unable to reference server-side audio resource with ID %u: %@", &v67, 0x2Cu);
     }
 
@@ -8066,9 +8066,9 @@ LABEL_67:
       {
 LABEL_76:
         v33 = 0;
-        if (a6)
+        if (error)
         {
-          *a6 = *(*&buf[8] + 40);
+          *error = *(*&buf[8] + 40);
         }
 
 LABEL_78:
@@ -8149,7 +8149,7 @@ LABEL_49:
   v62[3] = &unk_2781C9380;
   v62[4] = &v57;
   v62[5] = buf;
-  [v55 copyCustomAudioEvent:v37 options:v56 reply:{v62, v52}];
+  [player copyCustomAudioEvent:v37 options:optionsCopy reply:{v62, v52}];
   if (*(*&buf[8] + 40))
   {
     if (kHAPIScope)
@@ -8159,9 +8159,9 @@ LABEL_49:
       {
 LABEL_60:
         v33 = 0;
-        if (a6)
+        if (error)
         {
-          *a6 = *(*&buf[8] + 40);
+          *error = *(*&buf[8] + 40);
         }
 
         goto LABEL_90;
@@ -8224,7 +8224,7 @@ LABEL_81:
     atomic_fetch_add_explicit(&v20->__shared_owners_, 1uLL, memory_order_relaxed);
   }
 
-  v49 = ResourceRegistry::emplace(v14, v48, &v60, *v19, v56, self);
+  v49 = ResourceRegistry::emplace(v14, v48, &v60, *v19, optionsCopy, self);
   if (v61)
   {
     std::__shared_weak_count::__release_shared[abi:ne200100](v61);
@@ -8342,11 +8342,11 @@ LABEL_9:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)doUnregisterAudioResource:(unint64_t)a3 fromPattern:(BOOL)a4 error:(id *)a5
+- (BOOL)doUnregisterAudioResource:(unint64_t)resource fromPattern:(BOOL)pattern error:(id *)error
 {
-  v6 = a4;
+  patternCopy = pattern;
   v46 = *MEMORY[0x277D85DE8];
-  v9 = [(CHHapticEngine *)self player];
+  player = [(CHHapticEngine *)self player];
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -8377,7 +8377,7 @@ LABEL_9:
     v43 = "[CHHapticEngine(CHHapticEngineInternal) doUnregisterAudioResource:fromPattern:error:]";
     v40 = 1024;
     v42 = 2080;
-    if (v6)
+    if (patternCopy)
     {
       v12 = "pattern-loaded";
     }
@@ -8385,7 +8385,7 @@ LABEL_9:
     v44 = 2080;
     *v45 = v12;
     *&v45[8] = 1024;
-    *&v45[10] = a3;
+    *&v45[10] = resource;
     _os_log_impl(&dword_21569A000, v10, OS_LOG_TYPE_INFO, "%25s:%-5d %s: Attempting to remove %s ID %u", buf, 0x2Cu);
   }
 
@@ -8393,7 +8393,7 @@ LABEL_10:
   v13 = _sResourceMutex;
   std::mutex::lock(_sResourceMutex);
   v15 = ResourceRegistry::instance(v14);
-  v16 = ResourceRegistry::decrementReferenceCount(v15, a3, self);
+  v16 = ResourceRegistry::decrementReferenceCount(v15, resource, self);
   if (v16)
   {
     if (v16 == 1)
@@ -8447,9 +8447,9 @@ LABEL_35:
         v31[2] = __86__CHHapticEngine_CHHapticEngineInternal__doUnregisterAudioResource_fromPattern_error___block_invoke;
         v31[3] = &unk_2781C93A8;
         v31[4] = &v32;
-        v24 = [v9 releaseCustomAudioEvent:a3 reply:v31];
+        v24 = [player releaseCustomAudioEvent:resource reply:v31];
         v19 = v24;
-        if (v9)
+        if (player)
         {
           v25 = v24;
         }
@@ -8462,7 +8462,7 @@ LABEL_35:
         if (v25)
         {
 LABEL_48:
-          if (a5)
+          if (error)
           {
             goto LABEL_49;
           }
@@ -8488,7 +8488,7 @@ LABEL_48:
         v18 = v26;
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
-          v28 = [v33[5] localizedDescription];
+          localizedDescription = [v33[5] localizedDescription];
           *buf = 136316162;
           v39 = "CHHapticEngine.mm";
           v40 = 1024;
@@ -8496,9 +8496,9 @@ LABEL_48:
           v42 = 2080;
           v43 = "[CHHapticEngine(CHHapticEngineInternal) doUnregisterAudioResource:fromPattern:error:]";
           v44 = 1024;
-          *v45 = a3;
+          *v45 = resource;
           *&v45[4] = 2112;
-          *&v45[6] = v28;
+          *&v45[6] = localizedDescription;
           _os_log_impl(&dword_21569A000, v18, OS_LOG_TYPE_ERROR, "%25s:%-5d %s: ERROR: unable to release server-side audio resource with ID %u: %@", buf, 0x2Cu);
         }
 
@@ -8549,17 +8549,17 @@ LABEL_26:
       v42 = 2080;
       v43 = "[CHHapticEngine(CHHapticEngineInternal) doUnregisterAudioResource:fromPattern:error:]";
       v44 = 1024;
-      *v45 = a3;
+      *v45 = resource;
       _os_log_impl(&dword_21569A000, v20, OS_LOG_TYPE_ERROR, "%25s:%-5d %s: ERROR: could not find audio resource with ID %u", buf, 0x22u);
     }
   }
 
-  if (a5)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.CoreHaptics" code:-4824 userInfo:0];
-    *a5 = v19 = 0;
+    *error = v19 = 0;
 LABEL_49:
-    *a5 = v33[5];
+    *error = v33[5];
     goto LABEL_50;
   }
 

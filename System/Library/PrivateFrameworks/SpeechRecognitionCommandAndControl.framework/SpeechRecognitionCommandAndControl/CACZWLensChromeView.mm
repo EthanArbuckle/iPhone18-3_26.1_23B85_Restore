@@ -1,89 +1,89 @@
 @interface CACZWLensChromeView
-- (CACZWLensChromeView)initWithFrame:(CGRect)a3;
+- (CACZWLensChromeView)initWithFrame:(CGRect)frame;
 - (CGRect)previousResizeBounds;
 - (void)layoutSubviews;
-- (void)showLensResizingHandles:(BOOL)a3 animated:(BOOL)a4;
-- (void)updateChromeVisibility:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)showLensResizingHandles:(BOOL)handles animated:(BOOL)animated;
+- (void)updateChromeVisibility:(BOOL)visibility animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation CACZWLensChromeView
 
-- (CACZWLensChromeView)initWithFrame:(CGRect)a3
+- (CACZWLensChromeView)initWithFrame:(CGRect)frame
 {
   v55.receiver = self;
   v55.super_class = CACZWLensChromeView;
-  v3 = [(CACZWLensChromeView *)&v55 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CACZWLensChromeView *)&v55 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(CACZWLensChromeView *)v3 layer];
+    layer = [(CACZWLensChromeView *)v3 layer];
     v6 = objc_alloc_init(MEMORY[0x277CD9E08]);
     [v6 setEnabled:1];
     [v6 setAllowsHitTesting:0];
     [v6 setMarginWidth:12.0];
     [v6 setMasksToBounds:0];
     [(CACZWLensChromeView *)v4 setBackdropLayer:v6];
-    v7 = [(CACZWLensChromeView *)v4 layer];
-    [v7 addSublayer:v6];
+    layer2 = [(CACZWLensChromeView *)v4 layer];
+    [layer2 addSublayer:v6];
 
     v8 = v6;
-    v9 = [MEMORY[0x277CD9ED0] layer];
-    v10 = [(CACZWLensChromeView *)v4 backdropLayer];
-    [v10 setMask:v9];
+    layer3 = [MEMORY[0x277CD9ED0] layer];
+    backdropLayer = [(CACZWLensChromeView *)v4 backdropLayer];
+    [backdropLayer setMask:layer3];
 
-    v11 = [MEMORY[0x277CD9F90] layer];
-    [(CACZWLensChromeView *)v4 setBackdropMaskShapeLayer:v11];
+    layer4 = [MEMORY[0x277CD9F90] layer];
+    [(CACZWLensChromeView *)v4 setBackdropMaskShapeLayer:layer4];
 
-    v12 = [MEMORY[0x277CD9F90] layer];
-    [(CACZWLensChromeView *)v4 setBackdropResizingMaskLayer:v12];
+    layer5 = [MEMORY[0x277CD9F90] layer];
+    [(CACZWLensChromeView *)v4 setBackdropResizingMaskLayer:layer5];
 
-    v13 = [MEMORY[0x277D75348] whiteColor];
-    v14 = [v13 CGColor];
-    v15 = [(CACZWLensChromeView *)v4 backdropResizingMaskLayer];
-    [v15 setBackgroundColor:v14];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    cGColor = [whiteColor CGColor];
+    backdropResizingMaskLayer = [(CACZWLensChromeView *)v4 backdropResizingMaskLayer];
+    [backdropResizingMaskLayer setBackgroundColor:cGColor];
 
-    v16 = [(CACZWLensChromeView *)v4 backdropResizingMaskLayer];
-    [v16 setOpacity:0.0];
+    backdropResizingMaskLayer2 = [(CACZWLensChromeView *)v4 backdropResizingMaskLayer];
+    [backdropResizingMaskLayer2 setOpacity:0.0];
 
-    v17 = [MEMORY[0x277CD9F90] layer];
-    [(CACZWLensChromeView *)v4 setBackdropGrabberMaskLayer:v17];
+    layer6 = [MEMORY[0x277CD9F90] layer];
+    [(CACZWLensChromeView *)v4 setBackdropGrabberMaskLayer:layer6];
 
-    v18 = [MEMORY[0x277D75348] whiteColor];
-    v19 = [v18 CGColor];
-    v20 = [(CACZWLensChromeView *)v4 backdropGrabberMaskLayer];
-    [v20 setBackgroundColor:v19];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    cGColor2 = [whiteColor2 CGColor];
+    backdropGrabberMaskLayer = [(CACZWLensChromeView *)v4 backdropGrabberMaskLayer];
+    [backdropGrabberMaskLayer setBackgroundColor:cGColor2];
 
-    v21 = [(CACZWLensChromeView *)v4 backdropGrabberMaskLayer];
-    [v21 setCornerRadius:5.0];
+    backdropGrabberMaskLayer2 = [(CACZWLensChromeView *)v4 backdropGrabberMaskLayer];
+    [backdropGrabberMaskLayer2 setCornerRadius:5.0];
 
-    v22 = [(CACZWLensChromeView *)v4 backdropLayer];
-    v23 = [v22 mask];
-    v24 = [(CACZWLensChromeView *)v4 backdropMaskShapeLayer];
-    [v23 addSublayer:v24];
+    backdropLayer2 = [(CACZWLensChromeView *)v4 backdropLayer];
+    mask = [backdropLayer2 mask];
+    backdropMaskShapeLayer = [(CACZWLensChromeView *)v4 backdropMaskShapeLayer];
+    [mask addSublayer:backdropMaskShapeLayer];
 
-    v25 = [(CACZWLensChromeView *)v4 backdropLayer];
-    v26 = [v25 mask];
-    v27 = [(CACZWLensChromeView *)v4 backdropGrabberMaskLayer];
-    [v26 addSublayer:v27];
+    backdropLayer3 = [(CACZWLensChromeView *)v4 backdropLayer];
+    mask2 = [backdropLayer3 mask];
+    backdropGrabberMaskLayer3 = [(CACZWLensChromeView *)v4 backdropGrabberMaskLayer];
+    [mask2 addSublayer:backdropGrabberMaskLayer3];
 
-    v28 = [(CACZWLensChromeView *)v4 backdropLayer];
-    v29 = [v28 mask];
-    v30 = [(CACZWLensChromeView *)v4 backdropResizingMaskLayer];
-    [v29 addSublayer:v30];
+    backdropLayer4 = [(CACZWLensChromeView *)v4 backdropLayer];
+    mask3 = [backdropLayer4 mask];
+    backdropResizingMaskLayer3 = [(CACZWLensChromeView *)v4 backdropResizingMaskLayer];
+    [mask3 addSublayer:backdropResizingMaskLayer3];
 
-    v31 = [MEMORY[0x277CD9F90] layer];
-    [(CACZWLensChromeView *)v4 setChromeInnerBorderLayer:v31];
-    [v8 addSublayer:v31];
-    v32 = [MEMORY[0x277D75348] clearColor];
-    [v31 setFillColor:{objc_msgSend(v32, "CGColor")}];
+    layer7 = [MEMORY[0x277CD9F90] layer];
+    [(CACZWLensChromeView *)v4 setChromeInnerBorderLayer:layer7];
+    [v8 addSublayer:layer7];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [layer7 setFillColor:{objc_msgSend(clearColor, "CGColor")}];
 
     v33 = CACZWLensInnerColor();
-    [v31 setStrokeColor:{objc_msgSend(v33, "CGColor")}];
+    [layer7 setStrokeColor:{objc_msgSend(v33, "CGColor")}];
 
-    [v31 setLineWidth:CACZWLensInnerBorderWidth()];
+    [layer7 setLineWidth:CACZWLensInnerBorderWidth()];
     v34 = *MEMORY[0x277CDA5E8];
     v35 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA5E8]];
-    [v31 setCompositingFilter:v35];
+    [layer7 setCompositingFilter:v35];
 
     v36 = objc_alloc_init(MEMORY[0x277CD9ED0]);
     v37 = CACZWLensInnerColor();
@@ -94,52 +94,52 @@
     [v36 setCompositingFilter:v38];
 
     [(CACZWLensChromeView *)v4 setGrabberOverlayLayer:v36];
-    v39 = [(CACZWLensChromeView *)v4 grabberOverlayLayer];
-    [v39 setCornerRadius:5.0];
+    grabberOverlayLayer = [(CACZWLensChromeView *)v4 grabberOverlayLayer];
+    [grabberOverlayLayer setCornerRadius:5.0];
 
     [v8 addSublayer:v36];
-    v40 = [MEMORY[0x277CD9F90] layer];
-    [(CACZWLensChromeView *)v4 setChromeOuterBorderLayer:v40];
-    [v8 addSublayer:v40];
+    layer8 = [MEMORY[0x277CD9F90] layer];
+    [(CACZWLensChromeView *)v4 setChromeOuterBorderLayer:layer8];
+    [v8 addSublayer:layer8];
 
-    v41 = [MEMORY[0x277D75348] clearColor];
-    [v40 setFillColor:{objc_msgSend(v41, "CGColor")}];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [layer8 setFillColor:{objc_msgSend(clearColor2, "CGColor")}];
 
     v42 = CACZWLensOuterColor();
-    [v40 setStrokeColor:{objc_msgSend(v42, "CGColor")}];
+    [layer8 setStrokeColor:{objc_msgSend(v42, "CGColor")}];
 
-    [v40 setLineWidth:CACZWLensOuterBorderWidth()];
+    [layer8 setLineWidth:CACZWLensOuterBorderWidth()];
     v43 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA5D8]];
-    [v40 setCompositingFilter:v43];
+    [layer8 setCompositingFilter:v43];
 
     [(CACZWLensChromeView *)v4 setLensCornerRadius:13.0];
-    v44 = [MEMORY[0x277CD9F90] layer];
-    [(CACZWLensChromeView *)v4 setLensResizingHandlesLayer:v44];
-    [v44 setOpacity:0.0];
+    layer9 = [MEMORY[0x277CD9F90] layer];
+    [(CACZWLensChromeView *)v4 setLensResizingHandlesLayer:layer9];
+    [layer9 setOpacity:0.0];
     v45 = CACZWLensInnerColor();
-    [v44 setFillColor:{objc_msgSend(v45, "CGColor")}];
+    [layer9 setFillColor:{objc_msgSend(v45, "CGColor")}];
 
     v46 = [MEMORY[0x277CD9EA0] filterWithType:v34];
-    [v44 setCompositingFilter:v46];
+    [layer9 setCompositingFilter:v46];
 
-    v47 = [(CACZWLensChromeView *)v4 layer];
-    [v47 addSublayer:v44];
+    layer10 = [(CACZWLensChromeView *)v4 layer];
+    [layer10 addSublayer:layer9];
 
-    v48 = [MEMORY[0x277CD9F90] layer];
+    layer11 = [MEMORY[0x277CD9F90] layer];
 
-    [(CACZWLensChromeView *)v4 setTouchStealerShapeLayer:v48];
+    [(CACZWLensChromeView *)v4 setTouchStealerShapeLayer:layer11];
     LODWORD(v49) = 1.0;
-    [v48 setOpacity:v49];
-    v50 = [MEMORY[0x277D75348] blackColor];
-    v51 = [v50 colorWithAlphaComponent:0.00392156863];
-    [v48 setStrokeColor:{objc_msgSend(v51, "CGColor")}];
+    [layer11 setOpacity:v49];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    v51 = [blackColor colorWithAlphaComponent:0.00392156863];
+    [layer11 setStrokeColor:{objc_msgSend(v51, "CGColor")}];
 
-    v52 = [MEMORY[0x277D75348] clearColor];
-    [v48 setFillColor:{objc_msgSend(v52, "CGColor")}];
+    clearColor3 = [MEMORY[0x277D75348] clearColor];
+    [layer11 setFillColor:{objc_msgSend(clearColor3, "CGColor")}];
 
-    [v48 setLineWidth:CACZWZoomLensBorderThicknessForTouches()];
-    v53 = [(CACZWLensChromeView *)v4 layer];
-    [v53 addSublayer:v48];
+    [layer11 setLineWidth:CACZWZoomLensBorderThicknessForTouches()];
+    layer12 = [(CACZWLensChromeView *)v4 layer];
+    [layer12 addSublayer:layer11];
   }
 
   return v4;
@@ -157,122 +157,122 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CACZWLensChromeView *)self chromeInnerBorderLayer];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  chromeInnerBorderLayer = [(CACZWLensChromeView *)self chromeInnerBorderLayer];
+  [chromeInnerBorderLayer setFrame:{v4, v6, v8, v10}];
 
   [(CACZWLensChromeView *)self bounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(CACZWLensChromeView *)self chromeOuterBorderLayer];
-  [v20 setFrame:{v13, v15, v17, v19}];
+  chromeOuterBorderLayer = [(CACZWLensChromeView *)self chromeOuterBorderLayer];
+  [chromeOuterBorderLayer setFrame:{v13, v15, v17, v19}];
 
   [(CACZWLensChromeView *)self bounds];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  v29 = [(CACZWLensChromeView *)self lensResizingHandlesLayer];
-  [v29 setFrame:{v22, v24, v26, v28}];
+  lensResizingHandlesLayer = [(CACZWLensChromeView *)self lensResizingHandlesLayer];
+  [lensResizingHandlesLayer setFrame:{v22, v24, v26, v28}];
 
   [(CACZWLensChromeView *)self bounds];
   v31 = v30;
   v33 = v32;
   v35 = v34;
   v37 = v36;
-  v38 = [(CACZWLensChromeView *)self backdropLayer];
-  v39 = [v38 mask];
-  [v39 setFrame:{v31, v33, v35, v37}];
+  backdropLayer = [(CACZWLensChromeView *)self backdropLayer];
+  mask = [backdropLayer mask];
+  [mask setFrame:{v31, v33, v35, v37}];
 
   [(CACZWLensChromeView *)self bounds];
   v41 = v40;
   v43 = v42;
   v45 = v44;
   v47 = v46;
-  v48 = [(CACZWLensChromeView *)self backdropResizingMaskLayer];
-  [v48 setFrame:{v41, v43, v45, v47}];
+  backdropResizingMaskLayer = [(CACZWLensChromeView *)self backdropResizingMaskLayer];
+  [backdropResizingMaskLayer setFrame:{v41, v43, v45, v47}];
 
   [(CACZWLensChromeView *)self bounds];
   v50 = v49;
   v52 = v51;
   v54 = v53;
   v56 = v55;
-  v57 = [(CACZWLensChromeView *)self backdropMaskShapeLayer];
-  [v57 setFrame:{v50, v52, v54, v56}];
+  backdropMaskShapeLayer = [(CACZWLensChromeView *)self backdropMaskShapeLayer];
+  [backdropMaskShapeLayer setFrame:{v50, v52, v54, v56}];
 
   [(CACZWLensChromeView *)self bounds];
   v59 = v58;
   v61 = v60;
   v63 = v62;
   v65 = v64;
-  v66 = [(CACZWLensChromeView *)self touchStealerShapeLayer];
-  [v66 setFrame:{v59, v61, v63, v65}];
+  touchStealerShapeLayer = [(CACZWLensChromeView *)self touchStealerShapeLayer];
+  [touchStealerShapeLayer setFrame:{v59, v61, v63, v65}];
 
   v67 = MEMORY[0x277D75208];
   [(CACZWLensChromeView *)self bounds];
   v68 = [v67 bezierPathWithRect:?];
-  v69 = [v68 CGPath];
-  v70 = [(CACZWLensChromeView *)self touchStealerShapeLayer];
-  [v70 setPath:v69];
+  cGPath = [v68 CGPath];
+  touchStealerShapeLayer2 = [(CACZWLensChromeView *)self touchStealerShapeLayer];
+  [touchStealerShapeLayer2 setPath:cGPath];
 
   [(CACZWLensChromeView *)self bounds];
   v75 = CACZWOuterLensBorderForBounds([(CACZWLensChromeView *)self showingResizeHandles], v71, v72, v73, v74);
   [(CACZWLensChromeView *)self bounds];
   v80 = CACZWInnerLensBorderForBounds([(CACZWLensChromeView *)self showingResizeHandles], v76, v77, v78, v79);
-  v81 = [v75 CGPath];
-  v82 = [(CACZWLensChromeView *)self chromeOuterBorderLayer];
-  [v82 setPath:v81];
+  cGPath2 = [v75 CGPath];
+  chromeOuterBorderLayer2 = [(CACZWLensChromeView *)self chromeOuterBorderLayer];
+  [chromeOuterBorderLayer2 setPath:cGPath2];
 
-  v83 = [v80 CGPath];
-  v84 = [(CACZWLensChromeView *)self chromeInnerBorderLayer];
-  [v84 setPath:v83];
+  cGPath3 = [v80 CGPath];
+  chromeInnerBorderLayer2 = [(CACZWLensChromeView *)self chromeInnerBorderLayer];
+  [chromeInnerBorderLayer2 setPath:cGPath3];
 
   [(CACZWLensChromeView *)self bounds];
   v86 = v85;
   v88 = v87;
   v90 = v89;
   v92 = v91;
-  v93 = [(CACZWLensChromeView *)self backdropLayer];
-  [v93 setFrame:{v86, v88, v90, v92}];
+  backdropLayer2 = [(CACZWLensChromeView *)self backdropLayer];
+  [backdropLayer2 setFrame:{v86, v88, v90, v92}];
 
   [(CACZWLensChromeView *)self bounds];
   v98 = CACZWResizeGrabberPath(v94, v95, v96, v97);
-  v99 = [v98 CGPath];
-  v100 = [(CACZWLensChromeView *)self lensResizingHandlesLayer];
-  [v100 setPath:v99];
+  cGPath4 = [v98 CGPath];
+  lensResizingHandlesLayer2 = [(CACZWLensChromeView *)self lensResizingHandlesLayer];
+  [lensResizingHandlesLayer2 setPath:cGPath4];
 
   [(CACZWLensChromeView *)self bounds];
   v105 = CACZWResizeGrabberPath(v101, v102, v103, v104);
-  v106 = [v105 CGPath];
-  v107 = [(CACZWLensChromeView *)self backdropResizingMaskLayer];
-  [v107 setPath:v106];
+  cGPath5 = [v105 CGPath];
+  backdropResizingMaskLayer2 = [(CACZWLensChromeView *)self backdropResizingMaskLayer];
+  [backdropResizingMaskLayer2 setPath:cGPath5];
 
-  v108 = [MEMORY[0x277D75348] whiteColor];
-  v109 = [v108 CGColor];
-  v110 = [(CACZWLensChromeView *)self backdropResizingMaskLayer];
-  [v110 setFillColor:v109];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  cGColor = [whiteColor CGColor];
+  backdropResizingMaskLayer3 = [(CACZWLensChromeView *)self backdropResizingMaskLayer];
+  [backdropResizingMaskLayer3 setFillColor:cGColor];
 
-  v111 = [MEMORY[0x277D75348] clearColor];
-  v112 = [v111 CGColor];
-  v113 = [(CACZWLensChromeView *)self backdropResizingMaskLayer];
-  [v113 setBackgroundColor:v112];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  cGColor2 = [clearColor CGColor];
+  backdropResizingMaskLayer4 = [(CACZWLensChromeView *)self backdropResizingMaskLayer];
+  [backdropResizingMaskLayer4 setBackgroundColor:cGColor2];
 
   v114 = [v80 copy];
   [v114 appendPath:v75];
-  v115 = [v114 CGPath];
-  v116 = [(CACZWLensChromeView *)self backdropMaskShapeLayer];
-  [v116 setPath:v115];
+  cGPath6 = [v114 CGPath];
+  backdropMaskShapeLayer2 = [(CACZWLensChromeView *)self backdropMaskShapeLayer];
+  [backdropMaskShapeLayer2 setPath:cGPath6];
 
-  v117 = [MEMORY[0x277D75348] clearColor];
-  v118 = [v117 CGColor];
-  v119 = [(CACZWLensChromeView *)self backdropMaskShapeLayer];
-  [v119 setFillColor:v118];
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
+  cGColor3 = [clearColor2 CGColor];
+  backdropMaskShapeLayer3 = [(CACZWLensChromeView *)self backdropMaskShapeLayer];
+  [backdropMaskShapeLayer3 setFillColor:cGColor3];
 
-  v120 = [MEMORY[0x277D75348] whiteColor];
-  v121 = [v120 CGColor];
-  v122 = [(CACZWLensChromeView *)self backdropMaskShapeLayer];
-  [v122 setStrokeColor:v121];
+  whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+  cGColor4 = [whiteColor2 CGColor];
+  backdropMaskShapeLayer4 = [(CACZWLensChromeView *)self backdropMaskShapeLayer];
+  [backdropMaskShapeLayer4 setStrokeColor:cGColor4];
 
   v123 = CACZWLensInnerBorderWidth();
   v124 = CACZWLensOuterBorderWidth();
@@ -281,24 +281,24 @@
     v123 = v124;
   }
 
-  v125 = [(CACZWLensChromeView *)self backdropMaskShapeLayer];
-  [v125 setLineWidth:v123];
+  backdropMaskShapeLayer5 = [(CACZWLensChromeView *)self backdropMaskShapeLayer];
+  [backdropMaskShapeLayer5 setLineWidth:v123];
 
-  v126 = [MEMORY[0x277D75348] clearColor];
-  v127 = [v126 CGColor];
-  v128 = [(CACZWLensChromeView *)self backdropMaskShapeLayer];
-  [v128 setBackgroundColor:v127];
+  clearColor3 = [MEMORY[0x277D75348] clearColor];
+  cGColor5 = [clearColor3 CGColor];
+  backdropMaskShapeLayer6 = [(CACZWLensChromeView *)self backdropMaskShapeLayer];
+  [backdropMaskShapeLayer6 setBackgroundColor:cGColor5];
 
   [MEMORY[0x277CD9FF0] commit];
 }
 
-- (void)updateChromeVisibility:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)updateChromeVisibility:(BOOL)visibility animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
+  animatedCopy = animated;
+  completionCopy = completion;
   v9 = MEMORY[0x277D75D18];
   v10 = 0.0;
-  if (v5)
+  if (animatedCopy)
   {
     v10 = CACZWDefaultFadeAnimationDuration();
   }
@@ -308,13 +308,13 @@
   v14[2] = __66__CACZWLensChromeView_updateChromeVisibility_animated_completion___block_invoke;
   v14[3] = &unk_279CEBF20;
   v14[4] = self;
-  v15 = a3;
+  visibilityCopy = visibility;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __66__CACZWLensChromeView_updateChromeVisibility_animated_completion___block_invoke_2;
   v12[3] = &unk_279CEC388;
-  v13 = v8;
-  v11 = v8;
+  v13 = completionCopy;
+  v11 = completionCopy;
   [v9 animateWithDuration:v14 animations:v12 completion:v10];
 }
 
@@ -340,15 +340,15 @@ uint64_t __66__CACZWLensChromeView_updateChromeVisibility_animated_completion___
   return result;
 }
 
-- (void)showLensResizingHandles:(BOOL)a3 animated:(BOOL)a4
+- (void)showLensResizingHandles:(BOOL)handles animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  handlesCopy = handles;
   [MEMORY[0x277CD9FF0] begin];
-  [MEMORY[0x277CD9FF0] setDisableActions:!v4];
-  v7 = [(CACZWLensChromeView *)self lensResizingHandlesLayer];
-  v8 = v7;
-  if (v5)
+  [MEMORY[0x277CD9FF0] setDisableActions:!animatedCopy];
+  lensResizingHandlesLayer = [(CACZWLensChromeView *)self lensResizingHandlesLayer];
+  v8 = lensResizingHandlesLayer;
+  if (handlesCopy)
   {
     v9 = 1.0;
   }
@@ -358,7 +358,7 @@ uint64_t __66__CACZWLensChromeView_updateChromeVisibility_animated_completion___
     v9 = 0.0;
   }
 
-  if (v5)
+  if (handlesCopy)
   {
     v10 = 0.0;
   }
@@ -368,21 +368,21 @@ uint64_t __66__CACZWLensChromeView_updateChromeVisibility_animated_completion___
     v10 = 1.0;
   }
 
-  [v7 setOpacity:COERCE_DOUBLE(LODWORD(v9))];
+  [lensResizingHandlesLayer setOpacity:COERCE_DOUBLE(LODWORD(v9))];
 
-  v11 = [(CACZWLensChromeView *)self grabberOverlayLayer];
+  grabberOverlayLayer = [(CACZWLensChromeView *)self grabberOverlayLayer];
   *&v12 = v10;
-  [v11 setOpacity:v12];
+  [grabberOverlayLayer setOpacity:v12];
 
-  v13 = [(CACZWLensChromeView *)self backdropResizingMaskLayer];
+  backdropResizingMaskLayer = [(CACZWLensChromeView *)self backdropResizingMaskLayer];
   *&v14 = v9;
-  [v13 setOpacity:v14];
+  [backdropResizingMaskLayer setOpacity:v14];
 
-  v15 = [(CACZWLensChromeView *)self backdropGrabberMaskLayer];
+  backdropGrabberMaskLayer = [(CACZWLensChromeView *)self backdropGrabberMaskLayer];
   *&v16 = v10;
-  [v15 setOpacity:v16];
+  [backdropGrabberMaskLayer setOpacity:v16];
 
-  [(CACZWLensChromeView *)self setShowingResizeHandles:v5];
+  [(CACZWLensChromeView *)self setShowingResizeHandles:handlesCopy];
   [(CACZWLensChromeView *)self layoutSubviews];
   v17 = MEMORY[0x277CD9FF0];
 

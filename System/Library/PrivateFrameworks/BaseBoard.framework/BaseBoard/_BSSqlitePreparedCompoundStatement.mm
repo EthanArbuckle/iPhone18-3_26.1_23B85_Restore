@@ -1,14 +1,14 @@
 @interface _BSSqlitePreparedCompoundStatement
-- (BOOL)executeWithBindings:(id)a3 resultRowHandler:(id)a4 error:(id *)a5;
+- (BOOL)executeWithBindings:(id)bindings resultRowHandler:(id)handler error:(id *)error;
 @end
 
 @implementation _BSSqlitePreparedCompoundStatement
 
-- (BOOL)executeWithBindings:(id)a3 resultRowHandler:(id)a4 error:(id *)a5
+- (BOOL)executeWithBindings:(id)bindings resultRowHandler:(id)handler error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  bindingsCopy = bindings;
+  handlerCopy = handler;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -27,7 +27,7 @@
           objc_enumerationMutation(v10);
         }
 
-        if (([*(*(&v16 + 1) + 8 * i) executeWithBindings:v8 resultRowHandler:v9 error:{a5, v16}] & 1) == 0)
+        if (([*(*(&v16 + 1) + 8 * i) executeWithBindings:bindingsCopy resultRowHandler:handlerCopy error:{error, v16}] & 1) == 0)
         {
           v14 = 0;
           goto LABEL_11;

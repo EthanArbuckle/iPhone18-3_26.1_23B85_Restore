@@ -1,50 +1,50 @@
 @interface PLExpandedPlatterTransitioningDelegate
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
-- (void)viewControllerAnimator:(id)a3 willBeginDismissalAnimationWithTransitionContext:(id)a4;
-- (void)viewControllerAnimator:(id)a3 willBeginPresentationAnimationWithTransitionContext:(id)a4;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
+- (void)viewControllerAnimator:(id)animator willBeginDismissalAnimationWithTransitionContext:(id)context;
+- (void)viewControllerAnimator:(id)animator willBeginPresentationAnimationWithTransitionContext:(id)context;
 @end
 
 @implementation PLExpandedPlatterTransitioningDelegate
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  v6 = a5;
-  v7 = [v6 pl_containingClickPresentationInteractionPresentingViewController];
-  v8 = v7;
-  if (v7)
+  sourceControllerCopy = sourceController;
+  pl_containingClickPresentationInteractionPresentingViewController = [sourceControllerCopy pl_containingClickPresentationInteractionPresentingViewController];
+  v8 = pl_containingClickPresentationInteractionPresentingViewController;
+  if (pl_containingClickPresentationInteractionPresentingViewController)
   {
-    [v7 viewForPreview];
+    [pl_containingClickPresentationInteractionPresentingViewController viewForPreview];
   }
 
   else
   {
-    [v6 view];
+    [sourceControllerCopy view];
   }
   v9 = ;
   v10 = [[PLViewControllerAnimator alloc] initForPresentation:1 withSourceView:v9];
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v8 clickPresentationInteractionManager];
+    clickPresentationInteractionManager = [v8 clickPresentationInteractionManager];
   }
 
   else
   {
-    v11 = 0;
+    clickPresentationInteractionManager = 0;
   }
 
-  if ([v11 hasCommittedToPresentation])
+  if ([clickPresentationInteractionManager hasCommittedToPresentation])
   {
-    v12 = [v11 didInteractionInitiateWithHint];
+    didInteractionInitiateWithHint = [clickPresentationInteractionManager didInteractionInitiateWithHint];
   }
 
   else
   {
-    v12 = 0;
+    didInteractionInitiateWithHint = 0;
   }
 
-  [v10 setIncludePresentingViewInAnimation:v12];
+  [v10 setIncludePresentingViewInAnimation:didInteractionInitiateWithHint];
   if ([(UIPresentationController *)self->_presentationController conformsToProtocol:&unk_2833AB500])
   {
     [v10 addObserver:self->_presentationController];
@@ -55,41 +55,41 @@
   return v10;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
-  v4 = a3;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ([v4 presenter], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  controllerCopy = controller;
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([controllerCopy presenter], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
-    v7 = [v5 viewForPreview];
+    viewForPreview = [v5 viewForPreview];
   }
 
   else
   {
-    v8 = [v4 presentingViewController];
-    v7 = [v8 view];
+    presentingViewController = [controllerCopy presentingViewController];
+    viewForPreview = [presentingViewController view];
 
     v6 = 0;
   }
 
   v9 = off_278424C18;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v4 viewControllerTransitionTypeForTransitionDelegate:self] == 1)
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [controllerCopy viewControllerTransitionTypeForTransitionDelegate:self] == 1)
   {
     v9 = off_278424C20;
   }
 
-  v10 = [objc_alloc(*v9) initForPresentation:0 withSourceView:v7];
+  v10 = [objc_alloc(*v9) initForPresentation:0 withSourceView:viewForPreview];
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v6 clickPresentationInteractionManager];
+    clickPresentationInteractionManager = [v6 clickPresentationInteractionManager];
   }
 
   else
   {
-    v11 = 0;
+    clickPresentationInteractionManager = 0;
   }
 
-  [v10 setIncludePresentingViewInAnimation:{objc_msgSend(v11, "didInteractionInitiateWithHint")}];
+  [v10 setIncludePresentingViewInAnimation:{objc_msgSend(clickPresentationInteractionManager, "didInteractionInitiateWithHint")}];
   if ([(UIPresentationController *)self->_presentationController conformsToProtocol:&unk_2833AB500])
   {
     [v10 addObserver:self->_presentationController];
@@ -100,22 +100,22 @@
   return v10;
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  v8 = a3;
+  controllerCopy = controller;
   presentationController = self->_presentationController;
   if (!presentationController)
   {
-    v10 = a5;
-    v11 = a4;
-    v12 = [v10 pl_containingClickPresentationInteractionPresentingViewController];
-    v13 = [v12 viewForPreview];
-    if (v12 && (objc_opt_respondsToSelector() & 1) != 0)
+    sourceViewControllerCopy = sourceViewController;
+    viewControllerCopy = viewController;
+    pl_containingClickPresentationInteractionPresentingViewController = [sourceViewControllerCopy pl_containingClickPresentationInteractionPresentingViewController];
+    viewForPreview = [pl_containingClickPresentationInteractionPresentingViewController viewForPreview];
+    if (pl_containingClickPresentationInteractionPresentingViewController && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v8 setPresenter:v12];
+      [controllerCopy setPresenter:pl_containingClickPresentationInteractionPresentingViewController];
     }
 
-    v14 = [[PLExpandedPlatterPresentationController alloc] initWithPresentedViewController:v8 presentingViewController:v11 sourceViewController:v10 sourceView:v13];
+    v14 = [[PLExpandedPlatterPresentationController alloc] initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy sourceViewController:sourceViewControllerCopy sourceView:viewForPreview];
 
     v15 = self->_presentationController;
     self->_presentationController = &v14->super;
@@ -128,19 +128,19 @@
   return presentationController;
 }
 
-- (void)viewControllerAnimator:(id)a3 willBeginPresentationAnimationWithTransitionContext:(id)a4
+- (void)viewControllerAnimator:(id)animator willBeginPresentationAnimationWithTransitionContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  animatorCopy = animator;
+  contextCopy = context;
   objc_initWeak(&location, self);
-  v8 = [v7 viewControllerForKey:*MEMORY[0x277D77240]];
-  v9 = [v8 transitionCoordinator];
+  v8 = [contextCopy viewControllerForKey:*MEMORY[0x277D77240]];
+  transitionCoordinator = [v8 transitionCoordinator];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __117__PLExpandedPlatterTransitioningDelegate_viewControllerAnimator_willBeginPresentationAnimationWithTransitionContext___block_invoke;
   v10[3] = &unk_2784253C8;
   objc_copyWeak(&v11, &location);
-  [v9 animateAlongsideTransition:0 completion:v10];
+  [transitionCoordinator animateAlongsideTransition:0 completion:v10];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -158,19 +158,19 @@ void __117__PLExpandedPlatterTransitioningDelegate_viewControllerAnimator_willBe
   }
 }
 
-- (void)viewControllerAnimator:(id)a3 willBeginDismissalAnimationWithTransitionContext:(id)a4
+- (void)viewControllerAnimator:(id)animator willBeginDismissalAnimationWithTransitionContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  animatorCopy = animator;
+  contextCopy = context;
   objc_initWeak(&location, self);
-  v8 = [v7 viewControllerForKey:*MEMORY[0x277D77230]];
-  v9 = [v8 transitionCoordinator];
+  v8 = [contextCopy viewControllerForKey:*MEMORY[0x277D77230]];
+  transitionCoordinator = [v8 transitionCoordinator];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __114__PLExpandedPlatterTransitioningDelegate_viewControllerAnimator_willBeginDismissalAnimationWithTransitionContext___block_invoke;
   v10[3] = &unk_2784253C8;
   objc_copyWeak(&v11, &location);
-  [v9 animateAlongsideTransition:0 completion:v10];
+  [transitionCoordinator animateAlongsideTransition:0 completion:v10];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);

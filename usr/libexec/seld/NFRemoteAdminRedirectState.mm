@@ -1,11 +1,11 @@
 @interface NFRemoteAdminRedirectState
-- (NFRemoteAdminRedirectState)initWithCoder:(id)a3;
-- (NFRemoteAdminRedirectState)initWithDictionary:(id)a3 sourceURL:(id)a4 originator:(id)a5 initialStep:(unint64_t)a6;
-- (id)_extractAidsFromStringArray:(id)a3;
+- (NFRemoteAdminRedirectState)initWithCoder:(id)coder;
+- (NFRemoteAdminRedirectState)initWithDictionary:(id)dictionary sourceURL:(id)l originator:(id)originator initialStep:(unint64_t)step;
+- (id)_extractAidsFromStringArray:(id)array;
 - (id)_redirectResult;
 - (id)description;
 - (id)redirectResponse;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)incrementLongRetry;
 - (void)incrementStep;
 - (void)save;
@@ -13,20 +13,20 @@
 
 @implementation NFRemoteAdminRedirectState
 
-- (id)_extractAidsFromStringArray:(id)a3
+- (id)_extractAidsFromStringArray:(id)array
 {
-  v4 = a3;
-  if ([v4 count])
+  arrayCopy = array;
+  if ([arrayCopy count])
   {
     v5 = objc_opt_new();
-    if ([v4 count])
+    if ([arrayCopy count])
     {
       v6 = 0;
       v7 = &GetElapsedTimeInMillisecondsFromMachTime_ptr;
       do
       {
         v8 = v7[193];
-        v9 = [v4 objectAtIndex:v6];
+        v9 = [arrayCopy objectAtIndex:v6];
         v10 = [v8 NF_dataWithHexString:v9];
 
         if (v10)
@@ -45,7 +45,7 @@
             isMetaClass = class_isMetaClass(Class);
             ClassName = object_getClassName(self);
             Name = sel_getName(a2);
-            v17 = [v4 objectAtIndex:v6];
+            v17 = [arrayCopy objectAtIndex:v6];
             v18 = 45;
             if (isMetaClass)
             {
@@ -74,7 +74,7 @@
 
             v22 = object_getClassName(self);
             v23 = sel_getName(a2);
-            v24 = [v4 objectAtIndex:v6];
+            v24 = [arrayCopy objectAtIndex:v6];
             *buf = 67110146;
             v28 = v21;
             v29 = 2082;
@@ -93,7 +93,7 @@
         ++v6;
       }
 
-      while ([v4 count] > v6);
+      while ([arrayCopy count] > v6);
     }
   }
 
@@ -105,36 +105,36 @@
   return v5;
 }
 
-- (NFRemoteAdminRedirectState)initWithDictionary:(id)a3 sourceURL:(id)a4 originator:(id)a5 initialStep:(unint64_t)a6
+- (NFRemoteAdminRedirectState)initWithDictionary:(id)dictionary sourceURL:(id)l originator:(id)originator initialStep:(unint64_t)step
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a4;
+  dictionaryCopy = dictionary;
+  originatorCopy = originator;
+  lCopy = l;
   v13 = +[NSDate date];
   v34.receiver = self;
   v34.super_class = NFRemoteAdminRedirectState;
-  v14 = [(NFRemoteAdminState *)&v34 initWithIdentifier:v11 sourceURL:v12 retryDate:v13];
+  v14 = [(NFRemoteAdminState *)&v34 initWithIdentifier:originatorCopy sourceURL:lCopy retryDate:v13];
 
   if (v14)
   {
-    v14->_step = a6;
-    v15 = [v10 NF_stringForKey:@"kBatchId"];
+    v14->_step = step;
+    v15 = [dictionaryCopy NF_stringForKey:@"kBatchId"];
     batchId = v14->_batchId;
     v14->_batchId = v15;
 
-    v17 = [v10 NF_stringForKey:@"kTaskId"];
+    v17 = [dictionaryCopy NF_stringForKey:@"kTaskId"];
     taskId = v14->_taskId;
     v14->_taskId = v17;
 
-    v19 = [v10 NF_stringForKey:@"targetSEID"];
+    v19 = [dictionaryCopy NF_stringForKey:@"targetSEID"];
     seid = v14->_seid;
     v14->_seid = v19;
 
-    v21 = [v10 NF_dictionaryForKey:@"redirectRequest"];
+    v21 = [dictionaryCopy NF_dictionaryForKey:@"redirectRequest"];
     v22 = [v21 NF_arrayForKey:@"whitelistedInstances"];
     if (!v22)
     {
-      v22 = [v10 NF_arrayForKey:@"whitelistedInstances"];
+      v22 = [dictionaryCopy NF_arrayForKey:@"whitelistedInstances"];
     }
 
     v23 = [(NFRemoteAdminRedirectState *)v14 _extractAidsFromStringArray:v22];
@@ -207,16 +207,16 @@
     [v9 setObject:notification forKeyedSubscript:@"kNotification"];
   }
 
-  v15 = [(NFRemoteAdminState *)self unsentScriptResponse];
+  unsentScriptResponse = [(NFRemoteAdminState *)self unsentScriptResponse];
 
-  if (v15)
+  if (unsentScriptResponse)
   {
-    v16 = [(NFRemoteAdminState *)self unsentScriptResponse];
-    [v9 setObject:v16 forKeyedSubscript:@"pendingSPResponse"];
+    unsentScriptResponse2 = [(NFRemoteAdminState *)self unsentScriptResponse];
+    [v9 setObject:unsentScriptResponse2 forKeyedSubscript:@"pendingSPResponse"];
   }
 
-  v17 = [(NFRemoteAdminRedirectStatePerformanceMetrics *)self->_performanceMetrics asDictionary];
-  [v9 addEntriesFromDictionary:v17];
+  asDictionary = [(NFRemoteAdminRedirectStatePerformanceMetrics *)self->_performanceMetrics asDictionary];
+  [v9 addEntriesFromDictionary:asDictionary];
 
   [v3 setObject:v9 forKeyedSubscript:@"redirectResponse"];
 
@@ -239,8 +239,8 @@
     [v3 setObject:batchId forKeyedSubscript:@"kBatchId"];
   }
 
-  v6 = [(NFRemoteAdminRedirectState *)self _redirectResult];
-  [v3 addEntriesFromDictionary:v6];
+  _redirectResult = [(NFRemoteAdminRedirectState *)self _redirectResult];
+  [v3 addEntriesFromDictionary:_redirectResult];
 
   return v3;
 }
@@ -256,18 +256,18 @@
 
 - (void)incrementLongRetry
 {
-  v4 = [(NFRemoteAdminState *)self retryInterval];
-  v6 = v4;
-  if (!v4)
+  retryInterval = [(NFRemoteAdminState *)self retryInterval];
+  v6 = retryInterval;
+  if (!retryInterval)
   {
     v7 = 0;
     goto LABEL_4;
   }
 
-  v7 = *(v4 + 8);
+  v7 = *(retryInterval + 8);
   if (v7 <= 0x18)
   {
-    *(v4 + 8) = v7 + 1;
+    *(retryInterval + 8) = v7 + 1;
 LABEL_4:
     LODWORD(v5) = dword_100040818[v7];
     v9 = [NSDate dateWithTimeIntervalSinceNow:v5];
@@ -336,11 +336,11 @@ LABEL_17:
 
 - (id)description
 {
-  v3 = [(NFRemoteAdminState *)self retryInterval];
-  v4 = v3;
-  if (v3)
+  retryInterval = [(NFRemoteAdminState *)self retryInterval];
+  v4 = retryInterval;
+  if (retryInterval)
   {
-    v5 = *(v3 + 16);
+    v5 = *(retryInterval + 16);
     if (v5)
     {
       v6 = v4[2];
@@ -363,23 +363,23 @@ LABEL_6:
   v19.receiver = self;
   v19.super_class = NFRemoteAdminRedirectState;
   v9 = [(NFRemoteAdminState *)&v19 description];
-  v10 = [(NFRemoteAdminRedirectState *)self batchId];
-  v11 = [(NFRemoteAdminRedirectState *)self taskId];
-  v12 = [(NFRemoteAdminRedirectState *)self redirectUrl];
-  v13 = [(NFRemoteAdminRedirectState *)self version];
-  v14 = [(NFRemoteAdminRedirectState *)self httpStatus];
-  v15 = [(NFRemoteAdminRedirectState *)self spStatusCode];
-  v16 = [v18 initWithFormat:@"%@ { batchId=%@ taskid=%@ redirectUrl=%@ version=%@ httpStatus=%@ spStatus=%@ step=%d retryAfter=%f pendingImmediateRetry=%d}", v9, v10, v11, v12, v13, v14, v15, -[NFRemoteAdminRedirectState step](self, "step"), v8, -[NFRemoteAdminState pendingImmediateRetry](self, "pendingImmediateRetry")];
+  batchId = [(NFRemoteAdminRedirectState *)self batchId];
+  taskId = [(NFRemoteAdminRedirectState *)self taskId];
+  redirectUrl = [(NFRemoteAdminRedirectState *)self redirectUrl];
+  version = [(NFRemoteAdminRedirectState *)self version];
+  httpStatus = [(NFRemoteAdminRedirectState *)self httpStatus];
+  spStatusCode = [(NFRemoteAdminRedirectState *)self spStatusCode];
+  v16 = [v18 initWithFormat:@"%@ { batchId=%@ taskid=%@ redirectUrl=%@ version=%@ httpStatus=%@ spStatus=%@ step=%d retryAfter=%f pendingImmediateRetry=%d}", v9, batchId, taskId, redirectUrl, version, httpStatus, spStatusCode, -[NFRemoteAdminRedirectState step](self, "step"), v8, -[NFRemoteAdminState pendingImmediateRetry](self, "pendingImmediateRetry")];
 
   return v16;
 }
 
-- (NFRemoteAdminRedirectState)initWithCoder:(id)a3
+- (NFRemoteAdminRedirectState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v40.receiver = self;
   v40.super_class = NFRemoteAdminRedirectState;
-  v5 = [(NFRemoteAdminState *)&v40 initWithCoder:v4];
+  v5 = [(NFRemoteAdminState *)&v40 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = [NSSet alloc];
@@ -388,57 +388,57 @@ LABEL_6:
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v11 = [v6 initWithObjects:{v7, v8, v9, v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"batchId"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"batchId"];
     batchId = v5->_batchId;
     v5->_batchId = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"taskId"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"taskId"];
     taskId = v5->_taskId;
     v5->_taskId = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"redirectUrl"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"redirectUrl"];
     redirectUrl = v5->_redirectUrl;
     v5->_redirectUrl = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"version"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"version"];
     version = v5->_version;
     v5->_version = v18;
 
-    v20 = [v4 decodeObjectOfClasses:v11 forKey:@"forwardDataToSMP"];
+    v20 = [coderCopy decodeObjectOfClasses:v11 forKey:@"forwardDataToSMP"];
     forwardDataToSMP = v5->_forwardDataToSMP;
     v5->_forwardDataToSMP = v20;
 
-    v22 = [v4 decodeObjectOfClasses:v11 forKey:@"forwardDataToSP"];
+    v22 = [coderCopy decodeObjectOfClasses:v11 forKey:@"forwardDataToSP"];
     forwardDataToSP = v5->_forwardDataToSP;
     v5->_forwardDataToSP = v22;
 
-    v24 = [v4 decodeObjectOfClasses:v11 forKey:@"notification"];
+    v24 = [coderCopy decodeObjectOfClasses:v11 forKey:@"notification"];
     notification = v5->_notification;
     v5->_notification = v24;
 
-    v26 = [NFNSCheckedDecoder coder:v4 decodeArrayOfClass:objc_opt_class() forKey:@"whitelistedInstances"];
+    v26 = [NFNSCheckedDecoder coder:coderCopy decodeArrayOfClass:objc_opt_class() forKey:@"whitelistedInstances"];
     whitelistedInstances = v5->_whitelistedInstances;
     v5->_whitelistedInstances = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"incompleteReason"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"incompleteReason"];
     incompleteReason = v5->_incompleteReason;
     v5->_incompleteReason = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"httpStatus"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"httpStatus"];
     httpStatus = v5->_httpStatus;
     v5->_httpStatus = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"spStatusCode"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"spStatusCode"];
     spStatusCode = v5->_spStatusCode;
     v5->_spStatusCode = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"step"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"step"];
     v5->_step = [v34 integerValue];
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"performanceMetrics"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"performanceMetrics"];
     performanceMetrics = v5->_performanceMetrics;
     v5->_performanceMetrics = v35;
 
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"seid"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"seid"];
     seid = v5->_seid;
     v5->_seid = v37;
   }
@@ -446,28 +446,28 @@ LABEL_6:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = NFRemoteAdminRedirectState;
-  v4 = a3;
-  [(NFRemoteAdminState *)&v6 encodeWithCoder:v4];
-  [v4 encodeObject:self->_batchId forKey:{@"batchId", v6.receiver, v6.super_class}];
-  [v4 encodeObject:self->_taskId forKey:@"taskId"];
-  [v4 encodeObject:self->_redirectUrl forKey:@"redirectUrl"];
-  [v4 encodeObject:self->_version forKey:@"version"];
-  [v4 encodeObject:self->_forwardDataToSMP forKey:@"forwardDataToSMP"];
-  [v4 encodeObject:self->_forwardDataToSP forKey:@"forwardDataToSP"];
-  [v4 encodeObject:self->_incompleteReason forKey:@"incompleteReason"];
-  [v4 encodeObject:self->_notification forKey:@"notification"];
-  [v4 encodeObject:self->_httpStatus forKey:@"httpStatus"];
-  [v4 encodeObject:self->_spStatusCode forKey:@"spStatusCode"];
+  coderCopy = coder;
+  [(NFRemoteAdminState *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_batchId forKey:{@"batchId", v6.receiver, v6.super_class}];
+  [coderCopy encodeObject:self->_taskId forKey:@"taskId"];
+  [coderCopy encodeObject:self->_redirectUrl forKey:@"redirectUrl"];
+  [coderCopy encodeObject:self->_version forKey:@"version"];
+  [coderCopy encodeObject:self->_forwardDataToSMP forKey:@"forwardDataToSMP"];
+  [coderCopy encodeObject:self->_forwardDataToSP forKey:@"forwardDataToSP"];
+  [coderCopy encodeObject:self->_incompleteReason forKey:@"incompleteReason"];
+  [coderCopy encodeObject:self->_notification forKey:@"notification"];
+  [coderCopy encodeObject:self->_httpStatus forKey:@"httpStatus"];
+  [coderCopy encodeObject:self->_spStatusCode forKey:@"spStatusCode"];
   v5 = [NSNumber numberWithInteger:self->_step];
-  [v4 encodeObject:v5 forKey:@"step"];
+  [coderCopy encodeObject:v5 forKey:@"step"];
 
-  [v4 encodeObject:self->_performanceMetrics forKey:@"performanceMetrics"];
-  [v4 encodeObject:self->_whitelistedInstances forKey:@"whitelistedInstances"];
-  [v4 encodeObject:self->_seid forKey:@"seid"];
+  [coderCopy encodeObject:self->_performanceMetrics forKey:@"performanceMetrics"];
+  [coderCopy encodeObject:self->_whitelistedInstances forKey:@"whitelistedInstances"];
+  [coderCopy encodeObject:self->_seid forKey:@"seid"];
 }
 
 @end

@@ -1,46 +1,46 @@
 @interface SBHomeGestureRootFloatingSwitcherModifier
-- (CGRect)_frameWithScaleAppliedForIndex:(unint64_t)a3;
-- (SBHomeGestureRootFloatingSwitcherModifier)initWithMultitaskingModifier:(id)a3 floatingConfiguration:(int64_t)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)gestureChildModifierForGestureEvent:(id)a3 activeTransitionModifier:(id)a4;
-- (id)transitionChildModifierForMainTransitionEvent:(id)a3 activeGestureModifier:(id)a4;
+- (CGRect)_frameWithScaleAppliedForIndex:(unint64_t)index;
+- (SBHomeGestureRootFloatingSwitcherModifier)initWithMultitaskingModifier:(id)modifier floatingConfiguration:(int64_t)configuration;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)gestureChildModifierForGestureEvent:(id)event activeTransitionModifier:(id)modifier;
+- (id)transitionChildModifierForMainTransitionEvent:(id)event activeGestureModifier:(id)modifier;
 @end
 
 @implementation SBHomeGestureRootFloatingSwitcherModifier
 
-- (SBHomeGestureRootFloatingSwitcherModifier)initWithMultitaskingModifier:(id)a3 floatingConfiguration:(int64_t)a4
+- (SBHomeGestureRootFloatingSwitcherModifier)initWithMultitaskingModifier:(id)modifier floatingConfiguration:(int64_t)configuration
 {
-  v7 = a3;
+  modifierCopy = modifier;
   v11.receiver = self;
   v11.super_class = SBHomeGestureRootFloatingSwitcherModifier;
   v8 = [(SBGestureRootSwitcherModifier *)&v11 initWithStartingEnvironmentMode:3];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_multitaskingModifier, a3);
-    v9->_floatingConfiguration = a4;
+    objc_storeStrong(&v8->_multitaskingModifier, modifier);
+    v9->_floatingConfiguration = configuration;
   }
 
   return v9;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v8.receiver = self;
   v8.super_class = SBHomeGestureRootFloatingSwitcherModifier;
-  v4 = [(SBGestureRootSwitcherModifier *)&v8 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(SBGestureRootSwitcherModifier *)&v8 descriptionBuilderWithMultilinePrefix:prefix];
   v5 = SBStringForFloatingConfiguration(self->_floatingConfiguration);
   v6 = [v4 appendObject:v5 withName:@"floatingConfiguration"];
 
   return v4;
 }
 
-- (id)gestureChildModifierForGestureEvent:(id)a3 activeTransitionModifier:(id)a4
+- (id)gestureChildModifierForGestureEvent:(id)event activeTransitionModifier:(id)modifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBGestureRootSwitcherModifier *)self selectedAppLayout];
-  if (v6)
+  modifierCopy = modifier;
+  eventCopy = event;
+  selectedAppLayout = [(SBGestureRootSwitcherModifier *)self selectedAppLayout];
+  if (modifierCopy)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -52,36 +52,36 @@
   }
 
   v10 = [SBHomeGestureFloatingSwitcherModifier alloc];
-  v11 = [v7 gestureID];
+  gestureID = [eventCopy gestureID];
 
-  v12 = [(SBHomeGestureFloatingSwitcherModifier *)v10 initWithGestureID:v11 selectedAppLayout:v8 continuingGesture:v6 != 0 lastGestureWasAnArcSwipe:isKindOfClass & 1 floatingConfiguration:self->_floatingConfiguration];
+  v12 = [(SBHomeGestureFloatingSwitcherModifier *)v10 initWithGestureID:gestureID selectedAppLayout:selectedAppLayout continuingGesture:modifierCopy != 0 lastGestureWasAnArcSwipe:isKindOfClass & 1 floatingConfiguration:self->_floatingConfiguration];
 
   return v12;
 }
 
-- (id)transitionChildModifierForMainTransitionEvent:(id)a3 activeGestureModifier:(id)a4
+- (id)transitionChildModifierForMainTransitionEvent:(id)event activeGestureModifier:(id)modifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 toFloatingAppLayout];
-  v10 = [v7 toFloatingSwitcherVisible];
-  v11 = [v7 transitionID];
-  if (v10)
+  eventCopy = event;
+  modifierCopy = modifier;
+  toFloatingAppLayout = [eventCopy toFloatingAppLayout];
+  toFloatingSwitcherVisible = [eventCopy toFloatingSwitcherVisible];
+  transitionID = [eventCopy transitionID];
+  if (toFloatingSwitcherVisible)
   {
     v12 = [SBHomeGestureToSwitcherFloatingSwitcherModifier alloc];
     multitaskingModifier = self->_multitaskingModifier;
-    v14 = [(SBGestureRootSwitcherModifier *)self selectedAppLayout];
-    v15 = [(SBHomeGestureToSwitcherFloatingSwitcherModifier *)v12 initWithTransitionID:v11 multitaskingModifier:multitaskingModifier selectedAppLayout:v14];
+    selectedAppLayout = [(SBGestureRootSwitcherModifier *)self selectedAppLayout];
+    v15 = [(SBHomeGestureToSwitcherFloatingSwitcherModifier *)v12 initWithTransitionID:transitionID multitaskingModifier:multitaskingModifier selectedAppLayout:selectedAppLayout];
 LABEL_11:
     v33 = v15;
     goto LABEL_12;
   }
 
-  if (!v9)
+  if (!toFloatingAppLayout)
   {
     v34 = [SBHomeGestureToStashedFloatingSwitcherModifier alloc];
-    v14 = [(SBGestureRootSwitcherModifier *)self selectedAppLayout];
-    v15 = -[SBHomeGestureToStashedFloatingSwitcherModifier initWithTransitionID:fromAppLayout:toFloatingConfiguration:](v34, "initWithTransitionID:fromAppLayout:toFloatingConfiguration:", v11, v14, [v7 toFloatingConfiguration]);
+    selectedAppLayout = [(SBGestureRootSwitcherModifier *)self selectedAppLayout];
+    v15 = -[SBHomeGestureToStashedFloatingSwitcherModifier initWithTransitionID:fromAppLayout:toFloatingConfiguration:](v34, "initWithTransitionID:fromAppLayout:toFloatingConfiguration:", transitionID, selectedAppLayout, [eventCopy toFloatingConfiguration]);
     goto LABEL_11;
   }
 
@@ -91,11 +91,11 @@ LABEL_11:
     [SBHomeGestureRootFloatingSwitcherModifier transitionChildModifierForMainTransitionEvent:a2 activeGestureModifier:self];
   }
 
-  v36 = [v8 currentFinalDestination] == 1;
-  v14 = [(SBGestureRootSwitcherModifier *)self selectedAppLayout];
-  v16 = [(SBHomeGestureRootFloatingSwitcherModifier *)self appLayouts];
-  v17 = [v16 indexOfObject:v14];
-  v18 = [v16 indexOfObject:v9];
+  v36 = [modifierCopy currentFinalDestination] == 1;
+  selectedAppLayout = [(SBGestureRootSwitcherModifier *)self selectedAppLayout];
+  appLayouts = [(SBHomeGestureRootFloatingSwitcherModifier *)self appLayouts];
+  v17 = [appLayouts indexOfObject:selectedAppLayout];
+  v18 = [appLayouts indexOfObject:toFloatingAppLayout];
   v19 = 1;
   if (v17 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -120,17 +120,17 @@ LABEL_11:
     }
   }
 
-  v33 = -[SBArcSwipeFloatingSwitcherModifier initWithTransitionID:fromAppLayout:toAppLayout:floatingConfiguration:direction:needsOvershoot:]([SBArcSwipeFloatingSwitcherModifier alloc], "initWithTransitionID:fromAppLayout:toAppLayout:floatingConfiguration:direction:needsOvershoot:", v11, v14, v9, [v7 toFloatingConfiguration], v36, v19);
+  v33 = -[SBArcSwipeFloatingSwitcherModifier initWithTransitionID:fromAppLayout:toAppLayout:floatingConfiguration:direction:needsOvershoot:]([SBArcSwipeFloatingSwitcherModifier alloc], "initWithTransitionID:fromAppLayout:toAppLayout:floatingConfiguration:direction:needsOvershoot:", transitionID, selectedAppLayout, toFloatingAppLayout, [eventCopy toFloatingConfiguration], v36, v19);
 
 LABEL_12:
 
   return v33;
 }
 
-- (CGRect)_frameWithScaleAppliedForIndex:(unint64_t)a3
+- (CGRect)_frameWithScaleAppliedForIndex:(unint64_t)index
 {
   [(SBHomeGestureRootFloatingSwitcherModifier *)self frameForIndex:?];
-  [(SBHomeGestureRootFloatingSwitcherModifier *)self scaleForIndex:a3];
+  [(SBHomeGestureRootFloatingSwitcherModifier *)self scaleForIndex:index];
 
   SBTransformedRectWithScale();
   result.size.height = v8;

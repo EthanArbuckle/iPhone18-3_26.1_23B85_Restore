@@ -1,25 +1,25 @@
 @interface IMDMessagesSyncCoordinatorInternal
-+ (id)initiateSyncFor:(id)a3 delegate:(id)a4 forceRunNow:(BOOL)a5 error:(id *)a6;
++ (id)initiateSyncFor:(id)for delegate:(id)delegate forceRunNow:(BOOL)now error:(id *)error;
 + (id)readServerCountsFromDefaults;
-+ (void)clearSyncStoreWhenSafeWithCompletionHandler:(id)a3;
-+ (void)fetchSyncStoreCountsWithCompletion:(id)a3;
-+ (void)registerWithNotifier:(id)a3;
-+ (void)registerWithStore:(id)a3 asType:(int64_t)a4;
++ (void)clearSyncStoreWhenSafeWithCompletionHandler:(id)handler;
++ (void)fetchSyncStoreCountsWithCompletion:(id)completion;
++ (void)registerWithNotifier:(id)notifier;
++ (void)registerWithStore:(id)store asType:(int64_t)type;
 - (IMDMessagesSyncCoordinatorInternal)init;
 @end
 
 @implementation IMDMessagesSyncCoordinatorInternal
 
-+ (void)clearSyncStoreWhenSafeWithCompletionHandler:(id)a3
++ (void)clearSyncStoreWhenSafeWithCompletionHandler:(id)handler
 {
   v5 = sub_22B9349C8(&unk_27D8D5780, &qword_22BA13DB0);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8, v7);
   v9 = &v15 - v8;
-  v10 = _Block_copy(a3);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
-  *(v11 + 24) = a1;
+  *(v11 + 24) = self;
   v12 = sub_22BA1030C();
   (*(*(v12 - 8) + 56))(v9, 1, 1, v12);
   v13 = swift_allocObject();
@@ -35,7 +35,7 @@
   sub_22BA04B0C(0, 0, v9, &unk_22BA18598, v14);
 }
 
-+ (void)registerWithStore:(id)a3 asType:(int64_t)a4
++ (void)registerWithStore:(id)store asType:(int64_t)type
 {
   v6 = qword_281416508;
   swift_unknownObjectRetain();
@@ -44,13 +44,13 @@
     swift_once();
   }
 
-  [swift_unknownObjectRetain() registerRecordStoreWithType:a4 store:a3];
+  [swift_unknownObjectRetain() registerRecordStoreWithType:type store:store];
   swift_unknownObjectRelease();
 
   swift_unknownObjectRelease();
 }
 
-+ (void)registerWithNotifier:(id)a3
++ (void)registerWithNotifier:(id)notifier
 {
   v3 = qword_281416500;
   swift_unknownObjectRetain();
@@ -73,13 +73,13 @@
   swift_unknownObjectRelease();
 }
 
-+ (id)initiateSyncFor:(id)a3 delegate:(id)a4 forceRunNow:(BOOL)a5 error:(id *)a6
++ (id)initiateSyncFor:(id)for delegate:(id)delegate forceRunNow:(BOOL)now error:(id *)error
 {
   v8 = sub_22BA0FFFC();
   v10 = v9;
   swift_getObjCClassMetadata();
   swift_unknownObjectRetain();
-  static SyncCoordinator.initiateSync(for:delegate:forceRunNow:)(v8, v10, a4, a5);
+  static SyncCoordinator.initiateSync(for:delegate:forceRunNow:)(v8, v10, delegate, now);
 
   swift_unknownObjectRelease();
   v11 = sub_22BA0FF5C();
@@ -96,13 +96,13 @@
   return v2;
 }
 
-+ (void)fetchSyncStoreCountsWithCompletion:(id)a3
++ (void)fetchSyncStoreCountsWithCompletion:(id)completion
 {
   v4 = sub_22B9349C8(&unk_27D8D5780, &qword_22BA13DB0);
   v5 = *(*(v4 - 8) + 64);
   MEMORY[0x28223BE20](v4 - 8, v6);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(completion);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   ObjCClassMetadata = swift_getObjCClassMetadata();

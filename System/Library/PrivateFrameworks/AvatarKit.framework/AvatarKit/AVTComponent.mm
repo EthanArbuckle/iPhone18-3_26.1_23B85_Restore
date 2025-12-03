@@ -1,67 +1,67 @@
 @interface AVTComponent
-- (AVTComponent)initWithType:(int64_t)a3 assets:(id)a4 morphVariant:(id)a5 imageVariant:(id)a6 materialVariant:(id)a7 morphVariantIntensity:(float)a8 bodyPoseVariantIntensity:(float)a9 textureAssetPresence:(float)a10;
+- (AVTComponent)initWithType:(int64_t)type assets:(id)assets morphVariant:(id)variant imageVariant:(id)imageVariant materialVariant:(id)materialVariant morphVariantIntensity:(float)intensity bodyPoseVariantIntensity:(float)variantIntensity textureAssetPresence:(float)self0;
 - (id)description;
-- (id)materialAtIndex:(unint64_t)a3;
-- (void)setMaterial:(id)a3 atIndex:(unint64_t)a4;
+- (id)materialAtIndex:(unint64_t)index;
+- (void)setMaterial:(id)material atIndex:(unint64_t)index;
 @end
 
 @implementation AVTComponent
 
-- (void)setMaterial:(id)a3 atIndex:(unint64_t)a4
+- (void)setMaterial:(id)material atIndex:(unint64_t)index
 {
-  v7 = a3;
-  if (v7 || a4)
+  materialCopy = material;
+  if (materialCopy || index)
   {
-    if (a4 >= 3)
+    if (index >= 3)
     {
       [AVTComponent setMaterial:atIndex:];
     }
 
-    v8 = v7;
-    objc_storeStrong(&self->_materials[a4], a3);
-    v7 = v8;
+    v8 = materialCopy;
+    objc_storeStrong(&self->_materials[index], material);
+    materialCopy = v8;
   }
 }
 
-- (id)materialAtIndex:(unint64_t)a3
+- (id)materialAtIndex:(unint64_t)index
 {
-  if (a3 > 2)
+  if (index > 2)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = self->_materials[a3];
-    if (a3 && !v6)
+    v6 = self->_materials[index];
+    if (index && !v6)
     {
-      v6 = [(AVTComponent *)self materialAtIndex:a3 - 1];
+      v6 = [(AVTComponent *)self materialAtIndex:index - 1];
     }
   }
 
   return v6;
 }
 
-- (AVTComponent)initWithType:(int64_t)a3 assets:(id)a4 morphVariant:(id)a5 imageVariant:(id)a6 materialVariant:(id)a7 morphVariantIntensity:(float)a8 bodyPoseVariantIntensity:(float)a9 textureAssetPresence:(float)a10
+- (AVTComponent)initWithType:(int64_t)type assets:(id)assets morphVariant:(id)variant imageVariant:(id)imageVariant materialVariant:(id)materialVariant morphVariantIntensity:(float)intensity bodyPoseVariantIntensity:(float)variantIntensity textureAssetPresence:(float)self0
 {
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
+  assetsCopy = assets;
+  variantCopy = variant;
+  imageVariantCopy = imageVariant;
+  materialVariantCopy = materialVariant;
   v26.receiver = self;
   v26.super_class = AVTComponent;
   v23 = [(AVTComponent *)&v26 init];
   v24 = v23;
   if (v23)
   {
-    v23->_type = a3;
-    objc_storeStrong(&v23->_assets, a4);
-    objc_storeStrong(&v24->_morphVariant, a5);
-    objc_storeStrong(&v24->_imageVariant, a6);
-    objc_storeStrong(&v24->_materialVariant, a7);
-    v24->_morphVariantIntensity = a8;
-    v24->_bodyPoseVariantIntensity = a9;
-    v24->_textureAssetPresence = a10;
+    v23->_type = type;
+    objc_storeStrong(&v23->_assets, assets);
+    objc_storeStrong(&v24->_morphVariant, variant);
+    objc_storeStrong(&v24->_imageVariant, imageVariant);
+    objc_storeStrong(&v24->_materialVariant, materialVariant);
+    v24->_morphVariantIntensity = intensity;
+    v24->_bodyPoseVariantIntensity = variantIntensity;
+    v24->_textureAssetPresence = presence;
   }
 
   return v24;

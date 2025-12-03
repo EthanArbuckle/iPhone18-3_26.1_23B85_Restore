@@ -1,10 +1,10 @@
 @interface ECTransferActionReplayer
-- (id)_allCopyItemsBySourceRemoteIDsForAction:(id)a3 failedItems:(id *)a4;
-- (id)_appendMessagesInAction:(id)a3;
-- (id)_deleteItemsInAction:(id)a3;
-- (id)_downLoadSourceMessagesInAction:(id)a3;
-- (id)_transferItemsInAction:(id)a3 isMove:(BOOL)a4;
-- (id)failActionWithError:(id)a3;
+- (id)_allCopyItemsBySourceRemoteIDsForAction:(id)action failedItems:(id *)items;
+- (id)_appendMessagesInAction:(id)action;
+- (id)_deleteItemsInAction:(id)action;
+- (id)_downLoadSourceMessagesInAction:(id)action;
+- (id)_transferItemsInAction:(id)action isMove:(BOOL)move;
+- (id)failActionWithError:(id)error;
 - (id)replayAction;
 @end
 
@@ -12,46 +12,46 @@
 
 - (id)replayAction
 {
-  v4 = [(ECLocalActionReplayer *)self action];
+  action = [(ECLocalActionReplayer *)self action];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"ECTransferActionReplayer.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"[transferAction isKindOfClass:[ECTransferMessageAction class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ECTransferActionReplayer.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"[transferAction isKindOfClass:[ECTransferMessageAction class]]"}];
   }
 
-  v5 = [v4 itemsToDownload];
-  v6 = [v5 count];
+  itemsToDownload = [action itemsToDownload];
+  v6 = [itemsToDownload count];
 
   if (v6)
   {
-    v7 = [(ECTransferActionReplayer *)self _downLoadSourceMessagesInAction:v4];
+    v7 = [(ECTransferActionReplayer *)self _downLoadSourceMessagesInAction:action];
   }
 
   else
   {
-    v10 = [v4 itemsToCopy];
-    v11 = [v10 count];
+    itemsToCopy = [action itemsToCopy];
+    v11 = [itemsToCopy count];
 
     if (v11)
     {
-      v12 = [v4 mailboxURL];
-      v13 = [v4 destinationMailboxURL];
-      v14 = [v12 isEqual:v13];
+      mailboxURL = [action mailboxURL];
+      destinationMailboxURL = [action destinationMailboxURL];
+      v14 = [mailboxURL isEqual:destinationMailboxURL];
 
       if (v14)
       {
-        v7 = [(ECTransferActionReplayer *)self _appendMessagesInAction:v4];
+        v7 = [(ECTransferActionReplayer *)self _appendMessagesInAction:action];
       }
 
       else
       {
-        if ([v4 transferType] == 1)
+        if ([action transferType] == 1)
         {
-          v17 = [(ECLocalActionReplayer *)self delegate];
-          v18 = [v4 sourceMailboxURL];
-          v19 = [v4 destinationMailboxURL];
-          v20 = [v17 moveSupportedFromMailboxURL:v18 toURL:v19];
+          delegate = [(ECLocalActionReplayer *)self delegate];
+          sourceMailboxURL = [action sourceMailboxURL];
+          destinationMailboxURL2 = [action destinationMailboxURL];
+          v20 = [delegate moveSupportedFromMailboxURL:sourceMailboxURL toURL:destinationMailboxURL2];
         }
 
         else
@@ -59,22 +59,22 @@
           v20 = 0;
         }
 
-        v7 = [(ECTransferActionReplayer *)self _transferItemsInAction:v4 isMove:v20];
+        v7 = [(ECTransferActionReplayer *)self _transferItemsInAction:action isMove:v20];
       }
     }
 
     else
     {
-      v15 = [v4 itemsToDelete];
-      v16 = [v15 count];
+      itemsToDelete = [action itemsToDelete];
+      v16 = [itemsToDelete count];
 
       if (!v16)
       {
-        v22 = [MEMORY[0x277CCA890] currentHandler];
-        [v22 handleFailureInMethod:a2 object:self file:@"ECTransferActionReplayer.m" lineNumber:36 description:{@"The copy action had nothing to do, so it shouldn't have been created"}];
+        currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"ECTransferActionReplayer.m" lineNumber:36 description:{@"The copy action had nothing to do, so it shouldn't have been created"}];
       }
 
-      v7 = [(ECTransferActionReplayer *)self _deleteItemsInAction:v4];
+      v7 = [(ECTransferActionReplayer *)self _deleteItemsInAction:action];
     }
   }
 
@@ -83,16 +83,16 @@
   return v8;
 }
 
-- (id)_downLoadSourceMessagesInAction:(id)a3
+- (id)_downLoadSourceMessagesInAction:(id)action
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 itemsToDownload];
-  v6 = [v5 firstObject];
+  actionCopy = action;
+  itemsToDownload = [actionCopy itemsToDownload];
+  firstObject = [itemsToDownload firstObject];
 
-  v7 = [v6 sourceRemoteID];
-  v8 = [v4 mailboxURL];
-  v9 = [(ECTransferActionReplayer *)self fetchBodyDataForRemoteID:v7 mailboxURL:v8];
+  sourceRemoteID = [firstObject sourceRemoteID];
+  mailboxURL = [actionCopy mailboxURL];
+  v9 = [(ECTransferActionReplayer *)self fetchBodyDataForRemoteID:sourceRemoteID mailboxURL:mailboxURL];
 
   if ([v9 length])
   {
@@ -101,7 +101,7 @@
     v20[1] = 3221225472;
     v20[2] = __60__ECTransferActionReplayer__downLoadSourceMessagesInAction___block_invoke;
     v20[3] = &unk_27874C540;
-    v21 = v6;
+    v21 = firstObject;
     v22 = v9;
     v11 = [(ECTransferMessageActionResults *)v10 initWithBuilder:v20];
 
@@ -116,8 +116,8 @@ LABEL_7:
     v13 = +[ECLocalActionReplayer log];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [(ECLocalActionReplayer *)self action];
-      [(ECTransferActionReplayer *)v14 _downLoadSourceMessagesInAction:v6, buf, v13];
+      action = [(ECLocalActionReplayer *)self action];
+      [(ECTransferActionReplayer *)action _downLoadSourceMessagesInAction:firstObject, buf, v13];
     }
 
     v15 = [ECTransferMessageActionResults alloc];
@@ -125,7 +125,7 @@ LABEL_7:
     v18[1] = 3221225472;
     v18[2] = __60__ECTransferActionReplayer__downLoadSourceMessagesInAction___block_invoke_16;
     v18[3] = &unk_27874C540;
-    v19[0] = v6;
+    v19[0] = firstObject;
     v19[1] = self;
     v11 = [(ECTransferMessageActionResults *)v15 initWithBuilder:v18];
     v12 = v19;
@@ -173,21 +173,21 @@ void __60__ECTransferActionReplayer__downLoadSourceMessagesInAction___block_invo
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_transferItemsInAction:(id)a3 isMove:(BOOL)a4
+- (id)_transferItemsInAction:(id)action isMove:(BOOL)move
 {
-  v4 = a4;
+  moveCopy = move;
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  actionCopy = action;
   v32 = 0;
-  v7 = [(ECTransferActionReplayer *)self _allCopyItemsBySourceRemoteIDsForAction:v6 failedItems:&v32];
+  v7 = [(ECTransferActionReplayer *)self _allCopyItemsBySourceRemoteIDsForAction:actionCopy failedItems:&v32];
   v8 = v32;
   if ([v8 count])
   {
     v9 = +[ECLocalActionReplayer log];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(ECLocalActionReplayer *)self action];
-      [(ECTransferActionReplayer *)v10 _transferItemsInAction:buf isMove:v9];
+      action = [(ECLocalActionReplayer *)self action];
+      [(ECTransferActionReplayer *)action _transferItemsInAction:buf isMove:v9];
     }
 
     v11 = [ECTransferMessageActionResults alloc];
@@ -202,17 +202,17 @@ void __60__ECTransferActionReplayer__downLoadSourceMessagesInAction___block_invo
 
   else
   {
-    if (v4)
+    if (moveCopy)
     {
-      v14 = [v6 destinationMailboxURL];
-      v12 = [(ECTransferActionReplayer *)self moveItems:v7 destinationMailboxURL:v14];
+      destinationMailboxURL = [actionCopy destinationMailboxURL];
+      v12 = [(ECTransferActionReplayer *)self moveItems:v7 destinationMailboxURL:destinationMailboxURL];
 
-      v15 = [(ECLocalMessageActionResults *)v12 error];
-      if (v15)
+      error = [(ECLocalMessageActionResults *)v12 error];
+      if (error)
       {
         v16 = MEMORY[0x277CCACA8];
-        v17 = [(ECLocalMessageActionResults *)v12 error];
-        v13 = [v16 stringWithFormat:@"didn't work, error = %@", v17];
+        error2 = [(ECLocalMessageActionResults *)v12 error];
+        v13 = [v16 stringWithFormat:@"didn't work, error = %@", error2];
       }
 
       else
@@ -223,10 +223,10 @@ void __60__ECTransferActionReplayer__downLoadSourceMessagesInAction___block_invo
       v22 = +[ECLocalActionReplayer log];
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [(ECLocalActionReplayer *)self action];
+        action2 = [(ECLocalActionReplayer *)self action];
         v24 = [v7 count];
         *buf = 138543874;
-        v34 = v23;
+        v34 = action2;
         v35 = 2048;
         v36 = v24;
         v37 = 2114;
@@ -237,15 +237,15 @@ void __60__ECTransferActionReplayer__downLoadSourceMessagesInAction___block_invo
 
     else
     {
-      v18 = [v6 destinationMailboxURL];
-      v12 = [(ECTransferActionReplayer *)self copyItems:v7 destinationMailboxURL:v18];
+      destinationMailboxURL2 = [actionCopy destinationMailboxURL];
+      v12 = [(ECTransferActionReplayer *)self copyItems:v7 destinationMailboxURL:destinationMailboxURL2];
 
-      v19 = [(ECLocalMessageActionResults *)v12 error];
-      if (v19)
+      error3 = [(ECLocalMessageActionResults *)v12 error];
+      if (error3)
       {
         v20 = MEMORY[0x277CCACA8];
-        v21 = [(ECLocalMessageActionResults *)v12 error];
-        v13 = [v20 stringWithFormat:@"didn't work, error = %@", v21];
+        error4 = [(ECLocalMessageActionResults *)v12 error];
+        v13 = [v20 stringWithFormat:@"didn't work, error = %@", error4];
       }
 
       else
@@ -256,10 +256,10 @@ void __60__ECTransferActionReplayer__downLoadSourceMessagesInAction___block_invo
       v22 = +[ECLocalActionReplayer log];
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v25 = [(ECLocalActionReplayer *)self action];
+        action3 = [(ECLocalActionReplayer *)self action];
         v26 = [v7 count];
         *buf = 138543874;
-        v34 = v25;
+        v34 = action3;
         v35 = 2048;
         v36 = v26;
         v37 = 2114;
@@ -281,18 +281,18 @@ void __58__ECTransferActionReplayer__transferItemsInAction_isMove___block_invoke
   [v3 setFailedItems:*(a1 + 32)];
 }
 
-- (id)_allCopyItemsBySourceRemoteIDsForAction:(id)a3 failedItems:(id *)a4
+- (id)_allCopyItemsBySourceRemoteIDsForAction:(id)action failedItems:(id *)items
 {
   v26 = *MEMORY[0x277D85DE8];
-  v20 = a3;
+  actionCopy = action;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [v20 itemsToCopy];
-  v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  itemsToCopy = [actionCopy itemsToCopy];
+  v8 = [itemsToCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
     v9 = *v22;
@@ -302,14 +302,14 @@ LABEL_3:
     {
       if (*v22 != v9)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(itemsToCopy);
       }
 
       v11 = *(*(&v21 + 1) + 8 * v10);
-      v12 = [v11 sourceRemoteID];
-      if (v12 || ([v11 sourceMessage], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "remoteID"), v12 = objc_claimAutoreleasedReturnValue(), v13, v12))
+      sourceRemoteID = [v11 sourceRemoteID];
+      if (sourceRemoteID || ([v11 sourceMessage], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "remoteID"), sourceRemoteID = objc_claimAutoreleasedReturnValue(), v13, sourceRemoteID))
       {
-        [v5 setObject:v11 forKeyedSubscript:v12];
+        [v5 setObject:v11 forKeyedSubscript:sourceRemoteID];
       }
 
       else
@@ -326,7 +326,7 @@ LABEL_3:
 
       if (v8 == ++v10)
       {
-        v15 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v15 = [itemsToCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
         v8 = v15;
         if (v15)
         {
@@ -339,10 +339,10 @@ LABEL_3:
   }
 
   v16 = [v6 count];
-  if (a4 && v16)
+  if (items && v16)
   {
     v17 = v6;
-    *a4 = v6;
+    *items = v6;
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -350,27 +350,27 @@ LABEL_3:
   return v5;
 }
 
-- (id)_appendMessagesInAction:(id)a3
+- (id)_appendMessagesInAction:(id)action
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 itemsToCopy];
-  v6 = [v5 firstObject];
+  actionCopy = action;
+  itemsToCopy = [actionCopy itemsToCopy];
+  firstObject = [itemsToCopy firstObject];
 
-  v7 = [v6 destinationMessage];
-  if (!v7)
+  destinationMessage = [firstObject destinationMessage];
+  if (!destinationMessage)
   {
     goto LABEL_3;
   }
 
-  v8 = [v6 destinationMessage];
-  v9 = [v8 flags];
-  v10 = [v9 deleted];
+  destinationMessage2 = [firstObject destinationMessage];
+  flags = [destinationMessage2 flags];
+  deleted = [flags deleted];
 
-  if (!v10)
+  if (!deleted)
   {
-    v15 = [v4 destinationMailboxURL];
-    v14 = [(ECTransferActionReplayer *)self appendItem:v6 mailboxURL:v15];
+    destinationMailboxURL = [actionCopy destinationMailboxURL];
+    v14 = [(ECTransferActionReplayer *)self appendItem:firstObject mailboxURL:destinationMailboxURL];
   }
 
   else
@@ -379,9 +379,9 @@ LABEL_3:
     v11 = +[ECLocalActionReplayer log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(ECLocalActionReplayer *)self action];
+      action = [(ECLocalActionReplayer *)self action];
       *buf = 138543362;
-      v21 = v12;
+      v21 = action;
       _os_log_impl(&dword_22D092000, v11, OS_LOG_TYPE_DEFAULT, "<%{public}@>. Not appending deleted messages", buf, 0xCu);
     }
 
@@ -390,7 +390,7 @@ LABEL_3:
     v18[1] = 3221225472;
     v18[2] = __52__ECTransferActionReplayer__appendMessagesInAction___block_invoke;
     v18[3] = &unk_27874C4D0;
-    v19 = v6;
+    v19 = firstObject;
     v14 = [(ECTransferMessageActionResults *)v13 initWithBuilder:v18];
   }
 
@@ -411,12 +411,12 @@ void __52__ECTransferActionReplayer__appendMessagesInAction___block_invoke(uint6
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_deleteItemsInAction:(id)a3
+- (id)_deleteItemsInAction:(id)action
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 itemsToDelete];
-  v6 = [(ECTransferActionReplayer *)self deleteSourceMessagesFromTransferItems:v5];
+  actionCopy = action;
+  itemsToDelete = [actionCopy itemsToDelete];
+  v6 = [(ECTransferActionReplayer *)self deleteSourceMessagesFromTransferItems:itemsToDelete];
 
   v7 = @"got connection error";
   if (v6)
@@ -428,12 +428,12 @@ void __52__ECTransferActionReplayer__appendMessagesInAction___block_invoke(uint6
   v9 = +[ECLocalActionReplayer log];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(ECLocalActionReplayer *)self action];
-    v11 = [v4 itemsToDelete];
+    action = [(ECLocalActionReplayer *)self action];
+    itemsToDelete2 = [actionCopy itemsToDelete];
     *buf = 138543874;
-    v19 = v10;
+    v19 = action;
     v20 = 2048;
-    v21 = [v11 count];
+    v21 = [itemsToDelete2 count];
     v22 = 2114;
     v23 = v8;
     _os_log_impl(&dword_22D092000, v9, OS_LOG_TYPE_DEFAULT, "Replaying delete action %{public}@ for %lu items %{public}@", buf, 0x20u);
@@ -446,7 +446,7 @@ void __52__ECTransferActionReplayer__appendMessagesInAction___block_invoke(uint6
     v16[1] = 3221225472;
     v16[2] = __49__ECTransferActionReplayer__deleteItemsInAction___block_invoke;
     v16[3] = &unk_27874C4D0;
-    v17 = v4;
+    v17 = actionCopy;
     v13 = [(ECTransferMessageActionResults *)v12 initWithBuilder:v16];
   }
 
@@ -468,51 +468,51 @@ void __49__ECTransferActionReplayer__deleteItemsInAction___block_invoke(uint64_t
   [v4 setCompletedItems:v3];
 }
 
-- (id)failActionWithError:(id)a3
+- (id)failActionWithError:(id)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(ECLocalActionReplayer *)self action];
+  errorCopy = error;
+  action = [(ECLocalActionReplayer *)self action];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v26 = [MEMORY[0x277CCA890] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"ECTransferActionReplayer.m" lineNumber:152 description:{@"Invalid parameter not satisfying: %@", @"[action isKindOfClass:[ECTransferMessageAction class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ECTransferActionReplayer.m" lineNumber:152 description:{@"Invalid parameter not satisfying: %@", @"[action isKindOfClass:[ECTransferMessageAction class]]"}];
   }
 
-  v7 = v6;
-  v8 = [v7 itemsToDownload];
-  v9 = [v8 count];
+  v7 = action;
+  itemsToDownload = [v7 itemsToDownload];
+  v9 = [itemsToDownload count];
 
   if (v9)
   {
-    v10 = [v7 itemsToDownload];
+    itemsToDownload2 = [v7 itemsToDownload];
     v11 = 1;
   }
 
   else
   {
-    v12 = [v7 itemsToCopy];
-    v13 = [v12 count];
+    itemsToCopy = [v7 itemsToCopy];
+    v13 = [itemsToCopy count];
 
     if (v13)
     {
-      v10 = [v7 itemsToCopy];
+      itemsToDownload2 = [v7 itemsToCopy];
       v11 = 3;
     }
 
     else
     {
-      v14 = [v7 itemsToDelete];
-      v15 = [v14 count];
+      itemsToDelete = [v7 itemsToDelete];
+      v15 = [itemsToDelete count];
 
       if (!v15)
       {
-        v27 = [MEMORY[0x277CCA890] currentHandler];
-        [v27 handleFailureInMethod:a2 object:self file:@"ECTransferActionReplayer.m" lineNumber:164 description:{@"The copy action had nothing to do, so it shouldn't have been created"}];
+        currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"ECTransferActionReplayer.m" lineNumber:164 description:{@"The copy action had nothing to do, so it shouldn't have been created"}];
       }
 
-      v10 = [v7 itemsToDelete];
+      itemsToDownload2 = [v7 itemsToDelete];
       v11 = 4;
     }
   }
@@ -520,13 +520,13 @@ void __49__ECTransferActionReplayer__deleteItemsInAction___block_invoke(uint64_t
   v16 = +[ECLocalActionReplayer log];
   if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
   {
-    v23 = [(ECLocalActionReplayer *)self action];
-    v24 = [(ECLocalActionReplayer *)self error];
-    v25 = [v24 ef_publicDescription];
+    action2 = [(ECLocalActionReplayer *)self action];
+    error = [(ECLocalActionReplayer *)self error];
+    ef_publicDescription = [error ef_publicDescription];
     *buf = 138543618;
-    v33 = v23;
+    v33 = action2;
     v34 = 2114;
-    v35 = v25;
+    v35 = ef_publicDescription;
     _os_log_error_impl(&dword_22D092000, v16, OS_LOG_TYPE_ERROR, "<%{public}@>. Failed with error: %{public}@", buf, 0x16u);
   }
 
@@ -536,10 +536,10 @@ void __49__ECTransferActionReplayer__deleteItemsInAction___block_invoke(uint64_t
   v28[2] = __48__ECTransferActionReplayer_failActionWithError___block_invoke;
   v28[3] = &unk_27874C568;
   v31 = v11;
-  v29 = v10;
-  v18 = v5;
+  v29 = itemsToDownload2;
+  v18 = errorCopy;
   v30 = v18;
-  v19 = v10;
+  v19 = itemsToDownload2;
   v20 = [(ECTransferMessageActionResults *)v17 initWithBuilder:v28];
 
   v21 = *MEMORY[0x277D85DE8];

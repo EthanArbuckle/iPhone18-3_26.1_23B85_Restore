@@ -1,13 +1,13 @@
 @interface PGBusinessLocationSummarizedFeature
-- (PGBusinessLocationSummarizedFeature)initWithIntervalsPresent:(id)a3 isMandatoryForKeyAsset:(BOOL)a4 businessNode:(id)a5;
+- (PGBusinessLocationSummarizedFeature)initWithIntervalsPresent:(id)present isMandatoryForKeyAsset:(BOOL)asset businessNode:(id)node;
 @end
 
 @implementation PGBusinessLocationSummarizedFeature
 
-- (PGBusinessLocationSummarizedFeature)initWithIntervalsPresent:(id)a3 isMandatoryForKeyAsset:(BOOL)a4 businessNode:(id)a5
+- (PGBusinessLocationSummarizedFeature)initWithIntervalsPresent:(id)present isMandatoryForKeyAsset:(BOOL)asset businessNode:(id)node
 {
-  v8 = a3;
-  v9 = a5;
+  presentCopy = present;
+  nodeCopy = node;
   v15.receiver = self;
   v15.super_class = PGBusinessLocationSummarizedFeature;
   v10 = [(PGBusinessLocationSummarizedFeature *)&v15 init];
@@ -15,12 +15,12 @@
   if (v10)
   {
     v10->_type = 2;
-    v12 = PGSummarizedFeatureConsolidatedDateIntervals(v8);
+    v12 = PGSummarizedFeatureConsolidatedDateIntervals(presentCopy);
     intervalsPresent = v11->_intervalsPresent;
     v11->_intervalsPresent = v12;
 
-    v11->_isMandatoryForKeyAsset = a4;
-    objc_storeStrong(&v11->_businessNode, a5);
+    v11->_isMandatoryForKeyAsset = asset;
+    objc_storeStrong(&v11->_businessNode, node);
   }
 
   return v11;

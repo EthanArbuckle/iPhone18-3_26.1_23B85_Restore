@@ -1,16 +1,16 @@
 @interface NTKCPhotoFaceCollectionGalleryCollection
-- (id)initForDevice:(id)a3;
+- (id)initForDevice:(id)device;
 - (void)dealloc;
 - (void)photoAlbumChanged;
 @end
 
 @implementation NTKCPhotoFaceCollectionGalleryCollection
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v6 = +[NTKCompanionFaceCollectionsManager sharedInstance];
-  v7 = [v6 sharedFaceCollectionForDevice:v5 forCollectionIdentifier:@"PhotosFaces"];
+  v7 = [v6 sharedFaceCollectionForDevice:deviceCopy forCollectionIdentifier:@"PhotosFaces"];
 
   v9 = NTKCCustomizationLocalizedString(@"GALLERY_TITLE_PHOTOS", @"Photos", v8);
   v22.receiver = self;
@@ -19,7 +19,7 @@
 
   if (v10)
   {
-    objc_storeStrong(&v10->_device, a3);
+    objc_storeStrong(&v10->_device, device);
     [v7 addObserver:v10];
     v12 = NTKCCustomizationLocalizedString(@"GALLERY_PHOTOS_DESCRIPTION", @"description", v11);
     [(NTKGalleryCollection *)v10 setDescriptionText:v12];
@@ -40,7 +40,7 @@
     v16[2] = __58__NTKCPhotoFaceCollectionGalleryCollection_initForDevice___block_invoke_183;
     v16[3] = &unk_27877E438;
     v17 = v10;
-    v18 = v5;
+    v18 = deviceCopy;
     dispatch_async(v14, v16);
 
     objc_destroyWeak(&v20);
@@ -119,8 +119,8 @@ void __58__NTKCPhotoFaceCollectionGalleryCollection_initForDevice___block_invoke
   albumName = self->_albumName;
   self->_albumName = v4;
 
-  v6 = [(NTKGalleryCollection *)self delegate];
-  [v6 galleryCollectionDidChange:self shouldUpdateSnaphots:0];
+  delegate = [(NTKGalleryCollection *)self delegate];
+  [delegate galleryCollectionDidChange:self shouldUpdateSnaphots:0];
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface SWMessage
-- (SWMessage)initWithDictionary:(id)a3;
+- (SWMessage)initWithDictionary:(id)dictionary;
 @end
 
 @implementation SWMessage
 
-- (SWMessage)initWithDictionary:(id)a3
+- (SWMessage)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
-  v6 = [v5 objectForKey:@"name"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKey:@"name"];
   if (v6)
   {
     v9.receiver = self;
@@ -17,7 +17,7 @@
     if (v7)
     {
       objc_storeStrong(&v7->_name, v6);
-      objc_storeStrong(&self->_body, a3);
+      objc_storeStrong(&self->_body, dictionary);
     }
   }
 

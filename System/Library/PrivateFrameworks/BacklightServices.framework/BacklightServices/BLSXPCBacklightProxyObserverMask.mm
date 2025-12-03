@@ -1,47 +1,47 @@
 @interface BLSXPCBacklightProxyObserverMask
-+ (id)maskForObserver:(id)a3;
-- (BLSXPCBacklightProxyObserverMask)initWithCoder:(id)a3;
-- (BLSXPCBacklightProxyObserverMask)initWithObserver:(id)a3;
-- (BLSXPCBacklightProxyObserverMask)initWithObservingDidCompleteUpdateToState:(BOOL)a3 observingEventsArray:(BOOL)a4 didChangeAlwaysOnEnabled:(BOOL)a5 activatingWithEvent:(BOOL)a6 deactivatingWithEvent:(BOOL)a7 performingEvent:(BOOL)a8;
-- (BLSXPCBacklightProxyObserverMask)initWithXPCDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)maskForObserver:(id)observer;
+- (BLSXPCBacklightProxyObserverMask)initWithCoder:(id)coder;
+- (BLSXPCBacklightProxyObserverMask)initWithObserver:(id)observer;
+- (BLSXPCBacklightProxyObserverMask)initWithObservingDidCompleteUpdateToState:(BOOL)state observingEventsArray:(BOOL)array didChangeAlwaysOnEnabled:(BOOL)enabled activatingWithEvent:(BOOL)event deactivatingWithEvent:(BOOL)withEvent performingEvent:(BOOL)performingEvent;
+- (BLSXPCBacklightProxyObserverMask)initWithXPCDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation BLSXPCBacklightProxyObserverMask
 
-+ (id)maskForObserver:(id)a3
++ (id)maskForObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithObserver:v4];
+  observerCopy = observer;
+  v5 = [[self alloc] initWithObserver:observerCopy];
 
   return v5;
 }
 
-- (BLSXPCBacklightProxyObserverMask)initWithObservingDidCompleteUpdateToState:(BOOL)a3 observingEventsArray:(BOOL)a4 didChangeAlwaysOnEnabled:(BOOL)a5 activatingWithEvent:(BOOL)a6 deactivatingWithEvent:(BOOL)a7 performingEvent:(BOOL)a8
+- (BLSXPCBacklightProxyObserverMask)initWithObservingDidCompleteUpdateToState:(BOOL)state observingEventsArray:(BOOL)array didChangeAlwaysOnEnabled:(BOOL)enabled activatingWithEvent:(BOOL)event deactivatingWithEvent:(BOOL)withEvent performingEvent:(BOOL)performingEvent
 {
   v15.receiver = self;
   v15.super_class = BLSXPCBacklightProxyObserverMask;
   result = [(BLSXPCBacklightProxyObserverMask *)&v15 init];
   if (result)
   {
-    result->_observingDidCompleteUpdateToState = a3;
-    result->_observingEventsArray = a4;
-    result->_observingDidChangeAlwaysOnEnabled = a5;
-    result->_observingActivatingWithEvent = a6;
-    result->_observingDeactivatingWithEvent = a7;
-    result->_observingPerformingEvent = a8;
+    result->_observingDidCompleteUpdateToState = state;
+    result->_observingEventsArray = array;
+    result->_observingDidChangeAlwaysOnEnabled = enabled;
+    result->_observingActivatingWithEvent = event;
+    result->_observingDeactivatingWithEvent = withEvent;
+    result->_observingPerformingEvent = performingEvent;
   }
 
   return result;
 }
 
-- (BLSXPCBacklightProxyObserverMask)initWithObserver:(id)a3
+- (BLSXPCBacklightProxyObserverMask)initWithObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = objc_opt_respondsToSelector();
   if (v5)
   {
@@ -70,35 +70,35 @@
   v7 = [v3 appendBool:self->_observingActivatingWithEvent withName:@"activating" ifEqualTo:1];
   v8 = [v3 appendBool:self->_observingDeactivatingWithEvent withName:@"deactivating" ifEqualTo:1];
   v9 = [v3 appendBool:self->_observingPerformingEvent withName:@"performingEvent" ifEqualTo:1];
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendBool:self->_observingDidCompleteUpdateToState];
-  v5 = [v3 appendBool:self->_observingEventsArray];
-  v6 = [v3 appendBool:self->_observingDidChangeAlwaysOnEnabled];
-  v7 = [v3 appendBool:self->_observingActivatingWithEvent];
-  v8 = [v3 appendBool:self->_observingDeactivatingWithEvent];
-  v9 = [v3 appendBool:self->_observingPerformingEvent];
-  v10 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendBool:self->_observingDidCompleteUpdateToState];
+  v5 = [builder appendBool:self->_observingEventsArray];
+  v6 = [builder appendBool:self->_observingDidChangeAlwaysOnEnabled];
+  v7 = [builder appendBool:self->_observingActivatingWithEvent];
+  v8 = [builder appendBool:self->_observingDeactivatingWithEvent];
+  v9 = [builder appendBool:self->_observingPerformingEvent];
+  v10 = [builder hash];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   observingDidCompleteUpdateToState = self->_observingDidCompleteUpdateToState;
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __44__BLSXPCBacklightProxyObserverMask_isEqual___block_invoke;
   v38[3] = &unk_278428FA8;
-  v7 = v4;
+  v7 = equalCopy;
   v39 = v7;
   v8 = [v5 appendBool:observingDidCompleteUpdateToState counterpart:v38];
   observingEventsArray = self->_observingEventsArray;
@@ -146,65 +146,65 @@
   return observingPerformingEvent;
 }
 
-- (BLSXPCBacklightProxyObserverMask)initWithXPCDictionary:(id)a3
+- (BLSXPCBacklightProxyObserverMask)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [@"didUpdateToState" UTF8String];
-  v6 = [@"eventsArray" UTF8String];
-  v7 = [@"alwaysOnEnabled" UTF8String];
-  v8 = [@"activating" UTF8String];
-  v9 = [@"deactivating" UTF8String];
-  v10 = [@"performingEvent" UTF8String];
-  v11 = xpc_dictionary_get_BOOL(v4, v5);
-  v12 = xpc_dictionary_get_BOOL(v4, v6);
-  v13 = xpc_dictionary_get_BOOL(v4, v7);
-  v14 = xpc_dictionary_get_BOOL(v4, v8);
-  v15 = xpc_dictionary_get_BOOL(v4, v9);
-  v16 = xpc_dictionary_get_BOOL(v4, v10);
+  dictionaryCopy = dictionary;
+  uTF8String = [@"didUpdateToState" UTF8String];
+  uTF8String2 = [@"eventsArray" UTF8String];
+  uTF8String3 = [@"alwaysOnEnabled" UTF8String];
+  uTF8String4 = [@"activating" UTF8String];
+  uTF8String5 = [@"deactivating" UTF8String];
+  uTF8String6 = [@"performingEvent" UTF8String];
+  v11 = xpc_dictionary_get_BOOL(dictionaryCopy, uTF8String);
+  v12 = xpc_dictionary_get_BOOL(dictionaryCopy, uTF8String2);
+  v13 = xpc_dictionary_get_BOOL(dictionaryCopy, uTF8String3);
+  v14 = xpc_dictionary_get_BOOL(dictionaryCopy, uTF8String4);
+  v15 = xpc_dictionary_get_BOOL(dictionaryCopy, uTF8String5);
+  v16 = xpc_dictionary_get_BOOL(dictionaryCopy, uTF8String6);
 
   return [(BLSXPCBacklightProxyObserverMask *)self initWithObservingDidCompleteUpdateToState:v11 observingEventsArray:v12 didChangeAlwaysOnEnabled:v13 activatingWithEvent:v14 deactivatingWithEvent:v15 performingEvent:v16];
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  xdict = a3;
-  v4 = [@"didUpdateToState" UTF8String];
-  v5 = [@"eventsArray" UTF8String];
-  v6 = [@"alwaysOnEnabled" UTF8String];
-  v7 = [@"activating" UTF8String];
-  v8 = [@"deactivating" UTF8String];
-  v9 = [@"performingEvent" UTF8String];
-  xpc_dictionary_set_BOOL(xdict, v4, self->_observingDidCompleteUpdateToState);
-  xpc_dictionary_set_BOOL(xdict, v5, self->_observingEventsArray);
-  xpc_dictionary_set_BOOL(xdict, v6, self->_observingDidChangeAlwaysOnEnabled);
-  xpc_dictionary_set_BOOL(xdict, v7, self->_observingActivatingWithEvent);
-  xpc_dictionary_set_BOOL(xdict, v8, self->_observingDeactivatingWithEvent);
-  xpc_dictionary_set_BOOL(xdict, v9, self->_observingPerformingEvent);
+  xdict = dictionary;
+  uTF8String = [@"didUpdateToState" UTF8String];
+  uTF8String2 = [@"eventsArray" UTF8String];
+  uTF8String3 = [@"alwaysOnEnabled" UTF8String];
+  uTF8String4 = [@"activating" UTF8String];
+  uTF8String5 = [@"deactivating" UTF8String];
+  uTF8String6 = [@"performingEvent" UTF8String];
+  xpc_dictionary_set_BOOL(xdict, uTF8String, self->_observingDidCompleteUpdateToState);
+  xpc_dictionary_set_BOOL(xdict, uTF8String2, self->_observingEventsArray);
+  xpc_dictionary_set_BOOL(xdict, uTF8String3, self->_observingDidChangeAlwaysOnEnabled);
+  xpc_dictionary_set_BOOL(xdict, uTF8String4, self->_observingActivatingWithEvent);
+  xpc_dictionary_set_BOOL(xdict, uTF8String5, self->_observingDeactivatingWithEvent);
+  xpc_dictionary_set_BOOL(xdict, uTF8String6, self->_observingPerformingEvent);
 }
 
-- (BLSXPCBacklightProxyObserverMask)initWithCoder:(id)a3
+- (BLSXPCBacklightProxyObserverMask)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"didUpdateToState"];
-  v6 = [v4 decodeBoolForKey:@"eventsArray"];
-  v7 = [v4 decodeBoolForKey:@"alwaysOnEnabled"];
-  v8 = [v4 decodeBoolForKey:@"activating"];
-  v9 = [v4 decodeBoolForKey:@"deactivating"];
-  v10 = [v4 decodeBoolForKey:@"performingEvent"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"didUpdateToState"];
+  v6 = [coderCopy decodeBoolForKey:@"eventsArray"];
+  v7 = [coderCopy decodeBoolForKey:@"alwaysOnEnabled"];
+  v8 = [coderCopy decodeBoolForKey:@"activating"];
+  v9 = [coderCopy decodeBoolForKey:@"deactivating"];
+  v10 = [coderCopy decodeBoolForKey:@"performingEvent"];
 
   return [(BLSXPCBacklightProxyObserverMask *)self initWithObservingDidCompleteUpdateToState:v5 observingEventsArray:v6 didChangeAlwaysOnEnabled:v7 activatingWithEvent:v8 deactivatingWithEvent:v9 performingEvent:v10];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   observingDidCompleteUpdateToState = self->_observingDidCompleteUpdateToState;
-  v5 = a3;
-  [v5 encodeBool:observingDidCompleteUpdateToState forKey:@"didUpdateToState"];
-  [v5 encodeBool:self->_observingEventsArray forKey:@"eventsArray"];
-  [v5 encodeBool:self->_observingDidChangeAlwaysOnEnabled forKey:@"alwaysOnEnabled"];
-  [v5 encodeBool:self->_observingActivatingWithEvent forKey:@"activating"];
-  [v5 encodeBool:self->_observingDeactivatingWithEvent forKey:@"deactivating"];
-  [v5 encodeBool:self->_observingPerformingEvent forKey:@"performingEvent"];
+  coderCopy = coder;
+  [coderCopy encodeBool:observingDidCompleteUpdateToState forKey:@"didUpdateToState"];
+  [coderCopy encodeBool:self->_observingEventsArray forKey:@"eventsArray"];
+  [coderCopy encodeBool:self->_observingDidChangeAlwaysOnEnabled forKey:@"alwaysOnEnabled"];
+  [coderCopy encodeBool:self->_observingActivatingWithEvent forKey:@"activating"];
+  [coderCopy encodeBool:self->_observingDeactivatingWithEvent forKey:@"deactivating"];
+  [coderCopy encodeBool:self->_observingPerformingEvent forKey:@"performingEvent"];
 }
 
 @end

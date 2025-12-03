@@ -8,9 +8,9 @@
 {
   v4.receiver = self;
   v4.super_class = _SBSlideOverGlassMaterialBackgroundView;
-  v2 = [(_SBSlideOverGlassMaterialBackgroundView *)&v4 layer];
+  layer = [(_SBSlideOverGlassMaterialBackgroundView *)&v4 layer];
 
-  return v2;
+  return layer;
 }
 
 @end

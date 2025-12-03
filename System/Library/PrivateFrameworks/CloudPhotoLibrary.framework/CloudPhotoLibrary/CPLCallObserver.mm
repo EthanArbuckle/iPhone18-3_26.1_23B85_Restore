@@ -1,9 +1,9 @@
 @interface CPLCallObserver
-+ (void)observeAsyncCallOn:(id)a3 selector:(SEL)a4 block:(id)a5;
-+ (void)observeAsyncCallWithFunction:(id)a3 block:(id)a4;
-+ (void)observeSyncCallOn:(id)a3 selector:(SEL)a4 block:(id)a5;
-+ (void)observeSyncCallWithFunction:(id)a3 block:(id)a4;
-- (CPLCallObserver)initWithObject:(id)a3 selector:(SEL)a4 functionName:(id)a5;
++ (void)observeAsyncCallOn:(id)on selector:(SEL)selector block:(id)block;
++ (void)observeAsyncCallWithFunction:(id)function block:(id)block;
++ (void)observeSyncCallOn:(id)on selector:(SEL)selector block:(id)block;
++ (void)observeSyncCallWithFunction:(id)function block:(id)block;
+- (CPLCallObserver)initWithObject:(id)object selector:(SEL)selector functionName:(id)name;
 - (id)_callDescription;
 - (void)callDidFinish;
 @end
@@ -29,9 +29,9 @@
       v6 = __CPLObserverOSLogDomain();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
-        v7 = [(CPLCallObserver *)self _callDescription];
+        _callDescription = [(CPLCallObserver *)self _callDescription];
         *buf = 138543618;
-        v13 = v7;
+        v13 = _callDescription;
         v14 = 2048;
         v15 = v5;
         v8 = v6;
@@ -48,9 +48,9 @@ LABEL_9:
     v6 = __CPLObserverOSLogDomain();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(CPLCallObserver *)self _callDescription];
+      _callDescription = [(CPLCallObserver *)self _callDescription];
       *buf = 138543618;
-      v13 = v7;
+      v13 = _callDescription;
       v14 = 2048;
       v15 = v5;
       v8 = v6;
@@ -87,7 +87,7 @@ void __32__CPLCallObserver_callDidFinish__block_invoke(uint64_t a1)
   v6[1] = 3221225472;
   v7 = __35__CPLCallObserver__callDescription__block_invoke;
   v8 = &unk_1E861F818;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&self->_lock);
@@ -159,11 +159,11 @@ void __35__CPLCallObserver__callDescription__block_invoke(uint64_t a1)
   objc_storeStrong(v20, v3);
 }
 
-- (CPLCallObserver)initWithObject:(id)a3 selector:(SEL)a4 functionName:(id)a5
+- (CPLCallObserver)initWithObject:(id)object selector:(SEL)selector functionName:(id)name
 {
   v41 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  objectCopy = object;
+  nameCopy = name;
   v38.receiver = self;
   v38.super_class = CPLCallObserver;
   v11 = [(CPLCallObserver *)&v38 init];
@@ -171,16 +171,16 @@ void __35__CPLCallObserver__callDescription__block_invoke(uint64_t a1)
   if (v11)
   {
     v11->_lock._os_unfair_lock_opaque = 0;
-    if (v10)
+    if (nameCopy)
     {
-      v13 = [v10 copy];
+      v13 = [nameCopy copy];
       functionName = v12->_functionName;
       v12->_functionName = v13;
 
 LABEL_9:
-      v17 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
       startDate = v12->_startDate;
-      v12->_startDate = v17;
+      v12->_startDate = date;
 
       v19 = CPLCopyDefaultSerialQueueAttributes();
       v20 = dispatch_queue_create("com.apple.cpl.callobserver", v19);
@@ -206,20 +206,20 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    if (v9)
+    if (objectCopy)
     {
-      if (a4)
+      if (selector)
       {
-        isClass = object_isClass(v9);
+        isClass = object_isClass(objectCopy);
         v12->_objectIsClass = isClass;
-        v16 = v9;
+        v16 = objectCopy;
         if (!isClass)
         {
           v16 = objc_opt_class();
         }
 
         v12->_aClass = v16;
-        v12->_selector = a4;
+        v12->_selector = selector;
         goto LABEL_9;
       }
 
@@ -235,10 +235,10 @@ LABEL_9:
         }
       }
 
-      v31 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v32 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLCallObserver.m"];
       v33 = NSStringFromSelector(a2);
-      [v31 handleFailureInMethod:a2 object:v12 file:v32 lineNumber:49 description:{@"Missing selector calling %@", v33}];
+      [currentHandler handleFailureInMethod:a2 object:v12 file:v32 lineNumber:49 description:{@"Missing selector calling %@", v33}];
     }
 
     else
@@ -255,10 +255,10 @@ LABEL_9:
         }
       }
 
-      v31 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v32 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLCallObserver.m"];
       v33 = NSStringFromSelector(a2);
-      [v31 handleFailureInMethod:a2 object:v12 file:v32 lineNumber:48 description:{@"Missing object calling %@", v33}];
+      [currentHandler handleFailureInMethod:a2 object:v12 file:v32 lineNumber:48 description:{@"Missing object calling %@", v33}];
     }
 
     abort();
@@ -291,41 +291,41 @@ void __56__CPLCallObserver_initWithObject_selector_functionName___block_invoke(u
   v5 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)observeAsyncCallWithFunction:(id)a3 block:(id)a4
++ (void)observeAsyncCallWithFunction:(id)function block:(id)block
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CPLCallObserver alloc] initWithObject:0 selector:0 functionName:v6];
+  blockCopy = block;
+  functionCopy = function;
+  v7 = [[CPLCallObserver alloc] initWithObject:0 selector:0 functionName:functionCopy];
 
-  v5[2](v5, v7);
+  blockCopy[2](blockCopy, v7);
 }
 
-+ (void)observeSyncCallWithFunction:(id)a3 block:(id)a4
++ (void)observeSyncCallWithFunction:(id)function block:(id)block
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CPLCallObserver alloc] initWithObject:0 selector:0 functionName:v6];
+  blockCopy = block;
+  functionCopy = function;
+  v7 = [[CPLCallObserver alloc] initWithObject:0 selector:0 functionName:functionCopy];
 
-  v5[2](v5);
+  blockCopy[2](blockCopy);
   [(CPLCallObserver *)v7 callDidFinish];
 }
 
-+ (void)observeAsyncCallOn:(id)a3 selector:(SEL)a4 block:(id)a5
++ (void)observeAsyncCallOn:(id)on selector:(SEL)selector block:(id)block
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [[CPLCallObserver alloc] initWithObject:v8 selector:a4 functionName:0];
+  blockCopy = block;
+  onCopy = on;
+  v9 = [[CPLCallObserver alloc] initWithObject:onCopy selector:selector functionName:0];
 
-  v7[2](v7, v9);
+  blockCopy[2](blockCopy, v9);
 }
 
-+ (void)observeSyncCallOn:(id)a3 selector:(SEL)a4 block:(id)a5
++ (void)observeSyncCallOn:(id)on selector:(SEL)selector block:(id)block
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [[CPLCallObserver alloc] initWithObject:v8 selector:a4 functionName:0];
+  blockCopy = block;
+  onCopy = on;
+  v9 = [[CPLCallObserver alloc] initWithObject:onCopy selector:selector functionName:0];
 
-  v7[2](v7);
+  blockCopy[2](blockCopy);
   [(CPLCallObserver *)v9 callDidFinish];
 }
 

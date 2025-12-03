@@ -1,27 +1,27 @@
 @interface RTStateDepictionOneState
-- (RTStateDepictionOneState)initWithCoder:(id)a3;
-- (RTStateDepictionOneState)initWithLocation:(id)a3 type:(int64_t)a4 typeSource:(unint64_t)a5 customLabel:(id)a6 mapItem:(id)a7;
+- (RTStateDepictionOneState)initWithCoder:(id)coder;
+- (RTStateDepictionOneState)initWithLocation:(id)location type:(int64_t)type typeSource:(unint64_t)source customLabel:(id)label mapItem:(id)item;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTStateDepictionOneState
 
-- (RTStateDepictionOneState)initWithLocation:(id)a3 type:(int64_t)a4 typeSource:(unint64_t)a5 customLabel:(id)a6 mapItem:(id)a7
+- (RTStateDepictionOneState)initWithLocation:(id)location type:(int64_t)type typeSource:(unint64_t)source customLabel:(id)label mapItem:(id)item
 {
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
+  locationCopy = location;
+  labelCopy = label;
+  itemCopy = item;
   v24.receiver = self;
   v24.super_class = RTStateDepictionOneState;
   v16 = [(RTStateDepictionOneState *)&v24 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_location, a3);
-    v17->_type = a4;
-    v17->_typeSource = a5;
-    objc_storeStrong(&v17->_mapItem, a7);
+    objc_storeStrong(&v16->_location, location);
+    v17->_type = type;
+    v17->_typeSource = source;
+    objc_storeStrong(&v17->_mapItem, item);
     geocodeDate = v17->_geocodeDate;
     v17->_geocodeDate = 0;
 
@@ -29,7 +29,7 @@
     histEntryExit_s = v17->_histEntryExit_s;
     v17->_histEntryExit_s = v19;
 
-    v21 = [v14 copy];
+    v21 = [labelCopy copy];
     customLabel = v17->_customLabel;
     v17->_customLabel = v21;
   }
@@ -37,45 +37,45 @@
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(RTStateDepictionOneState *)self location];
-  [v4 encodeObject:v5 forKey:@"location"];
+  coderCopy = coder;
+  location = [(RTStateDepictionOneState *)self location];
+  [coderCopy encodeObject:location forKey:@"location"];
 
-  [v4 encodeInteger:-[RTStateDepictionOneState type](self forKey:{"type"), @"type"}];
-  [v4 encodeInteger:-[RTStateDepictionOneState typeSource](self forKey:{"typeSource"), @"typeSource2.0"}];
+  [coderCopy encodeInteger:-[RTStateDepictionOneState type](self forKey:{"type"), @"type"}];
+  [coderCopy encodeInteger:-[RTStateDepictionOneState typeSource](self forKey:{"typeSource"), @"typeSource2.0"}];
   v6 = MEMORY[0x277D0EBC0];
-  v7 = [(RTStateDepictionOneState *)self geoMapItem];
-  v8 = [v6 mapItemStorageForGEOMapItem:v7];
-  [v4 encodeObject:v8 forKey:@"mapItem"];
+  geoMapItem = [(RTStateDepictionOneState *)self geoMapItem];
+  v8 = [v6 mapItemStorageForGEOMapItem:geoMapItem];
+  [coderCopy encodeObject:v8 forKey:@"mapItem"];
 
-  [v4 encodeInteger:-[RTStateDepictionOneState mapItemSource](self forKey:{"mapItemSource"), @"mapItemSource"}];
-  v9 = [(RTStateDepictionOneState *)self geocodeDate];
-  [v4 encodeObject:v9 forKey:@"geocodeDate"];
+  [coderCopy encodeInteger:-[RTStateDepictionOneState mapItemSource](self forKey:{"mapItemSource"), @"mapItemSource"}];
+  geocodeDate = [(RTStateDepictionOneState *)self geocodeDate];
+  [coderCopy encodeObject:geocodeDate forKey:@"geocodeDate"];
 
-  v10 = [(RTStateDepictionOneState *)self histEntryExit_s];
-  [v4 encodeObject:v10 forKey:@"histEntryExit_s"];
+  histEntryExit_s = [(RTStateDepictionOneState *)self histEntryExit_s];
+  [coderCopy encodeObject:histEntryExit_s forKey:@"histEntryExit_s"];
 
-  v11 = [(RTStateDepictionOneState *)self customLabel];
-  [v4 encodeObject:v11 forKey:@"customLabel"];
+  customLabel = [(RTStateDepictionOneState *)self customLabel];
+  [coderCopy encodeObject:customLabel forKey:@"customLabel"];
 }
 
-- (RTStateDepictionOneState)initWithCoder:(id)a3
+- (RTStateDepictionOneState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = RTStateDepictionOneState;
   v5 = [(RTStateDepictionOneState *)&v24 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"location"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"location"];
     location = v5->_location;
     v5->_location = v6;
 
-    if ([v4 containsValueForKey:@"type"])
+    if ([coderCopy containsValueForKey:@"type"])
     {
-      v8 = [v4 decodeIntegerForKey:@"type"];
+      v8 = [coderCopy decodeIntegerForKey:@"type"];
     }
 
     else
@@ -84,9 +84,9 @@
     }
 
     v5->_type = v8;
-    if ([v4 containsValueForKey:@"typeSource2.0"])
+    if ([coderCopy containsValueForKey:@"typeSource2.0"])
     {
-      v9 = [v4 decodeIntegerForKey:@"typeSource2.0"];
+      v9 = [coderCopy decodeIntegerForKey:@"typeSource2.0"];
     }
 
     else
@@ -95,25 +95,25 @@
     }
 
     v5->_typeSource = v9;
-    if ([v4 containsValueForKey:@"typeSource"])
+    if ([coderCopy containsValueForKey:@"typeSource"])
     {
-      v10 = [v4 decodeIntegerForKey:@"typeSource"] + 1;
+      v10 = [coderCopy decodeIntegerForKey:@"typeSource"] + 1;
       if (v10 <= 6)
       {
         v5->_typeSource = qword_230B01578[v10];
       }
     }
 
-    if ([v4 containsValueForKey:@"mapItem"])
+    if ([coderCopy containsValueForKey:@"mapItem"])
     {
-      v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mapItem"];
+      v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mapItem"];
       geoMapItem = v5->_geoMapItem;
       v5->_geoMapItem = v11;
     }
 
-    if ([v4 containsValueForKey:@"mapItemSource"])
+    if ([coderCopy containsValueForKey:@"mapItemSource"])
     {
-      v13 = [v4 decodeIntegerForKey:@"mapItemSource"];
+      v13 = [coderCopy decodeIntegerForKey:@"mapItemSource"];
     }
 
     else
@@ -122,20 +122,20 @@
     }
 
     v5->_mapItemSource = v13;
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"geocodeDate"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"geocodeDate"];
     geocodeDate = v5->_geocodeDate;
     v5->_geocodeDate = v14;
 
     v16 = MEMORY[0x277CBEB98];
     v17 = objc_opt_class();
     v18 = [v16 setWithObjects:{v17, objc_opt_class(), 0}];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"histEntryExit_s"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"histEntryExit_s"];
     histEntryExit_s = v5->_histEntryExit_s;
     v5->_histEntryExit_s = v19;
 
-    if ([v4 containsValueForKey:@"customLabel"])
+    if ([coderCopy containsValueForKey:@"customLabel"])
     {
-      v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"customLabel"];
+      v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"customLabel"];
       customLabel = v5->_customLabel;
       v5->_customLabel = v21;
     }
@@ -147,27 +147,27 @@
 - (id)description
 {
   v27 = MEMORY[0x277CCACA8];
-  v26 = [(RTStateDepictionOneState *)self location];
+  location = [(RTStateDepictionOneState *)self location];
   v23 = [MEMORY[0x277D01170] locationOfInterestTypeToString:{-[RTStateDepictionOneState type](self, "type")}];
   v21 = [MEMORY[0x277D01170] locationOfInterestTypeSourceToString:{-[RTStateDepictionOneState typeSource](self, "typeSource")}];
-  v30 = [(RTStateDepictionOneState *)self histEntryExit_s];
-  v19 = [v30 count];
-  v29 = [(RTStateDepictionOneState *)self mapItem];
-  v3 = [v29 address];
-  v25 = [(RTStateDepictionOneState *)self mapItem];
-  v24 = [v25 location];
-  [v24 latitude];
+  histEntryExit_s = [(RTStateDepictionOneState *)self histEntryExit_s];
+  v19 = [histEntryExit_s count];
+  mapItem = [(RTStateDepictionOneState *)self mapItem];
+  address = [mapItem address];
+  mapItem2 = [(RTStateDepictionOneState *)self mapItem];
+  location2 = [mapItem2 location];
+  [location2 latitude];
   v5 = v4;
-  v22 = [(RTStateDepictionOneState *)self mapItem];
-  v20 = [v22 location];
-  [v20 longitude];
+  mapItem3 = [(RTStateDepictionOneState *)self mapItem];
+  location3 = [mapItem3 location];
+  [location3 longitude];
   v7 = v6;
-  v18 = [(RTStateDepictionOneState *)self mapItem];
-  v8 = [v18 extendedAttributes];
-  v9 = [v8 addressIdentifier];
-  v10 = [(RTStateDepictionOneState *)self mapItem];
-  v11 = [v10 extendedAttributes];
-  if ([v11 isMe])
+  mapItem4 = [(RTStateDepictionOneState *)self mapItem];
+  extendedAttributes = [mapItem4 extendedAttributes];
+  addressIdentifier = [extendedAttributes addressIdentifier];
+  mapItem5 = [(RTStateDepictionOneState *)self mapItem];
+  extendedAttributes2 = [mapItem5 extendedAttributes];
+  if ([extendedAttributes2 isMe])
   {
     v12 = @"YES";
   }
@@ -178,10 +178,10 @@
   }
 
   v13 = MEMORY[0x277D011A0];
-  v14 = [(RTStateDepictionOneState *)self mapItem];
-  v15 = [v13 sourceToString:{objc_msgSend(v14, "source")}];
-  v16 = [(RTStateDepictionOneState *)self customLabel];
-  v28 = [v27 stringWithFormat:@"location, %@, type, %@, typeSource, %@, visits, %lu, mapItem, address, %@, location, <%f, %f>, addressIdentifier, %@, isMe, %@, mapItemSource, %@, customLabel, %@", v26, v23, v21, v19, v3, v5, v7, v9, v12, v15, v16];
+  mapItem6 = [(RTStateDepictionOneState *)self mapItem];
+  v15 = [v13 sourceToString:{objc_msgSend(mapItem6, "source")}];
+  customLabel = [(RTStateDepictionOneState *)self customLabel];
+  v28 = [v27 stringWithFormat:@"location, %@, type, %@, typeSource, %@, visits, %lu, mapItem, address, %@, location, <%f, %f>, addressIdentifier, %@, isMe, %@, mapItemSource, %@, customLabel, %@", location, v23, v21, v19, address, v5, v7, addressIdentifier, v12, v15, customLabel];
 
   return v28;
 }

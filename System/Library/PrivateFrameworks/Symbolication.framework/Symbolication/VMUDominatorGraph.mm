@@ -1,32 +1,32 @@
 @interface VMUDominatorGraph
-+ (id)consolidate:(id)a3;
-- (VMUDominatorGraph)initWithDict:(id)a3;
-- (VMUDominatorGraph)initWithGraph:(id)a3 debugTimer:(id)a4;
-- (id)_computeDominators:(id)a3 roots:(void *)a4 reversePostOrder:(unsigned int *)a5 debugTimer:(id)a6;
++ (id)consolidate:(id)consolidate;
+- (VMUDominatorGraph)initWithDict:(id)dict;
+- (VMUDominatorGraph)initWithGraph:(id)graph debugTimer:(id)timer;
+- (id)_computeDominators:(id)dominators roots:(void *)roots reversePostOrder:(unsigned int *)order debugTimer:(id)timer;
 - (id)copyDict;
-- (id)export:(id)a3;
-- (id)fastDFS:(id)a3 graph:(id)a4;
+- (id)export:(id)export;
+- (id)fastDFS:(id)s graph:(id)graph;
 - (id)iterDominatorRoots;
-- (void)_computeDominees:(id)a3;
-- (void)enumerateDirectDomineesForNodeName:(unsigned int)a3 withBlock:(id)a4;
-- (void)enumerateDominatorRootsWithBlock:(id)a3;
-- (void)enumerateDomineesForNodeName:(unsigned int)a3 withBlock:(id)a4;
+- (void)_computeDominees:(id)dominees;
+- (void)enumerateDirectDomineesForNodeName:(unsigned int)name withBlock:(id)block;
+- (void)enumerateDominatorRootsWithBlock:(id)block;
+- (void)enumerateDomineesForNodeName:(unsigned int)name withBlock:(id)block;
 @end
 
 @implementation VMUDominatorGraph
 
-- (VMUDominatorGraph)initWithDict:(id)a3
+- (VMUDominatorGraph)initWithDict:(id)dict
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"dominators"];
+  dictCopy = dict;
+  v5 = [dictCopy objectForKeyedSubscript:@"dominators"];
   dominators_data = self->_dominators_data;
   self->_dominators_data = v5;
 
-  v7 = [v4 objectForKeyedSubscript:@"firstDominates"];
+  v7 = [dictCopy objectForKeyedSubscript:@"firstDominates"];
   firstDominates_data = self->_firstDominates_data;
   self->_firstDominates_data = v7;
 
-  v9 = [v4 objectForKeyedSubscript:@"nextDominates"];
+  v9 = [dictCopy objectForKeyedSubscript:@"nextDominates"];
 
   nextDominates_data = self->_nextDominates_data;
   self->_nextDominates_data = v9;
@@ -38,15 +38,15 @@
     self->_firstDominates = [(NSData *)self->_firstDominates_data bytes];
     self->_nextDominates = [(NSData *)self->_nextDominates_data bytes];
     self->_nodeNamespaceSize = [(NSData *)self->_firstDominates_data length]>> 2;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 - (id)copyDict
@@ -63,16 +63,16 @@
   return result;
 }
 
-+ (id)consolidate:(id)a3
++ (id)consolidate:(id)consolidate
 {
   v99 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  consolidateCopy = consolidate;
   v64 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v90 = 0u;
   v91 = 0u;
   v92 = 0u;
   v93 = 0u;
-  obj = v3;
+  obj = consolidateCopy;
   v62 = [obj countByEnumeratingWithState:&v90 objects:v98 count:16];
   if (v62)
   {
@@ -357,15 +357,15 @@
   return v61;
 }
 
-- (id)export:(id)a3
+- (id)export:(id)export
 {
-  v4 = a3;
+  exportCopy = export;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __28__VMUDominatorGraph_export___block_invoke;
   aBlock[3] = &unk_1E827A258;
-  v10 = v4;
-  v5 = v4;
+  v10 = exportCopy;
+  v5 = exportCopy;
   v6 = _Block_copy(aBlock);
   v7 = [(VMUDominatorGraph *)self fastDFS:v6 graph:v5];
 
@@ -553,19 +553,19 @@ LABEL_21:
   return v48;
 }
 
-- (id)fastDFS:(id)a3 graph:(id)a4
+- (id)fastDFS:(id)s graph:(id)graph
 {
   v36 = *MEMORY[0x1E69E9840];
-  aBlock = a3;
-  v24 = a4;
-  v6 = [[VMUVMRegionIdentifier alloc] initWithGraph:v24 options:0];
+  aBlock = s;
+  graphCopy = graph;
+  v6 = [[VMUVMRegionIdentifier alloc] initWithGraph:graphCopy options:0];
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v8 = [(VMUVMRegionIdentifier *)v6 regions];
-  v9 = [v8 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  regions = [(VMUVMRegionIdentifier *)v6 regions];
+  v9 = [regions countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v9)
   {
     v10 = *v32;
@@ -575,7 +575,7 @@ LABEL_21:
       {
         if (*v32 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(regions);
         }
 
         v12 = *(*(&v31 + 1) + 8 * i);
@@ -586,7 +586,7 @@ LABEL_21:
         }
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v9 = [regions countByEnumeratingWithState:&v31 objects:v35 count:16];
     }
 
     while (v9);
@@ -595,7 +595,7 @@ LABEL_21:
   v26[0] = 1;
   v14 = v7;
   v26[1] = v14;
-  v15 = v24;
+  v15 = graphCopy;
   v26[2] = v15;
   v16 = v6;
   v26[3] = v16;
@@ -644,16 +644,16 @@ LABEL_18:
   return v21;
 }
 
-- (VMUDominatorGraph)initWithGraph:(id)a3 debugTimer:(id)a4
+- (VMUDominatorGraph)initWithGraph:(id)graph debugTimer:(id)timer
 {
-  v6 = a3;
-  v7 = a4;
+  graphCopy = graph;
+  timerCopy = timer;
   v18.receiver = self;
   v18.super_class = VMUDominatorGraph;
   v8 = [(VMUDominatorGraph *)&v18 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [graphCopy copy];
 
     v8->_nodeNamespaceSize = [v9 nodeNamespaceSize];
     v10 = [[VMUReverseGraphEnumerator alloc] initWithGraph:v9];
@@ -661,33 +661,33 @@ LABEL_18:
     v8->_reverseGraphEnumerator = &v10->super;
 
     [v9 removeWeakEdges];
-    v12 = [v9 nodeNamespaceSize];
-    v13 = malloc_type_calloc(1uLL, ((v12 + 7) >> 3) + 4, 0xB2EC2458uLL);
-    *v13 = v12;
+    nodeNamespaceSize = [v9 nodeNamespaceSize];
+    v13 = malloc_type_calloc(1uLL, ((nodeNamespaceSize + 7) >> 3) + 4, 0xB2EC2458uLL);
+    *v13 = nodeNamespaceSize;
     [v9 markRootNodes:v13];
     v14 = [[VMUGraphEnumerator alloc] initWithGraph:v9];
     v15 = [(VMUGraphEnumerator *)v14 buildReversePostOrderWithRoots:v13];
 
-    v16 = [(VMUDominatorGraph *)v8 _computeDominators:v9 roots:v13 reversePostOrder:v15 debugTimer:v7];
+    v16 = [(VMUDominatorGraph *)v8 _computeDominators:v9 roots:v13 reversePostOrder:v15 debugTimer:timerCopy];
     [(VMUDominatorGraph *)v8 setDominators_data:v16];
 
     v8->_dominators = [(NSData *)v8->_dominators_data bytes];
     free(v15);
     free(v13);
     [(VMUDominatorGraph *)v8 _computeDominees:v9];
-    v6 = v9;
+    graphCopy = v9;
   }
 
   return v8;
 }
 
-- (id)_computeDominators:(id)a3 roots:(void *)a4 reversePostOrder:(unsigned int *)a5 debugTimer:(id)a6
+- (id)_computeDominators:(id)dominators roots:(void *)roots reversePostOrder:(unsigned int *)order debugTimer:(id)timer
 {
-  v36 = a3;
-  v37 = a6;
-  v8 = [v36 invertedGraph];
-  v9 = [v8 nodeNamespaceSize];
-  v10 = 4 * (v9 + 1);
+  dominatorsCopy = dominators;
+  timerCopy = timer;
+  invertedGraph = [dominatorsCopy invertedGraph];
+  nodeNamespaceSize = [invertedGraph nodeNamespaceSize];
+  v10 = 4 * (nodeNamespaceSize + 1);
   v11 = malloc_type_malloc(v10, 0x100004052888210uLL);
   LODWORD(__pattern4) = -1;
   memset_pattern4(v11, &__pattern4, v10);
@@ -699,15 +699,15 @@ LABEL_18:
   v13 = malloc_type_malloc(v10, 0x100004052888210uLL);
   LODWORD(__pattern4) = -1;
   memset_pattern4(v13, &__pattern4, v10);
-  v38 = v8;
-  v14 = [v8 nodeNamespaceSize];
-  if (v14 >= 1)
+  v38 = invertedGraph;
+  nodeNamespaceSize2 = [invertedGraph nodeNamespaceSize];
+  if (nodeNamespaceSize2 >= 1)
   {
-    v15 = v14;
-    v16 = a5;
+    v15 = nodeNamespaceSize2;
+    orderCopy = order;
     do
     {
-      v18 = *v16++;
+      v18 = *orderCopy++;
       v17 = v18;
       if (v18 == -1)
       {
@@ -720,31 +720,31 @@ LABEL_18:
     while (v15);
   }
 
-  v11[v9] = v9;
-  v41[v9] = [v8 nodeNamespaceSize] + 100;
+  v11[nodeNamespaceSize] = nodeNamespaceSize;
+  v41[nodeNamespaceSize] = [invertedGraph nodeNamespaceSize] + 100;
   v39 = 0;
   do
   {
     while (1)
     {
-      v19 = [v38 nodeNamespaceSize];
-      if (v19 >= 1)
+      nodeNamespaceSize3 = [v38 nodeNamespaceSize];
+      if (nodeNamespaceSize3 >= 1)
       {
         v20 = 0;
         v42 = 0;
         v21 = -1;
-        v22 = a5;
-        v23 = v19;
+        orderCopy2 = order;
+        v23 = nodeNamespaceSize3;
         while (1)
         {
-          v25 = *v22++;
+          v25 = *orderCopy2++;
           v24 = v25;
           if (v25 == -1)
           {
             goto LABEL_30;
           }
 
-          if (v11[v24] != v9)
+          if (v11[v24] != nodeNamespaceSize)
           {
             break;
           }
@@ -784,7 +784,7 @@ LABEL_26:
             _Block_object_dispose(&__pattern4, 8);
             goto LABEL_27;
           case 0:
-            v11[v24] = v9;
+            v11[v24] = nodeNamespaceSize;
             goto LABEL_15;
         }
 
@@ -813,14 +813,14 @@ LABEL_26:
             v45 = &v49;
             v46 = v41;
             v47 = v11;
-            v44 = v36;
+            v44 = dominatorsCopy;
             [(VMUGraphEnumerator *)v40 enumerateEdgesOfNode:v24 withBlock:v43];
           }
         }
 
         else
         {
-          v52 = v9;
+          v52 = nodeNamespaceSize;
         }
 
         v30 = *(v50 + 6);
@@ -844,7 +844,7 @@ LABEL_26:
       v20 = 0;
       v21 = -1;
 LABEL_30:
-      if (!v37)
+      if (!timerCopy)
       {
         break;
       }
@@ -859,13 +859,13 @@ LABEL_30:
 
   while (v42);
 LABEL_34:
-  v31 = [v38 nodeNamespaceSize];
-  if (v31 >= 1)
+  nodeNamespaceSize4 = [v38 nodeNamespaceSize];
+  if (nodeNamespaceSize4 >= 1)
   {
-    v32 = v31;
+    v32 = nodeNamespaceSize4;
     do
     {
-      if (*v11 == v9)
+      if (*v11 == nodeNamespaceSize)
       {
         *v11 = -1;
       }
@@ -937,27 +937,27 @@ void *__74__VMUDominatorGraph__computeDominators_roots_reversePostOrder_debugTim
   return result;
 }
 
-- (void)_computeDominees:(id)a3
+- (void)_computeDominees:(id)dominees
 {
-  v17 = a3;
-  v4 = 4 * [v17 nodeNamespaceSize];
+  domineesCopy = dominees;
+  v4 = 4 * [domineesCopy nodeNamespaceSize];
   v5 = malloc_type_malloc(v4, 0x100004052888210uLL);
   __pattern4 = -1;
   memset_pattern4(v5, &__pattern4, v4);
   self->_firstDominates = v5;
-  v6 = 4 * [v17 nodeNamespaceSize];
+  v6 = 4 * [domineesCopy nodeNamespaceSize];
   v7 = malloc_type_malloc(v6, 0x100004052888210uLL);
   v18 = -1;
   memset_pattern4(v7, &v18, v6);
   self->_nextDominates = v7;
-  v8 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:self->_firstDominates length:4 * objc_msgSend(v17 freeWhenDone:{"nodeNamespaceSize"), 1}];
+  v8 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:self->_firstDominates length:4 * objc_msgSend(domineesCopy freeWhenDone:{"nodeNamespaceSize"), 1}];
   [(VMUDominatorGraph *)self setFirstDominates_data:v8];
 
-  v9 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:self->_nextDominates length:4 * objc_msgSend(v17 freeWhenDone:{"nodeNamespaceSize"), 1}];
+  v9 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:self->_nextDominates length:4 * objc_msgSend(domineesCopy freeWhenDone:{"nodeNamespaceSize"), 1}];
   [(VMUDominatorGraph *)self setNextDominates_data:v9];
 
-  v10 = [v17 nodeNamespaceSize];
-  if (v10 >= 1)
+  nodeNamespaceSize = [domineesCopy nodeNamespaceSize];
+  if (nodeNamespaceSize >= 1)
   {
     v11 = 0;
     dominators = self->_dominators;
@@ -981,15 +981,15 @@ void *__74__VMUDominatorGraph__computeDominators_roots_reversePostOrder_debugTim
       ++v11;
     }
 
-    while (v10 != v11);
+    while (nodeNamespaceSize != v11);
   }
 }
 
-- (void)enumerateDomineesForNodeName:(unsigned int)a3 withBlock:(id)a4
+- (void)enumerateDomineesForNodeName:(unsigned int)name withBlock:(id)block
 {
-  v12 = a4;
+  blockCopy = block;
   v6 = malloc_type_malloc(0x80uLL, 0x100004052888210uLL);
-  *v6 = self->_firstDominates[a3];
+  *v6 = self->_firstDominates[name];
   v7 = 1;
   v8 = 32;
   do
@@ -998,7 +998,7 @@ void *__74__VMUDominatorGraph__computeDominators_roots_reversePostOrder_debugTim
     v10 = v6[v7 - 1];
     if (v10 != -1)
     {
-      v12[2](v12, v6[v7 - 1]);
+      blockCopy[2](blockCopy, v6[v7 - 1]);
       if (v7 + 1 >= v8)
       {
         v6 = malloc_type_realloc(v6, 8 * v8, 0x100004052888210uLL);
@@ -1018,17 +1018,17 @@ void *__74__VMUDominatorGraph__computeDominators_roots_reversePostOrder_debugTim
   free(v6);
 }
 
-- (void)enumerateDirectDomineesForNodeName:(unsigned int)a3 withBlock:(id)a4
+- (void)enumerateDirectDomineesForNodeName:(unsigned int)name withBlock:(id)block
 {
-  for (i = self->_firstDominates[a3]; i != -1; i = self->_nextDominates[i])
+  for (i = self->_firstDominates[name]; i != -1; i = self->_nextDominates[i])
   {
-    (*(a4 + 2))(a4, i);
+    (*(block + 2))(block, i);
   }
 }
 
-- (void)enumerateDominatorRootsWithBlock:(id)a3
+- (void)enumerateDominatorRootsWithBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   nodeNamespaceSize = self->_nodeNamespaceSize;
   if (nodeNamespaceSize >= 1)
   {
@@ -1036,7 +1036,7 @@ void *__74__VMUDominatorGraph__computeDominators_roots_reversePostOrder_debugTim
     {
       if (self->_dominators[i] == -1 && self->_firstDominates[i] != -1)
       {
-        v6[2](v6, i);
+        blockCopy[2](blockCopy, i);
       }
     }
   }

@@ -1,7 +1,7 @@
 @interface WiFiUsageAccessPointProfileConfiguration
-+ (id)getConfigForKey:(id)a3;
++ (id)getConfigForKey:(id)key;
 + (void)initialize;
-+ (void)setConfig:(id)a3;
++ (void)setConfig:(id)config;
 @end
 
 @implementation WiFiUsageAccessPointProfileConfiguration
@@ -12,26 +12,26 @@
   _apProfileConfig = 0;
 }
 
-+ (void)setConfig:(id)a3
++ (void)setConfig:(id)config
 {
-  v4 = a3;
-  if (([v4 isEqualToDictionary:_apProfileConfig] & 1) == 0)
+  configCopy = config;
+  if (([configCopy isEqualToDictionary:_apProfileConfig] & 1) == 0)
   {
-    objc_storeStrong(&_apProfileConfig, a3);
+    objc_storeStrong(&_apProfileConfig, config);
     +[WiFiUsageAccessPointProfile updateConfig];
     NSLog(&cfstr_SUpdatedWifius.isa, "+[WiFiUsageAccessPointProfileConfiguration setConfig:]");
   }
 }
 
-+ (id)getConfigForKey:(id)a3
++ (id)getConfigForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   if (_apProfileConfig)
   {
-    v4 = [_apProfileConfig objectForKey:v3];
+    v4 = [_apProfileConfig objectForKey:keyCopy];
     if (!v4)
     {
-      NSLog(&cfstr_SDoesNotContai.isa, "+[WiFiUsageAccessPointProfileConfiguration getConfigForKey:]", @"AccessPointProfile", v3);
+      NSLog(&cfstr_SDoesNotContai.isa, "+[WiFiUsageAccessPointProfileConfiguration getConfigForKey:]", @"AccessPointProfile", keyCopy);
     }
   }
 

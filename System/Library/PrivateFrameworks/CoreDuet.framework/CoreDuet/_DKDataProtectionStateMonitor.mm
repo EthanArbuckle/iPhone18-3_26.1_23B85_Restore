@@ -2,7 +2,7 @@
 - (_DKDataProtectionStateMonitor)init;
 - (id)changeHandler;
 - (void)dealloc;
-- (void)setChangeHandler:(id)a3;
+- (void)setChangeHandler:(id)handler;
 @end
 
 @implementation _DKDataProtectionStateMonitor
@@ -36,14 +36,14 @@
   [(_DKDataProtectionStateMonitor *)&v3 dealloc];
 }
 
-- (void)setChangeHandler:(id)a3
+- (void)setChangeHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   handlerUUID = self->_handlerUUID;
   if (!handlerUUID)
   {
-    if (!v4)
+    if (!handlerCopy)
     {
       goto LABEL_4;
     }
@@ -51,7 +51,7 @@
     goto LABEL_3;
   }
 
-  v10 = v4;
+  v10 = handlerCopy;
   [(_DKDataProtectionMonitor *)self->_main deregisterStateChangeHandler:?];
   v5 = v10;
   if (v10)

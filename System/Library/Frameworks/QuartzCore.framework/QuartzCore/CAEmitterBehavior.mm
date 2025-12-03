@@ -1,20 +1,20 @@
 @interface CAEmitterBehavior
 + (id)behaviorTypes;
-+ (id)behaviorWithType:(id)a3;
-+ (void)CAMLParserStartElement:(id)a3;
-- (CAEmitterBehavior)initWithCoder:(id)a3;
-- (CAEmitterBehavior)initWithType:(id)a3;
++ (id)behaviorWithType:(id)type;
++ (void)CAMLParserStartElement:(id)element;
+- (CAEmitterBehavior)initWithCoder:(id)coder;
+- (CAEmitterBehavior)initWithType:(id)type;
 - (Object)CA_copyRenderValue;
-- (id)CAMLTypeForKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)valueForKey:(id)a3;
+- (id)CAMLTypeForKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)valueForKey:(id)key;
 - (void)dealloc;
-- (void)didChangeValueForKey:(id)a3;
-- (void)encodeWithCAMLWriter:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setName:(id)a3;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (void)didChangeValueForKey:(id)key;
+- (void)encodeWithCAMLWriter:(id)writer;
+- (void)encodeWithCoder:(id)coder;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setName:(id)name;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation CAEmitterBehavior
@@ -163,9 +163,9 @@ LABEL_31:
   return result;
 }
 
-- (id)CAMLTypeForKey:(id)a3
+- (id)CAMLTypeForKey:(id)key
 {
-  v4 = CAInternAtom(a3, 0);
+  v4 = CAInternAtom(key, 0);
   if (v4 == 234)
   {
     return @"BOOL";
@@ -379,19 +379,19 @@ LABEL_31:
   return @"string";
 }
 
-- (void)encodeWithCAMLWriter:(id)a3
+- (void)encodeWithCAMLWriter:(id)writer
 {
-  [a3 setElementAttribute:-[CAEmitterBehavior type](self forKey:{"type"), @"behavior"}];
-  v5 = [(CAEmitterBehavior *)self name];
-  if (v5)
+  [writer setElementAttribute:-[CAEmitterBehavior type](self forKey:{"type"), @"behavior"}];
+  name = [(CAEmitterBehavior *)self name];
+  if (name)
   {
-    [a3 setElementAttribute:v5 forKey:@"name"];
+    [writer setElementAttribute:name forKey:@"name"];
   }
 
-  v6 = [(CAEmitterBehavior *)self isEnabled];
-  if ((v6 & 1) == 0)
+  isEnabled = [(CAEmitterBehavior *)self isEnabled];
+  if ((isEnabled & 1) == 0)
   {
-    v6 = [a3 setElementAttribute:@"0" forKey:@"enabled"];
+    isEnabled = [writer setElementAttribute:@"0" forKey:@"enabled"];
   }
 
   if (self->_attr)
@@ -399,7 +399,7 @@ LABEL_31:
     v7 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
     if (!v7)
     {
-      v7 = CA::Transaction::create(v6);
+      v7 = CA::Transaction::create(isEnabled);
     }
 
     v8 = *(v7 + 29);
@@ -412,14 +412,14 @@ LABEL_31:
     attr = self->_attr;
     if (attr)
     {
-      CA::AttrList::for_each(*attr, write_attr, a3);
+      CA::AttrList::for_each(*attr, write_attr, writer);
     }
 
     CA::Transaction::unlock(v7);
   }
 }
 
-- (CAEmitterBehavior)initWithCoder:(id)a3
+- (CAEmitterBehavior)initWithCoder:(id)coder
 {
   v12 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
@@ -427,14 +427,14 @@ LABEL_31:
   v4 = [(CAEmitterBehavior *)&v11 init];
   if (v4)
   {
-    v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     if (v5)
     {
       v4->_type = CAInternAtom(v5, 1);
     }
 
-    v4->_name = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-    if ([a3 containsValueForKey:@"enabled"] && !objc_msgSend(a3, "decodeBoolForKey:", @"enabled"))
+    v4->_name = [coder decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    if ([coder containsValueForKey:@"enabled"] && !objc_msgSend(coder, "decodeBoolForKey:", @"enabled"))
     {
       v6 = v4->_flags & 0xFFFFFFFE;
     }
@@ -445,7 +445,7 @@ LABEL_31:
     }
 
     v4->_flags = v6;
-    v7 = [a3 CA_decodeObjectForKey:@"values"];
+    v7 = [coder CA_decodeObjectForKey:@"values"];
     if (v7)
     {
       v8 = v7;
@@ -460,18 +460,18 @@ LABEL_31:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = [a3 encodeObject:CAAtomGetString(self->_type) forKey:@"type"];
+  v5 = [coder encodeObject:CAAtomGetString(self->_type) forKey:@"type"];
   name = self->_name;
   if (name)
   {
-    v5 = [a3 encodeObject:name forKey:@"name"];
+    v5 = [coder encodeObject:name forKey:@"name"];
   }
 
   if ((self->_flags & 1) == 0)
   {
-    v5 = [a3 encodeBool:0 forKey:@"enabled"];
+    v5 = [coder encodeBool:0 forKey:@"enabled"];
   }
 
   if (self->_attr)
@@ -498,13 +498,13 @@ LABEL_31:
     }
 
     CA::Transaction::unlock(v7);
-    [a3 CA_encodeObject:v11 forKey:@"values" conditional:0];
+    [coder CA_encodeObject:v11 forKey:@"values" conditional:0];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -586,12 +586,12 @@ LABEL_31:
   [(CAEmitterBehavior *)&v9 dealloc];
 }
 
-- (void)didChangeValueForKey:(id)a3
+- (void)didChangeValueForKey:(id)key
 {
   v8 = *MEMORY[0x1E69E9840];
   if (self->_cache)
   {
-    v5 = CAInternAtom(a3, 0);
+    v5 = CAInternAtom(key, 0);
     if (v5 == 121 || v5 == 736 || v5 == 490)
     {
       cache = self->_cache;
@@ -606,18 +606,18 @@ LABEL_31:
 
   v7.receiver = self;
   v7.super_class = CAEmitterBehavior;
-  [(CAEmitterBehavior *)&v7 didChangeValueForKey:a3];
+  [(CAEmitterBehavior *)&v7 didChangeValueForKey:key];
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!key)
   {
     return 0;
   }
 
-  v4 = CAInternAtom(a3, 1);
+  v4 = CAInternAtom(key, 1);
   if (v4 != 234)
   {
     v5 = v4;
@@ -661,21 +661,21 @@ LABEL_31:
   }
 
   v7 = MEMORY[0x1E696AD98];
-  v8 = [(CAEmitterBehavior *)self isEnabled];
+  isEnabled = [(CAEmitterBehavior *)self isEnabled];
 
-  return [v7 numberWithBool:v8];
+  return [v7 numberWithBool:isEnabled];
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v16[0] = a3;
-  if (a4)
+  v16[0] = value;
+  if (key)
   {
-    v7 = CAInternAtom(a4, 1);
+    v7 = CAInternAtom(key, 1);
     if (v7 == 234)
     {
-      v9 = *MEMORY[0x1E695E4C0] != a3;
+      v9 = *MEMORY[0x1E695E4C0] != value;
 
       [(CAEmitterBehavior *)self setEnabled:v9];
     }
@@ -686,7 +686,7 @@ LABEL_31:
       if (v7 == 527)
       {
 
-        [(CAEmitterBehavior *)self setName:a3];
+        [(CAEmitterBehavior *)self setName:value];
       }
 
       else
@@ -706,9 +706,9 @@ LABEL_31:
         }
 
         attr = self->_attr;
-        if (!attr || !CA::AttrList::get(attr, v8, 1, &v15) || ([v15 isEqual:a3] & 1) == 0)
+        if (!attr || !CA::AttrList::get(attr, v8, 1, &v15) || ([v15 isEqual:value] & 1) == 0)
         {
-          [(CAEmitterBehavior *)self willChangeValueForKey:a4];
+          [(CAEmitterBehavior *)self willChangeValueForKey:key];
           v13 = self->_attr;
           if (!v13)
           {
@@ -732,7 +732,7 @@ LABEL_31:
             self->_cache = 0;
           }
 
-          [(CAEmitterBehavior *)self didChangeValueForKey:a4];
+          [(CAEmitterBehavior *)self didChangeValueForKey:key];
         }
 
         CA::Transaction::unlock(v10);
@@ -741,13 +741,13 @@ LABEL_31:
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if ((self->_flags & 1) != a3)
+  if ((self->_flags & 1) != enabled)
   {
-    v4 = a3;
+    enabledCopy = enabled;
     [(CAEmitterBehavior *)self willChangeValueForKey:@"enabled"];
-    self->_flags = self->_flags & 0xFFFFFFFE | v4;
+    self->_flags = self->_flags & 0xFFFFFFFE | enabledCopy;
     cache = self->_cache;
     if (cache)
     {
@@ -763,13 +763,13 @@ LABEL_31:
   }
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  if (self->_name != a3)
+  if (self->_name != name)
   {
     [(CAEmitterBehavior *)self willChangeValueForKey:@"name"];
 
-    self->_name = [a3 copy];
+    self->_name = [name copy];
     cache = self->_cache;
     if (cache)
     {
@@ -785,25 +785,25 @@ LABEL_31:
   }
 }
 
-- (CAEmitterBehavior)initWithType:(id)a3
+- (CAEmitterBehavior)initWithType:(id)type
 {
   self->_flags = 1;
-  if (a3)
+  if (type)
   {
-    self->_type = CAInternAtom(a3, 1);
+    self->_type = CAInternAtom(type, 1);
   }
 
   return [(CAEmitterBehavior *)self init];
 }
 
-+ (void)CAMLParserStartElement:(id)a3
++ (void)CAMLParserStartElement:(id)element
 {
-  v4 = [a3 attributeForKey:@"behavior" remove:1];
+  v4 = [element attributeForKey:@"behavior" remove:1];
   if (v4)
   {
     v5 = [CAEmitterBehavior behaviorWithType:v4];
 
-    [a3 setElementValue:v5];
+    [element setElementValue:v5];
   }
 
   else
@@ -811,9 +811,9 @@ LABEL_31:
   }
 }
 
-+ (id)behaviorWithType:(id)a3
++ (id)behaviorWithType:(id)type
 {
-  v3 = [[a1 alloc] initWithType:a3];
+  v3 = [[self alloc] initWithType:type];
 
   return v3;
 }

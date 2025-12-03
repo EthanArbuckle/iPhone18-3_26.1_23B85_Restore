@@ -1,23 +1,23 @@
 @interface TPSCloudBackupValidation
-- (void)validateWithCompletion:(id)a3;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSCloudBackupValidation
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
   v4 = MEMORY[0x277D28A40];
-  v5 = a3;
+  completionCopy = completion;
   v6 = [[v4 alloc] initWithDelegate:0];
-  v7 = [v6 isBackupEnabled];
-  v8 = v7 ^ [(TPSTargetingValidation *)self BOOLValue];
-  v9 = [MEMORY[0x277D71778] targeting];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+  isBackupEnabled = [v6 isBackupEnabled];
+  v8 = isBackupEnabled ^ [(TPSTargetingValidation *)self BOOLValue];
+  targeting = [MEMORY[0x277D71778] targeting];
+  if (os_log_type_enabled(targeting, OS_LOG_TYPE_DEBUG))
   {
-    [(TPSDictationLanguageValidation *)self validateWithCompletion:v9];
+    [(TPSDictationLanguageValidation *)self validateWithCompletion:targeting];
   }
 
-  (*(v5 + 2))(v5, v8 ^ 1u, 0);
+  (*(completionCopy + 2))(completionCopy, v8 ^ 1u, 0);
 }
 
 @end

@@ -2,23 +2,23 @@
 - (PXFeedbackCollector)init;
 - (id)_appVersion;
 - (id)_uniqueSystemIdentifier;
-- (id)addFeedbackFromDictionary:(id)a3;
-- (id)feedbackEntryFromDictionary:(id)a3;
-- (void)addFeedbackEntry:(id)a3;
-- (void)removeFeedbackEntry:(id)a3;
+- (id)addFeedbackFromDictionary:(id)dictionary;
+- (id)feedbackEntryFromDictionary:(id)dictionary;
+- (void)addFeedbackEntry:(id)entry;
+- (void)removeFeedbackEntry:(id)entry;
 @end
 
 @implementation PXFeedbackCollector
 
 - (id)_appVersion
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 infoDictionary];
-  v4 = [v3 objectForKey:@"CFBundleShortVersionString"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  infoDictionary = [mainBundle infoDictionary];
+  v4 = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
 
-  v5 = [MEMORY[0x1E696AAE8] mainBundle];
-  v6 = [v5 infoDictionary];
-  v7 = [v6 objectForKey:*MEMORY[0x1E695E500]];
+  mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+  infoDictionary2 = [mainBundle2 infoDictionary];
+  v7 = [infoDictionary2 objectForKey:*MEMORY[0x1E695E500]];
 
   v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@(%@)", v4, v7];
 
@@ -27,50 +27,50 @@
 
 - (id)_uniqueSystemIdentifier
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 identifierForVendor];
-  v4 = [v3 UUIDString];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  identifierForVendor = [currentDevice identifierForVendor];
+  uUIDString = [identifierForVendor UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
-- (void)removeFeedbackEntry:(id)a3
+- (void)removeFeedbackEntry:(id)entry
 {
-  if (a3)
+  if (entry)
   {
-    v4 = a3;
-    v5 = [(PXFeedbackCollector *)self feedbackStore];
-    [v5 removeFeedbackEntry:v4];
+    entryCopy = entry;
+    feedbackStore = [(PXFeedbackCollector *)self feedbackStore];
+    [feedbackStore removeFeedbackEntry:entryCopy];
   }
 }
 
-- (id)addFeedbackFromDictionary:(id)a3
+- (id)addFeedbackFromDictionary:(id)dictionary
 {
-  v4 = [(PXFeedbackCollector *)self feedbackEntryFromDictionary:a3];
+  v4 = [(PXFeedbackCollector *)self feedbackEntryFromDictionary:dictionary];
   if (v4)
   {
-    v5 = [(PXFeedbackCollector *)self feedbackStore];
-    [v5 addFeedbackEntry:v4];
+    feedbackStore = [(PXFeedbackCollector *)self feedbackStore];
+    [feedbackStore addFeedbackEntry:v4];
   }
 
   return v4;
 }
 
-- (void)addFeedbackEntry:(id)a3
+- (void)addFeedbackEntry:(id)entry
 {
-  if (a3)
+  if (entry)
   {
-    v4 = a3;
-    v5 = [(PXFeedbackCollector *)self feedbackStore];
-    [v5 addFeedbackEntry:v4];
+    entryCopy = entry;
+    feedbackStore = [(PXFeedbackCollector *)self feedbackStore];
+    [feedbackStore addFeedbackEntry:entryCopy];
   }
 }
 
-- (id)feedbackEntryFromDictionary:(id)a3
+- (id)feedbackEntryFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_opt_new();
-  v6 = [v4 objectForKey:kPXFeedbackUserLikedCollectionKey];
+  v6 = [dictionaryCopy objectForKey:kPXFeedbackUserLikedCollectionKey];
   if (v6)
   {
 
@@ -79,14 +79,14 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v7 = [v4 objectForKey:kPXFeedbackUserLikedMemoriesKey];
+  v7 = [dictionaryCopy objectForKey:kPXFeedbackUserLikedMemoriesKey];
 
   if (v7)
   {
     goto LABEL_4;
   }
 
-  v14 = [v4 objectForKey:kPXFeedbackUserDislikedCollectionKey];
+  v14 = [dictionaryCopy objectForKey:kPXFeedbackUserDislikedCollectionKey];
   if (v14)
   {
 
@@ -95,7 +95,7 @@ LABEL_17:
     goto LABEL_5;
   }
 
-  v15 = [v4 objectForKey:kPXFeedbackUserDislikedMemoriesKey];
+  v15 = [dictionaryCopy objectForKey:kPXFeedbackUserDislikedMemoriesKey];
 
   if (v15)
   {
@@ -104,31 +104,31 @@ LABEL_17:
 
   v8 = 3;
 LABEL_5:
-  v9 = [v4 objectForKey:kPXFeedbackEntrySystemIDKey];
-  if (!v9)
+  _uniqueSystemIdentifier = [dictionaryCopy objectForKey:kPXFeedbackEntrySystemIDKey];
+  if (!_uniqueSystemIdentifier)
   {
-    v9 = [(PXFeedbackCollector *)self _uniqueSystemIdentifier];
+    _uniqueSystemIdentifier = [(PXFeedbackCollector *)self _uniqueSystemIdentifier];
   }
 
-  [v5 setSystemID:v9];
-  v10 = [v4 objectForKey:kPXFeedbackEntryTimestampKey];
-  if (!v10)
+  [v5 setSystemID:_uniqueSystemIdentifier];
+  date = [dictionaryCopy objectForKey:kPXFeedbackEntryTimestampKey];
+  if (!date)
   {
-    v10 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
   }
 
-  [v5 setTimestamp:v10];
-  v11 = [v4 objectForKey:kPXFeedbackEntryAppVersionKey];
-  if (!v11)
+  [v5 setTimestamp:date];
+  _appVersion = [dictionaryCopy objectForKey:kPXFeedbackEntryAppVersionKey];
+  if (!_appVersion)
   {
-    v11 = [(PXFeedbackCollector *)self _appVersion];
+    _appVersion = [(PXFeedbackCollector *)self _appVersion];
   }
 
-  [v5 setAppVersion:v11];
+  [v5 setAppVersion:_appVersion];
   [v5 setAlreadyCollected:0];
   [v5 setGeneralFeedback:v8];
-  v12 = [v5 feedbackItemsDict];
-  [v12 addEntriesFromDictionary:v4];
+  feedbackItemsDict = [v5 feedbackItemsDict];
+  [feedbackItemsDict addEntriesFromDictionary:dictionaryCopy];
 
   return v5;
 }

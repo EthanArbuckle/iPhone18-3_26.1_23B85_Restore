@@ -1,27 +1,27 @@
 @interface ICSearchResult
-+ (BOOL)canFitAttributedString:(id)a3 ellipses:(id)a4 shouldPrefixWithEllipses:(BOOL)a5 insideFrame:(CGRect)a6 centered:(BOOL)a7;
-+ (CGRect)boundingRectForAttributedString:(id)a3 fittingSize:(CGSize)a4;
-+ (id)attributedStringWithMatchHighlighted:(id)a3 optionalAttributedHighlightedString:(id)a4 textCheckingResult:(id)a5 usingAttributes:(id)a6 highlightColor:(id)a7 insideFrame:(CGRect)a8 isSnippetForParticipantMatch:(BOOL)a9 finishingUpRegexMatchFinder:(id)a10;
-+ (id)attributesByHighlightingAttributes:(id)a3 withHighlightColor:(id)a4;
-+ (id)authorNameToHighlightForNote:(id)a3 fromSearchResult:(id)a4 textCheckingResult:(id *)a5;
-+ (id)finishUpHighlightingWithMatchFinder:(id)a3 forAttributedString:(id)a4 inRange:(_NSRange)a5 highlightedAttributes:(id)a6;
-+ (id)firstTextCheckingResultOfRegex:(id)a3 inDocumentText:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)canFitAttributedString:(id)string ellipses:(id)ellipses shouldPrefixWithEllipses:(BOOL)withEllipses insideFrame:(CGRect)frame centered:(BOOL)centered;
++ (CGRect)boundingRectForAttributedString:(id)string fittingSize:(CGSize)size;
++ (id)attributedStringWithMatchHighlighted:(id)highlighted optionalAttributedHighlightedString:(id)string textCheckingResult:(id)result usingAttributes:(id)attributes highlightColor:(id)color insideFrame:(CGRect)frame isSnippetForParticipantMatch:(BOOL)match finishingUpRegexMatchFinder:(id)self0;
++ (id)attributesByHighlightingAttributes:(id)attributes withHighlightColor:(id)color;
++ (id)authorNameToHighlightForNote:(id)note fromSearchResult:(id)result textCheckingResult:(id *)checkingResult;
++ (id)finishUpHighlightingWithMatchFinder:(id)finder forAttributedString:(id)string inRange:(_NSRange)range highlightedAttributes:(id)attributes;
++ (id)firstTextCheckingResultOfRegex:(id)regex inDocumentText:(id)text;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)snippetAttributedStringInsideFrame;
 - (CGRect)titleAttributedStringInsideFrame;
-- (ICSearchResult)initWithMainContextObject:(id)a3 currentContextObject:(id)a4 configuration:(id)a5;
-- (ICSearchResult)initWithObject:(id)a3 configuration:(id)a4;
+- (ICSearchResult)initWithMainContextObject:(id)object currentContextObject:(id)contextObject configuration:(id)configuration;
+- (ICSearchResult)initWithObject:(id)object configuration:(id)configuration;
 - (NSDictionary)decomposedHighlightInfo;
 - (NSString)description;
-- (id)attributedSummaryWithBaseAttributes:(id)a3 highlightColor:(id)a4 insideFrame:(CGRect)a5;
-- (id)attributedTitleWithBaseAttributes:(id)a3 highlightColor:(id)a4 insideFrame:(CGRect)a5;
-- (id)snippetWithBaseAttributes:(id)a3 highlightColor:(id)a4 insideFrame:(CGRect)a5;
-- (int64_t)compareByModificationDate:(id)a3;
+- (id)attributedSummaryWithBaseAttributes:(id)attributes highlightColor:(id)color insideFrame:(CGRect)frame;
+- (id)attributedTitleWithBaseAttributes:(id)attributes highlightColor:(id)color insideFrame:(CGRect)frame;
+- (id)snippetWithBaseAttributes:(id)attributes highlightColor:(id)color insideFrame:(CGRect)frame;
+- (int64_t)compareByModificationDate:(id)date;
 - (void)initializeRegexes;
-- (void)prepareDisplayingSnippetWithAccessingObject:(id)a3;
-- (void)prepareDisplayingTitleWithAccessingObject:(id)a3;
-- (void)prepareFirstMatchingRangeWithAccessingObject:(id)a3;
-- (void)refetchObjectFromContext:(id)a3;
+- (void)prepareDisplayingSnippetWithAccessingObject:(id)object;
+- (void)prepareDisplayingTitleWithAccessingObject:(id)object;
+- (void)prepareFirstMatchingRangeWithAccessingObject:(id)object;
+- (void)refetchObjectFromContext:(id)context;
 - (void)refreshDisplaySnippet;
 - (void)refreshDisplayTitle;
 - (void)refreshFirstMatchingRange;
@@ -29,27 +29,27 @@
 
 @implementation ICSearchResult
 
-- (ICSearchResult)initWithObject:(id)a3 configuration:(id)a4
+- (ICSearchResult)initWithObject:(id)object configuration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  configurationCopy = configuration;
   v31.receiver = self;
   v31.super_class = ICSearchResult;
   v9 = [(ICSearchResult *)&v31 init];
   if (v9)
   {
-    if (!v7)
+    if (!objectCopy)
     {
       [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"object" functionName:"-[ICSearchResult initWithObject:configuration:]" simulateCrash:1 showAlert:0 format:@"object is nil"];
     }
 
-    v10 = [v7 managedObjectContext];
-    v11 = [v10 ic_isMainThreadContext];
+    managedObjectContext = [objectCopy managedObjectContext];
+    ic_isMainThreadContext = [managedObjectContext ic_isMainThreadContext];
 
-    if (v11)
+    if (ic_isMainThreadContext)
     {
-      objc_storeStrong(&v9->_object, a3);
-      objc_storeStrong(&v9->_currentContextObject, a3);
+      objc_storeStrong(&v9->_object, object);
+      objc_storeStrong(&v9->_currentContextObject, object);
     }
 
     else
@@ -60,47 +60,47 @@
       v28 = __Block_byref_object_copy__57;
       v29 = __Block_byref_object_dispose__57;
       v30 = 0;
-      v12 = [v7 managedObjectContext];
+      managedObjectContext2 = [objectCopy managedObjectContext];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __47__ICSearchResult_initWithObject_configuration___block_invoke;
       v22[3] = &unk_1E8468FA8;
       v24 = &v25;
-      v23 = v7;
-      [v12 performBlockAndWait:v22];
+      v23 = objectCopy;
+      [managedObjectContext2 performBlockAndWait:v22];
 
       if (v26[5])
       {
-        v13 = [MEMORY[0x1E69B7AA8] sharedIndexer];
-        v14 = [v13 mainContextObjectForObjectIDURIString:v26[5]];
+        mEMORY[0x1E69B7AA8] = [MEMORY[0x1E69B7AA8] sharedIndexer];
+        v14 = [mEMORY[0x1E69B7AA8] mainContextObjectForObjectIDURIString:v26[5]];
         object = v9->_object;
         v9->_object = v14;
       }
 
       else
       {
-        v13 = os_log_create("com.apple.notes", "UI");
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+        mEMORY[0x1E69B7AA8] = os_log_create("com.apple.notes", "UI");
+        if (os_log_type_enabled(mEMORY[0x1E69B7AA8], OS_LOG_TYPE_ERROR))
         {
-          [ICSearchResult initWithObject:v13 configuration:?];
+          [ICSearchResult initWithObject:mEMORY[0x1E69B7AA8] configuration:?];
         }
       }
 
       _Block_object_dispose(&v25, 8);
     }
 
-    objc_storeStrong(&v9->_configuration, a4);
+    objc_storeStrong(&v9->_configuration, configuration);
     v16 = [(ICSearchIndexable *)v9->_object hash];
-    v9->_cachedHash = [v8 hash] + v16;
+    v9->_cachedHash = [configurationCopy hash] + v16;
     [(ICSearchResult *)v9 initializeRegexes];
-    v17 = [v7 managedObjectContext];
+    managedObjectContext3 = [objectCopy managedObjectContext];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __47__ICSearchResult_initWithObject_configuration___block_invoke_15;
     v19[3] = &unk_1E8468F80;
     v20 = v9;
-    v21 = v7;
-    [v17 performBlockAndWait:v19];
+    v21 = objectCopy;
+    [managedObjectContext3 performBlockAndWait:v19];
   }
 
   return v9;
@@ -124,35 +124,35 @@ uint64_t __47__ICSearchResult_initWithObject_configuration___block_invoke_15(uin
   return [v2 prepareFirstMatchingRangeWithAccessingObject:v3];
 }
 
-- (ICSearchResult)initWithMainContextObject:(id)a3 currentContextObject:(id)a4 configuration:(id)a5
+- (ICSearchResult)initWithMainContextObject:(id)object currentContextObject:(id)contextObject configuration:(id)configuration
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  objectCopy = object;
+  contextObjectCopy = contextObject;
+  configurationCopy = configuration;
   v19.receiver = self;
   v19.super_class = ICSearchResult;
   v12 = [(ICSearchResult *)&v19 init];
   if (v12)
   {
-    if (v9)
+    if (objectCopy)
     {
-      if (v10)
+      if (contextObjectCopy)
       {
 LABEL_4:
-        objc_storeStrong(&v12->_object, a3);
-        objc_storeStrong(&v12->_currentContextObject, a4);
-        objc_storeStrong(&v12->_configuration, a5);
-        v13 = [v9 hash];
-        v12->_cachedHash = [v11 hash] + v13;
+        objc_storeStrong(&v12->_object, object);
+        objc_storeStrong(&v12->_currentContextObject, contextObject);
+        objc_storeStrong(&v12->_configuration, configuration);
+        v13 = [objectCopy hash];
+        v12->_cachedHash = [configurationCopy hash] + v13;
         [(ICSearchResult *)v12 initializeRegexes];
-        v14 = [v10 managedObjectContext];
+        managedObjectContext = [contextObjectCopy managedObjectContext];
         v16[0] = MEMORY[0x1E69E9820];
         v16[1] = 3221225472;
         v16[2] = __79__ICSearchResult_initWithMainContextObject_currentContextObject_configuration___block_invoke;
         v16[3] = &unk_1E8468F80;
         v17 = v12;
-        v18 = v10;
-        [v14 performBlockAndWait:v16];
+        v18 = contextObjectCopy;
+        [managedObjectContext performBlockAndWait:v16];
 
         goto LABEL_5;
       }
@@ -161,7 +161,7 @@ LABEL_4:
     else
     {
       [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"mainContextObject" functionName:"-[ICSearchResult initWithMainContextObject:currentContextObject:configuration:]" simulateCrash:1 showAlert:0 format:@"mainContextObject is nil"];
-      if (v10)
+      if (contextObjectCopy)
       {
         goto LABEL_4;
       }
@@ -189,41 +189,41 @@ uint64_t __79__ICSearchResult_initWithMainContextObject_currentContextObject_con
 - (void)initializeRegexes
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  v3 = [(ICSearchResult *)self decomposedHighlightInfo];
-  v4 = [v3 objectForKeyedSubscript:&unk_1F4FC4008];
+  decomposedHighlightInfo = [(ICSearchResult *)self decomposedHighlightInfo];
+  v4 = [decomposedHighlightInfo objectForKeyedSubscript:&unk_1F4FC4008];
   if (v4)
   {
     v5 = [ICSearchResultRegexMatchFinder alloc];
     v6 = [v4 objectForKeyedSubscript:&unk_1F4FC4020];
     v7 = [v4 objectForKeyedSubscript:&unk_1F4FC4038];
-    v8 = [(ICSearchResult *)self configuration];
-    v9 = [v8 searchString];
-    v10 = [(ICSearchResultRegexMatchFinder *)v5 initWithPrefixMatchingTokens:v6 substringMatchingTokens:v7 searchString:v9];
+    configuration = [(ICSearchResult *)self configuration];
+    searchString = [configuration searchString];
+    v10 = [(ICSearchResultRegexMatchFinder *)v5 initWithPrefixMatchingTokens:v6 substringMatchingTokens:v7 searchString:searchString];
     [(ICSearchResult *)self setTitleHighlightRegexMatchFinder:v10];
   }
 
-  v11 = [v3 objectForKeyedSubscript:&unk_1F4FC4050];
+  v11 = [decomposedHighlightInfo objectForKeyedSubscript:&unk_1F4FC4050];
   if (v11)
   {
     v12 = [ICSearchResultRegexMatchFinder alloc];
     v13 = [v11 objectForKeyedSubscript:&unk_1F4FC4020];
     v14 = [v11 objectForKeyedSubscript:&unk_1F4FC4038];
-    v15 = [(ICSearchResult *)self configuration];
-    v16 = [v15 searchString];
-    v17 = [(ICSearchResultRegexMatchFinder *)v12 initWithPrefixMatchingTokens:v13 substringMatchingTokens:v14 searchString:v16];
+    configuration2 = [(ICSearchResult *)self configuration];
+    searchString2 = [configuration2 searchString];
+    v17 = [(ICSearchResultRegexMatchFinder *)v12 initWithPrefixMatchingTokens:v13 substringMatchingTokens:v14 searchString:searchString2];
     [(ICSearchResult *)self setParticipantHighlightRegexMatchFinder:v17];
   }
 
-  v37 = v3;
-  v18 = [v3 objectForKeyedSubscript:&unk_1F4FC4068];
+  v37 = decomposedHighlightInfo;
+  v18 = [decomposedHighlightInfo objectForKeyedSubscript:&unk_1F4FC4068];
   if (v18)
   {
     v19 = [ICSearchResultRegexMatchFinder alloc];
     v20 = [v18 objectForKeyedSubscript:&unk_1F4FC4020];
     v21 = [v18 objectForKeyedSubscript:&unk_1F4FC4038];
-    v22 = [(ICSearchResult *)self configuration];
-    v23 = [v22 searchString];
-    v24 = [(ICSearchResultRegexMatchFinder *)v19 initWithPrefixMatchingTokens:v20 substringMatchingTokens:v21 searchString:v23];
+    configuration3 = [(ICSearchResult *)self configuration];
+    searchString3 = [configuration3 searchString];
+    v24 = [(ICSearchResultRegexMatchFinder *)v19 initWithPrefixMatchingTokens:v20 substringMatchingTokens:v21 searchString:searchString3];
     [(ICSearchResult *)self setSnippetHighlightRegexMatchFinder:v24];
   }
 
@@ -231,15 +231,15 @@ uint64_t __79__ICSearchResult_initWithMainContextObject_currentContextObject_con
   v26 = [ICSearchResultRegexMatchFinder alloc];
   v27 = [v25 objectForKeyedSubscript:&unk_1F4FC4020];
   v28 = [v25 objectForKeyedSubscript:&unk_1F4FC4038];
-  v29 = [(ICSearchResult *)self configuration];
-  v30 = [v29 searchString];
-  v31 = [(ICSearchResultRegexMatchFinder *)v26 initWithPrefixMatchingTokens:v27 substringMatchingTokens:v28 searchString:v30];
+  configuration4 = [(ICSearchResult *)self configuration];
+  searchString4 = [configuration4 searchString];
+  v31 = [(ICSearchResultRegexMatchFinder *)v26 initWithPrefixMatchingTokens:v27 substringMatchingTokens:v28 searchString:searchString4];
   [(ICSearchResult *)self setHighlightPatternRegexFinder:v31];
 
   v32 = MEMORY[0x1E696AE70];
-  v33 = [(ICSearchResult *)self configuration];
-  v34 = [v33 searchString];
-  v38[0] = v34;
+  configuration5 = [(ICSearchResult *)self configuration];
+  searchString5 = [configuration5 searchString];
+  v38[0] = searchString5;
   v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:1];
   v36 = [v32 ic_regexForSearchStrings:v35];
   [(ICSearchResult *)self setTipKitCheckRegex:v36];
@@ -251,10 +251,10 @@ uint64_t __79__ICSearchResult_initWithMainContextObject_currentContextObject_con
   if (!decomposedHighlightInfo)
   {
     v4 = MEMORY[0x1E695DF20];
-    v5 = [(ICSearchResult *)self configuration];
-    v6 = [v5 sortableSearchableItem];
-    v7 = [v6 highlightInfo];
-    v8 = [v4 decomposedHighlightInfo:v7];
+    configuration = [(ICSearchResult *)self configuration];
+    sortableSearchableItem = [configuration sortableSearchableItem];
+    highlightInfo = [sortableSearchableItem highlightInfo];
+    v8 = [v4 decomposedHighlightInfo:highlightInfo];
     v9 = self->_decomposedHighlightInfo;
     self->_decomposedHighlightInfo = v8;
 
@@ -266,14 +266,14 @@ uint64_t __79__ICSearchResult_initWithMainContextObject_currentContextObject_con
 
 - (void)refreshDisplayTitle
 {
-  v3 = [(ICSearchResult *)self object];
-  v4 = [v3 managedObjectContext];
+  object = [(ICSearchResult *)self object];
+  managedObjectContext = [object managedObjectContext];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __37__ICSearchResult_refreshDisplayTitle__block_invoke;
   v5[3] = &unk_1E8468BA0;
   v5[4] = self;
-  [v4 performBlockAndWait:v5];
+  [managedObjectContext performBlockAndWait:v5];
 }
 
 void __37__ICSearchResult_refreshDisplayTitle__block_invoke(uint64_t a1)
@@ -285,14 +285,14 @@ void __37__ICSearchResult_refreshDisplayTitle__block_invoke(uint64_t a1)
 
 - (void)refreshDisplaySnippet
 {
-  v3 = [(ICSearchResult *)self object];
-  v4 = [v3 managedObjectContext];
+  object = [(ICSearchResult *)self object];
+  managedObjectContext = [object managedObjectContext];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __39__ICSearchResult_refreshDisplaySnippet__block_invoke;
   v5[3] = &unk_1E8468BA0;
   v5[4] = self;
-  [v4 performBlockAndWait:v5];
+  [managedObjectContext performBlockAndWait:v5];
 }
 
 void __39__ICSearchResult_refreshDisplaySnippet__block_invoke(uint64_t a1)
@@ -304,14 +304,14 @@ void __39__ICSearchResult_refreshDisplaySnippet__block_invoke(uint64_t a1)
 
 - (void)refreshFirstMatchingRange
 {
-  v3 = [(ICSearchResult *)self object];
-  v4 = [v3 managedObjectContext];
+  object = [(ICSearchResult *)self object];
+  managedObjectContext = [object managedObjectContext];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __43__ICSearchResult_refreshFirstMatchingRange__block_invoke;
   v5[3] = &unk_1E8468BA0;
   v5[4] = self;
-  [v4 performBlockAndWait:v5];
+  [managedObjectContext performBlockAndWait:v5];
 }
 
 void __43__ICSearchResult_refreshFirstMatchingRange__block_invoke(uint64_t a1)
@@ -321,15 +321,15 @@ void __43__ICSearchResult_refreshFirstMatchingRange__block_invoke(uint64_t a1)
   [v1 prepareFirstMatchingRangeWithAccessingObject:v2];
 }
 
-- (void)prepareDisplayingTitleWithAccessingObject:(id)a3
+- (void)prepareDisplayingTitleWithAccessingObject:(id)object
 {
-  v15 = a3;
+  objectCopy = object;
   [(ICSearchResult *)self setTitleAttributedStringInsideFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   [(ICSearchResult *)self setDisplayingTitle:0];
   [(ICSearchResult *)self setDisplayingTitleCheckingResult:0];
   if (objc_opt_respondsToSelector())
   {
-    v4 = v15;
+    v4 = objectCopy;
   }
 
   else
@@ -351,38 +351,38 @@ void __43__ICSearchResult_refreshFirstMatchingRange__block_invoke(uint64_t a1)
     [v6 title];
   }
   v8 = ;
-  v9 = [v8 ic_whitespaceAndNewlineCoalescedString];
+  ic_whitespaceAndNewlineCoalescedString = [v8 ic_whitespaceAndNewlineCoalescedString];
 
-  if (v9)
+  if (ic_whitespaceAndNewlineCoalescedString)
   {
-    [(ICSearchResult *)self setDisplayingTitle:v9];
-    v10 = [(ICSearchResult *)self titleHighlightRegexMatchFinder];
-    v11 = [(ICSearchResult *)self displayingTitle];
-    v12 = [v10 firstMatchInDocumentWithGlobalFallback:v11];
+    [(ICSearchResult *)self setDisplayingTitle:ic_whitespaceAndNewlineCoalescedString];
+    titleHighlightRegexMatchFinder = [(ICSearchResult *)self titleHighlightRegexMatchFinder];
+    displayingTitle = [(ICSearchResult *)self displayingTitle];
+    v12 = [titleHighlightRegexMatchFinder firstMatchInDocumentWithGlobalFallback:displayingTitle];
     [(ICSearchResult *)self setDisplayingTitleCheckingResult:v12];
   }
 
   if (v5)
   {
-    v13 = [v5 trimmedAttributedTitle];
-    if (v13)
+    trimmedAttributedTitle = [v5 trimmedAttributedTitle];
+    if (trimmedAttributedTitle)
     {
-      v14 = v13;
-      [(ICSearchResult *)self setDisplayingAttributedTitle:v13];
+      v14 = trimmedAttributedTitle;
+      [(ICSearchResult *)self setDisplayingAttributedTitle:trimmedAttributedTitle];
     }
   }
 }
 
-- (void)prepareDisplayingSnippetWithAccessingObject:(id)a3
+- (void)prepareDisplayingSnippetWithAccessingObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   [(ICSearchResult *)self setSnippetAttributedStringInsideFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   [(ICSearchResult *)self setDisplayingSnippet:0];
   [(ICSearchResult *)self setDisplayingSnippetCheckingResult:0];
   [(ICSearchResult *)self setIsDisplayingParticipantMatch:0];
   if (objc_opt_respondsToSelector())
   {
-    v5 = v4;
+    v5 = objectCopy;
   }
 
   else
@@ -397,17 +397,17 @@ void __43__ICSearchResult_refreshFirstMatchingRange__block_invoke(uint64_t a1)
     if ([v6 isPasswordProtected])
     {
       objc_opt_class();
-      v8 = ICDynamicCast();
-      v9 = [MEMORY[0x1E69B77F0] snippetForPasswordProtectedNote:v8];
-      [(ICSearchResult *)self setDisplayingSnippet:v9];
+      snippetHighlightRegexMatchFinder = ICDynamicCast();
+      displayingSnippet3 = [MEMORY[0x1E69B77F0] snippetForPasswordProtectedNote:snippetHighlightRegexMatchFinder];
+      [(ICSearchResult *)self setDisplayingSnippet:displayingSnippet3];
 LABEL_16:
 
       goto LABEL_17;
     }
 
-    v10 = [(ICSearchResult *)self participantHighlightRegexMatchFinder];
+    participantHighlightRegexMatchFinder = [(ICSearchResult *)self participantHighlightRegexMatchFinder];
 
-    if (v10)
+    if (participantHighlightRegexMatchFinder)
     {
       v35 = 0;
       v11 = [ICSearchResult authorNameToHighlightForNote:v7 fromSearchResult:self textCheckingResult:&v35];
@@ -419,13 +419,13 @@ LABEL_16:
         v15 = [v13 localizedStringWithFormat:v14, v11];
         [(ICSearchResult *)self setDisplayingSnippet:v15];
 
-        v16 = [(ICSearchResult *)self displayingSnippet];
-        v17 = [v16 rangeOfString:v11];
+        displayingSnippet = [(ICSearchResult *)self displayingSnippet];
+        v17 = [displayingSnippet rangeOfString:v11];
 
         v18 = [ICSearchTextCheckingResult alloc];
-        v19 = [v12 range];
+        range = [v12 range];
         [v12 range];
-        v21 = [(ICSearchTextCheckingResult *)v18 initWithRange:v19 + v17, v20];
+        v21 = [(ICSearchTextCheckingResult *)v18 initWithRange:range + v17, v20];
 
         [(ICSearchResult *)self setDisplayingSnippetCheckingResult:v21];
         [(ICSearchResult *)self setIsDisplayingParticipantMatch:1];
@@ -433,29 +433,29 @@ LABEL_16:
       }
     }
 
-    v22 = [(ICSearchResult *)self displayingSnippet];
-    if (!v22 || (v23 = v22, [(ICSearchResult *)self displayingSnippetCheckingResult], v24 = objc_claimAutoreleasedReturnValue(), v24, v23, !v24))
+    displayingSnippet2 = [(ICSearchResult *)self displayingSnippet];
+    if (!displayingSnippet2 || (v23 = displayingSnippet2, [(ICSearchResult *)self displayingSnippetCheckingResult], v24 = objc_claimAutoreleasedReturnValue(), v24, v23, !v24))
     {
-      v25 = [v7 noteAsPlainTextWithoutTitle];
-      v26 = [v25 ic_whitespaceAndNewlineCoalescedString];
-      [(ICSearchResult *)self setDisplayingSnippet:v26];
+      noteAsPlainTextWithoutTitle = [v7 noteAsPlainTextWithoutTitle];
+      ic_whitespaceAndNewlineCoalescedString = [noteAsPlainTextWithoutTitle ic_whitespaceAndNewlineCoalescedString];
+      [(ICSearchResult *)self setDisplayingSnippet:ic_whitespaceAndNewlineCoalescedString];
 
-      v27 = [v7 noteWithoutTitle];
+      noteWithoutTitle = [v7 noteWithoutTitle];
       v28 = *MEMORY[0x1E69DB5F0];
-      v29 = [v7 noteWithoutTitle];
-      v30 = [v29 ic_range];
-      LODWORD(v28) = [v27 ic_containsAttribute:v28 inRange:{v30, v31}];
+      noteWithoutTitle2 = [v7 noteWithoutTitle];
+      ic_range = [noteWithoutTitle2 ic_range];
+      LODWORD(v28) = [noteWithoutTitle ic_containsAttribute:v28 inRange:{ic_range, v31}];
 
       if (v28)
       {
-        v32 = [v7 noteWithoutTitle];
-        v33 = [v32 ic_whitespaceAndNewlineCoalescedAttributedString];
-        [(ICSearchResult *)self setDisplayingAttributedSnippet:v33];
+        noteWithoutTitle3 = [v7 noteWithoutTitle];
+        ic_whitespaceAndNewlineCoalescedAttributedString = [noteWithoutTitle3 ic_whitespaceAndNewlineCoalescedAttributedString];
+        [(ICSearchResult *)self setDisplayingAttributedSnippet:ic_whitespaceAndNewlineCoalescedAttributedString];
       }
 
-      v8 = [(ICSearchResult *)self snippetHighlightRegexMatchFinder];
-      v9 = [(ICSearchResult *)self displayingSnippet];
-      v34 = [v8 firstMatchInDocumentWithGlobalFallback:v9];
+      snippetHighlightRegexMatchFinder = [(ICSearchResult *)self snippetHighlightRegexMatchFinder];
+      displayingSnippet3 = [(ICSearchResult *)self displayingSnippet];
+      v34 = [snippetHighlightRegexMatchFinder firstMatchInDocumentWithGlobalFallback:displayingSnippet3];
       [(ICSearchResult *)self setDisplayingSnippetCheckingResult:v34];
 
       goto LABEL_16;
@@ -465,10 +465,10 @@ LABEL_16:
 LABEL_17:
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 isMemberOfClass:objc_opt_class()] && self->_object == *(v4 + 4) && -[ICSearchResultConfiguration isEqual:](self->_configuration, "isEqual:", *(v4 + 5));
+  equalCopy = equal;
+  v5 = [equalCopy isMemberOfClass:objc_opt_class()] && self->_object == *(equalCopy + 4) && -[ICSearchResultConfiguration isEqual:](self->_configuration, "isEqual:", *(equalCopy + 5));
 
   return v5;
 }
@@ -476,77 +476,77 @@ LABEL_17:
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(ICSearchResult *)self configuration];
-  v5 = [v4 searchString];
-  v6 = [v5 hash];
-  v7 = [(ICSearchResult *)self object];
-  v8 = [v7 searchIndexingIdentifier];
-  v9 = [v3 stringWithFormat:@"(searchStringHash = %lu) %@", v6, v8];
+  configuration = [(ICSearchResult *)self configuration];
+  searchString = [configuration searchString];
+  v6 = [searchString hash];
+  object = [(ICSearchResult *)self object];
+  searchIndexingIdentifier = [object searchIndexingIdentifier];
+  v9 = [v3 stringWithFormat:@"(searchStringHash = %lu) %@", v6, searchIndexingIdentifier];
 
   return v9;
 }
 
-- (int64_t)compareByModificationDate:(id)a3
+- (int64_t)compareByModificationDate:(id)date
 {
-  v4 = a3;
-  v5 = [(ICSearchResult *)self object];
-  v6 = [v5 modificationDate];
-  v7 = [v4 object];
+  dateCopy = date;
+  object = [(ICSearchResult *)self object];
+  modificationDate = [object modificationDate];
+  object2 = [dateCopy object];
 
-  v8 = [v7 modificationDate];
-  v9 = [v6 compare:v8];
+  modificationDate2 = [object2 modificationDate];
+  v9 = [modificationDate compare:modificationDate2];
 
   return v9;
 }
 
-- (void)refetchObjectFromContext:(id)a3
+- (void)refetchObjectFromContext:(id)context
 {
-  v8 = a3;
-  if (v8)
+  contextCopy = context;
+  if (contextCopy)
   {
-    v4 = [(ICSearchIndexable *)self->_object objectID];
+    objectID = [(ICSearchIndexable *)self->_object objectID];
 
-    if (v4)
+    if (objectID)
     {
-      v5 = [(ICSearchIndexable *)self->_object objectID];
-      v6 = [v8 existingObjectWithID:v5 error:0];
+      objectID2 = [(ICSearchIndexable *)self->_object objectID];
+      v6 = [contextCopy existingObjectWithID:objectID2 error:0];
       object = self->_object;
       self->_object = v6;
     }
   }
 }
 
-- (id)attributedSummaryWithBaseAttributes:(id)a3 highlightColor:(id)a4 insideFrame:(CGRect)a5
+- (id)attributedSummaryWithBaseAttributes:(id)attributes highlightColor:(id)color insideFrame:(CGRect)frame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a3;
-  v12 = a4;
-  v13 = [(ICSearchResult *)self configuration];
-  v14 = [v13 foundAttachmentObjectID];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  attributesCopy = attributes;
+  colorCopy = color;
+  configuration = [(ICSearchResult *)self configuration];
+  foundAttachmentObjectID = [configuration foundAttachmentObjectID];
 
-  if (v14)
+  if (foundAttachmentObjectID)
   {
     v15 = __ICLocalizedFrameworkString_impl(@"Found in attachments", @"Found in attachments", 0, 1);
-    v16 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v15];
+    height = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v15];
   }
 
   else
   {
-    v16 = [(ICSearchResult *)self snippetWithBaseAttributes:v11 highlightColor:v12 insideFrame:x, y, width, height];
+    height = [(ICSearchResult *)self snippetWithBaseAttributes:attributesCopy highlightColor:colorCopy insideFrame:x, y, width, height];
   }
 
-  return v16;
+  return height;
 }
 
-- (void)prepareFirstMatchingRangeWithAccessingObject:(id)a3
+- (void)prepareFirstMatchingRangeWithAccessingObject:(id)object
 {
-  v28 = a3;
+  objectCopy = object;
   [(ICSearchResult *)self setFirstMatchingRangeInNote:0];
-  v4 = [v28 searchResultType];
-  if (v4 == 1)
+  searchResultType = [objectCopy searchResultType];
+  if (searchResultType == 1)
   {
     objc_opt_class();
     v17 = ICDynamicCast();
@@ -556,21 +556,21 @@ LABEL_17:
       goto LABEL_20;
     }
 
-    v18 = [v17 rangeInNote];
-    if (v18 == 0x7FFFFFFFFFFFFFFFLL)
+    rangeInNote = [v17 rangeInNote];
+    if (rangeInNote == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_20;
     }
 
-    v7 = [MEMORY[0x1E696B098] valueWithRange:{v18, v19}];
-    v20 = self;
+    v7 = [MEMORY[0x1E696B098] valueWithRange:{rangeInNote, v19}];
+    selfCopy2 = self;
     v21 = v7;
 LABEL_10:
-    [(ICSearchResult *)v20 setFirstMatchingRangeInNote:v21];
+    [(ICSearchResult *)selfCopy2 setFirstMatchingRangeInNote:v21];
     goto LABEL_19;
   }
 
-  if (v4)
+  if (searchResultType)
   {
     goto LABEL_21;
   }
@@ -582,15 +582,15 @@ LABEL_10:
   v7 = v6;
   if (v5)
   {
-    v8 = [v5 searchableString];
-    v9 = [(ICSearchResult *)self highlightPatternRegexFinder];
-    v10 = [v8 string];
-    v11 = [v9 firstMatchInDocumentWithGlobalFallback:v10];
+    searchableString = [v5 searchableString];
+    highlightPatternRegexFinder = [(ICSearchResult *)self highlightPatternRegexFinder];
+    string = [searchableString string];
+    v11 = [highlightPatternRegexFinder firstMatchInDocumentWithGlobalFallback:string];
 
     if (v11)
     {
-      v12 = [v11 range];
-      v14 = [v5 textRangeForSearchRange:v12 inSearchableString:{v13, v8}];
+      range = [v11 range];
+      v14 = [v5 textRangeForSearchRange:range inSearchableString:{v13, searchableString}];
       if (v14 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v16 = 0;
@@ -609,30 +609,30 @@ LABEL_10:
 
   if (v6)
   {
-    v22 = [(ICSearchResult *)self displayingSnippetCheckingResult];
-    if (v22)
+    displayingSnippetCheckingResult = [(ICSearchResult *)self displayingSnippetCheckingResult];
+    if (displayingSnippetCheckingResult)
     {
-      v8 = v22;
+      searchableString = displayingSnippetCheckingResult;
 LABEL_17:
       v25 = MEMORY[0x1E696B098];
-      v26 = [v8 range];
-      v11 = [v25 valueWithRange:{v26, v27}];
+      range2 = [searchableString range];
+      v11 = [v25 valueWithRange:{range2, v27}];
       [(ICSearchResult *)self setFirstMatchingRangeInNote:v11];
 LABEL_18:
 
       goto LABEL_19;
     }
 
-    v23 = [v7 contentAsPlainTextPreservingNewlines];
-    v24 = [(ICSearchResult *)self highlightPatternRegexFinder];
-    v8 = [v24 firstMatchInDocumentWithGlobalFallback:v23];
+    contentAsPlainTextPreservingNewlines = [v7 contentAsPlainTextPreservingNewlines];
+    highlightPatternRegexFinder2 = [(ICSearchResult *)self highlightPatternRegexFinder];
+    searchableString = [highlightPatternRegexFinder2 firstMatchInDocumentWithGlobalFallback:contentAsPlainTextPreservingNewlines];
 
-    if (v8)
+    if (searchableString)
     {
       goto LABEL_17;
     }
 
-    v20 = self;
+    selfCopy2 = self;
     v21 = 0;
     goto LABEL_10;
   }
@@ -643,9 +643,9 @@ LABEL_20:
 LABEL_21:
 }
 
-+ (CGRect)boundingRectForAttributedString:(id)a3 fittingSize:(CGSize)a4
++ (CGRect)boundingRectForAttributedString:(id)string fittingSize:(CGSize)size
 {
-  [a3 boundingRectWithSize:3 options:0 context:{a4.width + a4.width, a4.height + a4.height}];
+  [string boundingRectWithSize:3 options:0 context:{size.width + size.width, size.height + size.height}];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -653,35 +653,35 @@ LABEL_21:
   return result;
 }
 
-+ (BOOL)canFitAttributedString:(id)a3 ellipses:(id)a4 shouldPrefixWithEllipses:(BOOL)a5 insideFrame:(CGRect)a6 centered:(BOOL)a7
++ (BOOL)canFitAttributedString:(id)string ellipses:(id)ellipses shouldPrefixWithEllipses:(BOOL)withEllipses insideFrame:(CGRect)frame centered:(BOOL)centered
 {
-  v7 = a7;
-  height = a6.size.height;
-  width = a6.size.width;
-  v10 = a5;
-  v13 = a3;
-  v14 = a4;
-  v15 = v13;
+  centeredCopy = centered;
+  height = frame.size.height;
+  width = frame.size.width;
+  withEllipsesCopy = withEllipses;
+  stringCopy = string;
+  ellipsesCopy = ellipses;
+  v15 = stringCopy;
   v16 = v15;
   v17 = v15;
-  if (v10)
+  if (withEllipsesCopy)
   {
     v18 = [v15 mutableCopy];
-    [v18 insertAttributedString:v14 atIndex:0];
+    [v18 insertAttributedString:ellipsesCopy atIndex:0];
     v17 = [v18 copy];
   }
 
-  [v14 size];
-  [a1 boundingRectForAttributedString:v14 fittingSize:width];
+  [ellipsesCopy size];
+  [self boundingRectForAttributedString:ellipsesCopy fittingSize:width];
   v20 = 1.0;
-  if (v7)
+  if (centeredCopy)
   {
     v20 = 0.5;
   }
 
   v21 = width * v20;
   v22 = fmax(height, ceil(v19));
-  [a1 boundingRectForAttributedString:v17 fittingSize:{v21, v22}];
+  [self boundingRectForAttributedString:v17 fittingSize:{v21, v22}];
   v30.origin.x = v23;
   v30.origin.y = v24;
   v30.size.width = v25;
@@ -695,67 +695,67 @@ LABEL_21:
   return v27;
 }
 
-+ (id)attributesByHighlightingAttributes:(id)a3 withHighlightColor:(id)a4
++ (id)attributesByHighlightingAttributes:(id)attributes withHighlightColor:(id)color
 {
-  v5 = a4;
-  if (v5)
+  colorCopy = color;
+  if (colorCopy)
   {
-    v6 = v5;
-    v7 = a3;
+    tintColor = colorCopy;
+    attributesCopy = attributes;
   }
 
   else
   {
     v8 = MEMORY[0x1E69DC888];
-    v9 = a3;
-    v6 = [v8 tintColor];
+    attributesCopy2 = attributes;
+    tintColor = [v8 tintColor];
   }
 
-  if (a3)
+  if (attributes)
   {
-    v10 = a3;
+    attributesCopy3 = attributes;
   }
 
   else
   {
-    v10 = MEMORY[0x1E695E0F8];
+    attributesCopy3 = MEMORY[0x1E695E0F8];
   }
 
-  v11 = [v10 mutableCopy];
+  v11 = [attributesCopy3 mutableCopy];
 
-  [v11 setObject:v6 forKeyedSubscript:*MEMORY[0x1E69DB650]];
+  [v11 setObject:tintColor forKeyedSubscript:*MEMORY[0x1E69DB650]];
   v12 = [v11 copy];
 
   return v12;
 }
 
-+ (id)attributedStringWithMatchHighlighted:(id)a3 optionalAttributedHighlightedString:(id)a4 textCheckingResult:(id)a5 usingAttributes:(id)a6 highlightColor:(id)a7 insideFrame:(CGRect)a8 isSnippetForParticipantMatch:(BOOL)a9 finishingUpRegexMatchFinder:(id)a10
++ (id)attributedStringWithMatchHighlighted:(id)highlighted optionalAttributedHighlightedString:(id)string textCheckingResult:(id)result usingAttributes:(id)attributes highlightColor:(id)color insideFrame:(CGRect)frame isSnippetForParticipantMatch:(BOOL)match finishingUpRegexMatchFinder:(id)self0
 {
-  height = a8.size.height;
-  width = a8.size.width;
-  y = a8.origin.y;
-  x = a8.origin.x;
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a6;
-  v23 = a7;
-  v24 = v19;
-  v79 = a10;
-  if (v19)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  highlightedCopy = highlighted;
+  stringCopy = string;
+  resultCopy = result;
+  attributesCopy = attributes;
+  colorCopy = color;
+  v24 = highlightedCopy;
+  finderCopy = finder;
+  if (highlightedCopy)
   {
-    if (v20)
+    if (stringCopy)
     {
-      v25 = [v19 length];
-      if (v25 != [v20 length])
+      v25 = [highlightedCopy length];
+      if (v25 != [stringCopy length])
       {
         [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"attributedHighlightedString == ((void*)0) || string == ((void*)0) || string.length == attributedHighlightedString.length" functionName:"+[ICSearchResult attributedStringWithMatchHighlighted:optionalAttributedHighlightedString:textCheckingResult:usingAttributes:highlightColor:insideFrame:isSnippetForParticipantMatch:finishingUpRegexMatchFinder:]" simulateCrash:1 showAlert:0 format:@"Unsupported use of method."];
       }
     }
   }
 
-  v77 = v22;
-  v26 = [v22 copy];
+  v77 = attributesCopy;
+  v26 = [attributesCopy copy];
   v27 = v26;
   v28 = MEMORY[0x1E695E0F8];
   if (v26)
@@ -765,25 +765,25 @@ LABEL_21:
 
   v29 = v28;
 
-  v76 = v23;
-  v30 = [a1 attributesByHighlightingAttributes:v29 withHighlightColor:v23];
+  v76 = colorCopy;
+  v30 = [self attributesByHighlightingAttributes:v29 withHighlightColor:colorCopy];
   v78 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@"…" attributes:v29];
   v31 = &off_1D4433000;
-  if (v21)
+  if (resultCopy)
   {
-    v32 = [v21 range];
-    v34 = [v19 paragraphRangeForRange:{v32, v33}];
+    range = [resultCopy range];
+    v34 = [highlightedCopy paragraphRangeForRange:{range, v33}];
     v36 = v35;
-    v37 = ([v21 range] - v34);
-    [v21 range];
+    v37 = ([resultCopy range] - v34);
+    [resultCopy range];
     v39 = v38;
     v73 = v24;
-    if (v20)
+    if (stringCopy)
     {
-      v40 = [v20 attributedSubstringFromRange:{v34, v36}];
+      v40 = [stringCopy attributedSubstringFromRange:{v34, v36}];
       v41 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:v40];
-      v42 = [v41 ic_range];
-      [v41 addAttributes:v29 range:{v42, v43}];
+      ic_range = [v41 ic_range];
+      [v41 addAttributes:v29 range:{ic_range, v43}];
     }
 
     else
@@ -820,7 +820,7 @@ LABEL_21:
       v90 = &v89;
       v91 = 0x2020000000;
       v92 = 0;
-      if (a9 || (v92 = v37, [v41 string], v48 = objc_claimAutoreleasedReturnValue(), v95[0] = MEMORY[0x1E69E9820], v95[1] = 3221225472, v95[2] = __210__ICSearchResult_attributedStringWithMatchHighlighted_optionalAttributedHighlightedString_textCheckingResult_usingAttributes_highlightColor_insideFrame_isSnippetForParticipantMatch_finishingUpRegexMatchFinder___block_invoke, v95[3] = &unk_1E846D6F8, v99 = v37, v100 = v39, v72 = v41, v96 = v72, v101 = a1, v49 = v78, v102 = x, v103 = y, v104 = width, v105 = height, v106 = a9, v97 = v49, v98 = &v89, objc_msgSend(v48, "enumerateSubstringsInRange:options:usingBlock:", 0, &v37[v39], 259, v95), v48, v97, v96, !v90[3]))
+      if (match || (v92 = v37, [v41 string], v48 = objc_claimAutoreleasedReturnValue(), v95[0] = MEMORY[0x1E69E9820], v95[1] = 3221225472, v95[2] = __210__ICSearchResult_attributedStringWithMatchHighlighted_optionalAttributedHighlightedString_textCheckingResult_usingAttributes_highlightColor_insideFrame_isSnippetForParticipantMatch_finishingUpRegexMatchFinder___block_invoke, v95[3] = &unk_1E846D6F8, v99 = v37, v100 = v39, v72 = v41, v96 = v72, v101 = self, v49 = v78, v102 = x, v103 = y, v104 = width, v105 = height, v106 = match, v97 = v49, v98 = &v89, objc_msgSend(v48, "enumerateSubstringsInRange:options:usingBlock:", 0, &v37[v39], 259, v95), v48, v97, v96, !v90[3]))
       {
         v47 = v41;
         v24 = v73;
@@ -833,8 +833,8 @@ LABEL_21:
         v75 = [v72 length];
         v50 = v90[3];
         v51 = MEMORY[0x1E696AEC0];
-        v52 = [v72 string];
-        LODWORD(v51) = [v51 ic_isCharacterInlineAttachmentPrefix:{objc_msgSend(v52, "characterAtIndex:", v90[3] - 1)}];
+        string = [v72 string];
+        LODWORD(v51) = [v51 ic_isCharacterInlineAttachmentPrefix:{objc_msgSend(string, "characterAtIndex:", v90[3] - 1)}];
         v53 = v75 - v50;
 
         v54 = v90[3];
@@ -861,24 +861,24 @@ LABEL_21:
     goto LABEL_29;
   }
 
-  v44 = v20;
-  if (v20)
+  v44 = stringCopy;
+  if (stringCopy)
   {
     v41 = v44;
-    v20 = v44;
+    stringCopy = v44;
 LABEL_28:
     v57 = [v41 mutableCopy];
-    v58 = [v41 ic_range];
-    [v57 addAttributes:v29 range:{v58, v59}];
+    ic_range2 = [v41 ic_range];
+    [v57 addAttributes:v29 range:{ic_range2, v59}];
     v47 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithAttributedString:v57];
 
 LABEL_29:
     goto LABEL_30;
   }
 
-  v20 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v19];
+  stringCopy = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:highlightedCopy];
   v107[0] = 0;
-  v56 = [MEMORY[0x1E69B7A90] snippetForAttributedContent:v20 attributedSnippetIfNecessary:v107];
+  v56 = [MEMORY[0x1E69B7A90] snippetForAttributedContent:stringCopy attributedSnippetIfNecessary:v107];
   v41 = v107[0];
 
   if (v41)
@@ -908,9 +908,9 @@ LABEL_30:
     v47 = v60;
   }
 
-  v61 = [v47 ic_attributedStringByReplacingNewlineCharactersWithWhiteSpace];
+  ic_attributedStringByReplacingNewlineCharactersWithWhiteSpace = [v47 ic_attributedStringByReplacingNewlineCharactersWithWhiteSpace];
 
-  v62 = [objc_opt_class() finishUpHighlightingWithMatchFinder:v79 forAttributedString:v61 inRange:0 highlightedAttributes:{objc_msgSend(v61, "length"), v30}];
+  v62 = [objc_opt_class() finishUpHighlightingWithMatchFinder:finderCopy forAttributedString:ic_attributedStringByReplacingNewlineCharactersWithWhiteSpace inRange:0 highlightedAttributes:{objc_msgSend(ic_attributedStringByReplacingNewlineCharactersWithWhiteSpace, "length"), v30}];
 
   v89 = 0;
   v90 = &v89;
@@ -918,7 +918,7 @@ LABEL_30:
   v93 = 0;
   v94 = 0;
   v92 = &unk_1D449C2A9;
-  v63 = [v62 string];
+  string2 = [v62 string];
   v64 = [v62 length];
   v80[0] = MEMORY[0x1E69E9820];
   v80[1] = *(v31 + 491);
@@ -927,16 +927,16 @@ LABEL_30:
   v83 = &v89;
   v65 = v62;
   v81 = v65;
-  v84 = a1;
+  selfCopy = self;
   v66 = v78;
   v82 = v66;
   v85 = x;
   v86 = y;
   v87 = width;
   v88 = height;
-  [v63 enumerateSubstringsInRange:0 options:v64 usingBlock:{5, v80}];
+  [string2 enumerateSubstringsInRange:0 options:v64 usingBlock:{5, v80}];
 
-  v67 = [objc_opt_class() finishUpHighlightingWithMatchFinder:v79 forAttributedString:v65 inRange:v90[4] highlightedAttributes:{v90[5], v30}];
+  v67 = [objc_opt_class() finishUpHighlightingWithMatchFinder:finderCopy forAttributedString:v65 inRange:v90[4] highlightedAttributes:{v90[5], v30}];
 
   _Block_object_dispose(&v89, 8);
 
@@ -982,15 +982,15 @@ void __210__ICSearchResult_attributedStringWithMatchHighlighted_optionalAttribut
   }
 }
 
-+ (id)finishUpHighlightingWithMatchFinder:(id)a3 forAttributedString:(id)a4 inRange:(_NSRange)a5 highlightedAttributes:(id)a6
++ (id)finishUpHighlightingWithMatchFinder:(id)finder forAttributedString:(id)string inRange:(_NSRange)range highlightedAttributes:(id)attributes
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   v37 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = v11;
+  finderCopy = finder;
+  stringCopy = string;
+  attributesCopy = attributes;
+  v13 = stringCopy;
   v14 = v13;
   if (location || length != [v13 length])
   {
@@ -1009,13 +1009,13 @@ void __210__ICSearchResult_attributedStringWithMatchHighlighted_optionalAttribut
     v16 = v14;
   }
 
-  v18 = [v16 string];
-  v19 = [v10 matchesInDocumentWithPerTokenFallback:v18];
+  string = [v16 string];
+  v19 = [finderCopy matchesInDocumentWithPerTokenFallback:string];
 
   v20 = v14;
   if ([v19 count])
   {
-    v31 = v10;
+    v31 = finderCopy;
     v21 = [v14 mutableCopy];
     v32 = 0u;
     v33 = 0u;
@@ -1037,8 +1037,8 @@ void __210__ICSearchResult_attributedStringWithMatchHighlighted_optionalAttribut
             objc_enumerationMutation(v22);
           }
 
-          v27 = [*(*(&v32 + 1) + 8 * v26) range];
-          [v21 addAttributes:v12 range:{v27 + v15, v28}];
+          range = [*(*(&v32 + 1) + 8 * v26) range];
+          [v21 addAttributes:attributesCopy range:{range + v15, v28}];
           ++v26;
         }
 
@@ -1050,7 +1050,7 @@ void __210__ICSearchResult_attributedStringWithMatchHighlighted_optionalAttribut
     }
 
     v20 = [v21 copy];
-    v10 = v31;
+    finderCopy = v31;
   }
 
   v29 = v20;
@@ -1058,19 +1058,19 @@ void __210__ICSearchResult_attributedStringWithMatchHighlighted_optionalAttribut
   return v20;
 }
 
-- (id)attributedTitleWithBaseAttributes:(id)a3 highlightColor:(id)a4 insideFrame:(CGRect)a5
+- (id)attributedTitleWithBaseAttributes:(id)attributes highlightColor:(id)color insideFrame:(CGRect)frame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(ICSearchResult *)self displayingTitle];
-  v14 = [(ICSearchResult *)self displayingAttributedTitle];
-  v15 = [(ICSearchResult *)self displayingTitleCheckingResult];
-  v16 = [(ICSearchResult *)self titleHighlightRegexMatchFinder];
-  v17 = [ICSearchResult attributedStringWithMatchHighlighted:v13 optionalAttributedHighlightedString:v14 textCheckingResult:v15 usingAttributes:v12 highlightColor:v11 insideFrame:0 isSnippetForParticipantMatch:x finishingUpRegexMatchFinder:y, width, height, v16];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  colorCopy = color;
+  attributesCopy = attributes;
+  displayingTitle = [(ICSearchResult *)self displayingTitle];
+  displayingAttributedTitle = [(ICSearchResult *)self displayingAttributedTitle];
+  displayingTitleCheckingResult = [(ICSearchResult *)self displayingTitleCheckingResult];
+  titleHighlightRegexMatchFinder = [(ICSearchResult *)self titleHighlightRegexMatchFinder];
+  v17 = [ICSearchResult attributedStringWithMatchHighlighted:displayingTitle optionalAttributedHighlightedString:displayingAttributedTitle textCheckingResult:displayingTitleCheckingResult usingAttributes:attributesCopy highlightColor:colorCopy insideFrame:0 isSnippetForParticipantMatch:x finishingUpRegexMatchFinder:y, width, height, titleHighlightRegexMatchFinder];
 
   [(ICSearchResult *)self setTitleAttributedString:v17];
   [(ICSearchResult *)self setTitleAttributedStringInsideFrame:x, y, width, height];
@@ -1078,31 +1078,31 @@ void __210__ICSearchResult_attributedStringWithMatchHighlighted_optionalAttribut
   return [(ICSearchResult *)self titleAttributedString];
 }
 
-+ (id)authorNameToHighlightForNote:(id)a3 fromSearchResult:(id)a4 textCheckingResult:(id *)a5
++ (id)authorNameToHighlightForNote:(id)note fromSearchResult:(id)result textCheckingResult:(id *)checkingResult
 {
   v46 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 participantHighlightRegexMatchFinder];
+  noteCopy = note;
+  resultCopy = result;
+  participantHighlightRegexMatchFinder = [resultCopy participantHighlightRegexMatchFinder];
 
-  if (v9)
+  if (participantHighlightRegexMatchFinder)
   {
-    v29 = a5;
-    v10 = [v8 displayingTitleCheckingResult];
+    checkingResultCopy = checkingResult;
+    displayingTitleCheckingResult = [resultCopy displayingTitleCheckingResult];
 
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v30 = v7;
-    v11 = [v7 authorsExcludingCurrentUser];
-    v35 = [v11 countByEnumeratingWithState:&v40 objects:v45 count:16];
+    v30 = noteCopy;
+    authorsExcludingCurrentUser = [noteCopy authorsExcludingCurrentUser];
+    v35 = [authorsExcludingCurrentUser countByEnumeratingWithState:&v40 objects:v45 count:16];
     v12 = 0;
     if (v35)
     {
       v13 = *v41;
-      v32 = v11;
-      v33 = v10;
+      v32 = authorsExcludingCurrentUser;
+      v33 = displayingTitleCheckingResult;
       v31 = *v41;
       while (2)
       {
@@ -1112,24 +1112,24 @@ void __210__ICSearchResult_attributedStringWithMatchHighlighted_optionalAttribut
         {
           if (*v41 != v13)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(authorsExcludingCurrentUser);
           }
 
           v16 = *(*(&v40 + 1) + 8 * v14);
-          v17 = [v16 ic_localizedNameWithDefaultFormattingStyle];
-          v18 = [v8 participantHighlightRegexMatchFinder];
-          v12 = [v18 firstMatchInDocumentWithGlobalFallback:v17];
+          ic_localizedNameWithDefaultFormattingStyle = [v16 ic_localizedNameWithDefaultFormattingStyle];
+          participantHighlightRegexMatchFinder2 = [resultCopy participantHighlightRegexMatchFinder];
+          v12 = [participantHighlightRegexMatchFinder2 firstMatchInDocumentWithGlobalFallback:ic_localizedNameWithDefaultFormattingStyle];
 
           if (v12)
           {
-            if (v10)
+            if (displayingTitleCheckingResult)
             {
               v38 = 0u;
               v39 = 0u;
               v36 = 0u;
               v37 = 0u;
-              v19 = [v16 ic_componentsForSearchHighlighting];
-              v20 = [v19 countByEnumeratingWithState:&v36 objects:v44 count:16];
+              ic_componentsForSearchHighlighting = [v16 ic_componentsForSearchHighlighting];
+              v20 = [ic_componentsForSearchHighlighting countByEnumeratingWithState:&v36 objects:v44 count:16];
               if (v20)
               {
                 v34 = v12;
@@ -1140,22 +1140,22 @@ void __210__ICSearchResult_attributedStringWithMatchHighlighted_optionalAttribut
                   {
                     if (*v37 != v21)
                     {
-                      objc_enumerationMutation(v19);
+                      objc_enumerationMutation(ic_componentsForSearchHighlighting);
                     }
 
                     v23 = *(*(&v36 + 1) + 8 * i);
-                    v24 = [v8 configuration];
-                    v25 = [v24 searchString];
-                    v26 = [v23 compare:v25 options:1];
+                    configuration = [resultCopy configuration];
+                    searchString = [configuration searchString];
+                    v26 = [v23 compare:searchString options:1];
 
                     if (!v26)
                     {
-                      v20 = v17;
+                      v20 = ic_localizedNameWithDefaultFormattingStyle;
                       goto LABEL_20;
                     }
                   }
 
-                  v20 = [v19 countByEnumeratingWithState:&v36 objects:v44 count:16];
+                  v20 = [ic_componentsForSearchHighlighting countByEnumeratingWithState:&v36 objects:v44 count:16];
                   if (v20)
                   {
                     continue;
@@ -1165,8 +1165,8 @@ void __210__ICSearchResult_attributedStringWithMatchHighlighted_optionalAttribut
                 }
 
 LABEL_20:
-                v11 = v32;
-                v10 = v33;
+                authorsExcludingCurrentUser = v32;
+                displayingTitleCheckingResult = v33;
                 v12 = v34;
                 v13 = v31;
               }
@@ -1174,16 +1174,16 @@ LABEL_20:
 
             else
             {
-              v20 = v17;
+              v20 = ic_localizedNameWithDefaultFormattingStyle;
             }
 
             if (v20)
             {
 
-              if (v29)
+              if (checkingResultCopy)
               {
                 v27 = v12;
-                *v29 = v12;
+                *checkingResultCopy = v12;
               }
 
               goto LABEL_31;
@@ -1199,7 +1199,7 @@ LABEL_20:
         }
 
         while (v14 != v35);
-        v35 = [v11 countByEnumeratingWithState:&v40 objects:v45 count:16];
+        v35 = [authorsExcludingCurrentUser countByEnumeratingWithState:&v40 objects:v45 count:16];
         if (v35)
         {
           continue;
@@ -1211,89 +1211,89 @@ LABEL_20:
 
     v20 = 0;
 LABEL_31:
-    v7 = v30;
+    noteCopy = v30;
   }
 
   else
   {
     v20 = 0;
-    if (a5)
+    if (checkingResult)
     {
-      *a5 = 0;
+      *checkingResult = 0;
     }
   }
 
   return v20;
 }
 
-+ (id)firstTextCheckingResultOfRegex:(id)a3 inDocumentText:(id)a4
++ (id)firstTextCheckingResultOfRegex:(id)regex inDocumentText:(id)text
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 length];
+  regexCopy = regex;
+  textCopy = text;
+  v7 = [textCopy length];
   v8 = 0;
-  if (v5 && v7)
+  if (regexCopy && v7)
   {
-    v8 = [v5 firstMatchInString:v6 options:0 range:{0, objc_msgSend(v6, "length")}];
+    v8 = [regexCopy firstMatchInString:textCopy options:0 range:{0, objc_msgSend(textCopy, "length")}];
   }
 
   return v8;
 }
 
-- (id)snippetWithBaseAttributes:(id)a3 highlightColor:(id)a4 insideFrame:(CGRect)a5
+- (id)snippetWithBaseAttributes:(id)attributes highlightColor:(id)color insideFrame:(CGRect)frame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a3;
-  v12 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  attributesCopy = attributes;
+  colorCopy = color;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
   v35 = __Block_byref_object_copy__57;
   v36 = __Block_byref_object_dispose__57;
   v37 = 0;
-  v13 = [(ICSearchResult *)self displayingSnippet];
-  if (v13)
+  displayingSnippet = [(ICSearchResult *)self displayingSnippet];
+  if (displayingSnippet)
   {
 
 LABEL_4:
-    v15 = [(ICSearchResult *)self object];
+    object = [(ICSearchResult *)self object];
     if (objc_opt_respondsToSelector())
     {
-      v16 = [(ICSearchResult *)self object];
+      object2 = [(ICSearchResult *)self object];
     }
 
     else
     {
-      v16 = 0;
+      object2 = 0;
     }
 
-    v17 = [(ICSearchResult *)self object];
-    v18 = [v17 managedObjectContext];
+    object3 = [(ICSearchResult *)self object];
+    managedObjectContext = [object3 managedObjectContext];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __71__ICSearchResult_snippetWithBaseAttributes_highlightColor_insideFrame___block_invoke;
     v22[3] = &unk_1E846D748;
-    v19 = v16;
+    v19 = object2;
     v23 = v19;
-    v24 = self;
-    v25 = v11;
+    selfCopy = self;
+    v25 = attributesCopy;
     v27 = &v32;
-    v26 = v12;
+    v26 = colorCopy;
     v28 = x;
     v29 = y;
     v30 = width;
     v31 = height;
-    [v18 performBlockAndWait:v22];
+    [managedObjectContext performBlockAndWait:v22];
 
     goto LABEL_8;
   }
 
-  v14 = [(ICSearchResult *)self displayingAttributedSnippet];
+  displayingAttributedSnippet = [(ICSearchResult *)self displayingAttributedSnippet];
 
-  if (v14)
+  if (displayingAttributedSnippet)
   {
     goto LABEL_4;
   }

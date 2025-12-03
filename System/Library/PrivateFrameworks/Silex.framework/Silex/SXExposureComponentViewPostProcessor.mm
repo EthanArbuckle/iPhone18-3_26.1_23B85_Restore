@@ -1,56 +1,56 @@
 @interface SXExposureComponentViewPostProcessor
-- (SXExposureComponentViewPostProcessor)initWithExposureMonitor:(id)a3 analyticsReportingProvider:(id)a4;
-- (void)processComponent:(id)a3 view:(id)a4;
+- (SXExposureComponentViewPostProcessor)initWithExposureMonitor:(id)monitor analyticsReportingProvider:(id)provider;
+- (void)processComponent:(id)component view:(id)view;
 @end
 
 @implementation SXExposureComponentViewPostProcessor
 
-- (SXExposureComponentViewPostProcessor)initWithExposureMonitor:(id)a3 analyticsReportingProvider:(id)a4
+- (SXExposureComponentViewPostProcessor)initWithExposureMonitor:(id)monitor analyticsReportingProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  monitorCopy = monitor;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = SXExposureComponentViewPostProcessor;
   v9 = [(SXExposureComponentViewPostProcessor *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_monitor, a3);
-    objc_storeStrong(&v10->_analyticsReporterProvider, a4);
-    v11 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    objc_storeStrong(&v9->_monitor, monitor);
+    objc_storeStrong(&v10->_analyticsReporterProvider, provider);
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     exposedEvents = v10->_exposedEvents;
-    v10->_exposedEvents = v11;
+    v10->_exposedEvents = weakToStrongObjectsMapTable;
   }
 
   return v10;
 }
 
-- (void)processComponent:(id)a3 view:(id)a4
+- (void)processComponent:(id)component view:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 analytics];
-  v9 = [v8 allKeys];
-  v10 = [v9 count];
+  componentCopy = component;
+  viewCopy = view;
+  analytics = [componentCopy analytics];
+  allKeys = [analytics allKeys];
+  v10 = [allKeys count];
 
   if (v10)
   {
-    v11 = [(SXExposureComponentViewPostProcessor *)self exposedEvents];
-    [v11 removeObjectForKey:v7];
+    exposedEvents = [(SXExposureComponentViewPostProcessor *)self exposedEvents];
+    [exposedEvents removeObjectForKey:viewCopy];
 
-    v12 = [(SXExposureComponentViewPostProcessor *)self monitor];
-    [v12 stopTrackingExposureOfComponentView:v7];
+    monitor = [(SXExposureComponentViewPostProcessor *)self monitor];
+    [monitor stopTrackingExposureOfComponentView:viewCopy];
 
     objc_initWeak(&location, self);
-    v13 = [(SXExposureComponentViewPostProcessor *)self monitor];
+    monitor2 = [(SXExposureComponentViewPostProcessor *)self monitor];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __62__SXExposureComponentViewPostProcessor_processComponent_view___block_invoke;
     v14[3] = &unk_1E84FE860;
     objc_copyWeak(&v17, &location);
-    v15 = v6;
-    v16 = v7;
-    [v13 onExposureOf:v16 then:v14];
+    v15 = componentCopy;
+    v16 = viewCopy;
+    [monitor2 onExposureOf:v16 then:v14];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);

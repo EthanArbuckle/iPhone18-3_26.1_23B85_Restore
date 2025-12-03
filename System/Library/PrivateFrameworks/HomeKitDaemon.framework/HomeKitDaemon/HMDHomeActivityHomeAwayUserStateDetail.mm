@@ -1,5 +1,5 @@
 @interface HMDHomeActivityHomeAwayUserStateDetail
-- (HMDHomeActivityHomeAwayUserStateDetail)initWithUser:(id)a3 state:(unint64_t)a4 device:(id)a5;
+- (HMDHomeActivityHomeAwayUserStateDetail)initWithUser:(id)user state:(unint64_t)state device:(id)device;
 - (id)attributeDescriptions;
 @end
 
@@ -9,14 +9,14 @@
 {
   v20[4] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v19 = [(HMDHomeActivityHomeAwayUserStateDetail *)self user];
-  v4 = [v19 shortDescription];
-  v5 = [v3 initWithName:@"user" value:v4];
+  user = [(HMDHomeActivityHomeAwayUserStateDetail *)self user];
+  shortDescription = [user shortDescription];
+  v5 = [v3 initWithName:@"user" value:shortDescription];
   v20[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMDHomeActivityHomeAwayUserStateDetail *)self deviceWhichUpdatedUserPresence];
-  v8 = [v7 shortDescription];
-  v9 = [v6 initWithName:@"device" value:v8];
+  deviceWhichUpdatedUserPresence = [(HMDHomeActivityHomeAwayUserStateDetail *)self deviceWhichUpdatedUserPresence];
+  shortDescription2 = [deviceWhichUpdatedUserPresence shortDescription];
+  v9 = [v6 initWithName:@"device" value:shortDescription2];
   v20[1] = v9;
   v10 = objc_alloc(MEMORY[0x277D0F778]);
   [(HMDHomeActivityHomeAwayUserStateDetail *)self isAtHome];
@@ -35,20 +35,20 @@
   return v16;
 }
 
-- (HMDHomeActivityHomeAwayUserStateDetail)initWithUser:(id)a3 state:(unint64_t)a4 device:(id)a5
+- (HMDHomeActivityHomeAwayUserStateDetail)initWithUser:(id)user state:(unint64_t)state device:(id)device
 {
-  v9 = a3;
-  v10 = a5;
+  userCopy = user;
+  deviceCopy = device;
   v14.receiver = self;
   v14.super_class = HMDHomeActivityHomeAwayUserStateDetail;
   v11 = [(HMDHomeActivityHomeAwayUserStateDetail *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_user, a3);
-    v12->_atHome = a4 == 2;
-    v12->_notAtHome = a4 == 3;
-    objc_storeStrong(&v12->_deviceWhichUpdatedUserPresence, a5);
+    objc_storeStrong(&v11->_user, user);
+    v12->_atHome = state == 2;
+    v12->_notAtHome = state == 3;
+    objc_storeStrong(&v12->_deviceWhichUpdatedUserPresence, device);
   }
 
   return v12;

@@ -1,24 +1,24 @@
 @interface PXGSublayoutDataStore
-- ($7C531AF6E50BD019A4D1760C681E3492)geometryForSublayout:(SEL)a3;
+- ($7C531AF6E50BD019A4D1760C681E3492)geometryForSublayout:(SEL)sublayout;
 - (NSString)diagnosticDescription;
-- (id)sublayoutAtIndex:(int64_t)a3;
-- (id)sublayoutProviderAtIndex:(int64_t)a3;
-- (int64_t)indexOfSublayout:(id)a3;
-- (unsigned)spriteIndexOriginForSublayout:(id)a3;
-- (unsigned)spriteIndexOriginForSublayoutIndex:(int64_t)a3;
-- (void)_insertRange:(_NSRange)a3;
+- (id)sublayoutAtIndex:(int64_t)index;
+- (id)sublayoutProviderAtIndex:(int64_t)index;
+- (int64_t)indexOfSublayout:(id)sublayout;
+- (unsigned)spriteIndexOriginForSublayout:(id)sublayout;
+- (unsigned)spriteIndexOriginForSublayoutIndex:(int64_t)index;
+- (void)_insertRange:(_NSRange)range;
 - (void)dealloc;
-- (void)enumerateSublayoutGeometriesInRange:(_NSRange)a3 options:(unint64_t)a4 usingBlock:(id)a5;
-- (void)enumerateSublayoutGeometriesUsingBlock:(id)a3;
-- (void)enumerateSublayoutsAtPoint:(CGPoint)a3 usingBlock:(id)a4;
-- (void)enumerateSublayoutsInRange:(_NSRange)a3 options:(unint64_t)a4 usingBlock:(id)a5;
-- (void)enumerateSublayoutsInRect:(CGRect)a3 usingBlock:(id)a4;
-- (void)enumerateSublayoutsUsingBlock:(id)a3;
-- (void)insertSublayout:(id)a3 atIndex:(int64_t)a4;
-- (void)insertSublayoutProvider:(id)a3 inRange:(_NSRange)a4;
-- (void)moveSublayoutsFromIndexes:(__CFArray *)a3 toIndexes:(id)a4;
-- (void)removeSublayoutsInRange:(_NSRange)a3;
-- (void)setCount:(int64_t)a3;
+- (void)enumerateSublayoutGeometriesInRange:(_NSRange)range options:(unint64_t)options usingBlock:(id)block;
+- (void)enumerateSublayoutGeometriesUsingBlock:(id)block;
+- (void)enumerateSublayoutsAtPoint:(CGPoint)point usingBlock:(id)block;
+- (void)enumerateSublayoutsInRange:(_NSRange)range options:(unint64_t)options usingBlock:(id)block;
+- (void)enumerateSublayoutsInRect:(CGRect)rect usingBlock:(id)block;
+- (void)enumerateSublayoutsUsingBlock:(id)block;
+- (void)insertSublayout:(id)sublayout atIndex:(int64_t)index;
+- (void)insertSublayoutProvider:(id)provider inRange:(_NSRange)range;
+- (void)moveSublayoutsFromIndexes:(__CFArray *)indexes toIndexes:(id)toIndexes;
+- (void)removeSublayoutsInRange:(_NSRange)range;
+- (void)setCount:(int64_t)count;
 @end
 
 @implementation PXGSublayoutDataStore
@@ -31,13 +31,13 @@
   v6 = [v3 stringWithFormat:@"<%@: %p\n", v5, self];
 
   v7 = [(PXGSublayoutDataStore *)self count];
-  v8 = [(PXGSublayoutDataStore *)self geometries];
-  v9 = [(PXGSublayoutDataStore *)self infos];
+  geometries = [(PXGSublayoutDataStore *)self geometries];
+  infos = [(PXGSublayoutDataStore *)self infos];
   if (v7 >= 1)
   {
-    v10 = v9;
+    v10 = infos;
     v11 = 0;
-    p_var2 = &v8->var4.var2;
+    p_var2 = &geometries->var4.var2;
     do
     {
       v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"{%.2f, %.2f, %.5f}", *&p_var2[-1].width, *&p_var2[-1].height, *&p_var2->width];
@@ -59,19 +59,19 @@
   return v6;
 }
 
-- (void)enumerateSublayoutGeometriesInRange:(_NSRange)a3 options:(unint64_t)a4 usingBlock:(id)a5
+- (void)enumerateSublayoutGeometriesInRange:(_NSRange)range options:(unint64_t)options usingBlock:(id)block
 {
-  v5 = a4;
-  length = a3.length;
-  location = a3.location;
-  v10 = a5;
+  optionsCopy = options;
+  length = range.length;
+  location = range.location;
+  blockCopy = block;
   if (location + length > [(PXGSublayoutDataStore *)self count])
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v19.location = location;
     v19.length = length;
     v17 = NSStringFromRange(v19);
-    [v16 handleFailureInMethod:a2 object:self file:@"PXGSublayoutDataStore.m" lineNumber:264 description:{@"range out of bounds %@ 0..%li", v17, -[PXGSublayoutDataStore count](self, "count")}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGSublayoutDataStore.m" lineNumber:264 description:{@"range out of bounds %@ 0..%li", v17, -[PXGSublayoutDataStore count](self, "count")}];
 
     if (!length)
     {
@@ -84,8 +84,8 @@
     goto LABEL_12;
   }
 
-  v11 = (v5 & 2) == 0;
-  if ((v5 & 2) != 0)
+  v11 = (optionsCopy & 2) == 0;
+  if ((optionsCopy & 2) != 0)
   {
     v12 = location + length - 1;
   }
@@ -110,7 +110,7 @@
   v18 = 0;
   do
   {
-    v10[2](v10, v12, v14, v15, &v18);
+    blockCopy[2](blockCopy, v12, v14, v15, &v18);
     if (v18)
     {
       break;
@@ -126,17 +126,17 @@
 LABEL_12:
 }
 
-- (void)enumerateSublayoutGeometriesUsingBlock:(id)a3
+- (void)enumerateSublayoutGeometriesUsingBlock:(id)block
 {
-  v4 = a3;
-  [(PXGSublayoutDataStore *)self enumerateSublayoutGeometriesInRange:0 options:[(PXGSublayoutDataStore *)self count] usingBlock:0, v4];
+  blockCopy = block;
+  [(PXGSublayoutDataStore *)self enumerateSublayoutGeometriesInRange:0 options:[(PXGSublayoutDataStore *)self count] usingBlock:0, blockCopy];
 }
 
-- (int64_t)indexOfSublayout:(id)a3
+- (int64_t)indexOfSublayout:(id)sublayout
 {
-  v4 = a3;
+  sublayoutCopy = sublayout;
   v5 = [(PXGSublayoutDataStore *)self count];
-  v6 = [(PXGSublayoutDataStore *)self infos];
+  infos = [(PXGSublayoutDataStore *)self infos];
   if (v5 < 1)
   {
 LABEL_5:
@@ -146,10 +146,10 @@ LABEL_5:
   else
   {
     v7 = 0;
-    while (v6->var0 != v4)
+    while (infos->var0 != sublayoutCopy)
     {
       ++v7;
-      ++v6;
+      ++infos;
       if (v5 == v7)
       {
         goto LABEL_5;
@@ -160,19 +160,19 @@ LABEL_5:
   return v7;
 }
 
-- (void)enumerateSublayoutsAtPoint:(CGPoint)a3 usingBlock:(id)a4
+- (void)enumerateSublayoutsAtPoint:(CGPoint)point usingBlock:(id)block
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  blockCopy = block;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __63__PXGSublayoutDataStore_enumerateSublayoutsAtPoint_usingBlock___block_invoke;
   v9[3] = &unk_2782A9480;
   v11 = x;
   v12 = y;
-  v10 = v7;
-  v8 = v7;
+  v10 = blockCopy;
+  v8 = blockCopy;
   [(PXGSublayoutDataStore *)self enumerateSublayoutGeometriesUsingBlock:v9];
 }
 
@@ -201,13 +201,13 @@ uint64_t __63__PXGSublayoutDataStore_enumerateSublayoutsAtPoint_usingBlock___blo
   return result;
 }
 
-- (void)enumerateSublayoutsInRect:(CGRect)a3 usingBlock:(id)a4
+- (void)enumerateSublayoutsInRect:(CGRect)rect usingBlock:(id)block
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  blockCopy = block;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __62__PXGSublayoutDataStore_enumerateSublayoutsInRect_usingBlock___block_invoke;
@@ -216,8 +216,8 @@ uint64_t __63__PXGSublayoutDataStore_enumerateSublayoutsAtPoint_usingBlock___blo
   v14 = y;
   v15 = width;
   v16 = height;
-  v12 = v9;
-  v10 = v9;
+  v12 = blockCopy;
+  v10 = blockCopy;
   [(PXGSublayoutDataStore *)self enumerateSublayoutGeometriesUsingBlock:v11];
 }
 
@@ -246,19 +246,19 @@ uint64_t __62__PXGSublayoutDataStore_enumerateSublayoutsInRect_usingBlock___bloc
   return result;
 }
 
-- (void)enumerateSublayoutsInRange:(_NSRange)a3 options:(unint64_t)a4 usingBlock:(id)a5
+- (void)enumerateSublayoutsInRange:(_NSRange)range options:(unint64_t)options usingBlock:(id)block
 {
-  v5 = a4;
-  length = a3.length;
-  location = a3.location;
-  v10 = a5;
+  optionsCopy = options;
+  length = range.length;
+  location = range.location;
+  blockCopy = block;
   if (location + length > [(PXGSublayoutDataStore *)self count])
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXGSublayoutDataStore.m" lineNumber:202 description:{@"Invalid parameter not satisfying: %@", @"NSMaxRange(range) <= self.count"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGSublayoutDataStore.m" lineNumber:202 description:{@"Invalid parameter not satisfying: %@", @"NSMaxRange(range) <= self.count"}];
   }
 
-  if ((v5 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
     v11 = -1;
   }
@@ -268,11 +268,11 @@ uint64_t __62__PXGSublayoutDataStore_enumerateSublayoutsInRect_usingBlock___bloc
     v11 = 1;
   }
 
-  v12 = [(PXGSublayoutDataStore *)self infos];
+  infos = [(PXGSublayoutDataStore *)self infos];
   v16 = 0;
   if (length)
   {
-    if ((v5 & 2) != 0)
+    if ((optionsCopy & 2) != 0)
     {
       v13 = location + length - 1;
     }
@@ -282,12 +282,12 @@ uint64_t __62__PXGSublayoutDataStore_enumerateSublayoutsInRect_usingBlock___bloc
       v13 = location;
     }
 
-    v14 = &v12[v13];
+    v14 = &infos[v13];
     do
     {
       if (v14->var0)
       {
-        v10[2](v10, v13, v14->var0, &v16);
+        blockCopy[2](blockCopy, v13, v14->var0, &v16);
         if (v16)
         {
           break;
@@ -303,31 +303,31 @@ uint64_t __62__PXGSublayoutDataStore_enumerateSublayoutsInRect_usingBlock___bloc
   }
 }
 
-- (void)enumerateSublayoutsUsingBlock:(id)a3
+- (void)enumerateSublayoutsUsingBlock:(id)block
 {
-  v4 = a3;
-  [(PXGSublayoutDataStore *)self enumerateSublayoutsInRange:0 options:[(PXGSublayoutDataStore *)self count] usingBlock:0, v4];
+  blockCopy = block;
+  [(PXGSublayoutDataStore *)self enumerateSublayoutsInRange:0 options:[(PXGSublayoutDataStore *)self count] usingBlock:0, blockCopy];
 }
 
-- ($7C531AF6E50BD019A4D1760C681E3492)geometryForSublayout:(SEL)a3
+- ($7C531AF6E50BD019A4D1760C681E3492)geometryForSublayout:(SEL)sublayout
 {
   v17 = a4;
   v7 = [(PXGSublayoutDataStore *)self count];
-  v8 = [(PXGSublayoutDataStore *)self infos];
+  infos = [(PXGSublayoutDataStore *)self infos];
   if (v7 < 1)
   {
 LABEL_5:
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a3 object:self file:@"PXGSublayoutDataStore.m" lineNumber:194 description:{@"couldn't find sublayout %@", v17}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:sublayout object:self file:@"PXGSublayoutDataStore.m" lineNumber:194 description:{@"couldn't find sublayout %@", v17}];
 
     abort();
   }
 
   v9 = 0;
-  while (v8->var0 != v17)
+  while (infos->var0 != v17)
   {
     ++v9;
-    ++v8;
+    ++infos;
     if (v7 == v9)
     {
       goto LABEL_5;
@@ -352,9 +352,9 @@ LABEL_5:
   return result;
 }
 
-- (unsigned)spriteIndexOriginForSublayout:(id)a3
+- (unsigned)spriteIndexOriginForSublayout:(id)sublayout
 {
-  v4 = a3;
+  sublayoutCopy = sublayout;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -363,7 +363,7 @@ LABEL_5:
   v7[1] = 3221225472;
   v7[2] = __55__PXGSublayoutDataStore_spriteIndexOriginForSublayout___block_invoke;
   v7[3] = &unk_2782AA970;
-  v5 = v4;
+  v5 = sublayoutCopy;
   v8 = v5;
   v9 = &v10;
   [(PXGSublayoutDataStore *)self enumerateSublayoutsUsingBlock:v7];
@@ -390,7 +390,7 @@ uint64_t __55__PXGSublayoutDataStore_spriteIndexOriginForSublayout___block_invok
   return result;
 }
 
-- (unsigned)spriteIndexOriginForSublayoutIndex:(int64_t)a3
+- (unsigned)spriteIndexOriginForSublayoutIndex:(int64_t)index
 {
   v6 = 0;
   v7 = &v6;
@@ -401,7 +401,7 @@ uint64_t __55__PXGSublayoutDataStore_spriteIndexOriginForSublayout___block_invok
   v5[2] = __60__PXGSublayoutDataStore_spriteIndexOriginForSublayoutIndex___block_invoke;
   v5[3] = &unk_2782A9430;
   v5[4] = &v6;
-  v5[5] = a3;
+  v5[5] = index;
   [(PXGSublayoutDataStore *)self enumerateSublayoutsUsingBlock:v5];
   v3 = *(v7 + 6);
   _Block_object_dispose(&v6, 8);
@@ -425,54 +425,54 @@ uint64_t __60__PXGSublayoutDataStore_spriteIndexOriginForSublayoutIndex___block_
   return result;
 }
 
-- (id)sublayoutProviderAtIndex:(int64_t)a3
+- (id)sublayoutProviderAtIndex:(int64_t)index
 {
-  if (a3 < 0 || [(PXGSublayoutDataStore *)self count]<= a3)
+  if (index < 0 || [(PXGSublayoutDataStore *)self count]<= index)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXGSublayoutDataStore.m" lineNumber:158 description:{@"Invalid parameter not satisfying: %@", @"index >= 0 && index < self.count"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGSublayoutDataStore.m" lineNumber:158 description:{@"Invalid parameter not satisfying: %@", @"index >= 0 && index < self.count"}];
   }
 
-  v6 = ([(PXGSublayoutDataStore *)self infos]+ 16 * a3)[8];
+  v6 = ([(PXGSublayoutDataStore *)self infos]+ 16 * index)[8];
 
   return v6;
 }
 
-- (id)sublayoutAtIndex:(int64_t)a3
+- (id)sublayoutAtIndex:(int64_t)index
 {
-  if (a3 < 0 || [(PXGSublayoutDataStore *)self count]<= a3)
+  if (index < 0 || [(PXGSublayoutDataStore *)self count]<= index)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXGSublayoutDataStore.m" lineNumber:153 description:{@"Invalid parameter not satisfying: %@", @"index >= 0 && index < self.count"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGSublayoutDataStore.m" lineNumber:153 description:{@"Invalid parameter not satisfying: %@", @"index >= 0 && index < self.count"}];
   }
 
-  v6 = [(PXGSublayoutDataStore *)self infos][16 * a3];
+  index = [(PXGSublayoutDataStore *)self infos][16 * index];
 
-  return v6;
+  return index;
 }
 
-- (void)moveSublayoutsFromIndexes:(__CFArray *)a3 toIndexes:(id)a4
+- (void)moveSublayoutsFromIndexes:(__CFArray *)indexes toIndexes:(id)toIndexes
 {
-  v7 = a4;
-  Count = CFArrayGetCount(a3);
-  v9 = [v7 count];
+  toIndexesCopy = toIndexes;
+  Count = CFArrayGetCount(indexes);
+  v9 = [toIndexesCopy count];
   v10 = v9;
   if (Count < 1 || v9 <= 0)
   {
-    v27 = [MEMORY[0x277CCA890] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"PXGSublayoutDataStore.m" lineNumber:122 description:{@"Invalid parameter not satisfying: %@", @"fromIndexesCount > 0 && toIndexesCount > 0"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGSublayoutDataStore.m" lineNumber:122 description:{@"Invalid parameter not satisfying: %@", @"fromIndexesCount > 0 && toIndexesCount > 0"}];
   }
 
   if (Count != v10)
   {
-    v25 = [MEMORY[0x277CCA890] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"PXGSublayoutDataStore.m" lineNumber:123 description:{@"Invalid parameter not satisfying: %@", @"fromIndexesCount == toIndexesCount"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXGSublayoutDataStore.m" lineNumber:123 description:{@"Invalid parameter not satisfying: %@", @"fromIndexesCount == toIndexesCount"}];
   }
 
   if (![(PXGSublayoutDataStore *)self count])
   {
-    v26 = [MEMORY[0x277CCA890] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"PXGSublayoutDataStore.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"self.count != 0"}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXGSublayoutDataStore.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"self.count != 0"}];
   }
 
   v11 = [(PXGSublayoutDataStore *)self count];
@@ -490,7 +490,7 @@ uint64_t __60__PXGSublayoutDataStore_spriteIndexOriginForSublayoutIndex___block_
   {
     for (i = 0; i < Count; v30[3] = i)
     {
-      ValueAtIndex = CFArrayGetValueAtIndex(a3, i);
+      ValueAtIndex = CFArrayGetValueAtIndex(indexes, i);
       v14 = v30[3] + v11;
       geometries = self->_geometries;
       v16 = &geometries[v14];
@@ -525,7 +525,7 @@ uint64_t __60__PXGSublayoutDataStore_spriteIndexOriginForSublayoutIndex___block_
   v28[7] = v10;
   v28[4] = self;
   v28[5] = &v29;
-  [v7 enumerateRangesUsingBlock:v28];
+  [toIndexesCopy enumerateRangesUsingBlock:v28];
   [(PXGSublayoutDataStore *)self setCount:[(PXGSublayoutDataStore *)self count]- v10];
   _Block_object_dispose(&v29, 8);
 }
@@ -574,25 +574,25 @@ __n128 __61__PXGSublayoutDataStore_moveSublayoutsFromIndexes_toIndexes___block_i
   return result;
 }
 
-- (void)_insertRange:(_NSRange)a3
+- (void)_insertRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  if (a3.location > [(PXGSublayoutDataStore *)self count])
+  length = range.length;
+  location = range.location;
+  if (range.location > [(PXGSublayoutDataStore *)self count])
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXGSublayoutDataStore.m" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"range.location <= self.count"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGSublayoutDataStore.m" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"range.location <= self.count"}];
   }
 
   [(PXGSublayoutDataStore *)self setCount:[(PXGSublayoutDataStore *)self count]+ length];
   _PXGArrayInsertRange(self->_geometries, 136, [(PXGSublayoutDataStore *)self count], location, length);
   _PXGArrayInsertRange(self->_infos, 16, [(PXGSublayoutDataStore *)self count], location, length);
-  v7 = [(PXGSublayoutDataStore *)self geometries];
-  v8 = [(PXGSublayoutDataStore *)self infos];
+  geometries = [(PXGSublayoutDataStore *)self geometries];
+  infos = [(PXGSublayoutDataStore *)self infos];
   if (length)
   {
-    v9 = &v8[location];
-    p_var5 = &v7[location].var5;
+    v9 = &infos[location];
+    p_var5 = &geometries[location].var5;
     v11 = *MEMORY[0x277CBF3A8];
     do
     {
@@ -618,11 +618,11 @@ __n128 __61__PXGSublayoutDataStore_moveSublayoutsFromIndexes_toIndexes___block_i
   }
 }
 
-- (void)removeSublayoutsInRange:(_NSRange)a3
+- (void)removeSublayoutsInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  if (a3.location + a3.length <= [(PXGSublayoutDataStore *)self count])
+  length = range.length;
+  location = range.location;
+  if (range.location + range.length <= [(PXGSublayoutDataStore *)self count])
   {
     if (length)
     {
@@ -634,8 +634,8 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v10 = [MEMORY[0x277CCA890] currentHandler];
-  [v10 handleFailureInMethod:a2 object:self file:@"PXGSublayoutDataStore.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"NSMaxRange(range) <= self.count"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGSublayoutDataStore.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"NSMaxRange(range) <= self.count"}];
 
   if (!length)
   {
@@ -667,24 +667,24 @@ LABEL_10:
   [(PXGSublayoutDataStore *)self setCount:v11];
 }
 
-- (void)insertSublayoutProvider:(id)a3 inRange:(_NSRange)a4
+- (void)insertSublayoutProvider:(id)provider inRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v12 = a3;
+  length = range.length;
+  location = range.location;
+  providerCopy = provider;
   [(PXGSublayoutDataStore *)self _insertRange:location, length];
-  v7 = [(PXGSublayoutDataStore *)self geometries];
-  v8 = [(PXGSublayoutDataStore *)self infos];
+  geometries = [(PXGSublayoutDataStore *)self geometries];
+  infos = [(PXGSublayoutDataStore *)self infos];
   if (length)
   {
-    p_var1 = &v8[location].var1;
-    p_width = &v7[location].var3.width;
+    p_var1 = &infos[location].var1;
+    p_width = &geometries[location].var3.width;
     v11 = *MEMORY[0x277D3CFE0];
     do
     {
       *p_width = v11;
       p_width = (p_width + 136);
-      *p_var1 = v12;
+      *p_var1 = providerCopy;
       p_var1 += 2;
       --length;
     }
@@ -693,16 +693,16 @@ LABEL_10:
   }
 }
 
-- (void)insertSublayout:(id)a3 atIndex:(int64_t)a4
+- (void)insertSublayout:(id)sublayout atIndex:(int64_t)index
 {
-  v6 = a3;
-  [(PXGSublayoutDataStore *)self _insertRange:a4, 1];
-  v7 = [(PXGSublayoutDataStore *)self geometries]+ 136 * a4;
-  [v6 contentSize];
+  sublayoutCopy = sublayout;
+  [(PXGSublayoutDataStore *)self _insertRange:index, 1];
+  v7 = [(PXGSublayoutDataStore *)self geometries]+ 136 * index;
+  [sublayoutCopy contentSize];
   v7->var3.width = v8;
   v7->var3.height = v9;
-  v10 = [(PXGSublayoutDataStore *)self infos]+ 16 * a4;
-  v11 = v6;
+  v10 = [(PXGSublayoutDataStore *)self infos]+ 16 * index;
+  v11 = sublayoutCopy;
   if (v10->var0 != v11)
   {
 
@@ -710,13 +710,13 @@ LABEL_10:
   }
 }
 
-- (void)setCount:(int64_t)a3
+- (void)setCount:(int64_t)count
 {
-  if (self->_count != a3)
+  if (self->_count != count)
   {
-    self->_count = a3;
+    self->_count = count;
     capacity = self->_capacity;
-    if (capacity < a3)
+    if (capacity < count)
     {
       if (capacity)
       {
@@ -725,12 +725,12 @@ LABEL_10:
           capacity *= 2;
         }
 
-        while (capacity < a3);
+        while (capacity < count);
       }
 
       else
       {
-        capacity = a3;
+        capacity = count;
       }
 
       self->_capacity = capacity;

@@ -1,7 +1,7 @@
 @interface ArticleMastheadRootViewController
 - (UIEdgeInsets)overrideSafeAreaInsets;
-- (_TtC12NewsArticlesP33_F6C36BFF6F0AD6186D9B355F4002244233ArticleMastheadRootViewController)initWithCoder:(id)a3;
-- (_TtC12NewsArticlesP33_F6C36BFF6F0AD6186D9B355F4002244233ArticleMastheadRootViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC12NewsArticlesP33_F6C36BFF6F0AD6186D9B355F4002244233ArticleMastheadRootViewController)initWithCoder:(id)coder;
+- (_TtC12NewsArticlesP33_F6C36BFF6F0AD6186D9B355F4002244233ArticleMastheadRootViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
 - (void)viewWillLayoutSubviews;
@@ -9,7 +9,7 @@
 
 @implementation ArticleMastheadRootViewController
 
-- (_TtC12NewsArticlesP33_F6C36BFF6F0AD6186D9B355F4002244233ArticleMastheadRootViewController)initWithCoder:(id)a3
+- (_TtC12NewsArticlesP33_F6C36BFF6F0AD6186D9B355F4002244233ArticleMastheadRootViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC12NewsArticlesP33_F6C36BFF6F0AD6186D9B355F4002244233ArticleMastheadRootViewController_coverViewManager;
   sub_1D7D2A59C();
@@ -31,23 +31,23 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7B064F4();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7B06618();
 }
 
 - (void)viewSafeAreaInsetsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7B06848();
 }
 
-- (_TtC12NewsArticlesP33_F6C36BFF6F0AD6186D9B355F4002244233ArticleMastheadRootViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12NewsArticlesP33_F6C36BFF6F0AD6186D9B355F4002244233ArticleMastheadRootViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -58,7 +58,7 @@
 {
   swift_getObjectType();
   sub_1D7B092B4(&qword_1EE0C2EE8, type metadata accessor for ArticleMastheadRootViewController);
-  v3 = self;
+  selfCopy = self;
   sub_1D7D2B9DC();
   v5 = v4;
   v7 = v6;

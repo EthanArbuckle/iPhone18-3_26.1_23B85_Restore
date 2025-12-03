@@ -1,6 +1,6 @@
 @interface FMPFSKBTRangeDiskNode
 - (_TtC10TVRemoteUI21FMPFSKBTRangeDiskNode)init;
-- (_TtC10TVRemoteUI21FMPFSKBTRangeDiskNode)initWithCoder:(id)a3;
+- (_TtC10TVRemoteUI21FMPFSKBTRangeDiskNode)initWithCoder:(id)coder;
 @end
 
 @implementation FMPFSKBTRangeDiskNode
@@ -19,7 +19,7 @@
   return v5;
 }
 
-- (_TtC10TVRemoteUI21FMPFSKBTRangeDiskNode)initWithCoder:(id)a3
+- (_TtC10TVRemoteUI21FMPFSKBTRangeDiskNode)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC10TVRemoteUI21FMPFSKBTRangeDiskNode_sizeSpring;
   *(&self->super.super.super.super.super.isa + v4) = specialized static FMPFFluidSpring.lazySpringWith(initialValue:stableValueThreshold:)(0, 0, 0x3F50624DD2F1A9FCLL, 0);

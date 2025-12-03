@@ -1,14 +1,14 @@
 @interface PKAccountWebServiceAccountActionRequest
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
 @end
 
 @implementation PKAccountWebServiceAccountActionRequest
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  informationCopy = information;
+  v5 = informationCopy;
   if (!self->_baseURL)
   {
     v10 = PKLogFacilityTypeGetObject(0xFuLL);
@@ -29,7 +29,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (!v4)
+  if (!informationCopy)
   {
     v10 = PKLogFacilityTypeGetObject(0xFuLL);
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -83,9 +83,9 @@ LABEL_23:
 
   if (![(PKAccountAction *)action actionType])
   {
-    v29 = [(PKAccountAction *)self->_action amount];
+    amount = [(PKAccountAction *)self->_action amount];
 
-    if (!v29)
+    if (!amount)
     {
       v10 = PKLogFacilityTypeGetObject(0xFuLL);
       if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -102,9 +102,9 @@ LABEL_23:
       goto LABEL_23;
     }
 
-    v30 = [(PKAccountAction *)self->_action currencyCode];
+    currencyCode = [(PKAccountAction *)self->_action currencyCode];
 
-    if (v30)
+    if (currencyCode)
     {
       goto LABEL_6;
     }
@@ -136,45 +136,45 @@ LABEL_6:
 
   [v10 setHTTPMethod:@"POST"];
   [v10 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-  v11 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v12 = PKAccountActionTypeToString([(PKAccountAction *)self->_action actionType]);
-  [v11 setObject:v12 forKey:@"action"];
+  [dictionary setObject:v12 forKey:@"action"];
 
   accountUserAltDSID = self->_accountUserAltDSID;
   if (accountUserAltDSID)
   {
-    [v11 setObject:accountUserAltDSID forKey:@"accountUserAltDSID"];
+    [dictionary setObject:accountUserAltDSID forKey:@"accountUserAltDSID"];
   }
 
   if (![(PKAccountAction *)self->_action actionType])
   {
-    v14 = [(PKAccountAction *)self->_action amount];
-    v15 = [v14 stringValue];
-    [v11 setObject:v15 forKey:@"amount"];
+    amount2 = [(PKAccountAction *)self->_action amount];
+    stringValue = [amount2 stringValue];
+    [dictionary setObject:stringValue forKey:@"amount"];
 
-    v16 = [(PKAccountAction *)self->_action currencyCode];
-    [v11 setObject:v16 forKey:@"currencyCode"];
+    currencyCode2 = [(PKAccountAction *)self->_action currencyCode];
+    [dictionary setObject:currencyCode2 forKey:@"currencyCode"];
 
-    v17 = [(PKAccountAction *)self->_action identifier];
-    [v11 setObject:v17 forKey:@"identifier"];
+    identifier = [(PKAccountAction *)self->_action identifier];
+    [dictionary setObject:identifier forKey:@"identifier"];
 
     v18 = PKAccountRewardRedemptionTypeToString([(PKAccountAction *)self->_action redemptionType]);
-    [v11 setObject:v18 forKey:@"rewardRedemptionType"];
+    [dictionary setObject:v18 forKey:@"rewardRedemptionType"];
   }
 
   if ([(PKAccountAction *)self->_action actionType]== 2)
   {
     v19 = PKAccountRewardRedemptionTypeToString([(PKAccountAction *)self->_action redemptionType]);
-    [v11 setObject:v19 forKey:@"rewardRedemptionType"];
+    [dictionary setObject:v19 forKey:@"rewardRedemptionType"];
 
-    v20 = [(PKAccountAction *)self->_action identifier];
-    if ([v20 length])
+    identifier2 = [(PKAccountAction *)self->_action identifier];
+    if ([identifier2 length])
     {
-      [v11 setObject:v20 forKey:@"identifier"];
+      [dictionary setObject:identifier2 forKey:@"identifier"];
     }
   }
 
-  v21 = [objc_opt_class() _HTTPBodyWithDictionary:v11];
+  v21 = [objc_opt_class() _HTTPBodyWithDictionary:dictionary];
   [v10 setHTTPBody:v21];
 
   v22 = [v10 copy];

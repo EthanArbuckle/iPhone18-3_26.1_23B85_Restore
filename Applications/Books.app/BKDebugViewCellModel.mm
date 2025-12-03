@@ -1,34 +1,34 @@
 @interface BKDebugViewCellModel
-+ (id)modelWithAccessoryType:(int64_t)a3;
-+ (id)modelWithAccessoryView:(id)a3;
-+ (id)modelWithDetailLineBreakMode:(int64_t)a3 detailTextBlock:(id)a4;
++ (id)modelWithAccessoryType:(int64_t)type;
++ (id)modelWithAccessoryView:(id)view;
++ (id)modelWithDetailLineBreakMode:(int64_t)mode detailTextBlock:(id)block;
 @end
 
 @implementation BKDebugViewCellModel
 
-+ (id)modelWithAccessoryView:(id)a3
++ (id)modelWithAccessoryView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = objc_alloc_init(BKDebugViewCellModel);
-  [(BKDebugViewCellModel *)v4 setAccessoryView:v3];
+  [(BKDebugViewCellModel *)v4 setAccessoryView:viewCopy];
 
   return v4;
 }
 
-+ (id)modelWithAccessoryType:(int64_t)a3
++ (id)modelWithAccessoryType:(int64_t)type
 {
   v4 = objc_alloc_init(BKDebugViewCellModel);
-  [(BKDebugViewCellModel *)v4 setAccessoryType:a3];
+  [(BKDebugViewCellModel *)v4 setAccessoryType:type];
 
   return v4;
 }
 
-+ (id)modelWithDetailLineBreakMode:(int64_t)a3 detailTextBlock:(id)a4
++ (id)modelWithDetailLineBreakMode:(int64_t)mode detailTextBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v6 = objc_alloc_init(BKDebugViewCellModel);
-  [(BKDebugViewCellModel *)v6 setDetailLineBreakMode:a3];
-  [(BKDebugViewCellModel *)v6 setDetailTextBlock:v5];
+  [(BKDebugViewCellModel *)v6 setDetailLineBreakMode:mode];
+  [(BKDebugViewCellModel *)v6 setDetailTextBlock:blockCopy];
 
   return v6;
 }

@@ -1,28 +1,28 @@
 @interface MRUArtworkView
 - (CGRect)artworkFrame;
-- (CGRect)artworkFrameForSize:(CGSize)a3 availableBounds:(CGRect)a4;
+- (CGRect)artworkFrameForSize:(CGSize)size availableBounds:(CGRect)bounds;
 - (CGSize)fittingSize;
 - (CGSize)preferredContentSize;
 - (CGSize)sizeThatFits:(CGSize)result;
-- (MRUArtworkView)initWithFrame:(CGRect)a3;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)artworkLoadingDidTimeoutInController:(id)a3;
-- (void)controller:(id)a3 didLoadArtworkImage:(id)a4;
-- (void)controller:(id)a3 didStartLoadingImageForCatalog:(id)a4;
+- (MRUArtworkView)initWithFrame:(CGRect)frame;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)artworkLoadingDidTimeoutInController:(id)controller;
+- (void)controller:(id)controller didLoadArtworkImage:(id)image;
+- (void)controller:(id)controller didStartLoadingImageForCatalog:(id)catalog;
 - (void)layoutSubviews;
-- (void)setArtwork:(id)a3;
+- (void)setArtwork:(id)artwork;
 - (void)setArtworkFittingSize;
-- (void)setArtworkImage:(id)a3;
-- (void)setCatalog:(id)a3;
-- (void)setContentScale:(double)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setPlaceholderImage:(id)a3;
-- (void)setShowPlaceholder:(BOOL)a3;
-- (void)setStyle:(int64_t)a3;
-- (void)setStylingProvider:(id)a3;
-- (void)setUseVisualEffectPlaceholder:(BOOL)a3;
+- (void)setArtworkImage:(id)image;
+- (void)setCatalog:(id)catalog;
+- (void)setContentScale:(double)scale;
+- (void)setFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setPlaceholderImage:(id)image;
+- (void)setShowPlaceholder:(BOOL)placeholder;
+- (void)setStyle:(int64_t)style;
+- (void)setStylingProvider:(id)provider;
+- (void)setUseVisualEffectPlaceholder:(BOOL)placeholder;
 - (void)updateArtworkFittingSize;
 - (void)updatePlaceholderBackground;
 - (void)updateStyle;
@@ -33,21 +33,21 @@
 
 @implementation MRUArtworkView
 
-- (MRUArtworkView)initWithFrame:(CGRect)a3
+- (MRUArtworkView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v31[1] = *MEMORY[0x1E69E9840];
   v26.receiver = self;
   v26.super_class = MRUArtworkView;
   v7 = [(MRUArtworkView *)&v26 initWithFrame:?];
   if (v7)
   {
-    v8 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v7->_observers;
-    v7->_observers = v8;
+    v7->_observers = weakObjectsHashTable;
 
     v31[0] = objc_opt_class();
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:1];
@@ -171,20 +171,20 @@
   }
 }
 
-- (void)setArtwork:(id)a3
+- (void)setArtwork:(id)artwork
 {
-  objc_storeStrong(&self->_artwork, a3);
-  v5 = a3;
-  v6 = [v5 catalog];
+  objc_storeStrong(&self->_artwork, artwork);
+  artworkCopy = artwork;
+  catalog = [artworkCopy catalog];
 
-  [(MRUArtworkView *)self setCatalog:v6];
+  [(MRUArtworkView *)self setCatalog:catalog];
 }
 
-- (void)setCatalog:(id)a3
+- (void)setCatalog:(id)catalog
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_catalog, a3);
+  catalogCopy = catalog;
+  objc_storeStrong(&self->_catalog, catalog);
   v6 = MCLogCategoryDefault();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -193,7 +193,7 @@
     *buf = 138412802;
     v27 = v7;
     v28 = 2048;
-    v29 = self;
+    selfCopy = self;
     v30 = 1024;
     v31 = isArtworkControllerEnabled;
     _os_log_impl(&dword_1A20FC000, v6, OS_LOG_TYPE_INFO, "%@<%p> setCatalog isArtworkControllerEnabled:%{BOOL}u", buf, 0x1Cu);
@@ -202,13 +202,13 @@
   if (self->_isArtworkControllerEnabled)
   {
     [(MRUArtworkView *)self updateArtworkFittingSize];
-    [(MRUArtworkController *)self->_controller setCatalog:v5];
+    [(MRUArtworkController *)self->_controller setCatalog:catalogCopy];
   }
 
   else
   {
-    v9 = [(MRUArtworkView *)self imageLoader];
-    v10 = v9 == 0;
+    imageLoader = [(MRUArtworkView *)self imageLoader];
+    v10 = imageLoader == 0;
 
     if (v10)
     {
@@ -226,10 +226,10 @@
       objc_destroyWeak(buf);
     }
 
-    if (v5)
+    if (catalogCopy)
     {
-      v13 = [(MRUArtworkView *)self imageLoader];
-      v14 = [v13 wouldLoadNewImageForCatalog:v5];
+      imageLoader2 = [(MRUArtworkView *)self imageLoader];
+      v14 = [imageLoader2 wouldLoadNewImageForCatalog:catalogCopy];
 
       if (v14)
       {
@@ -242,7 +242,7 @@
         v21[2] = __29__MRUArtworkView_setCatalog___block_invoke_15;
         v21[3] = &unk_1E7663980;
         objc_copyWeak(&v23, buf);
-        v22 = v5;
+        v22 = catalogCopy;
         v18 = [v15 timerWithInterval:0 repeats:v21 block:v17];
         artworkTimer = self->_artworkTimer;
         self->_artworkTimer = v18;
@@ -253,8 +253,8 @@
     }
 
     [(MRUArtworkView *)self updateArtworkFittingSize];
-    v20 = [(MRUArtworkView *)self imageLoader];
-    [v20 updateCatalog:v5];
+    imageLoader3 = [(MRUArtworkView *)self imageLoader];
+    [imageLoader3 updateCatalog:catalogCopy];
   }
 }
 
@@ -309,12 +309,12 @@ void __29__MRUArtworkView_setCatalog___block_invoke_15(uint64_t a1)
   [WeakRetained setArtworkImage:0];
 }
 
-- (void)setArtworkImage:(id)a3
+- (void)setArtworkImage:(id)image
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_artworkImage, a3);
-  [(UIImageView *)self->_artworkImageView setImage:v5];
+  imageCopy = image;
+  objc_storeStrong(&self->_artworkImage, image);
+  [(UIImageView *)self->_artworkImageView setImage:imageCopy];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
@@ -338,7 +338,7 @@ void __29__MRUArtworkView_setCatalog___block_invoke_15(uint64_t a1)
         v11 = *(*(&v13 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 artworkView:self didChangeArtworkImage:v5];
+          [v11 artworkView:self didChangeArtworkImage:imageCopy];
         }
 
         ++v10;
@@ -368,32 +368,32 @@ uint64_t __34__MRUArtworkView_setArtworkImage___block_invoke(uint64_t a1)
   return [v2 updateStyle];
 }
 
-- (void)setPlaceholderImage:(id)a3
+- (void)setPlaceholderImage:(id)image
 {
-  objc_storeStrong(&self->_placeholderImage, a3);
-  v5 = a3;
-  [(UIImageView *)self->_placeholderImageView setImage:v5];
+  objc_storeStrong(&self->_placeholderImage, image);
+  imageCopy = image;
+  [(UIImageView *)self->_placeholderImageView setImage:imageCopy];
 
   [(MRUArtworkView *)self setNeedsLayout];
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_stylingProvider != v5)
+  providerCopy = provider;
+  if (self->_stylingProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_stylingProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_stylingProvider, provider);
     [(MRUArtworkView *)self updateVisualStyling];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(MRUArtworkView *)self updateStyle];
     [(MRUArtworkView *)self updateVisibility];
 
@@ -401,18 +401,18 @@ uint64_t __34__MRUArtworkView_setArtworkImage___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setShowPlaceholder:(BOOL)a3
+- (void)setShowPlaceholder:(BOOL)placeholder
 {
-  if (self->_showPlaceholder != a3)
+  if (self->_showPlaceholder != placeholder)
   {
-    self->_showPlaceholder = a3;
+    self->_showPlaceholder = placeholder;
     [(MRUArtworkView *)self updateVisibility];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v14.receiver = self;
   v14.super_class = MRUArtworkView;
   [(MRUArtworkView *)&v14 setHighlighted:?];
@@ -420,7 +420,7 @@ uint64_t __34__MRUArtworkView_setArtworkImage___block_invoke(uint64_t a1)
   {
     if (self->_animation == 1)
     {
-      if (v3)
+      if (highlightedCopy)
       {
         v13[0] = MEMORY[0x1E69E9820];
         v13[1] = 3221225472;
@@ -451,10 +451,10 @@ uint64_t __34__MRUArtworkView_setArtworkImage___block_invoke(uint64_t a1)
       [MEMORY[0x1E69DD250] _animateUsingSpringWithDuration:4 delay:v9 options:0 mass:v7 stiffness:0.0 damping:v8 initialVelocity:v5 animations:v6 completion:0.0];
     }
 
-    else if (v3)
+    else if (highlightedCopy)
     {
-      v10 = [(MRUArtworkView *)self artworkImageView];
-      [v10 setAlpha:0.2];
+      artworkImageView = [(MRUArtworkView *)self artworkImageView];
+      [artworkImageView setAlpha:0.2];
     }
 
     else
@@ -499,12 +499,12 @@ void __33__MRUArtworkView_setHighlighted___block_invoke_3(uint64_t a1)
   [v1 setAlpha:1.0];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   UIRectGetCenter();
   v9 = v8;
   v11 = v10;
@@ -548,20 +548,20 @@ void __33__MRUArtworkView_setHighlighted___block_invoke_3(uint64_t a1)
   [(MRUArtworkView *)self layoutIfNeeded];
 }
 
-- (void)setUseVisualEffectPlaceholder:(BOOL)a3
+- (void)setUseVisualEffectPlaceholder:(BOOL)placeholder
 {
-  if (self->_useVisualEffectPlaceholder != a3)
+  if (self->_useVisualEffectPlaceholder != placeholder)
   {
-    self->_useVisualEffectPlaceholder = a3;
+    self->_useVisualEffectPlaceholder = placeholder;
     [(MRUArtworkView *)self updatePlaceholderBackground];
   }
 }
 
-- (void)setContentScale:(double)a3
+- (void)setContentScale:(double)scale
 {
-  if (vabdd_f64(self->_contentScale, a3) > 2.22044605e-16)
+  if (vabdd_f64(self->_contentScale, scale) > 2.22044605e-16)
   {
-    self->_contentScale = a3;
+    self->_contentScale = scale;
     [(MRUArtworkView *)self updateStyle];
   }
 }
@@ -581,15 +581,15 @@ void __33__MRUArtworkView_setHighlighted___block_invoke_3(uint64_t a1)
   return result;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
   v5 = MEMORY[0x1E69DCDC0];
-  [(UIImageView *)self->_artworkImageView frame:a3];
+  [(UIImageView *)self->_artworkImageView frame:interaction];
 
   return [v5 regionWithRect:0 identifier:?];
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v5 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:self];
   v6 = [MEMORY[0x1E69DCDB8] effectWithPreview:v5];
@@ -610,22 +610,22 @@ void __33__MRUArtworkView_setHighlighted___block_invoke_3(uint64_t a1)
   return v22;
 }
 
-- (void)controller:(id)a3 didStartLoadingImageForCatalog:(id)a4
+- (void)controller:(id)controller didStartLoadingImageForCatalog:(id)catalog
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  catalogCopy = catalog;
   v6 = MCLogCategoryDefault();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v9 = 138543618;
     v10 = objc_opt_class();
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A20FC000, v6, OS_LOG_TYPE_INFO, "%{public}@<%p> controller:didStartLoadingImageForCatalog:", &v9, 0x16u);
   }
 
-  v7 = [(MRUArtwork *)self->_artwork catalog];
-  v8 = [v7 isArtworkVisuallyIdenticalToCatalog:v5];
+  catalog = [(MRUArtwork *)self->_artwork catalog];
+  v8 = [catalog isArtworkVisuallyIdenticalToCatalog:catalogCopy];
 
   if (v8)
   {
@@ -633,24 +633,24 @@ void __33__MRUArtworkView_setHighlighted___block_invoke_3(uint64_t a1)
   }
 }
 
-- (void)controller:(id)a3 didLoadArtworkImage:(id)a4
+- (void)controller:(id)controller didLoadArtworkImage:(id)image
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  imageCopy = image;
   v6 = MCLogCategoryDefault();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = 138543618;
     v8 = objc_opt_class();
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A20FC000, v6, OS_LOG_TYPE_INFO, "%{public}@<%p> controller:didLoadArtworkImage:", &v7, 0x16u);
   }
 
-  [(MRUArtworkView *)self setArtworkImage:v5];
+  [(MRUArtworkView *)self setArtworkImage:imageCopy];
 }
 
-- (void)artworkLoadingDidTimeoutInController:(id)a3
+- (void)artworkLoadingDidTimeoutInController:(id)controller
 {
   v9 = *MEMORY[0x1E69E9840];
   v4 = MCLogCategoryDefault();
@@ -659,7 +659,7 @@ void __33__MRUArtworkView_setHighlighted___block_invoke_3(uint64_t a1)
     v5 = 138543618;
     v6 = objc_opt_class();
     v7 = 2048;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A20FC000, v4, OS_LOG_TYPE_INFO, "%{public}@<%p> artworkLoadingDidTimeoutInController:", &v5, 0x16u);
   }
 
@@ -697,8 +697,8 @@ void __33__MRUArtworkView_setHighlighted___block_invoke_3(uint64_t a1)
 - (void)updateVisualStyling
 {
   stylingProvider = self->_stylingProvider;
-  v5 = [(MRUArtworkView *)self traitCollection];
-  v4 = [(MRUVisualStylingProvider *)stylingProvider colorForStyle:0 traitCollection:v5];
+  traitCollection = [(MRUArtworkView *)self traitCollection];
+  v4 = [(MRUVisualStylingProvider *)stylingProvider colorForStyle:0 traitCollection:traitCollection];
   [(UIImageView *)self->_placeholderImageView setTintColor:v4];
 }
 
@@ -787,8 +787,8 @@ LABEL_26:
   [(MRUShadowView *)self->_artworkShadowView setOffset:MRUArtworkShadowOffset()];
   [(MRUShadowView *)self->_artworkShadowView setRadius:MRUArtworkShadowRadius(self->_style)];
   v7 = self->_style;
-  v8 = [(MRUArtworkView *)self traitCollection];
-  v9 = MRUArtworkShadowOpacity(v7, [v8 userInterfaceStyle]);
+  traitCollection = [(MRUArtworkView *)self traitCollection];
+  v9 = MRUArtworkShadowOpacity(v7, [traitCollection userInterfaceStyle]);
   *&v9 = v9;
   [(MRUShadowView *)self->_artworkShadowView setOpacity:v9];
 
@@ -802,15 +802,15 @@ LABEL_26:
   [(UIImageView *)self->_placeholderImageView setPreferredSymbolConfiguration:v12];
 }
 
-- (CGRect)artworkFrameForSize:(CGSize)a3 availableBounds:(CGRect)a4
+- (CGRect)artworkFrameForSize:(CGSize)size availableBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.height;
-  v9 = a3.width;
-  if (!MRUArtworkIsSquare(a3.width, a3.height))
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v8 = size.height;
+  v9 = size.width;
+  if (!MRUArtworkIsSquare(size.width, size.height))
   {
     v20.origin.x = x;
     v20.origin.y = y;
@@ -909,17 +909,17 @@ LABEL_8:
   {
     width = self->_fittingSize.width;
     height = self->_fittingSize.height;
-    v8 = [(MRUArtworkView *)self controller];
-    [v8 setPreferredContentSize:{width, height}];
+    controller = [(MRUArtworkView *)self controller];
+    [controller setPreferredContentSize:{width, height}];
   }
 
   else
   {
-    v8 = [(MRUArtworkView *)self imageLoader];
+    controller = [(MRUArtworkView *)self imageLoader];
     p_fittingSize = &self->_fittingSize;
-    v6 = [(MRUArtworkView *)self traitCollection];
-    [v6 displayScale];
-    [v8 updateFittingSize:p_fittingSize->width scale:{p_fittingSize->height, v7}];
+    traitCollection = [(MRUArtworkView *)self traitCollection];
+    [traitCollection displayScale];
+    [controller updateFittingSize:p_fittingSize->width scale:{p_fittingSize->height, v7}];
   }
 }
 

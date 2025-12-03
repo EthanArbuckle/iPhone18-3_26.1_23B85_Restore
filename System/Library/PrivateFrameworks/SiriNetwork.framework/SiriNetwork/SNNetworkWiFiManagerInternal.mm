@@ -1,10 +1,10 @@
 @interface SNNetworkWiFiManagerInternal
 + (SNNetworkWiFiManagerInternal)shared;
 - (BOOL)isWiFiEnabled;
-- (BOOL)registerOneShotPowerStateDidChangeForWiFiInterface:(id)a3;
+- (BOOL)registerOneShotPowerStateDidChangeForWiFiInterface:(id)interface;
 - (id)getWiFiRecordRepresentation;
-- (void)acquireWiFiAssertionWithWifiAssertionTypeRawValue:(int64_t)a3;
-- (void)powerStateDidChangeForWiFiInterfaceWithName:(id)a3;
+- (void)acquireWiFiAssertionWithWifiAssertionTypeRawValue:(int64_t)value;
+- (void)powerStateDidChangeForWiFiInterfaceWithName:(id)name;
 - (void)releaseWiFiAssertion;
 @end
 
@@ -19,15 +19,15 @@
 
 - (BOOL)isWiFiEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = NetworkWiFiManager.isWiFiEnabled()();
 
   return v3;
 }
 
-- (BOOL)registerOneShotPowerStateDidChangeForWiFiInterface:(id)a3
+- (BOOL)registerOneShotPowerStateDidChangeForWiFiInterface:(id)interface
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(interface);
   if (v4)
   {
     v5 = v4;
@@ -42,14 +42,14 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   v9 = NetworkWiFiManager.registerOneShotPowerStateDidChangeForWiFiInterface(_:)(v7, v6);
   outlined consume of (@escaping @callee_guaranteed (@guaranteed SNLinkRecommendationInfo?) -> ())?(v7);
 
   return v9;
 }
 
-- (void)powerStateDidChangeForWiFiInterfaceWithName:(id)a3
+- (void)powerStateDidChangeForWiFiInterfaceWithName:(id)name
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   v4._countAndFlagsBits = self;
@@ -59,21 +59,21 @@
 
 - (id)getWiFiRecordRepresentation
 {
-  v2 = self;
+  selfCopy = self;
   v3 = NetworkWiFiManager.getWiFiRecordRepresentation()();
 
   return v3;
 }
 
-- (void)acquireWiFiAssertionWithWifiAssertionTypeRawValue:(int64_t)a3
+- (void)acquireWiFiAssertionWithWifiAssertionTypeRawValue:(int64_t)value
 {
-  v4 = self;
-  NetworkWiFiManager.acquireWiFiAssertion(wifiAssertionTypeRawValue:)(a3);
+  selfCopy = self;
+  NetworkWiFiManager.acquireWiFiAssertion(wifiAssertionTypeRawValue:)(value);
 }
 
 - (void)releaseWiFiAssertion
 {
-  v2 = self;
+  selfCopy = self;
   NetworkWiFiManager.releaseWiFiAssertion()();
 }
 

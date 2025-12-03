@@ -1,22 +1,22 @@
 @interface EKREMReminderPredicate
-- (BOOL)evaluateWithObject:(id)a3;
-- (EKREMReminderPredicate)initWithCalendars:(id)a3;
-- (id)fetchMatchingRemindersInStore:(id)a3 allLists:(id)a4 error:(id *)a5;
-- (id)initForCalendarStoreWithCalendars:(id)a3;
-- (id)remListIDsWithAllLists:(id)a3;
+- (BOOL)evaluateWithObject:(id)object;
+- (EKREMReminderPredicate)initWithCalendars:(id)calendars;
+- (id)fetchMatchingRemindersInStore:(id)store allLists:(id)lists error:(id *)error;
+- (id)initForCalendarStoreWithCalendars:(id)calendars;
+- (id)remListIDsWithAllLists:(id)lists;
 @end
 
 @implementation EKREMReminderPredicate
 
-- (EKREMReminderPredicate)initWithCalendars:(id)a3
+- (EKREMReminderPredicate)initWithCalendars:(id)calendars
 {
-  v4 = a3;
+  calendarsCopy = calendars;
   v9.receiver = self;
   v9.super_class = EKREMReminderPredicate;
   v5 = [(EKREMReminderPredicate *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [calendarsCopy copy];
     calendars = v5->_calendars;
     v5->_calendars = v6;
 
@@ -26,15 +26,15 @@
   return v5;
 }
 
-- (id)initForCalendarStoreWithCalendars:(id)a3
+- (id)initForCalendarStoreWithCalendars:(id)calendars
 {
-  v4 = a3;
+  calendarsCopy = calendars;
   v9.receiver = self;
   v9.super_class = EKREMReminderPredicate;
   v5 = [(EKREMReminderPredicate *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [calendarsCopy copy];
     calendars = v5->_calendars;
     v5->_calendars = v6;
 
@@ -44,10 +44,10 @@
   return v5;
 }
 
-- (id)remListIDsWithAllLists:(id)a3
+- (id)remListIDsWithAllLists:(id)lists
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  listsCopy = lists;
   if ([(NSArray *)self->_calendars count]|| self->noCalendarNoResult)
   {
     v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSArray count](self->_calendars, "count")}];
@@ -71,15 +71,15 @@
           }
 
           v11 = *(*(&v19 + 1) + 8 * i);
-          v12 = [v11 frozenObject];
+          frozenObject = [v11 frozenObject];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
           if (isKindOfClass)
           {
-            v14 = [v11 frozenObject];
-            v15 = [v14 remObjectID];
-            [v5 addObject:v15];
+            frozenObject2 = [v11 frozenObject];
+            remObjectID = [frozenObject2 remObjectID];
+            [v5 addObject:remObjectID];
           }
         }
 
@@ -94,7 +94,7 @@
 
   else
   {
-    v16 = [v4 valueForKey:@"objectID"];
+    v16 = [listsCopy valueForKey:@"objectID"];
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -102,18 +102,18 @@
   return v16;
 }
 
-- (id)fetchMatchingRemindersInStore:(id)a3 allLists:(id)a4 error:(id *)a5
+- (id)fetchMatchingRemindersInStore:(id)store allLists:(id)lists error:(id *)error
 {
-  v8 = a3;
-  v9 = [(EKREMReminderPredicate *)self remListIDsWithAllLists:a4];
-  v10 = [v8 fetchRemindersForEventKitBridgingWithListIDs:v9 error:a5];
+  storeCopy = store;
+  v9 = [(EKREMReminderPredicate *)self remListIDsWithAllLists:lists];
+  v10 = [storeCopy fetchRemindersForEventKitBridgingWithListIDs:v9 error:error];
 
   return v10;
 }
 
-- (BOOL)evaluateWithObject:(id)a3
+- (BOOL)evaluateWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -129,9 +129,9 @@
       }
 
       v9 = self->_calendarIdentifierSet;
-      v10 = [v4 calendar];
-      v11 = [v10 calendarIdentifier];
-      v12 = [(NSSet *)v9 containsObject:v11];
+      calendar = [objectCopy calendar];
+      calendarIdentifier = [calendar calendarIdentifier];
+      v12 = [(NSSet *)v9 containsObject:calendarIdentifier];
     }
 
     else

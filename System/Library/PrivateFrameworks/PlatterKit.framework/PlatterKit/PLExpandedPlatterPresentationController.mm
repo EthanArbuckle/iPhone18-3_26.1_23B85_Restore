@@ -1,13 +1,13 @@
 @interface PLExpandedPlatterPresentationController
-+ (CGRect)useableContainerViewBoundsForExpandedPlatter:(id)a3 inContainerViewWithBounds:(CGRect)a4;
-+ (CGSize)_sizeOfExpandedPlatter:(id)a3 withPreferredContentSize:(CGSize)a4 inContainerViewWithBounds:(CGRect)a5;
-+ (CGSize)_sizeOfViewWithPreferredContentSize:(CGSize)a3 inUseableContainerViewBounds:(CGRect)a4;
++ (CGRect)useableContainerViewBoundsForExpandedPlatter:(id)platter inContainerViewWithBounds:(CGRect)bounds;
++ (CGSize)_sizeOfExpandedPlatter:(id)platter withPreferredContentSize:(CGSize)size inContainerViewWithBounds:(CGRect)bounds;
++ (CGSize)_sizeOfViewWithPreferredContentSize:(CGSize)size inUseableContainerViewBounds:(CGRect)bounds;
 - (BOOL)_actuateFeedbackForDismissalIfNecessary;
 - (BOOL)_isLocalHomeAffordanceVisible;
-- (CGPoint)_contentOffsetForPresentedExpandedPlatterView:(id)a3;
+- (CGPoint)_contentOffsetForPresentedExpandedPlatterView:(id)view;
 - (CGPoint)additionalContentTranslation;
-- (CGRect)_dismissLabelContainerViewFrameForPresentedViewFrame:(CGRect)a3;
-- (CGRect)_frameOfPresentedViewInContainerViewWithBounds:(CGRect)a3;
+- (CGRect)_dismissLabelContainerViewFrameForPresentedViewFrame:(CGRect)frame;
+- (CGRect)_frameOfPresentedViewInContainerViewWithBounds:(CGRect)bounds;
 - (CGRect)_keyboardFrame;
 - (CGRect)_sourceViewFinalDismissalFrame;
 - (CGRect)_sourceViewFinalPresentationFrame;
@@ -16,50 +16,50 @@
 - (CGRect)finalPresentationFrameOfPresentingViewInContainerView;
 - (CGRect)frameOfPresentedViewInContainerView;
 - (CGRect)initialFrameOfPresentedViewInContainerView;
-- (PLExpandedPlatterPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5 sourceView:(id)a6;
+- (PLExpandedPlatterPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController sourceView:(id)view;
 - (PLExpandedPlatterPresentationControllerDelegate)presentationControllerDelegate;
-- (UIEdgeInsets)_contentInsetWithPresentedFrame:(CGRect)a3 inContainerViewWithBounds:(CGRect)a4;
+- (UIEdgeInsets)_contentInsetWithPresentedFrame:(CGRect)frame inContainerViewWithBounds:(CGRect)bounds;
 - (id)_clickPresentationInteractionManager;
 - (id)_presentedExpandedPlatter;
 - (void)_actuateFeedbackForDismissalInvalidationIfNecessary;
 - (void)_configureDismissFeedbackIfNecessary;
 - (void)_configureDismissLabelIfNecessary;
-- (void)_dismissExpandedPlatterWithTrigger:(int64_t)a3;
+- (void)_dismissExpandedPlatterWithTrigger:(int64_t)trigger;
 - (void)_fireHomeGesture;
-- (void)_handleBackgroundTap:(id)a3;
-- (void)_handleHomeAffordancePan:(id)a3;
+- (void)_handleBackgroundTap:(id)tap;
+- (void)_handleHomeAffordancePan:(id)pan;
 - (void)_popDismissLabel;
-- (void)_setHomeAffordanceVisible:(BOOL)a3;
-- (void)_setKeyboardHomeAffordanceVisible:(BOOL)a3;
-- (void)_setLocalHomeAffordanceVisible:(BOOL)a3;
+- (void)_setHomeAffordanceVisible:(BOOL)visible;
+- (void)_setKeyboardHomeAffordanceVisible:(BOOL)visible;
+- (void)_setLocalHomeAffordanceVisible:(BOOL)visible;
 - (void)_settleHomeAffordance;
 - (void)completeDismissal;
 - (void)containerViewWillLayoutSubviews;
-- (void)hintDismissalWithCommitProgress:(double)a3 overallProgress:(double)a4;
-- (void)keyboardWillHide:(id)a3;
-- (void)keyboardWillShow:(id)a3;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
+- (void)hintDismissalWithCommitProgress:(double)progress overallProgress:(double)overallProgress;
+- (void)keyboardWillHide:(id)hide;
+- (void)keyboardWillShow:(id)show;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
 - (void)presentationTransitionWillBegin;
-- (void)setAdditionalContentTranslation:(CGPoint)a3;
-- (void)setAdditionalHomeAffordanceSpacing:(double)a3;
-- (void)setHomeAffordancePanGesture:(id)a3;
-- (void)setHomeAffordanceVisible:(BOOL)a3;
-- (void)viewControllerAnimator:(id)a3 willBeginPresentationAnimationWithTransitionContext:(id)a4;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)setAdditionalContentTranslation:(CGPoint)translation;
+- (void)setAdditionalHomeAffordanceSpacing:(double)spacing;
+- (void)setHomeAffordancePanGesture:(id)gesture;
+- (void)setHomeAffordanceVisible:(BOOL)visible;
+- (void)viewControllerAnimator:(id)animator willBeginPresentationAnimationWithTransitionContext:(id)context;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PLExpandedPlatterPresentationController
 
-+ (CGRect)useableContainerViewBoundsForExpandedPlatter:(id)a3 inContainerViewWithBounds:(CGRect)a4
++ (CGRect)useableContainerViewBoundsForExpandedPlatter:(id)platter inContainerViewWithBounds:(CGRect)bounds
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 _peripheryInsets];
+  platterCopy = platter;
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen _peripheryInsets];
   v7 = v6;
 
   if (v7 > 0.0)
   {
-    [v4 dismissControlInsets];
+    [platterCopy dismissControlInsets];
   }
 
   UIRectInset();
@@ -79,33 +79,33 @@
   return result;
 }
 
-+ (CGSize)_sizeOfExpandedPlatter:(id)a3 withPreferredContentSize:(CGSize)a4 inContainerViewWithBounds:(CGRect)a5
++ (CGSize)_sizeOfExpandedPlatter:(id)platter withPreferredContentSize:(CGSize)size inContainerViewWithBounds:(CGRect)bounds
 {
-  height = a4.height;
-  width = a4.width;
-  [a1 useableContainerViewBoundsForExpandedPlatter:a3 inContainerViewWithBounds:{a5.origin.x, a5.origin.y, a5.size.width, a5.size.height}];
+  height = size.height;
+  width = size.width;
+  [self useableContainerViewBoundsForExpandedPlatter:platter inContainerViewWithBounds:{bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height}];
 
-  [a1 _sizeOfViewWithPreferredContentSize:width inUseableContainerViewBounds:{height, v8, v9, v10, v11}];
+  [self _sizeOfViewWithPreferredContentSize:width inUseableContainerViewBounds:{height, v8, v9, v10, v11}];
   result.height = v13;
   result.width = v12;
   return result;
 }
 
-- (PLExpandedPlatterPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5 sourceView:(id)a6
+- (PLExpandedPlatterPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController sourceView:(id)view
 {
-  v9 = a3;
-  v10 = a6;
+  controllerCopy = controller;
+  viewCopy = view;
   v15.receiver = self;
   v15.super_class = PLExpandedPlatterPresentationController;
-  v11 = [(PLExpandedPlatterPresentationController *)&v15 initWithPresentedViewController:v9 presentingViewController:a4];
+  v11 = [(PLExpandedPlatterPresentationController *)&v15 initWithPresentedViewController:controllerCopy presentingViewController:viewController];
   if (v11)
   {
-    if ([v9 conformsToProtocol:&unk_2833BFBA0])
+    if ([controllerCopy conformsToProtocol:&unk_2833BFBA0])
     {
-      [(PLExpandedPlatterPresentationController *)v11 setPresentationControllerDelegate:v9];
+      [(PLExpandedPlatterPresentationController *)v11 setPresentationControllerDelegate:controllerCopy];
     }
 
-    objc_storeWeak(&v11->_sourceView, v10);
+    objc_storeWeak(&v11->_sourceView, viewCopy);
     WeakRetained = objc_loadWeakRetained(&v11->_presentationControllerDelegate);
     if (objc_opt_respondsToSelector())
     {
@@ -129,21 +129,21 @@
   if ((*&self->_expandedPlatterPresentationControllerHelperFlags & 1) == 0)
   {
     *&self->_expandedPlatterPresentationControllerHelperFlags |= 1u;
-    v4 = [(PLExpandedPlatterPresentationController *)self presentedViewController];
+    presentedViewController = [(PLExpandedPlatterPresentationController *)self presentedViewController];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v4 viewWithContent];
+      viewWithContent = [presentedViewController viewWithContent];
     }
 
     else
     {
-      v6 = [(PLExpandedPlatterPresentationController *)self presentedViewController];
-      v5 = [v6 view];
+      presentedViewController2 = [(PLExpandedPlatterPresentationController *)self presentedViewController];
+      viewWithContent = [presentedViewController2 view];
     }
 
-    if ([v5 conformsToProtocol:&unk_2833AE9C0])
+    if ([viewWithContent conformsToProtocol:&unk_2833AE9C0])
     {
-      v7 = v5;
+      expandedPlatterView = viewWithContent;
     }
 
     else
@@ -156,10 +156,10 @@ LABEL_10:
         goto LABEL_11;
       }
 
-      v7 = [v5 expandedPlatterView];
+      expandedPlatterView = [viewWithContent expandedPlatterView];
     }
 
-    v8 = v7;
+    v8 = expandedPlatterView;
 
     objc_storeWeak(&self->_presentedExpandedPlatter, v8);
     WeakRetained = v8;
@@ -173,44 +173,44 @@ LABEL_11:
 
 - (id)_clickPresentationInteractionManager
 {
-  v2 = [(PLExpandedPlatterPresentationController *)self presentedViewController];
+  presentedViewController = [(PLExpandedPlatterPresentationController *)self presentedViewController];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 presenter];
+    presenter = [presentedViewController presenter];
   }
 
   else
   {
-    v3 = 0;
+    presenter = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 clickPresentationInteractionManager];
+    clickPresentationInteractionManager = [presenter clickPresentationInteractionManager];
   }
 
   else
   {
-    v4 = 0;
+    clickPresentationInteractionManager = 0;
   }
 
-  return v4;
+  return clickPresentationInteractionManager;
 }
 
-- (CGRect)_frameOfPresentedViewInContainerViewWithBounds:(CGRect)a3
+- (CGRect)_frameOfPresentedViewInContainerViewWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(PLExpandedPlatterPresentationController *)self _presentedExpandedPlatter];
-  [objc_opt_class() useableContainerViewBoundsForExpandedPlatter:v8 inContainerViewWithBounds:{x, y, width, height}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  _presentedExpandedPlatter = [(PLExpandedPlatterPresentationController *)self _presentedExpandedPlatter];
+  [objc_opt_class() useableContainerViewBoundsForExpandedPlatter:_presentedExpandedPlatter inContainerViewWithBounds:{x, y, width, height}];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [(PLExpandedPlatterPresentationController *)self presentedViewController];
-  [v17 preferredContentSize];
+  presentedViewController = [(PLExpandedPlatterPresentationController *)self presentedViewController];
+  [presentedViewController preferredContentSize];
   v19 = v18;
   v21 = v20;
 
@@ -222,7 +222,7 @@ LABEL_11:
   v29 = v28;
   v30 = objc_opt_class();
   v77 = v27;
-  [v8 platterFrameForFrame:{v23, v25, v27, v29}];
+  [_presentedExpandedPlatter platterFrameForFrame:{v23, v25, v27, v29}];
   [v30 _sizeOfViewWithPreferredContentSize:v31 inUseableContainerViewBounds:{v32, v10, v12, v14, v16}];
   BSRectWithSize();
   v74 = v33;
@@ -258,8 +258,8 @@ LABEL_11:
   p_keyboardFrame = &self->_keyboardFrame;
   if (CGRectIsEmpty(self->_keyboardFrame))
   {
-    v41 = [MEMORY[0x277D759A0] mainScreen];
-    [v41 _peripheryInsets];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _peripheryInsets];
 
     UIRectInset();
     v75 = v44;
@@ -288,7 +288,7 @@ LABEL_11:
   v79 = v43;
   UIRectCenteredXInRect();
   MinX = CGRectGetMinX(v86);
-  [v8 frameForPlatterFrame:{MinX, v39, v74, v80}];
+  [_presentedExpandedPlatter frameForPlatterFrame:{MinX, v39, v74, v80}];
   CGRectGetMinX(v87);
   UIRectContainInRect();
   v50 = v49;
@@ -349,7 +349,7 @@ LABEL_11:
   v91.origin.y = v52;
   v91.size.width = v58;
   v91.size.height = v59;
-  [v8 frameForPlatterFrame:{v50, MaxY - CGRectGetHeight(v91), v54, v56}];
+  [_presentedExpandedPlatter frameForPlatterFrame:{v50, MaxY - CGRectGetHeight(v91), v54, v56}];
   v93.origin.y = CGRectGetMinY(v92);
   v93.origin.x = v50;
   v93.size.width = v54;
@@ -378,14 +378,14 @@ LABEL_11:
   return result;
 }
 
-- (UIEdgeInsets)_contentInsetWithPresentedFrame:(CGRect)a3 inContainerViewWithBounds:(CGRect)a4
+- (UIEdgeInsets)_contentInsetWithPresentedFrame:(CGRect)frame inContainerViewWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [(PLExpandedPlatterPresentationController *)self _presentedExpandedPlatter];
-  [v9 minimumScrollViewContentInsets];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  _presentedExpandedPlatter = [(PLExpandedPlatterPresentationController *)self _presentedExpandedPlatter];
+  [_presentedExpandedPlatter minimumScrollViewContentInsets];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -394,7 +394,7 @@ LABEL_11:
   if (!CGRectIsEmpty(*p_keyboardFrame))
   {
     rect = height;
-    [v9 sizeExcludingActions];
+    [_presentedExpandedPlatter sizeExcludingActions];
     v32.size.height = v19;
     v32.origin.x = x;
     v32.origin.y = y;
@@ -402,9 +402,9 @@ LABEL_11:
     MaxY = CGRectGetMaxY(v32);
     if (MaxY > CGRectGetMinY(*p_keyboardFrame))
     {
-      [v9 actionsSizeThatFits:{a4.size.width, a4.size.height}];
+      [_presentedExpandedPlatter actionsSizeThatFits:{bounds.size.width, bounds.size.height}];
       v29 = v21;
-      v22 = CGRectGetHeight(a4);
+      v22 = CGRectGetHeight(bounds);
       v33.origin.x = x;
       v33.origin.y = y;
       v33.size.width = width;
@@ -429,22 +429,22 @@ LABEL_11:
   return result;
 }
 
-- (CGPoint)_contentOffsetForPresentedExpandedPlatterView:(id)a3
+- (CGPoint)_contentOffsetForPresentedExpandedPlatterView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 scrollView];
-  [v5 contentOffset];
+  viewCopy = view;
+  scrollView = [viewCopy scrollView];
+  [scrollView contentOffset];
   v36 = v6;
-  [v4 contentSizeExcludingActions];
+  [viewCopy contentSizeExcludingActions];
   v35 = v7;
-  v8 = [(PLExpandedPlatterPresentationController *)self presentedView];
-  [v8 frame];
+  presentedView = [(PLExpandedPlatterPresentationController *)self presentedView];
+  [presentedView frame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
 
-  [v4 scrollViewFrame];
+  [viewCopy scrollViewFrame];
   v18 = v17;
   v20 = v19;
   v22 = v21;
@@ -459,7 +459,7 @@ LABEL_11:
   v39.size.width = v14;
   v39.size.height = v16;
   v26 = v20 + CGRectGetMinY(v39);
-  [v4 minimumScrollViewContentInsets];
+  [viewCopy minimumScrollViewContentInsets];
   v28 = v27;
 
   v29 = -v28;
@@ -486,27 +486,27 @@ LABEL_11:
   return result;
 }
 
-- (void)setAdditionalContentTranslation:(CGPoint)a3
+- (void)setAdditionalContentTranslation:(CGPoint)translation
 {
-  if (a3.x != self->_additionalContentTranslation.x || a3.y != self->_additionalContentTranslation.y)
+  if (translation.x != self->_additionalContentTranslation.x || translation.y != self->_additionalContentTranslation.y)
   {
-    self->_additionalContentTranslation = a3;
-    v5 = [(PLExpandedPlatterPresentationController *)self containerView];
-    [v5 setNeedsLayout];
+    self->_additionalContentTranslation = translation;
+    containerView = [(PLExpandedPlatterPresentationController *)self containerView];
+    [containerView setNeedsLayout];
   }
 }
 
-- (void)setHomeAffordanceVisible:(BOOL)a3
+- (void)setHomeAffordanceVisible:(BOOL)visible
 {
-  if (self->_homeAffordanceVisible != a3)
+  if (self->_homeAffordanceVisible != visible)
   {
-    self->_homeAffordanceVisible = a3;
-    if (a3)
+    self->_homeAffordanceVisible = visible;
+    if (visible)
     {
-      v4 = [(PLExpandedPlatterPresentationController *)self presentedViewController];
-      v5 = [v4 _appearState];
+      presentedViewController = [(PLExpandedPlatterPresentationController *)self presentedViewController];
+      _appearState = [presentedViewController _appearState];
 
-      if (v5 != 2)
+      if (_appearState != 2)
       {
         return;
       }
@@ -523,9 +523,9 @@ LABEL_11:
   }
 }
 
-- (void)_setHomeAffordanceVisible:(BOOL)a3
+- (void)_setHomeAffordanceVisible:(BOOL)visible
 {
-  if (a3)
+  if (visible)
   {
     if (CGRectIsEmpty(self->_keyboardFrame))
     {
@@ -534,18 +534,18 @@ LABEL_11:
       return;
     }
 
-    v4 = self;
+    selfCopy2 = self;
     v5 = 1;
   }
 
   else
   {
     [(PLExpandedPlatterPresentationController *)self _setLocalHomeAffordanceVisible:?];
-    v4 = self;
+    selfCopy2 = self;
     v5 = 0;
   }
 
-  [(PLExpandedPlatterPresentationController *)v4 _setKeyboardHomeAffordanceVisible:v5];
+  [(PLExpandedPlatterPresentationController *)selfCopy2 _setKeyboardHomeAffordanceVisible:v5];
 }
 
 - (BOOL)_isLocalHomeAffordanceVisible
@@ -559,27 +559,27 @@ LABEL_11:
   return homeAffordanceView;
 }
 
-- (void)_setLocalHomeAffordanceVisible:(BOOL)a3
+- (void)_setLocalHomeAffordanceVisible:(BOOL)visible
 {
-  v3 = a3;
-  if (a3 && !self->_homeAffordanceView)
+  visibleCopy = visible;
+  if (visible && !self->_homeAffordanceView)
   {
     v5 = objc_alloc_init(MEMORY[0x277D26710]);
     homeAffordanceView = self->_homeAffordanceView;
     self->_homeAffordanceView = v5;
 
     [(MTLumaDodgePillView *)self->_homeAffordanceView setStyle:3];
-    v7 = [(PLExpandedPlatterPresentationController *)self containerView];
-    [v7 addSubview:self->_homeAffordanceView];
+    containerView = [(PLExpandedPlatterPresentationController *)self containerView];
+    [containerView addSubview:self->_homeAffordanceView];
   }
 
   if (self->_homeAffordanceView)
   {
-    v8 = [MEMORY[0x277D75D18] areAnimationsEnabled];
+    areAnimationsEnabled = [MEMORY[0x277D75D18] areAnimationsEnabled];
     v9 = self->_homeAffordanceView;
-    if (v8)
+    if (areAnimationsEnabled)
     {
-      if (v3)
+      if (visibleCopy)
       {
         [(MTLumaDodgePillView *)v9 setHidden:0];
         [(MTLumaDodgePillView *)self->_homeAffordanceView setAlpha:0.0];
@@ -601,26 +601,26 @@ LABEL_11:
       v22[2] = __74__PLExpandedPlatterPresentationController__setLocalHomeAffordanceVisible___block_invoke;
       v22[3] = &unk_278425100;
       v23 = v10;
-      v24 = v3;
+      v24 = visibleCopy;
       v16 = MEMORY[0x277D85DD0];
       v17 = 3221225472;
       v18 = __74__PLExpandedPlatterPresentationController__setLocalHomeAffordanceVisible___block_invoke_2;
       v19 = &unk_278425128;
-      v21 = v3;
+      v21 = visibleCopy;
       v14 = v23;
       v20 = v14;
       [v13 animateWithSettings:v12 options:6 actions:v22 completion:&v16];
       if (([(MTLumaDodgePillView *)self->_homeAffordanceView isHidden:v16]& 1) == 0)
       {
-        v15 = [(PLExpandedPlatterPresentationController *)self containerView];
-        [v15 setNeedsLayout];
+        containerView2 = [(PLExpandedPlatterPresentationController *)self containerView];
+        [containerView2 setNeedsLayout];
       }
     }
 
     else
     {
 
-      [(MTLumaDodgePillView *)v9 setHidden:!v3];
+      [(MTLumaDodgePillView *)v9 setHidden:!visibleCopy];
     }
   }
 }
@@ -649,10 +649,10 @@ uint64_t __74__PLExpandedPlatterPresentationController__setLocalHomeAffordanceVi
   return result;
 }
 
-- (void)_setKeyboardHomeAffordanceVisible:(BOOL)a3
+- (void)_setKeyboardHomeAffordanceVisible:(BOOL)visible
 {
   keyboardHomeAffordance = self->_keyboardHomeAffordance;
-  if (a3)
+  if (visible)
   {
     if (keyboardHomeAffordance)
     {
@@ -662,9 +662,9 @@ uint64_t __74__PLExpandedPlatterPresentationController__setLocalHomeAffordanceVi
     WeakRetained = objc_loadWeakRetained(&self->_presentationControllerDelegate);
     if (objc_opt_respondsToSelector())
     {
-      v5 = [(PLExpandedPlatterPresentationController *)self containerView];
-      v6 = [v5 window];
-      v7 = [WeakRetained expandedPlatterPresentationController:self keyboardAssertionForGestureWindow:v6];
+      containerView = [(PLExpandedPlatterPresentationController *)self containerView];
+      window = [containerView window];
+      v7 = [WeakRetained expandedPlatterPresentationController:self keyboardAssertionForGestureWindow:window];
       [(PLExpandedPlatterPresentationController *)self _setKeyboardHomeAffordance:v7];
     }
 
@@ -684,11 +684,11 @@ uint64_t __74__PLExpandedPlatterPresentationController__setLocalHomeAffordanceVi
   }
 }
 
-- (void)setAdditionalHomeAffordanceSpacing:(double)a3
+- (void)setAdditionalHomeAffordanceSpacing:(double)spacing
 {
-  if (self->_additionalHomeAffordanceSpacing != a3)
+  if (self->_additionalHomeAffordanceSpacing != spacing)
   {
-    self->_additionalHomeAffordanceSpacing = a3;
+    self->_additionalHomeAffordanceSpacing = spacing;
     if ([(PLExpandedPlatterPresentationController *)self isHomeAffordanceVisible])
     {
       if ([(PLExpandedPlatterPresentationController *)self _isLocalHomeAffordanceVisible])
@@ -712,53 +712,53 @@ uint64_t __74__PLExpandedPlatterPresentationController__setLocalHomeAffordanceVi
   }
 }
 
-- (void)setHomeAffordancePanGesture:(id)a3
+- (void)setHomeAffordancePanGesture:(id)gesture
 {
-  v5 = a3;
+  gestureCopy = gesture;
   homeAffordancePanGesture = self->_homeAffordancePanGesture;
-  if (homeAffordancePanGesture != v5)
+  if (homeAffordancePanGesture != gestureCopy)
   {
-    v7 = v5;
+    v7 = gestureCopy;
     if (homeAffordancePanGesture)
     {
       [(UIPanGestureRecognizer *)homeAffordancePanGesture removeTarget:self action:sel__handleHomeAffordancePan_];
     }
 
-    objc_storeStrong(&self->_homeAffordancePanGesture, a3);
+    objc_storeStrong(&self->_homeAffordancePanGesture, gesture);
     homeAffordancePanGesture = [(UIPanGestureRecognizer *)self->_homeAffordancePanGesture addTarget:self action:sel__handleHomeAffordancePan_];
-    v5 = v7;
+    gestureCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](homeAffordancePanGesture, v5);
+  MEMORY[0x2821F96F8](homeAffordancePanGesture, gestureCopy);
 }
 
-- (void)_handleHomeAffordancePan:(id)a3
+- (void)_handleHomeAffordancePan:(id)pan
 {
-  v4 = a3;
-  v5 = [(PLExpandedPlatterPresentationController *)self presentedViewController];
-  if ([v5 isBeingPresented])
+  panCopy = pan;
+  presentedViewController = [(PLExpandedPlatterPresentationController *)self presentedViewController];
+  if ([presentedViewController isBeingPresented])
   {
     goto LABEL_2;
   }
 
-  v6 = [(PLExpandedPlatterPresentationController *)self presentedViewController];
-  v7 = [v6 isBeingDismissed];
+  presentedViewController2 = [(PLExpandedPlatterPresentationController *)self presentedViewController];
+  isBeingDismissed = [presentedViewController2 isBeingDismissed];
 
-  if (v7)
+  if (isBeingDismissed)
   {
     goto LABEL_4;
   }
 
-  v5 = [(PLExpandedPlatterPresentationController *)self containerView];
-  [v5 bounds];
+  presentedViewController = [(PLExpandedPlatterPresentationController *)self containerView];
+  [presentedViewController bounds];
   MaxY = CGRectGetMaxY(v23);
-  [v4 locationInView:v5];
+  [panCopy locationInView:presentedViewController];
   v10 = v9;
-  v11 = [v4 state];
-  if (v11 <= 3)
+  state = [panCopy state];
+  if (state <= 3)
   {
     v12 = MaxY - v10;
-    switch(v11)
+    switch(state)
     {
       case 1:
         if (!self->_homeAffordanceFeedbackGenerator)
@@ -778,7 +778,7 @@ uint64_t __74__PLExpandedPlatterPresentationController__setLocalHomeAffordanceVi
       case 2:
         break;
       case 3:
-        [v4 velocityInView:v5];
+        [panCopy velocityInView:presentedViewController];
         if (v12 + v13 * -0.15 > 100.0)
         {
 LABEL_16:
@@ -805,7 +805,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if ((v11 - 4) < 2)
+  if ((state - 4) < 2)
   {
 LABEL_12:
     [(PLExpandedPlatterPresentationController *)self _settleHomeAffordance];
@@ -816,22 +816,22 @@ LABEL_2:
 LABEL_4:
 }
 
-- (void)_dismissExpandedPlatterWithTrigger:(int64_t)a3
+- (void)_dismissExpandedPlatterWithTrigger:(int64_t)trigger
 {
-  v5 = [(PLExpandedPlatterPresentationController *)self presentedViewController];
+  presentedViewController = [(PLExpandedPlatterPresentationController *)self presentedViewController];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v8 = [(PLExpandedPlatterPresentationController *)self presentedViewController];
-    v7 = [v8 dismisser];
-    [v7 expandedPlatterPresentable:v8 requestsDismissalWithTrigger:a3];
+    presentedViewController2 = [(PLExpandedPlatterPresentationController *)self presentedViewController];
+    dismisser = [presentedViewController2 dismisser];
+    [dismisser expandedPlatterPresentable:presentedViewController2 requestsDismissalWithTrigger:trigger];
   }
 
   else
   {
-    v8 = [(PLExpandedPlatterPresentationController *)self _clickPresentationInteractionManager];
-    [v8 _dismissIfPossibleWithTrigger:a3];
+    presentedViewController2 = [(PLExpandedPlatterPresentationController *)self _clickPresentationInteractionManager];
+    [presentedViewController2 _dismissIfPossibleWithTrigger:trigger];
   }
 }
 
@@ -859,15 +859,15 @@ LABEL_4:
   }
 }
 
-- (void)_handleBackgroundTap:(id)a3
+- (void)_handleBackgroundTap:(id)tap
 {
-  v4 = a3;
-  v9 = [(PLExpandedPlatterPresentationController *)self _presentedExpandedPlatter];
-  [v4 locationInView:v9];
+  tapCopy = tap;
+  _presentedExpandedPlatter = [(PLExpandedPlatterPresentationController *)self _presentedExpandedPlatter];
+  [tapCopy locationInView:_presentedExpandedPlatter];
   v6 = v5;
   v8 = v7;
 
-  if (([v9 pointInside:0 withEvent:{v6, v8}] & 1) == 0)
+  if (([_presentedExpandedPlatter pointInside:0 withEvent:{v6, v8}] & 1) == 0)
   {
     [(PLExpandedPlatterPresentationController *)self _dismissExpandedPlatterWithTrigger:3];
   }
@@ -877,18 +877,18 @@ LABEL_4:
 {
   if (!self->_dismissFeedbackBehavior)
   {
-    v3 = [(PLExpandedPlatterPresentationController *)self containerView];
-    if (v3)
+    containerView = [(PLExpandedPlatterPresentationController *)self containerView];
+    if (containerView)
     {
-      v8 = v3;
+      v8 = containerView;
       v4 = objc_alloc(MEMORY[0x277D76288]);
-      v5 = [(PLExpandedPlatterPresentationController *)self _presentedExpandedPlatter];
-      v6 = [v4 initWithStyle:1 view:v5];
+      _presentedExpandedPlatter = [(PLExpandedPlatterPresentationController *)self _presentedExpandedPlatter];
+      v6 = [v4 initWithStyle:1 view:_presentedExpandedPlatter];
       dismissFeedbackBehavior = self->_dismissFeedbackBehavior;
       self->_dismissFeedbackBehavior = v6;
 
       [(_UIStatesFeedbackGenerator *)self->_dismissFeedbackBehavior prepare];
-      v3 = v8;
+      containerView = v8;
     }
   }
 }
@@ -923,26 +923,26 @@ LABEL_4:
     self->_dismissLabel = v3;
 
     v5 = self->_dismissLabel;
-    v6 = [MEMORY[0x277CF0D60] defaultFontProvider];
-    v7 = [v6 preferredFontForTextStyle:*MEMORY[0x277D76968] hiFontStyle:8];
+    defaultFontProvider = [MEMORY[0x277CF0D60] defaultFontProvider];
+    v7 = [defaultFontProvider preferredFontForTextStyle:*MEMORY[0x277D76968] hiFontStyle:8];
     [(UILabel *)v5 setFont:v7];
 
     v8 = self->_dismissLabel;
-    v9 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v8 setTextColor:v9];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v8 setTextColor:whiteColor];
 
     v10 = self->_dismissLabel;
     v11 = PlatterKitFrameworkBundle();
     v12 = [v11 localizedStringForKey:@"EXPANDED_PLATTER_DISMISS_HINT" value:&stru_28338E618 table:0];
-    v13 = [v12 localizedUppercaseString];
-    [(UILabel *)v10 setText:v13];
+    localizedUppercaseString = [v12 localizedUppercaseString];
+    [(UILabel *)v10 setText:localizedUppercaseString];
 
     [(UILabel *)self->_dismissLabel setContentMode:4];
     [(UILabel *)self->_dismissLabel setTextAlignment:1];
     v14 = objc_alloc(MEMORY[0x277D75D18]);
     v15 = self->_dismissLabel;
-    v16 = [(PLExpandedPlatterPresentationController *)self containerView];
-    [v16 bounds];
+    containerView = [(PLExpandedPlatterPresentationController *)self containerView];
+    [containerView bounds];
     [(UILabel *)v15 sizeThatFits:v17, v18];
     BSRectWithSize();
     v19 = [v14 initWithFrame:?];
@@ -956,18 +956,18 @@ LABEL_4:
     [(UILabel *)v21 setFrame:?];
     [(UIView *)self->_dismissLabelContainerView addSubview:self->_dismissLabel];
     [(UILabel *)self->_dismissLabel setAutoresizingMask:18];
-    v22 = [(PLExpandedPlatterPresentationController *)self containerView];
-    [v22 addSubview:self->_dismissLabelContainerView];
+    containerView2 = [(PLExpandedPlatterPresentationController *)self containerView];
+    [containerView2 addSubview:self->_dismissLabelContainerView];
 
-    v23 = [(PLExpandedPlatterPresentationController *)self containerView];
-    [v23 setNeedsLayout];
+    containerView3 = [(PLExpandedPlatterPresentationController *)self containerView];
+    [containerView3 setNeedsLayout];
   }
 }
 
-- (CGRect)_dismissLabelContainerViewFrameForPresentedViewFrame:(CGRect)a3
+- (CGRect)_dismissLabelContainerViewFrameForPresentedViewFrame:(CGRect)frame
 {
-  v4 = [(PLExpandedPlatterPresentationController *)self containerView];
-  [v4 bounds];
+  containerView = [(PLExpandedPlatterPresentationController *)self containerView];
+  [containerView bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -979,25 +979,25 @@ LABEL_4:
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [(UILabel *)self->_dismissLabel font];
+  font = [(UILabel *)self->_dismissLabel font];
   v43.origin.x = v14;
   v43.origin.y = v16;
   v43.size.width = v18;
   v43.size.height = v20;
   CGRectGetMaxY(v43);
-  [v21 descender];
+  [font descender];
   v44.origin.x = v6;
   v44.origin.y = v8;
   v44.size.width = v10;
   v44.size.height = v12;
   CGRectGetWidth(v44);
-  [v21 lineHeight];
+  [font lineHeight];
   BSRectWithSize();
   v23 = v22;
   v25 = v24;
   v27 = v26;
   v29 = v28;
-  CGRectGetMinY(a3);
+  CGRectGetMinY(frame);
   v45.origin.x = v23;
   v45.origin.y = v25;
   v45.size.width = v27;
@@ -1066,16 +1066,16 @@ uint64_t __59__PLExpandedPlatterPresentationController__popDismissLabel__block_i
   return [v1 setTransform:v4];
 }
 
-- (void)hintDismissalWithCommitProgress:(double)a3 overallProgress:(double)a4
+- (void)hintDismissalWithCommitProgress:(double)progress overallProgress:(double)overallProgress
 {
   [(PLExpandedPlatterPresentationController *)self _configureDismissFeedbackIfNecessary];
-  v7 = fmin(fmax(a4, 0.0), 1.0) * -0.1 + 1.0;
-  v8 = [(PLExpandedPlatterPresentationController *)self presentedView];
+  v7 = fmin(fmax(overallProgress, 0.0), 1.0) * -0.1 + 1.0;
+  presentedView = [(PLExpandedPlatterPresentationController *)self presentedView];
   CGAffineTransformMakeScale(&v30, v7, v7);
-  [v8 setTransform:&v30];
+  [presentedView setTransform:&v30];
 
   [(PLExpandedPlatterPresentationController *)self _configureDismissLabelIfNecessary];
-  v9 = fmax(a3, 0.0);
+  v9 = fmax(progress, 0.0);
   if (v9 >= 1.0)
   {
     v10 = 1.0;
@@ -1087,15 +1087,15 @@ uint64_t __59__PLExpandedPlatterPresentationController__popDismissLabel__block_i
   }
 
   [(UILabel *)self->_dismissLabel setAlpha:v10];
-  v11 = [(PLExpandedPlatterPresentationController *)self _presentedExpandedPlatter];
-  v12 = [v11 superview];
-  [v11 frame];
+  _presentedExpandedPlatter = [(PLExpandedPlatterPresentationController *)self _presentedExpandedPlatter];
+  superview = [_presentedExpandedPlatter superview];
+  [_presentedExpandedPlatter frame];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [(PLExpandedPlatterPresentationController *)self containerView];
-  [v12 convertRect:v21 toView:{v14, v16, v18, v20}];
+  containerView = [(PLExpandedPlatterPresentationController *)self containerView];
+  [superview convertRect:containerView toView:{v14, v16, v18, v20}];
   v23 = v22;
   v25 = v24;
   v27 = v26;
@@ -1121,15 +1121,15 @@ uint64_t __59__PLExpandedPlatterPresentationController__popDismissLabel__block_i
 {
   if (self->_dismissLabel)
   {
-    v21 = [(PLExpandedPlatterPresentationController *)self _presentedExpandedPlatter];
-    v3 = [v21 superview];
-    [v21 frame];
+    _presentedExpandedPlatter = [(PLExpandedPlatterPresentationController *)self _presentedExpandedPlatter];
+    superview = [_presentedExpandedPlatter superview];
+    [_presentedExpandedPlatter frame];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    v12 = [(PLExpandedPlatterPresentationController *)self containerView];
-    [v3 convertRect:v12 toView:{v5, v7, v9, v11}];
+    containerView = [(PLExpandedPlatterPresentationController *)self containerView];
+    [superview convertRect:containerView toView:{v5, v7, v9, v11}];
     v14 = v13;
     v16 = v15;
     v18 = v17;
@@ -1143,8 +1143,8 @@ uint64_t __59__PLExpandedPlatterPresentationController__popDismissLabel__block_i
 
 - (CGRect)frameOfPresentedViewInContainerView
 {
-  v3 = [(PLExpandedPlatterPresentationController *)self containerView];
-  [v3 bounds];
+  containerView = [(PLExpandedPlatterPresentationController *)self containerView];
+  [containerView bounds];
   [(PLExpandedPlatterPresentationController *)self _frameOfPresentedViewInContainerViewWithBounds:?];
   v5 = v4;
   v7 = v6;
@@ -1167,13 +1167,13 @@ uint64_t __59__PLExpandedPlatterPresentationController__popDismissLabel__block_i
   if ((*&self->_expandedPlatterPresentationControllerHelperFlags & 2) == 0)
   {
     *&self->_expandedPlatterPresentationControllerHelperFlags |= 2u;
-    v3 = [(PLExpandedPlatterPresentationController *)self presentedViewController];
+    presentedViewController = [(PLExpandedPlatterPresentationController *)self presentedViewController];
     if (objc_opt_respondsToSelector())
     {
-      v4 = [v3 presenter];
-      if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
+      presenter = [presentedViewController presenter];
+      if (presenter && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        [v4 initialPresentedFrameOfViewForPreview];
+        [presenter initialPresentedFrameOfViewForPreview];
         self->_sourceViewInitialPresentationFrame.origin.x = v5;
         self->_sourceViewInitialPresentationFrame.origin.y = v6;
         self->_sourceViewInitialPresentationFrame.size.width = v7;
@@ -1186,13 +1186,13 @@ LABEL_9:
 
     else
     {
-      v4 = 0;
+      presenter = 0;
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_sourceView);
-    v10 = [WeakRetained superview];
+    superview = [WeakRetained superview];
     [WeakRetained frame];
-    [v10 convertRect:0 toView:?];
+    [superview convertRect:0 toView:?];
     self->_sourceViewInitialPresentationFrame.origin.x = v11;
     self->_sourceViewInitialPresentationFrame.origin.y = v12;
     self->_sourceViewInitialPresentationFrame.size.width = v13;
@@ -1218,13 +1218,13 @@ LABEL_10:
   if ((*&self->_expandedPlatterPresentationControllerHelperFlags & 4) == 0)
   {
     *&self->_expandedPlatterPresentationControllerHelperFlags |= 4u;
-    v3 = [(PLExpandedPlatterPresentationController *)self presentedViewController];
+    presentedViewController = [(PLExpandedPlatterPresentationController *)self presentedViewController];
     if (objc_opt_respondsToSelector())
     {
-      v4 = [v3 presenter];
-      if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
+      presenter = [presentedViewController presenter];
+      if (presenter && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        [v4 finalPresentedFrameOfViewForPreview];
+        [presenter finalPresentedFrameOfViewForPreview];
 LABEL_9:
         self->_sourceViewFinalPresentationFrame.origin.x = v5;
         self->_sourceViewFinalPresentationFrame.origin.y = v6;
@@ -1237,7 +1237,7 @@ LABEL_9:
 
     else
     {
-      v4 = 0;
+      presenter = 0;
     }
 
     [(PLExpandedPlatterPresentationController *)self _sourceViewInitialPresentationFrame];
@@ -1261,13 +1261,13 @@ LABEL_10:
   if ((*&self->_expandedPlatterPresentationControllerHelperFlags & 8) == 0)
   {
     *&self->_expandedPlatterPresentationControllerHelperFlags |= 8u;
-    v3 = [(PLExpandedPlatterPresentationController *)self presentedViewController];
+    presentedViewController = [(PLExpandedPlatterPresentationController *)self presentedViewController];
     if (objc_opt_respondsToSelector())
     {
-      v4 = [v3 presenter];
-      if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
+      presenter = [presentedViewController presenter];
+      if (presenter && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        [v4 finalDismissedFrameOfViewForPreview];
+        [presenter finalDismissedFrameOfViewForPreview];
 LABEL_9:
         self->_sourceViewFinalDismissalFrame.origin.x = v5;
         self->_sourceViewFinalDismissalFrame.origin.y = v6;
@@ -1280,7 +1280,7 @@ LABEL_9:
 
     else
     {
-      v4 = 0;
+      presenter = 0;
     }
 
     [(PLExpandedPlatterPresentationController *)self _sourceViewFinalPresentationFrame];
@@ -1317,22 +1317,22 @@ LABEL_10:
 
   else
   {
-    v15 = [(PLExpandedPlatterPresentationController *)self _presentedExpandedPlatter];
-    v16 = [v15 superview];
-    [v16 convertRect:0 fromView:{x, y, width, height}];
+    _presentedExpandedPlatter = [(PLExpandedPlatterPresentationController *)self _presentedExpandedPlatter];
+    superview = [_presentedExpandedPlatter superview];
+    [superview convertRect:0 fromView:{x, y, width, height}];
     v18 = v17;
     v20 = v19;
     v22 = v21;
     v24 = v23;
 
-    [v15 frameForPlatterFrame:{v18, v20, v22, v24}];
+    [_presentedExpandedPlatter frameForPlatterFrame:{v18, v20, v22, v24}];
     v26 = v25;
     v28 = v27;
     v30 = v29;
     v32 = v31;
-    v33 = [(PLExpandedPlatterPresentationController *)self containerView];
-    v34 = [v15 superview];
-    [v33 convertRect:v34 fromView:{v26, v28, v30, v32}];
+    containerView = [(PLExpandedPlatterPresentationController *)self containerView];
+    superview2 = [_presentedExpandedPlatter superview];
+    [containerView convertRect:superview2 fromView:{v26, v28, v30, v32}];
     v8 = v35;
     v10 = v36;
     v12 = v37;
@@ -1352,9 +1352,9 @@ LABEL_10:
 
 - (CGRect)finalPresentationFrameOfPresentingViewInContainerView
 {
-  v3 = [(PLExpandedPlatterPresentationController *)self _presentedExpandedPlatter];
+  _presentedExpandedPlatter = [(PLExpandedPlatterPresentationController *)self _presentedExpandedPlatter];
   [(PLExpandedPlatterPresentationController *)self frameOfPresentedViewInContainerView];
-  [v3 platterFrameForFrame:?];
+  [_presentedExpandedPlatter platterFrameForFrame:?];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1373,9 +1373,9 @@ LABEL_10:
 
 - (CGRect)finalDismissalFrameOfPresentingViewInContainerView
 {
-  v3 = [(PLExpandedPlatterPresentationController *)self containerView];
+  containerView = [(PLExpandedPlatterPresentationController *)self containerView];
   [(PLExpandedPlatterPresentationController *)self _sourceViewFinalDismissalFrame];
-  [v3 convertRect:0 fromView:?];
+  [containerView convertRect:0 fromView:?];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1394,11 +1394,11 @@ LABEL_10:
 
 - (void)presentationTransitionWillBegin
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel_keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -1407,8 +1407,8 @@ LABEL_10:
   v7[4] = self;
   [MEMORY[0x277D75D18] performWithoutAnimation:v7];
   v5 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__handleBackgroundTap_];
-  v6 = [(PLExpandedPlatterPresentationController *)self containerView];
-  [v6 addGestureRecognizer:v5];
+  containerView = [(PLExpandedPlatterPresentationController *)self containerView];
+  [containerView addGestureRecognizer:v5];
 }
 
 void __74__PLExpandedPlatterPresentationController_presentationTransitionWillBegin__block_invoke(uint64_t a1)
@@ -1430,20 +1430,20 @@ void __74__PLExpandedPlatterPresentationController_presentationTransitionWillBeg
 
 - (void)containerViewWillLayoutSubviews
 {
-  v3 = [(PLExpandedPlatterPresentationController *)self presentedViewController];
-  v4 = [v3 isBeingDismissed];
+  presentedViewController = [(PLExpandedPlatterPresentationController *)self presentedViewController];
+  isBeingDismissed = [presentedViewController isBeingDismissed];
 
-  if ((v4 & 1) == 0)
+  if ((isBeingDismissed & 1) == 0)
   {
-    v5 = [(PLExpandedPlatterPresentationController *)self presentedView];
+    presentedView = [(PLExpandedPlatterPresentationController *)self presentedView];
     [(PLExpandedPlatterPresentationController *)self frameOfPresentedViewInContainerView];
-    PLSetViewFrameMaintainingTransform(v5, v6, v7, v8, v9);
+    PLSetViewFrameMaintainingTransform(presentedView, v6, v7, v8, v9);
   }
 
   if ([(PLExpandedPlatterPresentationController *)self isHomeAffordanceVisible])
   {
-    v10 = [(PLExpandedPlatterPresentationController *)self containerView];
-    [v10 bounds];
+    containerView = [(PLExpandedPlatterPresentationController *)self containerView];
+    [containerView bounds];
     v12 = v11;
     v14 = v13;
     v16 = v15;
@@ -1479,19 +1479,19 @@ void __74__PLExpandedPlatterPresentationController_presentationTransitionWillBeg
   }
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
-  v4 = a3;
-  v5 = [(PLExpandedPlatterPresentationController *)self presentedViewController];
+  containerCopy = container;
+  presentedViewController = [(PLExpandedPlatterPresentationController *)self presentedViewController];
 
-  if (v5 != v4)
+  if (presentedViewController != containerCopy)
   {
     goto LABEL_21;
   }
 
   width = self->_childPreferredContentSize.width;
   height = self->_childPreferredContentSize.height;
-  [v4 preferredContentSize];
+  [containerCopy preferredContentSize];
   self->_childPreferredContentSize.width = v9;
   self->_childPreferredContentSize.height = v8;
   if (width == v9 && height == v8)
@@ -1512,11 +1512,11 @@ void __74__PLExpandedPlatterPresentationController_presentationTransitionWillBeg
     [v12 _setDuration:0.25];
   }
 
-  v13 = [(PLExpandedPlatterPresentationController *)self containerView];
-  v14 = v13;
-  if (v13)
+  containerView = [(PLExpandedPlatterPresentationController *)self containerView];
+  v14 = containerView;
+  if (containerView)
   {
-    [v13 bounds];
+    [containerView bounds];
     v16 = v15;
     v18 = v17;
     if (!v12)
@@ -1527,19 +1527,19 @@ void __74__PLExpandedPlatterPresentationController_presentationTransitionWillBeg
     goto LABEL_11;
   }
 
-  v30 = [MEMORY[0x277D759A0] mainScreen];
-  [v30 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v16 = v31;
   v18 = v32;
 
   if (v12)
   {
 LABEL_11:
-    [(PLExpandedPlatterPresentationController *)self sizeForChildContentContainer:v4 withParentContainerSize:v16, v18];
+    [(PLExpandedPlatterPresentationController *)self sizeForChildContentContainer:containerCopy withParentContainerSize:v16, v18];
     v20 = v19;
     v22 = v21;
-    v23 = [v12 _transitionCoordinator];
-    [v4 viewWillTransitionToSize:v23 withTransitionCoordinator:{v20, v22}];
+    _transitionCoordinator = [v12 _transitionCoordinator];
+    [containerCopy viewWillTransitionToSize:_transitionCoordinator withTransitionCoordinator:{v20, v22}];
   }
 
 LABEL_12:
@@ -1624,22 +1624,22 @@ void __97__PLExpandedPlatterPresentationController_preferredContentSizeDidChange
   [a1[6] __runAlongsideAnimations];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v10.receiver = self;
   v10.super_class = PLExpandedPlatterPresentationController;
-  [(PLExpandedPlatterPresentationController *)&v10 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  objc_storeWeak(&self->_activeTransitionCoordinator, v7);
+  [(PLExpandedPlatterPresentationController *)&v10 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  objc_storeWeak(&self->_activeTransitionCoordinator, coordinatorCopy);
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __94__PLExpandedPlatterPresentationController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_2784251C8;
   v8[4] = self;
-  [v7 animateAlongsideTransition:0 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:0 completion:v8];
   objc_destroyWeak(&location);
 }
 
@@ -1654,14 +1654,14 @@ void *__94__PLExpandedPlatterPresentationController_viewWillTransitionToSize_wit
   return result;
 }
 
-- (void)viewControllerAnimator:(id)a3 willBeginPresentationAnimationWithTransitionContext:(id)a4
+- (void)viewControllerAnimator:(id)animator willBeginPresentationAnimationWithTransitionContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  animatorCopy = animator;
+  contextCopy = context;
   if ([(PLExpandedPlatterPresentationController *)self isHomeAffordanceVisible])
   {
     objc_initWeak(&location, self);
-    [v6 transitionDuration:v7];
+    [animatorCopy transitionDuration:contextCopy];
     v9 = dispatch_time(0, vcvtd_n_f64_s64((v8 * 1000000000.0), 2uLL));
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
@@ -1680,18 +1680,18 @@ void __118__PLExpandedPlatterPresentationController_viewControllerAnimator_willB
   [WeakRetained _setHomeAffordanceVisible:1];
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
-  v4 = a3;
+  showCopy = show;
   if (self->_listenToKeyboardEvents || (-[PLExpandedPlatterPresentationController presentedViewController](self, "presentedViewController"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 _containsFirstResponder], v5, v6))
   {
     self->_listenToKeyboardEvents = 1;
-    v7 = [(PLExpandedPlatterPresentationController *)self presentedView];
-    v8 = [v7 window];
-    v9 = [v4 userInfo];
-    v10 = [v9 objectForKey:*MEMORY[0x277D76BB8]];
+    presentedView = [(PLExpandedPlatterPresentationController *)self presentedView];
+    window = [presentedView window];
+    userInfo = [showCopy userInfo];
+    v10 = [userInfo objectForKey:*MEMORY[0x277D76BB8]];
     [v10 CGRectValue];
-    [v8 convertRect:0 fromWindow:?];
+    [window convertRect:0 fromWindow:?];
     self->_keyboardFrame.origin.x = v11;
     self->_keyboardFrame.origin.y = v12;
     self->_keyboardFrame.size.width = v13;
@@ -1699,10 +1699,10 @@ void __118__PLExpandedPlatterPresentationController_viewControllerAnimator_willB
 
     self->_keyboardFrame.size.height = self->_keyboardFrame.size.height + 8.0;
     self->_keyboardFrame.origin.y = self->_keyboardFrame.origin.y + -8.0;
-    v15 = [(PLExpandedPlatterPresentationController *)self presentedViewController];
-    LOBYTE(v8) = [v15 isBeingDismissed];
+    presentedViewController = [(PLExpandedPlatterPresentationController *)self presentedViewController];
+    LOBYTE(window) = [presentedViewController isBeingDismissed];
 
-    if ((v8 & 1) == 0)
+    if ((window & 1) == 0)
     {
       [(PLExpandedPlatterPresentationController *)self _setLocalHomeAffordanceVisible:0];
       [(PLExpandedPlatterPresentationController *)self frameOfPresentedViewInContainerView];
@@ -1710,28 +1710,28 @@ void __118__PLExpandedPlatterPresentationController_viewControllerAnimator_willB
       v19 = v18;
       v21 = v20;
       v23 = v22;
-      v24 = [(PLExpandedPlatterPresentationController *)self containerView];
-      [v24 bounds];
+      containerView = [(PLExpandedPlatterPresentationController *)self containerView];
+      [containerView bounds];
       [(PLExpandedPlatterPresentationController *)self _contentInsetWithPresentedFrame:*&v17 inContainerViewWithBounds:*&v19, *&v21, *&v23, v25, v26, v27, v28];
       v48 = v30;
       v49 = v29;
       v32 = v31;
       v34 = v33;
 
-      v35 = [v4 userInfo];
-      v36 = [v35 objectForKey:*MEMORY[0x277D76B78]];
+      userInfo2 = [showCopy userInfo];
+      v36 = [userInfo2 objectForKey:*MEMORY[0x277D76B78]];
       [v36 doubleValue];
       v38 = v37;
 
-      v39 = [v4 userInfo];
-      v40 = [v39 objectForKey:*MEMORY[0x277D76B70]];
-      v41 = [v40 unsignedIntegerValue];
+      userInfo3 = [showCopy userInfo];
+      v40 = [userInfo3 objectForKey:*MEMORY[0x277D76B70]];
+      unsignedIntegerValue = [v40 unsignedIntegerValue];
 
-      v42 = [(PLExpandedPlatterPresentationController *)self _presentedExpandedPlatter];
-      v43 = [v42 scrollView];
+      _presentedExpandedPlatter = [(PLExpandedPlatterPresentationController *)self _presentedExpandedPlatter];
+      scrollView = [_presentedExpandedPlatter scrollView];
       objc_initWeak(&location, self);
       v44 = MEMORY[0x277D75D18];
-      v45 = PLViewAnimationOptionsForAnimationCurve(v41);
+      v45 = PLViewAnimationOptionsForAnimationCurve(unsignedIntegerValue);
       if (v38 == 0.0)
       {
         v38 = 0.25;
@@ -1746,9 +1746,9 @@ void __118__PLExpandedPlatterPresentationController_viewControllerAnimator_willB
       v55[2] = v19;
       v55[3] = v21;
       v55[4] = v23;
-      v46 = v42;
+      v46 = _presentedExpandedPlatter;
       v53 = v46;
-      v47 = v43;
+      v47 = scrollView;
       v54 = v47;
       v55[5] = v49;
       v55[6] = v48;
@@ -1809,32 +1809,32 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)keyboardWillHide:(id)a3
+- (void)keyboardWillHide:(id)hide
 {
-  v4 = a3;
+  hideCopy = hide;
   if (self->_listenToKeyboardEvents)
   {
     v5 = *(MEMORY[0x277CBF3A0] + 16);
     self->_keyboardFrame.origin = *MEMORY[0x277CBF3A0];
     self->_keyboardFrame.size = v5;
-    v6 = [(PLExpandedPlatterPresentationController *)self presentedViewController];
-    v7 = [v6 isBeingDismissed];
+    presentedViewController = [(PLExpandedPlatterPresentationController *)self presentedViewController];
+    isBeingDismissed = [presentedViewController isBeingDismissed];
 
-    if ((v7 & 1) == 0)
+    if ((isBeingDismissed & 1) == 0)
     {
       [(PLExpandedPlatterPresentationController *)self _setKeyboardHomeAffordanceVisible:0];
-      v8 = [v4 userInfo];
-      v9 = [v8 objectForKey:*MEMORY[0x277D76B78]];
+      userInfo = [hideCopy userInfo];
+      v9 = [userInfo objectForKey:*MEMORY[0x277D76B78]];
       [v9 doubleValue];
       v11 = v10;
 
-      v12 = [v4 userInfo];
-      v13 = [v12 objectForKey:*MEMORY[0x277D76B70]];
-      v14 = [v13 unsignedIntegerValue];
+      userInfo2 = [hideCopy userInfo];
+      v13 = [userInfo2 objectForKey:*MEMORY[0x277D76B70]];
+      unsignedIntegerValue = [v13 unsignedIntegerValue];
 
       objc_initWeak(&location, self);
       v15 = MEMORY[0x277D75D18];
-      v16 = PLViewAnimationOptionsForAnimationCurve(v14);
+      v16 = PLViewAnimationOptionsForAnimationCurve(unsignedIntegerValue);
       if (v11 == 0.0)
       {
         v11 = 0.25;
@@ -1922,15 +1922,15 @@ void __60__PLExpandedPlatterPresentationController_keyboardWillHide___block_invo
   return result;
 }
 
-+ (CGSize)_sizeOfViewWithPreferredContentSize:(CGSize)a3 inUseableContainerViewBounds:(CGRect)a4
++ (CGSize)_sizeOfViewWithPreferredContentSize:(CGSize)size inUseableContainerViewBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.height;
-  v9 = a3.width;
-  v10 = CGRectGetWidth(a4);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v8 = size.height;
+  v9 = size.width;
+  v10 = CGRectGetWidth(bounds);
   if (v9 > v10)
   {
     v9 = v10;

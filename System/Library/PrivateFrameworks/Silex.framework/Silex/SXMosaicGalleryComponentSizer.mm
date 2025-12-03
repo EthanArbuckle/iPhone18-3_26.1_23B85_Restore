@@ -1,20 +1,20 @@
 @interface SXMosaicGalleryComponentSizer
-- (CGSize)galleryLayouter:(id)a3 dimensionsForItemAtIndex:(unint64_t)a4;
+- (CGSize)galleryLayouter:(id)layouter dimensionsForItemAtIndex:(unint64_t)index;
 - (SXMosaicGalleryLayouter)layouter;
-- (double)calculateHeightForWidth:(double)a3 layoutContext:(id)a4;
-- (id)documentColumnLayoutForGalleryLayouter:(id)a3;
-- (unint64_t)numberOfItemsForGalleryLayouter:(id)a3;
+- (double)calculateHeightForWidth:(double)width layoutContext:(id)context;
+- (id)documentColumnLayoutForGalleryLayouter:(id)layouter;
+- (unint64_t)numberOfItemsForGalleryLayouter:(id)layouter;
 @end
 
 @implementation SXMosaicGalleryComponentSizer
 
-- (double)calculateHeightForWidth:(double)a3 layoutContext:(id)a4
+- (double)calculateHeightForWidth:(double)width layoutContext:(id)context
 {
-  v6 = [(SXMosaicGalleryComponentSizer *)self layouter];
-  [v6 calculateLayoutForWidth:a3];
+  layouter = [(SXMosaicGalleryComponentSizer *)self layouter];
+  [layouter calculateLayoutForWidth:width];
 
-  v7 = [(SXMosaicGalleryComponentSizer *)self layouter];
-  [v7 contentSize];
+  layouter2 = [(SXMosaicGalleryComponentSizer *)self layouter];
+  [layouter2 contentSize];
   v9 = v8;
 
   return v9;
@@ -36,15 +36,15 @@
   return layouter;
 }
 
-- (CGSize)galleryLayouter:(id)a3 dimensionsForItemAtIndex:(unint64_t)a4
+- (CGSize)galleryLayouter:(id)layouter dimensionsForItemAtIndex:(unint64_t)index
 {
-  v6 = [(SXComponentSizer *)self component];
-  v7 = [v6 items];
-  v8 = [v7 objectAtIndex:a4];
+  component = [(SXComponentSizer *)self component];
+  items = [component items];
+  v8 = [items objectAtIndex:index];
 
-  v9 = [(SXComponentSizer *)self DOMObjectProvider];
-  v10 = [v8 imageIdentifier];
-  v11 = [v9 imageResourceForIdentifier:v10];
+  dOMObjectProvider = [(SXComponentSizer *)self DOMObjectProvider];
+  imageIdentifier = [v8 imageIdentifier];
+  v11 = [dOMObjectProvider imageResourceForIdentifier:imageIdentifier];
 
   [v11 dimensions];
   v13 = v12;
@@ -57,21 +57,21 @@
   return result;
 }
 
-- (unint64_t)numberOfItemsForGalleryLayouter:(id)a3
+- (unint64_t)numberOfItemsForGalleryLayouter:(id)layouter
 {
-  v3 = [(SXComponentSizer *)self component];
-  v4 = [v3 items];
-  v5 = [v4 count];
+  component = [(SXComponentSizer *)self component];
+  items = [component items];
+  v5 = [items count];
 
   return v5;
 }
 
-- (id)documentColumnLayoutForGalleryLayouter:(id)a3
+- (id)documentColumnLayoutForGalleryLayouter:(id)layouter
 {
-  v3 = [(SXComponentSizer *)self layoutOptions];
-  v4 = [v3 columnLayout];
+  layoutOptions = [(SXComponentSizer *)self layoutOptions];
+  columnLayout = [layoutOptions columnLayout];
 
-  return v4;
+  return columnLayout;
 }
 
 @end

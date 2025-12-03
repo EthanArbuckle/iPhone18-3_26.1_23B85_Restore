@@ -1,49 +1,49 @@
 @interface IDSDictionaryInvitationContext
-- (BOOL)isEqual:(id)a3;
-- (IDSDictionaryInvitationContext)initWithCoder:(id)a3;
-- (IDSDictionaryInvitationContext)initWithDictionary:(id)a3 schema:(id)a4;
-- (IDSDictionaryInvitationContext)initWithPayload:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IDSDictionaryInvitationContext)initWithCoder:(id)coder;
+- (IDSDictionaryInvitationContext)initWithDictionary:(id)dictionary schema:(id)schema;
+- (IDSDictionaryInvitationContext)initWithPayload:(id)payload;
 - (NSString)description;
 - (id)payload;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSDictionaryInvitationContext
 
-- (IDSDictionaryInvitationContext)initWithDictionary:(id)a3 schema:(id)a4
+- (IDSDictionaryInvitationContext)initWithDictionary:(id)dictionary schema:(id)schema
 {
-  v7 = a3;
-  v8 = a4;
+  dictionaryCopy = dictionary;
+  schemaCopy = schema;
   v12.receiver = self;
   v12.super_class = IDSDictionaryInvitationContext;
   v9 = [(IDSDictionaryInvitationContext *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_schemaIdentifier, a4);
+    objc_storeStrong(&v9->_schemaIdentifier, schema);
     v10->_contextType = 1;
-    objc_storeStrong(&v10->_dictionary, a3);
+    objc_storeStrong(&v10->_dictionary, dictionary);
   }
 
   return v10;
 }
 
-- (IDSDictionaryInvitationContext)initWithPayload:(id)a3
+- (IDSDictionaryInvitationContext)initWithPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v12.receiver = self;
   v12.super_class = IDSDictionaryInvitationContext;
   v5 = [(IDSDictionaryInvitationContext *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:*MEMORY[0x1E69A49B0]];
+    v6 = [payloadCopy objectForKey:*MEMORY[0x1E69A49B0]];
     schemaIdentifier = v5->_schemaIdentifier;
     v5->_schemaIdentifier = v6;
 
-    v8 = [v4 objectForKey:*MEMORY[0x1E69A49B8]];
+    v8 = [payloadCopy objectForKey:*MEMORY[0x1E69A49B8]];
     v5->_contextType = [v8 intValue];
 
-    v9 = [v4 objectForKey:*MEMORY[0x1E69A49A0]];
+    v9 = [payloadCopy objectForKey:*MEMORY[0x1E69A49A0]];
     dictionary = v5->_dictionary;
     v5->_dictionary = v9;
   }
@@ -67,27 +67,27 @@
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(IDSDictionaryInvitationContext *)self schemaIdentifier];
-  v5 = [(IDSDictionaryInvitationContext *)self contextType];
-  v6 = [(IDSDictionaryInvitationContext *)self payload];
-  v7 = [v3 stringWithFormat:@"<IDSDictionaryInvitationContext %p>: schemaIdentifier %@ contextType %ld payload %@", self, v4, v5, v6];
+  schemaIdentifier = [(IDSDictionaryInvitationContext *)self schemaIdentifier];
+  contextType = [(IDSDictionaryInvitationContext *)self contextType];
+  payload = [(IDSDictionaryInvitationContext *)self payload];
+  v7 = [v3 stringWithFormat:@"<IDSDictionaryInvitationContext %p>: schemaIdentifier %@ contextType %ld payload %@", self, schemaIdentifier, contextType, payload];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(IDSDictionaryInvitationContext *)self contextType];
-    if (v6 == [v5 contextType] && (-[IDSDictionaryInvitationContext schemaIdentifier](self, "schemaIdentifier"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "schemaIdentifier"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "isEqual:", v8), v8, v7, v9))
+    v5 = equalCopy;
+    contextType = [(IDSDictionaryInvitationContext *)self contextType];
+    if (contextType == [v5 contextType] && (-[IDSDictionaryInvitationContext schemaIdentifier](self, "schemaIdentifier"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "schemaIdentifier"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "isEqual:", v8), v8, v7, v9))
     {
-      v10 = [(IDSDictionaryInvitationContext *)self dictionary];
-      v11 = [v5 dictionary];
-      v12 = [v10 isEqual:v11];
+      dictionary = [(IDSDictionaryInvitationContext *)self dictionary];
+      dictionary2 = [v5 dictionary];
+      v12 = [dictionary isEqual:dictionary2];
     }
 
     else
@@ -104,17 +104,17 @@
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(IDSDictionaryInvitationContext *)self payload];
-  [v4 encodeObject:v5 forKey:@"contextPayload"];
+  coderCopy = coder;
+  payload = [(IDSDictionaryInvitationContext *)self payload];
+  [coderCopy encodeObject:payload forKey:@"contextPayload"];
 }
 
-- (IDSDictionaryInvitationContext)initWithCoder:(id)a3
+- (IDSDictionaryInvitationContext)initWithCoder:(id)coder
 {
   v3 = MEMORY[0x1E695DFD8];
-  v4 = a3;
+  coderCopy = coder;
   v22 = [v3 alloc];
   v21 = objc_opt_class();
   v20 = objc_opt_class();
@@ -130,7 +130,7 @@
   v12 = objc_opt_class();
   v13 = objc_opt_class();
   v14 = [v22 initWithObjects:{v21, v20, v19, v18, v5, v6, v7, v8, v9, v10, v11, v12, v13, objc_opt_class(), 0}];
-  v15 = [v4 decodeObjectOfClasses:v14 forKey:@"contextPayload"];
+  v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"contextPayload"];
 
   v16 = [(IDSDictionaryInvitationContext *)self initWithPayload:v15];
   return v16;

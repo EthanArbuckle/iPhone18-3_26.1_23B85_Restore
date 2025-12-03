@@ -1,10 +1,10 @@
 @interface MIDIUMPMutableFunctionBlock
-- (BOOL)reconfigureWithFirstGroup:(unsigned __int8)a3 direction:(int)a4 MIDI1Info:(int)a5 UIHint:(int)a6 error:(id *)a7;
+- (BOOL)reconfigureWithFirstGroup:(unsigned __int8)group direction:(int)direction MIDI1Info:(int)info UIHint:(int)hint error:(id *)error;
 - (BOOL)registerWithServer;
-- (BOOL)setEnabled:(BOOL)a3 error:(id *)a4;
-- (BOOL)setName:(id)a3 error:(id *)a4;
+- (BOOL)setEnabled:(BOOL)enabled error:(id *)error;
+- (BOOL)setName:(id)name error:(id *)error;
 - (MIDIUMPMutableEndpoint)UMPEndpoint;
-- (MIDIUMPMutableFunctionBlock)initWithName:(id)a3 direction:(int)a4 firstGroup:(unsigned __int8)a5 totalGroupsSpanned:(unsigned __int8)a6 maxSysEx8Streams:(unsigned __int8)a7 MIDI1Info:(int)a8 UIHint:(int)a9 isEnabled:(BOOL)a10;
+- (MIDIUMPMutableFunctionBlock)initWithName:(id)name direction:(int)direction firstGroup:(unsigned __int8)group totalGroupsSpanned:(unsigned __int8)spanned maxSysEx8Streams:(unsigned __int8)streams MIDI1Info:(int)info UIHint:(int)hint isEnabled:(BOOL)self0;
 - (void)dealloc;
 @end
 
@@ -32,13 +32,13 @@
   return v5;
 }
 
-- (BOOL)reconfigureWithFirstGroup:(unsigned __int8)a3 direction:(int)a4 MIDI1Info:(int)a5 UIHint:(int)a6 error:(id *)a7
+- (BOOL)reconfigureWithFirstGroup:(unsigned __int8)group direction:(int)direction MIDI1Info:(int)info UIHint:(int)hint error:(id *)error
 {
-  v11 = a3;
+  groupCopy = group;
   os_unfair_recursive_lock_lock_with_options();
-  if ([(MIDIUMPFunctionBlock *)self totalGroupsSpanned]+ v11 >= 0x11)
+  if ([(MIDIUMPFunctionBlock *)self totalGroupsSpanned]+ groupCopy >= 0x11)
   {
-    if (a7)
+    if (error)
     {
       goto LABEL_7;
     }
@@ -48,19 +48,19 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (a4 == 3 || ([(MIDIUMPFunctionBlock *)self midiCIDevice], v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
+  if (direction == 3 || ([(MIDIUMPFunctionBlock *)self midiCIDevice], v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
   {
-    self->super._firstGroup = v11;
-    self->super._direction = a4;
-    self->super._MIDI1Info = a5;
-    self->super._UIHint = a6;
-    v14 = [(MIDIUMPFunctionBlock *)self serializeDescription];
-    v16 = UMPCIObjectSetDescription([(MIDIUMPFunctionBlock *)self objectRef], v14);
+    self->super._firstGroup = groupCopy;
+    self->super._direction = direction;
+    self->super._MIDI1Info = info;
+    self->super._UIHint = hint;
+    serializeDescription = [(MIDIUMPFunctionBlock *)self serializeDescription];
+    v16 = UMPCIObjectSetDescription([(MIDIUMPFunctionBlock *)self objectRef], serializeDescription);
     v15 = v16 == 0;
-    if (a7 && v16)
+    if (error && v16)
     {
       v17 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v16 userInfo:0];
-      *a7 = v17;
+      *error = v17;
 
       v15 = 0;
     }
@@ -68,15 +68,15 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  if (!a7)
+  if (!error)
   {
     goto LABEL_12;
   }
 
 LABEL_7:
-  v14 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-10845 userInfo:0];
+  serializeDescription = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-10845 userInfo:0];
   v15 = 0;
-  *a7 = v14;
+  *error = serializeDescription;
 LABEL_11:
 
 LABEL_13:
@@ -84,69 +84,69 @@ LABEL_13:
   return v15;
 }
 
-- (BOOL)setName:(id)a3 error:(id *)a4
+- (BOOL)setName:(id)name error:(id *)error
 {
-  v6 = a3;
+  nameCopy = name;
   os_unfair_recursive_lock_lock_with_options();
-  v7 = [v6 copy];
+  v7 = [nameCopy copy];
   name = self->super._name;
   self->super._name = v7;
 
-  v9 = [(MIDIUMPFunctionBlock *)self serializeDescription];
-  v10 = UMPCIObjectSetDescription([(MIDIUMPFunctionBlock *)self objectRef], v9);
+  serializeDescription = [(MIDIUMPFunctionBlock *)self serializeDescription];
+  v10 = UMPCIObjectSetDescription([(MIDIUMPFunctionBlock *)self objectRef], serializeDescription);
   v11 = v10;
-  if (a4 && v10)
+  if (error && v10)
   {
     v12 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-10844 userInfo:0];
-    *a4 = v12;
+    *error = v12;
   }
 
   os_unfair_recursive_lock_unlock();
   return v11 == 0;
 }
 
-- (BOOL)setEnabled:(BOOL)a3 error:(id *)a4
+- (BOOL)setEnabled:(BOOL)enabled error:(id *)error
 {
-  v5 = a3;
+  enabledCopy = enabled;
   os_unfair_recursive_lock_lock_with_options();
   if ([(MIDIUMPFunctionBlock *)self objectRef]|| [(MIDIUMPMutableFunctionBlock *)self registerWithServer])
   {
-    v7 = UMPCIObjectSetEnableState([(MIDIUMPFunctionBlock *)self objectRef], v5);
+    v7 = UMPCIObjectSetEnableState([(MIDIUMPFunctionBlock *)self objectRef], enabledCopy);
     if (v7)
     {
-      if (a4)
+      if (error)
       {
         v8 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v7 userInfo:0];
 LABEL_9:
         v9 = v8;
-        *a4 = v9;
+        *error = v9;
 
-        LOBYTE(a4) = 0;
+        LOBYTE(error) = 0;
       }
     }
 
     else
     {
-      self->super._isEnabled = v5;
-      LOBYTE(a4) = 1;
+      self->super._isEnabled = enabledCopy;
+      LOBYTE(error) = 1;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v8 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-10844 userInfo:0];
     goto LABEL_9;
   }
 
   os_unfair_recursive_lock_unlock();
-  return a4;
+  return error;
 }
 
 - (BOOL)registerWithServer
 {
-  v3 = [(MIDIUMPFunctionBlock *)self serializeDescription];
+  serializeDescription = [(MIDIUMPFunctionBlock *)self serializeDescription];
   v6 = 0;
-  v4 = UMPCIObjectCreate(1, v3, &v6);
+  v4 = UMPCIObjectCreate(1, serializeDescription, &v6);
   if (!v4)
   {
     os_unfair_recursive_lock_lock_with_options();
@@ -165,9 +165,9 @@ LABEL_9:
   [(MIDIUMPMutableFunctionBlock *)&v3 dealloc];
 }
 
-- (MIDIUMPMutableFunctionBlock)initWithName:(id)a3 direction:(int)a4 firstGroup:(unsigned __int8)a5 totalGroupsSpanned:(unsigned __int8)a6 maxSysEx8Streams:(unsigned __int8)a7 MIDI1Info:(int)a8 UIHint:(int)a9 isEnabled:(BOOL)a10
+- (MIDIUMPMutableFunctionBlock)initWithName:(id)name direction:(int)direction firstGroup:(unsigned __int8)group totalGroupsSpanned:(unsigned __int8)spanned maxSysEx8Streams:(unsigned __int8)streams MIDI1Info:(int)info UIHint:(int)hint isEnabled:(BOOL)self0
 {
-  v17 = a3;
+  nameCopy = name;
   if (CheckVirtualEndpointCreation(void)::virtualEndpointsAllowed < 0)
   {
     CheckVirtualEndpointCreation(void)::virtualEndpointsAllowed = 0;
@@ -180,7 +180,7 @@ LABEL_9:
     else if (!CheckVirtualEndpointCreation(void)::virtualEndpointsAllowed)
     {
 LABEL_11:
-      v21 = 0;
+      selfCopy = 0;
       goto LABEL_12;
     }
   }
@@ -190,18 +190,18 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  objc_storeStrong(&self->super._name, a3);
-  self->super._direction = a4;
-  self->super._firstGroup = a5;
-  self->super._totalGroupsSpanned = a6;
-  self->super._maxSysEx8Streams = a7;
-  self->super._MIDI1Info = a8;
-  self->super._UIHint = a9;
-  self->super._isEnabled = a10;
-  v21 = self;
+  objc_storeStrong(&self->super._name, name);
+  self->super._direction = direction;
+  self->super._firstGroup = group;
+  self->super._totalGroupsSpanned = spanned;
+  self->super._maxSysEx8Streams = streams;
+  self->super._MIDI1Info = info;
+  self->super._UIHint = hint;
+  self->super._isEnabled = enabled;
+  selfCopy = self;
 LABEL_12:
 
-  return v21;
+  return selfCopy;
 }
 
 @end

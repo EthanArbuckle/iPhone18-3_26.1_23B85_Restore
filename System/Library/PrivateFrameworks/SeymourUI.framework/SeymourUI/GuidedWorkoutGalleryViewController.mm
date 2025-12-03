@@ -1,43 +1,43 @@
 @interface GuidedWorkoutGalleryViewController
-- (_TtC9SeymourUI34GuidedWorkoutGalleryViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC9SeymourUI34GuidedWorkoutGalleryViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)handleBackButtonTap;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation GuidedWorkoutGalleryViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B7C81EC();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_20B7C83FC(a3);
+  selfCopy = self;
+  sub_20B7C83FC(appear);
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v3 = a3;
+  appearingCopy = appearing;
   v7.receiver = self;
   v7.super_class = type metadata accessor for GuidedWorkoutGalleryViewController();
   v4 = v7.receiver;
-  [(GuidedWorkoutGalleryViewController *)&v7 viewIsAppearing:v3];
+  [(GuidedWorkoutGalleryViewController *)&v7 viewIsAppearing:appearingCopy];
   [*(*(*&v4[OBJC_IVAR____TtC9SeymourUI34GuidedWorkoutGalleryViewController_dataProvider] + OBJC_IVAR____TtC9SeymourUI32GuidedWorkoutGalleryDataProvider_page) + OBJC_IVAR____TtC9SeymourUI11CatalogPage_collectionView) contentOffset];
   sub_20BE81338(v5, v6);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = sub_20C1333A4();
   v6 = *(v5 - 8);
   MEMORY[0x28223BE20](v5);
@@ -45,10 +45,10 @@
   v9 = type metadata accessor for GuidedWorkoutGalleryViewController();
   v12.receiver = self;
   v12.super_class = v9;
-  v10 = self;
-  [(GuidedWorkoutGalleryViewController *)&v12 viewDidAppear:v3];
-  v11[1] = v10;
-  (*(v6 + 16))(v8, *(&v10->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI34GuidedWorkoutGalleryViewController_dataProvider) + OBJC_IVAR____TtC9SeymourUI32GuidedWorkoutGalleryDataProvider_metricPage, v5);
+  selfCopy = self;
+  [(GuidedWorkoutGalleryViewController *)&v12 viewDidAppear:appearCopy];
+  v11[1] = selfCopy;
+  (*(v6 + 16))(v8, *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI34GuidedWorkoutGalleryViewController_dataProvider) + OBJC_IVAR____TtC9SeymourUI32GuidedWorkoutGalleryDataProvider_metricPage, v5);
   sub_20B7C9A98(&qword_27C7659A0);
   sub_20C138C54();
   (*(v6 + 8))(v8, v5);
@@ -57,19 +57,19 @@
   sub_20C139364();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_20B7C8B10(a3);
+  selfCopy = self;
+  sub_20B7C8B10(disappear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for GuidedWorkoutGalleryViewController();
   v4 = v5.receiver;
-  [(GuidedWorkoutGalleryViewController *)&v5 viewDidDisappear:v3];
+  [(GuidedWorkoutGalleryViewController *)&v5 viewDidDisappear:disappearCopy];
   sub_20B7C9A98(&qword_27C765990);
   sub_20B7C9A98(&qword_27C765998);
   sub_20C139374();
@@ -91,15 +91,15 @@
 
 - (void)handleBackButtonTap
 {
-  v4 = self;
-  v2 = [(GuidedWorkoutGalleryViewController *)v4 navigationController];
-  if (v2)
+  selfCopy = self;
+  navigationController = [(GuidedWorkoutGalleryViewController *)selfCopy navigationController];
+  if (navigationController)
   {
-    v3 = v2;
+    v3 = navigationController;
   }
 }
 
-- (_TtC9SeymourUI34GuidedWorkoutGalleryViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI34GuidedWorkoutGalleryViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

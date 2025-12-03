@@ -1,13 +1,13 @@
 @interface MPAssistantLikesMediaEntity
-- (void)_performWithCompletion:(id)a3;
-- (void)performWithCompletion:(id)a3;
+- (void)_performWithCompletion:(id)completion;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation MPAssistantLikesMediaEntity
 
-- (void)_performWithCompletion:(id)a3
+- (void)_performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   requestAceHash = self->_requestAceHash;
   userIdentity = self->_userIdentity;
   v8[0] = MEMORY[0x277D85DD0];
@@ -15,19 +15,19 @@
   v8[2] = sub_2334EDDF8;
   v8[3] = &unk_2789DB2D8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   sub_233505CB8(@"Likes Media Entity", requestAceHash, 21, userIdentity, v8);
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if (![(NSString *)self->_requestAceHash length])
   {
-    v5 = [(MPAssistantLikesMediaEntity *)self aceId];
-    v6 = sub_233505670(@"Likes Media Entity", v5);
+    aceId = [(MPAssistantLikesMediaEntity *)self aceId];
+    v6 = sub_233505670(@"Likes Media Entity", aceId);
     requestAceHash = self->_requestAceHash;
     self->_requestAceHash = v6;
   }
@@ -42,16 +42,16 @@
   }
 
   v10 = self->_requestAceHash;
-  v11 = [(SAMPLikesMediaEntity *)self influencedSharedUserId];
-  v12 = [(SAMPLikesMediaEntity *)self influencedSharedUserId];
+  influencedSharedUserId = [(SAMPLikesMediaEntity *)self influencedSharedUserId];
+  influencedSharedUserId2 = [(SAMPLikesMediaEntity *)self influencedSharedUserId];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_2334EE0D4;
   v15[3] = &unk_2789DB648;
   v15[4] = self;
-  v16 = v4;
-  v13 = v4;
-  sub_233506A24(@"Likes Media Entity", v10, v11, v12, v15);
+  v16 = completionCopy;
+  v13 = completionCopy;
+  sub_233506A24(@"Likes Media Entity", v10, influencedSharedUserId, influencedSharedUserId2, v15);
 
   v14 = *MEMORY[0x277D85DE8];
 }

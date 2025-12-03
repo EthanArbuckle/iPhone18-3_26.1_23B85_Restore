@@ -1,22 +1,22 @@
 @interface MDLTransform
-+ (__n128)globalTransformWithObject:(uint64_t)a3 atTime:(void *)a4;
-+ (__n128)localTransformWithObject:(const char *)a3 atTime:(void *)a4;
++ (__n128)globalTransformWithObject:(uint64_t)object atTime:(void *)time;
++ (__n128)localTransformWithObject:(const char *)object atTime:(void *)time;
 - (CAAnimation)transformAnimation;
 - (MDLTransform)init;
 - (MDLTransform)initWithMatrix:(matrix_float4x4)matrix;
 - (MDLTransform)initWithTransformComponent:(id)component;
 - (MDLTransform)initWithTransformComponent:(id)component resetsTransform:(BOOL)resetsTransform;
 - (NSArray)keyTimes;
-- (__n128)localTransformAtTime:(uint64_t)a1;
+- (__n128)localTransformAtTime:(uint64_t)time;
 - (__n128)matrix;
 - (double)maximumTime;
 - (double)minimumTime;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (matrix_float4x4)rotationMatrixAtTime:(NSTimeInterval)time;
-- (uint64_t)setLocalTransform:(__n128)a3;
-- (uint64_t)setLocalTransform:(__n128)a3 forTime:(__n128)a4;
-- (uint64_t)setMatrix:(__n128)a3;
+- (uint64_t)setLocalTransform:(__n128)transform;
+- (uint64_t)setLocalTransform:(__n128)transform forTime:(__n128)time;
+- (uint64_t)setMatrix:(__n128)matrix;
 - (vector_float3)rotation;
 - (vector_float3)rotationAtTime:(NSTimeInterval)time;
 - (vector_float3)scale;
@@ -137,20 +137,20 @@
 
 - (__n128)matrix
 {
-  result = *(a1 + 144);
-  v2 = *(a1 + 160);
-  v3 = *(a1 + 176);
-  v4 = *(a1 + 192);
+  result = *(self + 144);
+  v2 = *(self + 160);
+  v3 = *(self + 176);
+  v4 = *(self + 192);
   return result;
 }
 
-- (uint64_t)setMatrix:(__n128)a3
+- (uint64_t)setMatrix:(__n128)matrix
 {
   v6[0] = a2;
-  v6[1] = a3;
+  v6[1] = matrix;
   v6[2] = a4;
   v6[3] = a5;
-  return sub_239ECB24C((a1 + 16), v6);
+  return sub_239ECB24C((self + 16), v6);
 }
 
 - (vector_float3)translation
@@ -428,40 +428,40 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   sub_239F1647C(v10 + 16, &self->_transform);
   return v10;
 }
 
-- (uint64_t)setLocalTransform:(__n128)a3 forTime:(__n128)a4
+- (uint64_t)setLocalTransform:(__n128)transform forTime:(__n128)time
 {
   v7[0] = a2;
-  v7[1] = a3;
-  v7[2] = a4;
+  v7[1] = transform;
+  v7[2] = time;
   v7[3] = a5;
-  return sub_239ECB5B8((a1 + 16), v7, a6);
+  return sub_239ECB5B8((self + 16), v7, a6);
 }
 
-- (uint64_t)setLocalTransform:(__n128)a3
+- (uint64_t)setLocalTransform:(__n128)transform
 {
   v6[0] = a2;
-  v6[1] = a3;
+  v6[1] = transform;
   v6[2] = a4;
   v6[3] = a5;
-  return sub_239ECB24C((a1 + 16), v6);
+  return sub_239ECB24C((self + 16), v6);
 }
 
-- (__n128)localTransformAtTime:(uint64_t)a1
+- (__n128)localTransformAtTime:(uint64_t)time
 {
-  sub_239ECAF50(a1 + 16);
-  result = *(a1 + 144);
-  v3 = *(a1 + 160);
-  v4 = *(a1 + 176);
-  v5 = *(a1 + 192);
+  sub_239ECAF50(time + 16);
+  result = *(time + 144);
+  v3 = *(time + 160);
+  v4 = *(time + 176);
+  v5 = *(time + 192);
   return result;
 }
 
@@ -478,13 +478,13 @@
   return result;
 }
 
-+ (__n128)localTransformWithObject:(const char *)a3 atTime:(void *)a4
++ (__n128)localTransformWithObject:(const char *)object atTime:(void *)time
 {
-  v5 = objc_msgSend_componentConformingToProtocol_(a4, a3, &unk_284D27B70);
+  v5 = objc_msgSend_componentConformingToProtocol_(time, object, &unk_284D27B70);
   v8 = v5;
   if (v5)
   {
-    objc_msgSend_localTransformAtTime_(v5, v6, v7, a1);
+    objc_msgSend_localTransformAtTime_(v5, v6, v7, self);
     v14 = v9;
   }
 
@@ -499,10 +499,10 @@
   return v14;
 }
 
-+ (__n128)globalTransformWithObject:(uint64_t)a3 atTime:(void *)a4
++ (__n128)globalTransformWithObject:(uint64_t)object atTime:(void *)time
 {
-  v5 = a4;
-  v9 = objc_msgSend_parent(v5, v6, v7);
+  timeCopy = time;
+  v9 = objc_msgSend_parent(timeCopy, v6, v7);
   if (v9)
   {
     do
@@ -525,18 +525,18 @@
   v13 = objc_msgSend_componentConformingToProtocol_(v9, v8, &unk_284D27B70);
   if (objc_msgSend_resetsTransform(v13, v14, v15) || !v13)
   {
-    objc_msgSend_localTransformWithObject_atTime_(MDLTransform, v16, v5, a1);
+    objc_msgSend_localTransformWithObject_atTime_(MDLTransform, v16, timeCopy, self);
     v33 = v27;
   }
 
   else
   {
-    objc_msgSend_globalTransformWithObject_atTime_(MDLTransform, v16, v9, a1);
+    objc_msgSend_globalTransformWithObject_atTime_(MDLTransform, v16, v9, self);
     v31 = v18;
     v32 = v17;
     v29 = v20;
     v30 = v19;
-    objc_msgSend_localTransformWithObject_atTime_(MDLTransform, v21, v5, a1);
+    objc_msgSend_localTransformWithObject_atTime_(MDLTransform, v21, timeCopy, self);
     v22 = 0;
     v34[0] = v23;
     v34[1] = v24;

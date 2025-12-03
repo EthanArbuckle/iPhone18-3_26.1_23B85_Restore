@@ -1,34 +1,34 @@
 @interface PHAssetGeoHashUtilities
-+ (id)_featureVectorDataWithOneHotAtIndex:(unint64_t)a3 featureVectorSize:(unint64_t)a4;
++ (id)_featureVectorDataWithOneHotAtIndex:(unint64_t)index featureVectorSize:(unint64_t)size;
 + (id)_newSystemPhotoLibrary;
-+ (id)_poiGeoHashForAsset:(id)a3 geoHashSize:(unint64_t)a4;
-+ (id)_randomPublishedUUIDsFromPublishedUUIDs:(id)a3 sentUUIDs:(id)a4;
-+ (id)_sceneLabelsForSceneClassifications:(id)a3;
++ (id)_poiGeoHashForAsset:(id)asset geoHashSize:(unint64_t)size;
++ (id)_randomPublishedUUIDsFromPublishedUUIDs:(id)ds sentUUIDs:(id)iDs;
++ (id)_sceneLabelsForSceneClassifications:(id)classifications;
 + (id)assetUUIDsFromBiomeStream;
-+ (id)assetUUIDsFromBiomeStreamWithPhotoLibrary:(id)a3;
-+ (id)featureVectorByGeoHashForAssetUUID:(id)a3 geoHashSize:(id)a4 geoHashKeySize:(id)a5 sceneLabelMapping:(id)a6 dryRun:(id)a7;
-+ (id)featureVectorByGeoHashForAssetUUID:(id)a3 geoHashSize:(id)a4 geoHashKeySize:(id)a5 sceneLabelMapping:(id)a6 dryRun:(id)a7 photoLibrary:(id)a8;
-+ (id)featureVectorByGeoHashForAssetUUIDs:(id)a3 geoHashSize:(id)a4 geoHashKeySize:(id)a5 sceneLabelMapping:(id)a6 dryRun:(id)a7;
-+ (id)featureVectorByGeoHashForAssetUUIDs:(id)a3 geoHashSize:(id)a4 geoHashKeySize:(id)a5 sceneLabelMapping:(id)a6 dryRun:(id)a7 photoLibrary:(id)a8;
-+ (id)mockReturnDataWithAssetUUIDs:(id)a3 geoHashKeySize:(id)a4;
-+ (id)poiGeoHashWithGeoHashSize:(unint64_t)a3 latitude:(double)a4 longitude:(double)a5;
++ (id)assetUUIDsFromBiomeStreamWithPhotoLibrary:(id)library;
++ (id)featureVectorByGeoHashForAssetUUID:(id)d geoHashSize:(id)size geoHashKeySize:(id)keySize sceneLabelMapping:(id)mapping dryRun:(id)run;
++ (id)featureVectorByGeoHashForAssetUUID:(id)d geoHashSize:(id)size geoHashKeySize:(id)keySize sceneLabelMapping:(id)mapping dryRun:(id)run photoLibrary:(id)library;
++ (id)featureVectorByGeoHashForAssetUUIDs:(id)ds geoHashSize:(id)size geoHashKeySize:(id)keySize sceneLabelMapping:(id)mapping dryRun:(id)run;
++ (id)featureVectorByGeoHashForAssetUUIDs:(id)ds geoHashSize:(id)size geoHashKeySize:(id)keySize sceneLabelMapping:(id)mapping dryRun:(id)run photoLibrary:(id)library;
++ (id)mockReturnDataWithAssetUUIDs:(id)ds geoHashKeySize:(id)size;
++ (id)poiGeoHashWithGeoHashSize:(unint64_t)size latitude:(double)latitude longitude:(double)longitude;
 + (id)sceneLabelExclusionList;
-+ (unint64_t)_indexForPOIGeoHash:(id)a3 geoHashKeySize:(unint64_t)a4;
-+ (unint64_t)_randomSceneIndexForAsset:(id)a3 sceneLabelMapping:(id)a4 orderedRemappedSceneLabels:(id)a5;
++ (unint64_t)_indexForPOIGeoHash:(id)hash geoHashKeySize:(unint64_t)size;
++ (unint64_t)_randomSceneIndexForAsset:(id)asset sceneLabelMapping:(id)mapping orderedRemappedSceneLabels:(id)labels;
 @end
 
 @implementation PHAssetGeoHashUtilities
 
-+ (id)_poiGeoHashForAsset:(id)a3 geoHashSize:(unint64_t)a4
++ (id)_poiGeoHashForAsset:(id)asset geoHashSize:(unint64_t)size
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 location];
-  [v6 coordinate];
+  assetCopy = asset;
+  location = [assetCopy location];
+  [location coordinate];
   v8 = v7;
 
-  v9 = [v5 location];
-  [v9 coordinate];
+  location2 = [assetCopy location];
+  [location2 coordinate];
   v11 = v10;
 
   if (v8 == 0.0 && v11 == 0.0)
@@ -36,9 +36,9 @@
     v12 = PLBackendGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v5 uuid];
+      uuid = [assetCopy uuid];
       v16 = 138412290;
-      v17 = v13;
+      v17 = uuid;
       _os_log_impl(&dword_19C86F000, v12, OS_LOG_TYPE_DEFAULT, "[PHAssetGeoHashUtilities] Invalid coordinates for asset uuid %@", &v16, 0xCu);
     }
 
@@ -47,16 +47,16 @@
 
   else
   {
-    v14 = [PHAssetGeoHashUtilities poiGeoHashWithGeoHashSize:a4 latitude:v8 longitude:v11];
+    v14 = [PHAssetGeoHashUtilities poiGeoHashWithGeoHashSize:size latitude:v8 longitude:v11];
   }
 
   return v14;
 }
 
-+ (id)poiGeoHashWithGeoHashSize:(unint64_t)a3 latitude:(double)a4 longitude:(double)a5
++ (id)poiGeoHashWithGeoHashSize:(unint64_t)size latitude:(double)latitude longitude:(double)longitude
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (a4 == 0.0 && a5 == 0.0)
+  if (latitude == 0.0 && longitude == 0.0)
   {
     v8 = PLBackendGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -69,7 +69,7 @@
   }
 
   v8 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  if ([v8 length]>= a3)
+  if ([v8 length]>= size)
   {
 LABEL_18:
     v8 = v8;
@@ -90,7 +90,7 @@ LABEL_18:
     {
       v16 = (v12 + v13) * 0.5;
       v17 = v14;
-      if (v16 >= a5)
+      if (v16 >= longitude)
       {
         v13 = (v12 + v13) * 0.5;
         goto LABEL_13;
@@ -107,7 +107,7 @@ LABEL_11:
 
     v17 = (v14 + v15) * 0.5;
     v16 = v12;
-    if (v17 < a4)
+    if (v17 < latitude)
     {
       goto LABEL_11;
     }
@@ -122,7 +122,7 @@ LABEL_13:
     ++v9;
 LABEL_17:
     v11 ^= 1u;
-    if ([v8 length]>= a3)
+    if ([v8 length]>= size)
     {
       goto LABEL_18;
     }
@@ -162,21 +162,21 @@ LABEL_23:
   return v2;
 }
 
-+ (id)_randomPublishedUUIDsFromPublishedUUIDs:(id)a3 sentUUIDs:(id)a4
++ (id)_randomPublishedUUIDsFromPublishedUUIDs:(id)ds sentUUIDs:(id)iDs
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
+  dsCopy = ds;
+  iDsCopy = iDs;
+  v7 = [dsCopy count];
   if (v7 > 0x64)
   {
     v10 = v7;
-    v8 = [v5 allObjects];
+    allObjects = [dsCopy allObjects];
     v11 = objc_alloc_init(MEMORY[0x1E696AD50]);
     for (i = 0; i != 100; ++i)
     {
       v13 = arc4random_uniform(v10);
-      v14 = [v8 objectAtIndexedSubscript:v13];
-      v15 = [v6 containsObject:v14];
+      v14 = [allObjects objectAtIndexedSubscript:v13];
+      v15 = [iDsCopy containsObject:v14];
 
       for (j = 0; j != 100; ++j)
       {
@@ -191,17 +191,17 @@ LABEL_23:
       [v11 addIndex:v13];
     }
 
-    v9 = [v8 objectsAtIndexes:v11];
+    v8AllObjects = [allObjects objectsAtIndexes:v11];
   }
 
   else
   {
-    v8 = [v5 mutableCopy];
-    [v8 minusSet:v6];
-    v9 = [v8 allObjects];
+    allObjects = [dsCopy mutableCopy];
+    [allObjects minusSet:iDsCopy];
+    v8AllObjects = [allObjects allObjects];
   }
 
-  return v9;
+  return v8AllObjects;
 }
 
 + (id)_newSystemPhotoLibrary
@@ -213,25 +213,25 @@ LABEL_23:
   return v4;
 }
 
-+ (id)_featureVectorDataWithOneHotAtIndex:(unint64_t)a3 featureVectorSize:(unint64_t)a4
++ (id)_featureVectorDataWithOneHotAtIndex:(unint64_t)index featureVectorSize:(unint64_t)size
 {
-  if (a3 >= a4)
+  if (index >= size)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"PHAssetGeoHashUtilities.m" lineNumber:242 description:{@"Invalid parameter not satisfying: %@", @"oneHotIndex < featureVectorSize"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssetGeoHashUtilities.m" lineNumber:242 description:{@"Invalid parameter not satisfying: %@", @"oneHotIndex < featureVectorSize"}];
   }
 
-  v6 = malloc_type_calloc(a4, 1uLL, 0x100004077774924uLL);
-  v6[a3] = 1;
+  v6 = malloc_type_calloc(size, 1uLL, 0x100004077774924uLL);
+  v6[index] = 1;
   v7 = MEMORY[0x1E695DEF0];
 
-  return [v7 dataWithBytesNoCopy:v6 length:a4];
+  return [v7 dataWithBytesNoCopy:v6 length:size];
 }
 
-+ (unint64_t)_indexForPOIGeoHash:(id)a3 geoHashKeySize:(unint64_t)a4
++ (unint64_t)_indexForPOIGeoHash:(id)hash geoHashKeySize:(unint64_t)size
 {
-  v5 = a3;
-  v6 = [v5 substringWithRange:{a4, objc_msgSend(v5, "length") - a4}];
+  hashCopy = hash;
+  v6 = [hashCopy substringWithRange:{size, objc_msgSend(hashCopy, "length") - size}];
   v7 = 0;
   if ([v6 length])
   {
@@ -251,18 +251,18 @@ LABEL_23:
   return v7;
 }
 
-+ (id)_sceneLabelsForSceneClassifications:(id)a3
++ (id)_sceneLabelsForSceneClassifications:(id)classifications
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  classificationsCopy = classifications;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v6 = [a1 sceneLabelExclusionList];
+  sceneLabelExclusionList = [self sceneLabelExclusionList];
   v7 = objc_alloc_init(MEMORY[0x1E69C0850]);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = v4;
+  v8 = classificationsCopy;
   v9 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v9)
   {
@@ -301,8 +301,8 @@ LABEL_23:
             v21 = v20;
             if (v20)
             {
-              v22 = [v20 lowercaseString];
-              v23 = [v6 containsObject:v22];
+              lowercaseString = [v20 lowercaseString];
+              v23 = [sceneLabelExclusionList containsObject:lowercaseString];
 
               if ((v23 & 1) == 0)
               {
@@ -322,21 +322,21 @@ LABEL_23:
   return v5;
 }
 
-+ (unint64_t)_randomSceneIndexForAsset:(id)a3 sceneLabelMapping:(id)a4 orderedRemappedSceneLabels:(id)a5
++ (unint64_t)_randomSceneIndexForAsset:(id)asset sceneLabelMapping:(id)mapping orderedRemappedSceneLabels:(id)labels
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v27 = a5;
-  v10 = [v8 sceneClassifications];
-  v11 = [a1 _sceneLabelsForSceneClassifications:v10];
+  assetCopy = asset;
+  mappingCopy = mapping;
+  labelsCopy = labels;
+  sceneClassifications = [assetCopy sceneClassifications];
+  v11 = [self _sceneLabelsForSceneClassifications:sceneClassifications];
 
   v12 = PLBackendGetLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [v8 uuid];
+    uuid = [assetCopy uuid];
     *buf = 138412546;
-    v34 = v13;
+    v34 = uuid;
     v35 = 2112;
     v36 = v11;
     _os_log_impl(&dword_19C86F000, v12, OS_LOG_TYPE_INFO, "[PHAssetGeoHashUtilities] Scene labels for asset %@: %@", buf, 0x16u);
@@ -363,8 +363,8 @@ LABEL_23:
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v28 + 1) + 8 * v19) lowercaseString];
-        v21 = [v9 objectForKeyedSubscript:v20];
+        lowercaseString = [*(*(&v28 + 1) + 8 * v19) lowercaseString];
+        v21 = [mappingCopy objectForKeyedSubscript:lowercaseString];
 
         if (v21)
         {
@@ -383,20 +383,20 @@ LABEL_23:
 
   if ([v14 count])
   {
-    v22 = [v14 objectAtIndexedSubscript:{objc_msgSend(a1, "_randomIndexFromCount:", objc_msgSend(v14, "count"))}];
-    v23 = v27;
-    v24 = [v27 indexOfObject:v22];
+    v22 = [v14 objectAtIndexedSubscript:{objc_msgSend(self, "_randomIndexFromCount:", objc_msgSend(v14, "count"))}];
+    v23 = labelsCopy;
+    v24 = [labelsCopy indexOfObject:v22];
   }
 
   else
   {
     v22 = PLBackendGetLog();
-    v23 = v27;
+    v23 = labelsCopy;
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [v8 uuid];
+      uuid2 = [assetCopy uuid];
       *buf = 138412546;
-      v34 = v25;
+      v34 = uuid2;
       v35 = 2112;
       v36 = v15;
       _os_log_impl(&dword_19C86F000, v22, OS_LOG_TYPE_DEFAULT, "[PHAssetGeoHashUtilities] Scene labels for asset %@ are empty after remapping. Scene Labels: %@", buf, 0x16u);
@@ -408,17 +408,17 @@ LABEL_23:
   return v24;
 }
 
-+ (id)mockReturnDataWithAssetUUIDs:(id)a3 geoHashKeySize:(id)a4
++ (id)mockReturnDataWithAssetUUIDs:(id)ds geoHashKeySize:(id)size
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
+  dsCopy = ds;
+  sizeCopy = size;
+  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v6;
+  obj = dsCopy;
   v9 = [obj countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v9)
   {
@@ -434,8 +434,8 @@ LABEL_23:
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
-        v14 = [a1 _featureVectorDataWithOneHotAtIndex:1 featureVectorSize:3];
-        v15 = [v13 substringWithRange:{0, objc_msgSend(v7, "integerValue")}];
+        v14 = [self _featureVectorDataWithOneHotAtIndex:1 featureVectorSize:3];
+        v15 = [v13 substringWithRange:{0, objc_msgSend(sizeCopy, "integerValue")}];
         v23 = v15;
         v24 = v14;
         v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
@@ -451,50 +451,50 @@ LABEL_23:
   return v8;
 }
 
-+ (id)featureVectorByGeoHashForAssetUUIDs:(id)a3 geoHashSize:(id)a4 geoHashKeySize:(id)a5 sceneLabelMapping:(id)a6 dryRun:(id)a7 photoLibrary:(id)a8
++ (id)featureVectorByGeoHashForAssetUUIDs:(id)ds geoHashSize:(id)size geoHashKeySize:(id)keySize sceneLabelMapping:(id)mapping dryRun:(id)run photoLibrary:(id)library
 {
   v88 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v66 = a4;
-  v15 = a5;
-  v70 = a6;
-  v16 = a7;
-  v17 = a8;
-  if ([v15 integerValue] >= 1 && objc_msgSend(v15, "integerValue") < 5)
+  dsCopy = ds;
+  sizeCopy = size;
+  keySizeCopy = keySize;
+  mappingCopy = mapping;
+  runCopy = run;
+  libraryCopy = library;
+  if ([keySizeCopy integerValue] >= 1 && objc_msgSend(keySizeCopy, "integerValue") < 5)
   {
-    if ([v16 BOOLValue])
+    if ([runCopy BOOLValue])
     {
-      v19 = [a1 mockReturnDataWithAssetUUIDs:v14 geoHashKeySize:v15];
+      v19 = [self mockReturnDataWithAssetUUIDs:dsCopy geoHashKeySize:keySizeCopy];
     }
 
     else
     {
-      v61 = v16;
-      v65 = v15;
+      v61 = runCopy;
+      v65 = keySizeCopy;
       v21 = MEMORY[0x1E695DFD8];
-      v22 = [v70 allValues];
-      v23 = [v21 setWithArray:v22];
+      allValues = [mappingCopy allValues];
+      v23 = [v21 setWithArray:allValues];
 
       v64 = v23;
-      v24 = [v23 allObjects];
-      v25 = [v24 sortedArrayUsingSelector:sel_compare_];
+      allObjects = [v23 allObjects];
+      v25 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
-      v60 = v17;
-      v26 = [v17 librarySpecificFetchOptions];
+      v60 = libraryCopy;
+      librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
       v83 = @"PHAssetPropertySetSceneAnalysis";
       v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v83 count:1];
-      [v26 setFetchPropertySets:v27];
+      [librarySpecificFetchOptions setFetchPropertySets:v27];
 
-      v62 = v14;
-      v59 = v26;
-      v28 = [PHAsset fetchAssetsWithLocalIdentifiers:v14 options:v26];
+      v62 = dsCopy;
+      v59 = librarySpecificFetchOptions;
+      v28 = [PHAsset fetchAssetsWithLocalIdentifiers:dsCopy options:librarySpecificFetchOptions];
       v29 = objc_alloc_init(MEMORY[0x1E695DF90]);
       v75 = 0u;
       v76 = 0u;
       v77 = 0u;
       v78 = 0u;
       obj = v28;
-      v30 = v66;
+      v30 = sizeCopy;
       v63 = v25;
       v69 = [obj countByEnumeratingWithState:&v75 objects:v82 count:16];
       if (v69)
@@ -511,13 +511,13 @@ LABEL_23:
 
             v33 = *(*(&v75 + 1) + 8 * i);
             v34 = objc_autoreleasePoolPush();
-            v35 = [a1 _randomSceneIndexForAsset:v33 sceneLabelMapping:v70 orderedRemappedSceneLabels:v25];
+            v35 = [self _randomSceneIndexForAsset:v33 sceneLabelMapping:mappingCopy orderedRemappedSceneLabels:v25];
             if (v35 != 0x7FFFFFFFFFFFFFFFLL)
             {
               v36 = v35;
               context = v34;
-              [a1 _poiGeoHashForAsset:v33 geoHashSize:{objc_msgSend(v30, "integerValue")}];
-              v38 = v37 = a1;
+              [self _poiGeoHashForAsset:v33 geoHashSize:{objc_msgSend(v30, "integerValue")}];
+              v38 = v37 = self;
               if (v38)
               {
                 v39 = [v37 _indexForPOIGeoHash:v38 geoHashKeySize:{objc_msgSend(v65, "integerValue")}];
@@ -528,12 +528,12 @@ LABEL_23:
                 v80 = v42;
                 v81 = v41;
                 v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v81 forKeys:&v80 count:1];
-                v44 = [v33 uuid];
-                [v29 setObject:v43 forKeyedSubscript:v44];
+                uuid = [v33 uuid];
+                [v29 setObject:v43 forKeyedSubscript:uuid];
 
                 v45 = [v29 count];
                 v46 = v45 > 9;
-                v30 = v66;
+                v30 = sizeCopy;
                 if (v46)
                 {
 
@@ -542,7 +542,7 @@ LABEL_23:
                 }
               }
 
-              a1 = v37;
+              self = v37;
               v34 = context;
             }
 
@@ -561,17 +561,17 @@ LABEL_23:
 
 LABEL_24:
 
-      v17 = v60;
+      libraryCopy = v60;
       if ([v29 count])
       {
         v47 = MEMORY[0x1E69BE398];
-        v48 = [v29 allKeys];
-        v49 = [v60 photoLibraryBundle];
-        v50 = [v49 pathManager];
-        [v47 publishUUIDs:v48 stream:1 pathManager:v50];
+        allKeys = [v29 allKeys];
+        photoLibraryBundle = [v60 photoLibraryBundle];
+        pathManager = [photoLibraryBundle pathManager];
+        [v47 publishUUIDs:allKeys stream:1 pathManager:pathManager];
       }
 
-      v14 = v62;
+      dsCopy = v62;
       v19 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v62, "count")}];
       v71 = 0u;
       v72 = 0u;
@@ -613,8 +613,8 @@ LABEL_24:
         while (v53);
       }
 
-      v15 = v65;
-      v16 = v61;
+      keySizeCopy = v65;
+      runCopy = v61;
     }
   }
 
@@ -624,7 +624,7 @@ LABEL_24:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v85 = v15;
+      v85 = keySizeCopy;
       v86 = 2048;
       v87 = 4;
       _os_log_impl(&dword_19C86F000, v18, OS_LOG_TYPE_ERROR, "[PHAssetGeoHashUtilities] geoHashKeySize %@ not supported. It should be a number between 1 and %tu (inclusive).", buf, 0x16u);
@@ -636,31 +636,31 @@ LABEL_24:
   return v19;
 }
 
-+ (id)featureVectorByGeoHashForAssetUUIDs:(id)a3 geoHashSize:(id)a4 geoHashKeySize:(id)a5 sceneLabelMapping:(id)a6 dryRun:(id)a7
++ (id)featureVectorByGeoHashForAssetUUIDs:(id)ds geoHashSize:(id)size geoHashKeySize:(id)keySize sceneLabelMapping:(id)mapping dryRun:(id)run
 {
   v29 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if ([v14 integerValue] >= 1 && objc_msgSend(v14, "integerValue") < 5)
+  dsCopy = ds;
+  sizeCopy = size;
+  keySizeCopy = keySize;
+  mappingCopy = mapping;
+  runCopy = run;
+  if ([keySizeCopy integerValue] >= 1 && objc_msgSend(keySizeCopy, "integerValue") < 5)
   {
-    if ([v16 BOOLValue])
+    if ([runCopy BOOLValue])
     {
-      v18 = [a1 mockReturnDataWithAssetUUIDs:v12 geoHashKeySize:v14];
+      v18 = [self mockReturnDataWithAssetUUIDs:dsCopy geoHashKeySize:keySizeCopy];
     }
 
     else
     {
-      v20 = [a1 _newSystemPhotoLibrary];
+      _newSystemPhotoLibrary = [self _newSystemPhotoLibrary];
       v24 = 0;
-      v21 = [v20 openAndWaitWithUpgrade:0 error:&v24];
+      v21 = [_newSystemPhotoLibrary openAndWaitWithUpgrade:0 error:&v24];
       v22 = v24;
       if (v21)
       {
-        v18 = [a1 featureVectorByGeoHashForAssetUUIDs:v12 geoHashSize:v13 geoHashKeySize:v14 sceneLabelMapping:v15 dryRun:v16 photoLibrary:v20];
-        [v20 close];
+        v18 = [self featureVectorByGeoHashForAssetUUIDs:dsCopy geoHashSize:sizeCopy geoHashKeySize:keySizeCopy sceneLabelMapping:mappingCopy dryRun:runCopy photoLibrary:_newSystemPhotoLibrary];
+        [_newSystemPhotoLibrary close];
       }
 
       else
@@ -684,7 +684,7 @@ LABEL_24:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v26 = v14;
+      v26 = keySizeCopy;
       v27 = 2048;
       v28 = 4;
       _os_log_impl(&dword_19C86F000, v17, OS_LOG_TYPE_ERROR, "[PHAssetGeoHashUtilities] geoHashKeySize %@ not supported. It should be a number between 1 and %tu (inclusive).", buf, 0x16u);
@@ -696,60 +696,60 @@ LABEL_24:
   return v18;
 }
 
-+ (id)featureVectorByGeoHashForAssetUUID:(id)a3 geoHashSize:(id)a4 geoHashKeySize:(id)a5 sceneLabelMapping:(id)a6 dryRun:(id)a7 photoLibrary:(id)a8
++ (id)featureVectorByGeoHashForAssetUUID:(id)d geoHashSize:(id)size geoHashKeySize:(id)keySize sceneLabelMapping:(id)mapping dryRun:(id)run photoLibrary:(id)library
 {
   v26 = *MEMORY[0x1E69E9840];
-  v25 = a3;
+  dCopy = d;
   v14 = MEMORY[0x1E695DEC8];
-  v15 = a8;
-  v16 = a7;
-  v17 = a6;
-  v18 = a5;
-  v19 = a4;
-  v20 = a3;
-  v21 = [v14 arrayWithObjects:&v25 count:1];
+  libraryCopy = library;
+  runCopy = run;
+  mappingCopy = mapping;
+  keySizeCopy = keySize;
+  sizeCopy = size;
+  dCopy2 = d;
+  v21 = [v14 arrayWithObjects:&dCopy count:1];
 
-  v22 = [a1 featureVectorByGeoHashForAssetUUIDs:v21 geoHashSize:v19 geoHashKeySize:v18 sceneLabelMapping:v17 dryRun:v16 photoLibrary:{v15, v25, v26}];
+  v22 = [self featureVectorByGeoHashForAssetUUIDs:v21 geoHashSize:sizeCopy geoHashKeySize:keySizeCopy sceneLabelMapping:mappingCopy dryRun:runCopy photoLibrary:{libraryCopy, dCopy, v26}];
 
-  v23 = [v22 firstObject];
+  firstObject = [v22 firstObject];
 
-  return v23;
+  return firstObject;
 }
 
-+ (id)featureVectorByGeoHashForAssetUUID:(id)a3 geoHashSize:(id)a4 geoHashKeySize:(id)a5 sceneLabelMapping:(id)a6 dryRun:(id)a7
++ (id)featureVectorByGeoHashForAssetUUID:(id)d geoHashSize:(id)size geoHashKeySize:(id)keySize sceneLabelMapping:(id)mapping dryRun:(id)run
 {
   v23 = *MEMORY[0x1E69E9840];
-  v22 = a3;
+  dCopy = d;
   v12 = MEMORY[0x1E695DEC8];
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
-  v18 = [v12 arrayWithObjects:&v22 count:1];
+  runCopy = run;
+  mappingCopy = mapping;
+  keySizeCopy = keySize;
+  sizeCopy = size;
+  dCopy2 = d;
+  v18 = [v12 arrayWithObjects:&dCopy count:1];
 
-  v19 = [a1 featureVectorByGeoHashForAssetUUIDs:v18 geoHashSize:v16 geoHashKeySize:v15 sceneLabelMapping:v14 dryRun:{v13, v22, v23}];
+  v19 = [self featureVectorByGeoHashForAssetUUIDs:v18 geoHashSize:sizeCopy geoHashKeySize:keySizeCopy sceneLabelMapping:mappingCopy dryRun:{runCopy, dCopy, v23}];
 
-  v20 = [v19 firstObject];
+  firstObject = [v19 firstObject];
 
-  return v20;
+  return firstObject;
 }
 
-+ (id)assetUUIDsFromBiomeStreamWithPhotoLibrary:(id)a3
++ (id)assetUUIDsFromBiomeStreamWithPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v5 = MEMORY[0x1E69BE398];
-  v6 = [v4 photoLibraryBundle];
-  v7 = [v6 pathManager];
-  v8 = [v5 publishedUUIDsInStream:0 pathManager:v7];
+  photoLibraryBundle = [libraryCopy photoLibraryBundle];
+  pathManager = [photoLibraryBundle pathManager];
+  v8 = [v5 publishedUUIDsInStream:0 pathManager:pathManager];
 
   if (v8)
   {
     v9 = [MEMORY[0x1E695DFD8] setWithArray:v8];
     v10 = MEMORY[0x1E69BE398];
-    v11 = [v4 photoLibraryBundle];
-    v12 = [v11 pathManager];
-    v13 = [v10 publishedUUIDsInStream:1 pathManager:v12];
+    photoLibraryBundle2 = [libraryCopy photoLibraryBundle];
+    pathManager2 = [photoLibraryBundle2 pathManager];
+    v13 = [v10 publishedUUIDsInStream:1 pathManager:pathManager2];
 
     if (v13)
     {
@@ -769,7 +769,7 @@ LABEL_24:
     }
 
     v17 = v14;
-    v15 = [a1 _randomPublishedUUIDsFromPublishedUUIDs:v9 sentUUIDs:v14];
+    v15 = [self _randomPublishedUUIDsFromPublishedUUIDs:v9 sentUUIDs:v14];
   }
 
   else
@@ -790,14 +790,14 @@ LABEL_24:
 + (id)assetUUIDsFromBiomeStream
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [a1 _newSystemPhotoLibrary];
+  _newSystemPhotoLibrary = [self _newSystemPhotoLibrary];
   v9 = 0;
-  v4 = [v3 openAndWaitWithUpgrade:0 error:&v9];
+  v4 = [_newSystemPhotoLibrary openAndWaitWithUpgrade:0 error:&v9];
   v5 = v9;
   if (v4)
   {
-    v6 = [a1 assetUUIDsFromBiomeStreamWithPhotoLibrary:v3];
-    [v3 close];
+    v6 = [self assetUUIDsFromBiomeStreamWithPhotoLibrary:_newSystemPhotoLibrary];
+    [_newSystemPhotoLibrary close];
   }
 
   else

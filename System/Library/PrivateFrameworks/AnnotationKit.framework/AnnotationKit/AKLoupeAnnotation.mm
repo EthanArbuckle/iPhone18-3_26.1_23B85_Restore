@@ -1,18 +1,18 @@
 @interface AKLoupeAnnotation
-+ (id)displayNameForUndoablePropertyChangeWithKey:(id)a3;
++ (id)displayNameForUndoablePropertyChangeWithKey:(id)key;
 + (id)keyPathsForValuesAffectingDrawingBounds;
 + (id)keyPathsForValuesAffectingHitTestBounds;
-- (AKLoupeAnnotation)initWithCoder:(id)a3;
+- (AKLoupeAnnotation)initWithCoder:(id)coder;
 - (CGRect)rectangle;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)displayName;
 - (id)keysForValuesToObserveForAdornments;
 - (id)keysForValuesToObserveForRedrawing;
 - (id)keysForValuesToObserveForUndo;
 - (void)adjustModelToCompensateForOriginalExif;
-- (void)encodeWithCoder:(id)a3;
-- (void)flattenModelExifOrientation:(int64_t)a3 withModelSize:(CGSize)a4;
-- (void)translateBy:(CGPoint)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)flattenModelExifOrientation:(int64_t)orientation withModelSize:(CGSize)size;
+- (void)translateBy:(CGPoint)by;
 @end
 
 @implementation AKLoupeAnnotation
@@ -20,7 +20,7 @@
 + (id)keyPathsForValuesAffectingHitTestBounds
 {
   v2 = MEMORY[0x277CBEB58];
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___AKLoupeAnnotation;
   v3 = objc_msgSendSuper2(&v6, sel_keyPathsForValuesAffectingHitTestBounds);
   v4 = [v2 setWithSet:v3];
@@ -33,7 +33,7 @@
 + (id)keyPathsForValuesAffectingDrawingBounds
 {
   v2 = MEMORY[0x277CBEB58];
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___AKLoupeAnnotation;
   v3 = objc_msgSendSuper2(&v6, sel_keyPathsForValuesAffectingDrawingBounds);
   v4 = [v2 setWithSet:v3];
@@ -43,16 +43,16 @@
   return v4;
 }
 
-+ (id)displayNameForUndoablePropertyChangeWithKey:(id)a3
++ (id)displayNameForUndoablePropertyChangeWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"rectangle"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"rectangle"])
   {
     v5 = @"Bounds";
     goto LABEL_5;
   }
 
-  if ([v4 isEqualToString:@"magnification"])
+  if ([keyCopy isEqualToString:@"magnification"])
   {
     v5 = @"Magnification";
 LABEL_5:
@@ -65,9 +65,9 @@ LABEL_5:
     }
   }
 
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___AKLoupeAnnotation;
-  v7 = objc_msgSendSuper2(&v9, sel_displayNameForUndoablePropertyChangeWithKey_, v4);
+  v7 = objc_msgSendSuper2(&v9, sel_displayNameForUndoablePropertyChangeWithKey_, keyCopy);
 LABEL_7:
 
   return v7;
@@ -86,8 +86,8 @@ LABEL_7:
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKLoupeAnnotation;
-  v3 = [(AKStrokedAnnotation *)&v6 keysForValuesToObserveForUndo];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForUndo = [(AKStrokedAnnotation *)&v6 keysForValuesToObserveForUndo];
+  v4 = [v2 setWithSet:keysForValuesToObserveForUndo];
 
   [v4 addObjectsFromArray:&unk_2851BAFE0];
 
@@ -99,8 +99,8 @@ LABEL_7:
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKLoupeAnnotation;
-  v3 = [(AKStrokedAnnotation *)&v6 keysForValuesToObserveForRedrawing];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForRedrawing = [(AKStrokedAnnotation *)&v6 keysForValuesToObserveForRedrawing];
+  v4 = [v2 setWithSet:keysForValuesToObserveForRedrawing];
 
   [v4 addObjectsFromArray:&unk_2851BAFF8];
 
@@ -112,8 +112,8 @@ LABEL_7:
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKLoupeAnnotation;
-  v3 = [(AKAnnotation *)&v6 keysForValuesToObserveForAdornments];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForAdornments = [(AKAnnotation *)&v6 keysForValuesToObserveForAdornments];
+  v4 = [v2 setWithSet:keysForValuesToObserveForAdornments];
 
   [v4 addObjectsFromArray:&unk_2851BB010];
 
@@ -139,18 +139,18 @@ LABEL_7:
   [(AKLoupeAnnotation *)self setRectangle:?];
 }
 
-- (void)flattenModelExifOrientation:(int64_t)a3 withModelSize:(CGSize)a4
+- (void)flattenModelExifOrientation:(int64_t)orientation withModelSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  [AKGeometryHelper adjustOriginalExifOrientationOnAnnotation:self flatteningOriginalModelExif:a3];
+  height = size.height;
+  width = size.width;
+  [AKGeometryHelper adjustOriginalExifOrientationOnAnnotation:self flatteningOriginalModelExif:orientation];
   [(AKLoupeAnnotation *)self rectangle];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
   memset(&v16[1], 0, sizeof(CGAffineTransform));
-  [AKGeometryHelper affineTransformFlatteningOriginalModelExif:a3 withOriginalModelSize:width, height];
+  [AKGeometryHelper affineTransformFlatteningOriginalModelExif:orientation withOriginalModelSize:width, height];
   v16[0] = v16[1];
   v17.origin.x = v9;
   v17.origin.y = v11;
@@ -160,65 +160,65 @@ LABEL_7:
   [(AKLoupeAnnotation *)self setRectangle:v18.origin.x, v18.origin.y, v18.size.width, v18.size.height];
 }
 
-- (void)translateBy:(CGPoint)a3
+- (void)translateBy:(CGPoint)by
 {
-  y = a3.y;
-  x = a3.x;
-  if (a3.x != *MEMORY[0x277CBF348] || a3.y != *(MEMORY[0x277CBF348] + 8))
+  y = by.y;
+  x = by.x;
+  if (by.x != *MEMORY[0x277CBF348] || by.y != *(MEMORY[0x277CBF348] + 8))
   {
-    v7 = [(AKAnnotation *)self isTranslating];
+    isTranslating = [(AKAnnotation *)self isTranslating];
     [(AKAnnotation *)self setIsTranslating:1];
     [(AKLoupeAnnotation *)self rectangle];
     [(AKLoupeAnnotation *)self setRectangle:x + v8, y + v9];
 
-    [(AKAnnotation *)self setIsTranslating:v7];
+    [(AKAnnotation *)self setIsTranslating:isTranslating];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = AKLoupeAnnotation;
   v5 = [(AKAnnotation *)&v9 copyWithZone:?];
   if (v5)
   {
-    v6 = [(AKLoupeAnnotation *)self imageData];
-    v7 = [v6 copyWithZone:a3];
+    imageData = [(AKLoupeAnnotation *)self imageData];
+    v7 = [imageData copyWithZone:zone];
     [v5 setImageData:v7];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = AKLoupeAnnotation;
-  v4 = a3;
-  [(AKStrokedAnnotation *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(AKStrokedAnnotation *)&v6 encodeWithCoder:coderCopy];
   [(AKLoupeAnnotation *)self rectangle:v6.receiver];
   DictionaryRepresentation = CGRectCreateDictionaryRepresentation(v7);
-  [v4 encodeObject:DictionaryRepresentation forKey:@"rectangle"];
+  [coderCopy encodeObject:DictionaryRepresentation forKey:@"rectangle"];
   [(AKLoupeAnnotation *)self magnification];
-  [v4 encodeDouble:@"magnification" forKey:?];
+  [coderCopy encodeDouble:@"magnification" forKey:?];
 }
 
-- (AKLoupeAnnotation)initWithCoder:(id)a3
+- (AKLoupeAnnotation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = AKLoupeAnnotation;
-  v5 = [(AKStrokedAnnotation *)&v12 initWithCoder:v4];
+  v5 = [(AKStrokedAnnotation *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"rectangle"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"rectangle"];
 
     CGRectMakeWithDictionaryRepresentation(v10, &v5->_rectangle);
-    [v4 decodeDoubleForKey:@"magnification"];
+    [coderCopy decodeDoubleForKey:@"magnification"];
     [(AKLoupeAnnotation *)v5 setMagnification:?];
   }
 

@@ -1,8 +1,8 @@
 @interface AAKPriMLTaskProvider
 - (_TtC14AAKPriMLPlugin20AAKPriMLTaskProvider)init;
-- (id)assetURLForRecipe:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (id)namespaceIdentifierForRecipe:(id)a3;
-- (id)recipeDictionaryForRecipe:(id)a3 error:(id *)a4;
+- (id)assetURLForRecipe:(id)recipe forKey:(id)key error:(id *)error;
+- (id)namespaceIdentifierForRecipe:(id)recipe;
+- (id)recipeDictionaryForRecipe:(id)recipe error:(id *)error;
 - (id)recipeIdentifiers;
 @end
 
@@ -14,7 +14,7 @@
   v3 = swift_allocObject();
   *(v3 + 16) = xmmword_100005930;
   v4 = *(&self->super.isa + OBJC_IVAR____TtC14AAKPriMLPlugin20AAKPriMLTaskProvider_task);
-  v5 = self;
+  selfCopy = self;
   *(v3 + 32) = sub_100005140();
   *(v3 + 40) = v6;
 
@@ -23,10 +23,10 @@
   return v7.super.isa;
 }
 
-- (id)recipeDictionaryForRecipe:(id)a3 error:(id *)a4
+- (id)recipeDictionaryForRecipe:(id)recipe error:(id *)error
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC14AAKPriMLPlugin20AAKPriMLTaskProvider_task);
-  v5 = self;
+  selfCopy = self;
   sub_100005130();
 
   v6.super.isa = sub_100005170().super.isa;
@@ -34,7 +34,7 @@
   return v6.super.isa;
 }
 
-- (id)assetURLForRecipe:(id)a3 forKey:(id)a4 error:(id *)a5
+- (id)assetURLForRecipe:(id)recipe forKey:(id)key error:(id *)error
 {
   v7 = sub_100005010();
   v8 = *(v7 - 8);
@@ -43,7 +43,7 @@
   v11 = &v23 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1000051B0();
   v12 = *(&self->super.isa + OBJC_IVAR____TtC14AAKPriMLPlugin20AAKPriMLTaskProvider_task);
-  v13 = self;
+  selfCopy = self;
   sub_100005120();
   v15 = v14;
 
@@ -63,13 +63,13 @@
     *v19 = 0;
     swift_willThrow();
 
-    if (a5)
+    if (error)
     {
       v20 = sub_100004F90();
 
       v21 = v20;
       v18 = 0;
-      *a5 = v20;
+      *error = v20;
     }
 
     else
@@ -82,7 +82,7 @@
   return v18;
 }
 
-- (id)namespaceIdentifierForRecipe:(id)a3
+- (id)namespaceIdentifierForRecipe:(id)recipe
 {
   v3 = sub_1000051A0();
 

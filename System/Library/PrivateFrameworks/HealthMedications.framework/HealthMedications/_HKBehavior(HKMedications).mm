@@ -7,7 +7,7 @@
 
 - (uint64_t)hkmd_supportsTimeZone
 {
-  if ([a1 healthAppHiddenOrNotInstalled])
+  if ([self healthAppHiddenOrNotInstalled])
   {
     _HKInitializeLogging();
     v2 = HKLogMedication();
@@ -24,7 +24,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([a1 isAppleWatch])
+  if ([self isAppleWatch])
   {
     _HKInitializeLogging();
     v2 = HKLogMedication();
@@ -46,12 +46,12 @@ LABEL_8:
 
 - (uint64_t)hkmd_supportsMedicationsWidget
 {
-  if ([a1 isDeviceSupported])
+  if ([self isDeviceSupported])
   {
-    v2 = [a1 currentDeviceName];
-    v3 = [v2 isEqualToString:@"iPhone"];
+    currentDeviceName = [self currentDeviceName];
+    v3 = [currentDeviceName isEqualToString:@"iPhone"];
 
-    v4 = [a1 isAppleWatch] | v3;
+    v4 = [self isAppleWatch] | v3;
   }
 
   else

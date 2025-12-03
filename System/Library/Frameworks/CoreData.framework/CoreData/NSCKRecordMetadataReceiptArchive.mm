@@ -1,13 +1,13 @@
 @interface NSCKRecordMetadataReceiptArchive
-- (NSCKRecordMetadataReceiptArchive)initWithCoder:(id)a3;
-- (NSCKRecordMetadataReceiptArchive)initWithReceiptsToEncode:(id)a3;
+- (NSCKRecordMetadataReceiptArchive)initWithCoder:(id)coder;
+- (NSCKRecordMetadataReceiptArchive)initWithReceiptsToEncode:(id)encode;
 - (void)dealloc;
-- (void)enumerateArchivedRecordIDsUsingBlock:(id)a3;
+- (void)enumerateArchivedRecordIDsUsingBlock:(id)block;
 @end
 
 @implementation NSCKRecordMetadataReceiptArchive
 
-- (NSCKRecordMetadataReceiptArchive)initWithReceiptsToEncode:(id)a3
+- (NSCKRecordMetadataReceiptArchive)initWithReceiptsToEncode:(id)encode
 {
   v22 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
@@ -20,7 +20,7 @@
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v4 = [a3 countByEnumeratingWithState:&v14 objects:v21 count:16];
+    v4 = [encode countByEnumeratingWithState:&v14 objects:v21 count:16];
     if (v4)
     {
       v5 = v4;
@@ -31,24 +31,24 @@
         {
           if (*v15 != v6)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(encode);
           }
 
           v8 = *(*(&v14 + 1) + 8 * i);
-          v9 = [v8 createRecordIDForMovedRecord];
-          v10 = -[NSMutableDictionary objectForKey:](v3->_zoneIDToArchivedReceipts, "objectForKey:", [v9 zoneID]);
+          createRecordIDForMovedRecord = [v8 createRecordIDForMovedRecord];
+          v10 = -[NSMutableDictionary objectForKey:](v3->_zoneIDToArchivedReceipts, "objectForKey:", [createRecordIDForMovedRecord zoneID]);
           if (!v10)
           {
             v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-            -[NSMutableDictionary setObject:forKey:](v3->_zoneIDToArchivedReceipts, "setObject:forKey:", v10, [v9 zoneID]);
+            -[NSMutableDictionary setObject:forKey:](v3->_zoneIDToArchivedReceipts, "setObject:forKey:", v10, [createRecordIDForMovedRecord zoneID]);
           }
 
           v19 = @"movedAt";
-          v20 = [v8 movedAt];
-          [v10 setObject:objc_msgSend(MEMORY[0x1E695DF20] forKey:{"dictionaryWithObjects:forKeys:count:", &v20, &v19, 1), objc_msgSend(v9, "recordName")}];
+          movedAt = [v8 movedAt];
+          [v10 setObject:objc_msgSend(MEMORY[0x1E695DF20] forKey:{"dictionaryWithObjects:forKeys:count:", &movedAt, &v19, 1), objc_msgSend(createRecordIDForMovedRecord, "recordName")}];
         }
 
-        v5 = [a3 countByEnumeratingWithState:&v14 objects:v21 count:16];
+        v5 = [encode countByEnumeratingWithState:&v14 objects:v21 count:16];
       }
 
       while (v5);
@@ -67,7 +67,7 @@
   [(NSCKRecordMetadataReceiptArchive *)&v3 dealloc];
 }
 
-- (NSCKRecordMetadataReceiptArchive)initWithCoder:(id)a3
+- (NSCKRecordMetadataReceiptArchive)initWithCoder:(id)coder
 {
   v9[4] = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -81,14 +81,14 @@
     v9[1] = objc_opt_class();
     v9[2] = objc_opt_class();
     v9[3] = objc_opt_class();
-    v4->_zoneIDToArchivedReceipts = [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithArray:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v9, 4)), @"archiveDictionary"}];
+    v4->_zoneIDToArchivedReceipts = [coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithArray:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v9, 4)), @"archiveDictionary"}];
   }
 
   v6 = *MEMORY[0x1E69E9840];
   return v4;
 }
 
-- (void)enumerateArchivedRecordIDsUsingBlock:(id)a3
+- (void)enumerateArchivedRecordIDsUsingBlock:(id)block
 {
   v29 = *MEMORY[0x1E69E9840];
   v23 = 0u;
@@ -133,7 +133,7 @@
 
               v11 = *(*(&v19 + 1) + 8 * i);
               v12 = [objc_alloc(getCloudKitCKRecordIDClass[0]()) initWithRecordName:v11 zoneID:v5];
-              (*(a3 + 2))(a3, v12, [objc_msgSend(v6 objectForKey:{v11), "objectForKey:", @"movedAt"}]);
+              (*(block + 2))(block, v12, [objc_msgSend(v6 objectForKey:{v11), "objectForKey:", @"movedAt"}]);
             }
 
             v8 = [v6 countByEnumeratingWithState:&v19 objects:v27 count:16];

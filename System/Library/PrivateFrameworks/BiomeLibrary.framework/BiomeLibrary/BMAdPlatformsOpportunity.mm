@@ -1,22 +1,22 @@
 @interface BMAdPlatformsOpportunity
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMAdPlatformsOpportunity)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMAdPlatformsOpportunity)initWithPlacement:(int)a3 numAds:(id)a4 numPassed:(id)a5 storefront:(id)a6 searchTerm:(id)a7;
-- (BOOL)isEqual:(id)a3;
+- (BMAdPlatformsOpportunity)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMAdPlatformsOpportunity)initWithPlacement:(int)placement numAds:(id)ads numPassed:(id)passed storefront:(id)storefront searchTerm:(id)term;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMAdPlatformsOpportunity
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -24,9 +24,9 @@
     goto LABEL_18;
   }
 
-  v5 = v4;
-  v6 = [(BMAdPlatformsOpportunity *)self placement];
-  if (v6 != [v5 placement])
+  v5 = equalCopy;
+  placement = [(BMAdPlatformsOpportunity *)self placement];
+  if (placement != [v5 placement])
   {
     goto LABEL_15;
   }
@@ -43,8 +43,8 @@
       goto LABEL_15;
     }
 
-    v7 = [(BMAdPlatformsOpportunity *)self numAds];
-    if (v7 != [v5 numAds])
+    numAds = [(BMAdPlatformsOpportunity *)self numAds];
+    if (numAds != [v5 numAds])
     {
       goto LABEL_15;
     }
@@ -62,41 +62,41 @@
       goto LABEL_15;
     }
 
-    v8 = [(BMAdPlatformsOpportunity *)self numPassed];
-    if (v8 != [v5 numPassed])
+    numPassed = [(BMAdPlatformsOpportunity *)self numPassed];
+    if (numPassed != [v5 numPassed])
     {
       goto LABEL_15;
     }
   }
 
-  v9 = [(BMAdPlatformsOpportunity *)self storefront];
-  v10 = [v5 storefront];
-  v11 = v10;
-  if (v9 == v10)
+  storefront = [(BMAdPlatformsOpportunity *)self storefront];
+  storefront2 = [v5 storefront];
+  v11 = storefront2;
+  if (storefront == storefront2)
   {
 
     goto LABEL_20;
   }
 
-  v12 = [(BMAdPlatformsOpportunity *)self storefront];
-  v13 = [v5 storefront];
-  v14 = [v12 isEqual:v13];
+  storefront3 = [(BMAdPlatformsOpportunity *)self storefront];
+  storefront4 = [v5 storefront];
+  v14 = [storefront3 isEqual:storefront4];
 
   if (v14)
   {
 LABEL_20:
-    v17 = [(BMAdPlatformsOpportunity *)self searchTerm];
-    v18 = [v5 searchTerm];
-    if (v17 == v18)
+    searchTerm = [(BMAdPlatformsOpportunity *)self searchTerm];
+    searchTerm2 = [v5 searchTerm];
+    if (searchTerm == searchTerm2)
     {
       v15 = 1;
     }
 
     else
     {
-      v19 = [(BMAdPlatformsOpportunity *)self searchTerm];
-      v20 = [v5 searchTerm];
-      v15 = [v19 isEqual:v20];
+      searchTerm3 = [(BMAdPlatformsOpportunity *)self searchTerm];
+      searchTerm4 = [v5 searchTerm];
+      v15 = [searchTerm3 isEqual:searchTerm4];
     }
 
     goto LABEL_16;
@@ -134,53 +134,53 @@ LABEL_18:
     v5 = 0;
   }
 
-  v6 = [(BMAdPlatformsOpportunity *)self storefront];
-  v7 = [(BMAdPlatformsOpportunity *)self searchTerm];
+  storefront = [(BMAdPlatformsOpportunity *)self storefront];
+  searchTerm = [(BMAdPlatformsOpportunity *)self searchTerm];
   v18 = @"placement";
-  v8 = v3;
+  null = v3;
   if (!v3)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16 = v8;
-  v23[0] = v8;
+  v16 = null;
+  v23[0] = null;
   v19 = @"numAds";
-  v9 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[1] = v9;
+  v23[1] = null2;
   v20 = @"numPassed";
-  v10 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[2] = v10;
+  v23[2] = null3;
   v21 = @"storefront";
-  v11 = v6;
-  if (!v6)
+  null4 = storefront;
+  if (!storefront)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[3] = v11;
+  v23[3] = null4;
   v22 = @"searchTerm";
-  v12 = v7;
-  if (!v7)
+  null5 = searchTerm;
+  if (!searchTerm)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[4] = v12;
+  v23[4] = null5;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v18 count:{5, v16}];
-  if (v7)
+  if (searchTerm)
   {
-    if (v6)
+    if (storefront)
     {
       goto LABEL_19;
     }
@@ -189,7 +189,7 @@ LABEL_18:
   else
   {
 
-    if (v6)
+    if (storefront)
     {
 LABEL_19:
       if (v5)
@@ -240,38 +240,38 @@ LABEL_22:
   return v13;
 }
 
-- (BMAdPlatformsOpportunity)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMAdPlatformsOpportunity)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v50[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"placement"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"placement"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v40 = 0;
 LABEL_9:
-    v9 = [v6 objectForKeyedSubscript:@"numAds"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"numAds"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v15 = 0;
           goto LABEL_43;
         }
 
         v16 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v17 = a4;
+        errorCopy = error;
         v18 = *MEMORY[0x1E698F240];
         v47 = *MEMORY[0x1E696A578];
         v39 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"numAds"];
         v48 = v39;
         v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
         v19 = [v16 initWithDomain:v18 code:2 userInfo:v10];
-        a4 = 0;
+        error = 0;
         v15 = 0;
-        *v17 = v19;
+        *errorCopy = v19;
         goto LABEL_42;
       }
 
@@ -283,18 +283,18 @@ LABEL_9:
       v38 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"numPassed"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"numPassed"];
     v37 = v7;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v39 = 0;
           v15 = 0;
-          a4 = v38;
+          error = v38;
           goto LABEL_42;
         }
 
@@ -306,7 +306,7 @@ LABEL_9:
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
         v39 = 0;
         v15 = 0;
-        *a4 = [v20 initWithDomain:v21 code:2 userInfo:v11];
+        *error = [v20 initWithDomain:v21 code:2 userInfo:v11];
         goto LABEL_50;
       }
 
@@ -318,7 +318,7 @@ LABEL_9:
       v39 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"storefront"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"storefront"];
     if (!v11 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v12 = 0;
@@ -330,12 +330,12 @@ LABEL_9:
     {
       v12 = v11;
 LABEL_18:
-      v13 = [v6 objectForKeyedSubscript:@"searchTerm"];
+      v13 = [dictionaryCopy objectForKeyedSubscript:@"searchTerm"];
       if (!v13 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v14 = 0;
 LABEL_21:
-        a4 = v38;
+        error = v38;
         v15 = -[BMAdPlatformsOpportunity initWithPlacement:numAds:numPassed:storefront:searchTerm:](self, "initWithPlacement:numAds:numPassed:storefront:searchTerm:", [v40 intValue], v38, v39, v12, v14);
         self = v15;
 LABEL_40:
@@ -354,7 +354,7 @@ LABEL_42:
         goto LABEL_21;
       }
 
-      if (a4)
+      if (error)
       {
         v36 = objc_alloc(MEMORY[0x1E696ABC0]);
         v34 = *MEMORY[0x1E698F240];
@@ -362,20 +362,20 @@ LABEL_42:
         v25 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"searchTerm"];
         v42 = v25;
         v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
-        *a4 = [v36 initWithDomain:v34 code:2 userInfo:v26];
+        *error = [v36 initWithDomain:v34 code:2 userInfo:v26];
       }
 
       v14 = 0;
       v15 = 0;
 LABEL_39:
-      a4 = v38;
+      error = v38;
       goto LABEL_40;
     }
 
-    if (a4)
+    if (error)
     {
       v22 = objc_alloc(MEMORY[0x1E696ABC0]);
-      v35 = a4;
+      errorCopy2 = error;
       v23 = *MEMORY[0x1E698F240];
       v43 = *MEMORY[0x1E696A578];
       v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"storefront"];
@@ -384,14 +384,14 @@ LABEL_39:
       v24 = [v22 initWithDomain:v23 code:2 userInfo:v13];
       v12 = 0;
       v15 = 0;
-      *v35 = v24;
+      *errorCopy2 = v24;
       goto LABEL_39;
     }
 
     v12 = 0;
     v15 = 0;
 LABEL_50:
-    a4 = v38;
+    error = v38;
     goto LABEL_41;
   }
 
@@ -411,7 +411,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!error)
   {
     v40 = 0;
     v15 = 0;
@@ -419,17 +419,17 @@ LABEL_8:
   }
 
   v29 = objc_alloc(MEMORY[0x1E696ABC0]);
-  v30 = a4;
+  errorCopy3 = error;
   v31 = *MEMORY[0x1E698F240];
   v49 = *MEMORY[0x1E696A578];
   v32 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"placement"];
   v50[0] = v32;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v50 forKeys:&v49 count:1];
   v33 = v31;
-  a4 = v32;
+  error = v32;
   v40 = 0;
   v15 = 0;
-  *v30 = [v29 initWithDomain:v33 code:2 userInfo:v9];
+  *errorCopy3 = [v29 initWithDomain:v33 code:2 userInfo:v9];
 LABEL_43:
 
 LABEL_44:
@@ -441,16 +441,16 @@ LABEL_44:
 {
   v3 = objc_opt_new();
   [(BMAdPlatformsOpportunity *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   placement = self->_placement;
-  v9 = v4;
+  v9 = toCopy;
   PBDataWriterWriteUint32Field();
   if (self->_hasNumAds)
   {
@@ -478,9 +478,9 @@ LABEL_44:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v43.receiver = self;
   v43.super_class = BMAdPlatformsOpportunity;
   v5 = [(BMEventBase *)&v43 init];
@@ -489,12 +489,12 @@ LABEL_44:
     goto LABEL_72;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_70;
       }
@@ -505,18 +505,18 @@ LABEL_44:
       while (1)
       {
         v44 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v44 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v44 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v44 & 0x7F) << v7;
@@ -534,9 +534,9 @@ LABEL_44:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_70;
       }
@@ -557,18 +557,18 @@ LABEL_16:
           while (1)
           {
             v44 = 0;
-            v28 = [v4 position] + 1;
-            if (v28 >= [v4 position] && (v29 = objc_msgSend(v4, "position") + 1, v29 <= objc_msgSend(v4, "length")))
+            v28 = [fromCopy position] + 1;
+            if (v28 >= [fromCopy position] && (v29 = objc_msgSend(fromCopy, "position") + 1, v29 <= objc_msgSend(fromCopy, "length")))
             {
-              v30 = [v4 data];
-              [v30 getBytes:&v44 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v44 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v27 |= (v44 & 0x7F) << v25;
@@ -586,7 +586,7 @@ LABEL_16:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v24 = 0;
           }
@@ -617,8 +617,8 @@ LABEL_68:
       *(&v5->super.super.isa + v17) = v16;
 
 LABEL_69:
-      v40 = [v4 position];
-      if (v40 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_70;
       }
@@ -632,18 +632,18 @@ LABEL_69:
       while (1)
       {
         v44 = 0;
-        v35 = [v4 position] + 1;
-        if (v35 >= [v4 position] && (v36 = objc_msgSend(v4, "position") + 1, v36 <= objc_msgSend(v4, "length")))
+        v35 = [fromCopy position] + 1;
+        if (v35 >= [fromCopy position] && (v36 = objc_msgSend(fromCopy, "position") + 1, v36 <= objc_msgSend(fromCopy, "length")))
         {
-          v37 = [v4 data];
-          [v37 getBytes:&v44 range:{objc_msgSend(v4, "position"), 1}];
+          data3 = [fromCopy data];
+          [data3 getBytes:&v44 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v34 |= (v44 & 0x7F) << v32;
@@ -661,7 +661,7 @@ LABEL_69:
         }
       }
 
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         v38 = 0;
       }
@@ -694,18 +694,18 @@ LABEL_54:
     while (1)
     {
       v44 = 0;
-      v21 = [v4 position] + 1;
-      if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 1, v22 <= objc_msgSend(v4, "length")))
+      v21 = [fromCopy position] + 1;
+      if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 1, v22 <= objc_msgSend(fromCopy, "length")))
       {
-        v23 = [v4 data];
-        [v23 getBytes:&v44 range:{objc_msgSend(v4, "position"), 1}];
+        data4 = [fromCopy data];
+        [data4 getBytes:&v44 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-        [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+        [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
       }
 
       else
       {
-        [v4 _setError];
+        [fromCopy _setError];
       }
 
       v20 |= (v44 & 0x7F) << v18;
@@ -723,7 +723,7 @@ LABEL_54:
       }
     }
 
-    if ([v4 hasError])
+    if ([fromCopy hasError])
     {
       v24 = 0;
     }
@@ -739,7 +739,7 @@ LABEL_67:
   }
 
 LABEL_70:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_71:
     v41 = 0;
@@ -760,54 +760,54 @@ LABEL_72:
   v4 = BMAdPlatformsOpportunityPlacementAsString([(BMAdPlatformsOpportunity *)self placement]);
   v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMAdPlatformsOpportunity numAds](self, "numAds")}];
   v6 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMAdPlatformsOpportunity numPassed](self, "numPassed")}];
-  v7 = [(BMAdPlatformsOpportunity *)self storefront];
-  v8 = [(BMAdPlatformsOpportunity *)self searchTerm];
-  v9 = [v3 initWithFormat:@"BMAdPlatformsOpportunity with placement: %@, numAds: %@, numPassed: %@, storefront: %@, searchTerm: %@", v4, v5, v6, v7, v8];
+  storefront = [(BMAdPlatformsOpportunity *)self storefront];
+  searchTerm = [(BMAdPlatformsOpportunity *)self searchTerm];
+  v9 = [v3 initWithFormat:@"BMAdPlatformsOpportunity with placement: %@, numAds: %@, numPassed: %@, storefront: %@, searchTerm: %@", v4, v5, v6, storefront, searchTerm];
 
   return v9;
 }
 
-- (BMAdPlatformsOpportunity)initWithPlacement:(int)a3 numAds:(id)a4 numPassed:(id)a5 storefront:(id)a6 searchTerm:(id)a7
+- (BMAdPlatformsOpportunity)initWithPlacement:(int)placement numAds:(id)ads numPassed:(id)passed storefront:(id)storefront searchTerm:(id)term
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  adsCopy = ads;
+  passedCopy = passed;
+  storefrontCopy = storefront;
+  termCopy = term;
   v20.receiver = self;
   v20.super_class = BMAdPlatformsOpportunity;
   v16 = [(BMEventBase *)&v20 init];
   if (v16)
   {
     v16->_dataVersion = [objc_opt_class() latestDataVersion];
-    v16->_placement = a3;
-    if (v12)
+    v16->_placement = placement;
+    if (adsCopy)
     {
       v16->_hasNumAds = 1;
-      v17 = [v12 intValue];
+      intValue = [adsCopy intValue];
     }
 
     else
     {
       v16->_hasNumAds = 0;
-      v17 = -1;
+      intValue = -1;
     }
 
-    v16->_numAds = v17;
-    if (v13)
+    v16->_numAds = intValue;
+    if (passedCopy)
     {
       v16->_hasNumPassed = 1;
-      v18 = [v13 intValue];
+      intValue2 = [passedCopy intValue];
     }
 
     else
     {
       v16->_hasNumPassed = 0;
-      v18 = -1;
+      intValue2 = -1;
     }
 
-    v16->_numPassed = v18;
-    objc_storeStrong(&v16->_storefront, a6);
-    objc_storeStrong(&v16->_searchTerm, a7);
+    v16->_numPassed = intValue2;
+    objc_storeStrong(&v16->_storefront, storefront);
+    objc_storeStrong(&v16->_searchTerm, term);
   }
 
   return v16;
@@ -852,9 +852,9 @@ LABEL_72:
   return v7;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -862,8 +862,8 @@ LABEL_72:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMAdPlatformsOpportunity alloc] initByReadFrom:v7];
     v4 = v8;

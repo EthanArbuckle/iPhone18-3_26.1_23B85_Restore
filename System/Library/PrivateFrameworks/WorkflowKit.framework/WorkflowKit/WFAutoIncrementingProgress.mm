@@ -1,5 +1,5 @@
 @interface WFAutoIncrementingProgress
-- (WFAutoIncrementingProgress)initWithParent:(id)a3 pendingUnitCount:(unint64_t)a4 duration:(double)a5;
+- (WFAutoIncrementingProgress)initWithParent:(id)parent pendingUnitCount:(unint64_t)count duration:(double)duration;
 - (void)cancel;
 - (void)finish;
 - (void)start;
@@ -10,9 +10,9 @@
 - (void)finish
 {
   [(WFAutoIncrementingProgress *)self cancel];
-  v3 = [(WFAutoIncrementingProgress *)self totalUnitCount];
+  totalUnitCount = [(WFAutoIncrementingProgress *)self totalUnitCount];
 
-  [(WFAutoIncrementingProgress *)self setCompletedUnitCount:v3];
+  [(WFAutoIncrementingProgress *)self setCompletedUnitCount:totalUnitCount];
 }
 
 - (void)cancel
@@ -36,8 +36,8 @@
 
 - (void)start
 {
-  v3 = [(WFAutoIncrementingProgress *)self timer];
-  if (v3)
+  timer = [(WFAutoIncrementingProgress *)self timer];
+  if (timer)
   {
   }
 
@@ -89,18 +89,18 @@ uint64_t __35__WFAutoIncrementingProgress_start__block_invoke(uint64_t a1)
   return [v1 setCompletedUnitCount:v2];
 }
 
-- (WFAutoIncrementingProgress)initWithParent:(id)a3 pendingUnitCount:(unint64_t)a4 duration:(double)a5
+- (WFAutoIncrementingProgress)initWithParent:(id)parent pendingUnitCount:(unint64_t)count duration:(double)duration
 {
-  v8 = a3;
+  parentCopy = parent;
   v13.receiver = self;
   v13.super_class = WFAutoIncrementingProgress;
   v9 = [(WFAutoIncrementingProgress *)&v13 initWithParent:0 userInfo:0];
   v10 = v9;
   if (v9)
   {
-    v9->_duration = a5;
-    [(WFAutoIncrementingProgress *)v9 setTotalUnitCount:(a5 / 0.1)];
-    [v8 addChild:v10 withPendingUnitCount:a4];
+    v9->_duration = duration;
+    [(WFAutoIncrementingProgress *)v9 setTotalUnitCount:(duration / 0.1)];
+    [parentCopy addChild:v10 withPendingUnitCount:count];
     v11 = v10;
   }
 

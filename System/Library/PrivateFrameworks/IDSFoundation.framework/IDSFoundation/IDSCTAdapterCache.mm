@@ -109,9 +109,9 @@
   v21 = v15;
   v22 = v11;
   v23 = v9;
-  v24 = [v3 stringWithFormat:@"<%@: %p, dualSIM: %@, anyUsable: %@, anyInserted: %@, supportsID: %@, anySimul: %@, sims: %@>", v4, self, v23, v22, v21, v20, v19, sims];
+  sims = [v3 stringWithFormat:@"<%@: %p, dualSIM: %@, anyUsable: %@, anyInserted: %@, supportsID: %@, anySimul: %@, sims: %@>", v4, self, v23, v22, v21, v20, v19, sims];
 
-  return v24;
+  return sims;
 }
 
 @end

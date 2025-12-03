@@ -6,52 +6,52 @@
 - (BKContentViewControllerLayoutDelegate)layoutDelegate;
 - (BKPageLocation)assignedPageLocation;
 - (BOOL)hasHighlightedText;
-- (CGRect)cachedRectForAnnotation:(id)a3;
-- (CGRect)cachedVisibleRectForAnnotation:(id)a3;
-- (CGRect)rectForAnnotation:(id)a3;
-- (CGRect)rectForAnnotation:(id)a3 visible:(BOOL)a4;
-- (CGRect)rectForLocation:(id)a3;
-- (CGRect)visibleRectForLocation:(id)a3;
+- (CGRect)cachedRectForAnnotation:(id)annotation;
+- (CGRect)cachedVisibleRectForAnnotation:(id)annotation;
+- (CGRect)rectForAnnotation:(id)annotation;
+- (CGRect)rectForAnnotation:(id)annotation visible:(BOOL)visible;
+- (CGRect)rectForLocation:(id)location;
+- (CGRect)visibleRectForLocation:(id)location;
 - (CGSize)estimatedContentSize;
 - (UIEdgeInsets)contentInsets;
 - (UIEdgeInsets)separatorInsets;
 - (id)snapshot;
 - (int)pageProgressionDirection;
-- (void)_setThemeIfNeeded:(id)a3;
-- (void)addHighlightView:(id)a3 forWK2:(BOOL)a4;
+- (void)_setThemeIfNeeded:(id)needed;
+- (void)addHighlightView:(id)view forWK2:(BOOL)k2;
 - (void)applyPageColor;
 - (void)contentLoadFailed;
 - (void)contentReady;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
-- (void)ensureLocationVisible:(id)a3 adjustForSearchResultRevealMode:(BOOL)a4 completion:(id)a5;
-- (void)ensureLocationVisible:(id)a3 completion:(id)a4;
-- (void)hideLoadingViewAnimated:(BOOL)a3;
-- (void)hideReloadUIAnimated:(BOOL)a3;
-- (void)highlightSearchLocation:(id)a3;
-- (void)isLocationVisible:(id)a3 annotation:(id)a4 completion:(id)a5;
+- (void)ensureLocationVisible:(id)visible adjustForSearchResultRevealMode:(BOOL)mode completion:(id)completion;
+- (void)ensureLocationVisible:(id)visible completion:(id)completion;
+- (void)hideLoadingViewAnimated:(BOOL)animated;
+- (void)hideReloadUIAnimated:(BOOL)animated;
+- (void)highlightSearchLocation:(id)location;
+- (void)isLocationVisible:(id)visible annotation:(id)annotation completion:(id)completion;
 - (void)load;
-- (void)pageOffsetRangeForLocation:(id)a3 completion:(id)a4;
+- (void)pageOffsetRangeForLocation:(id)location completion:(id)completion;
 - (void)prepareForReuse;
-- (void)rectForAnnotation:(id)a3 visible:(BOOL)a4 withCompletion:(id)a5;
-- (void)rectForAnnotation:(id)a3 withCompletion:(id)a4;
-- (void)rectForLocation:(id)a3 completion:(id)a4;
+- (void)rectForAnnotation:(id)annotation visible:(BOOL)visible withCompletion:(id)completion;
+- (void)rectForAnnotation:(id)annotation withCompletion:(id)completion;
+- (void)rectForLocation:(id)location completion:(id)completion;
 - (void)releaseViews;
-- (void)reloadViewDidBeginReloading:(id)a3;
-- (void)removeHighlightView:(id)a3;
-- (void)selectLocation:(id)a3 completion:(id)a4;
-- (void)setContentLoaded:(BOOL)a3;
-- (void)setDelegate:(id)a3;
-- (void)setHighlightViews:(id)a3;
-- (void)setSelectionHighlightsVisible:(BOOL)a3;
-- (void)showLoadingViewAnimated:(BOOL)a3;
-- (void)showReloadUIAnimated:(BOOL)a3;
+- (void)reloadViewDidBeginReloading:(id)reloading;
+- (void)removeHighlightView:(id)view;
+- (void)selectLocation:(id)location completion:(id)completion;
+- (void)setContentLoaded:(BOOL)loaded;
+- (void)setDelegate:(id)delegate;
+- (void)setHighlightViews:(id)views;
+- (void)setSelectionHighlightsVisible:(BOOL)visible;
+- (void)showLoadingViewAnimated:(BOOL)animated;
+- (void)showReloadUIAnimated:(BOOL)animated;
 - (void)updateSelectionHighlights;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)visibleRectForLocation:(id)a3 completion:(id)a4;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)visibleRectForLocation:(id)location completion:(id)completion;
 @end
 
 @implementation BKContentViewController
@@ -115,17 +115,17 @@
   [(BKContentViewController *)&v6 didReceiveMemoryWarning];
   if ([(BKContentViewController *)self isViewLoaded])
   {
-    v3 = [(BKContentViewController *)self view];
-    v4 = [v3 window];
-    if (v4)
+    view = [(BKContentViewController *)self view];
+    window = [view window];
+    if (window)
     {
     }
 
     else
     {
-      v5 = [(BKContentViewController *)self isContentLoaded];
+      isContentLoaded = [(BKContentViewController *)self isContentLoaded];
 
-      if ((v5 & 1) == 0)
+      if ((isContentLoaded & 1) == 0)
       {
         [(BKContentViewController *)self contentLoadFailed];
       }
@@ -141,11 +141,11 @@
   [(BKContentViewController *)self applyPageColor];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = BKContentViewController;
-  [(BKContentViewController *)&v4 viewDidAppear:a3];
+  [(BKContentViewController *)&v4 viewDidAppear:appear];
   if ([(BKContentViewController *)self showsLoadingIndicator])
   {
     if (![(BKContentViewController *)self isContentLoaded])
@@ -155,26 +155,26 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = BKContentViewController;
-  [(BKContentViewController *)&v4 viewWillDisappear:a3];
+  [(BKContentViewController *)&v4 viewWillDisappear:disappear];
   [(BKContentViewController *)self clearSelection];
   [(IMBaseRenderingCache *)self->_contentViewImageCache cancelRenderingCacheOperationsForTarget:self];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = BKContentViewController;
-  [(BKContentViewController *)&v4 viewDidDisappear:a3];
+  [(BKContentViewController *)&v4 viewDidDisappear:disappear];
   [(BKContentViewController *)self clearHighlightsForSearchResults];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -184,9 +184,9 @@
     if (v6)
     {
       v7 = v6;
-      v8 = [(BKContentViewController *)self isContentLoaded];
+      isContentLoaded = [(BKContentViewController *)self isContentLoaded];
 
-      if ((v8 & 1) == 0)
+      if ((isContentLoaded & 1) == 0)
       {
         [(BKContentViewController *)self contentLoadFailed];
       }
@@ -207,9 +207,9 @@
   [(BKContentViewController *)self setDocument:0];
 }
 
-- (void)isLocationVisible:(id)a3 annotation:(id)a4 completion:(id)a5
+- (void)isLocationVisible:(id)visible annotation:(id)annotation completion:(id)completion
 {
-  v5 = objc_retainBlock(a5);
+  v5 = objc_retainBlock(completion);
   if (v5)
   {
     v6 = v5;
@@ -218,9 +218,9 @@
   }
 }
 
-- (CGRect)cachedRectForAnnotation:(id)a3
+- (CGRect)cachedRectForAnnotation:(id)annotation
 {
-  v3 = a3;
+  annotationCopy = annotation;
   v4 = [NSString stringWithFormat:@"%@: %s", @"Do not call method", "[BKContentViewController cachedRectForAnnotation:]"];
   v5 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
   v6 = v5;
@@ -228,9 +228,9 @@
   objc_exception_throw(v5);
 }
 
-- (CGRect)cachedVisibleRectForAnnotation:(id)a3
+- (CGRect)cachedVisibleRectForAnnotation:(id)annotation
 {
-  v3 = a3;
+  annotationCopy = annotation;
   v4 = [NSString stringWithFormat:@"%@: %s", @"Do not call method", "[BKContentViewController cachedVisibleRectForAnnotation:]"];
   v5 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v4 userInfo:0];
   v6 = v5;
@@ -238,9 +238,9 @@
   objc_exception_throw(v5);
 }
 
-- (void)pageOffsetRangeForLocation:(id)a3 completion:(id)a4
+- (void)pageOffsetRangeForLocation:(id)location completion:(id)completion
 {
-  v4 = objc_retainBlock(a4);
+  v4 = objc_retainBlock(completion);
   if (v4)
   {
     v5 = v4;
@@ -249,9 +249,9 @@
   }
 }
 
-- (void)ensureLocationVisible:(id)a3 completion:(id)a4
+- (void)ensureLocationVisible:(id)visible completion:(id)completion
 {
-  v4 = objc_retainBlock(a4);
+  v4 = objc_retainBlock(completion);
   if (v4)
   {
     v5 = v4;
@@ -260,9 +260,9 @@
   }
 }
 
-- (void)ensureLocationVisible:(id)a3 adjustForSearchResultRevealMode:(BOOL)a4 completion:(id)a5
+- (void)ensureLocationVisible:(id)visible adjustForSearchResultRevealMode:(BOOL)mode completion:(id)completion
 {
-  v5 = objc_retainBlock(a5);
+  v5 = objc_retainBlock(completion);
   if (v5)
   {
     v6 = v5;
@@ -276,16 +276,16 @@
   [(BKContentViewController *)self setContentLoadPending:1];
   if (([(BKContentViewController *)self isViewLoaded]& 1) == 0)
   {
-    v3 = [(BKContentViewController *)self view];
+    view = [(BKContentViewController *)self view];
   }
 }
 
-- (void)setContentLoaded:(BOOL)a3
+- (void)setContentLoaded:(BOOL)loaded
 {
-  if (self->_contentLoaded != a3)
+  if (self->_contentLoaded != loaded)
   {
-    self->_contentLoaded = a3;
-    if (a3)
+    self->_contentLoaded = loaded;
+    if (loaded)
     {
       if (self->_loadingView)
       {
@@ -330,49 +330,49 @@
   {
     if ([(BKContentViewController *)self shouldApplyPageColor])
     {
-      v13 = [(BKContentViewController *)self themePage];
-      v3 = [v13 backgroundColorForTraitEnvironment:self];
+      themePage = [(BKContentViewController *)self themePage];
+      layer4 = [themePage backgroundColorForTraitEnvironment:self];
       v4 = [CAFilter alloc];
       v5 = [v4 initWithType:kCAFilterMultiplyColor];
-      [v5 setValue:objc_msgSend(v3 forKeyPath:{"CGColor"), @"inputColor"}];
+      [v5 setValue:objc_msgSend(layer4 forKeyPath:{"CGColor"), @"inputColor"}];
       v6 = [NSArray arrayWithObject:v5];
-      v7 = [(BKContentViewController *)self view];
-      v8 = [v7 layer];
-      [v8 setFilters:v6];
+      view = [(BKContentViewController *)self view];
+      layer = [view layer];
+      [layer setFilters:v6];
 
-      v9 = [(BKContentViewController *)self view];
-      v10 = [v9 layer];
-      [v10 setCreatesCompositingGroup:1];
+      view2 = [(BKContentViewController *)self view];
+      layer2 = [view2 layer];
+      [layer2 setCreatesCompositingGroup:1];
     }
 
     else
     {
-      v11 = [(BKContentViewController *)self view];
-      v12 = [v11 layer];
-      [v12 setFilters:0];
+      view3 = [(BKContentViewController *)self view];
+      layer3 = [view3 layer];
+      [layer3 setFilters:0];
 
-      v13 = [(BKContentViewController *)self view];
-      v3 = [v13 layer];
-      [v3 setCreatesCompositingGroup:0];
+      themePage = [(BKContentViewController *)self view];
+      layer4 = [themePage layer];
+      [layer4 setCreatesCompositingGroup:0];
     }
   }
 }
 
-- (void)_setThemeIfNeeded:(id)a3
+- (void)_setThemeIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [(BKContentViewController *)self theme];
-  v6 = [v4 isEqual:v5];
+  neededCopy = needed;
+  theme = [(BKContentViewController *)self theme];
+  v6 = [neededCopy isEqual:theme];
 
   if ((v6 & 1) == 0)
   {
     v8.receiver = self;
     v8.super_class = BKContentViewController;
-    [(BKContentViewController *)&v8 setTheme:v4];
+    [(BKContentViewController *)&v8 setTheme:neededCopy];
     [(BKContentViewController *)self applyPageColor];
-    v7 = [(BKContentViewController *)self themePage];
-    [(BKContentLoadingView *)self->_loadingView setTheme:v7];
-    [(BKContentReloadView *)self->_reloadView setTheme:v7];
+    themePage = [(BKContentViewController *)self themePage];
+    [(BKContentLoadingView *)self->_loadingView setTheme:themePage];
+    [(BKContentReloadView *)self->_reloadView setTheme:themePage];
   }
 }
 
@@ -380,24 +380,24 @@
 {
   if ([(BKContentViewController *)self isViewLoaded])
   {
-    v3 = [(BKContentViewController *)self view];
-    v4 = [v3 im_snapshotInContext];
+    view = [(BKContentViewController *)self view];
+    im_snapshotInContext = [view im_snapshotInContext];
   }
 
   else
   {
-    v4 = 0;
+    im_snapshotInContext = 0;
   }
 
-  return v4;
+  return im_snapshotInContext;
 }
 
 - (BKPageLocation)assignedPageLocation
 {
-  v3 = [(BKContentViewController *)self pageOffset];
-  if (v3 <= 0x7FFFFFFFFFFFFFFELL)
+  pageOffset = [(BKContentViewController *)self pageOffset];
+  if (pageOffset <= 0x7FFFFFFFFFFFFFFELL)
   {
-    v4 = [[BKPageLocation alloc] initWithOrdinal:[(BKContentViewController *)self ordinal] andOffset:v3];
+    v4 = [[BKPageLocation alloc] initWithOrdinal:[(BKContentViewController *)self ordinal] andOffset:pageOffset];
   }
 
   else
@@ -410,15 +410,15 @@
 
 - (int)pageProgressionDirection
 {
-  v2 = [(BKContentViewController *)self book];
-  v3 = [v2 bkPageProgressionDirection];
+  book = [(BKContentViewController *)self book];
+  bkPageProgressionDirection = [book bkPageProgressionDirection];
 
-  return v3;
+  return bkPageProgressionDirection;
 }
 
-- (void)selectLocation:(id)a3 completion:(id)a4
+- (void)selectLocation:(id)location completion:(id)completion
 {
-  v4 = objc_retainBlock(a4);
+  v4 = objc_retainBlock(completion);
   if (v4)
   {
     v5 = v4;
@@ -427,7 +427,7 @@
   }
 }
 
-- (CGRect)rectForLocation:(id)a3
+- (CGRect)rectForLocation:(id)location
 {
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
@@ -440,9 +440,9 @@
   return result;
 }
 
-- (void)rectForLocation:(id)a3 completion:(id)a4
+- (void)rectForLocation:(id)location completion:(id)completion
 {
-  v4 = objc_retainBlock(a4);
+  v4 = objc_retainBlock(completion);
   if (v4)
   {
     v5 = v4;
@@ -451,17 +451,17 @@
   }
 }
 
-- (CGRect)visibleRectForLocation:(id)a3
+- (CGRect)visibleRectForLocation:(id)location
 {
-  [(BKContentViewController *)self rectForLocation:a3];
+  [(BKContentViewController *)self rectForLocation:location];
   x = v17.origin.x;
   y = v17.origin.y;
   width = v17.size.width;
   height = v17.size.height;
   if (!CGRectIsNull(v17))
   {
-    v8 = [(BKContentViewController *)self view];
-    [v8 bounds];
+    view = [(BKContentViewController *)self view];
+    [view bounds];
     v21.origin.x = v9;
     v21.origin.y = v10;
     v21.size.width = v11;
@@ -488,21 +488,21 @@
   return result;
 }
 
-- (void)visibleRectForLocation:(id)a3 completion:(id)a4
+- (void)visibleRectForLocation:(id)location completion:(id)completion
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_636F8;
   v6[3] = &unk_1E3208;
-  v7 = self;
-  v8 = a4;
-  v5 = v8;
-  [(BKContentViewController *)v7 rectForLocation:a3 completion:v6];
+  selfCopy = self;
+  completionCopy = completion;
+  v5 = completionCopy;
+  [(BKContentViewController *)selfCopy rectForLocation:location completion:v6];
 }
 
-- (CGRect)rectForAnnotation:(id)a3
+- (CGRect)rectForAnnotation:(id)annotation
 {
-  [(BKContentViewController *)self rectForAnnotation:a3 visible:1];
+  [(BKContentViewController *)self rectForAnnotation:annotation visible:1];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -510,32 +510,32 @@
   return result;
 }
 
-- (void)rectForAnnotation:(id)a3 withCompletion:(id)a4
+- (void)rectForAnnotation:(id)annotation withCompletion:(id)completion
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_638A4;
   v7[3] = &unk_1E41C8;
-  v8 = a4;
-  v6 = v8;
-  [(BKContentViewController *)self rectForAnnotation:a3 visible:1 withCompletion:v7];
+  completionCopy = completion;
+  v6 = completionCopy;
+  [(BKContentViewController *)self rectForAnnotation:annotation visible:1 withCompletion:v7];
 }
 
-- (void)rectForAnnotation:(id)a3 visible:(BOOL)a4 withCompletion:(id)a5
+- (void)rectForAnnotation:(id)annotation visible:(BOOL)visible withCompletion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [a3 location];
-  if (v5)
+  visibleCopy = visible;
+  completionCopy = completion;
+  location = [annotation location];
+  if (visibleCopy)
   {
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_63A48;
     v15[3] = &unk_1E41C8;
     v10 = &v16;
-    v16 = v8;
-    v11 = v8;
-    [(BKContentViewController *)self visibleRectForLocation:v9 completion:v15];
+    v16 = completionCopy;
+    v11 = completionCopy;
+    [(BKContentViewController *)self visibleRectForLocation:location completion:v15];
   }
 
   else
@@ -545,24 +545,24 @@
     v13[2] = sub_63AC4;
     v13[3] = &unk_1E41C8;
     v10 = &v14;
-    v14 = v8;
-    v12 = v8;
-    [(BKContentViewController *)self rectForLocation:v9 completion:v13];
+    v14 = completionCopy;
+    v12 = completionCopy;
+    [(BKContentViewController *)self rectForLocation:location completion:v13];
   }
 }
 
-- (CGRect)rectForAnnotation:(id)a3 visible:(BOOL)a4
+- (CGRect)rectForAnnotation:(id)annotation visible:(BOOL)visible
 {
-  v4 = a4;
-  v6 = [a3 location];
-  if (v4)
+  visibleCopy = visible;
+  location = [annotation location];
+  if (visibleCopy)
   {
-    [(BKContentViewController *)self visibleRectForLocation:v6];
+    [(BKContentViewController *)self visibleRectForLocation:location];
   }
 
   else
   {
-    [(BKContentViewController *)self rectForLocation:v6];
+    [(BKContentViewController *)self rectForLocation:location];
   }
 
   v11 = v7;
@@ -581,23 +581,23 @@
   return result;
 }
 
-- (void)highlightSearchLocation:(id)a3
+- (void)highlightSearchLocation:(id)location
 {
-  v5 = a3;
-  v4 = [(BKContentViewController *)self ordinal];
-  if (v4 == [v5 ordinal])
+  locationCopy = location;
+  ordinal = [(BKContentViewController *)self ordinal];
+  if (ordinal == [locationCopy ordinal])
   {
-    [(BKContentViewController *)self setSearchLocation:v5];
+    [(BKContentViewController *)self setSearchLocation:locationCopy];
   }
 }
 
-- (void)setHighlightViews:(id)a3
+- (void)setHighlightViews:(id)views
 {
-  v4 = a3;
-  if (([(NSMutableArray *)self->_highlightViews isEqualToArray:v4]& 1) == 0)
+  viewsCopy = views;
+  if (([(NSMutableArray *)self->_highlightViews isEqualToArray:viewsCopy]& 1) == 0)
   {
     highlightViews = self->_highlightViews;
-    if (highlightViews != v4 && ([(NSMutableArray *)highlightViews count]|| [(NSMutableArray *)v4 count]))
+    if (highlightViews != viewsCopy && ([(NSMutableArray *)highlightViews count]|| [(NSMutableArray *)viewsCopy count]))
     {
       if ([(NSMutableArray *)self->_highlightViews count])
       {
@@ -638,7 +638,7 @@
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v12 = v4;
+      v12 = viewsCopy;
       v13 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
       if (v13)
       {
@@ -675,12 +675,12 @@
   }
 }
 
-- (void)addHighlightView:(id)a3 forWK2:(BOOL)a4
+- (void)addHighlightView:(id)view forWK2:(BOOL)k2
 {
-  v6 = a3;
-  if (v6)
+  viewCopy = view;
+  if (viewCopy)
   {
-    v12 = v6;
+    v12 = viewCopy;
     if (!self->_highlightViews)
     {
       v7 = [[NSMutableArray alloc] initWithCapacity:30];
@@ -688,7 +688,7 @@
       self->_highlightViews = v7;
     }
 
-    if (a4)
+    if (k2)
     {
       [(BKContentViewController *)self highlightViewContainerWK2];
     }
@@ -698,31 +698,31 @@
       [(BKContentViewController *)self highlightViewContainer];
     }
     v9 = ;
-    v10 = [(BKContentViewController *)self view];
+    view = [(BKContentViewController *)self view];
 
-    if (v10 != v9)
+    if (view != v9)
     {
-      v11 = [(BKContentViewController *)self view];
+      view2 = [(BKContentViewController *)self view];
       [v12 frame];
-      [v11 convertRect:v9 toView:?];
+      [view2 convertRect:v9 toView:?];
       [v12 setFrame:?];
     }
 
     [v9 addSubview:v12];
     [(NSMutableArray *)self->_highlightViews addObject:v12];
 
-    v6 = v12;
+    viewCopy = v12;
   }
 }
 
-- (void)removeHighlightView:(id)a3
+- (void)removeHighlightView:(id)view
 {
-  if (a3)
+  if (view)
   {
     highlightViews = self->_highlightViews;
-    v4 = a3;
-    [(NSMutableArray *)highlightViews removeObject:v4];
-    [v4 removeFromSuperview];
+    viewCopy = view;
+    [(NSMutableArray *)highlightViews removeObject:viewCopy];
+    [viewCopy removeFromSuperview];
   }
 }
 
@@ -732,8 +732,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(BKContentViewController *)self highlightViews];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  highlightViews = [(BKContentViewController *)self highlightViews];
+  v3 = [highlightViews countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -745,7 +745,7 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(highlightViews);
         }
 
         [*(*(&v7 + 1) + 8 * v6) updateHighlightImage];
@@ -753,22 +753,22 @@
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [highlightViews countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)setSelectionHighlightsVisible:(BOOL)a3
+- (void)setSelectionHighlightsVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(BKContentViewController *)self highlightViews];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  highlightViews = [(BKContentViewController *)self highlightViews];
+  v5 = [highlightViews countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -780,15 +780,15 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(highlightViews);
         }
 
-        [*(*(&v9 + 1) + 8 * v8) setHidden:!v3];
+        [*(*(&v9 + 1) + 8 * v8) setHidden:!visibleCopy];
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [highlightViews countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -837,25 +837,25 @@ LABEL_11:
   return v3;
 }
 
-- (void)showLoadingViewAnimated:(BOOL)a3
+- (void)showLoadingViewAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(BKContentViewController *)self loadingView];
+  animatedCopy = animated;
+  loadingView = [(BKContentViewController *)self loadingView];
   v6 = 0.0;
-  [v5 setAlpha:0.0];
-  v7 = [v5 superview];
+  [loadingView setAlpha:0.0];
+  superview = [loadingView superview];
 
-  if (!v7)
+  if (!superview)
   {
-    v8 = [(BKContentViewController *)self view];
-    [v8 addSubview:v5];
+    view = [(BKContentViewController *)self view];
+    [view addSubview:loadingView];
   }
 
-  v9 = [(BKContentViewController *)self view];
-  [v9 bounds];
-  [v5 setFrame:?];
+  view2 = [(BKContentViewController *)self view];
+  [view2 bounds];
+  [loadingView setFrame:?];
 
-  if (v3)
+  if (animatedCopy)
   {
     v6 = 0.2;
   }
@@ -864,16 +864,16 @@ LABEL_11:
   v11[1] = 3221225472;
   v11[2] = sub_64450;
   v11[3] = &unk_1E2BD0;
-  v12 = v5;
-  v10 = v5;
+  v12 = loadingView;
+  v10 = loadingView;
   [UIView animateWithDuration:v11 animations:v6];
 }
 
-- (void)hideLoadingViewAnimated:(BOOL)a3
+- (void)hideLoadingViewAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(BKContentViewController *)self loadingView];
-  if (v3)
+  animatedCopy = animated;
+  loadingView = [(BKContentViewController *)self loadingView];
+  if (animatedCopy)
   {
     v5 = 0.2;
   }
@@ -887,7 +887,7 @@ LABEL_11:
   v9[1] = 3221225472;
   v9[2] = sub_6456C;
   v9[3] = &unk_1E2BD0;
-  v10 = v4;
+  v10 = loadingView;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_64578;
@@ -903,14 +903,14 @@ LABEL_11:
   if (!loadingView)
   {
     v4 = [BKContentLoadingView alloc];
-    v5 = [(BKContentViewController *)self view];
-    [v5 bounds];
+    view = [(BKContentViewController *)self view];
+    [view bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(BKContentViewController *)self themePage];
-    v15 = [(BKContentLoadingView *)v4 initWithFrame:v14 theme:v7, v9, v11, v13];
+    themePage = [(BKContentViewController *)self themePage];
+    v15 = [(BKContentLoadingView *)v4 initWithFrame:themePage theme:v7, v9, v11, v13];
     v16 = self->_loadingView;
     self->_loadingView = v15;
 
@@ -921,25 +921,25 @@ LABEL_11:
   return loadingView;
 }
 
-- (void)showReloadUIAnimated:(BOOL)a3
+- (void)showReloadUIAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(BKContentViewController *)self reloadView];
+  animatedCopy = animated;
+  reloadView = [(BKContentViewController *)self reloadView];
   v6 = 0.0;
-  [v5 setAlpha:0.0];
-  v7 = [v5 superview];
+  [reloadView setAlpha:0.0];
+  superview = [reloadView superview];
 
-  if (!v7)
+  if (!superview)
   {
-    v8 = [(BKContentViewController *)self view];
-    [v8 addSubview:v5];
+    view = [(BKContentViewController *)self view];
+    [view addSubview:reloadView];
   }
 
-  v9 = [(BKContentViewController *)self view];
-  [v9 bounds];
-  [v5 setFrame:?];
+  view2 = [(BKContentViewController *)self view];
+  [view2 bounds];
+  [reloadView setFrame:?];
 
-  if (v3)
+  if (animatedCopy)
   {
     v6 = 0.2;
   }
@@ -948,16 +948,16 @@ LABEL_11:
   v11[1] = 3221225472;
   v11[2] = sub_64798;
   v11[3] = &unk_1E2BD0;
-  v12 = v5;
-  v10 = v5;
+  v12 = reloadView;
+  v10 = reloadView;
   [UIView animateWithDuration:v11 animations:v6];
 }
 
-- (void)hideReloadUIAnimated:(BOOL)a3
+- (void)hideReloadUIAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(BKContentViewController *)self reloadView];
-  if (v3)
+  animatedCopy = animated;
+  reloadView = [(BKContentViewController *)self reloadView];
+  if (animatedCopy)
   {
     v5 = 0.2;
   }
@@ -971,7 +971,7 @@ LABEL_11:
   v9[1] = 3221225472;
   v9[2] = sub_648B4;
   v9[3] = &unk_1E2BD0;
-  v10 = v4;
+  v10 = reloadView;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_648C0;
@@ -987,14 +987,14 @@ LABEL_11:
   if (!reloadView)
   {
     v4 = [BKContentReloadView alloc];
-    v5 = [(BKContentViewController *)self view];
-    [v5 bounds];
+    view = [(BKContentViewController *)self view];
+    [view bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(BKContentViewController *)self themePage];
-    v15 = [(BKContentReloadView *)v4 initWithFrame:v14 theme:self delegate:v7, v9, v11, v13];
+    themePage = [(BKContentViewController *)self themePage];
+    v15 = [(BKContentReloadView *)v4 initWithFrame:themePage theme:self delegate:v7, v9, v11, v13];
     v16 = self->_reloadView;
     self->_reloadView = v15;
 
@@ -1005,7 +1005,7 @@ LABEL_11:
   return reloadView;
 }
 
-- (void)reloadViewDidBeginReloading:(id)a3
+- (void)reloadViewDidBeginReloading:(id)reloading
 {
   [(BKContentViewController *)self hideReloadUIAnimated:1];
   [(BKContentViewController *)self reload];

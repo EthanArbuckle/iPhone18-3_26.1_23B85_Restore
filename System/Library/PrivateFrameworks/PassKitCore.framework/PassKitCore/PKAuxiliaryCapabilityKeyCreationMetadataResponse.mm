@@ -1,24 +1,24 @@
 @interface PKAuxiliaryCapabilityKeyCreationMetadataResponse
-- (PKAuxiliaryCapabilityKeyCreationMetadataResponse)initWithData:(id)a3;
-- (id)entriesForCapabilities:(id)a3;
+- (PKAuxiliaryCapabilityKeyCreationMetadataResponse)initWithData:(id)data;
+- (id)entriesForCapabilities:(id)capabilities;
 @end
 
 @implementation PKAuxiliaryCapabilityKeyCreationMetadataResponse
 
-- (PKAuxiliaryCapabilityKeyCreationMetadataResponse)initWithData:(id)a3
+- (PKAuxiliaryCapabilityKeyCreationMetadataResponse)initWithData:(id)data
 {
   v20 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = PKAuxiliaryCapabilityKeyCreationMetadataResponse;
-  v3 = [(PKWebServiceResponse *)&v15 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v15 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = jSONObject;
       v7 = [(PKAuxiliaryCapabilityKeyCreationMetadataResponse *)v6 PKArrayContaining:objc_opt_class() forKey:@"entries"];
       entryDicts = v4->_entryDicts;
       v4->_entryDicts = v7;
@@ -58,9 +58,9 @@ LABEL_9:
   return v4;
 }
 
-- (id)entriesForCapabilities:(id)a3
+- (id)entriesForCapabilities:(id)capabilities
 {
-  v4 = [a3 pk_indexDictionaryByApplyingBlock:&__block_literal_global_123];
+  v4 = [capabilities pk_indexDictionaryByApplyingBlock:&__block_literal_global_123];
   entryDicts = self->_entryDicts;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;

@@ -1,12 +1,12 @@
 @interface BSServiceConnectionEndpointInjectorConfiguration
 - (BSServiceConnectionEndpointInjectorConfiguration)init;
-- (void)addEndpoint:(id)a3;
-- (void)setAdditionalAttributes:(id)a3;
-- (void)setDomain:(id)a3;
-- (void)setInheritingEnvironment:(id)a3;
-- (void)setInstance:(id)a3;
-- (void)setService:(id)a3;
-- (void)setTarget:(id)a3;
+- (void)addEndpoint:(id)endpoint;
+- (void)setAdditionalAttributes:(id)attributes;
+- (void)setDomain:(id)domain;
+- (void)setInheritingEnvironment:(id)environment;
+- (void)setInstance:(id)instance;
+- (void)setService:(id)service;
+- (void)setTarget:(id)target;
 @end
 
 @implementation BSServiceConnectionEndpointInjectorConfiguration
@@ -26,11 +26,11 @@
   return v3;
 }
 
-- (void)setTarget:(id)a3
+- (void)setTarget:(id)target
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  targetCopy = target;
+  if (!targetCopy)
   {
     v9 = MEMORY[0x1E696AEC0];
     getRBSTargetClass();
@@ -48,7 +48,7 @@
       v29 = 2114;
       v30 = v15;
       v31 = 2048;
-      v32 = self;
+      selfCopy2 = self;
       v33 = 2114;
       v34 = @"BSServiceConnectionEndpointInjector.m";
       v35 = 1024;
@@ -70,13 +70,13 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v17 = MEMORY[0x1E696AEC0];
-    v18 = [v5 classForCoder];
-    if (!v18)
+    classForCoder = [targetCopy classForCoder];
+    if (!classForCoder)
     {
-      v18 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v19 = NSStringFromClass(v18);
+    v19 = NSStringFromClass(classForCoder);
     getRBSTargetClass();
     v20 = objc_opt_class();
     v21 = NSStringFromClass(v20);
@@ -92,7 +92,7 @@
       v29 = 2114;
       v30 = v25;
       v31 = 2048;
-      v32 = self;
+      selfCopy2 = self;
       v33 = 2114;
       v34 = @"BSServiceConnectionEndpointInjector.m";
       v35 = 1024;
@@ -110,18 +110,18 @@
   }
 
   os_unfair_lock_assert_owner(&self->_lock);
-  v6 = [v5 copy];
+  v6 = [targetCopy copy];
   lock_target = self->_lock_target;
   self->_lock_target = v6;
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDomain:(id)a3
+- (void)setDomain:(id)domain
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  domainCopy = domain;
   v6 = MEMORY[0x1E696AEC0];
-  if (!v5)
+  if (!domainCopy)
   {
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
@@ -137,7 +137,7 @@
       v29 = 2114;
       v30 = v15;
       v31 = 2048;
-      v32 = self;
+      selfCopy2 = self;
       v33 = 2114;
       v34 = @"BSServiceConnectionEndpointInjector.m";
       v35 = 1024;
@@ -158,13 +158,13 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v17 = MEMORY[0x1E696AEC0];
-    v18 = [v5 classForCoder];
-    if (!v18)
+    classForCoder = [domainCopy classForCoder];
+    if (!classForCoder)
     {
-      v18 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v19 = NSStringFromClass(v18);
+    v19 = NSStringFromClass(classForCoder);
     v20 = objc_opt_class();
     v21 = NSStringFromClass(v20);
     v22 = [v17 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"domain", v19, v21];
@@ -179,7 +179,7 @@
       v29 = 2114;
       v30 = v25;
       v31 = 2048;
-      v32 = self;
+      selfCopy2 = self;
       v33 = 2114;
       v34 = @"BSServiceConnectionEndpointInjector.m";
       v35 = 1024;
@@ -197,18 +197,18 @@
   }
 
   os_unfair_lock_assert_owner(&self->_lock);
-  v7 = [v5 copy];
+  v7 = [domainCopy copy];
   lock_domain = self->_lock_domain;
   self->_lock_domain = v7;
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setService:(id)a3
+- (void)setService:(id)service
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  serviceCopy = service;
   v6 = MEMORY[0x1E696AEC0];
-  if (!v5)
+  if (!serviceCopy)
   {
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
@@ -224,7 +224,7 @@
       v29 = 2114;
       v30 = v15;
       v31 = 2048;
-      v32 = self;
+      selfCopy2 = self;
       v33 = 2114;
       v34 = @"BSServiceConnectionEndpointInjector.m";
       v35 = 1024;
@@ -245,13 +245,13 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v17 = MEMORY[0x1E696AEC0];
-    v18 = [v5 classForCoder];
-    if (!v18)
+    classForCoder = [serviceCopy classForCoder];
+    if (!classForCoder)
     {
-      v18 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v19 = NSStringFromClass(v18);
+    v19 = NSStringFromClass(classForCoder);
     v20 = objc_opt_class();
     v21 = NSStringFromClass(v20);
     v22 = [v17 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"service", v19, v21];
@@ -266,7 +266,7 @@
       v29 = 2114;
       v30 = v25;
       v31 = 2048;
-      v32 = self;
+      selfCopy2 = self;
       v33 = 2114;
       v34 = @"BSServiceConnectionEndpointInjector.m";
       v35 = 1024;
@@ -284,18 +284,18 @@
   }
 
   os_unfair_lock_assert_owner(&self->_lock);
-  v7 = [v5 copy];
+  v7 = [serviceCopy copy];
   lock_service = self->_lock_service;
   self->_lock_service = v7;
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setInstance:(id)a3
+- (void)setInstance:(id)instance
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  instanceCopy = instance;
   v6 = MEMORY[0x1E696AEC0];
-  if (!v5)
+  if (!instanceCopy)
   {
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
@@ -311,7 +311,7 @@
       v29 = 2114;
       v30 = v15;
       v31 = 2048;
-      v32 = self;
+      selfCopy2 = self;
       v33 = 2114;
       v34 = @"BSServiceConnectionEndpointInjector.m";
       v35 = 1024;
@@ -332,13 +332,13 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v17 = MEMORY[0x1E696AEC0];
-    v18 = [v5 classForCoder];
-    if (!v18)
+    classForCoder = [instanceCopy classForCoder];
+    if (!classForCoder)
     {
-      v18 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v19 = NSStringFromClass(v18);
+    v19 = NSStringFromClass(classForCoder);
     v20 = objc_opt_class();
     v21 = NSStringFromClass(v20);
     v22 = [v17 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"instance", v19, v21];
@@ -353,7 +353,7 @@
       v29 = 2114;
       v30 = v25;
       v31 = 2048;
-      v32 = self;
+      selfCopy2 = self;
       v33 = 2114;
       v34 = @"BSServiceConnectionEndpointInjector.m";
       v35 = 1024;
@@ -371,17 +371,17 @@
   }
 
   os_unfair_lock_assert_owner(&self->_lock);
-  v7 = [v5 copy];
+  v7 = [instanceCopy copy];
   lock_instance = self->_lock_instance;
   self->_lock_instance = v7;
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addEndpoint:(id)a3
+- (void)addEndpoint:(id)endpoint
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  endpointCopy = endpoint;
+  if (!endpointCopy)
   {
     v11 = MEMORY[0x1E696AEC0];
     v12 = objc_opt_class();
@@ -398,7 +398,7 @@
       v31 = 2114;
       v32 = v17;
       v33 = 2048;
-      v34 = self;
+      selfCopy2 = self;
       v35 = 2114;
       v36 = @"BSServiceConnectionEndpointInjector.m";
       v37 = 1024;
@@ -419,13 +419,13 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v19 = MEMORY[0x1E696AEC0];
-    v20 = [v5 classForCoder];
-    if (!v20)
+    classForCoder = [endpointCopy classForCoder];
+    if (!classForCoder)
     {
-      v20 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v21 = NSStringFromClass(v20);
+    v21 = NSStringFromClass(classForCoder);
     v22 = objc_opt_class();
     v23 = NSStringFromClass(v22);
     v24 = [v19 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"endpoint", v21, v23];
@@ -440,7 +440,7 @@
       v31 = 2114;
       v32 = v27;
       v33 = 2048;
-      v34 = self;
+      selfCopy2 = self;
       v35 = 2114;
       v36 = @"BSServiceConnectionEndpointInjector.m";
       v37 = 1024;
@@ -463,24 +463,24 @@
   {
     v7 = *MEMORY[0x1E69E9840];
 
-    [(NSMutableOrderedSet *)lock_endpoints addObject:v5];
+    [(NSMutableOrderedSet *)lock_endpoints addObject:endpointCopy];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E695DFA0] orderedSetWithObject:v5];
+    v8 = [MEMORY[0x1E695DFA0] orderedSetWithObject:endpointCopy];
     v9 = self->_lock_endpoints;
     self->_lock_endpoints = v8;
     v10 = *MEMORY[0x1E69E9840];
   }
 }
 
-- (void)setInheritingEnvironment:(id)a3
+- (void)setInheritingEnvironment:(id)environment
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  environmentCopy = environment;
   v6 = MEMORY[0x1E696AEC0];
-  if (!v5)
+  if (!environmentCopy)
   {
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
@@ -496,7 +496,7 @@
       v29 = 2114;
       v30 = v15;
       v31 = 2048;
-      v32 = self;
+      selfCopy2 = self;
       v33 = 2114;
       v34 = @"BSServiceConnectionEndpointInjector.m";
       v35 = 1024;
@@ -517,13 +517,13 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v17 = MEMORY[0x1E696AEC0];
-    v18 = [v5 classForCoder];
-    if (!v18)
+    classForCoder = [environmentCopy classForCoder];
+    if (!classForCoder)
     {
-      v18 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v19 = NSStringFromClass(v18);
+    v19 = NSStringFromClass(classForCoder);
     v20 = objc_opt_class();
     v21 = NSStringFromClass(v20);
     v22 = [v17 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"inheritingEnvironment", v19, v21];
@@ -538,7 +538,7 @@
       v29 = 2114;
       v30 = v25;
       v31 = 2048;
-      v32 = self;
+      selfCopy2 = self;
       v33 = 2114;
       v34 = @"BSServiceConnectionEndpointInjector.m";
       v35 = 1024;
@@ -556,17 +556,17 @@
   }
 
   os_unfair_lock_assert_owner(&self->_lock);
-  v7 = [v5 copy];
+  v7 = [environmentCopy copy];
   lock_inheritingEnvironment = self->_lock_inheritingEnvironment;
   self->_lock_inheritingEnvironment = v7;
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setAdditionalAttributes:(id)a3
+- (void)setAdditionalAttributes:(id)attributes
 {
   v67 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  attributesCopy = attributes;
+  if (!attributesCopy)
   {
     v32 = MEMORY[0x1E696AEC0];
     v33 = objc_opt_class();
@@ -583,7 +583,7 @@
       v57 = 2114;
       v58 = v38;
       v59 = 2048;
-      v60 = self;
+      selfCopy4 = self;
       v61 = 2114;
       v62 = @"BSServiceConnectionEndpointInjector.m";
       v63 = 1024;
@@ -604,13 +604,13 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v40 = MEMORY[0x1E696AEC0];
-    v41 = [v5 classForCoder];
-    if (!v41)
+    classForCoder = [attributesCopy classForCoder];
+    if (!classForCoder)
     {
-      v41 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v42 = NSStringFromClass(v41);
+    v42 = NSStringFromClass(classForCoder);
     v43 = objc_opt_class();
     v44 = NSStringFromClass(v43);
     v45 = [v40 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"additionalAttributes", v42, v44];
@@ -625,7 +625,7 @@
       v57 = 2114;
       v58 = v48;
       v59 = 2048;
-      v60 = self;
+      selfCopy4 = self;
       v61 = 2114;
       v62 = @"BSServiceConnectionEndpointInjector.m";
       v63 = 1024;
@@ -646,7 +646,7 @@
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v6 = v5;
+  v6 = attributesCopy;
   v7 = [v6 countByEnumeratingWithState:&v50 objects:v54 count:16];
   if (v7)
   {
@@ -679,7 +679,7 @@
             v57 = 2114;
             v58 = v20;
             v59 = 2048;
-            v60 = self;
+            selfCopy4 = self;
             v61 = 2114;
             v62 = @"BSServiceConnectionEndpointInjector.m";
             v63 = 1024;
@@ -701,13 +701,13 @@
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           v22 = MEMORY[0x1E696AEC0];
-          v23 = [v10 classForCoder];
-          if (!v23)
+          classForCoder2 = [v10 classForCoder];
+          if (!classForCoder2)
           {
-            v23 = objc_opt_class();
+            classForCoder2 = objc_opt_class();
           }
 
-          v24 = NSStringFromClass(v23);
+          v24 = NSStringFromClass(classForCoder2);
           getRBSAttributeClass();
           v25 = objc_opt_class();
           v26 = NSStringFromClass(v25);
@@ -723,7 +723,7 @@
             v57 = 2114;
             v58 = v30;
             v59 = 2048;
-            v60 = self;
+            selfCopy4 = self;
             v61 = 2114;
             v62 = @"BSServiceConnectionEndpointInjector.m";
             v63 = 1024;

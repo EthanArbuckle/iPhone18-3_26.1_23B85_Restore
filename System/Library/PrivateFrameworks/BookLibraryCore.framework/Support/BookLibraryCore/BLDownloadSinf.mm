@@ -1,19 +1,19 @@
 @interface BLDownloadSinf
-- (BLDownloadSinf)initWithDictionary:(id)a3;
+- (BLDownloadSinf)initWithDictionary:(id)dictionary;
 - (int64_t)identifier;
 @end
 
 @implementation BLDownloadSinf
 
-- (BLDownloadSinf)initWithDictionary:(id)a3
+- (BLDownloadSinf)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = BLDownloadSinf;
   v5 = [(BLDownloadSinf *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     info = v5->_info;
     v5->_info = v6;
   }
@@ -24,9 +24,9 @@
 - (int64_t)identifier
 {
   v2 = [(NSDictionary *)self->_info objectForKey:@"id"];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 @end

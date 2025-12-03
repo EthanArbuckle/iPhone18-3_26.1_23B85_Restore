@@ -1,21 +1,21 @@
 @interface HKSPDictionarySerializer
-- (BOOL)serialize:(id)a3 error:(id *)a4;
-- (HKSPDictionarySerializer)initWithSerializationOptions:(unint64_t)a3;
+- (BOOL)serialize:(id)serialize error:(id *)error;
+- (HKSPDictionarySerializer)initWithSerializationOptions:(unint64_t)options;
 - (NSSet)serializedClasses;
-- (id)_dictionaryForProtocolObject:(id)a3;
-- (void)_encodeObject:(id)a3 forKey:(id)a4;
-- (void)_encodeProtocolObject:(id)a3 forKey:(id)a4;
-- (void)encodeDouble:(double)a3 forKey:(id)a4;
-- (void)encodeFloat:(float)a3 forKey:(id)a4;
-- (void)encodeInt64:(int64_t)a3 forKey:(id)a4;
-- (void)encodeInteger:(int64_t)a3 forKey:(id)a4;
-- (void)encodeObject:(id)a3 forKey:(id)a4;
-- (void)encodeRootObject:(id)a3;
+- (id)_dictionaryForProtocolObject:(id)object;
+- (void)_encodeObject:(id)object forKey:(id)key;
+- (void)_encodeProtocolObject:(id)object forKey:(id)key;
+- (void)encodeDouble:(double)double forKey:(id)key;
+- (void)encodeFloat:(float)float forKey:(id)key;
+- (void)encodeInt64:(int64_t)int64 forKey:(id)key;
+- (void)encodeInteger:(int64_t)integer forKey:(id)key;
+- (void)encodeObject:(id)object forKey:(id)key;
+- (void)encodeRootObject:(id)object;
 @end
 
 @implementation HKSPDictionarySerializer
 
-- (HKSPDictionarySerializer)initWithSerializationOptions:(unint64_t)a3
+- (HKSPDictionarySerializer)initWithSerializationOptions:(unint64_t)options
 {
   v14.receiver = self;
   v14.super_class = HKSPDictionarySerializer;
@@ -23,7 +23,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_serializationOptions = a3;
+    v4->_serializationOptions = options;
     v6 = MEMORY[0x277CBEB18];
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v8 = [v6 arrayWithObject:v7];
@@ -40,16 +40,16 @@
   return v5;
 }
 
-- (BOOL)serialize:(id)a3 error:(id *)a4
+- (BOOL)serialize:(id)serialize error:(id *)error
 {
-  [(HKSPDictionarySerializer *)self encodeRootObject:a3];
-  if (a4)
+  [(HKSPDictionarySerializer *)self encodeRootObject:serialize];
+  if (error)
   {
-    *a4 = [(NSError *)self->_internalError copy];
+    *error = [(NSError *)self->_internalError copy];
   }
 
-  v6 = [(HKSPDictionarySerializer *)self internalError];
-  v7 = v6 == 0;
+  internalError = [(HKSPDictionarySerializer *)self internalError];
+  v7 = internalError == 0;
 
   return v7;
 }
@@ -61,11 +61,11 @@
   return v2;
 }
 
-- (void)encodeRootObject:(id)a3
+- (void)encodeRootObject:(id)object
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![v4 conformsToProtocol:&unk_287A87508])
+  objectCopy = object;
+  if (![objectCopy conformsToProtocol:&unk_287A87508])
   {
     v5 = MEMORY[0x277CCA9B8];
     v12 = *MEMORY[0x277CCA450];
@@ -78,7 +78,7 @@
 
   if (!self->_internalError)
   {
-    v9 = [(HKSPDictionarySerializer *)self _dictionaryForProtocolObject:v4];
+    v9 = [(HKSPDictionarySerializer *)self _dictionaryForProtocolObject:objectCopy];
     serializedDictionary = self->_serializedDictionary;
     self->_serializedDictionary = v9;
   }
@@ -86,49 +86,49 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)encodeInteger:(int64_t)a3 forKey:(id)a4
+- (void)encodeInteger:(int64_t)integer forKey:(id)key
 {
   v6 = MEMORY[0x277CCABB0];
-  v7 = a4;
-  v8 = [v6 numberWithInteger:a3];
-  [(HKSPDictionarySerializer *)self _encodeObject:v8 forKey:v7];
+  keyCopy = key;
+  v8 = [v6 numberWithInteger:integer];
+  [(HKSPDictionarySerializer *)self _encodeObject:v8 forKey:keyCopy];
 }
 
-- (void)encodeInt64:(int64_t)a3 forKey:(id)a4
+- (void)encodeInt64:(int64_t)int64 forKey:(id)key
 {
   v6 = MEMORY[0x277CCABB0];
-  v7 = a4;
-  v8 = [v6 numberWithLongLong:a3];
-  [(HKSPDictionarySerializer *)self _encodeObject:v8 forKey:v7];
+  keyCopy = key;
+  v8 = [v6 numberWithLongLong:int64];
+  [(HKSPDictionarySerializer *)self _encodeObject:v8 forKey:keyCopy];
 }
 
-- (void)encodeFloat:(float)a3 forKey:(id)a4
+- (void)encodeFloat:(float)float forKey:(id)key
 {
   v6 = MEMORY[0x277CCABB0];
-  v7 = a4;
-  *&v8 = a3;
+  keyCopy = key;
+  *&v8 = float;
   v9 = [v6 numberWithFloat:v8];
-  [(HKSPDictionarySerializer *)self _encodeObject:v9 forKey:v7];
+  [(HKSPDictionarySerializer *)self _encodeObject:v9 forKey:keyCopy];
 }
 
-- (void)encodeDouble:(double)a3 forKey:(id)a4
+- (void)encodeDouble:(double)double forKey:(id)key
 {
   v6 = MEMORY[0x277CCABB0];
-  v7 = a4;
-  v8 = [v6 numberWithDouble:a3];
-  [(HKSPDictionarySerializer *)self _encodeObject:v8 forKey:v7];
+  keyCopy = key;
+  v8 = [v6 numberWithDouble:double];
+  [(HKSPDictionarySerializer *)self _encodeObject:v8 forKey:keyCopy];
 }
 
-- (void)encodeObject:(id)a3 forKey:(id)a4
+- (void)encodeObject:(id)object forKey:(id)key
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  keyCopy = key;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
-    v9 = [MEMORY[0x277CBEB18] array];
+    v8 = objectCopy;
+    array = [MEMORY[0x277CBEB18] array];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
@@ -152,12 +152,12 @@
           if ([v15 conformsToProtocol:&unk_287A87508])
           {
             v16 = [(HKSPDictionarySerializer *)self _dictionaryForProtocolObject:v15];
-            [v9 addObject:v16];
+            [array addObject:v16];
           }
 
           else
           {
-            [v9 addObject:v15];
+            [array addObject:v15];
           }
         }
 
@@ -167,7 +167,7 @@
       while (v12);
     }
 
-    [(HKSPDictionarySerializer *)self _encodeObject:v9 forKey:v7];
+    [(HKSPDictionarySerializer *)self _encodeObject:array forKey:keyCopy];
   }
 
   else
@@ -175,10 +175,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v28 = v7;
-      v29 = v6;
-      v17 = v6;
-      v18 = [MEMORY[0x277CBEB38] dictionary];
+      v28 = keyCopy;
+      v29 = objectCopy;
+      v17 = objectCopy;
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
@@ -203,12 +203,12 @@
             if ([v25 conformsToProtocol:&unk_287A87508])
             {
               v26 = [(HKSPDictionarySerializer *)self _dictionaryForProtocolObject:v25];
-              [v18 setObject:v26 forKeyedSubscript:v24];
+              [dictionary setObject:v26 forKeyedSubscript:v24];
             }
 
             else
             {
-              [v18 setObject:v25 forKeyedSubscript:v24];
+              [dictionary setObject:v25 forKeyedSubscript:v24];
             }
           }
 
@@ -218,46 +218,46 @@
         while (v21);
       }
 
-      v7 = v28;
-      [(HKSPDictionarySerializer *)self _encodeObject:v18 forKey:v28];
+      keyCopy = v28;
+      [(HKSPDictionarySerializer *)self _encodeObject:dictionary forKey:v28];
 
-      v6 = v29;
+      objectCopy = v29;
     }
 
-    else if ([v6 conformsToProtocol:&unk_287A87508])
+    else if ([objectCopy conformsToProtocol:&unk_287A87508])
     {
-      [(HKSPDictionarySerializer *)self _encodeProtocolObject:v6 forKey:v7];
+      [(HKSPDictionarySerializer *)self _encodeProtocolObject:objectCopy forKey:keyCopy];
     }
 
     else
     {
-      [(HKSPDictionarySerializer *)self _encodeObject:v6 forKey:v7];
+      [(HKSPDictionarySerializer *)self _encodeObject:objectCopy forKey:keyCopy];
     }
   }
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_encodeProtocolObject:(id)a3 forKey:(id)a4
+- (void)_encodeProtocolObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = [(HKSPDictionarySerializer *)self _dictionaryForProtocolObject:a3];
-  [(HKSPDictionarySerializer *)self _encodeObject:v7 forKey:v6];
+  keyCopy = key;
+  v7 = [(HKSPDictionarySerializer *)self _dictionaryForProtocolObject:object];
+  [(HKSPDictionarySerializer *)self _encodeObject:v7 forKey:keyCopy];
 }
 
-- (void)_encodeObject:(id)a3 forKey:(id)a4
+- (void)_encodeObject:(id)object forKey:(id)key
 {
   stack = self->_stack;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NSMutableArray *)stack lastObject];
-  [v8 setObject:v7 forKeyedSubscript:v6];
+  keyCopy = key;
+  objectCopy = object;
+  lastObject = [(NSMutableArray *)stack lastObject];
+  [lastObject setObject:objectCopy forKeyedSubscript:keyCopy];
 }
 
-- (id)_dictionaryForProtocolObject:(id)a3
+- (id)_dictionaryForProtocolObject:(id)object
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  objectCopy = object;
+  v5 = [objectCopy copy];
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [(NSMutableArray *)self->_stack addObject:v7];

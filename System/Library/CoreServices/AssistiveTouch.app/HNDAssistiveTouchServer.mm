@@ -2,41 +2,41 @@
 + (id)sharedInstance;
 - (HNDAssistiveTouchServer)init;
 - (id)_dictionaryElements;
-- (id)_dictionaryElementsHandler:(id)a3;
-- (id)_highlightDictionaryElementsHandler:(id)a3;
-- (id)_longPressDictionaryElementHandler:(id)a3;
-- (id)_pressDictionaryElementHandler:(id)a3;
-- (id)_scrollDictionaryElementDownHandler:(id)a3;
-- (id)_scrollDictionaryElementLeftHandler:(id)a3;
-- (id)_scrollDictionaryElementRightHandler:(id)a3;
-- (id)_scrollDictionaryElementToBottomHandler:(id)a3;
-- (id)_scrollDictionaryElementToTopHandler:(id)a3;
-- (id)_scrollDictionaryElementUpHandler:(id)a3;
-- (id)_setDictionaryElementValueHandler:(id)a3;
-- (id)_zoomInDictionaryElementHandler:(id)a3;
-- (id)_zoomOutDictionaryElementHandler:(id)a3;
+- (id)_dictionaryElementsHandler:(id)handler;
+- (id)_highlightDictionaryElementsHandler:(id)handler;
+- (id)_longPressDictionaryElementHandler:(id)handler;
+- (id)_pressDictionaryElementHandler:(id)handler;
+- (id)_scrollDictionaryElementDownHandler:(id)handler;
+- (id)_scrollDictionaryElementLeftHandler:(id)handler;
+- (id)_scrollDictionaryElementRightHandler:(id)handler;
+- (id)_scrollDictionaryElementToBottomHandler:(id)handler;
+- (id)_scrollDictionaryElementToTopHandler:(id)handler;
+- (id)_scrollDictionaryElementUpHandler:(id)handler;
+- (id)_setDictionaryElementValueHandler:(id)handler;
+- (id)_zoomInDictionaryElementHandler:(id)handler;
+- (id)_zoomOutDictionaryElementHandler:(id)handler;
 - (id)scatBackCursorUIContext;
-- (id)scatBackCursorUIContextForDisplayID:(unsigned int)a3;
+- (id)scatBackCursorUIContextForDisplayID:(unsigned int)d;
 - (id)scatFrontCursorUIContext;
-- (id)scatFrontCursorUIContextForDisplayID:(unsigned int)a3;
+- (id)scatFrontCursorUIContextForDisplayID:(unsigned int)d;
 - (id)scatUIContext;
-- (id)scatUIContextForDisplayID:(unsigned int)a3;
-- (void)_enableHiddenNubbitMode:(BOOL)a3;
-- (void)_enableServer:(BOOL)a3;
-- (void)_highlightDictionaryElementsWithIndexes:(id)a3;
+- (id)scatUIContextForDisplayID:(unsigned int)d;
+- (void)_enableHiddenNubbitMode:(BOOL)mode;
+- (void)_enableServer:(BOOL)server;
+- (void)_highlightDictionaryElementsWithIndexes:(id)indexes;
 - (void)_home;
 - (void)_lock;
-- (void)_longPressDictionaryElementWithIndex:(unint64_t)a3;
-- (void)_performAction:(int)a3 withIndex:(unint64_t)a4;
-- (void)_pressDictionaryElementWithIndex:(unint64_t)a3;
+- (void)_longPressDictionaryElementWithIndex:(unint64_t)index;
+- (void)_performAction:(int)action withIndex:(unint64_t)index;
+- (void)_pressDictionaryElementWithIndex:(unint64_t)index;
 - (void)_screenshot;
-- (void)_scrollDictionaryElementWithIndex:(unint64_t)a3 direction:(int64_t)a4;
-- (void)_scrollDictionaryElementWithIndex:(unint64_t)a3 position:(int64_t)a4;
-- (void)_setDictionaryElementValueWithIndex:(unint64_t)a3 value:(id)a4;
+- (void)_scrollDictionaryElementWithIndex:(unint64_t)index direction:(int64_t)direction;
+- (void)_scrollDictionaryElementWithIndex:(unint64_t)index position:(int64_t)position;
+- (void)_setDictionaryElementValueWithIndex:(unint64_t)index value:(id)value;
 - (void)_toggleMute;
 - (void)_tripleHome;
-- (void)_zoomDictionaryElementWithIndex:(unint64_t)a3 direction:(int64_t)a4;
-- (void)accessibilityManager:(id)a3 didReceiveEvent:(int64_t)a4 data:(id)a5;
+- (void)_zoomDictionaryElementWithIndex:(unint64_t)index direction:(int64_t)direction;
+- (void)accessibilityManager:(id)manager didReceiveEvent:(int64_t)event data:(id)data;
 - (void)dealloc;
 @end
 
@@ -52,44 +52,44 @@
     [NSThread sleepForTimeInterval:0.25];
   }
 
-  v4 = [v2 elements];
+  elements = [v2 elements];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100091A28;
   v7[3] = &unk_1001D3F68;
-  v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(elements, "count")}];
   v8 = v5;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [elements enumerateObjectsUsingBlock:v7];
 
   return v5;
 }
 
-- (void)_enableHiddenNubbitMode:(BOOL)a3
+- (void)_enableHiddenNubbitMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v5 = +[HNDHandManager sharedManager];
   [v5 updateAllSettings];
-  [(HNDAssistiveTouchServer *)self _enableServer:v3];
+  [(HNDAssistiveTouchServer *)self _enableServer:modeCopy];
 }
 
-- (void)_highlightDictionaryElementsWithIndexes:(id)a3
+- (void)_highlightDictionaryElementsWithIndexes:(id)indexes
 {
-  v10 = a3;
-  v4 = [(HNDAssistiveTouchServer *)self cursorManager];
+  indexesCopy = indexes;
+  cursorManager = [(HNDAssistiveTouchServer *)self cursorManager];
   v5 = +[HNDAccessibilityManager sharedManager];
-  v6 = [v5 elements];
-  if (v6 && [v10 count])
+  elements = [v5 elements];
+  if (elements && [indexesCopy count])
   {
-    v7 = [v10 objectAtIndexedSubscript:0];
-    v8 = [v7 unsignedIntegerValue];
+    v7 = [indexesCopy objectAtIndexedSubscript:0];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-    v9 = [v6 objectAtIndexedSubscript:v8];
-    [v4 updateMainCursorWithElement:v9];
+    v9 = [elements objectAtIndexedSubscript:unsignedIntegerValue];
+    [cursorManager updateMainCursorWithElement:v9];
   }
 
   else
   {
-    [v4 updateMainCursorWithElement:0];
+    [cursorManager updateMainCursorWithElement:0];
   }
 }
 
@@ -108,14 +108,14 @@
   [v2 activateLockButton];
 }
 
-- (void)_longPressDictionaryElementWithIndex:(unint64_t)a3
+- (void)_longPressDictionaryElementWithIndex:(unint64_t)index
 {
   v7 = +[HNDAccessibilityManager sharedManager];
-  v4 = [v7 elements];
-  v5 = v4;
-  if (v4 && [v4 count] > a3)
+  elements = [v7 elements];
+  v5 = elements;
+  if (elements && [elements count] > index)
   {
-    v6 = [v5 objectAtIndexedSubscript:a3];
+    v6 = [v5 objectAtIndexedSubscript:index];
     [v6 longPress];
   }
 
@@ -125,15 +125,15 @@
   }
 }
 
-- (void)_performAction:(int)a3 withIndex:(unint64_t)a4
+- (void)_performAction:(int)action withIndex:(unint64_t)index
 {
-  v5 = *&a3;
+  v5 = *&action;
   v10 = +[HNDAccessibilityManager sharedManager];
-  v6 = [v10 elements];
-  v7 = v6;
-  if (v6 && [v6 count] > a4)
+  elements = [v10 elements];
+  v7 = elements;
+  if (elements && [elements count] > index)
   {
-    v8 = [v7 objectAtIndexedSubscript:a4];
+    v8 = [v7 objectAtIndexedSubscript:index];
   }
 
   else
@@ -148,14 +148,14 @@
   }
 }
 
-- (void)_pressDictionaryElementWithIndex:(unint64_t)a3
+- (void)_pressDictionaryElementWithIndex:(unint64_t)index
 {
   v7 = +[HNDAccessibilityManager sharedManager];
-  v4 = [v7 elements];
-  v5 = v4;
-  if (v4 && [v4 count] > a3)
+  elements = [v7 elements];
+  v5 = elements;
+  if (elements && [elements count] > index)
   {
-    v6 = [v5 objectAtIndexedSubscript:a3];
+    v6 = [v5 objectAtIndexedSubscript:index];
     [v6 press];
   }
 
@@ -171,14 +171,14 @@
   [v2 takeScreenshot];
 }
 
-- (void)_scrollDictionaryElementWithIndex:(unint64_t)a3 direction:(int64_t)a4
+- (void)_scrollDictionaryElementWithIndex:(unint64_t)index direction:(int64_t)direction
 {
   v11 = +[HNDAccessibilityManager sharedManager];
-  v6 = [v11 elements];
-  v7 = v6;
-  if (v6 && [v6 count] > a3)
+  elements = [v11 elements];
+  v7 = elements;
+  if (elements && [elements count] > index)
   {
-    v8 = [v7 objectAtIndexedSubscript:a3];
+    v8 = [v7 objectAtIndexedSubscript:index];
   }
 
   else
@@ -187,15 +187,15 @@
   }
 
   v9 = v8;
-  if (a4 > 1)
+  if (direction > 1)
   {
-    if (a4 == 2)
+    if (direction == 2)
     {
       v10 = 2009;
       goto LABEL_15;
     }
 
-    if (a4 == 3)
+    if (direction == 3)
     {
       v10 = 2007;
       goto LABEL_15;
@@ -206,13 +206,13 @@ LABEL_12:
     goto LABEL_16;
   }
 
-  if (!a4)
+  if (!direction)
   {
     v10 = 2006;
     goto LABEL_15;
   }
 
-  if (a4 != 1)
+  if (direction != 1)
   {
     goto LABEL_12;
   }
@@ -223,17 +223,17 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)_scrollDictionaryElementWithIndex:(unint64_t)a3 position:(int64_t)a4
+- (void)_scrollDictionaryElementWithIndex:(unint64_t)index position:(int64_t)position
 {
   v6 = +[AXElement systemWideElement];
-  v12 = [v6 currentApplication];
+  currentApplication = [v6 currentApplication];
 
   v7 = +[HNDAccessibilityManager sharedManager];
-  v8 = [v7 elements];
-  v9 = v8;
-  if (v8 && [v8 count] > a3)
+  elements = [v7 elements];
+  v9 = elements;
+  if (elements && [elements count] > index)
   {
-    v10 = [v9 objectAtIndexedSubscript:a3];
+    v10 = [v9 objectAtIndexedSubscript:index];
   }
 
   else
@@ -242,43 +242,43 @@ LABEL_16:
   }
 
   v11 = v10;
-  [v12 setAutoscrollTarget:v10];
-  if (a4 == 1)
+  [currentApplication setAutoscrollTarget:v10];
+  if (position == 1)
   {
-    [v12 scrollToTop];
+    [currentApplication scrollToTop];
   }
 
-  else if (a4)
+  else if (position)
   {
     _AXLogWithFacility();
   }
 
   else
   {
-    [v12 scrollToBottom];
+    [currentApplication scrollToBottom];
   }
 }
 
-- (void)_setDictionaryElementValueWithIndex:(unint64_t)a3 value:(id)a4
+- (void)_setDictionaryElementValueWithIndex:(unint64_t)index value:(id)value
 {
-  v5 = a4;
+  valueCopy = value;
   v12 = +[HNDAccessibilityManager sharedManager];
-  v6 = [v12 elements];
-  v7 = v6;
-  if (v6 && [v6 count] > a3)
+  elements = [v12 elements];
+  v7 = elements;
+  if (elements && [elements count] > index)
   {
-    v8 = [v7 objectAtIndexedSubscript:a3];
+    firstResponder = [v7 objectAtIndexedSubscript:index];
   }
 
   else
   {
     v9 = +[AXElement systemWideElement];
-    v10 = [v9 currentApplication];
-    v8 = [v10 firstResponder];
+    currentApplication = [v9 currentApplication];
+    firstResponder = [currentApplication firstResponder];
   }
 
-  v11 = [v8 uiElement];
-  [v11 setAXAttribute:2006 withString:v5];
+  uiElement = [firstResponder uiElement];
+  [uiElement setAXAttribute:2006 withString:valueCopy];
 }
 
 - (void)_toggleMute
@@ -293,14 +293,14 @@ LABEL_16:
   [v2 activateTripleClick];
 }
 
-- (void)_zoomDictionaryElementWithIndex:(unint64_t)a3 direction:(int64_t)a4
+- (void)_zoomDictionaryElementWithIndex:(unint64_t)index direction:(int64_t)direction
 {
   v11 = +[HNDAccessibilityManager sharedManager];
-  v6 = [v11 elements];
-  v7 = v6;
-  if (v6 && [v6 count] > a3)
+  elements = [v11 elements];
+  v7 = elements;
+  if (elements && [elements count] > index)
   {
-    v8 = [v7 objectAtIndexedSubscript:a3];
+    v8 = [v7 objectAtIndexedSubscript:index];
   }
 
   else
@@ -309,13 +309,13 @@ LABEL_16:
   }
 
   v9 = v8;
-  if (a4 == 1)
+  if (direction == 1)
   {
     v10 = 2002;
     goto LABEL_9;
   }
 
-  if (!a4)
+  if (!direction)
   {
     v10 = 2001;
 LABEL_9:
@@ -327,67 +327,67 @@ LABEL_9:
 LABEL_11:
 }
 
-- (void)accessibilityManager:(id)a3 didReceiveEvent:(int64_t)a4 data:(id)a5
+- (void)accessibilityManager:(id)manager didReceiveEvent:(int64_t)event data:(id)data
 {
-  v5 = [(HNDAssistiveTouchServer *)self cursorManager:a3];
+  v5 = [(HNDAssistiveTouchServer *)self cursorManager:manager];
   [v5 updateMainCursorWithElement:0];
 }
 
 - (id)scatUIContext
 {
   v2 = +[HNDHandManager sharedManager];
-  v3 = [v2 mainDisplayManager];
-  v4 = [v3 scannerContentView];
+  mainDisplayManager = [v2 mainDisplayManager];
+  scannerContentView = [mainDisplayManager scannerContentView];
 
-  return v4;
+  return scannerContentView;
 }
 
 - (id)scatBackCursorUIContext
 {
   v2 = +[HNDHandManager sharedManager];
-  v3 = [v2 mainDisplayManager];
-  v4 = [v3 scannerBackCursorView];
+  mainDisplayManager = [v2 mainDisplayManager];
+  scannerBackCursorView = [mainDisplayManager scannerBackCursorView];
 
-  return v4;
+  return scannerBackCursorView;
 }
 
 - (id)scatFrontCursorUIContext
 {
   v2 = +[HNDHandManager sharedManager];
-  v3 = [v2 mainDisplayManager];
-  v4 = [v3 scannerFrontCursorView];
+  mainDisplayManager = [v2 mainDisplayManager];
+  scannerFrontCursorView = [mainDisplayManager scannerFrontCursorView];
 
-  return v4;
+  return scannerFrontCursorView;
 }
 
-- (id)scatUIContextForDisplayID:(unsigned int)a3
+- (id)scatUIContextForDisplayID:(unsigned int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v4 = +[HNDHandManager sharedManager];
   v5 = [v4 displayManagerForDisplayId:v3];
-  v6 = [v5 scannerContentView];
+  scannerContentView = [v5 scannerContentView];
 
-  return v6;
+  return scannerContentView;
 }
 
-- (id)scatFrontCursorUIContextForDisplayID:(unsigned int)a3
+- (id)scatFrontCursorUIContextForDisplayID:(unsigned int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v4 = +[HNDHandManager sharedManager];
   v5 = [v4 displayManagerForDisplayId:v3];
-  v6 = [v5 scannerFrontCursorView];
+  scannerFrontCursorView = [v5 scannerFrontCursorView];
 
-  return v6;
+  return scannerFrontCursorView;
 }
 
-- (id)scatBackCursorUIContextForDisplayID:(unsigned int)a3
+- (id)scatBackCursorUIContextForDisplayID:(unsigned int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v4 = +[HNDHandManager sharedManager];
   v5 = [v4 displayManagerForDisplayId:v3];
-  v6 = [v5 scannerBackCursorView];
+  scannerBackCursorView = [v5 scannerBackCursorView];
 
-  return v6;
+  return scannerBackCursorView;
 }
 
 - (void)dealloc
@@ -444,14 +444,14 @@ LABEL_11:
   return v3;
 }
 
-- (void)_enableServer:(BOOL)a3
+- (void)_enableServer:(BOOL)server
 {
-  v3 = a3;
-  v5 = [(HNDAssistiveTouchServer *)self server];
-  v6 = v5;
-  if (v3)
+  serverCopy = server;
+  server = [(HNDAssistiveTouchServer *)self server];
+  v6 = server;
+  if (serverCopy)
   {
-    if (!v5)
+    if (!server)
     {
       v7 = [AXIPCServer alloc];
       v6 = [v7 initWithServiceName:AXAssistiveTouchServerServiceName perPidService:0];
@@ -501,7 +501,7 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  if ([v5 isRunning])
+  if ([server isRunning])
   {
     v16 = 0;
     [v6 stopServerWithError:&v16];
@@ -517,138 +517,138 @@ LABEL_14:
   }
 }
 
-- (id)_dictionaryElementsHandler:(id)a3
+- (id)_dictionaryElementsHandler:(id)handler
 {
-  v3 = [(HNDAssistiveTouchServer *)self _dictionaryElements];
+  _dictionaryElements = [(HNDAssistiveTouchServer *)self _dictionaryElements];
   v7 = AXAssistiveTouchPayloadKeyDictionaryElements;
-  v8 = v3;
+  v8 = _dictionaryElements;
   v4 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
   v5 = [[AXIPCMessage alloc] initWithKey:6000 payload:v4];
 
   return v5;
 }
 
-- (id)_highlightDictionaryElementsHandler:(id)a3
+- (id)_highlightDictionaryElementsHandler:(id)handler
 {
-  v4 = [a3 payload];
-  v5 = [v4 objectForKeyedSubscript:AXAssistiveTouchPayloadKeyDictionaryElementIndexes];
+  payload = [handler payload];
+  v5 = [payload objectForKeyedSubscript:AXAssistiveTouchPayloadKeyDictionaryElementIndexes];
 
   [(HNDAssistiveTouchServer *)self _highlightDictionaryElementsWithIndexes:v5];
   return 0;
 }
 
-- (id)_longPressDictionaryElementHandler:(id)a3
+- (id)_longPressDictionaryElementHandler:(id)handler
 {
-  v4 = [a3 payload];
-  v5 = [v4 objectForKeyedSubscript:AXAssistiveTouchPayloadKeyDictionaryElementIndex];
-  v6 = [v5 unsignedIntegerValue];
+  payload = [handler payload];
+  v5 = [payload objectForKeyedSubscript:AXAssistiveTouchPayloadKeyDictionaryElementIndex];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  [(HNDAssistiveTouchServer *)self _longPressDictionaryElementWithIndex:v6];
+  [(HNDAssistiveTouchServer *)self _longPressDictionaryElementWithIndex:unsignedIntegerValue];
   return 0;
 }
 
-- (id)_pressDictionaryElementHandler:(id)a3
+- (id)_pressDictionaryElementHandler:(id)handler
 {
-  v4 = [a3 payload];
-  v5 = [v4 objectForKeyedSubscript:AXAssistiveTouchPayloadKeyDictionaryElementIndex];
-  v6 = [v5 unsignedIntegerValue];
+  payload = [handler payload];
+  v5 = [payload objectForKeyedSubscript:AXAssistiveTouchPayloadKeyDictionaryElementIndex];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  [(HNDAssistiveTouchServer *)self _pressDictionaryElementWithIndex:v6];
+  [(HNDAssistiveTouchServer *)self _pressDictionaryElementWithIndex:unsignedIntegerValue];
   return 0;
 }
 
-- (id)_scrollDictionaryElementDownHandler:(id)a3
+- (id)_scrollDictionaryElementDownHandler:(id)handler
 {
-  v4 = [a3 payload];
-  v5 = [v4 objectForKeyedSubscript:AXAssistiveTouchPayloadKeyDictionaryElementIndex];
-  v6 = [v5 unsignedIntegerValue];
+  payload = [handler payload];
+  v5 = [payload objectForKeyedSubscript:AXAssistiveTouchPayloadKeyDictionaryElementIndex];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  [(HNDAssistiveTouchServer *)self _scrollDictionaryElementWithIndex:v6 direction:0];
+  [(HNDAssistiveTouchServer *)self _scrollDictionaryElementWithIndex:unsignedIntegerValue direction:0];
   return 0;
 }
 
-- (id)_scrollDictionaryElementLeftHandler:(id)a3
+- (id)_scrollDictionaryElementLeftHandler:(id)handler
 {
-  v4 = [a3 payload];
-  v5 = [v4 objectForKeyedSubscript:AXAssistiveTouchPayloadKeyDictionaryElementIndex];
-  v6 = [v5 unsignedIntegerValue];
+  payload = [handler payload];
+  v5 = [payload objectForKeyedSubscript:AXAssistiveTouchPayloadKeyDictionaryElementIndex];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  [(HNDAssistiveTouchServer *)self _scrollDictionaryElementWithIndex:v6 direction:1];
+  [(HNDAssistiveTouchServer *)self _scrollDictionaryElementWithIndex:unsignedIntegerValue direction:1];
   return 0;
 }
 
-- (id)_scrollDictionaryElementRightHandler:(id)a3
+- (id)_scrollDictionaryElementRightHandler:(id)handler
 {
-  v4 = [a3 payload];
-  v5 = [v4 objectForKeyedSubscript:AXAssistiveTouchPayloadKeyDictionaryElementIndex];
-  v6 = [v5 unsignedIntegerValue];
+  payload = [handler payload];
+  v5 = [payload objectForKeyedSubscript:AXAssistiveTouchPayloadKeyDictionaryElementIndex];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  [(HNDAssistiveTouchServer *)self _scrollDictionaryElementWithIndex:v6 direction:2];
+  [(HNDAssistiveTouchServer *)self _scrollDictionaryElementWithIndex:unsignedIntegerValue direction:2];
   return 0;
 }
 
-- (id)_scrollDictionaryElementToBottomHandler:(id)a3
+- (id)_scrollDictionaryElementToBottomHandler:(id)handler
 {
-  v4 = [a3 payload];
-  v5 = [v4 objectForKeyedSubscript:AXAssistiveTouchPayloadKeyDictionaryElementIndex];
-  v6 = [v5 unsignedIntegerValue];
+  payload = [handler payload];
+  v5 = [payload objectForKeyedSubscript:AXAssistiveTouchPayloadKeyDictionaryElementIndex];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  [(HNDAssistiveTouchServer *)self _scrollDictionaryElementWithIndex:v6 position:0];
+  [(HNDAssistiveTouchServer *)self _scrollDictionaryElementWithIndex:unsignedIntegerValue position:0];
   return 0;
 }
 
-- (id)_scrollDictionaryElementToTopHandler:(id)a3
+- (id)_scrollDictionaryElementToTopHandler:(id)handler
 {
-  v4 = [a3 payload];
-  v5 = [v4 objectForKeyedSubscript:AXAssistiveTouchPayloadKeyDictionaryElementIndex];
-  v6 = [v5 unsignedIntegerValue];
+  payload = [handler payload];
+  v5 = [payload objectForKeyedSubscript:AXAssistiveTouchPayloadKeyDictionaryElementIndex];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  [(HNDAssistiveTouchServer *)self _scrollDictionaryElementWithIndex:v6 position:1];
+  [(HNDAssistiveTouchServer *)self _scrollDictionaryElementWithIndex:unsignedIntegerValue position:1];
   return 0;
 }
 
-- (id)_scrollDictionaryElementUpHandler:(id)a3
+- (id)_scrollDictionaryElementUpHandler:(id)handler
 {
-  v4 = [a3 payload];
-  v5 = [v4 objectForKeyedSubscript:AXAssistiveTouchPayloadKeyDictionaryElementIndex];
-  v6 = [v5 unsignedIntegerValue];
+  payload = [handler payload];
+  v5 = [payload objectForKeyedSubscript:AXAssistiveTouchPayloadKeyDictionaryElementIndex];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  [(HNDAssistiveTouchServer *)self _scrollDictionaryElementWithIndex:v6 direction:3];
+  [(HNDAssistiveTouchServer *)self _scrollDictionaryElementWithIndex:unsignedIntegerValue direction:3];
   return 0;
 }
 
-- (id)_setDictionaryElementValueHandler:(id)a3
+- (id)_setDictionaryElementValueHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [v4 payload];
-  v6 = [v5 objectForKeyedSubscript:AXAssistiveTouchPayloadKeyDictionaryElementIndex];
-  v7 = [v6 unsignedIntegerValue];
+  handlerCopy = handler;
+  payload = [handlerCopy payload];
+  v6 = [payload objectForKeyedSubscript:AXAssistiveTouchPayloadKeyDictionaryElementIndex];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  v8 = [v4 payload];
+  payload2 = [handlerCopy payload];
 
-  v9 = [v8 objectForKeyedSubscript:AXAssistiveTouchPayloadKeyDictionaryElementValue];
+  v9 = [payload2 objectForKeyedSubscript:AXAssistiveTouchPayloadKeyDictionaryElementValue];
 
-  [(HNDAssistiveTouchServer *)self _setDictionaryElementValueWithIndex:v7 value:v9];
+  [(HNDAssistiveTouchServer *)self _setDictionaryElementValueWithIndex:unsignedIntegerValue value:v9];
   return 0;
 }
 
-- (id)_zoomInDictionaryElementHandler:(id)a3
+- (id)_zoomInDictionaryElementHandler:(id)handler
 {
-  v4 = [a3 payload];
-  v5 = [v4 objectForKeyedSubscript:AXAssistiveTouchPayloadKeyDictionaryElementIndex];
-  v6 = [v5 unsignedIntegerValue];
+  payload = [handler payload];
+  v5 = [payload objectForKeyedSubscript:AXAssistiveTouchPayloadKeyDictionaryElementIndex];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  [(HNDAssistiveTouchServer *)self _zoomDictionaryElementWithIndex:v6 direction:0];
+  [(HNDAssistiveTouchServer *)self _zoomDictionaryElementWithIndex:unsignedIntegerValue direction:0];
   return 0;
 }
 
-- (id)_zoomOutDictionaryElementHandler:(id)a3
+- (id)_zoomOutDictionaryElementHandler:(id)handler
 {
-  v4 = [a3 payload];
-  v5 = [v4 objectForKeyedSubscript:AXAssistiveTouchPayloadKeyDictionaryElementIndex];
-  v6 = [v5 unsignedIntegerValue];
+  payload = [handler payload];
+  v5 = [payload objectForKeyedSubscript:AXAssistiveTouchPayloadKeyDictionaryElementIndex];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  [(HNDAssistiveTouchServer *)self _zoomDictionaryElementWithIndex:v6 direction:1];
+  [(HNDAssistiveTouchServer *)self _zoomDictionaryElementWithIndex:unsignedIntegerValue direction:1];
   return 0;
 }
 

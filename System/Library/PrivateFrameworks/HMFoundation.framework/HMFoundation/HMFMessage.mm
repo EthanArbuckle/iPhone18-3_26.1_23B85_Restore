@@ -1,26 +1,26 @@
 @interface HMFMessage
 + (NSSet)allowedClassesForXPC;
-+ (id)messageWithMessage:(id)a3 messagePayload:(id)a4;
-+ (id)messageWithMessage:(id)a3 messagePayload:(id)a4 responseHandler:(id)a5;
-+ (id)messageWithName:(id)a3 destination:(id)a4 payload:(id)a5;
-+ (id)messageWithName:(id)a3 identifier:(id)a4 messagePayload:(id)a5;
-+ (id)messageWithName:(id)a3 messagePayload:(id)a4;
-+ (id)messageWithName:(id)a3 messagePayload:(id)a4 responseHandler:(id)a5;
-+ (id)messageWithName:(id)a3 qualityOfService:(int64_t)a4 destination:(id)a5 payload:(id)a6;
++ (id)messageWithMessage:(id)message messagePayload:(id)payload;
++ (id)messageWithMessage:(id)message messagePayload:(id)payload responseHandler:(id)handler;
++ (id)messageWithName:(id)name destination:(id)destination payload:(id)payload;
++ (id)messageWithName:(id)name identifier:(id)identifier messagePayload:(id)payload;
++ (id)messageWithName:(id)name messagePayload:(id)payload;
++ (id)messageWithName:(id)name messagePayload:(id)payload responseHandler:(id)handler;
++ (id)messageWithName:(id)name qualityOfService:(int64_t)service destination:(id)destination payload:(id)payload;
 + (id)shortDescription;
-- (BOOL)BOOLForKey:(id)a3;
-- (BOOL)BOOLForKey:(id)a3 keyPresent:(BOOL *)a4;
-- (BOOL)respondWithError:(id)a3;
-- (BOOL)respondWithOutcomeOf:(id)a3;
-- (BOOL)respondWithPayload:(id)a3;
-- (BOOL)respondWithPayload:(id)a3 error:(id)a4;
+- (BOOL)BOOLForKey:(id)key;
+- (BOOL)BOOLForKey:(id)key keyPresent:(BOOL *)present;
+- (BOOL)respondWithError:(id)error;
+- (BOOL)respondWithOutcomeOf:(id)of;
+- (BOOL)respondWithPayload:(id)payload;
+- (BOOL)respondWithPayload:(id)payload error:(id)error;
 - (HMFActivity)activity;
 - (HMFFlow)flow;
 - (HMFMessage)init;
-- (HMFMessage)initWithCoder:(id)a3;
-- (HMFMessage)initWithInternalMessage:(id)a3;
-- (HMFMessage)initWithName:(id)a3 identifier:(id)a4 messagePayload:(id)a5 responseHandler:(id)a6;
-- (HMFMessage)initWithName:(id)a3 qualityOfService:(int64_t)a4 destination:(id)a5 userInfo:(id)a6 headers:(id)a7 payload:(id)a8;
+- (HMFMessage)initWithCoder:(id)coder;
+- (HMFMessage)initWithInternalMessage:(id)message;
+- (HMFMessage)initWithName:(id)name identifier:(id)identifier messagePayload:(id)payload responseHandler:(id)handler;
+- (HMFMessage)initWithName:(id)name qualityOfService:(int64_t)service destination:(id)destination userInfo:(id)info headers:(id)headers payload:(id)payload;
 - (HMFMessageDestination)destination;
 - (HMFMessageTransport)transport;
 - (NSDictionary)headers;
@@ -29,40 +29,40 @@
 - (NSString)name;
 - (NSString)untrustedClientIdentifier;
 - (NSUUID)identifier;
-- (id)URLForKey:(id)a3;
-- (id)arrayForKey:(id)a3;
-- (id)arrayOfDateComponentsForKey:(id)a3;
-- (id)calendarForKey:(id)a3;
+- (id)URLForKey:(id)key;
+- (id)arrayForKey:(id)key;
+- (id)arrayOfDateComponentsForKey:(id)key;
+- (id)calendarForKey:(id)key;
 - (id)copy;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)dataForKey:(id)a3;
-- (id)dateComponentsForKey:(id)a3;
-- (id)dateForKey:(id)a3;
-- (id)descriptionWithPointer:(BOOL)a3;
-- (id)dictionaryForKey:(id)a3;
-- (id)errorForKey:(id)a3;
-- (id)fileHandleForKey:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)dataForKey:(id)key;
+- (id)dateComponentsForKey:(id)key;
+- (id)dateForKey:(id)key;
+- (id)descriptionWithPointer:(BOOL)pointer;
+- (id)dictionaryForKey:(id)key;
+- (id)errorForKey:(id)key;
+- (id)fileHandleForKey:(id)key;
 - (id)logEventSession;
 - (id)mutableCopy;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)nullForKey:(id)a3;
-- (id)numberForKey:(id)a3;
-- (id)predicateForKey:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)nullForKey:(id)key;
+- (id)numberForKey:(id)key;
+- (id)predicateForKey:(id)key;
 - (id)responseHandler;
-- (id)setForKey:(id)a3;
+- (id)setForKey:(id)key;
 - (id)shortDescription;
-- (id)stringForKey:(id)a3;
-- (id)timeZoneForKey:(id)a3;
-- (id)unarchivedObjectForKey:(id)a3 ofClasses:(id)a4;
-- (id)uuidForKey:(id)a3;
+- (id)stringForKey:(id)key;
+- (id)timeZoneForKey:(id)key;
+- (id)unarchivedObjectForKey:(id)key ofClasses:(id)classes;
+- (id)uuidForKey:(id)key;
 - (int64_t)qualityOfService;
-- (void)__initWithInternalMessage:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDestination:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setLogEventSession:(id)a3;
-- (void)setMessagePayload:(id)a3;
-- (void)setResponseHandler:(id)a3;
+- (void)__initWithInternalMessage:(id)message;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDestination:(id)destination;
+- (void)setIdentifier:(id)identifier;
+- (void)setLogEventSession:(id)session;
+- (void)setMessagePayload:(id)payload;
+- (void)setResponseHandler:(id)handler;
 @end
 
 @implementation HMFMessage
@@ -95,20 +95,20 @@
 
 - (int64_t)qualityOfService
 {
-  v2 = [(HMFMessage *)self internal];
-  v3 = [v2 qualityOfService];
+  internal = [(HMFMessage *)self internal];
+  qualityOfService = [internal qualityOfService];
 
-  return v3;
+  return qualityOfService;
 }
 
 - (id)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(HMFMessage *)self name];
-  v6 = [(HMFMessage *)self identifier];
-  v7 = [v6 UUIDString];
-  v8 = [v3 stringWithFormat:@"%@ %@(%@)", v4, v5, v7];
+  shortDescription = [objc_opt_class() shortDescription];
+  name = [(HMFMessage *)self name];
+  identifier = [(HMFMessage *)self identifier];
+  uUIDString = [identifier UUIDString];
+  v8 = [v3 stringWithFormat:@"%@ %@(%@)", shortDescription, name, uUIDString];
 
   return v8;
 }
@@ -122,26 +122,26 @@
 
 - (NSString)name
 {
-  v2 = [(HMFMessage *)self internal];
-  v3 = [v2 name];
+  internal = [(HMFMessage *)self internal];
+  name = [internal name];
 
-  return v3;
+  return name;
 }
 
 - (NSUUID)identifier
 {
-  v2 = [(HMFMessage *)self internal];
-  v3 = [v2 identifier];
+  internal = [(HMFMessage *)self internal];
+  identifier = [internal identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (HMFActivity)activity
 {
-  v2 = [(HMFMessage *)self internal];
-  v3 = [v2 activity];
+  internal = [(HMFMessage *)self internal];
+  activity = [internal activity];
 
-  return v3;
+  return activity;
 }
 
 - (id)copy
@@ -153,28 +153,28 @@
 
 - (id)responseHandler
 {
-  v2 = [(HMFMessage *)self internal];
-  v3 = [v2 responseHandler];
+  internal = [(HMFMessage *)self internal];
+  responseHandler = [internal responseHandler];
 
-  return v3;
+  return responseHandler;
 }
 
 - (HMFMessageDestination)destination
 {
-  v2 = [(HMFMessage *)self internal];
-  v3 = [v2 destination];
+  internal = [(HMFMessage *)self internal];
+  destination = [internal destination];
 
-  return v3;
+  return destination;
 }
 
 - (NSDictionary)headers
 {
-  v2 = [(HMFMessage *)self internal];
-  v3 = [v2 headers];
+  internal = [(HMFMessage *)self internal];
+  headers = [internal headers];
 
-  if (v3)
+  if (headers)
   {
-    v4 = v3;
+    v4 = headers;
   }
 
   else
@@ -189,28 +189,28 @@
 
 - (NSDictionary)messagePayload
 {
-  v2 = [(HMFMessage *)self internal];
-  v3 = [v2 messagePayload];
+  internal = [(HMFMessage *)self internal];
+  messagePayload = [internal messagePayload];
 
-  return v3;
+  return messagePayload;
 }
 
 - (HMFMessageTransport)transport
 {
-  v2 = [(HMFMessage *)self internal];
-  v3 = [v2 transport];
+  internal = [(HMFMessage *)self internal];
+  transport = [internal transport];
 
-  return v3;
+  return transport;
 }
 
 - (NSDictionary)userInfo
 {
-  v2 = [(HMFMessage *)self internal];
-  v3 = [v2 userInfo];
+  internal = [(HMFMessage *)self internal];
+  userInfo = [internal userInfo];
 
-  if (v3)
+  if (userInfo)
   {
-    v4 = v3;
+    v4 = userInfo;
   }
 
   else
@@ -230,19 +230,19 @@
   return [(HMFMessage *)&v3 mutableCopy];
 }
 
-- (BOOL)respondWithOutcomeOf:(id)a3
+- (BOOL)respondWithOutcomeOf:(id)of
 {
-  v4 = a3;
-  v5 = [(HMFMessage *)self responseHandler];
-  v6 = v5;
-  if (v5)
+  ofCopy = of;
+  responseHandler = [(HMFMessage *)self responseHandler];
+  v6 = responseHandler;
+  if (responseHandler)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __46__HMFMessage_HMFFuture__respondWithOutcomeOf___block_invoke;
     v8[3] = &unk_2786E6BE8;
-    v9 = v5;
-    [v4 getResultWithCompletion:v8];
+    v9 = responseHandler;
+    [ofCopy getResultWithCompletion:v8];
   }
 
   return v6 != 0;
@@ -261,35 +261,35 @@
   objc_exception_throw(v7);
 }
 
-+ (id)messageWithName:(id)a3 destination:(id)a4 payload:(id)a5
++ (id)messageWithName:(id)name destination:(id)destination payload:(id)payload
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithName:v10 destination:v9 payload:v8];
+  payloadCopy = payload;
+  destinationCopy = destination;
+  nameCopy = name;
+  v11 = [[self alloc] initWithName:nameCopy destination:destinationCopy payload:payloadCopy];
 
   return v11;
 }
 
-+ (id)messageWithName:(id)a3 qualityOfService:(int64_t)a4 destination:(id)a5 payload:(id)a6
++ (id)messageWithName:(id)name qualityOfService:(int64_t)service destination:(id)destination payload:(id)payload
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [[a1 alloc] initWithName:v12 qualityOfService:a4 destination:v11 payload:v10];
+  payloadCopy = payload;
+  destinationCopy = destination;
+  nameCopy = name;
+  v13 = [[self alloc] initWithName:nameCopy qualityOfService:service destination:destinationCopy payload:payloadCopy];
 
   return v13;
 }
 
-- (HMFMessage)initWithName:(id)a3 qualityOfService:(int64_t)a4 destination:(id)a5 userInfo:(id)a6 headers:(id)a7 payload:(id)a8
+- (HMFMessage)initWithName:(id)name qualityOfService:(int64_t)service destination:(id)destination userInfo:(id)info headers:(id)headers payload:(id)payload
 {
   v33 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (!v14)
+  nameCopy = name;
+  destinationCopy = destination;
+  infoCopy = info;
+  headersCopy = headers;
+  payloadCopy = payload;
+  if (!nameCopy)
   {
     v24 = objc_autoreleasePoolPush();
     v25 = HMFGetOSLogHandle();
@@ -306,11 +306,11 @@ LABEL_10:
 LABEL_11:
 
     objc_autoreleasePoolPop(v24);
-    v23 = 0;
+    selfCopy = 0;
     goto LABEL_12;
   }
 
-  if (!v15)
+  if (!destinationCopy)
   {
     v24 = objc_autoreleasePoolPush();
     v25 = HMFGetOSLogHandle();
@@ -327,15 +327,15 @@ LABEL_11:
   }
 
   v19 = objc_alloc_init(HMFMessageInternal);
-  v20 = [MEMORY[0x277CCAD78] UUID];
-  [(HMFMessageInternal *)v19 setIdentifier:v20];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  [(HMFMessageInternal *)v19 setIdentifier:uUID];
 
-  [(HMFMessageInternal *)v19 setName:v14];
-  [(HMFMessageInternal *)v19 setQualityOfService:a4];
-  [(HMFMessageInternal *)v19 setDestination:v15];
-  [(HMFMessageInternal *)v19 setUserInfo:v16];
-  [(HMFMessageInternal *)v19 setHeaders:v17];
-  [(HMFMessageInternal *)v19 setMessagePayload:v18];
+  [(HMFMessageInternal *)v19 setName:nameCopy];
+  [(HMFMessageInternal *)v19 setQualityOfService:service];
+  [(HMFMessageInternal *)v19 setDestination:destinationCopy];
+  [(HMFMessageInternal *)v19 setUserInfo:infoCopy];
+  [(HMFMessageInternal *)v19 setHeaders:headersCopy];
+  [(HMFMessageInternal *)v19 setMessagePayload:payloadCopy];
   v30.receiver = self;
   v30.super_class = HMFMessage;
   v21 = [(HMFMessage *)&v30 init];
@@ -347,45 +347,45 @@ LABEL_11:
 
   self = v22;
 
-  v23 = self;
+  selfCopy = self;
 LABEL_12:
 
   v28 = *MEMORY[0x277D85DE8];
-  return v23;
+  return selfCopy;
 }
 
-- (HMFMessage)initWithInternalMessage:(id)a3
+- (HMFMessage)initWithInternalMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v8.receiver = self;
   v8.super_class = HMFMessage;
   v5 = [(HMFMessage *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(HMFMessage *)v5 __initWithInternalMessage:v4];
+    [(HMFMessage *)v5 __initWithInternalMessage:messageCopy];
   }
 
   return v6;
 }
 
-- (void)__initWithInternalMessage:(id)a3
+- (void)__initWithInternalMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   if (self)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_internal, a3);
-    v5 = v6;
+    v6 = messageCopy;
+    objc_storeStrong(&self->_internal, message);
+    messageCopy = v6;
   }
 }
 
-- (id)descriptionWithPointer:(BOOL)a3
+- (id)descriptionWithPointer:(BOOL)pointer
 {
-  v3 = a3;
+  pointerCopy = pointer;
   v5 = MEMORY[0x277CCACA8];
-  v20 = [objc_opt_class() shortDescription];
-  if (v3)
+  shortDescription = [objc_opt_class() shortDescription];
+  if (pointerCopy)
   {
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@" %p", self];
   }
@@ -395,21 +395,21 @@ LABEL_12:
     v6 = &stru_283EBDA30;
   }
 
-  v7 = [(HMFMessage *)self identifier];
-  v8 = [v7 UUIDString];
-  v9 = [(HMFMessage *)self name];
-  v10 = [(HMFMessage *)self qualityOfService];
-  v19 = v3;
-  if (v10 <= 16)
+  identifier = [(HMFMessage *)self identifier];
+  uUIDString = [identifier UUIDString];
+  name = [(HMFMessage *)self name];
+  qualityOfService = [(HMFMessage *)self qualityOfService];
+  v19 = pointerCopy;
+  if (qualityOfService <= 16)
   {
-    if (v10 == -1)
+    if (qualityOfService == -1)
     {
       v11 = v6;
       v12 = @"Default";
       goto LABEL_16;
     }
 
-    if (v10 == 9)
+    if (qualityOfService == 9)
     {
       v11 = v6;
       v12 = @"Background";
@@ -419,7 +419,7 @@ LABEL_12:
 
   else
   {
-    switch(v10)
+    switch(qualityOfService)
     {
       case 17:
         v11 = v6;
@@ -439,11 +439,11 @@ LABEL_12:
   v11 = v6;
   v12 = @"Unknown";
 LABEL_16:
-  v13 = [(HMFMessage *)self destination];
-  v14 = [(HMFMessage *)self activity];
-  v15 = [(HMFMessage *)self userInfo];
-  v16 = [(HMFMessage *)self headers];
-  v17 = [v5 stringWithFormat:@"<%@%@, Identifier = %@, Name = %@, QoS = %@, Destination = %@, Activity = %@, \nUser Info = %@, \nHeaders = %@>", v20, v11, v8, v9, v12, v13, v14, v15, v16];
+  destination = [(HMFMessage *)self destination];
+  activity = [(HMFMessage *)self activity];
+  userInfo = [(HMFMessage *)self userInfo];
+  headers = [(HMFMessage *)self headers];
+  v17 = [v5 stringWithFormat:@"<%@%@, Identifier = %@, Name = %@, QoS = %@, Destination = %@, Activity = %@, \nUser Info = %@, \nHeaders = %@>", shortDescription, v11, uUIDString, name, v12, destination, activity, userInfo, headers];
 
   if (v19)
   {
@@ -452,86 +452,86 @@ LABEL_16:
   return v17;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v4 = a3;
-    v5 = [(HMFMessage *)self internal];
-    [v5 setIdentifier:v4];
+    identifierCopy = identifier;
+    internal = [(HMFMessage *)self internal];
+    [internal setIdentifier:identifierCopy];
   }
 }
 
-- (void)setDestination:(id)a3
+- (void)setDestination:(id)destination
 {
-  if (a3)
+  if (destination)
   {
-    v4 = a3;
-    v5 = [(HMFMessage *)self internal];
-    [v5 setDestination:v4];
+    destinationCopy = destination;
+    internal = [(HMFMessage *)self internal];
+    [internal setDestination:destinationCopy];
   }
 }
 
 - (NSString)untrustedClientIdentifier
 {
-  v2 = [(HMFMessage *)self headers];
-  v3 = [v2 hmf_stringForKey:@"HMF.untrustedClientIdentifier"];
+  headers = [(HMFMessage *)self headers];
+  v3 = [headers hmf_stringForKey:@"HMF.untrustedClientIdentifier"];
 
   return v3;
 }
 
-- (void)setMessagePayload:(id)a3
+- (void)setMessagePayload:(id)payload
 {
-  v4 = a3;
-  v5 = [(HMFMessage *)self internal];
-  [v5 setMessagePayload:v4];
+  payloadCopy = payload;
+  internal = [(HMFMessage *)self internal];
+  [internal setMessagePayload:payloadCopy];
 }
 
 - (id)logEventSession
 {
-  v2 = [(HMFMessage *)self internal];
-  v3 = [v2 logEventSession];
+  internal = [(HMFMessage *)self internal];
+  logEventSession = [internal logEventSession];
 
-  return v3;
+  return logEventSession;
 }
 
-- (void)setLogEventSession:(id)a3
+- (void)setLogEventSession:(id)session
 {
-  v4 = a3;
-  v5 = [(HMFMessage *)self internal];
-  [v5 setLogEventSession:v4];
+  sessionCopy = session;
+  internal = [(HMFMessage *)self internal];
+  [internal setLogEventSession:sessionCopy];
 }
 
-- (void)setResponseHandler:(id)a3
+- (void)setResponseHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(HMFMessage *)self internal];
-  [v5 setResponseHandler:v4];
+  handlerCopy = handler;
+  internal = [(HMFMessage *)self internal];
+  [internal setResponseHandler:handlerCopy];
 }
 
-- (BOOL)respondWithPayload:(id)a3
+- (BOOL)respondWithPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [(HMFMessage *)self responseHandler];
-  v6 = v5;
-  if (v5)
+  payloadCopy = payload;
+  responseHandler = [(HMFMessage *)self responseHandler];
+  v6 = responseHandler;
+  if (responseHandler)
   {
-    (*(v5 + 16))(v5, 0, v4);
+    (*(responseHandler + 16))(responseHandler, 0, payloadCopy);
   }
 
   return v6 != 0;
 }
 
-- (BOOL)respondWithError:(id)a3
+- (BOOL)respondWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(HMFMessage *)self responseHandler];
-  v6 = v5;
-  if (v5)
+  errorCopy = error;
+  responseHandler = [(HMFMessage *)self responseHandler];
+  v6 = responseHandler;
+  if (responseHandler)
   {
-    if (v4)
+    if (errorCopy)
     {
-      (*(v5 + 16))(v5, v4, 0);
+      (*(responseHandler + 16))(responseHandler, errorCopy, 0);
     }
 
     else
@@ -544,59 +544,59 @@ LABEL_16:
   return v6 != 0;
 }
 
-- (BOOL)respondWithPayload:(id)a3 error:(id)a4
+- (BOOL)respondWithPayload:(id)payload error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMFMessage *)self responseHandler];
-  v9 = v8;
-  if (v8)
+  payloadCopy = payload;
+  errorCopy = error;
+  responseHandler = [(HMFMessage *)self responseHandler];
+  v9 = responseHandler;
+  if (responseHandler)
   {
-    (*(v8 + 16))(v8, v7, v6);
+    (*(responseHandler + 16))(responseHandler, errorCopy, payloadCopy);
   }
 
   return v9 != 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(HMFMessage *)self internal];
-  v5 = [v4 copyWithZone:a3];
+  internal = [(HMFMessage *)self internal];
+  v5 = [internal copyWithZone:zone];
 
-  v6 = [MEMORY[0x277CCAD78] UUID];
-  [v5 setIdentifier:v6];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  [v5 setIdentifier:uUID];
 
-  v7 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithInternalMessage:", v5}];
+  v7 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithInternalMessage:", v5}];
   return v7;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [(HMFMessage *)self internal];
-  v5 = [v4 copyWithZone:a3];
+  internal = [(HMFMessage *)self internal];
+  v5 = [internal copyWithZone:zone];
 
   v6 = [(HMFMessage *)[HMFMutableMessage allocWithZone:?], "initWithInternalMessage:", v5];
   return v6;
 }
 
-- (HMFMessage)initWithCoder:(id)a3
+- (HMFMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(HMFMessageInternal);
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMF.identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMF.identifier"];
   [(HMFMessageInternal *)v5 setIdentifier:v6];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMF.name"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMF.name"];
   [(HMFMessageInternal *)v5 setName:v7];
 
-  [v4 decodeDoubleForKey:@"HMF.timeout"];
+  [coderCopy decodeDoubleForKey:@"HMF.timeout"];
   [(HMFMessageInternal *)v5 setTimeout:?];
-  -[HMFMessageInternal setQualityOfService:](v5, "setQualityOfService:", [v4 decodeIntegerForKey:@"HMF.qos"]);
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMF.destination"];
+  -[HMFMessageInternal setQualityOfService:](v5, "setQualityOfService:", [coderCopy decodeIntegerForKey:@"HMF.qos"]);
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMF.destination"];
   [(HMFMessageInternal *)v5 setDestination:v8];
 
   v9 = +[HMFMessage allowedClassesForXPC];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"HMF.headers"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"HMF.headers"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -613,7 +613,7 @@ LABEL_16:
 
   [(HMFMessageInternal *)v5 setHeaders:v12];
   v13 = +[HMFMessage allowedClassesForXPC];
-  v14 = [v4 decodeObjectOfClasses:v13 forKey:@"HMF.payload"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"HMF.payload"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -634,116 +634,116 @@ LABEL_16:
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMFMessage *)self identifier];
-  [v4 encodeObject:v5 forKey:@"HMF.identifier"];
+  coderCopy = coder;
+  identifier = [(HMFMessage *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"HMF.identifier"];
 
-  v6 = [(HMFMessage *)self name];
-  [v4 encodeObject:v6 forKey:@"HMF.name"];
+  name = [(HMFMessage *)self name];
+  [coderCopy encodeObject:name forKey:@"HMF.name"];
 
   [(HMFMessage *)self timeout];
-  [v4 encodeDouble:@"HMF.timeout" forKey:?];
-  [v4 encodeInteger:-[HMFMessage qualityOfService](self forKey:{"qualityOfService"), @"HMF.qos"}];
-  v7 = [(HMFMessage *)self destination];
-  [v4 encodeObject:v7 forKey:@"HMF.destination"];
+  [coderCopy encodeDouble:@"HMF.timeout" forKey:?];
+  [coderCopy encodeInteger:-[HMFMessage qualityOfService](self forKey:{"qualityOfService"), @"HMF.qos"}];
+  destination = [(HMFMessage *)self destination];
+  [coderCopy encodeObject:destination forKey:@"HMF.destination"];
 
-  v8 = [(HMFMessage *)self headers];
-  [v4 encodeObject:v8 forKey:@"HMF.headers"];
+  headers = [(HMFMessage *)self headers];
+  [coderCopy encodeObject:headers forKey:@"HMF.headers"];
 
-  v9 = [(HMFMessage *)self messagePayload];
-  [v4 encodeObject:v9 forKey:@"HMF.payload"];
+  messagePayload = [(HMFMessage *)self messagePayload];
+  [coderCopy encodeObject:messagePayload forKey:@"HMF.payload"];
 }
 
-+ (id)messageWithName:(id)a3 messagePayload:(id)a4
++ (id)messageWithName:(id)name messagePayload:(id)payload
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithName:v7 identifier:0 messagePayload:v6 responseHandler:0];
+  payloadCopy = payload;
+  nameCopy = name;
+  v8 = [[self alloc] initWithName:nameCopy identifier:0 messagePayload:payloadCopy responseHandler:0];
 
   return v8;
 }
 
-+ (id)messageWithName:(id)a3 messagePayload:(id)a4 responseHandler:(id)a5
++ (id)messageWithName:(id)name messagePayload:(id)payload responseHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithName:v10 identifier:0 messagePayload:v9 responseHandler:v8];
+  handlerCopy = handler;
+  payloadCopy = payload;
+  nameCopy = name;
+  v11 = [[self alloc] initWithName:nameCopy identifier:0 messagePayload:payloadCopy responseHandler:handlerCopy];
 
   return v11;
 }
 
-+ (id)messageWithName:(id)a3 identifier:(id)a4 messagePayload:(id)a5
++ (id)messageWithName:(id)name identifier:(id)identifier messagePayload:(id)payload
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithName:v10 identifier:v9 messagePayload:v8 responseHandler:0];
+  payloadCopy = payload;
+  identifierCopy = identifier;
+  nameCopy = name;
+  v11 = [[self alloc] initWithName:nameCopy identifier:identifierCopy messagePayload:payloadCopy responseHandler:0];
 
   return v11;
 }
 
-+ (id)messageWithMessage:(id)a3 messagePayload:(id)a4
++ (id)messageWithMessage:(id)message messagePayload:(id)payload
 {
-  v6 = a4;
-  v7 = [a3 internal];
-  v8 = [v7 copy];
+  payloadCopy = payload;
+  internal = [message internal];
+  v8 = [internal copy];
 
-  [v8 setMessagePayload:v6];
-  v9 = [[a1 alloc] initWithInternalMessage:v8];
+  [v8 setMessagePayload:payloadCopy];
+  v9 = [[self alloc] initWithInternalMessage:v8];
 
   return v9;
 }
 
-+ (id)messageWithMessage:(id)a3 messagePayload:(id)a4 responseHandler:(id)a5
++ (id)messageWithMessage:(id)message messagePayload:(id)payload responseHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 internal];
-  v11 = [v10 copy];
+  handlerCopy = handler;
+  payloadCopy = payload;
+  internal = [message internal];
+  v11 = [internal copy];
 
-  [v11 setMessagePayload:v9];
-  if (v8)
+  [v11 setMessagePayload:payloadCopy];
+  if (handlerCopy)
   {
-    [v11 setResponseHandler:v8];
+    [v11 setResponseHandler:handlerCopy];
   }
 
-  v12 = [[a1 alloc] initWithInternalMessage:v11];
+  v12 = [[self alloc] initWithInternalMessage:v11];
 
   return v12;
 }
 
-- (HMFMessage)initWithName:(id)a3 identifier:(id)a4 messagePayload:(id)a5 responseHandler:(id)a6
+- (HMFMessage)initWithName:(id)name identifier:(id)identifier messagePayload:(id)payload responseHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  payloadCopy = payload;
+  nameCopy = name;
   v14 = +[HMFMessageDestination allMessageDestinations];
-  v15 = [(HMFMessage *)self initWithName:v13 destination:v14 payload:v12];
+  v15 = [(HMFMessage *)self initWithName:nameCopy destination:v14 payload:payloadCopy];
 
   if (v15)
   {
-    if (v10)
+    if (identifierCopy)
     {
-      v16 = [(HMFMessage *)v15 internal];
-      [v16 setIdentifier:v10];
+      internal = [(HMFMessage *)v15 internal];
+      [internal setIdentifier:identifierCopy];
     }
 
-    v17 = [(HMFMessage *)v15 internal];
-    [v17 setResponseHandler:v11];
+    internal2 = [(HMFMessage *)v15 internal];
+    [internal2 setResponseHandler:handlerCopy];
   }
 
   return v15;
 }
 
-- (id)uuidForKey:(id)a3
+- (id)uuidForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HMFMessage *)self messagePayload];
-  v6 = [v5 hmf_UUIDForKey:v4];
+  keyCopy = key;
+  messagePayload = [(HMFMessage *)self messagePayload];
+  v6 = [messagePayload hmf_UUIDForKey:keyCopy];
 
   return v6;
 }
@@ -751,8 +751,8 @@ LABEL_16:
 - (HMFFlow)flow
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(HMFMessage *)self messagePayload];
-  v4 = [v3 hmf_flowForKey:@"HMFMessageFlowKey"];
+  messagePayload = [(HMFMessage *)self messagePayload];
+  v4 = [messagePayload hmf_flowForKey:@"HMFMessageFlowKey"];
 
   if (v4)
   {
@@ -767,13 +767,13 @@ LABEL_16:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = HMFGetLogIdentifier(0);
-      v9 = [v5 UUID];
+      uUID = [v5 UUID];
       v12 = 138543874;
       v13 = v8;
       v14 = 2112;
-      v15 = v9;
+      v15 = uUID;
       v16 = 2112;
-      v17 = self;
+      selfCopy = self;
       _os_log_impl(&dword_22ADEC000, v7, OS_LOG_TYPE_INFO, "%{public}@[NewFlow: %@ {Feature:Error}] Incorrect Flow Usage: Expected, but did not find, flow for message: %@", &v12, 0x20u);
     }
 
@@ -785,127 +785,127 @@ LABEL_16:
   return v5;
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HMFMessage *)self messagePayload];
-  v6 = [v5 hmf_stringForKey:v4];
+  keyCopy = key;
+  messagePayload = [(HMFMessage *)self messagePayload];
+  v6 = [messagePayload hmf_stringForKey:keyCopy];
 
   return v6;
 }
 
-- (id)numberForKey:(id)a3
+- (id)numberForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HMFMessage *)self messagePayload];
-  v6 = [v5 hmf_numberForKey:v4];
+  keyCopy = key;
+  messagePayload = [(HMFMessage *)self messagePayload];
+  v6 = [messagePayload hmf_numberForKey:keyCopy];
 
   return v6;
 }
 
-- (BOOL)BOOLForKey:(id)a3
+- (BOOL)BOOLForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HMFMessage *)self messagePayload];
-  v6 = [v5 hmf_BOOLForKey:v4];
+  keyCopy = key;
+  messagePayload = [(HMFMessage *)self messagePayload];
+  v6 = [messagePayload hmf_BOOLForKey:keyCopy];
 
   return v6;
 }
 
-- (BOOL)BOOLForKey:(id)a3 keyPresent:(BOOL *)a4
+- (BOOL)BOOLForKey:(id)key keyPresent:(BOOL *)present
 {
-  v6 = a3;
-  v7 = [(HMFMessage *)self messagePayload];
-  LOBYTE(a4) = [v7 hmf_BOOLForKey:v6 isPresent:a4];
+  keyCopy = key;
+  messagePayload = [(HMFMessage *)self messagePayload];
+  LOBYTE(present) = [messagePayload hmf_BOOLForKey:keyCopy isPresent:present];
 
-  return a4;
+  return present;
 }
 
-- (id)dictionaryForKey:(id)a3
+- (id)dictionaryForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HMFMessage *)self messagePayload];
-  v6 = [v5 hmf_dictionaryForKey:v4];
+  keyCopy = key;
+  messagePayload = [(HMFMessage *)self messagePayload];
+  v6 = [messagePayload hmf_dictionaryForKey:keyCopy];
 
   return v6;
 }
 
-- (id)arrayForKey:(id)a3
+- (id)arrayForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HMFMessage *)self messagePayload];
-  v6 = [v5 hmf_arrayForKey:v4];
+  keyCopy = key;
+  messagePayload = [(HMFMessage *)self messagePayload];
+  v6 = [messagePayload hmf_arrayForKey:keyCopy];
 
   return v6;
 }
 
-- (id)setForKey:(id)a3
+- (id)setForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HMFMessage *)self messagePayload];
-  v6 = [v5 hmf_setForKey:v4];
+  keyCopy = key;
+  messagePayload = [(HMFMessage *)self messagePayload];
+  v6 = [messagePayload hmf_setForKey:keyCopy];
 
   return v6;
 }
 
-- (id)dataForKey:(id)a3
+- (id)dataForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HMFMessage *)self messagePayload];
-  v6 = [v5 hmf_dataForKey:v4];
+  keyCopy = key;
+  messagePayload = [(HMFMessage *)self messagePayload];
+  v6 = [messagePayload hmf_dataForKey:keyCopy];
 
   return v6;
 }
 
-- (id)dateForKey:(id)a3
+- (id)dateForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HMFMessage *)self messagePayload];
-  v6 = [v5 hmf_dateForKey:v4];
+  keyCopy = key;
+  messagePayload = [(HMFMessage *)self messagePayload];
+  v6 = [messagePayload hmf_dateForKey:keyCopy];
 
   return v6;
 }
 
-- (id)nullForKey:(id)a3
+- (id)nullForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HMFMessage *)self messagePayload];
-  v6 = [v5 hmf_nullForKey:v4];
+  keyCopy = key;
+  messagePayload = [(HMFMessage *)self messagePayload];
+  v6 = [messagePayload hmf_nullForKey:keyCopy];
 
   return v6;
 }
 
-- (id)timeZoneForKey:(id)a3
+- (id)timeZoneForKey:(id)key
 {
-  v3 = [(HMFMessage *)self dataForKey:a3];
+  v3 = [(HMFMessage *)self dataForKey:key];
   v4 = [MEMORY[0x277CBEBB0] hmf_unarchiveFromData:v3 error:0];
 
   return v4;
 }
 
-- (id)dateComponentsForKey:(id)a3
+- (id)dateComponentsForKey:(id)key
 {
-  v3 = [(HMFMessage *)self dataForKey:a3];
+  v3 = [(HMFMessage *)self dataForKey:key];
   v4 = [MEMORY[0x277CBEAB8] hmf_unarchiveFromData:v3 error:0];
 
   return v4;
 }
 
-- (id)URLForKey:(id)a3
+- (id)URLForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HMFMessage *)self messagePayload];
-  v6 = [v5 hmf_URLForKey:v4];
+  keyCopy = key;
+  messagePayload = [(HMFMessage *)self messagePayload];
+  v6 = [messagePayload hmf_URLForKey:keyCopy];
 
   return v6;
 }
 
-- (id)errorForKey:(id)a3
+- (id)errorForKey:(id)key
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMFMessage *)self messagePayload];
-  v6 = [v5 hmf_errorForKey:v4];
+  keyCopy = key;
+  messagePayload = [(HMFMessage *)self messagePayload];
+  v6 = [messagePayload hmf_errorForKey:keyCopy];
 
   if (v6)
   {
@@ -916,7 +916,7 @@ LABEL_16:
   {
     v11[0] = objc_opt_class();
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
-    v7 = [(HMFMessage *)self unarchivedObjectForKey:v4 ofClasses:v8];
+    v7 = [(HMFMessage *)self unarchivedObjectForKey:keyCopy ofClasses:v8];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -924,23 +924,23 @@ LABEL_16:
   return v7;
 }
 
-- (id)calendarForKey:(id)a3
+- (id)calendarForKey:(id)key
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v9[0] = objc_opt_class();
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-  v6 = [(HMFMessage *)self unarchivedObjectForKey:v4 ofClasses:v5];
+  v6 = [(HMFMessage *)self unarchivedObjectForKey:keyCopy ofClasses:v5];
 
   v7 = *MEMORY[0x277D85DE8];
 
   return v6;
 }
 
-- (id)predicateForKey:(id)a3
+- (id)predicateForKey:(id)key
 {
   v12[2] = *MEMORY[0x277D85DE8];
-  v3 = [(HMFMessage *)self dataForKey:a3];
+  v3 = [(HMFMessage *)self dataForKey:key];
   if (v3)
   {
     v4 = MEMORY[0x277CCAAC8];
@@ -972,10 +972,10 @@ LABEL_16:
   return v9;
 }
 
-- (id)arrayOfDateComponentsForKey:(id)a3
+- (id)arrayOfDateComponentsForKey:(id)key
 {
   v12[2] = *MEMORY[0x277D85DE8];
-  v3 = [(HMFMessage *)self dataForKey:a3];
+  v3 = [(HMFMessage *)self dataForKey:key];
   if (v3)
   {
     v4 = MEMORY[0x277CCAAC8];
@@ -1008,21 +1008,21 @@ LABEL_16:
   return v9;
 }
 
-- (id)unarchivedObjectForKey:(id)a3 ofClasses:(id)a4
+- (id)unarchivedObjectForKey:(id)key ofClasses:(id)classes
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMFMessage *)self messagePayload];
-  v9 = [v8 hmf_unarchivedObjectForKey:v7 ofClasses:v6];
+  classesCopy = classes;
+  keyCopy = key;
+  messagePayload = [(HMFMessage *)self messagePayload];
+  v9 = [messagePayload hmf_unarchivedObjectForKey:keyCopy ofClasses:classesCopy];
 
   return v9;
 }
 
-- (id)fileHandleForKey:(id)a3
+- (id)fileHandleForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HMFMessage *)self messagePayload];
-  v6 = [v5 hmf_fileHandleForKey:v4];
+  keyCopy = key;
+  messagePayload = [(HMFMessage *)self messagePayload];
+  v6 = [messagePayload hmf_fileHandleForKey:keyCopy];
 
   return v6;
 }

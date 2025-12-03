@@ -3,9 +3,9 @@
 - (_TtC17MeasureFoundation10WorldPoint)init;
 - (int64_t)state;
 - (int64_t)type;
-- (void)setLines:(id)a3;
-- (void)setState:(int64_t)a3;
-- (void)setType:(int64_t)a3;
+- (void)setLines:(id)lines;
+- (void)setState:(int64_t)state;
+- (void)setType:(int64_t)type;
 @end
 
 @implementation WorldPoint
@@ -20,7 +20,7 @@
   return v2;
 }
 
-- (void)setLines:(id)a3
+- (void)setLines:(id)lines
 {
   type metadata accessor for WorldLine();
   v4 = sub_258428860();
@@ -35,7 +35,7 @@
   swift_beginAccess();
   v4 = *(self + v3);
   v5 = *(v4 + 24);
-  v6 = self;
+  selfCopy = self;
 
   os_unfair_lock_lock(v5);
   swift_beginAccess();
@@ -45,17 +45,17 @@
   return v7;
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
-  v4 = self;
-  WorldPoint.type.setter(a3);
+  selfCopy = self;
+  WorldPoint.type.setter(type);
 }
 
 - (int64_t)state
 {
   v2 = *(self + OBJC_IVAR____TtC17MeasureFoundation13MeasureObject__state);
   v3 = *(v2 + 24);
-  v4 = self;
+  selfCopy = self;
 
   os_unfair_lock_lock(v3);
   swift_beginAccess();
@@ -65,10 +65,10 @@
   return v5;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  v4 = self;
-  WorldPoint.state.setter(a3);
+  selfCopy = self;
+  WorldPoint.state.setter(state);
 }
 
 - (_TtC17MeasureFoundation10WorldPoint)init

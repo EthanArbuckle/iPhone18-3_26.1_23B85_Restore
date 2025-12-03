@@ -1,5 +1,5 @@
 @interface PUTilingViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_isEligibleForFocusInteraction;
 - (BOOL)accessibilityPerformEscape;
 - (BOOL)canBecomeFocused;
@@ -10,20 +10,20 @@
 
 @implementation PUTilingViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PUOneUpBarsController" hasInstanceMethod:@"browsingSession" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUBrowsingSession" hasInstanceMethod:@"viewModel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUBrowsingViewModel" hasInstanceMethod:@"isChromeVisible" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PUOneUpViewController" hasInstanceMethod:@"_barsController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUTilingView" isKindOfClass:@"UIScrollView"];
-  [v3 validateClass:@"PUTilingView" hasInstanceMethod:@"layout" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUTilingLayout" hasInstanceMethod:@"preferredScrollInfo" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUTilingScrollInfo" hasInstanceMethod:@"interpageSpacing" withFullSignature:{"{CGSize=dd}", 0}];
-  [v3 validateClass:@"PUScrubberView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"canBecomeFocused" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"_isEligibleForFocusInteraction" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PUOneUpBarsController" hasInstanceMethod:@"browsingSession" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUBrowsingSession" hasInstanceMethod:@"viewModel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUBrowsingViewModel" hasInstanceMethod:@"isChromeVisible" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PUOneUpViewController" hasInstanceMethod:@"_barsController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUTilingView" isKindOfClass:@"UIScrollView"];
+  [validationsCopy validateClass:@"PUTilingView" hasInstanceMethod:@"layout" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUTilingLayout" hasInstanceMethod:@"preferredScrollInfo" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUTilingScrollInfo" hasInstanceMethod:@"interpageSpacing" withFullSignature:{"{CGSize=dd}", 0}];
+  [validationsCopy validateClass:@"PUScrubberView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"canBecomeFocused" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"_isEligibleForFocusInteraction" withFullSignature:{"B", 0}];
 }
 
 - (BOOL)accessibilityPerformEscape
@@ -113,8 +113,8 @@
 {
   v5.receiver = self;
   v5.super_class = PUTilingViewAccessibility;
-  v3 = [(PUTilingViewAccessibility *)&v5 canBecomeFocused];
-  return ([(PUTilingViewAccessibility *)self _accessibilityIsFKARunningForFocusItem]| v3) & 1;
+  canBecomeFocused = [(PUTilingViewAccessibility *)&v5 canBecomeFocused];
+  return ([(PUTilingViewAccessibility *)self _accessibilityIsFKARunningForFocusItem]| canBecomeFocused) & 1;
 }
 
 - (BOOL)_isEligibleForFocusInteraction

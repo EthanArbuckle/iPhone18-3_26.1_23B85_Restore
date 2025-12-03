@@ -1,35 +1,35 @@
 @interface ACDAuthenticationPluginManager
-+ (id)_sanitizeError:(id)a3;
-- (ACDAuthenticationPluginManager)initWithAuthenticationPluginLoader:(id)a3;
-- (BOOL)_renewalRequestIsWithinLimitsForAccount:(id)a3 accountStore:(id)a4;
-- (BOOL)isPushSupportedForAccount:(id)a3;
-- (id)_authCapableParentAccountForAccount:(id)a3;
-- (id)_authenticationTypeForAccount:(id)a3;
-- (id)_descriptionForRenewalResult:(int64_t)a3;
-- (id)_unsanitizeOptionsDictionary:(id)a3;
++ (id)_sanitizeError:(id)error;
+- (ACDAuthenticationPluginManager)initWithAuthenticationPluginLoader:(id)loader;
+- (BOOL)_renewalRequestIsWithinLimitsForAccount:(id)account accountStore:(id)store;
+- (BOOL)isPushSupportedForAccount:(id)account;
+- (id)_authCapableParentAccountForAccount:(id)account;
+- (id)_authenticationTypeForAccount:(id)account;
+- (id)_descriptionForRenewalResult:(int64_t)result;
+- (id)_unsanitizeOptionsDictionary:(id)dictionary;
 - (unint64_t)renewalCredentialTimeout;
-- (void)_handleDiscoveryCompletionResult:(id)a3 forAccount:(id)a4 discoveryID:(id)a5 accountStore:(id)a6 shouldSave:(BOOL)a7 error:(id)a8;
-- (void)_handleRenewalCompletionResult:(int64_t)a3 forAccount:(id)a4 renewalID:(id)a5 accountStore:(id)a6 error:(id)a7;
-- (void)_handleVerificationCompletionForAccount:(id)a3 verifiedAccount:(id)a4 error:(id)a5 store:(id)a6 shouldSave:(BOOL)a7;
-- (void)credentialForAccount:(id)a3 client:(id)a4 store:(id)a5 handler:(id)a6;
-- (void)discoverPropertiesForAccount:(id)a3 accountStore:(id)a4 options:(id)a5 completion:(id)a6;
-- (void)renewCredentialsForAccount:(id)a3 accountStore:(id)a4 options:(id)a5 completion:(id)a6;
-- (void)setRenewalRateLimiter:(id)a3;
-- (void)verifyCredentialsForAccount:(id)a3 accountStore:(id)a4 options:(id)a5 handler:(id)a6;
+- (void)_handleDiscoveryCompletionResult:(id)result forAccount:(id)account discoveryID:(id)d accountStore:(id)store shouldSave:(BOOL)save error:(id)error;
+- (void)_handleRenewalCompletionResult:(int64_t)result forAccount:(id)account renewalID:(id)d accountStore:(id)store error:(id)error;
+- (void)_handleVerificationCompletionForAccount:(id)account verifiedAccount:(id)verifiedAccount error:(id)error store:(id)store shouldSave:(BOOL)save;
+- (void)credentialForAccount:(id)account client:(id)client store:(id)store handler:(id)handler;
+- (void)discoverPropertiesForAccount:(id)account accountStore:(id)store options:(id)options completion:(id)completion;
+- (void)renewCredentialsForAccount:(id)account accountStore:(id)store options:(id)options completion:(id)completion;
+- (void)setRenewalRateLimiter:(id)limiter;
+- (void)verifyCredentialsForAccount:(id)account accountStore:(id)store options:(id)options handler:(id)handler;
 @end
 
 @implementation ACDAuthenticationPluginManager
 
-- (ACDAuthenticationPluginManager)initWithAuthenticationPluginLoader:(id)a3
+- (ACDAuthenticationPluginManager)initWithAuthenticationPluginLoader:(id)loader
 {
-  v5 = a3;
+  loaderCopy = loader;
   v28.receiver = self;
   v28.super_class = ACDAuthenticationPluginManager;
   v6 = [(ACDAuthenticationPluginManager *)&v28 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_authPluginLoader, a3);
+    objc_storeStrong(&v6->_authPluginLoader, loader);
     v8 = objc_alloc_init(ACDQueueDictionary);
     verificationHandlerQueues = v7->_verificationHandlerQueues;
     v7->_verificationHandlerQueues = v8;
@@ -71,17 +71,17 @@
   return v7;
 }
 
-- (BOOL)isPushSupportedForAccount:(id)a3
+- (BOOL)isPushSupportedForAccount:(id)account
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accountCopy = account;
   v5 = _ACDLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [ACDAuthenticationPluginManager isPushSupportedForAccount:];
   }
 
-  v6 = [(ACDAuthenticationPluginManager *)self _authenticationTypeForAccount:v4];
+  v6 = [(ACDAuthenticationPluginManager *)self _authenticationTypeForAccount:accountCopy];
   v7 = _ACDLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -91,7 +91,7 @@
   v8 = [(ACDAuthenticationPluginLoader *)self->_authPluginLoader pluginForAuthenticationType:v6];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 isPushSupportedForAccount:v4];
+    v9 = [v8 isPushSupportedForAccount:accountCopy];
   }
 
   else
@@ -100,7 +100,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v4;
+      v15 = accountCopy;
       _os_log_impl(&dword_221D2F000, v10, OS_LOG_TYPE_DEFAULT, "The plugin for account %@ does not implement isPushSupportedForAccount:", &v14, 0xCu);
     }
 
@@ -117,20 +117,20 @@
   return v9;
 }
 
-- (void)credentialForAccount:(id)a3 client:(id)a4 store:(id)a5 handler:(id)a6
+- (void)credentialForAccount:(id)account client:(id)client store:(id)store handler:(id)handler
 {
   v36 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  accountCopy = account;
+  clientCopy = client;
+  storeCopy = store;
+  handlerCopy = handler;
   v14 = _ACDLogSystem();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     [ACDAuthenticationPluginManager credentialForAccount:client:store:handler:];
   }
 
-  v15 = [(ACDAuthenticationPluginManager *)self _authenticationTypeForAccount:v10];
+  v15 = [(ACDAuthenticationPluginManager *)self _authenticationTypeForAccount:accountCopy];
   v16 = _ACDLogSystem();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
@@ -143,7 +143,7 @@
     v20 = _ACDLogSystem();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
-      [ACDAuthenticationPluginManager credentialForAccount:v10 client:? store:? handler:?];
+      [ACDAuthenticationPluginManager credentialForAccount:accountCopy client:? store:? handler:?];
     }
 
     v21 = MEMORY[0x277CCA9B8];
@@ -154,7 +154,7 @@
 
   if (objc_opt_respondsToSelector())
   {
-    v18 = [v17 credentialForAccount:v10 client:v11];
+    v18 = [v17 credentialForAccount:accountCopy client:clientCopy];
     v19 = 0;
     goto LABEL_17;
   }
@@ -164,7 +164,7 @@
     if (objc_opt_respondsToSelector())
     {
       v28 = 0;
-      v18 = [v17 credentialForAccount:v10 client:v11 store:v12 error:&v28];
+      v18 = [v17 credentialForAccount:accountCopy client:clientCopy store:storeCopy error:&v28];
       v24 = v28;
       goto LABEL_16;
     }
@@ -173,7 +173,7 @@
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v31 = v10;
+      v31 = accountCopy;
       _os_log_impl(&dword_221D2F000, v27, OS_LOG_TYPE_DEFAULT, "The plugin for account %@ does not implement credentialForAccount", buf, 0xCu);
     }
 
@@ -187,7 +187,7 @@ LABEL_11:
   }
 
   v29 = 0;
-  v18 = [v17 credentialForAccount:v10 client:v11 error:&v29];
+  v18 = [v17 credentialForAccount:accountCopy client:clientCopy error:&v29];
   v24 = v29;
 LABEL_16:
   v19 = v24;
@@ -198,52 +198,52 @@ LABEL_17:
     *buf = 138412802;
     v31 = v18;
     v32 = 2112;
-    v33 = v10;
+    v33 = accountCopy;
     v34 = 2112;
-    v35 = v11;
+    v35 = clientCopy;
     _os_log_debug_impl(&dword_221D2F000, v25, OS_LOG_TYPE_DEBUG, "Returning credential %@ for account %@ to %@.", buf, 0x20u);
   }
 
-  v13[2](v13, v18, v19);
+  handlerCopy[2](handlerCopy, v18, v19);
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)verifyCredentialsForAccount:(id)a3 accountStore:(id)a4 options:(id)a5 handler:(id)a6
+- (void)verifyCredentialsForAccount:(id)account accountStore:(id)store options:(id)options handler:(id)handler
 {
   v63 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v44 = a4;
-  aBlock = a6;
-  v11 = [(ACDAuthenticationPluginManager *)self _unsanitizeOptionsDictionary:a5];
+  accountCopy = account;
+  storeCopy = store;
+  aBlock = handler;
+  v11 = [(ACDAuthenticationPluginManager *)self _unsanitizeOptionsDictionary:options];
   v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CB90B0]];
-  v43 = [v12 BOOLValue];
+  bOOLValue = [v12 BOOLValue];
 
   v13 = [v11 objectForKeyedSubscript:*MEMORY[0x277CB9050]];
-  v14 = [v13 BOOLValue];
+  bOOLValue2 = [v13 BOOLValue];
 
   v15 = _ACDLogSystem();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    v40 = [MEMORY[0x277CCABB0] numberWithBool:v43];
-    v41 = [v44 client];
+    v40 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
+    client = [storeCopy client];
     *buf = 138412802;
-    v58 = v10;
+    v58 = accountCopy;
     v59 = 2112;
     v60 = v40;
     v61 = 2112;
-    v62 = v41;
+    v62 = client;
     _os_log_debug_impl(&dword_221D2F000, v15, OS_LOG_TYPE_DEBUG, "verifyCredentialsForAccount %@ (should save? %@) was called for client %@...", buf, 0x20u);
   }
 
-  if (v14)
+  if (bOOLValue2)
   {
-    v16 = [v10 accountType];
-    v17 = [v16 identifier];
+    accountType = [accountCopy accountType];
+    identifier = [accountType identifier];
   }
 
   else
   {
-    v17 = [(ACDAuthenticationPluginManager *)self _authenticationTypeForAccount:v10];
+    identifier = [(ACDAuthenticationPluginManager *)self _authenticationTypeForAccount:accountCopy];
   }
 
   v18 = _ACDLogSystem();
@@ -252,87 +252,87 @@ LABEL_17:
     [ACDAuthenticationPluginManager verifyCredentialsForAccount:accountStore:options:handler:];
   }
 
-  v19 = [(ACDAuthenticationPluginLoader *)self->_authPluginLoader pluginForAuthenticationType:v17];
+  v19 = [(ACDAuthenticationPluginLoader *)self->_authPluginLoader pluginForAuthenticationType:identifier];
   if (v19)
   {
-    v20 = self;
-    objc_sync_enter(v20);
-    if (v14)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (bOOLValue2)
     {
-      v21 = v10;
+      v21 = accountCopy;
     }
 
     else
     {
-      v21 = [(ACDAuthenticationPluginManager *)v20 _authCapableParentAccountForAccount:v10];
+      v21 = [(ACDAuthenticationPluginManager *)selfCopy _authCapableParentAccountForAccount:accountCopy];
     }
 
     v29 = v21;
-    [(NSLock *)v20->_verificationHandlersLock lock];
-    verificationHandlerQueues = v20->_verificationHandlerQueues;
-    v31 = [v29 identifier];
-    v32 = [(ACDQueueDictionary *)verificationHandlerQueues isQueueEmptyForKey:v31];
+    [(NSLock *)selfCopy->_verificationHandlersLock lock];
+    verificationHandlerQueues = selfCopy->_verificationHandlerQueues;
+    identifier2 = [v29 identifier];
+    v32 = [(ACDQueueDictionary *)verificationHandlerQueues isQueueEmptyForKey:identifier2];
     if ((v32 & 1) == 0)
     {
       v33 = [v11 objectForKeyedSubscript:*MEMORY[0x277CB9048]];
-      v34 = [v33 BOOLValue];
+      bOOLValue3 = [v33 BOOLValue];
 
-      if (v34)
+      if (bOOLValue3)
       {
         v32 = 1;
         goto LABEL_19;
       }
 
-      v31 = _ACDLogSystem();
-      if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
+      identifier2 = _ACDLogSystem();
+      if (os_log_type_enabled(identifier2, OS_LOG_TYPE_DEBUG))
       {
         [ACDAuthenticationPluginManager verifyCredentialsForAccount:accountStore:options:handler:];
       }
     }
 
 LABEL_19:
-    v35 = v20->_verificationHandlerQueues;
+    v35 = selfCopy->_verificationHandlerQueues;
     v36 = _Block_copy(aBlock);
-    v37 = [v29 identifier];
-    [(ACDQueueDictionary *)v35 addObject:v36 toQueueForKey:v37];
+    identifier3 = [v29 identifier];
+    [(ACDQueueDictionary *)v35 addObject:v36 toQueueForKey:identifier3];
 
-    [(NSLock *)v20->_verificationHandlersLock unlock];
+    [(NSLock *)selfCopy->_verificationHandlersLock unlock];
     if (v32)
     {
-      authenticationPluginQueue = v20->_authenticationPluginQueue;
+      authenticationPluginQueue = selfCopy->_authenticationPluginQueue;
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __91__ACDAuthenticationPluginManager_verifyCredentialsForAccount_accountStore_options_handler___block_invoke;
       block[3] = &unk_27848C950;
-      v47 = v10;
+      v47 = accountCopy;
       v48 = v29;
       v53 = a2;
       v49 = v19;
-      v50 = v20;
-      v51 = v44;
-      v54 = v43;
+      v50 = selfCopy;
+      v51 = storeCopy;
+      v54 = bOOLValue;
       v52 = v11;
       dispatch_async(authenticationPluginQueue, block);
     }
 
-    objc_sync_exit(v20);
+    objc_sync_exit(selfCopy);
     goto LABEL_22;
   }
 
   v22 = _ACDLogSystem();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
   {
-    [ACDAuthenticationPluginManager verifyCredentialsForAccount:v10 accountStore:? options:? handler:?];
+    [ACDAuthenticationPluginManager verifyCredentialsForAccount:accountCopy accountStore:? options:? handler:?];
   }
 
   v23 = MEMORY[0x277CCACA8];
-  v24 = [v10 accountType];
-  v25 = [v24 identifier];
-  v20 = [v23 stringWithFormat:@"No auth plugin to verify credentials for accounts of type %@", v25];
+  accountType2 = [accountCopy accountType];
+  identifier4 = [accountType2 identifier];
+  selfCopy = [v23 stringWithFormat:@"No auth plugin to verify credentials for accounts of type %@", identifier4];
 
   v26 = MEMORY[0x277CCA9B8];
   v55 = *MEMORY[0x277CCA450];
-  v56 = v20;
+  v56 = selfCopy;
   v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v56 forKeys:&v55 count:1];
   v28 = [v26 errorWithDomain:*MEMORY[0x277CB8DC0] code:4 userInfo:v27];
   (*(aBlock + 2))(aBlock, 0, v28);
@@ -454,32 +454,32 @@ void __91__ACDAuthenticationPluginManager_verifyCredentialsForAccount_accountSto
   [*(a1 + 40) _handleVerificationCompletionForAccount:*(a1 + 48) verifiedAccount:v12 error:v11 store:*(a1 + 56) shouldSave:*(a1 + 72)];
 }
 
-- (void)_handleVerificationCompletionForAccount:(id)a3 verifiedAccount:(id)a4 error:(id)a5 store:(id)a6 shouldSave:(BOOL)a7
+- (void)_handleVerificationCompletionForAccount:(id)account verifiedAccount:(id)verifiedAccount error:(id)error store:(id)store shouldSave:(BOOL)save
 {
-  v7 = a7;
+  saveCopy = save;
   v47 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  accountCopy = account;
+  verifiedAccountCopy = verifiedAccount;
+  errorCopy = error;
+  storeCopy = store;
   v16 = _ACDLogSystem();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v42 = v12;
+    v42 = accountCopy;
     v43 = 2112;
-    v44 = v13;
+    v44 = verifiedAccountCopy;
     v45 = 2112;
-    v46 = v14;
+    v46 = errorCopy;
     _os_log_debug_impl(&dword_221D2F000, v16, OS_LOG_TYPE_DEBUG, "ACDAuthenticationPluginManager _handleVerificationCompletion: plugin reports being done for account %@. Verified account is %@ and error is %@", buf, 0x20u);
   }
 
-  if (v13)
+  if (verifiedAccountCopy)
   {
-    [v13 setAuthenticated:1];
+    [verifiedAccountCopy setAuthenticated:1];
     v17 = _ACDLogSystem();
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG);
-    if (v7)
+    if (saveCopy)
     {
       if (v18)
       {
@@ -487,14 +487,14 @@ void __91__ACDAuthenticationPluginManager_verifyCredentialsForAccount_accountSto
       }
 
       v39 = 0;
-      v19 = [v15 saveVerifiedAccount:v13 error:&v39];
+      v19 = [storeCopy saveVerifiedAccount:verifiedAccountCopy error:&v39];
       v20 = v39;
       v21 = _ACDLogSystem();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
       {
         v34 = [MEMORY[0x277CCABB0] numberWithBool:v19];
         *buf = 138412802;
-        v42 = v13;
+        v42 = verifiedAccountCopy;
         v43 = 2112;
         v44 = v34;
         v45 = 2112;
@@ -502,12 +502,12 @@ void __91__ACDAuthenticationPluginManager_verifyCredentialsForAccount_accountSto
         _os_log_debug_impl(&dword_221D2F000, v21, OS_LOG_TYPE_DEBUG, "ACDAuthenticationPluginManager _handleVerificationCompletion: saving verified account %@ completed with result %@ and error %@", buf, 0x20u);
       }
 
-      v22 = [v15 client];
-      v23 = [v22 hasEntitlement:*MEMORY[0x277CB8FE0]];
+      client = [storeCopy client];
+      v23 = [client hasEntitlement:*MEMORY[0x277CB8FE0]];
 
       if (v23)
       {
-        [v13 setCredential:0];
+        [verifiedAccountCopy setCredential:0];
       }
     }
 
@@ -535,8 +535,8 @@ void __91__ACDAuthenticationPluginManager_verifyCredentialsForAccount_accountSto
 
   [(NSLock *)self->_verificationHandlersLock lock];
   verificationHandlerQueues = self->_verificationHandlerQueues;
-  v26 = [v12 identifier];
-  v27 = [(ACDQueueDictionary *)verificationHandlerQueues dequeueAllObjectsInQueueForKey:v26];
+  identifier = [accountCopy identifier];
+  v27 = [(ACDQueueDictionary *)verificationHandlerQueues dequeueAllObjectsInQueueForKey:identifier];
 
   [(NSLock *)self->_verificationHandlersLock unlock];
   v37 = 0u;
@@ -572,21 +572,21 @@ void __91__ACDAuthenticationPluginManager_verifyCredentialsForAccount_accountSto
 
 - (unint64_t)renewalCredentialTimeout
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 persistentDomainForName:@"com.apple.accounts"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults persistentDomainForName:@"com.apple.accounts"];
   v4 = [v3 objectForKeyedSubscript:@"renewalCredentialTimeout"];
 
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [v4 unsignedIntegerValue];
-    if ((v5 - 1) >= 0xE0F)
+    unsignedIntegerValue = [v4 unsignedIntegerValue];
+    if ((unsignedIntegerValue - 1) >= 0xE0F)
     {
       v6 = 3600;
     }
 
     else
     {
-      v6 = v5;
+      v6 = unsignedIntegerValue;
     }
   }
 
@@ -598,37 +598,37 @@ void __91__ACDAuthenticationPluginManager_verifyCredentialsForAccount_accountSto
   return v6;
 }
 
-- (void)renewCredentialsForAccount:(id)a3 accountStore:(id)a4 options:(id)a5 completion:(id)a6
+- (void)renewCredentialsForAccount:(id)account accountStore:(id)store options:(id)options completion:(id)completion
 {
   v111 = *MEMORY[0x277D85DE8];
-  v74 = a3;
-  val = a4;
-  aBlock = a6;
-  v75 = [(ACDAuthenticationPluginManager *)self _unsanitizeOptionsDictionary:a5];
-  v10 = [MEMORY[0x277CB8F78] sharedInstance];
-  v11 = [v10 valueForManagedDefault:*MEMORY[0x277CB8F08]];
-  v12 = [v11 BOOLValue];
+  accountCopy = account;
+  val = store;
+  aBlock = completion;
+  v75 = [(ACDAuthenticationPluginManager *)self _unsanitizeOptionsDictionary:options];
+  mEMORY[0x277CB8F78] = [MEMORY[0x277CB8F78] sharedInstance];
+  v11 = [mEMORY[0x277CB8F78] valueForManagedDefault:*MEMORY[0x277CB8F08]];
+  bOOLValue = [v11 BOOLValue];
 
   v13 = [v75 objectForKey:*MEMORY[0x277CB90A0]];
-  v69 = [v13 BOOLValue];
+  bOOLValue2 = [v13 BOOLValue];
 
   v14 = [v75 objectForKey:*MEMORY[0x277CB9098]];
-  v15 = [v14 BOOLValue];
+  bOOLValue3 = [v14 BOOLValue];
 
   v16 = [v75 objectForKeyedSubscript:*MEMORY[0x277CB9050]];
-  v17 = [v16 BOOLValue];
+  bOOLValue4 = [v16 BOOLValue];
 
   v70 = [v75 objectForKey:*MEMORY[0x277CB9088]];
   v18 = _ACDLogSystem();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [val client];
-    v20 = [MEMORY[0x277CCABB0] numberWithBool:v69];
-    v21 = [MEMORY[0x277CCABB0] numberWithBool:v15];
+    client = [val client];
+    v20 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue2];
+    v21 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue3];
     *buf = 138413314;
-    v102 = v74;
+    v102 = accountCopy;
     v103 = 2114;
-    v104 = v19;
+    v104 = client;
     v105 = 2112;
     v106 = v70;
     v107 = 2114;
@@ -638,15 +638,15 @@ void __91__ACDAuthenticationPluginManager_verifyCredentialsForAccount_accountSto
     _os_log_impl(&dword_221D2F000, v18, OS_LOG_TYPE_DEFAULT, "renewCredentialsForAccount %@ was called by client %{public}@ with reason %@ shouldForce %{public}@ shouldAvoidUI %{public}@", buf, 0x34u);
   }
 
-  if (v17)
+  if (bOOLValue4)
   {
-    v22 = [v74 accountType];
-    v72 = [v22 identifier];
+    accountType = [accountCopy accountType];
+    identifier = [accountType identifier];
   }
 
   else
   {
-    v72 = [(ACDAuthenticationPluginManager *)self _authenticationTypeForAccount:v74];
+    identifier = [(ACDAuthenticationPluginManager *)self _authenticationTypeForAccount:accountCopy];
   }
 
   v23 = _ACDLogSystem();
@@ -655,7 +655,7 @@ void __91__ACDAuthenticationPluginManager_verifyCredentialsForAccount_accountSto
     [ACDAuthenticationPluginManager renewCredentialsForAccount:accountStore:options:completion:];
   }
 
-  if (v12)
+  if (bOOLValue)
   {
     v24 = _ACDLogSystem();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -668,20 +668,20 @@ void __91__ACDAuthenticationPluginManager_verifyCredentialsForAccount_accountSto
 
   else
   {
-    v25 = [(ACDAuthenticationPluginLoader *)self->_authPluginLoader pluginForAuthenticationType:v72];
+    v25 = [(ACDAuthenticationPluginLoader *)self->_authPluginLoader pluginForAuthenticationType:identifier];
     if (v25)
     {
-      v26 = self;
-      objc_sync_enter(v26);
-      v76 = v26;
-      if (v17)
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      v76 = selfCopy;
+      if (bOOLValue4)
       {
-        v67 = v74;
+        v67 = accountCopy;
       }
 
       else
       {
-        v67 = [(ACDAuthenticationPluginManager *)v26 _authCapableParentAccountForAccount:v74];
+        v67 = [(ACDAuthenticationPluginManager *)selfCopy _authCapableParentAccountForAccount:accountCopy];
       }
 
       if (objc_opt_respondsToSelector())
@@ -712,8 +712,8 @@ void __91__ACDAuthenticationPluginManager_verifyCredentialsForAccount_accountSto
 
       if (![v35 count])
       {
-        v38 = [v67 identifier];
-        v97 = v38;
+        identifier2 = [v67 identifier];
+        v97 = identifier2;
         v39 = [MEMORY[0x277CBEA60] arrayWithObjects:&v97 count:1];
 
         v35 = v39;
@@ -777,9 +777,9 @@ LABEL_38:
           if (![(ACDQueueDictionary *)v76->_renewalHandlerQueues isQueueEmptyForKey:v54])
           {
             v55 = [v75 objectForKeyedSubscript:v52];
-            v56 = [v55 BOOLValue];
+            bOOLValue5 = [v55 BOOLValue];
 
-            if ((v56 & 1) == 0)
+            if ((bOOLValue5 & 1) == 0)
             {
               break;
             }
@@ -808,7 +808,7 @@ LABEL_38:
         if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v102 = v74;
+          v102 = accountCopy;
           v103 = 2112;
           v104 = v57;
           _os_log_impl(&dword_221D2F000, v58, OS_LOG_TYPE_DEFAULT, "It appears we are already renewing credentials for account %@ with renewal ID %@. We will enqueue the current request's completion handler and call it when done.", buf, 0x16u);
@@ -826,13 +826,13 @@ LABEL_38:
 LABEL_45:
 
 LABEL_50:
-        if ((v69 & 1) != 0 || [(ACDAuthenticationPluginManager *)v76 _renewalRequestIsWithinLimitsForAccount:v74 accountStore:val])
+        if ((bOOLValue2 & 1) != 0 || [(ACDAuthenticationPluginManager *)v76 _renewalRequestIsWithinLimitsForAccount:accountCopy accountStore:val])
         {
           v63 = _ACDLogSystem();
           if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
-            v102 = v74;
+            v102 = accountCopy;
             v103 = 2112;
             v104 = 0;
             _os_log_impl(&dword_221D2F000, v63, OS_LOG_TYPE_DEFAULT, "Allow new renewal for account %@ with renewal ID %@.", buf, 0x16u);
@@ -852,7 +852,7 @@ LABEL_50:
           if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
-            v102 = v74;
+            v102 = accountCopy;
             v103 = 2112;
             v104 = 0;
             _os_log_impl(&dword_221D2F000, v60, OS_LOG_TYPE_DEFAULT, "Limit renewal for account %@ with renewal ID %@.", buf, 0x16u);
@@ -878,7 +878,7 @@ LABEL_50:
         block[1] = 3221225472;
         block[2] = __93__ACDAuthenticationPluginManager_renewCredentialsForAccount_accountStore_options_completion___block_invoke;
         block[3] = &unk_27848C9C8;
-        v79 = v74;
+        v79 = accountCopy;
         v80 = v76;
         v81 = v25;
         v86[1] = a2;
@@ -902,13 +902,13 @@ LABEL_50:
       v27 = _ACDLogSystem();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
-        [ACDAuthenticationPluginManager renewCredentialsForAccount:v74 accountStore:? options:? completion:?];
+        [ACDAuthenticationPluginManager renewCredentialsForAccount:accountCopy accountStore:? options:? completion:?];
       }
 
       v28 = MEMORY[0x277CCACA8];
-      v29 = [v74 accountType];
-      v30 = [v29 identifier];
-      v31 = [v28 stringWithFormat:@"No auth plugin to renew credentials for accounts of type %@", v30];
+      accountType2 = [accountCopy accountType];
+      identifier3 = [accountType2 identifier];
+      v31 = [v28 stringWithFormat:@"No auth plugin to renew credentials for accounts of type %@", identifier3];
 
       v32 = MEMORY[0x277CCA9B8];
       v99 = *MEMORY[0x277CCA450];
@@ -1083,22 +1083,22 @@ void __93__ACDAuthenticationPluginManager_renewCredentialsForAccount_accountStor
   }
 }
 
-- (BOOL)_renewalRequestIsWithinLimitsForAccount:(id)a3 accountStore:(id)a4
+- (BOOL)_renewalRequestIsWithinLimitsForAccount:(id)account accountStore:(id)store
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
-  v9 = [v7 accountWithIdentifier:v8];
+  accountCopy = account;
+  storeCopy = store;
+  identifier = [accountCopy identifier];
+  v9 = [storeCopy accountWithIdentifier:identifier];
 
-  v10 = [v9 lastCredentialRenewalRejectionDate];
-  if (v10 && ([MEMORY[0x277CBEAA8] date], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "timeIntervalSinceDate:", v10), v13 = v12, v11, v13 < 86400.0))
+  lastCredentialRenewalRejectionDate = [v9 lastCredentialRenewalRejectionDate];
+  if (lastCredentialRenewalRejectionDate && ([MEMORY[0x277CBEAA8] date], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "timeIntervalSinceDate:", lastCredentialRenewalRejectionDate), v13 = v12, v11, v13 < 86400.0))
   {
     v14 = _ACDLogSystem();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v41 = v6;
+      v41 = accountCopy;
       _os_log_impl(&dword_221D2F000, v14, OS_LOG_TYPE_DEFAULT, "The user has declined an identical request to renew credentials for %@ within the past 24 hours. Suppressing the password prompt and failing immediately.", buf, 0xCu);
     }
 
@@ -1108,9 +1108,9 @@ void __93__ACDAuthenticationPluginManager_renewCredentialsForAccount_accountStor
   else
   {
     v16 = MEMORY[0x277CCACA8];
-    v17 = [v7 client];
-    v18 = [v17 bundleID];
-    v19 = [v6 identifier];
+    client = [storeCopy client];
+    bundleID = [client bundleID];
+    identifier2 = [accountCopy identifier];
     v20 = DMIsMigrationNeeded();
     v21 = @"NO";
     if (v20)
@@ -1118,29 +1118,29 @@ void __93__ACDAuthenticationPluginManager_renewCredentialsForAccount_accountStor
       v21 = @"YES";
     }
 
-    v14 = [v16 stringWithFormat:@"%@.%@.%@", v18, v19, v21];
+    v14 = [v16 stringWithFormat:@"%@.%@.%@", bundleID, identifier2, v21];
 
-    v22 = [(ACDAuthenticationPluginLoader *)self->_authPluginLoader renewalRateLimiter];
-    v15 = [v22 reservePerformActionForKey:v14];
+    renewalRateLimiter = [(ACDAuthenticationPluginLoader *)self->_authPluginLoader renewalRateLimiter];
+    v15 = [renewalRateLimiter reservePerformActionForKey:v14];
 
     if ((v15 & 1) == 0)
     {
       v23 = _ACDLogSystem();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
-        v37 = [v6 accountType];
-        v39 = [v37 identifier];
+        accountType = [accountCopy accountType];
+        identifier3 = [accountType identifier];
         v30 = MEMORY[0x277CCABB0];
-        v36 = [(ACDAuthenticationPluginLoader *)self->_authPluginLoader renewalRateLimiter];
-        v31 = [v30 numberWithUnsignedInteger:{objc_msgSend(v36, "maximum")}];
+        renewalRateLimiter2 = [(ACDAuthenticationPluginLoader *)self->_authPluginLoader renewalRateLimiter];
+        v31 = [v30 numberWithUnsignedInteger:{objc_msgSend(renewalRateLimiter2, "maximum")}];
         v32 = MEMORY[0x277CCABB0];
-        v35 = [(ACDAuthenticationPluginLoader *)self->_authPluginLoader renewalRateLimiter];
-        [v35 timeInterval];
+        renewalRateLimiter3 = [(ACDAuthenticationPluginLoader *)self->_authPluginLoader renewalRateLimiter];
+        [renewalRateLimiter3 timeInterval];
         v34 = [v32 numberWithDouble:v33 / 60.0];
         *buf = 138544130;
         v41 = v14;
         v42 = 2114;
-        v43 = v39;
+        v43 = identifier3;
         v44 = 2114;
         v45 = v31;
         v46 = 2114;
@@ -1150,12 +1150,12 @@ void __93__ACDAuthenticationPluginManager_renewCredentialsForAccount_accountStor
 
       if (([(NSMutableSet *)self->_keysForRateExceededBugSent containsObject:v14]& 1) == 0)
       {
-        [v6 accountType];
+        [accountCopy accountType];
         v24 = v38 = self;
-        v25 = [v24 identifier];
-        v26 = [v7 client];
-        v27 = [v26 bundleID];
-        [ACDAutoBugCapture triggerAutoBugCaptureWithType:0x28353A2D8 subType:0x28353A318 subtypeContext:v25 detectedProcess:v27];
+        identifier4 = [v24 identifier];
+        client2 = [storeCopy client];
+        bundleID2 = [client2 bundleID];
+        [ACDAutoBugCapture triggerAutoBugCaptureWithType:0x28353A2D8 subType:0x28353A318 subtypeContext:identifier4 detectedProcess:bundleID2];
 
         [(NSMutableSet *)v38->_keysForRateExceededBugSent addObject:v14];
       }
@@ -1166,43 +1166,43 @@ void __93__ACDAuthenticationPluginManager_renewCredentialsForAccount_accountStor
   return v15;
 }
 
-- (void)_handleRenewalCompletionResult:(int64_t)a3 forAccount:(id)a4 renewalID:(id)a5 accountStore:(id)a6 error:(id)a7
+- (void)_handleRenewalCompletionResult:(int64_t)result forAccount:(id)account renewalID:(id)d accountStore:(id)store error:(id)error
 {
   v46 = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  accountCopy = account;
+  dCopy = d;
+  storeCopy = store;
+  errorCopy = error;
   v16 = _ACDLogSystem();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
-    v33 = [(ACDAuthenticationPluginManager *)self _descriptionForRenewalResult:a3];
+    v33 = [(ACDAuthenticationPluginManager *)self _descriptionForRenewalResult:result];
     *buf = 138412802;
-    v41 = v12;
+    v41 = accountCopy;
     v42 = 2112;
     v43 = v33;
     v44 = 2112;
-    v45 = v15;
+    v45 = errorCopy;
     _os_log_debug_impl(&dword_221D2F000, v16, OS_LOG_TYPE_DEBUG, "ACDAuthenticationPluginManager _handleRenewalCompletion: plugin reports being done for account %@ with result %@ and error %@", buf, 0x20u);
   }
 
-  v17 = v15;
+  v17 = errorCopy;
   v18 = v17;
-  if (a3 || v17)
+  if (result || v17)
   {
     v19 = v17;
-    if (a3 != 1)
+    if (result != 1)
     {
       goto LABEL_16;
     }
 
-    v20 = [MEMORY[0x277CBEAA8] date];
-    [v12 setLastCredentialRenewalRejectionDate:v20];
+    date = [MEMORY[0x277CBEAA8] date];
+    [accountCopy setLastCredentialRenewalRejectionDate:date];
   }
 
   else
   {
-    [v12 setAuthenticated:1];
+    [accountCopy setAuthenticated:1];
   }
 
   v21 = _ACDLogSystem();
@@ -1212,7 +1212,7 @@ void __93__ACDAuthenticationPluginManager_renewCredentialsForAccount_accountStor
   }
 
   v38 = 0;
-  v22 = [v14 saveVerifiedAccount:v12 error:&v38];
+  v22 = [storeCopy saveVerifiedAccount:accountCopy error:&v38];
   v23 = v38;
   v19 = v18;
   if ((v22 & 1) == 0)
@@ -1238,7 +1238,7 @@ LABEL_16:
   }
 
   [(NSLock *)self->_renewalHandlersLock lock];
-  v26 = [(ACDQueueDictionary *)self->_renewalHandlerQueues dequeueAllObjectsInQueueForKey:v13];
+  v26 = [(ACDQueueDictionary *)self->_renewalHandlerQueues dequeueAllObjectsInQueueForKey:dCopy];
   [(NSLock *)self->_renewalHandlersLock unlock];
   v36 = 0u;
   v37 = 0u;
@@ -1271,47 +1271,47 @@ LABEL_16:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)discoverPropertiesForAccount:(id)a3 accountStore:(id)a4 options:(id)a5 completion:(id)a6
+- (void)discoverPropertiesForAccount:(id)account accountStore:(id)store options:(id)options completion:(id)completion
 {
   v61[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v48 = a4;
-  aBlock = a6;
-  v11 = a5;
+  accountCopy = account;
+  storeCopy = store;
+  aBlock = completion;
+  optionsCopy = options;
   v12 = _ACDLogSystem();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    [ACDAuthenticationPluginManager discoverPropertiesForAccount:v10 accountStore:v48 options:? completion:?];
+    [ACDAuthenticationPluginManager discoverPropertiesForAccount:accountCopy accountStore:storeCopy options:? completion:?];
   }
 
-  v13 = [(ACDAuthenticationPluginManager *)self _unsanitizeOptionsDictionary:v11];
+  v13 = [(ACDAuthenticationPluginManager *)self _unsanitizeOptionsDictionary:optionsCopy];
 
   v14 = [v13 objectForKeyedSubscript:*MEMORY[0x277CB9050]];
-  v15 = [v14 BOOLValue];
+  bOOLValue = [v14 BOOLValue];
 
   v16 = *MEMORY[0x277CB9078];
   v17 = [v13 objectForKeyedSubscript:*MEMORY[0x277CB9078]];
   if (v17)
   {
-    v18 = [v13 objectForKeyedSubscript:v16];
-    v46 = [v18 BOOLValue];
+    objectID = [v13 objectForKeyedSubscript:v16];
+    bOOLValue2 = [objectID BOOLValue];
   }
 
   else
   {
-    v18 = [v10 objectID];
-    v46 = v18 != 0;
+    objectID = [accountCopy objectID];
+    bOOLValue2 = objectID != 0;
   }
 
-  if (v15)
+  if (bOOLValue)
   {
-    v19 = [v10 accountType];
-    v20 = [v19 identifier];
+    accountType = [accountCopy accountType];
+    identifier = [accountType identifier];
   }
 
   else
   {
-    v20 = [(ACDAuthenticationPluginManager *)self _authenticationTypeForAccount:v10];
+    identifier = [(ACDAuthenticationPluginManager *)self _authenticationTypeForAccount:accountCopy];
   }
 
   v21 = _ACDLogSystem();
@@ -1320,30 +1320,30 @@ LABEL_16:
     [ACDAuthenticationPluginManager discoverPropertiesForAccount:accountStore:options:completion:];
   }
 
-  v22 = [(ACDAuthenticationPluginLoader *)self->_authPluginLoader pluginForAuthenticationType:v20];
+  v22 = [(ACDAuthenticationPluginLoader *)self->_authPluginLoader pluginForAuthenticationType:identifier];
   if (v22)
   {
-    v23 = self;
-    objc_sync_enter(v23);
-    if (v15)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (bOOLValue)
     {
-      v24 = v10;
+      v24 = accountCopy;
     }
 
     else
     {
-      v24 = [(ACDAuthenticationPluginManager *)v23 _authCapableParentAccountForAccount:v10];
+      v24 = [(ACDAuthenticationPluginManager *)selfCopy _authCapableParentAccountForAccount:accountCopy];
     }
 
     v32 = v24;
     v33 = MEMORY[0x277CCACA8];
     v34 = objc_opt_class();
     v35 = NSStringFromClass(v34);
-    v36 = [v32 identifier];
-    v37 = [v33 stringWithFormat:@"%@.%@", v35, v36];
+    identifier2 = [v32 identifier];
+    v37 = [v33 stringWithFormat:@"%@.%@", v35, identifier2];
 
-    [(NSLock *)v23->_discoveryHandlersLock lock];
-    if (-[ACDQueueDictionary isQueueEmptyForKey:](v23->_discoveryHandlerQueues, "isQueueEmptyForKey:", v37) || ([v13 objectForKeyedSubscript:*MEMORY[0x277CB9048]], v38 = objc_claimAutoreleasedReturnValue(), v39 = objc_msgSend(v38, "BOOLValue"), v38, (v39 & 1) != 0))
+    [(NSLock *)selfCopy->_discoveryHandlersLock lock];
+    if (-[ACDQueueDictionary isQueueEmptyForKey:](selfCopy->_discoveryHandlerQueues, "isQueueEmptyForKey:", v37) || ([v13 objectForKeyedSubscript:*MEMORY[0x277CB9048]], v38 = objc_claimAutoreleasedReturnValue(), v39 = objc_msgSend(v38, "BOOLValue"), v38, (v39 & 1) != 0))
     {
       v40 = 1;
     }
@@ -1359,31 +1359,31 @@ LABEL_16:
       v40 = 0;
     }
 
-    discoveryHandlerQueues = v23->_discoveryHandlerQueues;
+    discoveryHandlerQueues = selfCopy->_discoveryHandlerQueues;
     v43 = _Block_copy(aBlock);
     [(ACDQueueDictionary *)discoveryHandlerQueues addObject:v43 toQueueForKey:v37];
 
-    [(NSLock *)v23->_discoveryHandlersLock unlock];
+    [(NSLock *)selfCopy->_discoveryHandlersLock unlock];
     if (v40)
     {
-      authenticationPluginQueue = v23->_authenticationPluginQueue;
+      authenticationPluginQueue = selfCopy->_authenticationPluginQueue;
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __95__ACDAuthenticationPluginManager_discoverPropertiesForAccount_accountStore_options_completion___block_invoke;
       block[3] = &unk_27848CA18;
-      v51 = v10;
+      v51 = accountCopy;
       v52 = v32;
       v58 = a2;
       v53 = v22;
-      v54 = v23;
+      v54 = selfCopy;
       v55 = v37;
-      v56 = v48;
-      v59 = v46;
+      v56 = storeCopy;
+      v59 = bOOLValue2;
       v57 = v13;
       dispatch_async(authenticationPluginQueue, block);
     }
 
-    objc_sync_exit(v23);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -1391,17 +1391,17 @@ LABEL_16:
     v25 = _ACDLogSystem();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      [ACDAuthenticationPluginManager discoverPropertiesForAccount:v10 accountStore:? options:? completion:?];
+      [ACDAuthenticationPluginManager discoverPropertiesForAccount:accountCopy accountStore:? options:? completion:?];
     }
 
     v26 = MEMORY[0x277CCACA8];
-    v27 = [v10 accountType];
-    v28 = [v27 identifier];
-    v23 = [v26 stringWithFormat:@"No auth plugin to discover properties for accounts of type %@", v28];
+    accountType2 = [accountCopy accountType];
+    identifier3 = [accountType2 identifier];
+    selfCopy = [v26 stringWithFormat:@"No auth plugin to discover properties for accounts of type %@", identifier3];
 
     v29 = MEMORY[0x277CCA9B8];
     v60 = *MEMORY[0x277CCA450];
-    v61[0] = v23;
+    v61[0] = selfCopy;
     v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v61 forKeys:&v60 count:1];
     v31 = [v29 errorWithDomain:*MEMORY[0x277CB8DC0] code:4 userInfo:v30];
     (*(aBlock + 2))(aBlock, 0, v31);
@@ -1494,26 +1494,26 @@ void __95__ACDAuthenticationPluginManager_discoverPropertiesForAccount_accountSt
   [*(a1 + 40) _handleDiscoveryCompletionResult:v9 forAccount:*(a1 + 48) discoveryID:*(a1 + 56) accountStore:*(a1 + 64) shouldSave:*(a1 + 80) error:v11];
 }
 
-- (void)_handleDiscoveryCompletionResult:(id)a3 forAccount:(id)a4 discoveryID:(id)a5 accountStore:(id)a6 shouldSave:(BOOL)a7 error:(id)a8
+- (void)_handleDiscoveryCompletionResult:(id)result forAccount:(id)account discoveryID:(id)d accountStore:(id)store shouldSave:(BOOL)save error:(id)error
 {
-  v9 = a7;
+  saveCopy = save;
   v38 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
+  resultCopy = result;
+  accountCopy = account;
+  dCopy = d;
+  storeCopy = store;
+  errorCopy = error;
   v19 = _ACDLogSystem();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
   {
     [ACDAuthenticationPluginManager _handleDiscoveryCompletionResult:forAccount:discoveryID:accountStore:shouldSave:error:];
   }
 
-  v20 = v18;
-  if (!v18)
+  v20 = errorCopy;
+  if (!errorCopy)
   {
     v20 = 0;
-    if (v9)
+    if (saveCopy)
     {
       v21 = _ACDLogSystem();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -1522,7 +1522,7 @@ void __95__ACDAuthenticationPluginManager_discoverPropertiesForAccount_accountSt
       }
 
       v36 = 0;
-      v22 = [v17 saveVerifiedAccount:v15 error:&v36];
+      v22 = [storeCopy saveVerifiedAccount:accountCopy error:&v36];
       v23 = v36;
       v20 = 0;
       if ((v22 & 1) == 0)
@@ -1539,7 +1539,7 @@ void __95__ACDAuthenticationPluginManager_discoverPropertiesForAccount_accountSt
   }
 
   [(NSLock *)self->_discoveryHandlersLock lock];
-  v25 = [(ACDQueueDictionary *)self->_discoveryHandlerQueues dequeueAllObjectsInQueueForKey:v16];
+  v25 = [(ACDQueueDictionary *)self->_discoveryHandlerQueues dequeueAllObjectsInQueueForKey:dCopy];
   [(NSLock *)self->_discoveryHandlersLock unlock];
   v34 = 0u;
   v35 = 0u;
@@ -1575,12 +1575,12 @@ void __95__ACDAuthenticationPluginManager_discoverPropertiesForAccount_accountSt
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_authenticationTypeForAccount:(id)a3
+- (id)_authenticationTypeForAccount:(id)account
 {
-  v4 = a3;
-  v5 = [v4 authenticationType];
+  accountCopy = account;
+  authenticationType = [accountCopy authenticationType];
   v6 = *MEMORY[0x277CB90B8];
-  if ([v5 isEqualToString:*MEMORY[0x277CB90B8]])
+  if ([authenticationType isEqualToString:*MEMORY[0x277CB90B8]])
   {
     v7 = _ACDLogSystem();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -1588,12 +1588,12 @@ void __95__ACDAuthenticationPluginManager_discoverPropertiesForAccount_accountSt
       [ACDAuthenticationPluginManager _authenticationTypeForAccount:];
     }
 
-    v8 = objc_alloc_init(MEMORY[0x277CB8F48]);
-    v9 = [v4 parentAccountIdentifier];
-    v10 = [v8 accountWithIdentifier:v9];
+    accountType2 = objc_alloc_init(MEMORY[0x277CB8F48]);
+    parentAccountIdentifier = [accountCopy parentAccountIdentifier];
+    v10 = [accountType2 accountWithIdentifier:parentAccountIdentifier];
 
-    v11 = [v10 authenticationType];
-    if ([v11 isEqualToString:v6])
+    authenticationType2 = [v10 authenticationType];
+    if ([authenticationType2 isEqualToString:v6])
     {
       v12 = [(ACDAuthenticationPluginManager *)self _authenticationTypeForAccount:v10];
     }
@@ -1602,15 +1602,15 @@ void __95__ACDAuthenticationPluginManager_discoverPropertiesForAccount_accountSt
     {
       v16 = _ACDLogSystem();
       v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG);
-      if (!v11)
+      if (!authenticationType2)
       {
         if (v17)
         {
           [ACDAuthenticationPluginManager _authenticationTypeForAccount:v10];
         }
 
-        v19 = [v10 accountType];
-        v15 = [v19 identifier];
+        accountType = [v10 accountType];
+        identifier = [accountType identifier];
 
         goto LABEL_15;
       }
@@ -1620,10 +1620,10 @@ void __95__ACDAuthenticationPluginManager_discoverPropertiesForAccount_accountSt
         [ACDAuthenticationPluginManager _authenticationTypeForAccount:];
       }
 
-      v12 = v11;
+      v12 = authenticationType2;
     }
 
-    v15 = v12;
+    identifier = v12;
 LABEL_15:
 
 LABEL_19:
@@ -1632,15 +1632,15 @@ LABEL_19:
 
   v13 = _ACDLogSystem();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG);
-  if (!v5)
+  if (!authenticationType)
   {
     if (v14)
     {
-      [ACDAuthenticationPluginManager _authenticationTypeForAccount:v4];
+      [ACDAuthenticationPluginManager _authenticationTypeForAccount:accountCopy];
     }
 
-    v8 = [v4 accountType];
-    v15 = [v8 identifier];
+    accountType2 = [accountCopy accountType];
+    identifier = [accountType2 identifier];
     goto LABEL_19;
   }
 
@@ -1649,68 +1649,68 @@ LABEL_19:
     [ACDAuthenticationPluginManager _authenticationTypeForAccount:];
   }
 
-  v15 = v5;
+  identifier = authenticationType;
 LABEL_20:
 
-  return v15;
+  return identifier;
 }
 
-- (id)_authCapableParentAccountForAccount:(id)a3
+- (id)_authCapableParentAccountForAccount:(id)account
 {
-  v3 = a3;
-  v4 = [v3 authenticationType];
+  accountCopy = account;
+  authenticationType = [accountCopy authenticationType];
   v5 = *MEMORY[0x277CB90B8];
-  v6 = [v4 isEqualToString:*MEMORY[0x277CB90B8]];
+  v6 = [authenticationType isEqualToString:*MEMORY[0x277CB90B8]];
 
-  v7 = v3;
+  parentAccount = accountCopy;
   if (v6)
   {
-    v8 = v3;
+    v8 = accountCopy;
     do
     {
-      v7 = [v8 parentAccount];
+      parentAccount = [v8 parentAccount];
 
-      v9 = [v7 authenticationType];
-      v10 = [v9 isEqualToString:v5];
+      authenticationType2 = [parentAccount authenticationType];
+      v10 = [authenticationType2 isEqualToString:v5];
 
-      v8 = v7;
+      v8 = parentAccount;
     }
 
     while ((v10 & 1) != 0);
   }
 
-  return v7;
+  return parentAccount;
 }
 
-- (id)_descriptionForRenewalResult:(int64_t)a3
+- (id)_descriptionForRenewalResult:(int64_t)result
 {
-  if (a3 > 2)
+  if (result > 2)
   {
     return @"UNKNOWN";
   }
 
   else
   {
-    return off_27848CA60[a3];
+    return off_27848CA60[result];
   }
 }
 
-+ (id)_sanitizeError:(id)a3
++ (id)_sanitizeError:(id)error
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 domain];
+  errorCopy = error;
+  domain = [errorCopy domain];
   v5 = *MEMORY[0x277CCA738];
-  v6 = [v4 isEqualToString:*MEMORY[0x277CCA738]];
+  v6 = [domain isEqualToString:*MEMORY[0x277CCA738]];
 
   if (v6)
   {
-    v7 = [v3 userInfo];
-    v8 = [v7 mutableCopy];
+    userInfo = [errorCopy userInfo];
+    v8 = [userInfo mutableCopy];
 
-    v9 = [v3 userInfo];
+    userInfo2 = [errorCopy userInfo];
     v10 = *MEMORY[0x277CCA750];
-    v11 = [v9 objectForKeyedSubscript:*MEMORY[0x277CCA750]];
+    v11 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x277CCA750]];
 
     if (v11)
     {
@@ -1750,21 +1750,21 @@ LABEL_20:
     }
 
     [v8 removeObjectForKey:*MEMORY[0x277CCA7E8]];
-    v22 = [v3 userInfo];
+    userInfo3 = [errorCopy userInfo];
     v27 = MEMORY[0x277D85DD0];
     v28 = 3221225472;
     v29 = __49__ACDAuthenticationPluginManager__sanitizeError___block_invoke;
     v30 = &unk_27848CA40;
     v31 = v8;
     v23 = v8;
-    [v22 enumerateKeysAndObjectsUsingBlock:&v27];
+    [userInfo3 enumerateKeysAndObjectsUsingBlock:&v27];
 
-    v24 = [MEMORY[0x277CCA9B8] errorWithDomain:v5 code:objc_msgSend(v3 userInfo:{"code", v27, v28, v29, v30), v23}];
+    v24 = [MEMORY[0x277CCA9B8] errorWithDomain:v5 code:objc_msgSend(errorCopy userInfo:{"code", v27, v28, v29, v30), v23}];
   }
 
   else
   {
-    v24 = v3;
+    v24 = errorCopy;
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -1787,29 +1787,29 @@ void __49__ACDAuthenticationPluginManager__sanitizeError___block_invoke(uint64_t
   }
 }
 
-- (id)_unsanitizeOptionsDictionary:(id)a3
+- (id)_unsanitizeOptionsDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = *MEMORY[0x277CB8FD8];
-  v5 = [v3 objectForKeyedSubscript:*MEMORY[0x277CB8FD8]];
+  v5 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277CB8FD8]];
   if (v5)
   {
-    v6 = [v3 mutableCopy];
+    v6 = [dictionaryCopy mutableCopy];
     v7 = unserializeSecCertificates();
     [v6 setObject:v7 forKeyedSubscript:v4];
   }
 
   else
   {
-    v6 = v3;
+    v6 = dictionaryCopy;
   }
 
   return v6;
 }
 
-- (void)setRenewalRateLimiter:(id)a3
+- (void)setRenewalRateLimiter:(id)limiter
 {
-  if (a3)
+  if (limiter)
   {
     authPluginLoader = self->_authPluginLoader;
 

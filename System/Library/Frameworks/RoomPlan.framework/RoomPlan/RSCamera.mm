@@ -1,29 +1,29 @@
 @interface RSCamera
 - (__n128)intrinsics;
 - (__n128)pose;
-- (__n128)setIntrinsics:(__n128)a3;
-- (__n128)setPose:(__n128)a3;
-- (__n128)setTransform:(__n128)a3;
+- (__n128)setIntrinsics:(__n128)intrinsics;
+- (__n128)setPose:(__n128)pose;
+- (__n128)setTransform:(__n128)transform;
 - (__n128)transform;
 - (double)imageResolution;
-- (uint64_t)setImageResolution:(double)a3;
+- (uint64_t)setImageResolution:(double)resolution;
 @end
 
 @implementation RSCamera
 
 - (__n128)transform
 {
-  result = *(a1 + 16);
-  v2 = *(a1 + 32);
-  v3 = *(a1 + 48);
-  v4 = *(a1 + 64);
+  result = *(self + 16);
+  v2 = *(self + 32);
+  v3 = *(self + 48);
+  v4 = *(self + 64);
   return result;
 }
 
-- (__n128)setTransform:(__n128)a3
+- (__n128)setTransform:(__n128)transform
 {
   result[1] = a2;
-  result[2] = a3;
+  result[2] = transform;
   result[3] = a4;
   result[4] = a5;
   return result;
@@ -31,17 +31,17 @@
 
 - (__n128)pose
 {
-  result = *(a1 + 80);
-  v2 = *(a1 + 96);
-  v3 = *(a1 + 112);
-  v4 = *(a1 + 128);
+  result = *(self + 80);
+  v2 = *(self + 96);
+  v3 = *(self + 112);
+  v4 = *(self + 128);
   return result;
 }
 
-- (__n128)setPose:(__n128)a3
+- (__n128)setPose:(__n128)pose
 {
   result[5] = a2;
-  result[6] = a3;
+  result[6] = pose;
   result[7] = a4;
   result[8] = a5;
   return result;
@@ -49,31 +49,31 @@
 
 - (__n128)intrinsics
 {
-  result = *(a1 + 144);
-  v2 = *(a1 + 160);
-  v3 = *(a1 + 176);
+  result = *(self + 144);
+  v2 = *(self + 160);
+  v3 = *(self + 176);
   return result;
 }
 
-- (__n128)setIntrinsics:(__n128)a3
+- (__n128)setIntrinsics:(__n128)intrinsics
 {
   result[9] = a2;
-  result[10] = a3;
+  result[10] = intrinsics;
   result[11] = a4;
   return result;
 }
 
 - (double)imageResolution
 {
-  result = *(a1 + 192);
-  v2 = *(a1 + 200);
+  result = *(self + 192);
+  v2 = *(self + 200);
   return result;
 }
 
-- (uint64_t)setImageResolution:(double)a3
+- (uint64_t)setImageResolution:(double)resolution
 {
   *(result + 192) = a2;
-  *(result + 200) = a3;
+  *(result + 200) = resolution;
   return result;
 }
 

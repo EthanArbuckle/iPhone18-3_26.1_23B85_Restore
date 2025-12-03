@@ -1,20 +1,20 @@
 @interface MFSearchShadowView
 + (double)defaultHeight;
 + (id)_shadowImage;
-- (MFSearchShadowView)initWithFrame:(CGRect)a3;
+- (MFSearchShadowView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation MFSearchShadowView
 
-- (MFSearchShadowView)initWithFrame:(CGRect)a3
+- (MFSearchShadowView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MFSearchShadowView;
-  v3 = [(MFSearchShadowView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MFSearchShadowView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [objc_opt_class() _shadowImage];
-    [(MFSearchShadowView *)v3 setImage:v4];
+    _shadowImage = [objc_opt_class() _shadowImage];
+    [(MFSearchShadowView *)v3 setImage:_shadowImage];
 
     [(MFSearchShadowView *)v3 setUserInteractionEnabled:0];
   }
@@ -33,8 +33,8 @@
 
 + (double)defaultHeight
 {
-  v2 = [a1 _shadowImage];
-  [v2 size];
+  _shadowImage = [self _shadowImage];
+  [_shadowImage size];
   v4 = v3;
 
   return v4;

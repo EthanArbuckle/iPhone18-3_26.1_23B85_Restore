@@ -1,6 +1,6 @@
 @interface PKTransitCommutePlan
 - (BOOL)hasExpiredPlanDate;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPlanAvailable;
 - (BOOL)isPlanDisplayable;
 - (NSDate)expiryDate;
@@ -10,16 +10,16 @@
 - (NSString)formattedDateString;
 - (NSString)startDateString;
 - (NSString)uniqueIdentifier;
-- (PKTransitCommutePlan)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)updateWithCommutePlanDetail:(id)a3;
+- (PKTransitCommutePlan)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)updateWithCommutePlanDetail:(id)detail;
 - (unint64_t)hash;
 - (void)_updateFieldsByKey;
 - (void)_updateProperties;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDetails:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDetails:(id)details;
+- (void)setTitle:(id)title;
 @end
 
 @implementation PKTransitCommutePlan
@@ -134,11 +134,11 @@ LABEL_5:
 
 - (BOOL)hasExpiredPlanDate
 {
-  v2 = [(PKTransitCommutePlan *)self expiryDate];
-  v3 = [MEMORY[0x1E695DF00] date];
-  if (v2)
+  expiryDate = [(PKTransitCommutePlan *)self expiryDate];
+  date = [MEMORY[0x1E695DF00] date];
+  if (expiryDate)
   {
-    v4 = [v2 compare:v3] != 1;
+    v4 = [expiryDate compare:date] != 1;
   }
 
   else
@@ -152,21 +152,21 @@ LABEL_5:
 - (NSSet)foreignReferenceIdentifiers
 {
   v2 = [(PKTransitCommutePlan *)self passFieldForKey:@"amountRemaining"];
-  v3 = [v2 foreignReferenceIdentifiers];
+  foreignReferenceIdentifiers = [v2 foreignReferenceIdentifiers];
 
-  return v3;
+  return foreignReferenceIdentifiers;
 }
 
 - (NSString)formattedDateString
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [(PKTransitCommutePlan *)self startDate];
-  v5 = [(PKTransitCommutePlan *)self expiryDate];
-  if (v4 && [v4 compare:v3] == 1)
+  date = [MEMORY[0x1E695DF00] date];
+  startDate = [(PKTransitCommutePlan *)self startDate];
+  expiryDate = [(PKTransitCommutePlan *)self expiryDate];
+  if (startDate && [startDate compare:date] == 1)
   {
-    v6 = [(PKTransitCommutePlan *)self startDateString];
+    startDateString = [(PKTransitCommutePlan *)self startDateString];
     v7 = @"COMMUTE_PLAN_STARTS_ON";
-    if (!v6)
+    if (!startDateString)
     {
       goto LABEL_8;
     }
@@ -174,15 +174,15 @@ LABEL_5:
 
   else
   {
-    if (!v5 || (PKStoreDemoModeEnabled() & 1) != 0)
+    if (!expiryDate || (PKStoreDemoModeEnabled() & 1) != 0)
     {
-      v6 = 0;
+      startDateString = 0;
 LABEL_8:
       v8 = 0;
       goto LABEL_14;
     }
 
-    if ([v5 compare:v3] == 1)
+    if ([expiryDate compare:date] == 1)
     {
       v7 = @"COMMUTE_PLAN_EXPIRES_ON";
     }
@@ -192,14 +192,14 @@ LABEL_8:
       v7 = @"COMMUTE_PLAN_EXPIRED_ON";
     }
 
-    v6 = [(PKTransitCommutePlan *)self expiryDateString];
-    if (!v6)
+    startDateString = [(PKTransitCommutePlan *)self expiryDateString];
+    if (!startDateString)
     {
       goto LABEL_8;
     }
   }
 
-  v8 = PKLocalizedPaymentString(&v7->isa, &stru_1F2281668.isa, v6);
+  v8 = PKLocalizedPaymentString(&v7->isa, &stru_1F2281668.isa, startDateString);
 LABEL_14:
 
   return v8;
@@ -207,28 +207,28 @@ LABEL_14:
 
 - (BOOL)isPlanDisplayable
 {
-  v2 = [(PKTransitCommutePlan *)self expiryDate];
-  if (!v2)
+  expiryDate = [(PKTransitCommutePlan *)self expiryDate];
+  if (!expiryDate)
   {
-    v2 = [MEMORY[0x1E695DF00] distantFuture];
+    expiryDate = [MEMORY[0x1E695DF00] distantFuture];
   }
 
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [v3 compare:v2] != 1;
+  date = [MEMORY[0x1E695DF00] date];
+  v4 = [date compare:expiryDate] != 1;
 
   return v4;
 }
 
 - (BOOL)isPlanAvailable
 {
-  v3 = [(PKTransitCommutePlan *)self startDate];
-  if (!v3)
+  startDate = [(PKTransitCommutePlan *)self startDate];
+  if (!startDate)
   {
-    v3 = [MEMORY[0x1E695DF00] distantPast];
+    startDate = [MEMORY[0x1E695DF00] distantPast];
   }
 
-  v4 = [MEMORY[0x1E695DF00] date];
-  v5 = [v4 compare:v3] != -1 && -[PKTransitCommutePlan isPlanDisplayable](self, "isPlanDisplayable");
+  date = [MEMORY[0x1E695DF00] date];
+  v5 = [date compare:startDate] != -1 && -[PKTransitCommutePlan isPlanDisplayable](self, "isPlanDisplayable");
 
   return v5;
 }
@@ -246,25 +246,25 @@ LABEL_14:
   return v3;
 }
 
-- (id)updateWithCommutePlanDetail:(id)a3
+- (id)updateWithCommutePlanDetail:(id)detail
 {
-  v4 = a3;
+  detailCopy = detail;
   v5 = [(PKTransitCommutePlan *)self mutableCopy];
-  v6 = [v4 uniqueIdentifier];
-  [v5 setUniqueIdentifier:v6];
+  uniqueIdentifier = [detailCopy uniqueIdentifier];
+  [v5 setUniqueIdentifier:uniqueIdentifier];
 
-  v7 = [v4 startDate];
-  [v5 setStartDate:v7];
+  startDate = [detailCopy startDate];
+  [v5 setStartDate:startDate];
 
-  v8 = [v4 expiryDate];
-  [v5 setExpiryDate:v8];
+  expiryDate = [detailCopy expiryDate];
+  [v5 setExpiryDate:expiryDate];
 
-  v9 = [v4 localizedTitle];
-  v10 = [v5 titleText];
-  v11 = [v4 localizedDescription];
+  localizedTitle = [detailCopy localizedTitle];
+  titleText = [v5 titleText];
+  localizedDescription = [detailCopy localizedDescription];
 
-  v12 = [v5 descriptionText];
-  v13 = v9;
+  descriptionText = [v5 descriptionText];
+  v13 = localizedTitle;
   v14 = v13;
   if (v13)
   {
@@ -272,7 +272,7 @@ LABEL_14:
 
     if (v15)
     {
-      v16 = v10;
+      v16 = titleText;
       if (!v16 || (v17 = v16, v18 = [v16 length], v17, !v18))
       {
         [v5 setTitleText:v14];
@@ -280,7 +280,7 @@ LABEL_14:
     }
   }
 
-  v19 = v11;
+  v19 = localizedDescription;
   v20 = v19;
   if (v19)
   {
@@ -288,7 +288,7 @@ LABEL_14:
 
     if (v21)
     {
-      v22 = v12;
+      v22 = descriptionText;
       if (!v22 || (v23 = v22, v24 = [v22 length], v23, !v24))
       {
         [v5 setDescriptionText:v20];
@@ -301,72 +301,72 @@ LABEL_14:
   return v25;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v6 = a3;
-  [v6 encodeObject:identifier forKey:@"identifier"];
-  v5 = [(PKTransitCommutePlan *)self uniqueIdentifier];
-  [v6 encodeObject:v5 forKey:@"uniqueIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  uniqueIdentifier = [(PKTransitCommutePlan *)self uniqueIdentifier];
+  [coderCopy encodeObject:uniqueIdentifier forKey:@"uniqueIdentifier"];
 
-  [v6 encodeObject:self->_deviceAccountIdentifiers forKey:@"deviceAccountIdentifiers"];
-  [v6 encodeObject:self->_title forKey:@"title"];
-  [v6 encodeObject:self->_details forKey:@"details"];
-  [v6 encodeInteger:self->_properties forKey:@"properties"];
-  [v6 encodeObject:self->_startDate forKey:@"startDate"];
-  [v6 encodeObject:self->_expiryDate forKey:@"expiryDate"];
-  [v6 encodeObject:self->_usage forKey:@"usage"];
-  [v6 encodeBool:self->_requiresAppletSourceOfTruth forKey:@"requiresAppletSourceOfTruth"];
-  [v6 encodeBool:self->_isDeviceBound forKey:@"isDeviceBound"];
+  [coderCopy encodeObject:self->_deviceAccountIdentifiers forKey:@"deviceAccountIdentifiers"];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
+  [coderCopy encodeObject:self->_details forKey:@"details"];
+  [coderCopy encodeInteger:self->_properties forKey:@"properties"];
+  [coderCopy encodeObject:self->_startDate forKey:@"startDate"];
+  [coderCopy encodeObject:self->_expiryDate forKey:@"expiryDate"];
+  [coderCopy encodeObject:self->_usage forKey:@"usage"];
+  [coderCopy encodeBool:self->_requiresAppletSourceOfTruth forKey:@"requiresAppletSourceOfTruth"];
+  [coderCopy encodeBool:self->_isDeviceBound forKey:@"isDeviceBound"];
 }
 
-- (PKTransitCommutePlan)initWithCoder:(id)a3
+- (PKTransitCommutePlan)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKTransitCommutePlan *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uniqueIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uniqueIdentifier"];
     uniqueIdentifier = v5->_uniqueIdentifier;
     v5->_uniqueIdentifier = v8;
 
     v10 = MEMORY[0x1E695DFD8];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"deviceAccountIdentifiers"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"deviceAccountIdentifiers"];
     deviceAccountIdentifiers = v5->_deviceAccountIdentifiers;
     v5->_deviceAccountIdentifiers = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v15;
 
     v17 = MEMORY[0x1E695DFD8];
     v18 = objc_opt_class();
     v19 = [v17 setWithObjects:{v18, objc_opt_class(), 0}];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"details"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"details"];
     details = v5->_details;
     v5->_details = v20;
 
-    v5->_properties = [v4 decodeIntegerForKey:@"properties"];
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+    v5->_properties = [coderCopy decodeIntegerForKey:@"properties"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
     startDate = v5->_startDate;
     v5->_startDate = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expiryDate"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expiryDate"];
     expiryDate = v5->_expiryDate;
     v5->_expiryDate = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"usage"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"usage"];
     usage = v5->_usage;
     v5->_usage = v26;
 
-    v5->_requiresAppletSourceOfTruth = [v4 decodeBoolForKey:@"requiresAppletSourceOfTruth"];
-    v5->_isDeviceBound = [v4 decodeBoolForKey:@"isDeviceBound"];
+    v5->_requiresAppletSourceOfTruth = [coderCopy decodeBoolForKey:@"requiresAppletSourceOfTruth"];
+    v5->_isDeviceBound = [coderCopy decodeBoolForKey:@"isDeviceBound"];
     [(PKTransitCommutePlan *)v5 _updateFieldsByKey];
     [(PKTransitCommutePlan *)v5 _updateProperties];
   }
@@ -374,33 +374,33 @@ LABEL_14:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   [v5 setIdentifier:v6];
 
-  v7 = [(PKTransitCommutePlan *)self uniqueIdentifier];
-  v8 = [v7 copyWithZone:a3];
+  uniqueIdentifier = [(PKTransitCommutePlan *)self uniqueIdentifier];
+  v8 = [uniqueIdentifier copyWithZone:zone];
   [v5 setUniqueIdentifier:v8];
 
-  v9 = [(NSArray *)self->_deviceAccountIdentifiers copyWithZone:a3];
+  v9 = [(NSArray *)self->_deviceAccountIdentifiers copyWithZone:zone];
   [v5 setDeviceAccountIdentifiers:v9];
 
-  v10 = [(PKPassField *)self->_title copyWithZone:a3];
+  v10 = [(PKPassField *)self->_title copyWithZone:zone];
   [v5 setTitle:v10];
 
-  v11 = [(NSArray *)self->_details copyWithZone:a3];
+  v11 = [(NSArray *)self->_details copyWithZone:zone];
   [v5 setDetails:v11];
 
   [v5 setProperties:self->_properties];
-  v12 = [(NSDate *)self->_startDate copyWithZone:a3];
+  v12 = [(NSDate *)self->_startDate copyWithZone:zone];
   [v5 setStartDate:v12];
 
-  v13 = [(NSDate *)self->_expiryDate copyWithZone:a3];
+  v13 = [(NSDate *)self->_expiryDate copyWithZone:zone];
   [v5 setExpiryDate:v13];
 
-  v14 = [(PKPassField *)self->_usage copyWithZone:a3];
+  v14 = [(PKPassField *)self->_usage copyWithZone:zone];
   [v5 setUsage:v14];
 
   [v5 setRequiresAppletSourceOfTruth:self->_requiresAppletSourceOfTruth];
@@ -408,33 +408,33 @@ LABEL_14:
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(NSString *)self->_identifier mutableCopyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(NSString *)self->_identifier mutableCopyWithZone:zone];
   [v5 setIdentifier:v6];
 
-  v7 = [(PKTransitCommutePlan *)self uniqueIdentifier];
-  v8 = [v7 mutableCopyWithZone:a3];
+  uniqueIdentifier = [(PKTransitCommutePlan *)self uniqueIdentifier];
+  v8 = [uniqueIdentifier mutableCopyWithZone:zone];
   [v5 setUniqueIdentifier:v8];
 
-  v9 = [(NSArray *)self->_deviceAccountIdentifiers mutableCopyWithZone:a3];
+  v9 = [(NSArray *)self->_deviceAccountIdentifiers mutableCopyWithZone:zone];
   [v5 setDeviceAccountIdentifiers:v9];
 
-  v10 = [(PKPassField *)self->_title copyWithZone:a3];
+  v10 = [(PKPassField *)self->_title copyWithZone:zone];
   [v5 setTitle:v10];
 
-  v11 = [(NSArray *)self->_details mutableCopyWithZone:a3];
+  v11 = [(NSArray *)self->_details mutableCopyWithZone:zone];
   [v5 setDetails:v11];
 
   [v5 setProperties:self->_properties];
-  v12 = [(NSDate *)self->_startDate copyWithZone:a3];
+  v12 = [(NSDate *)self->_startDate copyWithZone:zone];
   [v5 setStartDate:v12];
 
-  v13 = [(NSDate *)self->_expiryDate copyWithZone:a3];
+  v13 = [(NSDate *)self->_expiryDate copyWithZone:zone];
   [v5 setExpiryDate:v13];
 
-  v14 = [(PKPassField *)self->_usage copyWithZone:a3];
+  v14 = [(PKPassField *)self->_usage copyWithZone:zone];
   [v5 setUsage:v14];
 
   [v5 setRequiresAppletSourceOfTruth:self->_requiresAppletSourceOfTruth];
@@ -442,9 +442,9 @@ LABEL_14:
   return v5;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   title = self->_title;
   self->_title = v4;
 
@@ -453,9 +453,9 @@ LABEL_14:
   [(PKTransitCommutePlan *)self _updateProperties];
 }
 
-- (void)setDetails:(id)a3
+- (void)setDetails:(id)details
 {
-  v4 = [a3 copy];
+  v4 = [details copy];
   details = self->_details;
   self->_details = v4;
 
@@ -474,8 +474,8 @@ LABEL_14:
 
   else
   {
-    v4 = [(PKTransitCommutePlan *)self _expiryField];
-    v3 = _dateFromField(v4);
+    _expiryField = [(PKTransitCommutePlan *)self _expiryField];
+    v3 = _dateFromField(_expiryField);
   }
 
   return v3;
@@ -491,8 +491,8 @@ LABEL_14:
 
   else
   {
-    v4 = [(PKTransitCommutePlan *)self _startField];
-    v3 = _dateFromField(v4);
+    _startField = [(PKTransitCommutePlan *)self _startField];
+    v3 = _dateFromField(_startField);
   }
 
   return v3;
@@ -500,30 +500,30 @@ LABEL_14:
 
 - (NSString)expiryDateString
 {
-  v3 = [(PKTransitCommutePlan *)self expiryDate];
-  v4 = [(PKTransitCommutePlan *)self _expiryField];
+  expiryDate = [(PKTransitCommutePlan *)self expiryDate];
+  _expiryField = [(PKTransitCommutePlan *)self _expiryField];
   v5 = objc_alloc_init(MEMORY[0x1E696AB78]);
-  [v5 setDateStyle:{objc_msgSend(v4, "dateStyle")}];
-  v6 = [v5 stringFromDate:v3];
+  [v5 setDateStyle:{objc_msgSend(_expiryField, "dateStyle")}];
+  v6 = [v5 stringFromDate:expiryDate];
 
   return v6;
 }
 
 - (NSString)startDateString
 {
-  v3 = [(PKTransitCommutePlan *)self startDate];
-  v4 = [(PKTransitCommutePlan *)self _startField];
+  startDate = [(PKTransitCommutePlan *)self startDate];
+  _startField = [(PKTransitCommutePlan *)self _startField];
   v5 = objc_alloc_init(MEMORY[0x1E696AB78]);
-  [v5 setDateStyle:{objc_msgSend(v4, "dateStyle")}];
-  v6 = [v5 stringFromDate:v3];
+  [v5 setDateStyle:{objc_msgSend(_startField, "dateStyle")}];
+  v6 = [v5 stringFromDate:startDate];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -534,7 +534,7 @@ LABEL_14:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       identifier = self->_identifier;
       v7 = v5->_identifier;
       if (identifier && v7)
@@ -542,18 +542,18 @@ LABEL_14:
         if (([(NSString *)identifier isEqual:?]& 1) != 0)
         {
 LABEL_6:
-          v8 = [(PKTransitCommutePlan *)self uniqueIdentifier];
-          v9 = [(PKTransitCommutePlan *)v5 uniqueIdentifier];
-          v10 = v9;
-          if (v8 && v9)
+          uniqueIdentifier = [(PKTransitCommutePlan *)self uniqueIdentifier];
+          uniqueIdentifier2 = [(PKTransitCommutePlan *)v5 uniqueIdentifier];
+          v10 = uniqueIdentifier2;
+          if (uniqueIdentifier && uniqueIdentifier2)
           {
-            if (([v8 isEqual:v9] & 1) == 0)
+            if (([uniqueIdentifier isEqual:uniqueIdentifier2] & 1) == 0)
             {
               goto LABEL_46;
             }
           }
 
-          else if (v8 != v9)
+          else if (uniqueIdentifier != uniqueIdentifier2)
           {
             goto LABEL_46;
           }
@@ -681,8 +681,8 @@ LABEL_49:
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [v3 safelyAddObject:self->_identifier];
-  v4 = [(PKTransitCommutePlan *)self uniqueIdentifier];
-  [v3 safelyAddObject:v4];
+  uniqueIdentifier = [(PKTransitCommutePlan *)self uniqueIdentifier];
+  [v3 safelyAddObject:uniqueIdentifier];
 
   [v3 safelyAddObject:self->_title];
   [v3 addObjectsFromArray:self->_details];

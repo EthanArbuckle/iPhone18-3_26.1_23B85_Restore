@@ -1,9 +1,9 @@
 @interface _DASSystemWorkloadRecorder
 + (id)sharedInstance;
-+ (unint64_t)bucketizedWorkload:(unint64_t)a3;
-- (BOOL)recordWorkload:(unint64_t)a3 ofCategory:(unint64_t)a4 error:(id *)a5;
++ (unint64_t)bucketizedWorkload:(unint64_t)workload;
+- (BOOL)recordWorkload:(unint64_t)workload ofCategory:(unint64_t)category error:(id *)error;
 - (_DASSystemWorkloadRecorder)init;
-- (void)sendToPPS:(id)a3;
+- (void)sendToPPS:(id)s;
 @end
 
 @implementation _DASSystemWorkloadRecorder
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = sub_100062344;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B2F0 != -1)
   {
     dispatch_once(&qword_10020B2F0, block);
@@ -45,38 +45,38 @@
   return v2;
 }
 
-+ (unint64_t)bucketizedWorkload:(unint64_t)a3
++ (unint64_t)bucketizedWorkload:(unint64_t)workload
 {
   result = 100000;
-  if (a3 > 0x186A0)
+  if (workload > 0x186A0)
   {
     return 120000;
   }
 
-  if (a3 <= 0x13880)
+  if (workload <= 0x13880)
   {
     result = 80000;
-    if (a3 <= 0xFDE8)
+    if (workload <= 0xFDE8)
     {
-      if (a3 <= 0xC350)
+      if (workload <= 0xC350)
       {
-        if (a3 <= 0x9C40)
+        if (workload <= 0x9C40)
         {
-          if (a3 <= 0x7530)
+          if (workload <= 0x7530)
           {
-            if (a3 <= 0x4E20)
+            if (workload <= 0x4E20)
             {
-              if (a3 <= 0x2710)
+              if (workload <= 0x2710)
               {
-                if (a3 <= 0x1388)
+                if (workload <= 0x1388)
                 {
-                  if (a3 <= 0x7D0)
+                  if (workload <= 0x7D0)
                   {
-                    if (a3 <= 0x1F4)
+                    if (workload <= 0x1F4)
                     {
-                      if (a3 <= 0x64)
+                      if (workload <= 0x64)
                       {
-                        if (a3)
+                        if (workload)
                         {
                           return 100;
                         }
@@ -145,24 +145,24 @@
   return result;
 }
 
-- (BOOL)recordWorkload:(unint64_t)a3 ofCategory:(unint64_t)a4 error:(id *)a5
+- (BOOL)recordWorkload:(unint64_t)workload ofCategory:(unint64_t)category error:(id *)error
 {
-  v8 = [NSMutableDictionary dictionary:a3];
-  v9 = [NSNumber numberWithUnsignedInteger:a4];
+  v8 = [NSMutableDictionary dictionary:workload];
+  v9 = [NSNumber numberWithUnsignedInteger:category];
   [v8 setObject:v9 forKeyedSubscript:@"WorkloadType"];
 
-  v10 = [NSNumber numberWithUnsignedInteger:[_DASSystemWorkloadRecorder bucketizedWorkload:a3]];
+  v10 = [NSNumber numberWithUnsignedInteger:[_DASSystemWorkloadRecorder bucketizedWorkload:workload]];
   [v8 setObject:v10 forKeyedSubscript:@"Size"];
 
   [(_DASSystemWorkloadRecorder *)self sendToPPS:v8];
   return 1;
 }
 
-- (void)sendToPPS:(id)a3
+- (void)sendToPPS:(id)s
 {
-  v3 = a3;
+  sCopy = s;
   v4 = +[_DASPPSDataManager sharedInstance];
-  [v4 sendDataToPPS:v3 subsystem:@"BackgroundProcessing" category:@"WorkloadInformation"];
+  [v4 sendDataToPPS:sCopy subsystem:@"BackgroundProcessing" category:@"WorkloadInformation"];
 }
 
 @end

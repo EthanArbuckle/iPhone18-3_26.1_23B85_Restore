@@ -1,45 +1,45 @@
 @interface SBRevealContinuousExposeStripOverflowRootSwitcherModifier
-- (SBRevealContinuousExposeStripOverflowRootSwitcherModifier)initWithInitialAppLayout:(id)a3;
-- (id)gestureChildModifierForGestureEvent:(id)a3 activeTransitionModifier:(id)a4;
-- (id)transitionChildModifierForMainTransitionEvent:(id)a3 activeGestureModifier:(id)a4;
+- (SBRevealContinuousExposeStripOverflowRootSwitcherModifier)initWithInitialAppLayout:(id)layout;
+- (id)gestureChildModifierForGestureEvent:(id)event activeTransitionModifier:(id)modifier;
+- (id)transitionChildModifierForMainTransitionEvent:(id)event activeGestureModifier:(id)modifier;
 @end
 
 @implementation SBRevealContinuousExposeStripOverflowRootSwitcherModifier
 
-- (SBRevealContinuousExposeStripOverflowRootSwitcherModifier)initWithInitialAppLayout:(id)a3
+- (SBRevealContinuousExposeStripOverflowRootSwitcherModifier)initWithInitialAppLayout:(id)layout
 {
-  v5 = a3;
+  layoutCopy = layout;
   v9.receiver = self;
   v9.super_class = SBRevealContinuousExposeStripOverflowRootSwitcherModifier;
   v6 = [(SBGestureRootSwitcherModifier *)&v9 initWithStartingEnvironmentMode:3];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_initialAppLayout, a3);
+    objc_storeStrong(&v6->_initialAppLayout, layout);
   }
 
   return v7;
 }
 
-- (id)gestureChildModifierForGestureEvent:(id)a3 activeTransitionModifier:(id)a4
+- (id)gestureChildModifierForGestureEvent:(id)event activeTransitionModifier:(id)modifier
 {
-  v5 = a3;
+  eventCopy = event;
   v6 = [SBRevealContinuousExposeStripOverflowGestureModifier alloc];
-  v7 = [v5 gestureID];
+  gestureID = [eventCopy gestureID];
 
-  v8 = [(SBRevealContinuousExposeStripOverflowGestureModifier *)v6 initWithGestureID:v7 initialAppLayout:self->_initialAppLayout];
+  v8 = [(SBRevealContinuousExposeStripOverflowGestureModifier *)v6 initWithGestureID:gestureID initialAppLayout:self->_initialAppLayout];
 
   return v8;
 }
 
-- (id)transitionChildModifierForMainTransitionEvent:(id)a3 activeGestureModifier:(id)a4
+- (id)transitionChildModifierForMainTransitionEvent:(id)event activeGestureModifier:(id)modifier
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = [SBContinuousExposeSwitcherToAppModifier alloc];
-  v6 = [v4 transitionID];
+  transitionID = [eventCopy transitionID];
 
   v7 = objc_alloc_init(SBAppSwitcherContinuousExposeSwitcherModifier);
-  v8 = [(SBContinuousExposeSwitcherToAppModifier *)v5 initWithTransitionID:v6 direction:1 multitaskingModifier:v7];
+  v8 = [(SBContinuousExposeSwitcherToAppModifier *)v5 initWithTransitionID:transitionID direction:1 multitaskingModifier:v7];
 
   return v8;
 }

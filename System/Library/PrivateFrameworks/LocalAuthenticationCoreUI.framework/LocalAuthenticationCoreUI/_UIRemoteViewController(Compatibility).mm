@@ -8,10 +8,10 @@
 {
   v10 = a4;
   v6 = a3;
-  v7 = [v6 serviceViewControllerClassName];
-  v8 = [v6 serviceBundleIdentifier];
+  serviceViewControllerClassName = [v6 serviceViewControllerClassName];
+  serviceBundleIdentifier = [v6 serviceBundleIdentifier];
 
-  v9 = [a1 requestViewController:v7 fromServiceWithBundleIdentifier:v8 connectionHandler:v10];
+  v9 = [self requestViewController:serviceViewControllerClassName fromServiceWithBundleIdentifier:serviceBundleIdentifier connectionHandler:v10];
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface SeosDecoder
-+ (id)parseEndEvent:(id)a3 withApplet:(id)a4 error:(id *)a5;
-+ (id)parseStartEvent:(id)a3 withApplet:(id)a4 error:(id *)a5;
-- (id)GetAppletProperties:(id)a3 withPackage:(id)a4 withModule:(id)a5 withTransceiver:(id)a6 withError:(id *)a7;
-- (id)getAppletStateAndHistory:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withError:(id *)a7;
-- (id)parseHCIEvent:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withTransceiver:(id)a7 withError:(id *)a8;
-- (id)processEndOfTransaction:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withError:(id *)a7;
++ (id)parseEndEvent:(id)event withApplet:(id)applet error:(id *)error;
++ (id)parseStartEvent:(id)event withApplet:(id)applet error:(id *)error;
+- (id)GetAppletProperties:(id)properties withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error;
+- (id)getAppletStateAndHistory:(id)history withApplet:(id)applet withPackage:(id)package withModule:(id)module withError:(id *)error;
+- (id)parseHCIEvent:(id)event withApplet:(id)applet withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error;
+- (id)processEndOfTransaction:(id)transaction withApplet:(id)applet withPackage:(id)package withModule:(id)module withError:(id *)error;
 @end
 
 @implementation SeosDecoder
 
-- (id)parseHCIEvent:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withTransceiver:(id)a7 withError:(id *)a8
+- (id)parseHCIEvent:(id)event withApplet:(id)applet withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error
 {
   v75[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  if ([v10 length] > 1)
+  eventCopy = event;
+  appletCopy = applet;
+  if ([eventCopy length] > 1)
   {
-    v23 = *[v10 bytes];
-    v24 = *([v10 bytes] + 1);
+    v23 = *[eventCopy bytes];
+    v24 = *([eventCopy bytes] + 1);
     if (v24 == 1)
     {
       v25 = ATLLogObject();
@@ -29,14 +29,14 @@
 
       v26 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Legacy SEOS, punting"];
       v14 = v26;
-      if (!a8)
+      if (!error)
       {
         goto LABEL_33;
       }
 
-      v27 = *a8;
+      v27 = *error;
       v28 = MEMORY[0x277CCA9B8];
-      if (*a8)
+      if (*error)
       {
         v29 = *MEMORY[0x277CCA7E8];
         v68[0] = *MEMORY[0x277CCA450];
@@ -65,11 +65,11 @@
       goto LABEL_32;
     }
 
-    if ([v10 length] > 9)
+    if ([eventCopy length] > 9)
     {
       if (v23 == 1 && v24 == 255)
       {
-        v39 = [SeosDecoder parseStartEvent:v10 withApplet:v11 error:a8];
+        v39 = [SeosDecoder parseStartEvent:eventCopy withApplet:appletCopy error:error];
       }
 
       else
@@ -88,15 +88,15 @@
 
           v47 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Invalid event type 0x%x version 0x%x", v23, v24];
           v14 = v47;
-          if (!a8)
+          if (!error)
           {
             goto LABEL_33;
           }
 
-          v48 = *a8;
+          v48 = *error;
           v49 = MEMORY[0x277CCA9B8];
           v50 = *MEMORY[0x277CCA450];
-          if (*a8)
+          if (*error)
           {
             v51 = *MEMORY[0x277CCA7E8];
             v56[0] = *MEMORY[0x277CCA450];
@@ -125,7 +125,7 @@
           goto LABEL_32;
         }
 
-        v39 = [SeosDecoder parseEndEvent:v10 withApplet:v11 error:a8];
+        v39 = [SeosDecoder parseEndEvent:eventCopy withApplet:appletCopy error:error];
       }
 
       v43 = v39;
@@ -136,21 +136,21 @@
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109120;
-      v61 = [v10 length];
+      v61 = [eventCopy length];
       _os_log_impl(&dword_22EEF5000, v34, OS_LOG_TYPE_ERROR, "Invalid eventData length %u", buf, 8u);
     }
 
-    v35 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Invalid eventData length %u", objc_msgSend(v10, "length")];
+    v35 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Invalid eventData length %u", objc_msgSend(eventCopy, "length")];
     v14 = v35;
-    if (!a8)
+    if (!error)
     {
       goto LABEL_33;
     }
 
-    v36 = *a8;
+    v36 = *error;
     v16 = MEMORY[0x277CCA9B8];
     v37 = *MEMORY[0x277CCA450];
-    if (*a8)
+    if (*error)
     {
       v38 = *MEMORY[0x277CCA7E8];
       v64[0] = *MEMORY[0x277CCA450];
@@ -177,21 +177,21 @@ LABEL_24:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
     *buf = 67109120;
-    v61 = [v10 length];
+    v61 = [eventCopy length];
     _os_log_impl(&dword_22EEF5000, v12, OS_LOG_TYPE_ERROR, "Invalid eventData length %u", buf, 8u);
   }
 
-  v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Invalid eventData length %u", objc_msgSend(v10, "length")];
+  v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Invalid eventData length %u", objc_msgSend(eventCopy, "length")];
   v14 = v13;
-  if (!a8)
+  if (!error)
   {
     goto LABEL_33;
   }
 
-  v15 = *a8;
+  v15 = *error;
   v16 = MEMORY[0x277CCA9B8];
   v17 = *MEMORY[0x277CCA450];
-  if (!*a8)
+  if (!*error)
   {
     v74 = *MEMORY[0x277CCA450];
     v75[0] = v13;
@@ -216,7 +216,7 @@ LABEL_25:
   v41 = v16;
   v42 = 6;
 LABEL_32:
-  *a8 = [v41 errorWithDomain:@"ATL" code:v42 userInfo:v40];
+  *error = [v41 errorWithDomain:@"ATL" code:v42 userInfo:v40];
 
 LABEL_33:
   v43 = 0;
@@ -227,7 +227,7 @@ LABEL_34:
   return v43;
 }
 
-- (id)getAppletStateAndHistory:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withError:(id *)a7
+- (id)getAppletStateAndHistory:(id)history withApplet:(id)applet withPackage:(id)package withModule:(id)module withError:(id *)error
 {
   v26[1] = *MEMORY[0x277D85DE8];
   v8 = ATLLogObject();
@@ -239,12 +239,12 @@ LABEL_34:
 
   v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SeosDecoder doesn't support GetState"];
   v10 = v9;
-  if (a7)
+  if (error)
   {
-    v11 = *a7;
+    v11 = *error;
     v12 = MEMORY[0x277CCA9B8];
     v13 = *MEMORY[0x277CCA450];
-    if (*a7)
+    if (*error)
     {
       v14 = *MEMORY[0x277CCA7E8];
       v23[0] = *MEMORY[0x277CCA450];
@@ -268,36 +268,36 @@ LABEL_34:
     }
 
     v19 = [v15 dictionaryWithObjects:v16 forKeys:v17 count:v18];
-    *a7 = [v12 errorWithDomain:@"ATL" code:2 userInfo:v19];
+    *error = [v12 errorWithDomain:@"ATL" code:2 userInfo:v19];
   }
 
   v20 = *MEMORY[0x277D85DE8];
   return 0;
 }
 
-+ (id)parseStartEvent:(id)a3 withApplet:(id)a4 error:(id *)a5
++ (id)parseStartEvent:(id)event withApplet:(id)applet error:(id *)error
 {
   v52[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 length] != 10)
+  eventCopy = event;
+  appletCopy = applet;
+  if ([eventCopy length] != 10)
   {
     v15 = ATLLogObject();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109120;
-      v46 = [v7 length];
+      v46 = [eventCopy length];
       _os_log_impl(&dword_22EEF5000, v15, OS_LOG_TYPE_ERROR, "Invalid eventData length %u", buf, 8u);
     }
 
-    v16 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Invalid eventData length %u", objc_msgSend(v7, "length")];
+    v16 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Invalid eventData length %u", objc_msgSend(eventCopy, "length")];
     v10 = v16;
-    if (a5)
+    if (error)
     {
-      v17 = *a5;
+      v17 = *error;
       v18 = MEMORY[0x277CCA9B8];
       v19 = *MEMORY[0x277CCA450];
-      if (*a5)
+      if (*error)
       {
         v20 = *MEMORY[0x277CCA7E8];
         v49[0] = *MEMORY[0x277CCA450];
@@ -331,13 +331,13 @@ LABEL_14:
     goto LABEL_21;
   }
 
-  v9 = [v7 bytes];
-  if ((~*(v9 + 5) & 0xA580) != 0)
+  bytes = [eventCopy bytes];
+  if ((~*(bytes + 5) & 0xA580) != 0)
   {
     v25 = ATLLogObject();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      v26 = *(v9 + 5);
+      v26 = *(bytes + 5);
       *buf = 67109376;
       v46 = v26;
       v47 = 1024;
@@ -345,18 +345,18 @@ LABEL_14:
       _os_log_impl(&dword_22EEF5000, v25, OS_LOG_TYPE_ERROR, "Unexpected cmd of StartEvent %u (exp) %u", buf, 0xEu);
     }
 
-    v27 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unexpected cmd of StartEvent %u (exp) %u", *(v9 + 5), 42368];
-    v10 = v27;
-    if (a5)
+    42368 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unexpected cmd of StartEvent %u (exp) %u", *(bytes + 5), 42368];
+    v10 = 42368;
+    if (error)
     {
-      v28 = *a5;
+      v28 = *error;
       v29 = MEMORY[0x277CCA9B8];
-      if (*a5)
+      if (*error)
       {
         v30 = *MEMORY[0x277CCA7E8];
         v41[0] = *MEMORY[0x277CCA450];
         v41[1] = v30;
-        v42[0] = v27;
+        v42[0] = 42368;
         v42[1] = v28;
         v31 = MEMORY[0x277CBEAC0];
         v32 = v42;
@@ -367,7 +367,7 @@ LABEL_14:
       else
       {
         v43 = *MEMORY[0x277CCA450];
-        v44 = v27;
+        v44 = 42368;
         v31 = MEMORY[0x277CBEAC0];
         v32 = &v44;
         v33 = &v43;
@@ -379,7 +379,7 @@ LABEL_14:
       v36 = 3;
 LABEL_19:
       [v35 errorWithDomain:@"ATL" code:v36 userInfo:v11];
-      *a5 = v14 = 0;
+      *error = v14 = 0;
       goto LABEL_20;
     }
 
@@ -389,18 +389,18 @@ LABEL_19:
   v39[0] = @"EventType";
   v39[1] = @"appletIdentifier";
   v40[0] = @"StartEvent";
-  v40[1] = v8;
+  v40[1] = appletCopy;
   v39[2] = @"Version";
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(v9 + 1)];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(bytes + 1)];
   v40[2] = v10;
   v39[3] = @"command";
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(v9 + 5))];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:bswap32(*(bytes + 5))];
   v40[3] = v11;
   v39[4] = @"selectStatus";
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:bswap32(*(v9 + 2)) >> 16];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:bswap32(*(bytes + 2)) >> 16];
   v40[4] = v12;
   v39[5] = @"spIdentifier";
-  v13 = [SeosDecoder resolveServiceProvider:*(v9 + 9)];
+  v13 = [SeosDecoder resolveServiceProvider:*(bytes + 9)];
   v39[6] = @"IgnoreRFEvents";
   v39[7] = @"DontWaitForEOT";
   v40[5] = v13;
@@ -420,34 +420,34 @@ LABEL_21:
   return v14;
 }
 
-+ (id)parseEndEvent:(id)a3 withApplet:(id)a4 error:(id *)a5
++ (id)parseEndEvent:(id)event withApplet:(id)applet error:(id *)error
 {
   v111[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 length] <= 0x30)
+  eventCopy = event;
+  appletCopy = applet;
+  if ([eventCopy length] <= 0x30)
   {
     v9 = ATLLogObject();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      *&buf[4] = [v7 length];
+      *&buf[4] = [eventCopy length];
       *&buf[12] = 2048;
       *&buf[14] = 49;
       _os_log_impl(&dword_22EEF5000, v9, OS_LOG_TYPE_ERROR, "End event length %zu (exp) %zu", buf, 0x16u);
     }
 
-    v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"End event length %zu (exp) %zu", objc_msgSend(v7, "length"), 49];
+    v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"End event length %zu (exp) %zu", objc_msgSend(eventCopy, "length"), 49];
     v11 = v10;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_41;
     }
 
-    v12 = *a5;
+    v12 = *error;
     v13 = MEMORY[0x277CCA9B8];
     v14 = *MEMORY[0x277CCA450];
-    if (*a5)
+    if (*error)
     {
       v15 = *MEMORY[0x277CCA7E8];
       v108[0] = *MEMORY[0x277CCA450];
@@ -461,7 +461,7 @@ LABEL_29:
       v48 = 2;
 LABEL_40:
       v62 = [v16 dictionaryWithObjects:v17 forKeys:v18 count:v48];
-      *a5 = [v13 errorWithDomain:@"ATL" code:3 userInfo:v62];
+      *error = [v13 errorWithDomain:@"ATL" code:3 userInfo:v62];
 
 LABEL_41:
       v63 = 0;
@@ -476,9 +476,9 @@ LABEL_41:
     goto LABEL_39;
   }
 
-  v19 = [v7 bytes];
-  v20 = v19;
-  v21 = *(v19 + 40);
+  bytes = [eventCopy bytes];
+  v20 = bytes;
+  v21 = *(bytes + 40);
   if (v21 != 1 && v21 != 0x4000)
   {
     v36 = ATLLogObject();
@@ -492,15 +492,15 @@ LABEL_41:
 
     v38 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unexpected Transaction Status %d", *(v20 + 40)];
     v11 = v38;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_41;
     }
 
-    v39 = *a5;
+    v39 = *error;
     v13 = MEMORY[0x277CCA9B8];
     v40 = *MEMORY[0x277CCA450];
-    if (*a5)
+    if (*error)
     {
       v41 = *MEMORY[0x277CCA7E8];
       v104[0] = *MEMORY[0x277CCA450];
@@ -523,7 +523,7 @@ LABEL_39:
     goto LABEL_40;
   }
 
-  if ((*(v19 + 42) | 0x2000) != 0x2002)
+  if ((*(bytes + 42) | 0x2000) != 0x2002)
   {
     v42 = ATLLogObject();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
@@ -536,15 +536,15 @@ LABEL_39:
 
     v44 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unexpected Informative %d", *(v20 + 42)];
     v11 = v44;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_41;
     }
 
-    v45 = *a5;
+    v45 = *error;
     v13 = MEMORY[0x277CCA9B8];
     v46 = *MEMORY[0x277CCA450];
-    if (*a5)
+    if (*error)
     {
       v47 = *MEMORY[0x277CCA7E8];
       v100[0] = *MEMORY[0x277CCA450];
@@ -565,7 +565,7 @@ LABEL_39:
     goto LABEL_39;
   }
 
-  v11 = [v7 subdataWithRange:{49, objc_msgSend(v7, "length") - 49}];
+  v11 = [eventCopy subdataWithRange:{49, objc_msgSend(eventCopy, "length") - 49}];
   v80[0] = [v11 bytes];
   v80[1] = [v11 length];
   memset(buf, 0, sizeof(buf));
@@ -585,12 +585,12 @@ LABEL_39:
     v50 = objc_alloc(MEMORY[0x277CCACA8]);
     v51 = [v50 initWithFormat:@"Failed to decode E1 tag %d or wrong tag 0x%llx", v22, *buf];
     v52 = v51;
-    if (a5)
+    if (error)
     {
-      v53 = *a5;
+      v53 = *error;
       v54 = MEMORY[0x277CCA9B8];
       v55 = *MEMORY[0x277CCA450];
-      if (*a5)
+      if (*error)
       {
         v56 = *MEMORY[0x277CCA7E8];
         v93[0] = *MEMORY[0x277CCA450];
@@ -614,7 +614,7 @@ LABEL_39:
       }
 
       v66 = [v57 dictionaryWithObjects:v58 forKeys:v59 count:v60];
-      *a5 = [v54 errorWithDomain:@"ATL" code:3 userInfo:v66];
+      *error = [v54 errorWithDomain:@"ATL" code:3 userInfo:v66];
     }
 
     goto LABEL_41;
@@ -647,7 +647,7 @@ LABEL_39:
     v81[0] = @"EventType";
     v81[1] = @"appletIdentifier";
     v82[0] = @"EndEvent";
-    v82[1] = v8;
+    v82[1] = appletCopy;
     v81[2] = @"Version";
     v78 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(v20 + 1)];
     v82[2] = v78;
@@ -699,12 +699,12 @@ LABEL_39:
 
   v26 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode E1 contents %d", v24];
   v27 = v26;
-  if (a5)
+  if (error)
   {
-    v28 = *a5;
+    v28 = *error;
     v29 = MEMORY[0x277CCA9B8];
     v30 = *MEMORY[0x277CCA450];
-    if (*a5)
+    if (*error)
     {
       v31 = *MEMORY[0x277CCA7E8];
       v87[0] = *MEMORY[0x277CCA450];
@@ -729,7 +729,7 @@ LABEL_39:
 
     v67 = [v32 dictionaryWithObjects:v33 forKeys:v34 count:v35];
     [v29 errorWithDomain:@"ATL" code:3 userInfo:v67];
-    *a5 = v63 = 0;
+    *error = v63 = 0;
 LABEL_65:
 
     goto LABEL_66;
@@ -744,20 +744,20 @@ LABEL_42:
   return v63;
 }
 
-- (id)GetAppletProperties:(id)a3 withPackage:(id)a4 withModule:(id)a5 withTransceiver:(id)a6 withError:(id *)a7
+- (id)GetAppletProperties:(id)properties withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error
 {
   v11[2] = *MEMORY[0x277D85DE8];
   v10[0] = @"Supported";
   v10[1] = @"DelayExpressReentry";
   v11[0] = MEMORY[0x277CBEC38];
   v11[1] = &unk_2843C7208;
-  v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:{2, a6, a7}];
+  v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:{2, transceiver, error}];
   v8 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-- (id)processEndOfTransaction:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withError:(id *)a7
+- (id)processEndOfTransaction:(id)transaction withApplet:(id)applet withPackage:(id)package withModule:(id)module withError:(id *)error
 {
   v26[1] = *MEMORY[0x277D85DE8];
   v8 = ATLLogObject();
@@ -769,12 +769,12 @@ LABEL_42:
 
   v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SEOS decoder doesn't expect processEndOfTransaction"];
   v10 = v9;
-  if (a7)
+  if (error)
   {
-    v11 = *a7;
+    v11 = *error;
     v12 = MEMORY[0x277CCA9B8];
     v13 = *MEMORY[0x277CCA450];
-    if (*a7)
+    if (*error)
     {
       v14 = *MEMORY[0x277CCA7E8];
       v23[0] = *MEMORY[0x277CCA450];
@@ -798,7 +798,7 @@ LABEL_42:
     }
 
     v19 = [v15 dictionaryWithObjects:v16 forKeys:v17 count:v18];
-    *a7 = [v12 errorWithDomain:@"ATL" code:7 userInfo:v19];
+    *error = [v12 errorWithDomain:@"ATL" code:7 userInfo:v19];
   }
 
   v20 = *MEMORY[0x277D85DE8];

@@ -1,14 +1,14 @@
 @interface ManagedSyncChangeTag
-- (ManagedSyncChangeTag)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (ManagedSyncChangeTag)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation ManagedSyncChangeTag
 
-- (ManagedSyncChangeTag)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (ManagedSyncChangeTag)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ManagedSyncChangeTag();
-  return [(ManagedSyncChangeTag *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(ManagedSyncChangeTag *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

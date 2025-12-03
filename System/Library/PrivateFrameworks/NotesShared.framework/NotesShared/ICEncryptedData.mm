@@ -1,33 +1,33 @@
 @interface ICEncryptedData
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
-- (ICEncryptedData)initWithData:(id)a3 tag:(id)a4 initializationVector:(id)a5;
-- (ICEncryptedData)initWithData:(id)a3 tag:(id)a4 initializationVector:(id)a5 fallbackTag:(id)a6 fallbackInitializationVector:(id)a7;
+- (ICEncryptedData)initWithData:(id)data tag:(id)tag initializationVector:(id)vector;
+- (ICEncryptedData)initWithData:(id)data tag:(id)tag initializationVector:(id)vector fallbackTag:(id)fallbackTag fallbackInitializationVector:(id)initializationVector;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation ICEncryptedData
 
-- (ICEncryptedData)initWithData:(id)a3 tag:(id)a4 initializationVector:(id)a5
+- (ICEncryptedData)initWithData:(id)data tag:(id)tag initializationVector:(id)vector
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  tagCopy = tag;
+  vectorCopy = vector;
   v19.receiver = self;
   v19.super_class = ICEncryptedData;
   v11 = [(ICEncryptedData *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dataCopy copy];
     data = v11->_data;
     v11->_data = v12;
 
-    v14 = [v9 copy];
+    v14 = [tagCopy copy];
     tag = v11->_tag;
     v11->_tag = v14;
 
-    v16 = [v10 copy];
+    v16 = [vectorCopy copy];
     initializationVector = v11->_initializationVector;
     v11->_initializationVector = v16;
   }
@@ -35,35 +35,35 @@
   return v11;
 }
 
-- (ICEncryptedData)initWithData:(id)a3 tag:(id)a4 initializationVector:(id)a5 fallbackTag:(id)a6 fallbackInitializationVector:(id)a7
+- (ICEncryptedData)initWithData:(id)data tag:(id)tag initializationVector:(id)vector fallbackTag:(id)fallbackTag fallbackInitializationVector:(id)initializationVector
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dataCopy = data;
+  tagCopy = tag;
+  vectorCopy = vector;
+  fallbackTagCopy = fallbackTag;
+  initializationVectorCopy = initializationVector;
   v29.receiver = self;
   v29.super_class = ICEncryptedData;
   v17 = [(ICEncryptedData *)&v29 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [dataCopy copy];
     data = v17->_data;
     v17->_data = v18;
 
-    v20 = [v13 copy];
+    v20 = [tagCopy copy];
     tag = v17->_tag;
     v17->_tag = v20;
 
-    v22 = [v14 copy];
+    v22 = [vectorCopy copy];
     initializationVector = v17->_initializationVector;
     v17->_initializationVector = v22;
 
-    v24 = [v15 copy];
+    v24 = [fallbackTagCopy copy];
     fallbackTag = v17->_fallbackTag;
     v17->_fallbackTag = v24;
 
-    v26 = [v16 copy];
+    v26 = [initializationVectorCopy copy];
     fallbackInitializationVector = v17->_fallbackInitializationVector;
     v17->_fallbackInitializationVector = v26;
   }
@@ -77,58 +77,58 @@
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   v7 = MEMORY[0x277CCABB0];
-  v8 = [(ICEncryptedData *)self fallbackTag];
-  if (v8)
+  fallbackTag = [(ICEncryptedData *)self fallbackTag];
+  if (fallbackTag)
   {
     v9 = 1;
   }
 
   else
   {
-    v2 = [(ICEncryptedData *)self fallbackInitializationVector];
-    v9 = v2 != 0;
+    fallbackInitializationVector = [(ICEncryptedData *)self fallbackInitializationVector];
+    v9 = fallbackInitializationVector != 0;
   }
 
   v10 = [v7 numberWithInt:v9];
   v11 = [v4 stringWithFormat:@"<%@: %p, hasFallback: %@>", v6, self, v10];
 
-  if (!v8)
+  if (!fallbackTag)
   {
   }
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 != self)
+  if (equal != self)
   {
-    v4 = a3;
+    equalCopy = equal;
     objc_opt_class();
     v5 = ICDynamicCast();
 
-    v6 = [v5 data];
-    v7 = [(ICEncryptedData *)self data];
+    data = [v5 data];
+    data2 = [(ICEncryptedData *)self data];
     v8 = *MEMORY[0x277CBEEE8];
-    if (*MEMORY[0x277CBEEE8] == v6)
+    if (*MEMORY[0x277CBEEE8] == data)
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = v6;
+      v9 = data;
     }
 
     v10 = v9;
-    if (v8 == v7)
+    if (v8 == data2)
     {
       v11 = 0;
     }
 
     else
     {
-      v11 = v7;
+      v11 = data2;
     }
 
     v12 = v11;
@@ -174,7 +174,7 @@ LABEL_70:
       v16 = v10;
     }
 
-    v17 = v16;
+    initializationVector = v16;
     if (v8 == v13)
     {
       v18 = 0;
@@ -186,10 +186,10 @@ LABEL_70:
     }
 
     v19 = v18;
-    if (v17 | v19)
+    if (initializationVector | v19)
     {
-      v20 = v19;
-      if (v17)
+      initializationVector2 = v19;
+      if (initializationVector)
       {
         v21 = v19 == 0;
       }
@@ -207,7 +207,7 @@ LABEL_68:
         goto LABEL_69;
       }
 
-      LODWORD(v15) = [v17 isEqual:v19];
+      LODWORD(v15) = [initializationVector isEqual:v19];
 
       if (!v15)
       {
@@ -215,34 +215,34 @@ LABEL_68:
       }
     }
 
-    v45 = v7;
-    v17 = [v5 initializationVector];
-    v20 = [(ICEncryptedData *)self initializationVector];
-    if (v8 == v17)
+    v45 = data2;
+    initializationVector = [v5 initializationVector];
+    initializationVector2 = [(ICEncryptedData *)self initializationVector];
+    if (v8 == initializationVector)
     {
       v22 = 0;
     }
 
     else
     {
-      v22 = v17;
+      v22 = initializationVector;
     }
 
     v15 = v22;
-    if (v8 == v20)
+    if (v8 == initializationVector2)
     {
       v23 = 0;
     }
 
     else
     {
-      v23 = v20;
+      v23 = initializationVector2;
     }
 
     v24 = v23;
     if (v15 | v24)
     {
-      v25 = v24;
+      fallbackTag2 = v24;
       v26 = v15;
       LOBYTE(v15) = 0;
       if (!v26 || !v24)
@@ -251,7 +251,7 @@ LABEL_68:
 LABEL_66:
 
 LABEL_67:
-        v7 = v45;
+        data2 = v45;
         goto LABEL_68;
       }
 
@@ -266,67 +266,67 @@ LABEL_67:
     }
 
     v42 = v5;
-    v28 = [v5 fallbackTag];
-    v25 = [(ICEncryptedData *)self fallbackTag];
-    v44 = v28;
-    if (v8 == v28)
+    fallbackTag = [v5 fallbackTag];
+    fallbackTag2 = [(ICEncryptedData *)self fallbackTag];
+    v44 = fallbackTag;
+    if (v8 == fallbackTag)
     {
       v29 = 0;
     }
 
     else
     {
-      v29 = v28;
+      v29 = fallbackTag;
     }
 
-    v30 = v29;
-    if (v8 == v25)
+    fallbackInitializationVector = v29;
+    if (v8 == fallbackTag2)
     {
       v31 = 0;
     }
 
     else
     {
-      v31 = v25;
+      v31 = fallbackTag2;
     }
 
     v32 = v31;
-    if (v30 | v32)
+    if (fallbackInitializationVector | v32)
     {
-      v33 = v32;
+      fallbackInitializationVector2 = v32;
       LOBYTE(v15) = 0;
-      if (!v30 || !v32)
+      if (!fallbackInitializationVector || !v32)
       {
 LABEL_64:
 
         goto LABEL_65;
       }
 
-      LODWORD(v15) = [v30 isEqual:v32];
+      LODWORD(v15) = [fallbackInitializationVector isEqual:v32];
 
       if (!v15)
       {
 LABEL_65:
-        v6 = v41;
+        data = v41;
         v5 = v42;
         goto LABEL_66;
       }
     }
 
-    v30 = [v42 fallbackInitializationVector];
-    v33 = [(ICEncryptedData *)self fallbackInitializationVector];
-    if (v8 == v30)
+    fallbackInitializationVector = [v42 fallbackInitializationVector];
+    fallbackInitializationVector2 = [(ICEncryptedData *)self fallbackInitializationVector];
+    if (v8 == fallbackInitializationVector)
     {
       v34 = 0;
     }
 
     else
     {
-      v34 = v30;
+      v34 = fallbackInitializationVector;
     }
 
     v35 = v34;
-    v14 = v8 == v33;
+    v14 = v8 == fallbackInitializationVector2;
     v36 = v35;
     if (v14)
     {
@@ -335,7 +335,7 @@ LABEL_65:
 
     else
     {
-      v37 = v33;
+      v37 = fallbackInitializationVector2;
     }
 
     v38 = v37;
@@ -366,41 +366,41 @@ LABEL_65:
   result = self->_hash;
   if (!result)
   {
-    v4 = [(ICEncryptedData *)self data];
-    v5 = [v4 hash];
+    data = [(ICEncryptedData *)self data];
+    v5 = [data hash];
     v6 = [(ICEncryptedData *)self tag];
     v7 = [v6 hash];
     LOBYTE(v8) = v7;
     if (!v7)
     {
-      v9 = [MEMORY[0x277CBEB68] null];
-      v8 = [v9 hash];
+      null = [MEMORY[0x277CBEB68] null];
+      v8 = [null hash];
     }
 
-    v25 = [(ICEncryptedData *)self initializationVector];
-    if (![v25 hash])
+    initializationVector = [(ICEncryptedData *)self initializationVector];
+    if (![initializationVector hash])
     {
-      v10 = [MEMORY[0x277CBEB68] null];
-      [v10 hash];
+      null2 = [MEMORY[0x277CBEB68] null];
+      [null2 hash];
     }
 
-    v11 = [(ICEncryptedData *)self fallbackTag];
-    if (![v11 hash])
+    fallbackTag = [(ICEncryptedData *)self fallbackTag];
+    if (![fallbackTag hash])
     {
-      v12 = [MEMORY[0x277CBEB68] null];
-      [v12 hash];
+      null3 = [MEMORY[0x277CBEB68] null];
+      [null3 hash];
     }
 
-    v13 = [(ICEncryptedData *)self fallbackInitializationVector];
-    if (![v13 hash])
+    fallbackInitializationVector = [(ICEncryptedData *)self fallbackInitializationVector];
+    if (![fallbackInitializationVector hash])
     {
       [MEMORY[0x277CBEB68] null];
       v24 = v5;
       v21 = v6;
-      v23 = v22 = v4;
+      v23 = v22 = data;
       [v23 hash];
 
-      v4 = v22;
+      data = v22;
       v6 = v21;
       v5 = v24;
     }
@@ -415,8 +415,8 @@ LABEL_65:
 
 - (BOOL)isValid
 {
-  v3 = [(ICEncryptedData *)self data];
-  v4 = [v3 length];
+  data = [(ICEncryptedData *)self data];
+  v4 = [data length];
 
   if (v4)
   {
@@ -429,11 +429,11 @@ LABEL_65:
 
     else
     {
-      v8 = [(ICEncryptedData *)self fallbackTag];
-      if ([v8 length])
+      fallbackTag = [(ICEncryptedData *)self fallbackTag];
+      if ([fallbackTag length])
       {
-        v9 = [(ICEncryptedData *)self fallbackInitializationVector];
-        v7 = [v9 length] != 0;
+        fallbackInitializationVector = [(ICEncryptedData *)self fallbackInitializationVector];
+        v7 = [fallbackInitializationVector length] != 0;
       }
 
       else

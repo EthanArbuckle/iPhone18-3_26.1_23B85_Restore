@@ -1,14 +1,14 @@
 @interface SBHImageOnlyApplication
 - (NSURL)bundleURL;
 - (SBHImageOnlyApplication)init;
-- (SBHImageOnlyApplication)initWithBundleIdentifier:(id)a3;
-- (id)applicationBundleIdentifierForImageForIcon:(id)a3;
-- (id)icon:(id)a3 displayNameForLocation:(id)a4;
+- (SBHImageOnlyApplication)initWithBundleIdentifier:(id)identifier;
+- (id)applicationBundleIdentifierForImageForIcon:(id)icon;
+- (id)icon:(id)icon displayNameForLocation:(id)location;
 @end
 
 @implementation SBHImageOnlyApplication
 
-- (SBHImageOnlyApplication)initWithBundleIdentifier:(id)a3
+- (SBHImageOnlyApplication)initWithBundleIdentifier:(id)identifier
 {
   v4 = sub_1BEE4708C();
   v5 = (self + OBJC_IVAR___SBHImageOnlyApplication_bundleIdentifier);
@@ -32,7 +32,7 @@
   return v6;
 }
 
-- (id)icon:(id)a3 displayNameForLocation:(id)a4
+- (id)icon:(id)icon displayNameForLocation:(id)location
 {
 
   v4 = sub_1BEE4705C();
@@ -40,7 +40,7 @@
   return v4;
 }
 
-- (id)applicationBundleIdentifierForImageForIcon:(id)a3
+- (id)applicationBundleIdentifierForImageForIcon:(id)icon
 {
 
   v3 = sub_1BEE4705C();

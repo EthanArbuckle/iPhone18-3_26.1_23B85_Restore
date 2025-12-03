@@ -1,20 +1,20 @@
 @interface HDAuthorizationStoreResetServer
-+ (BOOL)validateClient:(id)a3 error:(id *)a4;
-- (void)remote_recalibrateEstimatesForSampleType:(id)a3 effectiveDate:(id)a4 completion:(id)a5;
-- (void)remote_resetAuthorizationStatusForBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)remote_resetAuthorizationStatusesForObjects:(id)a3 completion:(id)a4;
-- (void)remote_resetObjectAuthorizationStatusForBundleIdentifier:(id)a3 objectType:(id)a4 completion:(id)a5;
++ (BOOL)validateClient:(id)client error:(id *)error;
+- (void)remote_recalibrateEstimatesForSampleType:(id)type effectiveDate:(id)date completion:(id)completion;
+- (void)remote_resetAuthorizationStatusForBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)remote_resetAuthorizationStatusesForObjects:(id)objects completion:(id)completion;
+- (void)remote_resetObjectAuthorizationStatusForBundleIdentifier:(id)identifier objectType:(id)type completion:(id)completion;
 @end
 
 @implementation HDAuthorizationStoreResetServer
 
-+ (BOOL)validateClient:(id)a3 error:(id *)a4
++ (BOOL)validateClient:(id)client error:(id *)error
 {
-  v5 = a3;
+  clientCopy = client;
   v6 = *MEMORY[0x277CCB888];
-  if ([v5 hasRequiredEntitlement:*MEMORY[0x277CCB888] error:a4])
+  if ([clientCopy hasRequiredEntitlement:*MEMORY[0x277CCB888] error:error])
   {
-    v7 = [v5 valueForEntitlement:v6];
+    v7 = [clientCopy valueForEntitlement:v6];
     objc_opt_class();
     v8 = objc_opt_isKindOfClass() ^ 1;
   }
@@ -24,30 +24,30 @@
     LOBYTE(v8) = 0;
   }
 
-  v9 = v8 | [v5 hasRequiredArrayEntitlement:v6 containing:*MEMORY[0x277CCBD60] error:a4];
+  v9 = v8 | [clientCopy hasRequiredArrayEntitlement:v6 containing:*MEMORY[0x277CCBD60] error:error];
 
   return v9 & 1;
 }
 
-- (void)remote_resetObjectAuthorizationStatusForBundleIdentifier:(id)a3 objectType:(id)a4 completion:(id)a5
+- (void)remote_resetObjectAuthorizationStatusForBundleIdentifier:(id)identifier objectType:(id)type completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = [(HDStandardTaskServer *)self profile];
-  v10 = [v9 sourceManager];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
+  sourceManager = [profile sourceManager];
   v21 = 0;
-  v11 = [v10 localSourceForBundleIdentifier:v7 error:&v21];
+  v11 = [sourceManager localSourceForBundleIdentifier:identifierCopy error:&v21];
   v12 = v21;
 
   if (v11)
   {
-    v13 = [(HDStandardTaskServer *)self profile];
+    profile2 = [(HDStandardTaskServer *)self profile];
     v20 = v12;
-    v14 = [HDObjectAuthorizationEntity resetObjectAuthorizationRecordsForSource:v11 profile:v13 error:&v20];
+    v14 = [HDObjectAuthorizationEntity resetObjectAuthorizationRecordsForSource:v11 profile:profile2 error:&v20];
     v15 = v20;
 
-    v8[2](v8, v14, v15);
+    completionCopy[2](completionCopy, v14, v15);
     v12 = v15;
   }
 
@@ -63,39 +63,39 @@
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v23 = v7;
+        v23 = identifierCopy;
         v24 = 2114;
         v25 = v12;
         _os_log_impl(&dword_228986000, v18, OS_LOG_TYPE_INFO, "Failed to look up source for bundle identifier '%@' when reseting object authorization: %{public}@", buf, 0x16u);
       }
     }
 
-    v8[2](v8, 0, v12);
+    completionCopy[2](completionCopy, 0, v12);
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remote_resetAuthorizationStatusesForObjects:(id)a3 completion:(id)a4
+- (void)remote_resetAuthorizationStatusesForObjects:(id)objects completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HDStandardTaskServer *)self profile];
-  v9 = [v8 database];
-  v17 = self;
+  objectsCopy = objects;
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
+  database = [profile database];
+  selfCopy = self;
   v18 = 0;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __90__HDAuthorizationStoreResetServer_remote_resetAuthorizationStatusesForObjects_completion___block_invoke;
   v14[3] = &unk_278615D40;
-  v15 = v6;
-  v16 = v8;
-  v10 = v8;
-  v11 = v6;
-  v12 = [(HDHealthEntity *)HDObjectAuthorizationEntity performWriteTransactionWithHealthDatabase:v9 error:&v18 block:v14];
+  v15 = objectsCopy;
+  v16 = profile;
+  v10 = profile;
+  v11 = objectsCopy;
+  v12 = [(HDHealthEntity *)HDObjectAuthorizationEntity performWriteTransactionWithHealthDatabase:database error:&v18 block:v14];
   v13 = v18;
 
-  v7[2](v7, v12, v13);
+  completionCopy[2](completionCopy, v12, v13);
 }
 
 BOOL __90__HDAuthorizationStoreResetServer_remote_resetAuthorizationStatusesForObjects_completion___block_invoke(id *a1, uint64_t a2, uint64_t a3)
@@ -178,38 +178,38 @@ LABEL_14:
   return v21;
 }
 
-- (void)remote_resetAuthorizationStatusForBundleIdentifier:(id)a3 completion:(id)a4
+- (void)remote_resetAuthorizationStatusForBundleIdentifier:(id)identifier completion:(id)completion
 {
   v35 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (identifierCopy)
   {
-    v9 = [(HDStandardTaskServer *)self profile];
+    profile = [(HDStandardTaskServer *)self profile];
     v30 = 0;
-    v10 = [HDAuthorizationEntity resetAuthorizationStatusesForBundleIdentifier:v7 profile:v9 error:&v30];
+    v10 = [HDAuthorizationEntity resetAuthorizationStatusesForBundleIdentifier:identifierCopy profile:profile error:&v30];
     v11 = v30;
 
     if (v10)
     {
-      v12 = [(HDStandardTaskServer *)self profile];
-      v13 = [v12 sourceManager];
+      profile2 = [(HDStandardTaskServer *)self profile];
+      sourceManager = [profile2 sourceManager];
       v29 = v11;
-      v14 = [v13 localSourceForBundleIdentifier:v7 error:&v29];
+      v14 = [sourceManager localSourceForBundleIdentifier:identifierCopy error:&v29];
       v15 = v29;
 
       if (v14)
       {
-        v16 = [(HDStandardTaskServer *)self profile];
+        profile3 = [(HDStandardTaskServer *)self profile];
         v28 = v15;
-        v17 = [HDObjectAuthorizationEntity resetObjectAuthorizationRecordsForSource:v14 profile:v16 error:&v28];
+        v17 = [HDObjectAuthorizationEntity resetObjectAuthorizationRecordsForSource:v14 profile:profile3 error:&v28];
         v18 = v28;
 
         if (v17)
         {
-          v19 = [(HDStandardTaskServer *)self profile];
+          profile4 = [(HDStandardTaskServer *)self profile];
           v27 = v18;
-          v20 = [HDConceptAuthorizationEntity resetConceptAuthorizationRecordsForSource:v14 profile:v19 error:&v27];
+          v20 = [HDConceptAuthorizationEntity resetConceptAuthorizationRecordsForSource:v14 profile:profile4 error:&v27];
           v15 = v27;
 
           if (!v20)
@@ -219,14 +219,14 @@ LABEL_14:
             if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
             {
               *buf = 138543618;
-              v32 = v7;
+              v32 = identifierCopy;
               v33 = 2114;
               v34 = v15;
               _os_log_error_impl(&dword_228986000, v21, OS_LOG_TYPE_ERROR, "Failed to reset status for %{public}@ (concept authorization records failure: %{public}@)", buf, 0x16u);
             }
           }
 
-          v8[2](v8, v20, v15);
+          completionCopy[2](completionCopy, v20, v15);
         }
 
         else
@@ -236,13 +236,13 @@ LABEL_14:
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
-            v32 = v7;
+            v32 = identifierCopy;
             v33 = 2114;
             v34 = v18;
             _os_log_impl(&dword_228986000, v25, OS_LOG_TYPE_DEFAULT, "Failed to reset status for %{public}@ (object authorization records failure: %{public}@)", buf, 0x16u);
           }
 
-          v8[2](v8, 0, v18);
+          completionCopy[2](completionCopy, 0, v18);
           v15 = v18;
         }
       }
@@ -254,13 +254,13 @@ LABEL_14:
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          v32 = v7;
+          v32 = identifierCopy;
           v33 = 2114;
           v34 = v15;
           _os_log_impl(&dword_228986000, v24, OS_LOG_TYPE_DEFAULT, "Failed to reset status for %{public}@ (local source failure: %{public}@)", buf, 0x16u);
         }
 
-        v8[2](v8, 0, v15);
+        completionCopy[2](completionCopy, 0, v15);
       }
 
       v11 = v15;
@@ -273,52 +273,52 @@ LABEL_14:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v32 = v7;
+        v32 = identifierCopy;
         v33 = 2114;
         v34 = v11;
         _os_log_impl(&dword_228986000, v23, OS_LOG_TYPE_DEFAULT, "Failed to reset status for %{public}@ (authorization entity failure: %{public}@)", buf, 0x16u);
       }
 
-      v8[2](v8, 0, v11);
+      completionCopy[2](completionCopy, 0, v11);
     }
   }
 
   else
   {
     v22 = [MEMORY[0x277CCA9B8] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:@"bundleIdentifier may not be nil"];
-    v8[2](v8, 0, v22);
+    completionCopy[2](completionCopy, 0, v22);
   }
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remote_recalibrateEstimatesForSampleType:(id)a3 effectiveDate:(id)a4 completion:(id)a5
+- (void)remote_recalibrateEstimatesForSampleType:(id)type effectiveDate:(id)date completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CBEAA8] date];
-  v11 = [v8 compare:v10];
+  typeCopy = type;
+  dateCopy = date;
+  completionCopy = completion;
+  date = [MEMORY[0x277CBEAA8] date];
+  v11 = [dateCopy compare:date];
 
   if (v11 == 1)
   {
-    [MEMORY[0x277CCA9B8] hk_error:3 format:{@"Effective date (%@) cannot be in the future.", v8}];
+    [MEMORY[0x277CCA9B8] hk_error:3 format:{@"Effective date (%@) cannot be in the future.", dateCopy}];
     v14 = LABEL_6:;
-    v9[2](v9, 0, v14);
+    completionCopy[2](completionCopy, 0, v14);
 
     goto LABEL_7;
   }
 
-  if ([v7 code] != 183)
+  if ([typeCopy code] != 183)
   {
-    [MEMORY[0x277CCA9B8] hk_error:3 format:{@"Estimate recalibration is not supported for %@.", v7}];
+    [MEMORY[0x277CCA9B8] hk_error:3 format:{@"Estimate recalibration is not supported for %@.", typeCopy}];
     goto LABEL_6;
   }
 
   v15 = 0;
-  v12 = [MEMORY[0x277CC1D30] resetPredictedWalkDistanceOnDate:v8 error:&v15];
+  v12 = [MEMORY[0x277CC1D30] resetPredictedWalkDistanceOnDate:dateCopy error:&v15];
   v13 = v15;
-  v9[2](v9, v12, v13);
+  completionCopy[2](completionCopy, v12, v13);
 
 LABEL_7:
 }

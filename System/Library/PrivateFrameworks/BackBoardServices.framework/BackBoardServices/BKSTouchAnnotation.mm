@@ -1,27 +1,27 @@
 @interface BKSTouchAnnotation
-- (BKSTouchAnnotation)initWithCoder:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BKSTouchAnnotation)initWithCoder:(id)coder;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BKSTouchAnnotation
 
-- (BKSTouchAnnotation)initWithCoder:(id)a3
+- (BKSTouchAnnotation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = BKSTouchAnnotation;
   v5 = [(BKSTouchAnnotation *)&v11 init];
   if (v5)
   {
-    v5->_touchIdentifier = [v4 decodeInt32ForKey:@"touchIdentifier"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"text"];
+    v5->_touchIdentifier = [coderCopy decodeInt32ForKey:@"touchIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"text"];
     text = v5->_text;
     v5->_text = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uniqueIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uniqueIdentifier"];
     uniqueIdentifier = v5->_uniqueIdentifier;
     v5->_uniqueIdentifier = v8;
   }
@@ -29,43 +29,43 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   touchIdentifier = self->_touchIdentifier;
-  v5 = a3;
-  [v5 encodeInt32:touchIdentifier forKey:@"touchIdentifier"];
-  [v5 encodeObject:self->_text forKey:@"text"];
-  [v5 encodeObject:self->_uniqueIdentifier forKey:@"uniqueIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:touchIdentifier forKey:@"touchIdentifier"];
+  [coderCopy encodeObject:self->_text forKey:@"text"];
+  [coderCopy encodeObject:self->_uniqueIdentifier forKey:@"uniqueIdentifier"];
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(BKSTouchAnnotation *)self succinctDescriptionBuilder];
-  v5 = [v4 appendUnsignedInt:self->_touchIdentifier withName:@"touchIdentifier"];
-  v6 = [v4 appendObject:self->_text withName:@"text"];
+  succinctDescriptionBuilder = [(BKSTouchAnnotation *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendUnsignedInt:self->_touchIdentifier withName:@"touchIdentifier"];
+  v6 = [succinctDescriptionBuilder appendObject:self->_text withName:@"text"];
   uniqueIdentifier = self->_uniqueIdentifier;
   if (uniqueIdentifier)
   {
-    v8 = [v4 appendObject:uniqueIdentifier withName:@"uniqueIdentifier"];
+    v8 = [succinctDescriptionBuilder appendObject:uniqueIdentifier withName:@"uniqueIdentifier"];
   }
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BKSTouchAnnotation *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BKSTouchAnnotation *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(BKSTouchAnnotation *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BKSTouchAnnotation *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 @end

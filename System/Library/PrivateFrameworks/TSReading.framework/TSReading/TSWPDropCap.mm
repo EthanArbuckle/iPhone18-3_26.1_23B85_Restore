@@ -1,10 +1,10 @@
 @interface TSWPDropCap
-+ (id)dropCapWithCharCount:(unint64_t)a3 characterStyleOverridePropertyMap:(id)a4 lineCount:(unint64_t)a5;
-+ (id)dropCapWithCharCount:(unint64_t)a3 characterStyleOverridePropertyMap:(id)a4 spacing:(id)a5;
-+ (id)dropCapWithCharCount:(unint64_t)a3 characterStyleOverridePropertyMap:(id)a4 spacings:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (TSWPDropCap)initWithCharCount:(unint64_t)a3 characterStyleOverridePropertyMap:(id)a4 spacings:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)dropCapWithCharCount:(unint64_t)count characterStyleOverridePropertyMap:(id)map lineCount:(unint64_t)lineCount;
++ (id)dropCapWithCharCount:(unint64_t)count characterStyleOverridePropertyMap:(id)map spacing:(id)spacing;
++ (id)dropCapWithCharCount:(unint64_t)count characterStyleOverridePropertyMap:(id)map spacings:(id)spacings;
+- (BOOL)isEqual:(id)equal;
+- (TSWPDropCap)initWithCharCount:(unint64_t)count characterStyleOverridePropertyMap:(id)map spacings:(id)spacings;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -12,7 +12,7 @@
 
 @implementation TSWPDropCap
 
-- (TSWPDropCap)initWithCharCount:(unint64_t)a3 characterStyleOverridePropertyMap:(id)a4 spacings:(id)a5
+- (TSWPDropCap)initWithCharCount:(unint64_t)count characterStyleOverridePropertyMap:(id)map spacings:(id)spacings
 {
   v11.receiver = self;
   v11.super_class = TSWPDropCap;
@@ -20,9 +20,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->_charCount = a3;
-    v8->_characterStyleOverridePropertyMap = [a4 copy];
-    v9->_spacings = [a5 copy];
+    v8->_charCount = count;
+    v8->_characterStyleOverridePropertyMap = [map copy];
+    v9->_spacings = [spacings copy];
   }
 
   return v9;
@@ -35,7 +35,7 @@
   [(TSWPDropCap *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   charCount = self->_charCount;
@@ -45,21 +45,21 @@
   return [v4 initWithCharCount:charCount characterStyleOverridePropertyMap:characterStyleOverridePropertyMap spacings:spacings];
 }
 
-+ (id)dropCapWithCharCount:(unint64_t)a3 characterStyleOverridePropertyMap:(id)a4 lineCount:(unint64_t)a5
++ (id)dropCapWithCharCount:(unint64_t)count characterStyleOverridePropertyMap:(id)map lineCount:(unint64_t)lineCount
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v8 = [a1 alloc];
-  v10[0] = [TSWPDropCapSpacing dropCapSpacingWithLineCount:a5 elevatedLineCount:0];
-  return [v8 initWithCharCount:a3 characterStyleOverridePropertyMap:a4 spacings:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v10, 1)}];
+  v8 = [self alloc];
+  v10[0] = [TSWPDropCapSpacing dropCapSpacingWithLineCount:lineCount elevatedLineCount:0];
+  return [v8 initWithCharCount:count characterStyleOverridePropertyMap:map spacings:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v10, 1)}];
 }
 
-+ (id)dropCapWithCharCount:(unint64_t)a3 characterStyleOverridePropertyMap:(id)a4 spacing:(id)a5
++ (id)dropCapWithCharCount:(unint64_t)count characterStyleOverridePropertyMap:(id)map spacing:(id)spacing
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v8 = [a1 alloc];
-  if (a5)
+  v8 = [self alloc];
+  if (spacing)
   {
-    v11[0] = a5;
+    v11[0] = spacing;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
   }
 
@@ -68,12 +68,12 @@
     v9 = 0;
   }
 
-  return [v8 initWithCharCount:a3 characterStyleOverridePropertyMap:a4 spacings:v9];
+  return [v8 initWithCharCount:count characterStyleOverridePropertyMap:map spacings:v9];
 }
 
-+ (id)dropCapWithCharCount:(unint64_t)a3 characterStyleOverridePropertyMap:(id)a4 spacings:(id)a5
++ (id)dropCapWithCharCount:(unint64_t)count characterStyleOverridePropertyMap:(id)map spacings:(id)spacings
 {
-  v5 = [[a1 alloc] initWithCharCount:a3 characterStyleOverridePropertyMap:a4 spacings:{objc_msgSend(a5, "tsu_map:", &__block_literal_global_75)}];
+  v5 = [[self alloc] initWithCharCount:count characterStyleOverridePropertyMap:map spacings:{objc_msgSend(spacings, "tsu_map:", &__block_literal_global_75)}];
 
   return v5;
 }
@@ -85,31 +85,31 @@ id __79__TSWPDropCap_dropCapWithCharCount_characterStyleOverridePropertyMap_spac
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   v4 = TSUDynamicCast();
   if (v4)
   {
     v5 = v4;
-    v6 = [(TSWPDropCap *)self charCount];
-    if (v6 == [v5 charCount])
+    charCount = [(TSWPDropCap *)self charCount];
+    if (charCount == [v5 charCount])
     {
       LODWORD(v4) = -[NSArray isEqualToArray:](-[TSWPDropCap spacings](self, "spacings"), "isEqualToArray:", [v5 spacings]);
       if (v4)
       {
-        v7 = [(TSWPDropCap *)self characterStyleOverridePropertyMap];
-        if (v7 == [v5 characterStyleOverridePropertyMap])
+        characterStyleOverridePropertyMap = [(TSWPDropCap *)self characterStyleOverridePropertyMap];
+        if (characterStyleOverridePropertyMap == [v5 characterStyleOverridePropertyMap])
         {
           LOBYTE(v4) = 1;
         }
 
         else
         {
-          v8 = [(TSWPDropCap *)self characterStyleOverridePropertyMap];
-          v9 = [v5 characterStyleOverridePropertyMap];
+          characterStyleOverridePropertyMap2 = [(TSWPDropCap *)self characterStyleOverridePropertyMap];
+          characterStyleOverridePropertyMap3 = [v5 characterStyleOverridePropertyMap];
 
-          LOBYTE(v4) = [(TSSPropertyMap *)v8 isEqual:v9];
+          LOBYTE(v4) = [(TSSPropertyMap *)characterStyleOverridePropertyMap2 isEqual:characterStyleOverridePropertyMap3];
         }
       }
     }
@@ -125,8 +125,8 @@ id __79__TSWPDropCap_dropCapWithCharCount_characterStyleOverridePropertyMap_spac
 
 - (unint64_t)hash
 {
-  v3 = [(TSWPDropCap *)self charCount];
-  v4 = v3 ^ (4 * [(TSSPropertyMap *)[(TSWPDropCap *)self characterStyleOverridePropertyMap] hash]);
+  charCount = [(TSWPDropCap *)self charCount];
+  v4 = charCount ^ (4 * [(TSSPropertyMap *)[(TSWPDropCap *)self characterStyleOverridePropertyMap] hash]);
   return v4 ^ ([(NSArray *)[(TSWPDropCap *)self spacings] hash]<< 10);
 }
 

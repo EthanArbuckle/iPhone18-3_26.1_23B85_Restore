@@ -1,9 +1,9 @@
 @interface _MFMailAccountProxySource
 - (_MFMailAccountProxySource)init;
-- (id)accountProxiesOriginatingBundleID:(id)a3 sourceAccountManagement:(int)a4;
+- (id)accountProxiesOriginatingBundleID:(id)d sourceAccountManagement:(int)management;
 - (void)_deregisterForNotifications_nts;
 - (void)_registerForNotifications_nts;
-- (void)_resetAccountsChanged:(BOOL)a3;
+- (void)_resetAccountsChanged:(BOOL)changed;
 - (void)dealloc;
 @end
 
@@ -37,10 +37,10 @@
   [(_MFMailAccountProxySource *)&v4 dealloc];
 }
 
-- (id)accountProxiesOriginatingBundleID:(id)a3 sourceAccountManagement:(int)a4
+- (id)accountProxiesOriginatingBundleID:(id)d sourceAccountManagement:(int)management
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&management;
+  dCopy = d;
   [(NSLock *)self->_lock lock];
   if (!self->_accountProxies || self->_lastSourceAccountManagementQueried != v4)
   {
@@ -56,7 +56,7 @@
     v19 = v11;
     v20 = v9;
     v12 = v9;
-    [v10 accountValuesForKeys:v7 originatingBundleID:v6 sourceAccountManagement:v4 launchMobileMail:1 completionBlock:v18];
+    [v10 accountValuesForKeys:v7 originatingBundleID:dCopy sourceAccountManagement:v4 launchMobileMail:1 completionBlock:v18];
     dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
     accountProxies = self->_accountProxies;
     self->_accountProxies = v11;
@@ -73,7 +73,7 @@
   return v15;
 }
 
-- (void)_resetAccountsChanged:(BOOL)a3
+- (void)_resetAccountsChanged:(BOOL)changed
 {
   [(NSLock *)self->_lock lock];
   [(_MFMailAccountProxySource *)self _deregisterForNotifications_nts];
@@ -81,8 +81,8 @@
   self->_accountProxies = 0;
 
   [(NSLock *)self->_lock unlock];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 postNotificationName:@"MFMailComposeControllerShouldReloadAccounts" object:0 userInfo:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MFMailComposeControllerShouldReloadAccounts" object:0 userInfo:0];
 }
 
 - (void)_registerForNotifications_nts
@@ -92,7 +92,7 @@
   v3 = 136315394;
   v4 = v2;
   v5 = 1024;
-  v6 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1BE819000, a2, OS_LOG_TYPE_ERROR, "Failed to register for %s notifications: %u", &v3, 0x12u);
 }
 
@@ -103,8 +103,8 @@
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, *MEMORY[0x1E69B1558], 0);
     notify_cancel(self->_notifyToken);
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 removeObserver:self name:*MEMORY[0x1E69DDAC8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDAC8] object:0];
 
     self->_registeredForNotifications = 0;
   }

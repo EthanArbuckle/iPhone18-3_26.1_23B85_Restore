@@ -1,38 +1,38 @@
 @interface PUImageAnalysisInteraction
 - (BOOL)_allowsSubjectLifting;
-- (BOOL)actionInfoItemExistsAtLocation:(id)a3;
+- (BOOL)actionInfoItemExistsAtLocation:(id)location;
 - (BOOL)allowsVKRemoveBackground;
-- (BOOL)dataDetectorExistsAtLocation:(id)a3;
+- (BOOL)dataDetectorExistsAtLocation:(id)location;
 - (BOOL)hasActiveTextSelection;
-- (BOOL)imageAnalysisInteraction:(id)a3 shouldBeginAtPoint:(CGPoint)a4 forAnalysisType:(unint64_t)a5;
-- (BOOL)imageAnalysisInteraction:(id)a3 shouldShowLookupForItemFromCallout:(id)a4;
+- (BOOL)imageAnalysisInteraction:(id)interaction shouldBeginAtPoint:(CGPoint)point forAnalysisType:(unint64_t)type;
+- (BOOL)imageAnalysisInteraction:(id)interaction shouldShowLookupForItemFromCallout:(id)callout;
 - (BOOL)imageInteractionHasAnalysisAndSubjectLiftingEnabled;
-- (BOOL)imageSubjectExistsAtLocation:(id)a3;
-- (BOOL)interactiveItemExistsAtLocation:(id)a3;
+- (BOOL)imageSubjectExistsAtLocation:(id)location;
+- (BOOL)interactiveItemExistsAtLocation:(id)location;
 - (BOOL)isImageSubjectAnalysisAvailable;
 - (BOOL)isImageSubjectAnalyzingFinished;
-- (BOOL)isShowingLivePhotoForImageAnalysisInteraction:(id)a3;
+- (BOOL)isShowingLivePhotoForImageAnalysisInteraction:(id)interaction;
 - (BOOL)isSubjectInteractionInProgress;
 - (BOOL)isVisualIntelligenceOverlayInitialized;
 - (BOOL)subjectHighlightActive;
-- (BOOL)textExistsAtLocation:(id)a3;
+- (BOOL)textExistsAtLocation:(id)location;
 - (BOOL)visualImageInteractionEnabled;
-- (BOOL)visualSearchExistsAtLocation:(id)a3;
+- (BOOL)visualSearchExistsAtLocation:(id)location;
 - (CGRect)contentFrame;
 - (CGRect)contentsRect;
-- (CGRect)contentsRectForImageAnalysisInteraction:(id)a3;
+- (CGRect)contentsRectForImageAnalysisInteraction:(id)interaction;
 - (PUAssetViewModel)assetViewModel;
 - (PUBrowsingViewModel)browsingViewModel;
-- (PUImageAnalysisInteraction)initWithInteractionCreator:(id)a3;
+- (PUImageAnalysisInteraction)initWithInteractionCreator:(id)creator;
 - (PUImageAnalysisInteractionDelegate)delegate;
 - (PXEventCoalescer)sizeChangeCoalescer;
 - (UICoordinateSpace)contentCoordinateSpace;
 - (UIEdgeInsets)additionalActionInfoEdgeInsets;
-- (id)contentImageForImageAnalysisInteraction:(id)a3;
-- (id)contentViewForImageAnalysisInteraction:(id)a3;
-- (id)presentingViewControllerForImageAnalysisInteraction:(id)a3;
-- (void)_handleAssetViewModelChange:(id)a3;
-- (void)_handleBrowsingViewModelChange:(id)a3;
+- (id)contentImageForImageAnalysisInteraction:(id)interaction;
+- (id)contentViewForImageAnalysisInteraction:(id)interaction;
+- (id)presentingViewControllerForImageAnalysisInteraction:(id)interaction;
+- (void)_handleAssetViewModelChange:(id)change;
+- (void)_handleBrowsingViewModelChange:(id)change;
 - (void)_invalidateInteraction;
 - (void)_ppt_fireVKAnalysisWaitingTimer;
 - (void)_ppt_resetVKAnalysisWaitingTimer;
@@ -44,18 +44,18 @@
 - (void)_updateStatusCornerState;
 - (void)beginImageSubjectAnalysisIfNecessary;
 - (void)dealloc;
-- (void)imageAnalysisInteraction:(id)a3 didTapVisualSearchIndicatorWithNormalizedBoundingBox:(CGRect)a4;
-- (void)imageAnalysisInteraction:(id)a3 livePhotoShouldPlay:(BOOL)a4;
-- (void)imageAnalysisInteractionDidDismissVisualSearchController:(id)a3;
-- (void)imageAnalysisInteractionSubjectInteractionInProgressDidChange:(id)a3;
-- (void)ppt_notifyWhenVKAnalysisIsReadyWithTimeout:(double)a3 completionHandler:(id)a4;
-- (void)setAdditionalActionInfoEdgeInsets:(UIEdgeInsets)a3;
-- (void)setAssetViewModel:(id)a3;
-- (void)setBrowsingViewModel:(id)a3;
-- (void)setContentsRect:(CGRect)a3;
-- (void)setHostView:(id)a3;
-- (void)setIsDrivingLivePhotoPlayback:(BOOL)a3;
-- (void)viewModel:(id)a3 didChange:(id)a4;
+- (void)imageAnalysisInteraction:(id)interaction didTapVisualSearchIndicatorWithNormalizedBoundingBox:(CGRect)box;
+- (void)imageAnalysisInteraction:(id)interaction livePhotoShouldPlay:(BOOL)play;
+- (void)imageAnalysisInteractionDidDismissVisualSearchController:(id)controller;
+- (void)imageAnalysisInteractionSubjectInteractionInProgressDidChange:(id)change;
+- (void)ppt_notifyWhenVKAnalysisIsReadyWithTimeout:(double)timeout completionHandler:(id)handler;
+- (void)setAdditionalActionInfoEdgeInsets:(UIEdgeInsets)insets;
+- (void)setAssetViewModel:(id)model;
+- (void)setBrowsingViewModel:(id)model;
+- (void)setContentsRect:(CGRect)rect;
+- (void)setHostView:(id)view;
+- (void)setIsDrivingLivePhotoPlayback:(BOOL)playback;
+- (void)viewModel:(id)model didChange:(id)change;
 @end
 
 @implementation PUImageAnalysisInteraction
@@ -127,41 +127,41 @@
   return WeakRetained;
 }
 
-- (void)ppt_notifyWhenVKAnalysisIsReadyWithTimeout:(double)a3 completionHandler:(id)a4
+- (void)ppt_notifyWhenVKAnalysisIsReadyWithTimeout:(double)timeout completionHandler:(id)handler
 {
-  v7 = a4;
-  if (v7)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v8 = [MEMORY[0x1E69DC668] sharedApplication];
-    v9 = [v8 launchedToTest];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    launchedToTest = [mEMORY[0x1E69DC668] launchedToTest];
 
-    if (v9)
+    if (launchedToTest)
     {
-      v10 = [(PUImageAnalysisInteraction *)self pptVKAnalysisWaitingTimer];
-      v11 = [v10 isValid];
+      pptVKAnalysisWaitingTimer = [(PUImageAnalysisInteraction *)self pptVKAnalysisWaitingTimer];
+      isValid = [pptVKAnalysisWaitingTimer isValid];
 
-      if (v11)
+      if (isValid)
       {
-        v20 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v20 handleFailureInMethod:a2 object:self file:@"PUImageAnalysisInteraction.m" lineNumber:637 description:{@"Should not request notification, when a request is already on going"}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PUImageAnalysisInteraction.m" lineNumber:637 description:{@"Should not request notification, when a request is already on going"}];
       }
 
       v12 = MEMORY[0x1E69C3C88];
-      v13 = [(PUImageAnalysisInteraction *)self assetViewModel];
-      v14 = [v13 asset];
-      v15 = [v12 canRequestVKImageAnalysisForAsset:v14];
+      assetViewModel = [(PUImageAnalysisInteraction *)self assetViewModel];
+      asset = [assetViewModel asset];
+      v15 = [v12 canRequestVKImageAnalysisForAsset:asset];
 
-      v16 = [(PUImageAnalysisInteraction *)self assetViewModel];
-      v17 = [v16 visualImageAnalysis];
+      assetViewModel2 = [(PUImageAnalysisInteraction *)self assetViewModel];
+      visualImageAnalysis = [assetViewModel2 visualImageAnalysis];
 
-      if (v17 || (v15 & 1) == 0)
+      if (visualImageAnalysis || (v15 & 1) == 0)
       {
         [(PUImageAnalysisInteraction *)self _ppt_resetVKAnalysisWaitingTimer];
         location[1] = MEMORY[0x1E69E9820];
         location[2] = 3221225472;
         location[3] = __91__PUImageAnalysisInteraction_ppt_notifyWhenVKAnalysisIsReadyWithTimeout_completionHandler___block_invoke;
         location[4] = &unk_1E7B80C88;
-        v28 = v7;
+        v28 = handlerCopy;
         px_dispatch_on_main_queue();
       }
 
@@ -173,9 +173,9 @@
         v22 = 3221225472;
         v23 = __91__PUImageAnalysisInteraction_ppt_notifyWhenVKAnalysisIsReadyWithTimeout_completionHandler___block_invoke_2;
         v24 = &unk_1E7B7B3B0;
-        v25 = v7;
+        v25 = handlerCopy;
         objc_copyWeak(&v26, location);
-        v19 = [v18 pu_scheduledTimerWithTimeInterval:0 repeats:&v21 block:a3];
+        v19 = [v18 pu_scheduledTimerWithTimeInterval:0 repeats:&v21 block:timeout];
         [(PUImageAnalysisInteraction *)self setPptVKAnalysisWaitingTimer:v19, v21, v22, v23, v24];
 
         objc_destroyWeak(&v26);
@@ -204,16 +204,16 @@ void __91__PUImageAnalysisInteraction_ppt_notifyWhenVKAnalysisIsReadyWithTimeout
 
 - (void)_ppt_fireVKAnalysisWaitingTimer
 {
-  v3 = [(PUImageAnalysisInteraction *)self pptVKAnalysisWaitingTimer];
-  [v3 fire];
+  pptVKAnalysisWaitingTimer = [(PUImageAnalysisInteraction *)self pptVKAnalysisWaitingTimer];
+  [pptVKAnalysisWaitingTimer fire];
 
   [(PUImageAnalysisInteraction *)self _ppt_resetVKAnalysisWaitingTimer];
 }
 
 - (void)_ppt_resetVKAnalysisWaitingTimer
 {
-  v3 = [(PUImageAnalysisInteraction *)self pptVKAnalysisWaitingTimer];
-  [v3 invalidate];
+  pptVKAnalysisWaitingTimer = [(PUImageAnalysisInteraction *)self pptVKAnalysisWaitingTimer];
+  [pptVKAnalysisWaitingTimer invalidate];
 
   [(PUImageAnalysisInteraction *)self setPptVKAnalysisWaitingTimer:0];
 }
@@ -221,20 +221,20 @@ void __91__PUImageAnalysisInteraction_ppt_notifyWhenVKAnalysisIsReadyWithTimeout
 - (BOOL)allowsVKRemoveBackground
 {
   v2 = +[PUOneUpSettings sharedInstance];
-  v3 = [v2 allowsVisualIntelligenceRemoveBackground];
+  allowsVisualIntelligenceRemoveBackground = [v2 allowsVisualIntelligenceRemoveBackground];
 
-  return v3;
+  return allowsVisualIntelligenceRemoveBackground;
 }
 
 - (void)_updateStatusCornerState
 {
-  v3 = [(PUImageAnalysisInteraction *)self assetViewModel];
-  if ([v3 statusCornerState] != 1)
+  assetViewModel = [(PUImageAnalysisInteraction *)self assetViewModel];
+  if ([assetViewModel statusCornerState] != 1)
   {
-    v4 = [(PUImageAnalysisInteraction *)self interaction];
-    if (([v4 actionInfoViewHidden] & 1) != 0 || !objc_msgSend(v4, "liveTextButtonVisible"))
+    interaction = [(PUImageAnalysisInteraction *)self interaction];
+    if (([interaction actionInfoViewHidden] & 1) != 0 || !objc_msgSend(interaction, "liveTextButtonVisible"))
     {
-      if ([v3 statusCornerState] != 2)
+      if ([assetViewModel statusCornerState] != 2)
       {
 LABEL_8:
 
@@ -257,7 +257,7 @@ LABEL_8:
 
     v5[2] = v6;
     v5[3] = &unk_1E7B80DD0;
-    v7 = v3;
+    v7 = assetViewModel;
     v5[4] = v7;
     [v7 performChanges:v5];
 
@@ -269,26 +269,26 @@ LABEL_9:
 
 - (BOOL)isSubjectInteractionInProgress
 {
-  v2 = [(PUImageAnalysisInteraction *)self interaction];
-  v3 = [v2 subjectInteractionInProgress];
+  interaction = [(PUImageAnalysisInteraction *)self interaction];
+  subjectInteractionInProgress = [interaction subjectInteractionInProgress];
 
-  return v3;
+  return subjectInteractionInProgress;
 }
 
 - (BOOL)subjectHighlightActive
 {
-  v2 = [(PUImageAnalysisInteraction *)self interaction];
-  v3 = [v2 subjectHighlightActive];
+  interaction = [(PUImageAnalysisInteraction *)self interaction];
+  subjectHighlightActive = [interaction subjectHighlightActive];
 
-  return v3;
+  return subjectHighlightActive;
 }
 
 - (BOOL)imageInteractionHasAnalysisAndSubjectLiftingEnabled
 {
   if (-[PUImageAnalysisInteraction allowsVKRemoveBackground](self, "allowsVKRemoveBackground") && (-[PUImageAnalysisInteraction interaction](self, "interaction"), v3 = objc_claimAutoreleasedReturnValue(), [v3 analysis], v4 = objc_claimAutoreleasedReturnValue(), v4, v3, v4))
   {
-    v5 = [(PUImageAnalysisInteraction *)self interaction];
-    v6 = ([v5 activeInteractionTypes] >> 3) & 1;
+    interaction = [(PUImageAnalysisInteraction *)self interaction];
+    v6 = ([interaction activeInteractionTypes] >> 3) & 1;
   }
 
   else
@@ -303,46 +303,46 @@ LABEL_9:
 {
   if ([(PUImageAnalysisInteraction *)self allowsVKRemoveBackground])
   {
-    v3 = [(PUImageAnalysisInteraction *)self interaction];
-    [v3 beginImageSubjectAnalysisIfNecessary];
+    interaction = [(PUImageAnalysisInteraction *)self interaction];
+    [interaction beginImageSubjectAnalysisIfNecessary];
   }
 }
 
 - (BOOL)isImageSubjectAnalysisAvailable
 {
-  v2 = [(PUImageAnalysisInteraction *)self interaction];
-  v3 = [v2 isSubjectHighlightAvailable];
+  interaction = [(PUImageAnalysisInteraction *)self interaction];
+  isSubjectHighlightAvailable = [interaction isSubjectHighlightAvailable];
 
-  return v3;
+  return isSubjectHighlightAvailable;
 }
 
 - (BOOL)hasActiveTextSelection
 {
-  v2 = [(PUImageAnalysisInteraction *)self interaction];
-  v3 = [v2 hasActiveTextSelection];
+  interaction = [(PUImageAnalysisInteraction *)self interaction];
+  hasActiveTextSelection = [interaction hasActiveTextSelection];
 
-  return v3;
+  return hasActiveTextSelection;
 }
 
 - (BOOL)isVisualIntelligenceOverlayInitialized
 {
-  v2 = [(PUImageAnalysisInteraction *)self interaction];
-  v3 = [v2 analysis];
-  v4 = v3 != 0;
+  interaction = [(PUImageAnalysisInteraction *)self interaction];
+  analysis = [interaction analysis];
+  v4 = analysis != 0;
 
   return v4;
 }
 
-- (BOOL)imageSubjectExistsAtLocation:(id)a3
+- (BOOL)imageSubjectExistsAtLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   if ([(PUImageAnalysisInteraction *)self allowsVKRemoveBackground])
   {
-    v5 = [(PUImageAnalysisInteraction *)self interaction];
-    v6 = [(PUImageAnalysisInteraction *)self interaction];
-    v7 = [v6 view];
-    [v4 locationInView:v7];
-    v8 = [v5 imageSubjectExistsAtPoint:?];
+    interaction = [(PUImageAnalysisInteraction *)self interaction];
+    interaction2 = [(PUImageAnalysisInteraction *)self interaction];
+    view = [interaction2 view];
+    [locationCopy locationInView:view];
+    v8 = [interaction imageSubjectExistsAtPoint:?];
   }
 
   else
@@ -353,101 +353,101 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)actionInfoItemExistsAtLocation:(id)a3
+- (BOOL)actionInfoItemExistsAtLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(PUImageAnalysisInteraction *)self interaction];
-  v6 = [(PUImageAnalysisInteraction *)self interaction];
-  v7 = [v6 view];
-  [v4 locationInView:v7];
+  locationCopy = location;
+  interaction = [(PUImageAnalysisInteraction *)self interaction];
+  interaction2 = [(PUImageAnalysisInteraction *)self interaction];
+  view = [interaction2 view];
+  [locationCopy locationInView:view];
   v9 = v8;
   v11 = v10;
 
-  LOBYTE(v4) = [v5 actionInfoItemExistsAtPoint:{v9, v11}];
-  return v4;
+  LOBYTE(locationCopy) = [interaction actionInfoItemExistsAtPoint:{v9, v11}];
+  return locationCopy;
 }
 
-- (BOOL)interactiveItemExistsAtLocation:(id)a3
+- (BOOL)interactiveItemExistsAtLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(PUImageAnalysisInteraction *)self interaction];
-  v6 = [(PUImageAnalysisInteraction *)self interaction];
-  v7 = [v6 view];
-  [v4 locationInView:v7];
+  locationCopy = location;
+  interaction = [(PUImageAnalysisInteraction *)self interaction];
+  interaction2 = [(PUImageAnalysisInteraction *)self interaction];
+  view = [interaction2 view];
+  [locationCopy locationInView:view];
   v9 = v8;
   v11 = v10;
 
-  LOBYTE(v4) = [v5 interactableItemExistsAtPoint:{v9, v11}];
-  return v4;
+  LOBYTE(locationCopy) = [interaction interactableItemExistsAtPoint:{v9, v11}];
+  return locationCopy;
 }
 
-- (BOOL)dataDetectorExistsAtLocation:(id)a3
+- (BOOL)dataDetectorExistsAtLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(PUImageAnalysisInteraction *)self interaction];
-  v6 = [(PUImageAnalysisInteraction *)self interaction];
-  v7 = [v6 view];
-  [v4 locationInView:v7];
+  locationCopy = location;
+  interaction = [(PUImageAnalysisInteraction *)self interaction];
+  interaction2 = [(PUImageAnalysisInteraction *)self interaction];
+  view = [interaction2 view];
+  [locationCopy locationInView:view];
   v9 = v8;
   v11 = v10;
 
-  LOBYTE(v4) = [v5 dataDetectorExistsAtPoint:{v9, v11}];
-  return v4;
+  LOBYTE(locationCopy) = [interaction dataDetectorExistsAtPoint:{v9, v11}];
+  return locationCopy;
 }
 
-- (BOOL)textExistsAtLocation:(id)a3
+- (BOOL)textExistsAtLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(PUImageAnalysisInteraction *)self interaction];
-  v6 = [(PUImageAnalysisInteraction *)self interaction];
-  v7 = [v6 view];
-  [v4 locationInView:v7];
+  locationCopy = location;
+  interaction = [(PUImageAnalysisInteraction *)self interaction];
+  interaction2 = [(PUImageAnalysisInteraction *)self interaction];
+  view = [interaction2 view];
+  [locationCopy locationInView:view];
   v9 = v8;
   v11 = v10;
 
-  LOBYTE(v4) = [v5 textExistsAtPoint:{v9, v11}];
-  return v4;
+  LOBYTE(locationCopy) = [interaction textExistsAtPoint:{v9, v11}];
+  return locationCopy;
 }
 
 - (BOOL)visualImageInteractionEnabled
 {
-  v2 = self;
-  v3 = [(PUImageAnalysisInteraction *)self delegate];
-  LOBYTE(v2) = [v3 analysisInteractionAllowedForImageAnalysisInteraction:v2];
+  selfCopy = self;
+  delegate = [(PUImageAnalysisInteraction *)self delegate];
+  LOBYTE(selfCopy) = [delegate analysisInteractionAllowedForImageAnalysisInteraction:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)setIsDrivingLivePhotoPlayback:(BOOL)a3
+- (void)setIsDrivingLivePhotoPlayback:(BOOL)playback
 {
-  if (self->_isDrivingLivePhotoPlayback != a3)
+  if (self->_isDrivingLivePhotoPlayback != playback)
   {
-    self->_isDrivingLivePhotoPlayback = a3;
-    if (!a3 && [(PUImageAnalysisInteraction *)self shouldResetInteractionWhenNotDrivingLivePhotoPlayback])
+    self->_isDrivingLivePhotoPlayback = playback;
+    if (!playback && [(PUImageAnalysisInteraction *)self shouldResetInteractionWhenNotDrivingLivePhotoPlayback])
     {
       [(PUImageAnalysisInteraction *)self _resetInteraction];
     }
 
-    v5 = [(PUImageAnalysisInteraction *)self delegate];
-    [v5 imageAnalysisInteractionIsDrivingLivePhotoPlaybackDidChange:self];
+    delegate = [(PUImageAnalysisInteraction *)self delegate];
+    [delegate imageAnalysisInteractionIsDrivingLivePhotoPlaybackDidChange:self];
   }
 }
 
-- (void)imageAnalysisInteractionDidDismissVisualSearchController:(id)a3
+- (void)imageAnalysisInteractionDidDismissVisualSearchController:(id)controller
 {
-  v3 = [(PUImageAnalysisInteraction *)self assetViewModel];
+  assetViewModel = [(PUImageAnalysisInteraction *)self assetViewModel];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __87__PUImageAnalysisInteraction_imageAnalysisInteractionDidDismissVisualSearchController___block_invoke;
   v5[3] = &unk_1E7B80DD0;
-  v6 = v3;
-  v4 = v3;
+  v6 = assetViewModel;
+  v4 = assetViewModel;
   [v4 performChanges:v5];
 }
 
-- (void)imageAnalysisInteraction:(id)a3 didTapVisualSearchIndicatorWithNormalizedBoundingBox:(CGRect)a4
+- (void)imageAnalysisInteraction:(id)interaction didTapVisualSearchIndicatorWithNormalizedBoundingBox:(CGRect)box
 {
-  v4 = [(PUImageAnalysisInteraction *)self assetViewModel:a3];
+  v4 = [(PUImageAnalysisInteraction *)self assetViewModel:interaction];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __108__PUImageAnalysisInteraction_imageAnalysisInteraction_didTapVisualSearchIndicatorWithNormalizedBoundingBox___block_invoke;
@@ -457,32 +457,32 @@ LABEL_9:
   [v5 performChanges:v6];
 }
 
-- (id)presentingViewControllerForImageAnalysisInteraction:(id)a3
+- (id)presentingViewControllerForImageAnalysisInteraction:(id)interaction
 {
-  v4 = [(PUImageAnalysisInteraction *)self delegate];
-  v5 = [v4 presentingViewControllerForImageAnalysisInteraction:self];
+  delegate = [(PUImageAnalysisInteraction *)self delegate];
+  v5 = [delegate presentingViewControllerForImageAnalysisInteraction:self];
 
   return v5;
 }
 
-- (void)imageAnalysisInteraction:(id)a3 livePhotoShouldPlay:(BOOL)a4
+- (void)imageAnalysisInteraction:(id)interaction livePhotoShouldPlay:(BOOL)play
 {
-  v4 = a4;
-  v6 = [(PUImageAnalysisInteraction *)self assetViewModel];
-  v7 = [v6 isAccessoryViewVisible];
+  playCopy = play;
+  assetViewModel = [(PUImageAnalysisInteraction *)self assetViewModel];
+  isAccessoryViewVisible = [assetViewModel isAccessoryViewVisible];
 
-  if ((v7 & 1) == 0)
+  if ((isAccessoryViewVisible & 1) == 0)
   {
-    v8 = [(PUImageAnalysisInteraction *)self browsingViewModel];
+    browsingViewModel = [(PUImageAnalysisInteraction *)self browsingViewModel];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __75__PUImageAnalysisInteraction_imageAnalysisInteraction_livePhotoShouldPlay___block_invoke;
     v9[3] = &unk_1E7B7FF98;
     v9[4] = self;
-    v10 = v4;
-    [v8 performChanges:v9];
+    v10 = playCopy;
+    [browsingViewModel performChanges:v9];
 
-    [(PUImageAnalysisInteraction *)self setIsDrivingLivePhotoPlayback:v4];
+    [(PUImageAnalysisInteraction *)self setIsDrivingLivePhotoPlayback:playCopy];
   }
 }
 
@@ -493,11 +493,11 @@ void __75__PUImageAnalysisInteraction_imageAnalysisInteraction_livePhotoShouldPl
   [v2 setLivePhotoShouldPlay:v1];
 }
 
-- (BOOL)isShowingLivePhotoForImageAnalysisInteraction:(id)a3
+- (BOOL)isShowingLivePhotoForImageAnalysisInteraction:(id)interaction
 {
-  v3 = [(PUImageAnalysisInteraction *)self assetViewModel];
-  v4 = [v3 asset];
-  v5 = [v4 playbackStyle] == 3;
+  assetViewModel = [(PUImageAnalysisInteraction *)self assetViewModel];
+  asset = [assetViewModel asset];
+  v5 = [asset playbackStyle] == 3;
 
   return v5;
 }
@@ -510,17 +510,17 @@ uint64_t __88__PUImageAnalysisInteraction_imageAnalysisInteraction_liveTextButto
   return [v2 _updateAdditionalActionInfoEdgeInsets];
 }
 
-- (BOOL)imageAnalysisInteraction:(id)a3 shouldShowLookupForItemFromCallout:(id)a4
+- (BOOL)imageAnalysisInteraction:(id)interaction shouldShowLookupForItemFromCallout:(id)callout
 {
-  v5 = [PUOneUpSettings sharedInstance:a3];
-  v6 = [v5 allowsVisualIntelligenceVisualLookupInfoPanelMode];
+  v5 = [PUOneUpSettings sharedInstance:interaction];
+  allowsVisualIntelligenceVisualLookupInfoPanelMode = [v5 allowsVisualIntelligenceVisualLookupInfoPanelMode];
 
-  if (v6)
+  if (allowsVisualIntelligenceVisualLookupInfoPanelMode)
   {
-    v7 = [MEMORY[0x1E69DC938] currentDevice];
-    v8 = [v7 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v8 != 1 || (-[PUImageAnalysisInteraction browsingViewModel](self, "browsingViewModel"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 horizontalSizeClass], v9, v10 != 2))
+    if (userInterfaceIdiom != 1 || (-[PUImageAnalysisInteraction browsingViewModel](self, "browsingViewModel"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 horizontalSizeClass], v9, v10 != 2))
     {
       objc_initWeak(&location, self);
       v11 = dispatch_time(0, 200000000);
@@ -546,26 +546,26 @@ void __90__PUImageAnalysisInteraction_imageAnalysisInteraction_shouldShowLookupF
   [v2 showDetailsViewForImageAnalysisInteraction:*(a1 + 32)];
 }
 
-- (void)imageAnalysisInteractionSubjectInteractionInProgressDidChange:(id)a3
+- (void)imageAnalysisInteractionSubjectInteractionInProgressDidChange:(id)change
 {
-  v4 = [(PUImageAnalysisInteraction *)self delegate];
-  [v4 imageAnalysisInteractionSubjectInteractionInProgressDidChange:self];
+  delegate = [(PUImageAnalysisInteraction *)self delegate];
+  [delegate imageAnalysisInteractionSubjectInteractionInProgressDidChange:self];
 }
 
-- (BOOL)imageAnalysisInteraction:(id)a3 shouldBeginAtPoint:(CGPoint)a4 forAnalysisType:(unint64_t)a5
+- (BOOL)imageAnalysisInteraction:(id)interaction shouldBeginAtPoint:(CGPoint)point forAnalysisType:(unint64_t)type
 {
-  v5 = a5;
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  v10 = [(PUImageAnalysisInteraction *)self interaction];
+  typeCopy = type;
+  y = point.y;
+  x = point.x;
+  interactionCopy = interaction;
+  interaction = [(PUImageAnalysisInteraction *)self interaction];
 
-  if (v10 != v9)
+  if (interaction != interactionCopy)
   {
     goto LABEL_2;
   }
 
-  if ((v5 & 8) == 0)
+  if ((typeCopy & 8) == 0)
   {
 LABEL_4:
     v11 = 1;
@@ -574,17 +574,17 @@ LABEL_4:
 
   if ([(PUImageAnalysisInteraction *)self allowsVKRemoveBackground])
   {
-    if (![v9 isSubjectHighlightAvailable])
+    if (![interactionCopy isSubjectHighlightAvailable])
     {
       goto LABEL_4;
     }
 
-    if ([v9 imageSubjectExistsAtPoint:{x, y}])
+    if ([interactionCopy imageSubjectExistsAtPoint:{x, y}])
     {
       v13 = MEMORY[0x1E69C3C88];
-      v14 = [(PUImageAnalysisInteraction *)self assetViewModel];
-      v15 = [v14 asset];
-      [v13 preheatResourcesForSubjectExtractionOfAsset:v15];
+      assetViewModel = [(PUImageAnalysisInteraction *)self assetViewModel];
+      asset = [assetViewModel asset];
+      [v13 preheatResourcesForSubjectExtractionOfAsset:asset];
 
       goto LABEL_4;
     }
@@ -597,22 +597,22 @@ LABEL_5:
   return v11;
 }
 
-- (CGRect)contentsRectForImageAnalysisInteraction:(id)a3
+- (CGRect)contentsRectForImageAnalysisInteraction:(id)interaction
 {
   [(PUImageAnalysisInteraction *)self contentsRect];
-  v4 = [(PUImageAnalysisInteraction *)self hostView];
-  [v4 bounds];
+  hostView = [(PUImageAnalysisInteraction *)self hostView];
+  [hostView bounds];
 
-  v5 = [(PUImageAnalysisInteraction *)self assetViewModel];
-  v6 = [v5 asset];
-  [v6 aspectRatio];
+  assetViewModel = [(PUImageAnalysisInteraction *)self assetViewModel];
+  asset = [assetViewModel asset];
+  [asset aspectRatio];
   v8 = v7;
 
   if (v8 < 0.0 || v8 > 0.0)
   {
-    v13 = [(PUImageAnalysisInteraction *)self hostView];
-    v14 = [v13 traitCollection];
-    [v14 displayScale];
+    hostView2 = [(PUImageAnalysisInteraction *)self hostView];
+    traitCollection = [hostView2 traitCollection];
+    [traitCollection displayScale];
     PFFrameApplyingContentsRectInBounds();
 
     PXRectNormalize();
@@ -633,93 +633,93 @@ LABEL_5:
   return result;
 }
 
-- (id)contentImageForImageAnalysisInteraction:(id)a3
+- (id)contentImageForImageAnalysisInteraction:(id)interaction
 {
-  v3 = [(PUImageAnalysisInteraction *)self assetViewModel];
-  v4 = [v3 asset];
-  v5 = [v4 mediaType];
+  assetViewModel = [(PUImageAnalysisInteraction *)self assetViewModel];
+  asset = [assetViewModel asset];
+  mediaType = [asset mediaType];
 
-  if (v5 != 2)
+  if (mediaType != 2)
   {
     goto LABEL_6;
   }
 
-  v6 = [v3 videoPlayer];
-  v7 = [v6 videoSession];
-  v8 = [v7 currentPixelBuffer];
+  videoPlayer = [assetViewModel videoPlayer];
+  videoSession = [videoPlayer videoSession];
+  currentPixelBuffer = [videoSession currentPixelBuffer];
 
-  if (!v8)
+  if (!currentPixelBuffer)
   {
     goto LABEL_8;
   }
 
   imageOut = 0;
-  VTCreateCGImageFromCVPixelBuffer(v8, 0, &imageOut);
+  VTCreateCGImageFromCVPixelBuffer(currentPixelBuffer, 0, &imageOut);
   if (imageOut)
   {
-    v9 = [v3 videoPlayer];
-    v10 = [v9 videoSession];
-    v11 = v10;
-    if (v10)
+    videoPlayer2 = [assetViewModel videoPlayer];
+    videoSession2 = [videoPlayer2 videoSession];
+    v11 = videoSession2;
+    if (videoSession2)
     {
-      [v10 preferredTransform];
+      [videoSession2 preferredTransform];
     }
 
     v12 = PXVKImageOrientationFromPreferredTransform();
 
-    v8 = [MEMORY[0x1E69DCAB8] imageWithCGImage:imageOut scale:v12 orientation:1.0];
+    currentPixelBuffer = [MEMORY[0x1E69DCAB8] imageWithCGImage:imageOut scale:v12 orientation:1.0];
     CGImageRelease(imageOut);
   }
 
   else
   {
 LABEL_6:
-    v8 = 0;
+    currentPixelBuffer = 0;
   }
 
 LABEL_8:
 
-  return v8;
+  return currentPixelBuffer;
 }
 
-- (id)contentViewForImageAnalysisInteraction:(id)a3
+- (id)contentViewForImageAnalysisInteraction:(id)interaction
 {
-  v4 = [(PUImageAnalysisInteraction *)self delegate];
-  v5 = [v4 contentViewForImageAnalysisInteraction:self];
+  delegate = [(PUImageAnalysisInteraction *)self delegate];
+  hostView = [delegate contentViewForImageAnalysisInteraction:self];
 
-  if (!v5)
+  if (!hostView)
   {
-    v5 = [(PUImageAnalysisInteraction *)self hostView];
+    hostView = [(PUImageAnalysisInteraction *)self hostView];
   }
 
-  return v5;
+  return hostView;
 }
 
 - (void)_updateAdditionalActionInfoEdgeInsets
 {
-  v3 = [(PUImageAnalysisInteraction *)self interaction];
+  interaction = [(PUImageAnalysisInteraction *)self interaction];
   [(PUImageAnalysisInteraction *)self additionalActionInfoEdgeInsets];
   PXEdgeInsetsAdd();
-  [v3 setActionInfoEdgeInsets:?];
+  [interaction setActionInfoEdgeInsets:?];
 }
 
-- (void)setAdditionalActionInfoEdgeInsets:(UIEdgeInsets)a3
+- (void)setAdditionalActionInfoEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_additionalActionInfoEdgeInsets.top), vceqq_f64(v4, *&self->_additionalActionInfoEdgeInsets.bottom)))) & 1) == 0)
   {
-    self->_additionalActionInfoEdgeInsets = a3;
+    self->_additionalActionInfoEdgeInsets = insets;
     [(PUImageAnalysisInteraction *)self _updateAdditionalActionInfoEdgeInsets];
   }
 }
 
 - (BOOL)_allowsSubjectLifting
 {
-  v3 = [(PUImageAnalysisInteraction *)self assetViewModel];
-  [v3 accessoryViewVisibilityFraction];
+  assetViewModel = [(PUImageAnalysisInteraction *)self assetViewModel];
+  [assetViewModel accessoryViewVisibilityFraction];
   v4 = PXFloatGreaterThanOrApproximatelyEqualToFloat();
 
   if (!v4)
@@ -727,84 +727,84 @@ LABEL_8:
     return 1;
   }
 
-  v5 = [MEMORY[0x1E69DC938] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v7 = [(PUImageAnalysisInteraction *)self browsingViewModel];
-  v8 = [v7 horizontalSizeClass];
+  browsingViewModel = [(PUImageAnalysisInteraction *)self browsingViewModel];
+  horizontalSizeClass = [browsingViewModel horizontalSizeClass];
 
-  return !v6 || v8 == 1;
+  return !userInterfaceIdiom || horizontalSizeClass == 1;
 }
 
 - (void)_updateInteraction
 {
-  v3 = [(PUImageAnalysisInteraction *)self interaction];
-  if (!v3)
+  interaction = [(PUImageAnalysisInteraction *)self interaction];
+  if (!interaction)
   {
     goto LABEL_47;
   }
 
-  v4 = [(PUImageAnalysisInteraction *)self assetViewModel];
-  v5 = [(PUImageAnalysisInteraction *)self browsingViewModel];
-  v6 = [(PUImageAnalysisInteraction *)self delegate];
-  if (![v4 isFullyInFocus] || (objc_msgSend(v4, "isBeingDismissed") & 1) != 0 || objc_msgSend(v4, "statusCornerState") == 1)
+  assetViewModel = [(PUImageAnalysisInteraction *)self assetViewModel];
+  browsingViewModel = [(PUImageAnalysisInteraction *)self browsingViewModel];
+  delegate = [(PUImageAnalysisInteraction *)self delegate];
+  if (![assetViewModel isFullyInFocus] || (objc_msgSend(assetViewModel, "isBeingDismissed") & 1) != 0 || objc_msgSend(assetViewModel, "statusCornerState") == 1)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [v5 isInSelectionMode] ^ 1;
+    v7 = [browsingViewModel isInSelectionMode] ^ 1;
   }
 
-  v8 = [v3 analysis];
-  v9 = [v4 visualImageAnalysis];
+  analysis = [interaction analysis];
+  visualImageAnalysis = [assetViewModel visualImageAnalysis];
 
-  if (v8 != v9)
+  if (analysis != visualImageAnalysis)
   {
-    v10 = [v4 visualImageAnalysis];
-    [v3 setAnalysis:v10];
+    visualImageAnalysis2 = [assetViewModel visualImageAnalysis];
+    [interaction setAnalysis:visualImageAnalysis2];
   }
 
-  v30 = v6;
+  v30 = delegate;
   if (v7)
   {
-    v11 = [v4 bestImage];
-    v12 = [v6 textsToHighlightForImageAnalysisInteraction:self];
-    if ([v5 isChromeVisible])
+    bestImage = [assetViewModel bestImage];
+    v12 = [delegate textsToHighlightForImageAnalysisInteraction:self];
+    if ([browsingViewModel isChromeVisible])
     {
-      v13 = [(PUImageAnalysisInteraction *)self sizeChangeCoalescer];
-      if ([v13 hasPendingEvent] && (objc_msgSend(v3, "hasActiveTextSelection") & 1) == 0)
+      sizeChangeCoalescer = [(PUImageAnalysisInteraction *)self sizeChangeCoalescer];
+      if ([sizeChangeCoalescer hasPendingEvent] && (objc_msgSend(interaction, "hasActiveTextSelection") & 1) == 0)
       {
-        v29 = [v3 highlightSelectableItems];
+        highlightSelectableItems = [interaction highlightSelectableItems];
       }
 
       else
       {
-        v29 = 1;
+        highlightSelectableItems = 1;
       }
     }
 
-    else if ([v3 hasActiveTextSelection])
+    else if ([interaction hasActiveTextSelection])
     {
-      v29 = 1;
+      highlightSelectableItems = 1;
     }
 
     else
     {
-      v29 = [v3 highlightSelectableItems];
+      highlightSelectableItems = [interaction highlightSelectableItems];
     }
 
-    v17 = [(PUImageAnalysisInteraction *)self _allowsSubjectLifting];
-    v18 = [(PUImageAnalysisInteraction *)self assetViewModel];
-    v19 = [v18 isAccessoryViewVisible];
+    _allowsSubjectLifting = [(PUImageAnalysisInteraction *)self _allowsSubjectLifting];
+    assetViewModel2 = [(PUImageAnalysisInteraction *)self assetViewModel];
+    isAccessoryViewVisible = [assetViewModel2 isAccessoryViewVisible];
 
-    if (v19 && (-[PUImageAnalysisInteraction assetViewModel](self, "assetViewModel"), v20 = objc_claimAutoreleasedReturnValue(), [v20 accessoryViewVisibilityFraction], v21 = PXFloatGreaterThanOrApproximatelyEqualToFloat(), v20, v21))
+    if (isAccessoryViewVisible && (-[PUImageAnalysisInteraction assetViewModel](self, "assetViewModel"), v20 = objc_claimAutoreleasedReturnValue(), [v20 accessoryViewVisibilityFraction], v21 = PXFloatGreaterThanOrApproximatelyEqualToFloat(), v20, v21))
     {
-      if (v17)
+      if (_allowsSubjectLifting)
       {
-        v22 = [(PUImageAnalysisInteraction *)self sizeChangeCoalescer];
-        if ([v22 hasPendingEvent])
+        sizeChangeCoalescer2 = [(PUImageAnalysisInteraction *)self sizeChangeCoalescer];
+        if ([sizeChangeCoalescer2 hasPendingEvent])
         {
 
 LABEL_53:
@@ -832,11 +832,11 @@ LABEL_53:
         goto LABEL_28;
       }
 
-      v26 = [v3 analysis];
-      v27 = [v26 hasVisualSearchResults];
+      analysis2 = [interaction analysis];
+      hasVisualSearchResults = [analysis2 hasVisualSearchResults];
 
       v15 = 0;
-      if (v27)
+      if (hasVisualSearchResults)
       {
         v23 = 4;
       }
@@ -850,7 +850,7 @@ LABEL_53:
     else
     {
       v15 = 0;
-      if (v17)
+      if (_allowsSubjectLifting)
       {
         v23 = 9;
       }
@@ -862,7 +862,7 @@ LABEL_53:
     }
 
 LABEL_28:
-    if ([v3 highlightSelectableItems])
+    if ([interaction highlightSelectableItems])
     {
       v16 = v23 | 2;
     }
@@ -872,9 +872,9 @@ LABEL_28:
       v16 = v23;
     }
 
-    if (v29)
+    if (highlightSelectableItems)
     {
-      [v3 updateActionInfoLayout];
+      [interaction updateActionInfoLayout];
       v14 = 1;
     }
 
@@ -888,49 +888,49 @@ LABEL_28:
 
   v14 = 0;
   v15 = 0;
-  v11 = 0;
+  bestImage = 0;
   v12 = 0;
   v16 = 0;
 LABEL_34:
-  if ([v3 activeInteractionTypes] != v16)
+  if ([interaction activeInteractionTypes] != v16)
   {
-    [v3 setActiveInteractionTypes:v16];
+    [interaction setActiveInteractionTypes:v16];
   }
 
-  v24 = [v3 _photosImageForRemoveBackground];
+  _photosImageForRemoveBackground = [interaction _photosImageForRemoveBackground];
 
-  if (v24 != v11)
+  if (_photosImageForRemoveBackground != bestImage)
   {
-    [v3 set_photosImageForRemoveBackground:v11];
+    [interaction set_photosImageForRemoveBackground:bestImage];
   }
 
-  if (v15 != [v3 _photosInfoSingleTapSubjectModeEnabled])
+  if (v15 != [interaction _photosInfoSingleTapSubjectModeEnabled])
   {
-    [v3 set_photosInfoSingleTapSubjectModeEnabled:v15];
+    [interaction set_photosInfoSingleTapSubjectModeEnabled:v15];
   }
 
-  if (v14 == [v3 actionInfoViewHidden])
+  if (v14 == [interaction actionInfoViewHidden])
   {
-    [v3 setActionInfoViewHidden:v14 ^ 1u];
+    [interaction setActionInfoViewHidden:v14 ^ 1u];
   }
 
   if (v7)
   {
-    [v3 beginImageSubjectAnalysisIfNecessary];
+    [interaction beginImageSubjectAnalysisIfNecessary];
   }
 
   if (v12)
   {
-    [v3 highlightMatchesForStrings:v12 animated:1];
+    [interaction highlightMatchesForStrings:v12 animated:1];
   }
 
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __48__PUImageAnalysisInteraction__updateInteraction__block_invoke;
   v31[3] = &unk_1E7B80C38;
-  v32 = v4;
-  v33 = v3;
-  v25 = v4;
+  v32 = assetViewModel;
+  v33 = interaction;
+  v25 = assetViewModel;
   [v25 performChanges:v31];
 
 LABEL_47:
@@ -938,44 +938,44 @@ LABEL_47:
 
 - (void)_updateInteractionView
 {
-  v3 = [(PUImageAnalysisInteraction *)self interaction];
-  if (v3)
+  interaction = [(PUImageAnalysisInteraction *)self interaction];
+  if (interaction)
   {
-    v7 = v3;
-    v4 = [(PUImageAnalysisInteraction *)self hostView];
-    v5 = [v7 view];
+    v7 = interaction;
+    hostView = [(PUImageAnalysisInteraction *)self hostView];
+    view = [v7 view];
 
-    if (v4 != v5)
+    if (hostView != view)
     {
-      v6 = [v7 view];
-      [v6 removeInteraction:v7];
+      view2 = [v7 view];
+      [view2 removeInteraction:v7];
 
-      [v4 addInteraction:v7];
+      [hostView addInteraction:v7];
     }
 
-    v3 = v7;
+    interaction = v7;
   }
 }
 
-- (void)setHostView:(id)a3
+- (void)setHostView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   p_hostView = &self->_hostView;
-  if (self->_hostView != v5)
+  if (self->_hostView != viewCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_hostView, a3);
+    v7 = viewCopy;
+    objc_storeStrong(p_hostView, view);
     p_hostView = [(PUImageAnalysisInteraction *)self _resetInteraction];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](p_hostView, v5);
+  MEMORY[0x1EEE66BB8](p_hostView, viewCopy);
 }
 
-- (void)_handleBrowsingViewModelChange:(id)a3
+- (void)_handleBrowsingViewModelChange:(id)change
 {
-  v4 = a3;
-  if (([v4 chromeVisibilityDidChange] & 1) != 0 || (objc_msgSend(v4, "isInteractingWithVideoScrubberDidChange") & 1) != 0 || objc_msgSend(v4, "isInSelectionModeDidChange"))
+  changeCopy = change;
+  if (([changeCopy chromeVisibilityDidChange] & 1) != 0 || (objc_msgSend(changeCopy, "isInteractingWithVideoScrubberDidChange") & 1) != 0 || objc_msgSend(changeCopy, "isInSelectionModeDidChange"))
   {
     [(PUImageAnalysisInteraction *)self _invalidateInteraction];
   }
@@ -983,21 +983,21 @@ LABEL_47:
 
 - (void)_updateContentsRect
 {
-  v3 = [(PUImageAnalysisInteraction *)self assetViewModel];
-  [v3 mainImageContentsRect];
+  assetViewModel = [(PUImageAnalysisInteraction *)self assetViewModel];
+  [assetViewModel mainImageContentsRect];
   [(PUImageAnalysisInteraction *)self setContentsRect:?];
 }
 
-- (void)_handleAssetViewModelChange:(id)a3
+- (void)_handleAssetViewModelChange:(id)change
 {
-  v5 = a3;
-  if (([v5 accessoryViewVisibilityFractionChanged] & 1) != 0 || (objc_msgSend(v5, "modelTileTransformChanged") & 1) != 0 || objc_msgSend(v5, "isUserTransformingTileDidChange"))
+  changeCopy = change;
+  if (([changeCopy accessoryViewVisibilityFractionChanged] & 1) != 0 || (objc_msgSend(changeCopy, "modelTileTransformChanged") & 1) != 0 || objc_msgSend(changeCopy, "isUserTransformingTileDidChange"))
   {
-    v4 = [(PUImageAnalysisInteraction *)self sizeChangeCoalescer];
-    [v4 inputEvent];
+    sizeChangeCoalescer = [(PUImageAnalysisInteraction *)self sizeChangeCoalescer];
+    [sizeChangeCoalescer inputEvent];
   }
 
-  if ([v5 visualImageAnalysisChanged])
+  if ([changeCopy visualImageAnalysisChanged])
   {
     if ([(PUImageAnalysisInteraction *)self isDrivingLivePhotoPlayback])
     {
@@ -1008,14 +1008,14 @@ LABEL_47:
     goto LABEL_13;
   }
 
-  if (([v5 bestImageChanged] & 1) != 0 || (objc_msgSend(v5, "isFullyInFocusChanged") & 1) != 0 || (objc_msgSend(v5, "accessoryViewVisibilityFractionChanged") & 1) != 0 || (objc_msgSend(v5, "isBeingDismissedChanged") & 1) != 0 || objc_msgSend(v5, "statusCornerStateChanged"))
+  if (([changeCopy bestImageChanged] & 1) != 0 || (objc_msgSend(changeCopy, "isFullyInFocusChanged") & 1) != 0 || (objc_msgSend(changeCopy, "accessoryViewVisibilityFractionChanged") & 1) != 0 || (objc_msgSend(changeCopy, "isBeingDismissedChanged") & 1) != 0 || objc_msgSend(changeCopy, "statusCornerStateChanged"))
   {
 LABEL_13:
     [(PUImageAnalysisInteraction *)self _invalidateInteraction];
     goto LABEL_14;
   }
 
-  if ([v5 mainImageContentsRectChanged])
+  if ([changeCopy mainImageContentsRectChanged])
   {
     [(PUImageAnalysisInteraction *)self _updateContentsRect];
   }
@@ -1023,32 +1023,32 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)viewModel:(id)a3 didChange:(id)a4
+- (void)viewModel:(id)model didChange:(id)change
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(PUImageAnalysisInteraction *)self assetViewModel];
+  modelCopy = model;
+  changeCopy = change;
+  assetViewModel = [(PUImageAnalysisInteraction *)self assetViewModel];
 
-  if (v7 == v9)
+  if (assetViewModel == modelCopy)
   {
-    [(PUImageAnalysisInteraction *)self _handleAssetViewModelChange:v6];
+    [(PUImageAnalysisInteraction *)self _handleAssetViewModelChange:changeCopy];
   }
 
   else
   {
-    v8 = [(PUImageAnalysisInteraction *)self browsingViewModel];
+    browsingViewModel = [(PUImageAnalysisInteraction *)self browsingViewModel];
 
-    if (v8 == v9)
+    if (browsingViewModel == modelCopy)
     {
-      [(PUImageAnalysisInteraction *)self _handleBrowsingViewModelChange:v6];
+      [(PUImageAnalysisInteraction *)self _handleBrowsingViewModelChange:changeCopy];
     }
   }
 }
 
 - (void)_invalidateInteraction
 {
-  v2 = [(PUImageAnalysisInteraction *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateInteraction];
+  updater = [(PUImageAnalysisInteraction *)self updater];
+  [updater setNeedsUpdateOf:sel__updateInteraction];
 }
 
 void __45__PUImageAnalysisInteraction__scheduleUpdate__block_invoke(uint64_t a1)
@@ -1071,8 +1071,8 @@ void __45__PUImageAnalysisInteraction__scheduleUpdate__block_invoke(uint64_t a1)
 
   else
   {
-    v4 = [(PUImageAnalysisInteraction *)self interactionCreator];
-    v5 = v4[2]();
+    interactionCreator = [(PUImageAnalysisInteraction *)self interactionCreator];
+    v5 = interactionCreator[2]();
     v6 = self->_interaction;
     self->_interaction = v5;
 
@@ -1085,15 +1085,15 @@ void __45__PUImageAnalysisInteraction__scheduleUpdate__block_invoke(uint64_t a1)
         v10 = 138412546;
         v11 = v8;
         v12 = 2112;
-        v13 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1B36F3000, v7, OS_LOG_TYPE_DEFAULT, "Creating VKC interaction: %@ on %@", &v10, 0x16u);
       }
     }
   }
 
   [(PXVKImageAnalysisInteraction *)self->_interaction setDelegate:self];
-  v9 = [(PUImageAnalysisInteraction *)self sizeChangeCoalescer];
-  [v9 inputEvent];
+  sizeChangeCoalescer = [(PUImageAnalysisInteraction *)self sizeChangeCoalescer];
+  [sizeChangeCoalescer inputEvent];
 
   [(PUImageAnalysisInteraction *)self _updateInteractionView];
   [(PUImageAnalysisInteraction *)self _invalidateInteraction];
@@ -1117,33 +1117,33 @@ void __45__PUImageAnalysisInteraction__scheduleUpdate__block_invoke(uint64_t a1)
   return sizeChangeCoalescer;
 }
 
-- (void)setContentsRect:(CGRect)a3
+- (void)setContentsRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(a3, self->_contentsRect))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (!CGRectEqualToRect(rect, self->_contentsRect))
   {
     self->_contentsRect.origin.x = x;
     self->_contentsRect.origin.y = y;
     self->_contentsRect.size.width = width;
     self->_contentsRect.size.height = height;
-    v8 = [(PUImageAnalysisInteraction *)self interaction];
-    [v8 updateContentsRect];
+    interaction = [(PUImageAnalysisInteraction *)self interaction];
+    [interaction updateContentsRect];
   }
 }
 
-- (BOOL)visualSearchExistsAtLocation:(id)a3
+- (BOOL)visualSearchExistsAtLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   if (-[PUImageAnalysisInteraction visualImageInteractionEnabled](self, "visualImageInteractionEnabled") && (-[PUImageAnalysisInteraction interaction](self, "interaction"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 activeInteractionTypes], v5, (v6 & 4) != 0))
   {
-    v8 = [(PUImageAnalysisInteraction *)self interaction];
-    v9 = [(PUImageAnalysisInteraction *)self interaction];
-    v10 = [v9 view];
-    [v4 locationInView:v10];
-    v7 = [v8 visualSearchExistsAtPoint:?];
+    interaction = [(PUImageAnalysisInteraction *)self interaction];
+    interaction2 = [(PUImageAnalysisInteraction *)self interaction];
+    view = [interaction2 view];
+    [locationCopy locationInView:view];
+    v7 = [interaction visualSearchExistsAtPoint:?];
   }
 
   else
@@ -1156,15 +1156,15 @@ void __45__PUImageAnalysisInteraction__scheduleUpdate__block_invoke(uint64_t a1)
 
 - (BOOL)isImageSubjectAnalyzingFinished
 {
-  v2 = [(PUImageAnalysisInteraction *)self interaction];
-  v3 = [v2 isSubjectAnalysisComplete];
+  interaction = [(PUImageAnalysisInteraction *)self interaction];
+  isSubjectAnalysisComplete = [interaction isSubjectAnalysisComplete];
 
-  return v3;
+  return isSubjectAnalysisComplete;
 }
 
-- (void)setBrowsingViewModel:(id)a3
+- (void)setBrowsingViewModel:(id)model
 {
-  obj = a3;
+  obj = model;
   WeakRetained = objc_loadWeakRetained(&self->_browsingViewModel);
 
   if (WeakRetained != obj)
@@ -1179,9 +1179,9 @@ void __45__PUImageAnalysisInteraction__scheduleUpdate__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setAssetViewModel:(id)a3
+- (void)setAssetViewModel:(id)model
 {
-  obj = a3;
+  obj = model;
   WeakRetained = objc_loadWeakRetained(&self->_assetViewModel);
 
   if (WeakRetained != obj)
@@ -1197,9 +1197,9 @@ void __45__PUImageAnalysisInteraction__scheduleUpdate__block_invoke(uint64_t a1)
   }
 }
 
-- (PUImageAnalysisInteraction)initWithInteractionCreator:(id)a3
+- (PUImageAnalysisInteraction)initWithInteractionCreator:(id)creator
 {
-  v4 = a3;
+  creatorCopy = creator;
   v12.receiver = self;
   v12.super_class = PUImageAnalysisInteraction;
   v5 = [(PUImageAnalysisInteraction *)&v12 init];
@@ -1210,9 +1210,9 @@ void __45__PUImageAnalysisInteraction__scheduleUpdate__block_invoke(uint64_t a1)
     v5->_updater = v6;
 
     [(PXUpdater *)v5->_updater addUpdateSelector:sel__updateInteraction];
-    if (v4)
+    if (creatorCopy)
     {
-      v8 = v4;
+      v8 = creatorCopy;
     }
 
     else
@@ -1232,8 +1232,8 @@ void __45__PUImageAnalysisInteraction__scheduleUpdate__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [(PXVKImageAnalysisInteraction *)self->_interaction view];
-  [v3 removeInteraction:self->_interaction];
+  view = [(PXVKImageAnalysisInteraction *)self->_interaction view];
+  [view removeInteraction:self->_interaction];
 
   v4.receiver = self;
   v4.super_class = PUImageAnalysisInteraction;

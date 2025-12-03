@@ -1,16 +1,16 @@
 @interface PKWatchDeviceImageOverlayView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKWatchDeviceImageOverlayView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKWatchDeviceImageOverlayView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation PKWatchDeviceImageOverlayView
 
-- (PKWatchDeviceImageOverlayView)initWithFrame:(CGRect)a3
+- (PKWatchDeviceImageOverlayView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = PKWatchDeviceImageOverlayView;
-  v3 = [(PKWatchDeviceImageOverlayView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKWatchDeviceImageOverlayView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(PKWatchHeroImageView);
@@ -33,9 +33,9 @@
   [(PKWatchHeroImageView *)self->_watchView setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKWatchHeroImageView *)self->_watchView sizeThatFits:a3.width, a3.height];
+  [(PKWatchHeroImageView *)self->_watchView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;

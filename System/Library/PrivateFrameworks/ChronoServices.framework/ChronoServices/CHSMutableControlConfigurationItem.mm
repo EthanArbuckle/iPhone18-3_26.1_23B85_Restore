@@ -1,31 +1,31 @@
 @interface CHSMutableControlConfigurationItem
 - (CHSMutableControlConfigurationItem)init;
-- (CHSMutableControlConfigurationItem)initWithUniqueIdentifier:(id)a3 controlIdentity:(id)a4;
-- (CHSMutableControlConfigurationItem)initWithUniqueIdentifier:(id)a3 controlIdentity:(id)a4 location:(int64_t)a5;
-- (id)copyWithZone:(void *)a3;
+- (CHSMutableControlConfigurationItem)initWithUniqueIdentifier:(id)identifier controlIdentity:(id)identity;
+- (CHSMutableControlConfigurationItem)initWithUniqueIdentifier:(id)identifier controlIdentity:(id)identity location:(int64_t)location;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation CHSMutableControlConfigurationItem
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   v4 = objc_allocWithZone(CHSControlConfigurationItem);
 
   return [v4 initWithItem_];
 }
 
-- (CHSMutableControlConfigurationItem)initWithUniqueIdentifier:(id)a3 controlIdentity:(id)a4 location:(int64_t)a5
+- (CHSMutableControlConfigurationItem)initWithUniqueIdentifier:(id)identifier controlIdentity:(id)identity location:(int64_t)location
 {
   v6.receiver = self;
   v6.super_class = CHSMutableControlConfigurationItem;
-  return [(CHSControlConfigurationItem *)&v6 initWithUniqueIdentifier:a3 controlIdentity:a4 location:a5];
+  return [(CHSControlConfigurationItem *)&v6 initWithUniqueIdentifier:identifier controlIdentity:identity location:location];
 }
 
-- (CHSMutableControlConfigurationItem)initWithUniqueIdentifier:(id)a3 controlIdentity:(id)a4
+- (CHSMutableControlConfigurationItem)initWithUniqueIdentifier:(id)identifier controlIdentity:(id)identity
 {
   v5.receiver = self;
   v5.super_class = CHSMutableControlConfigurationItem;
-  return [(CHSControlConfigurationItem *)&v5 initWithUniqueIdentifier:a3 controlIdentity:a4];
+  return [(CHSControlConfigurationItem *)&v5 initWithUniqueIdentifier:identifier controlIdentity:identity];
 }
 
 - (CHSMutableControlConfigurationItem)init

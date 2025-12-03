@@ -1,8 +1,8 @@
 @interface BKUIUtils
-+ (int64_t)activeInterfaceOrientationForView:(id)a3;
++ (int64_t)activeInterfaceOrientationForView:(id)view;
 + (void)resetScreenDimming;
-+ (void)vibrateForBiometricEvent:(BOOL)a3;
-+ (void)vibrateWithIntensity:(float)a3 withPattern:(id)a4;
++ (void)vibrateForBiometricEvent:(BOOL)event;
++ (void)vibrateWithIntensity:(float)intensity withPattern:(id)pattern;
 @end
 
 @implementation BKUIUtils
@@ -14,39 +14,39 @@
     +[BKUIUtils resetScreenDimming];
   }
 
-  v2 = [MEMORY[0x277D75128] sharedApplication];
-  [v2 setIdleTimerDisabled:1];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] setIdleTimerDisabled:1];
 
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  [v3 setIdleTimerDisabled:0];
+  mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128]2 setIdleTimerDisabled:0];
 }
 
-+ (void)vibrateWithIntensity:(float)a3 withPattern:(id)a4
++ (void)vibrateWithIntensity:(float)intensity withPattern:(id)pattern
 {
-  v5 = a4;
+  patternCopy = pattern;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
-    [BKUIUtils vibrateWithIntensity:v5 withPattern:a3];
+    [BKUIUtils vibrateWithIntensity:patternCopy withPattern:intensity];
   }
 
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  *&v7 = a3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  *&v7 = intensity;
   v8 = [MEMORY[0x277CCABB0] numberWithFloat:v7];
-  [v6 setObject:v8 forKey:@"Intensity"];
+  [dictionary setObject:v8 forKey:@"Intensity"];
 
-  [v6 setObject:v5 forKey:@"VibePattern"];
+  [dictionary setObject:patternCopy forKey:@"VibePattern"];
   AudioServicesPlaySystemSoundWithVibration();
 }
 
-+ (void)vibrateForBiometricEvent:(BOOL)a3
++ (void)vibrateForBiometricEvent:(BOOL)event
 {
-  v3 = a3;
+  eventCopy = event;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
-    [BKUIUtils vibrateForBiometricEvent:v3];
+    [BKUIUtils vibrateForBiometricEvent:eventCopy];
   }
 
-  if (v3)
+  if (eventCopy)
   {
     v5 = &unk_2853CC868;
   }
@@ -60,49 +60,49 @@
   [BKUIUtils vibrateWithIntensity:v5 withPattern:v4];
 }
 
-+ (int64_t)activeInterfaceOrientationForView:(id)a3
++ (int64_t)activeInterfaceOrientationForView:(id)view
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D75128] sharedApplication];
-  if ([v4 isFrontBoard])
+  viewCopy = view;
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  if ([mEMORY[0x277D75128] isFrontBoard])
   {
 
 LABEL_4:
-    v8 = [MEMORY[0x277D75128] sharedApplication];
-    v9 = [v8 activeInterfaceOrientation];
+    mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+    activeInterfaceOrientation = [mEMORY[0x277D75128]2 activeInterfaceOrientation];
     goto LABEL_5;
   }
 
-  v5 = [MEMORY[0x277CCA8D8] mainBundle];
-  v6 = [v5 bundleIdentifier];
-  v7 = [v6 isEqualToString:@"com.apple.springboard"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v7 = [bundleIdentifier isEqualToString:@"com.apple.springboard"];
 
   if (v7)
   {
     goto LABEL_4;
   }
 
-  v12 = [v3 window];
+  window = [viewCopy window];
 
-  if (!v12)
+  if (!window)
   {
-    v8 = [MEMORY[0x277D75128] sharedApplication];
-    v13 = [v8 windows];
+    mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+    windows = [mEMORY[0x277D75128]2 windows];
     v14 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_0];
-    v15 = [v13 filteredArrayUsingPredicate:v14];
-    v16 = [v15 firstObject];
-    v10 = [v16 interfaceOrientation];
+    v15 = [windows filteredArrayUsingPredicate:v14];
+    firstObject = [v15 firstObject];
+    interfaceOrientation = [firstObject interfaceOrientation];
 
     goto LABEL_6;
   }
 
-  v8 = [v3 window];
-  v9 = [v8 interfaceOrientation];
+  mEMORY[0x277D75128]2 = [viewCopy window];
+  activeInterfaceOrientation = [mEMORY[0x277D75128]2 interfaceOrientation];
 LABEL_5:
-  v10 = v9;
+  interfaceOrientation = activeInterfaceOrientation;
 LABEL_6:
 
-  return v10;
+  return interfaceOrientation;
 }
 
 + (void)vibrateWithIntensity:(uint64_t)a1 withPattern:(float)a2 .cold.1(uint64_t a1, float a2)

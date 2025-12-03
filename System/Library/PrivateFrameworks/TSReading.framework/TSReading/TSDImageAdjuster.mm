@@ -1,8 +1,8 @@
 @interface TSDImageAdjuster
-- (CGImage)newFilteredImageForImage:(CGImage *)a3 enhancedImage:(CGImage *)a4;
-- (CGImage)p_newImageFromCIImage:(id)a3 underlyingImage:(CGImage *)a4;
+- (CGImage)newFilteredImageForImage:(CGImage *)image enhancedImage:(CGImage *)enhancedImage;
+- (CGImage)p_newImageFromCIImage:(id)image underlyingImage:(CGImage *)underlyingImage;
 - (TSDImageAdjuster)init;
-- (TSDImageAdjuster)initWithImageAdjustments:(id)a3;
+- (TSDImageAdjuster)initWithImageAdjustments:(id)adjustments;
 - (void)dealloc;
 @end
 
@@ -10,20 +10,20 @@
 
 - (TSDImageAdjuster)init
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageAdjuster init]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageAdjuster.m"), 24, @"The -initWithImageAdjustments is the designated initializer of TSDImageAdjuster."}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageAdjuster.m"), 24, @"The -initWithImageAdjustments is the designated initializer of TSDImageAdjuster."}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"The -initWithImageAdjustments is the designated initializer of TSDImageAdjuster.", "-[TSDImageAdjuster init]"), 0}]);
 }
 
-- (TSDImageAdjuster)initWithImageAdjustments:(id)a3
+- (TSDImageAdjuster)initWithImageAdjustments:(id)adjustments
 {
   v6.receiver = self;
   v6.super_class = TSDImageAdjuster;
   v4 = [(TSDImageAdjuster *)&v6 init];
   if (v4)
   {
-    v4->mImageAdjustments = a3;
+    v4->mImageAdjustments = adjustments;
   }
 
   return v4;
@@ -36,36 +36,36 @@
   [(TSDImageAdjuster *)&v3 dealloc];
 }
 
-- (CGImage)newFilteredImageForImage:(CGImage *)a3 enhancedImage:(CGImage *)a4
+- (CGImage)newFilteredImageForImage:(CGImage *)image enhancedImage:(CGImage *)enhancedImage
 {
   v99[1] = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!image)
   {
     return 0;
   }
 
-  v4 = a3;
+  imageCopy = image;
   mImageAdjustments = self->mImageAdjustments;
   if (mImageAdjustments)
   {
-    v8 = [(TSDImageAdjustments *)mImageAdjustments enhance];
+    enhance = [(TSDImageAdjustments *)mImageAdjustments enhance];
     v9 = 0;
-    if (a4)
+    if (enhancedImage)
     {
-      if (v8)
+      if (enhance)
       {
-        v9 = *a4 != 0;
-        if (*a4)
+        v9 = *enhancedImage != 0;
+        if (*enhancedImage)
         {
-          v4 = *a4;
+          imageCopy = *enhancedImage;
         }
       }
     }
 
-    v82 = [objc_alloc(MEMORY[0x277CBF758]) initWithCGImage:v4];
+    v82 = [objc_alloc(MEMORY[0x277CBF758]) initWithCGImage:imageCopy];
     v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v11 = [(TSDImageAdjustments *)self->mImageAdjustments enhance];
-    if (!v9 && v11)
+    enhance2 = [(TSDImageAdjustments *)self->mImageAdjustments enhance];
+    if (!v9 && enhance2)
     {
       v98 = *MEMORY[0x277CBFA10];
       v99[0] = MEMORY[0x277CBEC28];
@@ -75,10 +75,10 @@
         [v10 addObjectsFromArray:v12];
       }
 
-      if (a4 && [v12 count])
+      if (enhancedImage && [v12 count])
       {
-        v80 = a4;
-        v81 = v4;
+        enhancedImageCopy = enhancedImage;
+        v81 = imageCopy;
         v93 = 0u;
         v94 = 0u;
         v91 = 0u;
@@ -111,8 +111,8 @@
         }
 
         v19 = v14;
-        v4 = v81;
-        *v80 = [(TSDImageAdjuster *)self p_newImageFromCIImage:v19 underlyingImage:v81];
+        imageCopy = v81;
+        *enhancedImageCopy = [(TSDImageAdjuster *)self p_newImageFromCIImage:v19 underlyingImage:v81];
         v87 = 0u;
         v88 = 0u;
         v89 = 0u;
@@ -285,28 +285,28 @@
         while (v74);
       }
 
-      v78 = [(TSDImageAdjuster *)self p_newImageFromCIImage:v73 underlyingImage:v4];
+      v78 = [(TSDImageAdjuster *)self p_newImageFromCIImage:v73 underlyingImage:imageCopy];
     }
 
     else
     {
 
-      return CGImageRetain(v4);
+      return CGImageRetain(imageCopy);
     }
 
     return v78;
   }
 
-  return CGImageRetain(a3);
+  return CGImageRetain(image);
 }
 
-- (CGImage)p_newImageFromCIImage:(id)a3 underlyingImage:(CGImage *)a4
+- (CGImage)p_newImageFromCIImage:(id)image underlyingImage:(CGImage *)underlyingImage
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  Width = CGImageGetWidth(a4);
-  CGImageGetHeight(a4);
+  Width = CGImageGetWidth(underlyingImage);
+  CGImageGetHeight(underlyingImage);
   v7 = 3;
-  AlphaInfo = CGImageGetAlphaInfo(a4);
+  AlphaInfo = CGImageGetAlphaInfo(underlyingImage);
   if (AlphaInfo - 5 < 2)
   {
     goto LABEL_4;
@@ -333,7 +333,7 @@ LABEL_6:
   v17 = MEMORY[0x277CBF740];
   v21 = *MEMORY[0x277CBF930];
   v22[0] = TSUDeviceRGBColorSpace();
-  v18 = [objc_msgSend(v17 contextWithOptions:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v22, &v21, 1)), "createCGImage:fromRect:", a3, v10, v12, v14, v16}];
+  v18 = [objc_msgSend(v17 contextWithOptions:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v22, &v21, 1)), "createCGImage:fromRect:", image, v10, v12, v14, v16}];
   v23.origin.x = v10;
   v23.origin.y = v12;
   v23.size.width = v14;

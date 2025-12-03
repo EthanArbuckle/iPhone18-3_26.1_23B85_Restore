@@ -5,15 +5,15 @@
 - (id)_circularBackground;
 - (id)_clockHands;
 - (id)_clockHandsInlay;
-- (id)_colorForCircularTicksForMinute:(unint64_t)a3;
+- (id)_colorForCircularTicksForMinute:(unint64_t)minute;
 - (id)_largeTick;
 - (id)_simpleTextComplication;
 - (id)_smallTick;
 - (id)circularDialSubtickColor;
-- (id)colorForCircularTicksForHour:(unint64_t)a3;
-- (id)colorForCircularTicksForMinute:(unint64_t)a3;
-- (id)colorForHourMarker:(unint64_t)a3;
-- (id)digitColorAtIndex:(unint64_t)a3;
+- (id)colorForCircularTicksForHour:(unint64_t)hour;
+- (id)colorForCircularTicksForMinute:(unint64_t)minute;
+- (id)colorForHourMarker:(unint64_t)marker;
+- (id)digitColorAtIndex:(unint64_t)index;
 @end
 
 @implementation NTKCaliforniaColorPalette
@@ -25,35 +25,35 @@
   return [(NTKFaceColorPalette *)&v3 initWithDomainName:@"california" inBundle:0];
 }
 
-- (id)colorForHourMarker:(unint64_t)a3
+- (id)colorForHourMarker:(unint64_t)marker
 {
   v5 = [(NTKCaliforniaColorPalette *)self _colorForCircularTicksForMinute:1];
   if ([(NTKFaceColorPalette *)self isNotFoundColor:v5])
   {
-    v6 = [(NTKCaliforniaColorPalette *)self digit];
+    digit = [(NTKCaliforniaColorPalette *)self digit];
   }
 
   else
   {
-    v7 = a3 - 2;
-    if (a3 <= 0xB)
+    markerCopy = marker - 2;
+    if (marker <= 0xB)
     {
-      v7 = a3;
+      markerCopy = marker;
     }
 
-    v6 = [(NTKCaliforniaColorPalette *)self _colorForCircularTicksForMinute:5 * ((v7 + 1) % 0xC)];
+    digit = [(NTKCaliforniaColorPalette *)self _colorForCircularTicksForMinute:5 * ((markerCopy + 1) % 0xC)];
   }
 
-  v8 = v6;
+  v8 = digit;
 
   return v8;
 }
 
-- (id)digitColorAtIndex:(unint64_t)a3
+- (id)digitColorAtIndex:(unint64_t)index
 {
   v5 = MEMORY[0x277CCACA8];
   v6 = NSStringFromSelector(sel_digit);
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3 + 1];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index + 1];
   v8 = [v5 stringWithFormat:@"%@%@", v6, v7];
 
   v9 = [(NTKFaceColorPalette *)self valueForKey:v8];
@@ -61,27 +61,27 @@
   return v9;
 }
 
-- (id)colorForCircularTicksForMinute:(unint64_t)a3
+- (id)colorForCircularTicksForMinute:(unint64_t)minute
 {
   if ([(NTKFaceColorPalette *)self isRainbowColor])
   {
-    v5 = [(NTKCaliforniaColorPalette *)self _colorForCircularTicksForMinute:a3];
-    v6 = [v5 colorWithAlphaComponent:0.4];
+    v5 = [(NTKCaliforniaColorPalette *)self _colorForCircularTicksForMinute:minute];
+    circularDialSubtickColor = [v5 colorWithAlphaComponent:0.4];
   }
 
   else
   {
-    v6 = [(NTKCaliforniaColorPalette *)self circularDialSubtickColor];
+    circularDialSubtickColor = [(NTKCaliforniaColorPalette *)self circularDialSubtickColor];
   }
 
-  return v6;
+  return circularDialSubtickColor;
 }
 
-- (id)colorForCircularTicksForHour:(unint64_t)a3
+- (id)colorForCircularTicksForHour:(unint64_t)hour
 {
   if ([(NTKFaceColorPalette *)self isRainbowColor])
   {
-    [(NTKCaliforniaColorPalette *)self _colorForCircularTicksForMinute:5 * a3];
+    [(NTKCaliforniaColorPalette *)self _colorForCircularTicksForMinute:5 * hour];
   }
 
   else
@@ -93,21 +93,21 @@
   return v5;
 }
 
-- (id)_colorForCircularTicksForMinute:(unint64_t)a3
+- (id)_colorForCircularTicksForMinute:(unint64_t)minute
 {
-  v3 = 59;
-  if (a3 < 0x3B)
+  minuteCopy = 59;
+  if (minute < 0x3B)
   {
-    v3 = a3;
+    minuteCopy = minute;
   }
 
-  NTKCaliforniaMulticolorColor(self, v3 / 60.0);
+  NTKCaliforniaMulticolorColor(self, minuteCopy / 60.0);
 }
 
 - (id)circularDialSubtickColor
 {
-  v2 = [(NTKCaliforniaColorPalette *)self bezelComplication];
-  v3 = [v2 colorWithAlphaComponent:0.4];
+  bezelComplication = [(NTKCaliforniaColorPalette *)self bezelComplication];
+  v3 = [bezelComplication colorWithAlphaComponent:0.4];
 
   return v3;
 }
@@ -116,65 +116,65 @@
 {
   if ([(NTKFaceColorPalette *)self isEvergreenCollection])
   {
-    v3 = [(NTKCaliforniaColorPalette *)self primaryColor];
+    primaryColor = [(NTKCaliforniaColorPalette *)self primaryColor];
   }
 
   else
   {
-    v3 = 0;
+    primaryColor = 0;
   }
 
-  return v3;
+  return primaryColor;
 }
 
 - (id)_circularBackground
 {
   if ([(NTKFaceColorPalette *)self isEvergreenCollection])
   {
-    v3 = [(NTKCaliforniaColorPalette *)self primaryColor];
+    primaryColor = [(NTKCaliforniaColorPalette *)self primaryColor];
   }
 
   else if ([(NTKFaceColorPalette *)self isRainbowColor])
   {
-    v3 = [(NTKCaliforniaColorPalette *)self background];
+    primaryColor = [(NTKCaliforniaColorPalette *)self background];
   }
 
   else
   {
-    v3 = 0;
+    primaryColor = 0;
   }
 
-  return v3;
+  return primaryColor;
 }
 
 - (id)_smallTick
 {
-  v3 = [(NTKFaceColorPalette *)self isEvergreenCollection];
-  v4 = [(NTKCaliforniaColorPalette *)self digit];
-  v5 = v4;
+  isEvergreenCollection = [(NTKFaceColorPalette *)self isEvergreenCollection];
+  digit = [(NTKCaliforniaColorPalette *)self digit];
+  v5 = digit;
   v6 = 0.4;
-  if (v3)
+  if (isEvergreenCollection)
   {
     v6 = 0.2;
   }
 
-  v7 = [v4 colorWithAlphaComponent:v6];
+  v7 = [digit colorWithAlphaComponent:v6];
 
   return v7;
 }
 
 - (id)_largeTick
 {
-  v3 = [(NTKFaceColorPalette *)self isEvergreenCollection];
-  v4 = [(NTKCaliforniaColorPalette *)self digit];
-  v5 = v4;
+  isEvergreenCollection = [(NTKFaceColorPalette *)self isEvergreenCollection];
+  digit = [(NTKCaliforniaColorPalette *)self digit];
+  v5 = digit;
   v6 = 0.9;
-  if (v3)
+  if (isEvergreenCollection)
   {
     v6 = 0.7;
   }
 
-  v7 = [v4 colorWithAlphaComponent:v6];
+  v7 = [digit colorWithAlphaComponent:v6];
 
   return v7;
 }
@@ -199,8 +199,8 @@
 {
   if ([(NTKFaceColorPalette *)self isEvergreenCollection])
   {
-    v3 = [(NTKCaliforniaColorPalette *)self primaryColor];
-    v4 = NTKColorByApplyingWhiteOverlay(v3, 0.3);
+    primaryColor = [(NTKCaliforniaColorPalette *)self primaryColor];
+    v4 = NTKColorByApplyingWhiteOverlay(primaryColor, 0.3);
   }
 
   else
@@ -234,26 +234,26 @@
     return 0;
   }
 
-  v4 = [(NTKFaceColorPalette *)self pigmentEditOption];
-  v5 = [v4 collectionName];
-  v6 = [v5 isEqualToString:@"seasons.fall2021"];
+  pigmentEditOption = [(NTKFaceColorPalette *)self pigmentEditOption];
+  collectionName = [pigmentEditOption collectionName];
+  v6 = [collectionName isEqualToString:@"seasons.fall2021"];
 
   if (!v6)
   {
     return 1;
   }
 
-  v7 = [(NTKFaceColorPalette *)self pigmentEditOption];
-  v8 = [v7 fullname];
+  pigmentEditOption2 = [(NTKFaceColorPalette *)self pigmentEditOption];
+  fullname = [pigmentEditOption2 fullname];
 
-  if ([v8 isEqualToString:@"seasons.fall2021.purple1"])
+  if ([fullname isEqualToString:@"seasons.fall2021.purple1"])
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = [v8 isEqualToString:@"seasons.fall2021.purple2"];
+    v3 = [fullname isEqualToString:@"seasons.fall2021.purple2"];
   }
 
   return v3;

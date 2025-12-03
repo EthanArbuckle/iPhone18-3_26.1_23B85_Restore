@@ -1,10 +1,10 @@
 @interface ICHashtagViewController
 - (ICHashtagViewControllerDelegate)delegate;
 - (id)nibBundle;
-- (void)createFutureHashtag:(id)a3;
-- (void)createHashtag:(id)a3;
-- (void)createUnknownInlineAttachment:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)createFutureHashtag:(id)hashtag;
+- (void)createHashtag:(id)hashtag;
+- (void)createUnknownInlineAttachment:(id)attachment;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation ICHashtagViewController
@@ -17,67 +17,67 @@
   return [v2 bundleForClass:v3];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = ICHashtagViewController;
-  [(ICHashtagViewController *)&v5 viewDidAppear:a3];
-  v4 = [(ICHashtagViewController *)self textField];
-  [v4 becomeFirstResponder];
+  [(ICHashtagViewController *)&v5 viewDidAppear:appear];
+  textField = [(ICHashtagViewController *)self textField];
+  [textField becomeFirstResponder];
 }
 
-- (void)createHashtag:(id)a3
+- (void)createHashtag:(id)hashtag
 {
-  v4 = [(ICHashtagViewController *)self textField];
-  v9 = [v4 text];
+  textField = [(ICHashtagViewController *)self textField];
+  text = [textField text];
 
-  v5 = [(ICHashtagViewController *)self delegate];
+  delegate = [(ICHashtagViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(ICHashtagViewController *)self delegate];
-    [v7 hashtagViewController:self insertHashtagWithText:v9 viaAutoComplete:0];
+    delegate2 = [(ICHashtagViewController *)self delegate];
+    [delegate2 hashtagViewController:self insertHashtagWithText:text viaAutoComplete:0];
   }
 
-  v8 = [(ICHashtagViewController *)self presentingViewController];
-  [v8 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(ICHashtagViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)createUnknownInlineAttachment:(id)a3
+- (void)createUnknownInlineAttachment:(id)attachment
 {
-  v4 = [(ICHashtagViewController *)self textField];
-  v9 = [v4 text];
+  textField = [(ICHashtagViewController *)self textField];
+  text = [textField text];
 
-  v5 = [(ICHashtagViewController *)self delegate];
+  delegate = [(ICHashtagViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(ICHashtagViewController *)self delegate];
-    [v7 hashtagViewController:self insertUnknownInlineAttachmentWithText:v9];
+    delegate2 = [(ICHashtagViewController *)self delegate];
+    [delegate2 hashtagViewController:self insertUnknownInlineAttachmentWithText:text];
   }
 
-  v8 = [(ICHashtagViewController *)self presentingViewController];
-  [v8 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(ICHashtagViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)createFutureHashtag:(id)a3
+- (void)createFutureHashtag:(id)hashtag
 {
-  v4 = [(ICHashtagViewController *)self textField];
-  v9 = [v4 text];
+  textField = [(ICHashtagViewController *)self textField];
+  text = [textField text];
 
-  v5 = [(ICHashtagViewController *)self delegate];
+  delegate = [(ICHashtagViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(ICHashtagViewController *)self delegate];
-    [v7 hashtagViewController:self insertFutureHashtagWithText:v9];
+    delegate2 = [(ICHashtagViewController *)self delegate];
+    [delegate2 hashtagViewController:self insertFutureHashtagWithText:text];
   }
 
-  v8 = [(ICHashtagViewController *)self presentingViewController];
-  [v8 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(ICHashtagViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (ICHashtagViewControllerDelegate)delegate

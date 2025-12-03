@@ -1,35 +1,35 @@
 @interface SceneDelegate
 - (_TtC20PeopleMessageService13SceneDelegate)init;
-- (void)scene:(id)a3 openURLContexts:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)setWindow:(id)a3;
+- (void)scene:(id)scene openURLContexts:(id)contexts;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)setWindow:(id)window;
 @end
 
 @implementation SceneDelegate
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC20PeopleMessageService13SceneDelegate_window);
-  *(&self->super.super.isa + OBJC_IVAR____TtC20PeopleMessageService13SceneDelegate_window) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC20PeopleMessageService13SceneDelegate_window) = window;
+  windowCopy = window;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_10000978C(v8, v10);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_10000978C(sceneCopy, optionsCopy);
 }
 
-- (void)scene:(id)a3 openURLContexts:(id)a4
+- (void)scene:(id)scene openURLContexts:(id)contexts
 {
   sub_100007AA8();
   sub_1000096E4(&qword_10001D430, sub_100007AA8);
   v6 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
+  sceneCopy = scene;
+  selfCopy = self;
   sub_100008384(v6);
 }
 

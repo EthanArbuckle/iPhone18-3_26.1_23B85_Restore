@@ -1,13 +1,13 @@
 @interface SOLDAPHelper
 - (SOLDAPHelper)init;
-- (void)connectToLDAPService:(id)a3 requireTLSForLDAP:(BOOL)a4 bundleIdentifier:(id)a5 inBackground:(BOOL)a6 completion:(id)a7;
+- (void)connectToLDAPService:(id)service requireTLSForLDAP:(BOOL)p bundleIdentifier:(id)identifier inBackground:(BOOL)background completion:(id)completion;
 - (void)dealloc;
 - (void)disconnect;
-- (void)queryforBaseDN:(id)a3 andScope:(int)a4 andAttributes:(id)a5 withFilter:(id)a6 completion:(id)a7;
-- (void)setupLDAPconnection:(id)a3 andPort:(unsigned __int16)a4 andRequireTLSForLDAP:(BOOL)a5 andBundleIdentifier:(id)a6;
-- (void)startLDAPWithCompletion:(id)a3;
-- (void)useDigestMD5Auth:(id)a3 andPassword:(id)a4;
-- (void)useKerberosAuth:(gss_cred_id_t_desc_struct *)a3 forSPN:(id)a4;
+- (void)queryforBaseDN:(id)n andScope:(int)scope andAttributes:(id)attributes withFilter:(id)filter completion:(id)completion;
+- (void)setupLDAPconnection:(id)pconnection andPort:(unsigned __int16)port andRequireTLSForLDAP:(BOOL)p andBundleIdentifier:(id)identifier;
+- (void)startLDAPWithCompletion:(id)completion;
+- (void)useDigestMD5Auth:(id)auth andPassword:(id)password;
+- (void)useKerberosAuth:(gss_cred_id_t_desc_struct *)auth forSPN:(id)n;
 @end
 
 @implementation SOLDAPHelper
@@ -37,31 +37,31 @@
   [(SOLDAPHelper *)&v3 dealloc];
 }
 
-- (void)setupLDAPconnection:(id)a3 andPort:(unsigned __int16)a4 andRequireTLSForLDAP:(BOOL)a5 andBundleIdentifier:(id)a6
+- (void)setupLDAPconnection:(id)pconnection andPort:(unsigned __int16)port andRequireTLSForLDAP:(BOOL)p andBundleIdentifier:(id)identifier
 {
-  v7 = a5;
-  v8 = a4;
+  pCopy = p;
+  portCopy = port;
   v23 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  v12 = [(SOLDAPHelper *)self ldap];
+  pconnectionCopy = pconnection;
+  identifierCopy = identifier;
+  ldap = [(SOLDAPHelper *)self ldap];
 
-  if (!v12)
+  if (!ldap)
   {
     v13 = SO_LOG_SOLDAPHelper();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412802;
-      v18 = v10;
+      v18 = pconnectionCopy;
       v19 = 1024;
-      v20 = v8;
+      v20 = portCopy;
       v21 = 2114;
-      v22 = v11;
+      v22 = identifierCopy;
       _os_log_debug_impl(&dword_24006C000, v13, OS_LOG_TYPE_DEBUG, "setting up ldap connection: %@, %d, %{public}@", buf, 0x1Cu);
     }
 
     v14 = ldap_connection_create_with_hostname();
-    if (v7)
+    if (pCopy)
     {
       v15 = SO_LOG_SOLDAPHelper();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -72,9 +72,9 @@
       ldap_connection_set_tls();
     }
 
-    if (v11 && ([v11 isEqualToString:&stru_285206D08] & 1) == 0)
+    if (identifierCopy && ([identifierCopy isEqualToString:&stru_285206D08] & 1) == 0)
     {
-      [v11 UTF8String];
+      [identifierCopy UTF8String];
       ldap_connection_set_source_application_by_bundle();
     }
 
@@ -96,18 +96,18 @@ uint64_t __85__SOLDAPHelper_setupLDAPconnection_andPort_andRequireTLSForLDAP_and
   return [*(a1 + 32) setIsConnected:0];
 }
 
-- (void)connectToLDAPService:(id)a3 requireTLSForLDAP:(BOOL)a4 bundleIdentifier:(id)a5 inBackground:(BOOL)a6 completion:(id)a7
+- (void)connectToLDAPService:(id)service requireTLSForLDAP:(BOOL)p bundleIdentifier:(id)identifier inBackground:(BOOL)background completion:(id)completion
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
+  backgroundCopy = background;
+  serviceCopy = service;
+  identifierCopy = identifier;
+  completionCopy = completion;
   [(SOLDAPHelper *)self setCompletionCalled:0];
-  v15 = [(SOLDAPHelper *)self ldap];
+  ldap = [(SOLDAPHelper *)self ldap];
 
-  if (v15)
+  if (ldap)
   {
-    v14[2](v14, 0, @"There is already an ldap connection");
+    completionCopy[2](completionCopy, 0, @"There is already an ldap connection");
   }
 
   else
@@ -115,41 +115,41 @@ uint64_t __85__SOLDAPHelper_setupLDAPconnection_andPort_andRequireTLSForLDAP_and
     v16 = SO_LOG_SOLDAPHelper();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      [SOLDAPHelper connectToLDAPService:v12 requireTLSForLDAP:v13 bundleIdentifier:v16 inBackground:? completion:?];
+      [SOLDAPHelper connectToLDAPService:serviceCopy requireTLSForLDAP:identifierCopy bundleIdentifier:v16 inBackground:? completion:?];
     }
 
-    [v12 UTF8String];
+    [serviceCopy UTF8String];
     srv = nw_endpoint_create_srv();
     v18 = *MEMORY[0x277CD9230];
     legacy_tcp_socket = nw_parameters_create_legacy_tcp_socket();
-    if (v8)
+    if (backgroundCopy)
     {
       nw_parameters_set_traffic_class();
     }
 
-    if (v13 && ([v13 isEqualToString:&stru_285206D08] & 1) == 0)
+    if (identifierCopy && ([identifierCopy isEqualToString:&stru_285206D08] & 1) == 0)
     {
-      [v13 UTF8String];
+      [identifierCopy UTF8String];
       nw_parameters_set_source_application_by_bundle_id();
     }
 
     v20 = nw_connection_create(srv, legacy_tcp_socket);
     [(SOLDAPHelper *)self setConnection:v20];
 
-    v21 = [(SOLDAPHelper *)self connection];
+    connection = [(SOLDAPHelper *)self connection];
     v22 = dispatch_get_global_queue(0, 0);
-    nw_connection_set_queue(v21, v22);
+    nw_connection_set_queue(connection, v22);
 
-    v23 = [(SOLDAPHelper *)self connection];
+    connection2 = [(SOLDAPHelper *)self connection];
     v25 = MEMORY[0x277D85DD0];
     v26 = 3221225472;
     v27 = __96__SOLDAPHelper_connectToLDAPService_requireTLSForLDAP_bundleIdentifier_inBackground_completion___block_invoke;
     v28 = &unk_278C92E88;
-    v29 = self;
-    v31 = v14;
-    v32 = a4;
-    v30 = v13;
-    nw_connection_set_state_changed_handler(v23, &v25);
+    selfCopy = self;
+    v31 = completionCopy;
+    pCopy = p;
+    v30 = identifierCopy;
+    nw_connection_set_state_changed_handler(connection2, &v25);
 
     v24 = [(SOLDAPHelper *)self connection:v25];
     nw_connection_start(v24);
@@ -314,17 +314,17 @@ void __96__SOLDAPHelper_connectToLDAPService_requireTLSForLDAP_bundleIdentifier_
   }
 }
 
-- (void)startLDAPWithCompletion:(id)a3
+- (void)startLDAPWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = SO_LOG_SOLDAPHelper();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [SOLDAPHelper startLDAPWithCompletion:];
   }
 
-  v6 = [(SOLDAPHelper *)self ldap];
-  v7 = v4;
+  ldap = [(SOLDAPHelper *)self ldap];
+  v7 = completionCopy;
   ldap_connection_start();
 }
 
@@ -365,14 +365,14 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)queryforBaseDN:(id)a3 andScope:(int)a4 andAttributes:(id)a5 withFilter:(id)a6 completion:(id)a7
+- (void)queryforBaseDN:(id)n andScope:(int)scope andAttributes:(id)attributes withFilter:(id)filter completion:(id)completion
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a3;
-  v15 = [(SOLDAPHelper *)self ldap];
-  v19 = v11;
+  completionCopy = completion;
+  filterCopy = filter;
+  attributesCopy = attributes;
+  nCopy = n;
+  ldap = [(SOLDAPHelper *)self ldap];
+  v19 = completionCopy;
   v16 = v19;
   v17 = ldap_connection_query_create();
 
@@ -413,9 +413,9 @@ void __76__SOLDAPHelper_queryforBaseDN_andScope_andAttributes_withFilter_complet
 
 - (void)disconnect
 {
-  v3 = [(SOLDAPHelper *)self ldap];
+  ldap = [(SOLDAPHelper *)self ldap];
 
-  if (v3)
+  if (ldap)
   {
     v4 = SO_LOG_SOLDAPHelper();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -423,35 +423,35 @@ void __76__SOLDAPHelper_queryforBaseDN_andScope_andAttributes_withFilter_complet
       [SOLDAPHelper disconnect];
     }
 
-    v5 = [(SOLDAPHelper *)self ldap];
+    ldap2 = [(SOLDAPHelper *)self ldap];
     ldap_connection_disconnect();
 
     [(SOLDAPHelper *)self setLdap:0];
   }
 }
 
-- (void)useDigestMD5Auth:(id)a3 andPassword:(id)a4
+- (void)useDigestMD5Auth:(id)auth andPassword:(id)password
 {
   v6 = MEMORY[0x277CBEB38];
-  v7 = a4;
-  v8 = a3;
-  v11 = [v6 dictionary];
-  [v11 setValue:v8 forKey:*MEMORY[0x277CEE088]];
+  passwordCopy = password;
+  authCopy = auth;
+  dictionary = [v6 dictionary];
+  [dictionary setValue:authCopy forKey:*MEMORY[0x277CEE088]];
 
-  [v11 setValue:v7 forKey:*MEMORY[0x277CEE080]];
-  v9 = [(SOLDAPHelper *)self ldap];
+  [dictionary setValue:passwordCopy forKey:*MEMORY[0x277CEE080]];
+  ldap = [(SOLDAPHelper *)self ldap];
   v10 = *MEMORY[0x277CEE058];
   ldap_connection_add_credential();
 }
 
-- (void)useKerberosAuth:(gss_cred_id_t_desc_struct *)a3 forSPN:(id)a4
+- (void)useKerberosAuth:(gss_cred_id_t_desc_struct *)auth forSPN:(id)n
 {
   error = 0;
-  v6 = GSSCreateName(a4, MEMORY[0x277CCAEF8], &error);
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  [v7 setValue:a3 forKey:*MEMORY[0x277CEE070]];
-  [v7 setValue:v6 forKey:*MEMORY[0x277CEE078]];
-  v8 = [(SOLDAPHelper *)self ldap];
+  v6 = GSSCreateName(n, MEMORY[0x277CCAEF8], &error);
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setValue:auth forKey:*MEMORY[0x277CEE070]];
+  [dictionary setValue:v6 forKey:*MEMORY[0x277CEE078]];
+  ldap = [(SOLDAPHelper *)self ldap];
   v9 = *MEMORY[0x277CEE060];
   ldap_connection_add_credential();
 }

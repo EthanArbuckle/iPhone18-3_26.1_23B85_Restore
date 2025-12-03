@@ -1,10 +1,10 @@
 @interface TSCEFunction_INTERSECT_RANGES
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_INTERSECT_RANGES
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
   v197 = 0;
   v198 = 0;
@@ -12,13 +12,13 @@
   v196.range = vdupq_n_s64(0x7FFF7FFFFFFFuLL);
   v196._tableUID._lower = 0;
   v196._tableUID._upper = 0;
-  v7 = *(a5 + 1) - *a5;
+  v7 = *(arguments + 1) - *arguments;
   v8 = v7 >> 3;
   if (!(v7 >> 3))
   {
-    v15 = objc_msgSend_functionName(a4, a2, a3, a4, a5);
+    v15 = objc_msgSend_functionName(spec, a2, context, spec, arguments);
     v18 = objc_msgSend_wrongNumberOfArgumentsErrorForFunctionName_provided_(TSCEError, v16, v15, 0, v17);
-    v22 = objc_msgSend_raiseErrorOrConvert_(a3, v19, v18, v20, v21);
+    v22 = objc_msgSend_raiseErrorOrConvert_(context, v19, v18, v20, v21);
 
     goto LABEL_6;
   }
@@ -26,11 +26,11 @@
   if (v8 >= 1)
   {
     v188 = v7 >> 3;
-    v10 = **a5;
+    v10 = **arguments;
     v14 = v10;
     if (v10)
     {
-      objc_msgSend_formatWithContext_(v10, v11, a3, v12, v13);
+      objc_msgSend_formatWithContext_(v10, v11, context, v12, v13);
     }
 
     else
@@ -40,11 +40,11 @@
 
     sub_22114F414(&v197, &v195);
     v194 = 0;
-    v29 = objc_msgSend_asReference_functionSpec_argumentIndex_outError_(v14, v28, a3, a4, 0, &v194);
+    v29 = objc_msgSend_asReference_functionSpec_argumentIndex_outError_(v14, v28, context, spec, 0, &v194);
     v34 = v194;
     if (v34)
     {
-      v22 = objc_msgSend_raiseErrorOrConvert_(a3, v30, v34, v32, v33);
+      v22 = objc_msgSend_raiseErrorOrConvert_(context, v30, v34, v32, v33);
 LABEL_55:
 
       goto LABEL_58;
@@ -62,13 +62,13 @@ LABEL_55:
 
     v196 = v195;
     v189 = objc_msgSend_preserveFlags(v29, v30, v31, v32, v33);
-    v107 = objc_msgSend_calcEngine(a3, v103, v104, v105, v106);
+    v107 = objc_msgSend_calcEngine(context, v103, v104, v105, v106);
     IsWithinTable = objc_msgSend_rangeIsWithinTable_(v107, v108, &v196, v109, v110);
 
     if ((IsWithinTable & 1) == 0)
     {
       v116 = objc_msgSend_invalidReferenceError(TSCEError, v112, v113, v114, v115);
-      v22 = objc_msgSend_raiseErrorOrConvert_(a3, v117, v116, v118, v119);
+      v22 = objc_msgSend_raiseErrorOrConvert_(context, v117, v116, v118, v119);
 
       goto LABEL_55;
     }
@@ -86,12 +86,12 @@ LABEL_55:
     v23 = 1;
     while (1)
     {
-      v121 = *(*a5 + 8 * v24);
+      v121 = *(*arguments + 8 * v24);
       v125 = v121;
       v187 = v121;
       if (v121)
       {
-        objc_msgSend_formatWithContext_(v121, v122, a3, v123, v124);
+        objc_msgSend_formatWithContext_(v121, v122, context, v123, v124);
       }
 
       else
@@ -101,11 +101,11 @@ LABEL_55:
 
       sub_22114F414(&v197, &v195);
       v193 = 0;
-      v127 = objc_msgSend_asReference_functionSpec_argumentIndex_outError_(v125, v126, a3, a4, v24, &v193);
+      v127 = objc_msgSend_asReference_functionSpec_argumentIndex_outError_(v125, v126, context, spec, v24, &v193);
       v132 = v193;
       if (v132)
       {
-        v22 = objc_msgSend_raiseErrorOrConvert_(a3, v128, v132, v130, v131);
+        v22 = objc_msgSend_raiseErrorOrConvert_(context, v128, v132, v130, v131);
 
         goto LABEL_58;
       }
@@ -120,13 +120,13 @@ LABEL_55:
         memset(&v195, 0, sizeof(v195));
       }
 
-      v133 = objc_msgSend_calcEngine(a3, v128, v129, v130, v131, *&v185);
+      v133 = objc_msgSend_calcEngine(context, v128, v129, v130, v131, *&v185);
       v137 = objc_msgSend_rangeIsWithinTable_(v133, v134, &v195, v135, v136);
 
       if ((v137 & 1) == 0)
       {
         v181 = objc_msgSend_invalidReferenceError(TSCEError, v138, v139, v140, v141);
-        v22 = objc_msgSend_raiseErrorOrConvert_(a3, v182, v181, v183, v184);
+        v22 = objc_msgSend_raiseErrorOrConvert_(context, v182, v181, v183, v184);
 
         goto LABEL_58;
       }
@@ -508,7 +508,7 @@ LABEL_36:
     {
       v38 = [TSCEReferenceValue alloc];
       LOBYTE(v195._tskFormat) = v189;
-      v22 = objc_msgSend_initWithContext_rangeRef_preserveFlags_(v38, v39, a3, &v196, &v195);
+      v22 = objc_msgSend_initWithContext_rangeRef_preserveFlags_(v38, v39, context, &v196, &v195);
       objc_msgSend_setIsOutputOfAFunction_(v22, v40, 1, v41, v42);
       sub_221256020(&v197, &v190);
       TSCEFormat::TSCEFormat(&v195, &v190);
@@ -523,7 +523,7 @@ LABEL_36:
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v77, v78, v79, v80);
     v15 = objc_msgSend_invalidReferenceError(TSCEError, v81, v82, v83, v84);
-    v22 = objc_msgSend_raiseErrorOrConvert_(a3, v85, v15, v86, v87);
+    v22 = objc_msgSend_raiseErrorOrConvert_(context, v85, v15, v86, v87);
 LABEL_6:
 
     goto LABEL_58;
@@ -534,7 +534,7 @@ LABEL_38:
   if (!v23)
   {
     v47 = MEMORY[0x277D81150];
-    v48 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "+[TSCEFunction_INTERSECT_RANGES evaluateForArgsWithContext:functionSpec:arguments:]", a4, a5);
+    v48 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "+[TSCEFunction_INTERSECT_RANGES evaluateForArgsWithContext:functionSpec:arguments:]", spec, arguments);
     v52 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v49, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCELookupReferenceFunctions.mm", v50, v51);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v47, v53, v48, v52, 1680, 0, "Should have detected bad reference during loop");
 
@@ -550,10 +550,10 @@ LABEL_38:
 LABEL_49:
     memset(v191, 0, sizeof(v191));
     sub_221478AC0(v191, v68, v69, (v69 - v68) >> 3);
-    v92 = objc_msgSend_containingTable(a3, v88, v89, v90, v91);
-    v97 = objc_msgSend_calcEngine(a3, v93, v94, v95, v96);
+    v92 = objc_msgSend_containingTable(context, v88, v89, v90, v91);
+    v97 = objc_msgSend_calcEngine(context, v93, v94, v95, v96);
     v99 = objc_msgSend_invalidIntersectionError_hostTableUID_calcEngine_(TSCEError, v98, v191, v92, v97);
-    v22 = objc_msgSend_raiseErrorOrConvert_(a3, v100, v99, v101, v102);
+    v22 = objc_msgSend_raiseErrorOrConvert_(context, v100, v99, v101, v102);
 
     v200[0] = v191;
     sub_22107C2C0(v200);
@@ -570,9 +570,9 @@ LABEL_49:
     v60 = v58 + 1;
     while (1)
     {
-      v61 = *(*a5 + 8 * v59);
+      v61 = *(*arguments + 8 * v59);
       v192 = 0;
-      v63 = objc_msgSend_asReference_functionSpec_argumentIndex_outError_(v61, v62, a3, a4, v59, &v192);
+      v63 = objc_msgSend_asReference_functionSpec_argumentIndex_outError_(v61, v62, context, spec, v59, &v192);
       v67 = v192;
       v200[0] = v63;
       if (v67)
@@ -590,7 +590,7 @@ LABEL_49:
       }
     }
 
-    v22 = objc_msgSend_raiseErrorOrConvert_(a3, v64, v67, v65, v66);
+    v22 = objc_msgSend_raiseErrorOrConvert_(context, v64, v67, v65, v66);
   }
 
   v200[0] = &v195;

@@ -1,16 +1,16 @@
 @interface SXVideoComponent
-- (BOOL)allowsPrerollAdsWithValue:(id)a3 withType:(int)a4;
-- (SXVideoComponent)initWithJSONObject:(id)a3 andVersion:(id)a4;
-- (double)aspectRatioWithValue:(id)a3 withType:(int)a4;
+- (BOOL)allowsPrerollAdsWithValue:(id)value withType:(int)type;
+- (SXVideoComponent)initWithJSONObject:(id)object andVersion:(id)version;
+- (double)aspectRatioWithValue:(id)value withType:(int)type;
 @end
 
 @implementation SXVideoComponent
 
-- (SXVideoComponent)initWithJSONObject:(id)a3 andVersion:(id)a4
+- (SXVideoComponent)initWithJSONObject:(id)object andVersion:(id)version
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  objectCopy = object;
+  versionCopy = version;
+  v8 = objectCopy;
   objc_opt_class();
   v9 = v8;
   if (objc_opt_isKindOfClass())
@@ -21,27 +21,27 @@
     if (!v10)
     {
       v9 = [v8 mutableCopy];
-      v11 = [MEMORY[0x1E696AFB0] UUID];
-      v12 = [v11 UUIDString];
-      [v9 setObject:v12 forKey:@"prerollPlacementIdentifier"];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
+      [v9 setObject:uUIDString forKey:@"prerollPlacementIdentifier"];
     }
   }
 
   v15.receiver = self;
   v15.super_class = SXVideoComponent;
-  v13 = [(SXJSONObject *)&v15 initWithJSONObject:v9 andVersion:v7];
+  v13 = [(SXJSONObject *)&v15 initWithJSONObject:v9 andVersion:versionCopy];
 
   return v13;
 }
 
-- (double)aspectRatioWithValue:(id)a3 withType:(int)a4
+- (double)aspectRatioWithValue:(id)value withType:(int)type
 {
-  if (a4 != 2)
+  if (type != 2)
   {
     return 1.77777779;
   }
 
-  [a3 floatValue];
+  [value floatValue];
   v5 = v4;
   v6 = v4 == 0.0;
   result = 1.77777779;
@@ -53,11 +53,11 @@
   return result;
 }
 
-- (BOOL)allowsPrerollAdsWithValue:(id)a3 withType:(int)a4
+- (BOOL)allowsPrerollAdsWithValue:(id)value withType:(int)type
 {
-  if (a3 && a4 == 2)
+  if (value && type == 2)
   {
-    return [a3 BOOLValue];
+    return [value BOOLValue];
   }
 
   else

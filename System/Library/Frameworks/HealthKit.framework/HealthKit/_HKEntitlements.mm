@@ -1,22 +1,22 @@
 @interface _HKEntitlements
 + (id)_allowedEntitlementsSet;
 + (id)_containerAppExtensionEntitlementsForCurrentTask;
-+ (id)_entitlementsWithSecTask:(__SecTask *)a3 valueOverrides:(id)a4 error:(id *)a5;
-+ (id)entitlementsForCurrentTaskWithError:(id *)a3;
-+ (id)entitlementsWithApplicationIdentifier:(id)a3;
-+ (id)entitlementsWithConnection:(id)a3 error:(id *)a4;
-+ (id)entitlementsWithDictionary:(id)a3;
-- (BOOL)arrayEntitlement:(id)a3 containsString:(id)a4;
-- (BOOL)hasEntitlement:(id)a3;
++ (id)_entitlementsWithSecTask:(__SecTask *)task valueOverrides:(id)overrides error:(id *)error;
++ (id)entitlementsForCurrentTaskWithError:(id *)error;
++ (id)entitlementsWithApplicationIdentifier:(id)identifier;
++ (id)entitlementsWithConnection:(id)connection error:(id *)error;
++ (id)entitlementsWithDictionary:(id)dictionary;
+- (BOOL)arrayEntitlement:(id)entitlement containsString:(id)string;
+- (BOOL)hasEntitlement:(id)entitlement;
 - (BOOL)hasPrivateMetadataAccess;
 - (_HKEntitlements)init;
-- (id)_initWithEntitlementValues:(id)a3;
-- (id)_typesFromIdentifierArray:(id)a3;
-- (id)stringForEntitlement:(id)a3;
+- (id)_initWithEntitlementValues:(id)values;
+- (id)_typesFromIdentifierArray:(id)array;
+- (id)stringForEntitlement:(id)entitlement;
 - (id)typesForReadAuthorizationBypass;
 - (id)typesForReadAuthorizationOverride;
 - (id)typesForWriteAuthorizationOverride;
-- (id)valueForEntitlement:(id)a3;
+- (id)valueForEntitlement:(id)entitlement;
 @end
 
 @implementation _HKEntitlements
@@ -33,7 +33,7 @@
   return v3;
 }
 
-+ (id)entitlementsForCurrentTaskWithError:(id *)a3
++ (id)entitlementsForCurrentTaskWithError:(id *)error
 {
   if (_currentTaskEntitlementsOverride)
   {
@@ -46,14 +46,14 @@
     if (v6)
     {
       v7 = v6;
-      v8 = [a1 _containerAppExtensionEntitlementsForCurrentTask];
-      v3 = [a1 _entitlementsWithSecTask:v7 valueOverrides:v8 error:a3];
+      _containerAppExtensionEntitlementsForCurrentTask = [self _containerAppExtensionEntitlementsForCurrentTask];
+      v3 = [self _entitlementsWithSecTask:v7 valueOverrides:_containerAppExtensionEntitlementsForCurrentTask error:error];
       CFRelease(v7);
     }
 
     else
     {
-      [MEMORY[0x1E696ABC0] hk_assignError:a3 code:100 description:@"Unable to retrieve current task for entitlement lookup."];
+      [MEMORY[0x1E696ABC0] hk_assignError:error code:100 description:@"Unable to retrieve current task for entitlement lookup."];
       v3 = 0;
     }
   }
@@ -95,18 +95,18 @@
   return v7;
 }
 
-+ (id)entitlementsWithConnection:(id)a3 error:(id *)a4
++ (id)entitlementsWithConnection:(id)connection error:(id *)error
 {
-  v7 = a3;
-  v8 = v7;
-  if (v7)
+  connectionCopy = connection;
+  v8 = connectionCopy;
+  if (connectionCopy)
   {
-    [v7 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
   {
-    [(_HKEntitlements *)a2 entitlementsWithConnection:a1 error:&v17];
+    [(_HKEntitlements *)a2 entitlementsWithConnection:self error:&v17];
   }
 
   v9 = SecTaskCreateWithAuditToken(0, &v17);
@@ -118,55 +118,55 @@
       v11 = [MEMORY[0x1E6963618] hk_appExtensionContainerBundleForConnection:v8];
       if (v11)
       {
-        v12 = [a1 _allowedEntitlementsSet];
-        v13 = [v11 entitlementValuesForKeys:v12];
-        v14 = [v13 rawValues];
+        _allowedEntitlementsSet = [self _allowedEntitlementsSet];
+        v13 = [v11 entitlementValuesForKeys:_allowedEntitlementsSet];
+        rawValues = [v13 rawValues];
       }
 
       else
       {
-        v14 = 0;
+        rawValues = 0;
       }
     }
 
     else
     {
-      v14 = 0;
+      rawValues = 0;
     }
 
-    v15 = [a1 _entitlementsWithSecTask:v10 valueOverrides:v14 error:a4];
+    v15 = [self _entitlementsWithSecTask:v10 valueOverrides:rawValues error:error];
     CFRelease(v10);
   }
 
   else
   {
-    [MEMORY[0x1E696ABC0] hk_assignError:a4 code:100 description:@"Unable to retrieve remote task for entitlement lookup."];
+    [MEMORY[0x1E696ABC0] hk_assignError:error code:100 description:@"Unable to retrieve remote task for entitlement lookup."];
     v15 = 0;
   }
 
   return v15;
 }
 
-+ (id)_entitlementsWithSecTask:(__SecTask *)a3 valueOverrides:(id)a4 error:(id *)a5
++ (id)_entitlementsWithSecTask:(__SecTask *)task valueOverrides:(id)overrides error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  overridesCopy = overrides;
   error = 0;
-  v9 = [a1 _allowedEntitlementsSet];
-  v10 = [v9 allObjects];
+  _allowedEntitlementsSet = [self _allowedEntitlementsSet];
+  allObjects = [_allowedEntitlementsSet allObjects];
 
-  v11 = SecTaskCopyValuesForEntitlements(a3, v10, &error);
+  v11 = SecTaskCopyValuesForEntitlements(task, allObjects, &error);
   v12 = [(__CFDictionary *)v11 mutableCopy];
 
-  v13 = error;
+  errorCopy = error;
   if (v12)
   {
-    v27 = error;
+    errorCopy2 = error;
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v14 = v10;
+    v14 = allObjects;
     v15 = [(__CFArray *)v14 countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v15)
     {
@@ -182,7 +182,7 @@
           }
 
           v19 = *(*(&v28 + 1) + 8 * i);
-          v20 = [v8 objectForKeyedSubscript:v19];
+          v20 = [overridesCopy objectForKeyedSubscript:v19];
           if (v20)
           {
             [v12 setObject:v20 forKeyedSubscript:v19];
@@ -195,25 +195,25 @@
       while (v16);
     }
 
-    v21 = [[a1 alloc] _initWithEntitlementValues:v12];
-    v13 = v27;
+    v21 = [[self alloc] _initWithEntitlementValues:v12];
+    errorCopy = errorCopy2;
   }
 
   else
   {
-    v22 = error;
-    v23 = v22;
-    if (v22)
+    errorCopy3 = error;
+    v23 = errorCopy3;
+    if (errorCopy3)
     {
-      if (a5)
+      if (error)
       {
-        v24 = v22;
-        *a5 = v23;
+        v24 = errorCopy3;
+        *error = v23;
       }
 
       else
       {
-        _HKLogDroppedError(v22);
+        _HKLogDroppedError(errorCopy3);
       }
     }
 
@@ -225,24 +225,24 @@
   return v21;
 }
 
-+ (id)entitlementsWithDictionary:(id)a3
++ (id)entitlementsWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithEntitlementValues:v4];
+  dictionaryCopy = dictionary;
+  v5 = [[self alloc] _initWithEntitlementValues:dictionaryCopy];
 
   return v5;
 }
 
-+ (id)entitlementsWithApplicationIdentifier:(id)a3
++ (id)entitlementsWithApplicationIdentifier:(id)identifier
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v10 = @"application-identifier";
-  v11[0] = a3;
+  v11[0] = identifier;
   v4 = MEMORY[0x1E695DF20];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [v4 dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
-  v7 = [a1 entitlementsWithDictionary:v6];
+  v7 = [self entitlementsWithDictionary:v6];
 
   v8 = *MEMORY[0x1E69E9840];
 
@@ -259,20 +259,20 @@
   return 0;
 }
 
-- (id)_initWithEntitlementValues:(id)a3
+- (id)_initWithEntitlementValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v14.receiver = self;
   v14.super_class = _HKEntitlements;
   v5 = [(_HKEntitlements *)&v14 init];
   if (v5)
   {
-    v6 = [objc_opt_class() _allowedEntitlementsSet];
-    v7 = [v4 hk_filteredDictionaryForKeys:v6];
+    _allowedEntitlementsSet = [objc_opt_class() _allowedEntitlementsSet];
+    v7 = [valuesCopy hk_filteredDictionaryForKeys:_allowedEntitlementsSet];
     entitlementValues = v5->_entitlementValues;
     v5->_entitlementValues = v7;
 
-    v9 = [v4 objectForKeyedSubscript:@"application-identifier"];
+    v9 = [valuesCopy objectForKeyedSubscript:@"application-identifier"];
     v10 = v9;
     if (v9)
     {
@@ -293,21 +293,21 @@
   return v5;
 }
 
-- (BOOL)hasEntitlement:(id)a3
+- (BOOL)hasEntitlement:(id)entitlement
 {
-  v3 = [(_HKEntitlements *)self valueForEntitlement:a3];
+  v3 = [(_HKEntitlements *)self valueForEntitlement:entitlement];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)hasPrivateMetadataAccess
@@ -320,14 +320,14 @@
   return [(_HKEntitlements *)self hasEntitlement:@"com.apple.private.healthkit.metadata.private"];
 }
 
-- (BOOL)arrayEntitlement:(id)a3 containsString:(id)a4
+- (BOOL)arrayEntitlement:(id)entitlement containsString:(id)string
 {
-  v6 = a4;
-  v7 = [(_HKEntitlements *)self valueForEntitlement:a3];
+  stringCopy = string;
+  v7 = [(_HKEntitlements *)self valueForEntitlement:entitlement];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v7 containsObject:v6];
+    v8 = [v7 containsObject:stringCopy];
   }
 
   else
@@ -338,9 +338,9 @@
   return v8;
 }
 
-- (id)stringForEntitlement:(id)a3
+- (id)stringForEntitlement:(id)entitlement
 {
-  v3 = [(_HKEntitlements *)self valueForEntitlement:a3];
+  v3 = [(_HKEntitlements *)self valueForEntitlement:entitlement];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -355,18 +355,18 @@
   return v4;
 }
 
-- (id)valueForEntitlement:(id)a3
+- (id)valueForEntitlement:(id)entitlement
 {
-  v5 = a3;
-  v6 = [objc_opt_class() _allowedEntitlementsSet];
-  v7 = [v6 containsObject:v5];
+  entitlementCopy = entitlement;
+  _allowedEntitlementsSet = [objc_opt_class() _allowedEntitlementsSet];
+  v7 = [_allowedEntitlementsSet containsObject:entitlementCopy];
 
   if ((v7 & 1) == 0)
   {
-    [(_HKEntitlements *)a2 valueForEntitlement:v5];
+    [(_HKEntitlements *)a2 valueForEntitlement:entitlementCopy];
   }
 
-  v8 = [(NSDictionary *)self->_entitlementValues objectForKeyedSubscript:v5];
+  v8 = [(NSDictionary *)self->_entitlementValues objectForKeyedSubscript:entitlementCopy];
 
   return v8;
 }
@@ -395,14 +395,14 @@
   return v4;
 }
 
-- (id)_typesFromIdentifierArray:(id)a3
+- (id)_typesFromIdentifierArray:(id)array
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  arrayCopy = array;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = arrayCopy;
     v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v15 = 0u;
     v16 = 0u;

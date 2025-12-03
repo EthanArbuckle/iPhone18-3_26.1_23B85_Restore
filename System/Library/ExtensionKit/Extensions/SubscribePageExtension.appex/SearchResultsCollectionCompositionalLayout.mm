@@ -1,25 +1,25 @@
 @interface SearchResultsCollectionCompositionalLayout
 - (CGSize)collectionViewContentSize;
-- (_TtC22SubscribePageExtension42SearchResultsCollectionCompositionalLayout)initWithSectionProvider:(id)a3 configuration:(id)a4;
-- (id)layoutAttributesForDecorationViewOfKind:(id)a3 atIndexPath:(id)a4;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
+- (_TtC22SubscribePageExtension42SearchResultsCollectionCompositionalLayout)initWithSectionProvider:(id)provider configuration:(id)configuration;
+- (id)layoutAttributesForDecorationViewOfKind:(id)kind atIndexPath:(id)path;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
 @end
 
 @implementation SearchResultsCollectionCompositionalLayout
 
-- (_TtC22SubscribePageExtension42SearchResultsCollectionCompositionalLayout)initWithSectionProvider:(id)a3 configuration:(id)a4
+- (_TtC22SubscribePageExtension42SearchResultsCollectionCompositionalLayout)initWithSectionProvider:(id)provider configuration:(id)configuration
 {
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(provider);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
-  return sub_1000E3CB4(sub_1000E5B80, v6, a4);
+  return sub_1000E3CB4(sub_1000E5B80, v6, configuration);
 }
 
 - (CGSize)collectionViewContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000E3EA8();
   v5 = v4;
 
@@ -30,10 +30,10 @@
   return result;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  x = a3.origin.x;
-  v4 = self;
+  x = rect.origin.x;
+  selfCopy = self;
   v5 = sub_1000E41E4(x);
 
   if (v5)
@@ -50,17 +50,17 @@
   return v6.super.isa;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v4 = sub_1007417F4();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v14 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100741744();
-  v8 = self;
+  selfCopy = self;
   isa = sub_100741704().super.isa;
   v10 = type metadata accessor for SearchResultsCollectionCompositionalLayout();
-  v14.receiver = v8;
+  v14.receiver = selfCopy;
   v14.super_class = v10;
   v11 = [(BaseCollectionCompositionalLayout *)&v14 layoutAttributesForItemAtIndexPath:isa];
 
@@ -68,7 +68,7 @@
   {
     v12 = sub_1000E4DC4(v11);
 
-    v8 = v11;
+    selfCopy = v11;
   }
 
   else
@@ -81,26 +81,26 @@
   return v12;
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
   v6 = sub_1007417F4();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v17 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100741744();
-  v10 = a3;
-  v11 = self;
+  kindCopy = kind;
+  selfCopy = self;
   isa = sub_100741704().super.isa;
   v13 = type metadata accessor for SearchResultsCollectionCompositionalLayout();
-  v17.receiver = v11;
+  v17.receiver = selfCopy;
   v17.super_class = v13;
-  v14 = [(BaseCollectionCompositionalLayout *)&v17 layoutAttributesForSupplementaryViewOfKind:v10 atIndexPath:isa];
+  v14 = [(BaseCollectionCompositionalLayout *)&v17 layoutAttributesForSupplementaryViewOfKind:kindCopy atIndexPath:isa];
 
   if (v14)
   {
     v15 = sub_1000E4DC4(v14);
 
-    v11 = v14;
+    selfCopy = v14;
   }
 
   else
@@ -113,7 +113,7 @@
   return v15;
 }
 
-- (id)layoutAttributesForDecorationViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForDecorationViewOfKind:(id)kind atIndexPath:(id)path
 {
   v5 = sub_1007417F4();
   v6 = *(v5 - 8);
@@ -122,7 +122,7 @@
   v9 = sub_100753094();
   v11 = v10;
   sub_100741744();
-  v12 = self;
+  selfCopy = self;
   v13 = sub_1000E519C(v9, v11, v8);
 
   (*(v6 + 8))(v8, v5);

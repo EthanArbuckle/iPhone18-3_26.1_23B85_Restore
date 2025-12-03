@@ -1,23 +1,23 @@
 @interface CNContactActionsController
 + (id)descriptorForRequiredKeys;
-- (CNContactActionsController)initWithContact:(id)a3 actionTypes:(id)a4;
-- (CNContactActionsController)initWithContact:(id)a3 dataSource:(id)a4 actionTypes:(id)a5;
+- (CNContactActionsController)initWithContact:(id)contact actionTypes:(id)types;
+- (CNContactActionsController)initWithContact:(id)contact dataSource:(id)source actionTypes:(id)types;
 - (CNContactActionsControllerDelegate)delegate;
 - (CNUINavigationListStyle)navigationListStyle;
 - (UIViewController)viewController;
-- (id)actionForItem:(id)a3 withImage:(id)a4;
-- (id)defaultActionForActionType:(id)a3;
-- (id)imageForActionType:(id)a3;
-- (id)modelForActionType:(id)a3;
-- (id)navigationListItemForUserActionType:(id)a3;
+- (id)actionForItem:(id)item withImage:(id)image;
+- (id)defaultActionForActionType:(id)type;
+- (id)imageForActionType:(id)type;
+- (id)modelForActionType:(id)type;
+- (id)navigationListItemForUserActionType:(id)type;
 - (void)cancelModels;
 - (void)dealloc;
-- (void)generateMenuForItem:(id)a3 image:(id)a4 withCurrentList:(id)a5;
-- (void)navigationListController:(id)a3 didSelectItem:(id)a4;
+- (void)generateMenuForItem:(id)item image:(id)image withCurrentList:(id)list;
+- (void)navigationListController:(id)controller didSelectItem:(id)item;
 - (void)prepareNavigationListItems;
 - (void)retrieveModels;
-- (void)setActionsOrder:(int64_t)a3;
-- (void)setNavigationListStyle:(id)a3;
+- (void)setActionsOrder:(int64_t)order;
+- (void)setNavigationListStyle:(id)style;
 - (void)styleUpdated;
 @end
 
@@ -27,8 +27,8 @@
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E695CD58];
-  v3 = [MEMORY[0x1E6996BE8] descriptorForRequiredKeys];
-  v8[0] = v3;
+  descriptorForRequiredKeys = [MEMORY[0x1E6996BE8] descriptorForRequiredKeys];
+  v8[0] = descriptorForRequiredKeys;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[CNContactActionsController descriptorForRequiredKeys]"];
   v6 = [v2 descriptorWithKeyDescriptors:v4 description:v5];
@@ -50,32 +50,32 @@
   return WeakRetained;
 }
 
-- (id)actionForItem:(id)a3 withImage:(id)a4
+- (id)actionForItem:(id)item withImage:(id)image
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 title];
+  itemCopy = item;
+  imageCopy = image;
+  title = [itemCopy title];
   v9 = MEMORY[0x1E69DC628];
-  v10 = v7;
-  if (!v7)
+  image = imageCopy;
+  if (!imageCopy)
   {
-    v10 = [v6 image];
+    image = [itemCopy image];
   }
 
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __54__CNContactActionsController_actionForItem_withImage___block_invoke;
   v18 = &unk_1E74E7808;
-  v19 = v6;
-  v20 = self;
-  v11 = v6;
-  v12 = [v9 actionWithTitle:v8 image:v10 identifier:0 handler:&v15];
-  if (!v7)
+  v19 = itemCopy;
+  selfCopy = self;
+  v11 = itemCopy;
+  v12 = [v9 actionWithTitle:title image:image identifier:0 handler:&v15];
+  if (!imageCopy)
   {
   }
 
-  v13 = [v11 subtitle];
-  [v12 setSubtitle:v13];
+  subtitle = [v11 subtitle];
+  [v12 setSubtitle:subtitle];
 
   return v12;
 }
@@ -118,25 +118,25 @@ void __54__CNContactActionsController_actionForItem_withImage___block_invoke(uin
   [v7 contactActionsController:*(a1 + 40) didSelectAction:v8];
 }
 
-- (void)generateMenuForItem:(id)a3 image:(id)a4 withCurrentList:(id)a5
+- (void)generateMenuForItem:(id)item image:(id)image withCurrentList:(id)list
 {
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 items];
+  itemCopy = item;
+  imageCopy = image;
+  listCopy = list;
+  items = [itemCopy items];
 
-  if (v11)
+  if (items)
   {
-    v31 = v10;
-    v32 = v9;
+    v31 = listCopy;
+    v32 = imageCopy;
     v12 = objc_opt_new();
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v13 = [v8 items];
-    v14 = [v13 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    items2 = [itemCopy items];
+    v14 = [items2 countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v14)
     {
       v15 = v14;
@@ -147,7 +147,7 @@ void __54__CNContactActionsController_actionForItem_withImage___block_invoke(uin
         {
           if (*v34 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(items2);
           }
 
           v18 = *(*(&v33 + 1) + 8 * i);
@@ -158,24 +158,24 @@ void __54__CNContactActionsController_actionForItem_withImage___block_invoke(uin
 
           else
           {
-            v20 = [v8 image];
-            v21 = v8;
-            v22 = v20;
+            image = [itemCopy image];
+            v21 = itemCopy;
+            v22 = image;
             v23 = v32;
-            if (v20)
+            if (image)
             {
-              v23 = v20;
+              v23 = image;
             }
 
             v19 = v23;
 
-            v8 = v21;
+            itemCopy = v21;
           }
 
           [(CNContactActionsController *)self generateMenuForItem:v18 image:v19 withCurrentList:v12];
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v15 = [items2 countByEnumeratingWithState:&v33 objects:v37 count:16];
       }
 
       while (v15);
@@ -183,68 +183,68 @@ void __54__CNContactActionsController_actionForItem_withImage___block_invoke(uin
 
     if ([(CNContactActionsController *)self displayMenuIconAtTopLevel])
     {
-      v24 = [v8 image];
+      image2 = [itemCopy image];
     }
 
     else
     {
-      v24 = 0;
+      image2 = 0;
     }
 
-    v10 = v31;
-    v9 = v32;
-    v27 = [v8 shouldDisplayInline];
+    listCopy = v31;
+    imageCopy = v32;
+    shouldDisplayInline = [itemCopy shouldDisplayInline];
     v28 = MEMORY[0x1E69DCC60];
-    v29 = [v8 title];
-    v30 = [v28 menuWithTitle:v29 image:v24 identifier:0 options:v27 children:v12];
+    title = [itemCopy title];
+    v30 = [v28 menuWithTitle:title image:image2 identifier:0 options:shouldDisplayInline children:v12];
 
-    [v10 addObject:v30];
+    [listCopy addObject:v30];
   }
 
   else
   {
-    v25 = [v8 image];
-    v12 = v25;
-    if (v25)
+    image3 = [itemCopy image];
+    v12 = image3;
+    if (image3)
     {
-      v26 = v25;
+      v26 = image3;
     }
 
     else
     {
-      v26 = v9;
+      v26 = imageCopy;
     }
 
-    v24 = [(CNContactActionsController *)self actionForItem:v8 withImage:v26];
-    [v10 addObject:v24];
+    image2 = [(CNContactActionsController *)self actionForItem:itemCopy withImage:v26];
+    [listCopy addObject:image2];
   }
 }
 
 - (void)prepareNavigationListItems
 {
   v49 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(CNContactActionsController *)self actionTypes];
+  array = [MEMORY[0x1E695DF70] array];
+  actionTypes = [(CNContactActionsController *)self actionTypes];
   v46[0] = MEMORY[0x1E69E9820];
   v46[1] = 3221225472;
   v46[2] = __56__CNContactActionsController_prepareNavigationListItems__block_invoke;
   v46[3] = &unk_1E74E5A18;
   v46[4] = self;
-  v5 = [v4 _cn_filter:v46];
+  v5 = [actionTypes _cn_filter:v46];
 
   v6 = v5;
-  v7 = v6;
+  allObjects = v6;
   if ([(CNContactActionsController *)self actionsOrder]== 1)
   {
-    v8 = [v6 reverseObjectEnumerator];
-    v7 = [v8 allObjects];
+    reverseObjectEnumerator = [v6 reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
   }
 
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v9 = v7;
+  v9 = allObjects;
   v10 = [v9 countByEnumeratingWithState:&v42 objects:v48 count:16];
   if (v10)
   {
@@ -260,7 +260,7 @@ void __54__CNContactActionsController_actionForItem_withImage___block_invoke(uin
         }
 
         v14 = [(CNContactActionsController *)self navigationListItemForUserActionType:*(*(&v42 + 1) + 8 * i)];
-        [v3 addObject:v14];
+        [array addObject:v14];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v42 objects:v48 count:16];
@@ -269,29 +269,29 @@ void __54__CNContactActionsController_actionForItem_withImage___block_invoke(uin
     while (v11);
   }
 
-  v15 = [v3 copy];
-  v16 = [(CNContactActionsController *)self displayedController];
-  [v16 setItems:v15];
+  v15 = [array copy];
+  displayedController = [(CNContactActionsController *)self displayedController];
+  [displayedController setItems:v15];
 
-  v17 = [v3 count];
+  v17 = [array count];
   if (v17 == 1)
   {
-    v18 = [v3 firstObject];
+    firstObject = [array firstObject];
   }
 
   else
   {
-    v18 = 0;
+    firstObject = 0;
   }
 
-  v19 = [(CNContactActionsController *)self displayedController];
-  [v19 setExpandedItem:v18];
+  displayedController2 = [(CNContactActionsController *)self displayedController];
+  [displayedController2 setExpandedItem:firstObject];
 
   if (v17 == 1)
   {
   }
 
-  v20 = [(CNContactActionsController *)self delegate];
+  delegate = [(CNContactActionsController *)self delegate];
   v21 = objc_opt_respondsToSelector();
 
   if (v21)
@@ -302,7 +302,7 @@ void __54__CNContactActionsController_actionForItem_withImage___block_invoke(uin
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v23 = v3;
+    v23 = array;
     v24 = [v23 countByEnumeratingWithState:&v38 objects:v47 count:16];
     if (v24)
     {
@@ -318,8 +318,8 @@ void __54__CNContactActionsController_actionForItem_withImage___block_invoke(uin
           }
 
           v28 = *(*(&v38 + 1) + 8 * j);
-          v29 = [v28 image];
-          [(CNContactActionsController *)self generateMenuForItem:v28 image:v29 withCurrentList:v22];
+          image = [v28 image];
+          [(CNContactActionsController *)self generateMenuForItem:v28 image:image withCurrentList:v22];
         }
 
         v25 = [v23 countByEnumeratingWithState:&v38 objects:v47 count:16];
@@ -330,16 +330,16 @@ void __54__CNContactActionsController_actionForItem_withImage___block_invoke(uin
 
     if ([v22 count] == 1)
     {
-      v30 = [v22 firstObject];
+      firstObject2 = [v22 firstObject];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       v6 = v37;
       if (isKindOfClass)
       {
-        v32 = [v22 firstObject];
-        v33 = [v32 children];
-        v34 = [v33 mutableCopy];
+        firstObject3 = [v22 firstObject];
+        children = [firstObject3 children];
+        v34 = [children mutableCopy];
 
         v22 = v34;
       }
@@ -350,9 +350,9 @@ void __54__CNContactActionsController_actionForItem_withImage___block_invoke(uin
       v6 = v37;
     }
 
-    v35 = [(CNContactActionsController *)self delegate];
+    delegate2 = [(CNContactActionsController *)self delegate];
     v36 = [v22 copy];
-    [v35 contactActionsController:self didUpdateWithMenu:v36];
+    [delegate2 contactActionsController:self didUpdateWithMenu:v36];
   }
 }
 
@@ -373,21 +373,21 @@ uint64_t __56__CNContactActionsController_prepareNavigationListItems__block_invo
   return v4;
 }
 
-- (id)navigationListItemForUserActionType:(id)a3
+- (id)navigationListItemForUserActionType:(id)type
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CNContactActionsController *)self imageForActionType:v4];
-  v6 = [(CNContactActionsController *)self actionsDataSource];
-  v7 = [v6 consumer:self localizedDisplayNameForActionType:v4];
+  typeCopy = type;
+  v5 = [(CNContactActionsController *)self imageForActionType:typeCopy];
+  actionsDataSource = [(CNContactActionsController *)self actionsDataSource];
+  v7 = [actionsDataSource consumer:self localizedDisplayNameForActionType:typeCopy];
 
   v8 = [[CNUINavigationListItem alloc] initWithTitle:v7 image:v5];
-  [(CNUINavigationListItem *)v8 setIdentifier:v4];
-  v9 = [(CNContactActionsController *)self modelForActionType:v4];
+  [(CNUINavigationListItem *)v8 setIdentifier:typeCopy];
+  v9 = [(CNContactActionsController *)self modelForActionType:typeCopy];
   if ([(CNContactActionsController *)self generateFaceTimeListItemsOnly])
   {
-    v10 = [CNUINavigationListItem faceTimeNavigationListItemsForUserActionListModel:v9];
-    [(CNUINavigationListItem *)v8 setItems:v10];
+    defaultAppBundleIdentifier2 = [CNUINavigationListItem faceTimeNavigationListItemsForUserActionListModel:v9];
+    [(CNUINavigationListItem *)v8 setItems:defaultAppBundleIdentifier2];
 LABEL_6:
 
     goto LABEL_27;
@@ -395,27 +395,27 @@ LABEL_6:
 
   if ([(CNContactActionsController *)self generateDefaultAppListItemsOnly])
   {
-    v11 = [(CNContactActionsController *)self defaultAppBundleIdentifier];
+    defaultAppBundleIdentifier = [(CNContactActionsController *)self defaultAppBundleIdentifier];
 
-    if (!v11)
+    if (!defaultAppBundleIdentifier)
     {
       v36 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"parameter ‘self.defaultAppBundleIdentifier’ must be nonnull" userInfo:0];
       objc_exception_throw(v36);
     }
 
-    v10 = [(CNContactActionsController *)self defaultAppBundleIdentifier];
-    v12 = [CNUINavigationListItem defaultAppNavigationListItemsForUserActionListModel:v9 defaultAppBundleIdentifier:v10];
+    defaultAppBundleIdentifier2 = [(CNContactActionsController *)self defaultAppBundleIdentifier];
+    v12 = [CNUINavigationListItem defaultAppNavigationListItemsForUserActionListModel:v9 defaultAppBundleIdentifier:defaultAppBundleIdentifier2];
     [(CNUINavigationListItem *)v8 setItems:v12];
 
     goto LABEL_6;
   }
 
-  v39 = v4;
+  v39 = typeCopy;
   v13 = v9;
   if ([(CNContactActionsController *)self generateFavoritesListItemsOnly])
   {
-    v14 = [v9 actions];
-    v15 = [v14 _cn_filter:&__block_literal_global_10114];
+    actions = [v9 actions];
+    v15 = [actions _cn_filter:&__block_literal_global_10114];
 
     v16 = [objc_alloc(MEMORY[0x1E6996BF0]) initWithModel:v13 actions:v15];
     [(CNContactActionsController *)self setDisplayNonDefaultAppsMenuTitle:0];
@@ -430,8 +430,8 @@ LABEL_6:
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v18 = [(CNUINavigationListItem *)v8 items];
-  v19 = [v18 countByEnumeratingWithState:&v42 objects:v46 count:16];
+  items = [(CNUINavigationListItem *)v8 items];
+  v19 = [items countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (!v19)
   {
     v21 = 0;
@@ -449,45 +449,45 @@ LABEL_6:
     {
       if (*v43 != v22)
       {
-        objc_enumerationMutation(v18);
+        objc_enumerationMutation(items);
       }
 
       v24 = *(*(&v42 + 1) + 8 * v23);
       [v24 setParent:v8];
-      v25 = [v24 defaultItem];
+      defaultItem = [v24 defaultItem];
 
-      if (v25)
+      if (defaultItem)
       {
-        v26 = [v24 defaultItem];
+        defaultItem2 = [v24 defaultItem];
 LABEL_16:
 
-        v21 = v26;
+        v21 = defaultItem2;
         goto LABEL_17;
       }
 
-      v27 = [v13 defaultAction];
-      if (v27)
+      defaultAction = [v13 defaultAction];
+      if (defaultAction)
       {
-        v28 = v27;
-        v29 = v18;
+        v28 = defaultAction;
+        v29 = items;
         v30 = v8;
         v31 = v13;
-        v32 = [v13 defaultAction];
-        v33 = [v24 content];
+        defaultAction2 = [v13 defaultAction];
+        content = [v24 content];
 
-        if (v32 == v33)
+        if (defaultAction2 == content)
         {
-          v26 = v24;
+          defaultItem2 = v24;
           v13 = v31;
           v8 = v30;
-          v18 = v29;
+          items = v29;
           v20 = v41;
           goto LABEL_16;
         }
 
         v13 = v31;
         v8 = v30;
-        v18 = v29;
+        items = v29;
         v20 = v41;
       }
 
@@ -496,7 +496,7 @@ LABEL_17:
     }
 
     while (v20 != v23);
-    v34 = [v18 countByEnumeratingWithState:&v42 objects:v46 count:16];
+    v34 = [items countByEnumeratingWithState:&v42 objects:v46 count:16];
     v20 = v34;
   }
 
@@ -506,33 +506,33 @@ LABEL_26:
   [(CNUINavigationListItem *)v8 setDefaultItem:v21];
   v9 = v13;
   v5 = v38;
-  v4 = v40;
+  typeCopy = v40;
   v7 = v37;
 LABEL_27:
 
   return v8;
 }
 
-- (id)defaultActionForActionType:(id)a3
+- (id)defaultActionForActionType:(id)type
 {
-  v4 = a3;
-  v5 = [(CNContactActionsController *)self modelsByActionTypes];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  typeCopy = type;
+  modelsByActionTypes = [(CNContactActionsController *)self modelsByActionTypes];
+  v6 = [modelsByActionTypes objectForKeyedSubscript:typeCopy];
 
-  v7 = [v6 defaultAction];
+  defaultAction = [v6 defaultAction];
 
-  return v7;
+  return defaultAction;
 }
 
-- (void)navigationListController:(id)a3 didSelectItem:(id)a4
+- (void)navigationListController:(id)controller didSelectItem:(id)item
 {
-  v16 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  itemCopy = item;
   objc_opt_class();
-  v7 = [v6 content];
+  content = [itemCopy content];
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = content;
   }
 
   else
@@ -542,46 +542,46 @@ LABEL_27:
 
   v9 = v8;
 
-  if (v9 || ((objc_opt_class(), [v6 defaultItem], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "content"), v7 = objc_claimAutoreleasedReturnValue(), (objc_opt_isKindOfClass() & 1) == 0) ? (v11 = 0) : (v11 = v7), v12 = v11, v7, v10, v12))
+  if (v9 || ((objc_opt_class(), [itemCopy defaultItem], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "content"), content = objc_claimAutoreleasedReturnValue(), (objc_opt_isKindOfClass() & 1) == 0) ? (v11 = 0) : (v11 = content), v12 = v11, content, v10, v12))
   {
-    v13 = [(CNContactActionsController *)self delegate];
-    [v13 contactActionsController:self didSelectAction:v7];
+    delegate = [(CNContactActionsController *)self delegate];
+    [delegate contactActionsController:self didSelectAction:content];
   }
 
   else
   {
-    v14 = [v6 items];
-    v15 = [v14 count];
+    items = [itemCopy items];
+    v15 = [items count];
 
     if (v15)
     {
-      [v16 toggleItem:v6];
+      [controllerCopy toggleItem:itemCopy];
     }
   }
 }
 
-- (id)imageForActionType:(id)a3
+- (id)imageForActionType:(id)type
 {
-  v4 = a3;
-  v5 = [(CNContactActionsController *)self viewController];
-  v6 = [v5 traitCollection];
-  v7 = [v6 userInterfaceIdiom];
+  typeCopy = type;
+  viewController = [(CNContactActionsController *)self viewController];
+  traitCollection = [viewController traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v7 == 3)
+  if (userInterfaceIdiom == 3)
   {
-    v8 = [MEMORY[0x1E69DCAB8] cnui_carPlayUserActionSymbolImageForActionType:v4];
+    v8 = [MEMORY[0x1E69DCAB8] cnui_carPlayUserActionSymbolImageForActionType:typeCopy];
   }
 
   else
   {
     if ([(CNContactActionsController *)self shouldUseOutlinedActionGlyphStyle])
     {
-      [MEMORY[0x1E69DCAB8] cnui_userActionOutlinedSymbolImageForActionType:v4 scale:3 withColor:0];
+      [MEMORY[0x1E69DCAB8] cnui_userActionOutlinedSymbolImageForActionType:typeCopy scale:3 withColor:0];
     }
 
     else
     {
-      [MEMORY[0x1E69DCAB8] cnui_userActionSymbolImageForActionType:v4 scale:3 withColor:0];
+      [MEMORY[0x1E69DCAB8] cnui_userActionSymbolImageForActionType:typeCopy scale:3 withColor:0];
     }
     v8 = ;
   }
@@ -591,49 +591,49 @@ LABEL_27:
   return v9;
 }
 
-- (void)setActionsOrder:(int64_t)a3
+- (void)setActionsOrder:(int64_t)order
 {
-  if (self->_actionsOrder != a3)
+  if (self->_actionsOrder != order)
   {
-    self->_actionsOrder = a3;
+    self->_actionsOrder = order;
     [(CNContactActionsController *)self prepareNavigationListItems];
-    v5 = [(CNContactActionsController *)self displayedController];
-    [v5 reloadNavigationListView];
+    displayedController = [(CNContactActionsController *)self displayedController];
+    [displayedController reloadNavigationListView];
   }
 }
 
-- (id)modelForActionType:(id)a3
+- (id)modelForActionType:(id)type
 {
-  v4 = a3;
-  v5 = [(CNContactActionsController *)self modelsByActionTypes];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  typeCopy = type;
+  modelsByActionTypes = [(CNContactActionsController *)self modelsByActionTypes];
+  v6 = [modelsByActionTypes objectForKeyedSubscript:typeCopy];
 
   return v6;
 }
 
 - (void)cancelModels
 {
-  v2 = [(CNContactActionsController *)self modelCancelables];
-  [v2 _cn_each:*MEMORY[0x1E6996470]];
+  modelCancelables = [(CNContactActionsController *)self modelCancelables];
+  [modelCancelables _cn_each:*MEMORY[0x1E6996470]];
 }
 
 - (void)retrieveModels
 {
   [(CNContactActionsController *)self cancelModels];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   objc_initWeak(&location, self);
-  v4 = [(CNContactActionsController *)self actionTypes];
+  actionTypes = [(CNContactActionsController *)self actionTypes];
   v6 = MEMORY[0x1E69E9820];
   v7 = 3221225472;
   v8 = __44__CNContactActionsController_retrieveModels__block_invoke;
   v9 = &unk_1E74E24E0;
-  v10 = self;
+  selfCopy = self;
   objc_copyWeak(&v12, &location);
-  v5 = v3;
+  v5 = array;
   v11 = v5;
-  [v4 enumerateObjectsUsingBlock:&v6];
+  [actionTypes enumerateObjectsUsingBlock:&v6];
 
-  [(CNContactActionsController *)self setModelCancelables:v5, v6, v7, v8, v9, v10];
+  [(CNContactActionsController *)self setModelCancelables:v5, v6, v7, v8, v9, selfCopy];
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
 }
@@ -715,10 +715,10 @@ void __44__CNContactActionsController_retrieveModels__block_invoke_3(uint64_t a1
 - (void)styleUpdated
 {
   objc_opt_class();
-  v3 = [(CNContactActionsController *)self viewController];
+  viewController = [(CNContactActionsController *)self viewController];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = viewController;
   }
 
   else
@@ -727,15 +727,15 @@ void __44__CNContactActionsController_retrieveModels__block_invoke_3(uint64_t a1
   }
 
   v5 = v4;
-  v6 = [(CNContactActionsController *)self navigationListStyle];
-  [v5 setNavigationListStyle:v6];
+  navigationListStyle = [(CNContactActionsController *)self navigationListStyle];
+  [v5 setNavigationListStyle:navigationListStyle];
 
   [(CNContactActionsController *)self retrieveModels];
 }
 
-- (void)setNavigationListStyle:(id)a3
+- (void)setNavigationListStyle:(id)style
 {
-  objc_storeWeak(&self->_navigationListStyle, a3);
+  objc_storeWeak(&self->_navigationListStyle, style);
 
   [(CNContactActionsController *)self styleUpdated];
 }
@@ -748,20 +748,20 @@ void __44__CNContactActionsController_retrieveModels__block_invoke_3(uint64_t a1
   [(CNContactActionsController *)&v3 dealloc];
 }
 
-- (CNContactActionsController)initWithContact:(id)a3 dataSource:(id)a4 actionTypes:(id)a5
+- (CNContactActionsController)initWithContact:(id)contact dataSource:(id)source actionTypes:(id)types
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contactCopy = contact;
+  sourceCopy = source;
+  typesCopy = types;
   v18.receiver = self;
   v18.super_class = CNContactActionsController;
   v12 = [(CNContactActionsController *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_contact, a3);
-    objc_storeStrong(&v13->_actionTypes, a5);
-    objc_storeStrong(&v13->_actionsDataSource, a4);
+    objc_storeStrong(&v12->_contact, contact);
+    objc_storeStrong(&v13->_actionTypes, types);
+    objc_storeStrong(&v13->_actionsDataSource, source);
     modelsByActionTypes = v13->_modelsByActionTypes;
     v13->_modelsByActionTypes = MEMORY[0x1E695E0F8];
 
@@ -775,17 +775,17 @@ void __44__CNContactActionsController_retrieveModels__block_invoke_3(uint64_t a1
   return v13;
 }
 
-- (CNContactActionsController)initWithContact:(id)a3 actionTypes:(id)a4
+- (CNContactActionsController)initWithContact:(id)contact actionTypes:(id)types
 {
   v6 = MEMORY[0x1E6996BE8];
-  v7 = a4;
-  v8 = a3;
+  typesCopy = types;
+  contactCopy = contact;
   v9 = [v6 alloc];
   v10 = +[CNUIContactsEnvironment currentEnvironment];
-  v11 = [v10 actionDiscoveringEnvironment];
-  v12 = [v9 initWithDiscoveringEnvironment:v11];
+  actionDiscoveringEnvironment = [v10 actionDiscoveringEnvironment];
+  v12 = [v9 initWithDiscoveringEnvironment:actionDiscoveringEnvironment];
 
-  v13 = [(CNContactActionsController *)self initWithContact:v8 dataSource:v12 actionTypes:v7];
+  v13 = [(CNContactActionsController *)self initWithContact:contactCopy dataSource:v12 actionTypes:typesCopy];
   return v13;
 }
 

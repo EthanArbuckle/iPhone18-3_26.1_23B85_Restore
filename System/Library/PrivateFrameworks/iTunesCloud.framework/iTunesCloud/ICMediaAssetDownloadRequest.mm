@@ -1,31 +1,31 @@
 @interface ICMediaAssetDownloadRequest
-- (ICMediaAssetDownloadRequest)initWithRequestContext:(id)a3 storeMediaResponseItem:(id)a4 resumeData:(id)a5;
+- (ICMediaAssetDownloadRequest)initWithRequestContext:(id)context storeMediaResponseItem:(id)item resumeData:(id)data;
 - (id)_createAVAssetDownloadOptionsDictionary;
-- (id)_mediaKindFromResponseItemMetadata:(id)a3;
+- (id)_mediaKindFromResponseItemMetadata:(id)metadata;
 - (id)_sessionIdentifier;
 - (void)cancel;
-- (void)contentKeySession:(id)a3 didFinishProcessingKey:(id)a4 withResponse:(id)a5 error:(id)a6;
+- (void)contentKeySession:(id)session didFinishProcessingKey:(id)key withResponse:(id)response error:(id)error;
 - (void)execute;
-- (void)finishWithError:(id)a3;
-- (void)performRequestWithResponseHandler:(id)a3;
-- (void)setValue:(id)a3 forHTTPHeaderField:(id)a4;
+- (void)finishWithError:(id)error;
+- (void)performRequestWithResponseHandler:(id)handler;
+- (void)setValue:(id)value forHTTPHeaderField:(id)field;
 @end
 
 @implementation ICMediaAssetDownloadRequest
 
-- (id)_mediaKindFromResponseItemMetadata:(id)a3
+- (id)_mediaKindFromResponseItemMetadata:(id)metadata
 {
   v3 = _mediaKindFromResponseItemMetadata__sOnceToken;
-  v4 = a3;
+  metadataCopy = metadata;
   if (v3 != -1)
   {
     dispatch_once(&_mediaKindFromResponseItemMetadata__sOnceToken, &__block_literal_global_3737);
   }
 
   v5 = _mediaKindFromResponseItemMetadata__sDownloadMediaTypeToAVMediaKind;
-  v6 = [v4 kind];
+  kind = [metadataCopy kind];
 
-  v7 = [v5 objectForKey:v6];
+  v7 = [v5 objectForKey:kind];
 
   return v7;
 }
@@ -50,22 +50,22 @@ void __66__ICMediaAssetDownloadRequest__mediaKindFromResponseItemMetadata___bloc
 {
   v60 = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:10];
-  v4 = [(ICRequestContext *)self->_requestContext clientInfo];
-  v5 = [v4 clientIdentifier];
-  [v3 setObject:v5 forKeyedSubscript:*MEMORY[0x1E6987240]];
+  clientInfo = [(ICRequestContext *)self->_requestContext clientInfo];
+  clientIdentifier = [clientInfo clientIdentifier];
+  [v3 setObject:clientIdentifier forKeyedSubscript:*MEMORY[0x1E6987240]];
 
   v6 = [(NSMutableDictionary *)self->_additionalHTTPHeaderFields mutableCopy];
-  v7 = [(ICStoreMediaResponseItem *)self->_storeMediaResponseItem downloadableAsset];
-  v8 = v7;
-  if (v7)
+  downloadableAsset = [(ICStoreMediaResponseItem *)self->_storeMediaResponseItem downloadableAsset];
+  v8 = downloadableAsset;
+  if (downloadableAsset)
   {
-    v9 = [v7 downloadKey];
+    downloadKey = [downloadableAsset downloadKey];
 
-    if (v9)
+    if (downloadKey)
     {
       v10 = MEMORY[0x1E696AEC0];
-      v11 = [v8 downloadKey];
-      v12 = [v10 stringWithFormat:@"downloadKey=%@", v11];
+      downloadKey2 = [v8 downloadKey];
+      v12 = [v10 stringWithFormat:@"downloadKey=%@", downloadKey2];
       [v6 setObject:v12 forKey:@"Cookie"];
     }
   }
@@ -92,8 +92,8 @@ void __66__ICMediaAssetDownloadRequest__mediaKindFromResponseItemMetadata___bloc
   v16 = [v8 md5];
   [v15 setObject:v16 forKeyedSubscript:*MEMORY[0x1E6993BA8]];
 
-  v17 = [v8 fairPlayInfoList];
-  v18 = [v17 count];
+  fairPlayInfoList = [v8 fairPlayInfoList];
+  v18 = [fairPlayInfoList count];
 
   if (v18)
   {
@@ -104,8 +104,8 @@ void __66__ICMediaAssetDownloadRequest__mediaKindFromResponseItemMetadata___bloc
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v21 = [v8 fairPlayInfoList];
-    v22 = [v21 countByEnumeratingWithState:&v51 objects:v59 count:16];
+    fairPlayInfoList2 = [v8 fairPlayInfoList];
+    v22 = [fairPlayInfoList2 countByEnumeratingWithState:&v51 objects:v59 count:16];
     if (v22)
     {
       v23 = v22;
@@ -116,14 +116,14 @@ void __66__ICMediaAssetDownloadRequest__mediaKindFromResponseItemMetadata___bloc
         {
           if (*v52 != v24)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(fairPlayInfoList2);
           }
 
-          v26 = [*(*(&v51 + 1) + 8 * i) responseSinfDictionary];
-          [v20 addObject:v26];
+          responseSinfDictionary = [*(*(&v51 + 1) + 8 * i) responseSinfDictionary];
+          [v20 addObject:responseSinfDictionary];
         }
 
-        v23 = [v21 countByEnumeratingWithState:&v51 objects:v59 count:16];
+        v23 = [fairPlayInfoList2 countByEnumeratingWithState:&v51 objects:v59 count:16];
       }
 
       while (v23);
@@ -141,69 +141,69 @@ void __66__ICMediaAssetDownloadRequest__mediaKindFromResponseItemMetadata___bloc
   v49 = v15;
   [v3 setObject:v15 forKeyedSubscript:*MEMORY[0x1E6987260]];
   v27 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v28 = [(ICStoreRequestContext *)self->_requestContext identity];
-  v29 = [(ICStoreRequestContext *)self->_requestContext identityStore];
+  identity = [(ICStoreRequestContext *)self->_requestContext identity];
+  identityStore = [(ICStoreRequestContext *)self->_requestContext identityStore];
   v30 = 0;
-  v47 = v29;
-  if (v28 && v29 && (v50 = 0, [v29 getPropertiesForUserIdentity:v28 error:&v50], v30 = objc_claimAutoreleasedReturnValue(), (v31 = v50) != 0))
+  v47 = identityStore;
+  if (identity && identityStore && (v50 = 0, [identityStore getPropertiesForUserIdentity:identity error:&v50], v30 = objc_claimAutoreleasedReturnValue(), (v31 = v50) != 0))
   {
     v32 = v31;
-    v33 = os_log_create("com.apple.amp.iTunesCloud", "Default");
+    dSID = os_log_create("com.apple.amp.iTunesCloud", "Default");
     v46 = v30;
-    if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(dSID, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v56 = self;
+      selfCopy = self;
       v57 = 2114;
       v58 = v32;
-      _os_log_impl(&dword_1B4491000, v33, OS_LOG_TYPE_ERROR, "%{public}@ failed to load identity properties. err=%{public}@", buf, 0x16u);
+      _os_log_impl(&dword_1B4491000, dSID, OS_LOG_TYPE_ERROR, "%{public}@ failed to load identity properties. err=%{public}@", buf, 0x16u);
     }
   }
 
   else
   {
     v46 = v30;
-    v33 = [v30 DSID];
-    [v27 setObject:v33 forKeyedSubscript:*MEMORY[0x1E6987268]];
+    dSID = [v30 DSID];
+    [v27 setObject:dSID forKeyedSubscript:*MEMORY[0x1E6987268]];
     v32 = 0;
   }
 
   v34 = v32;
 
-  v35 = [(ICStoreMediaResponseItem *)self->_storeMediaResponseItem redownloadParameters];
-  [v27 setObject:v35 forKeyedSubscript:*MEMORY[0x1E6987270]];
+  redownloadParameters = [(ICStoreMediaResponseItem *)self->_storeMediaResponseItem redownloadParameters];
+  [v27 setObject:redownloadParameters forKeyedSubscript:*MEMORY[0x1E6987270]];
 
-  v36 = [(ICStoreMediaResponseItem *)self->_storeMediaResponseItem metadata];
-  if (!v36)
+  metadata = [(ICStoreMediaResponseItem *)self->_storeMediaResponseItem metadata];
+  if (!metadata)
   {
-    v36 = [v8 metadata];
+    metadata = [v8 metadata];
   }
 
-  v37 = [v36 itemCloudID];
+  itemCloudID = [metadata itemCloudID];
 
-  if (v37)
+  if (itemCloudID)
   {
-    v38 = [v36 itemCloudID];
+    itemCloudID2 = [metadata itemCloudID];
     v39 = @"match";
   }
 
   else
   {
-    v38 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[ICStoreMediaResponseItem storeAdamID](self->_storeMediaResponseItem, "storeAdamID")}];
+    itemCloudID2 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[ICStoreMediaResponseItem storeAdamID](self->_storeMediaResponseItem, "storeAdamID")}];
     v39 = @"purchaseHistory";
   }
 
-  [v27 setObject:v38 forKeyedSubscript:*MEMORY[0x1E6987278]];
+  [v27 setObject:itemCloudID2 forKeyedSubscript:*MEMORY[0x1E6987278]];
 
   [v27 setObject:v39 forKeyedSubscript:*MEMORY[0x1E6987290]];
-  if (v36)
+  if (metadata)
   {
-    v40 = [(ICMediaAssetDownloadRequest *)self _mediaKindFromResponseItemMetadata:v36];
+    v40 = [(ICMediaAssetDownloadRequest *)self _mediaKindFromResponseItemMetadata:metadata];
     [v27 setObject:v40 forKeyedSubscript:*MEMORY[0x1E6987288]];
   }
 
-  v41 = [(ICStoreRequestContext *)self->_requestContext userAgent];
-  [v27 setObject:v41 forKeyedSubscript:*MEMORY[0x1E6987298]];
+  userAgent = [(ICStoreRequestContext *)self->_requestContext userAgent];
+  [v27 setObject:userAgent forKeyedSubscript:*MEMORY[0x1E6987298]];
 
   [v3 setObject:v27 forKeyedSubscript:*MEMORY[0x1E6987280]];
   if (!self->_allowsCellularData)
@@ -238,21 +238,21 @@ void __66__ICMediaAssetDownloadRequest__mediaKindFromResponseItemMetadata___bloc
 - (id)_sessionIdentifier
 {
   v3 = [MEMORY[0x1E696AD60] stringWithString:@"com.apple.iTunesCloud.ICMediaAssetDownloadRequest."];
-  v4 = [(ICRequestContext *)self->_requestContext clientInfo];
-  v5 = [v4 clientIdentifier];
+  clientInfo = [(ICRequestContext *)self->_requestContext clientInfo];
+  clientIdentifier = [clientInfo clientIdentifier];
 
-  if (v5)
+  if (clientIdentifier)
   {
-    [v3 appendString:v5];
+    [v3 appendString:clientIdentifier];
     [v3 appendString:@"."];
   }
 
-  v6 = [(ICRequestContext *)self->_requestContext clientInfo];
-  v7 = [v6 requestingBundleIdentifier];
+  clientInfo2 = [(ICRequestContext *)self->_requestContext clientInfo];
+  requestingBundleIdentifier = [clientInfo2 requestingBundleIdentifier];
 
-  if (v7)
+  if (requestingBundleIdentifier)
   {
-    [v3 appendString:v7];
+    [v3 appendString:requestingBundleIdentifier];
     [v3 appendString:@"."];
   }
 
@@ -281,34 +281,34 @@ void __66__ICMediaAssetDownloadRequest__mediaKindFromResponseItemMetadata___bloc
   return v3;
 }
 
-- (void)contentKeySession:(id)a3 didFinishProcessingKey:(id)a4 withResponse:(id)a5 error:(id)a6
+- (void)contentKeySession:(id)session didFinishProcessingKey:(id)key withResponse:(id)response error:(id)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a6;
-  if (v9)
+  keyCopy = key;
+  errorCopy = error;
+  if (errorCopy)
   {
     v10 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v11 = 138543874;
-      v12 = self;
+      selfCopy = self;
       v13 = 2114;
-      v14 = v8;
+      v14 = keyCopy;
       v15 = 2114;
-      v16 = v9;
+      v16 = errorCopy;
       _os_log_impl(&dword_1B4491000, v10, OS_LOG_TYPE_ERROR, "%{public}@ Failed to fetch key with identifier '%{public}@'. err=%{public}@", &v11, 0x20u);
     }
 
-    objc_storeStrong(&self->_keyDeliveryError, a6);
+    objc_storeStrong(&self->_keyDeliveryError, error);
   }
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v6.receiver = self;
   v6.super_class = ICMediaAssetDownloadRequest;
-  [(ICRequestOperation *)&v6 finishWithError:a3];
+  [(ICRequestOperation *)&v6 finishWithError:error];
   request = self->_request;
   self->_request = 0;
 
@@ -327,17 +327,17 @@ void __66__ICMediaAssetDownloadRequest__mediaKindFromResponseItemMetadata___bloc
   }
 }
 
-- (void)setValue:(id)a3 forHTTPHeaderField:(id)a4
+- (void)setValue:(id)value forHTTPHeaderField:(id)field
 {
   additionalHTTPHeaderFields = self->_additionalHTTPHeaderFields;
-  if (a3)
+  if (value)
   {
-    [(NSMutableDictionary *)additionalHTTPHeaderFields setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)additionalHTTPHeaderFields setObject:value forKey:field];
   }
 
   else
   {
-    [(NSMutableDictionary *)additionalHTTPHeaderFields removeObjectForKey:a4];
+    [(NSMutableDictionary *)additionalHTTPHeaderFields removeObjectForKey:field];
   }
 }
 
@@ -345,52 +345,52 @@ void __66__ICMediaAssetDownloadRequest__mediaKindFromResponseItemMetadata___bloc
 {
   v103 = *MEMORY[0x1E69E9840];
   v3 = +[ICDeviceInfo currentDeviceInfo];
-  v4 = [v3 isWatch];
+  isWatch = [v3 isWatch];
 
-  v5 = [(ICMediaAssetDownloadRequest *)self _sessionIdentifier];
+  _sessionIdentifier = [(ICMediaAssetDownloadRequest *)self _sessionIdentifier];
   v6 = +[ICURLSessionManager sharedSessionManager];
   v93[0] = MEMORY[0x1E69E9820];
   v93[1] = 3221225472;
   v93[2] = __38__ICMediaAssetDownloadRequest_execute__block_invoke;
   v93[3] = &unk_1E7BF3F10;
-  v96 = v4 ^ 1;
-  v7 = v5;
+  v96 = isWatch ^ 1;
+  v7 = _sessionIdentifier;
   v94 = v7;
-  v95 = self;
+  selfCopy = self;
   v8 = [v6 sessionWithIdentifier:v7 creationBlock:v93];
   downloadSession = self->_downloadSession;
   self->_downloadSession = v8;
 
   if (self->_downloadSession)
   {
-    v10 = [(ICStoreMediaResponseItem *)self->_storeMediaResponseItem hlsAsset];
-    v11 = [v10 playlistURL];
-    if (v11 && self->_prefersHLSAsset)
+    hlsAsset = [(ICStoreMediaResponseItem *)self->_storeMediaResponseItem hlsAsset];
+    playlistURL = [hlsAsset playlistURL];
+    if (playlistURL && self->_prefersHLSAsset)
     {
       v12 = os_log_create("com.apple.amp.iTunesCloud", "Default");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v100 = self;
+        selfCopy8 = self;
         _os_log_impl(&dword_1B4491000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ An HLS asset is available and is preferred, so we will use it", buf, 0xCu);
       }
 
-      v13 = v11;
+      assetURL = playlistURL;
     }
 
     else
     {
-      v14 = [(ICStoreMediaResponseItem *)self->_storeMediaResponseItem downloadableAsset];
-      v13 = [v14 assetURL];
+      downloadableAsset = [(ICStoreMediaResponseItem *)self->_storeMediaResponseItem downloadableAsset];
+      assetURL = [downloadableAsset assetURL];
 
-      if (!v13)
+      if (!assetURL)
       {
         v51 = os_log_create("com.apple.amp.iTunesCloud", "Default");
         if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
         {
           storeMediaResponseItem = self->_storeMediaResponseItem;
           *buf = 138543618;
-          v100 = self;
+          selfCopy8 = self;
           v101 = 2114;
           v102 = storeMediaResponseItem;
           _os_log_impl(&dword_1B4491000, v51, OS_LOG_TYPE_ERROR, "%{public}@ Failed to download because the item is invalid (assetURL=nil) %{public}@", buf, 0x16u);
@@ -399,29 +399,29 @@ void __66__ICMediaAssetDownloadRequest__mediaKindFromResponseItemMetadata___bloc
         v53 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"ICError" code:-8301 debugDescription:@"Invalid ICStoreMediaResponseItem object (assetURL=nil)"];
         [(ICMediaAssetDownloadRequest *)self finishWithError:v53];
 
-        v13 = 0;
+        assetURL = 0;
         goto LABEL_38;
       }
     }
 
-    v15 = [[ICURLRequest alloc] initWithURL:v13 requestContext:self->_requestContext resumeData:self->_resumeData];
+    v15 = [[ICURLRequest alloc] initWithURL:assetURL requestContext:self->_requestContext resumeData:self->_resumeData];
     request = self->_request;
     self->_request = v15;
 
-    v17 = [(ICRequestOperation *)self progress];
-    v18 = [(ICURLRequest *)self->_request progress];
-    [v17 addChild:v18 withPendingUnitCount:100];
+    progress = [(ICRequestOperation *)self progress];
+    progress2 = [(ICURLRequest *)self->_request progress];
+    [progress addChild:progress2 withPendingUnitCount:100];
 
     if (self->_destinationURL)
     {
-      if (v4)
+      if (isWatch)
       {
 LABEL_10:
         v19 = os_log_create("com.apple.amp.iTunesCloud", "Default");
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v100 = self;
+          selfCopy8 = self;
           _os_log_impl(&dword_1B4491000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ Enqueueing standard file asset download", buf, 0xCu);
         }
 
@@ -447,18 +447,18 @@ LABEL_38:
       [MEMORY[0x1E696AFB0] UUID];
       v26 = v85 = v7;
       [v26 UUIDString];
-      v83 = v13;
-      v28 = v27 = v11;
+      v83 = assetURL;
+      v28 = v27 = playlistURL;
       v29 = [v25 stringByAppendingPathComponent:v28];
       v30 = [v24 fileURLWithPath:v29];
       v31 = self->_destinationURL;
       self->_destinationURL = v30;
 
-      v11 = v27;
-      v13 = v83;
+      playlistURL = v27;
+      assetURL = v83;
 
       v7 = v85;
-      if (v4)
+      if (isWatch)
       {
         goto LABEL_10;
       }
@@ -469,27 +469,27 @@ LABEL_38:
     v34 = v33;
     if (prefersHLSAsset)
     {
-      v79 = v11;
+      v79 = playlistURL;
       v80 = v33;
       v86 = v7;
       v35 = MEMORY[0x1E6988168];
       v97 = *MEMORY[0x1E6987BF0];
       v98 = &unk_1F2C92020;
       v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v98 forKeys:&v97 count:1];
-      v84 = v13;
-      v37 = [v35 URLAssetWithURL:v13 options:v36];
+      v84 = assetURL;
+      v37 = [v35 URLAssetWithURL:assetURL options:v36];
 
-      v38 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
       v39 = MEMORY[0x1E695DFF8];
       v40 = NSTemporaryDirectory();
-      v41 = [MEMORY[0x1E696AFB0] UUID];
-      v42 = [v41 UUIDString];
-      v43 = [v40 stringByAppendingPathComponent:v42];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
+      v43 = [v40 stringByAppendingPathComponent:uUIDString];
       v44 = [v39 fileURLWithPath:v43];
 
       v92 = 0;
-      v78 = v38;
-      LOBYTE(v39) = [v38 createDirectoryAtURL:v44 withIntermediateDirectories:1 attributes:0 error:&v92];
+      v78 = defaultManager;
+      LOBYTE(v39) = [defaultManager createDirectoryAtURL:v44 withIntermediateDirectories:1 attributes:0 error:&v92];
       v45 = v92;
       if ((v39 & 1) == 0)
       {
@@ -497,7 +497,7 @@ LABEL_38:
         if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v100 = self;
+          selfCopy8 = self;
           v101 = 2114;
           v102 = v45;
           _os_log_impl(&dword_1B4491000, v46, OS_LOG_TYPE_ERROR, "%{public}@ Failed to create download destination directory. This isn't fatal but may result in failure to save the playback keys. err=%{public}@", buf, 0x16u);
@@ -507,36 +507,36 @@ LABEL_38:
         v44 = v47;
       }
 
-      v82 = [v10 keyServerURL];
-      v81 = [v10 keyCertificateURL];
-      v48 = [v10 keyServerProtocolType];
-      v49 = v48;
+      keyServerURL = [hlsAsset keyServerURL];
+      keyCertificateURL = [hlsAsset keyCertificateURL];
+      keyServerProtocolType = [hlsAsset keyServerProtocolType];
+      v49 = keyServerProtocolType;
       v77 = v45;
-      if (v48 == @"simplified")
+      if (keyServerProtocolType == @"simplified")
       {
         v50 = 1;
       }
 
       else
       {
-        v50 = [(__CFString *)v48 isEqual:@"simplified"];
+        v50 = [(__CFString *)keyServerProtocolType isEqual:@"simplified"];
       }
 
       v58 = [ICContentKeySession alloc];
       requestContext = self->_requestContext;
       v60 = [ICFileContentKeyStore alloc];
-      v61 = [v44 path];
-      v62 = [(ICFileContentKeyStore *)v60 initWithPath:v61];
+      path = [v44 path];
+      v62 = [(ICFileContentKeyStore *)v60 initWithPath:path];
       v63 = [(ICContentKeySession *)v58 initWithRequestContext:requestContext keyStore:v62 delegate:self];
       contentKeySession = self->_contentKeySession;
       self->_contentKeySession = v63;
 
       [(ICContentKeySession *)self->_contentKeySession setRequestOfflineKeys:1];
-      v65 = v82;
-      [(ICContentKeySession *)self->_contentKeySession setKeyServerURL:v82];
+      v65 = keyServerURL;
+      [(ICContentKeySession *)self->_contentKeySession setKeyServerURL:keyServerURL];
       [(ICContentKeySession *)self->_contentKeySession setKeyServerProtocolType:v50];
-      v66 = v81;
-      [(ICContentKeySession *)self->_contentKeySession setKeyCertificateURL:v81];
+      v66 = keyCertificateURL;
+      [(ICContentKeySession *)self->_contentKeySession setKeyCertificateURL:keyCertificateURL];
       v67 = self->_contentKeySession;
       v68 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[ICStoreMediaResponseItem storeAdamID](self->_storeMediaResponseItem, "storeAdamID")}];
       [(ICContentKeySession *)v67 setAdamID:v68];
@@ -547,21 +547,21 @@ LABEL_38:
       if (self->_keyDeliveryError)
       {
         [(ICMediaAssetDownloadRequest *)self finishWithError:?];
-        v11 = v79;
+        playlistURL = v79;
         v34 = v80;
-        v13 = v84;
+        assetURL = v84;
         v70 = v78;
       }
 
       else
       {
         v71 = os_log_create("com.apple.amp.iTunesCloud", "Default");
-        v11 = v79;
+        playlistURL = v79;
         if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
         {
           v72 = self->_contentKeySession;
           *buf = 138543618;
-          v100 = self;
+          selfCopy8 = self;
           v101 = 2114;
           v102 = v72;
           _os_log_impl(&dword_1B4491000, v71, OS_LOG_TYPE_DEFAULT, "%{public}@ Enqueueing aggregate asset download using key session %{public}@", buf, 0x16u);
@@ -569,7 +569,7 @@ LABEL_38:
 
         v73 = self->_request;
         v74 = self->_destinationURL;
-        v75 = [(ICMediaAssetDownloadRequest *)self _createAVAssetDownloadOptionsDictionary];
+        _createAVAssetDownloadOptionsDictionary = [(ICMediaAssetDownloadRequest *)self _createAVAssetDownloadOptionsDictionary];
         v89[0] = MEMORY[0x1E69E9820];
         v89[1] = 3221225472;
         v89[2] = __38__ICMediaAssetDownloadRequest_execute__block_invoke_41;
@@ -581,11 +581,11 @@ LABEL_38:
         v34 = v80;
         v76 = v73;
         v69 = v37;
-        [(ICURLSession *)v80 enqueueAggregateAssetDownloadRequest:v76 toDestination:v74 withAVURLAsset:v37 options:v75 completionHandler:v89];
+        [(ICURLSession *)v80 enqueueAggregateAssetDownloadRequest:v76 toDestination:v74 withAVURLAsset:v37 options:_createAVAssetDownloadOptionsDictionary completionHandler:v89];
 
-        v13 = v84;
-        v66 = v81;
-        v65 = v82;
+        assetURL = v84;
+        v66 = keyCertificateURL;
+        v65 = keyServerURL;
       }
 
       v7 = v86;
@@ -597,19 +597,19 @@ LABEL_38:
       if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v100 = self;
+        selfCopy8 = self;
         _os_log_impl(&dword_1B4491000, v54, OS_LOG_TYPE_DEFAULT, "%{public}@ Enqueueing AV asset download", buf, 0xCu);
       }
 
       v55 = self->_request;
       v56 = self->_destinationURL;
-      v57 = [(ICMediaAssetDownloadRequest *)self _createAVAssetDownloadOptionsDictionary];
+      _createAVAssetDownloadOptionsDictionary2 = [(ICMediaAssetDownloadRequest *)self _createAVAssetDownloadOptionsDictionary];
       v88[0] = MEMORY[0x1E69E9820];
       v88[1] = 3221225472;
       v88[2] = __38__ICMediaAssetDownloadRequest_execute__block_invoke_44;
       v88[3] = &unk_1E7BFA4D8;
       v88[4] = self;
-      [(ICURLSession *)v34 enqueueAVDownloadRequest:v55 toDestination:v56 withOptions:v57 completionHandler:v88];
+      [(ICURLSession *)v34 enqueueAVDownloadRequest:v55 toDestination:v56 withOptions:_createAVAssetDownloadOptionsDictionary2 completionHandler:v88];
     }
 
     goto LABEL_38;
@@ -619,12 +619,12 @@ LABEL_38:
   if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
-    v100 = self;
+    selfCopy8 = self;
     _os_log_impl(&dword_1B4491000, v23, OS_LOG_TYPE_ERROR, "%{public}@ Failed to create an ICURLSession instance", buf, 0xCu);
   }
 
-  v13 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"ICError" code:-8300 debugDescription:@"Failed to create an ICURLSession instance"];
-  [(ICMediaAssetDownloadRequest *)self finishWithError:v13];
+  assetURL = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"ICError" code:-8300 debugDescription:@"Failed to create an ICURLSession instance"];
+  [(ICMediaAssetDownloadRequest *)self finishWithError:assetURL];
 LABEL_39:
 }
 
@@ -889,17 +889,17 @@ void __38__ICMediaAssetDownloadRequest_execute__block_invoke_45(uint64_t a1, voi
   [*(a1 + 32) finishWithError:v6];
 }
 
-- (void)performRequestWithResponseHandler:(id)a3
+- (void)performRequestWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [MEMORY[0x1E696ADC8] ic_sharedRequestOperationQueueWithQualityOfService:{-[ICMediaAssetDownloadRequest qualityOfService](self, "qualityOfService")}];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__ICMediaAssetDownloadRequest_performRequestWithResponseHandler___block_invoke;
   v7[3] = &unk_1E7BFA490;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(ICRequestOperation *)self performRequestOnOperationQueue:v5 withCompletionHandler:v7];
 }
 
@@ -915,29 +915,29 @@ void __65__ICMediaAssetDownloadRequest_performRequestWithResponseHandler___block
   *(v4 + 392) = 0;
 }
 
-- (ICMediaAssetDownloadRequest)initWithRequestContext:(id)a3 storeMediaResponseItem:(id)a4 resumeData:(id)a5
+- (ICMediaAssetDownloadRequest)initWithRequestContext:(id)context storeMediaResponseItem:(id)item resumeData:(id)data
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  itemCopy = item;
+  dataCopy = data;
   v17.receiver = self;
   v17.super_class = ICMediaAssetDownloadRequest;
   v12 = [(ICRequestOperation *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_requestContext, a3);
+    objc_storeStrong(&v12->_requestContext, context);
     v13->_allowsCellularData = 1;
     v13->_allowsProxyCellularData = 1;
     v13->_allowsCellularFallback = 1;
     v13->_allowDownloadOnConstrainedNetworks = 1;
-    objc_storeStrong(&v13->_storeMediaResponseItem, a4);
+    objc_storeStrong(&v13->_storeMediaResponseItem, item);
     v13->_discretionary = 0;
     v13->_prefersHLSAsset = 0;
-    objc_storeStrong(&v13->_resumeData, a5);
-    v14 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v13->_resumeData, data);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     additionalHTTPHeaderFields = v13->_additionalHTTPHeaderFields;
-    v13->_additionalHTTPHeaderFields = v14;
+    v13->_additionalHTTPHeaderFields = dictionary;
   }
 
   return v13;

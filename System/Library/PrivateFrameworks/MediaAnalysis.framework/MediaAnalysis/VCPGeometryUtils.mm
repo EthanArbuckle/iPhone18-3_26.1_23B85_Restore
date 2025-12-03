@@ -1,16 +1,16 @@
 @interface VCPGeometryUtils
-+ (CGPoint)pointFromNormalizedPoint:(CGPoint)a3 inBounds:(CGRect)a4;
-+ (CGRect)normalizedRectForRect:(CGRect)a3 inBounds:(CGRect)a4;
-+ (CGRect)normalizedRectForRect:(CGRect)a3 inBoundsOfSize:(CGSize)a4;
-+ (CGRect)rectFromMappingNormalizedRect:(CGRect)a3 toBounds:(CGRect)a4;
-+ (CGRect)rectFromMappingNormalizedRect:(CGRect)a3 toBoundsOfSize:(CGSize)a4;
++ (CGPoint)pointFromNormalizedPoint:(CGPoint)point inBounds:(CGRect)bounds;
++ (CGRect)normalizedRectForRect:(CGRect)rect inBounds:(CGRect)bounds;
++ (CGRect)normalizedRectForRect:(CGRect)rect inBoundsOfSize:(CGSize)size;
++ (CGRect)rectFromMappingNormalizedRect:(CGRect)rect toBounds:(CGRect)bounds;
++ (CGRect)rectFromMappingNormalizedRect:(CGRect)rect toBoundsOfSize:(CGSize)size;
 @end
 
 @implementation VCPGeometryUtils
 
-+ (CGRect)normalizedRectForRect:(CGRect)a3 inBoundsOfSize:(CGSize)a4
++ (CGRect)normalizedRectForRect:(CGRect)rect inBoundsOfSize:(CGSize)size
 {
-  [a1 normalizedRectForRect:a3.origin.x inBounds:{a3.origin.y, a3.size.width, a3.size.height, 0.0, 0.0, a4.width, a4.height}];
+  [self normalizedRectForRect:rect.origin.x inBounds:{rect.origin.y, rect.size.width, rect.size.height, 0.0, 0.0, size.width, size.height}];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -18,9 +18,9 @@
   return result;
 }
 
-+ (CGRect)normalizedRectForRect:(CGRect)a3 inBounds:(CGRect)a4
++ (CGRect)normalizedRectForRect:(CGRect)rect inBounds:(CGRect)bounds
 {
-  if (a4.size.width <= 0.0)
+  if (bounds.size.width <= 0.0)
   {
     v14 = *MEMORY[0x1E695F050];
     v15 = *(MEMORY[0x1E695F050] + 8);
@@ -30,8 +30,8 @@
 
   else
   {
-    height = a4.size.height;
-    if (a4.size.height > 0.0 && (width = a4.size.width, y = a4.origin.y, x = a4.origin.x, v8 = a3.size.height, v9 = a3.size.width, v10 = a3.origin.y, v11 = a3.origin.x, v18.origin.x = v11, v18.origin.y = v10, v18.size.width = v9, v18.size.height = v8, CGRectContainsRect(a4, v18)))
+    height = bounds.size.height;
+    if (bounds.size.height > 0.0 && (width = bounds.size.width, y = bounds.origin.y, x = bounds.origin.x, v8 = rect.size.height, v9 = rect.size.width, v10 = rect.origin.y, v11 = rect.origin.x, v18.origin.x = v11, v18.origin.y = v10, v18.size.width = v9, v18.size.height = v8, CGRectContainsRect(bounds, v18)))
     {
       v12 = v9 / width;
       v13 = v8 / height;
@@ -55,9 +55,9 @@
   return result;
 }
 
-+ (CGRect)rectFromMappingNormalizedRect:(CGRect)a3 toBoundsOfSize:(CGSize)a4
++ (CGRect)rectFromMappingNormalizedRect:(CGRect)rect toBoundsOfSize:(CGSize)size
 {
-  [a1 rectFromMappingNormalizedRect:a3.origin.x toBounds:{a3.origin.y, a3.size.width, a3.size.height, 0.0, 0.0, a4.width, a4.height}];
+  [self rectFromMappingNormalizedRect:rect.origin.x toBounds:{rect.origin.y, rect.size.width, rect.size.height, 0.0, 0.0, size.width, size.height}];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -65,17 +65,17 @@
   return result;
 }
 
-+ (CGRect)rectFromMappingNormalizedRect:(CGRect)a3 toBounds:(CGRect)a4
++ (CGRect)rectFromMappingNormalizedRect:(CGRect)rect toBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
-  if (CGRectIsNull(a4) || (v16.origin.x = x, v16.origin.y = y, v16.size.width = width, v16.size.height = height, CGRectIsInfinite(v16)) || width <= 0.0 || height <= 0.0)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v8 = rect.size.height;
+  v9 = rect.size.width;
+  v10 = rect.origin.y;
+  v11 = rect.origin.x;
+  if (CGRectIsNull(bounds) || (v16.origin.x = x, v16.origin.y = y, v16.size.width = width, v16.size.height = height, CGRectIsInfinite(v16)) || width <= 0.0 || height <= 0.0)
   {
     v12 = *MEMORY[0x1E695F050];
     v13 = *(MEMORY[0x1E695F050] + 8);
@@ -98,10 +98,10 @@
   return result;
 }
 
-+ (CGPoint)pointFromNormalizedPoint:(CGPoint)a3 inBounds:(CGRect)a4
++ (CGPoint)pointFromNormalizedPoint:(CGPoint)point inBounds:(CGRect)bounds
 {
-  v4 = a4.origin.x + a3.x * a4.size.width;
-  v5 = a4.origin.y + a3.y * a4.size.height;
+  v4 = bounds.origin.x + point.x * bounds.size.width;
+  v5 = bounds.origin.y + point.y * bounds.size.height;
   result.y = v5;
   result.x = v4;
   return result;

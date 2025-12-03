@@ -1,52 +1,52 @@
 @interface EMSearchableIndexUserQuery
-- (EMSearchableIndexUserQuery)initWithExpression:(id)a3 builder:(id)a4;
+- (EMSearchableIndexUserQuery)initWithExpression:(id)expression builder:(id)builder;
 @end
 
 @implementation EMSearchableIndexUserQuery
 
-- (EMSearchableIndexUserQuery)initWithExpression:(id)a3 builder:(id)a4
+- (EMSearchableIndexUserQuery)initWithExpression:(id)expression builder:(id)builder
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  expressionCopy = expression;
+  builderCopy = builder;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __57__EMSearchableIndexUserQuery_initWithExpression_builder___block_invoke;
   aBlock[3] = &unk_1E826F970;
-  v8 = v6;
+  v8 = expressionCopy;
   v23 = v8;
-  v9 = self;
-  v24 = v9;
+  selfCopy = self;
+  v24 = selfCopy;
   v10 = _Block_copy(aBlock);
-  v11 = [v8 updatedSuggestion];
-  v12 = v11;
-  if (v11)
+  updatedSuggestion = [v8 updatedSuggestion];
+  v12 = updatedSuggestion;
+  if (updatedSuggestion)
   {
-    v13 = v11;
+    emptySuggestion = updatedSuggestion;
   }
 
   else
   {
-    v13 = [MEMORY[0x1E6964EA8] emptySuggestion];
+    emptySuggestion = [MEMORY[0x1E6964EA8] emptySuggestion];
   }
 
-  v14 = v13;
+  v14 = emptySuggestion;
 
   v15 = [MEMORY[0x1E6964ED0] userQueryContextWithCurrentSuggestion:v14];
   v16 = +[EMSearchableIndexQuery log];
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [v8 ef_publicDescription];
+    ef_publicDescription = [v8 ef_publicDescription];
     *buf = 138478083;
-    v26 = v17;
+    v26 = ef_publicDescription;
     v27 = 2113;
     v28 = v15;
     _os_log_impl(&dword_1C6655000, v16, OS_LOG_TYPE_DEFAULT, "Setting user query with expression: %{private}@ context: %{private}@", buf, 0x16u);
   }
 
-  v21.receiver = v9;
+  v21.receiver = selfCopy;
   v21.super_class = EMSearchableIndexUserQuery;
-  v18 = [(EMSearchableIndexQuery *)&v21 initWithExpression:v8 builder:v7 queryContext:v15 querySetup:v10];
+  v18 = [(EMSearchableIndexQuery *)&v21 initWithExpression:v8 builder:builderCopy queryContext:v15 querySetup:v10];
 
   v19 = *MEMORY[0x1E69E9840];
   return v18;

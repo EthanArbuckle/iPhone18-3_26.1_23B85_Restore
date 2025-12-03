@@ -1,5 +1,5 @@
 @interface PVComputeGrabCut
-- (BOOL)processImage:(id)a3 trimap:(id)a4 roi:(CGRect)a5 clusters:(int)a6 gamma:(float)a7 iterations:(int)a8 mask:(id)a9;
+- (BOOL)processImage:(id)image trimap:(id)trimap roi:(CGRect)roi clusters:(int)clusters gamma:(float)gamma iterations:(int)iterations mask:(id)mask;
 - (PVComputeGrabCut)init;
 - (void)dealloc;
 @end
@@ -31,13 +31,13 @@
   [(PVComputeGrabCut *)&v4 dealloc];
 }
 
-- (BOOL)processImage:(id)a3 trimap:(id)a4 roi:(CGRect)a5 clusters:(int)a6 gamma:(float)a7 iterations:(int)a8 mask:(id)a9
+- (BOOL)processImage:(id)image trimap:(id)trimap roi:(CGRect)roi clusters:(int)clusters gamma:(float)gamma iterations:(int)iterations mask:(id)mask
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a9;
-  v18 = [v15 cvPixelBuffer];
-  PixelFormatType = CVPixelBufferGetPixelFormatType(v18);
+  imageCopy = image;
+  trimapCopy = trimap;
+  maskCopy = mask;
+  cvPixelBuffer = [imageCopy cvPixelBuffer];
+  PixelFormatType = CVPixelBufferGetPixelFormatType(cvPixelBuffer);
   if (PixelFormatType == 1111970369)
   {
     v20 = 23;
@@ -54,9 +54,9 @@
     v20 = 0;
   }
 
-  HGCVBitmap::create(v18, v20, 0, &v28);
-  v21 = [v16 cvPixelBuffer];
-  if (CVPixelBufferGetPixelFormatType(v21) == 1278226488)
+  HGCVBitmap::create(cvPixelBuffer, v20, 0, &v28);
+  cvPixelBuffer2 = [trimapCopy cvPixelBuffer];
+  if (CVPixelBufferGetPixelFormatType(cvPixelBuffer2) == 1278226488)
   {
     v22 = 1;
   }
@@ -67,9 +67,9 @@
     v22 = 0;
   }
 
-  HGCVBitmap::create(v21, v22, 0, &v27);
-  v23 = [v17 cvPixelBuffer];
-  if (CVPixelBufferGetPixelFormatType(v23) == 1278226488)
+  HGCVBitmap::create(cvPixelBuffer2, v22, 0, &v27);
+  cvPixelBuffer3 = [maskCopy cvPixelBuffer];
+  if (CVPixelBufferGetPixelFormatType(cvPixelBuffer3) == 1278226488)
   {
     v24 = 1;
   }
@@ -80,12 +80,12 @@
     v24 = 0;
   }
 
-  HGCVBitmap::create(v23, v24, 0, &v26);
+  HGCVBitmap::create(cvPixelBuffer3, v24, 0, &v26);
   HGCVBitmap::lock(v28, 1uLL);
   HGCVBitmap::lock(v27, 0);
   HGCVBitmap::lock(v26, 0);
-  HFGrabCutInterface::InitDataModels(self->_module, v28, v27, a6);
-  HFGrabCutInterface::GenerateMask(self->_module, v28, v27, v26, a7, a8);
+  HFGrabCutInterface::InitDataModels(self->_module, v28, v27, clusters);
+  HFGrabCutInterface::GenerateMask(self->_module, v28, v27, v26, gamma, iterations);
   HGCVBitmap::unlock(v28, 1uLL);
   HGCVBitmap::unlock(v27, 0);
   HGCVBitmap::unlock(v26, 0);

@@ -1,16 +1,16 @@
 @interface CKDResetUserPrivacySettingsURLRequest
 - (id)generateRequestOperations;
 - (id)requestOperationClasses;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
 @end
 
 @implementation CKDResetUserPrivacySettingsURLRequest
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
   v3.receiver = self;
   v3.super_class = CKDResetUserPrivacySettingsURLRequest;
-  [(CKDURLRequest *)&v3 fillOutEquivalencyPropertiesBuilder:a3];
+  [(CKDURLRequest *)&v3 fillOutEquivalencyPropertiesBuilder:builder];
 }
 
 - (id)requestOperationClasses

@@ -1,17 +1,17 @@
 @interface BKPictureBookNavigationController
 - (BKPageCurlManager)pageCurlManager;
 - (BKPictureBookNavigationController)init;
-- (BOOL)_contentController:(id)a3 hasMediaElementAtPoint:(CGPoint)a4 inView:(id)a5;
-- (BOOL)_hasMediaElementAtTouch:(id)a3;
+- (BOOL)_contentController:(id)controller hasMediaElementAtPoint:(CGPoint)point inView:(id)view;
+- (BOOL)_hasMediaElementAtTouch:(id)touch;
 - (BOOL)_isFreeScale;
-- (BOOL)bkLongPressGestureCanTransitionToRecognizedState:(id)a3;
+- (BOOL)bkLongPressGestureCanTransitionToRecognizedState:(id)state;
 - (BOOL)currentlyZoomed;
-- (BOOL)gestureRecognizer:(id)a3 canBePreventedByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)hasMediaElementAtPoint:(CGPoint)a3 inView:(id)a4;
-- (BOOL)isMediaPlayerGestureRecognizer:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer canBePreventedByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)hasMediaElementAtPoint:(CGPoint)point inView:(id)view;
+- (BOOL)isMediaPlayerGestureRecognizer:(id)recognizer;
 - (BOOL)isZoomedBeyondPage;
 - (BOOL)isZoomedCloseToSpread;
 - (BOOL)isZoomedToRightPage;
@@ -32,79 +32,79 @@
 - (double)singlePagePadding;
 - (double)singlePageZoomScale;
 - (id)_createZoomingScrollView;
-- (id)_singlePageVisibleContentViewControllerForPageOffset:(int64_t)a3;
+- (id)_singlePageVisibleContentViewControllerForPageOffset:(int64_t)offset;
 - (id)curlContainer;
 - (id)viewControllers;
-- (id)viewForPageNumber:(int64_t)a3;
-- (int)tapActionForLocation:(CGPoint)a3 view:(id)a4 ignoreOppositePage:(BOOL)a5;
-- (unint64_t)_pageOffsetAfter:(int64_t)a3 whenCurlingForward:(BOOL)a4;
-- (void)_adjustToNewSize:(CGSize)a3 withOptionalTransitionCoordinator:(id)a4;
-- (void)_applyAdditionalScale:(id)a3;
-- (void)_autoCurlToSinglePageOffset:(int64_t)a3 forwardCurl:(BOOL)a4;
-- (void)_autoCurlToSpreadPageOffset:(int64_t)a3 forwardCurl:(BOOL)a4;
-- (void)_autoSlideToSpreadPageOffset:(int64_t)a3 forwardCurl:(BOOL)a4;
-- (void)_contentIsReadyOrFailed:(id)a3;
-- (void)_curlPageForReadAloud:(id)a3;
-- (void)_displayPagesForOffset:(int64_t)a3;
-- (void)_generateLeftPageImageAtPageOffset:(int64_t)a3 completion:(id)a4;
-- (void)_generateRightPageImageAtPageOffset:(int64_t)a3 completion:(id)a4;
-- (void)_insertDestinationSnapshotImageUnderCurrentPageCurl:(int64_t)a3;
+- (id)viewForPageNumber:(int64_t)number;
+- (int)tapActionForLocation:(CGPoint)location view:(id)view ignoreOppositePage:(BOOL)page;
+- (unint64_t)_pageOffsetAfter:(int64_t)after whenCurlingForward:(BOOL)forward;
+- (void)_adjustToNewSize:(CGSize)size withOptionalTransitionCoordinator:(id)coordinator;
+- (void)_applyAdditionalScale:(id)scale;
+- (void)_autoCurlToSinglePageOffset:(int64_t)offset forwardCurl:(BOOL)curl;
+- (void)_autoCurlToSpreadPageOffset:(int64_t)offset forwardCurl:(BOOL)curl;
+- (void)_autoSlideToSpreadPageOffset:(int64_t)offset forwardCurl:(BOOL)curl;
+- (void)_contentIsReadyOrFailed:(id)failed;
+- (void)_curlPageForReadAloud:(id)aloud;
+- (void)_displayPagesForOffset:(int64_t)offset;
+- (void)_generateLeftPageImageAtPageOffset:(int64_t)offset completion:(id)completion;
+- (void)_generateRightPageImageAtPageOffset:(int64_t)offset completion:(id)completion;
+- (void)_insertDestinationSnapshotImageUnderCurrentPageCurl:(int64_t)curl;
 - (void)_killSpreadManualCurl;
-- (void)_manualCurlToSinglePage:(CGPoint)a3;
+- (void)_manualCurlToSinglePage:(CGPoint)page;
 - (void)_resetCurlContainer;
-- (void)_resetSinglePageCurlContainer:(id)a3;
-- (void)_restoreViewHierarchyWithArray:(id)a3;
+- (void)_resetSinglePageCurlContainer:(id)container;
+- (void)_restoreViewHierarchyWithArray:(id)array;
 - (void)_setupView;
 - (void)_timeOutWaitingForPaint;
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
 - (void)_updateBookScale;
 - (void)_updateSelectionHighlights;
-- (void)addPendingContent:(id)a3;
-- (void)contentViewImage:(BOOL)a3 afterScreenUpdates:(BOOL)a4 completion:(id)a5;
-- (void)curlPageForReadAloud:(BOOL)a3;
+- (void)addPendingContent:(id)content;
+- (void)contentViewImage:(BOOL)image afterScreenUpdates:(BOOL)updates completion:(id)completion;
+- (void)curlPageForReadAloud:(BOOL)aloud;
 - (void)dealloc;
 - (void)enterSinglePageMode;
 - (void)exitSinglePageMode;
-- (void)handleDoubleTap:(id)a3;
-- (void)handlePageChangeTap:(id)a3;
-- (void)handleSinglePageManualCurlGesture:(id)a3;
-- (void)handleSpreadManualCurlGesture:(id)a3;
-- (void)leftSwipe:(id)a3;
-- (void)manualCurlGesture:(id)a3;
-- (void)pageAnimation:(id)a3 didFinish:(BOOL)a4;
-- (void)pageAnimationWillBegin:(id)a3;
-- (void)pageCurlManager:(id)a3 didCancelCurl:(id)a4;
-- (void)pageCurlManager:(id)a3 didFinishCurl:(id)a4 transitionCompleted:(BOOL)a5;
-- (void)pageCurlManager:(id)a3 willBeginCurl:(id)a4;
+- (void)handleDoubleTap:(id)tap;
+- (void)handlePageChangeTap:(id)tap;
+- (void)handleSinglePageManualCurlGesture:(id)gesture;
+- (void)handleSpreadManualCurlGesture:(id)gesture;
+- (void)leftSwipe:(id)swipe;
+- (void)manualCurlGesture:(id)gesture;
+- (void)pageAnimation:(id)animation didFinish:(BOOL)finish;
+- (void)pageAnimationWillBegin:(id)begin;
+- (void)pageCurlManager:(id)manager didCancelCurl:(id)curl;
+- (void)pageCurlManager:(id)manager didFinishCurl:(id)curl transitionCompleted:(BOOL)completed;
+- (void)pageCurlManager:(id)manager willBeginCurl:(id)curl;
 - (void)releaseViews;
-- (void)removePendingContent:(id)a3;
-- (void)rightSwipe:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndZooming:(id)a3 withView:(id)a4 atScale:(double)a5;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewDidZoom:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4;
-- (void)setContentSize:(CGSize)a3;
-- (void)setPageOffset:(int64_t)a3;
-- (void)setSelectionHighlightsVisible:(BOOL)a3;
-- (void)slide:(BOOL)a3 animated:(BOOL)a4 withDelay:(double)a5;
-- (void)toggleControls:(id)a3;
-- (void)transitionDidFinish:(BOOL)a3;
+- (void)removePendingContent:(id)content;
+- (void)rightSwipe:(id)swipe;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndZooming:(id)zooming withView:(id)view atScale:(double)scale;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewDidZoom:(id)zoom;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view;
+- (void)setContentSize:(CGSize)size;
+- (void)setPageOffset:(int64_t)offset;
+- (void)setSelectionHighlightsVisible:(BOOL)visible;
+- (void)slide:(BOOL)slide animated:(BOOL)animated withDelay:(double)delay;
+- (void)toggleControls:(id)controls;
+- (void)transitionDidFinish:(BOOL)finish;
 - (void)turnToNextPage;
-- (void)turnToPageNumber:(int64_t)a3 animated:(BOOL)a4;
+- (void)turnToPageNumber:(int64_t)number animated:(BOOL)animated;
 - (void)turnToPreviousPage;
 - (void)updateUpsellZoomScale;
-- (void)updateVisibleContentViewControllerForOffset:(int64_t)a3;
+- (void)updateVisibleContentViewControllerForOffset:(int64_t)offset;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)zoom:(BOOL)a3 animated:(BOOL)a4;
-- (void)zoomToPage:(unint64_t)a3 animated:(BOOL)a4;
-- (void)zoomToPoint:(CGPoint)a3 scale:(double)a4 animated:(BOOL)a5;
-- (void)zoomToSpread:(BOOL)a3;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)zoom:(BOOL)zoom animated:(BOOL)animated;
+- (void)zoomToPage:(unint64_t)page animated:(BOOL)animated;
+- (void)zoomToPoint:(CGPoint)point scale:(double)scale animated:(BOOL)animated;
+- (void)zoomToSpread:(BOOL)spread;
 @end
 
 @implementation BKPictureBookNavigationController
@@ -184,30 +184,30 @@
   v24.receiver = self;
   v24.super_class = BKPictureBookNavigationController;
   [(BKPictureBookNavigationController *)&v24 viewDidLoad];
-  v3 = [(BKPictureBookNavigationController *)self view];
-  [v3 setOpaque:0];
-  v4 = [(BKPictureBookNavigationController *)self _createZoomingScrollView];
+  view = [(BKPictureBookNavigationController *)self view];
+  [view setOpaque:0];
+  _createZoomingScrollView = [(BKPictureBookNavigationController *)self _createZoomingScrollView];
   scrollView = self->_scrollView;
-  self->_scrollView = v4;
+  self->_scrollView = _createZoomingScrollView;
 
-  [v3 bounds];
+  [view bounds];
   IMActionSafeRectForRect();
   [(BKPictureBookScrollView *)self->_scrollView setFrame:?];
-  [v3 addSubview:self->_scrollView];
+  [view addSubview:self->_scrollView];
   v6 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"handleDoubleTap:"];
   doubleTapGestureRecognizer = self->_doubleTapGestureRecognizer;
   self->_doubleTapGestureRecognizer = v6;
 
   [(UITapGestureRecognizer *)self->_doubleTapGestureRecognizer setNumberOfTapsRequired:2];
   [(UITapGestureRecognizer *)self->_doubleTapGestureRecognizer setDelegate:self];
-  [v3 addGestureRecognizer:self->_doubleTapGestureRecognizer];
+  [view addGestureRecognizer:self->_doubleTapGestureRecognizer];
   v8 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"handlePageChangeTap:"];
   pageChangeTapRecognizer = self->_pageChangeTapRecognizer;
   self->_pageChangeTapRecognizer = v8;
 
   [(UITapGestureRecognizer *)self->_pageChangeTapRecognizer setDelegate:self];
   [(UITapGestureRecognizer *)self->_pageChangeTapRecognizer requireGestureRecognizerToFail:self->_doubleTapGestureRecognizer];
-  [v3 addGestureRecognizer:self->_pageChangeTapRecognizer];
+  [view addGestureRecognizer:self->_pageChangeTapRecognizer];
   v10 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"toggleControls:"];
   controlsTapRecognizer = self->_controlsTapRecognizer;
   self->_controlsTapRecognizer = v10;
@@ -215,7 +215,7 @@
   [(UITapGestureRecognizer *)self->_controlsTapRecognizer setDelegate:self];
   [(UITapGestureRecognizer *)self->_controlsTapRecognizer requireGestureRecognizerToFail:self->_pageChangeTapRecognizer];
   [(UITapGestureRecognizer *)self->_controlsTapRecognizer requireGestureRecognizerToFail:self->_doubleTapGestureRecognizer];
-  [v3 addGestureRecognizer:self->_controlsTapRecognizer];
+  [view addGestureRecognizer:self->_controlsTapRecognizer];
   v12 = [[BKLongPressGestureRecognizer alloc] initWithTarget:self action:"manualCurlGesture:"];
   manualCurlGestureRecognizer = self->_manualCurlGestureRecognizer;
   self->_manualCurlGestureRecognizer = v12;
@@ -224,7 +224,7 @@
   [(BKLongPressGestureRecognizer *)self->_manualCurlGestureRecognizer setMinimumPressDuration:0.0500000007];
   [(BKLongPressGestureRecognizer *)self->_manualCurlGestureRecognizer setCancelsTouchesInView:1];
   [(BKLongPressGestureRecognizer *)self->_manualCurlGestureRecognizer requireGestureRecognizerToFail:self->_pageChangeTapRecognizer];
-  [v3 addGestureRecognizer:self->_manualCurlGestureRecognizer];
+  [view addGestureRecognizer:self->_manualCurlGestureRecognizer];
   v14 = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:"leftSwipe:"];
   leftSwipeGestureRecognizer = self->_leftSwipeGestureRecognizer;
   self->_leftSwipeGestureRecognizer = v14;
@@ -234,7 +234,7 @@
   [(UISwipeGestureRecognizer *)self->_leftSwipeGestureRecognizer setCancelsTouchesInView:1];
   [(UISwipeGestureRecognizer *)self->_leftSwipeGestureRecognizer requireGestureRecognizerToFail:self->_manualCurlGestureRecognizer];
   [(UISwipeGestureRecognizer *)self->_leftSwipeGestureRecognizer requireGestureRecognizerToFail:self->_panManualCurlGestureRecognizer];
-  [v3 addGestureRecognizer:self->_leftSwipeGestureRecognizer];
+  [view addGestureRecognizer:self->_leftSwipeGestureRecognizer];
   v16 = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:"rightSwipe:"];
   rightSwipeGestureRecognizer = self->_rightSwipeGestureRecognizer;
   self->_rightSwipeGestureRecognizer = v16;
@@ -243,7 +243,7 @@
   [(UISwipeGestureRecognizer *)self->_rightSwipeGestureRecognizer setDirection:1];
   [(UISwipeGestureRecognizer *)self->_rightSwipeGestureRecognizer requireGestureRecognizerToFail:self->_manualCurlGestureRecognizer];
   [(UISwipeGestureRecognizer *)self->_rightSwipeGestureRecognizer requireGestureRecognizerToFail:self->_panManualCurlGestureRecognizer];
-  [v3 addGestureRecognizer:self->_rightSwipeGestureRecognizer];
+  [view addGestureRecognizer:self->_rightSwipeGestureRecognizer];
   v18 = objc_alloc_init(BKPictureBookView);
   bookView = self->_bookView;
   self->_bookView = v18;
@@ -253,8 +253,8 @@
   [(BKPictureBookView *)self->_bookView setDrawsShadow:1];
   [(BKPictureBookView *)self->_bookView setDrawsSpine:[(BKPictureBookNavigationController *)self drawsSpine]];
   [(BKPictureBookView *)self->_bookView sizeToFit];
-  v20 = [(BKPictureBookNavigationController *)self curlContainer];
-  v21 = [(BKPictureBookNavigationController *)self singlePageCurlContainer];
+  curlContainer = [(BKPictureBookNavigationController *)self curlContainer];
+  singlePageCurlContainer = [(BKPictureBookNavigationController *)self singlePageCurlContainer];
   [(BKPictureBookScrollView *)self->_scrollView addSubview:self->_bookView];
   if (!self->_needsTurnToPageNumber)
   {
@@ -264,18 +264,18 @@
   }
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v4.receiver = self;
   v4.super_class = BKPictureBookNavigationController;
-  [(BKPictureBookNavigationController *)&v4 viewIsAppearing:a3];
+  [(BKPictureBookNavigationController *)&v4 viewIsAppearing:appearing];
   [(BKPictureBookNavigationController *)self _setupView];
 }
 
 - (void)_setupView
 {
-  v3 = [(BKPictureBookNavigationController *)self view];
-  [v3 bounds];
+  view = [(BKPictureBookNavigationController *)self view];
+  [view bounds];
   IMActionSafeRectForRect();
   [(BKPictureBookScrollView *)self->_scrollView setFrame:?];
 
@@ -285,8 +285,8 @@
   [(BKZoomingScrollView *)scrollView configureForImageSize:v5, v6];
   [(BKPictureBookScrollView *)self->_scrollView minimumZoomScale];
   [(BKPictureBookScrollView *)self->_scrollView setZoomScale:?];
-  v7 = [(BKPictureBookNavigationController *)self openToSpread];
-  if ([(BKPictureBookNavigationController *)self lastCompletedTransition]== 1 || v7 && (v7 != 0x7FFFFFFFFFFFFFFFLL || !isPortrait()))
+  openToSpread = [(BKPictureBookNavigationController *)self openToSpread];
+  if ([(BKPictureBookNavigationController *)self lastCompletedTransition]== 1 || openToSpread && (openToSpread != 0x7FFFFFFFFFFFFFFFLL || !isPortrait()))
   {
     [(BKPictureBookScrollView *)self->_scrollView minimumZoomScale];
     [(BKPictureBookScrollView *)self->_scrollView setZoomScale:?];
@@ -298,26 +298,26 @@
   }
 
   [(BKPictureBookNavigationController *)self _updateBookScale];
-  v8 = [(BKPageNavigationViewController *)self pageOffset];
+  pageOffset = [(BKPageNavigationViewController *)self pageOffset];
 
-  [(BKPictureBookNavigationController *)self _displayPagesForOffset:v8];
+  [(BKPictureBookNavigationController *)self _displayPagesForOffset:pageOffset];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = BKPictureBookNavigationController;
-  [(BKPictureBookNavigationController *)&v4 viewWillDisappear:a3];
+  [(BKPictureBookNavigationController *)&v4 viewWillDisappear:disappear];
   [(BKPictureBookCurlState *)self->_curlState killAllCurls];
   [(BKPageCurlManager *)self->_pageCurlManager reset];
   [(BKPictureBookNavigationController *)self _resetSinglePageCurlContainer];
 }
 
-- (void)_adjustToNewSize:(CGSize)a3 withOptionalTransitionCoordinator:(id)a4
+- (void)_adjustToNewSize:(CGSize)size withOptionalTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   [(BKPageCurlManager *)self->_pageCurlManager setHidden:1];
   [(BKPictureBookNavigationController *)self _resetSinglePageCurlContainer];
   x = self->_manualCurlStartPosition.x;
@@ -350,7 +350,7 @@
   v15[3] = &unk_1E2A60;
   v15[4] = self;
   v10 = objc_retainBlock(v15);
-  if (v7)
+  if (coordinatorCopy)
   {
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
@@ -362,7 +362,7 @@
     v11[2] = sub_4C14;
     v11[3] = &unk_1E2B58;
     v12 = v10;
-    [v7 animateAlongsideTransition:v13 completion:v11];
+    [coordinatorCopy animateAlongsideTransition:v13 completion:v11];
   }
 
   else
@@ -372,30 +372,30 @@
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   if ([(BKPictureBookNavigationController *)self isVisible])
   {
-    v8 = [(BKPageNavigationViewController *)self delegate];
-    v9 = [v8 inLiveResize];
+    delegate = [(BKPageNavigationViewController *)self delegate];
+    inLiveResize = [delegate inLiveResize];
 
-    if ((v9 & 1) == 0)
+    if ((inLiveResize & 1) == 0)
     {
-      [(BKPictureBookNavigationController *)self _adjustToNewSize:v7 withOptionalTransitionCoordinator:width, height];
+      [(BKPictureBookNavigationController *)self _adjustToNewSize:coordinatorCopy withOptionalTransitionCoordinator:width, height];
     }
   }
 
   v10.receiver = self;
   v10.super_class = BKPictureBookNavigationController;
-  [(BKPictureBookNavigationController *)&v10 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(BKPictureBookNavigationController *)&v10 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  LOBYTE(self->_lastCompletedTransition) = [(BKPictureBookNavigationController *)self singlePageAspectFits:a3];
+  LOBYTE(self->_lastCompletedTransition) = [(BKPictureBookNavigationController *)self singlePageAspectFits:change];
   if (![(BKPictureBookNavigationController *)self supportsSinglePageMode])
   {
 
@@ -403,12 +403,12 @@
   }
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = BKPictureBookNavigationController;
-  [(BKPictureBookNavigationController *)&v6 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
-  if (a3)
+  [(BKPictureBookNavigationController *)&v6 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
+  if (window)
   {
     [(BKPictureBookNavigationController *)self _setupView];
   }
@@ -481,31 +481,31 @@ LABEL_8:
   return v3;
 }
 
-- (id)viewForPageNumber:(int64_t)a3
+- (id)viewForPageNumber:(int64_t)number
 {
-  v4 = [(BKPageNavigationViewController *)self delegate];
-  v5 = [v4 contentViewControllerForPageNumber:a3];
+  delegate = [(BKPageNavigationViewController *)self delegate];
+  v5 = [delegate contentViewControllerForPageNumber:number];
 
-  v6 = [v5 view];
+  view = [v5 view];
 
-  return v6;
+  return view;
 }
 
-- (void)_applyAdditionalScale:(id)a3
+- (void)_applyAdditionalScale:(id)scale
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  scaleCopy = scale;
+  v5 = scaleCopy;
+  if (scaleCopy)
   {
-    v6 = [v4 loader];
-    v7 = [v6 webView];
-    [v7 be_scale];
+    loader = [scaleCopy loader];
+    webView = [loader webView];
+    [webView be_scale];
     v9 = v8;
 
     if (v9 >= BEWebViewMinimumZoomScale || (v10 = *self[1].super.super.IMViewController_opaque, v9 >= v10) || v10 <= 0.0)
     {
-      v13 = [v5 view];
-      v14 = v13;
+      view = [v5 view];
+      v14 = view;
       v16 = *&CGAffineTransformIdentity.c;
       *&buf.a = *&CGAffineTransformIdentity.a;
       *&buf.c = v16;
@@ -529,24 +529,24 @@ LABEL_8:
       memset(&buf, 0, sizeof(buf));
       CGAffineTransformMakeScale(&buf, v11, v11);
       v18 = buf;
-      v13 = [v5 view];
-      v14 = v13;
+      view = [v5 view];
+      v14 = view;
       v17 = v18;
       p_buf = &v17;
     }
 
-    [v13 setTransform:{p_buf, *&v17.a, *&v17.c, *&v17.tx}];
+    [view setTransform:{p_buf, *&v17.a, *&v17.c, *&v17.tx}];
   }
 }
 
-- (void)_displayPagesForOffset:(int64_t)a3
+- (void)_displayPagesForOffset:(int64_t)offset
 {
-  v5 = [(BKPictureBookNavigationController *)self isViewLoaded];
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL && v5)
+  isViewLoaded = [(BKPictureBookNavigationController *)self isViewLoaded];
+  if (offset != 0x7FFFFFFFFFFFFFFFLL && isViewLoaded)
   {
-    v6 = [(BKPageNavigationViewController *)self leftPageNumberForSinglePageOffset:a3];
-    v7 = [(BKPageNavigationViewController *)self delegate];
-    obj = [v7 contentViewControllerForPageNumber:v6];
+    v6 = [(BKPageNavigationViewController *)self leftPageNumberForSinglePageOffset:offset];
+    delegate = [(BKPageNavigationViewController *)self delegate];
+    obj = [delegate contentViewControllerForPageNumber:v6];
 
     v8 = self->_rightContentViewController;
     if (obj != v8)
@@ -554,8 +554,8 @@ LABEL_8:
       [(BKPictureBookNavigationController *)self addPendingContent:obj];
       [(BKPictureBookNavigationController *)self removePendingContent:v8];
       [(BKPictureBookView *)self->_bookView setLeftContentView:0];
-      v9 = [(BKContentViewController *)obj view];
-      [(BKPictureBookView *)self->_bookView setLeftContentView:v9];
+      view = [(BKContentViewController *)obj view];
+      [(BKPictureBookView *)self->_bookView setLeftContentView:view];
 
       objc_storeStrong(&self->_rightContentViewController, obj);
       objc_opt_class();
@@ -563,14 +563,14 @@ LABEL_8:
       [(BKPictureBookNavigationController *)self _applyAdditionalScale:v10];
       if ([(BKContentViewController *)v8 isViewLoaded])
       {
-        v11 = [(BKPageNavigationViewController *)self delegate];
-        [v11 pageNavigationDidRemoveContentViewController:v8];
+        delegate2 = [(BKPageNavigationViewController *)self delegate];
+        [delegate2 pageNavigationDidRemoveContentViewController:v8];
       }
     }
 
-    v12 = [(BKPageNavigationViewController *)self rightPageNumberForSinglePageOffset:a3];
-    v13 = [(BKPageNavigationViewController *)self delegate];
-    v14 = [v13 contentViewControllerForPageNumber:v12];
+    v12 = [(BKPageNavigationViewController *)self rightPageNumberForSinglePageOffset:offset];
+    delegate3 = [(BKPageNavigationViewController *)self delegate];
+    v14 = [delegate3 contentViewControllerForPageNumber:v12];
 
     v15 = self->_pendingLoads;
     if (v14 != v15)
@@ -578,8 +578,8 @@ LABEL_8:
       [(BKPictureBookNavigationController *)self addPendingContent:v14];
       [(BKPictureBookNavigationController *)self removePendingContent:v15];
       [(BKPictureBookView *)self->_bookView setRightContentView:0];
-      v16 = [(NSMutableSet *)v14 view];
-      [(BKPictureBookView *)self->_bookView setRightContentView:v16];
+      view2 = [(NSMutableSet *)v14 view];
+      [(BKPictureBookView *)self->_bookView setRightContentView:view2];
 
       objc_storeStrong(&self->_pendingLoads, v14);
       objc_opt_class();
@@ -587,19 +587,19 @@ LABEL_8:
       [(BKPictureBookNavigationController *)self _applyAdditionalScale:v17];
       if ([(NSMutableSet *)v15 isViewLoaded])
       {
-        v18 = [(BKPageNavigationViewController *)self delegate];
-        [v18 pageNavigationDidRemoveContentViewController:v15];
+        delegate4 = [(BKPageNavigationViewController *)self delegate];
+        [delegate4 pageNavigationDidRemoveContentViewController:v15];
       }
     }
 
-    [(BKPictureBookNavigationController *)self updateVisibleContentViewControllerForOffset:a3];
+    [(BKPictureBookNavigationController *)self updateVisibleContentViewControllerForOffset:offset];
     [(BKPictureBookNavigationController *)self updateUpsellZoomScale];
   }
 }
 
-- (id)_singlePageVisibleContentViewControllerForPageOffset:(int64_t)a3
+- (id)_singlePageVisibleContentViewControllerForPageOffset:(int64_t)offset
 {
-  if ([(BKPictureBookNavigationController *)self inSinglePageMode]&& ((v5 = [(BKPageNavigationViewController *)self leftPageNumberForSinglePageOffset:a3]- 1, v6 = [(BKPageNavigationViewController *)self rightPageNumberForSinglePageOffset:a3], v5 == a3) && (p_rightContentViewController = &self->_rightContentViewController, [(BKContentViewController *)self->_rightContentViewController isContentLoaded]) || v6 - 1 == a3 && (p_rightContentViewController = &self->_pendingLoads, [(NSMutableSet *)self->_pendingLoads isContentLoaded])))
+  if ([(BKPictureBookNavigationController *)self inSinglePageMode]&& ((v5 = [(BKPageNavigationViewController *)self leftPageNumberForSinglePageOffset:offset]- 1, v6 = [(BKPageNavigationViewController *)self rightPageNumberForSinglePageOffset:offset], v5 == offset) && (p_rightContentViewController = &self->_rightContentViewController, [(BKContentViewController *)self->_rightContentViewController isContentLoaded]) || v6 - 1 == offset && (p_rightContentViewController = &self->_pendingLoads, [(NSMutableSet *)self->_pendingLoads isContentLoaded])))
   {
     v8 = *p_rightContentViewController;
   }
@@ -612,30 +612,30 @@ LABEL_8:
   return v8;
 }
 
-- (void)updateVisibleContentViewControllerForOffset:(int64_t)a3
+- (void)updateVisibleContentViewControllerForOffset:(int64_t)offset
 {
   if ([(BKPictureBookNavigationController *)self inSinglePageMode])
   {
-    v5 = [(BKPictureBookNavigationController *)self _singlePageVisibleContentViewControllerForPageOffset:a3];
+    v5 = [(BKPictureBookNavigationController *)self _singlePageVisibleContentViewControllerForPageOffset:offset];
     if (v5)
     {
       v7 = v5;
-      v6 = [(BKPageNavigationViewController *)self delegate];
-      [v6 pageNavigationContentViewWillAppear:v7];
+      delegate = [(BKPageNavigationViewController *)self delegate];
+      [delegate pageNavigationContentViewWillAppear:v7];
 
       v5 = v7;
     }
   }
 }
 
-- (void)contentViewImage:(BOOL)a3 afterScreenUpdates:(BOOL)a4 completion:(id)a5
+- (void)contentViewImage:(BOOL)image afterScreenUpdates:(BOOL)updates completion:(id)completion
 {
-  v5 = a3;
-  v7 = a5;
-  v8 = v5 && [(BKPictureBookNavigationController *)self drawsSpine];
-  v9 = [(BKPictureBookView *)self->_bookView window];
+  imageCopy = image;
+  completionCopy = completion;
+  v8 = imageCopy && [(BKPictureBookNavigationController *)self drawsSpine];
+  window = [(BKPictureBookView *)self->_bookView window];
 
-  if (v9)
+  if (window)
   {
     [(BKPictureBookScrollView *)self->_scrollView bounds];
     v11 = v10;
@@ -656,15 +656,15 @@ LABEL_8:
     v21 = v13 * v20;
     [(BKPictureBookScrollView *)self->_scrollView contentSize];
     v23 = v13 * v22;
-    v24 = [(BKPictureBookView *)self->_bookView im_snapshotInContext];
+    im_snapshotInContext = [(BKPictureBookView *)self->_bookView im_snapshotInContext];
     v38.width = v21;
     v38.height = v23;
     UIGraphicsBeginImageContextWithOptions(v38, 0, 0.0);
-    [v24 drawInRect:{0.0, 0.0, v21, v23}];
+    [im_snapshotInContext drawInRect:{0.0, 0.0, v21, v23}];
     v25 = UIGraphicsGetImageFromCurrentImageContext();
 
     UIGraphicsEndImageContext();
-    v7[2](v7, v25);
+    completionCopy[2](completionCopy, v25);
   }
 
   else
@@ -681,7 +681,7 @@ LABEL_8:
     [(BKPictureBookView *)v30 setScale:1.0];
     [(BKPictureBookView *)v30 setDrawsSpine:v8];
     objc_initWeak(&location, self);
-    v31 = [(BKPageNavigationViewController *)self pageOffset];
+    pageOffset = [(BKPageNavigationViewController *)self pageOffset];
     v32[0] = _NSConcreteStackBlock;
     v32[1] = 3221225472;
     v32[2] = sub_5878;
@@ -689,63 +689,63 @@ LABEL_8:
     objc_copyWeak(&v36, &location);
     v25 = v30;
     v33 = v25;
-    v34 = self;
-    v35 = v7;
-    [(BKPictureBookNavigationController *)self _generateLeftPageImageAtPageOffset:v31 completion:v32];
+    selfCopy = self;
+    v35 = completionCopy;
+    [(BKPictureBookNavigationController *)self _generateLeftPageImageAtPageOffset:pageOffset completion:v32];
 
     objc_destroyWeak(&v36);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)_generateLeftPageImageAtPageOffset:(int64_t)a3 completion:(id)a4
+- (void)_generateLeftPageImageAtPageOffset:(int64_t)offset completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(BKPageNavigationViewController *)self leftPageNumberForSinglePageOffset:a3];
-  v8 = [(BKPageNavigationViewController *)self delegate];
-  [v8 pageNavigationSnapshotForPageNumber:v7 completion:v6];
+  completionCopy = completion;
+  v7 = [(BKPageNavigationViewController *)self leftPageNumberForSinglePageOffset:offset];
+  delegate = [(BKPageNavigationViewController *)self delegate];
+  [delegate pageNavigationSnapshotForPageNumber:v7 completion:completionCopy];
 }
 
-- (void)_generateRightPageImageAtPageOffset:(int64_t)a3 completion:(id)a4
+- (void)_generateRightPageImageAtPageOffset:(int64_t)offset completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(BKPageNavigationViewController *)self rightPageNumberForSinglePageOffset:a3];
-  v8 = [(BKPageNavigationViewController *)self delegate];
-  [v8 pageNavigationSnapshotForPageNumber:v7 completion:v6];
+  completionCopy = completion;
+  v7 = [(BKPageNavigationViewController *)self rightPageNumberForSinglePageOffset:offset];
+  delegate = [(BKPageNavigationViewController *)self delegate];
+  [delegate pageNavigationSnapshotForPageNumber:v7 completion:completionCopy];
 }
 
-- (void)setPageOffset:(int64_t)a3
+- (void)setPageOffset:(int64_t)offset
 {
-  if (self->super._pageOffset != a3 || ![(BKPictureBookNavigationController *)self hasTurnedToInitialPage])
+  if (self->super._pageOffset != offset || ![(BKPictureBookNavigationController *)self hasTurnedToInitialPage])
   {
     v6.receiver = self;
     v6.super_class = BKPictureBookNavigationController;
-    [(BKPageNavigationViewController *)&v6 setPageOffset:a3];
+    [(BKPageNavigationViewController *)&v6 setPageOffset:offset];
     if ([(BKPictureBookNavigationController *)self isViewLoaded])
     {
-      [(BKPictureBookNavigationController *)self _displayPagesForOffset:a3];
+      [(BKPictureBookNavigationController *)self _displayPagesForOffset:offset];
       [(BKPictureBookNavigationController *)self setHasTurnedToInitialPage:1];
-      v5 = [(BKPageNavigationViewController *)self delegate];
-      [v5 pageNavigationDidChangeLocation:self];
+      delegate = [(BKPageNavigationViewController *)self delegate];
+      [delegate pageNavigationDidChangeLocation:self];
     }
   }
 }
 
 - (_NSRange)visiblePages
 {
-  v3 = [(BKPictureBookNavigationController *)self inSinglePageMode];
-  v4 = [(BKPageNavigationViewController *)self pageOffset];
-  if (v3)
+  inSinglePageMode = [(BKPictureBookNavigationController *)self inSinglePageMode];
+  pageOffset = [(BKPageNavigationViewController *)self pageOffset];
+  if (inSinglePageMode)
   {
-    v5 = v4 + 1;
+    v5 = pageOffset + 1;
     v6 = 1;
   }
 
   else
   {
-    v7 = [(BKPageNavigationViewController *)self leftPageNumberForSpreadPageOffset:v4];
+    v7 = [(BKPageNavigationViewController *)self leftPageNumberForSpreadPageOffset:pageOffset];
     v8 = [(BKPageNavigationViewController *)self rightPageNumberForSpreadPageOffset:[(BKPageNavigationViewController *)self pageOffset]];
-    v9 = [(BKViewController *)self layoutDirection];
+    layoutDirection = [(BKViewController *)self layoutDirection];
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v10 = v7;
@@ -776,7 +776,7 @@ LABEL_8:
       v6 = 2;
     }
 
-    if (v9 == 1)
+    if (layoutDirection == 1)
     {
       v5 = v10;
     }
@@ -792,14 +792,14 @@ LABEL_8:
   return result;
 }
 
-- (void)slide:(BOOL)a3 animated:(BOOL)a4 withDelay:(double)a5
+- (void)slide:(BOOL)slide animated:(BOOL)animated withDelay:(double)delay
 {
-  v6 = a4;
-  v7 = a3;
+  animatedCopy = animated;
+  slideCopy = slide;
   [(BKPictureBookScrollView *)self->_scrollView contentOffset];
   v10 = v9;
   scrollView = self->_scrollView;
-  if (v7)
+  if (slideCopy)
   {
     [(BKPictureBookScrollView *)scrollView contentInset];
     v13 = -v12;
@@ -819,16 +819,16 @@ LABEL_8:
   v20 = v13 == v19 && v10 == v18;
   if (!v20)
   {
-    if (v6)
+    if (animatedCopy)
     {
       [(BKPictureBookNavigationController *)self contentSize];
       v22 = v21;
       v24 = v23;
-      v25 = [(BKPictureBookNavigationController *)self thumbnailBookViewConfiguration];
-      v26 = [(BKPictureBookNavigationController *)self drawsSpine];
-      v27 = [(BKPictureBookNavigationController *)self supportsSinglePageMode];
+      thumbnailBookViewConfiguration = [(BKPictureBookNavigationController *)self thumbnailBookViewConfiguration];
+      drawsSpine = [(BKPictureBookNavigationController *)self drawsSpine];
+      supportsSinglePageMode = [(BKPictureBookNavigationController *)self supportsSinglePageMode];
       [(BKPictureBookNavigationController *)self _containerBoundsForGeometry];
-      v32 = [BKPictureBookViewGeometry geometryWithContentSize:v25 configuration:v26 drawsSpine:v27 ignoresPadding:v22 containerBounds:v24, v28, v29, v30, v31];
+      v32 = [BKPictureBookViewGeometry geometryWithContentSize:thumbnailBookViewConfiguration configuration:drawsSpine drawsSpine:supportsSinglePageMode ignoresPadding:v22 containerBounds:v24, v28, v29, v30, v31];
 
       [(BKPictureBookScrollView *)self->_scrollView contentSize];
       v34 = v33;
@@ -868,7 +868,7 @@ LABEL_8:
       v49[2] = sub_5FF8;
       v49[3] = &unk_1E2C20;
       v49[4] = self;
-      [UIView animateWithDuration:4 delay:v50 options:v49 animations:v45 completion:a5];
+      [UIView animateWithDuration:4 delay:v50 options:v49 animations:v45 completion:delay];
     }
 
     else
@@ -880,25 +880,25 @@ LABEL_8:
   }
 }
 
-- (void)_insertDestinationSnapshotImageUnderCurrentPageCurl:(int64_t)a3
+- (void)_insertDestinationSnapshotImageUnderCurrentPageCurl:(int64_t)curl
 {
   v5 = [[BKPageBookCurlView alloc] initWithImage:0 borderColor:0 isLeft:0];
   [(BKPageCurl *)self->_manualCurl frame];
   [(BKPageBookCurlView *)v5 setFrame:?];
-  v6 = [(BKPictureBookNavigationController *)self theme];
-  -[BKPageBookCurlView setUseInvertedColors:](v5, "setUseInvertedColors:", [v6 shouldInvertContent]);
+  theme = [(BKPictureBookNavigationController *)self theme];
+  -[BKPageBookCurlView setUseInvertedColors:](v5, "setUseInvertedColors:", [theme shouldInvertContent]);
 
-  v7 = [(BKPageCurl *)self->_manualCurl superview];
-  [v7 insertSubview:v5 belowSubview:self->_manualCurl];
+  superview = [(BKPageCurl *)self->_manualCurl superview];
+  [superview insertSubview:v5 belowSubview:self->_manualCurl];
 
-  v8 = [(BKPageNavigationViewController *)self delegate];
+  delegate = [(BKPageNavigationViewController *)self delegate];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_62DC;
   v18[3] = &unk_1E2C48;
   v9 = v5;
   v19 = v9;
-  [v8 pageNavigationSnapshotForPageNumber:a3 + 1 completion:v18];
+  [delegate pageNavigationSnapshotForPageNumber:curl + 1 completion:v18];
 
   if (*&self->_desiredScale)
   {
@@ -915,7 +915,7 @@ LABEL_8:
 
   objc_storeStrong(&self->_desiredScale, v5);
   [(BKPictureBookNavigationController *)self performSelector:"_timeOutWaitingForPaint" withObject:0 afterDelay:1.0];
-  v11 = [(BKPictureBookNavigationController *)self _singlePageVisibleContentViewControllerForPageOffset:a3];
+  v11 = [(BKPictureBookNavigationController *)self _singlePageVisibleContentViewControllerForPageOffset:curl];
   objc_initWeak(&buf, self);
   objc_opt_class();
   v12 = BUDynamicCast();
@@ -932,12 +932,12 @@ LABEL_8:
   objc_destroyWeak(&buf);
 }
 
-- (void)turnToPageNumber:(int64_t)a3 animated:(BOOL)a4
+- (void)turnToPageNumber:(int64_t)number animated:(BOOL)animated
 {
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (number != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = a4;
-    if ([(BKPageNavigationViewController *)self pageOffset]+ 1 != a3)
+    animatedCopy = animated;
+    if ([(BKPageNavigationViewController *)self pageOffset]+ 1 != number)
     {
       v7 = +[AETestDriver shared];
       [v7 postEvent:kBETestDriverPageTurnStart sender:self];
@@ -947,10 +947,10 @@ LABEL_8:
 
       self->_cancelControlTapForPageTurn = 1;
       self->_cancelPageChangeForPageTurn = 1;
-      v9 = [(BKPictureBookNavigationController *)self isVisible]& v4;
+      v9 = [(BKPictureBookNavigationController *)self isVisible]& animatedCopy;
       if (v9 == 1 && [(BKPictureBookNavigationController *)self _isFreeScale])
       {
-        *&self->_curlPageForReadAloud = a3;
+        *&self->_curlPageForReadAloud = number;
         v10 = [(BKPageNavigationViewController *)self pageOffset]+ 1;
 
         [(BKPictureBookNavigationController *)self zoomToPage:v10 animated:1];
@@ -958,47 +958,47 @@ LABEL_8:
 
       else
       {
-        v11 = [(BKPageNavigationViewController *)self pageCount];
-        if (v11 >= a3)
+        pageCount = [(BKPageNavigationViewController *)self pageCount];
+        if (pageCount >= number)
         {
-          v12 = a3;
+          numberCopy = number;
         }
 
         else
         {
-          v12 = v11;
+          numberCopy = pageCount;
         }
 
-        if (v12 <= 1)
+        if (numberCopy <= 1)
         {
           v13 = 1;
         }
 
         else
         {
-          v13 = v12;
+          v13 = numberCopy;
         }
 
         v14 = v13 - 1;
-        v15 = [(BKViewController *)self layoutDirection];
-        v16 = (v15 != 1) ^ v13;
-        v17 = [(BKPictureBookNavigationController *)self inSinglePageMode];
-        v18 = [(BKPageNavigationViewController *)self pageOffset];
-        if (v17)
+        layoutDirection = [(BKViewController *)self layoutDirection];
+        v16 = (layoutDirection != 1) ^ v13;
+        inSinglePageMode = [(BKPictureBookNavigationController *)self inSinglePageMode];
+        pageOffset = [(BKPageNavigationViewController *)self pageOffset];
+        if (inSinglePageMode)
         {
-          if (LOBYTE(self->_swipeSelector) != 1 || (x = self->_manualCurlStartPosition.x, x == 0.0) || v14 > v18 == [*&x forwardCurl])
+          if (LOBYTE(self->_swipeSelector) != 1 || (x = self->_manualCurlStartPosition.x, x == 0.0) || v14 > pageOffset == [*&x forwardCurl])
           {
             [(BKPictureBookNavigationController *)self slide:v16 & 1 animated:0 withDelay:0.0];
-            v25 = [(BKPageNavigationViewController *)self pageOffset];
+            pageOffset2 = [(BKPageNavigationViewController *)self pageOffset];
             v26 = v9 ^ 1;
-            if (v14 == v25)
+            if (v14 == pageOffset2)
             {
               v26 = 1;
             }
 
             if ((v26 & 1) == 0)
             {
-              [(BKPictureBookNavigationController *)self _autoCurlToSinglePageOffset:v14 forwardCurl:v14 > v18];
+              [(BKPictureBookNavigationController *)self _autoCurlToSinglePageOffset:v14 forwardCurl:v14 > pageOffset];
             }
 
             [(BKPictureBookNavigationController *)self setPageOffset:v14];
@@ -1019,7 +1019,7 @@ LABEL_8:
 
         else
         {
-          v20 = [(BKPageNavigationViewController *)self leftPageNumberForSpreadPageOffset:v18];
+          v20 = [(BKPageNavigationViewController *)self leftPageNumberForSpreadPageOffset:pageOffset];
           v21 = [(BKPageNavigationViewController *)self leftPageNumberForSpreadPageOffset:v14];
           v22 = v9 ^ 1;
           v23 = 0.0;
@@ -1030,7 +1030,7 @@ LABEL_8:
 
           if ((v22 & 1) == 0)
           {
-            v24 = (v15 != 1) ^ (v14 <= [(BKPageNavigationViewController *)self pageOffset]);
+            v24 = (layoutDirection != 1) ^ (v14 <= [(BKPageNavigationViewController *)self pageOffset]);
             if (HIBYTE(self->_lastCompletedTransition) == 1)
             {
               [(BKPictureBookNavigationController *)self _autoCurlToSpreadPageOffset:v14 forwardCurl:v24];
@@ -1053,25 +1053,25 @@ LABEL_8:
   }
 }
 
-- (void)_autoSlideToSpreadPageOffset:(int64_t)a3 forwardCurl:(BOOL)a4
+- (void)_autoSlideToSpreadPageOffset:(int64_t)offset forwardCurl:(BOOL)curl
 {
-  v4 = a4;
+  curlCopy = curl;
   v35 = [(BKPageNavigationViewController *)self leftPageNumberForSpreadPageOffset:[(BKPageNavigationViewController *)self pageOffset]];
   v34 = [(BKPageNavigationViewController *)self rightPageNumberForSpreadPageOffset:[(BKPageNavigationViewController *)self pageOffset]];
-  v7 = [(BKPageNavigationViewController *)self leftPageNumberForSpreadPageOffset:a3];
-  v8 = [(BKPageNavigationViewController *)self rightPageNumberForSpreadPageOffset:a3];
+  v7 = [(BKPageNavigationViewController *)self leftPageNumberForSpreadPageOffset:offset];
+  v8 = [(BKPageNavigationViewController *)self rightPageNumberForSpreadPageOffset:offset];
   v36 = objc_opt_new();
-  v9 = [(BKPictureBookNavigationController *)self isZoomedToSpread];
+  isZoomedToSpread = [(BKPictureBookNavigationController *)self isZoomedToSpread];
   [(BKPictureBookNavigationController *)self contentSize];
   v11 = v10;
   v13 = v12;
-  v14 = [(BKPictureBookNavigationController *)self thumbnailBookViewConfiguration];
-  v15 = [(BKPictureBookNavigationController *)self drawsSpine];
-  v16 = [(BKPictureBookNavigationController *)self supportsSinglePageMode];
+  thumbnailBookViewConfiguration = [(BKPictureBookNavigationController *)self thumbnailBookViewConfiguration];
+  drawsSpine = [(BKPictureBookNavigationController *)self drawsSpine];
+  supportsSinglePageMode = [(BKPictureBookNavigationController *)self supportsSinglePageMode];
   [(BKPictureBookNavigationController *)self _containerBoundsForGeometry];
-  v21 = [BKPictureBookViewGeometry geometryWithContentSize:v14 configuration:v15 drawsSpine:v16 ignoresPadding:v11 containerBounds:v13, v17, v18, v19, v20];
+  v21 = [BKPictureBookViewGeometry geometryWithContentSize:thumbnailBookViewConfiguration configuration:drawsSpine drawsSpine:supportsSinglePageMode ignoresPadding:v11 containerBounds:v13, v17, v18, v19, v20];
 
-  [v21 scaleForSpread:v9 landscape:isPortrait() ^ 1];
+  [v21 scaleForSpread:isZoomedToSpread landscape:isPortrait() ^ 1];
   if (v22 >= BEWebViewMinimumZoomScale)
   {
     v23 = v22;
@@ -1096,45 +1096,45 @@ LABEL_8:
 
   [v36 setScale:v23];
   [v36 setCurlContainer:*p_pageCurlManager];
-  v25 = [(BKPageNavigationViewController *)self delegate];
-  [v36 setNavDelegate:v25];
+  delegate = [(BKPageNavigationViewController *)self delegate];
+  [v36 setNavDelegate:delegate];
 
-  [v36 setForwardCurl:v4];
+  [v36 setForwardCurl:curlCopy];
   [v36 setAutoCurl:1];
   [v36 setApplyMaskAndGutter:{-[BKPictureBookNavigationController drawsSpine](self, "drawsSpine")}];
-  v26 = [(BKPictureBookNavigationController *)self pageCurlManager];
-  v27 = [v26 numberOfQueuedCurls];
+  pageCurlManager = [(BKPictureBookNavigationController *)self pageCurlManager];
+  numberOfQueuedCurls = [pageCurlManager numberOfQueuedCurls];
 
-  if (!v27)
+  if (!numberOfQueuedCurls)
   {
     if ([(BKContentViewController *)self->_rightContentViewController isContentLoaded])
     {
-      v28 = [(BKContentViewController *)self->_rightContentViewController view];
-      [v36 setLeftSourceView:v28];
+      view = [(BKContentViewController *)self->_rightContentViewController view];
+      [v36 setLeftSourceView:view];
     }
 
     if ([(NSMutableSet *)self->_pendingLoads isContentLoaded])
     {
-      v29 = [(NSMutableSet *)self->_pendingLoads view];
-      [v36 setRightSourceView:v29];
+      view2 = [(NSMutableSet *)self->_pendingLoads view];
+      [v36 setRightSourceView:view2];
     }
 
     [(BKPictureBookView *)self->_bookView setLeftContentView:0];
     [(BKPictureBookView *)self->_bookView setRightContentView:0];
   }
 
-  v30 = [(BKViewController *)self layoutDirection];
+  layoutDirection = [(BKViewController *)self layoutDirection];
   [v36 generateWithOldLeftPageNumber:v35 oldRightPageNumber:v34 newLeftPageNumber:v7 newRightPageNumber:v8 useMirrorForBackImage:0];
   v31 = objc_alloc_init(BKPageSlide);
   [(BKPageAnimation *)v31 setPageAnimationDelegate:self];
-  v32 = [v36 pageArray];
-  v33 = [v36 backPageArray];
+  pageArray = [v36 pageArray];
+  backPageArray = [v36 backPageArray];
   if (BYTE2(self->_lastCompletedTransition) == 1)
   {
     p_pageCurlManager = &self->_manualCurl;
   }
 
-  [(BKPageSlide *)v31 autoSlideFromPages:v32 toPages:v33 inContainer:*p_pageCurlManager isForwardAnimation:v4 isRTL:v30 == 1 isZoomedToSpread:v9 completion:0];
+  [(BKPageSlide *)v31 autoSlideFromPages:pageArray toPages:backPageArray inContainer:*p_pageCurlManager isForwardAnimation:curlCopy isRTL:layoutDirection == 1 isZoomedToSpread:isZoomedToSpread completion:0];
 }
 
 - (void)turnToNextPage
@@ -1167,9 +1167,9 @@ LABEL_8:
   [(BKPageNavigationViewController *)self turnToPreviousPageWithDelta:v3];
 }
 
-- (void)transitionDidFinish:(BOOL)a3
+- (void)transitionDidFinish:(BOOL)finish
 {
-  if (a3)
+  if (finish)
   {
     [(BKPictureBookNavigationController *)self setLastCompletedTransition:1];
   }
@@ -1180,23 +1180,23 @@ LABEL_8:
   }
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  if (a3.width != self->_contentSize.width || a3.height != self->_contentSize.height)
+  if (size.width != self->_contentSize.width || size.height != self->_contentSize.height)
   {
-    self->_contentSize.width = fmax(a3.width, 100.0);
-    self->_contentSize.height = fmax(a3.height, 100.0);
+    self->_contentSize.width = fmax(size.width, 100.0);
+    self->_contentSize.height = fmax(size.height, 100.0);
     [(BKPictureBookView *)self->_bookView setContentSize:?];
   }
 }
 
-- (void)addPendingContent:(id)a3
+- (void)addPendingContent:(id)content
 {
-  v4 = a3;
-  if (v4)
+  contentCopy = content;
+  if (contentCopy)
   {
-    v7 = v4;
-    if ([v4 isLoading])
+    v7 = contentCopy;
+    if ([contentCopy isLoading])
     {
       v5 = +[NSNotificationCenter defaultCenter];
       [v5 addObserver:self selector:"_contentIsReadyOrFailed:" name:BKContentReadyNotification object:v7];
@@ -1204,21 +1204,21 @@ LABEL_8:
       [(BKPictureBookNavigationController *)self willChangeValueForKey:@"isContentRenderComplete"];
       [self->_needsTurnToPageNumber addObject:v7];
       [(BKPictureBookNavigationController *)self didChangeValueForKey:@"isContentRenderComplete"];
-      v6 = [v7 view];
-      [v6 setHidden:1];
+      view = [v7 view];
+      [view setHidden:1];
     }
   }
 
   _objc_release_x1();
 }
 
-- (void)removePendingContent:(id)a3
+- (void)removePendingContent:(id)content
 {
-  v4 = a3;
-  if (v4)
+  contentCopy = content;
+  if (contentCopy)
   {
-    v7 = v4;
-    if ([self->_needsTurnToPageNumber containsObject:v4])
+    v7 = contentCopy;
+    if ([self->_needsTurnToPageNumber containsObject:contentCopy])
     {
       v5 = +[NSNotificationCenter defaultCenter];
       [v5 removeObserver:self name:BKContentReadyNotification object:v7];
@@ -1232,22 +1232,22 @@ LABEL_8:
         [(BKPictureBookNavigationController *)self _resetSinglePageCurlContainer];
       }
 
-      v6 = [v7 view];
-      [v6 setHidden:0];
+      view = [v7 view];
+      [view setHidden:0];
     }
   }
 
   _objc_release_x1();
 }
 
-- (void)_contentIsReadyOrFailed:(id)a3
+- (void)_contentIsReadyOrFailed:(id)failed
 {
-  v4 = [a3 object];
-  [(BKPictureBookNavigationController *)self removePendingContent:v4];
+  object = [failed object];
+  [(BKPictureBookNavigationController *)self removePendingContent:object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 performSelector:"playFirstVisibleAutoplayMediaObject" withObject:0 afterDelay:0.25];
+    [object performSelector:"playFirstVisibleAutoplayMediaObject" withObject:0 afterDelay:0.25];
   }
 }
 
@@ -1267,46 +1267,46 @@ LABEL_8:
   return curlState;
 }
 
-- (int)tapActionForLocation:(CGPoint)a3 view:(id)a4 ignoreOppositePage:(BOOL)a5
+- (int)tapActionForLocation:(CGPoint)location view:(id)view ignoreOppositePage:(BOOL)page
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
-  v10 = [(BKPictureBookNavigationController *)self thumbnailBookViewConfiguration];
-  [v10 tapToTurnWidth];
+  y = location.y;
+  x = location.x;
+  viewCopy = view;
+  thumbnailBookViewConfiguration = [(BKPictureBookNavigationController *)self thumbnailBookViewConfiguration];
+  [thumbnailBookViewConfiguration tapToTurnWidth];
   v12 = v11;
 
   v13 = +[NSUserDefaults standardUserDefaults];
   v14 = [v13 BOOLForKey:BKLeftTapTurnToNextDefault[0]];
 
-  v15 = [(BKViewController *)self layoutDirection];
-  [v9 bounds];
+  layoutDirection = [(BKViewController *)self layoutDirection];
+  [viewCopy bounds];
   if (x > CGRectGetMaxX(v29) - v12)
   {
     goto LABEL_2;
   }
 
-  [v9 bounds];
+  [viewCopy bounds];
   if (x < v12 + CGRectGetMinX(v30))
   {
     goto LABEL_4;
   }
 
-  [v9 convertPoint:self->_bookView toView:{x, y}];
+  [viewCopy convertPoint:self->_bookView toView:{x, y}];
   v21 = v20;
   [(BKPictureBookScrollView *)self->_scrollView zoomScale];
   v23 = v22;
   [(BKPictureBookScrollView *)self->_scrollView minimumZoomScale];
-  if (v23 > v24 && !a5 && ![(BKPictureBookNavigationController *)self inSinglePageMode])
+  if (v23 > v24 && !page && ![(BKPictureBookNavigationController *)self inSinglePageMode])
   {
-    v25 = [(BKPageNavigationViewController *)self pageOffset];
-    v26 = v25 & 1;
-    if (v25 < 0)
+    pageOffset = [(BKPageNavigationViewController *)self pageOffset];
+    v26 = pageOffset & 1;
+    if (pageOffset < 0)
     {
       v26 = -v26;
     }
 
-    if (v26 == (v15 != 1))
+    if (v26 == (layoutDirection != 1))
     {
       [(BKPictureBookView *)self->_bookView bounds];
       if (v21 > CGRectGetMidX(v31))
@@ -1315,14 +1315,14 @@ LABEL_8:
       }
     }
 
-    v27 = [(BKPageNavigationViewController *)self pageOffset];
-    v28 = v27 & 1;
-    if (v27 < 0)
+    pageOffset2 = [(BKPageNavigationViewController *)self pageOffset];
+    v28 = pageOffset2 & 1;
+    if (pageOffset2 < 0)
     {
       v28 = -v28;
     }
 
-    if (v28 == (v15 == 1))
+    if (v28 == (layoutDirection == 1))
     {
       [(BKPictureBookView *)self->_bookView bounds];
       if (v21 < CGRectGetMidX(v32))
@@ -1350,7 +1350,7 @@ LABEL_4:
 LABEL_2:
   v16 = 2;
 LABEL_5:
-  if (v15 == 1)
+  if (layoutDirection == 1)
   {
     v17 = 1;
   }
@@ -1375,17 +1375,17 @@ LABEL_11:
   return v18;
 }
 
-- (void)handlePageChangeTap:(id)a3
+- (void)handlePageChangeTap:(id)tap
 {
   if (!self->_cancelPageChangeForPageTurn)
   {
-    v5 = a3;
-    v13 = [v5 view];
-    [v5 locationInView:v13];
+    tapCopy = tap;
+    view = [tapCopy view];
+    [tapCopy locationInView:view];
     v7 = v6;
     v9 = v8;
 
-    v10 = [(BKPictureBookNavigationController *)self tapActionForLocation:v13 view:0 ignoreOppositePage:v7, v9];
+    v10 = [(BKPictureBookNavigationController *)self tapActionForLocation:view view:0 ignoreOppositePage:v7, v9];
     if ([(BKPictureBookNavigationController *)self isZoomedBeyondPage]&& v10)
     {
       [(BKPictureBookView *)self->_bookView frame];
@@ -1404,17 +1404,17 @@ LABEL_11:
       [(BKPictureBookNavigationController *)self turnToNextPage];
     }
 
-    v12 = [(BKPageNavigationViewController *)self delegate];
-    [v12 pageNavigationDidBeginInteracting:self];
+    delegate = [(BKPageNavigationViewController *)self delegate];
+    [delegate pageNavigationDidBeginInteracting:self];
   }
 }
 
-- (void)handleDoubleTap:(id)a3
+- (void)handleDoubleTap:(id)tap
 {
-  v15 = a3;
-  v4 = [v15 view];
-  [v15 locationInView:v4];
-  [v4 convertPoint:self->_bookView toView:?];
+  tapCopy = tap;
+  view = [tapCopy view];
+  [tapCopy locationInView:view];
+  [view convertPoint:self->_bookView toView:?];
   v6 = v5;
   [(BKPictureBookView *)self->_bookView bounds];
   MidX = CGRectGetMidX(v17);
@@ -1451,17 +1451,17 @@ LABEL_8:
   [(BKPictureBookScrollView *)self->_scrollView zoomScale];
   [(BKPictureBookScrollView *)self->_scrollView maximumZoomScale];
   [(BKPictureBookScrollView *)self->_scrollView zoomScale];
-  [v15 locationInView:v4];
-  [v4 convertPoint:self->_bookView toView:?];
+  [tapCopy locationInView:view];
+  [view convertPoint:self->_bookView toView:?];
   [BKPictureBookNavigationController zoomToPoint:"zoomToPoint:scale:animated:" scale:1 animated:?];
 LABEL_10:
-  v14 = [(BKPageNavigationViewController *)self delegate];
-  [v14 pageNavigationDidBeginInteracting:self];
+  delegate = [(BKPageNavigationViewController *)self delegate];
+  [delegate pageNavigationDidBeginInteracting:self];
 }
 
-- (void)toggleControls:(id)a3
+- (void)toggleControls:(id)controls
 {
-  v8 = a3;
+  controlsCopy = controls;
   leftContentViewController = self->_leftContentViewController;
   if (leftContentViewController && ([(BKContentViewController *)leftContentViewController isAutoCurl]& 1) == 0)
   {
@@ -1476,87 +1476,87 @@ LABEL_10:
 
   if (!self->_cancelControlTapForPageTurn)
   {
-    v6 = [(BKPictureBookNavigationController *)self presentedViewController];
+    presentedViewController = [(BKPictureBookNavigationController *)self presentedViewController];
 
-    if (!v6)
+    if (!presentedViewController)
     {
-      v7 = [(BKPageNavigationViewController *)self delegate];
-      [v7 pageNavigationToggleControls:self];
+      delegate = [(BKPageNavigationViewController *)self delegate];
+      [delegate pageNavigationToggleControls:self];
     }
   }
 }
 
-- (void)leftSwipe:(id)a3
+- (void)leftSwipe:(id)swipe
 {
-  v4 = [(BKViewController *)self layoutDirection];
-  v5 = [(BKPageNavigationViewController *)self pageOffset];
-  v6 = [(BKPageNavigationViewController *)self pageCount];
+  layoutDirection = [(BKViewController *)self layoutDirection];
+  pageOffset = [(BKPageNavigationViewController *)self pageOffset];
+  pageCount = [(BKPageNavigationViewController *)self pageCount];
   [(BKPictureBookScrollView *)self->_scrollView setScrollEnabled:0];
   [(BKPictureBookNavigationController *)self turnToNextPage];
   [(BKPictureBookScrollView *)self->_scrollView setScrollEnabled:[(BKPictureBookNavigationController *)self inSinglePageMode]^ 1];
-  v7 = [(BKPageNavigationViewController *)self delegate];
-  [v7 pageNavigationDidBeginInteracting:self];
+  delegate = [(BKPageNavigationViewController *)self delegate];
+  [delegate pageNavigationDidBeginInteracting:self];
 
-  if (v4 != 1)
+  if (layoutDirection != 1)
   {
-    v8 = [(BKPageNavigationViewController *)self delegate];
-    v9 = v8;
-    if (v5 == v6 - 1)
+    delegate2 = [(BKPageNavigationViewController *)self delegate];
+    v9 = delegate2;
+    if (pageOffset == pageCount - 1)
     {
-      [v8 pageNavigationDidTryToSwipePastEndOfBook:self];
+      [delegate2 pageNavigationDidTryToSwipePastEndOfBook:self];
     }
 
     else
     {
-      [v8 pageNavigationDidSwipeToNextPage:self];
+      [delegate2 pageNavigationDidSwipeToNextPage:self];
     }
   }
 }
 
-- (void)rightSwipe:(id)a3
+- (void)rightSwipe:(id)swipe
 {
-  v4 = [(BKViewController *)self layoutDirection];
-  v5 = [(BKPageNavigationViewController *)self pageOffset];
-  v6 = [(BKPageNavigationViewController *)self pageCount];
+  layoutDirection = [(BKViewController *)self layoutDirection];
+  pageOffset = [(BKPageNavigationViewController *)self pageOffset];
+  pageCount = [(BKPageNavigationViewController *)self pageCount];
   [(BKPictureBookScrollView *)self->_scrollView setScrollEnabled:0];
   [(BKPictureBookNavigationController *)self turnToPreviousPage];
   [(BKPictureBookScrollView *)self->_scrollView setScrollEnabled:[(BKPictureBookNavigationController *)self inSinglePageMode]^ 1];
-  v7 = [(BKPageNavigationViewController *)self delegate];
-  [v7 pageNavigationDidBeginInteracting:self];
+  delegate = [(BKPageNavigationViewController *)self delegate];
+  [delegate pageNavigationDidBeginInteracting:self];
 
-  if (v4 == 1)
+  if (layoutDirection == 1)
   {
-    v8 = [(BKPageNavigationViewController *)self delegate];
-    v9 = v8;
-    if (v5 == v6 - 1)
+    delegate2 = [(BKPageNavigationViewController *)self delegate];
+    v9 = delegate2;
+    if (pageOffset == pageCount - 1)
     {
-      [v8 pageNavigationDidTryToSwipePastEndOfBook:self];
+      [delegate2 pageNavigationDidTryToSwipePastEndOfBook:self];
     }
 
     else
     {
-      [v8 pageNavigationDidSwipeToNextPage:self];
+      [delegate2 pageNavigationDidSwipeToNextPage:self];
     }
   }
 }
 
-- (BOOL)_hasMediaElementAtTouch:(id)a3
+- (BOOL)_hasMediaElementAtTouch:(id)touch
 {
-  v4 = a3;
-  v5 = [(BKPictureBookNavigationController *)self view];
-  [v4 locationInView:v5];
+  touchCopy = touch;
+  view = [(BKPictureBookNavigationController *)self view];
+  [touchCopy locationInView:view];
   v7 = v6;
   v9 = v8;
 
-  LOBYTE(self) = [(BKPictureBookNavigationController *)self hasMediaElementAtPoint:v5 inView:v7, v9];
+  LOBYTE(self) = [(BKPictureBookNavigationController *)self hasMediaElementAtPoint:view inView:v7, v9];
   return self;
 }
 
-- (BOOL)hasMediaElementAtPoint:(CGPoint)a3 inView:(id)a4
+- (BOOL)hasMediaElementAtPoint:(CGPoint)point inView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -1577,7 +1577,7 @@ LABEL_10:
 
         objc_opt_class();
         v13 = BUDynamicCast();
-        if (v13 && [(BKPictureBookNavigationController *)self _contentController:v13 hasMediaElementAtPoint:v7 inView:x, y])
+        if (v13 && [(BKPictureBookNavigationController *)self _contentController:v13 hasMediaElementAtPoint:viewCopy inView:x, y])
         {
 
           v14 = 1;
@@ -1601,15 +1601,15 @@ LABEL_12:
   return v14;
 }
 
-- (BOOL)_contentController:(id)a3 hasMediaElementAtPoint:(CGPoint)a4 inView:(id)a5
+- (BOOL)_contentController:(id)controller hasMediaElementAtPoint:(CGPoint)point inView:(id)view
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 webView2];
-  v11 = [v10 be_contentView];
-  [v11 convertPoint:v9 fromView:{x, y}];
+  y = point.y;
+  x = point.x;
+  controllerCopy = controller;
+  viewCopy = view;
+  webView2 = [controllerCopy webView2];
+  be_contentView = [webView2 be_contentView];
+  [be_contentView convertPoint:viewCopy fromView:{x, y}];
   v13 = v12;
   v15 = v14;
 
@@ -1617,11 +1617,11 @@ LABEL_12:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v16 = [v8 loader];
-  v17 = [v16 mediaFrames];
-  v18 = [v17 allValues];
+  loader = [controllerCopy loader];
+  mediaFrames = [loader mediaFrames];
+  allValues = [mediaFrames allValues];
 
-  v19 = [v18 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v19 = [allValues countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v19)
   {
     v20 = *v24;
@@ -1631,7 +1631,7 @@ LABEL_12:
       {
         if (*v24 != v20)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v23 + 1) + 8 * i) CGRectValue];
@@ -1644,7 +1644,7 @@ LABEL_12:
         }
       }
 
-      v19 = [v18 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v19 = [allValues countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v19)
       {
         continue;
@@ -1659,14 +1659,14 @@ LABEL_11:
   return v19;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  touchCopy = touch;
   v8 = 0;
-  if (self->_pageChangeTapRecognizer != v6 && self->_controlsTapRecognizer != v6 || ![(BKPictureBookNavigationController *)self _hasMediaElementAtTouch:v7])
+  if (self->_pageChangeTapRecognizer != recognizerCopy && self->_controlsTapRecognizer != recognizerCopy || ![(BKPictureBookNavigationController *)self _hasMediaElementAtTouch:touchCopy])
   {
-    if (self->_doubleTapGestureRecognizer != v6 || (-[UITapGestureRecognizer view](v6, "view"), v9 = objc_claimAutoreleasedReturnValue(), [v7 locationInView:v9], v11 = v10, v13 = v12, v9, -[UITapGestureRecognizer view](v6, "view"), v14 = objc_claimAutoreleasedReturnValue(), v15 = -[BKPictureBookNavigationController tapActionForLocation:view:ignoreOppositePage:](self, "tapActionForLocation:view:ignoreOppositePage:", v14, 1, v11, v13), v14, !v15))
+    if (self->_doubleTapGestureRecognizer != recognizerCopy || (-[UITapGestureRecognizer view](recognizerCopy, "view"), v9 = objc_claimAutoreleasedReturnValue(), [touchCopy locationInView:v9], v11 = v10, v13 = v12, v9, -[UITapGestureRecognizer view](recognizerCopy, "view"), v14 = objc_claimAutoreleasedReturnValue(), v15 = -[BKPictureBookNavigationController tapActionForLocation:view:ignoreOppositePage:](self, "tapActionForLocation:view:ignoreOppositePage:", v14, 1, v11, v13), v14, !v15))
     {
       v8 = 1;
     }
@@ -1675,30 +1675,30 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_pageChangeTapRecognizer == v4)
+  beginCopy = begin;
+  v5 = beginCopy;
+  if (self->_pageChangeTapRecognizer == beginCopy)
   {
     self->_cancelPageChangeForPageTurn = 0;
-    v7 = [(UITapGestureRecognizer *)v4 view];
-    [(UITapGestureRecognizer *)v5 locationInView:v7];
-    LOBYTE(v6) = [(BKPictureBookNavigationController *)self tapActionForLocation:v7 view:[(BKPictureBookNavigationController *)self isZoomedBeyondPage] ignoreOppositePage:v8, v9]!= 0;
+    view = [(UITapGestureRecognizer *)beginCopy view];
+    [(UITapGestureRecognizer *)v5 locationInView:view];
+    LOBYTE(v6) = [(BKPictureBookNavigationController *)self tapActionForLocation:view view:[(BKPictureBookNavigationController *)self isZoomedBeyondPage] ignoreOppositePage:v8, v9]!= 0;
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  if (self->_doubleTapGestureRecognizer == v4)
+  if (self->_doubleTapGestureRecognizer == beginCopy)
   {
-    v7 = [(UITapGestureRecognizer *)v4 view];
-    [(UITapGestureRecognizer *)v5 locationInView:v7];
-    LOBYTE(v6) = ![(BKPictureBookNavigationController *)self tapActionForLocation:v7 view:1 ignoreOppositePage:?]&& [(BKPageCurlManager *)self->_pageCurlManager isHidden]&& ([(BKPageCurl *)self->_manualCurl isHidden]& 1) != 0;
+    view = [(UITapGestureRecognizer *)beginCopy view];
+    [(UITapGestureRecognizer *)v5 locationInView:view];
+    LOBYTE(v6) = ![(BKPictureBookNavigationController *)self tapActionForLocation:view view:1 ignoreOppositePage:?]&& [(BKPageCurlManager *)self->_pageCurlManager isHidden]&& ([(BKPageCurl *)self->_manualCurl isHidden]& 1) != 0;
     goto LABEL_15;
   }
 
-  if (self->_leftSwipeGestureRecognizer == v4)
+  if (self->_leftSwipeGestureRecognizer == beginCopy)
   {
     [(BKPictureBookScrollView *)self->_scrollView contentOffset];
     v12 = v11;
@@ -1710,7 +1710,7 @@ LABEL_15:
     leftContentViewController = self->_leftContentViewController;
     if (!leftContentViewController || [(BKContentViewController *)leftContentViewController isAutoCurl])
     {
-      v17 = [(BKPictureBookNavigationController *)self inSinglePageMode];
+      inSinglePageMode = [(BKPictureBookNavigationController *)self inSinglePageMode];
       if (v13 >= v15)
       {
         LOBYTE(v6) = 1;
@@ -1718,21 +1718,21 @@ LABEL_15:
 
       else
       {
-        LOBYTE(v6) = v17;
+        LOBYTE(v6) = inSinglePageMode;
       }
     }
   }
 
   else
   {
-    if (self->_rightSwipeGestureRecognizer != v4)
+    if (self->_rightSwipeGestureRecognizer != beginCopy)
     {
-      if (self->_controlsTapRecognizer == v4)
+      if (self->_controlsTapRecognizer == beginCopy)
       {
         self->_cancelControlTapForPageTurn = 0;
       }
 
-      else if (self->_manualCurlGestureRecognizer == v4 || self->_panManualCurlGestureRecognizer == v4)
+      else if (self->_manualCurlGestureRecognizer == beginCopy || self->_panManualCurlGestureRecognizer == beginCopy)
       {
         v6 = ![(BKPictureBookNavigationController *)self isZoomedBeyondPage];
         goto LABEL_16;
@@ -1775,9 +1775,9 @@ LABEL_16:
   return v6;
 }
 
-- (BOOL)isMediaPlayerGestureRecognizer:(id)a3
+- (BOOL)isMediaPlayerGestureRecognizer:(id)recognizer
 {
-  v3 = a3;
+  recognizerCopy = recognizer;
   NSClassFromString(@"MPTapGestureRecognizer");
   v4 = 1;
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1800,27 +1800,27 @@ LABEL_16:
   return v4;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = v6;
-  if (self->_doubleTapGestureRecognizer == a3 || self->_pageChangeTapRecognizer == a3)
+  gestureRecognizerCopy = gestureRecognizer;
+  v7 = gestureRecognizerCopy;
+  if (self->_doubleTapGestureRecognizer == recognizer || self->_pageChangeTapRecognizer == recognizer)
   {
-    v8 = [v6 bk_isWKSyntheticTapGestureRecognizer];
+    bk_isWKSyntheticTapGestureRecognizer = [gestureRecognizerCopy bk_isWKSyntheticTapGestureRecognizer];
   }
 
   else
   {
-    v8 = 0;
+    bk_isWKSyntheticTapGestureRecognizer = 0;
   }
 
-  return v8;
+  return bk_isWKSyntheticTapGestureRecognizer;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 canBePreventedByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer canBePreventedByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
   NSClassFromString(@"UIWebTouchEventsGestureRecognizer");
   if (objc_opt_isKindOfClass() & 1) != 0 || (NSClassFromString(@"WKTouchEventsGestureRecognizer"), (objc_opt_isKindOfClass()))
   {
@@ -1829,9 +1829,9 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (self->_doubleTapGestureRecognizer != v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (self->_doubleTapGestureRecognizer != recognizerCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    if (self->_leftSwipeGestureRecognizer == v6 || self->_rightSwipeGestureRecognizer == v6)
+    if (self->_leftSwipeGestureRecognizer == recognizerCopy || self->_rightSwipeGestureRecognizer == recognizerCopy)
     {
       NSClassFromString(@"UITextRangeAdjustmentGestureRecognizer");
       isKindOfClass = objc_opt_isKindOfClass();
@@ -1841,7 +1841,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v8 = v7;
+  v8 = gestureRecognizerCopy;
   if ([v8 numberOfTapsRequired] == &dword_0 + 2)
   {
     isKindOfClass = [v8 matchesTarget:+[UIView be_wkContentViewClass](UIView andAction:{"be_wkContentViewClass"), "_nonBlockingDoubleTapRecognized:"}] ^ 1;
@@ -1856,12 +1856,12 @@ LABEL_10:
   return isKindOfClass & 1;
 }
 
-- (void)pageAnimationWillBegin:(id)a3
+- (void)pageAnimationWillBegin:(id)begin
 {
   if ([(BKPictureBookNavigationController *)self inSinglePageMode])
   {
-    v4 = [(BKPictureBookNavigationController *)self singlePageCurlContainer];
-    [v4 setHidden:0];
+    singlePageCurlContainer = [(BKPictureBookNavigationController *)self singlePageCurlContainer];
+    [singlePageCurlContainer setHidden:0];
   }
 
   else
@@ -1874,11 +1874,11 @@ LABEL_10:
   [(BKPictureBookScrollView *)scrollView setScrollEnabled:0];
 }
 
-- (void)pageAnimation:(id)a3 didFinish:(BOOL)a4
+- (void)pageAnimation:(id)animation didFinish:(BOOL)finish
 {
-  v4 = a4;
-  v12 = a3;
-  if ([v12 state] != &dword_0 + 2)
+  finishCopy = finish;
+  animationCopy = animation;
+  if ([animationCopy state] != &dword_0 + 2)
   {
     if ([(BKPictureBookNavigationController *)self inSinglePageMode])
     {
@@ -1888,8 +1888,8 @@ LABEL_10:
 
     else
     {
-      v6 = [v12 existingPages];
-      [(BKPictureBookNavigationController *)self _restoreViewHierarchyWithArray:v6];
+      existingPages = [animationCopy existingPages];
+      [(BKPictureBookNavigationController *)self _restoreViewHierarchyWithArray:existingPages];
     }
   }
 
@@ -1900,14 +1900,14 @@ LABEL_10:
   leftContentViewController = self->_leftContentViewController;
   self->_leftContentViewController = 0;
 
-  if (v4)
+  if (finishCopy)
   {
-    if ([v12 finished])
+    if ([animationCopy finished])
     {
       [(BKPictureBookNavigationController *)self _resetCurlContainer];
     }
 
-    if (-[BKPictureBookNavigationController inSinglePageMode](self, "inSinglePageMode") && [v12 state] == &dword_4)
+    if (-[BKPictureBookNavigationController inSinglePageMode](self, "inSinglePageMode") && [animationCopy state] == &dword_4)
     {
       [(BKPictureBookNavigationController *)self slide:[(BKPictureBookNavigationController *)self isZoomedToRightPage] animated:0 withDelay:0.0];
     }
@@ -1953,12 +1953,12 @@ LABEL_23:
   }
 }
 
-- (void)pageCurlManager:(id)a3 willBeginCurl:(id)a4
+- (void)pageCurlManager:(id)manager willBeginCurl:(id)curl
 {
-  if ([(BKPictureBookNavigationController *)self inSinglePageMode:a3])
+  if ([(BKPictureBookNavigationController *)self inSinglePageMode:manager])
   {
-    v5 = [(BKPictureBookNavigationController *)self singlePageCurlContainer];
-    [v5 setHidden:0];
+    singlePageCurlContainer = [(BKPictureBookNavigationController *)self singlePageCurlContainer];
+    [singlePageCurlContainer setHidden:0];
   }
 
   else
@@ -1971,12 +1971,12 @@ LABEL_23:
   [(BKPictureBookScrollView *)scrollView setScrollEnabled:0];
 }
 
-- (void)pageCurlManager:(id)a3 didFinishCurl:(id)a4 transitionCompleted:(BOOL)a5
+- (void)pageCurlManager:(id)manager didFinishCurl:(id)curl transitionCompleted:(BOOL)completed
 {
-  v5 = a5;
-  v15 = a3;
-  v8 = a4;
-  if (!v5)
+  completedCopy = completed;
+  managerCopy = manager;
+  curlCopy = curl;
+  if (!completedCopy)
   {
     if ([(BKPictureBookNavigationController *)self inSinglePageMode])
     {
@@ -1986,8 +1986,8 @@ LABEL_23:
 
     else
     {
-      v9 = [v8 existingPages];
-      [(BKPictureBookNavigationController *)self _restoreViewHierarchyWithArray:v9];
+      existingPages = [curlCopy existingPages];
+      [(BKPictureBookNavigationController *)self _restoreViewHierarchyWithArray:existingPages];
     }
   }
 
@@ -1998,21 +1998,21 @@ LABEL_23:
   leftContentViewController = self->_leftContentViewController;
   self->_leftContentViewController = 0;
 
-  if (v5)
+  if (completedCopy)
   {
-    if ([v8 finished])
+    if ([curlCopy finished])
     {
       [(BKPictureBookNavigationController *)self _resetCurlContainer];
     }
 
-    if (-[BKPictureBookNavigationController inSinglePageMode](self, "inSinglePageMode") && [v8 state] == &dword_4)
+    if (-[BKPictureBookNavigationController inSinglePageMode](self, "inSinglePageMode") && [curlCopy state] == &dword_4)
     {
       [(BKPictureBookNavigationController *)self slide:[(BKPictureBookNavigationController *)self isZoomedToRightPage] animated:0 withDelay:0.0];
     }
 
-    [(BKPictureBookNavigationController *)self _resetSinglePageCurlContainer:v8];
+    [(BKPictureBookNavigationController *)self _resetSinglePageCurlContainer:curlCopy];
     p_singlePageCurlContainer = &self->_singlePageCurlContainer;
-    if (self->_singlePageCurlContainer && ![v15 numberOfQueuedCurls])
+    if (self->_singlePageCurlContainer && ![managerCopy numberOfQueuedCurls])
     {
       if (*p_singlePageCurlContainer)
       {
@@ -2051,21 +2051,21 @@ LABEL_23:
   }
 }
 
-- (void)pageCurlManager:(id)a3 didCancelCurl:(id)a4
+- (void)pageCurlManager:(id)manager didCancelCurl:(id)curl
 {
-  v5 = [(BKPictureBookNavigationController *)self inSinglePageMode:a3]^ 1;
+  v5 = [(BKPictureBookNavigationController *)self inSinglePageMode:manager]^ 1;
   scrollView = self->_scrollView;
 
   [(BKPictureBookScrollView *)scrollView setScrollEnabled:v5];
 }
 
-- (void)setSelectionHighlightsVisible:(BOOL)a3
+- (void)setSelectionHighlightsVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   [(BKContentViewController *)self->_rightContentViewController setSelectionHighlightsVisible:?];
   pendingLoads = self->_pendingLoads;
 
-  [(NSMutableSet *)pendingLoads setSelectionHighlightsVisible:v3];
+  [(NSMutableSet *)pendingLoads setSelectionHighlightsVisible:visibleCopy];
 }
 
 - (void)_updateSelectionHighlights
@@ -2076,47 +2076,47 @@ LABEL_23:
   [(NSMutableSet *)pendingLoads updateSelectionHighlights];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v14 = a3;
-  [v14 contentOffset];
+  scrollCopy = scroll;
+  [scrollCopy contentOffset];
   v4 = v3;
   v6 = v5;
-  [v14 contentSize];
+  [scrollCopy contentSize];
   v8 = v7;
-  [v14 bounds];
+  [scrollCopy bounds];
   if (v8 > CGRectGetWidth(v16))
   {
     v9 = 0.0;
     if (v4 >= 0.0)
     {
-      [v14 contentSize];
+      [scrollCopy contentSize];
       v11 = v10;
-      [v14 bounds];
+      [scrollCopy bounds];
       if (v4 <= ceil(v11 - CGRectGetWidth(v17)))
       {
         goto LABEL_6;
       }
 
-      [v14 contentSize];
+      [scrollCopy contentSize];
       v13 = v12;
-      [v14 bounds];
+      [scrollCopy bounds];
       v9 = round(v13 - CGRectGetWidth(v18));
     }
 
-    [v14 setContentOffset:{v9, v6}];
+    [scrollCopy setContentOffset:{v9, v6}];
   }
 
 LABEL_6:
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = [(BKPageNavigationViewController *)self delegate];
-  [v4 pageNavigationDidBeginInteracting:self];
+  delegate = [(BKPageNavigationViewController *)self delegate];
+  [delegate pageNavigationDidBeginInteracting:self];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
   [(BKZoomingScrollView *)self->_scrollView pointToCenterAfterRotation];
   v7 = v6;
@@ -2124,22 +2124,22 @@ LABEL_6:
   {
     [(BKPictureBookView *)self->_bookView bounds];
     MidX = CGRectGetMidX(v12);
-    v9 = [(BKPageNavigationViewController *)self pageOffset];
-    v10 = v7 <= MidX ? [(BKPageNavigationViewController *)self leftPageNumberForSinglePageOffset:v9]: [(BKPageNavigationViewController *)self rightPageNumberForSinglePageOffset:v9];
+    pageOffset = [(BKPageNavigationViewController *)self pageOffset];
+    v10 = v7 <= MidX ? [(BKPageNavigationViewController *)self leftPageNumberForSinglePageOffset:pageOffset]: [(BKPageNavigationViewController *)self rightPageNumberForSinglePageOffset:pageOffset];
     if (v10 != 0x7FFFFFFFFFFFFFFFLL)
     {
       [(BKPictureBookNavigationController *)self setPageOffset:v10 - 1];
     }
   }
 
-  if (!a4)
+  if (!decelerate)
   {
 
     [(BKPictureBookNavigationController *)self _updateSelectionHighlights];
   }
 }
 
-- (void)scrollViewDidZoom:(id)a3
+- (void)scrollViewDidZoom:(id)zoom
 {
   if (!+[BKBookViewController useEnhancedEditMenu])
   {
@@ -2151,19 +2151,19 @@ LABEL_6:
   [(BKZoomingScrollView *)scrollView centerContent];
 }
 
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view
 {
-  v5 = a3;
-  v6 = [(BKPageNavigationViewController *)self delegate];
-  [v6 pageNavigationDidBeginInteracting:self];
+  zoomingCopy = zooming;
+  delegate = [(BKPageNavigationViewController *)self delegate];
+  [delegate pageNavigationDidBeginInteracting:self];
 
-  [v5 setBounces:1];
-  [v5 setAlwaysBounceVertical:1];
-  [v5 setAlwaysBounceHorizontal:0];
+  [zoomingCopy setBounces:1];
+  [zoomingCopy setAlwaysBounceVertical:1];
+  [zoomingCopy setAlwaysBounceHorizontal:0];
 
-  v7 = [(BKContentViewController *)self->_leftContentViewController pageCurl];
-  v8 = [v7 existingPages];
-  [(BKPictureBookNavigationController *)self _restoreViewHierarchyWithArray:v8];
+  pageCurl = [(BKContentViewController *)self->_leftContentViewController pageCurl];
+  existingPages = [pageCurl existingPages];
+  [(BKPictureBookNavigationController *)self _restoreViewHierarchyWithArray:existingPages];
 
   if (!+[BKBookViewController useEnhancedEditMenu])
   {
@@ -2173,9 +2173,9 @@ LABEL_6:
   [(BKPictureBookNavigationController *)self exitSinglePageMode];
 }
 
-- (void)scrollViewDidEndZooming:(id)a3 withView:(id)a4 atScale:(double)a5
+- (void)scrollViewDidEndZooming:(id)zooming withView:(id)view atScale:(double)scale
 {
-  v7 = a3;
+  zoomingCopy = zooming;
   if ([(BKPictureBookNavigationController *)self isZoomedToSpread])
   {
     v8 = +[AETestDriver shared];
@@ -2210,7 +2210,7 @@ LABEL_6:
     }
 
     [(BKPictureBookScrollView *)self->_scrollView zoomScale];
-    if (v12 == a5)
+    if (v12 == scale)
     {
       [(BKPictureBookNavigationController *)self _updateBookScale];
       if ([(BKPictureBookNavigationController *)self isZoomedToSinglePage])
@@ -2219,10 +2219,10 @@ LABEL_6:
       }
     }
 
-    v13 = [(BKPictureBookNavigationController *)self _isFreeScale];
-    [v7 setBounces:v13];
-    [v7 setAlwaysBounceVertical:v13];
-    [v7 setAlwaysBounceHorizontal:0];
+    _isFreeScale = [(BKPictureBookNavigationController *)self _isFreeScale];
+    [zoomingCopy setBounces:_isFreeScale];
+    [zoomingCopy setAlwaysBounceVertical:_isFreeScale];
+    [zoomingCopy setAlwaysBounceHorizontal:0];
   }
 }
 
@@ -2233,8 +2233,8 @@ LABEL_6:
     return 0.0;
   }
 
-  v4 = [(BKPictureBookNavigationController *)self thumbnailBookViewConfiguration];
-  [v4 singlePagePadding];
+  thumbnailBookViewConfiguration = [(BKPictureBookNavigationController *)self thumbnailBookViewConfiguration];
+  [thumbnailBookViewConfiguration singlePagePadding];
   v6 = v5;
 
   return v6;
@@ -2263,18 +2263,18 @@ LABEL_6:
 
 - (BOOL)isZoomedToRightPage
 {
-  v3 = [(BKPictureBookNavigationController *)self isZoomedToSinglePage];
-  if (v3)
+  isZoomedToSinglePage = [(BKPictureBookNavigationController *)self isZoomedToSinglePage];
+  if (isZoomedToSinglePage)
   {
     [(BKPictureBookScrollView *)self->_scrollView contentOffset];
     v5 = v4;
     [(BKPictureBookScrollView *)self->_scrollView frame];
     v7 = v5 + v6;
     [(BKPictureBookScrollView *)self->_scrollView contentSize];
-    LOBYTE(v3) = vabdd_f64(v7, v8) <= 10.0;
+    LOBYTE(isZoomedToSinglePage) = vabdd_f64(v7, v8) <= 10.0;
   }
 
-  return v3;
+  return isZoomedToSinglePage;
 }
 
 - (BOOL)shouldZoomToSinglePage
@@ -2360,11 +2360,11 @@ LABEL_6:
 {
   if ([(BKPictureBookNavigationController *)self isViewLoaded])
   {
-    v3 = [(BKPictureBookNavigationController *)self view];
-    [v3 bounds];
+    view = [(BKPictureBookNavigationController *)self view];
+    [view bounds];
     v5 = v4;
-    v6 = [(BKPictureBookNavigationController *)self view];
-    [v6 bounds];
+    view2 = [(BKPictureBookNavigationController *)self view];
+    [view2 bounds];
     if (v5 >= v7)
     {
       lastCompletedTransition = 0;
@@ -2401,9 +2401,9 @@ LABEL_6:
     [(BKPictureBookNavigationController *)self contentSize];
     v7 = v6;
     v9 = v8;
-    v10 = [(BKPictureBookNavigationController *)self thumbnailBookViewConfiguration];
+    thumbnailBookViewConfiguration = [(BKPictureBookNavigationController *)self thumbnailBookViewConfiguration];
     [(BKPictureBookNavigationController *)self _containerBoundsForGeometry];
-    v15 = [BKPictureBookViewGeometry geometryWithContentSize:v10 configuration:0 drawsSpine:1 ignoresPadding:v7 containerBounds:v9, v11, v12, v13, v14];
+    v15 = [BKPictureBookViewGeometry geometryWithContentSize:thumbnailBookViewConfiguration configuration:0 drawsSpine:1 ignoresPadding:v7 containerBounds:v9, v11, v12, v13, v14];
 
     [v15 sizeForSpread:0 landscape:0];
     [(BKPageCurl *)self->_manualCurl setFrame:0.0, 0.0, v16, v17];
@@ -2420,16 +2420,16 @@ LABEL_6:
   if (![(BKPictureBookNavigationController *)self inSinglePageMode]&& [(BKPictureBookNavigationController *)self supportsSinglePageMode]&& [(BKPictureBookNavigationController *)self isZoomedToSinglePage])
   {
     BYTE2(self->_lastCompletedTransition) = 1;
-    v3 = [(BKPictureBookNavigationController *)self isZoomedToRightPage];
-    v4 = [(BKPageNavigationViewController *)self pageOffset];
-    if (v3)
+    isZoomedToRightPage = [(BKPictureBookNavigationController *)self isZoomedToRightPage];
+    pageOffset = [(BKPageNavigationViewController *)self pageOffset];
+    if (isZoomedToRightPage)
     {
-      v5 = [(BKPageNavigationViewController *)self rightPageNumberForSinglePageOffset:v4];
+      v5 = [(BKPageNavigationViewController *)self rightPageNumberForSinglePageOffset:pageOffset];
     }
 
     else
     {
-      v5 = [(BKPageNavigationViewController *)self leftPageNumberForSinglePageOffset:v4];
+      v5 = [(BKPageNavigationViewController *)self leftPageNumberForSinglePageOffset:pageOffset];
     }
 
     if (v5 != 0x7FFFFFFFFFFFFFFFLL)
@@ -2448,8 +2448,8 @@ LABEL_6:
       v6 = 1;
     }
 
-    v7 = [(BKPictureBookNavigationController *)self pageCurlManager];
-    [v7 setSpineLocation:v6];
+    pageCurlManager = [(BKPictureBookNavigationController *)self pageCurlManager];
+    [pageCurlManager setSpineLocation:v6];
   }
 }
 
@@ -2476,22 +2476,22 @@ LABEL_6:
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "#PictureBook 5 capture offset : %@", &v10, 0xCu);
     }
 
-    v7 = [(BKViewController *)self layoutDirection];
-    v8 = [(BKPageNavigationViewController *)self pageOffset];
-    if (v7 == 1)
+    layoutDirection = [(BKViewController *)self layoutDirection];
+    pageOffset = [(BKPageNavigationViewController *)self pageOffset];
+    if (layoutDirection == 1)
     {
-      [(BKPageNavigationViewController *)self rightPageNumberForSinglePageOffset:v8];
+      [(BKPageNavigationViewController *)self rightPageNumberForSinglePageOffset:pageOffset];
     }
 
     else
     {
-      [(BKPageNavigationViewController *)self leftPageNumberForSinglePageOffset:v8];
+      [(BKPageNavigationViewController *)self leftPageNumberForSinglePageOffset:pageOffset];
     }
 
     [(BKPictureBookNavigationController *)self _resetSinglePageCurlContainer];
     [(BKPictureBookScrollView *)self->_scrollView setScrollEnabled:1];
-    v9 = [(BKPictureBookNavigationController *)self pageCurlManager];
-    [v9 setSpineLocation:2];
+    pageCurlManager = [(BKPictureBookNavigationController *)self pageCurlManager];
+    [pageCurlManager setSpineLocation:2];
   }
 }
 
@@ -2535,17 +2535,17 @@ LABEL_6:
   }
 }
 
-- (void)zoomToSpread:(BOOL)a3
+- (void)zoomToSpread:(BOOL)spread
 {
-  v3 = a3;
+  spreadCopy = spread;
   if (![(BKPictureBookNavigationController *)self isZoomedToSpread])
   {
     v5 = +[AETestDriver shared];
     [v5 postEvent:kBETestDriverFXLZoomToSpreadStart sender:self];
 
     [(BKPictureBookView *)self->_bookView bounds];
-    [(BKPictureBookScrollView *)self->_scrollView zoomToRect:v3 animated:?];
-    if (!v3)
+    [(BKPictureBookScrollView *)self->_scrollView zoomToRect:spreadCopy animated:?];
+    if (!spreadCopy)
     {
 
       [(BKPictureBookNavigationController *)self exitSinglePageMode];
@@ -2553,10 +2553,10 @@ LABEL_6:
   }
 }
 
-- (void)zoom:(BOOL)a3 animated:(BOOL)a4
+- (void)zoom:(BOOL)zoom animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  zoomCopy = zoom;
   [(BKPictureBookView *)self->_bookView bounds];
   v8 = v7;
   v10 = v9;
@@ -2572,7 +2572,7 @@ LABEL_6:
   v22 = v10;
   v23 = v12;
   v24 = v14;
-  if (v5)
+  if (zoomCopy)
   {
     MinX = CGRectGetMinX(*&v21);
   }
@@ -2584,20 +2584,20 @@ LABEL_6:
 
   scrollView = self->_scrollView;
 
-  [(BKPictureBookScrollView *)scrollView zoomToRect:v4 animated:MinX, v10, v12 * 0.5 + v20, v14];
+  [(BKPictureBookScrollView *)scrollView zoomToRect:animatedCopy animated:MinX, v10, v12 * 0.5 + v20, v14];
 }
 
-- (void)zoomToPoint:(CGPoint)a3 scale:(double)a4 animated:(BOOL)a5
+- (void)zoomToPoint:(CGPoint)point scale:(double)scale animated:(BOOL)animated
 {
-  if (a4 != 0.0)
+  if (scale != 0.0)
   {
-    v6 = a5;
-    y = a3.y;
-    x = a3.x;
+    animatedCopy = animated;
+    y = point.y;
+    x = point.x;
     [(BKPictureBookScrollView *)self->_scrollView bounds];
-    v12 = v11 / a4;
+    v12 = v11 / scale;
     [(BKPictureBookScrollView *)self->_scrollView bounds];
-    v14 = v13 / a4;
+    v14 = v13 / scale;
     v15 = y - v14 * 0.5;
     if (x - v12 * 0.5 >= 0.0)
     {
@@ -2635,26 +2635,26 @@ LABEL_6:
 
     scrollView = self->_scrollView;
 
-    [(BKPictureBookScrollView *)scrollView zoomToRect:v6 animated:v16, v21, v12, v14];
+    [(BKPictureBookScrollView *)scrollView zoomToRect:animatedCopy animated:v16, v21, v12, v14];
   }
 }
 
-- (void)zoomToPage:(unint64_t)a3 animated:(BOOL)a4
+- (void)zoomToPage:(unint64_t)page animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v7 = [(BKPageNavigationViewController *)self leftPageNumberForSpreadPageOffset:[(BKPageNavigationViewController *)self pageOffset]];
   v8 = [(BKPageNavigationViewController *)self rightPageNumberForSpreadPageOffset:[(BKPageNavigationViewController *)self pageOffset]];
-  if (v7 == a3 || v8 == a3)
+  if (v7 == page || v8 == page)
   {
-    [(BKPictureBookNavigationController *)self zoom:v7 == a3 animated:v4];
-    [(BKPictureBookNavigationController *)self setPageOffset:a3 - 1];
-    if (v4)
+    [(BKPictureBookNavigationController *)self zoom:v7 == page animated:animatedCopy];
+    [(BKPictureBookNavigationController *)self setPageOffset:page - 1];
+    if (animatedCopy)
     {
       return;
     }
   }
 
-  else if (v4)
+  else if (animatedCopy)
   {
     return;
   }
@@ -2664,12 +2664,12 @@ LABEL_6:
 
 - (CGRect)_containerBoundsForGeometry
 {
-  v2 = [(BKPictureBookNavigationController *)self viewIfLoaded];
-  v3 = [v2 window];
-  v4 = v3;
-  if (v3 || (v3 = v2) != 0)
+  viewIfLoaded = [(BKPictureBookNavigationController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
+  v4 = window;
+  if (window || (window = viewIfLoaded) != 0)
   {
-    [v3 bounds];
+    [window bounds];
     x = v5;
     y = v7;
     width = v9;
@@ -2706,16 +2706,16 @@ LABEL_6:
       [(BKPictureBookNavigationController *)self contentSize];
       v5 = v4;
       v7 = v6;
-      v8 = [(BKPictureBookNavigationController *)self thumbnailBookViewConfiguration];
-      v9 = [(BKPictureBookNavigationController *)self drawsSpine];
+      thumbnailBookViewConfiguration = [(BKPictureBookNavigationController *)self thumbnailBookViewConfiguration];
+      drawsSpine = [(BKPictureBookNavigationController *)self drawsSpine];
       [(BKPictureBookNavigationController *)self _containerBoundsForGeometry];
-      v14 = [BKPictureBookViewGeometry geometryWithContentSize:v8 configuration:v9 drawsSpine:v5 containerBounds:v7, v10, v11, v12, v13];
+      v14 = [BKPictureBookViewGeometry geometryWithContentSize:thumbnailBookViewConfiguration configuration:drawsSpine drawsSpine:v5 containerBounds:v7, v10, v11, v12, v13];
       [v14 maximumSize];
       [v19 setContentSize:?];
 
       [(BKPictureBookView *)self->_bookView layoutIfNeeded];
-      v15 = [(BKPictureBookView *)self->_bookView leftContentView];
-      [v15 frame];
+      leftContentView = [(BKPictureBookView *)self->_bookView leftContentView];
+      [leftContentView frame];
       v17 = v16;
       [v19 contentSize];
       [v19 setZoomScale:v17 / v18];
@@ -2738,22 +2738,22 @@ LABEL_6:
   v10 = v9;
   [(BKPictureBookScrollView *)self->_scrollView minimumZoomScale];
   v12 = v11;
-  v13 = [(BKPictureBookNavigationController *)self _isFreeScale];
+  _isFreeScale = [(BKPictureBookNavigationController *)self _isFreeScale];
   [(BKPictureBookView *)self->_bookView frame];
   v51 = CGRectIntegral(v50);
   x = v51.origin.x;
   y = v51.origin.y;
   width = v51.size.width;
   height = v51.size.height;
-  v17 = [(BKPictureBookNavigationController *)self isZoomedToSpread];
-  v18 = [(BKPictureBookNavigationController *)self thumbnailBookViewConfiguration];
-  v19 = [(BKPictureBookNavigationController *)self drawsSpine];
-  v20 = [(BKPictureBookNavigationController *)self supportsSinglePageMode];
+  isZoomedToSpread = [(BKPictureBookNavigationController *)self isZoomedToSpread];
+  thumbnailBookViewConfiguration = [(BKPictureBookNavigationController *)self thumbnailBookViewConfiguration];
+  drawsSpine = [(BKPictureBookNavigationController *)self drawsSpine];
+  supportsSinglePageMode = [(BKPictureBookNavigationController *)self supportsSinglePageMode];
   [(BKPictureBookNavigationController *)self _containerBoundsForGeometry];
-  v25 = [BKPictureBookViewGeometry geometryWithContentSize:v18 configuration:v19 drawsSpine:v20 ignoresPadding:v4 containerBounds:v6, v21, v22, v23, v24];
+  v25 = [BKPictureBookViewGeometry geometryWithContentSize:thumbnailBookViewConfiguration configuration:drawsSpine drawsSpine:supportsSinglePageMode ignoresPadding:v4 containerBounds:v6, v21, v22, v23, v24];
 
-  [v25 scaleForSpread:v17 landscape:isPortrait() ^ 1];
-  if (v13)
+  [v25 scaleForSpread:isZoomedToSpread landscape:isPortrait() ^ 1];
+  if (_isFreeScale)
   {
     v27 = v8 * v10;
   }
@@ -2796,8 +2796,8 @@ LABEL_6:
   *(&self->_lastCompletedTransition + 4) = v33;
   if (v31 <= 50000000)
   {
-    [v25 sizeForSpread:v17 landscape:isPortrait() ^ 1];
-    if (v13)
+    [v25 sizeForSpread:isZoomedToSpread landscape:isPortrait() ^ 1];
+    if (_isFreeScale)
     {
       v35 = CGSizeZero.width;
       v36 = CGSizeZero.height;
@@ -2822,7 +2822,7 @@ LABEL_6:
     else
     {
       v40 = v34 / v32;
-      if (v17)
+      if (isZoomedToSpread)
       {
         v40 = 1.0;
       }
@@ -2855,21 +2855,21 @@ LABEL_6:
 {
   if ([(BKPictureBookNavigationController *)self isContentRenderComplete])
   {
-    v9 = [(BKPictureBookNavigationController *)self pageCurlManager];
-    if ([v9 numberOfQueuedCurls])
+    pageCurlManager = [(BKPictureBookNavigationController *)self pageCurlManager];
+    if ([pageCurlManager numberOfQueuedCurls])
     {
     }
 
     else
     {
-      v3 = [(BKPictureBookNavigationController *)self pageSlideAnimation];
-      if (v3)
+      pageSlideAnimation = [(BKPictureBookNavigationController *)self pageSlideAnimation];
+      if (pageSlideAnimation)
       {
-        v4 = v3;
-        v5 = [(BKPictureBookNavigationController *)self pageSlideAnimation];
-        v6 = [v5 finished];
+        v4 = pageSlideAnimation;
+        pageSlideAnimation2 = [(BKPictureBookNavigationController *)self pageSlideAnimation];
+        finished = [pageSlideAnimation2 finished];
 
-        if (!v6)
+        if (!finished)
         {
           return;
         }
@@ -2892,16 +2892,16 @@ LABEL_6:
 
 - (CGRect)_resetCurlContainerFrame
 {
-  v3 = [(BKPictureBookNavigationController *)self curlContainer];
-  v4 = [(BKPictureBookView *)self->_bookView contentView];
+  curlContainer = [(BKPictureBookNavigationController *)self curlContainer];
+  contentView = [(BKPictureBookView *)self->_bookView contentView];
   scrollView = self->_scrollView;
-  [v4 bounds];
-  [(BKPictureBookScrollView *)scrollView convertRect:v4 fromView:?];
+  [contentView bounds];
+  [(BKPictureBookScrollView *)scrollView convertRect:contentView fromView:?];
   v7 = v6;
   v9 = v8;
-  v10 = [v4 superview];
-  [v4 bounds];
-  [v10 convertRect:v4 fromView:?];
+  superview = [contentView superview];
+  [contentView bounds];
+  [superview convertRect:contentView fromView:?];
   v12 = v11;
   v14 = v13;
 
@@ -2935,11 +2935,11 @@ LABEL_6:
     [(BKPictureBookNavigationController *)self contentSize];
     v7 = v6;
     v9 = v8;
-    v10 = [(BKPictureBookNavigationController *)self thumbnailBookViewConfiguration];
-    v11 = [(BKPictureBookNavigationController *)self drawsSpine];
-    v12 = [(BKPictureBookNavigationController *)self supportsSinglePageMode];
+    thumbnailBookViewConfiguration = [(BKPictureBookNavigationController *)self thumbnailBookViewConfiguration];
+    drawsSpine = [(BKPictureBookNavigationController *)self drawsSpine];
+    supportsSinglePageMode = [(BKPictureBookNavigationController *)self supportsSinglePageMode];
     [(BKPictureBookNavigationController *)self _containerBoundsForGeometry];
-    v17 = [BKPictureBookViewGeometry geometryWithContentSize:v10 configuration:v11 drawsSpine:v12 ignoresPadding:v7 containerBounds:v9, v13, v14, v15, v16];
+    v17 = [BKPictureBookViewGeometry geometryWithContentSize:thumbnailBookViewConfiguration configuration:drawsSpine drawsSpine:supportsSinglePageMode ignoresPadding:v7 containerBounds:v9, v13, v14, v15, v16];
 
     [v17 scaleForSpread:-[BKPictureBookNavigationController isZoomedToSpread](self landscape:{"isZoomedToSpread"), isPortrait() ^ 1}];
     if (v18 < BEWebViewMinimumZoomScale)
@@ -2956,24 +2956,24 @@ LABEL_6:
   return pageCurlManager;
 }
 
-- (void)_resetSinglePageCurlContainer:(id)a3
+- (void)_resetSinglePageCurlContainer:(id)container
 {
-  v4 = [(BKPictureBookNavigationController *)self pageCurlManager];
-  v5 = [v4 numberOfQueuedCurls];
+  pageCurlManager = [(BKPictureBookNavigationController *)self pageCurlManager];
+  numberOfQueuedCurls = [pageCurlManager numberOfQueuedCurls];
 
-  if (!v5)
+  if (!numberOfQueuedCurls)
   {
-    v6 = [(BKPictureBookNavigationController *)self singlePageCurlContainer];
-    [v6 setHidden:1];
+    singlePageCurlContainer = [(BKPictureBookNavigationController *)self singlePageCurlContainer];
+    [singlePageCurlContainer setHidden:1];
   }
 }
 
 - (CGRect)_resetSinglePageCurlContainerFrame
 {
-  v3 = [(BKPictureBookView *)self->_bookView contentView];
+  contentView = [(BKPictureBookView *)self->_bookView contentView];
   scrollView = self->_scrollView;
-  [v3 bounds];
-  [(BKPictureBookScrollView *)scrollView convertRect:v3 fromView:?];
+  [contentView bounds];
+  [(BKPictureBookScrollView *)scrollView convertRect:contentView fromView:?];
   v6 = v5;
   [(BKPictureBookScrollView *)self->_scrollView contentOffset];
   if (v7 <= 0.0)
@@ -2984,17 +2984,17 @@ LABEL_6:
 
   else
   {
-    [v3 frame];
+    [contentView frame];
     v9 = v8;
-    [v3 frame];
+    [contentView frame];
     v10 = v9 + CGRectGetMidX(v21);
   }
 
   [(BKPictureBookView *)self->_bookView idealSinglePageSize];
   v13 = v12;
   v15 = v14;
-  v16 = [(BKPictureBookNavigationController *)self singlePageCurlContainer];
-  [v16 setFrame:{v10, v6, v13, v15}];
+  singlePageCurlContainer = [(BKPictureBookNavigationController *)self singlePageCurlContainer];
+  [singlePageCurlContainer setFrame:{v10, v6, v13, v15}];
 
   v17 = v10;
   v18 = v6;
@@ -3009,12 +3009,12 @@ LABEL_6:
 
 - (CGRect)_backPageCurlFrame
 {
-  v3 = [(BKPictureBookView *)self->_bookView contentView];
-  [v3 frame];
+  contentView = [(BKPictureBookView *)self->_bookView contentView];
+  [contentView frame];
   v5 = v4;
 
-  v6 = [(BKPictureBookNavigationController *)self singlePageCurlContainer];
-  [v6 origin];
+  singlePageCurlContainer = [(BKPictureBookNavigationController *)self singlePageCurlContainer];
+  [singlePageCurlContainer origin];
   v8 = v7;
 
   if (v8 > 0.0)
@@ -3022,8 +3022,8 @@ LABEL_6:
     v5 = -v5;
   }
 
-  v9 = [(BKPictureBookNavigationController *)self singlePageCurlContainer];
-  [v9 bounds];
+  singlePageCurlContainer2 = [(BKPictureBookNavigationController *)self singlePageCurlContainer];
+  [singlePageCurlContainer2 bounds];
   v19 = CGRectOffset(v18, v5, 0.0);
   x = v19.origin.x;
   y = v19.origin.y;
@@ -3041,27 +3041,27 @@ LABEL_6:
   return result;
 }
 
-- (void)_autoCurlToSpreadPageOffset:(int64_t)a3 forwardCurl:(BOOL)a4
+- (void)_autoCurlToSpreadPageOffset:(int64_t)offset forwardCurl:(BOOL)curl
 {
-  v4 = a4;
+  curlCopy = curl;
   v39 = [(BKPageNavigationViewController *)self leftPageNumberForSpreadPageOffset:[(BKPageNavigationViewController *)self pageOffset]];
   v7 = [(BKPageNavigationViewController *)self rightPageNumberForSpreadPageOffset:[(BKPageNavigationViewController *)self pageOffset]];
-  v8 = [(BKPageNavigationViewController *)self leftPageNumberForSpreadPageOffset:a3];
-  v9 = [(BKPageNavigationViewController *)self rightPageNumberForSpreadPageOffset:a3];
+  v8 = [(BKPageNavigationViewController *)self leftPageNumberForSpreadPageOffset:offset];
+  v9 = [(BKPageNavigationViewController *)self rightPageNumberForSpreadPageOffset:offset];
   v40 = objc_opt_new();
-  v10 = [(BKPictureBookNavigationController *)self isZoomedToSpread];
+  isZoomedToSpread = [(BKPictureBookNavigationController *)self isZoomedToSpread];
   [(BKPictureBookNavigationController *)self contentSize];
   v12 = v11;
   v14 = v13;
-  v15 = [(BKPictureBookNavigationController *)self thumbnailBookViewConfiguration];
-  v16 = [(BKPictureBookNavigationController *)self drawsSpine];
-  v17 = [(BKPictureBookNavigationController *)self supportsSinglePageMode];
+  thumbnailBookViewConfiguration = [(BKPictureBookNavigationController *)self thumbnailBookViewConfiguration];
+  drawsSpine = [(BKPictureBookNavigationController *)self drawsSpine];
+  supportsSinglePageMode = [(BKPictureBookNavigationController *)self supportsSinglePageMode];
   [(BKPictureBookNavigationController *)self _containerBoundsForGeometry];
-  v18 = v16;
-  v19 = v4;
-  v24 = [BKPictureBookViewGeometry geometryWithContentSize:v15 configuration:v18 drawsSpine:v17 ignoresPadding:v12 containerBounds:v14, v20, v21, v22, v23];
+  v18 = drawsSpine;
+  v19 = curlCopy;
+  v24 = [BKPictureBookViewGeometry geometryWithContentSize:thumbnailBookViewConfiguration configuration:v18 drawsSpine:supportsSinglePageMode ignoresPadding:v12 containerBounds:v14, v20, v21, v22, v23];
 
-  [v24 scaleForSpread:v10 landscape:isPortrait() ^ 1];
+  [v24 scaleForSpread:isZoomedToSpread landscape:isPortrait() ^ 1];
   if (v25 >= BEWebViewMinimumZoomScale)
   {
     v26 = v25;
@@ -3076,29 +3076,29 @@ LABEL_6:
   [(BKPictureBookNavigationController *)self _resetCurlContainerFrame];
   [v40 setScale:v26];
   [v40 setCurlContainer:self->_pageCurlManager];
-  v27 = [(BKPageNavigationViewController *)self delegate];
-  [v40 setNavDelegate:v27];
+  delegate = [(BKPageNavigationViewController *)self delegate];
+  [v40 setNavDelegate:delegate];
 
-  [v40 setForwardCurl:v4];
+  [v40 setForwardCurl:curlCopy];
   [v40 setAutoCurl:1];
   [v40 setApplyMaskAndGutter:{-[BKPictureBookNavigationController drawsSpine](self, "drawsSpine")}];
-  v28 = [(BKPictureBookNavigationController *)self pageCurlManager];
-  v29 = [v28 numberOfQueuedCurls];
+  pageCurlManager = [(BKPictureBookNavigationController *)self pageCurlManager];
+  numberOfQueuedCurls = [pageCurlManager numberOfQueuedCurls];
 
   v31 = v39;
   v30 = v40;
-  if (!v29)
+  if (!numberOfQueuedCurls)
   {
     if ([(BKContentViewController *)self->_rightContentViewController isContentLoaded])
     {
-      v32 = [(BKContentViewController *)self->_rightContentViewController view];
-      [v40 setLeftSourceView:v32];
+      view = [(BKContentViewController *)self->_rightContentViewController view];
+      [v40 setLeftSourceView:view];
     }
 
     if ([(NSMutableSet *)self->_pendingLoads isContentLoaded])
     {
-      v33 = [(NSMutableSet *)self->_pendingLoads view];
-      [v40 setRightSourceView:v33];
+      view2 = [(NSMutableSet *)self->_pendingLoads view];
+      [v40 setRightSourceView:view2];
     }
 
     [(BKPictureBookView *)self->_bookView setLeftContentView:0];
@@ -3108,7 +3108,7 @@ LABEL_6:
   }
 
   [v30 generateWithOldLeftPageNumber:v31 oldRightPageNumber:v7 newLeftPageNumber:v8 newRightPageNumber:v9];
-  if (LOBYTE(self->_swipeSelector) == 1 && (v34 = self->_leftContentViewController) != 0 && [(BKContentViewController *)v34 isForwardCurl]== v4)
+  if (LOBYTE(self->_swipeSelector) == 1 && (v34 = self->_leftContentViewController) != 0 && [(BKContentViewController *)v34 isForwardCurl]== curlCopy)
   {
     [(BKContentViewController *)self->_leftContentViewController finishManualCurlAtPostion:0.0, 0.0];
     leftContentViewController = self->_leftContentViewController;
@@ -3121,17 +3121,17 @@ LABEL_6:
   {
     [(BKPictureBookNavigationController *)self curlPageForReadAloud:0];
     *&self->_canFitToWidth = 0x7FFFFFFFFFFFFFFFLL;
-    v35 = [(BKPictureBookNavigationController *)self pageCurlManager];
-    v36 = [v40 pageArray];
-    v37 = [v40 backPage];
-    [v35 curlPages:v36 backPage:v37 inContainer:self->_pageCurlManager curlPage:v19];
+    pageCurlManager2 = [(BKPictureBookNavigationController *)self pageCurlManager];
+    pageArray = [v40 pageArray];
+    backPage = [v40 backPage];
+    [pageCurlManager2 curlPages:pageArray backPage:backPage inContainer:self->_pageCurlManager curlPage:v19];
   }
 }
 
-- (void)_autoCurlToSinglePageOffset:(int64_t)a3 forwardCurl:(BOOL)a4
+- (void)_autoCurlToSinglePageOffset:(int64_t)offset forwardCurl:(BOOL)curl
 {
-  v27 = a4;
-  if (LOBYTE(self->_swipeSelector) == 1 && (x = self->_manualCurlStartPosition.x, x != 0.0) && [*&x forwardCurl] == a4)
+  curlCopy = curl;
+  if (LOBYTE(self->_swipeSelector) == 1 && (x = self->_manualCurlStartPosition.x, x != 0.0) && [*&x forwardCurl] == curl)
   {
     [*&self->_manualCurlStartPosition.x finishManualCurl];
     LOBYTE(self->_swipeSelector) = 0;
@@ -3141,17 +3141,17 @@ LABEL_6:
   {
     [(BKPictureBookNavigationController *)self _resetSinglePageCurlContainerFrame];
     v7 = [[BKPageBookCurlView alloc] initWithImage:0 borderColor:0 isLeft:0];
-    v8 = [(BKPictureBookNavigationController *)self theme];
-    -[BKPageBookCurlView setUseInvertedColors:](v7, "setUseInvertedColors:", [v8 shouldInvertContent]);
+    theme = [(BKPictureBookNavigationController *)self theme];
+    -[BKPageBookCurlView setUseInvertedColors:](v7, "setUseInvertedColors:", [theme shouldInvertContent]);
 
     [(BKPageCurl *)self->_manualCurl bounds];
     [(BKPageBookCurlView *)v7 setFrame:?];
     [(BKPageBookCurlView *)v7 bounds];
     v10 = v9;
     v12 = v11;
-    v13 = [(BKPictureBookNavigationController *)self isZoomedToRightPage];
+    isZoomedToRightPage = [(BKPictureBookNavigationController *)self isZoomedToRightPage];
     bookView = self->_bookView;
-    if (v13)
+    if (isZoomedToRightPage)
     {
       [(BKPictureBookView *)bookView leftContentView];
     }
@@ -3186,20 +3186,20 @@ LABEL_6:
     }
 
     v18 = [NSArray arrayWithObjects:v7, 0];
-    v19 = [(BKViewController *)self layoutDirection];
-    v20 = (HIBYTE(self->_lastCompletedTransition) ^ 1) & (v19 == 1);
-    if (((HIBYTE(self->_lastCompletedTransition) ^ 1) & 1) == 0 && (v21 = 0, v27) || (v22 = -[BKPageBookCurlView initWithImage:borderColor:isLeft:]([BKPageBookCurlView alloc], "initWithImage:borderColor:isLeft:", 0, 0, 0), -[BKPictureBookNavigationController _backPageCurlFrame](self, "_backPageCurlFrame"), -[BKPageBookCurlView setFrame:](v22, "setFrame:"), -[BKPictureBookNavigationController theme](self, "theme"), v23 = objc_claimAutoreleasedReturnValue(), -[BKPageBookCurlView setUseInvertedColors:](v22, "setUseInvertedColors:", [v23 shouldInvertContent]), v23, -[BKPageNavigationViewController delegate](self, "delegate"), v24 = objc_claimAutoreleasedReturnValue(), v28[0] = _NSConcreteStackBlock, v28[1] = 3221225472, v28[2] = sub_AD10, v28[3] = &unk_1E2C48, v21 = v22, v29 = v21, objc_msgSend(v24, "pageNavigationSnapshotForPageNumber:completion:", a3 + 1, v28), v24, v29, (self->_lastCompletedTransition & 0x1000000) != 0))
+    layoutDirection = [(BKViewController *)self layoutDirection];
+    v20 = (HIBYTE(self->_lastCompletedTransition) ^ 1) & (layoutDirection == 1);
+    if (((HIBYTE(self->_lastCompletedTransition) ^ 1) & 1) == 0 && (v21 = 0, curlCopy) || (v22 = -[BKPageBookCurlView initWithImage:borderColor:isLeft:]([BKPageBookCurlView alloc], "initWithImage:borderColor:isLeft:", 0, 0, 0), -[BKPictureBookNavigationController _backPageCurlFrame](self, "_backPageCurlFrame"), -[BKPageBookCurlView setFrame:](v22, "setFrame:"), -[BKPictureBookNavigationController theme](self, "theme"), v23 = objc_claimAutoreleasedReturnValue(), -[BKPageBookCurlView setUseInvertedColors:](v22, "setUseInvertedColors:", [v23 shouldInvertContent]), v23, -[BKPageNavigationViewController delegate](self, "delegate"), v24 = objc_claimAutoreleasedReturnValue(), v28[0] = _NSConcreteStackBlock, v28[1] = 3221225472, v28[2] = sub_AD10, v28[3] = &unk_1E2C48, v21 = v22, v29 = v21, objc_msgSend(v24, "pageNavigationSnapshotForPageNumber:completion:", offset + 1, v28), v24, v29, (self->_lastCompletedTransition & 0x1000000) != 0))
     {
-      v25 = [(BKPictureBookNavigationController *)self pageCurlManager];
-      [(BKPageSlide *)v25 curlPages:v18 backPage:v21 inContainer:self->_manualCurl curlPage:v20 ^ v27];
+      pageCurlManager = [(BKPictureBookNavigationController *)self pageCurlManager];
+      [(BKPageSlide *)pageCurlManager curlPages:v18 backPage:v21 inContainer:self->_manualCurl curlPage:v20 ^ curlCopy];
     }
 
     else
     {
-      v25 = objc_alloc_init(BKPageSlide);
-      [(BKPageAnimation *)v25 setPageAnimationDelegate:self];
+      pageCurlManager = objc_alloc_init(BKPageSlide);
+      [(BKPageAnimation *)pageCurlManager setPageAnimationDelegate:self];
       v26 = [NSArray arrayWithObject:v21];
-      [(BKPageSlide *)v25 autoSlideFromPages:v18 toPages:v26 inContainer:self->_manualCurl isForwardAnimation:v20 ^ v27 isRTL:v19 == 1 isZoomedToSpread:0 completion:0];
+      [(BKPageSlide *)pageCurlManager autoSlideFromPages:v18 toPages:v26 inContainer:self->_manualCurl isForwardAnimation:v20 ^ curlCopy isRTL:layoutDirection == 1 isZoomedToSpread:0 completion:0];
     }
   }
 }
@@ -3222,10 +3222,10 @@ LABEL_6:
   }
 }
 
-- (void)_manualCurlToSinglePage:(CGPoint)a3
+- (void)_manualCurlToSinglePage:(CGPoint)page
 {
-  y = a3.y;
-  x = a3.x;
+  y = page.y;
+  x = page.x;
   v6 = self->_manualCurlStartPosition.x;
   if (v6 != 0.0)
   {
@@ -3244,27 +3244,27 @@ LABEL_6:
   height = v47.size.height;
   MidX = CGRectGetMidX(v47);
   v14 = x > MidX;
-  v15 = [(BKViewController *)self layoutDirection];
-  v16 = v15 == 1;
-  v17 = [(BKPictureBookNavigationController *)self isZoomedToRightPage];
-  v18 = [(BKPageNavigationViewController *)self pageOffset];
-  v19 = v18;
+  layoutDirection = [(BKViewController *)self layoutDirection];
+  v16 = layoutDirection == 1;
+  isZoomedToRightPage = [(BKPictureBookNavigationController *)self isZoomedToRightPage];
+  pageOffset = [(BKPageNavigationViewController *)self pageOffset];
+  v19 = pageOffset;
   if (v14 == v16)
   {
-    if (v18 <= 1)
+    if (pageOffset <= 1)
     {
       v22 = 1;
     }
 
     else
     {
-      v22 = v18;
+      v22 = pageOffset;
     }
   }
 
   else
   {
-    v20 = v18 + 1;
+    v20 = pageOffset + 1;
     v21 = [(BKPageNavigationViewController *)self pageCount]- 1;
     if (v20 < v21)
     {
@@ -3274,15 +3274,15 @@ LABEL_6:
     v22 = (v21 + 1);
   }
 
-  [(BKPictureBookNavigationController *)self slide:v17 animated:0 withDelay:0.0];
+  [(BKPictureBookNavigationController *)self slide:isZoomedToRightPage animated:0 withDelay:0.0];
   [(BKPictureBookNavigationController *)self _resetSinglePageCurlContainerFrame];
   v23 = [[BKPageBookCurlView alloc] initWithImage:0 borderColor:0 isLeft:0];
   [(BKPageBookCurlView *)v23 setFrame:v9, v10, width, height];
-  v24 = [(BKPictureBookNavigationController *)self theme];
-  -[BKPageBookCurlView setUseInvertedColors:](v23, "setUseInvertedColors:", [v24 shouldInvertContent]);
+  theme = [(BKPictureBookNavigationController *)self theme];
+  -[BKPageBookCurlView setUseInvertedColors:](v23, "setUseInvertedColors:", [theme shouldInvertContent]);
 
   bookView = self->_bookView;
-  if (v17)
+  if (isZoomedToRightPage)
   {
     [(BKPictureBookView *)bookView rightContentView];
   }
@@ -3320,17 +3320,17 @@ LABEL_6:
   v30 = [NSArray arrayWithObjects:v23, 0];
   v31 = [[BKPageBookCurlView alloc] initWithImage:0 borderColor:0 isLeft:0];
   [(BKPageBookCurlView *)v31 setFrame:v9, v10, width, height];
-  v32 = [(BKPictureBookNavigationController *)self theme];
-  -[BKPageBookCurlView setUseInvertedColors:](v31, "setUseInvertedColors:", [v32 shouldInvertContent]);
+  theme2 = [(BKPictureBookNavigationController *)self theme];
+  -[BKPageBookCurlView setUseInvertedColors:](v31, "setUseInvertedColors:", [theme2 shouldInvertContent]);
 
-  v33 = [(BKPageNavigationViewController *)self delegate];
+  delegate = [(BKPageNavigationViewController *)self delegate];
   v44[0] = _NSConcreteStackBlock;
   v44[1] = 3221225472;
   v44[2] = sub_B26C;
   v44[3] = &unk_1E2C48;
   v34 = v31;
   v45 = v34;
-  [v33 pageNavigationSnapshotForPageNumber:v22 completion:v44];
+  [delegate pageNavigationSnapshotForPageNumber:v22 completion:v44];
 
   if (v27)
   {
@@ -3349,8 +3349,8 @@ LABEL_6:
   [(BKPageBookCurlView *)v34 setFrame:?];
   if (HIBYTE(self->_lastCompletedTransition) == 1)
   {
-    v37 = [(BKPictureBookNavigationController *)self pageCurlManager];
-    v38 = [v37 beginManualCurl:v27 atLocation:v36 inPage:v30 fromPages:v34 backPage:self->_manualCurl inContainer:{x, y}];
+    pageCurlManager = [(BKPictureBookNavigationController *)self pageCurlManager];
+    v38 = [pageCurlManager beginManualCurl:v27 atLocation:v36 inPage:v30 fromPages:v34 backPage:self->_manualCurl inContainer:{x, y}];
     v39 = self->_manualCurlStartPosition.x;
     *&self->_manualCurlStartPosition.x = v38;
   }
@@ -3360,36 +3360,36 @@ LABEL_6:
     v40 = objc_alloc_init(BKPageSlide);
     [(BKPictureBookNavigationController *)self setPageSlideAnimation:v40];
 
-    v41 = [(BKPictureBookNavigationController *)self pageSlideAnimation];
-    [v41 setPageAnimationDelegate:self];
+    pageSlideAnimation = [(BKPictureBookNavigationController *)self pageSlideAnimation];
+    [pageSlideAnimation setPageAnimationDelegate:self];
 
-    v42 = [(BKPictureBookNavigationController *)self pageSlideAnimation];
+    pageSlideAnimation2 = [(BKPictureBookNavigationController *)self pageSlideAnimation];
     v43 = [NSArray arrayWithObject:v34];
-    [v42 initiateManualAnimationFromPages:v30 toPages:v43 inContainer:self->_manualCurl isForwardAnimation:x > MidX isRTL:v15 == 1 isZoomedToSpread:0];
+    [pageSlideAnimation2 initiateManualAnimationFromPages:v30 toPages:v43 inContainer:self->_manualCurl isForwardAnimation:x > MidX isRTL:layoutDirection == 1 isZoomedToSpread:0];
 
-    v37 = [(BKPictureBookNavigationController *)self pageSlideAnimation];
-    [v37 beginManualAnimationAtLocation:{x, y}];
+    pageCurlManager = [(BKPictureBookNavigationController *)self pageSlideAnimation];
+    [pageCurlManager beginManualAnimationAtLocation:{x, y}];
   }
 
   self->_manualCurlStartPosition.y = x;
   *&self->_pageOffsetToRestore = y;
 }
 
-- (void)_curlPageForReadAloud:(id)a3
+- (void)_curlPageForReadAloud:(id)aloud
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [aloud BOOLValue];
 
-  [(BKPictureBookNavigationController *)self curlPageForReadAloud:v4];
+  [(BKPictureBookNavigationController *)self curlPageForReadAloud:bOOLValue];
 }
 
-- (void)curlPageForReadAloud:(BOOL)a3
+- (void)curlPageForReadAloud:(BOOL)aloud
 {
-  if (a3)
+  if (aloud)
   {
-    v4 = [(BKPictureBookNavigationController *)self pageCurlManager];
-    v5 = [v4 numberOfQueuedCurls];
+    pageCurlManager = [(BKPictureBookNavigationController *)self pageCurlManager];
+    numberOfQueuedCurls = [pageCurlManager numberOfQueuedCurls];
 
-    if (v5)
+    if (numberOfQueuedCurls)
     {
       self->_singlePageCurlContainer = "_curlPageForReadAloud:";
     }
@@ -3401,10 +3401,10 @@ LABEL_6:
         [(BKPictureBookNavigationController *)self zoomToSpread:1];
       }
 
-      v7 = [(BKViewController *)self layoutDirection];
+      layoutDirection = [(BKViewController *)self layoutDirection];
       if ([(BKPictureBookNavigationController *)self inSinglePageMode])
       {
-        if (v7 == 1)
+        if (layoutDirection == 1)
         {
           Width = 0.0;
           *&v9 = 50.0;
@@ -3421,25 +3421,25 @@ LABEL_6:
         [(BKPageCurl *)self->_manualCurl bounds];
         Height = CGRectGetHeight(v58);
         [(BKPictureBookNavigationController *)self _manualCurlToSinglePage:Width, Height];
-        v39 = [(BKPictureBookNavigationController *)self pageCurlManager];
-        [v39 updateManualCurl:*&self->_manualCurlStartPosition.x toLocation:{v37 + Width, Height + -50.0}];
+        pageCurlManager2 = [(BKPictureBookNavigationController *)self pageCurlManager];
+        [pageCurlManager2 updateManualCurl:*&self->_manualCurlStartPosition.x toLocation:{v37 + Width, Height + -50.0}];
 
         LOBYTE(self->_swipeSelector) = 1;
       }
 
       else if (!self->_leftContentViewController)
       {
-        v55 = [(BKPictureBookNavigationController *)self curlContainer];
+        curlContainer = [(BKPictureBookNavigationController *)self curlContainer];
         [(BKPictureBookNavigationController *)self _resetCurlContainerFrame];
         [(BKContentViewController *)self->_leftContentViewController cancelManualCurl];
-        v10 = [(BKPictureBookNavigationController *)self pageCurlManager];
-        [v10 killAllCurls];
+        pageCurlManager3 = [(BKPictureBookNavigationController *)self pageCurlManager];
+        [pageCurlManager3 killAllCurls];
 
         v11 = [(BKPageNavigationViewController *)self pageOffset]+ 2;
-        v12 = [(BKPageNavigationViewController *)self pageCount];
-        if (v11 >= v12 - 1)
+        pageCount = [(BKPageNavigationViewController *)self pageCount];
+        if (v11 >= pageCount - 1)
         {
-          v11 = (v12 - 1);
+          v11 = (pageCount - 1);
         }
 
         v54 = [(BKPageNavigationViewController *)self leftPageNumberForSpreadPageOffset:[(BKPageNavigationViewController *)self pageOffset]];
@@ -3450,30 +3450,30 @@ LABEL_6:
         leftContentViewController = self->_leftContentViewController;
         self->_leftContentViewController = v16;
 
-        [(BKContentViewController *)self->_leftContentViewController setCurlContainer:v55];
-        v18 = [(BKPageNavigationViewController *)self delegate];
-        [(BKContentViewController *)self->_leftContentViewController setNavDelegate:v18];
+        [(BKContentViewController *)self->_leftContentViewController setCurlContainer:curlContainer];
+        delegate = [(BKPageNavigationViewController *)self delegate];
+        [(BKContentViewController *)self->_leftContentViewController setNavDelegate:delegate];
 
         [(BKContentViewController *)self->_leftContentViewController setForwardCurl:[(BKViewController *)self layoutDirection]== 0];
-        v19 = [(BKPictureBookNavigationController *)self isZoomedToSpread];
+        isZoomedToSpread = [(BKPictureBookNavigationController *)self isZoomedToSpread];
         v20 = 0.25;
-        if (v19)
+        if (isZoomedToSpread)
         {
           v20 = 0.5;
         }
 
         [(BKContentViewController *)self->_leftContentViewController setCurlThreshold:v20];
         [(BKContentViewController *)self->_leftContentViewController setApplyMaskAndGutter:[(BKPictureBookNavigationController *)self drawsSpine]];
-        v21 = [(BKPictureBookNavigationController *)self isZoomedToSpread];
+        isZoomedToSpread2 = [(BKPictureBookNavigationController *)self isZoomedToSpread];
         [(BKPictureBookNavigationController *)self contentSize];
         v23 = v22;
         v25 = v24;
-        v26 = [(BKPictureBookNavigationController *)self thumbnailBookViewConfiguration];
-        v27 = [(BKPictureBookNavigationController *)self drawsSpine];
+        thumbnailBookViewConfiguration = [(BKPictureBookNavigationController *)self thumbnailBookViewConfiguration];
+        drawsSpine = [(BKPictureBookNavigationController *)self drawsSpine];
         [(BKPictureBookNavigationController *)self _containerBoundsForGeometry];
-        v32 = [BKPictureBookViewGeometry geometryWithContentSize:v26 configuration:v27 drawsSpine:v23 containerBounds:v25, v28, v29, v30, v31];
+        v32 = [BKPictureBookViewGeometry geometryWithContentSize:thumbnailBookViewConfiguration configuration:drawsSpine drawsSpine:v23 containerBounds:v25, v28, v29, v30, v31];
 
-        [v32 scaleForSpread:v21 landscape:isPortrait() ^ 1];
+        [v32 scaleForSpread:isZoomedToSpread2 landscape:isPortrait() ^ 1];
         if (v33 >= BEWebViewMinimumZoomScale)
         {
           v34 = v33;
@@ -3484,10 +3484,10 @@ LABEL_6:
           v34 = BEWebViewMinimumZoomScale;
         }
 
-        [v55 setScale:v34];
+        [curlContainer setScale:v34];
         [(BKContentViewController *)self->_leftContentViewController setScale:v34];
         [(BKContentViewController *)self->_leftContentViewController generateWithOldLeftPageNumber:v54 oldRightPageNumber:v13 newLeftPageNumber:v14 newRightPageNumber:v15];
-        if (v7 == 1)
+        if (layoutDirection == 1)
         {
           v35 = 0.0;
           *&v36 = 50.0;
@@ -3495,32 +3495,32 @@ LABEL_6:
 
         else
         {
-          [v55 bounds];
+          [curlContainer bounds];
           v35 = CGRectGetWidth(v59);
           *&v36 = -50.0;
         }
 
         v40 = *&v36;
-        [v55 bounds];
+        [curlContainer bounds];
         v41 = CGRectGetHeight(v60);
         [(BKContentViewController *)self->_leftContentViewController startManualCurlAtPostion:v35, v41];
-        v42 = [(BKContentViewController *)self->_rightContentViewController view];
-        [(BKContentViewController *)self->_leftContentViewController setLeftSourceView:v42];
+        view = [(BKContentViewController *)self->_rightContentViewController view];
+        [(BKContentViewController *)self->_leftContentViewController setLeftSourceView:view];
 
-        v43 = [(NSMutableSet *)self->_pendingLoads view];
-        [(BKContentViewController *)self->_leftContentViewController setRightSourceView:v43];
+        view2 = [(NSMutableSet *)self->_pendingLoads view];
+        [(BKContentViewController *)self->_leftContentViewController setRightSourceView:view2];
 
         [(BKPictureBookView *)self->_bookView setLeftContentView:0];
         [(BKPictureBookView *)self->_bookView setRightContentView:0];
-        v44 = [(BKPictureBookNavigationController *)self pageCurlManager];
-        v45 = [(BKContentViewController *)self->_leftContentViewController isForwardCurl];
+        pageCurlManager4 = [(BKPictureBookNavigationController *)self pageCurlManager];
+        isForwardCurl = [(BKContentViewController *)self->_leftContentViewController isForwardCurl];
         [(BKContentViewController *)self->_leftContentViewController manualCurlStartPosition];
         v47 = v46;
         v49 = v48;
-        v50 = [(BKContentViewController *)self->_leftContentViewController curlPage];
-        v51 = [(BKContentViewController *)self->_leftContentViewController pageArray];
-        v52 = [(BKContentViewController *)self->_leftContentViewController backPage];
-        v53 = [v44 beginManualCurl:v45 atLocation:v50 inPage:v51 fromPages:v52 backPage:self->_pageCurlManager inContainer:{v47, v49}];
+        curlPage = [(BKContentViewController *)self->_leftContentViewController curlPage];
+        pageArray = [(BKContentViewController *)self->_leftContentViewController pageArray];
+        backPage = [(BKContentViewController *)self->_leftContentViewController backPage];
+        v53 = [pageCurlManager4 beginManualCurl:isForwardCurl atLocation:curlPage inPage:pageArray fromPages:backPage backPage:self->_pageCurlManager inContainer:{v47, v49}];
         [(BKContentViewController *)self->_leftContentViewController setPageCurl:v53];
 
         [(BKContentViewController *)self->_leftContentViewController updateManualCurlToPosition:v40 + v35, v41 + -50.0];
@@ -3540,32 +3540,32 @@ LABEL_6:
   }
 }
 
-- (void)manualCurlGesture:(id)a3
+- (void)manualCurlGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   if ([(BKPictureBookNavigationController *)self inSinglePageMode])
   {
-    [(BKPictureBookNavigationController *)self handleSinglePageManualCurlGesture:v4];
+    [(BKPictureBookNavigationController *)self handleSinglePageManualCurlGesture:gestureCopy];
   }
 
   else
   {
-    [(BKPictureBookNavigationController *)self handleSpreadManualCurlGesture:v4];
+    [(BKPictureBookNavigationController *)self handleSpreadManualCurlGesture:gestureCopy];
   }
 }
 
-- (void)handleSinglePageManualCurlGesture:(id)a3
+- (void)handleSinglePageManualCurlGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(BKPictureBookNavigationController *)self singlePageCurlContainer];
-  [v4 locationInView:v5];
+  gestureCopy = gesture;
+  singlePageCurlContainer = [(BKPictureBookNavigationController *)self singlePageCurlContainer];
+  [gestureCopy locationInView:singlePageCurlContainer];
   v7 = v6;
   v9 = v8;
 
-  v10 = [v4 state];
-  if (v10 > 3)
+  state = [gestureCopy state];
+  if (state > 3)
   {
-    if ((v10 - 4) >= 2)
+    if ((state - 4) >= 2)
     {
       return;
     }
@@ -3576,12 +3576,12 @@ LABEL_6:
       [*&x cancelManualCurl];
     }
 
-    v25 = [(BKPictureBookNavigationController *)self pageSlideAnimation];
-    [v25 cancelManualAnimation];
+    pageSlideAnimation = [(BKPictureBookNavigationController *)self pageSlideAnimation];
+    [pageSlideAnimation cancelManualAnimation];
     goto LABEL_22;
   }
 
-  if (v10 == &dword_0 + 1)
+  if (state == &dword_0 + 1)
   {
 
     [(BKPictureBookNavigationController *)self _manualCurlToSinglePage:v7, v9];
@@ -3589,14 +3589,14 @@ LABEL_6:
 
   else
   {
-    if (v10 != &dword_0 + 2)
+    if (state != &dword_0 + 2)
     {
-      if (v10 == &dword_0 + 3)
+      if (state == &dword_0 + 3)
       {
         v11 = self->_manualCurlStartPosition.x;
         if (v11 != 0.0)
         {
-          v12 = [*&v11 type];
+          type = [*&v11 type];
           v13 = vabdd_f64(v7, self->_manualCurlStartPosition.y);
           [(BKPageCurl *)self->_manualCurl frame];
           if (v13 <= CGRectGetWidth(v27) * 0.25)
@@ -3607,15 +3607,15 @@ LABEL_6:
           else
           {
             [*&self->_manualCurlStartPosition.x finishManualCurl];
-            v14 = [(BKPageNavigationViewController *)self pageOffset];
-            if (v12 == 2)
+            pageOffset = [(BKPageNavigationViewController *)self pageOffset];
+            if (type == 2)
             {
-              v15 = v14 + 1;
+              v15 = pageOffset + 1;
             }
 
             else
             {
-              v15 = v14 - 1;
+              v15 = pageOffset - 1;
             }
 
             [(BKPictureBookNavigationController *)self setPageOffset:v15];
@@ -3638,16 +3638,16 @@ LABEL_6:
           else
           {
             [(UIView *)lastCurlUnderPageView finishManualAnimation];
-            v22 = [(UIView *)self->_lastCurlUnderPageView isGoingToNextPage];
-            v23 = [(BKPageNavigationViewController *)self pageOffset];
-            if (v22)
+            isGoingToNextPage = [(UIView *)self->_lastCurlUnderPageView isGoingToNextPage];
+            pageOffset2 = [(BKPageNavigationViewController *)self pageOffset];
+            if (isGoingToNextPage)
             {
-              v24 = v23 + 1;
+              v24 = pageOffset2 + 1;
             }
 
             else
             {
-              v24 = v23 - 1;
+              v24 = pageOffset2 - 1;
             }
 
             [(BKPictureBookNavigationController *)self setPageOffset:v24];
@@ -3662,33 +3662,33 @@ LABEL_6:
 
     if (*&self->_manualCurlStartPosition.x)
     {
-      v17 = [(BKPictureBookNavigationController *)self pageCurlManager];
-      [v17 updateManualCurl:*&self->_manualCurlStartPosition.x toLocation:{v7, v9}];
+      pageCurlManager = [(BKPictureBookNavigationController *)self pageCurlManager];
+      [pageCurlManager updateManualCurl:*&self->_manualCurlStartPosition.x toLocation:{v7, v9}];
     }
 
-    v18 = [(BKPictureBookNavigationController *)self pageSlideAnimation];
+    pageSlideAnimation2 = [(BKPictureBookNavigationController *)self pageSlideAnimation];
 
-    if (v18)
+    if (pageSlideAnimation2)
     {
-      v25 = [(BKPictureBookNavigationController *)self pageSlideAnimation];
-      [v25 updateManualAnimationToLocation:{v7, v9}];
+      pageSlideAnimation = [(BKPictureBookNavigationController *)self pageSlideAnimation];
+      [pageSlideAnimation updateManualAnimationToLocation:{v7, v9}];
 LABEL_22:
     }
   }
 }
 
-- (unint64_t)_pageOffsetAfter:(int64_t)a3 whenCurlingForward:(BOOL)a4
+- (unint64_t)_pageOffsetAfter:(int64_t)after whenCurlingForward:(BOOL)forward
 {
-  v6 = ([(BKViewController *)self layoutDirection]== &dword_0 + 1) ^ a4;
-  v7 = [(BKPictureBookNavigationController *)self isZoomedToSpread];
+  v6 = ([(BKViewController *)self layoutDirection]== &dword_0 + 1) ^ forward;
+  isZoomedToSpread = [(BKPictureBookNavigationController *)self isZoomedToSpread];
   v8 = 1;
-  if (v7)
+  if (isZoomedToSpread)
   {
     v8 = 2;
   }
 
   v9 = -2;
-  if (!v7)
+  if (!isZoomedToSpread)
   {
     v9 = -1;
   }
@@ -3698,13 +3698,13 @@ LABEL_22:
     v8 = v9;
   }
 
-  v10 = v8 + a3;
+  v10 = v8 + after;
   if (v6 == 1)
   {
-    v11 = [(BKPageNavigationViewController *)self pageCount];
-    if (v10 >= v11 - 1)
+    pageCount = [(BKPageNavigationViewController *)self pageCount];
+    if (v10 >= pageCount - 1)
     {
-      v10 = v11 - 1;
+      v10 = pageCount - 1;
     }
   }
 
@@ -3714,9 +3714,9 @@ LABEL_22:
   }
 
   v12 = [(BKPageNavigationViewController *)self leftPageNumberForSpreadPageOffset:v10];
-  if (v12 == [(BKPageNavigationViewController *)self leftPageNumberForSpreadPageOffset:a3])
+  if (v12 == [(BKPageNavigationViewController *)self leftPageNumberForSpreadPageOffset:after])
   {
-    return a3;
+    return after;
   }
 
   else
@@ -3725,19 +3725,19 @@ LABEL_22:
   }
 }
 
-- (void)handleSpreadManualCurlGesture:(id)a3
+- (void)handleSpreadManualCurlGesture:(id)gesture
 {
-  v78 = a3;
-  v4 = [(BKPictureBookNavigationController *)self isZoomedToSpread];
-  v5 = [(BKPictureBookNavigationController *)self curlContainer];
-  [v78 locationInView:v5];
+  gestureCopy = gesture;
+  isZoomedToSpread = [(BKPictureBookNavigationController *)self isZoomedToSpread];
+  curlContainer = [(BKPictureBookNavigationController *)self curlContainer];
+  [gestureCopy locationInView:curlContainer];
   v7 = v6;
   v9 = v8;
 
-  v10 = [v78 state];
-  if (v10 > 3)
+  state = [gestureCopy state];
+  if (state > 3)
   {
-    if ((v10 - 4) >= 2)
+    if ((state - 4) >= 2)
     {
       goto LABEL_46;
     }
@@ -3746,15 +3746,15 @@ LABEL_22:
     leftContentViewController = self->_leftContentViewController;
     self->_leftContentViewController = 0;
 
-    v14 = [(BKPictureBookNavigationController *)self pageSlideAnimation];
-    [v14 cancelManualAnimation];
+    pageSlideAnimation = [(BKPictureBookNavigationController *)self pageSlideAnimation];
+    [pageSlideAnimation cancelManualAnimation];
     goto LABEL_16;
   }
 
-  if (v10 == &dword_0 + 1)
+  if (state == &dword_0 + 1)
   {
     v16 = &OBJC_IVAR___BKPictureBookNavigationController__singlePageCurlContainer;
-    if (v4)
+    if (isZoomedToSpread)
     {
       v16 = &OBJC_IVAR___BKPictureBookNavigationController__curlContainer;
     }
@@ -3765,21 +3765,21 @@ LABEL_22:
     v18 = BUDynamicCast();
     if (v18)
     {
-      v19 = [(BKPictureBookNavigationController *)self curlContainer];
-      [v18 velocityInView:v19];
+      curlContainer2 = [(BKPictureBookNavigationController *)self curlContainer];
+      [v18 velocityInView:curlContainer2];
       v21 = v20;
 
       v17 = v21 < 0.0;
     }
 
-    v22 = [(BKViewController *)self layoutDirection];
+    layoutDirection = [(BKViewController *)self layoutDirection];
     v23 = [(BKPictureBookNavigationController *)self _pageOffsetAfter:[(BKPageNavigationViewController *)self pageOffset] whenCurlingForward:v17];
     if (v23 == [(BKPageNavigationViewController *)self pageOffset])
     {
       goto LABEL_45;
     }
 
-    if (!v4)
+    if (!isZoomedToSpread)
     {
       [(BKPictureBookNavigationController *)self _resetSinglePageCurlContainerFrame];
     }
@@ -3794,8 +3794,8 @@ LABEL_22:
     {
       if (v17 != [(BKContentViewController *)v28 isForwardCurl])
       {
-        v29 = [(BKContentViewController *)self->_leftContentViewController pageCurl];
-        [v29 cancelManualCurl];
+        pageCurl = [(BKContentViewController *)self->_leftContentViewController pageCurl];
+        [pageCurl cancelManualCurl];
 
 LABEL_45:
         goto LABEL_46;
@@ -3809,7 +3809,7 @@ LABEL_45:
       self->_leftContentViewController = v47;
     }
 
-    v75 = v22;
+    v75 = layoutDirection;
     [(BKContentViewController *)self->_leftContentViewController setCurlContainer:self->_pageCurlManager];
     [(BKPageNavigationViewController *)self delegate];
     v49 = v77 = v27;
@@ -3818,7 +3818,7 @@ LABEL_45:
     [(BKContentViewController *)self->_leftContentViewController setForwardCurl:v17];
     [(BKContentViewController *)self->_leftContentViewController setApplyMaskAndGutter:[(BKPictureBookNavigationController *)self drawsSpine]];
     v50 = 0.25;
-    if (v4)
+    if (isZoomedToSpread)
     {
       v50 = 0.5;
     }
@@ -3827,14 +3827,14 @@ LABEL_45:
     [(BKPictureBookNavigationController *)self contentSize];
     v52 = v51;
     v54 = v53;
-    v55 = [(BKPictureBookNavigationController *)self thumbnailBookViewConfiguration];
+    thumbnailBookViewConfiguration = [(BKPictureBookNavigationController *)self thumbnailBookViewConfiguration];
     v76 = v25;
     v56 = v24;
-    v57 = [(BKPictureBookNavigationController *)self drawsSpine];
+    drawsSpine = [(BKPictureBookNavigationController *)self drawsSpine];
     [(BKPictureBookNavigationController *)self _containerBoundsForGeometry];
-    v62 = [BKPictureBookViewGeometry geometryWithContentSize:v55 configuration:v57 drawsSpine:v52 containerBounds:v54, v58, v59, v60, v61];
+    v62 = [BKPictureBookViewGeometry geometryWithContentSize:thumbnailBookViewConfiguration configuration:drawsSpine drawsSpine:v52 containerBounds:v54, v58, v59, v60, v61];
 
-    [v62 scaleForSpread:v4 landscape:isPortrait() ^ 1];
+    [v62 scaleForSpread:isZoomedToSpread landscape:isPortrait() ^ 1];
     if (v63 >= BEWebViewMinimumZoomScale)
     {
       v64 = v63;
@@ -3847,11 +3847,11 @@ LABEL_45:
 
     [(BKPageCurlManager *)self->_pageCurlManager setScale:v64, &self->_pageCurlManager];
     [(BKContentViewController *)self->_leftContentViewController setScale:v64];
-    v65 = [(BKContentViewController *)self->_rightContentViewController view];
-    [(BKContentViewController *)self->_leftContentViewController setLeftSourceView:v65];
+    view = [(BKContentViewController *)self->_rightContentViewController view];
+    [(BKContentViewController *)self->_leftContentViewController setLeftSourceView:view];
 
-    v66 = [(NSMutableSet *)self->_pendingLoads view];
-    [(BKContentViewController *)self->_leftContentViewController setRightSourceView:v66];
+    view2 = [(NSMutableSet *)self->_pendingLoads view];
+    [(BKContentViewController *)self->_leftContentViewController setRightSourceView:view2];
 
     [(BKContentViewController *)self->_leftContentViewController generateWithOldLeftPageNumber:v56 oldRightPageNumber:v76 newLeftPageNumber:v26 newRightPageNumber:v77];
     if (HIBYTE(self->_lastCompletedTransition) == 1)
@@ -3864,71 +3864,71 @@ LABEL_45:
       v67 = objc_alloc_init(BKPageSlide);
       [(BKPictureBookNavigationController *)self setPageSlideAnimation:v67];
 
-      v68 = [(BKPictureBookNavigationController *)self pageSlideAnimation];
-      [v68 setPageAnimationDelegate:self];
+      pageSlideAnimation2 = [(BKPictureBookNavigationController *)self pageSlideAnimation];
+      [pageSlideAnimation2 setPageAnimationDelegate:self];
 
-      v69 = [(BKPictureBookNavigationController *)self pageSlideAnimation];
-      v70 = [(BKContentViewController *)self->_leftContentViewController pageArray];
-      v71 = [(BKContentViewController *)self->_leftContentViewController backPageArray];
+      pageSlideAnimation3 = [(BKPictureBookNavigationController *)self pageSlideAnimation];
+      pageArray = [(BKContentViewController *)self->_leftContentViewController pageArray];
+      backPageArray = [(BKContentViewController *)self->_leftContentViewController backPageArray];
       p_manualCurl = v74;
       if (BYTE2(self->_lastCompletedTransition) == 1)
       {
         p_manualCurl = &self->_manualCurl;
       }
 
-      [v69 initiateManualAnimationFromPages:v70 toPages:v71 inContainer:*p_manualCurl isForwardAnimation:v17 isRTL:v75 == 1 isZoomedToSpread:v4];
+      [pageSlideAnimation3 initiateManualAnimationFromPages:pageArray toPages:backPageArray inContainer:*p_manualCurl isForwardAnimation:v17 isRTL:v75 == 1 isZoomedToSpread:isZoomedToSpread];
 
-      v73 = [(BKPictureBookNavigationController *)self pageSlideAnimation];
-      [v73 beginManualAnimationAtLocation:{v7, v9}];
+      pageSlideAnimation4 = [(BKPictureBookNavigationController *)self pageSlideAnimation];
+      [pageSlideAnimation4 beginManualAnimationAtLocation:{v7, v9}];
     }
 
     goto LABEL_45;
   }
 
-  if (v10 == &dword_0 + 2)
+  if (state == &dword_0 + 2)
   {
-    v30 = [(BKContentViewController *)self->_rightContentViewController view];
-    [(BKContentViewController *)self->_leftContentViewController setLeftSourceView:v30];
+    view3 = [(BKContentViewController *)self->_rightContentViewController view];
+    [(BKContentViewController *)self->_leftContentViewController setLeftSourceView:view3];
 
-    v31 = [(NSMutableSet *)self->_pendingLoads view];
-    [(BKContentViewController *)self->_leftContentViewController setRightSourceView:v31];
+    view4 = [(NSMutableSet *)self->_pendingLoads view];
+    [(BKContentViewController *)self->_leftContentViewController setRightSourceView:view4];
 
     if (self->_leftContentViewController && !self->_lastCurlUnderPageView)
     {
       [(BKPictureBookView *)self->_bookView setLeftContentView:0];
       [(BKPictureBookView *)self->_bookView setRightContentView:0];
-      v32 = [(BKContentViewController *)self->_leftContentViewController pageCurl];
+      pageCurl2 = [(BKContentViewController *)self->_leftContentViewController pageCurl];
 
-      if (!v32)
+      if (!pageCurl2)
       {
-        v33 = [(BKPictureBookNavigationController *)self pageCurlManager];
-        v34 = [(BKContentViewController *)self->_leftContentViewController isForwardCurl];
+        pageCurlManager = [(BKPictureBookNavigationController *)self pageCurlManager];
+        isForwardCurl = [(BKContentViewController *)self->_leftContentViewController isForwardCurl];
         [(BKContentViewController *)self->_leftContentViewController manualCurlStartPosition];
         v36 = v35;
         v38 = v37;
-        v39 = [(BKContentViewController *)self->_leftContentViewController curlPage];
-        v40 = [(BKContentViewController *)self->_leftContentViewController pageArray];
-        v41 = [(BKContentViewController *)self->_leftContentViewController backPage];
-        v42 = [v33 beginManualCurl:v34 atLocation:v39 inPage:v40 fromPages:v41 backPage:self->_pageCurlManager inContainer:{v36, v38}];
+        curlPage = [(BKContentViewController *)self->_leftContentViewController curlPage];
+        pageArray2 = [(BKContentViewController *)self->_leftContentViewController pageArray];
+        backPage = [(BKContentViewController *)self->_leftContentViewController backPage];
+        v42 = [pageCurlManager beginManualCurl:isForwardCurl atLocation:curlPage inPage:pageArray2 fromPages:backPage backPage:self->_pageCurlManager inContainer:{v36, v38}];
         [(BKContentViewController *)self->_leftContentViewController setPageCurl:v42];
 
-        v43 = [(BKContentViewController *)self->_rightContentViewController view];
-        [(BKContentViewController *)self->_leftContentViewController setLeftSourceView:v43];
+        view5 = [(BKContentViewController *)self->_rightContentViewController view];
+        [(BKContentViewController *)self->_leftContentViewController setLeftSourceView:view5];
 
-        v44 = [(NSMutableSet *)self->_pendingLoads view];
-        [(BKContentViewController *)self->_leftContentViewController setRightSourceView:v44];
+        view6 = [(NSMutableSet *)self->_pendingLoads view];
+        [(BKContentViewController *)self->_leftContentViewController setRightSourceView:view6];
       }
 
       [(BKContentViewController *)self->_leftContentViewController updateManualCurlToPosition:v7, v9];
-      v45 = [(BKPageNavigationViewController *)self delegate];
-      [v45 pageNavigationDidBeginInteracting:self];
+      delegate = [(BKPageNavigationViewController *)self delegate];
+      [delegate pageNavigationDidBeginInteracting:self];
     }
 
-    v46 = [(BKPictureBookNavigationController *)self pageSlideAnimation];
-    [v46 updateManualAnimationToLocation:{v7, v9}];
+    pageSlideAnimation5 = [(BKPictureBookNavigationController *)self pageSlideAnimation];
+    [pageSlideAnimation5 updateManualAnimationToLocation:{v7, v9}];
   }
 
-  else if (v10 == &dword_0 + 3)
+  else if (state == &dword_0 + 3)
   {
     v11 = self->_leftContentViewController;
     if (v11 && !self->_lastCurlUnderPageView)
@@ -3937,15 +3937,15 @@ LABEL_45:
       if ([(BKContentViewController *)self->_leftContentViewController finishManualCurlAtPostion:v7, v9])
       {
         [(BKPictureBookNavigationController *)self setPageOffset:[(BKPictureBookNavigationController *)self _pageOffsetAfter:[(BKPageNavigationViewController *)self pageOffset] whenCurlingForward:[(BKContentViewController *)self->_leftContentViewController isForwardCurl]]];
-        if (!v4)
+        if (!isZoomedToSpread)
         {
           [(BKPictureBookNavigationController *)self slide:[(BKContentViewController *)self->_leftContentViewController isForwardCurl] animated:1 withDelay:0.0];
         }
       }
 
-      v12 = [(BKContentViewController *)self->_leftContentViewController pageCurl];
+      pageCurl3 = [(BKContentViewController *)self->_leftContentViewController pageCurl];
 
-      if (!v12)
+      if (!pageCurl3)
       {
         v13 = self->_leftContentViewController;
         self->_leftContentViewController = 0;
@@ -3955,8 +3955,8 @@ LABEL_45:
     if (self->_lastCurlUnderPageView)
     {
       [(BKPictureBookNavigationController *)self setPageOffset:[(BKPictureBookNavigationController *)self _pageOffsetAfter:[(BKPageNavigationViewController *)self pageOffset] whenCurlingForward:[(BKContentViewController *)self->_leftContentViewController isForwardCurl]]];
-      v14 = [(BKPictureBookNavigationController *)self pageSlideAnimation];
-      [v14 finishManualAnimation];
+      pageSlideAnimation = [(BKPictureBookNavigationController *)self pageSlideAnimation];
+      [pageSlideAnimation finishManualAnimation];
 LABEL_16:
 
       [(BKPictureBookNavigationController *)self setPageSlideAnimation:0];
@@ -3966,22 +3966,22 @@ LABEL_16:
 LABEL_46:
 }
 
-- (void)_restoreViewHierarchyWithArray:(id)a3
+- (void)_restoreViewHierarchyWithArray:(id)array
 {
-  if (a3)
+  if (array)
   {
-    v4 = [(NSMutableSet *)self->_pendingLoads view];
-    [(BKPictureBookView *)self->_bookView setRightContentView:v4];
+    view = [(NSMutableSet *)self->_pendingLoads view];
+    [(BKPictureBookView *)self->_bookView setRightContentView:view];
 
-    v5 = [(BKContentViewController *)self->_rightContentViewController view];
-    [(BKPictureBookView *)self->_bookView setLeftContentView:v5];
+    view2 = [(BKContentViewController *)self->_rightContentViewController view];
+    [(BKPictureBookView *)self->_bookView setLeftContentView:view2];
 
     leftContentViewController = self->_leftContentViewController;
     if (leftContentViewController)
     {
-      v7 = [(BKContentViewController *)leftContentViewController isAutoCurl];
+      isAutoCurl = [(BKContentViewController *)leftContentViewController isAutoCurl];
       leftContentViewController = self->_leftContentViewController;
-      if ((v7 & 1) == 0)
+      if ((isAutoCurl & 1) == 0)
       {
         [(BKContentViewController *)leftContentViewController cancelManualCurl];
         leftContentViewController = self->_leftContentViewController;
@@ -4001,20 +4001,20 @@ LABEL_46:
   {
     if (([(BKContentViewController *)leftContentViewController isAutoCurl]& 1) == 0)
     {
-      v4 = [(BKContentViewController *)self->_leftContentViewController pageCurl];
-      v5 = [v4 existingPages];
+      pageCurl = [(BKContentViewController *)self->_leftContentViewController pageCurl];
+      existingPages = [pageCurl existingPages];
 
-      if (v5)
+      if (existingPages)
       {
-        v6 = [(NSMutableSet *)self->_pendingLoads view];
-        [(BKPictureBookView *)self->_bookView setRightContentView:v6];
+        view = [(NSMutableSet *)self->_pendingLoads view];
+        [(BKPictureBookView *)self->_bookView setRightContentView:view];
 
-        v7 = [(BKContentViewController *)self->_rightContentViewController view];
-        [(BKPictureBookView *)self->_bookView setLeftContentView:v7];
+        view2 = [(BKContentViewController *)self->_rightContentViewController view];
+        [(BKPictureBookView *)self->_bookView setLeftContentView:view2];
 
         [(BKPictureBookView *)self->_bookView layoutIfNeeded];
-        v8 = [(BKPictureBookNavigationController *)self pageCurlManager];
-        [v8 killAllCurls];
+        pageCurlManager = [(BKPictureBookNavigationController *)self pageCurlManager];
+        [pageCurlManager killAllCurls];
 
         v9 = self->_leftContentViewController;
         self->_leftContentViewController = 0;
@@ -4025,19 +4025,19 @@ LABEL_46:
   }
 }
 
-- (BOOL)bkLongPressGestureCanTransitionToRecognizedState:(id)a3
+- (BOOL)bkLongPressGestureCanTransitionToRecognizedState:(id)state
 {
-  v4 = a3;
-  v5 = [(BKViewController *)self layoutDirection];
+  stateCopy = state;
+  layoutDirection = [(BKViewController *)self layoutDirection];
   if ([(BKPictureBookNavigationController *)self inSinglePageMode])
   {
     [(BKPictureBookNavigationController *)self _resetSinglePageCurlContainerFrame];
-    v6 = [(BKPictureBookNavigationController *)self view];
-    [v4 locationInView:v6];
+    view = [(BKPictureBookNavigationController *)self view];
+    [stateCopy locationInView:view];
     v8 = v7;
 
-    v9 = [(BKPictureBookNavigationController *)self view];
-    [v9 frame];
+    view2 = [(BKPictureBookNavigationController *)self view];
+    [view2 frame];
     v10 = CGRectGetWidth(v21) + -22.0;
 
     v11 = 22.0;
@@ -4045,8 +4045,8 @@ LABEL_46:
 
   else
   {
-    v12 = [(BKPictureBookNavigationController *)self curlContainer];
-    [v4 locationInView:v12];
+    curlContainer = [(BKPictureBookNavigationController *)self curlContainer];
+    [stateCopy locationInView:curlContainer];
     v8 = v13;
 
     [(BKPictureBookNavigationController *)self _resetCurlContainerFrame];
@@ -4059,23 +4059,23 @@ LABEL_46:
     goto LABEL_7;
   }
 
-  v15 = [(BKPageNavigationViewController *)self pageOffset];
-  v16 = v15;
-  if (v5 == 1)
+  pageOffset = [(BKPageNavigationViewController *)self pageOffset];
+  v16 = pageOffset;
+  if (layoutDirection == 1)
   {
-    if (v8 > v10 && !v15)
+    if (v8 > v10 && !pageOffset)
     {
       goto LABEL_7;
     }
 
-    v17 = [(BKPageNavigationViewController *)self pageOffset];
-    v18 = v17 >= [(BKPageNavigationViewController *)self pageCount]- 1;
+    pageOffset2 = [(BKPageNavigationViewController *)self pageOffset];
+    v18 = pageOffset2 >= [(BKPageNavigationViewController *)self pageCount]- 1;
   }
 
   else
   {
-    v19 = [(BKPageNavigationViewController *)self pageCount];
-    if (v8 > v10 && v16 >= v19 - 1)
+    pageCount = [(BKPageNavigationViewController *)self pageCount];
+    if (v8 > v10 && v16 >= pageCount - 1)
     {
       goto LABEL_7;
     }
@@ -4086,20 +4086,20 @@ LABEL_46:
   if (v8 < v11 && v18)
   {
 LABEL_7:
-    LOBYTE(v14) = 0;
-    return v14;
+    LOBYTE(isContentRenderComplete) = 0;
+    return isContentRenderComplete;
   }
 
-  v14 = [(BKPictureBookNavigationController *)self isContentRenderComplete];
-  if (v14)
+  isContentRenderComplete = [(BKPictureBookNavigationController *)self isContentRenderComplete];
+  if (isContentRenderComplete)
   {
     [(BKPictureBookScrollView *)self->_scrollView setBounces:0];
     [(BKPictureBookScrollView *)self->_scrollView setAlwaysBounceVertical:0];
     [(BKPictureBookScrollView *)self->_scrollView setAlwaysBounceHorizontal:0];
-    LOBYTE(v14) = 1;
+    LOBYTE(isContentRenderComplete) = 1;
   }
 
-  return v14;
+  return isContentRenderComplete;
 }
 
 - (CGSize)contentSize

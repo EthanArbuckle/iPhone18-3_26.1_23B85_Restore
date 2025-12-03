@@ -1,19 +1,19 @@
 @interface RCFoldersCollectionViewHeaderCell
 - (id)_headingText;
 - (id)accessibilityLabel;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation RCFoldersCollectionViewHeaderCell
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
   v6.receiver = self;
   v6.super_class = RCFoldersCollectionViewHeaderCell;
-  [(RCFoldersCollectionViewHeaderCell *)&v6 updateConfigurationUsingState:a3];
+  [(RCFoldersCollectionViewHeaderCell *)&v6 updateConfigurationUsingState:state];
   v4 = +[UIListContentConfiguration headerConfiguration];
-  v5 = [(RCFoldersCollectionViewHeaderCell *)self _headingText];
-  [v4 setText:v5];
+  _headingText = [(RCFoldersCollectionViewHeaderCell *)self _headingText];
+  [v4 setText:_headingText];
 
   [(RCFoldersCollectionViewHeaderCell *)self setContentConfiguration:v4];
 }
@@ -28,8 +28,8 @@
 
 - (id)accessibilityLabel
 {
-  v2 = [(RCFoldersCollectionViewHeaderCell *)self _headingText];
-  v3 = [NSString stringWithFormat:@"%@", v2];
+  _headingText = [(RCFoldersCollectionViewHeaderCell *)self _headingText];
+  v3 = [NSString stringWithFormat:@"%@", _headingText];
 
   return v3;
 }

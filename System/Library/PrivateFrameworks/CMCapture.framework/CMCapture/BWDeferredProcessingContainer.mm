@@ -1,25 +1,25 @@
 @interface BWDeferredProcessingContainer
-- (BOOL)hasBufferForType:(unint64_t)a3 portType:(id)a4;
-- (BOOL)hasInference:(id)a3 portType:(id)a4;
-- (BOOL)hasInferenceBuffer:(id)a3 portType:(id)a4;
-- (BWDeferredProcessingContainer)initWithApplicationID:(id)a3 captureRequestIdentifier:(id)a4 baseFolderURL:(id)a5 openForPeeking:(BOOL)a6 err:(int *)p_info;
-- (BWDeferredProcessingContainer)initWithApplicationID:(id)a3 resolvedSettings:(id)a4 unresolvedSettings:(id)a5 processingSettings:(id)a6 pipelineParameters:(id)a7 intermediates:(id)a8 photoDescriptors:(id)a9;
-- (BWDeferredProcessingContainer)initWithXPCEncoding:(id)a3 applicationID:(id)a4 captureRequestIdentifier:(id)a5 baseFolderURL:(id)a6 err:(int *)a7;
-- (__CVBuffer)copyBufferForTag:(id)a3 err:(int *)a4;
-- (__CVBuffer)copyBufferForType:(unint64_t)a3 portType:(id)a4 metadata:(id *)a5 err:(int *)a6;
-- (__CVBuffer)copyInferenceBufferForKey:(id)a3 portType:(id)a4 err:(int *)a5;
-- (id)copyArrayForTag:(id)a3 customClasses:(id)a4 err:(int *)a5;
-- (id)copyAttributesForBufferType:(unint64_t)a3 portType:(id)a4 err:(int *)a5;
-- (id)copyBuffersForType:(unint64_t)a3 portType:(id)a4 metadataArray:(id *)a5 err:(int *)a6;
-- (id)copyDictionaryForTag:(id)a3 customClasses:(id)a4 err:(int *)a5;
-- (id)copyInferenceForKey:(id)a3 customClasses:(id)a4 portType:(id)a5 err:(int *)a6;
-- (id)copyMetadataForBufferTag:(id)a3 err:(int *)a4;
-- (id)copyMetadataForTag:(id)a3 err:(int *)a4;
+- (BOOL)hasBufferForType:(unint64_t)type portType:(id)portType;
+- (BOOL)hasInference:(id)inference portType:(id)type;
+- (BOOL)hasInferenceBuffer:(id)buffer portType:(id)type;
+- (BWDeferredProcessingContainer)initWithApplicationID:(id)d captureRequestIdentifier:(id)identifier baseFolderURL:(id)l openForPeeking:(BOOL)peeking err:(int *)p_info;
+- (BWDeferredProcessingContainer)initWithApplicationID:(id)d resolvedSettings:(id)settings unresolvedSettings:(id)unresolvedSettings processingSettings:(id)processingSettings pipelineParameters:(id)parameters intermediates:(id)intermediates photoDescriptors:(id)descriptors;
+- (BWDeferredProcessingContainer)initWithXPCEncoding:(id)encoding applicationID:(id)d captureRequestIdentifier:(id)identifier baseFolderURL:(id)l err:(int *)err;
+- (__CVBuffer)copyBufferForTag:(id)tag err:(int *)err;
+- (__CVBuffer)copyBufferForType:(unint64_t)type portType:(id)portType metadata:(id *)metadata err:(int *)err;
+- (__CVBuffer)copyInferenceBufferForKey:(id)key portType:(id)type err:(int *)err;
+- (id)copyArrayForTag:(id)tag customClasses:(id)classes err:(int *)err;
+- (id)copyAttributesForBufferType:(unint64_t)type portType:(id)portType err:(int *)err;
+- (id)copyBuffersForType:(unint64_t)type portType:(id)portType metadataArray:(id *)array err:(int *)err;
+- (id)copyDictionaryForTag:(id)tag customClasses:(id)classes err:(int *)err;
+- (id)copyInferenceForKey:(id)key customClasses:(id)classes portType:(id)type err:(int *)err;
+- (id)copyMetadataForBufferTag:(id)tag err:(int *)err;
+- (id)copyMetadataForTag:(id)tag err:(int *)err;
 - (uint64_t)_buildFolderStatistics;
 - (uint64_t)_convertIntermediatesToCurrentCompatibleVersion;
-- (uint64_t)_copyObjectForTag:(uint64_t)a3 customClasses:(int *)a4 err:;
-- (uint64_t)hasBufferWithCaptureFrameFlags:(uint64_t)a3 portType:;
-- (void)abortingProcessingDueToError:(int)a3;
+- (uint64_t)_copyObjectForTag:(uint64_t)tag customClasses:(int *)classes err:;
+- (uint64_t)hasBufferWithCaptureFrameFlags:(uint64_t)flags portType:;
+- (void)abortingProcessingDueToError:(int)error;
 - (void)dealloc;
 - (void)releaseIntermediates;
 @end
@@ -34,32 +34,32 @@ uint64_t __113__BWDeferredProcessingContainer_initWithApplicationID_captureReque
   return [v4 isEqualToString:v3];
 }
 
-- (BWDeferredProcessingContainer)initWithXPCEncoding:(id)a3 applicationID:(id)a4 captureRequestIdentifier:(id)a5 baseFolderURL:(id)a6 err:(int *)a7
+- (BWDeferredProcessingContainer)initWithXPCEncoding:(id)encoding applicationID:(id)d captureRequestIdentifier:(id)identifier baseFolderURL:(id)l err:(int *)err
 {
   v73[0] = 0;
-  v72 = 0;
+  code = 0;
   v13 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
   {
-    [BWDeferredProcessingContainer initWithXPCEncoding:a5 applicationID:? captureRequestIdentifier:? baseFolderURL:? err:?];
-    if (a3)
+    [BWDeferredProcessingContainer initWithXPCEncoding:identifier applicationID:? captureRequestIdentifier:? baseFolderURL:? err:?];
+    if (encoding)
     {
 LABEL_3:
       v71.receiver = self;
       v71.super_class = BWDeferredProcessingContainer;
-      v14 = [(BWDeferredContainer *)&v71 initWithApplicationID:a4 captureRequestIdentifier:a5 baseFolderURL:a6 queuePriority:39 err:&v72];
+      v14 = [(BWDeferredContainer *)&v71 initWithApplicationID:d captureRequestIdentifier:identifier baseFolderURL:l queuePriority:39 err:&code];
       if (v14)
       {
-        [+[BWDeferredTransactionBroker sharedInstance](BWDeferredTransactionBroker openTransaction:"openTransaction:name:" name:4, a5];
+        [+[BWDeferredTransactionBroker sharedInstance](BWDeferredTransactionBroker openTransaction:"openTransaction:name:" name:4, identifier];
         v14->_isRemote = 1;
-        value = xpc_dictionary_get_value(a3, "Container");
+        value = xpc_dictionary_get_value(encoding, "Container");
         if (!value)
         {
           [BWDeferredProcessingContainer initWithXPCEncoding:applicationID:captureRequestIdentifier:baseFolderURL:err:];
           goto LABEL_64;
         }
 
-        xdict = xpc_dictionary_get_value(a3, "IntermediateObjects");
+        xdict = xpc_dictionary_get_value(encoding, "IntermediateObjects");
         if (xdict)
         {
           value = _CFXPCCreateCFObjectFromXPCObject();
@@ -70,7 +70,7 @@ LABEL_3:
             if (v73[0])
             {
               v54 = v16;
-              v72 = -16132;
+              code = -16132;
               v70 = 0;
               v69 = 0;
               os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -84,7 +84,7 @@ LABEL_3:
               {
 LABEL_71:
                 v54 = v17;
-                v72 = [v73[0] code];
+                code = [v73[0] code];
                 v70 = 0;
                 v69 = 0;
                 v57 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -92,11 +92,11 @@ LABEL_71:
                 goto LABEL_75;
               }
 
-              v19 = [v18 longValue];
-              v14->super._manifestVersion = v19;
-              if (v19 != 8)
+              longValue = [v18 longValue];
+              v14->super._manifestVersion = longValue;
+              if (longValue != 8)
               {
-                v72 = -16130;
+                code = -16130;
                 goto LABEL_58;
               }
 
@@ -207,7 +207,7 @@ LABEL_24:
                                       objc_opt_class();
                                       if ((objc_opt_isKindOfClass() & 1) == 0)
                                       {
-                                        v72 = -16132;
+                                        code = -16132;
 LABEL_39:
                                         v13 = MEMORY[0x1E695FF58];
                                         v14 = v61;
@@ -250,8 +250,8 @@ LABEL_39:
                                 v38 = 0;
 LABEL_48:
                                 v14 = v61;
-                                v72 = [(BWDeferredContainer *)v61 _validate];
-                                if (v72)
+                                code = [(BWDeferredContainer *)v61 _validate];
+                                if (code)
                                 {
                                   [BWDeferredProcessingContainer initWithXPCEncoding:applicationID:captureRequestIdentifier:baseFolderURL:err:];
                                 }
@@ -263,7 +263,7 @@ LABEL_48:
                                   [v58 timeIntervalSince1970];
                                   *(v61 + 344) = (v51 - v52);
                                   *(v61 + 336) = v38;
-                                  v72 = 0;
+                                  code = 0;
                                 }
 
                                 v13 = MEMORY[0x1E695FF58];
@@ -297,7 +297,7 @@ LABEL_40:
                   else
                   {
 LABEL_54:
-                    v72 = [v73[0] code];
+                    code = [v73[0] code];
                   }
                 }
 
@@ -308,7 +308,7 @@ LABEL_54:
 
 LABEL_58:
 
-                if (v72)
+                if (code)
                 {
 
                   v14 = 0;
@@ -323,7 +323,7 @@ LABEL_58:
               }
 
               v54 = v17;
-              v72 = [v73[0] code];
+              code = [v73[0] code];
               v70 = 0;
               v69 = 0;
               v56 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -351,14 +351,14 @@ LABEL_64:
     }
   }
 
-  else if (a3)
+  else if (encoding)
   {
     goto LABEL_3;
   }
 
-  if (a7)
+  if (err)
   {
-    *a7 = -16134;
+    *err = -16134;
   }
 
   if (*v13 == 1)
@@ -369,11 +369,11 @@ LABEL_64:
   return 0;
 }
 
-- (BWDeferredProcessingContainer)initWithApplicationID:(id)a3 resolvedSettings:(id)a4 unresolvedSettings:(id)a5 processingSettings:(id)a6 pipelineParameters:(id)a7 intermediates:(id)a8 photoDescriptors:(id)a9
+- (BWDeferredProcessingContainer)initWithApplicationID:(id)d resolvedSettings:(id)settings unresolvedSettings:(id)unresolvedSettings processingSettings:(id)processingSettings pipelineParameters:(id)parameters intermediates:(id)intermediates photoDescriptors:(id)descriptors
 {
   v10.receiver = self;
   v10.super_class = BWDeferredProcessingContainer;
-  return [(BWDeferredContainer *)&v10 initWithApplicationID:a3 resolvedSettings:a4 unresolvedSettings:a5 processingSettings:a6 pipelineParameters:a7 intermediates:a8 photoDescriptors:a9];
+  return [(BWDeferredContainer *)&v10 initWithApplicationID:d resolvedSettings:settings unresolvedSettings:unresolvedSettings processingSettings:processingSettings pipelineParameters:parameters intermediates:intermediates photoDescriptors:descriptors];
 }
 
 - (void)dealloc
@@ -397,7 +397,7 @@ LABEL_64:
   [(BWDeferredContainer *)&v5 dealloc];
 }
 
-- (__CVBuffer)copyBufferForTag:(id)a3 err:(int *)a4
+- (__CVBuffer)copyBufferForTag:(id)tag err:(int *)err
 {
   v9 = 0;
   v7 = MEMORY[0x1E695FF58];
@@ -406,15 +406,15 @@ LABEL_64:
     kdebug_trace();
   }
 
-  if (!a3)
+  if (!tag)
   {
     [BWDeferredProcessingContainer copyBufferForTag:? err:?];
     goto LABEL_8;
   }
 
   pthread_rwlock_rdlock(&self->super._lock);
-  a3 = [(BWDeferredContainer *)self _intermediateForTag:a3];
-  if (!a3)
+  tag = [(BWDeferredContainer *)self _intermediateForTag:tag];
+  if (!tag)
   {
     goto LABEL_15;
   }
@@ -422,13 +422,13 @@ LABEL_64:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    a3 = 0;
+    tag = 0;
 LABEL_15:
     v9 = -16136;
     goto LABEL_8;
   }
 
-  a3 = [a3 fetchAndRetain:&v9];
+  tag = [tag fetchAndRetain:&v9];
   if (v9)
   {
     [BWDeferredProcessingContainer copyBufferForTag:err:];
@@ -436,9 +436,9 @@ LABEL_15:
 
 LABEL_8:
   pthread_rwlock_unlock(&self->super._lock);
-  if (a4)
+  if (err)
   {
-    *a4 = v9;
+    *err = v9;
   }
 
   if (*v7 == 1)
@@ -446,10 +446,10 @@ LABEL_8:
     kdebug_trace();
   }
 
-  return a3;
+  return tag;
 }
 
-- (BOOL)hasBufferForType:(unint64_t)a3 portType:(id)a4
+- (BOOL)hasBufferForType:(unint64_t)type portType:(id)portType
 {
   pthread_rwlock_rdlock(&self->super._lock);
   intermediates = self->super._intermediates;
@@ -457,8 +457,8 @@ LABEL_8:
   v12[1] = 3221225472;
   v12[2] = __59__BWDeferredProcessingContainer_hasBufferForType_portType___block_invoke;
   v12[3] = &unk_1E7999900;
-  v12[4] = a4;
-  v12[5] = a3;
+  v12[4] = portType;
+  v12[5] = type;
   v8 = [(NSMutableArray *)intermediates indexOfObjectPassingTest:v12];
   v10 = v8 != 0x7FFFFFFFFFFFFFFFLL && (v9 = v8, v8 < [(NSMutableArray *)self->super._intermediates count]) && [(NSMutableArray *)self->super._intermediates objectAtIndexedSubscript:v9]!= 0;
   pthread_rwlock_unlock(&self->super._lock);
@@ -499,7 +499,7 @@ uint64_t __73__BWDeferredProcessingContainer_hasBufferWithCaptureFrameFlags_port
   return result;
 }
 
-- (__CVBuffer)copyBufferForType:(unint64_t)a3 portType:(id)a4 metadata:(id *)a5 err:(int *)a6
+- (__CVBuffer)copyBufferForType:(unint64_t)type portType:(id)portType metadata:(id *)metadata err:(int *)err
 {
   v20 = 0;
   pthread_rwlock_rdlock(&self->super._lock);
@@ -508,12 +508,12 @@ uint64_t __73__BWDeferredProcessingContainer_hasBufferWithCaptureFrameFlags_port
   v19[1] = 3221225472;
   v19[2] = __73__BWDeferredProcessingContainer_copyBufferForType_portType_metadata_err___block_invoke;
   v19[3] = &unk_1E7999900;
-  v19[4] = a4;
-  v19[5] = a3;
+  v19[4] = portType;
+  v19[5] = type;
   v12 = [(NSMutableArray *)intermediates indexOfObjectPassingTest:v19];
   if (v12 == 0x7FFFFFFFFFFFFFFFLL || (v13 = v12, v12 >= [(NSMutableArray *)self->super._intermediates count]) || ![(NSMutableArray *)self->super._intermediates objectAtIndexedSubscript:v13])
   {
-    v16 = 0;
+    metadataTag = 0;
     v15 = 0;
   }
 
@@ -521,7 +521,7 @@ uint64_t __73__BWDeferredProcessingContainer_hasBufferWithCaptureFrameFlags_port
   {
     v14 = [(NSMutableArray *)self->super._intermediates objectAtIndexedSubscript:v13];
     v15 = [v14 tag];
-    v16 = [v14 metadataTag];
+    metadataTag = [v14 metadataTag];
     if (v15)
     {
       v15 = [(BWDeferredProcessingContainer *)self copyBufferForTag:v15 err:&v20];
@@ -537,21 +537,21 @@ uint64_t __73__BWDeferredProcessingContainer_hasBufferWithCaptureFrameFlags_port
   else
   {
     v17 = 0;
-    if (a5 && v16)
+    if (metadata && metadataTag)
     {
-      v17 = [(BWDeferredProcessingContainer *)self copyMetadataForTag:v16 err:&v20];
+      v17 = [(BWDeferredProcessingContainer *)self copyMetadataForTag:metadataTag err:&v20];
     }
   }
 
   pthread_rwlock_unlock(&self->super._lock);
-  if (a6)
+  if (err)
   {
-    *a6 = v20;
+    *err = v20;
   }
 
-  if (a5)
+  if (metadata)
   {
-    *a5 = v17;
+    *metadata = v17;
   }
 
   return v15;
@@ -605,7 +605,7 @@ uint64_t __74__BWDeferredProcessingContainer_copyAttributesForBufferType_portTyp
   return [v4 isEqualToString:v5];
 }
 
-- (id)copyMetadataForBufferTag:(id)a3 err:(int *)a4
+- (id)copyMetadataForBufferTag:(id)tag err:(int *)err
 {
   v7 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
@@ -613,7 +613,7 @@ uint64_t __74__BWDeferredProcessingContainer_copyAttributesForBufferType_portTyp
     kdebug_trace();
   }
 
-  if (a3)
+  if (tag)
   {
     pthread_rwlock_rdlock(&self->super._lock);
     intermediates = self->super._intermediates;
@@ -621,17 +621,17 @@ uint64_t __74__BWDeferredProcessingContainer_copyAttributesForBufferType_portTyp
     v12[1] = 3221225472;
     v12[2] = __62__BWDeferredProcessingContainer_copyMetadataForBufferTag_err___block_invoke;
     v12[3] = &unk_1E7999888;
-    v12[4] = a3;
+    v12[4] = tag;
     v9 = [(NSMutableArray *)intermediates indexOfObjectPassingTest:v12];
     if (v9 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v10 = 0;
-      a3 = 0;
+      tag = 0;
     }
 
     else
     {
-      a3 = [(NSMutableArray *)self->super._intermediates objectAtIndexedSubscript:v9];
+      tag = [(NSMutableArray *)self->super._intermediates objectAtIndexedSubscript:v9];
       v10 = 0;
     }
   }
@@ -643,9 +643,9 @@ uint64_t __74__BWDeferredProcessingContainer_copyAttributesForBufferType_portTyp
   }
 
   pthread_rwlock_unlock(&self->super._lock);
-  if (a4)
+  if (err)
   {
-    *a4 = v10;
+    *err = v10;
   }
 
   if (*v7 == 1)
@@ -653,7 +653,7 @@ uint64_t __74__BWDeferredProcessingContainer_copyAttributesForBufferType_portTyp
     kdebug_trace();
   }
 
-  return a3;
+  return tag;
 }
 
 uint64_t __62__BWDeferredProcessingContainer_copyMetadataForBufferTag_err___block_invoke(uint64_t a1, void *a2)
@@ -670,7 +670,7 @@ uint64_t __62__BWDeferredProcessingContainer_copyMetadataForBufferTag_err___bloc
   return [v4 isEqualToString:v5];
 }
 
-- (id)copyMetadataForTag:(id)a3 err:(int *)a4
+- (id)copyMetadataForTag:(id)tag err:(int *)err
 {
   v12 = 0;
   v7 = MEMORY[0x1E695FF58];
@@ -679,7 +679,7 @@ uint64_t __62__BWDeferredProcessingContainer_copyMetadataForBufferTag_err___bloc
     kdebug_trace();
   }
 
-  v8 = [(BWDeferredProcessingContainer *)self _copyObjectForTag:a3 customClasses:0 err:&v12];
+  v8 = [(BWDeferredProcessingContainer *)self _copyObjectForTag:tag customClasses:0 err:&v12];
   if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     if (*v7 == 1)
@@ -697,9 +697,9 @@ uint64_t __62__BWDeferredProcessingContainer_copyMetadataForBufferTag_err___bloc
   }
 
   v9 = v12;
-  if (a4)
+  if (err)
   {
-    *a4 = v12;
+    *err = v12;
   }
 
   if (v9)
@@ -711,7 +711,7 @@ uint64_t __62__BWDeferredProcessingContainer_copyMetadataForBufferTag_err___bloc
   return v8;
 }
 
-- (BOOL)hasInferenceBuffer:(id)a3 portType:(id)a4
+- (BOOL)hasInferenceBuffer:(id)buffer portType:(id)type
 {
   pthread_rwlock_rdlock(&self->super._lock);
   intermediates = self->super._intermediates;
@@ -719,8 +719,8 @@ uint64_t __62__BWDeferredProcessingContainer_copyMetadataForBufferTag_err___bloc
   v12[1] = 3221225472;
   v12[2] = __61__BWDeferredProcessingContainer_hasInferenceBuffer_portType___block_invoke;
   v12[3] = &unk_1E7999928;
-  v12[4] = a4;
-  v12[5] = a3;
+  v12[4] = type;
+  v12[5] = buffer;
   v8 = [(NSMutableArray *)intermediates indexOfObjectPassingTest:v12];
   v10 = v8 != 0x7FFFFFFFFFFFFFFFLL && (v9 = v8, v8 < [(NSMutableArray *)self->super._intermediates count]) && [(NSMutableArray *)self->super._intermediates objectAtIndexedSubscript:v9]!= 0;
   pthread_rwlock_unlock(&self->super._lock);
@@ -741,7 +741,7 @@ uint64_t __61__BWDeferredProcessingContainer_hasInferenceBuffer_portType___block
   return [v4 isEqual:v5];
 }
 
-- (__CVBuffer)copyInferenceBufferForKey:(id)a3 portType:(id)a4 err:(int *)a5
+- (__CVBuffer)copyInferenceBufferForKey:(id)key portType:(id)type err:(int *)err
 {
   v15 = 0;
   pthread_rwlock_rdlock(&self->super._lock);
@@ -750,8 +750,8 @@ uint64_t __61__BWDeferredProcessingContainer_hasInferenceBuffer_portType___block
   v14[1] = 3221225472;
   v14[2] = __72__BWDeferredProcessingContainer_copyInferenceBufferForKey_portType_err___block_invoke;
   v14[3] = &unk_1E7999928;
-  v14[4] = a4;
-  v14[5] = a3;
+  v14[4] = type;
+  v14[5] = key;
   v10 = [(NSMutableArray *)intermediates indexOfObjectPassingTest:v14];
   if (v10 == 0x7FFFFFFFFFFFFFFFLL || (v11 = v10, v10 >= [(NSMutableArray *)self->super._intermediates count]) || ![(NSMutableArray *)self->super._intermediates objectAtIndexedSubscript:v11])
   {
@@ -768,9 +768,9 @@ uint64_t __61__BWDeferredProcessingContainer_hasInferenceBuffer_portType___block
   }
 
   pthread_rwlock_unlock(&self->super._lock);
-  if (a5)
+  if (err)
   {
-    *a5 = v15;
+    *err = v15;
   }
 
   return v12;
@@ -790,7 +790,7 @@ uint64_t __72__BWDeferredProcessingContainer_copyInferenceBufferForKey_portType_
   return [v4 isEqual:v5];
 }
 
-- (BOOL)hasInference:(id)a3 portType:(id)a4
+- (BOOL)hasInference:(id)inference portType:(id)type
 {
   pthread_rwlock_rdlock(&self->super._lock);
   intermediates = self->super._intermediates;
@@ -798,8 +798,8 @@ uint64_t __72__BWDeferredProcessingContainer_copyInferenceBufferForKey_portType_
   v12[1] = 3221225472;
   v12[2] = __55__BWDeferredProcessingContainer_hasInference_portType___block_invoke;
   v12[3] = &unk_1E7999928;
-  v12[4] = a4;
-  v12[5] = a3;
+  v12[4] = type;
+  v12[5] = inference;
   v8 = [(NSMutableArray *)intermediates indexOfObjectPassingTest:v12];
   v10 = v8 != 0x7FFFFFFFFFFFFFFFLL && (v9 = v8, v8 < [(NSMutableArray *)self->super._intermediates count]) && [(NSMutableArray *)self->super._intermediates objectAtIndexedSubscript:v9]!= 0;
   pthread_rwlock_unlock(&self->super._lock);
@@ -820,7 +820,7 @@ uint64_t __55__BWDeferredProcessingContainer_hasInference_portType___block_invok
   return [v4 isEqual:v5];
 }
 
-- (id)copyInferenceForKey:(id)a3 customClasses:(id)a4 portType:(id)a5 err:(int *)a6
+- (id)copyInferenceForKey:(id)key customClasses:(id)classes portType:(id)type err:(int *)err
 {
   v17 = 0;
   pthread_rwlock_rdlock(&self->super._lock);
@@ -829,8 +829,8 @@ uint64_t __55__BWDeferredProcessingContainer_hasInference_portType___block_invok
   v16[1] = 3221225472;
   v16[2] = __80__BWDeferredProcessingContainer_copyInferenceForKey_customClasses_portType_err___block_invoke;
   v16[3] = &unk_1E7999928;
-  v16[4] = a5;
-  v16[5] = a3;
+  v16[4] = type;
+  v16[5] = key;
   v12 = [(NSMutableArray *)intermediates indexOfObjectPassingTest:v16];
   if (v12 == 0x7FFFFFFFFFFFFFFFLL || (v13 = v12, v12 >= [(NSMutableArray *)self->super._intermediates count]) || ![(NSMutableArray *)self->super._intermediates objectAtIndexedSubscript:v13])
   {
@@ -839,7 +839,7 @@ uint64_t __55__BWDeferredProcessingContainer_hasInference_portType___block_invok
 
   else
   {
-    v14 = [-[NSMutableArray objectAtIndexedSubscript:](self->super._intermediates objectAtIndexedSubscript:{v13), "fetchWithCustomClassesAndRetain:err:", a4, &v17}];
+    v14 = [-[NSMutableArray objectAtIndexedSubscript:](self->super._intermediates objectAtIndexedSubscript:{v13), "fetchWithCustomClassesAndRetain:err:", classes, &v17}];
     if (v17)
     {
       [BWDeferredProcessingContainer copyInferenceForKey:customClasses:portType:err:];
@@ -847,9 +847,9 @@ uint64_t __55__BWDeferredProcessingContainer_hasInference_portType___block_invok
   }
 
   pthread_rwlock_unlock(&self->super._lock);
-  if (a6)
+  if (err)
   {
-    *a6 = v17;
+    *err = v17;
   }
 
   return v14;
@@ -878,11 +878,11 @@ uint64_t __80__BWDeferredProcessingContainer_copyInferenceForKey_customClasses_p
   pthread_rwlock_unlock(&self->super._lock);
 }
 
-- (void)abortingProcessingDueToError:(int)a3
+- (void)abortingProcessingDueToError:(int)error
 {
   if (self->_sessionDictionary)
   {
-    [(BWDeferredProcessingContainer *)*&a3 abortingProcessingDueToError:&v3, self];
+    [(BWDeferredProcessingContainer *)*&error abortingProcessingDueToError:&v3, self];
   }
 
   else
@@ -891,30 +891,30 @@ uint64_t __80__BWDeferredProcessingContainer_copyInferenceForKey_customClasses_p
   }
 }
 
-- (BWDeferredProcessingContainer)initWithApplicationID:(id)a3 captureRequestIdentifier:(id)a4 baseFolderURL:(id)a5 openForPeeking:(BOOL)a6 err:(int *)p_info
+- (BWDeferredProcessingContainer)initWithApplicationID:(id)d captureRequestIdentifier:(id)identifier baseFolderURL:(id)l openForPeeking:(BOOL)peeking err:(int *)p_info
 {
   v212[0] = 0;
   v211 = 0;
   OUTLINED_FUNCTION_16_2();
   if (v13)
   {
-    [(BWDeferredContainer *)self _getUUIDBytes:a4 high:0];
+    [(BWDeferredContainer *)self _getUUIDBytes:identifier high:0];
     v14 = OUTLINED_FUNCTION_18_0();
-    [(BWDeferredContainer *)v14 _getUUIDBytes:a4 high:1];
+    [(BWDeferredContainer *)v14 _getUUIDBytes:identifier high:1];
     OUTLINED_FUNCTION_38_11();
     kdebug_trace();
   }
 
   v210.receiver = self;
   v210.super_class = BWDeferredProcessingContainer;
-  v15 = [(BWDeferredContainer *)&v210 initWithApplicationID:a3 captureRequestIdentifier:a4 baseFolderURL:a5 queuePriority:39 err:v212];
+  v15 = [(BWDeferredContainer *)&v210 initWithApplicationID:d captureRequestIdentifier:identifier baseFolderURL:l queuePriority:39 err:v212];
   if (!v15)
   {
     v16 = 0;
     goto LABEL_6;
   }
 
-  [+[BWDeferredTransactionBroker sharedInstance](BWDeferredTransactionBroker openTransaction:"openTransaction:name:" name:4, a4];
+  [+[BWDeferredTransactionBroker sharedInstance](BWDeferredTransactionBroker openTransaction:"openTransaction:name:" name:4, identifier];
   v15->_metadataPrefetchQueue = FigDispatchQueueCreateWithPriority();
   v15->_bufferPrefetchQueue = FigDispatchQueueCreateWithPriority();
   v212[0] = [(BWDeferredProcessingContainer *)v15 _buildFolderStatistics];
@@ -925,8 +925,8 @@ uint64_t __80__BWDeferredProcessingContainer_copyInferenceForKey_customClasses_p
     goto LABEL_170;
   }
 
-  v17 = [(BWDeferredContainer *)v15 _containerManifestURL];
-  v212[0] = [(BWDeferredContainer *)BWDeferredProcessingContainer validateManifestURLSize:v17];
+  _containerManifestURL = [(BWDeferredContainer *)v15 _containerManifestURL];
+  v212[0] = [(BWDeferredContainer *)BWDeferredProcessingContainer validateManifestURLSize:_containerManifestURL];
   if (v212[0])
   {
 LABEL_170:
@@ -935,7 +935,7 @@ LABEL_170:
   }
 
   v209 = 0;
-  v18 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v17 options:0 error:&v209];
+  v18 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:_containerManifestURL options:0 error:&v209];
   if (!v18)
   {
     OUTLINED_FUNCTION_14_30(-16132);
@@ -944,15 +944,15 @@ LABEL_170:
     OUTLINED_FUNCTION_39_7();
     if (v13)
     {
-      v126 = v125;
+      identifierCopy = v125;
     }
 
     else
     {
-      v126 = a4;
+      identifierCopy = identifier;
     }
 
-    if (!v126)
+    if (!identifierCopy)
     {
       goto LABEL_169;
     }
@@ -993,16 +993,16 @@ LABEL_170:
     OUTLINED_FUNCTION_39_7();
     if (v13)
     {
-      v130 = v129;
+      identifierCopy2 = v129;
     }
 
     else
     {
-      v130 = a4;
+      identifierCopy2 = identifier;
     }
 
     OUTLINED_FUNCTION_9_43();
-    if (!v130)
+    if (!identifierCopy2)
     {
       goto LABEL_169;
     }
@@ -1103,7 +1103,7 @@ LABEL_19:
   v31 = [-[NSMutableDictionary objectForKeyedSubscript:](v15->_sessionDictionary objectForKeyedSubscript:{@"PreviousError", "intValue"}];
   v15->_previousAttemptErrorCode = v31;
   p_info = 0x1E696A000;
-  if (!a6)
+  if (!peeking)
   {
     if ([&unk_1F22490F0 containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v31)}])
     {
@@ -1121,7 +1121,7 @@ LABEL_19:
           v201 = 136315906;
           v202 = "[BWDeferredProcessingContainer initWithApplicationID:captureRequestIdentifier:baseFolderURL:openForPeeking:err:]";
           v203 = 2114;
-          v204 = a4;
+          identifierCopy4 = identifier;
           v205 = 1024;
           *v206 = previousAttemptErrorCode;
           *&v206[4] = 1024;
@@ -1136,7 +1136,7 @@ LABEL_19:
       }
     }
 
-    else if (([a3 isEqualToString:0x1F2185190] & 1) == 0)
+    else if (([d isEqualToString:0x1F2185190] & 1) == 0)
     {
       ++v15->_processingCount;
     }
@@ -1155,7 +1155,7 @@ LABEL_19:
         v201 = 136315906;
         v202 = "[BWDeferredProcessingContainer initWithApplicationID:captureRequestIdentifier:baseFolderURL:openForPeeking:err:]";
         v203 = 2114;
-        v204 = a4;
+        identifierCopy4 = identifier;
         v205 = 1024;
         *v206 = v118;
         *&v206[4] = 1024;
@@ -1198,9 +1198,9 @@ LABEL_177:
     goto LABEL_147;
   }
 
-  v33 = [v32 longValue];
-  v15->super._manifestVersion = v33;
-  if (v33 <= 6)
+  longValue = [v32 longValue];
+  v15->super._manifestVersion = longValue;
+  if (longValue <= 6)
   {
     v212[0] = -16130;
     goto LABEL_130;
@@ -1280,22 +1280,22 @@ LABEL_177:
   v45 = [OUTLINED_FUNCTION_7() setWithObject:?];
   v46 = OUTLINED_FUNCTION_18_20(v45);
   v15->super._stillImageSettings = v46;
-  v47 = [(FigCaptureStillImageSettings *)v46 deferredPhotoFinalDimensions];
-  if (v47 >= 1 && SHIDWORD(v47) >= 1)
+  deferredPhotoFinalDimensions = [(FigCaptureStillImageSettings *)v46 deferredPhotoFinalDimensions];
+  if (deferredPhotoFinalDimensions >= 1 && SHIDWORD(deferredPhotoFinalDimensions) >= 1)
   {
     [(FigCaptureStillImageSettings *)v15->super._stillImageSettings setOutputWidth:[(FigCaptureStillImageSettings *)v15->super._stillImageSettings deferredPhotoFinalWidth]];
     [(FigCaptureStillImageSettings *)v15->super._stillImageSettings setOutputHeight:[(FigCaptureStillImageSettings *)v15->super._stillImageSettings deferredPhotoFinalHeight]];
   }
 
-  v49 = [(FigCaptureStillImageSettings *)v15->super._stillImageSettings deferredPhotoFinalThumbnailDimensions];
-  if (v49 >= 1 && SHIDWORD(v49) >= 1)
+  deferredPhotoFinalThumbnailDimensions = [(FigCaptureStillImageSettings *)v15->super._stillImageSettings deferredPhotoFinalThumbnailDimensions];
+  if (deferredPhotoFinalThumbnailDimensions >= 1 && SHIDWORD(deferredPhotoFinalThumbnailDimensions) >= 1)
   {
     [(FigCaptureStillImageSettings *)v15->super._stillImageSettings setThumbnailWidth:[(FigCaptureStillImageSettings *)v15->super._stillImageSettings deferredPhotoFinalThumbnailDimensions]];
     [(FigCaptureStillImageSettings *)v15->super._stillImageSettings setThumbnailHeight:[(FigCaptureStillImageSettings *)v15->super._stillImageSettings deferredPhotoFinalThumbnailDimensions]>> 32];
   }
 
-  v51 = [(FigCaptureStillImageSettings *)v15->super._stillImageSettings deferredPhotoFinalRawThumbnailDimensions];
-  if (v51 >= 1 && SHIDWORD(v51) >= 1)
+  deferredPhotoFinalRawThumbnailDimensions = [(FigCaptureStillImageSettings *)v15->super._stillImageSettings deferredPhotoFinalRawThumbnailDimensions];
+  if (deferredPhotoFinalRawThumbnailDimensions >= 1 && SHIDWORD(deferredPhotoFinalRawThumbnailDimensions) >= 1)
   {
     [(FigCaptureStillImageSettings *)v15->super._stillImageSettings setRawThumbnailWidth:[(FigCaptureStillImageSettings *)v15->super._stillImageSettings deferredPhotoFinalRawThumbnailDimensions]];
     [(FigCaptureStillImageSettings *)v15->super._stillImageSettings setRawThumbnailHeight:[(FigCaptureStillImageSettings *)v15->super._stillImageSettings deferredPhotoFinalRawThumbnailDimensions]>> 32];
@@ -1368,7 +1368,7 @@ LABEL_124:
     }
   }
 
-  v155 = [(BWDeferredContainer *)v15 _intermediateFolderURL];
+  _intermediateFolderURL = [(BWDeferredContainer *)v15 _intermediateFolderURL];
   v62 = [objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")];
   if (!v62)
   {
@@ -1484,9 +1484,9 @@ LABEL_129:
         goto LABEL_130;
       }
 
-      v69 = [(BWStillImageCaptureSettings *)v15->super._stillImageCaptureSettings captureFlags];
+      captureFlags = [(BWStillImageCaptureSettings *)v15->super._stillImageCaptureSettings captureFlags];
       p_metadataPrefetchQueue = &v15->_bufferPrefetchQueue;
-      if ((v69 & 0x100000000) != 0)
+      if ((captureFlags & 0x100000000) != 0)
       {
         v71 = 0;
         goto LABEL_88;
@@ -1496,7 +1496,7 @@ LABEL_87:
       v71 = *p_metadataPrefetchQueue;
 LABEL_88:
       v72 = MEMORY[0x1E695DFF8];
-      v190[0] = [v155 path];
+      v190[0] = [_intermediateFolderURL path];
       v190[1] = v44;
       v212[0] = [p_info setURL:objc_msgSend(v72 prefetchQueue:{"fileURLWithPathComponents:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v190, 2)), v71}];
       if (v212[0])
@@ -1541,12 +1541,12 @@ LABEL_91:
     }
   }
 
-  v79 = [(BWStillImageCaptureSettings *)v15->super._stillImageCaptureSettings captureFlags];
+  captureFlags2 = [(BWStillImageCaptureSettings *)v15->super._stillImageCaptureSettings captureFlags];
   p_info = v148;
-  if ((v79 & 0x4000000000) != 0)
+  if ((captureFlags2 & 0x4000000000) != 0)
   {
     intermediates = v15->super._intermediates;
-    v88 = OUTLINED_FUNCTION_61_8(v79, v80, v81, v82, v83, v84, v85, v86, v137, 0, v140, v142, 352, v145, v146, v148, &v15->_bufferPrefetchQueue, obja, &v15->_metadataPrefetchQueue, v155, v157, v159, v161, v163, v165, v167, v169, v171, v173, v175, v177, v179, v181, v183, v185, v187, 0);
+    v88 = OUTLINED_FUNCTION_61_8(captureFlags2, v80, v81, v82, v83, v84, v85, v86, v137, 0, v140, v142, 352, v145, v146, v148, &v15->_bufferPrefetchQueue, obja, &v15->_metadataPrefetchQueue, _intermediateFolderURL, v157, v159, v161, v163, v165, v167, v169, v171, v173, v175, v177, v179, v181, v183, v185, v187, 0);
     if (v88)
     {
       v89 = v88;
@@ -1627,14 +1627,14 @@ LABEL_13:
       return 0;
     }
 
-    v8 = [v7 objectEnumerator];
-    if (v8)
+    objectEnumerator = [v7 objectEnumerator];
+    if (objectEnumerator)
     {
-      v9 = v8;
-      v10 = [v8 nextObject];
-      if (v10)
+      v9 = objectEnumerator;
+      nextObject = [objectEnumerator nextObject];
+      if (nextObject)
       {
-        v11 = v10;
+        nextObject2 = nextObject;
         v12 = 0;
         while (1)
         {
@@ -1645,8 +1645,8 @@ LABEL_13:
           }
 
           v12 += [v13 fileSize];
-          v11 = [v9 nextObject];
-          if (!v11)
+          nextObject2 = [v9 nextObject];
+          if (!nextObject2)
           {
             goto LABEL_11;
           }
@@ -1767,13 +1767,13 @@ LABEL_25:
                   v37 = v36;
                   v38 = [BWDeferredInferenceBufferIntermediate alloc];
                   v39 = [v24 tag];
-                  v40 = [v24 metadataTag];
-                  v41 = [v24 portType];
-                  v42 = [v24 compressionProfile];
+                  metadataTag = [v24 metadataTag];
+                  portType = [v24 portType];
+                  compressionProfile = [v24 compressionProfile];
                   v47 = [v24 URL];
-                  v43 = v40;
+                  v43 = metadataTag;
                   v1 = v74;
-                  isKindOfClass = [(BWDeferredInferenceBufferIntermediate *)v38 initWithBuffer:v37 tag:v39 metadataTag:v43 inferenceAttachedMediaKey:v80 portType:v41 compressionProfile:v42 URL:?];
+                  isKindOfClass = [(BWDeferredInferenceBufferIntermediate *)v38 initWithBuffer:v37 tag:v39 metadataTag:v43 inferenceAttachedMediaKey:v80 portType:portType compressionProfile:compressionProfile URL:?];
                   break;
                 default:
                   if (v80 >= 2)
@@ -1796,15 +1796,15 @@ LABEL_25:
                   v29 = v28;
                   v66 = objc_alloc((p_info + 471));
                   v30 = [v24 tag];
-                  v31 = [v24 captureFrameFlags];
-                  v32 = [v24 metadataTag];
-                  v33 = [v24 portType];
-                  v34 = [v24 compressionProfile];
+                  captureFrameFlags = [v24 captureFrameFlags];
+                  metadataTag2 = [v24 metadataTag];
+                  portType2 = [v24 portType];
+                  compressionProfile2 = [v24 compressionProfile];
                   v49 = [v24 URL];
-                  LODWORD(v47) = v34;
+                  LODWORD(v47) = compressionProfile2;
                   v35 = v30;
                   v1 = v74;
-                  isKindOfClass = [v66 initWithBuffer:v29 tag:v35 bufferType:37 captureFrameFlags:v31 metadataTag:v32 portType:v33 compressionProfile:? URL:?];
+                  isKindOfClass = [v66 initWithBuffer:v29 tag:v35 bufferType:37 captureFrameFlags:captureFrameFlags metadataTag:metadataTag2 portType:portType2 compressionProfile:? URL:?];
                   break;
               }
 
@@ -1903,19 +1903,19 @@ LABEL_41:
   return result;
 }
 
-- (uint64_t)hasBufferWithCaptureFrameFlags:(uint64_t)a3 portType:
+- (uint64_t)hasBufferWithCaptureFrameFlags:(uint64_t)flags portType:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  pthread_rwlock_rdlock((a1 + 16));
+  pthread_rwlock_rdlock((self + 16));
   OUTLINED_FUNCTION_33_0();
   v10[1] = 3221225472;
   v10[2] = __73__BWDeferredProcessingContainer_hasBufferWithCaptureFrameFlags_portType___block_invoke;
   v10[3] = &unk_1E7999900;
-  v10[4] = a3;
+  v10[4] = flags;
   v10[5] = a2;
   [v6 indexOfObjectPassingTest:v10];
   OUTLINED_FUNCTION_79();
@@ -1929,11 +1929,11 @@ LABEL_41:
     v8 = 1;
   }
 
-  pthread_rwlock_unlock((a1 + 16));
+  pthread_rwlock_unlock((self + 16));
   return v8;
 }
 
-- (id)copyBuffersForType:(unint64_t)a3 portType:(id)a4 metadataArray:(id *)a5 err:(int *)a6
+- (id)copyBuffersForType:(unint64_t)type portType:(id)portType metadataArray:(id *)array err:(int *)err
 {
   v84[0] = 0;
   pthread_rwlock_rdlock(&self->super._lock);
@@ -1942,17 +1942,17 @@ LABEL_41:
   v83[1] = 3221225472;
   v83[2] = __79__BWDeferredProcessingContainer_copyBuffersForType_portType_metadataArray_err___block_invoke;
   v83[3] = &unk_1E7999900;
-  v83[4] = a4;
-  v83[5] = a3;
+  v83[4] = portType;
+  v83[5] = type;
   v13 = [(NSMutableArray *)self->super._intermediates objectsAtIndexes:[(NSMutableArray *)intermediates indexesOfObjectsPassingTest:v83]];
   if ([v13 count])
   {
-    v14 = [MEMORY[0x1E695DF70] array];
-    v22 = v14;
-    if (a5)
+    array = [MEMORY[0x1E695DF70] array];
+    v22 = array;
+    if (array)
     {
-      v14 = [MEMORY[0x1E695DF70] array];
-      v23 = v14;
+      array = [MEMORY[0x1E695DF70] array];
+      v23 = array;
     }
 
     else
@@ -1960,12 +1960,12 @@ LABEL_41:
       v23 = 0;
     }
 
-    v24 = OUTLINED_FUNCTION_64_8(v14, v15, v16, v17, v18, v19, v20, v21, v42, v44, v46, v48, v50, v52, v54, v56, v58, v60, v62, v64, v66, v68, v70, v72, v74, v76, v78, v80, 0);
+    v24 = OUTLINED_FUNCTION_64_8(array, v15, v16, v17, v18, v19, v20, v21, v42, v44, v46, v48, v50, v52, v54, v56, v58, v60, v62, v64, v66, v68, v70, v72, v74, v76, v78, v80, 0);
     if (v24)
     {
       v25 = v24;
       v47 = v6;
-      v49 = a6;
+      errCopy = err;
       v26 = MEMORY[0];
       while (2)
       {
@@ -1978,8 +1978,8 @@ LABEL_41:
 
           v28 = *(8 * i);
           v29 = [v28 tag];
-          v30 = [v28 metadataTag];
-          v38 = v30;
+          metadataTag = [v28 metadataTag];
+          v38 = metadataTag;
           if (v29)
           {
             v39 = [(BWDeferredProcessingContainer *)self copyBufferForTag:v29 err:v84];
@@ -1995,7 +1995,7 @@ LABEL_41:
             }
           }
 
-          if (a5 && v38)
+          if (array && v38)
           {
             v40 = [(BWDeferredProcessingContainer *)self copyMetadataForTag:v38 err:v84];
             if (v40)
@@ -2013,7 +2013,7 @@ LABEL_22:
           }
         }
 
-        v25 = OUTLINED_FUNCTION_64_8(v30, v31, v32, v33, v34, v35, v36, v37, v43, v45, v47, v49, v51, v53, v55, v57, v59, v61, v63, v65, v67, v69, v71, v73, v75, v77, v79, v81, v82);
+        v25 = OUTLINED_FUNCTION_64_8(metadataTag, v31, v32, v33, v34, v35, v36, v37, v43, v45, v47, errCopy, v51, v53, v55, v57, v59, v61, v63, v65, v67, v69, v71, v73, v75, v77, v79, v81, v82);
         if (v25)
         {
           continue;
@@ -2023,7 +2023,7 @@ LABEL_22:
       }
 
 LABEL_23:
-      a6 = v49;
+      err = errCopy;
     }
   }
 
@@ -2034,54 +2034,54 @@ LABEL_23:
   }
 
   pthread_rwlock_unlock(&self->super._lock);
-  if (a6)
+  if (err)
   {
-    *a6 = v84[0];
+    *err = v84[0];
   }
 
-  if (a5)
+  if (array)
   {
-    *a5 = [v23 copy];
+    *array = [v23 copy];
   }
 
   return [v22 copy];
 }
 
-- (id)copyAttributesForBufferType:(unint64_t)a3 portType:(id)a4 err:(int *)a5
+- (id)copyAttributesForBufferType:(unint64_t)type portType:(id)portType err:(int *)err
 {
   pthread_rwlock_rdlock(&self->super._lock);
   OUTLINED_FUNCTION_33_0();
   v17[1] = 3221225472;
   v17[2] = __74__BWDeferredProcessingContainer_copyAttributesForBufferType_portType_err___block_invoke;
   v17[3] = &unk_1E7999900;
-  v17[4] = a4;
-  v17[5] = a3;
+  v17[4] = portType;
+  v17[5] = type;
   [v9 indexOfObjectPassingTest:v17];
   OUTLINED_FUNCTION_79();
   if (!v11 && (v14 = v10, [(NSMutableArray *)self->super._intermediates objectAtIndexedSubscript:v10]&& (v15 = [(NSMutableArray *)self->super._intermediates objectAtIndexedSubscript:v14], objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
   {
-    v12 = [v15 attributes];
+    attributes = [v15 attributes];
     v13 = 0;
   }
 
   else
   {
-    v12 = 0;
+    attributes = 0;
     v13 = -16136;
   }
 
   pthread_rwlock_unlock(&self->super._lock);
-  if (a5)
+  if (err)
   {
-    *a5 = v13;
+    *err = v13;
   }
 
-  return v12;
+  return attributes;
 }
 
-- (uint64_t)_copyObjectForTag:(uint64_t)a3 customClasses:(int *)a4 err:
+- (uint64_t)_copyObjectForTag:(uint64_t)tag customClasses:(int *)classes err:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -2095,11 +2095,11 @@ LABEL_23:
     kdebug_trace();
   }
 
-  pthread_rwlock_rdlock((a1 + 16));
-  v9 = [(BWDeferredContainer *)a1 _intermediateForTag:a2];
+  pthread_rwlock_rdlock((self + 16));
+  v9 = [(BWDeferredContainer *)self _intermediateForTag:a2];
   if (v9 && (v10 = v9, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v11 = [v10 fetchWithCustomClassesAndRetain:a3 err:&v13];
+    v11 = [v10 fetchWithCustomClassesAndRetain:tag err:&v13];
   }
 
   else
@@ -2108,10 +2108,10 @@ LABEL_23:
     v13 = -16136;
   }
 
-  pthread_rwlock_unlock((a1 + 16));
-  if (a4)
+  pthread_rwlock_unlock((self + 16));
+  if (classes)
   {
-    *a4 = v13;
+    *classes = v13;
   }
 
   if (*v8 == 1)
@@ -2123,7 +2123,7 @@ LABEL_23:
   return v11;
 }
 
-- (id)copyArrayForTag:(id)a3 customClasses:(id)a4 err:(int *)a5
+- (id)copyArrayForTag:(id)tag customClasses:(id)classes err:(int *)err
 {
   OUTLINED_FUNCTION_58_2();
   OUTLINED_FUNCTION_40_15();
@@ -2199,7 +2199,7 @@ LABEL_9:
   return result;
 }
 
-- (id)copyDictionaryForTag:(id)a3 customClasses:(id)a4 err:(int *)a5
+- (id)copyDictionaryForTag:(id)tag customClasses:(id)classes err:(int *)err
 {
   OUTLINED_FUNCTION_58_2();
   OUTLINED_FUNCTION_40_15();

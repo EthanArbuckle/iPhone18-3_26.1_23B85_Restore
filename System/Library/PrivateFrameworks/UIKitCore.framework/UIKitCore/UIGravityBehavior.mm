@@ -5,18 +5,18 @@
 - (NSArray)items;
 - (UIGravityBehavior)initWithItems:(NSArray *)items;
 - (id)description;
-- (void)_addGravityItem:(id)a3;
+- (void)_addGravityItem:(id)item;
 - (void)_associate;
 - (void)_dissociate;
-- (void)_setAngle:(double)a3 magnitude:(double)a4;
+- (void)_setAngle:(double)angle magnitude:(double)magnitude;
 - (void)addItem:(id)item;
 - (void)removeItem:(id)item;
 - (void)setAngle:(CGFloat)angle;
 - (void)setAngle:(CGFloat)angle magnitude:(CGFloat)magnitude;
-- (void)setGravity:(CGPoint)a3;
+- (void)setGravity:(CGPoint)gravity;
 - (void)setMagnitude:(CGFloat)magnitude;
-- (void)setXComponent:(double)a3;
-- (void)setYComponent:(double)a3;
+- (void)setXComponent:(double)component;
+- (void)setYComponent:(double)component;
 @end
 
 @implementation UIGravityBehavior
@@ -38,11 +38,11 @@
   return v6;
 }
 
-- (void)_addGravityItem:(id)a3
+- (void)_addGravityItem:(id)item
 {
-  v4 = a3;
-  v5 = [(UIDynamicBehavior *)self _context];
-  v6 = [v5 _registerBodyForItem:v4];
+  itemCopy = item;
+  _context = [(UIDynamicBehavior *)self _context];
+  v6 = [_context _registerBodyForItem:itemCopy];
 
   [v6 setUsesPreciseCollisionDetection:1];
   [v6 setAffectedByGravity:1];
@@ -52,19 +52,19 @@
 - (void)addItem:(id)item
 {
   v8 = item;
-  v4 = [(UIDynamicBehavior *)self _items];
-  v5 = [v4 containsObject:v8];
+  _items = [(UIDynamicBehavior *)self _items];
+  v5 = [_items containsObject:v8];
 
   if ((v5 & 1) == 0)
   {
     [(UIDynamicBehavior *)self _addItem:v8];
-    v6 = [(UIDynamicBehavior *)self _context];
+    _context = [(UIDynamicBehavior *)self _context];
 
-    if (v6)
+    if (_context)
     {
       [(UIGravityBehavior *)self _addGravityItem:v8];
-      v7 = [(UIDynamicBehavior *)self _context];
-      [v7 _tickle];
+      _context2 = [(UIDynamicBehavior *)self _context];
+      [_context2 _tickle];
     }
   }
 }
@@ -72,16 +72,16 @@
 - (void)removeItem:(id)item
 {
   v8 = item;
-  v4 = [(UIDynamicBehavior *)self _items];
-  v5 = [v4 containsObject:v8];
+  _items = [(UIDynamicBehavior *)self _items];
+  v5 = [_items containsObject:v8];
 
   if (v5)
   {
-    v6 = [(UIDynamicBehavior *)self _context];
-    [v6 _unregisterBodyForItem:v8 action:&__block_literal_global_197];
+    _context = [(UIDynamicBehavior *)self _context];
+    [_context _unregisterBodyForItem:v8 action:&__block_literal_global_197];
 
-    v7 = [(UIDynamicBehavior *)self _context];
-    [v7 _tickle];
+    _context2 = [(UIDynamicBehavior *)self _context];
+    [_context2 _tickle];
 
     [(UIDynamicBehavior *)self _removeItem:v8];
   }
@@ -138,26 +138,26 @@ void __32__UIGravityBehavior_removeItem___block_invoke(uint64_t a1, void *a2)
   [UIGravityBehavior setAngle:"setAngle:magnitude:" magnitude:?];
 }
 
-- (void)setXComponent:(double)a3
+- (void)setXComponent:(double)component
 {
   [(UIGravityBehavior *)self yComponent];
 
-  [(UIGravityBehavior *)self setGravity:a3, v5];
+  [(UIGravityBehavior *)self setGravity:component, v5];
 }
 
-- (void)setYComponent:(double)a3
+- (void)setYComponent:(double)component
 {
   [(UIGravityBehavior *)self xComponent];
 
   [(UIGravityBehavior *)self setGravity:?];
 }
 
-- (void)_setAngle:(double)a3 magnitude:(double)a4
+- (void)_setAngle:(double)angle magnitude:(double)magnitude
 {
-  v6 = a3;
-  v7 = __sincosf_stret(v6);
+  angleCopy = angle;
+  v7 = __sincosf_stret(angleCopy);
 
-  [(UIGravityBehavior *)self setGravity:v7.__cosval * a4, v7.__sinval * a4];
+  [(UIGravityBehavior *)self setGravity:v7.__cosval * magnitude, v7.__sinval * magnitude];
 }
 
 - (void)setAngle:(CGFloat)angle magnitude:(CGFloat)magnitude
@@ -168,17 +168,17 @@ void __32__UIGravityBehavior_removeItem___block_invoke(uint64_t a1, void *a2)
   [(UIGravityBehavior *)self setGravity:v7.__cosval * magnitude, v7.__sinval * magnitude];
 }
 
-- (void)setGravity:(CGPoint)a3
+- (void)setGravity:(CGPoint)gravity
 {
-  if (a3.x != self->_gravity.x || a3.y != self->_gravity.y)
+  if (gravity.x != self->_gravity.x || gravity.y != self->_gravity.y)
   {
-    self->_gravity = a3;
-    v6 = [(UIDynamicBehavior *)self _context];
-    v7 = [v6 _world];
+    self->_gravity = gravity;
+    _context = [(UIDynamicBehavior *)self _context];
+    _world = [_context _world];
     [(UIGravityBehavior *)self gravity];
     v9 = v8 * 10.0;
     [(UIGravityBehavior *)self gravity];
-    [v7 setGravity:{v9, v10 * 10.0}];
+    [_world setGravity:{v9, v10 * 10.0}];
 
     [(UIDynamicBehavior *)self _changedParameterForBody:0];
   }
@@ -187,8 +187,8 @@ void __32__UIGravityBehavior_removeItem___block_invoke(uint64_t a1, void *a2)
 - (NSArray)items
 {
   v2 = MEMORY[0x1E695DEC8];
-  v3 = [(UIDynamicBehavior *)self _items];
-  v4 = [v2 arrayWithArray:v3];
+  _items = [(UIDynamicBehavior *)self _items];
+  v4 = [v2 arrayWithArray:_items];
 
   return v4;
 }
@@ -196,19 +196,19 @@ void __32__UIGravityBehavior_removeItem___block_invoke(uint64_t a1, void *a2)
 - (void)_associate
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(UIDynamicBehavior *)self _context];
-  v4 = [v3 _world];
+  _context = [(UIDynamicBehavior *)self _context];
+  _world = [_context _world];
   [(UIGravityBehavior *)self gravity];
   v6 = v5 * 10.0;
   [(UIGravityBehavior *)self gravity];
-  [v4 setGravity:{v6, v7 * 10.0}];
+  [_world setGravity:{v6, v7 * 10.0}];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v8 = [(UIDynamicBehavior *)self _items];
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  _items = [(UIDynamicBehavior *)self _items];
+  v9 = [_items countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -220,14 +220,14 @@ void __32__UIGravityBehavior_removeItem___block_invoke(uint64_t a1, void *a2)
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(_items);
         }
 
         [(UIGravityBehavior *)self _addGravityItem:*(*(&v13 + 1) + 8 * v12++)];
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [_items countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
@@ -237,16 +237,16 @@ void __32__UIGravityBehavior_removeItem___block_invoke(uint64_t a1, void *a2)
 - (void)_dissociate
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(UIDynamicBehavior *)self _context];
-  v4 = [v3 _world];
-  [v4 setGravity:{0.0, 0.0}];
+  _context = [(UIDynamicBehavior *)self _context];
+  _world = [_context _world];
+  [_world setGravity:{0.0, 0.0}];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(UIDynamicBehavior *)self _items];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  _items = [(UIDynamicBehavior *)self _items];
+  v6 = [_items countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -258,18 +258,18 @@ void __32__UIGravityBehavior_removeItem___block_invoke(uint64_t a1, void *a2)
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_items);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
-        v11 = [(UIDynamicBehavior *)self _context];
-        [v11 _unregisterBodyForItem:v10 action:&__block_literal_global_2_9];
+        _context2 = [(UIDynamicBehavior *)self _context];
+        [_context2 _unregisterBodyForItem:v10 action:&__block_literal_global_2_9];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [_items countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -283,8 +283,8 @@ void __32__UIGravityBehavior_removeItem___block_invoke(uint64_t a1, void *a2)
   v9.super_class = UIGravityBehavior;
   v4 = [(UIDynamicBehavior *)&v9 description];
   v5 = NSStringFromCGPoint(self->_gravity);
-  v6 = [(UIDynamicBehavior *)self _itemsDescription];
-  v7 = [v3 stringWithFormat:@"%@ %@ %@", v4, v5, v6];
+  _itemsDescription = [(UIDynamicBehavior *)self _itemsDescription];
+  v7 = [v3 stringWithFormat:@"%@ %@ %@", v4, v5, _itemsDescription];
 
   return v7;
 }

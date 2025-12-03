@@ -2,14 +2,14 @@
 + (MPSNNDefaultPadding)paddingForTensorflowAveragePooling;
 + (MPSNNDefaultPadding)paddingForTensorflowAveragePoolingValidOnly;
 + (MPSNNDefaultPadding)paddingWithMethod:(MPSNNPaddingMethod)method;
-+ (id)zeroPaddingWithTopAmount:(unint64_t)a3 bottomAmount:(unint64_t)a4 leftAmount:(unint64_t)a5 rightAmount:(unint64_t)a6;
-- (BOOL)isEqual:(id)a3;
-- (MPSNNDefaultPadding)initWithCoder:(id)a3;
-- (MPSNNDefaultPadding)initWithPaddingMethod:(unint64_t)a3;
++ (id)zeroPaddingWithTopAmount:(unint64_t)amount bottomAmount:(unint64_t)bottomAmount leftAmount:(unint64_t)leftAmount rightAmount:(unint64_t)rightAmount;
+- (BOOL)isEqual:(id)equal;
+- (MPSNNDefaultPadding)initWithCoder:(id)coder;
+- (MPSNNDefaultPadding)initWithPaddingMethod:(unint64_t)method;
 - (NSString)debugDescription;
 - (NSString)label;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSNNDefaultPadding
@@ -48,14 +48,14 @@
   }
 }
 
-- (MPSNNDefaultPadding)initWithPaddingMethod:(unint64_t)a3
+- (MPSNNDefaultPadding)initWithPaddingMethod:(unint64_t)method
 {
   v5.receiver = self;
   v5.super_class = MPSNNDefaultPadding;
   result = [(MPSNNDefaultPadding *)&v5 init];
   if (result)
   {
-    result->_method = a3;
+    result->_method = method;
     result->_mpsOwned = 0;
   }
 
@@ -66,7 +66,7 @@
 {
   if ((method & 0x4000) != 0)
   {
-    v14 = a1;
+    selfCopy2 = self;
     if (MTLReportFailureTypeEnabled())
     {
       goto LABEL_15;
@@ -77,7 +77,7 @@
 
   if ((method & 0xFFFFFFFFFFFF3800) != 0)
   {
-    v14 = a1;
+    selfCopy2 = self;
     if (MTLReportFailureTypeEnabled())
     {
 LABEL_15:
@@ -163,42 +163,42 @@ LABEL_16:
   return result;
 }
 
-+ (id)zeroPaddingWithTopAmount:(unint64_t)a3 bottomAmount:(unint64_t)a4 leftAmount:(unint64_t)a5 rightAmount:(unint64_t)a6
++ (id)zeroPaddingWithTopAmount:(unint64_t)amount bottomAmount:(unint64_t)bottomAmount leftAmount:(unint64_t)leftAmount rightAmount:(unint64_t)rightAmount
 {
   v10 = [ExplicitZeroPadding alloc];
-  v14 = objc_msgSend_initWithPaddingLeft_paddingRight_paddingTop_paddingBottom_(v10, v11, a5, a6, a3, a4, v12, v13);
+  v14 = objc_msgSend_initWithPaddingLeft_paddingRight_paddingTop_paddingBottom_(v10, v11, leftAmount, rightAmount, amount, bottomAmount, v12, v13);
 
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v5 = objc_opt_class();
-  isMemberOfClass = objc_msgSend_isMemberOfClass_(a3, v6, v5, v7, v8, v9, v10, v11);
+  isMemberOfClass = objc_msgSend_isMemberOfClass_(equal, v6, v5, v7, v8, v9, v10, v11);
   if (isMemberOfClass)
   {
-    LOBYTE(isMemberOfClass) = (objc_opt_respondsToSelector() & 1) == 0 && self->_method == *(a3 + 1);
+    LOBYTE(isMemberOfClass) = (objc_opt_respondsToSelector() & 1) == 0 && self->_method == *(equal + 1);
   }
 
   return isMemberOfClass;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeInt32_forKey_(a3, a2, 1, @"kMPSNNPaddingMethod_vers", v3, v4, v5, v6);
+  objc_msgSend_encodeInt32_forKey_(coder, a2, 1, @"kMPSNNPaddingMethod_vers", v3, v4, v5, v6);
   method_low = LODWORD(self->_method);
 
-  objc_msgSend_encodeInt32_forKey_(a3, v9, method_low, @"kMPSNNPaddingMethod", v10, v11, v12, v13);
+  objc_msgSend_encodeInt32_forKey_(coder, v9, method_low, @"kMPSNNPaddingMethod", v10, v11, v12, v13);
 }
 
-- (MPSNNDefaultPadding)initWithCoder:(id)a3
+- (MPSNNDefaultPadding)initWithCoder:(id)coder
 {
-  if (objc_msgSend_decodeInt32ForKey_(a3, v4, @"kMPSNNPaddingMethod_vers", v5, v6, v7, v8, v9) != 1)
+  if (objc_msgSend_decodeInt32ForKey_(coder, v4, @"kMPSNNPaddingMethod_vers", v5, v6, v7, v8, v9) != 1)
   {
     return 0;
   }
 
-  v16 = objc_msgSend_decodeInt32ForKey_(a3, v10, @"kMPSNNPaddingMethod", v11, v12, v13, v14, v15);
+  v16 = objc_msgSend_decodeInt32ForKey_(coder, v10, @"kMPSNNPaddingMethod", v11, v12, v13, v14, v15);
   v23 = objc_msgSend_paddingWithMethod_(MPSNNDefaultPadding, v17, v16, v18, v19, v20, v21, v22);
 
   return v23;

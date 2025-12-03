@@ -9,7 +9,7 @@
   v4 = a3;
   if (objc_opt_respondsToSelector())
   {
-    [a1 _deferWhenTouchingWithBlock:v4];
+    [self _deferWhenTouchingWithBlock:v4];
   }
 
   else

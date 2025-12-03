@@ -1,11 +1,11 @@
 @interface _PKAppProtectionCoordinator
 + (_PKAppProtectionCoordinator)shared;
-+ (id)sharedInstanceForApp:(id)a3;
++ (id)sharedInstanceForApp:(id)app;
 - (BOOL)isEffectivelyLocked;
 - (_PKAppProtectionCoordinator)init;
-- (void)isShieldRequiredWithCompletionHandler:(id)a3;
+- (void)isShieldRequiredWithCompletionHandler:(id)handler;
 - (void)requestAccess;
-- (void)requestAccessWithCompletionHandler:(id)a3;
+- (void)requestAccessWithCompletionHandler:(id)handler;
 @end
 
 @implementation _PKAppProtectionCoordinator
@@ -17,18 +17,18 @@
   return v2;
 }
 
-+ (id)sharedInstanceForApp:(id)a3
++ (id)sharedInstanceForApp:(id)app
 {
   v3 = qword_1EB5980F0;
-  v4 = a3;
-  v5 = v4;
+  appCopy = app;
+  v5 = appCopy;
   if (v3 != -1)
   {
-    v4 = swift_once();
+    appCopy = swift_once();
   }
 
   v6 = qword_1EB598928;
-  MEMORY[0x1EEE9AC00](v4);
+  MEMORY[0x1EEE9AC00](appCopy);
   os_unfair_lock_lock((v6 + 24));
   sub_1AD3DABC4((v6 + 16), &v9);
   os_unfair_lock_unlock((v6 + 24));
@@ -40,26 +40,26 @@
 
 - (BOOL)isEffectivelyLocked
 {
-  v2 = self;
+  selfCopy = self;
   if (PKAppProtectionEnabled())
   {
-    v3 = [*(&v2->super.isa + OBJC_IVAR____PKAppProtectionCoordinator_application) isEffectivelyLocked];
+    isEffectivelyLocked = [*(&selfCopy->super.isa + OBJC_IVAR____PKAppProtectionCoordinator_application) isEffectivelyLocked];
   }
 
   else
   {
-    v3 = 0;
+    isEffectivelyLocked = 0;
   }
 
-  return v3;
+  return isEffectivelyLocked;
 }
 
-- (void)isShieldRequiredWithCompletionHandler:(id)a3
+- (void)isShieldRequiredWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB598840);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -75,22 +75,22 @@
   v12[3] = 0;
   v12[4] = &unk_1ADB78B68;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_1AD4BBDF0(0, 0, v7, &unk_1ADB78B70, v12);
 }
 
 - (void)requestAccess
 {
-  v2 = self;
+  selfCopy = self;
   AppProtectionCoordinator.requestAccess()();
 }
 
-- (void)requestAccessWithCompletionHandler:(id)a3
+- (void)requestAccessWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB598840);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -106,7 +106,7 @@
   v12[3] = 0;
   v12[4] = &unk_1ADB78B48;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_1AD4BBDF0(0, 0, v7, &unk_1ADB78B50, v12);
 }
 

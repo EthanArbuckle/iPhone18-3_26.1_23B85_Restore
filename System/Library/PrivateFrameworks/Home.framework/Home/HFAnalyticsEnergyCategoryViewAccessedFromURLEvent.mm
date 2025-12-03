@@ -1,15 +1,15 @@
 @interface HFAnalyticsEnergyCategoryViewAccessedFromURLEvent
-- (HFAnalyticsEnergyCategoryViewAccessedFromURLEvent)initWithData:(id)a3;
+- (HFAnalyticsEnergyCategoryViewAccessedFromURLEvent)initWithData:(id)data;
 - (id)payload;
 @end
 
 @implementation HFAnalyticsEnergyCategoryViewAccessedFromURLEvent
 
-- (HFAnalyticsEnergyCategoryViewAccessedFromURLEvent)initWithData:(id)a3
+- (HFAnalyticsEnergyCategoryViewAccessedFromURLEvent)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
-  v5 = [v4 objectForKeyedSubscript:@"energyCategoryViewAccessedFrom"];
+  v5 = [dataCopy objectForKeyedSubscript:@"energyCategoryViewAccessedFrom"];
 
   if (objc_opt_isKindOfClass())
   {
@@ -44,11 +44,11 @@
 {
   v7.receiver = self;
   v7.super_class = HFAnalyticsEnergyCategoryViewAccessedFromURLEvent;
-  v3 = [(HFAnalyticsEvent *)&v7 payload];
-  v4 = [v3 mutableCopy];
+  payload = [(HFAnalyticsEvent *)&v7 payload];
+  v4 = [payload mutableCopy];
 
-  v5 = [(HFAnalyticsEnergyCategoryViewAccessedFromURLEvent *)self fromUIView];
-  [v4 na_safeSetObject:v5 forKey:@"energyViewAccessedFrom"];
+  fromUIView = [(HFAnalyticsEnergyCategoryViewAccessedFromURLEvent *)self fromUIView];
+  [v4 na_safeSetObject:fromUIView forKey:@"energyViewAccessedFrom"];
 
   [v4 na_safeSetObject:&unk_282524DE0 forKey:@"homeAppEventCount"];
 

@@ -48,65 +48,65 @@
 - (int64_t)voiceOverTouchBrailleUIBrailleNotesSortType;
 - (int64_t)voiceOverTouchBrailleUILiveCaptionsSource;
 - (int64_t)voiceOverTouchBrailleZoomOutNumCellsPerElement;
-- (void)setVoiceOverContentDescriptionLevel:(int64_t)a3;
-- (void)setVoiceOverContinuousPathKeyboardStartTimeout:(double)a3;
-- (void)setVoiceOverCursorOutputStyle:(int64_t)a3;
-- (void)setVoiceOverDefaultPunctuationGroup:(id)a3;
-- (void)setVoiceOverDefaultVoiceSelections:(id)a3;
-- (void)setVoiceOverHearingAidRoutingEnabled:(BOOL)a3;
-- (void)setVoiceOverImageCaptionsEnabled:(BOOL)a3;
-- (void)setVoiceOverLanguageDetectionEnabled:(BOOL)a3;
-- (void)setVoiceOverLargeCursorEnabled:(BOOL)a3;
-- (void)setVoiceOverListAnnotation:(int64_t)a3;
-- (void)setVoiceOverMagicTapDefaultToMediaPlayback:(BOOL)a3;
-- (void)setVoiceOverPitchChangeEnabled:(BOOL)a3;
-- (void)setVoiceOverSpeakUpEnabled:(BOOL)a3;
-- (void)setVoiceOverSpeakingRate:(float)a3;
-- (void)setVoiceOverTouchBrailleDisplayInputMode:(int64_t)a3;
-- (void)setVoiceOverTouchBrailleDisplayOutputMode:(int64_t)a3;
-- (void)setVoiceOverTouchBrailleDisplaySyncInputOutputTables:(BOOL)a3;
-- (void)setVoiceOverTouchBrailleGesturesActivationGestureEnabled:(BOOL)a3;
-- (void)setVoiceOverTouchBrailleGesturesAutoActivateOnTextFields:(BOOL)a3;
-- (void)setVoiceOverTouchBrailleGesturesDisplaysEnteredText:(BOOL)a3;
-- (void)setVoiceOverTouchBrailleGesturesInputMode:(int64_t)a3;
-- (void)setVoiceOverTouchBrailleGesturesLearnsDotPositions:(BOOL)a3;
-- (void)setVoiceOverTouchBrailleGesturesSingleHandStyle:(int64_t)a3;
-- (void)setVoiceOverTouchBrailleGesturesSoundOption:(int64_t)a3;
-- (void)setVoiceOverTouchBrailleGesturesUsesHapticFeedback:(BOOL)a3;
-- (void)setVoiceOverTouchBrailleGesturesUsesTypingSoundFeedback:(BOOL)a3;
-- (void)setVoiceOverTouchBrailleGesutresSingleHandUsesDotNumbersFeedback:(BOOL)a3;
-- (void)setVoiceOverTouchBrailleHIMSUsesDot7ForCommand:(BOOL)a3;
-- (void)setVoiceOverTouchBraillePanningAutoTurnsReadingContent:(BOOL)a3;
-- (void)setVoiceOverTouchBrailleUIBrailleNotesSortDirection:(int64_t)a3;
-- (void)setVoiceOverTouchBrailleUIBrailleNotesSortType:(int64_t)a3;
-- (void)setVoiceOverTouchBrailleUICalculatorUsesUEBMath:(BOOL)a3;
-- (void)setVoiceOverTouchBrailleUIIsBRFReflowEnabled:(BOOL)a3;
-- (void)setVoiceOverTouchBrailleUIIsBRFStripPageIndicatorsEnabled:(BOOL)a3;
-- (void)setVoiceOverTouchBrailleUILiveCaptionsSource:(int64_t)a3;
-- (void)setVoiceOverTouchBrailleUIMigrationMessageAnnounced:(BOOL)a3;
-- (void)setVoiceOverTouchBrailleUIReadListItemsEnabled:(BOOL)a3;
-- (void)setVoiceOverTouchBrailleUIShouldReopenViewsWhenRestart:(BOOL)a3;
-- (void)setVoiceOverTouchBrailleUIShowsBackButton:(BOOL)a3;
-- (void)setVoiceOverTouchBrailleUITypingSpeechFeedbackEnabled:(BOOL)a3;
-- (void)setVoiceOverTouchBrailleUIVisualsEnabled:(BOOL)a3;
-- (void)setVoiceOverTouchBrailleUsesUnderlineCursor:(BOOL)a3;
-- (void)setVoiceOverTouchBrailleZoomOutNumCellsPerElement:(int64_t)a3;
-- (void)setVoiceOverTouchKeyboardBrailleUIEnabled:(BOOL)a3;
-- (void)setVoiceOverTouchPerkinsChordKeyboardInputEnabled:(BOOL)a3;
-- (void)setVoiceOverTouchPerkinsKeyboardInputEnabled:(BOOL)a3;
-- (void)setVoiceOverUseDigitalCrownNavigation:(BOOL)a3;
-- (void)setVoiceOverUseSiriSounds:(BOOL)a3;
-- (void)setVoiceOverUseTVToggleStyleNavigation:(BOOL)a3;
-- (void)setWithVoiceId:(NSString *)a3 forLanguage:(NSString *)a4 completionHandler:(id)a5;
-- (void)setWithVoiceId:(id)a3 forLanguage:(id)a4 rate:(float)a5 volume:(float)a6 pitch:(float)a7;
-- (void)speechVoiceIdentifierForLanguage:(NSString *)a3 completionHandler:(id)a4;
+- (void)setVoiceOverContentDescriptionLevel:(int64_t)level;
+- (void)setVoiceOverContinuousPathKeyboardStartTimeout:(double)timeout;
+- (void)setVoiceOverCursorOutputStyle:(int64_t)style;
+- (void)setVoiceOverDefaultPunctuationGroup:(id)group;
+- (void)setVoiceOverDefaultVoiceSelections:(id)selections;
+- (void)setVoiceOverHearingAidRoutingEnabled:(BOOL)enabled;
+- (void)setVoiceOverImageCaptionsEnabled:(BOOL)enabled;
+- (void)setVoiceOverLanguageDetectionEnabled:(BOOL)enabled;
+- (void)setVoiceOverLargeCursorEnabled:(BOOL)enabled;
+- (void)setVoiceOverListAnnotation:(int64_t)annotation;
+- (void)setVoiceOverMagicTapDefaultToMediaPlayback:(BOOL)playback;
+- (void)setVoiceOverPitchChangeEnabled:(BOOL)enabled;
+- (void)setVoiceOverSpeakUpEnabled:(BOOL)enabled;
+- (void)setVoiceOverSpeakingRate:(float)rate;
+- (void)setVoiceOverTouchBrailleDisplayInputMode:(int64_t)mode;
+- (void)setVoiceOverTouchBrailleDisplayOutputMode:(int64_t)mode;
+- (void)setVoiceOverTouchBrailleDisplaySyncInputOutputTables:(BOOL)tables;
+- (void)setVoiceOverTouchBrailleGesturesActivationGestureEnabled:(BOOL)enabled;
+- (void)setVoiceOverTouchBrailleGesturesAutoActivateOnTextFields:(BOOL)fields;
+- (void)setVoiceOverTouchBrailleGesturesDisplaysEnteredText:(BOOL)text;
+- (void)setVoiceOverTouchBrailleGesturesInputMode:(int64_t)mode;
+- (void)setVoiceOverTouchBrailleGesturesLearnsDotPositions:(BOOL)positions;
+- (void)setVoiceOverTouchBrailleGesturesSingleHandStyle:(int64_t)style;
+- (void)setVoiceOverTouchBrailleGesturesSoundOption:(int64_t)option;
+- (void)setVoiceOverTouchBrailleGesturesUsesHapticFeedback:(BOOL)feedback;
+- (void)setVoiceOverTouchBrailleGesturesUsesTypingSoundFeedback:(BOOL)feedback;
+- (void)setVoiceOverTouchBrailleGesutresSingleHandUsesDotNumbersFeedback:(BOOL)feedback;
+- (void)setVoiceOverTouchBrailleHIMSUsesDot7ForCommand:(BOOL)command;
+- (void)setVoiceOverTouchBraillePanningAutoTurnsReadingContent:(BOOL)content;
+- (void)setVoiceOverTouchBrailleUIBrailleNotesSortDirection:(int64_t)direction;
+- (void)setVoiceOverTouchBrailleUIBrailleNotesSortType:(int64_t)type;
+- (void)setVoiceOverTouchBrailleUICalculatorUsesUEBMath:(BOOL)math;
+- (void)setVoiceOverTouchBrailleUIIsBRFReflowEnabled:(BOOL)enabled;
+- (void)setVoiceOverTouchBrailleUIIsBRFStripPageIndicatorsEnabled:(BOOL)enabled;
+- (void)setVoiceOverTouchBrailleUILiveCaptionsSource:(int64_t)source;
+- (void)setVoiceOverTouchBrailleUIMigrationMessageAnnounced:(BOOL)announced;
+- (void)setVoiceOverTouchBrailleUIReadListItemsEnabled:(BOOL)enabled;
+- (void)setVoiceOverTouchBrailleUIShouldReopenViewsWhenRestart:(BOOL)restart;
+- (void)setVoiceOverTouchBrailleUIShowsBackButton:(BOOL)button;
+- (void)setVoiceOverTouchBrailleUITypingSpeechFeedbackEnabled:(BOOL)enabled;
+- (void)setVoiceOverTouchBrailleUIVisualsEnabled:(BOOL)enabled;
+- (void)setVoiceOverTouchBrailleUsesUnderlineCursor:(BOOL)cursor;
+- (void)setVoiceOverTouchBrailleZoomOutNumCellsPerElement:(int64_t)element;
+- (void)setVoiceOverTouchKeyboardBrailleUIEnabled:(BOOL)enabled;
+- (void)setVoiceOverTouchPerkinsChordKeyboardInputEnabled:(BOOL)enabled;
+- (void)setVoiceOverTouchPerkinsKeyboardInputEnabled:(BOOL)enabled;
+- (void)setVoiceOverUseDigitalCrownNavigation:(BOOL)navigation;
+- (void)setVoiceOverUseSiriSounds:(BOOL)sounds;
+- (void)setVoiceOverUseTVToggleStyleNavigation:(BOOL)navigation;
+- (void)setWithVoiceId:(NSString *)id forLanguage:(NSString *)language completionHandler:(id)handler;
+- (void)setWithVoiceId:(id)id forLanguage:(id)language rate:(float)rate volume:(float)volume pitch:(float)pitch;
+- (void)speechVoiceIdentifierForLanguage:(NSString *)language completionHandler:(id)handler;
 @end
 
 @implementation AXSettings.VoiceOver
 
 - (NSDictionary)voiceOverDefaultVoiceSelections
 {
-  v2 = self;
+  selfCopy = self;
   sub_18B236D84();
 
   sub_18B2C9424();
@@ -115,614 +115,614 @@
   return v3;
 }
 
-- (void)setVoiceOverDefaultVoiceSelections:(id)a3
+- (void)setVoiceOverDefaultVoiceSelections:(id)selections
 {
   sub_18B2C9424();
   v4 = sub_18B2C9814();
-  v5 = self;
+  selfCopy = self;
   sub_18B237528(v4);
 }
 
 - (BOOL)voiceOverLargeCursorEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.largeCursorEnabled.getter();
 
   return v3 & 1;
 }
 
-- (void)setVoiceOverLargeCursorEnabled:(BOOL)a3
+- (void)setVoiceOverLargeCursorEnabled:(BOOL)enabled
 {
-  v4 = self;
-  AXSettings.VoiceOver.largeCursorEnabled.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.largeCursorEnabled.setter(enabled);
 }
 
 - (BOOL)voiceOverMagicTapDefaultToMediaPlayback
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.magicTapDefaultToMediaPlayback.getter();
 
   return v3 & 1;
 }
 
-- (void)setVoiceOverMagicTapDefaultToMediaPlayback:(BOOL)a3
+- (void)setVoiceOverMagicTapDefaultToMediaPlayback:(BOOL)playback
 {
-  v4 = self;
-  AXSettings.VoiceOver.magicTapDefaultToMediaPlayback.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.magicTapDefaultToMediaPlayback.setter(playback);
 }
 
 - (int64_t)voiceOverContentDescriptionLevel
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.contentDescriptionLevel.getter();
 
   return v3;
 }
 
-- (void)setVoiceOverContentDescriptionLevel:(int64_t)a3
+- (void)setVoiceOverContentDescriptionLevel:(int64_t)level
 {
-  v4 = self;
-  AXSettings.VoiceOver.contentDescriptionLevel.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.contentDescriptionLevel.setter(level);
 }
 
 - (BOOL)voiceOverUseDigitalCrownNavigation
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.useDigitalCrownNavigation.getter();
 
   return v3 & 1;
 }
 
-- (void)setVoiceOverUseDigitalCrownNavigation:(BOOL)a3
+- (void)setVoiceOverUseDigitalCrownNavigation:(BOOL)navigation
 {
-  v4 = self;
-  AXSettings.VoiceOver.useDigitalCrownNavigation.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.useDigitalCrownNavigation.setter(navigation);
 }
 
 - (BOOL)voiceOverImageCaptionsEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.imageCaptionsEnabled.getter();
 
   return v3 & 1;
 }
 
-- (void)setVoiceOverImageCaptionsEnabled:(BOOL)a3
+- (void)setVoiceOverImageCaptionsEnabled:(BOOL)enabled
 {
-  v4 = self;
-  AXSettings.VoiceOver.imageCaptionsEnabled.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.imageCaptionsEnabled.setter(enabled);
 }
 
 - (BOOL)voiceOverUseTVToggleStyleNavigation
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.useTVToggleStyleNavigation.getter();
 
   return v3 & 1;
 }
 
-- (void)setVoiceOverUseTVToggleStyleNavigation:(BOOL)a3
+- (void)setVoiceOverUseTVToggleStyleNavigation:(BOOL)navigation
 {
-  v4 = self;
-  AXSettings.VoiceOver.useTVToggleStyleNavigation.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.useTVToggleStyleNavigation.setter(navigation);
 }
 
 - (double)voiceOverContinuousPathKeyboardStartTimeout
 {
-  v2 = self;
+  selfCopy = self;
   started = AXSettings.VoiceOver.continuousPathKeyboardStartTimeout.getter();
 
   return started;
 }
 
-- (void)setVoiceOverContinuousPathKeyboardStartTimeout:(double)a3
+- (void)setVoiceOverContinuousPathKeyboardStartTimeout:(double)timeout
 {
-  v4 = self;
-  AXSettings.VoiceOver.continuousPathKeyboardStartTimeout.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.continuousPathKeyboardStartTimeout.setter(timeout);
 }
 
 - (BOOL)voiceOverHearingAidRoutingEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.hearingAidRoutingEnabled.getter();
 
   return v3 & 1;
 }
 
-- (void)setVoiceOverHearingAidRoutingEnabled:(BOOL)a3
+- (void)setVoiceOverHearingAidRoutingEnabled:(BOOL)enabled
 {
-  v4 = self;
-  AXSettings.VoiceOver.hearingAidRoutingEnabled.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.hearingAidRoutingEnabled.setter(enabled);
 }
 
 - (int64_t)voiceOverListAnnotation
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.listAnnotation.getter();
 
   return v3;
 }
 
-- (void)setVoiceOverListAnnotation:(int64_t)a3
+- (void)setVoiceOverListAnnotation:(int64_t)annotation
 {
-  v4 = self;
-  AXSettings.VoiceOver.listAnnotation.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.listAnnotation.setter(annotation);
 }
 
 - (BOOL)voiceOverUseSiriSounds
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.useSiriSounds.getter();
 
   return v3 & 1;
 }
 
-- (void)setVoiceOverUseSiriSounds:(BOOL)a3
+- (void)setVoiceOverUseSiriSounds:(BOOL)sounds
 {
-  v4 = self;
-  AXSettings.VoiceOver.useSiriSounds.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.useSiriSounds.setter(sounds);
 }
 
 - (int64_t)voiceOverCursorOutputStyle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.cursorOutputStyle.getter();
 
   return v3;
 }
 
-- (void)setVoiceOverCursorOutputStyle:(int64_t)a3
+- (void)setVoiceOverCursorOutputStyle:(int64_t)style
 {
-  v4 = self;
-  AXSettings.VoiceOver.cursorOutputStyle.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.cursorOutputStyle.setter(style);
 }
 
 - (BOOL)voiceOverTouchBraillePanningAutoTurnsReadingContent
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.braillePanningAutoTurnsReadingContent.getter();
 
   return v3 & 1;
 }
 
-- (void)setVoiceOverTouchBraillePanningAutoTurnsReadingContent:(BOOL)a3
+- (void)setVoiceOverTouchBraillePanningAutoTurnsReadingContent:(BOOL)content
 {
-  v4 = self;
-  AXSettings.VoiceOver.braillePanningAutoTurnsReadingContent.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.braillePanningAutoTurnsReadingContent.setter(content);
 }
 
 - (int64_t)voiceOverTouchBrailleDisplayOutputMode
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.brailleDisplayOutputMode.getter();
 
   return v3;
 }
 
-- (void)setVoiceOverTouchBrailleDisplayOutputMode:(int64_t)a3
+- (void)setVoiceOverTouchBrailleDisplayOutputMode:(int64_t)mode
 {
-  v4 = self;
-  AXSettings.VoiceOver.brailleDisplayOutputMode.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.brailleDisplayOutputMode.setter(mode);
 }
 
 - (int64_t)voiceOverTouchBrailleDisplayInputMode
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.brailleDisplayInputMode.getter();
 
   return v3;
 }
 
-- (void)setVoiceOverTouchBrailleDisplayInputMode:(int64_t)a3
+- (void)setVoiceOverTouchBrailleDisplayInputMode:(int64_t)mode
 {
-  v4 = self;
-  AXSettings.VoiceOver.brailleDisplayInputMode.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.brailleDisplayInputMode.setter(mode);
 }
 
 - (int64_t)voiceOverTouchBrailleGesturesInputMode
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.brailleGesturesInputMode.getter();
 
   return v3;
 }
 
-- (void)setVoiceOverTouchBrailleGesturesInputMode:(int64_t)a3
+- (void)setVoiceOverTouchBrailleGesturesInputMode:(int64_t)mode
 {
-  v4 = self;
-  AXSettings.VoiceOver.brailleGesturesInputMode.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.brailleGesturesInputMode.setter(mode);
 }
 
 - (BOOL)voiceOverTouchBrailleDisplaySyncInputOutputTables
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver._objBrailleDisplaySyncInputOutputTables.getter();
 
   return v3 & 1;
 }
 
-- (void)setVoiceOverTouchBrailleDisplaySyncInputOutputTables:(BOOL)a3
+- (void)setVoiceOverTouchBrailleDisplaySyncInputOutputTables:(BOOL)tables
 {
-  v4 = self;
-  AXSettings.VoiceOver._objBrailleDisplaySyncInputOutputTables.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver._objBrailleDisplaySyncInputOutputTables.setter(tables);
 }
 
 - (BOOL)voiceOverTouchBrailleGesturesActivationGestureEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.brailleGesturesActivationGestureEnabled.getter();
 
   return v3 & 1;
 }
 
-- (void)setVoiceOverTouchBrailleGesturesActivationGestureEnabled:(BOOL)a3
+- (void)setVoiceOverTouchBrailleGesturesActivationGestureEnabled:(BOOL)enabled
 {
-  v4 = self;
-  AXSettings.VoiceOver.brailleGesturesActivationGestureEnabled.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.brailleGesturesActivationGestureEnabled.setter(enabled);
 }
 
 - (int64_t)voiceOverTouchBrailleGesturesSoundOption
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.brailleGesturesSoundOption.getter();
 
   return v3;
 }
 
-- (void)setVoiceOverTouchBrailleGesturesSoundOption:(int64_t)a3
+- (void)setVoiceOverTouchBrailleGesturesSoundOption:(int64_t)option
 {
-  v4 = self;
-  AXSettings.VoiceOver.brailleGesturesSoundOption.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.brailleGesturesSoundOption.setter(option);
 }
 
 - (BOOL)voiceOverTouchBrailleGesturesUsesHapticFeedback
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.brailleGesturesUsesHapticFeedback.getter();
 
   return v3 & 1;
 }
 
-- (void)setVoiceOverTouchBrailleGesturesUsesHapticFeedback:(BOOL)a3
+- (void)setVoiceOverTouchBrailleGesturesUsesHapticFeedback:(BOOL)feedback
 {
-  v4 = self;
-  AXSettings.VoiceOver.brailleGesturesUsesHapticFeedback.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.brailleGesturesUsesHapticFeedback.setter(feedback);
 }
 
 - (BOOL)voiceOverTouchBrailleGesturesUsesTypingSoundFeedback
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.brailleGesturesUsesTypingSoundFeedback.getter();
 
   return v3 & 1;
 }
 
-- (void)setVoiceOverTouchBrailleGesturesUsesTypingSoundFeedback:(BOOL)a3
+- (void)setVoiceOverTouchBrailleGesturesUsesTypingSoundFeedback:(BOOL)feedback
 {
-  v4 = self;
-  AXSettings.VoiceOver.brailleGesturesUsesTypingSoundFeedback.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.brailleGesturesUsesTypingSoundFeedback.setter(feedback);
 }
 
 - (BOOL)voiceOverTouchBrailleGesutresSingleHandUsesDotNumbersFeedback
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.brailleGesturesSingleHandUsesDotNumbersFeedback.getter();
 
   return v3 & 1;
 }
 
-- (void)setVoiceOverTouchBrailleGesutresSingleHandUsesDotNumbersFeedback:(BOOL)a3
+- (void)setVoiceOverTouchBrailleGesutresSingleHandUsesDotNumbersFeedback:(BOOL)feedback
 {
-  v4 = self;
-  AXSettings.VoiceOver.brailleGesturesSingleHandUsesDotNumbersFeedback.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.brailleGesturesSingleHandUsesDotNumbersFeedback.setter(feedback);
 }
 
 - (BOOL)voiceOverTouchBrailleGesturesDisplaysEnteredText
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.brailleGesturesDisplayEnteredText.getter();
 
   return v3 & 1;
 }
 
-- (void)setVoiceOverTouchBrailleGesturesDisplaysEnteredText:(BOOL)a3
+- (void)setVoiceOverTouchBrailleGesturesDisplaysEnteredText:(BOOL)text
 {
-  v4 = self;
-  AXSettings.VoiceOver.brailleGesturesDisplayEnteredText.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.brailleGesturesDisplayEnteredText.setter(text);
 }
 
 - (BOOL)voiceOverTouchBrailleGesturesLearnsDotPositions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.brailleGesturesLearnsDotPositions.getter();
 
   return v3 & 1;
 }
 
-- (void)setVoiceOverTouchBrailleGesturesLearnsDotPositions:(BOOL)a3
+- (void)setVoiceOverTouchBrailleGesturesLearnsDotPositions:(BOOL)positions
 {
-  v4 = self;
-  AXSettings.VoiceOver.brailleGesturesLearnsDotPositions.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.brailleGesturesLearnsDotPositions.setter(positions);
 }
 
 - (BOOL)voiceOverTouchBrailleGesturesAutoActivateOnTextFields
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.brailleGesturesAutoActivateOnTextFields.getter();
 
   return v3 & 1;
 }
 
-- (void)setVoiceOverTouchBrailleGesturesAutoActivateOnTextFields:(BOOL)a3
+- (void)setVoiceOverTouchBrailleGesturesAutoActivateOnTextFields:(BOOL)fields
 {
-  v4 = self;
-  AXSettings.VoiceOver.brailleGesturesAutoActivateOnTextFields.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.brailleGesturesAutoActivateOnTextFields.setter(fields);
 }
 
 - (int64_t)voiceOverTouchBrailleGesturesSingleHandStyle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.brailleGesturesSingleHandStyle.getter();
 
   return v3;
 }
 
-- (void)setVoiceOverTouchBrailleGesturesSingleHandStyle:(int64_t)a3
+- (void)setVoiceOverTouchBrailleGesturesSingleHandStyle:(int64_t)style
 {
-  v4 = self;
-  AXSettings.VoiceOver.brailleGesturesSingleHandStyle.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.brailleGesturesSingleHandStyle.setter(style);
 }
 
 - (BOOL)voiceOverTouchPerkinsKeyboardInputEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.perkinsKeyboardInputEnabled.getter();
 
   return v3 & 1;
 }
 
-- (void)setVoiceOverTouchPerkinsKeyboardInputEnabled:(BOOL)a3
+- (void)setVoiceOverTouchPerkinsKeyboardInputEnabled:(BOOL)enabled
 {
-  v4 = self;
-  AXSettings.VoiceOver.perkinsKeyboardInputEnabled.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.perkinsKeyboardInputEnabled.setter(enabled);
 }
 
 - (BOOL)voiceOverTouchPerkinsChordKeyboardInputEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.perkinsChordKeyboardInputEnabled.getter();
 
   return v3 & 1;
 }
 
-- (void)setVoiceOverTouchPerkinsChordKeyboardInputEnabled:(BOOL)a3
+- (void)setVoiceOverTouchPerkinsChordKeyboardInputEnabled:(BOOL)enabled
 {
-  v4 = self;
-  AXSettings.VoiceOver.perkinsChordKeyboardInputEnabled.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.perkinsChordKeyboardInputEnabled.setter(enabled);
 }
 
 - (BOOL)voiceOverTouchBrailleHIMSUsesDot7ForCommand
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.brailleHIMSUsesDot7ForCommand.getter();
 
   return v3 & 1;
 }
 
-- (void)setVoiceOverTouchBrailleHIMSUsesDot7ForCommand:(BOOL)a3
+- (void)setVoiceOverTouchBrailleHIMSUsesDot7ForCommand:(BOOL)command
 {
-  v4 = self;
-  AXSettings.VoiceOver.brailleHIMSUsesDot7ForCommand.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.brailleHIMSUsesDot7ForCommand.setter(command);
 }
 
 - (BOOL)voiceOverTouchKeyboardBrailleUIEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.keyboardBrailleUIEnabled.getter();
 
   return v3 & 1;
 }
 
-- (void)setVoiceOverTouchKeyboardBrailleUIEnabled:(BOOL)a3
+- (void)setVoiceOverTouchKeyboardBrailleUIEnabled:(BOOL)enabled
 {
-  v4 = self;
-  AXSettings.VoiceOver.keyboardBrailleUIEnabled.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.keyboardBrailleUIEnabled.setter(enabled);
 }
 
 - (BOOL)voiceOverTouchBrailleUIShouldReopenViewsWhenRestart
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.brailleUIShouldReopenViewsWhenRestart.getter();
 
   return v3 & 1;
 }
 
-- (void)setVoiceOverTouchBrailleUIShouldReopenViewsWhenRestart:(BOOL)a3
+- (void)setVoiceOverTouchBrailleUIShouldReopenViewsWhenRestart:(BOOL)restart
 {
-  v4 = self;
-  AXSettings.VoiceOver.brailleUIShouldReopenViewsWhenRestart.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.brailleUIShouldReopenViewsWhenRestart.setter(restart);
 }
 
 - (BOOL)voiceOverTouchBrailleUIReadListItemsEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.brailleUIReadListItemsEnabled.getter();
 
   return v3 & 1;
 }
 
-- (void)setVoiceOverTouchBrailleUIReadListItemsEnabled:(BOOL)a3
+- (void)setVoiceOverTouchBrailleUIReadListItemsEnabled:(BOOL)enabled
 {
-  v4 = self;
-  AXSettings.VoiceOver.brailleUIReadListItemsEnabled.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.brailleUIReadListItemsEnabled.setter(enabled);
 }
 
 - (BOOL)voiceOverTouchBrailleUIVisualsEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.brailleUIVisualsEnabled.getter();
 
   return v3 & 1;
 }
 
-- (void)setVoiceOverTouchBrailleUIVisualsEnabled:(BOOL)a3
+- (void)setVoiceOverTouchBrailleUIVisualsEnabled:(BOOL)enabled
 {
-  v4 = self;
-  AXSettings.VoiceOver.brailleUIVisualsEnabled.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.brailleUIVisualsEnabled.setter(enabled);
 }
 
 - (int64_t)voiceOverTouchBrailleUIBrailleNotesSortType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.brailleUIBrailleNotesSortType.getter();
 
   return v3;
 }
 
-- (void)setVoiceOverTouchBrailleUIBrailleNotesSortType:(int64_t)a3
+- (void)setVoiceOverTouchBrailleUIBrailleNotesSortType:(int64_t)type
 {
-  v4 = self;
-  AXSettings.VoiceOver.brailleUIBrailleNotesSortType.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.brailleUIBrailleNotesSortType.setter(type);
 }
 
 - (int64_t)voiceOverTouchBrailleUIBrailleNotesSortDirection
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.brailleUIBrailleNotesSortDirection.getter();
 
   return v3;
 }
 
-- (void)setVoiceOverTouchBrailleUIBrailleNotesSortDirection:(int64_t)a3
+- (void)setVoiceOverTouchBrailleUIBrailleNotesSortDirection:(int64_t)direction
 {
-  v4 = self;
-  AXSettings.VoiceOver.brailleUIBrailleNotesSortDirection.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.brailleUIBrailleNotesSortDirection.setter(direction);
 }
 
 - (BOOL)voiceOverTouchBrailleUITypingSpeechFeedbackEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.brailleUITypingSpeechFeedbackEnabled.getter();
 
   return v3 & 1;
 }
 
-- (void)setVoiceOverTouchBrailleUITypingSpeechFeedbackEnabled:(BOOL)a3
+- (void)setVoiceOverTouchBrailleUITypingSpeechFeedbackEnabled:(BOOL)enabled
 {
-  v4 = self;
-  AXSettings.VoiceOver.brailleUITypingSpeechFeedbackEnabled.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.brailleUITypingSpeechFeedbackEnabled.setter(enabled);
 }
 
 - (BOOL)voiceOverTouchBrailleUIIsBRFReflowEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.brailleUIBRFReflowEnabled.getter();
 
   return v3 & 1;
 }
 
-- (void)setVoiceOverTouchBrailleUIIsBRFReflowEnabled:(BOOL)a3
+- (void)setVoiceOverTouchBrailleUIIsBRFReflowEnabled:(BOOL)enabled
 {
-  v4 = self;
-  AXSettings.VoiceOver.brailleUIBRFReflowEnabled.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.brailleUIBRFReflowEnabled.setter(enabled);
 }
 
 - (BOOL)voiceOverTouchBrailleUIIsBRFStripPageIndicatorsEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.brailleUIBRFStripPageIndicatorsEnabled.getter();
 
   return v3 & 1;
 }
 
-- (void)setVoiceOverTouchBrailleUIIsBRFStripPageIndicatorsEnabled:(BOOL)a3
+- (void)setVoiceOverTouchBrailleUIIsBRFStripPageIndicatorsEnabled:(BOOL)enabled
 {
-  v4 = self;
-  AXSettings.VoiceOver.brailleUIBRFStripPageIndicatorsEnabled.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.brailleUIBRFStripPageIndicatorsEnabled.setter(enabled);
 }
 
 - (BOOL)voiceOverTouchBrailleUICalculatorUsesUEBMath
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.brailleUICalculatorUsesUEBMath.getter();
 
   return v3 & 1;
 }
 
-- (void)setVoiceOverTouchBrailleUICalculatorUsesUEBMath:(BOOL)a3
+- (void)setVoiceOverTouchBrailleUICalculatorUsesUEBMath:(BOOL)math
 {
-  v4 = self;
-  AXSettings.VoiceOver.brailleUICalculatorUsesUEBMath.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.brailleUICalculatorUsesUEBMath.setter(math);
 }
 
 - (int64_t)voiceOverTouchBrailleUILiveCaptionsSource
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.brailleUILiveCaptionsSource.getter();
 
   return v3;
 }
 
-- (void)setVoiceOverTouchBrailleUILiveCaptionsSource:(int64_t)a3
+- (void)setVoiceOverTouchBrailleUILiveCaptionsSource:(int64_t)source
 {
-  v4 = self;
-  AXSettings.VoiceOver.brailleUILiveCaptionsSource.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.brailleUILiveCaptionsSource.setter(source);
 }
 
 - (BOOL)voiceOverTouchBrailleUIMigrationMessageAnnounced
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.brailleUIMigrationMessageAnnounced.getter();
 
   return v3 & 1;
 }
 
-- (void)setVoiceOverTouchBrailleUIMigrationMessageAnnounced:(BOOL)a3
+- (void)setVoiceOverTouchBrailleUIMigrationMessageAnnounced:(BOOL)announced
 {
-  v4 = self;
-  AXSettings.VoiceOver.brailleUIMigrationMessageAnnounced.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.brailleUIMigrationMessageAnnounced.setter(announced);
 }
 
 - (BOOL)voiceOverTouchBrailleUIShowsBackButton
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.brailleUIShowsBackButton.getter();
 
   return v3 & 1;
 }
 
-- (void)setVoiceOverTouchBrailleUIShowsBackButton:(BOOL)a3
+- (void)setVoiceOverTouchBrailleUIShowsBackButton:(BOOL)button
 {
-  v4 = self;
-  AXSettings.VoiceOver.brailleUIShowsBackButton.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.brailleUIShowsBackButton.setter(button);
 }
 
 - (int64_t)voiceOverTouchBrailleZoomOutNumCellsPerElement
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.brailleZoomOutNumCellsPerElement.getter();
 
   return v3;
 }
 
-- (void)setVoiceOverTouchBrailleZoomOutNumCellsPerElement:(int64_t)a3
+- (void)setVoiceOverTouchBrailleZoomOutNumCellsPerElement:(int64_t)element
 {
-  v4 = self;
-  AXSettings.VoiceOver.brailleZoomOutNumCellsPerElement.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.brailleZoomOutNumCellsPerElement.setter(element);
 }
 
 - (BOOL)voiceOverTouchBrailleUsesUnderlineCursor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.brailleUsesUnderlineCursor.getter();
 
   return v3 & 1;
 }
 
-- (void)setVoiceOverTouchBrailleUsesUnderlineCursor:(BOOL)a3
+- (void)setVoiceOverTouchBrailleUsesUnderlineCursor:(BOOL)cursor
 {
-  v4 = self;
-  AXSettings.VoiceOver.brailleUsesUnderlineCursor.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.brailleUsesUnderlineCursor.setter(cursor);
 }
 
 - (NSUUID)voiceOverDefaultPunctuationGroup
@@ -730,7 +730,7 @@
   v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EA9B74F0);
   MEMORY[0x1EEE9AC00](v3 - 8);
   v5 = &v13 - v4;
-  v6 = self;
+  selfCopy = self;
   AXSettings.VoiceOver.defaultPunctuationGroup.getter();
 
   v7 = sub_18B2C8FD4();
@@ -747,12 +747,12 @@
   return v10;
 }
 
-- (void)setVoiceOverDefaultPunctuationGroup:(id)a3
+- (void)setVoiceOverDefaultPunctuationGroup:(id)group
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EA9B74F0);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v11 - v6;
-  if (a3)
+  if (group)
   {
     sub_18B2C8FB4();
     v8 = sub_18B2C8FD4();
@@ -765,77 +765,77 @@
     (*(*(v9 - 8) + 56))(v7, 1, 1, v9);
   }
 
-  v10 = self;
+  selfCopy = self;
   AXSettings.VoiceOver.defaultPunctuationGroup.setter(v7);
 }
 
 - (BOOL)voiceOverLanguageDetectionEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.languageDetectionEnabled.getter();
 
   return v3 & 1;
 }
 
-- (void)setVoiceOverLanguageDetectionEnabled:(BOOL)a3
+- (void)setVoiceOverLanguageDetectionEnabled:(BOOL)enabled
 {
-  v4 = self;
-  AXSettings.VoiceOver.languageDetectionEnabled.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.languageDetectionEnabled.setter(enabled);
 }
 
 - (BOOL)voiceOverPitchChangeEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.pitchChangeEnabled.getter();
 
   return v3 & 1;
 }
 
-- (void)setVoiceOverPitchChangeEnabled:(BOOL)a3
+- (void)setVoiceOverPitchChangeEnabled:(BOOL)enabled
 {
-  v4 = self;
-  AXSettings.VoiceOver.pitchChangeEnabled.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.pitchChangeEnabled.setter(enabled);
 }
 
 - (BOOL)voiceOverSpeakUpEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.VoiceOver.speakUpEnabled.getter();
 
   return v3 & 1;
 }
 
-- (void)setVoiceOverSpeakUpEnabled:(BOOL)a3
+- (void)setVoiceOverSpeakUpEnabled:(BOOL)enabled
 {
-  v4 = self;
-  AXSettings.VoiceOver.speakUpEnabled.setter(a3);
+  selfCopy = self;
+  AXSettings.VoiceOver.speakUpEnabled.setter(enabled);
 }
 
 - (float)voiceOverSpeakingRate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18B255C68();
 
   return v3;
 }
 
-- (void)setVoiceOverSpeakingRate:(float)a3
+- (void)setVoiceOverSpeakingRate:(float)rate
 {
   v5 = swift_allocObject();
   *(v5 + 16) = self;
-  *(v5 + 24) = a3;
-  v6 = self;
+  *(v5 + 24) = rate;
+  selfCopy = self;
   sub_18B2C95A4();
 }
 
-- (void)speechVoiceIdentifierForLanguage:(NSString *)a3 completionHandler:(id)a4
+- (void)speechVoiceIdentifierForLanguage:(NSString *)language completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EA9B64E8);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = language;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_18B2C9A74();
@@ -850,20 +850,20 @@
   v14[3] = 0;
   v14[4] = &unk_18B2F9F90;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  languageCopy = language;
+  selfCopy = self;
   sub_18B29CF64(0, 0, v9, &unk_18B2F9F98, v14);
 }
 
-- (void)setWithVoiceId:(NSString *)a3 forLanguage:(NSString *)a4 completionHandler:(id)a5
+- (void)setWithVoiceId:(NSString *)id forLanguage:(NSString *)language completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EA9B64E8);
   MEMORY[0x1EEE9AC00](v9 - 8);
   v11 = &v20 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = id;
+  v13[3] = language;
   v13[4] = v12;
   v13[5] = self;
   v14 = sub_18B2C9A74();
@@ -878,15 +878,15 @@
   v16[3] = 0;
   v16[4] = &unk_18B2F9F70;
   v16[5] = v15;
-  v17 = a3;
-  v18 = a4;
-  v19 = self;
+  idCopy = id;
+  languageCopy = language;
+  selfCopy = self;
   sub_18B29CF64(0, 0, v11, &unk_18B2F9540, v16);
 }
 
-- (void)setWithVoiceId:(id)a3 forLanguage:(id)a4 rate:(float)a5 volume:(float)a6 pitch:(float)a7
+- (void)setWithVoiceId:(id)id forLanguage:(id)language rate:(float)rate volume:(float)volume pitch:(float)pitch
 {
-  if (a3)
+  if (id)
   {
     v11 = sub_18B2C9894();
     v13 = v12;
@@ -900,12 +900,12 @@
 
   v14 = sub_18B2C9894();
   v16 = v15;
-  v17 = self;
+  selfCopy = self;
   v18.value._countAndFlagsBits = v11;
   v18.value._object = v13;
   v19._countAndFlagsBits = v14;
   v19._object = v16;
-  AXSettings.VoiceOver.set(voiceId:forLanguage:rate:volume:pitch:)(v18, v19, a5, a6, a7);
+  AXSettings.VoiceOver.set(voiceId:forLanguage:rate:volume:pitch:)(v18, v19, rate, volume, pitch);
 }
 
 @end

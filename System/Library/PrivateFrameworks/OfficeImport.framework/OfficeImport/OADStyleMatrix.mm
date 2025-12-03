@@ -1,15 +1,15 @@
 @interface OADStyleMatrix
-+ (id)objectInArray:(id)a3 withPossiblyOutOfRangeIndex:(unint64_t)a4 defaultValue:(id)a5;
++ (id)objectInArray:(id)array withPossiblyOutOfRangeIndex:(unint64_t)index defaultValue:(id)value;
 - (OADStyleMatrix)init;
-- (id)bgFillAtIndex:(unint64_t)a3;
+- (id)bgFillAtIndex:(unint64_t)index;
 - (id)description;
-- (id)effectsAtIndex:(unint64_t)a3;
-- (id)effectsAtIndex:(unint64_t)a3 color:(id)a4;
-- (id)fillAtIndex:(unint64_t)a3;
-- (id)fillAtIndex:(unint64_t)a3 color:(id)a4;
-- (id)strokeAtIndex:(unint64_t)a3;
-- (id)strokeAtIndex:(unint64_t)a3 color:(id)a4;
-- (void)padArray:(id)a3 withContentsOfArray:(id)a4;
+- (id)effectsAtIndex:(unint64_t)index;
+- (id)effectsAtIndex:(unint64_t)index color:(id)color;
+- (id)fillAtIndex:(unint64_t)index;
+- (id)fillAtIndex:(unint64_t)index color:(id)color;
+- (id)strokeAtIndex:(unint64_t)index;
+- (id)strokeAtIndex:(unint64_t)index color:(id)color;
+- (void)padArray:(id)array withContentsOfArray:(id)ofArray;
 - (void)validateStyleMatrix;
 @end
 
@@ -42,18 +42,18 @@
   return v2;
 }
 
-+ (id)objectInArray:(id)a3 withPossiblyOutOfRangeIndex:(unint64_t)a4 defaultValue:(id)a5
++ (id)objectInArray:(id)array withPossiblyOutOfRangeIndex:(unint64_t)index defaultValue:(id)value
 {
-  v7 = a3;
-  v8 = a5;
-  if ([v7 count] <= a4)
+  arrayCopy = array;
+  valueCopy = value;
+  if ([arrayCopy count] <= index)
   {
-    v9 = v8;
+    v9 = valueCopy;
   }
 
   else
   {
-    v9 = [v7 objectAtIndex:a4];
+    v9 = [arrayCopy objectAtIndex:index];
   }
 
   v10 = v9;
@@ -61,14 +61,14 @@
   return v10;
 }
 
-- (id)fillAtIndex:(unint64_t)a3
+- (id)fillAtIndex:(unint64_t)index
 {
-  if (a3)
+  if (index)
   {
-    if (a3 < 0x3E9)
+    if (index < 0x3E9)
     {
       mFills = self->mFills;
-      v5 = a3 - 1;
+      v5 = index - 1;
       v6 = +[OADSolidFill whiteFill];
       v3 = [OADStyleMatrix objectInArray:mFills withPossiblyOutOfRangeIndex:v5 defaultValue:v6];
     }
@@ -87,18 +87,18 @@
   return v3;
 }
 
-- (id)fillAtIndex:(unint64_t)a3 color:(id)a4
+- (id)fillAtIndex:(unint64_t)index color:(id)color
 {
-  v6 = a4;
-  v7 = [(OADStyleMatrix *)self fillAtIndex:a3];
+  colorCopy = color;
+  v7 = [(OADStyleMatrix *)self fillAtIndex:index];
   v8 = v7;
   if (v7)
   {
     v9 = [v7 copy];
 
-    if (v6)
+    if (colorCopy)
     {
-      [v9 setStyleColor:v6];
+      [v9 setStyleColor:colorCopy];
     }
   }
 
@@ -110,18 +110,18 @@
   return v9;
 }
 
-- (id)strokeAtIndex:(unint64_t)a3
+- (id)strokeAtIndex:(unint64_t)index
 {
-  if (a3)
+  if (index)
   {
-    v3 = a3 - 1000;
-    if (a3 <= 0x3E8)
+    indexCopy = index - 1000;
+    if (index <= 0x3E8)
     {
-      v3 = a3;
+      indexCopy = index;
     }
 
     mStrokes = self->mStrokes;
-    v5 = v3 - 1;
+    v5 = indexCopy - 1;
     v6 = +[OADStroke blackStroke];
     v7 = [OADStyleMatrix objectInArray:mStrokes withPossiblyOutOfRangeIndex:v5 defaultValue:v6];
   }
@@ -134,18 +134,18 @@
   return v7;
 }
 
-- (id)strokeAtIndex:(unint64_t)a3 color:(id)a4
+- (id)strokeAtIndex:(unint64_t)index color:(id)color
 {
-  v6 = a4;
-  v7 = [(OADStyleMatrix *)self strokeAtIndex:a3];
+  colorCopy = color;
+  v7 = [(OADStyleMatrix *)self strokeAtIndex:index];
   v8 = v7;
   if (v7)
   {
     v9 = [v7 copy];
 
-    if (v6)
+    if (colorCopy)
     {
-      [v9 setStyleColor:v6];
+      [v9 setStyleColor:colorCopy];
     }
   }
 
@@ -157,20 +157,20 @@
   return v9;
 }
 
-- (id)effectsAtIndex:(unint64_t)a3
+- (id)effectsAtIndex:(unint64_t)index
 {
-  if (a3)
+  if (index)
   {
-    v3 = a3 - 1000;
-    if (a3 <= 0x3E8)
+    indexCopy = index - 1000;
+    if (index <= 0x3E8)
     {
-      v3 = a3;
+      indexCopy = index;
     }
 
     mEffects = self->mEffects;
-    v5 = v3 - 1;
-    v6 = [MEMORY[0x277CBEA60] array];
-    v7 = [OADStyleMatrix objectInArray:mEffects withPossiblyOutOfRangeIndex:v5 defaultValue:v6];
+    v5 = indexCopy - 1;
+    array = [MEMORY[0x277CBEA60] array];
+    v7 = [OADStyleMatrix objectInArray:mEffects withPossiblyOutOfRangeIndex:v5 defaultValue:array];
   }
 
   else
@@ -181,17 +181,17 @@
   return v7;
 }
 
-- (id)effectsAtIndex:(unint64_t)a3 color:(id)a4
+- (id)effectsAtIndex:(unint64_t)index color:(id)color
 {
-  v6 = a4;
-  v7 = [(OADStyleMatrix *)self effectsAtIndex:a3];
+  colorCopy = color;
+  v7 = [(OADStyleMatrix *)self effectsAtIndex:index];
   if (v7)
   {
     v8 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:v7 copyItems:1];
 
-    if (v6)
+    if (colorCopy)
     {
-      [v8 makeObjectsPerformSelector:sel_setStyleColor_ withObject:v6];
+      [v8 makeObjectsPerformSelector:sel_setStyleColor_ withObject:colorCopy];
     }
   }
 
@@ -203,25 +203,25 @@
   return v8;
 }
 
-- (id)bgFillAtIndex:(unint64_t)a3
+- (id)bgFillAtIndex:(unint64_t)index
 {
   mBgFills = self->mBgFills;
-  v4 = a3 - 1001;
+  v4 = index - 1001;
   v5 = +[OADSolidFill whiteFill];
   v6 = [OADStyleMatrix objectInArray:mBgFills withPossiblyOutOfRangeIndex:v4 defaultValue:v5];
 
   return v6;
 }
 
-- (void)padArray:(id)a3 withContentsOfArray:(id)a4
+- (void)padArray:(id)array withContentsOfArray:(id)ofArray
 {
-  v8 = a3;
-  v5 = a4;
-  v6 = [v8 count];
-  if (v6 < [v5 count])
+  arrayCopy = array;
+  ofArrayCopy = ofArray;
+  v6 = [arrayCopy count];
+  if (v6 < [ofArrayCopy count])
   {
-    v7 = [v5 subarrayWithRange:{objc_msgSend(v8, "count"), objc_msgSend(v5, "count") - objc_msgSend(v8, "count")}];
-    [v8 addObjectsFromArray:v7];
+    v7 = [ofArrayCopy subarrayWithRange:{objc_msgSend(arrayCopy, "count"), objc_msgSend(ofArrayCopy, "count") - objc_msgSend(arrayCopy, "count")}];
+    [arrayCopy addObjectsFromArray:v7];
   }
 }
 
@@ -236,13 +236,13 @@
     v6 = [[OAXDrawingState alloc] initWithClient:0];
     [OAXStyleMatrix readFromNode:v4 toStyleMatrix:v5 packagePart:0 drawingState:v6];
     xmlFreeDoc(v3);
-    v7 = [(OADStyleMatrix *)self name];
-    v8 = [v7 length];
+    name = [(OADStyleMatrix *)self name];
+    v8 = [name length];
 
     if (!v8)
     {
-      v9 = [v5 name];
-      [(OADStyleMatrix *)self setName:v9];
+      name2 = [v5 name];
+      [(OADStyleMatrix *)self setName:name2];
     }
 
     [(OADStyleMatrix *)self padArray:self->mFills withContentsOfArray:v5[2]];

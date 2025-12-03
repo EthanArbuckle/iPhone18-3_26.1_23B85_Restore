@@ -1,15 +1,15 @@
 @interface HULocationTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation HULocationTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HULocationTableViewCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HULocationTableViewCell" hasInstanceMethod:@"locationIcon" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HULocationTableViewCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HULocationTableViewCell" hasInstanceMethod:@"locationIcon" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -18,8 +18,8 @@
   v3 = [(HULocationTableViewCellAccessibility *)self safeValueForKey:@"locationIcon"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 superview];
-  if (v5)
+  superview = [v4 superview];
+  if (superview)
   {
     v6 = accessibilityLocalizedString(@"home.locations.current");
   }
@@ -30,7 +30,7 @@
   }
 
   v7 = [(HULocationTableViewCellAccessibility *)self safeValueForKey:@"titleLabel"];
-  v10 = [v7 accessibilityLabel];
+  accessibilityLabel = [v7 accessibilityLabel];
   v8 = __AXStringForVariables();
 
   return v8;

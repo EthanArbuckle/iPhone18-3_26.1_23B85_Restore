@@ -1,19 +1,19 @@
 @interface MFBase64Decoder
-+ (BOOL)isValidBase64:(id)a3;
-- (MFBase64Decoder)initWithConsumers:(id)a3;
-- (int64_t)appendData:(id)a3;
-- (unint64_t)_decodeBytes:(const char *)a3 end:(const char *)a4 into:(char *)a5 length:(unint64_t)a6 startingAt:(unint64_t)a7 outEncodedOffset:(unint64_t *)a8;
++ (BOOL)isValidBase64:(id)base64;
+- (MFBase64Decoder)initWithConsumers:(id)consumers;
+- (int64_t)appendData:(id)data;
+- (unint64_t)_decodeBytes:(const char *)bytes end:(const char *)end into:(char *)into length:(unint64_t)length startingAt:(unint64_t)at outEncodedOffset:(unint64_t *)offset;
 - (void)done;
-- (void)setConvertCommas:(BOOL)a3;
+- (void)setConvertCommas:(BOOL)commas;
 @end
 
 @implementation MFBase64Decoder
 
-- (MFBase64Decoder)initWithConsumers:(id)a3
+- (MFBase64Decoder)initWithConsumers:(id)consumers
 {
   v4.receiver = self;
   v4.super_class = MFBase64Decoder;
-  result = [(MFBaseFilterDataConsumer *)&v4 initWithConsumers:a3];
+  result = [(MFBaseFilterDataConsumer *)&v4 initWithConsumers:consumers];
   if (result)
   {
     result->_table = &Decode64Table;
@@ -22,23 +22,23 @@
   return result;
 }
 
-- (unint64_t)_decodeBytes:(const char *)a3 end:(const char *)a4 into:(char *)a5 length:(unint64_t)a6 startingAt:(unint64_t)a7 outEncodedOffset:(unint64_t *)a8
+- (unint64_t)_decodeBytes:(const char *)bytes end:(const char *)end into:(char *)into length:(unint64_t)length startingAt:(unint64_t)at outEncodedOffset:(unint64_t *)offset
 {
-  v9 = a3;
+  endCopy = bytes;
   equalCount = self->_equalCount;
   validBytes = self->_validBytes;
   decodedBits = self->_decodedBits;
-  if (a3 >= a4)
+  if (bytes >= end)
   {
     goto LABEL_18;
   }
 
-  v23 = a8;
+  offsetCopy = offset;
   table = self->_table;
   do
   {
-    v18 = table[*v9];
-    if (table[*v9] < 0)
+    v18 = table[*endCopy];
+    if (table[*endCopy] < 0)
     {
       if ((~v18 & 0xFB) == 0)
       {
@@ -61,53 +61,53 @@ LABEL_9:
         goto LABEL_9;
       }
 
-      if (a7 + 2 >= a6)
+      if (at + 2 >= length)
       {
-        v19 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:a5 length:a7];
+        v19 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:into length:at];
         v25.receiver = self;
         v25.super_class = MFBase64Decoder;
         [(MFBaseFilterDataConsumer *)&v25 appendData:v19];
 
-        a7 = 0;
+        at = 0;
       }
 
       equalCount = 0;
-      v20 = &a5[a7];
+      v20 = &into[at];
       *(v20 + 1) = bswap32(decodedBits) >> 16;
       *v20 = BYTE2(decodedBits);
-      a7 += 3;
+      at += 3;
       decodedBits = 0;
     }
 
 LABEL_10:
-    ++v9;
+    ++endCopy;
   }
 
-  while (v9 != a4);
-  v9 = a4;
+  while (endCopy != end);
+  endCopy = end;
 LABEL_17:
-  a8 = v23;
+  offset = offsetCopy;
 LABEL_18:
   self->_equalCount = equalCount;
   self->_validBytes = validBytes & 3;
   self->_decodedBits = decodedBits;
-  if (a8)
+  if (offset)
   {
-    *a8 = v9 - a3;
+    *offset = endCopy - bytes;
   }
 
-  return a7;
+  return at;
 }
 
-- (int64_t)appendData:(id)a3
+- (int64_t)appendData:(id)data
 {
-  v38 = MEMORY[0x1EEE9AC00](self, a2, a3);
+  v38 = MEMORY[0x1EEE9AC00](self, a2, data);
   v44 = *MEMORY[0x1E69E9840];
   v36 = v3;
   v4 = [v36 length];
-  v5 = [v36 bytes];
+  bytes = [v36 bytes];
   memset(__b, 170, sizeof(__b));
-  v6 = [v38 convertCommas];
+  convertCommas = [v38 convertCommas];
   if (!v4)
   {
     goto LABEL_64;
@@ -115,7 +115,7 @@ LABEL_18:
 
   v7 = 0;
   v8 = 0;
-  v37 = v6;
+  v37 = convertCommas;
   do
   {
     v9 = *(v38 + 40);
@@ -129,12 +129,12 @@ LABEL_18:
     v12 = 0;
     v13 = 0;
     v14 = 0;
-    v15 = v5 + v7;
+    v15 = bytes + v7;
     v16 = 1;
     do
     {
       v17 = *(v15 + v12);
-      if ((*(v15 + v12) & 0x80000000) == 0 && (v17 == 44 ? (v18 = v6) : (v18 = 0), (v18 & 1) != 0 || ((1 << (v17 & 7)) & _IsValidBase64Chr_table[*(v15 + v12) >> 3]) != 0))
+      if ((*(v15 + v12) & 0x80000000) == 0 && (v17 == 44 ? (v18 = convertCommas) : (v18 = 0), (v18 & 1) != 0 || ((1 << (v17 & 7)) & _IsValidBase64Chr_table[*(v15 + v12) >> 3]) != 0))
       {
         v16 = v13 == 0;
       }
@@ -234,7 +234,7 @@ LABEL_32:
             v22 = v21;
           }
 
-          memmove(&__b[v8], (v5 + i + v7), v22);
+          memmove(&__b[v8], (bytes + i + v7), v22);
           v8 += v22;
           v23 = v8 - 0x4000;
           if (v8 >= 0x4000)
@@ -283,19 +283,19 @@ LABEL_58:
       {
         v40 = 0;
         v29 = v38;
-        v8 = [v38 _decodeBytes:v5 + v7 end:v5 + v4 - 0x4000 into:__b length:0x4000 startingAt:v8 outEncodedOffset:&v40];
+        v8 = [v38 _decodeBytes:bytes + v7 end:bytes + v4 - 0x4000 into:__b length:0x4000 startingAt:v8 outEncodedOffset:&v40];
         v7 += v40;
       }
 
       v30 = *(v29 + 24);
       if (v30)
       {
-        [v30 appendBytes:v5 + v7 length:v4 - v7];
+        [v30 appendBytes:bytes + v7 length:v4 - v7];
       }
 
       else
       {
-        v31 = [objc_alloc(MEMORY[0x1E695DF88]) initWithBytes:v5 + v7 length:v4 - v7];
+        v31 = [objc_alloc(MEMORY[0x1E695DF88]) initWithBytes:bytes + v7 length:v4 - v7];
         v32 = *(v38 + 24);
         *(v38 + 24) = v31;
       }
@@ -310,10 +310,10 @@ LABEL_58:
       *(v38 + 24) = 0;
     }
 
-    v8 = [v38 _decodeBytes:v5 + v7 end:v5 + v7 + v11 into:__b length:0x4000 startingAt:v8 outEncodedOffset:0];
+    v8 = [v38 _decodeBytes:bytes + v7 end:bytes + v7 + v11 into:__b length:0x4000 startingAt:v8 outEncodedOffset:0];
 LABEL_51:
     v7 += v11;
-    v6 = v37;
+    convertCommas = v37;
   }
 
   while (v7 < v4);
@@ -399,10 +399,10 @@ LABEL_13:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setConvertCommas:(BOOL)a3
+- (void)setConvertCommas:(BOOL)commas
 {
   v3 = &Decode64Table;
-  if (a3)
+  if (commas)
   {
     v3 = &Decode64AltTable;
   }
@@ -410,19 +410,19 @@ LABEL_13:
   self->_table = v3;
 }
 
-+ (BOOL)isValidBase64:(id)a3
++ (BOOL)isValidBase64:(id)base64
 {
-  v3 = a3;
-  v4 = [v3 bytes];
-  v5 = [v3 length];
-  LODWORD(v6) = v4;
+  base64Copy = base64;
+  bytes = [base64Copy bytes];
+  v5 = [base64Copy length];
+  LODWORD(v6) = bytes;
   if (v5 < 1)
   {
     goto LABEL_14;
   }
 
   v7 = 0;
-  v6 = v4;
+  v6 = bytes;
   do
   {
     v8 = *v6;
@@ -447,12 +447,12 @@ LABEL_13:
     ++v6;
   }
 
-  while (v9 && v6 < v4 + v5);
+  while (v9 && v6 < bytes + v5);
   v11 = v7 < 3 ? v9 : 0;
   if (v11 == 1)
   {
 LABEL_14:
-    v10 = ((v6 - v4) & 3) == 0;
+    v10 = ((v6 - bytes) & 3) == 0;
   }
 
   else

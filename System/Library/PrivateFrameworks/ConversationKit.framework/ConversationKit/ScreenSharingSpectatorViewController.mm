@@ -1,5 +1,5 @@
 @interface ScreenSharingSpectatorViewController
-- (_TtC15ConversationKit36ScreenSharingSpectatorViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15ConversationKit36ScreenSharingSpectatorViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)loadView;
 - (void)viewDidLoad;
@@ -9,7 +9,7 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ScreenSharingSpectatorViewController.supportedInterfaceOrientations.getter();
 
   return v3;
@@ -17,24 +17,24 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   ScreenSharingSpectatorViewController.loadView()();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   ScreenSharingSpectatorViewController.viewDidLoad()();
 }
 
-- (_TtC15ConversationKit36ScreenSharingSpectatorViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15ConversationKit36ScreenSharingSpectatorViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   ScreenSharingSpectatorViewController.init(nibName:bundle:)();
 }
 

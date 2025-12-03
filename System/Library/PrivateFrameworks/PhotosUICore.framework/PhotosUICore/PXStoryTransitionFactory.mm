@@ -1,13 +1,13 @@
 @interface PXStoryTransitionFactory
-+ ($3CC8671D27C23BF42ADDB32F2B5E48AE)visibleOrderOutDurationForTransitionInfo:(SEL)a3;
-+ (id)effectTransitionWithInfo:(id *)a3 entityManager:(id)a4;
-+ (id)segmentTransitionWithInfo:(id *)a3 event:(int64_t)a4 clipLayouts:(id)a5 storyTransitionCurveType:(unint64_t)a6;
-+ (id)wipeTransitionWithConfiguration:(id)a3;
++ ($3CC8671D27C23BF42ADDB32F2B5E48AE)visibleOrderOutDurationForTransitionInfo:(SEL)info;
++ (id)effectTransitionWithInfo:(id *)info entityManager:(id)manager;
++ (id)segmentTransitionWithInfo:(id *)info event:(int64_t)event clipLayouts:(id)layouts storyTransitionCurveType:(unint64_t)type;
++ (id)wipeTransitionWithConfiguration:(id)configuration;
 @end
 
 @implementation PXStoryTransitionFactory
 
-+ ($3CC8671D27C23BF42ADDB32F2B5E48AE)visibleOrderOutDurationForTransitionInfo:(SEL)a3
++ ($3CC8671D27C23BF42ADDB32F2B5E48AE)visibleOrderOutDurationForTransitionInfo:(SEL)info
 {
   v9 = *MEMORY[0x1E69E9840];
   var0 = a4->var0;
@@ -22,33 +22,33 @@
   return CMTimeMultiplyByRatio(retstr, &v8, v6, 100);
 }
 
-+ (id)wipeTransitionWithConfiguration:(id)a3
++ (id)wipeTransitionWithConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [[PXStoryTransitionWipe alloc] initWithConfiguration:v3];
+  configurationCopy = configuration;
+  v4 = [[PXStoryTransitionWipe alloc] initWithConfiguration:configurationCopy];
 
   return v4;
 }
 
-+ (id)segmentTransitionWithInfo:(id *)a3 event:(int64_t)a4 clipLayouts:(id)a5 storyTransitionCurveType:(unint64_t)a6
++ (id)segmentTransitionWithInfo:(id *)info event:(int64_t)event clipLayouts:(id)layouts storyTransitionCurveType:(unint64_t)type
 {
   v33 = *MEMORY[0x1E69E9840];
-  v11 = a5;
+  layoutsCopy = layouts;
   v12 = 0;
-  var0 = a3->var0;
+  var0 = info->var0;
   if (var0 <= 3)
   {
-    if (a3->var0 <= 1u)
+    if (info->var0 <= 1u)
     {
-      if (!a3->var0)
+      if (!info->var0)
       {
         v15 = PLUIGetLog();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
-          v16 = *&a3->var2.var1;
-          v30 = *&a3->var0;
+          v16 = *&info->var2.var1;
+          v30 = *&info->var0;
           v31 = v16;
-          v32 = *&a3->var3;
+          v32 = *&info->var3;
           v17 = PXStoryTransitionInfoDescription(&v30);
           LODWORD(v30) = 138543362;
           *(&v30 + 4) = v17;
@@ -63,11 +63,11 @@
     if (var0 == 2)
     {
       v19 = [PXStoryTransitionCrossfade alloc];
-      v20 = *&a3->var2.var1;
-      v30 = *&a3->var0;
+      v20 = *&info->var2.var1;
+      v30 = *&info->var0;
       v31 = v20;
-      v32 = *&a3->var3;
-      v18 = [(PXStoryTransitionCrossfade *)v19 initWithTransitionInfo:&v30 event:a4 clipLayouts:v11 storyTransitionCurveType:a6];
+      v32 = *&info->var3;
+      v18 = [(PXStoryTransitionCrossfade *)v19 initWithTransitionInfo:&v30 event:event clipLayouts:layoutsCopy storyTransitionCurveType:type];
 LABEL_24:
       v12 = v18;
       goto LABEL_25;
@@ -81,15 +81,15 @@ LABEL_24:
     v14 = PXStoryTransitionFadeToBlack;
 LABEL_23:
     v21 = [v14 alloc];
-    v22 = *&a3->var2.var1;
-    v30 = *&a3->var0;
+    v22 = *&info->var2.var1;
+    v30 = *&info->var0;
     v31 = v22;
-    v32 = *&a3->var3;
-    v18 = [v21 initWithTransitionInfo:&v30 event:a4 clipLayouts:v11];
+    v32 = *&info->var3;
+    v18 = [v21 initWithTransitionInfo:&v30 event:event clipLayouts:layoutsCopy];
     goto LABEL_24;
   }
 
-  if (a3->var0 <= 6u)
+  if (info->var0 <= 6u)
   {
     switch(var0)
     {
@@ -100,11 +100,11 @@ LABEL_23:
         v14 = PXStoryTransitionScale;
         goto LABEL_23;
       case 5u:
-        v24 = [MEMORY[0x1E696AAA8] currentHandler];
-        v25 = v24;
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        v25 = currentHandler;
         v26 = @"Use +[PXStoryTransitionFactory panTransitionWithConfiguration:] instead.";
         v27 = a2;
-        v28 = a1;
+        selfCopy3 = self;
         v29 = 1120;
         goto LABEL_33;
     }
@@ -112,7 +112,7 @@ LABEL_23:
 
   else
   {
-    if (a3->var0 <= 8u)
+    if (info->var0 <= 8u)
     {
       if (var0 == 7)
       {
@@ -120,14 +120,14 @@ LABEL_23:
         goto LABEL_23;
       }
 
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
-      v25 = v24;
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      v25 = currentHandler;
       v26 = @"Use +[PXStoryTransitionFactory wipeTransitionWithConfiguration:] instead.";
       v27 = a2;
-      v28 = a1;
+      selfCopy3 = self;
       v29 = 1129;
 LABEL_33:
-      [v24 handleFailureInMethod:v27 object:v28 file:@"PXStoryTransition.m" lineNumber:v29 description:v26];
+      [currentHandler handleFailureInMethod:v27 object:selfCopy3 file:@"PXStoryTransition.m" lineNumber:v29 description:v26];
 
       abort();
     }
@@ -140,11 +140,11 @@ LABEL_33:
 
     if (var0 == 10)
     {
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
-      v25 = v24;
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      v25 = currentHandler;
       v26 = @"Not a valid transition.";
       v27 = a2;
-      v28 = a1;
+      selfCopy3 = self;
       v29 = 1135;
       goto LABEL_33;
     }
@@ -155,11 +155,11 @@ LABEL_25:
   return v12;
 }
 
-+ (id)effectTransitionWithInfo:(id *)a3 entityManager:(id)a4
++ (id)effectTransitionWithInfo:(id *)info entityManager:(id)manager
 {
-  v7 = a4;
+  managerCopy = manager;
   v8 = 0;
-  var0 = a3->var0;
+  var0 = info->var0;
   if (var0 <= 6)
   {
     if (var0 != 4)
@@ -169,7 +169,7 @@ LABEL_25:
         goto LABEL_18;
       }
 
-      v10 = BYTE5(a3->var2.var3);
+      v10 = BYTE5(info->var2.var3);
       if ((v10 - 1) < 2)
       {
         v11 = &off_1E7721608;
@@ -179,10 +179,10 @@ LABEL_25:
       {
         if ((v10 - 3) >= 2)
         {
-          if (!BYTE5(a3->var2.var3))
+          if (!BYTE5(info->var2.var3))
           {
-            v22 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v22 handleFailureInMethod:a2 object:a1 file:@"PXStoryTransition.m" lineNumber:1067 description:@"Code which should be unreachable has been reached"];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryTransition.m" lineNumber:1067 description:@"Code which should be unreachable has been reached"];
 
             abort();
           }
@@ -194,24 +194,24 @@ LABEL_25:
         v11 = &off_1E7721700;
       }
 
-      v12 = [objc_alloc(*v11) initWithEntityManager:v7];
+      v12 = [objc_alloc(*v11) initWithEntityManager:managerCopy];
 LABEL_15:
-      v20 = *&a3->var2.var1;
-      v23 = *&a3->var0;
+      v20 = *&info->var2.var1;
+      v23 = *&info->var0;
       v24 = v20;
-      v25 = *&a3->var3;
+      v25 = *&info->var3;
       v16 = [PXStoryTransitionPan panWithEffect:v12 transitionInfo:&v23];
       goto LABEL_16;
     }
 
-    v12 = [[off_1E77215E8 alloc] initWithEntityManager:v7];
+    v12 = [[off_1E77215E8 alloc] initWithEntityManager:managerCopy];
     v13 = PXStoryTransitionExposureBleed;
 LABEL_11:
     v14 = [v13 alloc];
-    v15 = *&a3->var2.var1;
-    v23 = *&a3->var0;
+    v15 = *&info->var2.var1;
+    v23 = *&info->var0;
     v24 = v15;
-    v25 = *&a3->var3;
+    v25 = *&info->var3;
     v16 = [v14 initWithTransitionInfo:&v23 effect:v12];
 LABEL_16:
     v8 = v16;
@@ -225,18 +225,18 @@ LABEL_16:
       goto LABEL_18;
     }
 
-    v12 = [[off_1E7721680 alloc] initWithEntityManager:v7];
+    v12 = [[off_1E7721680 alloc] initWithEntityManager:managerCopy];
     v13 = PXStoryTransitionZoom;
     goto LABEL_11;
   }
 
-  v12 = [[off_1E7721698 alloc] initWithEntityManager:v7];
-  v17 = [[off_1E7721698 alloc] initWithEntityManager:v7];
+  v12 = [[off_1E7721698 alloc] initWithEntityManager:managerCopy];
+  v17 = [[off_1E7721698 alloc] initWithEntityManager:managerCopy];
   v18 = [PXStoryTransitionRotate alloc];
-  v19 = *&a3->var2.var1;
-  v23 = *&a3->var0;
+  v19 = *&info->var2.var1;
+  v23 = *&info->var0;
   v24 = v19;
-  v25 = *&a3->var3;
+  v25 = *&info->var3;
   v8 = [(PXStoryTransitionRotate *)v18 initWithTransitionInfo:&v23 effect:v12 auxiliaryEffect:v17];
 
 LABEL_17:

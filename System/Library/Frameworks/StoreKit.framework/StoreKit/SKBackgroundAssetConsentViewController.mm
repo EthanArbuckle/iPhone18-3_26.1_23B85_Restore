@@ -30,24 +30,24 @@
   v7.receiver = self;
   v7.super_class = SKBackgroundAssetConsentViewController;
   [(OBBaseWelcomeController *)&v7 viewDidLoad];
-  v3 = [MEMORY[0x1E69B7D00] boldButton];
+  boldButton = [MEMORY[0x1E69B7D00] boldButton];
   v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"BACKGROUND_ASSETS_CONSENT_CONTINUE" value:&stru_1F29BCE20 table:0];
-  [v3 setTitle:v5 forState:0];
+  [boldButton setTitle:v5 forState:0];
 
-  [v3 addTarget:self action:sel__continueButtonPressed forControlEvents:64];
-  v6 = [(SKBackgroundAssetConsentViewController *)self buttonTray];
-  [v6 addButton:v3];
+  [boldButton addTarget:self action:sel__continueButtonPressed forControlEvents:64];
+  buttonTray = [(SKBackgroundAssetConsentViewController *)self buttonTray];
+  [buttonTray addButton:boldButton];
 }
 
 - (void)dealloc
 {
-  v3 = [(SKBackgroundAssetConsentViewController *)self responseBlock];
+  responseBlock = [(SKBackgroundAssetConsentViewController *)self responseBlock];
 
-  if (v3)
+  if (responseBlock)
   {
-    v4 = [(SKBackgroundAssetConsentViewController *)self responseBlock];
-    v4[2](v4, 0);
+    responseBlock2 = [(SKBackgroundAssetConsentViewController *)self responseBlock];
+    responseBlock2[2](responseBlock2, 0);
   }
 
   v5.receiver = self;
@@ -57,12 +57,12 @@
 
 - (void)_continueButtonPressed
 {
-  v3 = [(SKBackgroundAssetConsentViewController *)self responseBlock];
+  responseBlock = [(SKBackgroundAssetConsentViewController *)self responseBlock];
 
-  if (v3)
+  if (responseBlock)
   {
-    v4 = [(SKBackgroundAssetConsentViewController *)self responseBlock];
-    v4[2](v4, MEMORY[0x1E695E118]);
+    responseBlock2 = [(SKBackgroundAssetConsentViewController *)self responseBlock];
+    responseBlock2[2](responseBlock2, MEMORY[0x1E695E118]);
   }
 
   [(SKBackgroundAssetConsentViewController *)self setResponseBlock:0];

@@ -1,31 +1,31 @@
 @interface MIOFrameProcessorFactory
-+ (id)processorForConfig:(id)a3 formatDescription:(opaqueCMFormatDescription *)a4;
++ (id)processorForConfig:(id)config formatDescription:(opaqueCMFormatDescription *)description;
 @end
 
 @implementation MIOFrameProcessorFactory
 
-+ (id)processorForConfig:(id)a3 formatDescription:(opaqueCMFormatDescription *)a4
++ (id)processorForConfig:(id)config formatDescription:(opaqueCMFormatDescription *)description
 {
-  v5 = a3;
-  MediaSubType = CMFormatDescriptionGetMediaSubType(a4);
-  v7 = [v5 objectForKey:@"StreamEncoderType"];
-  v8 = [v7 intValue];
+  configCopy = config;
+  MediaSubType = CMFormatDescriptionGetMediaSubType(description);
+  v7 = [configCopy objectForKey:@"StreamEncoderType"];
+  intValue = [v7 intValue];
 
   v9 = off_279847308;
-  if (v8 != 17)
+  if (intValue != 17)
   {
-    v10 = v8 & 0xFFFFFFFE;
-    v11 = (v8 & 0xFFFFFFFE) != 6 || MediaSubType == 1278226488;
-    if (v11 || ([v5 objectForKey:@"StreamConvertNonPlanarBuffersTo8bitMonochrome"], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "BOOLValue"), v12, (v13 & 1) == 0))
+    v10 = intValue & 0xFFFFFFFE;
+    v11 = (intValue & 0xFFFFFFFE) != 6 || MediaSubType == 1278226488;
+    if (v11 || ([configCopy objectForKey:@"StreamConvertNonPlanarBuffersTo8bitMonochrome"], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "BOOLValue"), v12, (v13 & 1) == 0))
     {
-      if (MediaSubType == 1919365992 && ([v5 objectForKey:@"StreamConvertRGBPlanarHalfToRGBAHalf"], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "BOOLValue"), v14, (v15 & 1) != 0))
+      if (MediaSubType == 1919365992 && ([configCopy objectForKey:@"StreamConvertRGBPlanarHalfToRGBAHalf"], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "BOOLValue"), v14, (v15 & 1) != 0))
       {
         v9 = off_2798473D8;
       }
 
       else if ([(MIOPixelBufferUtility *)PixelBufferUtility isPixelFormatRawBayer:MediaSubType])
       {
-        if (v8 == 14)
+        if (intValue == 14)
         {
           v9 = off_279847348;
         }
@@ -36,7 +36,7 @@
         }
       }
 
-      else if (MediaSubType == 1278226738 && v8 == 14)
+      else if (MediaSubType == 1278226738 && intValue == 14)
       {
         v9 = off_279847348;
       }
@@ -63,7 +63,7 @@
     }
   }
 
-  v17 = [objc_alloc(*v9) initWithInputFormatDescription:a4];
+  v17 = [objc_alloc(*v9) initWithInputFormatDescription:description];
 
   return v17;
 }

@@ -1,31 +1,31 @@
 @interface SPBTFindingSession
 + (id)exportedInterface;
 + (id)remoteInterface;
-- (SPBTFindingSession)initWithConfig:(id)a3;
+- (SPBTFindingSession)initWithConfig:(id)config;
 - (SPBTFindingXPCProtocol)proxy;
-- (void)findingSessionError:(id)a3;
-- (void)interruptionHandler:(id)a3;
-- (void)invalidationHandler:(id)a3;
-- (void)startFastAdvertisingForBeacon:(id)a3 completion:(id)a4;
-- (void)startFindingBeacon:(id)a3 completion:(id)a4;
-- (void)stopFastAdvertisingForBeacon:(id)a3 completion:(id)a4;
-- (void)stopFindingBeacon:(id)a3 completion:(id)a4;
-- (void)updateConfig:(id)a3;
-- (void)updatedBTRSSIMeasurement:(id)a3;
-- (void)updatedBTRSSIResult:(id)a3;
+- (void)findingSessionError:(id)error;
+- (void)interruptionHandler:(id)handler;
+- (void)invalidationHandler:(id)handler;
+- (void)startFastAdvertisingForBeacon:(id)beacon completion:(id)completion;
+- (void)startFindingBeacon:(id)beacon completion:(id)completion;
+- (void)stopFastAdvertisingForBeacon:(id)beacon completion:(id)completion;
+- (void)stopFindingBeacon:(id)beacon completion:(id)completion;
+- (void)updateConfig:(id)config;
+- (void)updatedBTRSSIMeasurement:(id)measurement;
+- (void)updatedBTRSSIResult:(id)result;
 @end
 
 @implementation SPBTFindingSession
 
-- (SPBTFindingSession)initWithConfig:(id)a3
+- (SPBTFindingSession)initWithConfig:(id)config
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  configCopy = config;
   v6 = LogCategory_BTFinding();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v5;
+    v18 = configCopy;
     _os_log_impl(&dword_2643D0000, v6, OS_LOG_TYPE_DEFAULT, "SPBTFindingSession: initWithConfig %@", buf, 0xCu);
   }
 
@@ -44,37 +44,37 @@
     callbackQueue = v7->_callbackQueue;
     v7->_callbackQueue = v12;
 
-    objc_storeStrong(&v7->_config, a3);
-    [(SPBTFindingSession *)v7 updateConfig:v5];
+    objc_storeStrong(&v7->_config, config);
+    [(SPBTFindingSession *)v7 updateConfig:configCopy];
   }
 
   v14 = *MEMORY[0x277D85DE8];
   return v7;
 }
 
-- (void)interruptionHandler:(id)a3
+- (void)interruptionHandler:(id)handler
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = LogCategory_BTFinding();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = handlerCopy;
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "SPBTFindingSession: interruptionHandler %@", buf, 0xCu);
   }
 
-  v6 = [(SPBTFindingSession *)self sessionInvalidatedCallback];
+  sessionInvalidatedCallback = [(SPBTFindingSession *)self sessionInvalidatedCallback];
 
-  if (v6)
+  if (sessionInvalidatedCallback)
   {
-    v7 = [(SPBTFindingSession *)self callbackQueue];
+    callbackQueue = [(SPBTFindingSession *)self callbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __42__SPBTFindingSession_interruptionHandler___block_invoke;
     block[3] = &unk_279B58AE8;
     block[4] = self;
-    dispatch_sync(v7, block);
+    dispatch_sync(callbackQueue, block);
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -86,30 +86,30 @@ void __42__SPBTFindingSession_interruptionHandler___block_invoke(uint64_t a1)
   v1[2]();
 }
 
-- (void)invalidationHandler:(id)a3
+- (void)invalidationHandler:(id)handler
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = LogCategory_BTFinding();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = handlerCopy;
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "SPBTFindingSession: invalidationHandler %@", buf, 0xCu);
   }
 
   [(SPBTFindingSession *)self setSession:0];
-  v6 = [(SPBTFindingSession *)self sessionInvalidatedCallback];
+  sessionInvalidatedCallback = [(SPBTFindingSession *)self sessionInvalidatedCallback];
 
-  if (v6)
+  if (sessionInvalidatedCallback)
   {
-    v7 = [(SPBTFindingSession *)self callbackQueue];
+    callbackQueue = [(SPBTFindingSession *)self callbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __42__SPBTFindingSession_invalidationHandler___block_invoke;
     block[3] = &unk_279B58AE8;
     block[4] = self;
-    dispatch_sync(v7, block);
+    dispatch_sync(callbackQueue, block);
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -124,16 +124,16 @@ void __42__SPBTFindingSession_invalidationHandler___block_invoke(uint64_t a1)
 - (SPBTFindingXPCProtocol)proxy
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v3 = [(SPBTFindingSession *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SPBTFindingSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(SPBTFindingSession *)self session];
+  session = [(SPBTFindingSession *)self session];
 
-  if (!v4)
+  if (!session)
   {
-    v5 = [(SPBTFindingSession *)self serviceDescription];
+    serviceDescription = [(SPBTFindingSession *)self serviceDescription];
 
-    if (!v5)
+    if (!serviceDescription)
     {
       objc_initWeak(location, self);
       aBlock[0] = MEMORY[0x277D85DD0];
@@ -160,40 +160,40 @@ void __42__SPBTFindingSession_invalidationHandler___block_invoke(uint64_t a1)
     }
 
     v12 = objc_alloc(MEMORY[0x277D07BA8]);
-    v13 = [(SPBTFindingSession *)self serviceDescription];
-    v14 = [v12 initWithServiceDescription:v13];
+    serviceDescription2 = [(SPBTFindingSession *)self serviceDescription];
+    v14 = [v12 initWithServiceDescription:serviceDescription2];
     [(SPBTFindingSession *)self setSession:v14];
 
     v15 = LogCategory_BTFinding();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(SPBTFindingSession *)self serviceDescription];
-      v17 = [v16 machService];
+      serviceDescription3 = [(SPBTFindingSession *)self serviceDescription];
+      machService = [serviceDescription3 machService];
       LODWORD(location[0]) = 138412290;
-      *(location + 4) = v17;
+      *(location + 4) = machService;
       _os_log_impl(&dword_2643D0000, v15, OS_LOG_TYPE_DEFAULT, "SPBTFindingSession: Establishing XPC connection to %@", location, 0xCu);
     }
 
-    v18 = [(SPBTFindingSession *)self session];
-    [v18 resume];
+    session2 = [(SPBTFindingSession *)self session];
+    [session2 resume];
 
     v19 = LogCategory_BTFinding();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(SPBTFindingSession *)self serviceDescription];
-      v21 = [v20 machService];
+      serviceDescription4 = [(SPBTFindingSession *)self serviceDescription];
+      machService2 = [serviceDescription4 machService];
       LODWORD(location[0]) = 138412290;
-      *(location + 4) = v21;
+      *(location + 4) = machService2;
       _os_log_impl(&dword_2643D0000, v19, OS_LOG_TYPE_DEFAULT, "SPBTFindingSession: Established XPC connection to %@", location, 0xCu);
     }
   }
 
-  v22 = [(SPBTFindingSession *)self session];
-  v23 = [v22 proxy];
+  session3 = [(SPBTFindingSession *)self session];
+  proxy = [session3 proxy];
 
   v24 = *MEMORY[0x277D85DE8];
 
-  return v23;
+  return proxy;
 }
 
 void __27__SPBTFindingSession_proxy__block_invoke(uint64_t a1, void *a2)
@@ -248,16 +248,16 @@ uint64_t __37__SPBTFindingSession_remoteInterface__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)updateConfig:(id)a3
+- (void)updateConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __35__SPBTFindingSession_updateConfig___block_invoke;
   v6[3] = &unk_279B58C78;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = configCopy;
+  v5 = configCopy;
   _os_activity_initiate(&dword_2643D0000, "SPBTFindingSession.updateConfig", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -307,19 +307,19 @@ void __35__SPBTFindingSession_updateConfig___block_invoke_2(uint64_t a1, void *a
   }
 }
 
-- (void)startFindingBeacon:(id)a3 completion:(id)a4
+- (void)startFindingBeacon:(id)beacon completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  beaconCopy = beacon;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __52__SPBTFindingSession_startFindingBeacon_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = beaconCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = beaconCopy;
   _os_activity_initiate(&dword_2643D0000, "SPBTFindingSession.start", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -378,19 +378,19 @@ void __52__SPBTFindingSession_startFindingBeacon_completion___block_invoke_2(uin
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)startFastAdvertisingForBeacon:(id)a3 completion:(id)a4
+- (void)startFastAdvertisingForBeacon:(id)beacon completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  beaconCopy = beacon;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __63__SPBTFindingSession_startFastAdvertisingForBeacon_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = beaconCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = beaconCopy;
   _os_activity_initiate(&dword_2643D0000, "SPBTFindingSession.startFastAdvertising", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -449,19 +449,19 @@ void __63__SPBTFindingSession_startFastAdvertisingForBeacon_completion___block_i
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)stopFastAdvertisingForBeacon:(id)a3 completion:(id)a4
+- (void)stopFastAdvertisingForBeacon:(id)beacon completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  beaconCopy = beacon;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __62__SPBTFindingSession_stopFastAdvertisingForBeacon_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = beaconCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = beaconCopy;
   _os_activity_initiate(&dword_2643D0000, "SPBTFindingSession.stopFastAdvertising", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -520,19 +520,19 @@ void __62__SPBTFindingSession_stopFastAdvertisingForBeacon_completion___block_in
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)stopFindingBeacon:(id)a3 completion:(id)a4
+- (void)stopFindingBeacon:(id)beacon completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  beaconCopy = beacon;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __51__SPBTFindingSession_stopFindingBeacon_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = beaconCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = beaconCopy;
   _os_activity_initiate(&dword_2643D0000, "SPBTFindingSession.stop", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -591,9 +591,9 @@ void __51__SPBTFindingSession_stopFindingBeacon_completion___block_invoke_2(uint
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)updatedBTRSSIMeasurement:(id)a3
+- (void)updatedBTRSSIMeasurement:(id)measurement
 {
-  v4 = a3;
+  measurementCopy = measurement;
   v5 = LogCategory_BTFinding();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -601,15 +601,15 @@ void __51__SPBTFindingSession_stopFindingBeacon_completion___block_invoke_2(uint
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "updatedBTRSSIMeasurement() called from daemon", buf, 2u);
   }
 
-  v6 = [(SPBTFindingSession *)self callbackQueue];
+  callbackQueue = [(SPBTFindingSession *)self callbackQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __47__SPBTFindingSession_updatedBTRSSIMeasurement___block_invoke;
   v8[3] = &unk_279B58C78;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = measurementCopy;
+  v7 = measurementCopy;
+  dispatch_async(callbackQueue, v8);
 }
 
 void __47__SPBTFindingSession_updatedBTRSSIMeasurement___block_invoke(uint64_t a1)
@@ -618,9 +618,9 @@ void __47__SPBTFindingSession_updatedBTRSSIMeasurement___block_invoke(uint64_t a
   v2[2](v2, *(a1 + 40));
 }
 
-- (void)updatedBTRSSIResult:(id)a3
+- (void)updatedBTRSSIResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v5 = LogCategory_BTFinding();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -628,15 +628,15 @@ void __47__SPBTFindingSession_updatedBTRSSIMeasurement___block_invoke(uint64_t a
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "updatedBTRSSIResult() called from daemon", buf, 2u);
   }
 
-  v6 = [(SPBTFindingSession *)self callbackQueue];
+  callbackQueue = [(SPBTFindingSession *)self callbackQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __42__SPBTFindingSession_updatedBTRSSIResult___block_invoke;
   v8[3] = &unk_279B58C78;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = resultCopy;
+  v7 = resultCopy;
+  dispatch_async(callbackQueue, v8);
 }
 
 void __42__SPBTFindingSession_updatedBTRSSIResult___block_invoke(uint64_t a1)
@@ -645,27 +645,27 @@ void __42__SPBTFindingSession_updatedBTRSSIResult___block_invoke(uint64_t a1)
   v2[2](v2, *(a1 + 40));
 }
 
-- (void)findingSessionError:(id)a3
+- (void)findingSessionError:(id)error
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = LogCategory_BTFinding();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v12 = v4;
+    v12 = errorCopy;
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "[findingSessionError called from client]. Error %{public}@", buf, 0xCu);
   }
 
-  v6 = [(SPBTFindingSession *)self callbackQueue];
+  callbackQueue = [(SPBTFindingSession *)self callbackQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __42__SPBTFindingSession_findingSessionError___block_invoke;
   v9[3] = &unk_279B58C78;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
-  dispatch_sync(v6, v9);
+  v10 = errorCopy;
+  v7 = errorCopy;
+  dispatch_sync(callbackQueue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
 }

@@ -1,47 +1,47 @@
 @interface PLSEvent
 + (id)event;
-+ (id)eventWithUUID:(id)a3;
-- (BOOL)isEqualToEvent:(id)a3;
++ (id)eventWithUUID:(id)d;
+- (BOOL)isEqualToEvent:(id)event;
 - (PLSEvent)init;
-- (PLSEvent)initWithCoder:(id)a3;
-- (PLSEvent)initWithUUID:(id)a3;
+- (PLSEvent)initWithCoder:(id)coder;
+- (PLSEvent)initWithUUID:(id)d;
 - (id)description;
-- (id)initFromPropertyList:(id)a3;
+- (id)initFromPropertyList:(id)list;
 - (id)propertyList;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PLSEvent
 
-- (BOOL)isEqualToEvent:(id)a3
+- (BOOL)isEqualToEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (!eventCopy)
   {
     goto LABEL_19;
   }
 
-  if (v4 != self)
+  if (eventCopy != self)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(PLSEvent *)self name];
-      v7 = [(PLSEvent *)v5 name];
-      v8 = [PLSLibraryChangeSnapshot string:v6 equalsString:v7];
+      name = [(PLSEvent *)self name];
+      name2 = [(PLSEvent *)v5 name];
+      v8 = [PLSLibraryChangeSnapshot string:name equalsString:name2];
 
       if (v8)
       {
-        v9 = [(PLSEvent *)self parentUUID];
-        v10 = [(PLSEvent *)v5 parentUUID];
-        v11 = [PLSLibraryChangeSnapshot string:v9 equalsString:v10];
+        parentUUID = [(PLSEvent *)self parentUUID];
+        parentUUID2 = [(PLSEvent *)v5 parentUUID];
+        v11 = [PLSLibraryChangeSnapshot string:parentUUID equalsString:parentUUID2];
 
         if (v11)
         {
-          v12 = [(PLSEvent *)self keyAssetUUID];
-          v13 = [(PLSEvent *)v5 keyAssetUUID];
-          v14 = [PLSLibraryChangeSnapshot string:v12 equalsString:v13];
+          keyAssetUUID = [(PLSEvent *)self keyAssetUUID];
+          keyAssetUUID2 = [(PLSEvent *)v5 keyAssetUUID];
+          v14 = [PLSLibraryChangeSnapshot string:keyAssetUUID equalsString:keyAssetUUID2];
 
           if (v14)
           {
@@ -119,53 +119,53 @@ LABEL_20:
 {
   v12.receiver = self;
   v12.super_class = PLSEvent;
-  v3 = [(PLSItem *)&v12 propertyList];
-  v4 = [NSMutableDictionary dictionaryWithDictionary:v3];
+  propertyList = [(PLSItem *)&v12 propertyList];
+  v4 = [NSMutableDictionary dictionaryWithDictionary:propertyList];
 
-  v5 = [(PLSEvent *)self name];
+  name = [(PLSEvent *)self name];
 
-  if (v5)
+  if (name)
   {
-    v6 = [(PLSEvent *)self name];
-    [v4 setObject:v6 forKey:kPLSEventNameKey];
+    name2 = [(PLSEvent *)self name];
+    [v4 setObject:name2 forKey:kPLSEventNameKey];
   }
 
-  v7 = [(PLSEvent *)self parentUUID];
+  parentUUID = [(PLSEvent *)self parentUUID];
 
-  if (v7)
+  if (parentUUID)
   {
-    v8 = [(PLSEvent *)self parentUUID];
-    [v4 setObject:v8 forKey:kPLSEventParentUUIDKey];
+    parentUUID2 = [(PLSEvent *)self parentUUID];
+    [v4 setObject:parentUUID2 forKey:kPLSEventParentUUIDKey];
   }
 
-  v9 = [(PLSEvent *)self keyAssetUUID];
+  keyAssetUUID = [(PLSEvent *)self keyAssetUUID];
 
-  if (v9)
+  if (keyAssetUUID)
   {
-    v10 = [(PLSEvent *)self keyAssetUUID];
-    [v4 setObject:v10 forKey:kPLSKeyAssetUUIDKey];
+    keyAssetUUID2 = [(PLSEvent *)self keyAssetUUID];
+    [v4 setObject:keyAssetUUID2 forKey:kPLSKeyAssetUUIDKey];
   }
 
   return v4;
 }
 
-- (id)initFromPropertyList:(id)a3
+- (id)initFromPropertyList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v13.receiver = self;
   v13.super_class = PLSEvent;
-  v5 = [(PLSItem *)&v13 initFromPropertyList:v4];
+  v5 = [(PLSItem *)&v13 initFromPropertyList:listCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:kPLSEventNameKey];
+    v6 = [listCopy objectForKey:kPLSEventNameKey];
     v7 = v5[4];
     v5[4] = v6;
 
-    v8 = [v4 objectForKey:kPLSEventParentUUIDKey];
+    v8 = [listCopy objectForKey:kPLSEventParentUUIDKey];
     v9 = v5[5];
     v5[5] = v8;
 
-    v10 = [v4 objectForKey:kPLSKeyAssetUUIDKey];
+    v10 = [listCopy objectForKey:kPLSKeyAssetUUIDKey];
     v11 = v5[6];
     v5[6] = v10;
   }
@@ -173,40 +173,40 @@ LABEL_20:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PLSEvent *)self name];
-  [v4 encodeObject:v5 forKey:kPLSEventNameKey];
+  coderCopy = coder;
+  name = [(PLSEvent *)self name];
+  [coderCopy encodeObject:name forKey:kPLSEventNameKey];
 
-  v6 = [(PLSEvent *)self parentUUID];
-  [v4 encodeObject:v6 forKey:kPLSEventParentUUIDKey];
+  parentUUID = [(PLSEvent *)self parentUUID];
+  [coderCopy encodeObject:parentUUID forKey:kPLSEventParentUUIDKey];
 
-  v7 = [(PLSEvent *)self keyAssetUUID];
-  [v4 encodeObject:v7 forKey:kPLSKeyAssetUUIDKey];
+  keyAssetUUID = [(PLSEvent *)self keyAssetUUID];
+  [coderCopy encodeObject:keyAssetUUID forKey:kPLSKeyAssetUUIDKey];
 
   v8.receiver = self;
   v8.super_class = PLSEvent;
-  [(PLSItem *)&v8 encodeWithCoder:v4];
+  [(PLSItem *)&v8 encodeWithCoder:coderCopy];
 }
 
-- (PLSEvent)initWithCoder:(id)a3
+- (PLSEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PLSEvent;
-  v5 = [(PLSItem *)&v13 initWithCoder:v4];
+  v5 = [(PLSItem *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:kPLSEventNameKey];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:kPLSEventNameKey];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:kPLSEventParentUUIDKey];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:kPLSEventParentUUIDKey];
     parentUUID = v5->_parentUUID;
     v5->_parentUUID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:kPLSKeyAssetUUIDKey];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:kPLSKeyAssetUUIDKey];
     keyAssetUUID = v5->_keyAssetUUID;
     v5->_keyAssetUUID = v10;
   }
@@ -219,18 +219,18 @@ LABEL_20:
   v8.receiver = self;
   v8.super_class = PLSEvent;
   v3 = [(PLSItem *)&v8 description];
-  v4 = [(PLSEvent *)self name];
-  v5 = [(PLSEvent *)self keyAssetUUID];
-  v6 = [NSString stringWithFormat:@"Event - %@, name: %@, key asset: %@", v3, v4, v5];
+  name = [(PLSEvent *)self name];
+  keyAssetUUID = [(PLSEvent *)self keyAssetUUID];
+  v6 = [NSString stringWithFormat:@"Event - %@, name: %@, key asset: %@", v3, name, keyAssetUUID];
 
   return v6;
 }
 
-- (PLSEvent)initWithUUID:(id)a3
+- (PLSEvent)initWithUUID:(id)d
 {
   v9.receiver = self;
   v9.super_class = PLSEvent;
-  v3 = [(PLSItem *)&v9 initWithUUID:a3];
+  v3 = [(PLSItem *)&v9 initWithUUID:d];
   v4 = v3;
   if (v3)
   {
@@ -255,10 +255,10 @@ LABEL_20:
   return v4;
 }
 
-+ (id)eventWithUUID:(id)a3
++ (id)eventWithUUID:(id)d
 {
-  v3 = a3;
-  v4 = [[PLSEvent alloc] initWithUUID:v3];
+  dCopy = d;
+  v4 = [[PLSEvent alloc] initWithUUID:dCopy];
 
   return v4;
 }

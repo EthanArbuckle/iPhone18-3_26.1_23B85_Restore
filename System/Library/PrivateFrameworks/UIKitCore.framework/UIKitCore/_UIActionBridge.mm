@@ -1,27 +1,27 @@
 @interface _UIActionBridge
-+ (id)_validatedCommandMenuElementForLeaf:(void *)a3 context:(void *)a4 validator:(uint64_t)a5 includeCommandsWithoutTargets:;
-+ (id)actionMenuForMenu:(id)a3 firstTarget:(id)a4 includeHidden:(BOOL)a5;
-+ (id)actionMenuForMenu:(id)a3 firstTarget:(id)a4 includeHidden:(BOOL)a5 validator:(id)a6;
-+ (id)validatedCommandMenuForMenu:(id)a3 context:(id)a4;
-+ (id)validatedCommandMenuForMenu:(id)a3 context:(id)a4 validator:(id)a5;
++ (id)_validatedCommandMenuElementForLeaf:(void *)leaf context:(void *)context validator:(uint64_t)validator includeCommandsWithoutTargets:;
++ (id)actionMenuForMenu:(id)menu firstTarget:(id)target includeHidden:(BOOL)hidden;
++ (id)actionMenuForMenu:(id)menu firstTarget:(id)target includeHidden:(BOOL)hidden validator:(id)validator;
++ (id)validatedCommandMenuForMenu:(id)menu context:(id)context;
++ (id)validatedCommandMenuForMenu:(id)menu context:(id)context validator:(id)validator;
 @end
 
 @implementation _UIActionBridge
 
-+ (id)actionMenuForMenu:(id)a3 firstTarget:(id)a4 includeHidden:(BOOL)a5 validator:(id)a6
++ (id)actionMenuForMenu:(id)menu firstTarget:(id)target includeHidden:(BOOL)hidden validator:(id)validator
 {
   v50 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v29 = a4;
-  v28 = a6;
-  shouldAlwaysShowCommandsWithout = [(UIMenu *)v9 _shouldAlwaysShowCommandsWithoutTargets];
+  menuCopy = menu;
+  targetCopy = target;
+  validatorCopy = validator;
+  shouldAlwaysShowCommandsWithout = [(UIMenu *)menuCopy _shouldAlwaysShowCommandsWithoutTargets];
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v23 = v9;
-  obj = [v9 children];
+  v23 = menuCopy;
+  obj = [menuCopy children];
   v11 = [obj countByEnumeratingWithState:&v45 objects:v49 count:16];
   if (v11)
   {
@@ -41,11 +41,11 @@
         v39[1] = 3221225472;
         v39[2] = __73___UIActionBridge_actionMenuForMenu_firstTarget_includeHidden_validator___block_invoke;
         v39[3] = &unk_1E71045C0;
-        v43 = a1;
-        v15 = v29;
+        selfCopy = self;
+        v15 = targetCopy;
         v40 = v15;
-        v44 = a5;
-        v16 = v28;
+        hiddenCopy = hidden;
+        v16 = validatorCopy;
         v41 = v16;
         v17 = v10;
         v18 = v10;
@@ -56,7 +56,7 @@
         v33[3] = &unk_1E7104610;
         v34 = v15;
         v35 = v16;
-        v37 = a5;
+        hiddenCopy2 = hidden;
         v38 = shouldAlwaysShowCommandsWithout;
         v19 = v18;
         v10 = v17;
@@ -65,7 +65,7 @@
         v30[1] = 3221225472;
         v30[2] = __73___UIActionBridge_actionMenuForMenu_firstTarget_includeHidden_validator___block_invoke_5;
         v30[3] = &unk_1E7104638;
-        v32 = a5;
+        hiddenCopy3 = hidden;
         v31 = v19;
         [v14 _acceptMenuVisit:v39 commandVisit:v33 actionVisit:v30 deferredElementVisit:0];
       }
@@ -91,31 +91,31 @@
   return v21;
 }
 
-+ (id)actionMenuForMenu:(id)a3 firstTarget:(id)a4 includeHidden:(BOOL)a5
++ (id)actionMenuForMenu:(id)menu firstTarget:(id)target includeHidden:(BOOL)hidden
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
+  hiddenCopy = hidden;
+  targetCopy = target;
+  menuCopy = menu;
   v10 = objc_alloc_init(_UIMenuLeafValidator);
-  v11 = [a1 actionMenuForMenu:v9 firstTarget:v8 includeHidden:v5 validator:v10];
+  v11 = [self actionMenuForMenu:menuCopy firstTarget:targetCopy includeHidden:hiddenCopy validator:v10];
 
   return v11;
 }
 
-+ (id)validatedCommandMenuForMenu:(id)a3 context:(id)a4 validator:(id)a5
++ (id)validatedCommandMenuForMenu:(id)menu context:(id)context validator:(id)validator
 {
   v42 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v24 = a4;
-  v23 = a5;
-  shouldAlwaysShowCommandsWithout = [(UIMenu *)v8 _shouldAlwaysShowCommandsWithoutTargets];
-  shouldShowAlternatesInContext = [(UIMenu *)v8 _shouldShowAlternatesInContextMenus];
+  menuCopy = menu;
+  contextCopy = context;
+  validatorCopy = validator;
+  shouldAlwaysShowCommandsWithout = [(UIMenu *)menuCopy _shouldAlwaysShowCommandsWithoutTargets];
+  shouldShowAlternatesInContext = [(UIMenu *)menuCopy _shouldShowAlternatesInContextMenus];
   v22 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = [v8 children];
+  obj = [menuCopy children];
   v9 = [obj countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v9)
   {
@@ -135,10 +135,10 @@
         v32[1] = 3221225472;
         v32[2] = __65___UIActionBridge_validatedCommandMenuForMenu_context_validator___block_invoke;
         v32[3] = &unk_1E7104660;
-        v36 = a1;
-        v14 = v24;
+        selfCopy = self;
+        v14 = contextCopy;
         v33 = v14;
-        v15 = v23;
+        v15 = validatorCopy;
         v34 = v15;
         v16 = v22;
         v35 = v16;
@@ -146,7 +146,7 @@
         v25[1] = 3221225472;
         v25[2] = __65___UIActionBridge_validatedCommandMenuForMenu_context_validator___block_invoke_2;
         v25[3] = &unk_1E71046B0;
-        v29 = a1;
+        selfCopy2 = self;
         v26 = v14;
         v27 = v15;
         v30 = shouldAlwaysShowCommandsWithout;
@@ -161,29 +161,29 @@
     while (v10);
   }
 
-  [v8 _resolveElementSizeWithContext:v24];
-  v17 = [v8 menuByReplacingChildren:v22];
+  [menuCopy _resolveElementSizeWithContext:contextCopy];
+  v17 = [menuCopy menuByReplacingChildren:v22];
 
   return v17;
 }
 
-+ (id)_validatedCommandMenuElementForLeaf:(void *)a3 context:(void *)a4 validator:(uint64_t)a5 includeCommandsWithoutTargets:
++ (id)_validatedCommandMenuElementForLeaf:(void *)leaf context:(void *)context validator:(uint64_t)validator includeCommandsWithoutTargets:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
+  leafCopy = leaf;
+  contextCopy = context;
   v11 = objc_opt_self();
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v12 = v8;
-    [v12 set_useSenderForResolvingTarget:{objc_msgSend(v9, "useSenderAsResponderSender")}];
+    [v12 set_useSenderForResolvingTarget:{objc_msgSend(leafCopy, "useSenderAsResponderSender")}];
     v30 = 0;
-    v13 = [v9 firstResponderTarget];
-    v14 = [v9 sender];
-    v15 = [v12 _resolvedTargetFromFirstTarget:v13 sender:v14 shouldUseFallbackActionOut:&v30];
+    firstResponderTarget = [leafCopy firstResponderTarget];
+    sender = [leafCopy sender];
+    v15 = [v12 _resolvedTargetFromFirstTarget:firstResponderTarget sender:sender shouldUseFallbackActionOut:&v30];
 
-    if ([v9 useSenderAsResponderSender])
+    if ([leafCopy useSenderAsResponderSender])
     {
       if (v15)
       {
@@ -201,23 +201,23 @@ LABEL_20:
 
           if (v27)
           {
-            v21 = [v12 copyWithZone:0];
-            _UIMenuLeafCopyValidatablePropertiesFromValidatedLeaf(v21, v16);
-            [v21 setAttributes:{objc_msgSend(v21, "attributes") | v17}];
-            v28 = [v12 _getStateObservers];
-            [v21 _setStateObservers:v28];
+            menuElementRepresentation = [v12 copyWithZone:0];
+            _UIMenuLeafCopyValidatablePropertiesFromValidatedLeaf(menuElementRepresentation, v16);
+            [menuElementRepresentation setAttributes:{objc_msgSend(menuElementRepresentation, "attributes") | v17}];
+            _getStateObservers = [v12 _getStateObservers];
+            [menuElementRepresentation _setStateObservers:_getStateObservers];
           }
 
           else
           {
-            v21 = v12;
+            menuElementRepresentation = v12;
           }
 
           goto LABEL_30;
         }
 
 LABEL_27:
-        v21 = 0;
+        menuElementRepresentation = 0;
         goto LABEL_30;
       }
 
@@ -226,13 +226,13 @@ LABEL_27:
 
     else
     {
-      v23 = [v9 sender];
-      v16 = [v10 validatedCommandForTarget:v15 command:v12 sender:v23];
+      sender2 = [leafCopy sender];
+      v16 = [contextCopy validatedCommandForTarget:v15 command:v12 sender:sender2];
     }
 
     v17 = 0;
     v18 = 1;
-    if (!v15 && a5)
+    if (!v15 && validator)
     {
       v26 = v12;
 
@@ -250,7 +250,7 @@ LABEL_27:
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     v25 = v8;
-    v21 = v25;
+    menuElementRepresentation = v25;
     if ((isKindOfClass & 1) == 0 || ([v25 attributes] & 4) == 0)
     {
       goto LABEL_30;
@@ -260,33 +260,33 @@ LABEL_27:
   }
 
   v19 = v8;
-  if (([v9 supportsCustomViewMenuElements] & 1) != 0 || (objc_msgSend(v19, "menuElementRepresentation"), v20 = objc_claimAutoreleasedReturnValue(), v20, !v20))
+  if (([leafCopy supportsCustomViewMenuElements] & 1) != 0 || (objc_msgSend(v19, "menuElementRepresentation"), v20 = objc_claimAutoreleasedReturnValue(), v20, !v20))
   {
-    v21 = v19;
+    menuElementRepresentation = v19;
   }
 
   else
   {
-    v21 = [v19 menuElementRepresentation];
-    if ([v21 _isLeaf])
+    menuElementRepresentation = [v19 menuElementRepresentation];
+    if ([menuElementRepresentation _isLeaf])
     {
-      v22 = [(_UIActionBridge *)v11 _validatedCommandMenuElementForLeaf:v21 context:v9 validator:v10 includeCommandsWithoutTargets:a5];
+      v22 = [(_UIActionBridge *)v11 _validatedCommandMenuElementForLeaf:menuElementRepresentation context:leafCopy validator:contextCopy includeCommandsWithoutTargets:validator];
 
-      v21 = v22;
+      menuElementRepresentation = v22;
     }
   }
 
 LABEL_30:
 
-  return v21;
+  return menuElementRepresentation;
 }
 
-+ (id)validatedCommandMenuForMenu:(id)a3 context:(id)a4
++ (id)validatedCommandMenuForMenu:(id)menu context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  menuCopy = menu;
   v8 = objc_alloc_init(_UIMenuLeafValidator);
-  v9 = [a1 validatedCommandMenuForMenu:v7 context:v6 validator:v8];
+  v9 = [self validatedCommandMenuForMenu:menuCopy context:contextCopy validator:v8];
 
   return v9;
 }

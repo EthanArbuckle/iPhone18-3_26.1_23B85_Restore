@@ -1,13 +1,13 @@
 @interface HighlightMenuIdentifier
 - (_TtC8BookCoreP33_213CCCF002B71F6D33A127415B0D848C23HighlightMenuIdentifier)init;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation HighlightMenuIdentifier
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_1CF9DC(v6);
 
   sub_18E35C(v6, v6[3]);

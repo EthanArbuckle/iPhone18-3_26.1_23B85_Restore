@@ -1,37 +1,37 @@
 @interface REMRecurrenceEnd
-+ (id)recurrenceEndWithEndDate:(id)a3;
-+ (id)recurrenceEndWithOccurrenceCount:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)recurrenceEndWithEndDate:(id)date;
++ (id)recurrenceEndWithOccurrenceCount:(unint64_t)count;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)usesEndDate;
-- (REMRecurrenceEnd)initWithCoder:(id)a3;
-- (REMRecurrenceEnd)initWithEndDate:(id)a3;
-- (REMRecurrenceEnd)initWithOccurrenceCount:(unint64_t)a3;
+- (REMRecurrenceEnd)initWithCoder:(id)coder;
+- (REMRecurrenceEnd)initWithEndDate:(id)date;
+- (REMRecurrenceEnd)initWithOccurrenceCount:(unint64_t)count;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMRecurrenceEnd
 
-+ (id)recurrenceEndWithEndDate:(id)a3
++ (id)recurrenceEndWithEndDate:(id)date
 {
-  v3 = a3;
-  v4 = [[REMRecurrenceEnd alloc] initWithEndDate:v3];
+  dateCopy = date;
+  v4 = [[REMRecurrenceEnd alloc] initWithEndDate:dateCopy];
 
   return v4;
 }
 
-+ (id)recurrenceEndWithOccurrenceCount:(unint64_t)a3
++ (id)recurrenceEndWithOccurrenceCount:(unint64_t)count
 {
-  v3 = [[REMRecurrenceEnd alloc] initWithOccurrenceCount:a3];
+  v3 = [[REMRecurrenceEnd alloc] initWithOccurrenceCount:count];
 
   return v3;
 }
 
-- (REMRecurrenceEnd)initWithEndDate:(id)a3
+- (REMRecurrenceEnd)initWithEndDate:(id)date
 {
-  v4 = a3;
-  if (!v4)
+  dateCopy = date;
+  if (!dateCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"endDate is nil"];
   }
@@ -42,7 +42,7 @@
   if (v5)
   {
     v6 = MEMORY[0x1E695DF00];
-    [v4 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     v8 = [v6 dateWithTimeIntervalSinceReferenceDate:floor(v7)];
     endDate = v5->_endDate;
     v5->_endDate = v8;
@@ -51,9 +51,9 @@
   return v5;
 }
 
-- (REMRecurrenceEnd)initWithOccurrenceCount:(unint64_t)a3
+- (REMRecurrenceEnd)initWithOccurrenceCount:(unint64_t)count
 {
-  if (!a3)
+  if (!count)
   {
     v5 = os_log_create("com.apple.reminderkit", "default");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -67,57 +67,57 @@
   result = [(REMRecurrenceEnd *)&v7 init];
   if (result)
   {
-    result->_occurrenceCount = a3;
+    result->_occurrenceCount = count;
   }
 
   return result;
 }
 
-- (REMRecurrenceEnd)initWithCoder:(id)a3
+- (REMRecurrenceEnd)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = REMRecurrenceEnd;
   v5 = [(REMRecurrenceEnd *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
     endDate = v5->_endDate;
     v5->_endDate = v6;
 
-    v5->_occurrenceCount = [v4 decodeIntegerForKey:@"occurrenceCount"];
+    v5->_occurrenceCount = [coderCopy decodeIntegerForKey:@"occurrenceCount"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(REMRecurrenceEnd *)self endDate];
-  [v5 encodeObject:v4 forKey:@"endDate"];
+  coderCopy = coder;
+  endDate = [(REMRecurrenceEnd *)self endDate];
+  [coderCopy encodeObject:endDate forKey:@"endDate"];
 
-  [v5 encodeInteger:-[REMRecurrenceEnd occurrenceCount](self forKey:{"occurrenceCount"), @"occurrenceCount"}];
+  [coderCopy encodeInteger:-[REMRecurrenceEnd occurrenceCount](self forKey:{"occurrenceCount"), @"occurrenceCount"}];
 }
 
 - (BOOL)usesEndDate
 {
-  v2 = [(REMRecurrenceEnd *)self endDate];
-  v3 = v2 != 0;
+  endDate = [(REMRecurrenceEnd *)self endDate];
+  v3 = endDate != 0;
 
   return v3;
 }
 
 - (id)description
 {
-  v3 = [(REMRecurrenceEnd *)self endDate];
+  endDate = [(REMRecurrenceEnd *)self endDate];
 
   v4 = MEMORY[0x1E696AEC0];
   v5 = objc_opt_class();
-  if (v3)
+  if (endDate)
   {
-    v6 = [(REMRecurrenceEnd *)self endDate];
-    v7 = [v4 stringWithFormat:@"%@ %p { UNTIL=%@ } ", v5, self, v6];
+    endDate2 = [(REMRecurrenceEnd *)self endDate];
+    v7 = [v4 stringWithFormat:@"%@ %p { UNTIL=%@ } ", v5, self, endDate2];
   }
 
   else
@@ -130,17 +130,17 @@
 
 - (unint64_t)hash
 {
-  v3 = [(REMRecurrenceEnd *)self occurrenceCount];
-  v4 = [(REMRecurrenceEnd *)self endDate];
-  v5 = [v4 hash];
+  occurrenceCount = [(REMRecurrenceEnd *)self occurrenceCount];
+  endDate = [(REMRecurrenceEnd *)self endDate];
+  v5 = [endDate hash];
 
-  return v5 ^ v3;
+  return v5 ^ occurrenceCount;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -148,20 +148,20 @@
   else
   {
     v5 = objc_opt_class();
-    if (v5 == objc_opt_class() && (v6 = [(REMRecurrenceEnd *)self occurrenceCount], v6 == [(REMRecurrenceEnd *)v4 occurrenceCount]))
+    if (v5 == objc_opt_class() && (v6 = [(REMRecurrenceEnd *)self occurrenceCount], v6 == [(REMRecurrenceEnd *)equalCopy occurrenceCount]))
     {
-      v7 = [(REMRecurrenceEnd *)self endDate];
-      v8 = [(REMRecurrenceEnd *)v4 endDate];
-      if (v7 == v8)
+      endDate = [(REMRecurrenceEnd *)self endDate];
+      endDate2 = [(REMRecurrenceEnd *)equalCopy endDate];
+      if (endDate == endDate2)
       {
         v11 = 1;
       }
 
-      else if (v4)
+      else if (equalCopy)
       {
-        v9 = [(REMRecurrenceEnd *)self endDate];
-        v10 = [(REMRecurrenceEnd *)v4 endDate];
-        v11 = [v9 isEqualToDate:v10];
+        endDate3 = [(REMRecurrenceEnd *)self endDate];
+        endDate4 = [(REMRecurrenceEnd *)equalCopy endDate];
+        v11 = [endDate3 isEqualToDate:endDate4];
       }
 
       else

@@ -2,7 +2,7 @@
 - (BOOL)workflowEnvironmentIsValid;
 - (WFWorkflow)workflow;
 - (void)refreshAvailability;
-- (void)setWorkflow:(id)a3;
+- (void)setWorkflow:(id)workflow;
 @end
 
 @implementation WFWorkflowEnvironmentResource
@@ -16,22 +16,22 @@
 
 - (void)refreshAvailability
 {
-  v3 = [(WFWorkflowEnvironmentResource *)self workflowEnvironmentIsValid];
+  workflowEnvironmentIsValid = [(WFWorkflowEnvironmentResource *)self workflowEnvironmentIsValid];
 
-  [(WFResource *)self updateAvailability:v3 withError:0];
+  [(WFResource *)self updateAvailability:workflowEnvironmentIsValid withError:0];
 }
 
 - (BOOL)workflowEnvironmentIsValid
 {
-  v3 = [(WFWorkflowEnvironmentResource *)self workflow];
+  workflow = [(WFWorkflowEnvironmentResource *)self workflow];
 
-  if (v3)
+  if (workflow)
   {
-    v4 = [(WFWorkflowEnvironmentResource *)self workflow];
-    v5 = [v4 environment];
+    workflow2 = [(WFWorkflowEnvironmentResource *)self workflow];
+    environment = [workflow2 environment];
 
-    v6 = [(WFResource *)self definition];
-    v7 = [v6 objectForKey:@"WFWorkflowEnvironment"];
+    definition = [(WFResource *)self definition];
+    v7 = [definition objectForKey:@"WFWorkflowEnvironment"];
     v8 = objc_opt_class();
     v9 = WFEnforceClass_1501(v7, v8);
 
@@ -41,15 +41,15 @@
       {
         v10 = 0;
 LABEL_8:
-        v12 = [(WFResource *)self definition];
-        v13 = [v12 objectForKey:@"WFRelation"];
+        definition2 = [(WFResource *)self definition];
+        v13 = [definition2 objectForKey:@"WFRelation"];
         v14 = objc_opt_class();
         v15 = WFEnforceClass_1501(v13, v14);
 
         if (v15)
         {
           v16 = [v15 isEqualToString:@"!="];
-          if (v5 == v10)
+          if (environment == v10)
           {
             v11 = 0;
           }
@@ -62,7 +62,7 @@ LABEL_8:
 
         else
         {
-          v11 = v5 == v10;
+          v11 = environment == v10;
         }
 
         goto LABEL_15;
@@ -84,9 +84,9 @@ LABEL_15:
   return 0;
 }
 
-- (void)setWorkflow:(id)a3
+- (void)setWorkflow:(id)workflow
 {
-  objc_storeWeak(&self->_workflow, a3);
+  objc_storeWeak(&self->_workflow, workflow);
 
   [(WFResource *)self invalidateAvailability];
 }

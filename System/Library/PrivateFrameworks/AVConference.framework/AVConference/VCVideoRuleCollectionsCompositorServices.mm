@@ -17,14 +17,14 @@
     return buf[0];
   }
 
-  v3 = [MEMORY[0x1E695DF70] array];
-  if (!v3)
+  array = [MEMORY[0x1E695DF70] array];
+  if (!array)
   {
     [(VCVideoRuleCollectionsCompositorServices *)self setUpHEVCRules];
     return buf[0];
   }
 
-  v4 = v3;
+  v4 = array;
   v5 = 1.0;
   v6 = &v45;
   v7 = &v29;
@@ -86,8 +86,8 @@
     *v37 = v11;
     *&v37[4] = 1024;
     *&v37[6] = v12;
-    LOWORD(v38) = 1024;
-    *(&v38 + 2) = v14;
+    LOWORD(selfCopy) = 1024;
+    *(&selfCopy + 2) = v14;
     v24 = " [%s] %s:%d Failed to allocate rule for (width=%u, height=%u, frameRate=%u)";
     v25 = v23;
     v26 = 46;
@@ -126,7 +126,7 @@
     v36 = 2112;
     *v37 = v21;
     *&v37[8] = 2048;
-    v38 = self;
+    selfCopy = self;
     v39 = 1024;
     v40 = v11;
     v41 = 1024;
@@ -144,7 +144,7 @@
 
 - (void)setUpHEVCRules
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {
@@ -166,7 +166,7 @@ LABEL_11:
 
   if (objc_opt_respondsToSelector())
   {
-    [a1 performSelector:sel_logPrefix];
+    [self performSelector:sel_logPrefix];
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 3)

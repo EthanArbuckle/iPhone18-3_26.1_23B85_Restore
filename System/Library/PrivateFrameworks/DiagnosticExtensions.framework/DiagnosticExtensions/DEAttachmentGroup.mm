@@ -1,22 +1,22 @@
 @interface DEAttachmentGroup
-+ (id)createWithName:(id)a3 rootURL:(id)a4;
-+ (id)createWithName:(id)a3 rootURL:(id)a4 attachmentItems:(id)a5;
-- (DEAttachmentGroup)initWithCoder:(id)a3;
-- (id)attachToDestinationDir:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)createWithName:(id)name rootURL:(id)l;
++ (id)createWithName:(id)name rootURL:(id)l attachmentItems:(id)items;
+- (DEAttachmentGroup)initWithCoder:(id)coder;
+- (id)attachToDestinationDir:(id)dir;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DEAttachmentGroup
 
-+ (id)createWithName:(id)a3 rootURL:(id)a4
++ (id)createWithName:(id)name rootURL:(id)l
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  lCopy = l;
   v7 = objc_alloc_init(DEAttachmentGroup);
-  [(DEAttachmentItem *)v7 setDisplayName:v5];
-  [(DEAttachmentGroup *)v7 setRootURL:v6];
-  v8 = [DEUtils lsDir:v6];
+  [(DEAttachmentItem *)v7 setDisplayName:nameCopy];
+  [(DEAttachmentGroup *)v7 setRootURL:lCopy];
+  v8 = [DEUtils lsDir:lCopy];
   v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v8, "count")}];
   v23 = 0u;
   v24 = 0u;
@@ -53,8 +53,8 @@
   [(DEAttachmentGroup *)v7 setAttachmentItems:v18];
 
   [(DEAttachmentItem *)v7 setAttachmentType:@"DEAttachmentTypeGroup"];
-  v19 = [(DEAttachmentItem *)v7 displayName];
-  v20 = [v6 URLByAppendingPathComponent:v19];
+  displayName = [(DEAttachmentItem *)v7 displayName];
+  v20 = [lCopy URLByAppendingPathComponent:displayName];
   [(DEAttachmentItem *)v7 setPath:v20];
 
   v21 = *MEMORY[0x277D85DE8];
@@ -62,37 +62,37 @@
   return v7;
 }
 
-+ (id)createWithName:(id)a3 rootURL:(id)a4 attachmentItems:(id)a5
++ (id)createWithName:(id)name rootURL:(id)l attachmentItems:(id)items
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  itemsCopy = items;
+  lCopy = l;
+  nameCopy = name;
   v10 = objc_alloc_init(DEAttachmentGroup);
-  [(DEAttachmentItem *)v10 setDisplayName:v9];
+  [(DEAttachmentItem *)v10 setDisplayName:nameCopy];
 
-  [(DEAttachmentGroup *)v10 setRootURL:v8];
-  [(DEAttachmentGroup *)v10 setAttachmentItems:v7];
+  [(DEAttachmentGroup *)v10 setRootURL:lCopy];
+  [(DEAttachmentGroup *)v10 setAttachmentItems:itemsCopy];
 
   [(DEAttachmentItem *)v10 setAttachmentType:@"DEAttachmentTypeGroup"];
-  v11 = [(DEAttachmentItem *)v10 displayName];
-  v12 = [v8 URLByAppendingPathComponent:v11];
+  displayName = [(DEAttachmentItem *)v10 displayName];
+  v12 = [lCopy URLByAppendingPathComponent:displayName];
 
   [(DEAttachmentItem *)v10 setPath:v12];
 
   return v10;
 }
 
-- (DEAttachmentGroup)initWithCoder:(id)a3
+- (DEAttachmentGroup)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = DEAttachmentGroup;
-  v3 = a3;
-  v4 = [(DEAttachmentItem *)&v10 initWithCoder:v3];
-  v5 = [v3 decodeObjectForKey:{@"RootURL", v10.receiver, v10.super_class}];
+  coderCopy = coder;
+  v4 = [(DEAttachmentItem *)&v10 initWithCoder:coderCopy];
+  v5 = [coderCopy decodeObjectForKey:{@"RootURL", v10.receiver, v10.super_class}];
   rootURL = v4->_rootURL;
   v4->_rootURL = v5;
 
-  v7 = [v3 decodeObjectForKey:@"AttachmentItems"];
+  v7 = [coderCopy decodeObjectForKey:@"AttachmentItems"];
 
   attachmentItems = v4->_attachmentItems;
   v4->_attachmentItems = v7;
@@ -100,48 +100,48 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = DEAttachmentGroup;
-  v4 = a3;
-  [(DEAttachmentItem *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_rootURL forKey:{@"RootURL", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_attachmentItems forKey:@"AttachmentItems"];
+  coderCopy = coder;
+  [(DEAttachmentItem *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_rootURL forKey:{@"RootURL", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_attachmentItems forKey:@"AttachmentItems"];
 }
 
-- (id)attachToDestinationDir:(id)a3
+- (id)attachToDestinationDir:(id)dir
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dirCopy = dir;
   v5 = +[DELogging fwHandle];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v37 = v4;
+    v37 = dirCopy;
     _os_log_impl(&dword_248AB3000, v5, OS_LOG_TYPE_INFO, "Log destination directory: %{public}@", buf, 0xCu);
   }
 
-  v6 = [(DEAttachmentItem *)self displayName];
-  if (v6)
+  displayName = [(DEAttachmentItem *)self displayName];
+  if (displayName)
   {
-    v7 = [(DEAttachmentItem *)self displayName];
+    displayName2 = [(DEAttachmentItem *)self displayName];
   }
 
   else
   {
-    v8 = [(DEAttachmentGroup *)self rootURL];
-    v7 = [v8 lastPathComponent];
+    rootURL = [(DEAttachmentGroup *)self rootURL];
+    displayName2 = [rootURL lastPathComponent];
   }
 
-  v9 = [v4 URLByAppendingPathComponent:v7];
+  v9 = [dirCopy URLByAppendingPathComponent:displayName2];
   v10 = [DEUtils createDirectoryWithClassCDataProtection:v9];
   if (v10)
   {
-    v11 = +[DELogging fwHandle];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    attachmentItems = +[DELogging fwHandle];
+    if (os_log_type_enabled(attachmentItems, OS_LOG_TYPE_ERROR))
     {
-      [(DEAttachmentGroup *)v9 attachToDestinationDir:v10, v11];
+      [(DEAttachmentGroup *)v9 attachToDestinationDir:v10, attachmentItems];
     }
   }
 
@@ -152,8 +152,8 @@
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v11 = [(DEAttachmentGroup *)self attachmentItems];
-    v12 = [v11 countByEnumeratingWithState:&v31 objects:v35 count:16];
+    attachmentItems = [(DEAttachmentGroup *)self attachmentItems];
+    v12 = [attachmentItems countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v12)
     {
       v13 = v12;
@@ -164,27 +164,27 @@
         {
           if (*v32 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(attachmentItems);
           }
 
           v16 = [*(*(&v31 + 1) + 8 * i) attachToDestinationDir:v9];
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v31 objects:v35 count:16];
+        v13 = [attachmentItems countByEnumeratingWithState:&v31 objects:v35 count:16];
       }
 
       while (v13);
     }
   }
 
-  v17 = [(DEAttachmentItem *)self attachedPath];
-  if (v17)
+  attachedPath = [(DEAttachmentItem *)self attachedPath];
+  if (attachedPath)
   {
-    v18 = v17;
-    v19 = [(DEAttachmentItem *)self deleteOnAttach];
-    v20 = [v19 BOOLValue];
+    v18 = attachedPath;
+    deleteOnAttach = [(DEAttachmentItem *)self deleteOnAttach];
+    bOOLValue = [deleteOnAttach BOOLValue];
 
-    if (v20)
+    if (bOOLValue)
     {
       v21 = +[DELogging fwHandle];
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -192,15 +192,15 @@
         [DEAttachmentGroup attachToDestinationDir:v21];
       }
 
-      v22 = [(DEAttachmentGroup *)self rootURL];
-      [DEUtils removeFile:v22];
+      rootURL2 = [(DEAttachmentGroup *)self rootURL];
+      [DEUtils removeFile:rootURL2];
     }
   }
 
-  v23 = [(DEAttachmentItem *)self shouldCompress];
-  v24 = [v23 BOOLValue];
+  shouldCompress = [(DEAttachmentItem *)self shouldCompress];
+  bOOLValue2 = [shouldCompress BOOLValue];
 
-  if (v24)
+  if (bOOLValue2)
   {
     v25 = +[DELogging fwHandle];
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -208,16 +208,16 @@
       [DEAttachmentGroup attachToDestinationDir:v25];
     }
 
-    v26 = [(DEAttachmentItem *)self attachedPath];
-    v27 = [DEArchiver archiveDirectoryAt:v26];
+    attachedPath2 = [(DEAttachmentItem *)self attachedPath];
+    v27 = [DEArchiver archiveDirectoryAt:attachedPath2];
     [(DEAttachmentItem *)self setAttachedPath:v27];
   }
 
-  v28 = [(DEAttachmentItem *)self attachedPath];
+  attachedPath3 = [(DEAttachmentItem *)self attachedPath];
 
   v29 = *MEMORY[0x277D85DE8];
 
-  return v28;
+  return attachedPath3;
 }
 
 - (void)attachToDestinationDir:(NSObject *)a3 .cold.1(uint64_t a1, void *a2, NSObject *a3)

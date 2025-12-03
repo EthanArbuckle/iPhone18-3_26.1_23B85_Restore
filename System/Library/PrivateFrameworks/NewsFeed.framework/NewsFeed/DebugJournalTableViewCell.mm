@@ -1,15 +1,15 @@
 @interface DebugJournalTableViewCell
-- (_TtC8NewsFeed25DebugJournalTableViewCell)initWithCoder:(id)a3;
-- (_TtC8NewsFeed25DebugJournalTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC8NewsFeed25DebugJournalTableViewCell)initWithCoder:(id)coder;
+- (_TtC8NewsFeed25DebugJournalTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation DebugJournalTableViewCell
 
-- (_TtC8NewsFeed25DebugJournalTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC8NewsFeed25DebugJournalTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v4 = sub_1D726207C();
   }
@@ -23,7 +23,7 @@
   return sub_1D7256380(v4, v5);
 }
 
-- (_TtC8NewsFeed25DebugJournalTableViewCell)initWithCoder:(id)a3
+- (_TtC8NewsFeed25DebugJournalTableViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8NewsFeed25DebugJournalTableViewCell_stripView;
   *(&self->super.super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x1E69DD250]) initWithFrame_];

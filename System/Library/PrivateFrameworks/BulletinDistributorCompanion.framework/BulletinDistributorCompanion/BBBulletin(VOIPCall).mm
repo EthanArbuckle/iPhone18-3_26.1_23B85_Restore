@@ -6,12 +6,12 @@
 
 - (uint64_t)blt_isVOIPCall
 {
-  v2 = [a1 sound];
-  v3 = [v2 alertConfiguration];
-  if ([v3 type] == 1)
+  sound = [self sound];
+  alertConfiguration = [sound alertConfiguration];
+  if ([alertConfiguration type] == 1)
   {
-    v4 = [a1 sectionID];
-    v5 = [v4 hasPrefix:@"com.apple."] ^ 1;
+    sectionID = [self sectionID];
+    v5 = [sectionID hasPrefix:@"com.apple."] ^ 1;
   }
 
   else

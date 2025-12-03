@@ -1,33 +1,33 @@
 @interface ICASFolderType
-- (ICASFolderType)initWithFolderType:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASFolderType)initWithFolderType:(int64_t)type;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASFolderType
 
-- (ICASFolderType)initWithFolderType:(int64_t)a3
+- (ICASFolderType)initWithFolderType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = ICASFolderType;
   result = [(ICASFolderType *)&v5 init];
   if (result)
   {
-    result->_folderType = a3;
+    result->_folderType = type;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASFolderType *)self folderType];
+  folderType = [(ICASFolderType *)self folderType];
   v4 = @"unknown";
-  if (v3 == 1)
+  if (folderType == 1)
   {
     v4 = @"modern";
   }
 
-  if (v3 == 2)
+  if (folderType == 2)
   {
     return @"html";
   }

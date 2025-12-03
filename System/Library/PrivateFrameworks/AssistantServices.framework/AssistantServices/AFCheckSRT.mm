@@ -1,8 +1,8 @@
 @interface AFCheckSRT
 - (AFCheckSRT)init;
-- (BOOL)trackEvent:(double)a3 forTurn:(id)a4;
+- (BOOL)trackEvent:(double)event forTurn:(id)turn;
 - (void)dealloc;
-- (void)didReceivePluginSelected:(id)a3;
+- (void)didReceivePluginSelected:(id)selected;
 @end
 
 @implementation AFCheckSRT
@@ -28,14 +28,14 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didReceivePluginSelected:(id)a3
+- (void)didReceivePluginSelected:(id)selected
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  selectedCopy = selected;
+  v5 = selectedCopy;
+  if (selectedCopy)
   {
-    v6 = [v4 objectForKey:@"FlowPlugin"];
+    v6 = [selectedCopy objectForKey:@"FlowPlugin"];
     if (v6)
     {
       os_unfair_lock_lock(&self->_stateLock);
@@ -58,19 +58,19 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)trackEvent:(double)a3 forTurn:(id)a4
+- (BOOL)trackEvent:(double)event forTurn:(id)turn
 {
   v29[2] = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  turnCopy = turn;
   currentTurnID = self->_currentTurnID;
-  if (currentTurnID && [(NSString *)currentTurnID isEqualToString:v7])
+  if (currentTurnID && [(NSString *)currentTurnID isEqualToString:turnCopy])
   {
     v9 = 0;
   }
 
   else
   {
-    objc_storeStrong(&self->_currentTurnID, a4);
+    objc_storeStrong(&self->_currentTurnID, turn);
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     v11 = v10;
     os_unfair_lock_lock(&self->_stateLock);
@@ -83,7 +83,7 @@
 
       os_unfair_lock_unlock(&self->_stateLock);
       v28[0] = @"SRTTime";
-      *&v15 = v11 - a3;
+      *&v15 = v11 - event;
       v16 = [MEMORY[0x1E696AD98] numberWithFloat:v15];
       v28[1] = @"PluginMeasuringSRT";
       v29[0] = v16;

@@ -1,14 +1,14 @@
 @interface HMDVersionStringDataTransformer
-+ (id)reverseTransformedValue:(id)a3 error:(id *)a4;
-+ (id)transformedValue:(id)a3 error:(id *)a4;
++ (id)reverseTransformedValue:(id)value error:(id *)error;
++ (id)transformedValue:(id)value error:(id *)error;
 @end
 
 @implementation HMDVersionStringDataTransformer
 
-+ (id)reverseTransformedValue:(id)a3 error:(id *)a4
++ (id)reverseTransformedValue:(id)value error:(id *)error
 {
-  v4 = a3;
-  v5 = [[NSString alloc] initWithData:v4 encoding:4];
+  valueCopy = value;
+  v5 = [[NSString alloc] initWithData:valueCopy encoding:4];
 
   if (v5)
   {
@@ -23,10 +23,10 @@
   return v6;
 }
 
-+ (id)transformedValue:(id)a3 error:(id *)a4
++ (id)transformedValue:(id)value error:(id *)error
 {
-  v4 = [a3 versionString];
-  v5 = [v4 dataUsingEncoding:4];
+  versionString = [value versionString];
+  v5 = [versionString dataUsingEncoding:4];
 
   return v5;
 }

@@ -1,24 +1,24 @@
 @interface PLModelMigrationAction_RemoveOldCameraPreviewWellImage
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_RemoveOldCameraPreviewWellImage
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v68 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = 1;
   v8 = [(PLModelMigrationActionCore *)self cancellableDiscreteProgressWithTotalUnitCount:1 pendingParentUnitCount:1];
   [v8 becomeCurrentWithPendingUnitCount:1];
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
-  v10 = [MEMORY[0x1E69BF168] photoDataMiscDirectory];
-  v11 = [v10 stringByAppendingPathComponent:@"PreviewWellImage.tiff"];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  photoDataMiscDirectory = [MEMORY[0x1E69BF168] photoDataMiscDirectory];
+  v11 = [photoDataMiscDirectory stringByAppendingPathComponent:@"PreviewWellImage.tiff"];
 
-  if ([v9 fileExistsAtPath:v11])
+  if ([defaultManager fileExistsAtPath:v11])
   {
     v32 = 0;
-    v12 = [v9 removeItemAtPath:v11 error:&v32];
+    v12 = [defaultManager removeItemAtPath:v11 error:&v32];
     v13 = v32;
     if (v12)
     {
@@ -33,9 +33,9 @@
 
       if (v16)
       {
-        v17 = [(PLModelMigrationActionCore *)self logger];
+        logger = [(PLModelMigrationActionCore *)self logger];
 
-        if (v17)
+        if (logger)
         {
           v66 = 0u;
           v67 = 0u;
@@ -116,15 +116,15 @@
   }
 
   v26 = objc_alloc_init(PLCameraPreviewWellManager);
-  [(PLCameraPreviewWellManager *)v26 refreshPreviewWellImageWithContext:v6 avoidNotificationIfLinkIsAlreadySet:0];
+  [(PLCameraPreviewWellManager *)v26 refreshPreviewWellImageWithContext:contextCopy avoidNotificationIfLinkIsAlreadySet:0];
 
   [v8 resignCurrent];
   v27 = v13;
   v28 = v27;
-  if ((v14 & 1) == 0 && a4)
+  if ((v14 & 1) == 0 && error)
   {
     v29 = v27;
-    *a4 = v28;
+    *error = v28;
   }
 
   [(PLModelMigrationActionCore *)self finalizeProgress];

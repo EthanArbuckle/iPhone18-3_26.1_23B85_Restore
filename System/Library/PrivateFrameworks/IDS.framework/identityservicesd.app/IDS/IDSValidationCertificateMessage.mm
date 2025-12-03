@@ -1,10 +1,10 @@
 @interface IDSValidationCertificateMessage
 - (IDSValidationCertificateMessage)init;
 - (id)additionalMessageHeaders;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
-- (void)handleResponseDictionary:(id)a3;
+- (void)handleResponseDictionary:(id)dictionary;
 @end
 
 @implementation IDSValidationCertificateMessage
@@ -18,8 +18,8 @@
   {
     IMGetConferenceSettings();
     v3 = 0;
-    v4 = [v3 lastObject];
-    [(IDSValidationCertificateMessage *)v2 setTopic:v4];
+    lastObject = [v3 lastObject];
+    [(IDSValidationCertificateMessage *)v2 setTopic:lastObject];
 
     [(IDSValidationCertificateMessage *)v2 setWantsResponse:1];
   }
@@ -27,16 +27,16 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = IDSValidationCertificateMessage;
-  v4 = [(IDSValidationCertificateMessage *)&v8 copyWithZone:a3];
-  v5 = [(IDSValidationCertificateMessage *)self responseCertificateData];
-  [v4 setResponseCertificateData:v5];
+  v4 = [(IDSValidationCertificateMessage *)&v8 copyWithZone:zone];
+  responseCertificateData = [(IDSValidationCertificateMessage *)self responseCertificateData];
+  [v4 setResponseCertificateData:responseCertificateData];
 
-  v6 = [(IDSValidationCertificateMessage *)self pushToken];
-  [v4 setPushToken:v6];
+  pushToken = [(IDSValidationCertificateMessage *)self pushToken];
+  [v4 setPushToken:pushToken];
 
   return v4;
 }
@@ -59,8 +59,8 @@
 {
   v5.receiver = self;
   v5.super_class = IDSValidationCertificateMessage;
-  v2 = [(IDSValidationCertificateMessage *)&v5 additionalMessageHeaders];
-  Mutable = [v2 mutableCopy];
+  additionalMessageHeaders = [(IDSValidationCertificateMessage *)&v5 additionalMessageHeaders];
+  Mutable = [additionalMessageHeaders mutableCopy];
 
   if (!Mutable)
   {
@@ -70,9 +70,9 @@
   return Mutable;
 }
 
-- (void)handleResponseDictionary:(id)a3
+- (void)handleResponseDictionary:(id)dictionary
 {
-  v4 = [a3 objectForKey:@"cert"];
+  v4 = [dictionary objectForKey:@"cert"];
   [(IDSValidationCertificateMessage *)self setResponseCertificateData:v4];
 }
 

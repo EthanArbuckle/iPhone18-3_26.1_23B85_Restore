@@ -1,24 +1,24 @@
 @interface VoiceVolumeControlView
 - (CGSize)intrinsicContentSize;
-- (VoiceVolumeControlView)initWithDelegate:(id)a3;
+- (VoiceVolumeControlView)initWithDelegate:(id)delegate;
 - (VoiceVolumeControlViewDelegate)delegate;
-- (double)_buttonLabelVerticalMarginForTrait:(id)a3;
-- (id)_accessibilityIdenfifierPrefixForVolumeOption:(int64_t)a3;
-- (id)_accessibilityTextForVolumeOption:(int64_t)a3;
-- (id)_buttonForVolumeOption:(int64_t)a3;
+- (double)_buttonLabelVerticalMarginForTrait:(id)trait;
+- (id)_accessibilityIdenfifierPrefixForVolumeOption:(int64_t)option;
+- (id)_accessibilityTextForVolumeOption:(int64_t)option;
+- (id)_buttonForVolumeOption:(int64_t)option;
 - (id)_effectiveTraitCollection;
-- (id)_imageForVolumeOption:(int64_t)a3;
-- (id)_labelForVolumeOption:(int64_t)a3;
+- (id)_imageForVolumeOption:(int64_t)option;
+- (id)_labelForVolumeOption:(int64_t)option;
 - (void)_addShadows;
 - (void)_animateContentUpdate;
 - (void)_setup;
 - (void)_updateContent;
-- (void)buttonSwiped:(id)a3;
-- (void)buttonTapped:(id)a3;
+- (void)buttonSwiped:(id)swiped;
+- (void)buttonTapped:(id)tapped;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)valueChangedForGEOConfigKey:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)valueChangedForGEOConfigKey:(id)key;
 @end
 
 @implementation VoiceVolumeControlView
@@ -30,9 +30,9 @@
   return WeakRetained;
 }
 
-- (void)valueChangedForGEOConfigKey:(id)a3
+- (void)valueChangedForGEOConfigKey:(id)key
 {
-  if (a3.var0 == 736 && a3.var1 == &unk_101644C90)
+  if (key.var0 == 736 && key.var1 == &unk_101644C90)
   {
     self->_currentSelection = GEOConfigGetInteger();
 
@@ -53,8 +53,8 @@
 
   [(UIView *)self->_selectionBadge frame];
   v6 = v5 * 0.5;
-  v7 = [(VoiceVolumeControlView *)self traitCollection];
-  [v7 displayScale];
+  traitCollection = [(VoiceVolumeControlView *)self traitCollection];
+  [traitCollection displayScale];
   v9 = v8;
 
   v14 = +[UIColor systemBlackColor];
@@ -87,10 +87,10 @@
   }
 }
 
-- (double)_buttonLabelVerticalMarginForTrait:(id)a3
+- (double)_buttonLabelVerticalMarginForTrait:(id)trait
 {
-  v3 = [a3 preferredContentSizeCategory];
-  if (UIContentSizeCategoryCompareToCategory(v3, UIContentSizeCategoryMedium) == NSOrderedDescending)
+  preferredContentSizeCategory = [trait preferredContentSizeCategory];
+  if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, UIContentSizeCategoryMedium) == NSOrderedDescending)
   {
     v4 = 10.0;
   }
@@ -105,33 +105,33 @@
 
 - (id)_effectiveTraitCollection
 {
-  v3 = [(VoiceVolumeControlView *)self traitCollection];
-  v4 = [(VoiceVolumeControlView *)self _maximumContentSizeCategory];
-  v5 = [v3 _maps_traitCollectionByClampingContentSizeCategoryWithMinimumContentSizeCategory:0 maximumContentSizeCategory:v4];
+  traitCollection = [(VoiceVolumeControlView *)self traitCollection];
+  _maximumContentSizeCategory = [(VoiceVolumeControlView *)self _maximumContentSizeCategory];
+  v5 = [traitCollection _maps_traitCollectionByClampingContentSizeCategoryWithMinimumContentSizeCategory:0 maximumContentSizeCategory:_maximumContentSizeCategory];
 
   return v5;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v21.receiver = self;
   v21.super_class = VoiceVolumeControlView;
-  [(VoiceVolumeControlView *)&v21 traitCollectionDidChange:v4];
-  v5 = [(VoiceVolumeControlView *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
-  v8 = sub_10008FB5C(v6, v7);
+  [(VoiceVolumeControlView *)&v21 traitCollectionDidChange:changeCopy];
+  traitCollection = [(VoiceVolumeControlView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+  v8 = sub_10008FB5C(preferredContentSizeCategory, preferredContentSizeCategory2);
 
   if (v8)
   {
-    v9 = [(VoiceVolumeControlView *)self _effectiveTraitCollection];
+    _effectiveTraitCollection = [(VoiceVolumeControlView *)self _effectiveTraitCollection];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v10 = [(UIStackView *)self->_labelStackView arrangedSubviews];
-    v11 = [v10 countByEnumeratingWithState:&v17 objects:v22 count:16];
+    arrangedSubviews = [(UIStackView *)self->_labelStackView arrangedSubviews];
+    v11 = [arrangedSubviews countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v11)
     {
       v12 = v11;
@@ -143,18 +143,18 @@
         {
           if (*v18 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(arrangedSubviews);
           }
 
           v15 = *(*(&v17 + 1) + 8 * v14);
-          v16 = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline compatibleWithTraitCollection:v9];
+          v16 = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline compatibleWithTraitCollection:_effectiveTraitCollection];
           [v15 setFont:v16];
 
           v14 = v14 + 1;
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v17 objects:v22 count:16];
+        v12 = [arrangedSubviews countByEnumeratingWithState:&v17 objects:v22 count:16];
       }
 
       while (v12);
@@ -162,11 +162,11 @@
   }
 }
 
-- (id)_accessibilityTextForVolumeOption:(int64_t)a3
+- (id)_accessibilityTextForVolumeOption:(int64_t)option
 {
-  if (a3 <= 2)
+  if (option <= 2)
   {
-    v4 = off_101626248[a3];
+    v4 = off_101626248[option];
     v5 = +[NSBundle mainBundle];
     v3 = [v5 localizedStringForKey:v4 value:@"localized string not found" table:0];
   }
@@ -174,15 +174,15 @@
   return v3;
 }
 
-- (id)_accessibilityIdenfifierPrefixForVolumeOption:(int64_t)a3
+- (id)_accessibilityIdenfifierPrefixForVolumeOption:(int64_t)option
 {
   v3 = @"VolumeSoft";
-  if (a3 == 1)
+  if (option == 1)
   {
     v3 = @"VolumeNormal";
   }
 
-  if (a3 == 2)
+  if (option == 2)
   {
     return @"VolumeLoud";
   }
@@ -203,51 +203,51 @@
   [UIView animateWithDuration:v2 animations:0.25];
 }
 
-- (void)buttonSwiped:(id)a3
+- (void)buttonSwiped:(id)swiped
 {
-  v12 = a3;
-  v4 = [v12 view];
-  v5 = [v4 tag];
+  swipedCopy = swiped;
+  view = [swipedCopy view];
+  v5 = [view tag];
   currentSelection = self->_currentSelection;
 
   if (v5 == currentSelection)
   {
-    v7 = [v12 direction];
-    v8 = [v12 view];
-    v9 = [v8 tag];
-    v10 = (v7 == 2 ? v9 - 1 : v9 + 1);
+    direction = [swipedCopy direction];
+    view2 = [swipedCopy view];
+    v9 = [view2 tag];
+    v10 = (direction == 2 ? v9 - 1 : v9 + 1);
 
     if (v10 <= 2)
     {
       self->_currentSelection = v10;
-      v11 = [(VoiceVolumeControlView *)self delegate];
-      [v11 audioControlView:self didSelectAudioVolume:self->_currentSelection];
+      delegate = [(VoiceVolumeControlView *)self delegate];
+      [delegate audioControlView:self didSelectAudioVolume:self->_currentSelection];
 
       [(VoiceVolumeControlView *)self _animateContentUpdate];
     }
   }
 }
 
-- (void)buttonTapped:(id)a3
+- (void)buttonTapped:(id)tapped
 {
-  self->_currentSelection = [a3 tag];
-  v4 = [(VoiceVolumeControlView *)self delegate];
-  [v4 audioControlView:self didSelectAudioVolume:self->_currentSelection];
+  self->_currentSelection = [tapped tag];
+  delegate = [(VoiceVolumeControlView *)self delegate];
+  [delegate audioControlView:self didSelectAudioVolume:self->_currentSelection];
 
   [(VoiceVolumeControlView *)self _animateContentUpdate];
 }
 
-- (id)_buttonForVolumeOption:(int64_t)a3
+- (id)_buttonForVolumeOption:(int64_t)option
 {
   v5 = objc_opt_new();
-  [v5 setTag:a3];
-  v6 = [(VoiceVolumeControlView *)self _accessibilityIdenfifierPrefixForVolumeOption:a3];
+  [v5 setTag:option];
+  v6 = [(VoiceVolumeControlView *)self _accessibilityIdenfifierPrefixForVolumeOption:option];
   [v5 setAccessibilityIdentifier:v6];
 
-  v7 = [(VoiceVolumeControlView *)self _accessibilityTextForVolumeOption:a3];
+  v7 = [(VoiceVolumeControlView *)self _accessibilityTextForVolumeOption:option];
   [v5 setAccessibilityLabel:v7];
 
-  v8 = [(VoiceVolumeControlView *)self _imageForVolumeOption:a3];
+  v8 = [(VoiceVolumeControlView *)self _imageForVolumeOption:option];
   [v5 setImage:v8 forState:0];
 
   [v5 addTarget:self action:"buttonTapped:" forControlEvents:64];
@@ -264,16 +264,16 @@
   return v5;
 }
 
-- (id)_labelForVolumeOption:(int64_t)a3
+- (id)_labelForVolumeOption:(int64_t)option
 {
-  if (a3 > 2)
+  if (option > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = off_101626230[a3];
+    v3 = off_101626230[option];
     v4 = +[NSBundle mainBundle];
     v5 = [v4 localizedStringForKey:v3 value:@"localized string not found" table:0];
   }
@@ -294,16 +294,16 @@
   return v6;
 }
 
-- (id)_imageForVolumeOption:(int64_t)a3
+- (id)_imageForVolumeOption:(int64_t)option
 {
   if (qword_10195CEE8 != -1)
   {
     dispatch_once(&qword_10195CEE8, &stru_1016261D8);
   }
 
-  if (a3 <= 2)
+  if (option <= 2)
   {
-    self = [UIImage systemImageNamed:off_101626218[a3] withConfiguration:qword_10195CEF0];
+    self = [UIImage systemImageNamed:off_101626218[option] withConfiguration:qword_10195CEF0];
   }
 
   return self;
@@ -337,14 +337,14 @@
   [(UIView *)self->_buttonStackViewContainer setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)self->_buttonStackViewContainer setAccessibilityLabel:@"buttonStackViewContainer"];
   [(UIView *)self->_buttonStackViewContainer setClipsToBounds:1];
-  v11 = [(UIView *)self->_buttonStackViewContainer layer];
-  [v11 setCornerRadius:44.0];
+  layer = [(UIView *)self->_buttonStackViewContainer layer];
+  [layer setCornerRadius:44.0];
 
   v12 = +[UIColor tertiarySystemFillColor];
   [(UIView *)self->_buttonStackViewContainer setBackgroundColor:v12];
 
-  v13 = [(UIView *)self->_buttonStackViewContainer widthAnchor];
-  v14 = [v13 constraintEqualToConstant:324.0];
+  widthAnchor = [(UIView *)self->_buttonStackViewContainer widthAnchor];
+  v14 = [widthAnchor constraintEqualToConstant:324.0];
 
   LODWORD(v15) = 1144750080;
   [v14 setPriority:v15];
@@ -357,8 +357,8 @@
   self->_selectionBadge = v16;
 
   [(UIView *)self->_selectionBadge setTranslatesAutoresizingMaskIntoConstraints:0];
-  v18 = [(UIView *)self->_selectionBadge layer];
-  [v18 setCornerRadius:40.0];
+  layer2 = [(UIView *)self->_selectionBadge layer];
+  [layer2 setCornerRadius:40.0];
 
   v19 = +[UIColor systemWhiteColor];
   [(UIView *)self->_selectionBadge setBackgroundColor:v19];
@@ -408,7 +408,7 @@
   v114 = 0u;
   v111 = 0u;
   v112 = 0u;
-  v99 = self;
+  selfCopy = self;
   obj = self->_buttons;
   v100 = [(NSArray *)obj countByEnumeratingWithState:&v111 objects:v122 count:16];
   if (v100)
@@ -425,17 +425,17 @@
 
         v29 = *(*(&v111 + 1) + 8 * j);
         [v29 setTranslatesAutoresizingMaskIntoConstraints:0];
-        v102 = [v29 widthAnchor];
-        v30 = [v29 heightAnchor];
-        v31 = [v102 constraintEqualToAnchor:v30];
+        widthAnchor2 = [v29 widthAnchor];
+        heightAnchor = [v29 heightAnchor];
+        v31 = [widthAnchor2 constraintEqualToAnchor:heightAnchor];
         v121[0] = v31;
-        v32 = [v29 topAnchor];
-        v33 = [(UIStackView *)v99->_buttonStackView topAnchor];
-        v34 = [v32 constraintEqualToAnchor:v33];
+        topAnchor = [v29 topAnchor];
+        topAnchor2 = [(UIStackView *)selfCopy->_buttonStackView topAnchor];
+        v34 = [topAnchor constraintEqualToAnchor:topAnchor2];
         v121[1] = v34;
-        v35 = [v29 bottomAnchor];
-        v36 = [(UIStackView *)v99->_buttonStackView bottomAnchor];
-        v37 = [v35 constraintEqualToAnchor:v36];
+        bottomAnchor = [v29 bottomAnchor];
+        bottomAnchor2 = [(UIStackView *)selfCopy->_buttonStackView bottomAnchor];
+        v37 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
         v121[2] = v37;
         v38 = [NSArray arrayWithObjects:v121 count:3];
         [v97 addObjectsFromArray:v38];
@@ -466,7 +466,7 @@
           objc_enumerationMutation(&off_1016EC890);
         }
 
-        v44 = -[VoiceVolumeControlView _labelForVolumeOption:](v99, "_labelForVolumeOption:", [*(*(&v107 + 1) + 8 * k) integerValue]);
+        v44 = -[VoiceVolumeControlView _labelForVolumeOption:](selfCopy, "_labelForVolumeOption:", [*(*(&v107 + 1) + 8 * k) integerValue]);
         [v39 addObject:v44];
       }
 
@@ -477,91 +477,91 @@
   }
 
   v45 = [[UIStackView alloc] initWithArrangedSubviews:v39];
-  labelStackView = v99->_labelStackView;
-  v99->_labelStackView = v45;
+  labelStackView = selfCopy->_labelStackView;
+  selfCopy->_labelStackView = v45;
 
-  [(UIStackView *)v99->_labelStackView setSpacing:10.0];
-  [(UIStackView *)v99->_labelStackView setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(UIStackView *)v99->_labelStackView setAlignment:5];
-  [(UIStackView *)v99->_labelStackView setAxis:0];
-  [(UIStackView *)v99->_labelStackView setDistribution:3];
-  [(VoiceVolumeControlView *)v99 addSubview:v99->_labelStackView];
+  [(UIStackView *)selfCopy->_labelStackView setSpacing:10.0];
+  [(UIStackView *)selfCopy->_labelStackView setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(UIStackView *)selfCopy->_labelStackView setAlignment:5];
+  [(UIStackView *)selfCopy->_labelStackView setAxis:0];
+  [(UIStackView *)selfCopy->_labelStackView setDistribution:3];
+  [(VoiceVolumeControlView *)selfCopy addSubview:selfCopy->_labelStackView];
   v104[0] = _NSConcreteStackBlock;
   v104[1] = 3221225472;
   v104[2] = sub_1006AC778;
   v104[3] = &unk_1016261B8;
   v105 = v97;
-  v106 = v99;
+  v106 = selfCopy;
   v103 = v97;
   [v39 enumerateObjectsUsingBlock:v104];
-  v101 = [(UIView *)v99->_buttonStackViewContainer topAnchor];
-  v98 = [(VoiceVolumeControlView *)v99 topAnchor];
-  v96 = [v101 constraintEqualToAnchor:v98];
+  topAnchor3 = [(UIView *)selfCopy->_buttonStackViewContainer topAnchor];
+  topAnchor4 = [(VoiceVolumeControlView *)selfCopy topAnchor];
+  v96 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v119[0] = v96;
-  obja = [(UIView *)v99->_buttonStackViewContainer heightAnchor];
+  obja = [(UIView *)selfCopy->_buttonStackViewContainer heightAnchor];
   v89 = [obja constraintEqualToConstant:88.0];
   v119[1] = v89;
-  v88 = [(UIView *)v99->_buttonStackViewContainer leftAnchor];
-  v87 = [(VoiceVolumeControlView *)v99 leftAnchor];
-  v86 = [v88 constraintEqualToAnchor:v87];
+  leftAnchor = [(UIView *)selfCopy->_buttonStackViewContainer leftAnchor];
+  leftAnchor2 = [(VoiceVolumeControlView *)selfCopy leftAnchor];
+  v86 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v119[2] = v86;
-  v85 = [(UIView *)v99->_buttonStackViewContainer rightAnchor];
-  v84 = [(VoiceVolumeControlView *)v99 rightAnchor];
-  v83 = [v85 constraintEqualToAnchor:v84];
+  rightAnchor = [(UIView *)selfCopy->_buttonStackViewContainer rightAnchor];
+  rightAnchor2 = [(VoiceVolumeControlView *)selfCopy rightAnchor];
+  v83 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v119[3] = v83;
-  v82 = [(UIView *)v99->_selectionBadge topAnchor];
-  v81 = [(UIView *)v99->_buttonStackViewContainer topAnchor];
-  v80 = [v82 constraintEqualToAnchor:v81 constant:4.0];
+  topAnchor5 = [(UIView *)selfCopy->_selectionBadge topAnchor];
+  topAnchor6 = [(UIView *)selfCopy->_buttonStackViewContainer topAnchor];
+  v80 = [topAnchor5 constraintEqualToAnchor:topAnchor6 constant:4.0];
   v119[4] = v80;
-  v79 = [(UIView *)v99->_selectionBadge bottomAnchor];
-  v78 = [(UIView *)v99->_buttonStackViewContainer bottomAnchor];
-  v77 = [v79 constraintEqualToAnchor:v78 constant:-4.0];
+  bottomAnchor3 = [(UIView *)selfCopy->_selectionBadge bottomAnchor];
+  bottomAnchor4 = [(UIView *)selfCopy->_buttonStackViewContainer bottomAnchor];
+  v77 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-4.0];
   v119[5] = v77;
-  v76 = [(UIView *)v99->_selectionBadge widthAnchor];
-  v90 = [(UIView *)v99->_selectionBadge heightAnchor];
-  v75 = [v76 constraintEqualToAnchor:v90];
+  widthAnchor3 = [(UIView *)selfCopy->_selectionBadge widthAnchor];
+  heightAnchor2 = [(UIView *)selfCopy->_selectionBadge heightAnchor];
+  v75 = [widthAnchor3 constraintEqualToAnchor:heightAnchor2];
   v119[6] = v75;
-  v74 = [(UIStackView *)v99->_buttonStackView topAnchor];
-  v73 = [(UIView *)v99->_buttonStackViewContainer topAnchor];
-  v72 = [v74 constraintEqualToAnchor:v73 constant:4.0];
+  topAnchor7 = [(UIStackView *)selfCopy->_buttonStackView topAnchor];
+  topAnchor8 = [(UIView *)selfCopy->_buttonStackViewContainer topAnchor];
+  v72 = [topAnchor7 constraintEqualToAnchor:topAnchor8 constant:4.0];
   v119[7] = v72;
-  v71 = [(UIStackView *)v99->_buttonStackView bottomAnchor];
-  v70 = [(UIView *)v99->_buttonStackViewContainer bottomAnchor];
-  v69 = [v71 constraintEqualToAnchor:v70 constant:-4.0];
+  bottomAnchor5 = [(UIStackView *)selfCopy->_buttonStackView bottomAnchor];
+  bottomAnchor6 = [(UIView *)selfCopy->_buttonStackViewContainer bottomAnchor];
+  v69 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6 constant:-4.0];
   v119[8] = v69;
-  v68 = [(UIStackView *)v99->_buttonStackView leftAnchor];
-  v67 = [(UIView *)v99->_buttonStackViewContainer leftAnchor];
-  v66 = [v68 constraintEqualToAnchor:v67 constant:4.0];
+  leftAnchor3 = [(UIStackView *)selfCopy->_buttonStackView leftAnchor];
+  leftAnchor4 = [(UIView *)selfCopy->_buttonStackViewContainer leftAnchor];
+  v66 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4 constant:4.0];
   v119[9] = v66;
-  v65 = [(UIStackView *)v99->_buttonStackView rightAnchor];
-  v64 = [(UIView *)v99->_buttonStackViewContainer rightAnchor];
-  v63 = [v65 constraintEqualToAnchor:v64 constant:-4.0];
+  rightAnchor3 = [(UIStackView *)selfCopy->_buttonStackView rightAnchor];
+  rightAnchor4 = [(UIView *)selfCopy->_buttonStackViewContainer rightAnchor];
+  v63 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4 constant:-4.0];
   v119[10] = v63;
-  v62 = [(UIStackView *)v99->_labelStackView topAnchor];
-  v61 = [(UIView *)v99->_buttonStackViewContainer bottomAnchor];
-  v60 = [v62 constraintLessThanOrEqualToAnchor:v61 constant:10.0];
+  topAnchor9 = [(UIStackView *)selfCopy->_labelStackView topAnchor];
+  bottomAnchor7 = [(UIView *)selfCopy->_buttonStackViewContainer bottomAnchor];
+  v60 = [topAnchor9 constraintLessThanOrEqualToAnchor:bottomAnchor7 constant:10.0];
   v119[11] = v60;
-  v59 = [(UIStackView *)v99->_labelStackView topAnchor];
-  v58 = [(UIView *)v99->_buttonStackViewContainer bottomAnchor];
-  v57 = [v59 constraintGreaterThanOrEqualToAnchor:v58 constant:8.0];
+  topAnchor10 = [(UIStackView *)selfCopy->_labelStackView topAnchor];
+  bottomAnchor8 = [(UIView *)selfCopy->_buttonStackViewContainer bottomAnchor];
+  v57 = [topAnchor10 constraintGreaterThanOrEqualToAnchor:bottomAnchor8 constant:8.0];
   v119[12] = v57;
-  v56 = [(UIStackView *)v99->_labelStackView leftAnchor];
-  v47 = [(UIStackView *)v99->_buttonStackView leftAnchor];
-  v48 = [v56 constraintEqualToAnchor:v47];
+  leftAnchor5 = [(UIStackView *)selfCopy->_labelStackView leftAnchor];
+  leftAnchor6 = [(UIStackView *)selfCopy->_buttonStackView leftAnchor];
+  v48 = [leftAnchor5 constraintEqualToAnchor:leftAnchor6];
   v119[13] = v48;
-  v49 = [(UIStackView *)v99->_labelStackView rightAnchor];
-  v50 = [(UIStackView *)v99->_buttonStackView rightAnchor];
-  v51 = [v49 constraintEqualToAnchor:v50];
+  rightAnchor5 = [(UIStackView *)selfCopy->_labelStackView rightAnchor];
+  rightAnchor6 = [(UIStackView *)selfCopy->_buttonStackView rightAnchor];
+  v51 = [rightAnchor5 constraintEqualToAnchor:rightAnchor6];
   v119[14] = v51;
-  v52 = [(VoiceVolumeControlView *)v99 topAnchor];
-  v53 = [(UIView *)v99->_buttonStackViewContainer topAnchor];
-  v54 = [v52 constraintEqualToAnchor:v53];
+  topAnchor11 = [(VoiceVolumeControlView *)selfCopy topAnchor];
+  topAnchor12 = [(UIView *)selfCopy->_buttonStackViewContainer topAnchor];
+  v54 = [topAnchor11 constraintEqualToAnchor:topAnchor12];
   v119[15] = v54;
   v55 = [NSArray arrayWithObjects:v119 count:16];
   [v103 addObjectsFromArray:v55];
 
   [NSLayoutConstraint activateConstraints:v103];
-  [(VoiceVolumeControlView *)v99 _updateContent];
+  [(VoiceVolumeControlView *)selfCopy _updateContent];
   _GEOConfigAddDelegateListenerForKey();
 }
 
@@ -576,15 +576,15 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(UIStackView *)self->_labelStackView arrangedSubviews];
-  v4 = [v3 firstObject];
-  v5 = [v4 font];
-  [v5 lineHeight];
+  arrangedSubviews = [(UIStackView *)self->_labelStackView arrangedSubviews];
+  firstObject = [arrangedSubviews firstObject];
+  font = [firstObject font];
+  [font lineHeight];
   v7 = v6;
 
   v8 = ceil(v7);
-  v9 = [(VoiceVolumeControlView *)self traitCollection];
-  [(VoiceVolumeControlView *)self _buttonLabelVerticalMarginForTrait:v9];
+  traitCollection = [(VoiceVolumeControlView *)self traitCollection];
+  [(VoiceVolumeControlView *)self _buttonLabelVerticalMarginForTrait:traitCollection];
   v11 = v10;
 
   v12 = v8 + v11 + 88.0;
@@ -602,9 +602,9 @@
   [(VoiceVolumeControlView *)&v3 dealloc];
 }
 
-- (VoiceVolumeControlView)initWithDelegate:(id)a3
+- (VoiceVolumeControlView)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = VoiceVolumeControlView;
   v5 = [(VoiceVolumeControlView *)&v9 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
@@ -614,7 +614,7 @@
     v7 = NSStringFromClass(v6);
     [(VoiceVolumeControlView *)v5 setAccessibilityIdentifier:v7];
 
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     [(VoiceVolumeControlView *)v5 _setup];
   }
 

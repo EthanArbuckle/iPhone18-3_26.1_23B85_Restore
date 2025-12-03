@@ -1,32 +1,32 @@
 @interface MBKeyBagFile
-+ (BOOL)decryptFileWithPath:(id)a3 keybag:(id)a4 encryptionKey:(id)a5 size:(unint64_t)a6 error:(id *)a7;
-+ (BOOL)validateWrappedKey:(id)a3 withKeyBag:(id)a4 forPath:(id)a5 error:(id *)a6;
-+ (const)keyBagUUIDForEncryptionKey:(id)a3;
-+ (id)keybagFileWithPath:(id)a3 error:(id *)a4;
-- (BOOL)closeWithError:(id *)a3;
-- (BOOL)validateEncryptionKey:(id)a3 error:(id *)a4;
-- (MBKeyBagFile)initWithHandle:(_mkbbackupref *)a3;
-- (id)encryptionKeyWithError:(id *)a3;
-- (id)updatedEncryptionKeyForCurrentKey:(id)a3 withError:(id *)a4;
-- (int)readWithBytes:(void *)a3 count:(unsigned int)a4 offset:(unint64_t)a5 error:(id *)a6;
++ (BOOL)decryptFileWithPath:(id)path keybag:(id)keybag encryptionKey:(id)key size:(unint64_t)size error:(id *)error;
++ (BOOL)validateWrappedKey:(id)key withKeyBag:(id)bag forPath:(id)path error:(id *)error;
++ (const)keyBagUUIDForEncryptionKey:(id)key;
++ (id)keybagFileWithPath:(id)path error:(id *)error;
+- (BOOL)closeWithError:(id *)error;
+- (BOOL)validateEncryptionKey:(id)key error:(id *)error;
+- (MBKeyBagFile)initWithHandle:(_mkbbackupref *)handle;
+- (id)encryptionKeyWithError:(id *)error;
+- (id)updatedEncryptionKeyForCurrentKey:(id)key withError:(id *)error;
+- (int)readWithBytes:(void *)bytes count:(unsigned int)count offset:(unint64_t)offset error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation MBKeyBagFile
 
-+ (BOOL)decryptFileWithPath:(id)a3 keybag:(id)a4 encryptionKey:(id)a5 size:(unint64_t)a6 error:(id *)a7
++ (BOOL)decryptFileWithPath:(id)path keybag:(id)keybag encryptionKey:(id)key size:(unint64_t)size error:(id *)error
 {
-  if (!a4)
+  if (!keybag)
   {
     __assert_rtn("+[MBKeyBagFile decryptFileWithPath:keybag:encryptionKey:size:error:]", "MBKeyBagFile.m", 34, "keybag");
   }
 
-  return [a4 decryptFileWithPath:a3 encryptionKey:a5 size:a6 error:a7];
+  return [keybag decryptFileWithPath:path encryptionKey:key size:size error:error];
 }
 
-+ (id)keybagFileWithPath:(id)a3 error:(id *)a4
++ (id)keybagFileWithPath:(id)path error:(id *)error
 {
-  [a3 fileSystemRepresentation];
+  [path fileSystemRepresentation];
   v6 = MKBBackupOpen();
   v7 = MBGetDefaultLog();
   v8 = v7;
@@ -38,7 +38,7 @@
     }
 
     *buf = 138412546;
-    v12 = a3;
+    pathCopy3 = path;
     v13 = 1024;
     v14 = -2;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "MKBBackupOpen(%@): %d", buf, 0x12u);
@@ -53,28 +53,28 @@
     }
 
     *buf = 138412546;
-    v12 = a3;
+    pathCopy3 = path;
     v13 = 1024;
     v14 = v6;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "MKBBackupOpen(%@): %d", buf, 0x12u);
 LABEL_10:
     _MBLog();
 LABEL_11:
-    if (!a4)
+    if (!error)
     {
       return 0;
     }
 
-    v10 = [MBKeyBag errorWithReturnCode:v6 path:a3 description:@"MKBBackupOpen error"];
+    v10 = [MBKeyBag errorWithReturnCode:v6 path:path description:@"MKBBackupOpen error"];
     result = 0;
-    *a4 = v10;
+    *error = v10;
     return result;
   }
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v12 = a3;
+    pathCopy3 = path;
     v13 = 1024;
     v14 = 0;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "MKBBackupOpen(%@): %d", buf, 0x12u);
@@ -84,14 +84,14 @@ LABEL_11:
   return [[MBKeyBagFile alloc] initWithHandle:0];
 }
 
-- (MBKeyBagFile)initWithHandle:(_mkbbackupref *)a3
+- (MBKeyBagFile)initWithHandle:(_mkbbackupref *)handle
 {
   v5.receiver = self;
   v5.super_class = MBKeyBagFile;
   result = [(MBKeyBagFile *)&v5 init];
   if (result)
   {
-    result->_handle = a3;
+    result->_handle = handle;
   }
 
   return result;
@@ -109,7 +109,7 @@ LABEL_11:
   [(MBKeyBagFile *)&v3 dealloc];
 }
 
-- (id)encryptionKeyWithError:(id *)a3
+- (id)encryptionKeyWithError:(id *)error
 {
   handle = self->_handle;
   v6 = MKBBackupCopyKeyWithError();
@@ -167,20 +167,20 @@ LABEL_10:
     }
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = [MBKeyBag errorWithReturnCode:v6 description:@"MKBBackupCopyKey error"];
+    *error = [MBKeyBag errorWithReturnCode:v6 description:@"MKBBackupCopyKey error"];
   }
 
   return 0;
 }
 
-- (id)updatedEncryptionKeyForCurrentKey:(id)a3 withError:(id *)a4
+- (id)updatedEncryptionKeyForCurrentKey:(id)key withError:(id *)error
 {
-  v4 = a3;
-  if (!a3)
+  keyCopy = key;
+  if (!key)
   {
-    return v4;
+    return keyCopy;
   }
 
   handle = self->_handle;
@@ -221,7 +221,7 @@ LABEL_11:
         _MBLog();
       }
 
-      return v4;
+      return keyCopy;
     }
 
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -239,15 +239,15 @@ LABEL_11:
     }
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [MBKeyBag errorWithReturnCode:updated description:@"MKBBackupUpdateKey error"];
+    *error = [MBKeyBag errorWithReturnCode:updated description:@"MKBBackupUpdateKey error"];
   }
 
   return 0;
 }
 
-- (BOOL)validateEncryptionKey:(id)a3 error:(id *)a4
+- (BOOL)validateEncryptionKey:(id)key error:(id *)error
 {
   handle = self->_handle;
   v7 = MKBBackupValidateKey();
@@ -289,9 +289,9 @@ LABEL_11:
 
     _MBLog();
 LABEL_10:
-    if (a4)
+    if (error)
     {
-      *a4 = [MBKeyBag errorWithReturnCode:v7 description:@"MKBBackupValidateKey error"];
+      *error = [MBKeyBag errorWithReturnCode:v7 description:@"MKBBackupValidateKey error"];
     }
 
     return v7 == 0;
@@ -313,17 +313,17 @@ LABEL_10:
   return v7 == 0;
 }
 
-+ (BOOL)validateWrappedKey:(id)a3 withKeyBag:(id)a4 forPath:(id)a5 error:(id *)a6
++ (BOOL)validateWrappedKey:(id)key withKeyBag:(id)bag forPath:(id)path error:(id *)error
 {
-  if (!a4)
+  if (!bag)
   {
     __assert_rtn("+[MBKeyBagFile validateWrappedKey:withKeyBag:forPath:error:]", "MBKeyBagFile.m", 137, "keybag");
   }
 
-  return [a4 validateWrappedKey:a3 error:{a6, a5}];
+  return [bag validateWrappedKey:key error:{error, path}];
 }
 
-- (int)readWithBytes:(void *)a3 count:(unsigned int)a4 offset:(unint64_t)a5 error:(id *)a6
+- (int)readWithBytes:(void *)bytes count:(unsigned int)count offset:(unint64_t)offset error:(id *)error
 {
   handle = self->_handle;
   v12 = MKBBackupPread();
@@ -334,11 +334,11 @@ LABEL_10:
     *buf = 134219008;
     v18 = v14;
     v19 = 2048;
-    v20 = a3;
+    bytesCopy = bytes;
     v21 = 1024;
-    v22 = a4;
+    countCopy = count;
     v23 = 2048;
-    v24 = a5;
+    offsetCopy = offset;
     v25 = 2048;
     v26 = v12;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "MKBBackupPread(%p, %p, %u, %llu): %ld", buf, 0x30u);
@@ -349,16 +349,16 @@ LABEL_10:
   if (v12 < 0)
   {
     LODWORD(v12) = -1;
-    if (a6)
+    if (error)
     {
-      *a6 = [MBKeyBag errorWithReturnCode:0xFFFFFFFFLL description:@"MKBBackupPread error"];
+      *error = [MBKeyBag errorWithReturnCode:0xFFFFFFFFLL description:@"MKBBackupPread error"];
     }
   }
 
   return v12;
 }
 
-- (BOOL)closeWithError:(id *)a3
+- (BOOL)closeWithError:(id *)error
 {
   handle = self->_handle;
   v5 = MKBBackupClose();
@@ -373,22 +373,22 @@ LABEL_10:
     _MBLog();
   }
 
-  if (a3 && v5)
+  if (error && v5)
   {
-    *a3 = [MBKeyBag errorWithReturnCode:v5 description:@"MKBBackupClose error"];
+    *error = [MBKeyBag errorWithReturnCode:v5 description:@"MKBBackupClose error"];
   }
 
   return v5 == 0;
 }
 
-+ (const)keyBagUUIDForEncryptionKey:(id)a3
++ (const)keyBagUUIDForEncryptionKey:(id)key
 {
-  if ([a3 length] < 0x10)
+  if ([key length] < 0x10)
   {
     return 0;
   }
 
-  return [a3 bytes];
+  return [key bytes];
 }
 
 @end

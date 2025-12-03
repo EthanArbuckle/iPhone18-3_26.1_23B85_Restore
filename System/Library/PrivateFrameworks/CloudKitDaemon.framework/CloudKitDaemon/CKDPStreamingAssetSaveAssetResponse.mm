@@ -1,20 +1,20 @@
 @interface CKDPStreamingAssetSaveAssetResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasUploadURLExpirationTimeSeconds:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasUploadURLExpirationTimeSeconds:(BOOL)seconds;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPStreamingAssetSaveAssetResponse
 
-- (void)setHasUploadURLExpirationTimeSeconds:(BOOL)a3
+- (void)setHasUploadURLExpirationTimeSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 2;
   }
@@ -63,59 +63,59 @@
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (*&self->_has)
   {
     reservedSize = self->_reservedSize;
     PBDataWriterWriteInt64Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_uploadURL)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     uploadURLExpirationTimeSeconds = self->_uploadURLExpirationTimeSeconds;
     PBDataWriterWriteInt64Field();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_reservedSize;
-    *(v4 + 32) |= 1u;
+    toCopy[1] = self->_reservedSize;
+    *(toCopy + 32) |= 1u;
   }
 
   uploadURL = self->_uploadURL;
   if (uploadURL)
   {
-    v7 = v4;
-    objc_msgSend_setUploadURL_(v4, v5, uploadURL);
-    v4 = v7;
+    v7 = toCopy;
+    objc_msgSend_setUploadURL_(toCopy, v5, uploadURL);
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    v4[2] = self->_uploadURLExpirationTimeSeconds;
-    *(v4 + 32) |= 2u;
+    toCopy[2] = self->_uploadURLExpirationTimeSeconds;
+    *(toCopy + 32) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v12 = v10;
   if (*&self->_has)
@@ -124,7 +124,7 @@
     *(v10 + 32) |= 1u;
   }
 
-  v13 = objc_msgSend_copyWithZone_(self->_uploadURL, v11, a3);
+  v13 = objc_msgSend_copyWithZone_(self->_uploadURL, v11, zone);
   v14 = *(v12 + 24);
   *(v12 + 24) = v13;
 
@@ -137,32 +137,32 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v9 = *(v4 + 32);
+  v9 = *(equalCopy + 32);
   if (has)
   {
-    if ((v4[4] & 1) == 0 || self->_reservedSize != v4[1])
+    if ((equalCopy[4] & 1) == 0 || self->_reservedSize != equalCopy[1])
     {
       goto LABEL_14;
     }
   }
 
-  else if (v4[4])
+  else if (equalCopy[4])
   {
     goto LABEL_14;
   }
 
   uploadURL = self->_uploadURL;
-  v11 = v4[3];
+  v11 = equalCopy[3];
   if (uploadURL | v11)
   {
     if (!objc_msgSend_isEqual_(uploadURL, v7, v11))
@@ -173,13 +173,13 @@ LABEL_14:
     }
 
     has = self->_has;
-    v9 = *(v4 + 32);
+    v9 = *(equalCopy + 32);
   }
 
   v12 = (v9 & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((v9 & 2) == 0 || self->_uploadURLExpirationTimeSeconds != v4[2])
+    if ((v9 & 2) == 0 || self->_uploadURLExpirationTimeSeconds != equalCopy[2])
     {
       goto LABEL_14;
     }
@@ -218,26 +218,26 @@ LABEL_15:
   return v5 ^ v4 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[4])
+  fromCopy = from;
+  if (fromCopy[4])
   {
-    self->_reservedSize = v4[1];
+    self->_reservedSize = fromCopy[1];
     *&self->_has |= 1u;
   }
 
-  v6 = v4[3];
+  v6 = fromCopy[3];
   if (v6)
   {
-    v7 = v4;
+    v7 = fromCopy;
     objc_msgSend_setUploadURL_(self, v5, v6);
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if ((v4[4] & 2) != 0)
+  if ((fromCopy[4] & 2) != 0)
   {
-    self->_uploadURLExpirationTimeSeconds = v4[2];
+    self->_uploadURLExpirationTimeSeconds = fromCopy[2];
     *&self->_has |= 2u;
   }
 }

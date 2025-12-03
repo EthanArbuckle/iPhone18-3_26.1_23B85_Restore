@@ -3,7 +3,7 @@
 - (BOOL)isContentRestricted;
 - (BOOL)isPausable;
 - (BOOL)isPurchase;
-- (ISUDownload)initWithManagedDownload:(id)a3;
+- (ISUDownload)initWithManagedDownload:(id)download;
 - (NSNumber)storeItemIdentifier;
 - (NSNumber)storePreorderIdentifier;
 - (NSString)artistName;
@@ -19,14 +19,14 @@
 - (int64_t)bytesTotal;
 - (void)dealloc;
 - (void)resetPreorderState;
-- (void)setManagedDownload:(id)a3;
+- (void)setManagedDownload:(id)download;
 @end
 
 @implementation ISUDownload
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = *MEMORY[0x1E69D4B70];
     __Properties = *MEMORY[0x1E69D4B58];
@@ -51,14 +51,14 @@
   }
 }
 
-- (ISUDownload)initWithManagedDownload:(id)a3
+- (ISUDownload)initWithManagedDownload:(id)download
 {
   v7.receiver = self;
   v7.super_class = ISUDownload;
   v4 = [(ISUDownload *)&v7 init];
   if (v4)
   {
-    v4->_download = a3;
+    v4->_download = download;
     v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"com.apple.iTunesStoreUI.ISUDownload.%p", v4];
     v4->_dispatchQueue = dispatch_queue_create([v5 UTF8String], 0);
   }
@@ -161,8 +161,8 @@ uint64_t __25__ISUDownload_bytesTotal__block_invoke(uint64_t a1)
 
 - (id)copyLocalizedStatusString
 {
-  v3 = [(ISUDownload *)self phaseIdentifier];
-  if ([(NSString *)v3 isEqualToString:*MEMORY[0x1E69D4B28]])
+  phaseIdentifier = [(ISUDownload *)self phaseIdentifier];
+  if ([(NSString *)phaseIdentifier isEqualToString:*MEMORY[0x1E69D4B28]])
   {
     v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v5 = @"DOWNLOAD_ERROR";
@@ -180,7 +180,7 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  if ([(NSString *)v3 isEqualToString:*MEMORY[0x1E69D4B40]])
+  if ([(NSString *)phaseIdentifier isEqualToString:*MEMORY[0x1E69D4B40]])
   {
     v6 = [objc_msgSend(MEMORY[0x1E69DC938] "currentDevice")] & 0xFFFFFFFFFFFFFFFBLL;
     v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -197,35 +197,35 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  if ([(NSString *)v3 isEqualToString:*MEMORY[0x1E69D4B50]])
+  if ([(NSString *)phaseIdentifier isEqualToString:*MEMORY[0x1E69D4B50]])
   {
     v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v5 = @"WAITING";
     goto LABEL_11;
   }
 
-  v25 = [(ISUDownload *)self statusDescription];
-  if ([(NSString *)v25 length])
+  statusDescription = [(ISUDownload *)self statusDescription];
+  if ([(NSString *)statusDescription length])
   {
-    v7 = v25;
+    v7 = statusDescription;
     goto LABEL_12;
   }
 
-  if (![(NSString *)v3 isEqualToString:*MEMORY[0x1E69D4B20]])
+  if (![(NSString *)phaseIdentifier isEqualToString:*MEMORY[0x1E69D4B20]])
   {
     goto LABEL_23;
   }
 
-  v9 = [(ISUDownload *)self bytesDownloaded];
-  v10 = [(ISUDownload *)self bytesTotal];
-  if (v10 < 1 || v9 <= 0)
+  bytesDownloaded = [(ISUDownload *)self bytesDownloaded];
+  bytesTotal = [(ISUDownload *)self bytesTotal];
+  if (bytesTotal < 1 || bytesDownloaded <= 0)
   {
     v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v5 = @"UNKNOWN_PROGRESS";
     goto LABEL_11;
   }
 
-  if (v9 >= v10)
+  if (bytesDownloaded >= bytesTotal)
   {
 LABEL_23:
     v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -239,7 +239,7 @@ LABEL_23:
   v14 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   if (v12 >= 0.0)
   {
-    v17 = [v13 initWithFormat:objc_msgSend(v14, "localizedStringForKey:value:table:", @"TIME_FORMAT", &stru_1F41B3660, 0), v12 / 0x3CuLL, v12 % 0x3C];
+    0x3C = [v13 initWithFormat:objc_msgSend(v14, "localizedStringForKey:value:table:", @"TIME_FORMAT", &stru_1F41B3660, 0), v12 / 0x3CuLL, v12 % 0x3C];
     v18 = [objc_msgSend(MEMORY[0x1E69DC938] "currentDevice")];
     v19 = objc_alloc(MEMORY[0x1E696AEC0]);
     v20 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -255,7 +255,7 @@ LABEL_23:
 
     v22 = [v20 localizedStringForKey:v21 value:&stru_1F41B3660 table:0];
     v23 = CPFSSizeStrings();
-    v24 = [v19 initWithFormat:v22, v23, CPFSSizeStrings(), v17];
+    v24 = [v19 initWithFormat:v22, v23, CPFSSizeStrings(), 0x3C];
 
     return v24;
   }
@@ -337,8 +337,8 @@ uint64_t __34__ISUDownload_isContentRestricted__block_invoke(uint64_t a1)
   v4 = 0;
   if (*(v9 + 24) == 1)
   {
-    v5 = [(ISUDownload *)self phaseIdentifier];
-    v4 = [(NSString *)v5 isEqual:*MEMORY[0x1E69D4B20]];
+    phaseIdentifier = [(ISUDownload *)self phaseIdentifier];
+    v4 = [(NSString *)phaseIdentifier isEqual:*MEMORY[0x1E69D4B20]];
   }
 
   _Block_object_dispose(&v8, 8);
@@ -478,7 +478,7 @@ uint64_t __33__ISUDownload_resetPreorderState__block_invoke(uint64_t a1)
   return [*(*(a1 + 32) + 8) resetCachedProperties:v2 count:1];
 }
 
-- (void)setManagedDownload:(id)a3
+- (void)setManagedDownload:(id)download
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -486,7 +486,7 @@ uint64_t __33__ISUDownload_resetPreorderState__block_invoke(uint64_t a1)
   v4[2] = __34__ISUDownload_setManagedDownload___block_invoke;
   v4[3] = &unk_1E8164370;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = download;
   dispatch_sync(dispatchQueue, v4);
 }
 

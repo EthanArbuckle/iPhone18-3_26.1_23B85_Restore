@@ -1,17 +1,17 @@
 @interface THGlossaryViewController
 + (id)newViewController;
-- (BOOL)followAnchor:(id)a3 pulse:(BOOL)a4;
-- (BOOL)followGlossaryAnchor:(id)a3;
-- (BOOL)followLink:(id)a3 animated:(BOOL)a4;
+- (BOOL)followAnchor:(id)anchor pulse:(BOOL)pulse;
+- (BOOL)followGlossaryAnchor:(id)anchor;
+- (BOOL)followLink:(id)link animated:(BOOL)animated;
 - (BOOL)isGlossaryVisible;
 - (BOOL)p_isCollapsed;
 - (BOOL)p_isCompact;
 - (CGRect)glossaryEntryLayoutViewFrame;
 - (CGSize)glossaryEntryLayoutContentSize;
-- (THGlossaryViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)glossaryEntryLayoutValueForDistance:(int)a3;
+- (THGlossaryViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (double)glossaryEntryLayoutValueForDistance:(int)distance;
 - (id)displayedEntry;
-- (id)documentNavigatorForGlossaryDefinitionsViewController:(id)a3;
+- (id)documentNavigatorForGlossaryDefinitionsViewController:(id)controller;
 - (id)documentRoot;
 - (id)glossaryEntryLayoutBackgroundColor;
 - (id)glossaryEntryLayoutForegroundColor;
@@ -21,23 +21,23 @@
 - (int64_t)p_interfaceOrientation;
 - (void)_applyColors;
 - (void)dealloc;
-- (void)didScrollToEntry:(id)a3;
-- (void)displayEntry:(id)a3 whenCollapsed:(BOOL)a4;
-- (void)displayEntryByPath:(id)a3;
-- (void)furtherInitWithGlossaryController:(id)a3;
-- (void)handleDone:(id)a3;
+- (void)didScrollToEntry:(id)entry;
+- (void)displayEntry:(id)entry whenCollapsed:(BOOL)collapsed;
+- (void)displayEntryByPath:(id)path;
+- (void)furtherInitWithGlossaryController:(id)controller;
+- (void)handleDone:(id)done;
 - (void)loadView;
-- (void)p_configureToolbarsForCollapsed:(BOOL)a3;
+- (void)p_configureToolbarsForCollapsed:(BOOL)collapsed;
 - (void)p_setupChildViewControllers;
 - (void)releaseChildViewControllers;
-- (void)setTheme:(id)a3;
-- (void)showEntry:(id)a3;
-- (void)showEntryAtIndex:(unint64_t)a3;
-- (void)showEntryAtPath:(id)a3;
-- (void)splitViewController:(id)a3 willChangeToDisplayMode:(int64_t)a4;
+- (void)setTheme:(id)theme;
+- (void)showEntry:(id)entry;
+- (void)showEntryAtIndex:(unint64_t)index;
+- (void)showEntryAtPath:(id)path;
+- (void)splitViewController:(id)controller willChangeToDisplayMode:(int64_t)mode;
 - (void)unload;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation THGlossaryViewController
@@ -49,11 +49,11 @@
   return [(THGlossaryViewController *)v2 initWithNibName:0 bundle:0];
 }
 
-- (THGlossaryViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (THGlossaryViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5.receiver = self;
   v5.super_class = THGlossaryViewController;
-  result = [(THGlossaryViewController *)&v5 initWithNibName:a3 bundle:a4];
+  result = [(THGlossaryViewController *)&v5 initWithNibName:name bundle:bundle];
   if (result)
   {
     result->_targetOrientation = 0x7FFFFFFFFFFFFFFFLL;
@@ -115,12 +115,12 @@
   [(THGlossaryViewController *)&v3 dealloc];
 }
 
-- (void)handleDone:(id)a3
+- (void)handleDone:(id)done
 {
   bookViewController = self->_bookViewController;
-  v4 = [(THGlossaryViewController *)self originalViewController];
+  originalViewController = [(THGlossaryViewController *)self originalViewController];
 
-  [(THBookViewController *)bookViewController hideGlossaryWithDestinationViewController:v4];
+  [(THBookViewController *)bookViewController hideGlossaryWithDestinationViewController:originalViewController];
 }
 
 - (int64_t)p_interfaceOrientation
@@ -130,19 +130,19 @@
   return [v2 interfaceOrientation];
 }
 
-- (void)furtherInitWithGlossaryController:(id)a3
+- (void)furtherInitWithGlossaryController:(id)controller
 {
   [(THGlossaryViewController *)self setGlossaryController:?];
-  v5 = [THGlossaryLinkResolver glossaryLinkResolverWithGlossaryController:a3];
+  v5 = [THGlossaryLinkResolver glossaryLinkResolverWithGlossaryController:controller];
 
   [(THGlossaryViewController *)self setGlossaryLinkResolver:v5];
 }
 
 - (id)documentRoot
 {
-  v2 = [(THBookViewController *)[(THGlossaryViewController *)self bookViewController] documentViewController];
+  documentViewController = [(THBookViewController *)[(THGlossaryViewController *)self bookViewController] documentViewController];
 
-  return [(THDocumentViewController *)v2 documentRoot];
+  return [(THDocumentViewController *)documentViewController documentRoot];
 }
 
 - (BOOL)p_isCompact
@@ -163,21 +163,21 @@
     return 1;
   }
 
-  v4 = [(THGlossaryViewController *)self bookViewController];
+  bookViewController = [(THGlossaryViewController *)self bookViewController];
 
-  return [(THBookViewController *)v4 im_isCompactWidth];
+  return [(THBookViewController *)bookViewController im_isCompactWidth];
 }
 
 - (BOOL)p_isCollapsed
 {
-  v2 = [(THGlossaryViewController *)self glossarySplitViewController];
+  glossarySplitViewController = [(THGlossaryViewController *)self glossarySplitViewController];
 
-  return [(UISplitViewController *)v2 isCollapsed];
+  return [(UISplitViewController *)glossarySplitViewController isCollapsed];
 }
 
-- (void)p_configureToolbarsForCollapsed:(BOOL)a3
+- (void)p_configureToolbarsForCollapsed:(BOOL)collapsed
 {
-  v3 = a3;
+  collapsedCopy = collapsed;
   v5 = [(IMTheme *)[(THGlossaryViewController *)self theme] backgroundColorForTraitEnvironment:self];
   if (!v5)
   {
@@ -185,11 +185,11 @@
   }
 
   [-[UISplitViewController view](-[THGlossaryViewController glossarySplitViewController](self "glossarySplitViewController")];
-  v6 = [(THGlossaryTermsViewController *)[(THGlossaryViewController *)self termsViewController] navigationItem];
-  if (v6)
+  navigationItem = [(THGlossaryTermsViewController *)[(THGlossaryViewController *)self termsViewController] navigationItem];
+  if (navigationItem)
   {
-    v7 = v6;
-    if (v3)
+    v7 = navigationItem;
+    if (collapsedCopy)
     {
       v8 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"handleDone:"];
       [v7 setRightBarButtonItem:v8];
@@ -197,25 +197,25 @@
 
     else
     {
-      [v6 setRightBarButtonItem:0];
+      [navigationItem setRightBarButtonItem:0];
     }
   }
 
-  v9 = [(THGlossaryDefinitionsViewController *)[(THGlossaryViewController *)self definitionsViewController] navigationItem];
-  if (v9)
+  navigationItem2 = [(THGlossaryDefinitionsViewController *)[(THGlossaryViewController *)self definitionsViewController] navigationItem];
+  if (navigationItem2)
   {
-    v10 = v9;
-    v11 = [(IMTheme *)[(THGlossaryViewController *)self theme] contentTextColor];
-    if (!v11)
+    v10 = navigationItem2;
+    contentTextColor = [(IMTheme *)[(THGlossaryViewController *)self theme] contentTextColor];
+    if (!contentTextColor)
     {
-      v11 = +[UIColor bc_booksLabelColor];
+      contentTextColor = +[UIColor bc_booksLabelColor];
     }
 
     [v10 setLeftItemsSupplementBackButton:1];
     v13 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"handleDone:"];
-    v12 = [(UISplitViewController *)[(THGlossaryViewController *)self glossarySplitViewController] displayModeButtonItem];
-    [(UIBarButtonItem *)v12 setTintColor:v11];
-    [v10 setLeftBarButtonItem:v12];
+    displayModeButtonItem = [(UISplitViewController *)[(THGlossaryViewController *)self glossarySplitViewController] displayModeButtonItem];
+    [(UIBarButtonItem *)displayModeButtonItem setTintColor:contentTextColor];
+    [v10 setLeftBarButtonItem:displayModeButtonItem];
     [v10 setRightBarButtonItem:v13];
   }
 }
@@ -232,11 +232,11 @@
   [(THGlossaryViewController *)self _applyColors];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = THGlossaryViewController;
-  [(THGlossaryViewController *)&v4 viewDidAppear:a3];
+  [(THGlossaryViewController *)&v4 viewDidAppear:appear];
   if ([(THGlossaryViewController *)self pendingShowFirstEntry])
   {
     [(THGlossaryViewController *)self showEntryAtIndex:0];
@@ -244,9 +244,9 @@
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (self->_shouldDismissAfterRotate)
   {
     self->_shouldDismissAfterRotate = 0;
@@ -256,7 +256,7 @@
 
   v5.receiver = self;
   v5.super_class = THGlossaryViewController;
-  [(THGlossaryViewController *)&v5 viewDidDisappear:v3];
+  [(THGlossaryViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
 - (int64_t)layoutOrientation
@@ -274,22 +274,22 @@
 
 - (BOOL)isGlossaryVisible
 {
-  v3 = [(THGlossaryViewController *)self isViewLoaded];
-  if (v3)
+  isViewLoaded = [(THGlossaryViewController *)self isViewLoaded];
+  if (isViewLoaded)
   {
-    LOBYTE(v3) = [-[THGlossaryViewController view](self "view")] != 0;
+    LOBYTE(isViewLoaded) = [-[THGlossaryViewController view](self "view")] != 0;
   }
 
-  return v3;
+  return isViewLoaded;
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
   if (([(IMTheme *)self->_theme isEqual:?]& 1) == 0)
   {
-    v5 = a3;
+    themeCopy = theme;
 
-    self->_theme = a3;
+    self->_theme = theme;
 
     [(THGlossaryViewController *)self _applyColors];
   }
@@ -297,28 +297,28 @@
 
 - (void)_applyColors
 {
-  v3 = [(THGlossaryViewController *)self theme];
-  v4 = [(IMTheme *)v3 backgroundColorForTraitEnvironment:self];
+  theme = [(THGlossaryViewController *)self theme];
+  v4 = [(IMTheme *)theme backgroundColorForTraitEnvironment:self];
   if (!v4)
   {
     v4 = +[UIColor bc_booksBackground];
   }
 
   [-[THGlossaryViewController view](self "view")];
-  v5 = [(IMTheme *)v3 keyColor];
-  if (!v5)
+  keyColor = [(IMTheme *)theme keyColor];
+  if (!keyColor)
   {
-    v5 = +[UIColor bc_booksKeyColor];
+    keyColor = +[UIColor bc_booksKeyColor];
   }
 
   [-[THGlossaryViewController view](self "view")];
   [(THGlossaryViewController *)self p_configureToolbarsForCollapsed:[(THGlossaryViewController *)self p_isCollapsed]];
-  [(THGlossaryTermsViewController *)self->_termsViewController setTheme:v3];
-  [(THGlossaryDefinitionsViewController *)self->_definitionsViewController setTheme:v3];
-  v6 = [(IMTheme *)v3 contentTextColor];
-  if (!v6)
+  [(THGlossaryTermsViewController *)self->_termsViewController setTheme:theme];
+  [(THGlossaryDefinitionsViewController *)self->_definitionsViewController setTheme:theme];
+  contentTextColor = [(IMTheme *)theme contentTextColor];
+  if (!contentTextColor)
   {
-    v6 = +[UIColor bc_booksLabelColor];
+    contentTextColor = +[UIColor bc_booksLabelColor];
   }
 
   masterNavigationController = self->_masterNavigationController;
@@ -347,7 +347,7 @@
         v14 = *(*(&v15 + 1) + 8 * i);
         [objc_msgSend(v14 "navigationBar")];
         v19 = NSForegroundColorAttributeName;
-        v20 = v6;
+        v20 = contentTextColor;
         [objc_msgSend(v14 "navigationBar")];
       }
 
@@ -371,84 +371,84 @@
   return result;
 }
 
-- (void)splitViewController:(id)a3 willChangeToDisplayMode:(int64_t)a4
+- (void)splitViewController:(id)controller willChangeToDisplayMode:(int64_t)mode
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_B9680;
   v4[3] = &unk_45AE58;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = controller;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)displayEntry:(id)a3 whenCollapsed:(BOOL)a4
+- (void)displayEntry:(id)entry whenCollapsed:(BOOL)collapsed
 {
-  if (a3)
+  if (entry)
   {
-    v6 = a4;
-    v7 = [(THGlossaryTermsViewController *)[(THGlossaryViewController *)self termsViewController] glossaryIndex];
-    if ([(THGlossaryIndex *)v7 indexForEntry:a3]== 0x7FFFFFFFFFFFFFFFLL)
+    collapsedCopy = collapsed;
+    glossaryIndex = [(THGlossaryTermsViewController *)[(THGlossaryViewController *)self termsViewController] glossaryIndex];
+    if ([(THGlossaryIndex *)glossaryIndex indexForEntry:entry]== 0x7FFFFFFFFFFFFFFFLL)
     {
-      v7 = [THGlossaryIndex alphabeticalIndexForEntries:[NSArray arrayWithObject:a3]];
+      glossaryIndex = [THGlossaryIndex alphabeticalIndexForEntries:[NSArray arrayWithObject:entry]];
     }
 
-    [(THGlossaryDefinitionsViewController *)[(THGlossaryViewController *)self definitionsViewController] displayIndex:v7 withEntry:a3 animated:[(THGlossaryViewController *)self shouldAnimateShowEntry]];
-    if (v6)
+    [(THGlossaryDefinitionsViewController *)[(THGlossaryViewController *)self definitionsViewController] displayIndex:glossaryIndex withEntry:entry animated:[(THGlossaryViewController *)self shouldAnimateShowEntry]];
+    if (collapsedCopy)
     {
       if ([(THGlossaryViewController *)self p_isCollapsed])
       {
-        v8 = [(THGlossaryViewController *)self masterNavigationController];
-        v9 = [(THGlossaryViewController *)self detailNavigationController];
-        if ([(UINavigationController *)v8 topViewController]!= v9)
+        masterNavigationController = [(THGlossaryViewController *)self masterNavigationController];
+        detailNavigationController = [(THGlossaryViewController *)self detailNavigationController];
+        if ([(UINavigationController *)masterNavigationController topViewController]!= detailNavigationController)
         {
-          [(UINavigationController *)v8 pushViewController:v9 animated:1];
+          [(UINavigationController *)masterNavigationController pushViewController:detailNavigationController animated:1];
         }
       }
     }
   }
 
-  [(THGlossaryViewController *)self setLastDisplayedEntry:a3, a4];
+  [(THGlossaryViewController *)self setLastDisplayedEntry:entry, collapsed];
 }
 
-- (void)displayEntryByPath:(id)a3
+- (void)displayEntryByPath:(id)path
 {
-  v4 = [(THGlossaryController *)self->_glossaryController entryForPath:a3];
+  v4 = [(THGlossaryController *)self->_glossaryController entryForPath:path];
 
   [(THGlossaryViewController *)self displayEntry:v4 whenCollapsed:1];
 }
 
 - (id)displayedEntry
 {
-  v2 = [(THGlossaryViewController *)self definitionsViewController];
+  definitionsViewController = [(THGlossaryViewController *)self definitionsViewController];
 
-  return [(THGlossaryDefinitionsViewController *)v2 displayedEntry];
+  return [(THGlossaryDefinitionsViewController *)definitionsViewController displayedEntry];
 }
 
-- (void)didScrollToEntry:(id)a3
+- (void)didScrollToEntry:(id)entry
 {
-  [(THGlossaryTermsViewController *)[(THGlossaryViewController *)self termsViewController] selectEntry:a3 scrollPosition:0 animated:1];
+  [(THGlossaryTermsViewController *)[(THGlossaryViewController *)self termsViewController] selectEntry:entry scrollPosition:0 animated:1];
 
-  [(THGlossaryViewController *)self setLastDisplayedEntry:a3];
+  [(THGlossaryViewController *)self setLastDisplayedEntry:entry];
 }
 
-- (void)showEntry:(id)a3
+- (void)showEntry:(id)entry
 {
-  [(THGlossaryDefinitionsViewController *)[(THGlossaryViewController *)self definitionsViewController] displayIndex:[(THGlossaryController *)self->_glossaryController alphabeticalTermIndex] withEntry:a3 animated:0];
+  [(THGlossaryDefinitionsViewController *)[(THGlossaryViewController *)self definitionsViewController] displayIndex:[(THGlossaryController *)self->_glossaryController alphabeticalTermIndex] withEntry:entry animated:0];
   [(THGlossaryTermsViewController *)[(THGlossaryViewController *)self termsViewController] clearSearch];
-  [(THGlossaryTermsViewController *)[(THGlossaryViewController *)self termsViewController] selectEntry:a3 scrollPosition:1 animated:0];
+  [(THGlossaryTermsViewController *)[(THGlossaryViewController *)self termsViewController] selectEntry:entry scrollPosition:1 animated:0];
 
-  [(THGlossaryViewController *)self setLastDisplayedEntry:a3];
+  [(THGlossaryViewController *)self setLastDisplayedEntry:entry];
 }
 
-- (void)showEntryAtPath:(id)a3
+- (void)showEntryAtPath:(id)path
 {
-  v4 = [(THGlossaryController *)self->_glossaryController entryForPath:a3];
+  v4 = [(THGlossaryController *)self->_glossaryController entryForPath:path];
 
   [(THGlossaryViewController *)self showEntry:v4];
 }
 
-- (void)showEntryAtIndex:(unint64_t)a3
+- (void)showEntryAtIndex:(unint64_t)index
 {
   v4 = [-[THGlossaryController alphabeticalTermIndex](self->_glossaryController "alphabeticalTermIndex")];
 
@@ -457,68 +457,68 @@
 
 - (void)unload
 {
-  v2 = [(THGlossaryViewController *)self definitionsViewController];
+  definitionsViewController = [(THGlossaryViewController *)self definitionsViewController];
 
-  [(THGlossaryDefinitionsViewController *)v2 unload];
+  [(THGlossaryDefinitionsViewController *)definitionsViewController unload];
 }
 
-- (BOOL)followGlossaryAnchor:(id)a3
+- (BOOL)followGlossaryAnchor:(id)anchor
 {
-  if (![a3 glossaryEntry])
+  if (![anchor glossaryEntry])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v5 = [a3 glossaryEntry];
-  if (v5)
+  glossaryEntry = [anchor glossaryEntry];
+  if (glossaryEntry)
   {
     objc_opt_class();
-    v6 = TSUDynamicCast();
-    if (!v6)
+    anchorCopy = TSUDynamicCast();
+    if (!anchorCopy)
     {
-      v6 = a3;
+      anchorCopy = anchor;
     }
 
-    -[THGlossaryViewController showEntry:](self, "showEntry:", [v6 glossaryEntry]);
+    -[THGlossaryViewController showEntry:](self, "showEntry:", [anchorCopy glossaryEntry]);
   }
 
-  return v5 != 0;
+  return glossaryEntry != 0;
 }
 
-- (id)documentNavigatorForGlossaryDefinitionsViewController:(id)a3
+- (id)documentNavigatorForGlossaryDefinitionsViewController:(id)controller
 {
-  v3 = [(THGlossaryViewController *)self bookViewController];
+  bookViewController = [(THGlossaryViewController *)self bookViewController];
 
-  return [(THBookViewController *)v3 documentNavigator];
+  return [(THBookViewController *)bookViewController documentNavigator];
 }
 
-- (BOOL)followAnchor:(id)a3 pulse:(BOOL)a4
+- (BOOL)followAnchor:(id)anchor pulse:(BOOL)pulse
 {
-  if (!a3)
+  if (!anchor)
   {
     return 0;
   }
 
-  v4 = a4;
-  if ([a3 glossaryEntry])
+  pulseCopy = pulse;
+  if ([anchor glossaryEntry])
   {
 
-    return [(THGlossaryViewController *)self followGlossaryAnchor:a3];
+    return [(THGlossaryViewController *)self followGlossaryAnchor:anchor];
   }
 
   else
   {
     [(THBookViewController *)[(THGlossaryViewController *)self bookViewController] recordOutgoingMajorNavigationJump];
-    v7 = [(THBookViewController *)[(THGlossaryViewController *)self bookViewController] followAnchor:a3 pulse:v4];
+    v7 = [(THBookViewController *)[(THGlossaryViewController *)self bookViewController] followAnchor:anchor pulse:pulseCopy];
     [(THBookViewController *)[(THGlossaryViewController *)self bookViewController] recordCurrentLocationInHistory];
     [(THBookViewController *)[(THGlossaryViewController *)self bookViewController] updateNavigationAffordances];
     return v7;
   }
 }
 
-- (BOOL)followLink:(id)a3 animated:(BOOL)a4
+- (BOOL)followLink:(id)link animated:(BOOL)animated
 {
-  v7 = [(THGlossaryLinkResolver *)[(THGlossaryViewController *)self glossaryLinkResolver] anchorFromAbsoluteLink:a3];
+  v7 = [(THGlossaryLinkResolver *)[(THGlossaryViewController *)self glossaryLinkResolver] anchorFromAbsoluteLink:link];
   if (v7)
   {
 
@@ -531,9 +531,9 @@
     block[1] = 3221225472;
     v10 = sub_B9CC4;
     v11 = &unk_45CEE0;
-    v12 = self;
-    v13 = a3;
-    v14 = a4;
+    selfCopy = self;
+    linkCopy = link;
+    animatedCopy = animated;
     if (+[NSThread isMainThread])
     {
       v10(block);
@@ -567,10 +567,10 @@
 {
   if ([(THGlossaryDefinitionsViewController *)[(THGlossaryViewController *)self definitionsViewController] isViewLoaded])
   {
-    v3 = [(THGlossaryDefinitionsViewController *)[(THGlossaryViewController *)self definitionsViewController] view];
-    if (v3)
+    view = [(THGlossaryDefinitionsViewController *)[(THGlossaryViewController *)self definitionsViewController] view];
+    if (view)
     {
-      [v3 frame];
+      [view frame];
       TSDRectWithSize();
       x = v4;
       y = v6;
@@ -621,25 +621,25 @@
   return result;
 }
 
-- (double)glossaryEntryLayoutValueForDistance:(int)a3
+- (double)glossaryEntryLayoutValueForDistance:(int)distance
 {
   v5 = [(THGlossaryViewController *)self layoutOrientation]- 3;
   if ([(THGlossaryViewController *)self p_isCompact])
   {
     result = 0.0;
-    if (a3 > 3)
+    if (distance > 3)
     {
-      if (a3 == 6)
+      if (distance == 6)
       {
         result = 8.0;
       }
 
-      if (a3 == 5)
+      if (distance == 5)
       {
         result = 8.0;
       }
 
-      if (a3 == 4)
+      if (distance == 4)
       {
         return 8.0;
       }
@@ -647,12 +647,12 @@
 
     else
     {
-      if (a3 < 2)
+      if (distance < 2)
       {
         return 15.0;
       }
 
-      if (a3 == 2)
+      if (distance == 2)
       {
         goto LABEL_22;
       }
@@ -668,9 +668,9 @@
     v10[4] = self;
     v11 = v5 < 2;
     result = 0.0;
-    if (a3 > 1)
+    if (distance > 1)
     {
-      if (a3 == 2)
+      if (distance == 2)
       {
 LABEL_22:
         v7 = v5 < 2;
@@ -678,7 +678,7 @@ LABEL_22:
         return v8[v7];
       }
 
-      if (a3 != 3)
+      if (distance != 3)
       {
         return result;
       }
@@ -696,9 +696,9 @@ LABEL_22:
 
     else
     {
-      if (a3)
+      if (distance)
       {
-        if (a3 != 1)
+        if (distance != 1)
         {
           return result;
         }
@@ -730,13 +730,13 @@ LABEL_22:
 
 - (id)glossaryEntryLayoutForegroundColor
 {
-  v3 = [(IMTheme *)[(THGlossaryViewController *)self theme] contentTextColor];
-  if (!v3)
+  contentTextColor = [(IMTheme *)[(THGlossaryViewController *)self theme] contentTextColor];
+  if (!contentTextColor)
   {
-    v3 = +[UIColor bc_booksLabelColor];
+    contentTextColor = +[UIColor bc_booksLabelColor];
   }
 
-  v4 = [v3 resolvedColorWithTraitCollection:{-[THGlossaryViewController traitCollection](self, "traitCollection")}];
+  v4 = [contentTextColor resolvedColorWithTraitCollection:{-[THGlossaryViewController traitCollection](self, "traitCollection")}];
 
   return [TSUColor colorWithUIColor:v4];
 }

@@ -14,41 +14,41 @@
 - (uint64_t)CUIK_attendeesIconState
 {
   v36 = *MEMORY[0x1E69E9840];
-  if (![a1 hasAttendees])
+  if (![self hasAttendees])
   {
     return 0;
   }
 
-  if (![a1 isSelfOrganized])
+  if (![self isSelfOrganized])
   {
-    if ([a1 status] == 3)
+    if ([self status] == 3)
     {
       return 10;
     }
 
-    v21 = [a1 selfAttendee];
-    v22 = [v21 participantStatus];
+    selfAttendee = [self selfAttendee];
+    participantStatus = [selfAttendee participantStatus];
 
-    if (v22)
+    if (participantStatus)
     {
-      v23 = [a1 selfAttendee];
-      v24 = [v23 participantStatus];
+      selfAttendee2 = [self selfAttendee];
+      participantStatus2 = [selfAttendee2 participantStatus];
 
-      if (v24 == 3)
+      if (participantStatus2 == 3)
       {
         return 10;
       }
 
       else
       {
-        return 8 * (v24 == 4);
+        return 8 * (participantStatus2 == 4);
       }
     }
 
     return 0;
   }
 
-  [a1 attendeesNotIncludingOrganizer];
+  [self attendeesNotIncludingOrganizer];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -86,8 +86,8 @@
     }
   }
 
-  v8 = [a1 roomAttendees];
-  v9 = [v8 count];
+  roomAttendees = [self roomAttendees];
+  v9 = [roomAttendees count];
   v10 = [v2 count];
 
   v28 = 0u;
@@ -114,10 +114,10 @@
         v18 = *(*(&v26 + 1) + 8 * j);
         if (v9 == v10 || ![*(*(&v26 + 1) + 8 * j) isLocationRoom] || objc_msgSend(v18, "participantStatus") != 2)
         {
-          v19 = [v18 participantStatus];
+          participantStatus3 = [v18 participantStatus];
           if (v14)
           {
-            if (v15 != v19)
+            if (v15 != participantStatus3)
             {
               v20 = 6;
               goto LABEL_39;
@@ -129,7 +129,7 @@
           else
           {
             v14 = 1;
-            v15 = v19;
+            v15 = participantStatus3;
           }
         }
       }
@@ -175,33 +175,33 @@ LABEL_40:
 
 - (BOOL)CUIK_deleteActionShouldDeclineEvent
 {
-  v2 = [a1 calendar];
-  v3 = [v2 source];
-  if ([v3 sourceType] == 1)
+  calendar = [self calendar];
+  source = [calendar source];
+  if ([source sourceType] == 1)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [a1 calendar];
-    v6 = [v5 source];
-    v4 = [v6 sourceType] != 2;
+    calendar2 = [self calendar];
+    source2 = [calendar2 source];
+    v4 = [source2 sourceType] != 2;
   }
 
-  v7 = [a1 selfAttendee];
-  v8 = [v7 participantStatus];
+  selfAttendee = [self selfAttendee];
+  participantStatus = [selfAttendee participantStatus];
 
-  v9 = [a1 status];
-  v10 = [a1 currentUserGeneralizedParticipantRole];
-  v11 = [a1 organizer];
-  v12 = [v11 scheduleAgent];
+  status = [self status];
+  currentUserGeneralizedParticipantRole = [self currentUserGeneralizedParticipantRole];
+  organizer = [self organizer];
+  scheduleAgent = [organizer scheduleAgent];
 
   result = 0;
-  if (!v4 && v10 == 1)
+  if (!v4 && currentUserGeneralizedParticipantRole == 1)
   {
-    v15 = v9 != 3 && v12 == 2;
-    return v8 != 3 && v15;
+    v15 = status != 3 && scheduleAgent == 2;
+    return participantStatus != 3 && v15;
   }
 
   return result;
@@ -209,23 +209,23 @@ LABEL_40:
 
 - (__CFString)CUIK_symbolName:()CalendarUIKit
 {
-  if ([a1 isIntegrationEvent])
+  if ([self isIntegrationEvent])
   {
-    v5 = [a1 completed];
+    completed = [self completed];
     v6 = @"circle";
     v7 = @"circle.inset.filled";
-    v8 = v5 == 0;
+    v8 = completed == 0;
   }
 
   else
   {
-    if ([a1 isBirthday])
+    if ([self isBirthday])
     {
       return @"gift.circle.fill";
     }
 
-    v10 = [a1 calendar];
-    v11 = [v10 isHolidayCalendar];
+    calendar = [self calendar];
+    isHolidayCalendar = [calendar isHolidayCalendar];
 
     v6 = @"calendar.circle.fill";
     if (!a3)
@@ -234,7 +234,7 @@ LABEL_40:
     }
 
     v7 = @"star.circle.fill";
-    v8 = v11 == 0;
+    v8 = isHolidayCalendar == 0;
   }
 
   if (v8)
@@ -250,13 +250,13 @@ LABEL_40:
 
 - (id)CUIK_symbolColor
 {
-  if ([a1 isIntegrationEvent])
+  if ([self isIntegrationEvent])
   {
-    v2 = [a1 color];
-    v3 = v2;
-    if (v2)
+    color = [self color];
+    v3 = color;
+    if (color)
     {
-      [v2 CUIK_color];
+      [color CUIK_color];
     }
 
     else
@@ -268,7 +268,7 @@ LABEL_40:
 
   else
   {
-    if ([a1 isBirthday])
+    if ([self isBirthday])
     {
       [MEMORY[0x1E69DC888] systemRedColor];
     }
@@ -285,36 +285,36 @@ LABEL_40:
 
 - (id)CUIK_disabledSymbolColor
 {
-  v1 = [a1 CUIK_symbolColor];
-  v2 = [v1 cuik_colorWithAlphaScaled:0.4];
+  cUIK_symbolColor = [self CUIK_symbolColor];
+  v2 = [cUIK_symbolColor cuik_colorWithAlphaScaled:0.4];
 
   return v2;
 }
 
 - (uint64_t)_isFirstFutureOccurrenceReminder
 {
-  if (![a1 isReminderIntegrationEvent])
+  if (![self isReminderIntegrationEvent])
   {
     return 0;
   }
 
-  if (![a1 hasRecurrenceRules])
+  if (![self hasRecurrenceRules])
   {
     return 1;
   }
 
-  v2 = [MEMORY[0x1E695DF00] CalSimulatedDateForNow];
-  [v2 timeIntervalSinceReferenceDate];
+  calSimulatedDateForNow = [MEMORY[0x1E695DF00] CalSimulatedDateForNow];
+  [calSimulatedDateForNow timeIntervalSinceReferenceDate];
   v4 = v3;
-  v5 = [a1 startDate];
-  [v5 timeIntervalSinceReferenceDate];
+  startDate = [self startDate];
+  [startDate timeIntervalSinceReferenceDate];
   v7 = v6;
 
   v15 = 0;
   if (v4 < v7)
   {
-    v8 = [a1 previousOccurrence];
-    if (!v8 || (v9 = v8, [v8 startDate], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "timeIntervalSinceReferenceDate"), v12 = v11, objc_msgSend(v2, "timeIntervalSinceReferenceDate"), v14 = v13, v10, v9, v12 < v14))
+    previousOccurrence = [self previousOccurrence];
+    if (!previousOccurrence || (v9 = previousOccurrence, [previousOccurrence startDate], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "timeIntervalSinceReferenceDate"), v12 = v11, objc_msgSend(calSimulatedDateForNow, "timeIntervalSinceReferenceDate"), v14 = v13, v10, v9, v12 < v14))
     {
       v15 = 1;
     }
@@ -325,27 +325,27 @@ LABEL_40:
 
 - (id)CUIK_currentReminder
 {
-  v2 = [MEMORY[0x1E695DF00] CalSimulatedDateForNow];
-  v3 = [MEMORY[0x1E695DFE8] defaultTimeZone];
-  v4 = [v2 dateForEndOfDayInTimeZone:v3];
-  v5 = [a1 masterEvent];
+  calSimulatedDateForNow = [MEMORY[0x1E695DF00] CalSimulatedDateForNow];
+  defaultTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
+  v4 = [calSimulatedDateForNow dateForEndOfDayInTimeZone:defaultTimeZone];
+  masterEvent = [self masterEvent];
   v6 = objc_alloc_init(MEMORY[0x1E6966AC0]);
-  v7 = [v5 timeZone];
-  if (!v7)
+  timeZone = [masterEvent timeZone];
+  if (!timeZone)
   {
-    v7 = v3;
+    timeZone = defaultTimeZone;
   }
 
-  v8 = [v5 startDate];
-  v9 = [v6 copyOccurrenceDatesWithEKEvent:v5 startDate:v8 endDate:v4 timeZone:v7 limit:0];
+  startDate = [masterEvent startDate];
+  v9 = [v6 copyOccurrenceDatesWithEKEvent:masterEvent startDate:startDate endDate:v4 timeZone:timeZone limit:0];
 
-  v10 = v5;
+  v10 = masterEvent;
   if ([v9 count])
   {
     v11 = objc_alloc(MEMORY[0x1E6966A08]);
-    v12 = [v5 persistentObject];
-    v13 = [v9 lastObject];
-    v10 = [v11 initWithPersistentObject:v12 occurrenceDate:v13];
+    persistentObject = [masterEvent persistentObject];
+    lastObject = [v9 lastObject];
+    v10 = [v11 initWithPersistentObject:persistentObject occurrenceDate:lastObject];
   }
 
   return v10;
@@ -353,13 +353,13 @@ LABEL_40:
 
 - (__CFString)CUIK_attendeesIconSymbolWithAttendeesIconState:()CalendarUIKit myParticipantStatus:
 {
-  v6 = [a1 currentUserGeneralizedParticipantRole];
+  currentUserGeneralizedParticipantRole = [self currentUserGeneralizedParticipantRole];
   if (a4 == 3)
   {
     return @"person.fill.xmark";
   }
 
-  if (v6 == 2 && (a3 - 1) <= 9)
+  if (currentUserGeneralizedParticipantRole == 2 && (a3 - 1) <= 9)
   {
     return off_1E8399AB8[a3 - 1];
   }

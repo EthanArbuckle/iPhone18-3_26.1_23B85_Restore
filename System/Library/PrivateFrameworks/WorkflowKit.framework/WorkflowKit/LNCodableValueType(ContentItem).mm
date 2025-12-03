@@ -12,18 +12,18 @@
   v13 = a4;
   v14 = a5;
   v15 = a6;
-  v16 = [v12 value];
-  if (v16 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  value = [v12 value];
+  if (value && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v17 = objc_alloc([a1 wf_objectClass]);
-    v18 = [v16 data];
-    v19 = [v17 initWithData:v18];
+    v17 = objc_alloc([self wf_objectClass]);
+    data = [value data];
+    v19 = [v17 initWithData:data];
 
     v20 = objc_alloc(MEMORY[0x1E69ACA90]);
-    v21 = [v12 valueType];
-    v22 = [v20 initWithValue:v19 valueType:v21];
+    valueType = [v12 valueType];
+    v22 = [v20 initWithValue:v19 valueType:valueType];
 
-    v28.receiver = a1;
+    v28.receiver = self;
     v28.super_class = &off_1F4AECC20;
     v23 = objc_msgSendSuper2(&v28, sel_wf_contentItemFromLinkValue_appBundleIdentifier_displayedBundleIdentifier_teamIdentifier_disclosureLevel_, v22, v13, v14, v15, a7);
     if (v23)
@@ -46,8 +46,8 @@
     }
 
     v25 = v24;
-    v26 = [v12 displayRepresentation];
-    [v25 setDisplayRepresentation:v26];
+    displayRepresentation = [v12 displayRepresentation];
+    [v25 setDisplayRepresentation:displayRepresentation];
   }
 
   else
@@ -65,8 +65,8 @@
   v2 = objc_opt_class();
   v3 = NSStringFromClass(v2);
   v22[0] = v3;
-  v4 = [a1 identifier];
-  v5 = [v4 stringByReplacingOccurrencesOfString:@"." withString:@"_"];
+  identifier = [self identifier];
+  v5 = [identifier stringByReplacingOccurrencesOfString:@"." withString:@"_"];
   v22[1] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
 
@@ -96,13 +96,13 @@ LABEL_3:
   aBlock[3] = &__block_descriptor_40_e14_B32__0_8_16_24lu32l8;
   aBlock[4] = v2;
   v13 = _Block_copy(aBlock);
-  v14 = a1;
+  selfCopy = self;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __54__LNCodableValueType_ContentItem__wf_contentItemClass__block_invoke_2;
   v19[3] = &unk_1E8375460;
-  v20 = v14;
-  v15 = v14;
+  v20 = selfCopy;
+  v15 = selfCopy;
   v16 = _Block_copy(v19);
   v13[2](v13, v12, sel_valueType, v16);
 
@@ -118,31 +118,31 @@ LABEL_6:
 
 - (id)wf_contentItemClassWithAppBundleIdentifier:()ContentItem
 {
-  v2 = [a1 identifier];
-  v3 = [MEMORY[0x1E69AC750] wf_dateIntervalIdentifier];
-  v4 = [v2 isEqual:v3];
+  identifier = [self identifier];
+  wf_dateIntervalIdentifier = [MEMORY[0x1E69AC750] wf_dateIntervalIdentifier];
+  v4 = [identifier isEqual:wf_dateIntervalIdentifier];
 
   if (v4)
   {
     goto LABEL_4;
   }
 
-  v5 = [a1 identifier];
-  v6 = [MEMORY[0x1E69AC750] wf_durationIdentifier];
-  v7 = [v5 isEqual:v6];
+  identifier2 = [self identifier];
+  wf_durationIdentifier = [MEMORY[0x1E69AC750] wf_durationIdentifier];
+  v7 = [identifier2 isEqual:wf_durationIdentifier];
 
-  if (v7 || ([a1 identifier], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E69AC750], "wf_personNameComponentsIdentifier"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqual:", v9), v9, v8, v10))
+  if (v7 || ([self identifier], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E69AC750], "wf_personNameComponentsIdentifier"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqual:", v9), v9, v8, v10))
   {
 LABEL_4:
-    v11 = objc_opt_class();
+    wf_contentItemClass = objc_opt_class();
   }
 
   else
   {
-    v11 = [a1 wf_contentItemClass];
+    wf_contentItemClass = [self wf_contentItemClass];
   }
 
-  return v11;
+  return wf_contentItemClass;
 }
 
 @end

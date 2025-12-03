@@ -1,38 +1,38 @@
 @interface DACalDBHelper
-- (BOOL)_saveDatabase:(CalDatabase *)a3 path:(id)a4 fushCaches:(BOOL)a5;
-- (BOOL)closeDatabaseForAccountID:(id)a3 save:(BOOL)a4;
-- (BOOL)closeDatabaseForAuxDatabaseRef:(void *)a3 save:(BOOL)a4;
-- (BOOL)saveDatabaseForAccountID:(id)a3 flushCaches:(BOOL)a4;
-- (BOOL)saveDatabaseForAuxDatabaseRef:(void *)a3 flushCaches:(BOOL)a4;
-- (CalDatabase)_cachedDatabaseForAccountID:(id)a3 path:(id *)a4;
-- (CalDatabase)_cachedDatabaseForAuxDatabaseRef:(void *)a3 path:(id *)a4;
-- (CalDatabase)databaseForAccountID:(id)a3;
-- (CalDatabase)databaseForAuxDatabaseRef:(void *)a3;
-- (DACalDBHelper)initWithDatabaseInitOptions:(int)a3 mainDatabasePath:(id)a4 containerProvider:(id)a5;
+- (BOOL)_saveDatabase:(CalDatabase *)database path:(id)path fushCaches:(BOOL)caches;
+- (BOOL)closeDatabaseForAccountID:(id)d save:(BOOL)save;
+- (BOOL)closeDatabaseForAuxDatabaseRef:(void *)ref save:(BOOL)save;
+- (BOOL)saveDatabaseForAccountID:(id)d flushCaches:(BOOL)caches;
+- (BOOL)saveDatabaseForAuxDatabaseRef:(void *)ref flushCaches:(BOOL)caches;
+- (CalDatabase)_cachedDatabaseForAccountID:(id)d path:(id *)path;
+- (CalDatabase)_cachedDatabaseForAuxDatabaseRef:(void *)ref path:(id *)path;
+- (CalDatabase)databaseForAccountID:(id)d;
+- (CalDatabase)databaseForAuxDatabaseRef:(void *)ref;
+- (DACalDBHelper)initWithDatabaseInitOptions:(int)options mainDatabasePath:(id)path containerProvider:(id)provider;
 - (id)_effectiveAndCanonicalMainDatabasePath;
 - (id)_mainDatabasePath;
-- (id)_pathForAccountID:(id)a3 createdDatabase:(CalDatabase *)a4;
+- (id)_pathForAccountID:(id)d createdDatabase:(CalDatabase *)database;
 - (id)allOpenDatabases;
-- (void)_closeDatabase:(CalDatabase *)a3 path:(id)a4;
-- (void)_openDatabaseForAccountID:(id)a3 auxDatabaseRef:(void *)a4 path:(id)a5 clientID:(id)a6 createdDatabaseToConsume:(CalDatabase *)a7;
-- (void)_registerForCalendarYieldNotificationsForDB:(CalDatabase *)a3;
-- (void)openDatabaseForAccountID:(id)a3 clientID:(id)a4;
-- (void)openDatabaseForAuxDatabaseRef:(void *)a3 clientID:(id)a4;
+- (void)_closeDatabase:(CalDatabase *)database path:(id)path;
+- (void)_openDatabaseForAccountID:(id)d auxDatabaseRef:(void *)ref path:(id)path clientID:(id)iD createdDatabaseToConsume:(CalDatabase *)consume;
+- (void)_registerForCalendarYieldNotificationsForDB:(CalDatabase *)b;
+- (void)openDatabaseForAccountID:(id)d clientID:(id)iD;
+- (void)openDatabaseForAuxDatabaseRef:(void *)ref clientID:(id)d;
 @end
 
 @implementation DACalDBHelper
 
-- (DACalDBHelper)initWithDatabaseInitOptions:(int)a3 mainDatabasePath:(id)a4 containerProvider:(id)a5
+- (DACalDBHelper)initWithDatabaseInitOptions:(int)options mainDatabasePath:(id)path containerProvider:(id)provider
 {
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  providerCopy = provider;
   v24.receiver = self;
   v24.super_class = DACalDBHelper;
   v11 = [(DACalDBHelper *)&v24 init];
   v12 = v11;
   if (v11)
   {
-    v11->_initOptions = a3;
+    v11->_initOptions = options;
     v13 = dispatch_queue_create("com.apple.dataaccessd.calDBQueue", 0);
     queue = v12->_queue;
     v12->_queue = v13;
@@ -53,8 +53,8 @@
     connectionCountsByPath = v12->_connectionCountsByPath;
     v12->_connectionCountsByPath = v21;
 
-    objc_storeStrong(&v12->_mainDatabasePathOverride, a4);
-    objc_storeStrong(&v12->_containerProviderOverride, a5);
+    objc_storeStrong(&v12->_mainDatabasePathOverride, path);
+    objc_storeStrong(&v12->_containerProviderOverride, provider);
   }
 
   return v12;
@@ -79,9 +79,9 @@
   cachedMainDatabasePath = self->_cachedMainDatabasePath;
   if (!cachedMainDatabasePath)
   {
-    v4 = [(DACalDBHelper *)self _effectiveAndCanonicalMainDatabasePath];
+    _effectiveAndCanonicalMainDatabasePath = [(DACalDBHelper *)self _effectiveAndCanonicalMainDatabasePath];
     v5 = self->_cachedMainDatabasePath;
-    self->_cachedMainDatabasePath = v4;
+    self->_cachedMainDatabasePath = _effectiveAndCanonicalMainDatabasePath;
 
     cachedMainDatabasePath = self->_cachedMainDatabasePath;
   }
@@ -89,20 +89,20 @@
   return cachedMainDatabasePath;
 }
 
-- (void)openDatabaseForAccountID:(id)a3 clientID:(id)a4
+- (void)openDatabaseForAccountID:(id)d clientID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__DACalDBHelper_openDatabaseForAccountID_clientID___block_invoke;
   block[3] = &unk_278F13108;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  selfCopy = self;
+  v14 = iDCopy;
+  v9 = iDCopy;
+  v10 = dCopy;
   dispatch_sync(queue, block);
 }
 
@@ -126,12 +126,12 @@ void __51__DACalDBHelper_openDatabaseForAccountID_clientID___block_invoke(uint64
   [*(a1 + 40) _openDatabaseForAccountID:*(a1 + 32) auxDatabaseRef:0 path:v4 clientID:*(a1 + 48) createdDatabaseToConsume:v5];
 }
 
-- (id)_pathForAccountID:(id)a3 createdDatabase:(CalDatabase *)a4
+- (id)_pathForAccountID:(id)d createdDatabase:(CalDatabase *)database
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_queue);
-  v7 = [(NSMutableDictionary *)self->_containerPathsByAccountID objectForKeyedSubscript:v6];
+  v7 = [(NSMutableDictionary *)self->_containerPathsByAccountID objectForKeyedSubscript:dCopy];
   if (!v7)
   {
     if (self->_mainDatabasePathOverride)
@@ -157,15 +157,15 @@ void __51__DACalDBHelper_openDatabaseForAccountID_clientID___block_invoke(uint64
       v11 = v10;
       v12 = CalDatabaseCopyDirectoryPathForDatabase();
       v13 = v12;
-      if (a4)
+      if (database)
       {
-        *a4 = v11;
+        *database = v11;
         if (v12)
         {
 LABEL_10:
           v7 = [objc_opt_class() _canonicalizePath:v13];
 
-          [(NSMutableDictionary *)self->_containerPathsByAccountID setObject:v7 forKeyedSubscript:v6];
+          [(NSMutableDictionary *)self->_containerPathsByAccountID setObject:v7 forKeyedSubscript:dCopy];
           goto LABEL_15;
         }
       }
@@ -185,7 +185,7 @@ LABEL_10:
     if (os_log_type_enabled(v14, v15))
     {
       v18 = 138543362;
-      v19 = v6;
+      v19 = dCopy;
       _os_log_impl(&dword_24844D000, v14, v15, "Failed to determine database directory path for accountID: %{public}@", &v18, 0xCu);
     }
 
@@ -199,12 +199,12 @@ LABEL_15:
   return v7;
 }
 
-- (void)openDatabaseForAuxDatabaseRef:(void *)a3 clientID:(id)a4
+- (void)openDatabaseForAuxDatabaseRef:(void *)ref clientID:(id)d
 {
-  v7 = a4;
-  if (!a3)
+  dCopy = d;
+  if (!ref)
   {
-    [(DACalDBHelper *)a2 openDatabaseForAuxDatabaseRef:v7 clientID:?];
+    [(DACalDBHelper *)a2 openDatabaseForAuxDatabaseRef:dCopy clientID:?];
   }
 
   queue = self->_queue;
@@ -212,10 +212,10 @@ LABEL_15:
   block[1] = 3221225472;
   block[2] = __56__DACalDBHelper_openDatabaseForAuxDatabaseRef_clientID___block_invoke;
   block[3] = &unk_278F13378;
-  v11 = v7;
-  v12 = a3;
+  v11 = dCopy;
+  refCopy = ref;
   block[4] = self;
-  v9 = v7;
+  v9 = dCopy;
   dispatch_sync(queue, block);
 }
 
@@ -305,9 +305,9 @@ uint64_t __33__DACalDBHelper_allOpenDatabases__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (CalDatabase)databaseForAccountID:(id)a3
+- (CalDatabase)databaseForAccountID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -317,10 +317,10 @@ uint64_t __33__DACalDBHelper_allOpenDatabases__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __38__DACalDBHelper_databaseForAccountID___block_invoke;
   block[3] = &unk_278F133D0;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(queue, block);
   v7 = v13[3];
 
@@ -342,7 +342,7 @@ CFTypeRef __38__DACalDBHelper_databaseForAccountID___block_invoke(uint64_t a1)
   return result;
 }
 
-- (CalDatabase)databaseForAuxDatabaseRef:(void *)a3
+- (CalDatabase)databaseForAuxDatabaseRef:(void *)ref
 {
   v7 = 0;
   v8 = &v7;
@@ -355,7 +355,7 @@ CFTypeRef __38__DACalDBHelper_databaseForAccountID___block_invoke(uint64_t a1)
   block[3] = &unk_278F133F8;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = ref;
   dispatch_sync(queue, block);
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -369,9 +369,9 @@ uint64_t __43__DACalDBHelper_databaseForAuxDatabaseRef___block_invoke(uint64_t a
   return result;
 }
 
-- (BOOL)saveDatabaseForAccountID:(id)a3 flushCaches:(BOOL)a4
+- (BOOL)saveDatabaseForAccountID:(id)d flushCaches:(BOOL)caches
 {
-  v7 = a3;
+  dCopy = d;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -382,11 +382,11 @@ uint64_t __43__DACalDBHelper_databaseForAuxDatabaseRef___block_invoke(uint64_t a
   block[2] = __54__DACalDBHelper_saveDatabaseForAccountID_flushCaches___block_invoke;
   block[3] = &unk_278F13420;
   block[4] = self;
-  v12 = v7;
+  v12 = dCopy;
   v13 = &v16;
   v14 = a2;
-  v15 = a4;
-  v9 = v7;
+  cachesCopy = caches;
+  v9 = dCopy;
   dispatch_sync(queue, block);
   LOBYTE(a2) = *(v17 + 24);
 
@@ -415,7 +415,7 @@ void __54__DACalDBHelper_saveDatabaseForAccountID_flushCaches___block_invoke(uin
   }
 }
 
-- (BOOL)saveDatabaseForAuxDatabaseRef:(void *)a3 flushCaches:(BOOL)a4
+- (BOOL)saveDatabaseForAuxDatabaseRef:(void *)ref flushCaches:(BOOL)caches
 {
   v9 = 0;
   v10 = &v9;
@@ -426,11 +426,11 @@ void __54__DACalDBHelper_saveDatabaseForAccountID_flushCaches___block_invoke(uin
   block[1] = 3221225472;
   block[2] = __59__DACalDBHelper_saveDatabaseForAuxDatabaseRef_flushCaches___block_invoke;
   block[3] = &unk_278F13448;
-  block[6] = a3;
+  block[6] = ref;
   block[7] = a2;
   block[4] = self;
   block[5] = &v9;
-  v8 = a4;
+  cachesCopy = caches;
   dispatch_sync(queue, block);
   v5 = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
@@ -462,20 +462,20 @@ void __59__DACalDBHelper_saveDatabaseForAuxDatabaseRef_flushCaches___block_invok
   }
 }
 
-- (BOOL)closeDatabaseForAccountID:(id)a3 save:(BOOL)a4
+- (BOOL)closeDatabaseForAccountID:(id)d save:(BOOL)save
 {
-  v4 = a4;
-  v7 = a3;
-  v8 = !v4 || [(DACalDBHelper *)self saveDatabaseForAccountID:v7 flushCaches:0];
+  saveCopy = save;
+  dCopy = d;
+  v8 = !saveCopy || [(DACalDBHelper *)self saveDatabaseForAccountID:dCopy flushCaches:0];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__DACalDBHelper_closeDatabaseForAccountID_save___block_invoke;
   block[3] = &unk_278F13378;
   block[4] = self;
-  v13 = v7;
+  v13 = dCopy;
   v14 = a2;
-  v10 = v7;
+  v10 = dCopy;
   dispatch_sync(queue, block);
 
   return v8;
@@ -500,16 +500,16 @@ void __48__DACalDBHelper_closeDatabaseForAccountID_save___block_invoke(uint64_t 
   }
 }
 
-- (BOOL)closeDatabaseForAuxDatabaseRef:(void *)a3 save:(BOOL)a4
+- (BOOL)closeDatabaseForAuxDatabaseRef:(void *)ref save:(BOOL)save
 {
-  v7 = !a4 || [(DACalDBHelper *)self saveDatabaseForAuxDatabaseRef:a3 flushCaches:0];
+  v7 = !save || [(DACalDBHelper *)self saveDatabaseForAuxDatabaseRef:ref flushCaches:0];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__DACalDBHelper_closeDatabaseForAuxDatabaseRef_save___block_invoke;
   block[3] = &unk_278F13470;
   block[4] = self;
-  block[5] = a3;
+  block[5] = ref;
   block[6] = a2;
   dispatch_sync(queue, block);
   return v7;
@@ -538,39 +538,39 @@ void __53__DACalDBHelper_closeDatabaseForAuxDatabaseRef_save___block_invoke(uint
   }
 }
 
-- (void)_openDatabaseForAccountID:(id)a3 auxDatabaseRef:(void *)a4 path:(id)a5 clientID:(id)a6 createdDatabaseToConsume:(CalDatabase *)a7
+- (void)_openDatabaseForAccountID:(id)d auxDatabaseRef:(void *)ref path:(id)path clientID:(id)iD createdDatabaseToConsume:(CalDatabase *)consume
 {
   v48 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  pathCopy = path;
+  iDCopy = iD;
   dispatch_assert_queue_V2(self->_queue);
-  v15 = [(NSMutableDictionary *)self->_databasesByContainerPath objectForKeyedSubscript:v13];
+  consumeCopy = [(NSMutableDictionary *)self->_databasesByContainerPath objectForKeyedSubscript:pathCopy];
 
   v16 = MEMORY[0x277D03988];
-  if (v15)
+  if (consumeCopy)
   {
     v17 = CalDatabaseCopyClientIdentifier();
-    if (v14 && ([(CalDatabase *)v14 isEqual:v17]& 1) == 0)
+    if (iDCopy && ([(CalDatabase *)iDCopy isEqual:v17]& 1) == 0)
     {
-      [DACalDBHelper _openDatabaseForAccountID:a2 auxDatabaseRef:self path:v17 clientID:v14 createdDatabaseToConsume:?];
+      [DACalDBHelper _openDatabaseForAccountID:a2 auxDatabaseRef:self path:v17 clientID:iDCopy createdDatabaseToConsume:?];
     }
 
     v18 = 0;
 LABEL_28:
-    [(NSCountedSet *)self->_connectionCountsByPath addObject:v13, v40];
-    v28 = [(NSCountedSet *)self->_connectionCountsByPath countForObject:v13];
+    [(NSCountedSet *)self->_connectionCountsByPath addObject:pathCopy, v40];
+    v28 = [(NSCountedSet *)self->_connectionCountsByPath countForObject:pathCopy];
     v29 = DALoggingwithCategory();
     v30 = v16;
     v31 = *(v16 + 7);
     if (os_log_type_enabled(v29, v31))
     {
       *buf = 134218498;
-      v43 = v15;
+      consumeCopy2 = consumeCopy;
       v44 = 2114;
-      v45 = v14;
+      v45 = iDCopy;
       v46 = 2048;
-      v47 = v28;
+      refCopy = v28;
       _os_log_impl(&dword_24844D000, v29, v31, "Cal database %p opened for %{public}@. Connection count is now %lu", buf, 0x20u);
     }
 
@@ -581,12 +581,12 @@ LABEL_28:
       if (os_log_type_enabled(v32, v33))
       {
         *buf = 134217984;
-        v43 = v28;
+        consumeCopy2 = v28;
         _os_log_impl(&dword_24844D000, v32, v33, "connectionCount is > 1, at %lu", buf, 0xCu);
       }
     }
 
-    if (a7)
+    if (consume)
     {
       v34 = v18;
     }
@@ -598,10 +598,10 @@ LABEL_28:
 
     if ((v34 & 1) == 0)
     {
-      CFRelease(a7);
+      CFRelease(consume);
     }
 
-    v35 = v12;
+    v35 = dCopy;
     goto LABEL_40;
   }
 
@@ -610,18 +610,18 @@ LABEL_28:
   if (os_log_type_enabled(v19, v20))
   {
     *buf = 138543362;
-    v43 = v14;
+    consumeCopy2 = iDCopy;
     _os_log_impl(&dword_24844D000, v19, v20, "Creating calendar database for clientID %{public}@", buf, 0xCu);
   }
 
-  v15 = a7;
-  if (a7)
+  consumeCopy = consume;
+  if (consume)
   {
     v21 = DALoggingwithCategory();
     if (os_log_type_enabled(v21, v20))
     {
       *buf = 134349056;
-      v43 = a7;
+      consumeCopy2 = consume;
       v22 = "Using already-created calendar database %{public}p";
 LABEL_24:
       _os_log_impl(&dword_24844D000, v21, v20, v22, buf, 0xCu);
@@ -631,8 +631,8 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v40 = v12;
-  if (v12)
+  v40 = dCopy;
+  if (dCopy)
   {
     if (self->_mainDatabasePathOverride)
     {
@@ -651,54 +651,54 @@ LABEL_24:
       [v25 setDataContainerProvider:?];
     }
 
-    v15 = CalDatabaseCreateWithConfigurationForAccountID();
+    consumeCopy = CalDatabaseCreateWithConfigurationForAccountID();
   }
 
   else
   {
-    if (a4)
+    if (ref)
     {
       CalGetDatabaseForRecord();
       initOptions = self->_initOptions;
-      v15 = CalDatabaseCreateWithAuxDatabaseRef();
+      consumeCopy = CalDatabaseCreateWithAuxDatabaseRef();
       goto LABEL_21;
     }
 
-    v23 = [MEMORY[0x277CBEBC0] fileURLWithPath:v13];
+    v23 = [MEMORY[0x277CBEBC0] fileURLWithPath:pathCopy];
     v38 = self->_initOptions;
     containerProviderOverride = self->_containerProviderOverride;
-    v15 = CalDatabaseCreateWithOptionsDatabaseDirectoryURLAndContainerProvider();
+    consumeCopy = CalDatabaseCreateWithOptionsDatabaseDirectoryURLAndContainerProvider();
   }
 
 LABEL_21:
   v26 = DALoggingwithCategory();
   v21 = v26;
-  if (v15)
+  if (consumeCopy)
   {
     if (os_log_type_enabled(v26, v20))
     {
       *buf = 134349056;
-      v43 = v15;
+      consumeCopy2 = consumeCopy;
       v22 = "Created calendar database %{public}p";
       goto LABEL_24;
     }
 
 LABEL_25:
 
-    [(NSMutableDictionary *)self->_databasesByContainerPath setObject:v15 forKeyedSubscript:v13];
-    [(DACalDBHelper *)self _registerForCalendarYieldNotificationsForDB:v15];
-    if (![(CalDatabase *)v14 length])
+    [(NSMutableDictionary *)self->_databasesByContainerPath setObject:consumeCopy forKeyedSubscript:pathCopy];
+    [(DACalDBHelper *)self _registerForCalendarYieldNotificationsForDB:consumeCopy];
+    if (![(CalDatabase *)iDCopy length])
     {
       v27 = @"com.apple.dataaccessd.changeinserter";
 
-      v14 = v27;
+      iDCopy = v27;
     }
 
     v16 = MEMORY[0x277D03988];
-    v18 = a7 != 0;
+    v18 = consume != 0;
     CalDatabaseSetClientIdentifier();
     CalDatabaseSetPropertyModificationLoggingEnabled();
-    CFRelease(v15);
+    CFRelease(consumeCopy);
     v17 = 0;
     goto LABEL_28;
   }
@@ -708,11 +708,11 @@ LABEL_25:
   if (os_log_type_enabled(v26, v37))
   {
     *buf = 138543874;
-    v43 = v40;
+    consumeCopy2 = v40;
     v44 = 2114;
-    v45 = v13;
+    v45 = pathCopy;
     v46 = 2050;
-    v47 = a4;
+    refCopy = ref;
     _os_log_impl(&dword_24844D000, v21, v37, "Failed to open database with account ID %{public}@, path %{public}@, auxDatabaseRef %{public}p", buf, 0x20u);
   }
 
@@ -722,18 +722,18 @@ LABEL_40:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (CalDatabase)_cachedDatabaseForAccountID:(id)a3 path:(id *)a4
+- (CalDatabase)_cachedDatabaseForAccountID:(id)d path:(id *)path
 {
-  v6 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_queue);
-  if (v6)
+  if (dCopy)
   {
-    v7 = [(DACalDBHelper *)self _pathForAccountID:v6 createdDatabase:0];
+    v7 = [(DACalDBHelper *)self _pathForAccountID:dCopy createdDatabase:0];
     if (!v7)
     {
 LABEL_12:
       v12 = 0;
-      if (!a4)
+      if (!path)
       {
         goto LABEL_10;
       }
@@ -774,11 +774,11 @@ LABEL_12:
 
   v12 = [(NSMutableDictionary *)self->_databasesByContainerPath objectForKeyedSubscript:v7];
 
-  if (a4)
+  if (path)
   {
 LABEL_9:
     v13 = v7;
-    *a4 = v7;
+    *path = v7;
   }
 
 LABEL_10:
@@ -786,21 +786,21 @@ LABEL_10:
   return v12;
 }
 
-- (CalDatabase)_cachedDatabaseForAuxDatabaseRef:(void *)a3 path:(id *)a4
+- (CalDatabase)_cachedDatabaseForAuxDatabaseRef:(void *)ref path:(id *)path
 {
   dispatch_assert_queue_V2(self->_queue);
-  if (a3)
+  if (ref)
   {
     UID = CalAuxDatabaseGetUID();
     containerPathsByAuxDatabaseID = self->_containerPathsByAuxDatabaseID;
     v9 = [MEMORY[0x277CCABB0] numberWithInt:UID];
-    a3 = [(NSMutableDictionary *)containerPathsByAuxDatabaseID objectForKeyedSubscript:v9];
+    ref = [(NSMutableDictionary *)containerPathsByAuxDatabaseID objectForKeyedSubscript:v9];
 
-    if (a3)
+    if (ref)
     {
-      v10 = [(NSMutableDictionary *)self->_databasesByContainerPath objectForKeyedSubscript:a3];
+      v10 = [(NSMutableDictionary *)self->_databasesByContainerPath objectForKeyedSubscript:ref];
 
-      if (!a4)
+      if (!path)
       {
         goto LABEL_8;
       }
@@ -809,11 +809,11 @@ LABEL_10:
     }
 
     v10 = 0;
-    if (a4)
+    if (path)
     {
 LABEL_7:
-      v11 = a3;
-      *a4 = a3;
+      refCopy = ref;
+      *path = ref;
     }
   }
 
@@ -827,13 +827,13 @@ LABEL_8:
   return v10;
 }
 
-- (BOOL)_saveDatabase:(CalDatabase *)a3 path:(id)a4 fushCaches:(BOOL)a5
+- (BOOL)_saveDatabase:(CalDatabase *)database path:(id)path fushCaches:(BOOL)caches
 {
-  v5 = a5;
+  cachesCopy = caches;
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  pathCopy = path;
   dispatch_assert_queue_V2(self->_queue);
-  v9 = [(DALocalDBWatcher *)self->_watcher lastSavedCalSequenceNumberForDatabaseInContainer:v8];
+  v9 = [(DALocalDBWatcher *)self->_watcher lastSavedCalSequenceNumberForDatabaseInContainer:pathCopy];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, *MEMORY[0x277CF7708], 0, 0, 1u);
   v11 = +[DALocalDBGateKeeper sharedGateKeeper];
@@ -844,7 +844,7 @@ LABEL_8:
   if (os_log_type_enabled(v12, v13))
   {
     v14 = &stru_285AA6518;
-    if (v5)
+    if (cachesCopy)
     {
       v15 = @", and flushing caches";
     }
@@ -861,7 +861,7 @@ LABEL_8:
     }
 
     *buf = 134218498;
-    v27 = a3;
+    databaseCopy3 = database;
     v28 = 2114;
     v29 = v15;
     v30 = 2114;
@@ -874,15 +874,15 @@ LABEL_8:
 
   if (self->_watcher)
   {
-    [(DALocalDBWatcher *)self->_watcher setLastSavedCalSequenceNumber:CalDatabaseGetSequenceNumber() forDatabaseInContainer:v8];
+    [(DALocalDBWatcher *)self->_watcher setLastSavedCalSequenceNumber:CalDatabaseGetSequenceNumber() forDatabaseInContainer:pathCopy];
   }
 
-  if (v5)
+  if (cachesCopy)
   {
     v17 = CalDatabaseSaveAndFlushCaches();
-    [(DACalDBHelper *)self _registerForCalendarYieldNotificationsForDB:a3];
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v18 postNotificationName:@"CalDBIsClosing" object:0];
+    [(DACalDBHelper *)self _registerForCalendarYieldNotificationsForDB:database];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"CalDBIsClosing" object:0];
 
     if (v17)
     {
@@ -895,7 +895,7 @@ LABEL_13:
   else
   {
     v20 = CalDatabaseSave();
-    [(DACalDBHelper *)self _registerForCalendarYieldNotificationsForDB:a3];
+    [(DACalDBHelper *)self _registerForCalendarYieldNotificationsForDB:database];
     if (v20)
     {
       goto LABEL_13;
@@ -906,13 +906,13 @@ LABEL_13:
   if (os_log_type_enabled(v21, v13))
   {
     v22 = &stru_285AA6518;
-    if (v5)
+    if (cachesCopy)
     {
       v22 = @", and flushing caches";
     }
 
     *buf = 134218242;
-    v27 = a3;
+    databaseCopy3 = database;
     v28 = 2114;
     v29 = v22;
     _os_log_impl(&dword_24844D000, v21, v13, "Saving calendar database %p%{public}@.  Save failed", buf, 0x16u);
@@ -924,13 +924,13 @@ LABEL_13:
     if (os_log_type_enabled(v23, v13))
     {
       *buf = 134218240;
-      v27 = a3;
+      databaseCopy3 = database;
       v28 = 1024;
       LODWORD(v29) = v9;
       _os_log_impl(&dword_24844D000, v23, v13, "Resetting calendar database %p sequence %d", buf, 0x12u);
     }
 
-    [(DALocalDBWatcher *)self->_watcher setLastSavedCalSequenceNumber:v9 forDatabaseInContainer:v8];
+    [(DALocalDBWatcher *)self->_watcher setLastSavedCalSequenceNumber:v9 forDatabaseInContainer:pathCopy];
   }
 
   v19 = 0;
@@ -940,17 +940,17 @@ LABEL_24:
   return v19;
 }
 
-- (void)_closeDatabase:(CalDatabase *)a3 path:(id)a4
+- (void)_closeDatabase:(CalDatabase *)database path:(id)path
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  pathCopy = path;
   dispatch_assert_queue_V2(self->_queue);
-  v7 = [(NSCountedSet *)self->_connectionCountsByPath countForObject:v6];
+  v7 = [(NSCountedSet *)self->_connectionCountsByPath countForObject:pathCopy];
   if (v7)
   {
     v8 = v7;
-    [(NSCountedSet *)self->_connectionCountsByPath removeObject:v6];
-    if (a3)
+    [(NSCountedSet *)self->_connectionCountsByPath removeObject:pathCopy];
+    if (database)
     {
       v9 = CalDatabaseCopyClientIdentifier();
     }
@@ -965,7 +965,7 @@ LABEL_24:
     if (os_log_type_enabled(v11, v12))
     {
       v16 = 134218498;
-      v17 = a3;
+      databaseCopy2 = database;
       v18 = 2048;
       v19 = v8 - 1;
       v20 = 2114;
@@ -979,15 +979,15 @@ LABEL_24:
       if (os_log_type_enabled(v13, v12))
       {
         v16 = 134217984;
-        v17 = a3;
+        databaseCopy2 = database;
         _os_log_impl(&dword_24844D000, v13, v12, "Destroying calendar database %p", &v16, 0xCu);
       }
 
-      v14 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v14 postNotificationName:@"CalDBIsClosing" object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:@"CalDBIsClosing" object:0];
 
       CalDatabaseRegisterYieldBlock();
-      [(NSMutableDictionary *)self->_databasesByContainerPath setObject:0 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)self->_databasesByContainerPath setObject:0 forKeyedSubscript:pathCopy];
     }
   }
 
@@ -998,7 +998,7 @@ LABEL_24:
     if (os_log_type_enabled(v9, v10))
     {
       v16 = 138543362;
-      v17 = v6;
+      databaseCopy2 = pathCopy;
       _os_log_impl(&dword_24844D000, v9, v10, "_closeDatabase called too many times with path: %{public}@", &v16, 0xCu);
     }
   }
@@ -1006,9 +1006,9 @@ LABEL_24:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_registerForCalendarYieldNotificationsForDB:(CalDatabase *)a3
+- (void)_registerForCalendarYieldNotificationsForDB:(CalDatabase *)b
 {
-  if (a3)
+  if (b)
   {
     CalDatabaseRegisterYieldBlock();
   }

@@ -1,24 +1,24 @@
 @interface FCFeedPrewarmOperation
-- (FCFeedPrewarmOperation)initWithPrewarmRequest:(id)a3 contentContext:(id)a4;
-- (id)_commitQueryResult:(id)a3;
-- (void)commitResultsOnceWithCompletionHandler:(id)a3;
+- (FCFeedPrewarmOperation)initWithPrewarmRequest:(id)request contentContext:(id)context;
+- (id)_commitQueryResult:(id)result;
+- (void)commitResultsOnceWithCompletionHandler:(id)handler;
 - (void)performOperation;
 @end
 
 @implementation FCFeedPrewarmOperation
 
-- (FCFeedPrewarmOperation)initWithPrewarmRequest:(id)a3 contentContext:(id)a4
+- (FCFeedPrewarmOperation)initWithPrewarmRequest:(id)request contentContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  contextCopy = context;
   v16.receiver = self;
   v16.super_class = FCFeedPrewarmOperation;
   v9 = [(FCOperation *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_prewarmRequest, a3);
-    objc_storeStrong(&v10->_contentContext, a4);
+    objc_storeStrong(&v9->_prewarmRequest, request);
+    objc_storeStrong(&v10->_contentContext, context);
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
     feedIDsByCKFeedID = v10->_feedIDsByCKFeedID;
     v10->_feedIDsByCKFeedID = v11;
@@ -31,14 +31,14 @@
   return v10;
 }
 
-- (void)commitResultsOnceWithCompletionHandler:(id)a3
+- (void)commitResultsOnceWithCompletionHandler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   [(FCOperation *)self startIfNeeded];
-  v5 = [(FCFeedPrewarmOperation *)self lazyResultPromise];
+  lazyResultPromise = [(FCFeedPrewarmOperation *)self lazyResultPromise];
 
-  if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!lazyResultPromise && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"lazy result promise should be created as soon as the operation starts"];
     *buf = 136315906;
@@ -63,7 +63,7 @@
   v17[1] = 3221225472;
   v17[2] = __65__FCFeedPrewarmOperation_commitResultsOnceWithCompletionHandler___block_invoke_2;
   v17[3] = &unk_1E7C396E8;
-  v8 = v4;
+  v8 = handlerCopy;
   v18 = v8;
   v9 = [v6 thenOn:v7 then:v17];
   v10 = zalgo();
@@ -99,31 +99,31 @@ void __65__FCFeedPrewarmOperation_commitResultsOnceWithCompletionHandler___block
 
 - (void)performOperation
 {
-  v3 = [(FCFeedPrewarmOperation *)self prewarmRequest];
-  v4 = [v3 feedRequests];
-  v5 = [v4 fc_arrayByTransformingWithBlock:&__block_literal_global_16];
+  prewarmRequest = [(FCFeedPrewarmOperation *)self prewarmRequest];
+  feedRequests = [prewarmRequest feedRequests];
+  v5 = [feedRequests fc_arrayByTransformingWithBlock:&__block_literal_global_16];
 
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = [(FCFeedPrewarmOperation *)self contentContext];
-  v8 = [v7 internalContentContext];
-  v9 = [v8 feedDatabase];
+  array = [MEMORY[0x1E695DF70] array];
+  contentContext = [(FCFeedPrewarmOperation *)self contentContext];
+  internalContentContext = [contentContext internalContentContext];
+  feedDatabase = [internalContentContext feedDatabase];
   v56[0] = MEMORY[0x1E69E9820];
   v56[1] = 3221225472;
   v56[2] = __42__FCFeedPrewarmOperation_performOperation__block_invoke_2;
   v56[3] = &unk_1E7C39758;
   v56[4] = self;
-  v10 = v6;
+  v10 = array;
   v57 = v10;
-  [v9 enumerateRangesMissingFromLookups:v5 visitor:v56];
+  [feedDatabase enumerateRangesMissingFromLookups:v5 visitor:v56];
 
   if ([v10 count])
   {
     v49 = v5;
     v11 = objc_alloc_init(FCCKBatchedOrderFeedQueryOperation);
-    v12 = [(FCFeedPrewarmOperation *)self contentContext];
-    v13 = [v12 internalContentContext];
-    v14 = [v13 contentDatabase];
-    [(FCCKBatchedOrderFeedQueryOperation *)v11 setDatabase:v14];
+    contentContext2 = [(FCFeedPrewarmOperation *)self contentContext];
+    internalContentContext2 = [contentContext2 internalContentContext];
+    contentDatabase = [internalContentContext2 contentDatabase];
+    [(FCCKBatchedOrderFeedQueryOperation *)v11 setDatabase:contentDatabase];
 
     if (v11)
     {
@@ -132,60 +132,60 @@ void __65__FCFeedPrewarmOperation_commitResultsOnceWithCompletionHandler___block
     }
 
     v16 = MEMORY[0x1E69B6E30];
-    v17 = [(FCFeedPrewarmOperation *)self contentContext];
-    v18 = [v17 internalContentContext];
-    v19 = [v18 articleRecordSource];
-    v20 = [v16 keysForFeedItemAndArticleRecordWithRecordSource:v19];
+    contentContext3 = [(FCFeedPrewarmOperation *)self contentContext];
+    internalContentContext3 = [contentContext3 internalContentContext];
+    articleRecordSource = [internalContentContext3 articleRecordSource];
+    v20 = [v16 keysForFeedItemAndArticleRecordWithRecordSource:articleRecordSource];
 
-    v21 = [MEMORY[0x1E695DF70] array];
-    v22 = [(FCFeedPrewarmOperation *)self prewarmRequest];
-    LOBYTE(v18) = [v22 options];
+    array2 = [MEMORY[0x1E695DF70] array];
+    prewarmRequest2 = [(FCFeedPrewarmOperation *)self prewarmRequest];
+    LOBYTE(internalContentContext3) = [prewarmRequest2 options];
 
-    if ((v18 & 2) != 0)
+    if ((internalContentContext3 & 2) != 0)
     {
-      v23 = [(FCFeedPrewarmOperation *)self contentContext];
-      v24 = [v23 internalContentContext];
-      v25 = [v24 articleRecordSource];
-      v26 = [v25 desiredKeys];
-      v27 = [v20 arrayByAddingObjectsFromArray:v26];
+      contentContext4 = [(FCFeedPrewarmOperation *)self contentContext];
+      internalContentContext4 = [contentContext4 internalContentContext];
+      articleRecordSource2 = [internalContentContext4 articleRecordSource];
+      desiredKeys = [articleRecordSource2 desiredKeys];
+      v27 = [v20 arrayByAddingObjectsFromArray:desiredKeys];
 
       v20 = v27;
     }
 
-    v28 = [(FCFeedPrewarmOperation *)self prewarmRequest];
-    v29 = [v28 options];
+    prewarmRequest3 = [(FCFeedPrewarmOperation *)self prewarmRequest];
+    options = [prewarmRequest3 options];
 
-    if ((v29 & 4) != 0)
+    if ((options & 4) != 0)
     {
-      v30 = [(FCFeedPrewarmOperation *)self contentContext];
-      v31 = [v30 internalContentContext];
-      v32 = [v31 tagRecordSource];
-      v33 = [v32 desiredKeys];
-      v34 = [v20 arrayByAddingObjectsFromArray:v33];
+      contentContext5 = [(FCFeedPrewarmOperation *)self contentContext];
+      internalContentContext5 = [contentContext5 internalContentContext];
+      tagRecordSource = [internalContentContext5 tagRecordSource];
+      desiredKeys2 = [tagRecordSource desiredKeys];
+      v34 = [v20 arrayByAddingObjectsFromArray:desiredKeys2];
 
-      [v21 addObject:@"sourceChannelTagID"];
+      [array2 addObject:@"sourceChannelTagID"];
       v20 = v34;
     }
 
-    v35 = [(FCFeedPrewarmOperation *)self prewarmRequest];
-    v36 = [v35 options];
+    prewarmRequest4 = [(FCFeedPrewarmOperation *)self prewarmRequest];
+    options2 = [prewarmRequest4 options];
 
-    if ((v36 & 8) != 0)
+    if ((options2 & 8) != 0)
     {
-      v38 = [(FCFeedPrewarmOperation *)self contentContext];
-      v39 = [v38 internalContentContext];
-      v40 = [v39 issueRecordSource];
-      v41 = [v40 desiredKeys];
-      v42 = [v20 arrayByAddingObjectsFromArray:v41];
+      contentContext6 = [(FCFeedPrewarmOperation *)self contentContext];
+      internalContentContext6 = [contentContext6 internalContentContext];
+      issueRecordSource = [internalContentContext6 issueRecordSource];
+      desiredKeys3 = [issueRecordSource desiredKeys];
+      v42 = [v20 arrayByAddingObjectsFromArray:desiredKeys3];
 
-      [v21 addObject:@"parentIssueID"];
+      [array2 addObject:@"parentIssueID"];
       v20 = v42;
     }
 
     if (v11)
     {
       objc_setProperty_nonatomic_copy(v11, v37, v20, 384);
-      objc_setProperty_nonatomic_copy(v11, v43, v21, 408);
+      objc_setProperty_nonatomic_copy(v11, v43, array2, 408);
     }
 
     newValue[0] = MEMORY[0x1E69E9820];
@@ -211,7 +211,7 @@ void __65__FCFeedPrewarmOperation_commitResultsOnceWithCompletionHandler___block
     v51[2] = __42__FCFeedPrewarmOperation_performOperation__block_invoke_6;
     v51[3] = &unk_1E7C397D0;
     v52 = v45;
-    v53 = self;
+    selfCopy = self;
     v47 = v45;
     v48 = [v46 initWithConstructor:v51];
     [(FCFeedPrewarmOperation *)self setLazyResultPromise:v48];
@@ -325,26 +325,26 @@ id __42__FCFeedPrewarmOperation_performOperation__block_invoke_8(uint64_t a1, vo
   return v5;
 }
 
-- (id)_commitQueryResult:(id)a3
+- (id)_commitQueryResult:(id)result
 {
   v100 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   v5 = FCOperationLog;
   if (os_log_type_enabled(FCOperationLog, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(FCOperation *)self shortOperationDescription];
+    shortOperationDescription = [(FCOperation *)self shortOperationDescription];
     *buf = 138543362;
-    v95 = v7;
+    v95 = shortOperationDescription;
     _os_log_impl(&dword_1B63EF000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ will commit query response to database", buf, 0xCu);
   }
 
-  v81 = [MEMORY[0x1E695DF00] date];
-  v8 = [(FCFeedPrewarmOperation *)self feedIDsByCKFeedID];
-  v9 = [(FCFeedPrewarmOperation *)self requestRangeByFeedID];
-  if (v4)
+  date = [MEMORY[0x1E695DF00] date];
+  feedIDsByCKFeedID = [(FCFeedPrewarmOperation *)self feedIDsByCKFeedID];
+  requestRangeByFeedID = [(FCFeedPrewarmOperation *)self requestRangeByFeedID];
+  if (resultCopy)
   {
-    v10 = v4[2];
+    v10 = resultCopy[2];
   }
 
   else
@@ -357,14 +357,14 @@ id __42__FCFeedPrewarmOperation_performOperation__block_invoke_8(uint64_t a1, vo
   v92[1] = 3221225472;
   v92[2] = __45__FCFeedPrewarmOperation__commitQueryResult___block_invoke;
   v92[3] = &unk_1E7C397F8;
-  v12 = v8;
+  v12 = feedIDsByCKFeedID;
   v93 = v12;
   v82 = [v11 fc_dictionaryWithKeyBlock:v92 valueBlock:&__block_literal_global_27_0];
 
-  v13 = [MEMORY[0x1E695DF00] date];
-  if (v4)
+  date2 = [MEMORY[0x1E695DF00] date];
+  if (resultCopy)
   {
-    v14 = v4[1];
+    v14 = resultCopy[1];
   }
 
   else
@@ -386,50 +386,50 @@ id __42__FCFeedPrewarmOperation_performOperation__block_invoke_8(uint64_t a1, vo
   if (os_log_type_enabled(FCOperationLog, OS_LOG_TYPE_DEFAULT))
   {
     v18 = v17;
-    v19 = [(FCOperation *)self shortOperationDescription];
-    v20 = [v13 fc_millisecondTimeIntervalUntilNow];
+    shortOperationDescription2 = [(FCOperation *)self shortOperationDescription];
+    fc_millisecondTimeIntervalUntilNow = [date2 fc_millisecondTimeIntervalUntilNow];
     *buf = 138543618;
-    v95 = v19;
+    v95 = shortOperationDescription2;
     v96 = 2048;
-    v97 = v20;
+    v97 = fc_millisecondTimeIntervalUntilNow;
     _os_log_impl(&dword_1B63EF000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ spent %llums creating feed items", buf, 0x16u);
   }
 
-  v80 = v13;
-  v21 = [MEMORY[0x1E695DF00] date];
-  v22 = [(FCFeedPrewarmOperation *)self contentContext];
-  v23 = [v22 internalContentContext];
-  v24 = [v23 feedDatabase];
-  v25 = [v16 allValues];
-  [v24 saveFeedItems:v83 feedIDs:v25 extentByFeedID:v82 requestRangeByFeedID:v9];
+  v80 = date2;
+  date3 = [MEMORY[0x1E695DF00] date];
+  contentContext = [(FCFeedPrewarmOperation *)self contentContext];
+  internalContentContext = [contentContext internalContentContext];
+  feedDatabase = [internalContentContext feedDatabase];
+  allValues = [v16 allValues];
+  [feedDatabase saveFeedItems:v83 feedIDs:allValues extentByFeedID:v82 requestRangeByFeedID:requestRangeByFeedID];
 
   v26 = FCOperationLog;
   if (os_log_type_enabled(FCOperationLog, OS_LOG_TYPE_DEFAULT))
   {
     v27 = v26;
-    v28 = [(FCOperation *)self shortOperationDescription];
-    v29 = [v21 fc_millisecondTimeIntervalUntilNow];
+    shortOperationDescription3 = [(FCOperation *)self shortOperationDescription];
+    fc_millisecondTimeIntervalUntilNow2 = [date3 fc_millisecondTimeIntervalUntilNow];
     v30 = [v83 count];
     *buf = 138543874;
-    v95 = v28;
+    v95 = shortOperationDescription3;
     v96 = 2048;
-    v97 = v29;
+    v97 = fc_millisecondTimeIntervalUntilNow2;
     v98 = 2048;
     v99 = v30;
     _os_log_impl(&dword_1B63EF000, v27, OS_LOG_TYPE_DEFAULT, "%{public}@ spent %llums saving %lu feed items", buf, 0x20u);
   }
 
-  v31 = [(FCFeedPrewarmOperation *)self prewarmRequest];
-  v32 = [v31 options];
+  prewarmRequest = [(FCFeedPrewarmOperation *)self prewarmRequest];
+  options = [prewarmRequest options];
 
-  if ((v32 & 2) != 0)
+  if ((options & 2) != 0)
   {
-    v33 = [(FCFeedPrewarmOperation *)self contentContext];
-    v34 = [v33 internalContentContext];
-    v35 = [v34 articleRecordSource];
-    if (v4)
+    contentContext2 = [(FCFeedPrewarmOperation *)self contentContext];
+    internalContentContext2 = [contentContext2 internalContentContext];
+    articleRecordSource = [internalContentContext2 articleRecordSource];
+    if (resultCopy)
     {
-      v36 = v4[1];
+      v36 = resultCopy[1];
     }
 
     else
@@ -438,20 +438,20 @@ id __42__FCFeedPrewarmOperation_performOperation__block_invoke_8(uint64_t a1, vo
     }
 
     v37 = v36;
-    v38 = [v35 saveArticleRecords:v37];
+    v38 = [articleRecordSource saveArticleRecords:v37];
   }
 
-  v39 = [(FCFeedPrewarmOperation *)self prewarmRequest];
-  v40 = [v39 options];
+  prewarmRequest2 = [(FCFeedPrewarmOperation *)self prewarmRequest];
+  options2 = [prewarmRequest2 options];
 
-  if ((v40 & 4) != 0)
+  if ((options2 & 4) != 0)
   {
-    v41 = [(FCFeedPrewarmOperation *)self contentContext];
-    v42 = [v41 internalContentContext];
-    v43 = [v42 tagRecordSource];
-    if (v4)
+    contentContext3 = [(FCFeedPrewarmOperation *)self contentContext];
+    internalContentContext3 = [contentContext3 internalContentContext];
+    tagRecordSource = [internalContentContext3 tagRecordSource];
+    if (resultCopy)
     {
-      v44 = v4[3];
+      v44 = resultCopy[3];
     }
 
     else
@@ -460,20 +460,20 @@ id __42__FCFeedPrewarmOperation_performOperation__block_invoke_8(uint64_t a1, vo
     }
 
     v45 = v44;
-    v46 = [v43 saveTagRecords:v45];
+    v46 = [tagRecordSource saveTagRecords:v45];
   }
 
-  v47 = [(FCFeedPrewarmOperation *)self prewarmRequest];
-  v48 = [v47 options];
+  prewarmRequest3 = [(FCFeedPrewarmOperation *)self prewarmRequest];
+  options3 = [prewarmRequest3 options];
 
-  if ((v48 & 8) != 0)
+  if ((options3 & 8) != 0)
   {
-    v49 = [(FCFeedPrewarmOperation *)self contentContext];
-    v50 = [v49 internalContentContext];
-    v51 = [v50 issueRecordSource];
-    if (v4)
+    contentContext4 = [(FCFeedPrewarmOperation *)self contentContext];
+    internalContentContext4 = [contentContext4 internalContentContext];
+    issueRecordSource = [internalContentContext4 issueRecordSource];
+    if (resultCopy)
     {
-      v52 = v4[4];
+      v52 = resultCopy[4];
     }
 
     else
@@ -482,14 +482,14 @@ id __42__FCFeedPrewarmOperation_performOperation__block_invoke_8(uint64_t a1, vo
     }
 
     v53 = v52;
-    v54 = [v51 saveRecords:v53];
+    v54 = [issueRecordSource saveRecords:v53];
   }
 
   v55 = MEMORY[0x1E695DFD8];
-  v79 = v21;
-  if (v4)
+  v79 = date3;
+  if (resultCopy)
   {
-    v56 = v4[2];
+    v56 = resultCopy[2];
   }
 
   else
@@ -507,43 +507,43 @@ id __42__FCFeedPrewarmOperation_performOperation__block_invoke_8(uint64_t a1, vo
   v59 = [v57 fc_arrayByTransformingWithBlock:v88];
   v60 = [v55 setWithArray:v59];
 
-  v61 = [(FCFeedPrewarmOperation *)self prewarmRequest];
-  v62 = [v61 feedRequests];
+  prewarmRequest4 = [(FCFeedPrewarmOperation *)self prewarmRequest];
+  feedRequests = [prewarmRequest4 feedRequests];
   v86[0] = MEMORY[0x1E69E9820];
   v86[1] = 3221225472;
   v86[2] = __45__FCFeedPrewarmOperation__commitQueryResult___block_invoke_2_32;
   v86[3] = &unk_1E7C39890;
   v63 = v60;
   v87 = v63;
-  v64 = [v62 fc_arrayOfObjectsPassingTest:v86];
+  v64 = [feedRequests fc_arrayOfObjectsPassingTest:v86];
 
-  v65 = [(FCFeedPrewarmOperation *)self prewarmRequest];
-  v66 = [v65 feedRequests];
+  prewarmRequest5 = [(FCFeedPrewarmOperation *)self prewarmRequest];
+  feedRequests2 = [prewarmRequest5 feedRequests];
   v84[0] = MEMORY[0x1E69E9820];
   v84[1] = 3221225472;
   v84[2] = __45__FCFeedPrewarmOperation__commitQueryResult___block_invoke_3_34;
   v84[3] = &unk_1E7C39890;
   v67 = v63;
   v85 = v67;
-  v68 = [v66 fc_arrayOfObjectsPassingTest:v84];
+  v68 = [feedRequests2 fc_arrayOfObjectsPassingTest:v84];
 
   v69 = FCOperationLog;
   if (os_log_type_enabled(FCOperationLog, OS_LOG_TYPE_DEFAULT))
   {
     v70 = v69;
-    v71 = [(FCOperation *)self shortOperationDescription];
-    v72 = [v81 fc_millisecondTimeIntervalUntilNow];
+    shortOperationDescription4 = [(FCOperation *)self shortOperationDescription];
+    fc_millisecondTimeIntervalUntilNow3 = [date fc_millisecondTimeIntervalUntilNow];
     *buf = 138543618;
-    v95 = v71;
+    v95 = shortOperationDescription4;
     v96 = 2048;
-    v97 = v72;
+    v97 = fc_millisecondTimeIntervalUntilNow3;
     _os_log_impl(&dword_1B63EF000, v70, OS_LOG_TYPE_DEFAULT, "%{public}@ did commit query response to database, total time = %llums", buf, 0x16u);
   }
 
   v73 = [FCFeedPrewarmResult alloc];
-  if (v4)
+  if (resultCopy)
   {
-    v74 = v4[5];
+    v74 = resultCopy[5];
   }
 
   else

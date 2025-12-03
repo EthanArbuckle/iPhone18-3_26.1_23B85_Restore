@@ -1,28 +1,28 @@
 @interface WFFTPDirectoryListingContentItem
 + (id)contentCategories;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)ownedTypes;
-- (id)generateObjectRepresentationsForClass:(Class)a3 options:(id)a4 error:(id *)a5;
+- (id)generateObjectRepresentationsForClass:(Class)class options:(id)options error:(id *)error;
 @end
 
 @implementation WFFTPDirectoryListingContentItem
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"FTP directories", @"FTP directories");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"FTP directory", @"FTP directory");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -55,17 +55,17 @@
   return v4;
 }
 
-- (id)generateObjectRepresentationsForClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateObjectRepresentationsForClass:(Class)class options:(id)options error:(id *)error
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
-    v8 = [(WFContentItem *)self internalRepresentationType];
-    v9 = [(WFContentItem *)self fileRepresentationForType:v8];
+    internalRepresentationType = [(WFContentItem *)self internalRepresentationType];
+    v9 = [(WFContentItem *)self fileRepresentationForType:internalRepresentationType];
 
     v10 = objc_alloc(MEMORY[0x277CCACA8]);
-    v11 = [v9 data];
-    v12 = [v10 initWithData:v11 encoding:4];
+    data = [v9 data];
+    v12 = [v10 initWithData:data encoding:4];
 
     v13 = [v12 componentsSeparatedByString:@"\r\n"];
     v19[0] = MEMORY[0x277D85DD0];
@@ -75,12 +75,12 @@
     v20 = v9;
     v14 = v9;
     v7 = [v13 if_compactMap:v19];
-    v15 = v20;
+    name = v20;
   }
 
   else
   {
-    if (objc_opt_class() != a3)
+    if (objc_opt_class() != class)
     {
       v7 = 0;
       goto LABEL_7;
@@ -91,8 +91,8 @@
 
     v13 = [v12 if_map:&__block_literal_global_15565];
     v14 = [v13 componentsJoinedByString:@"\n"];
-    v15 = [(WFContentItem *)self name];
-    v17 = [WFObjectRepresentation object:v14 named:v15];
+    name = [(WFContentItem *)self name];
+    v17 = [WFObjectRepresentation object:v14 named:name];
     v21[0] = v17;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
   }

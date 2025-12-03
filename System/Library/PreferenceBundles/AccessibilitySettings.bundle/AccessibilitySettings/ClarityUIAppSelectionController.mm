@@ -1,16 +1,16 @@
 @interface ClarityUIAppSelectionController
-- (BOOL)_shouldPresentPrivacyDisclosureControllerForBundleIdentifier:(id)a3;
+- (BOOL)_shouldPresentPrivacyDisclosureControllerForBundleIdentifier:(id)identifier;
 - (ClarityUIAppSelectionController)init;
 - (id)tableView;
-- (void)_addAppWithBundleIdentifier:(id)a3 didDismissPrivacyDisclosureController:(BOOL)a4;
-- (void)_applicationDidBecomeActive:(id)a3;
-- (void)_presentViewController:(id)a3 animated:(BOOL)a4;
-- (void)cancelButtonTappedForPrivacyDisclosureController:(id)a3;
-- (void)dataSource:(id)a3 didSelectBundleIdentifier:(id)a4;
-- (void)didUpdateApplicationIdentifiersForDataSource:(id)a3;
+- (void)_addAppWithBundleIdentifier:(id)identifier didDismissPrivacyDisclosureController:(BOOL)controller;
+- (void)_applicationDidBecomeActive:(id)active;
+- (void)_presentViewController:(id)controller animated:(BOOL)animated;
+- (void)cancelButtonTappedForPrivacyDisclosureController:(id)controller;
+- (void)dataSource:(id)source didSelectBundleIdentifier:(id)identifier;
+- (void)didUpdateApplicationIdentifiersForDataSource:(id)source;
 - (void)loadView;
-- (void)nextButtonTappedForAppSetupController:(id)a3;
-- (void)nextButtonTappedForBundleIdentifier:(id)a3;
+- (void)nextButtonTappedForAppSetupController:(id)controller;
+- (void)nextButtonTappedForBundleIdentifier:(id)identifier;
 @end
 
 @implementation ClarityUIAppSelectionController
@@ -39,144 +39,144 @@
 
 - (void)loadView
 {
-  v4 = [(ClarityUIAppSelectionController *)self dataSource];
-  v3 = [v4 tableView];
-  [(ClarityUIAppSelectionController *)self setView:v3];
+  dataSource = [(ClarityUIAppSelectionController *)self dataSource];
+  tableView = [dataSource tableView];
+  [(ClarityUIAppSelectionController *)self setView:tableView];
 }
 
 - (id)tableView
 {
   [(ClarityUIAppSelectionController *)self view];
 
-  v3 = [(ClarityUIAppSelectionController *)self dataSource];
-  v4 = [v3 tableView];
+  dataSource = [(ClarityUIAppSelectionController *)self dataSource];
+  tableView = [dataSource tableView];
 
-  return v4;
+  return tableView;
 }
 
-- (void)dataSource:(id)a3 didSelectBundleIdentifier:(id)a4
+- (void)dataSource:(id)source didSelectBundleIdentifier:(id)identifier
 {
-  v5 = a4;
-  if ([(ClarityUIAppSelectionController *)self _shouldPresentPrivacyDisclosureControllerForBundleIdentifier:v5])
+  identifierCopy = identifier;
+  if ([(ClarityUIAppSelectionController *)self _shouldPresentPrivacyDisclosureControllerForBundleIdentifier:identifierCopy])
   {
     v6 = +[CLFLog commonLog];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v5;
+      v10 = identifierCopy;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Presenting privacy disclosure controller for application with bundle identifier %@.", &v9, 0xCu);
     }
 
     v7 = +[ClarityUIAppSetupCoordinator sharedInstance];
-    v8 = [v7 createPrivacyDisclosureControllerForBundleIdentifier:v5];
+    v8 = [v7 createPrivacyDisclosureControllerForBundleIdentifier:identifierCopy];
 
     [v8 setDelegate:self];
     [(ClarityUIAppSelectionController *)self _presentViewController:v8 animated:1];
-    [(ClarityUIAppSelectionController *)self setBundleIdentifierForPrivacyDisclosureController:v5];
+    [(ClarityUIAppSelectionController *)self setBundleIdentifierForPrivacyDisclosureController:identifierCopy];
   }
 
   else
   {
-    [(ClarityUIAppSelectionController *)self _addAppWithBundleIdentifier:v5 didDismissPrivacyDisclosureController:0];
+    [(ClarityUIAppSelectionController *)self _addAppWithBundleIdentifier:identifierCopy didDismissPrivacyDisclosureController:0];
   }
 }
 
-- (void)didUpdateApplicationIdentifiersForDataSource:(id)a3
+- (void)didUpdateApplicationIdentifiersForDataSource:(id)source
 {
-  v4 = [a3 applicationIdentifiers];
+  applicationIdentifiers = [source applicationIdentifiers];
   v3 = +[CLFSettings sharedInstance];
-  [v3 setApplicationBundleIdentifiers:v4];
+  [v3 setApplicationBundleIdentifiers:applicationIdentifiers];
 }
 
-- (void)_addAppWithBundleIdentifier:(id)a3 didDismissPrivacyDisclosureController:(BOOL)a4
+- (void)_addAppWithBundleIdentifier:(id)identifier didDismissPrivacyDisclosureController:(BOOL)controller
 {
-  v4 = a4;
-  v9 = a3;
+  controllerCopy = controller;
+  identifierCopy = identifier;
   v6 = +[ClarityUIAppSetupCoordinator sharedInstance];
-  v7 = [v6 createSetupNavigationControllerForBundleIdentifier:v9];
+  v7 = [v6 createSetupNavigationControllerForBundleIdentifier:identifierCopy];
 
   if (v7)
   {
     [v7 setDelegate:self];
-    [(ClarityUIAppSelectionController *)self _presentViewController:v7 animated:!v4];
+    [(ClarityUIAppSelectionController *)self _presentViewController:v7 animated:!controllerCopy];
   }
 
   else
   {
-    v8 = [(ClarityUIAppSelectionController *)self dataSource];
-    [v8 commitChangeForApplicationIdentifier:v9];
+    dataSource = [(ClarityUIAppSelectionController *)self dataSource];
+    [dataSource commitChangeForApplicationIdentifier:identifierCopy];
   }
 }
 
-- (BOOL)_shouldPresentPrivacyDisclosureControllerForBundleIdentifier:(id)a3
+- (BOOL)_shouldPresentPrivacyDisclosureControllerForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[CLFAppAvailabilityChecker sharedInstance];
-  v5 = [v4 requiresPreflightForBundleIdentifier:v3];
+  v5 = [v4 requiresPreflightForBundleIdentifier:identifierCopy];
 
   return v5;
 }
 
-- (void)_presentViewController:(id)a3 animated:(BOOL)a4
+- (void)_presentViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
+  animatedCopy = animated;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v7 setShouldPresentWithAnimation:v4];
-    [(ClarityUIAppSelectionController *)self presentViewController:v7 animated:0 completion:0];
+    [controllerCopy setShouldPresentWithAnimation:animatedCopy];
+    [(ClarityUIAppSelectionController *)self presentViewController:controllerCopy animated:0 completion:0];
   }
 
   else
   {
-    v6 = [[ClarityOnboardingNavigationWrapperController alloc] initWithController:v7 shouldPresentWithAnimation:v4];
+    v6 = [[ClarityOnboardingNavigationWrapperController alloc] initWithController:controllerCopy shouldPresentWithAnimation:animatedCopy];
     [(ClarityOnboardingNavigationWrapperController *)v6 setModalPresentationStyle:5];
     [(ClarityUIAppSelectionController *)self presentViewController:v6 animated:0 completion:0];
   }
 }
 
-- (void)_applicationDidBecomeActive:(id)a3
+- (void)_applicationDidBecomeActive:(id)active
 {
-  v4 = [(ClarityUIAppSelectionController *)self bundleIdentifierForPrivacyDisclosureController];
-  if (v4 && ![(ClarityUIAppSelectionController *)self _shouldPresentPrivacyDisclosureControllerForBundleIdentifier:v4])
+  bundleIdentifierForPrivacyDisclosureController = [(ClarityUIAppSelectionController *)self bundleIdentifierForPrivacyDisclosureController];
+  if (bundleIdentifierForPrivacyDisclosureController && ![(ClarityUIAppSelectionController *)self _shouldPresentPrivacyDisclosureControllerForBundleIdentifier:bundleIdentifierForPrivacyDisclosureController])
   {
     v5 = _NSConcreteStackBlock;
     v6 = 3221225472;
     v7 = __63__ClarityUIAppSelectionController__applicationDidBecomeActive___block_invoke;
     v8 = &unk_255538;
-    v9 = self;
-    v10 = v4;
+    selfCopy = self;
+    v10 = bundleIdentifierForPrivacyDisclosureController;
     [(ClarityUIAppSelectionController *)self dismissViewControllerAnimated:0 completion:&v5];
-    [(ClarityUIAppSelectionController *)self setBundleIdentifierForPrivacyDisclosureController:0, v5, v6, v7, v8, v9];
+    [(ClarityUIAppSelectionController *)self setBundleIdentifierForPrivacyDisclosureController:0, v5, v6, v7, v8, selfCopy];
   }
 }
 
-- (void)nextButtonTappedForAppSetupController:(id)a3
+- (void)nextButtonTappedForAppSetupController:(id)controller
 {
-  v4 = a3;
-  v5 = [(ClarityUIAppSelectionController *)self dataSource];
-  v6 = [v4 bundleIdentifier];
+  controllerCopy = controller;
+  dataSource = [(ClarityUIAppSelectionController *)self dataSource];
+  bundleIdentifier = [controllerCopy bundleIdentifier];
 
-  [v5 commitChangeForApplicationIdentifier:v6];
+  [dataSource commitChangeForApplicationIdentifier:bundleIdentifier];
 
   [(ClarityUIAppSelectionController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)nextButtonTappedForBundleIdentifier:(id)a3
+- (void)nextButtonTappedForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ClarityUIAppSelectionController *)self dataSource];
-  [v5 commitChangeForApplicationIdentifier:v4];
+  identifierCopy = identifier;
+  dataSource = [(ClarityUIAppSelectionController *)self dataSource];
+  [dataSource commitChangeForApplicationIdentifier:identifierCopy];
 
   [(ClarityUIAppSelectionController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)cancelButtonTappedForPrivacyDisclosureController:(id)a3
+- (void)cancelButtonTappedForPrivacyDisclosureController:(id)controller
 {
-  v4 = [(ClarityUIAppSelectionController *)self bundleIdentifierForPrivacyDisclosureController];
+  bundleIdentifierForPrivacyDisclosureController = [(ClarityUIAppSelectionController *)self bundleIdentifierForPrivacyDisclosureController];
 
-  if (!v4)
+  if (!bundleIdentifierForPrivacyDisclosureController)
   {
     v5 = +[CLFLog commonLog];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))

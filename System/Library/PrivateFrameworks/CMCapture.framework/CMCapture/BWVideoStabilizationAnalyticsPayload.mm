@@ -3,8 +3,8 @@
 - (id)eventDictionary;
 - (void)dealloc;
 - (void)reset;
-- (void)setOverscanHistogram:(id)a3 BinningFactor:(int)a4 Histogram:(id)a5;
-- (void)setSigmaHistogram:(id)a3;
+- (void)setOverscanHistogram:(id)histogram BinningFactor:(int)factor Histogram:(id)a5;
+- (void)setSigmaHistogram:(id)histogram;
 @end
 
 @implementation BWVideoStabilizationAnalyticsPayload
@@ -68,16 +68,16 @@
   [(BWVideoStabilizationAnalyticsPayload *)&v4 dealloc];
 }
 
-- (void)setSigmaHistogram:(id)a3
+- (void)setSigmaHistogram:(id)histogram
 {
-  if ([a3 count] > 6)
+  if ([histogram count] > 6)
   {
     v5 = 7;
   }
 
   else
   {
-    v5 = [a3 count];
+    v5 = [histogram count];
     if (!v5)
     {
       return;
@@ -88,20 +88,20 @@
   sigmaHistogram = self->_sigmaHistogram;
   do
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v6), "floatValue"}];
+    [objc_msgSend(histogram objectAtIndexedSubscript:{v6), "floatValue"}];
     sigmaHistogram[v6++] = v8;
   }
 
   while (v5 != v6);
 }
 
-- (void)setOverscanHistogram:(id)a3 BinningFactor:(int)a4 Histogram:(id)a5
+- (void)setOverscanHistogram:(id)histogram BinningFactor:(int)factor Histogram:(id)a5
 {
   count = self->_count;
   if (count <= 5)
   {
-    self->_portType[count] = a3;
-    self->_binningFactor[count] = a4;
+    self->_portType[count] = histogram;
+    self->_binningFactor[count] = factor;
     if ([a5 count] > 6)
     {
       v8 = 7;
@@ -137,23 +137,23 @@ LABEL_8:
 
 - (id)eventDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_devicePosition), @"devicePosition"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_height), @"height"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_width), @"width"}];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_devicePosition), @"devicePosition"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_height), @"height"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_width), @"width"}];
   *&v4 = self->_startingUIZoom;
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v4), @"startingUIZoom"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v4), @"startingUIZoom"}];
   *&v5 = self->_minUIZoom;
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v5), @"minUIZoom"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v5), @"minUIZoom"}];
   *&v6 = self->_maxUIZoom;
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v6), @"maxUIZoom"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_averageLuxValue), @"averageLuxValue"}];
-  [v3 setObject:self->_videoType forKeyedSubscript:@"videoType"];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v6), @"maxUIZoom"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", self->_averageLuxValue), @"averageLuxValue"}];
+  [dictionary setObject:self->_videoType forKeyedSubscript:@"videoType"];
   for (i = 0; i != 7; ++i)
   {
     v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"sigmaHist%d", i];
     *&v9 = self->_sigmaHistogram[i];
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v9), v8}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v9), v8}];
   }
 
   if (self->_count)
@@ -169,7 +169,7 @@ LABEL_8:
       {
         v15 = [(NSString *)v13 stringByAppendingFormat:@"%doverscanHist%d", v14, v12];
         *&v16 = (*overscanHistogram)[v12];
-        [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v16), v15}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v16), v15}];
         ++v12;
       }
 
@@ -181,7 +181,7 @@ LABEL_8:
     while (v10 < self->_count);
   }
 
-  return v3;
+  return dictionary;
 }
 
 @end

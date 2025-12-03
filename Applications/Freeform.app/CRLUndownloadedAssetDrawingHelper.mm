@@ -1,34 +1,34 @@
 @interface CRLUndownloadedAssetDrawingHelper
 - (_TtC8Freeform33CRLUndownloadedAssetDrawingHelper)init;
-- (_TtC8Freeform33CRLUndownloadedAssetDrawingHelper)initWithRep:(id)a3;
-- (_TtC8Freeform33CRLUndownloadedAssetDrawingHelper)initWithRep:(id)a3 asset:(id)a4;
-- (void)drawInContext:(CGContext *)a3;
+- (_TtC8Freeform33CRLUndownloadedAssetDrawingHelper)initWithRep:(id)rep;
+- (_TtC8Freeform33CRLUndownloadedAssetDrawingHelper)initWithRep:(id)rep asset:(id)asset;
+- (void)drawInContext:(CGContext *)context;
 @end
 
 @implementation CRLUndownloadedAssetDrawingHelper
 
-- (_TtC8Freeform33CRLUndownloadedAssetDrawingHelper)initWithRep:(id)a3 asset:(id)a4
+- (_TtC8Freeform33CRLUndownloadedAssetDrawingHelper)initWithRep:(id)rep asset:(id)asset
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = sub_101252E28(v5, v6);
+  repCopy = rep;
+  assetCopy = asset;
+  v7 = sub_101252E28(repCopy, assetCopy);
 
   return v7;
 }
 
-- (_TtC8Freeform33CRLUndownloadedAssetDrawingHelper)initWithRep:(id)a3
+- (_TtC8Freeform33CRLUndownloadedAssetDrawingHelper)initWithRep:(id)rep
 {
-  v3 = a3;
+  repCopy = rep;
   v4 = sub_1012538FC();
 
   return v4;
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  v4 = a3;
-  v5 = self;
-  sub_101251240(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_101251240(contextCopy);
 }
 
 - (_TtC8Freeform33CRLUndownloadedAssetDrawingHelper)init

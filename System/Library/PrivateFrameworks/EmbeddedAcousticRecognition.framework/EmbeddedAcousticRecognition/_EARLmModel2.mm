@@ -1,13 +1,13 @@
 @interface _EARLmModel2
-+ (id)deserializeModelData:(id)a3;
++ (id)deserializeModelData:(id)data;
 + (void)initialize;
-- (BOOL)writeToDirectory:(id)a3;
+- (BOOL)writeToDirectory:(id)directory;
 - (id).cxx_construct;
-- (id)_initWithModel:(shared_ptr<quasar::LmModel2>)a3;
+- (id)_initWithModel:(shared_ptr<quasar::LmModel2>)model;
 - (id)metrics;
-- (id)serializedModelWithLanguage:(id)a3 modelData:(id)a4 oovs:(id)a5;
+- (id)serializedModelWithLanguage:(id)language modelData:(id)data oovs:(id)oovs;
 - (shared_ptr<quasar::LmModel2>)model;
-- (void)setProtectionClass:(id)a3;
+- (void)setProtectionClass:(id)class;
 @end
 
 @implementation _EARLmModel2
@@ -15,19 +15,19 @@
 + (void)initialize
 {
   v3 = objc_opt_class();
-  if (v3 == a1)
+  if (v3 == self)
   {
 
     EARLogger::initializeLogging(v3);
   }
 }
 
-- (id)_initWithModel:(shared_ptr<quasar::LmModel2>)a3
+- (id)_initWithModel:(shared_ptr<quasar::LmModel2>)model
 {
-  ptr = a3.__ptr_;
-  if (*a3.__ptr_)
+  ptr = model.__ptr_;
+  if (*model.__ptr_)
   {
-    v4 = *a3.__ptr_ + *(**a3.__ptr_ - 24);
+    v4 = *model.__ptr_ + *(**model.__ptr_ - 24);
   }
 
   else
@@ -35,7 +35,7 @@
     v4 = 0;
   }
 
-  v5 = *(a3.__ptr_ + 1);
+  v5 = *(model.__ptr_ + 1);
   v13 = v4;
   v14 = v5;
   if (v5)
@@ -45,7 +45,7 @@
 
   v12.receiver = self;
   v12.super_class = _EARLmModel2;
-  v6 = [(_EARLmHandle *)&v12 _initWithHandle:&v13, a3.__cntrl_];
+  v6 = [(_EARLmHandle *)&v12 _initWithHandle:&v13, model.__cntrl_];
   if (v14)
   {
     std::__shared_weak_count::__release_shared[abi:ne200100](v14);
@@ -81,14 +81,14 @@ LABEL_16:
   return v10;
 }
 
-- (BOOL)writeToDirectory:(id)a3
+- (BOOL)writeToDirectory:(id)directory
 {
   __p[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  directoryCopy = directory;
   ptr = self->_model.__ptr_;
-  if (v4)
+  if (directoryCopy)
   {
-    [v4 ear_toString];
+    [directoryCopy ear_toString];
   }
 
   else
@@ -99,12 +99,12 @@ LABEL_16:
   quasar::LmModel2::write(ptr, __p);
 }
 
-- (void)setProtectionClass:(id)a3
+- (void)setProtectionClass:(id)class
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (*MEMORY[0x1E696A378] == v4)
+  classCopy = class;
+  v5 = classCopy;
+  if (*MEMORY[0x1E696A378] == classCopy)
   {
     ptr = self->_model.__ptr_;
     v8 = 1;
@@ -113,21 +113,21 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (*MEMORY[0x1E696A380] == v4)
+  if (*MEMORY[0x1E696A380] == classCopy)
   {
     ptr = self->_model.__ptr_;
     v8 = 2;
     goto LABEL_12;
   }
 
-  if (*MEMORY[0x1E696A388] == v4)
+  if (*MEMORY[0x1E696A388] == classCopy)
   {
     ptr = self->_model.__ptr_;
     v8 = 3;
     goto LABEL_12;
   }
 
-  if (*MEMORY[0x1E696A3A8] == v4)
+  if (*MEMORY[0x1E696A3A8] == classCopy)
   {
     ptr = self->_model.__ptr_;
     v8 = 4;
@@ -155,13 +155,13 @@ LABEL_13:
   return v2;
 }
 
-- (id)serializedModelWithLanguage:(id)a3 modelData:(id)a4 oovs:(id)a5
+- (id)serializedModelWithLanguage:(id)language modelData:(id)data oovs:(id)oovs
 {
   v26[5] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
+  languageCopy = language;
+  dataCopy = data;
+  oovsCopy = oovs;
+  v11 = [languageCopy stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
 
   v12 = MEMORY[0x1E696AEC0];
   kaldi::quasar::Vocab::OOvWord(self->_model.__ptr_, &__p);
@@ -181,9 +181,9 @@ LABEL_13:
     operator delete(__p.__r_.__value_.__l.__data_);
   }
 
-  v15 = [v9 _ear_sha256];
-  v16 = v15;
-  if (v10 && v11 && v14 && v15)
+  _ear_sha256 = [dataCopy _ear_sha256];
+  v16 = _ear_sha256;
+  if (oovsCopy && v11 && v14 && _ear_sha256)
   {
     v25[0] = @"language";
     v25[1] = @"assetVersion";
@@ -191,10 +191,10 @@ LABEL_13:
     v26[1] = v14;
     v25[2] = @"modelTrainingData";
     v25[3] = @"dataHash";
-    v26[2] = v9;
-    v26[3] = v15;
+    v26[2] = dataCopy;
+    v26[3] = _ear_sha256;
     v25[4] = @"oovs";
-    v26[4] = v10;
+    v26[4] = oovsCopy;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:5];
     v23 = 0;
     v18 = [MEMORY[0x1E696AE40] dataWithPropertyList:v17 format:200 options:0 error:&v23];
@@ -229,10 +229,10 @@ LABEL_13:
   return v18;
 }
 
-+ (id)deserializeModelData:(id)a3
++ (id)deserializeModelData:(id)data
 {
   v8 = 0;
-  v3 = [MEMORY[0x1E696AE40] propertyListWithData:a3 options:0 format:0 error:&v8];
+  v3 = [MEMORY[0x1E696AE40] propertyListWithData:data options:0 format:0 error:&v8];
   v4 = v8;
   if (v3)
   {

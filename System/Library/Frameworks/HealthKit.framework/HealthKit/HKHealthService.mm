@@ -1,40 +1,40 @@
 @interface HKHealthService
-+ (id)localizedHealthServiceType:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)localizedHealthServiceType:(int64_t)type;
+- (BOOL)isEqual:(id)equal;
 - (HKHealthService)init;
-- (HKHealthService)initWithCoder:(id)a3;
-- (HKHealthService)initWithType:(int64_t)a3 identifier:(id)a4 name:(id)a5;
-- (id)_initWithType:(int64_t)a3 identifier:(id)a4 name:(id)a5 serviceId:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HKHealthService)initWithCoder:(id)coder;
+- (HKHealthService)initWithType:(int64_t)type identifier:(id)identifier name:(id)name;
+- (id)_initWithType:(int64_t)type identifier:(id)identifier name:(id)name serviceId:(id)id;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKHealthService
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(HKHealthService *)self type];
-  v7 = [(HKHealthService *)self identifier];
-  v8 = [v5 initWithType:v6 identifier:v7 name:0];
+  type = [(HKHealthService *)self type];
+  identifier = [(HKHealthService *)self identifier];
+  v8 = [v5 initWithType:type identifier:identifier name:0];
 
   if (v8)
   {
     [(HKHealthService *)self lastConnection];
     v8[4] = v9;
-    v10 = [(HKHealthService *)self name];
-    v11 = [v10 copyWithZone:a3];
+    name = [(HKHealthService *)self name];
+    v11 = [name copyWithZone:zone];
     v12 = v8[3];
     v8[3] = v11;
 
-    v13 = [(HKHealthService *)self identifier];
-    v14 = [v13 copyWithZone:a3];
+    identifier2 = [(HKHealthService *)self identifier];
+    v14 = [identifier2 copyWithZone:zone];
     v15 = v8[2];
     v8[2] = v14;
 
-    v16 = [(HKHealthService *)self serviceId];
-    v17 = [v16 copyWithZone:a3];
+    serviceId = [(HKHealthService *)self serviceId];
+    v17 = [serviceId copyWithZone:zone];
     v18 = v8[5];
     v8[5] = v17;
   }
@@ -44,35 +44,35 @@
 
 - (HKHealthService)init
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [(HKHealthService *)self initWithType:-1 identifier:v3 name:@"HealthService"];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v4 = [(HKHealthService *)self initWithType:-1 identifier:uUID name:@"HealthService"];
 
   return v4;
 }
 
-- (HKHealthService)initWithType:(int64_t)a3 identifier:(id)a4 name:(id)a5
+- (HKHealthService)initWithType:(int64_t)type identifier:(id)identifier name:(id)name
 {
-  v8 = a4;
-  v9 = a5;
-  if (a3 >= 4)
+  identifierCopy = identifier;
+  nameCopy = name;
+  if (type >= 4)
   {
     v10 = MEMORY[0x1E695DF30];
     v11 = *MEMORY[0x1E695D940];
-    v12 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v12 = [MEMORY[0x1E696AD98] numberWithInteger:type];
     [v10 raise:v11 format:{@"Invalid HKHealthServiceType %@", v12}];
   }
 
-  v13 = [(HKHealthService *)self _initWithType:a3 identifier:v8 name:v9 serviceId:0];
+  v13 = [(HKHealthService *)self _initWithType:type identifier:identifierCopy name:nameCopy serviceId:0];
 
   return v13;
 }
 
-- (id)_initWithType:(int64_t)a3 identifier:(id)a4 name:(id)a5 serviceId:(id)a6
+- (id)_initWithType:(int64_t)type identifier:(id)identifier name:(id)name serviceId:(id)id
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v11)
+  identifierCopy = identifier;
+  nameCopy = name;
+  idCopy = id;
+  if (!identifierCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Invalid nil identifier."];
   }
@@ -83,11 +83,11 @@
   v15 = v14;
   if (v14)
   {
-    v14->_type = a3;
-    objc_storeStrong(&v14->_identifier, a4);
-    if (v12)
+    v14->_type = type;
+    objc_storeStrong(&v14->_identifier, identifier);
+    if (nameCopy)
     {
-      v16 = v12;
+      v16 = nameCopy;
     }
 
     else
@@ -97,7 +97,7 @@
 
     objc_storeStrong(&v15->_name, v16);
     v15->_lastConnection = 0.0;
-    v17 = [v13 copy];
+    v17 = [idCopy copy];
     serviceId = v15->_serviceId;
     v15->_serviceId = v17;
   }
@@ -105,10 +105,10 @@
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -118,7 +118,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       type = self->_type;
       v7 = v5->_type;
       v8 = [(NSUUID *)self->_identifier isEqual:v5->_identifier];
@@ -162,26 +162,26 @@
   return v9;
 }
 
-- (HKHealthService)initWithCoder:(id)a3
+- (HKHealthService)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = HKHealthService;
   v5 = [(HKHealthService *)&v14 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"HealthServiceType"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HealthDeviceName"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"HealthServiceType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HealthDeviceName"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HealthDeviceIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HealthDeviceIdentifier"];
     identifier = v5->_identifier;
     v5->_identifier = v8;
 
-    [v4 decodeDoubleForKey:@"HealthDeviceLastConnection"];
+    [coderCopy decodeDoubleForKey:@"HealthDeviceLastConnection"];
     v5->_lastConnection = v10;
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HealthServiceId"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HealthServiceId"];
     serviceId = v5->_serviceId;
     v5->_serviceId = v11;
   }
@@ -189,15 +189,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"HealthServiceType"];
-  [v5 encodeObject:self->_name forKey:@"HealthDeviceName"];
-  [v5 encodeObject:self->_identifier forKey:@"HealthDeviceIdentifier"];
-  [v5 encodeDouble:@"HealthDeviceLastConnection" forKey:self->_lastConnection];
-  [v5 encodeObject:self->_serviceId forKey:@"HealthServiceId"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"HealthServiceType"];
+  [coderCopy encodeObject:self->_name forKey:@"HealthDeviceName"];
+  [coderCopy encodeObject:self->_identifier forKey:@"HealthDeviceIdentifier"];
+  [coderCopy encodeDouble:@"HealthDeviceLastConnection" forKey:self->_lastConnection];
+  [coderCopy encodeObject:self->_serviceId forKey:@"HealthServiceId"];
 }
 
 - (id)description
@@ -205,9 +205,9 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(NSUUID *)self->_identifier UUIDString];
+  uUIDString = [(NSUUID *)self->_identifier UUIDString];
   v7 = [HKHealthService localizedHealthServiceType:self->_type];
-  v8 = [v3 stringWithFormat:@"%@ %@: %@ (%@)", v5, v6, v7, self->_name];
+  v8 = [v3 stringWithFormat:@"%@ %@: %@ (%@)", v5, uUIDString, v7, self->_name];
 
   if (self->_serviceId)
   {
@@ -219,11 +219,11 @@
   return v8;
 }
 
-+ (id)localizedHealthServiceType:(int64_t)a3
++ (id)localizedHealthServiceType:(int64_t)type
 {
-  if (a3 <= 100)
+  if (type <= 100)
   {
-    switch(a3)
+    switch(type)
     {
       case 0:
         return @"Heart Rate Monitor";
@@ -236,14 +236,14 @@
     return @"Unknown";
   }
 
-  if (a3 > 102)
+  if (type > 102)
   {
-    if (a3 == 103)
+    if (type == 103)
     {
       return @"Glucose Monitor";
     }
 
-    if (a3 == 104)
+    if (type == 104)
     {
       return @"Health Thermometer";
     }
@@ -251,7 +251,7 @@
     return @"Unknown";
   }
 
-  if (a3 == 101)
+  if (type == 101)
   {
     return @"Blood Pressure Monitor";
   }

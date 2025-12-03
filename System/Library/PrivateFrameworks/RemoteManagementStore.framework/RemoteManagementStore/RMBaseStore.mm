@@ -1,70 +1,70 @@
 @interface RMBaseStore
-- (BOOL)isEqualToStore:(id)a3;
-- (BOOL)isValidDeclaration:(id)a3;
-- (RMBaseStore)initWithCoder:(id)a3;
-- (RMBaseStore)initWithIdentifier:(id)a3 type:(int64_t)a4 scope:(int64_t)a5 name:(id)a6 description:(id)a7 enrollmentURL:(id)a8 accountIdentifier:(id)a9 defaultToInteractive:(BOOL)a10 dataSeparated:(BOOL)a11 personaIdentifier:(id)a12;
-- (id)metadataReturningError:(id *)a3;
-- (id)metadataValueForKey:(id)a3 error:(id *)a4;
-- (void)declarationManifestWithCompletionHandler:(id)a3;
-- (void)declarationWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)declarationsWithCompletionHandler:(id)a3;
-- (void)declarationsWithTypes:(id)a3 completionHandler:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)fetchDataAtURL:(id)a3 completionHandler:(id)a4;
-- (void)waitForActiveAndValidDeclarations:(id)a3 timeout:(double)a4 completionHandler:(id)a5;
-- (void)waitForProcessingOfDeclarations:(id)a3 timeout:(double)a4 completionHandler:(id)a5;
+- (BOOL)isEqualToStore:(id)store;
+- (BOOL)isValidDeclaration:(id)declaration;
+- (RMBaseStore)initWithCoder:(id)coder;
+- (RMBaseStore)initWithIdentifier:(id)identifier type:(int64_t)type scope:(int64_t)scope name:(id)name description:(id)description enrollmentURL:(id)l accountIdentifier:(id)accountIdentifier defaultToInteractive:(BOOL)self0 dataSeparated:(BOOL)self1 personaIdentifier:(id)self2;
+- (id)metadataReturningError:(id *)error;
+- (id)metadataValueForKey:(id)key error:(id *)error;
+- (void)declarationManifestWithCompletionHandler:(id)handler;
+- (void)declarationWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)declarationsWithCompletionHandler:(id)handler;
+- (void)declarationsWithTypes:(id)types completionHandler:(id)handler;
+- (void)encodeWithCoder:(id)coder;
+- (void)fetchDataAtURL:(id)l completionHandler:(id)handler;
+- (void)waitForActiveAndValidDeclarations:(id)declarations timeout:(double)timeout completionHandler:(id)handler;
+- (void)waitForProcessingOfDeclarations:(id)declarations timeout:(double)timeout completionHandler:(id)handler;
 @end
 
 @implementation RMBaseStore
 
-- (RMBaseStore)initWithIdentifier:(id)a3 type:(int64_t)a4 scope:(int64_t)a5 name:(id)a6 description:(id)a7 enrollmentURL:(id)a8 accountIdentifier:(id)a9 defaultToInteractive:(BOOL)a10 dataSeparated:(BOOL)a11 personaIdentifier:(id)a12
+- (RMBaseStore)initWithIdentifier:(id)identifier type:(int64_t)type scope:(int64_t)scope name:(id)name description:(id)description enrollmentURL:(id)l accountIdentifier:(id)accountIdentifier defaultToInteractive:(BOOL)self0 dataSeparated:(BOOL)self1 personaIdentifier:(id)self2
 {
-  v16 = a3;
-  v17 = a6;
-  v18 = a7;
-  v29 = a8;
-  v19 = a9;
-  v20 = a12;
+  identifierCopy = identifier;
+  nameCopy = name;
+  descriptionCopy = description;
+  lCopy = l;
+  accountIdentifierCopy = accountIdentifier;
+  personaIdentifierCopy = personaIdentifier;
   v30.receiver = self;
   v30.super_class = RMBaseStore;
   v21 = [(RMBaseStore *)&v30 init];
   if (v21)
   {
-    v22 = [v16 copy];
+    v22 = [identifierCopy copy];
     identifier = v21->_identifier;
     v21->_identifier = v22;
 
-    v21->_type = a4;
-    v21->_scope = a5;
-    objc_storeStrong(&v21->_name, a6);
-    objc_storeStrong(&v21->_storeDescription, a7);
-    objc_storeStrong(&v21->_enrollmentURL, a8);
-    v24 = [v19 copy];
+    v21->_type = type;
+    v21->_scope = scope;
+    objc_storeStrong(&v21->_name, name);
+    objc_storeStrong(&v21->_storeDescription, description);
+    objc_storeStrong(&v21->_enrollmentURL, l);
+    v24 = [accountIdentifierCopy copy];
     accountIdentifier = v21->_accountIdentifier;
     v21->_accountIdentifier = v24;
 
-    v21->_defaultToInteractive = a10;
-    v21->_dataSeparated = a11;
-    objc_storeStrong(&v21->_personaIdentifier, a12);
+    v21->_defaultToInteractive = interactive;
+    v21->_dataSeparated = separated;
+    objc_storeStrong(&v21->_personaIdentifier, personaIdentifier);
   }
 
   return v21;
 }
 
-- (void)declarationManifestWithCompletionHandler:(id)a3
+- (void)declarationManifestWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RMBaseStore *)self xpcConnection];
-  v6 = [v5 connection];
+  handlerCopy = handler;
+  xpcConnection = [(RMBaseStore *)self xpcConnection];
+  connection = [xpcConnection connection];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __56__RMBaseStore_declarationManifestWithCompletionHandler___block_invoke;
   v13[3] = &unk_279B05310;
-  v7 = v4;
+  v7 = handlerCopy;
   v14 = v7;
-  v8 = [v6 remoteObjectProxyWithErrorHandler:v13];
+  v8 = [connection remoteObjectProxyWithErrorHandler:v13];
 
-  v9 = [(RMBaseStore *)self identifier];
+  identifier = [(RMBaseStore *)self identifier];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __56__RMBaseStore_declarationManifestWithCompletionHandler___block_invoke_29;
@@ -72,7 +72,7 @@
   v11[4] = self;
   v12 = v7;
   v10 = v7;
-  [v8 declarationManifestForStoreIdentifier:v9 completionHandler:v11];
+  [v8 declarationManifestForStoreIdentifier:identifier completionHandler:v11];
 }
 
 void __56__RMBaseStore_declarationManifestWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -115,21 +115,21 @@ void __56__RMBaseStore_declarationManifestWithCompletionHandler___block_invoke_2
   [*(a1 + 32) xpcConnection];
 }
 
-- (void)declarationWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)declarationWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RMBaseStore *)self xpcConnection];
-  v9 = [v8 connection];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  xpcConnection = [(RMBaseStore *)self xpcConnection];
+  connection = [xpcConnection connection];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __59__RMBaseStore_declarationWithIdentifier_completionHandler___block_invoke;
   v16[3] = &unk_279B05310;
-  v10 = v6;
+  v10 = handlerCopy;
   v17 = v10;
-  v11 = [v9 remoteObjectProxyWithErrorHandler:v16];
+  v11 = [connection remoteObjectProxyWithErrorHandler:v16];
 
-  v12 = [(RMBaseStore *)self identifier];
+  identifier = [(RMBaseStore *)self identifier];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __59__RMBaseStore_declarationWithIdentifier_completionHandler___block_invoke_31;
@@ -137,7 +137,7 @@ void __56__RMBaseStore_declarationManifestWithCompletionHandler___block_invoke_2
   v14[4] = self;
   v15 = v10;
   v13 = v10;
-  [v11 declarationWithIdentifier:v7 storeIdentifier:v12 completionHandler:v14];
+  [v11 declarationWithIdentifier:identifierCopy storeIdentifier:identifier completionHandler:v14];
 }
 
 void __59__RMBaseStore_declarationWithIdentifier_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -180,20 +180,20 @@ void __59__RMBaseStore_declarationWithIdentifier_completionHandler___block_invok
   [*(a1 + 32) xpcConnection];
 }
 
-- (void)declarationsWithCompletionHandler:(id)a3
+- (void)declarationsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RMBaseStore *)self xpcConnection];
-  v6 = [v5 connection];
+  handlerCopy = handler;
+  xpcConnection = [(RMBaseStore *)self xpcConnection];
+  connection = [xpcConnection connection];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __49__RMBaseStore_declarationsWithCompletionHandler___block_invoke;
   v13[3] = &unk_279B05310;
-  v7 = v4;
+  v7 = handlerCopy;
   v14 = v7;
-  v8 = [v6 remoteObjectProxyWithErrorHandler:v13];
+  v8 = [connection remoteObjectProxyWithErrorHandler:v13];
 
-  v9 = [(RMBaseStore *)self identifier];
+  identifier = [(RMBaseStore *)self identifier];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __49__RMBaseStore_declarationsWithCompletionHandler___block_invoke_33;
@@ -201,7 +201,7 @@ void __59__RMBaseStore_declarationWithIdentifier_completionHandler___block_invok
   v11[4] = self;
   v12 = v7;
   v10 = v7;
-  [v8 declarationsForStoreIdentifier:v9 completionHandler:v11];
+  [v8 declarationsForStoreIdentifier:identifier completionHandler:v11];
 }
 
 void __49__RMBaseStore_declarationsWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -244,21 +244,21 @@ void __49__RMBaseStore_declarationsWithCompletionHandler___block_invoke_33(uint6
   [*(a1 + 32) xpcConnection];
 }
 
-- (void)declarationsWithTypes:(id)a3 completionHandler:(id)a4
+- (void)declarationsWithTypes:(id)types completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RMBaseStore *)self xpcConnection];
-  v9 = [v8 connection];
+  handlerCopy = handler;
+  typesCopy = types;
+  xpcConnection = [(RMBaseStore *)self xpcConnection];
+  connection = [xpcConnection connection];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __55__RMBaseStore_declarationsWithTypes_completionHandler___block_invoke;
   v16[3] = &unk_279B05310;
-  v10 = v6;
+  v10 = handlerCopy;
   v17 = v10;
-  v11 = [v9 remoteObjectProxyWithErrorHandler:v16];
+  v11 = [connection remoteObjectProxyWithErrorHandler:v16];
 
-  v12 = [(RMBaseStore *)self identifier];
+  identifier = [(RMBaseStore *)self identifier];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __55__RMBaseStore_declarationsWithTypes_completionHandler___block_invoke_35;
@@ -266,7 +266,7 @@ void __49__RMBaseStore_declarationsWithCompletionHandler___block_invoke_33(uint6
   v14[4] = self;
   v15 = v10;
   v13 = v10;
-  [v11 declarationsWithTypes:v7 storeIdentifier:v12 completionHandler:v14];
+  [v11 declarationsWithTypes:typesCopy storeIdentifier:identifier completionHandler:v14];
 }
 
 void __55__RMBaseStore_declarationsWithTypes_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -309,11 +309,11 @@ void __55__RMBaseStore_declarationsWithTypes_completionHandler___block_invoke_35
   [*(a1 + 32) xpcConnection];
 }
 
-- (BOOL)isValidDeclaration:(id)a3
+- (BOOL)isValidDeclaration:(id)declaration
 {
   v4 = MEMORY[0x277D46038];
-  v5 = a3;
-  LOBYTE(self) = [v5 isSupportedForPlatform:objc_msgSend(v4 scope:"currentPlatform") enrollmentType:{-[RMBaseStore scope](self, "scope"), -[RMBaseStore type](self, "type")}];
+  declarationCopy = declaration;
+  LOBYTE(self) = [declarationCopy isSupportedForPlatform:objc_msgSend(v4 scope:"currentPlatform") enrollmentType:{-[RMBaseStore scope](self, "scope"), -[RMBaseStore type](self, "type")}];
 
   return self;
 }
@@ -357,21 +357,21 @@ void __77__RMBaseStore_setShouldInstallConfiguration_shouldInstall_completionHan
   [*(a1 + 32) xpcConnection];
 }
 
-- (void)fetchDataAtURL:(id)a3 completionHandler:(id)a4
+- (void)fetchDataAtURL:(id)l completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RMBaseStore *)self xpcConnection];
-  v9 = [v8 connection];
+  handlerCopy = handler;
+  lCopy = l;
+  xpcConnection = [(RMBaseStore *)self xpcConnection];
+  connection = [xpcConnection connection];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __48__RMBaseStore_fetchDataAtURL_completionHandler___block_invoke;
   v16[3] = &unk_279B05310;
-  v10 = v6;
+  v10 = handlerCopy;
   v17 = v10;
-  v11 = [v9 remoteObjectProxyWithErrorHandler:v16];
+  v11 = [connection remoteObjectProxyWithErrorHandler:v16];
 
-  v12 = [(RMBaseStore *)self identifier];
+  identifier = [(RMBaseStore *)self identifier];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __48__RMBaseStore_fetchDataAtURL_completionHandler___block_invoke_37;
@@ -379,7 +379,7 @@ void __77__RMBaseStore_setShouldInstallConfiguration_shouldInstall_completionHan
   v14[4] = self;
   v15 = v10;
   v13 = v10;
-  [v11 fetchDataAtURL:v7 storeIdentifier:v12 completionHandler:v14];
+  [v11 fetchDataAtURL:lCopy storeIdentifier:identifier completionHandler:v14];
 }
 
 void __48__RMBaseStore_fetchDataAtURL_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -422,21 +422,21 @@ void __48__RMBaseStore_fetchDataAtURL_completionHandler___block_invoke_37(uint64
   [*(a1 + 32) xpcConnection];
 }
 
-- (void)waitForActiveAndValidDeclarations:(id)a3 timeout:(double)a4 completionHandler:(id)a5
+- (void)waitForActiveAndValidDeclarations:(id)declarations timeout:(double)timeout completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(RMBaseStore *)self xpcConnection];
-  v11 = [v10 connection];
+  handlerCopy = handler;
+  declarationsCopy = declarations;
+  xpcConnection = [(RMBaseStore *)self xpcConnection];
+  connection = [xpcConnection connection];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __75__RMBaseStore_waitForActiveAndValidDeclarations_timeout_completionHandler___block_invoke;
   v18[3] = &unk_279B05310;
-  v12 = v8;
+  v12 = handlerCopy;
   v19 = v12;
-  v13 = [v11 remoteObjectProxyWithErrorHandler:v18];
+  v13 = [connection remoteObjectProxyWithErrorHandler:v18];
 
-  v14 = [(RMBaseStore *)self identifier];
+  identifier = [(RMBaseStore *)self identifier];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __75__RMBaseStore_waitForActiveAndValidDeclarations_timeout_completionHandler___block_invoke_39;
@@ -444,7 +444,7 @@ void __48__RMBaseStore_fetchDataAtURL_completionHandler___block_invoke_37(uint64
   v16[4] = self;
   v17 = v12;
   v15 = v12;
-  [v13 waitForActiveAndValidDeclarations:v9 timeout:v14 storeIdentifier:v16 completionHandler:a4];
+  [v13 waitForActiveAndValidDeclarations:declarationsCopy timeout:identifier storeIdentifier:v16 completionHandler:timeout];
 }
 
 void __75__RMBaseStore_waitForActiveAndValidDeclarations_timeout_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -486,21 +486,21 @@ void __75__RMBaseStore_waitForActiveAndValidDeclarations_timeout_completionHandl
   [*(a1 + 32) xpcConnection];
 }
 
-- (void)waitForProcessingOfDeclarations:(id)a3 timeout:(double)a4 completionHandler:(id)a5
+- (void)waitForProcessingOfDeclarations:(id)declarations timeout:(double)timeout completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(RMBaseStore *)self xpcConnection];
-  v11 = [v10 connection];
+  handlerCopy = handler;
+  declarationsCopy = declarations;
+  xpcConnection = [(RMBaseStore *)self xpcConnection];
+  connection = [xpcConnection connection];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __73__RMBaseStore_waitForProcessingOfDeclarations_timeout_completionHandler___block_invoke;
   v18[3] = &unk_279B05310;
-  v12 = v8;
+  v12 = handlerCopy;
   v19 = v12;
-  v13 = [v11 remoteObjectProxyWithErrorHandler:v18];
+  v13 = [connection remoteObjectProxyWithErrorHandler:v18];
 
-  v14 = [(RMBaseStore *)self identifier];
+  identifier = [(RMBaseStore *)self identifier];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __73__RMBaseStore_waitForProcessingOfDeclarations_timeout_completionHandler___block_invoke_40;
@@ -508,7 +508,7 @@ void __75__RMBaseStore_waitForActiveAndValidDeclarations_timeout_completionHandl
   v16[4] = self;
   v17 = v12;
   v15 = v12;
-  [v13 waitForProcessingOfDeclarations:v9 timeout:v14 storeIdentifier:v16 completionHandler:a4];
+  [v13 waitForProcessingOfDeclarations:declarationsCopy timeout:identifier storeIdentifier:v16 completionHandler:timeout];
 }
 
 void __73__RMBaseStore_waitForProcessingOfDeclarations_timeout_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -550,11 +550,11 @@ void __73__RMBaseStore_waitForProcessingOfDeclarations_timeout_completionHandler
   [*(a1 + 32) xpcConnection];
 }
 
-- (id)metadataReturningError:(id *)a3
+- (id)metadataReturningError:(id *)error
 {
-  v5 = [(RMBaseStore *)self xpcConnection];
-  v6 = [v5 connection];
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_0];
+  xpcConnection = [(RMBaseStore *)self xpcConnection];
+  connection = [xpcConnection connection];
+  v7 = [connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_0];
 
   v23 = 0;
   v24[0] = &v23;
@@ -568,34 +568,34 @@ void __73__RMBaseStore_waitForProcessingOfDeclarations_timeout_completionHandler
   v21[2] = __Block_byref_object_copy_;
   v21[3] = __Block_byref_object_dispose_;
   v22 = 0;
-  v8 = [(RMBaseStore *)self identifier];
+  identifier = [(RMBaseStore *)self identifier];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __38__RMBaseStore_metadataReturningError___block_invoke_41;
   v19[3] = &unk_279B05420;
   v19[4] = &v23;
   v19[5] = &v20;
-  [v7 metadataForStoreIdentifier:v8 completionHandler:v19];
+  [v7 metadataForStoreIdentifier:identifier completionHandler:v19];
 
   if (*(v21[0] + 40))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       [(RMBaseStore *)v21 metadataReturningError:v9, v10, v11, v12, v13, v14, v15];
-      if (a3)
+      if (error)
       {
 LABEL_4:
         v16 = *(v21[0] + 40);
         if (v16)
         {
           v17 = 0;
-          *a3 = v16;
+          *error = v16;
           goto LABEL_11;
         }
       }
     }
 
-    else if (a3)
+    else if (error)
     {
       goto LABEL_4;
     }
@@ -640,18 +640,18 @@ void __38__RMBaseStore_metadataReturningError___block_invoke_41(uint64_t a1, voi
   *(v9 + 40) = v6;
 }
 
-- (id)metadataValueForKey:(id)a3 error:(id *)a4
+- (id)metadataValueForKey:(id)key error:(id *)error
 {
-  v6 = a3;
-  v7 = [(RMBaseStore *)self xpcConnection];
-  v8 = [v7 connection];
+  keyCopy = key;
+  xpcConnection = [(RMBaseStore *)self xpcConnection];
+  connection = [xpcConnection connection];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __41__RMBaseStore_metadataValueForKey_error___block_invoke;
   v22[3] = &unk_279B05448;
-  v9 = v6;
+  v9 = keyCopy;
   v23 = v9;
-  v10 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v22];
+  v10 = [connection synchronousRemoteObjectProxyWithErrorHandler:v22];
 
   v19 = 0;
   v20[0] = &v19;
@@ -665,34 +665,34 @@ void __38__RMBaseStore_metadataReturningError___block_invoke_41(uint64_t a1, voi
   v17[2] = __Block_byref_object_copy_;
   v17[3] = __Block_byref_object_dispose_;
   v18 = 0;
-  v11 = [(RMBaseStore *)self identifier];
+  identifier = [(RMBaseStore *)self identifier];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __41__RMBaseStore_metadataValueForKey_error___block_invoke_43;
   v15[3] = &unk_279B05470;
   v15[4] = &v19;
   v15[5] = &v16;
-  [v10 metadataValueForKey:v9 storeIdentifier:v11 completionHandler:v15];
+  [v10 metadataValueForKey:v9 storeIdentifier:identifier completionHandler:v15];
 
   if (*(v17[0] + 40))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       [RMBaseStore metadataValueForKey:v9 error:v17];
-      if (a4)
+      if (error)
       {
 LABEL_4:
         v12 = *(v17[0] + 40);
         if (v12)
         {
           v13 = 0;
-          *a4 = v12;
+          *error = v12;
           goto LABEL_11;
         }
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       goto LABEL_4;
     }
@@ -737,100 +737,100 @@ void __41__RMBaseStore_metadataValueForKey_error___block_invoke_43(uint64_t a1, 
   *(v9 + 40) = v6;
 }
 
-- (RMBaseStore)initWithCoder:(id)a3
+- (RMBaseStore)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v18 = [v3 decodeIntegerForKey:@"type"];
-  v17 = [v3 decodeIntegerForKey:@"scope"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"description"];
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"enrollmentURL"];
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"defaultToInteractive"];
-  v10 = [v9 BOOLValue];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v18 = [coderCopy decodeIntegerForKey:@"type"];
+  v17 = [coderCopy decodeIntegerForKey:@"scope"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"description"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"enrollmentURL"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"defaultToInteractive"];
+  bOOLValue = [v9 BOOLValue];
 
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"dataSeparated"];
-  v12 = [v11 BOOLValue];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dataSeparated"];
+  bOOLValue2 = [v11 BOOLValue];
 
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"personaIdentifier"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"personaIdentifier"];
 
-  BYTE1(v16) = v12;
-  LOBYTE(v16) = v10;
+  BYTE1(v16) = bOOLValue2;
+  LOBYTE(v16) = bOOLValue;
   v14 = [(RMBaseStore *)self initWithIdentifier:v4 type:v18 scope:v17 name:v5 description:v6 enrollmentURL:v7 accountIdentifier:v8 defaultToInteractive:v16 dataSeparated:v13 personaIdentifier:?];
 
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v17 = a3;
-  v4 = [(RMBaseStore *)self identifier];
-  [v17 encodeObject:v4 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(RMBaseStore *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  [v17 encodeInteger:-[RMBaseStore type](self forKey:{"type"), @"type"}];
-  [v17 encodeInteger:-[RMBaseStore scope](self forKey:{"scope"), @"scope"}];
-  v5 = [(RMBaseStore *)self name];
+  [coderCopy encodeInteger:-[RMBaseStore type](self forKey:{"type"), @"type"}];
+  [coderCopy encodeInteger:-[RMBaseStore scope](self forKey:{"scope"), @"scope"}];
+  name = [(RMBaseStore *)self name];
 
-  if (v5)
+  if (name)
   {
-    v6 = [(RMBaseStore *)self name];
-    [v17 encodeObject:v6 forKey:@"name"];
+    name2 = [(RMBaseStore *)self name];
+    [coderCopy encodeObject:name2 forKey:@"name"];
   }
 
-  v7 = [(RMBaseStore *)self storeDescription];
+  storeDescription = [(RMBaseStore *)self storeDescription];
 
-  if (v7)
+  if (storeDescription)
   {
-    v8 = [(RMBaseStore *)self storeDescription];
-    [v17 encodeObject:v8 forKey:@"description"];
+    storeDescription2 = [(RMBaseStore *)self storeDescription];
+    [coderCopy encodeObject:storeDescription2 forKey:@"description"];
   }
 
-  v9 = [(RMBaseStore *)self enrollmentURL];
+  enrollmentURL = [(RMBaseStore *)self enrollmentURL];
 
-  if (v9)
+  if (enrollmentURL)
   {
-    v10 = [(RMBaseStore *)self enrollmentURL];
-    [v17 encodeObject:v10 forKey:@"enrollmentURL"];
+    enrollmentURL2 = [(RMBaseStore *)self enrollmentURL];
+    [coderCopy encodeObject:enrollmentURL2 forKey:@"enrollmentURL"];
   }
 
-  v11 = [(RMBaseStore *)self accountIdentifier];
+  accountIdentifier = [(RMBaseStore *)self accountIdentifier];
 
-  if (v11)
+  if (accountIdentifier)
   {
-    v12 = [(RMBaseStore *)self accountIdentifier];
-    [v17 encodeObject:v12 forKey:@"accountIdentifier"];
+    accountIdentifier2 = [(RMBaseStore *)self accountIdentifier];
+    [coderCopy encodeObject:accountIdentifier2 forKey:@"accountIdentifier"];
   }
 
   v13 = [MEMORY[0x277CCABB0] numberWithBool:{-[RMBaseStore defaultToInteractive](self, "defaultToInteractive")}];
-  [v17 encodeObject:v13 forKey:@"defaultToInteractive"];
+  [coderCopy encodeObject:v13 forKey:@"defaultToInteractive"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithBool:{-[RMBaseStore dataSeparated](self, "dataSeparated")}];
-  [v17 encodeObject:v14 forKey:@"dataSeparated"];
+  [coderCopy encodeObject:v14 forKey:@"dataSeparated"];
 
-  v15 = [(RMBaseStore *)self personaIdentifier];
+  personaIdentifier = [(RMBaseStore *)self personaIdentifier];
 
-  if (v15)
+  if (personaIdentifier)
   {
-    v16 = [(RMBaseStore *)self personaIdentifier];
-    [v17 encodeObject:v16 forKey:@"personaIdentifier"];
+    personaIdentifier2 = [(RMBaseStore *)self personaIdentifier];
+    [coderCopy encodeObject:personaIdentifier2 forKey:@"personaIdentifier"];
   }
 }
 
-- (BOOL)isEqualToStore:(id)a3
+- (BOOL)isEqualToStore:(id)store
 {
-  v4 = a3;
-  v5 = [(RMBaseStore *)self identifier];
-  v6 = [v4 identifier];
-  if ([v5 isEqualToString:v6])
+  storeCopy = store;
+  identifier = [(RMBaseStore *)self identifier];
+  identifier2 = [storeCopy identifier];
+  if ([identifier isEqualToString:identifier2])
   {
-    v7 = [(RMBaseStore *)self type];
-    if (v7 == [v4 type])
+    type = [(RMBaseStore *)self type];
+    if (type == [storeCopy type])
     {
-      v8 = [(RMBaseStore *)self name];
-      v9 = [v4 name];
-      v10 = v8;
-      v11 = v9;
+      name = [(RMBaseStore *)self name];
+      name2 = [storeCopy name];
+      v10 = name;
+      v11 = name2;
       v12 = v11;
       if (v10 == v11)
       {
@@ -857,10 +857,10 @@ LABEL_35:
         }
       }
 
-      v17 = [(RMBaseStore *)self storeDescription];
-      v18 = [v4 storeDescription];
-      v15 = v17;
-      v19 = v18;
+      storeDescription = [(RMBaseStore *)self storeDescription];
+      storeDescription2 = [storeCopy storeDescription];
+      v15 = storeDescription;
+      v19 = storeDescription2;
       v14 = v19;
       v36 = v15;
       if (v15 == v19)
@@ -884,10 +884,10 @@ LABEL_35:
         }
       }
 
-      v21 = [(RMBaseStore *)self accountIdentifier];
-      v22 = [v4 accountIdentifier];
-      v15 = v21;
-      v23 = v22;
+      accountIdentifier = [(RMBaseStore *)self accountIdentifier];
+      accountIdentifier2 = [storeCopy accountIdentifier];
+      v15 = accountIdentifier;
+      v23 = accountIdentifier2;
       v20 = v23;
       if (v15 == v23)
       {
@@ -914,8 +914,8 @@ LABEL_35:
         }
       }
 
-      v26 = [(RMBaseStore *)self defaultToInteractive];
-      if (v26 != [v4 defaultToInteractive] || (v27 = -[RMBaseStore dataSeparated](self, "dataSeparated"), v27 != objc_msgSend(v4, "dataSeparated")))
+      defaultToInteractive = [(RMBaseStore *)self defaultToInteractive];
+      if (defaultToInteractive != [storeCopy defaultToInteractive] || (v27 = -[RMBaseStore dataSeparated](self, "dataSeparated"), v27 != objc_msgSend(storeCopy, "dataSeparated")))
       {
         LOBYTE(v13) = 0;
 LABEL_25:
@@ -928,10 +928,10 @@ LABEL_34:
         goto LABEL_35;
       }
 
-      v28 = [(RMBaseStore *)self personaIdentifier];
-      v29 = [v4 personaIdentifier];
-      v30 = v28;
-      v31 = v29;
+      personaIdentifier = [(RMBaseStore *)self personaIdentifier];
+      personaIdentifier2 = [storeCopy personaIdentifier];
+      v30 = personaIdentifier;
+      v31 = personaIdentifier2;
       v32 = v31;
       if (v30 == v31)
       {

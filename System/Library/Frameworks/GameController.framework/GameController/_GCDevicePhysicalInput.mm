@@ -1,15 +1,15 @@
 @interface _GCDevicePhysicalInput
-- (BOOL)_commitTransaction:(_GCDevicePhysicalInput *)a1;
+- (BOOL)_commitTransaction:(_GCDevicePhysicalInput *)transaction;
 - (_GCDevicePhysicalInput)_handleEventTransaction:(_GCDevicePhysicalInput *)result;
 - (_GCDevicePhysicalInput)handleMouseEvent:(_GCDevicePhysicalInput *)result;
-- (_GCDevicePhysicalInput)initWithFacade:(id)a3 elements:(id)a4;
-- (_GCDevicePhysicalInput)initWithFacade:(id)a3 elements:(id)a4 attributes:(id)a5;
+- (_GCDevicePhysicalInput)initWithFacade:(id)facade elements:(id)elements;
+- (_GCDevicePhysicalInput)initWithFacade:(id)facade elements:(id)elements attributes:(id)attributes;
 - (_GCDevicePhysicalInput)updateWithElements:(_GCDevicePhysicalInput *)result;
 - (double)lastEventTimestamp;
 - (id)elementValueDidChangeHandler;
 - (id)inputStateAvailableHandler;
 - (id)popTransaction;
-- (id)popTransactionNotExceedingTimestamp:(double)a3;
+- (id)popTransactionNotExceedingTimestamp:(double)timestamp;
 - (id)queue;
 - (uint64_t)currentTransaction;
 - (uint64_t)handleCollectionEvent:(uint64_t)result;
@@ -17,10 +17,10 @@
 - (uint64_t)pendingTransaction;
 - (uint64_t)transactionQueueDepth;
 - (void)dealloc;
-- (void)setDataSource:(id)a3;
-- (void)setDevice:(id)a3;
-- (void)setElementValueDidChangeHandler:(uint64_t)a3;
-- (void)setInputStateAvailableHandler:(uint64_t)a3;
+- (void)setDataSource:(id)source;
+- (void)setDevice:(id)device;
+- (void)setElementValueDidChangeHandler:(uint64_t)handler;
+- (void)setInputStateAvailableHandler:(uint64_t)handler;
 - (void)setQueue:(void *)result;
 - (void)setTransactionQueueDepth:(void *)result;
 - (void)updateViewStateIfNeeded;
@@ -28,21 +28,21 @@
 
 @implementation _GCDevicePhysicalInput
 
-- (_GCDevicePhysicalInput)initWithFacade:(id)a3 elements:(id)a4 attributes:(id)a5
+- (_GCDevicePhysicalInput)initWithFacade:(id)facade elements:(id)elements attributes:(id)attributes
 {
   v9 = objc_opt_new();
   v24.receiver = self;
   v24.super_class = _GCDevicePhysicalInput;
-  v10 = -[_GCDevicePhysicalInputBase _initWithFacadeTemplate:elementsTemplates:attributes:context:](&v24, sel__initWithFacadeTemplate_elementsTemplates_attributes_context_, a3, [a4 allObjects], a5, v9);
+  v10 = -[_GCDevicePhysicalInputBase _initWithFacadeTemplate:elementsTemplates:attributes:context:](&v24, sel__initWithFacadeTemplate_elementsTemplates_attributes_context_, facade, [elements allObjects], attributes, v9);
   v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:2];
-  v13 = [(_GCDevicePhysicalInputBase *)v10 viewConfiguration];
-  v15 = [(_GCDevicePhysicalInputBase *)v10 viewState];
-  v16 = [_GCDevicePhysicalInputTransaction transactionWithImplementation:v10 configuration:v13 state:v15];
+  viewConfiguration = [(_GCDevicePhysicalInputBase *)v10 viewConfiguration];
+  viewState = [(_GCDevicePhysicalInputBase *)v10 viewState];
+  v16 = [_GCDevicePhysicalInputTransaction transactionWithImplementation:v10 configuration:viewConfiguration state:viewState];
   [(NSMutableArray *)v11 addObject:v16];
-  v18 = [(_GCDevicePhysicalInputBase *)v10 viewConfiguration];
-  v20 = [(_GCDevicePhysicalInputBase *)v10 viewState];
-  v21 = [_GCDevicePhysicalInputStateTable stateTableWithCopyOfStateTable:v20];
-  v22 = [_GCDevicePhysicalInputTransaction transactionWithImplementation:v10 configuration:v18 state:v21];
+  viewConfiguration2 = [(_GCDevicePhysicalInputBase *)v10 viewConfiguration];
+  viewState2 = [(_GCDevicePhysicalInputBase *)v10 viewState];
+  v21 = [_GCDevicePhysicalInputStateTable stateTableWithCopyOfStateTable:viewState2];
+  v22 = [_GCDevicePhysicalInputTransaction transactionWithImplementation:v10 configuration:viewConfiguration2 state:v21];
   [(NSMutableArray *)v11 addObject:v22];
   v10->_allTransactions = v11;
   v10->_currentTransaction = v16;
@@ -53,41 +53,41 @@
   return v10;
 }
 
-- (_GCDevicePhysicalInput)initWithFacade:(id)a3 elements:(id)a4
+- (_GCDevicePhysicalInput)initWithFacade:(id)facade elements:(id)elements
 {
   v7 = [MEMORY[0x1E695DFD8] set];
 
-  return [(_GCDevicePhysicalInput *)self initWithFacade:a3 elements:a4 attributes:v7];
+  return [(_GCDevicePhysicalInput *)self initWithFacade:facade elements:elements attributes:v7];
 }
 
-- (BOOL)_commitTransaction:(_GCDevicePhysicalInput *)a1
+- (BOOL)_commitTransaction:(_GCDevicePhysicalInput *)transaction
 {
   v31 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (transaction)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(transaction);
     if (a2)
     {
-      v19 = [(_GCDevicePhysicalInputBase *)a1->_pendingTransaction viewConfiguration];
-      [(_GCDevicePhysicalInputBase *)a1 setViewConfiguration:v19];
+      viewConfiguration = [(_GCDevicePhysicalInputBase *)transaction->_pendingTransaction viewConfiguration];
+      [(_GCDevicePhysicalInputBase *)transaction setViewConfiguration:viewConfiguration];
     }
 
-    v5 = [(_GCDevicePhysicalInputBase *)a1->_pendingTransaction viewState];
-    [(_GCDevicePhysicalInputBase *)a1 setViewState:v5];
-    objc_storeStrong(&a1->_currentTransaction, a1->_pendingTransaction);
-    objc_storeStrong(&a1->_pendingTransaction, 0);
-    [(NSMutableArray *)a1->_bufferedTransactions addObject:a1->_currentTransaction];
-    while ([(NSMutableArray *)a1->_bufferedTransactions count]> a1->_bufferedTransactionsQueueDepth)
+    viewState = [(_GCDevicePhysicalInputBase *)transaction->_pendingTransaction viewState];
+    [(_GCDevicePhysicalInputBase *)transaction setViewState:viewState];
+    objc_storeStrong(&transaction->_currentTransaction, transaction->_pendingTransaction);
+    objc_storeStrong(&transaction->_pendingTransaction, 0);
+    [(NSMutableArray *)transaction->_bufferedTransactions addObject:transaction->_currentTransaction];
+    while ([(NSMutableArray *)transaction->_bufferedTransactions count]> transaction->_bufferedTransactionsQueueDepth)
     {
-      [(NSMutableArray *)a1->_bufferedTransactions removeObjectAtIndex:0];
-      [(_GCDevicePhysicalInputTransaction *)[(NSMutableArray *)a1->_bufferedTransactions firstObject] invalidateAllUpdateContexts];
+      [(NSMutableArray *)transaction->_bufferedTransactions removeObjectAtIndex:0];
+      [(_GCDevicePhysicalInputTransaction *)[(NSMutableArray *)transaction->_bufferedTransactions firstObject] invalidateAllUpdateContexts];
     }
 
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    allTransactions = a1->_allTransactions;
+    allTransactions = transaction->_allTransactions;
     v8 = [(NSMutableArray *)allTransactions countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v8)
     {
@@ -104,7 +104,7 @@
           v11 = *(*(&v26 + 1) + 8 * i);
           if ([v11 retainCount] == 1)
           {
-            objc_storeStrong(&a1->_pendingTransaction, v11);
+            objc_storeStrong(&transaction->_pendingTransaction, v11);
             goto LABEL_17;
           }
         }
@@ -120,33 +120,33 @@
     }
 
 LABEL_17:
-    pendingTransaction = a1->_pendingTransaction;
+    pendingTransaction = transaction->_pendingTransaction;
     if (pendingTransaction)
     {
       if (a2)
       {
-        v25 = [(_GCDevicePhysicalInputBase *)a1 viewConfiguration];
-        [(_GCDevicePhysicalInputBase *)a1->_pendingTransaction setViewConfiguration:v25];
-        pendingTransaction = a1->_pendingTransaction;
+        viewConfiguration2 = [(_GCDevicePhysicalInputBase *)transaction viewConfiguration];
+        [(_GCDevicePhysicalInputBase *)transaction->_pendingTransaction setViewConfiguration:viewConfiguration2];
+        pendingTransaction = transaction->_pendingTransaction;
       }
 
-      v13 = [(_GCDevicePhysicalInputBase *)pendingTransaction viewState];
-      v15 = [(_GCDevicePhysicalInputBase *)a1->_currentTransaction viewState];
-      [(_GCDevicePhysicalInputStateTable *)v13 updateStateTableWithContentsOf:v15];
+      viewState2 = [(_GCDevicePhysicalInputBase *)pendingTransaction viewState];
+      viewState3 = [(_GCDevicePhysicalInputBase *)transaction->_currentTransaction viewState];
+      [(_GCDevicePhysicalInputStateTable *)viewState2 updateStateTableWithContentsOf:viewState3];
     }
 
     else
     {
-      v20 = [(_GCDevicePhysicalInputBase *)a1 viewConfiguration];
-      v22 = [(_GCDevicePhysicalInputBase *)a1 viewState];
-      v23 = [_GCDevicePhysicalInputStateTable stateTableWithCopyOfStateTable:v22];
-      v24 = [_GCDevicePhysicalInputTransaction transactionWithImplementation:a1 configuration:v20 state:v23];
-      [(NSMutableArray *)a1->_allTransactions addObject:v24];
-      a1->_pendingTransaction = v24;
+      viewConfiguration3 = [(_GCDevicePhysicalInputBase *)transaction viewConfiguration];
+      viewState4 = [(_GCDevicePhysicalInputBase *)transaction viewState];
+      v23 = [_GCDevicePhysicalInputStateTable stateTableWithCopyOfStateTable:viewState4];
+      v24 = [_GCDevicePhysicalInputTransaction transactionWithImplementation:transaction configuration:viewConfiguration3 state:v23];
+      [(NSMutableArray *)transaction->_allTransactions addObject:v24];
+      transaction->_pendingTransaction = v24;
     }
 
-    v16 = [(NSMutableArray *)a1->_bufferedTransactions count]== 1;
-    objc_sync_exit(a1);
+    v16 = [(NSMutableArray *)transaction->_bufferedTransactions count]== 1;
+    objc_sync_exit(transaction);
   }
 
   else
@@ -205,34 +205,34 @@ LABEL_17:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDevice:(id)a3
+- (void)setDevice:(id)device
 {
   v5.receiver = self;
   v5.super_class = _GCDevicePhysicalInput;
   [(_GCDevicePhysicalInputBase *)&v5 setDevice:?];
-  [(NSMutableArray *)self->_allTransactions makeObjectsPerformSelector:sel_setDevice_ withObject:a3];
+  [(NSMutableArray *)self->_allTransactions makeObjectsPerformSelector:sel_setDevice_ withObject:device];
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  if (!a3 && [(_GCDevicePhysicalInputBase *)self dataSource])
+  if (!source && [(_GCDevicePhysicalInputBase *)self dataSource])
   {
     [_GCDevicePhysicalInput setDataSource:?];
   }
 
   v5.receiver = self;
   v5.super_class = _GCDevicePhysicalInput;
-  [(_GCDevicePhysicalInputBase *)&v5 setDataSource:a3];
+  [(_GCDevicePhysicalInputBase *)&v5 setDataSource:source];
 }
 
 - (id)popTransaction
 {
   [(_GCDevicePhysicalInputDataSource *)[(_GCDevicePhysicalInputBase *)self dataSource] physicalInputPoll:self forLatest:0];
   objc_sync_enter(self);
-  v3 = [(NSMutableArray *)self->_bufferedTransactions firstObject];
-  if (v3)
+  firstObject = [(NSMutableArray *)self->_bufferedTransactions firstObject];
+  if (firstObject)
   {
-    v4 = v3;
+    v4 = firstObject;
     [(NSMutableArray *)self->_bufferedTransactions removeObjectAtIndex:0];
   }
 
@@ -248,16 +248,16 @@ LABEL_17:
   return v4;
 }
 
-- (id)popTransactionNotExceedingTimestamp:(double)a3
+- (id)popTransactionNotExceedingTimestamp:(double)timestamp
 {
   [(_GCDevicePhysicalInputDataSource *)[(_GCDevicePhysicalInputBase *)self dataSource] physicalInputPoll:self forLatest:0];
   objc_sync_enter(self);
-  v5 = [(NSMutableArray *)self->_bufferedTransactions firstObject];
-  v6 = v5;
-  if (v5)
+  firstObject = [(NSMutableArray *)self->_bufferedTransactions firstObject];
+  v6 = firstObject;
+  if (firstObject)
   {
-    [v5 lastEventTimestamp];
-    if (v7 <= a3)
+    [firstObject lastEventTimestamp];
+    if (v7 <= timestamp)
     {
       v6 = v6;
       [(NSMutableArray *)self->_bufferedTransactions removeObjectAtIndex:0];
@@ -278,9 +278,9 @@ LABEL_17:
 
 - (void)updateViewStateIfNeeded
 {
-  v3 = [(_GCDevicePhysicalInputBase *)self dataSource];
+  dataSource = [(_GCDevicePhysicalInputBase *)self dataSource];
 
-  [(_GCDevicePhysicalInputDataSource *)v3 physicalInputPoll:self forLatest:1];
+  [(_GCDevicePhysicalInputDataSource *)dataSource physicalInputPoll:self forLatest:1];
 }
 
 - (_GCDevicePhysicalInput)_handleEventTransaction:(_GCDevicePhysicalInput *)result
@@ -299,16 +299,16 @@ LABEL_17:
     pendingTransaction = result->_pendingTransaction;
     v5 = (*(a2 + 16))(a2, pendingTransaction);
     [(_GCDevicePhysicalInputTransaction *)pendingTransaction setLastEventHostTimestamp:v5];
-    v6 = [(_GCDevicePhysicalInputBase *)v2 elements];
-    v7 = [(_GCDevicePhysicalInputBase *)v2 facade];
-    [(_GCDevicePhysicalInputView *)v7 _willChangeValueForKey:?];
-    v8 = [(_GCDevicePhysicalInputBase *)v2 facade];
-    [(_GCDevicePhysicalInputView *)v8 _willChangeValueForKey:?];
+    elements = [(_GCDevicePhysicalInputBase *)v2 elements];
+    facade = [(_GCDevicePhysicalInputBase *)v2 facade];
+    [(_GCDevicePhysicalInputView *)facade _willChangeValueForKey:?];
+    facade2 = [(_GCDevicePhysicalInputBase *)v2 facade];
+    [(_GCDevicePhysicalInputView *)facade2 _willChangeValueForKey:?];
     v53 = 0u;
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v9 = [v6 countByEnumeratingWithState:&v51 objects:v57 count:16];
+    v9 = [elements countByEnumeratingWithState:&v51 objects:v57 count:16];
     if (v9)
     {
       v10 = v9;
@@ -320,7 +320,7 @@ LABEL_17:
         {
           if (*v52 != v12)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(elements);
           }
 
           v14 = *(*(&v51 + 1) + 8 * i);
@@ -334,7 +334,7 @@ LABEL_17:
           ++v11;
         }
 
-        v10 = [v6 countByEnumeratingWithState:&v51 objects:v57 count:16];
+        v10 = [elements countByEnumeratingWithState:&v51 objects:v57 count:16];
       }
 
       while (v10);
@@ -348,7 +348,7 @@ LABEL_17:
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v17 = [v6 countByEnumeratingWithState:&v46 objects:v56 count:16];
+    v17 = [elements countByEnumeratingWithState:&v46 objects:v56 count:16];
     if (v17)
     {
       v18 = v17;
@@ -360,7 +360,7 @@ LABEL_17:
         {
           if (*v47 != v20)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(elements);
           }
 
           v22 = *(*(&v46 + 1) + 8 * j);
@@ -374,16 +374,16 @@ LABEL_17:
           ++v19;
         }
 
-        v18 = [v6 countByEnumeratingWithState:&v46 objects:v56 count:16];
+        v18 = [elements countByEnumeratingWithState:&v46 objects:v56 count:16];
       }
 
       while (v18);
     }
 
-    v24 = [(_GCDevicePhysicalInputBase *)v2 facade];
-    [(_GCDevicePhysicalInputView *)v24 _didChangeValueForKey:?];
-    v25 = [(_GCDevicePhysicalInputBase *)v2 facade];
-    [(_GCDevicePhysicalInputView *)v25 _didChangeValueForKey:?];
+    facade3 = [(_GCDevicePhysicalInputBase *)v2 facade];
+    [(_GCDevicePhysicalInputView *)facade3 _didChangeValueForKey:?];
+    facade4 = [(_GCDevicePhysicalInputBase *)v2 facade];
+    [(_GCDevicePhysicalInputView *)facade4 _didChangeValueForKey:?];
     Property = objc_getProperty(v2, v26, 112, 1);
     if (Property)
     {
@@ -392,7 +392,7 @@ LABEL_17:
       v45 = 0u;
       v42 = 0u;
       v43 = 0u;
-      v30 = [v6 countByEnumeratingWithState:&v42 objects:v55 count:16];
+      v30 = [elements countByEnumeratingWithState:&v42 objects:v55 count:16];
       if (v30)
       {
         v31 = v30;
@@ -404,20 +404,20 @@ LABEL_17:
           {
             if (*v43 != v33)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(elements);
             }
 
             v35 = *(*(&v42 + 1) + 8 * k);
             if ([(_GCDevicePhysicalInputTransaction *)currentTransaction updateContextForElementAtIndex:v32 size:0 onlyIfChanged:1])
             {
-              v36 = [(_GCDevicePhysicalInputBase *)v2 facade];
-              v29[2](v29, v36, v35);
+              facade5 = [(_GCDevicePhysicalInputBase *)v2 facade];
+              v29[2](v29, facade5, v35);
             }
 
             ++v32;
           }
 
-          v31 = [v6 countByEnumeratingWithState:&v42 objects:v55 count:16];
+          v31 = [elements countByEnumeratingWithState:&v42 objects:v55 count:16];
         }
 
         while (v31);
@@ -434,8 +434,8 @@ LABEL_17:
     if (v37)
     {
       v38 = result;
-      v39 = [(_GCDevicePhysicalInputBase *)v2 facade];
-      result = (v38->super._dataSource)(v38, v39);
+      facade6 = [(_GCDevicePhysicalInputBase *)v2 facade];
+      result = (v38->super._dataSource)(v38, facade6);
     }
 
     atomic_store(0, &v2->_isHandlingEvent);
@@ -452,18 +452,18 @@ LABEL_17:
   {
     v3 = result;
     pendingTransaction = result->_pendingTransaction;
-    v5 = [(_GCDevicePhysicalInputBase *)pendingTransaction elements];
-    v6 = [v5 count];
+    elements = [(_GCDevicePhysicalInputBase *)pendingTransaction elements];
+    v6 = [elements count];
     if (v6 != [a2 count])
     {
-      v58 = v5;
+      v58 = elements;
       v60 = a2;
       [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
     }
 
     v67 = a2;
-    v8 = [(_GCDevicePhysicalInputBase *)v3->_pendingTransaction viewConfiguration];
-    v9 = [_GCDevicePhysicalInputStateTable stateTableWithCopyOfStateTable:v8];
+    viewConfiguration = [(_GCDevicePhysicalInputBase *)v3->_pendingTransaction viewConfiguration];
+    v9 = [_GCDevicePhysicalInputStateTable stateTableWithCopyOfStateTable:viewConfiguration];
     [(_GCDevicePhysicalInputBase *)v3->_pendingTransaction setViewConfiguration:v9];
     objc_sync_enter(v3);
     currentTransaction = v3->_currentTransaction;
@@ -474,7 +474,7 @@ LABEL_17:
     v93 = 0u;
     v90 = 0u;
     v91 = 0u;
-    v11 = [v5 countByEnumeratingWithState:&v90 objects:v96 count:16];
+    v11 = [elements countByEnumeratingWithState:&v90 objects:v96 count:16];
     if (v11)
     {
       v12 = v11;
@@ -482,7 +482,7 @@ LABEL_17:
       v14 = *v91;
       do
       {
-        v15 = v5;
+        v15 = elements;
         v16 = 0;
         v17 = v13;
         do
@@ -514,7 +514,7 @@ LABEL_17:
         }
 
         while (v12 != v16);
-        v5 = v15;
+        elements = v15;
         v12 = [v15 countByEnumeratingWithState:&v90 objects:v96 count:16];
       }
 
@@ -522,12 +522,12 @@ LABEL_17:
     }
 
     v20 = v65;
-    v21 = [(_GCDevicePhysicalInputBase *)v65 elements];
+    elements2 = [(_GCDevicePhysicalInputBase *)v65 elements];
     v80 = 0u;
     v81 = 0u;
     v82 = 0u;
     v83 = 0u;
-    v22 = [v21 countByEnumeratingWithState:&v80 objects:v95 count:16];
+    v22 = [elements2 countByEnumeratingWithState:&v80 objects:v95 count:16];
     if (v22)
     {
       v23 = v22;
@@ -539,7 +539,7 @@ LABEL_17:
         {
           if (*v81 != v25)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(elements2);
           }
 
           v27 = *(*(&v80 + 1) + 8 * i);
@@ -553,7 +553,7 @@ LABEL_17:
           ++v24;
         }
 
-        v23 = [v21 countByEnumeratingWithState:&v80 objects:v95 count:16];
+        v23 = [elements2 countByEnumeratingWithState:&v80 objects:v95 count:16];
       }
 
       while (v23);
@@ -575,7 +575,7 @@ LABEL_17:
         {
           if (*v71 != v43)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(elements2);
           }
 
           v45 = *(v70 + 8 * j);
@@ -609,8 +609,8 @@ LABEL_17:
     if (v54)
     {
       v55 = result;
-      v56 = [(_GCDevicePhysicalInputBase *)v20 facade];
-      result = (v55->super._dataSource)(v55, v56);
+      facade = [(_GCDevicePhysicalInputBase *)v20 facade];
+      result = (v55->super._dataSource)(v55, facade);
     }
   }
 
@@ -620,14 +620,14 @@ LABEL_17:
 
 - (uint64_t)currentTransaction
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  objc_sync_enter(a1);
-  v2 = a1[17];
-  objc_sync_exit(a1);
+  objc_sync_enter(self);
+  v2 = self[17];
+  objc_sync_exit(self);
   return v2;
 }
 
@@ -646,11 +646,11 @@ LABEL_17:
   if (result)
   {
     v1 = result;
-    v2 = [result dataSource];
-    if (v2)
+    dataSource = [result dataSource];
+    if (dataSource)
     {
 
-      return [v2 physicalInputQueue:v1];
+      return [dataSource physicalInputQueue:v1];
     }
 
     else
@@ -669,20 +669,20 @@ LABEL_17:
   if (result)
   {
     v3 = result;
-    v4 = [result dataSource];
-    if (v4)
+    dataSource = [result dataSource];
+    if (dataSource)
     {
 
-      return [v4 physicalInput:v3 setQueue:a2];
+      return [dataSource physicalInput:v3 setQueue:a2];
     }
 
     else
     {
       [-[_GCDevicePhysicalInputBase facade](v3) willChangeValueForKey:@"queue"];
       objc_setAssociatedObject(v3, GCDevicePhysicalInputQueueKey, a2, 0x301);
-      v5 = [(_GCDevicePhysicalInputBase *)v3 facade];
+      facade = [(_GCDevicePhysicalInputBase *)v3 facade];
 
-      return [v5 didChangeValueForKey:@"queue"];
+      return [facade didChangeValueForKey:@"queue"];
     }
   }
 
@@ -691,14 +691,14 @@ LABEL_17:
 
 - (uint64_t)transactionQueueDepth
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  objc_sync_enter(a1);
-  v2 = a1[20];
-  objc_sync_exit(a1);
+  objc_sync_enter(self);
+  v2 = self[20];
+  objc_sync_exit(self);
   return v2;
 }
 
@@ -724,9 +724,9 @@ LABEL_17:
     }
 
     objc_sync_exit(v2);
-    v4 = [v2 dataSource];
+    dataSource = [v2 dataSource];
 
-    return [v4 physicalInputTransactionQueueDepthDidChange:v2];
+    return [dataSource physicalInputTransactionQueueDepthDidChange:v2];
   }
 
   return result;
@@ -734,23 +734,23 @@ LABEL_17:
 
 - (uint64_t)pendingTransaction
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  objc_sync_enter(a1);
-  v2 = a1[18];
-  objc_sync_exit(a1);
+  objc_sync_enter(self);
+  v2 = self[18];
+  objc_sync_exit(self);
   return v2;
 }
 
 - (double)lastEventTimestamp
 {
   [(_GCDevicePhysicalInput *)self updateViewStateIfNeeded];
-  v3 = [(_GCDevicePhysicalInput *)self currentTransaction];
+  currentTransaction = [(_GCDevicePhysicalInput *)self currentTransaction];
 
-  [v3 lastEventTimestamp];
+  [currentTransaction lastEventTimestamp];
   return result;
 }
 
@@ -764,19 +764,19 @@ LABEL_17:
   return result;
 }
 
-- (void)setElementValueDidChangeHandler:(uint64_t)a3
+- (void)setElementValueDidChangeHandler:(uint64_t)handler
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_1_24(a1, a2, a3, 112);
+    OUTLINED_FUNCTION_1_24(self, a2, handler, 112);
   }
 }
 
-- (void)setInputStateAvailableHandler:(uint64_t)a3
+- (void)setInputStateAvailableHandler:(uint64_t)handler
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_1_24(a1, a2, a3, 120);
+    OUTLINED_FUNCTION_1_24(self, a2, handler, 120);
   }
 }
 

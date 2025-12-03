@@ -1,13 +1,13 @@
 @interface TSCH3DLabelsReprojectionMeshRenderer
-- (void)renderWithMeshRenderLabelInfo:(id)a3;
+- (void)renderWithMeshRenderLabelInfo:(id)info;
 @end
 
 @implementation TSCH3DLabelsReprojectionMeshRenderer
 
-- (void)renderWithMeshRenderLabelInfo:(id)a3
+- (void)renderWithMeshRenderLabelInfo:(id)info
 {
-  v3 = a3;
-  v8 = objc_msgSend_renderer(v3, v4, v5, v6, v7);
+  infoCopy = info;
+  v8 = objc_msgSend_renderer(infoCopy, v4, v5, v6, v7);
   v13 = objc_msgSend_pipeline(v8, v9, v10, v11, v12);
   v316 = objc_msgSend_processor(v13, v14, v15, v16, v17);
   v22 = objc_msgSend_labelCamera(v8, v18, v19, v20, v21);
@@ -15,10 +15,10 @@
   if (v22)
   {
     objc_msgSend_normalizedProjection(v22, v23, v24, v25, v26);
-    if (v3)
+    if (infoCopy)
     {
 LABEL_3:
-      objc_msgSend_translation(v3, v23, v29, v25, v26);
+      objc_msgSend_translation(infoCopy, v23, v29, v25, v26);
       v30 = v350;
       v31 = v351;
       goto LABEL_6;
@@ -29,7 +29,7 @@ LABEL_3:
   {
     v29 = 0.0;
     memset(&v362, 0, 64);
-    if (v3)
+    if (infoCopy)
     {
       goto LABEL_3;
     }
@@ -55,9 +55,9 @@ LABEL_6:
   v360 = (v31 + v32.f32[0]) + 0.0;
   v361 = (v32.f32[0] + (v31 * 0.0)) + 1.0;
   *&v35 = sub_2761558A0(&v362, &v352, &v363).u64[0];
-  if (v3)
+  if (infoCopy)
   {
-    objc_msgSend_offset(v3, v34, v35, v36, v37);
+    objc_msgSend_offset(infoCopy, v34, v35, v36, v37);
     v38 = v339;
   }
 
@@ -79,7 +79,7 @@ LABEL_6:
   v348 = vaddv_f32(v39) + 0.0;
   v349 = v348 + 1.0;
   *&v40 = sub_2761558A0(&v363, &v340, v364).u64[0];
-  objc_msgSend_rotation(v3, v41, v40, v42, v43);
+  objc_msgSend_rotation(infoCopy, v41, v40, v42, v43);
   v45 = __sincosf_stret(v44 * 0.017453);
   v46 = (1.0 - v45.__cosval) * 0.0;
   v47 = v45.__cosval + (v46 * 0.0);
@@ -110,9 +110,9 @@ LABEL_6:
   v337[11] = (v57 * 0.0) + v60;
   v338 = xmmword_2764D5F20;
   *&v62 = sub_2761558A0(v364, v337, __p).u64[0];
-  if (v3)
+  if (infoCopy)
   {
-    objc_msgSend_alignmentOffset(v3, v61, v62, v63, v64);
+    objc_msgSend_alignmentOffset(infoCopy, v61, v62, v63, v64);
     v65 = v326;
   }
 
@@ -134,9 +134,9 @@ LABEL_6:
   v335 = vaddv_f32(v66) + 0.0;
   v336 = v335 + 1.0;
   *&v68 = sub_2761558A0(__p, &v327, &v374).u64[0];
-  if (v3)
+  if (infoCopy)
   {
-    objc_msgSend_scale(v3, v67, v68, *v69.i64, v70);
+    objc_msgSend_scale(infoCopy, v67, v68, *v69.i64, v70);
     v69.i32[0] = v319;
     v71 = v320;
   }
@@ -172,9 +172,9 @@ LABEL_6:
 
   while (v75 != 4);
   v80 = objc_msgSend_camera(v13, *&v77, v78, v72, v73);
-  if (v3)
+  if (infoCopy)
   {
-    objc_msgSend_position(v3, v79, v81, v82, v83);
+    objc_msgSend_position(infoCopy, v79, v81, v82, v83);
   }
 
   else
@@ -315,7 +315,7 @@ LABEL_6:
     v141 = v362.f32[2];
     v142 = objc_msgSend_label(v8, v119, v139, v121, v122);
     v309 = v13;
-    v310 = v3;
+    v310 = infoCopy;
     v147 = objc_msgSend_attributes(v142, v143, v144, v145, v146);
     v152 = objc_msgSend_string(v147, v148, v149, v150, v151);
     v153 = MEMORY[0x277CCACA8];
@@ -357,7 +357,7 @@ LABEL_6:
     NSLog(&cfstr_LabelboundsDis.isa, v152, v172, v124, v179);
 
     v13 = v309;
-    v3 = v310;
+    infoCopy = v310;
     if (byte_280A46430)
     {
       v186 = MEMORY[0x277CCACA8];
@@ -508,7 +508,7 @@ LABEL_6:
       NSLog(&cfstr_PlaneInverse.isa, v199, v315, v313, v240, v254, v268, v282, v289);
 
       v13 = v309;
-      v3 = v310;
+      infoCopy = v310;
     }
   }
 

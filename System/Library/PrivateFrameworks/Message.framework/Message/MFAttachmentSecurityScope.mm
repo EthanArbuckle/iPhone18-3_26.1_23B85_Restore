@@ -1,10 +1,10 @@
 @interface MFAttachmentSecurityScope
-+ (id)securityScopedURL:(id)a3;
-+ (id)securityScopedURL:(id)a3 withToken:(id)a4;
++ (id)securityScopedURL:(id)l;
++ (id)securityScopedURL:(id)l withToken:(id)token;
 - (BOOL)isBundle;
 - (BOOL)isReadable;
-- (MFAttachmentSecurityScope)initWithSecurityScopedURL:(id)a3 withToken:(id)a4;
-- (id)_temporaryReadURL:(id)a3 error:(id *)a4;
+- (MFAttachmentSecurityScope)initWithSecurityScopedURL:(id)l withToken:(id)token;
+- (id)_temporaryReadURL:(id)l error:(id *)error;
 - (id)data;
 - (id)securityScopeToken;
 - (id)startReadAccess;
@@ -19,27 +19,27 @@
 
 @implementation MFAttachmentSecurityScope
 
-+ (id)securityScopedURL:(id)a3
++ (id)securityScopedURL:(id)l
 {
-  v3 = a3;
-  v4 = [[MFAttachmentSecurityScope alloc] initWithSecurityScopedURL:v3 withToken:0];
+  lCopy = l;
+  v4 = [[MFAttachmentSecurityScope alloc] initWithSecurityScopedURL:lCopy withToken:0];
 
   return v4;
 }
 
-+ (id)securityScopedURL:(id)a3 withToken:(id)a4
++ (id)securityScopedURL:(id)l withToken:(id)token
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[MFAttachmentSecurityScope alloc] initWithSecurityScopedURL:v5 withToken:v6];
+  lCopy = l;
+  tokenCopy = token;
+  v7 = [[MFAttachmentSecurityScope alloc] initWithSecurityScopedURL:lCopy withToken:tokenCopy];
 
   return v7;
 }
 
-- (MFAttachmentSecurityScope)initWithSecurityScopedURL:(id)a3 withToken:(id)a4
+- (MFAttachmentSecurityScope)initWithSecurityScopedURL:(id)l withToken:(id)token
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  tokenCopy = token;
   v13.receiver = self;
   v13.super_class = MFAttachmentSecurityScope;
   v9 = [(MFAttachmentSecurityScope *)&v13 init];
@@ -49,8 +49,8 @@
     fileCoordinator = v9->_fileCoordinator;
     v9->_fileCoordinator = v10;
 
-    objc_storeStrong(&v9->_securityScopedURL, a3);
-    objc_storeStrong(&v9->_securityScopeToken, a4);
+    objc_storeStrong(&v9->_securityScopedURL, l);
+    objc_storeStrong(&v9->_securityScopeToken, token);
   }
 
   return v9;
@@ -90,13 +90,13 @@
       v25[2] = __45__MFAttachmentSecurityScope_startWriteAccess__block_invoke;
       v25[3] = &unk_1E7AA5050;
       [(NSFileCoordinator *)fileCoordinator coordinateWritingItemAtURL:securityScopedURL options:8 error:v26 byAccessor:v25];
-      v7 = v26[0];
+      stringByDeletingLastPathComponent = v26[0];
       if (!self->_secureWriteURL)
       {
         v8 = MFLogGeneral();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
         {
-          [v7 ef_publicDescription];
+          [stringByDeletingLastPathComponent ef_publicDescription];
           objc_claimAutoreleasedReturnValue();
           [MFAttachmentSecurityScope startWriteAccess];
         }
@@ -107,19 +107,19 @@
       goto LABEL_17;
     }
 
-    v9 = [(NSURL *)self->_securityScopedURL path];
-    v7 = [v9 stringByDeletingLastPathComponent];
+    path = [(NSURL *)self->_securityScopedURL path];
+    stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
 
-    v10 = [MEMORY[0x1E696AC08] defaultManager];
-    v11 = [(NSURL *)self->_securityScopedURL path];
-    if ([v10 isWritableFileAtPath:v11])
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path2 = [(NSURL *)self->_securityScopedURL path];
+    if ([defaultManager isWritableFileAtPath:path2])
     {
     }
 
     else
     {
-      v12 = [MEMORY[0x1E696AC08] defaultManager];
-      v13 = [v12 isWritableFileAtPath:v7];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      v13 = [defaultManager2 isWritableFileAtPath:stringByDeletingLastPathComponent];
 
       if (!v13)
       {
@@ -209,9 +209,9 @@ LABEL_17:
 
     else
     {
-      v15 = [MEMORY[0x1E696AC08] defaultManager];
-      v16 = [(NSURL *)self->_securityScopedURL path];
-      v17 = [v15 isReadableFileAtPath:v16];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      path = [(NSURL *)self->_securityScopedURL path];
+      v17 = [defaultManager isReadableFileAtPath:path];
 
       if (v17)
       {
@@ -278,25 +278,25 @@ void __44__MFAttachmentSecurityScope_startReadAccess__block_invoke_129(uint64_t 
   *(v7 + 32) = v6;
 }
 
-- (id)_temporaryReadURL:(id)a3 error:(id *)a4
+- (id)_temporaryReadURL:(id)l error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  lCopy = l;
   v6 = NSTemporaryDirectory();
-  v7 = [MEMORY[0x1E696AFB0] UUID];
-  v8 = [v7 UUIDString];
-  v9 = [v6 stringByAppendingPathComponent:v8];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v9 = [v6 stringByAppendingPathComponent:uUIDString];
 
-  v10 = [v5 lastPathComponent];
-  v11 = [MEMORY[0x1E696AC08] defaultManager];
-  LODWORD(v8) = [v11 createDirectoryAtPath:v9 withIntermediateDirectories:1 attributes:0 error:a4];
+  lastPathComponent = [lCopy lastPathComponent];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  LODWORD(uUIDString) = [defaultManager createDirectoryAtPath:v9 withIntermediateDirectories:1 attributes:0 error:error];
 
-  if (v8)
+  if (uUIDString)
   {
-    v12 = [v9 stringByAppendingPathComponent:v10];
+    v12 = [v9 stringByAppendingPathComponent:lastPathComponent];
     v13 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:v12 isDirectory:0];
-    v14 = [MEMORY[0x1E696AC08] defaultManager];
-    v15 = [v14 linkItemAtURL:v5 toURL:v13 error:a4];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    v15 = [defaultManager2 linkItemAtURL:lCopy toURL:v13 error:error];
 
     if (v15)
     {
@@ -306,28 +306,28 @@ void __44__MFAttachmentSecurityScope_startReadAccess__block_invoke_129(uint64_t 
     v16 = MFLogGeneral();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      if (a4)
+      if (error)
       {
-        v20 = [*a4 ef_publicDescription];
+        ef_publicDescription = [*error ef_publicDescription];
       }
 
       else
       {
-        v20 = @"unknown";
+        ef_publicDescription = @"unknown";
       }
 
       v21 = 138412546;
       v22 = v13;
       v23 = 2114;
-      v24 = v20;
+      v24 = ef_publicDescription;
       _os_log_error_impl(&dword_1B0389000, v16, OS_LOG_TYPE_ERROR, "#Attachments Failed to create temporary read URL [%@] error [%{public}@]", &v21, 0x16u);
-      if (a4)
+      if (error)
       {
       }
     }
 
-    v17 = [MEMORY[0x1E696AC08] defaultManager];
-    [v17 removeItemAtPath:v9 error:0];
+    defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager3 removeItemAtPath:v9 error:0];
   }
 
   else
@@ -389,8 +389,8 @@ LABEL_8:
 {
   if (!self->_securityScopeToken)
   {
-    v3 = [(NSURL *)self->_securityScopedURL path];
-    [v3 fileSystemRepresentation];
+    path = [(NSURL *)self->_securityScopedURL path];
+    [path fileSystemRepresentation];
     v4 = *MEMORY[0x1E69E9BB0];
     v5 = *MEMORY[0x1E69E9BD8];
     v6 = sandbox_extension_issue_file();
@@ -410,12 +410,12 @@ LABEL_8:
 
 - (void)_attachSecurityScope
 {
-  v3 = [(MFAttachmentSecurityScope *)self securityScopeToken];
+  securityScopeToken = [(MFAttachmentSecurityScope *)self securityScopeToken];
 
-  if (v3)
+  if (securityScopeToken)
   {
     securityScopedURL = self->_securityScopedURL;
-    v5 = [(MFAttachmentSecurityScope *)self securityScopeToken];
+    securityScopeToken2 = [(MFAttachmentSecurityScope *)self securityScopeToken];
     MEMORY[0x1B272A5A0](securityScopedURL);
   }
 }
@@ -425,7 +425,7 @@ LABEL_8:
   secureReadURL = self->_secureReadURL;
   if (!secureReadURL)
   {
-    v4 = [(MFAttachmentSecurityScope *)self startReadAccess];
+    startReadAccess = [(MFAttachmentSecurityScope *)self startReadAccess];
     secureReadURL = self->_secureReadURL;
   }
 
@@ -437,9 +437,9 @@ LABEL_8:
 
 - (BOOL)isReadable
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(NSURL *)self->_securityScopedURL path];
-  v5 = [v3 isReadableFileAtPath:v4];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [(NSURL *)self->_securityScopedURL path];
+  v5 = [defaultManager isReadableFileAtPath:path];
 
   if (v5)
   {
@@ -456,13 +456,13 @@ LABEL_8:
 - (BOOL)isBundle
 {
   v8 = 0;
-  v3 = [(MFAttachmentSecurityScope *)self isReadable];
+  isReadable = [(MFAttachmentSecurityScope *)self isReadable];
   v4 = 0;
-  if (v3)
+  if (isReadable)
   {
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    v6 = [(NSURL *)self->_secureReadURL path];
-    [v5 fileExistsAtPath:v6 isDirectory:&v8];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [(NSURL *)self->_secureReadURL path];
+    [defaultManager fileExistsAtPath:path isDirectory:&v8];
 
     v4 = v8;
   }

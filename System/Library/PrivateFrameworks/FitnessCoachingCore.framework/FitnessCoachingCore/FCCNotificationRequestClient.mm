@@ -1,7 +1,7 @@
 @interface FCCNotificationRequestClient
 - (FCCNotificationRequestClient)init;
-- (FCCNotificationRequestClient)initWithQueue:(id)a3 xpcClient:(id)a4;
-- (void)postSampleNotificationWithCompletion:(id)a3;
+- (FCCNotificationRequestClient)initWithQueue:(id)queue xpcClient:(id)client;
+- (void)postSampleNotificationWithCompletion:(id)completion;
 @end
 
 @implementation FCCNotificationRequestClient
@@ -15,34 +15,34 @@
   return v5;
 }
 
-- (FCCNotificationRequestClient)initWithQueue:(id)a3 xpcClient:(id)a4
+- (FCCNotificationRequestClient)initWithQueue:(id)queue xpcClient:(id)client
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  clientCopy = client;
   v12.receiver = self;
   v12.super_class = FCCNotificationRequestClient;
   v9 = [(FCCNotificationRequestClient *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dispatchQueue, a3);
-    objc_storeStrong(&v10->_xpcClient, a4);
+    objc_storeStrong(&v9->_dispatchQueue, queue);
+    objc_storeStrong(&v10->_xpcClient, client);
   }
 
   return v10;
 }
 
-- (void)postSampleNotificationWithCompletion:(id)a3
+- (void)postSampleNotificationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69__FCCNotificationRequestClient_postSampleNotificationWithCompletion___block_invoke;
   v7[3] = &unk_27900A068;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 

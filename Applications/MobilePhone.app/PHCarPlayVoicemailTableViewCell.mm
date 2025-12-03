@@ -2,10 +2,10 @@
 - (BOOL)restrictedMessage;
 - (MPMessage)voicemailMessage;
 - (NSString)localizedSenderIdentityTitle;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
-- (void)setLocalizedSenderIdentityTitle:(id)a3;
-- (void)setRestrictedMessage:(BOOL)a3;
-- (void)setVoicemailMessage:(id)a3;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
+- (void)setLocalizedSenderIdentityTitle:(id)title;
+- (void)setRestrictedMessage:(BOOL)message;
+- (void)setVoicemailMessage:(id)message;
 @end
 
 @implementation PHCarPlayVoicemailTableViewCell
@@ -18,15 +18,15 @@
   return v2;
 }
 
-- (void)setVoicemailMessage:(id)a3
+- (void)setVoicemailMessage:(id)message
 {
   v5 = OBJC_IVAR___PHCarPlayVoicemailTableViewCell_voicemailMessage;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = message;
   swift_unknownObjectRetain_n();
-  v6 = self;
+  selfCopy = self;
   swift_unknownObjectRelease();
-  [(PHCarPlayVoicemailTableViewCell *)v6 setNeedsUpdateConfiguration];
+  [(PHCarPlayVoicemailTableViewCell *)selfCopy setNeedsUpdateConfiguration];
   swift_unknownObjectRelease();
 }
 
@@ -37,11 +37,11 @@
   return *(self + v3);
 }
 
-- (void)setRestrictedMessage:(BOOL)a3
+- (void)setRestrictedMessage:(BOOL)message
 {
   v5 = OBJC_IVAR___PHCarPlayVoicemailTableViewCell_restrictedMessage;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = message;
   [(PHCarPlayVoicemailTableViewCell *)self setNeedsUpdateConfiguration];
 }
 
@@ -63,9 +63,9 @@
   return v3;
 }
 
-- (void)setLocalizedSenderIdentityTitle:(id)a3
+- (void)setLocalizedSenderIdentityTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -81,19 +81,19 @@
   swift_beginAccess();
   *v7 = v4;
   v7[1] = v6;
-  v8 = self;
+  selfCopy = self;
 
-  [(PHCarPlayVoicemailTableViewCell *)v8 setNeedsUpdateConfiguration];
+  [(PHCarPlayVoicemailTableViewCell *)selfCopy setNeedsUpdateConfiguration];
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = type metadata accessor for UICellConfigurationState();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   PHCarPlayVoicemailTableViewCell.updateConfiguration(using:)(v7);
 
   (*(v5 + 8))(v7, v4);

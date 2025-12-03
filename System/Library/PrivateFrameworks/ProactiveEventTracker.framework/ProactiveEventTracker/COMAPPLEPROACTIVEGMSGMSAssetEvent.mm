@@ -1,36 +1,36 @@
 @interface COMAPPLEPROACTIVEGMSGMSAssetEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsLoadReason:(id)a3;
-- (int)StringAsLoadResult:(id)a3;
-- (int)StringAsLoadType:(id)a3;
+- (int)StringAsLoadReason:(id)reason;
+- (int)StringAsLoadResult:(id)result;
+- (int)StringAsLoadType:(id)type;
 - (int)loadReason;
 - (int)loadResult;
 - (int)loadType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasLoadReason:(BOOL)a3;
-- (void)setHasLoadResult:(BOOL)a3;
-- (void)setHasLoadType:(BOOL)a3;
-- (void)setHasMemoryCostKB:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasLoadReason:(BOOL)reason;
+- (void)setHasLoadResult:(BOOL)result;
+- (void)setHasLoadType:(BOOL)type;
+- (void)setHasMemoryCostKB:(BOOL)b;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation COMAPPLEPROACTIVEGMSGMSAssetEvent
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 44);
+  fromCopy = from;
+  v5 = *(fromCopy + 44);
   if ((v5 & 4) != 0)
   {
-    self->_version = *(v4 + 3);
+    self->_version = *(fromCopy + 3);
     *&self->_has |= 4u;
-    v5 = *(v4 + 44);
+    v5 = *(fromCopy + 44);
     if ((v5 & 0x20) == 0)
     {
 LABEL_3:
@@ -43,14 +43,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 44) & 0x20) == 0)
+  else if ((*(fromCopy + 44) & 0x20) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_loadType = *(v4 + 10);
+  self->_loadType = *(fromCopy + 10);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 8) == 0)
   {
 LABEL_4:
@@ -63,9 +63,9 @@ LABEL_4:
   }
 
 LABEL_13:
-  self->_loadReason = *(v4 + 8);
+  self->_loadReason = *(fromCopy + 8);
   *&self->_has |= 8u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x10) == 0)
   {
 LABEL_5:
@@ -78,9 +78,9 @@ LABEL_5:
   }
 
 LABEL_14:
-  self->_loadResult = *(v4 + 9);
+  self->_loadResult = *(fromCopy + 9);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 2) == 0)
   {
 LABEL_6:
@@ -93,12 +93,12 @@ LABEL_6:
   }
 
 LABEL_15:
-  self->_memoryCostKB = *(v4 + 2);
+  self->_memoryCostKB = *(fromCopy + 2);
   *&self->_has |= 2u;
-  if (*(v4 + 44))
+  if (*(fromCopy + 44))
   {
 LABEL_7:
-    self->_latencyMillis = *(v4 + 1);
+    self->_latencyMillis = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -211,23 +211,23 @@ LABEL_7:
   return v5 ^ v4 ^ v6 ^ v7 ^ v8 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 44) & 4) == 0 || self->_version != *(v4 + 3))
+    if ((*(equalCopy + 44) & 4) == 0 || self->_version != *(equalCopy + 3))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 44) & 4) != 0)
+  else if ((*(equalCopy + 44) & 4) != 0)
   {
 LABEL_31:
     v5 = 0;
@@ -236,60 +236,60 @@ LABEL_31:
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 44) & 0x20) == 0 || self->_loadType != *(v4 + 10))
+    if ((*(equalCopy + 44) & 0x20) == 0 || self->_loadType != *(equalCopy + 10))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 44) & 0x20) != 0)
+  else if ((*(equalCopy + 44) & 0x20) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 44) & 8) == 0 || self->_loadReason != *(v4 + 8))
+    if ((*(equalCopy + 44) & 8) == 0 || self->_loadReason != *(equalCopy + 8))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 44) & 8) != 0)
+  else if ((*(equalCopy + 44) & 8) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 44) & 0x10) == 0 || self->_loadResult != *(v4 + 9))
+    if ((*(equalCopy + 44) & 0x10) == 0 || self->_loadResult != *(equalCopy + 9))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 44) & 0x10) != 0)
+  else if ((*(equalCopy + 44) & 0x10) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0 || self->_memoryCostKB != *(v4 + 2))
+    if ((*(equalCopy + 44) & 2) == 0 || self->_memoryCostKB != *(equalCopy + 2))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
     goto LABEL_31;
   }
 
-  v5 = (*(v4 + 44) & 1) == 0;
+  v5 = (*(equalCopy + 44) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_latencyMillis != *(v4 + 1))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_latencyMillis != *(equalCopy + 1))
     {
       goto LABEL_31;
     }
@@ -302,9 +302,9 @@ LABEL_32:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -386,14 +386,14 @@ LABEL_7:
   return result;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[3] = self->_version;
-    *(v4 + 44) |= 4u;
+    toCopy[3] = self->_version;
+    *(toCopy + 44) |= 4u;
     has = self->_has;
     if ((has & 0x20) == 0)
     {
@@ -412,8 +412,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 10) = self->_loadType;
-  *(v4 + 44) |= 0x20u;
+  *(toCopy + 10) = self->_loadType;
+  *(toCopy + 44) |= 0x20u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -427,8 +427,8 @@ LABEL_4:
   }
 
 LABEL_13:
-  *(v4 + 8) = self->_loadReason;
-  *(v4 + 44) |= 8u;
+  *(toCopy + 8) = self->_loadReason;
+  *(toCopy + 44) |= 8u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -442,8 +442,8 @@ LABEL_5:
   }
 
 LABEL_14:
-  *(v4 + 9) = self->_loadResult;
-  *(v4 + 44) |= 0x10u;
+  *(toCopy + 9) = self->_loadResult;
+  *(toCopy + 44) |= 0x10u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -457,21 +457,21 @@ LABEL_6:
   }
 
 LABEL_15:
-  v4[2] = self->_memoryCostKB;
-  *(v4 + 44) |= 2u;
+  toCopy[2] = self->_memoryCostKB;
+  *(toCopy + 44) |= 2u;
   if (*&self->_has)
   {
 LABEL_7:
-    v4[1] = *&self->_latencyMillis;
-    *(v4 + 44) |= 1u;
+    toCopy[1] = *&self->_latencyMillis;
+    *(toCopy + 44) |= 1u;
   }
 
 LABEL_8:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -554,12 +554,12 @@ LABEL_8:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_version];
-    [v3 setObject:v7 forKey:@"version"];
+    [dictionary setObject:v7 forKey:@"version"];
 
     has = self->_has;
     if ((has & 0x20) == 0)
@@ -590,7 +590,7 @@ LABEL_3:
     v9 = off_1E86C2D28[loadType];
   }
 
-  [v3 setObject:v9 forKey:@"loadType"];
+  [dictionary setObject:v9 forKey:@"loadType"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -616,7 +616,7 @@ LABEL_16:
     v11 = off_1E86C2D40[loadReason];
   }
 
-  [v3 setObject:v11 forKey:@"loadReason"];
+  [dictionary setObject:v11 forKey:@"loadReason"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -642,7 +642,7 @@ LABEL_20:
     v13 = off_1E86C2D68[loadResult];
   }
 
-  [v3 setObject:v13 forKey:@"loadResult"];
+  [dictionary setObject:v13 forKey:@"loadResult"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -658,18 +658,18 @@ LABEL_6:
 
 LABEL_24:
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_memoryCostKB];
-  [v3 setObject:v14 forKey:@"memoryCostKB"];
+  [dictionary setObject:v14 forKey:@"memoryCostKB"];
 
   if (*&self->_has)
   {
 LABEL_7:
     v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_latencyMillis];
-    [v3 setObject:v5 forKey:@"latencyMillis"];
+    [dictionary setObject:v5 forKey:@"latencyMillis"];
   }
 
 LABEL_8:
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -678,15 +678,15 @@ LABEL_8:
   v8.receiver = self;
   v8.super_class = COMAPPLEPROACTIVEGMSGMSAssetEvent;
   v4 = [(COMAPPLEPROACTIVEGMSGMSAssetEvent *)&v8 description];
-  v5 = [(COMAPPLEPROACTIVEGMSGMSAssetEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(COMAPPLEPROACTIVEGMSGMSAssetEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasMemoryCostKB:(BOOL)a3
+- (void)setHasMemoryCostKB:(BOOL)b
 {
-  if (a3)
+  if (b)
   {
     v3 = 2;
   }
@@ -699,30 +699,30 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsLoadResult:(id)a3
+- (int)StringAsLoadResult:(id)result
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"GMS_LOAD_RESULT_UNKNOWN"])
+  resultCopy = result;
+  if ([resultCopy isEqualToString:@"GMS_LOAD_RESULT_UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"GMS_LOAD_RESULT_LOADED"])
+  else if ([resultCopy isEqualToString:@"GMS_LOAD_RESULT_LOADED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"GMS_LOAD_RESULT_UNLOADED"])
+  else if ([resultCopy isEqualToString:@"GMS_LOAD_RESULT_UNLOADED"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"GMS_LOAD_RESULT_LOAD_FAILURE"])
+  else if ([resultCopy isEqualToString:@"GMS_LOAD_RESULT_LOAD_FAILURE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"GMS_LOAD_RESULT_UNLOAD_FAILURE"])
+  else if ([resultCopy isEqualToString:@"GMS_LOAD_RESULT_UNLOAD_FAILURE"])
   {
     v4 = 4;
   }
@@ -735,9 +735,9 @@ LABEL_8:
   return v4;
 }
 
-- (void)setHasLoadResult:(BOOL)a3
+- (void)setHasLoadResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v3 = 16;
   }
@@ -763,30 +763,30 @@ LABEL_8:
   }
 }
 
-- (int)StringAsLoadReason:(id)a3
+- (int)StringAsLoadReason:(id)reason
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"GMS_LOAD_REASON_UNKNOWN"])
+  reasonCopy = reason;
+  if ([reasonCopy isEqualToString:@"GMS_LOAD_REASON_UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"GMS_LOAD_REASON_USER_INITIATED"])
+  else if ([reasonCopy isEqualToString:@"GMS_LOAD_REASON_USER_INITIATED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"GMS_LOAD_REASON_POLICY_CHANGE"])
+  else if ([reasonCopy isEqualToString:@"GMS_LOAD_REASON_POLICY_CHANGE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"GMS_LOAD_REASON_MEMORY_BUDGET_PRESSURE"])
+  else if ([reasonCopy isEqualToString:@"GMS_LOAD_REASON_MEMORY_BUDGET_PRESSURE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"GMS_LOAD_REASON_ACQUISITION_ERROR"])
+  else if ([reasonCopy isEqualToString:@"GMS_LOAD_REASON_ACQUISITION_ERROR"])
   {
     v4 = 4;
   }
@@ -799,9 +799,9 @@ LABEL_8:
   return v4;
 }
 
-- (void)setHasLoadReason:(BOOL)a3
+- (void)setHasLoadReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 8;
   }
@@ -827,20 +827,20 @@ LABEL_8:
   }
 }
 
-- (int)StringAsLoadType:(id)a3
+- (int)StringAsLoadType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"GMS_LOAD_TYPE_UNKNOWN"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"GMS_LOAD_TYPE_UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"GMS_LOAD_TYPE_LOAD"])
+  else if ([typeCopy isEqualToString:@"GMS_LOAD_TYPE_LOAD"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"GMS_LOAD_TYPE_UNLOAD"])
+  else if ([typeCopy isEqualToString:@"GMS_LOAD_TYPE_UNLOAD"])
   {
     v4 = 2;
   }
@@ -853,9 +853,9 @@ LABEL_8:
   return v4;
 }
 
-- (void)setHasLoadType:(BOOL)a3
+- (void)setHasLoadType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 32;
   }
@@ -881,9 +881,9 @@ LABEL_8:
   }
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }

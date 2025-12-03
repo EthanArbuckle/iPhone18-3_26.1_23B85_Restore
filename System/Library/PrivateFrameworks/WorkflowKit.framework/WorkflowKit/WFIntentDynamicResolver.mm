@@ -1,11 +1,11 @@
 @interface WFIntentDynamicResolver
-- (WFIntentDynamicResolver)initWithIntentKeyPathToResolve:(id)a3 dataSource:(id)a4;
+- (WFIntentDynamicResolver)initWithIntentKeyPathToResolve:(id)resolve dataSource:(id)source;
 - (WFIntentDynamicResolverDataSource)dataSource;
-- (id)resolveWithUserInput:(id)a3 completionBlock:(id)a4;
-- (void)beginSessionWithCompletionBlock:(id)a3;
+- (id)resolveWithUserInput:(id)input completionBlock:(id)block;
+- (void)beginSessionWithCompletionBlock:(id)block;
 - (void)endSession;
-- (void)failWithError:(id)a3;
-- (void)populatedSkeletonIntentWithUserInput:(id)a3 forKeyPath:(id)a4 completionBlock:(id)a5;
+- (void)failWithError:(id)error;
+- (void)populatedSkeletonIntentWithUserInput:(id)input forKeyPath:(id)path completionBlock:(id)block;
 @end
 
 @implementation WFIntentDynamicResolver
@@ -17,17 +17,17 @@
   return WeakRetained;
 }
 
-- (void)failWithError:(id)a3
+- (void)failWithError:(id)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   self->_state = 2;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(WFIntentDynamicResolver *)self activeRequests];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  activeRequests = [(WFIntentDynamicResolver *)self activeRequests];
+  v6 = [activeRequests countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -38,20 +38,20 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(activeRequests);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
         if (([v10 isCancelled] & 1) == 0)
         {
-          v11 = [v10 resolutionBlock];
-          (v11)[2](v11, 0, 1, 0, v4);
+          resolutionBlock = [v10 resolutionBlock];
+          (resolutionBlock)[2](resolutionBlock, 0, 1, 0, errorCopy);
         }
 
         [v10 cancel];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [activeRequests countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -63,31 +63,31 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)populatedSkeletonIntentWithUserInput:(id)a3 forKeyPath:(id)a4 completionBlock:(id)a5
+- (void)populatedSkeletonIntentWithUserInput:(id)input forKeyPath:(id)path completionBlock:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFIntentDynamicResolver *)self dataSource];
-  if (v11)
+  inputCopy = input;
+  pathCopy = path;
+  blockCopy = block;
+  dataSource = [(WFIntentDynamicResolver *)self dataSource];
+  if (dataSource)
   {
 
 LABEL_4:
-    v14 = [(WFIntentDynamicResolver *)self dataSource];
+    dataSource2 = [(WFIntentDynamicResolver *)self dataSource];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __91__WFIntentDynamicResolver_populatedSkeletonIntentWithUserInput_forKeyPath_completionBlock___block_invoke;
     v17[3] = &unk_1E83769A0;
-    v20 = v10;
-    v18 = v8;
-    v19 = v9;
-    [v14 generateSkeletonIntentForDynamicResolver:self withCompletionBlock:v17];
+    v20 = blockCopy;
+    v18 = inputCopy;
+    v19 = pathCopy;
+    [dataSource2 generateSkeletonIntentForDynamicResolver:self withCompletionBlock:v17];
 
     goto LABEL_5;
   }
 
-  v12 = [(WFIntentDynamicResolver *)self dataSource];
+  dataSource3 = [(WFIntentDynamicResolver *)self dataSource];
   v13 = objc_opt_respondsToSelector();
 
   if (v13)
@@ -103,7 +103,7 @@ LABEL_4:
     _os_log_impl(&dword_1CA256000, v16, OS_LOG_TYPE_FAULT, "%s Trying to populate skeleton intent, but there's no data source.", buf, 0xCu);
   }
 
-  (*(v10 + 2))(v10, 0, 0);
+  (*(blockCopy + 2))(blockCopy, 0, 0);
 LABEL_5:
 
   v15 = *MEMORY[0x1E69E9840];
@@ -132,35 +132,35 @@ void __91__WFIntentDynamicResolver_populatedSkeletonIntentWithUserInput_forKeyPa
   v6();
 }
 
-- (id)resolveWithUserInput:(id)a3 completionBlock:(id)a4
+- (id)resolveWithUserInput:(id)input completionBlock:(id)block
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  inputCopy = input;
+  blockCopy = block;
   if ([(WFIntentDynamicResolver *)self state]== 1)
   {
     v8 = objc_opt_new();
-    [v8 setResolutionBlock:v7];
+    [v8 setResolutionBlock:blockCopy];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __64__WFIntentDynamicResolver_resolveWithUserInput_completionBlock___block_invoke;
     aBlock[3] = &unk_1E8376928;
     v9 = v8;
     v28 = v9;
-    v10 = v7;
-    v29 = self;
+    v10 = blockCopy;
+    selfCopy = self;
     v30 = v10;
     v11 = _Block_copy(aBlock);
-    v12 = [(WFIntentDynamicResolver *)self intentKeyPathToResolve];
+    intentKeyPathToResolve = [(WFIntentDynamicResolver *)self intentKeyPathToResolve];
     v20 = MEMORY[0x1E69E9820];
     v21 = 3221225472;
     v22 = __64__WFIntentDynamicResolver_resolveWithUserInput_completionBlock___block_invoke_2;
     v23 = &unk_1E8376978;
-    v24 = self;
+    selfCopy2 = self;
     v25 = v10;
     v26 = v11;
     v13 = v11;
-    [(WFIntentDynamicResolver *)self populatedSkeletonIntentWithUserInput:v6 forKeyPath:v12 completionBlock:&v20];
+    [(WFIntentDynamicResolver *)self populatedSkeletonIntentWithUserInput:inputCopy forKeyPath:intentKeyPathToResolve completionBlock:&v20];
 
     v14 = [(WFIntentDynamicResolver *)self activeRequests:v20];
     [v14 addObject:v9];
@@ -179,7 +179,7 @@ void __91__WFIntentDynamicResolver_populatedSkeletonIntentWithUserInput_forKeyPa
       _os_log_impl(&dword_1CA256000, v17, OS_LOG_TYPE_ERROR, "%s Currently not in a resolution session.", buf, 0xCu);
     }
 
-    (*(v7 + 2))(v7, 0, 1, 0, 0);
+    (*(blockCopy + 2))(blockCopy, 0, 1, 0, 0);
     v16 = 0;
   }
 
@@ -353,8 +353,8 @@ LABEL_24:
 
 - (void)endSession
 {
-  v3 = [(WFIntentDynamicResolver *)self extensionConnection];
-  [v3 reset];
+  extensionConnection = [(WFIntentDynamicResolver *)self extensionConnection];
+  [extensionConnection reset];
 
   extensionConnection = self->_extensionConnection;
   self->_extensionConnection = 0;
@@ -365,12 +365,12 @@ LABEL_24:
   self->_state = 0;
 }
 
-- (void)beginSessionWithCompletionBlock:(id)a3
+- (void)beginSessionWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(WFIntentDynamicResolver *)self state]== 1)
   {
-    v4[2](v4, 0);
+    blockCopy[2](blockCopy, 0);
   }
 
   else
@@ -381,7 +381,7 @@ LABEL_24:
     v5[2] = __59__WFIntentDynamicResolver_beginSessionWithCompletionBlock___block_invoke;
     v5[3] = &unk_1E8376900;
     v5[4] = self;
-    v6 = v4;
+    v6 = blockCopy;
     [(WFIntentDynamicResolver *)self populatedSkeletonIntentWithUserInput:0 forKeyPath:0 completionBlock:v5];
   }
 }
@@ -525,18 +525,18 @@ void __59__WFIntentDynamicResolver_beginSessionWithCompletionBlock___block_invok
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (WFIntentDynamicResolver)initWithIntentKeyPathToResolve:(id)a3 dataSource:(id)a4
+- (WFIntentDynamicResolver)initWithIntentKeyPathToResolve:(id)resolve dataSource:(id)source
 {
-  v7 = a3;
-  v8 = a4;
+  resolveCopy = resolve;
+  sourceCopy = source;
   v13.receiver = self;
   v13.super_class = WFIntentDynamicResolver;
   v9 = [(WFIntentDynamicResolver *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_intentKeyPathToResolve, a3);
-    objc_storeWeak(&v10->_dataSource, v8);
+    objc_storeStrong(&v9->_intentKeyPathToResolve, resolve);
+    objc_storeWeak(&v10->_dataSource, sourceCopy);
     v11 = v10;
   }
 

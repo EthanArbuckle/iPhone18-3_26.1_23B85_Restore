@@ -1,13 +1,13 @@
 @interface PLCloudAssetPayloadRestore
-+ (id)assetForPayload:(id)a3 inManagedObjectContext:(id)a4;
-+ (id)assetsForPayloadIDsWithPayloads:(id)a3 inManagedObjectContext:(id)a4;
++ (id)assetForPayload:(id)payload inManagedObjectContext:(id)context;
++ (id)assetsForPayloadIDsWithPayloads:(id)payloads inManagedObjectContext:(id)context;
 + (id)relationshipKeyPathsForPrefetching;
-- (PLCloudAssetPayloadRestore)initWithDelegate:(id)a3 batchSize:(unint64_t)a4;
+- (PLCloudAssetPayloadRestore)initWithDelegate:(id)delegate batchSize:(unint64_t)size;
 - (id)_resolveLocalIdentifiersForCloudIdentifiersForPayloadIDs;
 - (void)_insertBatchOfUnresolvedCloudIdentifiers;
 - (void)_insertBatchToRestore;
-- (void)_insertPayload:(id)a3 forAssets:(id)a4 skipMessage:(id)a5;
-- (void)addPayload:(id)a3;
+- (void)_insertPayload:(id)payload forAssets:(id)assets skipMessage:(id)message;
+- (void)addPayload:(id)payload;
 - (void)insertRemainingPayloads;
 @end
 
@@ -175,15 +175,15 @@ void __86__PLCloudAssetPayloadRestore__resolveLocalIdentifiersForCloudIdentifier
   }
 }
 
-- (void)_insertPayload:(id)a3 forAssets:(id)a4 skipMessage:(id)a5
+- (void)_insertPayload:(id)payload forAssets:(id)assets skipMessage:(id)message
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  payloadCopy = payload;
+  messageCopy = message;
   delegate = self->_delegate;
-  v11 = a4;
-  v12 = [(PLCloudAssetPayloadRestoreDelegate *)delegate managedObjectContext];
-  v13 = [v8 insertWithAssets:v11 inManagedObjectContext:v12];
+  assetsCopy = assets;
+  managedObjectContext = [(PLCloudAssetPayloadRestoreDelegate *)delegate managedObjectContext];
+  v13 = [payloadCopy insertWithAssets:assetsCopy inManagedObjectContext:managedObjectContext];
 
   if (v13)
   {
@@ -196,9 +196,9 @@ void __86__PLCloudAssetPayloadRestore__resolveLocalIdentifiersForCloudIdentifier
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v16 = 138412546;
-      v17 = v9;
+      v17 = messageCopy;
       v18 = 2112;
-      v19 = v8;
+      v19 = payloadCopy;
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_INFO, "ComputeCache BatchRestore: Skipped payload (%@): %@\n", &v16, 0x16u);
     }
 
@@ -210,17 +210,17 @@ void __86__PLCloudAssetPayloadRestore__resolveLocalIdentifiersForCloudIdentifier
 
 - (void)_insertBatchOfUnresolvedCloudIdentifiers
 {
-  v3 = [(PLCloudAssetPayloadRestore *)self _resolveLocalIdentifiersForCloudIdentifiersForPayloadIDs];
-  v4 = v3;
-  if (v3)
+  _resolveLocalIdentifiersForCloudIdentifiersForPayloadIDs = [(PLCloudAssetPayloadRestore *)self _resolveLocalIdentifiersForCloudIdentifiersForPayloadIDs];
+  v4 = _resolveLocalIdentifiersForCloudIdentifiersForPayloadIDs;
+  if (_resolveLocalIdentifiersForCloudIdentifiersForPayloadIDs)
   {
     delegate = self->_delegate;
     v6 = MEMORY[0x1E69E9820];
     v7 = 3221225472;
     v8 = __70__PLCloudAssetPayloadRestore__insertBatchOfUnresolvedCloudIdentifiers__block_invoke;
     v9 = &unk_1E7578848;
-    v10 = self;
-    v11 = v3;
+    selfCopy = self;
+    v11 = _resolveLocalIdentifiersForCloudIdentifiersForPayloadIDs;
     [(PLCloudAssetPayloadRestoreDelegate *)delegate performTransactionAndWait:&v6];
     [(NSMutableDictionary *)self->_payloadsWithUnresolvedAssets removeAllObjects:v6];
   }
@@ -393,9 +393,9 @@ void __51__PLCloudAssetPayloadRestore__insertBatchToRestore__block_invoke_2(uint
   }
 }
 
-- (void)addPayload:(id)a3
+- (void)addPayload:(id)payload
 {
-  [(NSMutableArray *)self->_batchToRestore addObject:a3];
+  [(NSMutableArray *)self->_batchToRestore addObject:payload];
   if ([(NSMutableArray *)self->_batchToRestore count]>= self->_batchSize)
   {
     [(PLCloudAssetPayloadRestore *)self _insertBatchToRestore];
@@ -408,23 +408,23 @@ void __51__PLCloudAssetPayloadRestore__insertBatchToRestore__block_invoke_2(uint
   }
 }
 
-- (PLCloudAssetPayloadRestore)initWithDelegate:(id)a3 batchSize:(unint64_t)a4
+- (PLCloudAssetPayloadRestore)initWithDelegate:(id)delegate batchSize:(unint64_t)size
 {
-  v7 = a3;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = PLCloudAssetPayloadRestore;
   v8 = [(PLCloudAssetPayloadRestore *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_delegate, a3);
-    v10 = 50;
-    if (a4)
+    objc_storeStrong(&v8->_delegate, delegate);
+    sizeCopy = 50;
+    if (size)
     {
-      v10 = a4;
+      sizeCopy = size;
     }
 
-    v9->_batchSize = v10;
+    v9->_batchSize = sizeCopy;
     v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v9->_batchSize];
     batchToRestore = v9->_batchToRestore;
     v9->_batchToRestore = v11;
@@ -447,11 +447,11 @@ void __51__PLCloudAssetPayloadRestore__insertBatchToRestore__block_invoke_2(uint
   return v2;
 }
 
-+ (id)assetsForPayloadIDsWithPayloads:(id)a3 inManagedObjectContext:(id)a4
++ (id)assetsForPayloadIDsWithPayloads:(id)payloads inManagedObjectContext:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v7 = MEMORY[0x1E695DF90];
-  v8 = a3;
+  payloadsCopy = payloads;
   v9 = objc_alloc_init(v7);
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -463,7 +463,7 @@ void __51__PLCloudAssetPayloadRestore__insertBatchToRestore__block_invoke_2(uint
   v41 = v12;
   v13 = v11;
   v42 = v13;
-  [v8 enumerateObjectsUsingBlock:v40];
+  [payloadsCopy enumerateObjectsUsingBlock:v40];
 
   v14 = 0x1E695D000;
   if ([v13 count])
@@ -473,14 +473,14 @@ void __51__PLCloudAssetPayloadRestore__insertBatchToRestore__block_invoke_2(uint
     v17 = [v15 fetchRequestWithEntityName:v16];
 
     v18 = MEMORY[0x1E696AE18];
-    v19 = [v13 allKeys];
-    v20 = [v18 predicateWithFormat:@"%K IN %@", @"cloudAssetGUID", v19];
+    allKeys = [v13 allKeys];
+    v20 = [v18 predicateWithFormat:@"%K IN %@", @"cloudAssetGUID", allKeys];
     [v17 setPredicate:v20];
 
-    v21 = [a1 relationshipKeyPathsForPrefetching];
-    [v17 setRelationshipKeyPathsForPrefetching:v21];
+    relationshipKeyPathsForPrefetching = [self relationshipKeyPathsForPrefetching];
+    [v17 setRelationshipKeyPathsForPrefetching:relationshipKeyPathsForPrefetching];
 
-    v22 = [v6 executeFetchRequest:v17 error:0];
+    v22 = [contextCopy executeFetchRequest:v17 error:0];
     v37[0] = MEMORY[0x1E69E9820];
     v37[1] = 3221225472;
     v37[2] = __85__PLCloudAssetPayloadRestore_assetsForPayloadIDsWithPayloads_inManagedObjectContext___block_invoke_2;
@@ -499,14 +499,14 @@ void __51__PLCloudAssetPayloadRestore__insertBatchToRestore__block_invoke_2(uint
     v25 = [v23 fetchRequestWithEntityName:v24];
 
     v26 = MEMORY[0x1E696AE18];
-    v27 = [v12 allKeys];
-    v28 = [v26 predicateWithFormat:@"%K IN %@", @"uuid", v27];
+    allKeys2 = [v12 allKeys];
+    v28 = [v26 predicateWithFormat:@"%K IN %@", @"uuid", allKeys2];
     [v25 setPredicate:v28];
 
-    v29 = [a1 relationshipKeyPathsForPrefetching];
-    [v25 setRelationshipKeyPathsForPrefetching:v29];
+    relationshipKeyPathsForPrefetching2 = [self relationshipKeyPathsForPrefetching];
+    [v25 setRelationshipKeyPathsForPrefetching:relationshipKeyPathsForPrefetching2];
 
-    v30 = [v6 executeFetchRequest:v25 error:0];
+    v30 = [contextCopy executeFetchRequest:v25 error:0];
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __85__PLCloudAssetPayloadRestore_assetsForPayloadIDsWithPayloads_inManagedObjectContext___block_invoke_3;
@@ -678,16 +678,16 @@ void __85__PLCloudAssetPayloadRestore_assetsForPayloadIDsWithPayloads_inManagedO
   }
 }
 
-+ (id)assetForPayload:(id)a3 inManagedObjectContext:(id)a4
++ (id)assetForPayload:(id)payload inManagedObjectContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 assetIdentifiers];
-  v9 = [v8 count];
+  payloadCopy = payload;
+  contextCopy = context;
+  assetIdentifiers = [payloadCopy assetIdentifiers];
+  v9 = [assetIdentifiers count];
 
   if (!v9)
   {
-    v15 = 0;
+    firstObject = 0;
     goto LABEL_9;
   }
 
@@ -695,33 +695,33 @@ void __85__PLCloudAssetPayloadRestore_assetsForPayloadIDsWithPayloads_inManagedO
   v11 = +[PLManagedAsset entityName];
   v12 = [v10 fetchRequestWithEntityName:v11];
 
-  v13 = [v6 assetIdentifierType];
-  if (!v13)
+  assetIdentifierType = [payloadCopy assetIdentifierType];
+  if (!assetIdentifierType)
   {
     v14 = @"uuid";
     goto LABEL_7;
   }
 
-  if (v13 == 1)
+  if (assetIdentifierType == 1)
   {
     v14 = @"cloudAssetGUID";
 LABEL_7:
     v16 = MEMORY[0x1E696AE18];
-    v17 = [v6 assetIdentifiers];
-    v18 = [v17 anyObject];
-    v19 = [v16 predicateWithFormat:@"%K == %@", v14, v18];
+    assetIdentifiers2 = [payloadCopy assetIdentifiers];
+    anyObject = [assetIdentifiers2 anyObject];
+    v19 = [v16 predicateWithFormat:@"%K == %@", v14, anyObject];
     [v12 setPredicate:v19];
   }
 
-  v20 = [a1 relationshipKeyPathsForPrefetching];
-  [v12 setRelationshipKeyPathsForPrefetching:v20];
+  relationshipKeyPathsForPrefetching = [self relationshipKeyPathsForPrefetching];
+  [v12 setRelationshipKeyPathsForPrefetching:relationshipKeyPathsForPrefetching];
 
-  v21 = [v7 executeFetchRequest:v12 error:0];
-  v15 = [v21 firstObject];
+  v21 = [contextCopy executeFetchRequest:v12 error:0];
+  firstObject = [v21 firstObject];
 
 LABEL_9:
 
-  return v15;
+  return firstObject;
 }
 
 @end

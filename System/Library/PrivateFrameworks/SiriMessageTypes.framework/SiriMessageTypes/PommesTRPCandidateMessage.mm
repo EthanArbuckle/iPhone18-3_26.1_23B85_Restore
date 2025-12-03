@@ -6,7 +6,7 @@
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   sub_2230F7E50();
 
   v3 = sub_2232000A4();

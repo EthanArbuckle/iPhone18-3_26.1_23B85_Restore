@@ -1,37 +1,37 @@
 @interface UICommand
-+ (id)_maps_commandWithEnableFeatureTitle:(id)a3 disableFeatureTitle:(id)a4 imageName:(id)a5 action:(SEL)a6;
-- (void)_maps_setUseDisableFeatureTitle:(BOOL)a3;
++ (id)_maps_commandWithEnableFeatureTitle:(id)title disableFeatureTitle:(id)featureTitle imageName:(id)name action:(SEL)action;
+- (void)_maps_setUseDisableFeatureTitle:(BOOL)title;
 @end
 
 @implementation UICommand
 
-- (void)_maps_setUseDisableFeatureTitle:(BOOL)a3
+- (void)_maps_setUseDisableFeatureTitle:(BOOL)title
 {
-  if (a3)
+  if (title)
   {
-    v5 = [(UICommand *)self propertyList];
+    propertyList = [(UICommand *)self propertyList];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v5 objectForKeyedSubscript:@"MapsUICommandDisableTitleKey"];
+      v4 = [propertyList objectForKeyedSubscript:@"MapsUICommandDisableTitleKey"];
       [(UICommand *)self setTitle:v4];
     }
   }
 }
 
-+ (id)_maps_commandWithEnableFeatureTitle:(id)a3 disableFeatureTitle:(id)a4 imageName:(id)a5 action:(SEL)a6
++ (id)_maps_commandWithEnableFeatureTitle:(id)title disableFeatureTitle:(id)featureTitle imageName:(id)name action:(SEL)action
 {
   v17[0] = @"MapsUICommandEnableTitleKey";
   v17[1] = @"MapsUICommandDisableTitleKey";
-  v18[0] = a3;
-  v18[1] = a4;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  v18[0] = title;
+  v18[1] = featureTitle;
+  nameCopy = name;
+  featureTitleCopy = featureTitle;
+  titleCopy = title;
   v13 = [NSDictionary dictionaryWithObjects:v18 forKeys:v17 count:2];
-  v14 = [UIImage systemImageNamed:v10];
+  v14 = [UIImage systemImageNamed:nameCopy];
 
-  v15 = [a1 commandWithTitle:v12 image:v14 action:a6 propertyList:v13];
+  v15 = [self commandWithTitle:titleCopy image:v14 action:action propertyList:v13];
 
   return v15;
 }

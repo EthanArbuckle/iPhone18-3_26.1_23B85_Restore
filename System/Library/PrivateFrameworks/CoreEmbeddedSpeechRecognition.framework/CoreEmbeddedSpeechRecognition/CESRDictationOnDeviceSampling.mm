@@ -4,9 +4,9 @@
 + (id)_readDictationSampledPlist;
 + (id)sharedManager;
 - (BOOL)_isSamplingDateCurrent;
-- (BOOL)isRequestSelectedForSamplingFromConfigForLanguage:(id)a3;
+- (BOOL)isRequestSelectedForSamplingFromConfigForLanguage:(id)language;
 - (CESRDictationOnDeviceSampling)init;
-- (void)_setRequestCount:(int64_t)a3;
+- (void)_setRequestCount:(int64_t)count;
 - (void)_setSamplingDateToCurrentDate;
 - (void)_updateDictationSampledPlist;
 - (void)incrementSampledRequestCount;
@@ -16,27 +16,27 @@
 
 - (BOOL)_isSamplingDateCurrent
 {
-  v3 = [MEMORY[0x277CBEA80] currentCalendar];
-  LOBYTE(self) = [v3 isDateInToday:self->_samplingDate];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  LOBYTE(self) = [currentCalendar isDateInToday:self->_samplingDate];
 
   return self;
 }
 
 - (void)_setSamplingDateToCurrentDate
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   samplingDate = self->_samplingDate;
-  self->_samplingDate = v3;
+  self->_samplingDate = date;
 
   v6 = self->_samplingDate;
   dictationSamplingVariables = self->_dictationSamplingVariables;
-  v7 = [MEMORY[0x277CEF290] sampledCurrentSamplingDateKey];
-  [(NSMutableDictionary *)dictationSamplingVariables setObject:v6 forKeyedSubscript:v7];
+  sampledCurrentSamplingDateKey = [MEMORY[0x277CEF290] sampledCurrentSamplingDateKey];
+  [(NSMutableDictionary *)dictationSamplingVariables setObject:v6 forKeyedSubscript:sampledCurrentSamplingDateKey];
 }
 
-- (void)_setRequestCount:(int64_t)a3
+- (void)_setRequestCount:(int64_t)count
 {
-  self->_numberOfRequestsTillNow = a3;
+  self->_numberOfRequestsTillNow = count;
   v4 = [MEMORY[0x277CCABB0] numberWithInteger:?];
   [(NSMutableDictionary *)self->_dictationSamplingVariables setObject:v4 forKeyedSubscript:@"numberOfRequestsTillNow"];
 }
@@ -111,7 +111,7 @@ void __61__CESRDictationOnDeviceSampling__updateDictationSampledPlist__block_inv
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isRequestSelectedForSamplingFromConfigForLanguage:(id)a3
+- (BOOL)isRequestSelectedForSamplingFromConfigForLanguage:(id)language
 {
   v23 = *MEMORY[0x277D85DE8];
   if (!+[CESRDictationOnDeviceSampling _isSamplingAllowed])
@@ -119,7 +119,7 @@ void __61__CESRDictationOnDeviceSampling__updateDictationSampledPlist__block_inv
     goto LABEL_26;
   }
 
-  if (a3 && (!self->_numberOfRequestsTillNow || ![(CESRDictationOnDeviceSampling *)self _isSamplingDateCurrent]))
+  if (language && (!self->_numberOfRequestsTillNow || ![(CESRDictationOnDeviceSampling *)self _isSamplingDateCurrent]))
   {
     self->_isDeviceSampledFromConfig = 1;
     v5 = [MEMORY[0x277CCABB0] numberWithBool:1];
@@ -255,16 +255,16 @@ LABEL_27:
     fileQueue = v2->_fileQueue;
     v2->_fileQueue = v4;
 
-    v6 = [objc_opt_class() _readDictationSampledPlist];
+    _readDictationSampledPlist = [objc_opt_class() _readDictationSampledPlist];
     dictationSamplingVariables = v2->_dictationSamplingVariables;
-    v2->_dictationSamplingVariables = v6;
+    v2->_dictationSamplingVariables = _readDictationSampledPlist;
 
     v2->_isDeviceSampledFromConfig = 1;
     if ([(NSMutableDictionary *)v2->_dictationSamplingVariables count])
     {
       v8 = v2->_dictationSamplingVariables;
-      v9 = [MEMORY[0x277CEF290] sampledCurrentSamplingDateKey];
-      v10 = [(NSMutableDictionary *)v8 objectForKey:v9];
+      sampledCurrentSamplingDateKey = [MEMORY[0x277CEF290] sampledCurrentSamplingDateKey];
+      v10 = [(NSMutableDictionary *)v8 objectForKey:sampledCurrentSamplingDateKey];
       samplingDate = v2->_samplingDate;
       v2->_samplingDate = v10;
 
@@ -299,9 +299,9 @@ LABEL_27:
 + (id)_readDictationSampledPlist
 {
   v21 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CEF290] sampledLibraryDirectoryPath];
-  v3 = [MEMORY[0x277CEF290] sampledPlistFileName];
-  v4 = [v2 stringByAppendingPathComponent:v3];
+  sampledLibraryDirectoryPath = [MEMORY[0x277CEF290] sampledLibraryDirectoryPath];
+  sampledPlistFileName = [MEMORY[0x277CEF290] sampledPlistFileName];
+  v4 = [sampledLibraryDirectoryPath stringByAppendingPathComponent:sampledPlistFileName];
 
   v5 = MEMORY[0x277CBEB38];
   v6 = [MEMORY[0x277CBEBC0] fileURLWithPath:v4];
@@ -323,15 +323,15 @@ LABEL_27:
       _os_log_error_impl(&dword_225EEB000, v9, OS_LOG_TYPE_ERROR, "%s Dictation Sampling: Failed to read plist at path: %@, error: %@", buf, 0x20u);
     }
 
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
   else
   {
-    v10 = [v7 mutableCopy];
+    dictionary = [v7 mutableCopy];
   }
 
-  v11 = v10;
+  v11 = dictionary;
 
   v12 = *MEMORY[0x277D85DE8];
 
@@ -341,8 +341,8 @@ LABEL_27:
 + (BOOL)_isSamplingAllowed
 {
   v10 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CEF368] sharedPreferences];
-  if ([v2 isDictationOnDeviceSamplingDisabled])
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  if ([mEMORY[0x277CEF368] isDictationOnDeviceSamplingDisabled])
   {
     v3 = *MEMORY[0x277CEF0E8];
     if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_INFO))
@@ -358,7 +358,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v2 isDictationHIPAACompliant])
+  if ([mEMORY[0x277CEF368] isDictationHIPAACompliant])
   {
     v3 = *MEMORY[0x277CEF0E8];
     if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_INFO))
@@ -374,7 +374,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if ([v2 siriDataSharingOptInStatus] != 1)
+  if ([mEMORY[0x277CEF368] siriDataSharingOptInStatus] != 1)
   {
     v3 = *MEMORY[0x277CEF0E8];
     if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_INFO))

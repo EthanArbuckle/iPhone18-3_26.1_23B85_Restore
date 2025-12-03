@@ -1,12 +1,12 @@
 @interface PKMANotificationAuthorizationAssetManager
 + (id)sharedInstance;
-- (CGImage)notificationAuthorizationImageForLocale:(id)a3;
+- (CGImage)notificationAuthorizationImageForLocale:(id)locale;
 - (PKMANotificationAuthorizationAssetManager)init;
-- (id)_languageDirectionFormatForLocale:(id)a3;
-- (id)_notificationAuthorizationImageFilenameForLocale:(id)a3;
-- (id)notificationAuthorizationString:(id)a3;
-- (id)notificationAuthorizationString:(id)a3 pass:(id)a4;
-- (void)downloadNotificationAuthorizationImage:(id)a3 completion:(id)a4;
+- (id)_languageDirectionFormatForLocale:(id)locale;
+- (id)_notificationAuthorizationImageFilenameForLocale:(id)locale;
+- (id)notificationAuthorizationString:(id)string;
+- (id)notificationAuthorizationString:(id)string pass:(id)pass;
+- (void)downloadNotificationAuthorizationImage:(id)image completion:(id)completion;
 @end
 
 @implementation PKMANotificationAuthorizationAssetManager
@@ -48,45 +48,45 @@ void __59__PKMANotificationAuthorizationAssetManager_sharedInstance__block_invok
   return v5;
 }
 
-- (id)notificationAuthorizationString:(id)a3
+- (id)notificationAuthorizationString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = [(PKMobileAssetManager *)self->_mobileAssetManager cachedStringsBundleWithIdentifier:*MEMORY[0x1E69BBB18]];
-  v6 = PKLocalizedStringInMobileAssetsStringsBundle(v4, v5);
+  v6 = PKLocalizedStringInMobileAssetsStringsBundle(stringCopy, v5);
   if (!v6)
   {
-    v6 = PKLocalizedString(v4);
+    v6 = PKLocalizedString(stringCopy);
   }
 
   return v6;
 }
 
-- (id)notificationAuthorizationString:(id)a3 pass:(id)a4
+- (id)notificationAuthorizationString:(id)string pass:(id)pass
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  passCopy = pass;
   v8 = [(PKMobileAssetManager *)self->_mobileAssetManager cachedStringsBundleWithIdentifier:*MEMORY[0x1E69BBB18]];
-  v9 = PKLocalizedStringInMobileAssetsStringsBundle(v6, v8);
+  v9 = PKLocalizedStringInMobileAssetsStringsBundle(stringCopy, v8);
   if (!v9)
   {
-    v10 = [v7 localizedDescription];
-    v9 = PKLocalizedString(v6, &stru_1F3BD5BF0.isa, v10);
+    localizedDescription = [passCopy localizedDescription];
+    v9 = PKLocalizedString(stringCopy, &stru_1F3BD5BF0.isa, localizedDescription);
   }
 
   return v9;
 }
 
-- (void)downloadNotificationAuthorizationImage:(id)a3 completion:(id)a4
+- (void)downloadNotificationAuthorizationImage:(id)image completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(PKMANotificationAuthorizationAssetManager *)self _notificationAuthorizationImageFilenameForLocale:a3];
+  completionCopy = completion;
+  v7 = [(PKMANotificationAuthorizationAssetManager *)self _notificationAuthorizationImageFilenameForLocale:image];
   mobileAssetManager = self->_mobileAssetManager;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __95__PKMANotificationAuthorizationAssetManager_downloadNotificationAuthorizationImage_completion___block_invoke;
   v10[3] = &unk_1E801CBF0;
-  v11 = v6;
-  v9 = v6;
+  v11 = completionCopy;
+  v9 = completionCopy;
   [(PKMobileAssetManager *)mobileAssetManager dynamicAssetWithIdentifier:v7 parameters:0 timeout:20 completion:v10];
 }
 
@@ -101,9 +101,9 @@ uint64_t __95__PKMANotificationAuthorizationAssetManager_downloadNotificationAut
   return result;
 }
 
-- (CGImage)notificationAuthorizationImageForLocale:(id)a3
+- (CGImage)notificationAuthorizationImageForLocale:(id)locale
 {
-  v4 = [(PKMANotificationAuthorizationAssetManager *)self _notificationAuthorizationImageFilenameForLocale:a3];
+  v4 = [(PKMANotificationAuthorizationAssetManager *)self _notificationAuthorizationImageFilenameForLocale:locale];
   v5 = [(PKMobileAssetManager *)self->_mobileAssetManager cachedDynamicAssetWithIdentifier:v4 parameters:0];
   v6 = [v4 stringByAppendingFormat:@"_%@", @"Light"];
   v7 = [v4 stringByAppendingFormat:@"_%@", @"Dark"];
@@ -137,16 +137,16 @@ LABEL_7:
 
 LABEL_4:
   v11 = PKUIDynamicImage(v8, v10);
-  v12 = [v11 CGImage];
+  cGImage = [v11 CGImage];
 
-  return v12;
+  return cGImage;
 }
 
-- (id)_languageDirectionFormatForLocale:(id)a3
+- (id)_languageDirectionFormatForLocale:(id)locale
 {
   v3 = MEMORY[0x1E695DF58];
-  v4 = [a3 languageCode];
-  v5 = [v3 characterDirectionForLanguage:v4];
+  languageCode = [locale languageCode];
+  v5 = [v3 characterDirectionForLanguage:languageCode];
 
   v6 = @"LTR";
   if (v5 == 2)
@@ -159,9 +159,9 @@ LABEL_4:
   return v7;
 }
 
-- (id)_notificationAuthorizationImageFilenameForLocale:(id)a3
+- (id)_notificationAuthorizationImageFilenameForLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"Notification"];
   if (PKIsVision())
   {
@@ -179,7 +179,7 @@ LABEL_4:
     }
 
     [v5 appendFormat:@"_%@", v8];
-    v9 = [(PKMANotificationAuthorizationAssetManager *)self _languageDirectionFormatForLocale:v4];
+    v9 = [(PKMANotificationAuthorizationAssetManager *)self _languageDirectionFormatForLocale:localeCopy];
     [v5 appendString:v9];
 
     v10 = PKNumberingSystemForLocale();
@@ -202,7 +202,7 @@ LABEL_4:
   else
   {
     [v5 appendFormat:@"_%@", @"Phone"];
-    v11 = [(PKMANotificationAuthorizationAssetManager *)self _languageDirectionFormatForLocale:v4];
+    v11 = [(PKMANotificationAuthorizationAssetManager *)self _languageDirectionFormatForLocale:localeCopy];
     [v5 appendString:v11];
 
     IsAvailable = PKHomeButtonIsAvailable();

@@ -4,10 +4,10 @@
 - (CHRecognitionInsight)recordedInsightFromLastRequest;
 - (NSArray)locales;
 - (NSSet)declaredVariables;
-- (id)mathRecognitionResultForDrawing:(id)a3 options:(id)a4 shouldCancel:(id)a5;
-- (void)recordInsightWithRequest:(id)a3;
-- (void)setDeclaredVariables:(id)a3;
-- (void)setLocales:(id)a3;
+- (id)mathRecognitionResultForDrawing:(id)drawing options:(id)options shouldCancel:(id)cancel;
+- (void)recordInsightWithRequest:(id)request;
+- (void)setDeclaredVariables:(id)variables;
+- (void)setLocales:(id)locales;
 @end
 
 @implementation CHMathRecognizer
@@ -95,12 +95,12 @@
   return v2;
 }
 
-- (id)mathRecognitionResultForDrawing:(id)a3 options:(id)a4 shouldCancel:(id)a5
+- (id)mathRecognitionResultForDrawing:(id)drawing options:(id)options shouldCancel:(id)cancel
 {
   v234 = *MEMORY[0x1E69E9840];
-  v213 = a3;
-  v208 = a4;
-  v209 = a5;
+  drawingCopy = drawing;
+  optionsCopy = options;
+  cancelCopy = cancel;
   if (self)
   {
     activeRecognitionInsight = self->_activeRecognitionInsight;
@@ -122,7 +122,7 @@
   v214 = v16;
   if (v16)
   {
-    objc_msgSend_recordInputDrawing_(v16, v17, v213, v18, v19, v20);
+    objc_msgSend_recordInputDrawing_(v16, v17, drawingCopy, v18, v19, v20);
   }
 
   v221 = 0;
@@ -169,13 +169,13 @@
   block[1] = 3221225472;
   block[2] = sub_18380DC60;
   block[3] = &unk_1E6DDEC10;
-  v211 = v213;
+  v211 = drawingCopy;
   v216 = v211;
-  v217 = self;
-  v210 = v208;
+  selfCopy = self;
+  v210 = optionsCopy;
   v218 = v210;
   v220 = &v221;
-  v26 = v209;
+  v26 = cancelCopy;
   v219 = v26;
   dispatch_sync(recognitionQueue, block);
   v32 = v222[5];
@@ -468,16 +468,16 @@ LABEL_86:
   return v2;
 }
 
-- (void)setDeclaredVariables:(id)a3
+- (void)setDeclaredVariables:(id)variables
 {
-  v4 = a3;
+  variablesCopy = variables;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = sub_18380EA40;
   v6[3] = &unk_1E6DDC818;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = variablesCopy;
+  v5 = variablesCopy;
   sub_18380E77C(self, v6);
 }
 
@@ -502,16 +502,16 @@ LABEL_86:
   return v2;
 }
 
-- (void)setLocales:(id)a3
+- (void)setLocales:(id)locales
 {
-  v4 = a3;
+  localesCopy = locales;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = sub_18380EC28;
   v6[3] = &unk_1E6DDC818;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = localesCopy;
+  v5 = localesCopy;
   sub_18380E77C(self, v6);
 }
 
@@ -524,16 +524,16 @@ LABEL_86:
   return result;
 }
 
-- (void)recordInsightWithRequest:(id)a3
+- (void)recordInsightWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = sub_18380EDB0;
   v6[3] = &unk_1E6DDC818;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = requestCopy;
+  selfCopy = self;
+  v5 = requestCopy;
   sub_18380E77C(self, v6);
 }
 

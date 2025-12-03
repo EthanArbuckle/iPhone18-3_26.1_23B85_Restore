@@ -1,13 +1,13 @@
 @interface ASDTIOA2HeadsetInfoProperty
-- (ASDTIOA2HeadsetInfoProperty)initWithIOA2Device:(id)a3;
+- (ASDTIOA2HeadsetInfoProperty)initWithIOA2Device:(id)device;
 - (id)value;
 @end
 
 @implementation ASDTIOA2HeadsetInfoProperty
 
-- (ASDTIOA2HeadsetInfoProperty)initWithIOA2Device:(id)a3
+- (ASDTIOA2HeadsetInfoProperty)initWithIOA2Device:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = [objc_alloc(MEMORY[0x277CEFB68]) initWithAddress:{0x676C6F6268656164, 0}];
   v9.receiver = self;
   v9.super_class = ASDTIOA2HeadsetInfoProperty;
@@ -15,7 +15,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_device, v4);
+    objc_storeWeak(&v6->_device, deviceCopy);
   }
 
   return v7;

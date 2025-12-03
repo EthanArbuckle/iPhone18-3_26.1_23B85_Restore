@@ -1,39 +1,39 @@
 @interface _GCVirtualControllerImpl
 + (void)forceVirtualController;
 - (GCController)controller;
-- (_GCVirtualControllerImpl)initWithConfiguration:(id)a3;
+- (_GCVirtualControllerImpl)initWithConfiguration:(id)configuration;
 - (id)findKeyWindow;
-- (void)connectWithReplyHandler:(id)a3;
+- (void)connectWithReplyHandler:(id)handler;
 - (void)dealloc;
 - (void)disconnect;
 - (void)refreshViewForKeyWindow;
-- (void)updateConfigurationForElement:(id)a3 configuration:(id)a4;
+- (void)updateConfigurationForElement:(id)element configuration:(id)configuration;
 @end
 
 @implementation _GCVirtualControllerImpl
 
-- (_GCVirtualControllerImpl)initWithConfiguration:(id)a3
+- (_GCVirtualControllerImpl)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v14.receiver = self;
   v14.super_class = _GCVirtualControllerImpl;
   v6 = [(_GCVirtualControllerImpl *)&v14 init];
-  if (!v5 && GCCurrentProcessLinkedOnAfter())
+  if (!configurationCopy && GCCurrentProcessLinkedOnAfter())
   {
     [_GCVirtualControllerImpl initWithConfiguration:];
   }
 
-  objc_storeStrong(&v6->_configuration, a3);
-  v7 = [[GCTouchController alloc] initWithConfiguration:v5];
+  objc_storeStrong(&v6->_configuration, configuration);
+  v7 = [[GCTouchController alloc] initWithConfiguration:configurationCopy];
   controller = v6->_controller;
   v6->_controller = v7;
 
-  if (([v5 isHidden] & 1) == 0)
+  if (([configurationCopy isHidden] & 1) == 0)
   {
     v9 = [GCControllerView alloc];
     v10 = +[UIScreen mainScreen];
     [v10 bounds];
-    v11 = [(GCControllerView *)v9 initWithFrame:v5 configuration:?];
+    v11 = [(GCControllerView *)v9 initWithFrame:configurationCopy configuration:?];
     controllerView = v6->_controllerView;
     v6->_controllerView = v11;
 
@@ -51,15 +51,15 @@
   [(_GCVirtualControllerImpl *)&v3 dealloc];
 }
 
-- (void)connectWithReplyHandler:(id)a3
+- (void)connectWithReplyHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   v6 = 0;
   atomic_compare_exchange_strong(&s_connected, &v6, self);
   if (v6)
   {
-    if (v4)
+    if (handlerCopy)
     {
       v11[0] = NSLocalizedDescriptionKey;
       v11[1] = NSLocalizedFailureReasonErrorKey;
@@ -79,16 +79,16 @@
     block[2] = __52___GCVirtualControllerImpl_connectWithReplyHandler___block_invoke;
     block[3] = &unk_106E0;
     block[4] = self;
-    v10 = v4;
+    v10 = handlerCopy;
     dispatch_async(&_dispatch_main_q, block);
   }
 }
 
 - (void)disconnect
 {
-  v4 = self;
-  atomic_compare_exchange_strong(&s_connected, &v4, 0);
-  if (v4 == self)
+  selfCopy = self;
+  atomic_compare_exchange_strong(&s_connected, &selfCopy, 0);
+  if (selfCopy == self)
   {
     v13 = v2;
     v14 = v3;
@@ -121,20 +121,20 @@
   return v3;
 }
 
-- (void)updateConfigurationForElement:(id)a3 configuration:(id)a4
+- (void)updateConfigurationForElement:(id)element configuration:(id)configuration
 {
-  v10 = a3;
-  v6 = a4;
+  elementCopy = element;
+  configurationCopy = configuration;
   controllerView = self->_controllerView;
   if (!controllerView)
   {
     [_GCVirtualControllerImpl updateConfigurationForElement:configuration:];
   }
 
-  v8 = [(GCControllerView *)controllerView getConfigurationForElement:v10];
-  v9 = v6[2](v6, v8);
+  v8 = [(GCControllerView *)controllerView getConfigurationForElement:elementCopy];
+  v9 = configurationCopy[2](configurationCopy, v8);
 
-  [(GCControllerView *)self->_controllerView setConfigurationForElement:v10 configuration:v9];
+  [(GCControllerView *)self->_controllerView setConfigurationForElement:elementCopy configuration:v9];
 }
 
 + (void)forceVirtualController
@@ -170,16 +170,16 @@
 
 - (id)findKeyWindow
 {
-  if (a1)
+  if (self)
   {
     v1 = +[UIApplication sharedApplication];
-    v2 = [v1 windows];
+    windows = [v1 windows];
 
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = v2;
+    v3 = windows;
     v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v4)
     {
@@ -197,7 +197,7 @@
           v8 = *(*(&v11 + 1) + 8 * i);
           if ([v8 isKeyWindow])
           {
-            v9 = v8;
+            firstObject = v8;
 
             goto LABEL_12;
           }
@@ -213,27 +213,27 @@
       }
     }
 
-    v9 = [v3 firstObject];
+    firstObject = [v3 firstObject];
 LABEL_12:
   }
 
   else
   {
-    v9 = 0;
+    firstObject = 0;
   }
 
-  return v9;
+  return firstObject;
 }
 
 - (void)refreshViewForKeyWindow
 {
-  if (a1)
+  if (self)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __61___GCVirtualControllerImpl_Internal__refreshViewForKeyWindow__block_invoke;
     block[3] = &unk_10730;
-    block[4] = a1;
+    block[4] = self;
     dispatch_async(&_dispatch_main_q, block);
   }
 }

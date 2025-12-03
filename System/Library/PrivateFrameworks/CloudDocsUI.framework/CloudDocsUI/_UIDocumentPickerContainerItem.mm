@@ -1,27 +1,27 @@
 @interface _UIDocumentPickerContainerItem
-+ (id)_blockingBadgeForContainer:(id)a3 size:(CGSize)a4 scale:(double)a5;
-+ (id)_blockingFolderIconForURL:(id)a3 container:(id)a4 size:(CGSize)a5 scale:(double)a6;
-+ (id)_blockingIconForDocumentProxy:(id)a3 withSize:(CGSize)a4;
-+ (id)_blockingIconForURL:(id)a3 withSize:(CGSize)a4;
-+ (id)_blockingThumbnailForItem:(id)a3 documentProxy:(id)a4 withSize:(CGSize)a5 scale:(double)a6 wantsBorder:(BOOL *)a7 generatedThumbnail:(BOOL *)a8;
++ (id)_blockingBadgeForContainer:(id)container size:(CGSize)size scale:(double)scale;
++ (id)_blockingFolderIconForURL:(id)l container:(id)container size:(CGSize)size scale:(double)scale;
++ (id)_blockingIconForDocumentProxy:(id)proxy withSize:(CGSize)size;
++ (id)_blockingIconForURL:(id)l withSize:(CGSize)size;
++ (id)_blockingThumbnailForItem:(id)item documentProxy:(id)proxy withSize:(CGSize)size scale:(double)scale wantsBorder:(BOOL *)border generatedThumbnail:(BOOL *)thumbnail;
 + (id)_lruThumbnailArray;
 + (void)clearLRUThumbnailCache;
-+ (void)markThumbnailAsRecentlyUsed:(id)a3;
-- (BOOL)isActionApplicableForItem:(int64_t)a3;
++ (void)markThumbnailAsRecentlyUsed:(id)used;
+- (BOOL)isActionApplicableForItem:(int64_t)item;
 - (BOOL)isAlias;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (_UIDocumentPickerContainerItem)init;
 - (_UIDocumentPickerContainerModel)parentModel;
-- (id)_blipWithTags:(id)a3 height:(double)a4 scale:(double)a5;
-- (id)_blockingThumbnailWithSize:(CGSize)a3 scale:(double)a4 wantsBorder:(BOOL *)a5;
-- (id)_createThumbnailWithSize:(CGSize)a3 scale:(double)a4;
-- (id)_formattedSubtitleForNumberOfItems:(unint64_t)a3;
+- (id)_blipWithTags:(id)tags height:(double)height scale:(double)scale;
+- (id)_blockingThumbnailWithSize:(CGSize)size scale:(double)scale wantsBorder:(BOOL *)border;
+- (id)_createThumbnailWithSize:(CGSize)size scale:(double)scale;
+- (id)_formattedSubtitleForNumberOfItems:(unint64_t)items;
 - (id)_resourceIdentifier;
 - (id)sortPath;
-- (id)tagBlipsWithHeight:(double)a3 scale:(double)a4;
+- (id)tagBlipsWithHeight:(double)height scale:(double)scale;
 - (id)tags;
-- (id)thumbnailWithSize:(CGSize)a3 scale:(double)a4;
+- (id)thumbnailWithSize:(CGSize)size scale:(double)scale;
 - (unint64_t)hash;
 - (void)_ensureModelPresent;
 - (void)dealloc;
@@ -32,15 +32,15 @@
 
 @implementation _UIDocumentPickerContainerItem
 
-- (BOOL)isActionApplicableForItem:(int64_t)a3
+- (BOOL)isActionApplicableForItem:(int64_t)item
 {
-  v4 = self;
-  v5 = v4;
-  if (a3 > 3)
+  selfCopy = self;
+  v5 = selfCopy;
+  if (item > 3)
   {
-    if (a3 == 4)
+    if (item == 4)
     {
-      if (![(_UIDocumentPickerContainerItem *)v4 type])
+      if (![(_UIDocumentPickerContainerItem *)selfCopy type])
       {
         v6 = ![(_UIDocumentPickerContainerItem *)v5 isAlias];
         goto LABEL_18;
@@ -49,14 +49,14 @@
       goto LABEL_13;
     }
 
-    if (a3 != 5 && a3 != 6)
+    if (item != 5 && item != 6)
     {
 LABEL_13:
       LOBYTE(v6) = 0;
       goto LABEL_18;
     }
 
-    if ([(_UIDocumentPickerContainerItem *)v4 type])
+    if ([(_UIDocumentPickerContainerItem *)selfCopy type])
     {
       v7 = [(_UIDocumentPickerContainerItem *)v5 type]== 1;
       goto LABEL_15;
@@ -67,23 +67,23 @@ LABEL_11:
     goto LABEL_18;
   }
 
-  if (a3 < 2)
+  if (item < 2)
   {
     goto LABEL_11;
   }
 
-  if (a3 != 2)
+  if (item != 2)
   {
-    if (a3 == 3)
+    if (item == 3)
     {
-      LOBYTE(v6) = [(_UIDocumentPickerContainerItem *)v4 renameable];
+      LOBYTE(v6) = [(_UIDocumentPickerContainerItem *)selfCopy renameable];
       goto LABEL_18;
     }
 
     goto LABEL_13;
   }
 
-  v7 = [(_UIDocumentPickerContainerItem *)v4 type]== 0;
+  v7 = [(_UIDocumentPickerContainerItem *)selfCopy type]== 0;
 LABEL_15:
   LOBYTE(v6) = v7;
 LABEL_18:
@@ -125,28 +125,28 @@ LABEL_18:
   return v3;
 }
 
-+ (void)markThumbnailAsRecentlyUsed:(id)a3
++ (void)markThumbnailAsRecentlyUsed:(id)used
 {
-  v4 = a3;
-  v5 = [a1 _lruThumbnailArray];
-  [v5 insertObject:v4 atIndex:0];
+  usedCopy = used;
+  _lruThumbnailArray = [self _lruThumbnailArray];
+  [_lruThumbnailArray insertObject:usedCopy atIndex:0];
 
-  if ([v5 count] >= 0x29)
+  if ([_lruThumbnailArray count] >= 0x29)
   {
-    [v5 removeObjectsInRange:{40, objc_msgSend(v5, "count") - 40}];
+    [_lruThumbnailArray removeObjectsInRange:{40, objc_msgSend(_lruThumbnailArray, "count") - 40}];
   }
 }
 
 + (void)clearLRUThumbnailCache
 {
-  v2 = [a1 _lruThumbnailArray];
-  [v2 removeAllObjects];
+  _lruThumbnailArray = [self _lruThumbnailArray];
+  [_lruThumbnailArray removeAllObjects];
 }
 
-- (id)thumbnailWithSize:(CGSize)a3 scale:(double)a4
+- (id)thumbnailWithSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8 = [(_UIDocumentPickerContainerItem *)self url];
 
   if (v8)
@@ -160,13 +160,13 @@ LABEL_18:
 
     v11 = [_UIDocumentPickerContainerItemThumbnailKey alloc];
     v12 = [(_UIDocumentPickerContainerItem *)self url];
-    v13 = [(_UIDocumentPickerContainerItemThumbnailKey *)v11 initWithPrimaryKey:v12 size:width scale:height, a4];
+    scale = [(_UIDocumentPickerContainerItemThumbnailKey *)v11 initWithPrimaryKey:v12 size:width scale:height, scale];
 
-    v14 = [(NSMapTable *)self->_thumbnailsBySize objectForKey:v13];
+    v14 = [(NSMapTable *)self->_thumbnailsBySize objectForKey:scale];
     if (!v14)
     {
-      v15 = [(_UIDocumentPickerContainerItem *)self parentModel];
-      if (v15)
+      parentModel = [(_UIDocumentPickerContainerItem *)self parentModel];
+      if (parentModel)
       {
         objc_initWeak(&location, self);
         v16 = MEMORY[0x277CCA8C8];
@@ -175,19 +175,19 @@ LABEL_18:
         v24 = __58___UIDocumentPickerContainerItem_thumbnailWithSize_scale___block_invoke;
         v25 = &unk_278DD6530;
         objc_copyWeak(v29, &location);
-        v26 = self;
+        selfCopy = self;
         v29[1] = *&width;
         v29[2] = *&height;
-        v29[3] = *&a4;
-        v27 = v13;
-        v17 = v15;
+        v29[3] = *&scale;
+        v27 = scale;
+        v17 = parentModel;
         v28 = v17;
         v18 = [v16 blockOperationWithBlock:&v22];
         thumbnailLoadOperation = self->_thumbnailLoadOperation;
         self->_thumbnailLoadOperation = v18;
 
-        v20 = [v17 thumbnailQueue];
-        [v20 addOperation:self->_thumbnailLoadOperation];
+        thumbnailQueue = [v17 thumbnailQueue];
+        [thumbnailQueue addOperation:self->_thumbnailLoadOperation];
 
         objc_destroyWeak(v29);
         objc_destroyWeak(&location);
@@ -203,17 +203,17 @@ LABEL_18:
   return v14;
 }
 
-- (id)_createThumbnailWithSize:(CGSize)a3 scale:(double)a4
+- (id)_createThumbnailWithSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8 = objc_autoreleasePoolPush();
   v28 = 0;
-  v9 = [(_UIDocumentPickerContainerItem *)self _blockingThumbnailWithSize:&v28 scale:width wantsBorder:height, a4];
-  v10 = v9;
-  if (v9)
+  scale = [(_UIDocumentPickerContainerItem *)self _blockingThumbnailWithSize:&v28 scale:width wantsBorder:height, scale];
+  v10 = scale;
+  if (scale)
   {
-    [v9 size];
+    [scale size];
     v12 = v11 / height;
     [v10 size];
     v14 = fmax(v12, v13 / width);
@@ -224,7 +224,7 @@ LABEL_18:
       [v10 size];
       v18 = v17 / v14;
       v19 = objc_opt_new();
-      [v19 setScale:a4];
+      [v19 setScale:scale];
       v20 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:v19 format:{v16, v18}];
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
@@ -253,33 +253,33 @@ LABEL_18:
   return v21;
 }
 
-- (id)_blockingThumbnailWithSize:(CGSize)a3 scale:(double)a4 wantsBorder:(BOOL *)a5
+- (id)_blockingThumbnailWithSize:(CGSize)size scale:(double)scale wantsBorder:(BOOL *)border
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if ([(_UIDocumentPickerContainerItem *)self type]== 1)
   {
-    if (a5)
+    if (border)
     {
-      *a5 = 0;
+      *border = 0;
     }
 
     v10 = objc_opt_class();
     v11 = [(_UIDocumentPickerContainerItem *)self url];
-    v12 = [v10 _blockingFolderIconForURL:v11 container:0 size:width scale:{height, a4}];
+    v12 = [v10 _blockingFolderIconForURL:v11 container:0 size:width scale:{height, scale}];
   }
 
   else
   {
     v13 = MEMORY[0x277CC1EB8];
     v14 = [(_UIDocumentPickerContainerItem *)self url];
-    v15 = [v14 lastPathComponent];
-    v16 = [(_UIDocumentPickerContainerItem *)self contentType];
-    v11 = [v13 documentProxyForName:v15 type:v16 MIMEType:0];
+    lastPathComponent = [v14 lastPathComponent];
+    contentType = [(_UIDocumentPickerContainerItem *)self contentType];
+    v11 = [v13 documentProxyForName:lastPathComponent type:contentType MIMEType:0];
 
     v17 = objc_opt_class();
     v18 = [(_UIDocumentPickerContainerItem *)self url];
-    v12 = [v17 _blockingThumbnailForItem:v18 documentProxy:v11 withSize:a5 scale:0 wantsBorder:width generatedThumbnail:{height, a4}];
+    v12 = [v17 _blockingThumbnailForItem:v18 documentProxy:v11 withSize:border scale:0 wantsBorder:width generatedThumbnail:{height, scale}];
   }
 
   return v12;
@@ -317,15 +317,15 @@ LABEL_18:
   return resourceIdentifier;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 _resourceIdentifier];
-    v6 = [(_UIDocumentPickerContainerItem *)self _resourceIdentifier];
-    v7 = [v5 isEqual:v6];
+    _resourceIdentifier = [equalCopy _resourceIdentifier];
+    _resourceIdentifier2 = [(_UIDocumentPickerContainerItem *)self _resourceIdentifier];
+    v7 = [_resourceIdentifier isEqual:_resourceIdentifier2];
   }
 
   else
@@ -338,8 +338,8 @@ LABEL_18:
 
 - (unint64_t)hash
 {
-  v2 = [(_UIDocumentPickerContainerItem *)self _resourceIdentifier];
-  v3 = [v2 hash];
+  _resourceIdentifier = [(_UIDocumentPickerContainerItem *)self _resourceIdentifier];
+  v3 = [_resourceIdentifier hash];
 
   return v3;
 }
@@ -355,42 +355,42 @@ LABEL_18:
   return v3;
 }
 
-- (id)tagBlipsWithHeight:(double)a3 scale:(double)a4
+- (id)tagBlipsWithHeight:(double)height scale:(double)scale
 {
-  v7 = [(_UIDocumentPickerContainerItem *)self tags];
-  v8 = [v7 reverseObjectEnumerator];
-  v9 = [v8 allObjects];
+  tags = [(_UIDocumentPickerContainerItem *)self tags];
+  reverseObjectEnumerator = [tags reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  if ([v9 count] >= 4)
+  if ([allObjects count] >= 4)
   {
-    v10 = [v9 subarrayWithRange:{0, 3}];
+    v10 = [allObjects subarrayWithRange:{0, 3}];
 
-    v9 = v10;
+    allObjects = v10;
   }
 
-  v11 = [(_UIDocumentPickerContainerItem *)self _blipWithTags:v9 height:a3 scale:a4];
+  v11 = [(_UIDocumentPickerContainerItem *)self _blipWithTags:allObjects height:height scale:scale];
 
   return v11;
 }
 
-- (id)_blipWithTags:(id)a3 height:(double)a4 scale:(double)a5
+- (id)_blipWithTags:(id)tags height:(double)height scale:(double)scale
 {
-  v7 = a3;
-  if ([v7 count])
+  tagsCopy = tags;
+  if ([tagsCopy count])
   {
     v8 = MEMORY[0x277D755B8];
-    v9 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
-    v10 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+    v9 = [MEMORY[0x277CCABB0] numberWithDouble:height];
+    v10 = [MEMORY[0x277CCABB0] numberWithDouble:scale];
     v14 = *MEMORY[0x277D776E0];
     v11 = __UIImageCacheKeyWithSentinel();
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __61___UIDocumentPickerContainerItem__blipWithTags_height_scale___block_invoke;
     v15[3] = &unk_278DD65A8;
-    v17 = a4;
-    v16 = v7;
-    v18 = a5;
-    v12 = [v8 _cachedImageForKey:v11 fromBlock:{v15, v7, v9, v10, v14}];
+    heightCopy = height;
+    v16 = tagsCopy;
+    scaleCopy = scale;
+    v12 = [v8 _cachedImageForKey:v11 fromBlock:{v15, tagsCopy, v9, v10, v14}];
   }
 
   else
@@ -443,8 +443,8 @@ LABEL_18:
   [(_UIDocumentPickerContainerItem *)self _ensureModelPresent];
   if (self->_modelDisplayCount == 1 && self->_model)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:self selector:sel_modelChanged name:@"_UIDocumentPickerModelUpdatedNotification" object:self->_model];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_modelChanged name:@"_UIDocumentPickerModelUpdatedNotification" object:self->_model];
 
     model = self->_model;
 
@@ -463,18 +463,18 @@ LABEL_18:
     if (!self->_model)
     {
       v5 = [(_UIDocumentPickerContainerItem *)self url];
-      v13 = [v5 br_realpathURL];
+      br_realpathURL = [v5 br_realpathURL];
 
       v6 = [_UIDocumentPickerURLContainerModel alloc];
-      v7 = [(_UIDocumentPickerContainerItem *)self parentModel];
-      v8 = [v7 pickableTypes];
-      v9 = [(_UIDocumentPickerContainerItem *)self parentModel];
-      v10 = -[_UIDocumentPickerURLContainerModel initWithURL:pickableTypes:mode:](v6, "initWithURL:pickableTypes:mode:", v13, v8, [v9 pickerMode]);
+      parentModel = [(_UIDocumentPickerContainerItem *)self parentModel];
+      pickableTypes = [parentModel pickableTypes];
+      parentModel2 = [(_UIDocumentPickerContainerItem *)self parentModel];
+      v10 = -[_UIDocumentPickerURLContainerModel initWithURL:pickableTypes:mode:](v6, "initWithURL:pickableTypes:mode:", br_realpathURL, pickableTypes, [parentModel2 pickerMode]);
       v11 = self->_model;
       self->_model = v10;
 
-      v12 = [(_UIDocumentPickerContainerItem *)self title];
-      [(_UIDocumentPickerURLContainerModel *)self->_model setDisplayTitle:v12];
+      title = [(_UIDocumentPickerContainerItem *)self title];
+      [(_UIDocumentPickerURLContainerModel *)self->_model setDisplayTitle:title];
 
       objc_storeWeak(&self->_weak_model, self->_model);
     }
@@ -484,8 +484,8 @@ LABEL_18:
 - (void)modelChanged
 {
   [(_UIDocumentPickerContainerItem *)self _modelChanged];
-  v3 = [(_UIDocumentPickerContainerItem *)self parentModel];
-  [v3 refreshItem:self thumbnailOnly:0];
+  parentModel = [(_UIDocumentPickerContainerItem *)self parentModel];
+  [parentModel refreshItem:self thumbnailOnly:0];
 }
 
 - (void)decrementModelDisplayCount
@@ -494,8 +494,8 @@ LABEL_18:
   self->_modelDisplayCount = v3;
   if (!v3)
   {
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 removeObserver:self name:@"_UIDocumentPickerModelUpdatedNotification" object:self->_model];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:@"_UIDocumentPickerModelUpdatedNotification" object:self->_model];
 
     model = self->_model;
     self->_model = 0;
@@ -506,14 +506,14 @@ LABEL_18:
   }
 }
 
-- (id)_formattedSubtitleForNumberOfItems:(unint64_t)a3
+- (id)_formattedSubtitleForNumberOfItems:(unint64_t)items
 {
   v4 = MEMORY[0x277CCACA8];
   v5 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CloudDocsUI"];
   v6 = [v5 localizedStringForKey:@"%lu items" value:@"%lu items" table:@"Localizable"];
-  v7 = [v4 localizedStringWithFormat:v6, a3];
+  items = [v4 localizedStringWithFormat:v6, items];
 
-  return v7;
+  return items;
 }
 
 - (_UIDocumentPickerContainerModel)parentModel
@@ -527,35 +527,35 @@ LABEL_18:
 {
   v3 = objc_autoreleasePoolPush();
   v4 = [(_UIDocumentPickerContainerItem *)self url];
-  v5 = [v4 absoluteString];
+  absoluteString = [v4 absoluteString];
 
   objc_autoreleasePoolPop(v3);
 
-  return v5;
+  return absoluteString;
 }
 
-+ (id)_blockingThumbnailForItem:(id)a3 documentProxy:(id)a4 withSize:(CGSize)a5 scale:(double)a6 wantsBorder:(BOOL *)a7 generatedThumbnail:(BOOL *)a8
++ (id)_blockingThumbnailForItem:(id)item documentProxy:(id)proxy withSize:(CGSize)size scale:(double)scale wantsBorder:(BOOL *)border generatedThumbnail:(BOOL *)thumbnail
 {
-  height = a5.height;
-  width = a5.width;
-  v15 = a3;
-  v16 = a4;
+  height = size.height;
+  width = size.width;
+  itemCopy = item;
+  proxyCopy = proxy;
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-  v17 = [objc_alloc(MEMORY[0x277CDAA60]) initWithURL:v15];
-  v18 = [MEMORY[0x277CDAA68] descriptorWithSize:width scaleFactor:{height, a6}];
+  v17 = [objc_alloc(MEMORY[0x277CDAA60]) initWithURL:itemCopy];
+  v18 = [MEMORY[0x277CDAA68] descriptorWithSize:width scaleFactor:{height, scale}];
   v23 = 0;
   v19 = [v17 imageForUseMode:0 descriptor:v18 generateIfNeeded:1 contentRect:0 error:&v23];
   v20 = v23;
   if (v19)
   {
-    if (a8)
+    if (thumbnail)
     {
-      *a8 = 1;
+      *thumbnail = 1;
     }
 
-    if (a7)
+    if (border)
     {
-      *a7 = 1;
+      *border = 1;
     }
   }
 
@@ -564,50 +564,50 @@ LABEL_18:
     v21 = cdui_default_log();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
-      [_UIDocumentPickerContainerItem(Icons) _blockingThumbnailForItem:v15 documentProxy:? withSize:? scale:? wantsBorder:? generatedThumbnail:?];
+      [_UIDocumentPickerContainerItem(Icons) _blockingThumbnailForItem:itemCopy documentProxy:? withSize:? scale:? wantsBorder:? generatedThumbnail:?];
     }
 
-    if (a8)
+    if (thumbnail)
     {
-      *a8 = 0;
+      *thumbnail = 0;
     }
 
-    v19 = [a1 _blockingIconForDocumentProxy:v16 withSize:{width, height}];
+    v19 = [self _blockingIconForDocumentProxy:proxyCopy withSize:{width, height}];
   }
 
   return v19;
 }
 
-+ (id)_blockingIconForURL:(id)a3 withSize:(CGSize)a4
++ (id)_blockingIconForURL:(id)l withSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  lCopy = l;
   v12 = 0;
-  [v7 getPromisedItemResourceValue:&v12 forKey:*MEMORY[0x277CBE918] error:0];
+  [lCopy getPromisedItemResourceValue:&v12 forKey:*MEMORY[0x277CBE918] error:0];
   v8 = v12;
   if (UTTypeConformsTo(v8, *MEMORY[0x277CC2078]))
   {
-    v9 = [a1 _blockingFolderIconForURL:v7 container:0 size:width scale:{height, 0.0}];
+    v9 = [self _blockingFolderIconForURL:lCopy container:0 size:width scale:{height, 0.0}];
   }
 
   else
   {
     v10 = [MEMORY[0x277CC1EB8] documentProxyForName:0 type:v8 MIMEType:0];
-    v9 = [a1 _blockingIconForDocumentProxy:v10 withSize:{width, height}];
+    v9 = [self _blockingIconForDocumentProxy:v10 withSize:{width, height}];
   }
 
   return v9;
 }
 
-+ (id)_blockingIconForDocumentProxy:(id)a3 withSize:(CGSize)a4
++ (id)_blockingIconForDocumentProxy:(id)proxy withSize:(CGSize)size
 {
-  height = a4.height;
-  v5 = a3;
+  height = size.height;
+  proxyCopy = proxy;
   if (height <= 100.0)
   {
     v6 = MEMORY[0x277D755B8];
-    v7 = v5;
+    v7 = proxyCopy;
     if (height >= 50.0)
     {
       v8 = 11;
@@ -622,7 +622,7 @@ LABEL_18:
   else
   {
     v6 = MEMORY[0x277D755B8];
-    v7 = v5;
+    v7 = proxyCopy;
     v8 = 12;
   }
 
@@ -631,17 +631,17 @@ LABEL_18:
   return v9;
 }
 
-+ (id)_blockingBadgeForContainer:(id)a3 size:(CGSize)a4 scale:(double)a5
++ (id)_blockingBadgeForContainer:(id)container size:(CGSize)size scale:(double)scale
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v45 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  containerCopy = container;
   v43 = 1;
-  v9 = [v8 identifier];
-  v10 = [v9 isEqualToString:*MEMORY[0x277CFAD68]];
+  identifier = [containerCopy identifier];
+  v10 = [identifier isEqualToString:*MEMORY[0x277CFAD68]];
 
-  if (v10 && (v11 = MEMORY[0x277D755B8], [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CloudDocsUI"], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x277D75C80], "traitCollectionWithDisplayScale:", a5), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "imageNamed:inBundle:compatibleWithTraitCollection:", @"iCloudDrive-TopLevel", v12, v13), v14 = objc_claimAutoreleasedReturnValue(), v13, v12, v43 = 0, v14) || (v15 = MEMORY[0x277D755B8], objc_msgSend(v8, "imageDataForSize:scale:shouldTransformToAppIcon:", a5, &v43, width, height), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "imageWithData:scale:", v16, a5), v14 = objc_claimAutoreleasedReturnValue(), v16, v14) || (v17 = width * a5, v18 = MEMORY[0x277D755B8], objc_msgSend(v8, "imageDataForSize:scale:shouldTransformToAppIcon:", 1, &v43, v17, height * a5), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "imageWithData:scale:", v19, a5), v14 = objc_claimAutoreleasedReturnValue(), v19, v14))
+  if (v10 && (v11 = MEMORY[0x277D755B8], [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CloudDocsUI"], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x277D75C80], "traitCollectionWithDisplayScale:", scale), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "imageNamed:inBundle:compatibleWithTraitCollection:", @"iCloudDrive-TopLevel", v12, v13), imageRepresentationsAvailable = objc_claimAutoreleasedReturnValue(), v13, v12, v43 = 0, imageRepresentationsAvailable) || (v15 = MEMORY[0x277D755B8], objc_msgSend(containerCopy, "imageDataForSize:scale:shouldTransformToAppIcon:", scale, &v43, width, height), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "imageWithData:scale:", v16, scale), imageRepresentationsAvailable = objc_claimAutoreleasedReturnValue(), v16, imageRepresentationsAvailable) || (v17 = width * scale, v18 = MEMORY[0x277D755B8], objc_msgSend(containerCopy, "imageDataForSize:scale:shouldTransformToAppIcon:", 1, &v43, v17, height * scale), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "imageWithData:scale:", v19, scale), imageRepresentationsAvailable = objc_claimAutoreleasedReturnValue(), v19, imageRepresentationsAvailable))
   {
 LABEL_5:
     if (v43 != 1)
@@ -649,8 +649,8 @@ LABEL_5:
       goto LABEL_8;
     }
 
-    [v14 scale];
-    v20 = [v14 _applicationIconImageForFormat:2 precomposed:0 scale:?];
+    [imageRepresentationsAvailable scale];
+    v20 = [imageRepresentationsAvailable _applicationIconImageForFormat:2 precomposed:0 scale:?];
     goto LABEL_7;
   }
 
@@ -658,15 +658,15 @@ LABEL_5:
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v14 = [v8 imageRepresentationsAvailable];
-  v22 = [v14 countByEnumeratingWithState:&v39 objects:v44 count:16];
+  imageRepresentationsAvailable = [containerCopy imageRepresentationsAvailable];
+  v22 = [imageRepresentationsAvailable countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (!v22)
   {
 LABEL_19:
     v20 = 0;
 LABEL_7:
 
-    v14 = v20;
+    imageRepresentationsAvailable = v20;
     goto LABEL_8;
   }
 
@@ -678,7 +678,7 @@ LABEL_13:
   {
     if (*v40 != v24)
     {
-      objc_enumerationMutation(v14);
+      objc_enumerationMutation(imageRepresentationsAvailable);
     }
 
     v26 = *(*(&v39 + 1) + 8 * v25);
@@ -700,7 +700,7 @@ LABEL_13:
 
     if (v23 == ++v25)
     {
-      v23 = [v14 countByEnumeratingWithState:&v39 objects:v44 count:{16, v29 * v35}];
+      v23 = [imageRepresentationsAvailable countByEnumeratingWithState:&v39 objects:v44 count:{16, v29 * v35}];
       if (v23)
       {
         goto LABEL_13;
@@ -711,27 +711,27 @@ LABEL_13:
   }
 
   v36 = MEMORY[0x277D755B8];
-  v37 = [v8 imageDataForSize:v34 scale:&v43 shouldTransformToAppIcon:{v29, v31}];
-  v38 = [v36 imageWithData:v37 scale:a5];
+  v37 = [containerCopy imageDataForSize:v34 scale:&v43 shouldTransformToAppIcon:{v29, v31}];
+  v38 = [v36 imageWithData:v37 scale:scale];
 
   if (v38)
   {
-    v14 = v38;
+    imageRepresentationsAvailable = v38;
     goto LABEL_5;
   }
 
-  v14 = 0;
+  imageRepresentationsAvailable = 0;
 LABEL_8:
 
-  return v14;
+  return imageRepresentationsAvailable;
 }
 
-+ (id)_blockingFolderIconForURL:(id)a3 container:(id)a4 size:(CGSize)a5 scale:(double)a6
++ (id)_blockingFolderIconForURL:(id)l container:(id)container size:(CGSize)size scale:(double)scale
 {
-  height = a5.height;
-  width = a5.width;
-  v11 = a3;
-  v12 = a4;
+  height = size.height;
+  width = size.width;
+  lCopy = l;
+  containerCopy = container;
   v14 = *MEMORY[0x277CBF3A8];
   v13 = *(MEMORY[0x277CBF3A8] + 8);
   v15 = 1;
@@ -757,41 +757,41 @@ LABEL_8:
     v17 += 5;
     if (v19)
     {
-      if (v12)
+      if (containerCopy)
       {
         goto LABEL_8;
       }
 
 LABEL_13:
-      v22 = [v11 br_containerID];
-      if ([v22 isEqualToString:*MEMORY[0x277CFAD68]])
+      br_containerID = [lCopy br_containerID];
+      if ([br_containerID isEqualToString:*MEMORY[0x277CFAD68]])
       {
-        v23 = [v11 br_pathRelativeToSyncedRootURLForContainerID:v22];
-        v24 = [v23 pathComponents];
-        v25 = [v24 count];
+        v23 = [lCopy br_pathRelativeToSyncedRootURLForContainerID:br_containerID];
+        pathComponents = [v23 pathComponents];
+        v25 = [pathComponents count];
 
         if (v25 == 2)
         {
-          v26 = [v23 lastPathComponent];
-          if ([v26 isEqualToString:*MEMORY[0x277CFAD80]])
+          lastPathComponent = [v23 lastPathComponent];
+          if ([lastPathComponent isEqualToString:*MEMORY[0x277CFAD80]])
           {
-            v40 = v26;
+            v40 = lastPathComponent;
             v27 = @"Desktop%@";
             goto LABEL_24;
           }
 
-          if ([v26 isEqualToString:*MEMORY[0x277CFAD90]])
+          if ([lastPathComponent isEqualToString:*MEMORY[0x277CFAD90]])
           {
-            v40 = v26;
+            v40 = lastPathComponent;
             v27 = @"Documents%@";
 LABEL_24:
             v30 = MEMORY[0x277D755B8];
             v31 = [MEMORY[0x277CCACA8] stringWithFormat:v27, v19];
             v32 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CloudDocsUI"];
-            v33 = [MEMORY[0x277D75C80] traitCollectionWithDisplayScale:a6];
+            v33 = [MEMORY[0x277D75C80] traitCollectionWithDisplayScale:scale];
             v20 = [v30 imageNamed:v31 inBundle:v32 compatibleWithTraitCollection:v33];
 
-            v26 = v40;
+            lastPathComponent = v40;
           }
 
           else
@@ -822,7 +822,7 @@ LABEL_24:
   }
 
   v19 = 0;
-  if (!v12)
+  if (!containerCopy)
   {
     goto LABEL_13;
   }
@@ -830,12 +830,12 @@ LABEL_24:
 LABEL_8:
   if (v15)
   {
-    v20 = [a1 _blockingBadgeForContainer:v12 size:v14 scale:{v13, a6}];
+    v20 = [self _blockingBadgeForContainer:containerCopy size:v14 scale:{v13, scale}];
   }
 
   else
   {
-    v28 = [a1 _blockingBadgeForContainer:v12 size:width scale:{height, a6}];
+    v28 = [self _blockingBadgeForContainer:containerCopy size:width scale:{height, scale}];
     if (v28)
     {
       v20 = v28;

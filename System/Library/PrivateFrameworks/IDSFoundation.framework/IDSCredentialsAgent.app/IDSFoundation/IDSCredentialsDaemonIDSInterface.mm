@@ -1,37 +1,37 @@
 @interface IDSCredentialsDaemonIDSInterface
 + (id)sharedInstance;
-- (BOOL)_sendIDSMessage:(id)a3 queueOneIdentifier:(id)a4;
-- (BOOL)_sendIDSMessage:(id)a3 timeOut:(id)a4 queueOneIdentifier:(id)a5 forcedIdentifier:(id)a6 options:(id)a7 identifier:(id *)a8;
-- (BOOL)_sendIDSPairingMessage:(id)a3 queueOneIdentifier:(id)a4;
-- (BOOL)_sendIDSPairingMessage:(id)a3 timeOut:(id)a4 queueOneIdentifier:(id)a5 forcedIdentifier:(id)a6;
+- (BOOL)_sendIDSMessage:(id)message queueOneIdentifier:(id)identifier;
+- (BOOL)_sendIDSMessage:(id)message timeOut:(id)out queueOneIdentifier:(id)identifier forcedIdentifier:(id)forcedIdentifier options:(id)options identifier:(id *)a8;
+- (BOOL)_sendIDSPairingMessage:(id)message queueOneIdentifier:(id)identifier;
+- (BOOL)_sendIDSPairingMessage:(id)message timeOut:(id)out queueOneIdentifier:(id)identifier forcedIdentifier:(id)forcedIdentifier;
 - (IDSCredentialsDaemonIDSInterface)init;
-- (IDSCredentialsDaemonIDSInterface)initWithIDSService:(id)a3;
-- (id)_credentialUniqueIDFromMessageIdentifier:(id)a3;
-- (void)_addMessageInfo:(id)a3 description:(id)a4 completionBlock:(id)a5;
-- (void)_handleFetchFaceTimeAndiMessageInfoMessage:(id)a3;
-- (void)_handleFetchFaceTimeAndiMessageInfoMessageResponse:(id)a3;
-- (void)_handleFetchRAMessage:(id)a3;
-- (void)_handleFetchRAMessageResponse:(id)a3;
-- (void)_handleIncomingAccountSyncMessage:(id)a3 fromID:(id)a4;
-- (void)_handleIncomingAccountSyncMessageResponse:(id)a3;
-- (void)_handleSendIDSIDLocalIDQuery:(id)a3;
-- (void)_handleSendIDSIDLocalIDQueryResponse:(id)a3;
-- (void)_handleSendIDSLocalDeviceInfoRequest:(id)a3;
-- (void)_handleSendIDSLocalDeviceInfoResponse:(id)a3;
-- (void)_mapMessageIdentifier:(id)a3 toCredentialUniqueID:(id)a4;
-- (void)_removeMessageIdentifierMapping:(id)a3;
-- (void)_removeMessageIdentifierMappingWithCredentialUniqueID:(id)a3;
-- (void)_sendAccountSyncMessageToIDS:(id)a3 withCompletionBlock:(id)a4;
-- (void)_sendFetchIMFTRequestToIDS:(id)a3 withCompletionBlock:(id)a4;
-- (void)_sendFetchRARequestToIDS:(id)a3 withCompletionBlock:(id)a4;
-- (void)_sendIDSLocalDeviceInfoRequestToIDS:(id)a3 withCompletionBlock:(id)a4;
-- (void)_sendIDStatusQueryRequestToIDS:(id)a3 withCompletionBlock:(id)a4;
+- (IDSCredentialsDaemonIDSInterface)initWithIDSService:(id)service;
+- (id)_credentialUniqueIDFromMessageIdentifier:(id)identifier;
+- (void)_addMessageInfo:(id)info description:(id)description completionBlock:(id)block;
+- (void)_handleFetchFaceTimeAndiMessageInfoMessage:(id)message;
+- (void)_handleFetchFaceTimeAndiMessageInfoMessageResponse:(id)response;
+- (void)_handleFetchRAMessage:(id)message;
+- (void)_handleFetchRAMessageResponse:(id)response;
+- (void)_handleIncomingAccountSyncMessage:(id)message fromID:(id)d;
+- (void)_handleIncomingAccountSyncMessageResponse:(id)response;
+- (void)_handleSendIDSIDLocalIDQuery:(id)query;
+- (void)_handleSendIDSIDLocalIDQueryResponse:(id)response;
+- (void)_handleSendIDSLocalDeviceInfoRequest:(id)request;
+- (void)_handleSendIDSLocalDeviceInfoResponse:(id)response;
+- (void)_mapMessageIdentifier:(id)identifier toCredentialUniqueID:(id)d;
+- (void)_removeMessageIdentifierMapping:(id)mapping;
+- (void)_removeMessageIdentifierMappingWithCredentialUniqueID:(id)d;
+- (void)_sendAccountSyncMessageToIDS:(id)s withCompletionBlock:(id)block;
+- (void)_sendFetchIMFTRequestToIDS:(id)s withCompletionBlock:(id)block;
+- (void)_sendFetchRARequestToIDS:(id)s withCompletionBlock:(id)block;
+- (void)_sendIDSLocalDeviceInfoRequestToIDS:(id)s withCompletionBlock:(id)block;
+- (void)_sendIDStatusQueryRequestToIDS:(id)s withCompletionBlock:(id)block;
 - (void)dealloc;
-- (void)forwardIPCRequestToIDS:(id)a3 withCompletionBlock:(id)a4;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 activeAccountsChanged:(id)a4;
-- (void)service:(id)a3 didSwitchActivePairedDevice:(id)a4 acknowledgementBlock:(id)a5;
+- (void)forwardIPCRequestToIDS:(id)s withCompletionBlock:(id)block;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context;
+- (void)service:(id)service activeAccountsChanged:(id)changed;
+- (void)service:(id)service didSwitchActivePairedDevice:(id)device acknowledgementBlock:(id)block;
 @end
 
 @implementation IDSCredentialsDaemonIDSInterface
@@ -56,16 +56,16 @@
   return v4;
 }
 
-- (IDSCredentialsDaemonIDSInterface)initWithIDSService:(id)a3
+- (IDSCredentialsDaemonIDSInterface)initWithIDSService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v15.receiver = self;
   v15.super_class = IDSCredentialsDaemonIDSInterface;
   v6 = [(IDSCredentialsDaemonIDSInterface *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_idsService, a3);
+    objc_storeStrong(&v6->_idsService, service);
     [(IDSService *)v7->_idsService addDelegate:v7 queue:&_dispatch_main_q];
     v8 = objc_alloc_init(IMOrderedMutableDictionary);
     uniqueIDToInfo = v7->_uniqueIDToInfo;
@@ -91,9 +91,9 @@
   [(IDSCredentialsDaemonIDSInterface *)&v3 dealloc];
 }
 
-- (void)_sendFetchIMFTRequestToIDS:(id)a3 withCompletionBlock:(id)a4
+- (void)_sendFetchIMFTRequestToIDS:(id)s withCompletionBlock:(id)block
 {
-  v5 = [a4 copy];
+  v5 = [block copy];
   v6 = +[NSString stringGUID];
   v7 = objc_alloc_init(NSMutableDictionary);
   CFDictionarySetValue(v7, IDSRemoteCredentialKeyCommand, &off_1000111E8);
@@ -130,10 +130,10 @@
   }
 }
 
-- (void)_sendFetchRARequestToIDS:(id)a3 withCompletionBlock:(id)a4
+- (void)_sendFetchRARequestToIDS:(id)s withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = [a4 copy];
+  sCopy = s;
+  v7 = [block copy];
   v8 = IMGetXPCArrayFromDictionary();
 
   v9 = +[NSString stringGUID];
@@ -167,10 +167,10 @@
   }
 }
 
-- (void)_sendIDSLocalDeviceInfoRequestToIDS:(id)a3 withCompletionBlock:(id)a4
+- (void)_sendIDSLocalDeviceInfoRequestToIDS:(id)s withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = [a4 copy];
+  sCopy = s;
+  v7 = [block copy];
   v8 = +[NSString stringGUID];
   v9 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -222,10 +222,10 @@
   }
 }
 
-- (void)_sendIDStatusQueryRequestToIDS:(id)a3 withCompletionBlock:(id)a4
+- (void)_sendIDStatusQueryRequestToIDS:(id)s withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  sCopy = s;
+  blockCopy = block;
   v8 = +[NSString stringGUID];
   v9 = IMGetXPCArrayFromDictionary();
   v10 = IMGetXPCStringFromDictionary();
@@ -274,14 +274,14 @@
 
   if ([v8 length])
   {
-    [(IDSCredentialsDaemonIDSInterface *)self _addMessageInfo:v8 description:@"IDSRemoteCredentialCommandRequestIDStatus" completionBlock:v7];
+    [(IDSCredentialsDaemonIDSInterface *)self _addMessageInfo:v8 description:@"IDSRemoteCredentialCommandRequestIDStatus" completionBlock:blockCopy];
   }
 
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100001E24;
   v20[3] = &unk_100010630;
-  v17 = v7;
+  v17 = blockCopy;
   v21 = v17;
   v18 = objc_retainBlock(v20);
   if (![(IDSCredentialsDaemonIDSInterface *)self _storeIDSMessageForLaterDeliveryIfNecessary:v14 queueOneIdentifier:@"IDSRemoteCredentialCommandRequestDeviceInfo" completionBlock:v18 isPairing:0])
@@ -297,10 +297,10 @@
   }
 }
 
-- (void)_sendAccountSyncMessageToIDS:(id)a3 withCompletionBlock:(id)a4
+- (void)_sendAccountSyncMessageToIDS:(id)s withCompletionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  sCopy = s;
   v8 = +[NSString stringGUID];
   v9 = +[IMRGLog accountSync];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -327,14 +327,14 @@
 
   if ([v8 length])
   {
-    [(IDSCredentialsDaemonIDSInterface *)self _addMessageInfo:v8 description:@"IDSRemoteCredentialCommandAccountSyncMessage" completionBlock:v6];
+    [(IDSCredentialsDaemonIDSInterface *)self _addMessageInfo:v8 description:@"IDSRemoteCredentialCommandAccountSyncMessage" completionBlock:blockCopy];
   }
 
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_1000021A4;
   v26[3] = &unk_100010630;
-  v14 = v6;
+  v14 = blockCopy;
   v27 = v14;
   v15 = objc_retainBlock(v26);
   v16 = @"IDSRemoteCredentialCommandRequestDeviceInfo";
@@ -361,14 +361,14 @@
 
     v19 = [NSNumber numberWithDouble:IDSMaxMessageTimeout];
     v25 = 0;
-    v20 = self;
+    selfCopy = self;
     v23 = v18;
     v21 = [(IDSCredentialsDaemonIDSInterface *)self _sendIDSMessage:v13 timeOut:v19 queueOneIdentifier:v11 forcedIdentifier:0 options:v18 identifier:&v25];
     v22 = v25;
 
     if (!v14 || (v21 & 1) != 0)
     {
-      [(IDSCredentialsDaemonIDSInterface *)v20 _mapMessageIdentifier:v22 toCredentialUniqueID:v8];
+      [(IDSCredentialsDaemonIDSInterface *)selfCopy _mapMessageIdentifier:v22 toCredentialUniqueID:v8];
     }
 
     else
@@ -380,24 +380,24 @@
   }
 }
 
-- (BOOL)_sendIDSMessage:(id)a3 queueOneIdentifier:(id)a4
+- (BOOL)_sendIDSMessage:(id)message queueOneIdentifier:(id)identifier
 {
   v6 = IDSMaxMessageTimeout;
-  v7 = a4;
-  v8 = a3;
+  identifierCopy = identifier;
+  messageCopy = message;
   v9 = [NSNumber numberWithDouble:v6];
-  LOBYTE(self) = [(IDSCredentialsDaemonIDSInterface *)self _sendIDSMessage:v8 timeOut:v9 queueOneIdentifier:v7 forcedIdentifier:0];
+  LOBYTE(self) = [(IDSCredentialsDaemonIDSInterface *)self _sendIDSMessage:messageCopy timeOut:v9 queueOneIdentifier:identifierCopy forcedIdentifier:0];
 
   return self;
 }
 
-- (BOOL)_sendIDSMessage:(id)a3 timeOut:(id)a4 queueOneIdentifier:(id)a5 forcedIdentifier:(id)a6 options:(id)a7 identifier:(id *)a8
+- (BOOL)_sendIDSMessage:(id)message timeOut:(id)out queueOneIdentifier:(id)identifier forcedIdentifier:(id)forcedIdentifier options:(id)options identifier:(id *)a8
 {
-  v13 = a3;
-  value = a4;
-  v14 = a5;
-  v47 = a6;
-  v46 = a7;
+  messageCopy = message;
+  value = out;
+  identifierCopy = identifier;
+  forcedIdentifierCopy = forcedIdentifier;
+  optionsCopy = options;
   [(IDSService *)self->_idsService linkedDevicesWithRelationship:3];
   v53 = 0u;
   v54 = 0u;
@@ -419,8 +419,8 @@ LABEL_3:
       v19 = *(*(&v51 + 1) + 8 * v18);
       if ([v19 isActive])
       {
-        v20 = [v19 uniqueIDOverride];
-        v21 = [v20 length] == 0;
+        uniqueIDOverride = [v19 uniqueIDOverride];
+        v21 = [uniqueIDOverride length] == 0;
 
         if (!v21)
         {
@@ -448,7 +448,7 @@ LABEL_3:
     }
 
     v23 = JWEncodeDictionary();
-    v44 = [v23 _CUTCopyGzippedData];
+    _CUTCopyGzippedData = [v23 _CUTCopyGzippedData];
     v24 = objc_alloc_init(NSMutableDictionary);
     v25 = v24;
     if (value)
@@ -463,17 +463,17 @@ LABEL_3:
     }
 
     CFDictionarySetValue(v25, IDSSendMessageOptionEnforceRemoteTimeoutsKey, &__kCFBooleanFalse);
-    if (v14)
+    if (identifierCopy)
     {
-      CFDictionarySetValue(v25, IDSSendMessageOptionQueueOneIdentifierKey, v14);
+      CFDictionarySetValue(v25, IDSSendMessageOptionQueueOneIdentifierKey, identifierCopy);
     }
 
-    [(__CFDictionary *)v25 addEntriesFromDictionary:v46];
+    [(__CFDictionary *)v25 addEntriesFromDictionary:optionsCopy];
     idsService = self->_idsService;
     v28 = [NSSet setWithObject:v22];
     v49 = 0;
     v50 = 0;
-    v29 = [(IDSService *)idsService sendData:v44 toDestinations:v28 priority:300 options:v25 identifier:&v50 error:&v49];
+    v29 = [(IDSService *)idsService sendData:_CUTCopyGzippedData toDestinations:v28 priority:300 options:v25 identifier:&v50 error:&v49];
     v30 = v50;
     v31 = v49;
 
@@ -493,7 +493,7 @@ LABEL_3:
       v59 = 2112;
       v60 = v25;
       v61 = 2112;
-      v62 = v13;
+      v62 = messageCopy;
       v63 = 2112;
       v64 = v33;
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "Sending message to local account (identifier %@)  (error %@)  (options %@)  (messageDict %@) success: %@", buf, 0x34u);
@@ -507,7 +507,7 @@ LABEL_3:
         v34 = @"YES";
       }
 
-      v42 = v13;
+      v42 = messageCopy;
       v43 = v34;
       v40 = v31;
       v41 = v25;
@@ -531,7 +531,7 @@ LABEL_3:
       v59 = 2112;
       v60 = v25;
       v61 = 2112;
-      v62 = v13;
+      v62 = messageCopy;
       v63 = 2112;
       v64 = v36;
       _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "Sending message to local account (identifier %@)  (error %@)  (options %@)  (messageDict %@) success: %@", buf, 0x34u);
@@ -562,30 +562,30 @@ LABEL_34:
   return v29;
 }
 
-- (BOOL)_sendIDSPairingMessage:(id)a3 queueOneIdentifier:(id)a4
+- (BOOL)_sendIDSPairingMessage:(id)message queueOneIdentifier:(id)identifier
 {
   v6 = IDSMaxMessageTimeout;
-  v7 = a4;
-  v8 = a3;
+  identifierCopy = identifier;
+  messageCopy = message;
   v9 = [NSNumber numberWithDouble:v6];
-  LOBYTE(self) = [(IDSCredentialsDaemonIDSInterface *)self _sendIDSPairingMessage:v8 timeOut:v9 queueOneIdentifier:v7 forcedIdentifier:0];
+  LOBYTE(self) = [(IDSCredentialsDaemonIDSInterface *)self _sendIDSPairingMessage:messageCopy timeOut:v9 queueOneIdentifier:identifierCopy forcedIdentifier:0];
 
   return self;
 }
 
-- (BOOL)_sendIDSPairingMessage:(id)a3 timeOut:(id)a4 queueOneIdentifier:(id)a5 forcedIdentifier:(id)a6
+- (BOOL)_sendIDSPairingMessage:(id)message timeOut:(id)out queueOneIdentifier:(id)identifier forcedIdentifier:(id)forcedIdentifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v33 = a6;
+  messageCopy = message;
+  outCopy = out;
+  identifierCopy = identifier;
+  forcedIdentifierCopy = forcedIdentifier;
   v13 = JWEncodeDictionary();
-  v14 = [v13 _CUTCopyGzippedData];
+  _CUTCopyGzippedData = [v13 _CUTCopyGzippedData];
   v15 = objc_alloc_init(NSMutableDictionary);
   v16 = v15;
-  if (v11)
+  if (outCopy)
   {
-    CFDictionarySetValue(v15, IDSSendMessageOptionTimeoutKey, v11);
+    CFDictionarySetValue(v15, IDSSendMessageOptionTimeoutKey, outCopy);
   }
 
   v17 = IDSGetUUIDData();
@@ -595,16 +595,16 @@ LABEL_34:
   }
 
   CFDictionarySetValue(v16, IDSSendMessageOptionEnforceRemoteTimeoutsKey, &__kCFBooleanFalse);
-  if (v12)
+  if (identifierCopy)
   {
-    CFDictionarySetValue(v16, IDSSendMessageOptionQueueOneIdentifierKey, v12);
+    CFDictionarySetValue(v16, IDSSendMessageOptionQueueOneIdentifierKey, identifierCopy);
   }
 
   idsService = self->_idsService;
   v19 = [NSSet setWithObject:IDSDefaultPairedDevice];
   v34 = 0;
   v35 = 0;
-  v20 = [(IDSService *)idsService sendData:v14 toDestinations:v19 priority:300 options:v16 identifier:&v35 error:&v34];
+  v20 = [(IDSService *)idsService sendData:_CUTCopyGzippedData toDestinations:v19 priority:300 options:v16 identifier:&v35 error:&v34];
   v21 = v35;
   v22 = v34;
 
@@ -622,7 +622,7 @@ LABEL_34:
     v38 = 2112;
     v39 = v22;
     v40 = 2112;
-    v41 = v10;
+    v41 = messageCopy;
     v42 = 2112;
     v43 = v24;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Sending pairing message to local account (identifier %@)  (error %@)  (messageDict %@) success: %@", buf, 0x2Au);
@@ -636,7 +636,7 @@ LABEL_34:
       v25 = @"YES";
     }
 
-    v31 = v10;
+    v31 = messageCopy;
     v32 = v25;
     v29 = v21;
     v30 = v22;
@@ -657,7 +657,7 @@ LABEL_34:
     v38 = 2112;
     v39 = v22;
     v40 = 2112;
-    v41 = v10;
+    v41 = messageCopy;
     v42 = 2112;
     v43 = v27;
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Sending pairing message to local account (identifier %@)  (error %@)  (messageDict %@) success: %@", buf, 0x2Au);
@@ -666,23 +666,23 @@ LABEL_34:
   return v20;
 }
 
-- (void)forwardIPCRequestToIDS:(id)a3 withCompletionBlock:(id)a4
+- (void)forwardIPCRequestToIDS:(id)s withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = [a4 copy];
+  sCopy = s;
+  v7 = [block copy];
   v8 = IMGetXPCIntFromDictionary();
   v9 = v8;
   if (v8 <= 12)
   {
     if (v8 == 9)
     {
-      [(IDSCredentialsDaemonIDSInterface *)self _sendFetchIMFTRequestToIDS:v6 withCompletionBlock:v7];
+      [(IDSCredentialsDaemonIDSInterface *)self _sendFetchIMFTRequestToIDS:sCopy withCompletionBlock:v7];
       goto LABEL_17;
     }
 
     if (v8 == 11)
     {
-      [(IDSCredentialsDaemonIDSInterface *)self _sendIDSLocalDeviceInfoRequestToIDS:v6 withCompletionBlock:v7];
+      [(IDSCredentialsDaemonIDSInterface *)self _sendIDSLocalDeviceInfoRequestToIDS:sCopy withCompletionBlock:v7];
       goto LABEL_17;
     }
   }
@@ -692,13 +692,13 @@ LABEL_34:
     switch(v8)
     {
       case 13:
-        [(IDSCredentialsDaemonIDSInterface *)self _sendIDStatusQueryRequestToIDS:v6 withCompletionBlock:v7];
+        [(IDSCredentialsDaemonIDSInterface *)self _sendIDStatusQueryRequestToIDS:sCopy withCompletionBlock:v7];
         goto LABEL_17;
       case 15:
-        [(IDSCredentialsDaemonIDSInterface *)self _sendAccountSyncMessageToIDS:v6 withCompletionBlock:v7];
+        [(IDSCredentialsDaemonIDSInterface *)self _sendAccountSyncMessageToIDS:sCopy withCompletionBlock:v7];
         goto LABEL_17;
       case 17:
-        [(IDSCredentialsDaemonIDSInterface *)self _sendFetchRARequestToIDS:v6 withCompletionBlock:v7];
+        [(IDSCredentialsDaemonIDSInterface *)self _sendFetchRARequestToIDS:sCopy withCompletionBlock:v7];
         goto LABEL_17;
     }
   }
@@ -719,20 +719,20 @@ LABEL_34:
 LABEL_17:
 }
 
-- (void)_handleFetchFaceTimeAndiMessageInfoMessage:(id)a3
+- (void)_handleFetchFaceTimeAndiMessageInfoMessage:(id)message
 {
-  v22 = a3;
+  messageCopy = message;
   v3 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v29 = v22;
+    v29 = messageCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Received fetch iMessage info message: %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v20 = v22;
+    v20 = messageCopy;
     _IDSLogV();
   }
 
@@ -740,19 +740,19 @@ LABEL_17:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v29 = v22;
+    v29 = messageCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Fetching All Accounts that support AccountSync: %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v20 = v22;
+    v20 = messageCopy;
     _IDSLogV();
   }
 
   v5 = objc_opt_class();
   v6 = IDSRemoteCredentialKeyUniqueID;
-  v7 = sub_100003420(v5, v22, IDSRemoteCredentialKeyUniqueID);
+  v7 = sub_100003420(v5, messageCopy, IDSRemoteCredentialKeyUniqueID);
   v8 = objc_alloc_init(NSMutableDictionary);
   CFDictionarySetValue(v8, IDSRemoteCredentialKeyCommand, &off_100011260);
   if (v7)
@@ -767,9 +767,9 @@ LABEL_17:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v12 = [v11 enabledAccounts];
+  enabledAccounts = [v11 enabledAccounts];
   v13 = 0;
-  v14 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v14 = [enabledAccounts countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v14)
   {
     v15 = *v24;
@@ -781,20 +781,20 @@ LABEL_17:
       {
         if (*v24 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(enabledAccounts);
         }
 
         v13 = [v11 accountWithUniqueID:{*(*(&v23 + 1) + 8 * v16), v20}];
 
-        v18 = [v13 accountInfo];
-        [v9 addObject:v18];
+        accountInfo = [v13 accountInfo];
+        [v9 addObject:accountInfo];
 
         v16 = v16 + 1;
         v17 = v13;
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v14 = [enabledAccounts countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v14);
@@ -825,25 +825,25 @@ LABEL_17:
   }
 }
 
-- (void)_handleFetchFaceTimeAndiMessageInfoMessageResponse:(id)a3
+- (void)_handleFetchFaceTimeAndiMessageInfoMessageResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v4;
+    v13 = responseCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received fetch FaceTime and iMessage info response message: %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v11 = v4;
+    v11 = responseCopy;
     _IDSLogV();
   }
 
   v6 = objc_opt_class();
-  v7 = sub_100003420(v6, v4, IDSRemoteCredentialKeyUniqueID);
+  v7 = sub_100003420(v6, responseCopy, IDSRemoteCredentialKeyUniqueID);
   if (![v7 length])
   {
     v8 = OSLogHandleForIDSCategory();
@@ -863,30 +863,30 @@ LABEL_17:
   v10 = v9;
   if (v9)
   {
-    (*(v9 + 16))(v9, 10, v4, 1);
+    (*(v9 + 16))(v9, 10, responseCopy, 1);
     [(IDSCredentialsDaemonIDSInterface *)self _removeMessageInfo:v7];
     [(IDSCredentialsDaemonIDSInterface *)self _removeMessageIdentifierMappingWithCredentialUniqueID:v7];
   }
 }
 
-- (void)_handleFetchRAMessage:(id)a3
+- (void)_handleFetchRAMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v4;
+    v21 = messageCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received fetch Remote Accounts Message: %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v15 = v4;
+    v15 = messageCopy;
     _IDSLogV();
   }
 
-  v6 = [v4 _arrayForKey:{@"serviceTypes", v15}];
+  v6 = [messageCopy _arrayForKey:{@"serviceTypes", v15}];
   v7 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -903,7 +903,7 @@ LABEL_17:
 
   v8 = objc_opt_class();
   v9 = IDSRemoteCredentialKeyUniqueID;
-  v10 = sub_100003420(v8, v4, IDSRemoteCredentialKeyUniqueID);
+  v10 = sub_100003420(v8, messageCopy, IDSRemoteCredentialKeyUniqueID);
   v11 = objc_alloc_init(NSMutableDictionary);
   CFDictionarySetValue(v11, IDSRemoteCredentialKeyCommand, &off_100011278);
   if (v10)
@@ -924,30 +924,30 @@ LABEL_17:
   v17[2] = sub_100003A40;
   v17[3] = &unk_100010658;
   v18 = v11;
-  v19 = self;
+  selfCopy = self;
   v14 = v11;
   [v13 constructRAResponseDictionary:v6 completionHandler:v17];
 }
 
-- (void)_handleFetchRAMessageResponse:(id)a3
+- (void)_handleFetchRAMessageResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v4;
+    v13 = responseCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received fetch remote account response message: %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v11 = v4;
+    v11 = responseCopy;
     _IDSLogV();
   }
 
   v6 = objc_opt_class();
-  v7 = sub_100003420(v6, v4, IDSRemoteCredentialKeyUniqueID);
+  v7 = sub_100003420(v6, responseCopy, IDSRemoteCredentialKeyUniqueID);
   if (![v7 length])
   {
     v8 = OSLogHandleForIDSCategory();
@@ -967,15 +967,15 @@ LABEL_17:
   v10 = v9;
   if (v9)
   {
-    (*(v9 + 16))(v9, 18, v4, 1);
+    (*(v9 + 16))(v9, 18, responseCopy, 1);
     [(IDSCredentialsDaemonIDSInterface *)self _removeMessageInfo:v7];
     [(IDSCredentialsDaemonIDSInterface *)self _removeMessageIdentifierMappingWithCredentialUniqueID:v7];
   }
 }
 
-- (void)_handleSendIDSLocalDeviceInfoRequest:(id)a3
+- (void)_handleSendIDSLocalDeviceInfoRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = +[IMRGLog NRPairing];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -988,41 +988,41 @@ LABEL_17:
   v8[1] = 3221225472;
   v8[2] = sub_100003E80;
   v8[3] = &unk_100010658;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = requestCopy;
+  selfCopy = self;
+  v7 = requestCopy;
   [v6 getLocalDeviceInfoWithCompletionBlock:v8 queue:&_dispatch_main_q];
 }
 
-- (void)_handleSendIDSLocalDeviceInfoResponse:(id)a3
+- (void)_handleSendIDSLocalDeviceInfoResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = +[IMRGLog NRPairing];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v42 = v4;
+    v42 = responseCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received remote device info: %@", buf, 0xCu);
   }
 
   v6 = IDSRemoteCredentialKeyEncryptionKey;
-  v7 = [v4 objectForKey:IDSRemoteCredentialKeyEncryptionKey];
+  v7 = [responseCopy objectForKey:IDSRemoteCredentialKeyEncryptionKey];
   objc_opt_class();
-  v39 = self;
+  selfCopy = self;
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v4 objectForKey:v6];
+    v8 = [responseCopy objectForKey:v6];
     v9 = [NSData _IDSDataFromBase64String:v8];
 LABEL_7:
     v40 = v9;
     goto LABEL_9;
   }
 
-  v8 = [v4 objectForKey:v6];
+  v8 = [responseCopy objectForKey:v6];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v4 objectForKey:v6];
+    v9 = [responseCopy objectForKey:v6];
     goto LABEL_7;
   }
 
@@ -1030,22 +1030,22 @@ LABEL_7:
 LABEL_9:
 
   v10 = IDSRemoteCredentialKeyEncryptionClassAKey;
-  v11 = [v4 objectForKey:IDSRemoteCredentialKeyEncryptionClassAKey];
+  v11 = [responseCopy objectForKey:IDSRemoteCredentialKeyEncryptionClassAKey];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [v4 objectForKey:v10];
+    v12 = [responseCopy objectForKey:v10];
     v13 = [NSData _IDSDataFromBase64String:v12];
 LABEL_13:
     v14 = v13;
     goto LABEL_15;
   }
 
-  v12 = [v4 objectForKey:v10];
+  v12 = [responseCopy objectForKey:v10];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = [v4 objectForKey:v10];
+    v13 = [responseCopy objectForKey:v10];
     goto LABEL_13;
   }
 
@@ -1053,22 +1053,22 @@ LABEL_13:
 LABEL_15:
 
   v15 = IDSRemoteCredentialKeyEncryptionClassCKey;
-  v16 = [v4 objectForKey:IDSRemoteCredentialKeyEncryptionClassCKey];
+  v16 = [responseCopy objectForKey:IDSRemoteCredentialKeyEncryptionClassCKey];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v17 = [v4 objectForKey:v15];
+    v17 = [responseCopy objectForKey:v15];
     v18 = [NSData _IDSDataFromBase64String:v17];
 LABEL_19:
     v19 = v18;
     goto LABEL_21;
   }
 
-  v17 = [v4 objectForKey:v15];
+  v17 = [responseCopy objectForKey:v15];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = [v4 objectForKey:v15];
+    v18 = [responseCopy objectForKey:v15];
     goto LABEL_19;
   }
 
@@ -1076,13 +1076,13 @@ LABEL_19:
 LABEL_21:
 
   v20 = objc_opt_class();
-  v21 = sub_100003420(v20, v4, IDSRemoteCredentialKeyIdentifier);
+  v21 = sub_100003420(v20, responseCopy, IDSRemoteCredentialKeyIdentifier);
   v22 = objc_opt_class();
-  v23 = sub_100003420(v22, v4, IDSRemoteCredentialKeyPrivateDeviceData);
+  v23 = sub_100003420(v22, responseCopy, IDSRemoteCredentialKeyPrivateDeviceData);
   v24 = objc_opt_class();
-  v25 = sub_100003420(v24, v4, IDSRemoteCredentialKeyDeviceName);
+  v25 = sub_100003420(v24, responseCopy, IDSRemoteCredentialKeyDeviceName);
   v26 = objc_opt_class();
-  v27 = sub_100003420(v26, v4, IDSRemoteCredentialKeyHardwareVersion);
+  v27 = sub_100003420(v26, responseCopy, IDSRemoteCredentialKeyHardwareVersion);
   v28 = [NSDictionary alloc];
   v29 = v19;
   v37 = v19;
@@ -1093,37 +1093,37 @@ LABEL_21:
   [v32 setPairedDeviceInfo:v31];
 
   v33 = objc_opt_class();
-  v34 = sub_100003420(v33, v4, IDSRemoteCredentialKeyUniqueID);
-  v35 = [(IDSCredentialsDaemonIDSInterface *)v39 _blockForMessageIdentifier:v34];
+  v34 = sub_100003420(v33, responseCopy, IDSRemoteCredentialKeyUniqueID);
+  v35 = [(IDSCredentialsDaemonIDSInterface *)selfCopy _blockForMessageIdentifier:v34];
   v36 = v35;
   if (v35)
   {
-    (*(v35 + 16))(v35, 12, v4, 1);
-    [(IDSCredentialsDaemonIDSInterface *)v39 _removeMessageInfo:v34];
-    [(IDSCredentialsDaemonIDSInterface *)v39 _removeMessageIdentifierMappingWithCredentialUniqueID:v34];
+    (*(v35 + 16))(v35, 12, responseCopy, 1);
+    [(IDSCredentialsDaemonIDSInterface *)selfCopy _removeMessageInfo:v34];
+    [(IDSCredentialsDaemonIDSInterface *)selfCopy _removeMessageIdentifierMappingWithCredentialUniqueID:v34];
   }
 }
 
-- (void)_handleSendIDSIDLocalIDQuery:(id)a3
+- (void)_handleSendIDSIDLocalIDQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v22 = v4;
+    v22 = queryCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received IDs V2 Query Request message: %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v18 = v4;
+    v18 = queryCopy;
     _IDSLogV();
   }
 
-  v6 = [v4 _arrayForKey:{IDSRemoteCredentialKeyIDs, v18}];
+  v6 = [queryCopy _arrayForKey:{IDSRemoteCredentialKeyIDs, v18}];
   v7 = IDSRemoteCredentialKeyService;
-  v8 = [v4 _stringForKey:IDSRemoteCredentialKeyService];
+  v8 = [queryCopy _stringForKey:IDSRemoteCredentialKeyService];
   v9 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -1157,7 +1157,7 @@ LABEL_21:
 
   v13 = objc_opt_class();
   v14 = IDSRemoteCredentialKeyUniqueID;
-  v15 = sub_100003420(v13, v4, IDSRemoteCredentialKeyUniqueID);
+  v15 = sub_100003420(v13, queryCopy, IDSRemoteCredentialKeyUniqueID);
   v16 = objc_alloc_init(NSMutableDictionary);
   CFDictionarySetValue(v16, IDSRemoteCredentialKeyCommand, &off_1000112A8);
   if (v15)
@@ -1194,14 +1194,14 @@ LABEL_21:
   }
 }
 
-- (void)_handleSendIDSIDLocalIDQueryResponse:(id)a3
+- (void)_handleSendIDSIDLocalIDQueryResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = responseCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received ID Query response message V2 : %@", buf, 0xCu);
   }
 
@@ -1211,37 +1211,37 @@ LABEL_21:
   }
 
   v6 = objc_opt_class();
-  v7 = sub_100003420(v6, v4, IDSRemoteCredentialKeyUniqueID);
+  v7 = sub_100003420(v6, responseCopy, IDSRemoteCredentialKeyUniqueID);
   v8 = [(IDSCredentialsDaemonIDSInterface *)self _blockForMessageIdentifier:v7];
   v9 = v8;
   if (v8)
   {
-    (*(v8 + 16))(v8, 14, v4, 1);
+    (*(v8 + 16))(v8, 14, responseCopy, 1);
     [(IDSCredentialsDaemonIDSInterface *)self _removeMessageInfo:v7];
     [(IDSCredentialsDaemonIDSInterface *)self _removeMessageIdentifierMappingWithCredentialUniqueID:v7];
   }
 }
 
-- (void)_handleIncomingAccountSyncMessage:(id)a3 fromID:(id)a4
+- (void)_handleIncomingAccountSyncMessage:(id)message fromID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  dCopy = d;
   v8 = +[IMRGLog accountSync];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [NSDictionary dictionaryWithDictionary:v6];
+    v9 = [NSDictionary dictionaryWithDictionary:messageCopy];
     v16 = 138412290;
     v17 = v9;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Received incoming account sync message %@", &v16, 0xCu);
   }
 
   v10 = objc_opt_class();
-  v11 = sub_100003420(v10, v6, IDSRemoteCredentialKeySyncPayload);
+  v11 = sub_100003420(v10, messageCopy, IDSRemoteCredentialKeySyncPayload);
   IDSIncomingAccountSyncMessage();
 
   v12 = objc_opt_class();
   v13 = IDSRemoteCredentialKeyUniqueID;
-  v14 = sub_100003420(v12, v6, IDSRemoteCredentialKeyUniqueID);
+  v14 = sub_100003420(v12, messageCopy, IDSRemoteCredentialKeyUniqueID);
   v15 = objc_alloc_init(NSMutableDictionary);
   CFDictionarySetValue(v15, IDSRemoteCredentialKeyCommand, &off_1000112C0);
   if (v14)
@@ -1256,75 +1256,75 @@ LABEL_21:
   }
 }
 
-- (void)_handleIncomingAccountSyncMessageResponse:(id)a3
+- (void)_handleIncomingAccountSyncMessageResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = +[IMRGLog accountSync];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [NSDictionary dictionaryWithDictionary:v4];
+    v6 = [NSDictionary dictionaryWithDictionary:responseCopy];
     v11 = 138412290;
     v12 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received incoming account sync message response %@", &v11, 0xCu);
   }
 
   v7 = objc_opt_class();
-  v8 = sub_100003420(v7, v4, IDSRemoteCredentialKeyUniqueID);
+  v8 = sub_100003420(v7, responseCopy, IDSRemoteCredentialKeyUniqueID);
   v9 = [(IDSCredentialsDaemonIDSInterface *)self _blockForMessageIdentifier:v8];
   v10 = v9;
   if (v9)
   {
-    (*(v9 + 16))(v9, 16, v4, 1);
+    (*(v9 + 16))(v9, 16, responseCopy, 1);
     [(IDSCredentialsDaemonIDSInterface *)self _removeMessageInfo:v8];
     [(IDSCredentialsDaemonIDSInterface *)self _removeMessageIdentifierMappingWithCredentialUniqueID:v8];
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  dataCopy = data;
+  dCopy = d;
+  contextCopy = context;
   v17 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413314;
-    v30 = v12;
+    v30 = serviceCopy;
     v31 = 2112;
-    v32 = v13;
+    v32 = accountCopy;
     v33 = 2112;
-    v34 = v14;
+    v34 = dataCopy;
     v35 = 2112;
-    v36 = v15;
+    v36 = dCopy;
     v37 = 2112;
-    v38 = v16;
+    v38 = contextCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "incomingData on service %@, account %@ data %@ fromID %@ context %@", buf, 0x34u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v27 = v15;
-    v28 = v16;
-    v25 = v13;
-    v26 = v14;
-    v24 = v12;
+    v27 = dCopy;
+    v28 = contextCopy;
+    v25 = accountCopy;
+    v26 = dataCopy;
+    v24 = serviceCopy;
     _IDSLogV();
   }
 
-  v18 = [v14 _CUTOptionallyDecompressData];
+  _CUTOptionallyDecompressData = [dataCopy _CUTOptionallyDecompressData];
   v19 = JWDecodeDictionary();
   v20 = [v19 objectForKey:IDSRemoteCredentialKeyCommand];
-  v21 = [v20 unsignedIntValue];
+  unsignedIntValue = [v20 unsignedIntValue];
 
-  if (v21 > 9)
+  if (unsignedIntValue > 9)
   {
-    if (v21 <= 13)
+    if (unsignedIntValue <= 13)
     {
-      if (v21 > 11)
+      if (unsignedIntValue > 11)
       {
-        if (v21 == 12)
+        if (unsignedIntValue == 12)
         {
           [(IDSCredentialsDaemonIDSInterface *)self _handleSendIDSLocalDeviceInfoResponse:v19];
         }
@@ -1335,7 +1335,7 @@ LABEL_21:
         }
       }
 
-      else if (v21 == 10)
+      else if (unsignedIntValue == 10)
       {
         [(IDSCredentialsDaemonIDSInterface *)self _handleFetchFaceTimeAndiMessageInfoMessageResponse:v19];
       }
@@ -1348,22 +1348,22 @@ LABEL_21:
       goto LABEL_38;
     }
 
-    if (v21 <= 15)
+    if (unsignedIntValue <= 15)
     {
-      if (v21 == 14)
+      if (unsignedIntValue == 14)
       {
         [(IDSCredentialsDaemonIDSInterface *)self _handleSendIDSIDLocalIDQueryResponse:v19];
       }
 
       else
       {
-        [(IDSCredentialsDaemonIDSInterface *)self _handleIncomingAccountSyncMessage:v19 fromID:v15];
+        [(IDSCredentialsDaemonIDSInterface *)self _handleIncomingAccountSyncMessage:v19 fromID:dCopy];
       }
 
       goto LABEL_38;
     }
 
-    switch(v21)
+    switch(unsignedIntValue)
     {
       case 16:
         [(IDSCredentialsDaemonIDSInterface *)self _handleIncomingAccountSyncMessageResponse:v19];
@@ -1379,9 +1379,9 @@ LABEL_21:
     goto LABEL_33;
   }
 
-  if ((v21 - 1) >= 8)
+  if ((unsignedIntValue - 1) >= 8)
   {
-    if (v21 == 9)
+    if (unsignedIntValue == 9)
     {
       [(IDSCredentialsDaemonIDSInterface *)self _handleFetchFaceTimeAndiMessageInfoMessage:v19];
       goto LABEL_38;
@@ -1392,7 +1392,7 @@ LABEL_33:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      LODWORD(v30) = v21;
+      LODWORD(v30) = unsignedIntValue;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Unknown incoming IDS message with command %d, ignoring...", buf, 8u);
     }
 
@@ -1408,7 +1408,7 @@ LABEL_33:
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    LODWORD(v30) = v21;
+    LODWORD(v30) = unsignedIntValue;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Received deprecated IDSRemoteCredential command -- ignoring { command: %u }", buf, 8u);
   }
 
@@ -1421,49 +1421,49 @@ LABEL_37:
 LABEL_38:
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  successCopy = success;
+  serviceCopy = service;
+  accountCopy = account;
+  identifierCopy = identifier;
+  errorCopy = error;
   v16 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v17 = @"NO";
     *buf = 138412802;
-    v30 = v14;
+    v30 = identifierCopy;
     v31 = 2112;
-    if (v8)
+    if (successCopy)
     {
       v17 = @"YES";
     }
 
     v32 = v17;
     v33 = 2112;
-    v34 = v15;
+    v34 = errorCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Sent message with identifier %@ success %@ error %@", buf, 0x20u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
     v18 = @"NO";
-    if (v8)
+    if (successCopy)
     {
       v18 = @"YES";
     }
 
     v27 = v18;
-    v28 = v15;
-    v26 = v14;
+    v28 = errorCopy;
+    v26 = identifierCopy;
     _IDSLogV();
   }
 
   v19 = [IMRGLog NRPairing:v26];
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    if (v8)
+    if (successCopy)
     {
       v20 = @"YES";
     }
@@ -1473,19 +1473,19 @@ LABEL_38:
       v20 = @"NO";
     }
 
-    v21 = [(IMOrderedMutableDictionary *)self->_uniqueIDToInfo orderedObjects];
+    orderedObjects = [(IMOrderedMutableDictionary *)self->_uniqueIDToInfo orderedObjects];
     *buf = 138413058;
-    v30 = v14;
+    v30 = identifierCopy;
     v31 = 2112;
     v32 = v20;
     v33 = 2112;
-    v34 = v15;
+    v34 = errorCopy;
     v35 = 2112;
-    v36 = v21;
+    v36 = orderedObjects;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Sent message with identifier %@ success %@ error %@. Messages still in the queue: %@", buf, 0x2Au);
   }
 
-  if (!v8)
+  if (!successCopy)
   {
     v22 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -1499,7 +1499,7 @@ LABEL_38:
       _IDSLogV();
     }
 
-    v23 = [(IDSCredentialsDaemonIDSInterface *)self _credentialUniqueIDFromMessageIdentifier:v14];
+    v23 = [(IDSCredentialsDaemonIDSInterface *)self _credentialUniqueIDFromMessageIdentifier:identifierCopy];
     v24 = [(IDSCredentialsDaemonIDSInterface *)self _blockForMessageIdentifier:v23];
     if (v24)
     {
@@ -1519,21 +1519,21 @@ LABEL_38:
       [(IDSCredentialsDaemonIDSInterface *)self _removeMessageInfo:v23];
     }
 
-    [(IDSCredentialsDaemonIDSInterface *)self _removeMessageIdentifierMapping:v14];
+    [(IDSCredentialsDaemonIDSInterface *)self _removeMessageIdentifierMapping:identifierCopy];
   }
 }
 
-- (void)service:(id)a3 didSwitchActivePairedDevice:(id)a4 acknowledgementBlock:(id)a5
+- (void)service:(id)service didSwitchActivePairedDevice:(id)device acknowledgementBlock:(id)block
 {
   queuedMessages = self->_queuedMessages;
-  v6 = a5;
+  blockCopy = block;
   [(NSMutableArray *)queuedMessages removeAllObjects];
-  v6[2]();
+  blockCopy[2]();
 }
 
-- (void)service:(id)a3 activeAccountsChanged:(id)a4
+- (void)service:(id)service activeAccountsChanged:(id)changed
 {
-  if ([a4 count])
+  if ([changed count])
   {
     v24 = 0u;
     v25 = 0u;
@@ -1568,9 +1568,9 @@ LABEL_38:
         v16 = sub_100003420(v15, v8, @"IDSQueuedMessageForceIdentifier");
         v17 = [v8 objectForKey:@"IDSQueuedMessageCompletionBlock"];
         v18 = [v8 objectForKey:@"IDSQueuedMessageIsPairing"];
-        v19 = [v18 BOOLValue];
+        bOOLValue = [v18 BOOLValue];
 
-        if (v19)
+        if (bOOLValue)
         {
           if ([(IDSCredentialsDaemonIDSInterface *)self _sendIDSPairingMessage:v10 timeOut:v12 queueOneIdentifier:v14 forcedIdentifier:v16])
           {
@@ -1604,13 +1604,13 @@ LABEL_15:
   [(NSMutableArray *)self->_queuedMessages removeAllObjects];
 }
 
-- (void)_addMessageInfo:(id)a3 description:(id)a4 completionBlock:(id)a5
+- (void)_addMessageInfo:(id)info description:(id)description completionBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  descriptionCopy = description;
+  blockCopy = block;
+  infoCopy = info;
   Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-  v12 = objc_retainBlock(v9);
+  v12 = objc_retainBlock(blockCopy);
 
   if (v12)
   {
@@ -1622,7 +1622,7 @@ LABEL_15:
     sub_100008384();
   }
 
-  v13 = v8;
+  v13 = descriptionCopy;
   if (v13)
   {
     CFDictionarySetValue(Mutable, @"description", v13);
@@ -1633,32 +1633,32 @@ LABEL_15:
     sub_100008420();
   }
 
-  [(IMOrderedMutableDictionary *)self->_uniqueIDToInfo setOrderedObject:Mutable forKey:v10];
+  [(IMOrderedMutableDictionary *)self->_uniqueIDToInfo setOrderedObject:Mutable forKey:infoCopy];
 }
 
-- (void)_mapMessageIdentifier:(id)a3 toCredentialUniqueID:(id)a4
+- (void)_mapMessageIdentifier:(id)identifier toCredentialUniqueID:(id)d
 {
-  if (a3)
+  if (identifier)
   {
-    if (a4)
+    if (d)
     {
-      [(NSMutableDictionary *)self->_credentialIDByMessageID setObject:a4 forKey:a3];
+      [(NSMutableDictionary *)self->_credentialIDByMessageID setObject:d forKey:identifier];
     }
   }
 }
 
-- (void)_removeMessageIdentifierMapping:(id)a3
+- (void)_removeMessageIdentifierMapping:(id)mapping
 {
-  if (a3)
+  if (mapping)
   {
     [(NSMutableDictionary *)self->_credentialIDByMessageID removeObjectForKey:?];
   }
 }
 
-- (void)_removeMessageIdentifierMappingWithCredentialUniqueID:(id)a3
+- (void)_removeMessageIdentifierMappingWithCredentialUniqueID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     v16 = 0u;
     v17 = 0u;
@@ -1681,7 +1681,7 @@ LABEL_4:
 
         v10 = *(*(&v14 + 1) + 8 * v9);
         v11 = [(NSMutableDictionary *)self->_credentialIDByMessageID objectForKeyedSubscript:v10, v14];
-        v12 = [v11 isEqualToString:v4];
+        v12 = [v11 isEqualToString:dCopy];
 
         if (v12)
         {
@@ -1717,9 +1717,9 @@ LABEL_13:
 LABEL_14:
 }
 
-- (id)_credentialUniqueIDFromMessageIdentifier:(id)a3
+- (id)_credentialUniqueIDFromMessageIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = [(NSMutableDictionary *)self->_credentialIDByMessageID objectForKeyedSubscript:?];
   }

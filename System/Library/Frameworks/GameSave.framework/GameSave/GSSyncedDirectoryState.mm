@@ -1,6 +1,6 @@
 @interface GSSyncedDirectoryState
 - (GSSyncedDirectoryState)init;
-- (GSSyncedDirectoryState)initWithId:(id)a3 syncState:(int64_t)a4;
+- (GSSyncedDirectoryState)initWithId:(id)id syncState:(int64_t)state;
 - (NSArray)conflictedVersions;
 - (NSError)error;
 - (NSURL)url;
@@ -40,7 +40,7 @@
   v4 = *(*(v3 - 8) + 64);
   MEMORY[0x28223BE20](v3 - 8);
   v6 = &v15 - v5;
-  v7 = self;
+  selfCopy = self;
   GSSyncedDirectoryState.url.getter(v6);
 
   v8 = type metadata accessor for URL();
@@ -60,7 +60,7 @@
 
 - (NSArray)conflictedVersions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = GSSyncedDirectoryState.conflictedVersions.getter();
 
   if (v3)
@@ -79,7 +79,7 @@
 
 - (NSError)error
 {
-  v2 = self;
+  selfCopy = self;
   v3 = GSSyncedDirectoryState.error.getter();
 
   if (v3)
@@ -95,9 +95,9 @@
   return v4;
 }
 
-- (GSSyncedDirectoryState)initWithId:(id)a3 syncState:(int64_t)a4
+- (GSSyncedDirectoryState)initWithId:(id)id syncState:(int64_t)state
 {
-  if (a3)
+  if (id)
   {
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
@@ -109,7 +109,7 @@
     memset(v9, 0, sizeof(v9));
   }
 
-  *(self + OBJC_IVAR___GSSyncedDirectoryState_state) = a4;
+  *(self + OBJC_IVAR___GSSyncedDirectoryState_state) = state;
   outlined init with copy of Any?(v9, self + OBJC_IVAR___GSSyncedDirectoryState_internalValue);
   v8.receiver = self;
   v8.super_class = GSSyncedDirectoryState;

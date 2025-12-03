@@ -1,23 +1,23 @@
 @interface UIKBRenderFactoryHWR_Floating
-- (id)_traitsForKey:(id)a3 onKeyplane:(id)a4;
+- (id)_traitsForKey:(id)key onKeyplane:(id)keyplane;
 @end
 
 @implementation UIKBRenderFactoryHWR_Floating
 
-- (id)_traitsForKey:(id)a3 onKeyplane:(id)a4
+- (id)_traitsForKey:(id)key onKeyplane:(id)keyplane
 {
   v12.receiver = self;
   v12.super_class = UIKBRenderFactoryHWR_Floating;
-  v6 = a3;
-  v7 = [(UIKBRenderFactoryHWR_Portrait *)&v12 _traitsForKey:v6 onKeyplane:a4];
-  v8 = [v6 displayType];
+  keyCopy = key;
+  v7 = [(UIKBRenderFactoryHWR_Portrait *)&v12 _traitsForKey:keyCopy onKeyplane:keyplane];
+  displayType = [keyCopy displayType];
 
-  if (v8 == 12)
+  if (displayType == 12)
   {
-    v9 = [(UIKBRenderFactory *)self renderConfig];
-    v10 = [v9 lightKeyboard];
+    renderConfig = [(UIKBRenderFactory *)self renderConfig];
+    lightKeyboard = [renderConfig lightKeyboard];
 
-    if (v10)
+    if (lightKeyboard)
     {
       [v7 setBackgroundGradient:0];
       [v7 removeAllRenderEffects];

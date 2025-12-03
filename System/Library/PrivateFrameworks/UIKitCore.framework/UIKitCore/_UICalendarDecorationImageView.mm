@@ -1,16 +1,16 @@
 @interface _UICalendarDecorationImageView
-- (_UICalendarDecorationImageView)initWithFrame:(CGRect)a3;
+- (_UICalendarDecorationImageView)initWithFrame:(CGRect)frame;
 - (void)_updateSymbolConfiguration;
-- (void)setDecorationSize:(int64_t)a3;
+- (void)setDecorationSize:(int64_t)size;
 @end
 
 @implementation _UICalendarDecorationImageView
 
-- (_UICalendarDecorationImageView)initWithFrame:(CGRect)a3
+- (_UICalendarDecorationImageView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _UICalendarDecorationImageView;
-  v3 = [(UIImageView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIImageView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -21,21 +21,21 @@
   return v4;
 }
 
-- (void)setDecorationSize:(int64_t)a3
+- (void)setDecorationSize:(int64_t)size
 {
-  if (self->_decorationSize != a3)
+  if (self->_decorationSize != size)
   {
-    self->_decorationSize = a3;
+    self->_decorationSize = size;
     [(_UICalendarDecorationImageView *)self _updateSymbolConfiguration];
   }
 }
 
 - (void)_updateSymbolConfiguration
 {
-  v3 = [(_UICalendarDecorationImageView *)self decorationSize];
-  if (v3 < 3)
+  decorationSize = [(_UICalendarDecorationImageView *)self decorationSize];
+  if (decorationSize < 3)
   {
-    v4 = v3 + 1;
+    v4 = decorationSize + 1;
   }
 
   else

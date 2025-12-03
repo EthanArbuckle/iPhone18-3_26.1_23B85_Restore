@@ -1,63 +1,63 @@
 @interface CNFRegLearnMoreButton
-+ (id)roundedButtonWithText:(id)a3 color:(id)a4;
-- (CGRect)imageRectForContentRect:(CGRect)a3;
-- (CGRect)titleRectForContentRect:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CNFRegLearnMoreButton)initWithFrame:(CGRect)a3 style:(int64_t)a4 text:(id)a5;
++ (id)roundedButtonWithText:(id)text color:(id)color;
+- (CGRect)imageRectForContentRect:(CGRect)rect;
+- (CGRect)titleRectForContentRect:(CGRect)rect;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CNFRegLearnMoreButton)initWithFrame:(CGRect)frame style:(int64_t)style text:(id)text;
 - (void)_setupArrowImageForCurrentStyle;
 - (void)_setupLearnMoreTextForCurrentStyle;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation CNFRegLearnMoreButton
 
-+ (id)roundedButtonWithText:(id)a3 color:(id)a4
++ (id)roundedButtonWithText:(id)text color:(id)color
 {
   v5 = MEMORY[0x277D75220];
-  v6 = a4;
-  v7 = a3;
+  colorCopy = color;
+  textCopy = text;
   v8 = [v5 buttonWithType:1];
   LODWORD(v9) = -0.5;
   [v8 setCharge:v9];
   [v8 setAutoresizingMask:5];
-  v10 = [v8 titleLabel];
+  titleLabel = [v8 titleLabel];
   v11 = [MEMORY[0x277D74300] fontWithName:@"Helvetica Neue Light" size:14.0];
-  [v10 setFont:v11];
+  [titleLabel setFont:v11];
 
-  v12 = [v8 titleLabel];
-  [v12 setNumberOfLines:1];
+  titleLabel2 = [v8 titleLabel];
+  [titleLabel2 setNumberOfLines:1];
 
   [v8 setContentEdgeInsets:{0.0, 6.0, 0.0, 6.0}];
   [v8 setTitleEdgeInsets:{0.0, 0.0, 0.0, 0.0}];
-  [v8 setTitle:v7 forState:0];
+  [v8 setTitle:textCopy forState:0];
 
-  [v8 setTitleColor:v6 forState:0];
+  [v8 setTitleColor:colorCopy forState:0];
   [v8 sizeToFit];
 
   return v8;
 }
 
-- (CNFRegLearnMoreButton)initWithFrame:(CGRect)a3 style:(int64_t)a4 text:(id)a5
+- (CNFRegLearnMoreButton)initWithFrame:(CGRect)frame style:(int64_t)style text:(id)text
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  textCopy = text;
   v16.receiver = self;
   v16.super_class = CNFRegLearnMoreButton;
-  v12 = [(CNFRegLearnMoreButton *)&v16 initWithFrame:x, y, width, height];
-  v13 = v12;
-  if (v12)
+  height = [(CNFRegLearnMoreButton *)&v16 initWithFrame:x, y, width, height];
+  v13 = height;
+  if (height)
   {
-    [(CNFRegLearnMoreButton *)v12 setStyle:a4];
-    [(CNFRegLearnMoreButton *)v13 setButtonText:v11];
-    [(CNFRegLearnMoreButton *)v13 setUsesImage:a4 != 1];
-    [(CNFRegLearnMoreButton *)v13 setAlwaysUnderline:a4 == 1];
+    [(CNFRegLearnMoreButton *)height setStyle:style];
+    [(CNFRegLearnMoreButton *)v13 setButtonText:textCopy];
+    [(CNFRegLearnMoreButton *)v13 setUsesImage:style != 1];
+    [(CNFRegLearnMoreButton *)v13 setAlwaysUnderline:style == 1];
     [(CNFRegLearnMoreButton *)v13 _setupLearnMoreTextForCurrentStyle];
     [(CNFRegLearnMoreButton *)v13 _setupArrowImageForCurrentStyle];
-    v14 = [MEMORY[0x277D75348] clearColor];
-    [(CNFRegLearnMoreButton *)v13 setBackgroundColor:v14];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(CNFRegLearnMoreButton *)v13 setBackgroundColor:clearColor];
   }
 
   return v13;
@@ -88,39 +88,39 @@
 
   [(CNFRegLearnMoreButton *)self setTitle:v5 forState:0];
   v8 = [MEMORY[0x277D74300] boldSystemFontOfSize:15.0];
-  v9 = [v21 learnMoreTextColor];
-  v10 = [v21 learnMoreTextColorSelected];
-  v11 = [v21 learnMoreShadowColor];
+  learnMoreTextColor = [v21 learnMoreTextColor];
+  learnMoreTextColorSelected = [v21 learnMoreTextColorSelected];
+  learnMoreShadowColor = [v21 learnMoreShadowColor];
   v12 = 1.0;
   if ([(CNFRegLearnMoreButton *)self style]== 1)
   {
-    v13 = [v21 tableHeaderTextColor];
+    tableHeaderTextColor = [v21 tableHeaderTextColor];
 
-    v14 = [v21 tableHeaderTextColorSelected];
+    tableHeaderTextColorSelected = [v21 tableHeaderTextColorSelected];
 
-    v15 = [v21 tableHeaderTextShadowColor];
+    tableHeaderTextShadowColor = [v21 tableHeaderTextShadowColor];
 
     [v21 tableHeaderTextShadowOffset];
     v3 = v16;
     v12 = v17;
-    v10 = v14;
-    v11 = v15;
-    v9 = v13;
+    learnMoreTextColorSelected = tableHeaderTextColorSelected;
+    learnMoreShadowColor = tableHeaderTextShadowColor;
+    learnMoreTextColor = tableHeaderTextColor;
   }
 
-  [(CNFRegLearnMoreButton *)self setTitleColor:v9 forState:0];
-  [(CNFRegLearnMoreButton *)self setTitleColor:v10 forState:1];
-  v18 = [(CNFRegLearnMoreButton *)self titleLabel];
-  [v18 setFont:v8];
+  [(CNFRegLearnMoreButton *)self setTitleColor:learnMoreTextColor forState:0];
+  [(CNFRegLearnMoreButton *)self setTitleColor:learnMoreTextColorSelected forState:1];
+  titleLabel = [(CNFRegLearnMoreButton *)self titleLabel];
+  [titleLabel setFont:v8];
 
-  v19 = [(CNFRegLearnMoreButton *)self titleLabel];
-  [v19 setLineBreakMode:4];
+  titleLabel2 = [(CNFRegLearnMoreButton *)self titleLabel];
+  [titleLabel2 setLineBreakMode:4];
 
-  if (v11)
+  if (learnMoreShadowColor)
   {
-    [(CNFRegLearnMoreButton *)self setTitleShadowColor:v11 forState:0];
-    v20 = [(CNFRegLearnMoreButton *)self titleLabel];
-    [v20 setShadowOffset:{v3, v12}];
+    [(CNFRegLearnMoreButton *)self setTitleShadowColor:learnMoreShadowColor forState:0];
+    titleLabel3 = [(CNFRegLearnMoreButton *)self titleLabel];
+    [titleLabel3 setShadowOffset:{v3, v12}];
   }
 }
 
@@ -129,18 +129,18 @@
   if ([(CNFRegLearnMoreButton *)self usesImage])
   {
     v5 = +[CNFRegAppearanceController globalAppearanceController];
-    v3 = [v5 learnMoreArrowImage];
-    v4 = [v5 learnMoreArrowImagePressed];
-    [(CNFRegLearnMoreButton *)self setImage:v3 forState:0];
-    [(CNFRegLearnMoreButton *)self setImage:v4 forState:1];
+    learnMoreArrowImage = [v5 learnMoreArrowImage];
+    learnMoreArrowImagePressed = [v5 learnMoreArrowImagePressed];
+    [(CNFRegLearnMoreButton *)self setImage:learnMoreArrowImage forState:0];
+    [(CNFRegLearnMoreButton *)self setImage:learnMoreArrowImagePressed forState:1];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v11.receiver = self;
   v11.super_class = CNFRegLearnMoreButton;
-  [(CNFRegLearnMoreButton *)&v11 sizeThatFits:a3.width, a3.height];
+  [(CNFRegLearnMoreButton *)&v11 sizeThatFits:fits.width, fits.height];
   v5 = v4;
   v7 = v6;
   v8 = [(CNFRegLearnMoreButton *)self imageForState:[(CNFRegLearnMoreButton *)self state]];
@@ -156,12 +156,12 @@
   return result;
 }
 
-- (CGRect)imageRectForContentRect:(CGRect)a3
+- (CGRect)imageRectForContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = [(CNFRegLearnMoreButton *)self imageForState:[(CNFRegLearnMoreButton *)self state]];
   v9 = v8;
   if (v8)
@@ -205,19 +205,19 @@
   return result;
 }
 
-- (CGRect)titleRectForContentRect:(CGRect)a3
+- (CGRect)titleRectForContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v42[2] = *MEMORY[0x277D85DE8];
-  v8 = [(CNFRegLearnMoreButton *)self state];
-  v9 = [(CNFRegLearnMoreButton *)self titleForState:v8];
+  state = [(CNFRegLearnMoreButton *)self state];
+  v9 = [(CNFRegLearnMoreButton *)self titleForState:state];
   v10 = v9;
   if (v9 && [v9 length])
   {
-    v11 = [(CNFRegLearnMoreButton *)self imageForState:v8];
+    v11 = [(CNFRegLearnMoreButton *)self imageForState:state];
     v12 = v11;
     v13 = MEMORY[0x277CBF3A8];
     v14 = *MEMORY[0x277CBF3A8];
@@ -233,20 +233,20 @@
     v20 = y + v19;
     v22 = width - (v17 + v21);
     v24 = height - (v19 + v23);
-    v25 = [(CNFRegLearnMoreButton *)self _lineBreakMode];
+    _lineBreakMode = [(CNFRegLearnMoreButton *)self _lineBreakMode];
     v43.origin.x = v18;
     v43.origin.y = v20;
     v43.size.width = v22;
     v43.size.height = v24;
     v26 = CGRectGetWidth(v43);
-    v27 = [MEMORY[0x277D74248] defaultParagraphStyle];
-    v28 = [v27 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x277D74248] defaultParagraphStyle];
+    v28 = [defaultParagraphStyle mutableCopy];
 
-    [v28 setLineBreakMode:v25];
+    [v28 setLineBreakMode:_lineBreakMode];
     v41[0] = *MEMORY[0x277D740A8];
-    v29 = [(CNFRegLearnMoreButton *)self _font];
+    _font = [(CNFRegLearnMoreButton *)self _font];
     v41[1] = *MEMORY[0x277D74118];
-    v42[0] = v29;
+    v42[0] = _font;
     v42[1] = v28;
     v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v42 forKeys:v41 count:2];
 
@@ -294,37 +294,37 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v34[2] = *MEMORY[0x277D85DE8];
   v8 = +[CNFRegAppearanceController globalAppearanceController];
   if ([v8 learnMoreButtonDrawsUnderline] && ((-[CNFRegLearnMoreButton isHighlighted](self, "isHighlighted") & 1) != 0 || (-[CNFRegLearnMoreButton isSelected](self, "isSelected") & 1) != 0 || -[CNFRegLearnMoreButton alwaysUnderline](self, "alwaysUnderline")))
   {
     CurrentContext = UIGraphicsGetCurrentContext();
-    v10 = [(CNFRegLearnMoreButton *)self titleLabel];
+    titleLabel = [(CNFRegLearnMoreButton *)self titleLabel];
     [(CNFRegLearnMoreButton *)self bounds];
     v12 = v11;
-    v13 = [MEMORY[0x277D74248] defaultParagraphStyle];
-    v14 = [v13 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x277D74248] defaultParagraphStyle];
+    v14 = [defaultParagraphStyle mutableCopy];
 
     [v14 setLineBreakMode:4];
     v33[0] = *MEMORY[0x277D740A8];
-    v15 = [v10 font];
+    font = [titleLabel font];
     v33[1] = *MEMORY[0x277D74118];
-    v34[0] = v15;
+    v34[0] = font;
     v34[1] = v14;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:v33 count:2];
 
-    v17 = [v10 text];
-    if ([v17 length])
+    text = [titleLabel text];
+    if ([text length])
     {
-      v18 = [v10 text];
+      text2 = [titleLabel text];
       [(CNFRegLearnMoreButton *)self bounds];
-      [v18 boundingRectWithSize:1 options:v16 attributes:0 context:{v19, v20}];
+      [text2 boundingRectWithSize:1 options:v16 attributes:0 context:{v19, v20}];
       v22 = v21;
     }
 
@@ -333,20 +333,20 @@
       v22 = *MEMORY[0x277CBF3A8];
     }
 
-    [v10 center];
+    [titleLabel center];
     v23 = v22 * 0.5;
     v25 = v24 - v22 * 0.5;
-    [v10 center];
+    [titleLabel center];
     v27 = v23 + v26;
-    v28 = [v10 textColor];
-    CGContextSetStrokeColorWithColor(CurrentContext, [v28 CGColor]);
+    textColor = [titleLabel textColor];
+    CGContextSetStrokeColorWithColor(CurrentContext, [textColor CGColor]);
 
     CGContextSetLineWidth(CurrentContext, 1.5);
     CGContextMoveToPoint(CurrentContext, v25, v12 + -1.5);
     CGContextAddLineToPoint(CurrentContext, v27, v12 + -1.5);
     CGContextStrokePath(CurrentContext);
-    v29 = [MEMORY[0x277D75348] whiteColor];
-    CGContextSetStrokeColorWithColor(CurrentContext, [v29 CGColor]);
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    CGContextSetStrokeColorWithColor(CurrentContext, [whiteColor CGColor]);
 
     CGContextSetLineWidth(CurrentContext, 1.0);
     v30 = v12 + -0.5;

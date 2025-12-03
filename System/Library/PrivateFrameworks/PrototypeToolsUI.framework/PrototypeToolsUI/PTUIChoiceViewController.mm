@@ -1,33 +1,33 @@
 @interface PTUIChoiceViewController
-- (PTUIChoiceViewController)initWithPresentingRow:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
+- (PTUIChoiceViewController)initWithPresentingRow:(id)row;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
 - (void)_checkAppropriateCell;
 - (void)dealloc;
-- (void)rowDidReload:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)rowDidReload:(id)reload;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation PTUIChoiceViewController
 
-- (PTUIChoiceViewController)initWithPresentingRow:(id)a3
+- (PTUIChoiceViewController)initWithPresentingRow:(id)row
 {
-  v5 = a3;
+  rowCopy = row;
   v15.receiver = self;
   v15.super_class = PTUIChoiceViewController;
   v6 = [(PTUIChoiceViewController *)&v15 initWithStyle:2];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_row, a3);
+    objc_storeStrong(&v6->_row, row);
     [(PTChoiceRow *)v7->_row addObserver:v7];
-    v8 = [(PTUIChoiceViewController *)v7 navigationItem];
-    v9 = [(PTChoiceRow *)v7->_row title];
-    [v8 setTitle:v9];
+    navigationItem = [(PTUIChoiceViewController *)v7 navigationItem];
+    title = [(PTChoiceRow *)v7->_row title];
+    [navigationItem setTitle:title];
 
     row = v7->_row;
-    v11 = [(PTChoiceRow *)row value];
-    v12 = [(PTChoiceRow *)row indexPathForValue:v11];
+    value = [(PTChoiceRow *)row value];
+    v12 = [(PTChoiceRow *)row indexPathForValue:value];
     valueIndexPath = v7->_valueIndexPath;
     v7->_valueIndexPath = v12;
   }
@@ -43,15 +43,15 @@
   [(PTUIChoiceViewController *)&v3 dealloc];
 }
 
-- (void)rowDidReload:(id)a3
+- (void)rowDidReload:(id)reload
 {
-  v3 = [(PTUIChoiceViewController *)self tableView];
-  [v3 reloadData];
+  tableView = [(PTUIChoiceViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v4 = [(PTChoiceRow *)self->_row titleForSection:a4];
+  v4 = [(PTChoiceRow *)self->_row titleForSection:section];
   if ([v4 length])
   {
     v5 = objc_opt_new();
@@ -69,55 +69,55 @@
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"cell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"cell"];
   if (!v7)
   {
     v7 = [[_PTUIChoiceCell alloc] initWithReuseIdentifier:@"cell"];
   }
 
-  v8 = -[PTChoiceRow titleForRow:inSection:](self->_row, "titleForRow:inSection:", [v6 row], objc_msgSend(v6, "section"));
+  v8 = -[PTChoiceRow titleForRow:inSection:](self->_row, "titleForRow:inSection:", [pathCopy row], objc_msgSend(pathCopy, "section"));
   [(_PTUIChoiceCell *)v7 setTitle:v8];
 
   row = self->_row;
-  v10 = [v6 row];
-  v11 = [v6 section];
+  v10 = [pathCopy row];
+  section = [pathCopy section];
 
-  v12 = [(PTChoiceRow *)row valueForRow:v10 inSection:v11];
-  v13 = [(PTChoiceRow *)self->_row value];
-  -[_PTUIChoiceCell setChecked:](v7, "setChecked:", [v13 isEqual:v12]);
+  v12 = [(PTChoiceRow *)row valueForRow:v10 inSection:section];
+  value = [(PTChoiceRow *)self->_row value];
+  -[_PTUIChoiceCell setChecked:](v7, "setChecked:", [value isEqual:v12]);
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
   row = self->_row;
-  v8 = [v6 row];
-  v9 = [v6 section];
+  v8 = [pathCopy row];
+  section = [pathCopy section];
 
-  v12 = [(PTChoiceRow *)row valueForRow:v8 inSection:v9];
+  v12 = [(PTChoiceRow *)row valueForRow:v8 inSection:section];
   [(PTChoiceRow *)self->_row setValue:v12];
-  v10 = [(PTUIChoiceViewController *)self navigationController];
-  v11 = [v10 popViewControllerAnimated:1];
+  navigationController = [(PTUIChoiceViewController *)self navigationController];
+  v11 = [navigationController popViewControllerAnimated:1];
 }
 
 - (void)_checkAppropriateCell
 {
   row = self->_row;
-  v4 = [(PTChoiceRow *)row value];
-  v5 = [(PTChoiceRow *)row indexPathForValue:v4];
+  value = [(PTChoiceRow *)row value];
+  v5 = [(PTChoiceRow *)row indexPathForValue:value];
 
-  v6 = [(PTUIChoiceViewController *)self tableView];
-  v10 = [v6 cellForRowAtIndexPath:self->_valueIndexPath];
+  tableView = [(PTUIChoiceViewController *)self tableView];
+  v10 = [tableView cellForRowAtIndexPath:self->_valueIndexPath];
 
   [v10 setChecked:0];
-  v7 = [(PTUIChoiceViewController *)self tableView];
-  v8 = [v7 cellForRowAtIndexPath:v5];
+  tableView2 = [(PTUIChoiceViewController *)self tableView];
+  v8 = [tableView2 cellForRowAtIndexPath:v5];
 
   [v8 setChecked:1];
   valueIndexPath = self->_valueIndexPath;

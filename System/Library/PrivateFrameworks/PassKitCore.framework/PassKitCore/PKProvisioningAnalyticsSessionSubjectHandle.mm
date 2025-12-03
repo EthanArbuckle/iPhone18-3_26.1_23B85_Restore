@@ -1,23 +1,23 @@
 @interface PKProvisioningAnalyticsSessionSubjectHandle
-- (id)_initWithSubject:(id)a3 archivedParent:(id)a4;
+- (id)_initWithSubject:(id)subject archivedParent:(id)parent;
 - (void)_startReportingIfNecessary;
 - (void)stop;
 @end
 
 @implementation PKProvisioningAnalyticsSessionSubjectHandle
 
-- (id)_initWithSubject:(id)a3 archivedParent:(id)a4
+- (id)_initWithSubject:(id)subject archivedParent:(id)parent
 {
-  v7 = a3;
-  v8 = a4;
+  subjectCopy = subject;
+  parentCopy = parent;
   v12.receiver = self;
   v12.super_class = PKProvisioningAnalyticsSessionSubjectHandle;
   v9 = [(PKProvisioningAnalyticsSessionSubjectHandle *)&v12 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_subject, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v9->_subject, subject);
+    objc_storeStrong(p_isa + 2, parent);
   }
 
   return p_isa;

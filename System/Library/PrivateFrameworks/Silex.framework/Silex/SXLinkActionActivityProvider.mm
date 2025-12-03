@@ -1,48 +1,48 @@
 @interface SXLinkActionActivityProvider
-- (SXLinkActionActivityProvider)initWithURLHandler:(id)a3 URLPreviewing:(id)a4 host:(id)a5 URLQualifier:(id)a6;
-- (id)activityGroupForAction:(id)a3;
-- (id)previewActivityForAction:(id)a3;
-- (void)open:(id)a3;
-- (void)openInNewWindow:(id)a3;
-- (void)openInSafari:(id)a3;
+- (SXLinkActionActivityProvider)initWithURLHandler:(id)handler URLPreviewing:(id)previewing host:(id)host URLQualifier:(id)qualifier;
+- (id)activityGroupForAction:(id)action;
+- (id)previewActivityForAction:(id)action;
+- (void)open:(id)open;
+- (void)openInNewWindow:(id)window;
+- (void)openInSafari:(id)safari;
 @end
 
 @implementation SXLinkActionActivityProvider
 
-- (SXLinkActionActivityProvider)initWithURLHandler:(id)a3 URLPreviewing:(id)a4 host:(id)a5 URLQualifier:(id)a6
+- (SXLinkActionActivityProvider)initWithURLHandler:(id)handler URLPreviewing:(id)previewing host:(id)host URLQualifier:(id)qualifier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  handlerCopy = handler;
+  previewingCopy = previewing;
+  hostCopy = host;
+  qualifierCopy = qualifier;
   v18.receiver = self;
   v18.super_class = SXLinkActionActivityProvider;
   v15 = [(SXLinkActionActivityProvider *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_URLHandler, a3);
-    objc_storeStrong(&v16->_URLPreviewing, a4);
-    objc_storeStrong(&v16->_host, a5);
-    objc_storeStrong(&v16->_URLQualifier, a6);
+    objc_storeStrong(&v15->_URLHandler, handler);
+    objc_storeStrong(&v16->_URLPreviewing, previewing);
+    objc_storeStrong(&v16->_host, host);
+    objc_storeStrong(&v16->_URLQualifier, qualifier);
   }
 
   return v16;
 }
 
-- (id)activityGroupForAction:(id)a3
+- (id)activityGroupForAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = MEMORY[0x1E696AF20];
-  v6 = [v4 URL];
+  v6 = [actionCopy URL];
   v7 = [v5 componentsWithURL:v6 resolvingAgainstBaseURL:0];
 
   [v7 setQuery:0];
   [v7 setFragment:0];
   v8 = [v7 URL];
-  v9 = [v8 absoluteString];
+  absoluteString = [v8 absoluteString];
 
-  v10 = [[SXActionActivityGroup alloc] initWithTitle:v9];
+  v10 = [[SXActionActivityGroup alloc] initWithTitle:absoluteString];
   v11 = [SXBlockActionActivity alloc];
   v12 = SXBundle();
   v13 = [v12 localizedStringForKey:@"SXLinkActionOpen" value:&stru_1F532F6C0 table:0];
@@ -54,12 +54,12 @@
   v14 = [(SXBlockActionActivity *)v11 initWithLabel:v13 type:0 block:v43];
   [(SXActionActivityGroup *)v10 addActivity:v14];
 
-  v15 = [(SXLinkActionActivityProvider *)self URLQualifier];
+  uRLQualifier = [(SXLinkActionActivityProvider *)self URLQualifier];
   if (objc_opt_respondsToSelector())
   {
-    v16 = [(SXLinkActionActivityProvider *)self URLQualifier];
-    v17 = [v4 URL];
-    v18 = [v16 allowOpenInNewWindowForURL:v17];
+    uRLQualifier2 = [(SXLinkActionActivityProvider *)self URLQualifier];
+    v17 = [actionCopy URL];
+    v18 = [uRLQualifier2 allowOpenInNewWindowForURL:v17];
 
     if (v18)
     {
@@ -80,9 +80,9 @@
   {
   }
 
-  v23 = [(SXLinkActionActivityProvider *)self URLQualifier];
-  v24 = [v4 URL];
-  v25 = [v23 allowOpenInSafariForURL:v24];
+  uRLQualifier3 = [(SXLinkActionActivityProvider *)self URLQualifier];
+  v24 = [actionCopy URL];
+  v25 = [uRLQualifier3 allowOpenInSafariForURL:v24];
 
   if (v25)
   {
@@ -98,19 +98,19 @@
     [(SXActionActivityGroup *)v10 addActivity:v29];
   }
 
-  v30 = [(SXLinkActionActivityProvider *)self URLQualifier];
-  v31 = [v4 URL];
-  v32 = [v30 allowCopyingOfURL:v31];
+  uRLQualifier4 = [(SXLinkActionActivityProvider *)self URLQualifier];
+  v31 = [actionCopy URL];
+  v32 = [uRLQualifier4 allowCopyingOfURL:v31];
 
   if (v32)
   {
     v33 = [SXPasteboardActionActivity alloc];
     v34 = SXBundle();
     v35 = [v34 localizedStringForKey:@"Copy Link" value:&stru_1F532F6C0 table:0];
-    v36 = [MEMORY[0x1E69DCD50] generalPasteboard];
-    v37 = [v4 URL];
-    v38 = [v37 absoluteString];
-    v39 = [(SXPasteboardActionActivity *)v33 initWithLabel:v35 type:1 pasteboard:v36 string:v38];
+    generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+    v37 = [actionCopy URL];
+    absoluteString2 = [v37 absoluteString];
+    v39 = [(SXPasteboardActionActivity *)v33 initWithLabel:v35 type:1 pasteboard:generalPasteboard string:absoluteString2];
     [(SXActionActivityGroup *)v10 addActivity:v39];
   }
 
@@ -138,43 +138,43 @@ void __55__SXLinkActionActivityProvider_activityGroupForAction___block_invoke_3(
   [v2 openInSafari:v3];
 }
 
-- (id)previewActivityForAction:(id)a3
+- (id)previewActivityForAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = [SXURLPreviewActivity alloc];
-  v6 = [(SXLinkActionActivityProvider *)self URLPreviewing];
-  v7 = [v4 URL];
+  uRLPreviewing = [(SXLinkActionActivityProvider *)self URLPreviewing];
+  v7 = [actionCopy URL];
 
-  v8 = [(SXURLPreviewActivity *)v5 initWithURLPreviewing:v6 URL:v7];
+  v8 = [(SXURLPreviewActivity *)v5 initWithURLPreviewing:uRLPreviewing URL:v7];
 
   return v8;
 }
 
-- (void)open:(id)a3
+- (void)open:(id)open
 {
-  v4 = a3;
-  v5 = [(SXLinkActionActivityProvider *)self URLHandler];
-  [v5 openURL:v4];
+  openCopy = open;
+  uRLHandler = [(SXLinkActionActivityProvider *)self URLHandler];
+  [uRLHandler openURL:openCopy];
 }
 
-- (void)openInNewWindow:(id)a3
+- (void)openInNewWindow:(id)window
 {
-  v7 = a3;
-  v4 = [(SXLinkActionActivityProvider *)self URLHandler];
+  windowCopy = window;
+  uRLHandler = [(SXLinkActionActivityProvider *)self URLHandler];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SXLinkActionActivityProvider *)self URLHandler];
-    [v6 openNewWindowWithURL:v7];
+    uRLHandler2 = [(SXLinkActionActivityProvider *)self URLHandler];
+    [uRLHandler2 openNewWindowWithURL:windowCopy];
   }
 }
 
-- (void)openInSafari:(id)a3
+- (void)openInSafari:(id)safari
 {
-  v4 = a3;
-  v5 = [(SXLinkActionActivityProvider *)self host];
-  [v5 openURL:v4 completion:0];
+  safariCopy = safari;
+  host = [(SXLinkActionActivityProvider *)self host];
+  [host openURL:safariCopy completion:0];
 }
 
 @end

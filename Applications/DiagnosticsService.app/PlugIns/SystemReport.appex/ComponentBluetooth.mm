@@ -1,7 +1,7 @@
 @interface ComponentBluetooth
 - (BOOL)isPresent;
 - (id)bluetoothAddress;
-- (void)populateAttributes:(id)a3;
+- (void)populateAttributes:(id)attributes;
 @end
 
 @implementation ComponentBluetooth
@@ -16,11 +16,11 @@
   return findDeviceWithName("marconi-bt");
 }
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(ComponentBluetooth *)self bluetoothAddress];
-  [v4 setObject:v5 forKeyedSubscript:@"bluetoothAddress"];
+  attributesCopy = attributes;
+  bluetoothAddress = [(ComponentBluetooth *)self bluetoothAddress];
+  [attributesCopy setObject:bluetoothAddress forKeyedSubscript:@"bluetoothAddress"];
 }
 
 - (id)bluetoothAddress

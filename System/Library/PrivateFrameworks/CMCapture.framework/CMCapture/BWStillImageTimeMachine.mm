@@ -1,7 +1,7 @@
 @interface BWStillImageTimeMachine
-+ (BOOL)afComplete:(opaqueCMSampleBuffer *)a3;
-- (BWStillImageTimeMachine)initWithCapacity:(int)a3;
-- (int)insertFrame:(opaqueCMSampleBuffer *)a3;
++ (BOOL)afComplete:(opaqueCMSampleBuffer *)complete;
+- (BWStillImageTimeMachine)initWithCapacity:(int)capacity;
+- (int)insertFrame:(opaqueCMSampleBuffer *)frame;
 - (opaqueCMSampleBuffer)copyBestFrame;
 - (uint64_t)copyBestFrame;
 - (void)_drain;
@@ -13,7 +13,7 @@
 
 @implementation BWStillImageTimeMachine
 
-- (BWStillImageTimeMachine)initWithCapacity:(int)a3
+- (BWStillImageTimeMachine)initWithCapacity:(int)capacity
 {
   v7.receiver = self;
   v7.super_class = BWStillImageTimeMachine;
@@ -21,10 +21,10 @@
   v5 = v4;
   if (v4)
   {
-    v4->_capacity = a3;
-    if (a3 >= 1)
+    v4->_capacity = capacity;
+    if (capacity >= 1)
     {
-      v4->_frames = malloc_type_calloc(a3, 8uLL, 0x2004093837F09uLL);
+      v4->_frames = malloc_type_calloc(capacity, 8uLL, 0x2004093837F09uLL);
     }
 
     v5->_timeMachineMutex = FigSimpleMutexCreate();
@@ -63,7 +63,7 @@
   FigSimpleMutexUnlock();
 }
 
-- (int)insertFrame:(opaqueCMSampleBuffer *)a3
+- (int)insertFrame:(opaqueCMSampleBuffer *)frame
 {
   FigSimpleMutexLock();
   capacity = self->_capacity;
@@ -94,7 +94,7 @@
       v8 = 0;
     }
 
-    CopyIncludingMetadata = BWCMSampleBufferCreateCopyIncludingMetadata(a3, &self->_frames[v8]);
+    CopyIncludingMetadata = BWCMSampleBufferCreateCopyIncludingMetadata(frame, &self->_frames[v8]);
     if (CopyIncludingMetadata)
     {
       [BWStillImageTimeMachine insertFrame:];
@@ -282,14 +282,14 @@ LABEL_47:
   return v30;
 }
 
-+ (BOOL)afComplete:(opaqueCMSampleBuffer *)a3
++ (BOOL)afComplete:(opaqueCMSampleBuffer *)complete
 {
-  if (!a3)
+  if (!complete)
   {
     return 0;
   }
 
-  v3 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v3 = CMGetAttachment(complete, *off_1E798A3C8, 0);
   result = 1;
   if (v3)
   {
@@ -310,19 +310,19 @@ LABEL_47:
 
 - (void)_drain
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 28);
+    v2 = *(self + 28);
     if (v2)
     {
       for (i = 0; i < v2; ++i)
       {
-        v4 = *(*(a1 + 16) + 8 * i);
+        v4 = *(*(self + 16) + 8 * i);
         if (v4)
         {
           CFRelease(v4);
-          *(*(a1 + 16) + 8 * i) = 0;
-          v2 = *(a1 + 28);
+          *(*(self + 16) + 8 * i) = 0;
+          v2 = *(self + 28);
         }
       }
     }
@@ -349,7 +349,7 @@ LABEL_47:
   fig_log_get_emitter();
   OUTLINED_FUNCTION_1_6();
   result = FigDebugAssert3();
-  *a2 = *a1;
+  *a2 = *self;
   return result;
 }
 
